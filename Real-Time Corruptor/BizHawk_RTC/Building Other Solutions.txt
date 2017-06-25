@@ -1,0 +1,56 @@
+Besides the main Bizhawk.sln, there are a number of other projects, each with its own build method.  To develop Bizhawk, you do not need to build these other projects, as they are included prebuild in SVN.  You need only build them if you want to modify the cores themselves.
+
+
+EMU7800: Load EMU7800/EMU7800.sln; builds as .NET 4.0.  Does file automatically copy to appropriate folder??
+
+genplus-gx: Load genplus-gx/libretro/msvc/msvc-2010.sln; builds as VC++ (VC10).  Output dll automatically copies to appropriate folder.
+waterbox: check the waterbox/ folder for instructions on the alpha waterbox builds.
+
+libgambatte: Process libgambatte/Makefile with mingw.  Use "make install" to copy to output folder.  Alternatively, there is a VC10 solution at libgambatte/libgambatte.sln, but that's not used.
+amd64: there is some sort of codegen issue with mingw.  The VC10 solution is used there.
+
+libmeteor: Probably libmeteor/libmeteor.sln, but not well checked.
+
+libmupen64plus: ??
+
+libsnes: During development, run bizwinmake.sh. Edit it as necessary to change profiles and bitness. For making release mode dlls for committing, run bizwinmakedistro.sh. Note that 64bits libsnes doesn't work right now.
+
+quicknes: Process quicknes/mingw/Makefile with mingw.  Use "make install" top copy to output folder.  Alternatively, there is a VC10 solution at quicknes/libquicknes/libquicknes.sln, but that has audio output glitches.
+amd64: mingw only
+
+wonderswan: Load wonderswan/bizswan/bizswan.sln; builds as VC++ (VC10).  Output dll automatically copies to appropriate folder.  Alternatively, there is a mingw Makefile at wonderswan/mingw/Makefile, but that's not used.
+amd64: mingw only
+
+yabause: Load yabause/src/libyabause/libyabause.sln; builds as VC++ (VC10).  Output dll automatically copies to appropriate folder.
+
+
+libdarm: stock build from https://github.com/jbremer/darm.git   71a027e0ffb2171d01213c6ecc6da1c49e158398
+
+===========================================
+
+Here's a guide zeromus developed on 03-feb-2015 to assembly a mingw-w64 + msys capable of building bsnes and maybe other things. The motivation: mingw make stopped working at some point (maybe a windows update) and the compiler is old and has problems.
+
+Here's my reasoning for this approach:
+1. People tell me mingw-w64 is superior
+2. Mingw+msys or whatever will only install mingw
+3. mingw-w64 doesnt come with msys
+4. Therefore, we must 'upgrade' a mingw-w64 with msys. 
+
+Here's how:
+
+install an mingw-w64 toolchain. lets say its at C:\i686-4.9.2-posix-dwarf-rt_v3-rev1
+download mingw-get-setup.exe to C:\i686-4.9.2-posix-dwarf-rt_v3-rev1\mingw-get-setup.exe.
+Run it and install to C:\i686-4.9.2-posix-dwarf-rt_v3-rev1. Turn off the shortcuts, but leave on the GUI options. Install it and pick continue.
+Enable msys-base and pick installation > update catalogue. review changes and apply. then we'll be done. close, close, close.
+You now have C:\i686-4.9.2-posix-dwarf-rt_v3-rev1\msys\1.0\msys.bat
+run it, and run /postinstall/pi.sh
+enter y,y and then C:/i686-4.9.2-posix-dwarf-rt_v3-rev1/mingw32
+answer Y (is this step MISSING?)
+Now you've activated the mingw-w64 on this msys install.
+It will tell you "Oh joy" you dont have a better make.exe. Thats bullshit, their make.exe is terrible. In fact youll want a new one
+ln -s /mingw/bin/mingw32-make.exe /mingw/bin/make
+Now, with the way msys sets up its paths, youll be using that make by default
+
+=========================================
+
+natt: February 2016: the environment I currently use to build all of my mingw stuff, 32 and 64 bit, but not waterbox (which is on linux) and maybe not bsnes (haven't tried in a while) is a vanilla http://msys2.github.io/ install.

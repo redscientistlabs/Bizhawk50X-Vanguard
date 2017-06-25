@@ -1,0 +1,12 @@
+C:\Users\philt\Documents\PROJECTS\WindowsGlitchHarvester\WindowsGlitchHarvester\bin\x64\Debug\WindowsGlitchHarvester.exe.config
+C:\Users\philt\Documents\PROJECTS\WindowsGlitchHarvester\WindowsGlitchHarvester\bin\x64\Debug\WindowsGlitchHarvester.exe
+C:\Users\philt\Documents\PROJECTS\WindowsGlitchHarvester\WindowsGlitchHarvester\bin\x64\Debug\WindowsGlitchHarvester.pdb
+C:\Users\philt\Documents\PROJECTS\WindowsGlitchHarvester\WindowsGlitchHarvester\bin\x64\Debug\Crc32.dll
+C:\Users\philt\Documents\PROJECTS\WindowsGlitchHarvester\WindowsGlitchHarvester\bin\x64\Debug\ICSharpCode.SharpZipLib.dll
+C:\Users\philt\Documents\PROJECTS\WindowsGlitchHarvester\WindowsGlitchHarvester\obj\x64\Debug\WindowsGlitchHarvester.WGH_MainForm.resources
+C:\Users\philt\Documents\PROJECTS\WindowsGlitchHarvester\WindowsGlitchHarvester\obj\x64\Debug\WindowsGlitchHarvester.Properties.Resources.resources
+C:\Users\philt\Documents\PROJECTS\WindowsGlitchHarvester\WindowsGlitchHarvester\obj\x64\Debug\WindowsGlitchHarvester.WGH_SelectMultiple.resources
+C:\Users\philt\Documents\PROJECTS\WindowsGlitchHarvester\WindowsGlitchHarvester\obj\x64\Debug\WindowsGlitchHarvester.csproj.GenerateResource.Cache
+C:\Users\philt\Documents\PROJECTS\WindowsGlitchHarvester\WindowsGlitchHarvester\obj\x64\Debug\WindowsGlitchHarvester.exe
+C:\Users\philt\Documents\PROJECTS\WindowsGlitchHarvester\WindowsGlitchHarvester\obj\x64\Debug\WindowsGlitchHarvester.pdb
+C:\Users\philt\Documents\PROJECTS\WindowsGlitchHarvester\WindowsGlitchHarvester\obj\x64\Debug\WindowsGlitchHarvester.csprojResolveAssemblyReference.cache

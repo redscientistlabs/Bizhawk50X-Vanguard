@@ -1,0 +1,7 @@
+C:\Users\Philippe\Documents\Visual Studio 2010\Projects\Super RTC\Dev SRTC_Launcher\SRTC_Launcher\obj\x86\Release\RTC.SRTC_Launcher.resources
+C:\Users\Philippe\Documents\Visual Studio 2010\Projects\Super RTC\Dev SRTC_Launcher\SRTC_Launcher\obj\x86\Release\SRTC_Launcher.Properties.Resources.resources
+C:\Users\Philippe\Documents\Visual Studio 2010\Projects\Super RTC\Dev SRTC_Launcher\SRTC_Launcher\obj\x86\Release\SRTC_Launcher.csproj.GenerateResource.Cache
+C:\Users\Philippe\Documents\Visual Studio 2010\Projects\Super RTC\Dev SRTC_Launcher\SRTC_Launcher\bin\Release\SRTC_Launcher.exe
+C:\Users\Philippe\Documents\Visual Studio 2010\Projects\Super RTC\Dev SRTC_Launcher\SRTC_Launcher\bin\Release\SRTC_Launcher.pdb
+C:\Users\Philippe\Documents\Visual Studio 2010\Projects\Super RTC\Dev SRTC_Launcher\SRTC_Launcher\obj\x86\Release\SRTC_Launcher.exe
+C:\Users\Philippe\Documents\Visual Studio 2010\Projects\Super RTC\Dev SRTC_Launcher\SRTC_Launcher\obj\x86\Release\SRTC_Launcher.pdb

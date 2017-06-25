@@ -1,0 +1,8 @@
+C:\Users\Philippe\Documents\Visual Studio 2010\Projects\RT Corruptor Mod\AutoKillSwitch\AutoKillSwitch\bin\Release\AutoKillSwitch.exe
+C:\Users\Philippe\Documents\Visual Studio 2010\Projects\RT Corruptor Mod\AutoKillSwitch\AutoKillSwitch\bin\Release\AutoKillSwitch.pdb
+C:\Users\Philippe\Documents\Visual Studio 2010\Projects\RT Corruptor Mod\AutoKillSwitch\AutoKillSwitch\obj\x86\Release\RTC.AutoKillSwitch.resources
+C:\Users\Philippe\Documents\Visual Studio 2010\Projects\RT Corruptor Mod\AutoKillSwitch\AutoKillSwitch\obj\x86\Release\AutoKillSwitch.Properties.Resources.resources
+C:\Users\Philippe\Documents\Visual Studio 2010\Projects\RT Corruptor Mod\AutoKillSwitch\AutoKillSwitch\obj\x86\Release\AutoKillSwitch.csproj.GenerateResource.Cache
+C:\Users\Philippe\Documents\Visual Studio 2010\Projects\RT Corruptor Mod\AutoKillSwitch\AutoKillSwitch\obj\x86\Release\AutoKillSwitch.exe
+C:\Users\Philippe\Documents\Visual Studio 2010\Projects\RT Corruptor Mod\AutoKillSwitch\AutoKillSwitch\obj\x86\Release\AutoKillSwitch.pdb
+C:\Users\Philippe\Documents\Visual Studio 2010\Projects\RT Corruptor Mod\AutoKillSwitch\AutoKillSwitch\obj\x86\Release\AutoKillSwitch.csprojResolveAssemblyReference.cache
