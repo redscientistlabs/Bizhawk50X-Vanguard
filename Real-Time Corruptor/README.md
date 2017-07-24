@@ -29,5 +29,4 @@ Don't use this program if flashing images can give you seizures
 
 * [Current download](http://redscientist.com/software/rtc/releases/RTC078.zip)
 * [Download a previous version](http://redscientist.com/software/rtc/releases/)
-* [Website page](http://www.redscientist.com/)
 * [BizHawk emulator](https://github.com/TASVideos/BizHawk)
