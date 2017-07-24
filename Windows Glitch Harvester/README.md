@@ -38,4 +38,4 @@ Don't use this program if flashing images can give you seizures
 ## Links
 
 * [Current download](http://redscientist.com/software/wgh/releases/WGH009.zip)
-* [Download a previosu version](http://redscientist.com/software/wgh/releases/)
+* [Download a previous version](http://redscientist.com/software/wgh/releases/)
