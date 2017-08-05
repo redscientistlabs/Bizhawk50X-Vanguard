@@ -226,11 +226,13 @@ namespace RTC
                                 RTC_Core.ghForm.btnCorrupt_Click(null,null);
                                 break;
                             case "ASK_PLUGIN_SET":
-                                if (GlobalWin.MainForm.CurrentlyOpenRom != null)
+                                if (RTC_Core.SendCommandToBizhawk(new RTC_Command(CommandType.REMOTE_KEY_GETOPENROMFILENAME), true) != null)
                                     RefreshPlugin();
                                 break;
+
+                                
                         }
-                    break;
+                        break;
 
                 }
             }
@@ -241,7 +243,7 @@ namespace RTC
 
         public static void RefreshPlugin()
         {
-            SendToPlugin("RTC_Plugin|SET|" + GlobalWin.MainForm.CurrentlyOpenRom + "|" + RTC_Core.bizhawkDir + "\\CorruptedROM.rom" + "|" + RTC_Core.bizhawkDir + "\\ExternalCorrupt.exe");
+            SendToPlugin("RTC_Plugin|SET|" + RTC_Core.SendCommandToBizhawk(new RTC_Command(CommandType.REMOTE_KEY_GETOPENROMFILENAME), true).ToString() + "|" + RTC_Core.bizhawkDir + "\\CorruptedROM.rom" + "|" + RTC_Core.bizhawkDir + "\\ExternalCorrupt.exe");
         }
         public static void ClosePlugin()
         {

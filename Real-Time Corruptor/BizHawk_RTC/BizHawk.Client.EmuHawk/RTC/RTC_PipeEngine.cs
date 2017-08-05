@@ -12,7 +12,10 @@ namespace RTC
     public static class RTC_PipeEngine
     {
         public static int MaxPipes = 20;
+        public static int TiltValue = 0;
         public static Queue<BlastUnit> AllBlastPipes = new Queue<BlastUnit>();
+
+        public static bool ChainedPipes = true;
 
 		public static string lastDomain = null;
 		public static long lastAddress = 0;
@@ -43,7 +46,6 @@ namespace RTC
 				if (bu != null)
 					AllBlastPipes.Enqueue(bu);
 
-				RemoveExcessPipes();
 			}
 
 		}
@@ -62,25 +64,36 @@ namespace RTC
 			
             try
             {
-				if(lastDomain == null) // The first unit will always be null
-				{
-					lastDomain = _domain;
-					lastAddress = _address;
-					return null;
-				}
-				else
-				{
-					BlastPipe bp = new BlastPipe(_domain, _address, lastDomain, lastAddress, true);
-					lastDomain = _domain;
-					lastAddress = _address;
-					return bp;
+                if (ChainedPipes)
+                {
+                    if (lastDomain == null) // The first unit will always be null
+                    {
+                        lastDomain = _domain;
+                        lastAddress = _address;
+                        return null;
+                    }
+                    else
+                    {
+                        BlastPipe bp = new BlastPipe(_domain, _address, lastDomain, lastAddress, TiltValue, true);
+                        lastDomain = _domain;
+                        lastAddress = _address;
+                        return bp;
 
-				}
+                    }
+                }
+                else
+                {
+                    var pipeEnd = RTC_Core.GetBlastTarget();
+                    BlastPipe bp = new BlastPipe(_domain, _address, pipeEnd.domain, pipeEnd.address, TiltValue, true);
+                    lastDomain = _domain;
+                    lastAddress = _address;
+                    return bp;
+                }
 
-			}
+            }
             catch (Exception ex)
             {
-                MessageBox.Show("Something went wrong in the RTC Datapipe Engine. \n" +
+                MessageBox.Show("Something went wrong in the RTC Pipe Engine. \n" +
                                 "This is not a BizHawk error so you should probably send a screenshot of this to the devs\n\n" +
                                 ex.ToString());
                 return null;

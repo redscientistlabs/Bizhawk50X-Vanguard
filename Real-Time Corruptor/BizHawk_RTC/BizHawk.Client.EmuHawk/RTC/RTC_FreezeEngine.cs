@@ -321,7 +321,7 @@ namespace RTC
 
                     while (DuplicateFound)
                     {
-                        long queryAdress = tempActiveTable[RTC_Core.RandomLong(tempActiveTable.Length)];
+                        long queryAdress = tempActiveTable[RTC_Core.RandomLong(tempActiveTable.Length -1)];
 
                         if (!cappedActiveTable.Contains(queryAdress))
                         {
@@ -421,7 +421,7 @@ namespace RTC
                 if (RTC_Core.coreForm.cbFreezeEngineActive.Checked && ActiveTableReady)
                     Address = GetAdressFromActiveTable();
                 else
-                    Address = RTC_Core.RandomLong(mdp.Size);
+                    Address = RTC_Core.RandomLong(mdp.Size -1);
 
 				long safeAddress = Address - (Address % mdp.WordSize);
 

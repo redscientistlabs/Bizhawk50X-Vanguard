@@ -1059,11 +1059,6 @@ namespace RTC
 			RTC_Core.SendCommandToBizhawk(new RTC_Command(CommandType.REMOTE_SET_VECTOR_VALUES) { objectValue = RTC_VectorEngine.valueList });
 		}
 
-		private void btnShuffleCheats_Click(object sender, EventArgs e)
-		{
-			throw new Exception("not implemented");
-		}
-
 		private void btnGpJumpBack_Click(object sender, EventArgs e)
 		{
 			try
@@ -1105,6 +1100,32 @@ namespace RTC
 				btnGpJumpNow.Visible = true;
 			}
 		}
-	}
+
+        private void nmTiltPipeValue_ValueChanged(object sender, EventArgs e)
+        {
+            RTC_PipeEngine.TiltValue = Convert.ToInt32(nmTiltPipeValue.Value);
+            RTC_Core.SendCommandToBizhawk(new RTC_Command(CommandType.REMOTE_SET_PIPE_TILTVALUE) { objectValue = RTC_PipeEngine.TiltValue });
+        }
+
+        private void btnManualBlast_MouseDown(object sender, MouseEventArgs e)
+        {
+            if (e.Button == MouseButtons.Right)
+            {
+                Point locate = new Point((sender as Control).Location.X + e.Location.X, (sender as Control).Location.Y + e.Location.Y);
+
+                ContextMenuStrip columnsMenu = new ContextMenuStrip();
+                columnsMenu.Items.Add("Blast + Send RAW To Stash (Glitch Harvester)", null, new EventHandler((ob, ev) => {
+                    RTC_Core.SendCommandToRTC(new RTC_Command(CommandType.REMOTE_HOTKEY_BLASTRAWSTASH));
+                }));
+                columnsMenu.Show(this, locate);
+            }
+        }
+
+        private void cbGenerateChainedPipes_CheckedChanged(object sender, EventArgs e)
+        {
+            RTC_PipeEngine.ChainedPipes = cbGenerateChainedPipes.Checked;
+            RTC_Core.SendCommandToBizhawk(new RTC_Command(CommandType.REMOTE_SET_PIPE_CHAINEDPIPES) { objectValue = RTC_PipeEngine.ChainedPipes });
+        }
+    }
 
 }

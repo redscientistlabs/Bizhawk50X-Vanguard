@@ -1,0 +1,20 @@
+c:\users\philt\documents\visual studio 2015\Projects\RTC_Launcher\RTC_Launcher\bin\Debug\RTC_Launcher.exe
+c:\users\philt\documents\visual studio 2015\Projects\RTC_Launcher\RTC_Launcher\bin\Debug\RTC_Launcher.pdb
+c:\users\philt\documents\visual studio 2015\Projects\RTC_Launcher\RTC_Launcher\obj\Debug\RTC_Launcher.csprojResolveAssemblyReference.cache
+c:\users\philt\documents\visual studio 2015\Projects\RTC_Launcher\RTC_Launcher\obj\Debug\RTC_Launcher.MainForm.resources
+c:\users\philt\documents\visual studio 2015\Projects\RTC_Launcher\RTC_Launcher\obj\Debug\RTC_Launcher.Properties.Resources.resources
+c:\users\philt\documents\visual studio 2015\Projects\RTC_Launcher\RTC_Launcher\obj\Debug\RTC_Launcher.csproj.GenerateResource.Cache
+c:\users\philt\documents\visual studio 2015\Projects\RTC_Launcher\RTC_Launcher\obj\Debug\RTC_Launcher.exe
+c:\users\philt\documents\visual studio 2015\Projects\RTC_Launcher\RTC_Launcher\obj\Debug\RTC_Launcher.pdb
+c:\users\philt\documents\visual studio 2015\Projects\RTC_Launcher\RTC_Launcher\bin\Debug\RTC_Launcher.exe.config
+c:\users\philt\documents\visual studio 2015\Projects\RTC_Launcher\RTC_Launcher\obj\Debug\RTC_Launcher.DownloadForm.resources
+C:\Users\philt\Documents\PROJECTS\RTC3\RTC3 Launcher\RTC_Launcher\RTC_Launcher\bin\Debug\RTC_Launcher.exe.config
+C:\Users\philt\Documents\PROJECTS\RTC3\RTC3 Launcher\RTC_Launcher\RTC_Launcher\obj\Debug\RTC_Launcher.exe
+C:\Users\philt\Documents\PROJECTS\RTC3\RTC3 Launcher\RTC_Launcher\RTC_Launcher\obj\Debug\RTC_Launcher.pdb
+C:\Users\philt\Documents\PROJECTS\RTC3\RTC3 Launcher\RTC_Launcher\RTC_Launcher\bin\Debug\RTC_Launcher.exe
+C:\Users\philt\Documents\PROJECTS\RTC3\RTC3 Launcher\RTC_Launcher\RTC_Launcher\bin\Debug\RTC_Launcher.pdb
+C:\Users\philt\Documents\PROJECTS\RTC3\RTC3 Launcher\RTC_Launcher\RTC_Launcher\obj\Debug\RTC_Launcher.csprojResolveAssemblyReference.cache
+C:\Users\philt\Documents\PROJECTS\RTC3\RTC3 Launcher\RTC_Launcher\RTC_Launcher\obj\Debug\RTC_Launcher.DownloadForm.resources
+C:\Users\philt\Documents\PROJECTS\RTC3\RTC3 Launcher\RTC_Launcher\RTC_Launcher\obj\Debug\RTC_Launcher.MainForm.resources
+C:\Users\philt\Documents\PROJECTS\RTC3\RTC3 Launcher\RTC_Launcher\RTC_Launcher\obj\Debug\RTC_Launcher.Properties.Resources.resources
+C:\Users\philt\Documents\PROJECTS\RTC3\RTC3 Launcher\RTC_Launcher\RTC_Launcher\obj\Debug\RTC_Launcher.csproj.GenerateResource.Cache

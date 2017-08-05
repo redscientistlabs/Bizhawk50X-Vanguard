@@ -305,7 +305,7 @@ namespace WindowsGlitchHarvester
         {
             if (MessageBox.Show(
 @"This resets the backup of the current target by using the current data from it.
-If you override a clean backup uaing a corrupted file,
+If you override a clean backup using a corrupted file,
 you won't be able to restore the original file using it.
 
 Are you sure you want to reset the current target's backup?", "WARNING", MessageBoxButtons.YesNo) == DialogResult.No)

@@ -17,7 +17,7 @@ namespace RTC
 
     public static class RTC_Core
     {
-		public static string RtcVersion = "2.80";
+		public static string RtcVersion = "2.85";
 		
         public static Random RND = new Random();
         public static string[] args;
@@ -28,8 +28,8 @@ namespace RTC
 		public static int ErrorDelay = 1;
         public static BlastRadius Radius = BlastRadius.SPREAD;
 
-        public static bool ClearCheatsOnRewind = true;
-		public static bool ClearPipesOnRewind = true;
+        public static bool ClearCheatsOnRewind = false;
+		public static bool ClearPipesOnRewind = false;
 		public static bool ExtractBlastLayer = false;
         public static string lastOpenRom = null;
         public static int lastLoaderRom = 0;
@@ -264,8 +264,11 @@ namespace RTC
 			}
 
 
-			if (!isStandalone)
-				RTC_RPC.Start();
+            if (!RTC_Hooks.isRemoteRTC)
+            {
+                RTC_RPC.Start();
+            }
+
 
 			if (GlobalWin.MainForm != null)
 				GlobalWin.MainForm.Focus();
@@ -448,7 +451,7 @@ namespace RTC
 								}
 
                                 MaxAddress = RTC_MemoryDomains.getProxyFromString(Domain).Size;
-                                RandomAddress = RandomLong(MaxAddress);
+                                RandomAddress = RandomLong(MaxAddress -1);
 
                                 bu = getBlastUnit(Domain, RandomAddress);
                                 if (bu != null)
@@ -472,7 +475,7 @@ namespace RTC
 
                             for (int i = 0; i < _Intensity; i++)
                             {
-                                RandomAddress = RandomLong(MaxAddress);
+                                RandomAddress = RandomLong(MaxAddress -1);
 
                                 bu = getBlastUnit(Domain, RandomAddress);
                                 if(bu != null)
@@ -498,7 +501,7 @@ namespace RTC
 
                                 for (int i = 0; i < (int)((double)_Intensity / 10); i++)
                                 {
-                                    RandomAddress = RandomLong(MaxAddress);
+                                    RandomAddress = RandomLong(MaxAddress -1);
 
                                     bu = getBlastUnit(Domain, RandomAddress);
                                     if (bu != null)
@@ -535,6 +538,30 @@ namespace RTC
 
                 return null;
             }
+        }
+
+        public static BlastTarget GetBlastTarget()
+        {
+            string Domain = null;
+            long MaxAddress = -1;
+            long RandomAddress = -1;
+
+            string[] _selectedDomains = RTC_MemoryDomains.SelectedDomains;
+
+            if (RTC_Core.SelectedEngine != CorruptionEngine.FREEZE)
+            {
+                Domain = _selectedDomains[RND.Next(_selectedDomains.Length)];
+            }
+            else
+            {
+                Domain = RTC_MemoryDomains._domain.ToString();
+            }
+
+            MaxAddress = RTC_MemoryDomains.getProxyFromString(Domain).Size;
+            RandomAddress = RandomLong(MaxAddress - 1);
+
+            return new BlastTarget(Domain, RandomAddress);
+
         }
 
         public static string GetRandomKey()

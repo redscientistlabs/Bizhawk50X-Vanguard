@@ -82,7 +82,7 @@ namespace RTC
         {
             InitializeComponent();
 
-			btnSavestate_Click(btnSavestate01, null); //Selects first button as default
+			//btnSavestate_Click(btnSavestate01, null); //Selects first button as default
 
 			#region textbox states to dico
 			StateBoxes.Add("01", tbSavestate01);
@@ -115,16 +115,16 @@ namespace RTC
 			StateBoxes.Add("28", tbSavestate28);
 			StateBoxes.Add("29", tbSavestate29);
 			StateBoxes.Add("30", tbSavestate30);
-			StateBoxes.Add("31", tbSavestate21);
-			StateBoxes.Add("32", tbSavestate22);
-			StateBoxes.Add("33", tbSavestate23);
-			StateBoxes.Add("34", tbSavestate24);
-			StateBoxes.Add("35", tbSavestate25);
-			StateBoxes.Add("36", tbSavestate26);
-			StateBoxes.Add("37", tbSavestate27);
-			StateBoxes.Add("38", tbSavestate28);
-			StateBoxes.Add("39", tbSavestate29);
-			StateBoxes.Add("40", tbSavestate20);
+			StateBoxes.Add("31", tbSavestate31);
+			StateBoxes.Add("32", tbSavestate32);
+			StateBoxes.Add("33", tbSavestate33);
+			StateBoxes.Add("34", tbSavestate34);
+			StateBoxes.Add("35", tbSavestate35);
+			StateBoxes.Add("36", tbSavestate36);
+			StateBoxes.Add("37", tbSavestate37);
+			StateBoxes.Add("38", tbSavestate38);
+			StateBoxes.Add("39", tbSavestate39);
+			StateBoxes.Add("40", tbSavestate40);
 			#endregion
 
 			pnHideGlitchHarvester.Location = new Point(0, 0);
@@ -148,8 +148,10 @@ namespace RTC
 					ctrl.Size = new Size(29, 25);
 
 			RefreshStashHistory();
+            refreshSavestateTextboxes();
 
-		}
+
+        }
 
 		public void RefreshStashHistory(bool scrolldown = false)
 		{
@@ -185,11 +187,63 @@ namespace RTC
 				clickedButton.ForeColor = Color.OrangeRed;
 				clickedButton.BringToFront();
 
+
 				RTC_StockpileManager.currentSavestateKey = clickedButton.Text;
-				RTC_Core.SendCommandToBizhawk(new RTC_Command(CommandType.REMOTE_SET_SAVESTATEBOX) { objectValue = RTC_StockpileManager.currentSavestateKey });
+                StashKey psk = RTC_StockpileManager.getCurrentSavestateStashkey();
+
+
+                if (psk != null && !File.Exists(psk.RomFilename))
+                {
+                    if (DialogResult.Yes == MessageBox.Show($"Can't find file {psk.RomFilename}\nGame name: {psk.GameName}\nSystem name: {psk.SystemName}\n\n Would you like to provide a new file for replacement?", "Error: File not found", MessageBoxButtons.YesNo))
+                    {
+                        OpenFileDialog ofd = new OpenFileDialog();
+                        ofd.DefaultExt = "*";
+                        ofd.Title = "Select Replacement File";
+                        ofd.Filter = "Any file|*.*";
+                        ofd.RestoreDirectory = true;
+                        if (ofd.ShowDialog() == DialogResult.OK)
+                        {
+                            string Filename = ofd.FileName.ToString();
+                            string oldFilename = psk.RomFilename;
+                            for (int i = 1; i < 41; i++)
+                            {
+                                string key = i.ToString().PadLeft(2, '0');
+
+                                if (RTC_StockpileManager.SavestateStashkeyDico.ContainsKey(key))
+                                {
+                                    StashKey sk = RTC_StockpileManager.SavestateStashkeyDico[key];
+                                    if (sk.RomFilename == oldFilename)
+                                        sk.RomFilename = Filename;
+                                }
+
+                            }
+                        }
+                        else
+                        {
+                            clickedButton.ForeColor = Color.FromArgb(192, 255, 192);
+                            RTC_StockpileManager.currentSavestateKey = null;
+                            return;
+                        }
+                    }
+                    else
+                    {
+                        clickedButton.ForeColor = Color.FromArgb(192, 255, 192);
+                        RTC_StockpileManager.currentSavestateKey = null;
+                        return;
+                    }
+                }
+
+
+
+
+                RTC_Core.SendCommandToBizhawk(new RTC_Command(CommandType.REMOTE_SET_SAVESTATEBOX) { objectValue = RTC_StockpileManager.currentSavestateKey });
 
 				if (cbSavestateLoadOnClick.Checked)
-					RTC_StockpileManager.LoadState(RTC_StockpileManager.getCurrentSavestateStashkey());
+                {
+                    btnSaveLoad.Text = "LOAD";
+                    btnSaveLoad_Click(null, null);
+                }
+					//RTC_StockpileManager.LoadState(RTC_StockpileManager.getCurrentSavestateStashkey());
 
 			}
 			finally
@@ -256,11 +310,19 @@ namespace RTC
             }
             else
             {
+                if(RTC_StockpileManager.currentSavestateKey == null)
+                {
+                    MessageBox.Show("No Savestate Box is currently selected in the Glitch Harvester's Savestate Manager");
+                    return;
+                }
+
 
 				StashKey sk = RTC_StockpileManager.SaveState(true);
 
                 btnSaveLoad.Text = "LOAD";
                 btnSaveLoad.ForeColor = Color.FromArgb(192, 255, 192);
+
+                
             }
 
         }
@@ -376,7 +438,7 @@ namespace RTC
         }
 
 		private void btnAddStashToStockpile_Click(object sender, EventArgs e) => AddStashToStockpile();
-        public void AddStashToStockpile()
+        public void AddStashToStockpile(bool askForName = true)
         {
             if (lbStashHistory.Items.Count == 0 || lbStashHistory.SelectedIndex == -1)
             {
@@ -389,17 +451,19 @@ namespace RTC
             string value = "";
 
 			RTC_Core.StopSound();
-            if (this.getInputBox("Harvester", "Enter the new Stash name:", ref value) == DialogResult.OK)
+            if (askForName)
             {
-                Name = value.Trim();
-				RTC_Core.StartSound();
+                if (this.getInputBox("Harvester", "Enter the new Stash name:", ref value) == DialogResult.OK)
+                {
+                    Name = value.Trim();
+                    RTC_Core.StartSound();
+                }
+                else
+                {
+                    RTC_Core.StartSound();
+                    return;
+                }
             }
-            else
-            {
-				RTC_Core.StartSound();
-                return;
-            }
-
 
             if (Name != "")
 				RTC_StockpileManager.currentStashkey.Alias = Name;
@@ -624,7 +688,7 @@ namespace RTC
             //if (Global.Emulator is NullEmulator)
             //   return;
 
-            if (RTC_StockpileManager.currentStashkey == null || RTC_StockpileManager.currentStashkey.blastlayer.Layer.Count == 0)
+            if (RTC_StockpileManager.currentStashkey == null || RTC_StockpileManager.currentStashkey.BlastLayer.Layer.Count == 0)
             {
                 IsCorruptionApplied = false;
                 return;
@@ -633,7 +697,7 @@ namespace RTC
             if (!IsCorruptionApplied)
             {
                 IsCorruptionApplied = true;
-				RTC_Core.SendCommandToRTC(new RTC_Command(CommandType.BLAST) { blastlayer = RTC_StockpileManager.currentStashkey.blastlayer});
+				RTC_Core.SendCommandToRTC(new RTC_Command(CommandType.BLAST) { blastlayer = RTC_StockpileManager.currentStashkey.BlastLayer});
 				//RTC_StockpileManager.currentStashkey.blastlayer.Apply();
 
             }
@@ -919,7 +983,14 @@ namespace RTC
 				(columnsMenu.Items.Add("[Multiplayer] Send Selected Item as a Blast", null, new EventHandler((ob, ev) => { RTC_Core.Multiplayer?.SendBlastlayer(); })) as ToolStripMenuItem).Enabled = RTC_Core.Multiplayer != null && RTC_Core.Multiplayer.side != NetworkSide.DISCONNECTED;
 				(columnsMenu.Items.Add("[Multiplayer] Send Selected Item as a Game State", null, new EventHandler((ob, ev) => { RTC_Core.Multiplayer?.SendStashkey(); })) as ToolStripMenuItem).Enabled = RTC_Core.Multiplayer != null && RTC_Core.Multiplayer.side != NetworkSide.DISCONNECTED;
 				columnsMenu.Items.Add(new ToolStripSeparator());
-				columnsMenu.Items.Add("Open Selected Item in Blast Editor", null, new EventHandler((ob, ev) => { RTC_Core.beForm.LoadStashkey(RTC_StockpileManager.currentStashkey); }));
+				columnsMenu.Items.Add("Open Selected Item in Blast Editor", null, new EventHandler((ob, ev) => {
+                    if (RTC_Core.beForm != null)
+                    {
+                        RTC_Core.beForm.Close();
+                        RTC_Core.beForm = new RTC_BlastEditorForm();
+                        RTC_Core.beForm.LoadStashkey(RTC_StockpileManager.currentStashkey);
+                    }
+                }));
 
 				columnsMenu.Show(this, locate);
 			}
@@ -939,7 +1010,7 @@ namespace RTC
 			else
 				return;
 
-			RTC_StockpileManager.currentStashkey.blastlayer.Reroll();
+			RTC_StockpileManager.currentStashkey.BlastLayer.Reroll();
 
 			RTC_StockpileManager.ApplyStashkey(RTC_StockpileManager.currentStashkey);
 		}
@@ -954,12 +1025,12 @@ namespace RTC
 
 				if (RTC_StockpileManager.SavestateStashkeyDico.ContainsKey(key))
 				{
-					ssk.Stashkeys[i] = RTC_StockpileManager.SavestateStashkeyDico[key];
+					ssk.StashKeys[i] = RTC_StockpileManager.SavestateStashkeyDico[key];
 					ssk.Text[i] = StateBoxes[key].Text;
 				}
 				else
 				{
-					ssk.Stashkeys[i] = null;
+					ssk.StashKeys[i] = null;
 					ssk.Text[i] = null;
 				}
 
@@ -989,7 +1060,7 @@ namespace RTC
 
 			for(int i = 1; i < 41; i++)
 			{
-				StashKey key = ssk.Stashkeys[i];
+				StashKey key = ssk.StashKeys[i];
 
 				if (key == null)
 					continue;
@@ -1059,16 +1130,23 @@ namespace RTC
 			// repopulating savestates out of temp4 folder
 			for (int i = 1; i < 41; i++)
 			{
-				StashKey key = ssk.Stashkeys[i];
+				StashKey key = ssk.StashKeys[i];
 
 				if (key == null)
 					continue;
 
 				string statefilename = key.GameName + "." + key.ParentKey + ".timejump.State"; // get savestate name
+                string newStatePath = RTC_Core.bizhawkDir + "\\" + key.SystemName + "\\State\\" + statefilename;
+                string shortRomFilename = key.RomFilename.Substring(key.RomFilename.LastIndexOf("\\") + 1);
 
-				if (!File.Exists(RTC_Core.bizhawkDir + "\\" + key.SystemName + "\\State\\" + statefilename))
-					File.Copy(RTC_Core.rtcDir + "\\TEMP4\\" + statefilename, RTC_Core.bizhawkDir + "\\" + key.SystemName + "\\State\\" + statefilename); // copy savestates to temp folder
-			}
+
+                if (!File.Exists(RTC_Core.bizhawkDir + "\\" + key.SystemName + "\\State\\" + statefilename))
+					File.Copy(RTC_Core.rtcDir + "\\TEMP4\\" + statefilename, newStatePath); // copy savestates to temp folder
+
+                key.RomFilename = RTC_Core.rtcDir + "\\TEMP4\\" + shortRomFilename;
+                key.StateFilename = newStatePath;
+
+            }
 
 
 			//fill text/state controls/dico
@@ -1079,12 +1157,12 @@ namespace RTC
 				if (key == null)
 					continue;
 
-				if (ssk.Stashkeys[i] != null)
+				if (ssk.StashKeys[i] != null)
 				{
 					if (!RTC_StockpileManager.SavestateStashkeyDico.ContainsKey(key))
-						RTC_StockpileManager.SavestateStashkeyDico.Add(key, ssk.Stashkeys[i]);
+						RTC_StockpileManager.SavestateStashkeyDico.Add(key, ssk.StashKeys[i]);
 					else
-						RTC_StockpileManager.SavestateStashkeyDico[key] = ssk.Stashkeys[i];
+						RTC_StockpileManager.SavestateStashkeyDico[key] = ssk.StashKeys[i];
 				}
 
 				StateBoxes[key].Text = "";
@@ -1094,7 +1172,74 @@ namespace RTC
 
 			}
 
-		}
+            CheckCompatibility();
+
+            refreshSavestateTextboxes();
+
+
+        }
+
+        public static void CheckCompatibility()
+        {
+            List<string> ErrorMessages = new List<string>();
+
+            List<StashKey> sks = new List<StashKey>();
+
+            for (int i = 1; i < 41; i++)
+            {
+                string key = i.ToString().PadLeft(2, '0');
+
+                if (key == null)
+                    continue;
+
+                if (RTC_StockpileManager.SavestateStashkeyDico.ContainsKey(key))
+                    sks.Add(RTC_StockpileManager.SavestateStashkeyDico[key]);
+            }
+
+            foreach (StashKey sk in sks)
+            {
+                string currentCore = (string)RTC_Core.SendCommandToBizhawk(new RTC_Command(CommandType.REMOTE_KEY_GETSYSTEMCORE) { objectValue = sk.SystemName }, true);
+                if (sk.SystemCore != currentCore)
+                {
+                    string errorMessage = $"Core mismatch for System [{sk.SystemName}]\n Current Bizhawk core -> {currentCore}\n SavestateList core -> {sk.SystemCore}";
+
+                    if (!ErrorMessages.Contains(errorMessage))
+                        ErrorMessages.Add(errorMessage);
+                }
+
+            }
+
+            if (ErrorMessages.Count == 0)
+                return;
+
+            string message = "The loaded SavestateList returned the following errors:\n\n";
+
+            foreach (string line in ErrorMessages)
+                message += $"•  {line} \n\n";
+
+
+            MessageBox.Show(message, "Compatibility Checker", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+
+        }
+
+
+        public void refreshSavestateTextboxes()
+        {
+            //fill text/state controls/dico
+            for (int i = 1; i < 41; i++)
+            {
+                string key = i.ToString().PadLeft(2, '0');
+
+                if (key == null)
+                    continue;
+
+                if(RTC_StockpileManager.SavestateStashkeyDico.ContainsKey(key))
+                    StateBoxes[key].Visible = true;
+                else
+                    StateBoxes[key].Visible = false;
+
+            }
+        }
 
 		private void lbStashHistory_MouseDown(object sender, MouseEventArgs e)
 		{
@@ -1124,8 +1269,15 @@ namespace RTC
 
 				})) as ToolStripMenuItem).Enabled = RTC_Core.Multiplayer != null && RTC_Core.Multiplayer.side != NetworkSide.DISCONNECTED;
 				columnsMenu.Items.Add(new ToolStripSeparator());
-				columnsMenu.Items.Add("Open Selected Item in Blast Editor", null, new EventHandler((ob, ev) => { RTC_Core.beForm.LoadStashkey(RTC_StockpileManager.currentStashkey); }));
-				columnsMenu.Show(this, locate);
+                columnsMenu.Items.Add("Open Selected Item in Blast Editor", null, new EventHandler((ob, ev) => {
+                    if (RTC_Core.beForm != null)
+                    {
+                        RTC_Core.beForm.Close();
+                        RTC_Core.beForm = new RTC_BlastEditorForm();
+                        RTC_Core.beForm.LoadStashkey(RTC_StockpileManager.currentStashkey);
+                    }
+                }));
+                columnsMenu.Show(this, locate);
 			}
 		}
 
@@ -1174,9 +1326,11 @@ namespace RTC
 				lbStashHistory.ClearSelected();
 				RTC_Core.spForm.dgvStockpile.ClearSelection();
 
+                if (dgvStockpile.SelectedRows.Count == 0)
+                    return;
 
-				// Merge tool and ui change
-				if (dgvStockpile.SelectedRows.Count > 1)
+                // Merge tool and ui change
+                if (dgvStockpile.SelectedRows.Count > 1)
 				{
 					rbCorrupt.Checked = true;
 					rbCorrupt.Enabled = false;
@@ -1269,5 +1423,60 @@ namespace RTC
 			RTC_StockpileManager.renderAtLoad = cbRenderAtLoad.Checked;
 			RTC_Core.SendCommandToBizhawk(new RTC_Command(CommandType.REMOTE_RENDER_RENDERATLOAD) { objectValue = RTC_StockpileManager.renderAtLoad });
 		}
-	}
+
+        private void btnLoadSavestateList_MouseDown(object sender, MouseEventArgs e)
+        {
+            if (e.Button == MouseButtons.Right)
+            {
+                Point locate = new Point((sender as Control).Location.X + e.Location.X, (sender as Control).Location.Y + e.Location.Y);
+
+                ContextMenuStrip columnsMenu = new ContextMenuStrip();
+                columnsMenu.Items.Add("Clear Savestate List", null, new EventHandler((ob, ev) => {
+
+                    foreach (var item in pnSavestateHolder.Controls)
+                    {
+                        if (item is Button)
+                            (item as Button).ForeColor = Color.FromArgb(192, 255, 192);
+
+                        if (item is TextBox)
+                            (item as TextBox).Text = "";
+                    }
+
+
+                    for (int i = 1; i < 41; i++)
+                    {
+                        string key = i.ToString().PadLeft(2, '0');
+
+                        if (key == null)
+                            continue;
+
+                        if (RTC_StockpileManager.SavestateStashkeyDico.ContainsKey(key))
+                            RTC_StockpileManager.SavestateStashkeyDico.Remove(key);
+
+                    }
+
+                    RTC_StockpileManager.currentSavestateKey = null;
+
+                    refreshSavestateTextboxes();
+
+                }));
+
+                columnsMenu.Show(this, locate);
+            }
+        }
+
+        private void btnCorrupt_MouseDown(object sender, MouseEventArgs e)
+        {
+            if (e.Button == MouseButtons.Right)
+            {
+                Point locate = new Point((sender as Control).Location.X + e.Location.X, (sender as Control).Location.Y + e.Location.Y);
+
+                ContextMenuStrip columnsMenu = new ContextMenuStrip();
+                columnsMenu.Items.Add("Blast + Send RAW To Stash", null, new EventHandler((ob, ev) => {
+                    RTC_Core.SendCommandToRTC(new RTC_Command(CommandType.REMOTE_HOTKEY_BLASTRAWSTASH));
+                }));
+                columnsMenu.Show(this, locate);
+            }
+        }
+    }
 }

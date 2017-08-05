@@ -272,7 +272,7 @@ namespace RTC
 				RTC_Core.SendCommandToRTC(new RTC_Command(CommandType.REMOTE_HOTKEY_MANUALBLAST));
                 break;
 
-            case "Start/Stop AutoCorrupt":
+            case "Auto-Corrupt":
 				RTC_Core.SendCommandToRTC(new RTC_Command(CommandType.REMOTE_HOTKEY_AUTOCORRUPTTOGGLE));
                 break;
 
@@ -296,7 +296,7 @@ namespace RTC
 				RTC_Core.SendCommandToRTC(new RTC_Command(CommandType.REMOTE_HOTKEY_GHLOADCORRUPT));
                 break;
 
-            case "GH Corrupt w/o Load":
+            case "GH Just Corrupt":
 				RTC_Core.SendCommandToRTC(new RTC_Command(CommandType.REMOTE_HOTKEY_GHCORRUPT));
                 break;
 
@@ -308,8 +308,16 @@ namespace RTC
 				RTC_Core.SendCommandToRTC(new RTC_Command(CommandType.REMOTE_HOTKEY_GHSAVE));
                 break;
 
+            case "Stash->Stockpile":
+                RTC_Core.SendCommandToRTC(new RTC_Command(CommandType.REMOTE_HOTKEY_GHSTASHTOSTOCKPILE));
+                break;
+
             case "Induce KS Crash":
                 RTC_RPC.Stop();
+                break;
+
+            case "Blast+RawStash":
+                RTC_Core.SendCommandToRTC(new RTC_Command(CommandType.REMOTE_HOTKEY_BLASTRAWSTASH));
                 break;
 
             case "Send Raw to Stash":
@@ -321,8 +329,8 @@ namespace RTC
                 break;
 
 			case "BlastLayer Re-Blast":
-					RTC_Core.SendCommandToRTC(new RTC_Command(CommandType.REMOTE_HOTKEY_BLASTLAYERREBLAST));
-					break;
+				RTC_Core.SendCommandToRTC(new RTC_Command(CommandType.REMOTE_HOTKEY_BLASTLAYERREBLAST));
+				break;
 			}
             return true;
         }

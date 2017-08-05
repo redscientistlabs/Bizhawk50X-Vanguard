@@ -258,17 +258,19 @@ namespace BizHawk.Client.Common
                         // Unfortunately this has to be inserted directly in the project because hooking it into RTC
                         // would create a circular dependency in BizHawk
                         Bind("RTC","Manual Blast", toolTip: "For RTC" ),
-						Bind("RTC","Start/Stop AutoCorrupt", toolTip: "For RTC" ),
+						Bind("RTC","Auto-Corrupt", toolTip: "For RTC" ),
 						Bind("RTC","Error Delay--", toolTip: "For RTC" ),
 						Bind("RTC","Error Delay++", toolTip: "For RTC" ),
 						Bind("RTC","Intensity--", toolTip: "For RTC" ),
 						Bind("RTC","Intensity++", toolTip: "For RTC" ),
 						Bind("RTC","GH Load and Corrupt", toolTip: "For RTC" ),
-						Bind("RTC","GH Corrupt w/o Load", toolTip: "For RTC" ),
+						Bind("RTC","GH Just Corrupt", toolTip: "For RTC" ),
 						Bind("RTC","GH Load", toolTip: "For RTC" ),
 						Bind("RTC","GH Save", toolTip: "For RTC" ),
-						Bind("RTC","Induce KS Crash", toolTip: "For RTC" ),
-						Bind("RTC","Send Raw to Stash", toolTip: "For RTC" ),
+                        Bind("RTC","Stash->Stockpile", toolTip: "For RTC" ),
+                        Bind("RTC","Induce KS Crash", toolTip: "For RTC" ),
+                        Bind("RTC","Blast+RawStash", toolTip: "For RTC" ),
+                        Bind("RTC","Send Raw to Stash", toolTip: "For RTC" ),
 						Bind("RTC","BlastLayer Toggle", toolTip: "For RTC" ),
 						Bind("RTC","BlastLayer Re-Blast", toolTip: "For RTC" ),
                         //------------------

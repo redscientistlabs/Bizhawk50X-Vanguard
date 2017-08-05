@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
 using System.Drawing;
+using System.Globalization;
 using System.Linq;
 using System.Text;
 using System.Windows.Forms;
@@ -23,10 +24,10 @@ namespace RTC
 			if (_sk == null)
 				return;
 
-			lbBlastLayer.Items.Clear();
+			//lbBlastLayer.Items.Clear();
 			sk = (StashKey)_sk.Clone();
 
-			lbBlastLayer.DataSource = sk.blastlayer.Layer;
+			lbBlastLayer.DataSource = sk.BlastLayer.Layer;
 
 			//foreach (var item in sk.blastlayer.Layer)
 			//	lbBlastLayer.Items.Add(item);
@@ -37,15 +38,15 @@ namespace RTC
 		public void RefreshBlastLayer()
 		{
 			lbBlastLayer.DataSource = null;
-			lbBlastLayer.DataSource = sk.blastlayer.Layer;
+			lbBlastLayer.DataSource = sk.BlastLayer.Layer;
 		}
 
 		private void btnDisable50_Click(object sender, EventArgs e)
 		{
-			foreach (BlastUnit bu in sk.blastlayer.Layer)
+			foreach (BlastUnit bu in sk.BlastLayer.Layer)
 				bu.IsEnabled = true;
 
-			foreach (BlastUnit bu in sk.blastlayer.Layer.OrderBy(x => RTC_Core.RND.Next()).Take(sk.blastlayer.Layer.Count / 2))
+			foreach (BlastUnit bu in sk.BlastLayer.Layer.OrderBy(x => RTC_Core.RND.Next()).Take(sk.BlastLayer.Layer.Count / 2))
 				bu.IsEnabled = false;
 
 			RefreshBlastLayer();
@@ -55,11 +56,11 @@ namespace RTC
 		{
 			List<BlastUnit> newLayer = new List<BlastUnit>();
 
-			foreach (BlastUnit bu in sk.blastlayer.Layer)
+			foreach (BlastUnit bu in sk.BlastLayer.Layer)
 				if (bu.IsEnabled)
 					newLayer.Add(bu);
 
-			sk.blastlayer.Layer = newLayer;
+			sk.BlastLayer.Layer = newLayer;
 
 			RefreshBlastLayer();
 		}
@@ -77,7 +78,7 @@ namespace RTC
 
 			StashKey newSk = (StashKey)sk.Clone();
 
-			newSk.blastlayer = bl;
+			newSk.BlastLayer = bl;
 
 			newSk.Run();
 		}
@@ -121,8 +122,8 @@ namespace RTC
 
 		private void btnInvertDisabled_Click(object sender, EventArgs e)
 		{
-			for (int i = 0; i < sk.blastlayer.Layer.Count(); i++)
-				sk.blastlayer.Layer[i].IsEnabled = !sk.blastlayer.Layer[i].IsEnabled;
+			for (int i = 0; i < sk.BlastLayer.Layer.Count(); i++)
+				sk.BlastLayer.Layer[i].IsEnabled = !sk.BlastLayer.Layer[i].IsEnabled;
 
 			RefreshBlastLayer();
 		}
@@ -190,5 +191,109 @@ namespace RTC
 
 			RefreshBlastLayer();
 		}
-	}
+
+        private void btnDisableEverything_Click(object sender, EventArgs e)
+        {
+            foreach (BlastUnit bu in sk.BlastLayer.Layer)
+                bu.IsEnabled = false;
+
+            RefreshBlastLayer();
+        }
+
+        private void btnEnableEverything_Click(object sender, EventArgs e)
+        {
+            foreach (BlastUnit bu in sk.BlastLayer.Layer)
+                bu.IsEnabled = true;
+
+            RefreshBlastLayer();
+        }
+
+        public DialogResult getInputBox(string title, string promptText, ref string value)
+        {
+            Form form = new Form();
+            Label label = new Label();
+            TextBox textBox = new TextBox();
+            Button buttonOk = new Button();
+            Button buttonCancel = new Button();
+
+            form.Text = title;
+            label.Text = promptText;
+            textBox.Text = value;
+
+            buttonOk.Text = "OK";
+            buttonCancel.Text = "Cancel";
+            buttonOk.DialogResult = DialogResult.OK;
+            buttonCancel.DialogResult = DialogResult.Cancel;
+
+            label.SetBounds(9, 20, 372, 13);
+            textBox.SetBounds(12, 36, 372, 20);
+            buttonOk.SetBounds(228, 72, 75, 23);
+            buttonCancel.SetBounds(309, 72, 75, 23);
+
+            label.AutoSize = true;
+            textBox.Anchor = textBox.Anchor | AnchorStyles.Right;
+            buttonOk.Anchor = AnchorStyles.Bottom | AnchorStyles.Right;
+            buttonCancel.Anchor = AnchorStyles.Bottom | AnchorStyles.Right;
+
+            form.ClientSize = new Size(396, 107);
+            form.Controls.AddRange(new Control[] { label, textBox, buttonOk, buttonCancel });
+            form.ClientSize = new Size(Math.Max(300, label.Right + 10), form.ClientSize.Height);
+            form.FormBorderStyle = FormBorderStyle.FixedDialog;
+            form.StartPosition = FormStartPosition.CenterScreen;
+            form.MinimizeBox = false;
+            form.MaximizeBox = false;
+            form.AcceptButton = buttonOk;
+            form.CancelButton = buttonCancel;
+
+            DialogResult dialogResult = form.ShowDialog();
+            value = textBox.Text;
+            return dialogResult;
+        }
+
+
+        private void nmAddressEdit_MouseDown(object sender, MouseEventArgs e)
+        {
+            if (e.Button == MouseButtons.Right)
+            {
+                Point locate = new Point((sender as Control).Location.X + e.Location.X + gbAddressEdit.Location.X, (sender as Control).Location.Y + e.Location.Y + gbAddressEdit.Location.Y);
+
+                ContextMenuStrip columnsMenu = new ContextMenuStrip();
+                columnsMenu.Items.Add("Import from Hex", null, new EventHandler((ob, ev) => {
+                    string value = "";
+                    if (this.getInputBox("Import from Hex", "Enter Hexadecimal number:", ref value) == DialogResult.OK)
+                    {
+                        int newValue = int.Parse(value, NumberStyles.HexNumber);
+                        nmAddressEdit.Value = Convert.ToDecimal(newValue);
+                    }
+                }));
+                columnsMenu.Show(this, locate);
+            }
+        }
+
+        private void nmValueEdit_MouseDown(object sender, MouseEventArgs e)
+        {
+            if (e.Button == MouseButtons.Right)
+            {
+                Point locate = new Point((sender as Control).Location.X + e.Location.X + gbValueEdit.Location.X, (sender as Control).Location.Y + e.Location.Y + gbValueEdit.Location.Y);
+
+                ContextMenuStrip columnsMenu = new ContextMenuStrip();
+                columnsMenu.Items.Add("Import from Hex", null, new EventHandler((ob, ev) => {
+                    string value = "";
+                    if (this.getInputBox("Import from Hex", "Enter Hexadecimal number:", ref value) == DialogResult.OK)
+                    {
+                        int newValue = int.Parse(value, NumberStyles.HexNumber);
+                        nmValueEdit.Value = Convert.ToDecimal(newValue);
+                    }
+                }));
+                columnsMenu.Show(this, locate);
+            }
+        }
+
+        private void RTC_BlastEditorForm_Load(object sender, EventArgs e)
+        {
+            ContextMenu contextMenu = new ContextMenu();
+            this.nmAddressEdit.ContextMenu = contextMenu;
+            this.nmValueEdit.ContextMenu = contextMenu;
+        }
+    }
 }

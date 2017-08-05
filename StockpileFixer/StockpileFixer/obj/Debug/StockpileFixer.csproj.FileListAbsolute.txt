@@ -1,0 +1,12 @@
+c:\users\philt\documents\visual studio 2015\Projects\StockpileFixer\StockpileFixer\obj\Debug\StockpileFixer.Form1.resources
+c:\users\philt\documents\visual studio 2015\Projects\StockpileFixer\StockpileFixer\obj\Debug\StockpileFixer.Properties.Resources.resources
+c:\users\philt\documents\visual studio 2015\Projects\StockpileFixer\StockpileFixer\obj\Debug\StockpileFixer.csproj.GenerateResource.Cache
+c:\users\philt\documents\visual studio 2015\Projects\StockpileFixer\StockpileFixer\bin\Debug\StockpileFixer.exe
+c:\users\philt\documents\visual studio 2015\Projects\StockpileFixer\StockpileFixer\bin\Debug\StockpileFixer.pdb
+c:\users\philt\documents\visual studio 2015\Projects\StockpileFixer\StockpileFixer\obj\Debug\StockpileFixer.exe
+c:\users\philt\documents\visual studio 2015\Projects\StockpileFixer\StockpileFixer\obj\Debug\StockpileFixer.pdb
+c:\users\philt\documents\visual studio 2015\Projects\StockpileFixer\StockpileFixer\bin\Debug\StockpileFixer.exe.config
+c:\users\philt\documents\visual studio 2015\Projects\StockpileFixer\StockpileFixer\obj\Debug\StockpileFixer.csprojResolveAssemblyReference.cache
+C:\Users\philt\Documents\PROJECTS\RTC3\StockpileFixer\StockpileFixer\bin\Debug\StockpileFixer.exe.config
+C:\Users\philt\Documents\PROJECTS\RTC3\StockpileFixer\StockpileFixer\obj\Debug\StockpileFixer.exe
+C:\Users\philt\Documents\PROJECTS\RTC3\StockpileFixer\StockpileFixer\obj\Debug\StockpileFixer.pdb

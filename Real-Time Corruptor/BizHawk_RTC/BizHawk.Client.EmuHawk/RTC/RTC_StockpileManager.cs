@@ -81,9 +81,9 @@ namespace RTC
 					return isCorruptionApplied;
 			}
 			else
-				RTC_Core.SendCommandToBizhawk(new RTC_Command(CommandType.BLAST) { blastlayer = sk.blastlayer, isReplay = true});
+				RTC_Core.SendCommandToBizhawk(new RTC_Command(CommandType.BLAST) { blastlayer = sk.BlastLayer, isReplay = true});
 
-			isCorruptionApplied = (sk.blastlayer != null && sk.blastlayer.Layer.Count > 0);
+			isCorruptionApplied = (sk.BlastLayer != null && sk.BlastLayer.Layer.Count > 0);
 
 			PostApplyStashkey();
 			return isCorruptionApplied;
@@ -98,7 +98,7 @@ namespace RTC
 			if (psk == null)
 			{
 				RTC_Core.StopSound();
-				MessageBox.Show("There is no SaveState in the selected box,\nPress 'Switch: Save/Load State' then Press 'SAVE'");
+				MessageBox.Show("The Glitch Harvester could not perform the CORRUPT action\n\nEither no Savestate Box was selected in the Savestate Manager\nor the Savetate Box itself is empty.");
 				RTC_Core.StartSound();
 				return false;
 			}
@@ -149,11 +149,11 @@ namespace RTC
 
 			StashKey psk = RTC_StockpileManager.getCurrentSavestateStashkey();
 
-			if (psk == null)
+			if (psk == null && loadBeforeOperation && _loadBeforeOperation)
 			{
 				RTC_Core.StopSound();
-				MessageBox.Show("There is no SaveState in the selected box,\nPress 'Switch: Save/Load State' then Press 'SAVE'");
-				RTC_Core.StartSound();
+                MessageBox.Show("The Glitch Harvester could not perform the INJECT action\n\nEither no Savestate Box was selected in the Savestate Manager\nor the Savetate Box itself is empty.");
+                RTC_Core.StartSound();
 				return false;
 			}
 
@@ -165,7 +165,7 @@ namespace RTC
 			}
 
 
-			currentStashkey = new StashKey(RTC_Core.GetRandomKey(), psk.ParentKey, sk.blastlayer);
+			currentStashkey = new StashKey(RTC_Core.GetRandomKey(), psk.ParentKey, sk.BlastLayer);
 			currentStashkey.RomFilename = psk.RomFilename;
 			currentStashkey.SystemName = psk.SystemName;
 			currentStashkey.SystemCore = psk.SystemCore;
@@ -177,9 +177,9 @@ namespace RTC
 					return false;
 			}
 			else
-				RTC_Core.SendCommandToBizhawk(new RTC_Command(CommandType.BLAST) { blastlayer = sk.blastlayer}, true);
+				RTC_Core.SendCommandToBizhawk(new RTC_Command(CommandType.BLAST) { blastlayer = sk.BlastLayer}, true);
 
-			isCorruptionApplied = (sk.blastlayer != null);
+			isCorruptionApplied = (sk.BlastLayer != null);
 
 			if (stashAfterOperation)
 			{
@@ -194,6 +194,12 @@ namespace RTC
 		public static bool OriginalFromStashkey(StashKey sk)
 		{
 			PreApplyStashkey();
+
+            if(sk == null)
+            {
+                MessageBox.Show("No StashKey could be loaded");
+                 return false;
+            }
 
 			if (!LoadState(sk))
 				return isCorruptionApplied;
@@ -231,7 +237,7 @@ namespace RTC
 				BlastLayer bl = new BlastLayer();
 
 				foreach (StashKey item in sks)
-					bl.Layer.AddRange(item.blastlayer.Layer);
+					bl.Layer.AddRange(item.BlastLayer.Layer);
 
 
 				currentStashkey = new StashKey(RTC_Core.GetRandomKey(), master.ParentKey, bl);
@@ -246,9 +252,9 @@ namespace RTC
 						return isCorruptionApplied;
 				}
 				else
-					RTC_Core.SendCommandToBizhawk(new RTC_Command(CommandType.BLAST) { blastlayer = currentStashkey.blastlayer}, true);
+					RTC_Core.SendCommandToBizhawk(new RTC_Command(CommandType.BLAST) { blastlayer = currentStashkey.BlastLayer}, true);
 
-				isCorruptionApplied = (currentStashkey.blastlayer != null && currentStashkey.blastlayer.Layer.Count > 0);
+				isCorruptionApplied = (currentStashkey.BlastLayer != null && currentStashkey.BlastLayer.Layer.Count > 0);
 
 				if (stashAfterOperation && _stashAfterOperation)
 				{
@@ -281,7 +287,7 @@ namespace RTC
 		public static bool LoadStateAndBlastLayer(StashKey sk, bool ReloadRom = true)
 		{
 			object returnValue = RTC_Core.SendCommandToBizhawk(new RTC_Command(CommandType.REMOTE_LOADSTATE){
-				objectValue = new object[] { sk, ReloadRom, (sk.blastlayer != null && sk.blastlayer.Layer.Count > 0) }
+				objectValue = new object[] { sk, ReloadRom, (sk.BlastLayer != null && sk.BlastLayer.Layer.Count > 0) }
 			}, true);
 
 			return (returnValue != null ? (bool)returnValue : false);
@@ -353,15 +359,15 @@ namespace RTC
 			else
 			{
 				Key = _sk.Key;
-				statePath = _sk.stateFilename;
+				statePath = _sk.StateFilename;
 				sk = _sk;
 			}
 
 			if (statePath == null)
 				return null;
 
-			sk.stateShortFilename = statePath.Substring(statePath.LastIndexOf("\\") + 1, statePath.Length - (statePath.LastIndexOf("\\") + 1));
-			sk.stateFilename = statePath;
+			sk.StateShortFilename = statePath.Substring(statePath.LastIndexOf("\\") + 1, statePath.Length - (statePath.LastIndexOf("\\") + 1));
+			sk.StateFilename = statePath;
 
 			if (SendToStashDico)
 			{
@@ -445,7 +451,7 @@ namespace RTC
 
 			bl.Layer.AddRange(RTC_PipeEngine.AllBlastPipes);
 
-			sk.blastlayer = bl;
+			sk.BlastLayer = bl;
 
 			return sk;
 		}

@@ -12,7 +12,7 @@ namespace WindowsGlitchHarvester
 
     public static class WGH_Core
     {
-		public static string WghVersion = "0.17";
+		public static string WghVersion = "0.88";
 
 		public static Random RND = new Random();
 
@@ -153,7 +153,7 @@ namespace WindowsGlitchHarvester
 
                     for (int i = 0; i < Intensity; i++)
                     {
-                        RandomAdress = StartingAddress + RandomLong(BlastRange);
+                        RandomAdress = StartingAddress + RandomLong(BlastRange -1);
 
                         bu = getBlastUnit(TargetType, RandomAdress);
                         if (bu != null)

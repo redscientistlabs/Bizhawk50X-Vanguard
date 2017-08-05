@@ -23,3 +23,17 @@ C:\Users\philt\Documents\PROJECTS\WindowsGlitchHarvester\WindowsGlitchHarvester\
 C:\Users\philt\Documents\PROJECTS\WindowsGlitchHarvester\WindowsGlitchHarvester\obj\Debug\WindowsGlitchHarvester.exe
 C:\Users\philt\Documents\PROJECTS\WindowsGlitchHarvester\WindowsGlitchHarvester\obj\Debug\WindowsGlitchHarvester.pdb
 C:\Users\philt\Documents\PROJECTS\WindowsGlitchHarvester\WindowsGlitchHarvester\obj\Debug\WindowsGlitchHarvester.WGH_AutoCorruptForm.resources
+C:\Users\philt\Documents\PROJECTS\RTC3\Windows Glitch Harvester\WindowsGlitchHarvester\bin\Debug\WindowsGlitchHarvester.exe.config
+C:\Users\philt\Documents\PROJECTS\RTC3\Windows Glitch Harvester\WindowsGlitchHarvester\obj\Debug\WindowsGlitchHarvester.exe
+C:\Users\philt\Documents\PROJECTS\RTC3\Windows Glitch Harvester\WindowsGlitchHarvester\obj\Debug\WindowsGlitchHarvester.pdb
+C:\Users\philt\Documents\PROJECTS\RTC3\Windows Glitch Harvester\WindowsGlitchHarvester\bin\Debug\WindowsGlitchHarvester.exe
+C:\Users\philt\Documents\PROJECTS\RTC3\Windows Glitch Harvester\WindowsGlitchHarvester\bin\Debug\WindowsGlitchHarvester.pdb
+C:\Users\philt\Documents\PROJECTS\RTC3\Windows Glitch Harvester\WindowsGlitchHarvester\bin\Debug\Crc32.dll
+C:\Users\philt\Documents\PROJECTS\RTC3\Windows Glitch Harvester\WindowsGlitchHarvester\bin\Debug\ICSharpCode.SharpZipLib.dll
+C:\Users\philt\Documents\PROJECTS\RTC3\Windows Glitch Harvester\WindowsGlitchHarvester\obj\Debug\WindowsGlitchHarvester.csprojResolveAssemblyReference.cache
+C:\Users\philt\Documents\PROJECTS\RTC3\Windows Glitch Harvester\WindowsGlitchHarvester\obj\Debug\WindowsGlitchHarvester.WGH_AutoCorruptForm.resources
+C:\Users\philt\Documents\PROJECTS\RTC3\Windows Glitch Harvester\WindowsGlitchHarvester\obj\Debug\WindowsGlitchHarvester.WGH_MainForm.resources
+C:\Users\philt\Documents\PROJECTS\RTC3\Windows Glitch Harvester\WindowsGlitchHarvester\obj\Debug\WindowsGlitchHarvester.Properties.Resources.resources
+C:\Users\philt\Documents\PROJECTS\RTC3\Windows Glitch Harvester\WindowsGlitchHarvester\obj\Debug\WindowsGlitchHarvester.WGH_HookProcessForm.resources
+C:\Users\philt\Documents\PROJECTS\RTC3\Windows Glitch Harvester\WindowsGlitchHarvester\obj\Debug\WindowsGlitchHarvester.WGH_SelectMultipleForm.resources
+C:\Users\philt\Documents\PROJECTS\RTC3\Windows Glitch Harvester\WindowsGlitchHarvester\obj\Debug\WindowsGlitchHarvester.csproj.GenerateResource.Cache

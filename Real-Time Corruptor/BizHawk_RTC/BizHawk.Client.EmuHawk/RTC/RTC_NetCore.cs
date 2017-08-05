@@ -612,12 +612,22 @@ namespace RTC
 			{
 				RTC_Command cmd = cmdQueue.First.Value;
 
-				if (cmd.Type == CommandType.PUSHSCREEN)
-				{
-					cmd = GetLatestScreenFrame(cmdQueue);
-				}
-				else
-					cmdQueue.RemoveFirst();
+                if (cmd.Type == CommandType.PUSHSCREEN)
+                {
+                    cmd = GetLatestScreenFrame(cmdQueue);
+                }
+                else
+                {
+                    try
+                    {
+                        cmdQueue.RemoveFirst();
+                    }
+                    catch(Exception ex)
+                    {
+                        MessageBox.Show("NetCore had a thread collision and threw up.\nIn theory this should fix itself after you close this window.\n\n" + ex.ToString());
+                        return null;
+                    }
+                }
 
 				if (cmd == null)
 				{
@@ -838,7 +848,7 @@ namespace RTC
 							bool returnValue = RTC_StockpileManager.LoadState_NET(sk, reloadRom);
 
 							RTC_MemoryDomains.RefreshDomains(false);
-							RTC_Core.SendCommandToBizhawk(new RTC_Command(CommandType.BLAST) { blastlayer = sk.blastlayer, isReplay = true });
+							RTC_Core.SendCommandToBizhawk(new RTC_Command(CommandType.BLAST) { blastlayer = sk.BlastLayer, isReplay = true });
 
 							cmdBack = new RTC_Command(CommandType.RETURNVALUE);
 							cmdBack.objectValue = returnValue;
@@ -925,8 +935,8 @@ namespace RTC
 
 					case CommandType.REMOTE_KEY_PUSHSAVESTATEDICO:
 						RTC_StockpileManager.SavestateStashkeyDico[(string)(cmd.objectValue as object[])[1]] = (StashKey)((cmd.objectValue as object[])[0]);
-
-						break;
+                        RTC_Core.ghForm.refreshSavestateTextboxes();
+                        break;
 
 					case CommandType.REMOTE_KEY_GETPATHENTRY:
 						cmdBack = new RTC_Command(CommandType.RETURNVALUE);
@@ -1001,6 +1011,11 @@ namespace RTC
 						RTC_PipeEngine.MaxPipes = (int)cmd.objectValue;
 						break;
 
+                    case CommandType.REMOTE_SET_PIPE_TILTVALUE:
+						RTC_PipeEngine.TiltValue = (int)cmd.objectValue;
+						break;
+
+
 					case CommandType.REMOTE_SET_PIPE_CLEARPIPES:
 						RTC_PipeEngine.AllBlastPipes.Clear();
 						RTC_PipeEngine.lastDomain = null;
@@ -1008,6 +1023,10 @@ namespace RTC
 
 					case CommandType.REMOTE_SET_PIPE_LOCKPIPES:
 						RTC_PipeEngine.LockPipes = (bool)cmd.objectValue;
+						break;
+
+                    case CommandType.REMOTE_SET_PIPE_CHAINEDPIPES:
+						RTC_PipeEngine.ChainedPipes = (bool)cmd.objectValue;
 						break;
 
 					case CommandType.REMOTE_SET_PIPE_PROCESSONSTEP:
@@ -1128,23 +1147,31 @@ namespace RTC
 						RTC_Core.ghForm.btnSaveLoad.Text = "SAVE";
 						RTC_Core.ghForm.btnSaveLoad_Click(null, null);
 						break;
+                    case CommandType.REMOTE_HOTKEY_GHSTASHTOSTOCKPILE:
+                        RTC_Core.ghForm.AddStashToStockpile(false);
+                        break;
 
-					case CommandType.REMOTE_HOTKEY_SENDRAWSTASH:
+                    case CommandType.REMOTE_HOTKEY_SENDRAWSTASH:
 						RTC_Core.ghForm.btnSendRaw_Click(null, null);
 						break;
+
+                    case CommandType.REMOTE_HOTKEY_BLASTRAWSTASH:
+                        RTC_Core.SendCommandToBizhawk(new RTC_Command(CommandType.ASYNCBLAST));
+                        RTC_Core.ghForm.btnSendRaw_Click(null, null);
+				    break;
 					case CommandType.REMOTE_HOTKEY_BLASTLAYERTOGGLE:
 						RTC_Core.ghForm.btnBlastToggle_Click(null, null);
 						break;
 					case CommandType.REMOTE_HOTKEY_BLASTLAYERREBLAST:
 
-						if (RTC_StockpileManager.currentStashkey == null || RTC_StockpileManager.currentStashkey.blastlayer.Layer.Count == 0)
+						if (RTC_StockpileManager.currentStashkey == null || RTC_StockpileManager.currentStashkey.BlastLayer.Layer.Count == 0)
 						{
 							RTC_Core.ghForm.IsCorruptionApplied = false;
 							break;
 						}
 
 							RTC_Core.ghForm.IsCorruptionApplied = true;
-							RTC_Core.SendCommandToRTC(new RTC_Command(CommandType.BLAST) { blastlayer = RTC_StockpileManager.currentStashkey.blastlayer });
+							RTC_Core.SendCommandToRTC(new RTC_Command(CommandType.BLAST) { blastlayer = RTC_StockpileManager.currentStashkey.BlastLayer });
 						break;
 
 					case CommandType.REMOTE_RENDER_START:
@@ -1214,14 +1241,14 @@ namespace RTC
 			if (side == NetworkSide.DISCONNECTED)
 				return;
 
-			if (RTC_StockpileManager.currentStashkey == null || RTC_StockpileManager.currentStashkey.blastlayer == null)
+			if (RTC_StockpileManager.currentStashkey == null || RTC_StockpileManager.currentStashkey.BlastLayer == null)
 			{
 				MessageBox.Show("Couldn't fetch BlastLayer from RTC_StockpileManager.currentStashkey");
 				return;
 			}
 
 			RTC_Command cmd = new RTC_Command(CommandType.BLAST);
-			cmd.blastlayer = RTC_StockpileManager.currentStashkey.blastlayer;
+			cmd.blastlayer = RTC_StockpileManager.currentStashkey.BlastLayer;
 
 			SendCommand(cmd, false);
 		}
@@ -1441,9 +1468,12 @@ namespace RTC
 		REMOTE_SET_DISTORTION_DELAY,
 		REMOTE_SET_DISTORTION_RESYNC,
 		REMOTE_SET_PIPE_MAXPIPES,
-		REMOTE_SET_PIPE_CLEARPIPES,
+        REMOTE_SET_PIPE_TILTVALUE,
+
+        REMOTE_SET_PIPE_CLEARPIPES,
 		REMOTE_SET_PIPE_LOCKPIPES,
-		REMOTE_SET_PIPE_PROCESSONSTEP,
+        REMOTE_SET_PIPE_CHAINEDPIPES,
+        REMOTE_SET_PIPE_PROCESSONSTEP,
 		REMOTE_SET_PIPE_CLEARPIPESREWIND,
 		REMOTE_SET_VECTOR_LIMITER,
 		REMOTE_SET_VECTOR_VALUES,
@@ -1458,7 +1488,9 @@ namespace RTC
 		REMOTE_HOTKEY_GHCORRUPT,
 		REMOTE_HOTKEY_GHLOAD,
 		REMOTE_HOTKEY_GHSAVE,
-		REMOTE_HOTKEY_SENDRAWSTASH,
+        REMOTE_HOTKEY_GHSTASHTOSTOCKPILE,
+        REMOTE_HOTKEY_BLASTRAWSTASH,
+        REMOTE_HOTKEY_SENDRAWSTASH,
 		REMOTE_HOTKEY_BLASTLAYERTOGGLE,
 		REMOTE_HOTKEY_BLASTLAYERREBLAST,
 

@@ -128,8 +128,10 @@ namespace RTC
 				(columnsMenu.Items.Add("Show Note", null, new EventHandler((ob, ev) => { dgvStockpile.Columns["Note"].Visible ^= true; })) as ToolStripMenuItem).Checked = dgvStockpile.Columns["Note"].Visible;
 				columnsMenu.Items.Add(stripSeparator);
 				(columnsMenu.Items.Add("Load on Select", null, new EventHandler((ob, ev) => { RTC_Core.ghForm.cbLoadOnSelect.Checked ^= true; })) as ToolStripMenuItem).Checked = RTC_Core.ghForm.cbLoadOnSelect.Checked;
+                (columnsMenu.Items.Add("Clear Cheats/Freezes on Rewind", null, new EventHandler((ob, ev) => { RTC_Core.coreForm.cbClearCheatsOnRewind.Checked ^= true; })) as ToolStripMenuItem).Checked = RTC_Core.coreForm.cbClearCheatsOnRewind.Checked;
+                (columnsMenu.Items.Add("Clear Pipes on Rewind", null, new EventHandler((ob, ev) => { RTC_Core.coreForm.cbClearPipesOnRewind.Checked ^= true; })) as ToolStripMenuItem).Checked = RTC_Core.coreForm.cbClearPipesOnRewind.Checked;
 
-				columnsMenu.Show(this, locate);
+                columnsMenu.Show(this, locate);
 			}
 		}
 
@@ -242,7 +244,7 @@ namespace RTC
 					RTC_Core.ghForm.lbStashHistory.ClearSelected();
 					RTC_Core.ghForm.dgvStockpile.ClearSelection();
 
-					RTC_Core.ghForm.IsCorruptionApplied = !(RTC_StockpileManager.currentStashkey.blastlayer == null || RTC_StockpileManager.currentStashkey.blastlayer.Layer.Count == 0);
+					RTC_Core.ghForm.IsCorruptionApplied = !(RTC_StockpileManager.currentStashkey.BlastLayer == null || RTC_StockpileManager.currentStashkey.BlastLayer.Layer.Count == 0);
 				}
 
 			}
