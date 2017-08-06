@@ -1145,7 +1145,6 @@ namespace RTC
                 if (!File.Exists(RTC_Core.bizhawkDir + "\\" + key.SystemName + "\\State\\" + statefilename))
 					File.Copy(RTC_Core.rtcDir + "\\TEMP4\\" + statefilename, newStatePath); // copy savestates to temp folder
 
-                key.RomFilename = RTC_Core.rtcDir + "\\TEMP4\\" + shortRomFilename;
                 key.StateFilename = newStatePath;
 
             }
