@@ -489,11 +489,14 @@ namespace RTC
 			lbMemoryZones.Items.AddRange(RTC_MemoryDomains.MemoryDomainProxies.Keys.ToArray());
 		}
 
-		public void RefreshDomainsAndKeepSelected()
+		public void RefreshDomainsAndKeepSelected(string[] overrideDomains = null)
 		{
 			string[] copy = RTC_MemoryDomains.lastSelectedDomains;
 
-			RefreshDomains(); //refresh and reload zones
+            if (overrideDomains != null)
+                copy = overrideDomains;
+
+            RefreshDomains(); //refresh and reload zones
 
 			RTC_MemoryDomains.UpdateSelectedDomains(copy);
 

@@ -1096,7 +1096,10 @@ namespace RTC
 
 						Thread.Sleep(100);
 
-						if (RTC_Core.coreForm.cbUseGameProtection.Checked)
+                        if(RTC_StockpileManager.backupedState != null)
+                            RTC_Core.coreForm.RefreshDomainsAndKeepSelected(RTC_StockpileManager.backupedState.SelectedDomains.ToArray());
+
+                        if (RTC_Core.coreForm.cbUseGameProtection.Checked)
 							RTC_GameProtection.Start();
 
 						break;
