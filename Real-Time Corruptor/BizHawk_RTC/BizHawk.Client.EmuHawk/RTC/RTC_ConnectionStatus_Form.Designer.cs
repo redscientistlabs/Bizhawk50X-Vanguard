@@ -99,7 +99,7 @@
             this.btnStartEmuhawkDetached.Name = "btnStartEmuhawkDetached";
             this.btnStartEmuhawkDetached.Size = new System.Drawing.Size(163, 42);
             this.btnStartEmuhawkDetached.TabIndex = 2;
-            this.btnStartEmuhawkDetached.Text = "  Start EmuHawk";
+            this.btnStartEmuhawkDetached.Text = "  Start BizHawk";
             this.btnStartEmuhawkDetached.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageBeforeText;
             this.btnStartEmuhawkDetached.UseVisualStyleBackColor = false;
             this.btnStartEmuhawkDetached.Click += new System.EventHandler(this.btnStartEmuhawkDetached_Click);
@@ -283,7 +283,7 @@
             this.btnStartEmuhawkAttached.Name = "btnStartEmuhawkAttached";
             this.btnStartEmuhawkAttached.Size = new System.Drawing.Size(163, 42);
             this.btnStartEmuhawkAttached.TabIndex = 19;
-            this.btnStartEmuhawkAttached.Text = "  Start EmuHawk";
+            this.btnStartEmuhawkAttached.Text = "  Start BizHawk";
             this.btnStartEmuhawkAttached.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageBeforeText;
             this.btnStartEmuhawkAttached.UseVisualStyleBackColor = false;
             this.btnStartEmuhawkAttached.Click += new System.EventHandler(this.btnStartEmuhawkAttached_Click);

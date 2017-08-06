@@ -17,7 +17,7 @@ namespace RTC
 
     public static class RTC_Core
     {
-		public static string RtcVersion = "2.85";
+		public static string RtcVersion = "2.86";
 		
         public static Random RND = new Random();
         public static string[] args;
@@ -207,7 +207,7 @@ namespace RTC
 						csForm.Hide();
 
 						ghForm.pnHideGlitchHarvester.Hide();
-						csForm.btnStartEmuhawkDetached.Text = "Restart Bizhawk";
+						csForm.btnStartEmuhawkDetached.Text = "Restart BizHawk";
 
 						RTC_RPC.Heartbeat = true;
 						RTC_RPC.Freeze = false;
@@ -263,17 +263,18 @@ namespace RTC
 				
 			}
 
-
-            if (!RTC_Hooks.isRemoteRTC)
-            {
-                RTC_RPC.Start();
-            }
+            RTC_RPC.Start();
 
 
 			if (GlobalWin.MainForm != null)
 				GlobalWin.MainForm.Focus();
 
-		}
+
+            //Force create bizhawk config file if it doesn't exist
+            if (!File.Exists(RTC_Core.bizhawkDir + "\\config.ini"))
+                RTC_Hooks.BIZHAWK_SAVE_CONFIG();
+
+        }
 			
 			
 		

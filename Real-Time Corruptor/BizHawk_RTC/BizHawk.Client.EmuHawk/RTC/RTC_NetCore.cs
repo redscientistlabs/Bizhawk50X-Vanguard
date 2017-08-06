@@ -856,6 +856,10 @@ namespace RTC
 						}
 						break;
 
+                    case CommandType.REMOTE_MERGECONFIG:
+                        Stockpile.MergeBizhawkConfig_NET();
+                        break;
+
 					case CommandType.REMOTE_SAVESTATE:
 						{
 							StashKey sk = RTC_StockpileManager.SaveState_NET((bool)(cmd.objectValue as object[])[0], (StashKey)(cmd.objectValue as object[])[1]);
@@ -1429,6 +1433,7 @@ namespace RTC
 		REMOTE_LOADROM,
 		REMOTE_LOADSTATE,
 		REMOTE_SAVESTATE,
+        REMOTE_MERGECONFIG,
 		REMOTE_BACKUPKEY_REQUEST,
 		REMOTE_BACKUPKEY_STASH,
 		REMOTE_EVENT_LOADGAMEDONE_NEWGAME,

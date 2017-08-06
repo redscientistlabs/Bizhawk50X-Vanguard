@@ -16,6 +16,8 @@ using BizHawk.Emulation.Cores.Nintendo.N64;
 using System.Diagnostics;
 using Newtonsoft.Json.Linq;
 using Newtonsoft.Json;
+using Newtonsoft.Json.Serialization;
+using System.Reflection;
 
 namespace RTC
 {
@@ -392,8 +394,14 @@ namespace RTC
             File.Copy((RTC_Core.rtcDir + "\\TEMP\\config.ini"), (RTC_Core.bizhawkDir + "\\stockpile_config.ini"));
 
 
-            //string backupConfig = File.ReadAllText(RTC_Core.bizhawkDir + "\\backup_config.ini");
-            //string stockpileConfig = File.ReadAllText(RTC_Core.bizhawkDir + "\\stockpile_config.ini");
+            RTC_Core.SendCommandToBizhawk(new RTC_Command(CommandType.REMOTE_MERGECONFIG), true);
+
+            Process.Start(RTC_Core.bizhawkDir + $"\\StockpileConfig{(RTC_Core.isStandalone ? "DETACHED" : "ATTACHED")}.bat");
+
+		}
+
+        public static void MergeBizhawkConfig_NET()
+        {
 
             Config bc;
             Config sc;
@@ -441,19 +449,12 @@ namespace RTC
             {
                 /* Eat it */
             }
-
-
-            //string newStockpileConfig = JsonConvert.SerializeObject(sc);
-            //File.WriteAllText(RTC_Core.bizhawkDir + "\\stockpile_config.ini", newStockpileConfig);
-
-            Process.Start(RTC_Core.bizhawkDir + "\\SwitchToStockpileConfig.bat");
-
-		}
+        }
 
 		public static void RestoreBizhawkConfig()
 		{
 
-			Process.Start(RTC_Core.bizhawkDir + "\\RestoreConfig.bat");
+			Process.Start(RTC_Core.bizhawkDir + $"\\RestoreConfig{(RTC_Core.isStandalone ? "DETACHED" : "ATTACHED")}.bat");
 		}
 
 		public static void Import()

@@ -1,4 +1,4 @@
 @echo off
 cd BizHawk
-start FactoryClean.bat
+FactoryClean.bat
 exit

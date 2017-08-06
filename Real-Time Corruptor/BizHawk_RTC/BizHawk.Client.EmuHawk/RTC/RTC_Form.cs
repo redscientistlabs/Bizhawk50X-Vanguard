@@ -438,7 +438,7 @@ namespace RTC
 
         public void btnFactoryClean_Click(object sender, EventArgs e)
         {
-            Process.Start("FactoryClean.bat");
+            Process.Start($"FactoryClean{(RTC_Core.isStandalone ? "DETACHED" : "ATTACHED")}.bat");
         }
 
         public void btnAutoKillSwitch_Click(object sender, EventArgs e)

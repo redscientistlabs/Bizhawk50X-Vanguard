@@ -162,14 +162,16 @@ namespace RTC
 			lbStashHistory.DataSource = null;
 
 			DontLoadSelectedStash = true;
+            //lbStashHistory.BeginUpdate();
 			lbStashHistory.DataSource = RTC_StockpileManager.StashHistory;
+            //lbStashHistory.EndUpdate();
 
 			DontLoadSelectedStash = true;
-
 			if(lastSelect < lbStashHistory.Items.Count)
 				lbStashHistory.SelectedIndex = lastSelect;
 
 			DontLoadSelectedStash = false;
+
 		}
 
         public void btnSavestate_Click(object sender, EventArgs e)
@@ -983,14 +985,14 @@ namespace RTC
 				(columnsMenu.Items.Add("[Multiplayer] Send Selected Item as a Blast", null, new EventHandler((ob, ev) => { RTC_Core.Multiplayer?.SendBlastlayer(); })) as ToolStripMenuItem).Enabled = RTC_Core.Multiplayer != null && RTC_Core.Multiplayer.side != NetworkSide.DISCONNECTED;
 				(columnsMenu.Items.Add("[Multiplayer] Send Selected Item as a Game State", null, new EventHandler((ob, ev) => { RTC_Core.Multiplayer?.SendStashkey(); })) as ToolStripMenuItem).Enabled = RTC_Core.Multiplayer != null && RTC_Core.Multiplayer.side != NetworkSide.DISCONNECTED;
 				columnsMenu.Items.Add(new ToolStripSeparator());
-				columnsMenu.Items.Add("Open Selected Item in Blast Editor", null, new EventHandler((ob, ev) => {
+				(columnsMenu.Items.Add("Open Selected Item in Blast Editor", null, new EventHandler((ob, ev) => {
                     if (RTC_Core.beForm != null)
                     {
                         RTC_Core.beForm.Close();
                         RTC_Core.beForm = new RTC_BlastEditorForm();
                         RTC_Core.beForm.LoadStashkey(RTC_StockpileManager.currentStashkey);
                     }
-                }));
+                })) as ToolStripMenuItem).Enabled = (dgvStockpile.SelectedRows.Count == 1);
 
 				columnsMenu.Show(this, locate);
 			}
@@ -1269,14 +1271,14 @@ namespace RTC
 
 				})) as ToolStripMenuItem).Enabled = RTC_Core.Multiplayer != null && RTC_Core.Multiplayer.side != NetworkSide.DISCONNECTED;
 				columnsMenu.Items.Add(new ToolStripSeparator());
-                columnsMenu.Items.Add("Open Selected Item in Blast Editor", null, new EventHandler((ob, ev) => {
+                (columnsMenu.Items.Add("Open Selected Item in Blast Editor", null, new EventHandler((ob, ev) => {
                     if (RTC_Core.beForm != null)
                     {
                         RTC_Core.beForm.Close();
                         RTC_Core.beForm = new RTC_BlastEditorForm();
                         RTC_Core.beForm.LoadStashkey(RTC_StockpileManager.currentStashkey);
                     }
-                }));
+                })) as ToolStripMenuItem).Enabled = lbStashHistory.SelectedIndex != -1;
                 columnsMenu.Show(this, locate);
 			}
 		}

@@ -34,20 +34,26 @@ namespace RTC
         {
             Running = true;
 
+
             time = new System.Windows.Forms.Timer();
             time.Interval = 200;
             time.Tick += new EventHandler(CheckMessages);
             time.Start();
 
-            bridgeThread = new Thread(new ThreadStart(ListenToBridge));
-            bridgeThread.IsBackground = true;
-            bridgeThread.Start();
+            if (RTC_Hooks.isRemoteRTC)
+            {
+                RTC_RPC.SendToKillSwitch("UNFREEZE");
+            }
+            else
+            {
+                bridgeThread = new Thread(new ThreadStart(ListenToBridge));
+                bridgeThread.IsBackground = true;
+                bridgeThread.Start();
 
-            pluginThread = new Thread(new ThreadStart(ListenToPlugin));
-            pluginThread.IsBackground = true;
-            pluginThread.Start();
-
-            RTC_RPC.SendToKillSwitch("UNFREEZE");
+                pluginThread = new Thread(new ThreadStart(ListenToPlugin));
+                pluginThread.IsBackground = true;
+                pluginThread.Start();
+            }
         }
 
 		public static void StartKillswitch()
@@ -203,42 +209,48 @@ namespace RTC
 		}
 
 
-		public static void CheckMessages(object sender, EventArgs e)
+        public static void CheckMessages(object sender, EventArgs e)
         {
-            string msg = "";
-            while (messages.Count != 0)
+
+            if (RTC_Hooks.isRemoteRTC)
+                SendHeartbeat();
+            else
             {
-                msg = messages.Dequeue();
-                string[] splits = msg.Split('|');
 
-                switch (splits[0])
+                string msg = "";
+                while (messages.Count != 0)
                 {
-                    default:
-                        break;
+                    msg = messages.Dequeue();
+                    string[] splits = msg.Split('|');
 
-                    case "RTC":
-                        switch (splits[1])
-                        {
-                            default:
-                                break;
+                    switch (splits[0])
+                    {
+                        default:
+                            break;
 
-                            case "CORRUPT":
-                                RTC_Core.ghForm.btnCorrupt_Click(null,null);
-                                break;
-                            case "ASK_PLUGIN_SET":
-                                if (RTC_Core.SendCommandToBizhawk(new RTC_Command(CommandType.REMOTE_KEY_GETOPENROMFILENAME), true) != null)
-                                    RefreshPlugin();
-                                break;
+                        case "RTC":
+                            switch (splits[1])
+                            {
+                                default:
+                                    break;
 
-                                
-                        }
-                        break;
+                                case "CORRUPT":
+                                    RTC_Core.ghForm.btnCorrupt_Click(null, null);
+                                    break;
+                                case "ASK_PLUGIN_SET":
+                                    if (RTC_Core.SendCommandToBizhawk(new RTC_Command(CommandType.REMOTE_KEY_GETOPENROMFILENAME), true) != null)
+                                        RefreshPlugin();
+                                    break;
 
+
+                            }
+                            break;
+
+                    }
                 }
+
             }
-
-
-            SendHeartbeat();
+        
         }
 
         public static void RefreshPlugin()

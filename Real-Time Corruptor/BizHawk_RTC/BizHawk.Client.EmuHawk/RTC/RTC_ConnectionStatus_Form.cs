@@ -51,7 +51,7 @@ namespace RTC
 			if (rotateRandomSounds)
 				simpleSound = new SoundPlayer(getRandomSound());
 
-			if (simpleSound != null && btnStartEmuhawkDetached.Text == "Restart EmuHawk")
+			if (simpleSound != null && btnStartEmuhawkDetached.Text == "Restart BizHawk")
 			{
 				if (isClassicCrash)
 				{

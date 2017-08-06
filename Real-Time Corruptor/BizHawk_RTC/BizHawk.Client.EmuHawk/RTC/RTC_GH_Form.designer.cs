@@ -1839,7 +1839,7 @@
             this.btnClearStockpile.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnClearStockpile.Font = new System.Drawing.Font("Segoe UI Semibold", 9.75F, System.Drawing.FontStyle.Bold);
             this.btnClearStockpile.ForeColor = System.Drawing.Color.Black;
-            this.btnClearStockpile.Location = new System.Drawing.Point(485, 449);
+            this.btnClearStockpile.Location = new System.Drawing.Point(483, 449);
             this.btnClearStockpile.Name = "btnClearStockpile";
             this.btnClearStockpile.Size = new System.Drawing.Size(106, 32);
             this.btnClearStockpile.TabIndex = 115;

@@ -137,6 +137,12 @@ namespace RTC
 
         }
 
+        public static void BIZHAWK_SAVE_CONFIG()
+        {
+            if (DisableRTC) return;
+
+            RTC_Core.SendCommandToBizhawk(new RTC_Command(CommandType.REMOTE_EVENT_SAVEBIZHAWKCONFIG));
+        }
 
         public static void LOAD_GAME_BEGIN()
         {
