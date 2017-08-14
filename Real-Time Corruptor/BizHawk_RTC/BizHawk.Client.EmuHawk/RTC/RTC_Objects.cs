@@ -219,7 +219,10 @@ namespace RTC
 
 			RTC_StockpileManager.currentStockpile = sks;
 
-			return true;
+            RTC_StockpileManager.unsavedEdits = false;
+
+
+            return true;
         }
 
 		public static bool Load(DataGridView dgvStockpile, string Filename = null)
@@ -246,7 +249,9 @@ namespace RTC
 				return false;
 			}
 
-			Extract(Filename, "TEMP", "stockpile.xml");
+            RTC_RPC.SendToKillSwitch("FREEZE");
+
+            Extract(Filename, "TEMP", "stockpile.xml");
 
 			FileStream FS;
 			XmlSerializer xs = new XmlSerializer(typeof(Stockpile));
@@ -261,7 +266,8 @@ namespace RTC
 			catch
 			{
 				MessageBox.Show("The Stockpile file could not be loaded");
-				return false;
+                RTC_RPC.SendToKillSwitch("UNFREEZE");
+                return false;
 			}
 
 			RTC_StockpileManager.currentStockpile = sks;
@@ -296,7 +302,9 @@ namespace RTC
 
 			CheckCompatibility(sks);
 
-			return true;
+            RTC_RPC.SendToKillSwitch("UNFREEZE");
+
+            return true;
 
 		}
 

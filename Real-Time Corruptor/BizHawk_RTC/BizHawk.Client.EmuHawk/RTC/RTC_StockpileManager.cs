@@ -23,7 +23,9 @@ namespace RTC
 		public static string currentGameSystem = "";
 		public static string currentGameName = "";
 
-		private static bool _isCorruptionApplied = false;
+        public static bool unsavedEdits = false;
+
+        private static bool _isCorruptionApplied = false;
 
 		public static bool isCorruptionApplied
 		{

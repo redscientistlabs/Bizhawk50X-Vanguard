@@ -4238,7 +4238,7 @@ namespace BizHawk.Client.EmuHawk
 		{
 			//RTC_HIJACK : MainForm_FormClosing
 			//You might have
-			RTC.RTC_Hooks.MAINFORM_CLOSING();
+			RTC.RTC_Hooks.MAINFORM_CLOSING(sender, e);
 			//---------------------
 		}
 

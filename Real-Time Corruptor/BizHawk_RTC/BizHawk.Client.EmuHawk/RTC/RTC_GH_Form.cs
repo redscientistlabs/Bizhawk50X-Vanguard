@@ -498,7 +498,9 @@ namespace RTC
 
 			RTC_StockpileManager.StockpileChanged();
 
-		}
+            RTC_StockpileManager.unsavedEdits = true;
+
+        }
 
 		public DialogResult getInputBox(string title, string promptText, ref string value)
         {
@@ -559,7 +561,10 @@ namespace RTC
 						dgvStockpile.Rows.Remove(row);
 
 			RTC_StockpileManager.StockpileChanged();
-			RTC_Core.StartSound();
+
+            RTC_StockpileManager.unsavedEdits = true;
+
+            RTC_Core.StartSound();
 		}
 
 		private void btnClearStockpile_Click(object sender, EventArgs e) => ClearStockpile();
@@ -582,7 +587,10 @@ namespace RTC
 				RTC_Core.ghForm.btnSaveStockpile.ForeColor = Color.DimGray;
 
 				RTC_StockpileManager.StockpileChanged();
-				RTC_Core.StartSound();
+
+                RTC_StockpileManager.unsavedEdits = false;
+
+                RTC_Core.StartSound();
 			}
 		}
 
@@ -610,7 +618,9 @@ namespace RTC
 					dgvStockpile.ClearSelection();
 					RTC_StockpileManager.StockpileChanged();
 
-				}
+                    RTC_StockpileManager.unsavedEdits = false;
+
+                }
 				finally
 				{
 					RTC_Core.StartSound();
@@ -822,7 +832,9 @@ namespace RTC
 				dgvStockpile.Rows[newpos].Selected = true;
 			}
 
-			RTC_StockpileManager.StockpileChanged();
+            RTC_StockpileManager.unsavedEdits = true;
+
+            RTC_StockpileManager.StockpileChanged();
 
 		}
 
@@ -856,7 +868,9 @@ namespace RTC
 				dgvStockpile.Rows[newpos].Selected = true;
 			}
 
-			RTC_StockpileManager.StockpileChanged();
+            RTC_StockpileManager.unsavedEdits = true;
+
+            RTC_StockpileManager.StockpileChanged();
 
 		}
 
@@ -940,7 +954,9 @@ namespace RTC
 
 			RTC_StockpileManager.StockpileChanged();
 
-			RTC_Core.StartSound();
+            RTC_StockpileManager.unsavedEdits = true;
+
+            RTC_Core.StartSound();
 
 		}
 
@@ -1008,7 +1024,8 @@ namespace RTC
 			else if (dgvStockpile.SelectedRows.Count != 0 && dgvStockpile.SelectedRows[0].Cells[0].Value != null)
 			{
 				RTC_StockpileManager.currentStashkey = (dgvStockpile.SelectedRows[0].Cells[0].Value as StashKey);
-			}
+                RTC_StockpileManager.unsavedEdits = true;
+            }
 			else
 				return;
 
@@ -1145,7 +1162,7 @@ namespace RTC
                 if (!File.Exists(RTC_Core.bizhawkDir + "\\" + key.SystemName + "\\State\\" + statefilename))
 					File.Copy(RTC_Core.rtcDir + "\\TEMP4\\" + statefilename, newStatePath); // copy savestates to temp folder
 
-                key.RomFilename = RTC_Core.rtcDir + "\\TEMP4\\" + shortRomFilename;
+                //key.RomFilename = RTC_Core.rtcDir + "\\TEMP4\\" + shortRomFilename;
                 key.StateFilename = newStatePath;
 
             }

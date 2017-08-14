@@ -129,11 +129,17 @@ namespace RTC
 
         }
 
-        public static void MAINFORM_CLOSING()
+        public static void MAINFORM_CLOSING(object sender, FormClosingEventArgs e)
         {
 			if (DisableRTC) return;
 
-			RTC_Core.CloseAllRtcForms();
+            if (!RTC_Hooks.isRemoteRTC && RTC_StockpileManager.unsavedEdits && MessageBox.Show("You have unsaved edits in the Glitch Harvester Stockpile. \n\n Are you sure you want to close RTC without saving?", "Unsaved edits in Stockpile", MessageBoxButtons.YesNo) == DialogResult.No)
+            {
+                e.Cancel = true;
+                return;
+            }
+
+            RTC_Core.CloseAllRtcForms();
 
         }
 
