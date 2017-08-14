@@ -58,6 +58,9 @@
             this.btnStartVrun = new System.Windows.Forms.Button();
             this.label9 = new System.Windows.Forms.Label();
             this.lbVrunAddress = new System.Windows.Forms.Label();
+            this.button1 = new System.Windows.Forms.Button();
+            this.cbNetCoreCommandTimeout = new System.Windows.Forms.ComboBox();
+            this.label5 = new System.Windows.Forms.Label();
             this.pnCorruptionEngine.SuspendLayout();
             this.pnDisableGameProtection.SuspendLayout();
             this.pnBizhawkAttached.SuspendLayout();
@@ -95,9 +98,9 @@
             this.btnStartEmuhawkDetached.ForeColor = System.Drawing.Color.Black;
             this.btnStartEmuhawkDetached.Image = global::BizHawk.Client.EmuHawk.Properties.Resources.CorpHawkSmall;
             this.btnStartEmuhawkDetached.ImageAlign = System.Drawing.ContentAlignment.MiddleRight;
-            this.btnStartEmuhawkDetached.Location = new System.Drawing.Point(22, 22);
+            this.btnStartEmuhawkDetached.Location = new System.Drawing.Point(22, 14);
             this.btnStartEmuhawkDetached.Name = "btnStartEmuhawkDetached";
-            this.btnStartEmuhawkDetached.Size = new System.Drawing.Size(163, 42);
+            this.btnStartEmuhawkDetached.Size = new System.Drawing.Size(163, 29);
             this.btnStartEmuhawkDetached.TabIndex = 2;
             this.btnStartEmuhawkDetached.Text = "  Start BizHawk";
             this.btnStartEmuhawkDetached.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageBeforeText;
@@ -107,10 +110,10 @@
             // label1
             // 
             this.label1.AutoSize = true;
-            this.label1.Font = new System.Drawing.Font("Segoe UI", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label1.Location = new System.Drawing.Point(19, 148);
+            this.label1.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F);
+            this.label1.Location = new System.Drawing.Point(19, 109);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(120, 17);
+            this.label1.Size = new System.Drawing.Size(99, 13);
             this.label1.TabIndex = 3;
             this.label1.Text = "Crash sound effect:";
             // 
@@ -127,7 +130,7 @@
             "Quack",
             "None",
             "CRASHSOUNDS folder"});
-            this.cbCrashSoundEffect.Location = new System.Drawing.Point(22, 172);
+            this.cbCrashSoundEffect.Location = new System.Drawing.Point(22, 126);
             this.cbCrashSoundEffect.Name = "cbCrashSoundEffect";
             this.cbCrashSoundEffect.Size = new System.Drawing.Size(163, 25);
             this.cbCrashSoundEffect.TabIndex = 16;
@@ -135,7 +138,7 @@
             // 
             // pbTimeout
             // 
-            this.pbTimeout.Location = new System.Drawing.Point(22, 111);
+            this.pbTimeout.Location = new System.Drawing.Point(22, 74);
             this.pbTimeout.MarqueeAnimationSpeed = 1;
             this.pbTimeout.Maximum = 13;
             this.pbTimeout.Name = "pbTimeout";
@@ -151,7 +154,7 @@
             this.cbEnabled.Checked = true;
             this.cbEnabled.CheckState = System.Windows.Forms.CheckState.Checked;
             this.cbEnabled.ForeColor = System.Drawing.Color.White;
-            this.cbEnabled.Location = new System.Drawing.Point(22, 88);
+            this.cbEnabled.Location = new System.Drawing.Point(22, 51);
             this.cbEnabled.Name = "cbEnabled";
             this.cbEnabled.Size = new System.Drawing.Size(165, 17);
             this.cbEnabled.TabIndex = 18;
@@ -162,6 +165,8 @@
             // 
             this.pnCorruptionEngine.BackColor = System.Drawing.Color.Transparent;
             this.pnCorruptionEngine.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.pnCorruptionEngine.Controls.Add(this.cbNetCoreCommandTimeout);
+            this.pnCorruptionEngine.Controls.Add(this.label5);
             this.pnCorruptionEngine.Controls.Add(this.btnStartEmuhawkDetached);
             this.pnCorruptionEngine.Controls.Add(this.cbCrashSoundEffect);
             this.pnCorruptionEngine.Controls.Add(this.label1);
@@ -216,7 +221,7 @@
             this.pnDisableGameProtection.Controls.Add(this.btnStopGameProtection);
             this.pnDisableGameProtection.Location = new System.Drawing.Point(578, 64);
             this.pnDisableGameProtection.Name = "pnDisableGameProtection";
-            this.pnDisableGameProtection.Size = new System.Drawing.Size(208, 91);
+            this.pnDisableGameProtection.Size = new System.Drawing.Size(208, 81);
             this.pnDisableGameProtection.TabIndex = 118;
             this.pnDisableGameProtection.Tag = "";
             this.pnDisableGameProtection.Visible = false;
@@ -241,7 +246,7 @@
             this.btnStopGameProtection.ForeColor = System.Drawing.Color.Black;
             this.btnStopGameProtection.Location = new System.Drawing.Point(22, 36);
             this.btnStopGameProtection.Name = "btnStopGameProtection";
-            this.btnStopGameProtection.Size = new System.Drawing.Size(163, 32);
+            this.btnStopGameProtection.Size = new System.Drawing.Size(163, 28);
             this.btnStopGameProtection.TabIndex = 2;
             this.btnStopGameProtection.Text = "Stop";
             this.btnStopGameProtection.UseVisualStyleBackColor = false;
@@ -253,9 +258,9 @@
             this.pnBizhawkAttached.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.pnBizhawkAttached.Controls.Add(this.label3);
             this.pnBizhawkAttached.Controls.Add(this.btnStartEmuhawkAttached);
-            this.pnBizhawkAttached.Location = new System.Drawing.Point(20, 404);
+            this.pnBizhawkAttached.Location = new System.Drawing.Point(20, 415);
             this.pnBizhawkAttached.Name = "pnBizhawkAttached";
-            this.pnBizhawkAttached.Size = new System.Drawing.Size(208, 89);
+            this.pnBizhawkAttached.Size = new System.Drawing.Size(208, 72);
             this.pnBizhawkAttached.TabIndex = 120;
             this.pnBizhawkAttached.Tag = "";
             // 
@@ -264,7 +269,7 @@
             this.label3.AutoSize = true;
             this.label3.Font = new System.Drawing.Font("Segoe UI Semibold", 8F, System.Drawing.FontStyle.Bold);
             this.label3.ForeColor = System.Drawing.Color.DimGray;
-            this.label3.Location = new System.Drawing.Point(20, 69);
+            this.label3.Location = new System.Drawing.Point(20, 49);
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(165, 13);
             this.label3.TabIndex = 129;
@@ -279,9 +284,9 @@
             this.btnStartEmuhawkAttached.ForeColor = System.Drawing.Color.Black;
             this.btnStartEmuhawkAttached.Image = global::BizHawk.Client.EmuHawk.Properties.Resources.CorpHawkSmall;
             this.btnStartEmuhawkAttached.ImageAlign = System.Drawing.ContentAlignment.MiddleRight;
-            this.btnStartEmuhawkAttached.Location = new System.Drawing.Point(22, 22);
+            this.btnStartEmuhawkAttached.Location = new System.Drawing.Point(22, 13);
             this.btnStartEmuhawkAttached.Name = "btnStartEmuhawkAttached";
-            this.btnStartEmuhawkAttached.Size = new System.Drawing.Size(163, 42);
+            this.btnStartEmuhawkAttached.Size = new System.Drawing.Size(163, 29);
             this.btnStartEmuhawkAttached.TabIndex = 19;
             this.btnStartEmuhawkAttached.Text = "  Start BizHawk";
             this.btnStartEmuhawkAttached.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageBeforeText;
@@ -293,7 +298,7 @@
             this.lbBizhawkEmulatorAttached.AutoSize = true;
             this.lbBizhawkEmulatorAttached.Font = new System.Drawing.Font("Segoe UI Semibold", 10F, System.Drawing.FontStyle.Bold);
             this.lbBizhawkEmulatorAttached.ForeColor = System.Drawing.Color.White;
-            this.lbBizhawkEmulatorAttached.Location = new System.Drawing.Point(26, 382);
+            this.lbBizhawkEmulatorAttached.Location = new System.Drawing.Point(26, 393);
             this.lbBizhawkEmulatorAttached.Name = "lbBizhawkEmulatorAttached";
             this.lbBizhawkEmulatorAttached.Size = new System.Drawing.Size(121, 19);
             this.lbBizhawkEmulatorAttached.TabIndex = 121;
@@ -315,7 +320,7 @@
             this.lbBizhawkAttached.AutoSize = true;
             this.lbBizhawkAttached.Font = new System.Drawing.Font("Segoe UI Semibold", 9F, System.Drawing.FontStyle.Bold);
             this.lbBizhawkAttached.ForeColor = System.Drawing.Color.White;
-            this.lbBizhawkAttached.Location = new System.Drawing.Point(147, 385);
+            this.lbBizhawkAttached.Location = new System.Drawing.Point(147, 396);
             this.lbBizhawkAttached.Name = "lbBizhawkAttached";
             this.lbBizhawkAttached.Size = new System.Drawing.Size(63, 15);
             this.lbBizhawkAttached.TabIndex = 123;
@@ -326,7 +331,7 @@
             this.lbWindowsGlitchHarvester.AutoSize = true;
             this.lbWindowsGlitchHarvester.Font = new System.Drawing.Font("Segoe UI Semibold", 10F, System.Drawing.FontStyle.Bold);
             this.lbWindowsGlitchHarvester.ForeColor = System.Drawing.Color.White;
-            this.lbWindowsGlitchHarvester.Location = new System.Drawing.Point(584, 172);
+            this.lbWindowsGlitchHarvester.Location = new System.Drawing.Point(584, 156);
             this.lbWindowsGlitchHarvester.Name = "lbWindowsGlitchHarvester";
             this.lbWindowsGlitchHarvester.Size = new System.Drawing.Size(174, 19);
             this.lbWindowsGlitchHarvester.TabIndex = 125;
@@ -339,9 +344,9 @@
             this.pnWindowsGlitchHarvester.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.pnWindowsGlitchHarvester.Controls.Add(this.label8);
             this.pnWindowsGlitchHarvester.Controls.Add(this.btnStartWGH);
-            this.pnWindowsGlitchHarvester.Location = new System.Drawing.Point(578, 194);
+            this.pnWindowsGlitchHarvester.Location = new System.Drawing.Point(578, 178);
             this.pnWindowsGlitchHarvester.Name = "pnWindowsGlitchHarvester";
-            this.pnWindowsGlitchHarvester.Size = new System.Drawing.Size(208, 128);
+            this.pnWindowsGlitchHarvester.Size = new System.Drawing.Size(208, 115);
             this.pnWindowsGlitchHarvester.TabIndex = 124;
             this.pnWindowsGlitchHarvester.Tag = "";
             this.pnWindowsGlitchHarvester.Visible = false;
@@ -369,7 +374,7 @@
             this.btnStartWGH.ImageAlign = System.Drawing.ContentAlignment.MiddleRight;
             this.btnStartWGH.Location = new System.Drawing.Point(22, 65);
             this.btnStartWGH.Name = "btnStartWGH";
-            this.btnStartWGH.Size = new System.Drawing.Size(163, 42);
+            this.btnStartWGH.Size = new System.Drawing.Size(163, 29);
             this.btnStartWGH.TabIndex = 19;
             this.btnStartWGH.Text = "  Start WGH";
             this.btnStartWGH.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageBeforeText;
@@ -381,7 +386,7 @@
             this.lbVrun.AutoSize = true;
             this.lbVrun.Font = new System.Drawing.Font("Segoe UI Semibold", 10F, System.Drawing.FontStyle.Bold);
             this.lbVrun.ForeColor = System.Drawing.Color.White;
-            this.lbVrun.Location = new System.Drawing.Point(584, 343);
+            this.lbVrun.Location = new System.Drawing.Point(584, 306);
             this.lbVrun.Name = "lbVrun";
             this.lbVrun.Size = new System.Drawing.Size(48, 19);
             this.lbVrun.TabIndex = 127;
@@ -391,11 +396,12 @@
             // 
             this.pnVrun.BackColor = System.Drawing.Color.Transparent;
             this.pnVrun.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.pnVrun.Controls.Add(this.button1);
             this.pnVrun.Controls.Add(this.btnStartVrun);
             this.pnVrun.Controls.Add(this.label9);
-            this.pnVrun.Location = new System.Drawing.Point(578, 365);
+            this.pnVrun.Location = new System.Drawing.Point(578, 328);
             this.pnVrun.Name = "pnVrun";
-            this.pnVrun.Size = new System.Drawing.Size(208, 128);
+            this.pnVrun.Size = new System.Drawing.Size(208, 159);
             this.pnVrun.TabIndex = 126;
             this.pnVrun.Tag = "";
             // 
@@ -410,7 +416,7 @@
             this.btnStartVrun.ImageAlign = System.Drawing.ContentAlignment.MiddleRight;
             this.btnStartVrun.Location = new System.Drawing.Point(22, 64);
             this.btnStartVrun.Name = "btnStartVrun";
-            this.btnStartVrun.Size = new System.Drawing.Size(163, 42);
+            this.btnStartVrun.Size = new System.Drawing.Size(163, 29);
             this.btnStartVrun.TabIndex = 121;
             this.btnStartVrun.Text = "  Play VRUN";
             this.btnStartVrun.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageBeforeText;
@@ -426,19 +432,65 @@
             this.label9.Name = "label9";
             this.label9.Size = new System.Drawing.Size(179, 39);
             this.label9.TabIndex = 121;
-            this.label9.Text = "Corrupt everything in this online\nrandomized platforming shooter. \nRuns best in" +
-    " Google Chrome.";
+            this.label9.Text = "Corrupt everything in this online\nrandomized platforming shooter. \nRuns best in G" +
+    "oogle Chrome.";
             // 
             // lbVrunAddress
             // 
             this.lbVrunAddress.AutoSize = true;
             this.lbVrunAddress.Font = new System.Drawing.Font("Segoe UI Semibold", 9F, System.Drawing.FontStyle.Bold);
             this.lbVrunAddress.ForeColor = System.Drawing.Color.White;
-            this.lbVrunAddress.Location = new System.Drawing.Point(632, 347);
+            this.lbVrunAddress.Location = new System.Drawing.Point(632, 310);
             this.lbVrunAddress.Name = "lbVrunAddress";
             this.lbVrunAddress.Size = new System.Drawing.Size(93, 15);
             this.lbVrunAddress.TabIndex = 128;
             this.lbVrunAddress.Text = "http://virus.run/";
+            // 
+            // button1
+            // 
+            this.button1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(224)))), ((int)(((byte)(224)))), ((int)(((byte)(224)))));
+            this.button1.Enabled = false;
+            this.button1.FlatAppearance.BorderSize = 0;
+            this.button1.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.button1.Font = new System.Drawing.Font("Segoe UI Semibold", 11F, System.Drawing.FontStyle.Bold);
+            this.button1.ForeColor = System.Drawing.Color.Black;
+            this.button1.Image = global::BizHawk.Client.EmuHawk.Properties.Resources.ToolBox;
+            this.button1.ImageAlign = System.Drawing.ContentAlignment.MiddleRight;
+            this.button1.Location = new System.Drawing.Point(22, 110);
+            this.button1.Name = "button1";
+            this.button1.Size = new System.Drawing.Size(163, 29);
+            this.button1.TabIndex = 122;
+            this.button1.Text = "  VRUN Editor";
+            this.button1.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageBeforeText;
+            this.button1.UseVisualStyleBackColor = false;
+            // 
+            // cbNetCoreCommandTimeout
+            // 
+            this.cbNetCoreCommandTimeout.BackColor = System.Drawing.Color.Black;
+            this.cbNetCoreCommandTimeout.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.cbNetCoreCommandTimeout.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.cbNetCoreCommandTimeout.Font = new System.Drawing.Font("Segoe UI", 9.75F);
+            this.cbNetCoreCommandTimeout.ForeColor = System.Drawing.Color.White;
+            this.cbNetCoreCommandTimeout.FormattingEnabled = true;
+            this.cbNetCoreCommandTimeout.Items.AddRange(new object[] {
+            "Standard",
+            "Lazy",
+            "Disabled"});
+            this.cbNetCoreCommandTimeout.Location = new System.Drawing.Point(22, 181);
+            this.cbNetCoreCommandTimeout.Name = "cbNetCoreCommandTimeout";
+            this.cbNetCoreCommandTimeout.Size = new System.Drawing.Size(163, 25);
+            this.cbNetCoreCommandTimeout.TabIndex = 20;
+            this.cbNetCoreCommandTimeout.SelectedIndexChanged += new System.EventHandler(this.cbNetCoreCommandTimeout_SelectedIndexChanged);
+            // 
+            // label5
+            // 
+            this.label5.AutoSize = true;
+            this.label5.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F);
+            this.label5.Location = new System.Drawing.Point(19, 163);
+            this.label5.Name = "label5";
+            this.label5.Size = new System.Drawing.Size(173, 13);
+            this.label5.TabIndex = 19;
+            this.label5.Text = "NetCore/KillSwitch Aggressiveness";
             // 
             // RTC_ConnectionStatus_Form
             // 
@@ -514,5 +566,8 @@
 		public System.Windows.Forms.Button btnStartVrun;
 		private System.Windows.Forms.Label lbVrunAddress;
 		private System.Windows.Forms.Label label3;
-	}
+        public System.Windows.Forms.Button button1;
+        public System.Windows.Forms.ComboBox cbNetCoreCommandTimeout;
+        private System.Windows.Forms.Label label5;
+    }
 }

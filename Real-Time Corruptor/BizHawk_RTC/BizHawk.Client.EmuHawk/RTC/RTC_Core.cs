@@ -274,6 +274,9 @@ namespace RTC
             if (!File.Exists(RTC_Core.bizhawkDir + "\\config.ini"))
                 RTC_Hooks.BIZHAWK_SAVE_CONFIG();
 
+            if (RTC_Hooks.isRemoteRTC)
+                RTC_Core.SendCommandToRTC(new RTC_Command(CommandType.GETAGGRESSIVENESS));
+
         }
 			
 			

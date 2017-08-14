@@ -27,7 +27,9 @@ namespace RTC
 		private void RTC_ConnectionStatus_Form_Load(object sender, EventArgs e)
 		{
 			cbCrashSoundEffect.SelectedIndex = 0;
-			coldSound = new SoundPlayer("RTC\\ASSETS\\cold.wav");
+            cbNetCoreCommandTimeout.SelectedIndex = 0;
+
+            coldSound = new SoundPlayer("RTC\\ASSETS\\cold.wav");
 
             if(File.Exists(RTC_Core.bizhawkDir + "\\WGH\\WindowsGlitchHarvester.exe"))
             {
@@ -132,5 +134,47 @@ namespace RTC
 		{
 			Process.Start("http://virus.run/");
 		}
-	}
+
+        private void cbNetCoreCommandTimeout_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            string setting = cbNetCoreCommandTimeout.SelectedItem.ToString().ToUpper();
+            changeNetCoreSettings(setting);
+            RTC_Core.SendCommandToBizhawk(new RTC_Command(CommandType.AGGRESSIVENESS) { objectValue = setting });
+
+        }
+        public static void changeNetCoreSettings(string setting)
+        {
+            switch (setting)
+            {
+                case "STANDARD":
+                    RTC_NetCore.DefaultKeepAliveCounter = 5;
+                    RTC_NetCore.DefaultNetworkStreamTimeout = 2000;
+                    RTC_NetCore.DefaultMaxRetries = 666;
+
+                    if(RTC_Core.isStandalone)
+                        RTC_Core.csForm.pbTimeout.Maximum = 13;
+
+                    break;
+                case "LAZY":
+                    RTC_NetCore.DefaultKeepAliveCounter = 15;
+                    RTC_NetCore.DefaultNetworkStreamTimeout = 6000;
+                    RTC_NetCore.DefaultMaxRetries = 6666;
+
+                    if (RTC_Core.isStandalone)
+                        RTC_Core.csForm.pbTimeout.Maximum = 20;
+
+                    break;
+
+                case "DISABLED":
+                    RTC_NetCore.DefaultKeepAliveCounter = int.MaxValue;
+                    RTC_NetCore.DefaultNetworkStreamTimeout = int.MaxValue;
+                    RTC_NetCore.DefaultMaxRetries = int.MaxValue;
+
+                    if (RTC_Core.isStandalone)
+                        RTC_Core.csForm.pbTimeout.Maximum = int.MaxValue;
+
+                    break;
+            }
+        }
+    }
 }

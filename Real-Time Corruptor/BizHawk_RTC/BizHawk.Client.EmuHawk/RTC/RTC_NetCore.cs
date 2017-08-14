@@ -34,8 +34,12 @@ namespace RTC
 		public bool expectingSomeone = false;
 		static volatile bool isStreamReadingThreadAlive = false;
 
-		static int KeepAliveCounter = 3;
-		System.Windows.Forms.Timer KeepAliveTimer = null;
+		static int KeepAliveCounter = 5;
+        public static int DefaultKeepAliveCounter = 5;
+        public static int DefaultNetworkStreamTimeout = 2000;
+        public static int DefaultMaxRetries = 666;
+
+        System.Windows.Forms.Timer KeepAliveTimer = null;
 
 		static volatile Dictionary<string, bool> TransferedRomFilenames = new Dictionary<string, bool>();
 
@@ -132,8 +136,8 @@ namespace RTC
 
 				}
 
-				networkStream.ReadTimeout = 2000;
-				networkStream.WriteTimeout = 2000;
+				networkStream.ReadTimeout = DefaultNetworkStreamTimeout;
+				networkStream.WriteTimeout = DefaultNetworkStreamTimeout;
 
 				if (side == NetworkSide.CLIENT)
 					SendCommand(new RTC_Command(CommandType.HI), false, true);
@@ -339,7 +343,7 @@ namespace RTC
 				client = new TcpClient();
 
 				var result = client.BeginConnect(address, port, null, null);
-				var success = result.AsyncWaitHandle.WaitOne(TimeSpan.FromMilliseconds(666));
+				var success = result.AsyncWaitHandle.WaitOne(TimeSpan.FromMilliseconds(DefaultMaxRetries));
 
 				if (!success)
 					throw new Exception("Failed to connect.");
@@ -513,7 +517,7 @@ namespace RTC
 				return false;
 			}
 
-			KeepAliveCounter = 5;
+			KeepAliveCounter = DefaultKeepAliveCounter;
 
 			if (KeepAliveTimer == null)
 			{
@@ -558,7 +562,7 @@ namespace RTC
 					OnClientReconnecting(null);
 					StartNetworking(expectedSide);
 
-					KeepAliveCounter = 5;
+					KeepAliveCounter = DefaultKeepAliveCounter;
 				}
 				else if (expectedSide == NetworkSide.SERVER)
 				{
@@ -675,11 +679,20 @@ namespace RTC
 
 
 					case CommandType.BOOP:
-						KeepAliveCounter = 5;
+						KeepAliveCounter = DefaultKeepAliveCounter;
 						break;
 
-					#endregion
-					case CommandType.ASYNCBLAST:
+                    case CommandType.AGGRESSIVENESS:
+                        RTC_ConnectionStatus_Form.changeNetCoreSettings((string)cmd.objectValue);
+                        break;
+
+                    case CommandType.GETAGGRESSIVENESS:
+                        string setting = RTC_Core.csForm.cbNetCoreCommandTimeout.SelectedItem.ToString().ToUpper();
+                        RTC_Core.SendCommandToBizhawk(new RTC_Command(CommandType.AGGRESSIVENESS) { objectValue = setting });
+                        break;
+
+                    #endregion
+                    case CommandType.ASYNCBLAST:
 						{
 							BlastLayer bl = RTC_Core.Blast(null, RTC_MemoryDomains.SelectedDomains);
 							if (bl != null)
@@ -975,7 +988,7 @@ namespace RTC
 						RTC_Core.AutoCorrupt = (bool)cmd.objectValue;
 						break;
 
-					case CommandType.REMOTE_SET_INTENSITY:
+                    case CommandType.REMOTE_SET_INTENSITY:
 						RTC_Core.Intensity = (int)cmd.objectValue;
 						break;
 					case CommandType.REMOTE_SET_ERRORDELAY:
@@ -1359,7 +1372,7 @@ namespace RTC
 
 			int maxtries = 0;
 
-			while (!SyncReturns.ContainsKey(WatchedGuid) && maxtries < 666)
+			while (!SyncReturns.ContainsKey(WatchedGuid) && maxtries < RTC_NetCore.DefaultMaxRetries)
 			{
 				maxtries++;
 				//WaitMiliseconds(2);
@@ -1373,7 +1386,7 @@ namespace RTC
 				Thread.Sleep(2);
 			}
 
-			if (maxtries >= 666)
+			if (maxtries >= RTC_NetCore.DefaultMaxRetries)
 			{
 				//MessageBox.Show("An inter-thread synchronous method has timed before a response arrived. Aborting current procedure.");
 				return null;
@@ -1410,9 +1423,11 @@ namespace RTC
 		CONNECTIONLOST,
 		RETURNVALUE,
 		BOOP,
+        AGGRESSIVENESS,
+        GETAGGRESSIVENESS,
 
-		//General RTC commands
-		BLAST,
+        //General RTC commands
+        BLAST,
 		ASYNCBLAST,
 		STASHKEY,
 		
