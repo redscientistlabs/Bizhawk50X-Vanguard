@@ -4238,9 +4238,9 @@ namespace BizHawk.Client.EmuHawk
 		{
 			//RTC_HIJACK : MainForm_FormClosing
 			//You might have
-			RTC.RTC_Hooks.MAINFORM_CLOSING(sender, e);
-			//---------------------
-		}
+			RTC.RTC_Hooks.MAINFORM_CLOSING();
+            //---------------------
+        }
 
 		private void allowGameDBCoreOverridesToolStripMenuItem_Click(object sender, EventArgs e)
 		{
