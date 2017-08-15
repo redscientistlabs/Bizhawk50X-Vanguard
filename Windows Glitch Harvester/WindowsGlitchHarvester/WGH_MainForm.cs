@@ -650,7 +650,7 @@ Are you sure you want to reset the current target's backup?", "WARNING", Message
                 {
                     WGH_Core.currentMemoryInterface.getMemoryDump();
                     if (WGH_Core.currentMemoryInterface is ProcessInterface)
-                        (WGH_Core.currentMemoryInterface as ProcessInterface).useCaching = true;
+                        (WGH_Core.currentMemoryInterface as ProcessInterface).UseCaching = true;
 
                     btnEnableCaching.Text = "Disable caching on current target";
                 }
@@ -658,7 +658,7 @@ Are you sure you want to reset the current target's backup?", "WARNING", Message
                 {
                     WGH_Core.currentMemoryInterface.lastMemoryDump = null;
                     if (WGH_Core.currentMemoryInterface is ProcessInterface)
-                        (WGH_Core.currentMemoryInterface as ProcessInterface).useCaching = false;
+                        (WGH_Core.currentMemoryInterface as ProcessInterface).UseCaching = false;
 
                     btnEnableCaching.Text = "Enable caching on current target";
                 }
@@ -856,7 +856,7 @@ Are you sure you want to reset the current target's backup?", "WARNING", Message
             if (sk != null)
             {
 
-                foreach (BlastUnit bu in sk.blastlayer.Layer)
+                foreach (BlastUnit bu in sk.BlastLayer.Layer)
                 {
                     var bb = (bu as BlastByte);
                     if (bb.Type == BlastByteType.SET)
@@ -1020,6 +1020,44 @@ Are you sure you want to reset the current target's backup?", "WARNING", Message
         private void btnKillProcess_Click(object sender, EventArgs e)
         {
             TerminateIfNeeded();
+        }
+
+        private void lbStashHistory_MouseDown(object sender, MouseEventArgs e)
+        {
+            if (e.Button == MouseButtons.Right)
+            {
+                Point locate = new Point((sender as Control).Location.X + e.Location.X, (sender as Control).Location.Y + e.Location.Y);
+
+                ContextMenuStrip columnsMenu = new ContextMenuStrip();
+                (columnsMenu.Items.Add("Open Selected Item in Blast Editor", null, new EventHandler((ob, ev) => {
+                    if (WGH_Core.beForm != null)
+                    {
+                        WGH_Core.beForm.Close();
+                        WGH_Core.beForm = new WGH_BlastEditorForm();
+                        WGH_Core.beForm.LoadStashkey(WGH_Core.currentStashkey);
+                    }
+                })) as ToolStripMenuItem).Enabled = lbStashHistory.SelectedIndex != -1;
+                columnsMenu.Show(this, locate);
+            }
+        }
+
+        private void lbStockpile_MouseDown(object sender, MouseEventArgs e)
+        {
+            if (e.Button == MouseButtons.Right)
+            {
+                Point locate = new Point((sender as Control).Location.X + e.Location.X, (sender as Control).Location.Y + e.Location.Y);
+
+                ContextMenuStrip columnsMenu = new ContextMenuStrip();
+                (columnsMenu.Items.Add("Open Selected Item in Blast Editor", null, new EventHandler((ob, ev) => {
+                    if (WGH_Core.beForm != null)
+                    {
+                        WGH_Core.beForm.Close();
+                        WGH_Core.beForm = new WGH_BlastEditorForm();
+                        WGH_Core.beForm.LoadStashkey(WGH_Core.currentStashkey);
+                    }
+                })) as ToolStripMenuItem).Enabled = lbStockpile.SelectedIndex != -1;
+                columnsMenu.Show(this, locate);
+            }
         }
     }
 }

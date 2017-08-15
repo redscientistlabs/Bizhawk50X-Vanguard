@@ -12,7 +12,7 @@ namespace WindowsGlitchHarvester
 
     public static class WGH_Core
     {
-		public static string WghVersion = "0.88";
+		public static string WghVersion = "0.89";
 
 		public static Random RND = new Random();
 
@@ -44,6 +44,7 @@ namespace WindowsGlitchHarvester
         public static WGH_SelectMultipleForm smForm = null;
 		public static WGH_HookProcessForm hpForm = null;
 		public static WGH_AutoCorruptForm acForm = null;
+        public static WGH_BlastEditorForm beForm = null;
 
         //object references
         public static MemoryInterface currentMemoryInterface = null;
@@ -220,7 +221,7 @@ namespace WindowsGlitchHarvester
 
                 currentTargetType = "File";
                 var fi = new FileInterface(currentTargetId);
-                currentTargetName = fi.shortFilename;
+                currentTargetName = fi.ShortFilename;
                 currentMemoryInterface = fi;
                 ghForm.lbTarget.Text = currentTargetId + "|MemorySize:" + fi.lastMemorySize.ToString();
 
@@ -240,8 +241,8 @@ namespace WindowsGlitchHarvester
 
                 currentTargetType = "MultipleFiles";
                 var mfi = (MultipleFileInterface)WGH_Core.currentMemoryInterface;
-                currentTargetName = mfi.shortFilename;
-                ghForm.lbTarget.Text = mfi.shortFilename + "|MemorySize:" + mfi.lastMemorySize.ToString();
+                currentTargetName = mfi.ShortFilename;
+                ghForm.lbTarget.Text = mfi.ShortFilename + "|MemorySize:" + mfi.lastMemorySize.ToString();
             }
             else if (WGH_Core.ghForm.rbTargetProcess.Checked)
             {
@@ -258,8 +259,8 @@ namespace WindowsGlitchHarvester
 
 				currentTargetType = "Process";
 				var mfi = (ProcessInterface)WGH_Core.currentMemoryInterface;
-				currentTargetName = mfi.processName;
-				ghForm.lbTarget.Text = mfi.processName + "|MemorySize:" + mfi.lastMemorySize.ToString();
+				currentTargetName = mfi.ProcessName;
+				ghForm.lbTarget.Text = mfi.ProcessName + "|MemorySize:" + mfi.lastMemorySize.ToString();
 			}
         }
 

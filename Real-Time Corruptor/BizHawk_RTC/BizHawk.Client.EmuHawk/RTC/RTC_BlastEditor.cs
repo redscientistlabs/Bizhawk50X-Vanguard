@@ -295,5 +295,23 @@ namespace RTC
             this.nmAddressEdit.ContextMenu = contextMenu;
             this.nmValueEdit.ContextMenu = contextMenu;
         }
+
+        private void btnDuplicateSelected_Click(object sender, EventArgs e)
+        {
+            if (lbBlastLayer.SelectedIndex == -1)
+            {
+                MessageBox.Show("No unit was selected. Cannot duplicate.");
+                return;
+            }
+
+            int pos = lbBlastLayer.SelectedIndex;
+
+            BlastUnit bu = sk.BlastLayer.Layer[pos];
+            BlastUnit bu2 = ObjectCopier.Clone(bu);
+            sk.BlastLayer.Layer.Insert(pos, bu2);
+
+
+            RefreshBlastLayer();
+        }
     }
 }

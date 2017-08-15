@@ -72,35 +72,19 @@ namespace WindowsGlitchHarvester
     [Serializable()]
     public class Stockpile
     {
-        public List<StashKey> stashkeys = new List<StashKey>();
+        public List<StashKey> StashKeys = new List<StashKey>();
 
         public string Filename;
         public string ShortFilename;
 		public string WghVersion;
 
-		public string descrip = "";
-
-        public string Name;
-        public string CloudCorruptID = null;
-
-        public List<string> ComputerSerials = new List<string>();
-        public List<string> MakersName = new List<string>();
-        public List<string> MakersID = new List<string>();
-
-
         public Stockpile(ListBox lbStockpile)
         {
             foreach (StashKey sk in lbStockpile.Items)
             {
-                stashkeys.Add(sk);
+                StashKeys.Add(sk);
             }
         }
-
-        public override string ToString()
-        {
-            return (Name != null ? Name : "");
-        }
-
 
         public static void Save(Stockpile sks)
         {
@@ -109,7 +93,7 @@ namespace WindowsGlitchHarvester
 
         public static void Save(Stockpile sks, bool IsQuickSave)
         {
-            if (sks.stashkeys.Count == 0)
+            if (sks.StashKeys.Count == 0)
             {
                 MessageBox.Show("Can't save because the Current Stockpile is empty");
                 return;
@@ -235,7 +219,7 @@ namespace WindowsGlitchHarvester
             //fill list controls
             WGH_Core.ghForm.lbStockpile.Items.Clear();
 
-            foreach (StashKey key in sks.stashkeys)
+            foreach (StashKey key in sks.StashKeys)
             {
                 WGH_Core.ghForm.lbStockpile.Items.Add(key);
             }
@@ -324,7 +308,7 @@ namespace WindowsGlitchHarvester
 
             //fill list controls
 
-            foreach (StashKey key in sks.stashkeys)
+            foreach (StashKey key in sks.StashKeys)
             {
                 WGH_Core.ghForm.lbStockpile.Items.Add(key);
             }
@@ -336,7 +320,7 @@ namespace WindowsGlitchHarvester
 
 
     [Serializable()]
-    public class StashKey
+    public class StashKey : ICloneable
     {
 
         public String TargetId;
@@ -346,7 +330,7 @@ namespace WindowsGlitchHarvester
 
         public String Key;
         public String ParentKey = null;
-        public BlastLayer blastlayer = null;
+        public BlastLayer BlastLayer = null;
 
         public String Alias
         {
@@ -369,7 +353,7 @@ namespace WindowsGlitchHarvester
         {
 
             Key = _key;
-            blastlayer = _blastlayer;
+            BlastLayer = _blastlayer;
             TargetId = WGH_Core.currentTargetName;
             TargetType = WGH_Core.currentTargetType;
             TargetName = WGH_Core.currentTargetName;
@@ -381,10 +365,15 @@ namespace WindowsGlitchHarvester
             return Alias;
         }
 
+        public object Clone()
+        {
+            return ObjectCopier.Clone(this);
+        }
+
         public bool Run()
         {
-            WGH_Core.Blast(blastlayer);
-            return (blastlayer.Layer.Count > 0);
+            WGH_Core.Blast(BlastLayer);
+            return (BlastLayer.Layer.Count > 0);
         }
 
     }
@@ -438,6 +427,7 @@ namespace WindowsGlitchHarvester
     {
         public abstract bool Apply();
         public abstract BlastUnit GetBackup();
+        public abstract bool IsEnabled { get; set; }
     }
 
     [Serializable()]
@@ -447,7 +437,7 @@ namespace WindowsGlitchHarvester
         public long Address;
         public BlastByteType Type;
         public int Value;
-        public bool IsEnabled;
+        public override bool IsEnabled { get; set; }
 
         public BlastByte(string _domain, long _address, BlastByteType _type, int _value, bool _isEnabled)
         {
@@ -545,7 +535,7 @@ namespace WindowsGlitchHarvester
 		public byte[] Values;
 
 
-		public bool IsEnabled;
+		public override bool IsEnabled { get; set; }
 
 		public BlastVector(string _domain, long _address, byte[] _values, bool _isEnabled)
 		{
@@ -656,9 +646,9 @@ namespace WindowsGlitchHarvester
     [Serializable()]
     public class FileInterface : MemoryInterface
     {
-        public string filename;
-        public string shortFilename;
-        bool writeDirectly = false;
+        public string Filename;
+        public string ShortFilename;
+
         System.IO.Stream stream = null;
 
         public FileInterface(string _targetId)
@@ -666,8 +656,8 @@ namespace WindowsGlitchHarvester
             try
             {
                 string[] targetId = _targetId.Split('|');
-                filename = targetId[1];
-                shortFilename = filename.Substring(filename.LastIndexOf("\\") + 1, filename.Length - (filename.LastIndexOf("\\") + 1));
+                Filename = targetId[1];
+                ShortFilename = Filename.Substring(Filename.LastIndexOf("\\") + 1, Filename.Length - (Filename.LastIndexOf("\\") + 1));
 
                 SetBackup();
 
@@ -677,7 +667,7 @@ namespace WindowsGlitchHarvester
             }
             catch (Exception ex)
             {
-                MessageBox.Show($"FileInterface failed to load something \n\n" + "Culprit file: " + filename + "\n\n" + ex.ToString());
+                MessageBox.Show($"FileInterface failed to load something \n\n" + "Culprit file: " + Filename + "\n\n" + ex.ToString());
 
                 if(WGH_Core.ghForm.rbTargetMultipleFiles.Checked)
                     throw;
@@ -686,7 +676,7 @@ namespace WindowsGlitchHarvester
 
         public string getCompositeFilename(string prefix)
         {
-            return $"{prefix.Trim().ToUpper()}^{filename.ToBase64()}^{shortFilename}";
+            return $"{prefix.Trim().ToUpper()}^{Filename.ToBase64()}^{ShortFilename}";
         }
 
         public string getCorruptFilename(bool overrideWriteCopyMode = false)
@@ -694,7 +684,7 @@ namespace WindowsGlitchHarvester
             if(overrideWriteCopyMode || WGH_Core.writeCopyMode)
                 return WGH_Core.currentDir + "\\TEMP\\" + getCompositeFilename("CORRUPT");
             else
-                return filename;
+                return Filename;
         }
         public string getBackupFilename()
         {
@@ -742,15 +732,15 @@ namespace WindowsGlitchHarvester
             tryApplyWorkingFileAgain:
                 try
                 {
-                    if (File.Exists(filename))
-                        File.Delete(filename);
+                    if (File.Exists(Filename))
+                        File.Delete(Filename);
 
                     if (File.Exists(getCorruptFilename()))
-                        File.Move(getCorruptFilename(), filename);
+                        File.Move(getCorruptFilename(), Filename);
                 }
                 catch
                 {
-                    MessageBox.Show($"Could not get access to {filename} because some other program is probably using it. \n\nClose the file then press OK to try again", "WARNING");
+                    MessageBox.Show($"Could not get access to {Filename} because some other program is probably using it. \n\nClose the file then press OK to try again", "WARNING");
                     goto tryApplyWorkingFileAgain;
                 }
 
@@ -760,7 +750,7 @@ namespace WindowsGlitchHarvester
         public override void SetBackup()
         {
             if (!File.Exists(getBackupFilename()))
-                File.Copy(filename, getBackupFilename(), true);
+                File.Copy(Filename, getBackupFilename(), true);
         }
 
         public override void ResetBackup(bool askConfirmation = true)
@@ -780,15 +770,15 @@ namespace WindowsGlitchHarvester
 
             if (File.Exists(getBackupFilename()))
             {
-                File.Delete(filename);
-                File.Copy(getBackupFilename(), filename, true);
+                File.Delete(Filename);
+                File.Copy(getBackupFilename(), Filename, true);
 
                 if (announce)
-                    MessageBox.Show("Backup of " + shortFilename + " was restored");
+                    MessageBox.Show("Backup of " + ShortFilename + " was restored");
             }
             else
             {
-                MessageBox.Show("Couldn't find backup of " + shortFilename);
+                MessageBox.Show("Couldn't find backup of " + ShortFilename);
             }
         }
 
@@ -804,7 +794,7 @@ namespace WindowsGlitchHarvester
             if (lastMemorySize != null)
                 return (long)lastMemorySize;
 
-            lastMemorySize = new FileInfo(filename).Length;
+            lastMemorySize = new FileInfo(Filename).Length;
             return (long)lastMemorySize;
             
         }
@@ -882,12 +872,10 @@ namespace WindowsGlitchHarvester
     [Serializable()]
     public class MultipleFileInterface : MemoryInterface
     {
-        public string filename;
-        public string shortFilename;
-        //bool writeDirectly = false;
-        //Stream stream = null;
+        public string Filename;
+        public string ShortFilename;
 
-        public List<FileInterface> fileInterfaces = new List<FileInterface>();
+        public List<FileInterface> FileInterfaces = new List<FileInterface>();
 
         public MultipleFileInterface(string _targetId)
         {
@@ -896,10 +884,10 @@ namespace WindowsGlitchHarvester
                 string[] targetId = _targetId.Split('|');
 
                 for (int i = 0; i < targetId.Length; i++)
-                    fileInterfaces.Add(new FileInterface("File|" + targetId[i]));
+                    FileInterfaces.Add(new FileInterface("File|" + targetId[i]));
 
-                filename = "MultipleFiles";
-                shortFilename = "MultipleFiles";
+                Filename = "MultipleFiles";
+                ShortFilename = "MultipleFiles";
 
                 //SetBackup();
 
@@ -914,44 +902,44 @@ namespace WindowsGlitchHarvester
 
         public string getCompositeFilename(string prefix)
         {
-            return string.Join("|", fileInterfaces.Select(it => it.getCompositeFilename(prefix)));
+            return string.Join("|", FileInterfaces.Select(it => it.getCompositeFilename(prefix)));
 
         }
 
         public string getCorruptFilename(bool overrideWriteCopyMode = false)
         {
-            return string.Join("|", fileInterfaces.Select(it => it.getCorruptFilename(overrideWriteCopyMode)));
+            return string.Join("|", FileInterfaces.Select(it => it.getCorruptFilename(overrideWriteCopyMode)));
 
         }
 
         public string getBackupFilename()
         {
-            return string.Join("|", fileInterfaces.Select(it => it.getBackupFilename()));
+            return string.Join("|", FileInterfaces.Select(it => it.getBackupFilename()));
         }
 
         public override void ResetWorkingFile()
         {
-            foreach (var fi in fileInterfaces)
+            foreach (var fi in FileInterfaces)
                 fi.ResetWorkingFile();
 
         }
 
         public string SetWorkingFile()
         {
-            return string.Join("|", fileInterfaces.Select(it => it.SetWorkingFile()));
+            return string.Join("|", FileInterfaces.Select(it => it.SetWorkingFile()));
 
         }
 
         public override void ApplyWorkingFile()
         {
-            foreach (var fi in fileInterfaces)
+            foreach (var fi in FileInterfaces)
                 fi.ApplyWorkingFile();
 
         }
 
         public override void SetBackup()
         {
-            foreach (var fi in fileInterfaces)
+            foreach (var fi in FileInterfaces)
                 fi.SetBackup();
 
         }
@@ -961,7 +949,7 @@ namespace WindowsGlitchHarvester
             if (askConfirmation && MessageBox.Show("Are you sure you want to reset the backup using the target files?", "WARNING", MessageBoxButtons.YesNo) == DialogResult.No)
                 return;
 
-            foreach (var fi in fileInterfaces)
+            foreach (var fi in FileInterfaces)
                 fi.ResetBackup(false);
 
         }
@@ -969,11 +957,11 @@ namespace WindowsGlitchHarvester
         public override void RestoreBackup(bool announce = true)
         {
 
-            foreach (var fi in fileInterfaces)
+            foreach (var fi in FileInterfaces)
                 fi.RestoreBackup(false);
 
             if(announce)
-                MessageBox.Show("Backups of " + string.Join(",",fileInterfaces.Select(it => (it as FileInterface).shortFilename)) + " were restored");
+                MessageBox.Show("Backups of " + string.Join(",",FileInterfaces.Select(it => (it as FileInterface).ShortFilename)) + " were restored");
 
         }
 
@@ -982,7 +970,7 @@ namespace WindowsGlitchHarvester
 
             List<byte> allBytes = new List<byte>();
 
-            foreach(var fi in fileInterfaces)
+            foreach(var fi in FileInterfaces)
                 allBytes.AddRange(fi.getMemoryDump());
 
             lastMemoryDump = allBytes.ToArray();
@@ -995,7 +983,7 @@ namespace WindowsGlitchHarvester
         {
             long size = 0;
 
-            foreach (var fi in fileInterfaces)
+            foreach (var fi in FileInterfaces)
                 size += fi.getMemorySize();
 
             lastMemorySize = size;
@@ -1010,7 +998,7 @@ namespace WindowsGlitchHarvester
             long addressPad = 0;
             FileInterface targetInterface = null;
 
-            foreach(var fi in fileInterfaces)
+            foreach(var fi in FileInterfaces)
             {
                 if (addressPad + fi.getMemorySize() > address)
                 {
@@ -1037,7 +1025,7 @@ namespace WindowsGlitchHarvester
             long addressPad = 0;
             FileInterface targetInterface = null;
 
-            foreach (var fi in fileInterfaces)
+            foreach (var fi in FileInterfaces)
             {
                 if (addressPad + fi.getMemorySize() > address)
                 {
@@ -1065,7 +1053,7 @@ namespace WindowsGlitchHarvester
             long addressPad = 0;
             FileInterface targetInterface = null;
 
-            foreach (var fi in fileInterfaces)
+            foreach (var fi in FileInterfaces)
             {
                 if (addressPad + fi.getMemorySize() > address)
                 {
@@ -1095,7 +1083,7 @@ namespace WindowsGlitchHarvester
             long addressPad = 0;
             FileInterface targetInterface = null;
 
-            foreach (var fi in fileInterfaces)
+            foreach (var fi in FileInterfaces)
             {
                 if (addressPad + fi.getMemorySize() > address)
                 {
@@ -1120,17 +1108,17 @@ namespace WindowsGlitchHarvester
     [Serializable()]
     public class ProcessInterface : MemoryInterface
     {
-        public string processName;
-		ProcessHijacker hijack = null;
-		public bool Hooked;
+        public string ProcessName;
+		ProcessHijacker Hijack = null;
 
-		public bool useCaching = false;
+		public bool Hooked;
+		public bool UseCaching = false;
 
         public ProcessInterface(string _processName)
         {
-			hijack = new ProcessHijacker(_processName);
-			Hooked = hijack.Hooked;
-			processName = _processName;
+			Hijack = new ProcessHijacker(_processName);
+			Hooked = Hijack.Hooked;
+			ProcessName = _processName;
 
             //getMemoryDump();
             getMemorySize();
@@ -1138,18 +1126,18 @@ namespace WindowsGlitchHarvester
 
         public override byte[] getMemoryDump()
         {
-			lastMemoryDump = hijack.ReadAllData();
+			lastMemoryDump = Hijack.ReadAllData();
 			return lastMemoryDump;
         }
         public override byte[] lastMemoryDump { get; set; } = null;
 
         public override long getMemorySize()
         {
-            if (hijack == null)
+            if (Hijack == null)
                 return 0;
 
-			hijack.refreshProcessSize();
-			lastMemorySize = hijack.processSize;
+			Hijack.refreshProcessSize();
+			lastMemorySize = Hijack.processSize;
 
             return (long)lastMemorySize;
 
@@ -1172,10 +1160,10 @@ namespace WindowsGlitchHarvester
            // if (lastMemoryDump == null)
            //     getMemoryDump();
 
-            if (hijack == null)
+            if (Hijack == null)
                 return;
 
-			hijack.WriteBytes(data, address);
+			Hijack.WriteBytes(data, address);
 
             //for (int i = 0; i < data.Length; i++)
            // {
@@ -1200,18 +1188,18 @@ namespace WindowsGlitchHarvester
             //if (hijack == null)
                 //getMemoryDump();
 
-            if (hijack == null)
+            if (Hijack == null)
                 return;
 
-			hijack.WriteByte(data, address);
+			Hijack.WriteByte(data, address);
         }
 
         public override byte? PeekByte(long address)
         {
-            if (hijack == null)
+            if (Hijack == null)
                 return null;
 
-			if (useCaching)
+			if (UseCaching)
 			{
 				if (lastMemoryDump == null)
 					getMemoryDump();
@@ -1222,15 +1210,15 @@ namespace WindowsGlitchHarvester
 				return lastMemoryDump[address];
 			}
 			else
-				return hijack.ReadByte(address);
+				return Hijack.ReadByte(address);
 		}
 
         public override byte[] PeekBytes(long address, int range)
         {
-			if (hijack == null)
+			if (Hijack == null)
 				return null;
 
-			if(useCaching)
+			if(UseCaching)
 			{
 				if (lastMemoryDump == null)
 					getMemoryDump();
@@ -1241,7 +1229,7 @@ namespace WindowsGlitchHarvester
 				return lastMemoryDump.SubArray(address, range);
 			}
 			else
-				return hijack.ReadBytes(address, range);
+				return Hijack.ReadBytes(address, range);
 		}
 
         public override void SetBackup()

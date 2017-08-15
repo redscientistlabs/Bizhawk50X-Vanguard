@@ -1,34 +1,34 @@
-﻿namespace RTC
+﻿namespace WindowsGlitchHarvester
 {
-	partial class RTC_BlastEditorForm
-	{
-		/// <summary>
-		/// Required designer variable.
-		/// </summary>
-		private System.ComponentModel.IContainer components = null;
+    partial class WGH_BlastEditorForm
+    {
+        /// <summary>
+        /// Required designer variable.
+        /// </summary>
+        private System.ComponentModel.IContainer components = null;
 
-		/// <summary>
-		/// Clean up any resources being used.
-		/// </summary>
-		/// <param name="disposing">true if managed resources should be disposed; otherwise, false.</param>
-		protected override void Dispose(bool disposing)
-		{
-			if (disposing && (components != null))
-			{
-				components.Dispose();
-			}
-			base.Dispose(disposing);
-		}
+        /// <summary>
+        /// Clean up any resources being used.
+        /// </summary>
+        /// <param name="disposing">true if managed resources should be disposed; otherwise, false.</param>
+        protected override void Dispose(bool disposing)
+        {
+            if (disposing && (components != null))
+            {
+                components.Dispose();
+            }
+            base.Dispose(disposing);
+        }
 
-		#region Windows Form Designer generated code
+        #region Windows Form Designer generated code
 
-		/// <summary>
-		/// Required method for Designer support - do not modify
-		/// the contents of this method with the code editor.
-		/// </summary>
-		private void InitializeComponent()
-		{
-            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(RTC_BlastEditorForm));
+        /// <summary>
+        /// Required method for Designer support - do not modify
+        /// the contents of this method with the code editor.
+        /// </summary>
+        private void InitializeComponent()
+        {
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(WGH_BlastEditorForm));
             this.lbBlastLayer = new System.Windows.Forms.ListBox();
             this.btnCorrupt = new System.Windows.Forms.Button();
             this.btnLoadCorrupt = new System.Windows.Forms.Button();
@@ -55,8 +55,8 @@
             // 
             // lbBlastLayer
             // 
-            this.lbBlastLayer.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
+            this.lbBlastLayer.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)
+            | System.Windows.Forms.AnchorStyles.Left)
             | System.Windows.Forms.AnchorStyles.Right)));
             this.lbBlastLayer.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
             this.lbBlastLayer.BorderStyle = System.Windows.Forms.BorderStyle.None;
@@ -390,25 +390,25 @@
             ((System.ComponentModel.ISupportInitialize)(this.nmAddressEdit)).EndInit();
             this.ResumeLayout(false);
 
-		}
+        }
 
-		#endregion
+        #endregion
 
-		public System.Windows.Forms.ListBox lbBlastLayer;
-		private System.Windows.Forms.Button btnCorrupt;
-		private System.Windows.Forms.Button btnLoadCorrupt;
-		private System.Windows.Forms.Button btnSendToStash;
-		private System.Windows.Forms.Button btnDisable50;
-		private System.Windows.Forms.Button btnRemoveDisabled;
-		private System.Windows.Forms.Button btnInvertDisabled;
-		private System.Windows.Forms.GroupBox gbValueEdit;
-		private System.Windows.Forms.Button btnValueUpdate;
-		public System.Windows.Forms.NumericUpDown nmValueEdit;
-		private System.Windows.Forms.Label lbValueEdit;
-		private System.Windows.Forms.GroupBox gbAddressEdit;
-		private System.Windows.Forms.Label lbAddressEdit;
-		public System.Windows.Forms.NumericUpDown nmAddressEdit;
-		private System.Windows.Forms.Button btnAdressUpdate;
+        public System.Windows.Forms.ListBox lbBlastLayer;
+        private System.Windows.Forms.Button btnCorrupt;
+        private System.Windows.Forms.Button btnLoadCorrupt;
+        private System.Windows.Forms.Button btnSendToStash;
+        private System.Windows.Forms.Button btnDisable50;
+        private System.Windows.Forms.Button btnRemoveDisabled;
+        private System.Windows.Forms.Button btnInvertDisabled;
+        private System.Windows.Forms.GroupBox gbValueEdit;
+        private System.Windows.Forms.Button btnValueUpdate;
+        public System.Windows.Forms.NumericUpDown nmValueEdit;
+        private System.Windows.Forms.Label lbValueEdit;
+        private System.Windows.Forms.GroupBox gbAddressEdit;
+        private System.Windows.Forms.Label lbAddressEdit;
+        public System.Windows.Forms.NumericUpDown nmAddressEdit;
+        private System.Windows.Forms.Button btnAdressUpdate;
         private System.Windows.Forms.Button btnDisableEverything;
         private System.Windows.Forms.Button btnEnableEverything;
         private System.Windows.Forms.Button btnDuplicateSelected;

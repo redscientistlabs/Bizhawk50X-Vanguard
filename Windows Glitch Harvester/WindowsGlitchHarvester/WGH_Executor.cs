@@ -62,7 +62,7 @@ namespace WindowsGlitchHarvester
                     var fi = (FileInterface)WGH_Core.currentMemoryInterface;
                     //Process.Start(fi.filename);
 
-                    string fullPath = fi.filename;
+                    string fullPath = fi.Filename;
                     ProcessStartInfo psi = new ProcessStartInfo();
                     psi.FileName = Path.GetFileName(fullPath);
                     psi.WorkingDirectory = Path.GetDirectoryName(fullPath);
@@ -84,7 +84,7 @@ namespace WindowsGlitchHarvester
                     ProcessStartInfo psi = new ProcessStartInfo();
                     psi.FileName = Path.GetFileName(fullPath);
                     psi.WorkingDirectory = Path.GetDirectoryName(fullPath);
-                    psi.Arguments = "\"" + fi.filename + "\"";
+                    psi.Arguments = "\"" + fi.Filename + "\"";
                     Process.Start(psi);
 
                 }
