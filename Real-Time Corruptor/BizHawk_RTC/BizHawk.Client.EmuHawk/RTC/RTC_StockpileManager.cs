@@ -110,7 +110,7 @@ namespace RTC
 			{
 				RTC_Core.LoadRom(psk.RomFilename, true);
 				RTC_Core.coreForm.RefreshDomains();
-				RTC_Core.coreForm.setMemoryZonesAllButSelectedDomains(RTC_MemoryDomains.GetBlacklistedDomains());
+				RTC_Core.coreForm.setMemoryDomainsAllButSelectedDomains(RTC_MemoryDomains.GetBlacklistedDomains());
 			}
 
 

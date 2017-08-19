@@ -242,13 +242,14 @@ namespace RTC
 		public static BlastUnit GenerateUnit(string _domain, long _address)
         {
 
-			// Randomly selects a memory operation according to the selected algorithm
+            // Randomly selects a memory operation according to the selected algorithm
 
-			long safeAddress = _address - (_address % 8);
+            //long safeAddress = _address - (_address % 8); //64-bit trunk
+            long safeAddress = _address - (_address % 4); //32-bit trunk
 
-			MemoryDomainProxy md = RTC_MemoryDomains.getProxyFromString(_domain);
+            MemoryDomainProxy mdp = RTC_MemoryDomains.getProxy(_domain, safeAddress);
 
-			if (md == null)
+			if (mdp == null)
 				return null;
 
 
@@ -257,7 +258,7 @@ namespace RTC
 
 				BlastVector bv = null;
 
-				lastValues = read32bits(md, safeAddress);
+				lastValues = read32bits(mdp, safeAddress);
 				lastDomain = _domain;
 
 
@@ -290,12 +291,12 @@ namespace RTC
 			return BitConverter.ToString(bytes).Replace("-", "").ToLower();
 		}
 
-		public static byte[] read32bits(MemoryDomainProxy md, long address)
+		public static byte[] read32bits(MemoryDomainProxy mdp, long address)
 		{
-			return new byte[] { md.PeekByte(address),
-								md.PeekByte(address + 1),
-								md.PeekByte(address + 2),
-								md.PeekByte(address + 3)
+			return new byte[] { mdp.PeekByte(address),
+								mdp.PeekByte(address + 1),
+								mdp.PeekByte(address + 2),
+								mdp.PeekByte(address + 3)
 			};
 		}
 

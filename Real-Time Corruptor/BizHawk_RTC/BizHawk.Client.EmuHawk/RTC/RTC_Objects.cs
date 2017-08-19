@@ -837,13 +837,16 @@ namespace RTC
         public abstract BlastUnit GetBackup();
 		public abstract void Reroll();
 		public abstract bool IsEnabled { get; set; }
-	}
+
+        public abstract string Domain { get; set; }
+        public abstract long Address { get; set; }
+    }
 
     [Serializable()]
     public class BlastByte : BlastUnit
     {
-        public string Domain;
-        public long Address;
+        public override string Domain { get; set; }
+        public override long Address { get; set; }
         public BlastByteType Type;
         public int Value;
         public override bool IsEnabled { get; set; }
@@ -869,7 +872,7 @@ namespace RTC
 
             try
             {
-                MemoryDomainProxy mdp = RTC_MemoryDomains.getProxyFromString(Domain);
+                MemoryDomainProxy mdp = RTC_MemoryDomains.getProxy(Domain, Address);
 
 				if (mdp == null)
 					return true;
@@ -911,12 +914,12 @@ namespace RTC
 
             try
             {
-                MemoryDomainProxy md = RTC_MemoryDomains.getProxyFromString(Domain);
+                MemoryDomainProxy mdp = RTC_MemoryDomains.getProxy(Domain, Address);
 
-                if (md == null || Type == BlastByteType.NONE)
+                if (mdp == null || Type == BlastByteType.NONE)
                     return null;
 
-                return new BlastByte(Domain, Address, BlastByteType.SET, md.PeekByte(Address), true);
+                return new BlastByte(Domain, Address, BlastByteType.SET, mdp.PeekByte(Address), true);
 
             }
             catch (Exception ex)
@@ -965,9 +968,9 @@ namespace RTC
 	[Serializable()]
 	public class BlastVector : BlastUnit
 	{
-		public string Domain;
-		public long Address;
-		public BlastByteType Type;
+		public override string Domain { get; set; }
+        public override long Address { get; set; }
+        public BlastByteType Type;
 
 		public byte[] Values;
 
@@ -993,15 +996,15 @@ namespace RTC
 
 			try
 			{
-				MemoryDomainProxy md = RTC_MemoryDomains.getProxyFromString(Domain);
+				MemoryDomainProxy mdp = RTC_MemoryDomains.getProxy(Domain, Address);
 
-				if (md == null)
+				if (mdp == null)
 					return true;
 	
-				md.PokeByte(Address, Values[0]);
-				md.PokeByte(Address + 1, Values[1]);
-				md.PokeByte(Address + 2, Values[2]);
-				md.PokeByte(Address + 3, Values[3]);
+				mdp.PokeByte(Address, Values[0]);
+				mdp.PokeByte(Address + 1, Values[1]);
+				mdp.PokeByte(Address + 2, Values[2]);
+				mdp.PokeByte(Address + 3, Values[3]);
 
 			}
 			catch (Exception ex)
@@ -1022,12 +1025,12 @@ namespace RTC
 
 			try
 			{
-				MemoryDomainProxy md = RTC_MemoryDomains.getProxyFromString(Domain);
+				MemoryDomainProxy mdp = RTC_MemoryDomains.getProxy(Domain, Address);
 
-				if (md == null)
+				if (mdp == null)
 					return null;
 
-				return new BlastVector(Domain, Address, RTC_VectorEngine.read32bits(md, Address), true);
+				return new BlastVector(Domain, Address, RTC_VectorEngine.read32bits(mdp, Address), true);
 
 			}
 			catch (Exception ex)
@@ -1059,9 +1062,9 @@ namespace RTC
 	[Serializable()]
 	public class BlastPipe : BlastUnit
 	{
-		public string Domain;
-		public long Address;
-		public string PipeDomain;
+		public override string Domain { get; set; }
+        public override long Address { get; set; }
+        public string PipeDomain;
 		public long PipeAddress;
         public int TiltValue;
 
@@ -1086,13 +1089,13 @@ namespace RTC
 		{
 			try
 			{
-				MemoryDomainProxy md = RTC_MemoryDomains.getProxyFromString(Domain);
-				MemoryDomainProxy md2 = RTC_MemoryDomains.getProxyFromString(PipeDomain);
+				MemoryDomainProxy mdp = RTC_MemoryDomains.getProxy(Domain, Address);
+				MemoryDomainProxy mdp2 = RTC_MemoryDomains.getProxy(PipeDomain, PipeAddress);
 
-				if (md == null || md2 == null)
-					throw new Exception($"Memory Domain error, MD1 -> {md.ToString()}, md2 -> {md2.ToString()}");
+				if (mdp == null || mdp2 == null)
+					throw new Exception($"Memory Domain error, MD1 -> {mdp.ToString()}, md2 -> {mdp2.ToString()}");
 
-                int currentValue = (int)md.PeekByte(Address);
+                int currentValue = (int)mdp.PeekByte(Address);
 
                 int newValue = currentValue + TiltValue;
 
@@ -1101,7 +1104,7 @@ namespace RTC
                 else if (newValue > 255)
                     newValue = 255;
 
-                md2.PokeByte(PipeAddress,  (byte)newValue);
+                mdp2.PokeByte(PipeAddress,  (byte)newValue);
 
 			}
 			catch (Exception ex)
@@ -1130,12 +1133,12 @@ namespace RTC
 
 			try
 			{
-				MemoryDomainProxy md = RTC_MemoryDomains.getProxyFromString(PipeDomain);
+				MemoryDomainProxy mdp = RTC_MemoryDomains.getProxy(PipeDomain, PipeAddress);
 
-				if (md == null)
+				if (mdp == null)
 					return null;
 
-				return new BlastByte(PipeDomain, PipeAddress, BlastByteType.SET, md.PeekByte(PipeAddress), true);
+				return new BlastByte(PipeDomain, PipeAddress, BlastByteType.SET, mdp.PeekByte(PipeAddress), true);
 
 			}
 			catch (Exception ex)
@@ -1172,8 +1175,8 @@ namespace RTC
 	[Serializable()]
     public class BlastCheat : BlastUnit
     {
-        public string Domain;
-        public long Address;
+        public override string Domain { get; set; }
+        public override long Address { get; set; }
         public BizHawk.Client.Common.DisplayType DisplayType;
         public bool BigEndian;
         public int Value;
@@ -1210,17 +1213,17 @@ namespace RTC
                 if (!IsEnabled)
                     return true;
 
-                MemoryDomainProxy md = RTC_MemoryDomains.getProxyFromString(Domain);
+                MemoryDomainProxy mdp = RTC_MemoryDomains.getProxy(Domain, Address);
                 var settings = new RamSearchEngine.Settings(RTC_MemoryDomains.MDRI.MemoryDomains);
 
-                if (md == null)
+                if (mdp == null)
 					return true;
 
                 string cheatName = "RTC Cheat|" + Domain + "|" + Address.ToString() + "|" + DisplayType.ToString() + "|" + BigEndian.ToString() + "|" + Value.ToString() + "|" + IsEnabled.ToString() + "|" + IsFreeze.ToString();
 
                 if (!IsFreeze)
                 {
-                    Watch somewatch = Watch.GenerateWatch(md.md, Address, settings.Size, DisplayType, BigEndian, cheatName, Value, 0,0);
+                    Watch somewatch = Watch.GenerateWatch(mdp.md, Address, settings.Size, DisplayType, BigEndian, cheatName, Value, 0,0);
                     Cheat ch = new Cheat(somewatch, Value, null, true);
                     Global.CheatList.Add(ch);
                 }

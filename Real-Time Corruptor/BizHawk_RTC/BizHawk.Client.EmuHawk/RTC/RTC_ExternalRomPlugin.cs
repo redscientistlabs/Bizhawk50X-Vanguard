@@ -98,7 +98,7 @@ namespace RTC
                 return null;
             }
 
-            long maxaddress = RTC_MemoryDomains.getProxyFromString(_domain).Size;
+            long maxaddress = RTC_MemoryDomains.getInterface(_domain).Size;
 
             for (int i = 0; i < Original.Length; i++)
             {

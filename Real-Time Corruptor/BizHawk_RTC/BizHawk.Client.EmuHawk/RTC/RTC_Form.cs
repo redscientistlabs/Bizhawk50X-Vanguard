@@ -127,36 +127,36 @@ namespace RTC
 				pnCrashProtection.Visible = true;
 		}
 
-		public void setMemoryZonesSelectedDomains(string[] _domains)
+		public void setMemoryDomainsSelectedDomains(string[] _domains)
 		{
-			lbMemoryZones_DontExecute_SelectedIndexChanged = true;
+			lbMemoryDomains_DontExecute_SelectedIndexChanged = true;
 
-			for (int i = 0; i < lbMemoryZones.Items.Count; i++)
-				if (_domains.Contains(lbMemoryZones.Items[i].ToString()))
-					lbMemoryZones.SetSelected(i, true);
+			for (int i = 0; i < lbMemoryDomains.Items.Count; i++)
+				if (_domains.Contains(lbMemoryDomains.Items[i].ToString()))
+					lbMemoryDomains.SetSelected(i, true);
 				else
-					lbMemoryZones.SetSelected(i, false);
+					lbMemoryDomains.SetSelected(i, false);
 
-			lbMemoryZones_DontExecute_SelectedIndexChanged = false;
-			lbMemoryZones_SelectedIndexChanged(null, null);
+			lbMemoryDomains_DontExecute_SelectedIndexChanged = false;
+			lbMemoryDomains_SelectedIndexChanged(null, null);
 		}
 
-		public void setMemoryZonesAllButSelectedDomains(string[] _blacklistedDomains)
+		public void setMemoryDomainsAllButSelectedDomains(string[] _blacklistedDomains)
 		{
-			lbMemoryZones_DontExecute_SelectedIndexChanged = true;
+			lbMemoryDomains_DontExecute_SelectedIndexChanged = true;
 
 			for (
-				int i = 0; i < lbMemoryZones.Items.Count; i++)
-				if (_blacklistedDomains.Contains(lbMemoryZones.Items[i].ToString()))
-					lbMemoryZones.SetSelected(i, false);
+				int i = 0; i < lbMemoryDomains.Items.Count; i++)
+				if (_blacklistedDomains.Contains(lbMemoryDomains.Items[i].ToString()))
+					lbMemoryDomains.SetSelected(i, false);
 				else
-					lbMemoryZones.SetSelected(i, true);
+					lbMemoryDomains.SetSelected(i, true);
 
-			lbMemoryZones_DontExecute_SelectedIndexChanged = false;
-			lbMemoryZones_SelectedIndexChanged(null, null);
+			lbMemoryDomains_DontExecute_SelectedIndexChanged = false;
+			lbMemoryDomains_SelectedIndexChanged(null, null);
 		}
 
-		private void btnRefreshZones_Click(object sender, EventArgs e)
+		private void btnRefreshDomains_Click(object sender, EventArgs e)
         {
             RefreshDomains();
 
@@ -343,13 +343,13 @@ namespace RTC
 				nmMaxFreezes.Value = nmMaxCheats.Value;
 		}
 
-		public bool lbMemoryZones_DontExecute_SelectedIndexChanged = false;
-        private void lbMemoryZones_SelectedIndexChanged(object sender, EventArgs e)
+		public bool lbMemoryDomains_DontExecute_SelectedIndexChanged = false;
+        private void lbMemoryDomains_SelectedIndexChanged(object sender, EventArgs e)
         {
-			if (lbMemoryZones_DontExecute_SelectedIndexChanged)
+			if (lbMemoryDomains_DontExecute_SelectedIndexChanged)
 				return;
 
-			string[] selectedDomains = lbMemoryZones.SelectedItems.Cast<string>().ToArray();
+			string[] selectedDomains = lbMemoryDomains.SelectedItems.Cast<string>().ToArray();
 
 			RTC_MemoryDomains.UpdateSelectedDomains(selectedDomains, true);
 
@@ -360,21 +360,21 @@ namespace RTC
         {
             RefreshDomains();
 
-			lbMemoryZones_DontExecute_SelectedIndexChanged = true;
+			lbMemoryDomains_DontExecute_SelectedIndexChanged = true;
 
-			for (int i = 0; i < lbMemoryZones.Items.Count; i++)
-                lbMemoryZones.SetSelected(i, true);
+			for (int i = 0; i < lbMemoryDomains.Items.Count; i++)
+                lbMemoryDomains.SetSelected(i, true);
 
-			lbMemoryZones_DontExecute_SelectedIndexChanged = false;
+			lbMemoryDomains_DontExecute_SelectedIndexChanged = false;
 
-			lbMemoryZones_SelectedIndexChanged(null, null);
+			lbMemoryDomains_SelectedIndexChanged(null, null);
 
 		}
 
-        private void btnAutoSelectZones_Click(object sender, EventArgs e)
+        private void btnAutoSelectDomains_Click(object sender, EventArgs e)
         {
 			RefreshDomains();
-			setMemoryZonesAllButSelectedDomains(RTC_MemoryDomains.GetBlacklistedDomains());
+			setMemoryDomainsAllButSelectedDomains(RTC_MemoryDomains.GetBlacklistedDomains());
 
         }
 
@@ -491,8 +491,8 @@ namespace RTC
 		{
 			RTC_MemoryDomains.RefreshDomains();
 
-			lbMemoryZones.Items.Clear();
-			lbMemoryZones.Items.AddRange(RTC_MemoryDomains.MemoryDomainProxies.Keys.ToArray());
+			lbMemoryDomains.Items.Clear();
+			lbMemoryDomains.Items.AddRange(RTC_MemoryDomains.MemoryInterfaces.Keys.ToArray());
 		}
 
 		public void RefreshDomainsAndKeepSelected(string[] overrideDomains = null)
@@ -502,11 +502,11 @@ namespace RTC
             if (overrideDomains != null)
                 copy = overrideDomains;
 
-            RefreshDomains(); //refresh and reload zones
+            RefreshDomains(); //refresh and reload domains
 
 			RTC_MemoryDomains.UpdateSelectedDomains(copy);
 
-			RTC_Core.coreForm.setMemoryZonesSelectedDomains(copy);
+			RTC_Core.coreForm.setMemoryDomainsSelectedDomains(copy);
 
 
 		}
@@ -582,7 +582,7 @@ namespace RTC
                         MessageBox.Show("WARNING: No Easy-Mode template was made for this system. Please configure it manually and use the current settings.");
                         break;
 
-                    //TODO: Add more zones like gamegear, atari, turbo graphx
+                    //TODO: Add more domains for systems like gamegear, atari, turbo graphx
                 }
 
 

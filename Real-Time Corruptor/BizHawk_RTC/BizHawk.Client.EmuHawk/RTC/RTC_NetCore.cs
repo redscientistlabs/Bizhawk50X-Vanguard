@@ -910,11 +910,11 @@ namespace RTC
 
 					case CommandType.REMOTE_DOMAIN_PEEKBYTE:
 						cmdBack = new RTC_Command(CommandType.RETURNVALUE);
-						cmdBack.objectValue = RTC_MemoryDomains.getProxyFromString((string)(cmd.objectValue as object[])[0]).PeekByte((long)(cmd.objectValue as object[])[1]);
+						cmdBack.objectValue = RTC_MemoryDomains.getInterface((string)(cmd.objectValue as object[])[0]).PeekByte((long)(cmd.objectValue as object[])[1]);
 						break;
 
 					case CommandType.REMOTE_DOMAIN_POKEBYTE:
-						RTC_MemoryDomains.getProxyFromString((string)(cmd.objectValue as object[])[0]).PokeByte((long)(cmd.objectValue as object[])[1], (byte)(cmd.objectValue as object[])[2]);
+						RTC_MemoryDomains.getInterface((string)(cmd.objectValue as object[])[0]).PokeByte((long)(cmd.objectValue as object[])[1], (byte)(cmd.objectValue as object[])[2]);
 						break;
 
 					case CommandType.REMOTE_DOMAIN_GETDOMAINS:
@@ -1085,7 +1085,7 @@ namespace RTC
 						RTC_Core.AutoCorrupt = false;
 						//RTC_StockpileManager.isCorruptionApplied = false;
 						RTC_Core.coreForm.RefreshDomains();
-						RTC_Core.coreForm.setMemoryZonesAllButSelectedDomains(RTC_MemoryDomains.GetBlacklistedDomains());
+						RTC_Core.coreForm.setMemoryDomainsAllButSelectedDomains(RTC_MemoryDomains.GetBlacklistedDomains());
 						break;
 					case CommandType.REMOTE_EVENT_LOADGAMEDONE_SAMEGAME:
 						//RTC_StockpileManager.isCorruptionApplied = false;

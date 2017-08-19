@@ -82,9 +82,9 @@
             this.label10 = new System.Windows.Forms.Label();
             this.btnGenerateVirtualFromStashkey = new System.Windows.Forms.Button();
             this.btnSelectAll = new System.Windows.Forms.Button();
-            this.btnRefreshZones = new System.Windows.Forms.Button();
-            this.lbMemoryZones = new System.Windows.Forms.ListBox();
-            this.btnAutoSelectZones = new System.Windows.Forms.Button();
+            this.btnRefreshDomains = new System.Windows.Forms.Button();
+            this.lbMemoryDomains = new System.Windows.Forms.ListBox();
+            this.btnAutoSelectDomains = new System.Windows.Forms.Button();
             this.gbFreezeEngine = new System.Windows.Forms.GroupBox();
             this.cbClearFreezesOnRewind = new System.Windows.Forms.CheckBox();
             this.btnClearAllFreezes = new System.Windows.Forms.Button();
@@ -115,7 +115,7 @@
             this.lbFreezeEngineNbDumps = new System.Windows.Forms.Label();
             this.btnActiveTableQuickSave = new System.Windows.Forms.Button();
             this.lbFreezeEngineActiveStatus = new System.Windows.Forms.Label();
-            this.lbFreezeEngineZoneAddressSize = new System.Windows.Forms.Label();
+            this.lbFreezeEngineDomainAddressSize = new System.Windows.Forms.Label();
             this.btnActiveTableLoad = new System.Windows.Forms.Button();
             this.btnActiveTableSaveAs = new System.Windows.Forms.Button();
             this.btnActiveTableGenerate = new System.Windows.Forms.Button();
@@ -1031,55 +1031,55 @@
             this.btnSelectAll.UseVisualStyleBackColor = false;
             this.btnSelectAll.Click += new System.EventHandler(this.btnSelectAll_Click);
             // 
-            // btnRefreshZones
+            // btnRefreshDomains
             // 
-            this.btnRefreshZones.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(224)))), ((int)(((byte)(224)))), ((int)(((byte)(224)))));
-            this.btnRefreshZones.FlatAppearance.BorderSize = 0;
-            this.btnRefreshZones.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btnRefreshZones.Font = new System.Drawing.Font("Segoe UI Semibold", 9.75F, System.Drawing.FontStyle.Bold);
-            this.btnRefreshZones.ForeColor = System.Drawing.Color.Black;
-            this.btnRefreshZones.Location = new System.Drawing.Point(12, 79);
-            this.btnRefreshZones.Name = "btnRefreshZones";
-            this.btnRefreshZones.Size = new System.Drawing.Size(131, 28);
-            this.btnRefreshZones.TabIndex = 12;
-            this.btnRefreshZones.TabStop = false;
-            this.btnRefreshZones.Tag = "color:light";
-            this.btnRefreshZones.Text = "Unselect all";
-            this.btnRefreshZones.UseVisualStyleBackColor = false;
-            this.btnRefreshZones.Click += new System.EventHandler(this.btnRefreshZones_Click);
+            this.btnRefreshDomains.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(224)))), ((int)(((byte)(224)))), ((int)(((byte)(224)))));
+            this.btnRefreshDomains.FlatAppearance.BorderSize = 0;
+            this.btnRefreshDomains.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnRefreshDomains.Font = new System.Drawing.Font("Segoe UI Semibold", 9.75F, System.Drawing.FontStyle.Bold);
+            this.btnRefreshDomains.ForeColor = System.Drawing.Color.Black;
+            this.btnRefreshDomains.Location = new System.Drawing.Point(12, 79);
+            this.btnRefreshDomains.Name = "btnRefreshDomains";
+            this.btnRefreshDomains.Size = new System.Drawing.Size(131, 28);
+            this.btnRefreshDomains.TabIndex = 12;
+            this.btnRefreshDomains.TabStop = false;
+            this.btnRefreshDomains.Tag = "color:light";
+            this.btnRefreshDomains.Text = "Unselect all";
+            this.btnRefreshDomains.UseVisualStyleBackColor = false;
+            this.btnRefreshDomains.Click += new System.EventHandler(this.btnRefreshDomains_Click);
             // 
-            // lbMemoryZones
+            // lbMemoryDomains
             // 
-            this.lbMemoryZones.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
-            this.lbMemoryZones.BorderStyle = System.Windows.Forms.BorderStyle.None;
-            this.lbMemoryZones.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F);
-            this.lbMemoryZones.ForeColor = System.Drawing.Color.White;
-            this.lbMemoryZones.FormattingEnabled = true;
-            this.lbMemoryZones.Location = new System.Drawing.Point(147, 11);
-            this.lbMemoryZones.Margin = new System.Windows.Forms.Padding(5);
-            this.lbMemoryZones.Name = "lbMemoryZones";
-            this.lbMemoryZones.SelectionMode = System.Windows.Forms.SelectionMode.MultiSimple;
-            this.lbMemoryZones.Size = new System.Drawing.Size(255, 156);
-            this.lbMemoryZones.TabIndex = 11;
-            this.lbMemoryZones.Tag = "color:dark";
-            this.lbMemoryZones.SelectedIndexChanged += new System.EventHandler(this.lbMemoryZones_SelectedIndexChanged);
+            this.lbMemoryDomains.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
+            this.lbMemoryDomains.BorderStyle = System.Windows.Forms.BorderStyle.None;
+            this.lbMemoryDomains.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F);
+            this.lbMemoryDomains.ForeColor = System.Drawing.Color.White;
+            this.lbMemoryDomains.FormattingEnabled = true;
+            this.lbMemoryDomains.Location = new System.Drawing.Point(147, 11);
+            this.lbMemoryDomains.Margin = new System.Windows.Forms.Padding(5);
+            this.lbMemoryDomains.Name = "lbMemoryDomains";
+            this.lbMemoryDomains.SelectionMode = System.Windows.Forms.SelectionMode.MultiSimple;
+            this.lbMemoryDomains.Size = new System.Drawing.Size(255, 156);
+            this.lbMemoryDomains.TabIndex = 11;
+            this.lbMemoryDomains.Tag = "color:dark";
+            this.lbMemoryDomains.SelectedIndexChanged += new System.EventHandler(this.lbMemoryDomains_SelectedIndexChanged);
             // 
-            // btnAutoSelectZones
+            // btnAutoSelectDomains
             // 
-            this.btnAutoSelectZones.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(224)))), ((int)(((byte)(224)))), ((int)(((byte)(224)))));
-            this.btnAutoSelectZones.FlatAppearance.BorderSize = 0;
-            this.btnAutoSelectZones.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btnAutoSelectZones.Font = new System.Drawing.Font("Segoe UI Semibold", 9.75F, System.Drawing.FontStyle.Bold);
-            this.btnAutoSelectZones.ForeColor = System.Drawing.Color.Black;
-            this.btnAutoSelectZones.Location = new System.Drawing.Point(12, 13);
-            this.btnAutoSelectZones.Name = "btnAutoSelectZones";
-            this.btnAutoSelectZones.Size = new System.Drawing.Size(131, 28);
-            this.btnAutoSelectZones.TabIndex = 14;
-            this.btnAutoSelectZones.TabStop = false;
-            this.btnAutoSelectZones.Tag = "color:light";
-            this.btnAutoSelectZones.Text = "Auto-select";
-            this.btnAutoSelectZones.UseVisualStyleBackColor = false;
-            this.btnAutoSelectZones.Click += new System.EventHandler(this.btnAutoSelectZones_Click);
+            this.btnAutoSelectDomains.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(224)))), ((int)(((byte)(224)))), ((int)(((byte)(224)))));
+            this.btnAutoSelectDomains.FlatAppearance.BorderSize = 0;
+            this.btnAutoSelectDomains.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnAutoSelectDomains.Font = new System.Drawing.Font("Segoe UI Semibold", 9.75F, System.Drawing.FontStyle.Bold);
+            this.btnAutoSelectDomains.ForeColor = System.Drawing.Color.Black;
+            this.btnAutoSelectDomains.Location = new System.Drawing.Point(12, 13);
+            this.btnAutoSelectDomains.Name = "btnAutoSelectDomains";
+            this.btnAutoSelectDomains.Size = new System.Drawing.Size(131, 28);
+            this.btnAutoSelectDomains.TabIndex = 14;
+            this.btnAutoSelectDomains.TabStop = false;
+            this.btnAutoSelectDomains.Tag = "color:light";
+            this.btnAutoSelectDomains.Text = "Auto-select";
+            this.btnAutoSelectDomains.UseVisualStyleBackColor = false;
+            this.btnAutoSelectDomains.Click += new System.EventHandler(this.btnAutoSelectDomains_Click);
             // 
             // gbFreezeEngine
             // 
@@ -1493,15 +1493,15 @@
             this.lbFreezeEngineActiveStatus.TabIndex = 87;
             this.lbFreezeEngineActiveStatus.Text = "Active table status: NOT READY";
             // 
-            // lbFreezeEngineZoneAddressSize
+            // lbFreezeEngineDomainAddressSize
             // 
-            this.lbFreezeEngineZoneAddressSize.AutoSize = true;
-            this.lbFreezeEngineZoneAddressSize.ForeColor = System.Drawing.Color.White;
-            this.lbFreezeEngineZoneAddressSize.Location = new System.Drawing.Point(5, 97);
-            this.lbFreezeEngineZoneAddressSize.Name = "lbFreezeEngineZoneAddressSize";
-            this.lbFreezeEngineZoneAddressSize.Size = new System.Drawing.Size(96, 13);
-            this.lbFreezeEngineZoneAddressSize.TabIndex = 82;
-            this.lbFreezeEngineZoneAddressSize.Text = "Zone address size:";
+            this.lbFreezeEngineDomainAddressSize.AutoSize = true;
+            this.lbFreezeEngineDomainAddressSize.ForeColor = System.Drawing.Color.White;
+            this.lbFreezeEngineDomainAddressSize.Location = new System.Drawing.Point(5, 97);
+            this.lbFreezeEngineDomainAddressSize.Name = "lbFreezeEngineDomainAddressSize";
+            this.lbFreezeEngineDomainAddressSize.Size = new System.Drawing.Size(96, 13);
+            this.lbFreezeEngineDomainAddressSize.TabIndex = 82;
+            this.lbFreezeEngineDomainAddressSize.Text = "Domain address size:";
             // 
             // btnActiveTableLoad
             // 
@@ -1611,10 +1611,10 @@
             this.pnMemoryTargetting.Controls.Add(this.pnAdvancedTool);
             this.pnMemoryTargetting.Controls.Add(this.cbMemoryDomainTool);
             this.pnMemoryTargetting.Controls.Add(this.btnGenerateVirtualFromStashkey);
-            this.pnMemoryTargetting.Controls.Add(this.lbMemoryZones);
+            this.pnMemoryTargetting.Controls.Add(this.lbMemoryDomains);
             this.pnMemoryTargetting.Controls.Add(this.btnSelectAll);
-            this.pnMemoryTargetting.Controls.Add(this.btnAutoSelectZones);
-            this.pnMemoryTargetting.Controls.Add(this.btnRefreshZones);
+            this.pnMemoryTargetting.Controls.Add(this.btnAutoSelectDomains);
+            this.pnMemoryTargetting.Controls.Add(this.btnRefreshDomains);
             this.pnMemoryTargetting.Location = new System.Drawing.Point(227, 36);
             this.pnMemoryTargetting.Name = "pnMemoryTargetting";
             this.pnMemoryTargetting.Size = new System.Drawing.Size(413, 466);
@@ -1690,7 +1690,7 @@
             this.panel1.Controls.Add(this.lbFreezeEngineNbDumps);
             this.panel1.Controls.Add(this.lbFreezeEngineActiveTableSize);
             this.panel1.Controls.Add(this.cbAutoAddDump);
-            this.panel1.Controls.Add(this.lbFreezeEngineZoneAddressSize);
+            this.panel1.Controls.Add(this.lbFreezeEngineDomainAddressSize);
             this.panel1.Controls.Add(this.btnActiveTableAddDump);
             this.panel1.Controls.Add(this.btnActiveTableQuickSave);
             this.panel1.Controls.Add(this.label16);
@@ -2066,9 +2066,9 @@
         private System.Windows.Forms.Label label3;
         public System.Windows.Forms.NumericUpDown nmGameProtectionDelay;
         private System.Windows.Forms.Button btnSelectAll;
-        private System.Windows.Forms.Button btnRefreshZones;
-        private System.Windows.Forms.Button btnAutoSelectZones;
-        public System.Windows.Forms.ListBox lbMemoryZones;
+        private System.Windows.Forms.Button btnRefreshDomains;
+        private System.Windows.Forms.Button btnAutoSelectDomains;
+        public System.Windows.Forms.ListBox lbMemoryDomains;
         public System.Windows.Forms.ComboBox cbSelectedEngine;
         private System.Windows.Forms.GroupBox gbFreezeEngine;
         public System.Windows.Forms.CheckBox cbClearFreezesOnRewind;
@@ -2083,7 +2083,7 @@
         public System.Windows.Forms.Label lbFreezeEngineActiveStatus;
         public System.Windows.Forms.Label lbFreezeEngineNbDumps;
         public System.Windows.Forms.Label lbFreezeEngineActiveTableSize;
-        public System.Windows.Forms.Label lbFreezeEngineZoneAddressSize;
+        public System.Windows.Forms.Label lbFreezeEngineDomainAddressSize;
         private System.Windows.Forms.Button btnRTCMultiplayer;
         private System.Windows.Forms.Button btnStockpilePlayer;
         private System.Windows.Forms.GroupBox groupBox2;

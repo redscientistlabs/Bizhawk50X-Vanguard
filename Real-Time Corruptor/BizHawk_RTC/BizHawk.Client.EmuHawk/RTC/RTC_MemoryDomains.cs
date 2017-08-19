@@ -17,7 +17,7 @@ namespace RTC
     {
 		
 		public static volatile MemoryDomainRTCInterface MDRI = new MemoryDomainRTCInterface();
-		public static volatile Dictionary<string,MemoryDomainProxy> MemoryDomainProxies = new Dictionary<string, MemoryDomainProxy>();
+		public static volatile Dictionary<string,MemoryInterface> MemoryInterfaces = new Dictionary<string, MemoryInterface>();
 
 		public static string _domain = null;
 		public static bool BigEndian { get; set; }
@@ -179,10 +179,10 @@ namespace RTC
                 case "DGB": 
                     MessageBox.Show("WARNING: The selected system appears to be supported by Bizhawk Emulator.\n " +
                     "However, no corruption Template is available yet for this system.\n " +
-                    "You'll have to manually select the Memory Zones to corrupt.");
+                    "You'll have to manually select the Memory Domains to corrupt.");
                     break;
 
-                    //TODO: Add more zones like gamegear, atari, turbo graphx
+                    //TODO: Add more domains for cores like gamegear, atari, turbo graphx
             }
 
 
@@ -215,14 +215,14 @@ namespace RTC
 
 			if (RTC_Core.isStandalone)
 			{
-				MemoryDomainProxies.Clear();
+				MemoryInterfaces.Clear();
 
-				foreach (MemoryDomainProxy _domain in (MemoryDomainProxy[])returns[0])
-					MemoryDomainProxies.Add(_domain.ToString(), _domain);
+				foreach (MemoryDomainProxy mdp in (MemoryDomainProxy[])returns[0])
+					MemoryInterfaces.Add(mdp.ToString(), mdp);
 
 				_domain = (string)returns[1];
-				DataSize = MemoryDomainProxies[_domain].WordSize;
-				BigEndian = MemoryDomainProxies[_domain].BigEndian;
+				DataSize = MemoryInterfaces[_domain].WordSize;
+				BigEndian = MemoryInterfaces[_domain].BigEndian;
 
 			}
 
@@ -232,42 +232,62 @@ namespace RTC
 		{
 			Console.WriteLine($"{RTC_Core.RemoteRTC?.expectedSide.ToString()} -> getProxies()");
 
-			MemoryDomainProxies.Clear();
+			MemoryInterfaces.Clear();
 
 			ServiceInjector.UpdateServices(Global.Emulator.ServiceProvider, MDRI);
 
 			foreach (MemoryDomain _domain in MDRI.MemoryDomains)
-				MemoryDomainProxies.Add(_domain.ToString(), new MemoryDomainProxy(_domain));
+				MemoryInterfaces.Add(_domain.ToString(), new MemoryDomainProxy(_domain));
 
 			_domain = MDRI.MemoryDomains.MainMemory.ToString();
-			DataSize = MemoryDomainProxies[_domain].md.WordSize;
-			BigEndian = MemoryDomainProxies[_domain].md.EndianType == MemoryDomain.Endian.Big;
+			DataSize = (MemoryInterfaces[_domain] as MemoryDomainProxy).md.WordSize;
+			BigEndian = (MemoryInterfaces[_domain] as MemoryDomainProxy).md.EndianType == MemoryDomain.Endian.Big;
 
 			//RefreshDomains();
 
-			return new object[] { MemoryDomainProxies.Values.ToArray(), _domain };
+			return new object[] { MemoryInterfaces.Values.ToArray(), _domain };
 		}
 
         public static void Clear()
         {
 
-            MemoryDomainProxies.Clear();
+            MemoryInterfaces.Clear();
 
 			lastSelectedDomains = SelectedDomains;
 			SelectedDomains = new string[] { };
 
 			if(RTC_Core.coreForm != null)
-				RTC_Core.coreForm.lbMemoryZones.Items.Clear();
+				RTC_Core.coreForm.lbMemoryDomains.Items.Clear();
 
         }
 
-        public static MemoryDomainProxy getProxyFromString(string _domain)
+        public static MemoryDomainProxy getProxy(string _domain, long _address)
         {
-			if (MemoryDomainProxies.Count == 0)
+			if (MemoryInterfaces.Count == 0)
 				RefreshDomains();
 
-			if (MemoryDomainProxies.ContainsKey(_domain))
-				return MemoryDomainProxies[_domain];
+            if (MemoryInterfaces.ContainsKey(_domain))
+            {
+                MemoryInterface mi = MemoryInterfaces[_domain];
+                if(mi is MemoryDomainProxy)
+                    return (MemoryDomainProxy)mi;
+                else
+                {
+                    var vmd = (mi as VirtualMemoryDomain);
+                    return getProxy(vmd.getRealDomain(_address), vmd.getRealAddress(_address));
+                }
+            }
+            else
+                return null;
+        }
+
+        public static MemoryInterface getInterface(string _domain)
+        {
+			if (MemoryInterfaces.Count == 0)
+				RefreshDomains();
+
+			if (MemoryInterfaces.ContainsKey(_domain))
+				return MemoryInterfaces[_domain];
 			else
 				return null;
         }
@@ -288,7 +308,7 @@ namespace RTC
 			if (address >= 0)
 			{
 				var watch = Watch.GenerateWatch(
-					getProxyFromString(_domain).md,
+					getProxy(_domain, address).md,
 					address,
 					WatchSize,
 					BizHawk.Client.Common.DisplayType.Hex,
@@ -304,24 +324,132 @@ namespace RTC
 
 	}
 
-	[Serializable()]
-	public class MemoryDomainProxy
-	{
+    [Serializable()]
+    public abstract class MemoryInterface
+    {
+        public long Size;
+        public int WordSize;
+        public string name;
+        public bool BigEndian;
+
+        public abstract byte PeekByte(long address);
+        public abstract void PokeByte(long address, byte value);
+    }
+
+    [Serializable()]
+    public class VirtualMemoryDomain : MemoryInterface
+    {
+        List<MemoryPointer> MemoryPointers = new List<MemoryPointer>();
+
+        public void AddFromBlastLayer(BlastLayer bl)
+        {
+            if (bl == null)
+                return;
+
+            foreach(BlastUnit bu in bl.Layer)
+            {
+                MemoryPointers.Add(new MemoryPointer(bu.Domain, bu.Address));
+            }
+        }
+
+        public string getRealDomain(long address)
+        {
+            if (address < 0 || address >= MemoryPointers.Count)
+                return null;
+
+            return MemoryPointers[(int)address].Domain;
+        }
+
+        public long getRealAddress(long address)
+        {
+            if (address < 0 || address >= MemoryPointers.Count)
+                return 0;
+
+            return MemoryPointers[(int)address].Address;
+        }
+
+        public override string ToString()
+        {
+            return "[V] " + name;
+            //Virtual Memory Domains always start with [V]
+        }
+
+        public override byte PeekByte(long address)
+        {
+            string targetDomain = getRealDomain(address);
+            long targetAddress = getRealAddress(address);
+
+            var mdp = RTC_MemoryDomains.getProxy(targetDomain, targetAddress);
+
+            if(mdp == null)
+                return 0;
+
+            return mdp.PeekByte(targetAddress);
+        }
+
+        public override void PokeByte(long address, byte value)
+        {
+            string targetDomain = getRealDomain(address);
+            long targetAddress = getRealAddress(address);
+
+            var mdp = RTC_MemoryDomains.getProxy(targetDomain, targetAddress);
+
+            if (mdp == null)
+                return;
+
+            mdp.PokeByte(targetAddress, value);
+        }
+    }
+
+    [Serializable()]
+    public class MemoryPointer
+    {
+        private string _Domain;
+        public string Domain { get { return (IsEnabled ? _Domain : ""); }}
+
+        private long _Address;
+        public long Address { get { return (IsEnabled ? _Address : 0); } }
+
+        bool IsEnabled;
+
+        public MemoryPointer(string _domain, long _address)
+        {
+            _Domain = _domain;
+            _Address = _address;
+            IsEnabled = true;
+        }
+
+        public override string ToString()
+        {
+            return $"[{(IsEnabled ? "x" : " ")}] {_Domain}({_Address})";
+
+            //Gives: [x] ROM(123)
+        }
+
+        
+
+    }
+
+    [Serializable()]
+	public class MemoryDomainProxy : MemoryInterface
+    {
 
 		[NonSerialized]
 		public MemoryDomain md = null;
 
-		public long Size;
-		public int WordSize;
-		public string name;
-		public bool BigEndian;
+		//public long Size;
+		//public int WordSize;
+		//public string name;
+		//public bool BigEndian;
 
 		public MemoryDomainProxy(MemoryDomain _md)
 		{
 			md = _md;
 			Size = md.Size;
 
-			if (Global.Emulator is N64 && !(Global.Emulator as N64).UsingExpansionSlot)
+            name = md.ToString();
+
+            if (Global.Emulator is N64 && !(Global.Emulator as N64).UsingExpansionSlot && name == "RDRAM")
 				Size = Size / 2;
 
 			WordSize = md.WordSize;
@@ -348,7 +476,7 @@ namespace RTC
 			BigEndian = md.EndianType == MemoryDomain.Endian.Big;
 		}
 
-		public byte PeekByte(long address)
+		public override byte PeekByte(long address)
 		{
 			if (md == null)
 				return (byte)RTC_Core.SendCommandToBizhawk(new RTC_Command(CommandType.REMOTE_DOMAIN_PEEKBYTE) { objectValue = new object[] { name, address } }, true);
@@ -356,7 +484,7 @@ namespace RTC
 				return md.PeekByte(address);
 		}
 
-		public void PokeByte(long address, byte value)
+		public override void PokeByte(long address, byte value)
 		{
 			if (md == null)
 				RTC_Core.SendCommandToBizhawk(new RTC_Command(CommandType.REMOTE_DOMAIN_POKEBYTE) { objectValue = new object[] { name, address, value } });

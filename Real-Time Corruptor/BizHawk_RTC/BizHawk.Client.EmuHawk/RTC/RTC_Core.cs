@@ -443,7 +443,7 @@ namespace RTC
                     {
                         case BlastRadius.SPREAD:
 
-                            for (int i = 0; i < _Intensity; i++) //Randomly spreads all corruption bytes to all selected zones
+                            for (int i = 0; i < _Intensity; i++) //Randomly spreads all corruption bytes to all selected domains
                             {
 								if (RTC_Core.SelectedEngine != CorruptionEngine.FREEZE)
 								{
@@ -454,7 +454,7 @@ namespace RTC
 									Domain = RTC_MemoryDomains._domain.ToString();
 								}
 
-                                MaxAddress = RTC_MemoryDomains.getProxyFromString(Domain).Size;
+                                MaxAddress = RTC_MemoryDomains.getInterface(Domain).Size;
                                 RandomAddress = RandomLong(MaxAddress -1);
 
                                 bu = getBlastUnit(Domain, RandomAddress);
@@ -464,7 +464,7 @@ namespace RTC
 
                             break;
 
-                        case BlastRadius.CHUNK: //Randomly spreads the corruption bytes in one randomly selected zone
+                        case BlastRadius.CHUNK: //Randomly spreads the corruption bytes in one randomly selected domain
 
 							if (RTC_Core.SelectedEngine != CorruptionEngine.FREEZE)
 							{
@@ -475,7 +475,7 @@ namespace RTC
 								Domain = RTC_MemoryDomains._domain.ToString();
 							}
 
-							MaxAddress = RTC_MemoryDomains.getProxyFromString(Domain).Size;
+							MaxAddress = RTC_MemoryDomains.getInterface(Domain).Size;
 
                             for (int i = 0; i < _Intensity; i++)
                             {
@@ -501,7 +501,7 @@ namespace RTC
 									Domain = RTC_MemoryDomains._domain.ToString();
 								}
 
-								MaxAddress = RTC_MemoryDomains.getProxyFromString(Domain).Size;
+								MaxAddress = RTC_MemoryDomains.getInterface(Domain).Size;
 
                                 for (int i = 0; i < (int)((double)_Intensity / 10); i++)
                                 {
@@ -561,7 +561,7 @@ namespace RTC
                 Domain = RTC_MemoryDomains._domain.ToString();
             }
 
-            MaxAddress = RTC_MemoryDomains.getProxyFromString(Domain).Size;
+            MaxAddress = RTC_MemoryDomains.getInterface(Domain).Size;
             RandomAddress = RandomLong(MaxAddress - 1);
 
             return new BlastTarget(Domain, RandomAddress);
@@ -622,7 +622,7 @@ namespace RTC
 
 			RTC_Core.StartSound();
 
-			//coreForm.RefreshDomains(); //refresh and reload zones
+			//coreForm.RefreshDomains(); //refresh and reload domains
 
 
 		}

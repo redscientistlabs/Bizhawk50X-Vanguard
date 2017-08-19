@@ -219,7 +219,7 @@ namespace RTC
                 RTC_Core.coreForm.btnActiveTableGenerate.ForeColor = Color.OrangeRed;
             }
 
-            RTC_Core.coreForm.lbFreezeEngineZoneAddressSize.Text = "Zone address size: " + RTC_MemoryDomains.getProxyFromString(RTC_MemoryDomains._domain).Size.ToString();
+            RTC_Core.coreForm.lbFreezeEngineDomainAddressSize.Text = "Domain size: " + RTC_MemoryDomains.getInterface(RTC_MemoryDomains._domain).Size.ToString();
             RTC_Core.coreForm.lbFreezeEngineNbDumps.Text = "Memory dumps collected: 0";
             RTC_Core.coreForm.lbFreezeEngineActiveTableSize.Text = "Active table size: 0";
             ActiveTableReady = false;
@@ -246,12 +246,12 @@ namespace RTC
                 return;
 
             List<byte> newDump = new List<byte>();
-            for (long i = 0; i < RTC_MemoryDomains.getProxyFromString(RTC_MemoryDomains._domain).Size; i++)
+            for (long i = 0; i < RTC_MemoryDomains.getInterface(RTC_MemoryDomains._domain).Size; i++)
             {
 				newDump.Add((byte)RTC_Core.SendCommandToBizhawk(new RTC_Command(CommandType.REMOTE_DOMAIN_PEEKBYTE) {
 					objectValue = new object[] { RTC_MemoryDomains._domain.ToString(), i }
 				}, true));
-				//newDump.Add(RTC_MemoryZones._domain.PeekByte(i));
+				//newDump.Add(RTC_MemoryDomains._domain.PeekByte(i));
 			}
 
             string key = RTC_Core.GetRandomKey();
@@ -364,7 +364,7 @@ namespace RTC
 
 			long domainSize = (long)RTC_Core.SendCommandToBizhawk(new RTC_Command(CommandType.REMOTE_DOMAIN_GETSIZE) { objectValue = RTC_MemoryDomains._domain }, true);
 
-			for (long i = 0; i < RTC_MemoryDomains.getProxyFromString(RTC_MemoryDomains._domain).Size; i++)
+			for (long i = 0; i < RTC_MemoryDomains.getInterface(RTC_MemoryDomains._domain).Size; i++)
             {
                 newActiveTableActivity.Add(0);
             }
@@ -416,7 +416,7 @@ namespace RTC
                 bool _bigEndian = false;
                 int _value = 0;
                 long Address = 0;
-				MemoryDomainProxy mdp = RTC_MemoryDomains.getProxyFromString(RTC_MemoryDomains._domain);
+				MemoryDomainProxy mdp = RTC_MemoryDomains.getProxy(RTC_MemoryDomains._domain, _address);
 
                 if (RTC_Core.coreForm.cbFreezeEngineActive.Checked && ActiveTableReady)
                     Address = GetAdressFromActiveTable();
