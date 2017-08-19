@@ -12,7 +12,7 @@ namespace WindowsGlitchHarvester
 
     public static class WGH_Core
     {
-		public static string WghVersion = "0.89";
+		public static string WghVersion = "0.90";
 
 		public static Random RND = new Random();
 
@@ -79,9 +79,16 @@ namespace WindowsGlitchHarvester
 			acForm.BringToFront();
 			acForm.Visible = false;
 
-			if (File.Exists(currentDir + "\\params\\COLOR.TXT"))
+            if (!Directory.Exists(WGH_Core.currentDir + "\\TEMP\\"))
+                Directory.CreateDirectory(WGH_Core.currentDir + "\\TEMP\\");
+
+            if (!Directory.Exists(WGH_Core.currentDir + "\\PARAMS\\"))
+                Directory.CreateDirectory(WGH_Core.currentDir + "\\PARAMS\\");
+
+
+            if (File.Exists(currentDir + "\\PARAMS\\COLOR.TXT"))
 			{
-				string[] bytes = File.ReadAllText(currentDir + "\\params\\COLOR.TXT").Split(',');
+				string[] bytes = File.ReadAllText(currentDir + "\\PARAMS\\COLOR.TXT").Split(',');
 				SetWGHColor(Color.FromArgb(Convert.ToByte(bytes[0]), Convert.ToByte(bytes[1]), Convert.ToByte(bytes[2])));
 			}
 			else
@@ -394,10 +401,10 @@ namespace WindowsGlitchHarvester
 
 			SetWGHColor(color);
 
-			if (File.Exists(currentDir + "\\params\\COLOR.TXT"))
-				File.Delete(currentDir + "\\params\\COLOR.TXT");
+			if (File.Exists(currentDir + "\\PARAMS\\COLOR.TXT"))
+				File.Delete(currentDir + "\\PARAMS\\COLOR.TXT");
 
-			File.WriteAllText(currentDir + "\\params\\COLOR.TXT", color.R.ToString() + "," + color.G.ToString() + "," + color.B.ToString());
+			File.WriteAllText(currentDir + "\\PARAMS\\COLOR.TXT", color.R.ToString() + "," + color.G.ToString() + "," + color.B.ToString());
 		}
 
 	}

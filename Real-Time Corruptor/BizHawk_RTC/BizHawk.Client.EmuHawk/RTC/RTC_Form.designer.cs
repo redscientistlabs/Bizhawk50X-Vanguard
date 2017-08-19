@@ -1499,7 +1499,7 @@
             this.lbFreezeEngineDomainAddressSize.ForeColor = System.Drawing.Color.White;
             this.lbFreezeEngineDomainAddressSize.Location = new System.Drawing.Point(5, 97);
             this.lbFreezeEngineDomainAddressSize.Name = "lbFreezeEngineDomainAddressSize";
-            this.lbFreezeEngineDomainAddressSize.Size = new System.Drawing.Size(96, 13);
+            this.lbFreezeEngineDomainAddressSize.Size = new System.Drawing.Size(107, 13);
             this.lbFreezeEngineDomainAddressSize.TabIndex = 82;
             this.lbFreezeEngineDomainAddressSize.Text = "Domain address size:";
             // 
@@ -1640,14 +1640,16 @@
             this.cbMemoryDomainTool.FormattingEnabled = true;
             this.cbMemoryDomainTool.Items.AddRange(new object[] {
             "No Tool Selected",
-            "ActiveTable Generator",
-            "Virtual Domain Generator"});
+            "Virtual Memory Domain Pool",
+            "Virtual Memory Domain Generator",
+            "ActiveTable Generator"});
             this.cbMemoryDomainTool.Location = new System.Drawing.Point(12, 179);
             this.cbMemoryDomainTool.Name = "cbMemoryDomainTool";
             this.cbMemoryDomainTool.Size = new System.Drawing.Size(390, 25);
             this.cbMemoryDomainTool.TabIndex = 114;
             this.cbMemoryDomainTool.TabStop = false;
             this.cbMemoryDomainTool.Tag = "color:dark";
+            this.cbMemoryDomainTool.SelectedIndexChanged += new System.EventHandler(this.cbMemoryDomainTool_SelectedIndexChanged);
             // 
             // label17
             // 

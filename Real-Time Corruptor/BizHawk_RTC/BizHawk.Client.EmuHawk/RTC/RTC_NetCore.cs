@@ -17,6 +17,28 @@ namespace RTC
 {
 	public class RTC_NetCore
 	{
+        /*
+        NetCore is a side-agnostic TCP library for executing functions between processes whether locally or over the internet.
+        It is the base of Detached Mode and RTC Multiplayer in Attached Mode.
+        
+        As of RTC 3.0, Every function that links RTC and Bizhawk must be routed Through NetCore Commands.
+        While this renders debugging harder, it also allows normal functionality in both Detached and Attached mode.
+
+        NetCore uses serialized objects to transport command data and returns accross points.
+        Additionnal wrapping functions for NetCore exist in RTC_Core as a way of guaranteeing the direction commands go.
+        Commands can also loop inside the same process (A command sent to Bizhawk from the Bizhawk process will take the required route
+        arrive to its destination regardless of the mode NetCore is currently running)
+
+        Because the functions it serves is critical, it is built to automatically disconnect and reconnect upon timeout, packet loss or error.
+        While this prevents a lot of issues from happenning, it also creates some.
+
+        Executing Sync commands accross processes will JAM the mainthread of one while waiting for the second process to respond.
+        This makes detection of infinite loop, errors and innacceptable timeouts crucial for it to work well.
+
+        A setting called "Aggressiveness" in the main menu can either TRIPLE the timeout values or even Disable any timeout (not recommended).
+        */
+
+
 		volatile TcpClient client;
 		volatile NetworkStream clientStream;
 		System.Windows.Forms.Timer CommandQueueProcessorTimer;
@@ -169,20 +191,6 @@ namespace RTC
 
 						binaryFormatter.Serialize(networkStream, backCmd);
 
-						/*
-						if (backCmd.stashkey != null)
-						{
-							if (backCmd.Type == CommandType.PULLSWAPSTATE || backCmd.Type == CommandType.PUSHSWAPSTATE)
-								if(RTC_StockpileManager.SavestateStashkeyDico.ContainsKey(backCmd.stashkey.Key))
-									RTC_StockpileManager.SavestateStashkeyDico.Remove(backCmd.stashkey.Key);
-
-							if (backCmd.stashkey.stateData != null)
-								backCmd.stashkey.stateData = null;
-
-							if (backCmd.stashkey.RomData != null)
-								backCmd.stashkey.RomData = null;
-						}
-						*/
 
 						if (backCmd.Type == CommandType.BYE)
 						{
@@ -692,6 +700,7 @@ namespace RTC
                         break;
 
                     #endregion
+
                     case CommandType.ASYNCBLAST:
 						{
 							BlastLayer bl = RTC_Core.Blast(null, RTC_MemoryDomains.SelectedDomains);
@@ -919,7 +928,7 @@ namespace RTC
 
 					case CommandType.REMOTE_DOMAIN_GETDOMAINS:
 						cmdBack = new RTC_Command(CommandType.RETURNVALUE);
-						cmdBack.objectValue = RTC_MemoryDomains.getProxies();
+						cmdBack.objectValue = RTC_MemoryDomains.getInterfaces();
 
 						break;
 
@@ -935,19 +944,6 @@ namespace RTC
 					case CommandType.REMOTE_DOMAIN_SYSTEMPREFIX:
 						cmdBack = new RTC_Command(CommandType.RETURNVALUE);
 						cmdBack.objectValue = PathManager.SaveStatePrefix(Global.Game);
-						break;
-
-
-					case CommandType.REMOTE_KEY_APPLY:
-						RTC_StockpileManager.ApplyStashkey((StashKey)cmd.objectValue);
-						break;
-
-					case CommandType.REMOTE_KEY_INJECT:
-						RTC_StockpileManager.InjectFromStashkey((StashKey)cmd.objectValue, false);
-						break;
-
-					case CommandType.REMOTE_KEY_ORIGINAL:
-						RTC_StockpileManager.OriginalFromStashkey((StashKey)cmd.objectValue);
 						break;
 
 					case CommandType.REMOTE_KEY_PUSHSAVESTATEDICO:
@@ -1431,9 +1427,6 @@ namespace RTC
 		ASYNCBLAST,
 		STASHKEY,
 		
-		REMOTE_KEY_APPLY, //REFACTORED : TO BE REMOVED
-		REMOTE_KEY_INJECT, //REFACTORED : TO BE REMOVED
-		REMOTE_KEY_ORIGINAL, //REFACTORED : TO BE REMOVED
 		REMOTE_KEY_PUSHSAVESTATEDICO,
 		REMOTE_KEY_GETPATHENTRY,
 		REMOTE_KEY_GETSYSTEMCORE,

@@ -8,6 +8,11 @@ using ICSharpCode.SharpZipLib.Core;
 
 namespace BizHawk.Client.EmuHawk
 {
+
+    //TODO: Replace this class with the native .NET compression methods
+
+
+
     // SharpZipLibrary samples
     // Copyright (c) 2007, AlphaSierraPapa
     // All rights reserved.

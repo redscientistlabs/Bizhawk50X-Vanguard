@@ -355,7 +355,7 @@ namespace RTC
 
 			if (_sk == null) {
 				Key = RTC_Core.GetRandomKey();
-				statePath = RTC_Core.SaveSavestate(Key, threadSave);
+				statePath = RTC_Core.SaveSavestate_NET(Key, threadSave);
 				sk = new StashKey(Key, Key, null);
 			}
 			else

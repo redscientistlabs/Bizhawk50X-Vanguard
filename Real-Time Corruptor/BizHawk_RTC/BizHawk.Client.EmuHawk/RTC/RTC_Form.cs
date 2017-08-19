@@ -433,15 +433,6 @@ namespace RTC
 
         }
 
-        public void btnReboot_Click(object sender, EventArgs e)
-        {
-            if (File.Exists(RTC_Core.rtcDir + "\\SESSION\\Restore.dat"))
-                File.Delete(RTC_Core.rtcDir + "\\SESSION\\Restore.dat");
-
-            Process.Start("KillSwitchRestart.bat");
-
-        }
-
         public void btnFactoryClean_Click(object sender, EventArgs e)
         {
             Process.Start($"FactoryClean{(RTC_Core.isStandalone ? "DETACHED" : "ATTACHED")}.bat");
@@ -1134,6 +1125,27 @@ namespace RTC
         {
             RTC_PipeEngine.ChainedPipes = cbGenerateChainedPipes.Checked;
             RTC_Core.SendCommandToBizhawk(new RTC_Command(CommandType.REMOTE_SET_PIPE_CHAINEDPIPES) { objectValue = RTC_PipeEngine.ChainedPipes });
+        }
+
+        private void cbMemoryDomainTool_SelectedIndexChanged(object sender, EventArgs e)
+        {
+
+
+
+            switch (cbMemoryDomainTool.SelectedItem.ToString())
+            {
+                case "No Tool Selected":
+                    break;
+                case "Virtual Memory Domain Pool":
+                    break;
+                case "Virtual Memory Domain Generator":
+                    break;
+                case "ActiveTable Generator":
+                    break;
+            }
+
+
+
         }
     }
 

@@ -15,7 +15,7 @@ namespace RTC
 
     public static class RTC_ExternalRomPlugin
     {
-        public static string CorruptedRom = null;
+        public static string CorruptedRom = "CorruptedROM.rom";
         public static string SelectedPlugin = null;
         public static string PluginFilename = null;
 
@@ -24,17 +24,14 @@ namespace RTC
             return null;
         }
 
-        public static BlastLayer GetLayer()
+        public static BlastLayer GetBlastLayer()
         {
-            
 
-            if (!File.Exists("CorruptedROM.rom"))
+            if (!File.Exists(CorruptedRom))
                 {
                     MessageBox.Show("Null Plugin: You must have CorruptedROM.rom in your BizHawk folder");
                     return null;
                 }
-
-            CorruptedRom = "CorruptedROM.rom";
             
             BlastLayer bl = new BlastLayer();
 

@@ -18,8 +18,9 @@ namespace RTC
 		
 		public static volatile MemoryDomainRTCInterface MDRI = new MemoryDomainRTCInterface();
 		public static volatile Dictionary<string,MemoryInterface> MemoryInterfaces = new Dictionary<string, MemoryInterface>();
+        public static volatile Dictionary<string, MemoryInterface> VmdPool = new Dictionary<string, MemoryInterface>();
 
-		public static string _domain = null;
+        public static string _domain = null;
 		public static bool BigEndian { get; set; }
 		public static int DataSize { get; set; }
 		public static WatchSize WatchSize
@@ -200,7 +201,7 @@ namespace RTC
 			object[] returns;
 
 			if (!RTC_Core.isStandalone)
-				returns = (object[])getProxies();
+				returns = (object[])getInterfaces();
 			else
 				returns = (object[])RTC_Core.SendCommandToBizhawk(new RTC_Command(CommandType.REMOTE_DOMAIN_GETDOMAINS), true);
 
@@ -217,8 +218,8 @@ namespace RTC
 			{
 				MemoryInterfaces.Clear();
 
-				foreach (MemoryDomainProxy mdp in (MemoryDomainProxy[])returns[0])
-					MemoryInterfaces.Add(mdp.ToString(), mdp);
+				foreach (MemoryInterface mi in (MemoryInterface[])returns[0])
+					MemoryInterfaces.Add(mi.ToString(), mi);
 
 				_domain = (string)returns[1];
 				DataSize = MemoryInterfaces[_domain].WordSize;
@@ -228,9 +229,9 @@ namespace RTC
 
 		}
 
-		public static object getProxies()
+		public static object getInterfaces()
 		{
-			Console.WriteLine($"{RTC_Core.RemoteRTC?.expectedSide.ToString()} -> getProxies()");
+			Console.WriteLine($"{RTC_Core.RemoteRTC?.expectedSide.ToString()} -> getInterfaces()");
 
 			MemoryInterfaces.Clear();
 
@@ -245,7 +246,11 @@ namespace RTC
 
 			//RefreshDomains();
 
-			return new object[] { MemoryInterfaces.Values.ToArray(), _domain };
+            if(VmdPool.Count > 0)
+                foreach (string VmdKey in VmdPool.Keys)
+                    MemoryInterfaces.Add(VmdKey, VmdPool[VmdKey]);
+
+            return new object[] { MemoryInterfaces.Values.ToArray(), _domain };
 		}
 
         public static void Clear()

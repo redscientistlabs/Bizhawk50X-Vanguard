@@ -12,6 +12,9 @@ namespace RTC
 		List<Type> typeList = new List<Type>();
 
 		
+        //This is an array of pointers for setting/getting variables upon parameter synchronization accross processes
+        //The index of refs must match between processes otherwise it will break 
+        //(EmuHawk.exe and StandaloneRTC.exe must match versions)
 
 		Ref[] refs = {
 
@@ -48,11 +51,14 @@ namespace RTC
 
 		public RTC_Params()
 		{
+            //Fills the Params object upon creation
 			GetSetParams(true);
 		}
 
 		public void Deploy()
 		{
+            //Has to be manually deployed after received
+
 			GetSetParams(false);
 
 			if (RTC_StockpileManager.backupedState != null)
@@ -66,8 +72,9 @@ namespace RTC
 
 		private void GetSetParams(bool buildObject)
 		{
-			
-			for( int i = 0; i < refs.Length; i++)
+            //Builds the params object  or unwraps the params object from/back to all monitored variables
+
+            for ( int i = 0; i < refs.Length; i++)
 				if(buildObject)
 					objectList.Add(refs[i].Value);
 				else
@@ -77,9 +84,10 @@ namespace RTC
 		
 	}
 
+    
 	[Serializable()]
-	class Ref
-	{
+	class Ref //Serializable pointer object 
+    {
 		private Func<object> getter;
 		private Action<object> setter;
 		public Ref(Func<object> getter, Action<object> setter)

@@ -764,9 +764,7 @@
     </Compile>
     <Compile Include="RTC\RTC_NetCore.cs" />
     <Compile Include="RTC\RTC_NightmareEngine.cs" />
-    <Compile Include="RTC\RTC_Objects.cs">
-      <SubType>Component</SubType>
-    </Compile>
+    <Compile Include="RTC\RTC_Objects.cs" />
     <Compile Include="RTC\RTC_Render.cs" />
     <Compile Include="RTC\RTC_RPC.cs" />
     <Compile Include="RTC\RTC_SP_Form.cs">
@@ -788,6 +786,24 @@
     </Compile>
     <Compile Include="RTC\RTC_NE_Form.Designer.cs">
       <DependentUpon>RTC_NE_Form.cs</DependentUpon>
+    </Compile>
+    <Compile Include="RTC\RTC_VmdAct_Form.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="RTC\RTC_VmdAct_Form.Designer.cs">
+      <DependentUpon>RTC_VmdAct_Form.cs</DependentUpon>
+    </Compile>
+    <Compile Include="RTC\RTC_VmdGen_Form.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="RTC\RTC_VmdGen_Form.Designer.cs">
+      <DependentUpon>RTC_VmdGen_Form.cs</DependentUpon>
+    </Compile>
+    <Compile Include="RTC\RTC_VmdPool_Form.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="RTC\RTC_VmdPool_Form.Designer.cs">
+      <DependentUpon>RTC_VmdPool_Form.cs</DependentUpon>
     </Compile>
     <Compile Include="Sound\Output\DirectSoundSoundOutput.cs" />
     <Compile Include="Sound\Output\DummySoundOutput.cs" />
@@ -1534,6 +1550,15 @@
     </EmbeddedResource>
     <EmbeddedResource Include="RTC\RTC_NE_Form.resx">
       <DependentUpon>RTC_NE_Form.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="RTC\RTC_VmdAct_Form.resx">
+      <DependentUpon>RTC_VmdAct_Form.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="RTC\RTC_VmdGen_Form.resx">
+      <DependentUpon>RTC_VmdGen_Form.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="RTC\RTC_VmdPool_Form.resx">
+      <DependentUpon>RTC_VmdPool_Form.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="tools\AutoHawk.resx">
       <DependentUpon>AutoHawk.cs</DependentUpon>

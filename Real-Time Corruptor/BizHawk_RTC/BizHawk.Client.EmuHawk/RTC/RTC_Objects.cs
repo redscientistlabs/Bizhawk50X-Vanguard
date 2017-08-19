@@ -22,46 +22,6 @@ using System.Reflection;
 namespace RTC
 {
 
-    public class LabelPassthrough : Label
-    {
-
-        protected override void OnPaint(PaintEventArgs e)
-        {
-            TextRenderer.DrawText(e.Graphics, this.Text.ToString(), this.Font, ClientRectangle, ForeColor);
-        }
-
-    }
-
-	public class RefreshingListBox : ListBox
-	{
-		public void RefreshItemsReal()
-		{
-			base.RefreshItems();
-		}
-	}
-
-	public class MenuButton : Button
-    {
-        [DefaultValue(null)]
-        public ContextMenuStrip Menu { get; set; }
-
-        public void SetMenu(ContextMenuStrip _menu)
-        {
-            Menu = _menu;
-        }
-
-        protected override void OnMouseDown(MouseEventArgs mevent)
-        {
-            base.OnMouseDown(mevent);
-
-            if (Menu != null && mevent.Button == MouseButtons.Left)
-            {
-                Menu.Show(this, mevent.Location);
-            }
-        }
-    }
-
-
 	[XmlInclude(typeof(StashKey))]
 	[XmlInclude(typeof(BlastLayer))]
 	[XmlInclude(typeof(BlastCheat))]
@@ -732,6 +692,7 @@ namespace RTC
     [Serializable()]
     public class BlastTarget
     {
+
         public string domain = null;
         public long address = 0;
 
