@@ -360,7 +360,7 @@ namespace RTC
 
 
                 RTC_RPC.SendToKillSwitch("FREEZE");
-                RTC_NetCore.HugeOperationStart();
+                RTC_NetCore.HugeOperationStart("LAZY");
 
                 if (rbCorrupt.Checked)
                 {

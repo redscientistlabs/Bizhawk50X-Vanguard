@@ -17,7 +17,7 @@ namespace RTC
 
     public static class RTC_Core
     {
-		public static string RtcVersion = "2.90";
+		public static string RtcVersion = "2.90b";
 		
         public static Random RND = new Random();
         public static string[] args;
@@ -40,24 +40,42 @@ namespace RTC
         public static string bizhawkDir = Directory.GetCurrentDirectory();
         public static string rtcDir = bizhawkDir + "\\RTC";
 
-		//Forms
+		//RTC Main Forms
 		public static Color generalColor = Color.LightSteelBlue;
 		public static RTC_Form coreForm = null;
 		public static RTC_GH_Form ghForm = null;
         public static RTC_SP_Form spForm = null;
-
-        //Extension Forms
-		public static RTC_Multi_Form multiForm;
+        //RTC Extension Forms
+        public static RTC_Multi_Form multiForm;
 		public static RTC_MultiPeerPopout_Form multipeerpopoutForm = null;
 		public static RTC_StockpileBlastBoard sbForm = null;
 		public static RTC_ConnectionStatus_Form csForm = null;
 		public static RTC_BlastEditorForm beForm = null;
 		public static Form standaloneForm = null;
-
-        //Advanced Tool Forms
+        //RTC Advanced Tool Forms
         public static RTC_VmdPool_Form vmdPoolForm = null;
         public static RTC_VmdGen_Form vmdGenForm = null;
         public static RTC_VmdAct_Form vmdActForm = null;
+
+        //All RTC forms
+        public static Form[] allRtcForms = new Form[]
+        {
+                    coreForm,
+                    ghForm,
+                    spForm,
+
+                    multiForm,
+                    multipeerpopoutForm,
+                    sbForm,
+                    beForm,
+
+                    vmdActForm,
+                    vmdGenForm,
+                    vmdPoolForm,
+
+                    standaloneForm,
+        };
+
 
         //Bizhawk Overrides
         public static bool Bizhawk_OSD_Enabled = false;
@@ -84,23 +102,11 @@ namespace RTC
 			if (RTC_Core.RemoteRTC != null && RTC_Core.RemoteRTC.streamReadingThread != null)
 				RTC_Core.RemoteRTC.streamReadingThread.Abort();
 
-			if (coreForm != null)
-				coreForm.Close();
-			if (ghForm != null)
-				ghForm.Close();
-
-			if (spForm != null)
-				spForm.Close();
-			if (multiForm != null)
-				multiForm.Close();
-			if (multipeerpopoutForm != null)
-				multipeerpopoutForm.Close();
-			if (sbForm != null)
-				sbForm.Close();
-			if (csForm != null)
-				csForm.Close();
-			if (standaloneForm != null)
-				standaloneForm.Close();
+            foreach(Form frm in allRtcForms)
+            {
+                if (frm != null)
+                    frm.Close();
+            }
 
 
 			if (!RTC_Hooks.isRemoteRTC) //We force useless savestates to clear on quit to prevent disk usage to inflate too much
@@ -145,12 +151,10 @@ namespace RTC
 			coreForm = new RTC_Form();
 			ghForm = new RTC_GH_Form();
 			spForm = new RTC_SP_Form();
-
 			multiForm = new RTC_Multi_Form();
 			multipeerpopoutForm = new RTC_MultiPeerPopout_Form();
 			sbForm = new RTC_StockpileBlastBoard();
 			beForm = new RTC_BlastEditorForm();
-
             vmdPoolForm = new RTC_VmdPool_Form();
             vmdGenForm = new RTC_VmdGen_Form();
             vmdActForm = new RTC_VmdAct_Form();
@@ -760,21 +764,7 @@ namespace RTC
 			if (form == null)
 			{
 
-                var targetForms = new Form[]
-                {
-                    coreForm,
-                    ghForm,
-                    spForm,
-                    multiForm,
-                    multipeerpopoutForm,
-                    sbForm,
-                    beForm,
-                    vmdActForm,
-                    vmdGenForm,
-                    vmdPoolForm,
-                };
-
-                foreach(Form targetForm in targetForms)
+                foreach(Form targetForm in allRtcForms)
 				    if (targetForm != null)
 				    {
 					    allControls.AddRange(targetForm.Controls.getControlsWithTag());

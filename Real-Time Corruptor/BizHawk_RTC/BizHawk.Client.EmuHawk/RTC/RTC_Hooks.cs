@@ -349,7 +349,15 @@ namespace RTC
 					ActiveForm is RTC.RTC_GH_Form ||
 					ActiveForm is RTC.RTC_SP_Form ||
 					ActiveForm is RTC.RTC_Multi_Form ||
-					ActiveForm is RTC.RTC_MultiPeerPopout_Form);
-		}
-	}
+					ActiveForm is RTC.RTC_MultiPeerPopout_Form ||
+                    ActiveForm is RTC.RTC_StockpileBlastBoard ||
+                    ActiveForm is RTC.RTC_ConnectionStatus_Form ||
+                    ActiveForm is RTC.RTC_BlastEditorForm ||
+                    ActiveForm is RTC.RTC_VmdPool_Form ||
+                    ActiveForm is RTC.RTC_VmdGen_Form ||
+                    ActiveForm is RTC.RTC_VmdAct_Form
+                    );
+
+        }
+    }
 }

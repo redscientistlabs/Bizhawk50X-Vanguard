@@ -66,6 +66,7 @@ namespace RTC
 		static volatile Dictionary<string, bool> TransferedRomFilenames = new Dictionary<string, bool>();
 
 		private static object CommandQueueLock = new object();
+        private static bool NetCoreCommandSynclock = false;
 
 
 
@@ -99,12 +100,16 @@ namespace RTC
 		protected virtual void OnServerConnectionLost(EventArgs e) => ServerConnectionLost?.Invoke(this, e);
 
         static int lastNetCoreAggressivity = 0;
-        public static void HugeOperationStart()
+        public static void HugeOperationStart(string targetAggressiveness = "DISABLED")
         {
             if(RTC_Core.isStandalone)
             {
                 lastNetCoreAggressivity = RTC_Core.csForm.cbNetCoreCommandTimeout.SelectedIndex;
-                RTC_Core.csForm.cbNetCoreCommandTimeout.SelectedIndex = RTC_Core.csForm.cbNetCoreCommandTimeout.Items.Count - 1;
+
+                if(targetAggressiveness == "DISABLED")
+                    RTC_Core.csForm.cbNetCoreCommandTimeout.SelectedIndex = RTC_Core.csForm.cbNetCoreCommandTimeout.Items.Count - 1;
+                else
+                    RTC_Core.csForm.cbNetCoreCommandTimeout.SelectedIndex = RTC_Core.csForm.cbNetCoreCommandTimeout.Items.Count - 2;
             }
         }
         public static void HugeOperationEnd()
@@ -1156,17 +1161,29 @@ namespace RTC
 						break;
 
 					case CommandType.REMOTE_HOTKEY_GHLOADCORRUPT:
-						RTC_Core.ghForm.cbAutoLoadState.Checked = true;
-						RTC_Core.ghForm.btnCorrupt_Click(null, null);
-						break;
+                        if (!NetCoreCommandSynclock)
+                        {
+                            NetCoreCommandSynclock = true;
+
+                            RTC_Core.ghForm.cbAutoLoadState.Checked = true;
+                            RTC_Core.ghForm.btnCorrupt_Click(null, null);
+
+                            NetCoreCommandSynclock = false;
+                        }
+                        break;
 
 					case CommandType.REMOTE_HOTKEY_GHCORRUPT:
-						{
-							bool isload = RTC_Core.ghForm.cbAutoLoadState.Checked;
-							RTC_Core.ghForm.cbAutoLoadState.Checked = false;
-							RTC_Core.ghForm.btnCorrupt_Click(null, null);
-							RTC_Core.ghForm.cbAutoLoadState.Checked = isload;
-						}
+                        if (!NetCoreCommandSynclock)
+                        {
+                            NetCoreCommandSynclock = true;
+
+                            bool isload = RTC_Core.ghForm.cbAutoLoadState.Checked;
+                            RTC_Core.ghForm.cbAutoLoadState.Checked = false;
+                            RTC_Core.ghForm.btnCorrupt_Click(null, null);
+                            RTC_Core.ghForm.cbAutoLoadState.Checked = isload;
+
+                            NetCoreCommandSynclock = false;
+                        }
 						break;
 
 					case CommandType.REMOTE_HOTKEY_GHLOAD:
