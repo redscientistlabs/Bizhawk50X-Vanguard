@@ -18,6 +18,7 @@ using Newtonsoft.Json.Linq;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;
 using System.Reflection;
+using System.IO.Compression;
 
 namespace RTC
 {
@@ -210,6 +211,7 @@ namespace RTC
 			}
 
             RTC_RPC.SendToKillSwitch("FREEZE");
+            RTC_NetCore.HugeOperationStart();
 
             Extract(Filename, "TEMP", "stockpile.xml");
 
@@ -227,6 +229,7 @@ namespace RTC
 			{
 				MessageBox.Show("The Stockpile file could not be loaded");
                 RTC_RPC.SendToKillSwitch("UNFREEZE");
+                RTC_NetCore.HugeOperationEnd();
                 return false;
 			}
 
@@ -262,7 +265,9 @@ namespace RTC
 
 			CheckCompatibility(sks);
 
+
             RTC_RPC.SendToKillSwitch("UNFREEZE");
+            RTC_NetCore.HugeOperationEnd();
 
             return true;
 
@@ -280,10 +285,21 @@ namespace RTC
 					ErrorMessages.Add("You have loaded a stockpile created with RTC " + sks.RtcVersion + " using RTC " + RTC_Core.RtcVersion + "\n Items might not appear identical to how they when they were created.");
 			}
 
+            Dictionary<string, string> StashkeySystemNameToCurrentCore = new Dictionary<string, string>();
 
 			foreach(StashKey sk in sks.StashKeys)
 			{
-				string currentCore = (string)RTC_Core.SendCommandToBizhawk(new RTC_Command(CommandType.REMOTE_KEY_GETSYSTEMCORE) { objectValue = sk.SystemName }, true);
+                string currentCore;
+                string systemName = sk.SystemName;
+
+                if (StashkeySystemNameToCurrentCore.ContainsKey(systemName))
+                    currentCore = StashkeySystemNameToCurrentCore[systemName];
+                else
+                {
+                    currentCore = (string)RTC_Core.SendCommandToBizhawk(new RTC_Command(CommandType.REMOTE_KEY_GETSYSTEMCORE) { objectValue = systemName }, true);
+                    StashkeySystemNameToCurrentCore.Add(systemName, currentCore);
+                }
+
 				if(sk.SystemCore != currentCore)
 				{
 					string errorMessage = $"Core mismatch for System [{sk.SystemName}]\n Current Bizhawk core -> {currentCore}\n Stockpile core -> {sk.SystemCore}";
@@ -307,24 +323,24 @@ namespace RTC
 
 		}
 
-		public static void Extract(string Filename, string Folder, string MasterFile)
-		{
-			//clean temp folder
-			foreach (string file in Directory.GetFiles(RTC_Core.rtcDir + $"\\{Folder}"))
-				File.Delete(file);
+        public static void Extract(string Filename, string Folder, string MasterFile)
+        {
+            //clean temp folder
+            foreach (string file in Directory.GetFiles(RTC_Core.rtcDir + $"\\{Folder}"))
+                File.Delete(file);
 
-			//7z extract part
+            //7z extract part
 
-			string[] stringargs = { "-x", Filename, RTC_Core.rtcDir + $"\\{Folder}\\" };
+            string[] stringargs = { "-x", Filename, RTC_Core.rtcDir + $"\\{Folder}\\" };
 
-			FastZipProgram.Exec(stringargs);
+            FastZipProgram.Exec(stringargs);
 
-			if (!File.Exists(RTC_Core.rtcDir + $"\\{Folder}\\{MasterFile}"))
-			{
-				MessageBox.Show("The file could not be read properly");
-				return;
-			}
-		}
+            if (!File.Exists(RTC_Core.rtcDir + $"\\{Folder}\\{MasterFile}"))
+            {
+                MessageBox.Show("The file could not be read properly");
+                return;
+            }
+        }
 
 		public static void LoadBizhawkConfig(string Filename = null)
 		{
@@ -600,31 +616,31 @@ namespace RTC
 		public static string getCoreName(string _SystemName)
 		{
 
-			switch(_SystemName)
-			{
-				case "NES":
-					return (Global.Config.NES_InQuickNES ? "quicknes" : "neshawk");
+                switch (_SystemName)
+                {
+                    case "NES":
+                        return (Global.Config.NES_InQuickNES ? "quicknes" : "neshawk");
 
-				case "SNES":
-					if (!Global.Config.SNES_InSnes9x)
-					{
-						var snesSettings = BizHawk.Client.EmuHawk.ProfileConfig.GetSyncSettings<LibsnesCore, LibsnesCore.SnesSyncSettings>();
-						return $"bsnes:{snesSettings.Profile}";
-					}
-					else
-						return "snes9x";
+                    case "SNES":
+                        if (!Global.Config.SNES_InSnes9x)
+                        {
+                            var snesSettings = BizHawk.Client.EmuHawk.ProfileConfig.GetSyncSettings<LibsnesCore, LibsnesCore.SnesSyncSettings>();
+                            return $"bsnes:{snesSettings.Profile}";
+                        }
+                        else
+                            return "snes9x";
 
-				case "GBA":
-					return (Global.Config.GBA_UsemGBA ? "mgba" : "vba-next");
+                    case "GBA":
+                        return (Global.Config.GBA_UsemGBA ? "mgba" : "vba-next");
 
-				case "N64":
-					N64SyncSettings ss = (N64SyncSettings)Global.Config.GetCoreSyncSettings<N64>()
-					?? new N64SyncSettings();
+                    case "N64":
+                        N64SyncSettings ss = (N64SyncSettings)Global.Config.GetCoreSyncSettings<N64>()
+                        ?? new N64SyncSettings();
 
-					return $"{ss.VideoPlugin}/{ss.Rsp}/{ss.Core}";
+                        return $"{ss.VideoPlugin}/{ss.Rsp}/{ss.Core}";
 
 
-			}
+                }
 
 			return _SystemName;
 		}
@@ -726,14 +742,18 @@ namespace RTC
 				return;
 			}
 
-
+            /*
 			if (this != RTC_StockpileManager.lastBlastLayerBackup &&
 				RTC_Core.SelectedEngine != CorruptionEngine.HELLGENIE &&
 				RTC_Core.SelectedEngine != CorruptionEngine.FREEZE &&
 				RTC_Core.SelectedEngine != CorruptionEngine.PIPE)
 				RTC_StockpileManager.lastBlastLayerBackup = GetBackup();
+            */
 
-			bool success;
+            if (this != RTC_StockpileManager.lastBlastLayerBackup)
+                RTC_StockpileManager.lastBlastLayerBackup = GetBackup();
+
+            bool success;
 
 			try
 			{
@@ -741,7 +761,10 @@ namespace RTC
 				foreach (BlastUnit bb in Layer)
 				{
 
-					success = bb.Apply();
+                    if (bb == null) //BlastCheat getBackup() always returns null so they can happen and they are valid
+                        success = true;
+                    else
+					    success = bb.Apply();
 
 
 					if (!success)

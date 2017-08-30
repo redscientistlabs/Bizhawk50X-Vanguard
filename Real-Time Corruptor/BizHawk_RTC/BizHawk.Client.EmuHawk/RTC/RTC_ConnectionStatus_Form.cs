@@ -139,7 +139,7 @@ namespace RTC
         {
             string setting = cbNetCoreCommandTimeout.SelectedItem.ToString().ToUpper();
             changeNetCoreSettings(setting);
-            RTC_Core.SendCommandToBizhawk(new RTC_Command(CommandType.AGGRESSIVENESS) { objectValue = setting });
+            RTC_Core.SendCommandToBizhawk(new RTC_Command(CommandType.AGGRESSIVENESS) { objectValue = setting }, true);
 
         }
         public static void changeNetCoreSettings(string setting)
@@ -175,6 +175,8 @@ namespace RTC
 
                     break;
             }
+
+            RTC_NetCore.KeepAliveCounter = RTC_NetCore.DefaultKeepAliveCounter;
         }
     }
 }

@@ -37,7 +37,8 @@ namespace RTC
 			new Ref(() => RTC_PipeEngine.MaxPipes, x => { RTC_PipeEngine.MaxPipes = (int)x; }),
 			new Ref(() => RTC_PipeEngine.LockPipes, x => { RTC_PipeEngine.LockPipes = (bool)x; }),
 			new Ref(() => RTC_PipeEngine.ProcessOnStep, x => { RTC_PipeEngine.ProcessOnStep = (bool)x; }),
-			new Ref(() => RTC_VectorEngine.limiterList, x => { RTC_VectorEngine.limiterList = (string[])x; }),
+            new Ref(() => RTC_PipeEngine.ChainedPipes, x => { RTC_PipeEngine.ChainedPipes = (bool)x; }),
+            new Ref(() => RTC_VectorEngine.limiterList, x => { RTC_VectorEngine.limiterList = (string[])x; }),
 			new Ref(() => RTC_VectorEngine.valueList, x => { RTC_VectorEngine.valueList = (string[])x; }),
 
 			new Ref(() => RTC_StockpileManager.currentGameSystem, x => { RTC_StockpileManager.currentGameSystem = (string)x; }),

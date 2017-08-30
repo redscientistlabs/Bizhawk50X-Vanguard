@@ -56,7 +56,7 @@ namespace RTC
 		public bool expectingSomeone = false;
 		static volatile bool isStreamReadingThreadAlive = false;
 
-		static int KeepAliveCounter = 5;
+		public static int KeepAliveCounter = 5;
         public static int DefaultKeepAliveCounter = 5;
         public static int DefaultNetworkStreamTimeout = 2000;
         public static int DefaultMaxRetries = 666;
@@ -98,8 +98,22 @@ namespace RTC
 		public event EventHandler ServerConnectionLost;
 		protected virtual void OnServerConnectionLost(EventArgs e) => ServerConnectionLost?.Invoke(this, e);
 
-
-
+        static int lastNetCoreAggressivity = 0;
+        public static void HugeOperationStart()
+        {
+            if(RTC_Core.isStandalone)
+            {
+                lastNetCoreAggressivity = RTC_Core.csForm.cbNetCoreCommandTimeout.SelectedIndex;
+                RTC_Core.csForm.cbNetCoreCommandTimeout.SelectedIndex = RTC_Core.csForm.cbNetCoreCommandTimeout.Items.Count - 1;
+            }
+        }
+        public static void HugeOperationEnd()
+        {
+            if (RTC_Core.isStandalone)
+            {
+                RTC_Core.csForm.cbNetCoreCommandTimeout.SelectedIndex = lastNetCoreAggressivity;
+            }
+        }
 
 		public Socket KillableAcceptSocket(TcpListener listener)
 		{

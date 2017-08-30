@@ -1702,7 +1702,7 @@
             this.panel1.Controls.Add(this.btnActiveTableDumpsReset);
             this.panel1.Controls.Add(this.nmAutoAddSec);
             this.panel1.Controls.Add(this.lbFreezeEngineActiveStatus);
-            this.panel1.Location = new System.Drawing.Point(1003, 408);
+            this.panel1.Location = new System.Drawing.Point(659, 384);
             this.panel1.Name = "panel1";
             this.panel1.Size = new System.Drawing.Size(390, 250);
             this.panel1.TabIndex = 117;

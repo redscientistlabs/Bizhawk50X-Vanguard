@@ -32,7 +32,9 @@ namespace RTC
                     MessageBox.Show("Null Plugin: You must have CorruptedROM.rom in your BizHawk folder");
                     return null;
                 }
-            
+
+
+
             BlastLayer bl = new BlastLayer();
 
             string thisSystem = Global.Game.System;
@@ -107,6 +109,7 @@ namespace RTC
                         bl.Layer.Add(new BlastByte(_domain, i - skipbytes, BlastByteType.SET, Convert.ToInt32(Corrupt[i]), true));
                 }
             }
+
 
             if (bl.Layer.Count == 0)
                 return null;

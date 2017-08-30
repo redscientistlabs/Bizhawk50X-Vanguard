@@ -1129,7 +1129,30 @@ namespace RTC
 
         private void cbMemoryDomainTool_SelectedIndexChanged(object sender, EventArgs e)
         {
+            
+            if (!pnAdvancedTool.Controls.Contains(RTC_Core.vmdPoolForm))
+            {
+                RTC_Core.vmdPoolForm.TopLevel = false;
+                pnAdvancedTool.Controls.Add(RTC_Core.vmdPoolForm);
+            }
+            if (RTC_Core.vmdPoolForm.Visible)
+                RTC_Core.vmdPoolForm.Hide();
 
+            if (!pnAdvancedTool.Controls.Contains(RTC_Core.vmdGenForm))
+            {
+                RTC_Core.vmdGenForm.TopLevel = false;
+                pnAdvancedTool.Controls.Add(RTC_Core.vmdGenForm);
+            }
+            if (RTC_Core.vmdGenForm.Visible)
+                RTC_Core.vmdGenForm.Hide();
+
+            if (!pnAdvancedTool.Controls.Contains(RTC_Core.vmdActForm))
+            {
+                RTC_Core.vmdActForm.TopLevel = false;
+                pnAdvancedTool.Controls.Add(RTC_Core.vmdActForm);
+            }
+            if (RTC_Core.vmdActForm.Visible)
+                RTC_Core.vmdActForm.Hide();
 
 
             switch (cbMemoryDomainTool.SelectedItem.ToString())
@@ -1137,10 +1160,13 @@ namespace RTC
                 case "No Tool Selected":
                     break;
                 case "Virtual Memory Domain Pool":
+                    RTC_Core.vmdPoolForm.Show();
                     break;
                 case "Virtual Memory Domain Generator":
+                    RTC_Core.vmdGenForm.Show();
                     break;
                 case "ActiveTable Generator":
+                    RTC_Core.vmdActForm.Show();
                     break;
             }
 

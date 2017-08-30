@@ -17,7 +17,7 @@ namespace RTC
 
     public static class RTC_Core
     {
-		public static string RtcVersion = "2.89";
+		public static string RtcVersion = "2.90";
 		
         public static Random RND = new Random();
         public static string[] args;
@@ -759,50 +759,37 @@ namespace RTC
 
 			if (form == null)
 			{
-				if (coreForm != null)
-				{
-					allControls.AddRange(coreForm.Controls.getControlsWithTag());
-					allControls.Add(coreForm);
-				}
-				if (ghForm != null)
-				{
-					allControls.AddRange(ghForm.Controls.getControlsWithTag());
-					allControls.Add(ghForm);
-				}
-				if (spForm != null)
-				{
-					allControls.AddRange(spForm.Controls.getControlsWithTag());
-					allControls.Add(spForm);
-				}
-				if (multiForm != null)
-				{
-					allControls.AddRange(multiForm.Controls.getControlsWithTag());
-					allControls.Add(multiForm);
-				}
-				if (multipeerpopoutForm != null)
-				{
-					allControls.AddRange(multipeerpopoutForm.Controls.getControlsWithTag());
-					allControls.Add(multipeerpopoutForm);
-				}
-				if (sbForm != null)
-				{
-					allControls.AddRange(sbForm.Controls.getControlsWithTag());
-					allControls.Add(sbForm);
-				}
-				if (beForm != null)
-				{
-					allControls.AddRange(beForm.Controls.getControlsWithTag());
-					allControls.Add(beForm);
-				}
+
+                var targetForms = new Form[]
+                {
+                    coreForm,
+                    ghForm,
+                    spForm,
+                    multiForm,
+                    multipeerpopoutForm,
+                    sbForm,
+                    beForm,
+                    vmdActForm,
+                    vmdGenForm,
+                    vmdPoolForm,
+                };
+
+                foreach(Form targetForm in targetForms)
+				    if (targetForm != null)
+				    {
+					    allControls.AddRange(targetForm.Controls.getControlsWithTag());
+					    allControls.Add(targetForm);
+				    }
+
 
 			}
 			else
 				allControls.AddRange(form.Controls.getControlsWithTag());
 
-			var lightColorControls = allControls.FindAll(it => (it.Tag as string).Contains("color:light"));
-			var normalColorControls = allControls.FindAll(it => (it.Tag as string).Contains("color:normal"));
-			var darkColorControls = allControls.FindAll(it => (it.Tag as string).Contains("color:dark"));
-			var darkerColorControls = allControls.FindAll(it => (it.Tag as string).Contains("color:darker"));
+			var lightColorControls = allControls.FindAll(it => ((it.Tag as string) ?? "").Contains("color:light"));
+			var normalColorControls = allControls.FindAll(it => ((it.Tag as string) ?? "").Contains("color:normal"));
+			var darkColorControls = allControls.FindAll(it => ((it.Tag as string) ?? "").Contains("color:dark"));
+			var darkerColorControls = allControls.FindAll(it => ((it.Tag as string) ?? "").Contains("color:darker"));
 
 			foreach (Control c in lightColorControls)
 				c.BackColor = color.ChangeColorBrightness(0.30f);

@@ -358,14 +358,32 @@ namespace RTC
 
 				}
 
-				if (rbCorrupt.Checked)
-					RTC_StockpileManager.Corrupt();
+
+                RTC_RPC.SendToKillSwitch("FREEZE");
+                RTC_NetCore.HugeOperationStart();
+
+                if (rbCorrupt.Checked)
+                {
+                    if (RTC_Core.SelectedEngine == CorruptionEngine.EXTERNALROM)
+                    {
+                        if (sender == null)
+                            RTC_StockpileManager.Corrupt();
+                        else
+                            RTC_RPC.CorruptPlugin();
+                    }
+                    else
+                        RTC_StockpileManager.Corrupt();
+                }
 				if (rbInject.Checked)
 					RTC_StockpileManager.InjectFromStashkey(RTC_StockpileManager.currentStashkey);
 				else if (rbOriginal.Checked)
 					RTC_StockpileManager.OriginalFromStashkey(RTC_StockpileManager.currentStashkey);
 
-				RefreshStashHistory();
+                RTC_RPC.SendToKillSwitch("UNFREEZE");
+                RTC_NetCore.HugeOperationEnd();
+
+
+                RefreshStashHistory();
 
 			}
 			finally
@@ -1132,6 +1150,8 @@ namespace RTC
 			XmlSerializer xs = new XmlSerializer(typeof(SaveStateKeys));
 			SaveStateKeys ssk;
 
+            RTC_NetCore.HugeOperationStart();
+
 			try
 			{
 				Stockpile.Extract(Filename,"TEMP4","keys.xml");
@@ -1195,7 +1215,7 @@ namespace RTC
 
             refreshSavestateTextboxes();
 
-
+            RTC_NetCore.HugeOperationEnd();
         }
 
         public static void CheckCompatibility()
@@ -1215,9 +1235,21 @@ namespace RTC
                     sks.Add(RTC_StockpileManager.SavestateStashkeyDico[key]);
             }
 
+            Dictionary<string, string> StashkeySystemNameToCurrentCoreDico = new Dictionary<string, string>();
+
             foreach (StashKey sk in sks)
             {
-                string currentCore = (string)RTC_Core.SendCommandToBizhawk(new RTC_Command(CommandType.REMOTE_KEY_GETSYSTEMCORE) { objectValue = sk.SystemName }, true);
+                string currentCore;
+                string systemName = sk.SystemName;
+
+                if (StashkeySystemNameToCurrentCoreDico.ContainsKey(systemName))
+                    currentCore = StashkeySystemNameToCurrentCoreDico[systemName];
+                else
+                {
+                    currentCore = (string)RTC_Core.SendCommandToBizhawk(new RTC_Command(CommandType.REMOTE_KEY_GETSYSTEMCORE) { objectValue = systemName }, true);
+                    StashkeySystemNameToCurrentCoreDico.Add(systemName, currentCore);
+                }
+
                 if (sk.SystemCore != currentCore)
                 {
                     string errorMessage = $"Core mismatch for System [{sk.SystemName}]\n Current Bizhawk core -> {currentCore}\n SavestateList core -> {sk.SystemCore}";

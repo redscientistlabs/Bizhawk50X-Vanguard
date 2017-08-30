@@ -257,6 +257,12 @@ namespace RTC
         {
             SendToPlugin("RTC_Plugin|SET|" + RTC_Core.SendCommandToBizhawk(new RTC_Command(CommandType.REMOTE_KEY_GETOPENROMFILENAME), true).ToString() + "|" + RTC_Core.bizhawkDir + "\\CorruptedROM.rom" + "|" + RTC_Core.bizhawkDir + "\\ExternalCorrupt.exe");
         }
+
+        public static void CorruptPlugin()
+        {
+            SendToPlugin("RTC_Plugin|CORRUPT");
+        }
+
         public static void ClosePlugin()
         {
             SendToPlugin("RTC_Plugin|CLOSE");

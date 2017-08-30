@@ -16,8 +16,25 @@ namespace RTC
 
 		//Object references
 		public static Stockpile currentStockpile = null;
-		public static StashKey currentStashkey = null;
-		public static StashKey backupedState = null;
+
+		public static StashKey currentStashkey
+        {
+            get
+            {
+                return _currentStashkey;
+            }
+            set
+            {
+                _currentStashkey = value;
+
+                //GC.Collect();
+                //GC.WaitForPendingFinalizers();
+
+            }
+        }
+        private static StashKey _currentStashkey = null;
+
+        public static StashKey backupedState = null;
 		public static Stack<StashKey> allBackupStates = new Stack<StashKey>();
 		public static BlastLayer lastBlastLayerBackup = null;
 		public static string currentGameSystem = "";
