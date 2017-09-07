@@ -1052,12 +1052,13 @@
             // 
             this.lbMemoryDomains.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
             this.lbMemoryDomains.BorderStyle = System.Windows.Forms.BorderStyle.None;
-            this.lbMemoryDomains.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F);
+            this.lbMemoryDomains.Font = new System.Drawing.Font("Segoe UI", 8F);
             this.lbMemoryDomains.ForeColor = System.Drawing.Color.White;
             this.lbMemoryDomains.FormattingEnabled = true;
             this.lbMemoryDomains.Location = new System.Drawing.Point(147, 11);
             this.lbMemoryDomains.Margin = new System.Windows.Forms.Padding(5);
             this.lbMemoryDomains.Name = "lbMemoryDomains";
+            this.lbMemoryDomains.ScrollAlwaysVisible = true;
             this.lbMemoryDomains.SelectionMode = System.Windows.Forms.SelectionMode.MultiSimple;
             this.lbMemoryDomains.Size = new System.Drawing.Size(255, 156);
             this.lbMemoryDomains.TabIndex = 11;

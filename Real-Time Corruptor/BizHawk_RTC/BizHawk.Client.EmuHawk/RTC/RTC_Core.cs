@@ -17,7 +17,7 @@ namespace RTC
 
     public static class RTC_Core
     {
-		public static string RtcVersion = "2.90b";
+		public static string RtcVersion = "2.91a";
 		
         public static Random RND = new Random();
         public static string[] args;
@@ -161,6 +161,20 @@ namespace RTC
 
 			standaloneForm = _standaloneForm;
 
+
+            allRtcForms = new Form[]{
+                coreForm,
+                ghForm,
+                spForm,
+                multiForm,
+                multipeerpopoutForm,
+                sbForm,
+                beForm,
+                vmdPoolForm,
+                vmdGenForm,
+                vmdActForm,
+            };
+
             if (!Directory.Exists(RTC_Core.rtcDir + "\\TEMP\\"))
                 Directory.CreateDirectory(RTC_Core.rtcDir + "\\TEMP\\");
 
@@ -251,15 +265,26 @@ namespace RTC
 					{
 						RemoteRTC_SupposedToBeConnected = false;
 						Console.WriteLine("RemoteRTC.ServerConnectionLost");
-						coreForm.pnEngineConfig.Hide();
-						coreForm.pnLeftPanel.Hide();
-						csForm.lbConnectionStatus.Text = "Connection status: Bizhawk timed out";
-						csForm.btnReturnToSession.Visible = false;
-						ghForm.lbConnectionStatus.Text = "Connection status: Bizhawk timed out";
-						csForm.Show();
 
-						ghForm.pnHideGlitchHarvester.BringToFront();
-						ghForm.pnHideGlitchHarvester.Show();
+                        if (coreForm != null && !coreForm.IsDisposed)
+                        {
+                            coreForm.pnEngineConfig.Hide();
+                            coreForm.pnLeftPanel.Hide();
+                        }
+
+                        if (csForm != null && !csForm.IsDisposed)
+                        {
+                            csForm.lbConnectionStatus.Text = "Connection status: Bizhawk timed out";
+                            csForm.btnReturnToSession.Visible = false;
+                            csForm.Show();
+                        }
+
+                        if (ghForm != null && !ghForm.IsDisposed)
+                        {
+                            ghForm.lbConnectionStatus.Text = "Connection status: Bizhawk timed out";
+                            ghForm.pnHideGlitchHarvester.BringToFront();
+                            ghForm.pnHideGlitchHarvester.Show();
+                        }
 
 						RTC_GameProtection.Stop();
 

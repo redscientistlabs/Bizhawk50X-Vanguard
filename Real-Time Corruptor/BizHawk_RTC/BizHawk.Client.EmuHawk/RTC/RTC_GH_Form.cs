@@ -493,6 +493,8 @@ namespace RTC
 
 			var sk = RTC_StockpileManager.currentStashkey;
 
+            sk.BlastLayer.Rasterize();
+
 			var dataRow = dgvStockpile.Rows[dgvStockpile.Rows.Add()];
 			dataRow.Cells["Item"].Value = sk;
 			dataRow.Cells["GameName"].Value = sk.GameName;

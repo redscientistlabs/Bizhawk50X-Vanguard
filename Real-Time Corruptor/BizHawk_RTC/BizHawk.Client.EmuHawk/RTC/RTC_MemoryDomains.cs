@@ -9,6 +9,7 @@ using BizHawk.Client.EmuHawk;
 using System.Windows.Forms;
 using System.Threading;
 using BizHawk.Emulation.Cores.Nintendo.N64;
+using System.Xml.Serialization;
 
 namespace RTC
 {
@@ -246,9 +247,11 @@ namespace RTC
 
 			//RefreshDomains();
 
+            /*
             if(VmdPool.Count > 0)
                 foreach (string VmdKey in VmdPool.Keys)
                     MemoryInterfaces.Add(VmdKey, VmdPool[VmdKey]);
+            */
 
             return new object[] { MemoryInterfaces.Values.ToArray(), _domain };
 		}
@@ -274,13 +277,13 @@ namespace RTC
             if (MemoryInterfaces.ContainsKey(_domain))
             {
                 MemoryInterface mi = MemoryInterfaces[_domain];
-                if(mi is MemoryDomainProxy)
-                    return (MemoryDomainProxy)mi;
-                else
-                {
-                    var vmd = (mi as VirtualMemoryDomain);
-                    return getProxy(vmd.getRealDomain(_address), vmd.getRealAddress(_address));
-                }
+                return (MemoryDomainProxy)mi;
+            }
+            else if(VmdPool.ContainsKey(_domain))
+            {
+                MemoryInterface mi = VmdPool[_domain];
+                var vmd = (mi as VirtualMemoryDomain);
+                return getProxy(vmd.getRealDomain(_address), vmd.getRealAddress(_address));
             }
             else
                 return null;
@@ -291,10 +294,13 @@ namespace RTC
 			if (MemoryInterfaces.Count == 0)
 				RefreshDomains();
 
-			if (MemoryInterfaces.ContainsKey(_domain))
+            if (MemoryInterfaces.ContainsKey(_domain))
 				return MemoryInterfaces[_domain];
-			else
-				return null;
+
+            if (VmdPool.ContainsKey(_domain))
+                return VmdPool[_domain];
+
+			return null;
         }
 
 		public static void UnFreezeAddress(long address)
@@ -332,19 +338,22 @@ namespace RTC
     [Serializable()]
     public abstract class MemoryInterface
     {
-        public long Size;
-        public int WordSize;
-        public string name;
-        public bool BigEndian;
+        public abstract long Size { get; set; }
+        public int WordSize { get; set; }
+        public string name { get; set; }
+        public bool BigEndian { get; set; }
 
         public abstract byte PeekByte(long address);
         public abstract void PokeByte(long address, byte value);
     }
 
+    [XmlInclude(typeof(MemoryPointer))]
     [Serializable()]
     public class VirtualMemoryDomain : MemoryInterface
     {
-        List<MemoryPointer> MemoryPointers = new List<MemoryPointer>();
+        public List<MemoryPointer> MemoryPointers = new List<MemoryPointer>();
+
+        public override long Size { get { return MemoryPointers.Count; } set { } }
 
         public void AddFromBlastLayer(BlastLayer bl)
         {
@@ -375,7 +384,7 @@ namespace RTC
 
         public override string ToString()
         {
-            return "[V] " + name;
+            return "[V]" + name;
             //Virtual Memory Domains always start with [V]
         }
 
@@ -407,26 +416,34 @@ namespace RTC
     }
 
     [Serializable()]
+    [XmlType("MP")]
     public class MemoryPointer
     {
-        private string _Domain;
-        public string Domain { get { return (IsEnabled ? _Domain : ""); }}
-
-        private long _Address;
-        public long Address { get { return (IsEnabled ? _Address : 0); } }
-
-        bool IsEnabled;
+        [XmlElement("D")]
+        public string DomainData { get; set; }
+        [XmlIgnore]
+        public string Domain { get { return (IsEnabled ? DomainData : ""); }}
+        [XmlElement("A")]
+        public long AddressData { get; set; }
+        [XmlIgnore]
+        public long Address { get { return (IsEnabled ? AddressData : 0); } }
+        [XmlElement("E")]
+        public bool IsEnabled { get; set; }
 
         public MemoryPointer(string _domain, long _address)
         {
-            _Domain = _domain;
-            _Address = _address;
+            DomainData = _domain;
+            AddressData = _address;
             IsEnabled = true;
+        }
+
+        public MemoryPointer()
+        {
         }
 
         public override string ToString()
         {
-            return $"[{(IsEnabled ? "x" : " ")}] {_Domain}({_Address})";
+            return $"[{(IsEnabled ? "x" : " ")}] {DomainData}({AddressData})";
 
             //Gives: [x] ROM(123)
         }
@@ -446,6 +463,8 @@ namespace RTC
 		//public int WordSize;
 		//public string name;
 		//public bool BigEndian;
+
+        public override long Size { get; set; }
 
 		public MemoryDomainProxy(MemoryDomain _md)
 		{

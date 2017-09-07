@@ -77,10 +77,12 @@ namespace RTC
 			}
 
 			StashKey newSk = (StashKey)sk.Clone();
+			newSk.BlastLayer = (BlastLayer)bl.Clone();
 
-			newSk.BlastLayer = bl;
+            GC.Collect();
+            GC.WaitForPendingFinalizers();
 
-			newSk.Run();
+            newSk.Run();
 		}
 
 		private void btnCorrupt_Click(object sender, EventArgs e)
@@ -89,26 +91,32 @@ namespace RTC
 
 			foreach (var item in lbBlastLayer.Items)
 			{
-				BlastUnit bu = (item as BlastUnit);
-				if (bu.IsEnabled)
+                BlastUnit bu = (item as BlastUnit);
+                if (bu.IsEnabled)
 					bl.Layer.Add(bu);
 			}
 
-			bl.Apply();
+            GC.Collect();
+            GC.WaitForPendingFinalizers();
+
+            (bl.Clone() as BlastLayer).Apply();
 		}
 
 		private void btnSendToStash_Click(object sender, EventArgs e)
 		{
 			StashKey newSk = (StashKey)sk.Clone();
-			newSk.Key = RTC_Core.GetRandomKey();
-			newSk.Alias = null;
+			//newSk.Key = RTC_Core.GetRandomKey();
+			//newSk.Alias = null;
 
 			RTC_StockpileManager.StashHistory.Add(newSk);
 			RTC_Core.ghForm.RefreshStashHistory();
 			RTC_Core.ghForm.dgvStockpile.ClearSelection();
 			RTC_Core.ghForm.DontLoadSelectedStash = true;
 			RTC_Core.ghForm.lbStashHistory.SelectedIndex = RTC_Core.ghForm.lbStashHistory.Items.Count - 1;
-		}
+
+            GC.Collect();
+            GC.WaitForPendingFinalizers();
+        }
 
 		private void lbBlastLayer_MouseDoubleClick(object sender, MouseEventArgs e)
 		{

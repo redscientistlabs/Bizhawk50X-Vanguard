@@ -135,7 +135,7 @@ namespace RTC
 			Process.Start("http://virus.run/");
 		}
 
-        private void cbNetCoreCommandTimeout_SelectedIndexChanged(object sender, EventArgs e)
+        public void cbNetCoreCommandTimeout_SelectedIndexChanged(object sender, EventArgs e)
         {
             string setting = cbNetCoreCommandTimeout.SelectedItem.ToString().ToUpper();
             changeNetCoreSettings(setting);
@@ -144,9 +144,13 @@ namespace RTC
         }
         public static void changeNetCoreSettings(string setting)
         {
+            if (RTC_Core.isStandalone && RTC_Core.csForm.cbNetCoreCommandTimeout.SelectedItem.ToString() == setting)
+                return;
+
             switch (setting)
             {
                 case "STANDARD":
+                    ReturnWatch.maxtries = 0;
                     RTC_NetCore.DefaultKeepAliveCounter = 5;
                     RTC_NetCore.DefaultNetworkStreamTimeout = 2000;
                     RTC_NetCore.DefaultMaxRetries = 666;
@@ -156,6 +160,7 @@ namespace RTC
 
                     break;
                 case "LAZY":
+                    ReturnWatch.maxtries = 0;
                     RTC_NetCore.DefaultKeepAliveCounter = 15;
                     RTC_NetCore.DefaultNetworkStreamTimeout = 6000;
                     RTC_NetCore.DefaultMaxRetries = 6666;
@@ -166,6 +171,8 @@ namespace RTC
                     break;
 
                 case "DISABLED":
+
+                    ReturnWatch.maxtries = 0;
                     RTC_NetCore.DefaultKeepAliveCounter = int.MaxValue;
                     RTC_NetCore.DefaultNetworkStreamTimeout = int.MaxValue;
                     RTC_NetCore.DefaultMaxRetries = int.MaxValue;

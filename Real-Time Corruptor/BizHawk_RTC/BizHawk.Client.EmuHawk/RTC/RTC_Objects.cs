@@ -610,7 +610,10 @@ namespace RTC
 
 		public object Clone()
 		{
-			return ObjectCopier.Clone(this);
+            object sk = ObjectCopier.Clone(this);
+            (sk as StashKey).Key = RTC_Core.GetRandomKey();
+            (sk as StashKey).Alias = null;
+            return sk;
 		}
 
 		public static string getCoreName(string _SystemName)
@@ -720,7 +723,7 @@ namespace RTC
     }
 
     [Serializable()]
-	public class BlastLayer
+	public class BlastLayer : ICloneable
 	{
 		public List<BlastUnit> Layer;
 
@@ -734,7 +737,12 @@ namespace RTC
 			Layer = _layer;
 		}
 
-		public void Apply(bool ignoreMaximums = false)
+        public object Clone()
+        {
+            return ObjectCopier.Clone(this);
+        }
+
+        public void Apply(bool ignoreMaximums = false)
 		{
 			if(RTC_Core.isStandalone)
 			{
@@ -812,7 +820,12 @@ namespace RTC
 				bu.Reroll();
 		}
 
-	}
+        public void Rasterize()
+        {
+            foreach (BlastUnit bu in Layer)
+                bu.Rasterize();
+        }
+    }
 
     [Serializable()]
     public abstract class BlastUnit
@@ -820,7 +833,10 @@ namespace RTC
         public abstract bool Apply();
         public abstract BlastUnit GetBackup();
 		public abstract void Reroll();
-		public abstract bool IsEnabled { get; set; }
+
+        public abstract void Rasterize();
+
+        public abstract bool IsEnabled { get; set; }
 
         public abstract string Domain { get; set; }
         public abstract long Address { get; set; }
@@ -844,10 +860,23 @@ namespace RTC
             IsEnabled = _isEnabled;
         }
 
-		public BlastByte()
+        public BlastByte()
 		{
 
 		}
+
+        public override void Rasterize()
+        {
+            if(Domain.Contains("[V]"))
+            {
+                MemoryPointer mp = (RTC_MemoryDomains.VmdPool[Domain] as VirtualMemoryDomain)?.MemoryPointers[(int)Address];
+                if (mp == null)
+                    return;
+
+                Domain = mp.Domain;
+                Address = mp.Address;
+            }
+        }
 
         public override bool Apply()
         {
@@ -973,7 +1002,20 @@ namespace RTC
 
 		}
 
-		public override bool Apply()
+        public override void Rasterize()
+        {
+            if (Domain.Contains("[V]"))
+            {
+                MemoryPointer mp = (RTC_MemoryDomains.VmdPool[Domain] as VirtualMemoryDomain)?.MemoryPointers[(int)Address];
+                if (mp == null)
+                    return;
+
+                Domain = mp.Domain;
+                Address = mp.Address;
+            }
+        }
+
+        public override bool Apply()
 		{
 			if (!IsEnabled)
 				return true;
@@ -1069,7 +1111,7 @@ namespace RTC
             new object();
 		}
 
-		public void Execute()
+        public void Execute()
 		{
 			try
 			{
@@ -1099,7 +1141,30 @@ namespace RTC
 			}
 		}
 
-		public override bool Apply()
+        public override void Rasterize()
+        {
+            if (Domain.Contains("[V]"))
+            {
+                MemoryPointer mp = (RTC_MemoryDomains.VmdPool[Domain] as VirtualMemoryDomain)?.MemoryPointers[(int)Address];
+                if (mp != null)
+                {
+                    Domain = mp.Domain;
+                    Address = mp.Address;
+                }
+            }
+
+            if (PipeDomain.Contains("[V]"))
+            {
+                MemoryPointer mp = (RTC_MemoryDomains.VmdPool[PipeDomain] as VirtualMemoryDomain)?.MemoryPointers[(int)PipeAddress];
+                if (mp != null)
+                {
+                    PipeDomain = mp.Domain;
+                    PipeAddress = mp.Address;
+                }
+            }
+        }
+
+        public override bool Apply()
 		{
 			if (!IsEnabled)
 				return true;
@@ -1189,6 +1254,19 @@ namespace RTC
 		public BlastCheat()
 		{
 		}
+
+        public override void Rasterize()
+        {
+            if (Domain.Contains("[V]"))
+            {
+                MemoryPointer mp = (RTC_MemoryDomains.VmdPool[Domain] as VirtualMemoryDomain)?.MemoryPointers[(int)Address];
+                if (mp == null)
+                    return;
+
+                Domain = mp.Domain;
+                Address = mp.Address;
+            }
+        }
 
         public override bool Apply()
         {

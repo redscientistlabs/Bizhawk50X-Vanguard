@@ -59,7 +59,7 @@ namespace RTC
 		public static int KeepAliveCounter = 5;
         public static int DefaultKeepAliveCounter = 5;
         public static int DefaultNetworkStreamTimeout = 2000;
-        public static int DefaultMaxRetries = 666;
+        public static volatile int DefaultMaxRetries = 666;
 
         System.Windows.Forms.Timer KeepAliveTimer = null;
 
@@ -110,6 +110,7 @@ namespace RTC
                     RTC_Core.csForm.cbNetCoreCommandTimeout.SelectedIndex = RTC_Core.csForm.cbNetCoreCommandTimeout.Items.Count - 1;
                 else
                     RTC_Core.csForm.cbNetCoreCommandTimeout.SelectedIndex = RTC_Core.csForm.cbNetCoreCommandTimeout.Items.Count - 2;
+
             }
         }
         public static void HugeOperationEnd()
@@ -188,7 +189,17 @@ namespace RTC
 
 					if (networkStream != null && networkStream.DataAvailable)
 					{
-						RTC_Command cmd = (RTC_Command)binaryFormatter.Deserialize(networkStream);
+                        RTC_Command cmd;
+
+                        try
+                        {
+                            cmd = (RTC_Command)binaryFormatter.Deserialize(networkStream);
+                        }
+                        catch(Exception ex)
+                        {
+                            throw ex;
+                        }
+
 						if (cmd != null)
 						{
 							if(cmd.Type == CommandType.RETURNVALUE)
@@ -208,8 +219,14 @@ namespace RTC
 							PeerCommandQueue.RemoveFirst();
 						}
 
-						binaryFormatter.Serialize(networkStream, backCmd);
-
+                        try
+                        {
+                            binaryFormatter.Serialize(networkStream, backCmd);
+                        }
+                        catch(Exception ex)
+                        {
+                            throw ex;
+                        }
 
 						if (backCmd.Type == CommandType.BYE)
 						{
@@ -951,7 +968,22 @@ namespace RTC
 
 						break;
 
-					case CommandType.REMOTE_DOMAIN_SETSELECTEDDOMAINS:
+                    case CommandType.REMOTE_DOMAIN_VMD_ADD:
+                        {
+                            MemoryInterface VMD = (MemoryInterface)cmd.objectValue;
+                            RTC_MemoryDomains.VmdPool[VMD.ToString()] = VMD;
+                        }
+                        break;
+
+                    case CommandType.REMOTE_DOMAIN_VMD_REMOVE:
+                        {
+                            string VmdName = (string)cmd.objectValue;
+                            if (RTC_MemoryDomains.VmdPool.ContainsKey(VmdName))
+                                RTC_MemoryDomains.VmdPool.Remove(VmdName);
+                        }
+                        break;
+
+                    case CommandType.REMOTE_DOMAIN_SETSELECTEDDOMAINS:
 							RTC_MemoryDomains.UpdateSelectedDomains((string[])cmd.objectValue);
 						break;
 
@@ -1391,15 +1423,16 @@ namespace RTC
 	public static class ReturnWatch
 	{
 		public static volatile Dictionary<Guid, object> SyncReturns = new Dictionary<Guid, object>();
+        public static volatile int maxtries = 0;
 
 		public static object GetValue(Guid WatchedGuid, CommandType type)
 		{
 			//await Task.Factory.StartNew(() => WaitForValue(WatchedGuid));
 			Console.WriteLine("GetValue:Awaiting -> " + type.ToString());
 
-			int maxtries = 0;
+            maxtries = 0;
 
-			while (!SyncReturns.ContainsKey(WatchedGuid) && maxtries < RTC_NetCore.DefaultMaxRetries)
+            while (!SyncReturns.ContainsKey(WatchedGuid) && maxtries < RTC_NetCore.DefaultMaxRetries)
 			{
 				maxtries++;
 				//WaitMiliseconds(2);
@@ -1465,7 +1498,9 @@ namespace RTC
 		REMOTE_KEY_GETOPENROMFILENAME,
 		REMOTE_KEY_GETRAWBLASTLAYER,
 		REMOTE_DOMAIN_GETDOMAINS,
-		REMOTE_DOMAIN_SETSELECTEDDOMAINS,
+        REMOTE_DOMAIN_VMD_ADD,
+        REMOTE_DOMAIN_VMD_REMOVE,
+        REMOTE_DOMAIN_SETSELECTEDDOMAINS,
 		REMOTE_DOMAIN_SYSTEM,
 		REMOTE_DOMAIN_SYSTEMPREFIX,
 		REMOTE_DOMAIN_PEEKBYTE,

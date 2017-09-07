@@ -484,9 +484,14 @@ namespace RTC
 
 			lbMemoryDomains.Items.Clear();
 			lbMemoryDomains.Items.AddRange(RTC_MemoryDomains.MemoryInterfaces.Keys.ToArray());
-		}
 
-		public void RefreshDomainsAndKeepSelected(string[] overrideDomains = null)
+            if(RTC_MemoryDomains.VmdPool.Count > 0)
+                lbMemoryDomains.Items.AddRange(RTC_MemoryDomains.VmdPool.Values.Select(it => it.ToString()).ToArray());
+
+        }
+
+
+        public void RefreshDomainsAndKeepSelected(string[] overrideDomains = null)
 		{
 			string[] copy = RTC_MemoryDomains.lastSelectedDomains;
 
