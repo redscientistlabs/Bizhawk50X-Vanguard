@@ -10,6 +10,9 @@ using System.Windows.Forms;
 using System.Threading;
 using BizHawk.Emulation.Cores.Nintendo.N64;
 using System.Xml.Serialization;
+using System.Runtime.Serialization.Formatters.Binary;
+using System.IO;
+using System.IO.Compression;
 
 namespace RTC
 {
@@ -403,6 +406,50 @@ namespace RTC
                 return 0;
 
             return MemoryPointers[(int)address].Address;
+        }
+
+        public byte[] ToData()
+        {
+            VirtualMemoryDomain VMD = this;
+
+            using (MemoryStream serialized = new MemoryStream())
+            {
+                var binaryFormatter = new BinaryFormatter();
+                binaryFormatter.Serialize(serialized, VMD);
+
+                using (MemoryStream input = new MemoryStream(serialized.ToArray()))
+                using (MemoryStream output = new MemoryStream())
+                {
+
+                    using (GZipStream zip = new GZipStream(output, CompressionMode.Compress))
+                    {
+                        input.CopyTo(zip);
+                    }
+
+                    return output.ToArray();
+                }
+            }
+        }
+
+        public static VirtualMemoryDomain FromData(byte[] data)
+        {
+            using (MemoryStream input = new MemoryStream(data))
+            using (MemoryStream output = new MemoryStream())
+            {
+                using (GZipStream zip = new GZipStream(input, CompressionMode.Decompress))
+                {
+                    zip.CopyTo(output);
+                }
+
+                var binaryFormatter = new BinaryFormatter();
+
+                using (MemoryStream serialized = new MemoryStream(output.ToArray()))
+                {
+                    VirtualMemoryDomain VMD = (VirtualMemoryDomain)binaryFormatter.Deserialize(serialized);
+                    return VMD;
+                }
+            }
+
         }
 
         public override string ToString()

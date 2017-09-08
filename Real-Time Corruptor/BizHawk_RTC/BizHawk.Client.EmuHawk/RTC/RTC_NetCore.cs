@@ -970,7 +970,8 @@ namespace RTC
 
                     case CommandType.REMOTE_DOMAIN_VMD_ADD:
                         {
-                            MemoryInterface VMD = (MemoryInterface)cmd.objectValue;
+                            byte[] compresssedVMD = (byte[])cmd.objectValue;
+                            MemoryInterface VMD = (MemoryInterface)VirtualMemoryDomain.FromData(compresssedVMD);
                             RTC_MemoryDomains.VmdPool[VMD.ToString()] = VMD;
                         }
                         break;

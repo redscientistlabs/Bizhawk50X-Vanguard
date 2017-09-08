@@ -202,7 +202,7 @@ namespace RTC
             {
                 RTC_RPC.SendToKillSwitch("FREEZE");
                 RTC_NetCore.HugeOperationStart();
-                RTC_Core.SendCommandToBizhawk(new RTC_Command(CommandType.REMOTE_DOMAIN_VMD_ADD) { objectValue = VMD });
+                RTC_Core.SendCommandToBizhawk(new RTC_Command(CommandType.REMOTE_DOMAIN_VMD_ADD) { objectValue = VMD.ToData() }, true);
                 RTC_RPC.SendToKillSwitch("UNFREEZE");
                 RTC_NetCore.HugeOperationEnd();
             }

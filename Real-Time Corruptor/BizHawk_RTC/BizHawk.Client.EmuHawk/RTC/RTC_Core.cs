@@ -17,7 +17,7 @@ namespace RTC
 
     public static class RTC_Core
     {
-		public static string RtcVersion = "2.91b";
+		public static string RtcVersion = "2.91c";
 		
         public static Random RND = new Random();
         public static string[] args;
@@ -512,7 +512,7 @@ namespace RTC
 								if (RTC_Core.SelectedEngine != CorruptionEngine.FREEZE)
 									Domain = _selectedDomains[RND.Next(_selectedDomains.Length)];
 								else
-									Domain = RTC_MemoryDomains.MainDomain.ToString();
+                                    Domain = RTC_MemoryDomains.MainDomain.ToString();
 
                                 MaxAddress = RTC_MemoryDomains.getInterface(Domain).Size;
                                 RandomAddress = RTC_Core.RND.RandomLong(MaxAddress -1);

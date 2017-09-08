@@ -71,20 +71,28 @@ namespace RTC
             VirtualMemoryDomain VMD = (VirtualMemoryDomain)RTC_MemoryDomains.VmdPool[VmdName];
 
             SaveFileDialog saveFileDialog1 = new SaveFileDialog();
-            saveFileDialog1.DefaultExt = "xml";
+            saveFileDialog1.DefaultExt = "vmd";
             saveFileDialog1.Title = "Save VMD to File";
-            saveFileDialog1.Filter = "XML VMD file|*.xml";
+            saveFileDialog1.Filter = "Binary VMD file|*.vmd|XML VMD file|*.xml";
             saveFileDialog1.RestoreDirectory = true;
 
             if (saveFileDialog1.ShowDialog() == DialogResult.OK)
             {
-                FileStream FS;
-                XmlSerializer xs = new XmlSerializer(typeof(VirtualMemoryDomain));
+                string Filename = saveFileDialog1.FileName;
+                if (Filename.ToUpper().EndsWith(".VMD"))
+                {
+                    File.WriteAllBytes(Filename, VMD.ToData());
+                }
+                else
+                {
+                    FileStream FS;
+                    XmlSerializer xs = new XmlSerializer(typeof(VirtualMemoryDomain));
 
-                //creater stockpile.xml to temp folder from stockpile object
-                FS = File.Open(saveFileDialog1.FileName, FileMode.OpenOrCreate);
-                xs.Serialize(FS, VMD);
-                FS.Close();
+                    //creater stockpile.xml to temp folder from stockpile object
+                    FS = File.Open(Filename, FileMode.OpenOrCreate);
+                    xs.Serialize(FS, VMD);
+                    FS.Close();
+                }
             }
             else
                 return;
@@ -93,29 +101,47 @@ namespace RTC
         private void btnLoadVmd_Click(object sender, EventArgs e)
         {
             OpenFileDialog ofd = new OpenFileDialog();
-            ofd.DefaultExt = "xml";
+            ofd.DefaultExt = "vmd";
             ofd.Title = "Open VMD File";
-            ofd.Filter = "VMD xml files|*.xml";
+            ofd.Filter = "VMD files|*.vmd;*.xml";
             ofd.RestoreDirectory = true;
             if (ofd.ShowDialog() == DialogResult.OK)
             {
                 string Filename = ofd.FileName.ToString();
 
-                FileStream FS;
-                XmlSerializer xs = new XmlSerializer(typeof(VirtualMemoryDomain));
+                
                 VirtualMemoryDomain VMD;
+                byte[] binaryData = null;
 
                 try
                 {
-                    FS = File.Open(Filename, FileMode.OpenOrCreate);
-                    VMD = (VirtualMemoryDomain)xs.Deserialize(FS);
-                    FS.Close();
+                    if (Filename.ToUpper().EndsWith(".VMD"))
+                    {
+                        binaryData = File.ReadAllBytes(Filename);
+                        VMD = VirtualMemoryDomain.FromData(binaryData);
+                    }
+                    else
+                    {
+                        FileStream FS;
+                        XmlSerializer xs = new XmlSerializer(typeof(VirtualMemoryDomain));
+                        FS = File.Open(Filename, FileMode.OpenOrCreate);
+                        VMD = (VirtualMemoryDomain)xs.Deserialize(FS);
+                        FS.Close();
+                    }
 
                     string VmdName = VMD.ToString();
                     if (RTC_MemoryDomains.VmdPool.ContainsKey(VmdName))
                         RTC_MemoryDomains.VmdPool.Remove(VmdName);
 
                     RTC_MemoryDomains.VmdPool[VmdName] = VMD;
+                    if (RTC_Core.isStandalone)
+                    {
+                        RTC_RPC.SendToKillSwitch("FREEZE");
+                        RTC_NetCore.HugeOperationStart();
+                        RTC_Core.SendCommandToBizhawk(new RTC_Command(CommandType.REMOTE_DOMAIN_VMD_ADD) { objectValue = (binaryData != null ? binaryData : VMD.ToData()) },true);
+                        RTC_RPC.SendToKillSwitch("UNFREEZE");
+                        RTC_NetCore.HugeOperationEnd();
+                    }
 
                     RefreshVMDs();
                     RTC_Core.coreForm.RefreshDomainsAndKeepSelected();
