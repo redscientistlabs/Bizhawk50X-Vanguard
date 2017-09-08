@@ -890,18 +890,20 @@ namespace RTC
 				if (mdp == null)
 					return true;
 
+                long targetAddress = RTC_MemoryDomains.getRealAddress(Domain, Address);
+
                 switch (Type)
                 {
                     case BlastByteType.SET:
-                        mdp.PokeByte(Address, (byte)Value);
+                        mdp.PokeByte(targetAddress, (byte)Value);
                         break;
 
                     case BlastByteType.ADD:
-                        mdp.PokeByte(Address, (byte)(mdp.PeekByte(Address) + Value));
+                        mdp.PokeByte(targetAddress, (byte)(mdp.PeekByte(targetAddress) + Value));
                         break;
 
                     case BlastByteType.SUBSTRACT:
-                        mdp.PokeByte(Address, (byte)(mdp.PeekByte(Address) - Value));
+                        mdp.PokeByte(targetAddress, (byte)(mdp.PeekByte(targetAddress) - Value));
                         break;
 
                     case BlastByteType.NONE:
@@ -928,11 +930,12 @@ namespace RTC
             try
             {
                 MemoryDomainProxy mdp = RTC_MemoryDomains.getProxy(Domain, Address);
+                long targetAddress = RTC_MemoryDomains.getRealAddress(Domain, Address);
 
                 if (mdp == null || Type == BlastByteType.NONE)
                     return null;
 
-                return new BlastByte(Domain, Address, BlastByteType.SET, mdp.PeekByte(Address), true);
+                return new BlastByte(Domain, Address, BlastByteType.SET, mdp.PeekByte(targetAddress), true);
 
             }
             catch (Exception ex)
@@ -1026,11 +1029,13 @@ namespace RTC
 
 				if (mdp == null)
 					return true;
-	
-				mdp.PokeByte(Address, Values[0]);
-				mdp.PokeByte(Address + 1, Values[1]);
-				mdp.PokeByte(Address + 2, Values[2]);
-				mdp.PokeByte(Address + 3, Values[3]);
+
+                long targetAddress = RTC_MemoryDomains.getRealAddress(Domain, Address);
+
+                mdp.PokeByte(targetAddress, Values[0]);
+				mdp.PokeByte(targetAddress + 1, Values[1]);
+				mdp.PokeByte(targetAddress + 2, Values[2]);
+				mdp.PokeByte(targetAddress + 3, Values[3]);
 
 			}
 			catch (Exception ex)
@@ -1052,11 +1057,12 @@ namespace RTC
 			try
 			{
 				MemoryDomainProxy mdp = RTC_MemoryDomains.getProxy(Domain, Address);
-
 				if (mdp == null)
 					return null;
 
-				return new BlastVector(Domain, Address, RTC_VectorEngine.read32bits(mdp, Address), true);
+                long targetAddress = RTC_MemoryDomains.getRealAddress(Domain, Address);
+
+                return new BlastVector(Domain, Address, RTC_VectorEngine.read32bits(mdp, targetAddress), true);
 
 			}
 			catch (Exception ex)
@@ -1121,7 +1127,10 @@ namespace RTC
 				if (mdp == null || mdp2 == null)
 					throw new Exception($"Memory Domain error, MD1 -> {mdp.ToString()}, md2 -> {mdp2.ToString()}");
 
-                int currentValue = (int)mdp.PeekByte(Address);
+                long targetAddress = RTC_MemoryDomains.getRealAddress(Domain, Address);
+                long targetPipeAddress = RTC_MemoryDomains.getRealAddress(PipeDomain, PipeAddress);
+
+                int currentValue = (int)mdp.PeekByte(targetAddress);
 
                 int newValue = currentValue + TiltValue;
 
@@ -1130,7 +1139,7 @@ namespace RTC
                 else if (newValue > 255)
                     newValue = 255;
 
-                mdp2.PokeByte(PipeAddress,  (byte)newValue);
+                mdp2.PokeByte(targetPipeAddress,  (byte)newValue);
 
 			}
 			catch (Exception ex)
@@ -1281,11 +1290,14 @@ namespace RTC
                 if (mdp == null)
 					return true;
 
-                string cheatName = "RTC Cheat|" + Domain + "|" + Address.ToString() + "|" + DisplayType.ToString() + "|" + BigEndian.ToString() + "|" + Value.ToString() + "|" + IsEnabled.ToString() + "|" + IsFreeze.ToString();
+                string targetDomain = RTC_MemoryDomains.getRealDomain(Domain, Address);
+                long targetAddress = RTC_MemoryDomains.getRealAddress(Domain, Address);
+
+                string cheatName = "RTC Cheat|" + targetDomain + "|" + targetAddress.ToString() + "|" + DisplayType.ToString() + "|" + BigEndian.ToString() + "|" + Value.ToString() + "|" + IsEnabled.ToString() + "|" + IsFreeze.ToString();
 
                 if (!IsFreeze)
                 {
-                    Watch somewatch = Watch.GenerateWatch(mdp.md, Address, settings.Size, DisplayType, BigEndian, cheatName, Value, 0,0);
+                    Watch somewatch = Watch.GenerateWatch(mdp.md, targetAddress, settings.Size, DisplayType, BigEndian, cheatName, Value, 0,0);
                     Cheat ch = new Cheat(somewatch, Value, null, true);
                     Global.CheatList.Add(ch);
                 }

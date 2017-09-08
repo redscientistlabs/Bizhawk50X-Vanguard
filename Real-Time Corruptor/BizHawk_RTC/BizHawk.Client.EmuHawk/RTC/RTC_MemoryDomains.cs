@@ -21,7 +21,7 @@ namespace RTC
 		public static volatile Dictionary<string,MemoryInterface> MemoryInterfaces = new Dictionary<string, MemoryInterface>();
         public static volatile Dictionary<string, MemoryInterface> VmdPool = new Dictionary<string, MemoryInterface>();
 
-        public static string _domain = null;
+        public static string MainDomain = null;
 		public static bool BigEndian { get; set; }
 		public static int DataSize { get; set; }
 		public static WatchSize WatchSize
@@ -222,9 +222,9 @@ namespace RTC
 				foreach (MemoryInterface mi in (MemoryInterface[])returns[0])
 					MemoryInterfaces.Add(mi.ToString(), mi);
 
-				_domain = (string)returns[1];
-				DataSize = MemoryInterfaces[_domain].WordSize;
-				BigEndian = MemoryInterfaces[_domain].BigEndian;
+				MainDomain = (string)returns[1];
+				DataSize = MemoryInterfaces[MainDomain].WordSize;
+				BigEndian = MemoryInterfaces[MainDomain].BigEndian;
 
 			}
 
@@ -241,9 +241,9 @@ namespace RTC
 			foreach (MemoryDomain _domain in MDRI.MemoryDomains)
 				MemoryInterfaces.Add(_domain.ToString(), new MemoryDomainProxy(_domain));
 
-			_domain = MDRI.MemoryDomains.MainMemory.ToString();
-			DataSize = (MemoryInterfaces[_domain] as MemoryDomainProxy).md.WordSize;
-			BigEndian = (MemoryInterfaces[_domain] as MemoryDomainProxy).md.EndianType == MemoryDomain.Endian.Big;
+			MainDomain = MDRI.MemoryDomains.MainMemory.ToString();
+			DataSize = (MemoryInterfaces[MainDomain] as MemoryDomainProxy).md.WordSize;
+			BigEndian = (MemoryInterfaces[MainDomain] as MemoryDomainProxy).md.EndianType == MemoryDomain.Endian.Big;
 
 			//RefreshDomains();
 
@@ -253,7 +253,7 @@ namespace RTC
                     MemoryInterfaces.Add(VmdKey, VmdPool[VmdKey]);
             */
 
-            return new object[] { MemoryInterfaces.Values.ToArray(), _domain };
+            return new object[] { MemoryInterfaces.Values.ToArray(), MainDomain };
 		}
 
         public static void Clear()
@@ -319,7 +319,7 @@ namespace RTC
 			if (address >= 0)
 			{
 				var watch = Watch.GenerateWatch(
-					getProxy(_domain, address).md,
+					getProxy(MainDomain, address).md,
 					address,
 					WatchSize,
 					BizHawk.Client.Common.DisplayType.Hex,
@@ -333,7 +333,30 @@ namespace RTC
 			}
 		}
 
-	}
+        public static long getRealAddress(string domain, long address)
+        {
+            if (domain.Contains("[V]"))
+            {
+                MemoryInterface mi = VmdPool[domain];
+                var vmd = (mi as VirtualMemoryDomain);
+                return vmd.getRealAddress(address);
+            }
+            else
+                return address;
+        }
+
+        public static string getRealDomain(string domain, long address)
+        {
+            if (domain.Contains("[V]"))
+            {
+                MemoryInterface mi = VmdPool[domain];
+                var vmd = (mi as VirtualMemoryDomain);
+                return vmd.getRealDomain(address);
+            }
+            else
+                return domain;
+        }
+    }
 
     [Serializable()]
     public abstract class MemoryInterface
