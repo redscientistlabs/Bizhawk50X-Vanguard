@@ -989,15 +989,17 @@ namespace RTC
 				(columnsMenu.Items.Add("Open Selected Item in Blast Editor", null, new EventHandler((ob, ev) => {
                     if (RTC_Core.beForm != null)
                     {
+                        var sk = (dgvStockpile.SelectedRows[0].Cells[0].Value as StashKey);
                         RTC_Core.beForm.Close();
                         RTC_Core.beForm = new RTC_BlastEditorForm();
-                        RTC_Core.beForm.LoadStashkey(RTC_StockpileManager.currentStashkey);
+                        RTC_Core.beForm.LoadStashkey(sk);
                     }
                 })) as ToolStripMenuItem).Enabled = (dgvStockpile.SelectedRows.Count == 1);
 
                 columnsMenu.Items.Add(new ToolStripSeparator());
                 (columnsMenu.Items.Add("Generate VMD from Selected Item", null, new EventHandler((ob, ev) => {
-                    RTC_MemoryDomains.GenerateVmdFromStashkey(RTC_StockpileManager.currentStashkey);
+                    var sk = (dgvStockpile.SelectedRows[0].Cells[0].Value as StashKey);
+                    RTC_MemoryDomains.GenerateVmdFromStashkey(sk);
                 })) as ToolStripMenuItem).Enabled = (dgvStockpile.SelectedRows.Count == 1);
 
                 columnsMenu.Show(this, locate);
@@ -1298,16 +1300,18 @@ namespace RTC
                 (columnsMenu.Items.Add("Open Selected Item in Blast Editor", null, new EventHandler((ob, ev) => {
                     if (RTC_Core.beForm != null)
                     {
+                        var sk = RTC_StockpileManager.StashHistory[lbStashHistory.SelectedIndex];
                         RTC_Core.beForm.Close();
                         RTC_Core.beForm = new RTC_BlastEditorForm();
-                        RTC_Core.beForm.LoadStashkey(RTC_StockpileManager.currentStashkey);
+                        RTC_Core.beForm.LoadStashkey(sk);
                     }
                 })) as ToolStripMenuItem).Enabled = lbStashHistory.SelectedIndex != -1;
 
                 columnsMenu.Items.Add(new ToolStripSeparator());
                 (columnsMenu.Items.Add("Generate VMD from Selected Item", null, new EventHandler((ob, ev) => {
-                    RTC_StockpileManager.currentStashkey.BlastLayer.Rasterize();
-                    RTC_MemoryDomains.GenerateVmdFromStashkey(RTC_StockpileManager.currentStashkey);
+                    var sk = RTC_StockpileManager.StashHistory[lbStashHistory.SelectedIndex];
+                    sk.BlastLayer.Rasterize();
+                    RTC_MemoryDomains.GenerateVmdFromStashkey(sk);
                 })) as ToolStripMenuItem).Enabled = lbStashHistory.SelectedIndex != -1;
 
                 columnsMenu.Show(this, locate);
