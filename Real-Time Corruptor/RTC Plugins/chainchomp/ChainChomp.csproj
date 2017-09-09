@@ -172,7 +172,6 @@
   <ItemGroup>
     <Content Include="ChainChomp.ico" />
     <EmbeddedResource Include="Resources\super-mono-3d-52.png" />
-    <EmbeddedResource Include="Resources\imageres.dll" />
     <EmbeddedResource Include="Resources\disk16.png" />
     <EmbeddedResource Include="Resources\disk32.png" />
     <EmbeddedResource Include="Resources\chomp.WAV" />
