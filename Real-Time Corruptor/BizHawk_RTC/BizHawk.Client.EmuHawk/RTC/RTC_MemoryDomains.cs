@@ -367,6 +367,8 @@ namespace RTC
         {
             var proto = new VmdPrototype(sk.BlastLayer);
             AddVMD(proto);
+
+            RTC_Core.vmdPoolForm.RefreshVMDs();
         }
 
         public static void AddVMD(VmdPrototype proto) => AddVMD(proto.Generate());
@@ -445,6 +447,12 @@ namespace RTC
         public abstract void PokeByte(long address, byte value);
     }
 
+    [XmlInclude(typeof(BlastLayer))]
+    [XmlInclude(typeof(BlastCheat))]
+    [XmlInclude(typeof(BlastByte))]
+    [XmlInclude(typeof(BlastPipe))]
+    [XmlInclude(typeof(BlastVector))]
+    [XmlInclude(typeof(BlastUnit))]
     [Serializable()]
     public class VmdPrototype
     {
@@ -543,7 +551,7 @@ namespace RTC
 
     }
 
-    //[XmlInclude(typeof(MemoryPointer))]
+    
     [Serializable()]
     public class VirtualMemoryDomain : MemoryInterface
     {

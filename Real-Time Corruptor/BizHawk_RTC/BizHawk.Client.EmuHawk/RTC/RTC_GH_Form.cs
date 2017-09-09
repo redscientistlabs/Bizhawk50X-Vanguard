@@ -305,8 +305,15 @@ namespace RTC
 								return;
 						}
 
-					RTC_StockpileManager.LoadState(psk);
-				}
+                    RTC_RPC.SendToKillSwitch("FREEZE");
+                    RTC_NetCore.HugeOperationStart("LAZY");
+
+                    RTC_StockpileManager.LoadState(psk);
+
+                    RTC_RPC.SendToKillSwitch("UNFREEZE");
+                    RTC_NetCore.HugeOperationEnd();
+
+                }
 				else
 					MessageBox.Show("Savestate box is empty");
             }
