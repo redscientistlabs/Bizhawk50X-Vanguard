@@ -1015,7 +1015,9 @@ namespace RTC
 				case "Two":
 					RTC_VectorEngine.limiterList = RTC_VectorEngine.constantPositiveTwo;
 					break;
-
+                case "AnyFloat":
+                    RTC_VectorEngine.limiterList = null;
+                    break;
 					
 			}
 

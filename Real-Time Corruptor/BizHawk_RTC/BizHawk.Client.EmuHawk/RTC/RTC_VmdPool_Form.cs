@@ -25,14 +25,9 @@ namespace RTC
 
             string VmdName = lbLoadedVmdList.SelectedItem.ToString();
 
-            if(RTC_MemoryDomains.VmdPool.ContainsKey(VmdName))
-            {
-                RTC_MemoryDomains.VmdPool.Remove(VmdName);
-                RTC_Core.SendCommandToBizhawk(new RTC_Command(CommandType.REMOTE_DOMAIN_VMD_REMOVE) { objectValue = VmdName });
-            }
+            RTC_MemoryDomains.RemoveVMD(VmdName);
 
             RefreshVMDs();
-            RTC_Core.coreForm.RefreshDomainsAndKeepSelected();
         }
 
         public void RefreshVMDs()
@@ -106,7 +101,6 @@ namespace RTC
                 //string Filename = ofd.FileName.ToString();
                 foreach (string Filename in ofd.FileNames)
                 {
-                    VirtualMemoryDomain VMD;
                     try
                     {
 
@@ -115,33 +109,31 @@ namespace RTC
                         FS = File.Open(Filename, FileMode.OpenOrCreate);
                         var proto = (VmdPrototype)xs.Deserialize(FS);
                         FS.Close();
-                        VMD = proto.Generate();
 
-                        string VmdName = VMD.ToString();
-                        if (RTC_MemoryDomains.VmdPool.ContainsKey(VmdName))
-                            RTC_MemoryDomains.VmdPool.Remove(VmdName);
-
-                        RTC_MemoryDomains.VmdPool[VmdName] = VMD;
-                        if (RTC_Core.isStandalone)
-                        {
-                            RTC_RPC.SendToKillSwitch("FREEZE");
-                            RTC_NetCore.HugeOperationStart();
-                            RTC_Core.SendCommandToBizhawk(new RTC_Command(CommandType.REMOTE_DOMAIN_VMD_ADD) { objectValue = VMD.proto }, true);
-                            RTC_RPC.SendToKillSwitch("UNFREEZE");
-                            RTC_NetCore.HugeOperationEnd();
-                        }
-
-                        RefreshVMDs();
-                        RTC_Core.coreForm.RefreshDomainsAndKeepSelected();
+                        RTC_MemoryDomains.AddVMD(proto);
                     }
                     catch
                     {
                         MessageBox.Show($"The VMD xml file {Filename} could not be loaded.");
                     }
                 }
+
+                RefreshVMDs();
             }
             else
                 return;
+        }
+
+        private void btnRenameVMD_Click(object sender, EventArgs e)
+        {
+            if (lbLoadedVmdList.SelectedIndex == -1)
+                return;
+
+            string VmdName = lbLoadedVmdList.SelectedItem.ToString();
+
+            RTC_MemoryDomains.RenameVMD(VmdName);
+
+            RefreshVMDs();
         }
     }
 }

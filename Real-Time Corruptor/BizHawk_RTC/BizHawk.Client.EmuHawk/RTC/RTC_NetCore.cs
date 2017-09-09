@@ -894,7 +894,14 @@ namespace RTC
 						(cmd.objectValue as RTC_Params).Deploy();
 						break;
 
-					case CommandType.REMOTE_LOADROM:
+                    case CommandType.REMOTE_PUSHVMDS:
+                        RTC_MemoryDomains.VmdPool.Clear();
+                        foreach (var proto in (cmd.objectValue as VmdPrototype[]))
+                            RTC_MemoryDomains.AddVMD(proto);
+
+                        break;
+
+                    case CommandType.REMOTE_LOADROM:
 						RTC_Core.LoadRom_NET(cmd.romFilename);
 						break;
 					case CommandType.REMOTE_LOADSTATE:
@@ -969,20 +976,11 @@ namespace RTC
 						break;
 
                     case CommandType.REMOTE_DOMAIN_VMD_ADD:
-                        {
-                            //byte[] compresssedVMD = (byte[])cmd.objectValue;
-                            //MemoryInterface VMD = (MemoryInterface)VirtualMemoryDomain.FromData(compresssedVMD);
-                            MemoryInterface VMD = (cmd.objectValue as VmdPrototype).Generate();
-                            RTC_MemoryDomains.VmdPool[VMD.ToString()] = VMD;
-                        }
+                            RTC_MemoryDomains.AddVMD((cmd.objectValue as VmdPrototype));
                         break;
 
                     case CommandType.REMOTE_DOMAIN_VMD_REMOVE:
-                        {
-                            string VmdName = (string)cmd.objectValue;
-                            if (RTC_MemoryDomains.VmdPool.ContainsKey(VmdName))
-                                RTC_MemoryDomains.VmdPool.Remove(VmdName);
-                        }
+                            RTC_MemoryDomains.RemoveVMD((cmd.objectValue as string));
                         break;
 
                     case CommandType.REMOTE_DOMAIN_SETSELECTEDDOMAINS:
@@ -1156,7 +1154,10 @@ namespace RTC
 
 						RTC_Core.SendCommandToBizhawk(new RTC_Command(CommandType.REMOTE_PUSHPARAMS) { objectValue = new RTC_Params() }, true, true);
 
-						Thread.Sleep(100);
+                        RTC_Core.SendCommandToBizhawk(new RTC_Command(CommandType.REMOTE_PUSHVMDS) { objectValue = RTC_MemoryDomains.VmdPool.Values.Select(it => (it as VirtualMemoryDomain).proto).ToArray() }, true, true);
+
+
+                        Thread.Sleep(100);
 
                         if(RTC_StockpileManager.backupedState != null)
                             RTC_Core.coreForm.RefreshDomainsAndKeepSelected(RTC_StockpileManager.backupedState.SelectedDomains.ToArray());
@@ -1509,6 +1510,7 @@ namespace RTC
 		REMOTE_DOMAIN_POKEBYTE,
 		REMOTE_DOMAIN_GETSIZE,
 		REMOTE_PUSHPARAMS,
+        REMOTE_PUSHVMDS,
 		REMOTE_LOADROM,
 		REMOTE_LOADSTATE,
 		REMOTE_SAVESTATE,

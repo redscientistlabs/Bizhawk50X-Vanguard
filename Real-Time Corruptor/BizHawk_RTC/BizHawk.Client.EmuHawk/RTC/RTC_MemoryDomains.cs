@@ -22,6 +22,9 @@ namespace RTC
 		
 		public static volatile MemoryDomainRTCInterface MDRI = new MemoryDomainRTCInterface();
 		public static volatile Dictionary<string,MemoryInterface> MemoryInterfaces = new Dictionary<string, MemoryInterface>();
+
+
+
         public static volatile Dictionary<string, MemoryInterface> VmdPool = new Dictionary<string, MemoryInterface>();
 
         public static string MainDomain = null;
@@ -358,6 +361,75 @@ namespace RTC
             }
             else
                 return domain;
+        }
+
+        public static void GenerateVmdFromStashkey(StashKey sk)
+        {
+            var proto = new VmdPrototype(sk.BlastLayer);
+
+        }
+
+        public static void AddVMD(VmdPrototype proto) => AddVMD(proto.Generate());
+        public static void AddVMD(VirtualMemoryDomain VMD)
+        {
+            RTC_MemoryDomains.VmdPool[VMD.ToString()] = VMD;
+
+            if (RTC_Core.isStandalone)
+            {
+                RTC_RPC.SendToKillSwitch("FREEZE");
+                RTC_NetCore.HugeOperationStart();
+                RTC_Core.SendCommandToBizhawk(new RTC_Command(CommandType.REMOTE_DOMAIN_VMD_ADD) { objectValue = VMD.proto }, true);
+                RTC_RPC.SendToKillSwitch("UNFREEZE");
+                RTC_NetCore.HugeOperationEnd();
+            }
+
+            if(!RTC_Hooks.isRemoteRTC)
+                RTC_Core.coreForm.RefreshDomainsAndKeepSelected();
+        }
+
+        public static void RemoveVMD(VirtualMemoryDomain VMD) => RemoveVMD(VMD.ToString());
+        public static void RemoveVMD(string vmdName)
+        {
+            if (RTC_MemoryDomains.VmdPool.ContainsKey(vmdName))
+            {
+                RTC_MemoryDomains.VmdPool.Remove(vmdName);
+                RTC_Core.SendCommandToBizhawk(new RTC_Command(CommandType.REMOTE_DOMAIN_VMD_REMOVE) { objectValue = vmdName }, true);
+            }
+
+            if (!RTC_Hooks.isRemoteRTC)
+                RTC_Core.coreForm.RefreshDomainsAndKeepSelected();
+        }
+
+        public static void RenameVMD(VirtualMemoryDomain VMD) => RenameVMD(VMD.ToString());
+        public static void RenameVMD(string vmdName)
+        {
+            if (!RTC_MemoryDomains.VmdPool.ContainsKey(vmdName))
+                return;
+
+            RTC_Core.StopSound();
+            string Name = "";
+            string value = "";
+                if (RTC_Extensions.getInputBox("BlastLayer to VMD", "Enter the new VMD name:", ref value) == DialogResult.OK)
+                {
+                    Name = value.Trim();
+                    RTC_Core.StartSound();
+                }
+                else
+                {
+                    RTC_Core.StartSound();
+                    return;
+                }
+
+            if (string.IsNullOrWhiteSpace(Name))
+                Name = RTC_Core.GetRandomKey();
+
+            VirtualMemoryDomain VMD = (VirtualMemoryDomain)RTC_MemoryDomains.VmdPool[vmdName];
+
+            RemoveVMD(VMD);
+            VMD.name = Name;
+            VMD.proto.VmdName = Name;
+            AddVMD(VMD);
+
         }
     }
 

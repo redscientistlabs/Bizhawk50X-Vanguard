@@ -466,14 +466,12 @@ namespace RTC
                 return;
             }
 
-
+            RTC_Core.StopSound();
             string Name = "";
             string value = "";
-
-			RTC_Core.StopSound();
             if (askForName)
             {
-                if (this.getInputBox("Harvester", "Enter the new Stash name:", ref value) == DialogResult.OK)
+                if (RTC_Extensions.getInputBox("Harvester", "Enter the new Stash name:", ref value) == DialogResult.OK)
                 {
                     Name = value.Trim();
                     RTC_Core.StartSound();
@@ -520,48 +518,6 @@ namespace RTC
 
             RTC_StockpileManager.unsavedEdits = true;
 
-        }
-
-		public DialogResult getInputBox(string title, string promptText, ref string value)
-        {
-            Form form = new Form();
-            Label label = new Label();
-            TextBox textBox = new TextBox();
-            Button buttonOk = new Button();
-            Button buttonCancel = new Button();
-
-            form.Text = title;
-            label.Text = promptText;
-            textBox.Text = value;
-
-            buttonOk.Text = "OK";
-            buttonCancel.Text = "Cancel";
-            buttonOk.DialogResult = DialogResult.OK;
-            buttonCancel.DialogResult = DialogResult.Cancel;
-
-            label.SetBounds(9, 20, 372, 13);
-            textBox.SetBounds(12, 36, 372, 20);
-            buttonOk.SetBounds(228, 72, 75, 23);
-            buttonCancel.SetBounds(309, 72, 75, 23);
-
-            label.AutoSize = true;
-            textBox.Anchor = textBox.Anchor | AnchorStyles.Right;
-            buttonOk.Anchor = AnchorStyles.Bottom | AnchorStyles.Right;
-            buttonCancel.Anchor = AnchorStyles.Bottom | AnchorStyles.Right;
-
-            form.ClientSize = new Size(396, 107);
-            form.Controls.AddRange(new Control[] { label, textBox, buttonOk, buttonCancel });
-            form.ClientSize = new Size(Math.Max(300, label.Right + 10), form.ClientSize.Height);
-            form.FormBorderStyle = FormBorderStyle.FixedDialog;
-            form.StartPosition = FormStartPosition.CenterScreen;
-            form.MinimizeBox = false;
-            form.MaximizeBox = false;
-            form.AcceptButton = buttonOk;
-            form.CancelButton = buttonCancel;
-
-            DialogResult dialogResult = form.ShowDialog();
-            value = textBox.Text;
-            return dialogResult;
         }
 
 
@@ -954,7 +910,7 @@ namespace RTC
 				string Name = "";
 				string value = "";
 
-				if (this.getInputBox("Glitch Harvester", "Enter the new Stash name:", ref value) == DialogResult.OK)
+				if (RTC_Extensions.getInputBox("Glitch Harvester", "Enter the new Stash name:", ref value) == DialogResult.OK)
 				{
 					Name = value.Trim();
 				}
@@ -1017,10 +973,12 @@ namespace RTC
 				(columnsMenu.Items.Add("Show System Name", null, new EventHandler((ob, ev) => { dgvStockpile.Columns["SystemName"].Visible ^= true; })) as ToolStripMenuItem).Checked = dgvStockpile.Columns["SystemName"].Visible;
 				(columnsMenu.Items.Add("Show System Core", null, new EventHandler((ob, ev) => { dgvStockpile.Columns["SystemCore"].Visible ^= true; })) as ToolStripMenuItem).Checked = dgvStockpile.Columns["SystemCore"].Visible;
 				(columnsMenu.Items.Add("Show Note", null, new EventHandler((ob, ev) => { dgvStockpile.Columns["Note"].Visible ^= true; })) as ToolStripMenuItem).Checked = dgvStockpile.Columns["Note"].Visible;
-				columnsMenu.Items.Add(new ToolStripSeparator());
+
+                columnsMenu.Items.Add(new ToolStripSeparator());
 				(columnsMenu.Items.Add("[Multiplayer] Send Selected Item as a Blast", null, new EventHandler((ob, ev) => { RTC_Core.Multiplayer?.SendBlastlayer(); })) as ToolStripMenuItem).Enabled = RTC_Core.Multiplayer != null && RTC_Core.Multiplayer.side != NetworkSide.DISCONNECTED;
 				(columnsMenu.Items.Add("[Multiplayer] Send Selected Item as a Game State", null, new EventHandler((ob, ev) => { RTC_Core.Multiplayer?.SendStashkey(); })) as ToolStripMenuItem).Enabled = RTC_Core.Multiplayer != null && RTC_Core.Multiplayer.side != NetworkSide.DISCONNECTED;
-				columnsMenu.Items.Add(new ToolStripSeparator());
+
+                columnsMenu.Items.Add(new ToolStripSeparator());
 				(columnsMenu.Items.Add("Open Selected Item in Blast Editor", null, new EventHandler((ob, ev) => {
                     if (RTC_Core.beForm != null)
                     {
@@ -1030,7 +988,12 @@ namespace RTC
                     }
                 })) as ToolStripMenuItem).Enabled = (dgvStockpile.SelectedRows.Count == 1);
 
-				columnsMenu.Show(this, locate);
+                columnsMenu.Items.Add(new ToolStripSeparator());
+                (columnsMenu.Items.Add("Generate VMD from Selected Item", null, new EventHandler((ob, ev) => {
+                    RTC_MemoryDomains.GenerateVmdFromStashkey(RTC_StockpileManager.currentStashkey);
+                })) as ToolStripMenuItem).Enabled = (dgvStockpile.SelectedRows.Count == 1);
+
+                columnsMenu.Show(this, locate);
 			}
 		}
 
@@ -1321,7 +1284,8 @@ namespace RTC
 					RTC_Core.Multiplayer.SendCommand(new RTC_Command(CommandType.PULLSTATE), false);
 
 				})) as ToolStripMenuItem).Enabled = RTC_Core.Multiplayer != null && RTC_Core.Multiplayer.side != NetworkSide.DISCONNECTED;
-				columnsMenu.Items.Add(new ToolStripSeparator());
+
+                columnsMenu.Items.Add(new ToolStripSeparator());
                 (columnsMenu.Items.Add("Open Selected Item in Blast Editor", null, new EventHandler((ob, ev) => {
                     if (RTC_Core.beForm != null)
                     {
@@ -1330,6 +1294,12 @@ namespace RTC
                         RTC_Core.beForm.LoadStashkey(RTC_StockpileManager.currentStashkey);
                     }
                 })) as ToolStripMenuItem).Enabled = lbStashHistory.SelectedIndex != -1;
+
+                columnsMenu.Items.Add(new ToolStripSeparator());
+                (columnsMenu.Items.Add("Generate VMD from Selected Item", null, new EventHandler((ob, ev) => {
+                    RTC_MemoryDomains.GenerateVmdFromStashkey(RTC_StockpileManager.currentStashkey);
+                })) as ToolStripMenuItem).Enabled = lbStashHistory.SelectedIndex != -1;
+
                 columnsMenu.Show(this, locate);
 			}
 		}

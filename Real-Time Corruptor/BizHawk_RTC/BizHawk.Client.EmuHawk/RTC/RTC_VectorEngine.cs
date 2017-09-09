@@ -283,6 +283,9 @@ namespace RTC
 
 		public static bool isConstant(byte[] bytes, string[] list)
 		{
+            if (list == null)
+                return true;
+
 			return list.Contains(ByteArrayToString(bytes));
 		}
 

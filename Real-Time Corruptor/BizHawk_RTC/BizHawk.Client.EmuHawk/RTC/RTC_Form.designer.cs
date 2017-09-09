@@ -1786,7 +1786,8 @@
             "Tiny",
             "One",
             "One*",
-            "Two"});
+            "Two",
+            "AnyFloat"});
             this.cbVectorLimiterList.Location = new System.Drawing.Point(7, 78);
             this.cbVectorLimiterList.Name = "cbVectorLimiterList";
             this.cbVectorLimiterList.Size = new System.Drawing.Size(156, 25);

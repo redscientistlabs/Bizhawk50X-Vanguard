@@ -119,8 +119,8 @@ namespace RTC
 
                 if (lineParts.Length > 1)
                 {
-                    int start = Convert.ToInt32(lineParts[0]);
-                    int end = Convert.ToInt32(lineParts[1]);
+                    int start = SafeStringToInt(lineParts[0]);
+                    int end = SafeStringToInt(lineParts[1]);
 
                     if (remove)
                         proto.removeRanges.Add(new int[] { start, end });
@@ -129,7 +129,7 @@ namespace RTC
                 }
                 else
                 {
-                    int address = Convert.ToInt32(lineParts[0]);
+                    int address = SafeStringToInt(lineParts[0]);
 
                     if (remove)
                         proto.removeSingles.Add(address);
@@ -156,18 +156,8 @@ namespace RTC
                 return false;
             }
 
-            RTC_MemoryDomains.VmdPool[VMD.ToString()] = VMD;
-            if (RTC_Core.isStandalone)
-            {
-                RTC_RPC.SendToKillSwitch("FREEZE");
-                RTC_NetCore.HugeOperationStart();
-                RTC_Core.SendCommandToBizhawk(new RTC_Command(CommandType.REMOTE_DOMAIN_VMD_ADD) { objectValue = VMD.proto }, true);
-                RTC_RPC.SendToKillSwitch("UNFREEZE");
-                RTC_NetCore.HugeOperationEnd();
-            }
-
-            RTC_Core.coreForm.RefreshDomainsAndKeepSelected();
-
+            RTC_MemoryDomains.AddVMD(VMD);
+            
             tbVmdName.Text = "";
             cbSelectedMemoryDomain.SelectedIndex = -1;
             cbSelectedMemoryDomain.Items.Clear();

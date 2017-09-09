@@ -59,9 +59,9 @@
             this.cbSelectedMemoryDomain.Font = new System.Drawing.Font("Segoe UI", 9.75F);
             this.cbSelectedMemoryDomain.ForeColor = System.Drawing.Color.White;
             this.cbSelectedMemoryDomain.FormattingEnabled = true;
-            this.cbSelectedMemoryDomain.Location = new System.Drawing.Point(92, 29);
+            this.cbSelectedMemoryDomain.Location = new System.Drawing.Point(89, 26);
             this.cbSelectedMemoryDomain.Name = "cbSelectedMemoryDomain";
-            this.cbSelectedMemoryDomain.Size = new System.Drawing.Size(132, 25);
+            this.cbSelectedMemoryDomain.Size = new System.Drawing.Size(130, 25);
             this.cbSelectedMemoryDomain.TabIndex = 16;
             this.cbSelectedMemoryDomain.Tag = "color:dark";
             this.cbSelectedMemoryDomain.SelectedIndexChanged += new System.EventHandler(this.cbSelectedEngine_SelectedIndexChanged);
@@ -73,7 +73,7 @@
             this.btnLoadDomains.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnLoadDomains.Font = new System.Drawing.Font("Segoe UI Semibold", 9.75F, System.Drawing.FontStyle.Bold);
             this.btnLoadDomains.ForeColor = System.Drawing.Color.Black;
-            this.btnLoadDomains.Location = new System.Drawing.Point(7, 8);
+            this.btnLoadDomains.Location = new System.Drawing.Point(4, 5);
             this.btnLoadDomains.Name = "btnLoadDomains";
             this.btnLoadDomains.Size = new System.Drawing.Size(80, 47);
             this.btnLoadDomains.TabIndex = 17;
@@ -88,7 +88,7 @@
             this.label17.AutoSize = true;
             this.label17.Font = new System.Drawing.Font("Segoe UI Semibold", 10F, System.Drawing.FontStyle.Bold);
             this.label17.ForeColor = System.Drawing.Color.White;
-            this.label17.Location = new System.Drawing.Point(88, 7);
+            this.label17.Location = new System.Drawing.Point(85, 4);
             this.label17.Name = "label17";
             this.label17.Size = new System.Drawing.Size(115, 19);
             this.label17.TabIndex = 117;
@@ -104,9 +104,9 @@
             this.groupBox1.Controls.Add(this.lbDomainSizeLabel);
             this.groupBox1.Font = new System.Drawing.Font("Segoe UI Semibold", 10F, System.Drawing.FontStyle.Bold);
             this.groupBox1.ForeColor = System.Drawing.Color.White;
-            this.groupBox1.Location = new System.Drawing.Point(7, 60);
+            this.groupBox1.Location = new System.Drawing.Point(4, 58);
             this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(217, 81);
+            this.groupBox1.Size = new System.Drawing.Size(215, 81);
             this.groupBox1.TabIndex = 123;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Domain summary";
@@ -116,7 +116,7 @@
             this.lbEndianTypeValue.AutoSize = true;
             this.lbEndianTypeValue.Font = new System.Drawing.Font("Segoe UI", 8F);
             this.lbEndianTypeValue.ForeColor = System.Drawing.Color.White;
-            this.lbEndianTypeValue.Location = new System.Drawing.Point(84, 60);
+            this.lbEndianTypeValue.Location = new System.Drawing.Point(81, 57);
             this.lbEndianTypeValue.Name = "lbEndianTypeValue";
             this.lbEndianTypeValue.Size = new System.Drawing.Size(42, 13);
             this.lbEndianTypeValue.TabIndex = 92;
@@ -127,7 +127,7 @@
             this.lbWordSizeValue.AutoSize = true;
             this.lbWordSizeValue.Font = new System.Drawing.Font("Segoe UI", 8F);
             this.lbWordSizeValue.ForeColor = System.Drawing.Color.White;
-            this.lbWordSizeValue.Location = new System.Drawing.Point(84, 41);
+            this.lbWordSizeValue.Location = new System.Drawing.Point(81, 38);
             this.lbWordSizeValue.Name = "lbWordSizeValue";
             this.lbWordSizeValue.Size = new System.Drawing.Size(42, 13);
             this.lbWordSizeValue.TabIndex = 91;
@@ -138,7 +138,7 @@
             this.lbDomainSizeValue.AutoSize = true;
             this.lbDomainSizeValue.Font = new System.Drawing.Font("Segoe UI", 8F);
             this.lbDomainSizeValue.ForeColor = System.Drawing.Color.White;
-            this.lbDomainSizeValue.Location = new System.Drawing.Point(84, 24);
+            this.lbDomainSizeValue.Location = new System.Drawing.Point(81, 21);
             this.lbDomainSizeValue.Name = "lbDomainSizeValue";
             this.lbDomainSizeValue.Size = new System.Drawing.Size(42, 13);
             this.lbDomainSizeValue.TabIndex = 90;
@@ -149,7 +149,7 @@
             this.lbEndianTypeLabel.AutoSize = true;
             this.lbEndianTypeLabel.Font = new System.Drawing.Font("Segoe UI", 9.75F);
             this.lbEndianTypeLabel.ForeColor = System.Drawing.Color.White;
-            this.lbEndianTypeLabel.Location = new System.Drawing.Point(4, 56);
+            this.lbEndianTypeLabel.Location = new System.Drawing.Point(1, 53);
             this.lbEndianTypeLabel.Name = "lbEndianTypeLabel";
             this.lbEndianTypeLabel.Size = new System.Drawing.Size(81, 17);
             this.lbEndianTypeLabel.TabIndex = 88;
@@ -160,7 +160,7 @@
             this.lbWordSizeLabel.AutoSize = true;
             this.lbWordSizeLabel.Font = new System.Drawing.Font("Segoe UI", 9.75F);
             this.lbWordSizeLabel.ForeColor = System.Drawing.Color.White;
-            this.lbWordSizeLabel.Location = new System.Drawing.Point(4, 38);
+            this.lbWordSizeLabel.Location = new System.Drawing.Point(1, 35);
             this.lbWordSizeLabel.Name = "lbWordSizeLabel";
             this.lbWordSizeLabel.Size = new System.Drawing.Size(70, 17);
             this.lbWordSizeLabel.TabIndex = 87;
@@ -171,7 +171,7 @@
             this.lbDomainSizeLabel.AutoSize = true;
             this.lbDomainSizeLabel.Font = new System.Drawing.Font("Segoe UI", 9.75F);
             this.lbDomainSizeLabel.ForeColor = System.Drawing.Color.White;
-            this.lbDomainSizeLabel.Location = new System.Drawing.Point(4, 20);
+            this.lbDomainSizeLabel.Location = new System.Drawing.Point(1, 17);
             this.lbDomainSizeLabel.Name = "lbDomainSizeLabel";
             this.lbDomainSizeLabel.Size = new System.Drawing.Size(83, 17);
             this.lbDomainSizeLabel.TabIndex = 86;
@@ -184,9 +184,9 @@
             this.btnGenerateVMD.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnGenerateVMD.Font = new System.Drawing.Font("Segoe UI Semibold", 9.75F, System.Drawing.FontStyle.Bold);
             this.btnGenerateVMD.ForeColor = System.Drawing.Color.Black;
-            this.btnGenerateVMD.Location = new System.Drawing.Point(7, 213);
+            this.btnGenerateVMD.Location = new System.Drawing.Point(4, 216);
             this.btnGenerateVMD.Name = "btnGenerateVMD";
-            this.btnGenerateVMD.Size = new System.Drawing.Size(217, 30);
+            this.btnGenerateVMD.Size = new System.Drawing.Size(215, 30);
             this.btnGenerateVMD.TabIndex = 124;
             this.btnGenerateVMD.TabStop = false;
             this.btnGenerateVMD.Tag = "color:light";
@@ -199,7 +199,7 @@
             this.cbUsePointerSpacer.AutoSize = true;
             this.cbUsePointerSpacer.Font = new System.Drawing.Font("Segoe UI", 8F);
             this.cbUsePointerSpacer.ForeColor = System.Drawing.Color.White;
-            this.cbUsePointerSpacer.Location = new System.Drawing.Point(7, 153);
+            this.cbUsePointerSpacer.Location = new System.Drawing.Point(4, 153);
             this.cbUsePointerSpacer.Name = "cbUsePointerSpacer";
             this.cbUsePointerSpacer.Size = new System.Drawing.Size(112, 17);
             this.cbUsePointerSpacer.TabIndex = 125;
@@ -211,7 +211,7 @@
             this.nmPointerSpacer.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
             this.nmPointerSpacer.Font = new System.Drawing.Font("Segoe UI", 9.75F);
             this.nmPointerSpacer.ForeColor = System.Drawing.Color.White;
-            this.nmPointerSpacer.Location = new System.Drawing.Point(117, 149);
+            this.nmPointerSpacer.Location = new System.Drawing.Point(114, 149);
             this.nmPointerSpacer.Minimum = new decimal(new int[] {
             2,
             0,
@@ -233,7 +233,7 @@
             this.label4.AutoSize = true;
             this.label4.Font = new System.Drawing.Font("Segoe UI", 8F);
             this.label4.ForeColor = System.Drawing.Color.White;
-            this.label4.Location = new System.Drawing.Point(166, 154);
+            this.label4.Location = new System.Drawing.Point(163, 154);
             this.label4.Name = "label4";
             this.label4.Size = new System.Drawing.Size(58, 13);
             this.label4.TabIndex = 127;
@@ -242,22 +242,22 @@
             // tbCustomAddresses
             // 
             this.tbCustomAddresses.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
-            this.tbCustomAddresses.Font = new System.Drawing.Font("Segoe UI", 9F);
+            this.tbCustomAddresses.Font = new System.Drawing.Font("Segoe UI", 8F);
             this.tbCustomAddresses.ForeColor = System.Drawing.Color.White;
-            this.tbCustomAddresses.Location = new System.Drawing.Point(228, 31);
+            this.tbCustomAddresses.Location = new System.Drawing.Point(222, 24);
             this.tbCustomAddresses.Multiline = true;
             this.tbCustomAddresses.Name = "tbCustomAddresses";
             this.tbCustomAddresses.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
-            this.tbCustomAddresses.Size = new System.Drawing.Size(156, 212);
+            this.tbCustomAddresses.Size = new System.Drawing.Size(164, 222);
             this.tbCustomAddresses.TabIndex = 128;
             this.tbCustomAddresses.Tag = "color:dark";
             // 
             // label5
             // 
             this.label5.AutoSize = true;
-            this.label5.Font = new System.Drawing.Font("Segoe UI", 9F);
+            this.label5.Font = new System.Drawing.Font("Segoe UI Semibold", 9F, System.Drawing.FontStyle.Bold);
             this.label5.ForeColor = System.Drawing.Color.White;
-            this.label5.Location = new System.Drawing.Point(228, 9);
+            this.label5.Location = new System.Drawing.Point(222, 6);
             this.label5.Name = "label5";
             this.label5.Size = new System.Drawing.Size(131, 15);
             this.label5.TabIndex = 129;
@@ -268,7 +268,7 @@
             this.label2.AutoSize = true;
             this.label2.Font = new System.Drawing.Font("Segoe UI", 8F);
             this.label2.ForeColor = System.Drawing.Color.White;
-            this.label2.Location = new System.Drawing.Point(7, 186);
+            this.label2.Location = new System.Drawing.Point(4, 189);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(67, 13);
             this.label2.TabIndex = 131;
@@ -279,9 +279,9 @@
             this.tbVmdName.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
             this.tbVmdName.Font = new System.Drawing.Font("Segoe UI", 8F);
             this.tbVmdName.ForeColor = System.Drawing.Color.White;
-            this.tbVmdName.Location = new System.Drawing.Point(75, 180);
+            this.tbVmdName.Location = new System.Drawing.Point(72, 183);
             this.tbVmdName.Name = "tbVmdName";
-            this.tbVmdName.Size = new System.Drawing.Size(149, 22);
+            this.tbVmdName.Size = new System.Drawing.Size(147, 22);
             this.tbVmdName.TabIndex = 132;
             this.tbVmdName.Tag = "color:dark";
             // 
@@ -293,7 +293,7 @@
             this.btnHelp.Font = new System.Drawing.Font("Segoe UI Semibold", 9.75F, System.Drawing.FontStyle.Bold);
             this.btnHelp.ForeColor = System.Drawing.Color.Black;
             this.btnHelp.Image = global::BizHawk.Client.EmuHawk.Properties.Resources.Help;
-            this.btnHelp.Location = new System.Drawing.Point(363, 7);
+            this.btnHelp.Location = new System.Drawing.Point(367, 4);
             this.btnHelp.Name = "btnHelp";
             this.btnHelp.Size = new System.Drawing.Size(19, 18);
             this.btnHelp.TabIndex = 134;

@@ -37,6 +37,7 @@
             this.lbRealDomainLabel = new System.Windows.Forms.Label();
             this.lbVmdSizeValue = new System.Windows.Forms.Label();
             this.lbVmdSizeLabel = new System.Windows.Forms.Label();
+            this.btnRenameVMD = new System.Windows.Forms.Button();
             this.gbVmdSummary.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -62,9 +63,9 @@
             this.btnUnloadVmd.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnUnloadVmd.Font = new System.Drawing.Font("Segoe UI Semibold", 9.75F, System.Drawing.FontStyle.Bold);
             this.btnUnloadVmd.ForeColor = System.Drawing.Color.Black;
-            this.btnUnloadVmd.Location = new System.Drawing.Point(197, 82);
+            this.btnUnloadVmd.Location = new System.Drawing.Point(197, 107);
             this.btnUnloadVmd.Name = "btnUnloadVmd";
-            this.btnUnloadVmd.Size = new System.Drawing.Size(182, 28);
+            this.btnUnloadVmd.Size = new System.Drawing.Size(182, 25);
             this.btnUnloadVmd.TabIndex = 13;
             this.btnUnloadVmd.TabStop = false;
             this.btnUnloadVmd.Tag = "color:light";
@@ -81,7 +82,7 @@
             this.btnLoadVmd.ForeColor = System.Drawing.Color.Black;
             this.btnLoadVmd.Location = new System.Drawing.Point(197, 14);
             this.btnLoadVmd.Name = "btnLoadVmd";
-            this.btnLoadVmd.Size = new System.Drawing.Size(182, 28);
+            this.btnLoadVmd.Size = new System.Drawing.Size(182, 25);
             this.btnLoadVmd.TabIndex = 14;
             this.btnLoadVmd.TabStop = false;
             this.btnLoadVmd.Tag = "color:light";
@@ -96,9 +97,9 @@
             this.btnSaveVmd.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnSaveVmd.Font = new System.Drawing.Font("Segoe UI Semibold", 9.75F, System.Drawing.FontStyle.Bold);
             this.btnSaveVmd.ForeColor = System.Drawing.Color.Black;
-            this.btnSaveVmd.Location = new System.Drawing.Point(197, 48);
+            this.btnSaveVmd.Location = new System.Drawing.Point(197, 45);
             this.btnSaveVmd.Name = "btnSaveVmd";
-            this.btnSaveVmd.Size = new System.Drawing.Size(182, 28);
+            this.btnSaveVmd.Size = new System.Drawing.Size(182, 25);
             this.btnSaveVmd.TabIndex = 15;
             this.btnSaveVmd.TabStop = false;
             this.btnSaveVmd.Tag = "color:light";
@@ -114,9 +115,9 @@
             this.gbVmdSummary.Controls.Add(this.lbVmdSizeLabel);
             this.gbVmdSummary.Font = new System.Drawing.Font("Segoe UI Semibold", 10F, System.Drawing.FontStyle.Bold);
             this.gbVmdSummary.ForeColor = System.Drawing.Color.White;
-            this.gbVmdSummary.Location = new System.Drawing.Point(197, 116);
+            this.gbVmdSummary.Location = new System.Drawing.Point(197, 144);
             this.gbVmdSummary.Name = "gbVmdSummary";
-            this.gbVmdSummary.Size = new System.Drawing.Size(182, 119);
+            this.gbVmdSummary.Size = new System.Drawing.Size(182, 91);
             this.gbVmdSummary.TabIndex = 129;
             this.gbVmdSummary.TabStop = false;
             this.gbVmdSummary.Text = "Selected VMD Summary";
@@ -126,7 +127,7 @@
             this.lbRealDomainValue.AutoSize = true;
             this.lbRealDomainValue.Font = new System.Drawing.Font("Segoe UI", 8F);
             this.lbRealDomainValue.ForeColor = System.Drawing.Color.White;
-            this.lbRealDomainValue.Location = new System.Drawing.Point(8, 91);
+            this.lbRealDomainValue.Location = new System.Drawing.Point(8, 72);
             this.lbRealDomainValue.Name = "lbRealDomainValue";
             this.lbRealDomainValue.Size = new System.Drawing.Size(42, 13);
             this.lbRealDomainValue.TabIndex = 95;
@@ -137,7 +138,7 @@
             this.lbRealDomainLabel.AutoSize = true;
             this.lbRealDomainLabel.Font = new System.Drawing.Font("Segoe UI", 9.75F);
             this.lbRealDomainLabel.ForeColor = System.Drawing.Color.White;
-            this.lbRealDomainLabel.Location = new System.Drawing.Point(8, 69);
+            this.lbRealDomainLabel.Location = new System.Drawing.Point(8, 53);
             this.lbRealDomainLabel.Name = "lbRealDomainLabel";
             this.lbRealDomainLabel.Size = new System.Drawing.Size(85, 17);
             this.lbRealDomainLabel.TabIndex = 94;
@@ -148,7 +149,7 @@
             this.lbVmdSizeValue.AutoSize = true;
             this.lbVmdSizeValue.Font = new System.Drawing.Font("Segoe UI", 8F);
             this.lbVmdSizeValue.ForeColor = System.Drawing.Color.White;
-            this.lbVmdSizeValue.Location = new System.Drawing.Point(8, 48);
+            this.lbVmdSizeValue.Location = new System.Drawing.Point(8, 38);
             this.lbVmdSizeValue.Name = "lbVmdSizeValue";
             this.lbVmdSizeValue.Size = new System.Drawing.Size(42, 13);
             this.lbVmdSizeValue.TabIndex = 93;
@@ -159,11 +160,28 @@
             this.lbVmdSizeLabel.AutoSize = true;
             this.lbVmdSizeLabel.Font = new System.Drawing.Font("Segoe UI", 9.75F);
             this.lbVmdSizeLabel.ForeColor = System.Drawing.Color.White;
-            this.lbVmdSizeLabel.Location = new System.Drawing.Point(8, 26);
+            this.lbVmdSizeLabel.Location = new System.Drawing.Point(8, 19);
             this.lbVmdSizeLabel.Name = "lbVmdSizeLabel";
             this.lbVmdSizeLabel.Size = new System.Drawing.Size(67, 17);
             this.lbVmdSizeLabel.TabIndex = 89;
             this.lbVmdSizeLabel.Text = "VMD Size:";
+            // 
+            // btnRenameVMD
+            // 
+            this.btnRenameVMD.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(224)))), ((int)(((byte)(224)))), ((int)(((byte)(224)))));
+            this.btnRenameVMD.FlatAppearance.BorderSize = 0;
+            this.btnRenameVMD.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnRenameVMD.Font = new System.Drawing.Font("Segoe UI Semibold", 9.75F, System.Drawing.FontStyle.Bold);
+            this.btnRenameVMD.ForeColor = System.Drawing.Color.Black;
+            this.btnRenameVMD.Location = new System.Drawing.Point(197, 76);
+            this.btnRenameVMD.Name = "btnRenameVMD";
+            this.btnRenameVMD.Size = new System.Drawing.Size(182, 25);
+            this.btnRenameVMD.TabIndex = 130;
+            this.btnRenameVMD.TabStop = false;
+            this.btnRenameVMD.Tag = "color:light";
+            this.btnRenameVMD.Text = "Rename Selected VMD";
+            this.btnRenameVMD.UseVisualStyleBackColor = false;
+            this.btnRenameVMD.Click += new System.EventHandler(this.btnRenameVMD_Click);
             // 
             // RTC_VmdPool_Form
             // 
@@ -171,6 +189,7 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.Black;
             this.ClientSize = new System.Drawing.Size(390, 250);
+            this.Controls.Add(this.btnRenameVMD);
             this.Controls.Add(this.gbVmdSummary);
             this.Controls.Add(this.btnSaveVmd);
             this.Controls.Add(this.btnLoadVmd);
@@ -197,5 +216,6 @@
         public System.Windows.Forms.Label lbRealDomainLabel;
         public System.Windows.Forms.Label lbVmdSizeValue;
         public System.Windows.Forms.Label lbVmdSizeLabel;
+        private System.Windows.Forms.Button btnRenameVMD;
     }
 }
