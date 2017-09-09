@@ -1297,6 +1297,7 @@ namespace RTC
 
                 columnsMenu.Items.Add(new ToolStripSeparator());
                 (columnsMenu.Items.Add("Generate VMD from Selected Item", null, new EventHandler((ob, ev) => {
+                    RTC_StockpileManager.currentStashkey.BlastLayer.Rasterize();
                     RTC_MemoryDomains.GenerateVmdFromStashkey(RTC_StockpileManager.currentStashkey);
                 })) as ToolStripMenuItem).Enabled = lbStashHistory.SelectedIndex != -1;
 

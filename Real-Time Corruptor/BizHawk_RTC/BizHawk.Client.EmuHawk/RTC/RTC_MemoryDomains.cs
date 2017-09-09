@@ -366,7 +366,7 @@ namespace RTC
         public static void GenerateVmdFromStashkey(StashKey sk)
         {
             var proto = new VmdPrototype(sk.BlastLayer);
-
+            AddVMD(proto);
         }
 
         public static void AddVMD(VmdPrototype proto) => AddVMD(proto.Generate());
