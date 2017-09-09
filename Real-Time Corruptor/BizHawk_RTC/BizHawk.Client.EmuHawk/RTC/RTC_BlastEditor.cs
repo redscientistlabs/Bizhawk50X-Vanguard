@@ -333,7 +333,7 @@ namespace RTC
 
             foreach (BlastUnit bu in bul)
             {
-                if(usedAddresses.Contains(bu.Address))
+                if(!usedAddresses.Contains(bu.Address))
                     usedAddresses.Add(bu.Address);
                 else
                     sk.BlastLayer.Layer.Remove(bu);
