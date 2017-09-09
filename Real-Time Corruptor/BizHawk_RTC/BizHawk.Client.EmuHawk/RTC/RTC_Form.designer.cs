@@ -480,6 +480,8 @@
             this.track_ErrorDelay.Value = 2000;
             this.track_ErrorDelay.Scroll += new System.EventHandler(this.track_ErrorDelay_Scroll);
             this.track_ErrorDelay.ValueChanged += new System.EventHandler(this.track_ErrorDelay_Scroll);
+            this.track_ErrorDelay.MouseDown += new System.Windows.Forms.MouseEventHandler(this.track_ErrorDelay_MouseDown);
+            this.track_ErrorDelay.MouseUp += new System.Windows.Forms.MouseEventHandler(this.track_ErrorDelay_MouseUp);
             // 
             // track_Intensity
             // 
@@ -493,6 +495,8 @@
             this.track_Intensity.Value = 2000;
             this.track_Intensity.Scroll += new System.EventHandler(this.track_Intensity_Scroll);
             this.track_Intensity.ValueChanged += new System.EventHandler(this.track_Intensity_Scroll);
+            this.track_Intensity.MouseDown += new System.Windows.Forms.MouseEventHandler(this.track_Intensity_MouseDown);
+            this.track_Intensity.MouseUp += new System.Windows.Forms.MouseEventHandler(this.track_Intensity_MouseUp);
             // 
             // gbNightmareEngine
             // 

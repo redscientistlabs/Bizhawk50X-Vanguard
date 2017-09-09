@@ -1009,17 +1009,19 @@ namespace RTC
 
 			if (lbStashHistory.SelectedIndex != -1)
 			{
-				RTC_StockpileManager.currentStashkey = RTC_StockpileManager.StashHistory[lbStashHistory.SelectedIndex];
+				RTC_StockpileManager.currentStashkey = (StashKey)RTC_StockpileManager.StashHistory[lbStashHistory.SelectedIndex].Clone();
 			}
 			else if (dgvStockpile.SelectedRows.Count != 0 && dgvStockpile.SelectedRows[0].Cells[0].Value != null)
 			{
-				RTC_StockpileManager.currentStashkey = (dgvStockpile.SelectedRows[0].Cells[0].Value as StashKey);
-                RTC_StockpileManager.unsavedEdits = true;
+				RTC_StockpileManager.currentStashkey = (StashKey)(dgvStockpile.SelectedRows[0].Cells[0].Value as StashKey).Clone();
+                //RTC_StockpileManager.unsavedEdits = true;
             }
 			else
 				return;
 
 			RTC_StockpileManager.currentStashkey.BlastLayer.Reroll();
+
+            RTC_StockpileManager.AddCurrentStashkeyToStash();
 
 			RTC_StockpileManager.ApplyStashkey(RTC_StockpileManager.currentStashkey);
 		}
@@ -1508,6 +1510,20 @@ namespace RTC
                 }));
                 columnsMenu.Show(this, locate);
             }
+        }
+
+        private void track_Intensity_MouseDown(object sender, MouseEventArgs e)
+        {
+            RTC_RPC.SendToKillSwitch("FREEZE");
+            RTC_NetCore.HugeOperationStart("LAZY");
+        }
+
+        private void track_Intensity_MouseUp(object sender, MouseEventArgs e)
+        {
+            RTC_RPC.SendToKillSwitch("UNFREEZE");
+            RTC_NetCore.HugeOperationEnd();
+
+            track_Intensity_Scroll(sender, e);
         }
     }
 }

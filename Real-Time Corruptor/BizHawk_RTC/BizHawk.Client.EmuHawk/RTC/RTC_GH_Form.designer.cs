@@ -2103,7 +2103,8 @@
             this.track_Intensity.Scroll += new System.EventHandler(this.track_Intensity_Scroll);
             this.track_Intensity.ValueChanged += new System.EventHandler(this.track_Intensity_Scroll);
             this.track_Intensity.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.track_Intensity_Scroll);
-            this.track_Intensity.KeyUp += new System.Windows.Forms.KeyEventHandler(this.track_Intensity_Scroll);
+            this.track_Intensity.MouseDown += new System.Windows.Forms.MouseEventHandler(this.track_Intensity_MouseDown);
+            this.track_Intensity.MouseUp += new System.Windows.Forms.MouseEventHandler(this.track_Intensity_MouseUp);
             // 
             // pnIntensity
             // 

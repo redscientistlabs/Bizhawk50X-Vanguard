@@ -474,5 +474,16 @@ namespace RTC
 
 			return sk;
 		}
-	}
+
+        public static void AddCurrentStashkeyToStash(bool _stashAfterOperation = true)
+        {
+            isCorruptionApplied = (currentStashkey.BlastLayer != null && currentStashkey.BlastLayer.Layer.Count > 0);
+
+            if (stashAfterOperation && _stashAfterOperation)
+            {
+                StashHistory.Add(currentStashkey);
+                RTC_Core.ghForm.RefreshStashHistory();
+            }
+        }
+    }
 }
