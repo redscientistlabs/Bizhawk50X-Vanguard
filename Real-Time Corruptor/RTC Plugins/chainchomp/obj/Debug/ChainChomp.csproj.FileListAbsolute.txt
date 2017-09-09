@@ -1,0 +1,17 @@
+C:\Users\philt\Documents\PROJECTS\RTC3\Real-Time Corruptor\RTC Plugins\chainchomp\bin\Debug\ChainChomp.exe.config
+C:\Users\philt\Documents\PROJECTS\RTC3\Real-Time Corruptor\RTC Plugins\chainchomp\bin\Debug\license.txt
+C:\Users\philt\Documents\PROJECTS\RTC3\Real-Time Corruptor\RTC Plugins\chainchomp\bin\Debug\ChainChomp.exe
+C:\Users\philt\Documents\PROJECTS\RTC3\Real-Time Corruptor\RTC Plugins\chainchomp\bin\Debug\ChainChomp.pdb
+C:\Users\philt\Documents\PROJECTS\RTC3\Real-Time Corruptor\RTC Plugins\chainchomp\bin\Debug\ChainChompCorruptor.dll
+C:\Users\philt\Documents\PROJECTS\RTC3\Real-Time Corruptor\RTC Plugins\chainchomp\bin\Debug\ChainChompCorruptor.pdb
+C:\Users\philt\Documents\PROJECTS\RTC3\Real-Time Corruptor\RTC Plugins\chainchomp\obj\Debug\ChainChomp.csprojResolveAssemblyReference.cache
+C:\Users\philt\Documents\PROJECTS\RTC3\Real-Time Corruptor\RTC Plugins\chainchomp\obj\Debug\ChainChomp.AboutChainChomp.resources
+C:\Users\philt\Documents\PROJECTS\RTC3\Real-Time Corruptor\RTC Plugins\chainchomp\obj\Debug\ChainChomp.ChainChompApplication.resources
+C:\Users\philt\Documents\PROJECTS\RTC3\Real-Time Corruptor\RTC Plugins\chainchomp\obj\Debug\ChainChomp.ChainEditor.resources
+C:\Users\philt\Documents\PROJECTS\RTC3\Real-Time Corruptor\RTC Plugins\chainchomp\obj\Debug\ChainChomp.LibraryWindow.resources
+C:\Users\philt\Documents\PROJECTS\RTC3\Real-Time Corruptor\RTC Plugins\chainchomp\obj\Debug\ChainChomp.PositionSwitch.resources
+C:\Users\philt\Documents\PROJECTS\RTC3\Real-Time Corruptor\RTC Plugins\chainchomp\obj\Debug\ChainChomp.Properties.Resources.resources
+C:\Users\philt\Documents\PROJECTS\RTC3\Real-Time Corruptor\RTC Plugins\chainchomp\obj\Debug\ChainChomp.RackHeader.resources
+C:\Users\philt\Documents\PROJECTS\RTC3\Real-Time Corruptor\RTC Plugins\chainchomp\obj\Debug\ChainChomp.csproj.GenerateResource.Cache
+C:\Users\philt\Documents\PROJECTS\RTC3\Real-Time Corruptor\RTC Plugins\chainchomp\obj\Debug\ChainChomp.exe
+C:\Users\philt\Documents\PROJECTS\RTC3\Real-Time Corruptor\RTC Plugins\chainchomp\obj\Debug\ChainChomp.pdb

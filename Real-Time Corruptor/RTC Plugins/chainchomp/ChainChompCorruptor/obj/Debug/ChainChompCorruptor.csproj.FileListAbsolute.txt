@@ -1,0 +1,5 @@
+C:\Users\philt\Documents\PROJECTS\RTC3\Real-Time Corruptor\RTC Plugins\chainchomp\ChainChompCorruptor\bin\Debug\ChainChompCorruptor.dll
+C:\Users\philt\Documents\PROJECTS\RTC3\Real-Time Corruptor\RTC Plugins\chainchomp\ChainChompCorruptor\bin\Debug\ChainChompCorruptor.pdb
+C:\Users\philt\Documents\PROJECTS\RTC3\Real-Time Corruptor\RTC Plugins\chainchomp\ChainChompCorruptor\obj\Debug\ChainChompCorruptor.csprojResolveAssemblyReference.cache
+C:\Users\philt\Documents\PROJECTS\RTC3\Real-Time Corruptor\RTC Plugins\chainchomp\ChainChompCorruptor\obj\Debug\ChainChompCorruptor.dll
+C:\Users\philt\Documents\PROJECTS\RTC3\Real-Time Corruptor\RTC Plugins\chainchomp\ChainChompCorruptor\obj\Debug\ChainChompCorruptor.pdb

@@ -1,0 +1,267 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{466928AE-F06E-429F-9245-A7759B3EB9FD}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>ChompAndFriends</RootNamespace>
+    <AssemblyName>ChompAndFriends</AssemblyName>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup>
+    <RunPostBuildEvent>OnBuildSuccess</RunPostBuildEvent>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Runtime.Serialization" />
+    <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Blooper.cs" />
+    <Compile Include="BlooperUI.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="BlooperUI.Designer.cs">
+      <DependentUpon>BlooperUI.cs</DependentUpon>
+    </Compile>
+    <Compile Include="BlueShell.cs" />
+    <Compile Include="BlueShellUI.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="BlueShellUI.Designer.cs">
+      <DependentUpon>BlueShellUI.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Bobomb.cs" />
+    <Compile Include="Chomp.cs" />
+    <Compile Include="ChompUI.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="ChompUI.Designer.cs">
+      <DependentUpon>ChompUI.cs</DependentUpon>
+    </Compile>
+    <Compile Include="GreenShell.cs" />
+    <Compile Include="GreenShellUI.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="GreenShellUI.Designer.cs">
+      <DependentUpon>GreenShellUI.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Kamek.cs" />
+    <Compile Include="KamekUI.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="KamekUI.Designer.cs">
+      <DependentUpon>KamekUI.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Kirby.cs" />
+    <Compile Include="KirbyUI.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="KirbyUI.Designer.cs">
+      <DependentUpon>KirbyUI.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Mushroom.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="BobombUI.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="BobombUI.Designer.cs">
+      <DependentUpon>BobombUI.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Properties\Resources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
+    <Compile Include="MushroomUI.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="MushroomUI.Designer.cs">
+      <DependentUpon>MushroomUI.cs</DependentUpon>
+    </Compile>
+    <Compile Include="PSwitch.cs" />
+    <Compile Include="PSwitchUI.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="PSwitchUI.Designer.cs">
+      <DependentUpon>PSwitchUI.cs</DependentUpon>
+    </Compile>
+    <Compile Include="RedShell.cs" />
+    <Compile Include="RedShellUI.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="RedShellUI.Designer.cs">
+      <DependentUpon>RedShellUI.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Signpost.cs" />
+    <Compile Include="SignpostUI.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="SignpostUI.Designer.cs">
+      <DependentUpon>SignpostUI.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Thwomp.cs" />
+    <Compile Include="ThwompUI.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="ThwompUI.Designer.cs">
+      <DependentUpon>ThwompUI.cs</DependentUpon>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\ChainChompCorruptor\ChainChompCorruptor.csproj">
+      <Project>{5c4f1827-8631-4038-86e4-acaec892d715}</Project>
+      <Name>ChainChompCorruptor</Name>
+      <Private>True</Private>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="BlooperUI.resx">
+      <DependentUpon>BlooperUI.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="BlueShellUI.resx">
+      <DependentUpon>BlueShellUI.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ChompUI.resx">
+      <DependentUpon>ChompUI.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="GreenShellUI.resx">
+      <DependentUpon>GreenShellUI.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="KamekUI.resx">
+      <DependentUpon>KamekUI.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="KirbyUI.resx">
+      <DependentUpon>KirbyUI.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="BobombUI.resx">
+      <DependentUpon>BobombUI.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Properties\Resources.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="MushroomUI.resx">
+      <DependentUpon>MushroomUI.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="PSwitchUI.resx">
+      <DependentUpon>PSwitchUI.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="RedShellUI.resx">
+      <DependentUpon>RedShellUI.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="SignpostUI.resx">
+      <DependentUpon>SignpostUI.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ThwompUI.resx">
+      <DependentUpon>ThwompUI.cs</DependentUpon>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Resources\blooperPresets.zip" />
+    <EmbeddedResource Include="Resources\blueShellPresets.zip" />
+    <EmbeddedResource Include="Resources\bobombPresets.zip" />
+    <EmbeddedResource Include="Resources\chomp.png" />
+    <EmbeddedResource Include="Resources\chompFactoryPresets.zip" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Resources\chompPresets.zip" />
+    <EmbeddedResource Include="Resources\greenShellPresets.zip" />
+    <EmbeddedResource Include="Resources\kamekPresets.zip" />
+    <EmbeddedResource Include="Resources\kirbyPresets.zip" />
+    <EmbeddedResource Include="Resources\mushroom.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Resources\kamek.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Resources\kirby.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Resources\blooper.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Resources\bobomb.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Resources\blueshell.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Resources\greenShell.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Resources\mushroomPresets.zip" />
+    <EmbeddedResource Include="Resources\pSwitchPresets.zip" />
+    <EmbeddedResource Include="Resources\redShell.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Resources\redShellPresets.zip" />
+    <EmbeddedResource Include="Resources\signpostPresets.zip" />
+    <EmbeddedResource Include="Resources\sineWave.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Resources\squareWave.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Resources\thwompPresets.zip" />
+    <EmbeddedResource Include="Resources\triangleWave.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Resources\thwomp.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Resources\sawtoothWave.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Resources\absoluteSineWave.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Resources\pswitch.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Resources\signpost.png" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <PropertyGroup>
+    <PostBuildEvent>copy "$(TargetPath)" "$(SolutionDir)$(OutDir)corruptors"</PostBuildEvent>
+  </PropertyGroup>
+  <PropertyGroup>
+    <PreBuildEvent>
+    </PreBuildEvent>
+  </PropertyGroup>
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

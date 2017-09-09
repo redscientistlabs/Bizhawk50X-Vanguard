@@ -21,7 +21,7 @@ namespace RTC
 
 		public void LoadStashkey(StashKey _sk)
 		{
-			if (_sk == null)
+			if (_sk == null || _sk.BlastLayer == null || _sk.BlastLayer.Layer == null)
 				return;
 
 			//lbBlastLayer.Items.Clear();
