@@ -213,7 +213,7 @@
             this.nmPointerSpacer.ForeColor = System.Drawing.Color.White;
             this.nmPointerSpacer.Location = new System.Drawing.Point(117, 149);
             this.nmPointerSpacer.Minimum = new decimal(new int[] {
-            1,
+            2,
             0,
             0,
             0});
@@ -222,7 +222,7 @@
             this.nmPointerSpacer.TabIndex = 126;
             this.nmPointerSpacer.Tag = "color:dark";
             this.nmPointerSpacer.Value = new decimal(new int[] {
-            100,
+            2,
             0,
             0,
             0});
@@ -244,22 +244,22 @@
             this.tbCustomAddresses.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
             this.tbCustomAddresses.Font = new System.Drawing.Font("Segoe UI", 9F);
             this.tbCustomAddresses.ForeColor = System.Drawing.Color.White;
-            this.tbCustomAddresses.Location = new System.Drawing.Point(228, 29);
+            this.tbCustomAddresses.Location = new System.Drawing.Point(228, 31);
             this.tbCustomAddresses.Multiline = true;
             this.tbCustomAddresses.Name = "tbCustomAddresses";
             this.tbCustomAddresses.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
-            this.tbCustomAddresses.Size = new System.Drawing.Size(156, 214);
+            this.tbCustomAddresses.Size = new System.Drawing.Size(156, 212);
             this.tbCustomAddresses.TabIndex = 128;
             this.tbCustomAddresses.Tag = "color:dark";
             // 
             // label5
             // 
             this.label5.AutoSize = true;
-            this.label5.Font = new System.Drawing.Font("Segoe UI", 8F);
+            this.label5.Font = new System.Drawing.Font("Segoe UI", 9F);
             this.label5.ForeColor = System.Drawing.Color.White;
-            this.label5.Location = new System.Drawing.Point(235, 10);
+            this.label5.Location = new System.Drawing.Point(228, 9);
             this.label5.Name = "label5";
-            this.label5.Size = new System.Drawing.Size(126, 13);
+            this.label5.Size = new System.Drawing.Size(131, 15);
             this.label5.TabIndex = 129;
             this.label5.Text = "Remove/Add addresses";
             // 

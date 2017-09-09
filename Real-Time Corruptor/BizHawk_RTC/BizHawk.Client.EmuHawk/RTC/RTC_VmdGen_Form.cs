@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
 using System.Drawing;
+using System.Globalization;
 using System.Linq;
 using System.Text;
 using System.Windows.Forms;
@@ -12,7 +13,7 @@ namespace RTC
     public partial class RTC_VmdGen_Form : Form
     {
 
-        int currentDomainSize = 0;
+        long currentDomainSize = 0;
 
         public RTC_VmdGen_Form()
         {
@@ -51,24 +52,15 @@ namespace RTC
             lbWordSizeValue.Text = $"{mi.WordSize*8} bits";
             lbEndianTypeValue.Text = (mi.BigEndian ? "Big" : "Little");
 
-            currentDomainSize = Convert.ToInt32(mi.Size);
+            currentDomainSize = Convert.ToInt64(mi.Size);
         }
 
-        public bool isAddressInRanges(int Address, List<int> Singles, List<int[]> Ranges)
+        public int SafeStringToInt(string input)
         {
-            if (Singles.Contains(Address))
-                return true;
-        
-            foreach(int[] range in Ranges)
-            {
-                int start = range[0];
-                int end = range[1];
-
-                if(Address >= start && Address < end)
-                    return true;
-            }
-
-            return false;
+            if (input.ToUpper().Contains("0X"))
+                return int.Parse(input.Substring(2), NumberStyles.HexNumber);
+            else
+                return Convert.ToInt32(input);
         }
 
         private void btnGenerateVMD_Click(object sender, EventArgs e) => GenerateVMD();
@@ -86,15 +78,27 @@ namespace RTC
                 return false;
             }
 
-            string Domain = cbSelectedMemoryDomain.SelectedItem.ToString();
             MemoryInterface mi = RTC_MemoryDomains.MemoryInterfaces[cbSelectedMemoryDomain.SelectedItem.ToString()];
             VirtualMemoryDomain VMD = new VirtualMemoryDomain();
+            VmdPrototype proto = new VmdPrototype();
 
-            List<int> addSingles = new List<int>();
-            List<int> removeSingles = new List<int>();
+            proto.GenDomain = cbSelectedMemoryDomain.SelectedItem.ToString();
 
-            List<int[]> addRanges = new List<int[]>();
-            List<int[]> removeRanges = new List<int[]>();
+            if (string.IsNullOrWhiteSpace(tbVmdName.Text))
+                proto.VmdName = RTC_Core.GetRandomKey();
+            else
+                proto.VmdName = tbVmdName.Text;
+
+
+            proto.BigEndian = mi.BigEndian;
+            proto.WordSize = mi.WordSize;
+
+
+            if (cbUsePointerSpacer.Checked && nmPointerSpacer.Value > 1)
+                proto.PointerSpacer = Convert.ToInt32(nmPointerSpacer.Value);
+            else
+                proto.PointerSpacer = 1;
+
 
             foreach (string line in tbCustomAddresses.Lines)
             {
@@ -119,79 +123,34 @@ namespace RTC
                     int end = Convert.ToInt32(lineParts[1]);
 
                     if (remove)
-                        removeRanges.Add(new int[] { start, end });
+                        proto.removeRanges.Add(new int[] { start, end });
                     else
-                        addRanges.Add(new int[] { start, end });
+                        proto.addRanges.Add(new int[] { start, end });
                 }
                 else
                 {
                     int address = Convert.ToInt32(lineParts[0]);
 
                     if (remove)
-                        removeSingles.Add(address);
+                        proto.removeSingles.Add(address);
                     else
-                        addSingles.Add(address);
+                        proto.addSingles.Add(address);
                 }
 
 
             }
 
-            if(addRanges.Count == 0 && addSingles.Count == 0)
+            if (proto.addRanges.Count == 0 && proto.addSingles.Count == 0)
             {
                 //No add range was specified, use entire domain
-                int start = 0;
-                int end = currentDomainSize;
-
-                for (int i = start; i < end; i++)
-                {
-                    if (!isAddressInRanges(i, removeSingles, removeRanges))
-                        if (!cbUsePointerSpacer.Checked || i % nmPointerSpacer.Value == 0)
-                            VMD.MemoryPointers.Add(new MemoryPointer(Domain, i));
-                }
-            }
-            else
-            {
-                int addressCount = 0;
-
-                int estimatedSize = 0;
-                estimatedSize += addSingles.Count;
-                foreach (int[] range in addRanges)
-                    estimatedSize += (range[1] - range[0]);
-
-
-                foreach (int[] range in addRanges)
-                {
-                    int start = range[0];
-                    int end = range[1];
-
-                    for (int i = start; i < end; i++)
-                    {
-                        if (!isAddressInRanges(i, removeSingles, removeRanges))
-                            if (!cbUsePointerSpacer.Checked || addressCount % nmPointerSpacer.Value == 0)
-                                VMD.MemoryPointers.Add(new MemoryPointer(Domain, i));
-                        addressCount++;
-                    }
-                }
-
-                foreach (int single in addSingles)
-                {
-                    VMD.MemoryPointers.Add(new MemoryPointer(Domain, single));
-                    addressCount++;
-                }
-
+                proto.addRanges.Add(new int[] { 0, (currentDomainSize > int.MaxValue ? int.MaxValue : Convert.ToInt32(currentDomainSize)) });
             }
 
 
-
-            if (string.IsNullOrWhiteSpace(tbVmdName.Text))
-                tbVmdName.Text = RTC_Core.GetRandomKey().Substring(0, 5);
-
-            VMD.name = tbVmdName.Text;
-            VMD.BigEndian = mi.BigEndian;
-            VMD.WordSize = mi.WordSize;
+            VMD = proto.Generate();
 
 
-            if(VMD.MemoryPointers.Count == 0)
+            if (VMD.PointerAddresses.Count == 0)
             {
                 MessageBox.Show("The resulting VMD had no pointers so the operation got cancelled.");
                 return false;
@@ -202,7 +161,7 @@ namespace RTC
             {
                 RTC_RPC.SendToKillSwitch("FREEZE");
                 RTC_NetCore.HugeOperationStart();
-                RTC_Core.SendCommandToBizhawk(new RTC_Command(CommandType.REMOTE_DOMAIN_VMD_ADD) { objectValue = VMD.ToData() }, true);
+                RTC_Core.SendCommandToBizhawk(new RTC_Command(CommandType.REMOTE_DOMAIN_VMD_ADD) { objectValue = VMD.proto }, true);
                 RTC_RPC.SendToKillSwitch("UNFREEZE");
                 RTC_NetCore.HugeOperationEnd();
             }
@@ -215,7 +174,7 @@ namespace RTC
 
             currentDomainSize = 0;
 
-            nmPointerSpacer.Value = 1;
+            nmPointerSpacer.Value = 2;
             cbUsePointerSpacer.Checked = false;
 
             tbCustomAddresses.Text = "";
@@ -258,7 +217,9 @@ address is excluded from the range.
 > Single added addresses will bypass removal ranges
 
 > Single addresses aren't affected by the
-pointer spacer parameter");
+pointer spacer parameter
+
+> add 0x in front of addresses to use Hexadecimal");
         }
     }
 }

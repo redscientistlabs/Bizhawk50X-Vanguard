@@ -17,7 +17,7 @@ namespace RTC
 
     public static class RTC_Core
     {
-		public static string RtcVersion = "2.91c";
+		public static string RtcVersion = "2.91d";
 		
         public static Random RND = new Random();
         public static string[] args;
@@ -108,8 +108,11 @@ namespace RTC
                     frm.Close();
             }
 
+            if (RTC_Core.standaloneForm != null)
+                RTC_Core.standaloneForm.Close();
 
-			if (!RTC_Hooks.isRemoteRTC) //We force useless savestates to clear on quit to prevent disk usage to inflate too much
+
+            if (!RTC_Hooks.isRemoteRTC) //We force useless savestates to clear on quit to prevent disk usage to inflate too much
 			{
 				Process p = new Process();
 				p.StartInfo.FileName = RTC_Core.bizhawkDir + "\\StateClean.bat";
@@ -233,13 +236,24 @@ namespace RTC
 					{
 						RemoteRTC_SupposedToBeConnected = false;
 						Console.WriteLine("RemoteRTC.ServerStarted");
-						coreForm.pnEngineConfig.Hide();
-						coreForm.pnLeftPanel.Hide();
-						csForm.btnReturnToSession.Visible = false;
-						csForm.Show();
 
-						ghForm.pnHideGlitchHarvester.BringToFront();
-						ghForm.pnHideGlitchHarvester.Show();
+                        if (coreForm != null && !coreForm.IsDisposed)
+                        {
+                            coreForm.pnEngineConfig.Hide();
+                            coreForm.pnLeftPanel.Hide();
+                        }
+
+                        if (csForm != null && !csForm.IsDisposed)
+                        {
+                            csForm.btnReturnToSession.Visible = false;
+                            csForm.Show();
+                        }
+
+                        if (ghForm != null && !ghForm.IsDisposed)
+                        {
+                            ghForm.pnHideGlitchHarvester.BringToFront();
+                            ghForm.pnHideGlitchHarvester.Show();
+                        }
 					});
 
 					RemoteRTC.ServerConnected += new EventHandler((ob, ev) =>

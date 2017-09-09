@@ -373,13 +373,115 @@ namespace RTC
         public abstract void PokeByte(long address, byte value);
     }
 
-    [XmlInclude(typeof(MemoryPointer))]
+    [Serializable()]
+    public class VmdPrototype
+    {
+        public string VmdName { get; set; }
+        public string GenDomain { get; set; }
+        public bool BigEndian { get; set; }
+        public int WordSize { get; set; }
+        public int PointerSpacer { get; set; }
+
+        public List<int> addSingles = new List<int>();
+        public List<int> removeSingles = new List<int>();
+
+        public List<int[]> addRanges = new List<int[]>();
+        public List<int[]> removeRanges = new List<int[]>();
+
+        public BlastLayer SuppliedBlastLayer = null;
+
+        public VmdPrototype()
+        {
+        }
+
+        public VmdPrototype(BlastLayer bl)
+        {
+            VmdName = RTC_Core.GetRandomKey();
+            GenDomain = "Hybrid";
+
+            BlastUnit bu = bl.Layer[0];
+            var mi = RTC_MemoryDomains.getInterface(bu.Domain);
+            BigEndian = mi.BigEndian;
+            WordSize = mi.WordSize;
+            SuppliedBlastLayer = bl;
+        }
+
+        public VirtualMemoryDomain Generate()
+        {
+            VirtualMemoryDomain VMD = new VirtualMemoryDomain();
+
+            VMD.proto = this;
+            VMD.name = VmdName;
+            VMD.BigEndian = BigEndian;
+            VMD.WordSize = WordSize;
+
+            if (SuppliedBlastLayer != null)
+            {
+                VMD.AddFromBlastLayer(SuppliedBlastLayer);
+                return VMD;
+            }
+
+            int addressCount = 0;
+
+            foreach (int[] range in addRanges)
+            {
+                int start = range[0];
+                int end = range[1];
+
+                for (int i = start; i < end; i++)
+                {
+                    if (!isAddressInRanges(i, removeSingles, removeRanges))
+                        if (PointerSpacer == 1 || addressCount % PointerSpacer == 0)
+                        {
+                            //VMD.MemoryPointers.Add(new Tuple<string, long>(Domain, i));
+                            VMD.PointerDomains.Add(GenDomain);
+                            VMD.PointerAddresses.Add(i);
+                        }
+                    addressCount++;
+                }
+            }
+
+            foreach (int single in addSingles)
+            {
+                //VMD.MemoryPointers.Add(new Tuple<string, long>(Domain, single));
+                VMD.PointerDomains.Add(GenDomain);
+                VMD.PointerAddresses.Add(single);
+                addressCount++;
+            }
+
+            return VMD;
+        }
+
+        public bool isAddressInRanges(int Address, List<int> Singles, List<int[]> Ranges)
+        {
+            if (Singles.Contains(Address))
+                return true;
+
+            foreach (int[] range in Ranges)
+            {
+                int start = range[0];
+                int end = range[1];
+
+                if (Address >= start && Address < end)
+                    return true;
+            }
+
+            return false;
+        }
+
+    }
+
+    //[XmlInclude(typeof(MemoryPointer))]
     [Serializable()]
     public class VirtualMemoryDomain : MemoryInterface
     {
-        public List<MemoryPointer> MemoryPointers = new List<MemoryPointer>();
+        //public List<MemoryPointer> MemoryPointers = new List<MemoryPointer>();
+        //public List<Tuple<string, long>> MemoryPointers = new List<Tuple<string, long>>();
+        public List<string> PointerDomains = new List<string>();
+        public List<long> PointerAddresses = new List<long>();
+        public VmdPrototype proto;
 
-        public override long Size { get { return MemoryPointers.Count; } set { } }
+        public override long Size { get { return PointerDomains.Count; } set { } }
 
         public void AddFromBlastLayer(BlastLayer bl)
         {
@@ -388,24 +490,27 @@ namespace RTC
 
             foreach(BlastUnit bu in bl.Layer)
             {
-                MemoryPointers.Add(new MemoryPointer(bu.Domain, bu.Address));
+                //MemoryPointers.Add(new MemoryPointer(bu.Domain, bu.Address));
+                //MemoryPointers.Add(new Tuple<string, long>(bu.Domain, bu.Address));
+                PointerDomains.Add(bu.Domain);
+                PointerAddresses.Add(bu.Address);
             }
         }
 
         public string getRealDomain(long address)
         {
-            if (address < 0 || address >= MemoryPointers.Count)
+            if (address < 0 || address >= PointerDomains.Count)
                 return null;
 
-            return MemoryPointers[(int)address].Domain;
+            return PointerDomains[(int)address];
         }
 
         public long getRealAddress(long address)
         {
-            if (address < 0 || address >= MemoryPointers.Count)
+            if (address < 0 || address >= PointerAddresses.Count)
                 return 0;
 
-            return MemoryPointers[(int)address].Address;
+            return PointerAddresses[(int)address];
         }
 
         public byte[] ToData()
@@ -485,6 +590,7 @@ namespace RTC
         }
     }
 
+    /*
     [Serializable()]
     [XmlType("MP")]
     public class MemoryPointer
@@ -521,6 +627,7 @@ namespace RTC
         
 
     }
+    */
 
     [Serializable()]
 	public class MemoryDomainProxy : MemoryInterface

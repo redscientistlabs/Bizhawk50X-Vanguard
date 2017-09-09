@@ -869,12 +869,17 @@ namespace RTC
         {
             if(Domain.Contains("[V]"))
             {
-                MemoryPointer mp = (RTC_MemoryDomains.VmdPool[Domain] as VirtualMemoryDomain)?.MemoryPointers[(int)Address];
+                /*
+                Tuple<string,long> mp = (RTC_MemoryDomains.VmdPool[Domain] as VirtualMemoryDomain)?.MemoryPointers[(int)Address];
                 if (mp == null)
                     return;
 
-                Domain = mp.Domain;
-                Address = mp.Address;
+                Domain = mp.Item1;
+                Address = mp.Item2;
+                */
+
+                Domain = (RTC_MemoryDomains.VmdPool[Domain] as VirtualMemoryDomain)?.PointerDomains[(int)Address] ?? "ERROR";
+                Address = (RTC_MemoryDomains.VmdPool[Domain] as VirtualMemoryDomain)?.PointerAddresses[(int)Address] ?? -1;
             }
         }
 
@@ -1009,12 +1014,17 @@ namespace RTC
         {
             if (Domain.Contains("[V]"))
             {
-                MemoryPointer mp = (RTC_MemoryDomains.VmdPool[Domain] as VirtualMemoryDomain)?.MemoryPointers[(int)Address];
+                /*
+                Tuple<string,long> mp = (RTC_MemoryDomains.VmdPool[Domain] as VirtualMemoryDomain)?.MemoryPointers[(int)Address];
                 if (mp == null)
                     return;
 
-                Domain = mp.Domain;
-                Address = mp.Address;
+                Domain = mp.Item1;
+                Address = mp.Item2;
+                */
+
+                Domain = (RTC_MemoryDomains.VmdPool[Domain] as VirtualMemoryDomain)?.PointerDomains[(int)Address] ?? "ERROR";
+                Address = (RTC_MemoryDomains.VmdPool[Domain] as VirtualMemoryDomain)?.PointerAddresses[(int)Address] ?? -1;
             }
         }
 
@@ -1154,22 +1164,30 @@ namespace RTC
         {
             if (Domain.Contains("[V]"))
             {
-                MemoryPointer mp = (RTC_MemoryDomains.VmdPool[Domain] as VirtualMemoryDomain)?.MemoryPointers[(int)Address];
+                /*
+                Tuple<string,long> mp = (RTC_MemoryDomains.VmdPool[Domain] as VirtualMemoryDomain)?.MemoryPointers[(int)Address];
                 if (mp != null)
                 {
-                    Domain = mp.Domain;
-                    Address = mp.Address;
+                    Domain = mp.Item1;
+                    Address = mp.Item2;
                 }
+                */
+                Domain = (RTC_MemoryDomains.VmdPool[Domain] as VirtualMemoryDomain)?.PointerDomains[(int)Address] ?? "ERROR";
+                Address = (RTC_MemoryDomains.VmdPool[Domain] as VirtualMemoryDomain)?.PointerAddresses[(int)Address] ?? -1;
             }
 
             if (PipeDomain.Contains("[V]"))
             {
-                MemoryPointer mp = (RTC_MemoryDomains.VmdPool[PipeDomain] as VirtualMemoryDomain)?.MemoryPointers[(int)PipeAddress];
+                /*
+                Tuple<string, long> mp = (RTC_MemoryDomains.VmdPool[PipeDomain] as VirtualMemoryDomain)?.MemoryPointers[(int)PipeAddress];
                 if (mp != null)
                 {
-                    PipeDomain = mp.Domain;
-                    PipeAddress = mp.Address;
+                    PipeDomain = mp.Item1;
+                    PipeAddress = mp.Item2;
                 }
+                */
+                PipeDomain = (RTC_MemoryDomains.VmdPool[Domain] as VirtualMemoryDomain)?.PointerDomains[(int)Address] ?? "ERROR";
+                PipeAddress = (RTC_MemoryDomains.VmdPool[Domain] as VirtualMemoryDomain)?.PointerAddresses[(int)Address] ?? -1;
             }
         }
 
@@ -1268,12 +1286,17 @@ namespace RTC
         {
             if (Domain.Contains("[V]"))
             {
-                MemoryPointer mp = (RTC_MemoryDomains.VmdPool[Domain] as VirtualMemoryDomain)?.MemoryPointers[(int)Address];
+                /*
+                Tuple<string, long> mp = (RTC_MemoryDomains.VmdPool[Domain] as VirtualMemoryDomain)?.MemoryPointers[(int)Address];
                 if (mp == null)
                     return;
 
-                Domain = mp.Domain;
-                Address = mp.Address;
+                Domain = mp.Item1;
+                Address = mp.Item2;
+                */
+
+                Domain = (RTC_MemoryDomains.VmdPool[Domain] as VirtualMemoryDomain)?.PointerDomains[(int)Address] ?? "ERROR";
+                Address = (RTC_MemoryDomains.VmdPool[Domain] as VirtualMemoryDomain)?.PointerAddresses[(int)Address] ?? -1;
             }
         }
 

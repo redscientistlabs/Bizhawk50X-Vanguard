@@ -58,7 +58,7 @@ namespace RTC
             string VmdName = lbLoadedVmdList.SelectedItem.ToString();
             MemoryInterface mi = RTC_MemoryDomains.VmdPool[VmdName];
 
-            lbRealDomainValue.Text = (mi as VirtualMemoryDomain).MemoryPointers[0].Domain;
+            lbRealDomainValue.Text = (mi as VirtualMemoryDomain).PointerDomains[0];
             lbVmdSizeValue.Text = mi.Size.ToString();
         }
 
@@ -71,28 +71,23 @@ namespace RTC
             VirtualMemoryDomain VMD = (VirtualMemoryDomain)RTC_MemoryDomains.VmdPool[VmdName];
 
             SaveFileDialog saveFileDialog1 = new SaveFileDialog();
-            saveFileDialog1.DefaultExt = "vmd";
+            saveFileDialog1.DefaultExt = "xml";
             saveFileDialog1.Title = "Save VMD to File";
-            saveFileDialog1.Filter = "Binary VMD file|*.vmd|XML VMD file|*.xml";
+            saveFileDialog1.Filter = "XML VMD file|*.xml";
             saveFileDialog1.RestoreDirectory = true;
 
             if (saveFileDialog1.ShowDialog() == DialogResult.OK)
             {
                 string Filename = saveFileDialog1.FileName;
-                if (Filename.ToUpper().EndsWith(".VMD"))
-                {
-                    File.WriteAllBytes(Filename, VMD.ToData());
-                }
-                else
-                {
-                    FileStream FS;
-                    XmlSerializer xs = new XmlSerializer(typeof(VirtualMemoryDomain));
 
-                    //creater stockpile.xml to temp folder from stockpile object
-                    FS = File.Open(Filename, FileMode.OpenOrCreate);
-                    xs.Serialize(FS, VMD);
-                    FS.Close();
-                }
+                FileStream FS;
+                XmlSerializer xs = new XmlSerializer(typeof(VmdPrototype));
+
+                //creater stockpile.xml to temp folder from stockpile object
+                FS = File.Open(Filename, FileMode.OpenOrCreate);
+                xs.Serialize(FS, VMD.proto);
+                FS.Close();
+
             }
             else
                 return;
@@ -101,55 +96,48 @@ namespace RTC
         private void btnLoadVmd_Click(object sender, EventArgs e)
         {
             OpenFileDialog ofd = new OpenFileDialog();
-            ofd.DefaultExt = "vmd";
+            ofd.DefaultExt = "xml";
+            ofd.Multiselect = true;
             ofd.Title = "Open VMD File";
-            ofd.Filter = "VMD files|*.vmd;*.xml";
+            ofd.Filter = "VMD xml files|*.xml";
             ofd.RestoreDirectory = true;
             if (ofd.ShowDialog() == DialogResult.OK)
             {
-                string Filename = ofd.FileName.ToString();
-
-                
-                VirtualMemoryDomain VMD;
-                byte[] binaryData = null;
-
-                try
+                //string Filename = ofd.FileName.ToString();
+                foreach (string Filename in ofd.FileNames)
                 {
-                    if (Filename.ToUpper().EndsWith(".VMD"))
+                    VirtualMemoryDomain VMD;
+                    try
                     {
-                        binaryData = File.ReadAllBytes(Filename);
-                        VMD = VirtualMemoryDomain.FromData(binaryData);
-                    }
-                    else
-                    {
+
                         FileStream FS;
-                        XmlSerializer xs = new XmlSerializer(typeof(VirtualMemoryDomain));
+                        XmlSerializer xs = new XmlSerializer(typeof(VmdPrototype));
                         FS = File.Open(Filename, FileMode.OpenOrCreate);
-                        VMD = (VirtualMemoryDomain)xs.Deserialize(FS);
+                        var proto = (VmdPrototype)xs.Deserialize(FS);
                         FS.Close();
+                        VMD = proto.Generate();
+
+                        string VmdName = VMD.ToString();
+                        if (RTC_MemoryDomains.VmdPool.ContainsKey(VmdName))
+                            RTC_MemoryDomains.VmdPool.Remove(VmdName);
+
+                        RTC_MemoryDomains.VmdPool[VmdName] = VMD;
+                        if (RTC_Core.isStandalone)
+                        {
+                            RTC_RPC.SendToKillSwitch("FREEZE");
+                            RTC_NetCore.HugeOperationStart();
+                            RTC_Core.SendCommandToBizhawk(new RTC_Command(CommandType.REMOTE_DOMAIN_VMD_ADD) { objectValue = VMD.proto }, true);
+                            RTC_RPC.SendToKillSwitch("UNFREEZE");
+                            RTC_NetCore.HugeOperationEnd();
+                        }
+
+                        RefreshVMDs();
+                        RTC_Core.coreForm.RefreshDomainsAndKeepSelected();
                     }
-
-                    string VmdName = VMD.ToString();
-                    if (RTC_MemoryDomains.VmdPool.ContainsKey(VmdName))
-                        RTC_MemoryDomains.VmdPool.Remove(VmdName);
-
-                    RTC_MemoryDomains.VmdPool[VmdName] = VMD;
-                    if (RTC_Core.isStandalone)
+                    catch
                     {
-                        RTC_RPC.SendToKillSwitch("FREEZE");
-                        RTC_NetCore.HugeOperationStart();
-                        RTC_Core.SendCommandToBizhawk(new RTC_Command(CommandType.REMOTE_DOMAIN_VMD_ADD) { objectValue = (binaryData != null ? binaryData : VMD.ToData()) },true);
-                        RTC_RPC.SendToKillSwitch("UNFREEZE");
-                        RTC_NetCore.HugeOperationEnd();
+                        MessageBox.Show($"The VMD xml file {Filename} could not be loaded.");
                     }
-
-                    RefreshVMDs();
-                    RTC_Core.coreForm.RefreshDomainsAndKeepSelected();
-                }
-                catch
-                {
-                    MessageBox.Show("The VMD xml file could not be loaded");
-                    return;
                 }
             }
             else
