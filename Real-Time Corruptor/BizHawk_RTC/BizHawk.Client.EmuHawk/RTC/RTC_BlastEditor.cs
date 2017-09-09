@@ -27,18 +27,22 @@ namespace RTC
 			//lbBlastLayer.Items.Clear();
 			sk = (StashKey)_sk.Clone();
 
-			lbBlastLayer.DataSource = sk.BlastLayer.Layer;
+            //lbBlastLayer.DataSource = sk.BlastLayer.Layer;
 
-			//foreach (var item in sk.blastlayer.Layer)
-			//	lbBlastLayer.Items.Add(item);
+            //foreach (var item in sk.blastlayer.Layer)
+            //	lbBlastLayer.Items.Add(item);
 
-			this.Show();
+            RefreshBlastLayer();
+
+            this.Show();
 		}
 
 		public void RefreshBlastLayer()
 		{
 			lbBlastLayer.DataSource = null;
 			lbBlastLayer.DataSource = sk.BlastLayer.Layer;
+
+            lbBlastLayerSize.Text = "BlastLayer size: " + sk.BlastLayer.Layer.Count.ToString();
 		}
 
 		private void btnDisable50_Click(object sender, EventArgs e)
@@ -318,6 +322,22 @@ namespace RTC
             BlastUnit bu2 = ObjectCopier.Clone(bu);
             sk.BlastLayer.Layer.Insert(pos, bu2);
 
+
+            RefreshBlastLayer();
+        }
+
+        private void btnSanitizeDuplicates_Click(object sender, EventArgs e)
+        {
+            List<BlastUnit> bul = new List<BlastUnit>(sk.BlastLayer.Layer.ToArray().Reverse());
+            List<long> usedAddresses = new List<long>();
+
+            foreach (BlastUnit bu in bul)
+            {
+                if(usedAddresses.Contains(bu.Address))
+                    usedAddresses.Add(bu.Address);
+                else
+                    sk.BlastLayer.Layer.Remove(bu);
+            }
 
             RefreshBlastLayer();
         }

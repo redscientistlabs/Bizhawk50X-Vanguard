@@ -47,6 +47,8 @@
             this.btnDisableEverything = new System.Windows.Forms.Button();
             this.btnEnableEverything = new System.Windows.Forms.Button();
             this.btnDuplicateSelected = new System.Windows.Forms.Button();
+            this.btnSanitizeDuplicates = new System.Windows.Forms.Button();
+            this.lbBlastLayerSize = new System.Windows.Forms.Label();
             this.gbValueEdit.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.nmValueEdit)).BeginInit();
             this.gbAddressEdit.SuspendLayout();
@@ -60,7 +62,7 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.lbBlastLayer.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
             this.lbBlastLayer.BorderStyle = System.Windows.Forms.BorderStyle.None;
-            this.lbBlastLayer.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F);
+            this.lbBlastLayer.Font = new System.Drawing.Font("Segoe UI", 8F);
             this.lbBlastLayer.ForeColor = System.Drawing.Color.White;
             this.lbBlastLayer.FormattingEnabled = true;
             this.lbBlastLayer.IntegralHeight = false;
@@ -80,11 +82,11 @@
             this.btnCorrupt.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(32)))), ((int)(((byte)(32)))), ((int)(((byte)(32)))));
             this.btnCorrupt.FlatAppearance.BorderSize = 0;
             this.btnCorrupt.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btnCorrupt.Font = new System.Drawing.Font("Segoe UI Semibold", 11F, System.Drawing.FontStyle.Bold);
+            this.btnCorrupt.Font = new System.Drawing.Font("Segoe UI Semibold", 9F, System.Drawing.FontStyle.Bold);
             this.btnCorrupt.ForeColor = System.Drawing.Color.OrangeRed;
-            this.btnCorrupt.Location = new System.Drawing.Point(369, 459);
+            this.btnCorrupt.Location = new System.Drawing.Point(369, 475);
             this.btnCorrupt.Name = "btnCorrupt";
-            this.btnCorrupt.Size = new System.Drawing.Size(157, 28);
+            this.btnCorrupt.Size = new System.Drawing.Size(157, 23);
             this.btnCorrupt.TabIndex = 13;
             this.btnCorrupt.TabStop = false;
             this.btnCorrupt.Tag = "color:darker";
@@ -98,11 +100,11 @@
             this.btnLoadCorrupt.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(32)))), ((int)(((byte)(32)))), ((int)(((byte)(32)))));
             this.btnLoadCorrupt.FlatAppearance.BorderSize = 0;
             this.btnLoadCorrupt.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btnLoadCorrupt.Font = new System.Drawing.Font("Segoe UI Semibold", 11F, System.Drawing.FontStyle.Bold);
+            this.btnLoadCorrupt.Font = new System.Drawing.Font("Segoe UI Semibold", 9F, System.Drawing.FontStyle.Bold);
             this.btnLoadCorrupt.ForeColor = System.Drawing.Color.OrangeRed;
-            this.btnLoadCorrupt.Location = new System.Drawing.Point(369, 427);
+            this.btnLoadCorrupt.Location = new System.Drawing.Point(369, 449);
             this.btnLoadCorrupt.Name = "btnLoadCorrupt";
-            this.btnLoadCorrupt.Size = new System.Drawing.Size(157, 28);
+            this.btnLoadCorrupt.Size = new System.Drawing.Size(157, 23);
             this.btnLoadCorrupt.TabIndex = 14;
             this.btnLoadCorrupt.TabStop = false;
             this.btnLoadCorrupt.Tag = "color:darker";
@@ -116,11 +118,11 @@
             this.btnSendToStash.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(32)))), ((int)(((byte)(32)))), ((int)(((byte)(32)))));
             this.btnSendToStash.FlatAppearance.BorderSize = 0;
             this.btnSendToStash.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btnSendToStash.Font = new System.Drawing.Font("Segoe UI Semibold", 11F, System.Drawing.FontStyle.Bold);
+            this.btnSendToStash.Font = new System.Drawing.Font("Segoe UI Semibold", 9F, System.Drawing.FontStyle.Bold);
             this.btnSendToStash.ForeColor = System.Drawing.Color.OrangeRed;
-            this.btnSendToStash.Location = new System.Drawing.Point(369, 491);
+            this.btnSendToStash.Location = new System.Drawing.Point(369, 501);
             this.btnSendToStash.Name = "btnSendToStash";
-            this.btnSendToStash.Size = new System.Drawing.Size(157, 28);
+            this.btnSendToStash.Size = new System.Drawing.Size(157, 23);
             this.btnSendToStash.TabIndex = 12;
             this.btnSendToStash.TabStop = false;
             this.btnSendToStash.Tag = "color:darker";
@@ -134,11 +136,11 @@
             this.btnDisable50.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(224)))), ((int)(((byte)(224)))), ((int)(((byte)(224)))));
             this.btnDisable50.FlatAppearance.BorderSize = 0;
             this.btnDisable50.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btnDisable50.Font = new System.Drawing.Font("Segoe UI Semibold", 9.75F, System.Drawing.FontStyle.Bold);
+            this.btnDisable50.Font = new System.Drawing.Font("Segoe UI Semibold", 9F, System.Drawing.FontStyle.Bold);
             this.btnDisable50.ForeColor = System.Drawing.Color.Black;
-            this.btnDisable50.Location = new System.Drawing.Point(369, 14);
+            this.btnDisable50.Location = new System.Drawing.Point(369, 41);
             this.btnDisable50.Name = "btnDisable50";
-            this.btnDisable50.Size = new System.Drawing.Size(157, 25);
+            this.btnDisable50.Size = new System.Drawing.Size(157, 23);
             this.btnDisable50.TabIndex = 114;
             this.btnDisable50.TabStop = false;
             this.btnDisable50.Tag = "color:light";
@@ -152,11 +154,11 @@
             this.btnRemoveDisabled.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(224)))), ((int)(((byte)(224)))), ((int)(((byte)(224)))));
             this.btnRemoveDisabled.FlatAppearance.BorderSize = 0;
             this.btnRemoveDisabled.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btnRemoveDisabled.Font = new System.Drawing.Font("Segoe UI Semibold", 9.75F, System.Drawing.FontStyle.Bold);
+            this.btnRemoveDisabled.Font = new System.Drawing.Font("Segoe UI Semibold", 9F, System.Drawing.FontStyle.Bold);
             this.btnRemoveDisabled.ForeColor = System.Drawing.Color.Black;
-            this.btnRemoveDisabled.Location = new System.Drawing.Point(369, 71);
+            this.btnRemoveDisabled.Location = new System.Drawing.Point(369, 93);
             this.btnRemoveDisabled.Name = "btnRemoveDisabled";
-            this.btnRemoveDisabled.Size = new System.Drawing.Size(157, 25);
+            this.btnRemoveDisabled.Size = new System.Drawing.Size(157, 23);
             this.btnRemoveDisabled.TabIndex = 115;
             this.btnRemoveDisabled.TabStop = false;
             this.btnRemoveDisabled.Tag = "color:light";
@@ -170,11 +172,11 @@
             this.btnInvertDisabled.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(224)))), ((int)(((byte)(224)))), ((int)(((byte)(224)))));
             this.btnInvertDisabled.FlatAppearance.BorderSize = 0;
             this.btnInvertDisabled.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btnInvertDisabled.Font = new System.Drawing.Font("Segoe UI Semibold", 9.75F, System.Drawing.FontStyle.Bold);
+            this.btnInvertDisabled.Font = new System.Drawing.Font("Segoe UI Semibold", 9F, System.Drawing.FontStyle.Bold);
             this.btnInvertDisabled.ForeColor = System.Drawing.Color.Black;
-            this.btnInvertDisabled.Location = new System.Drawing.Point(369, 43);
+            this.btnInvertDisabled.Location = new System.Drawing.Point(369, 67);
             this.btnInvertDisabled.Name = "btnInvertDisabled";
-            this.btnInvertDisabled.Size = new System.Drawing.Size(157, 25);
+            this.btnInvertDisabled.Size = new System.Drawing.Size(157, 23);
             this.btnInvertDisabled.TabIndex = 116;
             this.btnInvertDisabled.TabStop = false;
             this.btnInvertDisabled.Tag = "color:light";
@@ -190,7 +192,7 @@
             this.gbValueEdit.Controls.Add(this.btnValueUpdate);
             this.gbValueEdit.Font = new System.Drawing.Font("Segoe UI", 9.75F);
             this.gbValueEdit.ForeColor = System.Drawing.Color.White;
-            this.gbValueEdit.Location = new System.Drawing.Point(369, 307);
+            this.gbValueEdit.Location = new System.Drawing.Point(369, 333);
             this.gbValueEdit.Name = "gbValueEdit";
             this.gbValueEdit.Size = new System.Drawing.Size(157, 112);
             this.gbValueEdit.TabIndex = 117;
@@ -251,7 +253,7 @@
             this.gbAddressEdit.Controls.Add(this.btnAdressUpdate);
             this.gbAddressEdit.Font = new System.Drawing.Font("Segoe UI", 9.75F);
             this.gbAddressEdit.ForeColor = System.Drawing.Color.White;
-            this.gbAddressEdit.Location = new System.Drawing.Point(369, 199);
+            this.gbAddressEdit.Location = new System.Drawing.Point(369, 227);
             this.gbAddressEdit.Name = "gbAddressEdit";
             this.gbAddressEdit.Size = new System.Drawing.Size(157, 112);
             this.gbAddressEdit.TabIndex = 127;
@@ -310,11 +312,11 @@
             this.btnDisableEverything.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(224)))), ((int)(((byte)(224)))), ((int)(((byte)(224)))));
             this.btnDisableEverything.FlatAppearance.BorderSize = 0;
             this.btnDisableEverything.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btnDisableEverything.Font = new System.Drawing.Font("Segoe UI Semibold", 9.75F, System.Drawing.FontStyle.Bold);
+            this.btnDisableEverything.Font = new System.Drawing.Font("Segoe UI Semibold", 9F, System.Drawing.FontStyle.Bold);
             this.btnDisableEverything.ForeColor = System.Drawing.Color.Black;
-            this.btnDisableEverything.Location = new System.Drawing.Point(369, 108);
+            this.btnDisableEverything.Location = new System.Drawing.Point(369, 155);
             this.btnDisableEverything.Name = "btnDisableEverything";
-            this.btnDisableEverything.Size = new System.Drawing.Size(157, 25);
+            this.btnDisableEverything.Size = new System.Drawing.Size(157, 23);
             this.btnDisableEverything.TabIndex = 128;
             this.btnDisableEverything.TabStop = false;
             this.btnDisableEverything.Tag = "color:light";
@@ -328,11 +330,11 @@
             this.btnEnableEverything.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(224)))), ((int)(((byte)(224)))), ((int)(((byte)(224)))));
             this.btnEnableEverything.FlatAppearance.BorderSize = 0;
             this.btnEnableEverything.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btnEnableEverything.Font = new System.Drawing.Font("Segoe UI Semibold", 9.75F, System.Drawing.FontStyle.Bold);
+            this.btnEnableEverything.Font = new System.Drawing.Font("Segoe UI Semibold", 9F, System.Drawing.FontStyle.Bold);
             this.btnEnableEverything.ForeColor = System.Drawing.Color.Black;
-            this.btnEnableEverything.Location = new System.Drawing.Point(370, 137);
+            this.btnEnableEverything.Location = new System.Drawing.Point(370, 181);
             this.btnEnableEverything.Name = "btnEnableEverything";
-            this.btnEnableEverything.Size = new System.Drawing.Size(157, 25);
+            this.btnEnableEverything.Size = new System.Drawing.Size(157, 23);
             this.btnEnableEverything.TabIndex = 129;
             this.btnEnableEverything.TabStop = false;
             this.btnEnableEverything.Tag = "color:light";
@@ -346,11 +348,11 @@
             this.btnDuplicateSelected.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(224)))), ((int)(((byte)(224)))), ((int)(((byte)(224)))));
             this.btnDuplicateSelected.FlatAppearance.BorderSize = 0;
             this.btnDuplicateSelected.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btnDuplicateSelected.Font = new System.Drawing.Font("Segoe UI Semibold", 9.75F, System.Drawing.FontStyle.Bold);
+            this.btnDuplicateSelected.Font = new System.Drawing.Font("Segoe UI Semibold", 9F, System.Drawing.FontStyle.Bold);
             this.btnDuplicateSelected.ForeColor = System.Drawing.Color.Black;
-            this.btnDuplicateSelected.Location = new System.Drawing.Point(370, 172);
+            this.btnDuplicateSelected.Location = new System.Drawing.Point(370, 207);
             this.btnDuplicateSelected.Name = "btnDuplicateSelected";
-            this.btnDuplicateSelected.Size = new System.Drawing.Size(157, 25);
+            this.btnDuplicateSelected.Size = new System.Drawing.Size(157, 23);
             this.btnDuplicateSelected.TabIndex = 130;
             this.btnDuplicateSelected.TabStop = false;
             this.btnDuplicateSelected.Tag = "color:light";
@@ -358,12 +360,43 @@
             this.btnDuplicateSelected.UseVisualStyleBackColor = false;
             this.btnDuplicateSelected.Click += new System.EventHandler(this.btnDuplicateSelected_Click);
             // 
+            // btnSanitizeDuplicates
+            // 
+            this.btnSanitizeDuplicates.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.btnSanitizeDuplicates.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(224)))), ((int)(((byte)(224)))), ((int)(((byte)(224)))));
+            this.btnSanitizeDuplicates.FlatAppearance.BorderSize = 0;
+            this.btnSanitizeDuplicates.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnSanitizeDuplicates.Font = new System.Drawing.Font("Segoe UI Semibold", 9F, System.Drawing.FontStyle.Bold);
+            this.btnSanitizeDuplicates.ForeColor = System.Drawing.Color.Black;
+            this.btnSanitizeDuplicates.Location = new System.Drawing.Point(370, 124);
+            this.btnSanitizeDuplicates.Name = "btnSanitizeDuplicates";
+            this.btnSanitizeDuplicates.Size = new System.Drawing.Size(157, 23);
+            this.btnSanitizeDuplicates.TabIndex = 131;
+            this.btnSanitizeDuplicates.TabStop = false;
+            this.btnSanitizeDuplicates.Tag = "color:light";
+            this.btnSanitizeDuplicates.Text = "Sanitize Duplicates";
+            this.btnSanitizeDuplicates.UseVisualStyleBackColor = false;
+            this.btnSanitizeDuplicates.Click += new System.EventHandler(this.btnSanitizeDuplicates_Click);
+            // 
+            // lbBlastLayerSize
+            // 
+            this.lbBlastLayerSize.AutoSize = true;
+            this.lbBlastLayerSize.Font = new System.Drawing.Font("Segoe UI", 8F);
+            this.lbBlastLayerSize.ForeColor = System.Drawing.Color.White;
+            this.lbBlastLayerSize.Location = new System.Drawing.Point(366, 18);
+            this.lbBlastLayerSize.Name = "lbBlastLayerSize";
+            this.lbBlastLayerSize.Size = new System.Drawing.Size(83, 13);
+            this.lbBlastLayerSize.TabIndex = 132;
+            this.lbBlastLayerSize.Text = "BlastLayer size:";
+            // 
             // RTC_BlastEditorForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.Gray;
             this.ClientSize = new System.Drawing.Size(539, 536);
+            this.Controls.Add(this.lbBlastLayerSize);
+            this.Controls.Add(this.btnSanitizeDuplicates);
             this.Controls.Add(this.btnDuplicateSelected);
             this.Controls.Add(this.btnEnableEverything);
             this.Controls.Add(this.btnDisableEverything);
@@ -389,6 +422,7 @@
             this.gbAddressEdit.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.nmAddressEdit)).EndInit();
             this.ResumeLayout(false);
+            this.PerformLayout();
 
 		}
 
@@ -412,5 +446,7 @@
         private System.Windows.Forms.Button btnDisableEverything;
         private System.Windows.Forms.Button btnEnableEverything;
         private System.Windows.Forms.Button btnDuplicateSelected;
+        private System.Windows.Forms.Button btnSanitizeDuplicates;
+        private System.Windows.Forms.Label lbBlastLayerSize;
     }
 }
