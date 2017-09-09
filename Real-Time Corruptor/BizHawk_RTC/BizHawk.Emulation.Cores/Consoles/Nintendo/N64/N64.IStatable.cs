@@ -56,7 +56,8 @@ namespace BizHawk.Emulation.Cores.Nintendo.N64
 			int length = reader.ReadInt32();
 			if ((_disableExpansionSlot && length >= 16788288) || (!_disableExpansionSlot && length < 16788288))
 			{
-				throw new SavestateSizeMismatchException("Wrong N64 savestate size");
+                //RTC_HIJACK: Add message (RTC: Try toggling the expansion pack setting)
+                throw new SavestateSizeMismatchException("Wrong N64 savestate size (RTC: Try toggling the expansion pack setting)");
 			}
 
 			reader.Read(SaveStatePrivateBuff, 0, length);

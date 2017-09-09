@@ -364,10 +364,13 @@ namespace BizHawk.Client.Common
 				name += "." + Global.Emulator.Attributes().CoreName;
 			}
 
+            //RTC_Hijack : Don't use moviesession prefix
+            /*
 			if (Global.MovieSession.Movie.IsActive)
 			{
 				name += "." + Path.GetFileNameWithoutExtension(Global.MovieSession.Movie.Filename);
 			}
+            */
 
 			var pathEntry = Global.Config.PathEntries[game.System, "Savestates"] ??
 							Global.Config.PathEntries[game.System, "Base"];
