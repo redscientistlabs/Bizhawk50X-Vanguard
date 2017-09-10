@@ -246,6 +246,7 @@ namespace RTC
 				File.Move(RTC_Core.rtcDir + "\\PARAMS\\DISCLAIMER.TXT", RTC_Core.rtcDir + "\\PARAMS\\DISCLAIMER.OLD");
 			}
 
+            RTC_Core.CheckForProblematicProcesses();
 		}
 
         public void track_ErrorDelay_Scroll(object sender, EventArgs e)
@@ -893,8 +894,8 @@ namespace RTC
 			ContextMenuStrip EasyButtonMenu = new ContextMenuStrip();
 			EasyButtonMenu.Items.Add("Start with Recommended Settings", null, new EventHandler(btnEasyModeTemplate_Click));
 			EasyButtonMenu.Items.Add(new ToolStripSeparator());
-			EasyButtonMenu.Items.Add("Watch a tutorial video", null, new EventHandler((ob,ev) => Process.Start("https://www.youtube.com/watch?v=sIELpn4-Umw"))).Enabled = false;
-			EasyButtonMenu.Items.Add("Open the online wiki", null, new EventHandler((ob, ev) => Process.Start("http://cc.r5x.cc/dokuwiki/")));
+			//EasyButtonMenu.Items.Add("Watch a tutorial video", null, new EventHandler((ob,ev) => Process.Start("https://www.youtube.com/watch?v=sIELpn4-Umw"))).Enabled = false;
+			EasyButtonMenu.Items.Add("Open the online wiki", null, new EventHandler((ob, ev) => Process.Start("https://corrupt.wiki/corruptors/rtc-real-time-corruptor.html")));
 			EasyButtonMenu.Show(this, locate);
         }
 
