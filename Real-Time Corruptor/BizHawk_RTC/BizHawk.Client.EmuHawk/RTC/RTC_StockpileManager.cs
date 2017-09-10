@@ -453,6 +453,8 @@ namespace RTC
 
 		public static StashKey getRawBlastlayer()
 		{
+            RTC_Core.StopSound();
+
 			StashKey sk = RTC_StockpileManager.SaveState_NET(false);
 
 			BlastLayer bl = new BlastLayer();
@@ -543,12 +545,14 @@ namespace RTC
 
                 BlastLayer romBlast = RTC_ExternalRomPlugin.GetBlastLayer(original, corrupted);
 
-                if (romBlast.Layer.Count > 0)
+                if (romBlast != null && romBlast.Layer.Count > 0)
                     bl.Layer.AddRange(romBlast.Layer);
 
             }
 
             sk.BlastLayer = bl;
+
+            RTC_Core.StartSound();
 
 			return sk;
 		}

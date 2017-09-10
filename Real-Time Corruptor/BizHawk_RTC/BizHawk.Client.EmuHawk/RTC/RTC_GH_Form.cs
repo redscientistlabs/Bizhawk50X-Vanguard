@@ -889,12 +889,18 @@ namespace RTC
 			{
 				btnSendRaw.Visible = false;
 
-				StashKey sk = (StashKey)RTC_Core.SendCommandToBizhawk(new RTC_Command(CommandType.REMOTE_KEY_GETRAWBLASTLAYER), true);
+                RTC_RPC.SendToKillSwitch("FREEZE");
+                RTC_NetCore.HugeOperationStart();
+
+                StashKey sk = (StashKey)RTC_Core.SendCommandToBizhawk(new RTC_Command(CommandType.REMOTE_KEY_GETRAWBLASTLAYER), true);
 
 				RTC_StockpileManager.currentStashkey = sk;
 				RTC_StockpileManager.StashHistory.Add(RTC_StockpileManager.currentStashkey);
 
-				RefreshStashHistory();
+                RTC_RPC.SendToKillSwitch("UNFREEZE");
+                RTC_NetCore.HugeOperationEnd();
+
+                RefreshStashHistory();
 
 				dgvStockpile.ClearSelection();
 
