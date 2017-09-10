@@ -579,8 +579,9 @@ namespace RTC
 
         private void btnLoadStockpile_Click(object sender, MouseEventArgs e)
         {
+            RTC_Core.CheckForProblematicProcesses();
 
-			Point locate = new Point((sender as Control).Location.X + e.Location.X, (sender as Control).Location.Y + e.Location.Y);
+            Point locate = new Point((sender as Control).Location.X + e.Location.X, (sender as Control).Location.Y + e.Location.Y);
 
 			ContextMenuStrip LoadMenuItems = new ContextMenuStrip();
 			LoadMenuItems.Items.Add("Load Stockpile", null, new EventHandler((ob, ev) => {
