@@ -17,7 +17,7 @@ namespace RTC
 
     public static class RTC_Core
     {
-		public static string RtcVersion = "2.92e";
+		public static string RtcVersion = "2.92f";
 		
         public static Random RND = new Random();
         public static string[] args;
@@ -150,28 +150,22 @@ namespace RTC
                     Warned = true;
                 }
 
-                if (processes.Contains("RTSS"))
+                if (processes.Contains("RTSS") || processes.Contains("RIVATUNERSTATISTICSSERVER"))
                 {
                     MessageBox.Show("Rivatuner Statistics Server OSD Detected. The RTSS OSD is incompatible with BizHawk's N64 Emulator. If you're using any GPU overclocking software such as MSI Afterburner, disable the OSD while running the RTC or blacklist emuhawk.exe in the RTSS Settings");
                     Warned = true;
                 }
 
-                if (processes.Contains("RIVATUNERSTATISTICSSERVER"))
+                if (processes.Contains("PRECISIONXSERVER"))
                 {
                     MessageBox.Show("EVGA Precision X OSD detected. The OSD is incompatible with BizHawk's N64 Emulator. Disable the OSD in the Precision X menu or blacklist emuhawk.exe in PrecisionX Server.");
                     Warned = true;
                 }
+                
             }
             catch
             {
-                //It is possible that certain computers cannot fetch the process list. 
-                //Some Lenovo laptops do that because of registry optimizations. It's stupid.
-                //Like, i understand that you want to optimize your laptops so they run better
-                //but it's not a reason to disable all the counters in the performance monitor
-                //I mean, what if your sysadmin needs to check that? what does he do?
-                //He's got to execute lodctr /R and rebuild all those counters. On every single Lenovo laptop.
-
-                //Let's just do nothing in that case. Anyway, you shouldn't be running RTC at work.
+                //Let's just do nothing in that case.
             }
 
 

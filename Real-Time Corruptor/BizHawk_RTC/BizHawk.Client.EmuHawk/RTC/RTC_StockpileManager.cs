@@ -235,7 +235,11 @@ namespace RTC
 
 			if (sks != null && sks.Count > 1)
 			{
-				StashKey master = sks[0];
+                RTC_RPC.SendToKillSwitch("FREEZE");
+                RTC_NetCore.HugeOperationStart();
+
+
+                StashKey master = sks[0];
 
 				string masterSystemCore = master.SystemCore;
 				bool allCoresIdentical = true;
@@ -250,7 +254,10 @@ namespace RTC
 				if(!allCoresIdentical)
 				{
 					MessageBox.Show("Merge attempt failed: Core mismatch\n\n" + string.Join("\n", sks.Select(it => $"{it.GameName} -> {it.SystemName} -> {it.SystemCore}")));
-					return false;
+                    RTC_RPC.SendToKillSwitch("UNFREEZE");
+                    RTC_NetCore.HugeOperationEnd();
+
+                    return false;
 				}
 
 				BlastLayer bl = new BlastLayer();
@@ -258,8 +265,10 @@ namespace RTC
 				foreach (StashKey item in sks)
 					bl.Layer.AddRange(item.BlastLayer.Layer);
 
+                RTC_RPC.SendToKillSwitch("UNFREEZE");
+                RTC_NetCore.HugeOperationEnd();
 
-				currentStashkey = new StashKey(RTC_Core.GetRandomKey(), master.ParentKey, bl);
+                currentStashkey = new StashKey(RTC_Core.GetRandomKey(), master.ParentKey, bl);
 				currentStashkey.RomFilename = master.RomFilename;
 				currentStashkey.SystemName = master.SystemName;
 				currentStashkey.SystemCore = master.SystemCore;

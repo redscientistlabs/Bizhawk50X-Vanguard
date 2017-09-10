@@ -1364,9 +1364,6 @@ namespace RTC
 				lbStashHistory.ClearSelected();
 				RTC_Core.spForm.dgvStockpile.ClearSelection();
 
-                if (dgvStockpile.SelectedRows.Count == 0)
-                    return;
-
                 // Merge tool and ui change
                 if (dgvStockpile.SelectedRows.Count > 1)
 				{
@@ -1397,22 +1394,28 @@ namespace RTC
 
 				}
 
-				RTC_StockpileManager.currentStashkey = (dgvStockpile.SelectedRows[0].Cells[0].Value as StashKey);
+                if (dgvStockpile.SelectedRows.Count == 0)
+                    return;
+
+                RTC_StockpileManager.currentStashkey = (dgvStockpile.SelectedRows[0].Cells[0].Value as StashKey);
 
 				if (!cbLoadOnSelect.Checked)
 					return;
 
+
+
 				// Merge Execution
 				if (dgvStockpile.SelectedRows.Count > 1)
 				{
-					List<StashKey> sks = new List<StashKey>();
+
+                    List<StashKey> sks = new List<StashKey>();
 
 					foreach (DataGridViewRow row in dgvStockpile.SelectedRows)
 						sks.Add((StashKey)row.Cells[0].Value);
 
 					RTC_StockpileManager.MergeStashkeys(sks);
 
-					return;
+                    return;
 				}
 
 

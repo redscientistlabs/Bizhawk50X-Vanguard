@@ -122,19 +122,26 @@ namespace RTC
                     int start = SafeStringToInt(lineParts[0]);
                     int end = SafeStringToInt(lineParts[1]);
 
+                    if (end >= currentDomainSize)
+                        end = Convert.ToInt32(currentDomainSize - 1);
+
                     if (remove)
                         proto.removeRanges.Add(new int[] { start, end });
                     else
                         proto.addRanges.Add(new int[] { start, end });
+                    
                 }
                 else
                 {
                     int address = SafeStringToInt(lineParts[0]);
 
-                    if (remove)
-                        proto.removeSingles.Add(address);
-                    else
-                        proto.addSingles.Add(address);
+                    if (address < currentDomainSize)
+                    {
+                        if (remove)
+                            proto.removeSingles.Add(address);
+                        else
+                            proto.addSingles.Add(address);
+                    }
                 }
 
 

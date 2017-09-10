@@ -21,6 +21,8 @@ namespace RTC
 		public static bool isRemoteRTC = false;
 		public static bool isNormalAdvance = false;
 
+        public static System.Diagnostics.Stopwatch watch = null;
+
 		public static volatile bool BIZHAWK_ALLOWED_DOUBLECLICK_FULLSCREEN = true;
 
         static int CPU_STEP_Count = 0;
@@ -269,74 +271,88 @@ namespace RTC
         {// You can go to the injected Hotkey Hijack by searching #HotkeyHijack
 			if (DisableRTC) return false;
 
+            if(watch != null)
+            {
+                long elapsedMs = watch.ElapsedMilliseconds;
+                if(elapsedMs > 3000)
+                {
+                    watch.Stop();
+                    watch = null;
+                }
+            }
+
 			switch (trigger)
             {
-            default:
-                return false;
+                default:
+                    return false;
 
-            case "Manual Blast":
-				RTC_Core.SendCommandToRTC(new RTC_Command(CommandType.REMOTE_HOTKEY_MANUALBLAST));
-                break;
+                case "Manual Blast":
+				    RTC_Core.SendCommandToRTC(new RTC_Command(CommandType.REMOTE_HOTKEY_MANUALBLAST));
+                    break;
 
-            case "Auto-Corrupt":
-				RTC_Core.SendCommandToRTC(new RTC_Command(CommandType.REMOTE_HOTKEY_AUTOCORRUPTTOGGLE));
-                break;
+                case "Auto-Corrupt":
+				    RTC_Core.SendCommandToRTC(new RTC_Command(CommandType.REMOTE_HOTKEY_AUTOCORRUPTTOGGLE));
+                    break;
 
-            case "Error Delay--":
-				RTC_Core.SendCommandToRTC(new RTC_Command(CommandType.REMOTE_HOTKEY_ERRORDELAYDECREASE));
-                break;
+                case "Error Delay--":
+				    RTC_Core.SendCommandToRTC(new RTC_Command(CommandType.REMOTE_HOTKEY_ERRORDELAYDECREASE));
+                    break;
 
-            case "Error Delay++":
-				RTC_Core.SendCommandToRTC(new RTC_Command(CommandType.REMOTE_HOTKEY_ERRORDELAYINCREASE));
-                break;
+                case "Error Delay++":
+				    RTC_Core.SendCommandToRTC(new RTC_Command(CommandType.REMOTE_HOTKEY_ERRORDELAYINCREASE));
+                    break;
 
-            case "Intensity--":
-				RTC_Core.SendCommandToRTC(new RTC_Command(CommandType.REMOTE_HOTKEY_INTENSITYDECREASE));
-                break;
+                case "Intensity--":
+				    RTC_Core.SendCommandToRTC(new RTC_Command(CommandType.REMOTE_HOTKEY_INTENSITYDECREASE));
+                    break;
 
-            case "Intensity++":
-				RTC_Core.SendCommandToRTC(new RTC_Command(CommandType.REMOTE_HOTKEY_INTENSITYINCREASE));
-                break;
+                case "Intensity++":
+				    RTC_Core.SendCommandToRTC(new RTC_Command(CommandType.REMOTE_HOTKEY_INTENSITYINCREASE));
+                    break;
 
-            case "GH Load and Corrupt":
-				RTC_Core.SendCommandToRTC(new RTC_Command(CommandType.REMOTE_HOTKEY_GHLOADCORRUPT));
-                break;
+                case "GH Load and Corrupt":
+                    watch = System.Diagnostics.Stopwatch.StartNew();
+                    RTC_Core.SendCommandToRTC(new RTC_Command(CommandType.REMOTE_HOTKEY_GHLOADCORRUPT));
+                    break;
 
-            case "GH Just Corrupt":
-				RTC_Core.SendCommandToRTC(new RTC_Command(CommandType.REMOTE_HOTKEY_GHCORRUPT));
-                break;
+                case "GH Just Corrupt":
+                    watch = System.Diagnostics.Stopwatch.StartNew();
+                    RTC_Core.SendCommandToRTC(new RTC_Command(CommandType.REMOTE_HOTKEY_GHCORRUPT));
+                    break;
 
-            case "GH Load":
-				RTC_Core.SendCommandToRTC(new RTC_Command(CommandType.REMOTE_HOTKEY_GHLOAD));
-                break;
+                case "GH Load":
+                    watch = System.Diagnostics.Stopwatch.StartNew();
+                    RTC_Core.SendCommandToRTC(new RTC_Command(CommandType.REMOTE_HOTKEY_GHLOAD));
+                    break;
 
-            case "GH Save":
-				RTC_Core.SendCommandToRTC(new RTC_Command(CommandType.REMOTE_HOTKEY_GHSAVE));
-                break;
+                case "GH Save":
+                    watch = System.Diagnostics.Stopwatch.StartNew();
+                    RTC_Core.SendCommandToRTC(new RTC_Command(CommandType.REMOTE_HOTKEY_GHSAVE));
+                    break;
 
-            case "Stash->Stockpile":
-                RTC_Core.SendCommandToRTC(new RTC_Command(CommandType.REMOTE_HOTKEY_GHSTASHTOSTOCKPILE));
-                break;
+                case "Stash->Stockpile":
+                    RTC_Core.SendCommandToRTC(new RTC_Command(CommandType.REMOTE_HOTKEY_GHSTASHTOSTOCKPILE));
+                    break;
 
-            case "Induce KS Crash":
-                RTC_RPC.Stop();
-                break;
+                case "Induce KS Crash":
+                    RTC_RPC.Stop();
+                    break;
 
-            case "Blast+RawStash":
-                RTC_Core.SendCommandToRTC(new RTC_Command(CommandType.REMOTE_HOTKEY_BLASTRAWSTASH));
-                break;
+                case "Blast+RawStash":
+                    RTC_Core.SendCommandToRTC(new RTC_Command(CommandType.REMOTE_HOTKEY_BLASTRAWSTASH));
+                    break;
 
-            case "Send Raw to Stash":
-				RTC_Core.SendCommandToRTC(new RTC_Command(CommandType.REMOTE_HOTKEY_SENDRAWSTASH));
-                break;
+                case "Send Raw to Stash":
+				    RTC_Core.SendCommandToRTC(new RTC_Command(CommandType.REMOTE_HOTKEY_SENDRAWSTASH));
+                    break;
 
-            case "BlastLayer Toggle":
-				RTC_Core.SendCommandToRTC(new RTC_Command(CommandType.REMOTE_HOTKEY_BLASTLAYERTOGGLE));
-                break;
+                case "BlastLayer Toggle":
+				    RTC_Core.SendCommandToRTC(new RTC_Command(CommandType.REMOTE_HOTKEY_BLASTLAYERTOGGLE));
+                    break;
 
-			case "BlastLayer Re-Blast":
-				RTC_Core.SendCommandToRTC(new RTC_Command(CommandType.REMOTE_HOTKEY_BLASTLAYERREBLAST));
-				break;
+			    case "BlastLayer Re-Blast":
+				    RTC_Core.SendCommandToRTC(new RTC_Command(CommandType.REMOTE_HOTKEY_BLASTLAYERREBLAST));
+				    break;
 			}
             return true;
         }
