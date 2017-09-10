@@ -437,11 +437,11 @@ namespace RTC
 
             if (domain.Contains("[V]"))
             {
-                mi = MemoryInterfaces[domain];
+                mi = VmdPool[domain];
             }
             else
             {
-                mi = VmdPool[domain];
+                mi = MemoryInterfaces[domain];
             }
 
             return mi.getDump();
