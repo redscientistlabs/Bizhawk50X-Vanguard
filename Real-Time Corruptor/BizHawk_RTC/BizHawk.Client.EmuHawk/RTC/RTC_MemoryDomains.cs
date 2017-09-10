@@ -22,9 +22,6 @@ namespace RTC
 		
 		public static volatile MemoryDomainRTCInterface MDRI = new MemoryDomainRTCInterface();
 		public static volatile Dictionary<string,MemoryInterface> MemoryInterfaces = new Dictionary<string, MemoryInterface>();
-
-
-
         public static volatile Dictionary<string, MemoryInterface> VmdPool = new Dictionary<string, MemoryInterface>();
 
         public static string MainDomain = null;
@@ -433,6 +430,22 @@ namespace RTC
             AddVMD(VMD);
 
         }
+
+        public static byte[] getDomainData(string domain)
+        {
+            MemoryInterface mi;
+
+            if (domain.Contains("[V]"))
+            {
+                mi = MemoryInterfaces[domain];
+            }
+            else
+            {
+                mi = VmdPool[domain];
+            }
+
+            return mi.getDump();
+        }
     }
 
     [Serializable()]
@@ -443,8 +456,12 @@ namespace RTC
         public string name { get; set; }
         public bool BigEndian { get; set; }
 
+        public abstract byte[] getDump();
+        public abstract byte[] PeekBytes(long startAddress, long endAddress);
         public abstract byte PeekByte(long address);
         public abstract void PokeByte(long address, byte value);
+
+        
     }
 
     [XmlInclude(typeof(BlastLayer))]
@@ -643,6 +660,21 @@ namespace RTC
             //Virtual Memory Domains always start with [V]
         }
 
+        public override byte[] getDump()
+        {
+            return PeekBytes(0, Size);
+        }
+
+        public override byte[] PeekBytes(long startAdress, long endAddress)
+        {
+            //endAddress is exclusive
+            List<byte> data = new List<byte>();
+            for (long i = startAdress; i < endAddress; i++)
+                data.Add(PeekByte(i));
+
+            return data.ToArray();
+        }
+
         public override byte PeekByte(long address)
         {
             string targetDomain = getRealDomain(address);
@@ -757,7 +789,23 @@ namespace RTC
 			BigEndian = md.EndianType == MemoryDomain.Endian.Big;
 		}
 
-		public override byte PeekByte(long address)
+        public override byte[] getDump()
+        {
+            return PeekBytes(0, Size);
+        }
+
+        public override byte[] PeekBytes(long startAdress, long endAddress)
+        {
+            //endAddress is exclusive
+            List<byte> data = new List<byte>();
+            for (long i = startAdress; i < endAddress; i++)
+                data.Add(PeekByte(i));
+
+            return data.ToArray();
+        }
+
+
+        public override byte PeekByte(long address)
 		{
 			if (md == null)
 				return (byte)RTC_Core.SendCommandToBizhawk(new RTC_Command(CommandType.REMOTE_DOMAIN_PEEKBYTE) { objectValue = new object[] { name, address } }, true);

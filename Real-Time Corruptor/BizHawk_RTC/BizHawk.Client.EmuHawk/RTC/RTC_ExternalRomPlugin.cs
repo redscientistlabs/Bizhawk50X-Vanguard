@@ -26,13 +26,27 @@ namespace RTC
 
         public static BlastLayer GetBlastLayer()
         {
-
             if (!File.Exists(CorruptedRom))
-                {
-                    MessageBox.Show("Null Plugin: You must have CorruptedROM.rom in your BizHawk folder");
-                    return null;
-                }
+            {
+                MessageBox.Show("Null Plugin: You must have CorruptedROM.rom in your BizHawk folder");
+                return null;
+            }
 
+            byte[] Corrupt = File.ReadAllBytes("CorruptedROM.rom");
+            byte[] Original = File.ReadAllBytes(GlobalWin.MainForm.CurrentlyOpenRom);
+
+            if (Original.Length != Corrupt.Length)
+            {
+                MessageBox.Show("Error: The corrupted rom isn't the same size as the original one");
+                return null;
+            }
+
+            return (GetBlastLayer(Original, Corrupt));
+
+        }
+
+        public static BlastLayer GetBlastLayer(byte[] Original, byte[] Corrupt)
+        {
 
 
             BlastLayer bl = new BlastLayer();
@@ -41,6 +55,8 @@ namespace RTC
             string _domain = "";
             string _seconddomain = "";
             int skipbytes = 0;
+
+            
 
             switch (thisSystem) 
             { 
@@ -87,15 +103,7 @@ namespace RTC
                     break;
             }
 
-
-            byte[] Original = File.ReadAllBytes(GlobalWin.MainForm.CurrentlyOpenRom);
-            byte[] Corrupt = File.ReadAllBytes("CorruptedROM.rom");
-
-            if (Original.Length != Corrupt.Length)
-            {
-                MessageBox.Show("Error: The corrupted rom isn't the same size as the original one");
-                return null;
-            }
+            
 
             long maxaddress = RTC_MemoryDomains.getInterface(_domain).Size;
 

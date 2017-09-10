@@ -479,7 +479,76 @@ namespace RTC
 
 			bl.Layer.AddRange(RTC_PipeEngine.AllBlastPipes);
 
-			sk.BlastLayer = bl;
+            string thisSystem = Global.Game.System;
+            string _primarydomain = null;
+            string _seconddomain = null;
+            int skipbytes = 0;
+            switch (thisSystem)
+            {
+                case "NES":
+                    _primarydomain = "PRG ROM";
+                    _seconddomain = "CHR VROM";
+                    skipbytes = 16;
+                    break;
+                case "SNES":
+                    _primarydomain = "CARTROM";
+                    break;
+                case "N64":
+                    _primarydomain = "ROM";
+                    break;
+                case "GB":
+                case "GBC":
+                    _primarydomain = "ROM";
+                    break;
+                case "SMS": // Sega Master System
+                    _primarydomain = "ROM";
+                    break;
+                case "GEN": // Sega Genesis
+                    _primarydomain = "MD CART";
+                    break;
+                case "PSX": // PlayStation
+                case "INTV":
+                case "SG":
+                case "GG":
+                case "PCECD":
+                case "PCE":
+                case "SGX":
+                case "TI83":
+                case "A26":
+                case "A78":
+                case "C64":
+                case "Coleco":
+                case "GBA":
+                case "SAT":
+                case "DGB":
+                default:
+                    break;
+            }
+
+            if (_primarydomain != null)
+            {
+                List<byte> addData = new List<byte>();
+                for (int i = 0; i < skipbytes; i++)
+                    addData.Add((byte)0);
+
+                addData.AddRange(RTC_MemoryDomains.getDomainData(_primarydomain));
+                if(_seconddomain != null)
+                    addData.AddRange(RTC_MemoryDomains.getDomainData(_seconddomain));
+
+                byte[] corrupted = addData.ToArray();
+                byte[] original = File.ReadAllBytes(GlobalWin.MainForm.CurrentlyOpenRom);
+
+                for (int i = 0; i < skipbytes; i++)
+                    original[i] = (byte)0;
+
+                BlastLayer romBlast = RTC_ExternalRomPlugin.GetBlastLayer(original, corrupted);
+
+                if (romBlast.Layer.Count > 0)
+                    bl.Layer.AddRange(romBlast.Layer);
+
+            }
+
+            sk.BlastLayer = bl;
 
 			return sk;
 		}
