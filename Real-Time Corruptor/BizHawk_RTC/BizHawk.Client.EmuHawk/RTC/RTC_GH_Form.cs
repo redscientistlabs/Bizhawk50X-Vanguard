@@ -381,7 +381,7 @@ namespace RTC
                     else
                         RTC_StockpileManager.Corrupt();
                 }
-				if (rbInject.Checked)
+				else if (rbInject.Checked)
 					RTC_StockpileManager.InjectFromStashkey(RTC_StockpileManager.currentStashkey);
 				else if (rbOriginal.Checked)
 					RTC_StockpileManager.OriginalFromStashkey(RTC_StockpileManager.currentStashkey);

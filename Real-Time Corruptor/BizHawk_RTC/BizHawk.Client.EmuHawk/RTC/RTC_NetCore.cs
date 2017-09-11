@@ -912,7 +912,9 @@ namespace RTC
 							bool returnValue = RTC_StockpileManager.LoadState_NET(sk, reloadRom);
 
 							RTC_MemoryDomains.RefreshDomains(false);
-							RTC_Core.SendCommandToBizhawk(new RTC_Command(CommandType.BLAST) { blastlayer = sk.BlastLayer, isReplay = true });
+
+                            if(runBlastLayer)
+							    RTC_Core.SendCommandToBizhawk(new RTC_Command(CommandType.BLAST) { blastlayer = sk.BlastLayer, isReplay = true });
 
 							cmdBack = new RTC_Command(CommandType.RETURNVALUE);
 							cmdBack.objectValue = returnValue;

@@ -52,10 +52,15 @@
             this.pnCorruptionEngine = new System.Windows.Forms.Panel();
             this.pictureBox1 = new System.Windows.Forms.PictureBox();
             this.label1 = new System.Windows.Forms.Label();
+            this.panel2 = new System.Windows.Forms.Panel();
+            this.label4 = new System.Windows.Forms.Label();
+            this.btnOnlineGuide = new System.Windows.Forms.Button();
+            this.label5 = new System.Windows.Forms.Label();
             this.panel1.SuspendLayout();
             this.pnVersionBatchFiles.SuspendLayout();
             this.pnCorruptionEngine.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
+            this.panel2.SuspendLayout();
             this.SuspendLayout();
             // 
             // panel1
@@ -63,7 +68,7 @@
             this.panel1.BackColor = System.Drawing.Color.Black;
             this.panel1.Controls.Add(this.lbMOTD);
             this.panel1.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.panel1.Location = new System.Drawing.Point(0, 453);
+            this.panel1.Location = new System.Drawing.Point(0, 492);
             this.panel1.Name = "panel1";
             this.panel1.Size = new System.Drawing.Size(517, 36);
             this.panel1.TabIndex = 0;
@@ -85,7 +90,7 @@
             this.label2.AutoSize = true;
             this.label2.Font = new System.Drawing.Font("Segoe UI Semibold", 10F, System.Drawing.FontStyle.Bold);
             this.label2.ForeColor = System.Drawing.Color.White;
-            this.label2.Location = new System.Drawing.Point(12, 9);
+            this.label2.Location = new System.Drawing.Point(12, 40);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(110, 19);
             this.label2.TabIndex = 83;
@@ -93,8 +98,6 @@
             // 
             // lbVersions
             // 
-            this.lbVersions.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left)));
             this.lbVersions.BackColor = System.Drawing.Color.Gray;
             this.lbVersions.BorderStyle = System.Windows.Forms.BorderStyle.None;
             this.lbVersions.Font = new System.Drawing.Font("Segoe UI", 9.75F);
@@ -102,10 +105,10 @@
             this.lbVersions.FormattingEnabled = true;
             this.lbVersions.IntegralHeight = false;
             this.lbVersions.ItemHeight = 17;
-            this.lbVersions.Location = new System.Drawing.Point(11, 31);
+            this.lbVersions.Location = new System.Drawing.Point(11, 62);
             this.lbVersions.Name = "lbVersions";
             this.lbVersions.ScrollAlwaysVisible = true;
-            this.lbVersions.Size = new System.Drawing.Size(143, 133);
+            this.lbVersions.Size = new System.Drawing.Size(143, 140);
             this.lbVersions.TabIndex = 82;
             this.lbVersions.Tag = "color:normal";
             this.lbVersions.SelectedIndexChanged += new System.EventHandler(this.lbVersions_SelectedIndexChanged);
@@ -125,7 +128,7 @@
             this.pnVersionBatchFiles.Controls.Add(this.btnBatchfile01);
             this.pnVersionBatchFiles.Controls.Add(this.btnBatchfile02);
             this.pnVersionBatchFiles.Controls.Add(this.btnStart);
-            this.pnVersionBatchFiles.Location = new System.Drawing.Point(170, 31);
+            this.pnVersionBatchFiles.Location = new System.Drawing.Point(170, 62);
             this.pnVersionBatchFiles.Name = "pnVersionBatchFiles";
             this.pnVersionBatchFiles.Size = new System.Drawing.Size(335, 406);
             this.pnVersionBatchFiles.TabIndex = 123;
@@ -343,8 +346,6 @@
             // 
             // lbOnlineVersions
             // 
-            this.lbOnlineVersions.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left)));
             this.lbOnlineVersions.BackColor = System.Drawing.Color.Gray;
             this.lbOnlineVersions.BorderStyle = System.Windows.Forms.BorderStyle.None;
             this.lbOnlineVersions.Font = new System.Drawing.Font("Segoe UI", 9.75F);
@@ -352,10 +353,10 @@
             this.lbOnlineVersions.FormattingEnabled = true;
             this.lbOnlineVersions.IntegralHeight = false;
             this.lbOnlineVersions.ItemHeight = 17;
-            this.lbOnlineVersions.Location = new System.Drawing.Point(11, 196);
+            this.lbOnlineVersions.Location = new System.Drawing.Point(11, 230);
             this.lbOnlineVersions.Name = "lbOnlineVersions";
             this.lbOnlineVersions.ScrollAlwaysVisible = true;
-            this.lbOnlineVersions.Size = new System.Drawing.Size(143, 208);
+            this.lbOnlineVersions.Size = new System.Drawing.Size(143, 196);
             this.lbOnlineVersions.TabIndex = 125;
             this.lbOnlineVersions.Tag = "color:normal";
             this.lbOnlineVersions.SelectedIndexChanged += new System.EventHandler(this.lbOnlineVersions_SelectedIndexChanged);
@@ -365,7 +366,7 @@
             this.label3.AutoSize = true;
             this.label3.Font = new System.Drawing.Font("Segoe UI Semibold", 10F, System.Drawing.FontStyle.Bold);
             this.label3.ForeColor = System.Drawing.Color.White;
-            this.label3.Location = new System.Drawing.Point(12, 174);
+            this.label3.Location = new System.Drawing.Point(12, 208);
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(131, 19);
             this.label3.TabIndex = 126;
@@ -379,7 +380,7 @@
             this.btnDownloadVersion.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnDownloadVersion.Font = new System.Drawing.Font("Segoe UI Semibold", 8F, System.Drawing.FontStyle.Bold);
             this.btnDownloadVersion.ForeColor = System.Drawing.Color.Black;
-            this.btnDownloadVersion.Location = new System.Drawing.Point(11, 410);
+            this.btnDownloadVersion.Location = new System.Drawing.Point(12, 441);
             this.btnDownloadVersion.Name = "btnDownloadVersion";
             this.btnDownloadVersion.Size = new System.Drawing.Size(143, 27);
             this.btnDownloadVersion.TabIndex = 128;
@@ -395,7 +396,7 @@
             this.lbSelectedVersion.AutoSize = true;
             this.lbSelectedVersion.Font = new System.Drawing.Font("Segoe UI Semibold", 10F, System.Drawing.FontStyle.Bold);
             this.lbSelectedVersion.ForeColor = System.Drawing.Color.White;
-            this.lbSelectedVersion.Location = new System.Drawing.Point(179, 9);
+            this.lbSelectedVersion.Location = new System.Drawing.Point(179, 40);
             this.lbSelectedVersion.Name = "lbSelectedVersion";
             this.lbSelectedVersion.Size = new System.Drawing.Size(117, 19);
             this.lbSelectedVersion.TabIndex = 129;
@@ -407,7 +408,7 @@
             this.pnCorruptionEngine.BackColor = System.Drawing.Color.Gray;
             this.pnCorruptionEngine.Controls.Add(this.pictureBox1);
             this.pnCorruptionEngine.Controls.Add(this.label1);
-            this.pnCorruptionEngine.Location = new System.Drawing.Point(224, 94);
+            this.pnCorruptionEngine.Location = new System.Drawing.Point(224, 125);
             this.pnCorruptionEngine.Name = "pnCorruptionEngine";
             this.pnCorruptionEngine.Size = new System.Drawing.Size(210, 256);
             this.pnCorruptionEngine.TabIndex = 130;
@@ -434,12 +435,66 @@
             this.label1.TabIndex = 130;
             this.label1.Text = "Select a RTC Version";
             // 
+            // panel2
+            // 
+            this.panel2.BackColor = System.Drawing.Color.Black;
+            this.panel2.Controls.Add(this.btnOnlineGuide);
+            this.panel2.Controls.Add(this.label4);
+            this.panel2.Dock = System.Windows.Forms.DockStyle.Top;
+            this.panel2.Location = new System.Drawing.Point(0, 0);
+            this.panel2.Name = "panel2";
+            this.panel2.Size = new System.Drawing.Size(517, 36);
+            this.panel2.TabIndex = 131;
+            // 
+            // label4
+            // 
+            this.label4.Font = new System.Drawing.Font("Segoe UI Semibold", 13F, System.Drawing.FontStyle.Bold);
+            this.label4.ForeColor = System.Drawing.Color.White;
+            this.label4.Location = new System.Drawing.Point(7, 0);
+            this.label4.Name = "label4";
+            this.label4.Size = new System.Drawing.Size(289, 36);
+            this.label4.TabIndex = 125;
+            this.label4.Text = "Real-Time Corruptor Launcher";
+            this.label4.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            // 
+            // btnOnlineGuide
+            // 
+            this.btnOnlineGuide.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.btnOnlineGuide.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(224)))), ((int)(((byte)(224)))), ((int)(((byte)(224)))));
+            this.btnOnlineGuide.FlatAppearance.BorderSize = 0;
+            this.btnOnlineGuide.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnOnlineGuide.Font = new System.Drawing.Font("Segoe UI Semibold", 8F, System.Drawing.FontStyle.Bold);
+            this.btnOnlineGuide.ForeColor = System.Drawing.Color.Black;
+            this.btnOnlineGuide.Location = new System.Drawing.Point(369, 6);
+            this.btnOnlineGuide.Name = "btnOnlineGuide";
+            this.btnOnlineGuide.Size = new System.Drawing.Size(143, 24);
+            this.btnOnlineGuide.TabIndex = 129;
+            this.btnOnlineGuide.TabStop = false;
+            this.btnOnlineGuide.Tag = "color:light";
+            this.btnOnlineGuide.Text = "Consult online guide";
+            this.btnOnlineGuide.UseVisualStyleBackColor = false;
+            this.btnOnlineGuide.Click += new System.EventHandler(this.btnOnlineGuide_Click);
+            // 
+            // label5
+            // 
+            this.label5.AutoSize = true;
+            this.label5.Font = new System.Drawing.Font("Segoe UI", 8F);
+            this.label5.ForeColor = System.Drawing.Color.White;
+            this.label5.Location = new System.Drawing.Point(14, 476);
+            this.label5.Name = "label5";
+            this.label5.Size = new System.Drawing.Size(483, 13);
+            this.label5.TabIndex = 132;
+            this.label5.Text = "RTC and WGH are developed by Redscientist Media, consult redscientist.com for mor" +
+    "e details";
+            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
-            this.ClientSize = new System.Drawing.Size(517, 489);
+            this.ClientSize = new System.Drawing.Size(517, 528);
+            this.Controls.Add(this.label5);
+            this.Controls.Add(this.panel2);
             this.Controls.Add(this.pnVersionBatchFiles);
             this.Controls.Add(this.pnCorruptionEngine);
             this.Controls.Add(this.lbSelectedVersion);
@@ -453,6 +508,7 @@
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.MaximizeBox = false;
             this.Name = "MainForm";
+            this.Tag = "color:dark";
             this.Text = "RTC Launcher";
             this.Load += new System.EventHandler(this.MainForm_Load);
             this.panel1.ResumeLayout(false);
@@ -460,6 +516,7 @@
             this.pnCorruptionEngine.ResumeLayout(false);
             this.pnCorruptionEngine.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
+            this.panel2.ResumeLayout(false);
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -490,6 +547,10 @@
         private System.Windows.Forms.Panel pnCorruptionEngine;
         private System.Windows.Forms.PictureBox pictureBox1;
         private System.Windows.Forms.Label label1;
+        private System.Windows.Forms.Panel panel2;
+        private System.Windows.Forms.Button btnOnlineGuide;
+        private System.Windows.Forms.Label label4;
+        private System.Windows.Forms.Label label5;
     }
 }
 
