@@ -595,6 +595,8 @@ namespace RTC
         {
             RTC_ExternalRomPlugin.SelectedPlugin = (sender as ComboBox).SelectedItem.ToString();
 
+            RTC_ExternalRomPlugin.KillLastPlugin();
+
         }
 
         private void cbUseGameProtection_CheckedChanged(object sender, EventArgs e)
@@ -878,7 +880,9 @@ namespace RTC
             Point locate = new Point((sender as Button).Location.X + e.Location.X, (sender as Button).Location.Y + e.Location.Y);
 
 			ContextMenuStrip ParamsButtonMenu = new ContextMenuStrip();
-			ParamsButtonMenu.Items.Add("Change RTC skin color", null, new EventHandler((ev, ob)=> { RTC_Core.SetAndSaveColorRTC(); }));
+            ParamsButtonMenu.Items.Add("Open the online wiki", null, new EventHandler((ob, ev) => Process.Start("https://corrupt.wiki/corruptors/rtc-real-time-corruptor.html")));
+            ParamsButtonMenu.Items.Add(new ToolStripSeparator());
+            ParamsButtonMenu.Items.Add("Change RTC skin color", null, new EventHandler((ev, ob)=> { RTC_Core.SetAndSaveColorRTC(); }));
 			ParamsButtonMenu.Items.Add("Reset RTC Parameters", null, null).Enabled = false;
 			ParamsButtonMenu.Items.Add("Reset RTC Parameters + Window Parameters", null, null).Enabled = false;
 			ParamsButtonMenu.Items.Add(new ToolStripSeparator());

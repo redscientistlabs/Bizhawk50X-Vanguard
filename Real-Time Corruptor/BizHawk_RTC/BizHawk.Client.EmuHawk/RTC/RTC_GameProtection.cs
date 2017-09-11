@@ -16,7 +16,7 @@ namespace RTC
     public static class RTC_GameProtection
     {
 		static Timer t;
-		public static int BackupInterval = 15;
+		public static int BackupInterval = 30;
 		public static bool isRunning = false;
 
         public static void Start()

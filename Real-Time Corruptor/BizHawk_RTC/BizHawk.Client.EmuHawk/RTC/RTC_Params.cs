@@ -30,7 +30,7 @@ namespace RTC
 			new Ref(() => RTC_Core.lastLoaderRom, x => { RTC_Core.lastLoaderRom = (int)x; }),
 			new Ref(() => RTC_Core.AutoCorrupt, x => { RTC_Core.AutoCorrupt = (bool)x; }),
 
-			new Ref(() => RTC_NightmareEngine.Algo, x => { RTC_NightmareEngine.Algo = (BlastByteAlgo)x; }),
+            new Ref(() => RTC_NightmareEngine.Algo, x => { RTC_NightmareEngine.Algo = (BlastByteAlgo)x; }),
 			new Ref(() => RTC_HellgenieEngine.MaxCheats, x => { RTC_HellgenieEngine.MaxCheats = (int)x; }),
 			new Ref(() => RTC_DistortionEngine.MaxAge, x => { RTC_DistortionEngine.MaxAge = (int)x; }),
 			new Ref(() => RTC_DistortionEngine.CurrentAge, x => { RTC_DistortionEngine.CurrentAge = (int)x; }),

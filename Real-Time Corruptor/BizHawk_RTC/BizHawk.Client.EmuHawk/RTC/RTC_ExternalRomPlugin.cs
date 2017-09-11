@@ -19,6 +19,8 @@ namespace RTC
         public static string SelectedPlugin = null;
         public static string PluginFilename = null;
 
+        public static string LastOpenedPlugin = null;
+
         public static BlastUnit GetUnit()
         {
             return null;
@@ -128,6 +130,16 @@ namespace RTC
 
         }
 
+        public static void KillLastPlugin()
+        {
+            if (LastOpenedPlugin != null)
+            {
+                ProcessStartInfo psi = new ProcessStartInfo("taskkill", "/F /IM \"" + LastOpenedPlugin + "\"");
+                psi.WindowStyle = System.Diagnostics.ProcessWindowStyle.Hidden;
+                Process.Start(psi);
+            }
+        }
+
         public static void OpenWindow()
         {
             if (SelectedPlugin == null || SelectedPlugin == "NULL")
@@ -160,6 +172,8 @@ namespace RTC
                 Thread.Sleep(300);
 
                 Process.Start(PluginExeFilename, "-RTC");
+
+                LastOpenedPlugin = PluginFilename;
             }
         }
 
