@@ -70,10 +70,14 @@ namespace RTC
 			foreach (DataGridViewRow dataRow in dgv.Rows)
 			{
 				StashKey sk = (StashKey)dataRow.Cells["Item"].Value;
-				if(sk.Note == null)
-					dataRow.Cells["Note"].Value = "";
-				else
-					dataRow.Cells["Note"].Value = "⚠";
+                if (sk.Note == null)
+                {
+                    dataRow.Cells["Note"].Value = "";
+                }
+                else
+                {
+                    dataRow.Cells["Note"].Value = "📝";
+                }
 
 			}
 		}
