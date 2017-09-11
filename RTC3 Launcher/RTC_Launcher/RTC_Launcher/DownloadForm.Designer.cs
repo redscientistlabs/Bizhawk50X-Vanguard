@@ -35,9 +35,9 @@
             // 
             // progressBar
             // 
-            this.progressBar.Location = new System.Drawing.Point(12, 419);
+            this.progressBar.Location = new System.Drawing.Point(31, 409);
             this.progressBar.Name = "progressBar";
-            this.progressBar.Size = new System.Drawing.Size(493, 58);
+            this.progressBar.Size = new System.Drawing.Size(456, 58);
             this.progressBar.TabIndex = 0;
             // 
             // lbStatus
@@ -56,7 +56,7 @@
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(32)))), ((int)(((byte)(32)))), ((int)(((byte)(32)))));
-            this.ClientSize = new System.Drawing.Size(517, 489);
+            this.ClientSize = new System.Drawing.Size(517, 497);
             this.Controls.Add(this.lbStatus);
             this.Controls.Add(this.progressBar);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;

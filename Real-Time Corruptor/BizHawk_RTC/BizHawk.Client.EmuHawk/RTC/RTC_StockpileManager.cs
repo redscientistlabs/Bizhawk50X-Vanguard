@@ -485,47 +485,51 @@ namespace RTC
             string _primarydomain = null;
             string _seconddomain = null;
             int skipbytes = 0;
-            switch (thisSystem)
+
+            switch (thisSystem.ToUpper())
             {
                 case "NES":
                     _primarydomain = "PRG ROM";
                     _seconddomain = "CHR VROM";
                     skipbytes = 16;
                     break;
+
                 case "SNES":
                     _primarydomain = "CARTROM";
                     break;
-                case "N64":
-                    _primarydomain = "ROM";
+
+                case "A78":
+                    _primarydomain = "HSC ROM";
                     break;
+
+                case "LYNX":
+                    _primarydomain = "Cart A";
+                    skipbytes = 64;
+                    break;
+
+                case "N64":
                 case "GB":
                 case "GBC":
-                    _primarydomain = "ROM";
-                    break;
-                case "SMS": // Sega Master System
-                    _primarydomain = "ROM";
-                    break;
-                case "GEN": // Sega Genesis
-                    _primarydomain = "MD CART";
-                    break;
-                case "PSX": // PlayStation
-                case "INTV":
-                case "SG":
-                case "GG":
-                case "PCECD":
-                case "PCE":
-                case "SGX":
-                case "TI83":
-                case "A26":
-                case "A78":
-                case "C64":
-                case "Coleco":
+                case "SMS":
+                case "GEN":
                 case "GBA":
-                case "SAT":
-                case "DGB":
-                default:
+                case "PCE":
+                case "GG":
+                case "SG":
+                case "SGX":
+                case "WSWAN":
+                    _primarydomain = "ROM";
                     break;
+
+
+                case "PCECD":
+                case "SAT":
+                case "PSX":
+                    MessageBox.Show("Unfortunately, Bizhawk doesn't support editing the ISOs while it is running. Maybe in a future version...");
+                    return null;
+
             }
+
 
             if (_primarydomain != null)
             {

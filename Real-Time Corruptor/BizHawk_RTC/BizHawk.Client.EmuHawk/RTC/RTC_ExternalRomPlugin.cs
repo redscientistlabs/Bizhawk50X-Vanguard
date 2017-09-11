@@ -54,60 +54,63 @@ namespace RTC
             BlastLayer bl = new BlastLayer();
 
             string thisSystem = Global.Game.System;
-            string _domain = "";
+            string _primarydomain = "";
             string _seconddomain = "";
             int skipbytes = 0;
 
-            
 
-            switch (thisSystem) 
-            { 
+
+            switch (thisSystem.ToUpper())
+            {
                 case "NES":
-                    _domain = "PRG ROM";
+                    _primarydomain = "PRG ROM";
                     _seconddomain = "CHR VROM";
                     skipbytes = 16;
                     break;
+
                 case "SNES":
-                    _domain = "CARTROM";
+                    _primarydomain = "CARTROM";
                     break;
+
+                case "A78":
+                    _primarydomain = "HSC ROM";
+                    break;
+
+                case "LYNX":
+                    _primarydomain = "Cart A";
+                    skipbytes = 64;
+                    break;
+
                 case "N64":
-                    _domain = "ROM";
-                    break;
                 case "GB":
                 case "GBC":
-                    _domain = "ROM";
-                    break;
-                case "SMS": // Sega Master System
-					_domain = "ROM";
-					return null;
-                case "GEN": // Sega Genesis
-                    _domain = "MD CART";
-                    break;
-				case "PSX": // PlayStation
-					MessageBox.Show("Unfortunately, Bizhawk doesn't support editing the PSX's ISO while it is running. Maybe in a future version...");
-					return null;
-				case "INTV":
-                case "SG":
-                case "GG":
-                case "PCECD":
-                case "PCE":
-                case "SGX":
-                case "TI83":
-                case "A26":
-                case "A78":
-                case "C64":
-                case "Coleco":
+                case "SMS":
+                case "GEN":
                 case "GBA":
-                case "SAT":
-                case "DGB":
-                default:
-                    MessageBox.Show("The selected system doesn't appear to have bridge configurations yet. This will not work. You could ask the devs to add it though.");
+                case "PCE":
+                case "GG":
+                case "SG":
+                case "SGX":
+                case "WSWAN":
+                    _primarydomain = "ROM";
                     break;
+
+
+                case "PCECD":
+                case "SAT":
+                case "PSX":
+                    MessageBox.Show("Unfortunately, Bizhawk doesn't support editing the ISOs while it is running. Maybe in a future version...");
+                    return null;
+
             }
 
-            
+            if(Original.Length != Corrupt.Length)
+            {
+                MessageBox.Show("ERROR, ROM SIZE MISMATCH");
+                return null;
+            }
 
-            long maxaddress = RTC_MemoryDomains.getInterface(_domain).Size;
+            long maxaddress = RTC_MemoryDomains.getInterface(_primarydomain).Size;
 
             for (int i = 0; i < Original.Length; i++)
             {
@@ -116,7 +119,7 @@ namespace RTC
                     if (i - skipbytes >= maxaddress)
                         bl.Layer.Add(new BlastByte(_seconddomain, (i - skipbytes) - maxaddress, BlastByteType.SET, Convert.ToInt32(Corrupt[i]), true));
                     else
-                        bl.Layer.Add(new BlastByte(_domain, i - skipbytes, BlastByteType.SET, Convert.ToInt32(Corrupt[i]), true));
+                        bl.Layer.Add(new BlastByte(_primarydomain, i - skipbytes, BlastByteType.SET, Convert.ToInt32(Corrupt[i]), true));
                 }
             }
 
