@@ -2363,7 +2363,8 @@
             // Note
             // 
             dataGridViewCellStyle1.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
-            dataGridViewCellStyle1.ForeColor = System.Drawing.Color.Red;
+            dataGridViewCellStyle1.Font = new System.Drawing.Font("Segoe UI", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            dataGridViewCellStyle1.ForeColor = System.Drawing.Color.Black;
             this.Note.DefaultCellStyle = dataGridViewCellStyle1;
             this.Note.HeaderText = "Note";
             this.Note.Name = "Note";
@@ -2567,14 +2568,14 @@
 		private System.Windows.Forms.Label label9;
 		public System.Windows.Forms.DataGridView dgvStockpile;
 		public System.Windows.Forms.Button btnRerollSelected;
-		private System.Windows.Forms.DataGridViewTextBoxColumn Item;
-		private System.Windows.Forms.DataGridViewTextBoxColumn GameName;
-		private System.Windows.Forms.DataGridViewTextBoxColumn SystemName;
-		private System.Windows.Forms.DataGridViewTextBoxColumn SystemCore;
-		private System.Windows.Forms.DataGridViewButtonColumn Note;
 		public System.Windows.Forms.ComboBox cbRenderType;
 		private System.Windows.Forms.Label label4;
 		public System.Windows.Forms.Button btnRender;
 		public System.Windows.Forms.Button btnOpenRenderFolder;
-	}
+        private System.Windows.Forms.DataGridViewTextBoxColumn Item;
+        private System.Windows.Forms.DataGridViewTextBoxColumn GameName;
+        private System.Windows.Forms.DataGridViewTextBoxColumn SystemName;
+        private System.Windows.Forms.DataGridViewTextBoxColumn SystemCore;
+        private System.Windows.Forms.DataGridViewButtonColumn Note;
+    }
 }
