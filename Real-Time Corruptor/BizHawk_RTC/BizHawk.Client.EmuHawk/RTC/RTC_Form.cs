@@ -540,8 +540,8 @@ namespace RTC
 
                     case "SNES":    //Super Nintendo
                         RTC_Core.SetEngineByName("Nightmare Engine");
-                        RTC_Core.coreForm.Intensity = 4;
-                        RTC_Core.coreForm.ErrorDelay = 8;
+                        RTC_Core.coreForm.Intensity = 1;
+                        RTC_Core.coreForm.ErrorDelay = 2;
                         break;
 
 
@@ -553,7 +553,7 @@ namespace RTC
 
                     case "N64":     //Nintendo 64
                         RTC_Core.SetEngineByName("Vector Engine");
-                        RTC_Core.coreForm.Intensity = 100;
+                        RTC_Core.coreForm.Intensity = 75;
                         RTC_Core.coreForm.ErrorDelay = 1;
                         break;
 
@@ -577,7 +577,7 @@ namespace RTC
                     case "SAT":     //Sega Saturn
                     case "DGB": 
                         MessageBox.Show("WARNING: No Easy-Mode template was made for this system. Please configure it manually and use the current settings.");
-                        break;
+                        return;
 
                     //TODO: Add more domains for systems like gamegear, atari, turbo graphx
                 }

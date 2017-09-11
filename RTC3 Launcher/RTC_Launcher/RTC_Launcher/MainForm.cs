@@ -141,10 +141,15 @@ namespace RTC_Launcher
             return fullFilename.Substring(fullFilename.LastIndexOf('\\') + 1);
         }
 
+        public string removeExtension(string filename)
+        {
+            return filename.Substring(0, filename.LastIndexOf('.'));
+        }
+
         public void DisplayVersion(string version)
         {
             List<string> batchFiles = new List<string>(Directory.GetFiles(launcherDir + "\\VERSIONS\\" + version));
-            List<string> batchFileNames = new List<string>(batchFiles.Select(it => getFilenameFromFullFilename(it).Replace(".bat", "")));
+            List<string> batchFileNames = new List<string>(batchFiles.Select(it => removeExtension(getFilenameFromFullFilename(it))));
 
             bool isDefaultStartPresent = false;
 
@@ -153,6 +158,18 @@ namespace RTC_Launcher
                 batchFileNames.Remove("START");
                 isDefaultStartPresent = true;
             }
+
+            string startfilename = null;
+
+            foreach(string file in batchFiles)
+                if(file.ToUpper().Contains("\\START.BAT"))
+                {
+                    startfilename = file;
+                    break;
+                }
+
+            if(startfilename != null)
+                batchFiles.Remove(startfilename);
 
             btnStart.Visible = isDefaultStartPresent;
 
@@ -163,6 +180,7 @@ namespace RTC_Launcher
             {
                 buttons[i].Visible = true;
                 buttons[i].Text = batchFileNames[i];
+                buttons[i].Tag = (buttons[i].Tag as string) + ";" + batchFiles[i];
             }
 
             lbSelectedVersion.Text = version;
@@ -188,8 +206,13 @@ namespace RTC_Launcher
             Button currentButton = (Button)sender;
 
             string version = lbVersions.SelectedItem.ToString();
+            string fullPath;
 
-            string fullPath = launcherDir + "\\VERSIONS\\" + version + "\\" + currentButton.Text + ".bat";
+            if (currentButton.Text == "START")
+                fullPath = launcherDir + "\\VERSIONS\\" + version + "\\START.bat";
+            else
+                fullPath = (currentButton.Tag as string).Split(';')[1];
+
             ProcessStartInfo psi = new ProcessStartInfo();
             psi.FileName = Path.GetFileName(fullPath);
             psi.WorkingDirectory = Path.GetDirectoryName(fullPath);

@@ -122,6 +122,7 @@ namespace RTC
 					break;
 
                 case "PCE":     //PC Engine / Turbo Grafx
+                case "SGX":     //Super Grafx
                     DomainBlacklist.Add("ROM");
                     break;
 
@@ -131,10 +132,6 @@ namespace RTC
                     DomainBlacklist.Add("BIOS");
                     DomainBlacklist.Add("PALRAM");
                     DomainBlacklist.Add("ROM");
-                    break;
-
-                case "SG":      //Sega SG-1000
-                    //everything okay
                     break;
 
                 case "SMS":     //Sega Master System
@@ -170,21 +167,22 @@ namespace RTC
                     DomainBlacklist.Add("Cart A");
                     break;
 
+                case "WSWAN":   //Wonderswan
+                    DomainBlacklist.Add("ROM");
+                    break;
+
+                case "Coleco":  //Colecovision
+                case "SG":      //Sega SG-1000
+                    //everything okay
+                    break;
 
                 case "INTV":    //Intellivision
-
-                case "PCECD":   //related to PC-Engine / Turbo Grafx
-                case "SGX":     //related to PC-Engine / Turbo Grafx
+                case "PCECD":   //PC-Engine CD / Turbo Grafx CD
                 case "TI83":    //Ti-83 Calculator
-                case "WSWAN":   //Wonderswan
                 case "C64":     //Commodore 64
-                case "Coleco":  //Colecovision
                 case "SGB":     //Super Gameboy
                 case "SAT":     //Sega Saturn
                 case "DGB": 
-                    MessageBox.Show("WARNING: The selected system appears to be supported by Bizhawk Emulator.\n " +
-                    "However, no corruption Template is available yet for this system.\n " +
-                    "You'll have to manually select the Memory Domains to corrupt.");
                     break;
 
                     //TODO: Add more domains for cores like gamegear, atari, turbo graphx
