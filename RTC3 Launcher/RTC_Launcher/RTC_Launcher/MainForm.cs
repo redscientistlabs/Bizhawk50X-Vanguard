@@ -77,8 +77,49 @@ namespace RTC_Launcher
 
             lbMOTD.Visible = true;
 
-            new object();
+            SetRTCColor(Color.FromArgb(120,180,155));
+
         }
+
+        public void SetRTCColor(Color color, Form form = null)
+        {
+            //Recolors all the RTC Forms using the general skin color
+
+            List<Control> allControls = new List<Control>();
+
+            if (form == null)
+            {
+
+                allControls.AddRange(this.Controls.getControlsWithTag());
+                allControls.Add(this);
+
+
+            }
+            else
+                allControls.AddRange(form.Controls.getControlsWithTag());
+
+            var lightColorControls = allControls.FindAll(it => ((it.Tag as string) ?? "").Contains("color:light"));
+            var normalColorControls = allControls.FindAll(it => ((it.Tag as string) ?? "").Contains("color:normal"));
+            var darkColorControls = allControls.FindAll(it => ((it.Tag as string) ?? "").Contains("color:dark"));
+            var darkerColorControls = allControls.FindAll(it => ((it.Tag as string) ?? "").Contains("color:darker"));
+
+            foreach (Control c in lightColorControls)
+                c.BackColor = color.ChangeColorBrightness(0.30f);
+
+            foreach (Control c in normalColorControls)
+                c.BackColor = color;
+
+            //spForm.dgvStockpile.BackgroundColor = color;
+            //ghForm.dgvStockpile.BackgroundColor = color;
+
+            foreach (Control c in darkColorControls)
+                c.BackColor = color.ChangeColorBrightness(-0.30f);
+
+            foreach (Control c in darkerColorControls)
+                c.BackColor = color.ChangeColorBrightness(-0.75f);
+
+        }
+
 
         public void RefreshInstalledVersions()
         {
@@ -294,6 +335,11 @@ namespace RTC_Launcher
                     Application.Restart();
                 }
             }
+        }
+
+        private void btnOnlineGuide_Click(object sender, EventArgs e)
+        {
+            Process.Start("https://corrupt.wiki/");
         }
     }
 }
