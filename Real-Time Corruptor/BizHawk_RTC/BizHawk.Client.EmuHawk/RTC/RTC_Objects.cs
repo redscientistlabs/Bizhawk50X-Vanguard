@@ -505,7 +505,6 @@ namespace RTC
                 return;
             }
 
-
             // repopulating savestates out of temp folder
             foreach (StashKey key in sks.StashKeys)
             {
@@ -539,10 +538,11 @@ namespace RTC
 				dataRow.Cells["SystemCore"].Value = sk.SystemCore;
             }
 
-			RTC_Core.ghForm.RefreshNoteIcons(RTC_Core.ghForm.dgvStockpile);
+            RTC_Core.ghForm.RefreshNoteIcons(RTC_Core.ghForm.dgvStockpile);
+            CheckCompatibility(sks);
 
 
-			RTC_StockpileManager.StockpileChanged();
+            RTC_StockpileManager.StockpileChanged();
 
         }
 

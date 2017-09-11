@@ -265,7 +265,7 @@
             this.nmGameProtectionDelay.TabIndex = 17;
             this.nmGameProtectionDelay.Tag = "color:dark";
             this.nmGameProtectionDelay.Value = new decimal(new int[] {
-            15,
+            30,
             0,
             0,
             0});

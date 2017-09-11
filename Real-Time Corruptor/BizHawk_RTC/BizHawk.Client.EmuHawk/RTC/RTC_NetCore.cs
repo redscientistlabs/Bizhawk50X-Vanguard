@@ -69,8 +69,7 @@ namespace RTC
         private static bool NetCoreCommandSynclock = false;
 
 
-
-		public event EventHandler ClientConnecting;
+        public event EventHandler ClientConnecting;
 		protected virtual void OnClientConnecting(EventArgs e) => ClientConnecting?.Invoke(this, e);
 
 		public event EventHandler ClientConnected;
@@ -943,11 +942,15 @@ namespace RTC
 
 							cmdBack = new RTC_Command(CommandType.REMOTE_BACKUPKEY_STASH);
 
-							bool multiThread = true;
+							bool multiThread = false;
+
+                            // apparently multithread savestates doesn't work well right now.
+                            // We can try again in a future version of bizhawk
+                            /*
 							if (new string[] {
-								"SNES",
+								 "SNES", "GB", "GBC", "GBA",
 							}.Contains(Global.Game.System.ToString().ToUpper()))
-								multiThread = false;
+								multiThread = false;*/
 
 								cmdBack.objectValue = RTC_StockpileManager.SaveState_NET(false, null, multiThread);
 							break;

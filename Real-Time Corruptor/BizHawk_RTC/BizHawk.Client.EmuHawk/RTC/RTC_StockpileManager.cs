@@ -220,7 +220,7 @@ namespace RTC
                  return false;
             }
 
-			if (!LoadState(sk))
+            if (!LoadState(sk, true, false))
 				return isCorruptionApplied;
 
 			isCorruptionApplied = false;
@@ -304,11 +304,11 @@ namespace RTC
 
 
 
-		public static bool LoadState(StashKey sk, bool ReloadRom = true)
+		public static bool LoadState(StashKey sk, bool ReloadRom = true, bool applyBlastLayer = true)
 		{
 			return (bool)RTC_Core.SendCommandToBizhawk(new RTC_Command(CommandType.REMOTE_LOADSTATE)
 			{
-				objectValue = new object[] { sk, ReloadRom, false }
+				objectValue = new object[] { sk, ReloadRom, false, applyBlastLayer }
 			},true);
 		}
 

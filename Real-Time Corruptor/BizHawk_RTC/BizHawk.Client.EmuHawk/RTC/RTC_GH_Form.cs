@@ -427,7 +427,25 @@ namespace RTC
 				if (!rbCorrupt.Checked && !rbInject.Checked && !rbOriginal.Checked)
 					rbCorrupt.Checked = true;
 
-				RTC_StockpileManager.currentStashkey = RTC_StockpileManager.StashHistory[lbStashHistory.SelectedIndex];
+                if(btnCorrupt.Text == "Merge")
+                {
+                    rbCorrupt.Enabled = true;
+                    rbInject.Enabled = true;
+                    rbOriginal.Enabled = true;
+                    btnRenameSelected.Visible = true;
+                    btnRemoveSelectedStockpile.Text = "Remove Item";
+
+                    if (rbCorrupt.Checked)
+                        btnCorrupt.Text = "Blast/Send";
+                    else if (rbInject.Checked)
+                        btnCorrupt.Text = "Inject";
+                    else if (rbOriginal.Checked)
+                        btnCorrupt.Text = "Original";
+
+                }
+
+
+                RTC_StockpileManager.currentStashkey = RTC_StockpileManager.StashHistory[lbStashHistory.SelectedIndex];
 
 				if (!cbLoadOnSelect.Checked)
 					return;
