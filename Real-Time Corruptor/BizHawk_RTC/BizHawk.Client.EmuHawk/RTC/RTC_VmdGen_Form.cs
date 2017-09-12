@@ -18,8 +18,6 @@ namespace RTC
         public RTC_VmdGen_Form()
         {
             InitializeComponent();
-            this.AutoScaleMode = AutoScaleMode.None;
-            this.AutoSize = false;
         }
 
         private void numericUpDown2_ValueChanged(object sender, EventArgs e)

@@ -85,8 +85,6 @@ namespace RTC
 		public RTC_GH_Form()
         {
             InitializeComponent();
-            this.AutoScaleMode = AutoScaleMode.None;
-            this.AutoSize = false;
 
             //btnSavestate_Click(btnSavestate01, null); //Selects first button as default
 

@@ -98,12 +98,13 @@ namespace RTC
 		public event EventHandler ServerConnectionLost;
 		protected virtual void OnServerConnectionLost(EventArgs e) => ServerConnectionLost?.Invoke(this, e);
 
-        static int lastNetCoreAggressivity = 0;
+        static int? lastNetCoreAggressivity = null;
         public static void HugeOperationStart(string targetAggressiveness = "DISABLED")
         {
             if(RTC_Core.isStandalone)
             {
-                lastNetCoreAggressivity = RTC_Core.csForm.cbNetCoreCommandTimeout.SelectedIndex;
+                if(lastNetCoreAggressivity == null)
+                    lastNetCoreAggressivity = RTC_Core.csForm.cbNetCoreCommandTimeout.SelectedIndex;
 
                 if(targetAggressiveness == "DISABLED")
                     RTC_Core.csForm.cbNetCoreCommandTimeout.SelectedIndex = RTC_Core.csForm.cbNetCoreCommandTimeout.Items.Count - 1;
@@ -116,7 +117,11 @@ namespace RTC
         {
             if (RTC_Core.isStandalone)
             {
-                RTC_Core.csForm.cbNetCoreCommandTimeout.SelectedIndex = lastNetCoreAggressivity;
+                if (lastNetCoreAggressivity != null)
+                {
+                    RTC_Core.csForm.cbNetCoreCommandTimeout.SelectedIndex = (int)lastNetCoreAggressivity;
+                    lastNetCoreAggressivity = null;
+                }
             }
         }
 

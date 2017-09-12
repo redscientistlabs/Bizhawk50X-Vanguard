@@ -122,8 +122,6 @@ namespace RTC
 		public RTC_Form()
         {
             InitializeComponent();
-            this.AutoScaleMode = AutoScaleMode.None;
-            this.AutoSize = false;
 
 			if (RTC_Core.isStandalone)
 				pnCrashProtection.Visible = true;
