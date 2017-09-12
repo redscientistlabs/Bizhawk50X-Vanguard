@@ -21,8 +21,6 @@ namespace RTC
 		public RTC_StockpileBlastBoard()
 		{
 			InitializeComponent();
-            this.AutoScaleMode = AutoScaleMode.None;
-            this.AutoSize = false;
         }
 
 		private void RTC_StockpileBoard_Load(object sender, EventArgs e) => RefreshButtons();

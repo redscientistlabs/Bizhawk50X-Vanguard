@@ -21,8 +21,6 @@ namespace RTC
 		public RTC_MultiPeerPopout_Form()
 		{
 			InitializeComponent();
-            this.AutoScaleMode = AutoScaleMode.None;
-            this.AutoSize = false;
         }
 
 		private void RTC_MultiPeerPopout_Load(object sender, EventArgs e)

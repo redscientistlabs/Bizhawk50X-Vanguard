@@ -48,8 +48,6 @@ namespace RTC
 		public RTC_Multi_Form()
 		{
 			InitializeComponent();
-            this.AutoScaleMode = AutoScaleMode.None;
-            this.AutoSize = false;
         }
 
 		private void RTC_Multi_Form_Load(object sender, EventArgs e)

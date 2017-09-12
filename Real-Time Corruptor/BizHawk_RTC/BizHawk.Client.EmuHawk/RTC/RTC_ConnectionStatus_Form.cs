@@ -22,8 +22,6 @@ namespace RTC
 		public RTC_ConnectionStatus_Form()
 		{
 			InitializeComponent();
-            this.AutoScaleMode = AutoScaleMode.None;
-            this.AutoSize = false;
         }
 
 		private void RTC_ConnectionStatus_Form_Load(object sender, EventArgs e)

@@ -17,7 +17,7 @@ namespace RTC
 
     public static class RTC_Core
     {
-		public static string RtcVersion = "2.96";
+		public static string RtcVersion = "2.96b";
 		
         public static Random RND = new Random();
         public static string[] args;
@@ -847,9 +847,7 @@ namespace RTC
 					    allControls.AddRange(targetForm.Controls.getControlsWithTag());
 					    allControls.Add(targetForm);
 				    }
-
-
-			}
+            }
 			else
 				allControls.AddRange(form.Controls.getControlsWithTag());
 

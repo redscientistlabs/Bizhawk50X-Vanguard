@@ -17,8 +17,6 @@ namespace RTC
 		public RTC_BlastEditorForm()
 		{
 			InitializeComponent();
-            this.AutoScaleMode = AutoScaleMode.None;
-            this.AutoSize = false;
         }
 
 		public void LoadStashkey(StashKey _sk)
