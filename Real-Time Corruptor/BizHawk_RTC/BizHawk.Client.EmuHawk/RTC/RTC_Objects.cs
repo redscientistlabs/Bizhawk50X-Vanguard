@@ -241,7 +241,16 @@ namespace RTC
 
 				string statefilename = key.GameName + "." + key.ParentKey + ".timejump.State"; // get savestate name
 
-				if (!File.Exists(RTC_Core.bizhawkDir + "\\" + key.SystemName + "\\State\\" + statefilename))
+                string SystemFolder = RTC_Core.bizhawkDir + "\\" + key.SystemName;
+                string SystemStateFolder = RTC_Core.bizhawkDir + "\\" + key.SystemName + "\\State\\";
+
+                if (!Directory.Exists(SystemFolder))
+                    Directory.CreateDirectory(SystemFolder);
+
+                if (!Directory.Exists(SystemStateFolder))
+                    Directory.CreateDirectory(SystemStateFolder);
+
+                if (!File.Exists(RTC_Core.bizhawkDir + "\\" + key.SystemName + "\\State\\" + statefilename))
 					File.Copy(RTC_Core.rtcDir + "\\TEMP\\" + statefilename, RTC_Core.bizhawkDir + "\\" + key.SystemName + "\\State\\" + statefilename); // copy savestates to temp folder
 			}
 
@@ -509,6 +518,15 @@ namespace RTC
             foreach (StashKey key in sks.StashKeys)
             {
                 string statefilename = key.GameName + "." + key.ParentKey + ".timejump.State"; // get savestate name
+
+                string SystemFolder = RTC_Core.bizhawkDir + "\\" + key.SystemName;
+                string SystemStateFolder = RTC_Core.bizhawkDir + "\\" + key.SystemName + "\\State\\";
+
+                if (!Directory.Exists(SystemFolder))
+                    Directory.CreateDirectory(SystemFolder);
+
+                if (!Directory.Exists(SystemStateFolder))
+                    Directory.CreateDirectory(SystemStateFolder);
 
                 if (!File.Exists(RTC_Core.bizhawkDir + "\\" + key.SystemName + "\\State\\" + statefilename))
                     File.Copy(RTC_Core.rtcDir + "\\TEMP3\\" + statefilename, RTC_Core.bizhawkDir + "\\" + key.SystemName + "\\State\\" + statefilename); // copy savestates to temp folder
@@ -1196,8 +1214,8 @@ namespace RTC
                     PipeAddress = mp.Item2;
                 }
                 */
-                string _domain = (string)Domain.Clone();
-                long _address = Address;
+                string _domain = (string)PipeDomain.Clone();
+                long _address = PipeAddress;
 
                 PipeDomain = (RTC_MemoryDomains.VmdPool[_domain] as VirtualMemoryDomain)?.PointerDomains[(int)_address] ?? "ERROR";
                 PipeAddress = (RTC_MemoryDomains.VmdPool[_domain] as VirtualMemoryDomain)?.PointerAddresses[(int)_address] ?? -1;
