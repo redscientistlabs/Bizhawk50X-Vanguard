@@ -85,11 +85,13 @@ namespace RTC
 		public RTC_GH_Form()
         {
             InitializeComponent();
+            this.AutoScaleMode = AutoScaleMode.None;
+            this.AutoSize = false;
 
-			//btnSavestate_Click(btnSavestate01, null); //Selects first button as default
+            //btnSavestate_Click(btnSavestate01, null); //Selects first button as default
 
-			#region textbox states to dico
-			StateBoxes.Add("01", tbSavestate01);
+            #region textbox states to dico
+            StateBoxes.Add("01", tbSavestate01);
 			StateBoxes.Add("02", tbSavestate02);
 			StateBoxes.Add("03", tbSavestate03);
 			StateBoxes.Add("04", tbSavestate04);

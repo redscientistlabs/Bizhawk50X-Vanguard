@@ -14,6 +14,8 @@ namespace RTC
         public RTC_VmdAct_Form()
         {
             InitializeComponent();
+            this.AutoScaleMode = AutoScaleMode.None;
+            this.AutoSize = false;
         }
     }
 }
