@@ -249,6 +249,9 @@ namespace RTC
                     }
                 }
 
+                if(!RTC_Core.isStandalone && !RTC_Hooks.isRemoteRTC)
+                    SendHeartbeat();
+
             }
         
         }

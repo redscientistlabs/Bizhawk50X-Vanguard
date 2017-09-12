@@ -16,6 +16,8 @@ namespace RTC
         public RTC_VmdPool_Form()
         {
             InitializeComponent();
+            this.AutoScaleMode = AutoScaleMode.None;
+            this.AutoSize = false;
         }
 
         private void btnUnloadVMD_Click(object sender, EventArgs e)

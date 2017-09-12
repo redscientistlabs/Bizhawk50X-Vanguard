@@ -19,6 +19,8 @@ namespace RTC
 		public RTC_SP_Form()
         {
             InitializeComponent();
+            this.AutoScaleMode = AutoScaleMode.None;
+            this.AutoSize = false;
         }
 
         private void RTC_BE_Form_FormClosing(object sender, FormClosingEventArgs e)

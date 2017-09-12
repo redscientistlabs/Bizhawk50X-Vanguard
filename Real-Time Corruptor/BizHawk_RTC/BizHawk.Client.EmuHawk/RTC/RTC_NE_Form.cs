@@ -23,8 +23,10 @@ namespace RTC
 			dgv = _dgv;
 
 			InitializeComponent();
+            this.AutoScaleMode = AutoScaleMode.None;
+            this.AutoSize = false;
 
-			this.Show();
+            this.Show();
 
 		}
 
