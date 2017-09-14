@@ -98,8 +98,11 @@ namespace RTC
 
             if (loadBeforeOperation && _loadBeforeOperation)
 			{
-				if (!LoadStateAndBlastLayer(sk))
-					return isCorruptionApplied;
+                if (!LoadStateAndBlastLayer(sk))
+                {
+                    RTC_NetCore.HugeOperationEnd(token);
+                    return isCorruptionApplied;
+                }
 			}
 			else
 				RTC_Core.SendCommandToBizhawk(new RTC_Command(CommandType.BLAST) { blastlayer = sk.BlastLayer, isReplay = true});
@@ -117,6 +120,8 @@ namespace RTC
 		{
 			PreApplyStashkey();
 
+            var token = RTC_NetCore.HugeOperationStart("LAZY");
+
 			StashKey psk = RTC_StockpileManager.getCurrentSavestateStashkey();
 
 			if (psk == null)
@@ -124,7 +129,8 @@ namespace RTC
 				RTC_Core.StopSound();
 				MessageBox.Show("The Glitch Harvester could not perform the CORRUPT action\n\nEither no Savestate Box was selected in the Savestate Manager\nor the Savetate Box itself is empty.");
 				RTC_Core.StartSound();
-				return false;
+                RTC_NetCore.HugeOperationEnd(token);
+                return false;
 			}
 
 			string currentGame = (string)RTC_Core.SendCommandToBizhawk(new RTC_Command(CommandType.REMOTE_KEY_GETGAMENAME), true);
@@ -147,8 +153,11 @@ namespace RTC
 
 			if (loadBeforeOperation && _loadBeforeOperation)
 			{
-				if (!LoadStateAndBlastLayer(currentStashkey))
-					return isCorruptionApplied;
+                if (!LoadStateAndBlastLayer(currentStashkey))
+                {
+                    RTC_NetCore.HugeOperationEnd(token);
+                    return isCorruptionApplied;
+                }
 			}
 			else
 				RTC_Core.SendCommandToBizhawk(new RTC_Command(CommandType.BLAST) { blastlayer = bl });
@@ -164,7 +173,9 @@ namespace RTC
 					RTC_Core.ghForm.lbStashHistory.SelectedIndex = RTC_Core.ghForm.lbStashHistory.Items.Count - 1;
 				}
 
-			PostApplyStashkey();
+            RTC_NetCore.HugeOperationEnd(token);
+
+            PostApplyStashkey();
 			return isCorruptionApplied;
 		}
 
