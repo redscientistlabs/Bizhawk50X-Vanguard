@@ -210,8 +210,7 @@ namespace RTC
 				return false;
 			}
 
-            RTC_RPC.SendToKillSwitch("FREEZE");
-            RTC_NetCore.HugeOperationStart();
+            var token = RTC_NetCore.HugeOperationStart();
 
             Extract(Filename, "TEMP", "stockpile.xml");
 
@@ -228,8 +227,7 @@ namespace RTC
 			catch
 			{
 				MessageBox.Show("The Stockpile file could not be loaded");
-                RTC_RPC.SendToKillSwitch("UNFREEZE");
-                RTC_NetCore.HugeOperationEnd();
+                RTC_NetCore.HugeOperationEnd(token);
                 return false;
 			}
 
@@ -275,8 +273,7 @@ namespace RTC
 			CheckCompatibility(sks);
 
 
-            RTC_RPC.SendToKillSwitch("UNFREEZE");
-            RTC_NetCore.HugeOperationEnd();
+            RTC_NetCore.HugeOperationEnd(token);
 
             return true;
 
