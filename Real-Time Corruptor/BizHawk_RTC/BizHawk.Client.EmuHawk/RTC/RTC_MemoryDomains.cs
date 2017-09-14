@@ -373,11 +373,11 @@ namespace RTC
 
             if (RTC_Core.isStandalone)
             {
-                RTC_RPC.SendToKillSwitch("FREEZE");
-                RTC_NetCore.HugeOperationStart();
+                var token = RTC_NetCore.HugeOperationStart();
+
                 RTC_Core.SendCommandToBizhawk(new RTC_Command(CommandType.REMOTE_DOMAIN_VMD_ADD) { objectValue = VMD.proto }, true);
-                RTC_RPC.SendToKillSwitch("UNFREEZE");
-                RTC_NetCore.HugeOperationEnd();
+
+                RTC_NetCore.HugeOperationEnd(token);
             }
 
             if(!RTC_Hooks.isRemoteRTC)

@@ -1186,15 +1186,14 @@ namespace RTC
 
         }
 
+        Guid? token = null;
         private void track_ErrorDelay_MouseDown(object sender, MouseEventArgs e)
         {
-            RTC_RPC.SendToKillSwitch("FREEZE");
             RTC_NetCore.HugeOperationStart("LAZY");
         }
 
         private void track_ErrorDelay_MouseUp(object sender, MouseEventArgs e)
         {
-            RTC_RPC.SendToKillSwitch("UNFREEZE");
             RTC_NetCore.HugeOperationEnd();
 
             track_ErrorDelay_Scroll(sender, e);
@@ -1202,13 +1201,11 @@ namespace RTC
 
         private void track_Intensity_MouseDown(object sender, MouseEventArgs e)
         {
-            RTC_RPC.SendToKillSwitch("FREEZE");
             RTC_NetCore.HugeOperationStart("LAZY");
         }
 
         private void track_Intensity_MouseUp(object sender, MouseEventArgs e)
         {
-            RTC_RPC.SendToKillSwitch("UNFREEZE");
             RTC_NetCore.HugeOperationEnd();
 
             track_Intensity_Scroll(sender, e);

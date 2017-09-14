@@ -99,9 +99,12 @@ namespace RTC
 		protected virtual void OnServerConnectionLost(EventArgs e) => ServerConnectionLost?.Invoke(this, e);
 
         static int? lastNetCoreAggressivity = null;
-        public static void HugeOperationStart(string targetAggressiveness = "DISABLED")
+        static Guid? lastNetCoreAggressivityGuid = null;
+        public static Guid HugeOperationStart(string targetAggressiveness = "DISABLED")
         {
-            if(RTC_Core.isStandalone)
+            RTC_RPC.SendToKillSwitch("FREEZE");
+
+            if (RTC_Core.isStandalone)
             {
                 if(lastNetCoreAggressivity == null)
                     lastNetCoreAggressivity = RTC_Core.csForm.cbNetCoreCommandTimeout.SelectedIndex;
@@ -112,17 +115,31 @@ namespace RTC
                     RTC_Core.csForm.cbNetCoreCommandTimeout.SelectedIndex = RTC_Core.csForm.cbNetCoreCommandTimeout.Items.Count - 2;
 
             }
+
+            var token = Guid.NewGuid();
+
+            if (lastNetCoreAggressivityGuid == null)
+                lastNetCoreAggressivityGuid = token;
+
+            return token;
         }
-        public static void HugeOperationEnd()
+        public static void HugeOperationEnd(Guid? operationGuid = null)
         {
+            RTC_RPC.SendToKillSwitch("UNFREEZE");
+
             if (RTC_Core.isStandalone)
             {
+                if (operationGuid != null && operationGuid != lastNetCoreAggressivityGuid)
+                    return;
+
                 if (lastNetCoreAggressivity != null)
                 {
                     RTC_Core.csForm.cbNetCoreCommandTimeout.SelectedIndex = (int)lastNetCoreAggressivity;
                     lastNetCoreAggressivity = null;
+                    lastNetCoreAggressivityGuid = null;
                 }
             }
+
         }
 
 		public Socket KillableAcceptSocket(TcpListener listener)

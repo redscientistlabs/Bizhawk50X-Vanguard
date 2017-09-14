@@ -152,7 +152,7 @@ namespace RTC
 
 			isNormalAdvance = false;
 
-			RTC_RPC.SendToKillSwitch("FREEZE");
+            RTC_NetCore.HugeOperationStart();
 
 			RTC_HellgenieEngine.ClearCheats(true);
 			RTC_PipeEngine.ClearPipes(true);
@@ -201,14 +201,14 @@ namespace RTC
 
             //RTC_Restore.SaveRestore();
 
-            RTC_RPC.SendToKillSwitch("UNFREEZE");
-			
+            RTC_NetCore.HugeOperationEnd();
+
         }
         public static void LOAD_GAME_FAILED()
         {
 			if (DisableRTC) return;
 
-			RTC_RPC.SendToKillSwitch("UNFREEZE");
+            RTC_NetCore.HugeOperationEnd();
         }
 
         static bool CLOSE_GAME_loop_flag = false;
@@ -249,14 +249,14 @@ namespace RTC
         {
 			if (DisableRTC) return;
 
-			RTC_RPC.SendToKillSwitch("FREEZE");
+            RTC_NetCore.HugeOperationStart();
         }
 
         public static void LOAD_SAVESTATE_END()
         {
 			if (DisableRTC) return;
 
-			RTC_RPC.SendToKillSwitch("UNFREEZE");
+            RTC_NetCore.HugeOperationEnd();
         }
 
         public static void EMU_CRASH(string msg)

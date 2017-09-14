@@ -309,13 +309,11 @@ namespace RTC
 								return;
 						}
 
-                    RTC_RPC.SendToKillSwitch("FREEZE");
-                    RTC_NetCore.HugeOperationStart("LAZY");
+                    var token = RTC_NetCore.HugeOperationStart("LAZY");
 
                     RTC_StockpileManager.LoadState(psk);
 
-                    RTC_RPC.SendToKillSwitch("UNFREEZE");
-                    RTC_NetCore.HugeOperationEnd();
+                    RTC_NetCore.HugeOperationEnd(token);
 
                 }
 				else
@@ -354,14 +352,14 @@ namespace RTC
 
 				if (btnCorrupt.Text.ToUpper() == "MERGE")
 				{
-					List<StashKey> sks = new List<StashKey>();
+                    List<StashKey> sks = new List<StashKey>();
 
 					foreach (DataGridViewRow row in dgvStockpile.SelectedRows)
 						sks.Add((StashKey)row.Cells[0].Value);
 
 					RTC_StockpileManager.MergeStashkeys(sks);
 
-					RefreshStashHistory();
+                    RefreshStashHistory();
 
 					//lbStashHistory.TopIndex = lbStashHistory.Items.Count - 1;
 
@@ -370,8 +368,7 @@ namespace RTC
 				}
 
 
-                RTC_RPC.SendToKillSwitch("FREEZE");
-                RTC_NetCore.HugeOperationStart("LAZY");
+                var token = RTC_NetCore.HugeOperationStart("LAZY");
 
                 if (rbCorrupt.Checked)
                 {
@@ -390,8 +387,8 @@ namespace RTC
 				else if (rbOriginal.Checked)
 					RTC_StockpileManager.OriginalFromStashkey(RTC_StockpileManager.currentStashkey);
 
-                RTC_RPC.SendToKillSwitch("UNFREEZE");
-                RTC_NetCore.HugeOperationEnd();
+
+                RTC_NetCore.HugeOperationEnd(token);
 
 
                 RefreshStashHistory();
@@ -454,14 +451,18 @@ namespace RTC
 				if (!cbLoadOnSelect.Checked)
 					return;
 
-				if (rbCorrupt.Checked)
+                var token = RTC_NetCore.HugeOperationStart("LAZY");
+
+                if (rbCorrupt.Checked)
 					RTC_StockpileManager.ApplyStashkey(RTC_StockpileManager.currentStashkey);
 				if (rbInject.Checked)
 					RTC_StockpileManager.InjectFromStashkey(RTC_StockpileManager.currentStashkey);
 				else if (rbOriginal.Checked)
 					RTC_StockpileManager.OriginalFromStashkey(RTC_StockpileManager.currentStashkey);
 
-			}
+                RTC_NetCore.HugeOperationEnd(token);
+
+            }
 			finally
 			{
 				lbStashHistory.Enabled = true;
@@ -911,16 +912,14 @@ namespace RTC
 			{
 				btnSendRaw.Visible = false;
 
-                RTC_RPC.SendToKillSwitch("FREEZE");
-                RTC_NetCore.HugeOperationStart();
+                var token = RTC_NetCore.HugeOperationStart();
 
                 StashKey sk = (StashKey)RTC_Core.SendCommandToBizhawk(new RTC_Command(CommandType.REMOTE_KEY_GETRAWBLASTLAYER), true);
 
 				RTC_StockpileManager.currentStashkey = sk;
 				RTC_StockpileManager.StashHistory.Add(RTC_StockpileManager.currentStashkey);
 
-                RTC_RPC.SendToKillSwitch("UNFREEZE");
-                RTC_NetCore.HugeOperationEnd();
+                RTC_NetCore.HugeOperationEnd(token);
 
                 RefreshStashHistory();
 
@@ -1155,7 +1154,7 @@ namespace RTC
 			XmlSerializer xs = new XmlSerializer(typeof(SaveStateKeys));
 			SaveStateKeys ssk;
 
-            RTC_NetCore.HugeOperationStart();
+            var token = RTC_NetCore.HugeOperationStart();
 
 			try
 			{
@@ -1220,7 +1219,7 @@ namespace RTC
 
             refreshSavestateTextboxes();
 
-            RTC_NetCore.HugeOperationEnd();
+            RTC_NetCore.HugeOperationEnd(token);
         }
 
         public static void CheckCompatibility()
@@ -1447,16 +1446,20 @@ namespace RTC
 				}
 
 
-				// One item Execution
+                // One item Execution
 
-				if (rbCorrupt.Checked)
+                var token = RTC_NetCore.HugeOperationStart("LAZY");
+
+                if (rbCorrupt.Checked)
 					RTC_StockpileManager.ApplyStashkey(RTC_StockpileManager.currentStashkey);
 				if (rbInject.Checked)
 					RTC_StockpileManager.InjectFromStashkey(RTC_StockpileManager.currentStashkey);
 				else if (rbOriginal.Checked)
 					RTC_StockpileManager.OriginalFromStashkey(RTC_StockpileManager.currentStashkey);
 
-			}
+                RTC_NetCore.HugeOperationEnd(token);
+
+            }
 			finally
 			{
 				dgvStockpile.Enabled = true;
@@ -1550,13 +1553,11 @@ namespace RTC
 
         private void track_Intensity_MouseDown(object sender, MouseEventArgs e)
         {
-            RTC_RPC.SendToKillSwitch("FREEZE");
             RTC_NetCore.HugeOperationStart("LAZY");
         }
 
         private void track_Intensity_MouseUp(object sender, MouseEventArgs e)
         {
-            RTC_RPC.SendToKillSwitch("UNFREEZE");
             RTC_NetCore.HugeOperationEnd();
 
             track_Intensity_Scroll(sender, e);

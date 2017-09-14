@@ -94,7 +94,9 @@ namespace RTC
 		{
 			PreApplyStashkey();
 
-			if (loadBeforeOperation && _loadBeforeOperation)
+            var token = RTC_NetCore.HugeOperationStart("LAZY");
+
+            if (loadBeforeOperation && _loadBeforeOperation)
 			{
 				if (!LoadStateAndBlastLayer(sk))
 					return isCorruptionApplied;
@@ -102,7 +104,10 @@ namespace RTC
 			else
 				RTC_Core.SendCommandToBizhawk(new RTC_Command(CommandType.BLAST) { blastlayer = sk.BlastLayer, isReplay = true});
 
-			isCorruptionApplied = (sk.BlastLayer != null && sk.BlastLayer.Layer.Count > 0);
+
+            RTC_NetCore.HugeOperationEnd(token);
+
+            isCorruptionApplied = (sk.BlastLayer != null && sk.BlastLayer.Layer.Count > 0);
 
 			PostApplyStashkey();
 			return isCorruptionApplied;
@@ -129,6 +134,7 @@ namespace RTC
 				RTC_Core.coreForm.RefreshDomains();
 				RTC_Core.coreForm.setMemoryDomainsAllButSelectedDomains(RTC_MemoryDomains.GetBlacklistedDomains());
 			}
+
 
 
 			BlastLayer bl = (BlastLayer)RTC_Core.SendCommandToBizhawk(new RTC_Command(CommandType.BLAST) { objectValue = RTC_MemoryDomains.SelectedDomains }, true);
@@ -235,8 +241,7 @@ namespace RTC
 
 			if (sks != null && sks.Count > 1)
 			{
-                RTC_RPC.SendToKillSwitch("FREEZE");
-                RTC_NetCore.HugeOperationStart();
+                var token = RTC_NetCore.HugeOperationStart();
 
 
                 StashKey master = sks[0];
@@ -254,8 +259,7 @@ namespace RTC
 				if(!allCoresIdentical)
 				{
 					MessageBox.Show("Merge attempt failed: Core mismatch\n\n" + string.Join("\n", sks.Select(it => $"{it.GameName} -> {it.SystemName} -> {it.SystemCore}")));
-                    RTC_RPC.SendToKillSwitch("UNFREEZE");
-                    RTC_NetCore.HugeOperationEnd();
+                    RTC_NetCore.HugeOperationEnd(token);
 
                     return false;
 				}
@@ -265,8 +269,7 @@ namespace RTC
 				foreach (StashKey item in sks)
 					bl.Layer.AddRange(item.BlastLayer.Layer);
 
-                RTC_RPC.SendToKillSwitch("UNFREEZE");
-                RTC_NetCore.HugeOperationEnd();
+                
 
                 currentStashkey = new StashKey(RTC_Core.GetRandomKey(), master.ParentKey, bl);
 				currentStashkey.RomFilename = master.RomFilename;
@@ -277,10 +280,14 @@ namespace RTC
 				if (loadBeforeOperation)
 				{
 					if (!LoadStateAndBlastLayer(currentStashkey))
-						return isCorruptionApplied;
+                    {
+                        RTC_NetCore.HugeOperationEnd(token);
+                        return isCorruptionApplied;
+                    }
+						
 				}
 				else
-					RTC_Core.SendCommandToBizhawk(new RTC_Command(CommandType.BLAST) { blastlayer = currentStashkey.BlastLayer}, true);
+					RTC_Core.SendCommandToBizhawk(new RTC_Command(CommandType.BLAST) { blastlayer = currentStashkey.BlastLayer});
 
 				isCorruptionApplied = (currentStashkey.BlastLayer != null && currentStashkey.BlastLayer.Layer.Count > 0);
 
@@ -290,7 +297,9 @@ namespace RTC
 					RTC_Core.ghForm.RefreshStashHistory();
 				}
 
-				PostApplyStashkey();
+                RTC_NetCore.HugeOperationEnd(token);
+
+                PostApplyStashkey();
 				return true;
 			}
 			else
