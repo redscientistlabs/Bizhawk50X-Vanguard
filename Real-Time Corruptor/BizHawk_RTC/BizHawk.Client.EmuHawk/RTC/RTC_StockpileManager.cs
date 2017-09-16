@@ -288,7 +288,10 @@ namespace RTC
 				currentStashkey.SystemCore = master.SystemCore;
 				currentStashkey.GameName = master.GameName;
 
-				if (loadBeforeOperation)
+                //RTC_NetCore.HugeOperationEnd(token);
+                token = RTC_NetCore.HugeOperationStart("LAZY");
+
+                if (loadBeforeOperation)
 				{
 					if (!LoadStateAndBlastLayer(currentStashkey))
                     {
@@ -510,7 +513,10 @@ namespace RTC
             {
                 case "NES":
                     _primarydomain = "PRG ROM";
-                    _seconddomain = "CHR VROM";
+
+                    if(RTC_MemoryDomains.MemoryInterfaces.ContainsKey("CHR VROM"))
+                        _seconddomain = "CHR VROM";
+
                     skipbytes = 16;
                     break;
 

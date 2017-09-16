@@ -25,8 +25,9 @@ namespace RTC
 
 		public Panel pnHideGlitchHarvester = new Panel();
 		public Label lbConnectionStatus = new Label();
+        public Button btnEmergencySaveStockpile = new Button();
 
-		Dictionary<string, TextBox> StateBoxes = new Dictionary<string, TextBox>();
+        Dictionary<string, TextBox> StateBoxes = new Dictionary<string, TextBox>();
         
         public bool IsCorruptionApplied
         {
@@ -135,11 +136,21 @@ namespace RTC
 			pnHideGlitchHarvester.Size = this.Size;
 			pnHideGlitchHarvester.BackColor = Color.Black;
 			pnHideGlitchHarvester.Controls.Add(lbConnectionStatus);
+
 			lbConnectionStatus.Location = new Point(32, 32);
-			lbConnectionStatus.Size = new Size(500, 500);
+			lbConnectionStatus.Size = new Size(500, 32);
 			lbConnectionStatus.ForeColor = Color.FromArgb(255, 192, 128);
 
-			Controls.Add(pnHideGlitchHarvester);
+            btnEmergencySaveStockpile.Text = "Emergency Save Stockpile";
+            btnEmergencySaveStockpile.Location = new Point(32, 64);
+            btnEmergencySaveStockpile.Size = new Size(200, 32);
+            btnEmergencySaveStockpile.BackColor = Color.OrangeRed;
+            btnEmergencySaveStockpile.Click += (s,e)=>{
+                btnSaveStockpileAs_Click(s,e);
+            };
+            pnHideGlitchHarvester.Controls.Add(btnEmergencySaveStockpile);
+
+            Controls.Add(pnHideGlitchHarvester);
 			pnHideGlitchHarvester.Hide();
 
 			cbRenderType.SelectedIndex = 0;

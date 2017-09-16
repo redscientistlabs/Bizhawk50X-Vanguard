@@ -68,7 +68,6 @@ namespace RTC
 		private static object CommandQueueLock = new object();
         private static bool NetCoreCommandSynclock = false;
 
-
         public event EventHandler ClientConnecting;
 		protected virtual void OnClientConnecting(EventArgs e) => ClientConnecting?.Invoke(this, e);
 
