@@ -64,7 +64,10 @@ namespace RTC
             {
                 case "NES":
                     _primarydomain = "PRG ROM";
-                    _seconddomain = "CHR VROM";
+
+                    if (RTC_MemoryDomains.MemoryInterfaces.ContainsKey("CHR VROM"))
+                        _seconddomain = "CHR VROM";
+
                     skipbytes = 16;
                     break;
 
