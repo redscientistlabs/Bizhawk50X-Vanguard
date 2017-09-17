@@ -17,7 +17,7 @@ namespace RTC
 
     public static class RTC_Core
     {
-		public static string RtcVersion = "2.99";
+		public static string RtcVersion = "3.00";
 		
         public static Random RND = new Random();
         public static string[] args;
@@ -112,7 +112,7 @@ namespace RTC
                 RTC_Core.standaloneForm.Close();
 
 
-            if (!RTC_Hooks.isRemoteRTC) //We force useless savestates to clear on quit to prevent disk usage to inflate too much
+            if (!RTC_Hooks.isRemoteRTC && File.Exists(RTC_Core.bizhawkDir + "\\StateClean.bat")) //We force useless savestates to clear on quit to prevent disk usage to inflate too much
 			{
 				Process p = new Process();
 				p.StartInfo.FileName = RTC_Core.bizhawkDir + "\\StateClean.bat";
