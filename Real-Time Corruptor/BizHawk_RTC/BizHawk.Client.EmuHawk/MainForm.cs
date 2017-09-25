@@ -1005,11 +1005,12 @@ namespace BizHawk.Client.EmuHawk
 				}
 				Console.WriteLine("Selecting display size " + lastComputedSize.ToString());
 
-				// Change size
+                // Change size
 
-				Size = new Size((lastComputedSize.Width) + borderWidth, ((lastComputedSize.Height) + borderHeight));
+                //RTC_HIJACK : Don't change the MainForm Size
+                //Size = new Size((lastComputedSize.Width) + borderWidth, ((lastComputedSize.Height) + borderHeight));
 
-				PerformLayout();
+                PerformLayout();
 				PresentationPanel.Resized = true;
 
 				// Is window off the screen at this size?

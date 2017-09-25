@@ -244,7 +244,7 @@ namespace WindowsGlitchHarvester
 
 			// Randomly selects a memory operation according to the selected algorithm
 
-			long safeAddress = _address - (_address % 8);
+			long safeAddress = _address - (_address % 4);
 
 			MemoryInterface mi = WGH_Core.currentMemoryInterface;
 			//MemoryDomainProxy md = RTC_MemoryDomains.getProxyFromString(_domain);
@@ -283,6 +283,9 @@ namespace WindowsGlitchHarvester
 
 		public static bool isConstant(byte[] bytes, string[] list)
 		{
+            if (list == null)
+                return true;
+
 			byte[] _bytes = (byte[])bytes.Clone();
 
 			if(WGH_VectorEngine.BigEndian)

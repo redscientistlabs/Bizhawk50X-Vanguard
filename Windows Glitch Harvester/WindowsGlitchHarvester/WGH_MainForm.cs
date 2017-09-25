@@ -920,6 +920,9 @@ Are you sure you want to reset the current target's backup?", "WARNING", Message
                 case "Two":
                     WGH_VectorEngine.limiterList = WGH_VectorEngine.constantPositiveTwo;
                     break;
+                case "AnyFloat":
+                    WGH_VectorEngine.limiterList = null;
+                    break;
 
 
             }
