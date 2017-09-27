@@ -7,6 +7,7 @@ using BizHawk.Emulation.Cores.Nintendo.Gameboy;
 using BizHawk.Emulation.Cores.Sega.MasterSystem;
 using BizHawk.Emulation.Common.IEmulatorExtensions;
 using BizHawk.Emulation.Cores.Consoles.Sega.gpgx;
+using BizHawk.Emulation.Cores.Consoles.Sega.PicoDrive;
 
 namespace BizHawk.Client.Common.MovieConversionExtensions
 {
@@ -115,7 +116,9 @@ namespace BizHawk.Client.Common.MovieConversionExtensions
 			bk2.SaveRam = old.SaveRam;
 
 			if (!backup)
+			{
 				bk2.Save();
+			}
 
 			return bk2;
 		}
@@ -142,8 +145,7 @@ namespace BizHawk.Client.Common.MovieConversionExtensions
 				}
 			}
 
-			TasMovie tas = new TasMovie(newFilename, true);
-			tas.BinarySavestate = savestate;
+			var tas = new TasMovie(newFilename, true) { BinarySavestate = savestate };
 			tas.ClearLagLog();
 
 			var entries = old.GetLogEntries();
@@ -185,7 +187,9 @@ namespace BizHawk.Client.Common.MovieConversionExtensions
 			foreach (TasMovieMarker marker in old.Markers)
 			{
 				if (marker.Frame > frame)
+				{
 					tas.Markers.Add(new TasMovieMarker(marker.Frame - frame, marker.Message));
+				}
 			}
 
 			tas.TasStateManager.Settings = old.TasStateManager.Settings;
@@ -216,8 +220,7 @@ namespace BizHawk.Client.Common.MovieConversionExtensions
 				}
 			}
 
-			TasMovie tas = new TasMovie(newFilename, true);
-			tas.SaveRam = saveRam;
+			var tas = new TasMovie(newFilename, true) { SaveRam = saveRam };
 			tas.TasStateManager.Clear();
 			tas.ClearLagLog();
 
@@ -281,9 +284,9 @@ namespace BizHawk.Client.Common.MovieConversionExtensions
 				movie.GameName = "NULL";
 			}
 
-			if (Global.Emulator.BoardName != null)
+			if (Global.Emulator.HasBoardInfo())
 			{
-				movie.BoardName = Global.Emulator.BoardName;
+				movie.BoardName = Global.Emulator.AsBoardInfo().BoardName;
 			}
 
 			if (Global.Emulator.HasRegions())
@@ -306,7 +309,6 @@ namespace BizHawk.Client.Common.MovieConversionExtensions
 						movie.HeaderEntries.Add(key, firmware.Hash);
 					}
 				}
-
 			}
 
 			if (Global.Emulator is Gameboy && (Global.Emulator as Gameboy).IsCGBMode())
@@ -319,13 +321,23 @@ namespace BizHawk.Client.Common.MovieConversionExtensions
 				movie.HeaderEntries.Add("IsSGMode", "1");
 			}
 
-			if (Global.Emulator is GPGX && (Global.Emulator as GPGX).IsSegaCD)
+			if (Global.Emulator is SMS && (Global.Emulator as SMS).IsGameGear)
+			{
+				movie.HeaderEntries.Add("IsGGMode", "1");
+			}
+
+			if (Global.Emulator is GPGX && (Global.Emulator as GPGX).IsMegaCD)
 			{
 				movie.HeaderEntries.Add("IsSegaCDMode", "1");
 			}
 
-			movie.Core = ((CoreAttributes)Attribute
-				.GetCustomAttribute(Global.Emulator.GetType(), typeof(CoreAttributes)))
+			if (Global.Emulator is PicoDrive && Global.Game["32X"])
+			{
+				movie.HeaderEntries.Add("Is32X", "1");
+			}
+
+			movie.Core = ((CoreAttribute)Attribute
+				.GetCustomAttribute(Global.Emulator.GetType(), typeof(CoreAttribute)))
 				.CoreName;
 		}
 	}

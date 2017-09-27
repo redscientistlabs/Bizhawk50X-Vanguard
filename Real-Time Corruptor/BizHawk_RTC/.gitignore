@@ -68,3 +68,8 @@ ExternalCoreProjects/Virtu/bin/*.*
 /psx/octoshock/bizhawk/Win32
 /psx/octoshock/bizhawk/x64
 /psx/octoshock/bizhawk/*.opendb
+
+**/StyleCop.Cache
+libsnes/vs2015/libsnes.VC.db
+waterbox/**/*.wbx
+waterbox/**/*.wbx.in

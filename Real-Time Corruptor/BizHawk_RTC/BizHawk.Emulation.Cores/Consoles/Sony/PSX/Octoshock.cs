@@ -25,14 +25,194 @@ using BizHawk.Common;
 
 namespace BizHawk.Emulation.Cores.Sony.PSX
 {
-	[CoreAttributes(
+	[Core(
 		"Octoshock",
-		"Ryphecha",
+		"Mednafen Team",
 		isPorted: true,
-		isReleased: true
-		)]
-	public unsafe partial class Octoshock : IEmulator, IVideoProvider, ISyncSoundProvider, ISaveRam, IStatable, IDriveLight, ISettable<Octoshock.Settings, Octoshock.SyncSettings>, IRegionable, IInputPollable
+		isReleased: true)]
+	public unsafe partial class Octoshock : IEmulator, IVideoProvider, ISoundProvider, ISaveRam, IStatable, IDriveLight, ISettable<Octoshock.Settings, Octoshock.SyncSettings>, IRegionable, IInputPollable
 	{
+		public Octoshock(CoreComm comm, PSF psf, object settings, object syncSettings)
+		{
+			Load(comm, null, null, null, settings, syncSettings, psf);
+			OctoshockDll.shock_PowerOn(psx);
+		}
+
+		//note: its annoying that we have to have a disc before constructing this.
+		//might want to change that later. HOWEVER - we need to definitely have a region, at least
+		public Octoshock(CoreComm comm, List<DiscSystem.Disc> discs, List<string> discNames, byte[] exe, object settings, object syncSettings)
+		{
+			Load(comm, discs, discNames, exe, settings, syncSettings, null);
+			OctoshockDll.shock_PowerOn(psx);
+		}
+
+		void Load(CoreComm comm, List<DiscSystem.Disc> discs, List<string> discNames, byte[] exe, object settings, object syncSettings, PSF psf)
+		{
+			ConnectTracer();
+			CoreComm = comm;
+			DriveLightEnabled = true;
+
+			_Settings = (Settings)settings ?? new Settings();
+			_SyncSettings = (SyncSettings)syncSettings ?? new SyncSettings();
+
+			Discs = discs;
+
+			Attach();
+
+			//assume this region for EXE and PSF, maybe not correct though
+			string firmwareRegion = "U";
+			SystemRegion = OctoshockDll.eRegion.NA;
+
+			if (discs != null)
+			{
+				HackyDiscButtons.AddRange(discNames);
+
+				foreach (var disc in discs)
+				{
+					var discInterface = new DiscInterface(disc,
+						(di) =>
+						{
+							//if current disc this delegate disc, activity is happening
+							if (di == currentDiscInterface)
+								DriveLightOn = true;
+						});
+
+					discInterfaces.Add(discInterface);
+				}
+			}
+			else
+			{
+				//assume its NA region for test programs, for now. could it be read out of the ps-exe header?
+			}
+
+			if (discInterfaces.Count != 0)
+			{
+				//determine region of one of the discs
+				OctoshockDll.ShockDiscInfo discInfo;
+				OctoshockDll.shock_AnalyzeDisc(discInterfaces[0].OctoshockHandle, out discInfo);
+
+				//try to acquire the appropriate firmware
+				if (discInfo.region == OctoshockDll.eRegion.EU) firmwareRegion = "E";
+				if (discInfo.region == OctoshockDll.eRegion.JP) firmwareRegion = "J";
+				SystemRegion = discInfo.region;
+			}
+
+			//see http://problemkaputt.de/psx-spx.htm
+			int CpuClock_n = 44100 * 768;
+			int CpuClock_d = 1;
+			int VidClock_n = CpuClock_n * 11;
+			int VidClock_d = CpuClock_d * 7;
+			if (SystemRegion == OctoshockDll.eRegion.EU)
+			{
+				VsyncNumerator = VidClock_n;
+				VsyncDenominator = VidClock_d * 314 * 3406;
+				SystemVidStandard = OctoshockDll.eVidStandard.PAL;
+			}
+			else
+			{
+				VsyncNumerator = VidClock_n;
+				VsyncDenominator = VidClock_d * 263 * 3413;
+				SystemVidStandard = OctoshockDll.eVidStandard.NTSC;
+			}
+
+			//TODO - known bad firmwares are a no-go. we should refuse to boot them. (thats the mednafen policy)
+			byte[] firmware = comm.CoreFileProvider.GetFirmware("PSX", firmwareRegion, true, "A PSX `" + firmwareRegion + "` region bios file is required");
+
+			//create the instance
+			fixed (byte* pFirmware = firmware)
+				OctoshockDll.shock_Create(out psx, SystemRegion, pFirmware);
+
+			SetMemoryDomains();
+			InitMemCallbacks();
+
+			//set a default framebuffer based on the first frame of emulation, to cut down on flickering or whatever
+			//this is probably quixotic, but we have to pick something
+			{
+				BufferWidth = 280;
+				BufferHeight = 240;
+				if (SystemVidStandard == OctoshockDll.eVidStandard.PAL)
+				{
+					BufferWidth = 280;
+					BufferHeight = 288;
+				}
+				CurrentVideoSize = new System.Drawing.Size(BufferWidth, BufferHeight);
+				var ri = Octoshock.CalculateResolution(SystemVidStandard, _Settings, BufferWidth, BufferHeight);
+				BufferWidth = VirtualWidth = ri.Resolution.Width;
+				BufferHeight = VirtualHeight = ri.Resolution.Height;
+				//VideoProvider_Padding = new System.Drawing.Size(50,50);
+				frameBuffer = new int[BufferWidth * BufferHeight];
+			}
+
+			if (discInterfaces.Count != 0)
+			{
+				//start with first disc inserted and tray closed. it's a sensible default.
+				//it will be possible for the user to specify a different initial configuration, but this will inform the UI
+				CurrentTrayOpen = false;
+				CurrentDiscIndexMounted = 1;
+			}
+			else if (psf == null)
+			{
+				//must be an exe
+				fixed (byte* pExeBuffer = exe)
+					OctoshockDll.shock_MountEXE(psx, pExeBuffer, exe.Length, false);
+
+				//start with no disc inserted and tray closed
+				CurrentTrayOpen = false;
+				CurrentDiscIndexMounted = 0;
+				OctoshockDll.shock_CloseTray(psx);
+			}
+			else
+			{
+				//must be a psf
+				if (psf.LibData != null)
+					fixed (byte* pBuf = psf.LibData)
+						OctoshockDll.shock_MountEXE(psx, pBuf, psf.LibData.Length, true);
+				fixed (byte* pBuf = psf.Data)
+					OctoshockDll.shock_MountEXE(psx, pBuf, psf.Data.Length, false);
+
+				//start with no disc inserted and tray closed
+				CurrentTrayOpen = false;
+				CurrentDiscIndexMounted = 0;
+				OctoshockDll.shock_CloseTray(psx);
+			}
+
+			//setup the controller based on sync settings
+			SetControllerButtons();
+
+			var fioCfg = _SyncSettings.FIOConfig;
+			if (fioCfg.Multitaps[0])
+			{
+				OctoshockDll.shock_Peripheral_Connect(psx, 0x01, OctoshockDll.ePeripheralType.Multitap);
+				OctoshockDll.shock_Peripheral_Connect(psx, 0x11, fioCfg.Devices8[0]);
+				OctoshockDll.shock_Peripheral_Connect(psx, 0x21, fioCfg.Devices8[1]);
+				OctoshockDll.shock_Peripheral_Connect(psx, 0x31, fioCfg.Devices8[2]);
+				OctoshockDll.shock_Peripheral_Connect(psx, 0x41, fioCfg.Devices8[3]);
+			}
+			else
+				OctoshockDll.shock_Peripheral_Connect(psx, 0x01, fioCfg.Devices8[0]);
+
+			if (fioCfg.Multitaps[1])
+			{
+				OctoshockDll.shock_Peripheral_Connect(psx, 0x02, OctoshockDll.ePeripheralType.Multitap);
+				OctoshockDll.shock_Peripheral_Connect(psx, 0x12, fioCfg.Devices8[4]);
+				OctoshockDll.shock_Peripheral_Connect(psx, 0x22, fioCfg.Devices8[5]);
+				OctoshockDll.shock_Peripheral_Connect(psx, 0x32, fioCfg.Devices8[6]);
+				OctoshockDll.shock_Peripheral_Connect(psx, 0x42, fioCfg.Devices8[7]);
+			}
+			else
+				OctoshockDll.shock_Peripheral_Connect(psx, 0x02, fioCfg.Devices8[4]);
+
+			var memcardTransaction = new OctoshockDll.ShockMemcardTransaction()
+			{
+				transaction = OctoshockDll.eShockMemcardTransaction.Connect
+			};
+			if (fioCfg.Memcards[0]) OctoshockDll.shock_Peripheral_MemcardTransact(psx, 0x01, ref memcardTransaction);
+			if (fioCfg.Memcards[1]) OctoshockDll.shock_Peripheral_MemcardTransact(psx, 0x02, ref memcardTransaction);
+
+			//do this after framebuffers and peripherals and whatever crap are setup. kind of lame, but thats how it is for now
+			StudySaveBufferSize();
+		}
+
 		public string SystemId { get { return "PSX"; } }
 
 		public static ControllerDefinition CreateControllerDefinition(SyncSettings syncSettings)
@@ -46,44 +226,75 @@ namespace BizHawk.Emulation.Cores.Sony.PSX
 			for (int i = 0; i < cfg.NumPlayers; i++)
 			{
 				int pnum = i + 1;
-				definition.BoolButtons.AddRange(new[]
-				{
-						"P" + pnum + " Up",
-						"P" + pnum + " Down",
-						"P" + pnum + " Left",
-						"P" + pnum + " Right",
-						"P" + pnum + " Select",
-						"P" + pnum + " Start",
-						"P" + pnum + " Square",
-						"P" + pnum + " Triangle",
-						"P" + pnum + " Circle",
-						"P" + pnum + " Cross",
-						"P" + pnum + " L1",
-						"P" + pnum + " R1",
-						"P" + pnum + " L2",
-						"P" + pnum + " R2",
-					});
 
 				var type = cfg.DevicesPlayer[i];
-
-				if (type == OctoshockDll.ePeripheralType.DualShock || type == OctoshockDll.ePeripheralType.DualAnalog)
+				if (type == OctoshockDll.ePeripheralType.NegCon)
 				{
-					definition.BoolButtons.Add("P" + pnum + " L3");
-					definition.BoolButtons.Add("P" + pnum + " R3");
-					definition.BoolButtons.Add("P" + pnum + " MODE");
+					definition.BoolButtons.AddRange(new[]
+					{
+							"P" + pnum + " Up",
+							"P" + pnum + " Down",
+							"P" + pnum + " Left",
+							"P" + pnum + " Right",
+							"P" + pnum + " Start",
+							"P" + pnum + " R",
+							"P" + pnum + " B",
+							"P" + pnum + " A",
+					});
 
 					definition.FloatControls.AddRange(new[]
-					{
-							"P" + pnum + " LStick X",
-							"P" + pnum + " LStick Y",
-							"P" + pnum + " RStick X",
-							"P" + pnum + " RStick Y"
-						});
+						{
+								"P" + pnum + " Twist",
+								"P" + pnum + " 1",
+								"P" + pnum + " 2",
+								"P" + pnum + " L"
+							});
 
 					definition.FloatRanges.Add(new[] { 0.0f, 128.0f, 255.0f });
-					definition.FloatRanges.Add(new[] { 255.0f, 128.0f, 0.0f });
 					definition.FloatRanges.Add(new[] { 0.0f, 128.0f, 255.0f });
-					definition.FloatRanges.Add(new[] { 255.0f, 128.0f, 0.0f });
+					definition.FloatRanges.Add(new[] { 0.0f, 128.0f, 255.0f });
+					definition.FloatRanges.Add(new[] { 0.0f, 128.0f, 255.0f });
+				}
+				else
+				{
+					definition.BoolButtons.AddRange(new[]
+					{
+							"P" + pnum + " Up",
+							"P" + pnum + " Down",
+							"P" + pnum + " Left",
+							"P" + pnum + " Right",
+							"P" + pnum + " Select",
+							"P" + pnum + " Start",
+							"P" + pnum + " Square",
+							"P" + pnum + " Triangle",
+							"P" + pnum + " Circle",
+							"P" + pnum + " Cross",
+							"P" + pnum + " L1",
+							"P" + pnum + " R1",
+							"P" + pnum + " L2",
+							"P" + pnum + " R2",
+						});
+
+
+					if (type == OctoshockDll.ePeripheralType.DualShock || type == OctoshockDll.ePeripheralType.DualAnalog)
+					{
+						definition.BoolButtons.Add("P" + pnum + " L3");
+						definition.BoolButtons.Add("P" + pnum + " R3");
+						definition.BoolButtons.Add("P" + pnum + " MODE");
+
+						definition.FloatControls.AddRange(new[]
+						{
+								"P" + pnum + " LStick X",
+								"P" + pnum + " LStick Y",
+								"P" + pnum + " RStick X",
+								"P" + pnum + " RStick Y"
+							});
+
+						definition.FloatRanges.Add(new[] { 0.0f, 128.0f, 255.0f });
+						definition.FloatRanges.Add(new[] { 255.0f, 128.0f, 0.0f });
+						definition.FloatRanges.Add(new[] { 0.0f, 128.0f, 255.0f });
+						definition.FloatRanges.Add(new[] { 255.0f, 128.0f, 0.0f });
+					}
 				}
 			}
 
@@ -109,8 +320,6 @@ namespace BizHawk.Emulation.Cores.Sony.PSX
 		{
 			ControllerDefinition = CreateControllerDefinition(_SyncSettings);
 		}
-
-		public string BoardName { get { return null; } }
 
 		private int[] frameBuffer = new int[0];
 		private Random rand = new Random();
@@ -230,170 +439,6 @@ namespace BizHawk.Emulation.Cores.Sony.PSX
 
 		public List<string> HackyDiscButtons = new List<string>();
 
-		public Octoshock(CoreComm comm, PSF psf, object settings, object syncSettings)
-		{
-			Load(comm, null, null, null, settings, syncSettings, psf);
-			OctoshockDll.shock_PowerOn(psx);
-		}
-
-		//note: its annoying that we have to have a disc before constructing this.
-		//might want to change that later. HOWEVER - we need to definitely have a region, at least
-		public Octoshock(CoreComm comm, List<DiscSystem.Disc> discs, List<string> discNames, byte[] exe, object settings, object syncSettings)
-		{
-			Load(comm, discs, discNames, exe, settings, syncSettings, null);
-			OctoshockDll.shock_PowerOn(psx);
-		}
-
-		void Load(CoreComm comm, List<DiscSystem.Disc> discs, List<string> discNames, byte[] exe, object settings, object syncSettings, PSF psf)
-		{
-			ConnectTracer();
-			CoreComm = comm;
-			DriveLightEnabled = true;
-
-			_Settings = (Settings)settings ?? new Settings();
-			_SyncSettings = (SyncSettings)syncSettings ?? new SyncSettings();
-
-			Discs = discs;
-
-			Attach();
-
-			//assume this region for EXE and PSF, maybe not correct though
-			string firmwareRegion = "U";
-			SystemRegion = OctoshockDll.eRegion.NA;
-
-			if (discs != null)
-			{
-				HackyDiscButtons.AddRange(discNames);
-
-				foreach (var disc in discs)
-				{
-					var discInterface = new DiscInterface(disc,
-						(di) =>
-						{
-							//if current disc this delegate disc, activity is happening
-							if (di == currentDiscInterface)
-								DriveLightOn = true;
-						});
-
-					discInterfaces.Add(discInterface);
-				}
-			}
-			else
-			{
-				//assume its NA region for test programs, for now. could it be read out of the ps-exe header?
-			}
-
-			if (discInterfaces.Count != 0)
-			{
-				//determine region of one of the discs
-				OctoshockDll.ShockDiscInfo discInfo;
-				OctoshockDll.shock_AnalyzeDisc(discInterfaces[0].OctoshockHandle, out discInfo);
-
-				//try to acquire the appropriate firmware
-				if (discInfo.region == OctoshockDll.eRegion.EU) firmwareRegion = "E";
-				if (discInfo.region == OctoshockDll.eRegion.JP) firmwareRegion = "J";
-				SystemRegion = discInfo.region;
-			}
-
-			//see http://problemkaputt.de/psx-spx.htm
-			int CpuClock_n = 44100 * 768;
-			int CpuClock_d = 1;
-			int VidClock_n = CpuClock_n * 11;
-			int VidClock_d = CpuClock_d * 7;
-			if (SystemRegion == OctoshockDll.eRegion.EU)
-			{
-				CoreComm.VsyncNum = VidClock_n;
-				CoreComm.VsyncDen = VidClock_d * 314 * 3406;
-				SystemVidStandard = OctoshockDll.eVidStandard.PAL;
-			}
-			else
-			{
-				CoreComm.VsyncNum = VidClock_n;
-				CoreComm.VsyncDen = VidClock_d * 263 * 3413;
-				SystemVidStandard = OctoshockDll.eVidStandard.NTSC;
-			}
-
-			//TODO - known bad firmwares are a no-go. we should refuse to boot them. (thats the mednafen policy)
-			byte[] firmware = comm.CoreFileProvider.GetFirmware("PSX", firmwareRegion, true, "A PSX `" + firmwareRegion + "` region bios file is required");
-
-			//create the instance
-			fixed (byte* pFirmware = firmware)
-				OctoshockDll.shock_Create(out psx, SystemRegion, pFirmware);
-
-			SetMemoryDomains();
-			InitMemCallbacks();
-
-			//set a default framebuffer based on the first frame of emulation, to cut down on flickering or whatever
-			//this is probably quixotic, but we have to pick something
-			{
-				BufferWidth = 280;
-				BufferHeight = 240;
-				if (SystemVidStandard == OctoshockDll.eVidStandard.PAL)
-				{
-					BufferWidth = 280;
-					BufferHeight = 288;
-				}
-				CurrentVideoSize = new System.Drawing.Size(BufferWidth, BufferHeight);
-				var ri = Octoshock.CalculateResolution(SystemVidStandard, _Settings, BufferWidth, BufferHeight);
-				BufferWidth = VirtualWidth = ri.Resolution.Width;
-				BufferHeight = VirtualHeight = ri.Resolution.Height;
-				//VideoProvider_Padding = new System.Drawing.Size(50,50);
-				frameBuffer = new int[BufferWidth * BufferHeight];
-			}
-
-			if (discInterfaces.Count != 0)
-			{
-				//start with first disc inserted and tray closed. it's a sensible default.
-				//it will be possible for the user to specify a different initial configuration, but this will inform the UI
-				CurrentTrayOpen = false;
-				CurrentDiscIndexMounted = 1;
-			}
-			else if (psf == null)
-			{
-				//must be an exe
-				fixed (byte* pExeBuffer = exe)
-					OctoshockDll.shock_MountEXE(psx, pExeBuffer, exe.Length, false);
-
-				//start with no disc inserted and tray closed
-				CurrentTrayOpen = false;
-				CurrentDiscIndexMounted = 0;
-				OctoshockDll.shock_CloseTray(psx);
-			}
-			else
-			{
-				//must be a psf
-				if (psf.LibData != null)
-					fixed (byte* pBuf = psf.LibData)
-						OctoshockDll.shock_MountEXE(psx, pBuf, psf.LibData.Length, true);
-				fixed (byte* pBuf = psf.Data)
-					OctoshockDll.shock_MountEXE(psx, pBuf, psf.Data.Length, false);
-
-				//start with no disc inserted and tray closed
-				CurrentTrayOpen = false;
-				CurrentDiscIndexMounted = 0;
-				OctoshockDll.shock_CloseTray(psx);
-			}
-
-			//setup the controller based on sync settings
-			SetControllerButtons();
-
-			var fioCfg = _SyncSettings.FIOConfig;
-			if(fioCfg.Devices8[0] != OctoshockDll.ePeripheralType.None)
-				OctoshockDll.shock_Peripheral_Connect(psx, 0x01, fioCfg.Devices8[0]);
-			if (fioCfg.Devices8[4] != OctoshockDll.ePeripheralType.None)
-				OctoshockDll.shock_Peripheral_Connect(psx, 0x02, fioCfg.Devices8[4]);
-
-			var memcardTransaction = new OctoshockDll.ShockMemcardTransaction()
-			{
-				transaction = OctoshockDll.eShockMemcardTransaction.Connect
-			};
-			if (fioCfg.Memcards[0]) OctoshockDll.shock_Peripheral_MemcardTransact(psx, 0x01, ref memcardTransaction);
-			if (fioCfg.Memcards[1]) OctoshockDll.shock_Peripheral_MemcardTransact(psx, 0x02, ref memcardTransaction);
-
-			//do this after framebuffers and peripherals and whatever crap are setup. kind of lame, but thats how it is for now
-			StudySaveBufferSize();
-		}
-
 		public IEmulatorServiceProvider ServiceProvider { get; private set; }
 
 		public bool DriveLightEnabled { get; private set; }
@@ -425,46 +470,80 @@ namespace BizHawk.Emulation.Cores.Sony.PSX
 		{
 			var fioCfg = _SyncSettings.FIOConfig.ToLogical();
 
-			int portNum = 0x01;
-			foreach (int slot in new[] { 0, 4 })
+			for (int port = 0; port < 2; port++)
 			{
-				//no input to set
-				if (fioCfg.Devices8[slot] == OctoshockDll.ePeripheralType.None)
-					continue;
-
-				uint buttons = 0;
-				string pstring = "P" + fioCfg.PlayerAssignments[slot] + " ";
-
-				if (Controller[pstring + "Select"]) buttons |= 1;
-				if (Controller[pstring + "Start"]) buttons |= 8;
-				if (Controller[pstring + "Up"]) buttons |= 16;
-				if (Controller[pstring + "Right"]) buttons |= 32;
-				if (Controller[pstring + "Down"]) buttons |= 64;
-				if (Controller[pstring + "Left"]) buttons |= 128;
-				if (Controller[pstring + "L2"]) buttons |= 256;
-				if (Controller[pstring + "R2"]) buttons |= 512;
-				if (Controller[pstring + "L1"]) buttons |= 1024;
-				if (Controller[pstring + "R1"]) buttons |= 2048;
-				if (Controller[pstring + "Triangle"]) buttons |= 4096;
-				if (Controller[pstring + "Circle"]) buttons |= 8192;
-				if (Controller[pstring + "Cross"]) buttons |= 16384;
-				if (Controller[pstring + "Square"]) buttons |= 32768;
-
-				byte left_x = 0, left_y = 0, right_x = 0, right_y = 0;
-				if (fioCfg.Devices8[slot] == OctoshockDll.ePeripheralType.DualShock || fioCfg.Devices8[slot] == OctoshockDll.ePeripheralType.DualAnalog)
+				for (int multiport = 0; multiport < 4; multiport++)
 				{
-					if (Controller[pstring + "L3"]) buttons |= 2;
-					if (Controller[pstring + "R3"]) buttons |= 4;
-					if (Controller[pstring + "MODE"]) buttons |= 65536;
+					//note: I would not say this port addressing scheme has been completely successful
+					//however, it may be because i was constantly constrained by having to adapt it to mednafen.. i dont know.
 
-					left_x = (byte)Controller.GetFloat(pstring + "LStick X");
-					left_y = (byte)Controller.GetFloat(pstring + "LStick Y");
-					right_x = (byte)Controller.GetFloat(pstring + "RStick X");
-					right_y = (byte)Controller.GetFloat(pstring + "RStick Y");
+					int portNum = (port + 1) + ((multiport + 1) << 4);
+					int slot = port * 4 + multiport;
+					
+					//no input to set
+					if (fioCfg.Devices8[slot] == OctoshockDll.ePeripheralType.None)
+						continue;
+
+					//address differently if it isn't multitap
+					if (!fioCfg.Multitaps[port])
+						portNum = port + 1;
+
+					uint buttons = 0;
+					string pstring = "P" + fioCfg.PlayerAssignments[slot] + " ";
+
+					if (fioCfg.Devices8[slot] == OctoshockDll.ePeripheralType.NegCon)
+					{
+						//1,2,4 skipped (would be Select, L3, R3 on other pads)
+						if (_controller.IsPressed(pstring + "Start")) buttons |= 8;
+						if (_controller.IsPressed(pstring + "Up")) buttons |= 16;
+						if (_controller.IsPressed(pstring + "Right")) buttons |= 32;
+						if (_controller.IsPressed(pstring + "Down")) buttons |= 64;
+						if (_controller.IsPressed(pstring + "Left")) buttons |= 128;
+						//256,512,1024 skipped (would be L2, R2, L1 on other pads)
+						if (_controller.IsPressed(pstring + "R")) buttons |= 2048;
+						if (_controller.IsPressed(pstring + "B")) buttons |= 4096;
+						if (_controller.IsPressed(pstring + "A")) buttons |= 8192;
+
+						byte twist = (byte)_controller.GetFloat(pstring + "Twist");
+						byte analog1 = (byte)_controller.GetFloat(pstring + "1");
+						byte analog2 = (byte)_controller.GetFloat(pstring + "2");
+						byte analogL = (byte)_controller.GetFloat(pstring + "L");
+
+						OctoshockDll.shock_Peripheral_SetPadInput(psx, portNum, buttons, twist, analog1, analog2, analogL);
+					}
+					else
+					{
+						if (_controller.IsPressed(pstring + "Select")) buttons |= 1;
+						if (_controller.IsPressed(pstring + "Start")) buttons |= 8;
+						if (_controller.IsPressed(pstring + "Up")) buttons |= 16;
+						if (_controller.IsPressed(pstring + "Right")) buttons |= 32;
+						if (_controller.IsPressed(pstring + "Down")) buttons |= 64;
+						if (_controller.IsPressed(pstring + "Left")) buttons |= 128;
+						if (_controller.IsPressed(pstring + "L2")) buttons |= 256;
+						if (_controller.IsPressed(pstring + "R2")) buttons |= 512;
+						if (_controller.IsPressed(pstring + "L1")) buttons |= 1024;
+						if (_controller.IsPressed(pstring + "R1")) buttons |= 2048;
+						if (_controller.IsPressed(pstring + "Triangle")) buttons |= 4096;
+						if (_controller.IsPressed(pstring + "Circle")) buttons |= 8192;
+						if (_controller.IsPressed(pstring + "Cross")) buttons |= 16384;
+						if (_controller.IsPressed(pstring + "Square")) buttons |= 32768;
+
+						byte left_x = 0, left_y = 0, right_x = 0, right_y = 0;
+						if (fioCfg.Devices8[slot] == OctoshockDll.ePeripheralType.DualShock || fioCfg.Devices8[slot] == OctoshockDll.ePeripheralType.DualAnalog)
+						{
+							if (_controller.IsPressed(pstring + "L3")) buttons |= 2;
+							if (_controller.IsPressed(pstring + "R3")) buttons |= 4;
+							if (_controller.IsPressed(pstring + "MODE")) buttons |= 65536;
+
+							left_x = (byte)_controller.GetFloat(pstring + "LStick X");
+							left_y = (byte)_controller.GetFloat(pstring + "LStick Y");
+							right_x = (byte)_controller.GetFloat(pstring + "RStick X");
+							right_y = (byte)_controller.GetFloat(pstring + "RStick Y");
+						}
+
+						OctoshockDll.shock_Peripheral_SetPadInput(psx, portNum, buttons, left_x, left_y, right_x, right_y);
+					}
 				}
-
-				OctoshockDll.shock_Peripheral_SetPadInput(psx, portNum, buttons, left_x, left_y, right_x, right_y);
-				portNum <<= 1;
 			}
 		}
 
@@ -612,7 +691,7 @@ namespace BizHawk.Emulation.Cores.Sony.PSX
 
 			//if tray open is requested, and valid, apply it
 			//in the first frame, go ahead and open it up so we have a chance to put a disc in it
-			if (Controller["Open"] && !CurrentTrayOpen || Frame == 0)
+			if (_controller.IsPressed("Open") && !CurrentTrayOpen || Frame == 0)
 			{
 				OctoshockDll.shock_OpenTray(psx);
 				CurrentTrayOpen = true;
@@ -620,7 +699,7 @@ namespace BizHawk.Emulation.Cores.Sony.PSX
 
 			//change the disc if needed, and valid
 			//also if frame is 0, we need to set a disc no matter what
-			int requestedDisc = (int)Controller.GetFloat("Disc Select");
+			int requestedDisc = (int)_controller.GetFloat("Disc Select");
 			if (requestedDisc != CurrentDiscIndexMounted && CurrentTrayOpen
 				|| Frame == 0
 				)
@@ -648,22 +727,25 @@ namespace BizHawk.Emulation.Cores.Sony.PSX
 			}
 
 			//if tray close is requested, and valid, apply it.
-			if (Controller["Close"] && CurrentTrayOpen)
+			if (_controller.IsPressed("Close") && CurrentTrayOpen)
 			{
 				OctoshockDll.shock_CloseTray(psx);
 				CurrentTrayOpen = false;
 			}
 
 			//if frame is 0 and user has made no preference, close the tray
-			if (!Controller["Close"] && !Controller["Open"] && Frame == 0 && CurrentTrayOpen)
+			if (!_controller.IsPressed("Close") && !_controller.IsPressed("Open") && Frame == 0 && CurrentTrayOpen)
 			{
 				OctoshockDll.shock_CloseTray(psx);
 				CurrentTrayOpen = false;
 			}
 		}
 
-		public void FrameAdvance(bool render, bool rendersound)
+		private IController _controller;
+
+		public void FrameAdvance(IController controller, bool render, bool rendersound)
 		{
+			_controller = controller;
 			FrameAdvance_PrepDiscState();
 
 			//clear drive light. itll get set to light up by sector-reading callbacks
@@ -700,7 +782,7 @@ namespace BizHawk.Emulation.Cores.Sony.PSX
 				OctoshockDll.shock_SetTraceCallback(psx, IntPtr.Zero, null);
 
 			//apply soft reset if needed
-			if (Controller["Reset"])
+			if (_controller.IsPressed("Reset"))
 				OctoshockDll.shock_SoftReset(psx);
 
 			//------------------------
@@ -764,7 +846,6 @@ namespace BizHawk.Emulation.Cores.Sony.PSX
 		}
 
 		public ControllerDefinition ControllerDefinition { get; private set; }
-		public IController Controller { get; set; }
 
 		public int Frame { get; private set; }
 		public int LagCount { get; set; }
@@ -786,6 +867,9 @@ namespace BizHawk.Emulation.Cores.Sony.PSX
 		public int BufferWidth { get; private set; }
 		public int BufferHeight { get; private set; }
 		public int BackgroundColor { get { return 0; } }
+		public int VsyncNumerator { get; private set; }
+		public int VsyncDenominator { get; private set; }
+
 		public System.Drawing.Size VideoProvider_Padding { get; private set; }
 
 		#region Debugging
@@ -830,22 +914,22 @@ namespace BizHawk.Emulation.Cores.Sony.PSX
 			int size;
 
 			OctoshockDll.shock_GetMemData(psx, out ptr, out size, OctoshockDll.eMemType.MainRAM);
-			mmd.Add(MemoryDomain.FromIntPtr("MainRAM", size, MemoryDomain.Endian.Little, ptr, true, 4));
+			mmd.Add(new MemoryDomainIntPtr("MainRAM", MemoryDomain.Endian.Little, ptr, size, true, 4));
 
 			OctoshockDll.shock_GetMemData(psx, out ptr, out size, OctoshockDll.eMemType.GPURAM);
-			mmd.Add(MemoryDomain.FromIntPtr("GPURAM", size, MemoryDomain.Endian.Little, ptr, true, 4));
+			mmd.Add(new MemoryDomainIntPtr("GPURAM", MemoryDomain.Endian.Little, ptr, size, true, 4));
 
 			OctoshockDll.shock_GetMemData(psx, out ptr, out size, OctoshockDll.eMemType.SPURAM);
-			mmd.Add(MemoryDomain.FromIntPtr("SPURAM", size, MemoryDomain.Endian.Little, ptr, true, 4));
+			mmd.Add(new MemoryDomainIntPtr("SPURAM", MemoryDomain.Endian.Little, ptr, size, true, 4));
 
 			OctoshockDll.shock_GetMemData(psx, out ptr, out size, OctoshockDll.eMemType.BiosROM);
-			mmd.Add(MemoryDomain.FromIntPtr("BiosROM", size, MemoryDomain.Endian.Little, ptr, true, 4));
+			mmd.Add(new MemoryDomainIntPtr("BiosROM", MemoryDomain.Endian.Little, ptr, size, true, 4));
 
 			OctoshockDll.shock_GetMemData(psx, out ptr, out size, OctoshockDll.eMemType.PIOMem);
-			mmd.Add(MemoryDomain.FromIntPtr("PIOMem", size, MemoryDomain.Endian.Little, ptr, true, 4));
+			mmd.Add(new MemoryDomainIntPtr("PIOMem", MemoryDomain.Endian.Little, ptr, size, true, 4));
 
 			OctoshockDll.shock_GetMemData(psx, out ptr, out size, OctoshockDll.eMemType.DCache);
-			mmd.Add(MemoryDomain.FromIntPtr("DCache", size, MemoryDomain.Endian.Little, ptr, true, 4));
+			mmd.Add(new MemoryDomainIntPtr("DCache", MemoryDomain.Endian.Little, ptr, size, true, 4));
 
 			MemoryDomains = new MemoryDomainList(mmd);
 			(ServiceProvider as BasicServiceProvider).Register<IMemoryDomains>(MemoryDomains);
@@ -861,12 +945,7 @@ namespace BizHawk.Emulation.Cores.Sony.PSX
 		private short[] sbuff = new short[1611 * 2]; //need this for pal
 		private int sbuffcontains = 0;
 
-		public ISoundProvider SoundProvider { get { throw new InvalidOperationException(); } }
-		public ISyncSoundProvider SyncSoundProvider { get { return this; } }
-		public bool StartAsyncSound() { return false; }
-		public void EndAsyncSound() { }
-
-		public void GetSamples(out short[] samples, out int nsamp)
+		public void GetSamplesSync(out short[] samples, out int nsamp)
 		{
 			samples = sbuff;
 			nsamp = sbuffcontains;
@@ -875,6 +954,29 @@ namespace BizHawk.Emulation.Cores.Sony.PSX
 		public void DiscardSamples()
 		{
 			sbuffcontains = 0;
+		}
+
+		public bool CanProvideAsync
+		{
+			get { return false; }
+		}
+
+		public void SetSyncMode(SyncSoundMode mode)
+		{
+			if (mode == SyncSoundMode.Async)
+			{
+				throw new NotSupportedException("Async mode is not supported.");
+			}
+		}
+
+		public SyncSoundMode SyncMode
+		{
+			get { return SyncSoundMode.Sync; }
+		}
+
+		public void GetSamplesAsync(short[] samples)
+		{
+			throw new InvalidOperationException("Async mode is not supported.");
 		}
 
 		#endregion

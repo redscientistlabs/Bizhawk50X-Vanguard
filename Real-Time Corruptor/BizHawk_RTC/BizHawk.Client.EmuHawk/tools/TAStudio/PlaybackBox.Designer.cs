@@ -57,7 +57,7 @@
 			this.PlaybackGroupBox.Controls.Add(this.PreviousMarkerButton);
 			this.PlaybackGroupBox.Location = new System.Drawing.Point(3, 3);
 			this.PlaybackGroupBox.Name = "PlaybackGroupBox";
-			this.PlaybackGroupBox.Size = new System.Drawing.Size(198, 104);
+			this.PlaybackGroupBox.Size = new System.Drawing.Size(252, 104);
 			this.PlaybackGroupBox.TabIndex = 0;
 			this.PlaybackGroupBox.TabStop = false;
 			this.PlaybackGroupBox.Text = "Playback";
@@ -87,7 +87,7 @@
 			// TurboSeekCheckbox
 			// 
 			this.TurboSeekCheckbox.AutoSize = true;
-			this.TurboSeekCheckbox.Location = new System.Drawing.Point(103, 43);
+			this.TurboSeekCheckbox.Location = new System.Drawing.Point(117, 43);
 			this.TurboSeekCheckbox.Name = "TurboSeekCheckbox";
 			this.TurboSeekCheckbox.Size = new System.Drawing.Size(80, 17);
 			this.TurboSeekCheckbox.TabIndex = 6;
@@ -169,7 +169,7 @@
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Inherit;
 			this.Controls.Add(this.PlaybackGroupBox);
 			this.Name = "PlaybackBox";
-			this.Size = new System.Drawing.Size(204, 110);
+			this.Size = new System.Drawing.Size(258, 110);
 			this.PlaybackGroupBox.ResumeLayout(false);
 			this.PlaybackGroupBox.PerformLayout();
 			this.ResumeLayout(false);

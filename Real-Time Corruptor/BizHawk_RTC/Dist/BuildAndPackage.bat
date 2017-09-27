@@ -9,15 +9,17 @@ if "%1"=="" (
 git --version > NUL
 @if errorlevel 1 goto MISSINGGIT
 
-reg query "HKLM\SOFTWARE\Microsoft\MSBuild\ToolsVersions\4.0" /v MSBuildToolsPath > nul 2>&1
+reg query "HKLM\SOFTWARE\Microsoft\MSBuild\ToolsVersions\14.0" /v MSBuildToolsPath > nul 2>&1
 if ERRORLEVEL 1 goto MISSINGMSBUILD
 
-for /f "skip=2 tokens=2,*" %%A in ('reg.exe query "HKLM\SOFTWARE\Microsoft\MSBuild\ToolsVersions\4.0" /v MSBuildToolsPath') do SET MSBUILDDIR=%%B
+for /f "skip=2 tokens=2,*" %%A in ('reg.exe query "HKLM\SOFTWARE\Microsoft\MSBuild\ToolsVersions\14.0" /v MSBuildToolsPath') do SET MSBUILDDIR=%%B
 
 IF NOT EXIST %MSBUILDDIR%nul goto MISSINGMSBUILD
 IF NOT EXIST %MSBUILDDIR%msbuild.exe goto MISSINGMSBUILD
 
-call "%MSBUILDDIR%msbuild.exe" ..\BizHawk.sln /p:Configuration=Release /p:Platform="x86" /t:rebuild
+call "%MSBUILDDIR%msbuild.exe" ..\BizHawk.sln /p:Configuration=Release /p:Platform="Any Cpu" /t:rebuild
+
+@if errorlevel 1 goto MSBUILDFAILED
 
 rmdir /s /q temp
 del /s %NAME%
@@ -33,7 +35,7 @@ rem explicitly list the OK ones here as individual copies. until then....
 copy *.dll dll
 
 rem Now, we're about to zip and then unzip. Why, you ask? Because that's just the way this evolved.
-..\dist\zip.exe -X -r ..\Dist\%NAME% EmuHawk.exe DiscoHawk.exe defctrl.json dll shaders gamedb Tools NES\Palettes Lua Gameboy\Palettes -x *.pdb -x *.lib -x *.pgd -x *.ipdb -x *.iobj -x *.exp -x dll\libsneshawk-64*.exe -x *.ilk -x dll\gpgx.elf -x dll\miniclient.* 
+..\dist\zip.exe -X -r ..\Dist\%NAME% EmuHawk.exe EmuHawk.exe.config DiscoHawk.exe DiscoHawk.exe.config defctrl.json dll shaders gamedb Tools NES\Palettes Lua Gameboy\Palettes -x *.pdb -x *.lib -x *.pgd -x *.ipdb -x *.iobj -x *.exp -x dll\libsneshawk-64*.exe -x *.ilk -x dll\gpgx.elf -x dll\miniclient.* 
 
 cd ..\Dist
 .\unzip.exe %NAME% -d temp
@@ -44,10 +46,8 @@ rmdir /s /q temp\lua
 rmdir /s /q temp\firmware
 
 rmdir /s /q gitsucks
-
 git --git-dir ../.git archive --format zip --output lua.zip HEAD Assets/Lua
 git --git-dir ../.git archive --format zip --output firmware.zip HEAD output/Firmware
-
 rem Getting externaltools example from my repo
 rem I once talked about a dedicated repo for external tools, think about moving the exemple to it it it happend
 git clone https://github.com/Hathor86/HelloWorld_BizHawkTool.git
@@ -97,6 +97,10 @@ goto END
 :MISSINGMSBUILD
 @echo Missing msbuild.exe. can't make distro without that.
 goto END
+:MSBUILDFAILED
+@echo msbuild failed. Usual cause: user committed broken code.
+goto END
 :MISSINGGIT
 @echo missing git.exe. can't make distro without that.
 :END
+

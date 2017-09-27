@@ -175,8 +175,10 @@ namespace RTC
             FS.Close();
 
             //7z the temp folder to destination filename
-            string[] stringargs = { "-c", sks.Filename, RTC_Core.rtcDir + "\\TEMP\\" };
-            FastZipProgram.Exec(stringargs);
+            //string[] stringargs = { "-c", sks.Filename, RTC_Core.rtcDir + "\\TEMP\\" };
+            //FastZipProgram.Exec(stringargs);
+
+			System.IO.Compression.ZipFile.CreateFromDirectory(RTC_Core.rtcDir + "\\TEMP\\", sks.Filename, System.IO.Compression.CompressionLevel.Fastest, false);
 
 			RTC_StockpileManager.currentStockpile = sks;
 
@@ -337,11 +339,13 @@ namespace RTC
 
             //7z extract part
 
-            string[] stringargs = { "-x", Filename, RTC_Core.rtcDir + $"\\{Folder}\\" };
+            //string[] stringargs = { "-x", Filename, RTC_Core.rtcDir + $"\\{Folder}\\" };
+            //FastZipProgram.Exec(stringargs);
 
-            FastZipProgram.Exec(stringargs);
+			System.IO.Compression.ZipFile.ExtractToDirectory(Filename, RTC_Core.rtcDir + $"\\{Folder}\\");
 
-            if (!File.Exists(RTC_Core.rtcDir + $"\\{Folder}\\{MasterFile}"))
+
+			if (!File.Exists(RTC_Core.rtcDir + $"\\{Folder}\\{MasterFile}"))
             {
                 MessageBox.Show("The file could not be read properly");
                 return;
@@ -482,11 +486,12 @@ namespace RTC
 
             //7z extract part
 
-            string[] stringargs = { "-x", Filename, RTC_Core.rtcDir + "\\TEMP3\\" };
+            //string[] stringargs = { "-x", Filename, RTC_Core.rtcDir + "\\TEMP3\\" };
+            //FastZipProgram.Exec(stringargs);
 
-            FastZipProgram.Exec(stringargs);
+			System.IO.Compression.ZipFile.ExtractToDirectory(Filename, RTC_Core.rtcDir + $"\\TEMP3\\");
 
-            if (!File.Exists(RTC_Core.rtcDir + "\\TEMP3\\stockpile.xml"))
+			if (!File.Exists(RTC_Core.rtcDir + "\\TEMP3\\stockpile.xml"))
             {
                 MessageBox.Show("The file could not be read properly");
                 return;
@@ -639,14 +644,8 @@ namespace RTC
                     case "NES":
                         return (Global.Config.NES_InQuickNES ? "quicknes" : "neshawk");
 
-                    case "SNES":
-                        if (!Global.Config.SNES_InSnes9x)
-                        {
-                            var snesSettings = BizHawk.Client.EmuHawk.ProfileConfig.GetSyncSettings<LibsnesCore, LibsnesCore.SnesSyncSettings>();
-                            return $"bsnes:{snesSettings.Profile}";
-                        }
-                        else
-                            return "snes9x";
+                    case "SNES" :
+						return (Global.Config.SNES_InSnes9x ? "snes9x" : "bsnes");
 
                     case "GBA":
                         return (Global.Config.GBA_UsemGBA ? "mgba" : "vba-next");

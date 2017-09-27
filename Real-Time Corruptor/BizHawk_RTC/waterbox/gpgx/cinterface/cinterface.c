@@ -192,6 +192,14 @@ GPGX_EX void gpgx_advance(void)
 	nsamples = audio_update(soundbuffer);
 }
 
+GPGX_EX void gpgx_swap_disc(const toc_t* toc)
+{
+	if (system_hw == SYSTEM_MCD)
+	{
+		cdd_hotswap(toc);
+	}
+}
+
 typedef struct
 {
 	uint32 width; // in cells
@@ -454,30 +462,30 @@ GPGX_EX const char* gpgx_get_memdom(int which, void **area, int *size)
 
 GPGX_EX void gpgx_write_m68k_bus(unsigned addr, unsigned data)
 {
-	unsigned char *base = m68k.memory_map[addr >> 16 & 0xff].base;
-	if (base)
-		base[addr & 0xffff ^ 1] = data;
+	cpu_memory_map m = m68k.memory_map[addr >> 16 & 0xff];
+	if (m.base && !m.write8)
+		m.base[addr & 0xffff ^ 1] = data;
 }
 
 GPGX_EX void gpgx_write_s68k_bus(unsigned addr, unsigned data)
 {
-	unsigned char *base = s68k.memory_map[addr >> 16 & 0xff].base;
-	if (base)
-		base[addr & 0xffff ^ 1] = data;
+	cpu_memory_map m = s68k.memory_map[addr >> 16 & 0xff];
+	if (m.base && !m.write8)
+		m.base[addr & 0xffff ^ 1] = data;
 }
 GPGX_EX unsigned gpgx_peek_m68k_bus(unsigned addr)
 {
-	unsigned char *base = m68k.memory_map[addr >> 16 & 0xff].base;
-	if (base)
-		return base[addr & 0xffff ^ 1];
+	cpu_memory_map m = m68k.memory_map[addr >> 16 & 0xff];
+	if (m.base && !m.read8)
+		return m.base[addr & 0xffff ^ 1];
 	else
 		return 0xff;
 }
 GPGX_EX unsigned gpgx_peek_s68k_bus(unsigned addr)
 {
-	unsigned char *base = s68k.memory_map[addr >> 16 & 0xff].base;
-	if (base)
-		return base[addr & 0xffff ^ 1];
+	cpu_memory_map m = s68k.memory_map[addr >> 16 & 0xff];
+	if (m.base && !m.read8)
+		return m.base[addr & 0xffff ^ 1];
 	else
 		return 0xff;
 }
@@ -550,7 +558,7 @@ GPGX_EX int gpgx_init(const char *feromextension, ECL_ENTRY int (*feload_archive
 	config.overscan = 0;
 	config.gg_extra = 0;
 	config.ntsc = 0;
-	config.render = 0;
+	config.render = 1;
 
 	// set overall input system type
 	// usual is MD GAMEPAD or NONE
@@ -580,6 +588,8 @@ GPGX_EX int gpgx_init(const char *feromextension, ECL_ENTRY int (*feload_archive
 
 	update_viewport();
 	gpgx_clear_sram();
+
+	load_archive_cb = NULL; // don't hold onto load_archive_cb for longer than we need it for
 
 	return 1;
 }
@@ -712,4 +722,10 @@ GPGX_EX int gpgx_getregs(gpregister_t *regs)
 	}
 
 	return ret;
+}
+
+// at the moment, this dummy is not called
+int main(void)
+{
+	return 0;
 }

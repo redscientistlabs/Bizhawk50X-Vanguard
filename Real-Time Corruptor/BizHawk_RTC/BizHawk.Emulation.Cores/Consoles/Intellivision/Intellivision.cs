@@ -1,29 +1,34 @@
 ﻿using System;
-using System.IO;
-using System.Collections.Generic;
 
 using BizHawk.Emulation.Common;
 using BizHawk.Emulation.Cores.Components.CP1610;
 
 namespace BizHawk.Emulation.Cores.Intellivision
 {
-	[CoreAttributes(
+	[Core(
 		"IntelliHawk",
-		"BrandonE",
+		"BrandonE, Alyosha",
 		isPorted: false,
-		isReleased: false
-		)]
-	[ServiceNotApplicable(typeof(ISaveRam))]
-	public sealed partial class Intellivision : IEmulator
+		isReleased: true)]
+	[ServiceNotApplicable(typeof(ISaveRam), typeof(IDriveLight), typeof(IRegionable))]
+	public sealed partial class Intellivision : IEmulator, IStatable, IInputPollable, IDisassemblable,
+		IBoardInfo, IDebuggable, ISettable<Intellivision.IntvSettings, Intellivision.IntvSyncSettings>
 	{
 		[CoreConstructor("INTV")]
-		public Intellivision(CoreComm comm, GameInfo game, byte[] rom)
+		public Intellivision(CoreComm comm, GameInfo game, byte[] rom, object settings, object syncSettings)
 		{
-			ServiceProvider = new BasicServiceProvider(this);
+			var ser = new BasicServiceProvider(this);
+			ServiceProvider = ser;
+
 			CoreComm = comm;
 
 			_rom = rom;
-			_gameInfo = game;
+
+			_settings = (IntvSettings)settings ?? new IntvSettings();
+			_syncSettings = (IntvSyncSettings)syncSettings ?? new IntvSyncSettings();
+
+			_controllerDeck = new IntellivisionControllerDeck(_syncSettings.Port1, _syncSettings.Port2);
+
 			_cart = new Intellicart();
 			if (_cart.Parse(_rom) == -1)
 			{
@@ -31,52 +36,62 @@ namespace BizHawk.Emulation.Cores.Intellivision
 				_cart.Parse(_rom);
 			}
 
-			_cpu = new CP1610();
-			_cpu.ReadMemory = ReadMemory;
-			_cpu.WriteMemory = WriteMemory;
+			_cpu = new CP1610
+			{
+				ReadMemory = ReadMemory,
+				WriteMemory = WriteMemory,
+				MemoryCallbacks = MemoryCallbacks
+			};
 			_cpu.Reset();
 
-			_stic = new STIC();
-			_stic.ReadMemory = ReadMemory;
-			_stic.WriteMemory = WriteMemory;
+			_stic = new STIC
+			{
+				ReadMemory = ReadMemory,
+				WriteMemory = WriteMemory
+			};
 			_stic.Reset();
-			(ServiceProvider as BasicServiceProvider).Register<IVideoProvider>(_stic);
 
-			_psg = new PSG();
-			_psg.ReadMemory = ReadMemory;
-			_psg.WriteMemory = WriteMemory;
+			_psg = new PSG
+			{
+				ReadMemory = ReadMemory,
+				WriteMemory = WriteMemory
+			};
+			_psg.Reset();
+
+			ser.Register<IVideoProvider>(_stic);
+			ser.Register<ISoundProvider>(_psg);
 
 			Connect();
-
-			//_cpu.LogData();
 
 			LoadExecutiveRom(CoreComm.CoreFileProvider.GetFirmware("INTV", "EROM", true, "Executive ROM is required."));
 			LoadGraphicsRom(CoreComm.CoreFileProvider.GetFirmware("INTV", "GROM", true, "Graphics ROM is required."));
 
-			Tracer = new TraceBuffer { Header = _cpu.TraceHeader };
-			(ServiceProvider as BasicServiceProvider).Register<ITraceable>(Tracer);
+			_tracer = new TraceBuffer { Header = _cpu.TraceHeader };
+			ser.Register<ITraceable>(_tracer);
 
 			SetupMemoryDomains();
 		}
 
-		private ITraceable Tracer { get; set; }
+		private readonly IntellivisionControllerDeck _controllerDeck;
 
-		private byte[] _rom;
-		private GameInfo _gameInfo;
+		private readonly byte[] _rom;
+		private readonly ITraceable _tracer;
+		private readonly CP1610 _cpu;
+		private readonly STIC _stic;
+		private readonly PSG _psg;
 
-		private CP1610 _cpu;
 		private ICart _cart;
-		private STIC _stic;
-		private PSG _psg;
+		private int _frame;
+		private int _sticRow;
 
-		public void Connect()
+		private void Connect()
 		{
 			_cpu.SetIntRM(_stic.GetSr1());
 			_cpu.SetBusRq(_stic.GetSr2());
 			_stic.SetSst(_cpu.GetBusAk());
 		}
 
-		public void LoadExecutiveRom(byte[] erom)
+		private void LoadExecutiveRom(byte[] erom)
 		{
 			if (erom.Length != 8192)
 			{
@@ -84,6 +99,7 @@ namespace BizHawk.Emulation.Cores.Intellivision
 			}
 
 			int index = 0;
+
 			// Combine every two bytes into a word.
 			while (index + 1 < erom.Length)
 			{
@@ -91,7 +107,7 @@ namespace BizHawk.Emulation.Cores.Intellivision
 			}
 		}
 
-		public void LoadGraphicsRom(byte[] grom)
+		private void LoadGraphicsRom(byte[] grom)
 		{
 			if (grom.Length != 2048)
 			{
@@ -101,23 +117,43 @@ namespace BizHawk.Emulation.Cores.Intellivision
 			GraphicsRom = grom;
 		}
 
-		public static readonly ControllerDefinition IntellivisionController =
-			new ControllerDefinition
-			{
-				Name = "Intellivision Controller",
-				BoolButtons = {					
-					"P1 L", "P1 R", "P1 Top",
-					"P1 Key 0", "P1 Key 1", "P1 Key 2", "P1 Key 3", "P1 Key 4", "P1 Key 5",
-					"P1 Key 6", "P1 Key 7", "P1 Key 8", "P1 Key 9", "P1 Enter", "P1 Clear",
-					"P1 N", "P1 NNE", "P1 NE", "P1 ENE","P1 E", "P1 ESE", "P1 SE", "P1 SSE",
-					"P1 S", "P1 SSW", "P1 SW", "P1 WSW","P1 W", "P1 WNW", "P1 NW", "P1 NNW",
+		private void GetControllerState(IController controller)
+		{
+			InputCallbacks.Call();
 
-					"P2 L", "P2 R", "P2 Top",
-					"P2 Key 0", "P2 Key 1", "P2 Key 2", "P2 Key 3", "P2 Key 4", "P2 Key 5",
-					"P2 Key 6", "P2 Key 7", "P2 Key 8", "P2 Key 9", "P2 Enter", "P2 Clear",
-					"P2 N", "P2 NNE", "P2 NE", "P2 ENE","P2 E", "P2 ESE", "P2 SE", "P2 SSE",
-					"P2 S", "P2 SSW", "P2 SW", "P2 WSW","P2 W", "P2 WNW", "P2 NW", "P2 NNW",
-				}
-			};
+			ushort port1 = _controllerDeck.ReadPort1(controller);
+			_psg.Register[15] = (ushort)(0xFF - port1);
+
+			ushort port2 = _controllerDeck.ReadPort2(controller);
+			_psg.Register[14] = (ushort)(0xFF - port2);
+		}
+
+		private void HardReset()
+		{
+			_cpu.Reset();
+			_stic.Reset();
+			_psg.Reset();
+
+			Connect();
+
+			ScratchpadRam = new byte[240];
+			SystemRam = new ushort[352];
+
+			_cart = new Intellicart();
+			if (_cart.Parse(_rom) == -1)
+			{
+				_cart = new Cartridge();
+				_cart.Parse(_rom);
+			}
+		}
+
+		private void SoftReset()
+		{
+			_cpu.Reset();
+			_stic.Reset();
+			_psg.Reset();
+
+			Connect();
+		}
 	}
 }

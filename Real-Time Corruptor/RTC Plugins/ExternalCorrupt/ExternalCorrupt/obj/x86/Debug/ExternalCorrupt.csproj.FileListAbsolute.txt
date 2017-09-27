@@ -7,3 +7,5 @@ c:\users\philippe\documents\visual studio 2010\Projects\ExternalCorrupt\External
 C:\Users\Philippe\Documents\Visual Studio 2010\Projects\ExternalCorrupt\ExternalCorrupt\obj\x86\Debug\ExternalCorrupt.csprojResolveAssemblyReference.cache
 C:\Users\Philippe\Documents\Visual Studio 2010\Projects\RT Corruptor Mod\ExternalCorrupt\ExternalCorrupt\obj\x86\Debug\ExternalCorrupt.exe
 C:\Users\Philippe\Documents\Visual Studio 2010\Projects\RT Corruptor Mod\ExternalCorrupt\ExternalCorrupt\obj\x86\Debug\ExternalCorrupt.pdb
+C:\Users\philt\Documents\PROJECTS\RTC3\Real-Time Corruptor\RTC Plugins\ExternalCorrupt\ExternalCorrupt\obj\x86\Debug\ExternalCorrupt.exe
+C:\Users\philt\Documents\PROJECTS\RTC3\Real-Time Corruptor\RTC Plugins\ExternalCorrupt\ExternalCorrupt\obj\x86\Debug\ExternalCorrupt.pdb

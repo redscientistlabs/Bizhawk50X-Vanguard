@@ -5,7 +5,6 @@ using System.Linq;
 using System.Reflection;
 
 using ICSharpCode.SharpZipLib.Zip;
-//using Ionic.Zip;
 
 namespace BizHawk.Client.Common
 {
@@ -73,12 +72,13 @@ namespace BizHawk.Client.Common
 		[AttributeUsage(AttributeTargets.Property)]
 		private class NameAttribute : Attribute
 		{
-			public string Name { get; private set; }
-			public string Ext { get; private set; }
+			public string Name { get; }
+			public string Ext { get; }
 			public NameAttribute(string name)
 			{
 				Name = name;
 			}
+
 			public NameAttribute(string name, string ext)
 			{
 				Name = name;
@@ -86,8 +86,8 @@ namespace BizHawk.Client.Common
 			}
 		}
 
-		public virtual string ReadName { get { return Name; } }
-		public virtual string WriteName { get { return Ext != null ? Name + '.' + Ext : Name; } }
+		public string ReadName => Name;
+		public string WriteName => Ext != null ? Name + '.' + Ext : Name;
 
 		public string Name { get; protected set; }
 		public string Ext { get; protected set; }
@@ -98,7 +98,9 @@ namespace BizHawk.Client.Common
 			Ext = ext;
 		}
 
-		protected BinaryStateLump() { }
+		protected BinaryStateLump()
+		{
+		}
 
 		static BinaryStateLump()
 		{
@@ -116,7 +118,7 @@ namespace BizHawk.Client.Common
 	/// </summary>
 	public class IndexedStateLump : BinaryStateLump
 	{
-		private BinaryStateLump _root;
+		private readonly BinaryStateLump _root;
 		private int _idx;
 		public IndexedStateLump(BinaryStateLump root)
 		{
@@ -201,7 +203,7 @@ namespace BizHawk.Client.Common
 			}
 		}
 
-		private static byte[] zipheader = new byte[] { 0x50, 0x4b, 0x03, 0x04 };
+		private static readonly byte[] Zipheader = { 0x50, 0x4b, 0x03, 0x04 };
 		public static BinaryStateLoader LoadAndDetect(string filename, bool isMovieLoad = false)
 		{
 			var ret = new BinaryStateLoader();
@@ -210,8 +212,10 @@ namespace BizHawk.Client.Common
 			{
 				byte[] data = new byte[4];
 				fs.Read(data, 0, 4);
-				if (!data.SequenceEqual(zipheader))
+				if (!data.SequenceEqual(Zipheader))
+				{
 					return null;
+				}
 			}
 			
 			try
@@ -230,13 +234,6 @@ namespace BizHawk.Client.Common
 			{
 				return null;
 			}
-		}
-
-		[Obsolete]
-		public bool HasLump(BinaryStateLump lump)
-		{
-			ZipEntry e;
-			return _entriesbyname.TryGetValue(lump.ReadName, out e);
 		}
 
 		/// <summary>
@@ -297,7 +294,7 @@ namespace BizHawk.Client.Common
 		public void GetCoreState(Action<BinaryReader, long> callbackBinary, Action<TextReader> callbackText)
 		{
 			if (!GetLump(BinaryStateLump.Corestate, false, callbackBinary)
-			    && !GetLump(BinaryStateLump.CorestateText, false, callbackText))
+				&& !GetLump(BinaryStateLump.CorestateText, false, callbackText))
 			{
 				throw new Exception("Couldn't find Binary or Text savestate");
 			}
@@ -325,13 +322,12 @@ namespace BizHawk.Client.Common
 			sw.Flush();
 		}
 
-
 		public BinaryStateSaver(string path, bool notamovie = true) // notamovie is hack, really should have separate something
 		{
-			_zip = new IonicZipWriter(path, notamovie ? Global.Config.SaveStateCompressionLevelNormal
-				: Global.Config.MovieCompressionLevel);
-			//_zip = new SharpZipWriter(path, Global.Config.SaveStateCompressionLevelNormal);
-			//_zip = new SevenZipWriter(path, Global.Config.SaveStateCompressionLevelNormal);
+			////_zip = new IonicZipWriter(path, notamovie ? Global.Config.SaveStateCompressionLevelNormal : Global.Config.MovieCompressionLevel);
+			////_zip = new SharpZipWriter(path, Global.Config.SaveStateCompressionLevelNormal);
+			////_zip = new SevenZipWriter(path, Global.Config.SaveStateCompressionLevelNormal);
+			_zip = new FrameworkZipWriter(path, notamovie ? Global.Config.SaveStateCompressionLevelNormal : Global.Config.MovieCompressionLevel);
 
 			if (notamovie)
 			{

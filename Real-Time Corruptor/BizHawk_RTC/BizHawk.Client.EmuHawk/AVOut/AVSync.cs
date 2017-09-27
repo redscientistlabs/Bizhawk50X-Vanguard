@@ -1,7 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 
 using BizHawk.Emulation.Common;
 
@@ -17,8 +14,14 @@ namespace BizHawk.Client.EmuHawk
 
 		private long _soundRemainder; // audio timekeeping for video dumping
 
-		public void DumpAV(IVideoProvider v, ISoundProvider s, out short[] samples, out int samplesprovided)
+		public void DumpAV(IVideoProvider v, ISoundProvider asyncSoundProvider, out short[] samples, out int samplesprovided)
 		{
+			// Sound refactor TODO: we could try set it here, but we want the client to be responsible for mode switching? There may be non-trivial complications with when to switch modes that we don't want this object worrying about
+			if (asyncSoundProvider.SyncMode != SyncSoundMode.Async)
+			{
+				throw new InvalidOperationException("Only async mode is supported, set async mode before passing in the sound provider");
+			}
+
 			if (!aset || !vset)
 				throw new InvalidOperationException("Must set params first!");
 
@@ -29,7 +32,7 @@ namespace BizHawk.Client.EmuHawk
 			_soundRemainder = nsampnum % fpsnum;
 
 			samples = new short[nsamp * channels];
-			s.GetSamples(samples);
+			asyncSoundProvider.GetSamplesAsync(samples);
 			samplesprovided = (int)nsamp;
 
 			w.AddFrame(v);
@@ -58,7 +61,9 @@ namespace BizHawk.Client.EmuHawk
 		private void VerifyParams()
 		{
 			if (!aset || !vset)
+			{
 				throw new InvalidOperationException("Must set params first!");
+			}
 
 			if (!pset)
 			{
@@ -73,15 +78,20 @@ namespace BizHawk.Client.EmuHawk
 			}
 		}
 
-		public void DumpAV(IVideoProvider v, ISyncSoundProvider s, out short[] samples, out int samplesprovided)
+		public void DumpAV(IVideoProvider v, ISoundProvider syncSoundProvider, out short[] samples, out int samplesprovided)
 		{
+			// Sound refactor TODO: we could just set it here, but we want the client to be responsible for mode switching? There may be non-trivial complications with when to switch modes that we don't want this object worrying about
+			if (syncSoundProvider.SyncMode != SyncSoundMode.Sync)
+			{
+				throw new InvalidOperationException("Only sync mode is supported, set sync mode before passing in the sound provider");
+			}
+
 			VerifyParams();
-			s.GetSamples(out samples, out samplesprovided);
+			syncSoundProvider.GetSamplesSync(out samples, out samplesprovided);
 			exaudio_num += samplesprovided * (long)fpsnum;
 
 			// todo: scan for duplicate frames (ie, video content exactly matches previous frame) and for them, skip the threshone step
 			// this is a good idea, but expensive on time.  is it worth it?
-
 			if (exaudio_num >= threshone)
 			{
 				// add frame once
@@ -109,7 +119,9 @@ namespace BizHawk.Client.EmuHawk
 			else
 			{
 				if (_samples.Length != samplesprovided * channels)
+				{
 					_samples = new short[samplesprovided * channels];
+				}
 
 				Buffer.BlockCopy(samples, 0, _samples, 0, samplesprovided * channels * sizeof(short));
 				w.AddSamples(_samples);
@@ -132,7 +144,10 @@ namespace BizHawk.Client.EmuHawk
 		public new virtual void SetMovieParameters(int fpsnum, int fpsden)
 		{
 			if (vset)
+			{
 				throw new InvalidOperationException();
+			}
+
 			vset = true;
 			this.fpsnum = fpsnum;
 			this.fpsden = fpsden;
@@ -143,9 +158,15 @@ namespace BizHawk.Client.EmuHawk
 		public new virtual void SetAudioParameters(int sampleRate, int channels, int bits)
 		{
 			if (aset)
+			{
 				throw new InvalidOperationException();
+			}
+
 			if (bits != 16)
+			{
 				throw new InvalidOperationException("Only 16 bit audio is supported!");
+			}
+
 			aset = true;
 			this.samplerate = sampleRate;
 			this.channels = channels;
@@ -175,8 +196,9 @@ namespace BizHawk.Client.EmuHawk
 	{
 		protected IVideoWriter w;
 
-		public bool UsesAudio { get { return w.UsesAudio; } }
-		public bool UsesVideo { get { return w.UsesVideo; } }
+		public bool UsesAudio => w.UsesAudio;
+
+		public bool UsesVideo => w.UsesVideo;
 
 		public void SetVideoCodecToken(IDisposable token)
 		{

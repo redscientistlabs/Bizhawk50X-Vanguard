@@ -1,5 +1,5 @@
 
-namespace LuaInterface 
+namespace NLua
 {    
 	using System;
 	using System.IO;
@@ -8,6 +8,7 @@ namespace LuaInterface
 	using System.Collections.Specialized;
 	using System.Reflection;
     using System.Threading;
+	using NLua.Exceptions;
     using Lua511;
 
 	/*
@@ -24,6 +25,8 @@ namespace LuaInterface
 	[CLSCompliant(true)]
     public class Lua : IDisposable
 	{
+
+		public static readonly string WhichLua = "LuaInterface";
 
 		static string init_luanet =
 			"local metatable = {}									\n"+
@@ -65,7 +68,7 @@ namespace LuaInterface
 			"-- Preload the mscorlib assembly							\n"+
 			"luanet.load_assembly(\"mscorlib\")							\n";
 
-		/*readonly */ IntPtr luaState;
+		/*readonly */ public IntPtr luaState; //zero 22-jul-2017 - made public
 		ObjectTranslator translator;
 
         LuaCSFunction panicCallback, lockCallback, unlockCallback;

@@ -18,9 +18,9 @@ namespace BizHawk.Client.EmuHawk
 	//They work but feel bad
 
 	//Verify all wording in the error reports
-	
 
-	[ToolAttributes(released: true, supportedSystems: new[] { "GB", "GBA", "GEN", "N64", "NES", "PSX", "SAT", "SMS", "SNES" })]
+
+	[Tool(released: true, supportedSystems: new[] { "GB", "GBA", "GEN", "N64", "NES", "PSX", "SAT", "SMS", "SNES" })]
 	public partial class GameShark : Form, IToolForm, IToolFormAutoConfig
 	{
 		#region " Game Genie Dictionary "
@@ -80,24 +80,24 @@ namespace BizHawk.Client.EmuHawk
 		};
 		//This only applies to the NES
 		private readonly Dictionary<char, int> _NESgameGenieTable = new Dictionary<char, int>
-			{
-				{ 'A', 0 },  // 0000
-				{ 'P', 1 },  // 0001
-				{ 'Z', 2 },  // 0010
-				{ 'L', 3 },  // 0011
-				{ 'G', 4 },  // 0100
-				{ 'I', 5 },  // 0101
-				{ 'T', 6 },  // 0110
-				{ 'Y', 7 },  // 0111
-				{ 'E', 8 },  // 1000
-				{ 'O', 9 },  // 1001
-				{ 'X', 10 }, // 1010
-				{ 'U', 11 }, // 1011
-				{ 'K', 12 }, // 1100
-				{ 'S', 13 }, // 1101
-				{ 'V', 14 }, // 1110
-				{ 'N', 15 }, // 1111
-			};
+		{
+			{ 'A', 0 },  // 0000
+			{ 'P', 1 },  // 0001
+			{ 'Z', 2 },  // 0010
+			{ 'L', 3 },  // 0011
+			{ 'G', 4 },  // 0100
+			{ 'I', 5 },  // 0101
+			{ 'T', 6 },  // 0110
+			{ 'Y', 7 },  // 0111
+			{ 'E', 8 },  // 1000
+			{ 'O', 9 },  // 1001
+			{ 'X', 10 }, // 1010
+			{ 'U', 11 }, // 1011
+			{ 'K', 12 }, // 1100
+			{ 'S', 13 }, // 1101
+			{ 'V', 14 }, // 1110
+			{ 'N', 15 }, // 1111
+		};
 		// including transposition
 		// Code: D F 4 7 0 9 1 5 6 B C 8 A 2 3 E
 		// Hex:  0 1 2 3 4 5 6 7 8 9 A B C D E F
@@ -148,7 +148,7 @@ namespace BizHawk.Client.EmuHawk
 
 		public void FastUpdate()
 		{
-			
+
 		}
 
 		public void Restart()
@@ -160,7 +160,7 @@ namespace BizHawk.Client.EmuHawk
 
 		public void UpdateValues()
 		{
-			
+
 		}
 
 		//My Variables
@@ -366,7 +366,7 @@ namespace BizHawk.Client.EmuHawk
 			{
 				//A Watch needs to be generated so we can make a cheat out of that.  This is due to how the Cheat engine works.
 				//System Bus Domain, The Address to Watch, Byte size (Byte), Hex Display, Description.  Not Big Endian.
-				var watch = Watch.GenerateWatch(MemoryDomains["System Bus"], long.Parse(RAMAddress, NumberStyles.HexNumber), WatchSize.Byte, Client.Common.DisplayType.Hex, false, txtDescription.Text);
+				var watch = Watch.GenerateWatch(MemoryDomains["System Bus"], long.Parse(RAMAddress, NumberStyles.HexNumber), WatchSize.Word, Common.DisplayType.Hex, false, txtDescription.Text);
 				//Take Watch, Add our Value we want, and it should be active when addded?
 				if (RAMCompare == null)
 				{
@@ -394,7 +394,7 @@ namespace BizHawk.Client.EmuHawk
 		//blnActionReplayMax means "This is an Action Replay MAX code."
 		Boolean blnActionReplayMax = false;
 		//blnCodeBreaker means "This is a CodeBreaker code."
-		Boolean blnCodeBreaker = false;
+		//Boolean blnCodeBreaker = false;
 		//blnUnhandled means "BizHawk can't do this one or the tool can't."
 		Boolean blnUnhandled = false;
 		//blnUnneeded means "You don't need this code."
@@ -402,14 +402,14 @@ namespace BizHawk.Client.EmuHawk
 		private void GBA()
 		{
 			blnEncrypted = false;
-			bool blnNoCode = false;
+			//bool blnNoCode = false;
 			//Super Ultra Mega HD BizHawk GameShark/Action Replay/Code Breaker Final Hyper Edition Arcade Remix EX + α GBA Code detection method.
 			//Seriously, it's that complex.
 
 			//Check Game Shark/Action Replay (Not Max) Codes
 			if (SingleCheat.Length == 17 && SingleCheat.IndexOf(" ") == 8)
 			{
-				blnNoCode = true;
+				//blnNoCode = true;
 				//Super Ultra Mega HD BizHawk GameShark/Action Replay/Code Breaker Final Hyper Edition Arcade Remix EX + α GBA Code detection method.
 				//Seriously, it's that complex.
 
@@ -531,57 +531,56 @@ namespace BizHawk.Client.EmuHawk
 					//Sample Code
 					//Encyped:		6C2A1F51C2C0
 					//Decrypted:	82028048 FFFFFFFF
-					GBACodeBreaker();
+					//GBACodeBreaker();
 
-					if (blnCodeBreaker == false)
-					{
-						parseString = SingleCheat;
-						UInt32 op1 = 0;
-						UInt32 op2 = 0;
-						UInt32 sum = 0xC6EF3720;
-						string test1;
-						string test2;
-						test1 = parseString.Remove(5, 6);
-						test2 = parseString.Remove(0, 6);
-						MessageBox.Show(test1.ToString());
-						MessageBox.Show(test2.ToString());
-						op1 = UInt32.Parse(parseString.Remove(5, 6), NumberStyles.HexNumber);
-						op2 = UInt32.Parse(parseString.Remove(0, 6), NumberStyles.HexNumber);
+					//if (blnCodeBreaker == false)
+					//{
+					//	parseString = SingleCheat;
+					//	UInt32 op1 = 0;
+					//	UInt32 op2 = 0;
+					//	UInt32 sum = 0xC6EF3720;
+					//	string test1;
+					//	string test2;
+					//	test1 = parseString.Remove(5, 6);
+					//	test2 = parseString.Remove(0, 6);
+					//	MessageBox.Show(test1.ToString());
+					//	MessageBox.Show(test2.ToString());
+					//	op1 = UInt32.Parse(parseString.Remove(5, 6), NumberStyles.HexNumber);
+					//	op2 = UInt32.Parse(parseString.Remove(0, 6), NumberStyles.HexNumber);
 
-						//Tiny Encryption Algorithm
-						int i;
-						for (i = 0; i < 32; ++i)
-						{
-							op2 -= ((op1 << 4) + GBAGameSharkSeeds[2]) ^ (op1 + sum) ^ ((op1 >> 5) + GBAGameSharkSeeds[3]);
-							op1 -= ((op2 << 4) + GBAGameSharkSeeds[0]) ^ (op2 + sum) ^ ((op2 >> 5) + GBAGameSharkSeeds[1]);
-							sum -= 0x9E3779B9;
-						}
-						//op1 has the Address
-						//op2 has the Value
-						//Sum, is pointless?
-						RAMAddress = string.Format("{0:X8}", op1);
-						//RAMAddress = RAMAddress.Remove(0, 1);
-						RAMValue = string.Format("{0:X8}", op2);
-						// && RAMAddress[6] == '0'
-					}
+					//	//Tiny Encryption Algorithm
+					//	int i;
+					//	for (i = 0; i < 32; ++i)
+					//	{
+					//		op2 -= ((op1 << 4) + GBAGameSharkSeeds[2]) ^ (op1 + sum) ^ ((op1 >> 5) + GBAGameSharkSeeds[3]);
+					//		op1 -= ((op2 << 4) + GBAGameSharkSeeds[0]) ^ (op2 + sum) ^ ((op2 >> 5) + GBAGameSharkSeeds[1]);
+					//		sum -= 0x9E3779B9;
+					//	}
+					//	//op1 has the Address
+					//	//op2 has the Value
+					//	//Sum, is pointless?
+					//	RAMAddress = string.Format("{0:X8}", op1);
+					//	//RAMAddress = RAMAddress.Remove(0, 1);
+					//	RAMValue = string.Format("{0:X8}", op2);
+					//	// && RAMAddress[6] == '0'
+					//}
 
-					if (blnCodeBreaker == true)
-					{
-						//We got a Valid Code Breaker Code.  Hopefully.
-						AddGBA();
-						return;
-					}
+					//if (blnCodeBreaker == true)
+					//{
+					//	//We got a Valid Code Breaker Code.  Hopefully.
+					//	AddGBA();
+					//	return;
+					//}
 
-					if (SingleCheat.IndexOf(" ") != 8 && SingleCheat.Length != 12)
-					{
-						MessageBox.Show("ALL Codes for Action Replay, Action Replay MAX, Codebreaker, GameShark Advance, GameShark SP, Xploder have a Space after the 8th character.", "Input Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-						return;
-					}
-					//We have a code
-					if (blnNoCode == false)
-					{
-					}
-
+					//if (SingleCheat.IndexOf(" ") != 8 && SingleCheat.Length != 12)
+					//{
+					//	MessageBox.Show("ALL Codes for Action Replay, Action Replay MAX, Codebreaker, GameShark Advance, GameShark SP, Xploder have a Space after the 8th character.", "Input Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+					//	return;
+					//}
+					////We have a code
+					//if (blnNoCode == false)
+					//{
+					//}
 				}
 			}
 		}
@@ -2429,17 +2428,17 @@ namespace BizHawk.Client.EmuHawk
 		{
 			if (byteSize == 8)
 			{
-				var watch = Watch.GenerateWatch(MemoryDomains["System Bus"], long.Parse(RAMAddress, NumberStyles.HexNumber), WatchSize.Byte, Client.Common.DisplayType.Hex, false, txtDescription.Text);
+				var watch = Watch.GenerateWatch(MemoryDomains["System Bus"], long.Parse(RAMAddress, NumberStyles.HexNumber), WatchSize.Word, Common.DisplayType.Hex, false, txtDescription.Text);
 				Global.CheatList.Add(new Cheat(watch, int.Parse(RAMValue, NumberStyles.HexNumber)));
 			}
 			else if (byteSize == 16)
 			{
-				var watch = Watch.GenerateWatch(MemoryDomains["System Bus"], long.Parse(RAMAddress, NumberStyles.HexNumber), WatchSize.Word, Client.Common.DisplayType.Hex, false, txtDescription.Text);
+				var watch = Watch.GenerateWatch(MemoryDomains["System Bus"], long.Parse(RAMAddress, NumberStyles.HexNumber), WatchSize.Byte, Common.DisplayType.Hex, false, txtDescription.Text);
 				Global.CheatList.Add(new Cheat(watch, int.Parse(RAMValue, NumberStyles.HexNumber)));
 			}
 			else if (byteSize == 32)
 			{
-				var watch = Watch.GenerateWatch(MemoryDomains["System Bus"], long.Parse(RAMAddress, NumberStyles.HexNumber), WatchSize.DWord, Client.Common.DisplayType.Hex, false, txtDescription.Text);
+				var watch = Watch.GenerateWatch(MemoryDomains["System Bus"], long.Parse(RAMAddress, NumberStyles.HexNumber), WatchSize.Word, Common.DisplayType.Hex, false, txtDescription.Text);
 				Global.CheatList.Add(new Cheat(watch, int.Parse(RAMValue, NumberStyles.HexNumber)));
 			}
 		}
@@ -2490,7 +2489,7 @@ namespace BizHawk.Client.EmuHawk
 				address = add.ToString("X6");
 				value = val.ToString("X4");
 				//Game Geneie, modifies the "ROM" which is why it says, "MD CART"
-				var watch = Watch.GenerateWatch(MemoryDomains["MD CART"], long.Parse(address, NumberStyles.HexNumber), WatchSize.Word, Client.Common.DisplayType.Hex, true, txtDescription.Text);
+				var watch = Watch.GenerateWatch(MemoryDomains["M68K BUS"], long.Parse(address, NumberStyles.HexNumber), WatchSize.Word, Common.DisplayType.Hex, true, txtDescription.Text);
 				//Add Cheat
 				Global.CheatList.Add(new Cheat(watch, val));
 			}
@@ -2548,13 +2547,13 @@ namespace BizHawk.Client.EmuHawk
 					//System Bus Domain, The Address to Watch, Byte size (Byte), Hex Display, Description, Big Endian.
 					if (byteSize == 1)
 					{
-						var watch = Watch.GenerateWatch(MemoryDomains["68K RAM"], long.Parse(RAMAddress, NumberStyles.HexNumber), WatchSize.Byte, Client.Common.DisplayType.Hex, false, txtDescription.Text);
+						var watch = Watch.GenerateWatch(MemoryDomains["68K RAM"], long.Parse(RAMAddress, NumberStyles.HexNumber), WatchSize.Byte, Common.DisplayType.Hex, false, txtDescription.Text);
 						//Take Watch, Add our Value we want, and it should be active when addded?
 						Global.CheatList.Add(new Cheat(watch, int.Parse(RAMValue, NumberStyles.HexNumber)));
 					}
 					if (byteSize == 2)
 					{
-						var watch = Watch.GenerateWatch(MemoryDomains["68K RAM"], long.Parse(RAMAddress, NumberStyles.HexNumber), WatchSize.Word, Client.Common.DisplayType.Hex, true, txtDescription.Text);
+						var watch = Watch.GenerateWatch(MemoryDomains["68K RAM"], long.Parse(RAMAddress, NumberStyles.HexNumber), WatchSize.Word, Common.DisplayType.Hex, true, txtDescription.Text);
 						//Take Watch, Add our Value we want, and it should be active when addded?
 						Global.CheatList.Add(new Cheat(watch, int.Parse(RAMValue, NumberStyles.HexNumber)));
 					}
@@ -2676,14 +2675,14 @@ namespace BizHawk.Client.EmuHawk
 				if (byteSize == 8)
 				{
 					//We have a Byte sized value
-					var watch = Watch.GenerateWatch(MemoryDomains["RDRAM"], long.Parse(RAMAddress, NumberStyles.HexNumber), WatchSize.Byte, Client.Common.DisplayType.Hex, true, txtDescription.Text);
+					var watch = Watch.GenerateWatch(MemoryDomains["RDRAM"], long.Parse(RAMAddress, NumberStyles.HexNumber), WatchSize.Byte, Common.DisplayType.Hex, true, txtDescription.Text);
 					//Take Watch, Add our Value we want, and it should be active when addded?
 					Global.CheatList.Add(new Cheat(watch, int.Parse(RAMValue, NumberStyles.HexNumber)));
 				}
 				if (byteSize == 16)
 				{
 					//We have a Word (Double Byte) sized Value
-					var watch = Watch.GenerateWatch(MemoryDomains["RDRAM"], long.Parse(RAMAddress, NumberStyles.HexNumber), WatchSize.Word, Client.Common.DisplayType.Hex, true, txtDescription.Text);
+					var watch = Watch.GenerateWatch(MemoryDomains["RDRAM"], long.Parse(RAMAddress, NumberStyles.HexNumber), WatchSize.Word, Common.DisplayType.Hex, true, txtDescription.Text);
 					//Take Watch, Add our Value we want, and it should be active when addded?
 					Global.CheatList.Add(new Cheat(watch, int.Parse(RAMValue, NumberStyles.HexNumber)));
 				}
@@ -2801,7 +2800,7 @@ namespace BizHawk.Client.EmuHawk
 					description = txtDescription.Text;
 				}
 
-				var watch = Watch.GenerateWatch(MemoryDomains["System Bus"], long.Parse(RAMAddress, NumberStyles.HexNumber), WatchSize.Byte, Client.Common.DisplayType.Hex, false, description);
+				var watch = Watch.GenerateWatch(MemoryDomains["System Bus"], long.Parse(RAMAddress, NumberStyles.HexNumber), WatchSize.Byte, Common.DisplayType.Hex, false, description);
 				//Take Watch, Add our Value we want, and it should be active when addded?
 				if (strCompare == "00")
 				{
@@ -2809,7 +2808,7 @@ namespace BizHawk.Client.EmuHawk
 				}
 				if (strCompare != "00")
 				{
-					Global.CheatList.Add(new Cheat(watch, int.Parse(RAMValue, NumberStyles.HexNumber), int.Parse(strCompare, NumberStyles.HexNumber)));
+					Global.CheatList.Add(new Cheat(watch, int.Parse(RAMValue, NumberStyles.HexNumber), int.Parse(strCompare, NumberStyles.HexNumber), true, Cheat.CompareType.Equal));
 				}
 				//Global.CheatList.Add(new Cheat(watch, int.Parse(RAMValue, NumberStyles.HexNumber), )
 			}
@@ -2912,14 +2911,14 @@ namespace BizHawk.Client.EmuHawk
 				if (byteSize == 8)
 				{
 					//We have a Byte sized value
-					var watch = Watch.GenerateWatch(MemoryDomains["MainRAM"], long.Parse(RAMAddress, NumberStyles.HexNumber), WatchSize.Word, Client.Common.DisplayType.Hex, false, txtDescription.Text);
+					var watch = Watch.GenerateWatch(MemoryDomains["MainRAM"], long.Parse(RAMAddress, NumberStyles.HexNumber), WatchSize.Byte, Common.DisplayType.Hex, false, txtDescription.Text);
 					//Take Watch, Add our Value we want, and it should be active when addded?
 					Global.CheatList.Add(new Cheat(watch, int.Parse(RAMValue, NumberStyles.HexNumber)));
 				}
 				if (byteSize == 16)
 				{
 					//We have a Word (Double Byte) sized Value
-					var watch = Watch.GenerateWatch(MemoryDomains["MainRAM"], long.Parse(RAMAddress, NumberStyles.HexNumber), WatchSize.Byte, Client.Common.DisplayType.Hex, false, txtDescription.Text);
+					var watch = Watch.GenerateWatch(MemoryDomains["MainRAM"], long.Parse(RAMAddress, NumberStyles.HexNumber), WatchSize.Word, Common.DisplayType.Hex, false, txtDescription.Text);
 					//Take Watch, Add our Value we want, and it should be active when addded?
 					Global.CheatList.Add(new Cheat(watch, int.Parse(RAMValue, NumberStyles.HexNumber)));
 				}
@@ -2988,14 +2987,14 @@ namespace BizHawk.Client.EmuHawk
 				if (byteSize == 8)
 				{
 					//We have a Byte sized value
-					var watch = Watch.GenerateWatch(MemoryDomains["Work Ram High"], long.Parse(RAMAddress, NumberStyles.HexNumber), WatchSize.Word, Client.Common.DisplayType.Hex, true, txtDescription.Text);
+					var watch = Watch.GenerateWatch(MemoryDomains["Work Ram High"], long.Parse(RAMAddress, NumberStyles.HexNumber), WatchSize.Byte, Common.DisplayType.Hex, true, txtDescription.Text);
 					//Take Watch, Add our Value we want, and it should be active when addded?
 					Global.CheatList.Add(new Cheat(watch, int.Parse(RAMValue, NumberStyles.HexNumber)));
 				}
 				if (byteSize == 16)
 				{
 					//We have a Word (Double Byte) sized Value
-					var watch = Watch.GenerateWatch(MemoryDomains["Work Ram High"], long.Parse(RAMAddress, NumberStyles.HexNumber), WatchSize.Byte, Client.Common.DisplayType.Hex, true, txtDescription.Text);
+					var watch = Watch.GenerateWatch(MemoryDomains["Work Ram High"], long.Parse(RAMAddress, NumberStyles.HexNumber), WatchSize.Word, Common.DisplayType.Hex, true, txtDescription.Text);
 					//Take Watch, Add our Value we want, and it should be active when addded?
 					Global.CheatList.Add(new Cheat(watch, int.Parse(RAMValue, NumberStyles.HexNumber)));
 				}
@@ -3047,7 +3046,7 @@ namespace BizHawk.Client.EmuHawk
 			{
 				//A Watch needs to be generated so we can make a cheat out of that.  This is due to how the Cheat engine works.
 				//System Bus Domain, The Address to Watch, Byte size (Byte), Hex Display, Description.  Not Big Endian.
-				var watch = Watch.GenerateWatch(MemoryDomains["Main RAM"], long.Parse(RAMAddress, NumberStyles.HexNumber), WatchSize.Byte, Client.Common.DisplayType.Hex, false, txtDescription.Text);
+				var watch = Watch.GenerateWatch(MemoryDomains["Main RAM"], long.Parse(RAMAddress, NumberStyles.HexNumber), WatchSize.Byte, Common.DisplayType.Hex, false, txtDescription.Text);
 				//Take Watch, Add our Value we want, and it should be active when addded
 
 				if (RAMCompare == null)
@@ -3180,7 +3179,7 @@ namespace BizHawk.Client.EmuHawk
 				if (byteSize == 16)
 				{
 					//System Bus Domain, The Address to Watch, Byte size (Byte), Hex Display, Description.  Not Big Endian.
-					var watch = Watch.GenerateWatch(MemoryDomains["System Bus"], long.Parse(RAMAddress, NumberStyles.HexNumber), WatchSize.Word, Client.Common.DisplayType.Hex, false, txtDescription.Text);
+					var watch = Watch.GenerateWatch(MemoryDomains["System Bus"], long.Parse(RAMAddress, NumberStyles.HexNumber), WatchSize.Word, Common.DisplayType.Hex, false, txtDescription.Text);
 					Global.CheatList.Add(new Cheat(watch, int.Parse(RAMValue, NumberStyles.HexNumber)));
 				}
 				if (byteSize == 8)
@@ -3188,12 +3187,13 @@ namespace BizHawk.Client.EmuHawk
 					//Is this correct?
 					if (GameGenie == true)
 					{
-						var watch = Watch.GenerateWatch(MemoryDomains["CARTROM"], long.Parse(RAMAddress, NumberStyles.HexNumber), WatchSize.Byte, Client.Common.DisplayType.Hex, false, txtDescription.Text);
-						Global.CheatList.Add(new Cheat(watch, int.Parse(RAMValue, NumberStyles.HexNumber)));
+						MessageBox.Show("Game genie codes are not currently supported for SNES", "SNES Game Genie not supported", MessageBoxButtons.OK, MessageBoxIcon.Error);
+						////var watch = Watch.GenerateWatch(MemoryDomains["CARTROM"], long.Parse(RAMAddress, NumberStyles.HexNumber), WatchSize.Byte, Common.DisplayType.Hex, false, txtDescription.Text);
+						////Global.CheatList.Add(new Cheat(watch, int.Parse(RAMValue, NumberStyles.HexNumber)));
 					}
 					else if (GameGenie == false)
 					{
-						var watch = Watch.GenerateWatch(MemoryDomains["System Bus"], long.Parse(RAMAddress, NumberStyles.HexNumber), WatchSize.Byte, Client.Common.DisplayType.Hex, false, txtDescription.Text);
+						var watch = Watch.GenerateWatch(MemoryDomains["System Bus"], long.Parse(RAMAddress, NumberStyles.HexNumber), WatchSize.Byte, Common.DisplayType.Hex, false, txtDescription.Text);
 						Global.CheatList.Add(new Cheat(watch, int.Parse(RAMValue, NumberStyles.HexNumber)));
 					}
 				}

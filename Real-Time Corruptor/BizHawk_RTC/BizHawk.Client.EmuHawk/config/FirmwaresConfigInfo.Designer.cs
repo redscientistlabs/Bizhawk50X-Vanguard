@@ -30,6 +30,7 @@
 		{
 			this.components = new System.ComponentModel.Container();
 			this.lvOptions = new System.Windows.Forms.ListView();
+			this.colSize = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
 			this.colHash = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
 			this.colStandardFilename = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
 			this.colDescription = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
@@ -43,7 +44,7 @@
 			this.lblFirmware = new System.Windows.Forms.Label();
 			this.lvmiOptionsContextMenuStrip = new System.Windows.Forms.ContextMenuStrip(this.components);
 			this.tsmiOptionsCopy = new System.Windows.Forms.ToolStripMenuItem();
-			this.colSize = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+			this.toolTip1 = new System.Windows.Forms.ToolTip(this.components);
 			this.tableLayoutPanel1.SuspendLayout();
 			this.flowLayoutPanel1.SuspendLayout();
 			this.lvmiOptionsContextMenuStrip.SuspendLayout();
@@ -67,8 +68,13 @@
 			this.lvOptions.TabIndex = 0;
 			this.lvOptions.UseCompatibleStateImageBehavior = false;
 			this.lvOptions.View = System.Windows.Forms.View.Details;
-			this.lvOptions.KeyDown += new System.Windows.Forms.KeyEventHandler(this.lvOptions_KeyDown);
-			this.lvOptions.MouseClick += new System.Windows.Forms.MouseEventHandler(this.lvOptions_MouseClick);
+			this.lvOptions.KeyDown += new System.Windows.Forms.KeyEventHandler(this.LvOptions_KeyDown);
+			this.lvOptions.MouseClick += new System.Windows.Forms.MouseEventHandler(this.LvOptions_MouseClick);
+			// 
+			// colSize
+			// 
+			this.colSize.Text = "Size";
+			this.colSize.Width = 74;
 			// 
 			// colHash
 			// 
@@ -179,12 +185,7 @@
 			this.tsmiOptionsCopy.Name = "tsmiOptionsCopy";
 			this.tsmiOptionsCopy.Size = new System.Drawing.Size(99, 22);
 			this.tsmiOptionsCopy.Text = "&Copy";
-			this.tsmiOptionsCopy.Click += new System.EventHandler(this.tsmiOptionsCopy_Click);
-			// 
-			// colSize
-			// 
-			this.colSize.Text = "Size";
-			this.colSize.Width = 74;
+			this.tsmiOptionsCopy.Click += new System.EventHandler(this.TsmiOptionsCopy_Click);
 			// 
 			// FirmwaresConfigInfo
 			// 
@@ -224,5 +225,6 @@
 		private System.Windows.Forms.ColumnHeader colInfo;
 		private System.Windows.Forms.ImageList imageList1;
 		private System.Windows.Forms.ColumnHeader colSize;
+		private System.Windows.Forms.ToolTip toolTip1;
 	}
 }

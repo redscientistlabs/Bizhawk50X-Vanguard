@@ -21,46 +21,38 @@ namespace BizHawk.Client.EmuHawk.CoreExtensions
 	{
 		public static Bitmap Icon(this IEmulator core)
 		{
-			var attributes = Global.Emulator.Attributes();
+			var attributes = core.Attributes();
 
 			if (!attributes.Ported)
 			{
 				return Properties.Resources.CorpHawkSmall;
 			}
 
-			if (Global.Emulator is QuickNES)
+			if (core is QuickNES)
 			{
 				return Properties.Resources.QuickNes;
 			}
-			else if (Global.Emulator is LibsnesCore)
+			else if (core is LibsnesCore)
 			{
 				return Properties.Resources.bsnes;
 			}
-			else if (Global.Emulator is Yabause)
-			{
-				return Properties.Resources.yabause;
-			}
-			else if (Global.Emulator is Atari7800)
+			else if (core is Atari7800)
 			{
 				return Properties.Resources.emu7800;
 			}
-			else if (Global.Emulator is GBA)
-			{
-				return Properties.Resources.meteor;
-			}
-			else if (Global.Emulator is GPGX)
+			else if (core is GPGX)
 			{
 				return Properties.Resources.genplus;
 			}
-			else if (Global.Emulator is PSP)
+			else if (core is PSP)
 			{
 				return Properties.Resources.ppsspp;
 			}
-			else if (Global.Emulator is Gameboy)
+			else if (core is Gameboy)
 			{
 				return Properties.Resources.gambatte;
 			}
-			else if (Global.Emulator is Snes9x)
+			else if (core is Snes9x)
 			{
 				return Properties.Resources.snes9x;
 			}
@@ -72,15 +64,10 @@ namespace BizHawk.Client.EmuHawk.CoreExtensions
 
 		public static string DisplayName(this IEmulator core)
 		{
-			var attributes = Global.Emulator.Attributes();
+			var attributes = core.Attributes();
 
-			var str = (!attributes.Released ? "(Experimental) " : string.Empty) +
+			var str = (!attributes.Released ? "(Experimental) " : "") +
 				attributes.CoreName;
-
-			if (Global.Emulator is LibsnesCore)
-			{
-				str += " (" + ((LibsnesCore)Global.Emulator).CurrentProfile + ")";
-			}
 
 			return str;
 		}

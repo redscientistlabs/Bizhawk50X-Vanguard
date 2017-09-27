@@ -1,18 +1,22 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using BizHawk.Emulation.Common;
-using System.Runtime.InteropServices;
 using System.IO;
+using System.Runtime.InteropServices;
 
+using BizHawk.Common;
+using BizHawk.Emulation.Common;
+
+// ReSharper disable InconsistentNaming
+// ReSharper disable StyleCop.SA1304
+// ReSharper disable StyleCop.SA1307
+// ReSharper disable StyleCop.SA1401
 namespace BizHawk.Client.Common
 {
 	public class QuickBmpFile
 	{
-		#region structs
+		#region Structs
+
 		[StructLayout(LayoutKind.Sequential, Pack = 1)]
-		class BITMAPFILEHEADER
+		private class BITMAPFILEHEADER
 		{
 			public ushort bfType;
 			public uint bfSize;
@@ -29,15 +33,19 @@ namespace BizHawk.Client.Common
 			{
 				var ret = GetObject<BITMAPFILEHEADER>(s);
 				if (ret.bfSize != Marshal.SizeOf(typeof(BITMAPFILEHEADER)))
+				{
 					throw new InvalidOperationException();
+				}
+
 				return ret;
 			}
 		}
 
-		[StructLayout(LayoutKind.Sequential)]
-		class BITMAPINFOHEADER
+		[StructLayout(LayoutKind.Sequential, Pack = 1)]
+		private class BITMAPINFOHEADER
 		{
 			public uint biSize;
+
 			public int biWidth;
 			public int biHeight;
 			public ushort biPlanes;
@@ -58,12 +66,15 @@ namespace BizHawk.Client.Common
 			{
 				var ret = GetObject<BITMAPINFOHEADER>(s);
 				if (ret.biSize != Marshal.SizeOf(typeof(BITMAPINFOHEADER)))
+				{
 					throw new InvalidOperationException();
+				}
+
 				return ret;
 			}
 		}
 
-		enum BitmapCompressionMode : uint
+		private enum BitmapCompressionMode : uint
 		{
 			BI_RGB = 0,
 			BI_RLE8 = 1,
@@ -72,19 +83,21 @@ namespace BizHawk.Client.Common
 			BI_JPEG = 4,
 			BI_PNG = 5
 		}
+
 		#endregion
 
-		private unsafe static byte[] GetBytes(object o)
+		private static unsafe byte[] GetBytes(object o)
 		{
 			byte[] ret = new byte[Marshal.SizeOf(o)];
 			fixed (byte* p = ret)
 			{
 				Marshal.StructureToPtr(o, (IntPtr)p, false);
 			}
+
 			return ret;
 		}
 
-		private unsafe static T GetObject<T>(Stream s)
+		private static unsafe T GetObject<T>(Stream s)
 		{
 			byte[] tmp = new byte[Marshal.SizeOf(typeof(T))];
 			s.Read(tmp, 0, tmp.Length);
@@ -94,76 +107,85 @@ namespace BizHawk.Client.Common
 			}
 		}
 
-		unsafe struct BMP
+		private unsafe struct BMP
 		{
 			public int* Data;
 			public int Width;
 			public int Height;
 		}
 
-		static void Blit(BMP src, BMP dst)
+		private static void Blit(BMP src, BMP dst)
 		{
 			if (src.Width == dst.Width && src.Height == dst.Height)
+			{
 				Blit_Same(src, dst);
+			}
 			else
+			{
 				Blit_Any(src, dst);
+			}
 		}
 
-		unsafe static void Blit_Same(BMP src, BMP dst)
+		private static unsafe void Blit_Same(BMP src, BMP dst)
 		{
-			int* sp = src.Data + src.Width * (src.Height - 1);
+			int* sp = src.Data + (src.Width * (src.Height - 1));
 			int* dp = dst.Data;
 			for (int j = 0; j < src.Height; j++)
 			{
 				for (int i = 0; i < src.Width; i++)
+				{
 					dp[i] = sp[i];
+				}
+
 				sp -= src.Width;
 				dp += src.Width;
 			}
 		}
 
-		unsafe static void Blit_Any(BMP src, BMP dst)
+		private static unsafe void Blit_Any(BMP src, BMP dst)
 		{
 			int w = dst.Width;
 			int h = dst.Height;
-			int in_w = src.Width;
-			int in_h = src.Height;
+			int inW = src.Width;
+			int inH = src.Height;
 			int* sp = src.Data;
 			int* dp = dst.Data;
 
 			// vflip along the way
 			for (int j = h - 1; j >= 0; j--)
 			{
-				sp = src.Data + in_w * (j * in_h / h);
+				sp = src.Data + (inW * (j * inH / h));
 				for (int i = 0; i < w; i++)
 				{
-					dp[i] = sp[i * in_w / w];
+					dp[i] = sp[i * inW / w];
 				}
+
 				dp += w;
 			}
 		}
 
-		unsafe static void Blit_Any_NoFlip(BMP src, BMP dst)
+		private static unsafe void Blit_Any_NoFlip(BMP src, BMP dst)
 		{
 			int w = dst.Width;
 			int h = dst.Height;
-			int in_w = src.Width;
-			int in_h = src.Height;
+			int inW = src.Width;
+			int inH = src.Height;
 			int* sp = src.Data;
 			int* dp = dst.Data;
 
 			for (int j = 0; j < h; j++)
 			{
-				sp = src.Data + in_w * (j * in_h / h);
+				sp = src.Data + (inW * (j * inH / h));
 				for (int i = 0; i < w; i++)
 				{
-					dp[i] = sp[i * in_w / w];
+					dp[i] = sp[i * inW / w];
 				}
+
 				dp += w;
 			}
 		}
 
-		public unsafe static void Copy(IVideoProvider src, IVideoProvider dst)
+		public static unsafe void Copy(IVideoProvider src, IVideoProvider dst)
 		{
 			if (src.BufferWidth == dst.BufferWidth && src.BufferHeight == dst.BufferHeight)
 			{
@@ -195,15 +217,32 @@ namespace BizHawk.Client.Common
 		public class LoadedBMP : IVideoProvider
 		{
 			public int[] VideoBuffer { get; set; }
-			public int[] GetVideoBuffer() { return VideoBuffer; }
-			public int VirtualWidth { get { return BufferWidth; } }
-			public int VirtualHeight { get { return BufferHeight; } }
+
+			public int[] GetVideoBuffer()
+			{
+				return VideoBuffer;
+			}
+
+			public int VirtualWidth => BufferWidth;
+
+			public int VirtualHeight => BufferHeight;
+
 			public int BufferWidth { get; set; }
 			public int BufferHeight { get; set; }
-			public int BackgroundColor { get { return unchecked((int)0xff000000); } }
+			public int BackgroundColor => unchecked((int)0xff000000);
+
+			public int VsyncNumerator
+			{
+				get { throw new InvalidOperationException(); }
+			}
+
+			public int VsyncDenominator
+			{
+				get { throw new InvalidOperationException(); }
+			}
 		}
 
-		public unsafe static bool Load(IVideoProvider v, Stream s)
+		public static unsafe bool Load(IVideoProvider v, Stream s)
 		{
 			var bf = BITMAPFILEHEADER.FromStream(s);
 			var bi = BITMAPINFOHEADER.FromStream(s);
@@ -212,43 +251,49 @@ namespace BizHawk.Client.Common
 				|| bi.biPlanes != 1
 				|| bi.biBitCount != 32
 				|| bi.biCompression != BitmapCompressionMode.BI_RGB)
+			{
 				return false;
-			int in_w = bi.biWidth;
-			int in_h = bi.biHeight;
+			}
 
-			byte[] src = new byte[in_w * in_h * 4];
+			int inW = bi.biWidth;
+			int inH = bi.biHeight;
+
+			byte[] src = new byte[inW * inH * 4];
 			s.Read(src, 0, src.Length);
 			if (v is LoadedBMP)
 			{
 				var l = v as LoadedBMP;
-				l.BufferWidth = in_w;
-				l.BufferHeight = in_h;
-				l.VideoBuffer = new int[in_w * in_h];
+				l.BufferWidth = inW;
+				l.BufferHeight = inH;
+				l.VideoBuffer = new int[inW * inH];
 			}
+
 			int[] dst = v.GetVideoBuffer();
 
-			fixed (byte *srcp = src)
+			fixed (byte* srcp = src)
 			fixed (int* dstp = dst)
 			{
-				using (new BizHawk.Common.SimpleTime("Blit"))
-				Blit(new BMP
-				{
-					Data = (int*)srcp,
-					Width = in_w,
-					Height = in_h
-				},
-				new BMP
-				{
-					Data = dstp,
-					Width = v.BufferWidth,
-					Height = v.BufferHeight,
-				});
+				using (new SimpleTime("Blit"))
+				{ 
+					Blit(new BMP
+					{
+						Data = (int*)srcp,
+						Width = inW,
+						Height = inH
+					},
+					new BMP
+					{
+						Data = dstp,
+						Width = v.BufferWidth,
+						Height = v.BufferHeight,
+					});
+				}
 			}
 
 			return true;
 		}
 
-		public unsafe static void Save(IVideoProvider v, Stream s, int w, int h)
+		public static unsafe void Save(IVideoProvider v, Stream s, int w, int h)
 		{
 			var bf = new BITMAPFILEHEADER();
 			var bi = new BITMAPINFOHEADER();
@@ -274,19 +319,21 @@ namespace BizHawk.Client.Common
 			fixed (int* srcp = src)
 			fixed (byte* dstp = dst)
 			{
-				using (new BizHawk.Common.SimpleTime("Blit"))
-				Blit(new BMP
-				{
-					Data = srcp,
-					Width = v.BufferWidth,
-					Height = v.BufferHeight
-				},
-				new BMP
-				{
-					Data = (int*)dstp,
-					Width = w,
-					Height = h,
-				});
+				using (new SimpleTime("Blit"))
+				{ 
+					Blit(new BMP
+					{
+						Data = srcp,
+						Width = v.BufferWidth,
+						Height = v.BufferHeight
+					},
+					new BMP
+					{
+						Data = (int*)dstp,
+						Width = w,
+						Height = h,
+					});
+				}
 			}
 
 			s.Write(dst, 0, dst.Length);

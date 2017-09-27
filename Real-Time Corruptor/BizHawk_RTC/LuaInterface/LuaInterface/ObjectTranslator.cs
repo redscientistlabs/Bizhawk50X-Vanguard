@@ -1,4 +1,4 @@
-namespace LuaInterface 
+namespace NLua 
 {
 	using System;
 	using System.IO;
@@ -6,6 +6,7 @@ namespace LuaInterface
 	using System.Reflection;
     using System.Collections.Generic;
     using System.Diagnostics;
+	using NLua.Exceptions;
     using Lua511;
 
 	/*
@@ -801,6 +802,13 @@ namespace LuaInterface
 			else if(o is LuaFunction)
 			{
 				((LuaFunction)o).push(luaState);
+			}
+			//zero 22-jul-2017
+			else if (o is Lua)
+			{
+				var lua = o as Lua;
+				LuaDLL.lua_pushthread(lua.luaState);
+				LuaDLL.lua_xmove(lua.luaState, luaState, 1);
 			}
 			else 
 			{

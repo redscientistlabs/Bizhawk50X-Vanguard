@@ -3,31 +3,32 @@ using System.Drawing;
 using System.Linq;
 using System.Threading;
 
-using LuaInterface;
+using NLua;
 using BizHawk.Common.ReflectionExtensions;
 
 namespace BizHawk.Client.Common
 {
 	public abstract class LuaLibraryBase
 	{
-		public LuaLibraryBase(Lua lua)
+		protected LuaLibraryBase(Lua lua)
 		{
 			Lua = lua;
 		}
 
-		public LuaLibraryBase(Lua lua, Action<string> logOutputCallback)
+		protected LuaLibraryBase(Lua lua, Action<string> logOutputCallback)
 			: this(lua)
 		{
 			LogOutputCallback = logOutputCallback;
 		}
 
-		public abstract string Name { get; }
-		public Action<string> LogOutputCallback { get; set; }
-		public Lua Lua { get; set; }
+		protected static Lua CurrentThread { get; private set; }
 
-		public static Lua CurrentThread { get; private set; }
-		static Thread CurrentHostThread;
-		static object ThreadMutex = new object();
+		private static Thread CurrentHostThread;
+		private static readonly object ThreadMutex = new object();
+
+		public abstract string Name { get; }
+		public Action<string> LogOutputCallback { protected get; set; }
+		protected Lua Lua { get; }
 
 		public static void ClearCurrentThread()
 		{
@@ -43,41 +44,12 @@ namespace BizHawk.Client.Common
 			lock (ThreadMutex)
 			{
 				if (CurrentHostThread != null)
+				{
 					throw new InvalidOperationException("Can't have lua running in two host threads at a time!");
+				}
+
 				CurrentHostThread = Thread.CurrentThread;
 				CurrentThread = luaThread;
-			}
-		}
-		
-
-		protected void Log(object message)
-		{
-			if (LogOutputCallback != null)
-			{
-				LogOutputCallback(message.ToString());
-			}
-		}
-
-		public virtual void LuaRegister(Type callingLibrary, LuaDocumentation docs = null)
-		{
-			Lua.NewTable(Name);
-
-			var luaAttr = typeof(LuaMethodAttributes);
-
-			var methods = GetType()
-							.GetMethods()
-							.Where(m => m.GetCustomAttributes(luaAttr, false).Any());
-
-			foreach (var method in methods)
-			{
-				var luaMethodAttr = method.GetCustomAttributes(luaAttr, false).First() as LuaMethodAttributes;
-				var luaName = Name + "." + luaMethodAttr.Name;
-				Lua.RegisterFunction(luaName, this, method);
-
-				if (docs != null)
-				{
-					docs.Add(new LibraryFunction(Name, callingLibrary.Description(), method));
-				}
 			}
 		}
 
@@ -98,8 +70,7 @@ namespace BizHawk.Client.Common
 				return null;
 			}
 
-			double tryNum = double.NaN;
-
+			double tryNum;
 			var result = double.TryParse(color.ToString(), out tryNum);
 
 			if (result)
@@ -114,6 +85,31 @@ namespace BizHawk.Client.Common
 			}
 
 			return null;
+		}
+
+		protected void Log(object message)
+		{
+			LogOutputCallback?.Invoke(message.ToString());
+		}
+
+		public void LuaRegister(Type callingLibrary, LuaDocumentation docs = null)
+		{
+			Lua.NewTable(Name);
+
+			var luaAttr = typeof(LuaMethodAttribute);
+
+			var methods = GetType()
+				.GetMethods()
+				.Where(m => m.GetCustomAttributes(luaAttr, false).Any());
+
+			foreach (var method in methods)
+			{
+				var luaMethodAttr = (LuaMethodAttribute)method.GetCustomAttributes(luaAttr, false).First();
+				var luaName = Name + "." + luaMethodAttr.Name;
+				Lua.RegisterFunction(luaName, this, method);
+
+				docs?.Add(new LibraryFunction(Name, callingLibrary.Description(), method));
+			}
 		}
 	}
 }

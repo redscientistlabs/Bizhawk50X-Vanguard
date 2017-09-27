@@ -1,5 +1,5 @@
 ﻿using System;
-using LuaInterface;
+using NLua;
 
 namespace BizHawk.Client.Common
 {
@@ -11,29 +11,26 @@ namespace BizHawk.Client.Common
 		public JoypadLuaLibrary(Lua lua, Action<string> logOutputCallback)
 			: base(lua, logOutputCallback) { }
 
-		public override string Name { get { return "joypad"; } }
+		public override string Name => "joypad";
 
-		[LuaMethodAttributes(
-			"get",
-			"returns a lua table of the controller buttons pressed. If supplied, it will only return a table of buttons for the given controller"
-		)]
+		[LuaMethod("get", "returns a lua table of the controller buttons pressed. If supplied, it will only return a table of buttons for the given controller")]
 		public LuaTable Get(int? controller = null)
 		{
 			var buttons = Lua.NewTable();
 			var adaptor = Global.AutofireStickyXORAdapter;
-			foreach (var button in adaptor.Source.Type.BoolButtons)
+			foreach (var button in adaptor.Source.Definition.BoolButtons)
 			{
 				if (!controller.HasValue)
 				{
-					buttons[button] = adaptor[button];
+					buttons[button] = adaptor.IsPressed(button);
 				}
 				else if (button.Length >= 3 && button.Substring(0, 2) == "P" + controller)
 				{
-					buttons[button.Substring(3)] = adaptor["P" + controller + " " + button.Substring(3)];
+					buttons[button.Substring(3)] = adaptor.IsPressed("P" + controller + " " + button.Substring(3));
 				}
 			}
 
-			foreach (var button in adaptor.Source.Type.FloatControls)
+			foreach (var button in adaptor.Source.Definition.FloatControls)
 			{
 				if (controller == null)
 				{
@@ -52,25 +49,20 @@ namespace BizHawk.Client.Common
 			return buttons;
 		}
 
-		[LuaMethodAttributes(
-			"getimmediate",
-			"returns a lua table of any controller buttons currently pressed by the user"
-		)]
+		// TODO: what about float controls?
+		[LuaMethod("getimmediate", "returns a lua table of any controller buttons currently pressed by the user")]
 		public LuaTable GetImmediate()
 		{
 			var buttons = Lua.NewTable();
-			foreach (var button in Global.ActiveController.Type.BoolButtons)
+			foreach (var button in Global.ActiveController.Definition.BoolButtons)
 			{
-				buttons[button] = Global.ActiveController[button];
+				buttons[button] = Global.ActiveController.IsPressed(button);
 			}
 
 			return buttons;
 		}
 
-		[LuaMethodAttributes(
-			"setfrommnemonicstr",
-			"sets the given buttons to their provided values for the current frame, string will be interpretted the same way an entry from a movie input log would be"
-		)]
+		[LuaMethod("setfrommnemonicstr", "sets the given buttons to their provided values for the current frame, string will be interpretted the same way an entry from a movie input log would be")]
 		public void SetFromMnemonicStr(string inputLogEntry)
 		{
 			try
@@ -78,12 +70,12 @@ namespace BizHawk.Client.Common
 				var lg = Global.MovieSession.MovieControllerInstance();
 				lg.SetControllersAsMnemonic(inputLogEntry);
 
-				foreach (var button in lg.Type.BoolButtons)
+				foreach (var button in lg.Definition.BoolButtons)
 				{
 					Global.LuaAndAdaptor.SetButton(button, lg.IsPressed(button));
 				}
 
-				foreach (var floatButton in lg.Type.FloatControls)
+				foreach (var floatButton in lg.Definition.FloatControls)
 				{
 					Global.LuaAndAdaptor.SetFloat(floatButton, lg.GetFloat(floatButton));
 				}
@@ -94,10 +86,7 @@ namespace BizHawk.Client.Common
 			}
 		}
 
-		[LuaMethodAttributes(
-			"set",
-			"sets the given buttons to their provided values for the current frame"
-		)]
+		[LuaMethod("set", "sets the given buttons to their provided values for the current frame")]
 		public void Set(LuaTable buttons, int? controller = null)
 		{
 			try
@@ -108,7 +97,7 @@ namespace BizHawk.Client.Common
 					bool? theValue;
 					var theValueStr = buttons[button].ToString();
 
-					if (!String.IsNullOrWhiteSpace(theValueStr))
+					if (!string.IsNullOrWhiteSpace(theValueStr))
 					{
 						if (theValueStr.ToLower() == "false")
 						{
@@ -161,10 +150,7 @@ namespace BizHawk.Client.Common
 			}
 		}
 
-		[LuaMethodAttributes(
-			"setanalog",
-			"sets the given analog controls to their provided values for the current frame. Note that unlike set() there is only the logic of overriding with the given value."
-		)]
+		[LuaMethod("setanalog", "sets the given analog controls to their provided values for the current frame. Note that unlike set() there is only the logic of overriding with the given value.")]
 		public void SetAnalog(LuaTable controls, object controller = null)
 		{
 			try
@@ -174,11 +160,13 @@ namespace BizHawk.Client.Common
 					var theValueStr = controls[name].ToString();
 					float? theValue = null;
 
-					if (!String.IsNullOrWhiteSpace(theValueStr))
+					if (!string.IsNullOrWhiteSpace(theValueStr))
 					{
 						float f;
 						if (float.TryParse(theValueStr, out f))
+						{
 							theValue = f;
+						}
 					}
 
 					if (controller == null)
@@ -189,10 +177,12 @@ namespace BizHawk.Client.Common
 					{
 						Global.StickyXORAdapter.SetFloat("P" + controller + " " + name, theValue);
 					}
-
 				}
 			}
-			catch { /*Eat it*/ }
+			catch
+			{
+				/*Eat it*/
+			}
 		}
 	}
 }

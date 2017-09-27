@@ -1,69 +1,72 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
+
 using BizHawk.Emulation.Common;
 
 namespace BizHawk.Emulation.Cores.Computers.Commodore64
 {
 	public partial class C64 : IDebuggable
 	{
-        [SaveState.DoNotSave] private IDebuggable _selectedDebuggable;
+		private IDebuggable _selectedDebuggable;
 
-        private IEnumerable<IDebuggable> GetAvailableDebuggables()
-        {
-            yield return _board.Cpu;
-            if (_board.DiskDrive != null)
-            {
-                yield return _board.DiskDrive;
-            }
-        }
-
-        private void SetDefaultDebuggable()
-        {
-            _selectedDebuggable = GetAvailableDebuggables().First();
-        }
-
-        IDictionary<string, RegisterValue> IDebuggable.GetCpuFlagsAndRegisters()
+		private IEnumerable<IDebuggable> GetAvailableDebuggables()
 		{
-            if (_selectedDebuggable == null)
-            {
-                SetDefaultDebuggable();
-            }
-            return _selectedDebuggable.GetCpuFlagsAndRegisters();
+			yield return _board.Cpu;
+			if (_board.DiskDrive != null)
+			{
+				yield return _board.DiskDrive;
+			}
 		}
 
-		void IDebuggable.SetCpuRegister(string register, int value)
+		private void SetDefaultDebuggable()
 		{
-		    if (_selectedDebuggable == null)
-		    {
-		        SetDefaultDebuggable();
-		    }
-		    _selectedDebuggable.SetCpuRegister(register, value);
+			_selectedDebuggable = GetAvailableDebuggables().First();
 		}
 
-		bool IDebuggable.CanStep(StepType type)
+		public IDictionary<string, RegisterValue> GetCpuFlagsAndRegisters()
 		{
-            if (_selectedDebuggable == null)
-            {
-                SetDefaultDebuggable();
-            }
-		    return _selectedDebuggable.CanStep(type);
+			if (_selectedDebuggable == null)
+			{
+				SetDefaultDebuggable();
+			}
+
+			return _selectedDebuggable.GetCpuFlagsAndRegisters();
 		}
 
-
-        void IDebuggable.Step(StepType type)
+		public void SetCpuRegister(string register, int value)
 		{
-            if (_selectedDebuggable == null)
-            {
-                SetDefaultDebuggable();
-            }
-            _selectedDebuggable.Step(type);
+			if (_selectedDebuggable == null)
+			{
+				SetDefaultDebuggable();
+			}
+
+			_selectedDebuggable.SetCpuRegister(register, value);
 		}
 
-        [SaveState.DoNotSave]
-        private readonly IMemoryCallbackSystem _memoryCallbacks;
+		public bool CanStep(StepType type)
+		{
+			if (_selectedDebuggable == null)
+			{
+				SetDefaultDebuggable();
+			}
 
-        [SaveState.DoNotSave]
-        IMemoryCallbackSystem IDebuggable.MemoryCallbacks { get { return _memoryCallbacks; } }
+			return _selectedDebuggable.CanStep(type);
+		}
+
+		public void Step(StepType type)
+		{
+			if (_selectedDebuggable == null)
+			{
+				SetDefaultDebuggable();
+			}
+
+			_selectedDebuggable.Step(type);
+		}
+
+		public int TotalExecutedCycles => _selectedDebuggable.TotalExecutedCycles;
+
+		private readonly IMemoryCallbackSystem _memoryCallbacks;
+
+		IMemoryCallbackSystem IDebuggable.MemoryCallbacks => _memoryCallbacks;
 	}
 }

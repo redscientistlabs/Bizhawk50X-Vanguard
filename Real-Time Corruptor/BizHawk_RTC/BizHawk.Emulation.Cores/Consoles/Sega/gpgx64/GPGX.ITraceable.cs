@@ -5,7 +5,7 @@ using System.Text;
 
 using BizHawk.Common.NumberExtensions;
 
-namespace BizHawk.Emulation.Cores.Consoles.Sega.gpgx64
+namespace BizHawk.Emulation.Cores.Consoles.Sega.gpgx
 {
 	public partial class GPGX
 	{
@@ -19,7 +19,7 @@ namespace BizHawk.Emulation.Cores.Consoles.Sega.gpgx64
 				Header = "M68K: PC, machine code, mnemonic, operands, registers (D0-D7, A0-A7, SR, USP), flags (XNZVC)";
 			}
 
-			public override void TraceFromCallback()
+			protected override void TraceFromCallback()
 			{
 				var regs = DebuggableCore.GetCpuFlagsAndRegisters();
 				uint pc = (uint)regs["M68K PC"].Value;
@@ -43,7 +43,7 @@ namespace BizHawk.Emulation.Cores.Consoles.Sega.gpgx64
 						{
 							sb.Append(
 								string.Format("{0}:{1} ",
-								r.Key.Replace("M68K", string.Empty).Trim(),
+								r.Key.Replace("M68K", "").Trim(),
 								r.Value.Value.ToHexString(r.Value.BitSize / 4)));
 						}
 					}

@@ -1,55 +1,32 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.IO;
 using System.Linq;
+using System.Reflection;
 using System.Threading;
 
-using BizHawk.Client.Common;
-using LuaInterface;
-using System.Reflection;
-using System.Collections.Generic;
+using NLua;
+
+using BizHawk.Common.ReflectionExtensions;
 using BizHawk.Emulation.Common;
-using System.IO;
+using BizHawk.Client.Common;
 
 namespace BizHawk.Client.EmuHawk
 {
 	public class EmuLuaLibrary
 	{
-		private readonly Dictionary<Type, LuaLibraryBase> Libraries = new Dictionary<Type, LuaLibraryBase>();
-		private readonly LuaConsole _caller;
-
-		private Lua _lua = new Lua();
-		private Lua _currThread;
-
 		public EmuLuaLibrary()
 		{
 			Docs = new LuaDocumentation();
+			//if(NLua.Lua.WhichLua == "NLua")
+				_lua["keepalives"] = _lua.NewTable();
 		}
 
-		private FormsLuaLibrary FormsLibrary
-		{
-			get { return (FormsLuaLibrary)Libraries[typeof(FormsLuaLibrary)]; }
-		}
-
-		private EventLuaLibrary EventsLibrary
-		{
-			get { return (EventLuaLibrary)Libraries[typeof(EventLuaLibrary)]; }
-		}
-
-		private EmulatorLuaLibrary EmulatorLuaLibrary
-		{
-			get { return (EmulatorLuaLibrary)Libraries[typeof(EmulatorLuaLibrary)]; }
-		}
-
-		public GuiLuaLibrary GuiLibrary
-		{
-			get { return (GuiLuaLibrary)Libraries[typeof(GuiLuaLibrary)]; }
-		}
-
-		public EmuLuaLibrary(LuaConsole passed)
+		public EmuLuaLibrary(IEmulatorServiceProvider serviceProvider)
 			: this()
 		{
 			LuaWait = new AutoResetEvent(false);
 			Docs.Clear();
-			_caller = passed.Get();
 
 			// Register lua libraries
 			var libs = Assembly
@@ -57,7 +34,7 @@ namespace BizHawk.Client.EmuHawk
 				.GetTypes()
 				.Where(t => typeof(LuaLibraryBase).IsAssignableFrom(t))
 				.Where(t => t.IsSealed)
-				.Where(t => ServiceInjector.IsAvailable(Global.Emulator.ServiceProvider, t))
+				.Where(t => ServiceInjector.IsAvailable(serviceProvider, t))
 				.ToList();
 
 			libs.AddRange(
@@ -66,16 +43,15 @@ namespace BizHawk.Client.EmuHawk
 				.GetTypes()
 				.Where(t => typeof(LuaLibraryBase).IsAssignableFrom(t))
 				.Where(t => t.IsSealed)
-				.Where(t => ServiceInjector.IsAvailable(Global.Emulator.ServiceProvider, t))
-			);
+				.Where(t => ServiceInjector.IsAvailable(serviceProvider, t)));
 
 			foreach (var lib in libs)
 			{
 				bool addLibrary = true;
-				var attributes = lib.GetCustomAttributes(typeof(LuaLibraryAttributes), false);
+				var attributes = lib.GetCustomAttributes(typeof(LuaLibraryAttribute), false);
 				if (attributes.Any())
 				{
-					addLibrary = VersionInfo.DeveloperBuild || (attributes.First() as LuaLibraryAttributes).Released;
+					addLibrary = VersionInfo.DeveloperBuild || (attributes.First() as LuaLibraryAttribute).Released;
 				}
 
 				if (addLibrary)
@@ -83,7 +59,7 @@ namespace BizHawk.Client.EmuHawk
 					var instance = (LuaLibraryBase)Activator.CreateInstance(lib, _lua);
 					instance.LuaRegister(lib, Docs);
 					instance.LogOutputCallback = ConsoleLuaLibrary.LogOutput;
-					ServiceInjector.UpdateServices(Global.Emulator.ServiceProvider, instance);
+					ServiceInjector.UpdateServices(serviceProvider, instance);
 					Libraries.Add(lib, instance);
 				}
 			}
@@ -92,25 +68,71 @@ namespace BizHawk.Client.EmuHawk
 
 			EmulatorLuaLibrary.FrameAdvanceCallback = Frameadvance;
 			EmulatorLuaLibrary.YieldCallback = EmuYield;
-		}
 
-		public void Restart()
-		{
-			foreach (var lib in Libraries)
+			// Add LuaCanvas to Docs
+			Type luaCanvas = typeof(LuaCanvas);
+
+			var methods = luaCanvas
+				.GetMethods()
+				.Where(m => m.GetCustomAttributes(typeof(LuaMethodAttribute), false).Any());
+
+			foreach (var method in methods)
 			{
-				ServiceInjector.UpdateServices(Global.Emulator.ServiceProvider, lib.Value);
+				Docs.Add(new LibraryFunction(nameof(LuaCanvas), luaCanvas.Description(), method));
 			}
 		}
 
-		public LuaDocumentation Docs { get; private set; }
+		public bool IsRebootingCore { get; set; } // pretty hacky.. we dont want a lua script to be able to restart itself by rebooting the core
+
+		private readonly Dictionary<Type, LuaLibraryBase> Libraries = new Dictionary<Type, LuaLibraryBase>();
+		public LuaFileList ScriptList { get; } = new LuaFileList();
+
+		public IEnumerable<LuaFile> RunningScripts
+		{
+			get { return ScriptList.Where(lf => lf.Enabled); }
+		}
+
+		private Lua _lua = new Lua();
+		private Lua _currThread;
+
+		private FormsLuaLibrary FormsLibrary => (FormsLuaLibrary)Libraries[typeof(FormsLuaLibrary)];
+
+		private EventLuaLibrary EventsLibrary => (EventLuaLibrary)Libraries[typeof(EventLuaLibrary)];
+
+		private EmulatorLuaLibrary EmulatorLuaLibrary => (EmulatorLuaLibrary)Libraries[typeof(EmulatorLuaLibrary)];
+
+		public GuiLuaLibrary GuiLibrary => (GuiLuaLibrary)Libraries[typeof(GuiLuaLibrary)];
+
+		public void Restart(IEmulatorServiceProvider newServiceProvider)
+		{
+			foreach (var lib in Libraries)
+			{
+				ServiceInjector.UpdateServices(newServiceProvider, lib.Value);
+			}
+		}
+
+		public void StartLuaDrawing()
+		{
+			if (ScriptList.Any() && GuiLibrary.SurfaceIsNull)
+			{
+				GuiLibrary.DrawNew("emu");
+			}
+		}
+
+		public void EndLuaDrawing()
+		{
+			if (ScriptList.Any())
+			{
+				GuiLibrary.DrawFinish();
+			}
+		}
+
+		public LuaDocumentation Docs { get; }
 		public bool IsRunning { get; set; }
 		public EventWaitHandle LuaWait { get; private set; }
 		public bool FrameAdvanceRequested { get; private set; }
 
-		public LuaFunctionList RegisteredFunctions
-		{
-			get { return EventsLibrary.RegisteredFunctions; }
-		}
+		public LuaFunctionList RegisteredFunctions => EventsLibrary.RegisteredFunctions;
 
 		public void WindowClosed(IntPtr handle)
 		{
@@ -156,14 +178,21 @@ namespace BizHawk.Client.EmuHawk
 			var content = File.ReadAllText(file);
 			var main = lua.LoadString(content, "main");
 			lua.Push(main); // push main function on to stack for subsequent resuming
+			//if (NLua.Lua.WhichLua == "NLua")
+			{
+				_lua.GetTable("keepalives")[lua] = 1;
+				//this not being run is the origin of a memory leak if you restart scripts too many times
+				_lua.Pop();
+			}
 			return lua;
 		}
 
 		public void ExecuteString(string command)
 		{
 			_currThread = _lua.NewThread();
-
 			_currThread.DoString(command);
+			//if (NLua.Lua.WhichLua == "NLua")
+				_lua.Pop();
 		}
 
 		public ResumeResult ResumeScript(Lua script)
@@ -177,7 +206,8 @@ namespace BizHawk.Client.EmuHawk
 				var execResult = script.Resume(0);
 
 				_lua.RunScheduledDisposes();
-				//not sure how this is going to work out, so do this too
+
+				// not sure how this is going to work out, so do this too
 				script.RunScheduledDisposes();
 
 				_currThread = null;

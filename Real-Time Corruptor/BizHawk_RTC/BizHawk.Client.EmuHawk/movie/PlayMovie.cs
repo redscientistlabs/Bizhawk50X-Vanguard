@@ -30,10 +30,10 @@ namespace BizHawk.Client.EmuHawk
 			MovieView.QueryItemText += MovieView_QueryItemText;
 			MovieView.VirtualMode = true;
 			_sortReverse = false;
-			_sortedCol = string.Empty;
+			_sortedCol = "";
 
 			_sortDetailsReverse = false;
-			_sortedDetailsCol = string.Empty;
+			_sortedDetailsCol = "";
 		}
 
 		private void PlayMovie_Load(object sender, EventArgs e)
@@ -47,7 +47,7 @@ namespace BizHawk.Client.EmuHawk
 
 		private void MovieView_QueryItemText(int index, int column, out string text)
 		{
-			text = string.Empty;
+			text = "";
 			if (column == 0) // File
 			{
 				text = Path.GetFileName(_movieList[index].Filename);
@@ -87,31 +87,31 @@ namespace BizHawk.Client.EmuHawk
 					return null;
 				}
 				
-				//System.Diagnostics.Stopwatch watch = new System.Diagnostics.Stopwatch(); watch.Start();
 				var movie = PreLoadMovieFile(file, force);
 				if (movie == null)
 				{
 					return null;
 				}
-				//watch.Stop(); Console.WriteLine("[{0}] {1}",watch.ElapsedMilliseconds,Path.GetFileName(filename));
 
 				int? index;
 				lock (_movieList)
 				{
-					//need to check IsDuplicateOf within the lock
+					// need to check IsDuplicateOf within the lock
 					index = IsDuplicateOf(filename);
-					if (index.HasValue) return index;
+					if (index.HasValue)
+					{
+						return index;
+					}
 
 					_movieList.Add(movie);
 					index = _movieList.Count - 1;
 				}
 
 				_sortReverse = false;
-				_sortedCol = string.Empty;
+				_sortedCol = "";
 
 				return index;
 			}
-
 		}
 
 		private int? IsDuplicateOf(string filename)
@@ -155,7 +155,7 @@ namespace BizHawk.Client.EmuHawk
 		{
 			MovieView.Refresh();
 			MovieCount.Text = _movieList.Count + " movie"
-				+ (_movieList.Count != 1 ? "s" : string.Empty);
+				+ (_movieList.Count != 1 ? "s" : "");
 		}
 
 		private void PreHighlightMovie()
@@ -226,7 +226,6 @@ namespace BizHawk.Client.EmuHawk
 			}
 
 			HighlightMovie(mostRecent);
-			return;
 		}
 
 		private void HighlightMovie(int index)
@@ -257,27 +256,33 @@ namespace BizHawk.Client.EmuHawk
 			{
 				string dp = dpTodo.Dequeue();
 				
-				//enqueue subdirectories if appropriate
+				// enqueue subdirectories if appropriate
 				if (Global.Config.PlayMovie_IncludeSubdir)
-					foreach(var subdir in Directory.GetDirectories(dp))
+				{
+					foreach (var subdir in Directory.GetDirectories(dp))
+					{
 						dpTodo.Enqueue(subdir);
+					}
+				}
 
-				//add movies
+				// add movies
 				fpTodo.AddRange(Directory.GetFiles(dp, "*." + MovieService.DefaultExtension));
 				fpTodo.AddRange(Directory.GetFiles(dp, "*." + TasMovie.Extension));
 			}
 
-			//in parallel, scan each movie
-			Parallel.For(0, fpTodo.Count, (i) =>
-			//for(int i=0;i<fpTodo.Count;i++)
+			// in parallel, scan each movie
+			Parallel.For(0, fpTodo.Count, i =>
 			{
 				var file = fpTodo[i];
-				lock(ordinals) ordinals[file] = i;
-				AddMovieToList(file, force: false);
-			}
-			);
+				lock (ordinals)
+				{
+					ordinals[file] = i;
+				}
 
-			//sort by the ordinal key to maintain relatively stable results when rescanning
+				AddMovieToList(file, force: false);
+			});
+
+			// sort by the ordinal key to maintain relatively stable results when rescanning
 			_movieList.Sort((a, b) => ordinals[a.Filename].CompareTo(ordinals[b.Filename]));
 
 			RefreshMovieList();
@@ -438,7 +443,7 @@ namespace BizHawk.Client.EmuHawk
 
 		private void MovieView_SelectedIndexChanged(object sender, EventArgs e)
 		{
-			toolTip1.SetToolTip(DetailsView, string.Empty);
+			toolTip1.SetToolTip(DetailsView, "");
 			DetailsView.Items.Clear();
 			if (MovieView.SelectedIndices.Count < 1)
 			{

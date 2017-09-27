@@ -74,37 +74,45 @@ namespace BizHawk.Client.MultiHawk
 					return NesCartFile
 						.GetStream()
 						.ReadAllBytes();
-				};
-
-				Database.LoadDatabase(Path.Combine(PathManager.GetExeDirectoryAbsolute(), "gamedb", "gamedb.txt"));
-
-				Input.Initialize(this.Handle);
-				InitControls();
-
-				// TODO
-				//CoreFileProvider.SyncCoreCommInputSignals();
-
-				Global.ActiveController = new Controller(NullEmulator.NullController);
-				Global.AutoFireController = Global.AutofireNullControls;
-				Global.AutofireStickyXORAdapter.SetOnOffPatternFromConfig();
-
-				Closing += (o, e) =>
-				{
-					Global.MovieSession.Movie.Stop();
-
-					foreach (var ew in EmulatorWindows.ToList())
-					{
-						ew.ShutDown();
-					}
-
-					SaveConfig();
-				};
-
-				if (Global.Config.MainWndx != -1 && Global.Config.MainWndy != -1 && Global.Config.SaveWindowPosition)
-				{
-					Location = new Point(Global.Config.MainWndx, Global.Config.MainWndy);
 				}
 			};
+
+			Database.LoadDatabase(Path.Combine(PathManager.GetExeDirectoryAbsolute(), "gamedb", "gamedb.txt"));
+
+			Input.Initialize(this.Handle);
+			InitControls();
+
+			// TODO
+			//CoreFileProvider.SyncCoreCommInputSignals();
+
+			Global.ActiveController = new Controller(NullController.Instance.Definition);
+			Global.AutoFireController = AutofireNullControls;
+			Global.AutofireStickyXORAdapter.SetOnOffPatternFromConfig();
+
+			Closing += (o, e) =>
+			{
+				Global.MovieSession.Movie.Stop();
+
+				foreach (var ew in EmulatorWindows.ToList())
+				{
+					ew.ShutDown();
+				}
+
+				SaveConfig();
+			};
+
+			if (Global.Config.MainWndx != -1 && Global.Config.MainWndy != -1 && Global.Config.SaveWindowPosition)
+			{
+				Location = new Point(Global.Config.MainWndx, Global.Config.MainWndy);
+			}
+		}
+
+		// TODO: make this an actual property, set it when loading a Rom, and pass it dialogs, etc
+		// This is a quick hack to reduce the dependency on Global.Emulator
+		public IEmulator Emulator
+		{
+			get { return Global.Emulator; }
+			set { Global.Emulator = value; }
 		}
 
 		private static bool StateErrorAskUser(string title, string message)
@@ -141,7 +149,7 @@ namespace BizHawk.Client.MultiHawk
 		}
 
 		public EmulatorWindowList EmulatorWindows = new EmulatorWindowList();
-
+		private AutofireController AutofireNullControls;
 		private bool _exit;
 
 		protected override void OnClosed(EventArgs e)
@@ -176,7 +184,7 @@ namespace BizHawk.Client.MultiHawk
 			ConfigService.Save(PathManager.DefaultIniPath, Global.Config);
 		}
 
-		private static void InitControls()
+		private void InitControls()
 		{
 			var controls = new Controller(
 				new ControllerDefinition
@@ -191,7 +199,7 @@ namespace BizHawk.Client.MultiHawk
 			}
 
 			Global.ClientControls = controls;
-			Global.AutofireNullControls = new AutofireController(NullEmulator.NullController, Global.Emulator);
+			AutofireNullControls = new AutofireController(NullController.Instance.Definition, Emulator);
 		}
 
 		private void OpenRomMenuItem_Click(object sender, EventArgs e)
@@ -272,7 +280,7 @@ namespace BizHawk.Client.MultiHawk
 
 				if (EmulatorWindows.First() == ew)
 				{
-					Global.Emulator = ew.Emulator;
+					Emulator = ew.Emulator;
 				}
 
 				return true;
@@ -322,8 +330,8 @@ namespace BizHawk.Client.MultiHawk
 					TopLevel = false,
 					Text = Path.GetFileNameWithoutExtension(StripArchivePath(path)),
 					Emulator = loader.LoadedEmulator,
-
 					GL = new Bizware.BizwareGL.Drivers.OpenTK.IGL_TK(2,0,false),
+					//GL = new Bizware.BizwareGL.Drivers.SlimDX.IGL_SlimDX9(),
 					GLManager = GLManager.Instance,
 					Game = loader.Game,
 					CurrentRomPath = loader.CanonicalFullPath
@@ -363,7 +371,8 @@ namespace BizHawk.Client.MultiHawk
 
 				if (EmulatorWindows.Count == 1)
 				{
-					Global.Emulator = ew.Emulator;
+					Emulator = ew.Emulator;
+					ViewSubMenu.Enabled = true;
 				}
 
 				_inputManager.SyncControls();
@@ -629,7 +638,7 @@ namespace BizHawk.Client.MultiHawk
 
 				// TODO
 				//Global.ActiveController.ApplyAxisConstraints(
-				//	(Global.Emulator is N64 && Global.Config.N64UseCircularAnalogConstraint) ? "Natural Circle" : null);
+				//	(Emulator is N64 && Global.Config.N64UseCircularAnalogConstraint) ? "Natural Circle" : null);
 
 				Global.ActiveController.OR_FromLogical(Global.ClickyVirtualPadController);
 				Global.AutoFireController.LatchFromPhysical(Global.ControllerInputCoalescer);
@@ -913,7 +922,7 @@ namespace BizHawk.Client.MultiHawk
 		public bool EmulatorPaused = true;
 		private readonly BizHawk.Client.EmuHawk.Throttle _throttle;
 		//private bool _unthrottled; // TODO
-		private bool _runloopFrameadvance;
+		private bool _runloopFrameAdvance;
 		private bool _runloopFrameProgress;
 		private long _frameAdvanceTimestamp;
 		private bool _runloopLastFf;
@@ -947,7 +956,7 @@ namespace BizHawk.Client.MultiHawk
 			Global.DisableSecondaryThrottling = /*_unthrottled || TODO */ turbo || fastForward;
 
 			// realtime throttle is never going to be so exact that using a double here is wrong
-			_throttle.SetCoreFps(EmulatorWindows.Master.Emulator.CoreComm.VsyncRate);
+			_throttle.SetCoreFps(EmulatorWindows.Master.Emulator.VsyncRate());
 			_throttle.signal_paused = EmulatorPaused;
 			_throttle.signal_unthrottle = /*_unthrottled || TODO */ turbo;
 			_throttle.signal_overrideSecondaryThrottle = fastForward && (Global.Config.SoundThrottle || Global.Config.VSyncThrottle || Global.Config.VSync);
@@ -957,8 +966,8 @@ namespace BizHawk.Client.MultiHawk
 		private void StepRunLoop_Throttle()
 		{
 			SyncThrottle();
-			_throttle.signal_frameAdvance = _runloopFrameadvance;
-			_throttle.signal_continuousframeAdvancing = _runloopFrameProgress;
+			_throttle.signal_frameAdvance = _runloopFrameAdvance;
+			_throttle.signal_continuousFrameAdvancing = _runloopFrameProgress;
 
 			_throttle.Step(true, -1);
 		}
@@ -978,7 +987,7 @@ namespace BizHawk.Client.MultiHawk
 		private void StepRunLoop_Core()
 		{
 			var runFrame = false;
-			_runloopFrameadvance = false;
+			_runloopFrameAdvance = false;
 			var currentTimestamp = Stopwatch.GetTimestamp();
 			double frameAdvanceTimestampDeltaMs = (double)(currentTimestamp - _frameAdvanceTimestamp) / Stopwatch.Frequency * 1000.0;
 			bool frameProgressTimeElapsed = frameAdvanceTimestampDeltaMs >= Global.Config.FrameProgressDelayMs;
@@ -990,7 +999,7 @@ namespace BizHawk.Client.MultiHawk
 				{
 					PauseEmulator();
 					runFrame = true;
-					_runloopFrameadvance = true;
+					_runloopFrameAdvance = true;
 					_frameAdvanceTimestamp = currentTimestamp;
 				}
 				else
@@ -1113,7 +1122,7 @@ namespace BizHawk.Client.MultiHawk
 
 		private void RecordMovieMenuItem_Click(object sender, EventArgs e)
 		{
-			new RecordMovie().ShowDialog();
+			new RecordMovie(Emulator).ShowDialog();
 			UpdateMainText();
 			UpdateAfterFrameChanged();
 		}
@@ -1192,7 +1201,7 @@ namespace BizHawk.Client.MultiHawk
 
 			try
 			{
-				Global.MovieSession.QueueNewMovie(movie, record, Global.Emulator);
+				Global.MovieSession.QueueNewMovie(movie, record, Emulator);
 			}
 			catch (MoviePlatformMismatchException ex)
 			{
@@ -1202,7 +1211,7 @@ namespace BizHawk.Client.MultiHawk
 
 			RebootCoresMenuItem_Click(null, null);
 
-			Global.Emulator = EmulatorWindows.Master.Emulator;
+			Emulator = EmulatorWindows.Master.Emulator;
 
 			if (Global.MovieSession.PreviousNES_InQuickNES.HasValue)
 			{
@@ -1272,15 +1281,16 @@ namespace BizHawk.Client.MultiHawk
 			EmulatorWindows.Remove(ew);
 			WorkspacePanel.Controls.Remove(ew);
 
-			if (ew.Emulator == Global.Emulator)
+			if (ew.Emulator == Emulator)
 			{
 				if (EmulatorWindows.Any())
 				{
-					Global.Emulator = EmulatorWindows.Master.Emulator;
+					Emulator = EmulatorWindows.Master.Emulator;
 				}
 				else
 				{
-					Global.Emulator = null;
+					Emulator = null;
+					ViewSubMenu.Enabled = false;
 				}
 			}
 		}
@@ -1474,33 +1484,33 @@ namespace BizHawk.Client.MultiHawk
 
 		private void ViewSubMenu_DropDownOpened(object sender, EventArgs e)
 		{
-			_1xMenuItem.Checked = Global.Config.TargetZoomFactors[Global.Emulator.SystemId] == 1;
-			_2xMenuItem.Checked = Global.Config.TargetZoomFactors[Global.Emulator.SystemId] == 2;
-			_3xMenuItem.Checked = Global.Config.TargetZoomFactors[Global.Emulator.SystemId] == 3;
-			_4xMenuItem.Checked = Global.Config.TargetZoomFactors[Global.Emulator.SystemId] == 4;
+			_1xMenuItem.Checked = Global.Config.TargetZoomFactors[Emulator.SystemId] == 1;
+			_2xMenuItem.Checked = Global.Config.TargetZoomFactors[Emulator.SystemId] == 2;
+			_3xMenuItem.Checked = Global.Config.TargetZoomFactors[Emulator.SystemId] == 3;
+			_4xMenuItem.Checked = Global.Config.TargetZoomFactors[Emulator.SystemId] == 4;
 		}
 
 		private void _1xMenuItem_Click(object sender, EventArgs e)
 		{
-			Global.Config.TargetZoomFactors[Global.Emulator.SystemId] = 1;
+			Global.Config.TargetZoomFactors[Emulator.SystemId] = 1;
 			ReRenderAllWindows();
 		}
 
 		private void _2xMenuItem_Click(object sender, EventArgs e)
 		{
-			Global.Config.TargetZoomFactors[Global.Emulator.SystemId] = 2;
+			Global.Config.TargetZoomFactors[Emulator.SystemId] = 2;
 			ReRenderAllWindows();
 		}
 
 		private void _3xMenuItem_Click(object sender, EventArgs e)
 		{
-			Global.Config.TargetZoomFactors[Global.Emulator.SystemId] = 3;
+			Global.Config.TargetZoomFactors[Emulator.SystemId] = 3;
 			ReRenderAllWindows();
 		}
 
 		private void _4xMenuItem_Click(object sender, EventArgs e)
 		{
-			Global.Config.TargetZoomFactors[Global.Emulator.SystemId] = 4;
+			Global.Config.TargetZoomFactors[Emulator.SystemId] = 4;
 			ReRenderAllWindows();
 		}
 

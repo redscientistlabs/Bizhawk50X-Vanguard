@@ -4,23 +4,11 @@ namespace BizHawk.Client.Common
 {
 	public partial class BkmMovie
 	{
-		public IDictionary<string, string> HeaderEntries
-		{
-			get
-			{
-				return Header;
-			}
-		}
-		
-		public SubtitleList Subtitles
-		{
-			get { return Header.Subtitles; }
-		}
+		public IDictionary<string, string> HeaderEntries => Header;
 
-		public IList<string> Comments
-		{
-			get { return Header.Comments; }
-		}
+		public SubtitleList Subtitles => Header.Subtitles;
+
+		public IList<string> Comments => Header.Comments;
 
 		public string SyncSettingsJson
 		{
@@ -41,7 +29,10 @@ namespace BizHawk.Client.Common
 		}
 
 		// Bkm doesn't support saveram anchored movies
-		public bool StartsFromSaveRam { get { return false; } set { } }
+		public bool StartsFromSaveRam
+		{
+			get { return false; } set { }
+		}
 
 		public string GameName
 		{
@@ -51,8 +42,8 @@ namespace BizHawk.Client.Common
 
 		public string SystemID
 		{
-			get { return Header.SystemID; }
-			set { Header.SystemID = value; }
+			get { return Header.SystemId; }
+			set { Header.SystemId = value; }
 		}
 
 		public string Hash
@@ -94,6 +85,6 @@ namespace BizHawk.Client.Common
 		public string TextSavestate { get; set; }
 		public byte[] BinarySavestate { get; set; }
 		public int[] SavestateFramebuffer { get { return null; } set { } } // eat and ignore framebuffers
-		public byte[] SaveRam { get { return null; } set {  } } // Bkm does not support Saveram anchored movies
+		public byte[] SaveRam { get { return null; } set { } } // Bkm does not support Saveram anchored movies
 	}
 }

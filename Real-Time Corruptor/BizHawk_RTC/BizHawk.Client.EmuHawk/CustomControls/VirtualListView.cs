@@ -54,9 +54,10 @@ namespace BizHawk.Client.EmuHawk
 		public uint dwDrawStage;
 		public IntPtr Hdc;
 		public RECT Rect;
-		public int dwItemSpec;
+		public IntPtr dwItemSpec;
 		public uint ItemState;
-		public int lItemlParam;
+		private int _pad64bits;
+		public IntPtr lItemlParam;
 	}
 
 	[StructLayout(LayoutKind.Sequential)]
@@ -499,8 +500,8 @@ namespace BizHawk.Client.EmuHawk
 				Win32.SendMessage(
 					this.Handle,
 					(int)ListViewMessages.LVM_SETITEMSTATE,
-					index,
-					ptrItem.ToInt32());
+					(IntPtr)index,
+					ptrItem);
 			} 
 			catch (Exception ex) 
 			{
@@ -524,8 +525,8 @@ namespace BizHawk.Client.EmuHawk
 			Win32.SendMessage(
 				this.Handle,
 				(int)ListViewMessages.LVM_SETITEMCOUNT,
-				this._itemCount,
-				0);
+				(IntPtr)this._itemCount,
+				IntPtr.Zero);
 		}
 
 		protected void OnDispInfoNotice(ref Message m, bool useAnsi)
@@ -596,7 +597,7 @@ namespace BizHawk.Client.EmuHawk
 					if (QueryItemBkColor != null)
 					{
 						var color = Color.FromArgb(cd.ClearTextBackground & 0xFF, (cd.ClearTextBackground >> 8) & 0xFF, (cd.ClearTextBackground >> 16) & 0xFF);
-						QueryItemBkColor(cd.Nmcd.dwItemSpec, cd.SubItem, ref color);
+						QueryItemBkColor(cd.Nmcd.dwItemSpec.ToInt32(), cd.SubItem, ref color);
 						cd.ClearTextBackground = (color.B << 16) | (color.G << 8) | color.R;
 						Marshal.StructureToPtr(cd, m.LParam, false);
 					}
@@ -749,14 +750,14 @@ namespace BizHawk.Client.EmuHawk
 			lvhti.Point.X = x;
 			lvhti.Point.Y = y;
 			Marshal.StructureToPtr(lvhti, ptrlvhti, true);
-			int z = Win32.SendMessage(this.Handle, (int)ListViewMessages.LVM_HITTEST, 0, ptrlvhti.ToInt32());
+			int z = (int)Win32.SendMessage(this.Handle, (int)ListViewMessages.LVM_HITTEST, (IntPtr)0, ptrlvhti);
 			Marshal.PtrToStructure(ptrlvhti, lvhti);
 			return z;
 		}
 
 		public void ensureVisible(int index) 
 		{
-			Win32.SendMessage(Handle, (int)ListViewMessages.LVM_ENSUREVISIBLE, index, 1);
+			Win32.SendMessage(Handle, (int)ListViewMessages.LVM_ENSUREVISIBLE, (IntPtr)index, (IntPtr)1);
 		}
 
 		public void ensureVisible() 

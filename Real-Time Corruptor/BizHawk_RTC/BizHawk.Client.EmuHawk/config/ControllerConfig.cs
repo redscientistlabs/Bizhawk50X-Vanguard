@@ -14,7 +14,7 @@ namespace BizHawk.Client.EmuHawk
 {
 	public partial class ControllerConfig : Form
 	{
-		private const int MAXPLAYERS = 8;
+		private const int MaxPlayers = 12;
 		private static readonly Dictionary<string, Bitmap> ControllerImages = new Dictionary<string, Bitmap>();
 		private readonly ControllerDefinition _theDefinition;
 
@@ -28,7 +28,6 @@ namespace BizHawk.Client.EmuHawk
 			ControllerImages.Add("Dual Gameboy Controller", Properties.Resources.GBController);
 
 			ControllerImages.Add("SMS Controller", Properties.Resources.SMSController);
-			ControllerImages.Add("Genesis 3-Button Controller", Properties.Resources.GENController);
 			ControllerImages.Add("GPGX Genesis Controller", Properties.Resources.GENController);
 			ControllerImages.Add("Saturn Controller", Properties.Resources.SaturnController);
 
@@ -46,6 +45,8 @@ namespace BizHawk.Client.EmuHawk
 			ControllerImages.Add("PSX Gamepad Controller", Properties.Resources.PSX_Original_Controller);
 			ControllerImages.Add("PSX DualShock Controller", Properties.Resources.psx_dualshock);
 			ControllerImages.Add("Apple IIe Keyboard", Properties.Resources.AppleIIKeyboard);
+			ControllerImages.Add("VirtualBoy Controller", Properties.Resources.VBoyController);
+			ControllerImages.Add("NeoGeo Portable Controller", Properties.Resources.NGPController);
 			
 		}
 
@@ -74,8 +75,7 @@ namespace BizHawk.Client.EmuHawk
 
 		private Control CreateNormalPanel(Dictionary<string, string> settings, List<string> buttons, Size size)
 		{
-			var cp = new ControllerConfigPanel { Dock = DockStyle.Fill, AutoScroll = true };
-			cp.Tooltip = toolTip1;
+			var cp = new ControllerConfigPanel { Dock = DockStyle.Fill, AutoScroll = true, Tooltip = toolTip1 };
 			cp.LoadSettings(settings, checkBoxAutoTab.Checked, buttons, size.Width, size.Height);
 			return cp;
 		}
@@ -109,7 +109,7 @@ namespace BizHawk.Client.EmuHawk
 			}
 
 			// split the list of all settings into buckets by player number
-			var buckets = new List<string>[MAXPLAYERS + 1];
+			var buckets = new List<string>[MaxPlayers + 1];
 			var categoryBuckets = new WorkingDictionary<string, List<string>>();
 			for (var i = 0; i < buckets.Length; i++)
 			{
@@ -122,7 +122,7 @@ namespace BizHawk.Client.EmuHawk
 			foreach (var button in controllerButtons)
 			{
 				int i;
-				for (i = 1; i <= MAXPLAYERS; i++)
+				for (i = MaxPlayers; i > 0; i--)
 				{
 					if (button.StartsWith("P" + i))
 					{
@@ -130,14 +130,19 @@ namespace BizHawk.Client.EmuHawk
 					}
 				}
 
-				if (i > MAXPLAYERS) // couldn't find
+				if (i > MaxPlayers) // couldn't find
 				{
 					i = 0;
 				}
 
 				if (categoryLabels.ContainsKey(button))
+				{
 					categoryBuckets[categoryLabels[button]].Add(button);
-				else buckets[i].Add(button);
+				}
+				else
+				{
+					buckets[i].Add(button);
+				}
 			}
 
 			if (buckets[0].Count == controllerButtons.Count)
@@ -151,7 +156,7 @@ namespace BizHawk.Client.EmuHawk
 				var tt = new TabControl { Dock = DockStyle.Fill };
 				dest.Controls.Add(tt);
 				int pageidx = 0;
-				for (int i = 1; i <= MAXPLAYERS; i++)
+				for (int i = 1; i <= MaxPlayers; i++)
 				{
 					if (buckets[i].Count > 0)
 					{
@@ -202,9 +207,9 @@ namespace BizHawk.Client.EmuHawk
 			IDictionary<string, Dictionary<string, string>> autofire,
 			IDictionary<string, Dictionary<string, Config.AnalogBind>> analog)
 		{
-			LoadToPanel(NormalControlsTab, _theDefinition.Name, _theDefinition.BoolButtons, _theDefinition.CategoryLabels, normal, string.Empty, CreateNormalPanel);
-			LoadToPanel(AutofireControlsTab, _theDefinition.Name, _theDefinition.BoolButtons, _theDefinition.CategoryLabels, autofire, string.Empty, CreateNormalPanel);
-			LoadToPanel(AnalogControlsTab, _theDefinition.Name, _theDefinition.FloatControls, _theDefinition.CategoryLabels, analog, new Config.AnalogBind(string.Empty, 1.0f, 0.1f), CreateAnalogPanel);
+			LoadToPanel(NormalControlsTab, _theDefinition.Name, _theDefinition.BoolButtons, _theDefinition.CategoryLabels, normal, "", CreateNormalPanel);
+			LoadToPanel(AutofireControlsTab, _theDefinition.Name, _theDefinition.BoolButtons, _theDefinition.CategoryLabels, autofire, "", CreateNormalPanel);
+			LoadToPanel(AnalogControlsTab, _theDefinition.Name, _theDefinition.FloatControls, _theDefinition.CategoryLabels, analog, new Config.AnalogBind("", 1.0f, 0.1f), CreateAnalogPanel);
 
 			if (AnalogControlsTab.Controls.Count == 0)
 			{
@@ -320,9 +325,10 @@ namespace BizHawk.Client.EmuHawk
 			GlobalWin.OSD.AddMessage("Controller settings saved");
 			DialogResult = DialogResult.OK;
 			Close();
-
+			
             //RTC_Hijack : Force save Controller config
             RTC.RTC_Hooks.BIZHAWK_SAVE_CONFIG();
+			
 		}
 
 		private void ButtonCancel_Click(object sender, EventArgs e)

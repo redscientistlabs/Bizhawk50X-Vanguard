@@ -35,6 +35,7 @@ namespace BizHawk.Client.EmuHawk
 			GraphicsControl.MouseDoubleClick += (o, e) => HandleFullscreenToggle(o, e);
 			GraphicsControl.MouseClick += (o, e) => GlobalWin.MainForm.MainForm_MouseClick(o, e);
 			GraphicsControl.MouseMove += (o, e) => GlobalWin.MainForm.MainForm_MouseMove(o, e);
+			GraphicsControl.MouseWheel += (o, e) => GlobalWin.MainForm.MainForm_MouseWheel(o, e);
 		}
 
 		bool IsDisposed = false;
@@ -54,6 +55,7 @@ namespace BizHawk.Client.EmuHawk
 
 		private void HandleFullscreenToggle(object sender, MouseEventArgs e)
 		{
+			
 			//RTC_Hijack : Return if hook is true
 			if (!RTC.RTC_Hooks.BIZHAWK_ALLOWED_DOUBLECLICK_FULLSCREEN)
 			{

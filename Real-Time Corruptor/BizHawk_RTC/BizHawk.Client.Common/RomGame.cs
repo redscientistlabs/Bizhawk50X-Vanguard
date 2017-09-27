@@ -9,16 +9,21 @@ namespace BizHawk.Client.Common
 {
 	public class RomGame
 	{
-		public byte[] RomData { get; set; }
-		public byte[] FileData { get; set; }
-		public GameInfo GameInfo { get; set; }
-		public string Extension { get; set; }
+		public byte[] RomData { get; }
+		public byte[] FileData { get; }
+		public GameInfo GameInfo { get; }
+		public string Extension { get; }
 
 		private const int BankSize = 1024;
 
-		public RomGame() { }
+		public RomGame()
+		{
+		}
 
-		public RomGame(HawkFile file) : this(file, null) { }
+		public RomGame(HawkFile file)
+			: this(file, null)
+		{
+		}
 
 		public RomGame(HawkFile file, string patch)
 		{
@@ -39,7 +44,7 @@ namespace BizHawk.Client.Common
 			// assume we have a header of that size. Otherwise, assume it's just all rom.
 			// Other 'recognized' header sizes may need to be added.
 			int headerOffset = fileLength % BankSize;
-			if (headerOffset.In(0, 512) == false)
+			if (headerOffset.In(0, 128, 512) == false)
 			{
 				Console.WriteLine("ROM was not a multiple of 1024 bytes, and not a recognized header size: {0}. Assume it's purely ROM data.", headerOffset);
 				headerOffset = 0;
@@ -81,6 +86,13 @@ namespace BizHawk.Client.Common
 
 			// note: this will be taking several hashes, of a potentially large amount of data.. yikes!
 			GameInfo = Database.GetGameInfo(RomData, file.Name);
+
+			if (GameInfo.NotInDatabase && headerOffset==128 && file.Extension == ".A78")
+			{
+				// if the game is not in the DB, add the header back in so the core can use it
+				// for now only .A78 games, but probably should be for other systems as well
+				RomData = FileData;
+			}
 			
 			CheckForPatchOptions();
 
@@ -101,7 +113,6 @@ namespace BizHawk.Client.Common
 		{
 			// SMD files are interleaved in pages of 16k, with the first 8k containing all 
 			// odd bytes and the second 8k containing all even bytes.
-
 			int size = source.Length;
 			if (size > 0x400000)
 			{
@@ -119,10 +130,11 @@ namespace BizHawk.Client.Common
 					output[(page * 0x4000) + (i * 2) + 1] = source[(page * 0x4000) + 0x0000 + i];
 				}
 			}
+
 			return output;
 		}
 
-		private unsafe static byte[] MutateSwapN64(byte[] source)
+		private static unsafe byte[] MutateSwapN64(byte[] source)
 		{
 			// N64 roms are in one of the following formats:
 			//  .Z64 = No swapping
@@ -154,7 +166,6 @@ namespace BizHawk.Client.Common
 						// output[i + 3] = source[i];
 						// output[i + 1] = source[i + 2];
 						// output[i + 2] = source[i + 1];
-
 						byte temp = pSource[i];
 						pSource[i] = source[i + 3];
 						pSource[i + 3] = temp;
@@ -188,7 +199,10 @@ namespace BizHawk.Client.Common
 					}
 				}
 			}
-			catch (Exception) { } // No need for errors in patching to propagate.
+			catch (Exception)
+			{
+				// No need for errors in patching to propagate.
+			}
 		}
 	}
 }

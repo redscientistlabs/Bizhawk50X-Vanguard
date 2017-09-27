@@ -37,8 +37,8 @@ namespace BizHawk.Client.EmuHawk
 					Services.Add(si.TypeName, si);
 				}
 
-				var notapplicableAttr = ((ServiceNotApplicable)Attribute
-					.GetCustomAttribute(emu.GetType(), typeof(ServiceNotApplicable)));
+				var notapplicableAttr = ((ServiceNotApplicableAttribute)Attribute
+					.GetCustomAttribute(emu.GetType(), typeof(ServiceNotApplicableAttribute)));
 
 				if (notapplicableAttr != null)
 				{
@@ -135,7 +135,7 @@ namespace BizHawk.Client.EmuHawk
 		{
 			var ret = new TreeNode
 			{
-				Text = ci.CoreName + (ci.Released ? string.Empty : " (UNRELEASED)"),
+				Text = ci.CoreName + (ci.Released ? "" : " (UNRELEASED)"),
 				ForeColor = ci.Released ? Color.Black : Color.DarkGray
 			};
 
@@ -223,7 +223,7 @@ namespace BizHawk.Client.EmuHawk
 				.Select(t => new
 				{
 					Type = t,
-					CoreAttributes = (CoreAttributes)t.GetCustomAttributes(typeof(CoreAttributes), false).First()
+					CoreAttributes = (CoreAttribute)t.GetCustomAttributes(typeof(CoreAttribute), false).First()
 				})
 				.OrderByDescending(t => t.CoreAttributes.Released)
 				.ThenBy(t => t.CoreAttributes.CoreName)
@@ -255,7 +255,7 @@ namespace BizHawk.Client.EmuHawk
 					string img = "Unknown";
 					var coreNode = new TreeNode
 					{
-						Text = t.CoreAttributes.CoreName + (t.CoreAttributes.Released ? string.Empty : " (UNRELEASED)"),
+						Text = t.CoreAttributes.CoreName + (t.CoreAttributes.Released ? "" : " (UNRELEASED)"),
 						ForeColor = t.CoreAttributes.Released ? Color.Black : Color.DarkGray,
 						ImageKey = img,
 						SelectedImageKey = img,

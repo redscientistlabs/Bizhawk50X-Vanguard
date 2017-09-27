@@ -285,7 +285,7 @@ namespace RTC
 
 				RTC_Command cmdBack = new RTC_Command(CommandType.PUSHSCREEN);
 
-				Bitmap bmp = MainForm.MakeScreenshotImage().ToSysdrawingBitmap();
+				Bitmap bmp = GlobalWin.MainForm.MakeScreenshotImage().ToSysdrawingBitmap();
 
 				if(cbCompressStream.Checked)
 				cmdBack.screen = SaveJPG100(bmp, 60);

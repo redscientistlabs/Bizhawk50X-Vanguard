@@ -1,11 +1,11 @@
-﻿using BizHawk.Common.NumberExtensions;
-using BizHawk.Common.StringExtensions;
-using BizHawk.Emulation.Common;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
-using System.Text;
+
+using BizHawk.Common.NumberExtensions;
+using BizHawk.Common.StringExtensions;
+using BizHawk.Emulation.Common;
 
 namespace BizHawk.Client.Common
 {
@@ -14,17 +14,11 @@ namespace BizHawk.Client.Common
 	/// </summary>
 	public sealed class DWordWatch : Watch
 	{
-		#region Fields
-
 		private uint _value;
 		private uint _previous;
 
-		#endregion
-
-		#region cTor(s)
-
 		/// <summary>
-		/// Inialize a new instance of <see cref="DWordWatch"/>
+		/// Initializes a new instance of the <see cref="DWordWatch"/> class
 		/// </summary>
 		/// <param name="domain"><see cref="MemoryDomain"/> where you want to track</param>
 		/// <param name="address">The address you want to track</param>
@@ -38,24 +32,13 @@ namespace BizHawk.Client.Common
 		internal DWordWatch(MemoryDomain domain, long address, DisplayType type, bool bigEndian, string note, uint value, uint previous, int changeCount)
 			: base(domain, address, WatchSize.DWord, type, bigEndian, note)
 		{
-			if (value == 0)
-			{
-				this._value = GetDWord();
-			}
-			else
-			{
-				this._value = value;
-			}
-			this._previous = previous;
-			this._changecount = changeCount;
+			_value = value == 0 ? GetDWord() : value;
+			_previous = previous;
+			ChangeCount = changeCount;
 		}
 
-		#endregion
-
-		#region Methods
-
 		/// <summary>
-		/// Enumerate wich <see cref="DisplayType"/> are valid for a <see cref="DWordWatch"/>
+		/// Gets a list of <see cref="DisplayType"/> for a <see cref="DWordWatch"/>
 		/// </summary>
 		public static IEnumerable<DisplayType> ValidTypes
 		{
@@ -71,12 +54,10 @@ namespace BizHawk.Client.Common
 			}
 		}
 
-		#region Implements
-
 		/// <summary>
-		/// Get a list a <see cref="DisplayType"/> that can be used for this <see cref="DWordWatch"/>
+		/// Get a list of <see cref="DisplayType"/> that can be used for a <see cref="DWordWatch"/>
 		/// </summary>
-		/// <returns>An enumartion that contains all valid <see cref="DisplayType"/></returns>
+		/// <returns>An enumeration that contains all valid <see cref="DisplayType"/></returns>
 		public override IEnumerable<DisplayType> AvailableTypes()
 		{
 			return ValidTypes;
@@ -95,7 +76,7 @@ namespace BizHawk.Client.Common
 		/// at the current <see cref="Watch"/> address
 		/// </summary>
 		/// <param name="value">Value to set</param>
-		/// <returns>True if value successfully sets; othewise, false</returns>
+		/// <returns>True if value successfully sets; otherwise, false</returns>
 		public override bool Poke(string value)
 		{
 			try
@@ -172,9 +153,9 @@ namespace BizHawk.Client.Common
 						break;
 				}
 
-				if (Global.CheatList.Contains(Domain, _address))
+				if (Global.CheatList.Contains(Domain, Address))
 				{
-					var cheat = Global.CheatList.FirstOrDefault(c => c.Address == _address && c.Domain == Domain);
+					var cheat = Global.CheatList.FirstOrDefault(c => c.Address == Address && c.Domain == Domain);
 					if (cheat != (Cheat)null)
 					{
 						cheat.PokeValue((int)val);
@@ -207,7 +188,7 @@ namespace BizHawk.Client.Common
 					if (_value != temp)
 					{
 						_previous = _value;
-						_changecount++;
+						ChangeCount++;
 					}
 
 					break;
@@ -216,16 +197,14 @@ namespace BizHawk.Client.Common
 					_value = GetDWord();
 					if (_value != Previous)
 					{
-						_changecount++;
+						ChangeCount++;
 					}
 
 					break;
 			}
 		}
 
-		#endregion Implements
-
-		//TODO: Implements IFormattable
+		// TODO: Implements IFormattable
 		public string FormatValue(uint val)
 		{
 			switch (Type)
@@ -238,104 +217,51 @@ namespace BizHawk.Client.Common
 				case DisplayType.Hex:
 					return val.ToHexString(8);
 				case DisplayType.FixedPoint_20_12:
-					return string.Format("{0:0.######}", val / 4096.0);
+					return $"{val / 4096.0:0.######}";
 				case DisplayType.FixedPoint_16_16:
-					return string.Format("{0:0.######}", val / 65536.0);
+					return $"{val / 65536.0:0.######}";
 				case DisplayType.Float:
 					var bytes = BitConverter.GetBytes(val);
 					var _float = BitConverter.ToSingle(bytes, 0);
-					//return string.Format("{0:0.######}", _float);
 					return _float.ToString(); // adelikat: decided that we like sci notation instead of spooky rounding
 			}
 		}
-
-		#endregion
-
-		#region Properties
-
-		#region Implements
 
 		/// <summary>
 		/// Get a string representation of difference
 		/// between current value and the previous one
 		/// </summary>
-		public override string Diff
-		{
-			get
-			{
-				return FormatValue(_previous - _value);
-			}
-		}
+		public override string Diff => (_previous - _value).ToString();
 
 		/// <summary>
 		/// Get the maximum possible value
 		/// </summary>
-		public override uint MaxValue
-		{
-			get
-			{
-				return uint.MaxValue;
-			}
-		}
+		public override uint MaxValue => uint.MaxValue;
 
 		/// <summary>
 		/// Get the current value
 		/// </summary>
-		public override int Value
-		{
-			get
-			{
-				return (int)GetDWord();
-			}
-		}
+		public override int Value => (int)GetDWord();
 
 		/// <summary>
 		/// Gets the current value
 		/// but with stuff I don't understand
 		/// </summary>
-		public override int ValueNoFreeze
-		{
-			get
-			{
-				return (int)GetDWord(true);
-			}
-		}
+		public override int ValueNoFreeze => (int)GetDWord(true);
 
 		/// <summary>
 		/// Get a string representation of the current value
 		/// </summary>
-		public override string ValueString
-		{
-			get
-			{
-				return FormatValue(GetDWord());
-			}
-		}
+		public override string ValueString => FormatValue(GetDWord());
 
 		/// <summary>
 		/// Get the previous value
 		/// </summary>
-		public override int Previous
-		{
-			get
-			{
-				return (int)_previous;
-			}
-		}
+		public override int Previous => (int)_previous;
 
 		/// <summary>
 		/// Get a string representation of the previous value
 		/// </summary>
-		public override string PreviousStr
-		{
-			get
-			{
-				return FormatValue(_previous);
-			}
-		}
-
-		#endregion Implements
-
-		#endregion
+		public override string PreviousStr => FormatValue(_previous);
 	}
 }

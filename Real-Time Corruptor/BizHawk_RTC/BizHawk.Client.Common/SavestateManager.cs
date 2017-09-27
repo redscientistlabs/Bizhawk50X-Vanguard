@@ -1,13 +1,10 @@
-﻿using System;
+﻿using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 
 using BizHawk.Common;
 using BizHawk.Common.BufferExtensions;
-using BizHawk.Common.IOExtensions;
-using BizHawk.Emulation.Common;
 using BizHawk.Emulation.Common.IEmulatorExtensions;
-using System.Collections.Generic;
 
 namespace BizHawk.Client.Common
 {
@@ -16,6 +13,7 @@ namespace BizHawk.Client.Common
 		public static void SaveStateFile(string filename, string name)
 		{
 			var core = Global.Emulator.AsStatable();
+
 			// the old method of text savestate save is now gone.
 			// a text savestate is just like a binary savestate, but with a different core lump
 			using (var bs = new BinaryStateSaver(filename))
@@ -25,26 +23,30 @@ namespace BizHawk.Client.Common
 				{
 					// text savestate format
 					using (new SimpleTime("Save Core"))
+					{
 						bs.PutLump(BinaryStateLump.CorestateText, (tw) => core.SaveStateText(tw));
+					}
 				}
 				else
 				{
 					// binary core lump format
 					using (new SimpleTime("Save Core"))
+					{
 						bs.PutLump(BinaryStateLump.Corestate, bw => core.SaveStateBinary(bw));
+					}
 				}
 
-				if (Global.Config.SaveScreenshotWithStates)
+				if (Global.Config.SaveScreenshotWithStates && Global.Emulator.HasVideoProvider())
 				{
-					var vp = Global.Emulator.VideoProvider();
+					var vp = Global.Emulator.AsVideoProvider();
 					var buff = vp.GetVideoBuffer();
 					if (buff.Length == 1)
 					{
-						//is a hacky opengl texture ID. can't handle this now!
-						//need to discuss options
-						//1. cores must be able to provide a pixels videoprovider in addition to a texture ID, on command (not very hard overall but interface changing and work per core)
-						//2. SavestateManager must be setup with a mechanism for resolving texture IDs (even less work, but sloppy)
-						//There are additional problems with AVWriting. They depend on VideoProvider providing pixels.
+						// is a hacky opengl texture ID. can't handle this now!
+						// need to discuss options
+						// 1. cores must be able to provide a pixels videoprovider in addition to a texture ID, on command (not very hard overall but interface changing and work per core)
+						// 2. SavestateManager must be setup with a mechanism for resolving texture IDs (even less work, but sloppy)
+						// There are additional problems with AVWriting. They depend on VideoProvider providing pixels.
 					}
 					else
 					{
@@ -57,8 +59,11 @@ namespace BizHawk.Client.Common
 							out_w /= 2;
 							out_h /= 2;
 						}
+
 						using (new SimpleTime("Save Framebuffer"))
-							bs.PutLump(BinaryStateLump.Framebuffer, (s) => QuickBmpFile.Save(Global.Emulator.VideoProvider(), s, out_w, out_h));
+						{
+							bs.PutLump(BinaryStateLump.Framebuffer, s => QuickBmpFile.Save(Global.Emulator.AsVideoProvider(), s, out_w, out_h));
+						}
 					}
 				}
 
@@ -96,14 +101,21 @@ namespace BizHawk.Client.Common
 
 		public static void PopulateFramebuffer(BinaryReader br)
 		{
+			if (!Global.Emulator.HasVideoProvider())
+			{
+				return;
+			}
+
 			try
 			{
 				using (new SimpleTime("Load Framebuffer"))
-					QuickBmpFile.Load(Global.Emulator.VideoProvider(), br.BaseStream);
+				{
+					QuickBmpFile.Load(Global.Emulator.AsVideoProvider(), br.BaseStream);
+				}
 			}
 			catch
 			{
-				var buff = Global.Emulator.VideoProvider().GetVideoBuffer();
+				var buff = Global.Emulator.AsVideoProvider().GetVideoBuffer();
 				try
 				{
 					for (int i = 0; i < buff.Length; i++)
@@ -112,7 +124,9 @@ namespace BizHawk.Client.Common
 						buff[i] = j;
 					}
 				}
-				catch (EndOfStreamException) { }
+				catch (EndOfStreamException)
+				{
+				}
 			}
 		}
 
@@ -155,40 +169,37 @@ namespace BizHawk.Client.Common
 					}
 
 					using (new SimpleTime("Load Core"))
+					{
 						bl.GetCoreState(br => core.LoadStateBinary(br), tr => core.LoadStateText(tr));
+					}
 
 					bl.GetLump(BinaryStateLump.Framebuffer, false, PopulateFramebuffer);
 
-					if (bl.HasLump(BinaryStateLump.UserData))
+					string userData = "";
+					bl.GetLump(BinaryStateLump.UserData, false, delegate(TextReader tr)
 					{
-						string userData = string.Empty;
-						bl.GetLump(BinaryStateLump.UserData, false, delegate(TextReader tr)
+						string line;
+						while ((line = tr.ReadLine()) != null)
 						{
-							string line;
-							while ((line = tr.ReadLine()) != null)
+							if (!string.IsNullOrWhiteSpace(line))
 							{
-								if (!string.IsNullOrWhiteSpace(line))
-								{
-									userData = line;
-								}
+								userData = line;
 							}
-						});
+						}
+					});
 
+					if (!string.IsNullOrWhiteSpace(userData))
+					{
 						Global.UserBag = (Dictionary<string, object>)ConfigService.LoadWithType(userData);
 					}
 
-					if (bl.HasLump(BinaryStateLump.LagLog)
-						&& Global.MovieSession.Movie.IsActive && Global.MovieSession.Movie is TasMovie)
+					if (Global.MovieSession.Movie.IsActive && Global.MovieSession.Movie is TasMovie)
 					{
 						bl.GetLump(BinaryStateLump.LagLog, false, delegate(BinaryReader br, long length)
 						{
-							(Global.MovieSession.Movie as TasMovie).TasLagLog.Load(br);
+							((TasMovie)Global.MovieSession.Movie).TasLagLog.Load(br);
 						});
 					}
-				}
-				catch
-				{
-					return false;
 				}
 				finally
 				{
@@ -197,41 +208,9 @@ namespace BizHawk.Client.Common
 
 				return true;
 			}
-			else // text mode
+			else
 			{
-				if (Global.MovieSession.HandleMovieLoadState(path))
-				{
-					using (var reader = new StreamReader(path))
-					{
-						core.LoadStateText(reader);
-
-						while (true)
-						{
-							var str = reader.ReadLine();
-							if (str == null)
-							{
-								break;
-							}
-							
-							if (str.Trim() == string.Empty)
-							{
-								continue;
-							}
-
-							var args = str.Split(' ');
-							if (args[0] == "Framebuffer")
-							{
-								Global.Emulator.VideoProvider().GetVideoBuffer().ReadFromHex(args[1]);
-							}
-						}
-					}
-
-					return true;
-				}
-				else
-				{
-					return false;
-				}
+				return false;
 			}
 		}
 	}

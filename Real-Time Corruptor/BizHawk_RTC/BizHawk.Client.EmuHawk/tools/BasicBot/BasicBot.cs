@@ -16,7 +16,7 @@ namespace BizHawk.Client.EmuHawk
 	{
 		private const string DialogTitle = "Basic Bot";
 
-		private string _currentFileName = string.Empty;
+		private string _currentFileName = "";
 
 		private string CurrentFileName
 		{
@@ -47,7 +47,7 @@ namespace BizHawk.Client.EmuHawk
 		private BotAttempt _comparisonBotAttempt = null;
 		private bool _replayMode = false;
 		private int _startFrame = 0;
-		private string _lastRom = string.Empty;
+		private string _lastRom = "";
 
 		private bool _dontUpdateValues = false;
 
@@ -96,7 +96,7 @@ namespace BizHawk.Client.EmuHawk
 			Settings = new BasicBotSettings();
 
 			_comparisonBotAttempt = new BotAttempt();
-        }
+		}
 
 		private void BasicBot_Load(object sender, EventArgs e)
 		{
@@ -287,65 +287,65 @@ namespace BizHawk.Client.EmuHawk
 			}
 		}
 
-        public byte MainComparisonType
-        {
-            get
-            {
-                return (byte)MainOperator.SelectedIndex;
-            }
-            set
-            {
-                if (value < 5) MainOperator.SelectedIndex = value;
-                else MainOperator.SelectedIndex = 0;
-            }
-        }
+		public byte MainComparisonType
+		{
+			get
+			{
+				return (byte)MainOperator.SelectedIndex;
+			}
+			set
+			{
+				if (value < 5) MainOperator.SelectedIndex = value;
+				else MainOperator.SelectedIndex = 0;
+			}
+		}
 
-        public byte Tie1ComparisonType
-        {
-            get
-            {
-                return (byte)Tiebreak1Operator.SelectedIndex;
-            }
-            set
-            {
-                if (value < 5) Tiebreak1Operator.SelectedIndex = value;
-                else Tiebreak1Operator.SelectedIndex = 0;
-            }
-        }
+		public byte Tie1ComparisonType
+		{
+			get
+			{
+				return (byte)Tiebreak1Operator.SelectedIndex;
+			}
+			set
+			{
+				if (value < 5) Tiebreak1Operator.SelectedIndex = value;
+				else Tiebreak1Operator.SelectedIndex = 0;
+			}
+		}
 
-        public byte Tie2ComparisonType
-        {
-            get
-            {
-                return (byte)Tiebreak2Operator.SelectedIndex;
-            }
-            set
-            {
-                if (value < 5) Tiebreak2Operator.SelectedIndex = value;
-                else Tiebreak2Operator.SelectedIndex = 0;
-            }
-        }
+		public byte Tie2ComparisonType
+		{
+			get
+			{
+				return (byte)Tiebreak2Operator.SelectedIndex;
+			}
+			set
+			{
+				if (value < 5) Tiebreak2Operator.SelectedIndex = value;
+				else Tiebreak2Operator.SelectedIndex = 0;
+			}
+		}
 
-        public byte Tie3ComparisonType
-        {
-            get
-            {
-                return (byte)Tiebreak3Operator.SelectedIndex;
-            }
-            set
-            {
-                if (value < 5) Tiebreak3Operator.SelectedIndex = value;
-                else Tiebreak3Operator.SelectedIndex = 0;
-            }
-        }
+		public byte Tie3ComparisonType
+		{
+			get
+			{
+				return (byte)Tiebreak3Operator.SelectedIndex;
+			}
+			set
+			{
+				if (value < 5) Tiebreak3Operator.SelectedIndex = value;
+				else Tiebreak3Operator.SelectedIndex = 0;
+			}
+		}
 
-        public string FromSlot
+		public string FromSlot
 		{
 			get
 			{
 				return StartFromSlotBox.SelectedItem != null 
 					? StartFromSlotBox.SelectedItem.ToString()
-					: string.Empty;
+					: "";
 			}
 
 			set
@@ -435,7 +435,7 @@ namespace BizHawk.Client.EmuHawk
 
 		private void NewMenuItem_Click(object sender, EventArgs e)
 		{
-			CurrentFileName = string.Empty;
+			CurrentFileName = "";
 			_bestBotAttempt = null;
 
 			ControlProbabilityPanel.Controls
@@ -449,10 +449,10 @@ namespace BizHawk.Client.EmuHawk
 			TieBreaker2Address = 0;
 			TieBreaker3Address = 0;
 			StartFromSlotBox.SelectedIndex = 0;
-            MainOperator.SelectedIndex = 0;
-            Tiebreak1Operator.SelectedIndex = 0;
-            Tiebreak2Operator.SelectedIndex = 0;
-            Tiebreak3Operator.SelectedIndex = 0;
+			MainOperator.SelectedIndex = 0;
+			Tiebreak1Operator.SelectedIndex = 0;
+			Tiebreak2Operator.SelectedIndex = 0;
+			Tiebreak3Operator.SelectedIndex = 0;
 			MainBestRadio.Checked = true;
 			MainValueNumeric.Value = 0;
 			TieBreak1Numeric.Value = 0;
@@ -622,10 +622,10 @@ namespace BizHawk.Client.EmuHawk
 			public int TieBreak1 { get; set; }
 			public int TieBreak2 { get; set; }
 			public int TieBreak3 { get; set; }
-            public byte ComparisonTypeMain { get; set; }
-            public byte ComparisonTypeTie1 { get; set; }
-            public byte ComparisonTypeTie2 { get; set; }
-            public byte ComparisonTypeTie3 { get; set; }
+			public byte ComparisonTypeMain { get; set; }
+			public byte ComparisonTypeTie1 { get; set; }
+			public byte ComparisonTypeTie2 { get; set; }
+			public byte ComparisonTypeTie3 { get; set; }
 
 			public List<string> Log { get; set; }
 		}
@@ -903,7 +903,7 @@ namespace BizHawk.Client.EmuHawk
 					var lg = Global.MovieSession.MovieControllerInstance();
 					lg.SetControllersAsMnemonic(logEntry);
 
-					foreach (var button in lg.Type.BoolButtons)
+					foreach (var button in lg.Definition.BoolButtons)
 					{
 						// TODO: make an input adapter specifically for the bot?
 						Global.LuaAndAdaptor.SetButton(button, lg.IsPressed(button));
@@ -916,7 +916,7 @@ namespace BizHawk.Client.EmuHawk
 			}
 			else if (_isBotting)
 			{
-				if (Global.Emulator.Frame >= _targetFrame)
+				if (Emulator.Frame >= _targetFrame)
 				{
 					Attempts++;
 					Frames += FrameLength;
@@ -981,23 +981,23 @@ namespace BizHawk.Client.EmuHawk
 			return true;
 		}
 
-        private bool TestValue(byte operation, int currentValue, int bestValue)
-        {
-            switch (operation)
-            {
-                case 0:
-                    return currentValue > bestValue;
-                case 1:
-                    return currentValue >= bestValue;
-                case 2:
-                    return currentValue == bestValue;
-                case 3:
-                    return currentValue <= bestValue;
-                case 4:
-                    return currentValue < bestValue;
-            }
-            return false;
-        }
+		private bool TestValue(byte operation, int currentValue, int bestValue)
+		{
+			switch (operation)
+			{
+				case 0:
+					return currentValue > bestValue;
+				case 1:
+					return currentValue >= bestValue;
+				case 2:
+					return currentValue == bestValue;
+				case 3:
+					return currentValue <= bestValue;
+				case 4:
+					return currentValue < bestValue;
+			}
+			return false;
+		}
 
 		private void UpdateBestAttempt()
 		{
@@ -1021,12 +1021,12 @@ namespace BizHawk.Client.EmuHawk
 			else
 			{
 				ClearBestButton.Enabled = false;
-				BestAttemptNumberLabel.Text = string.Empty;
-				BestMaximizeBox.Text = string.Empty;
-				BestTieBreak1Box.Text = string.Empty;
-				BestTieBreak2Box.Text = string.Empty;
-				BestTieBreak3Box.Text = string.Empty;
-				BestAttemptLogLabel.Text = string.Empty;
+				BestAttemptNumberLabel.Text = "";
+				BestMaximizeBox.Text = "";
+				BestTieBreak1Box.Text = "";
+				BestTieBreak2Box.Text = "";
+				BestTieBreak3Box.Text = "";
+				BestAttemptLogLabel.Text = "";
 				PlayBestButton.Enabled = false;
 			}
 		}
@@ -1075,7 +1075,7 @@ namespace BizHawk.Client.EmuHawk
 			GlobalWin.MainForm.LoadQuickSave(SelectedSlot, false, true); // Triggers an UpdateValues call
 			_dontUpdateValues = false;
 
-			_targetFrame = Global.Emulator.Frame + (int)FrameLengthNumeric.Value;
+			_targetFrame = Emulator.Frame + (int)FrameLengthNumeric.Value;
 
 			GlobalWin.MainForm.UnpauseEmulator();
 			if (Settings.TurboWhenBotting)
@@ -1088,7 +1088,7 @@ namespace BizHawk.Client.EmuHawk
 			_cachedControlProbabilities = ControlProbabilities;
 			_logGenerator = Global.MovieSession.LogGeneratorInstance();
 			_logGenerator.SetSource(Global.ClickyVirtualPadController);
-        }
+		}
 
 		private bool CanStart()
 		{
@@ -1212,7 +1212,7 @@ namespace BizHawk.Client.EmuHawk
 				if (TieBreak2BestRadio.Checked && _bestBotAttempt.TieBreak2 != _comparisonBotAttempt.TieBreak2)
 				{
 					_comparisonBotAttempt.TieBreak2 = _bestBotAttempt.TieBreak2;
-                }
+				}
 
 				if (TieBreak3BestRadio.Checked && _bestBotAttempt.TieBreak3 != _comparisonBotAttempt.TieBreak3)
 				{
@@ -1228,7 +1228,7 @@ namespace BizHawk.Client.EmuHawk
 			{
 				this.MainValueNumeric.Enabled = false;
 				_comparisonBotAttempt.Maximize = _bestBotAttempt == null ? 0 : _bestBotAttempt.Maximize;
-            }
+			}
 		}
 
 		private void Tiebreak1BestRadio_CheckedChanged(object sender, EventArgs e)
@@ -1268,7 +1268,7 @@ namespace BizHawk.Client.EmuHawk
 			{
 				this.MainValueNumeric.Enabled = true;
 				_comparisonBotAttempt.Maximize = (int)this.MainValueNumeric.Value;
-            }
+			}
 		}
 
 		private void TieBreak1ValueRadio_CheckedChanged(object sender, EventArgs e)

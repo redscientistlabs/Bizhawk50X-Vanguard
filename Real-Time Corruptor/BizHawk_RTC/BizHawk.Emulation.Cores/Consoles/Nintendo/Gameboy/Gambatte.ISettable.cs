@@ -1,7 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.ComponentModel;
-using System.Linq;
+
 using Newtonsoft.Json;
 
 using BizHawk.Common;
@@ -20,9 +19,14 @@ namespace BizHawk.Emulation.Cores.Nintendo.Gameboy
 		{
 			_settings = o;
 			if (IsCGBMode())
+			{
 				SetCGBColors(_settings.CGBColors);
+			}
 			else
+			{
 				ChangeDMGColors(_settings.GBPalette);
+			}
+
 			return false;
 		}
 
@@ -43,12 +47,12 @@ namespace BizHawk.Emulation.Cores.Nintendo.Gameboy
 
 		public class GambatteSettings
 		{
-			private static readonly int[] DefaultPalette = new[]
-				{
-					10798341, 8956165, 1922333, 337157,
-					10798341, 8956165, 1922333, 337157,
-					10798341, 8956165, 1922333, 337157
-				};
+			private static readonly int[] DefaultPalette =
+			{
+				10798341, 8956165, 1922333, 337157,
+				10798341, 8956165, 1922333, 337157,
+				10798341, 8956165, 1922333, 337157
+			};
 
 			public int[] GBPalette;
 			public GBColors.ColorType CGBColors;
@@ -76,10 +80,22 @@ namespace BizHawk.Emulation.Cores.Nintendo.Gameboy
 
 		public class GambatteSyncSettings
 		{
-			[DisplayName("Force DMG Mode")]
-			[Description("Force the game to run on DMG hardware, even if it's detected as a CGB game.  Relevant for games that are \"CGB Enhanced\" but do not require CGB.")]
+			[DisplayName("Enable BIOS: WARNING: File must exist!")]
+			[Description("Boots game using system BIOS. Should be used for TASing")]
 			[DefaultValue(false)]
-			public bool ForceDMG { get; set; }
+			public bool EnableBIOS { get; set; }
+
+			public enum ConsoleModeType
+			{
+				Auto,
+				GB,
+				GBC
+			}
+
+			[DisplayName("Console Mode")]
+			[Description("Pick which console to run, 'Auto' chooses from ROM header, 'GB' and 'GBC' chooses the respective system")]
+			[DefaultValue(ConsoleModeType.Auto)]
+			public ConsoleModeType ConsoleMode { get; set; }
 
 			[DisplayName("CGB in GBA")]
 			[Description("Emulate GBA hardware running a CGB game, instead of CGB hardware.  Relevant only for titles that detect the presense of a GBA, such as Shantae.")]
@@ -106,20 +122,20 @@ namespace BizHawk.Emulation.Cores.Nintendo.Gameboy
 			}
 
 			[JsonIgnore]
-			int _RTCInitialTime;
+			private int _RTCInitialTime;
 
 			[DisplayName("Equal Length Frames")]
 			[Description("When false, emulation frames sync to vblank.  Only useful for high level TASing.")]
 			[DefaultValue(true)]
 			public bool EqualLengthFrames
 			{
-				get { return _EqualLengthFrames; }
-				set { _EqualLengthFrames = value; }
+				get { return _equalLengthFrames; }
+				set { _equalLengthFrames = value; }
 			}
 
 			[JsonIgnore]
 			[DeepEqualsIgnore]
-			private bool _EqualLengthFrames;
+			private bool _equalLengthFrames;
 
 			public GambatteSyncSettings()
 			{

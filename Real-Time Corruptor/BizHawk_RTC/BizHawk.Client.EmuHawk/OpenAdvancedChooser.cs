@@ -9,6 +9,7 @@ using System.Text;
 using System.Windows.Forms;
 
 using BizHawk.Emulation.Cores;
+using BizHawk.Emulation.Cores.Libretro;
 using BizHawk.Client.Common;
 
 //these match strings from OpenAdvance. should we make them constants in there?
@@ -55,7 +56,7 @@ namespace BizHawk.Client.EmuHawk
 				RefreshLibretroCore(false);
 		}
 
-		LibRetroEmulator.RetroDescription CurrentDescription;
+		RetroDescription CurrentDescription;
 		void RefreshLibretroCore(bool bootstrap)
 		{
 			txtLibretroCore.Text = "";
@@ -72,10 +73,14 @@ namespace BizHawk.Client.EmuHawk
 			//scan the current libretro core to see if it can be launched with NoGame,and other stuff
 			try
 			{
-				//a stub corecomm. to reinforce that this won't touch the frontend at all!
-				//LibRetroEmulator should be able to survive having this stub corecomm
+				//OLD COMMENTS:
+				////a stub corecomm. to reinforce that this won't touch the frontend at all!
+				////LibRetroEmulator should be able to survive having this stub corecomm
+				//NEW COMMENTS:
+				//nope, we need to navigate to the dll path. this was a bad idea anyway. so many dlls get loaded, something to resolve them is needed
 				var coreComm = new BizHawk.Emulation.Common.CoreComm(null, null);
-				using (var retro = new LibRetroEmulator(coreComm, core))
+				CoreFileProvider.SyncCoreCommInputSignals(coreComm);
+				using (var retro = new LibretroCore(coreComm, core))
 				{
 					btnLibretroLaunchGame.Enabled = true;
 					if (retro.Description.SupportsNoGame)
@@ -94,10 +99,12 @@ namespace BizHawk.Client.EmuHawk
 						Console.WriteLine(v);
 				}
 			}
-			catch
+			catch (Exception ex)
 			{
 				if (!bootstrap)
-					MessageBox.Show("Couldn't load the selected Libretro core for analysis. It won't be available.");
+				{
+					MessageBox.Show("Couldn't load the selected Libretro core for analysis. It won't be available.\n\nError:\n\n" + ex.ToString());
+				}
 			}
 		}
 
@@ -108,7 +115,7 @@ namespace BizHawk.Client.EmuHawk
 			foreach(var ext in CurrentDescription.ValidExtensions.Split('|'))
 				sw.Write("*.{0};",ext);
 			var filter = sw.ToString();
-			filter = filter.Substring(0,filter.Length-1);
+			filter = filter.Substring(0,filter.Length-1); //remove last semicolon
 			List<string> args = new List<string>();
 			args.Add("Rom Files");
 			if (!CurrentDescription.NeedsArchives)
@@ -125,22 +132,44 @@ namespace BizHawk.Client.EmuHawk
 			SuggestedExtensionFilter = filter;
 
 			Result = Command.RetroLaunchGame;
-			DialogResult = System.Windows.Forms.DialogResult.OK;
+			DialogResult =  DialogResult.OK;
 			Close();
 		}
 
 		private void btnClassicLaunchGame_Click(object sender, EventArgs e)
 		{
 			Result = Command.ClassicLaunchGame;
-			DialogResult = System.Windows.Forms.DialogResult.OK;
+			DialogResult = DialogResult.OK;
 			Close();
 		}
 
 		private void btnLibretroLaunchNoGame_Click(object sender, EventArgs e)
 		{
 			Result = Command.RetroLaunchNoGame;
-			DialogResult = System.Windows.Forms.DialogResult.OK;
+			DialogResult = DialogResult.OK;
 			Close();
+		}
+
+		private void txtLibretroCore_DragEnter(object sender, DragEventArgs e)
+		{
+			if (e.Data.GetDataPresent(DataFormats.FileDrop))
+			{
+				var filePaths = (string[])e.Data.GetData(DataFormats.FileDrop);
+				if (Path.GetExtension(filePaths[0]).ToUpper() == ".DLL")
+				{
+					e.Effect = DragDropEffects.Copy;
+					return;
+				}
+			}
+
+			e.Effect = DragDropEffects.None;
+		}
+
+		private void txtLibretroCore_DragDrop(object sender, DragEventArgs e)
+		{
+			var filePaths = (string[])e.Data.GetData(DataFormats.FileDrop);
+			Global.Config.LibretroCore = filePaths[0];
+			RefreshLibretroCore(false);
 		}
 	}
 }

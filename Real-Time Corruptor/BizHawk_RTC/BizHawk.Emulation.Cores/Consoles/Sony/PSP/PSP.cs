@@ -1,28 +1,49 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Runtime.InteropServices;
 
 using BizHawk.Emulation.Common;
 
 namespace BizHawk.Emulation.Cores.Sony.PSP
 {
-	[CoreAttributes(
+	[Core(
 		"PPSSPP",
 		"hrydgard",
 		isPorted: true,
 		isReleased: false,
-		singleInstance: true
-		)]
-	public class PSP : IEmulator, IVideoProvider, ISyncSoundProvider
+		singleInstance: true)]
+	public class PSP : IEmulator, IVideoProvider, ISoundProvider
 	{
+		public PSP(CoreComm comm, string isopath)
+		{
+			ServiceProvider = new BasicServiceProvider(this);
+			if (attachedcore != null)
+			{
+				attachedcore.Dispose();
+				attachedcore = null;
+			}
+			CoreComm = comm;
+
+			glcontext = CoreComm.RequestGLContext(3, 0, true);
+			CoreComm.ActivateGLContext(glcontext);
+
+			logcallback = new PPSSPPDll.LogCB(LogCallbackFunc);
+
+			bool good = PPSSPPDll.BizInit(isopath, logcallback);
+			LogFlush();
+			if (!good)
+				throw new Exception("PPSSPP Init failed!");
+
+			CoreComm.RomStatusDetails = "It puts the scythe in the chicken or it gets the abyss again!";
+
+			attachedcore = this;
+		}
+
 		public static readonly ControllerDefinition PSPController = new ControllerDefinition
 		{
 			Name = "PSP Controller",
 			BoolButtons =
-			{					
-				"Up", "Down", "Left", "Right", "Select", "Start", "L", "R", "Square", "Triangle", "Circle", "Cross", 
+			{
+				"Up", "Down", "Left", "Right", "Select", "Start", "L", "R", "Square", "Triangle", "Circle", "Cross",
 				"Menu", "Back",
 				"Power"
 			},
@@ -41,17 +62,10 @@ namespace BizHawk.Emulation.Cores.Sony.PSP
 			}
 		};
 
-		public ISoundProvider SoundProvider { get { return null; } }
-		public ISyncSoundProvider SyncSoundProvider { get { return this; } }
-		public bool StartAsyncSound() { return false; }
-		public void EndAsyncSound() { }
 		public ControllerDefinition ControllerDefinition { get { return PSPController; } }
-		public IController Controller { get; set; }
 		public bool DeterministicEmulation { get { return true; } }
 		public string SystemId { get { return "PSP"; } }
 		public CoreComm CoreComm { get; private set; }
-
-		public string BoardName { get { return null; } }
 
 		PPSSPPDll.LogCB logcallback = null;
 		Queue<string> debugmsgs = new Queue<string>();
@@ -73,33 +87,6 @@ namespace BizHawk.Emulation.Cores.Sony.PSP
 		static PSP attachedcore = null;
 		object glcontext;
 
-		public PSP(CoreComm comm, string isopath)
-		{
-			ServiceProvider = new BasicServiceProvider(this);
-			if (attachedcore != null)
-			{
-				attachedcore.Dispose();
-				attachedcore = null;
-			}
-			CoreComm = comm;
-
-			glcontext = CoreComm.RequestGLContext(3, 0, true);
-			CoreComm.ActivateGLContext(glcontext);
-
-			logcallback = new PPSSPPDll.LogCB(LogCallbackFunc);
-
-			bool good = PPSSPPDll.BizInit(isopath, logcallback);
-			LogFlush();
-			if (!good)
-				throw new Exception("PPSSPP Init failed!");
-
-			CoreComm.VsyncDen = 1;
-			CoreComm.VsyncNum = 60;
-			CoreComm.RomStatusDetails = "It puts the scythe in the chicken or it gets the abyss again!";
-
-			attachedcore = this;
-		}
-
 		public IEmulatorServiceProvider ServiceProvider { get; private set; }
 
 		public void Dispose()
@@ -115,24 +102,23 @@ namespace BizHawk.Emulation.Cores.Sony.PSP
 			}
 		}
 
-		private void UpdateInput()
+		private void UpdateInput(IController c)
 		{
 			PPSSPPDll.Buttons b = 0;
-			var c = Controller;
-			if (c["Up"]) b |= PPSSPPDll.Buttons.UP;
-			if (c["Down"]) b |= PPSSPPDll.Buttons.DOWN;
-			if (c["Left"]) b |= PPSSPPDll.Buttons.LEFT;
-			if (c["Right"]) b |= PPSSPPDll.Buttons.RIGHT;
-			if (c["Select"]) b |= PPSSPPDll.Buttons.SELECT;
-			if (c["Start"]) b |= PPSSPPDll.Buttons.START;
-			if (c["L"]) b |= PPSSPPDll.Buttons.LBUMPER;
-			if (c["R"]) b |= PPSSPPDll.Buttons.RBUMPER;
-			if (c["Square"]) b |= PPSSPPDll.Buttons.A;
-			if (c["Triangle"]) b |= PPSSPPDll.Buttons.B;
-			if (c["Circle"]) b |= PPSSPPDll.Buttons.X;
-			if (c["Cross"]) b |= PPSSPPDll.Buttons.Y;
-			if (c["Menu"]) b |= PPSSPPDll.Buttons.MENU;
-			if (c["Back"]) b |= PPSSPPDll.Buttons.BACK;
+			if (c.IsPressed("Up")) b |= PPSSPPDll.Buttons.UP;
+			if (c.IsPressed("Down")) b |= PPSSPPDll.Buttons.DOWN;
+			if (c.IsPressed("Left")) b |= PPSSPPDll.Buttons.LEFT;
+			if (c.IsPressed("Right")) b |= PPSSPPDll.Buttons.RIGHT;
+			if (c.IsPressed("Select")) b |= PPSSPPDll.Buttons.SELECT;
+			if (c.IsPressed("Start")) b |= PPSSPPDll.Buttons.START;
+			if (c.IsPressed("L")) b |= PPSSPPDll.Buttons.LBUMPER;
+			if (c.IsPressed("R")) b |= PPSSPPDll.Buttons.RBUMPER;
+			if (c.IsPressed("Square")) b |= PPSSPPDll.Buttons.A;
+			if (c.IsPressed("Triangle")) b |= PPSSPPDll.Buttons.B;
+			if (c.IsPressed("Circle")) b |= PPSSPPDll.Buttons.X;
+			if (c.IsPressed("Cross")) b |= PPSSPPDll.Buttons.Y;
+			if (c.IsPressed("Menu")) b |= PPSSPPDll.Buttons.MENU;
+			if (c.IsPressed("Back")) b |= PPSSPPDll.Buttons.BACK;
 
 			input.SetButtons(b);
 
@@ -145,10 +131,10 @@ namespace BizHawk.Emulation.Cores.Sony.PSP
 		}
 
 
-		public void FrameAdvance(bool render, bool rendersound = true)
+		public void FrameAdvance(IController controller, bool render, bool rendersound = true)
 		{
 			Frame++;
-			UpdateInput();
+			UpdateInput(controller);
 			PPSSPPDll.BizAdvance(screenbuffer, input);
 
 			// problem 1: audio can be 48khz, if a particular core parameter is set.  we're not accounting for that.
@@ -184,9 +170,27 @@ namespace BizHawk.Emulation.Cores.Sony.PSP
 		public int BufferHeight { get { return screenheight; } }
 		public int BackgroundColor { get { return unchecked((int)0xff000000); } }
 
+		public int VsyncNumerator
+		{
+			[FeatureNotImplemented]
+			get
+			{
+				return NullVideo.DefaultVsyncNum;
+			}
+		}
+
+		public int VsyncDenominator
+		{
+			[FeatureNotImplemented]
+			get
+			{
+				return NullVideo.DefaultVsyncDen;
+			}
+		}
+
 		readonly short[] audiobuffer = new short[2048 * 2];
 		int nsampavail = 0;
-		public void GetSamples(out short[] samples, out int nsamp)
+		public void GetSamplesSync(out short[] samples, out int nsamp)
 		{			
 			samples = audiobuffer;
 			nsamp = nsampavail;
@@ -194,6 +198,29 @@ namespace BizHawk.Emulation.Cores.Sony.PSP
 		}
 		public void DiscardSamples()
 		{
+		}
+
+		public bool CanProvideAsync
+		{
+			get { return false; }
+		}
+
+		public void SetSyncMode(SyncSoundMode mode)
+		{
+			if (mode == SyncSoundMode.Async)
+			{
+				throw new NotSupportedException("Async mode is not supported.");
+			}
+		}
+
+		public SyncSoundMode SyncMode
+		{
+			get { return SyncSoundMode.Sync; }
+		}
+
+		public void GetSamplesAsync(short[] samples)
+		{
+			throw new InvalidOperationException("Async mode is not supported.");
 		}
 	}
 }

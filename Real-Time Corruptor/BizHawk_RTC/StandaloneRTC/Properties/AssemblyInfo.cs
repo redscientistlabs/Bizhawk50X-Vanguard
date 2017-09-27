@@ -6,11 +6,11 @@ using System.Runtime.InteropServices;
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
 [assembly: AssemblyTitle("StandaloneRTC")]
-[assembly: AssemblyDescription("")]
+[assembly: AssemblyDescription("Starts RTC in Detached Mode")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("")]
-[assembly: AssemblyProduct("StandaloneRTC")]
-[assembly: AssemblyCopyright("Copyright ©  2017")]
+[assembly: AssemblyCompany("Redscientist Media")]
+[assembly: AssemblyProduct("RTC3")]
+[assembly: AssemblyCopyright("Redscientist Media")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 

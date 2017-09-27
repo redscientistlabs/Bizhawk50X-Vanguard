@@ -1,4 +1,7 @@
-﻿using BizHawk.Emulation.Common;
+﻿using System;
+using System.Windows.Forms;
+
+using BizHawk.Emulation.Common;
 using BizHawk.Client.Common;
 
 namespace BizHawk.Client.EmuHawk
@@ -27,21 +30,21 @@ namespace BizHawk.Client.EmuHawk
 				var lg = Global.MovieSession.MovieControllerInstance();
 				lg.SetControllersAsMnemonic(inputLogEntry);
 
-				foreach (var button in lg.Type.BoolButtons)
+				foreach (var button in lg.Definition.BoolButtons)
 				{
 					Global.LuaAndAdaptor.SetButton(button, lg.IsPressed(button));
 				}
 
-				foreach (var floatButton in lg.Type.FloatControls)
+				foreach (var floatButton in lg.Definition.FloatControls)
 				{
 					Global.LuaAndAdaptor.SetFloat(floatButton, lg.GetFloat(floatButton));
 				}
 
 				return lg;
 			}
-			catch (System.Exception)
+			catch (Exception)
 			{
-				System.Windows.Forms.MessageBox.Show("Invalid mnemonic string: " + inputLogEntry, "Paste Input failed!");
+				MessageBox.Show("Invalid mnemonic string: " + inputLogEntry, "Paste Input failed!");
 				return null;
 			}
 		}

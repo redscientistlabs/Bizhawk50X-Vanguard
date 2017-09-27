@@ -13,7 +13,7 @@ namespace BizHawk.Client.EmuHawk
 		// TODO: don't use textboxes as labels
 		private List<Watch> _watchList = new List<Watch>();
 
-		public Point InitialLocation = new Point(0, 0);
+		public Point InitialLocation { get; set; } = new Point(0, 0);
 
 		public RamPoke()
 		{
@@ -80,8 +80,8 @@ namespace BizHawk.Client.EmuHawk
 			ValueBox.ByteSize = _watchList[0].Size;
 			ValueBox.Type = _watchList[0].Type;
 
-			ValueHexLabel.Text = _watchList[0].Type == DisplayType.Hex ? "0x" : string.Empty;
-			ValueBox.Text = _watchList[0].ValueString.Replace(" ", string.Empty);
+			ValueHexLabel.Text = _watchList[0].Type == DisplayType.Hex ? "0x" : "";
+			ValueBox.Text = _watchList[0].ValueString.Replace(" ", "");
 			DomainLabel.Text = _watchList[0].Domain.Name;
 			SizeLabel.Text = _watchList[0].Size.ToString();
 			DisplayTypeLabel.Text = Watch.DisplayTypeToString(_watchList[0].Type);
@@ -104,10 +104,7 @@ namespace BizHawk.Client.EmuHawk
 		{
 			var success = _watchList.All(watch => watch.Poke(ValueBox.Text));
 
-			if (ParentTool != null)
-			{
-				ParentTool.UpdateValues();
-			}
+			ParentTool?.UpdateValues();
 
 			if (success)
 			{

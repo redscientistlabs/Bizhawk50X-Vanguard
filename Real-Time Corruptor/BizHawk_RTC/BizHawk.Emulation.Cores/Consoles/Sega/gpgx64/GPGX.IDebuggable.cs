@@ -4,7 +4,7 @@ using System.Runtime.InteropServices;
 
 using BizHawk.Emulation.Common;
 
-namespace BizHawk.Emulation.Cores.Consoles.Sega.gpgx64
+namespace BizHawk.Emulation.Cores.Consoles.Sega.gpgx
 {
 	public partial class GPGX : IDebuggable
 	{
@@ -45,6 +45,12 @@ namespace BizHawk.Emulation.Cores.Consoles.Sega.gpgx64
 
 		[FeatureNotImplemented]
 		public void Step(StepType type) { throw new NotImplementedException(); }
+
+		[FeatureNotImplemented]
+		public int TotalExecutedCycles
+		{
+			get { throw new NotImplementedException(); }
+		}
 
 		private readonly MemoryCallbackSystem _memoryCallbacks = new MemoryCallbackSystem();
 

@@ -1,8 +1,10 @@
-﻿using System.ComponentModel;
+﻿using System;
+using System.ComponentModel;
+
+using NLua;
+
 using BizHawk.Emulation.Common;
 using BizHawk.Emulation.Cores.Consoles.Sega.gpgx;
-using LuaInterface;
-using System;
 
 namespace BizHawk.Client.Common
 {
@@ -18,7 +20,7 @@ namespace BizHawk.Client.Common
 		public GenesisLuaLibrary(Lua lua, Action<string> logOutputCallback)
 			: base(lua, logOutputCallback) { }
 
-		public override string Name { get { return "genesis"; } }
+		public override string Name => "genesis";
 
 		private GPGX.GPGXSettings GetSettings()
 		{
@@ -32,43 +34,28 @@ namespace BizHawk.Client.Common
 
 		private void PutSettings(GPGX.GPGXSettings settings)
 		{
-			if (Genesis != null)
-			{
-				Genesis.PutSettings(settings);
-			}
+			Genesis?.PutSettings(settings);
 		}
 
-		[LuaMethodAttributes(
-			"getlayer_bga",
-			"Returns whether the bg layer A is displayed"
-		)]
+		[LuaMethod("getlayer_bga", "Returns whether the bg layer A is displayed")]
 		public bool GetLayerBgA()
 		{
 			return GetSettings().DrawBGA;
 		}
 
-		[LuaMethodAttributes(
-			"getlayer_bgb",
-			"Returns whether the bg layer B is displayed"
-		)]
+		[LuaMethod("getlayer_bgb", "Returns whether the bg layer B is displayed")]
 		public bool GetLayerBgB()
 		{
 			return GetSettings().DrawBGB;
 		}
 
-		[LuaMethodAttributes(
-			"getlayer_bgw",
-			"Returns whether the bg layer W is displayed"
-		)]
+		[LuaMethod("getlayer_bgw", "Returns whether the bg layer W is displayed")]
 		public bool GetLayerBgW()
 		{
 			return GetSettings().DrawBGW;
 		}
 
-		[LuaMethodAttributes(
-			"setlayer_bga",
-			"Sets whether the bg layer A is displayed"
-		)]
+		[LuaMethod("setlayer_bga", "Sets whether the bg layer A is displayed")]
 		public void SetLayerBgA(bool value)
 		{
 			var s = GetSettings();
@@ -76,10 +63,7 @@ namespace BizHawk.Client.Common
 			PutSettings(s);
 		}
 
-		[LuaMethodAttributes(
-			"setlayer_bgb",
-			"Sets whether the bg layer B is displayed"
-		)]
+		[LuaMethod("setlayer_bgb", "Sets whether the bg layer B is displayed")]
 		public void SetLayerBgB(bool value)
 		{
 			var s = GetSettings();
@@ -87,10 +71,7 @@ namespace BizHawk.Client.Common
 			PutSettings(s);
 		}
 
-		[LuaMethodAttributes(
-			"setlayer_bgw",
-			"Sets whether the bg layer W is displayed"
-		)]
+		[LuaMethod("setlayer_bgw", "Sets whether the bg layer W is displayed")]
 		public void SetLayerBgW(bool value)
 		{
 			var s = GetSettings();

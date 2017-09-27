@@ -11,19 +11,19 @@ namespace BizHawk.Emulation.Cores.Nintendo.NES
 		{
 			return new Dictionary<string, RegisterValue>
 			{
-				{ "A", cpu.A },
-				{ "X", cpu.X },
-				{ "Y", cpu.Y },
-				{ "S", cpu.S },
-				{ "PC", cpu.PC },
-				{ "Flag C", cpu.FlagC },
-				{ "Flag Z", cpu.FlagZ },
-				{ "Flag I", cpu.FlagI },
-				{ "Flag D", cpu.FlagD },
-				{ "Flag B", cpu.FlagB },
-				{ "Flag V", cpu.FlagV },
-				{ "Flag N", cpu.FlagN },
-				{ "Flag T", cpu.FlagT }
+				["A"] = cpu.A,
+				["X"] = cpu.X,
+				["Y"] = cpu.Y,
+				["S"] = cpu.S,
+				["PC"] = cpu.PC,
+				["Flag C"] = cpu.FlagC,
+				["Flag Z"] = cpu.FlagZ,
+				["Flag I"] = cpu.FlagI,
+				["Flag D"] = cpu.FlagD,
+				["Flag B"] = cpu.FlagB,
+				["Flag V"] = cpu.FlagV,
+				["Flag N"] = cpu.FlagN,
+				["Flag T"] = cpu.FlagT
 			};
 		}
 
@@ -63,5 +63,10 @@ namespace BizHawk.Emulation.Cores.Nintendo.NES
 
 		[FeatureNotImplemented]
 		public void Step(StepType type) { throw new NotImplementedException(); }
+
+		public int TotalExecutedCycles
+		{
+			get { return cpu.TotalExecutedCycles; }
+		}
 	}
 }

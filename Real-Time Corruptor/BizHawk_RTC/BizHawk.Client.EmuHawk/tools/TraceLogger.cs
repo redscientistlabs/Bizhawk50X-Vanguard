@@ -62,7 +62,12 @@ namespace BizHawk.Client.EmuHawk
 			TraceView.QueryItemText += TraceView_QueryItemText;
 			TraceView.VirtualMode = true;
 
-			Closing += (o, e) => SaveConfigSettings();
+			Closing += (o, e) =>
+			{
+				SaveConfigSettings();
+				Tracer.Sink = null;
+				CloseFile();
+			};
 
 			MaxLines = 10000;
 			FileSizeCap = 150; // make 1 frame of tracelog for n64/psx fit in
@@ -86,7 +91,7 @@ namespace BizHawk.Client.EmuHawk
 
 		private void TraceView_QueryItemText(int index, int column, out string text)
 		{
-			text = string.Empty;
+			text = "";
 			if (index < _instructions.Count)
 			{
 				switch (column)

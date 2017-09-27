@@ -1,15 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
-using System.Reflection;
-using System.Text;
 
 namespace BizHawk.Emulation.Common
 {
 	// TODO: This should build itself from the Cores assembly, we don't want to maintain this
 	public class SystemLookup
 	{
-		private readonly List<SystemInfo> Systems = new List<SystemInfo>
+		private readonly List<SystemInfo> _systems = new List<SystemInfo>
 		{
 			new SystemInfo { SystemId = "A26", FullName = "Atari 2600" },
 			new SystemInfo { SystemId = "A78", FullName = "Atari 7800" },
@@ -42,7 +39,7 @@ namespace BizHawk.Emulation.Common
 		{
 			get
 			{
-				var system = Systems.FirstOrDefault(s => s.SystemId == systemId);
+				var system = _systems.FirstOrDefault(s => s.SystemId == systemId);
 
 				if (system != null)
 				{
@@ -53,18 +50,7 @@ namespace BizHawk.Emulation.Common
 			}
 		}
 
-		public IEnumerable<SystemInfo> AllSystems
-		{
-			get
-			{
-				if (VersionInfo.DeveloperBuild)
-				{
-					return Systems;
-				}
-
-				return Systems.Where(s => s.SystemId != "C64");
-			}
-		}
+		public IEnumerable<SystemInfo> AllSystems => _systems;
 
 		public class SystemInfo
 		{

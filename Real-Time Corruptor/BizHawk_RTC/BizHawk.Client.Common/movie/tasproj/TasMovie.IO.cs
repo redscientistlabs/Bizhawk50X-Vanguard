@@ -1,14 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
-
-using BizHawk.Common;
-using BizHawk.Common.CollectionExtensions;
-using BizHawk.Common.IOExtensions;
-using System.Diagnostics;
-using System.ComponentModel;
 
 namespace BizHawk.Client.Common
 {
@@ -34,14 +27,9 @@ namespace BizHawk.Client.Common
 				bs.PutLump(BinaryStateLump.Input, tw => WriteInputLog(tw));
 
 				// TasProj extras
-				bs.PutLump(BinaryStateLump.StateHistorySettings, tw => tw.WriteLine(StateManager.Settings.ToString()));
+				bs.PutLump(BinaryStateLump.StateHistorySettings, tw => tw.WriteLine(_stateManager.Settings.ToString()));
 
-				if (StateManager.Settings.SaveStateHistory)
-				{
-					bs.PutLump(BinaryStateLump.StateHistory, (BinaryWriter bw) => StateManager.Save(bw));
-				}
-
-				bs.PutLump(BinaryStateLump.LagLog, (BinaryWriter bw) => LagLog.Save(bw));
+				bs.PutLump(BinaryStateLump.LagLog, (BinaryWriter bw) => _lagLog.Save(bw));
 				bs.PutLump(BinaryStateLump.Markers, tw => tw.WriteLine(Markers.ToString()));
 
 				if (StartsFromSavestate)
@@ -74,17 +62,24 @@ namespace BizHawk.Client.Common
 				if (Branches.Any())
 				{
 					Branches.Save(bs);
-					if (StateManager.Settings.BranchStatesInTasproj)
+					if (_stateManager.Settings.BranchStatesInTasproj)
 					{
-						bs.PutLump(BinaryStateLump.BranchStateHistory, (BinaryWriter bw) => StateManager.SaveBranchStates(bw));
+						bs.PutLump(BinaryStateLump.BranchStateHistory, (BinaryWriter bw) => _stateManager.SaveBranchStates(bw));
 					}
 				}
 
 				bs.PutLump(BinaryStateLump.Session, tw => tw.WriteLine(Session.ToString()));
+
+				if (_stateManager.Settings.SaveStateHistory)
+				{
+					bs.PutLump(BinaryStateLump.StateHistory, (BinaryWriter bw) => _stateManager.Save(bw));
+				}
 			}
 
 			if (!backup)
+			{
 				Changes = false;
+			}
 		}
 
 		public override bool Load(bool preload)
@@ -160,7 +155,7 @@ namespace BizHawk.Client.Common
 
 				bl.GetLump(BinaryStateLump.Input, true, delegate(TextReader tr) // Note: ExtractInputLog will clear Lag and State data potentially, this must come before loading those
 				{
-					var errorMessage = string.Empty;
+					var errorMessage = "";
 					IsCountingRerecords = false;
 					ExtractInputLog(tr, out errorMessage);
 					IsCountingRerecords = true;
@@ -188,33 +183,15 @@ namespace BizHawk.Client.Common
 				}
 
 				// TasMovie enhanced information
-				if (bl.HasLump(BinaryStateLump.LagLog))
+				bl.GetLump(BinaryStateLump.LagLog, false, delegate(BinaryReader br, long length)
 				{
-					bl.GetLump(BinaryStateLump.LagLog, false, delegate(BinaryReader br, long length)
-					{
-						LagLog.Load(br);
-					});
-				}
+					_lagLog.Load(br);
+				});
 
 				bl.GetLump(BinaryStateLump.StateHistorySettings, false, delegate(TextReader tr)
 				{
-					StateManager.Settings.PopulateFromString(tr.ReadToEnd());
+					_stateManager.Settings.PopulateFromString(tr.ReadToEnd());
 				});
-
-				if(!preload)
-				{
-					if (StateManager.Settings.SaveStateHistory)
-					{
-						bl.GetLump(BinaryStateLump.StateHistory, false, delegate(BinaryReader br, long length)
-						{
-							StateManager.Load(br);
-						});
-					}
-
-					// Movie should always have a state at frame 0.
-					if (!this.StartsFromSavestate && Global.Emulator.Frame == 0)
-						StateManager.Capture();
-				}
 
 				bl.GetLump(BinaryStateLump.Markers, false, delegate(TextReader tr)
 				{
@@ -228,10 +205,10 @@ namespace BizHawk.Client.Common
 					}
 				});
 
-				if (GetClientSettingsOnLoad != null && bl.HasLump(BinaryStateLump.ClientSettings))
+				if (GetClientSettingsOnLoad != null)
 				{
-					string clientSettings = string.Empty;
-					bl.GetLump(BinaryStateLump.ClientSettings, true, delegate(TextReader tr)
+					string clientSettings = "";
+					bl.GetLump(BinaryStateLump.ClientSettings, false, delegate(TextReader tr)
 					{
 						string line;
 						while ((line = tr.ReadLine()) != null)
@@ -243,36 +220,36 @@ namespace BizHawk.Client.Common
 						}
 					});
 
-					GetClientSettingsOnLoad(clientSettings);
-				}
-
-				if (bl.HasLump(BinaryStateLump.VerificationLog))
-				{
-					bl.GetLump(BinaryStateLump.VerificationLog, true, delegate(TextReader tr)
+					if (!string.IsNullOrWhiteSpace(clientSettings))
 					{
-						VerificationLog.Clear();
-						while (true)
-						{
-							var line = tr.ReadLine();
-							if (string.IsNullOrEmpty(line))
-							{
-								break;
-							}
-
-							if (line.StartsWith("|"))
-							{
-								VerificationLog.Add(line);
-							}
-						}
-					});
+						GetClientSettingsOnLoad(clientSettings);
+					}
 				}
+
+				bl.GetLump(BinaryStateLump.VerificationLog, false, delegate(TextReader tr)
+				{
+					VerificationLog.Clear();
+					while (true)
+					{
+						var line = tr.ReadLine();
+						if (string.IsNullOrEmpty(line))
+						{
+							break;
+						}
+
+						if (line.StartsWith("|"))
+						{
+							VerificationLog.Add(line);
+						}
+					}
+				});
 
 				Branches.Load(bl, this);
-				if (StateManager.Settings.BranchStatesInTasproj)
+				if (_stateManager.Settings.BranchStatesInTasproj)
 				{
 					bl.GetLump(BinaryStateLump.BranchStateHistory, false, delegate(BinaryReader br, long length)
 					{
-						StateManager.LoadBranchStates(br);
+						_stateManager.LoadBranchStates(br);
 					});
 				}
 
@@ -280,6 +257,23 @@ namespace BizHawk.Client.Common
 				{
 					Session.PopulateFromString(tr.ReadToEnd());
 				});
+
+				if (!preload)
+				{
+					if (_stateManager.Settings.SaveStateHistory)
+					{
+						bl.GetLump(BinaryStateLump.StateHistory, false, delegate(BinaryReader br, long length)
+						{
+							_stateManager.Load(br);
+						});
+					}
+
+					// Movie should always have a state at frame 0.
+					if (!StartsFromSavestate && Global.Emulator.Frame == 0)
+					{
+						_stateManager.Capture();
+					}
+				}
 			}
 
 			Changes = false;
@@ -288,8 +282,8 @@ namespace BizHawk.Client.Common
 
 		private void ClearTasprojExtras()
 		{
-			LagLog.Clear();
-			StateManager.Clear();
+			_lagLog.Clear();
+			_stateManager.Clear();
 			Markers.Clear();
 			ChangeLog.ClearLog();
 		}

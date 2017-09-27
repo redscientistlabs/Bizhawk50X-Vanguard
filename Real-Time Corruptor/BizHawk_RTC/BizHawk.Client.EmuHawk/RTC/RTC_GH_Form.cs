@@ -1132,10 +1132,13 @@ namespace RTC
 			xs.Serialize(FS, ssk);
 			FS.Close();
 
-			//7z the temp folder to destination filename
-			string[] stringargs = { "-c", Filename, RTC_Core.rtcDir + "\\TEMP4\\" };
-			FastZipProgram.Exec(stringargs);
 
+
+			//7z the temp folder to destination filename
+			//string[] stringargs = { "-c", Filename, RTC_Core.rtcDir + "\\TEMP4\\" };
+			//FastZipProgram.Exec(stringargs);
+
+			System.IO.Compression.ZipFile.CreateFromDirectory(RTC_Core.rtcDir + "\\TEMP4\\", Filename, System.IO.Compression.CompressionLevel.Fastest, false);
 
 		}
 

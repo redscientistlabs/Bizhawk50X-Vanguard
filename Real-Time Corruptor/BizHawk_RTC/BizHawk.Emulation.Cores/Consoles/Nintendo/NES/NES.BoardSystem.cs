@@ -224,7 +224,7 @@ namespace BizHawk.Emulation.Cores.Nintendo.NES
 
 			public virtual void WriteReg2xxx(int addr, byte value)
 			{
-				NES.ppu.WriteReg(addr & 7, value);
+				NES.ppu.WriteReg(addr, value);
 			}
 
 			public virtual void WritePPU(int addr, byte value)
@@ -404,6 +404,7 @@ namespace BizHawk.Emulation.Cores.Nintendo.NES
 			}
 			Board.Dispose();
 			Board = newboard;
+			ppu.HasClockPPU = Board.GetType().GetMethod(nameof(INESBoard.ClockPPU)).DeclaringType != typeof(NESBoardBase);
 		}
 
 
@@ -778,12 +779,9 @@ namespace BizHawk.Emulation.Cores.Nintendo.NES
 							{
 								field.SetValue(board, Convert.ChangeType(Value, field.FieldType));
 							}
-							catch (Exception e)
+							catch (Exception e) when (e is InvalidCastException || e is FormatException || e is OverflowException)
 							{
-								if (e is InvalidCastException || e is FormatException || e is OverflowException)
-									throw new InvalidDataException("Auto Mapper Properties were in a bad format!", e);
-								else
-									throw;
+								throw new InvalidDataException("Auto Mapper Properties were in a bad format!", e);
 							}
 						}
 						break;

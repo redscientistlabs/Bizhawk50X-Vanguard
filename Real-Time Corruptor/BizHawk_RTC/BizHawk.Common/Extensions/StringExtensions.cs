@@ -18,7 +18,7 @@ namespace BizHawk.Common.StringExtensions
 			
 			if (index == 0)
 			{
-				return string.Empty;
+				return "";
 			}
 
 			return str.Substring(0, index);
@@ -222,7 +222,7 @@ namespace BizHawk.Common.StringExtensions
 		{
 			if (string.IsNullOrWhiteSpace(raw))
 			{
-				return string.Empty;
+				return "";
 			}
 
 			var output = new StringBuilder();
@@ -245,7 +245,7 @@ namespace BizHawk.Common.StringExtensions
 		{
 			if (string.IsNullOrWhiteSpace(raw))
 			{
-				return string.Empty;
+				return "";
 			}
 
 			var output = new StringBuilder();
@@ -269,7 +269,7 @@ namespace BizHawk.Common.StringExtensions
 		{
 			if (string.IsNullOrWhiteSpace(raw))
 			{
-				return string.Empty;
+				return "";
 			}
 
 			var output = new StringBuilder();
@@ -283,7 +283,6 @@ namespace BizHawk.Common.StringExtensions
 				}
 				else if (IsUnsigned(chr))
 				{
-					
 					output.Append(chr);
 				}
 
@@ -300,7 +299,7 @@ namespace BizHawk.Common.StringExtensions
 		{
 			if (string.IsNullOrWhiteSpace(raw))
 			{
-				return string.Empty;
+				return "";
 			}
 
 			var output = new StringBuilder(raw.Length);
@@ -318,13 +317,13 @@ namespace BizHawk.Common.StringExtensions
 
 		/// <summary>
 		/// Takes any string and removes any value that is not a fixed point value (0-9 or .)
-		/// Note: only the first occurance of a . will be kept
+		/// Note: only the first occurrence of a . will be kept
 		/// </summary>
 		public static string OnlyFixedPoint(this string raw)
 		{
 			if (string.IsNullOrWhiteSpace(raw))
 			{
-				return string.Empty;
+				return "";
 			}
 
 			var output = new StringBuilder();
@@ -353,13 +352,13 @@ namespace BizHawk.Common.StringExtensions
 
 		/// <summary>
 		/// Takes any string and removes any value that is not a float point value (0-9, -, or .)
-		/// Note: - is only valid as the first character, and only the first occurance of a . will be kept
+		/// Note: - is only valid as the first character, and only the first occurrence of a . will be kept
 		/// </summary>
 		public static string OnlyFloat(this string raw)
 		{
 			if (string.IsNullOrWhiteSpace(raw))
 			{
-				return string.Empty;
+				return "";
 			}
 
 			var output = new StringBuilder();

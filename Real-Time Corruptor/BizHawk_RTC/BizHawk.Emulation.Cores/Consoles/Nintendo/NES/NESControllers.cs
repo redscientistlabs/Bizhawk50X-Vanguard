@@ -19,6 +19,14 @@ namespace BizHawk.Emulation.Cores.Nintendo.NES
 	#region interfaces and such
 
 	/// <summary>
+	/// callback type for PPU to tell if there's light for a lightgun to detect
+	/// </summary>
+	/// <param name="x">x coordinate on screen</param>
+	/// <param name="y">y coordinate on screen</param>
+	/// <returns>true if there is light</returns>
+	public delegate bool LightgunDelegate(int x, int y);
+
+	/// <summary>
 	/// stores information about the strobe lines controlled by $4016
 	/// </summary>
 	public struct StrobeInfo
@@ -137,12 +145,12 @@ namespace BizHawk.Emulation.Cores.Nintendo.NES
 		ControlDefUnMerger RightU;
 		ControllerDefinition Definition;
 
-		public NesDeck(INesPort Left, INesPort Right, Func<int, int, bool> PPUCallback)
+		public NesDeck(INesPort Left, INesPort Right, LightgunDelegate PPUCallback)
 		{
 			this.Left = Left;
 			this.Right = Right;
 			List<ControlDefUnMerger> cdum;
-			Definition = ControllerDefMerger.GetMerged(new[] { Left.GetDefinition(), Right.GetDefinition() }, out cdum);
+			Definition = ControllerDefinitionMerger.GetMerged(new[] { Left.GetDefinition(), Right.GetDefinition() }, out cdum);
 			LeftU = cdum[0];
 			RightU = cdum[1];
 
@@ -413,7 +421,7 @@ namespace BizHawk.Emulation.Cores.Nintendo.NES
 
 		public byte Read(IController c)
 		{
-			byte ret = c["0Fire"] ? (byte)0x08 : (byte)0x00;
+			byte ret = c.IsPressed("0Fire") ? (byte)0x08 : (byte)0x00;
 			if (resetting)
 				return ret;
 
@@ -547,7 +555,7 @@ namespace BizHawk.Emulation.Cores.Nintendo.NES
 	// Dummy interface to indicate zapper behavior, used as a means of type checking for zapper functionality
 	public interface IZapper
 	{
-		Func<int, int, bool> PPUCallback { get; set; }
+		LightgunDelegate PPUCallback { get; set; }
 	}
 
 	public class Zapper : INesPort, IFamicomExpansion, IZapper
@@ -555,7 +563,7 @@ namespace BizHawk.Emulation.Cores.Nintendo.NES
 		/// <summary>
 		/// returns true if light was detected at the ppu coordinates specified
 		/// </summary>
-		public Func<int, int, bool> PPUCallback { get; set; }
+		public LightgunDelegate PPUCallback { get; set; }
 
 		static ControllerDefinition Definition = new ControllerDefinition
 		{
@@ -572,7 +580,7 @@ namespace BizHawk.Emulation.Cores.Nintendo.NES
 		public byte Read(IController c)
 		{
 			byte ret = 0;
-			if (c["0Fire"])
+			if (c.IsPressed("0Fire"))
 				ret |= 0x10;
 			if (!PPUCallback((int)c.GetFloat("0Zapper X"), (int)c.GetFloat("0Zapper Y")))
 				ret |= 0x08;
@@ -605,7 +613,7 @@ namespace BizHawk.Emulation.Cores.Nintendo.NES
 		/// <summary>
 		/// returns true if light was detected at the ppu coordinates specified
 		/// </summary
-		public Func<int, int, bool> PPUCallback { get; set; }
+		public LightgunDelegate PPUCallback { get; set; }
 
 		bool resetting = false;
 		uint latchedvalue = 0;
@@ -620,7 +628,7 @@ namespace BizHawk.Emulation.Cores.Nintendo.NES
 		void Latch(IController c)
 		{
 			byte ret = 0;
-			if (c["0Fire"])
+			if (c.IsPressed("0Fire"))
 				ret |= 0x80;
 			if (PPUCallback((int)c.GetFloat("0Zapper X"), (int)c.GetFloat("0Zapper Y")))
 				ret |= 0x40;
@@ -684,11 +692,11 @@ namespace BizHawk.Emulation.Cores.Nintendo.NES
 
 		ControllerDefinition Definition;
 
-		public FamicomDeck(IFamicomExpansion ExpSlot, Func<int, int, bool> PPUCallback)
+		public FamicomDeck(IFamicomExpansion ExpSlot, LightgunDelegate PPUCallback)
 		{
 			Player3 = ExpSlot;
 			List<ControlDefUnMerger> cdum;
-			Definition = ControllerDefMerger.GetMerged(
+			Definition = ControllerDefinitionMerger.GetMerged(
 				new[] { Player1.GetDefinition(), Player2.GetDefinition(), Player3.GetDefinition() }, out cdum);
 			Definition.BoolButtons.Add("P2 Microphone");
 			Player1U = cdum[0];
@@ -712,7 +720,7 @@ namespace BizHawk.Emulation.Cores.Nintendo.NES
 			byte ret = 0;
 			ret |= (byte)(Player1.Read(Player1U.UnMerge(c)) & 1);
 			ret |= (byte)(Player3.ReadA(Player3U.UnMerge(c)) & 2);
-			if (c["P2 Microphone"])
+			if (c.IsPressed("P2 Microphone"))
 				ret |= 4;
 			return ret;
 		}
@@ -774,7 +782,7 @@ namespace BizHawk.Emulation.Cores.Nintendo.NES
 
 		public byte ReadA(IController c)
 		{
-			return c["0Fire"] ? (byte)0x02 : (byte)0x00;
+			return c.IsPressed("0Fire") ? (byte)0x02 : (byte)0x00;
 		}
 
 		public byte ReadB(IController c)
@@ -925,12 +933,12 @@ namespace BizHawk.Emulation.Cores.Nintendo.NES
 				return 0;
 			int idx = row * 8 + column * 4;
 
-			byte ret = 0;
+			byte ret = 0x1E;
 
-			if (c[Buttons[idx]]) ret |= 16;
-			if (c[Buttons[idx + 1]]) ret |= 8;
-			if (c[Buttons[idx + 2]]) ret |= 4;
-			if (c[Buttons[idx + 3]]) ret |= 2;
+			if (c.IsPressed(Buttons[idx])) ret &= 0x0E;
+			if (c.IsPressed(Buttons[idx + 1])) ret &= 0x16;
+			if (c.IsPressed(Buttons[idx + 2])) ret &= 0x1A;
+			if (c.IsPressed(Buttons[idx + 3])) ret &= 0x1C;
 
 			// nothing is clocked here
 			return ret;
@@ -1040,9 +1048,9 @@ namespace BizHawk.Emulation.Cores.Nintendo.NES
 				x &= 255;
 				y &= 255;
 				latchedvalue = x << 10 | y << 2;
-				if (c["0Touch"])
+				if (c.IsPressed("0Touch"))
 					latchedvalue |= 2;
-				if (c["0Click"])
+				if (c.IsPressed("0Click"))
 					latchedvalue |= 1;
 			}
 			if (s.OUT0 > s.OUT0old) // L->H: reset shift
@@ -1118,7 +1126,7 @@ namespace BizHawk.Emulation.Cores.Nintendo.NES
 			{
 				if (values.Length > i)
 				{
-					if (values[i] != null && c[values[i]])
+					if (values[i] != null && c.IsPressed(values[i]))
 						ret |= 1 << i;
 				}
 				else
@@ -1130,101 +1138,6 @@ namespace BizHawk.Emulation.Cores.Nintendo.NES
 			return ret;
 		}
 	}
-
-	#region control definition adapters
-
-	// the idea here is that various connected peripherals have their controls all merged
-	// into one definition, including logic to unmerge the data back so each one can work
-	// with it without knowing what else is connected
-
-	public class ControlDefUnMerger
-	{
-		Dictionary<string, string> Remaps;
-
-		public ControlDefUnMerger(Dictionary<string, string> Remaps)
-		{
-			this.Remaps = Remaps;
-		}
-
-		private class DummyController : IController
-		{
-			IController src;
-			Dictionary<string, string> remaps;
-			public DummyController(IController src, Dictionary<string, string> remaps)
-			{
-				this.src = src;
-				this.remaps = remaps;
-			}
-
-			public ControllerDefinition Type { get { throw new NotImplementedException(); } }
-
-			public bool this[string button] { get { return IsPressed(button); } }
-
-			public bool IsPressed(string button)
-			{
-				return src.IsPressed(remaps[button]);
-			}
-
-			public float GetFloat(string name)
-			{
-				return src.GetFloat(remaps[name]);
-			}
-		}
-
-		public IController UnMerge(IController c)
-		{
-			return new DummyController(c, Remaps);
-		}
-
-	}
-
-	public static class ControllerDefMerger
-	{
-		private static string Allocate(string input, ref int plr, ref int plrnext)
-		{
-			int offset = int.Parse(input.Substring(0, 1));
-			int currplr = plr + offset;
-			if (currplr >= plrnext)
-				plrnext = currplr + 1;
-			return string.Format("P{0} {1}", currplr, input.Substring(1));
-		}
-
-		/// <summary>
-		/// handles all player number merging
-		/// </summary>
-		/// <param name="Controllers"></param>
-		/// <returns></returns>
-		public static ControllerDefinition GetMerged(IEnumerable<ControllerDefinition> Controllers, out List<ControlDefUnMerger> Unmergers)
-		{
-			ControllerDefinition ret = new ControllerDefinition();
-			Unmergers = new List<ControlDefUnMerger>();
-			int plr = 1;
-			int plrnext = 1;
-			foreach (var def in Controllers)
-			{
-				Dictionary<string, string> remaps = new Dictionary<string, string>();
-
-				foreach (string s in def.BoolButtons)
-				{
-					string r = Allocate(s, ref plr, ref plrnext);
-					ret.BoolButtons.Add(r);
-					remaps[s] = r;
-				}
-				foreach (string s in def.FloatControls)
-				{
-					string r = Allocate(s, ref plr, ref plrnext);
-					ret.FloatControls.Add(r);
-					remaps[s] = r;
-				}
-				ret.FloatRanges.AddRange(def.FloatRanges);
-				plr = plrnext;
-				Unmergers.Add(new ControlDefUnMerger(remaps));
-			}
-			return ret;
-		}
-	}
-
-	#endregion
 
 	#region settings
 
@@ -1319,7 +1232,7 @@ namespace BizHawk.Emulation.Cores.Nintendo.NES
 			return (NESControlSettings)MemberwiseClone();
 		}
 
-		public IControllerDeck Instantiate(Func<int, int, bool> PPUCallback)
+		public IControllerDeck Instantiate(LightgunDelegate PPUCallback)
 		{
 			if (Famicom)
 			{

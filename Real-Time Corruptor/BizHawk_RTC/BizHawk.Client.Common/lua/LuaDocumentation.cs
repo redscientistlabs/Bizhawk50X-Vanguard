@@ -1,5 +1,4 @@
 ﻿using System.Collections.Generic;
-using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Text;
@@ -9,9 +8,6 @@ namespace BizHawk.Client.Common
 {
 	public class LuaDocumentation : List<LibraryFunction>
 	{
-		public LuaDocumentation()
-			:base() { }
-
 		public string ToTASVideosWikiMarkup()
 		{
 			var sb = new StringBuilder();
@@ -44,7 +40,7 @@ __Types and notation__
 ** A standard Lua table
 ");
 
-			foreach (var library in this.Select(x => new { Name = x.Library, Description = x.LibraryDescription }).Distinct())
+			foreach (var library in this.Select(lf => new { Name = lf.Library, Description = lf.LibraryDescription }).Distinct())
 			{
 				sb
 					.AppendFormat("%%TAB {0}%%", library.Name)
@@ -58,7 +54,7 @@ __Types and notation__
 						.AppendLine();
 				}
 
-				foreach (var func in this.Where(x => x.Library == library.Name))
+				foreach (var func in this.Where(lf => lf.Library == library.Name))
 				{
 					sb
 						.AppendFormat("__{0}.{1}__%%%", func.Library, func.Name)
@@ -86,7 +82,7 @@ __Types and notation__
 			public string Scope { get; set; }
 
 			[JsonProperty(PropertyName = "completions")]
-			public List<Completion> Completions = new List<Completion>();
+			public List<Completion> Completions { get; set; } = new List<Completion>();
 
 			public class Completion
 			{
@@ -114,7 +110,7 @@ __Types and notation__
 				if (f.ParameterList.Any())
 				{
 					sb
-						.Append(string.Format("{0}.{1}(", f.Library, f.Name));
+						.Append($"{f.Library}.{f.Name}(");
 
 					var parameters = f.Method.GetParameters()
 						.ToList();
@@ -128,7 +124,7 @@ __Types and notation__
 
 						if (parameters[i].IsOptional)
 						{
-							sb.Append(string.Format("[{0}]", parameters[i].Name));
+							sb.Append($"[{parameters[i].Name}]");
 						}
 						else
 						{
@@ -147,7 +143,7 @@ __Types and notation__
 				}
 				else
 				{
-					sb.Append(string.Format("{0}.{1}()", f.Library, f.Name));
+					sb.Append($"{f.Library}.{f.Name}()");
 				}
 
 				completion.Contents = sb.ToString();
@@ -159,39 +155,33 @@ __Types and notation__
 
 		public string ToNotepadPlusPlusAutoComplete()
 		{
-			return string.Empty; // TODO
+			return ""; // TODO
 		}
 	}
 
 	public class LibraryFunction
 	{
-		private readonly LuaMethodAttributes _luaAttributes;
+		private readonly LuaMethodAttribute _luaAttributes;
 		private readonly MethodInfo _method;
 
 		public LibraryFunction(string library, string libraryDescription, MethodInfo method)
 		{
-			_luaAttributes = method.GetCustomAttributes(typeof(LuaMethodAttributes), false)
-				.First() as LuaMethodAttributes;
+			_luaAttributes = method.GetCustomAttributes(typeof(LuaMethodAttribute), false)
+				.First() as LuaMethodAttribute;
 			_method = method;
 
 			Library = library;
 			LibraryDescription = libraryDescription;
 		}
 
-		public string Library { get; private set; }
-		public string LibraryDescription { get; private set; }
+		public string Library { get; }
+		public string LibraryDescription { get; }
 
-		public MethodInfo Method {  get { return _method; } }
+		public MethodInfo Method => _method;
 
-		public string Name
-		{
-			get { return _luaAttributes.Name; }
-		}
+		public string Name => _luaAttributes.Name;
 
-		public string Description
-		{
-			get { return _luaAttributes.Description; }
-		}
+		public string Description => _luaAttributes.Description;
 
 		private string _paramterList = null;
 
@@ -235,10 +225,10 @@ __Types and notation__
 		private string TypeCleanup(string str)
 		{
 			return str
-				.Replace("System", string.Empty)
-				.Replace(" ", string.Empty)
-				.Replace(".", string.Empty)
-				.Replace("LuaInterface", string.Empty)
+				.Replace("System", "")
+				.Replace(" ", "")
+				.Replace(".", "")
+				.Replace("LuaInterface", "")
 				.Replace("Object[]", "object[] ")
 				.Replace("Object", "object ")
 				.Replace("Nullable`1[Boolean]", "bool? ")

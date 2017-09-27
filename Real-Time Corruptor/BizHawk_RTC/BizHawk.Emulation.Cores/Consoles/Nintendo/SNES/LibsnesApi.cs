@@ -1,202 +1,152 @@
 ﻿using System;
 using System.Diagnostics;
 using System.IO;
-using System.IO.Pipes;
 using System.Collections.Generic;
 using System.Runtime.InteropServices;
-using System.IO.MemoryMappedFiles;
 
 using BizHawk.Common;
+using BizHawk.Emulation.Cores.Waterbox;
+using BizHawk.Common.BizInvoke;
+using BizHawk.Emulation.Common;
 
 namespace BizHawk.Emulation.Cores.Nintendo.SNES
 {
-	public unsafe partial class LibsnesApi : IDisposable
+	public abstract unsafe class CoreImpl
 	{
-		//this wouldve been the ideal situation to learn protocol buffers, but since the number of messages here is so limited, it took less time to roll it by hand.
-		//todo - could optimize a lot of the apis once we decide to commit to this. will we? then we wont be able to debug bsnes as well
-		//        well, we could refactor it a lot and let the debuggable static dll version be the one that does annoying workarounds
-		//todo - more intelligent use of buffers to avoid so many copies (especially framebuffer from bsnes? supply framebuffer to-be-used to libsnes? same for audiobuffer)
-		//todo - refactor to use a smarter set of pipe reader and pipe writer classes
-		//todo - combine messages / tracecallbacks into one system with a channel number enum additionally
-		//todo - consider refactoring bsnes to allocate memory blocks through the interface, and set ours up to allocate from a large arena of shared memory.
-		//        this is a lot of work, but it will be some decent speedups. who wouldve ever thought to make an emulator this way? I will, from now on...
-		//todo - use a reader/writer ring buffer for communication instead of pipe
-		//todo - when exe wrapper is fully baked, put it into mingw so we can just have libsneshawk.exe without a separate dll. it hardly needs any debugging presently, it should be easy to maintain.
-		
-		//space optimizations to deploy later (only if people complain about so many files)
-		//todo - put executables in zipfiles and search for them there; dearchive to a .cache folder. check timestamps to know when to freshen. this is weird.....
+		[BizImport(CallingConvention.Cdecl, Compatibility = true)]
+		public abstract IntPtr DllInit();
+		[BizImport(CallingConvention.Cdecl, Compatibility = true)]
+		public abstract void Message(LibsnesApi.eMessage msg);
+		[BizImport(CallingConvention.Cdecl, Compatibility = true)]
+		public abstract void CopyBuffer(int id, void* ptr, int size);
+		[BizImport(CallingConvention.Cdecl, Compatibility = true)]
+		public abstract void SetBuffer(int id, void* ptr, int size);
+		[BizImport(CallingConvention.Cdecl)]
+		public abstract void PostLoadState();
+	}
 
-		//speedups to deploy later:
-		//todo - convey rom data faster than pipe blob (use shared memory) (WARNING: right now our general purpose shared memory is only 1MB. maybe wait until ring buffer IPC)
-		//todo - collapse input messages to one IPC operation. right now theres like 30 of them
-		//todo - collect all memory block names whenever a memory block is alloc/dealloced. that way we avoid the overhead when using them for gui stuff (gfx debugger, hex editor)
+	public unsafe partial class LibsnesApi : IDisposable, IMonitor, IBinaryStateable
+	{
+		static LibsnesApi()
+		{
+			if (sizeof(CommStruct) != 232)
+			{
+				throw new InvalidOperationException("sizeof(comm)");
+			}
+		}
 
+		private PeRunner _exe;
+		private CoreImpl _core;
+		private bool _disposed;
+		private CommStruct* _comm;
+		private readonly Dictionary<string, IntPtr> _sharedMemoryBlocks = new Dictionary<string, IntPtr>();
+		private bool _sealed = false;
 
-		InstanceDll instanceDll;
-		string InstanceName;
-		NamedPipeServerStream pipe;
-		BinaryWriter bwPipe;
-		BinaryReader brPipe;
-		MemoryMappedFile mmf;
-		MemoryMappedViewAccessor mmva;
-		byte* mmvaPtr;
-		IPCRingBuffer rbuf, wbuf;
-		IPCRingBufferStream rbufstr, wbufstr;
-		SwitcherStream rstream, wstream;
-		bool bufio;
+		public void Enter()
+		{
+			_exe.Enter();
+		}
 
-		[DllImport("msvcrt.dll", EntryPoint = "memcpy", CallingConvention = CallingConvention.Cdecl, SetLastError = false)]
-		public static unsafe extern void* CopyMemory(void* dest, void* src, ulong count);
+		public void Exit()
+		{
+			_exe.Exit();
+		}
 
-		[UnmanagedFunctionPointer(CallingConvention.Cdecl)]
-		delegate void DllInit(string ipcname);
+		private readonly List<string> _readonlyFiles = new List<string>();
+
+		public void AddReadonlyFile(byte[] data, string name)
+		{
+			_exe.AddReadonlyFile(data, name);
+			_readonlyFiles.Add(name);
+		}
 
 		public LibsnesApi(string dllPath)
 		{
-			InstanceName = "libsneshawk_" + Guid.NewGuid().ToString();
-
-			var pipeName = InstanceName;
-
-			mmf = MemoryMappedFile.CreateNew(pipeName, 1024 * 1024);
-			mmva = mmf.CreateViewAccessor();
-			mmva.SafeMemoryMappedViewHandle.AcquirePointer(ref mmvaPtr);
-
-			pipe = new NamedPipeServerStream(pipeName, PipeDirection.InOut, 1, PipeTransmissionMode.Byte, PipeOptions.None, 1024 * 1024, 1024);
-
-			instanceDll = new InstanceDll(dllPath);
-			var dllinit = (DllInit)Marshal.GetDelegateForFunctionPointer(instanceDll.GetProcAddress("DllInit"), typeof(DllInit));
-			dllinit(pipeName);
-
-			//TODO - start a thread to wait for process to exit and gracefully handle errors? how about the pipe?
-
-			pipe.WaitForConnection();
-
-			rbuf = new IPCRingBuffer();
-			wbuf = new IPCRingBuffer();
-			rbuf.Allocate(1024);
-			wbuf.Allocate(1024);
-			rbufstr = new IPCRingBufferStream(rbuf);
-			wbufstr = new IPCRingBufferStream(wbuf);
-
-			rstream = new SwitcherStream();
-			wstream = new SwitcherStream();
-
-			rstream.SetCurrStream(pipe);
-			wstream.SetCurrStream(pipe);
-
-			brPipe = new BinaryReader(rstream);
-			bwPipe = new BinaryWriter(wstream);
-
-			WritePipeMessage(eMessage.eMessage_SetBuffer);
-			bwPipe.Write(1);
-			WritePipeString(rbuf.Id);
-			WritePipeMessage(eMessage.eMessage_SetBuffer);
-			bwPipe.Write(0);
-			WritePipeString(wbuf.Id);
-			bwPipe.Flush();
+			_exe = new PeRunner(new PeRunnerOptions
+			{
+				Filename = "libsnes.wbx",
+				Path = dllPath,
+				SbrkHeapSizeKB = 4 * 1024,
+				InvisibleHeapSizeKB = 8 * 1024,
+				MmapHeapSizeKB = 32 * 1024, // TODO: see if we can safely make libco stacks smaller
+				PlainHeapSizeKB = 2 * 1024, // TODO: wasn't there more in here?
+				SealedHeapSizeKB = 128 * 1024
+			});
+			using (_exe.EnterExit())
+			{
+				// Marshal checks that function pointers passed to GetDelegateForFunctionPointer are
+				// _currently_ valid when created, even though they don't need to be valid until
+				// the delegate is later invoked.  so GetInvoker needs to be acquired within a lock.
+				_core = BizInvoker.GetInvoker<CoreImpl>(_exe, _exe, CallingConventionAdapters.Waterbox);
+				_comm = (CommStruct*)_core.DllInit().ToPointer();
+			}
 		}
 
 		public void Dispose()
 		{
-			WritePipeMessage(eMessage.eMessage_Shutdown);
-			WaitForCompletion();
-			instanceDll.Dispose();
-
-			pipe.Dispose();
-			mmva.Dispose();
-			mmf.Dispose();
-			rbuf.Dispose();
-			wbuf.Dispose();
-			foreach (var smb in DeallocatedMemoryBlocks.Values)
-				smb.Dispose();
-			DeallocatedMemoryBlocks.Clear();
-		}
-
-		public void BeginBufferIO()
-		{
-			bufio = true;
-			WritePipeMessage(eMessage.eMessage_BeginBufferIO);
-			rstream.SetCurrStream(rbufstr);
-			wstream.SetCurrStream(wbufstr);
-		}
-
-		public void EndBufferIO()
-		{
-			if(!bufio) return;
-			bufio = false;
-			WritePipeMessage(eMessage.eMessage_EndBufferIO);
-			rstream.SetCurrStream(pipe);
-			wstream.SetCurrStream(pipe);
-		}
-
-		void WritePipeString(string str)
-		{
-			WritePipeBlob(System.Text.Encoding.ASCII.GetBytes(str));
-		}
-
-		byte[] ReadPipeBlob()
-		{
-			int len = brPipe.ReadInt32();
-			var ret = new byte[len];
-			brPipe.Read(ret, 0, len);
-			return ret;
-		}
-
-		void WritePipeBlob(byte[] blob)
-		{
-			bwPipe.Write(blob.Length);
-			bwPipe.Write(blob);
-			bwPipe.Flush();
-		}
-
-		public int MessageCounter;
-
-		void WritePipeInt(int n)
-		{
-		}
-
-		void WritePipePointer(IntPtr ptr, bool flush = true)
-		{
-			bwPipe.Write(ptr.ToInt32());
-			if(flush) bwPipe.Flush();
-		}
-
-		void WritePipeMessage(eMessage msg)
-		{
-			if(!bufio) MessageCounter++;
-			//Console.WriteLine("write pipe message: " + msg);
-			bwPipe.Write((int)msg);
-			bwPipe.Flush();
-		}
-
-		eMessage ReadPipeMessage()
-		{
-			return (eMessage)brPipe.ReadInt32();
-		}
-
-		string ReadPipeString()
-		{
-			int len = brPipe.ReadInt32();
-			var bytes = brPipe.ReadBytes(len);
-			return System.Text.ASCIIEncoding.ASCII.GetString(bytes);
-		}
-
-		void WaitForCompletion()
-		{
-			for (; ; )
+			if (!_disposed)
 			{
-				var msg = ReadPipeMessage();
-				if (!bufio) MessageCounter++;
-				//Console.WriteLine("read pipe message: " + msg);
-
-				if (msg == eMessage.eMessage_BRK_Complete)
-					return;
-
-				//this approach is slower than having one big case. but, its easier to manage. once the code is stable, someone could clean it up (probably creating a delegate table would be best)
-				if (Handle_SIG(msg)) continue;
-				if (Handle_BRK(msg)) continue;
+				_disposed = true;
+				_exe.Dispose();
+				_exe = null;
+				_core = null;
+				_comm = null;
 			}
-		} 
+		}
+
+		/// <summary>
+		/// Copy an ascii string into libretro. It keeps the copy.
+		/// </summary>
+		public void CopyAscii(int id, string str)
+		{
+			fixed (byte* cp = System.Text.Encoding.ASCII.GetBytes(str + "\0"))
+			{
+				_core.CopyBuffer(id, cp, str.Length + 1);
+			}
+		}
+
+		/// <summary>
+		/// Copy a buffer into libretro. It keeps the copy.
+		/// </summary>
+		public void CopyBytes(int id, byte[] bytes)
+		{
+			fixed (byte* bp = bytes)
+			{
+				_core.CopyBuffer(id, bp, bytes.Length);
+			}
+		}
+
+		/// <summary>
+		/// Locks a buffer and sets it into libretro. You must pass a delegate to be executed while that buffer is locked.
+		/// This is meant to be used for avoiding a memcpy for large roms (which the core is then just going to memcpy again on its own)
+		/// The memcpy has to happen at some point (libretro semantics specify [not literally, the docs dont say] that the core should finish using the buffer before its init returns)
+		/// but this limits it to once.
+		/// Moreover, this keeps the c++ side from having to free strings when they're no longer used (and memory management is trickier there, so we try to avoid it)
+		/// </summary>
+		public void SetBytes(int id, byte[] bytes, Action andThen)
+		{
+			if (_sealed)
+				throw new InvalidOperationException("Init period is over");
+			fixed (byte* bp = bytes)
+			{
+				_core.SetBuffer(id, bp, bytes.Length);
+				andThen();
+			}
+		}
+
+		/// <summary>
+		/// see SetBytes
+		/// </summary>
+		public void SetAscii(int id, string str, Action andThen)
+		{
+			if (_sealed)
+				throw new InvalidOperationException("Init period is over");
+			fixed (byte* cp = System.Text.Encoding.ASCII.GetBytes(str + "\0"))
+			{
+				_core.SetBuffer(id, cp, str.Length + 1);
+				andThen();
+			}
+		}
 
 		public Action<uint> ReadHook, ExecHook;
 		public Action<uint, byte> WriteHook;
@@ -204,8 +154,16 @@ namespace BizHawk.Emulation.Cores.Nintendo.SNES
 		public enum eCDLog_AddrType
 		{
 			CARTROM, CARTRAM, WRAM, APURAM,
+			SGB_CARTROM, SGB_CARTRAM, SGB_WRAM, SGB_HRAM,
 			NUM
 		};
+
+		public enum eTRACE : uint
+		{
+			CPU = 0,
+			SMP = 1,
+			GB = 2
+		}
 
 		public enum eCDLog_Flags
 		{
@@ -215,9 +173,6 @@ namespace BizHawk.Emulation.Cores.Nintendo.SNES
 			DMAData = 0x08, //not supported yet
 			BRR = 0x80,
 		};
-
-		Dictionary<string, SharedMemoryBlock> SharedMemoryBlocks = new Dictionary<string, SharedMemoryBlock>();
-		Dictionary<string, SharedMemoryBlock> DeallocatedMemoryBlocks = new Dictionary<string, SharedMemoryBlock>();
 
 		snes_video_refresh_t video_refresh;
 		snes_input_poll_t input_poll;
@@ -236,17 +191,205 @@ namespace BizHawk.Emulation.Cores.Nintendo.SNES
 
 		public delegate void snes_video_refresh_t(int* data, int width, int height);
 		public delegate void snes_input_poll_t();
-		public delegate ushort snes_input_state_t(int port, int device, int index, int id);
+		public delegate short snes_input_state_t(int port, int device, int index, int id);
 		public delegate void snes_input_notify_t(int index);
 		public delegate void snes_audio_sample_t(ushort left, ushort right);
 		public delegate void snes_scanlineStart_t(int line);
 		public delegate string snes_path_request_t(int slot, string hint);
-		public delegate void snes_trace_t(string msg);
+		public delegate void snes_trace_t(uint which, string msg);
 
-		public void SPECIAL_Resume()
+
+		[StructLayout(LayoutKind.Explicit)]
+		public struct CPURegs
 		{
-			WritePipeMessage(eMessage.eMessage_ResumeAfterBRK);
+			[FieldOffset(0)]
+			public uint pc;
+			[FieldOffset(4)]
+			public ushort a, x, y, z, s, d, vector; //7x
+			[FieldOffset(18)]
+			public byte p, nothing;
+			[FieldOffset(20)]
+			public uint aa, rd;
+			[FieldOffset(28)]
+			public byte sp, dp, db, mdr;
+		}
+
+		[StructLayout(LayoutKind.Sequential)]
+		public struct LayerEnables
+		{
+			byte _BG1_Prio0, _BG1_Prio1;
+			byte _BG2_Prio0, _BG2_Prio1;
+			byte _BG3_Prio0, _BG3_Prio1;
+			byte _BG4_Prio0, _BG4_Prio1;
+			byte _Obj_Prio0, _Obj_Prio1, _Obj_Prio2, _Obj_Prio3;
+
+			public bool BG1_Prio0 { get { return _BG1_Prio0 != 0; } set { _BG1_Prio0 = (byte)(value ? 1 : 0); } }
+			public bool BG1_Prio1 { get { return _BG1_Prio1 != 0; } set { _BG1_Prio1 = (byte)(value ? 1 : 0); } }
+			public bool BG2_Prio0 { get { return _BG2_Prio0 != 0; } set { _BG2_Prio0 = (byte)(value ? 1 : 0); } }
+			public bool BG2_Prio1 { get { return _BG2_Prio1 != 0; } set { _BG2_Prio1 = (byte)(value ? 1 : 0); } }
+			public bool BG3_Prio0 { get { return _BG3_Prio0 != 0; } set { _BG3_Prio0 = (byte)(value ? 1 : 0); } }
+			public bool BG3_Prio1 { get { return _BG3_Prio1 != 0; } set { _BG3_Prio1 = (byte)(value ? 1 : 0); } }
+			public bool BG4_Prio0 { get { return _BG4_Prio0 != 0; } set { _BG4_Prio0 = (byte)(value ? 1 : 0); } }
+			public bool BG4_Prio1 { get { return _BG4_Prio1 != 0; } set { _BG4_Prio1 = (byte)(value ? 1 : 0); } }
+
+			public bool Obj_Prio0 { get { return _Obj_Prio0 != 0; } set { _Obj_Prio0 = (byte)(value ? 1 : 0); } }
+			public bool Obj_Prio1 { get { return _Obj_Prio1 != 0; } set { _Obj_Prio1 = (byte)(value ? 1 : 0); } }
+			public bool Obj_Prio2 { get { return _Obj_Prio2 != 0; } set { _Obj_Prio2 = (byte)(value ? 1 : 0); } }
+			public bool Obj_Prio3 { get { return _Obj_Prio3 != 0; } set { _Obj_Prio3 = (byte)(value ? 1 : 0); } }
+		}
+
+		[StructLayout(LayoutKind.Explicit)]
+		struct CommStruct
+		{
+			[FieldOffset(0)]
+			//the cmd being executed
+			public eMessage cmd;
+			[FieldOffset(4)]
+			//the status of the core
+			public eStatus status;
+			[FieldOffset(8)]
+			//the SIG or BRK that the core is halted in
+			public eMessage reason;
+
+			//flexible in/out parameters
+			//these are all "overloaded" a little so it isn't clear what's used for what in for any particular message..
+			//but I think it will beat having to have some kind of extremely verbose custom layouts for every message
+			[FieldOffset(16)]
+			public sbyte* str;
+			[FieldOffset(24)]
+			public void* ptr;
+			[FieldOffset(32)]
+			public uint id;
+			[FieldOffset(36)]
+			public uint addr;
+			[FieldOffset(40)]
+			public uint value;
+			[FieldOffset(44)]
+			public uint size;
+			[FieldOffset(48)]
+			public int port;
+			[FieldOffset(52)]
+			public int device;
+			[FieldOffset(56)]
+			public int index;
+			[FieldOffset(60)]
+			public int slot;
+			[FieldOffset(64)]
+			public int width;
+			[FieldOffset(68)]
+			public int height;
+			[FieldOffset(72)]
+			public int scanline;
+			[FieldOffset(76)]
+			public fixed int inports[2];
+
+			[FieldOffset(88)]
+			//this should always be used in pairs
+			public fixed long buf[3]; //ACTUALLY A POINTER but can't marshal it :(
+			[FieldOffset(112)]
+			public fixed int buf_size[3];
+
+			[FieldOffset(128)]
+			//bleck. this is a long so that it can be a 32/64bit pointer
+			public fixed long cdl_ptr[4];
+			[FieldOffset(160)]
+			public fixed int cdl_size[4];
+
+			[FieldOffset(176)]
+			public CPURegs cpuregs;
+			[FieldOffset(208)]
+			public LayerEnables layerEnables;
+
+			[FieldOffset(220)]
+			//static configuration-type information which can be grabbed off the core at any time without even needing a QUERY command
+			public SNES_REGION region;
+			[FieldOffset(224)]
+			public SNES_MAPPER mapper;
+
+			[FieldOffset(228)]
+			public int unused;
+
+			//utilities
+			//TODO: make internal, wrap on the API instead of the comm
+			public unsafe string GetAscii() { return _getAscii(str); }
+			public bool GetBool() { return value != 0; }
+
+			private unsafe string _getAscii(sbyte* ptr)
+			{
+				int len = 0;
+				sbyte* junko = (sbyte*)ptr;
+				while (junko[len] != 0) len++;
+
+				return new string((sbyte*)str, 0, len, System.Text.Encoding.ASCII);
+			}
+		}
+
+		public SNES_REGION Region
+		{
+			get
+			{
+				using (_exe.EnterExit())
+				{
+					return _comm->region;
+				}
+			}
+		}
+		public SNES_MAPPER Mapper
+		{
+			get
+			{
+				using (_exe.EnterExit())
+				{
+					return _comm->mapper;
+				}
+			}
+		}
+
+		public void SetLayerEnables(ref LayerEnables enables)
+		{
+			using (_exe.EnterExit())
+			{
+				_comm->layerEnables = enables;
+				QUERY_set_layer_enable();
+			}
+		}
+
+		public void SetInputPortBeforeInit(int port, SNES_INPUT_PORT type)
+		{
+			using (_exe.EnterExit())
+			{
+				_comm->inports[port] = (int)type;
+			}
+		}
+
+		public void Seal()
+		{
+			/* Cothreads can very easily acquire "pointer poison"; because their stack and even registers
+			 * are part of state, any poisoned pointer that's used even temporarily might be persisted longer
+			 * than needed.  Most of the libsnes core cothreads handle internal matters only and aren't very
+			 * vulnerable to pointer poison, but the main boss cothread is used heavily during init, when
+			 * many syscalls happen and many kinds of poison can end up on the stack.  so here, we call
+			 * _core.DllInit() again, which recreates that cothread, zeroing out all of the memory first,
+			 * as well as zeroing out the comm struct. */
+			_core.DllInit();
+			_exe.Seal();
+			_sealed = true;
+			foreach (var s in _readonlyFiles)
+			{
+				_exe.RemoveReadonlyFile(s);
+			}
+			_readonlyFiles.Clear();
+		}
+
+		public void SaveStateBinary(BinaryWriter writer)
+		{
+			_exe.SaveStateBinary(writer);
+		}
+
+		public void LoadStateBinary(BinaryReader reader)
+		{
+			_exe.LoadStateBinary(reader);
+			_core.PostLoadState();
 		}
 	}
-
 }

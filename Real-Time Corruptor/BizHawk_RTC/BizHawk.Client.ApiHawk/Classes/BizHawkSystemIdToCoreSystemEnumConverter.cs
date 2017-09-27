@@ -32,7 +32,7 @@ namespace BizHawk.Client.ApiHawk
 					return CoreSystem.Atari2600;
 
 				case "A78":
-					return CoreSystem.Atari2600;
+					return CoreSystem.Atari7800;
 
 				case "Coleco":
 					return CoreSystem.ColecoVision;
@@ -95,6 +95,15 @@ namespace BizHawk.Client.ApiHawk
 
 				case "WSWAN":
 					return CoreSystem.WonderSwan;
+
+				case "VB":
+				case "NGP":
+				case "DNGP":
+				case "O2":
+				case "SGB":
+				case "UZE":
+				case "PCFX":
+					return 0; // like I give a shit
 
 				default:
 					throw new IndexOutOfRangeException(string.Format("{0} is missing in convert list", value));

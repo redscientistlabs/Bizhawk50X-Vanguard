@@ -24,7 +24,7 @@ namespace BizHawk.Client.Common
 		public override string ToString()
 		{
 			var sb = new StringBuilder();
-			this.Sort();
+			Sort();
 			ForEach(subtitle => sb.AppendLine(subtitle.ToString()));
 			return sb.ToString();
 		}
@@ -38,7 +38,7 @@ namespace BizHawk.Client.Common
 					var subparts = subtitleStr.Split(' ');
 
 					// Unfortunately I made the file format space delminated so this hack is necessary to get the message
-					var message = string.Empty;
+					var message = "";
 					for (var i = 6; i < subparts.Length; i++)
 					{
 						message += subparts[i] + ' ';
@@ -67,20 +67,22 @@ namespace BizHawk.Client.Common
 
 		public new void Sort()
 		{
-			this.Sort((x, y) =>
+			Sort((x, y) =>
 			{
 				int result = x.Frame.CompareTo(y.Frame);
 				return result != 0 ? result : x.Y.CompareTo(y.Y);
 			});
 		}
 
-        public string ToSubRip(double fps)
-        {
-            int index = 1;
+		public string ToSubRip(double fps)
+		{
+			int index = 1;
 			var sb = new StringBuilder();
 			List<Subtitle> subs = new List<Subtitle>();
 			foreach (var subtitle in this)
+			{
 				subs.Add(subtitle);
+			}
 
 			// absense of line wrap forces miltiline subtitle macros
 			// so we sort them just in case and optionally concat back to a single unit
@@ -90,10 +92,12 @@ namespace BizHawk.Client.Common
 				int lastframe = 0;
 				subs = subs.OrderBy(s => s.Frame).ThenBy(s => s.Y).ToList();
 
-				for (int i = 0; ; i++)
+				for (int i = 0;; i++)
 				{
-					if (i == subs.Count()) // we're modifying it
+					if (i == subs.Count) // we're modifying it
+					{
 						break;
+					}
 
 					subs[i].Message = subs[i].Message.Trim();
 
@@ -113,10 +117,12 @@ namespace BizHawk.Client.Common
 				subs = subs.OrderBy(s => s.Frame).ThenByDescending(s => s.Y).ToList();
 			}
 
-            foreach (var subtitle in subs)
-                sb.Append(subtitle.ToSubRip(index++, fps, AddColorTag));
+			foreach (var subtitle in subs)
+			{
+				sb.Append(subtitle.ToSubRip(index++, fps, AddColorTag));
+			}
 
-            return sb.ToString();
-        }
+			return sb.ToString();
+		}
 	}
 }

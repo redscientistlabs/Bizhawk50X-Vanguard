@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -20,6 +19,11 @@ namespace BizHawk.Client.Common
 		public TasMovieMarkerList Markers { get; set; }
 		public Guid UniqueIdentifier { get; set; }
 		public string UserText { get; set; }
+
+		public TasBranch Clone()
+		{
+			return (TasBranch)MemberwiseClone();
+		}
 	}
 
 	public class TasBranchCollection : List<TasBranch>
@@ -30,7 +34,10 @@ namespace BizHawk.Client.Common
 			{
 				var currentHashes = this.Select(b => b.UniqueIdentifier.GetHashCode()).ToList();
 
-				do item.UniqueIdentifier = Guid.NewGuid();
+				do
+				{
+					item.UniqueIdentifier = Guid.NewGuid();
+				}
 				while (currentHashes.Contains(item.UniqueIdentifier.GetHashCode()));
 			}
 
@@ -53,9 +60,9 @@ namespace BizHawk.Client.Common
 					// if this header needs more stuff in it, handle it sensibly
 					tw.WriteLine(JsonConvert.SerializeObject(new
 					{
-						Frame = b.Frame,
-						TimeStamp = b.TimeStamp,
-						UniqueIdentifier = b.UniqueIdentifier
+						b.Frame,
+						b.TimeStamp,
+						b.UniqueIdentifier
 					}));
 				});
 
@@ -68,7 +75,9 @@ namespace BizHawk.Client.Common
 				{
 					int todo = b.InputLog.Count;
 					for (int i = 0; i < todo; i++)
+					{
 						tw.WriteLine(b.InputLog[i]);
+					}
 				});
 
 				bs.PutLump(nframebuffer, delegate(Stream s)
@@ -82,7 +91,7 @@ namespace BizHawk.Client.Common
 					b.LagLog.Save(bw);
 				});
 
-				bs.PutLump(nmarkers, delegate (TextWriter tw)
+				bs.PutLump(nmarkers, delegate(TextWriter tw)
 				{
 					tw.WriteLine(b.Markers.ToString());
 				});
@@ -123,7 +132,7 @@ namespace BizHawk.Client.Common
 					var header = (dynamic)JsonConvert.DeserializeObject(tr.ReadLine());
 					b.Frame = (int)header.Frame;
 
-					var timestamp = (dynamic)header.TimeStamp;
+					var timestamp = header.TimeStamp;
 
 					if (timestamp != null)
 					{
@@ -134,7 +143,7 @@ namespace BizHawk.Client.Common
 						b.TimeStamp = DateTime.Now;
 					}
 
-					var identifier = (dynamic)header.UniqueIdentifier;
+					var identifier = header.UniqueIdentifier;
 					if (identifier != null)
 					{
 						b.UniqueIdentifier = (Guid)identifier;
@@ -159,7 +168,9 @@ namespace BizHawk.Client.Common
 					b.InputLog = StringLogUtil.MakeStringLog();
 					string line;
 					while ((line = tr.ReadLine()) != null)
+					{
 						b.InputLog.Add(line);
+					}
 				});
 
 				bl.GetLump(nframebuffer, true, delegate(Stream s, long length)
@@ -176,7 +187,7 @@ namespace BizHawk.Client.Common
 				});
 
 				b.Markers = new TasMovieMarkerList(movie);
-				bl.GetLump(nmarkers, false, delegate (TextReader tr)
+				bl.GetLump(nmarkers, false, delegate(TextReader tr)
 				{
 					string line;
 					while ((line = tr.ReadLine()) != null)
@@ -187,7 +198,6 @@ namespace BizHawk.Client.Common
 						}
 					}
 				});
-
 
 				bl.GetLump(nusertext, false, delegate(TextReader tr)
 				{

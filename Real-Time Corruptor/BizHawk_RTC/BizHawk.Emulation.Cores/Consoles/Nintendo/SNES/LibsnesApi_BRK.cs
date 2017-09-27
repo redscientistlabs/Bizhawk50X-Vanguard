@@ -8,46 +8,38 @@ namespace BizHawk.Emulation.Cores.Nintendo.SNES
 	{
 		bool Handle_BRK(eMessage msg)
 		{
-			switch (msg)
+			using (_exe.EnterExit())
 			{
-				default:
-					return false;
+				switch (msg)
+				{
+					default:
+						return false;
 
-				case eMessage.eMessage_BRK_hook_exec:
-					{
-						var addr = brPipe.ReadInt32();
-						ExecHook((uint)addr);
+					case eMessage.eMessage_BRK_hook_exec:
+						ExecHook(_comm->addr);
 						break;
-					}
-				case eMessage.eMessage_BRK_hook_read:
-					{
-						var addr = brPipe.ReadInt32();
-						ReadHook((uint)addr);
+					case eMessage.eMessage_BRK_hook_read:
+						ReadHook(_comm->addr);
 						break;
-					}
-				case eMessage.eMessage_BRK_hook_write:
-					{
-						var addr = brPipe.ReadInt32();
-						var value = brPipe.ReadByte();
-						WriteHook((uint)addr, value);
+					case eMessage.eMessage_BRK_hook_write:
+						WriteHook(_comm->addr, (byte)_comm->value);
 						break;
-					}
 
-				//not supported yet
-				case eMessage.eMessage_BRK_hook_nmi:
-					break;
-				case eMessage.eMessage_BRK_hook_irq:
-					break;
+					//not supported yet
+					case eMessage.eMessage_BRK_hook_nmi:
+						break;
+					case eMessage.eMessage_BRK_hook_irq:
+						break;
 
-				case eMessage.eMessage_BRK_scanlineStart:
-					int line = brPipe.ReadInt32();
-					if (scanlineStart != null)
-						scanlineStart(line);
-					SPECIAL_Resume();
-					break;
+					case eMessage.eMessage_BRK_scanlineStart:
+						scanlineStart?.Invoke(_comm->scanline);
+						break;
 
-			} //switch(msg)
-			return true;
+				} //switch(msg)
+
+				_core.Message(eMessage.eMessage_Resume);
+				return true;
+			}
 		}
 	}
 }

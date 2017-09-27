@@ -21,3 +21,11 @@ C:\Users\philt\Documents\PROJECTS\RTC\Dev AutoKillSwitch\AutoKillSwitch\obj\x86\
 C:\Users\philt\Documents\PROJECTS\RTC\Dev AutoKillSwitch\AutoKillSwitch\obj\x86\Release\AutoKillSwitch.csproj.GenerateResource.Cache
 C:\Users\philt\Documents\PROJECTS\RTC\Dev AutoKillSwitch\AutoKillSwitch\obj\x86\Release\AutoKillSwitch.exe
 C:\Users\philt\Documents\PROJECTS\RTC\Dev AutoKillSwitch\AutoKillSwitch\obj\x86\Release\AutoKillSwitch.pdb
+C:\Users\philt\Documents\PROJECTS\RTC3\Real-Time Corruptor\Classic AutoKillSwitch\AutoKillSwitch\obj\x86\Release\AutoKillSwitch.exe
+C:\Users\philt\Documents\PROJECTS\RTC3\Real-Time Corruptor\Classic AutoKillSwitch\AutoKillSwitch\obj\x86\Release\AutoKillSwitch.pdb
+C:\Users\philt\Documents\PROJECTS\RTC3\Real-Time Corruptor\Classic AutoKillSwitch\AutoKillSwitch\bin\Release\AutoKillSwitch.exe
+C:\Users\philt\Documents\PROJECTS\RTC3\Real-Time Corruptor\Classic AutoKillSwitch\AutoKillSwitch\bin\Release\AutoKillSwitch.pdb
+C:\Users\philt\Documents\PROJECTS\RTC3\Real-Time Corruptor\Classic AutoKillSwitch\AutoKillSwitch\obj\x86\Release\AutoKillSwitch.csprojResolveAssemblyReference.cache
+C:\Users\philt\Documents\PROJECTS\RTC3\Real-Time Corruptor\Classic AutoKillSwitch\AutoKillSwitch\obj\x86\Release\RTC.AutoKillSwitch.resources
+C:\Users\philt\Documents\PROJECTS\RTC3\Real-Time Corruptor\Classic AutoKillSwitch\AutoKillSwitch\obj\x86\Release\AutoKillSwitch.Properties.Resources.resources
+C:\Users\philt\Documents\PROJECTS\RTC3\Real-Time Corruptor\Classic AutoKillSwitch\AutoKillSwitch\obj\x86\Release\AutoKillSwitch.csproj.GenerateResource.Cache

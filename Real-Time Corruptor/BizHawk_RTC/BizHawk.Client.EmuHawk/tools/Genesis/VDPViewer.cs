@@ -7,9 +7,10 @@ using System.Linq;
 using System.Text;
 using System.Windows.Forms;
 using BizHawk.Client.Common;
-using BizHawk.Emulation.Cores.Consoles.Sega.gpgx;
 using System.Drawing.Imaging;
 using BizHawk.Emulation.Common;
+using BizHawk.Emulation.Cores.Consoles.Sega.gpgx;
+using BizHawk.Common;
 
 namespace BizHawk.Client.EmuHawk
 {
@@ -18,7 +19,8 @@ namespace BizHawk.Client.EmuHawk
 		[RequiredService]
 		private GPGX Emu { get; set; }
 
-		private LibGPGX.VDPView View = new LibGPGX.VDPView();
+		private GPGX.VDPView View;
+
 		int palindex = 0;
 
 		protected override System.Drawing.Point ScrollToControl(System.Windows.Forms.Control activeControl)
@@ -60,7 +62,7 @@ namespace BizHawk.Client.EmuHawk
 			bv.Size = pixsize;
 			bv.ChangeBitmapSize(pixsize);
 
-			var lockdata = bv.bmp.LockBits(new Rectangle(Point.Empty, pixsize), ImageLockMode.WriteOnly, PixelFormat.Format32bppArgb);
+			var lockdata = bv.BMP.LockBits(new Rectangle(Point.Empty, pixsize), ImageLockMode.WriteOnly, PixelFormat.Format32bppArgb);
 			int pitch = lockdata.Stride / sizeof(int);
 			int* dest = (int*)lockdata.Scan0;
 
@@ -77,13 +79,13 @@ namespace BizHawk.Client.EmuHawk
 				dest -= 8 * tilew;
 				dest += 8 * pitch;
 			}
-			bv.bmp.UnlockBits(lockdata);
+			bv.BMP.UnlockBits(lockdata);
 			bv.Refresh();
 		}
 
-		unsafe void DrawPalettes(int *pal)
+		unsafe void DrawPalettes(int* pal)
 		{
-			var lockdata = bmpViewPal.bmp.LockBits(new Rectangle(0, 0, 16, 4), ImageLockMode.WriteOnly, PixelFormat.Format32bppArgb);
+			var lockdata = bmpViewPal.BMP.LockBits(new Rectangle(0, 0, 16, 4), ImageLockMode.WriteOnly, PixelFormat.Format32bppArgb);
 			int pitch = lockdata.Stride / sizeof(int);
 			int* dest = (int*)lockdata.Scan0;
 
@@ -93,13 +95,13 @@ namespace BizHawk.Client.EmuHawk
 					*dest++ = *pal++;
 				dest += pitch - 16;
 			}
-			bmpViewPal.bmp.UnlockBits(lockdata);
+			bmpViewPal.BMP.UnlockBits(lockdata);
 			bmpViewPal.Refresh();
 		}
 
 		unsafe void DrawTiles()
 		{
-			var lockdata = bmpViewTiles.bmp.LockBits(new Rectangle(0, 0, 512, 256), ImageLockMode.WriteOnly, PixelFormat.Format32bppArgb);
+			var lockdata = bmpViewTiles.BMP.LockBits(new Rectangle(0, 0, 512, 256), ImageLockMode.WriteOnly, PixelFormat.Format32bppArgb);
 			int pitch = lockdata.Stride / sizeof(int);
 			int* dest = (int*)lockdata.Scan0;
 			byte* src = (byte*)View.PatternCache;
@@ -115,29 +117,30 @@ namespace BizHawk.Client.EmuHawk
 				if ((tile & 63) == 0)
 					dest += 8 * pitch - 512;
 			}
-			bmpViewTiles.bmp.UnlockBits(lockdata);
+			bmpViewTiles.BMP.UnlockBits(lockdata);
 			bmpViewTiles.Refresh();
 		}
 
 		public void NewUpdate(ToolFormUpdateType type) { }
 
-		public void UpdateValues()
+		public unsafe void UpdateValues()
 		{
 			if (Emu == null)
 				return;
-			Emu.UpdateVDPViewContext(View);
-			unsafe
+
+			using ((View = Emu.UpdateVDPViewContext()).EnterExit())
 			{
 				int* pal = (int*)View.ColorCache;
 				//for (int i = 0; i < 0x40; i++)
 				//	pal[i] |= unchecked((int)0xff000000);
 				DrawPalettes(pal);
 				DrawTiles();
-				ushort *VRAMNT = (ushort*)View.VRAM;
-				byte *tiles = (byte*)View.PatternCache;
+				ushort* VRAMNT = (ushort*)View.VRAM;
+				byte* tiles = (byte*)View.PatternCache;
 				DrawNameTable(View.NTA, VRAMNT, tiles, pal, bmpViewNTA);
 				DrawNameTable(View.NTB, VRAMNT, tiles, pal, bmpViewNTB);
 				DrawNameTable(View.NTW, VRAMNT, tiles, pal, bmpViewNTW);
+				View = null;
 			}
 		}
 
@@ -186,7 +189,7 @@ namespace BizHawk.Client.EmuHawk
 				if (found is BmpView)
 				{
 					var bv = found as BmpView;
-					Clipboard.SetImage(bv.bmp);
+					Clipboard.SetImage(bv.BMP);
 				}
 			}
 		}

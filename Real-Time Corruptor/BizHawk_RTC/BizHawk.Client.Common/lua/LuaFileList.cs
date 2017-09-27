@@ -7,7 +7,7 @@ namespace BizHawk.Client.Common
 {
 	public class LuaFileList : List<LuaFile>
 	{
-		private string _filename = string.Empty;
+		private string _filename = "";
 		private bool _changes;
 
 		public Action ChangedCallback { get; set; }
@@ -39,19 +39,19 @@ namespace BizHawk.Client.Common
 
 			set
 			{
-				_filename = value ?? string.Empty;
+				_filename = value ?? "";
 			}
 		}
 
 		public void StopAllScripts()
 		{
-			ForEach(x => x.State = LuaFile.RunState.Disabled);
+			ForEach(lf => lf.State = LuaFile.RunState.Disabled);
 		}
 
 		public new void Clear()
 		{
 			StopAllScripts();
-			_filename = string.Empty;
+			_filename = "";
 			Changes = false;
 			base.Clear();
 		}
@@ -105,10 +105,9 @@ namespace BizHawk.Client.Common
 
 							Add(new LuaFile(scriptPath)
 							{
-								State = (
-										!Global.Config.DisableLuaScriptsOnLoad 
-										&& line.Substring(0, 1) == "1"
-									) ? LuaFile.RunState.Running : LuaFile.RunState.Disabled
+								State = !Global.Config.DisableLuaScriptsOnLoad && line.Substring(0, 1) == "1"
+									 ? LuaFile.RunState.Running
+									 : LuaFile.RunState.Disabled
 							});
 						}
 					}
@@ -118,10 +117,7 @@ namespace BizHawk.Client.Common
 				ForEach(lua => Global.Config.RecentLua.Add(lua.Path));
 
 				_filename = path;
-				if (LoadCallback != null)
-				{
-					LoadCallback();
-				}
+				LoadCallback?.Invoke();
 
 				return true;
 			}

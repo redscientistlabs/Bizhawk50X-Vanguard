@@ -1,63 +1,49 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel;
 using System.Linq;
 using System.Runtime.InteropServices;
-using System.Text;
 
-using Newtonsoft.Json;
-
-using BizHawk.Common.BufferExtensions;
 using BizHawk.Emulation.Common;
-using BizHawk.Common;
-using BizHawk.Common.CollectionExtensions;
-using BizHawk.Emulation.Common.BizInvoke;
+using BizHawk.Common.BizInvoke;
 
 namespace BizHawk.Emulation.Cores.Consoles.Nintendo.QuickNES
 {
-	[CoreAttributes(
+	[Core(
 		"QuickNes",
 		"",
 		isPorted: true,
 		isReleased: true,
 		portedVersion: "0.7.0",
-		portedUrl: "https://github.com/kode54/QuickNES"
-		)]
+		portedUrl: "https://github.com/kode54/QuickNES")]
 	[ServiceNotApplicable(typeof(IDriveLight))]
-	public partial class QuickNES : IEmulator, IVideoProvider, ISyncSoundProvider, ISaveRam, IInputPollable,
+	public partial class QuickNES : IEmulator, IVideoProvider, ISoundProvider, ISaveRam, IInputPollable, IBoardInfo,
 		IStatable, IDebuggable, ISettable<QuickNES.QuickNESSettings, QuickNES.QuickNESSyncSettings>, Cores.Nintendo.NES.INESPPUViewable
 	{
-		static readonly LibQuickNES QN;
-		static readonly DynamicLibraryImportResolver Resolver;
-
-
 		static QuickNES()
 		{
 			Resolver = new DynamicLibraryImportResolver(LibQuickNES.dllname);
-			QN = BizInvoker.GetInvoker<LibQuickNES>(Resolver);
+			QN = BizInvoker.GetInvoker<LibQuickNES>(Resolver, CallingConventionAdapters.Native);
 		}
 
 		[CoreConstructor("NES")]
-		public QuickNES(CoreComm comm, byte[] file, object Settings, object SyncSettings)
+		public QuickNES(CoreComm comm, byte[] file, object settings, object syncSettings)
 		{
 			using (FP.Save())
 			{
 				ServiceProvider = new BasicServiceProvider(this);
 				CoreComm = comm;
-
+				
 				Context = QN.qn_new();
 				if (Context == IntPtr.Zero)
+				{
 					throw new InvalidOperationException("qn_new() returned NULL");
+				}
+
 				try
 				{
-					unsafe
-					{
-						fixed (byte* p = file)
-						{
-							Console.WriteLine((IntPtr)p);
-							LibQuickNES.ThrowStringError(QN.qn_loadines(Context, file, file.Length));
-						}
-					}
+
+					file = FixInesHeader(file);
+					LibQuickNES.ThrowStringError(QN.qn_loadines(Context, file, file.Length));
 
 					InitSaveRamBuff();
 					InitSaveStateBuff();
@@ -68,11 +54,9 @@ namespace BizHawk.Emulation.Cores.Consoles.Nintendo.QuickNES
 					string mappername = Marshal.PtrToStringAnsi(QN.qn_get_mapper(Context, ref mapper));
 					Console.WriteLine("QuickNES: Booted with Mapper #{0} \"{1}\"", mapper, mappername);
 					BoardName = mappername;
-					CoreComm.VsyncNum = 39375000;
-					CoreComm.VsyncDen = 655171;
-					PutSettings((QuickNESSettings)Settings ?? new QuickNESSettings());
+					PutSettings((QuickNESSettings)settings ?? new QuickNESSettings());
 
-					_syncSettings = (QuickNESSyncSettings)SyncSettings ?? new QuickNESSyncSettings();
+					_syncSettings = (QuickNESSyncSettings)syncSettings ?? new QuickNESSyncSettings();
 					_syncSettingsNext = _syncSettings.Clone();
 
 					SetControllerDefinition();
@@ -87,6 +71,9 @@ namespace BizHawk.Emulation.Cores.Consoles.Nintendo.QuickNES
 				}
 			}
 		}
+
+		static readonly LibQuickNES QN;
+		static readonly DynamicLibraryImportResolver Resolver;
 
 		public IEmulatorServiceProvider ServiceProvider { get; private set; }
 
@@ -124,7 +111,6 @@ namespace BizHawk.Emulation.Cores.Consoles.Nintendo.QuickNES
 		#region Controller
 
 		public ControllerDefinition ControllerDefinition { get; private set; }
-		public IController Controller { get; set; }
 
 		void SetControllerDefinition()
 		{
@@ -167,43 +153,43 @@ namespace BizHawk.Emulation.Cores.Consoles.Nintendo.QuickNES
 		private static PadEnt[] PadP1 = GetPadList(1);
 		private static PadEnt[] PadP2 = GetPadList(2);
 
-		private int GetPad(IEnumerable<PadEnt> buttons)
+		private int GetPad(IController controller, IEnumerable<PadEnt> buttons)
 		{
 			int ret = 0;
 			foreach (var b in buttons)
 			{
-				if (Controller[b.Name])
+				if (controller.IsPressed(b.Name))
 					ret |= b.Mask;
 			}
 			return ret;
 		}
 
-		void SetPads(out int j1, out int j2)
+		void SetPads(IController controller, out int j1, out int j2)
 		{
 			if (_syncSettings.LeftPortConnected)
-				j1 = GetPad(PadP1) | unchecked((int)0xffffff00);
+				j1 = GetPad(controller, PadP1) | unchecked((int)0xffffff00);
 			else
 				j1 = 0;
 			if (_syncSettings.RightPortConnected)
-				j2 = GetPad(_syncSettings.LeftPortConnected ? PadP2 : PadP1) | unchecked((int)0xffffff00);
+				j2 = GetPad(controller, _syncSettings.LeftPortConnected ? PadP2 : PadP1) | unchecked((int)0xffffff00);
 			else
 				j2 = 0;
 		}
 
 		#endregion
 
-		public void FrameAdvance(bool render, bool rendersound = true)
+		public void FrameAdvance(IController controller, bool render, bool rendersound = true)
 		{
 			CheckDisposed();
 			using (FP.Save())
 			{
-				if (Controller["Power"])
+				if (controller.IsPressed("Power"))
 					QN.qn_reset(Context, true);
-				if (Controller["Reset"])
+				if (controller.IsPressed("Reset"))
 					QN.qn_reset(Context, false);
 
 				int j1, j2;
-				SetPads(out j1, out j2);
+				SetPads(controller, out j1, out j2);
 
 				if (Tracer.Enabled)
 					QN.qn_set_tracecb(Context, _tracecb);
@@ -320,56 +306,33 @@ namespace BizHawk.Emulation.Cores.Consoles.Nintendo.QuickNES
 				throw new ObjectDisposedException(GetType().Name);
 		}
 
-		#region SoundProvider
-
-		public ISoundProvider SoundProvider { get { return null; } }
-		public ISyncSoundProvider SyncSoundProvider { get { return this; } }
-		public bool StartAsyncSound() { return false; }
-		public void EndAsyncSound() { }
-
-		void InitAudio()
+		// Fix some incorrect ines header entries that QuickNES uses to load games.
+		// we need to do this from the raw file since QuickNES hasn't had time to process it yet.
+		byte[] FixInesHeader(byte[] file)
 		{
-			LibQuickNES.ThrowStringError(QN.qn_set_sample_rate(Context, 44100));
-		}
+			string sha1 = BizHawk.Common.BufferExtensions.BufferExtensions.HashSHA1(file);
+			bool didSomething = false;
 
-		void DrainAudio()
-		{
-			NumSamples = QN.qn_read_audio(Context, MonoBuff, MonoBuff.Length);
-			unsafe
+			Console.WriteLine(sha1);
+			if (sha1== "93010514AA1300499ABC8F145D6ABCDBF3084090") // Ms. Pac Man (Tengen) [!]
 			{
-				fixed (short* _src = &MonoBuff[0], _dst = &StereoBuff[0])
-				{
-					short* src = _src;
-					short* dst = _dst;
-					for (int i = 0; i < NumSamples; i++)
-					{
-						*dst++ = *src;
-						*dst++ = *src++;
-					}
-				}
+				file[6] &= 0xFE;
+				didSomething = true;
 			}
+
+			if (didSomething)
+			{
+				Console.WriteLine("iNES header error detected, adjusting settings...");
+				Console.WriteLine(sha1);
+			}
+
+			return file;
 		}
-
-		short[] MonoBuff = new short[1024];
-		short[] StereoBuff = new short[2048];
-		int NumSamples = 0;
-
-		public void GetSamples(out short[] samples, out int nsamp)
-		{
-			samples = StereoBuff;
-			nsamp = NumSamples;
-		}
-
-		public void DiscardSamples()
-		{
-		}
-
-		#endregion
 
 		#region Blacklist
 
 		// These games are known to not work in quicknes but quicknes thinks it can run them, bail out if one of these is loaded
-		private readonly string[] HashBlackList = new []
+		private static readonly HashSet<string> HashBlackList = new HashSet<string>
 		{
 			"E39CA4477D3B96E1CE3A1C61D8055187EA5F1784", // Bill and Ted's Excellent Adventure
 			"E8BC7E6BAE7032D571152F6834516535C34C68F0", // Bill and Ted's Excellent Adventure bad dump
@@ -426,6 +389,7 @@ namespace BizHawk.Emulation.Cores.Consoles.Nintendo.QuickNES
 			"F49F55748D8F1139F26289C3D390A138AF627195", // CPUtime (PD)
 			"A31B7F4BE478353442EED59EAAA71743A5C26C9D", // Crisis Force (J) [hM04]
 			"D9A6384293002315B8663F8C5CD2CC9BB273BFB2", // Crisis Force (J) [hM04][b2]
+			"DF3B2EC1EE818DA7C57672A82E76D9591C9D9DC1", // Cybernoid - The Fighting Machine
 			"819C27583EA289301649BA3157709EB7C0E35800", // Demo 1 by zgh4000 (2006-03) (PD)
 			"9EEA0CC3189B6A985C25D86B40D91CB6AFD87F89", // Demo 2 by zgh4000 (2006-03) (PD)
 			"FF944D6D5A187834D4F796CD1C9FC91EA7BFADAC", // Demo 3 by zgh4000 (2006-07-26) (PD)

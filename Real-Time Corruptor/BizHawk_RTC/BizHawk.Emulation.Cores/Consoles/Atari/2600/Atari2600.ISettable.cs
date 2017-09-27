@@ -25,10 +25,7 @@ namespace BizHawk.Emulation.Cores.Atari.Atari2600
 		{
 			if (Settings == null || Settings.SECAMColors != o.SECAMColors)
 			{
-				if (_tia != null)
-				{
-					_tia.SetSECAM(o.SECAMColors);
-				}
+				_tia?.SetSecam(o.SECAMColors);
 			}
 
 			Settings = o;
@@ -104,7 +101,7 @@ namespace BizHawk.Emulation.Cores.Atari.Atari2600
 			[DefaultValue(24)]
 			public int NTSCTopLine
 			{
-				get { return this._ntscTopLine; }
+				get { return _ntscTopLine; }
 				set { _ntscTopLine = Math.Min(64, Math.Max(value, 0)); }
 			}
 
@@ -122,8 +119,8 @@ namespace BizHawk.Emulation.Cores.Atari.Atari2600
 			[DefaultValue(24)]
 			public int PALTopLine
 			{
-				get { return this._palTopLine; }
-				set { this._palTopLine = Math.Min(64, Math.Max(value, 0)); }
+				get { return _palTopLine; }
+				set { _palTopLine = Math.Min(64, Math.Max(value, 0)); }
 			}
 
 			[DisplayName("PAL Bottom Line")]
@@ -131,8 +128,8 @@ namespace BizHawk.Emulation.Cores.Atari.Atari2600
 			[DefaultValue(296)]
 			public int PALBottomLine
 			{
-				get { return this._palBottomLine; }
-				set { this._palBottomLine = Math.Min(310, Math.Max(value, 192)); }
+				get { return _palBottomLine; }
+				set { _palBottomLine = Math.Min(310, Math.Max(value, 192)); }
 			}
 
 			[DisplayName("Background Color")]
@@ -152,6 +149,18 @@ namespace BizHawk.Emulation.Cores.Atari.Atari2600
 
 		public class A2600SyncSettings
 		{
+			[DefaultValue(Atari2600ControllerTypes.Joystick)]
+			[DisplayName("Port 1 Device")]
+			[Description("The type of controller plugged into the first controller port")]
+			[TypeConverter(typeof(DescribableEnumConverter))]
+			public Atari2600ControllerTypes Port1 { get; set; } = Atari2600ControllerTypes.Joystick;
+
+			[DefaultValue(Atari2600ControllerTypes.Joystick)]
+			[DisplayName("Port 2 Device")]
+			[Description("The type of controller plugged into the second controller port")]
+			[TypeConverter(typeof(DescribableEnumConverter))]
+			public Atari2600ControllerTypes Port2 { get; set; } = Atari2600ControllerTypes.Joystick;
+
 			[DisplayName("Black and White Mode")]
 			[Description("Set the TV Type switch on the console to B&W or Color.  This only affects the displayed image if the game supports it.")]
 			[DefaultValue(false)]

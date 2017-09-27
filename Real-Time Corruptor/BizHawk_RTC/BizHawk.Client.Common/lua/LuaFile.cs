@@ -1,13 +1,10 @@
-﻿using System;
-using System.IO;
-
-namespace BizHawk.Client.Common
+﻿namespace BizHawk.Client.Common
 {
 	public class LuaFile
 	{
 		public LuaFile(string path)
 		{
-			Name = string.Empty;
+			Name = "";
 			Path = path;
 			State = RunState.Running;
 			FrameWaiting = false;
@@ -23,20 +20,22 @@ namespace BizHawk.Client.Common
 			CurrentDirectory = System.IO.Path.GetDirectoryName(path);
 		}
 
-		public LuaFile(bool isSeparator)
+		private LuaFile(bool isSeparator)
 		{
 			IsSeparator = isSeparator;
-			Name = string.Empty;
-			Path = string.Empty;
+			Name = "";
+			Path = "";
 			State = RunState.Disabled;
 		}
 
+		public static LuaFile SeparatorInstance => new LuaFile(true);
+
 		public string Name { get; set; }
-		public string Path { get; set; }
-		public bool Enabled { get { return State != RunState.Disabled; } }
-		public bool Paused { get { return State == RunState.Paused; } }
-		public bool IsSeparator { get; set; }
-		public LuaInterface.Lua Thread { get; set; }
+		public string Path { get; }
+		public bool Enabled => State != RunState.Disabled;
+		public bool Paused => State == RunState.Paused;
+		public bool IsSeparator { get; }
+		public NLua.Lua Thread { get; set; }
 		public bool FrameWaiting { get; set; }
 		public string CurrentDirectory { get; set; }
 
@@ -47,32 +46,41 @@ namespace BizHawk.Client.Common
 
 		public RunState State { get; set; }
 
-		public static LuaFile SeparatorInstance
-		{
-			get { return new LuaFile(true); }
-		}
-
 		public void Stop()
 		{
 			State = RunState.Disabled;
+			//if(NLua.Lua.WhichLua == "NLua")
+				Thread.GetTable("keepalives")[Thread] = null;
 			Thread = null;
 		}
 
 		public void Toggle()
 		{
 			if (State == RunState.Paused)
+			{
 				State = RunState.Running;
+			}
 			else if (State == RunState.Disabled)
+			{
 				State = RunState.Running;
-			else State = RunState.Disabled;
+				FrameWaiting = false;
+			}
+			else
+			{
+				State = RunState.Disabled;
+			}
 		}
 
 		public void TogglePause()
 		{
 			if (State == RunState.Paused)
+			{
 				State = RunState.Running;
-			else if(State == RunState.Running)
+			}
+			else if (State == RunState.Running)
+			{
 				State = RunState.Paused;
+			}
 		}
 	}
 }

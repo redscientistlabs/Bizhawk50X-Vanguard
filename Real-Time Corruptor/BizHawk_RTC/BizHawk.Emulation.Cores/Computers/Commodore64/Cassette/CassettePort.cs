@@ -3,60 +3,61 @@ using BizHawk.Common;
 
 namespace BizHawk.Emulation.Cores.Computers.Commodore64.Cassette
 {
-    public sealed class CassettePort
-    {
-        [SaveState.DoNotSave]
-        public Func<bool> ReadDataOutput = () => true;
-        [SaveState.DoNotSave]
-        public Func<bool> ReadMotor = () => true;
+	public sealed class CassettePort
+	{
+		public Func<bool> ReadDataOutput = () => true;
+		public Func<bool> ReadMotor = () => true;
 
-        [SaveState.SaveWithName("Device")]
-        private CassettePortDevice _device;
-        [SaveState.SaveWithName("Connected")]
-        private bool _connected;
+		private CassettePortDevice _device;
 
-        public void HardReset()
-        {
-            if (_connected)
-            {
-                _device.HardReset();
-            }
-        }
+		private bool _connected;
 
-        public void ExecutePhase()
-        {
-            if (_connected)
-            {
-                _device.ExecutePhase2();
-            }
-        }
+		public void HardReset()
+		{
+			if (_connected)
+			{
+				_device.HardReset();
+			}
+		}
 
-        public bool ReadDataInputBuffer()
-        {
-            return !_connected || _device.ReadDataInputBuffer();
-        }
+		public void ExecutePhase()
+		{
+			if (_connected)
+			{
+				_device.ExecutePhase2();
+			}
+		}
 
-        public bool ReadSenseBuffer()
-        {
-            return !_connected || _device.ReadSenseBuffer();
-        }
+		public bool ReadDataInputBuffer()
+		{
+			return !_connected || _device.ReadDataInputBuffer();
+		}
 
-        public void SyncState(Serializer ser)
-        {
-            SaveState.SyncObject(ser, this);
-        }
+		public bool ReadSenseBuffer()
+		{
+			return !_connected || _device.ReadSenseBuffer();
+		}
 
-        public void Connect(CassettePortDevice device)
-        {
-            _connected = device != null;
-            _device = device;
-            if (_device == null)
-            {
-                return;
-            }
+		public void SyncState(Serializer ser)
+		{
+			ser.Sync("Connected", ref _connected);
+			if (_device != null)
+			{
+				_device.SyncState(ser);
+			}
+		}
 
-            _device.ReadDataOutput = () => ReadDataOutput();
-            _device.ReadMotor = () => ReadMotor();
-        }
-    }
+		public void Connect(CassettePortDevice device)
+		{
+			_connected = device != null;
+			_device = device;
+			if (_device == null)
+			{
+				return;
+			}
+
+			_device.ReadDataOutput = () => ReadDataOutput();
+			_device.ReadMotor = () => ReadMotor();
+		}
+	}
 }

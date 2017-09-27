@@ -1,7 +1,4 @@
-﻿using System.Linq;
-using System.IO;
-
-using BizHawk.Client.Common;
+﻿using BizHawk.Client.Common;
 
 namespace BizHawk.Client.EmuHawk
 {
@@ -18,27 +15,30 @@ namespace BizHawk.Client.EmuHawk
 
 				if (frame <= Emulator.Frame)
 				{
-					if ((Mainform.EmulatorPaused || !Mainform.IsSeeking) &&
-						!CurrentTasMovie.LastPositionStable)
+					if ((Mainform.EmulatorPaused || !Mainform.IsSeeking)
+						&& !CurrentTasMovie.LastPositionStable)
 					{
 						LastPositionFrame = Emulator.Frame;
 						CurrentTasMovie.LastPositionStable = true; // until new frame is emulated
 					}
+
 					GoToFrame(frame);
 				}
 			}
 		}
 
 		// SuuperW: I changed this to public so that it could be used by MarkerControl.cs
-		public void GoToFrame(int frame)
+		public void GoToFrame(int frame, bool fromLua = false, bool fromRewinding = false)
 		{
 			// If seeking to a frame before or at the end of the movie, use StartAtNearestFrameAndEmulate
 			// Otherwise, load the latest state (if not already there) and seek while recording.
 
+			WasRecording = CurrentTasMovie.IsRecording || WasRecording;
+
 			if (frame <= CurrentTasMovie.InputLogLength)
 			{
 				// Get as close as we can then emulate there
-				StartAtNearestFrameAndEmulate(frame);
+				StartAtNearestFrameAndEmulate(frame, fromLua, fromRewinding);
 
 				MaybeFollowCursor();
 			}
@@ -49,7 +49,9 @@ namespace BizHawk.Client.EmuHawk
 					bool wasPaused = Mainform.EmulatorPaused;
 					Mainform.FrameAdvance();
 					if (!wasPaused)
+					{
 						Mainform.UnpauseEmulator();
+					}
 				}
 				else
 				{
@@ -57,7 +59,9 @@ namespace BizHawk.Client.EmuHawk
 
 					int lastState = CurrentTasMovie.TasStateManager.GetStateClosestToFrame(frame).Key; // Simply getting the last state doesn't work if that state is the frame. [dispaly isn't saved in the state, need to emulate to frame]
 					if (lastState > Emulator.Frame)
+					{
 						LoadState(CurrentTasMovie.TasStateManager[lastState]); // STATE ACCESS
+					}
 
 					StartSeeking(frame);
 				}
@@ -85,7 +89,7 @@ namespace BizHawk.Client.EmuHawk
 			if (Emulator.Frame > 0)
 			{
 				var prevMarker = CurrentTasMovie.Markers.Previous(Emulator.Frame);
-				var prev = prevMarker != null ? prevMarker.Frame : 0;
+				var prev = prevMarker?.Frame ?? 0;
 				GoToFrame(prev);
 			}
 		}
@@ -93,7 +97,7 @@ namespace BizHawk.Client.EmuHawk
 		public void GoToNextMarker()
 		{
 			var nextMarker = CurrentTasMovie.Markers.Next(Emulator.Frame);
-			var next = nextMarker != null ? nextMarker.Frame : CurrentTasMovie.InputLogLength - 1;
+			var next = nextMarker?.Frame ?? CurrentTasMovie.InputLogLength - 1;
 			GoToFrame(next);
 		}
 
@@ -108,7 +112,9 @@ namespace BizHawk.Client.EmuHawk
 		public void SetVisibleIndex(int? indexThatMustBeVisible = null)
 		{
 			if (!indexThatMustBeVisible.HasValue)
+			{
 				indexThatMustBeVisible = Emulator.Frame;
+			}
 
 			TasView.ScrollToIndex(indexThatMustBeVisible.Value);
 		}
@@ -116,7 +122,9 @@ namespace BizHawk.Client.EmuHawk
 		private void MaybeFollowCursor()
 		{
 			if (TasPlaybackBox.FollowCursor)
+			{
 				SetVisibleIndex();
+			}
 		}
 	}
 }

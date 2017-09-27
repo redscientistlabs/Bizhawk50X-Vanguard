@@ -1,23 +1,20 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.ComponentModel;
+using System.Windows.Forms;
 
-using BizHawk.Emulation.Common.IEmulatorExtensions;
 using BizHawk.Client.Common;
 using BizHawk.Emulation.Common;
 using BizHawk.Common.ReflectionExtensions;
-
-using System.Windows.Forms;
 
 namespace BizHawk.Client.EmuHawk
 {
 	public class ToolManager
 	{
-		#region Fields
-
 		private readonly Form _owner;
 
 		// TODO: merge ToolHelper code where logical
@@ -25,12 +22,8 @@ namespace BizHawk.Client.EmuHawk
 		// Also a UsesRam, and similar method
 		private readonly List<IToolForm> _tools = new List<IToolForm>();
 
-		#endregion
-
-		#region cTor(s)
-
 		/// <summary>
-		/// Initialize an new ToolManager instance 
+		/// Initializes a new instance of the <see cref="ToolManager"/> class.
 		/// </summary>
 		/// <param name="owner">Form that handle the ToolManager</param>
 		public ToolManager(Form owner)
@@ -38,28 +31,24 @@ namespace BizHawk.Client.EmuHawk
 			_owner = owner;
 		}
 
-		#endregion
-
 		/// <summary>
-		/// Loads the tool dialog T (T must implemants <see cref="IToolForm"/>) , if it does not exist it will be created, if it is already open, it will be focused
+		/// Loads the tool dialog T (T must implements <see cref="IToolForm"/>) , if it does not exist it will be created, if it is already open, it will be focused
 		/// This method should be used only if you can't use the generic one
 		/// </summary>
 		/// <param name="toolType">Type of tool you want to load</param>
 		/// <param name="focus">Define if the tool form has to get the focus or not (Default is true)</param>
-		/// <returns>An instanciated <see cref="IToolForm"/></returns>
+		/// <returns>An instantiated <see cref="IToolForm"/></returns>
 		/// <exception cref="ArgumentException">Raised if <paramref name="toolType"/> can't be casted into IToolForm </exception>
 		internal IToolForm Load(Type toolType, bool focus = true)
 		{
 			if (!typeof(IToolForm).IsAssignableFrom(toolType))
 			{
-				throw new ArgumentException(string.Format("Type {0} does not implement IToolForm.", toolType.Name));
+				throw new ArgumentException($"Type {toolType.Name} does not implement IToolForm.");
 			}
-			else
-			{
-				//The type[] in parameter is used to avoid an ambigous name exception
-				MethodInfo method = GetType().GetMethod("Load", new Type[] { typeof(bool) }).MakeGenericMethod(toolType);
-				return (IToolForm)method.Invoke(this, new object[] { focus });
-			}
+			
+			// The type[] in parameter is used to avoid an ambigous name exception
+			MethodInfo method = GetType().GetMethod("Load", new Type[] { typeof(bool) }).MakeGenericMethod(toolType);
+			return (IToolForm)method.Invoke(this, new object[] { focus });
 		}
 
 		/// <summary>
@@ -67,20 +56,20 @@ namespace BizHawk.Client.EmuHawk
 		/// </summary>
 		/// <typeparam name="T">Type of tool you want to load</typeparam>
 		/// <param name="focus">Define if the tool form has to get the focus or not (Default is true)</param>
-		/// <returns>An instanciated <see cref="IToolForm"/></returns>
+		/// <returns>An instantiated <see cref="IToolForm"/></returns>
 		public T Load<T>(bool focus = true)
 			where T : class, IToolForm
 		{
-			return Load<T>(string.Empty, focus);
+			return Load<T>("", focus);
 		}
 
 		/// <summary>
 		/// Loads the tool dialog T (T must implement <see cref="IToolForm"/>) , if it does not exist it will be created, if it is already open, it will be focused
 		/// </summary>
 		/// <typeparam name="T">Type of tool you want to load</typeparam>
+		/// <param name="toolPath">Path to the .dll of the external tool</param>
 		/// <param name="focus">Define if the tool form has to get the focus or not (Default is true)</param>
-		/// <param name="toolPath">Path to the dll of the external tool</param>
-		/// <returns>An instanciated <see cref="IToolForm"/></returns>
+		/// <returns>An instantiated <see cref="IToolForm"/></returns>
 		public T Load<T>(string toolPath, bool focus = true)
 			where T : class, IToolForm
 		{
@@ -94,11 +83,11 @@ namespace BizHawk.Client.EmuHawk
 			T existingTool;
 			if (isExternal)
 			{
-				existingTool = (T)_tools.FirstOrDefault(x => x is T && x.GetType().Assembly.Location == toolPath);
+				existingTool = (T)_tools.FirstOrDefault(t => t is T && t.GetType().Assembly.Location == toolPath);
 			}
 			else
 			{
-				existingTool = (T)_tools.FirstOrDefault(x => x is T);
+				existingTool = (T)_tools.FirstOrDefault(t => t is T);
 			}
 
 			if (existingTool != null)
@@ -143,6 +132,7 @@ namespace BizHawk.Client.EmuHawk
 					settings = new ToolDialogSettings();
 					Global.Config.CommonToolSettings[toolType] = settings;
 				}
+
 				AttachSettingHooks(newTool as IToolFormAutoConfig, settings);
 			}
 
@@ -155,6 +145,7 @@ namespace BizHawk.Client.EmuHawk
 					settings = new Dictionary<string, object>();
 					Global.Config.CustomToolSettings[toolType] = settings;
 				}
+
 				InstallCustomConfig(newTool, settings);
 			}
 
@@ -170,7 +161,7 @@ namespace BizHawk.Client.EmuHawk
 				.Select(kvp => kvp.Key);
 
 			var customSettings = Global.Config.CustomToolSettings
-				.Where(list => list.Value.Any(kvp => typeof(ToolDialogSettings).IsAssignableFrom(kvp.Value.GetType()) && (kvp.Value as ToolDialogSettings).AutoLoad))
+				.Where(list => list.Value.Any(kvp => kvp.Value is ToolDialogSettings && ((ToolDialogSettings)kvp.Value).AutoLoad))
 				.Select(kvp => kvp.Key);
 
 			var typeNames = genericSettings.Concat(customSettings);
@@ -192,10 +183,10 @@ namespace BizHawk.Client.EmuHawk
 
 		private static void RefreshSettings(Form form, ToolStripItemCollection menu, ToolDialogSettings settings, int idx)
 		{
-			(menu[idx + 0] as ToolStripMenuItem).Checked = settings.SaveWindowPosition;
-			(menu[idx + 1] as ToolStripMenuItem).Checked = settings.TopMost;
-			(menu[idx + 2] as ToolStripMenuItem).Checked = settings.FloatingWindow;
-			(menu[idx + 3] as ToolStripMenuItem).Checked = settings.AutoLoad;
+			((ToolStripMenuItem)menu[idx + 0]).Checked = settings.SaveWindowPosition;
+			((ToolStripMenuItem)menu[idx + 1]).Checked = settings.TopMost;
+			((ToolStripMenuItem)menu[idx + 2]).Checked = settings.FloatingWindow;
+			((ToolStripMenuItem)menu[idx + 3]).Checked = settings.AutoLoad;
 
 			form.TopMost = settings.TopMost;
 
@@ -222,17 +213,22 @@ namespace BizHawk.Client.EmuHawk
 							break;
 						}
 					}
+
 					if (dest == null)
 					{
 						var submenu = new ToolStripMenuItem("&Settings");
 						ms.Items.Add(submenu);
 						dest = submenu.DropDownItems;
 					}
+
 					break;
 				}
 			}
+
 			if (dest == null)
+			{
 				throw new InvalidOperationException("IToolFormAutoConfig must have menu to bind to!");
+			}
 
 			int idx = dest.Count;
 
@@ -244,15 +240,18 @@ namespace BizHawk.Client.EmuHawk
 
 			RefreshSettings(form, dest, settings, idx);
 
-			if (settings.UseWindowPosition)
+			if (settings.UseWindowPosition && IsOnScreen(settings.TopLeft))
 			{
 				form.StartPosition = FormStartPosition.Manual;
 				form.Location = settings.WindowPosition;
 			}
+
 			if (settings.UseWindowSize)
 			{
 				if (form.FormBorderStyle == FormBorderStyle.Sizable || form.FormBorderStyle == FormBorderStyle.SizableToolWindow)
+				{
 					form.Size = settings.WindowSize;
+				}
 			}
 
 			form.FormClosing += (o, e) =>
@@ -261,6 +260,16 @@ namespace BizHawk.Client.EmuHawk
 				{
 					settings.Wndx = form.Location.X;
 					settings.Wndy = form.Location.Y;
+					if (settings.Wndx < 0)
+					{
+						settings.Wndx = 0;
+					}
+
+					if (settings.Wndy < 0)
+					{
+						settings.Wndy = 0;
+					}
+
 					settings.Width = form.Right - form.Left; // why not form.Size.Width?
 					settings.Height = form.Bottom - form.Top;
 				}
@@ -268,29 +277,29 @@ namespace BizHawk.Client.EmuHawk
 
 			dest[idx + 0].Click += (o, e) =>
 			{
-				bool val = !(o as ToolStripMenuItem).Checked;
+				bool val = !((ToolStripMenuItem)o).Checked;
 				settings.SaveWindowPosition = val;
-				(o as ToolStripMenuItem).Checked = val;
+				((ToolStripMenuItem)o).Checked = val;
 			};
 			dest[idx + 1].Click += (o, e) =>
 			{
-				bool val = !(o as ToolStripMenuItem).Checked;
+				bool val = !((ToolStripMenuItem)o).Checked;
 				settings.TopMost = val;
-				(o as ToolStripMenuItem).Checked = val;
+				((ToolStripMenuItem)o).Checked = val;
 				form.TopMost = val;
 			};
 			dest[idx + 2].Click += (o, e) =>
 			{
-				bool val = !(o as ToolStripMenuItem).Checked;
+				bool val = !((ToolStripMenuItem)o).Checked;
 				settings.FloatingWindow = val;
-				(o as ToolStripMenuItem).Checked = val;
+				((ToolStripMenuItem)o).Checked = val;
 				form.Owner = val ? null : _owner;
 			};
 			dest[idx + 3].Click += (o, e) =>
 			{
-				bool val = !(o as ToolStripMenuItem).Checked;
+				bool val = !((ToolStripMenuItem)o).Checked;
 				settings.AutoLoad = val;
-				(o as ToolStripMenuItem).Checked = val;
+				((ToolStripMenuItem)o).Checked = val;
 			};
 			dest[idx + 4].Click += (o, e) =>
 			{
@@ -310,7 +319,9 @@ namespace BizHawk.Client.EmuHawk
 			Type type = tool.GetType();
 			var props = type.GetPropertiesWithAttrib(typeof(ConfigPersistAttribute)).ToList();
 			if (props.Count == 0)
+			{
 				return;
+			}
 
 			foreach (var prop in props)
 			{
@@ -326,18 +337,19 @@ namespace BizHawk.Client.EmuHawk
 						// back on regular object serialization when needed.  so try to undo a TypeConverter
 						// operation here
 						var converter = TypeDescriptor.GetConverter(prop.PropertyType);
-						val = converter.ConvertFromString(null,System.Globalization.CultureInfo.InvariantCulture,((string)val));
+						val = converter.ConvertFromString(null, System.Globalization.CultureInfo.InvariantCulture, (string)val);
 					}
 					else if (!(val is bool) && prop.PropertyType.IsPrimitive)
 					{
 						// numeric constanst are similarly hosed
 						val = Convert.ChangeType(val, prop.PropertyType, System.Globalization.CultureInfo.InvariantCulture);
 					}
+
 					prop.SetValue(tool, val, null);
 				}
 			}
 
-			(tool as Form).FormClosing += (o, e) => SaveCustomConfig(tool, data, props);
+			((Form)tool).FormClosing += (o, e) => SaveCustomConfig(tool, data, props);
 		}
 
 		private static void SaveCustomConfig(IToolForm tool, Dictionary<string, object> data, List<PropertyInfo> props)
@@ -349,13 +361,13 @@ namespace BizHawk.Client.EmuHawk
 			}
 		}
 
-
 		/// <summary>
 		/// Determines whether a given IToolForm is already loaded
 		/// </summary>
+		/// <typeparam name="T">Type of tool to check</typeparam>
 		public bool IsLoaded<T>() where T : IToolForm
 		{
-			var existingTool = _tools.FirstOrDefault(x => x is T);
+			var existingTool = _tools.FirstOrDefault(t => t is T);
 			if (existingTool != null)
 			{
 				return !existingTool.IsDisposed;
@@ -364,17 +376,25 @@ namespace BizHawk.Client.EmuHawk
 			return false;
 		}
 
+		public static bool IsOnScreen(Point topLeft)
+		{
+			return Screen.AllScreens.Any(
+				screen => screen.WorkingArea.Contains(topLeft));
+		}
+
 		/// <summary>
 		/// Returns true if an instance of T exists
 		/// </summary>
+		/// <typeparam name="T">Type of tool to check</typeparam>
 		public bool Has<T>() where T : IToolForm
 		{
-			return _tools.Any(x => x is T && !x.IsDisposed);
+			return _tools.Any(t => t is T && !t.IsDisposed);
 		}
 
 		/// <summary>
 		/// Gets the instance of T, or creates and returns a new instance
 		/// </summary>
+		/// <typeparam name="T">Type of tool to get</typeparam>
 		public IToolForm Get<T>() where T : class, IToolForm
 		{
 			return Load<T>(false);
@@ -384,53 +404,64 @@ namespace BizHawk.Client.EmuHawk
 		{
 			get
 			{
-				//return _tools.Where(t => !t.IsDisposed);
 				return Assembly
 					.GetAssembly(typeof(IToolForm))
 					.GetTypes()
 					.Where(t => typeof(IToolForm).IsAssignableFrom(t))
 					.Where(t => !t.IsInterface)
-					.Where(t => IsAvailable(t));
+					.Where(IsAvailable);
 			}
 		}
 
 		public void UpdateBefore()
 		{
-			var beforeList = _tools.Where(x => x.UpdateBefore);
+			var beforeList = _tools.Where(t => t.UpdateBefore);
 			foreach (var tool in beforeList)
 			{
-				if (!tool.IsDisposed ||
-					(tool is RamWatch && Global.Config.DisplayRamWatch)) // RAM Watch hack, on screen display should run even if RAM Watch is closed
+				if (!tool.IsDisposed
+					|| (tool is RamWatch && Global.Config.DisplayRamWatch)) // RAM Watch hack, on screen display should run even if RAM Watch is closed
 				{
 					tool.UpdateValues();
 				}
 			}
+
 			foreach (var tool in _tools)
-				tool.NewUpdate(ToolFormUpdateType.PreFrame);
+			{
+				if (!tool.IsDisposed)
+				{
+					tool.NewUpdate(ToolFormUpdateType.PreFrame);
+				}
+			}
 		}
 
 		public void UpdateAfter()
 		{
-			var afterList = _tools.Where(x => !x.UpdateBefore);
+			var afterList = _tools.Where(t => !t.UpdateBefore);
 			foreach (var tool in afterList)
 			{
-				if (!tool.IsDisposed ||
-					(tool is RamWatch && Global.Config.DisplayRamWatch)) // RAM Watch hack, on screen display should run even if RAM Watch is closed
+				if (!tool.IsDisposed
+					|| (tool is RamWatch && Global.Config.DisplayRamWatch)) // RAM Watch hack, on screen display should run even if RAM Watch is closed
 				{
 					tool.UpdateValues();
 				}
 			}
 
 			foreach (var tool in _tools)
-				tool.NewUpdate(ToolFormUpdateType.PostFrame);
+			{
+				if (!tool.IsDisposed)
+				{
+					tool.NewUpdate(ToolFormUpdateType.PostFrame);
+				}
+			}
 		}
 
 		/// <summary>
 		/// Calls UpdateValues() on an instance of T, if it exists
 		/// </summary>
+		/// <typeparam name="T">Type of tool to update</typeparam>
 		public void UpdateValues<T>() where T : IToolForm
 		{
-			var tool = _tools.FirstOrDefault(x => x is T);
+			var tool = _tools.FirstOrDefault(t => t is T);
 			if (tool != null)
 			{
 				if (!tool.IsDisposed ||
@@ -479,13 +510,11 @@ namespace BizHawk.Client.EmuHawk
 		/// <summary>
 		/// Calls Restart() on an instance of T, if it exists
 		/// </summary>
+		/// <typeparam name="T">Type of tool to restart</typeparam>
 		public void Restart<T>() where T : IToolForm
 		{
-			var tool = _tools.FirstOrDefault(x => x is T);
-			if (tool != null)
-			{
-				tool.Restart();
-			}
+			var tool = _tools.FirstOrDefault(t => t is T);
+			tool?.Restart();
 		}
 
 		/// <summary>
@@ -507,6 +536,7 @@ namespace BizHawk.Client.EmuHawk
 		/// Calls AskSave() on an instance of T, if it exists, else returns true
 		/// The caller should interpret false as cancel and will back out of the action that invokes this call
 		/// </summary>
+		/// <typeparam name="T">Type of tool</typeparam>
 		public bool AskSave<T>() where T : IToolForm
 		{
 			if (Global.Config.SupressAskSave) // User has elected to not be nagged
@@ -514,23 +544,22 @@ namespace BizHawk.Client.EmuHawk
 				return true;
 			}
 
-			var tool = _tools.FirstOrDefault(x => x is T);
+			var tool = _tools.FirstOrDefault(t => t is T);
 			if (tool != null)
 			{
 				return tool.AskSaveChanges();
 			}
-			else
-			{
-				return false;
-			}
+
+			return false;
 		}
 
 		/// <summary>
 		/// If T exists, this call will close the tool, and remove it from memory
 		/// </summary>
+		/// <typeparam name="T">Type of tool to close</typeparam>
 		public void Close<T>() where T : IToolForm
 		{
-			var tool = _tools.FirstOrDefault(x => x is T);
+			var tool = _tools.FirstOrDefault(t => t is T);
 			if (tool != null)
 			{
 				tool.Close();
@@ -540,7 +569,7 @@ namespace BizHawk.Client.EmuHawk
 
 		public void Close(Type toolType)
 		{
-			var tool = _tools.FirstOrDefault(x => toolType.IsAssignableFrom(x.GetType()));
+			var tool = _tools.FirstOrDefault(toolType.IsInstanceOfType);
 
 			if (tool != null)
 			{
@@ -551,7 +580,7 @@ namespace BizHawk.Client.EmuHawk
 
 		public void Close()
 		{
-			_tools.ForEach(x => x.Close());
+			_tools.ForEach(t => t.Close());
 			_tools.Clear();
 		}
 
@@ -559,7 +588,7 @@ namespace BizHawk.Client.EmuHawk
 		/// Create a new instance of an IToolForm and return it
 		/// </summary>
 		/// <typeparam name="T">Type of tool you want to create</typeparam>
-		/// <param name="dllPath">Path dll for an external tool</param>
+		/// <param name="dllPath">Path .dll for an external tool</param>
 		/// <returns>New instance of an IToolForm</returns>
 		private IToolForm CreateInstance<T>(string dllPath)
 			where T : IToolForm
@@ -577,13 +606,14 @@ namespace BizHawk.Client.EmuHawk
 		{
 			IToolForm tool;
 
-			//Specific case for custom tools
-			//TODO: Use AppDomain in order to be able to unload the assembly
-			//Hard stuff as we need a proxy object that inherit from MarshalByRefObject.			
+			// Specific case for custom tools
+			// TODO: Use AppDomain in order to be able to unload the assembly
+			// Hard stuff as we need a proxy object that inherit from MarshalByRefObject.
 			if (toolType == typeof(IExternalToolForm))
 			{
-				if (MessageBox.Show("Are you sure want to load this external tool?\r\nAccept ONLY if you trust the source and if you know what you're doing. In any other case, choose no."
-				, "Confirmm loading", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
+				if (MessageBox.Show(
+					"Are you sure want to load this external tool?\r\nAccept ONLY if you trust the source and if you know what you're doing. In any other case, choose no.",
+					"Confirmm loading", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
 				{
 					try
 					{
@@ -626,7 +656,7 @@ namespace BizHawk.Client.EmuHawk
 			{
 				if (!fromLua)
 				{
-					LuaConsole.StartLuaDrawing();
+					LuaConsole.LuaImp.StartLuaDrawing();
 				}
 			}
 
@@ -646,18 +676,18 @@ namespace BizHawk.Client.EmuHawk
 			{
 				if (!fromLua)
 				{
-					LuaConsole.EndLuaDrawing();
+					LuaConsole.LuaImp.EndLuaDrawing();
 				}
 			}
 		}
 
 		public void FastUpdateBefore()
 		{
-			var beforeList = _tools.Where(x => x.UpdateBefore);
+			var beforeList = _tools.Where(t => t.UpdateBefore);
 			foreach (var tool in beforeList)
 			{
-				if (!tool.IsDisposed ||
-					(tool is RamWatch && Global.Config.DisplayRamWatch)) // RAM Watch hack, on screen display should run even if RAM Watch is closed
+				if (!tool.IsDisposed
+					|| (tool is RamWatch && Global.Config.DisplayRamWatch)) // RAM Watch hack, on screen display should run even if RAM Watch is closed
 				{
 					tool.FastUpdate();
 				}
@@ -671,11 +701,11 @@ namespace BizHawk.Client.EmuHawk
 				LuaConsole.ResumeScripts(true);
 			}
 
-			var afterList = _tools.Where(x => !x.UpdateBefore);
+			var afterList = _tools.Where(t => !t.UpdateBefore);
 			foreach (var tool in afterList)
 			{
-				if (!tool.IsDisposed ||
-					(tool is RamWatch && Global.Config.DisplayRamWatch)) // RAM Watch hack, on screen display should run even if RAM Watch is closed
+				if (!tool.IsDisposed
+					|| (tool is RamWatch && Global.Config.DisplayRamWatch)) // RAM Watch hack, on screen display should run even if RAM Watch is closed
 				{
 					tool.FastUpdate();
 				}
@@ -683,7 +713,7 @@ namespace BizHawk.Client.EmuHawk
 
 			if (Global.Config.RunLuaDuringTurbo && Has<LuaConsole>())
 			{
-				LuaConsole.EndLuaDrawing();
+				LuaConsole.LuaImp.EndLuaDrawing();
 			}
 		}
 
@@ -710,16 +740,11 @@ namespace BizHawk.Client.EmuHawk
 			}
 
 			var attr = tool.GetCustomAttributes(false)
-				.OfType<ToolAttributes>()
+				.OfType<ToolAttribute>()
 				.FirstOrDefault();
 
-			if (attr == null) // If no attributes there is no supported systems documented so assume all
-			{
-				return true;
-			}
-
 			// If no supported systems mentioned assume all
-			if (attr.SupportedSystems != null && attr.SupportedSystems.Any())
+			if (attr?.SupportedSystems != null && attr.SupportedSystems.Any())
 			{
 				return attr.SupportedSystems.Contains(Global.Emulator.SystemId);
 			}
@@ -734,7 +759,7 @@ namespace BizHawk.Client.EmuHawk
 		{
 			get
 			{
-				var tool = _tools.FirstOrDefault(x => x is RamWatch);
+				var tool = _tools.FirstOrDefault(t => t is RamWatch);
 				if (tool != null)
 				{
 					if (tool.IsDisposed)
@@ -757,7 +782,7 @@ namespace BizHawk.Client.EmuHawk
 		{
 			get
 			{
-				var tool = _tools.FirstOrDefault(x => x is RamSearch);
+				var tool = _tools.FirstOrDefault(t => t is RamSearch);
 				if (tool != null)
 				{
 					if (tool.IsDisposed)
@@ -780,7 +805,7 @@ namespace BizHawk.Client.EmuHawk
 		{
 			get
 			{
-				var tool = _tools.FirstOrDefault(x => x is Cheats);
+				var tool = _tools.FirstOrDefault(t => t is Cheats);
 				if (tool != null)
 				{
 					if (tool.IsDisposed)
@@ -803,7 +828,7 @@ namespace BizHawk.Client.EmuHawk
 		{
 			get
 			{
-				var tool = _tools.FirstOrDefault(x => x is HexEditor);
+				var tool = _tools.FirstOrDefault(t => t is HexEditor);
 				if (tool != null)
 				{
 					if (tool.IsDisposed)
@@ -826,7 +851,7 @@ namespace BizHawk.Client.EmuHawk
 		{
 			get
 			{
-				var tool = _tools.FirstOrDefault(x => x is VirtualpadTool);
+				var tool = _tools.FirstOrDefault(t => t is VirtualpadTool);
 				if (tool != null)
 				{
 					if (tool.IsDisposed)
@@ -849,7 +874,7 @@ namespace BizHawk.Client.EmuHawk
 		{
 			get
 			{
-				var tool = _tools.FirstOrDefault(x => x is SNESGraphicsDebugger);
+				var tool = _tools.FirstOrDefault(t => t is SNESGraphicsDebugger);
 				if (tool != null)
 				{
 					if (tool.IsDisposed)
@@ -872,7 +897,7 @@ namespace BizHawk.Client.EmuHawk
 		{
 			get
 			{
-				var tool = _tools.FirstOrDefault(x => x is LuaConsole);
+				var tool = _tools.FirstOrDefault(t => t is LuaConsole);
 				if (tool != null)
 				{
 					if (tool.IsDisposed)
@@ -897,9 +922,11 @@ namespace BizHawk.Client.EmuHawk
 			{
 				// prevent nasty silent corruption
 				if (!GlobalWin.Tools.IsLoaded<TAStudio>())
+				{
 					System.Diagnostics.Debug.Fail("TAStudio does not exist!");
+				}
 
-				var tool = _tools.FirstOrDefault(x => x is TAStudio);
+				var tool = _tools.FirstOrDefault(t => t is TAStudio);
 				if (tool != null)
 				{
 					if (tool.IsDisposed)

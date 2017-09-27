@@ -7,9 +7,9 @@ namespace BizHawk.Emulation.Cores.Atari.Atari2600
 	{
 		private readonly Atari2600 _core;
 
-		public byte DDRa = 0x00;
-		public byte DDRb = 0x00;
-        public byte outputA = 0x00;
+		private byte _ddRa = 0x00;
+		private byte _ddRb = 0x00;
+		private byte _outputA = 0x00;
 
 		public TimerData Timer;
 
@@ -36,32 +36,30 @@ namespace BizHawk.Emulation.Cores.Atari.Atari2600
 			{
 				// Read Output reg A
 				// Combine readings from player 1 and player 2
-                // actually depends on setting in SWCHCNTA (aka DDRa)
-
-                var temp = (byte)(_core.ReadControls1(peek) & 0xF0 | ((_core.ReadControls2(peek) >> 4) & 0x0F));
-                temp = (byte)(temp & ~DDRa);
-                temp = (byte)(temp + (outputA & DDRa));
-                return temp;
-				
+				// actually depends on setting in SWCHCNTA (aka DDRa)
+				var temp = (byte)(_core.ReadControls1(peek) & 0xF0 | ((_core.ReadControls2(peek) >> 4) & 0x0F));
+				temp = (byte)(temp & ~_ddRa);
+				temp = (byte)(temp + (_outputA & _ddRa));
+				return temp;
 			}
 			
 			if (registerAddr == 0x01)
 			{
 				// Read DDRA
-				return DDRa;
+				return _ddRa;
 			}
 			
 			if (registerAddr == 0x02)
 			{
 				// Read Output reg B
 				var temp = _core.ReadConsoleSwitches(peek);
-				temp = (byte)(temp & ~DDRb);
+				temp = (byte)(temp & ~_ddRb);
 				return temp;
 			}
 
 			if (registerAddr == 0x03) // Read DDRB
 			{
-				return DDRb;
+				return _ddRb;
 			}
 			
 			if ((registerAddr & 0x5) == 0x4)
@@ -79,12 +77,13 @@ namespace BizHawk.Emulation.Cores.Atari.Atari2600
 
 				return Timer.Value;
 			}
+
 			// TODO: fix this to match real behaviour
-            // This is an undocumented instruction whose behaviour is more dynamic then indicated here
+			// This is an undocumented instruction whose behaviour is more dynamic then indicated here
 			if ((registerAddr & 0x5) == 0x5)
 			{
 				// Read interrupt flag
-				if (Timer.InterruptFlag) //Timer.InterruptEnabled && )
+				if (Timer.InterruptFlag) // Timer.InterruptEnabled && )
 				{
 					return 0xC0;
 				}
@@ -118,7 +117,7 @@ namespace BizHawk.Emulation.Cores.Atari.Atari2600
 						// Write to Timer/1
 						Timer.PrescalerShift = 0;
 						Timer.Value = value;
-                        Timer.PrescalerCount = 0;// 1 << Timer.PrescalerShift;
+						Timer.PrescalerCount = 0; // 1 << Timer.PrescalerShift;
 						Timer.InterruptFlag = false;
 					}
 					else if (registerAddr == 0x05)
@@ -126,7 +125,7 @@ namespace BizHawk.Emulation.Cores.Atari.Atari2600
 						// Write to Timer/8
 						Timer.PrescalerShift = 3;
 						Timer.Value = value;
-                        Timer.PrescalerCount = 0;// 1 << Timer.PrescalerShift;
+						Timer.PrescalerCount = 0; // 1 << Timer.PrescalerShift;
 						Timer.InterruptFlag = false;
 					}
 					else if (registerAddr == 0x06)
@@ -134,7 +133,7 @@ namespace BizHawk.Emulation.Cores.Atari.Atari2600
 						// Write to Timer/64
 						Timer.PrescalerShift = 6;
 						Timer.Value = value;
-                        Timer.PrescalerCount = 0;// 1 << Timer.PrescalerShift;
+						Timer.PrescalerCount = 0; // 1 << Timer.PrescalerShift;
 						Timer.InterruptFlag = false;
 					}
 					else if (registerAddr == 0x07)
@@ -142,7 +141,7 @@ namespace BizHawk.Emulation.Cores.Atari.Atari2600
 						// Write to Timer/1024
 						Timer.PrescalerShift = 10;
 						Timer.Value = value;
-                        Timer.PrescalerCount = 0;// 1 << Timer.PrescalerShift;
+						Timer.PrescalerCount = 0; // 1 << Timer.PrescalerShift;
 						Timer.InterruptFlag = false;
 					}
 				}
@@ -155,23 +154,23 @@ namespace BizHawk.Emulation.Cores.Atari.Atari2600
 
 					if (registerAddr == 0x00)
 					{
-                        // Write Output reg A
-                        outputA = value;
+						// Write Output reg A
+						_outputA = value;
 					}
 					else if (registerAddr == 0x01)
 					{
 						// Write DDRA
-						DDRa = value;
+						_ddRa = value;
 					}
 					else if (registerAddr == 0x02)
 					{
-                        // Write Output reg B
-                        // But is read only
+						// Write Output reg B
+						// But is read only
 					}
 					else if (registerAddr == 0x03)
 					{
 						// Write DDRB
-						DDRb = value;
+						_ddRb = value;
 					}
 				}
 			}
@@ -180,10 +179,10 @@ namespace BizHawk.Emulation.Cores.Atari.Atari2600
 		public void SyncState(Serializer ser)
 		{
 			ser.BeginSection("M6532");
-			ser.Sync("ddra", ref DDRa);
-			ser.Sync("ddrb", ref DDRb);
-            ser.Sync("OutputA", ref outputA);
-            Timer.SyncState(ser);
+			ser.Sync("ddra", ref _ddRa);
+			ser.Sync("ddrb", ref _ddRb);
+			ser.Sync("OutputA", ref _outputA);
+			Timer.SyncState(ser);
 			ser.EndSection();
 		}
 
@@ -224,7 +223,6 @@ namespace BizHawk.Emulation.Cores.Atari.Atari2600
 				ser.Sync("interruptEnabled", ref InterruptEnabled);
 				ser.Sync("interruptFlag", ref InterruptFlag);
 			}
-
 		}
 	}
 }

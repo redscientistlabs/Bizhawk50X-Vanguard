@@ -1,8 +1,8 @@
 ﻿using System;
 using System.IO;
-using System.Linq;
 
 using BizHawk.Common;
+using BizHawk.Common.IOExtensions;
 
 namespace BizHawk.Client.Common
 {
@@ -21,13 +21,13 @@ namespace BizHawk.Client.Common
 			}
 
 			var backupName = Filename;
-			backupName = backupName.Insert(Filename.LastIndexOf("."), string.Format(".{0:yyyy-MM-dd HH.mm.ss}", DateTime.Now));
+			backupName = backupName.Insert(Filename.LastIndexOf("."), $".{DateTime.Now:yyyy-MM-dd HH.mm.ss}");
 			backupName = Path.Combine(Global.Config.PathEntries["Global", "Movie backups"].Path, Path.GetFileName(backupName));
 
-			var directory_info = new FileInfo(backupName).Directory;
-			if (directory_info != null)
+			var directoryInfo = new FileInfo(backupName).Directory;
+			if (directoryInfo != null)
 			{
-				Directory.CreateDirectory(directory_info.FullName);
+				Directory.CreateDirectory(directoryInfo.FullName);
 			}
 
 			Write(backupName, backup: true);
@@ -70,55 +70,47 @@ namespace BizHawk.Client.Common
 					}
 				});
 
-				if (bl.HasLump(BinaryStateLump.Comments))
+				bl.GetLump(BinaryStateLump.Comments, false, delegate(TextReader tr)
 				{
-					bl.GetLump(BinaryStateLump.Comments, true, delegate(TextReader tr)
+					string line;
+					while ((line = tr.ReadLine()) != null)
 					{
-						string line;
-						while ((line = tr.ReadLine()) != null)
+						if (!string.IsNullOrWhiteSpace(line))
 						{
-							if (!string.IsNullOrWhiteSpace(line))
-							{
-								Comments.Add(line);
-							}
+							Comments.Add(line);
 						}
-					});
-				}
+					}
+				});
 
-				if (bl.HasLump(BinaryStateLump.Subtitles))
+				bl.GetLump(BinaryStateLump.Subtitles, false, delegate(TextReader tr)
 				{
-					bl.GetLump(BinaryStateLump.Subtitles, true, delegate(TextReader tr)
+					string line;
+					while ((line = tr.ReadLine()) != null)
 					{
-						string line;
-						while ((line = tr.ReadLine()) != null)
+						if (!string.IsNullOrWhiteSpace(line))
 						{
-							if (!string.IsNullOrWhiteSpace(line))
-							{
-								Subtitles.AddFromString(line);
-							}
+							Subtitles.AddFromString(line);
 						}
-						Subtitles.Sort();
-					});
-				}
+					}
 
-				if (bl.HasLump(BinaryStateLump.SyncSettings))
+					Subtitles.Sort();
+				});
+
+				bl.GetLump(BinaryStateLump.SyncSettings, false, delegate(TextReader tr)
 				{
-					bl.GetLump(BinaryStateLump.SyncSettings, true, delegate(TextReader tr)
+					string line;
+					while ((line = tr.ReadLine()) != null)
 					{
-						string line;
-						while ((line = tr.ReadLine()) != null)
+						if (!string.IsNullOrWhiteSpace(line))
 						{
-							if (!string.IsNullOrWhiteSpace(line))
-							{
-								_syncSettingsJson = line;
-							}
+							_syncSettingsJson = line;
 						}
-					});
-				}
+					}
+				});
 
 				bl.GetLump(BinaryStateLump.Input, true, delegate(TextReader tr)
 				{
-					var errorMessage = string.Empty;
+					string errorMessage;
 					IsCountingRerecords = false;
 					ExtractInputLog(tr, out errorMessage);
 					IsCountingRerecords = true;
@@ -140,10 +132,11 @@ namespace BizHawk.Client.Common
 						{
 							SavestateFramebuffer = new int[length / sizeof(int)];
 							for (int i = 0; i < SavestateFramebuffer.Length; i++)
+							{
 								SavestateFramebuffer[i] = br.ReadInt32();
+							}
 						});
 				}
-
 				else if (StartsFromSaveRam)
 				{
 					bl.GetLump(BinaryStateLump.MovieSaveRam, false,
@@ -185,7 +178,7 @@ namespace BizHawk.Client.Common
 				bs.PutLump(BinaryStateLump.Subtitles, tw => tw.WriteLine(Subtitles.ToString()));
 				bs.PutLump(BinaryStateLump.SyncSettings, tw => tw.WriteLine(_syncSettingsJson));
 
-				bs.PutLump(BinaryStateLump.Input, tw => WriteInputLog(tw));
+				bs.PutLump(BinaryStateLump.Input, WriteInputLog);
 
 				if (StartsFromSavestate)
 				{
@@ -197,10 +190,10 @@ namespace BizHawk.Client.Common
 					{
 						bs.PutLump(BinaryStateLump.Corestate, (BinaryWriter bw) => bw.Write(BinarySavestate));
 					}
+
 					if (SavestateFramebuffer != null)
 					{
-						bs.PutLump(BinaryStateLump.Framebuffer,
-							(BinaryWriter bw) => BizHawk.Common.IOExtensions.IOExtensions.Write(bw, SavestateFramebuffer));
+						bs.PutLump(BinaryStateLump.Framebuffer, (BinaryWriter bw) => bw.Write(SavestateFramebuffer));
 					}
 				}
 				else if (StartsFromSaveRam)
@@ -210,16 +203,18 @@ namespace BizHawk.Client.Common
 			}
 
 			if (!backup)
+			{
 				Changes = false;
+			}
 		}
 
 		protected void ClearBeforeLoad()
 		{
 			Header.Clear();
-			_log.Clear();
+			Log.Clear();
 			Subtitles.Clear();
 			Comments.Clear();
-			_syncSettingsJson = string.Empty;
+			_syncSettingsJson = "";
 			TextSavestate = null;
 			BinarySavestate = null;
 		}

@@ -1,6 +1,5 @@
 ﻿using System;
 
-using BizHawk.Common;
 using BizHawk.Common.NumberExtensions;
 using BizHawk.Common.BufferExtensions;
 
@@ -11,27 +10,43 @@ namespace BizHawk.Emulation.Cores.Atari.Atari2600
 {
 	public partial class Atari2600
 	{
+		private readonly GameInfo _game;
+
 		private TIA _tia;
+		private M6532 _m6532;
 		private DCFilter _dcfilter;
 		private MapperBase _mapper;
+		private byte[] _ram;
 
-		internal byte[] Ram;
-
-		internal byte[] Rom { get; private set; }
-		internal MOS6502X Cpu { get; private set; }
-		internal M6532 M6532 { get; private set; }
-
-		internal int LastAddress;
-		internal int DistinctAccessCount;
-
+		private IController _controller;
+		private int _frame;
+		private int _lastAddress;
 		private bool _frameStartPending = true;
 
-		private bool _leftDifficultySwitchPressed = false;
-		private bool _rightDifficultySwitchPressed = false;
+		private bool _leftDifficultySwitchPressed;
+		private bool _rightDifficultySwitchPressed;
 
-		private bool _leftDifficultySwitchHeld = false;
-		private bool _rightDifficultySwitchHeld = false;
+		private bool _leftDifficultySwitchHeld;
+		private bool _rightDifficultySwitchHeld;
 
+		internal MOS6502X Cpu { get; private set; }
+		internal byte[] Ram => _ram;
+		internal byte[] Rom { get; }
+		internal int DistinctAccessCount { get; private set; }
+
+		private static MapperBase SetMultiCartMapper(int romLength, int gameTotal)
+		{
+			switch (romLength / gameTotal)
+			{
+				case 1024 * 2: // 2K
+					return new Multicart2K(gameTotal);
+				default:
+				case 1024 * 4: // 4K
+					return new Multicart4K(gameTotal);
+				case 1024 * 8: // 8K
+					return new Multicart8K(gameTotal);
+			}
+		}
 
 		internal byte BaseReadMemory(ushort addr)
 		{
@@ -43,12 +58,12 @@ namespace BizHawk.Emulation.Cores.Atari.Atari2600
 
 			if ((addr & 0x1080) == 0x0080)
 			{
-                _tia.bus_state = M6532.ReadMemory(addr, false);
-                return M6532.ReadMemory(addr, false);
+				_tia.BusState = _m6532.ReadMemory(addr, false);
+				return _m6532.ReadMemory(addr, false);
 			}
 
-            _tia.bus_state = Rom[addr & 0x0FFF];
-            return Rom[addr & 0x0FFF];
+			_tia.BusState = Rom[addr & 0x0FFF];
+			return Rom[addr & 0x0FFF];
 		}
 
 		internal byte BasePeekMemory(ushort addr)
@@ -61,18 +76,19 @@ namespace BizHawk.Emulation.Cores.Atari.Atari2600
 
 			if ((addr & 0x1080) == 0x0080)
 			{
-                return M6532.ReadMemory(addr, true);
+				return _m6532.ReadMemory(addr, true);
 			}
-            return Rom[addr & 0x0FFF];
+
+			return Rom[addr & 0x0FFF];
 		}
 
 		internal void BaseWriteMemory(ushort addr, byte value)
 		{
-            _tia.bus_state = value;
-            if (addr != LastAddress)
+			_tia.BusState = value;
+			if (addr != _lastAddress)
 			{
 				DistinctAccessCount++;
-				LastAddress = addr;
+				_lastAddress = addr;
 			}
 
 			addr = (ushort)(addr & 0x1FFF);
@@ -82,7 +98,7 @@ namespace BizHawk.Emulation.Cores.Atari.Atari2600
 			}
 			else if ((addr & 0x1080) == 0x0080)
 			{
-				M6532.WriteMemory(addr, value);
+				_m6532.WriteMemory(addr, value);
 			}
 			else
 			{
@@ -92,14 +108,14 @@ namespace BizHawk.Emulation.Cores.Atari.Atari2600
 
 		internal void BasePokeMemory(ushort addr, byte value)
 		{
-            addr = (ushort)(addr & 0x1FFF);
+			addr = (ushort)(addr & 0x1FFF);
 			if ((addr & 0x1080) == 0)
 			{
 				_tia.WriteMemory(addr, value, true);
 			}
 			else if ((addr & 0x1080) == 0x0080)
 			{
-				M6532.WriteMemory(addr, value);
+				_m6532.WriteMemory(addr, value);
 			}
 			else
 			{
@@ -107,34 +123,34 @@ namespace BizHawk.Emulation.Cores.Atari.Atari2600
 			}
 		}
 
-		internal byte ReadMemory(ushort addr)
+		private byte ReadMemory(ushort addr)
 		{
-			if (addr != LastAddress)
+			if (addr != _lastAddress)
 			{
 				DistinctAccessCount++;
-				LastAddress = addr;
+				_lastAddress = addr;
 			}
 
 			_mapper.Bit13 = addr.Bit(13);
 			var temp = _mapper.ReadMemory((ushort)(addr & 0x1FFF));
-            _tia.bus_state = temp;
+			_tia.BusState = temp;
 			MemoryCallbacks.CallReads(addr);
 
 			return temp;
 		}
 
-		internal byte PeekMemory(ushort addr)
+		private byte PeekMemory(ushort addr)
 		{
 			var temp = _mapper.PeekMemory((ushort)(addr & 0x1FFF));
 			return temp;
 		}
 
-		internal void WriteMemory(ushort addr, byte value)
+		private void WriteMemory(ushort addr, byte value)
 		{
-			if (addr != LastAddress)
+			if (addr != _lastAddress)
 			{
 				DistinctAccessCount++;
-				LastAddress = addr;
+				_lastAddress = addr;
 			}
 
 			_mapper.WriteMemory((ushort)(addr & 0x1FFF), value);
@@ -150,20 +166,6 @@ namespace BizHawk.Emulation.Cores.Atari.Atari2600
 		private void ExecFetch(ushort addr)
 		{
 			MemoryCallbacks.CallExecutes(addr);
-		}
-
-		private static MapperBase SetMultiCartMapper(int romLength, int gameTotal)
-		{
-			switch (romLength / gameTotal)
-			{
-				case 1024 * 2: // 2K
-					return new Multicart2K(gameTotal);
-				default:
-				case 1024 * 4: // 4K
-					return new Multicart4K(gameTotal);
-				case 1024 * 8: // 8K
-					return new Multicart8K(gameTotal);
-			}
 		}
 
 		private void RebootCore()
@@ -250,13 +252,13 @@ namespace BizHawk.Emulation.Cores.Atari.Atari2600
 					_mapper = new mUA();
 					break;
 
-                // Special Sega Mapper which has swapped banks
-                case "F8_sega":
-                    _mapper = new mF8_sega();
-                    break;
+				// Special Sega Mapper which has swapped banks
+				case "F8_sega":
+					_mapper = new mF8_sega();
+					break;
 
-                // Homebrew mappers
-                case "3E":
+				// Homebrew mappers
+				case "3E":
 					_mapper = new m3E();
 					break;
 				case "0840":
@@ -290,11 +292,11 @@ namespace BizHawk.Emulation.Cores.Atari.Atari2600
 			_lagcount = 0;
 			Cpu = new MOS6502X
 			{
-				ReadMemory = this.ReadMemory,
-				WriteMemory = this.WriteMemory,
-				PeekMemory = this.PeekMemory,
-				DummyReadMemory = this.ReadMemory,
-				OnExecFetch = this.ExecFetch
+				ReadMemory = ReadMemory,
+				WriteMemory = WriteMemory,
+				PeekMemory = PeekMemory,
+				DummyReadMemory = ReadMemory,
+				OnExecFetch = ExecFetch
 			};
 
 			if (_game["PAL"])
@@ -310,69 +312,53 @@ namespace BizHawk.Emulation.Cores.Atari.Atari2600
 				_pal = DetectPal(_game, Rom);
 			}
 
-			_tia = new TIA(this, _pal, Settings.SECAMColors);
-			_tia.GetFrameRate(out CoreComm.VsyncNum, out CoreComm.VsyncDen);
-
 			// dcfilter coefficent is from real observed hardware behavior: a latched "1" will fully decay by ~170 or so tia sound cycles
-			_dcfilter = DCFilter.AsISoundProvider(_tia, 256);
+			_tia = new TIA(this, _pal, Settings.SECAMColors);
 
-			M6532 = new M6532(this);
+			_dcfilter = new DCFilter(_tia, 256);
+
+			_m6532 = new M6532(this);
 
 			// Set up the system state here. for instance..
 			// Read from the reset vector for where to start
 			Cpu.PC = (ushort)(ReadMemory(0x1FFC) + (ReadMemory(0x1FFD) << 8)); // set the initial PC
 
 			// Show mapper class on romstatusdetails
-			CoreComm.RomStatusDetails =
-				string.Format(
-					"{0}\r\nSHA1:{1}\r\nMD5:{2}\r\nMapper Impl \"{3}\"",
-					this._game.Name,
-					Rom.HashSHA1(),
-					Rom.HashMD5(),
-					_mapper.GetType());
+			CoreComm.RomStatusDetails = $"{this._game.Name}\r\nSHA1:{Rom.HashSHA1()}\r\nMD5:{Rom.HashMD5()}\r\nMapper Impl \"{_mapper.GetType()}\"";
 
-
-            // as it turns out, the stack pointer cannot be set to 0 for some games as they do not initilize it themselves. 
-            // some documentation seems to indicate it should beset to FD, but currently there is no documentation of the 6532 
-            // executing a reset sequence at power on, but it's needed so let's hard code it for now
-            Cpu.S = 0xFD;
+			// as it turns out, the stack pointer cannot be set to 0 for some games as they do not initilize it themselves. 
+			// some documentation seems to indicate it should beset to FD, but currently there is no documentation of the 6532 
+			// executing a reset sequence at power on, but it's needed so let's hard code it for now
+			Cpu.S = 0xFD;
 		}
 
 		private bool _pal;
 
 		private void HardReset()
 		{
-			Ram = new byte[128];
+			_ram = new byte[128];
 			_mapper.HardReset();
 
 			Cpu = new MOS6502X
 			{
-				ReadMemory = this.ReadMemory,
-				WriteMemory = this.WriteMemory,
-				PeekMemory = this.PeekMemory,
-				DummyReadMemory = this.ReadMemory,
-				OnExecFetch = this.ExecFetch
+				ReadMemory = ReadMemory,
+				WriteMemory = WriteMemory,
+				PeekMemory = PeekMemory,
+				DummyReadMemory = ReadMemory,
+				OnExecFetch = ExecFetch
 			};
 
 			_tia.Reset();
 
-			M6532 = new M6532(this);
+			_m6532 = new M6532(this);
 			Cpu.PC = (ushort)(ReadMemory(0x1FFC) + (ReadMemory(0x1FFD) << 8)); // set the initial PC
 
-            // as it turns out, the stack pointer cannot be set to 0 for some games as they do not initilize it themselves. 
-            // some documentation seems to indicate it should beset to FD, but currently there is no documentation of the 6532 
-            // executing a reset sequence at power on, but it's needed so let's hard code it for now
-            Cpu.S = 0xFD;
-        }
-
-		public void FrameAdvance(bool render, bool rendersound)
-		{
-			StartFrameCond();
-			while (_tia.LineCount < _tia.NominalNumScanlines)
-				Cycle();
-            if (rendersound==false)
-                _tia._audioClocks = 0; // we need this here since the async sound provider won't check in this case
-			FinishFrameCond();
+			// as it turns out, the stack pointer cannot be set to 0 for some games as they do not initilize it themselves. 
+			// some documentation seems to indicate it should beset to FD, but currently there is no documentation of the 6532 
+			// executing a reset sequence at power on, but it's needed so let's hard code it for now
+			Cpu.S = 0xFD;
+			
+			SetupMemoryDomains();
 		}
 
 		private void VFrameAdvance() // advance up to 500 lines looking for end of video frame
@@ -381,7 +367,10 @@ namespace BizHawk.Emulation.Cores.Atari.Atari2600
 			bool frameend = false;
 			_tia.FrameEndCallBack = (n) => frameend = true;
 			for (int i = 0; i < 500 && !frameend; i++)
+			{
 				ScanlineAdvance();
+			}
+
 			_tia.FrameEndCallBack = null;
 		}
 
@@ -392,27 +381,27 @@ namespace BizHawk.Emulation.Cores.Atari.Atari2600
 				_frame++;
 				_islag = true;
 
-				if (Controller["Power"])
+				if (_controller.IsPressed("Power"))
 				{
 					HardReset();
 				}
 
-				if (Controller["Toggle Left Difficulty"] && !_leftDifficultySwitchHeld)
+				if (_controller.IsPressed("Toggle Left Difficulty") && !_leftDifficultySwitchHeld)
 				{
 					_leftDifficultySwitchPressed ^= true;
 					_leftDifficultySwitchHeld = true;
 				}
-				else if (!Controller["Toggle Left Difficulty"])
+				else if (!_controller.IsPressed("Toggle Left Difficulty"))
 				{
 					_leftDifficultySwitchHeld = false;
 				}
 
-				if (Controller["Toggle Right Difficulty"] && !_rightDifficultySwitchHeld)
+				if (_controller.IsPressed("Toggle Right Difficulty") && !_rightDifficultySwitchHeld)
 				{
 					_rightDifficultySwitchPressed ^= true;
 					_rightDifficultySwitchHeld = true;
 				}
-				else if (!Controller["Toggle Right Difficulty"])
+				else if (!_controller.IsPressed("Toggle Right Difficulty"))
 				{
 					_rightDifficultySwitchHeld = false;
 				}
@@ -428,7 +417,10 @@ namespace BizHawk.Emulation.Cores.Atari.Atari2600
 			{
 				_tia.CompleteAudioFrame();
 				if (_islag)
+				{
 					_lagcount++;
+				}
+
 				_tia.LineCount = 0;
 				_frameStartPending = true;
 			}
@@ -439,11 +431,12 @@ namespace BizHawk.Emulation.Cores.Atari.Atari2600
 			_tia.Execute(1);
 			_tia.Execute(1);
 			_tia.Execute(1);
-			M6532.Timer.Tick();
+			_m6532.Timer.Tick();
 			if (Tracer.Enabled)
 			{
 				Tracer.Put(Cpu.TraceState());
 			}
+
 			Cpu.ExecuteOne();
 			_mapper.ClockCpu();
 		}
@@ -451,13 +444,8 @@ namespace BizHawk.Emulation.Cores.Atari.Atari2600
 		internal byte ReadControls1(bool peek)
 		{
 			InputCallbacks.Call();
-			byte value = 0xFF;
-
-			if (Controller["P1 Up"]) { value &= 0xEF; }
-			if (Controller["P1 Down"]) { value &= 0xDF; }
-			if (Controller["P1 Left"]) { value &= 0xBF; }
-			if (Controller["P1 Right"]) { value &= 0x7F; }
-			if (Controller["P1 Button"]) { value &= 0xF7; }
+			
+			byte value = _controllerDeck.ReadPort1(_controller);
 
 			if (!peek)
 			{
@@ -470,13 +458,7 @@ namespace BizHawk.Emulation.Cores.Atari.Atari2600
 		internal byte ReadControls2(bool peek)
 		{
 			InputCallbacks.Call();
-			byte value = 0xFF;
-
-			if (Controller["P2 Up"]) { value &= 0xEF; }
-			if (Controller["P2 Down"]) { value &= 0xDF; }
-			if (Controller["P2 Left"]) { value &= 0xBF; }
-			if (Controller["P2 Right"]) { value &= 0x7F; }
-			if (Controller["P2 Button"]) { value &= 0xF7; }
+			byte value = _controllerDeck.ReadPort2(_controller);
 
 			if (!peek)
 			{
@@ -486,11 +468,25 @@ namespace BizHawk.Emulation.Cores.Atari.Atari2600
 			return value;
 		}
 
+		internal int ReadPot1(int pot)
+		{
+			int value = _controllerDeck.ReadPot1(_controller, pot);
+
+			return value;
+		}
+
+		internal int ReadPot2(int pot)
+		{
+			int value = _controllerDeck.ReadPot2(_controller, pot);
+
+			return value;
+		}
+
 		internal byte ReadConsoleSwitches(bool peek)
 		{
 			byte value = 0xFF;
-			bool select = Controller["Select"];
-			bool reset = Controller["Reset"];
+			bool select = _controller.IsPressed("Select");
+			bool reset = _controller.IsPressed("Reset");
 
 			if (reset) { value &= 0xFE; }
 			if (select) { value &= 0xFD; }

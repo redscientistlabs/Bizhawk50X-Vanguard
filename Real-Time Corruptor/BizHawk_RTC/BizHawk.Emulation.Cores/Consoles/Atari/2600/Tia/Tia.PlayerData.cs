@@ -20,11 +20,11 @@ namespace BizHawk.Emulation.Cores.Atari.Atari2600
 			public byte Nusiz;
 			public byte Collisions;
 
-            // Resp commands do not trigger start signals for main copies. We need to model this
-            public int Start_Signal;
-            public int Signal_Reached;
+			// Resp commands do not trigger start signals for main copies. We need to model this
+			private int _startSignal;
+			private int _signalReached;
 
-            public bool Tick()
+			public bool Tick()
 			{
 				var result = false;
 				if (ScanCnt < 8)
@@ -63,7 +63,6 @@ namespace BizHawk.Emulation.Cores.Atari.Atari2600
 						}
 					}
 
-
 					// Increment the Player Graphics Scan Counter
 
 					// This counter advances once per clock for single sized players,
@@ -74,7 +73,6 @@ namespace BizHawk.Emulation.Cores.Atari.Atari2600
 					// The first tick for single sized players happens immediately.
 					// The first tick for double and quad sized players is delayed one clock cycle,
 					// and then happen every 2 or 4 clocks
-
 					if ((Nusiz & 0x07) == 0x05)
 					{
 						if ((HPosCnt + 3) % 2 == 0)
@@ -114,10 +112,10 @@ namespace BizHawk.Emulation.Cores.Atari.Atari2600
 
 				// At counter position 0 we should initalize the scan counter. 
 				// Note that for double and quad sized players that the scan counter is not started immediately.
-				if (Start_Signal==160)
-                {
+				if (_startSignal == 160)
+				{
 					ScanCnt = 0;
-                    Start_Signal++;
+					_startSignal++;
 					if ((Nusiz & 0x07) == 0x05)
 					{
 						ScanCntInit = true;
@@ -132,23 +130,23 @@ namespace BizHawk.Emulation.Cores.Atari.Atari2600
 					}
 				}
 
-				if (Start_Signal == 16 && ((Nusiz & 0x07) == 0x01 || ((Nusiz & 0x07) == 0x03)))
+				if (_startSignal == 16 && ((Nusiz & 0x07) == 0x01 || ((Nusiz & 0x07) == 0x03)))
 				{
 					ScanCnt = 0;
-                    Start_Signal++;
-                }
+					_startSignal++;
+				}
 
-				if (Start_Signal == 32 && ((Nusiz & 0x07) == 0x02 || ((Nusiz & 0x07) == 0x03) || ((Nusiz & 0x07) == 0x06)))
+				if (_startSignal == 32 && ((Nusiz & 0x07) == 0x02 || ((Nusiz & 0x07) == 0x03) || ((Nusiz & 0x07) == 0x06)))
 				{
 					ScanCnt = 0;
-                    Start_Signal++;
-                }
+					_startSignal++;
+				}
 
-				if (Start_Signal == 64 && ((Nusiz & 0x07) == 0x04 || ((Nusiz & 0x07) == 0x06)))
+				if (_startSignal == 64 && ((Nusiz & 0x07) == 0x04 || ((Nusiz & 0x07) == 0x06)))
 				{
 					ScanCnt = 0;
-                    Start_Signal++;
-                }
+					_startSignal++;
+				}
 
 				// Increment the counter
 				HPosCnt++;
@@ -156,18 +154,19 @@ namespace BizHawk.Emulation.Cores.Atari.Atari2600
 				// Counter loops at 160 
 				HPosCnt %= 160;
 
-                //our goal here is to send a start signal 4 clocks before drawing begins. This properly emulates
-                //drawing on a real TIA
-                if (HPosCnt==156 || HPosCnt==12 || HPosCnt==28 || HPosCnt==60)
-                {
-                    Start_Signal = HPosCnt-1;
-                    Signal_Reached = HPosCnt + 5;
-                }
+				// our goal here is to send a start signal 4 clocks before drawing begins. This properly emulates
+				// drawing on a real TIA
+				if (HPosCnt == 156 || HPosCnt == 12 || HPosCnt == 28 || HPosCnt == 60)
+				{
+					_startSignal = HPosCnt - 1;
+					_signalReached = HPosCnt + 5;
+				}
 
-                if (Start_Signal<Signal_Reached)
-                {
-                    Start_Signal++;
-                }
+				if (_startSignal < _signalReached)
+				{
+					_startSignal++;
+				}
+
 				return result;
 			}
 
@@ -185,9 +184,9 @@ namespace BizHawk.Emulation.Cores.Atari.Atari2600
 				ser.Sync("delay", ref Delay);
 				ser.Sync("nusiz", ref Nusiz);
 				ser.Sync("collisions", ref Collisions);
-                ser.Sync("start_signal", ref Start_Signal);
-                ser.Sync("signal_reached", ref Signal_Reached);
-            }
+				ser.Sync("start_signal", ref _startSignal);
+				ser.Sync("signal_reached", ref _signalReached);
+			}
 		}
 	}
 }

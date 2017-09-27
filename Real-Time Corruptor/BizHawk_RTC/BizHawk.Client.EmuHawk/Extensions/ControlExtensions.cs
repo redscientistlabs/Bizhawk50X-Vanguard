@@ -52,7 +52,7 @@ namespace BizHawk.Client.EmuHawk.WinFormExtensions
 					var column = new ColumnHeader
 					{
 						Name = columnName,
-						Text = columnName.Replace("Column", string.Empty),
+						Text = columnName.Replace("Column", ""),
 						Width = columnWidth,
 					};
 
@@ -70,7 +70,7 @@ namespace BizHawk.Client.EmuHawk.WinFormExtensions
 					var lsstViewColumn = new ColumnHeader
 					{
 						Name = column.Name,
-						Text = column.Name.Replace("Column", string.Empty),
+						Text = column.Name.Replace("Column", ""),
 						Width = column.Width,
 						DisplayIndex = column.Index
 					};
@@ -95,7 +95,7 @@ namespace BizHawk.Client.EmuHawk.WinFormExtensions
 				var menuItem = new ToolStripMenuItem
 				{
 					Name = column.Name,
-					Text = column.Name.Replace("Column", string.Empty)
+					Text = column.Name.Replace("Column", "")
 				};
 
 				menuItem.Click += (o, ev) =>
@@ -157,10 +157,15 @@ namespace BizHawk.Client.EmuHawk.WinFormExtensions
 		/// <summary>
 		/// Handles EmuHawk specific issues before showing a modal dialog
 		/// </summary>
-		public static DialogResult ShowHawkDialog(this Form form, IWin32Window owner = null)
+		public static DialogResult ShowHawkDialog(this Form form, IWin32Window owner = null, Point position = default(Point))
 		{
 			GlobalWin.Sound.StopSound();
-			var result = (owner == null ? form.ShowDialog() : form.ShowDialog(owner));
+			if (position != default(Point))
+			{
+				form.StartPosition = FormStartPosition.Manual;
+				form.Location = position;
+			}
+			var result = (owner == null ? form.ShowDialog(new Form() { TopMost = true }) : form.ShowDialog(owner));
 			GlobalWin.Sound.StartSound();
 			return result;
 		}
@@ -171,7 +176,9 @@ namespace BizHawk.Client.EmuHawk.WinFormExtensions
 		public static DialogResult ShowHawkDialog(this CommonDialog form)
 		{
 			GlobalWin.Sound.StopSound();
-			var result = form.ShowDialog();
+			var tempForm = new Form() { TopMost = true };
+			var result = form.ShowDialog(tempForm);
+			tempForm.Dispose();
 			GlobalWin.Sound.StartSound();
 			return result;
 		}
@@ -234,7 +241,7 @@ namespace BizHawk.Client.EmuHawk.WinFormExtensions
 			var indexes = listViewControl.SelectedIndices;
 			if (indexes.Count <= 0)
 			{
-				return String.Empty;
+				return "";
 			}
 
 			var sb = new StringBuilder();

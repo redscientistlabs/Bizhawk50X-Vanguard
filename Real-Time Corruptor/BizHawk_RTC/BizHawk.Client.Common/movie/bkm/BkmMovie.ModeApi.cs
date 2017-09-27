@@ -4,29 +4,20 @@ namespace BizHawk.Client.Common
 {
 	public partial class BkmMovie
 	{
-		private enum Moviemode { Inactive, Play, Record, Finished }
+		private enum Moviemode
+		{
+			Inactive, Play, Record, Finished
+		}
 
 		private Moviemode _mode = Moviemode.Inactive;
 
-		public bool IsPlaying
-		{
-			get { return _mode == Moviemode.Play || _mode == Moviemode.Finished; }
-		}
+		public bool IsPlaying => _mode == Moviemode.Play || _mode == Moviemode.Finished;
 
-		public bool IsRecording
-		{
-			get { return _mode == Moviemode.Record; }
-		}
+		public bool IsRecording => _mode == Moviemode.Record;
 
-		public bool IsActive
-		{
-			get { return _mode != Moviemode.Inactive; }
-		}
+		public bool IsActive => _mode != Moviemode.Inactive;
 
-		public bool IsFinished
-		{
-			get { return _mode == Moviemode.Finished; }
-		}
+		public bool IsFinished => _mode == Moviemode.Finished;
 
 		public void StartNewRecording()
 		{

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Security.Cryptography;
 using System.IO;
 using System.Linq;
 
@@ -17,7 +18,7 @@ namespace BizHawk.Client.Common
 			public string Hash { get; set; }
 		}
 
-		public List<FirmwareEventArgs> RecentlyServed { get; private set; }
+		public List<FirmwareEventArgs> RecentlyServed { get; }
 
 		public class ResolutionInfo
 		{
@@ -45,7 +46,6 @@ namespace BizHawk.Client.Common
 			RecentlyServed = new List<FirmwareEventArgs>();
 		}
 
-
 		public ResolutionInfo Resolve(string sysId, string firmwareId)
 		{
 			return Resolve(FirmwareDatabase.LookupFirmwareRecord(sysId, firmwareId));
@@ -53,12 +53,10 @@ namespace BizHawk.Client.Common
 
 		public ResolutionInfo Resolve(FirmwareDatabase.FirmwareRecord record, bool forbidScan = false)
 		{
-			//purpose of forbidScan: sometimes this is called from a loop in Scan(). we dont want to repeatedly DoScanAndResolve in that case, its already been done.
-
+			// purpose of forbidScan: sometimes this is called from a loop in Scan(). we dont want to repeatedly DoScanAndResolve in that case, its already been done.
 			bool first = true;
 
 		RETRY:
-
 			ResolutionInfo resolved;
 			_resolutionDictionary.TryGetValue(record, out resolved);
 
@@ -66,7 +64,11 @@ namespace BizHawk.Client.Common
 			// NOTE: this could result in bad performance in some cases if the scanning happens repeatedly..
 			if (resolved == null && first)
 			{
-				if(!forbidScan) DoScanAndResolve();
+				if (!forbidScan)
+				{
+					DoScanAndResolve();
+				}
+
 				first = false;
 				goto RETRY;
 			}
@@ -78,25 +80,33 @@ namespace BizHawk.Client.Common
 		public string Request(string sysId, string firmwareId)
 		{
 			var resolved = Resolve(sysId, firmwareId);
-			if (resolved == null) return null;
+			if (resolved == null)
+			{
+				return null;
+			}
+
 			RecentlyServed.Add(new FirmwareEventArgs
-					{
-						SystemId = sysId,
-						FirmwareId = firmwareId,
-						Hash = resolved.Hash,
-						Size = resolved.Size
-					});
+			{
+				SystemId = sysId,
+				FirmwareId = firmwareId,
+				Hash = resolved.Hash,
+				Size = resolved.Size
+			});
+
 			return resolved.FilePath;
 		}
 
-		public class RealFirmwareReader : IDisposable
+		private class RealFirmwareReader : IDisposable
 		{
-			System.Security.Cryptography.SHA1 sha1 = System.Security.Cryptography.SHA1.Create();
+			private readonly List<RealFirmwareFile> _files = new List<RealFirmwareFile>();
+			private SHA1 _sha1 = SHA1.Create();
+
 			public void Dispose()
 			{
-				sha1.Dispose();
-				sha1 = null;
+				_sha1.Dispose();
+				_sha1 = null;
 			}
+
 			public RealFirmwareFile Read(FileInfo fi)
 			{
 				var rff = new RealFirmwareFile { FileInfo = fi };
@@ -104,27 +114,28 @@ namespace BizHawk.Client.Common
 
 				using (var fs = fi.OpenRead())
 				{
-					sha1.ComputeHash(fs);
+					_sha1.ComputeHash(fs);
 				}
 
-				rff.Hash = sha1.Hash.BytesToHexString();
-				dict[rff.Hash] = rff;
+				rff.Hash = _sha1.Hash.BytesToHexString();
+				Dict[rff.Hash] = rff;
 				_files.Add(rff);
 				return rff;
 			}
 
-			public readonly Dictionary<string, RealFirmwareFile> dict = new Dictionary<string, RealFirmwareFile>();
-			private readonly List<RealFirmwareFile> _files = new List<RealFirmwareFile>();
+			public Dictionary<string, RealFirmwareFile> Dict { get; } = new Dictionary<string, RealFirmwareFile>();
 		}
 
 		public void DoScanAndResolve()
 		{
-			//build a list of file sizes. Only those will be checked during scanning
+			// build a list of file sizes. Only those will be checked during scanning
 			HashSet<long> sizes = new HashSet<long>();
 			foreach (var ff in FirmwareDatabase.FirmwareFiles)
-				sizes.Add(ff.size);
+			{
+				sizes.Add(ff.Size);
+			}
 
-			using(var reader = new RealFirmwareReader())
+			using (var reader = new RealFirmwareReader())
 			{
 				// build a list of files under the global firmwares path, and build a hash for each of them while we're at it
 				var todo = new Queue<DirectoryInfo>();
@@ -135,7 +146,9 @@ namespace BizHawk.Client.Common
 					var di = todo.Dequeue();
 
 					if (!di.Exists)
+					{
 						continue;
+					}
 
 					// we're going to allow recursing into subdirectories, now. its been verified to work OK
 					foreach (var disub in di.GetDirectories())
@@ -145,8 +158,10 @@ namespace BizHawk.Client.Common
 				
 					foreach (var fi in di.GetFiles())
 					{
-						if(sizes.Contains(fi.Length))
+						if (sizes.Contains(fi.Length))
+						{
 							reader.Read(fi);
+						}
 					}
 				}
 
@@ -160,24 +175,24 @@ namespace BizHawk.Client.Common
 					var fr1 = fr;
 					var options =
 						from fo in FirmwareDatabase.FirmwareOptions
-						where fo.systemId == fr1.systemId && fo.firmwareId == fr1.firmwareId && fo.IsAcceptableOrIdeal
+						where fo.SystemId == fr1.SystemId && fo.FirmwareId == fr1.FirmwareId && fo.IsAcceptableOrIdeal
 						select fo;
 
 					// try each option
 					foreach (var fo in options)
 					{
-						var hash = fo.hash;
+						var hash = fo.Hash;
 
 						// did we find this firmware?
-						if (reader.dict.ContainsKey(hash))
+						if (reader.Dict.ContainsKey(hash))
 						{
 							// rad! then we can use it
 							var ri = new ResolutionInfo
 								{
-									FilePath = reader.dict[hash].FileInfo.FullName,
+									FilePath = reader.Dict[hash].FileInfo.FullName,
 									KnownFirmwareFile = FirmwareDatabase.FirmwareFilesByHash[hash],
 									Hash = hash,
-									Size = fo.size
+									Size = fo.Size
 								};
 							_resolutionDictionary[fr] = ri;
 							goto DONE_FIRMWARE;
@@ -185,7 +200,6 @@ namespace BizHawk.Client.Common
 					}
 
 				DONE_FIRMWARE: ;
-
 				}
 
 				// apply user overrides
@@ -203,6 +217,7 @@ namespace BizHawk.Client.Common
 							ri = new ResolutionInfo();
 							_resolutionDictionary[fr] = ri;
 						}
+
 						ri.UserSpecified = true;
 						ri.KnownFirmwareFile = null;
 						ri.FilePath = userSpec;
@@ -230,7 +245,7 @@ namespace BizHawk.Client.Common
 							// if the known firmware file is for a different firmware, flag it so we can show a warning
 							var option =
 								(from fo in FirmwareDatabase.FirmwareOptions
-								 where fo.hash == rff.Hash && fo.ConfigKey != fr.ConfigKey
+								 where fo.Hash == rff.Hash && fo.ConfigKey != fr.ConfigKey
 								 select fr).FirstOrDefault();
 
 							if (option != null)
@@ -239,11 +254,8 @@ namespace BizHawk.Client.Common
 							}
 						}
 					}
-
-				} //foreach(firmware record)
-			} //using(new RealFirmwareReader())
-		} //DoScanAndResolve()
-
-	} //class FirmwareManager
-
-} //namespace
+				} // foreach(firmware record)
+			} // using(new RealFirmwareReader())
+		} // DoScanAndResolve()
+	} // class FirmwareManager
+} // namespace

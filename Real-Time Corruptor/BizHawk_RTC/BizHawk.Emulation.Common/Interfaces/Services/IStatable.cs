@@ -3,23 +3,29 @@
 namespace BizHawk.Emulation.Common
 {
 	/// <summary>
+	/// Binary save and load state only without any trappings.  At the moment, an emulator core should not implement this directly
+	/// </summary>
+	public interface IBinaryStateable
+	{
+		void SaveStateBinary(BinaryWriter writer);
+		void LoadStateBinary(BinaryReader reader);
+	}
+
+	/// <summary>
 	/// This service manages the logic of sending and receiving savestates from the core
 	/// If this service is available, client apps will expose features for making savestates and that utilize savestates (such as rewind))
 	/// If unavailable these options will not be exposed
-	/// Additionally many tools depends on savestates such as TAStudio, these will only be available if this service is implmeented
+	/// Additionally many tools depend on savestates such as TAStudio, these will only be available if this service is implemented
 	/// </summary>
-	public interface IStatable : IEmulatorService
+	public interface IStatable : IBinaryStateable, IEmulatorService
 	{
 		/// <summary>
-		/// true if the core would rather give a binary savestate than a text one.  both must function regardless
+		/// Gets a value indicating whether the core would rather give a binary savestate than a text one. Both must function regardless
 		/// </summary>
 		bool BinarySaveStatesPreferred { get; }
 
 		void SaveStateText(TextWriter writer);
 		void LoadStateText(TextReader reader);
-
-		void SaveStateBinary(BinaryWriter writer);
-		void LoadStateBinary(BinaryReader reader);
 
 		/// <summary>
 		/// save state binary to a byte buffer

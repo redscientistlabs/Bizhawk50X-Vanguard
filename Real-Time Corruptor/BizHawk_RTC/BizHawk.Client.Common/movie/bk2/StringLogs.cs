@@ -1,9 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Globalization;
 using System.IO;
-using System.Linq;
-using System.Text;
 
 using BizHawk.Common;
 
@@ -11,15 +8,21 @@ namespace BizHawk.Client.Common
 {
 	public static class StringLogUtil
 	{
-		public static bool DefaultToDisk;
-		public static bool DefaultToAWE;
+		public static bool DefaultToDisk { get; set; }
+		public static bool DefaultToAWE { get; set; }
 		public static IStringLog MakeStringLog()
 		{
 			if (DefaultToDisk)
+			{
 				return new StreamStringLog(true);
-			else if(DefaultToAWE)
+			}
+
+			if (DefaultToAWE)
+			{
 				return new StreamStringLog(false);
-			else return new ListStringLog();
+			}
+
+			return new ListStringLog();
 		}
 	}
 
@@ -39,7 +42,7 @@ namespace BizHawk.Client.Common
 		void CopyTo(int index, string[] array, int arrayIndex, int count);
 	}
 
-	class ListStringLog : List<string>, IStringLog
+	internal class ListStringLog : List<string>, IStringLog
 	{
 		public IStringLog Clone()
 		{
@@ -52,23 +55,24 @@ namespace BizHawk.Client.Common
 	}
 
 	/// <summary>
-	/// A dumb-ish IStringLog with storage on disk with no provision for recovering lost space, except upon Clear()
-	/// The purpose here is to avoid having too complicated buggy logic or a dependency on sqlite or such.
+	/// A dumb IStringLog with storage on disk with no provision for recovering lost space, except upon Clear()
+	/// The purpose here is to avoid having too complicated buggy logic or a dependency on SQLite or such.
 	/// It should be faster than those alternatives, but wasteful of disk space.
-	/// It should also be easier to add new IList<string>-like methods than dealing with a database
+	/// It should also be easier to add new IList&lt;string&gt;-like methods than dealing with a database
 	/// </summary>
-	class StreamStringLog : IStringLog
+	internal class StreamStringLog : IStringLog
 	{
-		List<long> Offsets = new List<long>();
-		long cursor = 0;
-		BinaryWriter bw;
-		BinaryReader br;
-		bool mDisk;
+		private readonly Stream stream;
+		private readonly List<long> _offsets = new List<long>();
+		private readonly BinaryWriter _bw;
+		private readonly BinaryReader _br;
+		private readonly bool _mDisk;
 
-		Stream stream;
+		private long _cursor;
+
 		public StreamStringLog(bool disk)
 		{
-			mDisk = disk;
+			_mDisk = disk;
 			if (disk)
 			{
 				var path = TempFileCleaner.GetTempFilename("movieOnDisk");
@@ -78,15 +82,19 @@ namespace BizHawk.Client.Common
 			{
 				stream = new AWEMemoryStream();
 			}
-			bw = new BinaryWriter(stream);
-			br = new BinaryReader(stream);
+
+			_bw = new BinaryWriter(stream);
+			_br = new BinaryReader(stream);
 		}
 
 		public IStringLog Clone()
 		{
-			StreamStringLog ret = new StreamStringLog(mDisk); //doesnt necessarily make sense to copy the mDisk value, they could be designated for different targets...
+			StreamStringLog ret = new StreamStringLog(_mDisk); // doesnt necessarily make sense to copy the mDisk value, they could be designated for different targets...
 			for (int i = 0; i < Count; i++)
+			{
 				ret.Add(this[i]);
+			}
+
 			return ret;
 		}
 
@@ -95,92 +103,103 @@ namespace BizHawk.Client.Common
 			stream.Dispose();
 		}
 
-		public int Count { get { return Offsets.Count; } }
+		public int Count => _offsets.Count;
 
 		public void Clear()
 		{
 			stream.SetLength(0);
-			Offsets.Clear();
-			cursor = 0;
+			_offsets.Clear();
+			_cursor = 0;
 		}
 
 		public void Add(string str)
 		{
-			Offsets.Add(stream.Position);
-			bw.Write(str);
-			bw.Flush();
+			stream.Position = stream.Length;
+			_offsets.Add(stream.Position);
+			_bw.Write(str);
+			_bw.Flush();
 		}
 
 		public void RemoveAt(int index)
 		{
-			Offsets.RemoveAt(index);
-			//no garbage collection in the disk file... oh well.
+			// no garbage collection in the disk file... oh well.
+			_offsets.RemoveAt(index);
 		}
 
 		public string this[int index]
 		{
 			get
 			{
-				stream.Position = Offsets[index];
-				return br.ReadString();
+				stream.Position = _offsets[index];
+				return _br.ReadString();
 			}
+
 			set
 			{
 				stream.Position = stream.Length;
-				Offsets[index] = stream.Position;
-				bw.Write(value);
-				bw.Flush();
+				_offsets[index] = stream.Position;
+				_bw.Write(value);
+				_bw.Flush();
 			}
 		}
 
 		public void Insert(int index, string val)
 		{
-			Offsets.Insert(index, stream.Position);
-			bw.Write(val);
-			bw.Flush();
+			stream.Position = stream.Length;
+			_offsets.Insert(index, stream.Position);
+			_bw.Write(val);
+			_bw.Flush();
 		}
 
 		public void InsertRange(int index, IEnumerable<string> collection)
 		{
-			foreach(var item in collection)
-				Insert(index++,item);
+			foreach (var item in collection)
+			{
+				Insert(index++, item);
+			}
 		}
 
 		public void AddRange(IEnumerable<string> collection)
 		{
 			foreach (var item in collection)
+			{
 				Add(item);
+			}
 		}
 
-		class Enumerator : IEnumerator<string>
+		private class Enumerator : IEnumerator<string>
 		{
-			public StreamStringLog log;
-			int index = -1;
-			public string Current { get { return log[index]; } }
-			object System.Collections.IEnumerator.Current { get { return log[index]; } }
+			public StreamStringLog Log { get; set; }
+			private int _index = -1;
+
+			public string Current => Log[_index];
+			object System.Collections.IEnumerator.Current => Log[_index];
+
 			bool System.Collections.IEnumerator.MoveNext()
 			{
-				index++;
-				if (index >= log.Count)
+				_index++;
+				if (_index >= Log.Count)
 				{
-					index = log.Count;
+					_index = Log.Count;
 					return false;
 				}
+
 				return true;
 			}
-			void System.Collections.IEnumerator.Reset() { index = -1; }
+
+			void System.Collections.IEnumerator.Reset() { _index = -1; }
 			
 			public void Dispose() { }
 		}
 
 		IEnumerator<string> IEnumerable<string>.GetEnumerator()
 		{
-			return new Enumerator() { log = this };
+			return new Enumerator { Log = this };
 		}
 
 		System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator()
 		{
-			return new Enumerator() { log = this };
+			return new Enumerator { Log = this };
 		}
 
 		public void RemoveRange(int index, int count)
@@ -196,13 +215,17 @@ namespace BizHawk.Client.Common
 		public void CopyTo(string[] array)
 		{
 			for (int i = 0; i < Count; i++)
+			{
 				array[i] = this[i];
+			}
 		}
 
 		public void CopyTo(int index, string[] array, int arrayIndex, int count)
 		{
 			for (int i = 0; i < count; i++)
+			{
 				array[i + arrayIndex] = this[index + i];
+			}
 		}
 	}
 }

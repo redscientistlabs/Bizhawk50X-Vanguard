@@ -9,8 +9,14 @@ namespace BizHawk.Client.Common
 	[JsonObject]
 	public class RecentFiles : IEnumerable
 	{
+		// ReSharper disable once FieldCanBeMadeReadOnly.Local
 		private List<string> recentlist;
-		public RecentFiles() : this(8) { }
+
+		public RecentFiles()
+			: this(8)
+		{
+		}
+
 		public RecentFiles(int max)
 		{
 			recentlist = new List<string>();
@@ -26,25 +32,13 @@ namespace BizHawk.Client.Common
 		public bool Frozen { get; set; }
 
 		[JsonIgnore]
-		public bool Empty
-		{
-			get { return !recentlist.Any(); }
-		}
+		public bool Empty => !recentlist.Any();
 
 		[JsonIgnore]
-		public int Count
-		{
-			get { return recentlist.Count; }
-		}
+		public int Count => recentlist.Count;
 
 		[JsonIgnore]
-		public string MostRecent
-		{
-			get
-			{
-				return recentlist.Any() ? recentlist[0] : string.Empty;
-			}
-		}
+		public string MostRecent => recentlist.Any() ? recentlist[0] : "";
 
 		public string this[int index]
 		{
@@ -55,7 +49,7 @@ namespace BizHawk.Client.Common
 					return recentlist[index];
 				}
 
-				return string.Empty;
+				return "";
 			}
 		}
 

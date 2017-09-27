@@ -1,11 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Collections.ObjectModel;
+using System.Linq;
 
 namespace BizHawk.Emulation.Common
 {
+	/// <summary>
+	/// A generic implementation of IMemoryDomain that can be used by any core
+	/// </summary>
+	/// <seealso cref="IMemoryDomains" />
 	public class MemoryDomainList : ReadOnlyCollection<MemoryDomain>, IMemoryDomains
 	{
 		private MemoryDomain _mainMemory;
@@ -107,13 +110,16 @@ namespace BizHawk.Emulation.Common
 		/// <summary>
 		/// big hacks
 		/// </summary>
+		/// <typeparam name="T">The memory domain type to merge</typeparam>
 		private static void TryMerge<T>(MemoryDomain dest, MemoryDomain src, Action<T, T> func)
 			where T : MemoryDomain
 		{
 			var d1 = dest as T;
 			var s1 = src as T;
 			if (d1 != null && s1 != null)
+			{
 				func(d1, s1);
+			}
 		}
 	}
 }

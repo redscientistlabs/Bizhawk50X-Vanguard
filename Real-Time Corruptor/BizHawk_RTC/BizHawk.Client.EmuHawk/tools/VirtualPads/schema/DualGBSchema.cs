@@ -1,13 +1,14 @@
 ﻿using System.Collections.Generic;
-using System.ComponentModel;
 using System.Drawing;
 
-namespace BizHawk.Client.EmuHawk.tools.VirtualPads.schema
+using BizHawk.Emulation.Common;
+
+namespace BizHawk.Client.EmuHawk
 {
-	[SchemaAttributes("DGB")]
+	[Schema("DGB")]
 	public class DualGBSchema : IVirtualPadSchema
 	{
-		public IEnumerable<PadSchema> GetPadSchemas()
+		public IEnumerable<PadSchema> GetPadSchemas(IEmulator core)
 		{
 			yield return StandardController(1);
 			yield return StandardController(2);
@@ -21,7 +22,7 @@ namespace BizHawk.Client.EmuHawk.tools.VirtualPads.schema
 				DefaultSize = new Size(174, 79),
 				Buttons = new[]
 				{
-					new PadSchema.ButtonScema
+					new PadSchema.ButtonSchema
 					{
 						Name = "P" + controller + " Up",
 						DisplayName = "",
@@ -29,7 +30,7 @@ namespace BizHawk.Client.EmuHawk.tools.VirtualPads.schema
 						Location = new Point(14, 12),
 						Type = PadSchema.PadInputType.Boolean
 					},
-					new PadSchema.ButtonScema
+					new PadSchema.ButtonSchema
 					{
 						Name = "P" + controller + " Down",
 						DisplayName = "",
@@ -37,7 +38,7 @@ namespace BizHawk.Client.EmuHawk.tools.VirtualPads.schema
 						Location = new Point(14, 56),
 						Type = PadSchema.PadInputType.Boolean
 					},
-					new PadSchema.ButtonScema
+					new PadSchema.ButtonSchema
 					{
 						Name = "P" + controller + " Left",
 						DisplayName = "",
@@ -45,7 +46,7 @@ namespace BizHawk.Client.EmuHawk.tools.VirtualPads.schema
 						Location = new Point(2, 34),
 						Type = PadSchema.PadInputType.Boolean
 					},
-					new PadSchema.ButtonScema
+					new PadSchema.ButtonSchema
 					{
 						Name = "P" + controller + " Right",
 						DisplayName = "",
@@ -53,28 +54,28 @@ namespace BizHawk.Client.EmuHawk.tools.VirtualPads.schema
 						Location = new Point(24, 34),
 						Type = PadSchema.PadInputType.Boolean
 					},
-					new PadSchema.ButtonScema
+					new PadSchema.ButtonSchema
 					{
 						Name = "P" + controller + " B",
 						DisplayName = "B",
 						Location = new Point(122, 34),
 						Type = PadSchema.PadInputType.Boolean
 					},
-					new PadSchema.ButtonScema
+					new PadSchema.ButtonSchema
 					{
 						Name = "P" + controller + " A",
 						DisplayName = "A",
 						Location = new Point(146, 34),
 						Type = PadSchema.PadInputType.Boolean
 					},
-					new PadSchema.ButtonScema
+					new PadSchema.ButtonSchema
 					{
 						Name = "P" + controller + " Select",
 						DisplayName = "s",
 						Location = new Point(52, 34),
 						Type = PadSchema.PadInputType.Boolean
 					},
-					new PadSchema.ButtonScema
+					new PadSchema.ButtonSchema
 					{
 						Name = "P" + controller + " Start",
 						DisplayName = "S",
@@ -85,5 +86,4 @@ namespace BizHawk.Client.EmuHawk.tools.VirtualPads.schema
 			};
 		}
 	}
-	
 }

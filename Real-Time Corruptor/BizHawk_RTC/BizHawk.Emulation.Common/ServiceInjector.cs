@@ -1,8 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Reflection;
+
 using BizHawk.Common.ReflectionExtensions;
 
 namespace BizHawk.Emulation.Common
@@ -15,15 +13,14 @@ namespace BizHawk.Emulation.Common
 		/// <summary>
 		/// clears all services from a target
 		/// </summary>
-		/// <param name="target"></param>
 		public static void ClearServices(object target)
 		{
 			Type targetType = target.GetType();
 			object[] tmp = new object[1];
 
 			foreach (var propinfo in
-				targetType.GetPropertiesWithAttrib(typeof(RequiredService))
-				.Concat(targetType.GetPropertiesWithAttrib(typeof(OptionalService))))
+				targetType.GetPropertiesWithAttrib(typeof(RequiredServiceAttribute))
+				.Concat(targetType.GetPropertiesWithAttrib(typeof(OptionalServiceAttribute))))
 			{
 				propinfo.GetSetMethod(true).Invoke(target, tmp);
 			}
@@ -38,19 +35,23 @@ namespace BizHawk.Emulation.Common
 			Type targetType = target.GetType();
 			object[] tmp = new object[1];
 
-			foreach (var propinfo in targetType.GetPropertiesWithAttrib(typeof(RequiredService)))
+			foreach (var propinfo in targetType.GetPropertiesWithAttrib(typeof(RequiredServiceAttribute)))
 			{
 				tmp[0] = source.GetService(propinfo.PropertyType);
 				if (tmp[0] == null)
+				{
 					return false;
+				}
+
 				propinfo.GetSetMethod(true).Invoke(target, tmp);
 			}
 
-			foreach (var propinfo in targetType.GetPropertiesWithAttrib(typeof(OptionalService)))
+			foreach (var propinfo in targetType.GetPropertiesWithAttrib(typeof(OptionalServiceAttribute)))
 			{
 				tmp[0] = source.GetService(propinfo.PropertyType);
 				propinfo.GetSetMethod(true).Invoke(target, tmp);
 			}
+
 			return true;
 		}
 
@@ -60,20 +61,19 @@ namespace BizHawk.Emulation.Common
 		/// </summary>
 		public static bool IsAvailable(IEmulatorServiceProvider source, Type targetType)
 		{
-			return targetType.GetPropertiesWithAttrib(typeof(RequiredService))
+			return targetType.GetPropertiesWithAttrib(typeof(RequiredServiceAttribute))
 				.Select(pi => pi.PropertyType)
-				.All(t => source.HasService(t));
+				.All(source.HasService);
 		}
 	}
 
-
 	[AttributeUsage(AttributeTargets.Property)]
-	public class RequiredService : Attribute
+	public class RequiredServiceAttribute : Attribute
 	{
 	}
 
 	[AttributeUsage(AttributeTargets.Property)]
-	public class OptionalService : Attribute
+	public class OptionalServiceAttribute : Attribute
 	{
 	}
 }

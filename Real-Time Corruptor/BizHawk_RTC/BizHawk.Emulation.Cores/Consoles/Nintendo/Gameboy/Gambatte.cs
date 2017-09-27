@@ -1,103 +1,28 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.IO;
 
 using BizHawk.Common.BufferExtensions;
 using BizHawk.Emulation.Common;
-using BizHawk.Common;
-
-using Newtonsoft.Json;
+using BizHawk.Emulation.Cores.Consoles.Nintendo.Gameboy;
 
 namespace BizHawk.Emulation.Cores.Nintendo.Gameboy
 {
 	/// <summary>
 	/// a gameboy/gameboy color emulator wrapped around native C++ libgambatte
 	/// </summary>
-	[CoreAttributes(
+	[Core(
 		"Gambatte",
 		"",
 		isPorted: true,
 		isReleased: true,
 		portedVersion: "SVN 344",
-		portedUrl: "http://gambatte.sourceforge.net/"
-		)]
+		portedUrl: "http://gambatte.sourceforge.net/")]
 	[ServiceNotApplicable(typeof(IDriveLight), typeof(IDriveLight))]
-	public partial class Gameboy : IEmulator, IVideoProvider, ISyncSoundProvider, ISaveRam, IStatable, IInputPollable, ICodeDataLogger,
-		IDebuggable, ISettable<Gameboy.GambatteSettings, Gameboy.GambatteSyncSettings>
+	public partial class Gameboy : IEmulator, IVideoProvider, ISoundProvider, ISaveRam, IStatable, IInputPollable, ICodeDataLogger,
+		IBoardInfo, IDebuggable, ISettable<Gameboy.GambatteSettings, Gameboy.GambatteSyncSettings>,
+		IGameboyCommon
 	{
-		/// <summary>
-		/// the nominal length of one frame
-		/// </summary>
-		private const uint TICKSINFRAME = 35112;
-
-		/// <summary>
-		/// number of ticks per second
-		/// </summary>
-		private const uint TICKSPERSECOND = 2097152;
-
-		/// <summary>
-		/// keep a copy of the input callback delegate so it doesn't get GCed
-		/// </summary>
-		LibGambatte.InputGetter InputCallback;
-
-		/// <summary>
-		/// whatever keys are currently depressed
-		/// </summary>
-		LibGambatte.Buttons CurrentButtons = 0;
-
-		#region RTC
-
-		/// <summary>
-		/// RTC time when emulation begins.
-		/// </summary>
-		uint zerotime = 0;
-
-		/// <summary>
-		/// if true, RTC will run off of real elapsed time
-		/// </summary>
-		bool real_rtc_time = false;
-
-		LibGambatte.RTCCallback TimeCallback;
-
-		static long GetUnixNow()
-		{
-			// because internally the RTC works off of relative time, we don't need to base
-			// this off of any particular canonical epoch.
-			return DateTime.UtcNow.Ticks / 10000000L - 60000000000L;
-		}
-
-		uint GetCurrentTime()
-		{
-			if (real_rtc_time)
-			{
-				return (uint)GetUnixNow();
-			}
-			else
-			{
-				ulong fn = (ulong)Frame;
-				// as we're exactly tracking cpu cycles, this can be pretty accurate
-				fn *= 4389;
-				fn /= 262144;
-				fn += zerotime;
-				return (uint)fn;
-			}
-		}
-
-		uint GetInitialTime()
-		{
-			if (real_rtc_time)
-				return (uint)GetUnixNow();
-			else
-				// setting the initial boot time to 0 will cause our zerotime
-				// to function as an initial offset, which is what we want
-				return 0;
-		}
-
-		#endregion
-
 		[CoreConstructor("GB", "GBC")]
-		public Gameboy(CoreComm comm, GameInfo game, byte[] file, object Settings, object SyncSettings, bool deterministic)
+		public Gameboy(CoreComm comm, GameInfo game, byte[] file, object settings, object syncSettings, bool deterministic)
 		{
 			var ser = new BasicServiceProvider(this);
 			ser.Register<IDisassemblable>(new GBDisassembler());
@@ -110,8 +35,6 @@ namespace BizHawk.Emulation.Cores.Nintendo.Gameboy
 			InitMemoryCallbacks();
 			CoreComm = comm;
 
-			comm.VsyncNum = 262144;
-			comm.VsyncDen = 4389;
 			comm.RomStatusAnnotation = null;
 			comm.RomStatusDetails = null;
 			comm.NominalWidth = 160;
@@ -125,29 +48,85 @@ namespace BizHawk.Emulation.Cores.Nintendo.Gameboy
 			GambatteState = LibGambatte.gambatte_create();
 
 			if (GambatteState == IntPtr.Zero)
+			{
 				throw new InvalidOperationException("gambatte_create() returned null???");
+			}
+
+			Console.WriteLine(game.System);
+
+			byte[] BiosRom;
+
+			if (game.System == "GB")
+			{
+				BiosRom = comm.CoreFileProvider.GetFirmware("GB", "World", false);
+			}
+			else
+			{
+				BiosRom = comm.CoreFileProvider.GetFirmware("GBC", "World", false);
+			}
+
+			int bios_length = BiosRom == null ? 0 : BiosRom.Length;
 
 			try
 			{
-				this._syncSettings = (GambatteSyncSettings)SyncSettings ?? new GambatteSyncSettings();
+				_syncSettings = (GambatteSyncSettings)syncSettings ?? new GambatteSyncSettings();
+
 				// copy over non-loadflag syncsettings now; they won't take effect if changed later
-				zerotime = (uint)this._syncSettings.RTCInitialTime;
-				real_rtc_time = DeterministicEmulation ? false : this._syncSettings.RealTimeRTC;
+				zerotime = (uint)_syncSettings.RTCInitialTime;
+
+				real_rtc_time = !DeterministicEmulation && _syncSettings.RealTimeRTC;
 
 				LibGambatte.LoadFlags flags = 0;
 
-				if (this._syncSettings.ForceDMG)
-					flags |= LibGambatte.LoadFlags.FORCE_DMG;
-				if (this._syncSettings.GBACGB)
-					flags |= LibGambatte.LoadFlags.GBA_CGB;
-				if (this._syncSettings.MulticartCompat)
-					flags |= LibGambatte.LoadFlags.MULTICART_COMPAT;
+				switch (_syncSettings.ConsoleMode)
+				{
+					case GambatteSyncSettings.ConsoleModeType.GB:
+						flags |= LibGambatte.LoadFlags.FORCE_DMG;
+						// we need to change the BIOS to GB bios
+						if (game.System == "GBC")
+						{
+							BiosRom = comm.CoreFileProvider.GetFirmware("GB", "World", false);
+							bios_length = BiosRom.Length;
+						}
+						break;
+					case GambatteSyncSettings.ConsoleModeType.GBC:
+						BiosRom = comm.CoreFileProvider.GetFirmware("GBC", "World", false);
+						bios_length = BiosRom.Length;
+						break;
+					default:
+						if (game.System == "GB")
+							flags |= LibGambatte.LoadFlags.FORCE_DMG;
+						break;
+				}
 
-				if (LibGambatte.gambatte_load(GambatteState, file, (uint)file.Length, GetCurrentTime(), flags) != 0)
+				if (_syncSettings.EnableBIOS && BiosRom == null)
+				{
+					throw new MissingFirmwareException("Boot Rom not found");
+				}
+
+				// to disable BIOS loading into gambatte, just set bios_length to 0
+				if (!_syncSettings.EnableBIOS)
+				{
+					bios_length = 0;
+				}
+
+				if (_syncSettings.GBACGB)
+				{
+					flags |= LibGambatte.LoadFlags.GBA_CGB;
+				}
+
+				if (_syncSettings.MulticartCompat)
+				{
+					flags |= LibGambatte.LoadFlags.MULTICART_COMPAT;
+				}
+
+				if (LibGambatte.gambatte_load(GambatteState, file, (uint)file.Length, BiosRom, (uint)bios_length, GetCurrentTime(), flags) != 0)
+				{
 					throw new InvalidOperationException("gambatte_load() returned non-zero (is this not a gb or gbc rom?)");
+				}
 
 				// set real default colors (before anyone mucks with them at all)
-				PutSettings((GambatteSettings)Settings ?? new GambatteSettings());
+				PutSettings((GambatteSettings)settings ?? new GambatteSettings());
 
 				InitSound();
 
@@ -161,22 +140,17 @@ namespace BizHawk.Emulation.Cores.Nintendo.Gameboy
 
 				InitMemoryDomains();
 
-				CoreComm.RomStatusDetails = string.Format("{0}\r\nSHA1:{1}\r\nMD5:{2}\r\n",
-					game.Name,
-					file.HashSHA1(),
-					file.HashMD5());
+				CoreComm.RomStatusDetails = $"{game.Name}\r\nSHA1:{file.HashSHA1()}\r\nMD5:{file.HashMD5()}\r\n";
 
-				{
-					byte[] buff = new byte[32];
-					LibGambatte.gambatte_romtitle(GambatteState, buff);
-					string romname = System.Text.Encoding.ASCII.GetString(buff);
-					Console.WriteLine("Core reported rom name: {0}", romname);
-				}
+				byte[] buff = new byte[32];
+				LibGambatte.gambatte_romtitle(GambatteState, buff);
+				string romname = System.Text.Encoding.ASCII.GetString(buff);
+				Console.WriteLine("Core reported rom name: {0}", romname);
 
 				TimeCallback = new LibGambatte.RTCCallback(GetCurrentTime);
 				LibGambatte.gambatte_setrtccallback(GambatteState, TimeCallback);
 
-				CDCallback = new LibGambatte.CDCallback(CDCallbackProc);
+				_cdCallback = new LibGambatte.CDCallback(CDCallbackProc);
 
 				NewSaveCoreSetBuff();
 			}
@@ -187,34 +161,101 @@ namespace BizHawk.Emulation.Cores.Nintendo.Gameboy
 			}
 		}
 
-	
-		public IEmulatorServiceProvider ServiceProvider { get; private set; }
+		/// <summary>
+		/// the nominal length of one frame
+		/// </summary>
+		private const uint TICKSINFRAME = 35112;
 
-        #region ALL SAVESTATEABLE STATE GOES HERE
+		/// <summary>
+		/// number of ticks per second
+		/// </summary>
+		private const uint TICKSPERSECOND = 2097152;
 
-        /// <summary>
-        /// internal gambatte state
-        /// </summary>
-        internal IntPtr GambatteState = IntPtr.Zero;
+		/// <summary>
+		/// keep a copy of the input callback delegate so it doesn't get GCed
+		/// </summary>
+		private LibGambatte.InputGetter InputCallback;
 
-        public int Frame { get; set; }
-        public int LagCount { get; set; }
-        public bool IsLagFrame { get; set; }
+		/// <summary>
+		/// whatever keys are currently depressed
+		/// </summary>
+		private LibGambatte.Buttons CurrentButtons = 0;
 
-        // all cycle counts are relative to a 2*1024*1024 mhz refclock
+		#region RTC
 
-        /// <summary>
-        /// total cycles actually executed
-        /// </summary>
-        private ulong _cycleCount = 0;
+		/// <summary>
+		/// RTC time when emulation begins.
+		/// </summary>
+		private readonly uint zerotime = 0;
 
-        /// <summary>
-        /// number of extra cycles we overran in the last frame
-        /// </summary>
-        private uint frameOverflow = 0;
-        public ulong CycleCount { get { return _cycleCount; } }
+		/// <summary>
+		/// if true, RTC will run off of real elapsed time
+		/// </summary>
+		private bool real_rtc_time = false;
 
-        #endregion
+		private LibGambatte.RTCCallback TimeCallback;
+
+		private static long GetUnixNow()
+		{
+			// because internally the RTC works off of relative time, we don't need to base
+			// this off of any particular canonical epoch.
+			return DateTime.UtcNow.Ticks / 10000000L - 60000000000L;
+		}
+
+		private uint GetCurrentTime()
+		{
+			if (real_rtc_time)
+			{
+				return (uint)GetUnixNow();
+			}
+
+			ulong fn = (ulong)Frame;
+
+			// as we're exactly tracking cpu cycles, this can be pretty accurate
+			fn *= 4389;
+			fn /= 262144;
+			fn += zerotime;
+			return (uint)fn;
+		}
+
+		private uint GetInitialTime()
+		{
+			if (real_rtc_time)
+			{
+				return (uint)GetUnixNow();
+			}
+
+			// setting the initial boot time to 0 will cause our zerotime
+			// to function as an initial offset, which is what we want
+			return 0;
+		}
+
+		#endregion
+
+		#region ALL SAVESTATEABLE STATE GOES HERE
+
+		/// <summary>
+		/// internal gambatte state
+		/// </summary>
+		internal IntPtr GambatteState { get; private set; } = IntPtr.Zero;
+
+		public int LagCount { get; set; }
+		public bool IsLagFrame { get; set; }
+
+		// all cycle counts are relative to a 2*1024*1024 mhz refclock
+
+		/// <summary>
+		/// total cycles actually executed
+		/// </summary>
+		private ulong _cycleCount = 0;
+
+		/// <summary>
+		/// number of extra cycles we overran in the last frame
+		/// </summary>
+		private uint frameOverflow = 0;
+		public ulong CycleCount => _cycleCount;
+
+		#endregion
 
 		#region controller
 
@@ -227,14 +268,7 @@ namespace BizHawk.Emulation.Cores.Nintendo.Gameboy
 			}
 		};
 
-		public ControllerDefinition ControllerDefinition
-		{
-			get { return GbController; }
-		}
-
-		public IController Controller { get; set; }
-
-		LibGambatte.Buttons ControllerCallback()
+		private LibGambatte.Buttons ControllerCallback()
 		{
 			InputCallbacks.Call();
 			IsLagFrame = false;
@@ -246,127 +280,83 @@ namespace BizHawk.Emulation.Cores.Nintendo.Gameboy
 		/// <summary>
 		/// true if the emulator is currently emulating CGB
 		/// </summary>
-		/// <returns></returns>
 		public bool IsCGBMode()
 		{
-			return (LibGambatte.gambatte_iscgb(GambatteState));
+			return LibGambatte.gambatte_iscgb(GambatteState);
 		}
 
 		private InputCallbackSystem _inputCallbacks = new InputCallbackSystem();
+
 		// low priority TODO: due to certain aspects of the core implementation,
 		// we don't smartly use the ActiveChanged event here.
-		public IInputCallbackSystem InputCallbacks { get { return _inputCallbacks; } }
+		public IInputCallbackSystem InputCallbacks => _inputCallbacks;
 
 		/// <summary>
 		/// for use in dual core
 		/// </summary>
-		/// <param name="ics"></param>
 		public void ConnectInputCallbackSystem(InputCallbackSystem ics)
 		{
 			_inputCallbacks = ics;
 		}
 
-		internal void FrameAdvancePrep()
+		internal void FrameAdvancePrep(IController controller)
 		{
 			Frame++;
 
 			// update our local copy of the controller data
 			CurrentButtons = 0;
 
-			if (Controller["Up"])
+			if (controller.IsPressed("Up"))
 				CurrentButtons |= LibGambatte.Buttons.UP;
-			if (Controller["Down"])
+			if (controller.IsPressed("Down"))
 				CurrentButtons |= LibGambatte.Buttons.DOWN;
-			if (Controller["Left"])
+			if (controller.IsPressed("Left"))
 				CurrentButtons |= LibGambatte.Buttons.LEFT;
-			if (Controller["Right"])
+			if (controller.IsPressed("Right"))
 				CurrentButtons |= LibGambatte.Buttons.RIGHT;
-			if (Controller["A"])
+			if (controller.IsPressed("A"))
 				CurrentButtons |= LibGambatte.Buttons.A;
-			if (Controller["B"])
+			if (controller.IsPressed("B"))
 				CurrentButtons |= LibGambatte.Buttons.B;
-			if (Controller["Select"])
+			if (controller.IsPressed("Select"))
 				CurrentButtons |= LibGambatte.Buttons.SELECT;
-			if (Controller["Start"])
+			if (controller.IsPressed("Start"))
 				CurrentButtons |= LibGambatte.Buttons.START;
 
 			// the controller callback will set this to false if it actually gets called during the frame
 			IsLagFrame = true;
 
-			if (Controller["Power"])
+			if (controller.IsPressed("Power"))
+			{
 				LibGambatte.gambatte_reset(GambatteState, GetCurrentTime());
+			}
 
 			if (Tracer.Enabled)
-				tracecb = MakeTrace;
+			{
+				_tracecb = MakeTrace;
+			}
 			else
-				tracecb = null;
-			LibGambatte.gambatte_settracecallback(GambatteState, tracecb);
+			{
+				_tracecb = null;
+			}
 
-			LibGambatte.gambatte_setlayers(GambatteState, (_settings.DisplayBG ? 1 : 0) | (_settings.DisplayOBJ ? 2 : 0) | (_settings.DisplayWindow ? 4 : 0 ) );
+			LibGambatte.gambatte_settracecallback(GambatteState, _tracecb);
+
+			LibGambatte.gambatte_setlayers(GambatteState, (_settings.DisplayBG ? 1 : 0) | (_settings.DisplayOBJ ? 2 : 0) | (_settings.DisplayWindow ? 4 : 0));
 		}
 
 		internal void FrameAdvancePost()
 		{
 			if (IsLagFrame)
+			{
 				LagCount++;
-
-			if (endofframecallback != null)
-				endofframecallback(LibGambatte.gambatte_cpuread(GambatteState, 0xff40));
-		}
-
-		public void FrameAdvance(bool render, bool rendersound)
-		{
-			FrameAdvancePrep();
-			if (_syncSettings.EqualLengthFrames)
-			{
-				while (true)
-				{
-					// target number of samples to emit: length of 1 frame minus whatever overflow
-					uint samplesEmitted = TICKSINFRAME - frameOverflow;
-					System.Diagnostics.Debug.Assert(samplesEmitted * 2 <= soundbuff.Length);
-					if (LibGambatte.gambatte_runfor(GambatteState, soundbuff, ref samplesEmitted) > 0)
-						LibGambatte.gambatte_blitto(GambatteState, VideoBuffer, 160);
-
-					// account for actual number of samples emitted
-					_cycleCount += (ulong)samplesEmitted;
-					frameOverflow += samplesEmitted;
-
-					if (rendersound && !Muted)
-					{
-						ProcessSound((int)samplesEmitted);
-					}
-
-					if (frameOverflow >= TICKSINFRAME)
-					{
-						frameOverflow -= TICKSINFRAME;
-						break;
-					}
-				}
-			}
-			else
-			{
-				// target number of samples to emit: always 59.7fps
-				// runfor() always ends after creating a video frame, so sync-up is guaranteed
-				// when the display has been off, some frames can be markedly shorter than expected
-				uint samplesEmitted = TICKSINFRAME;
-				if (LibGambatte.gambatte_runfor(GambatteState, soundbuff, ref samplesEmitted) > 0)
-					LibGambatte.gambatte_blitto(GambatteState, VideoBuffer, 160);
-
-				_cycleCount += (ulong)samplesEmitted;
-				frameOverflow = 0;
-				if (rendersound && !Muted)
-				{
-					ProcessSound((int)samplesEmitted);
-				}
 			}
 
-			if (rendersound && !Muted)
-				ProcessSoundEnd();
-
-			FrameAdvancePost();
+			endofframecallback?.Invoke(LibGambatte.gambatte_cpuread(GambatteState, 0xff40));
 		}
 
-		static string MapperName(byte[] romdata)
+
+		private static string MapperName(byte[] romdata)
 		{
 			switch (romdata[0x147])
 			{
@@ -397,11 +387,12 @@ namespace BizHawk.Emulation.Cores.Nintendo.Gameboy
 		/// <summary>
 		/// throw exception with intelligible message on some kinds of bad rom
 		/// </summary>
-		/// <param name="romdata"></param>
-		static void ThrowExceptionForBadRom(byte[] romdata)
+		private static void ThrowExceptionForBadRom(byte[] romdata)
 		{
 			if (romdata.Length < 0x148)
+			{
 				throw new ArgumentException("ROM is far too small to be a valid GB\\GBC rom!");
+			}
 
 			switch (romdata[0x147])
 			{
@@ -442,33 +433,13 @@ namespace BizHawk.Emulation.Cores.Nintendo.Gameboy
 				case 0xfd: throw new UnsupportedGameException("\"Bandai TAMA5\" Mapper not supported!");
 				case 0xfe: throw new UnsupportedGameException("\"HuC3\" Mapper not supported!");
 				case 0xff: break;
-				default: throw new UnsupportedGameException(string.Format("Unknown mapper: {0:x2}", romdata[0x147]));
+				default: throw new UnsupportedGameException($"Unknown mapper: {romdata[0x147]:x2}");
 			}
-			return;
 		}
-
-		public string SystemId { get { return "GB"; } }
-
-		public string BoardName { get; private set; }
-
-		public bool DeterministicEmulation { get; private set; }
-
-		public void ResetCounters()
-		{
-			Frame = 0;
-			LagCount = 0;
-			IsLagFrame = false;
-			// reset frame counters is meant to "re-zero" emulation time wherever it was
-			// so these should be reset as well
-			_cycleCount = 0;
-			frameOverflow = 0;
-		}
-
-		public CoreComm CoreComm { get; set; }
 
 		#region ppudebug
 
-		public bool GetGPUMemoryAreas(out IntPtr vram, out IntPtr bgpal, out IntPtr sppal, out IntPtr oam)
+		public GPUMemoryAreas GetGPU()
 		{
 			IntPtr _vram = IntPtr.Zero;
 			IntPtr _bgpal = IntPtr.Zero;
@@ -480,48 +451,40 @@ namespace BizHawk.Emulation.Cores.Nintendo.Gameboy
 				|| !LibGambatte.gambatte_getmemoryarea(GambatteState, LibGambatte.MemoryAreas.sppal, ref _sppal, ref unused)
 				|| !LibGambatte.gambatte_getmemoryarea(GambatteState, LibGambatte.MemoryAreas.oam, ref _oam, ref unused))
 			{
-				vram = IntPtr.Zero;
-				bgpal = IntPtr.Zero;
-				sppal = IntPtr.Zero;
-				oam = IntPtr.Zero;
-				return false;
+				throw new InvalidOperationException("Unexpected error in gambatte_getmemoryarea");
 			}
-			vram = _vram;
-			bgpal = _bgpal;
-			sppal = _sppal;
-			oam = _oam;
-			return true;
-		}
+			return new GPUMemoryAreas(_vram, _oam, _sppal, _bgpal);
 
-		/// <summary>
-		/// 
-		/// </summary>
-		/// <param name="lcdc">current value of register $ff40 (LCDC)</param>
-		public delegate void ScanlineCallback(int lcdc);
+		}
 
 		/// <summary>
 		/// set up callback
 		/// </summary>
-		/// <param name="callback"></param>
 		/// <param name="line">scanline. -1 = end of frame, -2 = RIGHT NOW</param>
 		public void SetScanlineCallback(ScanlineCallback callback, int line)
 		{
 			if (GambatteState == IntPtr.Zero)
-				// not sure how this is being reached.  tried the debugger...
-				return;
+			{
+				return; // not sure how this is being reached.  tried the debugger...
+			}
+
 			endofframecallback = null;
 			if (callback == null || line == -1 || line == -2)
 			{
 				scanlinecb = null;
 				LibGambatte.gambatte_setscanlinecallback(GambatteState, null, 0);
 				if (line == -1)
+				{
 					endofframecallback = callback;
+				}
 				else if (line == -2)
+				{
 					callback(LibGambatte.gambatte_cpuread(GambatteState, 0xff40));
+				}
 			}
 			else if (line >= 0 && line <= 153)
 			{
-				scanlinecb = delegate()
+				scanlinecb = delegate
 				{
 					callback(LibGambatte.gambatte_cpuread(GambatteState, 0xff40));
 				};
@@ -529,7 +492,7 @@ namespace BizHawk.Emulation.Cores.Nintendo.Gameboy
 			}
 			else
 			{
-				throw new ArgumentOutOfRangeException("line", "line must be in [0, 153]");
+				throw new ArgumentOutOfRangeException(nameof(line), "line must be in [0, 153]");
 			}
 		}
 
@@ -537,16 +500,6 @@ namespace BizHawk.Emulation.Cores.Nintendo.Gameboy
 		ScanlineCallback endofframecallback;
 
 		#endregion
-
-		public void Dispose()
-		{
-			if (GambatteState != IntPtr.Zero)
-			{
-				LibGambatte.gambatte_destroy(GambatteState);
-				GambatteState = IntPtr.Zero;
-			}
-			DisposeSound();
-		}
 
 		#region palette
 
@@ -556,7 +509,9 @@ namespace BizHawk.Emulation.Cores.Nintendo.Gameboy
 		public void ChangeDMGColors(int[] colors)
 		{
 			for (int i = 0; i < 12; i++)
+			{
 				LibGambatte.gambatte_setdmgpalettecolor(GambatteState, (LibGambatte.PalType)(i / 4), (uint)i % 4, (uint)colors[i]);
+			}
 		}
 
 		public void SetCGBColors(GBColors.ColorType type)
@@ -564,104 +519,6 @@ namespace BizHawk.Emulation.Cores.Nintendo.Gameboy
 			int[] lut = GBColors.GetLut(type);
 			LibGambatte.gambatte_setcgbpalette(GambatteState, lut);
 		}
-
-		#endregion
-
-		#region ISoundProvider
-
-		public ISoundProvider SoundProvider { get { return null; } }
-		public ISyncSoundProvider SyncSoundProvider { get { return this; } }
-		public bool StartAsyncSound() { return false; }
-		public void EndAsyncSound() { }
-
-		/// <summary>
-		/// sample pairs before resampling
-		/// </summary>
-		short[] soundbuff = new short[(35112 + 2064) * 2];
-
-		int soundoutbuffcontains = 0;
-
-		short[] soundoutbuff = new short[2048];
-
-		int latchL = 0;
-		int latchR = 0;
-
-		BlipBuffer blipL, blipR;
-		uint blipAccumulate;
-
-		private void ProcessSound(int nsamp)
-		{
-			for (uint i = 0; i < nsamp; i++)
-			{
-				int curr = soundbuff[i * 2];
-
-				if (curr != latchL)
-				{
-					int diff = latchL - curr;
-					latchL = curr;
-					blipL.AddDelta(blipAccumulate, diff);
-				}
-				curr = soundbuff[i * 2 + 1];
-
-				if (curr != latchR)
-				{
-					int diff = latchR - curr;
-					latchR = curr;
-					blipR.AddDelta(blipAccumulate, diff);
-				}
-
-				blipAccumulate++;
-			}
-		}
-
-		private void ProcessSoundEnd()
-		{
-			blipL.EndFrame(blipAccumulate);
-			blipR.EndFrame(blipAccumulate);
-			blipAccumulate = 0;
-
-			soundoutbuffcontains = blipL.SamplesAvailable();
-			if (soundoutbuffcontains != blipR.SamplesAvailable())
-				throw new InvalidOperationException("Audio processing error");
-
-			blipL.ReadSamplesLeft(soundoutbuff, soundoutbuffcontains);
-			blipR.ReadSamplesRight(soundoutbuff, soundoutbuffcontains);
-		}
-
-		void InitSound()
-		{
-			blipL = new BlipBuffer(1024);
-			blipL.SetRates(TICKSPERSECOND, 44100);
-			blipR = new BlipBuffer(1024);
-			blipR.SetRates(TICKSPERSECOND, 44100);
-		}
-
-		void DisposeSound()
-		{
-			if (blipL != null)
-			{
-				blipL.Dispose();
-				blipL = null;
-			}
-			if (blipR != null)
-			{
-				blipR.Dispose();
-				blipR = null;
-			}
-		}
-
-		public void DiscardSamples()
-		{
-			soundoutbuffcontains = 0;
-		}
-
-		public void GetSamples(out short[] samples, out int nsamp)
-		{
-			samples = soundoutbuff;
-			nsamp = soundoutbuffcontains;
-		}
-
-		public bool Muted { get { return _settings.Muted; } }
 
 		#endregion
 	}

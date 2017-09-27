@@ -9,7 +9,7 @@ namespace BizHawk.Client.EmuHawk
 {
 	public partial class VirtualPadAnalogButton : UserControl, IVirtualPadControl
 	{
-		private string _displayName = string.Empty;
+		private string _displayName = "";
 		private int _maxValue, _minValue;
 		private bool _programmaticallyChangingValue;
 		private bool _readonly;
@@ -109,7 +109,7 @@ namespace BizHawk.Client.EmuHawk
 
 			set
 			{
-				_displayName = value ?? string.Empty;
+				_displayName = value ?? "";
 				if (DisplayNameLabel != null)
 				{
 					DisplayNameLabel.Text = _displayName;
@@ -153,17 +153,55 @@ namespace BizHawk.Client.EmuHawk
 			}
 		}
 
-		void UpdateTickFrequency()
+		public Orientation Orientation
 		{
-			if (AnalogTrackBar == null) return;
-			//try to base it on the width, lets make a tick every 10 pixels at the minimum
+			get
+			{
+				return AnalogTrackBar.Orientation;
+			}
+
+			set
+			{
+				AnalogTrackBar.Orientation = value;
+				if (value == Orientation.Horizontal)
+				{
+					AnalogTrackBar.Anchor = AnchorStyles.Left | AnchorStyles.Right | AnchorStyles.Top;
+					AnalogTrackBar.Size = new Size(Size.Width - 15, Size.Height - 15);
+				}
+				else if (value == Orientation.Vertical)
+				{
+					AnalogTrackBar.Anchor = AnchorStyles.Left | AnchorStyles.Top | AnchorStyles.Bottom;
+					AnalogTrackBar.Size = new Size(Size.Width - 15, Size.Height - 30);
+					ValueLabel.Top = Size.Height / 2;
+				}
+			}
+		}
+
+		private void UpdateTickFrequency()
+		{
+			if (AnalogTrackBar == null)
+			{
+				return;
+			}
+
+			// try to base it on the width, lets make a tick every 10 pixels at the minimum
 			int canDoTicks = AnalogTrackBar.Width / 10;
-			if (canDoTicks < 2) canDoTicks = 2;
+			if (canDoTicks < 2)
+			{
+				canDoTicks = 2;
+			}
+
 			int range = _maxValue - _minValue + 1;
 			if (range < canDoTicks)
+			{
 				canDoTicks = range;
+			}
+
 			if (canDoTicks <= 0)
+			{
 				canDoTicks = 1;
+			}
+
 			AnalogTrackBar.TickFrequency = range / canDoTicks;
 		}
 
@@ -218,6 +256,7 @@ namespace BizHawk.Client.EmuHawk
 				_programmaticallyChangingValue = false;
 			}
 		}
+
 		protected override void OnPaint(PaintEventArgs e)
 		{
 			RefreshWidgets();

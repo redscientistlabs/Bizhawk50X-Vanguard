@@ -3,11 +3,22 @@ using System.Collections.Generic;
 
 namespace BizHawk.Emulation.Common
 {
+	/// <summary>
+	/// This interface defines the mechanism by which clients can retrieve <seealso cref="IEmulatorService" />
+	/// from an IEmulator implementation
+	/// An implementation should collect all available IEmulatorService instances.
+	/// This interface defines only the client interaction.  This interface does not specify the means
+	/// by which a service provider will be populated with available services.  However, an implementation
+	/// by design must provide this mechanism
+	/// </summary>
+	/// <seealso cref="IEmulator" /> 
+	/// <seealso cref="IEmulatorService"/> 
 	public interface IEmulatorServiceProvider
 	{
 		/// <summary>
 		/// Returns whether or not T is available
 		/// </summary>
+		/// <typeparam name="T">The <seealso cref="IEmulatorService" /> to check</typeparam>
 		bool HasService<T>() where T : IEmulatorService;
 		
 		/// <summary>
@@ -19,6 +30,7 @@ namespace BizHawk.Emulation.Common
 		/// Returns an instance of T if T is available
 		/// Else returns null
 		/// </summary>
+		/// <typeparam name="T">The requested <seealso cref="IEmulatorService" /></typeparam>
 		T GetService<T>() where T : IEmulatorService;
 
 		/// <summary>
@@ -28,7 +40,7 @@ namespace BizHawk.Emulation.Common
 		object GetService(Type t);
 
 		/// <summary>
-		/// A list of all cuurently registered services available to be called
+		/// Gets a list of all currently registered services available to be retrieved
 		/// </summary>
 		IEnumerable<Type> AvailableServices { get; }
 	}

@@ -24,13 +24,13 @@ namespace BizHawk.Client.MultiHawk
 			string dllDir = Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), "dll");
 			SetDllDirectory(dllDir);
 
+			//in case assembly resolution fails, such as if we moved them into the dll subdiretory, this event handler can reroute to them
+			AppDomain.CurrentDomain.AssemblyResolve += new ResolveEventHandler(CurrentDomain_AssemblyResolve);
+
 			//but before we even try doing that, whack the MOTW from everything in that directory (thats a dll)
 			//otherwise, some people will have crashes at boot-up due to .net security disliking MOTW.
 			//some people are getting MOTW through a combination of browser used to download bizhawk, and program used to dearchive it
 			WhackAllMOTW(dllDir);
-
-			//in case assembly resolution fails, such as if we moved them into the dll subdiretory, this event handler can reroute to them
-			AppDomain.CurrentDomain.AssemblyResolve += new ResolveEventHandler(CurrentDomain_AssemblyResolve);
 #endif
 		}
 
@@ -86,24 +86,18 @@ namespace BizHawk.Client.MultiHawk
 						{
 							mf.ProgramRunLoop();
 						}
-						catch (Exception e)
+						catch (Exception e) when (Global.MovieSession.Movie.IsActive)
 						{
-#if WINDOWS
-							if (Global.MovieSession.Movie.IsActive)
+							var result = MessageBox.Show(
+								"EmuHawk has thrown a fatal exception and is about to close.\nA movie has been detected. Would you like to try to save?\n(Note: Depending on what caused this error, this may or may not succeed)",
+								"Fatal error: " + e.GetType().Name,
+								MessageBoxButtons.YesNo,
+								MessageBoxIcon.Exclamation
+								);
+							if (result == DialogResult.Yes)
 							{
-								var result = MessageBox.Show(
-									"EmuHawk has thrown a fatal exception and is about to close.\nA movie has been detected. Would you like to try to save?\n(Note: Depending on what caused this error, this may or may not succeed)",
-									"Fatal error: " + e.GetType().Name,
-									MessageBoxButtons.YesNo,
-									MessageBoxIcon.Exclamation
-									);
-								if (result == DialogResult.Yes)
-								{
-									Global.MovieSession.Movie.Save();
-								}
+								Global.MovieSession.Movie.Save();
 							}
-#endif
-							throw;
 						}
 					}
 			}

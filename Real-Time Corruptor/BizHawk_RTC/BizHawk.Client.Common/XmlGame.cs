@@ -13,17 +13,10 @@ namespace BizHawk.Client.Common
 {
 	public class XmlGame
 	{
-		public XmlGame()
-		{
-			Assets = new List<KeyValuePair<string, byte[]>>();
-			AssetFullPaths = new List<string>();
-			GI = new GameInfo();
-		}
-
 		public XmlDocument Xml { get; set; }
-		public GameInfo GI { get; set; }
-		public IList<KeyValuePair<string, byte[]>> Assets { get; set; }
-		public IList<string> AssetFullPaths { get; set; } // TODO: Hack work around, to avoid having to refactor Assets into a object array, should be refactored!
+		public GameInfo GI { get; } = new GameInfo();
+		public IList<KeyValuePair<string, byte[]>> Assets { get; } = new List<KeyValuePair<string, byte[]>>();
+		public IList<string> AssetFullPaths { get; } = new List<string>(); // TODO: Hack work around, to avoid having to refactor Assets into a object array, should be refactored!
 
 		public static XmlGame Create(HawkFile f)
 		{
@@ -38,22 +31,22 @@ namespace BizHawk.Client.Common
 				}
 
 				var ret = new XmlGame
+				{
+					GI =
 					{
-						GI =
-							{
-								System = y.Attributes["System"].Value,
-								Name = y.Attributes["Name"].Value,
-								Status = RomStatus.Unknown
-							},
-						Xml = x
-					};
-				string fullpath = string.Empty;
+						System = y.Attributes["System"].Value,
+						Name = y.Attributes["Name"].Value,
+						Status = RomStatus.Unknown
+					},
+					Xml = x
+				};
+				string fullpath = "";
 
 				var n = y.SelectSingleNode("./LoadAssets");
 				if (n != null)
 				{
-					var HashStream = new MemoryStream();
-					int? OriginalIndex = null;
+					var hashStream = new MemoryStream();
+					int? originalIndex = null;
 
 					foreach (XmlNode a in n.ChildNodes)
 					{
@@ -65,9 +58,9 @@ namespace BizHawk.Client.Common
 							var ai = f.FindArchiveMember(filename.Substring(1));
 							if (ai != null)
 							{
-								if (OriginalIndex == null)
+								if (originalIndex == null)
 								{
-									OriginalIndex = f.GetBoundIndex();
+									originalIndex = f.GetBoundIndex();
 								}
 
 								f.Unbind();
@@ -82,7 +75,7 @@ namespace BizHawk.Client.Common
 						else
 						{
 							// relative path
-							fullpath = Path.GetDirectoryName(f.CanonicalFullPath.Split('|').First()) ?? string.Empty;
+							fullpath = Path.GetDirectoryName(f.CanonicalFullPath.Split('|').First()) ?? "";
 							fullpath = Path.Combine(fullpath, filename.Split('|').First());
 							try
 							{
@@ -100,8 +93,6 @@ namespace BizHawk.Client.Common
 										data = File.ReadAllBytes(fullpath.Split('|').First());
 									}
 								}
-
-								
 							}
 							catch
 							{
@@ -114,16 +105,16 @@ namespace BizHawk.Client.Common
 						using (var sha1 = System.Security.Cryptography.SHA1.Create())
 						{
 							sha1.TransformFinalBlock(data, 0, data.Length);
-							HashStream.Write(sha1.Hash, 0, sha1.Hash.Length);
+							hashStream.Write(sha1.Hash, 0, sha1.Hash.Length);
 						}
 					}
 
-					ret.GI.Hash = HashStream.GetBuffer().HashSHA1(0, (int)HashStream.Length);
-					HashStream.Close();
-					if (OriginalIndex != null)
+					ret.GI.Hash = hashStream.GetBuffer().HashSHA1(0, (int)hashStream.Length);
+					hashStream.Close();
+					if (originalIndex != null)
 					{
 						f.Unbind();
-						f.BindArchiveMember((int)OriginalIndex);
+						f.BindArchiveMember((int)originalIndex);
 					}
 				}
 				else

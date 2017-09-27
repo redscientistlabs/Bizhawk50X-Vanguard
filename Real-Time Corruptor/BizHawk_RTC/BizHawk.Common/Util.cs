@@ -1,10 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Text;
-
-using BizHawk.Common.BufferExtensions;
+using System.IO.Compression;
 using System.Reflection;
+using System.Text;
 
 namespace BizHawk.Common
 {
@@ -29,10 +28,13 @@ namespace BizHawk.Common
 		/// </summary>
 		public static bool TryWaitForFileToVanish(string path)
 		{
-			for (int i = 0; i < 25; i++) //250ms
+			for (int i = 0; i < 25; i++) // 250ms
 			{
 				if (!File.Exists(path))
+				{
 					return true;
+				}
+
 				System.Threading.Thread.Sleep(10);
 			}
 			return false;
@@ -44,32 +46,36 @@ namespace BizHawk.Common
 		/// </summary>
 		public static bool TryMoveBackupFile(string pathWant, string pathBackup)
 		{
-			//If the path we want is available we dont actually have to make a backup
+			// If the path we want is available we dont actually have to make a backup
 			if (!File.Exists(pathWant))
+			{
 				return true;
+			}
 
-			//delete any existing backup
+			// delete any existing backup
 			try
 			{
 				if (File.Exists(pathBackup))
+				{
 					File.Delete(pathBackup);
+				}
 			}
 			catch
 			{
-				//just give up on the whole thing in case of exceptions. pathWant will get overwritten by the caller.
+				// just give up on the whole thing in case of exceptions. pathWant will get overwritten by the caller.
 				return false;
 			}
 
-			//deletes are asynchronous, need to wait for it to be gone
+			// deletes are asynchronous, need to wait for it to be gone
 			if(!TryWaitForFileToVanish(pathBackup))
 			{
-				//gave up waiting for existing backup to be gone. the whole thing's a total loss
+				// gave up waiting for existing backup to be gone. the whole thing's a total loss
 				return false;
 			}
 
 			try
 			{
-				//actually move pathWant out of the way to pathBackup now that pathBackup is free
+				// actually move pathWant out of the way to pathBackup now that pathBackup is free
 				File.Move(pathWant, pathBackup);
 			}
 			catch
@@ -78,8 +84,8 @@ namespace BizHawk.Common
 				return false;
 			}
 
-			//hmm these might be asynchronous too
-			//wait for the move to complete, at least enough for pathWant to be cleared up
+			// hmm these might be asynchronous too
+			// wait for the move to complete, at least enough for pathWant to be cleared up
 			return TryWaitForFileToVanish(pathWant);
 		}
 
@@ -168,6 +174,7 @@ namespace BizHawk.Common
 			{
 				ret[i] = buf[i] != 0;
 			}
+
 			return ret;
 		}
 
@@ -178,6 +185,7 @@ namespace BizHawk.Common
 			{
 				ret[i] = (byte)(buf[i] ? 1 : 0);
 			}
+
 			return ret;
 		}
 
@@ -420,6 +428,24 @@ namespace BizHawk.Common
 			}
 
 			return true;
+		}
+
+		public static byte[] DecompressGzipFile(Stream src)
+		{
+			var tmp = new byte[4];
+			if (src.Read(tmp, 0, 2) != 2)
+				throw new InvalidOperationException("Unexpected end of stream");
+			if (tmp[0] != 0x1f || tmp[1] != 0x8b)
+				throw new InvalidOperationException("GZIP header not present");
+			src.Seek(-4, SeekOrigin.End);
+			src.Read(tmp, 0, 4);
+			int size = BitConverter.ToInt32(tmp, 0);
+			var data = new byte[size];
+			var ms = new MemoryStream(data);
+			src.Seek(0, SeekOrigin.Begin);
+			using (var gs = new GZipStream(src, CompressionMode.Decompress, true))
+				gs.CopyTo(ms);
+			return data;
 		}
 	}
 

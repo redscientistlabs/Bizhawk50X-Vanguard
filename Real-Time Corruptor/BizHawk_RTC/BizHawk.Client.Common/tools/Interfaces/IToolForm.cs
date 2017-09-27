@@ -2,10 +2,10 @@
 {
 	public enum ToolFormUpdateType
 	{
-		//reserved
+		// reserved
 		Legacy, LegacyFast,
 
-		//reserved concept: we can run other events through here (should probably rename then)
+		// reserved concept: we can run other events through here (should probably rename then)
 		Reset,
 
 		/// <summary>
@@ -49,7 +49,6 @@
 		/// This tool dialog edits a file.  Returning false will tell the client the user wants to cancel the given action,
 		/// Return false to tell the client to back out of an action (such as closing the emulator)
 		/// </summary>
-		/// <returns></returns>
 		bool AskSaveChanges();
 
 		/// <summary>
@@ -60,7 +59,7 @@
 		/// </summary>
 		bool UpdateBefore { get; }
 
-		//Necessary winform calls
+		// Necessary winform calls
 		bool Focus();
 		bool ContainsFocus { get; }
 		void Show();
@@ -69,4 +68,3 @@
 		bool IsHandleCreated { get; }
 	}
 }
-	

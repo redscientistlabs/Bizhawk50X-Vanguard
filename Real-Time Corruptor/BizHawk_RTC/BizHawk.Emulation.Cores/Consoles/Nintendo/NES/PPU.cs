@@ -1,6 +1,4 @@
-﻿//http://nesdev.parodius.com/bbs/viewtopic.php?p=4571&sid=db4c7e35316cc5d734606dd02f11dccb
-
-using System;
+﻿using System;
 using System.Runtime.CompilerServices;
 using BizHawk.Common;
 
@@ -8,6 +6,10 @@ namespace BizHawk.Emulation.Cores.Nintendo.NES
 {
 	public sealed partial class PPU
 	{
+		public int cpu_step, cpu_stepcounter;
+
+		public bool HasClockPPU = false;
+
 		// this only handles region differences within the PPU
 		int preNMIlines;
 		int postNMIlines;
@@ -119,7 +121,10 @@ namespace BizHawk.Emulation.Cores.Nintendo.NES
 						goto loopout;
 
 					short s = xbuf[j * 256 + i];
-					sum += _currentLuma[s];
+
+					short palcolor = (short)(s & 0x3F);
+					short intensity = (short)((s >> 6) & 0x7);
+					sum += _currentLuma[palcolor];
 				}
 			}
 			loopout:
@@ -130,7 +135,7 @@ namespace BizHawk.Emulation.Cores.Nintendo.NES
 		//when the ppu issues a write it goes through here and into the game board
 		public void ppubus_write(int addr, byte value)
 		{
-			if (ppur.status.sl == 241 || (!reg_2001.show_obj && !reg_2001.show_bg))
+			if (ppur.status.sl == 241 || !PPUON)
 				nes.Board.AddressPPU(addr);
 
 			nes.Board.WritePPU(addr, value);
@@ -140,7 +145,7 @@ namespace BizHawk.Emulation.Cores.Nintendo.NES
 		public byte ppubus_read(int addr, bool ppu, bool addr_ppu)
 		{
 			//hardware doesnt touch the bus when the PPU is disabled
-			if (!reg_2001.PPUON && ppu)
+			if (!PPUON && ppu)
 				return 0xFF;
 
 			if (addr_ppu)
@@ -200,6 +205,8 @@ namespace BizHawk.Emulation.Cores.Nintendo.NES
 
 		public void SyncState(Serializer ser)
 		{
+			ser.Sync("cpu_step", ref cpu_step);
+			ser.Sync("cpu_stepcounter", ref cpu_stepcounter);
 			ser.Sync("ppudead", ref ppudead);
 			ser.Sync("idleSynch", ref idleSynch);
 			ser.Sync("NMI_PendingInstructions", ref NMI_PendingInstructions);
@@ -208,16 +215,22 @@ namespace BizHawk.Emulation.Cores.Nintendo.NES
 			ser.Sync("VRAMBuffer", ref VRAMBuffer);
 			ser.Sync("ppu_addr_temp", ref ppu_addr_temp);
 
-            ser.Sync("Read_Value", ref read_value);
-            ser.Sync("Prev_soam_index", ref soam_index_prev);
-            ser.Sync("Spr_Zero_Go", ref sprite_zero_go);
-            ser.Sync("Spr_zero_in_Range", ref sprite_zero_in_range);
+			ser.Sync("Read_Value", ref read_value);
+			ser.Sync("Prev_soam_index", ref soam_index_prev);
+			ser.Sync("Spr_Zero_Go", ref sprite_zero_go);
+			ser.Sync("Spr_zero_in_Range", ref sprite_zero_in_range);
 			ser.Sync("Is_even_cycle", ref is_even_cycle);
 			ser.Sync("soam_index", ref soam_index);
+			ser.Sync("install_2006", ref install_2006);
+			ser.Sync("race_2006", ref race_2006);
+			ser.Sync("install_2001", ref install_2001);
+			ser.Sync("show_bg_new", ref show_bg_new);
+			ser.Sync("show_obj_new", ref show_obj_new);
 
 			ser.Sync("ppu_open_bus", ref ppu_open_bus);
 			ser.Sync("double_2007_read", ref double_2007_read);
 			ser.Sync("ppu_open_bus_decay_timer", ref ppu_open_bus_decay_timer, false);
+			ser.Sync("glitchy_reads_2003", ref glitchy_reads_2003, false);
 
 			ser.Sync("OAM", ref OAM, false);
 			ser.Sync("PALRAM", ref PALRAM, false);
@@ -246,46 +259,78 @@ namespace BizHawk.Emulation.Cores.Nintendo.NES
 			ppu_open_bus_decay_timer = new int[8];
 		}
 
-#if VS2012
-		[MethodImpl(MethodImplOptions.AggressiveInlining)]
-#endif
-		void TriggerNMI()
-		{
-			nes.cpu.NMI = true;
-		}
-
-		//this gets called once after each cpu instruction executes.
-		//anything that needs to happen at instruction granularity can get checked here
-		//to save having to check it at ppu cycle granularity
-		public void PostCpuInstructionOne()
-		{
-			if (NMI_PendingInstructions > 0)
-			{
-				NMI_PendingInstructions--;
-				if (NMI_PendingInstructions <= 0)
-				{
-					TriggerNMI();
-				}
-			}
-		}
-
-#if VS2012
-		[MethodImpl(MethodImplOptions.AggressiveInlining)]
-#endif
 		void runppu(int x)
 		{
 			//run one ppu cycle at a time so we can interact with the ppu and clockPPU at high granularity
 			for (int i = 0; i < x; i++)
 			{
+				race_2006 = false;
+				if (install_2006>0)
+				{
+					install_2006--;
+					if (install_2006==0)
+					{
+						ppur.install_latches();
+
+						//nes.LogLine("addr wrote vt = {0}, ht = {1}", ppur._vt, ppur._ht);
+						//normally the address isnt observed by the board till it gets clocked by a read or write.
+						//but maybe thats just because a ppu read/write shoves it on the address bus
+						//apparently this shoves it on the address bus, too, or else blargg's mmc3 tests dont pass
+						//ONLY if the ppu is not rendering
+						if (ppur.status.sl == 241 || !PPUON)
+							nes.Board.AddressPPU(ppur.get_2007access());
+
+						race_2006 = true;
+					}
+				}
+
+				if (install_2001 > 0)
+				{
+					install_2001--;
+					if (install_2001 == 0)
+					{
+						show_bg_new = reg_2001.show_bg;
+						show_obj_new = reg_2001.show_obj;
+					}
+				}
+
 				ppur.status.cycle++;
-                is_even_cycle = !is_even_cycle;
-				//might not actually run a cpu cycle if there are none to be run right now
-				nes.RunCpuOne();
+				is_even_cycle = !is_even_cycle;
+
+				if (PPUON && ppur.status.cycle >= 257 && ppur.status.cycle <= 320 && 0 <= ppur.status.sl && ppur.status.sl <= 240)
+				{
+					reg_2003 = 0;
+				}
+
+				// Here we execute a CPU instruction if enough PPU cycles have passed
+				// also do other things that happen at instruction level granularity
+				cpu_stepcounter++;
+				if (cpu_stepcounter == nes.cpu_sequence[cpu_step])
+				{
+					cpu_step++;
+					if (cpu_step == 5) cpu_step = 0;
+					cpu_stepcounter = 0;
+
+					// this is where the CPU instruction is called
+					nes.RunCpuOne();
+
+					// decay the ppu bus, approximating real behaviour
+					PpuOpenBusDecay(DecayType.None);
+
+					// Check for NMIs
+					if (NMI_PendingInstructions > 0)
+					{
+						NMI_PendingInstructions--;
+						if (NMI_PendingInstructions <= 0)
+						{
+							nes.cpu.NMI = true;
+						}
+					}
+				}
 
 				if (Reg2002_vblank_active_pending)
 				{
-					//if (Reg2002_vblank_active_pending)
-						Reg2002_vblank_active = 1;
+					Reg2002_vblank_active = 1;
 					Reg2002_vblank_active_pending = false;
 				}
 
@@ -295,13 +340,11 @@ namespace BizHawk.Emulation.Cores.Nintendo.NES
 					Reg2002_vblank_clear_pending = false;
 				}
 
-				nes.Board.ClockPPU();
+				if (HasClockPPU)
+				{
+					nes.Board.ClockPPU();
+				}
 			}
 		}
-
-		//hack
-		//public bool PAL = false;
-		//bool SPRITELIMIT = true;
-	
 	}
 }

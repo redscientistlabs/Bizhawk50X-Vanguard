@@ -12,6 +12,7 @@ using System.Windows;
 using System.IO;
 using BizHawk.Client.Common;
 using System.Threading.Tasks;
+using System.Windows.Forms;
 
 namespace RTC
 {
@@ -891,7 +892,7 @@ namespace RTC
 						break;
 					case CommandType.PULLSCREEN:
 						cmdBack = new RTC_Command(CommandType.PUSHSCREEN);
-						cmdBack.screen = MainForm.MakeScreenshotImage().ToSysdrawingBitmap();
+						cmdBack.screen = GlobalWin.MainForm.MakeScreenshotImage().ToSysdrawingBitmap();
 						break;
 
 					case CommandType.REQUESTSTREAM:

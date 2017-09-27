@@ -4,24 +4,7 @@ namespace BizHawk.Emulation.Cores.Sega.MasterSystem
 {
 	public sealed partial class SMS : IEmulator
 	{
-		public IEmulatorServiceProvider ServiceProvider { get; private set; }
-
-		public ISoundProvider SoundProvider
-		{
-			get { return ActiveSoundProvider; }
-		}
-
-		public ISyncSoundProvider SyncSoundProvider
-		{
-			get { return new FakeSyncSound(ActiveSoundProvider, 735); }
-		}
-
-		public bool StartAsyncSound()
-		{
-			return true;
-		}
-
-		public void EndAsyncSound() { }
+		public IEmulatorServiceProvider ServiceProvider { get; }
 
 		public ControllerDefinition ControllerDefinition
 		{
@@ -36,12 +19,11 @@ namespace BizHawk.Emulation.Cores.Sega.MasterSystem
 			}
 		}
 
-		public IController Controller { get; set; }
-
-		public void FrameAdvance(bool render, bool rendersound)
+		public void FrameAdvance(IController controller, bool render, bool rendersound)
 		{
+			_controller = controller;
 			_lagged = true;
-			Frame++;
+			_frame++;
 			PSG.BeginFrame(Cpu.TotalExecutedCycles);
 			Cpu.Debug = Tracer.Enabled;
 			if (!IsGameGear)
@@ -51,12 +33,12 @@ namespace BizHawk.Emulation.Cores.Sega.MasterSystem
 
 			if (Cpu.Debug && Cpu.Logger == null) // TODO, lets not do this on each frame. But lets refactor CoreComm/CoreComm first
 			{
-				Cpu.Logger = (s) => Tracer.Put(s);
+				Cpu.Logger = s => Tracer.Put(s);
 			}
 
 			if (IsGameGear == false)
 			{
-				Cpu.NonMaskableInterrupt = Controller["Pause"];
+				Cpu.NonMaskableInterrupt = controller.IsPressed("Pause");
 			}
 
 			if (IsGame3D && Settings.Fix3D)
@@ -80,21 +62,23 @@ namespace BizHawk.Emulation.Cores.Sega.MasterSystem
 			}
 		}
 
-		public string SystemId { get { return "SMS"; } }
+	    public int Frame => _frame;
 
-		public bool DeterministicEmulation { get { return true; } }
+		public string SystemId => "SMS";
 
-		public string BoardName { get { return null; } }
+		public bool DeterministicEmulation => true;
 
 		public void ResetCounters()
 		{
-			Frame = 0;
+			_frame = 0;
 			_lagCount = 0;
 			_isLag = false;
 		}
 
-		public CoreComm CoreComm { get; private set; }
+		public CoreComm CoreComm { get; }
 
-		public void Dispose() { }
+		public void Dispose()
+		{
+		}
 	}
 }

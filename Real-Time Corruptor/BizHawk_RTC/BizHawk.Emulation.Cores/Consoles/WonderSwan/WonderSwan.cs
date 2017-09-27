@@ -1,27 +1,23 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using BizHawk.Common;
+
 using BizHawk.Emulation.Common;
-using System.IO;
-using Newtonsoft.Json;
-using System.Runtime.InteropServices;
 
 namespace BizHawk.Emulation.Cores.WonderSwan
 {
-	[CoreAttributes("Cygne/Mednafen", "Dox", true, true, "0.9.36.5", "http://mednafen.sourceforge.net/")]
+	[Core("Cygne/Mednafen", "Dox, Mednafen Team", true, true, "0.9.36.5", "http://mednafen.sourceforge.net/")]
 	[ServiceNotApplicable(typeof(IDriveLight), typeof(IRegionable))]
-	public partial class WonderSwan : IEmulator, IVideoProvider, ISyncSoundProvider,
+	public partial class WonderSwan : IEmulator, IVideoProvider, ISoundProvider,
 		IInputPollable, IDebuggable
 	{
 		[CoreConstructor("WSWAN")]
-		public WonderSwan(CoreComm comm, byte[] file, bool deterministic, object Settings, object SyncSettings)
+		public WonderSwan(CoreComm comm, byte[] file, bool deterministic, object settings, object syncSettings)
 		{
 			ServiceProvider = new BasicServiceProvider(this);
 			CoreComm = comm;
-			_Settings = (Settings)Settings ?? new Settings();
-			_SyncSettings = (SyncSettings)SyncSettings ?? new SyncSettings();
+			_Settings = (Settings)settings ?? new Settings();
+			_SyncSettings = (SyncSettings)syncSettings ?? new SyncSettings();
 			
 			DeterministicEmulation = deterministic; // when true, remember to force the RTC flag!
 			Core = BizSwan.bizswan_new();
@@ -37,9 +33,6 @@ namespace BizHawk.Emulation.Cores.WonderSwan
 
 				if (!BizSwan.bizswan_load(Core, file, file.Length, ref ss, ref rotate))
 					throw new InvalidOperationException("bizswan_load() returned FALSE!");
-
-				CoreComm.VsyncNum = 3072000; // master CPU clock, also pixel clock
-				CoreComm.VsyncDen = (144 + 15) * (224 + 32); // 144 vislines, 15 vblank lines; 224 vispixels, 32 hblank pixels
 
 				InitISaveRam();
 
@@ -68,17 +61,17 @@ namespace BizHawk.Emulation.Cores.WonderSwan
 			}
 		}
 
-		public void FrameAdvance(bool render, bool rendersound = true)
+		public void FrameAdvance(IController controller, bool render, bool rendersound = true)
 		{
 			Frame++;
 			IsLagFrame = true;
 
-			if (Controller["Power"])
+			if (controller.IsPressed("Power"))
 				BizSwan.bizswan_reset(Core);
 
 			bool rotate = false;
 			int soundbuffsize = sbuff.Length;
-			IsLagFrame = BizSwan.bizswan_advance(Core, GetButtons(), !render, vbuff, sbuff, ref soundbuffsize, ref rotate);
+			IsLagFrame = BizSwan.bizswan_advance(Core, GetButtons(controller), !render, vbuff, sbuff, ref soundbuffsize, ref rotate);
 			if (soundbuffsize == sbuff.Length)
 				throw new Exception();
 			sbuffcontains = soundbuffsize;
@@ -105,7 +98,6 @@ namespace BizHawk.Emulation.Cores.WonderSwan
 
 		public string SystemId { get { return "WSWAN"; } }
 		public bool DeterministicEmulation { get; private set; }
-		public string BoardName { get { return null; } }
 
 		#region Debugging
 
@@ -137,6 +129,9 @@ namespace BizHawk.Emulation.Cores.WonderSwan
 
 		[FeatureNotImplemented]
 		public void Step(StepType type) { throw new NotImplementedException(); }
+
+		[FeatureNotImplemented]
+		public int TotalExecutedCycles {  get { throw new NotImplementedException(); } }
 
 		BizSwan.MemoryCallback ReadCallbackD;
 		BizSwan.MemoryCallback WriteCallbackD;
@@ -214,28 +209,8 @@ namespace BizHawk.Emulation.Cores.WonderSwan
 		public int BufferHeight { get; private set; }
 		public int BackgroundColor { get { return unchecked((int)0xff000000); } }
 
-		#endregion
-
-		#region ISoundProvider
-
-		private short[] sbuff = new short[1536];
-		private int sbuffcontains = 0;
-
-		public ISoundProvider SoundProvider { get { throw new InvalidOperationException(); } }
-		public ISyncSoundProvider SyncSoundProvider { get { return this; } }
-		public bool StartAsyncSound() { return false; }
-		public void EndAsyncSound() { }
-
-		public void GetSamples(out short[] samples, out int nsamp)
-		{
-			samples = sbuff;
-			nsamp = sbuffcontains;
-		}
-
-		public void DiscardSamples()
-		{
-			sbuffcontains = 0;
-		}
+		public int VsyncNumerator => 3072000; // master CPU clock, also pixel clock
+		public int VsyncDenominator => (144 + 15) * (224 + 32); // 144 vislines, 15 vblank lines; 224 vispixels, 32 hblank pixels
 
 		#endregion
 	}

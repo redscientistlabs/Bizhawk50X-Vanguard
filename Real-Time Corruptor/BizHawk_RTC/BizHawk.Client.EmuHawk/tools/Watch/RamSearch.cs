@@ -27,23 +27,22 @@ namespace BizHawk.Client.EmuHawk
 	public partial class RamSearch : ToolFormBase, IToolForm
 	{
 		// TODO: DoSearch grabs the state of widgets and passes it to the engine before running, so rip out code that is attempting to keep the state up to date through change events
-
-		private string _currentFileName = string.Empty;
+		private string _currentFileName = "";
 
 		private RamSearchEngine _searches;
 		private RamSearchEngine.Settings _settings;
 
 		private int _defaultWidth;
 		private int _defaultHeight;
-		private string _sortedColumn = string.Empty;
+		private string _sortedColumn = "";
 		private bool _sortReverse;
 		private bool _forcePreviewClear;
 		private bool _autoSearch;
 
 		private bool _dropdownDontfire; // Used as a hack to get around lame .net dropdowns, there's no way to set their index without firing the selectedindexchanged event!
 
-		public const int MaxDetailedSize = 1024 * 1024; // 1mb, semi-arbituary decision, sets the size to check for and automatically switch to fast mode for the user
-		public const int MaxSupportedSize = 1024 * 1024 * 64; // 64mb, semi-arbituary decision, sets the maximum size RAM Search will support (as it will crash beyond this)
+		private const int MaxDetailedSize = 1024 * 1024; // 1mb, semi-arbituary decision, sets the size to check for and automatically switch to fast mode for the user
+		private const int MaxSupportedSize = 1024 * 1024 * 64; // 64mb, semi-arbituary decision, sets the maximum size RAM Search will support (as it will crash beyond this)
 
 		#region Initialize, Load, and Save
 
@@ -58,7 +57,7 @@ namespace BizHawk.Client.EmuHawk
 			WatchListView.VirtualMode = true;
 			Closing += (o, e) => SaveConfigSettings();
 
-			_sortedColumn = string.Empty;
+			_sortedColumn = "";
 			_sortReverse = false;
 
 			Settings = new RamSearchSettings();
@@ -81,10 +80,7 @@ namespace BizHawk.Client.EmuHawk
 			return true;
 		}
 
-		public bool UpdateBefore
-		{
-			get { return false; }
-		}
+		public bool UpdateBefore => false;
 
 		private void HardSetDisplayTypeDropDown(BizHawk.Client.Common.DisplayType type)
 		{
@@ -136,7 +132,7 @@ namespace BizHawk.Client.EmuHawk
 			DifferentByBox.Type = Common.DisplayType.Unsigned;
 			DifferenceBox.Type = Common.DisplayType.Unsigned;
 
-			MessageLabel.Text = string.Empty;
+			MessageLabel.Text = "";
 			SpecificAddressBox.MaxLength = (MemoryDomains.MainMemory.Size - 1).NumHexDigits();
 			HardSetSizeDropDown(_settings.Size);
 			PopulateTypeDropDown();
@@ -200,7 +196,7 @@ namespace BizHawk.Client.EmuHawk
 
 		private void ListView_QueryItemText(int index, int column, out string text)
 		{
-			text = string.Empty;
+			text = "";
 
 			if (index >= _searches.Count)
 			{
@@ -233,7 +229,7 @@ namespace BizHawk.Client.EmuHawk
 			_defaultWidth = Size.Width;
 			_defaultHeight = Size.Height;
 
-			if (Settings.UseWindowPosition)
+			if (Settings.UseWindowPosition && IsOnScreen(Settings.TopLeft))
 			{
 				Location = Settings.WindowPosition;
 			}
@@ -261,10 +257,12 @@ namespace BizHawk.Client.EmuHawk
 			SetTotal();
 		}
 
-		public void NewUpdate(ToolFormUpdateType type) { }
+		public void NewUpdate(ToolFormUpdateType type)
+		{
+		}
 
 		/// <summary>
-		/// This should only be called when the values of the list need an update such as after a poke or emulation occured
+		/// This should only be called when the values of the list need an update such as after a poke or emulation occurred
 		/// </summary>
 		public void UpdateValues()
 		{
@@ -311,9 +309,11 @@ namespace BizHawk.Client.EmuHawk
 			MessageLabel.Text = "Search restarted";
 			DoDomainSizeCheck();
 			NewSearch();
+			SetSize(_settings.Size);
+			HardSetDisplayTypeDropDown(_settings.Type);
 		}
 
-		public void SaveConfigSettings()
+		private void SaveConfigSettings()
 		{
 			SaveColumnInfo(WatchListView, Settings.Columns);
 
@@ -342,7 +342,7 @@ namespace BizHawk.Client.EmuHawk
 			UpdateList();
 			ToggleSearchDependentToolBarItems();
 			SetReboot(false);
-			MessageLabel.Text = string.Empty;
+			MessageLabel.Text = "";
 			SetDomainLabel();
 		}
 
@@ -470,13 +470,7 @@ namespace BizHawk.Client.EmuHawk
 			}
 		}
 
-		private int? DifferentByValue
-		{
-			get
-			{
-				return DifferentByRadio.Checked ? DifferentByBox.ToRawInt() : null;
-			}
-		}
+		private int? DifferentByValue => DifferentByRadio.Checked ? DifferentByBox.ToRawInt() : null;
 
 		private RamSearchEngine.ComparisonOperator Operator
 		{
@@ -558,10 +552,7 @@ namespace BizHawk.Client.EmuHawk
 			_forcePreviewClear = true;
 		}
 
-		private IEnumerable<int> SelectedIndices
-		{
-			get { return WatchListView.SelectedIndices.Cast<int>(); }
-		}
+		private IEnumerable<int> SelectedIndices => WatchListView.SelectedIndices.Cast<int>();
 
 		private IEnumerable<Watch> SelectedItems
 		{
@@ -575,12 +566,12 @@ namespace BizHawk.Client.EmuHawk
 
 		private void SetRemovedMessage(int val)
 		{
-			MessageLabel.Text = val + " address" + (val != 1 ? "es" : string.Empty) + " removed";
+			MessageLabel.Text = val + " address" + (val != 1 ? "es" : "") + " removed";
 		}
 
 		private void SetTotal()
 		{
-			TotalSearchLabel.Text = string.Format("{0:n0}", _searches.Count) + " addresses";
+			TotalSearchLabel.Text = $"{_searches.Count:n0}" + " addresses";
 		}
 
 		private void SetDomainLabel()
@@ -626,11 +617,19 @@ namespace BizHawk.Client.EmuHawk
 			if (_settings.Type != type)
 			{
 				if (!string.IsNullOrEmpty(SpecificValueBox.Text))
+				{
 					SpecificValueBox.Text = "0";
+				}
+
 				if (!string.IsNullOrEmpty(DifferenceBox.Text))
+				{
 					DifferenceBox.Text = "0";
+				}
+
 				if (!string.IsNullOrEmpty(DifferentByBox.Text))
+				{
 					DifferentByBox.Text = "0";
+				}
 			}
 
 			SpecificValueBox.Type = _settings.Type = type;
@@ -653,7 +652,7 @@ namespace BizHawk.Client.EmuHawk
 		private void SetSize(WatchSize size)
 		{
 			_settings.Size = size;
-            SpecificValueBox.ByteSize = size;
+			SpecificValueBox.ByteSize = size;
 			if (!string.IsNullOrEmpty(SpecificAddressBox.Text))
 			{
 				SpecificAddressBox.Text = "0";
@@ -699,8 +698,8 @@ namespace BizHawk.Client.EmuHawk
 
 		private void PopulateTypeDropDown()
 		{
-			var previous = DisplayTypeDropdown.SelectedItem != null ? DisplayTypeDropdown.SelectedItem.ToString() : string.Empty;
-			var next = string.Empty;
+			var previous = DisplayTypeDropdown.SelectedItem?.ToString() ?? "";
+			var next = "";
 
 			DisplayTypeDropdown.Items.Clear();
 
@@ -788,7 +787,7 @@ namespace BizHawk.Client.EmuHawk
 
 			NumberOfChangesRadio.Enabled = false;
 			NumberOfChangesBox.Enabled = false;
-			NumberOfChangesBox.Text = string.Empty;
+			NumberOfChangesBox.Text = "";
 			ClearChangeCountsToolBarItem.Enabled = false;
 
 			if (NumberOfChangesRadio.Checked || DifferenceRadio.Checked)
@@ -815,7 +814,7 @@ namespace BizHawk.Client.EmuHawk
 			}
 		}
 
-		public void LoadWatchFile(FileInfo file, bool append, bool truncate = false)
+		private void LoadWatchFile(FileInfo file, bool append, bool truncate = false)
 		{
 			if (file != null)
 			{
@@ -904,7 +903,7 @@ namespace BizHawk.Client.EmuHawk
 			switch (name)
 			{
 				default:
-					return string.Empty;
+					return "";
 				case WatchList.ADDRESS:
 					return _searches[index].AddressString;
 				case WatchList.VALUE:
@@ -969,7 +968,7 @@ namespace BizHawk.Client.EmuHawk
 				AutoSearchTakeLagFramesIntoAccount = true;
 			}
 
-			public ColumnList Columns { get; set; }
+			public ColumnList Columns { get; }
 			public bool PreviewMode { get; set; }
 			public bool AlwaysExcludeRamWatch { get; set; }
 			public bool AutoSearchTakeLagFramesIntoAccount { get; set; }
@@ -996,10 +995,9 @@ namespace BizHawk.Client.EmuHawk
 		private void OpenMenuItem_Click(object sender, EventArgs e)
 		{
 			LoadWatchFile(
-				GetWatchFileFromUser(string.Empty),
+				GetWatchFileFromUser(""),
 				sender == AppendFileMenuItem,
-				sender == TruncateFromFileMenuItem
-				);
+				sender == TruncateFromFileMenuItem);
 		}
 
 		private void SaveMenuItem_Click(object sender, EventArgs e)
@@ -1243,11 +1241,12 @@ namespace BizHawk.Client.EmuHawk
 		{
 			if (_searches.CanUndo)
 			{
-				_searches.Undo();
+				int restoredCount = _searches.Undo();
 				UpdateList();
 				ToggleSearchDependentToolBarItems();
 				_forcePreviewClear = true;
 				UpdateUndoToolBarButtons();
+				MessageLabel.Text = restoredCount + " address" + (restoredCount != 1 ? "es" : "") + " restored";
 			}
 		}
 
@@ -1255,11 +1254,12 @@ namespace BizHawk.Client.EmuHawk
 		{
 			if (_searches.CanRedo)
 			{
-				_searches.Redo();
+				int restoredCount = _searches.Redo();
 				UpdateList();
 				ToggleSearchDependentToolBarItems();
 				_forcePreviewClear = true;
 				UpdateUndoToolBarButtons();
+				MessageLabel.Text = restoredCount + " address" + (restoredCount != 1 ? "es" : "") + " removed";
 			}
 		}
 
@@ -1389,17 +1389,14 @@ namespace BizHawk.Client.EmuHawk
 		{
 			var recentFiles = Settings.RecentSearches; // We don't want to wipe recent files when restoring
 
-			Settings = new RamSearchSettings();
-			Settings.RecentSearches = recentFiles;
+			Settings = new RamSearchSettings { RecentSearches = recentFiles };
 
 			Size = new Size(_defaultWidth, _defaultHeight);
-
 
 			RamSearchMenu.Items.Remove(
 				RamSearchMenu.Items
 					.OfType<ToolStripMenuItem>()
-					.First(x => x.Name == "GeneratedColumnsSubMenu")
-			);
+					.First(x => x.Name == "GeneratedColumnsSubMenu"));
 
 			RamSearchMenu.Items.Add(Settings.Columns.GenerateColumnsMenu(ColumnToggleCallback));
 

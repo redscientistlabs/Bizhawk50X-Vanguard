@@ -17,51 +17,15 @@ using BizHawk.Emulation.Cores.Components.Z80;
 
 namespace BizHawk.Emulation.Cores.Sega.MasterSystem
 {
-	[CoreAttributes(
+	[Core(
 		"SMSHawk",
 		"Vecna",
 		isPorted: false,
-		isReleased: true
-		)]
+		isReleased: true)]
 	[ServiceNotApplicable(typeof(IDriveLight))]
 	public sealed partial class SMS : IEmulator, ISaveRam, IStatable, IInputPollable, IRegionable,
 		IDebuggable, ISettable<SMS.SMSSettings, SMS.SMSSyncSettings>, ICodeDataLogger
 	{
-		// Constants
-		private const int BankSize = 16384;
-
-		// ROM
-		private byte[] RomData;
-		private byte RomBank0, RomBank1, RomBank2, RomBank3;
-		private byte RomBanks;
-		private byte[] BiosRom;
-
-		// Machine resources
-		private Z80A Cpu;
-		private byte[] SystemRam;
-		public VDP Vdp;
-		private SN76489 PSG;
-		private YM2413 YM2413;
-		private SoundMixer SoundMixer;
-		public bool IsGameGear { get; set; }
-		public bool IsSG1000 { get; set; }
-
-		private bool HasYM2413 = false;
-
-		private int frame = 0;
-		
-		public int Frame { get { return frame; } set { frame = value; } }
-
-		private byte Port01 = 0xFF;
-		private byte Port02 = 0xFF;
-		private byte Port3E = 0xAF;
-		private byte Port3F = 0xFF;
-
-		private byte ForceStereoByte = 0xAD;
-		private bool IsGame3D = false;
-
-		public DisplayType Region { get; set; }
-
 		[CoreConstructor("SMS", "SG", "GG")]
 		public SMS(CoreComm comm, GameInfo game, byte[] rom, object settings, object syncSettings)
 		{
@@ -76,7 +40,10 @@ namespace BizHawk.Emulation.Cores.Sega.MasterSystem
 			RomData = rom;
 
 			if (RomData.Length % BankSize != 0)
+			{
 				Array.Resize(ref RomData, ((RomData.Length / BankSize) + 1) * BankSize);
+			}
+
 			RomBanks = (byte)(RomData.Length / BankSize);
 
 			Region = DetermineDisplayType(SyncSettings.DisplayType, game.Region);
@@ -85,13 +52,17 @@ namespace BizHawk.Emulation.Cores.Sega.MasterSystem
 				Region = DisplayType.PAL;
 				CoreComm.Notify("Display was forced to PAL mode for game compatibility.");
 			}
-			if (IsGameGear) 
+
+			if (IsGameGear)
+			{
 				Region = DisplayType.NTSC; // all game gears run at 60hz/NTSC mode
-			CoreComm.VsyncNum = Region == DisplayType.NTSC ? 60 : 50;
-			CoreComm.VsyncDen = 1;
+			}
 
 			RegionStr = SyncSettings.ConsoleRegion;
-			if (RegionStr == "Auto") RegionStr = DetermineRegion(game.Region);
+			if (RegionStr == "Auto")
+			{
+				RegionStr = DetermineRegion(game.Region);
+			}
 
 			if (game["Japan"] && RegionStr != "Japan")
 			{
@@ -100,16 +71,17 @@ namespace BizHawk.Emulation.Cores.Sega.MasterSystem
 			}
 
 			if ((game.NotInDatabase || game["FM"]) && SyncSettings.EnableFM && !IsGameGear)
+			{
 				HasYM2413 = true;
+			}
 
-			if (Controller == null)
-				Controller = NullController.GetNullController();
-
-			Cpu = new Z80A();
-			Cpu.RegisterSP = 0xDFF0;
-			Cpu.ReadHardware = ReadPort;
-			Cpu.WriteHardware = WritePort;
-			Cpu.MemoryCallbacks = MemoryCallbacks;
+			Cpu = new Z80A
+			{
+				RegisterSP = 0xDFF0,
+				ReadHardware = ReadPort,
+				WriteHardware = WritePort,
+				MemoryCallbacks = MemoryCallbacks
+			};
 
 			Vdp = new VDP(this, Cpu, IsGameGear ? VdpMode.GameGear : VdpMode.SMS, Region);
 			(ServiceProvider as BasicServiceProvider).Register<IVideoProvider>(Vdp);
@@ -117,8 +89,13 @@ namespace BizHawk.Emulation.Cores.Sega.MasterSystem
 			YM2413 = new YM2413();
 			SoundMixer = new SoundMixer(YM2413, PSG);
 			if (HasYM2413 && game["WhenFMDisablePSG"])
+			{
 				SoundMixer.DisableSource(PSG);
-			ActiveSoundProvider = HasYM2413 ? (ISoundProvider)SoundMixer : PSG;
+			}
+
+			ActiveSoundProvider = HasYM2413 ? (IAsyncSoundProvider)SoundMixer : PSG;
+			_fakeSyncSound = new FakeSyncSound(ActiveSoundProvider, 735);
+			(ServiceProvider as BasicServiceProvider).Register<ISoundProvider>(_fakeSyncSound);
 
 			SystemRam = new byte[0x2000];
 
@@ -145,6 +122,7 @@ namespace BizHawk.Emulation.Cores.Sega.MasterSystem
 				{
 					ForceStereoByte = byte.Parse(game.OptionValue("StereoByte"));
 				}
+
 				PSG.StereoPanning = ForceStereoByte;
 			}
 
@@ -165,13 +143,20 @@ namespace BizHawk.Emulation.Cores.Sega.MasterSystem
 			else if (game.System == "SMS")
 			{
 				BiosRom = comm.CoreFileProvider.GetFirmware("SMS", RegionStr, false);
-				if (BiosRom != null && (game["RequireBios"] || SyncSettings.UseBIOS))
-					Port3E = 0xF7;
 
-				if (BiosRom == null && game["RequireBios"])
-					throw new MissingFirmwareException("BIOS image not available. This game requires BIOS to function.");
-				if (SyncSettings.UseBIOS && BiosRom == null)
-					CoreComm.Notify("BIOS was selected, but rom image not available. BIOS not enabled.");
+				if (BiosRom == null)
+				{
+					throw new MissingFirmwareException("No BIOS found");
+				}				
+				else if (!game["RequireBios"] && !SyncSettings.UseBIOS)
+				{
+					// we are skipping the BIOS
+					// but only if it won't break the game
+				}
+				else
+				{
+					Port3E = 0xF7;
+				}
 			}
 
 			if (game["SRAM"])
@@ -193,6 +178,40 @@ namespace BizHawk.Emulation.Cores.Sega.MasterSystem
 			serviceProvider.Register<IDisassemblable>(new Disassembler());
 			Vdp.ProcessOverscan();
 		}
+
+		// Constants
+		private const int BankSize = 16384;
+
+		// ROM
+		private byte[] RomData;
+		private byte RomBank0, RomBank1, RomBank2, RomBank3;
+		private byte RomBanks;
+		private byte[] BiosRom;
+
+		// Machine resources
+		private Z80A Cpu;
+		private byte[] SystemRam;
+		public VDP Vdp;
+		private SN76489 PSG;
+		private YM2413 YM2413;
+		public bool IsGameGear { get; set; }
+		public bool IsSG1000 { get; set; }
+
+		private bool HasYM2413 = false;
+		private IController _controller;
+
+		private int _frame = 0;
+
+		private byte Port01 = 0xFF;
+		private byte Port02 = 0xFF;
+		private byte Port3E = 0xAF;
+		private byte Port3F = 0xFF;
+
+		private byte ForceStereoByte = 0xAD;
+		private bool IsGame3D = false;
+
+		public DisplayType Region { get; set; }
+
 
 		private ITraceable Tracer { get; set; }
 
@@ -309,8 +328,6 @@ namespace BizHawk.Emulation.Cores.Sega.MasterSystem
 			else if (port == 0xF1 && HasYM2413) YM2413.Write(value);
 			else if (port == 0xF2 && HasYM2413) YM2413.DetectionValue = value;
 		}
-
-		private ISoundProvider ActiveSoundProvider;
 
 		private string _region;
 		private string RegionStr

@@ -1,17 +1,8 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Text;
 using System.Windows.Forms;
 
-using BizHawk.Common;
 using BizHawk.Emulation.Cores.Sony.PSX;
 using BizHawk.Client.Common;
-using BizHawk.Client.EmuHawk.WinFormExtensions;
-using BizHawk.Common.ReflectionExtensions;
 
 namespace BizHawk.Client.EmuHawk
 {
@@ -24,13 +15,14 @@ namespace BizHawk.Client.EmuHawk
 
 		private void PSXControllerConfigNew_Load(object sender, EventArgs e)
 		{
-			//populate combo boxes
-			foreach(var combo in new[]{combo_1_1,combo_1_2,combo_1_3,combo_1_4,combo_2_1,combo_2_2,combo_2_3,combo_2_4})
+			// populate combo boxes
+			foreach (var combo in new[] { combo_1_1, combo_1_2, combo_1_3, combo_1_4, combo_2_1, combo_2_2, combo_2_3, combo_2_4 })
 			{
 				combo.Items.Add("-Nothing-");
 				combo.Items.Add("Gamepad");
 				combo.Items.Add("Dual Shock");
 				combo.Items.Add("Dual Analog");
+				combo.Items.Add("neGcon");
 				combo.SelectedIndex = 0;
 			}
 
@@ -40,7 +32,7 @@ namespace BizHawk.Client.EmuHawk
 			RefreshLabels();
 		}
 
-		void GuiFromUserConfig(OctoshockFIOConfigUser user)
+		private void GuiFromUserConfig(OctoshockFIOConfigUser user)
 		{
 			cbMemcard_1.Checked = user.Memcards[0];
 			cbMemcard_2.Checked = user.Memcards[1];
@@ -55,18 +47,17 @@ namespace BizHawk.Client.EmuHawk
 				if (user.Devices8[i] == OctoshockDll.ePeripheralType.Pad) combo.SelectedIndex = 1;
 				if (user.Devices8[i] == OctoshockDll.ePeripheralType.DualShock) combo.SelectedIndex = 2;
 				if (user.Devices8[i] == OctoshockDll.ePeripheralType.DualAnalog) combo.SelectedIndex = 3;
+				if (user.Devices8[i] == OctoshockDll.ePeripheralType.NegCon) combo.SelectedIndex = 4;
 			}
 		}
 
-		OctoshockFIOConfigUser UserConfigFromGui()
+		private OctoshockFIOConfigUser UserConfigFromGui()
 		{
-			OctoshockFIOConfigUser uc = new OctoshockFIOConfigUser();
-
-			uc.Memcards[0] = cbMemcard_1.Checked;
-			uc.Memcards[1] = cbMemcard_2.Checked;
-
-			uc.Multitaps[0] = cbMultitap_1.Checked;
-			uc.Multitaps[1] = cbMultitap_2.Checked;
+			var uc = new OctoshockFIOConfigUser
+			{
+				Memcards = { [0] = cbMemcard_1.Checked, [1] = cbMemcard_2.Checked },
+				Multitaps = { [0] = cbMultitap_1.Checked, [1] = cbMultitap_2.Checked }
+			};
 
 			var combos = new[] { combo_1_1, combo_1_2, combo_1_3, combo_1_4, combo_2_1, combo_2_2, combo_2_3, combo_2_4 };
 			for (int i = 0; i < 8; i++)
@@ -76,12 +67,13 @@ namespace BizHawk.Client.EmuHawk
 				if (combo.SelectedIndex == 1) uc.Devices8[i] = OctoshockDll.ePeripheralType.Pad;
 				if (combo.SelectedIndex == 2) uc.Devices8[i] = OctoshockDll.ePeripheralType.DualShock;
 				if (combo.SelectedIndex == 3) uc.Devices8[i] = OctoshockDll.ePeripheralType.DualAnalog;
+				if (combo.SelectedIndex == 4) uc.Devices8[i] = OctoshockDll.ePeripheralType.NegCon;
 			}
 
 			return uc;
 		}
 
-		void RefreshLabels()
+		private void RefreshLabels()
 		{
 			var uc = UserConfigFromGui();
 
@@ -109,33 +101,35 @@ namespace BizHawk.Client.EmuHawk
 			lbl_p_2_3.Visible = b2;
 			lbl_p_2_4.Visible = b2;
 
-			var LC = uc.ToLogical();
+			var lc = uc.ToLogical();
 
-			var p_labels = new[] { lbl_p_1_1,lbl_p_1_2,lbl_p_1_3,lbl_p_1_4,lbl_p_2_1,lbl_p_2_2,lbl_p_2_3,lbl_p_2_4};
+			var pLabels = new[] { lbl_p_1_1, lbl_p_1_2, lbl_p_1_3, lbl_p_1_4, lbl_p_2_1, lbl_p_2_2, lbl_p_2_3, lbl_p_2_4 };
 			for (int i = 0; i < 8; i++)
 			{
-				var lbl = p_labels[i];
-				if (LC.PlayerAssignments[i] == -1)
+				var lbl = pLabels[i];
+				if (lc.PlayerAssignments[i] == -1)
+				{
 					lbl.Visible = false;
+				}
 				else
 				{
-					lbl.Text = "P" + LC.PlayerAssignments[i];
+					lbl.Text = "P" + lc.PlayerAssignments[i];
 					lbl.Visible = true;
 				}
 			}
 		}
 
-		private void cb_changed(object sender, EventArgs e)
+		private void Cb_Changed(object sender, EventArgs e)
 		{
 			RefreshLabels();
 		}
 
-		private void combo_SelectedIndexChanged(object sender, EventArgs e)
+		private void Combo_SelectedIndexChanged(object sender, EventArgs e)
 		{
 			RefreshLabels();
 		}
 
-		private void btnOK_Click(object sender, EventArgs e)
+		private void BtnOk_Click(object sender, EventArgs e)
 		{
 			var psxSettings = ((Octoshock)Global.Emulator).GetSyncSettings();
 

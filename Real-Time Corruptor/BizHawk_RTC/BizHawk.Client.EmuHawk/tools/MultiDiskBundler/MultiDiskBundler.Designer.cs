@@ -138,10 +138,12 @@
             this.SystemDropDown.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.SystemDropDown.FormattingEnabled = true;
             this.SystemDropDown.Items.AddRange(new object[] {
-            "GB",
             "AppleII",
+            "C64",
+            "GB",
+            "PCFX",
             "PSX",
-            "C64"});
+            "SAT"});
             this.SystemDropDown.Location = new System.Drawing.Point(425, 75);
             this.SystemDropDown.Name = "SystemDropDown";
             this.SystemDropDown.Size = new System.Drawing.Size(69, 21);

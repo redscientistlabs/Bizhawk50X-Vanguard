@@ -4,25 +4,24 @@ namespace BizHawk.Client.Common
 {
 	public class Cheat
 	{
-		public enum COMPARISONTYPE
+		public enum CompareType
 		{
-			NONE,
-			EQUAL,
-			GREATER_THAN,
-			GREATER_THAN_OR_EQUAL,
-			LESS_THAN,
-			LESS_THAN_OR_EQUAL,
-			NOT_EQUAL
-		};
+			None,
+			Equal,
+			GreaterThan,
+			GreaterThanOrEqual,
+			LessThan,
+			LessThanOrEqual,
+			NotEqual
+		}
 
 		private readonly Watch _watch;
+		private readonly CompareType _comparisonType;
 		private int? _compare;
 		private int _val;
 		private bool _enabled;
-		private COMPARISONTYPE _comparisonType;
-		
 
-		public Cheat(Watch watch, int value, int? compare = null, bool enabled = true, COMPARISONTYPE comparisonType = COMPARISONTYPE.NONE)
+		public Cheat(Watch watch, int value, int? compare = null, bool enabled = true, CompareType comparisonType = CompareType.None)
 		{
 			_enabled = enabled;
 			_watch = watch;
@@ -50,8 +49,7 @@ namespace BizHawk.Client.Common
 					cheat.Size,
 					cheat.Type,
 					cheat.BigEndian ?? false,
-					cheat.Name
-				);
+					cheat.Name);
 				_compare = cheat.Compare;
 				_val = cheat.Value ?? 0;
 
@@ -62,75 +60,33 @@ namespace BizHawk.Client.Common
 		public delegate void CheatEventHandler(object sender);
 		public event CheatEventHandler Changed;
 
-		public static Cheat Separator
-		{
-			get { return new Cheat(SeparatorWatch.Instance, 0, null, false); }
-		}
+		public static Cheat Separator => new Cheat(SeparatorWatch.Instance, 0, null, false);
 
-		public bool IsSeparator
-		{
-			get { return _watch.IsSeparator; }
-		}
+		public bool IsSeparator => _watch.IsSeparator;
 
-		public bool Enabled
-		{
-			get { return !IsSeparator && _enabled; }
-		}
+		public bool Enabled => !IsSeparator && _enabled;
 
-		public long? Address
-		{
-			get { return _watch.Address; }
-		}
+		public long? Address => _watch.Address;
 
-		public int? Value
-		{
-			get { return IsSeparator ? (int?)null : _val; }
-		}
+		public int? Value => IsSeparator ? (int?)null : _val;
 
-		public bool? BigEndian
-		{
-			get { return IsSeparator ? (bool?)null : _watch.BigEndian; }
-		}
+		public bool? BigEndian => IsSeparator ? (bool?)null : _watch.BigEndian;
 
-		public int? Compare
-		{
-			get { return _compare.HasValue && !IsSeparator ? _compare : null; }
-		}
+		public int? Compare => _compare.HasValue && !IsSeparator ? _compare : null;
 
-		public MemoryDomain Domain
-		{
-			get { return _watch.Domain; }
-		}
+		public MemoryDomain Domain => _watch.Domain;
 
-		public WatchSize Size
-		{
-			get { return _watch.Size; }
-		}
+		public WatchSize Size => _watch.Size;
 
-		public char SizeAsChar
-		{
-			get { return _watch.SizeAsChar; }
-		}
+		public char SizeAsChar => _watch.SizeAsChar;
 
-		public DisplayType Type
-		{
-			get { return _watch.Type; }
-		}
+		public DisplayType Type => _watch.Type;
 
-		public char TypeAsChar
-		{
-			get { return _watch.TypeAsChar; }
-		}
+		public char TypeAsChar => _watch.TypeAsChar;
 
-		public string Name
-		{
-			get { return IsSeparator ? string.Empty : _watch.Notes; }
-		}
+		public string Name => IsSeparator ? "" : _watch.Notes;
 
-		public string AddressStr
-		{
-			get { return _watch.AddressString; }
-		}
+		public string AddressStr => _watch.AddressString;
 
 		public string ValueStr
 		{
@@ -140,7 +96,7 @@ namespace BizHawk.Client.Common
 				{
 					default:
 					case WatchSize.Separator:
-						return string.Empty;
+						return "";
 					case WatchSize.Byte:
 						return (_watch as ByteWatch).FormatValue((byte)_val);
 					case WatchSize.Word:
@@ -161,7 +117,7 @@ namespace BizHawk.Client.Common
 					{
 						default:
 						case WatchSize.Separator:
-							return string.Empty;
+							return "";
 						case WatchSize.Byte:
 							return (_watch as ByteWatch).FormatValue((byte)_compare.Value);
 						case WatchSize.Word:
@@ -171,14 +127,11 @@ namespace BizHawk.Client.Common
 					}
 				}
 				
-				return string.Empty;
+				return "";
 			}
 		}
 
-		public COMPARISONTYPE ComparisonType
-		{
-			get { return _comparisonType; }
-		}
+		public CompareType ComparisonType => _comparisonType;
 
 		public void Enable(bool handleChange = true)
 		{
@@ -237,49 +190,54 @@ namespace BizHawk.Client.Common
 					switch (_comparisonType)
 					{
 						default:
-						case COMPARISONTYPE.NONE: // This should never happen, but it's here just in case
-							break;
-						case COMPARISONTYPE.EQUAL:
+						case CompareType.None: // This should never happen, but it's here just in case.  adelikat: And yet it does! Cheat Code converter doesn't do this.  Changing this to default to equal since 99.9999% of all cheats are going to be equals
+						case CompareType.Equal:
 							if (_compare.Value == _watch.ValueNoFreeze) 
 							{
 								_watch.Poke(GetStringForPulse(_val));
 							}
+
 							break;
-						case COMPARISONTYPE.GREATER_THAN:
+						case CompareType.GreaterThan:
 							if (_compare.Value > _watch.ValueNoFreeze) 
 							{
 								_watch.Poke(GetStringForPulse(_val));
 							}
+
 							break;
-						case COMPARISONTYPE.GREATER_THAN_OR_EQUAL:
+						case CompareType.GreaterThanOrEqual:
 							if (_compare.Value >= _watch.ValueNoFreeze)
 							{
 								_watch.Poke(GetStringForPulse(_val));
 							}
+
 							break;
-						case COMPARISONTYPE.LESS_THAN:
+						case CompareType.LessThan:
 							if (_compare.Value < _watch.ValueNoFreeze) 
 							{
 								_watch.Poke(GetStringForPulse(_val));
 							}
+
 							break;
-						case COMPARISONTYPE.LESS_THAN_OR_EQUAL:
+						case CompareType.LessThanOrEqual:
 							if (_compare.Value <= _watch.ValueNoFreeze)
 							{
 								_watch.Poke(GetStringForPulse(_val));
 							}
+
 							break;
-						case COMPARISONTYPE.NOT_EQUAL:
+						case CompareType.NotEqual:
 							if (_compare.Value != _watch.ValueNoFreeze)
 							{
 								_watch.Poke(GetStringForPulse(_val));
 							}
+
 							break;
-					}		
+					}
 				}
 				else
 				{
-					switch(_watch.Size)
+					switch (_watch.Size)
 					{
 						case WatchSize.Byte:
 							_watch.Poke((_watch as ByteWatch).FormatValue((byte)_val));
@@ -305,10 +263,10 @@ namespace BizHawk.Client.Common
 				case WatchSize.Byte:
 					return _watch.Address == addr;
 				case WatchSize.Word:
-					return (addr == _watch.Address) || (addr == (_watch.Address) + 1);
+					return (addr == _watch.Address) || (addr == _watch.Address + 1);
 				case WatchSize.DWord:
-					return (addr == (_watch.Address)) || (addr == (_watch.Address) + 1) ||
-						(addr == (_watch.Address) + 2) || (addr == (_watch.Address) + 3);
+					return (addr == _watch.Address) || (addr == _watch.Address + 1) ||
+						(addr == _watch.Address + 2) || (addr == _watch.Address + 3);
 			}
 		}
 
@@ -326,22 +284,24 @@ namespace BizHawk.Client.Common
 				case WatchSize.Byte:
 					return (byte?)_val;
 				case WatchSize.Word:
-					if (addr == (_watch.Address))
+					if (addr == _watch.Address)
 					{
 						return (byte)(_val >> 8);
 					}
 
 					return (byte)(_val & 0xFF);
 				case WatchSize.DWord:
-					if (addr == (_watch.Address))
+					if (addr == _watch.Address)
 					{
 						return (byte)((_val >> 24) & 0xFF);
 					}
-					else if (addr == (_watch.Address) + 1)
+
+					if (addr == _watch.Address + 1)
 					{
 						return (byte)((_val >> 16) & 0xFF);
 					}
-					else if (addr == ((_watch.Address)) + 2)
+
+					if (addr == _watch.Address + 2)
 					{
 						return (byte)((_val >> 8) & 0xFF);
 					}
@@ -399,10 +359,7 @@ namespace BizHawk.Client.Common
 
 		private void Changes()
 		{
-			if (Changed != null)
-			{
-				Changed(this);
-			}
+			Changed?.Invoke(this);
 		}
 
 		public override bool Equals(object obj)

@@ -254,7 +254,7 @@ namespace BizHawk.Client.EmuHawk
 				}
 			}
 
-			return string.Empty;
+			return "";
 		}
 
 		public string InputStrOrAll()
@@ -298,7 +298,7 @@ namespace BizHawk.Client.EmuHawk
 				return lg.GenerateInputDisplay();
 			}
 
-			return string.Empty;
+			return "";
 		}
 
 		public string MakeRerecordCount()
@@ -308,7 +308,7 @@ namespace BizHawk.Client.EmuHawk
 				return Global.MovieSession.Movie.Rerecords.ToString();
 			}
 			
-			return string.Empty;
+			return "";
 		}
 
 		private void DrawOsdMessage(IBlitter g, string message, Color color, float x, float y)

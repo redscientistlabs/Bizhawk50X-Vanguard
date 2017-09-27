@@ -1,177 +1,205 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.IO;
-using System.Linq;
-using System.Text;
-using BizHawk.Emulation.Common;
+
+using BizHawk.Common;
 using BizHawk.Emulation.Cores.Components.M6502;
 using BizHawk.Emulation.Cores.Computers.Commodore64.Media;
 using BizHawk.Emulation.Cores.Computers.Commodore64.MOS;
 
 namespace BizHawk.Emulation.Cores.Computers.Commodore64.Serial
 {
-    public sealed partial class Drive1541 : SerialPortDevice
-    {
-        [SaveState.SaveWithName("Disk")]
-        private Disk _disk;
-        [SaveState.SaveWithName("BitHistory")]
-        private int _bitHistory;
-        [SaveState.SaveWithName("BitsRemainingInLatchedByte")]
-        private int _bitsRemainingInLatchedByte;
-        [SaveState.SaveWithName("Sync")]
-        private bool _sync;
-        [SaveState.SaveWithName("ByteReady")]
-        private bool _byteReady;
-        [SaveState.SaveWithName("DriveCpuClockNumerator")]
-        private readonly int _driveCpuClockNum;
-        [SaveState.SaveWithName("TrackNumber")]
-        private int _trackNumber;
-        [SaveState.SaveWithName("MotorEnabled")]
-        private bool _motorEnabled;
-        [SaveState.SaveWithName("LedEnabled")]
-        private bool _ledEnabled;
-        [SaveState.SaveWithName("MotorStep")]
-        private int _motorStep;
-        [SaveState.SaveWithName("CPU")]
-        private readonly MOS6502X _cpu;
-        [SaveState.SaveWithName("RAM")]
-        private readonly int[] _ram;
-        [SaveState.SaveWithName("VIA0")]
-        public readonly Via Via0;
-        [SaveState.SaveWithName("VIA1")]
-        public readonly Via Via1;
-        [SaveState.SaveWithName("SystemCpuClockNumerator")]
-        private readonly int _cpuClockNum;
-        [SaveState.SaveWithName("SystemDriveCpuRatioDifference")]
-        private int _ratioDifference;
-        [SaveState.SaveWithName("DriveLightOffTime")]
-        private int _driveLightOffTime;
-        [SaveState.DoNotSave]
-        private int[] _trackImageData = new int[1];
-        [SaveState.DoNotSave]
-        public Func<int> ReadIec = () => 0xFF;
-        [SaveState.DoNotSave]
-        public Action DebuggerStep;
-        [SaveState.DoNotSave]
-        public readonly Chip23128 DriveRom;
+	public sealed partial class Drive1541 : SerialPortDevice
+	{
+		private Disk _disk;
+		private int _bitHistory;
+		private int _bitsRemainingInLatchedByte;
+		private bool _sync;
+		private bool _byteReady;
+		private int _driveCpuClockNum;
+		private int _trackNumber;
+		private bool _motorEnabled;
+		private bool _ledEnabled;
+		private int _motorStep;
+		private readonly MOS6502X _cpu;
+		private int[] _ram;
+		public readonly Via Via0;
+		public readonly Via Via1;
+		private int _cpuClockNum;
+		private int _ratioDifference;
+		private int _driveLightOffTime;
+		private int[] _trackImageData = new int[1];
+		public Func<int> ReadIec = () => 0xFF;
+		public Action DebuggerStep;
+		public readonly Chip23128 DriveRom;
 
-        public Drive1541(int clockNum, int clockDen)
-        {
-            DriveRom = new Chip23128();
-            _cpu = new MOS6502X
-            {
-                ReadMemory = CpuRead,
-                WriteMemory = CpuWrite,
-                DummyReadMemory = CpuRead,
-                PeekMemory = CpuPeek,
-                NMI = false
-            };
+		public Drive1541(int clockNum, int clockDen)
+		{
+			DriveRom = new Chip23128();
+			_cpu = new MOS6502X
+			{
+				ReadMemory = CpuRead,
+				WriteMemory = CpuWrite,
+				DummyReadMemory = CpuRead,
+				PeekMemory = CpuPeek,
+				NMI = false
+			};
 
-            _ram = new int[0x800];
-            Via0 = Chip6522.Create(ViaReadClock, ViaReadData, ViaReadAtn, 8);
-            Via1 = Chip6522.Create(ReadVia1PrA, ReadVia1PrB);
+			_ram = new int[0x800];
+			Via0 = Chip6522.Create(ViaReadClock, ViaReadData, ViaReadAtn, 8);
+			Via1 = Chip6522.Create(ReadVia1PrA, ReadVia1PrB);
 
-            _cpuClockNum = clockNum;
-            _driveCpuClockNum = clockDen*16000000; // 16mhz
-        }
+			_cpuClockNum = clockNum;
+			_driveCpuClockNum = clockDen * 16000000; // 16mhz
+		}
 
-        public override void ExecutePhase()
-        {
-            _ratioDifference += _driveCpuClockNum;
-            while (_ratioDifference > _cpuClockNum)
-            {
-                _ratioDifference -= _cpuClockNum;
-                _clocks++;
-            }
-            ExecutePhaseInternal();
-        }
+		public override void SyncState(Serializer ser)
+		{
+			ser.BeginSection("Disk");
+			_disk.SyncState(ser);
+			ser.EndSection();
 
-        private void ExecutePhaseInternal()
-        {
-            // clock output from 325572-01 drives CPU clock (phi0)
-            ExecuteMotor();
-            ExecuteFlux();
-        }
+			ser.Sync("BitHistory", ref _bitHistory);
+			ser.Sync("BitsRemainingInLatchedByte", ref _bitsRemainingInLatchedByte);
+			ser.Sync("Sync", ref _sync);
+			ser.Sync("ByteReady", ref _byteReady);
+			ser.Sync("DriveCpuClockNumerator", ref _driveCpuClockNum);
+			ser.Sync("TrackNumber", ref _trackNumber);
+			ser.Sync("MotorEnabled", ref _motorEnabled);
+			ser.Sync("LedEnabled", ref _ledEnabled);
+			ser.Sync("MotorStep", ref _motorStep);
 
-        private void ExecuteSystem()
-        {
-            Via0.Ca1 = ViaReadAtn();
-            Via0.ExecutePhase();
-            Via1.ExecutePhase();
+			ser.BeginSection("Disk6502");
+			_cpu.SyncState(ser);
+			ser.EndSection();
+			
+			ser.Sync("RAM", ref _ram, useNull: false);
 
-            // SO pin pipeline
-            if ((_overflowFlagDelaySr & 0x01) != 0)
-            {
-                _cpu.SetOverflow();
-            }
-            _overflowFlagDelaySr >>= 1;
+			ser.BeginSection("VIA0");
+			Via0.SyncState(ser);
+			ser.EndSection();
 
-            _cpu.IRQ = !(Via0.Irq && Via1.Irq); // active low IRQ line
-            _cpu.ExecuteOne();
+			ser.BeginSection("VIA1");
+			Via1.SyncState(ser);
+			ser.EndSection();
 
-            if (_ledEnabled)
-            {
-                _driveLightOffTime = 25000;
-            }
-            else if (_driveLightOffTime > 0)
-            {
-                _driveLightOffTime--;
-            }
-        }
+			ser.Sync("SystemCpuClockNumerator", ref _cpuClockNum);
+			ser.Sync("SystemDriveCpuRatioDifference", ref _ratioDifference);
+			ser.Sync("DriveLightOffTime", ref _driveLightOffTime);
+			ser.Sync("TrackImageData", ref _trackImageData, useNull: false);
 
-        public override void HardReset()
-        {
-            Via0.HardReset();
-            Via1.HardReset();
-            _trackNumber = 34;
-            for (var i = 0; i < _ram.Length; i++)
-            {
-                _ram[i] = 0x00;
-            }
+			ser.Sync("DiskDensityCounter", ref _diskDensityCounter);
+			ser.Sync("DiskSupplementaryCounter", ref _diskSupplementaryCounter);
+			ser.Sync("DiskFluxReversalDetected", ref _diskFluxReversalDetected);
+			ser.Sync("DiskBitsRemainingInDataEntry", ref _diskBitsLeft);
+			ser.Sync("DiskDataEntryIndex", ref _diskByteOffset);
+			ser.Sync("DiskDataEntry", ref _diskBits);
+			ser.Sync("DiskCurrentCycle", ref _diskCycle);
+			ser.Sync("DiskDensityConfig", ref _diskDensity);
+			ser.Sync("PreviousCA1", ref _previousCa1);
+			ser.Sync("CountsBeforeRandomTransition", ref _countsBeforeRandomTransition);
+			ser.Sync("CurrentRNG", ref _rngCurrent);
+			ser.Sync("Clocks", ref _clocks);
+			ser.Sync("CpuClocks", ref _cpuClocks);
+			ser.Sync("OverflowFlagDelayShiftRegister", ref _overflowFlagDelaySr);
+		}
 
-            _diskDensity = 0;
-            _diskFluxReversalDetected = false;
-            _diskByteOffset = 0;
-            _diskBitsLeft = 0;
-            _diskBits = 0;
-            _driveLightOffTime = 0;
-            _diskDensityCounter = 0;
-            _diskSupplementaryCounter = 0;
-            _diskCycle = 0;
-            _previousCa1 = false;
-            _countsBeforeRandomTransition = 0;
+		public override void ExecutePhase()
+		{
+			_ratioDifference += _driveCpuClockNum;
+			while (_ratioDifference > _cpuClockNum)
+			{
+				_ratioDifference -= _cpuClockNum;
+				_clocks++;
+			}
 
-            SoftReset();
-            UpdateMediaData();
-        }
+			ExecutePhaseInternal();
+		}
 
-        public void SoftReset()
-        {
-            _cpu.NESSoftReset();
-            _overflowFlagDelaySr = 0;
-        }
+		private void ExecutePhaseInternal()
+		{
+			// clock output from 325572-01 drives CPU clock (phi0)
+			ExecuteMotor();
+			ExecuteFlux();
+		}
 
-        public void InsertMedia(Disk disk)
-        {
-            _disk = disk;
-            UpdateMediaData();
-        }
+		private void ExecuteSystem()
+		{
+			Via0.Ca1 = ViaReadAtn();
+			Via0.ExecutePhase();
+			Via1.ExecutePhase();
 
-        private void UpdateMediaData()
-        {
-            if (_disk != null)
-            {
-                _trackImageData = _disk.GetDataForTrack(_trackNumber);
-                _diskBits = _trackImageData[_diskByteOffset] >> (Disk.FluxBitsPerEntry - _diskBitsLeft);
-            }
-        }
+			// SO pin pipeline
+			if ((_overflowFlagDelaySr & 0x01) != 0)
+			{
+				_cpu.SetOverflow();
+			}
 
-        public void RemoveMedia()
-        {
-            _disk = null;
-            _trackImageData = null;
-            _diskBits = 0;
-        }
-    }
+			_overflowFlagDelaySr >>= 1;
+
+			_cpu.IRQ = !(Via0.Irq && Via1.Irq); // active low IRQ line
+			_cpu.ExecuteOne();
+
+			if (_ledEnabled)
+			{
+				_driveLightOffTime = 25000;
+			}
+			else if (_driveLightOffTime > 0)
+			{
+				_driveLightOffTime--;
+			}
+		}
+
+		public override void HardReset()
+		{
+			Via0.HardReset();
+			Via1.HardReset();
+			_trackNumber = 34;
+			for (var i = 0; i < _ram.Length; i++)
+			{
+				_ram[i] = 0x00;
+			}
+
+			_diskDensity = 0;
+			_diskFluxReversalDetected = false;
+			_diskByteOffset = 0;
+			_diskBitsLeft = 0;
+			_diskBits = 0;
+			_driveLightOffTime = 0;
+			_diskDensityCounter = 0;
+			_diskSupplementaryCounter = 0;
+			_diskCycle = 0;
+			_previousCa1 = false;
+			_countsBeforeRandomTransition = 0;
+
+			SoftReset();
+			UpdateMediaData();
+		}
+
+		public void SoftReset()
+		{
+			_cpu.NESSoftReset();
+			_overflowFlagDelaySr = 0;
+		}
+
+		public void InsertMedia(Disk disk)
+		{
+			_disk = disk;
+			UpdateMediaData();
+		}
+
+		private void UpdateMediaData()
+		{
+			if (_disk != null)
+			{
+				_trackImageData = _disk.GetDataForTrack(_trackNumber);
+				_diskBits = _trackImageData[_diskByteOffset] >> (Disk.FluxBitsPerEntry - _diskBitsLeft);
+			}
+		}
+
+		public void RemoveMedia()
+		{
+			_disk = null;
+			_trackImageData = null;
+			_diskBits = 0;
+		}
+	}
 }

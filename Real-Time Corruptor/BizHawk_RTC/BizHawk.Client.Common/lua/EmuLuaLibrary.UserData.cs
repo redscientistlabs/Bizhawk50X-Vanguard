@@ -1,11 +1,8 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.ComponentModel;
-using System.Linq;
 
-using LuaInterface;
-using BizHawk.Common;
-using BizHawk.Emulation.Common;
+using NLua;
+
 using BizHawk.Client.Common;
 
 namespace BizHawk.Client.EmuHawk
@@ -19,21 +16,24 @@ namespace BizHawk.Client.EmuHawk
 		public UserDataLibrary(Lua lua, Action<string> logOutputCallback)
 			: base(lua, logOutputCallback) { }
 
-		public override string Name { get { return "userdata"; } }
+		public override string Name => "userdata";
 
-		[LuaMethodAttributes(
-			"set",
-			"adds or updates the data with the given key with the given value"
-		)]
+		[LuaMethod("set", "adds or updates the data with the given key with the given value")]
 		public void Set(string name, object value)
 		{
+			if (value != null)
+			{
+				var t = value.GetType();
+				if (!t.IsPrimitive && t != typeof(string))
+				{
+					throw new InvalidOperationException("Invalid type for userdata");
+				}
+			}
+
 			Global.UserBag[name] = value;
 		}
 
-		[LuaMethodAttributes(
-			"get",
-			"gets the data with the given key, if the key does not exist it will return nil"
-		)]
+		[LuaMethod("get", "gets the data with the given key, if the key does not exist it will return nil")]
 		public object Get(string key)
 		{
 			if (Global.UserBag.ContainsKey(key))
@@ -44,28 +44,19 @@ namespace BizHawk.Client.EmuHawk
 			return null;
 		}
 
-		[LuaMethodAttributes(
-			"clear",
-			"clears all user data"
-		)]
+		[LuaMethod("clear", "clears all user data")]
 		public void Clear()
 		{
 			Global.UserBag.Clear();
 		}
 
-		[LuaMethodAttributes(
-			"remove",
-			"remove the data with the given key. Returns true if the element is successfully found and removed; otherwise, false."
-		)]
+		[LuaMethod("remove", "remove the data with the given key. Returns true if the element is successfully found and removed; otherwise, false.")]
 		public bool Remove(string key)
 		{
 			return Global.UserBag.Remove(key);
 		}
 
-		[LuaMethodAttributes(
-			"containskey",
-			"returns whether or not there is an entry for the given key"
-		)]
+		[LuaMethod("containskey", "returns whether or not there is an entry for the given key")]
 		public bool ContainsKey(string key)
 		{
 			return Global.UserBag.ContainsKey(key);

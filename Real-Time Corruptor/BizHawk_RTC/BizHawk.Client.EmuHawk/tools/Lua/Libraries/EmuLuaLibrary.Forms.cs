@@ -6,7 +6,8 @@ using System.Linq;
 using System.Windows.Forms;
 
 using BizHawk.Client.Common;
-using LuaInterface;
+using NLua;
+using System.IO;
 
 namespace BizHawk.Client.EmuHawk
 {
@@ -20,7 +21,7 @@ namespace BizHawk.Client.EmuHawk
 			: base(lua, logOutputCallback) { }
 
 		// TODO: replace references to ConsoleLuaLibrary.Log with a callback that is passed in
-		public override string Name { get { return "forms"; } }
+		public override string Name => "forms";
 
 		#region Forms Library Helpers
 
@@ -56,15 +57,12 @@ namespace BizHawk.Client.EmuHawk
 
 		private static void SetText(Control control, string caption)
 		{
-			control.Text = caption ?? string.Empty;
+			control.Text = caption ?? "";
 		}
 
 		#endregion
 
-		[LuaMethodAttributes(
-			"addclick",
-			"adds the given lua function as a click event to the given control"
-		)]
+		[LuaMethod("addclick", "adds the given lua function as a click event to the given control")]
 		public void AddClick(int handle, LuaFunction clickEvent)
 		{
 			var ptr = new IntPtr(handle);
@@ -80,10 +78,8 @@ namespace BizHawk.Client.EmuHawk
 			}
 		}
 
-		[LuaMethodAttributes(
-			"button",
-			"Creates a button control on the given form. The caption property will be the text value on the button. clickEvent is the name of a Lua function that will be invoked when the button is clicked. x, and y are the optional location parameters for the position of the button within the given form. The function returns the handle of the created button. Width and Height are optional, if not specified they will be a default size"
-		)]
+		[LuaMethod(
+			"button", "Creates a button control on the given form. The caption property will be the text value on the button. clickEvent is the name of a Lua function that will be invoked when the button is clicked. x, and y are the optional location parameters for the position of the button within the given form. The function returns the handle of the created button. Width and Height are optional, if not specified they will be a default size")]
 		public int Button(
 			int formHandle,
 			string caption,
@@ -117,10 +113,8 @@ namespace BizHawk.Client.EmuHawk
 			return (int)button.Handle;
 		}
 
-		[LuaMethodAttributes(
-			"checkbox",
-			"Creates a checkbox control on the given form. The caption property will be the text of the checkbox. x and y are the optional location parameters for the position of the checkbox within the form"
-		)]
+		[LuaMethod(
+			"checkbox", "Creates a checkbox control on the given form. The caption property will be the text of the checkbox. x and y are the optional location parameters for the position of the checkbox within the form")]
 		public int Checkbox(int formHandle, string caption, int? x = null, int? y = null)
 		{
 			var form = GetForm(formHandle);
@@ -141,10 +135,7 @@ namespace BizHawk.Client.EmuHawk
 			return (int)checkbox.Handle;
 		}
 
-		[LuaMethodAttributes(
-			"clearclicks",
-			"Removes all click events from the given widget at the specified handle"
-		)]
+		[LuaMethod("clearclicks", "Removes all click events from the given widget at the specified handle")]
 		public void ClearClicks(int handle)
 		{
 			var ptr = new IntPtr(handle);
@@ -164,10 +155,7 @@ namespace BizHawk.Client.EmuHawk
 			}
 		}
 
-		[LuaMethodAttributes(
-			"destroy",
-			"Closes and removes a Lua created form with the specified handle. If a dialog was found and removed true is returned, else false"
-		)]
+		[LuaMethod("destroy", "Closes and removes a Lua created form with the specified handle. If a dialog was found and removed true is returned, else false")]
 		public bool Destroy(int handle)
 		{
 			var ptr = new IntPtr(handle);
@@ -184,10 +172,7 @@ namespace BizHawk.Client.EmuHawk
 			return false;
 		}
 
-		[LuaMethodAttributes(
-			"destroyall",
-			"Closes and removes all Lua created dialogs"
-		)]
+		[LuaMethod("destroyall", "Closes and removes all Lua created dialogs")]
 		public void DestroyAll()
 		{
 			for (var i = _luaForms.Count - 1; i >= 0; i--)
@@ -196,10 +181,8 @@ namespace BizHawk.Client.EmuHawk
 			}
 		}
 
-		[LuaMethodAttributes(
-			"dropdown",
-			"Creates a dropdown (with a ComboBoxStyle of DropDownList) control on the given form. Dropdown items are passed via a lua table. Only the values will be pulled for the dropdown items, the keys are irrelevant. Items will be sorted alphabetically. x and y are the optional location parameters, and width and height are the optional size parameters."
-		)]
+		[LuaMethod(
+			"dropdown", "Creates a dropdown (with a ComboBoxStyle of DropDownList) control on the given form. Dropdown items are passed via a lua table. Only the values will be pulled for the dropdown items, the keys are irrelevant. Items will be sorted alphabetically. x and y are the optional location parameters, and width and height are the optional size parameters.")]
 		public int Dropdown(
 			int formHandle,
 			LuaTable items,
@@ -229,14 +212,11 @@ namespace BizHawk.Client.EmuHawk
 			{
 				SetSize(dropdown, width.Value, height.Value);
 			}
-			
+
 			return (int)dropdown.Handle;
 		}
 
-		[LuaMethodAttributes(
-			"getproperty",
-			"returns a string representation of the value of a property of the widget at the given handle"
-		)]
+		[LuaMethod("getproperty", "returns a string representation of the value of a property of the widget at the given handle")]
 		public string GetProperty(int handle, string property)
 		{
 			try
@@ -248,7 +228,7 @@ namespace BizHawk.Client.EmuHawk
 					{
 						return form.GetType().GetProperty(property).GetValue(form, null).ToString();
 					}
-					
+
 					foreach (Control control in form.Controls)
 					{
 						if (control.Handle == ptr)
@@ -263,13 +243,10 @@ namespace BizHawk.Client.EmuHawk
 				ConsoleLuaLibrary.Log(ex.Message);
 			}
 
-			return string.Empty;
+			return "";
 		}
 
-		[LuaMethodAttributes(
-			"gettext",
-			"Returns the text property of a given form or control"
-		)]
+		[LuaMethod("gettext", "Returns the text property of a given form or control")]
 		public string GetText(int handle)
 		{
 			try
@@ -281,7 +258,7 @@ namespace BizHawk.Client.EmuHawk
 					{
 						return form.Text;
 					}
-					
+
 					foreach (Control control in form.Controls)
 					{
 						if (control.Handle == ptr)
@@ -290,7 +267,7 @@ namespace BizHawk.Client.EmuHawk
 							{
 								return (control as LuaDropDown).SelectedItem.ToString();
 							}
-							
+
 							return control.Text;
 						}
 					}
@@ -301,13 +278,10 @@ namespace BizHawk.Client.EmuHawk
 				ConsoleLuaLibrary.Log(ex.Message);
 			}
 
-			return string.Empty;
+			return "";
 		}
 
-		[LuaMethodAttributes(
-			"ischecked",
-			"Returns the given checkbox's checked property"
-		)]
+		[LuaMethod("ischecked", "Returns the given checkbox's checked property")]
 		public bool IsChecked(int handle)
 		{
 			var ptr = new IntPtr(handle);
@@ -317,7 +291,7 @@ namespace BizHawk.Client.EmuHawk
 				{
 					return false;
 				}
-				
+
 				foreach (Control control in form.Controls)
 				{
 					if (control.Handle == ptr)
@@ -326,7 +300,7 @@ namespace BizHawk.Client.EmuHawk
 						{
 							return (control as LuaCheckbox).Checked;
 						}
-						
+
 						return false;
 					}
 				}
@@ -335,10 +309,8 @@ namespace BizHawk.Client.EmuHawk
 			return false;
 		}
 
-		[LuaMethodAttributes(
-			"label",
-			"Creates a label control on the given form. The caption property is the text of the label. x, and y are the optional location parameters for the position of the label within the given form. The function returns the handle of the created label. Width and Height are optional, if not specified they will be a default size."
-		)]
+		[LuaMethod(
+			"label", "Creates a label control on the given form. The caption property is the text of the label. x, and y are the optional location parameters for the position of the label within the given form. The function returns the handle of the created label. Width and Height are optional, if not specified they will be a default size.")]
 		public int Label(
 			int formHandle,
 			string caption,
@@ -376,10 +348,8 @@ namespace BizHawk.Client.EmuHawk
 			return (int)label.Handle;
 		}
 
-		[LuaMethodAttributes(
-			"newform",
-			"creates a new default dialog, if both width and height are specified it will create a dialog of the specified size. If title is specified it will be the caption of the dialog, else the dialog caption will be 'Lua Dialog'. The function will return an int representing the handle of the dialog created."
-		)]
+		[LuaMethod(
+			"newform", "creates a new default dialog, if both width and height are specified it will create a dialog of the specified size. If title is specified it will be the caption of the dialog, else the dialog caption will be 'Lua Dialog'. The function will return an int representing the handle of the dialog created.")]
 		public int NewForm(int? width = null, int? height = null, string title = null, LuaFunction onClose = null)
 		{
 			var form = new LuaWinform(CurrentThread);
@@ -413,10 +383,8 @@ namespace BizHawk.Client.EmuHawk
 			return (int)form.Handle;
 		}
 
-		[LuaMethodAttributes(
-			"openfile",
-			"Creates a standard openfile dialog with optional parameters for the filename, directory, and filter. The return value is the directory that the user picked. If they chose to cancel, it will return an empty string"
-		)]
+		[LuaMethod(
+			"openfile", "Creates a standard openfile dialog with optional parameters for the filename, directory, and filter. The return value is the directory that the user picked. If they chose to cancel, it will return an empty string")]
 		public string OpenFile(string fileName = null, string initialDirectory = null, string filter = "All files (*.*)|*.*")
 		{
 			// filterext format ex: "Image Files(*.BMP;*.JPG;*.GIF)|*.BMP;*.JPG;*.GIF|All files (*.*)|*.*"
@@ -425,30 +393,858 @@ namespace BizHawk.Client.EmuHawk
 			{
 				openFileDialog1.InitialDirectory = initialDirectory;
 			}
-			
+
 			if (fileName != null)
 			{
 				openFileDialog1.FileName = fileName;
 			}
-			
+
 			if (filter != null)
 			{
 				openFileDialog1.AddExtension = true;
 				openFileDialog1.Filter = filter;
 			}
-			
+
 			if (openFileDialog1.ShowDialog() == DialogResult.OK)
 			{
 				return openFileDialog1.FileName;
 			}
-			
-			return string.Empty;
+
+			return "";
 		}
 
-		[LuaMethodAttributes(
-			"setlocation",
-			"Sets the location of a control or form by passing in the handle of the created object"
+		[LuaMethod(
+			"pictureBox",
+			"Creates a new drawing area in the form. Optionally the location in the form as well as the size of the drawing area can be specified. Returns the handle the component can be refered to with.")]
+		public int PictureBox(int formHandle, int? x = null, int? y = null, int? width = null, int? height = null)
+		{
+			var form = GetForm(formHandle);
+			if (form == null)
+			{
+				return 0;
+			}
+
+			var pictureBox = new LuaPictureBox();
+			form.Controls.Add(pictureBox);
+
+			if (x.HasValue && y.HasValue)
+			{
+				SetLocation(pictureBox, x.Value, y.Value);
+			}
+
+			if (width.HasValue && height.HasValue)
+			{
+				pictureBox.LuaResize(width.Value, height.Value);
+			}
+
+			SetSize(pictureBox, width.Value, height.Value);
+
+			return (int)pictureBox.Handle;
+		}
+
+		#region LuaPictureBox Methods
+
+		[LuaMethod(
+			"clear",
+			"Clears the canvas")]
+		public void Clear(int componentHandle, Color color)
+		{
+			try
+			{
+				var ptr = new IntPtr(componentHandle);
+				foreach (var form in _luaForms)
+				{
+					if (form.Handle == ptr)
+					{
+						ConsoleLuaLibrary.Log("Drawing functions cannot be used on forms directly. Use them on a PictureBox component.");
+						return;
+					}
+
+					foreach (Control control in form.Controls)
+					{
+						if (control is LuaPictureBox)
+						{
+							(control as LuaPictureBox).Clear(color);
+						}
+					}
+				}
+			}
+			catch (Exception ex)
+			{
+				ConsoleLuaLibrary.Log(ex.Message);
+			}
+		}
+
+		[LuaMethod(
+			"refresh",
+			"Redraws the canvas")]
+		public void Refresh(int componentHandle)
+		{
+			try
+			{
+				var ptr = new IntPtr(componentHandle);
+				foreach (var form in _luaForms)
+				{
+					if (form.Handle == ptr)
+					{
+						ConsoleLuaLibrary.Log("Drawing functions cannot be used on forms directly. Use them on a PictureBox component.");
+						return;
+					}
+
+					foreach (Control control in form.Controls)
+					{
+						if (control is LuaPictureBox)
+						{
+							(control as LuaPictureBox).Refresh();
+						}
+					}
+				}
+			}
+			catch (Exception ex)
+			{
+				ConsoleLuaLibrary.Log(ex.Message);
+			}
+		}
+
+		[LuaMethod(
+			"setDefaultForegroundColor",
+			"Sets the default foreground color to use in drawing methods, white by default")]
+		public void SetDefaultForegroundColor(int componentHandle, Color color)
+		{
+			try
+			{
+				var ptr = new IntPtr(componentHandle);
+				foreach (var form in _luaForms)
+				{
+					if (form.Handle == ptr)
+					{
+						ConsoleLuaLibrary.Log("Drawing functions cannot be used on forms directly. Use them on a PictureBox component.");
+						return;
+					}
+
+					foreach (Control control in form.Controls)
+					{
+						if (control is LuaPictureBox)
+						{
+							(control as LuaPictureBox).SetDefaultForegroundColor(color);
+						}
+					}
+				}
+			}
+			catch (Exception ex)
+			{
+				ConsoleLuaLibrary.Log(ex.Message);
+			}
+		}
+
+		[LuaMethod(
+			"setDefaultBackgroundColor",
+			"Sets the default background color to use in drawing methods, transparent by default")]
+		public void SetDefaultBackgroundColor(int componentHandle, Color color)
+		{
+			try
+			{
+				var ptr = new IntPtr(componentHandle);
+				foreach (var form in _luaForms)
+				{
+					if (form.Handle == ptr)
+					{
+						ConsoleLuaLibrary.Log("Drawing functions cannot be used on forms directly. Use them on a PictureBox component.");
+						return;
+					}
+
+					foreach (Control control in form.Controls)
+					{
+						if (control is LuaPictureBox)
+						{
+							(control as LuaPictureBox).SetDefaultBackgroundColor(color);
+						}
+					}
+				}
+			}
+			catch (Exception ex)
+			{
+				ConsoleLuaLibrary.Log(ex.Message);
+			}
+		}
+
+		[LuaMethod(
+			"setDefaultTextBackground",
+			"Sets the default backgroiund color to use in text drawing methods, half-transparent black by default")]
+		public void SetDefaultTextBackground(int componentHandle, Color color)
+		{
+			try
+			{
+				var ptr = new IntPtr(componentHandle);
+				foreach (var form in _luaForms)
+				{
+					if (form.Handle == ptr)
+					{
+						ConsoleLuaLibrary.Log("Drawing functions cannot be used on forms directly. Use them on a PictureBox component.");
+						return;
+					}
+
+					foreach (Control control in form.Controls)
+					{
+						if (control is LuaPictureBox)
+						{
+							(control as LuaPictureBox).SetDefaultTextBackground(color);
+						}
+					}
+				}
+			}
+			catch (Exception ex)
+			{
+				ConsoleLuaLibrary.Log(ex.Message);
+			}
+		}
+
+		[LuaMethod(
+			"drawBezier",
+			"Draws a Bezier curve using the table of coordinates provided in the given color")]
+		public void DrawBezier(int componentHandle, LuaTable points, Color color)
+		{
+			try
+			{
+				var ptr = new IntPtr(componentHandle);
+				foreach (var form in _luaForms)
+				{
+					if (form.Handle == ptr)
+					{
+						ConsoleLuaLibrary.Log("Drawing functions cannot be used on forms directly. Use them on a PictureBox component.");
+						return;
+					}
+
+					foreach (Control control in form.Controls)
+					{
+						if (control is LuaPictureBox)
+						{
+							(control as LuaPictureBox).DrawBezier(points, color);
+						}
+					}
+				}
+			}
+			catch (Exception ex)
+			{
+				ConsoleLuaLibrary.Log(ex.Message);
+			}
+		}
+
+		[LuaMethod(
+			"drawBox",
+			"Draws a rectangle on screen from x1/y1 to x2/y2. Same as drawRectangle except it receives two points intead of a point and width/height")]
+		public void DrawBox(int componentHandle, int x, int y, int x2, int y2, Color? line = null, Color? background = null)
+		{
+			try
+			{
+				var ptr = new IntPtr(componentHandle);
+				foreach (var form in _luaForms)
+				{
+					if (form.Handle == ptr)
+					{
+						ConsoleLuaLibrary.Log("Drawing functions cannot be used on forms directly. Use them on a PictureBox component.");
+						return;
+					}
+
+					foreach (Control control in form.Controls)
+					{
+						if (control is LuaPictureBox)
+						{
+							(control as LuaPictureBox).DrawBox(x, y, x2, y2, line, background);
+						}
+					}
+				}
+			}
+			catch (Exception ex)
+			{
+				ConsoleLuaLibrary.Log(ex.Message);
+			}
+		}
+
+		[LuaMethod(
+			"drawEllipse",
+			"Draws an ellipse at the given coordinates and the given width and height. Line is the color of the ellipse. Background is the optional fill color")]
+		public void DrawEllipse(int componentHandle, int x, int y, int width, int height, Color? line = null, Color? background = null)
+		{
+			try
+			{
+				var ptr = new IntPtr(componentHandle);
+				foreach (var form in _luaForms)
+				{
+					if (form.Handle == ptr)
+					{
+						ConsoleLuaLibrary.Log("Drawing functions cannot be used on forms directly. Use them on a PictureBox component.");
+						return;
+					}
+
+					foreach (Control control in form.Controls)
+					{
+						if (control is LuaPictureBox)
+						{
+							(control as LuaPictureBox).DrawEllipse(x, y, width, height, line, background);
+						}
+					}
+				}
+			}
+			catch (Exception ex)
+			{
+				ConsoleLuaLibrary.Log(ex.Message);
+			}
+		}
+
+		[LuaMethod(
+			"drawIcon",
+			"draws an Icon (.ico) file from the given path at the given coordinate. width and height are optional. If specified, it will resize the image accordingly")]
+		public void DrawIcon(int componentHandle, string path, int x, int y, int? width = null, int? height = null)
+		{
+			try
+			{
+				var ptr = new IntPtr(componentHandle);
+				foreach (var form in _luaForms)
+				{
+					if (form.Handle == ptr)
+					{
+						ConsoleLuaLibrary.Log("Drawing functions cannot be used on forms directly. Use them on a PictureBox component.");
+						return;
+					}
+
+					foreach (Control control in form.Controls)
+					{
+						if (control is LuaPictureBox)
+						{
+							(control as LuaPictureBox).DrawIcon(path, x, y, width, height);
+						}
+					}
+				}
+			}
+			catch (Exception ex)
+			{
+				ConsoleLuaLibrary.Log(ex.Message);
+			}
+		}
+
+		[LuaMethod(
+			"drawImage",
+			"draws an image file from the given path at the given coordinate. width and height are optional. If specified, it will resize the image accordingly")]
+		public void DrawImage(int componentHandle, string path, int x, int y, int? width = null, int? height = null, bool cache = true)
+		{
+			if (!File.Exists(path))
+			{
+				ConsoleLuaLibrary.Log("File not found: " + path + "\nScript Terminated");
+				return;
+			}
+			try
+			{
+				var ptr = new IntPtr(componentHandle);
+				foreach (var form in _luaForms)
+				{
+					if (form.Handle == ptr)
+					{
+						ConsoleLuaLibrary.Log("Drawing functions cannot be used on forms directly. Use them on a PictureBox component.");
+						return;
+					}
+
+					foreach (Control control in form.Controls)
+					{
+						if (control is LuaPictureBox)
+						{
+							(control as LuaPictureBox).DrawImage(path, x, y, width, height, cache);
+						}
+					}
+				}
+			}
+			catch (Exception ex)
+			{
+				ConsoleLuaLibrary.Log(ex.Message);
+			}
+		}
+
+		[LuaMethod(
+			"clearImageCache",
+			"clears the image cache that is built up by using gui.drawImage, also releases the file handle for cached images")]
+		public void ClearImageCache(int componentHandle)
+		{
+			try
+			{
+				var ptr = new IntPtr(componentHandle);
+				foreach (var form in _luaForms)
+				{
+					if (form.Handle == ptr)
+					{
+						ConsoleLuaLibrary.Log("Drawing functions cannot be used on forms directly. Use them on a PictureBox component.");
+						return;
+					}
+
+					foreach (Control control in form.Controls)
+					{
+						if (control is LuaPictureBox)
+						{
+							(control as LuaPictureBox).ClearImageCache();
+						}
+					}
+				}
+			}
+			catch (Exception ex)
+			{
+				ConsoleLuaLibrary.Log(ex.Message);
+			}
+		}
+
+		[LuaMethod(
+			"drawImageRegion",
+			"draws a given region of an image file from the given path at the given coordinate, and optionally with the given size")]
+		public void DrawImageRegion(int componentHandle, string path, int source_x, int source_y, int source_width, int source_height, int dest_x, int dest_y, int? dest_width = null, int? dest_height = null)
+		{
+			if (!File.Exists(path))
+			{
+				ConsoleLuaLibrary.Log("File not found: " + path + "\nScript Terminated");
+				return;
+			}
+			try
+			{
+				var ptr = new IntPtr(componentHandle);
+				foreach (var form in _luaForms)
+				{
+					if (form.Handle == ptr)
+					{
+						ConsoleLuaLibrary.Log("Drawing functions cannot be used on forms directly. Use them on a PictureBox component.");
+						return;
+					}
+
+					foreach (Control control in form.Controls)
+					{
+						if (control is LuaPictureBox)
+						{
+							(control as LuaPictureBox).DrawImageRegion(path, source_x, source_y, source_width, source_height, dest_x, dest_y, dest_width, dest_height);
+						}
+					}
+				}
+			}
+			catch (Exception ex)
+			{
+				ConsoleLuaLibrary.Log(ex.Message);
+			}
+		}
+
+		[LuaMethod(
+			"drawLine",
+			"Draws a line from the first coordinate pair to the 2nd. Color is optional (if not specified it will be drawn black)")]
+		public void DrawLine(int componentHandle, int x1, int y1, int x2, int y2, Color? color = null)
+		{
+			try
+			{
+				var ptr = new IntPtr(componentHandle);
+				foreach (var form in _luaForms)
+				{
+					if (form.Handle == ptr)
+					{
+						ConsoleLuaLibrary.Log("Drawing functions cannot be used on forms directly. Use them on a PictureBox component.");
+						return;
+					}
+
+					foreach (Control control in form.Controls)
+					{
+						if (control is LuaPictureBox)
+						{
+							(control as LuaPictureBox).DrawLine(x1, y1, x2, y2, color);
+						}
+					}
+				}
+			}
+			catch (Exception ex)
+			{
+				ConsoleLuaLibrary.Log(ex.Message);
+			}
+		}
+
+		[LuaMethod(
+			"drawAxis",
+			"Draws an axis of the specified size at the coordinate pair.)")]
+		public void DrawAxis(int componentHandle, int x, int y, int size, Color? color = null)
+		{
+			try
+			{
+				var ptr = new IntPtr(componentHandle);
+				foreach (var form in _luaForms)
+				{
+					if (form.Handle == ptr)
+					{
+						ConsoleLuaLibrary.Log("Drawing functions cannot be used on forms directly. Use them on a PictureBox component.");
+						return;
+					}
+
+					foreach (Control control in form.Controls)
+					{
+						if (control is LuaPictureBox)
+						{
+							(control as LuaPictureBox).DrawAxis(x, y, size, color);
+						}
+					}
+				}
+			}
+			catch (Exception ex)
+			{
+				ConsoleLuaLibrary.Log(ex.Message);
+			}
+		}
+
+		[LuaMethod(
+			"drawArc",
+			"draws a Arc shape at the given coordinates and the given width and height"
 		)]
+		public void DrawArc(int componentHandle, int x, int y, int width, int height, int startangle, int sweepangle, Color? line = null)
+		{
+			try
+			{
+				var ptr = new IntPtr(componentHandle);
+				foreach (var form in _luaForms)
+				{
+					if (form.Handle == ptr)
+					{
+						ConsoleLuaLibrary.Log("Drawing functions cannot be used on forms directly. Use them on a PictureBox component.");
+						return;
+					}
+
+					foreach (Control control in form.Controls)
+					{
+						if (control is LuaPictureBox)
+						{
+							(control as LuaPictureBox).DrawArc(x, y, width, height, startangle, sweepangle, line);
+						}
+					}
+				}
+			}
+			catch (Exception ex)
+			{
+				ConsoleLuaLibrary.Log(ex.Message);
+			}
+		}
+
+		[LuaMethod(
+			"drawPie",
+			"draws a Pie shape at the given coordinates and the given width and height")]
+		public void DrawPie(
+			int componentHandle,
+			int x,
+			int y,
+			int width,
+			int height,
+			int startangle,
+			int sweepangle,
+			Color? line = null,
+			Color? background = null)
+		{
+			try
+			{
+				var ptr = new IntPtr(componentHandle);
+				foreach (var form in _luaForms)
+				{
+					if (form.Handle == ptr)
+					{
+						ConsoleLuaLibrary.Log("Drawing functions cannot be used on forms directly. Use them on a PictureBox component.");
+						return;
+					}
+
+					foreach (Control control in form.Controls)
+					{
+						if (control is LuaPictureBox)
+						{
+							(control as LuaPictureBox).DrawPie(x, y, width, height, startangle, sweepangle, line, background);
+						}
+					}
+				}
+			}
+			catch (Exception ex)
+			{
+				ConsoleLuaLibrary.Log(ex.Message);
+			}
+		}
+
+		[LuaMethod(
+			"drawPixel",
+			"Draws a single pixel at the given coordinates in the given color. Color is optional (if not specified it will be drawn black)")]
+		public void DrawPixel(int componentHandle, int x, int y, Color? color = null)
+		{
+			try
+			{
+				var ptr = new IntPtr(componentHandle);
+				foreach (var form in _luaForms)
+				{
+					if (form.Handle == ptr)
+					{
+						ConsoleLuaLibrary.Log("Drawing functions cannot be used on forms directly. Use them on a PictureBox component.");
+						return;
+					}
+
+					foreach (Control control in form.Controls)
+					{
+						if (control is LuaPictureBox)
+						{
+							(control as LuaPictureBox).DrawPixel(x, y, color);
+						}
+					}
+				}
+			}
+			catch (Exception ex)
+			{
+				ConsoleLuaLibrary.Log(ex.Message);
+			}
+		}
+
+		[LuaMethod(
+			"drawPolygon",
+			"Draws a polygon using the table of coordinates specified in points. This should be a table of tables(each of size 2). Line is the color of the polygon. Background is the optional fill color")]
+		public void DrawPolygon(int componentHandle, LuaTable points, Color? line = null, Color? background = null)
+		{
+			try
+			{
+				var ptr = new IntPtr(componentHandle);
+				foreach (var form in _luaForms)
+				{
+					if (form.Handle == ptr)
+					{
+						ConsoleLuaLibrary.Log("Drawing functions cannot be used on forms directly. Use them on a PictureBox component.");
+						return;
+					}
+
+					foreach (Control control in form.Controls)
+					{
+						if (control is LuaPictureBox)
+						{
+							(control as LuaPictureBox).DrawPolygon(points, line, background);
+						}
+					}
+				}
+			}
+			catch (Exception ex)
+			{
+				ConsoleLuaLibrary.Log(ex.Message);
+			}
+		}
+
+
+		[LuaMethod(
+			"drawRectangle",
+			"Draws a rectangle at the given coordinate and the given width and height. Line is the color of the box. Background is the optional fill color")]
+		public void DrawRectangle(int componentHandle, int x, int y, int width, int height, Color? line = null, Color? background = null)
+		{
+			try
+			{
+				var ptr = new IntPtr(componentHandle);
+				foreach (var form in _luaForms)
+				{
+					if (form.Handle == ptr)
+					{
+						ConsoleLuaLibrary.Log("Drawing functions cannot be used on forms directly. Use them on a PictureBox component.");
+						return;
+					}
+
+					foreach (Control control in form.Controls)
+					{
+						if (control is LuaPictureBox)
+						{
+							(control as LuaPictureBox).DrawRectangle(x, y, width, height, line, background);
+						}
+					}
+				}
+			}
+			catch (Exception ex)
+			{
+				ConsoleLuaLibrary.Log(ex.Message);
+			}
+		}
+
+		[LuaMethod(
+			"drawString",
+			"Alias of DrawText()")]
+		public void DrawString(
+			int componentHandle,
+			int x,
+			int y,
+			string message,
+			Color? forecolor = null,
+			Color? backcolor = null,
+			int? fontsize = null,
+			string fontfamily = null,
+			string fontstyle = null,
+			string horizalign = null,
+			string vertalign = null)
+		{
+			try
+			{
+				var ptr = new IntPtr(componentHandle);
+				foreach (var form in _luaForms)
+				{
+					if (form.Handle == ptr)
+					{
+						ConsoleLuaLibrary.Log("Drawing functions cannot be used on forms directly. Use them on a PictureBox component.");
+						return;
+					}
+
+					foreach (Control control in form.Controls)
+					{
+						if (control is LuaPictureBox)
+						{
+							(control as LuaPictureBox).DrawText(x, y, message, forecolor, backcolor, fontsize, fontfamily, fontstyle, horizalign, vertalign);
+						}
+					}
+				}
+			}
+			catch (Exception ex)
+			{
+				ConsoleLuaLibrary.Log(ex.Message);
+			}
+		}
+
+		[LuaMethod(
+			"drawText",
+			"Draws the given message at the given x,y coordinates and the given color. The default color is white. A fontfamily can be specified and is monospace generic if none is specified (font family options are the same as the .NET FontFamily class). The fontsize default is 12. The default font style is regular. Font style options are regular, bold, italic, strikethrough, underline. Horizontal alignment options are left (default), center, or right. Vertical alignment options are bottom (default), middle, or top. Alignment options specify which ends of the text will be drawn at the x and y coordinates.")]
+		public void DrawText(
+			int componentHandle,
+			int x,
+			int y,
+			string message,
+			Color? forecolor = null,
+			Color? backcolor = null,
+			int? fontsize = null,
+			string fontfamily = null,
+			string fontstyle = null,
+			string horizalign = null,
+			string vertalign = null)
+		{
+			try
+			{
+				var ptr = new IntPtr(componentHandle);
+				foreach (var form in _luaForms)
+				{
+					if (form.Handle == ptr)
+					{
+						ConsoleLuaLibrary.Log("Drawing functions cannot be used on forms directly. Use them on a PictureBox component.");
+						return;
+					}
+
+					foreach (Control control in form.Controls)
+					{
+						if (control is LuaPictureBox)
+						{
+							(control as LuaPictureBox).DrawText(x, y, message, forecolor, backcolor, fontsize, fontfamily, fontstyle, horizalign, vertalign);
+						}
+					}
+				}
+			}
+			catch (Exception ex)
+			{
+				ConsoleLuaLibrary.Log(ex.Message);
+			}
+		}
+
+		// It'd be great if these were simplified into 1 function, but I cannot figure out how to return a LuaTable from this class
+		[LuaMethod(
+			"getMouseX",
+			"Returns an integer representation of the mouse X coordinate relative to the PictureBox.")]
+		public int GetMouseX(int componentHandle)
+		{
+			try
+			{
+				var ptr = new IntPtr(componentHandle);
+				foreach (var form in _luaForms)
+				{
+					if (form.Handle == ptr)
+					{
+						ConsoleLuaLibrary.Log("Drawing functions cannot be used on forms directly. Use them on a PictureBox component.");
+						return 0;
+					}
+
+					foreach (Control control in form.Controls)
+					{
+						if (control is LuaPictureBox)
+						{
+							var position = (control as LuaPictureBox).GetMouse();
+							return position.X;
+						}
+					}
+				}
+			}
+			catch (Exception ex)
+			{
+				ConsoleLuaLibrary.Log(ex.Message);
+			}
+
+			return 0;
+		}
+
+		[LuaMethod(
+			"getMouseY",
+			"Returns an integer representation of the mouse Y coordinate relative to the PictureBox.")]
+		public int GetMouseY(int componentHandle)
+		{
+			try
+			{
+				var ptr = new IntPtr(componentHandle);
+				foreach (var form in _luaForms)
+				{
+					if (form.Handle == ptr)
+					{
+						ConsoleLuaLibrary.Log("Drawing functions cannot be used on forms directly. Use them on a PictureBox component.");
+						return 0;
+					}
+
+					foreach (Control control in form.Controls)
+					{
+						if (control is LuaPictureBox)
+						{
+							var position = (control as LuaPictureBox).GetMouse();
+							return position.Y;
+						}
+					}
+				}
+			}
+			catch (Exception ex)
+			{
+				ConsoleLuaLibrary.Log(ex.Message);
+			}
+
+			return 0;
+		}
+
+		#endregion
+
+		[LuaMethod("setdropdownitems", "Sets the items for a given dropdown box")]
+		public void SetDropdownItems(int handle, LuaTable items)
+		{
+			try
+			{
+				var ptr = new IntPtr(handle);
+				foreach (var form in _luaForms)
+				{
+					if (form.Handle == ptr)
+					{
+						return;
+					}
+
+					foreach (Control control in form.Controls)
+					{
+						if (control.Handle == ptr)
+						{
+							if (control is LuaDropDown)
+							{
+								var dropdownItems = items.Values.Cast<string>().ToList();
+								dropdownItems.Sort();
+								(control as LuaDropDown).SetItems(dropdownItems);
+							}
+
+							return;
+						}
+					}
+				}
+			}
+			catch (Exception ex)
+			{
+				Log(ex.Message);
+			}
+		}
+
+		[LuaMethod("setlocation", "Sets the location of a control or form by passing in the handle of the created object")]
 		public void SetLocation(int handle, int x, int y)
 		{
 			var ptr = new IntPtr(handle);
@@ -471,10 +1267,7 @@ namespace BizHawk.Client.EmuHawk
 			}
 		}
 
-		[LuaMethodAttributes(
-			"setproperty",
-			"Attempts to set the given property of the widget with the given value.  Note: not all properties will be able to be represented for the control to accept"
-		)]
+		[LuaMethod("setproperty", "Attempts to set the given property of the widget with the given value.  Note: not all properties will be able to be represented for the control to accept")]
 		public void SetProperty(int handle, string property, object value)
 		{
 			var ptr = new IntPtr(handle);
@@ -487,16 +1280,25 @@ namespace BizHawk.Client.EmuHawk
 					{
 						value = Enum.Parse(form.GetType().GetProperty(property).PropertyType, value.ToString(), true);
 					}
+
 					if (pt == typeof(Color))
 					{
-						//relying on exceptions for error handling here
+						// relying on exceptions for error handling here
 						var sval = (string)value;
-						if (sval[0] != '#') throw new Exception("Invalid #aarrggbb color");
-						if (sval.Length != 9) throw new Exception("Invalid #aarrggbb color");
-						value = Color.FromArgb(int.Parse(sval.Substring(1),System.Globalization.NumberStyles.HexNumber));
+						if (sval[0] != '#')
+						{
+							throw new Exception("Invalid #aarrggbb color");
+						}
+
+						if (sval.Length != 9)
+						{
+							throw new Exception("Invalid #aarrggbb color");
+						}
+
+						value = Color.FromArgb(int.Parse(sval.Substring(1), System.Globalization.NumberStyles.HexNumber));
 					}
-					form
-						.GetType()
+
+					form.GetType()
 						.GetProperty(property)
 						.SetValue(form, Convert.ChangeType(value, form.GetType().GetProperty(property).PropertyType), null);
 				}
@@ -510,8 +1312,8 @@ namespace BizHawk.Client.EmuHawk
 							{
 								value = Enum.Parse(control.GetType().GetProperty(property).PropertyType, value.ToString(), true);
 							}
-							control
-								.GetType()
+
+							control.GetType()
 								.GetProperty(property)
 								.SetValue(control, Convert.ChangeType(value, control.GetType().GetProperty(property).PropertyType), null);
 						}
@@ -520,19 +1322,13 @@ namespace BizHawk.Client.EmuHawk
 			}
 		}
 
-		[LuaMethodAttributes(
-				"createcolor",
-				"Creates a color object useful with setproperty"
-			)]
+		[LuaMethod("createcolor", "Creates a color object useful with setproperty")]
 		public Color CreateColor(int r, int g, int b, int a)
 		{
 			return Color.FromArgb(a, r, g, b);
 		}
 
-		[LuaMethodAttributes(
-			"setsize",
-			"TODO"
-		)]
+		[LuaMethod("setsize", "TODO")]
 		public void SetSize(int handle, int width, int height)
 		{
 			var ptr = new IntPtr(handle);
@@ -555,10 +1351,7 @@ namespace BizHawk.Client.EmuHawk
 			}
 		}
 
-		[LuaMethodAttributes(
-			"settext",
-			"Sets the text property of a control or form by passing in the handle of the created object"
-		)]
+		[LuaMethod("settext", "Sets the text property of a control or form by passing in the handle of the created object")]
 		public void Settext(int handle, string caption)
 		{
 			var ptr = new IntPtr(handle);
@@ -581,10 +1374,8 @@ namespace BizHawk.Client.EmuHawk
 			}
 		}
 
-		[LuaMethodAttributes(
-			"textbox",
-			"Creates a textbox control on the given form. The caption property will be the initial value of the textbox (default is empty). Width and Height are option, if not specified they will be a default size of 100, 20. Type is an optional property to restrict the textbox input. The available options are HEX, SIGNED, and UNSIGNED. Passing it null or any other value will set it to no restriction. x, and y are the optional location parameters for the position of the textbox within the given form. The function returns the handle of the created textbox. If true, the multiline will enable the standard winform multi-line property. If true, the fixedWidth options will create a fixed width font. Scrollbars is an optional property to specify which scrollbars to display. The available options are Vertical, Horizontal, Both, and None. Scrollbars are only shown on a multiline textbox"
-		)]
+		[LuaMethod(
+			"textbox", "Creates a textbox control on the given form. The caption property will be the initial value of the textbox (default is empty). Width and Height are option, if not specified they will be a default size of 100, 20. Type is an optional property to restrict the textbox input. The available options are HEX, SIGNED, and UNSIGNED. Passing it null or any other value will set it to no restriction. x, and y are the optional location parameters for the position of the textbox within the given form. The function returns the handle of the created textbox. If true, the multiline will enable the standard winform multi-line property. If true, the fixedWidth options will create a fixed width font. Scrollbars is an optional property to specify which scrollbars to display. The available options are Vertical, Horizontal, Both, and None. Scrollbars are only shown on a multiline textbox")]
 		public int Textbox(
 			int formHandle,
 			string caption = null,
@@ -630,6 +1421,7 @@ namespace BizHawk.Client.EmuHawk
 						break;
 				}
 			}
+
 			SetText(textbox, caption);
 
 			if (x.HasValue && y.HasValue)

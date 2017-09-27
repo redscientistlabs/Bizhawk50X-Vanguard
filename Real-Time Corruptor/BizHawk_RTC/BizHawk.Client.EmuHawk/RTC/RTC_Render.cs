@@ -30,12 +30,12 @@ namespace RTC
 			string Key = "RENDER_" + (RTC_Core.GetRandomKey());
 
 			if (lastType == RENDERTYPE.WAV)
-				GlobalWin.MainForm._RecordAv("wave", RTC_Core.rtcDir + "\\RENDEROUTPUT\\" + Key + ".wav", true);
+				GlobalWin.MainForm.RecordAvBase("wave", RTC_Core.rtcDir + "\\RENDEROUTPUT\\" + Key + ".wav", true);
 			else if (lastType == RENDERTYPE.AVI)
 			{
 				try
 				{
-					GlobalWin.MainForm._RecordAv("vfwavi", RTC_Core.rtcDir + "\\RENDEROUTPUT\\" + Key + ".avi", true);
+					GlobalWin.MainForm.RecordAvBase("vfwavi", RTC_Core.rtcDir + "\\RENDEROUTPUT\\" + Key + ".avi", true);
 				}
 				catch (Exception ex)
 				{
@@ -43,7 +43,7 @@ namespace RTC
 				}
 			}
 			else if (lastType == RENDERTYPE.MPEG)
-				GlobalWin.MainForm._RecordAv("ffmpeg", RTC_Core.rtcDir + "\\RENDEROUTPUT\\" + Key + ".mpg", true);
+				GlobalWin.MainForm.RecordAvBase("ffmpeg", RTC_Core.rtcDir + "\\RENDEROUTPUT\\" + Key + ".mpg", true);
 
 			RTC_Core.SendCommandToRTC(new RTC_Command(CommandType.REMOTE_RENDER_STARTED));
 		}
