@@ -1003,8 +1003,10 @@ namespace BizHawk.Client.EmuHawk
 
 				Console.WriteLine("Selecting display size " + lastComputedSize);
 
-				// Change size
-				Size = new Size(lastComputedSize.Width + borderWidth, lastComputedSize.Height + borderHeight);
+                // Change size
+                //RTC_HIJACK : Don't change the MainForm Size
+                //Size = new Size(lastComputedSize.Width + borderWidth, lastComputedSize.Height + borderHeight);
+
 				PerformLayout();
 				PresentationPanel.Resized = true;
 
