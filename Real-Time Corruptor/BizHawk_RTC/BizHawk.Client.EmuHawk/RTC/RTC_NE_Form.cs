@@ -39,9 +39,9 @@ namespace RTC
 		{
 			currentlyOpenNoteForm = null;
 
-			string cleanText = tbNote.Text.Trim();
+            string cleanText = string.Join(Environment.NewLine, tbNote.Lines.Select(it => it.Trim()));
 
-			sk.Note = null;
+            sk.Note = null;
 
 			if (cleanText != "")
 			{

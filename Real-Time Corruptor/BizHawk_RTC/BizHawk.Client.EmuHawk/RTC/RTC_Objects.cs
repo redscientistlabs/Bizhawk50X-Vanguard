@@ -178,7 +178,15 @@ namespace RTC
             //string[] stringargs = { "-c", sks.Filename, RTC_Core.rtcDir + "\\TEMP\\" };
             //FastZipProgram.Exec(stringargs);
 
-			System.IO.Compression.ZipFile.CreateFromDirectory(RTC_Core.rtcDir + "\\TEMP\\", sks.Filename, System.IO.Compression.CompressionLevel.Fastest, false);
+            string tempFilename = sks.Filename + ".temp";
+
+            System.IO.Compression.ZipFile.CreateFromDirectory(RTC_Core.rtcDir + "\\TEMP\\", sks.Filename, System.IO.Compression.CompressionLevel.Fastest, false);
+
+            if (File.Exists(sks.Filename))
+                File.Delete(sks.Filename);
+
+            File.Move(tempFilename, sks.Filename);
+
 
 			RTC_StockpileManager.currentStockpile = sks;
 

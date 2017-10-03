@@ -1134,13 +1134,20 @@ namespace RTC
 
 
 
-			//7z the temp folder to destination filename
-			//string[] stringargs = { "-c", Filename, RTC_Core.rtcDir + "\\TEMP4\\" };
-			//FastZipProgram.Exec(stringargs);
+            //7z the temp folder to destination filename
+            //string[] stringargs = { "-c", Filename, RTC_Core.rtcDir + "\\TEMP4\\" };
+            //FastZipProgram.Exec(stringargs);
 
-			System.IO.Compression.ZipFile.CreateFromDirectory(RTC_Core.rtcDir + "\\TEMP4\\", Filename, System.IO.Compression.CompressionLevel.Fastest, false);
+            string tempFilename = Filename + ".temp";
 
-		}
+            System.IO.Compression.ZipFile.CreateFromDirectory(RTC_Core.rtcDir + "\\TEMP4\\", tempFilename, System.IO.Compression.CompressionLevel.Fastest, false);
+
+            if (File.Exists(Filename))
+                File.Delete(Filename);
+
+            File.Move(tempFilename, Filename);
+
+        }
 
 		private void btnLoadSavestateList_Click(object sender, EventArgs e)
 		{
