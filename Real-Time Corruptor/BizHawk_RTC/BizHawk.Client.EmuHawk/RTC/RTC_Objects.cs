@@ -108,8 +108,23 @@ namespace RTC
 				{
 					AllRoms.Add(key.RomFilename);
 
-					if(key.RomFilename.ToUpper().Contains(".CUE"))
-						AllRoms.Add(key.RomFilename.Substring(0, key.RomFilename.Length -4) + ".bin");
+                    if (key.RomFilename.ToUpper().Contains(".CUE"))
+                    {
+                        string cueFolder = key.RomFilename.Substring(0, key.RomFilename.LastIndexOf("\\") + 1);
+                        string[] cueLines = File.ReadAllLines(key.RomFilename);
+                        List<string> binFiles = new List<string>();
+
+                        foreach(var line in cueLines)
+                            if(line.Contains ("FILE") && line.Contains("BINARY"))
+                            {
+                                int startFilename = line.IndexOf('"') + 1;
+                                int endFilename = line.LastIndexOf('"');
+
+                                binFiles.Add(line.Substring(startFilename, endFilename - startFilename));
+                            }
+                        
+                        AllRoms.AddRange(binFiles.Select(it => cueFolder + it));
+                    }
 				}
 
             //clean temp2 folder
@@ -180,7 +195,12 @@ namespace RTC
 
             string tempFilename = sks.Filename + ".temp";
 
-            System.IO.Compression.ZipFile.CreateFromDirectory(RTC_Core.rtcDir + "\\TEMP\\", sks.Filename, System.IO.Compression.CompressionLevel.Fastest, false);
+            var comp = System.IO.Compression.CompressionLevel.Fastest;
+
+            if (!RTC_Core.ghForm.cbCompressStockpiles.Checked)
+                comp = System.IO.Compression.CompressionLevel.NoCompression;
+
+            System.IO.Compression.ZipFile.CreateFromDirectory(RTC_Core.rtcDir + "\\TEMP\\", tempFilename, comp, false);
 
             if (File.Exists(sks.Filename))
                 File.Delete(sks.Filename);

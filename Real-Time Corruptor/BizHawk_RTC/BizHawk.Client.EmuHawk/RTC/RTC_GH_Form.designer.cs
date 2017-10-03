@@ -172,6 +172,7 @@
             this.SystemName = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.SystemCore = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.Note = new System.Windows.Forms.DataGridViewButtonColumn();
+            this.cbCompressStockpiles = new System.Windows.Forms.CheckBox();
             this.pnSidebar.SuspendLayout();
             this.pnSavestateHolder.SuspendLayout();
             this.panel1.SuspendLayout();
@@ -1750,9 +1751,9 @@
             this.btnStockpileMoveSelectedDown.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnStockpileMoveSelectedDown.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F);
             this.btnStockpileMoveSelectedDown.ForeColor = System.Drawing.Color.Black;
-            this.btnStockpileMoveSelectedDown.Location = new System.Drawing.Point(915, 449);
+            this.btnStockpileMoveSelectedDown.Location = new System.Drawing.Point(918, 449);
             this.btnStockpileMoveSelectedDown.Name = "btnStockpileMoveSelectedDown";
-            this.btnStockpileMoveSelectedDown.Size = new System.Drawing.Size(39, 32);
+            this.btnStockpileMoveSelectedDown.Size = new System.Drawing.Size(36, 32);
             this.btnStockpileMoveSelectedDown.TabIndex = 118;
             this.btnStockpileMoveSelectedDown.TabStop = false;
             this.btnStockpileMoveSelectedDown.Tag = "color:light";
@@ -1768,10 +1769,10 @@
             this.btnStockpileMoveSelectedUp.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnStockpileMoveSelectedUp.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F);
             this.btnStockpileMoveSelectedUp.ForeColor = System.Drawing.Color.Black;
-            this.btnStockpileMoveSelectedUp.Location = new System.Drawing.Point(874, 449);
+            this.btnStockpileMoveSelectedUp.Location = new System.Drawing.Point(882, 449);
             this.btnStockpileMoveSelectedUp.Margin = new System.Windows.Forms.Padding(0);
             this.btnStockpileMoveSelectedUp.Name = "btnStockpileMoveSelectedUp";
-            this.btnStockpileMoveSelectedUp.Size = new System.Drawing.Size(39, 32);
+            this.btnStockpileMoveSelectedUp.Size = new System.Drawing.Size(34, 32);
             this.btnStockpileMoveSelectedUp.TabIndex = 117;
             this.btnStockpileMoveSelectedUp.TabStop = false;
             this.btnStockpileMoveSelectedUp.Tag = "color:light";
@@ -1841,7 +1842,7 @@
             this.btnClearStockpile.ForeColor = System.Drawing.Color.Black;
             this.btnClearStockpile.Location = new System.Drawing.Point(483, 449);
             this.btnClearStockpile.Name = "btnClearStockpile";
-            this.btnClearStockpile.Size = new System.Drawing.Size(106, 32);
+            this.btnClearStockpile.Size = new System.Drawing.Size(105, 32);
             this.btnClearStockpile.TabIndex = 115;
             this.btnClearStockpile.TabStop = false;
             this.btnClearStockpile.Tag = "color:light";
@@ -1904,9 +1905,9 @@
             this.btnRemoveSelectedStockpile.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnRemoveSelectedStockpile.Font = new System.Drawing.Font("Segoe UI Semibold", 9.75F, System.Drawing.FontStyle.Bold);
             this.btnRemoveSelectedStockpile.ForeColor = System.Drawing.Color.Black;
-            this.btnRemoveSelectedStockpile.Location = new System.Drawing.Point(623, 449);
+            this.btnRemoveSelectedStockpile.Location = new System.Drawing.Point(600, 449);
             this.btnRemoveSelectedStockpile.Name = "btnRemoveSelectedStockpile";
-            this.btnRemoveSelectedStockpile.Size = new System.Drawing.Size(117, 32);
+            this.btnRemoveSelectedStockpile.Size = new System.Drawing.Size(99, 32);
             this.btnRemoveSelectedStockpile.TabIndex = 108;
             this.btnRemoveSelectedStockpile.TabStop = false;
             this.btnRemoveSelectedStockpile.Tag = "color:light";
@@ -2158,7 +2159,7 @@
             this.btnRenameSelected.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnRenameSelected.Font = new System.Drawing.Font("Segoe UI Semibold", 9.75F, System.Drawing.FontStyle.Bold);
             this.btnRenameSelected.ForeColor = System.Drawing.Color.Black;
-            this.btnRenameSelected.Location = new System.Drawing.Point(742, 449);
+            this.btnRenameSelected.Location = new System.Drawing.Point(701, 449);
             this.btnRenameSelected.Name = "btnRenameSelected";
             this.btnRenameSelected.Size = new System.Drawing.Size(99, 32);
             this.btnRenameSelected.TabIndex = 135;
@@ -2373,12 +2374,28 @@
             this.Note.Text = "";
             this.Note.Width = 35;
             // 
+            // cbCompressStockpiles
+            // 
+            this.cbCompressStockpiles.AutoSize = true;
+            this.cbCompressStockpiles.Checked = true;
+            this.cbCompressStockpiles.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.cbCompressStockpiles.Font = new System.Drawing.Font("Segoe UI", 8F);
+            this.cbCompressStockpiles.ForeColor = System.Drawing.Color.White;
+            this.cbCompressStockpiles.Location = new System.Drawing.Point(804, 450);
+            this.cbCompressStockpiles.Name = "cbCompressStockpiles";
+            this.cbCompressStockpiles.Size = new System.Drawing.Size(78, 30);
+            this.cbCompressStockpiles.TabIndex = 144;
+            this.cbCompressStockpiles.TabStop = false;
+            this.cbCompressStockpiles.Text = "Compess\nStockpiles";
+            this.cbCompressStockpiles.UseVisualStyleBackColor = true;
+            // 
             // RTC_GH_Form
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
             this.ClientSize = new System.Drawing.Size(964, 493);
+            this.Controls.Add(this.cbCompressStockpiles);
             this.Controls.Add(this.pnSidebar);
             this.Controls.Add(this.dgvStockpile);
             this.Controls.Add(this.label9);
@@ -2577,5 +2594,6 @@
         private System.Windows.Forms.DataGridViewTextBoxColumn SystemName;
         private System.Windows.Forms.DataGridViewTextBoxColumn SystemCore;
         private System.Windows.Forms.DataGridViewButtonColumn Note;
+        public System.Windows.Forms.CheckBox cbCompressStockpiles;
     }
 }

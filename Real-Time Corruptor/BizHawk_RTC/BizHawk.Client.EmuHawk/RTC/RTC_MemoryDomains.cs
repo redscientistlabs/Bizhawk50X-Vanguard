@@ -297,7 +297,7 @@ namespace RTC
 				MemoryInterfaces.Clear();
 
                 foreach (MemoryInterface mi in (MemoryInterface[])returns[0])
-                    if(MemoryInterfaces.ContainsKey(mi.ToString()))
+                    if(!MemoryInterfaces.ContainsKey(mi.ToString()))
                         MemoryInterfaces.Add(mi.ToString(), mi);
 
 				MainDomain = (string)returns[1];
@@ -317,7 +317,7 @@ namespace RTC
 			ServiceInjector.UpdateServices(Global.Emulator.ServiceProvider, MDRI);
 
 			foreach (MemoryDomain _domain in MDRI.MemoryDomains)
-                if (MemoryInterfaces.ContainsKey(_domain.ToString()))
+                if (!MemoryInterfaces.ContainsKey(_domain.ToString()))
                     MemoryInterfaces.Add(_domain.ToString(), new MemoryDomainProxy(_domain));
 
 			MainDomain = MDRI.MemoryDomains.MainMemory.ToString();
