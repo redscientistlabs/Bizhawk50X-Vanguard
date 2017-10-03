@@ -72,7 +72,6 @@ namespace BizHawk.Emulation.Cores.Nintendo.SNES
 
 				MakeMemoryDomain("SGB CARTRAM", LibsnesApi.SNES_MEMORY.SGB_CARTRAM, MemoryDomain.Endian.Little);
 
-				MakeMemoryDomain("WRAM", LibsnesApi.SNES_MEMORY.WRAM, MemoryDomain.Endian.Little);
 			}
 
 

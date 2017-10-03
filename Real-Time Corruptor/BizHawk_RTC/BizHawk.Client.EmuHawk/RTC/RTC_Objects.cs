@@ -1383,7 +1383,14 @@ namespace RTC
                     Global.CheatList.Add(ch);
                 }
                 else
-                    RTC_MemoryDomains.FreezeAddress(Address, cheatName);
+                {
+                    int _value = mdp.PeekByte(targetAddress);
+
+                    Watch somewatch = Watch.GenerateWatch(mdp.md, targetAddress, settings.Size, DisplayType, BigEndian, cheatName, _value, 0, 0);
+                    Cheat ch = new Cheat(somewatch, Value, null, true);
+                    Global.CheatList.Add(ch);
+                }
+                    //RTC_MemoryDomains.FreezeAddress(Address, cheatName);
 
                 
             }

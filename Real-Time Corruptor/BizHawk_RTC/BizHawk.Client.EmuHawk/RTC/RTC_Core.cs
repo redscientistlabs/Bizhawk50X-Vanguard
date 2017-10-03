@@ -17,7 +17,7 @@ namespace RTC
 
     public static class RTC_Core
     {
-		public static string RtcVersion = "3.02c";
+		public static string RtcVersion = "3.03b";
 		
         public static Random RND = new Random();
         public static string[] args;
@@ -233,16 +233,7 @@ namespace RTC
 
 
             //RTC skin color
-            if (isStandalone || !RTC_Hooks.isRemoteRTC)
-			{
-				if (File.Exists(rtcDir + "\\params\\COLOR.TXT"))
-				{
-					string[] bytes = File.ReadAllText(rtcDir + "\\params\\COLOR.TXT").Split(',');
-					SetRTCColor(Color.FromArgb(Convert.ToByte(bytes[0]), Convert.ToByte(bytes[1]), Convert.ToByte(bytes[2])));
-				}
-				else
-					SetRTCColor(Color.FromArgb(110, 150, 193));
-			}
+            RTC_Params.LoadRTCColor();
 
             //Initiation of loopback TCP, only in DETACHED MODE
 			if (RTC_Hooks.isRemoteRTC || RTC_Core.isStandalone)
@@ -535,7 +526,7 @@ namespace RTC
                 {
                     bl = new BlastLayer();
 
-                    if (RTC_Core.SelectedEngine != CorruptionEngine.FREEZE && (_selectedDomains == null || _selectedDomains.Count() == 0))
+                    if (_selectedDomains == null || _selectedDomains.Count() == 0)
 						return null;
 
 					// Age distortion BlastBytes
@@ -564,10 +555,7 @@ namespace RTC
 
                             for (int i = 0; i < _Intensity; i++) 
                             {
-								if (RTC_Core.SelectedEngine != CorruptionEngine.FREEZE)
-									Domain = _selectedDomains[RND.Next(_selectedDomains.Length)];
-								else
-                                    Domain = RTC_MemoryDomains.MainDomain.ToString();
+								Domain = _selectedDomains[RND.Next(_selectedDomains.Length)];
 
                                 MaxAddress = RTC_MemoryDomains.getInterface(Domain).Size;
                                 RandomAddress = RTC_Core.RND.RandomLong(MaxAddress -1);
@@ -581,10 +569,7 @@ namespace RTC
 
                         case BlastRadius.CHUNK: //Randomly spreads the corruption bytes in one randomly selected domain
 
-							if (RTC_Core.SelectedEngine != CorruptionEngine.FREEZE)
-								Domain = _selectedDomains[RND.Next(_selectedDomains.Length)];
-							else
-								Domain = RTC_MemoryDomains.MainDomain.ToString();
+							Domain = _selectedDomains[RND.Next(_selectedDomains.Length)];
 
 							MaxAddress = RTC_MemoryDomains.getInterface(Domain).Size;
 
@@ -603,10 +588,7 @@ namespace RTC
 
                             for (int j = 0; j < 10; j++) 
                             {
-								if (RTC_Core.SelectedEngine != CorruptionEngine.FREEZE)
-									Domain = _selectedDomains[RND.Next(_selectedDomains.Length)];
-								else
-									Domain = RTC_MemoryDomains.MainDomain.ToString();
+								Domain = _selectedDomains[RND.Next(_selectedDomains.Length)];
 
 								MaxAddress = RTC_MemoryDomains.getInterface(Domain).Size;
 
@@ -878,7 +860,7 @@ namespace RTC
 
 		}
 
-		public static void SetAndSaveColorRTC()
+		public static void SelectRTCColor()
 		{
 			// Show the color dialog.
 			Color color;
@@ -895,7 +877,8 @@ namespace RTC
 
 			SetRTCColor(color);
 
-			File.WriteAllText(rtcDir + "\\params\\COLOR.TXT", color.R.ToString() + "," + color.G.ToString() + "," + color.B.ToString());
+            RTC_Params.SaveRTCColor(color);
+			
 		}
 	}
 

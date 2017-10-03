@@ -236,14 +236,10 @@ namespace RTC
 			cbExternalSelectedPlugin.SelectedIndex = 0;
 
 
-			if (File.Exists(RTC_Core.rtcDir + "\\PARAMS\\DISCLAIMER.TXT"))
+			if (!File.Exists(RTC_Core.rtcDir + "\\PARAMS\\DISCLAIMER_READ"))
 			{
-				MessageBox.Show(File.ReadAllText(RTC_Core.rtcDir + "\\PARAMS\\DISCLAIMER.TXT").Replace("[ver]",RTC_Core.RtcVersion), "RTC", MessageBoxButtons.OK, MessageBoxIcon.Information);
-
-				if (File.Exists(RTC_Core.rtcDir + "\\PARAMS\\DISCLAIMER.OLD"))
-					File.Delete(RTC_Core.rtcDir + "\\PARAMS\\DISCLAIMER.OLD");
-
-				File.Move(RTC_Core.rtcDir + "\\PARAMS\\DISCLAIMER.TXT", RTC_Core.rtcDir + "\\PARAMS\\DISCLAIMER.OLD");
+				MessageBox.Show(File.ReadAllText(RTC_Core.rtcDir + "\\LICENSES\\DISCLAIMER.TXT").Replace("[ver]",RTC_Core.RtcVersion), "RTC", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                File.WriteAllText(RTC_Core.rtcDir + "\\PARAMS\\DISCLAIMER_READ", "");
 			}
 
             RTC_Core.CheckForProblematicProcesses();
@@ -783,6 +779,10 @@ namespace RTC
 			}
 		}
 
+        /*
+        
+         //Legacy Active Table code
+
         private void btnActiveTableDumpsReset_Click(object sender, EventArgs e)
         {
             RTC_FreezeEngine.ResetActiveTable();
@@ -875,6 +875,8 @@ namespace RTC
             }
         }
 
+        */
+
         private void btnReboot_MouseDown(object sender, MouseEventArgs e)
         {
             Point locate = new Point((sender as Button).Location.X + e.Location.X, (sender as Button).Location.Y + e.Location.Y);
@@ -882,7 +884,7 @@ namespace RTC
 			ContextMenuStrip ParamsButtonMenu = new ContextMenuStrip();
             ParamsButtonMenu.Items.Add("Open the online wiki", null, new EventHandler((ob, ev) => Process.Start("https://corrupt.wiki/")));
             ParamsButtonMenu.Items.Add(new ToolStripSeparator());
-            ParamsButtonMenu.Items.Add("Change RTC skin color", null, new EventHandler((ev, ob)=> { RTC_Core.SetAndSaveColorRTC(); }));
+            ParamsButtonMenu.Items.Add("Change RTC skin color", null, new EventHandler((ev, ob)=> { RTC_Core.SelectRTCColor(); }));
 			ParamsButtonMenu.Items.Add("Reset RTC Parameters", null, null).Enabled = false;
 			ParamsButtonMenu.Items.Add("Reset RTC Parameters + Window Parameters", null, null).Enabled = false;
 			ParamsButtonMenu.Items.Add(new ToolStripSeparator());

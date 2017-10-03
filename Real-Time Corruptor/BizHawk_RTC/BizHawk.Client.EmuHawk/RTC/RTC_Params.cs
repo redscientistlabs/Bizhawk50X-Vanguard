@@ -1,5 +1,8 @@
-﻿using System;
+﻿using BizHawk.Client.EmuHawk;
+using System;
 using System.Collections.Generic;
+using System.Drawing;
+using System.IO;
 using System.Linq;
 using System.Text;
 
@@ -82,6 +85,44 @@ namespace RTC
 					refs[i].Value = objectList[i];
 
 		}
+
+
+        public static void LoadRTCColor()
+        {
+            if (RTC_Core.isStandalone || !RTC_Hooks.isRemoteRTC)
+            {
+                if (File.Exists(RTC_Core.rtcDir + "\\params\\COLOR"))
+                {
+                    string[] bytes = File.ReadAllText(RTC_Core.rtcDir + "\\params\\COLOR").Split(',');
+                    RTC_Core.SetRTCColor(Color.FromArgb(Convert.ToByte(bytes[0]), Convert.ToByte(bytes[1]), Convert.ToByte(bytes[2])));
+                }
+                else
+                    RTC_Core.SetRTCColor(Color.FromArgb(110, 150, 193));
+            }
+        }
+
+        public static void SaveRTCColor(Color color)
+        {
+            File.WriteAllText(RTC_Core.rtcDir + "\\params\\COLOR", color.R.ToString() + "," + color.G.ToString() + "," + color.B.ToString());
+        }
+
+        public static void LoadBizhawkWindowState()
+        {
+            if(File.Exists(RTC_Core.rtcDir + "\\params\\BIZHAWK_SIZE"))
+            {
+                string[] size = File.ReadAllText(RTC_Core.rtcDir + "\\params\\BIZHAWK_SIZE").Split(',');
+                GlobalWin.MainForm.Size = new Size(Convert.ToInt32(size[0]), Convert.ToInt32(size[1]));
+                string[] location = File.ReadAllText(RTC_Core.rtcDir + "\\params\\BIZHAWK_LOCATION").Split(',');
+                GlobalWin.MainForm.Location = new Point(Convert.ToInt32(location[0]), Convert.ToInt32(location[1]));
+            }
+        }
+
+        public static void SaveBizhawkWindowState()
+        {
+            File.WriteAllText(RTC_Core.rtcDir + "\\params\\BIZHAWK_SIZE", $"{GlobalWin.MainForm.Size.Width},{GlobalWin.MainForm.Size.Height}");
+            File.WriteAllText(RTC_Core.rtcDir + "\\params\\BIZHAWK_LOCATION", $"{GlobalWin.MainForm.Location.X},{GlobalWin.MainForm.Location.Y}");
+        }
+
 		
 	}
 

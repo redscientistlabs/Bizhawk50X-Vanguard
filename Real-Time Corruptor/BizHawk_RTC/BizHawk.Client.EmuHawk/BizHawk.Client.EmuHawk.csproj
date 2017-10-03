@@ -720,6 +720,7 @@
     <Compile Include="RTC\RTC_Form.designer.cs">
       <DependentUpon>RTC_Form.cs</DependentUpon>
     </Compile>
+    <Compile Include="RTC\RTC_ActiveTable.cs" />
     <Compile Include="RTC\RTC_FreezeEngine.cs" />
     <Compile Include="RTC\RTC_GameProtection.cs" />
     <Compile Include="RTC\RTC_GH_Form.cs">

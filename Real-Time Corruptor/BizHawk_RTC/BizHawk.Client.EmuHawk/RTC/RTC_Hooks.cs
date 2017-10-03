@@ -121,6 +121,8 @@ namespace RTC
 
 			RTC_Core.LoadDefaultRom();
 
+            RTC_Params.LoadBizhawkWindowState();
+
 			GlobalWin.MainForm.Focus();
         }
 
@@ -128,7 +130,7 @@ namespace RTC
         {
 			if (DisableRTC) return;
 
-
+            RTC_Params.SaveBizhawkWindowState();
         }
 
         public static void MAINFORM_CLOSING()

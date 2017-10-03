@@ -91,35 +91,6 @@
             this.nmMaxFreezes = new System.Windows.Forms.NumericUpDown();
             this.label4 = new System.Windows.Forms.Label();
             this.cbFreezeEngineActive = new System.Windows.Forms.CheckBox();
-            this.btnActiveTableSubstractFile = new System.Windows.Forms.Button();
-            this.label16 = new System.Windows.Forms.Label();
-            this.nmAutoAddSec = new System.Windows.Forms.NumericUpDown();
-            this.cbAutoAddDump = new System.Windows.Forms.CheckBox();
-            this.btnActiveTableAddDump = new System.Windows.Forms.Button();
-            this.btnActiveTableDumpsReset = new System.Windows.Forms.Button();
-            this.groupBox2 = new System.Windows.Forms.GroupBox();
-            this.cbActiveTableExclude100percent = new System.Windows.Forms.CheckBox();
-            this.track_ActiveTableActivityThreshold = new System.Windows.Forms.TrackBar();
-            this.label15 = new System.Windows.Forms.Label();
-            this.nmActiveTableActivityThreshold = new System.Windows.Forms.NumericUpDown();
-            this.label14 = new System.Windows.Forms.Label();
-            this.groupBox1 = new System.Windows.Forms.GroupBox();
-            this.label12 = new System.Windows.Forms.Label();
-            this.nmActiveTableCapOffset = new System.Windows.Forms.NumericUpDown();
-            this.rbActiveTableCapBlockEnd = new System.Windows.Forms.RadioButton();
-            this.rbActiveTableCapBlockStart = new System.Windows.Forms.RadioButton();
-            this.rbActiveTableCapRandom = new System.Windows.Forms.RadioButton();
-            this.nmActiveTableCapSize = new System.Windows.Forms.NumericUpDown();
-            this.label6 = new System.Windows.Forms.Label();
-            this.cbActiveTableCapSize = new System.Windows.Forms.CheckBox();
-            this.lbFreezeEngineNbDumps = new System.Windows.Forms.Label();
-            this.btnActiveTableQuickSave = new System.Windows.Forms.Button();
-            this.lbFreezeEngineActiveStatus = new System.Windows.Forms.Label();
-            this.lbFreezeEngineDomainAddressSize = new System.Windows.Forms.Label();
-            this.btnActiveTableLoad = new System.Windows.Forms.Button();
-            this.btnActiveTableSaveAs = new System.Windows.Forms.Button();
-            this.btnActiveTableGenerate = new System.Windows.Forms.Button();
-            this.lbFreezeEngineActiveTableSize = new System.Windows.Forms.Label();
             this.pnGeneralParameters = new System.Windows.Forms.Panel();
             this.label5 = new System.Windows.Forms.Label();
             this.pnCorruptionEngine = new System.Windows.Forms.Panel();
@@ -129,7 +100,6 @@
             this.cbMemoryDomainTool = new System.Windows.Forms.ComboBox();
             this.label17 = new System.Windows.Forms.Label();
             this.pnEngineConfig = new System.Windows.Forms.Panel();
-            this.panel1 = new System.Windows.Forms.Panel();
             this.gbVectorEngine = new System.Windows.Forms.GroupBox();
             this.cbVectorValueList = new System.Windows.Forms.ComboBox();
             this.label19 = new System.Windows.Forms.Label();
@@ -162,18 +132,10 @@
             this.gbExternalRomPlugin.SuspendLayout();
             this.gbFreezeEngine.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.nmMaxFreezes)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.nmAutoAddSec)).BeginInit();
-            this.groupBox2.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.track_ActiveTableActivityThreshold)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.nmActiveTableActivityThreshold)).BeginInit();
-            this.groupBox1.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.nmActiveTableCapOffset)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.nmActiveTableCapSize)).BeginInit();
             this.pnGeneralParameters.SuspendLayout();
             this.pnCorruptionEngine.SuspendLayout();
             this.pnMemoryTargetting.SuspendLayout();
             this.pnEngineConfig.SuspendLayout();
-            this.panel1.SuspendLayout();
             this.gbVectorEngine.SuspendLayout();
             this.gbPipeEngine.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.nmTiltPipeValue)).BeginInit();
@@ -1184,380 +1146,6 @@
             this.cbFreezeEngineActive.UseVisualStyleBackColor = true;
             this.cbFreezeEngineActive.Visible = false;
             // 
-            // btnActiveTableSubstractFile
-            // 
-            this.btnActiveTableSubstractFile.BackColor = System.Drawing.Color.Black;
-            this.btnActiveTableSubstractFile.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btnActiveTableSubstractFile.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btnActiveTableSubstractFile.ForeColor = System.Drawing.Color.Silver;
-            this.btnActiveTableSubstractFile.Location = new System.Drawing.Point(6, 176);
-            this.btnActiveTableSubstractFile.Name = "btnActiveTableSubstractFile";
-            this.btnActiveTableSubstractFile.Size = new System.Drawing.Size(161, 23);
-            this.btnActiveTableSubstractFile.TabIndex = 123;
-            this.btnActiveTableSubstractFile.Text = "Substract file from table";
-            this.btnActiveTableSubstractFile.UseVisualStyleBackColor = false;
-            this.btnActiveTableSubstractFile.Click += new System.EventHandler(this.btnActiveTableSubstractFile_Click);
-            // 
-            // label16
-            // 
-            this.label16.AutoSize = true;
-            this.label16.ForeColor = System.Drawing.Color.White;
-            this.label16.Location = new System.Drawing.Point(140, 58);
-            this.label16.Name = "label16";
-            this.label16.Size = new System.Drawing.Size(24, 13);
-            this.label16.TabIndex = 122;
-            this.label16.Text = "sec";
-            // 
-            // nmAutoAddSec
-            // 
-            this.nmAutoAddSec.BackColor = System.Drawing.Color.Black;
-            this.nmAutoAddSec.ForeColor = System.Drawing.Color.Gold;
-            this.nmAutoAddSec.Location = new System.Drawing.Point(99, 54);
-            this.nmAutoAddSec.Minimum = new decimal(new int[] {
-            1,
-            0,
-            0,
-            0});
-            this.nmAutoAddSec.Name = "nmAutoAddSec";
-            this.nmAutoAddSec.Size = new System.Drawing.Size(39, 20);
-            this.nmAutoAddSec.TabIndex = 122;
-            this.nmAutoAddSec.Value = new decimal(new int[] {
-            1,
-            0,
-            0,
-            0});
-            this.nmAutoAddSec.ValueChanged += new System.EventHandler(this.nmAutoAddSec_ValueChanged);
-            this.nmAutoAddSec.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.nmAutoAddSec_ValueChanged);
-            this.nmAutoAddSec.KeyUp += new System.Windows.Forms.KeyEventHandler(this.nmAutoAddSec_ValueChanged);
-            // 
-            // cbAutoAddDump
-            // 
-            this.cbAutoAddDump.AutoSize = true;
-            this.cbAutoAddDump.Enabled = false;
-            this.cbAutoAddDump.Font = new System.Drawing.Font("Microsoft Sans Serif", 8F);
-            this.cbAutoAddDump.ForeColor = System.Drawing.Color.White;
-            this.cbAutoAddDump.Location = new System.Drawing.Point(5, 57);
-            this.cbAutoAddDump.Name = "cbAutoAddDump";
-            this.cbAutoAddDump.Size = new System.Drawing.Size(98, 17);
-            this.cbAutoAddDump.TabIndex = 122;
-            this.cbAutoAddDump.Text = "Auto-add every";
-            this.cbAutoAddDump.UseVisualStyleBackColor = true;
-            this.cbAutoAddDump.CheckedChanged += new System.EventHandler(this.cbAutoAddDump_CheckedChanged);
-            // 
-            // btnActiveTableAddDump
-            // 
-            this.btnActiveTableAddDump.BackColor = System.Drawing.Color.Black;
-            this.btnActiveTableAddDump.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btnActiveTableAddDump.ForeColor = System.Drawing.Color.Silver;
-            this.btnActiveTableAddDump.Location = new System.Drawing.Point(5, 27);
-            this.btnActiveTableAddDump.Name = "btnActiveTableAddDump";
-            this.btnActiveTableAddDump.Size = new System.Drawing.Size(161, 23);
-            this.btnActiveTableAddDump.TabIndex = 121;
-            this.btnActiveTableAddDump.Text = "Add state to collection";
-            this.btnActiveTableAddDump.UseVisualStyleBackColor = false;
-            this.btnActiveTableAddDump.Click += new System.EventHandler(this.btnActiveTableAddDump_Click);
-            // 
-            // btnActiveTableDumpsReset
-            // 
-            this.btnActiveTableDumpsReset.BackColor = System.Drawing.Color.Black;
-            this.btnActiveTableDumpsReset.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btnActiveTableDumpsReset.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(192)))), ((int)(((byte)(255)))), ((int)(((byte)(192)))));
-            this.btnActiveTableDumpsReset.Location = new System.Drawing.Point(5, 4);
-            this.btnActiveTableDumpsReset.Name = "btnActiveTableDumpsReset";
-            this.btnActiveTableDumpsReset.Size = new System.Drawing.Size(161, 23);
-            this.btnActiveTableDumpsReset.TabIndex = 83;
-            this.btnActiveTableDumpsReset.Text = "Reset dump collection";
-            this.btnActiveTableDumpsReset.UseVisualStyleBackColor = false;
-            this.btnActiveTableDumpsReset.Click += new System.EventHandler(this.btnActiveTableDumpsReset_Click);
-            // 
-            // groupBox2
-            // 
-            this.groupBox2.Controls.Add(this.cbActiveTableExclude100percent);
-            this.groupBox2.Controls.Add(this.track_ActiveTableActivityThreshold);
-            this.groupBox2.Controls.Add(this.label15);
-            this.groupBox2.Controls.Add(this.nmActiveTableActivityThreshold);
-            this.groupBox2.Controls.Add(this.label14);
-            this.groupBox2.Controls.Add(this.groupBox1);
-            this.groupBox2.Controls.Add(this.nmActiveTableCapSize);
-            this.groupBox2.Controls.Add(this.label6);
-            this.groupBox2.Controls.Add(this.cbActiveTableCapSize);
-            this.groupBox2.ForeColor = System.Drawing.Color.White;
-            this.groupBox2.Location = new System.Drawing.Point(173, 2);
-            this.groupBox2.Name = "groupBox2";
-            this.groupBox2.Size = new System.Drawing.Size(211, 243);
-            this.groupBox2.TabIndex = 87;
-            this.groupBox2.TabStop = false;
-            this.groupBox2.Text = "Generation parameters";
-            // 
-            // cbActiveTableExclude100percent
-            // 
-            this.cbActiveTableExclude100percent.AutoSize = true;
-            this.cbActiveTableExclude100percent.Checked = true;
-            this.cbActiveTableExclude100percent.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.cbActiveTableExclude100percent.Font = new System.Drawing.Font("Microsoft Sans Serif", 8F);
-            this.cbActiveTableExclude100percent.ForeColor = System.Drawing.Color.White;
-            this.cbActiveTableExclude100percent.Location = new System.Drawing.Point(14, 72);
-            this.cbActiveTableExclude100percent.Name = "cbActiveTableExclude100percent";
-            this.cbActiveTableExclude100percent.Size = new System.Drawing.Size(146, 17);
-            this.cbActiveTableExclude100percent.TabIndex = 122;
-            this.cbActiveTableExclude100percent.Text = "Exclude ever-changing %";
-            this.cbActiveTableExclude100percent.UseVisualStyleBackColor = true;
-            // 
-            // track_ActiveTableActivityThreshold
-            // 
-            this.track_ActiveTableActivityThreshold.Location = new System.Drawing.Point(8, 36);
-            this.track_ActiveTableActivityThreshold.Maximum = 9999;
-            this.track_ActiveTableActivityThreshold.Name = "track_ActiveTableActivityThreshold";
-            this.track_ActiveTableActivityThreshold.Size = new System.Drawing.Size(197, 45);
-            this.track_ActiveTableActivityThreshold.TabIndex = 85;
-            this.track_ActiveTableActivityThreshold.TickFrequency = 0;
-            this.track_ActiveTableActivityThreshold.Scroll += new System.EventHandler(this.track_ActiveTableActivityThreshold_Scroll);
-            // 
-            // label15
-            // 
-            this.label15.AutoSize = true;
-            this.label15.Location = new System.Drawing.Point(164, 19);
-            this.label15.Name = "label15";
-            this.label15.Size = new System.Drawing.Size(15, 13);
-            this.label15.TabIndex = 121;
-            this.label15.Text = "%";
-            // 
-            // nmActiveTableActivityThreshold
-            // 
-            this.nmActiveTableActivityThreshold.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
-            this.nmActiveTableActivityThreshold.DecimalPlaces = 2;
-            this.nmActiveTableActivityThreshold.ForeColor = System.Drawing.Color.White;
-            this.nmActiveTableActivityThreshold.Location = new System.Drawing.Point(108, 15);
-            this.nmActiveTableActivityThreshold.Maximum = new decimal(new int[] {
-            999,
-            0,
-            0,
-            65536});
-            this.nmActiveTableActivityThreshold.Name = "nmActiveTableActivityThreshold";
-            this.nmActiveTableActivityThreshold.Size = new System.Drawing.Size(53, 20);
-            this.nmActiveTableActivityThreshold.TabIndex = 120;
-            this.nmActiveTableActivityThreshold.ValueChanged += new System.EventHandler(this.nmActiveTableActivityThreshold_ValueChanged);
-            this.nmActiveTableActivityThreshold.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.nmActiveTableActivityThreshold_ValueChanged);
-            this.nmActiveTableActivityThreshold.KeyUp += new System.Windows.Forms.KeyEventHandler(this.nmActiveTableActivityThreshold_ValueChanged);
-            // 
-            // label14
-            // 
-            this.label14.AutoSize = true;
-            this.label14.Location = new System.Drawing.Point(10, 19);
-            this.label14.Name = "label14";
-            this.label14.Size = new System.Drawing.Size(94, 13);
-            this.label14.TabIndex = 119;
-            this.label14.Text = "Activity Threshold:";
-            // 
-            // groupBox1
-            // 
-            this.groupBox1.Controls.Add(this.label12);
-            this.groupBox1.Controls.Add(this.nmActiveTableCapOffset);
-            this.groupBox1.Controls.Add(this.rbActiveTableCapBlockEnd);
-            this.groupBox1.Controls.Add(this.rbActiveTableCapBlockStart);
-            this.groupBox1.Controls.Add(this.rbActiveTableCapRandom);
-            this.groupBox1.ForeColor = System.Drawing.Color.White;
-            this.groupBox1.Location = new System.Drawing.Point(14, 137);
-            this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(182, 93);
-            this.groupBox1.TabIndex = 85;
-            this.groupBox1.TabStop = false;
-            this.groupBox1.Text = "Capping distribution";
-            // 
-            // label12
-            // 
-            this.label12.AutoSize = true;
-            this.label12.Location = new System.Drawing.Point(8, 69);
-            this.label12.Name = "label12";
-            this.label12.Size = new System.Drawing.Size(38, 13);
-            this.label12.TabIndex = 80;
-            this.label12.Text = "Offset:";
-            // 
-            // nmActiveTableCapOffset
-            // 
-            this.nmActiveTableCapOffset.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
-            this.nmActiveTableCapOffset.ForeColor = System.Drawing.Color.White;
-            this.nmActiveTableCapOffset.Location = new System.Drawing.Point(48, 67);
-            this.nmActiveTableCapOffset.Maximum = new decimal(new int[] {
-            65536,
-            0,
-            0,
-            0});
-            this.nmActiveTableCapOffset.Name = "nmActiveTableCapOffset";
-            this.nmActiveTableCapOffset.Size = new System.Drawing.Size(64, 20);
-            this.nmActiveTableCapOffset.TabIndex = 119;
-            // 
-            // rbActiveTableCapBlockEnd
-            // 
-            this.rbActiveTableCapBlockEnd.AutoSize = true;
-            this.rbActiveTableCapBlockEnd.Location = new System.Drawing.Point(8, 47);
-            this.rbActiveTableCapBlockEnd.Name = "rbActiveTableCapBlockEnd";
-            this.rbActiveTableCapBlockEnd.Size = new System.Drawing.Size(105, 17);
-            this.rbActiveTableCapBlockEnd.TabIndex = 2;
-            this.rbActiveTableCapBlockEnd.Text = "Block - From end";
-            this.rbActiveTableCapBlockEnd.UseVisualStyleBackColor = true;
-            // 
-            // rbActiveTableCapBlockStart
-            // 
-            this.rbActiveTableCapBlockStart.AutoSize = true;
-            this.rbActiveTableCapBlockStart.Location = new System.Drawing.Point(8, 32);
-            this.rbActiveTableCapBlockStart.Name = "rbActiveTableCapBlockStart";
-            this.rbActiveTableCapBlockStart.Size = new System.Drawing.Size(107, 17);
-            this.rbActiveTableCapBlockStart.TabIndex = 1;
-            this.rbActiveTableCapBlockStart.Text = "Block - From start";
-            this.rbActiveTableCapBlockStart.UseVisualStyleBackColor = true;
-            // 
-            // rbActiveTableCapRandom
-            // 
-            this.rbActiveTableCapRandom.AutoSize = true;
-            this.rbActiveTableCapRandom.Checked = true;
-            this.rbActiveTableCapRandom.Location = new System.Drawing.Point(8, 17);
-            this.rbActiveTableCapRandom.Name = "rbActiveTableCapRandom";
-            this.rbActiveTableCapRandom.Size = new System.Drawing.Size(65, 17);
-            this.rbActiveTableCapRandom.TabIndex = 0;
-            this.rbActiveTableCapRandom.TabStop = true;
-            this.rbActiveTableCapRandom.Text = "Random";
-            this.rbActiveTableCapRandom.UseVisualStyleBackColor = true;
-            // 
-            // nmActiveTableCapSize
-            // 
-            this.nmActiveTableCapSize.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
-            this.nmActiveTableCapSize.ForeColor = System.Drawing.Color.White;
-            this.nmActiveTableCapSize.Location = new System.Drawing.Point(66, 111);
-            this.nmActiveTableCapSize.Maximum = new decimal(new int[] {
-            -1,
-            0,
-            0,
-            0});
-            this.nmActiveTableCapSize.Minimum = new decimal(new int[] {
-            1,
-            0,
-            0,
-            0});
-            this.nmActiveTableCapSize.Name = "nmActiveTableCapSize";
-            this.nmActiveTableCapSize.Size = new System.Drawing.Size(130, 20);
-            this.nmActiveTableCapSize.TabIndex = 77;
-            this.nmActiveTableCapSize.Value = new decimal(new int[] {
-            2048,
-            0,
-            0,
-            0});
-            // 
-            // label6
-            // 
-            this.label6.AutoSize = true;
-            this.label6.Location = new System.Drawing.Point(13, 114);
-            this.label6.Name = "label6";
-            this.label6.Size = new System.Drawing.Size(50, 13);
-            this.label6.TabIndex = 118;
-            this.label6.Text = "Cap size:";
-            // 
-            // cbActiveTableCapSize
-            // 
-            this.cbActiveTableCapSize.AutoSize = true;
-            this.cbActiveTableCapSize.Font = new System.Drawing.Font("Microsoft Sans Serif", 8F);
-            this.cbActiveTableCapSize.ForeColor = System.Drawing.Color.White;
-            this.cbActiveTableCapSize.Location = new System.Drawing.Point(14, 91);
-            this.cbActiveTableCapSize.Name = "cbActiveTableCapSize";
-            this.cbActiveTableCapSize.Size = new System.Drawing.Size(124, 17);
-            this.cbActiveTableCapSize.TabIndex = 77;
-            this.cbActiveTableCapSize.Text = "Cap active table size";
-            this.cbActiveTableCapSize.UseVisualStyleBackColor = true;
-            // 
-            // lbFreezeEngineNbDumps
-            // 
-            this.lbFreezeEngineNbDumps.AutoSize = true;
-            this.lbFreezeEngineNbDumps.ForeColor = System.Drawing.Color.White;
-            this.lbFreezeEngineNbDumps.Location = new System.Drawing.Point(5, 81);
-            this.lbFreezeEngineNbDumps.Name = "lbFreezeEngineNbDumps";
-            this.lbFreezeEngineNbDumps.Size = new System.Drawing.Size(127, 13);
-            this.lbFreezeEngineNbDumps.TabIndex = 86;
-            this.lbFreezeEngineNbDumps.Text = "Memory dumps collected:";
-            // 
-            // btnActiveTableQuickSave
-            // 
-            this.btnActiveTableQuickSave.BackColor = System.Drawing.Color.Black;
-            this.btnActiveTableQuickSave.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btnActiveTableQuickSave.ForeColor = System.Drawing.Color.Silver;
-            this.btnActiveTableQuickSave.Location = new System.Drawing.Point(122, 222);
-            this.btnActiveTableQuickSave.Name = "btnActiveTableQuickSave";
-            this.btnActiveTableQuickSave.Size = new System.Drawing.Size(46, 23);
-            this.btnActiveTableQuickSave.TabIndex = 120;
-            this.btnActiveTableQuickSave.Text = "Save";
-            this.btnActiveTableQuickSave.UseVisualStyleBackColor = false;
-            this.btnActiveTableQuickSave.Click += new System.EventHandler(this.btnActiveTableQuickSave_Click);
-            // 
-            // lbFreezeEngineActiveStatus
-            // 
-            this.lbFreezeEngineActiveStatus.AutoSize = true;
-            this.lbFreezeEngineActiveStatus.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F);
-            this.lbFreezeEngineActiveStatus.ForeColor = System.Drawing.Color.White;
-            this.lbFreezeEngineActiveStatus.Location = new System.Drawing.Point(4, 130);
-            this.lbFreezeEngineActiveStatus.Name = "lbFreezeEngineActiveStatus";
-            this.lbFreezeEngineActiveStatus.Size = new System.Drawing.Size(163, 13);
-            this.lbFreezeEngineActiveStatus.TabIndex = 87;
-            this.lbFreezeEngineActiveStatus.Text = "Active table status: NOT READY";
-            // 
-            // lbFreezeEngineDomainAddressSize
-            // 
-            this.lbFreezeEngineDomainAddressSize.AutoSize = true;
-            this.lbFreezeEngineDomainAddressSize.ForeColor = System.Drawing.Color.White;
-            this.lbFreezeEngineDomainAddressSize.Location = new System.Drawing.Point(5, 97);
-            this.lbFreezeEngineDomainAddressSize.Name = "lbFreezeEngineDomainAddressSize";
-            this.lbFreezeEngineDomainAddressSize.Size = new System.Drawing.Size(107, 13);
-            this.lbFreezeEngineDomainAddressSize.TabIndex = 82;
-            this.lbFreezeEngineDomainAddressSize.Text = "Domain address size:";
-            // 
-            // btnActiveTableLoad
-            // 
-            this.btnActiveTableLoad.BackColor = System.Drawing.Color.Black;
-            this.btnActiveTableLoad.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btnActiveTableLoad.ForeColor = System.Drawing.Color.Gold;
-            this.btnActiveTableLoad.Location = new System.Drawing.Point(6, 199);
-            this.btnActiveTableLoad.Name = "btnActiveTableLoad";
-            this.btnActiveTableLoad.Size = new System.Drawing.Size(161, 23);
-            this.btnActiveTableLoad.TabIndex = 118;
-            this.btnActiveTableLoad.Text = "Load Active table";
-            this.btnActiveTableLoad.UseVisualStyleBackColor = false;
-            this.btnActiveTableLoad.Click += new System.EventHandler(this.btnActiveTableLoad_Click);
-            // 
-            // btnActiveTableSaveAs
-            // 
-            this.btnActiveTableSaveAs.BackColor = System.Drawing.Color.Black;
-            this.btnActiveTableSaveAs.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btnActiveTableSaveAs.ForeColor = System.Drawing.Color.Silver;
-            this.btnActiveTableSaveAs.Location = new System.Drawing.Point(7, 222);
-            this.btnActiveTableSaveAs.Name = "btnActiveTableSaveAs";
-            this.btnActiveTableSaveAs.Size = new System.Drawing.Size(116, 23);
-            this.btnActiveTableSaveAs.TabIndex = 119;
-            this.btnActiveTableSaveAs.Text = "Save ActiveTable as";
-            this.btnActiveTableSaveAs.UseVisualStyleBackColor = false;
-            this.btnActiveTableSaveAs.Click += new System.EventHandler(this.btnActiveTableSaveAs_Click);
-            // 
-            // btnActiveTableGenerate
-            // 
-            this.btnActiveTableGenerate.BackColor = System.Drawing.Color.Black;
-            this.btnActiveTableGenerate.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btnActiveTableGenerate.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btnActiveTableGenerate.ForeColor = System.Drawing.Color.Silver;
-            this.btnActiveTableGenerate.Location = new System.Drawing.Point(6, 153);
-            this.btnActiveTableGenerate.Name = "btnActiveTableGenerate";
-            this.btnActiveTableGenerate.Size = new System.Drawing.Size(161, 23);
-            this.btnActiveTableGenerate.TabIndex = 84;
-            this.btnActiveTableGenerate.Text = ">>>   Generate Table   <<<";
-            this.btnActiveTableGenerate.UseVisualStyleBackColor = false;
-            this.btnActiveTableGenerate.Click += new System.EventHandler(this.btnActiveTableGenerate_Click);
-            // 
-            // lbFreezeEngineActiveTableSize
-            // 
-            this.lbFreezeEngineActiveTableSize.AutoSize = true;
-            this.lbFreezeEngineActiveTableSize.ForeColor = System.Drawing.Color.White;
-            this.lbFreezeEngineActiveTableSize.Location = new System.Drawing.Point(4, 113);
-            this.lbFreezeEngineActiveTableSize.Name = "lbFreezeEngineActiveTableSize";
-            this.lbFreezeEngineActiveTableSize.Size = new System.Drawing.Size(87, 13);
-            this.lbFreezeEngineActiveTableSize.TabIndex = 85;
-            this.lbFreezeEngineActiveTableSize.Text = "Active table size:";
-            // 
             // pnGeneralParameters
             // 
             this.pnGeneralParameters.BackColor = System.Drawing.Color.Gray;
@@ -1668,7 +1256,6 @@
             // 
             // pnEngineConfig
             // 
-            this.pnEngineConfig.Controls.Add(this.panel1);
             this.pnEngineConfig.Controls.Add(this.gbVectorEngine);
             this.pnEngineConfig.Controls.Add(this.gbPipeEngine);
             this.pnEngineConfig.Controls.Add(this.pnGeneralParameters);
@@ -1687,29 +1274,6 @@
             this.pnEngineConfig.Size = new System.Drawing.Size(1626, 888);
             this.pnEngineConfig.TabIndex = 117;
             this.pnEngineConfig.Tag = "color:dark";
-            // 
-            // panel1
-            // 
-            this.panel1.BackColor = System.Drawing.Color.Gray;
-            this.panel1.Controls.Add(this.btnActiveTableSubstractFile);
-            this.panel1.Controls.Add(this.btnActiveTableGenerate);
-            this.panel1.Controls.Add(this.lbFreezeEngineNbDumps);
-            this.panel1.Controls.Add(this.lbFreezeEngineActiveTableSize);
-            this.panel1.Controls.Add(this.cbAutoAddDump);
-            this.panel1.Controls.Add(this.lbFreezeEngineDomainAddressSize);
-            this.panel1.Controls.Add(this.btnActiveTableAddDump);
-            this.panel1.Controls.Add(this.btnActiveTableQuickSave);
-            this.panel1.Controls.Add(this.label16);
-            this.panel1.Controls.Add(this.groupBox2);
-            this.panel1.Controls.Add(this.btnActiveTableSaveAs);
-            this.panel1.Controls.Add(this.btnActiveTableLoad);
-            this.panel1.Controls.Add(this.btnActiveTableDumpsReset);
-            this.panel1.Controls.Add(this.nmAutoAddSec);
-            this.panel1.Controls.Add(this.lbFreezeEngineActiveStatus);
-            this.panel1.Location = new System.Drawing.Point(659, 384);
-            this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(390, 250);
-            this.panel1.TabIndex = 117;
             // 
             // gbVectorEngine
             // 
@@ -2009,23 +1573,12 @@
             this.gbFreezeEngine.ResumeLayout(false);
             this.gbFreezeEngine.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.nmMaxFreezes)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.nmAutoAddSec)).EndInit();
-            this.groupBox2.ResumeLayout(false);
-            this.groupBox2.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.track_ActiveTableActivityThreshold)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.nmActiveTableActivityThreshold)).EndInit();
-            this.groupBox1.ResumeLayout(false);
-            this.groupBox1.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.nmActiveTableCapOffset)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.nmActiveTableCapSize)).EndInit();
             this.pnGeneralParameters.ResumeLayout(false);
             this.pnGeneralParameters.PerformLayout();
             this.pnCorruptionEngine.ResumeLayout(false);
             this.pnMemoryTargetting.ResumeLayout(false);
             this.pnEngineConfig.ResumeLayout(false);
             this.pnEngineConfig.PerformLayout();
-            this.panel1.ResumeLayout(false);
-            this.panel1.PerformLayout();
             this.gbVectorEngine.ResumeLayout(false);
             this.gbVectorEngine.PerformLayout();
             this.gbPipeEngine.ResumeLayout(false);
@@ -2085,37 +1638,8 @@
         public System.Windows.Forms.Button btnEasyMode;
         public System.Windows.Forms.Button btnReboot;
         public System.Windows.Forms.CheckBox cbFreezeEngineActive;
-        private System.Windows.Forms.Button btnActiveTableDumpsReset;
-        private System.Windows.Forms.Button btnActiveTableLoad;
-        public System.Windows.Forms.Label lbFreezeEngineActiveStatus;
-        public System.Windows.Forms.Label lbFreezeEngineNbDumps;
-        public System.Windows.Forms.Label lbFreezeEngineActiveTableSize;
-        public System.Windows.Forms.Label lbFreezeEngineDomainAddressSize;
         private System.Windows.Forms.Button btnRTCMultiplayer;
         private System.Windows.Forms.Button btnStockpilePlayer;
-        private System.Windows.Forms.GroupBox groupBox2;
-        private System.Windows.Forms.Label label16;
-        public System.Windows.Forms.NumericUpDown nmAutoAddSec;
-        public System.Windows.Forms.CheckBox cbAutoAddDump;
-        public System.Windows.Forms.TrackBar track_ActiveTableActivityThreshold;
-        private System.Windows.Forms.Label label15;
-        public System.Windows.Forms.NumericUpDown nmActiveTableActivityThreshold;
-        private System.Windows.Forms.Label label14;
-        private System.Windows.Forms.GroupBox groupBox1;
-        private System.Windows.Forms.Label label12;
-        public System.Windows.Forms.NumericUpDown nmActiveTableCapOffset;
-        public System.Windows.Forms.NumericUpDown nmActiveTableCapSize;
-        private System.Windows.Forms.Label label6;
-        public System.Windows.Forms.CheckBox cbActiveTableCapSize;
-        public System.Windows.Forms.CheckBox cbActiveTableExclude100percent;
-        public System.Windows.Forms.Button btnActiveTableGenerate;
-        public System.Windows.Forms.Button btnActiveTableAddDump;
-        public System.Windows.Forms.RadioButton rbActiveTableCapBlockEnd;
-        public System.Windows.Forms.RadioButton rbActiveTableCapBlockStart;
-        public System.Windows.Forms.RadioButton rbActiveTableCapRandom;
-        public System.Windows.Forms.Button btnActiveTableSubstractFile;
-        public System.Windows.Forms.Button btnActiveTableSaveAs;
-        public System.Windows.Forms.Button btnActiveTableQuickSave;
 		private System.Windows.Forms.Label label2;
 		private System.Windows.Forms.Panel pnGeneralParameters;
 		private System.Windows.Forms.Label label5;
@@ -2149,7 +1673,6 @@
 		private System.Windows.Forms.Label label23;
 		private System.Windows.Forms.Label label22;
 		private System.Windows.Forms.Panel pnAdvancedTool;
-		private System.Windows.Forms.Panel panel1;
 		public System.Windows.Forms.Button btnGpJumpNow;
 		public System.Windows.Forms.Button btnGpJumpBack;
         public System.Windows.Forms.NumericUpDown nmTiltPipeValue;
