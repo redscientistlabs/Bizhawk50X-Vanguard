@@ -193,6 +193,82 @@ namespace RTC
 
         }
 
+        public static RomParts GetRomParts(string thisSystem, string romFilename)
+        {
+            RomParts rp = new RomParts();
+
+            switch (thisSystem.ToUpper())
+            {
+                case "NES":     //Nintendo Entertainment System
+                    rp.primarydomain = "PRG ROM";
+
+                    if (RTC_MemoryDomains.MemoryInterfaces.ContainsKey("CHR VROM"))
+                        rp.seconddomain = "CHR VROM";
+
+                    rp.skipbytes = 16;
+                    break;
+
+                case "SNES_SGB": //SuperGameBoy
+                    if (RTC_MemoryDomains.MemoryInterfaces.ContainsKey("SNES SGB CARTROM")) //BSNES
+                        rp.primarydomain = "SNES SGB CARTROM";
+                    else
+                        rp.primarydomain = "ROM"; //Sameboy
+                    break;
+
+                case "SNES":    //Super Nintendo
+                    rp.primarydomain = "CARTROM";
+
+                    long Filesize = new System.IO.FileInfo(romFilename).Length;
+
+                    if (Filesize % 1024 != 0)
+                        rp.skipbytes = 512;
+
+
+                    break;
+
+                case "LYNX":    //Atari Lynx
+                    rp.primarydomain = "Cart A";
+                    rp.skipbytes = 64;
+                    break;
+
+
+                case "N64":     //Nintendo 64
+                case "GB":      //Gameboy
+                case "GBC":     //Gameboy Color
+                case "SMS":     //Sega Master System
+                case "GBA":     //Game Boy Advance
+                case "PCE":     //PC Engine
+                case "GG":      //Game Gear
+                case "SG":      //SG-1000
+                case "SGX":     //PC Engine SGX
+                case "WSWAN":   //Wonderswan
+                case "VB":      //Virtualboy
+                case "NGP":     //Neo Geo Pocket
+                    rp.primarydomain = "ROM";
+                    break;
+
+
+                case "GEN":     // Sega Genesis
+                    if (RTC_MemoryDomains.MemoryInterfaces.ContainsKey("MD CART"))  //If it's regular Genesis or 32X
+                        rp.primarydomain = "MD CART";
+                    else
+                    {    //If it's in Sega CD mode
+                        rp.error = "Unfortunately, Bizhawk doesn't support editing the ISOs while it is running. Maybe in a future version...";
+                    }
+                    break;
+
+                case "PCFX":    //PCFX
+                case "PCECD":   //PC Engine CD
+                case "SAT":     //Sega Saturn
+                case "PSX":     //Playstation
+                    rp.error = "Unfortunately, Bizhawk doesn't support editing the ISOs while it is running. Maybe in a future version...";
+                    break;
+
+            }
+
+            return rp;
+        }
+
 
         public static void RefreshDomains(bool clearSelected = true)
         {
@@ -444,6 +520,14 @@ namespace RTC
 
             return mi.getDump();
         }
+    }
+
+    public class RomParts
+    {
+        public string error = null;
+        public string primarydomain = null;
+        public string seconddomain = null;
+        public int skipbytes = 0;
     }
 
     [Serializable()]

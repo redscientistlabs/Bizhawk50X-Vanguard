@@ -17,7 +17,7 @@ namespace RTC
 
     public static class RTC_Core
     {
-		public static string RtcVersion = "3.01a";
+		public static string RtcVersion = "3.02";
 		
         public static Random RND = new Random();
         public static string[] args;
@@ -140,6 +140,8 @@ namespace RTC
             if (Warned)
                 return;
 
+            /*
+            // PROCESS CHECKUP IS NO LONGER AVAILABLE WITH BIZHAWK 2.2
             try
             {
                 var processes = Process.GetProcesses().Select(it => $"{it.ProcessName.ToUpper()}").OrderBy(x => x).ToArray();
@@ -162,12 +164,13 @@ namespace RTC
                     Warned = true;
                 }
                 
+
             }
             catch
             {
                 //Let's just do nothing in that case.
             }
-
+            */
 
         }
 
@@ -763,8 +766,9 @@ namespace RTC
             path = path.Replace(".NesHawk.", ".");
             path = path.Replace(".VBA-Next.", ".");
 			path = path.Replace(".mGBA.", ".");
+            path = path.Replace(".Snes9x.", ".");
 
-			if(threadSave)
+            if (threadSave)
 			{
 				(new Thread(() => {
 					try
@@ -807,6 +811,7 @@ namespace RTC
             path = path.Replace(".NesHawk.", ".");
             path = path.Replace(".VBA-Next.", ".");
 			path = path.Replace(".mGBA.", ".");
+            path = path.Replace(".Snes9x.", ".");
 
             if (File.Exists(path) == false)
             {

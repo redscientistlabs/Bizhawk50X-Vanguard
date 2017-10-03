@@ -54,75 +54,32 @@ namespace RTC
             BlastLayer bl = new BlastLayer();
 
             string thisSystem = Global.Game.System;
-            string _primarydomain = "";
-            string _seconddomain = "";
-            int skipbytes = 0;
+            string romFilename = GlobalWin.MainForm.CurrentlyOpenRom;
 
+            var rp = RTC_MemoryDomains.GetRomParts(thisSystem, romFilename);
 
-
-            switch (thisSystem.ToUpper())
+            if (rp.error != null)
             {
-                case "NES":
-                    _primarydomain = "PRG ROM";
-
-                    if (RTC_MemoryDomains.MemoryInterfaces.ContainsKey("CHR VROM"))
-                        _seconddomain = "CHR VROM";
-
-                    skipbytes = 16;
-                    break;
-
-                case "SNES":
-                    _primarydomain = "CARTROM";
-                    break;
-
-                case "A78":
-                    _primarydomain = "HSC ROM";
-                    break;
-
-                case "LYNX":
-                    _primarydomain = "Cart A";
-                    skipbytes = 64;
-                    break;
-
-                case "N64":
-                case "GB":
-                case "GBC":
-                case "SMS":
-                case "GEN":
-                case "GBA":
-                case "PCE":
-                case "GG":
-                case "SG":
-                case "SGX":
-                case "WSWAN":
-                    _primarydomain = "ROM";
-                    break;
-
-
-                case "PCECD":
-                case "SAT":
-                case "PSX":
-                    MessageBox.Show("Unfortunately, Bizhawk doesn't support editing the ISOs while it is running. Maybe in a future version...");
-                    return null;
-
+                MessageBox.Show(rp.error);
+                return null;
             }
 
-            if(Original.Length != Corrupt.Length)
+            if (Original.Length != Corrupt.Length)
             {
                 MessageBox.Show("ERROR, ROM SIZE MISMATCH");
                 return null;
             }
 
-            long maxaddress = RTC_MemoryDomains.getInterface(_primarydomain).Size;
+            long maxaddress = RTC_MemoryDomains.getInterface(rp.primarydomain).Size;
 
             for (int i = 0; i < Original.Length; i++)
             {
-                if (Original[i] != Corrupt[i] && i >= skipbytes)
+                if (Original[i] != Corrupt[i] && i >= rp.skipbytes)
                 {
-                    if (i - skipbytes >= maxaddress)
-                        bl.Layer.Add(new BlastByte(_seconddomain, (i - skipbytes) - maxaddress, BlastByteType.SET, Convert.ToInt32(Corrupt[i]), true));
+                    if (i - rp.skipbytes >= maxaddress)
+                        bl.Layer.Add(new BlastByte(rp.seconddomain, (i - rp.skipbytes) - maxaddress, BlastByteType.SET, Convert.ToInt32(Corrupt[i]), true));
                     else
-                        bl.Layer.Add(new BlastByte(_primarydomain, i - skipbytes, BlastByteType.SET, Convert.ToInt32(Corrupt[i]), true));
+                        bl.Layer.Add(new BlastByte(rp.primarydomain, i - rp.skipbytes, BlastByteType.SET, Convert.ToInt32(Corrupt[i]), true));
                 }
             }
 

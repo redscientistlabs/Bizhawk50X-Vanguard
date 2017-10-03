@@ -505,83 +505,45 @@ namespace RTC
 			bl.Layer.AddRange(RTC_PipeEngine.AllBlastPipes);
 
             string thisSystem = Global.Game.System;
-            string _primarydomain = null;
-            string _seconddomain = null;
-            int skipbytes = 0;
+            string romFilename = GlobalWin.MainForm.CurrentlyOpenRom;
 
-            switch (thisSystem.ToUpper())
+            var rp = RTC_MemoryDomains.GetRomParts(thisSystem, romFilename);
+
+            if (rp.error == null)
             {
-                case "NES":
-                    _primarydomain = "PRG ROM";
 
-                    if(RTC_MemoryDomains.MemoryInterfaces.ContainsKey("CHR VROM"))
-                        _seconddomain = "CHR VROM";
+                if (rp.primarydomain != null)
+                {
+                    List<byte> addData = new List<byte>();
 
-                    skipbytes = 16;
-                    break;
+                    if (rp.skipbytes != 0)
+                    {
+                        byte[] padding = new byte[rp.skipbytes];
+                        for (int i = 0; i < rp.skipbytes; i++)
+                            padding[i] = 0;
 
-                case "SNES":
-                    _primarydomain = "CARTROM";
-                    break;
+                        addData.AddRange(padding);
+                    }
 
-                case "A78":
-                    _primarydomain = "HSC ROM";
-                    break;
+                    addData.AddRange(RTC_MemoryDomains.getDomainData(rp.primarydomain));
+                    if (rp.seconddomain != null)
+                        addData.AddRange(RTC_MemoryDomains.getDomainData(rp.seconddomain));
 
-                case "LYNX":
-                    _primarydomain = "Cart A";
-                    skipbytes = 64;
-                    break;
+                    byte[] corrupted = addData.ToArray();
+                    byte[] original = File.ReadAllBytes(GlobalWin.MainForm.CurrentlyOpenRom);
 
-                case "N64":
-                case "GB":
-                case "GBC":
-                case "SMS":
-                case "GEN":
-                case "GBA":
-                case "PCE":
-                case "GG":
-                case "SG":
-                case "SGX":
-                case "WSWAN":
-                    _primarydomain = "ROM";
-                    break;
+                    for (int i = 0; i < rp.skipbytes; i++)
+                        original[i] = 0;
 
+                    BlastLayer romBlast = RTC_ExternalRomPlugin.GetBlastLayer(original, corrupted);
 
-                case "PCECD":
-                case "SAT":
-                case "PSX":
-                    MessageBox.Show("Unfortunately, Bizhawk doesn't support editing the ISOs while it is running. Maybe in a future version...");
-                    return null;
+                    if (romBlast != null && romBlast.Layer.Count > 0)
+                        bl.Layer.AddRange(romBlast.Layer);
 
-            }
-
-
-            if (_primarydomain != null)
-            {
-                List<byte> addData = new List<byte>();
-                for (int i = 0; i < skipbytes; i++)
-                    addData.Add((byte)0);
-
-                addData.AddRange(RTC_MemoryDomains.getDomainData(_primarydomain));
-                if(_seconddomain != null)
-                    addData.AddRange(RTC_MemoryDomains.getDomainData(_seconddomain));
-
-                byte[] corrupted = addData.ToArray();
-                byte[] original = File.ReadAllBytes(GlobalWin.MainForm.CurrentlyOpenRom);
-
-                for (int i = 0; i < skipbytes; i++)
-                    original[i] = (byte)0;
-
-                BlastLayer romBlast = RTC_ExternalRomPlugin.GetBlastLayer(original, corrupted);
-
-                if (romBlast != null && romBlast.Layer.Count > 0)
-                    bl.Layer.AddRange(romBlast.Layer);
-
+                }
             }
 
             sk.BlastLayer = bl;
-
             RTC_Core.StartSound();
 
 			return sk;
