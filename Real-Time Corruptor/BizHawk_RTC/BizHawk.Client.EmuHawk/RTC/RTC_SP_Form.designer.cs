@@ -223,7 +223,7 @@
             this.Controls.Add(this.btnLoadStockpile);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
-            this.MinimumSize = new System.Drawing.Size(480, 300);
+            this.MinimumSize = new System.Drawing.Size(655, 515);
             this.Name = "RTC_SP_Form";
             this.Tag = "color:dark";
             this.Text = "RTC : Stockpile Player";

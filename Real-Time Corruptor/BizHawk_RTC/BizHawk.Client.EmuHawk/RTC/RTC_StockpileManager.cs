@@ -137,8 +137,8 @@ namespace RTC
 			if (psk.GameName != currentGame)
 			{
 				RTC_Core.LoadRom(psk.RomFilename, true);
-				RTC_Core.coreForm.RefreshDomains();
-				RTC_Core.coreForm.setMemoryDomainsAllButSelectedDomains(RTC_MemoryDomains.GetBlacklistedDomains());
+				RTC_Core.ecForm.RefreshDomains();
+				RTC_Core.ecForm.setMemoryDomainsAllButSelectedDomains(RTC_MemoryDomains.GetBlacklistedDomains());
 			}
 
 

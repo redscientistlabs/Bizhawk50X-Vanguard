@@ -27,7 +27,7 @@ namespace RTC
 
         private void btnSelectAll_Click(object sender, EventArgs e)
         {
-            RTC_Core.coreForm.RefreshDomainsAndKeepSelected();
+            RTC_Core.ecForm.RefreshDomainsAndKeepSelected();
 
             cbSelectedMemoryDomain.Items.Clear();
             cbSelectedMemoryDomain.Items.AddRange(RTC_MemoryDomains.MemoryInterfaces.Keys.Where(it => !it.Contains("[V]")).ToArray());
@@ -182,7 +182,7 @@ namespace RTC
 
             //send to vmd pool menu
             RTC_Core.vmdPoolForm.RefreshVMDs();
-            RTC_Core.coreForm.cbMemoryDomainTool.SelectedIndex = 1;
+            RTC_Core.ecForm.cbMemoryDomainTool.SelectedIndex = 1;
 
             GC.Collect();
             GC.WaitForPendingFinalizers();

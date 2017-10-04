@@ -99,6 +99,9 @@ namespace RTC
                 case "GBC":     //Gameboy Color
                     DomainBlacklist.Add("ROM"); //Cartridge
                     DomainBlacklist.Add("System Bus");
+                    DomainBlacklist.Add("OBP"); //SGB dummy domain doesn't do anything in sameboy
+                    DomainBlacklist.Add("BGP");  //SGB dummy domain doesn't do anything in sameboy
+                    DomainBlacklist.Add("BOOTROM"); //Sameboy SGB Bootrom
                     break;
 
                 case "SNES":    //Super Nintendo
@@ -108,7 +111,17 @@ namespace RTC
                     DomainBlacklist.Add("APURAM"); //SPC700 memory
                     DomainBlacklist.Add("CGRAM"); //Color Memory (Useless and disgusting)
 					DomainBlacklist.Add("System Bus"); // maxvalue is not representative of chip (goes ridiculously high)
-					break;
+                    DomainBlacklist.Add("SGB CARTROM"); // Supergameboy cartridge
+                    DomainBlacklist.Add("SGB CARTRAM"); // Supergameboy catridge save data 
+
+                    if(RTC_MemoryDomains.MemoryInterfaces.ContainsKey("SGB CARTROM"))
+                    {
+                        DomainBlacklist.Add("VRAM");
+                        DomainBlacklist.Add("WRAM");
+                        DomainBlacklist.Add("CARTROM");
+                    }
+
+                    break;
 
                 case "N64":     //Nintendo 64
                     DomainBlacklist.Add("System Bus");
@@ -124,6 +137,7 @@ namespace RTC
                 case "PCE":     //PC Engine / Turbo Grafx
                 case "SGX":     //Super Grafx
                     DomainBlacklist.Add("ROM");
+                    DomainBlacklist.Add("System Bus"); //BAD THINGS HAPPEN WITH THIS DOMAIN
                     break;
 
 
@@ -208,21 +222,18 @@ namespace RTC
                     rp.skipbytes = 16;
                     break;
 
-                case "SNES_SGB": //SuperGameBoy
-                    if (RTC_MemoryDomains.MemoryInterfaces.ContainsKey("SNES SGB CARTROM")) //BSNES
-                        rp.primarydomain = "SNES SGB CARTROM";
-                    else
-                        rp.primarydomain = "ROM"; //Sameboy
-                    break;
-
                 case "SNES":    //Super Nintendo
-                    rp.primarydomain = "CARTROM";
+                    if (RTC_MemoryDomains.MemoryInterfaces.ContainsKey("SGB CARTROM")) //BSNES SGB Mode
+                        rp.primarydomain = "SGB CARTROM";
+                    else
+                    {
+                        rp.primarydomain = "CARTROM";
 
-                    long Filesize = new System.IO.FileInfo(romFilename).Length;
+                        long Filesize = new System.IO.FileInfo(romFilename).Length;
 
-                    if (Filesize % 1024 != 0)
-                        rp.skipbytes = 512;
-
+                        if (Filesize % 1024 != 0)
+                            rp.skipbytes = 512;
+                    }
 
                     break;
 
@@ -343,8 +354,8 @@ namespace RTC
 			lastSelectedDomains = SelectedDomains;
 			SelectedDomains = new string[] { };
 
-			if(RTC_Core.coreForm != null)
-				RTC_Core.coreForm.lbMemoryDomains.Items.Clear();
+			if(RTC_Core.ecForm != null)
+				RTC_Core.ecForm.lbMemoryDomains.Items.Clear();
 
         }
 
@@ -459,7 +470,7 @@ namespace RTC
             }
 
             if(!RTC_Hooks.isRemoteRTC)
-                RTC_Core.coreForm.RefreshDomainsAndKeepSelected();
+                RTC_Core.ecForm.RefreshDomainsAndKeepSelected();
         }
 
         public static void RemoveVMD(VirtualMemoryDomain VMD) => RemoveVMD(VMD.ToString());
@@ -472,7 +483,7 @@ namespace RTC
             }
 
             if (!RTC_Hooks.isRemoteRTC)
-                RTC_Core.coreForm.RefreshDomainsAndKeepSelected();
+                RTC_Core.ecForm.RefreshDomainsAndKeepSelected();
         }
 
         public static void RenameVMD(VirtualMemoryDomain VMD) => RenameVMD(VMD.ToString());

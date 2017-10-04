@@ -43,8 +43,10 @@ namespace RTC
 		//RTC Main Forms
 		public static Color generalColor = Color.LightSteelBlue;
 		public static RTC_Form coreForm = null;
-		public static RTC_GH_Form ghForm = null;
+        public static RTC_EC_Form ecForm = null;
         public static RTC_SP_Form spForm = null;
+        public static RTC_GH_Form ghForm = null;
+
         //RTC Extension Forms
         public static RTC_Multi_Form multiForm;
 		public static RTC_MultiPeerPopout_Form multipeerpopoutForm = null;
@@ -193,8 +195,10 @@ namespace RTC
             }
 
 			coreForm = new RTC_Form();
-			ghForm = new RTC_GH_Form();
-			spForm = new RTC_SP_Form();
+            ecForm = new RTC_EC_Form();
+            spForm = new RTC_SP_Form();
+            ghForm = new RTC_GH_Form();
+			
 			multiForm = new RTC_Multi_Form();
 			multipeerpopoutForm = new RTC_MultiPeerPopout_Form();
 			sbForm = new RTC_StockpileBlastBoard();
@@ -208,8 +212,9 @@ namespace RTC
 
             allRtcForms = new Form[]{
                 coreForm,
-                ghForm,
+                ecForm,
                 spForm,
+                ghForm,
                 multiForm,
                 multipeerpopoutForm,
                 sbForm,
@@ -271,7 +276,6 @@ namespace RTC
 
                         if (coreForm != null && !coreForm.IsDisposed)
                         {
-                            coreForm.pnEngineConfig.Hide();
                             coreForm.pnLeftPanel.Hide();
                         }
 
@@ -292,7 +296,6 @@ namespace RTC
 					{
 						RemoteRTC_SupposedToBeConnected = true;
 						Console.WriteLine("RemoteRTC.ServerConnected");
-						coreForm.pnEngineConfig.Show();
 						coreForm.pnLeftPanel.Show();
 						csForm.lbConnectionStatus.Text = "Connection status: Connected";
 						csForm.btnReturnToSession.Visible = true;
@@ -314,7 +317,6 @@ namespace RTC
 
                         if (coreForm != null && !coreForm.IsDisposed)
                         {
-                            coreForm.pnEngineConfig.Hide();
                             coreForm.pnLeftPanel.Hide();
                         }
 
@@ -340,7 +342,6 @@ namespace RTC
 					{
 						RemoteRTC_SupposedToBeConnected = false;
 						Console.WriteLine("RemoteRTC.ServerDisconnected");
-						coreForm.pnEngineConfig.Hide();
 						coreForm.pnLeftPanel.Hide();
 						csForm.lbConnectionStatus.Text = "Connection status: NetCore Shutdown";
 						csForm.btnReturnToSession.Visible = false;
@@ -808,10 +809,10 @@ namespace RTC
         {
             //Selects an engine from a given string name
 
-            for (int i = 0; i < coreForm.cbSelectedEngine.Items.Count; i++)
-                if (coreForm.cbSelectedEngine.Items[i].ToString() == name)
+            for (int i = 0; i < ecForm.cbSelectedEngine.Items.Count; i++)
+                if (ecForm.cbSelectedEngine.Items[i].ToString() == name)
                 {
-                    coreForm.cbSelectedEngine.SelectedIndex = i;
+                    ecForm.cbSelectedEngine.SelectedIndex = i;
                     break;
                 }
 

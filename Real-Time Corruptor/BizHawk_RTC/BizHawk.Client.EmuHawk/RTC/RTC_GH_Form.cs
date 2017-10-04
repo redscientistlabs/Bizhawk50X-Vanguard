@@ -901,8 +901,8 @@ namespace RTC
         {
 			int _fx = Convert.ToInt32(nmIntensity.Value);
 
-			if (RTC_Core.coreForm.Intensity != _fx)
-				RTC_Core.coreForm.Intensity = _fx;
+			if (RTC_Core.ecForm.Intensity != _fx)
+				RTC_Core.ecForm.Intensity = _fx;
 
 		}
 
@@ -911,8 +911,8 @@ namespace RTC
 			double fx = Math.Floor(Math.Pow((track_Intensity.Value * 0.0005d), 2));
 			int _fx = Convert.ToInt32(fx);
 
-			if (_fx != RTC_Core.coreForm.Intensity)
-				RTC_Core.coreForm.Intensity = _fx;
+			if (_fx != RTC_Core.ecForm.Intensity)
+				RTC_Core.ecForm.Intensity = _fx;
 
 		}
 

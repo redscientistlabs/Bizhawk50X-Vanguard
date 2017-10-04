@@ -1158,12 +1158,12 @@ namespace RTC
 
 						RTC_Core.AutoCorrupt = false;
 						//RTC_StockpileManager.isCorruptionApplied = false;
-						RTC_Core.coreForm.RefreshDomains();
-						RTC_Core.coreForm.setMemoryDomainsAllButSelectedDomains(RTC_MemoryDomains.GetBlacklistedDomains());
+						RTC_Core.ecForm.RefreshDomains();
+						RTC_Core.ecForm.setMemoryDomainsAllButSelectedDomains(RTC_MemoryDomains.GetBlacklistedDomains());
 						break;
 					case CommandType.REMOTE_EVENT_LOADGAMEDONE_SAMEGAME:
 						//RTC_StockpileManager.isCorruptionApplied = false;
-						RTC_Core.coreForm.RefreshDomainsAndKeepSelected();
+						RTC_Core.ecForm.RefreshDomainsAndKeepSelected();
 						break;
 
 					case CommandType.REMOTE_EVENT_CLOSEBIZHAWK:
@@ -1187,7 +1187,7 @@ namespace RTC
                         Thread.Sleep(100);
 
                         if(RTC_StockpileManager.backupedState != null)
-                            RTC_Core.coreForm.RefreshDomainsAndKeepSelected(RTC_StockpileManager.backupedState.SelectedDomains.ToArray());
+                            RTC_Core.ecForm.RefreshDomainsAndKeepSelected(RTC_StockpileManager.backupedState.SelectedDomains.ToArray());
 
                         if (RTC_Core.coreForm.cbUseGameProtection.Checked)
 							RTC_GameProtection.Start();
@@ -1203,23 +1203,23 @@ namespace RTC
 						RTC_Core.coreForm.btnAutoCorrupt_Click(null, null);
 						break;
 					case CommandType.REMOTE_HOTKEY_ERRORDELAYDECREASE:
-						if (RTC_Core.coreForm.nmErrorDelay.Value > 1)
-							RTC_Core.coreForm.nmErrorDelay.Value--;
+						if (RTC_Core.ecForm.nmErrorDelay.Value > 1)
+							RTC_Core.ecForm.nmErrorDelay.Value--;
 						break;
 
 					case CommandType.REMOTE_HOTKEY_ERRORDELAYINCREASE:
-						if (RTC_Core.coreForm.nmErrorDelay.Value < RTC_Core.coreForm.track_ErrorDelay.Maximum)
-							RTC_Core.coreForm.nmErrorDelay.Value++;
+						if (RTC_Core.ecForm.nmErrorDelay.Value < RTC_Core.ecForm.track_ErrorDelay.Maximum)
+							RTC_Core.ecForm.nmErrorDelay.Value++;
 						break;
 
 					case CommandType.REMOTE_HOTKEY_INTENSITYDECREASE:
-						if (RTC_Core.coreForm.nmIntensity.Value > 1)
-							RTC_Core.coreForm.nmIntensity.Value--;
+						if (RTC_Core.ecForm.nmIntensity.Value > 1)
+							RTC_Core.ecForm.nmIntensity.Value--;
 						break;
 
 					case CommandType.REMOTE_HOTKEY_INTENSITYINCREASE:
-						if (RTC_Core.coreForm.nmIntensity.Value < RTC_Core.coreForm.track_Intensity.Maximum)
-							RTC_Core.coreForm.nmIntensity.Value++;
+						if (RTC_Core.ecForm.nmIntensity.Value < RTC_Core.ecForm.track_Intensity.Maximum)
+							RTC_Core.ecForm.nmIntensity.Value++;
 						break;
 
 					case CommandType.REMOTE_HOTKEY_GHLOADCORRUPT:

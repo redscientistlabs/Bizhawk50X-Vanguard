@@ -711,6 +711,12 @@
     <Compile Include="RTC\RTC_Core.cs" />
     <Compile Include="RTC\RTC_Diff.cs" />
     <Compile Include="RTC\RTC_DistortionEngine.cs" />
+    <Compile Include="RTC\RTC_EC_Form.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="RTC\RTC_EC_Form.Designer.cs">
+      <DependentUpon>RTC_EC_Form.cs</DependentUpon>
+    </Compile>
     <Compile Include="RTC\RTC_Enums.cs" />
     <Compile Include="RTC\RTC_Extensions.cs" />
     <Compile Include="RTC\RTC_ExternalRomPlugin.cs" />
@@ -1537,6 +1543,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="RTC\RTC_ConnectionStatus_Form.resx">
       <DependentUpon>RTC_ConnectionStatus_Form.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="RTC\RTC_EC_Form.resx">
+      <DependentUpon>RTC_EC_Form.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="RTC\RTC_Form.resx">
       <DependentUpon>RTC_Form.cs</DependentUpon>

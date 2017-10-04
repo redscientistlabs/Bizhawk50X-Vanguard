@@ -107,7 +107,6 @@ namespace RTC
 
 		private void btnReturnToSession_Click(object sender, EventArgs e)
 		{
-			RTC_Core.coreForm.pnEngineConfig.Show();
 			RTC_Core.coreForm.pnLeftPanel.Show();
 			RTC_Core.csForm.Hide();
 
