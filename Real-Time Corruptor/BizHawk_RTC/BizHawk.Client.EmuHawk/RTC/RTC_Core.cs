@@ -17,7 +17,7 @@ namespace RTC
 
     public static class RTC_Core
     {
-		public static string RtcVersion = "3.03b";
+		public static string RtcVersion = "3.03c";
 		
         public static Random RND = new Random();
         public static string[] args;
@@ -42,17 +42,17 @@ namespace RTC
 
 		//RTC Main Forms
 		public static Color generalColor = Color.LightSteelBlue;
-		public static RTC_Form coreForm = null;
+		public static RTC_Core_Form coreForm = null;
         public static RTC_EC_Form ecForm = null;
-        public static RTC_SP_Form spForm = null;
-        public static RTC_GH_Form ghForm = null;
+        public static RTC_StockpilePlayer_Form spForm = null;
+        public static RTC_GlitchHarvester_Form ghForm = null;
 
         //RTC Extension Forms
-        public static RTC_Multi_Form multiForm;
+        public static RTC_Multiplayer_Form multiForm;
 		public static RTC_MultiPeerPopout_Form multipeerpopoutForm = null;
-		public static RTC_StockpileBlastBoard sbForm = null;
+		public static RTC_StockpileBlastBoard_Form sbForm = null;
 		public static RTC_ConnectionStatus_Form csForm = null;
-		public static RTC_BlastEditorForm beForm = null;
+		public static RTC_BlastEditor_Form beForm = null;
 		public static Form standaloneForm = null;
         //RTC Advanced Tool Forms
         public static RTC_VmdPool_Form vmdPoolForm = null;
@@ -194,15 +194,15 @@ namespace RTC
                 return;
             }
 
-			coreForm = new RTC_Form();
+			coreForm = new RTC_Core_Form();
             ecForm = new RTC_EC_Form();
-            spForm = new RTC_SP_Form();
-            ghForm = new RTC_GH_Form();
+            spForm = new RTC_StockpilePlayer_Form();
+            ghForm = new RTC_GlitchHarvester_Form();
 			
-			multiForm = new RTC_Multi_Form();
+			multiForm = new RTC_Multiplayer_Form();
 			multipeerpopoutForm = new RTC_MultiPeerPopout_Form();
-			sbForm = new RTC_StockpileBlastBoard();
-			beForm = new RTC_BlastEditorForm();
+			sbForm = new RTC_StockpileBlastBoard_Form();
+			beForm = new RTC_BlastEditor_Form();
             vmdPoolForm = new RTC_VmdPool_Form();
             vmdGenForm = new RTC_VmdGen_Form();
             vmdActForm = new RTC_VmdAct_Form();

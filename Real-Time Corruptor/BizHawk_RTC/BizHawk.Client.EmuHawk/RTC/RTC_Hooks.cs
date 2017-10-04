@@ -363,14 +363,14 @@ namespace RTC
 		{
 			if (DisableRTC) return false;
 
-			return (ActiveForm is RTC.RTC_Form ||
-					ActiveForm is RTC.RTC_GH_Form ||
-					ActiveForm is RTC.RTC_SP_Form ||
-					ActiveForm is RTC.RTC_Multi_Form ||
+			return (ActiveForm is RTC.RTC_Core_Form ||
+					ActiveForm is RTC.RTC_GlitchHarvester_Form ||
+					ActiveForm is RTC.RTC_StockpilePlayer_Form ||
+					ActiveForm is RTC.RTC_Multiplayer_Form ||
 					ActiveForm is RTC.RTC_MultiPeerPopout_Form ||
-                    ActiveForm is RTC.RTC_StockpileBlastBoard ||
+                    ActiveForm is RTC.RTC_StockpileBlastBoard_Form ||
                     ActiveForm is RTC.RTC_ConnectionStatus_Form ||
-                    ActiveForm is RTC.RTC_BlastEditorForm ||
+                    ActiveForm is RTC.RTC_BlastEditor_Form ||
                     ActiveForm is RTC.RTC_VmdPool_Form ||
                     ActiveForm is RTC.RTC_VmdGen_Form ||
                     ActiveForm is RTC.RTC_VmdAct_Form

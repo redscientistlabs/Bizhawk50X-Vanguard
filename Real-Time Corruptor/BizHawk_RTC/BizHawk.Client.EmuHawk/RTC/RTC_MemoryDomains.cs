@@ -158,6 +158,12 @@ namespace RTC
 
                 case "GEN":     //Sega Genesis and CD
                     DomainBlacklist.Add("MD CART");
+                    DomainBlacklist.Add("CRAM"); //Color Ram
+                    DomainBlacklist.Add("VSRAM"); //Vertical scroll ram. Do you like glitched scrolling? Have a dedicated domain...
+                    DomainBlacklist.Add("SRAM"); //Save Ram
+                    DomainBlacklist.Add("BOOT ROM"); //Genesis Boot Rom 
+                    DomainBlacklist.Add("32X FB"); //32X Sprinkles
+                    DomainBlacklist.Add("CD BOOT ROM"); //Sega CD boot rom
                     break;
 
 
@@ -190,12 +196,30 @@ namespace RTC
                     //everything okay
                     break;
 
-                case "INTV":    //Intellivision
+                case "VB":      //Virtualboy
+                    DomainBlacklist.Add("ROM");
+                    DomainBlacklist.Add("CARTRAM");
+                    break;
+
+                case "SAT":     //Sega Saturn
+                    DomainBlacklist.Add("Backup RAM");
+                    DomainBlacklist.Add("Boot Rom");
+                    DomainBlacklist.Add("Backup Cart");
+                    DomainBlacklist.Add("VDP1 Framebuffer"); //Sprinkles
+                    DomainBlacklist.Add("VDP2 CRam"); //VDP 2 color ram (pallettes)
+                    DomainBlacklist.Add("Sound Ram"); //90% chance of killing the audio
+                    break;
+
+                case "INTV": //Intellivision
+                    DomainBlacklist.Add("Graphics ROM");
+                    DomainBlacklist.Add("System ROM");
+                    DomainBlacklist.Add("Executive ROM"); //??????    
+                    break;
+
                 case "PCECD":   //PC-Engine CD / Turbo Grafx CD
                 case "TI83":    //Ti-83 Calculator
                 case "C64":     //Commodore 64
                 case "SGB":     //Super Gameboy
-                case "SAT":     //Sega Saturn
                 case "DGB": 
                     break;
 
