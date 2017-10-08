@@ -311,7 +311,7 @@ namespace RTC
 
                 case CommandType.REMOTE_KEY_GETSYSTEMCORE:
                     cmdBack = new RTC_Command(CommandType.RETURNVALUE);
-                    cmdBack.objectValue = StashKey.getCoreName((string)cmd.objectValue);
+                    cmdBack.objectValue = StashKey.getCoreName_NET((string)cmd.objectValue);
                     break;
 
                 case CommandType.REMOTE_KEY_GETGAMENAME:

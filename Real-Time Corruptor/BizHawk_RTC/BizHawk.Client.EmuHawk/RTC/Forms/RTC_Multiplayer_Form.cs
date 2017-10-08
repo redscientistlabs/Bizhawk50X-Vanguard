@@ -467,7 +467,7 @@ namespace RTC
 			}
 		}
 
-		private void btnSplitscreen_Click(object sender, EventArgs e)
+		public void btnSplitscreen_Click(object sender, EventArgs e)
 		{
 			if (btnSplitscreen.ForeColor == Color.Red)
 			{

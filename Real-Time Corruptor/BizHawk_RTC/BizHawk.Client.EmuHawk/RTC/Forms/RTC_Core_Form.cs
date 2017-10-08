@@ -120,6 +120,9 @@ namespace RTC
 
         private void btnGlitchHarvester_Click(object sender, EventArgs e)
         {
+            if (!btnGlitchHarvester.Text.Contains("○"))
+                btnGlitchHarvester.Text = "○ " + btnGlitchHarvester.Text;
+
             RTC_Core.ghForm.Show();
 			RTC_Core.ghForm.Focus();
 		}
@@ -317,6 +320,7 @@ namespace RTC
             {
                 GhostBoxInvisible(btnEasyMode);
                 GhostBoxInvisible(btnEngineConfig);
+                GhostBoxInvisible(btnGlitchHarvester);
                 GhostBoxInvisible(btnRTCMultiplayer);
                 GhostBoxInvisible(btnStockpilePlayer);
                 GhostBoxInvisible(btnAutoCorrupt);

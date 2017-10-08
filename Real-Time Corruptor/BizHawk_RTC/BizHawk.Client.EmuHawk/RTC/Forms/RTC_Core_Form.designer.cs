@@ -543,7 +543,6 @@
         #endregion
         private System.Windows.Forms.Button btnManualBlast;
         public System.Windows.Forms.Panel pnLeftPanel;
-        private System.Windows.Forms.Button btnGlitchHarvester;
         public System.Windows.Forms.Button btnAutoCorrupt;
         public System.Windows.Forms.CheckBox cbUseGameProtection;
         public System.Windows.Forms.Button btnEasyMode;
@@ -570,6 +569,7 @@
         public System.Windows.Forms.ProgressBar pbAutoKillSwitchTimeout;
         public System.Windows.Forms.Button btnAutoKillSwitchExecute;
         private System.Windows.Forms.ComboBox cbAutoKillSwitchExecuteAction;
+        public System.Windows.Forms.Button btnGlitchHarvester;
     }
 }
 

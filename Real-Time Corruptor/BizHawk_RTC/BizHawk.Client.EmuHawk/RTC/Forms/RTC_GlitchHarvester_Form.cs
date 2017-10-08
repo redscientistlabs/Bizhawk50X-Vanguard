@@ -423,6 +423,7 @@ namespace RTC
         {
             if (e.CloseReason != CloseReason.FormOwnerClosing)
             {
+                RTC_Core.coreForm.btnGlitchHarvester.Text = RTC_Core.coreForm.btnGlitchHarvester.Text.Replace("○ ", "");
                 e.Cancel = true;
                 this.Hide();
             }
@@ -1244,7 +1245,7 @@ namespace RTC
 
 			}
 
-            CheckCompatibility();
+            //CheckCompatibility();
 
             refreshSavestateTextboxes();
 

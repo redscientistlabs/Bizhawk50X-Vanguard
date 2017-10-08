@@ -16,9 +16,10 @@ namespace RTC
 
 		Size BizhawkMainformLastSize;
 		Point BizhawkMainformLastLocation;
+        public bool BizhawkMainformDispFixScaleInteger;
+        public bool BizhawkMainformDispFixAspectRatio;
 
-
-		public RTC_MultiPeerPopout_Form()
+        public RTC_MultiPeerPopout_Form()
 		{
 			InitializeComponent();
         }
@@ -32,11 +33,15 @@ namespace RTC
 		{
 			if (e.CloseReason != CloseReason.FormOwnerClosing)
 			{
-				e.Cancel = true;
+                if (RTC_Core.multiForm.btnSplitscreen.ForeColor == Color.Red)
+                    RTC_Core.multiForm.btnSplitscreen_Click(sender, e);
+
+                RTC_Core.multiForm.btnPopoutPeerGameScreen.Visible = true;
+                RTC_Core.multiForm.pnPeerRedBar.Visible = true;
+                RTC_Core.multiForm.pbPeerScreen.Visible = true;
+
+                e.Cancel = true;
 				this.Hide();
-				RTC_Core.multiForm.btnPopoutPeerGameScreen.Visible = true;
-				RTC_Core.multiForm.pnPeerRedBar.Visible = true;
-				RTC_Core.multiForm.pbPeerScreen.Visible = true;
 			}
 
 		}
@@ -56,17 +61,19 @@ namespace RTC
 			SwitchWindowType();
 		}
 
-		public void SetSplitscreen(bool isSplitscreen)
+		public void SetSplitscreen(bool state)
 		{
-			if(isSplitscreen)
+			if(state)
 			{
 				this.Size = new Size(554, 297);
 				this.pbPeerScreen.Size = new Size(256, 224);
 
 				BizhawkMainformLastSize = GlobalWin.MainForm.Size;
 				BizhawkMainformLastLocation = GlobalWin.MainForm.Location;
+                BizhawkMainformDispFixAspectRatio = Global.Config.DispFixAspectRatio;
+                BizhawkMainformDispFixScaleInteger = Global.Config.DispFixScaleInteger;
 
-				GlobalWin.MainForm.Hide();
+                GlobalWin.MainForm.Hide();
 				GlobalWin.MainForm.MainformMenu.Visible = false;
 				GlobalWin.MainForm.MainStatusBar.Visible = false;
 				GlobalWin.MainForm.FormBorderStyle = FormBorderStyle.None;
@@ -105,7 +112,10 @@ namespace RTC
 
 				GlobalWin.MainForm.Show();
 
-				this.pbPeerScreen.Size = new Size(512, 448);
+                Global.Config.DispFixAspectRatio = BizhawkMainformDispFixAspectRatio;
+                Global.Config.DispFixScaleInteger = BizhawkMainformDispFixScaleInteger;
+
+                this.pbPeerScreen.Size = new Size(512, 448);
 				RTC_Hooks.BIZHAWK_ALLOWED_DOUBLECLICK_FULLSCREEN = true;
 
 				this.pbPeerScreen.Location = new Point(12, 19);

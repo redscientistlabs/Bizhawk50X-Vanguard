@@ -63,7 +63,8 @@ namespace BizHawk.Client.EmuHawk
 				?? new N64Settings();
 		}
 
-		private static void PutSyncSettings(N64SyncSettings s)
+        //RTC_Hijack : Make this method public
+		public static void PutSyncSettings(N64SyncSettings s)
 		{
 			if (Global.Emulator is N64)
 			{

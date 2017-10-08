@@ -316,9 +316,9 @@ namespace RTC
 			if (sks.RtcVersion != RTC_Core.RtcVersion)
 			{
 				if (sks.RtcVersion == null)
-					ErrorMessages.Add("You have loaded a broken stockpile using RTC " + RTC_Core.RtcVersion + "\n Items might not appear identical to how they when they were created.");
+					ErrorMessages.Add("You have loaded a broken stockpile that didn't contain an RTC Version number\n. There is no reason to believe that these items will work.");
 				else
-					ErrorMessages.Add("You have loaded a stockpile created with RTC " + sks.RtcVersion + " using RTC " + RTC_Core.RtcVersion + "\n Items might not appear identical to how they when they were created.");
+					ErrorMessages.Add("You have loaded a stockpile created with RTC " + sks.RtcVersion + " using RTC " + RTC_Core.RtcVersion + "\n Items might not appear identical to how they when they were created or it is possible that they don't work if BizHawk was upgraded.");
 			}
 
             Dictionary<string, string> StashkeySystemNameToCurrentCore = new Dictionary<string, string>();
@@ -664,31 +664,60 @@ namespace RTC
             return sk;
 		}
 
-		public static string getCoreName(string _SystemName)
-		{
+        public static void setCore(StashKey sk) => setCore(sk.SystemName, sk.SystemCore);
+        public static void setCore(string _systemName, string _systemCore)
+        {
+            switch (_systemName)
+            {
+                case "NES":
+                    Global.Config.NES_InQuickNES = _systemCore == "quicknes";
+                    break;
+                case "SNES":
+                    Global.Config.SNES_InSnes9x = _systemCore == "snes9x";
+                    break;
+                case "GBA":
+                    Global.Config.GBA_UsemGBA = _systemCore == "mgba";
+                    break;
+                case "N64":
 
-                switch (_SystemName)
-                {
-                    case "NES":
-                        return (Global.Config.NES_InQuickNES ? "quicknes" : "neshawk");
+                    string[] coreParts = _systemCore.Split('/');
 
-                    case "SNES" :
-						return (Global.Config.SNES_InSnes9x ? "snes9x" : "bsnes");
+                    N64SyncSettings ss = (N64SyncSettings)Global.Config.GetCoreSyncSettings<N64>()
+                    ?? new N64SyncSettings();
 
-                    case "GBA":
-                        return (Global.Config.GBA_UsemGBA ? "mgba" : "vba-next");
+                    ss.VideoPlugin = (PluginType)Enum.Parse(typeof(PluginType), coreParts[0], true);
+                    ss.Rsp = (N64SyncSettings.RspType)Enum.Parse(typeof(N64SyncSettings.RspType), coreParts[1], true);
+                    ss.Core = (N64SyncSettings.CoreType)Enum.Parse(typeof(N64SyncSettings.CoreType), coreParts[2], true);
 
-                    case "N64":
-                        N64SyncSettings ss = (N64SyncSettings)Global.Config.GetCoreSyncSettings<N64>()
-                        ?? new N64SyncSettings();
+                    N64VideoPluginconfig.PutSyncSettings(ss);
 
-                        return $"{ss.VideoPlugin}/{ss.Rsp}/{ss.Core}";
+                    break;
+            }
+        }
 
+        public static string getCoreName_NET(string _systemName)
+        {
 
-                }
+            switch (_systemName)
+            {
+                case "NES":
+                    return (Global.Config.NES_InQuickNES ? "quicknes" : "neshawk");
 
-			return _SystemName;
-		}
+                case "SNES":
+                    return (Global.Config.SNES_InSnes9x ? "snes9x" : "bsnes");
+
+                case "GBA":
+                    return (Global.Config.GBA_UsemGBA ? "mgba" : "vba-next");
+
+                case "N64":
+                    N64SyncSettings ss = (N64SyncSettings)Global.Config.GetCoreSyncSettings<N64>()
+                    ?? new N64SyncSettings();
+
+                    return $"{ss.VideoPlugin}/{ss.Rsp}/{ss.Core}";
+            }
+
+            return _systemName;
+        }
 
         public override string ToString()
         {

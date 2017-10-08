@@ -349,6 +349,8 @@ namespace RTC
 			if (sk == null)
 				return false;
 
+            StashKey.setCore(sk);
+
 			string GameSystem = sk.SystemName;
 			string GameName = sk.GameName;
 			string Key = sk.ParentKey;

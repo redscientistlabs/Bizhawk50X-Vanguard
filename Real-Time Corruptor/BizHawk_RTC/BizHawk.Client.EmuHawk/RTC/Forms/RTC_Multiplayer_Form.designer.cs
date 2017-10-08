@@ -934,7 +934,6 @@
 		private System.Windows.Forms.Button btnPushStashkeyToServer;
 		public System.Windows.Forms.CheckBox cbPullStateToGlitchHarvester;
 		private System.Windows.Forms.Button btnRequestStream;
-		private System.Windows.Forms.Button btnSplitscreen;
 		private System.Windows.Forms.Button btnBlastBoard;
 		public System.Windows.Forms.ComboBox cbStreamFps;
 		public System.Windows.Forms.CheckBox cbCompressStream;
@@ -942,5 +941,6 @@
 		private System.Windows.Forms.Button button2;
 		private System.Windows.Forms.Label label2;
         private System.Windows.Forms.Label label3;
+        public System.Windows.Forms.Button btnSplitscreen;
     }
 }
