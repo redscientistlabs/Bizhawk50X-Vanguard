@@ -610,6 +610,7 @@ namespace RTC
 		public byte[] StateData = null;
 
 		public string SystemName;
+        public string SystemDeepName;
 		public string SystemCore;
 		public List<string> SelectedDomains = new List<string>();
         public string GameName;
@@ -643,8 +644,8 @@ namespace RTC
 
 
 			RomFilename = (string)RTC_Core.SendCommandToBizhawk(new RTC_Command(CommandType.REMOTE_KEY_GETOPENROMFILENAME), true);
-			SystemName = RTC_Core.EmuFolderCheck((string)RTC_Core.SendCommandToBizhawk(new RTC_Command(CommandType.REMOTE_KEY_GETPATHENTRY), true));
-			SystemCore = (string)RTC_Core.SendCommandToBizhawk(new RTC_Command(CommandType.REMOTE_KEY_GETSYSTEMCORE) { objectValue = SystemName }, true);
+			SystemName = RTC_Core.EmuFolderCheck((string)RTC_Core.SendCommandToBizhawk(new RTC_Command(CommandType.REMOTE_KEY_GETSYSTEMNAME), true));
+            SystemCore = (string)RTC_Core.SendCommandToBizhawk(new RTC_Command(CommandType.REMOTE_KEY_GETSYSTEMCORE) { objectValue = SystemName }, true);
 			GameName = (string)RTC_Core.SendCommandToBizhawk(new RTC_Command(CommandType.REMOTE_KEY_GETGAMENAME), true);
 
 			this.SelectedDomains.AddRange(RTC_MemoryDomains.SelectedDomains);
@@ -667,13 +668,25 @@ namespace RTC
         public static void setCore(StashKey sk) => setCore(sk.SystemName, sk.SystemCore);
         public static void setCore(string _systemName, string _systemCore)
         {
-            switch (_systemName)
+            switch (_systemName.ToUpper())
             {
+                case "GAMEBOY":
+                    Global.Config.GB_AsSGB = _systemCore == "sameboy";
+                    Global.Config.SGB_UseBsnes = false;
+                    break;
                 case "NES":
                     Global.Config.NES_InQuickNES = _systemCore == "quicknes";
                     break;
                 case "SNES":
+
+                    if(_systemCore == "bsnes_SGB")
+                    {
+                        Global.Config.GB_AsSGB = true;
+                        Global.Config.SGB_UseBsnes = true;
+                    }
+
                     Global.Config.SNES_InSnes9x = _systemCore == "snes9x";
+
                     break;
                 case "GBA":
                     Global.Config.GBA_UsemGBA = _systemCore == "mgba";
@@ -688,6 +701,7 @@ namespace RTC
                     ss.VideoPlugin = (PluginType)Enum.Parse(typeof(PluginType), coreParts[0], true);
                     ss.Rsp = (N64SyncSettings.RspType)Enum.Parse(typeof(N64SyncSettings.RspType), coreParts[1], true);
                     ss.Core = (N64SyncSettings.CoreType)Enum.Parse(typeof(N64SyncSettings.CoreType), coreParts[2], true);
+                    ss.DisableExpansionSlot = (coreParts[3] == "NoExp");
 
                     N64VideoPluginconfig.PutSyncSettings(ss);
 
@@ -698,12 +712,19 @@ namespace RTC
         public static string getCoreName_NET(string _systemName)
         {
 
-            switch (_systemName)
+            switch (_systemName.ToUpper())
             {
+                case "GAMEBOY":
+                    return (Global.Config.GB_AsSGB ? "sameboy" : "gambatte");
+
                 case "NES":
                     return (Global.Config.NES_InQuickNES ? "quicknes" : "neshawk");
 
                 case "SNES":
+
+                    if (RTC_MemoryDomains.MemoryInterfaces.ContainsKey("SGB WRAM"))
+                        return "bsnes_SGB";
+
                     return (Global.Config.SNES_InSnes9x ? "snes9x" : "bsnes");
 
                 case "GBA":
@@ -713,7 +734,7 @@ namespace RTC
                     N64SyncSettings ss = (N64SyncSettings)Global.Config.GetCoreSyncSettings<N64>()
                     ?? new N64SyncSettings();
 
-                    return $"{ss.VideoPlugin}/{ss.Rsp}/{ss.Core}";
+                    return $"{ss.VideoPlugin}/{ss.Rsp}/{ss.Core}/{(ss.DisableExpansionSlot ? "NoExp" : "Exp")}";
             }
 
             return _systemName;

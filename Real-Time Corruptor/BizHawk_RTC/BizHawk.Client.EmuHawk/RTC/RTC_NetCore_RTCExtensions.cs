@@ -304,7 +304,7 @@ namespace RTC
                     }
                     break;
 
-                case CommandType.REMOTE_KEY_GETPATHENTRY:
+                case CommandType.REMOTE_KEY_GETSYSTEMNAME:
                     cmdBack = new RTC_Command(CommandType.RETURNVALUE);
                     cmdBack.objectValue = (Global.Config.PathEntries[Global.Game.System, "Savestates"] ?? Global.Config.PathEntries[Global.Game.System, "Base"]).SystemDisplayName;
                     break;
