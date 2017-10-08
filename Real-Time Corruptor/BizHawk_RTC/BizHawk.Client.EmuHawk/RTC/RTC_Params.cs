@@ -44,7 +44,8 @@ namespace RTC
             new Ref(() => RTC_VectorEngine.limiterList, x => { RTC_VectorEngine.limiterList = (string[])x; }),
 			new Ref(() => RTC_VectorEngine.valueList, x => { RTC_VectorEngine.valueList = (string[])x; }),
 
-			new Ref(() => RTC_StockpileManager.currentGameSystem, x => { RTC_StockpileManager.currentGameSystem = (string)x; }),
+            new Ref(() => RTC_StockpileManager.currentSavestateKey, x => { RTC_StockpileManager.currentSavestateKey = (string)x; }),
+            new Ref(() => RTC_StockpileManager.currentGameSystem, x => { RTC_StockpileManager.currentGameSystem = (string)x; }),
 			new Ref(() => RTC_StockpileManager.currentGameName, x => { RTC_StockpileManager.currentGameName = (string)x; }),
 			new Ref(() => RTC_StockpileManager.backupedState, x => { RTC_StockpileManager.backupedState = (StashKey)x; }),
 

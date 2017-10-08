@@ -73,9 +73,9 @@
             this.btnEasyMode.ForeColor = System.Drawing.Color.Black;
             this.btnEasyMode.Image = ((System.Drawing.Image)(resources.GetObject("btnEasyMode.Image")));
             this.btnEasyMode.ImageAlign = System.Drawing.ContentAlignment.MiddleRight;
-            this.btnEasyMode.Location = new System.Drawing.Point(5, 39);
+            this.btnEasyMode.Location = new System.Drawing.Point(5, 36);
             this.btnEasyMode.Name = "btnEasyMode";
-            this.btnEasyMode.Size = new System.Drawing.Size(140, 49);
+            this.btnEasyMode.Size = new System.Drawing.Size(140, 60);
             this.btnEasyMode.TabIndex = 85;
             this.btnEasyMode.TabStop = false;
             this.btnEasyMode.Tag = "color:light";
@@ -106,7 +106,7 @@
             this.btnAutoCorrupt.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnAutoCorrupt.Font = new System.Drawing.Font("Segoe UI Semibold", 10F, System.Drawing.FontStyle.Bold);
             this.btnAutoCorrupt.ForeColor = System.Drawing.Color.OrangeRed;
-            this.btnAutoCorrupt.Location = new System.Drawing.Point(5, 255);
+            this.btnAutoCorrupt.Location = new System.Drawing.Point(5, 259);
             this.btnAutoCorrupt.Name = "btnAutoCorrupt";
             this.btnAutoCorrupt.Size = new System.Drawing.Size(140, 29);
             this.btnAutoCorrupt.TabIndex = 8;
@@ -125,7 +125,7 @@
             this.btnManualBlast.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnManualBlast.Font = new System.Drawing.Font("Segoe UI Semibold", 10F, System.Drawing.FontStyle.Bold);
             this.btnManualBlast.ForeColor = System.Drawing.Color.OrangeRed;
-            this.btnManualBlast.Location = new System.Drawing.Point(5, 224);
+            this.btnManualBlast.Location = new System.Drawing.Point(5, 227);
             this.btnManualBlast.Name = "btnManualBlast";
             this.btnManualBlast.Size = new System.Drawing.Size(140, 29);
             this.btnManualBlast.TabIndex = 7;
@@ -167,7 +167,7 @@
             this.pnAutoKillSwitch.Controls.Add(this.cbUseAutoKillSwitch);
             this.pnAutoKillSwitch.Controls.Add(this.pbAutoKillSwitchTimeout);
             this.pnAutoKillSwitch.Controls.Add(this.label4);
-            this.pnAutoKillSwitch.Location = new System.Drawing.Point(5, 371);
+            this.pnAutoKillSwitch.Location = new System.Drawing.Point(5, 373);
             this.pnAutoKillSwitch.Name = "pnAutoKillSwitch";
             this.pnAutoKillSwitch.Size = new System.Drawing.Size(140, 106);
             this.pnAutoKillSwitch.TabIndex = 118;
@@ -251,9 +251,9 @@
             this.pnCrashProtection.Controls.Add(this.btnGpJumpBack);
             this.pnCrashProtection.Controls.Add(this.label2);
             this.pnCrashProtection.Controls.Add(this.cbUseGameProtection);
-            this.pnCrashProtection.Location = new System.Drawing.Point(5, 289);
+            this.pnCrashProtection.Location = new System.Drawing.Point(5, 291);
             this.pnCrashProtection.Name = "pnCrashProtection";
-            this.pnCrashProtection.Size = new System.Drawing.Size(140, 76);
+            this.pnCrashProtection.Size = new System.Drawing.Size(140, 79);
             this.pnCrashProtection.TabIndex = 116;
             this.pnCrashProtection.Tag = "color:dark";
             this.pnCrashProtection.Visible = false;
@@ -312,7 +312,7 @@
             this.btnEngineConfig.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnEngineConfig.Font = new System.Drawing.Font("Segoe UI Semibold", 10F, System.Drawing.FontStyle.Bold);
             this.btnEngineConfig.ForeColor = System.Drawing.Color.Black;
-            this.btnEngineConfig.Location = new System.Drawing.Point(5, 93);
+            this.btnEngineConfig.Location = new System.Drawing.Point(5, 99);
             this.btnEngineConfig.Name = "btnEngineConfig";
             this.btnEngineConfig.Size = new System.Drawing.Size(140, 29);
             this.btnEngineConfig.TabIndex = 118;
@@ -371,7 +371,7 @@
             this.btnStockpilePlayer.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnStockpilePlayer.Font = new System.Drawing.Font("Segoe UI Semibold", 10F, System.Drawing.FontStyle.Bold);
             this.btnStockpilePlayer.ForeColor = System.Drawing.Color.Black;
-            this.btnStockpilePlayer.Location = new System.Drawing.Point(5, 157);
+            this.btnStockpilePlayer.Location = new System.Drawing.Point(5, 163);
             this.btnStockpilePlayer.Name = "btnStockpilePlayer";
             this.btnStockpilePlayer.Size = new System.Drawing.Size(140, 29);
             this.btnStockpilePlayer.TabIndex = 109;
@@ -389,7 +389,7 @@
             this.btnRTCMultiplayer.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnRTCMultiplayer.Font = new System.Drawing.Font("Segoe UI Semibold", 10F, System.Drawing.FontStyle.Bold);
             this.btnRTCMultiplayer.ForeColor = System.Drawing.Color.Black;
-            this.btnRTCMultiplayer.Location = new System.Drawing.Point(5, 189);
+            this.btnRTCMultiplayer.Location = new System.Drawing.Point(5, 195);
             this.btnRTCMultiplayer.Name = "btnRTCMultiplayer";
             this.btnRTCMultiplayer.Size = new System.Drawing.Size(140, 29);
             this.btnRTCMultiplayer.TabIndex = 108;
@@ -407,7 +407,7 @@
             this.btnGlitchHarvester.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnGlitchHarvester.Font = new System.Drawing.Font("Segoe UI Semibold", 10F, System.Drawing.FontStyle.Bold);
             this.btnGlitchHarvester.ForeColor = System.Drawing.Color.Black;
-            this.btnGlitchHarvester.Location = new System.Drawing.Point(5, 125);
+            this.btnGlitchHarvester.Location = new System.Drawing.Point(5, 131);
             this.btnGlitchHarvester.Name = "btnGlitchHarvester";
             this.btnGlitchHarvester.Size = new System.Drawing.Size(140, 29);
             this.btnGlitchHarvester.TabIndex = 107;
@@ -428,7 +428,7 @@
             this.pnCrashProtectionUnavailable.Controls.Add(this.label1);
             this.pnCrashProtectionUnavailable.Controls.Add(this.label24);
             this.pnCrashProtectionUnavailable.Controls.Add(this.label23);
-            this.pnCrashProtectionUnavailable.Location = new System.Drawing.Point(5, 289);
+            this.pnCrashProtectionUnavailable.Location = new System.Drawing.Point(5, 291);
             this.pnCrashProtectionUnavailable.Name = "pnCrashProtectionUnavailable";
             this.pnCrashProtectionUnavailable.Size = new System.Drawing.Size(140, 188);
             this.pnCrashProtectionUnavailable.TabIndex = 119;

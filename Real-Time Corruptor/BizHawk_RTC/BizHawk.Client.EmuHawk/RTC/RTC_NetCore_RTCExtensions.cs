@@ -296,8 +296,12 @@ namespace RTC
                     break;
 
                 case CommandType.REMOTE_KEY_PUSHSAVESTATEDICO:
-                    RTC_StockpileManager.SavestateStashkeyDico[(string)(cmd.objectValue as object[])[1]] = (StashKey)((cmd.objectValue as object[])[0]);
-                    RTC_Core.ghForm.refreshSavestateTextboxes();
+                    {
+                        var key = (string)(cmd.objectValue as object[])[1];
+                        var sk = (StashKey)((cmd.objectValue as object[])[0]);
+                        RTC_StockpileManager.SavestateStashkeyDico[key] = sk;
+                        RTC_Core.ghForm.refreshSavestateTextboxes();
+                    }
                     break;
 
                 case CommandType.REMOTE_KEY_GETPATHENTRY:

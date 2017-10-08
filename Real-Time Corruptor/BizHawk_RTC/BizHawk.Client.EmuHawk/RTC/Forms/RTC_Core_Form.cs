@@ -99,7 +99,18 @@ namespace RTC
 
             RTC_Core.CheckForProblematicProcesses();
 
-            if (!RTC_Core.isStandalone)
+            if (RTC_Core.isStandalone)
+            {
+                GhostBoxInvisible(btnEasyMode);
+                GhostBoxInvisible(btnEngineConfig);
+                GhostBoxInvisible(btnGlitchHarvester);
+                GhostBoxInvisible(btnStockpilePlayer);
+                GhostBoxInvisible(btnRTCMultiplayer);
+                GhostBoxInvisible(btnManualBlast);
+                GhostBoxInvisible(btnAutoCorrupt);
+                GhostBoxInvisible(pnCrashProtection);
+            }
+            else
             {
                 btnEngineConfig_Click(sender, e);
                 pnCrashProtectionUnavailable.Visible = true;
@@ -275,19 +286,41 @@ namespace RTC
 			EasyButtonMenu.Show(this, locate);
         }
 
+        public void GhostBoxInvisible(Control ctrl)
+        {
+            Panel pn = new Panel();
+            var col = ctrl.Parent.BackColor;
+            pn.BorderStyle = BorderStyle.None;
+            pn.BackColor = RTC_Extensions.ChangeColorBrightness(col,-0.10f);
+            pn.Tag = "GHOST";
+            pn.Location = ctrl.Location;
+            pn.Size = ctrl.Size;
+            ctrl.Parent.Controls.Add(pn);
+            ctrl.Visible = false;
+        }
+
+        public void RemoveGhostBoxes()
+        {
+            List<Control> controlsToBeRemoved = new List<Control>();
+            foreach(Control ctrl in Controls)
+                if (ctrl.Tag.ToString() == "GHOST")
+                    controlsToBeRemoved.Add(ctrl);
+
+            foreach (Control ctrl in controlsToBeRemoved)
+                Controls.Remove(ctrl);
+        }
+
         public void showPanelForm(Form frm, bool HideButtons = true)
         {
 
             if(HideButtons && frm is RTC_ConnectionStatus_Form)
             {
-                btnEasyMode.Visible = false;
-                btnEngineConfig.Visible = false;
-                btnGlitchHarvester.Visible = false;
-                btnRTCMultiplayer.Visible = false;
-                btnStockpilePlayer.Visible = false;
-                btnAutoCorrupt.Visible = false;
-                btnManualBlast.Visible = false;
-
+                GhostBoxInvisible(btnEasyMode);
+                GhostBoxInvisible(btnEngineConfig);
+                GhostBoxInvisible(btnRTCMultiplayer);
+                GhostBoxInvisible(btnStockpilePlayer);
+                GhostBoxInvisible(btnAutoCorrupt);
+                GhostBoxInvisible(btnManualBlast);
             }
 
             btnEngineConfig.Text = btnEngineConfig.Text.Replace("● ", "");
@@ -334,6 +367,8 @@ namespace RTC
                     btnStockpilePlayer.Visible = true;
                     btnAutoCorrupt.Visible = true;
                     btnManualBlast.Visible = true;
+
+                    RemoveGhostBoxes();
 
                     if (!RTC_Core.FirstConnection)
                         pnCrashProtection.Visible = true;
@@ -443,6 +478,7 @@ namespace RTC
                     break;
             }
         }
+
     }
 
 }
