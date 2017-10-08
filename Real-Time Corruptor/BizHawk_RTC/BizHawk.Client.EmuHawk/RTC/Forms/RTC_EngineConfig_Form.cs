@@ -11,7 +11,7 @@ using System.Windows.Forms;
 
 namespace RTC
 {
-    public partial class RTC_EC_Form : Form
+    public partial class RTC_EngineConfig_Form : Form
     {
 
 
@@ -83,7 +83,7 @@ namespace RTC
 
 
 
-        public RTC_EC_Form()
+        public RTC_EngineConfig_Form()
         {
             InitializeComponent();
         }

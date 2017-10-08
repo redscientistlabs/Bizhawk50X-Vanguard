@@ -1,6 +1,6 @@
 ﻿namespace RTC
 {
-    partial class RTC_EC_Form
+    partial class RTC_EngineConfig_Form
     {
         /// <summary>
         /// Required designer variable.
@@ -1078,7 +1078,7 @@
             this.label9.TabIndex = 12;
             this.label9.Text = "Blast Type:";
             // 
-            // RTC_EC_Form
+            // RTC_EngineConfig_Form
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
@@ -1097,8 +1097,9 @@
             this.Controls.Add(this.pnMemoryTargetting);
             this.Controls.Add(this.pnCorruptionEngine);
             this.Controls.Add(this.label11);
+            this.DoubleBuffered = true;
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
-            this.Name = "RTC_EC_Form";
+            this.Name = "RTC_EngineConfig_Form";
             this.Tag = "color:dark";
             this.Text = "RTC : Engine Config";
             this.Load += new System.EventHandler(this.RTC_EC_Form_Load);
