@@ -451,7 +451,7 @@ namespace RTC
 
         private void cbAutoKillSwitchExecuteAction_SelectedIndexChanged(object sender, EventArgs e)
         {
-            btnAutoKillSwitchExecute.Text = cbAutoKillSwitchExecuteAction.SelectedItem.ToString();
+            btnAutoKillSwitchExecute.Text = cbAutoKillSwitchExecuteAction.SelectedItem?.ToString() ?? "Kill + Restart";
         }
 
         private void btnAutoKillSwitchExecute_Click(object sender, EventArgs e)
