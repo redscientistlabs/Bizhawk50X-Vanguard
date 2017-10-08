@@ -31,7 +31,7 @@ namespace RTC
 		private void RTC_NE_Form_Load(object sender, EventArgs e)
 		{
 			if (sk.Note != null)
-				tbNote.Text = sk.Note;
+				tbNote.Text = sk.Note.Replace("\n", Environment.NewLine);
 
 		}
 
@@ -39,7 +39,7 @@ namespace RTC
 		{
 			currentlyOpenNoteForm = null;
 
-            string cleanText = string.Join(Environment.NewLine, tbNote.Lines.Select(it => it.Trim()));
+            string cleanText = string.Join("\n", tbNote.Lines.Select(it => it.Trim()));
 
             sk.Note = null;
 

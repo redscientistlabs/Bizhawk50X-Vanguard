@@ -17,7 +17,7 @@ namespace RTC
 
     public static class RTC_Core
     {
-		public static string RtcVersion = "3.05c";
+		public static string RtcVersion = "3.06";
 		
         public static Random RND = new Random();
         public static string[] args;
@@ -300,7 +300,7 @@ namespace RTC
                             coreForm.btnEngineConfig_Click(ob, ev);
                         }
                         else
-                            coreForm.showPanelForm(coreForm.previousForm);
+                            coreForm.showPanelForm(coreForm.previousForm, false);
 
 						ghForm.pnHideGlitchHarvester.Hide();
 						csForm.btnStartEmuhawkDetached.Text = "Restart BizHawk";

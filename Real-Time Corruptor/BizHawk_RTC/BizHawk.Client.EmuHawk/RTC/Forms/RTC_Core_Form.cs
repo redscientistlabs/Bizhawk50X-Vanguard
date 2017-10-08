@@ -306,7 +306,7 @@ namespace RTC
         {
             List<Control> controlsToBeRemoved = new List<Control>();
             foreach(Control ctrl in Controls)
-                if (ctrl.Tag.ToString() == "GHOST")
+                if (ctrl.Tag != null && ctrl.Tag.ToString() == "GHOST")
                     controlsToBeRemoved.Add(ctrl);
 
             foreach (Control ctrl in controlsToBeRemoved)

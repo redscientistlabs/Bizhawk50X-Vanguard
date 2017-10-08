@@ -321,6 +321,9 @@ namespace RTC
 					ErrorMessages.Add("You have loaded a stockpile created with RTC " + sks.RtcVersion + " using RTC " + RTC_Core.RtcVersion + "\n Items might not appear identical to how they when they were created or it is possible that they don't work if BizHawk was upgraded.");
 			}
 
+            /*
+            // We switch cores on the fly now, no more need for checking core mismatch
+
             Dictionary<string, string> StashkeySystemNameToCurrentCore = new Dictionary<string, string>();
 
 			foreach(StashKey sk in sks.StashKeys)
@@ -345,6 +348,7 @@ namespace RTC
 				}
 
 			}
+            */
 
 			if (ErrorMessages.Count == 0)
 				return;

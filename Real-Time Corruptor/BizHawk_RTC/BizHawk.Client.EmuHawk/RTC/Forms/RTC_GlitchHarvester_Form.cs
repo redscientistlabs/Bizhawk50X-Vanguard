@@ -1245,7 +1245,8 @@ namespace RTC
 
 			}
 
-            CheckCompatibility();
+            // We can switch cores on the fly now, no need for compatibility check
+            //CheckCompatibility();
 
             refreshSavestateTextboxes();
 
