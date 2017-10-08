@@ -195,6 +195,7 @@
             this.Controls.Add(this.btnLoadVmd);
             this.Controls.Add(this.btnUnloadVmd);
             this.Controls.Add(this.lbLoadedVmdList);
+            this.DoubleBuffered = true;
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
             this.Name = "RTC_VmdPool_Form";
             this.Text = "RTC_VmdPool_Form";

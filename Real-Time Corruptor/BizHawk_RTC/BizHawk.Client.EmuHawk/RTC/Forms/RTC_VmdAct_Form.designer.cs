@@ -477,6 +477,7 @@
             this.Controls.Add(this.groupBox2);
             this.Controls.Add(this.btnActiveTableQuickSave);
             this.Controls.Add(this.label16);
+            this.DoubleBuffered = true;
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
             this.Name = "RTC_VmdAct_Form";
             this.Text = "RTC_VmdAct_Form";

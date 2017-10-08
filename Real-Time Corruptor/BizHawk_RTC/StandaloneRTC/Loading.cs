@@ -35,14 +35,14 @@ namespace StandaloneRTC
 
 		private void CheckHeartbeat(object sender, EventArgs e)
 		{
-			if ((RTC.RTC_Core.csForm.pbTimeout.Value == RTC.RTC_Core.csForm.pbTimeout.Maximum && !RTC.RTC_RPC.Heartbeat) || RTC.RTC_RPC.Freeze || !RTC.RTC_Core.csForm.cbEnabled.Checked)
+			if ((RTC.RTC_Core.coreForm.pbAutoKillSwitchTimeout.Value == RTC.RTC_Core.coreForm.pbAutoKillSwitchTimeout.Maximum && !RTC.RTC_RPC.Heartbeat) || RTC.RTC_RPC.Freeze || !RTC.RTC_Core.coreForm.cbUseAutoKillSwitch.Checked)
 				return;
 
 			if (!RTC.RTC_RPC.Heartbeat)
 			{
-				RTC.RTC_Core.csForm.pbTimeout.PerformStep();
+				RTC.RTC_Core.coreForm.pbAutoKillSwitchTimeout.PerformStep();
 
-				if (RTC.RTC_Core.csForm.pbTimeout.Value == RTC.RTC_Core.csForm.pbTimeout.Maximum)
+				if (RTC.RTC_Core.coreForm.pbAutoKillSwitchTimeout.Value == RTC.RTC_Core.coreForm.pbAutoKillSwitchTimeout.Maximum)
 				{
 					//this.Focused = false;
 					RTC.RTC_Core.csForm.btnStartEmuhawkDetached_Click(null, null);
@@ -53,7 +53,7 @@ namespace StandaloneRTC
 			}
 			else
 			{
-				RTC.RTC_Core.csForm.pbTimeout.Value = 0;
+				RTC.RTC_Core.coreForm.pbAutoKillSwitchTimeout.Value = 0;
 				RTC.RTC_RPC.Heartbeat = false;
 			}
 

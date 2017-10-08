@@ -208,7 +208,7 @@
             this.Note.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.Automatic;
             this.Note.Width = 35;
             // 
-            // RTC_SP_Form
+            // RTC_StockpilePlayer_Form
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
@@ -221,10 +221,11 @@
             this.Controls.Add(this.btnPreviousItem);
             this.Controls.Add(this.label2);
             this.Controls.Add(this.btnLoadStockpile);
+            this.DoubleBuffered = true;
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.MinimumSize = new System.Drawing.Size(655, 515);
-            this.Name = "RTC_SP_Form";
+            this.Name = "RTC_StockpilePlayer_Form";
             this.Tag = "color:dark";
             this.Text = "RTC : Stockpile Player";
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.RTC_BE_Form_FormClosing);

@@ -101,9 +101,16 @@ namespace RTC
 
 		public static void MAIN_BIZHAWK(string[] args)
 		{
-			//MessageBox.Show("ATTACH DEBUGGER NOW");
+            //MessageBox.Show("ATTACH DEBUGGER NOW");
 
-			RTC_Core.args = args;
+            if(!System.Environment.Is64BitOperatingSystem)
+            {
+                MessageBox.Show("32-bit operating system detected. Bizhawk requires 64-bit to run. Program will shut down");
+                Application.Exit();
+            }
+
+
+            RTC_Core.args = args;
 
 			DisableRTC = RTC_Core.args.Contains("-DISABLERTC");
 			isRemoteRTC = RTC_Core.args.Contains("-REMOTERTC");
@@ -173,7 +180,7 @@ namespace RTC
 
 			string uppercaseFilename = GlobalWin.MainForm.CurrentlyOpenRom.ToUpper();
 			if (RTC_Core.ghForm.Visible && (uppercaseFilename.Contains(".ZIP") || uppercaseFilename.Contains(".7Z")))
-				MessageBox.Show($"The rom {RTC_NetCore.ShortenFilename(uppercaseFilename)} is in an archive and can't be added to a Stockpile");
+				MessageBox.Show($"The rom {RTC_Extensions.ShortenFilename(uppercaseFilename)} is in an archive and can't be added to a Stockpile");
 
 			//Load Game vars into RTC_Core
 			PathEntry pathEntry = Global.Config.PathEntries[Global.Game.System, "Savestates"] ??
@@ -364,6 +371,7 @@ namespace RTC
 			if (DisableRTC) return false;
 
 			return (ActiveForm is RTC.RTC_Core_Form ||
+                    ActiveForm is RTC.RTC_Settings_Form ||
 					ActiveForm is RTC.RTC_GlitchHarvester_Form ||
 					ActiveForm is RTC.RTC_StockpilePlayer_Form ||
 					ActiveForm is RTC.RTC_Multiplayer_Form ||

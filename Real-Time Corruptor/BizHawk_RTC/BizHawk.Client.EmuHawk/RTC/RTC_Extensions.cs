@@ -66,6 +66,27 @@ namespace RTC
             Array.Copy(data, index, result, 0, length);
             return result;
         }
+
+        public static T[] FlipWords<T>(this T[] data, int wordSize)
+        {
+            //2 : 16-bit
+            //4 : 32-bit
+            //8 : 64-bit
+
+            T[] result = new T[data.Length];
+
+            for(int i=0; i<data.Length; i++)
+            {
+                int wordPos = i % wordSize;
+                int wordAddress = i - wordPos;
+                int newPos = wordAddress + (wordSize - (wordPos + 1));
+
+                result[newPos] = data[i];
+            }
+
+            return result;
+        }
+
         #endregion
 
         #region STRING EXTENSIONS
@@ -141,6 +162,19 @@ namespace RTC
             }
 
             return allControls;
+        }
+
+        #endregion
+
+        #region PATH EXTENSIONS
+
+        public static string ShortenFilename(string longFilenamePath)
+        {
+            //returns the filename from the full path
+            if (longFilenamePath.Contains("\\"))
+                return longFilenamePath.Substring(longFilenamePath.LastIndexOf("\\") + 1);
+            else
+                return longFilenamePath;
         }
 
         #endregion

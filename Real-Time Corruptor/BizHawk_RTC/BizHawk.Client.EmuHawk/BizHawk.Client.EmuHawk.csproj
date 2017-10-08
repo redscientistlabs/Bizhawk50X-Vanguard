@@ -708,14 +708,20 @@
     <Compile Include="RTC\Forms\RTC_ConnectionStatus_Form.designer.cs">
       <DependentUpon>RTC_ConnectionStatus_Form.cs</DependentUpon>
     </Compile>
+    <Compile Include="RTC\Forms\RTC_Settings_Form.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="RTC\Forms\RTC_Settings_Form.Designer.cs">
+      <DependentUpon>RTC_Settings_Form.cs</DependentUpon>
+    </Compile>
     <Compile Include="RTC\RTC_Core.cs" />
     <Compile Include="RTC\RTC_Diff.cs" />
     <Compile Include="RTC\Corruption Engines\RTC_DistortionEngine.cs" />
-    <Compile Include="RTC\Forms\RTC_EC_Form.cs">
+    <Compile Include="RTC\Forms\RTC_EngineConfig_Form.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="RTC\Forms\RTC_EC_Form.Designer.cs">
-      <DependentUpon>RTC_EC_Form.cs</DependentUpon>
+    <Compile Include="RTC\Forms\RTC_EngineConfig_Form.Designer.cs">
+      <DependentUpon>RTC_EngineConfig_Form.cs</DependentUpon>
     </Compile>
     <Compile Include="RTC\RTC_Enums.cs" />
     <Compile Include="RTC\RTC_Extensions.cs" />
@@ -750,6 +756,8 @@
     <Compile Include="RTC\Forms\RTC_Multiplayer_Form.designer.cs">
       <DependentUpon>RTC_Multiplayer_Form.cs</DependentUpon>
     </Compile>
+    <Compile Include="RTC\RTC_NetCoreSettings.cs" />
+    <Compile Include="RTC\RTC_NetCore_RTCExtensions.cs" />
     <Compile Include="RTC\RTC_NetCore.cs" />
     <Compile Include="RTC\Forms\RTC_NoteEditor_Form.cs">
       <SubType>Form</SubType>
@@ -1544,8 +1552,8 @@
     <EmbeddedResource Include="RTC\Forms\RTC_ConnectionStatus_Form.resx">
       <DependentUpon>RTC_ConnectionStatus_Form.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="RTC\Forms\RTC_EC_Form.resx">
-      <DependentUpon>RTC_EC_Form.cs</DependentUpon>
+    <EmbeddedResource Include="RTC\Forms\RTC_EngineConfig_Form.resx">
+      <DependentUpon>RTC_EngineConfig_Form.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="RTC\Forms\RTC_Core_Form.resx">
       <DependentUpon>RTC_Core_Form.cs</DependentUpon>
@@ -1561,6 +1569,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="RTC\Forms\RTC_NoteEditor_Form.resx">
       <DependentUpon>RTC_NoteEditor_Form.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="RTC\Forms\RTC_Settings_Form.resx">
+      <DependentUpon>RTC_Settings_Form.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="RTC\Forms\RTC_StockpilePlayer_Form.resx">
       <DependentUpon>RTC_StockpilePlayer_Form.cs</DependentUpon>
@@ -1916,6 +1927,7 @@
     <None Include="config\ControllerImages\GENController.png" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="Resources\paintbrush_icon.png" />
     <None Include="images\WSW.png" />
     <None Include="images\WNW.png" />
     <None Include="images\SW.png" />

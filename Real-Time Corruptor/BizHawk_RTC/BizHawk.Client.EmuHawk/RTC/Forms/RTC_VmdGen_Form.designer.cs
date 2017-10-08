@@ -321,6 +321,7 @@
             this.Controls.Add(this.label17);
             this.Controls.Add(this.btnLoadDomains);
             this.Controls.Add(this.cbSelectedMemoryDomain);
+            this.DoubleBuffered = true;
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
             this.Name = "RTC_VmdGen_Form";
             this.Text = "RTC_VmdGen_Form";

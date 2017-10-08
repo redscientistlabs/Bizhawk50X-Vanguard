@@ -2386,7 +2386,7 @@
             this.cbCompressStockpiles.Size = new System.Drawing.Size(78, 30);
             this.cbCompressStockpiles.TabIndex = 144;
             this.cbCompressStockpiles.TabStop = false;
-            this.cbCompressStockpiles.Text = "Compess\nStockpiles";
+            this.cbCompressStockpiles.Text = "Compress\nStockpiles";
             this.cbCompressStockpiles.UseVisualStyleBackColor = true;
             // 
             // RTC_GH_Form

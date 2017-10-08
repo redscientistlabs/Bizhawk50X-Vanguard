@@ -532,6 +532,9 @@ namespace RTC
                     byte[] corrupted = addData.ToArray();
                     byte[] original = File.ReadAllBytes(GlobalWin.MainForm.CurrentlyOpenRom);
 
+                    if (RTC_MemoryDomains.MemoryInterfaces.ContainsKey("32X FB")) //Flip 16-bit words on 32X rom
+                        original = original.FlipWords(2);
+
                     for (int i = 0; i < rp.skipbytes; i++)
                         original[i] = 0;
 

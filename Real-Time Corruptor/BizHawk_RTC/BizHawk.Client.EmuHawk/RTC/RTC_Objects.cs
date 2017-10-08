@@ -179,7 +179,7 @@ namespace RTC
 
 
 			for (int i = 0; i < sks.StashKeys.Count; i++) //changes RomFile to short filename
-				sks.StashKeys[i].RomFilename = RTC_NetCore.ShortenFilename(sks.StashKeys[i].RomFilename);
+				sks.StashKeys[i].RomFilename = RTC_Extensions.ShortenFilename(sks.StashKeys[i].RomFilename);
 
 			FileStream FS;
 			XmlSerializer xs = new XmlSerializer(typeof(Stockpile));

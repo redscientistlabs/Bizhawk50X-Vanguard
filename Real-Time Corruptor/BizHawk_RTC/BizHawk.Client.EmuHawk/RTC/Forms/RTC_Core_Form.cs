@@ -19,6 +19,8 @@ namespace RTC
     public partial class RTC_Core_Form : Form // replace by : UserControl for panel
     {
         SoundPlayer simpleSound = new SoundPlayer(RTC_Core.rtcDir + "\\ASSETS\\quack.wav"); //QUACK
+        public Form previousForm = null;
+        public Form activeForm = null;
 
         private const int CP_NOCLOSE_BUTTON = 0x200;
         protected override CreateParams CreateParams
@@ -61,8 +63,9 @@ namespace RTC
         {
             InitializeComponent();
 
-			if (RTC_Core.isStandalone)
-				pnCrashProtection.Visible = true;
+            if (RTC_Core.isStandalone)
+                pnAutoKillSwitch.Visible = true;
+
 		}
 
         public void btnManualBlast_Click(object sender, EventArgs e)
@@ -96,7 +99,12 @@ namespace RTC
 
             RTC_Core.CheckForProblematicProcesses();
 
-            btnEngineConfig_Click(sender, e);
+            if (!RTC_Core.isStandalone)
+            {
+                btnEngineConfig_Click(sender, e);
+                pnCrashProtectionUnavailable.Visible = true;
+            }
+
 		}
 
         private void btnGlitchHarvester_Click(object sender, EventArgs e)
@@ -131,17 +139,6 @@ namespace RTC
 				RTC_Core.CloseAllRtcForms();
 			}
         }
-
-        public void btnFactoryClean_Click(object sender, EventArgs e)
-        {
-            Process.Start($"FactoryClean{(RTC_Core.isStandalone ? "DETACHED" : "ATTACHED")}.bat");
-        }
-
-        public void btnAutoKillSwitch_Click(object sender, EventArgs e)
-        {
-            Process.Start("AutoKillSwitch.exe");
-        }
-
 
         public void btnEasyModeCurrent_Click(object sender, EventArgs e)
         {
@@ -244,8 +241,6 @@ namespace RTC
             if (cbUseGameProtection.Checked)
             {
                 RTC_GameProtection.Start();
-				RTC_Core.csForm.pnDisableGameProtection.Visible = true;
-
 			}
             else
             {
@@ -254,156 +249,19 @@ namespace RTC
 				RTC_StockpileManager.allBackupStates.Clear();
 				btnGpJumpBack.Visible = false;
 				btnGpJumpNow.Visible = false;
-				RTC_Core.csForm.pnDisableGameProtection.Visible = false;
 			}
 
         }
-
-        private void nmTimeStackDelay_ValueChanged(object sender, EventArgs e)
-        {
-			UpdateGameProtectionDelay();
-
-		}
-
-		public void UpdateGameProtectionDelay()
-		{
-			RTC_GameProtection.BackupInterval = Convert.ToInt32(nmGameProtectionDelay.Value);
-			if (RTC_GameProtection.isRunning)
-				RTC_GameProtection.Reset();
-
-		}
-
-
-        private void nmGameProtectionDelay_ValueChanged(object sender, KeyPressEventArgs e) => UpdateGameProtectionDelay();
-        private void nmGameProtectionDelay_ValueChanged(object sender, KeyEventArgs e) => UpdateGameProtectionDelay();
 
 
         private void btnLogo_MouseClick(object sender, MouseEventArgs e)
         {
-			if (RTC_Core.isStandalone)
-			{
-				RTC_Core.coreForm.pnLeftPanel.Hide();
-				RTC_Core.csForm.Show();
-			}
+            if (RTC_Core.isStandalone)
+                showPanelForm(RTC_Core.csForm, false);
 			else
-			{
 				simpleSound.Play();
-			}
 		}
 
-        /*
-        
-         //Legacy Active Table code
-
-        private void btnActiveTableDumpsReset_Click(object sender, EventArgs e)
-        {
-            RTC_FreezeEngine.ResetActiveTable();
-        }
-
-        private void btnActiveTableAddDump_Click(object sender, EventArgs e)
-        {
-            if (!RTC_FreezeEngine.FirstInit)
-                return;
-
-            RTC_FreezeEngine.AddDump();
-        }
-
-        private void btnActiveTableGenerate_Click(object sender, EventArgs e)
-        {
-            if (!RTC_FreezeEngine.FirstInit)
-                return;
-
-            RTC_FreezeEngine.GenerateActiveTable();
-        }
-
-        private void cbAutoAddDump_CheckedChanged(object sender, EventArgs e)
-        {
-            if (RTC_FreezeEngine.ActiveTableAutodump != null)
-            {
-                RTC_FreezeEngine.ActiveTableAutodump.Stop();
-                RTC_FreezeEngine.ActiveTableAutodump = null;
-            }
-
-            if (cbAutoAddDump.Checked)
-            {
-                RTC_FreezeEngine.ActiveTableAutodump = new System.Windows.Forms.Timer();
-                RTC_FreezeEngine.ActiveTableAutodump.Interval = Convert.ToInt32(nmAutoAddSec.Value) * 1000;
-                RTC_FreezeEngine.ActiveTableAutodump.Tick += new EventHandler(btnActiveTableAddDump_Click);
-                RTC_FreezeEngine.ActiveTableAutodump.Start();
-            }
-
-        }
-
-        private void nmAutoAddSec_ValueChanged(object sender, EventArgs e)
-        {
-            if(RTC_FreezeEngine.ActiveTableAutodump != null)
-                RTC_FreezeEngine.ActiveTableAutodump.Interval = Convert.ToInt32(nmAutoAddSec.Value) * 1000;
-        }
-
-        private void track_ActiveTableActivityThreshold_Scroll(object sender, EventArgs e)
-        {
-            if (Convert.ToInt32(track_ActiveTableActivityThreshold.Value) == Convert.ToInt32(nmActiveTableActivityThreshold.Value * 100))
-                return;
-
-            nmActiveTableActivityThreshold.Value = Convert.ToDecimal((double)track_ActiveTableActivityThreshold.Value / 100);
-            RTC_FreezeEngine.ActivityThreshold = Convert.ToDouble(nmActiveTableActivityThreshold.Value);
-        }
-
-        private void nmActiveTableActivityThreshold_ValueChanged(object sender, EventArgs e)
-        {
-            if (Convert.ToInt32(track_ActiveTableActivityThreshold.Value) == Convert.ToInt32(nmActiveTableActivityThreshold.Value * 100))
-                return;
-
-            track_ActiveTableActivityThreshold.Value = Convert.ToInt32(nmActiveTableActivityThreshold.Value * 100);
-            RTC_FreezeEngine.ActivityThreshold = Convert.ToDouble(nmActiveTableActivityThreshold.Value);
-        }
-
-        private void btnActiveTableSubstractFile_Click(object sender, EventArgs e)
-        {
-            if (!RTC_FreezeEngine.FirstInit)
-                return;
-
-            RTC_FreezeEngine.SubstractActiveTable();
-        }
-
-        private void btnActiveTableSaveAs_Click(object sender, EventArgs e)
-        {
-            if (!RTC_FreezeEngine.ActiveTableReady)
-                return;
-
-            RTC_FreezeEngine.SaveActiveTable(false);
-        }
-
-        private void btnActiveTableLoad_Click(object sender, EventArgs e)
-        {
-            RTC_FreezeEngine.LoadActiveTable();
-        }
-
-        private void btnActiveTableQuickSave_Click(object sender, EventArgs e)
-        {
-            if (btnActiveTableQuickSave.ForeColor != Color.Silver)
-            {
-                RTC_FreezeEngine.SaveActiveTable(true);
-            }
-        }
-
-        */
-
-        private void btnReboot_MouseDown(object sender, MouseEventArgs e)
-        {
-            Point locate = new Point((sender as Button).Location.X + e.Location.X, (sender as Button).Location.Y + e.Location.Y);
-
-			ContextMenuStrip ParamsButtonMenu = new ContextMenuStrip();
-            ParamsButtonMenu.Items.Add("Open the online wiki", null, new EventHandler((ob, ev) => Process.Start("https://corrupt.wiki/")));
-            ParamsButtonMenu.Items.Add(new ToolStripSeparator());
-            ParamsButtonMenu.Items.Add("Change RTC skin color", null, new EventHandler((ev, ob)=> { RTC_Core.SelectRTCColor(); }));
-			ParamsButtonMenu.Items.Add("Reset RTC Parameters", null, null).Enabled = false;
-			ParamsButtonMenu.Items.Add("Reset RTC Parameters + Window Parameters", null, null).Enabled = false;
-			ParamsButtonMenu.Items.Add(new ToolStripSeparator());
-			ParamsButtonMenu.Items.Add("Start AutoKillSwitch", null, new EventHandler(btnAutoKillSwitch_Click));
-			ParamsButtonMenu.Items.Add("RTC Factory Clean", null, new EventHandler(btnFactoryClean_Click));
-			ParamsButtonMenu.Show(this, locate);
-        }
 
         private void btnEasyMode_MouseDown(object sender, MouseEventArgs e)
         {
@@ -417,87 +275,85 @@ namespace RTC
 			EasyButtonMenu.Show(this, locate);
         }
 
-		private void btnStockPilePlayer_Click(object sender, EventArgs e)
-		{
-            btnEngineConfig.Text = btnEngineConfig.Text.Replace("● ", "");
-            btnStockpilePlayer.Text = btnStockpilePlayer.Text.Replace("● ", "");
-            btnRTCMultiplayer.Text = btnRTCMultiplayer.Text.Replace("● ", "");
+        public void showPanelForm(Form frm, bool HideButtons = true)
+        {
 
-            btnStockpilePlayer.Text = "● " + btnStockpilePlayer.Text;
-
-            if (this.Controls.Contains(RTC_Core.multiForm))
-				this.Controls.Remove(RTC_Core.multiForm);
-
-            if (this.Controls.Contains(RTC_Core.ecForm))
-                this.Controls.Remove(RTC_Core.ecForm);
-
-            if (!this.Controls.Contains(RTC_Core.spForm))
-			{
-				RTC_Core.spForm.TopLevel = false;
-				RTC_Core.spForm.Location = new Point(150, 0);
-				this.Controls.Add(RTC_Core.spForm);
-				
-			}
-
-			RTC_Core.spForm.Show();
-
-		}
-
-		private void btnRTCMultiplayer_Click(object sender, EventArgs e)
-		{
-			if(RTC_Core.isStandalone)
-			{
-				MessageBox.Show("Multiplayer unsupported in Detached mode");
-				return;
-			}
-
-            btnEngineConfig.Text = btnEngineConfig.Text.Replace("● ", "");
-            btnStockpilePlayer.Text = btnStockpilePlayer.Text.Replace("● ", "");
-            btnRTCMultiplayer.Text = btnRTCMultiplayer.Text.Replace("● ", "");
-
-            btnRTCMultiplayer.Text = "● " + btnRTCMultiplayer.Text;
-
-            if (this.Controls.Contains(RTC_Core.spForm))
-				this.Controls.Remove(RTC_Core.spForm);
-
-            if (this.Controls.Contains(RTC_Core.ecForm))
-                this.Controls.Remove(RTC_Core.ecForm);
-
-            if (!this.Controls.Contains(RTC_Core.multiForm))
-			{
-				RTC_Core.multiForm.TopLevel = false;
-				RTC_Core.multiForm.Location = new Point(150, 0);
-				this.Controls.Add(RTC_Core.multiForm);
-			}
-
-			RTC_Core.multiForm.Show();
-		}
-
-		public void btnEngineConfig_Click(object sender, EventArgs e)
-		{
-            btnEngineConfig.Text = btnEngineConfig.Text.Replace("● ", "");
-            btnStockpilePlayer.Text = btnStockpilePlayer.Text.Replace("● ", "");
-            btnRTCMultiplayer.Text = btnRTCMultiplayer.Text.Replace("● ", "");
-
-            btnEngineConfig.Text = "● " + btnEngineConfig.Text;
-
-            if (this.Controls.Contains(RTC_Core.multiForm))
-				this.Controls.Remove(RTC_Core.multiForm);
-
-			if (this.Controls.Contains(RTC_Core.spForm))
-				this.Controls.Remove(RTC_Core.spForm);
-
-            if (!this.Controls.Contains(RTC_Core.ecForm))
+            if(HideButtons && frm is RTC_ConnectionStatus_Form)
             {
-                RTC_Core.ecForm.TopLevel = false;
-                RTC_Core.ecForm.Location = new Point(150, 0);
-                this.Controls.Add(RTC_Core.ecForm);
+                btnEasyMode.Visible = false;
+                btnEngineConfig.Visible = false;
+                btnGlitchHarvester.Visible = false;
+                btnRTCMultiplayer.Visible = false;
+                btnStockpilePlayer.Visible = false;
+                btnAutoCorrupt.Visible = false;
+                btnManualBlast.Visible = false;
+
             }
 
-            RTC_Core.ecForm.Show();
+            btnEngineConfig.Text = btnEngineConfig.Text.Replace("● ", "");
+            btnStockpilePlayer.Text = btnStockpilePlayer.Text.Replace("● ", "");
+            btnRTCMultiplayer.Text = btnRTCMultiplayer.Text.Replace("● ", "");
+
+            Button btn = null;
+
+            if (frm is RTC_EngineConfig_Form)
+                btn = btnEngineConfig;
+            else if (frm is RTC_StockpilePlayer_Form)
+                btn = btnStockpilePlayer;
+            else if (frm is RTC_Multiplayer_Form)
+                btn = btnRTCMultiplayer;
+
+            if(btn != null)
+                btn.Text = "● " + btn.Text;
+
+
+            if (!this.Controls.Contains(frm))
+            {
+                if (activeForm != null)
+                    activeForm.Hide();
+
+                Controls.Remove(activeForm);
+                frm.TopLevel = false;
+                this.Controls.Add(frm);
+                frm.Dock = DockStyle.Left;
+                frm.SendToBack();
+                frm.BringToFront();
+                previousForm = activeForm;
+                activeForm = frm;
+                frm.Show();
+            }
+
+            if (!(frm is RTC_ConnectionStatus_Form))
+            {
+                if (!(frm is RTC_Settings_Form))
+                {
+                    btnEasyMode.Visible = true;
+                    btnEngineConfig.Visible = true;
+                    btnGlitchHarvester.Visible = true;
+                    btnRTCMultiplayer.Visible = true;
+                    btnStockpilePlayer.Visible = true;
+                    btnAutoCorrupt.Visible = true;
+                    btnManualBlast.Visible = true;
+
+                    if (!RTC_Core.FirstConnection)
+                        pnCrashProtection.Visible = true;
+                }
+            }
+
         }
 
-		private void btnGpJumpBack_Click(object sender, EventArgs e)
+        public void btnEngineConfig_Click(object sender, EventArgs e) => showPanelForm(RTC_Core.ecForm);
+        private void btnSettings_Click(object sender, EventArgs e) => showPanelForm(RTC_Core.sForm);
+        private void btnStockPilePlayer_Click(object sender, EventArgs e) => showPanelForm(RTC_Core.spForm);
+        private void btnRTCMultiplayer_Click(object sender, EventArgs e)
+		{
+			if(RTC_Core.isStandalone)
+				MessageBox.Show("Multiplayer unsupported in Detached mode");
+			else
+                showPanelForm(RTC_Core.multiForm);
+        }
+
+        private void btnGpJumpBack_Click(object sender, EventArgs e)
 		{
 			try
 			{
@@ -553,6 +409,40 @@ namespace RTC
             }
         }
 
+        private void cbUseAutoKillSwitch_CheckedChanged(object sender, EventArgs e)
+        {
+            pbAutoKillSwitchTimeout.Visible = cbUseAutoKillSwitch.Checked;
+        }
+
+        private void cbAutoKillSwitchExecuteAction_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            btnAutoKillSwitchExecute.Text = cbAutoKillSwitchExecuteAction.SelectedItem.ToString();
+        }
+
+        private void btnAutoKillSwitchExecute_Click(object sender, EventArgs e)
+        {
+
+            showPanelForm(RTC_Core.csForm);
+
+            RTC.RTC_RPC.Heartbeat = false;
+            RTC.RTC_Core.coreForm.pbAutoKillSwitchTimeout.Value = RTC.RTC_Core.coreForm.pbAutoKillSwitchTimeout.Maximum;
+            RTC.RTC_RPC.Freeze = true;
+
+            RTC_NetCoreSettings.PlayCrashSound();
+
+            switch (btnAutoKillSwitchExecute.Text.ToUpper())
+            {
+                case "KILL":
+                    Process.Start("KILLDETACHEDRTC.bat");
+                    break;
+                case "KILL + RESTART":
+                    Process.Start("RESTARTDETACHEDRTC.bat");
+                    break;
+                case "RESTART + RESET":
+                    Process.Start("RESETDETACHEDRTC.bat");
+                    break;
+            }
+        }
     }
 
 }

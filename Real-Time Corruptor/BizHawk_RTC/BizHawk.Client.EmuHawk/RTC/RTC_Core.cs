@@ -17,7 +17,7 @@ namespace RTC
 
     public static class RTC_Core
     {
-		public static string RtcVersion = "3.03c";
+		public static string RtcVersion = "3.04";
 		
         public static Random RND = new Random();
         public static string[] args;
@@ -43,9 +43,10 @@ namespace RTC
 		//RTC Main Forms
 		public static Color generalColor = Color.LightSteelBlue;
 		public static RTC_Core_Form coreForm = null;
-        public static RTC_EC_Form ecForm = null;
+        public static RTC_EngineConfig_Form ecForm = null;
         public static RTC_StockpilePlayer_Form spForm = null;
         public static RTC_GlitchHarvester_Form ghForm = null;
+        public static RTC_Settings_Form sForm = null;
 
         //RTC Extension Forms
         public static RTC_Multiplayer_Form multiForm;
@@ -53,30 +54,40 @@ namespace RTC
 		public static RTC_StockpileBlastBoard_Form sbForm = null;
 		public static RTC_ConnectionStatus_Form csForm = null;
 		public static RTC_BlastEditor_Form beForm = null;
+
 		public static Form standaloneForm = null;
+        
         //RTC Advanced Tool Forms
         public static RTC_VmdPool_Form vmdPoolForm = null;
         public static RTC_VmdGen_Form vmdGenForm = null;
         public static RTC_VmdAct_Form vmdActForm = null;
 
         //All RTC forms
-        public static Form[] allRtcForms = new Form[]
+        public static Form[] allRtcForms
         {
-                    coreForm,
-                    ghForm,
-                    spForm,
+            get
+            {
+                return new Form[]
+                    {
+                        coreForm,
+                        sForm,
+                        ecForm,
+                        ghForm,
+                        spForm,
 
-                    multiForm,
-                    multipeerpopoutForm,
-                    sbForm,
-                    beForm,
+                        multiForm,
+                        multipeerpopoutForm,
+                        sbForm,
+                        beForm,
 
-                    vmdActForm,
-                    vmdGenForm,
-                    vmdPoolForm,
+                        vmdActForm,
+                        vmdGenForm,
+                        vmdPoolForm,
 
-                    standaloneForm,
-        };
+                        standaloneForm,
+                    };
+            }
+        }
 
 
         //Bizhawk Overrides
@@ -89,6 +100,7 @@ namespace RTC
 		public static bool isStandalone = false;
 		public static bool RemoteRTC_SupposedToBeConnected = false;
 
+        public static bool FirstConnection = true;
         
 		public static volatile bool isClosing = false;
 		public static void CloseAllRtcForms() //This allows every form to get closed to prevent RTC from hanging
@@ -195,9 +207,10 @@ namespace RTC
             }
 
 			coreForm = new RTC_Core_Form();
-            ecForm = new RTC_EC_Form();
+            ecForm = new RTC_EngineConfig_Form();
             spForm = new RTC_StockpilePlayer_Form();
             ghForm = new RTC_GlitchHarvester_Form();
+            sForm = new RTC_Settings_Form();
 			
 			multiForm = new RTC_Multiplayer_Form();
 			multipeerpopoutForm = new RTC_MultiPeerPopout_Form();
@@ -209,20 +222,6 @@ namespace RTC
 
 			standaloneForm = _standaloneForm;
 
-
-            allRtcForms = new Form[]{
-                coreForm,
-                ecForm,
-                spForm,
-                ghForm,
-                multiForm,
-                multipeerpopoutForm,
-                sbForm,
-                beForm,
-                vmdPoolForm,
-                vmdGenForm,
-                vmdActForm,
-            };
 
             if (!Directory.Exists(RTC_Core.rtcDir + "\\TEMP\\"))
                 Directory.CreateDirectory(RTC_Core.rtcDir + "\\TEMP\\");
@@ -263,26 +262,23 @@ namespace RTC
 				{
 					coreForm.Text = "RTC : Detached Mode";
 
-					csForm = new RTC_ConnectionStatus_Form();
-					csForm.TopLevel = false;
-					csForm.Location = new Point(0, 0);
-					coreForm.Controls.Add(csForm);
-					csForm.TopMost = true;
+                    if(csForm == null)
+					    csForm = new RTC_ConnectionStatus_Form();
+
+                    RTC_Core.coreForm.showPanelForm(csForm);
 
 					RemoteRTC.ServerStarted += new EventHandler((ob, ev) =>
 					{
 						RemoteRTC_SupposedToBeConnected = false;
 						Console.WriteLine("RemoteRTC.ServerStarted");
 
-                        if (coreForm != null && !coreForm.IsDisposed)
-                        {
-                            coreForm.pnLeftPanel.Hide();
-                        }
 
                         if (csForm != null && !csForm.IsDisposed)
                         {
-                            csForm.btnReturnToSession.Visible = false;
-                            csForm.Show();
+                            if (RTC_Core.csForm == null)
+                                csForm = new RTC_ConnectionStatus_Form();
+
+                            RTC_Core.coreForm.showPanelForm(csForm);
                         }
 
                         if (ghForm != null && !ghForm.IsDisposed)
@@ -296,10 +292,15 @@ namespace RTC
 					{
 						RemoteRTC_SupposedToBeConnected = true;
 						Console.WriteLine("RemoteRTC.ServerConnected");
-						coreForm.pnLeftPanel.Show();
 						csForm.lbConnectionStatus.Text = "Connection status: Connected";
-						csForm.btnReturnToSession.Visible = true;
-						csForm.Hide();
+
+                        if (FirstConnection)
+                        {
+                            FirstConnection = false;
+                            coreForm.btnEngineConfig_Click(ob, ev);
+                        }
+                        else
+                            coreForm.showPanelForm(coreForm.previousForm);
 
 						ghForm.pnHideGlitchHarvester.Hide();
 						csForm.btnStartEmuhawkDetached.Text = "Restart BizHawk";
@@ -315,16 +316,11 @@ namespace RTC
 						RemoteRTC_SupposedToBeConnected = false;
 						Console.WriteLine("RemoteRTC.ServerConnectionLost");
 
-                        if (coreForm != null && !coreForm.IsDisposed)
-                        {
-                            coreForm.pnLeftPanel.Hide();
-                        }
 
                         if (csForm != null && !csForm.IsDisposed)
                         {
                             csForm.lbConnectionStatus.Text = "Connection status: Bizhawk timed out";
-                            csForm.btnReturnToSession.Visible = false;
-                            csForm.Show();
+                            coreForm.showPanelForm(csForm);
                         }
 
                         if (ghForm != null && !ghForm.IsDisposed)
@@ -342,11 +338,9 @@ namespace RTC
 					{
 						RemoteRTC_SupposedToBeConnected = false;
 						Console.WriteLine("RemoteRTC.ServerDisconnected");
-						coreForm.pnLeftPanel.Hide();
 						csForm.lbConnectionStatus.Text = "Connection status: NetCore Shutdown";
-						csForm.btnReturnToSession.Visible = false;
 						ghForm.lbConnectionStatus.Text = "Connection status: NetCore Shutdown";
-						csForm.Show();
+                        coreForm.showPanelForm(csForm);
 
 						ghForm.pnHideGlitchHarvester.BringToFront();
 						ghForm.pnHideGlitchHarvester.Show();

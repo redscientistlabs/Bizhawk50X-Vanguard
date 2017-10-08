@@ -846,7 +846,7 @@
             this.label3.TabIndex = 145;
             this.label3.Text = "(Beta)";
             // 
-            // RTC_Multi_Form
+            // RTC_Multiplayer_Form
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
@@ -866,10 +866,11 @@
             this.Controls.Add(this.label8);
             this.Controls.Add(this.panel3);
             this.Controls.Add(this.panel1);
+            this.DoubleBuffered = true;
             this.ForeColor = System.Drawing.Color.Black;
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
             this.MaximizeBox = false;
-            this.Name = "RTC_Multi_Form";
+            this.Name = "RTC_Multiplayer_Form";
             this.Tag = "color:dark";
             this.Text = "Multiplayer";
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.RTC_Multi_Form_FormClosing);

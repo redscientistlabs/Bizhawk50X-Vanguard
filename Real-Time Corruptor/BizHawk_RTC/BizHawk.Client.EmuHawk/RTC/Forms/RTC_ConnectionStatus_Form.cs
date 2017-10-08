@@ -14,10 +14,6 @@ namespace RTC
 {
 	public partial class RTC_ConnectionStatus_Form : Form
 	{
-		SoundPlayer simpleSound = null;
-		SoundPlayer coldSound = null;
-		bool isClassicCrash = true;
-		bool rotateRandomSounds = false;
 
 		public RTC_ConnectionStatus_Form()
 		{
@@ -26,10 +22,9 @@ namespace RTC
 
 		private void RTC_ConnectionStatus_Form_Load(object sender, EventArgs e)
 		{
-			cbCrashSoundEffect.SelectedIndex = 0;
-            cbNetCoreCommandTimeout.SelectedIndex = 0;
 
-            coldSound = new SoundPlayer("RTC\\ASSETS\\cold.wav");
+			RTC_Core.sForm.cbCrashSoundEffect.SelectedIndex = 0;
+            RTC_Core.sForm.cbNetCoreCommandTimeout.SelectedIndex = 0;
 
             if(File.Exists(RTC_Core.bizhawkDir + "\\WGH\\WindowsGlitchHarvester.exe"))
             {
@@ -44,71 +39,19 @@ namespace RTC
 			lbBizhawkEmulatorAttached.Visible = false;
 			pnBizhawkAttached.Visible = false;
 
-			pnDisableGameProtection.Location = new Point(pnBizhawkAttached.Location.X, pnBizhawkAttached.Location.Y);
-
 			RTC.RTC_RPC.Heartbeat = false;
-			RTC.RTC_Core.csForm.pbTimeout.Value = RTC.RTC_Core.csForm.pbTimeout.Maximum;
+			RTC.RTC_Core.coreForm.pbAutoKillSwitchTimeout.Value = RTC.RTC_Core.coreForm.pbAutoKillSwitchTimeout.Maximum;
 			RTC.RTC_RPC.Freeze = true;
 
-			if (rotateRandomSounds)
-				simpleSound = new SoundPlayer(getRandomSound());
-
-			if (simpleSound != null && btnStartEmuhawkDetached.Text == "Restart BizHawk")
-			{
-				if (isClassicCrash)
-				{
-					if (RTC_Core.RND.Next(9999) == 666)
-						coldSound.Play();
-					else
-						simpleSound.Play();
-				}
-				else
-					simpleSound.Play();
-			}
+            RTC_NetCoreSettings.PlayCrashSound();
 
 
 			Process.Start("RESTARTDETACHEDRTC.bat");
 		}
 
-		private string getRandomSound()
-		{
-			string[] files = Directory.GetFiles("RTC\\ASSETS\\CRASHSOUNDS\\");
-
-			if (files == null || files.Length == 0)
-				return "RTC\\ASSETS\\crash.wav";
-
-			return files[RTC_Core.RND.Next(files.Length)];
-		}
-
-		private void cbCrashSoundEffect_SelectedIndexChanged(object sender, EventArgs e)
-		{
-			rotateRandomSounds = false;
-			isClassicCrash = false;
-
-			switch (cbCrashSoundEffect.SelectedIndex)
-			{
-				case 0:
-					isClassicCrash = true;
-					simpleSound = new SoundPlayer("RTC\\ASSETS\\crash.wav");
-					break;
-				case 1:
-					simpleSound = new SoundPlayer("RTC\\ASSETS\\quack.wav");
-					break;
-
-				case 2:
-					simpleSound = null;
-				break;
-				case 3:
-					rotateRandomSounds = true;
-				break;
-			}
-
-		}
-
 		private void btnReturnToSession_Click(object sender, EventArgs e)
 		{
-			RTC_Core.coreForm.pnLeftPanel.Show();
-			RTC_Core.csForm.Hide();
+            RTC_Core.coreForm.showPanelForm(RTC_Core.coreForm.previousForm);
 
 		}
 
@@ -134,55 +77,5 @@ namespace RTC
 			Process.Start("http://virus.run/");
 		}
 
-        public void cbNetCoreCommandTimeout_SelectedIndexChanged(object sender, EventArgs e)
-        {
-            string setting = cbNetCoreCommandTimeout.SelectedItem.ToString().ToUpper();
-            changeNetCoreSettings(setting);
-            RTC_Core.SendCommandToBizhawk(new RTC_Command(CommandType.AGGRESSIVENESS) { objectValue = setting }, true);
-
-        }
-        public static void changeNetCoreSettings(string setting)
-        {
-            if (RTC_Core.isStandalone && RTC_Core.csForm.cbNetCoreCommandTimeout.SelectedItem.ToString() == setting)
-                return;
-
-            switch (setting)
-            {
-                case "STANDARD":
-                    ReturnWatch.maxtries = 0;
-                    RTC_NetCore.DefaultKeepAliveCounter = 5;
-                    RTC_NetCore.DefaultNetworkStreamTimeout = 2000;
-                    RTC_NetCore.DefaultMaxRetries = 666;
-
-                    if(RTC_Core.isStandalone)
-                        RTC_Core.csForm.pbTimeout.Maximum = 13;
-
-                    break;
-                case "LAZY":
-                    ReturnWatch.maxtries = 0;
-                    RTC_NetCore.DefaultKeepAliveCounter = 15;
-                    RTC_NetCore.DefaultNetworkStreamTimeout = 6000;
-                    RTC_NetCore.DefaultMaxRetries = 6666;
-
-                    if (RTC_Core.isStandalone)
-                        RTC_Core.csForm.pbTimeout.Maximum = 20;
-
-                    break;
-
-                case "DISABLED":
-
-                    ReturnWatch.maxtries = 0;
-                    RTC_NetCore.DefaultKeepAliveCounter = int.MaxValue;
-                    RTC_NetCore.DefaultNetworkStreamTimeout = int.MaxValue;
-                    RTC_NetCore.DefaultMaxRetries = int.MaxValue;
-
-                    if (RTC_Core.isStandalone)
-                        RTC_Core.csForm.pbTimeout.Maximum = int.MaxValue;
-
-                    break;
-            }
-
-            RTC_NetCore.KeepAliveCounter = RTC_NetCore.DefaultKeepAliveCounter;
-        }
     }
 }
