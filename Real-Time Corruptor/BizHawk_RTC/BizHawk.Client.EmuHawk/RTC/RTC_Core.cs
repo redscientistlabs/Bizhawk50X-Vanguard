@@ -17,7 +17,7 @@ namespace RTC
 
     public static class RTC_Core
     {
-		public static string RtcVersion = "3.05b";
+		public static string RtcVersion = "3.05c";
 		
         public static Random RND = new Random();
         public static string[] args;

@@ -684,8 +684,8 @@ namespace RTC
                         Global.Config.GB_AsSGB = true;
                         Global.Config.SGB_UseBsnes = true;
                     }
-
-                    Global.Config.SNES_InSnes9x = _systemCore == "snes9x";
+                    else
+                        Global.Config.SNES_InSnes9x = _systemCore == "snes9x";
 
                     break;
                 case "GBA":

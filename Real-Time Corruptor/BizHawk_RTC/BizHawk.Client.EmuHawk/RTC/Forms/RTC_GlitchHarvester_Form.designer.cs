@@ -2376,6 +2376,7 @@
             // 
             // cbCompressStockpiles
             // 
+            this.cbCompressStockpiles.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.cbCompressStockpiles.AutoSize = true;
             this.cbCompressStockpiles.Checked = true;
             this.cbCompressStockpiles.CheckState = System.Windows.Forms.CheckState.Checked;
@@ -2389,7 +2390,7 @@
             this.cbCompressStockpiles.Text = "Compress\nStockpiles";
             this.cbCompressStockpiles.UseVisualStyleBackColor = true;
             // 
-            // RTC_GH_Form
+            // RTC_GlitchHarvester_Form
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
@@ -2425,7 +2426,7 @@
             this.Controls.Add(this.label6);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.MinimumSize = new System.Drawing.Size(980, 532);
-            this.Name = "RTC_GH_Form";
+            this.Name = "RTC_GlitchHarvester_Form";
             this.Tag = "color:dark";
             this.Text = "Glitch Harvester";
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.RTC_GH_Form_FormClosing);

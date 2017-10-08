@@ -360,9 +360,9 @@ namespace RTC
                 frm.Show();
             }
 
-            if (!(frm is RTC_ConnectionStatus_Form))
+            if (!(frm is RTC_ConnectionStatus_Form) || !HideButtons)
             {
-                if (!(frm is RTC_Settings_Form))
+                if (!(frm is RTC_Settings_Form) || !HideButtons)
                 {
                     btnEasyMode.Visible = true;
                     btnEngineConfig.Visible = true;

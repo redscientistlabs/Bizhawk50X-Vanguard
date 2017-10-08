@@ -1245,7 +1245,7 @@ namespace RTC
 
 			}
 
-            //CheckCompatibility();
+            CheckCompatibility();
 
             refreshSavestateTextboxes();
 

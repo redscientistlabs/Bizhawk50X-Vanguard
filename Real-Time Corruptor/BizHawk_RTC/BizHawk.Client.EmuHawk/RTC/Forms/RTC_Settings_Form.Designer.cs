@@ -48,11 +48,15 @@
             this.btnStartAutoKillSwitch = new System.Windows.Forms.Button();
             this.lbAttachedModeSettings = new System.Windows.Forms.Label();
             this.button1 = new System.Windows.Forms.Button();
+            this.panel1 = new System.Windows.Forms.Panel();
+            this.label4 = new System.Windows.Forms.Label();
+            this.cbDisableBizhawkOSD = new System.Windows.Forms.CheckBox();
             ((System.ComponentModel.ISupportInitialize)(this.nmGameProtectionDelay)).BeginInit();
             this.groupBox1.SuspendLayout();
             this.groupBox2.SuspendLayout();
             this.pnDetachedModeSettings.SuspendLayout();
             this.pnAttachedModeSettings.SuspendLayout();
+            this.panel1.SuspendLayout();
             this.SuspendLayout();
             // 
             // label21
@@ -347,12 +351,49 @@
             this.button1.UseVisualStyleBackColor = false;
             this.button1.Click += new System.EventHandler(this.button1_Click);
             // 
+            // panel1
+            // 
+            this.panel1.BackColor = System.Drawing.Color.Gray;
+            this.panel1.Controls.Add(this.cbDisableBizhawkOSD);
+            this.panel1.Location = new System.Drawing.Point(19, 301);
+            this.panel1.Name = "panel1";
+            this.panel1.Size = new System.Drawing.Size(274, 116);
+            this.panel1.TabIndex = 132;
+            this.panel1.Tag = "color:normal";
+            // 
+            // label4
+            // 
+            this.label4.AutoSize = true;
+            this.label4.Font = new System.Drawing.Font("Segoe UI Semibold", 10F, System.Drawing.FontStyle.Bold);
+            this.label4.ForeColor = System.Drawing.Color.White;
+            this.label4.Location = new System.Drawing.Point(22, 279);
+            this.label4.Name = "label4";
+            this.label4.Size = new System.Drawing.Size(141, 19);
+            this.label4.TabIndex = 133;
+            this.label4.Text = "General RTC Settings";
+            // 
+            // cbDisableBizhawkOSD
+            // 
+            this.cbDisableBizhawkOSD.AutoSize = true;
+            this.cbDisableBizhawkOSD.Checked = true;
+            this.cbDisableBizhawkOSD.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.cbDisableBizhawkOSD.Font = new System.Drawing.Font("Segoe UI", 8F);
+            this.cbDisableBizhawkOSD.ForeColor = System.Drawing.Color.White;
+            this.cbDisableBizhawkOSD.Location = new System.Drawing.Point(11, 10);
+            this.cbDisableBizhawkOSD.Name = "cbDisableBizhawkOSD";
+            this.cbDisableBizhawkOSD.Size = new System.Drawing.Size(194, 17);
+            this.cbDisableBizhawkOSD.TabIndex = 0;
+            this.cbDisableBizhawkOSD.Text = "Disable the BizHawk OSD system";
+            this.cbDisableBizhawkOSD.UseVisualStyleBackColor = true;
+            // 
             // RTC_Settings_Form
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
             this.ClientSize = new System.Drawing.Size(655, 515);
+            this.Controls.Add(this.panel1);
+            this.Controls.Add(this.label4);
             this.Controls.Add(this.button1);
             this.Controls.Add(this.pnAttachedModeSettings);
             this.Controls.Add(this.lbAttachedModeSettings);
@@ -374,6 +415,8 @@
             this.groupBox2.PerformLayout();
             this.pnDetachedModeSettings.ResumeLayout(false);
             this.pnAttachedModeSettings.ResumeLayout(false);
+            this.panel1.ResumeLayout(false);
+            this.panel1.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -401,5 +444,8 @@
         public System.Windows.Forms.Button btnStartAutoKillSwitch;
         private System.Windows.Forms.Label lbAttachedModeSettings;
         public System.Windows.Forms.Button button1;
+        private System.Windows.Forms.Panel panel1;
+        private System.Windows.Forms.CheckBox cbDisableBizhawkOSD;
+        private System.Windows.Forms.Label label4;
     }
 }
