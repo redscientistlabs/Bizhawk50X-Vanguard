@@ -1253,6 +1253,8 @@ namespace RTC
             RTC_NetCore.HugeOperationEnd(token);
         }
 
+        /*
+         * //Not used since we switch cores on demand now
         public static void CheckCompatibility()
         {
             List<string> ErrorMessages = new List<string>();
@@ -1307,7 +1309,7 @@ namespace RTC
             MessageBox.Show(message, "Compatibility Checker", MessageBoxButtons.OK, MessageBoxIcon.Warning);
 
         }
-
+        */
 
         public void refreshSavestateTextboxes()
         {

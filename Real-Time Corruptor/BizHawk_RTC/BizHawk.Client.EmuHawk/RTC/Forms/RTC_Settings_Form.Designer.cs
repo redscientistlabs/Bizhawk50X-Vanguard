@@ -51,6 +51,7 @@
             this.panel1 = new System.Windows.Forms.Panel();
             this.cbDisableBizhawkOSD = new System.Windows.Forms.CheckBox();
             this.label4 = new System.Windows.Forms.Label();
+            this.cbAllowCrossCoreCorruption = new System.Windows.Forms.CheckBox();
             ((System.ComponentModel.ISupportInitialize)(this.nmGameProtectionDelay)).BeginInit();
             this.groupBox1.SuspendLayout();
             this.groupBox2.SuspendLayout();
@@ -354,6 +355,7 @@
             // panel1
             // 
             this.panel1.BackColor = System.Drawing.Color.Gray;
+            this.panel1.Controls.Add(this.cbAllowCrossCoreCorruption);
             this.panel1.Controls.Add(this.cbDisableBizhawkOSD);
             this.panel1.Location = new System.Drawing.Point(19, 301);
             this.panel1.Name = "panel1";
@@ -386,6 +388,19 @@
             this.label4.Size = new System.Drawing.Size(141, 19);
             this.label4.TabIndex = 133;
             this.label4.Text = "General RTC Settings";
+            // 
+            // cbAllowCrossCoreCorruption
+            // 
+            this.cbAllowCrossCoreCorruption.AutoSize = true;
+            this.cbAllowCrossCoreCorruption.Font = new System.Drawing.Font("Segoe UI", 8F);
+            this.cbAllowCrossCoreCorruption.ForeColor = System.Drawing.Color.White;
+            this.cbAllowCrossCoreCorruption.Location = new System.Drawing.Point(11, 33);
+            this.cbAllowCrossCoreCorruption.Name = "cbAllowCrossCoreCorruption";
+            this.cbAllowCrossCoreCorruption.Size = new System.Drawing.Size(172, 17);
+            this.cbAllowCrossCoreCorruption.TabIndex = 1;
+            this.cbAllowCrossCoreCorruption.Text = "Allow Cross-Core corruption";
+            this.cbAllowCrossCoreCorruption.UseVisualStyleBackColor = true;
+            this.cbAllowCrossCoreCorruption.CheckedChanged += new System.EventHandler(this.cbAllowCrossCoreCorruption_CheckedChanged);
             // 
             // RTC_Settings_Form
             // 
@@ -446,7 +461,8 @@
         private System.Windows.Forms.Label lbAttachedModeSettings;
         public System.Windows.Forms.Button button1;
         private System.Windows.Forms.Panel panel1;
-        private System.Windows.Forms.CheckBox cbDisableBizhawkOSD;
         private System.Windows.Forms.Label label4;
+        public System.Windows.Forms.CheckBox cbDisableBizhawkOSD;
+        public System.Windows.Forms.CheckBox cbAllowCrossCoreCorruption;
     }
 }

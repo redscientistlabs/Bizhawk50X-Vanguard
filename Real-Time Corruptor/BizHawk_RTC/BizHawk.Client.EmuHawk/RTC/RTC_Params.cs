@@ -156,8 +156,8 @@ namespace RTC
         {
             return File.Exists(RTC_Core.paramsDir + "\\" + paramName);
         }
-		
-	}
+
+    }
 
     
 	[Serializable()]

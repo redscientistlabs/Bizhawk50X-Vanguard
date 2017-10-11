@@ -113,5 +113,15 @@ namespace RTC
 
             RTC_Core.SendCommandToBizhawk(new RTC_Command(CommandType.BIZHAWK_SET_OSDDISABLED) { objectValue = cbDisableBizhawkOSD.Checked });
         }
+
+        private void cbAllowCrossCoreCorruption_CheckedChanged(object sender, EventArgs e)
+        {
+            if (cbAllowCrossCoreCorruption.Checked)
+                RTC_Params.SetParam("ALLOW_CROSS_CORE_CORRUPTION");
+            else
+                RTC_Params.RemoveParam("ALLOW_CROSS_CORE_CORRUPTION");
+
+            RTC_Core.AllowCrossCoreCorruption = cbAllowCrossCoreCorruption.Checked;
+        }
     }
 }

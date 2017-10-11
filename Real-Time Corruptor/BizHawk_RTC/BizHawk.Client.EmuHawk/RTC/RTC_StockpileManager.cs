@@ -194,7 +194,7 @@ namespace RTC
 			}
 
 
-			if (psk.SystemCore != sk.SystemCore)
+			if (psk.SystemCore != sk.SystemCore && !RTC_Core.AllowCrossCoreCorruption)
 			{
 				MessageBox.Show("Merge attempt failed: Core mismatch\n\n" + $"{psk.GameName} -> {psk.SystemName} -> {psk.SystemCore}\n{sk.GameName} -> {sk.SystemName} -> {sk.SystemCore}");
 				return isCorruptionApplied;
@@ -267,7 +267,7 @@ namespace RTC
 						break;
 					}
 
-				if(!allCoresIdentical)
+				if(!allCoresIdentical && !RTC_Core.AllowCrossCoreCorruption)
 				{
 					MessageBox.Show("Merge attempt failed: Core mismatch\n\n" + string.Join("\n", sks.Select(it => $"{it.GameName} -> {it.SystemName} -> {it.SystemCore}")));
                     RTC_NetCore.HugeOperationEnd(token);

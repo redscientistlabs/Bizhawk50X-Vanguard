@@ -21,7 +21,7 @@ namespace RTC
         public static Random RND = new Random();
 
         //General RTC Values
-        public static string RtcVersion = "3.06c";
+        public static string RtcVersion = "3.06d";
 
         //Directories
         public static string bizhawkDir = Directory.GetCurrentDirectory();
@@ -41,8 +41,11 @@ namespace RTC
         public static string lastOpenRom = null;
         public static int lastLoaderRom = 0;
 
-        //Bizhawk overrides
+        //RTC Settings
         public static bool BizhawkOsdDisabled = true;
+        public static bool AllowCrossCoreCorruption = false;
+
+
 
 
         //RTC Main Forms
@@ -94,9 +97,8 @@ namespace RTC
             }
         }
 
-
-		//NetCores
-		public static RTC_NetCore Multiplayer = null;
+        //NetCores
+        public static RTC_NetCore Multiplayer = null;
 		public static RTC_NetCore RemoteRTC = null;
 
 		public static bool isStandalone = false;
@@ -238,11 +240,13 @@ namespace RTC
                 Directory.CreateDirectory(RTC_Core.rtcDir + "\\TEMP4\\");
 
 
-            //RTC skin color
+            //Loading RTC PArams
             RTC_Params.LoadRTCColor();
+            RTC_Core.sForm.cbDisableBizhawkOSD.Checked = RTC_Params.IsParamSet("DISABLE_BIZHAWK_OSD");
+            RTC_Core.sForm.cbAllowCrossCoreCorruption.Checked = RTC_Params.IsParamSet("ALLOW_CROSS_CORE_CORRUPTION");
 
             //Initiation of loopback TCP, only in DETACHED MODE
-			if (RTC_Hooks.isRemoteRTC || RTC_Core.isStandalone)
+            if (RTC_Hooks.isRemoteRTC || RTC_Core.isStandalone)
 			{
 				RemoteRTC = new RTC_NetCore();
 				RemoteRTC.port = 42042;
