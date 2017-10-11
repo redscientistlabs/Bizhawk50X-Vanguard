@@ -81,11 +81,13 @@ namespace RTC
         {
 			if (DisableRTC) return;
 
-			if (_isRewinding || _isFastForwarding || _isPaused)
+            if (!_isRewinding && !_isFastForwarding)
+                if (RTC_PipeEngine.ProcessOnStep)
+                    RTC_PipeEngine.ExecutePipes();
+
+            if (_isRewinding || _isFastForwarding || _isPaused)
                 return;
 
-			if (RTC_PipeEngine.ProcessOnStep)
-				RTC_PipeEngine.ExecutePipes();
 
 			CPU_STEP_Count++;
 

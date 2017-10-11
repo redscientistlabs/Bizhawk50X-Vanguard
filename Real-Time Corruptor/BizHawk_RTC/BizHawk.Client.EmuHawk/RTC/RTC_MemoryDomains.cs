@@ -285,7 +285,12 @@ namespace RTC
 
                 case "GEN":     // Sega Genesis
                     if (RTC_MemoryDomains.MemoryInterfaces.ContainsKey("MD CART"))  //If it's regular Genesis or 32X
+                    {
                         rp.primarydomain = "MD CART";
+
+                        if (romFilename.ToUpper().Contains(".SMD"))
+                            rp.skipbytes = 512;
+                    }
                     else
                     {    //If it's in Sega CD mode
                         rp.error = "Unfortunately, Bizhawk doesn't support editing the ISOs while it is running. Maybe in a future version...";
@@ -397,7 +402,6 @@ namespace RTC
             {
                 MemoryInterface mi = VmdPool[_domain];
                 var vmd = (mi as VirtualMemoryDomain);
-                vmd.
                 return getProxy(vmd.getRealDomain(_address), vmd.getRealAddress(_address));
             }
             else

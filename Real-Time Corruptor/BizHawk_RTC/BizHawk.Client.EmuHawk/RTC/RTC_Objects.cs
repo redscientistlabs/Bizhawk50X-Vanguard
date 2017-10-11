@@ -465,8 +465,6 @@ namespace RTC
             //bc = (JObject)JsonConvert.DeserializeObject(backupConfig);
             //sc = (JObject)JsonConvert.DeserializeObject(stockpileConfig);
 
-            sc.HotkeyBindings = bc.HotkeyBindings;
-
 
             sc.HotkeyBindings = bc.HotkeyBindings;
             sc.AllTrollers = bc.AllTrollers;
