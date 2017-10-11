@@ -110,7 +110,7 @@ namespace RTC
 
                     if (key.RomFilename.ToUpper().Contains(".CUE"))
                     {
-                        string cueFolder = key.RomFilename.Substring(0, key.RomFilename.LastIndexOf("\\") + 1);
+                        string cueFolder = RTC_Extensions.getLongDirectoryFromPath(key.RomFilename);
                         string[] cueLines = File.ReadAllLines(key.RomFilename);
                         List<string> binFiles = new List<string>();
 
@@ -125,7 +125,21 @@ namespace RTC
                         
                         AllRoms.AddRange(binFiles.Select(it => cueFolder + it));
                     }
-				}
+
+                    if (key.RomFilename.ToUpper().Contains(".CCD"))
+                    {
+                        List<string> binFiles = new List<string>();
+
+                        if(File.Exists(RTC_Extensions.removeFileExtension(key.RomFilename) + ".sub"))
+                            binFiles.Add(RTC_Extensions.removeFileExtension(key.RomFilename) + ".sub");
+
+                        if (File.Exists(RTC_Extensions.removeFileExtension(key.RomFilename) + ".img"))
+                            binFiles.Add(RTC_Extensions.removeFileExtension(key.RomFilename) + ".img");
+
+                        AllRoms.AddRange(binFiles);
+                    }
+
+                }
 
             //clean temp2 folder
             foreach (string file in Directory.GetFiles(RTC_Core.rtcDir + "\\TEMP2"))
@@ -179,7 +193,7 @@ namespace RTC
 
 
 			for (int i = 0; i < sks.StashKeys.Count; i++) //changes RomFile to short filename
-				sks.StashKeys[i].RomFilename = RTC_Extensions.ShortenFilename(sks.StashKeys[i].RomFilename);
+				sks.StashKeys[i].RomFilename = RTC_Extensions.getShortFilenameFromPath(sks.StashKeys[i].RomFilename);
 
 			FileStream FS;
 			XmlSerializer xs = new XmlSerializer(typeof(Stockpile));

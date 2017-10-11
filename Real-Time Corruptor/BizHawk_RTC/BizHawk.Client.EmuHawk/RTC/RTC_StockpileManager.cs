@@ -536,6 +536,10 @@ namespace RTC
 
                     if (RTC_MemoryDomains.MemoryInterfaces.ContainsKey("32X FB")) //Flip 16-bit words on 32X rom
                         original = original.FlipWords(2);
+                    else if (thisSystem.ToUpper() == "N64")
+                        original = BizHawk.Client.Common.RomGame.MutateSwapN64(original);
+                    else if(GlobalWin.MainForm.CurrentlyOpenRom.ToUpper().Contains(".SMD"))
+                        original = BizHawk.Client.Common.RomGame.DeInterleaveSMD(original);
 
                     for (int i = 0; i < rp.skipbytes; i++)
                         original[i] = 0;

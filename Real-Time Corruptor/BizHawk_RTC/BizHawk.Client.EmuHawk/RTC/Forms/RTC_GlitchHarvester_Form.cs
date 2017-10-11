@@ -1382,7 +1382,7 @@ namespace RTC
 			foreach (DataGridViewRow dataRow in RTC_Core.ghForm.dgvStockpile.Rows)
 			{
 				StashKey sk = (StashKey)dataRow.Cells["Item"].Value;
-				sk.RomFilename = RTC_Core.rtcDir + "\\TEMP\\" + RTC_Extensions.ShortenFilename(sk.RomFilename);
+				sk.RomFilename = RTC_Core.rtcDir + "\\TEMP\\" + RTC_Extensions.getShortFilenameFromPath(sk.RomFilename);
 			}
 		}
 

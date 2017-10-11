@@ -49,8 +49,8 @@
             this.lbAttachedModeSettings = new System.Windows.Forms.Label();
             this.button1 = new System.Windows.Forms.Button();
             this.panel1 = new System.Windows.Forms.Panel();
-            this.label4 = new System.Windows.Forms.Label();
             this.cbDisableBizhawkOSD = new System.Windows.Forms.CheckBox();
+            this.label4 = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.nmGameProtectionDelay)).BeginInit();
             this.groupBox1.SuspendLayout();
             this.groupBox2.SuspendLayout();
@@ -361,17 +361,6 @@
             this.panel1.TabIndex = 132;
             this.panel1.Tag = "color:normal";
             // 
-            // label4
-            // 
-            this.label4.AutoSize = true;
-            this.label4.Font = new System.Drawing.Font("Segoe UI Semibold", 10F, System.Drawing.FontStyle.Bold);
-            this.label4.ForeColor = System.Drawing.Color.White;
-            this.label4.Location = new System.Drawing.Point(22, 279);
-            this.label4.Name = "label4";
-            this.label4.Size = new System.Drawing.Size(141, 19);
-            this.label4.TabIndex = 133;
-            this.label4.Text = "General RTC Settings";
-            // 
             // cbDisableBizhawkOSD
             // 
             this.cbDisableBizhawkOSD.AutoSize = true;
@@ -385,6 +374,18 @@
             this.cbDisableBizhawkOSD.TabIndex = 0;
             this.cbDisableBizhawkOSD.Text = "Disable the BizHawk OSD system";
             this.cbDisableBizhawkOSD.UseVisualStyleBackColor = true;
+            this.cbDisableBizhawkOSD.CheckedChanged += new System.EventHandler(this.cbDisableBizhawkOSD_CheckedChanged);
+            // 
+            // label4
+            // 
+            this.label4.AutoSize = true;
+            this.label4.Font = new System.Drawing.Font("Segoe UI Semibold", 10F, System.Drawing.FontStyle.Bold);
+            this.label4.ForeColor = System.Drawing.Color.White;
+            this.label4.Location = new System.Drawing.Point(22, 279);
+            this.label4.Name = "label4";
+            this.label4.Size = new System.Drawing.Size(141, 19);
+            this.label4.TabIndex = 133;
+            this.label4.Text = "General RTC Settings";
             // 
             // RTC_Settings_Form
             // 

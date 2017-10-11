@@ -91,10 +91,10 @@ namespace RTC
 			btnLogo.Text = "    Version " + RTC_Core.RtcVersion;
 
 
-			if (!File.Exists(RTC_Core.rtcDir + "\\PARAMS\\DISCLAIMER_READ"))
+			if (!RTC_Params.IsParamSet("DISCLAIMER_READ"))
 			{
 				MessageBox.Show(File.ReadAllText(RTC_Core.rtcDir + "\\LICENSES\\DISCLAIMER.TXT").Replace("[ver]",RTC_Core.RtcVersion), "RTC", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                File.WriteAllText(RTC_Core.rtcDir + "\\PARAMS\\DISCLAIMER_READ", "");
+                RTC_Params.SetParam("DISCLAIMER_READ");
 			}
 
             RTC_Core.CheckForProblematicProcesses();

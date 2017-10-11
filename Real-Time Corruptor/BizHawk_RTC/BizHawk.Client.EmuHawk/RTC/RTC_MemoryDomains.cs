@@ -397,6 +397,7 @@ namespace RTC
             {
                 MemoryInterface mi = VmdPool[_domain];
                 var vmd = (mi as VirtualMemoryDomain);
+                vmd.
                 return getProxy(vmd.getRealDomain(_address), vmd.getRealAddress(_address));
             }
             else

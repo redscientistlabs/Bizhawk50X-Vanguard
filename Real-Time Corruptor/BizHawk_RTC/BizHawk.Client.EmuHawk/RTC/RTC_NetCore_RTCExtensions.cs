@@ -69,7 +69,7 @@ namespace RTC
                     if (!File.Exists(RTC_Core.rtcDir + "\\TEMP\\" + cmd.romFilename))
                         File.WriteAllBytes(RTC_Core.rtcDir + "\\TEMP\\" + cmd.romFilename, cmd.romData);
 
-                    cmd.stashkey.RomFilename = RTC_Core.rtcDir + "\\TEMP\\" + RTC_Extensions.ShortenFilename(cmd.romFilename);
+                    cmd.stashkey.RomFilename = RTC_Core.rtcDir + "\\TEMP\\" + RTC_Extensions.getShortFilenameFromPath(cmd.romFilename);
 
                     cmd.stashkey.DeployState();
 
@@ -79,7 +79,7 @@ namespace RTC
 
                 case CommandType.PULLROM:
                     cmdBack = new RTC_Command(CommandType.PUSHROM);
-                    cmdBack.romFilename = RTC_Extensions.ShortenFilename(GlobalWin.MainForm.CurrentlyOpenRom);
+                    cmdBack.romFilename = RTC_Extensions.getShortFilenameFromPath(GlobalWin.MainForm.CurrentlyOpenRom);
 
                     if (!PeerHasRom(cmdBack.romFilename))
                         cmdBack.romData = File.ReadAllBytes(GlobalWin.MainForm.CurrentlyOpenRom);
@@ -89,7 +89,7 @@ namespace RTC
                 case CommandType.PUSHROM:
                     if (cmd.romData != null)
                     {
-                        cmd.romFilename = RTC_Extensions.ShortenFilename(cmd.romFilename);
+                        cmd.romFilename = RTC_Extensions.getShortFilenameFromPath(cmd.romFilename);
                         if (!File.Exists(RTC_Core.rtcDir + "\\TEMP\\" + cmd.romFilename))
                             File.WriteAllBytes(RTC_Core.rtcDir + "\\TEMP\\" + cmd.romFilename, cmd.romData);
                     }
@@ -120,7 +120,7 @@ namespace RTC
                 case CommandType.PULLSWAPSTATE:
 
                     cmdBack = new RTC_Command(CommandType.PUSHSWAPSTATE);
-                    cmdBack.romFilename = RTC_Extensions.ShortenFilename(GlobalWin.MainForm.CurrentlyOpenRom);
+                    cmdBack.romFilename = RTC_Extensions.getShortFilenameFromPath(GlobalWin.MainForm.CurrentlyOpenRom);
 
                     if (!PeerHasRom(cmdBack.romFilename))
                         cmdBack.romData = File.ReadAllBytes(GlobalWin.MainForm.CurrentlyOpenRom);
@@ -129,7 +129,7 @@ namespace RTC
                     cmdBack.stashkey = sk_PULLSWAPSTATE;
                     sk_PULLSWAPSTATE.EmbedState();
 
-                    cmd.romFilename = RTC_Extensions.ShortenFilename(cmd.romFilename);
+                    cmd.romFilename = RTC_Extensions.getShortFilenameFromPath(cmd.romFilename);
 
                     if (!File.Exists(RTC_Core.rtcDir + "\\TEMP\\" + cmd.romFilename))
                         File.WriteAllBytes(RTC_Core.rtcDir + "\\TEMP\\" + cmd.romFilename, cmd.romData);
@@ -145,7 +145,7 @@ namespace RTC
 
                 case CommandType.PUSHSWAPSTATE:
 
-                    cmd.romFilename = RTC_Extensions.ShortenFilename(cmd.romFilename);
+                    cmd.romFilename = RTC_Extensions.getShortFilenameFromPath(cmd.romFilename);
 
                     if (cmd.romData != null)
                         if (!File.Exists(RTC_Core.rtcDir + "\\TEMP\\" + cmd.romFilename))
@@ -327,6 +327,10 @@ namespace RTC
                 case CommandType.REMOTE_KEY_GETRAWBLASTLAYER:
                     cmdBack = new RTC_Command(CommandType.RETURNVALUE);
                     cmdBack.objectValue = RTC_StockpileManager.getRawBlastlayer();
+                    break;
+
+                case CommandType.BIZHAWK_SET_OSDDISABLED:
+                    RTC_Core.BizhawkOsdDisabled = (bool)cmd.objectValue;
                     break;
 
                 case CommandType.REMOTE_SET_SAVESTATEBOX:
@@ -628,7 +632,7 @@ namespace RTC
 
             RTC_Command cmd = new RTC_Command(CommandType.STASHKEY);
 
-            cmd.romFilename = RTC_Extensions.ShortenFilename(GlobalWin.MainForm.CurrentlyOpenRom);
+            cmd.romFilename = RTC_Extensions.getShortFilenameFromPath(GlobalWin.MainForm.CurrentlyOpenRom);
 
             if (!PeerHasRom(cmd.romFilename))
                 cmd.romData = File.ReadAllBytes(GlobalWin.MainForm.CurrentlyOpenRom);

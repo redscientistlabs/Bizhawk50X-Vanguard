@@ -192,7 +192,7 @@
             this.gbValueEdit.Controls.Add(this.btnValueUpdate);
             this.gbValueEdit.Font = new System.Drawing.Font("Segoe UI", 9.75F);
             this.gbValueEdit.ForeColor = System.Drawing.Color.White;
-            this.gbValueEdit.Location = new System.Drawing.Point(369, 333);
+            this.gbValueEdit.Location = new System.Drawing.Point(369, 330);
             this.gbValueEdit.Name = "gbValueEdit";
             this.gbValueEdit.Size = new System.Drawing.Size(157, 112);
             this.gbValueEdit.TabIndex = 117;
@@ -253,7 +253,7 @@
             this.gbAddressEdit.Controls.Add(this.btnAdressUpdate);
             this.gbAddressEdit.Font = new System.Drawing.Font("Segoe UI", 9.75F);
             this.gbAddressEdit.ForeColor = System.Drawing.Color.White;
-            this.gbAddressEdit.Location = new System.Drawing.Point(369, 227);
+            this.gbAddressEdit.Location = new System.Drawing.Point(369, 220);
             this.gbAddressEdit.Name = "gbAddressEdit";
             this.gbAddressEdit.Size = new System.Drawing.Size(157, 112);
             this.gbAddressEdit.TabIndex = 127;
@@ -314,7 +314,7 @@
             this.btnDisableEverything.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnDisableEverything.Font = new System.Drawing.Font("Segoe UI Semibold", 9F, System.Drawing.FontStyle.Bold);
             this.btnDisableEverything.ForeColor = System.Drawing.Color.Black;
-            this.btnDisableEverything.Location = new System.Drawing.Point(369, 155);
+            this.btnDisableEverything.Location = new System.Drawing.Point(369, 145);
             this.btnDisableEverything.Name = "btnDisableEverything";
             this.btnDisableEverything.Size = new System.Drawing.Size(157, 23);
             this.btnDisableEverything.TabIndex = 128;
@@ -332,7 +332,7 @@
             this.btnEnableEverything.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnEnableEverything.Font = new System.Drawing.Font("Segoe UI Semibold", 9F, System.Drawing.FontStyle.Bold);
             this.btnEnableEverything.ForeColor = System.Drawing.Color.Black;
-            this.btnEnableEverything.Location = new System.Drawing.Point(370, 181);
+            this.btnEnableEverything.Location = new System.Drawing.Point(370, 171);
             this.btnEnableEverything.Name = "btnEnableEverything";
             this.btnEnableEverything.Size = new System.Drawing.Size(157, 23);
             this.btnEnableEverything.TabIndex = 129;
@@ -350,7 +350,7 @@
             this.btnDuplicateSelected.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnDuplicateSelected.Font = new System.Drawing.Font("Segoe UI Semibold", 9F, System.Drawing.FontStyle.Bold);
             this.btnDuplicateSelected.ForeColor = System.Drawing.Color.Black;
-            this.btnDuplicateSelected.Location = new System.Drawing.Point(370, 207);
+            this.btnDuplicateSelected.Location = new System.Drawing.Point(370, 197);
             this.btnDuplicateSelected.Name = "btnDuplicateSelected";
             this.btnDuplicateSelected.Size = new System.Drawing.Size(157, 23);
             this.btnDuplicateSelected.TabIndex = 130;
@@ -368,7 +368,7 @@
             this.btnSanitizeDuplicates.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnSanitizeDuplicates.Font = new System.Drawing.Font("Segoe UI Semibold", 9F, System.Drawing.FontStyle.Bold);
             this.btnSanitizeDuplicates.ForeColor = System.Drawing.Color.Black;
-            this.btnSanitizeDuplicates.Location = new System.Drawing.Point(370, 124);
+            this.btnSanitizeDuplicates.Location = new System.Drawing.Point(370, 119);
             this.btnSanitizeDuplicates.Name = "btnSanitizeDuplicates";
             this.btnSanitizeDuplicates.Size = new System.Drawing.Size(157, 23);
             this.btnSanitizeDuplicates.TabIndex = 131;
@@ -390,7 +390,7 @@
             this.lbBlastLayerSize.TabIndex = 132;
             this.lbBlastLayerSize.Text = "BlastLayer size:";
             // 
-            // RTC_BlastEditorForm
+            // RTC_BlastEditor_Form
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
@@ -412,7 +412,7 @@
             this.Controls.Add(this.btnLoadCorrupt);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.MinimumSize = new System.Drawing.Size(532, 532);
-            this.Name = "RTC_BlastEditorForm";
+            this.Name = "RTC_BlastEditor_Form";
             this.Tag = "color:normal";
             this.Text = "Blast Editor";
             this.Load += new System.EventHandler(this.RTC_BlastEditorForm_Load);

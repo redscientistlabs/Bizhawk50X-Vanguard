@@ -168,11 +168,34 @@ namespace RTC
 
         #region PATH EXTENSIONS
 
-        public static string ShortenFilename(string longFilenamePath)
+        public static string getShortFilenameFromPath(string longFilenamePath)
         {
+            // >>> Will contain the character \ at the end
+
             //returns the filename from the full path
             if (longFilenamePath.Contains("\\"))
                 return longFilenamePath.Substring(longFilenamePath.LastIndexOf("\\") + 1);
+            else
+                return longFilenamePath;
+        }
+
+        public static string removeFileExtension(string filename)
+        {
+            // filename.wav -> filename
+
+            if (filename.Contains("."))
+                return filename.Substring(0, filename.LastIndexOf("."));
+            else
+                return filename;
+        }
+
+        public static string getLongDirectoryFromPath(string longFilenamePath)
+        {
+            // >>> Will contain the character \ at the end
+
+            //returns the filename from the full path
+            if (longFilenamePath.Contains("\\"))
+                return longFilenamePath.Substring(0, longFilenamePath.LastIndexOf("\\") + 1);
             else
                 return longFilenamePath;
         }

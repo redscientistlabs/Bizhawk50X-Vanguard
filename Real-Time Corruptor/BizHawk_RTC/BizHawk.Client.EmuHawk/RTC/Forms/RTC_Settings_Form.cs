@@ -4,6 +4,7 @@ using System.ComponentModel;
 using System.Data;
 using System.Diagnostics;
 using System.Drawing;
+using System.IO;
 using System.Linq;
 using System.Media;
 using System.Text;
@@ -100,6 +101,17 @@ namespace RTC
         private void button1_Click(object sender, EventArgs e)
         {
             RTC_Core.coreForm.showPanelForm(RTC_Core.coreForm.previousForm, false);
+        }
+
+        private void cbDisableBizhawkOSD_CheckedChanged(object sender, EventArgs e)
+        {
+
+            if (cbDisableBizhawkOSD.Checked)
+                RTC_Params.SetParam("DISABLE_BIZHAWK_OSD");
+            else
+                RTC_Params.RemoveParam("DISABLE_BIZHAWK_OSD");
+
+            RTC_Core.SendCommandToBizhawk(new RTC_Command(CommandType.BIZHAWK_SET_OSDDISABLED) { objectValue = cbDisableBizhawkOSD.Checked });
         }
     }
 }

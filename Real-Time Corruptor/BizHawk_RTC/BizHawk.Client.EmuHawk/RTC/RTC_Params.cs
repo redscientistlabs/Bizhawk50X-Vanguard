@@ -33,6 +33,8 @@ namespace RTC
 			new Ref(() => RTC_Core.lastLoaderRom, x => { RTC_Core.lastLoaderRom = (int)x; }),
 			new Ref(() => RTC_Core.AutoCorrupt, x => { RTC_Core.AutoCorrupt = (bool)x; }),
 
+            new Ref(() => RTC_Core.BizhawkOsdDisabled, x => { RTC_Core.BizhawkOsdDisabled = (bool)x; }),
+
             new Ref(() => RTC_NightmareEngine.Algo, x => { RTC_NightmareEngine.Algo = (BlastByteAlgo)x; }),
 			new Ref(() => RTC_HellgenieEngine.MaxCheats, x => { RTC_HellgenieEngine.MaxCheats = (int)x; }),
 			new Ref(() => RTC_DistortionEngine.MaxAge, x => { RTC_DistortionEngine.MaxAge = (int)x; }),
@@ -57,14 +59,14 @@ namespace RTC
 		public RTC_Params()
 		{
             //Fills the Params object upon creation
-			GetSetParams(true);
+			GetSetLiveParams(true);
 		}
 
 		public void Deploy()
 		{
             //Has to be manually deployed after received
 
-			GetSetParams(false);
+			GetSetLiveParams(false);
 
 			if (RTC_StockpileManager.backupedState != null)
 				RTC_StockpileManager.backupedState.Run();
@@ -75,9 +77,9 @@ namespace RTC
 		}
 
 
-		private void GetSetParams(bool buildObject)
+		private void GetSetLiveParams(bool buildObject)
 		{
-            //Builds the params object  or unwraps the params object from/back to all monitored variables
+            //Builds the params object or unwraps the params object from/back to all monitored variables
 
             for ( int i = 0; i < refs.Length; i++)
 				if(buildObject)
@@ -92,9 +94,9 @@ namespace RTC
         {
             if (RTC_Core.isStandalone || !RTC_Hooks.isRemoteRTC)
             {
-                if (File.Exists(RTC_Core.rtcDir + "\\params\\COLOR"))
+                if (IsParamSet("COLOR"))
                 {
-                    string[] bytes = File.ReadAllText(RTC_Core.rtcDir + "\\params\\COLOR").Split(',');
+                    string[] bytes = ReadParam("COLOR").Split(',');
                     RTC_Core.SetRTCColor(Color.FromArgb(Convert.ToByte(bytes[0]), Convert.ToByte(bytes[1]), Convert.ToByte(bytes[2])));
                 }
                 else
@@ -104,26 +106,56 @@ namespace RTC
 
         public static void SaveRTCColor(Color color)
         {
-            File.WriteAllText(RTC_Core.rtcDir + "\\params\\COLOR", color.R.ToString() + "," + color.G.ToString() + "," + color.B.ToString());
+            SetParam("COLOR", color.R.ToString() + "," + color.G.ToString() + "," + color.B.ToString());
         }
 
         public static void LoadBizhawkWindowState()
         {
-            if(File.Exists(RTC_Core.rtcDir + "\\params\\BIZHAWK_SIZE"))
+            if(IsParamSet("BIZHAWK_SIZE"))
             {
-                string[] size = File.ReadAllText(RTC_Core.rtcDir + "\\params\\BIZHAWK_SIZE").Split(',');
+                string[] size = ReadParam("BIZHAWK_SIZE").Split(',');
                 GlobalWin.MainForm.Size = new Size(Convert.ToInt32(size[0]), Convert.ToInt32(size[1]));
-                string[] location = File.ReadAllText(RTC_Core.rtcDir + "\\params\\BIZHAWK_LOCATION").Split(',');
+                string[] location = ReadParam("BIZHAWK_LOCATION").Split(',');
                 GlobalWin.MainForm.Location = new Point(Convert.ToInt32(location[0]), Convert.ToInt32(location[1]));
             }
         }
 
         public static void SaveBizhawkWindowState()
         {
-            File.WriteAllText(RTC_Core.rtcDir + "\\params\\BIZHAWK_SIZE", $"{GlobalWin.MainForm.Size.Width},{GlobalWin.MainForm.Size.Height}");
-            File.WriteAllText(RTC_Core.rtcDir + "\\params\\BIZHAWK_LOCATION", $"{GlobalWin.MainForm.Location.X},{GlobalWin.MainForm.Location.Y}");
+            SetParam("BIZHAWK_SIZE", $"{GlobalWin.MainForm.Size.Width},{GlobalWin.MainForm.Size.Height}");
+            SetParam("BIZHAWK_LOCATION", $"{GlobalWin.MainForm.Location.X},{GlobalWin.MainForm.Location.Y}");
         }
 
+
+        public static void SetParam(string paramName, string data = null)
+        {
+            if(data == null)
+            {
+                if (!IsParamSet(paramName))
+                    SetParam(paramName, "");
+            }
+            else
+                File.WriteAllText(RTC_Core.paramsDir + "\\" + paramName, data);
+        }
+
+        public static void RemoveParam(string paramName)
+        {
+            if (IsParamSet(paramName))
+                File.Delete(RTC_Core.paramsDir + "\\" + paramName);
+        }
+
+        public static string ReadParam(string paramName)
+        {
+            if(IsParamSet(paramName))
+                return File.ReadAllText(RTC_Core.paramsDir + "\\" + paramName);
+
+            return null;
+        }
+
+        public static bool IsParamSet(string paramName)
+        {
+            return File.Exists(RTC_Core.paramsDir + "\\" + paramName);
+        }
 		
 	}
 

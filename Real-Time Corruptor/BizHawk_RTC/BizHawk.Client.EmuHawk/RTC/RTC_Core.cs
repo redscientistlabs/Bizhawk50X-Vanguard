@@ -17,16 +17,23 @@ namespace RTC
 
     public static class RTC_Core
     {
-		public static string RtcVersion = "3.06";
-		
-        public static Random RND = new Random();
         public static string[] args;
+        public static Random RND = new Random();
 
-        //Values
+        //General RTC Values
+        public static string RtcVersion = "3.06b";
+
+        //Directories
+        public static string bizhawkDir = Directory.GetCurrentDirectory();
+        public static string rtcDir = bizhawkDir + "\\RTC";
+        public static string paramsDir = rtcDir + "\\PARAMS";
+
+        //Engine Values
         public static CorruptionEngine SelectedEngine = CorruptionEngine.NIGHTMARE;
 		public static int Intensity = 1;
 		public static int ErrorDelay = 1;
         public static BlastRadius Radius = BlastRadius.SPREAD;
+        public static bool AutoCorrupt = false;
 
         public static bool ClearCheatsOnRewind = false;
 		public static bool ClearPipesOnRewind = false;
@@ -34,14 +41,12 @@ namespace RTC
         public static string lastOpenRom = null;
         public static int lastLoaderRom = 0;
 
-        public static bool AutoCorrupt = false;
+        //Bizhawk overrides
+        public static bool BizhawkOsdDisabled = true;
 
-        //General Values
-        public static string bizhawkDir = Directory.GetCurrentDirectory();
-        public static string rtcDir = bizhawkDir + "\\RTC";
 
-		//RTC Main Forms
-		public static Color generalColor = Color.LightSteelBlue;
+        //RTC Main Forms
+        public static Color generalColor = Color.LightSteelBlue;
 		public static RTC_Core_Form coreForm = null;
         public static RTC_EngineConfig_Form ecForm = null;
         public static RTC_StockpilePlayer_Form spForm = null;
@@ -89,9 +94,6 @@ namespace RTC
             }
         }
 
-
-        //Bizhawk Overrides
-        public static bool Bizhawk_OSD_Enabled = false;
 
 		//NetCores
 		public static RTC_NetCore Multiplayer = null;
