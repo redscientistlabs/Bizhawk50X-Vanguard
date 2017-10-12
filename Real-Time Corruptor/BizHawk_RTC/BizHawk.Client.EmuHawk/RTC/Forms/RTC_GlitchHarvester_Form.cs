@@ -158,9 +158,11 @@ namespace RTC
 
 		private void RTC_GH_Form_Load(object sender, EventArgs e)
         {
+            /*
 			foreach (Control ctrl in pnSavestateHolder.Controls)
 				if (ctrl is Button)
 					ctrl.Size = new Size(29, 25);
+            */
 
 			RefreshStashHistory();
             refreshSavestateTextboxes();

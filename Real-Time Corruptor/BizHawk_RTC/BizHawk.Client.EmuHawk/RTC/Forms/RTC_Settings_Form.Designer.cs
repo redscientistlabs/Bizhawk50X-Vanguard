@@ -49,9 +49,9 @@
             this.lbAttachedModeSettings = new System.Windows.Forms.Label();
             this.button1 = new System.Windows.Forms.Button();
             this.panel1 = new System.Windows.Forms.Panel();
+            this.cbAllowCrossCoreCorruption = new System.Windows.Forms.CheckBox();
             this.cbDisableBizhawkOSD = new System.Windows.Forms.CheckBox();
             this.label4 = new System.Windows.Forms.Label();
-            this.cbAllowCrossCoreCorruption = new System.Windows.Forms.CheckBox();
             ((System.ComponentModel.ISupportInitialize)(this.nmGameProtectionDelay)).BeginInit();
             this.groupBox1.SuspendLayout();
             this.groupBox2.SuspendLayout();
@@ -139,7 +139,7 @@
             this.groupBox1.Controls.Add(this.label3);
             this.groupBox1.Controls.Add(this.label21);
             this.groupBox1.Controls.Add(this.nmGameProtectionDelay);
-            this.groupBox1.Font = new System.Drawing.Font("Segoe UI Semibold", 10F, System.Drawing.FontStyle.Bold);
+            this.groupBox1.Font = new System.Drawing.Font("Segoe UI Semibold", 9F);
             this.groupBox1.ForeColor = System.Drawing.Color.White;
             this.groupBox1.Location = new System.Drawing.Point(15, 147);
             this.groupBox1.Name = "groupBox1";
@@ -153,14 +153,17 @@
             this.btnOpenOnlineWiki.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(224)))), ((int)(((byte)(224)))), ((int)(((byte)(224)))));
             this.btnOpenOnlineWiki.FlatAppearance.BorderSize = 0;
             this.btnOpenOnlineWiki.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btnOpenOnlineWiki.Font = new System.Drawing.Font("Segoe UI Semibold", 11F, System.Drawing.FontStyle.Bold);
+            this.btnOpenOnlineWiki.Font = new System.Drawing.Font("Segoe UI", 8F);
             this.btnOpenOnlineWiki.ForeColor = System.Drawing.Color.Black;
-            this.btnOpenOnlineWiki.Location = new System.Drawing.Point(401, 23);
+            this.btnOpenOnlineWiki.Image = global::BizHawk.Client.EmuHawk.Properties.Resources.notepad_icon;
+            this.btnOpenOnlineWiki.ImageAlign = System.Drawing.ContentAlignment.MiddleRight;
+            this.btnOpenOnlineWiki.Location = new System.Drawing.Point(19, 139);
             this.btnOpenOnlineWiki.Name = "btnOpenOnlineWiki";
-            this.btnOpenOnlineWiki.Size = new System.Drawing.Size(232, 29);
+            this.btnOpenOnlineWiki.Size = new System.Drawing.Size(215, 45);
             this.btnOpenOnlineWiki.TabIndex = 125;
             this.btnOpenOnlineWiki.Tag = "color:light";
-            this.btnOpenOnlineWiki.Text = "Open the online wiki";
+            this.btnOpenOnlineWiki.Text = "    Open the online wiki";
+            this.btnOpenOnlineWiki.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageBeforeText;
             this.btnOpenOnlineWiki.UseVisualStyleBackColor = false;
             this.btnOpenOnlineWiki.Click += new System.EventHandler(this.btnOpenOnlineWiki_Click);
             // 
@@ -170,7 +173,7 @@
             this.groupBox2.Controls.Add(this.cbCrashSoundEffect);
             this.groupBox2.Controls.Add(this.label5);
             this.groupBox2.Controls.Add(this.label1);
-            this.groupBox2.Font = new System.Drawing.Font("Segoe UI Semibold", 10F, System.Drawing.FontStyle.Bold);
+            this.groupBox2.Font = new System.Drawing.Font("Segoe UI Semibold", 9F);
             this.groupBox2.ForeColor = System.Drawing.Color.White;
             this.groupBox2.Location = new System.Drawing.Point(15, 7);
             this.groupBox2.Name = "groupBox2";
@@ -181,10 +184,10 @@
             // 
             // cbNetCoreCommandTimeout
             // 
-            this.cbNetCoreCommandTimeout.BackColor = System.Drawing.Color.Black;
+            this.cbNetCoreCommandTimeout.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
             this.cbNetCoreCommandTimeout.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.cbNetCoreCommandTimeout.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.cbNetCoreCommandTimeout.Font = new System.Drawing.Font("Segoe UI", 9.75F);
+            this.cbNetCoreCommandTimeout.Font = new System.Drawing.Font("Segoe UI", 8F);
             this.cbNetCoreCommandTimeout.ForeColor = System.Drawing.Color.White;
             this.cbNetCoreCommandTimeout.FormattingEnabled = true;
             this.cbNetCoreCommandTimeout.Items.AddRange(new object[] {
@@ -193,16 +196,17 @@
             "Disabled"});
             this.cbNetCoreCommandTimeout.Location = new System.Drawing.Point(18, 93);
             this.cbNetCoreCommandTimeout.Name = "cbNetCoreCommandTimeout";
-            this.cbNetCoreCommandTimeout.Size = new System.Drawing.Size(163, 25);
+            this.cbNetCoreCommandTimeout.Size = new System.Drawing.Size(163, 21);
             this.cbNetCoreCommandTimeout.TabIndex = 129;
+            this.cbNetCoreCommandTimeout.Tag = "color:dark";
             this.cbNetCoreCommandTimeout.SelectedIndexChanged += new System.EventHandler(this.cbNetCoreCommandTimeout_SelectedIndexChanged);
             // 
             // cbCrashSoundEffect
             // 
-            this.cbCrashSoundEffect.BackColor = System.Drawing.Color.Black;
+            this.cbCrashSoundEffect.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
             this.cbCrashSoundEffect.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.cbCrashSoundEffect.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.cbCrashSoundEffect.Font = new System.Drawing.Font("Segoe UI", 9.75F);
+            this.cbCrashSoundEffect.Font = new System.Drawing.Font("Segoe UI", 8F);
             this.cbCrashSoundEffect.ForeColor = System.Drawing.Color.White;
             this.cbCrashSoundEffect.FormattingEnabled = true;
             this.cbCrashSoundEffect.Items.AddRange(new object[] {
@@ -212,8 +216,9 @@
             "CRASHSOUNDS folder"});
             this.cbCrashSoundEffect.Location = new System.Drawing.Point(18, 42);
             this.cbCrashSoundEffect.Name = "cbCrashSoundEffect";
-            this.cbCrashSoundEffect.Size = new System.Drawing.Size(163, 25);
+            this.cbCrashSoundEffect.Size = new System.Drawing.Size(163, 21);
             this.cbCrashSoundEffect.TabIndex = 127;
+            this.cbCrashSoundEffect.Tag = "color:dark";
             this.cbCrashSoundEffect.SelectedIndexChanged += new System.EventHandler(this.cbCrashSoundEffect_SelectedIndexChanged);
             // 
             // label5
@@ -241,13 +246,13 @@
             this.btnChangeRTCColor.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(224)))), ((int)(((byte)(224)))), ((int)(((byte)(224)))));
             this.btnChangeRTCColor.FlatAppearance.BorderSize = 0;
             this.btnChangeRTCColor.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btnChangeRTCColor.Font = new System.Drawing.Font("Segoe UI Semibold", 11F, System.Drawing.FontStyle.Bold);
+            this.btnChangeRTCColor.Font = new System.Drawing.Font("Segoe UI", 8F);
             this.btnChangeRTCColor.ForeColor = System.Drawing.Color.Black;
             this.btnChangeRTCColor.Image = global::BizHawk.Client.EmuHawk.Properties.Resources.paintbrush_icon;
             this.btnChangeRTCColor.ImageAlign = System.Drawing.ContentAlignment.MiddleRight;
             this.btnChangeRTCColor.Location = new System.Drawing.Point(19, 84);
             this.btnChangeRTCColor.Name = "btnChangeRTCColor";
-            this.btnChangeRTCColor.Size = new System.Drawing.Size(274, 45);
+            this.btnChangeRTCColor.Size = new System.Drawing.Size(215, 45);
             this.btnChangeRTCColor.TabIndex = 126;
             this.btnChangeRTCColor.Tag = "color:light";
             this.btnChangeRTCColor.Text = "   Change RTC\'s color theme";
@@ -260,7 +265,7 @@
             this.btnRtcFactoryClean.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(224)))), ((int)(((byte)(224)))), ((int)(((byte)(224)))));
             this.btnRtcFactoryClean.FlatAppearance.BorderSize = 0;
             this.btnRtcFactoryClean.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btnRtcFactoryClean.Font = new System.Drawing.Font("Segoe UI Semibold", 11F, System.Drawing.FontStyle.Bold);
+            this.btnRtcFactoryClean.Font = new System.Drawing.Font("Segoe UI", 8F);
             this.btnRtcFactoryClean.ForeColor = System.Drawing.Color.Black;
             this.btnRtcFactoryClean.Image = global::BizHawk.Client.EmuHawk.Properties.Resources.reboot;
             this.btnRtcFactoryClean.ImageAlign = System.Drawing.ContentAlignment.MiddleRight;
@@ -288,11 +293,11 @@
             // lbDetachedModeSettings
             // 
             this.lbDetachedModeSettings.AutoSize = true;
-            this.lbDetachedModeSettings.Font = new System.Drawing.Font("Segoe UI Semibold", 10F, System.Drawing.FontStyle.Bold);
+            this.lbDetachedModeSettings.Font = new System.Drawing.Font("Segoe UI Semibold", 9F);
             this.lbDetachedModeSettings.ForeColor = System.Drawing.Color.White;
-            this.lbDetachedModeSettings.Location = new System.Drawing.Point(405, 63);
+            this.lbDetachedModeSettings.Location = new System.Drawing.Point(405, 68);
             this.lbDetachedModeSettings.Name = "lbDetachedModeSettings";
-            this.lbDetachedModeSettings.Size = new System.Drawing.Size(163, 19);
+            this.lbDetachedModeSettings.Size = new System.Drawing.Size(138, 15);
             this.lbDetachedModeSettings.TabIndex = 129;
             this.lbDetachedModeSettings.Text = "Detached Mode Settings";
             // 
@@ -311,7 +316,7 @@
             this.btnStartAutoKillSwitch.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(224)))), ((int)(((byte)(224)))), ((int)(((byte)(224)))));
             this.btnStartAutoKillSwitch.FlatAppearance.BorderSize = 0;
             this.btnStartAutoKillSwitch.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btnStartAutoKillSwitch.Font = new System.Drawing.Font("Segoe UI Semibold", 10F, System.Drawing.FontStyle.Bold);
+            this.btnStartAutoKillSwitch.Font = new System.Drawing.Font("Segoe UI", 8F);
             this.btnStartAutoKillSwitch.ForeColor = System.Drawing.Color.Black;
             this.btnStartAutoKillSwitch.Location = new System.Drawing.Point(15, 15);
             this.btnStartAutoKillSwitch.Name = "btnStartAutoKillSwitch";
@@ -325,11 +330,11 @@
             // lbAttachedModeSettings
             // 
             this.lbAttachedModeSettings.AutoSize = true;
-            this.lbAttachedModeSettings.Font = new System.Drawing.Font("Segoe UI Semibold", 10F, System.Drawing.FontStyle.Bold);
+            this.lbAttachedModeSettings.Font = new System.Drawing.Font("Segoe UI Semibold", 9F);
             this.lbAttachedModeSettings.ForeColor = System.Drawing.Color.White;
-            this.lbAttachedModeSettings.Location = new System.Drawing.Point(405, 336);
+            this.lbAttachedModeSettings.Location = new System.Drawing.Point(405, 340);
             this.lbAttachedModeSettings.Name = "lbAttachedModeSettings";
-            this.lbAttachedModeSettings.Size = new System.Drawing.Size(160, 19);
+            this.lbAttachedModeSettings.Size = new System.Drawing.Size(135, 15);
             this.lbAttachedModeSettings.TabIndex = 131;
             this.lbAttachedModeSettings.Text = "Attached Mode Settings";
             // 
@@ -338,13 +343,13 @@
             this.button1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(224)))), ((int)(((byte)(224)))), ((int)(((byte)(224)))));
             this.button1.FlatAppearance.BorderSize = 0;
             this.button1.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.button1.Font = new System.Drawing.Font("Segoe UI Semibold", 10F, System.Drawing.FontStyle.Bold);
+            this.button1.Font = new System.Drawing.Font("Segoe UI", 8F);
             this.button1.ForeColor = System.Drawing.Color.Black;
             this.button1.Image = global::BizHawk.Client.EmuHawk.Properties.Resources.undo;
             this.button1.ImageAlign = System.Drawing.ContentAlignment.MiddleRight;
             this.button1.Location = new System.Drawing.Point(19, 465);
             this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(139, 29);
+            this.button1.Size = new System.Drawing.Size(215, 29);
             this.button1.TabIndex = 127;
             this.button1.Tag = "color:light";
             this.button1.Text = " Close Settings";
@@ -359,9 +364,22 @@
             this.panel1.Controls.Add(this.cbDisableBizhawkOSD);
             this.panel1.Location = new System.Drawing.Point(19, 301);
             this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(274, 116);
+            this.panel1.Size = new System.Drawing.Size(215, 116);
             this.panel1.TabIndex = 132;
             this.panel1.Tag = "color:normal";
+            // 
+            // cbAllowCrossCoreCorruption
+            // 
+            this.cbAllowCrossCoreCorruption.AutoSize = true;
+            this.cbAllowCrossCoreCorruption.Font = new System.Drawing.Font("Segoe UI", 8F);
+            this.cbAllowCrossCoreCorruption.ForeColor = System.Drawing.Color.White;
+            this.cbAllowCrossCoreCorruption.Location = new System.Drawing.Point(11, 33);
+            this.cbAllowCrossCoreCorruption.Name = "cbAllowCrossCoreCorruption";
+            this.cbAllowCrossCoreCorruption.Size = new System.Drawing.Size(172, 17);
+            this.cbAllowCrossCoreCorruption.TabIndex = 1;
+            this.cbAllowCrossCoreCorruption.Text = "Allow Cross-Core corruption";
+            this.cbAllowCrossCoreCorruption.UseVisualStyleBackColor = true;
+            this.cbAllowCrossCoreCorruption.CheckedChanged += new System.EventHandler(this.cbAllowCrossCoreCorruption_CheckedChanged);
             // 
             // cbDisableBizhawkOSD
             // 
@@ -381,26 +399,13 @@
             // label4
             // 
             this.label4.AutoSize = true;
-            this.label4.Font = new System.Drawing.Font("Segoe UI Semibold", 10F, System.Drawing.FontStyle.Bold);
+            this.label4.Font = new System.Drawing.Font("Segoe UI Semibold", 9F);
             this.label4.ForeColor = System.Drawing.Color.White;
-            this.label4.Location = new System.Drawing.Point(22, 279);
+            this.label4.Location = new System.Drawing.Point(22, 283);
             this.label4.Name = "label4";
-            this.label4.Size = new System.Drawing.Size(141, 19);
+            this.label4.Size = new System.Drawing.Size(117, 15);
             this.label4.TabIndex = 133;
             this.label4.Text = "General RTC Settings";
-            // 
-            // cbAllowCrossCoreCorruption
-            // 
-            this.cbAllowCrossCoreCorruption.AutoSize = true;
-            this.cbAllowCrossCoreCorruption.Font = new System.Drawing.Font("Segoe UI", 8F);
-            this.cbAllowCrossCoreCorruption.ForeColor = System.Drawing.Color.White;
-            this.cbAllowCrossCoreCorruption.Location = new System.Drawing.Point(11, 33);
-            this.cbAllowCrossCoreCorruption.Name = "cbAllowCrossCoreCorruption";
-            this.cbAllowCrossCoreCorruption.Size = new System.Drawing.Size(172, 17);
-            this.cbAllowCrossCoreCorruption.TabIndex = 1;
-            this.cbAllowCrossCoreCorruption.Text = "Allow Cross-Core corruption";
-            this.cbAllowCrossCoreCorruption.UseVisualStyleBackColor = true;
-            this.cbAllowCrossCoreCorruption.CheckedChanged += new System.EventHandler(this.cbAllowCrossCoreCorruption_CheckedChanged);
             // 
             // RTC_Settings_Form
             // 

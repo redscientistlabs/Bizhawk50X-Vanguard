@@ -381,6 +381,7 @@ namespace RTC
 
             RTC_Core.coreForm.btnAutoCorrupt.Visible = true;
             RTC_Core.ghForm.pnIntensity.Visible = true;
+            RTC_Core.ecForm.pnGeneralParameters.Visible = true;
 
             switch (cbSelectedEngine.SelectedItem.ToString())
             {
@@ -421,6 +422,7 @@ namespace RTC
 
                     RTC_Core.coreForm.AutoCorrupt = false;
                     RTC_Core.coreForm.btnAutoCorrupt.Visible = false;
+                    RTC_Core.ecForm.pnGeneralParameters.Visible = false;
 
                     RTC_Core.ghForm.pnIntensity.Visible = false;
                     break;
@@ -470,6 +472,8 @@ namespace RTC
                 track_Intensity.Visible = true;
                 cbBlastRadius.Visible = true;
             }
+
+            cbSelectedEngine.BringToFront();
 
             RTC_HellgenieEngine.ClearCheats();
             RTC_PipeEngine.ClearPipes();
@@ -710,5 +714,54 @@ namespace RTC
             //RTC_Restore.SaveRestore();
         }
 
+        private void nmMaxCheats_ValueChanged(object sender, KeyPressEventArgs e)
+        {
+
+        }
+
+        private void nmMaxCheats_ValueChanged(object sender, KeyEventArgs e)
+        {
+
+        }
+
+        private void nmMaxFreezes_ValueChanged(object sender, KeyPressEventArgs e)
+        {
+
+        }
+
+        private void nmMaxFreezes_ValueChanged(object sender, KeyEventArgs e)
+        {
+
+        }
+
+        private void nmDistortionDelay_ValueChanged(object sender, KeyPressEventArgs e)
+        {
+
+        }
+
+        private void nmDistortionDelay_ValueChanged(object sender, KeyEventArgs e)
+        {
+
+        }
+
+        private void nmTiltPipeValue_ValueChanged(object sender, KeyPressEventArgs e)
+        {
+
+        }
+
+        private void nmTiltPipeValue_ValueChanged(object sender, KeyEventArgs e)
+        {
+
+        }
+
+        private void nmMaxPipes_ValueChanged(object sender, KeyPressEventArgs e)
+        {
+
+        }
+
+        private void nmMaxPipes_ValueChanged(object sender, KeyEventArgs e)
+        {
+
+        }
     }
 }

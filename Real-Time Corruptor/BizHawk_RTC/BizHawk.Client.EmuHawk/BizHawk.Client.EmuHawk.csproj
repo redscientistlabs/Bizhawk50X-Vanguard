@@ -1927,6 +1927,7 @@
     <None Include="config\ControllerImages\GENController.png" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="Resources\notepad_icon.png" />
     <None Include="Resources\paintbrush_icon.png" />
     <None Include="images\WSW.png" />
     <None Include="images\WNW.png" />

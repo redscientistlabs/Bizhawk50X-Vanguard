@@ -93,10 +93,11 @@
             this.btnStartServer.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(224)))), ((int)(((byte)(224)))), ((int)(((byte)(224)))));
             this.btnStartServer.FlatAppearance.BorderSize = 0;
             this.btnStartServer.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnStartServer.Font = new System.Drawing.Font("Segoe UI", 8F);
             this.btnStartServer.ForeColor = System.Drawing.Color.Black;
             this.btnStartServer.Location = new System.Drawing.Point(92, 44);
             this.btnStartServer.Name = "btnStartServer";
-            this.btnStartServer.Size = new System.Drawing.Size(228, 25);
+            this.btnStartServer.Size = new System.Drawing.Size(228, 22);
             this.btnStartServer.TabIndex = 1;
             this.btnStartServer.TabStop = false;
             this.btnStartServer.Tag = "color:light";
@@ -108,11 +109,11 @@
             // tbClientAdress
             // 
             this.tbClientAdress.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
-            this.tbClientAdress.Font = new System.Drawing.Font("Microsoft Sans Serif", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.tbClientAdress.Font = new System.Drawing.Font("Segoe UI", 8F);
             this.tbClientAdress.ForeColor = System.Drawing.Color.White;
             this.tbClientAdress.Location = new System.Drawing.Point(92, 99);
             this.tbClientAdress.Name = "tbClientAdress";
-            this.tbClientAdress.Size = new System.Drawing.Size(120, 24);
+            this.tbClientAdress.Size = new System.Drawing.Size(120, 22);
             this.tbClientAdress.TabIndex = 2;
             this.tbClientAdress.Tag = "color:dark";
             this.tbClientAdress.TextChanged += new System.EventHandler(this.tbClientAdress_TextChanged);
@@ -122,10 +123,11 @@
             this.btnStartClient.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(224)))), ((int)(((byte)(224)))), ((int)(((byte)(224)))));
             this.btnStartClient.FlatAppearance.BorderSize = 0;
             this.btnStartClient.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnStartClient.Font = new System.Drawing.Font("Segoe UI", 8F);
             this.btnStartClient.ForeColor = System.Drawing.Color.Black;
             this.btnStartClient.Location = new System.Drawing.Point(213, 99);
             this.btnStartClient.Name = "btnStartClient";
-            this.btnStartClient.Size = new System.Drawing.Size(107, 24);
+            this.btnStartClient.Size = new System.Drawing.Size(107, 22);
             this.btnStartClient.TabIndex = 3;
             this.btnStartClient.TabStop = false;
             this.btnStartClient.Tag = "color:light";
@@ -143,7 +145,7 @@
             this.btnPullGameFromServer.ForeColor = System.Drawing.Color.Black;
             this.btnPullGameFromServer.Location = new System.Drawing.Point(10, 8);
             this.btnPullGameFromServer.Name = "btnPullGameFromServer";
-            this.btnPullGameFromServer.Size = new System.Drawing.Size(101, 25);
+            this.btnPullGameFromServer.Size = new System.Drawing.Size(101, 22);
             this.btnPullGameFromServer.TabIndex = 4;
             this.btnPullGameFromServer.TabStop = false;
             this.btnPullGameFromServer.Tag = "color:light";
@@ -182,7 +184,7 @@
             this.btnPushGameToServer.ForeColor = System.Drawing.Color.Black;
             this.btnPushGameToServer.Location = new System.Drawing.Point(114, 8);
             this.btnPushGameToServer.Name = "btnPushGameToServer";
-            this.btnPushGameToServer.Size = new System.Drawing.Size(101, 25);
+            this.btnPushGameToServer.Size = new System.Drawing.Size(101, 22);
             this.btnPushGameToServer.TabIndex = 7;
             this.btnPushGameToServer.TabStop = false;
             this.btnPushGameToServer.Tag = "color:light";
@@ -219,9 +221,9 @@
             this.btnPullStateFromServer.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnPullStateFromServer.Font = new System.Drawing.Font("Segoe UI", 8F);
             this.btnPullStateFromServer.ForeColor = System.Drawing.Color.Black;
-            this.btnPullStateFromServer.Location = new System.Drawing.Point(10, 36);
+            this.btnPullStateFromServer.Location = new System.Drawing.Point(10, 34);
             this.btnPullStateFromServer.Name = "btnPullStateFromServer";
-            this.btnPullStateFromServer.Size = new System.Drawing.Size(101, 25);
+            this.btnPullStateFromServer.Size = new System.Drawing.Size(101, 22);
             this.btnPullStateFromServer.TabIndex = 10;
             this.btnPullStateFromServer.TabStop = false;
             this.btnPullStateFromServer.Tag = "color:light";
@@ -236,9 +238,9 @@
             this.btnPushStateToServer.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnPushStateToServer.Font = new System.Drawing.Font("Segoe UI", 8F);
             this.btnPushStateToServer.ForeColor = System.Drawing.Color.Black;
-            this.btnPushStateToServer.Location = new System.Drawing.Point(114, 36);
+            this.btnPushStateToServer.Location = new System.Drawing.Point(114, 34);
             this.btnPushStateToServer.Name = "btnPushStateToServer";
-            this.btnPushStateToServer.Size = new System.Drawing.Size(101, 25);
+            this.btnPushStateToServer.Size = new System.Drawing.Size(101, 22);
             this.btnPushStateToServer.TabIndex = 11;
             this.btnPushStateToServer.TabStop = false;
             this.btnPushStateToServer.Tag = "color:light";
@@ -255,7 +257,7 @@
             this.btnPushBlastToServer.ForeColor = System.Drawing.Color.Black;
             this.btnPushBlastToServer.Location = new System.Drawing.Point(10, 120);
             this.btnPushBlastToServer.Name = "btnPushBlastToServer";
-            this.btnPushBlastToServer.Size = new System.Drawing.Size(101, 25);
+            this.btnPushBlastToServer.Size = new System.Drawing.Size(101, 22);
             this.btnPushBlastToServer.TabIndex = 13;
             this.btnPushBlastToServer.TabStop = false;
             this.btnPushBlastToServer.Tag = "color:light";
@@ -266,11 +268,11 @@
             // tbShowIp
             // 
             this.tbShowIp.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
-            this.tbShowIp.Font = new System.Drawing.Font("Segoe UI", 10F);
+            this.tbShowIp.Font = new System.Drawing.Font("Segoe UI", 8F);
             this.tbShowIp.ForeColor = System.Drawing.Color.White;
             this.tbShowIp.Location = new System.Drawing.Point(17, 9);
             this.tbShowIp.Name = "tbShowIp";
-            this.tbShowIp.Size = new System.Drawing.Size(167, 25);
+            this.tbShowIp.Size = new System.Drawing.Size(167, 22);
             this.tbShowIp.TabIndex = 15;
             this.tbShowIp.Tag = "color:dark";
             this.tbShowIp.Text = "Click to display your IP";
@@ -281,22 +283,22 @@
             // label5
             // 
             this.label5.AutoSize = true;
-            this.label5.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label5.Font = new System.Drawing.Font("Segoe UI", 8F);
             this.label5.ForeColor = System.Drawing.Color.Gainsboro;
-            this.label5.Location = new System.Drawing.Point(208, 15);
+            this.label5.Location = new System.Drawing.Point(208, 14);
             this.label5.Name = "label5";
-            this.label5.Size = new System.Drawing.Size(56, 13);
+            this.label5.Size = new System.Drawing.Size(54, 13);
             this.label5.TabIndex = 16;
             this.label5.Text = "TCP Port :";
             // 
             // tbServerPort
             // 
             this.tbServerPort.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
-            this.tbServerPort.Font = new System.Drawing.Font("Segoe UI", 10F);
+            this.tbServerPort.Font = new System.Drawing.Font("Segoe UI", 8F);
             this.tbServerPort.ForeColor = System.Drawing.Color.White;
             this.tbServerPort.Location = new System.Drawing.Point(266, 9);
             this.tbServerPort.Name = "tbServerPort";
-            this.tbServerPort.Size = new System.Drawing.Size(54, 25);
+            this.tbServerPort.Size = new System.Drawing.Size(54, 22);
             this.tbServerPort.TabIndex = 17;
             this.tbServerPort.Tag = "color:dark";
             this.tbServerPort.Text = "42069";
@@ -310,9 +312,9 @@
             this.btnSwapGameState.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnSwapGameState.Font = new System.Drawing.Font("Segoe UI", 8F);
             this.btnSwapGameState.ForeColor = System.Drawing.Color.Black;
-            this.btnSwapGameState.Location = new System.Drawing.Point(10, 92);
+            this.btnSwapGameState.Location = new System.Drawing.Point(10, 94);
             this.btnSwapGameState.Name = "btnSwapGameState";
-            this.btnSwapGameState.Size = new System.Drawing.Size(205, 25);
+            this.btnSwapGameState.Size = new System.Drawing.Size(205, 22);
             this.btnSwapGameState.TabIndex = 18;
             this.btnSwapGameState.TabStop = false;
             this.btnSwapGameState.Tag = "color:light";
@@ -337,9 +339,9 @@
             this.btnPushScreenToPear.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnPushScreenToPear.Font = new System.Drawing.Font("Segoe UI", 8F);
             this.btnPushScreenToPear.ForeColor = System.Drawing.Color.Black;
-            this.btnPushScreenToPear.Location = new System.Drawing.Point(114, 64);
+            this.btnPushScreenToPear.Location = new System.Drawing.Point(114, 60);
             this.btnPushScreenToPear.Name = "btnPushScreenToPear";
-            this.btnPushScreenToPear.Size = new System.Drawing.Size(101, 25);
+            this.btnPushScreenToPear.Size = new System.Drawing.Size(101, 22);
             this.btnPushScreenToPear.TabIndex = 20;
             this.btnPushScreenToPear.TabStop = false;
             this.btnPushScreenToPear.Tag = "color:light";
@@ -354,9 +356,9 @@
             this.btnPullScreenToPear.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnPullScreenToPear.Font = new System.Drawing.Font("Segoe UI", 8F);
             this.btnPullScreenToPear.ForeColor = System.Drawing.Color.Black;
-            this.btnPullScreenToPear.Location = new System.Drawing.Point(10, 64);
+            this.btnPullScreenToPear.Location = new System.Drawing.Point(10, 60);
             this.btnPullScreenToPear.Name = "btnPullScreenToPear";
-            this.btnPullScreenToPear.Size = new System.Drawing.Size(101, 25);
+            this.btnPullScreenToPear.Size = new System.Drawing.Size(101, 22);
             this.btnPullScreenToPear.TabIndex = 21;
             this.btnPullScreenToPear.TabStop = false;
             this.btnPullScreenToPear.Tag = "color:light";
@@ -367,11 +369,11 @@
             // cbStreamScreenToPeer
             // 
             this.cbStreamScreenToPeer.AutoSize = true;
-            this.cbStreamScreenToPeer.Font = new System.Drawing.Font("Segoe UI", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.cbStreamScreenToPeer.Font = new System.Drawing.Font("Segoe UI Semibold", 9F);
             this.cbStreamScreenToPeer.ForeColor = System.Drawing.Color.White;
-            this.cbStreamScreenToPeer.Location = new System.Drawing.Point(158, 149);
+            this.cbStreamScreenToPeer.Location = new System.Drawing.Point(170, 150);
             this.cbStreamScreenToPeer.Name = "cbStreamScreenToPeer";
-            this.cbStreamScreenToPeer.Size = new System.Drawing.Size(179, 21);
+            this.cbStreamScreenToPeer.Size = new System.Drawing.Size(158, 19);
             this.cbStreamScreenToPeer.TabIndex = 22;
             this.cbStreamScreenToPeer.Text = "Enable Screen Streaming";
             this.cbStreamScreenToPeer.UseVisualStyleBackColor = true;
@@ -382,10 +384,11 @@
             this.btnClearNetworkCache.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(224)))), ((int)(((byte)(224)))), ((int)(((byte)(224)))));
             this.btnClearNetworkCache.FlatAppearance.BorderSize = 0;
             this.btnClearNetworkCache.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnClearNetworkCache.Font = new System.Drawing.Font("Segoe UI", 8F);
             this.btnClearNetworkCache.ForeColor = System.Drawing.Color.Black;
-            this.btnClearNetworkCache.Location = new System.Drawing.Point(7, 99);
+            this.btnClearNetworkCache.Location = new System.Drawing.Point(7, 94);
             this.btnClearNetworkCache.Name = "btnClearNetworkCache";
-            this.btnClearNetworkCache.Size = new System.Drawing.Size(95, 36);
+            this.btnClearNetworkCache.Size = new System.Drawing.Size(95, 47);
             this.btnClearNetworkCache.TabIndex = 24;
             this.btnClearNetworkCache.TabStop = false;
             this.btnClearNetworkCache.Tag = "color:light";
@@ -597,22 +600,22 @@
             // label8
             // 
             this.label8.AutoSize = true;
-            this.label8.Font = new System.Drawing.Font("Segoe UI Semibold", 10F, System.Drawing.FontStyle.Bold);
+            this.label8.Font = new System.Drawing.Font("Segoe UI Semibold", 9F);
             this.label8.ForeColor = System.Drawing.Color.White;
-            this.label8.Location = new System.Drawing.Point(367, 300);
+            this.label8.Location = new System.Drawing.Point(367, 303);
             this.label8.Name = "label8";
-            this.label8.Size = new System.Drawing.Size(240, 19);
+            this.label8.Size = new System.Drawing.Size(202, 15);
             this.label8.TabIndex = 138;
             this.label8.Text = "Metagames and Multiplayer Features";
             // 
             // label6
             // 
             this.label6.AutoSize = true;
-            this.label6.Font = new System.Drawing.Font("Segoe UI Semibold", 10F, System.Drawing.FontStyle.Bold);
+            this.label6.Font = new System.Drawing.Font("Segoe UI Semibold", 9F);
             this.label6.ForeColor = System.Drawing.Color.White;
-            this.label6.Location = new System.Drawing.Point(366, 18);
+            this.label6.Location = new System.Drawing.Point(365, 25);
             this.label6.Name = "label6";
-            this.label6.Size = new System.Drawing.Size(125, 19);
+            this.label6.Size = new System.Drawing.Size(104, 15);
             this.label6.TabIndex = 139;
             this.label6.Text = "Multiplayer screen";
             // 
@@ -648,7 +651,7 @@
             this.cbCompressStream.CheckState = System.Windows.Forms.CheckState.Checked;
             this.cbCompressStream.Font = new System.Drawing.Font("Segoe UI", 8F);
             this.cbCompressStream.ForeColor = System.Drawing.Color.White;
-            this.cbCompressStream.Location = new System.Drawing.Point(7, 56);
+            this.cbCompressStream.Location = new System.Drawing.Point(7, 50);
             this.cbCompressStream.Name = "cbCompressStream";
             this.cbCompressStream.Size = new System.Drawing.Size(76, 17);
             this.cbCompressStream.TabIndex = 24;
@@ -660,7 +663,7 @@
             this.cbStreamFps.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
             this.cbStreamFps.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.cbStreamFps.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.cbStreamFps.Font = new System.Drawing.Font("Segoe UI", 9.75F);
+            this.cbStreamFps.Font = new System.Drawing.Font("Segoe UI", 8F);
             this.cbStreamFps.ForeColor = System.Drawing.Color.White;
             this.cbStreamFps.FormattingEnabled = true;
             this.cbStreamFps.Items.AddRange(new object[] {
@@ -674,7 +677,7 @@
             "1fps"});
             this.cbStreamFps.Location = new System.Drawing.Point(7, 24);
             this.cbStreamFps.Name = "cbStreamFps";
-            this.cbStreamFps.Size = new System.Drawing.Size(95, 25);
+            this.cbStreamFps.Size = new System.Drawing.Size(95, 21);
             this.cbStreamFps.TabIndex = 145;
             this.cbStreamFps.Tag = "color:dark";
             this.cbStreamFps.SelectedIndexChanged += new System.EventHandler(this.cbStreamFps_SelectedIndexChanged);
@@ -684,11 +687,11 @@
             this.btnRequestStream.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(224)))), ((int)(((byte)(224)))), ((int)(((byte)(224)))));
             this.btnRequestStream.FlatAppearance.BorderSize = 0;
             this.btnRequestStream.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btnRequestStream.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F);
+            this.btnRequestStream.Font = new System.Drawing.Font("Segoe UI", 8F);
             this.btnRequestStream.ForeColor = System.Drawing.Color.Black;
-            this.btnRequestStream.Location = new System.Drawing.Point(7, 138);
+            this.btnRequestStream.Location = new System.Drawing.Point(7, 145);
             this.btnRequestStream.Name = "btnRequestStream";
-            this.btnRequestStream.Size = new System.Drawing.Size(95, 27);
+            this.btnRequestStream.Size = new System.Drawing.Size(95, 24);
             this.btnRequestStream.TabIndex = 27;
             this.btnRequestStream.TabStop = false;
             this.btnRequestStream.Tag = "color:light";
@@ -699,11 +702,11 @@
             // label7
             // 
             this.label7.AutoSize = true;
-            this.label7.Font = new System.Drawing.Font("Segoe UI Semibold", 10F, System.Drawing.FontStyle.Bold);
+            this.label7.Font = new System.Drawing.Font("Segoe UI Semibold", 9F);
             this.label7.ForeColor = System.Drawing.Color.White;
-            this.label7.Location = new System.Drawing.Point(246, 300);
+            this.label7.Location = new System.Drawing.Point(248, 304);
             this.label7.Name = "label7";
-            this.label7.Size = new System.Drawing.Size(107, 19);
+            this.label7.Size = new System.Drawing.Size(90, 15);
             this.label7.TabIndex = 140;
             this.label7.Text = "Stream Options";
             // 
@@ -747,7 +750,7 @@
             this.btnPushStashkeyToServer.ForeColor = System.Drawing.Color.Black;
             this.btnPushStashkeyToServer.Location = new System.Drawing.Point(114, 120);
             this.btnPushStashkeyToServer.Name = "btnPushStashkeyToServer";
-            this.btnPushStashkeyToServer.Size = new System.Drawing.Size(101, 25);
+            this.btnPushStashkeyToServer.Size = new System.Drawing.Size(101, 22);
             this.btnPushStashkeyToServer.TabIndex = 22;
             this.btnPushStashkeyToServer.TabStop = false;
             this.btnPushStashkeyToServer.Tag = "color:light";
@@ -758,11 +761,11 @@
             // label9
             // 
             this.label9.AutoSize = true;
-            this.label9.Font = new System.Drawing.Font("Segoe UI Semibold", 10F, System.Drawing.FontStyle.Bold);
+            this.label9.Font = new System.Drawing.Font("Segoe UI Semibold", 9F);
             this.label9.ForeColor = System.Drawing.Color.White;
-            this.label9.Location = new System.Drawing.Point(16, 299);
+            this.label9.Location = new System.Drawing.Point(16, 305);
             this.label9.Name = "label9";
-            this.label9.Size = new System.Drawing.Size(130, 19);
+            this.label9.Size = new System.Drawing.Size(111, 15);
             this.label9.TabIndex = 141;
             this.label9.Text = "Manual Commands";
             // 
@@ -789,22 +792,22 @@
             // label10
             // 
             this.label10.AutoSize = true;
-            this.label10.Font = new System.Drawing.Font("Segoe UI Semibold", 10F, System.Drawing.FontStyle.Bold);
+            this.label10.Font = new System.Drawing.Font("Segoe UI Semibold", 9F);
             this.label10.ForeColor = System.Drawing.Color.White;
-            this.label10.Location = new System.Drawing.Point(16, 87);
+            this.label10.Location = new System.Drawing.Point(16, 91);
             this.label10.Name = "label10";
-            this.label10.Size = new System.Drawing.Size(111, 19);
+            this.label10.Size = new System.Drawing.Size(93, 15);
             this.label10.TabIndex = 142;
             this.label10.Text = "Session Settings";
             // 
             // lbCheekyHeadline
             // 
             this.lbCheekyHeadline.AutoSize = true;
-            this.lbCheekyHeadline.Font = new System.Drawing.Font("Segoe UI", 10F);
+            this.lbCheekyHeadline.Font = new System.Drawing.Font("Segoe UI", 8F);
             this.lbCheekyHeadline.ForeColor = System.Drawing.Color.Gainsboro;
-            this.lbCheekyHeadline.Location = new System.Drawing.Point(25, 49);
+            this.lbCheekyHeadline.Location = new System.Drawing.Point(25, 54);
             this.lbCheekyHeadline.Name = "lbCheekyHeadline";
-            this.lbCheekyHeadline.Size = new System.Drawing.Size(109, 19);
+            this.lbCheekyHeadline.Size = new System.Drawing.Size(92, 13);
             this.lbCheekyHeadline.TabIndex = 144;
             this.lbCheekyHeadline.Text = "Cheeky headline";
             // 
@@ -824,6 +827,7 @@
             this.btnPopoutPeerGameScreen.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(224)))), ((int)(((byte)(224)))), ((int)(((byte)(224)))));
             this.btnPopoutPeerGameScreen.FlatAppearance.BorderSize = 0;
             this.btnPopoutPeerGameScreen.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnPopoutPeerGameScreen.Font = new System.Drawing.Font("Segoe UI", 8F);
             this.btnPopoutPeerGameScreen.ForeColor = System.Drawing.Color.Black;
             this.btnPopoutPeerGameScreen.Location = new System.Drawing.Point(584, 18);
             this.btnPopoutPeerGameScreen.Name = "btnPopoutPeerGameScreen";

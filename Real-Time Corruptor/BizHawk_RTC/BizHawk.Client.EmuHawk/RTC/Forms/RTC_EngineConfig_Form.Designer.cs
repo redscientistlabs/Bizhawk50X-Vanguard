@@ -39,7 +39,6 @@
             this.labelErrorDelaySteps = new System.Windows.Forms.Label();
             this.track_Intensity = new System.Windows.Forms.TrackBar();
             this.track_ErrorDelay = new System.Windows.Forms.TrackBar();
-            this.label17 = new System.Windows.Forms.Label();
             this.label5 = new System.Windows.Forms.Label();
             this.pnMemoryTargetting = new System.Windows.Forms.Panel();
             this.pnAdvancedTool = new System.Windows.Forms.Panel();
@@ -49,16 +48,19 @@
             this.btnAutoSelectDomains = new System.Windows.Forms.Button();
             this.btnRefreshDomains = new System.Windows.Forms.Button();
             this.pnCorruptionEngine = new System.Windows.Forms.Panel();
-            this.cbSelectedEngine = new System.Windows.Forms.ComboBox();
             this.gbSelectedEngine = new System.Windows.Forms.GroupBox();
+            this.cbSelectedEngine = new System.Windows.Forms.ComboBox();
             this.label11 = new System.Windows.Forms.Label();
             this.gbVectorEngine = new System.Windows.Forms.GroupBox();
+            this.comboBox6 = new System.Windows.Forms.ComboBox();
             this.cbVectorValueList = new System.Windows.Forms.ComboBox();
             this.label19 = new System.Windows.Forms.Label();
             this.label18 = new System.Windows.Forms.Label();
             this.cbVectorLimiterList = new System.Windows.Forms.ComboBox();
             this.label13 = new System.Windows.Forms.Label();
             this.gbPipeEngine = new System.Windows.Forms.GroupBox();
+            this.label14 = new System.Windows.Forms.Label();
+            this.comboBox5 = new System.Windows.Forms.ComboBox();
             this.cbGenerateChainedPipes = new System.Windows.Forms.CheckBox();
             this.nmTiltPipeValue = new System.Windows.Forms.NumericUpDown();
             this.label25 = new System.Windows.Forms.Label();
@@ -69,26 +71,41 @@
             this.nmMaxPipes = new System.Windows.Forms.NumericUpDown();
             this.label8 = new System.Windows.Forms.Label();
             this.gbDistortionEngine = new System.Windows.Forms.GroupBox();
+            this.label17 = new System.Windows.Forms.Label();
+            this.comboBox3 = new System.Windows.Forms.ComboBox();
             this.btnResyncDistortionEngine = new System.Windows.Forms.Button();
             this.nmDistortionDelay = new System.Windows.Forms.NumericUpDown();
             this.label7 = new System.Windows.Forms.Label();
             this.gbExternalRomPlugin = new System.Windows.Forms.GroupBox();
+            this.comboBox7 = new System.Windows.Forms.ComboBox();
+            this.label12 = new System.Windows.Forms.Label();
             this.btnExternalOpenWindow = new System.Windows.Forms.Button();
             this.cbExternalSelectedPlugin = new System.Windows.Forms.ComboBox();
             this.label10 = new System.Windows.Forms.Label();
             this.gbFreezeEngine = new System.Windows.Forms.GroupBox();
+            this.label20 = new System.Windows.Forms.Label();
+            this.comboBox4 = new System.Windows.Forms.ComboBox();
             this.cbClearFreezesOnRewind = new System.Windows.Forms.CheckBox();
             this.btnClearAllFreezes = new System.Windows.Forms.Button();
             this.nmMaxFreezes = new System.Windows.Forms.NumericUpDown();
             this.label4 = new System.Windows.Forms.Label();
             this.gbHellgenieEngine = new System.Windows.Forms.GroupBox();
+            this.label16 = new System.Windows.Forms.Label();
+            this.comboBox2 = new System.Windows.Forms.ComboBox();
             this.cbClearCheatsOnRewind = new System.Windows.Forms.CheckBox();
             this.btnClearCheats = new System.Windows.Forms.Button();
             this.nmMaxCheats = new System.Windows.Forms.NumericUpDown();
             this.label1 = new System.Windows.Forms.Label();
             this.gbNightmareEngine = new System.Windows.Forms.GroupBox();
+            this.label15 = new System.Windows.Forms.Label();
+            this.comboBox1 = new System.Windows.Forms.ComboBox();
             this.cbBlastType = new System.Windows.Forms.ComboBox();
             this.label9 = new System.Windows.Forms.Label();
+            this.panel1 = new System.Windows.Forms.Panel();
+            this.label2 = new System.Windows.Forms.Label();
+            this.label3 = new System.Windows.Forms.Label();
+            this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.label6 = new System.Windows.Forms.Label();
             this.pnGeneralParameters.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.nmIntensity)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.nmErrorDelay)).BeginInit();
@@ -108,6 +125,8 @@
             this.gbHellgenieEngine.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.nmMaxCheats)).BeginInit();
             this.gbNightmareEngine.SuspendLayout();
+            this.panel1.SuspendLayout();
+            this.groupBox1.SuspendLayout();
             this.SuspendLayout();
             // 
             // pnGeneralParameters
@@ -123,9 +142,9 @@
             this.pnGeneralParameters.Controls.Add(this.labelErrorDelaySteps);
             this.pnGeneralParameters.Controls.Add(this.track_Intensity);
             this.pnGeneralParameters.Controls.Add(this.track_ErrorDelay);
-            this.pnGeneralParameters.Location = new System.Drawing.Point(14, 35);
+            this.pnGeneralParameters.Location = new System.Drawing.Point(14, 25);
             this.pnGeneralParameters.Name = "pnGeneralParameters";
-            this.pnGeneralParameters.Size = new System.Drawing.Size(200, 194);
+            this.pnGeneralParameters.Size = new System.Drawing.Size(200, 167);
             this.pnGeneralParameters.TabIndex = 117;
             this.pnGeneralParameters.Tag = "color:normal";
             // 
@@ -133,9 +152,9 @@
             // 
             this.nmIntensity.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
             this.nmIntensity.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.nmIntensity.Font = new System.Drawing.Font("Segoe UI", 9.75F);
+            this.nmIntensity.Font = new System.Drawing.Font("Segoe UI", 8F);
             this.nmIntensity.ForeColor = System.Drawing.Color.White;
-            this.nmIntensity.Location = new System.Drawing.Point(90, 82);
+            this.nmIntensity.Location = new System.Drawing.Point(90, 70);
             this.nmIntensity.Maximum = new decimal(new int[] {
             65536,
             0,
@@ -147,7 +166,7 @@
             0,
             0});
             this.nmIntensity.Name = "nmIntensity";
-            this.nmIntensity.Size = new System.Drawing.Size(60, 25);
+            this.nmIntensity.Size = new System.Drawing.Size(60, 22);
             this.nmIntensity.TabIndex = 5;
             this.nmIntensity.Tag = "color:dark";
             this.nmIntensity.Value = new decimal(new int[] {
@@ -163,9 +182,9 @@
             // 
             this.nmErrorDelay.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
             this.nmErrorDelay.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.nmErrorDelay.Font = new System.Drawing.Font("Segoe UI", 9.75F);
+            this.nmErrorDelay.Font = new System.Drawing.Font("Segoe UI", 8F);
             this.nmErrorDelay.ForeColor = System.Drawing.Color.White;
-            this.nmErrorDelay.Location = new System.Drawing.Point(90, 15);
+            this.nmErrorDelay.Location = new System.Drawing.Point(90, 10);
             this.nmErrorDelay.Maximum = new decimal(new int[] {
             65536,
             0,
@@ -177,7 +196,7 @@
             0,
             0});
             this.nmErrorDelay.Name = "nmErrorDelay";
-            this.nmErrorDelay.Size = new System.Drawing.Size(60, 25);
+            this.nmErrorDelay.Size = new System.Drawing.Size(60, 22);
             this.nmErrorDelay.TabIndex = 3;
             this.nmErrorDelay.Tag = "color:dark";
             this.nmErrorDelay.Value = new decimal(new int[] {
@@ -194,7 +213,7 @@
             this.labelIntensityTimes.AutoSize = true;
             this.labelIntensityTimes.Font = new System.Drawing.Font("Segoe UI", 9.75F);
             this.labelIntensityTimes.ForeColor = System.Drawing.Color.White;
-            this.labelIntensityTimes.Location = new System.Drawing.Point(155, 85);
+            this.labelIntensityTimes.Location = new System.Drawing.Point(155, 72);
             this.labelIntensityTimes.Name = "labelIntensityTimes";
             this.labelIntensityTimes.Size = new System.Drawing.Size(39, 17);
             this.labelIntensityTimes.TabIndex = 12;
@@ -205,7 +224,7 @@
             this.labelErrorDelay.AutoSize = true;
             this.labelErrorDelay.Font = new System.Drawing.Font("Segoe UI", 9.75F);
             this.labelErrorDelay.ForeColor = System.Drawing.Color.White;
-            this.labelErrorDelay.Location = new System.Drawing.Point(6, 16);
+            this.labelErrorDelay.Location = new System.Drawing.Point(6, 10);
             this.labelErrorDelay.Name = "labelErrorDelay";
             this.labelErrorDelay.Size = new System.Drawing.Size(81, 17);
             this.labelErrorDelay.TabIndex = 2;
@@ -216,16 +235,16 @@
             this.cbBlastRadius.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
             this.cbBlastRadius.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.cbBlastRadius.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.cbBlastRadius.Font = new System.Drawing.Font("Segoe UI", 9.75F);
+            this.cbBlastRadius.Font = new System.Drawing.Font("Segoe UI", 8F);
             this.cbBlastRadius.ForeColor = System.Drawing.Color.White;
             this.cbBlastRadius.FormattingEnabled = true;
             this.cbBlastRadius.Items.AddRange(new object[] {
             "SPREAD",
             "CHUNK",
             "BURST"});
-            this.cbBlastRadius.Location = new System.Drawing.Point(90, 151);
+            this.cbBlastRadius.Location = new System.Drawing.Point(90, 133);
             this.cbBlastRadius.Name = "cbBlastRadius";
-            this.cbBlastRadius.Size = new System.Drawing.Size(95, 25);
+            this.cbBlastRadius.Size = new System.Drawing.Size(100, 21);
             this.cbBlastRadius.TabIndex = 11;
             this.cbBlastRadius.Tag = "color:dark";
             this.cbBlastRadius.SelectedIndexChanged += new System.EventHandler(this.cbBlastRadius_SelectedIndexChanged);
@@ -235,7 +254,7 @@
             this.labelBlastRadius.AutoSize = true;
             this.labelBlastRadius.Font = new System.Drawing.Font("Segoe UI", 9.75F);
             this.labelBlastRadius.ForeColor = System.Drawing.Color.White;
-            this.labelBlastRadius.Location = new System.Drawing.Point(6, 156);
+            this.labelBlastRadius.Location = new System.Drawing.Point(6, 135);
             this.labelBlastRadius.Name = "labelBlastRadius";
             this.labelBlastRadius.Size = new System.Drawing.Size(81, 17);
             this.labelBlastRadius.TabIndex = 9;
@@ -246,7 +265,7 @@
             this.labelIntensity.AutoSize = true;
             this.labelIntensity.Font = new System.Drawing.Font("Segoe UI", 9.75F);
             this.labelIntensity.ForeColor = System.Drawing.Color.White;
-            this.labelIntensity.Location = new System.Drawing.Point(6, 87);
+            this.labelIntensity.Location = new System.Drawing.Point(6, 73);
             this.labelIntensity.Name = "labelIntensity";
             this.labelIntensity.Size = new System.Drawing.Size(62, 17);
             this.labelIntensity.TabIndex = 7;
@@ -257,7 +276,7 @@
             this.labelErrorDelaySteps.AutoSize = true;
             this.labelErrorDelaySteps.Font = new System.Drawing.Font("Segoe UI", 9.75F);
             this.labelErrorDelaySteps.ForeColor = System.Drawing.Color.White;
-            this.labelErrorDelaySteps.Location = new System.Drawing.Point(153, 16);
+            this.labelErrorDelaySteps.Location = new System.Drawing.Point(153, 10);
             this.labelErrorDelaySteps.Name = "labelErrorDelaySteps";
             this.labelErrorDelaySteps.Size = new System.Drawing.Size(39, 17);
             this.labelErrorDelaySteps.TabIndex = 4;
@@ -265,7 +284,7 @@
             // 
             // track_Intensity
             // 
-            this.track_Intensity.Location = new System.Drawing.Point(0, 113);
+            this.track_Intensity.Location = new System.Drawing.Point(0, 91);
             this.track_Intensity.Maximum = 512000;
             this.track_Intensity.Minimum = 2000;
             this.track_Intensity.Name = "track_Intensity";
@@ -280,7 +299,7 @@
             // 
             // track_ErrorDelay
             // 
-            this.track_ErrorDelay.Location = new System.Drawing.Point(0, 46);
+            this.track_ErrorDelay.Location = new System.Drawing.Point(0, 31);
             this.track_ErrorDelay.Maximum = 512000;
             this.track_ErrorDelay.Minimum = 2000;
             this.track_ErrorDelay.Name = "track_ErrorDelay";
@@ -293,25 +312,14 @@
             this.track_ErrorDelay.MouseDown += new System.Windows.Forms.MouseEventHandler(this.track_ErrorDelay_MouseDown);
             this.track_ErrorDelay.MouseUp += new System.Windows.Forms.MouseEventHandler(this.track_ErrorDelay_MouseUp);
             // 
-            // label17
-            // 
-            this.label17.AutoSize = true;
-            this.label17.Font = new System.Drawing.Font("Segoe UI Semibold", 10F, System.Drawing.FontStyle.Bold);
-            this.label17.ForeColor = System.Drawing.Color.White;
-            this.label17.Location = new System.Drawing.Point(231, 13);
-            this.label17.Name = "label17";
-            this.label17.Size = new System.Drawing.Size(121, 19);
-            this.label17.TabIndex = 122;
-            this.label17.Text = "Memory Domains";
-            // 
             // label5
             // 
             this.label5.AutoSize = true;
-            this.label5.Font = new System.Drawing.Font("Segoe UI Semibold", 10F, System.Drawing.FontStyle.Bold);
+            this.label5.Font = new System.Drawing.Font("Segoe UI Semibold", 9F);
             this.label5.ForeColor = System.Drawing.Color.White;
-            this.label5.Location = new System.Drawing.Point(18, 13);
+            this.label5.Location = new System.Drawing.Point(17, 9);
             this.label5.Name = "label5";
-            this.label5.Size = new System.Drawing.Size(130, 19);
+            this.label5.Size = new System.Drawing.Size(109, 15);
             this.label5.TabIndex = 118;
             this.label5.Text = "General Parameters";
             // 
@@ -320,20 +328,16 @@
             this.pnMemoryTargetting.BackColor = System.Drawing.Color.Gray;
             this.pnMemoryTargetting.Controls.Add(this.pnAdvancedTool);
             this.pnMemoryTargetting.Controls.Add(this.cbMemoryDomainTool);
-            this.pnMemoryTargetting.Controls.Add(this.lbMemoryDomains);
-            this.pnMemoryTargetting.Controls.Add(this.btnSelectAll);
-            this.pnMemoryTargetting.Controls.Add(this.btnAutoSelectDomains);
-            this.pnMemoryTargetting.Controls.Add(this.btnRefreshDomains);
-            this.pnMemoryTargetting.Location = new System.Drawing.Point(227, 35);
+            this.pnMemoryTargetting.Location = new System.Drawing.Point(227, 212);
             this.pnMemoryTargetting.Name = "pnMemoryTargetting";
-            this.pnMemoryTargetting.Size = new System.Drawing.Size(413, 466);
+            this.pnMemoryTargetting.Size = new System.Drawing.Size(413, 291);
             this.pnMemoryTargetting.TabIndex = 121;
             this.pnMemoryTargetting.Tag = "color:normal";
             // 
             // pnAdvancedTool
             // 
             this.pnAdvancedTool.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
-            this.pnAdvancedTool.Location = new System.Drawing.Point(12, 209);
+            this.pnAdvancedTool.Location = new System.Drawing.Point(11, 32);
             this.pnAdvancedTool.Name = "pnAdvancedTool";
             this.pnAdvancedTool.Size = new System.Drawing.Size(390, 250);
             this.pnAdvancedTool.TabIndex = 115;
@@ -344,16 +348,16 @@
             this.cbMemoryDomainTool.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
             this.cbMemoryDomainTool.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.cbMemoryDomainTool.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.cbMemoryDomainTool.Font = new System.Drawing.Font("Segoe UI", 9.75F);
+            this.cbMemoryDomainTool.Font = new System.Drawing.Font("Segoe UI", 8F);
             this.cbMemoryDomainTool.ForeColor = System.Drawing.Color.White;
             this.cbMemoryDomainTool.FormattingEnabled = true;
             this.cbMemoryDomainTool.Items.AddRange(new object[] {
             "No Tool Selected",
             "Virtual Memory Domain Pool",
             "Virtual Memory Domain Generator"});
-            this.cbMemoryDomainTool.Location = new System.Drawing.Point(12, 179);
+            this.cbMemoryDomainTool.Location = new System.Drawing.Point(11, 11);
             this.cbMemoryDomainTool.Name = "cbMemoryDomainTool";
-            this.cbMemoryDomainTool.Size = new System.Drawing.Size(390, 25);
+            this.cbMemoryDomainTool.Size = new System.Drawing.Size(390, 21);
             this.cbMemoryDomainTool.TabIndex = 114;
             this.cbMemoryDomainTool.TabStop = false;
             this.cbMemoryDomainTool.Tag = "color:dark";
@@ -366,12 +370,13 @@
             this.lbMemoryDomains.Font = new System.Drawing.Font("Segoe UI", 8F);
             this.lbMemoryDomains.ForeColor = System.Drawing.Color.White;
             this.lbMemoryDomains.FormattingEnabled = true;
-            this.lbMemoryDomains.Location = new System.Drawing.Point(147, 12);
+            this.lbMemoryDomains.IntegralHeight = false;
+            this.lbMemoryDomains.Location = new System.Drawing.Point(9, 41);
             this.lbMemoryDomains.Margin = new System.Windows.Forms.Padding(5);
             this.lbMemoryDomains.Name = "lbMemoryDomains";
             this.lbMemoryDomains.ScrollAlwaysVisible = true;
             this.lbMemoryDomains.SelectionMode = System.Windows.Forms.SelectionMode.MultiSimple;
-            this.lbMemoryDomains.Size = new System.Drawing.Size(255, 156);
+            this.lbMemoryDomains.Size = new System.Drawing.Size(181, 208);
             this.lbMemoryDomains.TabIndex = 11;
             this.lbMemoryDomains.Tag = "color:dark";
             this.lbMemoryDomains.SelectedIndexChanged += new System.EventHandler(this.lbMemoryDomains_SelectedIndexChanged);
@@ -381,11 +386,11 @@
             this.btnSelectAll.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(224)))), ((int)(((byte)(224)))), ((int)(((byte)(224)))));
             this.btnSelectAll.FlatAppearance.BorderSize = 0;
             this.btnSelectAll.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btnSelectAll.Font = new System.Drawing.Font("Segoe UI Semibold", 9.75F, System.Drawing.FontStyle.Bold);
+            this.btnSelectAll.Font = new System.Drawing.Font("Segoe UI", 8F);
             this.btnSelectAll.ForeColor = System.Drawing.Color.Black;
-            this.btnSelectAll.Location = new System.Drawing.Point(12, 47);
+            this.btnSelectAll.Location = new System.Drawing.Point(9, 255);
             this.btnSelectAll.Name = "btnSelectAll";
-            this.btnSelectAll.Size = new System.Drawing.Size(131, 28);
+            this.btnSelectAll.Size = new System.Drawing.Size(88, 24);
             this.btnSelectAll.TabIndex = 13;
             this.btnSelectAll.TabStop = false;
             this.btnSelectAll.Tag = "color:light";
@@ -398,15 +403,15 @@
             this.btnAutoSelectDomains.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(224)))), ((int)(((byte)(224)))), ((int)(((byte)(224)))));
             this.btnAutoSelectDomains.FlatAppearance.BorderSize = 0;
             this.btnAutoSelectDomains.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btnAutoSelectDomains.Font = new System.Drawing.Font("Segoe UI Semibold", 9.75F, System.Drawing.FontStyle.Bold);
+            this.btnAutoSelectDomains.Font = new System.Drawing.Font("Segoe UI", 8F);
             this.btnAutoSelectDomains.ForeColor = System.Drawing.Color.Black;
-            this.btnAutoSelectDomains.Location = new System.Drawing.Point(12, 14);
+            this.btnAutoSelectDomains.Location = new System.Drawing.Point(9, 12);
             this.btnAutoSelectDomains.Name = "btnAutoSelectDomains";
-            this.btnAutoSelectDomains.Size = new System.Drawing.Size(131, 28);
+            this.btnAutoSelectDomains.Size = new System.Drawing.Size(181, 24);
             this.btnAutoSelectDomains.TabIndex = 14;
             this.btnAutoSelectDomains.TabStop = false;
             this.btnAutoSelectDomains.Tag = "color:light";
-            this.btnAutoSelectDomains.Text = "Auto-select";
+            this.btnAutoSelectDomains.Text = "Auto-select domains";
             this.btnAutoSelectDomains.UseVisualStyleBackColor = false;
             this.btnAutoSelectDomains.Click += new System.EventHandler(this.btnAutoSelectDomains_Click);
             // 
@@ -415,11 +420,11 @@
             this.btnRefreshDomains.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(224)))), ((int)(((byte)(224)))), ((int)(((byte)(224)))));
             this.btnRefreshDomains.FlatAppearance.BorderSize = 0;
             this.btnRefreshDomains.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btnRefreshDomains.Font = new System.Drawing.Font("Segoe UI Semibold", 9.75F, System.Drawing.FontStyle.Bold);
+            this.btnRefreshDomains.Font = new System.Drawing.Font("Segoe UI", 8F);
             this.btnRefreshDomains.ForeColor = System.Drawing.Color.Black;
-            this.btnRefreshDomains.Location = new System.Drawing.Point(12, 80);
+            this.btnRefreshDomains.Location = new System.Drawing.Point(102, 255);
             this.btnRefreshDomains.Name = "btnRefreshDomains";
-            this.btnRefreshDomains.Size = new System.Drawing.Size(131, 28);
+            this.btnRefreshDomains.Size = new System.Drawing.Size(88, 24);
             this.btnRefreshDomains.TabIndex = 12;
             this.btnRefreshDomains.TabStop = false;
             this.btnRefreshDomains.Tag = "color:light";
@@ -432,18 +437,29 @@
             this.pnCorruptionEngine.BackColor = System.Drawing.Color.Gray;
             this.pnCorruptionEngine.Controls.Add(this.cbSelectedEngine);
             this.pnCorruptionEngine.Controls.Add(this.gbSelectedEngine);
-            this.pnCorruptionEngine.Location = new System.Drawing.Point(15, 264);
+            this.pnCorruptionEngine.Location = new System.Drawing.Point(227, 25);
             this.pnCorruptionEngine.Name = "pnCorruptionEngine";
-            this.pnCorruptionEngine.Size = new System.Drawing.Size(199, 237);
+            this.pnCorruptionEngine.Size = new System.Drawing.Size(413, 167);
             this.pnCorruptionEngine.TabIndex = 119;
             this.pnCorruptionEngine.Tag = "color:normal";
+            // 
+            // gbSelectedEngine
+            // 
+            this.gbSelectedEngine.Font = new System.Drawing.Font("Segoe UI", 9.75F);
+            this.gbSelectedEngine.ForeColor = System.Drawing.Color.White;
+            this.gbSelectedEngine.Location = new System.Drawing.Point(10, 4);
+            this.gbSelectedEngine.Name = "gbSelectedEngine";
+            this.gbSelectedEngine.Size = new System.Drawing.Size(391, 151);
+            this.gbSelectedEngine.TabIndex = 14;
+            this.gbSelectedEngine.TabStop = false;
+            this.gbSelectedEngine.Visible = false;
             // 
             // cbSelectedEngine
             // 
             this.cbSelectedEngine.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
             this.cbSelectedEngine.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.cbSelectedEngine.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.cbSelectedEngine.Font = new System.Drawing.Font("Segoe UI", 9.75F);
+            this.cbSelectedEngine.Font = new System.Drawing.Font("Segoe UI", 8F);
             this.cbSelectedEngine.ForeColor = System.Drawing.Color.White;
             this.cbSelectedEngine.FormattingEnabled = true;
             this.cbSelectedEngine.Items.AddRange(new object[] {
@@ -454,37 +470,27 @@
             "Pipe Engine",
             "Vector Engine",
             "External ROM Plugin"});
-            this.cbSelectedEngine.Location = new System.Drawing.Point(10, 12);
+            this.cbSelectedEngine.Location = new System.Drawing.Point(17, 13);
             this.cbSelectedEngine.Name = "cbSelectedEngine";
-            this.cbSelectedEngine.Size = new System.Drawing.Size(178, 25);
+            this.cbSelectedEngine.Size = new System.Drawing.Size(158, 21);
             this.cbSelectedEngine.TabIndex = 15;
             this.cbSelectedEngine.Tag = "color:dark";
             this.cbSelectedEngine.SelectedIndexChanged += new System.EventHandler(this.cbSelectedEngine_SelectedIndexChanged);
             // 
-            // gbSelectedEngine
-            // 
-            this.gbSelectedEngine.Font = new System.Drawing.Font("Segoe UI", 9.75F);
-            this.gbSelectedEngine.ForeColor = System.Drawing.Color.White;
-            this.gbSelectedEngine.Location = new System.Drawing.Point(12, 39);
-            this.gbSelectedEngine.Name = "gbSelectedEngine";
-            this.gbSelectedEngine.Size = new System.Drawing.Size(175, 187);
-            this.gbSelectedEngine.TabIndex = 14;
-            this.gbSelectedEngine.TabStop = false;
-            this.gbSelectedEngine.Visible = false;
-            // 
             // label11
             // 
             this.label11.AutoSize = true;
-            this.label11.Font = new System.Drawing.Font("Segoe UI Semibold", 10F, System.Drawing.FontStyle.Bold);
+            this.label11.Font = new System.Drawing.Font("Segoe UI Semibold", 9F);
             this.label11.ForeColor = System.Drawing.Color.White;
-            this.label11.Location = new System.Drawing.Point(19, 243);
+            this.label11.Location = new System.Drawing.Point(234, 9);
             this.label11.Name = "label11";
-            this.label11.Size = new System.Drawing.Size(123, 19);
+            this.label11.Size = new System.Drawing.Size(103, 15);
             this.label11.TabIndex = 120;
             this.label11.Text = "Corruption Engine";
             // 
             // gbVectorEngine
             // 
+            this.gbVectorEngine.Controls.Add(this.comboBox6);
             this.gbVectorEngine.Controls.Add(this.cbVectorValueList);
             this.gbVectorEngine.Controls.Add(this.label19);
             this.gbVectorEngine.Controls.Add(this.label18);
@@ -492,18 +498,33 @@
             this.gbVectorEngine.Controls.Add(this.label13);
             this.gbVectorEngine.Font = new System.Drawing.Font("Segoe UI", 9.75F);
             this.gbVectorEngine.ForeColor = System.Drawing.Color.White;
-            this.gbVectorEngine.Location = new System.Drawing.Point(1221, 35);
+            this.gbVectorEngine.Location = new System.Drawing.Point(1064, 152);
             this.gbVectorEngine.Name = "gbVectorEngine";
-            this.gbVectorEngine.Size = new System.Drawing.Size(175, 187);
+            this.gbVectorEngine.Size = new System.Drawing.Size(391, 151);
             this.gbVectorEngine.TabIndex = 128;
             this.gbVectorEngine.TabStop = false;
+            // 
+            // comboBox6
+            // 
+            this.comboBox6.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
+            this.comboBox6.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.comboBox6.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.comboBox6.Font = new System.Drawing.Font("Segoe UI", 8F);
+            this.comboBox6.ForeColor = System.Drawing.Color.White;
+            this.comboBox6.FormattingEnabled = true;
+            this.comboBox6.Location = new System.Drawing.Point(7, 9);
+            this.comboBox6.Name = "comboBox6";
+            this.comboBox6.Size = new System.Drawing.Size(158, 21);
+            this.comboBox6.TabIndex = 82;
+            this.comboBox6.Tag = "color:dark";
+            this.comboBox6.Visible = false;
             // 
             // cbVectorValueList
             // 
             this.cbVectorValueList.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
             this.cbVectorValueList.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.cbVectorValueList.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.cbVectorValueList.Font = new System.Drawing.Font("Segoe UI", 9.75F);
+            this.cbVectorValueList.Font = new System.Drawing.Font("Segoe UI", 8F);
             this.cbVectorValueList.ForeColor = System.Drawing.Color.White;
             this.cbVectorValueList.FormattingEnabled = true;
             this.cbVectorValueList.Items.AddRange(new object[] {
@@ -517,9 +538,9 @@
             "One*",
             "Two",
             "AnyFloat"});
-            this.cbVectorValueList.Location = new System.Drawing.Point(7, 138);
+            this.cbVectorValueList.Location = new System.Drawing.Point(5, 101);
             this.cbVectorValueList.Name = "cbVectorValueList";
-            this.cbVectorValueList.Size = new System.Drawing.Size(156, 25);
+            this.cbVectorValueList.Size = new System.Drawing.Size(161, 21);
             this.cbVectorValueList.TabIndex = 81;
             this.cbVectorValueList.Tag = "color:dark";
             this.cbVectorValueList.SelectedIndexChanged += new System.EventHandler(this.cbVectorValueList_SelectedIndexChanged);
@@ -527,29 +548,29 @@
             // label19
             // 
             this.label19.AutoSize = true;
-            this.label19.Font = new System.Drawing.Font("Segoe UI", 9.75F);
-            this.label19.Location = new System.Drawing.Point(6, 20);
+            this.label19.Font = new System.Drawing.Font("Segoe UI", 8.25F, System.Drawing.FontStyle.Italic);
+            this.label19.Location = new System.Drawing.Point(169, 15);
             this.label19.Name = "label19";
-            this.label19.Size = new System.Drawing.Size(132, 17);
+            this.label19.Size = new System.Drawing.Size(158, 13);
             this.label19.TabIndex = 77;
-            this.label19.Text = "Algorithm generation";
+            this.label19.Text = "Corrupts 32-bit floats using lists";
             // 
             // label18
             // 
             this.label18.AutoSize = true;
-            this.label18.Font = new System.Drawing.Font("Segoe UI", 9.75F);
-            this.label18.Location = new System.Drawing.Point(6, 116);
+            this.label18.Font = new System.Drawing.Font("Segoe UI", 8F);
+            this.label18.Location = new System.Drawing.Point(4, 89);
             this.label18.Name = "label18";
-            this.label18.Size = new System.Drawing.Size(59, 17);
+            this.label18.Size = new System.Drawing.Size(56, 13);
             this.label18.TabIndex = 80;
-            this.label18.Text = "Value list";
+            this.label18.Text = "Value list:";
             // 
             // cbVectorLimiterList
             // 
             this.cbVectorLimiterList.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
             this.cbVectorLimiterList.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.cbVectorLimiterList.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.cbVectorLimiterList.Font = new System.Drawing.Font("Segoe UI", 9.75F);
+            this.cbVectorLimiterList.Font = new System.Drawing.Font("Segoe UI", 8F);
             this.cbVectorLimiterList.ForeColor = System.Drawing.Color.White;
             this.cbVectorLimiterList.FormattingEnabled = true;
             this.cbVectorLimiterList.Items.AddRange(new object[] {
@@ -563,9 +584,9 @@
             "One*",
             "Two",
             "AnyFloat"});
-            this.cbVectorLimiterList.Location = new System.Drawing.Point(7, 78);
+            this.cbVectorLimiterList.Location = new System.Drawing.Point(5, 60);
             this.cbVectorLimiterList.Name = "cbVectorLimiterList";
-            this.cbVectorLimiterList.Size = new System.Drawing.Size(156, 25);
+            this.cbVectorLimiterList.Size = new System.Drawing.Size(161, 21);
             this.cbVectorLimiterList.TabIndex = 78;
             this.cbVectorLimiterList.Tag = "color:dark";
             this.cbVectorLimiterList.SelectedIndexChanged += new System.EventHandler(this.cbVectorLimiterList_SelectedIndexChanged);
@@ -573,15 +594,17 @@
             // label13
             // 
             this.label13.AutoSize = true;
-            this.label13.Font = new System.Drawing.Font("Segoe UI", 9.75F);
-            this.label13.Location = new System.Drawing.Point(6, 54);
+            this.label13.Font = new System.Drawing.Font("Segoe UI", 8F);
+            this.label13.Location = new System.Drawing.Point(4, 45);
             this.label13.Name = "label13";
-            this.label13.Size = new System.Drawing.Size(67, 17);
+            this.label13.Size = new System.Drawing.Size(62, 13);
             this.label13.TabIndex = 79;
-            this.label13.Text = "Limiter list";
+            this.label13.Text = "Limiter list:";
             // 
             // gbPipeEngine
             // 
+            this.gbPipeEngine.Controls.Add(this.label14);
+            this.gbPipeEngine.Controls.Add(this.comboBox5);
             this.gbPipeEngine.Controls.Add(this.cbGenerateChainedPipes);
             this.gbPipeEngine.Controls.Add(this.nmTiltPipeValue);
             this.gbPipeEngine.Controls.Add(this.label25);
@@ -593,22 +616,47 @@
             this.gbPipeEngine.Controls.Add(this.label8);
             this.gbPipeEngine.Font = new System.Drawing.Font("Segoe UI", 9.75F);
             this.gbPipeEngine.ForeColor = System.Drawing.Color.White;
-            this.gbPipeEngine.Location = new System.Drawing.Point(1040, 221);
+            this.gbPipeEngine.Location = new System.Drawing.Point(1065, 1);
             this.gbPipeEngine.Name = "gbPipeEngine";
-            this.gbPipeEngine.Size = new System.Drawing.Size(175, 187);
+            this.gbPipeEngine.Size = new System.Drawing.Size(391, 151);
             this.gbPipeEngine.TabIndex = 127;
             this.gbPipeEngine.TabStop = false;
+            // 
+            // label14
+            // 
+            this.label14.AutoSize = true;
+            this.label14.Font = new System.Drawing.Font("Segoe UI", 8.25F, System.Drawing.FontStyle.Italic);
+            this.label14.Location = new System.Drawing.Point(169, 15);
+            this.label14.Name = "label14";
+            this.label14.Size = new System.Drawing.Size(201, 13);
+            this.label14.TabIndex = 84;
+            this.label14.Text = "Copies values from an address to another";
+            // 
+            // comboBox5
+            // 
+            this.comboBox5.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
+            this.comboBox5.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.comboBox5.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.comboBox5.Font = new System.Drawing.Font("Segoe UI", 8F);
+            this.comboBox5.ForeColor = System.Drawing.Color.White;
+            this.comboBox5.FormattingEnabled = true;
+            this.comboBox5.Location = new System.Drawing.Point(7, 9);
+            this.comboBox5.Name = "comboBox5";
+            this.comboBox5.Size = new System.Drawing.Size(158, 21);
+            this.comboBox5.TabIndex = 83;
+            this.comboBox5.Tag = "color:dark";
+            this.comboBox5.Visible = false;
             // 
             // cbGenerateChainedPipes
             // 
             this.cbGenerateChainedPipes.AutoSize = true;
             this.cbGenerateChainedPipes.Checked = true;
             this.cbGenerateChainedPipes.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.cbGenerateChainedPipes.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.cbGenerateChainedPipes.Font = new System.Drawing.Font("Segoe UI", 8F);
             this.cbGenerateChainedPipes.ForeColor = System.Drawing.Color.White;
-            this.cbGenerateChainedPipes.Location = new System.Drawing.Point(10, 80);
+            this.cbGenerateChainedPipes.Location = new System.Drawing.Point(182, 36);
             this.cbGenerateChainedPipes.Name = "cbGenerateChainedPipes";
-            this.cbGenerateChainedPipes.Size = new System.Drawing.Size(151, 19);
+            this.cbGenerateChainedPipes.Size = new System.Drawing.Size(150, 17);
             this.cbGenerateChainedPipes.TabIndex = 82;
             this.cbGenerateChainedPipes.Text = "Generate Chained pipes";
             this.cbGenerateChainedPipes.UseVisualStyleBackColor = true;
@@ -617,9 +665,9 @@
             // nmTiltPipeValue
             // 
             this.nmTiltPipeValue.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
-            this.nmTiltPipeValue.Font = new System.Drawing.Font("Segoe UI", 9.75F);
+            this.nmTiltPipeValue.Font = new System.Drawing.Font("Segoe UI", 8F);
             this.nmTiltPipeValue.ForeColor = System.Drawing.Color.White;
-            this.nmTiltPipeValue.Location = new System.Drawing.Point(97, 152);
+            this.nmTiltPipeValue.Location = new System.Drawing.Point(98, 63);
             this.nmTiltPipeValue.Maximum = new decimal(new int[] {
             255,
             0,
@@ -631,7 +679,7 @@
             0,
             -2147483648});
             this.nmTiltPipeValue.Name = "nmTiltPipeValue";
-            this.nmTiltPipeValue.Size = new System.Drawing.Size(67, 25);
+            this.nmTiltPipeValue.Size = new System.Drawing.Size(67, 22);
             this.nmTiltPipeValue.TabIndex = 81;
             this.nmTiltPipeValue.Tag = "color:dark";
             this.nmTiltPipeValue.ValueChanged += new System.EventHandler(this.nmTiltPipeValue_ValueChanged);
@@ -641,21 +689,21 @@
             // label25
             // 
             this.label25.AutoSize = true;
-            this.label25.Font = new System.Drawing.Font("Segoe UI", 9.75F);
-            this.label25.Location = new System.Drawing.Point(7, 155);
+            this.label25.Font = new System.Drawing.Font("Segoe UI", 8F);
+            this.label25.Location = new System.Drawing.Point(4, 66);
             this.label25.Name = "label25";
-            this.label25.Size = new System.Drawing.Size(63, 17);
+            this.label25.Size = new System.Drawing.Size(56, 13);
             this.label25.TabIndex = 80;
             this.label25.Text = "Tilt Value:";
             // 
             // cbClearPipesOnRewind
             // 
             this.cbClearPipesOnRewind.AutoSize = true;
-            this.cbClearPipesOnRewind.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.cbClearPipesOnRewind.Font = new System.Drawing.Font("Segoe UI", 8F);
             this.cbClearPipesOnRewind.ForeColor = System.Drawing.Color.White;
-            this.cbClearPipesOnRewind.Location = new System.Drawing.Point(10, 130);
+            this.cbClearPipesOnRewind.Location = new System.Drawing.Point(5, 101);
             this.cbClearPipesOnRewind.Name = "cbClearPipesOnRewind";
-            this.cbClearPipesOnRewind.Size = new System.Drawing.Size(143, 19);
+            this.cbClearPipesOnRewind.Size = new System.Drawing.Size(142, 17);
             this.cbClearPipesOnRewind.TabIndex = 79;
             this.cbClearPipesOnRewind.Text = "Clear pipes on Rewind";
             this.cbClearPipesOnRewind.UseVisualStyleBackColor = true;
@@ -666,11 +714,11 @@
             this.cbProcessOnStep.AutoSize = true;
             this.cbProcessOnStep.Checked = true;
             this.cbProcessOnStep.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.cbProcessOnStep.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.cbProcessOnStep.Font = new System.Drawing.Font("Segoe UI", 8F);
             this.cbProcessOnStep.ForeColor = System.Drawing.Color.White;
-            this.cbProcessOnStep.Location = new System.Drawing.Point(10, 97);
+            this.cbProcessOnStep.Location = new System.Drawing.Point(182, 53);
             this.cbProcessOnStep.Name = "cbProcessOnStep";
-            this.cbProcessOnStep.Size = new System.Drawing.Size(136, 19);
+            this.cbProcessOnStep.Size = new System.Drawing.Size(132, 17);
             this.cbProcessOnStep.TabIndex = 78;
             this.cbProcessOnStep.Text = "Process on Emu Step";
             this.cbProcessOnStep.UseVisualStyleBackColor = true;
@@ -679,11 +727,11 @@
             // cbLockPipes
             // 
             this.cbLockPipes.AutoSize = true;
-            this.cbLockPipes.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.cbLockPipes.Font = new System.Drawing.Font("Segoe UI", 8F);
             this.cbLockPipes.ForeColor = System.Drawing.Color.White;
-            this.cbLockPipes.Location = new System.Drawing.Point(10, 113);
+            this.cbLockPipes.Location = new System.Drawing.Point(182, 69);
             this.cbLockPipes.Name = "cbLockPipes";
-            this.cbLockPipes.Size = new System.Drawing.Size(82, 19);
+            this.cbLockPipes.Size = new System.Drawing.Size(79, 17);
             this.cbLockPipes.TabIndex = 77;
             this.cbLockPipes.Text = "Lock Pipes";
             this.cbLockPipes.UseVisualStyleBackColor = true;
@@ -694,11 +742,11 @@
             this.btnClearPipes.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(224)))), ((int)(((byte)(224)))), ((int)(((byte)(224)))));
             this.btnClearPipes.FlatAppearance.BorderSize = 0;
             this.btnClearPipes.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btnClearPipes.Font = new System.Drawing.Font("Segoe UI Semibold", 9.75F, System.Drawing.FontStyle.Bold);
+            this.btnClearPipes.Font = new System.Drawing.Font("Segoe UI", 8F);
             this.btnClearPipes.ForeColor = System.Drawing.Color.Black;
-            this.btnClearPipes.Location = new System.Drawing.Point(9, 51);
+            this.btnClearPipes.Location = new System.Drawing.Point(6, 119);
             this.btnClearPipes.Name = "btnClearPipes";
-            this.btnClearPipes.Size = new System.Drawing.Size(156, 27);
+            this.btnClearPipes.Size = new System.Drawing.Size(156, 24);
             this.btnClearPipes.TabIndex = 76;
             this.btnClearPipes.TabStop = false;
             this.btnClearPipes.Tag = "color:light";
@@ -709,9 +757,9 @@
             // nmMaxPipes
             // 
             this.nmMaxPipes.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
-            this.nmMaxPipes.Font = new System.Drawing.Font("Segoe UI", 9.75F);
+            this.nmMaxPipes.Font = new System.Drawing.Font("Segoe UI", 8F);
             this.nmMaxPipes.ForeColor = System.Drawing.Color.White;
-            this.nmMaxPipes.Location = new System.Drawing.Point(97, 20);
+            this.nmMaxPipes.Location = new System.Drawing.Point(98, 36);
             this.nmMaxPipes.Maximum = new decimal(new int[] {
             65536,
             0,
@@ -723,7 +771,7 @@
             0,
             0});
             this.nmMaxPipes.Name = "nmMaxPipes";
-            this.nmMaxPipes.Size = new System.Drawing.Size(67, 25);
+            this.nmMaxPipes.Size = new System.Drawing.Size(67, 22);
             this.nmMaxPipes.TabIndex = 9;
             this.nmMaxPipes.Tag = "color:dark";
             this.nmMaxPipes.Value = new decimal(new int[] {
@@ -738,36 +786,63 @@
             // label8
             // 
             this.label8.AutoSize = true;
-            this.label8.Font = new System.Drawing.Font("Segoe UI", 9.75F);
-            this.label8.Location = new System.Drawing.Point(7, 23);
+            this.label8.Font = new System.Drawing.Font("Segoe UI", 8F);
+            this.label8.Location = new System.Drawing.Point(4, 40);
             this.label8.Name = "label8";
-            this.label8.Size = new System.Drawing.Size(71, 17);
+            this.label8.Size = new System.Drawing.Size(61, 13);
             this.label8.TabIndex = 0;
             this.label8.Text = "Max Pipes:";
             // 
             // gbDistortionEngine
             // 
+            this.gbDistortionEngine.Controls.Add(this.label17);
+            this.gbDistortionEngine.Controls.Add(this.comboBox3);
             this.gbDistortionEngine.Controls.Add(this.btnResyncDistortionEngine);
             this.gbDistortionEngine.Controls.Add(this.nmDistortionDelay);
             this.gbDistortionEngine.Controls.Add(this.label7);
             this.gbDistortionEngine.Font = new System.Drawing.Font("Segoe UI", 9.75F);
             this.gbDistortionEngine.ForeColor = System.Drawing.Color.White;
-            this.gbDistortionEngine.Location = new System.Drawing.Point(858, 221);
+            this.gbDistortionEngine.Location = new System.Drawing.Point(664, 304);
             this.gbDistortionEngine.Name = "gbDistortionEngine";
-            this.gbDistortionEngine.Size = new System.Drawing.Size(175, 187);
+            this.gbDistortionEngine.Size = new System.Drawing.Size(391, 151);
             this.gbDistortionEngine.TabIndex = 126;
             this.gbDistortionEngine.TabStop = false;
+            // 
+            // label17
+            // 
+            this.label17.AutoSize = true;
+            this.label17.Font = new System.Drawing.Font("Segoe UI", 8.25F, System.Drawing.FontStyle.Italic);
+            this.label17.Location = new System.Drawing.Point(169, 15);
+            this.label17.Name = "label17";
+            this.label17.Size = new System.Drawing.Size(189, 13);
+            this.label17.TabIndex = 87;
+            this.label17.Text = "Backups values and restores them later";
+            // 
+            // comboBox3
+            // 
+            this.comboBox3.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
+            this.comboBox3.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.comboBox3.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.comboBox3.Font = new System.Drawing.Font("Segoe UI", 8F);
+            this.comboBox3.ForeColor = System.Drawing.Color.White;
+            this.comboBox3.FormattingEnabled = true;
+            this.comboBox3.Location = new System.Drawing.Point(7, 9);
+            this.comboBox3.Name = "comboBox3";
+            this.comboBox3.Size = new System.Drawing.Size(158, 21);
+            this.comboBox3.TabIndex = 77;
+            this.comboBox3.Tag = "color:dark";
+            this.comboBox3.Visible = false;
             // 
             // btnResyncDistortionEngine
             // 
             this.btnResyncDistortionEngine.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(224)))), ((int)(((byte)(224)))), ((int)(((byte)(224)))));
             this.btnResyncDistortionEngine.FlatAppearance.BorderSize = 0;
             this.btnResyncDistortionEngine.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btnResyncDistortionEngine.Font = new System.Drawing.Font("Segoe UI Semibold", 9.75F, System.Drawing.FontStyle.Bold);
+            this.btnResyncDistortionEngine.Font = new System.Drawing.Font("Segoe UI", 8F);
             this.btnResyncDistortionEngine.ForeColor = System.Drawing.Color.Black;
-            this.btnResyncDistortionEngine.Location = new System.Drawing.Point(9, 56);
+            this.btnResyncDistortionEngine.Location = new System.Drawing.Point(6, 119);
             this.btnResyncDistortionEngine.Name = "btnResyncDistortionEngine";
-            this.btnResyncDistortionEngine.Size = new System.Drawing.Size(156, 27);
+            this.btnResyncDistortionEngine.Size = new System.Drawing.Size(156, 24);
             this.btnResyncDistortionEngine.TabIndex = 76;
             this.btnResyncDistortionEngine.TabStop = false;
             this.btnResyncDistortionEngine.Tag = "color:light";
@@ -778,9 +853,9 @@
             // nmDistortionDelay
             // 
             this.nmDistortionDelay.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
-            this.nmDistortionDelay.Font = new System.Drawing.Font("Segoe UI", 9.75F);
+            this.nmDistortionDelay.Font = new System.Drawing.Font("Segoe UI", 8F);
             this.nmDistortionDelay.ForeColor = System.Drawing.Color.White;
-            this.nmDistortionDelay.Location = new System.Drawing.Point(97, 20);
+            this.nmDistortionDelay.Location = new System.Drawing.Point(98, 36);
             this.nmDistortionDelay.Maximum = new decimal(new int[] {
             65536,
             0,
@@ -792,7 +867,7 @@
             0,
             0});
             this.nmDistortionDelay.Name = "nmDistortionDelay";
-            this.nmDistortionDelay.Size = new System.Drawing.Size(67, 25);
+            this.nmDistortionDelay.Size = new System.Drawing.Size(67, 22);
             this.nmDistortionDelay.TabIndex = 9;
             this.nmDistortionDelay.Tag = "color:dark";
             this.nmDistortionDelay.Value = new decimal(new int[] {
@@ -807,36 +882,63 @@
             // label7
             // 
             this.label7.AutoSize = true;
-            this.label7.Font = new System.Drawing.Font("Segoe UI", 9.75F);
-            this.label7.Location = new System.Drawing.Point(7, 23);
+            this.label7.Font = new System.Drawing.Font("Segoe UI", 8F);
+            this.label7.Location = new System.Drawing.Point(4, 40);
             this.label7.Name = "label7";
-            this.label7.Size = new System.Drawing.Size(72, 17);
+            this.label7.Size = new System.Drawing.Size(64, 13);
             this.label7.TabIndex = 0;
             this.label7.Text = "Dist. Delay:";
             // 
             // gbExternalRomPlugin
             // 
+            this.gbExternalRomPlugin.Controls.Add(this.comboBox7);
+            this.gbExternalRomPlugin.Controls.Add(this.label12);
             this.gbExternalRomPlugin.Controls.Add(this.btnExternalOpenWindow);
             this.gbExternalRomPlugin.Controls.Add(this.cbExternalSelectedPlugin);
             this.gbExternalRomPlugin.Controls.Add(this.label10);
             this.gbExternalRomPlugin.Font = new System.Drawing.Font("Segoe UI", 9.75F);
             this.gbExternalRomPlugin.ForeColor = System.Drawing.Color.White;
-            this.gbExternalRomPlugin.Location = new System.Drawing.Point(858, 35);
+            this.gbExternalRomPlugin.Location = new System.Drawing.Point(1065, 305);
             this.gbExternalRomPlugin.Name = "gbExternalRomPlugin";
-            this.gbExternalRomPlugin.Size = new System.Drawing.Size(175, 187);
+            this.gbExternalRomPlugin.Size = new System.Drawing.Size(391, 151);
             this.gbExternalRomPlugin.TabIndex = 125;
             this.gbExternalRomPlugin.TabStop = false;
+            // 
+            // comboBox7
+            // 
+            this.comboBox7.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
+            this.comboBox7.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.comboBox7.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.comboBox7.Font = new System.Drawing.Font("Segoe UI", 8F);
+            this.comboBox7.ForeColor = System.Drawing.Color.White;
+            this.comboBox7.FormattingEnabled = true;
+            this.comboBox7.Location = new System.Drawing.Point(7, 9);
+            this.comboBox7.Name = "comboBox7";
+            this.comboBox7.Size = new System.Drawing.Size(158, 21);
+            this.comboBox7.TabIndex = 79;
+            this.comboBox7.Tag = "color:dark";
+            this.comboBox7.Visible = false;
+            // 
+            // label12
+            // 
+            this.label12.AutoSize = true;
+            this.label12.Font = new System.Drawing.Font("Segoe UI", 8.25F, System.Drawing.FontStyle.Italic);
+            this.label12.Location = new System.Drawing.Point(169, 15);
+            this.label12.Name = "label12";
+            this.label12.Size = new System.Drawing.Size(194, 13);
+            this.label12.TabIndex = 78;
+            this.label12.Text = "Imports corruption from another source";
             // 
             // btnExternalOpenWindow
             // 
             this.btnExternalOpenWindow.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(224)))), ((int)(((byte)(224)))), ((int)(((byte)(224)))));
             this.btnExternalOpenWindow.FlatAppearance.BorderSize = 0;
             this.btnExternalOpenWindow.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btnExternalOpenWindow.Font = new System.Drawing.Font("Segoe UI Semibold", 9.75F, System.Drawing.FontStyle.Bold);
+            this.btnExternalOpenWindow.Font = new System.Drawing.Font("Segoe UI", 8F);
             this.btnExternalOpenWindow.ForeColor = System.Drawing.Color.Black;
-            this.btnExternalOpenWindow.Location = new System.Drawing.Point(9, 80);
+            this.btnExternalOpenWindow.Location = new System.Drawing.Point(6, 119);
             this.btnExternalOpenWindow.Name = "btnExternalOpenWindow";
-            this.btnExternalOpenWindow.Size = new System.Drawing.Size(156, 27);
+            this.btnExternalOpenWindow.Size = new System.Drawing.Size(156, 24);
             this.btnExternalOpenWindow.TabIndex = 77;
             this.btnExternalOpenWindow.TabStop = false;
             this.btnExternalOpenWindow.Tag = "color:light";
@@ -849,14 +951,14 @@
             this.cbExternalSelectedPlugin.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
             this.cbExternalSelectedPlugin.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.cbExternalSelectedPlugin.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.cbExternalSelectedPlugin.Font = new System.Drawing.Font("Segoe UI", 9.75F);
+            this.cbExternalSelectedPlugin.Font = new System.Drawing.Font("Segoe UI", 8F);
             this.cbExternalSelectedPlugin.ForeColor = System.Drawing.Color.White;
             this.cbExternalSelectedPlugin.FormattingEnabled = true;
             this.cbExternalSelectedPlugin.Items.AddRange(new object[] {
             "NULL"});
-            this.cbExternalSelectedPlugin.Location = new System.Drawing.Point(9, 49);
+            this.cbExternalSelectedPlugin.Location = new System.Drawing.Point(7, 79);
             this.cbExternalSelectedPlugin.Name = "cbExternalSelectedPlugin";
-            this.cbExternalSelectedPlugin.Size = new System.Drawing.Size(156, 25);
+            this.cbExternalSelectedPlugin.Size = new System.Drawing.Size(158, 21);
             this.cbExternalSelectedPlugin.TabIndex = 14;
             this.cbExternalSelectedPlugin.Tag = "color:dark";
             this.cbExternalSelectedPlugin.SelectedIndexChanged += new System.EventHandler(this.cbExternalSelectedPlugin_SelectedIndexChanged);
@@ -864,35 +966,62 @@
             // label10
             // 
             this.label10.AutoSize = true;
-            this.label10.Font = new System.Drawing.Font("Segoe UI", 9.75F);
-            this.label10.Location = new System.Drawing.Point(8, 22);
+            this.label10.Font = new System.Drawing.Font("Segoe UI", 8F);
+            this.label10.Location = new System.Drawing.Point(4, 63);
             this.label10.Name = "label10";
-            this.label10.Size = new System.Drawing.Size(99, 17);
+            this.label10.Size = new System.Drawing.Size(89, 13);
             this.label10.TabIndex = 77;
             this.label10.Text = "Selected Plugin:";
             // 
             // gbFreezeEngine
             // 
+            this.gbFreezeEngine.Controls.Add(this.label20);
+            this.gbFreezeEngine.Controls.Add(this.comboBox4);
             this.gbFreezeEngine.Controls.Add(this.cbClearFreezesOnRewind);
             this.gbFreezeEngine.Controls.Add(this.btnClearAllFreezes);
             this.gbFreezeEngine.Controls.Add(this.nmMaxFreezes);
             this.gbFreezeEngine.Controls.Add(this.label4);
             this.gbFreezeEngine.Font = new System.Drawing.Font("Segoe UI", 9.75F);
             this.gbFreezeEngine.ForeColor = System.Drawing.Color.White;
-            this.gbFreezeEngine.Location = new System.Drawing.Point(677, 221);
+            this.gbFreezeEngine.Location = new System.Drawing.Point(664, 456);
             this.gbFreezeEngine.Name = "gbFreezeEngine";
-            this.gbFreezeEngine.Size = new System.Drawing.Size(175, 187);
+            this.gbFreezeEngine.Size = new System.Drawing.Size(391, 151);
             this.gbFreezeEngine.TabIndex = 129;
             this.gbFreezeEngine.TabStop = false;
+            // 
+            // label20
+            // 
+            this.label20.AutoSize = true;
+            this.label20.Font = new System.Drawing.Font("Segoe UI", 8.25F, System.Drawing.FontStyle.Italic);
+            this.label20.Location = new System.Drawing.Point(169, 15);
+            this.label20.Name = "label20";
+            this.label20.Size = new System.Drawing.Size(112, 13);
+            this.label20.TabIndex = 88;
+            this.label20.Text = "Freezes values in place";
+            // 
+            // comboBox4
+            // 
+            this.comboBox4.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
+            this.comboBox4.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.comboBox4.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.comboBox4.Font = new System.Drawing.Font("Segoe UI", 8F);
+            this.comboBox4.ForeColor = System.Drawing.Color.White;
+            this.comboBox4.FormattingEnabled = true;
+            this.comboBox4.Location = new System.Drawing.Point(7, 9);
+            this.comboBox4.Name = "comboBox4";
+            this.comboBox4.Size = new System.Drawing.Size(158, 21);
+            this.comboBox4.TabIndex = 77;
+            this.comboBox4.Tag = "color:dark";
+            this.comboBox4.Visible = false;
             // 
             // cbClearFreezesOnRewind
             // 
             this.cbClearFreezesOnRewind.AutoSize = true;
-            this.cbClearFreezesOnRewind.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.cbClearFreezesOnRewind.Font = new System.Drawing.Font("Segoe UI", 8F);
             this.cbClearFreezesOnRewind.ForeColor = System.Drawing.Color.White;
-            this.cbClearFreezesOnRewind.Location = new System.Drawing.Point(10, 47);
+            this.cbClearFreezesOnRewind.Location = new System.Drawing.Point(5, 101);
             this.cbClearFreezesOnRewind.Name = "cbClearFreezesOnRewind";
-            this.cbClearFreezesOnRewind.Size = new System.Drawing.Size(151, 19);
+            this.cbClearFreezesOnRewind.Size = new System.Drawing.Size(150, 17);
             this.cbClearFreezesOnRewind.TabIndex = 75;
             this.cbClearFreezesOnRewind.Text = "Clear freezes on Rewind";
             this.cbClearFreezesOnRewind.UseVisualStyleBackColor = true;
@@ -903,11 +1032,11 @@
             this.btnClearAllFreezes.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(224)))), ((int)(((byte)(224)))), ((int)(((byte)(224)))));
             this.btnClearAllFreezes.FlatAppearance.BorderSize = 0;
             this.btnClearAllFreezes.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btnClearAllFreezes.Font = new System.Drawing.Font("Segoe UI Semibold", 9.75F, System.Drawing.FontStyle.Bold);
+            this.btnClearAllFreezes.Font = new System.Drawing.Font("Segoe UI", 8F);
             this.btnClearAllFreezes.ForeColor = System.Drawing.Color.Black;
-            this.btnClearAllFreezes.Location = new System.Drawing.Point(9, 70);
+            this.btnClearAllFreezes.Location = new System.Drawing.Point(6, 119);
             this.btnClearAllFreezes.Name = "btnClearAllFreezes";
-            this.btnClearAllFreezes.Size = new System.Drawing.Size(156, 27);
+            this.btnClearAllFreezes.Size = new System.Drawing.Size(156, 24);
             this.btnClearAllFreezes.TabIndex = 10;
             this.btnClearAllFreezes.TabStop = false;
             this.btnClearAllFreezes.Tag = "color:light";
@@ -918,9 +1047,9 @@
             // nmMaxFreezes
             // 
             this.nmMaxFreezes.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
-            this.nmMaxFreezes.Font = new System.Drawing.Font("Segoe UI", 9.75F);
+            this.nmMaxFreezes.Font = new System.Drawing.Font("Segoe UI", 8F);
             this.nmMaxFreezes.ForeColor = System.Drawing.Color.White;
-            this.nmMaxFreezes.Location = new System.Drawing.Point(101, 20);
+            this.nmMaxFreezes.Location = new System.Drawing.Point(98, 36);
             this.nmMaxFreezes.Maximum = new decimal(new int[] {
             65536,
             0,
@@ -932,7 +1061,7 @@
             0,
             0});
             this.nmMaxFreezes.Name = "nmMaxFreezes";
-            this.nmMaxFreezes.Size = new System.Drawing.Size(64, 25);
+            this.nmMaxFreezes.Size = new System.Drawing.Size(67, 22);
             this.nmMaxFreezes.TabIndex = 9;
             this.nmMaxFreezes.Tag = "color:dark";
             this.nmMaxFreezes.Value = new decimal(new int[] {
@@ -947,35 +1076,62 @@
             // label4
             // 
             this.label4.AutoSize = true;
-            this.label4.Font = new System.Drawing.Font("Segoe UI", 9.75F);
-            this.label4.Location = new System.Drawing.Point(7, 24);
+            this.label4.Font = new System.Drawing.Font("Segoe UI", 8F);
+            this.label4.Location = new System.Drawing.Point(4, 40);
             this.label4.Name = "label4";
-            this.label4.Size = new System.Drawing.Size(82, 17);
+            this.label4.Size = new System.Drawing.Size(70, 13);
             this.label4.TabIndex = 0;
             this.label4.Text = "Max freezes:";
             // 
             // gbHellgenieEngine
             // 
+            this.gbHellgenieEngine.Controls.Add(this.label16);
+            this.gbHellgenieEngine.Controls.Add(this.comboBox2);
             this.gbHellgenieEngine.Controls.Add(this.cbClearCheatsOnRewind);
             this.gbHellgenieEngine.Controls.Add(this.btnClearCheats);
             this.gbHellgenieEngine.Controls.Add(this.nmMaxCheats);
             this.gbHellgenieEngine.Controls.Add(this.label1);
             this.gbHellgenieEngine.Font = new System.Drawing.Font("Segoe UI", 9.75F);
             this.gbHellgenieEngine.ForeColor = System.Drawing.Color.White;
-            this.gbHellgenieEngine.Location = new System.Drawing.Point(1040, 35);
+            this.gbHellgenieEngine.Location = new System.Drawing.Point(664, 152);
             this.gbHellgenieEngine.Name = "gbHellgenieEngine";
-            this.gbHellgenieEngine.Size = new System.Drawing.Size(175, 187);
+            this.gbHellgenieEngine.Size = new System.Drawing.Size(391, 151);
             this.gbHellgenieEngine.TabIndex = 124;
             this.gbHellgenieEngine.TabStop = false;
+            // 
+            // label16
+            // 
+            this.label16.AutoSize = true;
+            this.label16.Font = new System.Drawing.Font("Segoe UI", 8.25F, System.Drawing.FontStyle.Italic);
+            this.label16.Location = new System.Drawing.Point(169, 15);
+            this.label16.Name = "label16";
+            this.label16.Size = new System.Drawing.Size(218, 13);
+            this.label16.TabIndex = 86;
+            this.label16.Text = "Edits values and makes them keep their value";
+            // 
+            // comboBox2
+            // 
+            this.comboBox2.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
+            this.comboBox2.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.comboBox2.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.comboBox2.Font = new System.Drawing.Font("Segoe UI", 8F);
+            this.comboBox2.ForeColor = System.Drawing.Color.White;
+            this.comboBox2.FormattingEnabled = true;
+            this.comboBox2.Location = new System.Drawing.Point(7, 9);
+            this.comboBox2.Name = "comboBox2";
+            this.comboBox2.Size = new System.Drawing.Size(158, 21);
+            this.comboBox2.TabIndex = 76;
+            this.comboBox2.Tag = "color:dark";
+            this.comboBox2.Visible = false;
             // 
             // cbClearCheatsOnRewind
             // 
             this.cbClearCheatsOnRewind.AutoSize = true;
-            this.cbClearCheatsOnRewind.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.cbClearCheatsOnRewind.Font = new System.Drawing.Font("Segoe UI", 8F);
             this.cbClearCheatsOnRewind.ForeColor = System.Drawing.Color.White;
-            this.cbClearCheatsOnRewind.Location = new System.Drawing.Point(10, 47);
+            this.cbClearCheatsOnRewind.Location = new System.Drawing.Point(5, 101);
             this.cbClearCheatsOnRewind.Name = "cbClearCheatsOnRewind";
-            this.cbClearCheatsOnRewind.Size = new System.Drawing.Size(149, 19);
+            this.cbClearCheatsOnRewind.Size = new System.Drawing.Size(147, 17);
             this.cbClearCheatsOnRewind.TabIndex = 75;
             this.cbClearCheatsOnRewind.Text = "Clear cheats on Rewind";
             this.cbClearCheatsOnRewind.UseVisualStyleBackColor = true;
@@ -986,11 +1142,11 @@
             this.btnClearCheats.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(224)))), ((int)(((byte)(224)))), ((int)(((byte)(224)))));
             this.btnClearCheats.FlatAppearance.BorderSize = 0;
             this.btnClearCheats.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btnClearCheats.Font = new System.Drawing.Font("Segoe UI Semibold", 9.75F, System.Drawing.FontStyle.Bold);
+            this.btnClearCheats.Font = new System.Drawing.Font("Segoe UI", 8F);
             this.btnClearCheats.ForeColor = System.Drawing.Color.Black;
-            this.btnClearCheats.Location = new System.Drawing.Point(9, 70);
+            this.btnClearCheats.Location = new System.Drawing.Point(6, 119);
             this.btnClearCheats.Name = "btnClearCheats";
-            this.btnClearCheats.Size = new System.Drawing.Size(156, 27);
+            this.btnClearCheats.Size = new System.Drawing.Size(156, 24);
             this.btnClearCheats.TabIndex = 10;
             this.btnClearCheats.TabStop = false;
             this.btnClearCheats.Tag = "color:light";
@@ -1001,9 +1157,9 @@
             // nmMaxCheats
             // 
             this.nmMaxCheats.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
-            this.nmMaxCheats.Font = new System.Drawing.Font("Segoe UI", 9.75F);
+            this.nmMaxCheats.Font = new System.Drawing.Font("Segoe UI", 8F);
             this.nmMaxCheats.ForeColor = System.Drawing.Color.White;
-            this.nmMaxCheats.Location = new System.Drawing.Point(101, 20);
+            this.nmMaxCheats.Location = new System.Drawing.Point(98, 36);
             this.nmMaxCheats.Maximum = new decimal(new int[] {
             65536,
             0,
@@ -1015,7 +1171,7 @@
             0,
             0});
             this.nmMaxCheats.Name = "nmMaxCheats";
-            this.nmMaxCheats.Size = new System.Drawing.Size(64, 25);
+            this.nmMaxCheats.Size = new System.Drawing.Size(67, 22);
             this.nmMaxCheats.TabIndex = 9;
             this.nmMaxCheats.Tag = "color:dark";
             this.nmMaxCheats.Value = new decimal(new int[] {
@@ -1030,40 +1186,67 @@
             // label1
             // 
             this.label1.AutoSize = true;
-            this.label1.Font = new System.Drawing.Font("Segoe UI", 9.75F);
-            this.label1.Location = new System.Drawing.Point(7, 24);
+            this.label1.Font = new System.Drawing.Font("Segoe UI", 8F);
+            this.label1.Location = new System.Drawing.Point(4, 40);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(77, 17);
+            this.label1.Size = new System.Drawing.Size(67, 13);
             this.label1.TabIndex = 0;
             this.label1.Text = "Max cheats:";
             // 
             // gbNightmareEngine
             // 
+            this.gbNightmareEngine.Controls.Add(this.label15);
+            this.gbNightmareEngine.Controls.Add(this.comboBox1);
             this.gbNightmareEngine.Controls.Add(this.cbBlastType);
             this.gbNightmareEngine.Controls.Add(this.label9);
             this.gbNightmareEngine.Font = new System.Drawing.Font("Segoe UI", 9.75F);
             this.gbNightmareEngine.ForeColor = System.Drawing.Color.White;
-            this.gbNightmareEngine.Location = new System.Drawing.Point(677, 35);
+            this.gbNightmareEngine.Location = new System.Drawing.Point(664, 1);
             this.gbNightmareEngine.Name = "gbNightmareEngine";
-            this.gbNightmareEngine.Size = new System.Drawing.Size(175, 187);
+            this.gbNightmareEngine.Size = new System.Drawing.Size(391, 151);
             this.gbNightmareEngine.TabIndex = 123;
             this.gbNightmareEngine.TabStop = false;
+            // 
+            // label15
+            // 
+            this.label15.AutoSize = true;
+            this.label15.Font = new System.Drawing.Font("Segoe UI", 8.25F, System.Drawing.FontStyle.Italic);
+            this.label15.Location = new System.Drawing.Point(169, 15);
+            this.label15.Name = "label15";
+            this.label15.Size = new System.Drawing.Size(117, 13);
+            this.label15.TabIndex = 85;
+            this.label15.Text = "Replaces or edits values";
+            // 
+            // comboBox1
+            // 
+            this.comboBox1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
+            this.comboBox1.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.comboBox1.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.comboBox1.Font = new System.Drawing.Font("Segoe UI", 8F);
+            this.comboBox1.ForeColor = System.Drawing.Color.White;
+            this.comboBox1.FormattingEnabled = true;
+            this.comboBox1.Location = new System.Drawing.Point(7, 9);
+            this.comboBox1.Name = "comboBox1";
+            this.comboBox1.Size = new System.Drawing.Size(158, 21);
+            this.comboBox1.TabIndex = 16;
+            this.comboBox1.Tag = "color:dark";
+            this.comboBox1.Visible = false;
             // 
             // cbBlastType
             // 
             this.cbBlastType.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
             this.cbBlastType.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.cbBlastType.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.cbBlastType.Font = new System.Drawing.Font("Segoe UI", 9.75F);
+            this.cbBlastType.Font = new System.Drawing.Font("Segoe UI", 8F);
             this.cbBlastType.ForeColor = System.Drawing.Color.White;
             this.cbBlastType.FormattingEnabled = true;
             this.cbBlastType.Items.AddRange(new object[] {
             "RANDOM",
             "RANDOMTILT",
             "TILT"});
-            this.cbBlastType.Location = new System.Drawing.Point(76, 20);
+            this.cbBlastType.Location = new System.Drawing.Point(73, 36);
             this.cbBlastType.Name = "cbBlastType";
-            this.cbBlastType.Size = new System.Drawing.Size(91, 25);
+            this.cbBlastType.Size = new System.Drawing.Size(91, 21);
             this.cbBlastType.TabIndex = 13;
             this.cbBlastType.Tag = "color:dark";
             this.cbBlastType.SelectedIndexChanged += new System.EventHandler(this.cbBlastType_SelectedIndexChanged);
@@ -1071,19 +1254,80 @@
             // label9
             // 
             this.label9.AutoSize = true;
-            this.label9.Font = new System.Drawing.Font("Segoe UI", 9.75F);
-            this.label9.Location = new System.Drawing.Point(7, 23);
+            this.label9.Font = new System.Drawing.Font("Segoe UI", 8F);
+            this.label9.Location = new System.Drawing.Point(4, 39);
             this.label9.Name = "label9";
-            this.label9.Size = new System.Drawing.Size(69, 17);
+            this.label9.Size = new System.Drawing.Size(60, 13);
             this.label9.TabIndex = 12;
             this.label9.Text = "Blast Type:";
+            // 
+            // panel1
+            // 
+            this.panel1.BackColor = System.Drawing.Color.Gray;
+            this.panel1.Controls.Add(this.lbMemoryDomains);
+            this.panel1.Controls.Add(this.btnAutoSelectDomains);
+            this.panel1.Controls.Add(this.btnRefreshDomains);
+            this.panel1.Controls.Add(this.btnSelectAll);
+            this.panel1.Location = new System.Drawing.Point(14, 212);
+            this.panel1.Name = "panel1";
+            this.panel1.Size = new System.Drawing.Size(200, 291);
+            this.panel1.TabIndex = 130;
+            this.panel1.Tag = "color:normal";
+            // 
+            // label2
+            // 
+            this.label2.AutoSize = true;
+            this.label2.Font = new System.Drawing.Font("Segoe UI Semibold", 9F);
+            this.label2.ForeColor = System.Drawing.Color.White;
+            this.label2.Location = new System.Drawing.Point(17, 197);
+            this.label2.Name = "label2";
+            this.label2.Size = new System.Drawing.Size(103, 15);
+            this.label2.TabIndex = 131;
+            this.label2.Text = "Memory Domains";
+            // 
+            // label3
+            // 
+            this.label3.AutoSize = true;
+            this.label3.Font = new System.Drawing.Font("Segoe UI Semibold", 9F);
+            this.label3.ForeColor = System.Drawing.Color.White;
+            this.label3.Location = new System.Drawing.Point(228, 197);
+            this.label3.Name = "label3";
+            this.label3.Size = new System.Drawing.Size(139, 15);
+            this.label3.TabIndex = 132;
+            this.label3.Text = "Advanced Memory Tools";
+            // 
+            // groupBox1
+            // 
+            this.groupBox1.Controls.Add(this.label6);
+            this.groupBox1.Font = new System.Drawing.Font("Segoe UI", 9.75F);
+            this.groupBox1.ForeColor = System.Drawing.Color.White;
+            this.groupBox1.Location = new System.Drawing.Point(23, 29);
+            this.groupBox1.Name = "groupBox1";
+            this.groupBox1.Size = new System.Drawing.Size(181, 151);
+            this.groupBox1.TabIndex = 133;
+            this.groupBox1.TabStop = false;
+            // 
+            // label6
+            // 
+            this.label6.AutoSize = true;
+            this.label6.Font = new System.Drawing.Font("Segoe UI Semibold", 9F);
+            this.label6.ForeColor = System.Drawing.Color.White;
+            this.label6.Location = new System.Drawing.Point(14, 64);
+            this.label6.Name = "label6";
+            this.label6.Size = new System.Drawing.Size(155, 30);
+            this.label6.TabIndex = 132;
+            this.label6.Text = "Parameters unavailable with\nExternal ROM Plugin";
+            this.label6.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
             // RTC_EngineConfig_Form
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
-            this.ClientSize = new System.Drawing.Size(1414, 515);
+            this.ClientSize = new System.Drawing.Size(1467, 623);
+            this.Controls.Add(this.label3);
+            this.Controls.Add(this.label2);
+            this.Controls.Add(this.panel1);
             this.Controls.Add(this.gbVectorEngine);
             this.Controls.Add(this.gbPipeEngine);
             this.Controls.Add(this.gbDistortionEngine);
@@ -1092,11 +1336,11 @@
             this.Controls.Add(this.gbHellgenieEngine);
             this.Controls.Add(this.gbNightmareEngine);
             this.Controls.Add(this.pnGeneralParameters);
-            this.Controls.Add(this.label17);
             this.Controls.Add(this.label5);
             this.Controls.Add(this.pnMemoryTargetting);
             this.Controls.Add(this.pnCorruptionEngine);
             this.Controls.Add(this.label11);
+            this.Controls.Add(this.groupBox1);
             this.DoubleBuffered = true;
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
             this.Name = "RTC_EngineConfig_Form";
@@ -1130,14 +1374,15 @@
             ((System.ComponentModel.ISupportInitialize)(this.nmMaxCheats)).EndInit();
             this.gbNightmareEngine.ResumeLayout(false);
             this.gbNightmareEngine.PerformLayout();
+            this.panel1.ResumeLayout(false);
+            this.groupBox1.ResumeLayout(false);
+            this.groupBox1.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
         }
 
         #endregion
-
-        private System.Windows.Forms.Panel pnGeneralParameters;
         public System.Windows.Forms.NumericUpDown nmIntensity;
         public System.Windows.Forms.NumericUpDown nmErrorDelay;
         private System.Windows.Forms.Label labelIntensityTimes;
@@ -1148,7 +1393,6 @@
         private System.Windows.Forms.Label labelErrorDelaySteps;
         public System.Windows.Forms.TrackBar track_Intensity;
         public System.Windows.Forms.TrackBar track_ErrorDelay;
-        private System.Windows.Forms.Label label17;
         private System.Windows.Forms.Label label5;
         private System.Windows.Forms.Panel pnMemoryTargetting;
         private System.Windows.Forms.Panel pnAdvancedTool;
@@ -1198,5 +1442,24 @@
         private System.Windows.Forms.GroupBox gbNightmareEngine;
         public System.Windows.Forms.ComboBox cbBlastType;
         private System.Windows.Forms.Label label9;
+        private System.Windows.Forms.Panel panel1;
+        private System.Windows.Forms.Label label2;
+        private System.Windows.Forms.Label label3;
+        private System.Windows.Forms.GroupBox groupBox1;
+        private System.Windows.Forms.Label label6;
+        public System.Windows.Forms.Panel pnGeneralParameters;
+        private System.Windows.Forms.Label label12;
+        public System.Windows.Forms.ComboBox comboBox6;
+        private System.Windows.Forms.Label label14;
+        public System.Windows.Forms.ComboBox comboBox5;
+        private System.Windows.Forms.Label label17;
+        public System.Windows.Forms.ComboBox comboBox3;
+        public System.Windows.Forms.ComboBox comboBox7;
+        private System.Windows.Forms.Label label20;
+        public System.Windows.Forms.ComboBox comboBox4;
+        private System.Windows.Forms.Label label16;
+        public System.Windows.Forms.ComboBox comboBox2;
+        private System.Windows.Forms.Label label15;
+        public System.Windows.Forms.ComboBox comboBox1;
     }
 }
