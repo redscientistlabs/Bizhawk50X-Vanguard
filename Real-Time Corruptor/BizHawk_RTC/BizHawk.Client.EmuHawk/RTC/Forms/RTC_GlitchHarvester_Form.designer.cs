@@ -239,7 +239,7 @@
             this.label4.AutoSize = true;
             this.label4.Font = new System.Drawing.Font("Segoe UI", 8F);
             this.label4.ForeColor = System.Drawing.Color.White;
-            this.label4.Location = new System.Drawing.Point(5, 441);
+            this.label4.Location = new System.Drawing.Point(5, 444);
             this.label4.Name = "label4";
             this.label4.Size = new System.Drawing.Size(32, 13);
             this.label4.TabIndex = 142;
@@ -276,7 +276,7 @@
             "WAV",
             "AVI",
             "MPEG"});
-            this.cbRenderType.Location = new System.Drawing.Point(38, 437);
+            this.cbRenderType.Location = new System.Drawing.Point(38, 440);
             this.cbRenderType.Name = "cbRenderType";
             this.cbRenderType.Size = new System.Drawing.Size(102, 21);
             this.cbRenderType.TabIndex = 141;
@@ -310,7 +310,7 @@
             this.cbRenderAtLoad.AutoSize = true;
             this.cbRenderAtLoad.Font = new System.Drawing.Font("Segoe UI", 8F);
             this.cbRenderAtLoad.ForeColor = System.Drawing.Color.White;
-            this.cbRenderAtLoad.Location = new System.Drawing.Point(9, 461);
+            this.cbRenderAtLoad.Location = new System.Drawing.Point(7, 464);
             this.cbRenderAtLoad.Name = "cbRenderAtLoad";
             this.cbRenderAtLoad.Size = new System.Drawing.Size(121, 17);
             this.cbRenderAtLoad.TabIndex = 76;
@@ -2086,7 +2086,7 @@
             this.rbOriginal.AutoSize = true;
             this.rbOriginal.Font = new System.Drawing.Font("Segoe UI", 8F);
             this.rbOriginal.ForeColor = System.Drawing.Color.White;
-            this.rbOriginal.Location = new System.Drawing.Point(6, 28);
+            this.rbOriginal.Location = new System.Drawing.Point(6, 29);
             this.rbOriginal.Name = "rbOriginal";
             this.rbOriginal.Size = new System.Drawing.Size(67, 17);
             this.rbOriginal.TabIndex = 85;
@@ -2099,7 +2099,7 @@
             this.rbInject.AutoSize = true;
             this.rbInject.Font = new System.Drawing.Font("Segoe UI", 8F);
             this.rbInject.ForeColor = System.Drawing.Color.White;
-            this.rbInject.Location = new System.Drawing.Point(6, 14);
+            this.rbInject.Location = new System.Drawing.Point(6, 15);
             this.rbInject.Name = "rbInject";
             this.rbInject.Size = new System.Drawing.Size(53, 17);
             this.rbInject.TabIndex = 84;
@@ -2113,7 +2113,7 @@
             this.rbCorrupt.Checked = true;
             this.rbCorrupt.Font = new System.Drawing.Font("Segoe UI", 8F);
             this.rbCorrupt.ForeColor = System.Drawing.Color.White;
-            this.rbCorrupt.Location = new System.Drawing.Point(6, 0);
+            this.rbCorrupt.Location = new System.Drawing.Point(6, 1);
             this.rbCorrupt.Name = "rbCorrupt";
             this.rbCorrupt.Size = new System.Drawing.Size(65, 17);
             this.rbCorrupt.TabIndex = 83;
@@ -2198,14 +2198,14 @@
             // 
             // track_Intensity
             // 
-            this.track_Intensity.Location = new System.Drawing.Point(-2, 27);
+            this.track_Intensity.Location = new System.Drawing.Point(-2, 30);
             this.track_Intensity.Maximum = 512000;
             this.track_Intensity.Minimum = 2000;
             this.track_Intensity.Name = "track_Intensity";
             this.track_Intensity.Size = new System.Drawing.Size(204, 45);
             this.track_Intensity.TabIndex = 15;
             this.track_Intensity.TabStop = false;
-            this.track_Intensity.TickFrequency = 0;
+            this.track_Intensity.TickFrequency = 32000;
             this.track_Intensity.Value = 2000;
             this.track_Intensity.Scroll += new System.EventHandler(this.track_Intensity_Scroll);
             this.track_Intensity.ValueChanged += new System.EventHandler(this.track_Intensity_Scroll);
@@ -2262,7 +2262,7 @@
             this.panel2.Controls.Add(this.cbStashCorrupted);
             this.panel2.Controls.Add(this.cbAutoLoadState);
             this.panel2.Controls.Add(this.btnBlastToggle);
-            this.panel2.Location = new System.Drawing.Point(158, 84);
+            this.panel2.Location = new System.Drawing.Point(158, 87);
             this.panel2.Name = "panel2";
             this.panel2.Size = new System.Drawing.Size(204, 87);
             this.panel2.TabIndex = 136;
@@ -2392,7 +2392,7 @@
             this.pnIntensity.Controls.Add(this.labelIntensity);
             this.pnIntensity.Location = new System.Drawing.Point(158, 30);
             this.pnIntensity.Name = "pnIntensity";
-            this.pnIntensity.Size = new System.Drawing.Size(204, 55);
+            this.pnIntensity.Size = new System.Drawing.Size(204, 58);
             this.pnIntensity.TabIndex = 122;
             this.pnIntensity.Tag = "color:normal";
             // 

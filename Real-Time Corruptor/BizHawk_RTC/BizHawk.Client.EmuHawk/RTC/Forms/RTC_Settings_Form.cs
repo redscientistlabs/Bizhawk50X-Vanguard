@@ -107,9 +107,9 @@ namespace RTC
         {
 
             if (cbDisableBizhawkOSD.Checked)
-                RTC_Params.SetParam("DISABLE_BIZHAWK_OSD");
+                RTC_Params.RemoveParam("ENABLE_BIZHAWK_OSD");
             else
-                RTC_Params.RemoveParam("DISABLE_BIZHAWK_OSD");
+                RTC_Params.SetParam("ENABLE_BIZHAWK_OSD");
 
             RTC_Core.SendCommandToBizhawk(new RTC_Command(CommandType.BIZHAWK_SET_OSDDISABLED) { objectValue = cbDisableBizhawkOSD.Checked });
         }

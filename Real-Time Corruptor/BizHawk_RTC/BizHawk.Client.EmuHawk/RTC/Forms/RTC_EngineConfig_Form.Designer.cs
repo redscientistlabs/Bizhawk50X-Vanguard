@@ -48,8 +48,8 @@
             this.btnAutoSelectDomains = new System.Windows.Forms.Button();
             this.btnRefreshDomains = new System.Windows.Forms.Button();
             this.pnCorruptionEngine = new System.Windows.Forms.Panel();
-            this.gbSelectedEngine = new System.Windows.Forms.GroupBox();
             this.cbSelectedEngine = new System.Windows.Forms.ComboBox();
+            this.gbSelectedEngine = new System.Windows.Forms.GroupBox();
             this.label11 = new System.Windows.Forms.Label();
             this.gbVectorEngine = new System.Windows.Forms.GroupBox();
             this.comboBox6 = new System.Windows.Forms.ComboBox();
@@ -443,17 +443,6 @@
             this.pnCorruptionEngine.TabIndex = 119;
             this.pnCorruptionEngine.Tag = "color:normal";
             // 
-            // gbSelectedEngine
-            // 
-            this.gbSelectedEngine.Font = new System.Drawing.Font("Segoe UI", 9.75F);
-            this.gbSelectedEngine.ForeColor = System.Drawing.Color.White;
-            this.gbSelectedEngine.Location = new System.Drawing.Point(10, 4);
-            this.gbSelectedEngine.Name = "gbSelectedEngine";
-            this.gbSelectedEngine.Size = new System.Drawing.Size(391, 151);
-            this.gbSelectedEngine.TabIndex = 14;
-            this.gbSelectedEngine.TabStop = false;
-            this.gbSelectedEngine.Visible = false;
-            // 
             // cbSelectedEngine
             // 
             this.cbSelectedEngine.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
@@ -470,12 +459,23 @@
             "Pipe Engine",
             "Vector Engine",
             "External ROM Plugin"});
-            this.cbSelectedEngine.Location = new System.Drawing.Point(17, 13);
+            this.cbSelectedEngine.Location = new System.Drawing.Point(10, 13);
             this.cbSelectedEngine.Name = "cbSelectedEngine";
-            this.cbSelectedEngine.Size = new System.Drawing.Size(158, 21);
+            this.cbSelectedEngine.Size = new System.Drawing.Size(165, 21);
             this.cbSelectedEngine.TabIndex = 15;
             this.cbSelectedEngine.Tag = "color:dark";
             this.cbSelectedEngine.SelectedIndexChanged += new System.EventHandler(this.cbSelectedEngine_SelectedIndexChanged);
+            // 
+            // gbSelectedEngine
+            // 
+            this.gbSelectedEngine.Font = new System.Drawing.Font("Segoe UI", 9.75F);
+            this.gbSelectedEngine.ForeColor = System.Drawing.Color.White;
+            this.gbSelectedEngine.Location = new System.Drawing.Point(10, 4);
+            this.gbSelectedEngine.Name = "gbSelectedEngine";
+            this.gbSelectedEngine.Size = new System.Drawing.Size(391, 151);
+            this.gbSelectedEngine.TabIndex = 14;
+            this.gbSelectedEngine.TabStop = false;
+            this.gbSelectedEngine.Visible = false;
             // 
             // label11
             // 
@@ -512,9 +512,9 @@
             this.comboBox6.Font = new System.Drawing.Font("Segoe UI", 8F);
             this.comboBox6.ForeColor = System.Drawing.Color.White;
             this.comboBox6.FormattingEnabled = true;
-            this.comboBox6.Location = new System.Drawing.Point(7, 9);
+            this.comboBox6.Location = new System.Drawing.Point(0, 9);
             this.comboBox6.Name = "comboBox6";
-            this.comboBox6.Size = new System.Drawing.Size(158, 21);
+            this.comboBox6.Size = new System.Drawing.Size(165, 21);
             this.comboBox6.TabIndex = 82;
             this.comboBox6.Tag = "color:dark";
             this.comboBox6.Visible = false;
@@ -538,9 +538,9 @@
             "One*",
             "Two",
             "AnyFloat"});
-            this.cbVectorValueList.Location = new System.Drawing.Point(5, 101);
+            this.cbVectorValueList.Location = new System.Drawing.Point(7, 101);
             this.cbVectorValueList.Name = "cbVectorValueList";
-            this.cbVectorValueList.Size = new System.Drawing.Size(161, 21);
+            this.cbVectorValueList.Size = new System.Drawing.Size(158, 21);
             this.cbVectorValueList.TabIndex = 81;
             this.cbVectorValueList.Tag = "color:dark";
             this.cbVectorValueList.SelectedIndexChanged += new System.EventHandler(this.cbVectorValueList_SelectedIndexChanged);
@@ -584,9 +584,9 @@
             "One*",
             "Two",
             "AnyFloat"});
-            this.cbVectorLimiterList.Location = new System.Drawing.Point(5, 60);
+            this.cbVectorLimiterList.Location = new System.Drawing.Point(7, 60);
             this.cbVectorLimiterList.Name = "cbVectorLimiterList";
-            this.cbVectorLimiterList.Size = new System.Drawing.Size(161, 21);
+            this.cbVectorLimiterList.Size = new System.Drawing.Size(158, 21);
             this.cbVectorLimiterList.TabIndex = 78;
             this.cbVectorLimiterList.Tag = "color:dark";
             this.cbVectorLimiterList.SelectedIndexChanged += new System.EventHandler(this.cbVectorLimiterList_SelectedIndexChanged);
@@ -640,9 +640,9 @@
             this.comboBox5.Font = new System.Drawing.Font("Segoe UI", 8F);
             this.comboBox5.ForeColor = System.Drawing.Color.White;
             this.comboBox5.FormattingEnabled = true;
-            this.comboBox5.Location = new System.Drawing.Point(7, 9);
+            this.comboBox5.Location = new System.Drawing.Point(0, 9);
             this.comboBox5.Name = "comboBox5";
-            this.comboBox5.Size = new System.Drawing.Size(158, 21);
+            this.comboBox5.Size = new System.Drawing.Size(165, 21);
             this.comboBox5.TabIndex = 83;
             this.comboBox5.Tag = "color:dark";
             this.comboBox5.Visible = false;
@@ -826,9 +826,9 @@
             this.comboBox3.Font = new System.Drawing.Font("Segoe UI", 8F);
             this.comboBox3.ForeColor = System.Drawing.Color.White;
             this.comboBox3.FormattingEnabled = true;
-            this.comboBox3.Location = new System.Drawing.Point(7, 9);
+            this.comboBox3.Location = new System.Drawing.Point(0, 9);
             this.comboBox3.Name = "comboBox3";
-            this.comboBox3.Size = new System.Drawing.Size(158, 21);
+            this.comboBox3.Size = new System.Drawing.Size(165, 21);
             this.comboBox3.TabIndex = 77;
             this.comboBox3.Tag = "color:dark";
             this.comboBox3.Visible = false;
@@ -912,9 +912,9 @@
             this.comboBox7.Font = new System.Drawing.Font("Segoe UI", 8F);
             this.comboBox7.ForeColor = System.Drawing.Color.White;
             this.comboBox7.FormattingEnabled = true;
-            this.comboBox7.Location = new System.Drawing.Point(7, 9);
+            this.comboBox7.Location = new System.Drawing.Point(0, 9);
             this.comboBox7.Name = "comboBox7";
-            this.comboBox7.Size = new System.Drawing.Size(158, 21);
+            this.comboBox7.Size = new System.Drawing.Size(165, 21);
             this.comboBox7.TabIndex = 79;
             this.comboBox7.Tag = "color:dark";
             this.comboBox7.Visible = false;
@@ -1007,9 +1007,9 @@
             this.comboBox4.Font = new System.Drawing.Font("Segoe UI", 8F);
             this.comboBox4.ForeColor = System.Drawing.Color.White;
             this.comboBox4.FormattingEnabled = true;
-            this.comboBox4.Location = new System.Drawing.Point(7, 9);
+            this.comboBox4.Location = new System.Drawing.Point(0, 9);
             this.comboBox4.Name = "comboBox4";
-            this.comboBox4.Size = new System.Drawing.Size(158, 21);
+            this.comboBox4.Size = new System.Drawing.Size(165, 21);
             this.comboBox4.TabIndex = 77;
             this.comboBox4.Tag = "color:dark";
             this.comboBox4.Visible = false;
@@ -1117,9 +1117,9 @@
             this.comboBox2.Font = new System.Drawing.Font("Segoe UI", 8F);
             this.comboBox2.ForeColor = System.Drawing.Color.White;
             this.comboBox2.FormattingEnabled = true;
-            this.comboBox2.Location = new System.Drawing.Point(7, 9);
+            this.comboBox2.Location = new System.Drawing.Point(0, 9);
             this.comboBox2.Name = "comboBox2";
-            this.comboBox2.Size = new System.Drawing.Size(158, 21);
+            this.comboBox2.Size = new System.Drawing.Size(165, 21);
             this.comboBox2.TabIndex = 76;
             this.comboBox2.Tag = "color:dark";
             this.comboBox2.Visible = false;
@@ -1225,9 +1225,9 @@
             this.comboBox1.Font = new System.Drawing.Font("Segoe UI", 8F);
             this.comboBox1.ForeColor = System.Drawing.Color.White;
             this.comboBox1.FormattingEnabled = true;
-            this.comboBox1.Location = new System.Drawing.Point(7, 9);
+            this.comboBox1.Location = new System.Drawing.Point(0, 9);
             this.comboBox1.Name = "comboBox1";
-            this.comboBox1.Size = new System.Drawing.Size(158, 21);
+            this.comboBox1.Size = new System.Drawing.Size(165, 21);
             this.comboBox1.TabIndex = 16;
             this.comboBox1.Tag = "color:dark";
             this.comboBox1.Visible = false;

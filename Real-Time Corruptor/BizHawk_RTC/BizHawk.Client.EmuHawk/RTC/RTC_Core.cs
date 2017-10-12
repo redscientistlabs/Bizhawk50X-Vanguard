@@ -242,7 +242,7 @@ namespace RTC
 
             //Loading RTC PArams
             RTC_Params.LoadRTCColor();
-            RTC_Core.sForm.cbDisableBizhawkOSD.Checked = RTC_Params.IsParamSet("DISABLE_BIZHAWK_OSD");
+            RTC_Core.sForm.cbDisableBizhawkOSD.Checked = !RTC_Params.IsParamSet("ENABLE_BIZHAWK_OSD");
             RTC_Core.sForm.cbAllowCrossCoreCorruption.Checked = RTC_Params.IsParamSet("ALLOW_CROSS_CORE_CORRUPTION");
 
             //Initiation of loopback TCP, only in DETACHED MODE
