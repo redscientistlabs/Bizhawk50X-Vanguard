@@ -1458,6 +1458,10 @@ namespace RTC
 
                 string cheatName = "RTC Cheat|" + targetDomain + "|" + (targetAddress).ToString() + "|" + DisplayType.ToString() + "|" + BigEndian.ToString() + "|" + String.Join(",", Value.Select(it => it.ToString())) + "|" + IsEnabled.ToString() + "|" + IsFreeze.ToString();
 
+                //VERY IMPORTANT MESSAGE FOR ENDIANESS
+                //Endianess used to be borked in cheats for bizhawk 2.2
+                //So we handle it ourselves and all cheats become little endian
+
                 long _value = 0;
                 if (IsFreeze)
                 {
@@ -1465,18 +1469,25 @@ namespace RTC
 
                     MemoryDomainProxy targetMdp = RTC_MemoryDomains.getProxy(targetDomain, targetAddress);
 
-                    for (int i=0; i< Value.Length; i++)
+                    for (int i = 0; i < Value.Length; i++)
                     {
                         freezeValue[i] = targetMdp.PeekByte(targetAddress + i);
                     }
+
+
+                    if (BigEndian)
+                        freezeValue = RTC_Extensions.FlipWords(freezeValue, freezeValue.Length);
 
                     _value = Convert.ToInt64(RTC_Extensions.getDecimalValue(freezeValue));
 
                 }
                 else
-                    _value = Convert.ToInt64(RTC_Extensions.getDecimalValue(Value));
+                {
 
-                Watch somewatch = Watch.GenerateWatch(mdp.md, targetAddress, (WatchSize)Value.Length, DisplayType, BigEndian, cheatName, _value, 0, 0);
+                    _value = Convert.ToInt64(RTC_Extensions.getDecimalValue(RTC_Extensions.FlipWords(Value, Value.Length)));
+                }
+
+                Watch somewatch = Watch.GenerateWatch(mdp.md, targetAddress, (WatchSize)Value.Length, DisplayType, false, cheatName, _value, 0, 0);
                 Cheat ch = new Cheat(somewatch, unchecked((int)_value), null, true);
                 Global.CheatList.Add(ch);
 
