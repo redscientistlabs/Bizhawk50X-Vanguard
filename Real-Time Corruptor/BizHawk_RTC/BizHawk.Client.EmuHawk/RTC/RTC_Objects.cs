@@ -1463,9 +1463,11 @@ namespace RTC
                 {
                     byte[] freezeValue = new byte[Value.Length];
 
-                    for(int i=0; i< Value.Length; i++)
+                    MemoryDomainProxy targetMdp = RTC_MemoryDomains.getProxy(targetDomain, targetAddress);
+
+                    for (int i=0; i< Value.Length; i++)
                     {
-                        freezeValue[i] = mdp.PeekByte(targetAddress);
+                        freezeValue[i] = targetMdp.PeekByte(targetAddress + i);
                     }
 
                     _value = Convert.ToInt64(RTC_Extensions.getDecimalValue(freezeValue));
@@ -1474,8 +1476,8 @@ namespace RTC
                 else
                     _value = Convert.ToInt64(RTC_Extensions.getDecimalValue(Value));
 
-                Watch somewatch = Watch.GenerateWatch(mdp.md, targetAddress, settings.Size, DisplayType, BigEndian, cheatName, _value, 0, 0);
-                Cheat ch = new Cheat(somewatch, Convert.ToInt32(_value), null, true);
+                Watch somewatch = Watch.GenerateWatch(mdp.md, targetAddress, (WatchSize)Value.Length, DisplayType, BigEndian, cheatName, _value, 0, 0);
+                Cheat ch = new Cheat(somewatch, unchecked((int)_value), null, true);
                 Global.CheatList.Add(ch);
 
             }
@@ -1509,7 +1511,7 @@ namespace RTC
             string cleanDomainName = Domain.Replace("(nametables)", ""); //Shortens the domain name if it contains "(nametables)"
 
             //RTC_TODO: Rewrite the toString method for this
-            return (EnabledString + cleanDomainName + "(" + Convert.ToInt32(Address).ToString() + ")." + DisplayType.ToString() + "(" + RTC_Extensions.getDecimalValue(Value).ToString() + ")");
+            return (EnabledString + cleanDomainName + "(" + Convert.ToInt32(Address).ToString() + ")" + (IsFreeze ? "" : ".Value(" + RTC_Extensions.getDecimalValue(Value).ToString() + ")"));
         }
     }
 

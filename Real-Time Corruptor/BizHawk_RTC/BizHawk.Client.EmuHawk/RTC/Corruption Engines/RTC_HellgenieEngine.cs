@@ -30,7 +30,7 @@ namespace RTC
                     _value[i] = (byte)RTC_Core.RND.Next(255);
 
 
-                return new BlastCheat(_domain, _address, _displaytype, mdp.BigEndian, _value, true, false);
+                return new BlastCheat(_domain, safeAddress, _displaytype, mdp.BigEndian, _value, true, false);
             }
             catch (Exception ex)
             {
