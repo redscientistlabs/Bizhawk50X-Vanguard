@@ -245,9 +245,9 @@
             this.labelErrorDelay.ForeColor = System.Drawing.Color.White;
             this.labelErrorDelay.Location = new System.Drawing.Point(6, 10);
             this.labelErrorDelay.Name = "labelErrorDelay";
-            this.labelErrorDelay.Size = new System.Drawing.Size(81, 17);
+            this.labelErrorDelay.Size = new System.Drawing.Size(80, 17);
             this.labelErrorDelay.TabIndex = 2;
-            this.labelErrorDelay.Text = "Error Delay :";
+            this.labelErrorDelay.Text = "Error delay :";
             // 
             // cbBlastRadius
             // 
@@ -841,9 +841,9 @@
             this.label25.Font = new System.Drawing.Font("Segoe UI", 8F);
             this.label25.Location = new System.Drawing.Point(4, 66);
             this.label25.Name = "label25";
-            this.label25.Size = new System.Drawing.Size(56, 13);
+            this.label25.Size = new System.Drawing.Size(55, 13);
             this.label25.TabIndex = 80;
-            this.label25.Text = "Tilt Value:";
+            this.label25.Text = "Tilt value:";
             // 
             // cbClearPipesOnRewind
             // 
@@ -938,9 +938,9 @@
             this.label8.Font = new System.Drawing.Font("Segoe UI", 8F);
             this.label8.Location = new System.Drawing.Point(4, 40);
             this.label8.Name = "label8";
-            this.label8.Size = new System.Drawing.Size(61, 13);
+            this.label8.Size = new System.Drawing.Size(62, 13);
             this.label8.TabIndex = 0;
-            this.label8.Text = "Max Pipes:";
+            this.label8.Text = "Max pipes:";
             // 
             // gbDistortionEngine
             // 
@@ -1044,9 +1044,9 @@
             this.label7.Font = new System.Drawing.Font("Segoe UI", 8F);
             this.label7.Location = new System.Drawing.Point(4, 40);
             this.label7.Name = "label7";
-            this.label7.Size = new System.Drawing.Size(64, 13);
+            this.label7.Size = new System.Drawing.Size(92, 13);
             this.label7.TabIndex = 0;
-            this.label7.Text = "Dist. Delay:";
+            this.label7.Text = "Distortion delay:";
             // 
             // gbExternalRomPlugin
             // 
@@ -1125,7 +1125,7 @@
             this.cbExternalSelectedPlugin.FormattingEnabled = true;
             this.cbExternalSelectedPlugin.Items.AddRange(new object[] {
             "NULL"});
-            this.cbExternalSelectedPlugin.Location = new System.Drawing.Point(7, 79);
+            this.cbExternalSelectedPlugin.Location = new System.Drawing.Point(7, 68);
             this.cbExternalSelectedPlugin.Name = "cbExternalSelectedPlugin";
             this.cbExternalSelectedPlugin.Size = new System.Drawing.Size(158, 21);
             this.cbExternalSelectedPlugin.TabIndex = 14;
@@ -1136,11 +1136,11 @@
             // 
             this.label10.AutoSize = true;
             this.label10.Font = new System.Drawing.Font("Segoe UI", 8F);
-            this.label10.Location = new System.Drawing.Point(4, 63);
+            this.label10.Location = new System.Drawing.Point(4, 52);
             this.label10.Name = "label10";
-            this.label10.Size = new System.Drawing.Size(89, 13);
+            this.label10.Size = new System.Drawing.Size(90, 13);
             this.label10.TabIndex = 77;
-            this.label10.Text = "Selected Plugin:";
+            this.label10.Text = "Selected plugin:";
             // 
             // gbFreezeEngine
             // 
@@ -1458,7 +1458,7 @@
             this.label9.Name = "label9";
             this.label9.Size = new System.Drawing.Size(60, 13);
             this.label9.TabIndex = 12;
-            this.label9.Text = "Blast Type:";
+            this.label9.Text = "Blast type:";
             // 
             // panel1
             // 

@@ -110,6 +110,56 @@ namespace RTC
         }
         #endregion
 
+        #region BYTE ARRAY EXTENSIONS
+
+        public static long getNumericMaxValue(byte[] Value)
+        {
+            switch (Value.Length)
+            {
+                case 1:
+                    return byte.MaxValue;
+                case 2:
+                    return UInt16.MaxValue;
+                case 4:
+                    return UInt32.MaxValue;
+            }
+
+            return 0;
+        }
+
+        public static decimal getDecimalValue(byte[] Value)
+        {
+            switch (Value.Length)
+            {
+                case 1:
+                    return (int)Value[0];
+                case 2:
+                    return BitConverter.ToUInt16(Value, 0);
+                case 4:
+                    return BitConverter.ToUInt32(Value, 0);
+            }
+
+            return 0;
+        }
+
+        public static byte[] getByteArrayValue(byte[] originalValue, decimal newValue)
+        {
+            switch (originalValue.Length)
+            {
+                case 1:
+                    return new byte[] { (byte)newValue };
+                case 2:
+                    return BitConverter.GetBytes(Convert.ToInt16(newValue));
+                case 4:
+                    return BitConverter.GetBytes(Convert.ToInt32(newValue));
+            }
+
+            return null;
+        }
+
+        #endregion
+
+
         #region COLOR EXTENSIONS
 
         /// <summary>

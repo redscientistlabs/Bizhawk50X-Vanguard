@@ -1101,7 +1101,7 @@ namespace RTC
                 EnabledString = "[x] BlastByte -> ";
 
             string cleanDomainName = Domain.Replace("(nametables)", ""); //Shortens the domain name if it contains "(nametables)"
-            return (EnabledString + cleanDomainName + "(" + Convert.ToInt32(Address).ToString() + ")." + Type.ToString() + "(" + Value.ToString() + ")");
+            return (EnabledString + cleanDomainName + "(" + Convert.ToInt32(Address).ToString() + ")." + Type.ToString() + "(" + RTC_Extensions.getDecimalValue(Value).ToString() + ")");
         }
     }
 
@@ -1506,7 +1506,7 @@ namespace RTC
             string cleanDomainName = Domain.Replace("(nametables)", ""); //Shortens the domain name if it contains "(nametables)"
 
             //RTC_TODO: Rewrite the toString method for this
-            return (EnabledString + cleanDomainName + "(" + Convert.ToInt32(Address).ToString() + ")." + DisplayType.ToString() + "(" + Value.ToString() + ")");
+            return (EnabledString + cleanDomainName + "(" + Convert.ToInt32(Address).ToString() + ")." + DisplayType.ToString() + "(" + RTC_Extensions.getDecimalValue(Value).ToString() + ")");
         }
     }
 
