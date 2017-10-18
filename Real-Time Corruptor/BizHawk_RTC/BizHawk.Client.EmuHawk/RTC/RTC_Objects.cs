@@ -1013,7 +1013,7 @@ namespace RTC
                     switch (Type)
                     {
                         case BlastByteType.SET:
-                            mdp.PokeByte(targetAddress, Value[i]);
+                            mdp.PokeByte(targetAddress + i, Value[i]);
                             break;
 
                         case BlastByteType.ADD:
@@ -1455,25 +1455,27 @@ namespace RTC
                 string targetDomain = RTC_MemoryDomains.getRealDomain(Domain, Address);
                 long targetAddress = RTC_MemoryDomains.getRealAddress(Domain, Address);
 
-                string cheatName = "RTC Cheat|" + targetDomain + "|" + targetAddress.ToString() + "|" + DisplayType.ToString() + "|" + BigEndian.ToString() + "|" + String.Join(",", Value.Select(it => it.ToString())) + "|" + IsEnabled.ToString() + "|" + IsFreeze.ToString();
-
+                
                 for (int i = 0; i < Value.Length; i++)
-                if (!IsFreeze)
                 {
-                        Watch somewatch = Watch.GenerateWatch(mdp.md, targetAddress, settings.Size, DisplayType, BigEndian, cheatName, Value[i], 0, 0);
+                    string cheatName = "RTC Cheat|" + targetDomain + "|" + (targetAddress + i).ToString() + "|" + DisplayType.ToString() + "|" + BigEndian.ToString() + "|" + String.Join(",", Value.Select(it => it.ToString())) + "|" + IsEnabled.ToString() + "|" + IsFreeze.ToString();
+
+                    if (!IsFreeze)
+                    {
+                        Watch somewatch = Watch.GenerateWatch(mdp.md, targetAddress + i, settings.Size, DisplayType, BigEndian, cheatName, Value[i], 0, 0);
                         Cheat ch = new Cheat(somewatch, Value[i], null, true);
                         Global.CheatList.Add(ch);
-                }
-                else
-                {
-                    int _value = mdp.PeekByte(targetAddress + i);
+                    }
+                    else
+                    {
+                        int _value = mdp.PeekByte(targetAddress + i);
 
-                    Watch somewatch = Watch.GenerateWatch(mdp.md, targetAddress, settings.Size, DisplayType, BigEndian, cheatName, _value, 0, 0);
-                    Cheat ch = new Cheat(somewatch, _value, null, true);
-                    Global.CheatList.Add(ch);
-                }
+                        Watch somewatch = Watch.GenerateWatch(mdp.md, targetAddress + i, settings.Size, DisplayType, BigEndian, cheatName, _value, 0, 0);
+                        Cheat ch = new Cheat(somewatch, _value, null, true);
+                        Global.CheatList.Add(ch);
+                    }
                     //RTC_MemoryDomains.FreezeAddress(Address, cheatName);
-
+                }
                 
             }
             catch (Exception ex)
