@@ -1450,33 +1450,34 @@ namespace RTC
                 var settings = new RamSearchEngine.Settings(RTC_MemoryDomains.MDRI.MemoryDomains);
 
                 if (mdp == null)
-					return true;
+                    return true;
 
                 string targetDomain = RTC_MemoryDomains.getRealDomain(Domain, Address);
                 long targetAddress = RTC_MemoryDomains.getRealAddress(Domain, Address);
 
-                
-                for (int i = 0; i < Value.Length; i++)
+
+                string cheatName = "RTC Cheat|" + targetDomain + "|" + (targetAddress).ToString() + "|" + DisplayType.ToString() + "|" + BigEndian.ToString() + "|" + String.Join(",", Value.Select(it => it.ToString())) + "|" + IsEnabled.ToString() + "|" + IsFreeze.ToString();
+
+                long _value = 0;
+                if (IsFreeze)
                 {
-                    string cheatName = "RTC Cheat|" + targetDomain + "|" + (targetAddress + i).ToString() + "|" + DisplayType.ToString() + "|" + BigEndian.ToString() + "|" + String.Join(",", Value.Select(it => it.ToString())) + "|" + IsEnabled.ToString() + "|" + IsFreeze.ToString();
+                    byte[] freezeValue = new byte[Value.Length];
 
-                    if (!IsFreeze)
+                    for(int i=0; i< Value.Length; i++)
                     {
-                        Watch somewatch = Watch.GenerateWatch(mdp.md, targetAddress + i, settings.Size, DisplayType, BigEndian, cheatName, Value[i], 0, 0);
-                        Cheat ch = new Cheat(somewatch, Value[i], null, true);
-                        Global.CheatList.Add(ch);
+                        freezeValue[i] = mdp.PeekByte(targetAddress);
                     }
-                    else
-                    {
-                        int _value = mdp.PeekByte(targetAddress + i);
 
-                        Watch somewatch = Watch.GenerateWatch(mdp.md, targetAddress + i, settings.Size, DisplayType, BigEndian, cheatName, _value, 0, 0);
-                        Cheat ch = new Cheat(somewatch, _value, null, true);
-                        Global.CheatList.Add(ch);
-                    }
-                    //RTC_MemoryDomains.FreezeAddress(Address, cheatName);
+                    _value = Convert.ToInt64(RTC_Extensions.getDecimalValue(freezeValue));
+
                 }
-                
+                else
+                    _value = Convert.ToInt64(RTC_Extensions.getDecimalValue(Value));
+
+                Watch somewatch = Watch.GenerateWatch(mdp.md, targetAddress, settings.Size, DisplayType, BigEndian, cheatName, _value, 0, 0);
+                Cheat ch = new Cheat(somewatch, Convert.ToInt32(_value), null, true);
+                Global.CheatList.Add(ch);
+
             }
             catch (Exception ex)
             {
