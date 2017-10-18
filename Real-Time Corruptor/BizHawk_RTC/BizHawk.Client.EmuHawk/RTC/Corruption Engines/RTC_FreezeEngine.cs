@@ -26,9 +26,18 @@ namespace RTC
                 MemoryDomainProxy mdp = RTC_MemoryDomains.getProxy(_domain, _address);
                 BizHawk.Client.Common.DisplayType _displaytype = BizHawk.Client.Common.DisplayType.Unsigned;
 
-                int _value = mdp.PeekByte(_address);
+                byte[] _value;
+                if (RTC_Core.CustomPrecision == -1)
+                    _value = new byte[mdp.WordSize];
+                else
+                    _value = new byte[RTC_Core.CustomPrecision];
 
-                return new BlastCheat(_domain, _address, _displaytype, mdp.BigEndian, _value, true, true);
+                long safeAddress = _address - (_address % _value.Length);
+
+                for (int i = 0; i < _value.Length; i++)
+                    _value[i] = mdp.PeekByte(safeAddress + i);
+
+                return new BlastCheat(_domain, safeAddress, _displaytype, mdp.BigEndian, _value, true, true);
             }
             catch (Exception ex)
             {

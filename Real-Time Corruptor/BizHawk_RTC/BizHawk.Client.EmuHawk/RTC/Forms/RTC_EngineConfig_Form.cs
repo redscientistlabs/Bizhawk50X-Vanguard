@@ -379,6 +379,8 @@ namespace RTC
             gbVectorEngine.Visible = false;
             gbExternalRomPlugin.Visible = false;
 
+            pnCustomPrecision.Visible = false;
+
             RTC_Core.coreForm.btnAutoCorrupt.Visible = true;
             RTC_Core.ghForm.pnIntensity.Visible = true;
             RTC_Core.ecForm.pnGeneralParameters.Visible = true;
@@ -388,26 +390,31 @@ namespace RTC
                 case "Nightmare Engine":
                     RTC_Core.SelectedEngine = CorruptionEngine.NIGHTMARE;
                     gbNightmareEngine.Visible = true;
+                    pnCustomPrecision.Visible = true;
                     break;
 
                 case "Hellgenie Engine":
                     RTC_Core.SelectedEngine = CorruptionEngine.HELLGENIE;
                     gbHellgenieEngine.Visible = true;
+                    pnCustomPrecision.Visible = true;
                     break;
 
                 case "Distortion Engine":
                     RTC_Core.SelectedEngine = CorruptionEngine.DISTORTION;
                     gbDistortionEngine.Visible = true;
+                    pnCustomPrecision.Visible = true;
                     break;
 
                 case "Freeze Engine":
                     RTC_Core.SelectedEngine = CorruptionEngine.FREEZE;
                     gbFreezeEngine.Visible = true;
+                    pnCustomPrecision.Visible = true;
                     break;
 
                 case "Pipe Engine":
                     RTC_Core.SelectedEngine = CorruptionEngine.PIPE;
                     gbPipeEngine.Visible = true;
+                    pnCustomPrecision.Visible = true;
                     break;
 
                 case "Vector Engine":
@@ -521,7 +528,7 @@ namespace RTC
 
         private void cbLockPipes_CheckedChanged(object sender, EventArgs e)
         {
-            RTC_PipeEngine.LockPipes = cbLockPipes.Checked;
+            RTC_PipeEngine.LockPipes = pnCustomPrecision.Checked;
             RTC_Core.SendCommandToBizhawk(new RTC_Command(CommandType.REMOTE_SET_PIPE_LOCKPIPES) { objectValue = RTC_PipeEngine.LockPipes });
         }
 
@@ -545,33 +552,53 @@ namespace RTC
             {
                 case "Extended":
                     RTC_VectorEngine.limiterList = RTC_VectorEngine.extendedListOfConstants;
+                    lbVectorEngineLimiterText1.Text = "-65536.00 to +65536.00 in low res";
+                    lbVectorEngineLimiterText2.Text = "including tiny decimals";
                     break;
                 case "Extended+":
                     RTC_VectorEngine.limiterList = RTC_VectorEngine.listOfPositiveConstants;
+                    lbVectorEngineLimiterText1.Text = "0 to +65536 in low res";
+                    lbVectorEngineLimiterText2.Text = "including tiny decimals";
                     break;
                 case "Extended-":
                     RTC_VectorEngine.limiterList = RTC_VectorEngine.listOfNegativeConstants;
+                    lbVectorEngineLimiterText1.Text = "0 to -65536 in low res";
+                    lbVectorEngineLimiterText2.Text = "including tiny decimals";
                     break;
                 case "Whole":
                     RTC_VectorEngine.limiterList = RTC_VectorEngine.listOfWholeConstants;
+                    lbVectorEngineLimiterText1.Text = "-65536.00 to +65536.00 in low res";
+                    lbVectorEngineLimiterText2.Text = "integral numbers";
                     break;
                 case "Whole+":
                     RTC_VectorEngine.limiterList = RTC_VectorEngine.listOfWholePositiveConstants;
+                    lbVectorEngineLimiterText1.Text = "0 to +65536.00 in low res";
+                    lbVectorEngineLimiterText2.Text = "integral numbers";
                     break;
                 case "Tiny":
                     RTC_VectorEngine.limiterList = RTC_VectorEngine.listOfTinyConstants;
+                    lbVectorEngineLimiterText1.Text = "tiny decimals between";
+                    lbVectorEngineLimiterText2.Text = "-1.00 and +1.00";
                     break;
                 case "One":
                     RTC_VectorEngine.limiterList = RTC_VectorEngine.constantPositiveOne;
+                    lbVectorEngineLimiterText1.Text = "The number 1.00";
+                    lbVectorEngineLimiterText2.Text = "";
                     break;
                 case "One*":
                     RTC_VectorEngine.limiterList = RTC_VectorEngine.constantOne;
+                    lbVectorEngineLimiterText1.Text = "The numbers 1.00 and -1.00";
+                    lbVectorEngineLimiterText2.Text = "";
                     break;
                 case "Two":
                     RTC_VectorEngine.limiterList = RTC_VectorEngine.constantPositiveTwo;
+                    lbVectorEngineLimiterText1.Text = "The number 2.00";
+                    lbVectorEngineLimiterText2.Text = "";
                     break;
                 case "AnyFloat":
                     RTC_VectorEngine.limiterList = null;
+                    lbVectorEngineLimiterText1.Text = "Any address is legal";
+                    lbVectorEngineLimiterText2.Text = "";
                     break;
 
             }
@@ -588,33 +615,53 @@ namespace RTC
             {
                 case "Extended":
                     RTC_VectorEngine.valueList = RTC_VectorEngine.extendedListOfConstants;
+                    lbVectorEngineValueText1.Text = "-65536.00 to +65536.00 in low res";
+                    lbVectorEngineValueText2.Text = "including tiny decimals";
                     break;
                 case "Extended+":
                     RTC_VectorEngine.valueList = RTC_VectorEngine.listOfPositiveConstants;
+                    lbVectorEngineValueText1.Text = "0 to +65536 in low res";
+                    lbVectorEngineValueText2.Text = "including tiny decimals";
                     break;
                 case "Extended-":
                     RTC_VectorEngine.valueList = RTC_VectorEngine.listOfNegativeConstants;
+                    lbVectorEngineValueText1.Text = "0 to -65536 in low res";
+                    lbVectorEngineValueText2.Text = "including tiny decimals";
                     break;
                 case "Whole":
                     RTC_VectorEngine.valueList = RTC_VectorEngine.listOfWholeConstants;
+                    lbVectorEngineValueText1.Text = "-65536.00 to +65536.00 in low res";
+                    lbVectorEngineValueText2.Text = "integral numbers";
                     break;
                 case "Whole+":
                     RTC_VectorEngine.valueList = RTC_VectorEngine.listOfWholePositiveConstants;
+                    lbVectorEngineValueText1.Text = "0 to +65536.00 in low res";
+                    lbVectorEngineValueText2.Text = "integral numbers";
                     break;
                 case "Tiny":
                     RTC_VectorEngine.valueList = RTC_VectorEngine.listOfTinyConstants;
+                    lbVectorEngineValueText1.Text = "tiny decimals between";
+                    lbVectorEngineValueText2.Text = "-1.00 and +1.00";
                     break;
                 case "One":
                     RTC_VectorEngine.valueList = RTC_VectorEngine.constantPositiveOne;
+                    lbVectorEngineValueText1.Text = "The number 1.00";
+                    lbVectorEngineValueText2.Text = "";
                     break;
                 case "One*":
                     RTC_VectorEngine.valueList = RTC_VectorEngine.constantOne;
+                    lbVectorEngineValueText1.Text = "The numbers 1.00 and -1.00";
+                    lbVectorEngineValueText2.Text = "";
                     break;
                 case "Two":
                     RTC_VectorEngine.valueList = RTC_VectorEngine.constantPositiveTwo;
+                    lbVectorEngineValueText1.Text = "The number 2.00";
+                    lbVectorEngineValueText2.Text = "";
                     break;
                 case "AnyFloat":
                     RTC_VectorEngine.valueList = null;
+                    lbVectorEngineValueText1.Text = "Randomly generated Float";
+                    lbVectorEngineValueText2.Text = "";
                     break;
             }
 
@@ -624,8 +671,8 @@ namespace RTC
 
         private void nmTiltPipeValue_ValueChanged(object sender, EventArgs e)
         {
-            RTC_PipeEngine.TiltValue = Convert.ToInt32(nmTiltPipeValue.Value);
-            RTC_Core.SendCommandToBizhawk(new RTC_Command(CommandType.REMOTE_SET_PIPE_TILTVALUE) { objectValue = RTC_PipeEngine.TiltValue });
+            RTC_PipeEngine.tiltValue = Convert.ToInt32(nmTiltPipeValue.Value);
+            RTC_Core.SendCommandToBizhawk(new RTC_Command(CommandType.REMOTE_SET_PIPE_TILTVALUE) { objectValue = RTC_PipeEngine.tiltValue });
         }
 
 
@@ -761,6 +808,48 @@ namespace RTC
 
         private void nmMaxPipes_ValueChanged(object sender, KeyEventArgs e)
         {
+
+        }
+
+        private void cbUseCustomPrecision_CheckedChanged(object sender, EventArgs e)
+        {
+            if(cbUseCustomPrecision.Checked)
+            {
+                if (cbCustomPrecision.SelectedIndex == -1)
+                    cbCustomPrecision.SelectedIndex = 0;
+
+
+            }
+            else
+            {
+                cbCustomPrecision.SelectedIndex = -1;
+                RTC_Core.CustomPrecision = -1;
+                RTC_Core.SendCommandToBizhawk(new RTC_Command(CommandType.REMOTE_SET_CUSTOMPRECISION){objectValue = RTC_Core.CustomPrecision});
+            }
+            
+        }
+
+        private void cbCustomPrecision_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            if(cbCustomPrecision.SelectedIndex != -1)
+            {
+                cbUseCustomPrecision.Checked = true;
+                
+                switch(cbCustomPrecision.SelectedIndex)
+                {
+                    case 0:
+                        RTC_Core.CustomPrecision = 1;
+                        break;
+                    case 1:
+                        RTC_Core.CustomPrecision = 2;
+                        break;
+                    case 2:
+                        RTC_Core.CustomPrecision = 4;
+                        break;
+                }
+
+                RTC_Core.SendCommandToBizhawk(new RTC_Command(CommandType.REMOTE_SET_CUSTOMPRECISION) { objectValue = RTC_Core.CustomPrecision });
+            }
 
         }
     }

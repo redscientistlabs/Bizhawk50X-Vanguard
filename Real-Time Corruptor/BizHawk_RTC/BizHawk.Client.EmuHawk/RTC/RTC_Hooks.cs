@@ -196,8 +196,9 @@ namespace RTC
 
 			//prepare memory domains in advance on bizhawk side
 			RTC_MemoryDomains.RefreshDomains(false);
-
-			if (RTC_StockpileManager.currentGameName != lastGameName)
+            
+          
+            if (RTC_StockpileManager.currentGameName != lastGameName)
             {
 				RTC_Core.SendCommandToRTC(new RTC_Command(CommandType.REMOTE_EVENT_LOADGAMEDONE_NEWGAME));
 			}

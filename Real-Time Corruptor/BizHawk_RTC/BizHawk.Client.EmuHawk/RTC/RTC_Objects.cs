@@ -956,13 +956,14 @@ namespace RTC
         public override string Domain { get; set; }
         public override long Address { get; set; }
         public BlastByteType Type;
-        public int Value;
+        public byte[] Value;
         public override bool IsEnabled { get; set; }
 
-		public BlastByte(string _domain, long _address, BlastByteType _type, int _value, bool _isEnabled)
+		public BlastByte(string _domain, long _address, BlastByteType _type, byte[] _value, bool _isEnabled)
         {
             Domain = _domain;
-            Address = _address;
+            Address = _address - (_address % _value.Length);
+
             Type = _type;
             Value = _value;
             IsEnabled = _isEnabled;
@@ -1008,23 +1009,24 @@ namespace RTC
 
                 long targetAddress = RTC_MemoryDomains.getRealAddress(Domain, Address);
 
-                switch (Type)
-                {
-                    case BlastByteType.SET:
-                        mdp.PokeByte(targetAddress, (byte)Value);
-                        break;
+                for(int i=0; i<Value.Length; i++)
+                    switch (Type)
+                    {
+                        case BlastByteType.SET:
+                            mdp.PokeByte(targetAddress, Value[i]);
+                            break;
 
-                    case BlastByteType.ADD:
-                        mdp.PokeByte(targetAddress, (byte)(mdp.PeekByte(targetAddress) + Value));
-                        break;
+                        case BlastByteType.ADD:
+                            mdp.PokeByte(targetAddress, (byte)(mdp.PeekByte(targetAddress + i) + Value[i]));
+                            break;
 
-                    case BlastByteType.SUBSTRACT:
-                        mdp.PokeByte(targetAddress, (byte)(mdp.PeekByte(targetAddress) - Value));
-                        break;
+                        case BlastByteType.SUBSTRACT:
+                            mdp.PokeByte(targetAddress, (byte)(mdp.PeekByte(targetAddress + i) - Value[i]));
+                            break;
 
-                    case BlastByteType.NONE:
-                        return true;
-                }
+                        case BlastByteType.NONE:
+                            return true;
+                    }
 
             }
             catch (Exception ex)
@@ -1051,7 +1053,12 @@ namespace RTC
                 if (mdp == null || Type == BlastByteType.NONE)
                     return null;
 
-                return new BlastByte(Domain, Address, BlastByteType.SET, mdp.PeekByte(targetAddress), true);
+                byte[] _value = new byte[Value.Length];
+
+                for(int i=0; i<_value.Length; i++)
+                    _value[i] = mdp.PeekByte(targetAddress + i);
+
+                return new BlastByte(Domain, Address, BlastByteType.SET, _value, true);
 
             }
             catch (Exception ex)
@@ -1067,7 +1074,8 @@ namespace RTC
 		{
 			if(Type == BlastByteType.SET)
 			{
-				Value = RTC_Core.RND.Next(0, 255);
+                for(int i=0; i<Value.Length; i++)
+				    Value[i] = (byte)RTC_Core.RND.Next(0, 255);
 			}
 			else if(Type == BlastByteType.ADD || Type == BlastByteType.SUBSTRACT)
 			{
@@ -1222,11 +1230,12 @@ namespace RTC
         public override long Address { get; set; }
         public string PipeDomain;
 		public long PipeAddress;
+        public int PipeSize;
         public int TiltValue;
 
         public override bool IsEnabled { get; set; }
 
-		public BlastPipe(string _domain, long _address, string _pipeDomain, long _pipeAddress, int _tiltValue, bool _isEnabled)
+		public BlastPipe(string _domain, long _address, string _pipeDomain, long _pipeAddress, int _tiltValue, int _pipeSize, bool _isEnabled)
 		{
 			Domain = _domain;
 			Address = _address;
@@ -1335,7 +1344,12 @@ namespace RTC
 				if (mdp == null)
 					return null;
 
-				return new BlastByte(PipeDomain, PipeAddress, BlastByteType.SET, mdp.PeekByte(PipeAddress), true);
+                byte[] _value = new byte[PipeSize];
+
+                for (int i = 0; i < _value.Length; i++)
+                    _value[i] = mdp.PeekByte(PipeAddress + i);
+
+                return new BlastByte(PipeDomain, PipeAddress, BlastByteType.SET, _value, true);
 
 			}
 			catch (Exception ex)
@@ -1376,20 +1390,21 @@ namespace RTC
         public override long Address { get; set; }
         public BizHawk.Client.Common.DisplayType DisplayType;
         public bool BigEndian;
-        public int Value;
+        public byte[] Value;
         public bool IsFreeze;
 
 		public override bool IsEnabled { get; set; }
 
-		public BlastCheat(string _domain, long _address, BizHawk.Client.Common.DisplayType _displayType, bool _bigEndian, int _value, bool _isEnabled, bool _isFreeze)
+		public BlastCheat(string _domain, long _address, BizHawk.Client.Common.DisplayType _displayType, bool _bigEndian, byte[] _value, bool _isEnabled, bool _isFreeze)
         {
 			//because of this, blastcheats can't be generated on standalone side.
             var settings = new RamSearchEngine.Settings(RTC_MemoryDomains.MDRI.MemoryDomains);
 
             Domain = _domain;
-			Address = _address - (_address % (int)settings.Size);
 
-            
+            //Address = _address - (_address % (int)settings.Size);
+            Address = _address - (_address % _value.Length);
+
             DisplayType = settings.Type;
             BigEndian = settings.BigEndian;
 
@@ -1440,20 +1455,21 @@ namespace RTC
                 string targetDomain = RTC_MemoryDomains.getRealDomain(Domain, Address);
                 long targetAddress = RTC_MemoryDomains.getRealAddress(Domain, Address);
 
-                string cheatName = "RTC Cheat|" + targetDomain + "|" + targetAddress.ToString() + "|" + DisplayType.ToString() + "|" + BigEndian.ToString() + "|" + Value.ToString() + "|" + IsEnabled.ToString() + "|" + IsFreeze.ToString();
+                string cheatName = "RTC Cheat|" + targetDomain + "|" + targetAddress.ToString() + "|" + DisplayType.ToString() + "|" + BigEndian.ToString() + "|" + String.Join(",", Value.Select(it => it.ToString())) + "|" + IsEnabled.ToString() + "|" + IsFreeze.ToString();
 
+                for (int i = 0; i < Value.Length; i++)
                 if (!IsFreeze)
                 {
-                    Watch somewatch = Watch.GenerateWatch(mdp.md, targetAddress, settings.Size, DisplayType, BigEndian, cheatName, Value, 0,0);
-                    Cheat ch = new Cheat(somewatch, Value, null, true);
-                    Global.CheatList.Add(ch);
+                        Watch somewatch = Watch.GenerateWatch(mdp.md, targetAddress, settings.Size, DisplayType, BigEndian, cheatName, Value[i], 0, 0);
+                        Cheat ch = new Cheat(somewatch, Value[i], null, true);
+                        Global.CheatList.Add(ch);
                 }
                 else
                 {
-                    int _value = mdp.PeekByte(targetAddress);
+                    int _value = mdp.PeekByte(targetAddress + i);
 
                     Watch somewatch = Watch.GenerateWatch(mdp.md, targetAddress, settings.Size, DisplayType, BigEndian, cheatName, _value, 0, 0);
-                    Cheat ch = new Cheat(somewatch, Value, null, true);
+                    Cheat ch = new Cheat(somewatch, _value, null, true);
                     Global.CheatList.Add(ch);
                 }
                     //RTC_MemoryDomains.FreezeAddress(Address, cheatName);
@@ -1477,8 +1493,9 @@ namespace RTC
 
 		public override void Reroll()
 		{
-			Value = RTC_Core.RND.Next(255);
-		}
+            for (int i = 0; i < Value.Length; i++)
+                Value[i] = (byte)RTC_Core.RND.Next(0, 255);
+        }
 
 		public override string ToString()
         {

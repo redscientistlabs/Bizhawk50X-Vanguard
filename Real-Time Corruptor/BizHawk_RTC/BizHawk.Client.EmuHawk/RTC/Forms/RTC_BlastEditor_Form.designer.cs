@@ -217,7 +217,7 @@
             this.nmValueEdit.ForeColor = System.Drawing.Color.White;
             this.nmValueEdit.Location = new System.Drawing.Point(18, 39);
             this.nmValueEdit.Maximum = new decimal(new int[] {
-            2147483647,
+            255,
             0,
             0,
             0});

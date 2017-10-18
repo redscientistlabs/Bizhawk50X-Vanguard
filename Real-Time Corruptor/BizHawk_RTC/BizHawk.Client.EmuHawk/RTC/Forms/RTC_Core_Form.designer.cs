@@ -90,7 +90,7 @@
             this.cbUseGameProtection.AutoSize = true;
             this.cbUseGameProtection.Font = new System.Drawing.Font("Segoe UI", 8F);
             this.cbUseGameProtection.ForeColor = System.Drawing.Color.White;
-            this.cbUseGameProtection.Location = new System.Drawing.Point(9, 26);
+            this.cbUseGameProtection.Location = new System.Drawing.Point(9, 30);
             this.cbUseGameProtection.Name = "cbUseGameProtection";
             this.cbUseGameProtection.Size = new System.Drawing.Size(68, 17);
             this.cbUseGameProtection.TabIndex = 76;
@@ -167,9 +167,9 @@
             this.pnAutoKillSwitch.Controls.Add(this.cbUseAutoKillSwitch);
             this.pnAutoKillSwitch.Controls.Add(this.pbAutoKillSwitchTimeout);
             this.pnAutoKillSwitch.Controls.Add(this.label4);
-            this.pnAutoKillSwitch.Location = new System.Drawing.Point(5, 373);
+            this.pnAutoKillSwitch.Location = new System.Drawing.Point(5, 378);
             this.pnAutoKillSwitch.Name = "pnAutoKillSwitch";
-            this.pnAutoKillSwitch.Size = new System.Drawing.Size(140, 106);
+            this.pnAutoKillSwitch.Size = new System.Drawing.Size(140, 101);
             this.pnAutoKillSwitch.TabIndex = 118;
             this.pnAutoKillSwitch.Tag = "color:dark";
             this.pnAutoKillSwitch.Visible = false;
@@ -181,7 +181,7 @@
             this.btnAutoKillSwitchExecute.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnAutoKillSwitchExecute.Font = new System.Drawing.Font("Segoe UI Semibold", 9F, System.Drawing.FontStyle.Bold);
             this.btnAutoKillSwitchExecute.ForeColor = System.Drawing.Color.Black;
-            this.btnAutoKillSwitchExecute.Location = new System.Drawing.Point(9, 72);
+            this.btnAutoKillSwitchExecute.Location = new System.Drawing.Point(9, 65);
             this.btnAutoKillSwitchExecute.Name = "btnAutoKillSwitchExecute";
             this.btnAutoKillSwitchExecute.Size = new System.Drawing.Size(106, 25);
             this.btnAutoKillSwitchExecute.TabIndex = 118;
@@ -200,7 +200,7 @@
             "Kill",
             "Kill + Restart",
             "Restart + Reset"});
-            this.cbAutoKillSwitchExecuteAction.Location = new System.Drawing.Point(9, 72);
+            this.cbAutoKillSwitchExecuteAction.Location = new System.Drawing.Point(9, 65);
             this.cbAutoKillSwitchExecuteAction.Name = "cbAutoKillSwitchExecuteAction";
             this.cbAutoKillSwitchExecuteAction.Size = new System.Drawing.Size(123, 25);
             this.cbAutoKillSwitchExecuteAction.TabIndex = 119;
@@ -213,7 +213,7 @@
             this.cbUseAutoKillSwitch.CheckState = System.Windows.Forms.CheckState.Checked;
             this.cbUseAutoKillSwitch.Font = new System.Drawing.Font("Segoe UI", 8F);
             this.cbUseAutoKillSwitch.ForeColor = System.Drawing.Color.White;
-            this.cbUseAutoKillSwitch.Location = new System.Drawing.Point(9, 25);
+            this.cbUseAutoKillSwitch.Location = new System.Drawing.Point(9, 28);
             this.cbUseAutoKillSwitch.Name = "cbUseAutoKillSwitch";
             this.cbUseAutoKillSwitch.Size = new System.Drawing.Size(68, 17);
             this.cbUseAutoKillSwitch.TabIndex = 120;
@@ -223,11 +223,11 @@
             // 
             // pbAutoKillSwitchTimeout
             // 
-            this.pbAutoKillSwitchTimeout.Location = new System.Drawing.Point(9, 44);
+            this.pbAutoKillSwitchTimeout.Location = new System.Drawing.Point(9, 49);
             this.pbAutoKillSwitchTimeout.MarqueeAnimationSpeed = 1;
             this.pbAutoKillSwitchTimeout.Maximum = 13;
             this.pbAutoKillSwitchTimeout.Name = "pbAutoKillSwitchTimeout";
-            this.pbAutoKillSwitchTimeout.Size = new System.Drawing.Size(123, 20);
+            this.pbAutoKillSwitchTimeout.Size = new System.Drawing.Size(123, 13);
             this.pbAutoKillSwitchTimeout.Step = 1;
             this.pbAutoKillSwitchTimeout.TabIndex = 119;
             this.pbAutoKillSwitchTimeout.Tag = "17";
@@ -253,7 +253,7 @@
             this.pnCrashProtection.Controls.Add(this.cbUseGameProtection);
             this.pnCrashProtection.Location = new System.Drawing.Point(5, 291);
             this.pnCrashProtection.Name = "pnCrashProtection";
-            this.pnCrashProtection.Size = new System.Drawing.Size(140, 79);
+            this.pnCrashProtection.Size = new System.Drawing.Size(140, 84);
             this.pnCrashProtection.TabIndex = 116;
             this.pnCrashProtection.Tag = "color:dark";
             this.pnCrashProtection.Visible = false;
@@ -265,7 +265,7 @@
             this.btnGpJumpNow.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnGpJumpNow.Font = new System.Drawing.Font("Segoe UI Semibold", 8F, System.Drawing.FontStyle.Bold);
             this.btnGpJumpNow.ForeColor = System.Drawing.Color.Black;
-            this.btnGpJumpNow.Location = new System.Drawing.Point(73, 45);
+            this.btnGpJumpNow.Location = new System.Drawing.Point(73, 49);
             this.btnGpJumpNow.Name = "btnGpJumpNow";
             this.btnGpJumpNow.Size = new System.Drawing.Size(59, 23);
             this.btnGpJumpNow.TabIndex = 117;
@@ -283,7 +283,7 @@
             this.btnGpJumpBack.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnGpJumpBack.Font = new System.Drawing.Font("Segoe UI Semibold", 8F, System.Drawing.FontStyle.Bold);
             this.btnGpJumpBack.ForeColor = System.Drawing.Color.Black;
-            this.btnGpJumpBack.Location = new System.Drawing.Point(9, 45);
+            this.btnGpJumpBack.Location = new System.Drawing.Point(9, 49);
             this.btnGpJumpBack.Name = "btnGpJumpBack";
             this.btnGpJumpBack.Size = new System.Drawing.Size(59, 23);
             this.btnGpJumpBack.TabIndex = 116;

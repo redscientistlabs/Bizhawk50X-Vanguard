@@ -12,7 +12,7 @@ namespace RTC
     public static class RTC_PipeEngine
     {
         public static int MaxPipes = 20;
-        public static int TiltValue = 0;
+        public static int tiltValue = 0;
         public static Queue<BlastUnit> AllBlastPipes = new Queue<BlastUnit>();
 
         public static bool ChainedPipes = true;
@@ -64,19 +64,30 @@ namespace RTC
 			
             try
             {
+                
+                MemoryDomainProxy mdp = RTC_MemoryDomains.getProxy(_domain, _address);
+                int pipeSize;
+
+                if (RTC_Core.CustomPrecision == -1)
+                    pipeSize = mdp.WordSize;
+                else
+                    pipeSize = RTC_Core.CustomPrecision;
+
+                long safeAddress = _address - (_address % pipeSize);
+
                 if (ChainedPipes)
                 {
                     if (lastDomain == null) // The first unit will always be null
                     {
                         lastDomain = _domain;
-                        lastAddress = _address;
+                        lastAddress = safeAddress;
                         return null;
                     }
                     else
                     {
-                        BlastPipe bp = new BlastPipe(_domain, _address, lastDomain, lastAddress, TiltValue, true);
+                        BlastPipe bp = new BlastPipe(_domain, safeAddress, lastDomain, lastAddress, tiltValue, pipeSize, true);
                         lastDomain = _domain;
-                        lastAddress = _address;
+                        lastAddress = safeAddress;
                         return bp;
 
                     }
@@ -84,9 +95,11 @@ namespace RTC
                 else
                 {
                     var pipeEnd = RTC_Core.GetBlastTarget();
-                    BlastPipe bp = new BlastPipe(_domain, _address, pipeEnd.domain, pipeEnd.address, TiltValue, true);
+                    long safepipeEndAddress = pipeEnd.address - (pipeEnd.address % pipeSize);
+
+                    BlastPipe bp = new BlastPipe(_domain, safeAddress, pipeEnd.domain, safepipeEndAddress, tiltValue, pipeSize, true);
                     lastDomain = _domain;
-                    lastAddress = _address;
+                    lastAddress = safeAddress;
                     return bp;
                 }
 

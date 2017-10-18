@@ -21,7 +21,7 @@ namespace RTC
         public static Random RND = new Random();
 
         //General RTC Values
-        public static string RtcVersion = "3.07";
+        public static string RtcVersion = "3.08";
 
         //Directories
         public static string bizhawkDir = Directory.GetCurrentDirectory();
@@ -30,6 +30,7 @@ namespace RTC
 
         //Engine Values
         public static CorruptionEngine SelectedEngine = CorruptionEngine.NIGHTMARE;
+        public static int CustomPrecision = -1;
 		public static int Intensity = 1;
 		public static int ErrorDelay = 1;
         public static BlastRadius Radius = BlastRadius.SPREAD;

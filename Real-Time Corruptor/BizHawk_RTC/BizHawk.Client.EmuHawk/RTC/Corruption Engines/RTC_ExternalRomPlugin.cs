@@ -77,9 +77,9 @@ namespace RTC
                 if (Original[i] != Corrupt[i] && i >= rp.skipbytes)
                 {
                     if (i - rp.skipbytes >= maxaddress)
-                        bl.Layer.Add(new BlastByte(rp.seconddomain, (i - rp.skipbytes) - maxaddress, BlastByteType.SET, Convert.ToInt32(Corrupt[i]), true));
+                        bl.Layer.Add(new BlastByte(rp.seconddomain, (i - rp.skipbytes) - maxaddress, BlastByteType.SET, new byte[] {Corrupt[i]}, true));
                     else
-                        bl.Layer.Add(new BlastByte(rp.primarydomain, i - rp.skipbytes, BlastByteType.SET, Convert.ToInt32(Corrupt[i]), true));
+                        bl.Layer.Add(new BlastByte(rp.primarydomain, i - rp.skipbytes, BlastByteType.SET, new byte[] {Corrupt[i]}, true));
                 }
             }
 

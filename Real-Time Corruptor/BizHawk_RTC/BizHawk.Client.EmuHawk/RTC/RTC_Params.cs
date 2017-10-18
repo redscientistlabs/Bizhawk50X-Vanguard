@@ -22,7 +22,8 @@ namespace RTC
 		Ref[] refs = {
 
 			new Ref(() => RTC_Core.SelectedEngine, x => { RTC_Core.SelectedEngine = (CorruptionEngine)x; }),
-			new Ref(() => RTC_Core.Intensity, x => { RTC_Core.Intensity = (int)x; }),
+            new Ref(() => RTC_Core.CustomPrecision, x => { RTC_Core.CustomPrecision = (int)x; }),
+            new Ref(() => RTC_Core.Intensity, x => { RTC_Core.Intensity = (int)x; }),
 			new Ref(() => RTC_Core.ErrorDelay, x => { RTC_Core.ErrorDelay = (int)x; }),
 			new Ref(() => RTC_Core.Radius, x => { RTC_Core.Radius = (BlastRadius)x; }),
 			

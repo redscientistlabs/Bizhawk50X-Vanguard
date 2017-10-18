@@ -496,7 +496,7 @@ namespace RTC
 					BizHawk.Client.Common.DisplayType _displayType = BizHawk.Client.Common.DisplayType.Unsigned;
 
 					bool _bigEndian = Convert.ToBoolean(disassembleCheat[4]);
-					int _value = Convert.ToInt32(disassembleCheat[5]);
+					byte[] _value = disassembleCheat[5].Split(',').Select(it => Convert.ToByte(it)).ToArray();
 					bool _isEnabled = Convert.ToBoolean(disassembleCheat[6]);
 					bool _isFreeze = Convert.ToBoolean(disassembleCheat[7]);
 

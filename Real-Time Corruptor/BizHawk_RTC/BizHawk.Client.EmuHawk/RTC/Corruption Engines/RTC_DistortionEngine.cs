@@ -36,7 +36,7 @@ namespace RTC
             try
             {
                 BlastByteType Type = BlastByteType.SET;
-                int Value = 1;
+                byte[] Value = new byte[] { 1 };
                 BlastByte bb = new BlastByte(_domain, _address, Type, Value, true);
                 return bb.GetBackup();
 

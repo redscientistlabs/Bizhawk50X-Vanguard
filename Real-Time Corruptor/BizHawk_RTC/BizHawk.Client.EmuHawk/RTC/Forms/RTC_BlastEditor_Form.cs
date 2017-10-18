@@ -140,6 +140,57 @@ namespace RTC
 			RefreshBlastLayer();
 		}
 
+        public long getNumericMaxValue(byte[] Value)
+        {
+            switch(Value.Length)
+            {
+                case 1:
+                    return byte.MaxValue;
+                case 2:
+                    return Int16.MaxValue;
+                case 4:
+                    return Int32.MaxValue;
+                case 8:
+                    return Int64.MaxValue;
+            }
+
+            return 0;
+        }
+        
+        public decimal getDecimalValue(byte[] Value)
+        {
+            switch (Value.Length)
+            {
+                case 1:
+                    return (int)Value[0];
+                case 2:
+                    return BitConverter.ToInt16(Value, 0);
+                case 4:
+                    return BitConverter.ToInt32(Value, 0);
+                case 8:
+                    return BitConverter.ToInt64(Value, 0);
+            }
+
+            return 0;
+        }
+
+        public byte[] getByteArrayValue(byte[] originalValue, decimal newValue)
+        {
+            switch (originalValue.Length)
+            {
+                case 1:
+                    return new byte[] { (byte)newValue };
+                case 2:
+                    return BitConverter.GetBytes(Convert.ToInt16(newValue));
+                case 4:
+                    return BitConverter.GetBytes(Convert.ToInt32(newValue));
+                case 8:
+                    return BitConverter.GetBytes(Convert.ToInt64(newValue));
+            }
+
+            return null;
+        }
+
 		private void lbBlastLayer_SelectedIndexChanged(object sender, EventArgs e)
 		{
 			gbAddressEdit.Visible = false;
@@ -151,21 +202,31 @@ namespace RTC
 			if (lbBlastLayer.SelectedIndex == -1)
 				return;
 
-			if(lbBlastLayer.SelectedItem is BlastByte)
+            BlastUnit bu = (BlastUnit)lbBlastLayer.SelectedItem;
+            nmValueEdit.Value = 0;
+            nmValueEdit.Maximum = Int64.MaxValue;
+
+            if (lbBlastLayer.SelectedItem is BlastByte)
 			{
 				gbAddressEdit.Visible = true;
 				gbValueEdit.Visible = true;
 				nmAddressEdit.Value = (lbBlastLayer.SelectedItem as BlastByte).Address;
-				nmValueEdit.Value = (lbBlastLayer.SelectedItem as BlastByte).Value;
+
+                var bb = (bu as BlastByte);
+                nmValueEdit.Maximum = getNumericMaxValue(bb.Value);
+                nmValueEdit.Value = getDecimalValue(bb.Value);
 			}
 			else if (lbBlastLayer.SelectedItem is BlastCheat)
 			{
 				gbAddressEdit.Visible = true;
 				nmAddressEdit.Value = (lbBlastLayer.SelectedItem as BlastCheat).Address;
-				if(!(lbBlastLayer.SelectedItem as BlastCheat).IsFreeze)
+                var bc = (bu as BlastCheat);
+                if (!bc.IsFreeze)
 				{
 					gbValueEdit.Visible = true;
-					nmValueEdit.Value = (lbBlastLayer.SelectedItem as BlastCheat).Value;
+                    
+                    nmValueEdit.Maximum = getNumericMaxValue(bc.Value);
+                    nmValueEdit.Value = getDecimalValue(bc.Value);
 				}
 			}
 			else if (lbBlastLayer.SelectedItem is BlastPipe)
@@ -175,9 +236,10 @@ namespace RTC
 
 				gbAddressEdit.Visible = true;
 				gbValueEdit.Visible = true;
-				nmAddressEdit.Value = (lbBlastLayer.SelectedItem as BlastPipe).Address;
-				nmValueEdit.Value = (lbBlastLayer.SelectedItem as BlastPipe).PipeAddress;
-			}
+				nmAddressEdit.Value = (bu as BlastPipe).Address;
+				nmValueEdit.Value = (bu as BlastPipe).PipeAddress;
+                nmValueEdit.Maximum = 0;
+            }
 		}
 
 		private void btnAdressUpdate_Click(object sender, EventArgs e)
@@ -195,10 +257,10 @@ namespace RTC
 		private void btnValueUpdate_Click(object sender, EventArgs e)
 		{
 			if (lbBlastLayer.SelectedItem is BlastByte)
-				(lbBlastLayer.SelectedItem as BlastByte).Value = Convert.ToInt32(nmValueEdit.Value);
+				(lbBlastLayer.SelectedItem as BlastByte).Value = getByteArrayValue((lbBlastLayer.SelectedItem as BlastByte).Value, nmValueEdit.Value);
 			else if (lbBlastLayer.SelectedItem is BlastCheat)
-				(lbBlastLayer.SelectedItem as BlastCheat).Value = Convert.ToInt32(nmValueEdit.Value);
-			else if (lbBlastLayer.SelectedItem is BlastPipe)
+				(lbBlastLayer.SelectedItem as BlastCheat).Value = getByteArrayValue((lbBlastLayer.SelectedItem as BlastCheat).Value, nmValueEdit.Value);
+            else if (lbBlastLayer.SelectedItem is BlastPipe)
 				(lbBlastLayer.SelectedItem as BlastPipe).PipeAddress = Convert.ToInt64(nmValueEdit.Value);
 
 			RefreshBlastLayer();

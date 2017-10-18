@@ -341,6 +341,10 @@ namespace RTC
                     RTC_Core.AutoCorrupt = (bool)cmd.objectValue;
                     break;
 
+                case CommandType.REMOTE_SET_CUSTOMPRECISION:
+                    RTC_Core.CustomPrecision = (int)cmd.objectValue;
+                    break;
+
                 case CommandType.REMOTE_SET_INTENSITY:
                     RTC_Core.Intensity = (int)cmd.objectValue;
                     break;
@@ -382,7 +386,7 @@ namespace RTC
                     break;
 
                 case CommandType.REMOTE_SET_PIPE_TILTVALUE:
-                    RTC_PipeEngine.TiltValue = (int)cmd.objectValue;
+                    RTC_PipeEngine.tiltValue = (int)cmd.objectValue;
                     break;
 
 
@@ -439,10 +443,12 @@ namespace RTC
                     //RTC_StockpileManager.isCorruptionApplied = false;
                     RTC_Core.ecForm.RefreshDomains();
                     RTC_Core.ecForm.setMemoryDomainsAllButSelectedDomains(RTC_MemoryDomains.GetBlacklistedDomains());
+                    RTC_Core.ecForm.lbCoreDefault.Text = $"Core default: { RTC_MemoryDomains.MemoryInterfaces[RTC_MemoryDomains.MainDomain].WordSize * 8}-bit";
                     break;
                 case CommandType.REMOTE_EVENT_LOADGAMEDONE_SAMEGAME:
                     //RTC_StockpileManager.isCorruptionApplied = false;
                     RTC_Core.ecForm.RefreshDomainsAndKeepSelected();
+                    RTC_Core.ecForm.lbCoreDefault.Text = $"Core default: { RTC_MemoryDomains.MemoryInterfaces[RTC_MemoryDomains.MainDomain].WordSize * 8}-bit";
                     break;
 
                 case CommandType.REMOTE_EVENT_CLOSEBIZHAWK:
