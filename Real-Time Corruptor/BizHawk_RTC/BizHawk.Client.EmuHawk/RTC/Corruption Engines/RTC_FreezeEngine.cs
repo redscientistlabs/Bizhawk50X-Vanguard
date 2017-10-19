@@ -35,7 +35,8 @@ namespace RTC
                 long safeAddress = _address - (_address % _value.Length);
 
                 for (int i = 0; i < _value.Length; i++)
-                    _value[i] = mdp.PeekByte(safeAddress + i);
+                    _value[i] = 0;
+                    //_value[i] = mdp.PeekByte(safeAddress + i);
 
                 return new BlastCheat(_domain, safeAddress, _displaytype, mdp.BigEndian, _value, true, true);
             }

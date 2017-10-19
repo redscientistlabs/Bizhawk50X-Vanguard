@@ -535,6 +535,8 @@ namespace RTC
                 }
             }
 
+            RTC_StockpileManager.currentStashkey = (StashKey)lbStashHistory.SelectedItem;
+
             if (Name != "")
 				RTC_StockpileManager.currentStashkey.Alias = Name;
             else
