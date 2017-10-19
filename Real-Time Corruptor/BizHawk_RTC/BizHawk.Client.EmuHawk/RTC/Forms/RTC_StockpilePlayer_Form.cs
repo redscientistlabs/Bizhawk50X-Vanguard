@@ -175,7 +175,7 @@ namespace RTC
 
 				try
 				{
-					Stockpile.LoadBizhawkConfig();
+					Stockpile.LoadBizhawkConfigFromStockpile();
 				}
 				catch (Exception ex)
 				{

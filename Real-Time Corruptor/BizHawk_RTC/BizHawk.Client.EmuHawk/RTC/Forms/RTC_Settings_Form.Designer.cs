@@ -52,6 +52,7 @@
             this.cbAllowCrossCoreCorruption = new System.Windows.Forms.CheckBox();
             this.cbDisableBizhawkOSD = new System.Windows.Forms.CheckBox();
             this.label4 = new System.Windows.Forms.Label();
+            this.btnImportKeyBindings = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.nmGameProtectionDelay)).BeginInit();
             this.groupBox1.SuspendLayout();
             this.groupBox2.SuspendLayout();
@@ -157,7 +158,7 @@
             this.btnOpenOnlineWiki.ForeColor = System.Drawing.Color.Black;
             this.btnOpenOnlineWiki.Image = global::BizHawk.Client.EmuHawk.Properties.Resources.notepad_icon;
             this.btnOpenOnlineWiki.ImageAlign = System.Drawing.ContentAlignment.MiddleRight;
-            this.btnOpenOnlineWiki.Location = new System.Drawing.Point(19, 139);
+            this.btnOpenOnlineWiki.Location = new System.Drawing.Point(19, 186);
             this.btnOpenOnlineWiki.Name = "btnOpenOnlineWiki";
             this.btnOpenOnlineWiki.Size = new System.Drawing.Size(215, 45);
             this.btnOpenOnlineWiki.TabIndex = 125;
@@ -255,7 +256,7 @@
             this.btnChangeRTCColor.Size = new System.Drawing.Size(215, 45);
             this.btnChangeRTCColor.TabIndex = 126;
             this.btnChangeRTCColor.Tag = "color:light";
-            this.btnChangeRTCColor.Text = "   Change RTC\'s color theme";
+            this.btnChangeRTCColor.Text = "   Change color theme";
             this.btnChangeRTCColor.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageBeforeText;
             this.btnChangeRTCColor.UseVisualStyleBackColor = false;
             this.btnChangeRTCColor.Click += new System.EventHandler(this.btnChangeRTCColor_Click);
@@ -407,12 +408,32 @@
             this.label4.TabIndex = 133;
             this.label4.Text = "General RTC Settings";
             // 
+            // btnImportKeyBindings
+            // 
+            this.btnImportKeyBindings.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(224)))), ((int)(((byte)(224)))), ((int)(((byte)(224)))));
+            this.btnImportKeyBindings.FlatAppearance.BorderSize = 0;
+            this.btnImportKeyBindings.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnImportKeyBindings.Font = new System.Drawing.Font("Segoe UI", 8F);
+            this.btnImportKeyBindings.ForeColor = System.Drawing.Color.Black;
+            this.btnImportKeyBindings.Image = global::BizHawk.Client.EmuHawk.Properties.Resources.inifile_icon;
+            this.btnImportKeyBindings.ImageAlign = System.Drawing.ContentAlignment.MiddleRight;
+            this.btnImportKeyBindings.Location = new System.Drawing.Point(19, 135);
+            this.btnImportKeyBindings.Name = "btnImportKeyBindings";
+            this.btnImportKeyBindings.Size = new System.Drawing.Size(215, 45);
+            this.btnImportKeyBindings.TabIndex = 134;
+            this.btnImportKeyBindings.Tag = "color:light";
+            this.btnImportKeyBindings.Text = "   Import key bindings";
+            this.btnImportKeyBindings.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageBeforeText;
+            this.btnImportKeyBindings.UseVisualStyleBackColor = false;
+            this.btnImportKeyBindings.Click += new System.EventHandler(this.btnImportKeyBindings_Click);
+            // 
             // RTC_Settings_Form
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
             this.ClientSize = new System.Drawing.Size(655, 515);
+            this.Controls.Add(this.btnImportKeyBindings);
             this.Controls.Add(this.panel1);
             this.Controls.Add(this.label4);
             this.Controls.Add(this.button1);
@@ -469,5 +490,6 @@
         private System.Windows.Forms.Label label4;
         public System.Windows.Forms.CheckBox cbDisableBizhawkOSD;
         public System.Windows.Forms.CheckBox cbAllowCrossCoreCorruption;
+        public System.Windows.Forms.Button btnImportKeyBindings;
     }
 }

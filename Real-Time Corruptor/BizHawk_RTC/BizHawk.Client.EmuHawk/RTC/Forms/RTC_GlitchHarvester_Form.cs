@@ -662,7 +662,7 @@ namespace RTC
 				try
 				{
 					RTC_Core.StopSound();
-					Stockpile.LoadBizhawkConfig();
+					Stockpile.LoadBizhawkConfigFromStockpile();
 				}
 				finally
 				{

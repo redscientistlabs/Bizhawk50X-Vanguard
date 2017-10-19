@@ -398,7 +398,38 @@ namespace RTC
             }
         }
 
-		public static void LoadBizhawkConfig(string Filename = null)
+        public static void LoadBizhawkConfigFromIni(string Filename = null)
+        {
+
+            if (Filename == null)
+            {
+                OpenFileDialog ofd = new OpenFileDialog();
+                ofd.DefaultExt = "ini";
+                ofd.Title = "Open ini File";
+                ofd.Filter = "Bizhawk config file|*.ini";
+                ofd.RestoreDirectory = true;
+                if (ofd.ShowDialog() == DialogResult.OK)
+                {
+                    Filename = ofd.FileName.ToString();
+                }
+                else
+                    return;
+            }
+
+
+            if (File.Exists(RTC_Core.bizhawkDir + "\\stockpile_config.ini"))
+                File.Delete(RTC_Core.bizhawkDir + "\\stockpile_config.ini");
+            File.Copy(Filename, RTC_Core.bizhawkDir + "\\stockpile_config.ini");
+
+
+            RTC_Core.SendCommandToBizhawk(new RTC_Command(CommandType.REMOTE_MERGECONFIG), true);
+
+            Process.Start(RTC_Core.bizhawkDir + $"\\StockpileConfig{(RTC_Core.isStandalone ? "DETACHED" : "ATTACHED")}.bat");
+
+        }
+
+
+        public static void LoadBizhawkConfigFromStockpile(string Filename = null)
 		{
 
 			if (Filename == null)
@@ -1241,6 +1272,7 @@ namespace RTC
 			Address = _address;
 			PipeDomain = _pipeDomain;
 			PipeAddress = _pipeAddress;
+            PipeSize = _pipeSize;
 			IsEnabled = _isEnabled;
             TiltValue = _tiltValue;
 		}

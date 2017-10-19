@@ -123,5 +123,41 @@ namespace RTC
 
             RTC_Core.AllowCrossCoreCorruption = cbAllowCrossCoreCorruption.Checked;
         }
+
+        private void btnImportKeyBindings_Click(object sender, EventArgs e)
+        {
+
+            try
+            {
+                RTC_Core.StopSound();
+
+                if (RTC_Core.bizhawkDir.Contains("\\VERSIONS\\"))
+                {
+                    var bizhawkFolder = new DirectoryInfo(RTC_Core.bizhawkDir);
+                    var LauncherVersFolder = bizhawkFolder.Parent.Parent;
+
+                    var versions = LauncherVersFolder.GetDirectories().Reverse().ToArray();
+
+                    var prevVersion = versions[1].Name;
+
+                    var dr = MessageBox.Show(
+                        "RTC Launcher detected,\n" +
+                        $"Do you want to import Controller/Hotkey bindings from version {prevVersion}"
+                        , $"Import config from previous version ?", MessageBoxButtons.YesNo, MessageBoxIcon.Information);
+
+                    if (dr == DialogResult.Yes)
+                        Stockpile.LoadBizhawkConfigFromStockpile(versions[1] + "\\BizHawk\\config.ini");
+                    else
+                        Stockpile.LoadBizhawkConfigFromStockpile();
+                }
+                else
+                    Stockpile.LoadBizhawkConfigFromStockpile();
+            }
+            finally
+            {
+                RTC_Core.StartSound();
+            }
+
+        }
     }
 }
