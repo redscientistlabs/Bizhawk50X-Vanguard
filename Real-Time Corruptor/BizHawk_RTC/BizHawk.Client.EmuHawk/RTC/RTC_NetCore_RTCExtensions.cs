@@ -218,6 +218,10 @@ namespace RTC
                     Stockpile.MergeBizhawkConfig_NET();
                     break;
 
+                case CommandType.REMOTE_IMPORTKEYBINDS:
+                    Stockpile.ImportBizhawkKeybinds_NET();
+                    break;
+
                 case CommandType.REMOTE_SAVESTATE:
                     {
                         StashKey sk = RTC_StockpileManager.SaveState_NET((bool)(cmd.objectValue as object[])[0], (StashKey)(cmd.objectValue as object[])[1]);

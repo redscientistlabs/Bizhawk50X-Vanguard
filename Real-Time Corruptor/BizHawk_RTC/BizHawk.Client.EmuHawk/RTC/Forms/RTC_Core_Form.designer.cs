@@ -223,11 +223,11 @@
             // 
             // pbAutoKillSwitchTimeout
             // 
-            this.pbAutoKillSwitchTimeout.Location = new System.Drawing.Point(9, 49);
+            this.pbAutoKillSwitchTimeout.Location = new System.Drawing.Point(9, 48);
             this.pbAutoKillSwitchTimeout.MarqueeAnimationSpeed = 1;
             this.pbAutoKillSwitchTimeout.Maximum = 13;
             this.pbAutoKillSwitchTimeout.Name = "pbAutoKillSwitchTimeout";
-            this.pbAutoKillSwitchTimeout.Size = new System.Drawing.Size(123, 13);
+            this.pbAutoKillSwitchTimeout.Size = new System.Drawing.Size(123, 10);
             this.pbAutoKillSwitchTimeout.Step = 1;
             this.pbAutoKillSwitchTimeout.TabIndex = 119;
             this.pbAutoKillSwitchTimeout.Tag = "17";

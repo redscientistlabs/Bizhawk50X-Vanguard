@@ -1225,9 +1225,12 @@ namespace RTC
 
             }
 
+            //clear the stockpile dico
+            RTC_StockpileManager.SavestateStashkeyDico.Clear();
 
-			//fill text/state controls/dico
-			for (int i = 1; i < 41; i++)
+
+            //fill text/state controls/dico
+            for (int i = 1; i < 41; i++)
 			{
 				string key = i.ToString().PadLeft(2, '0');
 

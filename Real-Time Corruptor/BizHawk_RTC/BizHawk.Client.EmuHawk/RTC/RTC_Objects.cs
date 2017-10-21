@@ -398,7 +398,7 @@ namespace RTC
             }
         }
 
-        public static void LoadBizhawkConfigFromIni(string Filename = null)
+        public static void LoadBizhawkKeyBindsFromIni(string Filename = null)
         {
 
             if (Filename == null)
@@ -416,13 +416,16 @@ namespace RTC
                     return;
             }
 
+            if (File.Exists(RTC_Core.bizhawkDir + "\\import_config.ini"))
+                File.Delete(RTC_Core.bizhawkDir + "\\import_config.ini");
+            File.Copy(Filename, RTC_Core.bizhawkDir + "\\import_config.ini");
 
             if (File.Exists(RTC_Core.bizhawkDir + "\\stockpile_config.ini"))
                 File.Delete(RTC_Core.bizhawkDir + "\\stockpile_config.ini");
-            File.Copy(Filename, RTC_Core.bizhawkDir + "\\stockpile_config.ini");
+            File.Copy(RTC_Core.bizhawkDir + "\\config.ini", RTC_Core.bizhawkDir + "\\stockpile_config.ini");
 
 
-            RTC_Core.SendCommandToBizhawk(new RTC_Command(CommandType.REMOTE_MERGECONFIG), true);
+            RTC_Core.SendCommandToBizhawk(new RTC_Command(CommandType.REMOTE_IMPORTKEYBINDS), true);
 
             Process.Start(RTC_Core.bizhawkDir + $"\\StockpileConfig{(RTC_Core.isStandalone ? "DETACHED" : "ATTACHED")}.bat");
 
@@ -520,7 +523,56 @@ namespace RTC
             }
         }
 
-		public static void RestoreBizhawkConfig()
+        public static void ImportBizhawkKeybinds_NET()
+        {
+
+            Config bc;
+            Config sc;
+
+            var fileBc = new FileInfo(RTC_Core.bizhawkDir + "\\import_config.ini");
+            var fileSc = new FileInfo(RTC_Core.bizhawkDir + "\\stockpile_config.ini");
+
+
+            using (var reader = fileBc.OpenText())
+            {
+                var r = new JsonTextReader(reader);
+                bc = (Config)ConfigService.Serializer.Deserialize(r, typeof(Config));
+            }
+
+            using (var reader = fileSc.OpenText())
+            {
+                var r = new JsonTextReader(reader);
+                sc = (Config)ConfigService.Serializer.Deserialize(r, typeof(Config));
+            }
+
+            //bc = (JObject)JsonConvert.DeserializeObject(backupConfig);
+            //sc = (JObject)JsonConvert.DeserializeObject(stockpileConfig);
+
+
+            sc.HotkeyBindings = bc.HotkeyBindings;
+            sc.AllTrollers = bc.AllTrollers;
+            sc.AllTrollersAutoFire = bc.AllTrollersAutoFire;
+            sc.AllTrollersAnalog = bc.AllTrollersAnalog;
+
+            if (File.Exists(RTC_Core.bizhawkDir + "\\stockpile_config.ini"))
+                File.Delete(RTC_Core.bizhawkDir + "\\stockpile_config.ini");
+
+
+            try
+            {
+                using (var writer = fileSc.CreateText())
+                {
+                    var w = new JsonTextWriter(writer) { Formatting = Formatting.Indented };
+                    ConfigService.Serializer.Serialize(w, sc);
+                }
+            }
+            catch
+            {
+                /* Eat it */
+            }
+        }
+
+        public static void RestoreBizhawkConfig()
 		{
 
 			Process.Start(RTC_Core.bizhawkDir + $"\\RestoreConfig{(RTC_Core.isStandalone ? "DETACHED" : "ATTACHED")}.bat");

@@ -146,12 +146,12 @@ namespace RTC
                         , $"Import config from previous version ?", MessageBoxButtons.YesNo, MessageBoxIcon.Information);
 
                     if (dr == DialogResult.Yes)
-                        Stockpile.LoadBizhawkConfigFromStockpile(versions[1] + "\\BizHawk\\config.ini");
+                        Stockpile.LoadBizhawkKeyBindsFromIni(versions[1].FullName + "\\BizHawk\\config.ini");
                     else
-                        Stockpile.LoadBizhawkConfigFromStockpile();
+                        Stockpile.LoadBizhawkKeyBindsFromIni();
                 }
                 else
-                    Stockpile.LoadBizhawkConfigFromStockpile();
+                    Stockpile.LoadBizhawkKeyBindsFromIni();
             }
             finally
             {
