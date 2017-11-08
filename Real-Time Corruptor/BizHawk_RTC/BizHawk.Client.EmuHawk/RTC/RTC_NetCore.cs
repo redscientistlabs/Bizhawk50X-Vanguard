@@ -140,7 +140,20 @@ namespace RTC
 
         }
 
-		public Socket KillableAcceptSocket(TcpListener listener)
+        public static void HugeOperationReset()
+        {
+            RTC_RPC.SendToKillSwitch("UNFREEZE");
+
+            if (RTC_Core.isStandalone)
+            {
+                RTC_Core.sForm.cbNetCoreCommandTimeout.SelectedIndex = 0;
+                lastNetCoreAggressivity = null;
+                lastNetCoreAggressivityGuid = null;
+            }
+
+        }
+
+        public Socket KillableAcceptSocket(TcpListener listener)
 		{
 			Socket socket = null;
 

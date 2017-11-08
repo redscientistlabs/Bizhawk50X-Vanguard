@@ -457,7 +457,7 @@ namespace RTC
 
         private void btnAutoKillSwitchExecute_Click(object sender, EventArgs e)
         {
-            RTC_NetCore.HugeOperationEnd();
+            RTC_NetCore.HugeOperationReset();
 
             showPanelForm(RTC_Core.csForm);
 
