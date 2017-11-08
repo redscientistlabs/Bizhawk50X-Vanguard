@@ -1580,17 +1580,18 @@ namespace RTC
                     }
 
 
-                    //if (BigEndian)
-                    //    freezeValue = RTC_Extensions.FlipWords(freezeValue, freezeValue.Length);
-
-                    _value = Convert.ToInt64(RTC_Extensions.getDecimalValue(freezeValue));
+                    if (BigEndian)
+                        _value = Convert.ToInt64(RTC_Extensions.getDecimalValue(RTC_Extensions.FlipWords(freezeValue, freezeValue.Length)));
+                    else
+                        _value = Convert.ToInt64(RTC_Extensions.getDecimalValue(freezeValue));
 
                 }
                 else
                 {
-
-                    //_value = Convert.ToInt64(RTC_Extensions.getDecimalValue(RTC_Extensions.FlipWords(Value, Value.Length)));
-                    _value = Convert.ToInt64(RTC_Extensions.getDecimalValue(Value));
+                    if (BigEndian)
+                        _value = Convert.ToInt64(RTC_Extensions.getDecimalValue(RTC_Extensions.FlipWords(Value, Value.Length)));
+                    else
+                        _value = Convert.ToInt64(RTC_Extensions.getDecimalValue(Value));
                 }
 
                 Watch somewatch = Watch.GenerateWatch(mdp.md, targetAddress, (WatchSize)Value.Length, DisplayType, BigEndian, cheatName, _value, 0, 0);
