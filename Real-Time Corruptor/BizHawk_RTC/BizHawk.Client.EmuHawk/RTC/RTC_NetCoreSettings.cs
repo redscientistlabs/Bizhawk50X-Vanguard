@@ -10,9 +10,7 @@ namespace RTC
 {
     public static class RTC_NetCoreSettings
     {
-        public static SoundPlayer simpleSound = null;
-        public static bool isClassicCrash = true;
-        public static bool rotateRandomSounds = false;
+        public static SoundPlayer[] loadedSounds = null;
 
 
         public static void changeNetCoreSettings(string setting)
@@ -59,25 +57,11 @@ namespace RTC
             RTC_NetCore.KeepAliveCounter = RTC_NetCore.DefaultKeepAliveCounter;
         }
 
-        public static void PlayCrashSound()
+        public static void PlayCrashSound(bool forcePlay = false)
         {
-            if (rotateRandomSounds)
-                simpleSound = new SoundPlayer(getRandomSound());
+            if (loadedSounds != null && (forcePlay || RTC_Core.csForm.btnStartEmuhawkDetached.Text == "Restart BizHawk"))
+                loadedSounds[RTC_Core.RND.Next(loadedSounds.Length)].Play();
 
-            if (simpleSound != null && RTC_Core.csForm.btnStartEmuhawkDetached.Text == "Restart BizHawk")
-            {
-                simpleSound.Play();
-            }
-        }
-
-        public static string getRandomSound()
-        {
-            string[] files = Directory.GetFiles("RTC\\ASSETS\\CRASHSOUNDS\\");
-
-            if (files == null || files.Length == 0)
-                return "RTC\\ASSETS\\crash.wav";
-
-            return files[RTC_Core.RND.Next(files.Length)];
         }
 
     }

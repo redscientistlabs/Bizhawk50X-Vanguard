@@ -211,8 +211,8 @@
             this.cbCrashSoundEffect.ForeColor = System.Drawing.Color.White;
             this.cbCrashSoundEffect.FormattingEnabled = true;
             this.cbCrashSoundEffect.Items.AddRange(new object[] {
-            "Breaking plates",
-            "Quack",
+            "Breaking plates HD",
+            "Breaking plates Classic",
             "None",
             "CRASHSOUNDS folder"});
             this.cbCrashSoundEffect.Location = new System.Drawing.Point(18, 42);

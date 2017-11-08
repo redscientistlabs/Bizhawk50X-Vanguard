@@ -23,7 +23,13 @@ namespace RTC
 		private void RTC_ConnectionStatus_Form_Load(object sender, EventArgs e)
 		{
 
-			RTC_Core.sForm.cbCrashSoundEffect.SelectedIndex = 0;
+            int crashSound = 0;
+
+            if (RTC_Params.IsParamSet("CRASHSOUND"))
+                crashSound = Convert.ToInt32(RTC_Params.ReadParam("CRASHSOUND"));
+
+            RTC_Core.sForm.cbCrashSoundEffect.SelectedIndex = crashSound;
+
             RTC_Core.sForm.cbNetCoreCommandTimeout.SelectedIndex = 0;
 
             if(File.Exists(RTC_Core.bizhawkDir + "\\WGH\\WindowsGlitchHarvester.exe"))

@@ -437,8 +437,10 @@ namespace RTC
 			try
 			{
 				lbStashHistory.Enabled = false;
+                btnStashUP.Enabled = false;
+                btnStashDOWN.Enabled = false;
 
-				if (DontLoadSelectedStash || lbStashHistory.SelectedIndex == -1)
+                if (DontLoadSelectedStash || lbStashHistory.SelectedIndex == -1)
 				{
 					DontLoadSelectedStash = false;
 					return;
@@ -488,6 +490,8 @@ namespace RTC
 			finally
 			{
 				lbStashHistory.Enabled = true;
+                btnStashUP.Enabled = true;
+                btnStashDOWN.Enabled = true;
 			}
 		}
 
@@ -594,6 +598,8 @@ namespace RTC
 
             RTC_StockpileManager.unsavedEdits = true;
 
+            RedrawActionUI();
+
             RTC_Core.StartSound();
 		}
 
@@ -620,7 +626,10 @@ namespace RTC
 
                 RTC_StockpileManager.unsavedEdits = false;
 
+                RedrawActionUI();
+
                 RTC_Core.StartSound();
+
 			}
 		}
 
@@ -936,7 +945,7 @@ namespace RTC
 			{
 				btnSendRaw.Visible = false;
 
-                var token = RTC_NetCore.HugeOperationStart();
+                var token = RTC_NetCore.HugeOperationStart("LAZY");
 
                 StashKey sk = (StashKey)RTC_Core.SendCommandToBizhawk(new RTC_Command(CommandType.REMOTE_KEY_GETRAWBLASTLAYER), true);
 
@@ -1400,9 +1409,11 @@ namespace RTC
 			try
 			{
 				dgvStockpile.Enabled = false;
+                btnStockpileUP.Enabled = false;
+                btnStockpileDOWN.Enabled = false;
 
-				// Stockpile Note handling
-				if (e != null)
+                // Stockpile Note handling
+                if (e != null)
 				{
 					var senderGrid = (DataGridView)sender;
 
@@ -1431,35 +1442,7 @@ namespace RTC
 				lbStashHistory.ClearSelected();
 				RTC_Core.spForm.dgvStockpile.ClearSelection();
 
-                // Merge tool and ui change
-                if (dgvStockpile.SelectedRows.Count > 1)
-				{
-					rbCorrupt.Checked = true;
-					rbCorrupt.Enabled = false;
-					rbInject.Enabled = false;
-					rbOriginal.Enabled = false;
-					btnCorrupt.Text = "Merge";
-					btnRenameSelected.Visible = false;
-					btnRemoveSelectedStockpile.Text = "Remove Items";
-
-					rbCorrupt.Checked = true;
-				}
-				else
-				{
-					rbCorrupt.Enabled = true;
-					rbInject.Enabled = true;
-					rbOriginal.Enabled = true;
-					btnRenameSelected.Visible = true;
-					btnRemoveSelectedStockpile.Text = "Remove Item";
-
-					if (rbCorrupt.Checked)
-						btnCorrupt.Text = "Blast/Send";
-					else if (rbInject.Checked)
-						btnCorrupt.Text = "Inject";
-					else if (rbOriginal.Checked)
-						btnCorrupt.Text = "Original";
-
-				}
+                RedrawActionUI();
 
                 if (dgvStockpile.SelectedRows.Count == 0)
                     return;
@@ -1503,8 +1486,43 @@ namespace RTC
 			finally
 			{
 				dgvStockpile.Enabled = true;
+                btnStockpileUP.Enabled = true;
+                btnStockpileDOWN.Enabled = true;
 			}
 		}
+
+        public void RedrawActionUI()
+        {
+            // Merge tool and ui change
+            if (dgvStockpile.SelectedRows.Count > 1)
+            {
+                rbCorrupt.Checked = true;
+                rbCorrupt.Enabled = false;
+                rbInject.Enabled = false;
+                rbOriginal.Enabled = false;
+                btnCorrupt.Text = "Merge";
+                btnRenameSelected.Visible = false;
+                btnRemoveSelectedStockpile.Text = "Remove Items";
+
+                rbCorrupt.Checked = true;
+            }
+            else
+            {
+                rbCorrupt.Enabled = true;
+                rbInject.Enabled = true;
+                rbOriginal.Enabled = true;
+                btnRenameSelected.Visible = true;
+                btnRemoveSelectedStockpile.Text = "Remove Item";
+
+                if (rbCorrupt.Checked)
+                    btnCorrupt.Text = "Blast/Send";
+                else if (rbInject.Checked)
+                    btnCorrupt.Text = "Inject";
+                else if (rbOriginal.Checked)
+                    btnCorrupt.Text = "Original";
+
+            }
+        }
 
 		private void cbRenderType_SelectedIndexChanged(object sender, EventArgs e)
 		{

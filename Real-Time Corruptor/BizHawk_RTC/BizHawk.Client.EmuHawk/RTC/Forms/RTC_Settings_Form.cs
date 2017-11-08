@@ -33,26 +33,27 @@ namespace RTC
 
         private void cbCrashSoundEffect_SelectedIndexChanged(object sender, EventArgs e)
         {
-            RTC_NetCoreSettings.rotateRandomSounds = false;
-            RTC_NetCoreSettings.isClassicCrash = false;
 
             switch (cbCrashSoundEffect.SelectedIndex)
             {
                 case 0:
-                    RTC_NetCoreSettings.isClassicCrash = true;
-                    RTC_NetCoreSettings.simpleSound = new SoundPlayer("RTC\\ASSETS\\crash.wav");
+                    var PlatesHdFiles = Directory.GetFiles(RTC_Core.rtcDir + "\\ASSETS\\PLATESHD");
+                    RTC_NetCoreSettings.loadedSounds = PlatesHdFiles.Select(it => new SoundPlayer(it)).ToArray();
                     break;
                 case 1:
-                    RTC_NetCoreSettings.simpleSound = new SoundPlayer("RTC\\ASSETS\\quack.wav");
+                    RTC_NetCoreSettings.loadedSounds = new SoundPlayer[] { new SoundPlayer(RTC_Core.rtcDir + "\\ASSETS\\crash.wav") };
                     break;
 
                 case 2:
-                    RTC_NetCoreSettings.simpleSound = null;
+                    RTC_NetCoreSettings.loadedSounds = null;
                     break;
                 case 3:
-                    RTC_NetCoreSettings.rotateRandomSounds = true;
+                    var CrashSoundsFiles = Directory.GetFiles(RTC_Core.rtcDir + "\\ASSETS\\CRASHSOUNDS");
+                    RTC_NetCoreSettings.loadedSounds = CrashSoundsFiles.Select(it => new SoundPlayer(it)).ToArray();
                     break;
             }
+
+            RTC_Params.SetParam("CRASHSOUND", cbCrashSoundEffect.SelectedIndex.ToString());
 
         }
 

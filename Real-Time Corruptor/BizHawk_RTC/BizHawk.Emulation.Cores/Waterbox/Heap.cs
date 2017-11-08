@@ -74,8 +74,8 @@ namespace BizHawk.Emulation.Cores.Waterbox
 		{
 			if (!Sealed)
 			{
-                //RTC_Hijack : Prevent this memory from being marked as protected so we can still poke memory allocated with *alloc_sealed()
-                //Memory.Protect(Memory.Start, Used, MemoryBlock.Protection.R);
+                //RTC_Hijack : Change the protect level to RW instead of R
+                Memory.Protect(Memory.Start, Used, MemoryBlock.Protection.RW);
 
 
 				_hash = WaterboxUtils.Hash(Memory.GetStream(Memory.Start, Used, false));

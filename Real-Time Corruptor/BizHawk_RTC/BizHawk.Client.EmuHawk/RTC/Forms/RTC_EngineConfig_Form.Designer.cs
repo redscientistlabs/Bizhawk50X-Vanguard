@@ -48,7 +48,7 @@
             this.btnAutoSelectDomains = new System.Windows.Forms.Button();
             this.btnRefreshDomains = new System.Windows.Forms.Button();
             this.pnCorruptionEngine = new System.Windows.Forms.Panel();
-            this.panel3 = new System.Windows.Forms.Panel();
+            this.pnCustomPrecision = new System.Windows.Forms.Panel();
             this.lbCoreDefault = new System.Windows.Forms.Label();
             this.cbUseCustomPrecision = new System.Windows.Forms.CheckBox();
             this.cbCustomPrecision = new System.Windows.Forms.ComboBox();
@@ -77,7 +77,7 @@
             this.label25 = new System.Windows.Forms.Label();
             this.cbClearPipesOnRewind = new System.Windows.Forms.CheckBox();
             this.cbProcessOnStep = new System.Windows.Forms.CheckBox();
-            this.pnCustomPrecision = new System.Windows.Forms.CheckBox();
+            this.cbLockPipes = new System.Windows.Forms.CheckBox();
             this.btnClearPipes = new System.Windows.Forms.Button();
             this.nmMaxPipes = new System.Windows.Forms.NumericUpDown();
             this.label8 = new System.Windows.Forms.Label();
@@ -129,7 +129,7 @@
             ((System.ComponentModel.ISupportInitialize)(this.track_ErrorDelay)).BeginInit();
             this.pnMemoryTargetting.SuspendLayout();
             this.pnCorruptionEngine.SuspendLayout();
-            this.panel3.SuspendLayout();
+            this.pnCustomPrecision.SuspendLayout();
             this.gbVectorEngine.SuspendLayout();
             this.panel2.SuspendLayout();
             this.pnLimiterList.SuspendLayout();
@@ -454,7 +454,7 @@
             // pnCorruptionEngine
             // 
             this.pnCorruptionEngine.BackColor = System.Drawing.Color.Gray;
-            this.pnCorruptionEngine.Controls.Add(this.panel3);
+            this.pnCorruptionEngine.Controls.Add(this.pnCustomPrecision);
             this.pnCorruptionEngine.Controls.Add(this.cbSelectedEngine);
             this.pnCorruptionEngine.Controls.Add(this.gbSelectedEngine);
             this.pnCorruptionEngine.Location = new System.Drawing.Point(227, 25);
@@ -463,17 +463,17 @@
             this.pnCorruptionEngine.TabIndex = 119;
             this.pnCorruptionEngine.Tag = "color:normal";
             // 
-            // panel3
+            // pnCustomPrecision
             // 
-            this.panel3.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(32)))), ((int)(((byte)(32)))), ((int)(((byte)(32)))));
-            this.panel3.Controls.Add(this.lbCoreDefault);
-            this.panel3.Controls.Add(this.cbUseCustomPrecision);
-            this.panel3.Controls.Add(this.cbCustomPrecision);
-            this.panel3.Location = new System.Drawing.Point(179, 96);
-            this.panel3.Name = "panel3";
-            this.panel3.Size = new System.Drawing.Size(221, 57);
-            this.panel3.TabIndex = 136;
-            this.panel3.Tag = "color:darker";
+            this.pnCustomPrecision.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(32)))), ((int)(((byte)(32)))), ((int)(((byte)(32)))));
+            this.pnCustomPrecision.Controls.Add(this.lbCoreDefault);
+            this.pnCustomPrecision.Controls.Add(this.cbUseCustomPrecision);
+            this.pnCustomPrecision.Controls.Add(this.cbCustomPrecision);
+            this.pnCustomPrecision.Location = new System.Drawing.Point(179, 96);
+            this.pnCustomPrecision.Name = "pnCustomPrecision";
+            this.pnCustomPrecision.Size = new System.Drawing.Size(221, 57);
+            this.pnCustomPrecision.TabIndex = 136;
+            this.pnCustomPrecision.Tag = "color:darker";
             // 
             // lbCoreDefault
             // 
@@ -584,9 +584,9 @@
             this.panel2.Controls.Add(this.lbVectorEngineValueText1);
             this.panel2.Controls.Add(this.cbVectorValueList);
             this.panel2.Controls.Add(this.label18);
-            this.panel2.Location = new System.Drawing.Point(7, 93);
+            this.panel2.Location = new System.Drawing.Point(5, 93);
             this.panel2.Name = "panel2";
-            this.panel2.Size = new System.Drawing.Size(377, 47);
+            this.panel2.Size = new System.Drawing.Size(379, 47);
             this.panel2.TabIndex = 135;
             this.panel2.Tag = "color:darker";
             // 
@@ -594,7 +594,7 @@
             // 
             this.lbVectorEngineValueText2.AutoSize = true;
             this.lbVectorEngineValueText2.Font = new System.Drawing.Font("Segoe UI", 8F);
-            this.lbVectorEngineValueText2.Location = new System.Drawing.Point(162, 28);
+            this.lbVectorEngineValueText2.Location = new System.Drawing.Point(164, 28);
             this.lbVectorEngineValueText2.Name = "lbVectorEngineValueText2";
             this.lbVectorEngineValueText2.Size = new System.Drawing.Size(162, 13);
             this.lbVectorEngineValueText2.TabIndex = 139;
@@ -604,7 +604,7 @@
             // 
             this.lbVectorEngineValueText1.AutoSize = true;
             this.lbVectorEngineValueText1.Font = new System.Drawing.Font("Segoe UI", 8F);
-            this.lbVectorEngineValueText1.Location = new System.Drawing.Point(162, 13);
+            this.lbVectorEngineValueText1.Location = new System.Drawing.Point(164, 13);
             this.lbVectorEngineValueText1.Name = "lbVectorEngineValueText1";
             this.lbVectorEngineValueText1.Size = new System.Drawing.Size(192, 13);
             this.lbVectorEngineValueText1.TabIndex = 138;
@@ -698,9 +698,9 @@
             "One*",
             "Two",
             "AnyFloat"});
-            this.cbVectorLimiterList.Location = new System.Drawing.Point(8, 18);
+            this.cbVectorLimiterList.Location = new System.Drawing.Point(7, 18);
             this.cbVectorLimiterList.Name = "cbVectorLimiterList";
-            this.cbVectorLimiterList.Size = new System.Drawing.Size(153, 21);
+            this.cbVectorLimiterList.Size = new System.Drawing.Size(152, 21);
             this.cbVectorLimiterList.TabIndex = 78;
             this.cbVectorLimiterList.Tag = "color:dark";
             this.cbVectorLimiterList.SelectedIndexChanged += new System.EventHandler(this.cbVectorLimiterList_SelectedIndexChanged);
@@ -750,7 +750,7 @@
             this.gbPipeEngine.Controls.Add(this.label25);
             this.gbPipeEngine.Controls.Add(this.cbClearPipesOnRewind);
             this.gbPipeEngine.Controls.Add(this.cbProcessOnStep);
-            this.gbPipeEngine.Controls.Add(this.pnCustomPrecision);
+            this.gbPipeEngine.Controls.Add(this.cbLockPipes);
             this.gbPipeEngine.Controls.Add(this.btnClearPipes);
             this.gbPipeEngine.Controls.Add(this.nmMaxPipes);
             this.gbPipeEngine.Controls.Add(this.label8);
@@ -770,6 +770,7 @@
             this.panel8.Size = new System.Drawing.Size(221, 57);
             this.panel8.TabIndex = 140;
             this.panel8.Tag = "color:darker";
+            this.panel8.Visible = false;
             // 
             // label14
             // 
@@ -873,18 +874,18 @@
             this.cbProcessOnStep.UseVisualStyleBackColor = true;
             this.cbProcessOnStep.CheckedChanged += new System.EventHandler(this.cbProcessOnStep_CheckedChanged);
             // 
-            // pnCustomPrecision
+            // cbLockPipes
             // 
-            this.pnCustomPrecision.AutoSize = true;
-            this.pnCustomPrecision.Font = new System.Drawing.Font("Segoe UI", 8F);
-            this.pnCustomPrecision.ForeColor = System.Drawing.Color.White;
-            this.pnCustomPrecision.Location = new System.Drawing.Point(182, 69);
-            this.pnCustomPrecision.Name = "pnCustomPrecision";
-            this.pnCustomPrecision.Size = new System.Drawing.Size(79, 17);
-            this.pnCustomPrecision.TabIndex = 77;
-            this.pnCustomPrecision.Text = "Lock Pipes";
-            this.pnCustomPrecision.UseVisualStyleBackColor = true;
-            this.pnCustomPrecision.CheckedChanged += new System.EventHandler(this.cbLockPipes_CheckedChanged);
+            this.cbLockPipes.AutoSize = true;
+            this.cbLockPipes.Font = new System.Drawing.Font("Segoe UI", 8F);
+            this.cbLockPipes.ForeColor = System.Drawing.Color.White;
+            this.cbLockPipes.Location = new System.Drawing.Point(182, 69);
+            this.cbLockPipes.Name = "cbLockPipes";
+            this.cbLockPipes.Size = new System.Drawing.Size(79, 17);
+            this.cbLockPipes.TabIndex = 77;
+            this.cbLockPipes.Text = "Lock Pipes";
+            this.cbLockPipes.UseVisualStyleBackColor = true;
+            this.cbLockPipes.CheckedChanged += new System.EventHandler(this.cbLockPipes_CheckedChanged);
             // 
             // btnClearPipes
             // 
@@ -966,6 +967,7 @@
             this.panel6.Size = new System.Drawing.Size(221, 57);
             this.panel6.TabIndex = 139;
             this.panel6.Tag = "color:darker";
+            this.panel6.Visible = false;
             // 
             // label17
             // 
@@ -1072,6 +1074,7 @@
             this.panel9.Size = new System.Drawing.Size(221, 57);
             this.panel9.TabIndex = 140;
             this.panel9.Tag = "color:darker";
+            this.panel9.Visible = false;
             // 
             // comboBox7
             // 
@@ -1167,6 +1170,7 @@
             this.panel7.Size = new System.Drawing.Size(221, 57);
             this.panel7.TabIndex = 139;
             this.panel7.Tag = "color:darker";
+            this.panel7.Visible = false;
             // 
             // label20
             // 
@@ -1287,6 +1291,7 @@
             this.panel5.Size = new System.Drawing.Size(221, 57);
             this.panel5.TabIndex = 138;
             this.panel5.Tag = "color:darker";
+            this.panel5.Visible = false;
             // 
             // label16
             // 
@@ -1405,6 +1410,7 @@
             this.panel4.Size = new System.Drawing.Size(221, 57);
             this.panel4.TabIndex = 137;
             this.panel4.Tag = "color:darker";
+            this.panel4.Visible = false;
             // 
             // label15
             // 
@@ -1554,8 +1560,8 @@
             ((System.ComponentModel.ISupportInitialize)(this.track_ErrorDelay)).EndInit();
             this.pnMemoryTargetting.ResumeLayout(false);
             this.pnCorruptionEngine.ResumeLayout(false);
-            this.panel3.ResumeLayout(false);
-            this.panel3.PerformLayout();
+            this.pnCustomPrecision.ResumeLayout(false);
+            this.pnCustomPrecision.PerformLayout();
             this.gbVectorEngine.ResumeLayout(false);
             this.gbVectorEngine.PerformLayout();
             this.panel2.ResumeLayout(false);
@@ -1622,7 +1628,7 @@
         private System.Windows.Forms.Label label25;
         public System.Windows.Forms.CheckBox cbClearPipesOnRewind;
         public System.Windows.Forms.CheckBox cbProcessOnStep;
-        public System.Windows.Forms.CheckBox pnCustomPrecision;
+        public System.Windows.Forms.CheckBox cbLockPipes;
         private System.Windows.Forms.Button btnClearPipes;
         public System.Windows.Forms.NumericUpDown nmMaxPipes;
         private System.Windows.Forms.Label label8;
@@ -1672,7 +1678,7 @@
         private System.Windows.Forms.Panel pnLimiterList;
         private System.Windows.Forms.Label lbVectorEngineLimiterText2;
         private System.Windows.Forms.Label lbVectorEngineLimiterText1;
-        private System.Windows.Forms.Panel panel3;
+        private System.Windows.Forms.Panel pnCustomPrecision;
         public System.Windows.Forms.CheckBox cbUseCustomPrecision;
         public System.Windows.Forms.ComboBox cbCustomPrecision;
         private System.Windows.Forms.Panel panel8;

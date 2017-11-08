@@ -18,7 +18,6 @@ namespace RTC
 {
     public partial class RTC_Core_Form : Form // replace by : UserControl for panel
     {
-        SoundPlayer simpleSound = new SoundPlayer(RTC_Core.rtcDir + "\\ASSETS\\quack.wav"); //QUACK
         public Form previousForm = null;
         public Form activeForm = null;
 
@@ -272,8 +271,6 @@ namespace RTC
         {
             if (RTC_Core.isStandalone)
                 showPanelForm(RTC_Core.csForm, false);
-			else
-				simpleSound.Play();
 		}
 
 
@@ -460,6 +457,7 @@ namespace RTC
 
         private void btnAutoKillSwitchExecute_Click(object sender, EventArgs e)
         {
+            RTC_NetCore.HugeOperationEnd();
 
             showPanelForm(RTC_Core.csForm);
 
@@ -467,7 +465,7 @@ namespace RTC
             RTC.RTC_Core.coreForm.pbAutoKillSwitchTimeout.Value = RTC.RTC_Core.coreForm.pbAutoKillSwitchTimeout.Maximum;
             RTC.RTC_RPC.Freeze = true;
 
-            RTC_NetCoreSettings.PlayCrashSound();
+            RTC_NetCoreSettings.PlayCrashSound(true);
 
             switch (btnAutoKillSwitchExecute.Text.ToUpper())
             {

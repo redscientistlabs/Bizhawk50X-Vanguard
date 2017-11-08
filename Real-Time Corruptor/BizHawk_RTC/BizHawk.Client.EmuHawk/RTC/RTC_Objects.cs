@@ -168,16 +168,18 @@ namespace RTC
             }
 
             //clean temp folder
-            foreach (string file in Directory.GetFiles(RTC_Core.rtcDir + "\\TEMP"))
-                File.Delete(file);
+            EmptyFolder("TEMP");
+            //foreach (string file in Directory.GetFiles(RTC_Core.rtcDir + "\\TEMP"))
+            //    File.Delete(file);
 
             //sending back filtered files from temp2 folder to temp
             foreach (string file in Directory.GetFiles(RTC_Core.rtcDir + "\\TEMP2"))
                 File.Move(file, RTC_Core.rtcDir + "\\TEMP\\" + (file.Substring(file.LastIndexOf("\\") + 1, file.Length - (file.LastIndexOf("\\") + 1))));
 
             //clean temp2 folder again
-            foreach (string file in Directory.GetFiles(RTC_Core.rtcDir + "\\TEMP2"))
-                File.Delete(file);
+            EmptyFolder("TEMP2");
+            //foreach (string file in Directory.GetFiles(RTC_Core.rtcDir + "\\TEMP2"))
+            //    File.Delete(file);
 
             foreach (StashKey key in sks.StashKeys)
             {
@@ -377,23 +379,40 @@ namespace RTC
 
 		}
 
-        public static void Extract(string Filename, string Folder, string MasterFile)
+        public static void RecursiveDelete(DirectoryInfo baseDir)
         {
-            //clean temp folder
+            if (!baseDir.Exists)
+                return;
+
+            foreach (var dir in baseDir.EnumerateDirectories())
+            {
+                RecursiveDelete(dir);
+            }
+            baseDir.Delete(true);
+        }
+
+        public static void EmptyFolder(string Folder)
+        {
             foreach (string file in Directory.GetFiles(RTC_Core.rtcDir + $"\\{Folder}"))
                 File.Delete(file);
 
-            //7z extract part
+            foreach (string dir in Directory.GetDirectories(RTC_Core.rtcDir + $"\\{Folder}"))
+                RecursiveDelete(new DirectoryInfo(dir));
+        }
 
-            //string[] stringargs = { "-x", Filename, RTC_Core.rtcDir + $"\\{Folder}\\" };
-            //FastZipProgram.Exec(stringargs);
+        public static void Extract(string Filename, string Folder, string MasterFile)
+        {
+            EmptyFolder(Folder);
 
-			System.IO.Compression.ZipFile.ExtractToDirectory(Filename, RTC_Core.rtcDir + $"\\{Folder}\\");
+            ZipFile.ExtractToDirectory(Filename, RTC_Core.rtcDir + $"\\{Folder}\\");
 
 
 			if (!File.Exists(RTC_Core.rtcDir + $"\\{Folder}\\{MasterFile}"))
             {
                 MessageBox.Show("The file could not be read properly");
+
+                EmptyFolder(Folder);
+
                 return;
             }
         }
@@ -587,8 +606,9 @@ namespace RTC
         {
 
             //clean temp folder
-            foreach (string file in Directory.GetFiles(RTC_Core.rtcDir + "\\TEMP3"))
-                File.Delete(file);
+            EmptyFolder("TEMP3");
+            //foreach (string file in Directory.GetFiles(RTC_Core.rtcDir + "\\TEMP3"))
+            //    File.Delete(file);
 
             if (Filename == null)
             {
@@ -611,16 +631,14 @@ namespace RTC
                 return;
             }
 
-            //7z extract part
-
-            //string[] stringargs = { "-x", Filename, RTC_Core.rtcDir + "\\TEMP3\\" };
-            //FastZipProgram.Exec(stringargs);
-
-			System.IO.Compression.ZipFile.ExtractToDirectory(Filename, RTC_Core.rtcDir + $"\\TEMP3\\");
+            ZipFile.ExtractToDirectory(Filename, RTC_Core.rtcDir + $"\\TEMP3\\");
 
 			if (!File.Exists(RTC_Core.rtcDir + "\\TEMP3\\stockpile.xml"))
             {
                 MessageBox.Show("The file could not be read properly");
+
+                EmptyFolder("TEMP3");
+
                 return;
             }
 
@@ -659,6 +677,7 @@ namespace RTC
 
                 if (!File.Exists(RTC_Core.bizhawkDir + "\\" + key.SystemName + "\\State\\" + statefilename))
                     File.Copy(RTC_Core.rtcDir + "\\TEMP3\\" + statefilename, RTC_Core.bizhawkDir + "\\" + key.SystemName + "\\State\\" + statefilename); // copy savestates to temp folder
+
             }
 
             for (int i = 0; i < sks.StashKeys.Count; i++)
@@ -673,6 +692,8 @@ namespace RTC
                         File.Copy(file, RTC_Core.rtcDir + "\\TEMP\\" + file.Substring(file.LastIndexOf('\\'), file.Length - file.LastIndexOf('\\'))); // copy roms to temp
                     }
                     catch{}
+
+            //EmptyFolder("TEMP3");
 
             //fill list controls
 

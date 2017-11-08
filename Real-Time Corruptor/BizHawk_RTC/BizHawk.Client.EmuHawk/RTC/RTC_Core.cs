@@ -21,7 +21,7 @@ namespace RTC
         public static Random RND = new Random();
 
         //General RTC Values
-        public static string RtcVersion = "3.09";
+        public static string RtcVersion = "3.09c";
 
         //Directories
         public static string bizhawkDir = Directory.GetCurrentDirectory();
@@ -456,7 +456,9 @@ namespace RTC
                     return"PSX";
                 case "GG":
                     return "Game Gear";
-				default:
+                case "Commodore 64":
+                    return "C64";
+                default:
 					return SystemDisplayName;
 			}
             
