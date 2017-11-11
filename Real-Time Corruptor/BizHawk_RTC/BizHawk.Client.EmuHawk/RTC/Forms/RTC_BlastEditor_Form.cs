@@ -187,7 +187,7 @@ namespace RTC
 				gbValueEdit.Visible = true;
 				nmAddressEdit.Value = (bu as BlastPipe).Address;
 				nmValueEdit.Value = (bu as BlastPipe).PipeAddress;
-                nmValueEdit.Maximum = 0;
+                nmValueEdit.Maximum = nmAddressEdit.Maximum;
             }
 		}
 
