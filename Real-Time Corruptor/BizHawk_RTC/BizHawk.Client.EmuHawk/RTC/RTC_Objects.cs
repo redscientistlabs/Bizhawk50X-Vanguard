@@ -1365,19 +1365,24 @@ namespace RTC
 				if (mdp == null || mdp2 == null)
 					throw new Exception($"Memory Domain error, MD1 -> {mdp.ToString()}, md2 -> {mdp2.ToString()}");
 
-                long targetAddress = RTC_MemoryDomains.getRealAddress(Domain, Address);
-                long targetPipeAddress = RTC_MemoryDomains.getRealAddress(PipeDomain, PipeAddress);
+                for (int i = 0; i < PipeSize; i++)
+                {
 
-                int currentValue = (int)mdp.PeekByte(targetAddress);
+                    long targetAddress = RTC_MemoryDomains.getRealAddress(Domain, Address) + i;
+                    long targetPipeAddress = RTC_MemoryDomains.getRealAddress(PipeDomain, PipeAddress) + i;
 
-                int newValue = currentValue + TiltValue;
+                    int currentValue = (int)mdp.PeekByte(targetAddress);
 
-                if (newValue < 0)
-                    newValue = 0;
-                else if (newValue > 255)
-                    newValue = 255;
+                    int newValue = currentValue + TiltValue;
 
-                mdp2.PokeByte(targetPipeAddress,  (byte)newValue);
+                    if (newValue < 0)
+                        newValue = 0;
+                    else if (newValue > 255)
+                        newValue = 255;
+
+                    mdp2.PokeByte(targetPipeAddress, (byte)newValue);
+                }
+
 
 			}
 			catch (Exception ex)
