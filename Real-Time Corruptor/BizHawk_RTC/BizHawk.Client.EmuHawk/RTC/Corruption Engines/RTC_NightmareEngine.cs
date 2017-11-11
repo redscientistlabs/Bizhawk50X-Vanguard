@@ -68,19 +68,25 @@ namespace RTC
                 }
 
 
-                byte[] Value = new byte[] { 1 }; //1 by default because Add(1) or Substract(1) but more is still possible
+                byte[] Value;
+                if (RTC_Core.CustomPrecision == -1)
+                {
+                    var settings = new RamSearchEngine.Settings(RTC_MemoryDomains.MDRI.MemoryDomains);
+                    Value = new byte[(int)settings.Size];
+                }
+                else
+                    Value = new byte[RTC_Core.CustomPrecision];
+
+
                 if (Type == BlastByteType.SET)
                 {
-                    if (RTC_Core.CustomPrecision == -1)
-                    {
-                        var settings = new RamSearchEngine.Settings(RTC_MemoryDomains.MDRI.MemoryDomains);
-                        Value = new byte[(int)settings.Size];
-                    }
-                    else
-                        Value = new byte[RTC_Core.CustomPrecision];
-
                     for(int i=0; i<Value.Length; i++)
                         Value[i] = (byte)RTC_Core.RND.Next(0, 255);
+                }
+                else //ADD, SUBSTRACT
+                {
+                    for (int i = 0; i < Value.Length; i++)  //1 by default because Add(1) or Substract(1) but more is still possible
+                        Value[i] = 1;
                 }
 
                 return new BlastByte(_domain, _address, Type, Value, true);
