@@ -36,7 +36,18 @@ namespace RTC
             try
             {
                 BlastByteType Type = BlastByteType.SET;
-                byte[] Value = new byte[] { 1 };
+
+                MemoryDomainProxy mdp = RTC_MemoryDomains.getProxy(_domain, _address);
+
+                byte[] Value; ;
+                if (RTC_Core.CustomPrecision == -1)
+                    Value = new byte[mdp.WordSize];
+                else
+                    Value = new byte[RTC_Core.CustomPrecision];
+
+                for (int i = 0; i < Value.Length; i++)
+                    Value[i] = 1;
+
                 BlastByte bb = new BlastByte(_domain, _address, Type, Value, true);
                 return bb.GetBackup();
 
