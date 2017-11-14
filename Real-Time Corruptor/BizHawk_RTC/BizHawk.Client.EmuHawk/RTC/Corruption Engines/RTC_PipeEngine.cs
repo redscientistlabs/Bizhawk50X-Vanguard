@@ -64,7 +64,6 @@ namespace RTC
 			
             try
             {
-                
                 MemoryDomainProxy mdp = RTC_MemoryDomains.getProxy(_domain, _address);
                 int pipeSize;
 

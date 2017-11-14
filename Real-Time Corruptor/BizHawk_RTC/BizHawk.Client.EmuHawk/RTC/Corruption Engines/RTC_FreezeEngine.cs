@@ -22,7 +22,6 @@ namespace RTC
         {
             try
             {
-
                 MemoryDomainProxy mdp = RTC_MemoryDomains.getProxy(_domain, _address);
                 BizHawk.Client.Common.DisplayType _displaytype = BizHawk.Client.Common.DisplayType.Unsigned;
 

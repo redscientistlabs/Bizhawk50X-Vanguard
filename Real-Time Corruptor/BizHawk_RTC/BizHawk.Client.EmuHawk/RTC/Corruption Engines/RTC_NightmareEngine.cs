@@ -19,6 +19,7 @@ namespace RTC
 
             try
             {
+                MemoryDomainProxy mdp = RTC_MemoryDomains.getProxy(_domain, _address);
                 BlastByteType Type = BlastByteType.NONE;
 
                 switch (Algo)
@@ -66,30 +67,28 @@ namespace RTC
                         break;
 
                 }
+                
 
-
-                byte[] Value;
+                byte[] _value;
                 if (RTC_Core.CustomPrecision == -1)
-                {
-                    var settings = new RamSearchEngine.Settings(RTC_MemoryDomains.MDRI.MemoryDomains);
-                    Value = new byte[(int)settings.Size];
-                }
+                    _value = new byte[mdp.WordSize];
                 else
-                    Value = new byte[RTC_Core.CustomPrecision];
+                    _value = new byte[RTC_Core.CustomPrecision];
 
+                long safeAddress = _address - (_address % _value.Length);
 
                 if (Type == BlastByteType.SET)
                 {
-                    for(int i=0; i<Value.Length; i++)
-                        Value[i] = (byte)RTC_Core.RND.Next(0, 255);
+                    for(int i=0; i<_value.Length; i++)
+                        _value[i] = (byte)RTC_Core.RND.Next(0, 255);
                 }
                 else //ADD, SUBSTRACT
                 {
-                    for (int i = 0; i < Value.Length; i++)  //1 by default because Add(1) or Substract(1) but more is still possible
-                        Value[i] = 1;
+                    for (int i = 0; i < _value.Length; i++)  //1 by default because Add(1) or Substract(1) but more is still possible
+                        _value[i] = 1;
                 }
 
-                return new BlastByte(_domain, _address, Type, Value, true);
+                return new BlastByte(_domain, safeAddress, Type, _value, true);
 
             }
             catch (Exception ex)

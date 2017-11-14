@@ -248,7 +248,6 @@ namespace RTC
             long safeAddress = _address - (_address % 4); //32-bit trunk
 
             MemoryDomainProxy mdp = RTC_MemoryDomains.getProxy(_domain, safeAddress);
-
 			if (mdp == null)
 				return null;
 

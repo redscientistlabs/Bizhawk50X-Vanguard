@@ -149,9 +149,9 @@ namespace RTC
                 case 1:
                     return new byte[] { (byte)newValue };
                 case 2:
-                    return BitConverter.GetBytes(Convert.ToInt16(newValue));
+                    return BitConverter.GetBytes(Convert.ToUInt16(newValue));
                 case 4:
-                    return BitConverter.GetBytes(Convert.ToInt32(newValue));
+                    return BitConverter.GetBytes(Convert.ToUInt32(newValue));
             }
 
             return null;

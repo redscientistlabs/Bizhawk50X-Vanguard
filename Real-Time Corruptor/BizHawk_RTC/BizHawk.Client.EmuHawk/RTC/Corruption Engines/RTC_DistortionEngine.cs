@@ -35,20 +35,21 @@ namespace RTC
 
             try
             {
+                MemoryDomainProxy mdp = RTC_MemoryDomains.getProxy(_domain, _address);
                 BlastByteType Type = BlastByteType.SET;
 
-                MemoryDomainProxy mdp = RTC_MemoryDomains.getProxy(_domain, _address);
-
-                byte[] Value; ;
+                byte[] _value; ;
                 if (RTC_Core.CustomPrecision == -1)
-                    Value = new byte[mdp.WordSize];
+                    _value = new byte[mdp.WordSize];
                 else
-                    Value = new byte[RTC_Core.CustomPrecision];
+                    _value = new byte[RTC_Core.CustomPrecision];
 
-                for (int i = 0; i < Value.Length; i++)
-                    Value[i] = 1;
+                for (int i = 0; i < _value.Length; i++)
+                    _value[i] = 1;
 
-                BlastByte bb = new BlastByte(_domain, _address, Type, Value, true);
+                long safeAddress = _address - (_address % _value.Length);
+
+                BlastByte bb = new BlastByte(_domain, safeAddress, Type, _value, true);
                 return bb.GetBackup();
 
             }
