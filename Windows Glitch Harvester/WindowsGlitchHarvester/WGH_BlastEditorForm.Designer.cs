@@ -28,9 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
-            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(WGH_BlastEditorForm));
             this.lbBlastLayer = new System.Windows.Forms.ListBox();
-            this.btnCorrupt = new System.Windows.Forms.Button();
             this.btnLoadCorrupt = new System.Windows.Forms.Button();
             this.btnSendToStash = new System.Windows.Forms.Button();
             this.btnDisable50 = new System.Windows.Forms.Button();
@@ -55,8 +53,8 @@
             // 
             // lbBlastLayer
             // 
-            this.lbBlastLayer.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)
-            | System.Windows.Forms.AnchorStyles.Left)
+            this.lbBlastLayer.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.lbBlastLayer.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
             this.lbBlastLayer.BorderStyle = System.Windows.Forms.BorderStyle.None;
@@ -74,24 +72,6 @@
             this.lbBlastLayer.SelectedIndexChanged += new System.EventHandler(this.lbBlastLayer_SelectedIndexChanged);
             this.lbBlastLayer.MouseDoubleClick += new System.Windows.Forms.MouseEventHandler(this.lbBlastLayer_MouseDoubleClick);
             // 
-            // btnCorrupt
-            // 
-            this.btnCorrupt.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.btnCorrupt.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(32)))), ((int)(((byte)(32)))), ((int)(((byte)(32)))));
-            this.btnCorrupt.FlatAppearance.BorderSize = 0;
-            this.btnCorrupt.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btnCorrupt.Font = new System.Drawing.Font("Segoe UI Semibold", 11F, System.Drawing.FontStyle.Bold);
-            this.btnCorrupt.ForeColor = System.Drawing.Color.OrangeRed;
-            this.btnCorrupt.Location = new System.Drawing.Point(369, 459);
-            this.btnCorrupt.Name = "btnCorrupt";
-            this.btnCorrupt.Size = new System.Drawing.Size(157, 28);
-            this.btnCorrupt.TabIndex = 13;
-            this.btnCorrupt.TabStop = false;
-            this.btnCorrupt.Tag = "color:darker";
-            this.btnCorrupt.Text = "Corrupt";
-            this.btnCorrupt.UseVisualStyleBackColor = false;
-            this.btnCorrupt.Click += new System.EventHandler(this.btnCorrupt_Click);
-            // 
             // btnLoadCorrupt
             // 
             this.btnLoadCorrupt.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
@@ -100,13 +80,13 @@
             this.btnLoadCorrupt.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnLoadCorrupt.Font = new System.Drawing.Font("Segoe UI Semibold", 11F, System.Drawing.FontStyle.Bold);
             this.btnLoadCorrupt.ForeColor = System.Drawing.Color.OrangeRed;
-            this.btnLoadCorrupt.Location = new System.Drawing.Point(369, 427);
+            this.btnLoadCorrupt.Location = new System.Drawing.Point(370, 438);
             this.btnLoadCorrupt.Name = "btnLoadCorrupt";
             this.btnLoadCorrupt.Size = new System.Drawing.Size(157, 28);
             this.btnLoadCorrupt.TabIndex = 14;
             this.btnLoadCorrupt.TabStop = false;
             this.btnLoadCorrupt.Tag = "color:darker";
-            this.btnLoadCorrupt.Text = "Load + Corrupt";
+            this.btnLoadCorrupt.Text = "Corrupt + Execute";
             this.btnLoadCorrupt.UseVisualStyleBackColor = false;
             this.btnLoadCorrupt.Click += new System.EventHandler(this.btnLoadCorrupt_Click);
             // 
@@ -118,7 +98,7 @@
             this.btnSendToStash.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnSendToStash.Font = new System.Drawing.Font("Segoe UI Semibold", 11F, System.Drawing.FontStyle.Bold);
             this.btnSendToStash.ForeColor = System.Drawing.Color.OrangeRed;
-            this.btnSendToStash.Location = new System.Drawing.Point(369, 491);
+            this.btnSendToStash.Location = new System.Drawing.Point(370, 472);
             this.btnSendToStash.Name = "btnSendToStash";
             this.btnSendToStash.Size = new System.Drawing.Size(157, 28);
             this.btnSendToStash.TabIndex = 12;
@@ -358,7 +338,7 @@
             this.btnDuplicateSelected.UseVisualStyleBackColor = false;
             this.btnDuplicateSelected.Click += new System.EventHandler(this.btnDuplicateSelected_Click);
             // 
-            // RTC_BlastEditorForm
+            // WGH_BlastEditorForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
@@ -374,11 +354,9 @@
             this.Controls.Add(this.btnRemoveDisabled);
             this.Controls.Add(this.lbBlastLayer);
             this.Controls.Add(this.btnSendToStash);
-            this.Controls.Add(this.btnCorrupt);
             this.Controls.Add(this.btnLoadCorrupt);
-            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.MinimumSize = new System.Drawing.Size(532, 532);
-            this.Name = "RTC_BlastEditorForm";
+            this.Name = "WGH_BlastEditorForm";
             this.Tag = "color:normal";
             this.Text = "Blast Editor";
             this.Load += new System.EventHandler(this.RTC_BlastEditorForm_Load);
@@ -395,7 +373,6 @@
         #endregion
 
         public System.Windows.Forms.ListBox lbBlastLayer;
-        private System.Windows.Forms.Button btnCorrupt;
         private System.Windows.Forms.Button btnLoadCorrupt;
         private System.Windows.Forms.Button btnSendToStash;
         private System.Windows.Forms.Button btnDisable50;

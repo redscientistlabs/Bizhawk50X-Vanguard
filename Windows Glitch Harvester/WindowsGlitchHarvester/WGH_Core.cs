@@ -12,7 +12,7 @@ namespace WindowsGlitchHarvester
 
     public static class WGH_Core
     {
-		public static string WghVersion = "0.91";
+		public static string WghVersion = "0.91b";
 
 		public static Random RND = new Random();
 
@@ -45,6 +45,7 @@ namespace WindowsGlitchHarvester
 		public static WGH_HookProcessForm hpForm = null;
 		public static WGH_AutoCorruptForm acForm = null;
         public static WGH_BlastEditorForm beForm = null;
+        public static WGH_SavestateInfoForm ssForm = null;
 
         //object references
         public static MemoryInterface currentMemoryInterface = null;
@@ -226,11 +227,17 @@ namespace WindowsGlitchHarvester
                 if (currentMemoryInterface != null && (currentTargetType == "File" || currentTargetType == "MultipleFiles"))
                     WGH_Core.RestoreTarget();
 
+
+                //Disable caching of the previously loaded file if it was enabled
+                if (ghForm.btnEnableCaching.Text == "Disable caching on current target")
+                    ghForm.btnEnableCaching.PerformClick();
+
                 currentTargetType = "File";
                 var fi = new FileInterface(currentTargetId);
                 currentTargetName = fi.ShortFilename;
                 currentMemoryInterface = fi;
                 ghForm.lbTarget.Text = currentTargetId + "|MemorySize:" + fi.lastMemorySize.ToString();
+
 
             }
             else if (WGH_Core.ghForm.rbTargetMultipleFiles.Checked)

@@ -79,10 +79,11 @@ namespace WindowsGlitchHarvester
             StashKey newSk = (StashKey)sk.Clone();
 
             newSk.BlastLayer = bl;
-
+            WGH_Core.RestoreTarget();
             newSk.Run();
+            WGH_Executor.Execute();
         }
-
+        /*
         private void btnCorrupt_Click(object sender, EventArgs e)
         {
             BlastLayer bl = new BlastLayer();
@@ -93,9 +94,10 @@ namespace WindowsGlitchHarvester
                 if (bu.IsEnabled)
                     bl.Layer.Add(bu);
             }
-
+            
+            WGH_Core.RestoreTarget();
             bl.Apply();
-        }
+        }*/
 
         private void btnSendToStash_Click(object sender, EventArgs e)
         {
@@ -105,9 +107,12 @@ namespace WindowsGlitchHarvester
 
             WGH_Core.ghForm.DontLoadSelectedStash = true;
             WGH_Core.ghForm.lbStashHistory.Items.Add(newSk);
-            WGH_Core.ghForm.lbStashHistory.Items.Add(WGH_Core.currentStashkey);
+          //  WGH_Core.ghForm.lbStashHistory.Items.Add(WGH_Core.currentStashkey);
             WGH_Core.ghForm.lbStashHistory.SelectedIndex = WGH_Core.ghForm.lbStashHistory.Items.Count - 1;
             WGH_Core.ghForm.lbStockpile.ClearSelected();
+
+            GC.Collect();
+            GC.WaitForPendingFinalizers();
         }
 
         private void lbBlastLayer_MouseDoubleClick(object sender, MouseEventArgs e)
@@ -319,5 +324,6 @@ namespace WindowsGlitchHarvester
 
             RefreshBlastLayer();
         }
+        
     }
 }

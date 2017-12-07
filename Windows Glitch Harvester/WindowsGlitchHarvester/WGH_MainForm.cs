@@ -163,7 +163,6 @@ namespace WindowsGlitchHarvester
                         break;
                 }
             }
-
             WGH_Executor.Execute();
         }
 
@@ -643,7 +642,7 @@ Are you sure you want to reset the current target's backup?", "WARNING", Message
         }
 
 
-        private void btnEnableCaching_Click(object sender, EventArgs e)
+        public void btnEnableCaching_Click(object sender, EventArgs e)
         {
             if (WGH_Core.currentMemoryInterface != null)
                 if (btnEnableCaching.Text == "Enable caching on current target")
@@ -666,7 +665,6 @@ Are you sure you want to reset the current target's backup?", "WARNING", Message
 
         private void btnDisableAutoUncorrupt_Click(object sender, EventArgs e)
         {
-            if (!WGH_Core.AutoUncorrupt)
                 if (btnDisableAutoUncorrupt.Text == "Enable Auto-Uncorrupt")
                 {
                     WGH_Core.AutoUncorrupt = true;
@@ -856,33 +854,52 @@ Are you sure you want to reset the current target's backup?", "WARNING", Message
             if (sk != null)
             {
 
-                foreach (BlastUnit bu in sk.BlastLayer.Layer)
+                StashKey newSk = (StashKey)sk.Clone();
+                newSk.Key = WGH_Core.GetRandomKey();
+                newSk.Alias = null;
+
+                WGH_Core.ghForm.DontLoadSelectedStash = true;
+                WGH_Core.ghForm.lbStashHistory.Items.Add(newSk);
+                WGH_Core.ghForm.lbStashHistory.SelectedIndex = WGH_Core.ghForm.lbStashHistory.Items.Count - 1;
+                WGH_Core.ghForm.lbStockpile.ClearSelected();
+
+                //TODO: Refactor this properly instead of as a hacky mess
+                foreach (BlastUnit bu in newSk.BlastLayer.Layer)
                 {
                     var bb = (bu as BlastByte);
-                    if (bb.Type == BlastByteType.SET)
+                    //BAD HACK. USE THIS TO DECTECT IF VECTOR. SORRY I DIDN'T KNOW WHERE TO REFACTOR THIS -NARRY
+                    if (bb != null)
                     {
-                        bb.Value = WGH_Core.RND.Next(0, 255);
-                    }
-                    else if (bb.Type == BlastByteType.ADD || bb.Type == BlastByteType.SUBSTRACT)
-                    {
-                        int result = WGH_Core.RND.Next(1, 3);
-                        switch (result)
+                        if (bb.Type == BlastByteType.SET)
                         {
-                            case 1:
-                                bb.Type = BlastByteType.ADD;
-                                break;
-
-                            case 2:
-                                bb.Type = BlastByteType.SUBSTRACT;
-                                break;
-
+                            bb.Value = WGH_Core.RND.Next(0, 255);
                         }
+                        else if (bb.Type == BlastByteType.ADD || bb.Type == BlastByteType.SUBSTRACT)
+                        {
+                            int result = WGH_Core.RND.Next(1, 3);
+                            switch (result)
+                            {
+                                case 1:
+                                    bb.Type = BlastByteType.ADD;
+                                    break;
+
+                                case 2:
+                                    bb.Type = BlastByteType.SUBSTRACT;
+                                    break;
+
+                            }
+                        }
+                    }
+                    else
+                    {
+                        var bv = (bu as BlastVector);
+                        bv.Values = WGH_VectorEngine.getRandomConstant(WGH_VectorEngine.valueList);
                     }
                 }
 
                 WGH_Core.RestoreTarget();
 
-                sk.Run();
+                newSk.Run();
                 WGH_Executor.Execute();
             }
         }
@@ -901,6 +918,9 @@ Are you sure you want to reset the current target's backup?", "WARNING", Message
                     break;
                 case "Extended-":
                     WGH_VectorEngine.limiterList = WGH_VectorEngine.listOfNegativeConstants;
+                    break;
+                case "SuperExtended":
+                    WGH_VectorEngine.limiterList = WGH_VectorEngine.superExtendedListOfConstants;
                     break;
                 case "Whole":
                     WGH_VectorEngine.limiterList = WGH_VectorEngine.listOfWholeConstants;
@@ -942,6 +962,9 @@ Are you sure you want to reset the current target's backup?", "WARNING", Message
                     break;
                 case "Extended-":
                     WGH_VectorEngine.valueList = WGH_VectorEngine.listOfNegativeConstants;
+                    break;
+                case "SuperExtended":
+                    WGH_VectorEngine.limiterList = WGH_VectorEngine.superExtendedListOfConstants;
                     break;
                 case "Whole":
                     WGH_VectorEngine.valueList = WGH_VectorEngine.listOfWholeConstants;
@@ -1039,6 +1062,12 @@ Are you sure you want to reset the current target's backup?", "WARNING", Message
                         WGH_Core.beForm = new WGH_BlastEditorForm();
                         WGH_Core.beForm.LoadStashkey(WGH_Core.currentStashkey);
                     }
+                    else
+                    {
+                        WGH_Core.beForm = new WGH_BlastEditorForm();
+                        WGH_Core.beForm.LoadStashkey(WGH_Core.currentStashkey);
+                    }
+
                 })) as ToolStripMenuItem).Enabled = lbStashHistory.SelectedIndex != -1;
                 columnsMenu.Show(this, locate);
             }
@@ -1058,9 +1087,55 @@ Are you sure you want to reset the current target's backup?", "WARNING", Message
                         WGH_Core.beForm = new WGH_BlastEditorForm();
                         WGH_Core.beForm.LoadStashkey(WGH_Core.currentStashkey);
                     }
+                    else
+                    {
+                        WGH_Core.beForm = new WGH_BlastEditorForm();
+                        WGH_Core.beForm.LoadStashkey(WGH_Core.currentStashkey);
+                    }
+
                 })) as ToolStripMenuItem).Enabled = lbStockpile.SelectedIndex != -1;
                 columnsMenu.Show(this, locate);
             }
+        }
+
+        private void gbDefaultSettings_Enter(object sender, EventArgs e)
+        {
+
+        }
+
+
+        private void vectorOffset_ValueChanged(object sender, EventArgs e)
+        {
+            WGH_VectorEngine.vectorOffset = Convert.ToInt64(vectorOffset.Value);
+        }
+
+        private void label13_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void cbVectorAligned_CheckedChanged(object sender, EventArgs e)
+        {
+            WGH_VectorEngine.vectorAligned = cbVectorAligned.Checked;
+        }
+
+        private void label10_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void savestateInfoButton_Click(object sender, EventArgs e)
+        {
+            if (WGH_Core.ssForm != null)
+            {
+                WGH_Core.ssForm.Close();
+                WGH_Core.ssForm = new WGH_SavestateInfoForm();
+            }
+            else
+            {
+                WGH_Core.ssForm = new WGH_SavestateInfoForm();
+            }
+
         }
     }
 }

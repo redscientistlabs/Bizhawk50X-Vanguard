@@ -67,6 +67,7 @@
             this.btnStashHistoryUp = new System.Windows.Forms.Button();
             this.btnStashHistoryDown = new System.Windows.Forms.Button();
             this.pnTargetPanel = new System.Windows.Forms.Panel();
+            this.savestateInfoButton = new System.Windows.Forms.Button();
             this.rbTargetMultipleFiles = new System.Windows.Forms.RadioButton();
             this.btnClearAllBackups = new System.Windows.Forms.Button();
             this.btnResetBackup = new System.Windows.Forms.Button();
@@ -91,6 +92,9 @@
             this.cbInjectOnSelect = new System.Windows.Forms.CheckBox();
             this.btnRenameSelected = new System.Windows.Forms.Button();
             this.gbVectorEngineSettings = new System.Windows.Forms.GroupBox();
+            this.label10 = new System.Windows.Forms.Label();
+            this.cbVectorAligned = new System.Windows.Forms.CheckBox();
+            this.vectorOffset = new System.Windows.Forms.NumericUpDown();
             this.cbBigEndian = new System.Windows.Forms.CheckBox();
             this.cbVectorValueList = new System.Windows.Forms.ComboBox();
             this.label18 = new System.Windows.Forms.Label();
@@ -115,6 +119,7 @@
             this.pnTargetPanel.SuspendLayout();
             this.pnBottom.SuspendLayout();
             this.gbVectorEngineSettings.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.vectorOffset)).BeginInit();
             this.pnCorruptionEngine.SuspendLayout();
             this.panel1.SuspendLayout();
             this.panel3.SuspendLayout();
@@ -340,7 +345,7 @@
             this.nmIntensity.ForeColor = System.Drawing.Color.White;
             this.nmIntensity.Location = new System.Drawing.Point(114, 12);
             this.nmIntensity.Maximum = new decimal(new int[] {
-            4000000,
+            2147483647,
             0,
             0,
             0});
@@ -370,7 +375,7 @@
             // tbIntensity
             // 
             this.tbIntensity.Location = new System.Drawing.Point(9, 41);
-            this.tbIntensity.Maximum = 4000000;
+            this.tbIntensity.Maximum = 2147483647;
             this.tbIntensity.Name = "tbIntensity";
             this.tbIntensity.Size = new System.Drawing.Size(191, 45);
             this.tbIntensity.TabIndex = 17;
@@ -698,6 +703,7 @@
             // pnTargetPanel
             // 
             this.pnTargetPanel.BackColor = System.Drawing.Color.Gray;
+            this.pnTargetPanel.Controls.Add(this.savestateInfoButton);
             this.pnTargetPanel.Controls.Add(this.rbTargetMultipleFiles);
             this.pnTargetPanel.Controls.Add(this.btnClearAllBackups);
             this.pnTargetPanel.Controls.Add(this.btnResetBackup);
@@ -712,6 +718,24 @@
             this.pnTargetPanel.Size = new System.Drawing.Size(864, 64);
             this.pnTargetPanel.TabIndex = 39;
             this.pnTargetPanel.Tag = "color:normal";
+            // 
+            // savestateInfoButton
+            // 
+            this.savestateInfoButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.savestateInfoButton.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(32)))), ((int)(((byte)(32)))), ((int)(((byte)(32)))));
+            this.savestateInfoButton.FlatAppearance.BorderSize = 0;
+            this.savestateInfoButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.savestateInfoButton.Font = new System.Drawing.Font("Segoe UI", 8F);
+            this.savestateInfoButton.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(192)))), ((int)(((byte)(255)))), ((int)(((byte)(192)))));
+            this.savestateInfoButton.Location = new System.Drawing.Point(520, 7);
+            this.savestateInfoButton.Name = "savestateInfoButton";
+            this.savestateInfoButton.Size = new System.Drawing.Size(107, 23);
+            this.savestateInfoButton.TabIndex = 35;
+            this.savestateInfoButton.TabStop = false;
+            this.savestateInfoButton.Tag = "color:darker";
+            this.savestateInfoButton.Text = "Savestate Info";
+            this.savestateInfoButton.UseVisualStyleBackColor = false;
+            this.savestateInfoButton.Click += new System.EventHandler(this.savestateInfoButton_Click);
             // 
             // rbTargetMultipleFiles
             // 
@@ -1089,6 +1113,9 @@
             // 
             // gbVectorEngineSettings
             // 
+            this.gbVectorEngineSettings.Controls.Add(this.label10);
+            this.gbVectorEngineSettings.Controls.Add(this.cbVectorAligned);
+            this.gbVectorEngineSettings.Controls.Add(this.vectorOffset);
             this.gbVectorEngineSettings.Controls.Add(this.cbBigEndian);
             this.gbVectorEngineSettings.Controls.Add(this.cbVectorValueList);
             this.gbVectorEngineSettings.Controls.Add(this.label18);
@@ -1102,17 +1129,62 @@
             this.gbVectorEngineSettings.TabStop = false;
             this.gbVectorEngineSettings.Visible = false;
             // 
+            // label10
+            // 
+            this.label10.AutoSize = true;
+            this.label10.Font = new System.Drawing.Font("Segoe UI", 9.75F);
+            this.label10.Location = new System.Drawing.Point(137, 9);
+            this.label10.Name = "label10";
+            this.label10.Size = new System.Drawing.Size(43, 17);
+            this.label10.TabIndex = 89;
+            this.label10.Text = "Offset";
+            this.label10.Click += new System.EventHandler(this.label10_Click);
+            // 
+            // cbVectorAligned
+            // 
+            this.cbVectorAligned.AutoSize = true;
+            this.cbVectorAligned.Checked = true;
+            this.cbVectorAligned.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.cbVectorAligned.Cursor = System.Windows.Forms.Cursors.Default;
+            this.cbVectorAligned.Font = new System.Drawing.Font("Segoe UI", 9.75F);
+            this.cbVectorAligned.ForeColor = System.Drawing.Color.White;
+            this.cbVectorAligned.Location = new System.Drawing.Point(103, 103);
+            this.cbVectorAligned.Name = "cbVectorAligned";
+            this.cbVectorAligned.Size = new System.Drawing.Size(71, 21);
+            this.cbVectorAligned.TabIndex = 88;
+            this.cbVectorAligned.TabStop = false;
+            this.cbVectorAligned.Text = "Aligned";
+            this.cbVectorAligned.UseVisualStyleBackColor = true;
+            this.cbVectorAligned.CheckedChanged += new System.EventHandler(this.cbVectorAligned_CheckedChanged);
+            // 
+            // vectorOffset
+            // 
+            this.vectorOffset.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
+            this.vectorOffset.ForeColor = System.Drawing.SystemColors.Info;
+            this.vectorOffset.Location = new System.Drawing.Point(140, 29);
+            this.vectorOffset.Maximum = new decimal(new int[] {
+            3,
+            0,
+            0,
+            0});
+            this.vectorOffset.Name = "vectorOffset";
+            this.vectorOffset.Size = new System.Drawing.Size(34, 20);
+            this.vectorOffset.TabIndex = 87;
+            this.vectorOffset.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            this.vectorOffset.ValueChanged += new System.EventHandler(this.vectorOffset_ValueChanged);
+            // 
             // cbBigEndian
             // 
             this.cbBigEndian.AutoSize = true;
+            this.cbBigEndian.Cursor = System.Windows.Forms.Cursors.Default;
             this.cbBigEndian.Font = new System.Drawing.Font("Segoe UI", 9.75F);
             this.cbBigEndian.ForeColor = System.Drawing.Color.White;
-            this.cbBigEndian.Location = new System.Drawing.Point(23, 104);
+            this.cbBigEndian.Location = new System.Drawing.Point(16, 103);
             this.cbBigEndian.Name = "cbBigEndian";
-            this.cbBigEndian.Size = new System.Drawing.Size(112, 21);
+            this.cbBigEndian.Size = new System.Drawing.Size(88, 21);
             this.cbBigEndian.TabIndex = 86;
             this.cbBigEndian.TabStop = false;
-            this.cbBigEndian.Text = "use Big Endian";
+            this.cbBigEndian.Text = "Big Endian";
             this.cbBigEndian.UseVisualStyleBackColor = true;
             this.cbBigEndian.CheckedChanged += new System.EventHandler(this.cbBigEndian_CheckedChanged);
             // 
@@ -1128,6 +1200,7 @@
             "Extended",
             "Extended+",
             "Extended-",
+            "SuperExtended",
             "Whole",
             "Whole+",
             "Tiny",
@@ -1135,9 +1208,9 @@
             "One*",
             "Two",
             "AnyFloat"});
-            this.cbVectorValueList.Location = new System.Drawing.Point(16, 76);
+            this.cbVectorValueList.Location = new System.Drawing.Point(16, 73);
             this.cbVectorValueList.Name = "cbVectorValueList";
-            this.cbVectorValueList.Size = new System.Drawing.Size(158, 25);
+            this.cbVectorValueList.Size = new System.Drawing.Size(106, 25);
             this.cbVectorValueList.TabIndex = 85;
             this.cbVectorValueList.TabStop = false;
             this.cbVectorValueList.Tag = "color:dark";
@@ -1165,6 +1238,7 @@
             "Extended",
             "Extended+",
             "Extended-",
+            "SuperExtended",
             "Whole",
             "Whole+",
             "Tiny",
@@ -1174,7 +1248,7 @@
             "AnyFloat"});
             this.cbVectorLimiterList.Location = new System.Drawing.Point(16, 28);
             this.cbVectorLimiterList.Name = "cbVectorLimiterList";
-            this.cbVectorLimiterList.Size = new System.Drawing.Size(158, 25);
+            this.cbVectorLimiterList.Size = new System.Drawing.Size(106, 25);
             this.cbVectorLimiterList.TabIndex = 82;
             this.cbVectorLimiterList.TabStop = false;
             this.cbVectorLimiterList.Tag = "color:dark";
@@ -1199,6 +1273,7 @@
             this.gbDefaultSettings.TabIndex = 42;
             this.gbDefaultSettings.TabStop = false;
             this.gbDefaultSettings.Visible = false;
+            this.gbDefaultSettings.Enter += new System.EventHandler(this.gbDefaultSettings_Enter);
             // 
             // pnCorruptionEngine
             // 
@@ -1361,6 +1436,7 @@
             this.pnBottom.PerformLayout();
             this.gbVectorEngineSettings.ResumeLayout(false);
             this.gbVectorEngineSettings.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.vectorOffset)).EndInit();
             this.pnCorruptionEngine.ResumeLayout(false);
             this.panel1.ResumeLayout(false);
             this.panel1.PerformLayout();
@@ -1426,7 +1502,7 @@
         public System.Windows.Forms.RadioButton rbExecuteWith;
         private System.Windows.Forms.CheckBox cbTerminateOnReExec;
         public System.Windows.Forms.RadioButton rbTargetMultipleFiles;
-        private System.Windows.Forms.Button btnEnableCaching;
+        public System.Windows.Forms.Button btnEnableCaching;
         private System.Windows.Forms.Button btnDisableAutoUncorrupt;
         private System.Windows.Forms.Button btnRenameSelected;
         private System.Windows.Forms.Button btnRerollInject;
@@ -1449,6 +1525,10 @@
         private System.Windows.Forms.Button button1;
         private System.Windows.Forms.Label label8;
         public System.Windows.Forms.Label lbArgs;
+        private System.Windows.Forms.NumericUpDown vectorOffset;
+        private System.Windows.Forms.CheckBox cbVectorAligned;
+        private System.Windows.Forms.Label label10;
+        private System.Windows.Forms.Button savestateInfoButton;
     }
 }
 

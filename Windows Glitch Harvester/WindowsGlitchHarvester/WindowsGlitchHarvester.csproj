@@ -143,6 +143,12 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="FastZipProgram.cs" />
+    <Compile Include="WGH_SavestateInfoForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="WGH_SavestateInfoForm.Designer.cs">
+      <DependentUpon>WGH_SavestateInfoForm.cs</DependentUpon>
+    </Compile>
     <Compile Include="ProcessHijack.cs" />
     <Compile Include="Properties\Resources.Designer.cs">
       <AutoGen>True</AutoGen>
@@ -193,6 +199,9 @@
     <EmbeddedResource Include="WGH_AutoCorruptForm.resx">
       <DependentUpon>WGH_AutoCorruptForm.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="WGH_BlastEditorForm.resx">
+      <DependentUpon>WGH_BlastEditorForm.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="WGH_MainForm.resx">
       <DependentUpon>WGH_MainForm.cs</DependentUpon>
     </EmbeddedResource>
@@ -203,6 +212,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="WGH_HookToProcess.resx">
       <DependentUpon>WGH_HookToProcess.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="WGH_SavestateInfoForm.resx">
+      <DependentUpon>WGH_SavestateInfoForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="WGH_SelectMultiple.resx">
       <DependentUpon>WGH_SelectMultiple.cs</DependentUpon>

@@ -531,7 +531,7 @@ namespace WindowsGlitchHarvester
 		public string Domain;
 		public long Address;
 		public BlastByteType Type;
-
+        long vectorOffset = WGH_VectorEngine.vectorOffset;
 		public byte[] Values;
 
 
@@ -540,8 +540,11 @@ namespace WindowsGlitchHarvester
 		public BlastVector(string _domain, long _address, byte[] _values, bool _isEnabled)
 		{
 			Domain = _domain;
-			Address = (_address - (_address % 4));
-			Values = _values;
+            if (WGH_VectorEngine.vectorAligned)
+                Address = ((_address - (_address % 4)) + vectorOffset);
+            else
+               Address = (_address + vectorOffset);
+            Values = _values;
 			IsEnabled = _isEnabled;
 		}
 
@@ -626,6 +629,7 @@ namespace WindowsGlitchHarvester
     public abstract class MemoryInterface
     {
         public abstract byte[] getMemoryDump();
+        public abstract bool isDolphinSavestate();
         public abstract byte[] lastMemoryDump { get; set; }
         public abstract long getMemorySize();
         public abstract long? lastMemorySize{ get; set; }
@@ -797,6 +801,19 @@ namespace WindowsGlitchHarvester
             lastMemorySize = new FileInfo(Filename).Length;
             return (long)lastMemorySize;
             
+        }
+
+        public override bool isDolphinSavestate()
+        {
+            byte[] compare = Encoding.Default.GetBytes("Dolphin Narry's Mod");
+
+            string a = "Dolphin Narry's Mod";
+            string b  = Encoding.Default.GetString(PeekBytes(32, 19));
+
+            if (a == b)
+                return true;
+            else
+                return false;
         }
 
         public override long? lastMemorySize { get; set; }
@@ -991,6 +1008,12 @@ namespace WindowsGlitchHarvester
 
         }
 
+        public override bool isDolphinSavestate()
+        {
+            //Not supported for multiple files
+            return false;
+        }
+
         public override long? lastMemorySize { get; set; }
 
         public override void PokeBytes(long address, byte[] data)
@@ -1141,6 +1164,12 @@ namespace WindowsGlitchHarvester
 
             return (long)lastMemorySize;
 
+        }
+
+        public override bool isDolphinSavestate()
+        {  
+            //Not applicable for processs corruption
+            return false;
         }
 
         public override long? lastMemorySize { get; set; }
