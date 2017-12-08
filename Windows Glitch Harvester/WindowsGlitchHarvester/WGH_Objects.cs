@@ -805,7 +805,6 @@ namespace WindowsGlitchHarvester
 
         public override bool isDolphinSavestate()
         {
-            byte[] compare = Encoding.Default.GetBytes("Dolphin Narry's Mod");
 
             string a = "Dolphin Narry's Mod";
             string b  = Encoding.Default.GetString(PeekBytes(32, 19));
