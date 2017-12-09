@@ -31,7 +31,6 @@
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(WGH_SavestateInfoForm));
             this.sramLabel = new System.Windows.Forms.Label();
             this.aramexramLabel = new System.Windows.Forms.Label();
-            this.sramOffset = new System.Windows.Forms.Label();
             this.aramexramOffset = new System.Windows.Forms.Label();
             this.panel1 = new System.Windows.Forms.Panel();
             this.sramAlignment = new System.Windows.Forms.Label();
@@ -40,6 +39,7 @@
             this.label3 = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
             this.label1 = new System.Windows.Forms.Label();
+            this.sramOffset = new System.Windows.Forms.Label();
             this.panel1.SuspendLayout();
             this.panel3.SuspendLayout();
             this.SuspendLayout();
@@ -69,18 +69,6 @@
             this.aramexramLabel.TabIndex = 1;
             this.aramexramLabel.Text = "ARAM";
             this.aramexramLabel.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            // 
-            // sramOffset
-            // 
-            this.sramOffset.AutoSize = true;
-            this.sramOffset.BackColor = System.Drawing.Color.Transparent;
-            this.sramOffset.Font = new System.Drawing.Font("Microsoft Sans Serif", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.sramOffset.ForeColor = System.Drawing.Color.White;
-            this.sramOffset.Location = new System.Drawing.Point(109, 55);
-            this.sramOffset.Name = "sramOffset";
-            this.sramOffset.Size = new System.Drawing.Size(108, 25);
-            this.sramOffset.TabIndex = 4;
-            this.sramOffset.Text = "00000000";
             // 
             // aramexramOffset
             // 
@@ -183,6 +171,18 @@
             this.label1.Text = "Domain";
             this.label1.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
+            // sramOffset
+            // 
+            this.sramOffset.AutoSize = true;
+            this.sramOffset.BackColor = System.Drawing.Color.Transparent;
+            this.sramOffset.Font = new System.Drawing.Font("Microsoft Sans Serif", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.sramOffset.ForeColor = System.Drawing.Color.White;
+            this.sramOffset.Location = new System.Drawing.Point(109, 55);
+            this.sramOffset.Name = "sramOffset";
+            this.sramOffset.Size = new System.Drawing.Size(108, 25);
+            this.sramOffset.TabIndex = 4;
+            this.sramOffset.Text = "00000000";
+            // 
             // WGH_SavestateInfoForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -208,7 +208,6 @@
 
         private System.Windows.Forms.Label sramLabel;
         private System.Windows.Forms.Label aramexramLabel;
-        private System.Windows.Forms.Label sramOffset;
         private System.Windows.Forms.Label aramexramOffset;
         private System.Windows.Forms.Panel panel1;
         private System.Windows.Forms.Label sramAlignment;
@@ -217,5 +216,6 @@
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.Label label1;
+        private System.Windows.Forms.Label sramOffset;
     }
 }

@@ -375,7 +375,7 @@
             // tbIntensity
             // 
             this.tbIntensity.Location = new System.Drawing.Point(9, 41);
-            this.tbIntensity.Maximum = 2147483647;
+            this.tbIntensity.Maximum = 5000000;
             this.tbIntensity.Name = "tbIntensity";
             this.tbIntensity.Size = new System.Drawing.Size(191, 45);
             this.tbIntensity.TabIndex = 17;
