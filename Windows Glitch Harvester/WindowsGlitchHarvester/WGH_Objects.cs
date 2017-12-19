@@ -789,7 +789,7 @@ namespace WindowsGlitchHarvester
         public override byte[] getMemoryDump()
         {
             lastMemoryDump = File.ReadAllBytes(getBackupFilename());
-            return lastMemoryDump.ToArray();
+            return lastMemoryDump;
         }
         public override byte[] lastMemoryDump { get; set; } = null;
 

@@ -656,6 +656,9 @@ Are you sure you want to reset the current target's backup?", "WARNING", Message
                 else
                 {
                     WGH_Core.currentMemoryInterface.lastMemoryDump = null;
+                    GC.Collect();
+                    GC.WaitForFullGCComplete();
+
                     if (WGH_Core.currentMemoryInterface is ProcessInterface)
                         (WGH_Core.currentMemoryInterface as ProcessInterface).UseCaching = false;
 
