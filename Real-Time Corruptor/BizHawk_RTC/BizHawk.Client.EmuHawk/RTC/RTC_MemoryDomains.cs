@@ -91,8 +91,9 @@ namespace RTC
                     DomainBlacklist.Add("PRG ROM");
 					DomainBlacklist.Add("PALRAM"); //Color Memory (Useless and disgusting)
 					DomainBlacklist.Add("CHR VROM"); //Cartridge
-                    DomainBlacklist.Add("Battery RAM"); //Cartridge Save Data
-                    break;
+					DomainBlacklist.Add("Battery RAM"); //Cartridge Save Data
+					DomainBlacklist.Add("FDS Side"); //ROM data for the FDS. Sadly uncorruptable.
+					break;
 
 
                 case "GB":      //Gameboy
@@ -238,11 +239,19 @@ namespace RTC
             switch (thisSystem.ToUpper())
             {
                 case "NES":     //Nintendo Entertainment System
-                    rp.primarydomain = "PRG ROM";
 
-                    if (RTC_MemoryDomains.MemoryInterfaces.ContainsKey("CHR VROM"))
+					//There's no easy way to discern NES from FDS so just check for the domain name
+					if (RTC_MemoryDomains.MemoryInterfaces.ContainsKey("PRG ROM"))
+						rp.primarydomain = "PRG ROM";
+					else
+					{
+						rp.error = "Unfortunately, Bizhawk doesn't support editing the ROM (FDS Side) domain of FDS games. Maybe in a future version...";
+						break;
+					}						
+
+					if (RTC_MemoryDomains.MemoryInterfaces.ContainsKey("CHR VROM"))
                         rp.seconddomain = "CHR VROM";
-
+					//We're assuming there'll always be a header here. Let's hope we're right (we're not but bizhawk has issues loading headerless roms so we're fine probably)
                     rp.skipbytes = 16;
                     break;
 

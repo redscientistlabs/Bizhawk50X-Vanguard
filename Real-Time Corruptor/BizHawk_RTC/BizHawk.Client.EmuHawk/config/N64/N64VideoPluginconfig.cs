@@ -98,6 +98,11 @@ namespace BizHawk.Client.EmuHawk
 		private void Button1_Click(object sender, EventArgs e)
 		{
 			SaveSettings();
+
+			//rtc_hijack save config after saving plugin settings
+			RTC.RTC_Hooks.BIZHAWK_SAVE_CONFIG();
+
+
 			DialogResult = DialogResult.OK;
 			Close();
 		}

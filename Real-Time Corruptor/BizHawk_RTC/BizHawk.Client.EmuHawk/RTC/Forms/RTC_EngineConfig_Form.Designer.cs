@@ -260,7 +260,8 @@
             this.cbBlastRadius.Items.AddRange(new object[] {
             "SPREAD",
             "CHUNK",
-            "BURST"});
+            "BURST",
+			"NORMALIZED"});
             this.cbBlastRadius.Location = new System.Drawing.Point(90, 133);
             this.cbBlastRadius.Name = "cbBlastRadius";
             this.cbBlastRadius.Size = new System.Drawing.Size(100, 21);

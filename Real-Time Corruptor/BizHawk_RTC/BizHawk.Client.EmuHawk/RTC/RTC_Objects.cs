@@ -1121,11 +1121,11 @@ namespace RTC
                             break;
 
                         case BlastByteType.ADD:
-                            mdp.PokeByte(targetAddress, (byte)(mdp.PeekByte(targetAddress + i) + Value[i]));
+                            mdp.PokeByte(targetAddress + i, (byte)(mdp.PeekByte(targetAddress + i) + Value[i]));
                             break;
 
                         case BlastByteType.SUBSTRACT:
-                            mdp.PokeByte(targetAddress, (byte)(mdp.PeekByte(targetAddress + i) - Value[i]));
+                            mdp.PokeByte(targetAddress + i, (byte)(mdp.PeekByte(targetAddress + i) - Value[i]));
                             break;
 
                         case BlastByteType.NONE:

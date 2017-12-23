@@ -10,6 +10,7 @@ namespace RTC
         SPREAD,
         CHUNK,
         BURST,
+		NORMALIZED,
         NONE
     }
 

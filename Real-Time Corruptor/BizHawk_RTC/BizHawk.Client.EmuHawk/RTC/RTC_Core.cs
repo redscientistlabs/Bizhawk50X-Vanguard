@@ -21,7 +21,7 @@ namespace RTC
         public static Random RND = new Random();
 
         //General RTC Values
-        public static string RtcVersion = "3.10";
+        public static string RtcVersion = "3.10a";
 
         //Directories
         public static string bizhawkDir = Directory.GetCurrentDirectory();
@@ -588,28 +588,62 @@ namespace RTC
 
                             break;
 
-                        case BlastRadius.BURST: // 10 shots of 10% chunk
+						case BlastRadius.BURST: // 10 shots of 10% chunk
 
-                            for (int j = 0; j < 10; j++) 
-                            {
+							for (int j = 0; j < 10; j++)
+							{
 								Domain = _selectedDomains[RND.Next(_selectedDomains.Length)];
 
 								MaxAddress = RTC_MemoryDomains.getInterface(Domain).Size;
 
-                                for (int i = 0; i < (int)((double)_Intensity / 10); i++)
-                                {
-                                    RandomAddress = RTC_Core.RND.RandomLong(MaxAddress -1);
+								for (int i = 0; i < (int)((double)_Intensity / 10); i++)
+								{
+									RandomAddress = RTC_Core.RND.RandomLong(MaxAddress - 1);
 
-                                    bu = getBlastUnit(Domain, RandomAddress);
-                                    if (bu != null)
-                                        bl.Layer.Add(bu);
-                                }
+									bu = getBlastUnit(Domain, RandomAddress);
+									if (bu != null)
+										bl.Layer.Add(bu);
+								}
 
-                            }
+							}
 
-                            break;
+							break;
 
-                        case BlastRadius.NONE: //Shouldn't ever happen but handled anyway
+						case BlastRadius.NORMALIZED: // Blasts based on the size of the largest selected domain. Intensity =  Intensity / (domainSize[largestdomain]/domainSize[currentdomain])
+
+							//Find the smallest domain and base our normalization around it
+							//Domains aren't IComparable so I used keys
+
+							long[] domainSize = new long [_selectedDomains.Length];
+							for (int i = 0; i < _selectedDomains.Length; i++)
+							{
+								Domain = _selectedDomains[i];
+								domainSize[i] = RTC_MemoryDomains.getInterface(Domain).Size;
+							}
+							//Sort the arrays
+							Array.Sort(domainSize, _selectedDomains);
+
+							for (int i = 0; i < _selectedDomains.Length; i++)
+							{
+								Domain = _selectedDomains[i];
+
+								//Get the intensity divider. The size of the largest domain divided by the size of the current domain
+								long normalized = ((domainSize[_selectedDomains.Length-1] / (domainSize[i])));
+
+								for (int j = 0; j < (_Intensity / normalized); j++)
+								{
+									MaxAddress = RTC_MemoryDomains.getInterface(Domain).Size;
+									RandomAddress = RTC_Core.RND.RandomLong(MaxAddress - 1);
+
+									bu = getBlastUnit(Domain, RandomAddress);
+									if (bu != null)
+										bl.Layer.Add(bu);
+								}
+							}
+
+							break;
+
+						case BlastRadius.NONE: //Shouldn't ever happen but handled anyway
                             return null;
                     }
                     

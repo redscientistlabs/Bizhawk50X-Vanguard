@@ -222,10 +222,13 @@ namespace RTC
                     RTC_Core.Radius = BlastRadius.CHUNK;
                     break;
 
-                case "BURST":
-                    RTC_Core.Radius = BlastRadius.BURST;
-                    break;
-            }
+				case "BURST":
+					RTC_Core.Radius = BlastRadius.BURST;
+					break;
+				case "NORMALIZED":
+					RTC_Core.Radius = BlastRadius.NORMALIZED;
+					break;
+			}
 
             RTC_Core.SendCommandToBizhawk(new RTC_Command(CommandType.REMOTE_SET_BLASTRADIUS) { objectValue = RTC_Core.Radius });
 
