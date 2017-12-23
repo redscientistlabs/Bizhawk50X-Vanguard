@@ -261,6 +261,8 @@
             "SPREAD",
             "CHUNK",
             "BURST",
+			"EVEN",
+			"PROPORTIONAL",
 			"NORMALIZED"});
             this.cbBlastRadius.Location = new System.Drawing.Point(90, 133);
             this.cbBlastRadius.Name = "cbBlastRadius";

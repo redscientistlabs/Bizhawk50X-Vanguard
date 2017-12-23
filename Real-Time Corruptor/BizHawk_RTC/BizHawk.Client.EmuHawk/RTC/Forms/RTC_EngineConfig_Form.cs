@@ -214,20 +214,28 @@ namespace RTC
         {
             switch (cbBlastRadius.SelectedItem.ToString())
             {
-				case "SPREAD":
+                case "SPREAD":
 					RTC_Core.Radius = BlastRadius.SPREAD;
 					break;
 
-				case "CHUNK":
+                case "CHUNK":
 					RTC_Core.Radius = BlastRadius.CHUNK;
 					break;
 
-				case "BURST":
+                case "BURST":
 					RTC_Core.Radius = BlastRadius.BURST;
 					break;
 
 				case "NORMALIZED":
 					RTC_Core.Radius = BlastRadius.NORMALIZED;
+					break;
+
+				case "PROPOTIONAL":
+					RTC_Core.Radius = BlastRadius.PROPORTIONAL;
+					break;
+
+				case "EVEN":
+					RTC_Core.Radius = BlastRadius.EVEN;
 					break;
 			}
 

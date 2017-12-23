@@ -11,7 +11,9 @@ namespace RTC
         CHUNK,
         BURST,
 		NORMALIZED,
-        NONE
+		PROPORTIONAL,
+		EVEN,
+		NONE
     }
 
     public enum BlastByteType
