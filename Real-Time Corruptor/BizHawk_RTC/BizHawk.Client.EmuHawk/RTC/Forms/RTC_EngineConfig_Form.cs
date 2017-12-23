@@ -230,7 +230,7 @@ namespace RTC
 					RTC_Core.Radius = BlastRadius.NORMALIZED;
 					break;
 
-				case "PROPOTIONAL":
+				case "PROPORTIONAL":
 					RTC_Core.Radius = BlastRadius.PROPORTIONAL;
 					break;
 
