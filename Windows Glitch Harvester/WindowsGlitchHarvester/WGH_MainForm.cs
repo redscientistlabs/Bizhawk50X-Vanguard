@@ -29,6 +29,32 @@ namespace WindowsGlitchHarvester
         {
             InitializeComponent();
 
+            //Terrible ugly hack for the RefreshingListBox. Forgive my sins.
+            //---------------------------------------------------------------
+            var newListBox = new RefreshingListBox();
+            newListBox.Anchor = lbStockpile.Anchor;
+            newListBox.BackColor = lbStockpile.BackColor;
+            newListBox.BorderStyle = lbStockpile.BorderStyle;
+            newListBox.Font = lbStockpile.Font;
+            newListBox.ForeColor = lbStockpile.ForeColor;
+            newListBox.FormattingEnabled = lbStockpile.FormattingEnabled;
+            newListBox.IntegralHeight = lbStockpile.IntegralHeight;
+            newListBox.ItemHeight = lbStockpile.ItemHeight;
+            newListBox.Location = lbStockpile.Location;
+            newListBox.Name = lbStockpile.Name;
+            newListBox.ScrollAlwaysVisible = lbStockpile.ScrollAlwaysVisible;
+            newListBox.Size = lbStockpile.Size;
+            newListBox.TabIndex = lbStockpile.TabIndex;
+            newListBox.TabStop = lbStockpile.TabStop;
+            newListBox.Tag = lbStockpile.Tag;
+            newListBox.SelectedIndexChanged += new System.EventHandler(this.lbStockpile_SelectedIndexChanged);
+            newListBox.MouseDown += new System.Windows.Forms.MouseEventHandler(this.lbStockpile_MouseDown);
+            Controls.Remove(lbStockpile);
+            lbStockpile = newListBox;
+            Controls.Add(lbStockpile);
+            //---------------------------------------------------------------
+
+
             WGH_Core.Start(this);
         }
 
@@ -814,7 +840,7 @@ Are you sure you want to reset the current target's backup?", "WARNING", Message
                 }
 
                 (lbStockpile.SelectedItem as StashKey).Alias = Name;
-                lbStockpile.RefreshItemsReal();
+                (lbStockpile as RefreshingListBox).RefreshItemsReal();
 
             }
 
