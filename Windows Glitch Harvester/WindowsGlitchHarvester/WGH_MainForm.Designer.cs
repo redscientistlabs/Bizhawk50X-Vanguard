@@ -117,7 +117,7 @@
             this.label8 = new System.Windows.Forms.Label();
             this.label9 = new System.Windows.Forms.Label();
             this.button1 = new System.Windows.Forms.Button();
-            this.lbStockpile = new WindowsGlitchHarvester.RefreshingListBox();
+            this.lbStockpile = new System.Windows.Forms.ListBox();
             ((System.ComponentModel.ISupportInitialize)(this.nmIntensity)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.tbIntensity)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.tbStartingAddress)).BeginInit();
@@ -1622,7 +1622,7 @@
 
         #endregion
 
-        public RefreshingListBox lbStockpile;
+        public System.Windows.Forms.ListBox lbStockpile;
         private System.Windows.Forms.Button btnBlastTarget;
         private System.Windows.Forms.Button btnBrowseTarget;
         private System.Windows.Forms.Button btnLoadStockpile;
