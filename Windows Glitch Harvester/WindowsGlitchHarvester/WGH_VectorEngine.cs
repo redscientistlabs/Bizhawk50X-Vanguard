@@ -19,6 +19,12 @@ namespace WindowsGlitchHarvester
         public static long vectorOffset = 0;
         public static bool vectorAligned = true;
 
+        public static int limiterMin = 0;
+        public static int limiterMax = 0;
+        public static int valueMin = 0;
+        public static int valueMax = 0;
+        public static bool customWholeNumbers = false;
+
         #region constant lists
 
         public static string[] listOfTinyConstants = new string[]
@@ -209,6 +215,7 @@ namespace WindowsGlitchHarvester
 			"46000000", //
 			"46800000", //
 			"47000000", //
+            "477FFF00", // 65535
 			"47800000", // = 65536
 			"bc000000", //
 			"bd800000", //
@@ -346,6 +353,11 @@ namespace WindowsGlitchHarvester
             "000080c7" // = -65536
 		};
 
+        public static string[] customList = new string[]
+        {
+            "custom"
+		};
+
         public static bool BigEndian = false;
 
 		#endregion
@@ -377,8 +389,7 @@ namespace WindowsGlitchHarvester
 				lastDomain = _domain;
 
 
-
-				if (isConstant(lastValues, limiterList))
+                if (isConstant(lastValues, limiterList))
 					bv = new BlastVector(_domain, _address, getRandomConstant(valueList), true);
 
 				return bv;
@@ -401,52 +412,111 @@ namespace WindowsGlitchHarvester
             if (list == null)
                 return true;
 
-			byte[] _bytes = (byte[])bytes.Clone();
+            if (list[0] == "custom")
+            {
+                float value;
+
+                if (WGH_VectorEngine.BigEndian)
+                {
+                    value = ByteArrayToFloat(FlipBytes(bytes));
+                }
+                else
+                    value = ByteArrayToFloat(bytes);
+
+                if (value == 0)
+                   return false;
+                if (customWholeNumbers)
+                {
+
+                    if ((Math.Abs(value % 1) < Double.Epsilon) && value <= limiterMax && value >= limiterMin)
+                    {
+                        return true;
+                    }
+                    return false;
+                }
+
+                if (value <= limiterMax && value >= limiterMin)
+                    return true;
+
+                return false;
+            }
 
             if (!WGH_VectorEngine.BigEndian)
 			{
-				_bytes[0] = bytes[3];
-				_bytes[1] = bytes[2];
-				_bytes[2] = bytes[1];
-				_bytes[3] = bytes[0];
-			}
+                return list.Contains(ByteArrayToString(FlipBytes(bytes)));
+            }
 
-            return list.Contains(ByteArrayToString(_bytes));
+            return list.Contains(ByteArrayToString(bytes));
 		}
 
-		public static string ByteArrayToString(byte[] bytes)
-		{
-			return BitConverter.ToString(bytes).Replace("-", "").ToLower();
-		}
+        public static string ByteArrayToString(byte[] bytes)
+        {
+            return BitConverter.ToString(bytes).Replace("-", "").ToLower();
+        }
 
-		public static byte[] read32bits(MemoryInterface mi, long address)
+        public static float ByteArrayToFloat(byte[] bytes)
+        {
+            return BitConverter.ToSingle(bytes, 0);
+        }
+
+        public static byte[] read32bits(MemoryInterface mi, long address)
 		{
 			return mi.PeekBytes(address, 4);
 		}
 
 		public static byte[] getRandomConstant(string[] list)
-		{
-			if (list == null)
-			{
-				byte[] buffer = new byte[4];
-				WGH_Core.RND.NextBytes(buffer);
-				return buffer;
-			}
+        {
+            byte[] bytes;
+            if (list == null)
+            {
+                byte[] buffer = new byte[4];
+                WGH_Core.RND.NextBytes(buffer);
+                return buffer;
+            }
+            if (list[0] == "custom")
+            {
 
-			byte[] bytes = StringToByteArray(list[WGH_Core.RND.Next(list.Length)]);
-			byte[] _bytes = (byte[])bytes.Clone();
+                if (customWholeNumbers)
+                {
+                    int buffer = WGH_Core.RND.Next(valueMin, valueMax);
+                    bytes = BitConverter.GetBytes((float)buffer);
+                }
+                else
+                {
+                    float buffer = WGH_Core.RND.Next(valueMin, valueMax) + (float)WGH_Core.RND.NextDouble();
+                    bytes = BitConverter.GetBytes(buffer);
+                }
 
+                //This generates a little endian byte array. The normal byte flip check assumes the input is big endian, so handle it separately instead of flipping the bytes twice
+                if (WGH_VectorEngine.BigEndian)
+                {
+                    return FlipBytes(bytes);
+                }
+                return bytes;
+            }
 
-			if (!WGH_VectorEngine.BigEndian)
-			{
-				_bytes[0] = bytes[3];
-				_bytes[1] = bytes[2];
-				_bytes[2] = bytes[1];
-				_bytes[3] = bytes[0];
-			}
+            bytes = StringToByteArray(list[WGH_Core.RND.Next(list.Length)]);
 
-			return _bytes;
+            //Assume we have big endian input for some reason. If it's little endian, flip the bytes. 
+            if (!WGH_VectorEngine.BigEndian)
+            {
+                return FlipBytes(bytes);
+            }
+
+            return bytes;
 		}
+
+        public static byte[] FlipBytes(byte[] bytes)
+        {
+            byte[] _bytes = (byte[])bytes.Clone();
+
+            _bytes[0] = bytes[3];
+            _bytes[1] = bytes[2];
+            _bytes[2] = bytes[1];
+            _bytes[3] = bytes[0];
+
+            return _bytes;
+        }
 
 		public static byte[] StringToByteArray(string hex)
 		{

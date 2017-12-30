@@ -1322,7 +1322,7 @@ namespace RTC
 				EnabledString = "[x] BlastVector -> ";
 
 			string cleanDomainName = Domain.Replace("(nametables)", ""); //Shortens the domain name if it contains "(nametables)"
-			return (EnabledString + cleanDomainName + "(" + Convert.ToInt32(Address).ToString() + ")." + Type.ToString() + "(" + RTC_VectorEngine.ByteArrayToString(Values) + ")");
+			return (EnabledString + cleanDomainName + "(" + Convert.ToUInt32(Address).ToString() + ")." + Type.ToString() + "(" + RTC_VectorEngine.ByteArrayToString(Values) + ")");
 		}
 	}
 

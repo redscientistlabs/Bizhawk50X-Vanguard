@@ -92,6 +92,15 @@
             this.cbInjectOnSelect = new System.Windows.Forms.CheckBox();
             this.btnRenameSelected = new System.Windows.Forms.Button();
             this.gbVectorEngineSettings = new System.Windows.Forms.GroupBox();
+            this.label14 = new System.Windows.Forms.Label();
+            this.label15 = new System.Windows.Forms.Label();
+            this.limiterMax = new System.Windows.Forms.NumericUpDown();
+            this.limiterMin = new System.Windows.Forms.NumericUpDown();
+            this.label12 = new System.Windows.Forms.Label();
+            this.label11 = new System.Windows.Forms.Label();
+            this.customWholeNumbers = new System.Windows.Forms.CheckBox();
+            this.valueMax = new System.Windows.Forms.NumericUpDown();
+            this.valueMin = new System.Windows.Forms.NumericUpDown();
             this.label10 = new System.Windows.Forms.Label();
             this.cbVectorAligned = new System.Windows.Forms.CheckBox();
             this.vectorOffset = new System.Windows.Forms.NumericUpDown();
@@ -119,6 +128,10 @@
             this.pnTargetPanel.SuspendLayout();
             this.pnBottom.SuspendLayout();
             this.gbVectorEngineSettings.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.limiterMax)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.limiterMin)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.valueMax)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.valueMin)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.vectorOffset)).BeginInit();
             this.pnCorruptionEngine.SuspendLayout();
             this.panel1.SuspendLayout();
@@ -174,7 +187,7 @@
             this.lbStashHistory.Location = new System.Drawing.Point(229, 96);
             this.lbStashHistory.Name = "lbStashHistory";
             this.lbStashHistory.ScrollAlwaysVisible = true;
-            this.lbStashHistory.Size = new System.Drawing.Size(146, 407);
+            this.lbStashHistory.Size = new System.Drawing.Size(147, 216);
             this.lbStashHistory.TabIndex = 3;
             this.lbStashHistory.TabStop = false;
             this.lbStashHistory.Tag = "color:normal";
@@ -205,7 +218,7 @@
             this.btnClearStashHistory.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnClearStashHistory.Font = new System.Drawing.Font("Segoe UI Semibold", 9.75F, System.Drawing.FontStyle.Bold);
             this.btnClearStashHistory.ForeColor = System.Drawing.Color.Black;
-            this.btnClearStashHistory.Location = new System.Drawing.Point(229, 504);
+            this.btnClearStashHistory.Location = new System.Drawing.Point(229, 315);
             this.btnClearStashHistory.Name = "btnClearStashHistory";
             this.btnClearStashHistory.Size = new System.Drawing.Size(147, 32);
             this.btnClearStashHistory.TabIndex = 5;
@@ -517,7 +530,7 @@
             this.gbNightmareEngineSettings.ForeColor = System.Drawing.Color.White;
             this.gbNightmareEngineSettings.Location = new System.Drawing.Point(885, 228);
             this.gbNightmareEngineSettings.Name = "gbNightmareEngineSettings";
-            this.gbNightmareEngineSettings.Size = new System.Drawing.Size(190, 130);
+            this.gbNightmareEngineSettings.Size = new System.Drawing.Size(345, 130);
             this.gbNightmareEngineSettings.TabIndex = 28;
             this.gbNightmareEngineSettings.TabStop = false;
             this.gbNightmareEngineSettings.Visible = false;
@@ -566,7 +579,7 @@
             "Vector Engine"});
             this.cbCorruptionEngine.Location = new System.Drawing.Point(10, 12);
             this.cbCorruptionEngine.Name = "cbCorruptionEngine";
-            this.cbCorruptionEngine.Size = new System.Drawing.Size(190, 25);
+            this.cbCorruptionEngine.Size = new System.Drawing.Size(345, 25);
             this.cbCorruptionEngine.TabIndex = 29;
             this.cbCorruptionEngine.TabStop = false;
             this.cbCorruptionEngine.Tag = "color:dark";
@@ -1113,6 +1126,15 @@
             // 
             // gbVectorEngineSettings
             // 
+            this.gbVectorEngineSettings.Controls.Add(this.label14);
+            this.gbVectorEngineSettings.Controls.Add(this.label15);
+            this.gbVectorEngineSettings.Controls.Add(this.limiterMax);
+            this.gbVectorEngineSettings.Controls.Add(this.limiterMin);
+            this.gbVectorEngineSettings.Controls.Add(this.label12);
+            this.gbVectorEngineSettings.Controls.Add(this.label11);
+            this.gbVectorEngineSettings.Controls.Add(this.customWholeNumbers);
+            this.gbVectorEngineSettings.Controls.Add(this.valueMax);
+            this.gbVectorEngineSettings.Controls.Add(this.valueMin);
             this.gbVectorEngineSettings.Controls.Add(this.label10);
             this.gbVectorEngineSettings.Controls.Add(this.cbVectorAligned);
             this.gbVectorEngineSettings.Controls.Add(this.vectorOffset);
@@ -1124,16 +1146,159 @@
             this.gbVectorEngineSettings.ForeColor = System.Drawing.Color.White;
             this.gbVectorEngineSettings.Location = new System.Drawing.Point(885, 85);
             this.gbVectorEngineSettings.Name = "gbVectorEngineSettings";
-            this.gbVectorEngineSettings.Size = new System.Drawing.Size(190, 130);
+            this.gbVectorEngineSettings.Size = new System.Drawing.Size(345, 130);
             this.gbVectorEngineSettings.TabIndex = 42;
             this.gbVectorEngineSettings.TabStop = false;
             this.gbVectorEngineSettings.Visible = false;
+            // 
+            // label14
+            // 
+            this.label14.AutoSize = true;
+            this.label14.Font = new System.Drawing.Font("Segoe UI", 9.75F);
+            this.label14.Location = new System.Drawing.Point(265, 54);
+            this.label14.Name = "label14";
+            this.label14.Size = new System.Drawing.Size(76, 17);
+            this.label14.TabIndex = 100;
+            this.label14.Text = "Limiter Max";
+            // 
+            // label15
+            // 
+            this.label15.AutoSize = true;
+            this.label15.Font = new System.Drawing.Font("Segoe UI", 9.75F);
+            this.label15.Location = new System.Drawing.Point(265, 11);
+            this.label15.Name = "label15";
+            this.label15.Size = new System.Drawing.Size(73, 17);
+            this.label15.TabIndex = 99;
+            this.label15.Text = "Limiter Min";
+            // 
+            // limiterMax
+            // 
+            this.limiterMax.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
+            this.limiterMax.Font = new System.Drawing.Font("Segoe UI", 9.75F);
+            this.limiterMax.ForeColor = System.Drawing.Color.White;
+            this.limiterMax.Location = new System.Drawing.Point(268, 74);
+            this.limiterMax.Maximum = new decimal(new int[] {
+            2147483647,
+            0,
+            0,
+            0});
+            this.limiterMax.Minimum = new decimal(new int[] {
+            -2147483648,
+            0,
+            0,
+            -2147483648});
+            this.limiterMax.Name = "limiterMax";
+            this.limiterMax.Size = new System.Drawing.Size(62, 25);
+            this.limiterMax.TabIndex = 98;
+            this.limiterMax.Tag = "color:dark";
+            this.limiterMax.ValueChanged += new System.EventHandler(this.limiterMax_ValueChanged);
+            // 
+            // limiterMin
+            // 
+            this.limiterMin.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
+            this.limiterMin.Font = new System.Drawing.Font("Segoe UI", 9.75F);
+            this.limiterMin.ForeColor = System.Drawing.Color.White;
+            this.limiterMin.Location = new System.Drawing.Point(268, 29);
+            this.limiterMin.Maximum = new decimal(new int[] {
+            2147483647,
+            0,
+            0,
+            0});
+            this.limiterMin.Minimum = new decimal(new int[] {
+            -2147483648,
+            0,
+            0,
+            -2147483648});
+            this.limiterMin.Name = "limiterMin";
+            this.limiterMin.Size = new System.Drawing.Size(62, 25);
+            this.limiterMin.TabIndex = 97;
+            this.limiterMin.Tag = "color:dark";
+            this.limiterMin.ValueChanged += new System.EventHandler(this.limiterMin_ValueChanged);
+            // 
+            // label12
+            // 
+            this.label12.AutoSize = true;
+            this.label12.Font = new System.Drawing.Font("Segoe UI", 9.75F);
+            this.label12.Location = new System.Drawing.Point(188, 54);
+            this.label12.Name = "label12";
+            this.label12.Size = new System.Drawing.Size(68, 17);
+            this.label12.TabIndex = 96;
+            this.label12.Text = "Value Max";
+            // 
+            // label11
+            // 
+            this.label11.AutoSize = true;
+            this.label11.Font = new System.Drawing.Font("Segoe UI", 9.75F);
+            this.label11.Location = new System.Drawing.Point(188, 11);
+            this.label11.Name = "label11";
+            this.label11.Size = new System.Drawing.Size(65, 17);
+            this.label11.TabIndex = 95;
+            this.label11.Text = "Value Min";
+            // 
+            // customWholeNumbers
+            // 
+            this.customWholeNumbers.AutoSize = true;
+            this.customWholeNumbers.Cursor = System.Windows.Forms.Cursors.Default;
+            this.customWholeNumbers.Font = new System.Drawing.Font("Segoe UI", 9.75F);
+            this.customWholeNumbers.ForeColor = System.Drawing.SystemColors.Window;
+            this.customWholeNumbers.Location = new System.Drawing.Point(191, 105);
+            this.customWholeNumbers.Name = "customWholeNumbers";
+            this.customWholeNumbers.Size = new System.Drawing.Size(152, 21);
+            this.customWholeNumbers.TabIndex = 94;
+            this.customWholeNumbers.TabStop = false;
+            this.customWholeNumbers.Text = "Whole Numbers Only";
+            this.customWholeNumbers.UseVisualStyleBackColor = true;
+            this.customWholeNumbers.CheckedChanged += new System.EventHandler(this.customWholeNumbers_CheckedChanged);
+            // 
+            // valueMax
+            // 
+            this.valueMax.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
+            this.valueMax.Font = new System.Drawing.Font("Segoe UI", 9.75F);
+            this.valueMax.ForeColor = System.Drawing.Color.White;
+            this.valueMax.Location = new System.Drawing.Point(191, 74);
+            this.valueMax.Maximum = new decimal(new int[] {
+            2147483647,
+            0,
+            0,
+            0});
+            this.valueMax.Minimum = new decimal(new int[] {
+            -2147483648,
+            0,
+            0,
+            -2147483648});
+            this.valueMax.Name = "valueMax";
+            this.valueMax.Size = new System.Drawing.Size(62, 25);
+            this.valueMax.TabIndex = 91;
+            this.valueMax.Tag = "color:dark";
+            this.valueMax.ValueChanged += new System.EventHandler(this.valueMax_ValueChanged);
+            // 
+            // valueMin
+            // 
+            this.valueMin.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
+            this.valueMin.Font = new System.Drawing.Font("Segoe UI", 9.75F);
+            this.valueMin.ForeColor = System.Drawing.Color.White;
+            this.valueMin.Location = new System.Drawing.Point(191, 29);
+            this.valueMin.Maximum = new decimal(new int[] {
+            2147483647,
+            0,
+            0,
+            0});
+            this.valueMin.Minimum = new decimal(new int[] {
+            -2147483648,
+            0,
+            0,
+            -2147483648});
+            this.valueMin.Name = "valueMin";
+            this.valueMin.Size = new System.Drawing.Size(62, 25);
+            this.valueMin.TabIndex = 90;
+            this.valueMin.Tag = "color:dark";
+            this.valueMin.ValueChanged += new System.EventHandler(this.valueMin_ValueChanged);
             // 
             // label10
             // 
             this.label10.AutoSize = true;
             this.label10.Font = new System.Drawing.Font("Segoe UI", 9.75F);
-            this.label10.Location = new System.Drawing.Point(137, 9);
+            this.label10.Location = new System.Drawing.Point(128, 11);
             this.label10.Name = "label10";
             this.label10.Size = new System.Drawing.Size(43, 17);
             this.label10.TabIndex = 89;
@@ -1160,16 +1325,18 @@
             // vectorOffset
             // 
             this.vectorOffset.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
-            this.vectorOffset.ForeColor = System.Drawing.SystemColors.Info;
-            this.vectorOffset.Location = new System.Drawing.Point(140, 29);
+            this.vectorOffset.Font = new System.Drawing.Font("Segoe UI", 9.75F);
+            this.vectorOffset.ForeColor = System.Drawing.Color.White;
+            this.vectorOffset.Location = new System.Drawing.Point(131, 29);
             this.vectorOffset.Maximum = new decimal(new int[] {
             3,
             0,
             0,
             0});
             this.vectorOffset.Name = "vectorOffset";
-            this.vectorOffset.Size = new System.Drawing.Size(34, 20);
+            this.vectorOffset.Size = new System.Drawing.Size(34, 25);
             this.vectorOffset.TabIndex = 87;
+            this.vectorOffset.Tag = "color:dark";
             this.vectorOffset.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
             this.vectorOffset.ValueChanged += new System.EventHandler(this.vectorOffset_ValueChanged);
             // 
@@ -1207,6 +1374,7 @@
             "One",
             "One*",
             "Two",
+            "Custom",
             "AnyFloat"});
             this.cbVectorValueList.Location = new System.Drawing.Point(16, 73);
             this.cbVectorValueList.Name = "cbVectorValueList";
@@ -1245,6 +1413,7 @@
             "One",
             "One*",
             "Two",
+            "Custom",
             "AnyFloat"});
             this.cbVectorLimiterList.Location = new System.Drawing.Point(16, 28);
             this.cbVectorLimiterList.Name = "cbVectorLimiterList";
@@ -1269,7 +1438,7 @@
             this.gbDefaultSettings.ForeColor = System.Drawing.Color.White;
             this.gbDefaultSettings.Location = new System.Drawing.Point(10, 43);
             this.gbDefaultSettings.Name = "gbDefaultSettings";
-            this.gbDefaultSettings.Size = new System.Drawing.Size(190, 130);
+            this.gbDefaultSettings.Size = new System.Drawing.Size(345, 130);
             this.gbDefaultSettings.TabIndex = 42;
             this.gbDefaultSettings.TabStop = false;
             this.gbDefaultSettings.Visible = false;
@@ -1282,7 +1451,7 @@
             this.pnCorruptionEngine.Controls.Add(this.gbDefaultSettings);
             this.pnCorruptionEngine.Location = new System.Drawing.Point(9, 352);
             this.pnCorruptionEngine.Name = "pnCorruptionEngine";
-            this.pnCorruptionEngine.Size = new System.Drawing.Size(210, 184);
+            this.pnCorruptionEngine.Size = new System.Drawing.Size(367, 184);
             this.pnCorruptionEngine.TabIndex = 114;
             this.pnCorruptionEngine.Tag = "color:normal";
             // 
@@ -1389,6 +1558,7 @@
             this.ClientSize = new System.Drawing.Size(864, 625);
             this.Controls.Add(this.panel3);
             this.Controls.Add(this.label6);
+            this.Controls.Add(this.btnClearStashHistory);
             this.Controls.Add(this.panel1);
             this.Controls.Add(this.pnCorruptionEngine);
             this.Controls.Add(this.gbVectorEngineSettings);
@@ -1411,10 +1581,9 @@
             this.Controls.Add(this.label1);
             this.Controls.Add(this.btnSaveStockpile);
             this.Controls.Add(this.btnSaveStockpileAs);
-            this.Controls.Add(this.btnClearStashHistory);
             this.Controls.Add(this.btnLoadStockpile);
-            this.Controls.Add(this.lbStashHistory);
             this.Controls.Add(this.lbStockpile);
+            this.Controls.Add(this.lbStashHistory);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.MinimumSize = new System.Drawing.Size(880, 664);
             this.Name = "WGH_MainForm";
@@ -1436,6 +1605,10 @@
             this.pnBottom.PerformLayout();
             this.gbVectorEngineSettings.ResumeLayout(false);
             this.gbVectorEngineSettings.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.limiterMax)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.limiterMin)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.valueMax)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.valueMin)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.vectorOffset)).EndInit();
             this.pnCorruptionEngine.ResumeLayout(false);
             this.panel1.ResumeLayout(false);
@@ -1449,6 +1622,7 @@
 
         #endregion
 
+        public RefreshingListBox lbStockpile;
         private System.Windows.Forms.Button btnBlastTarget;
         private System.Windows.Forms.Button btnBrowseTarget;
         private System.Windows.Forms.Button btnLoadStockpile;
@@ -1479,7 +1653,6 @@
         private System.Windows.Forms.Button btnStockpileDown;
         private System.Windows.Forms.Button btnStashHistoryUp;
         private System.Windows.Forms.Button btnStashHistoryDown;
-        public RefreshingListBox lbStockpile;
         public System.Windows.Forms.ListBox lbStashHistory;
         public System.Windows.Forms.Button btnSaveStockpile;
         public System.Windows.Forms.RadioButton rbTargetFile;
@@ -1529,6 +1702,15 @@
         private System.Windows.Forms.CheckBox cbVectorAligned;
         private System.Windows.Forms.Label label10;
         private System.Windows.Forms.Button savestateInfoButton;
+        private System.Windows.Forms.NumericUpDown valueMax;
+        private System.Windows.Forms.NumericUpDown valueMin;
+        private System.Windows.Forms.CheckBox customWholeNumbers;
+        private System.Windows.Forms.Label label14;
+        private System.Windows.Forms.Label label15;
+        private System.Windows.Forms.NumericUpDown limiterMax;
+        private System.Windows.Forms.NumericUpDown limiterMin;
+        private System.Windows.Forms.Label label12;
+        private System.Windows.Forms.Label label11;
     }
 }
 

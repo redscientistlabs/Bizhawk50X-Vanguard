@@ -943,6 +943,9 @@ Are you sure you want to reset the current target's backup?", "WARNING", Message
                 case "Two":
                     WGH_VectorEngine.limiterList = WGH_VectorEngine.constantPositiveTwo;
                     break;
+                case "Custom":
+                    WGH_VectorEngine.limiterList = WGH_VectorEngine.customList;
+                    break;
                 case "AnyFloat":
                     WGH_VectorEngine.limiterList = null;
                     break;
@@ -967,7 +970,7 @@ Are you sure you want to reset the current target's backup?", "WARNING", Message
                     WGH_VectorEngine.valueList = WGH_VectorEngine.listOfNegativeConstants;
                     break;
                 case "SuperExtended":
-                    WGH_VectorEngine.limiterList = WGH_VectorEngine.superExtendedListOfConstants;
+                    WGH_VectorEngine.valueList = WGH_VectorEngine.superExtendedListOfConstants;
                     break;
                 case "Whole":
                     WGH_VectorEngine.valueList = WGH_VectorEngine.listOfWholeConstants;
@@ -986,6 +989,9 @@ Are you sure you want to reset the current target's backup?", "WARNING", Message
                     break;
                 case "Two":
                     WGH_VectorEngine.valueList = WGH_VectorEngine.constantPositiveTwo;
+                    break;
+                case "Custom":
+                    WGH_VectorEngine.valueList = WGH_VectorEngine.customList;
                     break;
                 case "AnyFloat":
                     WGH_VectorEngine.valueList = null;
@@ -1139,6 +1145,32 @@ Are you sure you want to reset the current target's backup?", "WARNING", Message
                 WGH_Core.ssForm = new WGH_SavestateInfoForm();
             }
 
+        }
+        private void customWholeNumbers_CheckedChanged(object sender, EventArgs e)
+        {
+            WGH_VectorEngine.customWholeNumbers = customWholeNumbers.Checked;
+        }
+
+        private void valueMin_ValueChanged(object sender, EventArgs e)
+        {
+            WGH_VectorEngine.valueMin = Convert.ToInt32(valueMin.Value);
+        }
+
+        private void valueMax_ValueChanged(object sender, EventArgs e)
+        {
+            WGH_VectorEngine.valueMax = Convert.ToInt32(valueMax.Value);
+        }
+        
+        private void limiterMin_ValueChanged(object sender, EventArgs e)
+        {
+
+            WGH_VectorEngine.limiterMin = Convert.ToInt32(limiterMin.Value);
+        }
+
+        private void limiterMax_ValueChanged(object sender, EventArgs e)
+        {
+
+            WGH_VectorEngine.limiterMax = Convert.ToInt32(limiterMax.Value);
         }
     }
 }
