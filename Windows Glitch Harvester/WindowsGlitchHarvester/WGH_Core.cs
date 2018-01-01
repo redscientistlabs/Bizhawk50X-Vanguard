@@ -12,7 +12,7 @@ namespace WindowsGlitchHarvester
 
     public static class WGH_Core
     {
-		public static string WghVersion = "0.92";
+		public static string WghVersion = "0.92b";
 
 		public static Random RND = new Random();
 

@@ -879,7 +879,6 @@ namespace WindowsGlitchHarvester
 
             return readBytes;
 
-
         }
 
     }

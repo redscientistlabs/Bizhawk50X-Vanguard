@@ -45,6 +45,7 @@
             this.btnDisableEverything = new System.Windows.Forms.Button();
             this.btnEnableEverything = new System.Windows.Forms.Button();
             this.btnDuplicateSelected = new System.Windows.Forms.Button();
+            this.lbBlastLayerSize = new System.Windows.Forms.Label();
             this.gbValueEdit.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.nmValueEdit)).BeginInit();
             this.gbAddressEdit.SuspendLayout();
@@ -80,7 +81,7 @@
             this.btnLoadCorrupt.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnLoadCorrupt.Font = new System.Drawing.Font("Segoe UI Semibold", 11F, System.Drawing.FontStyle.Bold);
             this.btnLoadCorrupt.ForeColor = System.Drawing.Color.OrangeRed;
-            this.btnLoadCorrupt.Location = new System.Drawing.Point(370, 438);
+            this.btnLoadCorrupt.Location = new System.Drawing.Point(370, 460);
             this.btnLoadCorrupt.Name = "btnLoadCorrupt";
             this.btnLoadCorrupt.Size = new System.Drawing.Size(157, 28);
             this.btnLoadCorrupt.TabIndex = 14;
@@ -98,7 +99,7 @@
             this.btnSendToStash.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnSendToStash.Font = new System.Drawing.Font("Segoe UI Semibold", 11F, System.Drawing.FontStyle.Bold);
             this.btnSendToStash.ForeColor = System.Drawing.Color.OrangeRed;
-            this.btnSendToStash.Location = new System.Drawing.Point(370, 472);
+            this.btnSendToStash.Location = new System.Drawing.Point(370, 493);
             this.btnSendToStash.Name = "btnSendToStash";
             this.btnSendToStash.Size = new System.Drawing.Size(157, 28);
             this.btnSendToStash.TabIndex = 12;
@@ -116,7 +117,7 @@
             this.btnDisable50.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnDisable50.Font = new System.Drawing.Font("Segoe UI Semibold", 9.75F, System.Drawing.FontStyle.Bold);
             this.btnDisable50.ForeColor = System.Drawing.Color.Black;
-            this.btnDisable50.Location = new System.Drawing.Point(369, 14);
+            this.btnDisable50.Location = new System.Drawing.Point(370, 34);
             this.btnDisable50.Name = "btnDisable50";
             this.btnDisable50.Size = new System.Drawing.Size(157, 25);
             this.btnDisable50.TabIndex = 114;
@@ -134,7 +135,7 @@
             this.btnRemoveDisabled.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnRemoveDisabled.Font = new System.Drawing.Font("Segoe UI Semibold", 9.75F, System.Drawing.FontStyle.Bold);
             this.btnRemoveDisabled.ForeColor = System.Drawing.Color.Black;
-            this.btnRemoveDisabled.Location = new System.Drawing.Point(369, 71);
+            this.btnRemoveDisabled.Location = new System.Drawing.Point(370, 90);
             this.btnRemoveDisabled.Name = "btnRemoveDisabled";
             this.btnRemoveDisabled.Size = new System.Drawing.Size(157, 25);
             this.btnRemoveDisabled.TabIndex = 115;
@@ -152,7 +153,7 @@
             this.btnInvertDisabled.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnInvertDisabled.Font = new System.Drawing.Font("Segoe UI Semibold", 9.75F, System.Drawing.FontStyle.Bold);
             this.btnInvertDisabled.ForeColor = System.Drawing.Color.Black;
-            this.btnInvertDisabled.Location = new System.Drawing.Point(369, 43);
+            this.btnInvertDisabled.Location = new System.Drawing.Point(370, 62);
             this.btnInvertDisabled.Name = "btnInvertDisabled";
             this.btnInvertDisabled.Size = new System.Drawing.Size(157, 25);
             this.btnInvertDisabled.TabIndex = 116;
@@ -170,7 +171,7 @@
             this.gbValueEdit.Controls.Add(this.btnValueUpdate);
             this.gbValueEdit.Font = new System.Drawing.Font("Segoe UI", 9.75F);
             this.gbValueEdit.ForeColor = System.Drawing.Color.White;
-            this.gbValueEdit.Location = new System.Drawing.Point(369, 307);
+            this.gbValueEdit.Location = new System.Drawing.Point(370, 329);
             this.gbValueEdit.Name = "gbValueEdit";
             this.gbValueEdit.Size = new System.Drawing.Size(157, 112);
             this.gbValueEdit.TabIndex = 117;
@@ -231,7 +232,7 @@
             this.gbAddressEdit.Controls.Add(this.btnAdressUpdate);
             this.gbAddressEdit.Font = new System.Drawing.Font("Segoe UI", 9.75F);
             this.gbAddressEdit.ForeColor = System.Drawing.Color.White;
-            this.gbAddressEdit.Location = new System.Drawing.Point(369, 199);
+            this.gbAddressEdit.Location = new System.Drawing.Point(370, 221);
             this.gbAddressEdit.Name = "gbAddressEdit";
             this.gbAddressEdit.Size = new System.Drawing.Size(157, 112);
             this.gbAddressEdit.TabIndex = 127;
@@ -292,7 +293,7 @@
             this.btnDisableEverything.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnDisableEverything.Font = new System.Drawing.Font("Segoe UI Semibold", 9.75F, System.Drawing.FontStyle.Bold);
             this.btnDisableEverything.ForeColor = System.Drawing.Color.Black;
-            this.btnDisableEverything.Location = new System.Drawing.Point(369, 108);
+            this.btnDisableEverything.Location = new System.Drawing.Point(370, 125);
             this.btnDisableEverything.Name = "btnDisableEverything";
             this.btnDisableEverything.Size = new System.Drawing.Size(157, 25);
             this.btnDisableEverything.TabIndex = 128;
@@ -310,7 +311,7 @@
             this.btnEnableEverything.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnEnableEverything.Font = new System.Drawing.Font("Segoe UI Semibold", 9.75F, System.Drawing.FontStyle.Bold);
             this.btnEnableEverything.ForeColor = System.Drawing.Color.Black;
-            this.btnEnableEverything.Location = new System.Drawing.Point(370, 137);
+            this.btnEnableEverything.Location = new System.Drawing.Point(370, 153);
             this.btnEnableEverything.Name = "btnEnableEverything";
             this.btnEnableEverything.Size = new System.Drawing.Size(157, 25);
             this.btnEnableEverything.TabIndex = 129;
@@ -328,7 +329,7 @@
             this.btnDuplicateSelected.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnDuplicateSelected.Font = new System.Drawing.Font("Segoe UI Semibold", 9.75F, System.Drawing.FontStyle.Bold);
             this.btnDuplicateSelected.ForeColor = System.Drawing.Color.Black;
-            this.btnDuplicateSelected.Location = new System.Drawing.Point(370, 172);
+            this.btnDuplicateSelected.Location = new System.Drawing.Point(370, 188);
             this.btnDuplicateSelected.Name = "btnDuplicateSelected";
             this.btnDuplicateSelected.Size = new System.Drawing.Size(157, 25);
             this.btnDuplicateSelected.TabIndex = 130;
@@ -338,12 +339,24 @@
             this.btnDuplicateSelected.UseVisualStyleBackColor = false;
             this.btnDuplicateSelected.Click += new System.EventHandler(this.btnDuplicateSelected_Click);
             // 
+            // lbBlastLayerSize
+            // 
+            this.lbBlastLayerSize.AutoSize = true;
+            this.lbBlastLayerSize.Font = new System.Drawing.Font("Segoe UI Semibold", 8.25F, System.Drawing.FontStyle.Bold);
+            this.lbBlastLayerSize.ForeColor = System.Drawing.Color.White;
+            this.lbBlastLayerSize.Location = new System.Drawing.Point(367, 14);
+            this.lbBlastLayerSize.Name = "lbBlastLayerSize";
+            this.lbBlastLayerSize.Size = new System.Drawing.Size(106, 13);
+            this.lbBlastLayerSize.TabIndex = 127;
+            this.lbBlastLayerSize.Text = "BlastLayer Size: null";
+            // 
             // WGH_BlastEditorForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.Gray;
             this.ClientSize = new System.Drawing.Size(539, 536);
+            this.Controls.Add(this.lbBlastLayerSize);
             this.Controls.Add(this.btnDuplicateSelected);
             this.Controls.Add(this.btnEnableEverything);
             this.Controls.Add(this.btnDisableEverything);
@@ -367,6 +380,7 @@
             this.gbAddressEdit.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.nmAddressEdit)).EndInit();
             this.ResumeLayout(false);
+            this.PerformLayout();
 
         }
 
@@ -389,5 +403,6 @@
         private System.Windows.Forms.Button btnDisableEverything;
         private System.Windows.Forms.Button btnEnableEverything;
         private System.Windows.Forms.Button btnDuplicateSelected;
+        private System.Windows.Forms.Label lbBlastLayerSize;
     }
 }

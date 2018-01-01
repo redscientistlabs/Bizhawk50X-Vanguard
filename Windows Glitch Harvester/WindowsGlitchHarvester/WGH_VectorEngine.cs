@@ -23,7 +23,7 @@ namespace WindowsGlitchHarvester
         public static int limiterMax = 0;
         public static int valueMin = 0;
         public static int valueMax = 0;
-        public static bool customWholeNumbers = false;
+        public static bool customWholeNumbers = true;
 
         #region constant lists
 
@@ -379,8 +379,11 @@ namespace WindowsGlitchHarvester
 			if (mi == null)
 				return null;
 
+            //Don't peek out of range
+            if (safeAddress + 4 > mi.lastMemorySize)
+                return null;
 
-			try
+            try
 			{
 
 				BlastVector bv = null;
@@ -461,7 +464,7 @@ namespace WindowsGlitchHarvester
 
         public static byte[] read32bits(MemoryInterface mi, long address)
 		{
-			return mi.PeekBytes(address, 4);
+            return mi.PeekBytes(address, 4);
 		}
 
 		public static byte[] getRandomConstant(string[] list)

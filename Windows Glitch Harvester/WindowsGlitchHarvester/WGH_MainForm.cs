@@ -1198,5 +1198,24 @@ Are you sure you want to reset the current target's backup?", "WARNING", Message
 
             WGH_VectorEngine.limiterMax = Convert.ToInt32(limiterMax.Value);
         }
+
+        public void RefreshStashHistory(bool scrolldown = false)
+        {
+            DontLoadSelectedStash = true;
+            var lastSelect = lbStashHistory.SelectedIndex;
+
+            DontLoadSelectedStash = true;
+
+            DontLoadSelectedStash = true;
+            //lbStashHistory.BeginUpdate();
+            //lbStashHistory.EndUpdate();
+
+            DontLoadSelectedStash = true;
+            if (lastSelect < lbStashHistory.Items.Count)
+                lbStashHistory.SelectedIndex = lastSelect;
+
+            DontLoadSelectedStash = false;
+
+        }
     }
 }

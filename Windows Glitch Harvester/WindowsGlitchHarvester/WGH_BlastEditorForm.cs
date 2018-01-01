@@ -31,7 +31,7 @@ namespace WindowsGlitchHarvester
 
             //foreach (var item in sk.blastlayer.Layer)
             //	lbBlastLayer.Items.Add(item);
-
+            RefreshBlastLayer();
             this.Show();
         }
 
@@ -39,6 +39,7 @@ namespace WindowsGlitchHarvester
         {
             lbBlastLayer.DataSource = null;
             lbBlastLayer.DataSource = sk.BlastLayer.Layer;
+            lbBlastLayerSize.Text = "BlastLayer size: " + sk.BlastLayer.Layer.Count.ToString();
         }
 
         private void btnDisable50_Click(object sender, EventArgs e)
@@ -107,9 +108,10 @@ namespace WindowsGlitchHarvester
 
             WGH_Core.ghForm.DontLoadSelectedStash = true;
             WGH_Core.ghForm.lbStashHistory.Items.Add(newSk);
-          //  WGH_Core.ghForm.lbStashHistory.Items.Add(WGH_Core.currentStashkey);
-            WGH_Core.ghForm.lbStashHistory.SelectedIndex = WGH_Core.ghForm.lbStashHistory.Items.Count - 1;
+            WGH_Core.ghForm.RefreshStashHistory();
+            //  WGH_Core.ghForm.lbStashHistory.Items.Add(WGH_Core.currentStashkey);
             WGH_Core.ghForm.lbStockpile.ClearSelected();
+            WGH_Core.ghForm.lbStashHistory.SelectedIndex = WGH_Core.ghForm.lbStashHistory.Items.Count - 1;
 
             GC.Collect();
             GC.WaitForPendingFinalizers();

@@ -740,13 +740,13 @@
             this.savestateInfoButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.savestateInfoButton.Font = new System.Drawing.Font("Segoe UI", 8F);
             this.savestateInfoButton.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(192)))), ((int)(((byte)(255)))), ((int)(((byte)(192)))));
-            this.savestateInfoButton.Location = new System.Drawing.Point(520, 7);
+            this.savestateInfoButton.Location = new System.Drawing.Point(494, 7);
             this.savestateInfoButton.Name = "savestateInfoButton";
-            this.savestateInfoButton.Size = new System.Drawing.Size(107, 23);
+            this.savestateInfoButton.Size = new System.Drawing.Size(133, 23);
             this.savestateInfoButton.TabIndex = 35;
             this.savestateInfoButton.TabStop = false;
             this.savestateInfoButton.Tag = "color:darker";
-            this.savestateInfoButton.Text = "Savestate Info";
+            this.savestateInfoButton.Text = "Dolphin Savestate Info";
             this.savestateInfoButton.UseVisualStyleBackColor = false;
             this.savestateInfoButton.Click += new System.EventHandler(this.savestateInfoButton_Click);
             // 
@@ -1165,7 +1165,7 @@
             // 
             this.label15.AutoSize = true;
             this.label15.Font = new System.Drawing.Font("Segoe UI", 9.75F);
-            this.label15.Location = new System.Drawing.Point(265, 11);
+            this.label15.Location = new System.Drawing.Point(265, 9);
             this.label15.Name = "label15";
             this.label15.Size = new System.Drawing.Size(73, 17);
             this.label15.TabIndex = 99;
@@ -1176,7 +1176,7 @@
             this.limiterMax.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
             this.limiterMax.Font = new System.Drawing.Font("Segoe UI", 9.75F);
             this.limiterMax.ForeColor = System.Drawing.Color.White;
-            this.limiterMax.Location = new System.Drawing.Point(268, 74);
+            this.limiterMax.Location = new System.Drawing.Point(268, 73);
             this.limiterMax.Maximum = new decimal(new int[] {
             2147483647,
             0,
@@ -1198,7 +1198,7 @@
             this.limiterMin.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
             this.limiterMin.Font = new System.Drawing.Font("Segoe UI", 9.75F);
             this.limiterMin.ForeColor = System.Drawing.Color.White;
-            this.limiterMin.Location = new System.Drawing.Point(268, 29);
+            this.limiterMin.Location = new System.Drawing.Point(268, 28);
             this.limiterMin.Maximum = new decimal(new int[] {
             2147483647,
             0,
@@ -1229,7 +1229,7 @@
             // 
             this.label11.AutoSize = true;
             this.label11.Font = new System.Drawing.Font("Segoe UI", 9.75F);
-            this.label11.Location = new System.Drawing.Point(188, 11);
+            this.label11.Location = new System.Drawing.Point(188, 9);
             this.label11.Name = "label11";
             this.label11.Size = new System.Drawing.Size(65, 17);
             this.label11.TabIndex = 95;
@@ -1238,6 +1238,8 @@
             // customWholeNumbers
             // 
             this.customWholeNumbers.AutoSize = true;
+            this.customWholeNumbers.Checked = true;
+            this.customWholeNumbers.CheckState = System.Windows.Forms.CheckState.Checked;
             this.customWholeNumbers.Cursor = System.Windows.Forms.Cursors.Default;
             this.customWholeNumbers.Font = new System.Drawing.Font("Segoe UI", 9.75F);
             this.customWholeNumbers.ForeColor = System.Drawing.SystemColors.Window;
@@ -1255,7 +1257,7 @@
             this.valueMax.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
             this.valueMax.Font = new System.Drawing.Font("Segoe UI", 9.75F);
             this.valueMax.ForeColor = System.Drawing.Color.White;
-            this.valueMax.Location = new System.Drawing.Point(191, 74);
+            this.valueMax.Location = new System.Drawing.Point(191, 73);
             this.valueMax.Maximum = new decimal(new int[] {
             2147483647,
             0,
@@ -1277,7 +1279,7 @@
             this.valueMin.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
             this.valueMin.Font = new System.Drawing.Font("Segoe UI", 9.75F);
             this.valueMin.ForeColor = System.Drawing.Color.White;
-            this.valueMin.Location = new System.Drawing.Point(191, 29);
+            this.valueMin.Location = new System.Drawing.Point(191, 28);
             this.valueMin.Maximum = new decimal(new int[] {
             2147483647,
             0,
@@ -1298,11 +1300,11 @@
             // 
             this.label10.AutoSize = true;
             this.label10.Font = new System.Drawing.Font("Segoe UI", 9.75F);
-            this.label10.Location = new System.Drawing.Point(128, 11);
+            this.label10.Location = new System.Drawing.Point(121, 9);
             this.label10.Name = "label10";
-            this.label10.Size = new System.Drawing.Size(43, 17);
+            this.label10.Size = new System.Drawing.Size(66, 17);
             this.label10.TabIndex = 89;
-            this.label10.Text = "Offset";
+            this.label10.Text = "Alignment";
             this.label10.Click += new System.EventHandler(this.label10_Click);
             // 
             // cbVectorAligned
@@ -1327,7 +1329,7 @@
             this.vectorOffset.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
             this.vectorOffset.Font = new System.Drawing.Font("Segoe UI", 9.75F);
             this.vectorOffset.ForeColor = System.Drawing.Color.White;
-            this.vectorOffset.Location = new System.Drawing.Point(131, 29);
+            this.vectorOffset.Location = new System.Drawing.Point(136, 28);
             this.vectorOffset.Maximum = new decimal(new int[] {
             3,
             0,
