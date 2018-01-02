@@ -111,6 +111,7 @@ namespace WindowsGlitchHarvester
             WGH_Core.ghForm.RefreshStashHistory();
             //  WGH_Core.ghForm.lbStashHistory.Items.Add(WGH_Core.currentStashkey);
             WGH_Core.ghForm.lbStockpile.ClearSelected();
+            WGH_Core.ghForm.lbStashHistory.ClearSelected();
             WGH_Core.ghForm.lbStashHistory.SelectedIndex = WGH_Core.ghForm.lbStashHistory.Items.Count - 1;
 
             GC.Collect();
@@ -271,7 +272,8 @@ namespace WindowsGlitchHarvester
                 Point locate = new Point((sender as Control).Location.X + e.Location.X + gbAddressEdit.Location.X, (sender as Control).Location.Y + e.Location.Y + gbAddressEdit.Location.Y);
 
                 ContextMenuStrip columnsMenu = new ContextMenuStrip();
-                columnsMenu.Items.Add("Import from Hex", null, new EventHandler((ob, ev) => {
+                columnsMenu.Items.Add("Import from Hex", null, new EventHandler((ob, ev) =>
+                {
                     string value = "";
                     if (this.getInputBox("Import from Hex", "Enter Hexadecimal number:", ref value) == DialogResult.OK)
                     {
@@ -290,7 +292,8 @@ namespace WindowsGlitchHarvester
                 Point locate = new Point((sender as Control).Location.X + e.Location.X + gbValueEdit.Location.X, (sender as Control).Location.Y + e.Location.Y + gbValueEdit.Location.Y);
 
                 ContextMenuStrip columnsMenu = new ContextMenuStrip();
-                columnsMenu.Items.Add("Import from Hex", null, new EventHandler((ob, ev) => {
+                columnsMenu.Items.Add("Import from Hex", null, new EventHandler((ob, ev) =>
+                {
                     string value = "";
                     if (this.getInputBox("Import from Hex", "Enter Hexadecimal number:", ref value) == DialogResult.OK)
                     {
@@ -326,6 +329,34 @@ namespace WindowsGlitchHarvester
 
             RefreshBlastLayer();
         }
-        
+
+        private void btnSanitizeDuplicates_Click(object sender, EventArgs e)
+        {
+            List<BlastUnit> bul = new List<BlastUnit>(sk.BlastLayer.Layer.ToArray().Reverse());
+            List<long> usedAddresses = new List<long>();
+            //This is bad but I'm not refactoring blastunit right now to do it cleaner -Narry
+            foreach (BlastUnit bu in bul)
+            {
+                var bb = (bu as BlastByte);
+                var bv = (bu as BlastVector);
+                
+                if(bb != null)
+                {
+                    if (!usedAddresses.Contains(bb.Address))
+                        usedAddresses.Add(bb.Address);
+                    else
+                        sk.BlastLayer.Layer.Remove(bu);
+                }
+                else if (bv != null)
+                {
+                    if (!usedAddresses.Contains(bv.Address))
+                        usedAddresses.Add(bv.Address);
+                    else
+                        sk.BlastLayer.Layer.Remove(bv);
+                }
+            }
+            RefreshBlastLayer();
+
+        }
     }
 }

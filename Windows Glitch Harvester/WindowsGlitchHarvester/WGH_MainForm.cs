@@ -47,6 +47,7 @@ namespace WindowsGlitchHarvester
             newListBox.TabIndex = lbStockpile.TabIndex;
             newListBox.TabStop = lbStockpile.TabStop;
             newListBox.Tag = lbStockpile.Tag;
+            newListBox.SelectionMode = lbStockpile.SelectionMode;
             newListBox.SelectedIndexChanged += new System.EventHandler(this.lbStockpile_SelectedIndexChanged);
             newListBox.MouseDown += new System.Windows.Forms.MouseEventHandler(this.lbStockpile_MouseDown);
             Controls.Remove(lbStockpile);
@@ -181,6 +182,7 @@ namespace WindowsGlitchHarvester
                     {
                         DontLoadSelectedStash = true;
                         lbStashHistory.Items.Add(WGH_Core.currentStashkey);
+                        lbStashHistory.ClearSelected();
                         lbStashHistory.SelectedIndex = lbStashHistory.Items.Count - 1;
                         lbStockpile.ClearSelected();
                     }
@@ -721,9 +723,17 @@ Are you sure you want to reset the current target's backup?", "WARNING", Message
                 return;
 
             if (lbStashHistory.SelectedIndex == lbStashHistory.Items.Count - 1)
+            {
+                lbStashHistory.ClearSelected();
                 lbStashHistory.SelectedIndex = 0;
+            }
+
             else
-                lbStashHistory.SelectedIndex++;
+            {
+                int SelectedIndex = lbStashHistory.SelectedIndex;
+                lbStashHistory.ClearSelected();
+                lbStashHistory.SelectedIndex = SelectedIndex - 1;
+            }
 
             //RTC_Restore.SaveRestore();
         }
@@ -734,9 +744,16 @@ Are you sure you want to reset the current target's backup?", "WARNING", Message
                 return;
 
             if (lbStashHistory.SelectedIndex == lbStashHistory.Items.Count - 1)
+            {
+                lbStashHistory.ClearSelected();
                 lbStashHistory.SelectedIndex = 0;
+            }
             else
-                lbStashHistory.SelectedIndex++;
+            {
+                int SelectedIndex = lbStashHistory.SelectedIndex;
+                lbStashHistory.ClearSelected();
+                lbStashHistory.SelectedIndex = SelectedIndex + 1;
+            }
 
             //RTC_Restore.SaveRestore();
         }
@@ -747,9 +764,17 @@ Are you sure you want to reset the current target's backup?", "WARNING", Message
                 return;
 
             if (lbStockpile.SelectedIndex == 0)
+            {
+                lbStockpile.ClearSelected();
                 lbStockpile.SelectedIndex = lbStockpile.Items.Count - 1;
+            }
+
             else
-                lbStockpile.SelectedIndex--;
+            {
+                int SelectedIndex = lbStockpile.SelectedIndex;
+                lbStockpile.ClearSelected();
+                lbStockpile.SelectedIndex = SelectedIndex - 1;
+            }
 
             //RTC_Restore.SaveRestore();
         }
@@ -760,9 +785,18 @@ Are you sure you want to reset the current target's backup?", "WARNING", Message
                 return;
 
             if (lbStockpile.SelectedIndex == lbStockpile.Items.Count - 1)
+            {
+                lbStockpile.ClearSelected();
                 lbStockpile.SelectedIndex = 0;
+            }
+
             else
-                lbStockpile.SelectedIndex++;
+            {
+
+                int SelectedIndex = lbStockpile.SelectedIndex;
+                lbStockpile.ClearSelected();
+                lbStockpile.SelectedIndex = SelectedIndex + 1;
+            }
 
             //RTC_Restore.SaveRestore();
         }
@@ -889,6 +923,7 @@ Are you sure you want to reset the current target's backup?", "WARNING", Message
 
                 WGH_Core.ghForm.DontLoadSelectedStash = true;
                 WGH_Core.ghForm.lbStashHistory.Items.Add(newSk);
+                WGH_Core.ghForm.lbStashHistory.ClearSelected();
                 WGH_Core.ghForm.lbStashHistory.SelectedIndex = WGH_Core.ghForm.lbStashHistory.Items.Count - 1;
                 WGH_Core.ghForm.lbStockpile.ClearSelected();
 
@@ -896,6 +931,7 @@ Are you sure you want to reset the current target's backup?", "WARNING", Message
                 foreach (BlastUnit bu in newSk.BlastLayer.Layer)
                 {
                     var bb = (bu as BlastByte);
+                    var bv = (bu as BlastVector);
                     //BAD HACK. USE THIS TO DECTECT IF VECTOR. SORRY I DIDN'T KNOW WHERE TO REFACTOR THIS -NARRY
                     if (bb != null)
                     {
@@ -919,9 +955,8 @@ Are you sure you want to reset the current target's backup?", "WARNING", Message
                             }
                         }
                     }
-                    else
+                    if( bv != null )
                     {
-                        var bv = (bu as BlastVector);
                         bv.Values = WGH_VectorEngine.getRandomConstant(WGH_VectorEngine.valueList);
                     }
                 }
@@ -1102,8 +1137,20 @@ Are you sure you want to reset the current target's backup?", "WARNING", Message
                         WGH_Core.beForm = new WGH_BlastEditorForm();
                         WGH_Core.beForm.LoadStashkey(WGH_Core.currentStashkey);
                     }
+                    
+                })) as ToolStripMenuItem).Enabled = (lbStashHistory.SelectedIndex != -1 && lbStashHistory.SelectedItems.Count == 1);
 
-                })) as ToolStripMenuItem).Enabled = lbStashHistory.SelectedIndex != -1;
+                (columnsMenu.Items.Add("Merge Selected Stashkeys", null, new EventHandler((ob, ev) =>
+                {
+                    List<StashKey> sks = new List<StashKey>();
+                    foreach (StashKey sk in lbStashHistory.SelectedItems)
+                        sks.Add((StashKey)sk);
+
+                    MergeStashkeys(sks);
+
+                    RefreshStashHistory();
+                })) as ToolStripMenuItem).Enabled = (lbStashHistory.SelectedIndex != -1 && lbStashHistory.SelectedItems.Count > 1);
+
                 columnsMenu.Show(this, locate);
             }
         }
@@ -1115,6 +1162,8 @@ Are you sure you want to reset the current target's backup?", "WARNING", Message
                 Point locate = new Point((sender as Control).Location.X + e.Location.X, (sender as Control).Location.Y + e.Location.Y);
 
                 ContextMenuStrip columnsMenu = new ContextMenuStrip();
+
+
                 (columnsMenu.Items.Add("Open Selected Item in Blast Editor", null, new EventHandler((ob, ev) => {
                     if (WGH_Core.beForm != null)
                     {
@@ -1128,7 +1177,20 @@ Are you sure you want to reset the current target's backup?", "WARNING", Message
                         WGH_Core.beForm.LoadStashkey(WGH_Core.currentStashkey);
                     }
 
-                })) as ToolStripMenuItem).Enabled = lbStockpile.SelectedIndex != -1;
+                })) as ToolStripMenuItem).Enabled = (lbStockpile.SelectedIndex != -1 && lbStockpile.SelectedItems.Count == 1);
+
+                (columnsMenu.Items.Add("Merge Selected Stockpiles", null, new EventHandler((ob, ev) =>
+                {
+                    List<StashKey> sks = new List<StashKey>();
+                    foreach (StashKey sk in lbStockpile.SelectedItems)
+                        sks.Add((StashKey)sk);
+
+                    MergeStashkeys(sks);
+
+                    RefreshStashHistory();
+                })) as ToolStripMenuItem).Enabled = (lbStockpile.SelectedIndex != -1 && lbStockpile.SelectedItems.Count > 1);
+
+
                 columnsMenu.Show(this, locate);
             }
         }
@@ -1204,18 +1266,43 @@ Are you sure you want to reset the current target's backup?", "WARNING", Message
             DontLoadSelectedStash = true;
             var lastSelect = lbStashHistory.SelectedIndex;
 
-            DontLoadSelectedStash = true;
 
-            DontLoadSelectedStash = true;
-            //lbStashHistory.BeginUpdate();
-            //lbStashHistory.EndUpdate();
-
-            DontLoadSelectedStash = true;
-            if (lastSelect < lbStashHistory.Items.Count)
+            if (lastSelect <= lbStashHistory.Items.Count)
+            {
+                lbStashHistory.ClearSelected();
                 lbStashHistory.SelectedIndex = lastSelect;
+            }
+                
 
             DontLoadSelectedStash = false;
 
         }
+        
+		public static bool MergeStashkeys(List<StashKey> sks, bool _stashAfterOperation = true)
+		{
+			if (sks != null && sks.Count > 1)
+            {
+                BlastLayer bl = new BlastLayer();
+				foreach (StashKey item in sks)
+					bl.Layer.AddRange(item.BlastLayer.Layer);
+
+                StashKey newSk = new StashKey(WGH_Core.GetRandomKey(), bl);
+                WGH_Core.ghForm.lbStashHistory.Items.Add(newSk);
+
+                WGH_Core.ghForm.RefreshStashHistory();
+
+                WGH_Core.RestoreTarget();
+                newSk.Run();
+                WGH_Executor.Execute();
+
+                return true;
+			}
+			else
+			{
+				MessageBox.Show("You need 2 or more items for Merging");
+				return false;
+			}
+
+		}
     }
 }

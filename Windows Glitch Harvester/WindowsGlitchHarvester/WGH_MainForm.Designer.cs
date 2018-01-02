@@ -187,6 +187,7 @@
             this.lbStashHistory.Location = new System.Drawing.Point(229, 96);
             this.lbStashHistory.Name = "lbStashHistory";
             this.lbStashHistory.ScrollAlwaysVisible = true;
+            this.lbStashHistory.SelectionMode = System.Windows.Forms.SelectionMode.MultiExtended;
             this.lbStashHistory.Size = new System.Drawing.Size(147, 216);
             this.lbStashHistory.TabIndex = 3;
             this.lbStashHistory.TabStop = false;
@@ -1545,6 +1546,7 @@
             this.lbStockpile.Location = new System.Drawing.Point(419, 96);
             this.lbStockpile.Name = "lbStockpile";
             this.lbStockpile.ScrollAlwaysVisible = true;
+            this.lbStockpile.SelectionMode = System.Windows.Forms.SelectionMode.MultiExtended;
             this.lbStockpile.Size = new System.Drawing.Size(435, 360);
             this.lbStockpile.TabIndex = 2;
             this.lbStockpile.TabStop = false;
