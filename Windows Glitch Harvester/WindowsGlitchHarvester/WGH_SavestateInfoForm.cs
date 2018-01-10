@@ -1,4 +1,5 @@
-﻿using System;
+﻿using RTCV.NetCore;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -12,15 +13,53 @@ namespace WindowsGlitchHarvester
 {
     public partial class WGH_SavestateInfoForm : Form
     {
+        WGH_DolphinConnector dolphinConn;
+
+        public static volatile Queue<string> lazyCrossThreadConsoleQueue = new Queue<string>();
+        public static volatile Queue<string> lazyCrossThreadStatusQueue = new Queue<string>();
+        System.Windows.Forms.Timer lazyCrossThreadTimer = new System.Windows.Forms.Timer();
+
         public WGH_SavestateInfoForm()
         {
             InitializeComponent();
+            dolphinConn = new WGH_DolphinConnector(this);
+            ConsoleEx.singularity.ConsoleWritten += OnConsoleWritten;
+
             this.Show();
+            
+            lazyCrossThreadTimer.Interval = 666;
+            lazyCrossThreadTimer.Tick += (o, e) => {
+                while (lazyCrossThreadConsoleQueue.Count != 0)
+                {
+                    lbNetCoreConsole.Items.Add(lazyCrossThreadConsoleQueue.Dequeue());
+                    lbNetCoreConsole.SelectedIndex = lbNetCoreConsole.Items.Count - 1;
+                }
+
+                while (lazyCrossThreadStatusQueue.Count != 0)
+                    lbStatus.Text = lazyCrossThreadStatusQueue.Dequeue();
+            };
+            lazyCrossThreadTimer.Start();
+            
         }
+
+        private void OnConsoleWritten(object sender, NetCoreEventArgs e)
+        {
+            lazyCrossThreadConsoleQueue.Enqueue(e.message.Type);
+            /*
+            try
+            {
+                lbNetCoreConsole.Items.Add(e.message.Type);
+            }
+            catch { }
+            */
+        }
+
         private void WGH_SavestateInfoForm_Load(object sender, EventArgs e)
         {
             GetSavestateInfo();
+
         }
+
 
         public void GetSavestateInfo()
         {
@@ -139,6 +178,36 @@ namespace WindowsGlitchHarvester
                 MessageBox.Show("The currently loaded file is not a Dolphin Narry's Mod v0.1.3 savestate.");
                 this.Close();
             }
+        }
+
+        private void btnStartNetCore_Click(object sender, EventArgs e)
+        {
+            if(btnStartNetCore.Text.Contains("Restart"))
+            {
+                dolphinConn.RestartServer();
+            }
+            else
+            {
+                dolphinConn.StartServer();
+                btnStartNetCore.Text = "Restart NetCore Server";
+            }
+            
+            
+        }
+
+        private void btnLoadState_Click(object sender, EventArgs e)
+        {
+            dolphinConn.connector.SendMessage("LOADSTATE", @"C:\test.state");
+            //This will send a NetCoreAdvancedMessage
+        }
+
+        private void btnSaveState_Click(object sender, EventArgs e)
+        {
+            dolphinConn.connector.SendMessage("SAVESTATE");
+            //This will send a NetCoreSimpleMessage
+
+            //dolphinConn.connector.SendMessage("SAVESTATE", null);
+            //If you want to send an advanced message or if you want to specify a filename for example
         }
     }
 }

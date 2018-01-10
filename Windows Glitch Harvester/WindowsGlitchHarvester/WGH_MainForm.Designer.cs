@@ -606,7 +606,7 @@
             this.rbTargetProcess.AutoSize = true;
             this.rbTargetProcess.Font = new System.Drawing.Font("Segoe UI", 8F);
             this.rbTargetProcess.ForeColor = System.Drawing.Color.White;
-            this.rbTargetProcess.Location = new System.Drawing.Point(237, 9);
+            this.rbTargetProcess.Location = new System.Drawing.Point(221, 9);
             this.rbTargetProcess.Name = "rbTargetProcess";
             this.rbTargetProcess.Size = new System.Drawing.Size(180, 17);
             this.rbTargetProcess.TabIndex = 31;
@@ -741,13 +741,13 @@
             this.savestateInfoButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.savestateInfoButton.Font = new System.Drawing.Font("Segoe UI", 8F);
             this.savestateInfoButton.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(192)))), ((int)(((byte)(255)))), ((int)(((byte)(192)))));
-            this.savestateInfoButton.Location = new System.Drawing.Point(494, 7);
+            this.savestateInfoButton.Location = new System.Drawing.Point(502, 7);
             this.savestateInfoButton.Name = "savestateInfoButton";
-            this.savestateInfoButton.Size = new System.Drawing.Size(133, 23);
+            this.savestateInfoButton.Size = new System.Drawing.Size(125, 23);
             this.savestateInfoButton.TabIndex = 35;
             this.savestateInfoButton.TabStop = false;
             this.savestateInfoButton.Tag = "color:darker";
-            this.savestateInfoButton.Text = "Dolphin Savestate Info";
+            this.savestateInfoButton.Text = "Dolphin Mod Tools";
             this.savestateInfoButton.UseVisualStyleBackColor = false;
             this.savestateInfoButton.Click += new System.EventHandler(this.savestateInfoButton_Click);
             // 
@@ -756,7 +756,7 @@
             this.rbTargetMultipleFiles.AutoSize = true;
             this.rbTargetMultipleFiles.Font = new System.Drawing.Font("Segoe UI", 8F);
             this.rbTargetMultipleFiles.ForeColor = System.Drawing.Color.White;
-            this.rbTargetMultipleFiles.Location = new System.Drawing.Point(101, 9);
+            this.rbTargetMultipleFiles.Location = new System.Drawing.Point(90, 9);
             this.rbTargetMultipleFiles.Name = "rbTargetMultipleFiles";
             this.rbTargetMultipleFiles.Size = new System.Drawing.Size(128, 17);
             this.rbTargetMultipleFiles.TabIndex = 34;

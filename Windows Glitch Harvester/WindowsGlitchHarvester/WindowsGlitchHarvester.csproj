@@ -109,6 +109,7 @@
     <ErrorReport>prompt</ErrorReport>
     <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
     <Prefer32Bit>true</Prefer32Bit>
+    <UseVSHostingProcess>false</UseVSHostingProcess>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x86'">
     <OutputPath>bin\x86\Release\</OutputPath>
@@ -130,6 +131,9 @@
       <HintPath>..\packages\SharpZipLib.0.86.0\lib\20\ICSharpCode.SharpZipLib.dll</HintPath>
       <Private>True</Private>
     </Reference>
+    <Reference Include="NetCore">
+      <HintPath>..\..\..\RTCV\NetCore\bin\Debug\NetCore.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
@@ -144,6 +148,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="FastZipProgram.cs" />
+    <Compile Include="WGH_DolphinConnector.cs" />
     <Compile Include="WGH_SavestateInfoForm.cs">
       <SubType>Form</SubType>
     </Compile>
