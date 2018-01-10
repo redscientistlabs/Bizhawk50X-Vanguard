@@ -130,17 +130,17 @@ namespace WindowsGlitchHarvester
 
             //creater master.sk to temp folder from stockpile object
 
-			if(File.Exists(WGH_Core.currentDir + "\\TEMP\\master.sk"))
-				FS = File.Open(WGH_Core.currentDir + "\\TEMP\\master.sk", FileMode.Open);
+			if(File.Exists(WGH_Core.currentDir + "\\TEMP2\\master.sk"))
+				FS = File.Open(WGH_Core.currentDir + "\\TEMP2\\master.sk", FileMode.Open);
 			else
-				FS = File.Open(WGH_Core.currentDir + "\\TEMP\\master.sk", FileMode.Create);
+				FS = File.Open(WGH_Core.currentDir + "\\TEMP2\\master.sk", FileMode.Create);
 
 			bformatter.Serialize(FS, sks);
             FS.Close();
 
 
             //7z the temp folder to destination filename
-            string[] stringargs = { "-c", sks.Filename, WGH_Core.currentDir + "\\TEMP\\" };
+            string[] stringargs = { "-c", sks.Filename, WGH_Core.currentDir + "\\TEMP2\\" };
             FastZipProgram.Exec(stringargs);
 
             Load(sks.Filename); //Reload file after for test and clean
@@ -156,7 +156,7 @@ namespace WindowsGlitchHarvester
         {
 
             //clean temp folder
-            foreach (string file in Directory.GetFiles(WGH_Core.currentDir + "\\TEMP"))
+            foreach (string file in Directory.GetFiles(WGH_Core.currentDir + "\\TEMP2"))
                 File.Delete(file);
 
             if (Filename == null)
@@ -182,11 +182,11 @@ namespace WindowsGlitchHarvester
 
             //7z extract part
 
-            string[] stringargs = { "-x", Filename, WGH_Core.currentDir + "\\TEMP\\" };
+            string[] stringargs = { "-x", Filename, WGH_Core.currentDir + "\\TEMP2\\" };
 
             FastZipProgram.Exec(stringargs);
 
-            if (!File.Exists(WGH_Core.currentDir + "\\TEMP\\master.sk"))
+            if (!File.Exists(WGH_Core.currentDir + "\\TEMP2\\master.sk"))
             {
                 MessageBox.Show("The file could not be read properly");
                 return;
@@ -203,7 +203,7 @@ namespace WindowsGlitchHarvester
 
             try
             {
-                FS = File.Open(WGH_Core.currentDir + "\\TEMP\\master.sk", FileMode.Open);
+                FS = File.Open(WGH_Core.currentDir + "\\TEMP2\\master.sk", FileMode.Open);
                 sks = (Stockpile)bformatter.Deserialize(FS);
                 FS.Close();
             }
@@ -248,7 +248,7 @@ namespace WindowsGlitchHarvester
         {
 
             //clean temp folder
-            foreach (string file in Directory.GetFiles(WGH_Core.currentDir + "\\TEMP3"))
+            foreach (string file in Directory.GetFiles(WGH_Core.currentDir + "\\TEMP2"))
                 File.Delete(file);
 
             if (Filename == null)
