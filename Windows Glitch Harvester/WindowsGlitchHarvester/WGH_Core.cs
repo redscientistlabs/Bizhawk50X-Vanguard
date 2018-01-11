@@ -34,6 +34,7 @@ namespace WindowsGlitchHarvester
         public static string currentDir = System.IO.Directory.GetCurrentDirectory();
         public static string currentTargetType = "";
         public static string currentTargetName = "";
+        public static string currentTargetFullName = "";
         public static string currentTargetId = "";
 
         public static bool writeCopyMode = false;
@@ -220,6 +221,7 @@ namespace WindowsGlitchHarvester
                     }
 
                     currentTargetId = "File|" + OpenFileDialog1.FileName.ToString();
+                    currentTargetFullName = OpenFileDialog1.FileName.ToString();
                 }
                 else
                     return;
@@ -235,6 +237,7 @@ namespace WindowsGlitchHarvester
                 currentTargetType = "File";
                 var fi = new FileInterface(currentTargetId);
                 currentTargetName = fi.ShortFilename;
+
                 currentMemoryInterface = fi;
                 ghForm.lbTarget.Text = currentTargetId + "|MemorySize:" + fi.lastMemorySize.ToString();
 

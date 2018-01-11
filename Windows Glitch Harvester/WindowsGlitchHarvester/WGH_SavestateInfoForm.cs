@@ -1,5 +1,6 @@
 ﻿using RTCV.NetCore;
 using System;
+using System.Threading;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -197,17 +198,35 @@ namespace WindowsGlitchHarvester
 
         private void btnLoadState_Click(object sender, EventArgs e)
         {
-            dolphinConn.connector.SendMessage("LOADSTATE", @"C:\test.state");
+            dolphinConn.connector.SendMessage("LOADSTATE", WGH_Core.currentTargetFullName);
+            Console.WriteLine(WGH_Core.currentTargetFullName);
             //This will send a NetCoreAdvancedMessage
         }
 
         private void btnSaveState_Click(object sender, EventArgs e)
         {
-            dolphinConn.connector.SendMessage("SAVESTATE");
+            //dolphinConn.connector.SendMessage("SAVESTATE");
             //This will send a NetCoreSimpleMessage
 
-            //dolphinConn.connector.SendMessage("SAVESTATE", null);
+            dolphinConn.connector.SendMessage("SAVESTATE", WGH_Core.currentTargetFullName);
             //If you want to send an advanced message or if you want to specify a filename for example
+        }
+
+        private void btnPokeByte_Click(object sender, EventArgs e)
+        {
+            Object[] message = new Object[2];
+            message[0] = addressNum.Value;
+            message[1] = valueNum.Value;
+
+            dolphinConn.connector.SendMessage("POKEBYTE", message);
+        }
+        
+
+        private void btnPeekByte_Click(object sender, EventArgs e)
+        {
+            dolphinConn.connector.SendMessage("PEEKBYTE", (Object)addressNum.Value);
+            Thread.Sleep(5000);
+            peekedValue.Text = WGH_DolphinConnector.peekedAddress.ToString();
         }
     }
 }

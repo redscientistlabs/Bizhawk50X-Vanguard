@@ -17,6 +17,8 @@ namespace WindowsGlitchHarvester
         public NetCoreConnector connector = null;
         public NetCoreSpec spec = null;
 
+        public static object peekedAddress;
+
         public WGH_DolphinConnector(WGH_SavestateInfoForm _form)
         {
             ssiForm = _form;
@@ -70,6 +72,9 @@ namespace WindowsGlitchHarvester
 
             switch (message.Type) //Handle received messages here
             {
+                case "PEEKBYTE":
+                    peekedAddress = advancedMessage.objectValue;
+                    break;
 
                 default:
                     ConsoleEx.WriteLine($"Received unassigned {(message is NetCoreAdvancedMessage ? "advanced " : "")}message \"{message.Type}\"");
