@@ -73,7 +73,9 @@ namespace WindowsGlitchHarvester
             switch (message.Type) //Handle received messages here
             {
                 case "PEEKBYTE":
-                    peekedAddress = advancedMessage.objectValue;
+                    {
+                        WGH_SavestateInfoForm.lazyCrossThreadPeekQueue.Enqueue(advancedMessage.objectValue.ToString());
+                    }
                     break;
 
                 default:

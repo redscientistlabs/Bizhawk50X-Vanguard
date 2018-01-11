@@ -50,11 +50,13 @@
             this.btnLoadState = new System.Windows.Forms.Button();
             this.btnSaveState = new System.Windows.Forms.Button();
             this.pnNetCoreActions = new System.Windows.Forms.Panel();
+            this.peekedValue = new System.Windows.Forms.Label();
             this.valueNum = new System.Windows.Forms.NumericUpDown();
             this.addressNum = new System.Windows.Forms.NumericUpDown();
             this.btnPeekByte = new System.Windows.Forms.Button();
             this.btnPokeByte = new System.Windows.Forms.Button();
-            this.peekedValue = new System.Windows.Forms.Label();
+            this.label7 = new System.Windows.Forms.Label();
+            this.label8 = new System.Windows.Forms.Label();
             this.panel1.SuspendLayout();
             this.panel3.SuspendLayout();
             this.panel2.SuspendLayout();
@@ -333,6 +335,8 @@
             // pnNetCoreActions
             // 
             this.pnNetCoreActions.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
+            this.pnNetCoreActions.Controls.Add(this.label8);
+            this.pnNetCoreActions.Controls.Add(this.label7);
             this.pnNetCoreActions.Controls.Add(this.peekedValue);
             this.pnNetCoreActions.Controls.Add(this.valueNum);
             this.pnNetCoreActions.Controls.Add(this.addressNum);
@@ -345,9 +349,19 @@
             this.pnNetCoreActions.Size = new System.Drawing.Size(429, 95);
             this.pnNetCoreActions.TabIndex = 18;
             // 
+            // peekedValue
+            // 
+            this.peekedValue.AutoSize = true;
+            this.peekedValue.ForeColor = System.Drawing.Color.White;
+            this.peekedValue.Location = new System.Drawing.Point(323, 71);
+            this.peekedValue.Name = "peekedValue";
+            this.peekedValue.Size = new System.Drawing.Size(35, 13);
+            this.peekedValue.TabIndex = 30;
+            this.peekedValue.Text = "NULL";
+            // 
             // valueNum
             // 
-            this.valueNum.Location = new System.Drawing.Point(340, 39);
+            this.valueNum.Location = new System.Drawing.Point(359, 39);
             this.valueNum.Maximum = new decimal(new int[] {
             1000000000,
             0,
@@ -359,7 +373,7 @@
             // 
             // addressNum
             // 
-            this.addressNum.Location = new System.Drawing.Point(340, 13);
+            this.addressNum.Location = new System.Drawing.Point(359, 13);
             this.addressNum.Maximum = new decimal(new int[] {
             1410065408,
             2,
@@ -405,15 +419,25 @@
             this.btnPokeByte.UseVisualStyleBackColor = false;
             this.btnPokeByte.Click += new System.EventHandler(this.btnPokeByte_Click);
             // 
-            // peekedValue
+            // label7
             // 
-            this.peekedValue.AutoSize = true;
-            this.peekedValue.ForeColor = System.Drawing.Color.White;
-            this.peekedValue.Location = new System.Drawing.Point(337, 70);
-            this.peekedValue.Name = "peekedValue";
-            this.peekedValue.Size = new System.Drawing.Size(35, 13);
-            this.peekedValue.TabIndex = 30;
-            this.peekedValue.Text = "NULL";
+            this.label7.AutoSize = true;
+            this.label7.ForeColor = System.Drawing.Color.White;
+            this.label7.Location = new System.Drawing.Point(310, 15);
+            this.label7.Name = "label7";
+            this.label7.Size = new System.Drawing.Size(48, 13);
+            this.label7.TabIndex = 31;
+            this.label7.Text = "Address:";
+            // 
+            // label8
+            // 
+            this.label8.AutoSize = true;
+            this.label8.ForeColor = System.Drawing.Color.White;
+            this.label8.Location = new System.Drawing.Point(321, 39);
+            this.label8.Name = "label8";
+            this.label8.Size = new System.Drawing.Size(37, 13);
+            this.label8.TabIndex = 32;
+            this.label8.Text = "Value:";
             // 
             // WGH_SavestateInfoForm
             // 
@@ -478,5 +502,7 @@
         private System.Windows.Forms.NumericUpDown valueNum;
         private System.Windows.Forms.NumericUpDown addressNum;
         private System.Windows.Forms.Label peekedValue;
+        private System.Windows.Forms.Label label8;
+        private System.Windows.Forms.Label label7;
     }
 }

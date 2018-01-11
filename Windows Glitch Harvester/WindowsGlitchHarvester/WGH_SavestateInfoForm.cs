@@ -18,6 +18,7 @@ namespace WindowsGlitchHarvester
 
         public static volatile Queue<string> lazyCrossThreadConsoleQueue = new Queue<string>();
         public static volatile Queue<string> lazyCrossThreadStatusQueue = new Queue<string>();
+        public static volatile Queue<string> lazyCrossThreadPeekQueue = new Queue<string>();
         System.Windows.Forms.Timer lazyCrossThreadTimer = new System.Windows.Forms.Timer();
 
         public WGH_SavestateInfoForm()
@@ -38,6 +39,8 @@ namespace WindowsGlitchHarvester
 
                 while (lazyCrossThreadStatusQueue.Count != 0)
                     lbStatus.Text = lazyCrossThreadStatusQueue.Dequeue();
+                while (lazyCrossThreadPeekQueue.Count != 0)
+                    peekedValue.Text = lazyCrossThreadPeekQueue.Dequeue();
             };
             lazyCrossThreadTimer.Start();
             
@@ -225,8 +228,7 @@ namespace WindowsGlitchHarvester
         private void btnPeekByte_Click(object sender, EventArgs e)
         {
             dolphinConn.connector.SendMessage("PEEKBYTE", (Object)addressNum.Value);
-            Thread.Sleep(5000);
-            peekedValue.Text = WGH_DolphinConnector.peekedAddress.ToString();
+            
         }
     }
 }
