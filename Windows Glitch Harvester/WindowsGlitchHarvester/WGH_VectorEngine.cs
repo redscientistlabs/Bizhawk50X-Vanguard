@@ -412,35 +412,46 @@ namespace WindowsGlitchHarvester
 
 		public static bool isConstant(byte[] bytes, string[] list)
 		{
+            try
+            {
             if (list == null)
                 return true;
 
-            if (list[0] == "custom")
-            {
-                float value;
-
-                if (WGH_VectorEngine.BigEndian)
+                if (list[0] == "custom")
                 {
-                    value = ByteArrayToFloat(FlipBytes(bytes));
-                }
-                else
-                    value = ByteArrayToFloat(bytes);
+                    float value;
 
-                if (value == 0)
-                   return false;
-                if (customWholeNumbers)
-                {
-
-                    if ((Math.Abs(value % 1) < Double.Epsilon) && value <= limiterMax && value >= limiterMin)
+                    if (WGH_VectorEngine.BigEndian)
                     {
-                        return true;
+                        value = ByteArrayToFloat(FlipBytes(bytes));
                     }
+                    else
+                        value = ByteArrayToFloat(bytes);
+
+                    if (value == 0)
+                        return false;
+                    if (customWholeNumbers)
+                    {
+
+                        if ((Math.Abs(value % 1) < Double.Epsilon) && value <= limiterMax && value >= limiterMin)
+                        {
+                            return true;
+                        }
+                        return false;
+                    }
+
+                    if (value <= limiterMax && value >= limiterMin)
+                        return true;
+
                     return false;
+
+                   }
                 }
-
-                if (value <= limiterMax && value >= limiterMin)
-                    return true;
-
+            catch (Exception ex)
+            {
+                MessageBox.Show("Something went wrong in the RTC Vector Engine. \n" +
+                                "This is not a BizHawk error so you should probably send a screenshot of this to the devs\n\n" +
+                                ex.ToString());
                 return false;
             }
 
@@ -454,7 +465,7 @@ namespace WindowsGlitchHarvester
 
         public static string ByteArrayToString(byte[] bytes)
         {
-            return BitConverter.ToString(bytes).Replace("-", "").ToLower();
+            return ((BitConverter.ToString(bytes).Replace("-", "") ?? null).ToLower());
         }
 
         public static float ByteArrayToFloat(byte[] bytes)

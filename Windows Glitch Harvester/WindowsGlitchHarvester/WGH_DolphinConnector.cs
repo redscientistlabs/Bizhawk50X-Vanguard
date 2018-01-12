@@ -28,7 +28,7 @@ namespace WindowsGlitchHarvester
         {
             spec = new NetCoreSpec();
 
-            //spec.syncObject = ssiForm;
+            spec.syncObject = ssiForm;
 
             spec.Side = NetworkSide.SERVER;
             spec.MessageReceived += OnMessageReceived;
@@ -72,6 +72,15 @@ namespace WindowsGlitchHarvester
 
             switch (message.Type) //Handle received messages here
             {
+
+                case "WII":
+                    WGH_SavestateInfoForm.isWii = true;
+                    break;
+
+                case "GAMECUBE":
+                    WGH_SavestateInfoForm.isWii = false;
+                    break;
+
                 default:
                     ConsoleEx.WriteLine($"Received unassigned {(message is NetCoreAdvancedMessage ? "advanced " : "")}message \"{message.Type}\"");
                     break;

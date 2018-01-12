@@ -1288,5 +1288,97 @@ namespace WindowsGlitchHarvester
 		{
 			getMemorySize();
 		}
-	}
+    }
+
+    [Serializable()]
+    public class DolphinInterface : MemoryInterface
+    {
+        public string ProcessName;
+        ProcessHijacker Hijack = null;
+
+        public bool Hooked;
+        public bool UseCaching = false;
+
+        public DolphinInterface(string _processName)
+        {
+            getMemorySize();
+        }
+
+        public override byte[] getMemoryDump()
+        {
+            lastMemoryDump = null;
+            return lastMemoryDump;
+        }
+        public override byte[] lastMemoryDump { get; set; } = null;
+
+        public override long getMemorySize()
+        {
+            lastMemorySize = WGH_SavestateInfoForm.getMemorySize();
+            return WGH_SavestateInfoForm.getMemorySize();
+        }
+
+        public override bool isDolphinSavestate()
+        {
+            return false;
+        }
+
+        public override long? lastMemorySize { get; set; }
+
+        public override void PokeBytes(long address, byte[] data)
+        {
+
+            WGH_Core.ssForm.PokeBytes(address, data);
+
+        }
+
+        public override void PokeByte(long address, byte data)
+        {
+            //    WGH_Core.ssForm.addressNum.Value = address;
+            //   WGH_Core.ssForm.valueNum.Value = (long)data;
+            //  WGH_Core.ssForm.btnPokeByte.PerformClick();
+            WGH_Core.ssForm.PokeByte(address, data);
+        }
+
+        public override byte? PeekByte(long address)
+        {
+           // WGH_Core.ssForm.addressNum.Value = address;
+           // WGH_Core.ssForm.btnPeekByte.PerformClick();
+            return Convert.ToByte(WGH_Core.ssForm.PeekByte());
+        }
+
+        public override byte[] PeekBytes(long address, int range)
+        {
+            return WGH_Core.ssForm.PeekBytes(address, range);
+        }
+
+        public override void SetBackup()
+        {
+            //CAN'T DO THAT WITH PROCESSES
+        }
+
+        public override void ResetBackup(bool askConfirmation = true)
+        {
+            //CAN'T DO THAT WITH PROCESSES
+        }
+
+        public override void RestoreBackup(bool announce = true)
+        {
+            //CAN'T DO THAT WITH PROCESSES
+        }
+
+        public override void ResetWorkingFile()
+        {
+            //CAN'T DO THAT WITH PROCESSES
+        }
+
+        public override void ApplyWorkingFile()
+        {
+            //CAN'T DO THAT WITH PROCESSES
+        }
+
+        public void RefreshSize()
+        {
+            getMemorySize();
+        }
+    }
 }

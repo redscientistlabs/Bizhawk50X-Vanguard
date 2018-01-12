@@ -1296,5 +1296,18 @@ Are you sure you want to reset the current target's backup?", "WARNING", Message
 			}
 
 		}
+
+        private void rbTargetDolphin_CheckedChanged(object sender, EventArgs e)
+        {
+            btnResetBackup.Enabled = false;
+            btnRestoreFileBackup.Enabled = false;
+            cbWriteCopyMode.Enabled = false;
+
+            rbExecuteCorruptedFile.Enabled = false;
+            rbExecuteWith.Enabled = false;
+
+            if (rbExecuteCorruptedFile.Checked || rbExecuteWith.Checked || rbExecuteOtherProgram.Checked)
+                rbNoExecution.Checked = true;
+        }
     }
 }

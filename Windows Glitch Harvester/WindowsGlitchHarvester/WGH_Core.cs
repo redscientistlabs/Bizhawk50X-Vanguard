@@ -263,22 +263,31 @@ namespace WindowsGlitchHarvester
             }
             else if (WGH_Core.ghForm.rbTargetProcess.Checked)
             {
-				if (hpForm != null)
-					hpForm.Close();
+                if (hpForm != null)
+                    hpForm.Close();
 
-				hpForm = new WGH_HookProcessForm();
+                hpForm = new WGH_HookProcessForm();
 
-				if (hpForm.ShowDialog() != DialogResult.OK)
-				{
-					WGH_Core.currentMemoryInterface = null;
-					return;
-				}
+                if (hpForm.ShowDialog() != DialogResult.OK)
+                {
+                    WGH_Core.currentMemoryInterface = null;
+                    return;
+                }
 
-				currentTargetType = "Process";
-				var mfi = (ProcessInterface)WGH_Core.currentMemoryInterface;
-				currentTargetName = mfi.ProcessName;
-				ghForm.lbTarget.Text = mfi.ProcessName + "|MemorySize:" + mfi.lastMemorySize.ToString();
-			}
+                currentTargetType = "Process";
+                var mfi = (ProcessInterface)WGH_Core.currentMemoryInterface;
+                currentTargetName = mfi.ProcessName;
+                ghForm.lbTarget.Text = mfi.ProcessName + "|MemorySize:" + mfi.lastMemorySize.ToString();
+            }
+            else if (WGH_Core.ghForm.rbTargetDolphin.Checked)
+            {
+
+                currentTargetType = "Dolphin";
+                //var mfi = (DolphinInterface)WGH_Core.currentMemoryInterface;
+                WGH_Core.currentMemoryInterface = new DolphinInterface("Test");
+                currentTargetName = "Dolphin";
+                ghForm.lbTarget.Text = currentTargetName + "|MemorySize:" + WGH_Core.currentMemoryInterface.lastMemorySize.ToString();
+            }
         }
 
         public static void RestoreTarget()

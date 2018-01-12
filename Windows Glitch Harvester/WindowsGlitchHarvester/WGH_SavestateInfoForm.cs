@@ -10,11 +10,19 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
+
+
 namespace WindowsGlitchHarvester
 {
     public partial class WGH_SavestateInfoForm : Form
     {
+        public static bool isWii = false;
         WGH_DolphinConnector dolphinConn;
+
+        static int sram_size = 25165824;
+        static int aram_size = 16777216;
+        static int exram_size = 67108864;
+
 
         public static volatile Queue<string> lazyCrossThreadConsoleQueue = new Queue<string>();
 
@@ -70,16 +78,16 @@ namespace WindowsGlitchHarvester
 
             MemoryInterface mi = WGH_Core.currentMemoryInterface;
 
-            if (mi == null)
+           /* if (mi == null)
             {
                 if (dolphinConn.connector != null)
                     dolphinConn.StopServer();
                 this.Close();
                 return;
-            }
+            }*/
 
 
-            if (mi.isDolphinSavestate())
+            if (mi != null && mi.isDolphinSavestate())
             {
                 byte[] bytes;
                 byte[] sram_pattern = { 0x5B, 0x43, 0x6F, 0x72, 0x65, 0x54, 0x69, 0x6D, 0x69, 0x6E, 0x67, 0x5D };
@@ -88,9 +96,6 @@ namespace WindowsGlitchHarvester
                 int sram_offset = 0;
                 int aram_offset = 0;
                 int exram_offset = 0;
-                int sram_size = 0;
-                int aram_size = 0;
-                int exram_size = 0;
 
                 //getMemorySize() returns a long whereas peekbytes uses an int. Dolphin savestates should never be 2GB large so this shouldn't be a problem
                 bytes = mi.PeekBytes(0, Convert.ToInt32(mi.getMemorySize()));
@@ -161,19 +166,19 @@ namespace WindowsGlitchHarvester
                 sramAlignment.Text = (sram_offset % 4).ToString();
 
                 //Sram is always 24MB so we can make this assumption
-                sram_size = 25165824;
+                //sram_size = SRAM_SIZE;
 
                 //Check for the exram. If it doesn't exist, we have gamecube so it's aram
                 if ((Encoding.Default.GetString(mi.PeekBytes(exram_offset + 4, 14)) == "[Memory EXRAM]"))
                 {
-                    aram_size = 16777216;
+                    //aram_size = ARAM_SIZE;
                     aramexramLabel.Text = "ARAM";
                     aramexramOffset.Text = aram_offset.ToString();
                     aramexramAlignment.Text = (aram_offset % 4).ToString();
                 }
                 else
                 {
-                    exram_size = 67108864;
+                    //exram_size = EXRAM_SIZE;
                     aramexramLabel.Text = "EXRAM";
                     aramexramOffset.Text = exram_offset.ToString();
                     aramexramAlignment.Text = (exram_offset % 4).ToString();
@@ -181,15 +186,24 @@ namespace WindowsGlitchHarvester
             }
             else
             {
-                MessageBox.Show("The currently loaded file is not a Dolphin Narry's Mod v0.1.3 savestate.");
+             //   MessageBox.Show("The currently loaded file is not a Dolphin Narry's Mod v0.1.3 savestate.");
 
-                if (dolphinConn.connector != null)
-                    dolphinConn.StopServer();
-                this.Close();
+          //      if (dolphinConn.connector != null)
+            //        dolphinConn.StopServer();
+              //  this.Close();
             }
         }
 
-        private void btnStartNetCore_Click(object sender, EventArgs e)
+        public static long getMemorySize()
+        {
+            if (isWii)
+                return sram_size + exram_size;
+            else
+                return sram_size + aram_size;
+
+        }
+
+        public void btnStartNetCore_Click(object sender, EventArgs e)
         {
             if(btnStartNetCore.Text.Contains("Restart"))
             {
@@ -204,14 +218,14 @@ namespace WindowsGlitchHarvester
             
         }
 
-        private void btnLoadState_Click(object sender, EventArgs e)
+        public void btnLoadState_Click(object sender, EventArgs e)
         {
             dolphinConn.connector.SendMessage("LOADSTATE", WGH_Core.currentTargetFullName);
             Console.WriteLine(WGH_Core.currentTargetFullName);
             //This will send a NetCoreAdvancedMessage
         }
 
-        private void btnSaveState_Click(object sender, EventArgs e)
+        public void btnSaveState_Click(object sender, EventArgs e)
         {
             //dolphinConn.connector.SendMessage("SAVESTATE");
             //This will send a NetCoreSimpleMessage
@@ -220,7 +234,7 @@ namespace WindowsGlitchHarvester
             //If you want to send an advanced message or if you want to specify a filename for example
         }
 
-        private void btnPokeByte_Click(object sender, EventArgs e)
+        public void btnPokeByte_Click(object sender, EventArgs e)
         {
             Object[] message = new Object[2];
             message[0] = addressNum.Value;
@@ -228,15 +242,15 @@ namespace WindowsGlitchHarvester
 
             dolphinConn.connector.SendMessage("POKEBYTE", message);
         }
-        
 
-        private void btnPeekByte_Click(object sender, EventArgs e)
+
+        public void btnPeekByte_Click(object sender, EventArgs e)
         {
 
             peekedValue.Text = dolphinConn.connector.SendSyncedMessage("PEEKBYTE", (Object)addressNum.Value)?.ToString() ?? "NULL";
         }
 
-        private void btnPokeBytes_Click(object sender, EventArgs e)
+        public void btnPokeBytes_Click(object sender, EventArgs e)
         {
             Object[] message = new Object[3];
             message[0] = addressNum.Value;
@@ -244,22 +258,57 @@ namespace WindowsGlitchHarvester
             message[2] = BitConverter.GetBytes((Int64)valueNum.Value);
 
             dolphinConn.connector.SendMessage("POKEBYTES", message);
-
         }
 
-        private void btnPeekBytes_Click(object sender, EventArgs e)
+        public Byte PeekByte()
+        {
+            Thread.Sleep(10);
+            return Convert.ToByte(dolphinConn.connector.SendSyncedMessage("PEEKBYTE", ((Object)addressNum.Value)?.ToString() ?? "NULL"));
+        }
+
+        public void PokeByte(long address, byte value)
+        {
+            Object[] message = new Object[2];
+            message[0] = address;
+            message[1] = value;
+
+            Thread.Sleep(10);
+
+            dolphinConn.connector.SendMessage("POKEBYTE", message);
+        }
+
+        public Byte[] PeekBytes(long address, int range)
+        {
+            Object[] message = new Object[2];
+            message[0] = address;
+            message[1] = range;
+            Thread.Sleep(10);
+            return (Byte[])(dolphinConn.connector.SendSyncedMessage("PEEKBYTES", message));
+        }
+
+        public void PokeBytes(long address, byte[] value)
+        {
+            Object[] message = new Object[3];
+            message[0] = address;
+            message[1] = value.Length;
+            message[2] = value;
+
+            Thread.Sleep(10);
+            dolphinConn.connector.SendMessage("POKEBYTES", message);
+        }
+
+        public void btnPeekBytes_Click(object sender, EventArgs e)
         {
             Object[] message = new Object[2];
             message[0] = addressNum.Value;
             message[1] = 4;
 
             Byte[] returned = (Byte[])(dolphinConn.connector.SendSyncedMessage("PEEKBYTES", message));
-
+            
+            Thread.Sleep(10);
             peekedValue.Text = " ";
             foreach (Byte _byte in returned)
                 peekedValue.Text += (_byte).ToString() ?? "NULL"; 
         }
-
-
     }
 }

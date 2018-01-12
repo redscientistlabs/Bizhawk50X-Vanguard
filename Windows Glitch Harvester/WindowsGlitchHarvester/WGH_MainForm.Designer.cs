@@ -118,6 +118,7 @@
             this.label9 = new System.Windows.Forms.Label();
             this.button1 = new System.Windows.Forms.Button();
             this.lbStockpile = new System.Windows.Forms.ListBox();
+            this.rbTargetDolphin = new System.Windows.Forms.RadioButton();
             ((System.ComponentModel.ISupportInitialize)(this.nmIntensity)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.tbIntensity)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.tbStartingAddress)).BeginInit();
@@ -606,7 +607,7 @@
             this.rbTargetProcess.AutoSize = true;
             this.rbTargetProcess.Font = new System.Drawing.Font("Segoe UI", 8F);
             this.rbTargetProcess.ForeColor = System.Drawing.Color.White;
-            this.rbTargetProcess.Location = new System.Drawing.Point(221, 9);
+            this.rbTargetProcess.Location = new System.Drawing.Point(324, 9);
             this.rbTargetProcess.Name = "rbTargetProcess";
             this.rbTargetProcess.Size = new System.Drawing.Size(180, 17);
             this.rbTargetProcess.TabIndex = 31;
@@ -717,6 +718,7 @@
             // pnTargetPanel
             // 
             this.pnTargetPanel.BackColor = System.Drawing.Color.Gray;
+            this.pnTargetPanel.Controls.Add(this.rbTargetDolphin);
             this.pnTargetPanel.Controls.Add(this.savestateInfoButton);
             this.pnTargetPanel.Controls.Add(this.rbTargetMultipleFiles);
             this.pnTargetPanel.Controls.Add(this.btnClearAllBackups);
@@ -1554,6 +1556,19 @@
             this.lbStockpile.SelectedIndexChanged += new System.EventHandler(this.lbStockpile_SelectedIndexChanged);
             this.lbStockpile.MouseDown += new System.Windows.Forms.MouseEventHandler(this.lbStockpile_MouseDown);
             // 
+            // rbTargetDolphin
+            // 
+            this.rbTargetDolphin.AutoSize = true;
+            this.rbTargetDolphin.Font = new System.Drawing.Font("Segoe UI", 8F);
+            this.rbTargetDolphin.ForeColor = System.Drawing.Color.White;
+            this.rbTargetDolphin.Location = new System.Drawing.Point(219, 9);
+            this.rbTargetDolphin.Name = "rbTargetDolphin";
+            this.rbTargetDolphin.Size = new System.Drawing.Size(101, 17);
+            this.rbTargetDolphin.TabIndex = 36;
+            this.rbTargetDolphin.Text = "Target Dolphin";
+            this.rbTargetDolphin.UseVisualStyleBackColor = true;
+            this.rbTargetDolphin.CheckedChanged += new System.EventHandler(this.rbTargetDolphin_CheckedChanged);
+            // 
             // WGH_MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -1715,6 +1730,7 @@
         private System.Windows.Forms.NumericUpDown limiterMin;
         private System.Windows.Forms.Label label12;
         private System.Windows.Forms.Label label11;
+        public System.Windows.Forms.RadioButton rbTargetDolphin;
     }
 }
 
