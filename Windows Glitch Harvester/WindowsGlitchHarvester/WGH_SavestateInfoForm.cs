@@ -227,8 +227,36 @@ namespace WindowsGlitchHarvester
 
         private void btnPeekByte_Click(object sender, EventArgs e)
         {
-            dolphinConn.connector.SendMessage("PEEKBYTE", (Object)addressNum.Value);
-            
+
+            peekedValue.Text = (dolphinConn.connector.SendSyncedMessage("PEEKBYTES", (Object)addressNum.Value)).ToString();
+
+
         }
+
+        private void btnPokeBytes_Click(object sender, EventArgs e)
+        {
+            Object[] message = new Object[3];
+            message[0] = addressNum.Value;
+            message[1] = 4;
+            message[2] = BitConverter.GetBytes((Int64)valueNum.Value);
+
+            dolphinConn.connector.SendMessage("POKEBYTES", message);
+
+        }
+
+        private void btnPeekBytes_Click(object sender, EventArgs e)
+        {
+            Object[] message = new Object[2];
+            message[0] = addressNum.Value;
+            message[1] = 4;
+
+            Byte[] returned = (Byte[])(dolphinConn.connector.SendSyncedMessage("PEEKBYTES", message));
+
+            peekedValue.Text = "";
+            foreach (Byte _byte in returned)
+                peekedValue.Text += (_byte).ToString();
+        }
+
+
     }
 }

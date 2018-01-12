@@ -72,12 +72,6 @@ namespace WindowsGlitchHarvester
 
             switch (message.Type) //Handle received messages here
             {
-                case "PEEKBYTE":
-                    {
-                        WGH_SavestateInfoForm.lazyCrossThreadPeekQueue.Enqueue(advancedMessage.objectValue.ToString());
-                    }
-                    break;
-
                 default:
                     ConsoleEx.WriteLine($"Received unassigned {(message is NetCoreAdvancedMessage ? "advanced " : "")}message \"{message.Type}\"");
                     break;
