@@ -25,6 +25,9 @@ namespace WindowsGlitchHarvester
         public void StartServer()
         {
             spec = new NetCoreSpec();
+
+            spec.syncObject = ssiForm;
+
             spec.Side = NetworkSide.SERVER;
             spec.MessageReceived += OnMessageReceived;
 
@@ -40,7 +43,9 @@ namespace WindowsGlitchHarvester
         {
             string text = $"Status: {spec.Connector.status}";
 
-            WGH_SavestateInfoForm.lazyCrossThreadStatusQueue.Enqueue(text);
+            ssiForm.lbStatus.Text = text;
+
+            //WGH_SavestateInfoForm.lazyCrossThreadStatusQueue.Enqueue(text);
 
         }
         
@@ -56,8 +61,6 @@ namespace WindowsGlitchHarvester
             StopServer();
             StartServer();
         }
-
-        public void ReturnValue(object value) => connector?.ReturnValue(value);
 
         private void OnMessageReceived(object sender, NetCoreEventArgs e)
         {

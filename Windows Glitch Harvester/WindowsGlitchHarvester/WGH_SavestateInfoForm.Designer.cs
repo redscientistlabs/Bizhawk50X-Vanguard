@@ -384,9 +384,9 @@
         private System.Windows.Forms.Button btnStartNetCore;
         private System.Windows.Forms.Label label6;
         private System.Windows.Forms.Panel panel2;
-        private System.Windows.Forms.Label lbStatus;
         private System.Windows.Forms.Button btnLoadState;
         private System.Windows.Forms.Button btnSaveState;
         private System.Windows.Forms.Panel pnNetCoreActions;
+        public System.Windows.Forms.Label lbStatus;
     }
 }

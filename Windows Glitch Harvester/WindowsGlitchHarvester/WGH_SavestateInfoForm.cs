@@ -16,7 +16,6 @@ namespace WindowsGlitchHarvester
         WGH_DolphinConnector dolphinConn;
 
         public static volatile Queue<string> lazyCrossThreadConsoleQueue = new Queue<string>();
-        public static volatile Queue<string> lazyCrossThreadStatusQueue = new Queue<string>();
         System.Windows.Forms.Timer lazyCrossThreadTimer = new System.Windows.Forms.Timer();
 
         public WGH_SavestateInfoForm()
@@ -35,8 +34,8 @@ namespace WindowsGlitchHarvester
                     lbNetCoreConsole.SelectedIndex = lbNetCoreConsole.Items.Count - 1;
                 }
 
-                while (lazyCrossThreadStatusQueue.Count != 0)
-                    lbStatus.Text = lazyCrossThreadStatusQueue.Dequeue();
+                //while (lazyCrossThreadStatusQueue.Count != 0)
+                //    lbStatus.Text = lazyCrossThreadStatusQueue.Dequeue();
             };
             lazyCrossThreadTimer.Start();
             
@@ -52,6 +51,8 @@ namespace WindowsGlitchHarvester
             }
             catch { }
             */
+
+            //lbNetCoreConsole.Items.Add(e.message.Type);
         }
 
         private void WGH_SavestateInfoForm_Load(object sender, EventArgs e)
