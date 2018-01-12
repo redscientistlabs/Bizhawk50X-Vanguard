@@ -46,9 +46,6 @@ namespace WindowsGlitchHarvester
             string text = $"Status: {spec.Connector.status}";
 
             ssiForm.lbStatus.Text = text;
-
-            //WGH_SavestateInfoForm.lazyCrossThreadStatusQueue.Enqueue(text);
-
         }
         
 

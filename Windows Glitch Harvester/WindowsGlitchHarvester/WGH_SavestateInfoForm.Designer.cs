@@ -536,7 +536,6 @@
         private System.Windows.Forms.Button btnLoadState;
         private System.Windows.Forms.Button btnSaveState;
         private System.Windows.Forms.Panel pnNetCoreActions;
-<<<<<<< HEAD
         private System.Windows.Forms.Button btnPeekByte;
         private System.Windows.Forms.Button btnPokeByte;
         private System.Windows.Forms.NumericUpDown valueNum;
@@ -546,8 +545,7 @@
         private System.Windows.Forms.Label label7;
         private System.Windows.Forms.Button btnPokeBytes;
         private System.Windows.Forms.Button btnPeekBytes;
-=======
         public System.Windows.Forms.Label lbStatus;
->>>>>>> syncobject
+
     }
 }
