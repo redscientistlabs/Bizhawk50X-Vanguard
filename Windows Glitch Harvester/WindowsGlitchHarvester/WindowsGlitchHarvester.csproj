@@ -131,7 +131,8 @@
       <HintPath>..\packages\SharpZipLib.0.86.0\lib\20\ICSharpCode.SharpZipLib.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="NetCore">
+    <Reference Include="NetCore, Version=2.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\RTCV\NetCore\bin\Debug\NetCore.dll</HintPath>
     </Reference>
     <Reference Include="System" />

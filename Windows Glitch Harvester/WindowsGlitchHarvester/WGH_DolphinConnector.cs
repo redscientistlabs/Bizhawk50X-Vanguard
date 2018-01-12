@@ -28,7 +28,7 @@ namespace WindowsGlitchHarvester
         {
             spec = new NetCoreSpec();
 
-            spec.syncObject = ssiForm;
+            //spec.syncObject = ssiForm;
 
             spec.Side = NetworkSide.SERVER;
             spec.MessageReceived += OnMessageReceived;

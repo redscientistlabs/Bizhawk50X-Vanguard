@@ -26,6 +26,9 @@ namespace WindowsGlitchHarvester
             dolphinConn = new WGH_DolphinConnector(this);
             ConsoleEx.singularity.ConsoleWritten += OnConsoleWritten;
 
+            if (dolphinConn.connector != null)
+                dolphinConn.StopServer();
+
             this.Show();
             
             lazyCrossThreadTimer.Interval = 666;
@@ -69,6 +72,8 @@ namespace WindowsGlitchHarvester
 
             if (mi == null)
             {
+                if (dolphinConn.connector != null)
+                    dolphinConn.StopServer();
                 this.Close();
                 return;
             }
@@ -177,6 +182,9 @@ namespace WindowsGlitchHarvester
             else
             {
                 MessageBox.Show("The currently loaded file is not a Dolphin Narry's Mod v0.1.3 savestate.");
+
+                if (dolphinConn.connector != null)
+                    dolphinConn.StopServer();
                 this.Close();
             }
         }
@@ -225,9 +233,7 @@ namespace WindowsGlitchHarvester
         private void btnPeekByte_Click(object sender, EventArgs e)
         {
 
-            peekedValue.Text = (dolphinConn.connector.SendSyncedMessage("PEEKBYTES", (Object)addressNum.Value)).ToString();
-
-
+            peekedValue.Text = dolphinConn.connector.SendSyncedMessage("PEEKBYTE", (Object)addressNum.Value)?.ToString() ?? "NULL";
         }
 
         private void btnPokeBytes_Click(object sender, EventArgs e)
@@ -249,9 +255,9 @@ namespace WindowsGlitchHarvester
 
             Byte[] returned = (Byte[])(dolphinConn.connector.SendSyncedMessage("PEEKBYTES", message));
 
-            peekedValue.Text = "";
+            peekedValue.Text = " ";
             foreach (Byte _byte in returned)
-                peekedValue.Text += (_byte).ToString();
+                peekedValue.Text += (_byte).ToString() ?? "NULL"; 
         }
 
 
