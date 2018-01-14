@@ -406,6 +406,8 @@ namespace WindowsGlitchHarvester
 
         public BlastLayer GetBackup()
         {
+
+
             List<BlastUnit> BackupLayer = new List<BlastUnit>(); ;
 
 			foreach (BlastUnit bb in Layer)
@@ -624,8 +626,14 @@ namespace WindowsGlitchHarvester
 		}
 	}
 
+    interface ICachable
+    {
+        
 
-	[Serializable()]
+    }
+
+
+    [Serializable()]
     public abstract class MemoryInterface
     {
         public abstract byte[] getMemoryDump();
@@ -1290,8 +1298,9 @@ namespace WindowsGlitchHarvester
 		}
     }
 
+
     [Serializable()]
-    public class DolphinInterface : MemoryInterface
+    public class DolphinInterface : MemoryInterface , ICachable
     {
         public string ProcessName;
         ProcessHijacker Hijack = null;
@@ -1326,24 +1335,17 @@ namespace WindowsGlitchHarvester
 
         public override void PokeBytes(long address, byte[] data)
         {
-
             WGH_Core.ssForm.PokeBytes(address, data);
-
         }
 
         public override void PokeByte(long address, byte data)
         {
-            //    WGH_Core.ssForm.addressNum.Value = address;
-            //   WGH_Core.ssForm.valueNum.Value = (long)data;
-            //  WGH_Core.ssForm.btnPokeByte.PerformClick();
             WGH_Core.ssForm.PokeByte(address, data);
         }
 
         public override byte? PeekByte(long address)
         {
-           // WGH_Core.ssForm.addressNum.Value = address;
-           // WGH_Core.ssForm.btnPeekByte.PerformClick();
-            return Convert.ToByte(WGH_Core.ssForm.PeekByte());
+            return WGH_Core.ssForm.PeekByte(address);
         }
 
         public override byte[] PeekBytes(long address, int range)

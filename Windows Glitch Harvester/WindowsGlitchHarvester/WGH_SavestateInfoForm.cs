@@ -257,13 +257,13 @@ namespace WindowsGlitchHarvester
             message[1] = 4;
             message[2] = BitConverter.GetBytes((Int64)valueNum.Value);
 
-            dolphinConn.connector.SendMessage("POKEBYTES", message);
+            dolphinConn.connector.SendSyncedMessage("POKEBYTES", message);
         }
 
-        public Byte PeekByte()
+        public Byte PeekByte(long address)
         {
             Thread.Sleep(10);
-            return Convert.ToByte(dolphinConn.connector.SendSyncedMessage("PEEKBYTE", ((Object)addressNum.Value)?.ToString() ?? "NULL"));
+            return Convert.ToByte(dolphinConn.connector.SendSyncedMessage("PEEKBYTE", ((Object)address) ?? 0));
         }
 
         public void PokeByte(long address, byte value)
@@ -272,9 +272,9 @@ namespace WindowsGlitchHarvester
             message[0] = address;
             message[1] = value;
 
-            Thread.Sleep(10);
 
-            dolphinConn.connector.SendMessage("POKEBYTE", message);
+            Thread.Sleep(10);
+            dolphinConn.connector.SendSyncedMessage("POKEBYTE", message);
         }
 
         public Byte[] PeekBytes(long address, int range)
@@ -283,7 +283,7 @@ namespace WindowsGlitchHarvester
             message[0] = address;
             message[1] = range;
             Thread.Sleep(10);
-            return (Byte[])(dolphinConn.connector.SendSyncedMessage("PEEKBYTES", message));
+            return (Byte[])(dolphinConn.connector.SendSyncedMessage("PEEKBYTES", message) ?? 0);
         }
 
         public void PokeBytes(long address, byte[] value)
@@ -300,15 +300,18 @@ namespace WindowsGlitchHarvester
         public void btnPeekBytes_Click(object sender, EventArgs e)
         {
             Object[] message = new Object[2];
-            message[0] = addressNum.Value;
-            message[1] = 4;
+            for(int i = 0; i < 1000; i++)
+            {
+                message[0] = addressNum.Value + i;
+                message[1] = 4;
 
-            Byte[] returned = (Byte[])(dolphinConn.connector.SendSyncedMessage("PEEKBYTES", message));
+                Byte[] returned = (Byte[])(dolphinConn.connector.SendSyncedMessage("PEEKBYTES", message));
+                Thread.Sleep(10);
+            }
             
-            Thread.Sleep(10);
             peekedValue.Text = " ";
-            foreach (Byte _byte in returned)
-                peekedValue.Text += (_byte).ToString() ?? "NULL"; 
+          //  foreach (Byte _byte in returned)
+          //      peekedValue.Text += (_byte).ToString() ?? "NULL"; 
         }
     }
 }

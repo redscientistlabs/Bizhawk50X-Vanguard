@@ -905,6 +905,7 @@ Are you sure you want to reset the current target's backup?", "WARNING", Message
 
             StashKey sk = null;
 
+
             if (lbStashHistory.SelectedIndex != -1)
             {
                 sk = (StashKey)lbStashHistory.SelectedItem;
@@ -926,6 +927,7 @@ Are you sure you want to reset the current target's backup?", "WARNING", Message
                 WGH_Core.ghForm.lbStashHistory.ClearSelected();
                 WGH_Core.ghForm.lbStashHistory.SelectedIndex = WGH_Core.ghForm.lbStashHistory.Items.Count - 1;
                 WGH_Core.ghForm.lbStockpile.ClearSelected();
+
 
                 //TODO: Refactor this properly instead of as a hacky mess
                 foreach (BlastUnit bu in newSk.BlastLayer.Layer)
