@@ -297,6 +297,25 @@ namespace WindowsGlitchHarvester
             dolphinConn.connector.SendMessage("POKEBYTES", message);
         }
 
+        public Byte[] PeekAddresses(long[] addresses)
+        {
+            Object[] message = new Object[2];
+            message[0] = addresses;
+            Thread.Sleep(10);
+
+            return (Byte[])(dolphinConn.connector.SendSyncedMessage("PEEKADDRESSES", message) ?? 0);
+        }
+
+        public void PokeAddresses(long[] addresses, object[] values)
+        {
+            Object[] message = new Object[3];
+            message[0] = addresses;
+            message[1] = values;
+
+            Thread.Sleep(10);
+            dolphinConn.connector.SendMessage("POKEADDRESSES", message);
+        }
+
         public void btnPeekBytes_Click(object sender, EventArgs e)
         {
             Object[] message = new Object[2];
