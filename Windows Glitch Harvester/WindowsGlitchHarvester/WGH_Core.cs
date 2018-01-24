@@ -279,6 +279,47 @@ namespace WindowsGlitchHarvester
                 currentTargetName = mfi.ProcessName;
                 ghForm.lbTarget.Text = mfi.ProcessName + "|MemorySize:" + mfi.lastMemorySize.ToString();
             }
+            if (WGH_Core.ghForm.rbTargetDolphin.Checked)
+            {
+                OpenFileDialog OpenFileDialog1;
+                LoadTargetAgain:
+                OpenFileDialog1 = new OpenFileDialog();
+
+                OpenFileDialog1.Title = "Open File";
+                OpenFileDialog1.Filter = "files|*.*";
+                OpenFileDialog1.RestoreDirectory = true;
+                if (OpenFileDialog1.ShowDialog() == DialogResult.OK)
+                {
+                    if (OpenFileDialog1.FileName.ToString().Contains('^'))
+                    {
+                        MessageBox.Show("You can't use a file that contains the character ^ ");
+                        goto LoadTargetAgain;
+                    }
+
+                    currentTargetId = "Dolphin|" + OpenFileDialog1.FileName.ToString();
+                    currentTargetFullName = OpenFileDialog1.FileName.ToString();
+                }
+                else
+                    return;
+
+                if (currentMemoryInterface != null && (currentTargetType == "Dolphin" || currentTargetType == "MultipleFiles"))
+                    WGH_Core.RestoreTarget();
+
+
+                //Disable caching of the previously loaded file if it was enabled
+                if (ghForm.btnEnableCaching.Text == "Disable caching on current target")
+                    ghForm.btnEnableCaching.PerformClick();
+
+                currentTargetType = "Dolphin";
+                var di = new DolphinInterface(currentTargetId);
+                currentTargetName = di.ShortFilename;
+
+                currentMemoryInterface = di;
+                ghForm.lbTarget.Text = currentTargetId + "|MemorySize:" + di.lastMemorySize.ToString();
+
+
+            }
+            /*
             else if (WGH_Core.ghForm.rbTargetDolphin.Checked)
             {
 
@@ -287,7 +328,8 @@ namespace WindowsGlitchHarvester
                 WGH_Core.currentMemoryInterface = new DolphinInterface("Test");
                 currentTargetName = "Dolphin";
                 ghForm.lbTarget.Text = currentTargetName + "|MemorySize:" + WGH_Core.currentMemoryInterface.lastMemorySize.ToString();
-            }
+            }*/
+
         }
 
         public static void RestoreTarget()

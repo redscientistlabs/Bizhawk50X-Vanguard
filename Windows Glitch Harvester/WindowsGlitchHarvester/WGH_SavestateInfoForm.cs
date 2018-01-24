@@ -17,7 +17,8 @@ namespace WindowsGlitchHarvester
     public partial class WGH_SavestateInfoForm : Form
     {
         public static bool isWii = false;
-        WGH_DolphinConnector dolphinConn;
+        WGH_DolphinConnector dolphinConn = null;
+
 
         static int sram_size = 25165824;
         static int aram_size = 16777216;
@@ -32,15 +33,19 @@ namespace WindowsGlitchHarvester
         {
             InitializeComponent();
             dolphinConn = new WGH_DolphinConnector(this);
+
+
+            ConsoleEx.singularity.ConsoleWritten -= OnConsoleWritten;
             ConsoleEx.singularity.ConsoleWritten += OnConsoleWritten;
 
             if (dolphinConn.connector != null)
                 dolphinConn.StopServer();
 
             this.Show();
-            
+
             lazyCrossThreadTimer.Interval = 666;
-            lazyCrossThreadTimer.Tick += (o, e) => {
+            lazyCrossThreadTimer.Tick += (o, e) =>
+            {
                 while (lazyCrossThreadConsoleQueue.Count != 0)
                 {
                     lbNetCoreConsole.Items.Add(lazyCrossThreadConsoleQueue.Dequeue());
@@ -49,7 +54,7 @@ namespace WindowsGlitchHarvester
 
             };
             lazyCrossThreadTimer.Start();
-            
+
         }
 
         private void OnConsoleWritten(object sender, NetCoreEventArgs e)
@@ -78,13 +83,13 @@ namespace WindowsGlitchHarvester
 
             MemoryInterface mi = WGH_Core.currentMemoryInterface;
 
-           /* if (mi == null)
-            {
-                if (dolphinConn.connector != null)
-                    dolphinConn.StopServer();
-                this.Close();
-                return;
-            }*/
+            /* if (mi == null)
+             {
+                 if (dolphinConn.connector != null)
+                     dolphinConn.StopServer();
+                 this.Close();
+                 return;
+             }*/
 
 
             if (mi != null && mi.isDolphinSavestate())
@@ -182,15 +187,15 @@ namespace WindowsGlitchHarvester
                     aramexramLabel.Text = "EXRAM";
                     aramexramOffset.Text = exram_offset.ToString();
                     aramexramAlignment.Text = (exram_offset % 4).ToString();
-                }                
+                }
             }
             else
             {
-             //   MessageBox.Show("The currently loaded file is not a Dolphin Narry's Mod v0.1.3 savestate.");
+                //   MessageBox.Show("The currently loaded file is not a Dolphin Narry's Mod v0.1.3 savestate.");
 
-          //      if (dolphinConn.connector != null)
-            //        dolphinConn.StopServer();
-              //  this.Close();
+                //      if (dolphinConn.connector != null)
+                //        dolphinConn.StopServer();
+                //  this.Close();
             }
         }
 
@@ -205,7 +210,7 @@ namespace WindowsGlitchHarvester
 
         public void btnStartNetCore_Click(object sender, EventArgs e)
         {
-            if(btnStartNetCore.Text.Contains("Restart"))
+            if (btnStartNetCore.Text.Contains("Restart"))
             {
                 dolphinConn.RestartServer();
             }
@@ -214,8 +219,8 @@ namespace WindowsGlitchHarvester
                 dolphinConn.StartServer();
                 btnStartNetCore.Text = "Restart NetCore Server";
             }
-            
-            
+
+
         }
 
         public void btnLoadState_Click(object sender, EventArgs e)
@@ -319,7 +324,7 @@ namespace WindowsGlitchHarvester
         public void btnPeekBytes_Click(object sender, EventArgs e)
         {
             Object[] message = new Object[2];
-            for(int i = 0; i < 1000; i++)
+            for (int i = 0; i < 1000; i++)
             {
                 message[0] = addressNum.Value + i;
                 message[1] = 4;
@@ -327,10 +332,22 @@ namespace WindowsGlitchHarvester
                 Byte[] returned = (Byte[])(dolphinConn.connector.SendSyncedMessage("PEEKBYTES", message));
                 Thread.Sleep(10);
             }
-            
+
             peekedValue.Text = " ";
-          //  foreach (Byte _byte in returned)
-          //      peekedValue.Text += (_byte).ToString() ?? "NULL"; 
+            //  foreach (Byte _byte in returned)
+            //      peekedValue.Text += (_byte).ToString() ?? "NULL"; 
+        }
+        public bool isNetcoreRunning()
+        {
+            if (dolphinConn.connector != null)
+                return true;
+            return false;
+        }
+        protected override void OnFormClosing(FormClosingEventArgs e)
+        {
+            if (btnStartNetCore.Text.Contains("Restart"))
+                dolphinConn.StopServer();
+
         }
     }
 }

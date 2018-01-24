@@ -50,6 +50,8 @@
             this.btnLoadState = new System.Windows.Forms.Button();
             this.btnSaveState = new System.Windows.Forms.Button();
             this.pnNetCoreActions = new System.Windows.Forms.Panel();
+            this.btnPokeBytes = new System.Windows.Forms.Button();
+            this.btnPeekBytes = new System.Windows.Forms.Button();
             this.label8 = new System.Windows.Forms.Label();
             this.label7 = new System.Windows.Forms.Label();
             this.peekedValue = new System.Windows.Forms.Label();
@@ -57,8 +59,7 @@
             this.addressNum = new System.Windows.Forms.NumericUpDown();
             this.btnPeekByte = new System.Windows.Forms.Button();
             this.btnPokeByte = new System.Windows.Forms.Button();
-            this.btnPeekBytes = new System.Windows.Forms.Button();
-            this.btnPokeBytes = new System.Windows.Forms.Button();
+            this.label9 = new System.Windows.Forms.Label();
             this.panel1.SuspendLayout();
             this.panel3.SuspendLayout();
             this.panel2.SuspendLayout();
@@ -353,6 +354,42 @@
             this.pnNetCoreActions.Size = new System.Drawing.Size(595, 95);
             this.pnNetCoreActions.TabIndex = 18;
             // 
+            // btnPokeBytes
+            // 
+            this.btnPokeBytes.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.btnPokeBytes.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(224)))), ((int)(((byte)(224)))), ((int)(((byte)(224)))));
+            this.btnPokeBytes.FlatAppearance.BorderSize = 0;
+            this.btnPokeBytes.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnPokeBytes.Font = new System.Drawing.Font("Segoe UI Semibold", 9.75F, System.Drawing.FontStyle.Bold);
+            this.btnPokeBytes.ForeColor = System.Drawing.Color.Black;
+            this.btnPokeBytes.Location = new System.Drawing.Point(319, 13);
+            this.btnPokeBytes.Name = "btnPokeBytes";
+            this.btnPokeBytes.Size = new System.Drawing.Size(137, 32);
+            this.btnPokeBytes.TabIndex = 35;
+            this.btnPokeBytes.TabStop = false;
+            this.btnPokeBytes.Tag = "color:light";
+            this.btnPokeBytes.Text = "Poke Bytes (4)";
+            this.btnPokeBytes.UseVisualStyleBackColor = false;
+            this.btnPokeBytes.Click += new System.EventHandler(this.btnPokeBytes_Click);
+            // 
+            // btnPeekBytes
+            // 
+            this.btnPeekBytes.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.btnPeekBytes.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(224)))), ((int)(((byte)(224)))), ((int)(((byte)(224)))));
+            this.btnPeekBytes.FlatAppearance.BorderSize = 0;
+            this.btnPeekBytes.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnPeekBytes.Font = new System.Drawing.Font("Segoe UI Semibold", 9.75F, System.Drawing.FontStyle.Bold);
+            this.btnPeekBytes.ForeColor = System.Drawing.Color.Black;
+            this.btnPeekBytes.Location = new System.Drawing.Point(319, 51);
+            this.btnPeekBytes.Name = "btnPeekBytes";
+            this.btnPeekBytes.Size = new System.Drawing.Size(137, 32);
+            this.btnPeekBytes.TabIndex = 34;
+            this.btnPeekBytes.TabStop = false;
+            this.btnPeekBytes.Tag = "color:light";
+            this.btnPeekBytes.Text = "Peek Bytes (4)";
+            this.btnPeekBytes.UseVisualStyleBackColor = false;
+            this.btnPeekBytes.Click += new System.EventHandler(this.btnPeekBytes_Click);
+            // 
             // label8
             // 
             this.label8.AutoSize = true;
@@ -443,41 +480,18 @@
             this.btnPokeByte.UseVisualStyleBackColor = false;
             this.btnPokeByte.Click += new System.EventHandler(this.btnPokeByte_Click);
             // 
-            // btnPeekBytes
+            // label9
             // 
-            this.btnPeekBytes.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.btnPeekBytes.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(224)))), ((int)(((byte)(224)))), ((int)(((byte)(224)))));
-            this.btnPeekBytes.FlatAppearance.BorderSize = 0;
-            this.btnPeekBytes.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btnPeekBytes.Font = new System.Drawing.Font("Segoe UI Semibold", 9.75F, System.Drawing.FontStyle.Bold);
-            this.btnPeekBytes.ForeColor = System.Drawing.Color.Black;
-            this.btnPeekBytes.Location = new System.Drawing.Point(319, 51);
-            this.btnPeekBytes.Name = "btnPeekBytes";
-            this.btnPeekBytes.Size = new System.Drawing.Size(137, 32);
-            this.btnPeekBytes.TabIndex = 34;
-            this.btnPeekBytes.TabStop = false;
-            this.btnPeekBytes.Tag = "color:light";
-            this.btnPeekBytes.Text = "Peek Bytes (4)";
-            this.btnPeekBytes.UseVisualStyleBackColor = false;
-            this.btnPeekBytes.Click += new System.EventHandler(this.btnPeekBytes_Click);
-            // 
-            // btnPokeBytes
-            // 
-            this.btnPokeBytes.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.btnPokeBytes.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(224)))), ((int)(((byte)(224)))), ((int)(((byte)(224)))));
-            this.btnPokeBytes.FlatAppearance.BorderSize = 0;
-            this.btnPokeBytes.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btnPokeBytes.Font = new System.Drawing.Font("Segoe UI Semibold", 9.75F, System.Drawing.FontStyle.Bold);
-            this.btnPokeBytes.ForeColor = System.Drawing.Color.Black;
-            this.btnPokeBytes.Location = new System.Drawing.Point(319, 13);
-            this.btnPokeBytes.Name = "btnPokeBytes";
-            this.btnPokeBytes.Size = new System.Drawing.Size(137, 32);
-            this.btnPokeBytes.TabIndex = 35;
-            this.btnPokeBytes.TabStop = false;
-            this.btnPokeBytes.Tag = "color:light";
-            this.btnPokeBytes.Text = "Poke Bytes (4)";
-            this.btnPokeBytes.UseVisualStyleBackColor = false;
-            this.btnPokeBytes.Click += new System.EventHandler(this.btnPokeBytes_Click);
+            this.label9.AutoSize = true;
+            this.label9.BackColor = System.Drawing.Color.Transparent;
+            this.label9.Font = new System.Drawing.Font("Segoe UI", 9.75F);
+            this.label9.ForeColor = System.Drawing.Color.White;
+            this.label9.Location = new System.Drawing.Point(263, 187);
+            this.label9.Name = "label9";
+            this.label9.Size = new System.Drawing.Size(51, 17);
+            this.label9.TabIndex = 25;
+            this.label9.Text = "Debug ";
+            this.label9.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
             // WGH_SavestateInfoForm
             // 
@@ -485,6 +499,7 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.Black;
             this.ClientSize = new System.Drawing.Size(859, 328);
+            this.Controls.Add(this.label9);
             this.Controls.Add(this.pnNetCoreActions);
             this.Controls.Add(this.panel2);
             this.Controls.Add(this.label6);
@@ -497,7 +512,7 @@
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.MaximizeBox = false;
             this.Name = "WGH_SavestateInfoForm";
-            this.Text = "Dolphin Mod Tools";
+            this.Text = "Dolphin Savestate Info";
             this.Load += new System.EventHandler(this.WGH_SavestateInfoForm_Load);
             this.panel1.ResumeLayout(false);
             this.panel1.PerformLayout();
@@ -533,7 +548,7 @@
         private System.Windows.Forms.Button btnStartNetCore;
         private System.Windows.Forms.Label label6;
         private System.Windows.Forms.Panel panel2;
-        private System.Windows.Forms.Button btnLoadState;
+        public System.Windows.Forms.Button btnLoadState;
         private System.Windows.Forms.Button btnSaveState;
         private System.Windows.Forms.Panel pnNetCoreActions;
         public System.Windows.Forms.Button btnPeekByte;
@@ -546,6 +561,6 @@
         public System.Windows.Forms.Button btnPokeBytes;
         public System.Windows.Forms.Button btnPeekBytes;
         public System.Windows.Forms.Label lbStatus;
-
+        private System.Windows.Forms.Label label9;
     }
 }

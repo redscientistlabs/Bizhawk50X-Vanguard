@@ -67,6 +67,7 @@
             this.btnStashHistoryUp = new System.Windows.Forms.Button();
             this.btnStashHistoryDown = new System.Windows.Forms.Button();
             this.pnTargetPanel = new System.Windows.Forms.Panel();
+            this.rbTargetDolphin = new System.Windows.Forms.RadioButton();
             this.savestateInfoButton = new System.Windows.Forms.Button();
             this.rbTargetMultipleFiles = new System.Windows.Forms.RadioButton();
             this.btnClearAllBackups = new System.Windows.Forms.Button();
@@ -118,7 +119,6 @@
             this.label9 = new System.Windows.Forms.Label();
             this.button1 = new System.Windows.Forms.Button();
             this.lbStockpile = new System.Windows.Forms.ListBox();
-            this.rbTargetDolphin = new System.Windows.Forms.RadioButton();
             ((System.ComponentModel.ISupportInitialize)(this.nmIntensity)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.tbIntensity)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.tbStartingAddress)).BeginInit();
@@ -176,8 +176,6 @@
             // 
             // lbStashHistory
             // 
-            this.lbStashHistory.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left)));
             this.lbStashHistory.BackColor = System.Drawing.Color.Gray;
             this.lbStashHistory.BorderStyle = System.Windows.Forms.BorderStyle.None;
             this.lbStashHistory.Font = new System.Drawing.Font("Segoe UI", 9.75F);
@@ -214,7 +212,7 @@
             // 
             // btnClearStashHistory
             // 
-            this.btnClearStashHistory.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.btnClearStashHistory.Anchor = System.Windows.Forms.AnchorStyles.Left;
             this.btnClearStashHistory.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(224)))), ((int)(((byte)(224)))), ((int)(((byte)(224)))));
             this.btnClearStashHistory.FlatAppearance.BorderSize = 0;
             this.btnClearStashHistory.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
@@ -734,6 +732,19 @@
             this.pnTargetPanel.Size = new System.Drawing.Size(864, 64);
             this.pnTargetPanel.TabIndex = 39;
             this.pnTargetPanel.Tag = "color:normal";
+            // 
+            // rbTargetDolphin
+            // 
+            this.rbTargetDolphin.AutoSize = true;
+            this.rbTargetDolphin.Font = new System.Drawing.Font("Segoe UI", 8F);
+            this.rbTargetDolphin.ForeColor = System.Drawing.Color.White;
+            this.rbTargetDolphin.Location = new System.Drawing.Point(219, 9);
+            this.rbTargetDolphin.Name = "rbTargetDolphin";
+            this.rbTargetDolphin.Size = new System.Drawing.Size(101, 17);
+            this.rbTargetDolphin.TabIndex = 36;
+            this.rbTargetDolphin.Text = "Target Dolphin";
+            this.rbTargetDolphin.UseVisualStyleBackColor = true;
+            this.rbTargetDolphin.CheckedChanged += new System.EventHandler(this.rbTargetDolphin_CheckedChanged);
             // 
             // savestateInfoButton
             // 
@@ -1451,6 +1462,8 @@
             // 
             // pnCorruptionEngine
             // 
+            this.pnCorruptionEngine.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left)));
             this.pnCorruptionEngine.BackColor = System.Drawing.Color.Gray;
             this.pnCorruptionEngine.Controls.Add(this.cbCorruptionEngine);
             this.pnCorruptionEngine.Controls.Add(this.gbDefaultSettings);
@@ -1555,19 +1568,6 @@
             this.lbStockpile.Tag = "color:normal";
             this.lbStockpile.SelectedIndexChanged += new System.EventHandler(this.lbStockpile_SelectedIndexChanged);
             this.lbStockpile.MouseDown += new System.Windows.Forms.MouseEventHandler(this.lbStockpile_MouseDown);
-            // 
-            // rbTargetDolphin
-            // 
-            this.rbTargetDolphin.AutoSize = true;
-            this.rbTargetDolphin.Font = new System.Drawing.Font("Segoe UI", 8F);
-            this.rbTargetDolphin.ForeColor = System.Drawing.Color.White;
-            this.rbTargetDolphin.Location = new System.Drawing.Point(219, 9);
-            this.rbTargetDolphin.Name = "rbTargetDolphin";
-            this.rbTargetDolphin.Size = new System.Drawing.Size(101, 17);
-            this.rbTargetDolphin.TabIndex = 36;
-            this.rbTargetDolphin.Text = "Target Dolphin";
-            this.rbTargetDolphin.UseVisualStyleBackColor = true;
-            this.rbTargetDolphin.CheckedChanged += new System.EventHandler(this.rbTargetDolphin_CheckedChanged);
             // 
             // WGH_MainForm
             // 

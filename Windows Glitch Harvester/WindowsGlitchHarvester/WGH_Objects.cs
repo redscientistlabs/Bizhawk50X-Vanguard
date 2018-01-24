@@ -1299,6 +1299,244 @@ namespace WindowsGlitchHarvester
     }
 
 
+
+    [Serializable()]
+    public class DolphinInterface : MemoryInterface
+    {
+        public string Filename;
+        public string ShortFilename;
+
+        System.IO.Stream stream = null;
+
+        public DolphinInterface(string _targetId)
+        {
+            try
+            {
+                string[] targetId = _targetId.Split('|');
+                Filename = targetId[1];
+                ShortFilename = Filename.Substring(Filename.LastIndexOf("\\") + 1, Filename.Length - (Filename.LastIndexOf("\\") + 1));
+
+                SetBackup();
+
+                //getMemoryDump();
+                getMemorySize();
+
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"FileInterface failed to load something \n\n" + "Culprit file: " + Filename + "\n\n" + ex.ToString());
+
+                if (WGH_Core.ghForm.rbTargetMultipleFiles.Checked)
+                    throw;
+            }
+        }
+
+        public string getCompositeFilename(string prefix)
+        {
+            return $"{prefix.Trim().ToUpper()}^{Filename.ToBase64()}^{ShortFilename}";
+        }
+
+        public string getCorruptFilename(bool overrideWriteCopyMode = false)
+        {
+            if (overrideWriteCopyMode || WGH_Core.writeCopyMode)
+                return WGH_Core.currentDir + "\\TEMP\\" + getCompositeFilename("CORRUPT");
+            else
+                return Filename;
+        }
+        public string getBackupFilename()
+        {
+            return WGH_Core.currentDir + "\\TEMP\\" + getCompositeFilename("BACKUP");
+        }
+
+        public override void ResetWorkingFile()
+        {
+
+            tryDeleteResetWorkingFileAgain:
+            try
+            {
+                if (File.Exists(getCorruptFilename()))
+                    File.Delete(getCorruptFilename());
+            }
+            catch
+            {
+                MessageBox.Show($"Could not get access to {getCorruptFilename()}\n\nClose the file then press OK", "WARNING");
+                goto tryDeleteResetWorkingFileAgain;
+            }
+
+
+            SetWorkingFile();
+        }
+
+        public string SetWorkingFile()
+        {
+            if (!File.Exists(getCorruptFilename()))
+                File.Copy(getBackupFilename(), getCorruptFilename(), true);
+
+            return getCorruptFilename();
+        }
+
+        public override void ApplyWorkingFile()
+        {
+            if (stream != null)
+            {
+                stream.Close();
+                stream = null;
+            }
+
+            if (WGH_Core.writeCopyMode)
+            {
+
+                tryApplyWorkingFileAgain:
+                try
+                {
+                    if (File.Exists(Filename))
+                        File.Delete(Filename);
+
+                    if (File.Exists(getCorruptFilename()))
+                        File.Move(getCorruptFilename(), Filename);
+                }
+                catch
+                {
+                    MessageBox.Show($"Could not get access to {Filename} because some other program is probably using it. \n\nClose the file then press OK to try again", "WARNING");
+                    goto tryApplyWorkingFileAgain;
+                }
+
+            }
+        }
+
+        public override void SetBackup()
+        {
+            if (!File.Exists(getBackupFilename()))
+                File.Copy(Filename, getBackupFilename(), true);
+        }
+
+        public override void ResetBackup(bool askConfirmation = true)
+        {
+            if (askConfirmation && MessageBox.Show("Are you sure you want to reset the backup using the target file?", "WARNING", MessageBoxButtons.YesNo) == DialogResult.No)
+                return;
+
+            if (File.Exists(getBackupFilename()))
+                File.Delete(getBackupFilename());
+
+            SetBackup();
+
+        }
+
+        public override void RestoreBackup(bool announce = true)
+        {
+
+            if (File.Exists(getBackupFilename()))
+            {
+                File.Delete(Filename);
+                File.Copy(getBackupFilename(), Filename, true);
+
+                if (announce)
+                    MessageBox.Show("Backup of " + ShortFilename + " was restored");
+            }
+            else
+            {
+                MessageBox.Show("Couldn't find backup of " + ShortFilename);
+            }
+        }
+
+        public override byte[] getMemoryDump()
+        {
+            lastMemoryDump = File.ReadAllBytes(getBackupFilename());
+            return lastMemoryDump;
+        }
+        public override byte[] lastMemoryDump { get; set; } = null;
+
+        public override long getMemorySize()
+        {
+            if (lastMemorySize != null)
+                return (long)lastMemorySize;
+
+            lastMemorySize = new FileInfo(Filename).Length;
+            return (long)lastMemorySize;
+
+        }
+
+        public override bool isDolphinSavestate()
+        {
+
+            string a = "Dolphin Narry's Mod";
+            string b = Encoding.Default.GetString(PeekBytes(32, 19));
+
+            if (a == b)
+                return true;
+            else
+                return false;
+        }
+
+        public override long? lastMemorySize { get; set; }
+
+        public override void PokeBytes(long address, byte[] data)
+        {
+            if (stream == null)
+                stream = File.Open(SetWorkingFile(), FileMode.Open);
+
+            stream.Position = address;
+            stream.Write(data, 0, data.Length);
+
+            if (lastMemoryDump != null)
+                for (int i = 0; i < data.Length; i++)
+                    lastMemoryDump[address + i] = data[i];
+
+        }
+
+        public override void PokeByte(long address, byte data)
+        {
+            if (stream == null)
+                stream = File.Open(SetWorkingFile(), FileMode.Open);
+
+            stream.Position = address;
+            stream.WriteByte(data);
+
+            if (lastMemoryDump != null)
+                lastMemoryDump[address] = data;
+        }
+
+        public override byte? PeekByte(long address)
+        {
+
+            if (lastMemoryDump != null)
+                return lastMemoryDump[address];
+
+            if (stream == null)
+                stream = File.Open(SetWorkingFile(), FileMode.Open);
+
+            byte[] readBytes = new byte[1];
+            stream.Position = address;
+            stream.Read(readBytes, 0, 1);
+
+            //fs.Close();
+
+            return readBytes[0];
+
+        }
+
+        public override byte[] PeekBytes(long address, int range)
+        {
+
+            if (lastMemoryDump != null)
+                return lastMemoryDump.SubArray(address, range);
+
+            if (stream == null)
+                stream = File.Open(SetWorkingFile(), FileMode.Open);
+
+            byte[] readBytes = new byte[range];
+            stream.Position = address;
+            stream.Read(readBytes, 0, range);
+
+            //fs.Close();
+
+            return readBytes;
+
+        }
+
+    }
+    //Actual dolphinInterface saved just in case
+    /*
     [Serializable()]
     public class DolphinInterface : MemoryInterface , ICachable
     {
@@ -1381,6 +1619,5 @@ namespace WindowsGlitchHarvester
         public void RefreshSize()
         {
             getMemorySize();
-        }
-    }
+        }*/
 }

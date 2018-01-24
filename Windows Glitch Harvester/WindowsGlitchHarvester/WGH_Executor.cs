@@ -53,8 +53,17 @@ namespace WindowsGlitchHarvester
         {
             var gh = WGH_Core.ghForm;
 
+            //Hijack no execution for the Netcore executor
             if (gh.rbNoExecution.Checked)
-                return;
+            {
+                if (WGH_Core.currentMemoryInterface is DolphinInterface && WGH_Core.ssForm.isNetcoreRunning())
+                {
+                    WGH_Core.ssForm.btnLoadState.PerformClick();
+                }
+                
+                else
+                    return;
+            }
             else if (gh.rbExecuteCorruptedFile.Checked)
             {
                 if (WGH_Core.currentTargetType == "File")

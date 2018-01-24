@@ -1301,15 +1301,19 @@ Are you sure you want to reset the current target's backup?", "WARNING", Message
 
         private void rbTargetDolphin_CheckedChanged(object sender, EventArgs e)
         {
-            btnResetBackup.Enabled = false;
-            btnRestoreFileBackup.Enabled = false;
-            cbWriteCopyMode.Enabled = false;
+
+
+            btnResetBackup.Enabled = true;
+            btnRestoreFileBackup.Enabled = true;
+            cbWriteCopyMode.Enabled = true;
+
 
             rbExecuteCorruptedFile.Enabled = false;
             rbExecuteWith.Enabled = false;
+            rbExecuteOtherProgram.Enabled = false;
+            rbExecuteScript.Enabled = false;
 
-            if (rbExecuteCorruptedFile.Checked || rbExecuteWith.Checked || rbExecuteOtherProgram.Checked)
-                rbNoExecution.Checked = true;
+            rbNoExecution.Checked = true;
         }
     }
 }
