@@ -1321,6 +1321,9 @@ namespace WindowsGlitchHarvester
                 //getMemoryDump();
                 getMemorySize();
 
+                if (WGH_Core.ssForm != null)
+                    WGH_Core.ssForm.GetSavestateInfo();
+
             }
             catch (Exception ex)
             {

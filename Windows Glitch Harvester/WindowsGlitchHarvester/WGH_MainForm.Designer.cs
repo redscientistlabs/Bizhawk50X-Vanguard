@@ -212,7 +212,7 @@
             // 
             // btnClearStashHistory
             // 
-            this.btnClearStashHistory.Anchor = System.Windows.Forms.AnchorStyles.Left;
+            this.btnClearStashHistory.Anchor = System.Windows.Forms.AnchorStyles.Top;
             this.btnClearStashHistory.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(224)))), ((int)(((byte)(224)))), ((int)(((byte)(224)))));
             this.btnClearStashHistory.FlatAppearance.BorderSize = 0;
             this.btnClearStashHistory.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
@@ -603,14 +603,15 @@
             // rbTargetProcess
             // 
             this.rbTargetProcess.AutoSize = true;
+            this.rbTargetProcess.BackColor = System.Drawing.Color.Transparent;
             this.rbTargetProcess.Font = new System.Drawing.Font("Segoe UI", 8F);
             this.rbTargetProcess.ForeColor = System.Drawing.Color.White;
-            this.rbTargetProcess.Location = new System.Drawing.Point(324, 9);
+            this.rbTargetProcess.Location = new System.Drawing.Point(320, 9);
             this.rbTargetProcess.Name = "rbTargetProcess";
             this.rbTargetProcess.Size = new System.Drawing.Size(180, 17);
             this.rbTargetProcess.TabIndex = 31;
             this.rbTargetProcess.Text = "Target Process (EXPERIMENTAL)";
-            this.rbTargetProcess.UseVisualStyleBackColor = true;
+            this.rbTargetProcess.UseVisualStyleBackColor = false;
             this.rbTargetProcess.CheckedChanged += new System.EventHandler(this.rbTargetProcess_CheckedChanged);
             // 
             // btnRemoveSelected
@@ -736,6 +737,7 @@
             // rbTargetDolphin
             // 
             this.rbTargetDolphin.AutoSize = true;
+            this.rbTargetDolphin.BackColor = System.Drawing.Color.Transparent;
             this.rbTargetDolphin.Font = new System.Drawing.Font("Segoe UI", 8F);
             this.rbTargetDolphin.ForeColor = System.Drawing.Color.White;
             this.rbTargetDolphin.Location = new System.Drawing.Point(219, 9);
@@ -743,7 +745,7 @@
             this.rbTargetDolphin.Size = new System.Drawing.Size(101, 17);
             this.rbTargetDolphin.TabIndex = 36;
             this.rbTargetDolphin.Text = "Target Dolphin";
-            this.rbTargetDolphin.UseVisualStyleBackColor = true;
+            this.rbTargetDolphin.UseVisualStyleBackColor = false;
             this.rbTargetDolphin.CheckedChanged += new System.EventHandler(this.rbTargetDolphin_CheckedChanged);
             // 
             // savestateInfoButton
@@ -1462,8 +1464,6 @@
             // 
             // pnCorruptionEngine
             // 
-            this.pnCorruptionEngine.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left)));
             this.pnCorruptionEngine.BackColor = System.Drawing.Color.Gray;
             this.pnCorruptionEngine.Controls.Add(this.cbCorruptionEngine);
             this.pnCorruptionEngine.Controls.Add(this.gbDefaultSettings);

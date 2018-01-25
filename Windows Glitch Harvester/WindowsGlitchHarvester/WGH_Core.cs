@@ -84,6 +84,9 @@ namespace WindowsGlitchHarvester
             if (!Directory.Exists(WGH_Core.currentDir + "\\TEMP\\"))
                 Directory.CreateDirectory(WGH_Core.currentDir + "\\TEMP\\");
 
+            if (!Directory.Exists(WGH_Core.currentDir + "\\TEMP2\\"))
+                Directory.CreateDirectory(WGH_Core.currentDir + "\\TEMP2\\");
+
             if (!Directory.Exists(WGH_Core.currentDir + "\\PARAMS\\"))
                 Directory.CreateDirectory(WGH_Core.currentDir + "\\PARAMS\\");
 
@@ -226,13 +229,13 @@ namespace WindowsGlitchHarvester
                 else
                     return;
 
-                if (currentMemoryInterface != null && (currentTargetType == "File" || currentTargetType == "MultipleFiles"))
-                    WGH_Core.RestoreTarget();
-
-
                 //Disable caching of the previously loaded file if it was enabled
                 if (ghForm.btnEnableCaching.Text == "Disable caching on current target")
                     ghForm.btnEnableCaching.PerformClick();
+
+                if (currentMemoryInterface != null && (currentTargetType == "File" || currentTargetType == "MultipleFiles"))
+                    WGH_Core.RestoreTarget();
+
 
                 currentTargetType = "File";
                 var fi = new FileInterface(currentTargetId);
@@ -302,13 +305,13 @@ namespace WindowsGlitchHarvester
                 else
                     return;
 
-                if (currentMemoryInterface != null && (currentTargetType == "Dolphin" || currentTargetType == "MultipleFiles"))
-                    WGH_Core.RestoreTarget();
-
-
                 //Disable caching of the previously loaded file if it was enabled
                 if (ghForm.btnEnableCaching.Text == "Disable caching on current target")
                     ghForm.btnEnableCaching.PerformClick();
+
+                if (currentMemoryInterface != null && (currentTargetType == "Dolphin" || currentTargetType == "File" || currentTargetType == "MultipleFiles"))
+                    WGH_Core.RestoreTarget();
+
 
                 currentTargetType = "Dolphin";
                 var di = new DolphinInterface(currentTargetId);
@@ -317,6 +320,8 @@ namespace WindowsGlitchHarvester
                 currentMemoryInterface = di;
                 ghForm.lbTarget.Text = currentTargetId + "|MemorySize:" + di.lastMemorySize.ToString();
 
+                //Cache the new file 
+                ghForm.btnEnableCaching.PerformClick();
 
             }
             /*
