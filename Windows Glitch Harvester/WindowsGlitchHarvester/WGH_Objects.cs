@@ -1321,13 +1321,11 @@ namespace WindowsGlitchHarvester
                 //getMemoryDump();
                 getMemorySize();
 
-                if (WGH_Core.ssForm != null)
-                    WGH_Core.ssForm.GetSavestateInfo();
 
             }
             catch (Exception ex)
             {
-                MessageBox.Show($"FileInterface failed to load something \n\n" + "Culprit file: " + Filename + "\n\n" + ex.ToString());
+                MessageBox.Show($"DolphinInterface failed to load something \n\n" + "Culprit file: " + Filename + "\n\n" + ex.ToString());
 
                 if (WGH_Core.ghForm.rbTargetMultipleFiles.Checked)
                     throw;

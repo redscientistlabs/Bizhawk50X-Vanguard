@@ -323,6 +323,10 @@ namespace WindowsGlitchHarvester
                 //Cache the new file 
                 ghForm.btnEnableCaching.PerformClick();
 
+                //Update the savestate info. It checks inside this function if it's a proper state
+                if (WGH_Core.ssForm != null)
+                    WGH_Core.ssForm.GetSavestateInfo();
+
             }
             /*
             else if (WGH_Core.ghForm.rbTargetDolphin.Checked)
