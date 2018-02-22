@@ -25,49 +25,26 @@ namespace WindowsGlitchHarvester
         static int exram_size = 67108864;
 
 
-        public static volatile Queue<string> lazyCrossThreadConsoleQueue = new Queue<string>();
-
-        System.Windows.Forms.Timer lazyCrossThreadTimer = new System.Windows.Forms.Timer();
 
         public WGH_SavestateInfoForm()
         {
             InitializeComponent();
             dolphinConn = new WGH_DolphinConnector(this);
 
-            if (!ConsoleEx.singularity.HasConsoleEventHandler())
-                ConsoleEx.singularity.ConsoleWritten += OnConsoleWritten;
+            ConsoleEx.singularity.Register((ob, ea) => Singularity_ConsoleWritten(ob, ea), this);
 
             if (dolphinConn.connector != null)
                 dolphinConn.StopServer();
 
             this.Show();
 
-            lazyCrossThreadTimer.Interval = 666;
-            lazyCrossThreadTimer.Tick += (o, e) =>
-            {
-                while (lazyCrossThreadConsoleQueue.Count != 0)
-                {
-                    lbNetCoreConsole.Items.Add(lazyCrossThreadConsoleQueue.Dequeue());
-                    lbNetCoreConsole.SelectedIndex = lbNetCoreConsole.Items.Count - 1;
-                }
-
-            };
-            lazyCrossThreadTimer.Start();
 
         }
 
-        private void OnConsoleWritten(object sender, NetCoreEventArgs e)
+        private void Singularity_ConsoleWritten(object sender, NetCoreEventArgs e)
         {
-            lazyCrossThreadConsoleQueue.Enqueue(e.message.Type);
-            /*
-            try
-            {
-                lbNetCoreConsole.Items.Add(e.message.Type);
-            }
-            catch { }
-            */
-
-            //lbNetCoreConsole.Items.Add(e.message.Type);
+            lbNetCoreConsole.Items.Add(e.message.Type + "\n");
+            lbNetCoreConsole.SelectedIndex = lbNetCoreConsole.Items.Count - 1;
         }
 
         private void WGH_SavestateInfoForm_Load(object sender, EventArgs e)
