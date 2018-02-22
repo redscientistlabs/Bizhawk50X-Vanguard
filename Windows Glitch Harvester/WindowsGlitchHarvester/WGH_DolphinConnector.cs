@@ -51,13 +51,14 @@ namespace WindowsGlitchHarvester
 
         public void StopServer()
         {
-            connector.Kill();
+            connector.Stop();
             connector = null;
         }
 
         public void RestartServer()
         {
-            StopServer();
+            connector.Kill();
+            connector = null;
             StartServer();
         }
 
@@ -68,7 +69,7 @@ namespace WindowsGlitchHarvester
 
             var message = e.message;
             var simpleMessage = message as NetCoreSimpleMessage;
-            var advancedMessage = message as NetCoreAdvancedMessage;
+            var advancedMessage = message as NetCoreAdvancedMessage;    
 
             switch (message.Type) //Handle received messages here
             {

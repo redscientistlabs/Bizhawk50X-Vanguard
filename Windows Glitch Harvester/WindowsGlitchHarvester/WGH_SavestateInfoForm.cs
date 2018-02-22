@@ -34,9 +34,8 @@ namespace WindowsGlitchHarvester
             InitializeComponent();
             dolphinConn = new WGH_DolphinConnector(this);
 
-
-            ConsoleEx.singularity.ConsoleWritten -= OnConsoleWritten;
-            ConsoleEx.singularity.ConsoleWritten += OnConsoleWritten;
+            if (!ConsoleEx.singularity.HasConsoleEventHandler())
+                ConsoleEx.singularity.ConsoleWritten += OnConsoleWritten;
 
             if (dolphinConn.connector != null)
                 dolphinConn.StopServer();
