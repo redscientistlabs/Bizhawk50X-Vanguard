@@ -354,15 +354,13 @@ Are you sure you want to reset the current target's backup?", "WARNING", Message
 
             foreach (string file in Directory.GetFiles(WGH_Core.currentDir + "\\TEMP"))
             {
-                tryDeleteAgain:
                 try
                 {
                     File.Delete(file);
                 }
                 catch
                 {
-                    if (MessageBox.Show($"Could not delete file {file} , try again?", "WARNING", MessageBoxButtons.YesNo) == DialogResult.Yes)
-                        goto tryDeleteAgain;
+                    MessageBox.Show($"Could not delete file {file}");
                 }
             }
 

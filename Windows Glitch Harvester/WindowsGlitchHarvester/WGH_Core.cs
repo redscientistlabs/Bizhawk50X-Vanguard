@@ -205,7 +205,6 @@ namespace WindowsGlitchHarvester
 
         public static void LoadTarget()
         {
-
             if (WGH_Core.ghForm.rbTargetFile.Checked)
             {
                 OpenFileDialog OpenFileDialog1;
@@ -233,8 +232,12 @@ namespace WindowsGlitchHarvester
                 if (ghForm.btnEnableCaching.Text == "Disable caching on current target")
                     ghForm.btnEnableCaching.PerformClick();
 
-                if (currentMemoryInterface != null && (currentTargetType == "File" || currentTargetType == "MultipleFiles"))
+                if (currentMemoryInterface != null && (currentTargetType == "Dolphin" || currentTargetType == "File" || currentTargetType == "MultipleFiles"))
+                {
                     WGH_Core.RestoreTarget();
+                    currentMemoryInterface.stream.Dispose();
+                }
+
 
 
                 currentTargetType = "File";
@@ -310,7 +313,11 @@ namespace WindowsGlitchHarvester
                     ghForm.btnEnableCaching.PerformClick();
 
                 if (currentMemoryInterface != null && (currentTargetType == "Dolphin" || currentTargetType == "File" || currentTargetType == "MultipleFiles"))
+                {
                     WGH_Core.RestoreTarget();
+                    currentMemoryInterface.stream.Dispose();
+                }
+                    
 
 
                 currentTargetType = "Dolphin";

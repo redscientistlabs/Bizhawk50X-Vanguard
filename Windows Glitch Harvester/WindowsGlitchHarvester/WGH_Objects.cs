@@ -653,6 +653,7 @@ namespace WindowsGlitchHarvester
         public abstract void ResetWorkingFile();
         public abstract void ApplyWorkingFile();
 
+        public System.IO.Stream stream = null;
     }
 
     [Serializable()]
@@ -661,7 +662,6 @@ namespace WindowsGlitchHarvester
         public string Filename;
         public string ShortFilename;
 
-        System.IO.Stream stream = null;
 
         public FileInterface(string _targetId)
         {
@@ -741,7 +741,6 @@ namespace WindowsGlitchHarvester
             if(WGH_Core.writeCopyMode)
             {
 
-            tryApplyWorkingFileAgain:
                 try
                 {
                     if (File.Exists(Filename))
@@ -753,7 +752,6 @@ namespace WindowsGlitchHarvester
                 catch
                 {
                     MessageBox.Show($"Could not get access to {Filename} because some other program is probably using it. \n\nClose the file then press OK to try again", "WARNING");
-                    goto tryApplyWorkingFileAgain;
                 }
 
             }
@@ -1306,7 +1304,6 @@ namespace WindowsGlitchHarvester
         public string Filename;
         public string ShortFilename;
 
-        System.IO.Stream stream = null;
 
         public DolphinInterface(string _targetId)
         {
