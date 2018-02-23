@@ -1717,7 +1717,7 @@
         private System.Windows.Forms.Button button1;
         private System.Windows.Forms.Label label8;
         public System.Windows.Forms.Label lbArgs;
-        private System.Windows.Forms.NumericUpDown vectorOffset;
+        public System.Windows.Forms.NumericUpDown vectorOffset;
         private System.Windows.Forms.CheckBox cbVectorAligned;
         private System.Windows.Forms.Label label10;
         private System.Windows.Forms.Button savestateInfoButton;

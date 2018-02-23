@@ -1318,7 +1318,6 @@ namespace WindowsGlitchHarvester
                 //getMemoryDump();
                 getMemorySize();
 
-
             }
             catch (Exception ex)
             {
@@ -1456,7 +1455,6 @@ namespace WindowsGlitchHarvester
 
         public override bool isDolphinSavestate()
         {
-
             string a = "Dolphin Narry's Mod";
             string b = Encoding.Default.GetString(PeekBytes(32, 19));
 

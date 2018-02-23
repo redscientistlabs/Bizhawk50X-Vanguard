@@ -12,7 +12,7 @@ namespace WindowsGlitchHarvester
 
     public static class WGH_Core
     {
-		public static string WghVersion = "0.93b";
+		public static string WghVersion = "0.93";
 
 		public static Random RND = new Random();
 
@@ -161,9 +161,7 @@ namespace WindowsGlitchHarvester
                         BlastRange = MaxAddress - StartingAddress;
                     else if (StartingAddress + BlastRange > MaxAddress)
                         BlastRange = MaxAddress - StartingAddress;
-
-
-
+                    
                     for (int i = 0; i < Intensity; i++)
                     {
                         RandomAdress = StartingAddress + RandomLong(BlastRange -1);
@@ -235,19 +233,15 @@ namespace WindowsGlitchHarvester
                 if (currentMemoryInterface != null && (currentTargetType == "Dolphin" || currentTargetType == "File" || currentTargetType == "MultipleFiles"))
                 {
                     WGH_Core.RestoreTarget();
-                    currentMemoryInterface.stream.Dispose();
+                    currentMemoryInterface.stream?.Dispose();
                 }
-
-
-
+                
                 currentTargetType = "File";
                 var fi = new FileInterface(currentTargetId);
                 currentTargetName = fi.ShortFilename;
 
                 currentMemoryInterface = fi;
                 ghForm.lbTarget.Text = currentTargetId + "|MemorySize:" + fi.lastMemorySize.ToString();
-
-
             }
             else if (WGH_Core.ghForm.rbTargetMultipleFiles.Checked)
             {
@@ -288,18 +282,16 @@ namespace WindowsGlitchHarvester
             if (WGH_Core.ghForm.rbTargetDolphin.Checked)
             {
                 OpenFileDialog OpenFileDialog1;
-                LoadTargetAgain:
                 OpenFileDialog1 = new OpenFileDialog();
 
                 OpenFileDialog1.Title = "Open File";
-                OpenFileDialog1.Filter = "files|*.*";
+                OpenFileDialog1.Filter = "Dolphin Savestates|*.state;*.s01;*.s02;*.s03;*.s04;*.s05;*.s06;*.s07;*.s08;*.s09;*.sav|All Files|*.*";
                 OpenFileDialog1.RestoreDirectory = true;
                 if (OpenFileDialog1.ShowDialog() == DialogResult.OK)
                 {
                     if (OpenFileDialog1.FileName.ToString().Contains('^'))
                     {
                         MessageBox.Show("You can't use a file that contains the character ^ ");
-                        goto LoadTargetAgain;
                     }
 
                     currentTargetId = "Dolphin|" + OpenFileDialog1.FileName.ToString();
@@ -315,9 +307,8 @@ namespace WindowsGlitchHarvester
                 if (currentMemoryInterface != null && (currentTargetType == "Dolphin" || currentTargetType == "File" || currentTargetType == "MultipleFiles"))
                 {
                     WGH_Core.RestoreTarget();
-                    currentMemoryInterface.stream.Dispose();
+                    currentMemoryInterface.stream?.Dispose();
                 }
-                    
 
 
                 currentTargetType = "Dolphin";
@@ -330,7 +321,7 @@ namespace WindowsGlitchHarvester
                 //Cache the new file 
                 ghForm.btnEnableCaching.PerformClick();
 
-                //Update the savestate info. It checks inside this function if it's a proper state
+                //Update the savestate info. 
                 if (WGH_Core.ssForm != null)
                     WGH_Core.ssForm.GetSavestateInfo();
 

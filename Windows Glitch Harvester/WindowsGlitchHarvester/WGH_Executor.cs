@@ -56,9 +56,20 @@ namespace WindowsGlitchHarvester
             //Hijack no execution for the Netcore executor
             if (gh.rbNoExecution.Checked)
             {
-                if (WGH_Core.currentMemoryInterface is DolphinInterface && WGH_Core.ssForm.isNetcoreRunning())
-                {
-                    WGH_Core.ssForm.btnLoadState.PerformClick();
+                if (WGH_Core.currentMemoryInterface is DolphinInterface) { 
+                    if (WGH_Core.ssForm != null && WGH_Core.ssForm.isNetcoreRunning())
+                    {
+                        WGH_Core.ssForm.btnLoadState.PerformClick();
+                    }
+                    else 
+                    {
+                        if (MessageBox.Show("Netcore isn't running! Do you want to start it?", "Alert", MessageBoxButtons.YesNo) == DialogResult.Yes)
+                        {
+                            WGH_Core.ssForm?.Close();
+                            WGH_Core.ssForm = new WGH_SavestateInfoForm();
+                            WGH_Core.ssForm.btnStartNetCore.PerformClick(); 
+                        }
+                    }
                 }
                 
                 else

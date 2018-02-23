@@ -37,8 +37,6 @@ namespace WindowsGlitchHarvester
                 dolphinConn.StopServer();
 
             this.Show();
-
-
         }
 
         private void Singularity_ConsoleWritten(object sender, NetCoreEventArgs e)
@@ -50,7 +48,6 @@ namespace WindowsGlitchHarvester
         private void WGH_SavestateInfoForm_Load(object sender, EventArgs e)
         {
             GetSavestateInfo();
-
         }
 
 
@@ -58,15 +55,6 @@ namespace WindowsGlitchHarvester
         {
 
             MemoryInterface mi = WGH_Core.currentMemoryInterface;
-
-            /* if (mi == null)
-             {
-                 if (dolphinConn.connector != null)
-                     dolphinConn.StopServer();
-                 this.Close();
-                 return;
-             }*/
-
 
             if (mi != null && mi.isDolphinSavestate())
             {
@@ -123,7 +111,7 @@ namespace WindowsGlitchHarvester
                 }
 
 
-                //Search for the sram
+                //Search for the exram
                 for (int i = 0; i < bytes.Length - exram_pattern.Length; i++)
                 {
                     bool found = true;
@@ -141,7 +129,6 @@ namespace WindowsGlitchHarvester
                         break;
                     }
                 }
-
 
                 sramOffset.Text = sram_offset.ToString();
                 sramAlignment.Text = (sram_offset % 4).ToString();
@@ -164,14 +151,12 @@ namespace WindowsGlitchHarvester
                     aramexramOffset.Text = exram_offset.ToString();
                     aramexramAlignment.Text = (exram_offset % 4).ToString();
                 }
+                //Set the vector engine alignment value. Just use the sram alignment
+                WGH_Core.ghForm.vectorOffset.Value = (sram_offset % 4);
             }
             else
             {
-                //   MessageBox.Show("The currently loaded file is not a Dolphin Narry's Mod v0.1.3 savestate.");
-
-                //      if (dolphinConn.connector != null)
-                //        dolphinConn.StopServer();
-                //  this.Close();
+               MessageBox.Show("The currently loaded file is not a Dolphin Narry's Mod v0.1.4 savestate.");
             }
         }
 

@@ -1074,6 +1074,8 @@ Are you sure you want to reset the current target's backup?", "WARNING", Message
                 columnsMenu.Items.Add("Run 50 times", null, new EventHandler((ob, ev) => { BlastTarget(50); }));
                 columnsMenu.Items.Add("Run 75 times", null, new EventHandler((ob, ev) => { BlastTarget(75); }));
                 columnsMenu.Items.Add("Run 100 times", null, new EventHandler((ob, ev) => { BlastTarget(100); }));
+                columnsMenu.Items.Add("Run 1000 times", null, new EventHandler((ob, ev) => { BlastTarget(1000); }));
+                columnsMenu.Items.Add("Run 10000 times", null, new EventHandler((ob, ev) => { BlastTarget(10000); }));
                 columnsMenu.Show(this, locate);
             }
 
@@ -1297,9 +1299,9 @@ Are you sure you want to reset the current target's backup?", "WARNING", Message
 
 		}
 
+
         private void rbTargetDolphin_CheckedChanged(object sender, EventArgs e)
         {
-
 
             btnResetBackup.Enabled = true;
             btnRestoreFileBackup.Enabled = true;
@@ -1312,6 +1314,11 @@ Are you sure you want to reset the current target's backup?", "WARNING", Message
             rbExecuteScript.Enabled = false;
 
             rbNoExecution.Checked = true;
+
+            cbVectorAligned.Checked = true;
+            cbBigEndian.Checked = true;
+
+
         }
     }
 }
