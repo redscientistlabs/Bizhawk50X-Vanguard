@@ -212,7 +212,6 @@
             // 
             // btnClearStashHistory
             // 
-            this.btnClearStashHistory.Anchor = System.Windows.Forms.AnchorStyles.Top;
             this.btnClearStashHistory.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(224)))), ((int)(((byte)(224)))), ((int)(((byte)(224)))));
             this.btnClearStashHistory.FlatAppearance.BorderSize = 0;
             this.btnClearStashHistory.FlatStyle = System.Windows.Forms.FlatStyle.Flat;

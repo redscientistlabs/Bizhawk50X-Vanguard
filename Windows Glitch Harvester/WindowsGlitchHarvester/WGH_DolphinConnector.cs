@@ -7,9 +7,6 @@ using System.Threading.Tasks;
 
 namespace WindowsGlitchHarvester
 {
-
-    
-
     public class WGH_DolphinConnector
     {
 
@@ -49,10 +46,18 @@ namespace WindowsGlitchHarvester
         }
         
 
-        public void StopServer()
+        public void StopServer(bool graceful = false)
         {
-            connector.Stop();
-            connector = null;
+            if (graceful)
+            {
+                connector.Stop();
+                connector = null;
+            }
+            else
+            {
+                connector.Kill();
+                connector = null;
+            }
         }
 
         public void RestartServer()
