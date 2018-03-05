@@ -360,9 +360,14 @@ namespace RTC
 
 			if (ReloadRom)
 			{
+				string ss = null ;
 				RTC_Core.LoadRom_NET(sk.RomFilename);
-				StashKey.putSyncSettings_NET(sk);
-				RTC_Core.LoadRom_NET(sk.RomFilename);
+
+				//If the syncsettings are different, update them and load it again. Otheriwse, leave as is
+				if(sk.SyncSettings != (ss = StashKey.getSyncSettings_NET(ss))){
+					StashKey.putSyncSettings_NET(sk);
+					RTC_Core.LoadRom_NET(sk.RomFilename);
+				}
 				GameHasChanged = true;
 			}
 

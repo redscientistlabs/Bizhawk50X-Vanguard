@@ -818,20 +818,19 @@ namespace RTC
                     Global.Config.GBA_UsemGBA = _systemCore == "mgba";
                     break;
                 case "N64":
-					/*
+					
+
+					//Leaving this here for backwards compatability with 3.10
+					//TODO: Remove this
                     string[] coreParts = _systemCore.Split('/');
-
-
                     N64SyncSettings ss = (N64SyncSettings)Global.Config.GetCoreSyncSettings<N64>()
                     ?? new N64SyncSettings();
-
                     ss.VideoPlugin = (PluginType)Enum.Parse(typeof(PluginType), coreParts[0], true);
                     ss.Rsp = (N64SyncSettings.RspType)Enum.Parse(typeof(N64SyncSettings.RspType), coreParts[1], true);
                     ss.Core = (N64SyncSettings.CoreType)Enum.Parse(typeof(N64SyncSettings.CoreType), coreParts[2], true);
                     ss.DisableExpansionSlot = (coreParts[3] == "NoExp");
-
                     N64VideoPluginconfig.PutSyncSettings(ss);
-					*/
+
 					
 					break;
             }
@@ -873,7 +872,6 @@ namespace RTC
 
 		public static string getSyncSettings_NET(string ss)
 		{
-
 			var settable = new SettingsAdapter(Global.Emulator);
 			if (settable.HasSyncSettings)
 			{
