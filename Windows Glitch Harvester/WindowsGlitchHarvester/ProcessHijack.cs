@@ -66,6 +66,9 @@ namespace WindowsGlitchHarvester
         [DllImport("kernel32.dll")]
         static extern void GetSystemInfo(out SYSTEM_INFO lpSystemInfo);
 
+        [DllImport("kernel32.dll")]
+        static extern void GetNativeSystemInfo(out SYSTEM_INFO lpSystemInfo);
+
         [DllImport("kernel32.dll", SetLastError = true)]
         static extern int VirtualQueryEx(IntPtr hProcess, IntPtr lpAddress, out MEMORY_BASIC_INFORMATION lpBuffer, uint dwLength);
 
