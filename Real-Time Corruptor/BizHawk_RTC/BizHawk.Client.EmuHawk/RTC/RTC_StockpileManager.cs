@@ -350,8 +350,6 @@ namespace RTC
 				return false;
 
             StashKey.setCore(sk);
-			StashKey.putSyncSettings_NET(sk);
-
 			string GameSystem = sk.SystemName;
 			string GameName = sk.GameName;
 			string Key = sk.ParentKey;
@@ -362,9 +360,13 @@ namespace RTC
 
 			if (ReloadRom)
 			{
-					RTC_Core.LoadRom_NET(sk.RomFilename);
-					GameHasChanged = true;
+				RTC_Core.LoadRom_NET(sk.RomFilename);
+				StashKey.putSyncSettings_NET(sk);
+				RTC_Core.LoadRom_NET(sk.RomFilename);
+				GameHasChanged = true;
 			}
+
+
 
 			RTC_Core.StartSound();
 
