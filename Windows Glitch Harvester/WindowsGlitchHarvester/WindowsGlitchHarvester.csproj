@@ -9,7 +9,7 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>WindowsGlitchHarvester</RootNamespace>
     <AssemblyName>WindowsGlitchHarvester</AssemblyName>
-    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.7.1</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <IsWebBootstrapper>false</IsWebBootstrapper>
     <PublishUrl>publish\</PublishUrl>
@@ -26,6 +26,7 @@
     <ApplicationVersion>1.0.0.%2a</ApplicationVersion>
     <UseApplicationTrust>false</UseApplicationTrust>
     <BootstrapperEnabled>true</BootstrapperEnabled>
+    <TargetFrameworkProfile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <PlatformTarget>AnyCPU</PlatformTarget>
@@ -124,8 +125,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="Crc32, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Crc32.1.0.0\lib\net45\Crc32.dll</HintPath>
-      <Private>True</Private>
+      <HintPath>..\packages\Crc32.1.0.0\lib\net452\Crc32.dll</HintPath>
     </Reference>
     <Reference Include="ICSharpCode.SharpZipLib, Version=0.86.0.518, Culture=neutral, PublicKeyToken=1b03e6acf1164f73, processorArchitecture=MSIL">
       <HintPath>..\packages\SharpZipLib.0.86.0\lib\20\ICSharpCode.SharpZipLib.dll</HintPath>
@@ -201,6 +201,7 @@
     <Compile Include="WGH_VectorEngine.cs" />
     <EmbeddedResource Include="WGH_AutoCorruptForm.resx">
       <DependentUpon>WGH_AutoCorruptForm.cs</DependentUpon>
+      <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="WGH_BlastEditorForm.resx">
       <DependentUpon>WGH_BlastEditorForm.cs</DependentUpon>
@@ -222,7 +223,9 @@
     <EmbeddedResource Include="WGH_SelectMultiple.resx">
       <DependentUpon>WGH_SelectMultiple.cs</DependentUpon>
     </EmbeddedResource>
-    <None Include="packages.config" />
+    <None Include="packages.config">
+      <SubType>Designer</SubType>
+    </None>
     <None Include="Properties\app.manifest" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>

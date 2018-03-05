@@ -56,7 +56,7 @@ namespace WindowsGlitchHarvester
 
             MemoryInterface mi = WGH_Core.currentMemoryInterface;
 
-            if (mi != null && mi.isDolphinSavestate())
+            if (mi != null && mi.dolphinSavestateVersion())
             {
                 byte[] bytes;
                 byte[] sram_pattern = { 0x5B, 0x43, 0x6F, 0x72, 0x65, 0x54, 0x69, 0x6D, 0x69, 0x6E, 0x67, 0x5D };
@@ -156,7 +156,7 @@ namespace WindowsGlitchHarvester
             }
             else
             {
-               MessageBox.Show("The currently loaded file is not a Dolphin Narry's Mod v0.1.4 savestate.");
+
             }
         }
 
