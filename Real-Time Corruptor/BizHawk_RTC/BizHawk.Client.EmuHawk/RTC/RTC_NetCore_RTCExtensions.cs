@@ -318,12 +318,21 @@ namespace RTC
                     cmdBack.objectValue = StashKey.getCoreName_NET((string)cmd.objectValue);
                     break;
 
-                case CommandType.REMOTE_KEY_GETGAMENAME:
-                    cmdBack = new RTC_Command(CommandType.RETURNVALUE);
-                    cmdBack.objectValue = PathManager.FilesystemSafeName(Global.Game);
-                    break;
+				case CommandType.REMOTE_KEY_GETGAMENAME:
+					cmdBack = new RTC_Command(CommandType.RETURNVALUE);
+					cmdBack.objectValue = PathManager.FilesystemSafeName(Global.Game);
+					break;
 
-                case CommandType.REMOTE_KEY_GETOPENROMFILENAME:
+				case CommandType.REMOTE_KEY_GETSYNCSETTINGS:
+					cmdBack = new RTC_Command(CommandType.RETURNVALUE);
+					cmdBack.objectValue = StashKey.getSyncSettings_NET((string)cmd.objectValue);
+					break;
+
+				case CommandType.REMOTE_KEY_PUTSYNCSETTINGS:
+					cmdBack = new RTC_Command(CommandType.RETURNVALUE);
+					break;
+
+				case CommandType.REMOTE_KEY_GETOPENROMFILENAME:
                     cmdBack = new RTC_Command(CommandType.RETURNVALUE);
                     cmdBack.objectValue = GlobalWin.MainForm.CurrentlyOpenRom;
                     break;

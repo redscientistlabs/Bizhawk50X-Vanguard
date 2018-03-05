@@ -350,6 +350,7 @@ namespace RTC
 				return false;
 
             StashKey.setCore(sk);
+			StashKey.putSyncSettings_NET(sk);
 
 			string GameSystem = sk.SystemName;
 			string GameName = sk.GameName;

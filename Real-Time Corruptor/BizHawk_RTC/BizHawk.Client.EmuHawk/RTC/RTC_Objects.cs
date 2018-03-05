@@ -30,6 +30,7 @@ namespace RTC
 	[XmlInclude(typeof(BlastPipe))]
 	[XmlInclude(typeof(BlastVector))]
 	[XmlInclude(typeof(BlastUnit))]
+
 	[Serializable()]
 	public class Stockpile
     {
@@ -722,7 +723,8 @@ namespace RTC
     public class StashKey : ICloneable
     {
 
-        public string RomFilename;
+		
+		public string RomFilename;
 		public byte[] RomData = null;
 
 		public string StateShortFilename = null;
@@ -735,6 +737,8 @@ namespace RTC
 		public List<string> SelectedDomains = new List<string>();
         public string GameName;
 		public string Note = null;
+		public string SyncSettings = null;
+
 
 
 		public string Key;
@@ -767,6 +771,7 @@ namespace RTC
 			SystemName = RTC_Core.EmuFolderCheck((string)RTC_Core.SendCommandToBizhawk(new RTC_Command(CommandType.REMOTE_KEY_GETSYSTEMNAME), true));
             SystemCore = (string)RTC_Core.SendCommandToBizhawk(new RTC_Command(CommandType.REMOTE_KEY_GETSYSTEMCORE) { objectValue = SystemName }, true);
 			GameName = (string)RTC_Core.SendCommandToBizhawk(new RTC_Command(CommandType.REMOTE_KEY_GETGAMENAME), true);
+			SyncSettings = (string)RTC_Core.SendCommandToBizhawk(new RTC_Command(CommandType.REMOTE_KEY_GETSYNCSETTINGS), true);
 
 			this.SelectedDomains.AddRange(RTC_MemoryDomains.SelectedDomains);
 
@@ -788,7 +793,8 @@ namespace RTC
         public static void setCore(StashKey sk) => setCore(sk.SystemName, sk.SystemCore);
         public static void setCore(string _systemName, string _systemCore)
         {
-            switch (_systemName.ToUpper())
+
+			switch (_systemName.ToUpper())
             {
                 case "GAMEBOY":
                     Global.Config.GB_AsSGB = _systemCore == "sameboy";
@@ -812,8 +818,9 @@ namespace RTC
                     Global.Config.GBA_UsemGBA = _systemCore == "mgba";
                     break;
                 case "N64":
-
+					/*
                     string[] coreParts = _systemCore.Split('/');
+
 
                     N64SyncSettings ss = (N64SyncSettings)Global.Config.GetCoreSyncSettings<N64>()
                     ?? new N64SyncSettings();
@@ -824,15 +831,18 @@ namespace RTC
                     ss.DisableExpansionSlot = (coreParts[3] == "NoExp");
 
                     N64VideoPluginconfig.PutSyncSettings(ss);
-
-                    break;
+					*/
+					
+					break;
             }
         }
 
         public static string getCoreName_NET(string _systemName)
-        {
+		{
 
-            switch (_systemName.ToUpper())
+			var settable = new SettingsAdapter(Global.Emulator);
+
+			switch (_systemName.ToUpper())
             {
                 case "GAMEBOY":
                     return (Global.Config.GB_AsSGB ? "sameboy" : "gambatte");
@@ -851,7 +861,8 @@ namespace RTC
                     return (Global.Config.GBA_UsemGBA ? "mgba" : "vba-next");
 
                 case "N64":
-                    N64SyncSettings ss = (N64SyncSettings)Global.Config.GetCoreSyncSettings<N64>()
+
+					N64SyncSettings ss = (N64SyncSettings)Global.Config.GetCoreSyncSettings<N64>()
                     ?? new N64SyncSettings();
 
                     return $"{ss.VideoPlugin}/{ss.Rsp}/{ss.Core}/{(ss.DisableExpansionSlot ? "NoExp" : "Exp")}";
@@ -860,7 +871,28 @@ namespace RTC
             return _systemName;
         }
 
-        public override string ToString()
+		public static string getSyncSettings_NET(string ss)
+		{
+
+			var settable = new SettingsAdapter(Global.Emulator);
+			if (settable.HasSyncSettings)
+			{
+				ss = ConfigService.SaveWithType(settable.GetSyncSettings());
+				return ss;
+			}
+			return null;
+		}
+		public static void putSyncSettings_NET(StashKey sk)
+		{
+
+			var settable = new SettingsAdapter(Global.Emulator);
+			if (settable.HasSyncSettings)
+			{
+				settable.PutSyncSettings(ConfigService.LoadWithType(sk.SyncSettings));
+			}
+		}
+
+		public override string ToString()
         {
             return Alias;
         }
