@@ -1,4 +1,5 @@
 Welcome to the Windows Glitch Harvester
+THIS PROGRAM IS IN ALPHA
 Version [ver]
 
 Disclaimer:

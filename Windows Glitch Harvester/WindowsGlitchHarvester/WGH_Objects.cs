@@ -714,8 +714,7 @@ namespace WindowsGlitchHarvester
             }
             catch
             {
-                MessageBox.Show($"Could not get access to {getCorruptFilename()}\n\nClose the file then press OK", "WARNING");
-                    goto tryDeleteResetWorkingFileAgain;
+                MessageBox.Show($"Could not get access to {getCorruptFilename()}\n\nClose the file then try whatever you were doing again", "WARNING");
             }
             
 
@@ -1348,7 +1347,6 @@ namespace WindowsGlitchHarvester
         public override void ResetWorkingFile()
         {
 
-            tryDeleteResetWorkingFileAgain:
             try
             {
                 if (File.Exists(getCorruptFilename()))
@@ -1356,10 +1354,8 @@ namespace WindowsGlitchHarvester
             }
             catch
             {
-                MessageBox.Show($"Could not get access to {getCorruptFilename()}\n\nClose the file then press OK", "WARNING");
-                goto tryDeleteResetWorkingFileAgain;
+                MessageBox.Show($"Could not get access to {getCorruptFilename()}", "WARNING");
             }
-
 
             SetWorkingFile();
         }
@@ -1394,8 +1390,7 @@ namespace WindowsGlitchHarvester
                 }
                 catch
                 {
-                    MessageBox.Show($"Could not get access to {Filename} because some other program is probably using it. \n\nClose the file then press OK to try again", "WARNING");
-                    goto tryApplyWorkingFileAgain;
+                    MessageBox.Show($"Could not get access to {Filename} because some other program is probably using it. \n\nClose the file then try again", "WARNING");
                 }
 
             }

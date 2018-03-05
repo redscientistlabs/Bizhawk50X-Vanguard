@@ -32,7 +32,7 @@ namespace WindowsGlitchHarvester
                     if (OpenFileDialog1.FileName.ToString().Contains('^'))
                     {
                         MessageBox.Show("You can't use a file that contains the character ^ ");
-                        goto SelectExecutorAgain;
+                        return;
                     }
 
                     otherProgram = OpenFileDialog1.FileName.ToString();

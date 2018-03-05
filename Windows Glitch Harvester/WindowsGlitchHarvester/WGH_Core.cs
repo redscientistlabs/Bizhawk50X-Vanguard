@@ -213,7 +213,6 @@ namespace WindowsGlitchHarvester
             if (WGH_Core.ghForm.rbTargetFile.Checked)
             {
                 OpenFileDialog OpenFileDialog1;
-                LoadTargetAgain:
                 OpenFileDialog1 = new OpenFileDialog();
 
                 OpenFileDialog1.Title = "Open File";
@@ -224,7 +223,7 @@ namespace WindowsGlitchHarvester
                     if(OpenFileDialog1.FileName.ToString().Contains('^'))
                     {
                         MessageBox.Show("You can't use a file that contains the character ^ ");
-                        goto LoadTargetAgain;
+                        return;
                     }
 
                     currentTargetId = "File|" + OpenFileDialog1.FileName.ToString();
