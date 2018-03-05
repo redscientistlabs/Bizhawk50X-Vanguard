@@ -99,7 +99,14 @@ namespace WindowsGlitchHarvester
 			else
 				SetWGHColor(Color.FromArgb(127, 120, 165));
 
-		}
+            if (File.Exists(currentDir + "\\LICENSES\\DISCLAIMER.TXT"))
+            {
+                MessageBox.Show(File.ReadAllText(currentDir + "\\LICENSES\\DISCLAIMER.TXT").Replace("[ver]", WGH_Core.WghVersion), "WGH", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                File.Delete(currentDir + "\\LICENSES\\DISCLAIMER.TXT");
+            }
+
+
+        }
 
         public static long RandomLong(long max)
         {
