@@ -492,6 +492,8 @@
             // cbUseCustomPrecision
             // 
             this.cbUseCustomPrecision.AutoSize = true;
+            this.cbUseCustomPrecision.Checked = true;
+            this.cbUseCustomPrecision.CheckState = System.Windows.Forms.CheckState.Checked;
             this.cbUseCustomPrecision.Font = new System.Drawing.Font("Segoe UI", 8F);
             this.cbUseCustomPrecision.ForeColor = System.Drawing.Color.White;
             this.cbUseCustomPrecision.Location = new System.Drawing.Point(7, 7);

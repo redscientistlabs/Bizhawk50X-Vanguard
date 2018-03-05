@@ -129,7 +129,8 @@ namespace RTC
             cbBlastType.SelectedIndex = 0;
             cbMemoryDomainTool.SelectedIndex = 0;
             cbExternalSelectedPlugin.SelectedIndex = 0;
-        }
+			cbCustomPrecision.SelectedIndex = 0;
+		}
 
 
         public void setMemoryDomainsSelectedDomains(string[] _domains)

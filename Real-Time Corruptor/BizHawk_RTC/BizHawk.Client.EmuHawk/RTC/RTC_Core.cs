@@ -30,7 +30,7 @@ namespace RTC
 
         //Engine Values
         public static CorruptionEngine SelectedEngine = CorruptionEngine.NIGHTMARE;
-        public static int CustomPrecision = -1;
+		public static int CustomPrecision = 1;
 		public static int Intensity = 1;
 		public static int ErrorDelay = 1;
         public static BlastRadius Radius = BlastRadius.SPREAD;
