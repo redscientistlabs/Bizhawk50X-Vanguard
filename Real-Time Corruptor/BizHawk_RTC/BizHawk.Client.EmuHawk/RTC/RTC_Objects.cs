@@ -884,7 +884,7 @@ namespace RTC
 		{
 
 			var settable = new SettingsAdapter(Global.Emulator);
-			if (settable.HasSyncSettings)
+			if (settable.HasSyncSettings && sk.SyncSettings != null)
 			{
 				settable.PutSyncSettings(ConfigService.LoadWithType(sk.SyncSettings));
 			}
