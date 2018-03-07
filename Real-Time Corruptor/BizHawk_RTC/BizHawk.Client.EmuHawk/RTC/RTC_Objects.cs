@@ -144,7 +144,11 @@ namespace RTC
 
             //clean temp2 folder
             foreach (string file in Directory.GetFiles(RTC_Core.rtcDir + "\\TEMP2"))
-                File.Delete(file);
+			{
+				File.SetAttributes(file, FileAttributes.Normal);
+				File.Delete(file);
+			}
+                
 
 
             //populating temp2 folder with roms
@@ -158,8 +162,9 @@ namespace RTC
 
 
 				if (File.Exists(romTempfilename))
-                {
-                    File.Delete(romTempfilename);
+				{
+					File.SetAttributes(romTempfilename, FileAttributes.Normal);
+					File.Delete(romTempfilename);
                     File.Copy(rom, romTempfilename);
                 }
                 else
@@ -394,14 +399,26 @@ namespace RTC
 
         public static void EmptyFolder(string Folder)
         {
-            foreach (string file in Directory.GetFiles(RTC_Core.rtcDir + $"\\{Folder}"))
-                File.Delete(file);
 
-            foreach (string dir in Directory.GetDirectories(RTC_Core.rtcDir + $"\\{Folder}"))
-                RecursiveDelete(new DirectoryInfo(dir));
-        }
+			try
+			{
+				foreach (string file in Directory.GetFiles(RTC_Core.rtcDir + $"\\{Folder}"))
+				{
+					File.SetAttributes(file, FileAttributes.Normal);
+					File.Delete(file);
+				}
 
-        public static void Extract(string Filename, string Folder, string MasterFile)
+				foreach (string dir in Directory.GetDirectories(RTC_Core.rtcDir + $"\\{Folder}"))
+					RecursiveDelete(new DirectoryInfo(dir));
+				}
+			catch (System.IO.IOException ex)
+			{
+				MessageBox.Show("Unable to empty a temp folder! If your stockpile has any CD based games, close them before saving the stockpile! If this isn't the case, report this bug to the RTC developers.");
+				throw new Exception(ex.ToString());
+			}
+		}
+
+		public static void Extract(string Filename, string Folder, string MasterFile)
         {
             EmptyFolder(Folder);
 
@@ -1166,7 +1183,7 @@ namespace RTC
             catch (Exception ex)
             {
                 throw new Exception("The BlastByte apply() function threw up. \n" +
-                "This is not a BizHawk error so you should probably send a screenshot of this to the devs\nif you are able to reproduce this bug in a consistant manner\n\n" +
+                "This is not a BizHawk error so you should probably send a screenshot of this to the RTC devs\nif you are able to reproduce this bug in a consistant manner\n\n" +
                 ex.ToString());
             }
 
@@ -1198,7 +1215,7 @@ namespace RTC
             catch (Exception ex)
             {
                 throw new Exception("The BlastByte GetBackup() function threw up. \n" +
-                "This is not a BizHawk error so you should probably send a screenshot of this to the devs\nif you are able to reproduce this bug in a consistant manner\n\n" +
+                "This is not a BizHawk error so you should probably send a screenshot of this to the RTC devs\nif you are able to reproduce this bug in a consistant manner\n\n" +
                 ex.ToString());
             }
 
@@ -1307,7 +1324,7 @@ namespace RTC
 			catch (Exception ex)
 			{
 				throw new Exception("The BlastVector apply() function threw up. \n" +
-                "This is not a BizHawk error so you should probably send a screenshot of this to the devs\nif you are able to reproduce this bug in a consistant manner\n\n" +
+                "This is not a BizHawk error so you should probably send a screenshot of this to the RTC devs\nif you are able to reproduce this bug in a consistant manner\n\n" +
 				ex.ToString());
 			}
 
@@ -1334,7 +1351,7 @@ namespace RTC
 			catch (Exception ex)
 			{
 				throw new Exception("The BlastVector GetBackup() function threw up. \n" +
-                "This is not a BizHawk error so you should probably send a screenshot of this to the devs\nif you are able to reproduce this bug in a consistant manner\n\n" +
+                "This is not a BizHawk error so you should probably send a screenshot of this to the RTC devs\nif you are able to reproduce this bug in a consistant manner\n\n" +
 				ex.ToString());
 			}
 
@@ -1418,7 +1435,7 @@ namespace RTC
 			catch (Exception ex)
 			{
 				throw new Exception("The BlastPipe apply() function threw up. \n" +
-                "This is not a BizHawk error so you should probably send a screenshot of this to the devs\nif you are able to reproduce this bug in a consistant manner\n\n" +
+                "This is not a BizHawk error so you should probably send a screenshot of this to the RTC devs\nif you are able to reproduce this bug in a consistant manner\n\n" +
 				ex.ToString());
 			}
 		}
@@ -1495,7 +1512,7 @@ namespace RTC
 			catch (Exception ex)
 			{
 				throw new Exception("The BlastPipe GetBackup() function threw up. \n" +
-                "This is not a BizHawk error so you should probably send a screenshot of this to the devs\nif you are able to reproduce this bug in a consistant manner\n\n" +
+                "This is not a BizHawk error so you should probably send a screenshot of this to the RTC devs\nif you are able to reproduce this bug in a consistant manner\n\n" +
 				ex.ToString());
 			}
 
@@ -1637,7 +1654,7 @@ namespace RTC
             catch (Exception ex)
             {
                 throw new Exception("The BlastCheat apply() function threw up. \n" +
-                "This is not a BizHawk error so you should probably send a screenshot of this to the devs\nif you are able to reproduce this bug in a consistant manner\n\n" +
+                "This is not a BizHawk error so you should probably send a screenshot of this to the RTC devs\nif you are able to reproduce this bug in a consistant manner\n\n" +
                 ex.ToString());
             }
 

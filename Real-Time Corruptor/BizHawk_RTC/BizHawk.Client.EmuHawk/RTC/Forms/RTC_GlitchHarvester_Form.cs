@@ -472,7 +472,7 @@ namespace RTC
 
                 RTC_StockpileManager.currentStashkey = RTC_StockpileManager.StashHistory[lbStashHistory.SelectedIndex];
 
-				if (!cbLoadOnSelect.Checked)
+				if (!cbLoadOnSelect.Checked && RTC_StockpileManager.loadBeforeOperation)
 					return;
 
                 var token = RTC_NetCore.HugeOperationStart("LAZY");
