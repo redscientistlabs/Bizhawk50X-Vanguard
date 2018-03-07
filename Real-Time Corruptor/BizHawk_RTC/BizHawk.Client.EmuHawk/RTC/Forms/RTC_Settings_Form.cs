@@ -126,7 +126,13 @@ namespace RTC
         }
 
         private void btnImportKeyBindings_Click(object sender, EventArgs e)
-        {
+        {	
+
+			if (RTC_Hooks.isRemoteRTC && (RTC_Core.RemoteRTC != null ? RTC_Core.RemoteRTC.expectedSide != NetworkSide.SERVER : false))
+			{
+				MessageBox.Show("Can't import keybindings when not connected to Bizhawk!");
+				return;
+			}
 
             try
             {
