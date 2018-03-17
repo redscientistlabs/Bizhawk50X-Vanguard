@@ -66,21 +66,22 @@ namespace BizHawk.Client.EmuHawk
 
 			HandleToggleLightAndLink();
 			SetStatusBar();
+
 			//RTC_HIJACK : Hook at Mainform MainForm_load() and disable version check
 			RTC.RTC_Hooks.MAINFORM_FORM_LOAD_END();
-/*
-			// New version notification
-			UpdateChecker.CheckComplete += (s2, e2) =>
-			{
-				if (IsDisposed)
-				{
-					return;
-				}
+			/*
+						// New version notification
+						UpdateChecker.CheckComplete += (s2, e2) =>
+						{
+							if (IsDisposed)
+							{
+								return;
+							}
 
-				this.BeginInvoke(() => { UpdateNotification.Visible = UpdateChecker.IsNewVersionAvailable; });
-			};
-			UpdateChecker.BeginCheck(); // Won't actually check unless enabled by user
-			*/
+							this.BeginInvoke(() => { UpdateNotification.Visible = UpdateChecker.IsNewVersionAvailable; });
+						};
+						UpdateChecker.BeginCheck(); // Won't actually check unless enabled by user
+						*/
 		}
 
 		static MainForm()
@@ -158,7 +159,7 @@ namespace BizHawk.Client.EmuHawk
 				}
 			};
 
-			argParse.parseArguments(args);
+			argParse.ParseArguments(args);
 
 			Database.LoadDatabase(Path.Combine(PathManager.GetExeDirectoryAbsolute(), "gamedb", "gamedb.txt"));
 
@@ -277,7 +278,8 @@ namespace BizHawk.Client.EmuHawk
 			if (argParse.cmdRom != null)
 			{
 				// Commandline should always override auto-load
-				LoadRom(argParse.cmdRom, new LoadRomArgs { OpenAdvanced = new OpenAdvanced_OpenRom() });
+				var ioa = OpenAdvancedSerializer.ParseWithLegacy(argParse.cmdRom);
+				LoadRom(argParse.cmdRom, new LoadRomArgs { OpenAdvanced = ioa });
 				if (Global.Game == null)
 				{
 					MessageBox.Show("Failed to load " + argParse.cmdRom + " specified on commandline");
@@ -408,7 +410,7 @@ namespace BizHawk.Client.EmuHawk
 			{
 				PauseEmulator();
 			}
-
+		
 			// start dumping, if appropriate
 			if (argParse.cmdDumpType != null && argParse.cmdDumpName != null)
 			{
@@ -611,7 +613,7 @@ namespace BizHawk.Client.EmuHawk
 
 		private bool IsTurboSeeking => PauseOnFrame.HasValue && Global.Config.TurboSeek;
 
-		private bool IsTurboing => Global.ClientControls["Turbo"] || IsTurboSeeking;
+		public bool IsTurboing => Global.ClientControls["Turbo"] || IsTurboSeeking;
 
 		#endregion
 
@@ -1003,9 +1005,9 @@ namespace BizHawk.Client.EmuHawk
 
 				Console.WriteLine("Selecting display size " + lastComputedSize);
 
-                // Change size
-                //RTC_HIJACK : Don't change the MainForm Size
-                //Size = new Size(lastComputedSize.Width + borderWidth, lastComputedSize.Height + borderHeight);
+				// Change size
+				//RTC_HIJACK : Don't change the MainForm Size
+				//Size = new Size(lastComputedSize.Width + borderWidth, lastComputedSize.Height + borderHeight);
 
 				PerformLayout();
 				PresentationPanel.Resized = true;
@@ -1424,6 +1426,8 @@ namespace BizHawk.Client.EmuHawk
 
 		public PresentationPanel PresentationPanel { get; }
 
+		//countdown for saveram autoflushing
+		public int AutoFlushSaveRamIn { get; set; }
 		#endregion
 
 		#region Private methods
@@ -1444,7 +1448,7 @@ namespace BizHawk.Client.EmuHawk
 			if (Convert.ToBoolean(1)) // weird hack to make the precompiler shut the fuck up about unreachable code
 				return; //Don't change MainForm Title
 						//----------------------------
-						
+
 			string str = "";
 
 			if (_inResizeLoop)
@@ -1581,6 +1585,16 @@ namespace BizHawk.Client.EmuHawk
 			{
 				try // zero says: this is sort of sketchy... but this is no time for rearchitecting
 				{
+					if (Global.Config.AutosaveSaveRAM)
+					{
+						var saveram = new FileInfo(PathManager.SaveRamPath(Global.Game));
+						var autosave = new FileInfo(PathManager.AutoSaveRamPath(Global.Game));
+						if (autosave.Exists && autosave.LastWriteTime > saveram.LastWriteTime)
+						{
+							GlobalWin.OSD.AddMessage("AutoSaveRAM is newer than last saved SaveRAM");
+						}
+					}
+
 					byte[] sram;
 
 					// GBA meteor core might not know how big the saveram ought to be, so just send it the whole file
@@ -1610,47 +1624,66 @@ namespace BizHawk.Client.EmuHawk
 					}
 
 					Emulator.AsSaveRam().StoreSaveRam(sram);
+					AutoFlushSaveRamIn = Global.Config.FlushSaveRamFrames;
 				}
 				catch (IOException)
 				{
 					GlobalWin.OSD.AddMessage("An error occurred while loading Sram");
 				}
 			}
-		}
+		}		
 
-		public void FlushSaveRAM()
+		public void FlushSaveRAM(bool autosave = false)
 		{
 			if (Emulator.HasSaveRam())
 			{
-				var path = PathManager.SaveRamPath(Global.Game);
-				var f = new FileInfo(path);
-				if (f.Directory != null && !f.Directory.Exists)
+				string path;
+				if (autosave)
 				{
-					f.Directory.Create();
+					path = PathManager.AutoSaveRamPath(Global.Game);
+					AutoFlushSaveRamIn = Global.Config.FlushSaveRamFrames;
+				}
+				else
+				{
+					path = PathManager.SaveRamPath(Global.Game);
+				}
+				var file = new FileInfo(path);
+				var newPath = path + ".new";
+				var newFile = new FileInfo(newPath);
+				var backupPath = path + ".bak";
+				var backupFile = new FileInfo(backupPath);
+				if (file.Directory != null && !file.Directory.Exists)
+				{
+					file.Directory.Create();
 				}
 
-				// Make backup first
-				if (Global.Config.BackupSaveram && f.Exists)
-				{
-					var backup = path + ".bak";
-					var backupFile = new FileInfo(backup);
-					if (backupFile.Exists)
-					{
-						backupFile.Delete();
-					}
-
-					f.CopyTo(backup);
-				}
-
-				var writer = new BinaryWriter(new FileStream(path, FileMode.Create, FileAccess.Write));
+				var writer = new BinaryWriter(new FileStream(newPath, FileMode.Create, FileAccess.Write));
 				var saveram = Emulator.AsSaveRam().CloneSaveRam();
 
 				if (saveram != null)
 				{
 					writer.Write(saveram, 0, saveram.Length);
 				}
-
 				writer.Close();
+
+				if (file.Exists)
+				{
+					if (Global.Config.BackupSaveram)
+					{
+						if (backupFile.Exists)
+						{
+							backupFile.Delete();
+						}
+
+						file.MoveTo(backupPath);
+					}
+					else
+					{
+						file.Delete();
+					}
+				}
+
+				newFile.MoveTo(path);
 			}
 		}
 
@@ -2060,13 +2093,13 @@ namespace BizHawk.Client.EmuHawk
 				if (VersionInfo.DeveloperBuild)
 				{
 					return FormatFilter(
-						"Rom Files", "*.nes;*.fds;*.unf;*.sms;*.gg;*.sg;*.pce;*.sgx;*.bin;*.smd;*.rom;*.a26;*.a78;*.lnx;*.m3u;*.cue;*.ccd;*.exe;*.gb;*.gbc;*.gba;*.gen;*.md;*.32x;*.col;*.int;*.smc;*.sfc;*.prg;*.d64;*.g64;*.crt;*.tap;*.sgb;*.xml;*.z64;*.v64;*.n64;*.ws;*.wsc;*.dsk;*.do;*.po;*.vb;*.ngp;*.ngc;*.psf;*.minipsf;*.nsf;%ARCH%",
+						"Rom Files", "*.nes;*.fds;*.unf;*.sms;*.gg;*.sg;*.pce;*.sgx;*.bin;*.smd;*.rom;*.a26;*.a78;*.lnx;*.m3u;*.cue;*.ccd;*.mds;*.exe;*.gb;*.gbc;*.gba;*.gen;*.md;*.32x;*.col;*.int;*.smc;*.sfc;*.prg;*.d64;*.g64;*.crt;*.tap;*.sgb;*.xml;*.z64;*.v64;*.n64;*.ws;*.wsc;*.dsk;*.do;*.po;*.vb;*.ngp;*.ngc;*.psf;*.minipsf;*.nsf;%ARCH%",
 						"Music Files", "*.psf;*.minipsf;*.sid;*.nsf",
-						"Disc Images", "*.cue;*.ccd;*.m3u",
+						"Disc Images", "*.cue;*.ccd;*.mds;*.m3u",
 						"NES", "*.nes;*.fds;*.unf;*.nsf;%ARCH%",
 						"Super NES", "*.smc;*.sfc;*.xml;%ARCH%",
 						"Master System", "*.sms;*.gg;*.sg;%ARCH%",
-						"PC Engine", "*.pce;*.sgx;*.cue;*.ccd;%ARCH%",
+						"PC Engine", "*.pce;*.sgx;*.cue;*.ccd;*.mds;%ARCH%",
 						"TI-83", "*.rom;%ARCH%",
 						"Archive Files", "%ARCH%",
 						"Savestate", "*.state",
@@ -2078,7 +2111,7 @@ namespace BizHawk.Client.EmuHawk
 						"Gameboy Advance", "*.gba;%ARCH%",
 						"Colecovision", "*.col;%ARCH%",
 						"Intellivision", "*.int;*.bin;*.rom;%ARCH%",
-						"PlayStation", "*.cue;*.ccd;*.m3u",
+						"PlayStation", "*.cue;*.ccd;*.mds;*.m3u",
 						"PSX Executables (experimental)", "*.exe",
 						"PSF Playstation Sound File", "*.psf;*.minipsf",
 						"Commodore 64", "*.prg; *.d64, *.g64; *.crt; *.tap;%ARCH%",
@@ -2092,17 +2125,17 @@ namespace BizHawk.Client.EmuHawk
 				}
 
 				return FormatFilter(
-					"Rom Files", "*.nes;*.fds;*.unf;*.sms;*.gg;*.sg;*.gb;*.gbc;*.gba;*.pce;*.sgx;*.bin;*.smd;*.gen;*.md;*.32x;*.smc;*.sfc;*.a26;*.a78;*.lnx;*.col;*.int;*.rom;*.m3u;*.cue;*.ccd;*.sgb;*.z64;*.v64;*.n64;*.ws;*.wsc;*.xml;*.dsk;*.do;*.po;*.psf;*.ngp;*.ngc;*.prg;*.d64;*.g64;*.minipsf;*.nsf;%ARCH%",
-					"Disc Images", "*.cue;*.ccd;*.m3u",
+					"Rom Files", "*.nes;*.fds;*.unf;*.sms;*.gg;*.sg;*.gb;*.gbc;*.gba;*.pce;*.sgx;*.bin;*.smd;*.gen;*.md;*.32x;*.smc;*.sfc;*.a26;*.a78;*.lnx;*.col;*.int;*.rom;*.m3u;*.cue;*.ccd;*.mds;*.sgb;*.z64;*.v64;*.n64;*.ws;*.wsc;*.xml;*.dsk;*.do;*.po;*.psf;*.ngp;*.ngc;*.prg;*.d64;*.g64;*.minipsf;*.nsf;%ARCH%",
+					"Disc Images", "*.cue;*.ccd;*.mds;*.m3u",
 					"NES", "*.nes;*.fds;*.unf;*.nsf;%ARCH%",
 					"Super NES", "*.smc;*.sfc;*.xml;%ARCH%",
-					"PlayStation", "*.cue;*.ccd;*.m3u",
+					"PlayStation", "*.cue;*.ccd;*.mds;*.m3u",
 					"PSF Playstation Sound File", "*.psf;*.minipsf",
 					"Nintendo 64", "*.z64;*.v64;*.n64",
 					"Gameboy", "*.gb;*.gbc;*.sgb;%ARCH%",
 					"Gameboy Advance", "*.gba;%ARCH%",
 					"Master System", "*.sms;*.gg;*.sg;%ARCH%",
-					"PC Engine", "*.pce;*.sgx;*.cue;*.ccd;%ARCH%",
+					"PC Engine", "*.pce;*.sgx;*.cue;*.ccd;*.mds;%ARCH%",
 					"Atari 2600", "*.a26;%ARCH%",
 					"Atari 7800", "*.a78;%ARCH%",
 					"Atari Lynx", "*.lnx;%ARCH%",
@@ -2130,7 +2163,7 @@ namespace BizHawk.Client.EmuHawk
 				RestoreDirectory = false,
 				FilterIndex = _lastOpenRomFilter
 			};
-			
+
 			//RTC_HIJACK : Fixing Bizhawk's LastRomPath
 			ofd.InitialDirectory = Global.Config.LastRomPath;
 			//-----------------------
@@ -2926,6 +2959,13 @@ namespace BizHawk.Client.EmuHawk
 
 				Global.MovieSession.HandleMovieOnFrameLoop();
 
+				if (Global.Config.AutosaveSaveRAM)
+				{
+					if (AutoFlushSaveRamIn-- <= 0)
+					{
+						FlushSaveRAM(true);
+					}
+				}
 				// why not skip audio if the user doesnt want sound
 				bool renderSound = (Global.Config.SoundEnabled && !IsTurboing) || (_currAviWriter?.UsesAudio ?? false);
 				if (!renderSound)
@@ -2950,11 +2990,6 @@ namespace BizHawk.Client.EmuHawk
 
 				Global.CheatList.Pulse();
 
-				if (!PauseAvi)
-				{
-					AvFrameAdvance();
-				}
-
 				if (IsLagFrame && Global.Config.AutofireLagFrames)
 				{
 					Global.AutoFireController.IncrementStarts();
@@ -2971,11 +3006,16 @@ namespace BizHawk.Client.EmuHawk
 
 				if (IsTurboing)
 				{
-					GlobalWin.Tools.FastUpdateAfter();
+					GlobalWin.Tools.FastUpdateAfter(SuppressLua);
 				}
 				else
 				{
 					UpdateToolsAfter(SuppressLua);
+				}
+
+				if (!PauseAvi)
+				{
+					AvFrameAdvance();
 				}
 
 				if (GlobalWin.Tools.IsLoaded<TAStudio>() &&
@@ -3011,11 +3051,10 @@ namespace BizHawk.Client.EmuHawk
 			}
 
 			GlobalWin.Sound.UpdateSound(atten);
-			
+
 			//RTC_HIJACK : Hooking at the end of the Core Step
 			RTC.RTC_Hooks.CPU_STEP(Global.ClientControls["Rewind"], Global.ClientControls["Fast Forward"], EmulatorPaused);
 			//---------------------------------------
-
 		}
 
 		private void UpdateFpsDisplay(long currentTimestamp, bool isRewinding, bool isFastForwarding)
@@ -3094,7 +3133,6 @@ namespace BizHawk.Client.EmuHawk
 		/// <summary>
 		/// start AV recording
 		/// </summary>
-		/// 
 		//RTC_HIJACK : make RecordAvBase() method public
 		public void RecordAvBase(string videowritername, string filename, bool unattended)
 		{
@@ -3498,10 +3536,10 @@ namespace BizHawk.Client.EmuHawk
 		// Still needs a good bit of refactoring
 		public bool LoadRom(string path, LoadRomArgs args)
 		{
-			
 			//RTC_HIJACK : Hook at beginning of LoadRom
 			RTC.RTC_Hooks.LOAD_GAME_BEGIN();
 			//----------
+
 			path = HawkFile.Util_ResolveLink(path);
 
 			// default args
@@ -3576,6 +3614,12 @@ namespace BizHawk.Client.EmuHawk
 					}
 				}
 
+				if (ioa is OpenAdvanced_OpenRom)
+				{
+					var ioa_openrom = (OpenAdvanced_OpenRom)ioa;
+					path = ioa_openrom.Path;
+				}
+
 				CoreFileProvider.SyncCoreCommInputSignals(nextComm);
 				var result = loader.LoadRom(path, nextComm);
 
@@ -3647,16 +3691,25 @@ namespace BizHawk.Client.EmuHawk
 					{
 						GlobalWin.Tools.Restart<LuaConsole>();
 					}
+
 					//RTC_Hijack ignoring default.nes for Recent Menu
 					if (!(loader.CanonicalFullPath.Contains("default.nes") || loader.CanonicalFullPath.Contains("\\TEMP\\") || loader.CanonicalFullPath.Contains("\\TEMP4\\")))
 					{
-					Global.Config.RecentRoms.Add(loaderName);
-					JumpLists.AddRecentItem(loaderName, ioa.DisplayName);
-					}
+						Global.Config.RecentRoms.Add(loaderName);
+						JumpLists.AddRecentItem(loaderName, ioa.DisplayName);
+					}//----------------------
+
 					// Don't load Save Ram if a movie is being loaded
-					if (!Global.MovieSession.MovieIsQueued && File.Exists(PathManager.SaveRamPath(loader.Game)))
+					if (!Global.MovieSession.MovieIsQueued)
 					{
-						LoadSaveRam();
+						if (File.Exists(PathManager.SaveRamPath(loader.Game)))
+						{
+							LoadSaveRam();
+						}
+						else if (Global.Config.AutosaveSaveRAM && File.Exists(PathManager.AutoSaveRamPath(loader.Game)))
+						{
+							GlobalWin.OSD.AddMessage("AutoSaveRAM found, but SaveRAM was not saved");
+						}
 					}
 
 					GlobalWin.Tools.Restart();
@@ -3685,11 +3738,9 @@ namespace BizHawk.Client.EmuHawk
 					CurrentlyOpenRomArgs = args;
 					GlobalWin.DisplayManager.Blank();
 
+					Global.Rewinder.Initialize();
 
-                    Global.Rewinder.Initialize();
-
-
-                    Global.StickyXORAdapter.ClearStickies();
+					Global.StickyXORAdapter.ClearStickies();
 					Global.StickyXORAdapter.ClearStickyFloats();
 					Global.AutofireStickyXORAdapter.ClearStickies();
 
@@ -3710,13 +3761,11 @@ namespace BizHawk.Client.EmuHawk
 					}
 
 					ClientApi.OnRomLoaded();
-					
-					
+
 					//RTC_HIJACK : Hook at the end of LoadRom
 					RTC.RTC_Hooks.LOAD_GAME_DONE();
 					//----------
 
-					
 					return true;
 				}
 				else
@@ -3738,13 +3787,9 @@ namespace BizHawk.Client.EmuHawk
 					UpdateDumpIcon();
 					SetMainformMovieInfo();
 					SetWindowText();
-					
-					
-
 					//RTC_HIJACK : Hook at LoadRom failure
 					RTC.RTC_Hooks.LOAD_GAME_FAILED();
 					//----------
-					
 					return false;
 				}
 			}
@@ -3823,7 +3868,7 @@ namespace BizHawk.Client.EmuHawk
 			RewireSound();
 			RebootStatusBarIcon.Visible = false;
 			GameIsClosing = false;
-			
+
 			// RTC_HIJACK : Hook after CloseGame
 			RTC.RTC_Hooks.CLOSE_GAME();
 		}
@@ -3844,11 +3889,9 @@ namespace BizHawk.Client.EmuHawk
 
 				GlobalWin.Tools.Restart();
 				RewireSound();
-				
 				//RTC_HIJACK : Don't change the Title
 				//Text = "BizHawk" + (VersionInfo.DeveloperBuild ? " (interim) " : string.Empty);
 				//-------------------------
-				
 				HandlePlatformMenus();
 				_stateSlots.Clear();
 				UpdateDumpIcon();
@@ -3859,6 +3902,7 @@ namespace BizHawk.Client.EmuHawk
 				UpdateStatusSlots();
 				CurrentlyOpenRom = null;
 				CurrentlyOpenRomArgs = null;
+				_currentlyOpenRomPoopForAdvancedLoaderPleaseRefactorMe = "";
 			}
 		}
 
@@ -3967,8 +4011,7 @@ namespace BizHawk.Client.EmuHawk
 			}
 
 			Global.MovieSession.Movie.IsCountingRerecords = wasCountingRerecords;
-			
-			
+
 			//RTC_HIJACK : Hook at the end of Load SaveState
 			RTC.RTC_Hooks.LOAD_SAVESTATE_END();
 			//-----------
@@ -4402,7 +4445,7 @@ namespace BizHawk.Client.EmuHawk
 		}
 
 		#endregion
-		
+
 		private void MainForm_ResizeEnd(object sender, EventArgs e)
 		{
 			//RTC_HIJACK : MainForm_ResizeEnd
@@ -4416,9 +4459,9 @@ namespace BizHawk.Client.EmuHawk
 		private void MainForm_FormClosing(object sender, FormClosingEventArgs e)
 		{
 			//RTC_HIJACK : MainForm_FormClosing
-			//You might have
+			//You might have to recreate
 			RTC.RTC_Hooks.MAINFORM_CLOSING();
-            //---------------------
-        }
+			//---------------------
+		}
 	}
 }

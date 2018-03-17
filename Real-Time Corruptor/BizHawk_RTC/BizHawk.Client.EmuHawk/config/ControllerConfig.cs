@@ -324,12 +324,9 @@ namespace BizHawk.Client.EmuHawk
 
 			GlobalWin.OSD.AddMessage("Controller settings saved");
 			DialogResult = DialogResult.OK;
-
-            //RTC_Hijack : Force save Controller config
-            RTC.RTC_Hooks.BIZHAWK_SAVE_CONFIG();
-
-            Close();
-			
+			//RTC_Hijack : Force save Controller config
+			RTC.RTC_Hooks.BIZHAWK_SAVE_CONFIG();
+			Close();
 		}
 
 		private void ButtonCancel_Click(object sender, EventArgs e)

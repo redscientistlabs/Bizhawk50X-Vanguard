@@ -21,7 +21,7 @@ namespace RTC
         public static Random RND = new Random();
 
         //General RTC Values
-        public static string RtcVersion = "3.10b";
+        public static string RtcVersion = "3.11";
 
         //Directories
         public static string bizhawkDir = Directory.GetCurrentDirectory();
@@ -492,7 +492,10 @@ namespace RTC
 				case CorruptionEngine.VECTOR:
 					bu = RTC_VectorEngine.GenerateUnit(_domain, _address);
 					break;
-                case CorruptionEngine.NONE:
+				case CorruptionEngine.BIT:
+					bu = RTC_BitEngine.GenerateUnit(_domain, _address);
+					break;
+				case CorruptionEngine.NONE:
                     return null;
             }
 

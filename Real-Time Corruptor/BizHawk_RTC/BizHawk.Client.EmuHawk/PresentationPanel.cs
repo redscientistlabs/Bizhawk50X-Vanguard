@@ -55,7 +55,7 @@ namespace BizHawk.Client.EmuHawk
 
 		private void HandleFullscreenToggle(object sender, MouseEventArgs e)
 		{
-			
+
 			//RTC_Hijack : Return if hook is true
 			if (!RTC.RTC_Hooks.BIZHAWK_ALLOWED_DOUBLECLICK_FULLSCREEN)
 			{

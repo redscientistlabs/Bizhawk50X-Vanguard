@@ -74,9 +74,8 @@ namespace BizHawk.Emulation.Cores.Waterbox
 		{
 			if (!Sealed)
 			{
-                //RTC_Hijack : Change the protect level to RW instead of R
-                Memory.Protect(Memory.Start, Used, MemoryBlock.Protection.RW);
-
+				//RTC_Hijack : Change the protect level to RW instead of R
+				Memory.Protect(Memory.Start, Used, MemoryBlock.Protection.RW);
 
 				_hash = WaterboxUtils.Hash(Memory.GetStream(Memory.Start, Used, false));
 				Sealed = true;

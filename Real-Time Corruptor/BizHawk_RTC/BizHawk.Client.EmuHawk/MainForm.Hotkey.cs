@@ -20,7 +20,6 @@ namespace BizHawk.Client.EmuHawk
 						break;
 				//---------------------
 
-
 				// General
 				case "Pause":
 					TogglePause();

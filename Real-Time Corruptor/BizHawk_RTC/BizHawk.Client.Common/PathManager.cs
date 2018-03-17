@@ -266,6 +266,12 @@ namespace BizHawk.Client.Common
 
 			return Path.Combine(MakeAbsolutePath(pathEntry.Path, game.System), name) + ".SaveRAM";
 		}
+		
+		public static string AutoSaveRamPath(GameInfo game)
+		{
+			var path = SaveRamPath(game);
+			return path.Insert(path.Length - 8, ".AutoSaveRAM");
+		}
 
 		public static string RetroSaveRAMDirectory(GameInfo game)
 		{
@@ -330,6 +336,12 @@ namespace BizHawk.Client.Common
 				name += "." + Global.Emulator.Attributes().CoreName;
 			}
 
+			// Gambatte and GBHawk have incompatible savestates, store the name to keep them separate
+			if (Global.Emulator.SystemId == "GB")
+			{
+				name += "." + Global.Emulator.Attributes().CoreName;
+			}
+
 			if (Global.Emulator is Snes9x) // Keep snes9x savestate away from libsnes, we want to not be too tedious so bsnes names will just have the profile name not the core name
 			{
 				name += "." + Global.Emulator.Attributes().CoreName;
@@ -347,8 +359,8 @@ namespace BizHawk.Client.Common
 			}
 
 
-            //RTC_Hijack : Don't use moviesession prefix
-            /*
+			//RTC_Hijack : Don't use moviesession prefix
+			/*
 			if (Global.MovieSession.Movie.IsActive)
 			{
 				name += "." + Path.GetFileNameWithoutExtension(Global.MovieSession.Movie.Filename);

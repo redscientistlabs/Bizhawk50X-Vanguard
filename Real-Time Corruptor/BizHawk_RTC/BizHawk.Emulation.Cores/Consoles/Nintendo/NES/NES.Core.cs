@@ -9,11 +9,10 @@ using BizHawk.Emulation.Cores.Components.M6502;
 
 namespace BizHawk.Emulation.Cores.Nintendo.NES
 {
-	public partial class NES : IEmulator
+	public partial class NES : IEmulator, ICycleTiming
 	{
 		//hardware/state
 		public MOS6502X cpu;
-		int cpu_accumulate; //cpu timekeeper
 		public PPU ppu;
 		public APU apu;
 		public byte[] ram;
@@ -25,12 +24,10 @@ namespace BizHawk.Emulation.Cores.Nintendo.NES
 		EDetectionOrigin origin = EDetectionOrigin.None;
 		int sprdma_countdown;
 
-		bool _irq_apu; //various irq signals that get merged to the cpu irq pin
-					   /// <summary>clock speed of the main cpu in hz</summary>
+		public bool _irq_apu; //various irq signals that get merged to the cpu irq pin
+		
+		/// <summary>clock speed of the main cpu in hz</summary>
 		public int cpuclockrate { get; private set; }
-
-		//irq state management
-		public bool irq_apu { get { return _irq_apu; } set { _irq_apu = value; } }
 
 		//user configuration 
 		int[] palette_compiled = new int[64 * 8];
@@ -51,7 +48,7 @@ namespace BizHawk.Emulation.Cores.Nintendo.NES
 
 		// cheat addr index tracker
 		// disables all cheats each frame
-		public int[] cheat_indexes = new int[500];
+		public int[] cheat_indexes = new int[0x10000];
 		public int num_cheats;
 
 		// new input system
@@ -62,11 +59,7 @@ namespace BizHawk.Emulation.Cores.Nintendo.NES
 		private DisplayType _display_type = DisplayType.NTSC;
 
 		//Sound config
-		public void SetSquare1(int v) { apu.Square1V = v; }
-		public void SetSquare2(int v) { apu.Square2V = v; }
-		public void SetTriangle(int v) { apu.TriangleV = v; }
-		public void SetNoise(int v) { apu.NoiseV = v; }
-		public void SetDMC(int v) { apu.DMCV = v; }
+		public void SetVol1(int v) { apu.m_vol = v; }
 
 		/// <summary>
 		/// for debugging only!
@@ -216,6 +209,7 @@ namespace BizHawk.Emulation.Cores.Nintendo.NES
 					cpuclockrate = 1662607;
 					cpu_sequence = cpu_sequence_PAL;
 					_display_type = DisplayType.PAL;
+					ClockRate = 5320342.5;
 					break;
 				case Common.DisplayType.NTSC:
 					apu = new APU(this, apu, false);
@@ -224,6 +218,7 @@ namespace BizHawk.Emulation.Cores.Nintendo.NES
 					VsyncDen = 655171;
 					cpuclockrate = 1789773;
 					cpu_sequence = cpu_sequence_NTSC;
+					ClockRate = 5369318.1818181818181818181818182;
 					break;
 				// this is in bootgod, but not used at all
 				case Common.DisplayType.Dendy:
@@ -234,6 +229,7 @@ namespace BizHawk.Emulation.Cores.Nintendo.NES
 					cpuclockrate = 1773448;
 					cpu_sequence = cpu_sequence_NTSC;
 					_display_type = DisplayType.Dendy;
+					ClockRate = 5320342.5;
 					break;
 				default:
 					throw new Exception("Unknown displaytype!");
@@ -292,9 +288,23 @@ namespace BizHawk.Emulation.Cores.Nintendo.NES
 					ram[0xEC] = 0;
 					ram[0xED] = 0;
 				}
+
+				if (cart.DB_GameInfo.Hash == "00C50062A2DECE99580063777590F26A253AAB6B") // Silva Saga
+				{
+					for (int i = 0; i < Board.WRAM.Length; i++)
+					{
+						Board.WRAM[i] = 0xFF;
+					}
+
+				}
+
+				
 			}
 
 		}
+
+		public long CycleCount => ppu.TotalCycles;
+		public double ClockRate { get; private set; }
 
 		private int VsyncNum { get; set; }
 		private int VsyncDen { get; set; }
@@ -360,7 +370,40 @@ namespace BizHawk.Emulation.Cores.Nintendo.NES
 					VS_coin_inserted &= 1;
 			}
 
-			ppu.FrameAdvance();
+			if (ppu.ppudead > 0)
+			{
+				while (ppu.ppudead > 0)
+				{
+					ppu.NewDeadPPU();
+				}				
+			}
+			else
+			{
+				ppu.ppu_init_frame();
+
+				ppu.do_vbl = true;
+				ppu.do_active_sl = true;
+				ppu.do_pre_vbl = true;
+
+				// do the vbl ticks seperate, that will save us a few checks that don't happen in active region
+				while (ppu.do_vbl)
+				{
+					ppu.TickPPU_VBL();
+				}
+
+				// now do the rest of the frame
+				while (ppu.do_active_sl)
+				{
+					ppu.TickPPU_active();
+				}
+
+				// now do the pre-NMI lines
+				while (ppu.do_pre_vbl)
+				{
+					ppu.TickPPU_preVBL();
+				}
+			}
+			
 			if (lagged)
 			{
 				_lagcount++;
@@ -380,7 +423,6 @@ namespace BizHawk.Emulation.Cores.Nintendo.NES
 		}
 
 		//PAL:
-		//0 15 30 45 60 -> 12 27 42 57 -> 9 24 39 54 -> 6 21 36 51 -> 3 18 33 48 -> 0
 		//sequence of ppu clocks per cpu clock: 3,3,3,3,4
 		//at least it should be, but something is off with that (start up time?) so it is 3,3,3,4,3 for now
 		//NTSC:
@@ -828,7 +870,7 @@ namespace BizHawk.Emulation.Cores.Nintendo.NES
 
 		public void ExecFetch(ushort addr)
 		{
-			MemoryCallbacks.CallExecutes(addr);
+			MemoryCallbacks.CallExecutes(addr, "System Bus");
 		}
 
 		public byte ReadMemory(ushort addr)
@@ -873,7 +915,7 @@ namespace BizHawk.Emulation.Cores.Nintendo.NES
 				ret = sysbus_watch[addr].ApplyGameGenie(ret);
 			}
 
-			MemoryCallbacks.CallReads(addr);
+			MemoryCallbacks.CallReads(addr, "System Bus");
 
 			DB = ret;
 			return ret;
@@ -928,7 +970,7 @@ namespace BizHawk.Emulation.Cores.Nintendo.NES
 				Board.WritePRG(addr - 0x8000, value);
 			}
 
-			MemoryCallbacks.CallWrites(addr);
+			MemoryCallbacks.CallWrites(addr, "System Bus");
 		}
 
 		// the palette for each VS game needs to be chosen explicitly since there are 6 different ones.

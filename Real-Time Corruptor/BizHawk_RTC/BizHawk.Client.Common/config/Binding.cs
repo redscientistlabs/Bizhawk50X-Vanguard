@@ -125,6 +125,7 @@ namespace BizHawk.Client.Common
 						Bind("General", "Hard Reset"),
 						Bind("General", "Quick Load", "P"),
 						Bind("General", "Quick Save", "I"),
+						Bind("General", "Autofire"),
 						Bind("General", "Autohold"),
 						Bind("General", "Clear Autohold"),
 						Bind("General", "Screenshot", "F12"),
@@ -148,7 +149,6 @@ namespace BizHawk.Client.Common
 						Bind("General", "Increase Speed", "Equals"),
 						Bind("General", "Decrease Speed", "Minus"),
 						Bind("General", "Reboot Core", "Ctrl+R"),
-						Bind("General", "Autofire"),
 						Bind("General", "Toggle Sound"),
 						Bind("General", "Exit Program"),
 						Bind("General", "Screen Raw to Clipboard", "Ctrl+C"),
@@ -273,15 +273,14 @@ namespace BizHawk.Client.Common
 						Bind("RTC","GH Just Corrupt", toolTip: "For RTC" ),
 						Bind("RTC","GH Load", toolTip: "For RTC" ),
 						Bind("RTC","GH Save", toolTip: "For RTC" ),
-                        Bind("RTC","Stash->Stockpile", toolTip: "For RTC" ),
-                        Bind("RTC","Induce KS Crash", toolTip: "For RTC" ),
-                        Bind("RTC","Blast+RawStash", toolTip: "For RTC" ),
-                        Bind("RTC","Send Raw to Stash", toolTip: "For RTC" ),
+						Bind("RTC","Stash->Stockpile", toolTip: "For RTC" ),
+						Bind("RTC","Induce KS Crash", toolTip: "For RTC" ),
+						Bind("RTC","Blast+RawStash", toolTip: "For RTC" ),
+						Bind("RTC","Send Raw to Stash", toolTip: "For RTC" ),
 						Bind("RTC","BlastLayer Toggle", toolTip: "For RTC" ),
 						Bind("RTC","BlastLayer Re-Blast", toolTip: "For RTC" ),
                         //------------------
-			
-						
+
 						Bind("Tools", "Toggle All Cheats"),
 					};
 

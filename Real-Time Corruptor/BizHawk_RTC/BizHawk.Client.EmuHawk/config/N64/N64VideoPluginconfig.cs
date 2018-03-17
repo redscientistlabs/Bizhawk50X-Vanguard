@@ -63,7 +63,7 @@ namespace BizHawk.Client.EmuHawk
 				?? new N64Settings();
 		}
 
-        //RTC_Hijack : Make this method public
+		//RTC_Hijack : Make this method public
 		public static void PutSyncSettings(N64SyncSettings s)
 		{
 			if (Global.Emulator is N64)
@@ -101,7 +101,6 @@ namespace BizHawk.Client.EmuHawk
 
 			//rtc_hijack save config after saving plugin settings
 			RTC.RTC_Hooks.BIZHAWK_SAVE_CONFIG();
-
 
 			DialogResult = DialogResult.OK;
 			Close();

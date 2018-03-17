@@ -43,6 +43,7 @@ namespace BizHawk.Client.EmuHawk
 		{
 			//RTC_HIJACK : Kill toolbox
 			return;
+
 			SetTools();
 			SetSize();
 

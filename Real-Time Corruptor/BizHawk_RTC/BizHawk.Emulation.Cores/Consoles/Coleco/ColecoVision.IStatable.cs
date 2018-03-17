@@ -7,59 +7,70 @@ namespace BizHawk.Emulation.Cores.ColecoVision
 {
 	public partial class ColecoVision : IStatable
 	{
-		public bool BinarySaveStatesPreferred => false;
+		public bool BinarySaveStatesPreferred
+		{
+			get { return true; }
+		}
+
+		public void SaveStateText(TextWriter writer)
+		{
+			SyncState(new Serializer(writer));
+		}
+
+		public void LoadStateText(TextReader reader)
+		{
+			SyncState(new Serializer(reader));
+		}
 
 		public void SaveStateBinary(BinaryWriter bw)
 		{
-			SyncState(Serializer.CreateBinaryWriter(bw));
+			SyncState(new Serializer(bw));
 		}
 
 		public void LoadStateBinary(BinaryReader br)
 		{
-			SyncState(Serializer.CreateBinaryReader(br));
-		}
-
-		public void SaveStateText(TextWriter tw)
-		{
-			SyncState(Serializer.CreateTextWriter(tw));
-		}
-
-		public void LoadStateText(TextReader tr)
-		{
-			SyncState(Serializer.CreateTextReader(tr));
+			SyncState(new Serializer(br));
 		}
 
 		public byte[] SaveStateBinary()
 		{
-			if (_stateBuffer == null)
-			{
-				var stream = new MemoryStream();
-				var writer = new BinaryWriter(stream);
-				SaveStateBinary(writer);
-				_stateBuffer = stream.ToArray();
-				writer.Close();
-				return _stateBuffer;
-			}
-			else
-			{
-				var stream = new MemoryStream(_stateBuffer);
-				var writer = new BinaryWriter(stream);
-				SaveStateBinary(writer);
-				writer.Close();
-				return _stateBuffer;
-			}
+			MemoryStream ms = new MemoryStream();
+			BinaryWriter bw = new BinaryWriter(ms);
+			SaveStateBinary(bw);
+			bw.Flush();
+			return ms.ToArray();
 		}
 
 		private void SyncState(Serializer ser)
 		{
-			ser.BeginSection("Coleco");
+			byte[] core = null;
+			if (ser.IsWriter)
+			{
+				var ms = new MemoryStream();
+				ms.Close();
+				core = ms.ToArray();
+			}
 			_cpu.SyncState(ser);
+
+			ser.BeginSection("Coleco");		
 			_vdp.SyncState(ser);
+			ControllerDeck.SyncState(ser);
 			PSG.SyncState(ser);
+			SGM_sound.SyncState(ser);
+			ser.Sync("UseSGM", ref use_SGM);
+			ser.Sync("is_MC", ref is_MC);
+			ser.Sync("MC_bank", ref MC_bank);
+			ser.Sync("EnableSGMhigh", ref enable_SGM_high);
+			ser.Sync("EnableSGMlow", ref enable_SGM_low);
+			ser.Sync("Port_0x53", ref port_0x53);
+			ser.Sync("Port_0x7F", ref port_0x7F);
 			ser.Sync("RAM", ref _ram, false);
+			ser.Sync("SGM_high_RAM", ref SGM_high_RAM, false);
+			ser.Sync("SGM_low_RAM", ref SGM_low_RAM, false);
 			ser.Sync("Frame", ref _frame);
 			ser.Sync("LagCount", ref _lagCount);
 			ser.Sync("IsLag", ref _isLag);
+
 			ser.EndSection();
 
 			if (ser.IsReader)

@@ -13,7 +13,7 @@ namespace BizHawk.Emulation.Cores.Sega.MasterSystem
 			{
 				Cpu.ReadMemory = ReadMemory;
 				Cpu.WriteMemory = WriteMemory;
-				Cpu.FetchMemory = FetchMemory_StubThunk;
+				Cpu.FetchMemory = FetchMemory;
 			}
 			else
 			{
@@ -94,9 +94,9 @@ namespace BizHawk.Emulation.Cores.Sega.MasterSystem
 		/// <summary>
 		/// A wrapper for FetchMemory which inserts CDL logic
 		/// </summary>
-		private byte FetchMemory_CDL(ushort address, bool first)
+		private byte FetchMemory_CDL(ushort address)
 		{
-			RunCDL(address, first ? CDLog_Flags.ExecFirst : CDLog_Flags.ExecOperand);
+			RunCDL(address, CDLog_Flags.ExecFirst);
 			return ReadMemory(address);
 		}
 

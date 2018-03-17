@@ -119,6 +119,8 @@ namespace RTC
             gbVectorEngine.Location = new Point(gbSelectedEngine.Location.X, gbSelectedEngine.Location.Y);
 
 
+
+
             foreach (string item in Directory.GetDirectories(RTC_Core.rtcDir + "\\PLUGINS"))
                 cbExternalSelectedPlugin.Items.Add(item.Substring(item.LastIndexOf("\\") + 1));
 
@@ -435,7 +437,14 @@ namespace RTC
                     gbVectorEngine.Visible = true;
                     break;
 
-                case "External ROM Plugin":
+				case "Bit Engine":
+					RTC_Core.SelectedEngine = CorruptionEngine.BIT;
+					gbNightmareEngine.Visible = true;
+					pnCustomPrecision.Visible = false;
+					break;
+
+
+				case "External ROM Plugin":
 
                     RTC_Core.SelectedEngine = CorruptionEngine.EXTERNALROM;
                     gbExternalRomPlugin.Visible = true;

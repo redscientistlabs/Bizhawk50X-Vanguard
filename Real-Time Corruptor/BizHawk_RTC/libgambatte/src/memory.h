@@ -19,6 +19,8 @@
 #ifndef MEMORY_H
 #define MEMORY_H
 
+static unsigned char const agbOverride[0xD] = { 0xFF, 0x00, 0xCD, 0x03, 0x35, 0xAA, 0x31, 0x90, 0x94, 0x00, 0x00, 0x00, 0x00 };
+
 #include "mem/cartridge.h"
 #include "video.h"
 #include "sound.h"
@@ -34,11 +36,20 @@ class FilterInfo;
 class Memory {
 	Cartridge cart;
 	unsigned char ioamhram[0x200];
-	
+	unsigned char cgbBios[0x900];
+	unsigned char dmgBios[0x100];
+	bool biosMode;
+	bool cgbSwitching;
+	bool agbMode;
+	bool gbIsCgb_;
+	unsigned short &SP;
+	unsigned short &PC;
+
 	void (*readCallback)(unsigned);
 	void (*writeCallback)(unsigned);
 	void (*execCallback)(unsigned);
 	CDCallback cdCallback;
+	void(*linkCallback)();
 
 	unsigned (*getInput)();
 	unsigned long divLastUpdate;
@@ -82,14 +93,11 @@ class Memory {
 	bool isDoubleSpeed() const { return display.isDoubleSpeed(); }
 
 public:
-	explicit Memory(const Interrupter &interrupter);
+	explicit Memory(const Interrupter &interrupter, unsigned short &sp, unsigned short &pc);
 	
 	bool loaded() const { return cart.loaded(); }
+	unsigned curRomBank() const { return cart.curRomBank(); }
 	const char * romTitle() const { return cart.romTitle(); }
-
-	void bios_reset(int setting) {
-		nontrivial_ff_write(0x50, setting, 0);
-	}
 
 	int debugGetLY() const { return display.debugGetLY(); }
 
@@ -99,6 +107,10 @@ public:
 	int saveSavedataLength() {return cart.saveSavedataLength(); }
 	void saveSavedata(char *dest) { cart.saveSavedata(dest); }
 	void updateInput();
+
+	unsigned char* cgbBiosBuffer() { return (unsigned char*)cgbBios; }
+	unsigned char* dmgBiosBuffer() { return (unsigned char*)dmgBios; }
+	bool gbIsCgb() { return gbIsCgb_; }
 
 	bool getMemoryArea(int which, unsigned char **data, int *length); // { return cart.getMemoryArea(which, data, length); }
 
@@ -182,6 +194,16 @@ public:
 	}
 
 
+	unsigned readBios(const unsigned P) {
+		if (gbIsCgb_) {
+			if (agbMode && P >= 0xF3 && P < 0x100) {
+				return (agbOverride[P - 0xF3] + cgbBios[P]) & 0xFF;
+			}
+			return cgbBios[P];
+		}
+		return dmgBios[P];
+	}
+
 	unsigned read(const unsigned P, const unsigned long cycleCounter) {
 		if (readCallback)
 			readCallback(P);
@@ -190,6 +212,9 @@ public:
 			CDMapResult map = CDMap(P);
 			if(map.type != eCDLog_AddrType_None)
 				cdCallback(map.addr,map.type,eCDLog_Flags_Data);
+		}
+		if (biosMode && ((!gbIsCgb_ && P < 0x100) || (gbIsCgb_ && P < 0x900 && (P < 0x100 || P >= 0x200)))) {
+			return readBios(P);
 		}
 		return cart.rmem(P >> 12) ? cart.rmem(P >> 12)[P] : nontrivial_read(P, cycleCounter);
 	}
@@ -203,10 +228,16 @@ public:
 			if(map.type != eCDLog_AddrType_None)
 				cdCallback(map.addr,map.type,first?eCDLog_Flags_ExecFirst : eCDLog_Flags_ExecOperand);
 		}
+		if (biosMode && ((!gbIsCgb_ && P < 0x100) || (gbIsCgb_ && P < 0x900 && (P < 0x100 || P >= 0x200)))) {
+			return readBios(P);
+		}
 		return cart.rmem(P >> 12) ? cart.rmem(P >> 12)[P] : nontrivial_read(P, cycleCounter);
 	}
 
 	unsigned peek(const unsigned P) {
+		if (biosMode && ((!gbIsCgb_ && P < 0x100) || (gbIsCgb_ && P < 0x900 && (P < 0x100 || P >= 0x200)))) {
+			return readBios(P);
+		}
 		return cart.rmem(P >> 12) ? cart.rmem(P >> 12)[P] : nontrivial_peek(P);
 	}
 
@@ -248,7 +279,7 @@ public:
 	unsigned long event(unsigned long cycleCounter);
 	unsigned long resetCounters(unsigned long cycleCounter);
 
-	int loadROM(const char *romfiledata, unsigned romfilelength, const char *biosfiledata, unsigned biosfilelength, bool forceDmg, bool multicartCompat);
+	int loadROM(const char *romfiledata, unsigned romfilelength, bool forceDmg, bool multicartCompat);
 
 	void setInputGetter(unsigned (*getInput)()) {
 		this->getInput = getInput;
@@ -275,6 +306,10 @@ public:
 		cart.setRTCCallback(callback);
 	}
 
+	void setLinkCallback(void(*callback)()) {
+		this->linkCallback = callback;
+	}
+
 	void setEndtime(unsigned long cc, unsigned long inc);
 	
 	void setSoundBuffer(uint_least32_t *const buf) { sound.setBuffer(buf); }
@@ -286,6 +321,10 @@ public:
 	
 	void setDmgPaletteColor(unsigned palNum, unsigned colorNum, unsigned long rgb32);
 	void setCgbPalette(unsigned *lut);
+
+	void blackScreen() {
+		display.blackScreen();
+	}
 
 	int LinkStatus(int which);
 

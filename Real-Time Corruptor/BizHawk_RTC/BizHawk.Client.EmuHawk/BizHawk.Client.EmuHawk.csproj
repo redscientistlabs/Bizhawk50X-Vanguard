@@ -37,6 +37,7 @@
     <UseApplicationTrust>false</UseApplicationTrust>
     <BootstrapperEnabled>true</BootstrapperEnabled>
     <ResolveAssemblyWarnOrErrorOnTargetArchitectureMismatch>None</ResolveAssemblyWarnOrErrorOnTargetArchitectureMismatch>
+    <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
   </PropertyGroup>
   <PropertyGroup>
     <NoWin32Manifest>true</NoWin32Manifest>
@@ -44,13 +45,14 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|AnyCPU'">
     <DebugSymbols>true</DebugSymbols>
     <OutputPath>..\output\</OutputPath>
-    <DefineConstants>DEBUG;WINDOWS</DefineConstants>
+    <DefineConstants>WINDOWS;DEBUG</DefineConstants>
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
     <DebugType>full</DebugType>
     <PlatformTarget>AnyCPU</PlatformTarget>
     <UseVSHostingProcess>false</UseVSHostingProcess>
     <ErrorReport>prompt</ErrorReport>
-    <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
+    <!--<CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>-->
+    <CodeAnalysisRuleSet Condition=" '$(OS)' == 'Windows_NT' ">AllRules.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|AnyCPU'">
     <OutputPath>..\output\</OutputPath>
@@ -61,7 +63,8 @@
     <PlatformTarget>AnyCPU</PlatformTarget>
     <UseVSHostingProcess>false</UseVSHostingProcess>
     <ErrorReport>prompt</ErrorReport>
-    <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
+    <!--<CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>-->
+    <CodeAnalysisRuleSet Condition=" '$(OS)' == 'Windows_NT' ">AllRules.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="GongShell">
@@ -71,7 +74,8 @@
       <HintPath>..\References\ICSharpCode.SharpZipLib.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.CSharp" />
-    <Reference Include="Microsoft.VisualBasic" Condition=" '$(OS)' == 'Windows_NT' " />
+    <!--<Reference Include="Microsoft.VisualBasic" Condition=" '$(OS)' == 'Windows_NT' " />-->
+    <Reference Include="Microsoft.VisualBasic" />
     <Reference Include="Newtonsoft.Json">
       <HintPath>..\References\Newtonsoft.Json.dll</HintPath>
     </Reference>
@@ -94,6 +98,7 @@
     <Reference Include="System.DirectoryServices" />
     <Reference Include="System.IO.Compression" />
     <Reference Include="System.IO.Compression.FileSystem" />
+    <Reference Include="System.Net.Http" />
     <Reference Include="System.Numerics" />
     <Reference Include="System.Xaml" />
     <Reference Include="System.Xml.Linq">
@@ -195,6 +200,7 @@
     <Compile Include="BizBoxInfoControl.Designer.cs">
       <DependentUpon>BizBoxInfoControl.cs</DependentUpon>
     </Compile>
+    <Compile Include="Communication.cs" />
     <Compile Include="config\AnalogRangeConfig.cs">
       <SubType>Component</SubType>
     </Compile>
@@ -600,7 +606,8 @@
     </Compile>
     <Compile Include="GLManager.cs" />
     <Compile Include="GlobalWin.cs" />
-    <Compile Include="Input\GamePad.cs" Condition=" '$(OS)' == 'Windows_NT' " />
+    <!--<Compile Include="Input\GamePad.cs" Condition=" '$(OS)' == 'Windows_NT' " />-->
+    <Compile Include="Input\GamePad.cs" />
     <Compile Include="Input\GamePad360.cs" />
     <Compile Include="Input\Input.cs" />
     <Compile Include="IControlMainform.cs" />
@@ -627,7 +634,8 @@
     <Compile Include="movie\EditCommentsForm.Designer.cs">
       <DependentUpon>EditCommentsForm.cs</DependentUpon>
     </Compile>
-    <Compile Include="Input\Keyboard.cs" Condition=" '$(OS)' == 'Windows_NT' " />
+    <!--<Compile Include="Input\Keyboard.cs" Condition=" '$(OS)' == 'Windows_NT' " />-->
+    <Compile Include="Input\Keyboard.cs" />
     <Compile Include="MainForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -696,6 +704,14 @@
     <Compile Include="RomStatusPicker.Designer.cs">
       <DependentUpon>RomStatusPicker.cs</DependentUpon>
     </Compile>
+    <Compile Include="RTC\Corruption Engines\RTC_BitEngine.cs" />
+    <Compile Include="RTC\Corruption Engines\RTC_DistortionEngine.cs" />
+    <Compile Include="RTC\Corruption Engines\RTC_ExternalRomPlugin.cs" />
+    <Compile Include="RTC\Corruption Engines\RTC_FreezeEngine.cs" />
+    <Compile Include="RTC\Corruption Engines\RTC_HellgenieEngine.cs" />
+    <Compile Include="RTC\Corruption Engines\RTC_NightmareEngine.cs" />
+    <Compile Include="RTC\Corruption Engines\RTC_PipeEngine.cs" />
+    <Compile Include="RTC\Corruption Engines\RTC_VectorEngine.cs" />
     <Compile Include="RTC\Forms\RTC_BlastEditor_Form.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -708,42 +724,24 @@
     <Compile Include="RTC\Forms\RTC_ConnectionStatus_Form.designer.cs">
       <DependentUpon>RTC_ConnectionStatus_Form.cs</DependentUpon>
     </Compile>
-    <Compile Include="RTC\Forms\RTC_Settings_Form.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="RTC\Forms\RTC_Settings_Form.Designer.cs">
-      <DependentUpon>RTC_Settings_Form.cs</DependentUpon>
-    </Compile>
-    <Compile Include="RTC\RTC_Core.cs" />
-    <Compile Include="RTC\RTC_Diff.cs" />
-    <Compile Include="RTC\Corruption Engines\RTC_DistortionEngine.cs" />
-    <Compile Include="RTC\Forms\RTC_EngineConfig_Form.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="RTC\Forms\RTC_EngineConfig_Form.Designer.cs">
-      <DependentUpon>RTC_EngineConfig_Form.cs</DependentUpon>
-    </Compile>
-    <Compile Include="RTC\RTC_Enums.cs" />
-    <Compile Include="RTC\RTC_Extensions.cs" />
-    <Compile Include="RTC\Corruption Engines\RTC_ExternalRomPlugin.cs" />
     <Compile Include="RTC\Forms\RTC_Core_Form.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="RTC\Forms\RTC_Core_Form.designer.cs">
       <DependentUpon>RTC_Core_Form.cs</DependentUpon>
     </Compile>
-    <Compile Include="RTC\RTC_ActiveTable.cs" />
-    <Compile Include="RTC\Corruption Engines\RTC_FreezeEngine.cs" />
-    <Compile Include="RTC\RTC_GameProtection.cs" />
+    <Compile Include="RTC\Forms\RTC_EngineConfig_Form.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="RTC\Forms\RTC_EngineConfig_Form.Designer.cs">
+      <DependentUpon>RTC_EngineConfig_Form.cs</DependentUpon>
+    </Compile>
     <Compile Include="RTC\Forms\RTC_GlitchHarvester_Form.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="RTC\Forms\RTC_GlitchHarvester_Form.designer.cs">
       <DependentUpon>RTC_GlitchHarvester_Form.cs</DependentUpon>
     </Compile>
-    <Compile Include="RTC\Corruption Engines\RTC_HellgenieEngine.cs" />
-    <Compile Include="RTC\RTC_Hooks.cs" />
-    <Compile Include="RTC\RTC_MemoryDomains.cs" />
     <Compile Include="RTC\Forms\RTC_MultiPeerPopout_Form.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -756,26 +754,17 @@
     <Compile Include="RTC\Forms\RTC_Multiplayer_Form.designer.cs">
       <DependentUpon>RTC_Multiplayer_Form.cs</DependentUpon>
     </Compile>
-    <Compile Include="RTC\RTC_NetCoreSettings.cs" />
-    <Compile Include="RTC\RTC_NetCore_RTCExtensions.cs" />
-    <Compile Include="RTC\RTC_NetCore.cs" />
     <Compile Include="RTC\Forms\RTC_NoteEditor_Form.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="RTC\Forms\RTC_NoteEditor_Form.designer.cs">
       <DependentUpon>RTC_NoteEditor_Form.cs</DependentUpon>
     </Compile>
-    <Compile Include="RTC\Corruption Engines\RTC_NightmareEngine.cs" />
-    <Compile Include="RTC\RTC_Objects.cs" />
-    <Compile Include="RTC\RTC_Params.cs" />
-    <Compile Include="RTC\Corruption Engines\RTC_PipeEngine.cs" />
-    <Compile Include="RTC\RTC_Render.cs" />
-    <Compile Include="RTC\RTC_RPC.cs" />
-    <Compile Include="RTC\Forms\RTC_StockpilePlayer_Form.cs">
+    <Compile Include="RTC\Forms\RTC_Settings_Form.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="RTC\Forms\RTC_StockpilePlayer_Form.designer.cs">
-      <DependentUpon>RTC_StockpilePlayer_Form.cs</DependentUpon>
+    <Compile Include="RTC\Forms\RTC_Settings_Form.Designer.cs">
+      <DependentUpon>RTC_Settings_Form.cs</DependentUpon>
     </Compile>
     <Compile Include="RTC\Forms\RTC_StockpileBlastBoard_Form.cs">
       <SubType>Form</SubType>
@@ -783,8 +772,12 @@
     <Compile Include="RTC\Forms\RTC_StockpileBlastBoard_Form.designer.cs">
       <DependentUpon>RTC_StockpileBlastBoard_Form.cs</DependentUpon>
     </Compile>
-    <Compile Include="RTC\RTC_StockpileManager.cs" />
-    <Compile Include="RTC\Corruption Engines\RTC_VectorEngine.cs" />
+    <Compile Include="RTC\Forms\RTC_StockpilePlayer_Form.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="RTC\Forms\RTC_StockpilePlayer_Form.designer.cs">
+      <DependentUpon>RTC_StockpilePlayer_Form.cs</DependentUpon>
+    </Compile>
     <Compile Include="RTC\Forms\RTC_VmdAct_Form.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -803,6 +796,22 @@
     <Compile Include="RTC\Forms\RTC_VmdPool_Form.designer.cs">
       <DependentUpon>RTC_VmdPool_Form.cs</DependentUpon>
     </Compile>
+    <Compile Include="RTC\RTC_ActiveTable.cs" />
+    <Compile Include="RTC\RTC_Core.cs" />
+    <Compile Include="RTC\RTC_Diff.cs" />
+    <Compile Include="RTC\RTC_Enums.cs" />
+    <Compile Include="RTC\RTC_Extensions.cs" />
+    <Compile Include="RTC\RTC_GameProtection.cs" />
+    <Compile Include="RTC\RTC_Hooks.cs" />
+    <Compile Include="RTC\RTC_MemoryDomains.cs" />
+    <Compile Include="RTC\RTC_NetCore.cs" />
+    <Compile Include="RTC\RTC_NetCoreSettings.cs" />
+    <Compile Include="RTC\RTC_NetCore_RTCExtensions.cs" />
+    <Compile Include="RTC\RTC_Objects.cs" />
+    <Compile Include="RTC\RTC_Params.cs" />
+    <Compile Include="RTC\RTC_Render.cs" />
+    <Compile Include="RTC\RTC_RPC.cs" />
+    <Compile Include="RTC\RTC_StockpileManager.cs" />
     <Compile Include="Sound\Interfaces\IBufferedSoundProvider.cs" />
     <Compile Include="Sound\Interfaces\ISoundOutput.cs" />
     <Compile Include="Sound\Output\DirectSoundSoundOutput.cs" />
@@ -931,6 +940,12 @@
     <Compile Include="tools\GB\GBGPUView.Designer.cs">
       <DependentUpon>GBGPUView.cs</DependentUpon>
     </Compile>
+    <Compile Include="tools\GB\GBPrinterView.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="tools\GB\GBPrinterView.Designer.cs">
+      <DependentUpon>GBPrinterView.cs</DependentUpon>
+    </Compile>
     <Compile Include="tools\Genesis\GenDbgWind.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -974,6 +989,7 @@
       <DependentUpon>NewHexEditor.cs</DependentUpon>
     </Compile>
     <Compile Include="tools\Lua\Libraries\EmuLuaLibrary.Client.cs" />
+    <Compile Include="tools\Lua\Libraries\EmuLuaLibrary.Communication.cs" />
     <Compile Include="tools\Lua\Libraries\EmuLuaLibrary.Console.cs" />
     <Compile Include="tools\Lua\Libraries\EmuLuaLibrary.cs" />
     <Compile Include="tools\Lua\Libraries\EmuLuaLibrary.Forms.cs" />
@@ -1552,11 +1568,11 @@
     <EmbeddedResource Include="RTC\Forms\RTC_ConnectionStatus_Form.resx">
       <DependentUpon>RTC_ConnectionStatus_Form.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="RTC\Forms\RTC_EngineConfig_Form.resx">
-      <DependentUpon>RTC_EngineConfig_Form.cs</DependentUpon>
-    </EmbeddedResource>
     <EmbeddedResource Include="RTC\Forms\RTC_Core_Form.resx">
       <DependentUpon>RTC_Core_Form.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="RTC\Forms\RTC_EngineConfig_Form.resx">
+      <DependentUpon>RTC_EngineConfig_Form.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="RTC\Forms\RTC_GlitchHarvester_Form.resx">
       <DependentUpon>RTC_GlitchHarvester_Form.cs</DependentUpon>
@@ -1573,11 +1589,11 @@
     <EmbeddedResource Include="RTC\Forms\RTC_Settings_Form.resx">
       <DependentUpon>RTC_Settings_Form.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="RTC\Forms\RTC_StockpilePlayer_Form.resx">
-      <DependentUpon>RTC_StockpilePlayer_Form.cs</DependentUpon>
-    </EmbeddedResource>
     <EmbeddedResource Include="RTC\Forms\RTC_StockpileBlastBoard_Form.resx">
       <DependentUpon>RTC_StockpileBlastBoard_Form.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="RTC\Forms\RTC_StockpilePlayer_Form.resx">
+      <DependentUpon>RTC_StockpilePlayer_Form.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="RTC\Forms\RTC_VmdAct_Form.resx">
       <DependentUpon>RTC_VmdAct_Form.cs</DependentUpon>
@@ -1639,6 +1655,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="tools\GB\GBGPUView.resx">
       <DependentUpon>GBGPUView.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="tools\GB\GBPrinterView.resx">
+      <DependentUpon>GBPrinterView.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="tools\Genesis\GenDbgWind.resx">
       <DependentUpon>GenDbgWind.cs</DependentUpon>
@@ -1928,8 +1947,8 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\inifile_icon.png" />
-    <None Include="Resources\notepad_icon.png" />
     <None Include="Resources\paintbrush_icon.png" />
+    <None Include="Resources\notepad_icon.png" />
     <None Include="images\WSW.png" />
     <None Include="images\WNW.png" />
     <None Include="images\SW.png" />
@@ -2238,7 +2257,6 @@
     <None Include="images\checkbox.png" />
     <None Include="images\Erase.png" />
     <None Include="images\bsnes.png" />
-    <None Include="images\emu7800.png" />
     <None Include="images\genplus.png" />
     <None Include="images\gambatte.png" />
     <None Include="images\dual.png" />

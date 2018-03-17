@@ -881,13 +881,13 @@ namespace BizHawk.Emulation.Cores.Sony.PSX
 			switch (type)
 			{
 				case OctoshockDll.eShockMemCb.Read: 
-					MemoryCallbacks.CallReads(address);
+					MemoryCallbacks.CallReads(address, "System Bus");
 					break;
 				case OctoshockDll.eShockMemCb.Write:
-					MemoryCallbacks.CallWrites(address);
+					MemoryCallbacks.CallWrites(address, "System Bus");
 					break;
 				case OctoshockDll.eShockMemCb.Execute:
-					MemoryCallbacks.CallExecutes(address);
+					MemoryCallbacks.CallExecutes(address, "System Bus");
 					break;
 			}
 		}
@@ -1083,7 +1083,6 @@ namespace BizHawk.Emulation.Cores.Sony.PSX
 			s.ExtraData.CurrentDiscIndexMounted = CurrentDiscIndexMounted;
 
 			ser.Serialize(writer, s);
-			// TODO write extra copy of stuff we don't use (WHY?)
 		}
 
 		public void LoadStateText(TextReader reader)

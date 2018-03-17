@@ -16,29 +16,24 @@ namespace BizHawk.Client.Common
 		private readonly TasStateManager _stateManager;
 		private readonly TasLagLog _lagLog = new TasLagLog();
 		private readonly Dictionary<int, IController> _inputStateCache = new Dictionary<int, IController>();
-
 		private BackgroundWorker _progressReportWorker;
-
-		public new const string Extension = "tasproj";
-		public const string DefaultProjectName = "default";
-
-		public bool LastPositionStable { get; set; } = true;
-		public string NewBranchText { get; set; } = "";
 
 		public readonly IStringLog VerificationLog = StringLogUtil.MakeStringLog(); // For movies that do not begin with power-on, this is the input required to get into the initial state
 		public readonly TasBranchCollection Branches = new TasBranchCollection();
 		public readonly TasSession Session;
 
-		public TasLagLog TasLagLog => _lagLog;
-
-		public IStringLog InputLog => Log;
-
+		public new const string Extension = "tasproj";
+		public const string DefaultProjectName = "default";
+		public string NewBranchText { get; set; } = "";
+		public int LastEditedFrame { get; set; } = -1;
+		public bool LastPositionStable { get; set; } = true;
 		public TasMovieMarkerList Markers { get; private set; }
-
 		public bool BindMarkersToInput { get; set; }
 		public bool UseInputCache { get; set; }
 		public int CurrentBranch { get; set; }
 
+		public TasLagLog TasLagLog => _lagLog;
+		public IStringLog InputLog => Log;
 		public int BranchCount => Branches.Count;
 		public int LastValidFrame => _lagLog.LastValidFrame;
 		public override string PreferredExtension => Extension;
@@ -155,7 +150,8 @@ namespace BizHawk.Client.Common
 		{
 			var anyInvalidated = _lagLog.RemoveFrom(frame);
 			_stateManager.Invalidate(frame + 1);
-			Changes = true; // TODO check if this actually removed anything before flagging changes
+			Changes = anyInvalidated;
+			LastEditedFrame = frame;
 
 			if (anyInvalidated && Global.MovieSession.Movie.IsCountingRerecords)
 			{
@@ -239,7 +235,7 @@ namespace BizHawk.Client.Common
 
 			if (!_stateManager.HasState(Global.Emulator.Frame))
 			{
-				_stateManager.Capture();
+				_stateManager.Capture(Global.Emulator.Frame == LastEditedFrame - 1);
 			}
 		}
 
@@ -497,13 +493,11 @@ namespace BizHawk.Client.Common
 		public void AddBranch(TasBranch branch)
 		{
 			Branches.Add(branch);
-			TasStateManager.AddBranch();
 			Changes = true;
 		}
 
 		public void RemoveBranch(TasBranch branch)
 		{
-			TasStateManager.RemoveBranch(Branches.IndexOf(branch));
 			Branches.Remove(branch);
 			Changes = true;
 		}
@@ -514,24 +508,20 @@ namespace BizHawk.Client.Common
 
 			Log?.Dispose();
 			Log = branch.InputLog.Clone();
-			////_changes = true;
+
+			_lagLog.FromLagLog(branch.LagLog);
 
 			// if there are branch states, they will be loaded anyway
 			// but if there's none, or only *after* divergent point, don't invalidate the entire movie anymore
 			if (divergentPoint.HasValue)
 			{
 				_stateManager.Invalidate(divergentPoint.Value);
-				_lagLog.FromLagLog(branch.LagLog); // don't truncate LagLog if the branch's one is shorter, but input is the same
 			}
 			else
 			{
 				_stateManager.Invalidate(branch.InputLog.Count);
 			}
-
-			_stateManager.LoadBranch(Branches.IndexOf(branch));
-			_stateManager.SetState(branch.Frame, branch.CoreData);
-
-			////ChangeLog = branch.ChangeLog;
+			
 			if (BindMarkersToInput) // pretty critical not to erase them
 			{
 				Markers = branch.Markers;
@@ -550,7 +540,6 @@ namespace BizHawk.Client.Common
 			}
 
 			Branches[index] = newBranch;
-			TasStateManager.UpdateBranch(index);
 			Changes = true;
 		}
 

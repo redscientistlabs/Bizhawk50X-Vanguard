@@ -63,8 +63,9 @@ namespace BizHawk.Emulation.Cores.Sega.MasterSystem
 			public bool EnableFM = true;
 			public bool AllowOverlock = false;
 			public bool UseBIOS = true;
-			public string ConsoleRegion = "Export";
-			public string DisplayType = "NTSC";
+			public string ConsoleRegion = "Auto";
+			public string DisplayType = "Auto";
+			public string ControllerType = "Standard";
 
 			public SMSSyncSettings Clone()
 			{
@@ -78,7 +79,8 @@ namespace BizHawk.Emulation.Cores.Sega.MasterSystem
 					x.AllowOverlock != y.AllowOverlock ||
 					x.UseBIOS != y.UseBIOS ||
 					x.ConsoleRegion != y.ConsoleRegion ||
-					x.DisplayType != y.DisplayType;
+					x.DisplayType != y.DisplayType ||
+					x.ControllerType != y.ControllerType;
 			}
 		}
 	}

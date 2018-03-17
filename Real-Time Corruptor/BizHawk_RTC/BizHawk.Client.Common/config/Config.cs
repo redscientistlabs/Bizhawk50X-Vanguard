@@ -5,7 +5,7 @@ using System.Drawing;
 using BizHawk.Emulation.Common;
 
 // ReSharper disable FieldCanBeMadeReadOnly.Global
-// ReSharper wLogWindow = false; InconsistentNaming
+// ReSharper disable InconsistentNaming
 // ReSharper disable StyleCop.SA1310
 // ReSharper disable StyleCop.SA1401
 namespace BizHawk.Client.Common
@@ -112,16 +112,13 @@ namespace BizHawk.Client.Common
 		public bool HotkeyConfigAutoTab = true;
 		public bool InputConfigAutoTab = true;
 		public bool ShowLogWindow = false;
-		
-		
+
 		//RTC_HIJACK : Put BackupSavestates to False
 		public bool BackupSavestates = false;
 
-		public bool BackupSaveram = true;
-
 		//RTC_HIJACK : Put SaveScreenshotWithStates to False
 		public bool SaveScreenshotWithStates = false;
-		
+
 		public int BigScreenshotSize = 128 * 1024;
 		public bool NoLowResLargeScreenshotWithStates = false;
 		public int AutofireOn = 1;
@@ -140,6 +137,21 @@ namespace BizHawk.Client.Common
 		public string Update_LatestVersion = "";
 		public string Update_IgnoreVersion = "";
 		public bool CDLAutoSave = true, CDLAutoStart = true;
+
+		/// <summary>
+		/// Makes a .bak file before any saveram-writing operation (could be extended to make timestamped backups)
+		/// </summary>
+		public bool BackupSaveram = true;
+
+		/// <summary>
+		/// Whether to make AutoSave files at periodic intervals
+		/// </summary>
+		public bool AutosaveSaveRAM;
+
+		/// <summary>
+		/// Intervals at which to make AutoSave files
+		/// </summary>
+		public int FlushSaveRamFrames;
 
 		//check CurrentDomain_AssemblyResolve if you change the defaults or name of this key
 		public bool UseNLua = true; // Whether or not to use a good, reliable, memory-leak-free lua interface that is slower than the original luainterface
@@ -213,7 +225,10 @@ namespace BizHawk.Client.Common
 
 		// Rewind settings
 		public bool Rewind_UseDelta = true;
+
+		//RTC_HIJACK : Put RewindEnabledSmall to true
 		public bool RewindEnabledSmall = true;
+
 		//RTC_HIJACK : Put RewindEnabledMedium to true
 		public bool RewindEnabledMedium = true;
 
@@ -228,21 +243,19 @@ namespace BizHawk.Client.Common
 
 		//RTC_HIJACK : Put RewindFrequencyMedium to 9
 		public int RewindFrequencyLarge = 9;
-		
+
 		public int Rewind_MediumStateSize = 262144; // 256kb
 		public int Rewind_LargeStateSize = 1048576; // 1mb
 		public int Rewind_BufferSize = 128; // in mb
-		
+
+
 		//RTC_HIJACK : But rewind back on disk true because of Garbage Collector hitching
 		public bool Rewind_OnDisk = true;
-		
+
 		public bool Rewind_IsThreaded = Environment.ProcessorCount > 1;
-		
-		
+
 		//RTC_HIJACK : Put RewindSpeedMultiplier to 2
 		public int RewindSpeedMultiplier = 2;
-
-		
 
 		// Savestate settings
 		public SaveStateTypeE SaveStateType = SaveStateTypeE.Default;
@@ -567,8 +580,8 @@ namespace BizHawk.Client.Common
 		public bool NES_InQuickNES = true;
 		public bool SNES_InSnes9x = true;
 		public bool GBA_UsemGBA = true;
-		public bool A78_UseEmu7800 = false;
 		public bool SGB_UseBsnes = false;
+		public bool GB_UseGBHawk = false;
 		public bool CoreForcingViaGameDB = true;
 		public string LibretroCore;
 	}
