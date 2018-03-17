@@ -704,7 +704,6 @@
     <Compile Include="RomStatusPicker.Designer.cs">
       <DependentUpon>RomStatusPicker.cs</DependentUpon>
     </Compile>
-    <Compile Include="RTC\Corruption Engines\RTC_BitEngine.cs" />
     <Compile Include="RTC\Corruption Engines\RTC_DistortionEngine.cs" />
     <Compile Include="RTC\Corruption Engines\RTC_ExternalRomPlugin.cs" />
     <Compile Include="RTC\Corruption Engines\RTC_FreezeEngine.cs" />

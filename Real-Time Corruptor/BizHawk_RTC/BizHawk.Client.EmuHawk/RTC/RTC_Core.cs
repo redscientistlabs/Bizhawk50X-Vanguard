@@ -21,7 +21,7 @@ namespace RTC
         public static Random RND = new Random();
 
         //General RTC Values
-        public static string RtcVersion = "3.11";
+        public static string RtcVersion = "3.11b";
 
         //Directories
         public static string bizhawkDir = Directory.GetCurrentDirectory();
@@ -492,9 +492,6 @@ namespace RTC
 				case CorruptionEngine.VECTOR:
 					bu = RTC_VectorEngine.GenerateUnit(_domain, _address);
 					break;
-				case CorruptionEngine.BIT:
-					bu = RTC_BitEngine.GenerateUnit(_domain, _address);
-					break;
 				case CorruptionEngine.NONE:
                     return null;
             }
@@ -837,9 +834,11 @@ namespace RTC
             path = path.Replace(".NesHawk.", ".");
             path = path.Replace(".VBA-Next.", ".");
 			path = path.Replace(".mGBA.", ".");
-            path = path.Replace(".Snes9x.", ".");
+			path = path.Replace(".Snes9x.", ".");
+			path = path.Replace(".Gambatte.", ".");
+			path = path.Replace(".GBHawk.", ".");
 
-            if (threadSave)
+			if (threadSave)
 			{
 				(new Thread(() => {
 					try
@@ -883,8 +882,10 @@ namespace RTC
             path = path.Replace(".VBA-Next.", ".");
 			path = path.Replace(".mGBA.", ".");
             path = path.Replace(".Snes9x.", ".");
+			path = path.Replace(".Gambatte.", ".");
+			path = path.Replace(".GBHawk.", ".");
 
-            if (File.Exists(path) == false)
+			if (File.Exists(path) == false)
             {
                 GlobalWin.OSD.AddMessage("Unable to load " + quickSlotName + ".State");
                 return;

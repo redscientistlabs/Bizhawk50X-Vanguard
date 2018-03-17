@@ -39,7 +39,6 @@ namespace RTC
         FREEZE,
 		PIPE,
 		VECTOR,
-		BIT,
         EXTERNALROM,
         NONE
     }

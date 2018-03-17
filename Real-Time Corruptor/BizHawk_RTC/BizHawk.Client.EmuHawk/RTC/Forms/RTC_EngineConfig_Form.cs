@@ -437,12 +437,6 @@ namespace RTC
                     gbVectorEngine.Visible = true;
                     break;
 
-				case "Bit Engine":
-					RTC_Core.SelectedEngine = CorruptionEngine.BIT;
-					gbNightmareEngine.Visible = true;
-					pnCustomPrecision.Visible = false;
-					break;
-
 
 				case "External ROM Plugin":
 

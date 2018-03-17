@@ -538,7 +538,6 @@
             "Freeze Engine",
             "Pipe Engine",
 			"Vector Engine",
-			"Bit Engine",
 			"External ROM Plugin"});
             this.cbSelectedEngine.Location = new System.Drawing.Point(10, 13);
             this.cbSelectedEngine.Name = "cbSelectedEngine";

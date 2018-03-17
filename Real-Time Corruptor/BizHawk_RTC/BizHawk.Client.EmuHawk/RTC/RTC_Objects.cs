@@ -816,7 +816,9 @@ namespace RTC
                 case "GAMEBOY":
                     Global.Config.GB_AsSGB = _systemCore == "sameboy";
                     Global.Config.SGB_UseBsnes = false;
-                    break;
+					Global.Config.GB_UseGBHawk = _systemCore == "gbhawk";
+
+					break;
                 case "NES":
                     Global.Config.NES_InQuickNES = _systemCore == "quicknes";
                     break;
@@ -861,9 +863,15 @@ namespace RTC
 			switch (_systemName.ToUpper())
             {
                 case "GAMEBOY":
-                    return (Global.Config.GB_AsSGB ? "sameboy" : "gambatte");
 
-                case "NES":
+					if (Global.Config.GB_AsSGB)
+						return "sameboy";
+					else if(Global.Config.GB_UseGBHawk)
+						return "gbhawk";
+					else
+						return "gambatte";
+
+				case "NES":
                     return (Global.Config.NES_InQuickNES ? "quicknes" : "neshawk");
 
                 case "SNES":
