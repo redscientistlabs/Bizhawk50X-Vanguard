@@ -1453,7 +1453,8 @@
             this.cbBlastType.Items.AddRange(new object[] {
             "RANDOM",
             "RANDOMTILT",
-            "TILT"});
+            "TILT",
+			"FILTERED"});
             this.cbBlastType.Location = new System.Drawing.Point(73, 36);
             this.cbBlastType.Name = "cbBlastType";
             this.cbBlastType.Size = new System.Drawing.Size(91, 21);

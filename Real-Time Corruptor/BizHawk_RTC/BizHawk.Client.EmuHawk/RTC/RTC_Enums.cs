@@ -29,6 +29,7 @@ namespace RTC
         RANDOM,
         RANDOMTILT,
         TILT,
+		FILTERED
     }
 
     public enum CorruptionEngine

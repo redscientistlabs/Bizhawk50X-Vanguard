@@ -259,10 +259,14 @@ namespace RTC
                     RTC_NightmareEngine.Algo = BlastByteAlgo.RANDOMTILT;
                     break;
 
-                case "TILT":
-                    RTC_NightmareEngine.Algo = BlastByteAlgo.TILT;
-                    break;
-            }
+				case "TILT":
+					RTC_NightmareEngine.Algo = BlastByteAlgo.TILT;
+					break;
+
+				case "FILTERED":
+					RTC_NightmareEngine.Algo = BlastByteAlgo.FILTERED;
+					break;
+			}
 
             RTC_Core.SendCommandToBizhawk(new RTC_Command(CommandType.REMOTE_SET_NIGHTMARE_TYPE) { objectValue = RTC_NightmareEngine.Algo });
 
