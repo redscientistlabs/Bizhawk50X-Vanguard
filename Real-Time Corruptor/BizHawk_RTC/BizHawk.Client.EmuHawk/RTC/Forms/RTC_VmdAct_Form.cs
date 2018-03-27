@@ -31,12 +31,12 @@ namespace RTC
 				if (value)
 				{
 					lbFreezeEngineActiveStatus.Text = "Active table status: READY";
-					btnActiveTableSubstractFile.ForeColor = Color.MediumPurple;
+					btnActiveTableSubstractFile.ForeColor = Color.Green;
 				}
 				else
 				{
 					lbFreezeEngineActiveStatus.Text = "Active table status: NOT READY";
-					btnActiveTableSubstractFile.ForeColor = Color.Silver;
+					btnActiveTableSubstractFile.ForeColor = Color.Red;
 				}
 
 				if (ActiveTableGenerated != null && ActiveTableGenerated.Length > 0)
@@ -188,9 +188,9 @@ namespace RTC
 
 			List<long> newActiveTableActivity = new List<long>();
 
-			long domainSize = (long)RTC_Core.SendCommandToBizhawk(new RTC_Command(CommandType.REMOTE_DOMAIN_GETSIZE) { objectValue = RTC_MemoryDomains.MainDomain }, true);
+		//	long domainSize = (long)RTC_Core.SendCommandToBizhawk(new RTC_Command(CommandType.REMOTE_DOMAIN_GETSIZE) { objectValue = cbSelectedMemoryDomain.SelectedItem.ToString()}, true);
 
-			for (long i = 0; i < RTC_MemoryDomains.getInterface(RTC_MemoryDomains.MainDomain).Size; i++)
+			for (long i = 0; i < RTC_MemoryDomains.getInterface(cbSelectedMemoryDomain.SelectedItem.ToString()).Size; i++)
 			{
 				newActiveTableActivity.Add(0);
 			}
@@ -244,11 +244,11 @@ namespace RTC
 				return;
 
 			List<byte> newDump = new List<byte>();
-			for (long i = 0; i < RTC_MemoryDomains.getInterface(RTC_MemoryDomains.MainDomain).Size; i++)
+			for (long i = 0; i < RTC_MemoryDomains.getInterface(cbSelectedMemoryDomain.SelectedItem.ToString()).Size; i++)
 			{
 				newDump.Add((byte)RTC_Core.SendCommandToBizhawk(new RTC_Command(CommandType.REMOTE_DOMAIN_PEEKBYTE)
 				{
-					objectValue = new object[] { RTC_MemoryDomains.MainDomain.ToString(), i }
+					objectValue = new object[] { cbSelectedMemoryDomain.SelectedItem.ToString(), i }
 				}, true));
 				//newDump.Add(RTC_MemoryDomains._domain.PeekByte(i));
 			}
@@ -274,7 +274,7 @@ namespace RTC
 				btnActiveTableGenerate.ForeColor = Color.OrangeRed;
 			}
 
-			lbFreezeEngineDomainAddressSize.Text = "Domain size: " + RTC_MemoryDomains.getInterface(RTC_MemoryDomains.MainDomain).Size.ToString();
+			lbFreezeEngineDomainAddressSize.Text = "Domain size: " + RTC_MemoryDomains.getInterface(cbSelectedMemoryDomain.SelectedItem.ToString()).Size.ToString();
 			lbFreezeEngineNbDumps.Text = "Memory dumps collected: 0";
 			lbFreezeEngineActiveTableSize.Text = "Active table size: 0";
 			ActiveTableReady = false;
@@ -292,41 +292,6 @@ namespace RTC
 			GC.WaitForPendingFinalizers();
 		}
 
-		private void btnActiveTableGenerate_Click(object sender, EventArgs e)
-		{
-
-			if (!ComputeActiveTableActivity())
-				return; //exit generation if activity computation failed
-
-			List<long> newActiveTable = new List<long>();
-			double computedThreshold = (double)ActiveTableDumps.Count * (ActivityThreshold / 100d) + 1d;
-			bool ExcludeEverchanging = cbActiveTableExclude100percent.Checked;
-
-
-			for (int i = 0; i < ActiveTableActivity.Length; i++)
-			{
-				if ((double)ActiveTableActivity[i] > computedThreshold && (!ExcludeEverchanging || ActiveTableActivity[i] != (long)ActiveTableDumps.Count))
-					newActiveTable.Add(i);
-			}
-
-			long[] tempActiveTable = newActiveTable.ToArray();
-
-
-			if (cbActiveTableCapSize.Checked && nmActiveTableCapSize.Value < tempActiveTable.Length)
-				ActiveTableGenerated = CapActiveTable(tempActiveTable);
-			else
-				ActiveTableGenerated = tempActiveTable;
-
-			lbFreezeEngineActiveTableSize.Text = "Active table size: " + ActiveTableGenerated.Length.ToString();
-
-
-			ActiveTableReady = true;
-			currentFilename = null;
-
-			GC.Collect();
-			GC.WaitForPendingFinalizers();
-
-		}
 
 		private void btnActiveTableLoad_Click(object sender, EventArgs e)
 		{
@@ -417,6 +382,158 @@ namespace RTC
 
 		private void btnActiveTableAddFile_Click(object sender, EventArgs e)
 		{
+
+
+			RTC_Core.StopSound();
+
+			string tempFilename;
+
+			OpenFileDialog OpenFileDialog1 = new OpenFileDialog();
+			OpenFileDialog1.DefaultExt = "act";
+			OpenFileDialog1.Title = "Open ActiveTable File";
+			OpenFileDialog1.Filter = "ACT files|*.act";
+			OpenFileDialog1.RestoreDirectory = true;
+			if (OpenFileDialog1.ShowDialog() == DialogResult.OK)
+			{
+				tempFilename = OpenFileDialog1.FileName.ToString();
+			}
+			else
+				return;
+
+			FileStream FS;
+			//BinaryFormatter bformatter = new BinaryFormatter();
+			XmlSerializer xs = new XmlSerializer(typeof(ActiveTableObject));
+			FS = File.Open(tempFilename, FileMode.OpenOrCreate);
+			//ActiveTableObject act = (ActiveTableObject)bformatter.Deserialize(FS);
+			ActiveTableObject act = (ActiveTableObject)xs.Deserialize(FS);
+			FS.Close();
+
+			long[] additiveActiveTable = act.data;
+
+			List<long> newActiveTable = new List<long>();
+
+			GC.Collect();
+			GC.WaitForPendingFinalizers();
+
+			foreach (long item in ActiveTableGenerated)
+				if (additiveActiveTable.Contains(item) && !newActiveTable.Contains(item))
+					newActiveTable.Add(item);
+
+
+			ActiveTableGenerated = newActiveTable.ToArray();
+			lbFreezeEngineActiveTableSize.Text = "Active table size: " + ActiveTableGenerated.Length.ToString();
+
+			GC.Collect();
+			GC.WaitForPendingFinalizers();
+
+			RTC_Core.StartSound();
+		}
+
+		private void generateActiveTable()
+		{
+
+			if (!ComputeActiveTableActivity())
+				return; //exit generation if activity computation failed
+
+			List<long> newActiveTable = new List<long>();
+			double computedThreshold = (double)ActiveTableDumps.Count * (ActivityThreshold / 100d) + 1d;
+			bool ExcludeEverchanging = cbActiveTableExclude100percent.Checked;
+
+
+			for (int i = 0; i < ActiveTableActivity.Length; i++)
+			{
+				if ((double)ActiveTableActivity[i] > computedThreshold && (!ExcludeEverchanging || ActiveTableActivity[i] != (long)ActiveTableDumps.Count))
+					newActiveTable.Add(i);
+			}
+
+			long[] tempActiveTable = newActiveTable.ToArray();
+
+
+			if (cbActiveTableCapSize.Checked && nmActiveTableCapSize.Value < tempActiveTable.Length)
+				ActiveTableGenerated = CapActiveTable(tempActiveTable);
+			else
+				ActiveTableGenerated = tempActiveTable;
+
+
+
+			lbFreezeEngineActiveTableSize.Text = "Active table size: " + ActiveTableGenerated.Length.ToString();
+
+
+			ActiveTableReady = true;
+			currentFilename = null;
+
+			GC.Collect();
+			GC.WaitForPendingFinalizers();
+		}
+
+		private bool generateVMD()	{
+
+
+
+			MemoryInterface mi = RTC_MemoryDomains.MemoryInterfaces[cbSelectedMemoryDomain.SelectedItem.ToString()];
+			VirtualMemoryDomain VMD = new VirtualMemoryDomain();
+			VmdPrototype proto = new VmdPrototype();
+
+			proto.GenDomain = cbSelectedMemoryDomain.SelectedItem.ToString();
+			proto.VmdName = RTC_Core.GetRandomKey();
+			proto.BigEndian = mi.BigEndian;
+			proto.WordSize = mi.WordSize;
+			proto.PointerSpacer = 1;
+			foreach (int address in ActiveTableGenerated)
+				proto.addSingles.Add(address);
+			VMD = proto.Generate();
+			if (VMD.PointerAddresses.Count == 0)
+			{
+				MessageBox.Show("The resulting VMD had no pointers so the operation got cancelled.");
+				return false;
+			}
+
+			RTC_MemoryDomains.AddVMD(VMD);
+
+			//send to vmd pool menu
+			RTC_Core.vmdPoolForm.RefreshVMDs();
+			RTC_Core.ecForm.cbMemoryDomainTool.SelectedIndex = 1;
+
+			GC.Collect();
+			GC.WaitForPendingFinalizers();
+			return true;
+		}
+
+
+		private void btnActiveTableGenerate_Click(object sender, EventArgs e)
+		{
+			generateActiveTable();
+			generateVMD();
+		}
+
+		private void btnLoadDomains_Click(object sender, EventArgs e)
+		{
+			RTC_Core.ecForm.RefreshDomainsAndKeepSelected();
+
+			cbSelectedMemoryDomain.Items.Clear();
+			cbSelectedMemoryDomain.Items.AddRange(RTC_MemoryDomains.MemoryInterfaces.Keys.Where(it => !it.Contains("[V]")).ToArray());
+
+			cbSelectedMemoryDomain.SelectedIndex = 0;
+		}
+
+		private void nmActiveTableActivityThreshold_ValueChanged(object sender, EventArgs e)
+		{
+			if (Convert.ToInt32(track_ActiveTableActivityThreshold.Value) == Convert.ToInt32(nmActiveTableActivityThreshold.Value * 100))
+				return;
+
+			track_ActiveTableActivityThreshold.Value = Convert.ToInt32(nmActiveTableActivityThreshold.Value * 100);
+			ActivityThreshold = Convert.ToDouble(nmActiveTableActivityThreshold.Value);
+
+		}
+
+		private void track_ActiveTableActivityThreshold_Scroll(object sender, EventArgs e)
+		{
+
+			if (Convert.ToInt32(track_ActiveTableActivityThreshold.Value) == Convert.ToInt32(nmActiveTableActivityThreshold.Value * 100))
+				return;
+
+			nmActiveTableActivityThreshold.Value = Convert.ToDecimal((double)track_ActiveTableActivityThreshold.Value / 100);
+			ActivityThreshold = Convert.ToDouble(nmActiveTableActivityThreshold.Value);
 
 		}
 	}
