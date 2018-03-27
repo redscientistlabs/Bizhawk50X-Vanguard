@@ -376,7 +376,8 @@
             this.cbMemoryDomainTool.Items.AddRange(new object[] {
             "No Tool Selected",
             "Virtual Memory Domain Pool",
-            "Virtual Memory Domain Generator"});
+			"Virtual Memory Domain Generator",
+			"ActiveTable Generator"});
             this.cbMemoryDomainTool.Location = new System.Drawing.Point(11, 11);
             this.cbMemoryDomainTool.Name = "cbMemoryDomainTool";
             this.cbMemoryDomainTool.Size = new System.Drawing.Size(390, 21);

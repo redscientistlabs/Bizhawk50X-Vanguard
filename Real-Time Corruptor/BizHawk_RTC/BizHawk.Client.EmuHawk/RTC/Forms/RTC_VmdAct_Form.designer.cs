@@ -56,7 +56,7 @@
             this.btnActiveTableDumpsReset = new System.Windows.Forms.Button();
             this.nmAutoAddSec = new System.Windows.Forms.NumericUpDown();
             this.lbFreezeEngineActiveStatus = new System.Windows.Forms.Label();
-            this.button1 = new System.Windows.Forms.Button();
+            this.btnActiveTableAddFile = new System.Windows.Forms.Button();
             this.groupBox2.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.track_ActiveTableActivityThreshold)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.nmActiveTableActivityThreshold)).BeginInit();
@@ -80,6 +80,7 @@
             this.btnActiveTableSubstractFile.Tag = "color:light";
             this.btnActiveTableSubstractFile.Text = "Substract ACT";
             this.btnActiveTableSubstractFile.UseVisualStyleBackColor = false;
+            this.btnActiveTableSubstractFile.Click += new System.EventHandler(this.btnActiveTableSubstractFile_Click);
             // 
             // btnActiveTableGenerate
             // 
@@ -95,6 +96,7 @@
             this.btnActiveTableGenerate.Tag = "color:light";
             this.btnActiveTableGenerate.Text = "Generate VMD";
             this.btnActiveTableGenerate.UseVisualStyleBackColor = false;
+            this.btnActiveTableGenerate.Click += new System.EventHandler(this.btnActiveTableGenerate_Click);
             // 
             // btnActiveTableQuickSave
             // 
@@ -110,6 +112,7 @@
             this.btnActiveTableQuickSave.Tag = "color:light";
             this.btnActiveTableQuickSave.Text = "Save ACT";
             this.btnActiveTableQuickSave.UseVisualStyleBackColor = false;
+            this.btnActiveTableQuickSave.Click += new System.EventHandler(this.btnActiveTableQuickSave_Click);
             // 
             // groupBox2
             // 
@@ -322,6 +325,7 @@
             this.btnActiveTableLoad.Tag = "color:light";
             this.btnActiveTableLoad.Text = "Load ACT";
             this.btnActiveTableLoad.UseVisualStyleBackColor = false;
+            this.btnActiveTableLoad.Click += new System.EventHandler(this.btnActiveTableLoad_Click);
             // 
             // lbFreezeEngineNbDumps
             // 
@@ -382,6 +386,7 @@
             this.btnActiveTableAddDump.Tag = "color:light";
             this.btnActiveTableAddDump.Text = "Add state to collection";
             this.btnActiveTableAddDump.UseVisualStyleBackColor = false;
+            this.btnActiveTableAddDump.Click += new System.EventHandler(this.btnActiveTableAddDump_Click);
             // 
             // label16
             // 
@@ -408,6 +413,7 @@
             this.btnActiveTableDumpsReset.Tag = "color:light";
             this.btnActiveTableDumpsReset.Text = "Reset dump collection";
             this.btnActiveTableDumpsReset.UseVisualStyleBackColor = false;
+            this.btnActiveTableDumpsReset.Click += new System.EventHandler(this.btnActiveTableDumpsReset_Click);
             // 
             // nmAutoAddSec
             // 
@@ -441,20 +447,21 @@
             this.lbFreezeEngineActiveStatus.TabIndex = 87;
             this.lbFreezeEngineActiveStatus.Text = "Active table status: NOT READY";
             // 
-            // button1
+            // btnActiveTableAddFile
             // 
-            this.button1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(224)))), ((int)(((byte)(224)))), ((int)(((byte)(224)))));
-            this.button1.FlatAppearance.BorderSize = 0;
-            this.button1.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.button1.Font = new System.Drawing.Font("Segoe UI", 8F);
-            this.button1.ForeColor = System.Drawing.Color.Black;
-            this.button1.Location = new System.Drawing.Point(107, 161);
-            this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(71, 23);
-            this.button1.TabIndex = 124;
-            this.button1.Tag = "color:light";
-            this.button1.Text = "Add ACT";
-            this.button1.UseVisualStyleBackColor = false;
+            this.btnActiveTableAddFile.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(224)))), ((int)(((byte)(224)))), ((int)(((byte)(224)))));
+            this.btnActiveTableAddFile.FlatAppearance.BorderSize = 0;
+            this.btnActiveTableAddFile.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnActiveTableAddFile.Font = new System.Drawing.Font("Segoe UI", 8F);
+            this.btnActiveTableAddFile.ForeColor = System.Drawing.Color.Black;
+            this.btnActiveTableAddFile.Location = new System.Drawing.Point(107, 161);
+            this.btnActiveTableAddFile.Name = "btnActiveTableAddFile";
+            this.btnActiveTableAddFile.Size = new System.Drawing.Size(71, 23);
+            this.btnActiveTableAddFile.TabIndex = 124;
+            this.btnActiveTableAddFile.Tag = "color:light";
+            this.btnActiveTableAddFile.Text = "Add ACT";
+            this.btnActiveTableAddFile.UseVisualStyleBackColor = false;
+            this.btnActiveTableAddFile.Click += new System.EventHandler(this.btnActiveTableAddFile_Click);
             // 
             // RTC_VmdAct_Form
             // 
@@ -462,7 +469,7 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.Black;
             this.ClientSize = new System.Drawing.Size(390, 250);
-            this.Controls.Add(this.button1);
+            this.Controls.Add(this.btnActiveTableAddFile);
             this.Controls.Add(this.btnActiveTableSubstractFile);
             this.Controls.Add(this.btnActiveTableGenerate);
             this.Controls.Add(this.btnActiveTableDumpsReset);
@@ -525,6 +532,6 @@
         private System.Windows.Forms.Button btnActiveTableDumpsReset;
         public System.Windows.Forms.NumericUpDown nmAutoAddSec;
         public System.Windows.Forms.Label lbFreezeEngineActiveStatus;
-        public System.Windows.Forms.Button button1;
+        public System.Windows.Forms.Button btnActiveTableAddFile;
     }
 }
