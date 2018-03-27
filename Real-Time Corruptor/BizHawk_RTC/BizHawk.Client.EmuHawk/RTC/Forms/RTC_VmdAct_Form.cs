@@ -61,7 +61,7 @@ namespace RTC
 			{
 				if (value == null)
 				{
-					btnActiveTableQuickSave.ForeColor = Color.Silver;
+					btnActiveTableQuickSave.ForeColor = Color.Black;
 				}
 				else
 				{
@@ -329,7 +329,10 @@ namespace RTC
 
 		private void btnActiveTableQuickSave_Click(object sender, EventArgs e)
 		{
-			SaveActiveTable(false);
+			if (currentFilename == null)
+				SaveActiveTable(false);
+			else
+				SaveActiveTable(true);
 		}
 
 		private void btnActiveTableSubstractFile_Click(object sender, EventArgs e)
@@ -467,8 +470,6 @@ namespace RTC
 		}
 
 		private bool generateVMD()	{
-
-
 
 			MemoryInterface mi = RTC_MemoryDomains.MemoryInterfaces[cbSelectedMemoryDomain.SelectedItem.ToString()];
 			VirtualMemoryDomain VMD = new VirtualMemoryDomain();
