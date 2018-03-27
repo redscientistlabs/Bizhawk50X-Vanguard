@@ -285,7 +285,11 @@ namespace RTC
                     RTC_MemoryDomains.RemoveVMD((cmd.objectValue as string));
                     break;
 
-                case CommandType.REMOTE_DOMAIN_SETSELECTEDDOMAINS:
+				case CommandType.REMOTE_DOMAIN_ACTIVETABLE_MAKEDUMP:
+					RTC_MemoryDomains.generateActiveTableDump((string)(cmd.objectValue as object[])[0],(string)(cmd.objectValue as object[])[1]);
+					break;
+
+				case CommandType.REMOTE_DOMAIN_SETSELECTEDDOMAINS:
                     RTC_MemoryDomains.UpdateSelectedDomains((string[])cmd.objectValue);
                     break;
 

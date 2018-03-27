@@ -31,12 +31,14 @@ namespace RTC
 				if (value)
 				{
 					lbFreezeEngineActiveStatus.Text = "Active table status: READY";
-					btnActiveTableSubstractFile.ForeColor = Color.Green;
+					btnActiveTableSubstractFile.ForeColor = Color.DarkGreen;
+					btnActiveTableAddFile.ForeColor = Color.DarkGreen;
 				}
 				else
 				{
 					lbFreezeEngineActiveStatus.Text = "Active table status: NOT READY";
 					btnActiveTableSubstractFile.ForeColor = Color.Red;
+					btnActiveTableAddFile.ForeColor = Color.Red;
 				}
 
 				if (ActiveTableGenerated != null && ActiveTableGenerated.Length > 0)
@@ -234,29 +236,23 @@ namespace RTC
 				return 0;
 		}
 
+
 		private void btnActiveTableAddDump_Click(object sender, EventArgs e)
 		{
 
-			MemoryStream ms = new MemoryStream();
-
+			//The netcore operation isn't huge, but the operation is blocking on the bizhawk side so we need to ensure it doesn't disconnect when it dumps to file
+			
 
 			if (ActiveTableDumps == null)
 				return;
 
-			List<byte> newDump = new List<byte>();
-			for (long i = 0; i < RTC_MemoryDomains.getInterface(cbSelectedMemoryDomain.SelectedItem.ToString()).Size; i++)
-			{
-				newDump.Add((byte)RTC_Core.SendCommandToBizhawk(new RTC_Command(CommandType.REMOTE_DOMAIN_PEEKBYTE)
-				{
-					objectValue = new object[] { cbSelectedMemoryDomain.SelectedItem.ToString(), i }
-				}, true));
-				//newDump.Add(RTC_MemoryDomains._domain.PeekByte(i));
-			}
-
 			string key = RTC_Core.GetRandomKey();
-			File.WriteAllBytes(RTC_Core.rtcDir + "\\MEMORYDUMPS\\" + key + ".dmp", newDump.ToArray());
-			ActiveTableDumps.Add(key);
+			RTC_Core.SendCommandToBizhawk(new RTC_Command(CommandType.REMOTE_DOMAIN_ACTIVETABLE_MAKEDUMP)
+			{
+				objectValue = new object[] { cbSelectedMemoryDomain.SelectedItem.ToString(), key }
+			}, true);
 
+			ActiveTableDumps.Add(key);
 			lbFreezeEngineNbDumps.Text = "Memory dumps collected: " + ActiveTableDumps.Count.ToString();
 
 			GC.Collect();
@@ -265,10 +261,17 @@ namespace RTC
 
 		private void btnActiveTableDumpsReset_Click(object sender, EventArgs e)
 		{
+			if(cbSelectedMemoryDomain == null)
+			{
+				MessageBox.Show("Select a domain before initializing the Active Table Generator!");
+				return;
+			}
 
 			if (!FirstInit)
 			{
 				FirstInit = true;
+				btnActiveTableDumpsReset.Text = "Reset";
+				btnActiveTableDumpsReset.ForeColor = Color.Black;
 				btnActiveTableAddDump.ForeColor = Color.FromArgb(192, 255, 192);
 				cbAutoAddDump.Enabled = true;
 				btnActiveTableGenerate.ForeColor = Color.OrangeRed;
@@ -419,7 +422,7 @@ namespace RTC
 			GC.WaitForPendingFinalizers();
 
 			foreach (long item in ActiveTableGenerated)
-				if (additiveActiveTable.Contains(item) && !newActiveTable.Contains(item))
+				if (additiveActiveTable.Contains(item))
 					newActiveTable.Add(item);
 
 
@@ -471,6 +474,8 @@ namespace RTC
 
 		private bool generateVMD()	{
 
+
+			var token = RTC_NetCore.HugeOperationStart("LAZY");
 			MemoryInterface mi = RTC_MemoryDomains.MemoryInterfaces[cbSelectedMemoryDomain.SelectedItem.ToString()];
 			VirtualMemoryDomain VMD = new VirtualMemoryDomain();
 			VmdPrototype proto = new VmdPrototype();
@@ -486,24 +491,26 @@ namespace RTC
 			if (VMD.PointerAddresses.Count == 0)
 			{
 				MessageBox.Show("The resulting VMD had no pointers so the operation got cancelled.");
+				RTC_NetCore.HugeOperationEnd(token);
 				return false;
 			}
 
 			RTC_MemoryDomains.AddVMD(VMD);
 
-			//send to vmd pool menu
 			RTC_Core.vmdPoolForm.RefreshVMDs();
-			RTC_Core.ecForm.cbMemoryDomainTool.SelectedIndex = 1;
 
 			GC.Collect();
 			GC.WaitForPendingFinalizers();
+
+			RTC_NetCore.HugeOperationEnd(token);
 			return true;
 		}
 
 
 		private void btnActiveTableGenerate_Click(object sender, EventArgs e)
 		{
-			generateActiveTable();
+			if(!ActiveTableReady)
+				generateActiveTable();
 			generateVMD();
 		}
 

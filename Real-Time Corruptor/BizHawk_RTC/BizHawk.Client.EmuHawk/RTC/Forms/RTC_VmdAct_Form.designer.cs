@@ -96,7 +96,7 @@
             this.btnActiveTableGenerate.Size = new System.Drawing.Size(161, 19);
             this.btnActiveTableGenerate.TabIndex = 84;
             this.btnActiveTableGenerate.Tag = "color:light";
-            this.btnActiveTableGenerate.Text = "Generate VMD";
+            this.btnActiveTableGenerate.Text = "Generate VMD from ACT";
             this.btnActiveTableGenerate.UseVisualStyleBackColor = false;
             this.btnActiveTableGenerate.Click += new System.EventHandler(this.btnActiveTableGenerate_Click);
             // 
@@ -424,13 +424,13 @@
             this.btnActiveTableDumpsReset.FlatAppearance.BorderSize = 0;
             this.btnActiveTableDumpsReset.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnActiveTableDumpsReset.Font = new System.Drawing.Font("Segoe UI", 8F);
-            this.btnActiveTableDumpsReset.ForeColor = System.Drawing.Color.Black;
+            this.btnActiveTableDumpsReset.ForeColor = System.Drawing.Color.DarkGreen;
             this.btnActiveTableDumpsReset.Location = new System.Drawing.Point(97, 9);
             this.btnActiveTableDumpsReset.Name = "btnActiveTableDumpsReset";
             this.btnActiveTableDumpsReset.Size = new System.Drawing.Size(83, 23);
             this.btnActiveTableDumpsReset.TabIndex = 83;
             this.btnActiveTableDumpsReset.Tag = "color:light";
-            this.btnActiveTableDumpsReset.Text = "Reset dump collection";
+            this.btnActiveTableDumpsReset.Text = "Initialize";
             this.btnActiveTableDumpsReset.UseVisualStyleBackColor = false;
             this.btnActiveTableDumpsReset.Click += new System.EventHandler(this.btnActiveTableDumpsReset_Click);
             // 

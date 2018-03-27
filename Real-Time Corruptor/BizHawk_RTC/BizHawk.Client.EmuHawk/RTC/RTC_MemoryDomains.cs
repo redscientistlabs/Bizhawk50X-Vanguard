@@ -556,7 +556,21 @@ namespace RTC
 
         }
 
-        public static byte[] getDomainData(string domain)
+		public static void generateActiveTableDump(string domain, string key)
+		{
+			var token = RTC_NetCore.HugeOperationStart("LAZY");
+			MemoryInterface mi;
+			mi = MemoryInterfaces[domain];
+
+			byte[] dump =  new byte[mi.Size];
+			dump = mi.getDump();
+
+			File.WriteAllBytes(RTC_Core.rtcDir + "\\MEMORYDUMPS\\" + key + ".dmp", dump.ToArray());
+			RTC_NetCore.HugeOperationEnd(token);
+		}
+
+
+		public static byte[] getDomainData(string domain)
         {
             MemoryInterface mi;
 
