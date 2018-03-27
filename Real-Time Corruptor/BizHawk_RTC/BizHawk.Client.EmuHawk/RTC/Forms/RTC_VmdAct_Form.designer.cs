@@ -378,6 +378,7 @@
             this.cbAutoAddDump.TabIndex = 122;
             this.cbAutoAddDump.Text = "Auto-add every";
             this.cbAutoAddDump.UseVisualStyleBackColor = true;
+            this.cbAutoAddDump.CheckedChanged += new System.EventHandler(this.cbAutoAddDump_CheckedChanged);
             // 
             // lbFreezeEngineDomainAddressSize
             // 
@@ -453,6 +454,7 @@
             0,
             0,
             0});
+            this.nmAutoAddSec.ValueChanged += new System.EventHandler(this.nmAutoAddSec_ValueChanged);
             // 
             // lbFreezeEngineActiveStatus
             // 

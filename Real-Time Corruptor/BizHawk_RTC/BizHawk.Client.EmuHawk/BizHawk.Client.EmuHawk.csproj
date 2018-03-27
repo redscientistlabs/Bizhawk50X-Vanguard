@@ -795,7 +795,6 @@
     <Compile Include="RTC\Forms\RTC_VmdPool_Form.designer.cs">
       <DependentUpon>RTC_VmdPool_Form.cs</DependentUpon>
     </Compile>
-    <Compile Include="RTC\RTC_ActiveTable.cs" />
     <Compile Include="RTC\RTC_Core.cs" />
     <Compile Include="RTC\RTC_Diff.cs" />
     <Compile Include="RTC\RTC_Enums.cs" />

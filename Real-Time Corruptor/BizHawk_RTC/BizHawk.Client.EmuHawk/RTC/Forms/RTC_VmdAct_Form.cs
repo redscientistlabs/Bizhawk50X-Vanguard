@@ -537,5 +537,29 @@ namespace RTC
 			ActivityThreshold = Convert.ToDouble(nmActiveTableActivityThreshold.Value);
 
 		}
+
+		private void cbAutoAddDump_CheckedChanged(object sender, EventArgs e)
+		{
+
+			if (ActiveTableAutodump != null)
+			{
+				ActiveTableAutodump.Stop();
+				ActiveTableAutodump = null;
+			}
+
+			if (cbAutoAddDump.Checked)
+			{
+				ActiveTableAutodump = new Timer();
+				ActiveTableAutodump.Interval = Convert.ToInt32(nmAutoAddSec.Value) * 1000;
+				ActiveTableAutodump.Tick += new EventHandler(btnActiveTableAddDump_Click);
+				ActiveTableAutodump.Start();
+			}
+		}
+
+		private void nmAutoAddSec_ValueChanged(object sender, EventArgs e)
+		{
+			if (ActiveTableAutodump != null)
+				ActiveTableAutodump.Interval = Convert.ToInt32(nmAutoAddSec.Value) * 1000;
+		}
 	}
 }
