@@ -39,7 +39,6 @@
             this.label14 = new System.Windows.Forms.Label();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
             this.label12 = new System.Windows.Forms.Label();
-            this.cbSelectedMemoryDomain = new System.Windows.Forms.ComboBox();
             this.nmActiveTableCapOffset = new System.Windows.Forms.NumericUpDown();
             this.rbActiveTableCapBlockEnd = new System.Windows.Forms.RadioButton();
             this.rbActiveTableCapBlockStart = new System.Windows.Forms.RadioButton();
@@ -47,6 +46,7 @@
             this.nmActiveTableCapSize = new System.Windows.Forms.NumericUpDown();
             this.label6 = new System.Windows.Forms.Label();
             this.cbActiveTableCapSize = new System.Windows.Forms.CheckBox();
+            this.cbSelectedMemoryDomain = new System.Windows.Forms.ComboBox();
             this.btnActiveTableLoad = new System.Windows.Forms.Button();
             this.lbFreezeEngineNbDumps = new System.Windows.Forms.Label();
             this.lbFreezeEngineActiveTableSize = new System.Windows.Forms.Label();
@@ -153,7 +153,7 @@
             // track_ActiveTableActivityThreshold
             // 
             this.track_ActiveTableActivityThreshold.Location = new System.Drawing.Point(8, 36);
-            this.track_ActiveTableActivityThreshold.Maximum = 100;
+            this.track_ActiveTableActivityThreshold.Maximum = 9999;
             this.track_ActiveTableActivityThreshold.Name = "track_ActiveTableActivityThreshold";
             this.track_ActiveTableActivityThreshold.Size = new System.Drawing.Size(171, 45);
             this.track_ActiveTableActivityThreshold.TabIndex = 85;
@@ -176,10 +176,10 @@
             this.nmActiveTableActivityThreshold.ForeColor = System.Drawing.Color.White;
             this.nmActiveTableActivityThreshold.Location = new System.Drawing.Point(108, 15);
             this.nmActiveTableActivityThreshold.Maximum = new decimal(new int[] {
-            999,
+            9999,
             0,
             0,
-            65536});
+            131072});
             this.nmActiveTableActivityThreshold.Name = "nmActiveTableActivityThreshold";
             this.nmActiveTableActivityThreshold.Size = new System.Drawing.Size(53, 22);
             this.nmActiveTableActivityThreshold.TabIndex = 120;
@@ -218,20 +218,6 @@
             this.label12.Size = new System.Drawing.Size(42, 13);
             this.label12.TabIndex = 80;
             this.label12.Text = "Offset:";
-            // 
-            // cbSelectedMemoryDomain
-            // 
-            this.cbSelectedMemoryDomain.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
-            this.cbSelectedMemoryDomain.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.cbSelectedMemoryDomain.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.cbSelectedMemoryDomain.Font = new System.Drawing.Font("Segoe UI", 9.75F);
-            this.cbSelectedMemoryDomain.ForeColor = System.Drawing.Color.White;
-            this.cbSelectedMemoryDomain.FormattingEnabled = true;
-            this.cbSelectedMemoryDomain.Location = new System.Drawing.Point(11, 62);
-            this.cbSelectedMemoryDomain.Name = "cbSelectedMemoryDomain";
-            this.cbSelectedMemoryDomain.Size = new System.Drawing.Size(169, 25);
-            this.cbSelectedMemoryDomain.TabIndex = 125;
-            this.cbSelectedMemoryDomain.Tag = "color:dark";
             // 
             // nmActiveTableCapOffset
             // 
@@ -328,6 +314,20 @@
             this.cbActiveTableCapSize.TabIndex = 77;
             this.cbActiveTableCapSize.Text = "Cap active table size";
             this.cbActiveTableCapSize.UseVisualStyleBackColor = true;
+            // 
+            // cbSelectedMemoryDomain
+            // 
+            this.cbSelectedMemoryDomain.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
+            this.cbSelectedMemoryDomain.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.cbSelectedMemoryDomain.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.cbSelectedMemoryDomain.Font = new System.Drawing.Font("Segoe UI", 9.75F);
+            this.cbSelectedMemoryDomain.ForeColor = System.Drawing.Color.White;
+            this.cbSelectedMemoryDomain.FormattingEnabled = true;
+            this.cbSelectedMemoryDomain.Location = new System.Drawing.Point(11, 62);
+            this.cbSelectedMemoryDomain.Name = "cbSelectedMemoryDomain";
+            this.cbSelectedMemoryDomain.Size = new System.Drawing.Size(169, 25);
+            this.cbSelectedMemoryDomain.TabIndex = 125;
+            this.cbSelectedMemoryDomain.Tag = "color:dark";
             // 
             // btnActiveTableLoad
             // 

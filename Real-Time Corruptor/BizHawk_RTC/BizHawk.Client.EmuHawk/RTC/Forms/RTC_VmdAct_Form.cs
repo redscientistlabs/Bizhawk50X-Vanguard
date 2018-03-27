@@ -329,7 +329,7 @@ namespace RTC
 
 		private void btnActiveTableQuickSave_Click(object sender, EventArgs e)
 		{
-			SaveActiveTable(true);
+			SaveActiveTable(false);
 		}
 
 		private void btnActiveTableSubstractFile_Click(object sender, EventArgs e)

@@ -1693,12 +1693,16 @@ namespace RTC
         }
     }
 
+
     [Serializable()]
     public class ActiveTableObject
     {
         public long[] data;
 
-        public ActiveTableObject(long[] _data)
+		public ActiveTableObject()
+		{
+		}
+		public ActiveTableObject(long[] _data)
         {
             data = _data;
         }
