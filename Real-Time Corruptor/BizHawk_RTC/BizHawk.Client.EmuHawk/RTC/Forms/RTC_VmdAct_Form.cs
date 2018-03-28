@@ -17,7 +17,8 @@ namespace RTC
         {
             InitializeComponent();
         }
-		
+
+		public bool ActLoadedFromFile = false;
 		public bool FirstInit = false;
 		public bool _activeTableReady = false;
 		public bool ActiveTableReady
@@ -33,12 +34,16 @@ namespace RTC
 					lbFreezeEngineActiveStatus.Text = "Active table status: READY";
 					btnActiveTableSubstractFile.ForeColor = Color.DarkGreen;
 					btnActiveTableAddFile.ForeColor = Color.DarkGreen;
+					btnActiveTableSubstractFile.Enabled = true;
+					btnActiveTableAddFile.Enabled = true;
 				}
 				else
 				{
 					lbFreezeEngineActiveStatus.Text = "Active table status: NOT READY";
 					btnActiveTableSubstractFile.ForeColor = Color.Red;
 					btnActiveTableAddFile.ForeColor = Color.Red;
+					btnActiveTableSubstractFile.Enabled = false;
+					btnActiveTableAddFile.Enabled = false;
 				}
 
 				if (ActiveTableGenerated != null && ActiveTableGenerated.Length > 0)
@@ -239,10 +244,11 @@ namespace RTC
 
 		private void btnActiveTableAddDump_Click(object sender, EventArgs e)
 		{
-
-			//The netcore operation isn't huge, but the operation is blocking on the bizhawk side so we need to ensure it doesn't disconnect when it dumps to file
-			
-
+			if (cbSelectedMemoryDomain == null || RTC_MemoryDomains.getInterface(cbSelectedMemoryDomain.SelectedItem.ToString()).Size.ToString() == null)
+			{
+				MessageBox.Show("Select a valid domain before continuing!");
+				return;
+			}
 			if (ActiveTableDumps == null)
 				return;
 
@@ -261,20 +267,20 @@ namespace RTC
 
 		private void btnActiveTableDumpsReset_Click(object sender, EventArgs e)
 		{
-			if(cbSelectedMemoryDomain == null)
-			{
-				MessageBox.Show("Select a domain before initializing the Active Table Generator!");
-				return;
-			}
+			ActLoadedFromFile = false;
 
 			if (!FirstInit)
 			{
 				FirstInit = true;
 				btnActiveTableDumpsReset.Text = "Reset";
 				btnActiveTableDumpsReset.ForeColor = Color.Black;
+
 				btnActiveTableAddDump.ForeColor = Color.FromArgb(192, 255, 192);
+				btnActiveTableGenerate.Enabled = true;
+				btnActiveTableAddDump.Enabled = true;
+				btnActiveTableLoad.Enabled = true;
+				btnActiveTableQuickSave.Enabled = true;
 				cbAutoAddDump.Enabled = true;
-				btnActiveTableGenerate.ForeColor = Color.OrangeRed;
 			}
 
 			lbFreezeEngineDomainAddressSize.Text = "Domain size: " + RTC_MemoryDomains.getInterface(cbSelectedMemoryDomain.SelectedItem.ToString()).Size.ToString();
@@ -301,33 +307,42 @@ namespace RTC
 
 			RTC_Core.StopSound();
 
-			OpenFileDialog OpenFileDialog1 = new OpenFileDialog();
-			OpenFileDialog1.DefaultExt = "act";
-			OpenFileDialog1.Title = "Open ActiveTable File";
-			OpenFileDialog1.Filter = "ACT files|*.act";
-			OpenFileDialog1.RestoreDirectory = true;
-			if (OpenFileDialog1.ShowDialog() == DialogResult.OK)
+
+			try
 			{
-				currentFilename = OpenFileDialog1.FileName.ToString();
-			}
-			else
-			{
+				OpenFileDialog OpenFileDialog1 = new OpenFileDialog();
+				OpenFileDialog1.DefaultExt = "act";
+				OpenFileDialog1.Title = "Open ActiveTable File";
+				OpenFileDialog1.Filter = "ACT files|*.act";
+				OpenFileDialog1.RestoreDirectory = true;
+				if (OpenFileDialog1.ShowDialog() == DialogResult.OK)
+				{
+					currentFilename = OpenFileDialog1.FileName.ToString();
+				}
+				else
+				{
+					RTC_Core.StartSound();
+					return;
+				}
+
+				FileStream FS;
+				//BinaryFormatter bformatter = new BinaryFormatter();
+				XmlSerializer xs = new XmlSerializer(typeof(ActiveTableObject));
+				FS = File.Open(currentFilename, FileMode.OpenOrCreate);
+				//ActiveTableObject act = (ActiveTableObject)bformatter.Deserialize(FS);
+				ActiveTableObject act = (ActiveTableObject)xs.Deserialize(FS);
+				FS.Close();
+
+				SetActiveTable(act);
+				ActLoadedFromFile = true;
+
+
 				RTC_Core.StartSound();
-				return;
 			}
-
-			FileStream FS;
-			//BinaryFormatter bformatter = new BinaryFormatter();
-			XmlSerializer xs = new XmlSerializer(typeof(ActiveTableObject));
-			FS = File.Open(currentFilename, FileMode.OpenOrCreate);
-			//ActiveTableObject act = (ActiveTableObject)bformatter.Deserialize(FS);
-			ActiveTableObject act = (ActiveTableObject)xs.Deserialize(FS);
-			FS.Close();
-
-			SetActiveTable(act);
-
-
-			RTC_Core.StartSound();
+			catch
+			{
+				MessageBox.Show($"The ACT xml file {currentFilename} could not be loaded.");
+			}
 		}
 
 		private void btnActiveTableQuickSave_Click(object sender, EventArgs e)
@@ -388,128 +403,156 @@ namespace RTC
 
 		private void btnActiveTableAddFile_Click(object sender, EventArgs e)
 		{
-
-
-			RTC_Core.StopSound();
-
-			string tempFilename;
-
-			OpenFileDialog OpenFileDialog1 = new OpenFileDialog();
-			OpenFileDialog1.DefaultExt = "act";
-			OpenFileDialog1.Title = "Open ActiveTable File";
-			OpenFileDialog1.Filter = "ACT files|*.act";
-			OpenFileDialog1.RestoreDirectory = true;
-			if (OpenFileDialog1.ShowDialog() == DialogResult.OK)
+			try
 			{
-				tempFilename = OpenFileDialog1.FileName.ToString();
+
+				RTC_Core.StopSound();
+
+				string tempFilename;
+
+				OpenFileDialog OpenFileDialog1 = new OpenFileDialog();
+				OpenFileDialog1.DefaultExt = "act";
+				OpenFileDialog1.Title = "Open ActiveTable File";
+				OpenFileDialog1.Filter = "ACT files|*.act";
+				OpenFileDialog1.RestoreDirectory = true;
+				if (OpenFileDialog1.ShowDialog() == DialogResult.OK)
+				{
+					tempFilename = OpenFileDialog1.FileName.ToString();
+				}
+				else
+					return;
+
+				FileStream FS;
+				//BinaryFormatter bformatter = new BinaryFormatter();
+				XmlSerializer xs = new XmlSerializer(typeof(ActiveTableObject));
+				FS = File.Open(tempFilename, FileMode.OpenOrCreate);
+				//ActiveTableObject act = (ActiveTableObject)bformatter.Deserialize(FS);
+				ActiveTableObject act = (ActiveTableObject)xs.Deserialize(FS);
+				FS.Close();
+
+				long[] additiveActiveTable = act.data;
+
+				List<long> newActiveTable = new List<long>();
+
+				GC.Collect();
+				GC.WaitForPendingFinalizers();
+
+				foreach (long item in ActiveTableGenerated)
+					if (additiveActiveTable.Contains(item))
+						newActiveTable.Add(item);
+
+
+				ActiveTableGenerated = newActiveTable.ToArray();
+				lbFreezeEngineActiveTableSize.Text = "Active table size: " + ActiveTableGenerated.Length.ToString();
+
+				GC.Collect();
+				GC.WaitForPendingFinalizers();
+
+				RTC_Core.StartSound();
 			}
-			else
-				return;
-
-			FileStream FS;
-			//BinaryFormatter bformatter = new BinaryFormatter();
-			XmlSerializer xs = new XmlSerializer(typeof(ActiveTableObject));
-			FS = File.Open(tempFilename, FileMode.OpenOrCreate);
-			//ActiveTableObject act = (ActiveTableObject)bformatter.Deserialize(FS);
-			ActiveTableObject act = (ActiveTableObject)xs.Deserialize(FS);
-			FS.Close();
-
-			long[] additiveActiveTable = act.data;
-
-			List<long> newActiveTable = new List<long>();
-
-			GC.Collect();
-			GC.WaitForPendingFinalizers();
-
-			foreach (long item in ActiveTableGenerated)
-				if (additiveActiveTable.Contains(item))
-					newActiveTable.Add(item);
-
-
-			ActiveTableGenerated = newActiveTable.ToArray();
-			lbFreezeEngineActiveTableSize.Text = "Active table size: " + ActiveTableGenerated.Length.ToString();
-
-			GC.Collect();
-			GC.WaitForPendingFinalizers();
-
-			RTC_Core.StartSound();
+			catch
+			{
+				MessageBox.Show($"Unable to add the active table! Are you sure an existing table was loaded?");
+			}
 		}
 
 		private void generateActiveTable()
 		{
+			try { 
+				if (!ComputeActiveTableActivity())
+					return; //exit generation if activity computation failed
 
-			if (!ComputeActiveTableActivity())
-				return; //exit generation if activity computation failed
-
-			List<long> newActiveTable = new List<long>();
-			double computedThreshold = (double)ActiveTableDumps.Count * (ActivityThreshold / 100d) + 1d;
-			bool ExcludeEverchanging = cbActiveTableExclude100percent.Checked;
+				List<long> newActiveTable = new List<long>();
+				double computedThreshold = (double)ActiveTableDumps.Count * (ActivityThreshold / 100d) + 1d;
+				bool ExcludeEverchanging = cbActiveTableExclude100percent.Checked;
 
 
-			for (int i = 0; i < ActiveTableActivity.Length; i++)
-			{
-				if ((double)ActiveTableActivity[i] > computedThreshold && (!ExcludeEverchanging || ActiveTableActivity[i] != (long)ActiveTableDumps.Count))
-					newActiveTable.Add(i);
+				for (int i = 0; i < ActiveTableActivity.Length; i++)
+				{
+					if ((double)ActiveTableActivity[i] > computedThreshold && (!ExcludeEverchanging || ActiveTableActivity[i] != (long)ActiveTableDumps.Count))
+						newActiveTable.Add(i);
+				}
+
+				long[] tempActiveTable = newActiveTable.ToArray();
+
+
+				if (cbActiveTableCapSize.Checked && nmActiveTableCapSize.Value < tempActiveTable.Length)
+					ActiveTableGenerated = CapActiveTable(tempActiveTable);
+				else
+					ActiveTableGenerated = tempActiveTable;
+
+				lbFreezeEngineActiveTableSize.Text = "Active table size: " + ActiveTableGenerated.Length.ToString();
+
+
+				ActiveTableReady = true;
+				currentFilename = null;
+
+				GC.Collect();
+				GC.WaitForPendingFinalizers();
+
 			}
-
-			long[] tempActiveTable = newActiveTable.ToArray();
-
-
-			if (cbActiveTableCapSize.Checked && nmActiveTableCapSize.Value < tempActiveTable.Length)
-				ActiveTableGenerated = CapActiveTable(tempActiveTable);
-			else
-				ActiveTableGenerated = tempActiveTable;
-
-
-
-			lbFreezeEngineActiveTableSize.Text = "Active table size: " + ActiveTableGenerated.Length.ToString();
-
-
-			ActiveTableReady = true;
-			currentFilename = null;
-
-			GC.Collect();
-			GC.WaitForPendingFinalizers();
+			catch (Exception ex)
+			{
+				MessageBox.Show("Something went wrong in when generating the active table. \n" +
+								"This is not a BizHawk error so you should probably send a screenshot of this to the devs\n\n" +
+								ex.ToString());
+				return;
+			}
 		}
 
-		private bool generateVMD()	{
+		private void generateVMD() {
 
+			try { 
+				var token = RTC_NetCore.HugeOperationStart("LAZY");
+				MemoryInterface mi = RTC_MemoryDomains.MemoryInterfaces[cbSelectedMemoryDomain.SelectedItem.ToString()];
+				VirtualMemoryDomain VMD = new VirtualMemoryDomain();
+				VmdPrototype proto = new VmdPrototype();
 
-			var token = RTC_NetCore.HugeOperationStart("LAZY");
-			MemoryInterface mi = RTC_MemoryDomains.MemoryInterfaces[cbSelectedMemoryDomain.SelectedItem.ToString()];
-			VirtualMemoryDomain VMD = new VirtualMemoryDomain();
-			VmdPrototype proto = new VmdPrototype();
+				proto.GenDomain = cbSelectedMemoryDomain.SelectedItem.ToString();
+				proto.VmdName = RTC_Core.GetRandomKey();
+				proto.BigEndian = mi.BigEndian;
+				proto.WordSize = mi.WordSize;
+				proto.PointerSpacer = 1;
+				foreach (int address in ActiveTableGenerated)
+					proto.addSingles.Add(address);
+				VMD = proto.Generate();
+				if (VMD.PointerAddresses.Count == 0)
+				{
+					MessageBox.Show("The resulting VMD had no pointers so the operation got cancelled.");
+					RTC_NetCore.HugeOperationEnd(token);
+					return;
+				}
 
-			proto.GenDomain = cbSelectedMemoryDomain.SelectedItem.ToString();
-			proto.VmdName = RTC_Core.GetRandomKey();
-			proto.BigEndian = mi.BigEndian;
-			proto.WordSize = mi.WordSize;
-			proto.PointerSpacer = 1;
-			foreach (int address in ActiveTableGenerated)
-				proto.addSingles.Add(address);
-			VMD = proto.Generate();
-			if (VMD.PointerAddresses.Count == 0)
-			{
-				MessageBox.Show("The resulting VMD had no pointers so the operation got cancelled.");
+				RTC_MemoryDomains.AddVMD(VMD);
+
+				RTC_Core.vmdPoolForm.RefreshVMDs();
+
+				GC.Collect();
+				GC.WaitForPendingFinalizers();
+
 				RTC_NetCore.HugeOperationEnd(token);
-				return false;
+				return;
 			}
-
-			RTC_MemoryDomains.AddVMD(VMD);
-
-			RTC_Core.vmdPoolForm.RefreshVMDs();
-
-			GC.Collect();
-			GC.WaitForPendingFinalizers();
-
-			RTC_NetCore.HugeOperationEnd(token);
-			return true;
+			catch (Exception ex)
+			{
+				MessageBox.Show("Something went wrong in when generating the VMD table. \n" +
+								"This is not a BizHawk error so you should probably send a screenshot of this to the devs\n\n" +
+								ex.ToString());
+				return;
+			}
 		}
 
 
 		private void btnActiveTableGenerate_Click(object sender, EventArgs e)
 		{
-			if(!ActiveTableReady)
+
+			if (cbSelectedMemoryDomain == null || RTC_MemoryDomains.getInterface(cbSelectedMemoryDomain.SelectedItem.ToString()).Size.ToString() == null)
+			{
+				MessageBox.Show("Select a valid domain before continuing!");
+				return;
+			}
+
+			if (!ActLoadedFromFile)
 				generateActiveTable();
 			generateVMD();
 		}
@@ -522,6 +565,9 @@ namespace RTC
 			cbSelectedMemoryDomain.Items.AddRange(RTC_MemoryDomains.MemoryInterfaces.Keys.Where(it => !it.Contains("[V]")).ToArray());
 
 			cbSelectedMemoryDomain.SelectedIndex = 0;
+
+			btnActiveTableDumpsReset.Enabled = true;
+			btnActiveTableDumpsReset.ForeColor = Color.DarkGreen;
 		}
 
 		private void nmActiveTableActivityThreshold_ValueChanged(object sender, EventArgs e)

@@ -71,6 +71,7 @@
             // btnActiveTableSubstractFile
             // 
             this.btnActiveTableSubstractFile.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(224)))), ((int)(((byte)(224)))), ((int)(((byte)(224)))));
+            this.btnActiveTableSubstractFile.Enabled = false;
             this.btnActiveTableSubstractFile.FlatAppearance.BorderSize = 0;
             this.btnActiveTableSubstractFile.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnActiveTableSubstractFile.Font = new System.Drawing.Font("Segoe UI", 8F);
@@ -87,6 +88,7 @@
             // btnActiveTableGenerate
             // 
             this.btnActiveTableGenerate.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(224)))), ((int)(((byte)(224)))), ((int)(((byte)(224)))));
+            this.btnActiveTableGenerate.Enabled = false;
             this.btnActiveTableGenerate.FlatAppearance.BorderSize = 0;
             this.btnActiveTableGenerate.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnActiveTableGenerate.Font = new System.Drawing.Font("Segoe UI", 8F);
@@ -103,6 +105,7 @@
             // btnActiveTableQuickSave
             // 
             this.btnActiveTableQuickSave.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(224)))), ((int)(((byte)(224)))), ((int)(((byte)(224)))));
+            this.btnActiveTableQuickSave.Enabled = false;
             this.btnActiveTableQuickSave.FlatAppearance.BorderSize = 0;
             this.btnActiveTableQuickSave.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnActiveTableQuickSave.Font = new System.Drawing.Font("Segoe UI", 8F);
@@ -332,6 +335,7 @@
             // btnActiveTableLoad
             // 
             this.btnActiveTableLoad.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(224)))), ((int)(((byte)(224)))), ((int)(((byte)(224)))));
+            this.btnActiveTableLoad.Enabled = false;
             this.btnActiveTableLoad.FlatAppearance.BorderSize = 0;
             this.btnActiveTableLoad.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnActiveTableLoad.Font = new System.Drawing.Font("Segoe UI", 8F);
@@ -394,6 +398,7 @@
             // btnActiveTableAddDump
             // 
             this.btnActiveTableAddDump.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(224)))), ((int)(((byte)(224)))), ((int)(((byte)(224)))));
+            this.btnActiveTableAddDump.Enabled = false;
             this.btnActiveTableAddDump.FlatAppearance.BorderSize = 0;
             this.btnActiveTableAddDump.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnActiveTableAddDump.Font = new System.Drawing.Font("Segoe UI", 8F);
@@ -421,10 +426,11 @@
             // btnActiveTableDumpsReset
             // 
             this.btnActiveTableDumpsReset.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(224)))), ((int)(((byte)(224)))), ((int)(((byte)(224)))));
+            this.btnActiveTableDumpsReset.Enabled = false;
             this.btnActiveTableDumpsReset.FlatAppearance.BorderSize = 0;
             this.btnActiveTableDumpsReset.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnActiveTableDumpsReset.Font = new System.Drawing.Font("Segoe UI", 8F);
-            this.btnActiveTableDumpsReset.ForeColor = System.Drawing.Color.DarkGreen;
+            this.btnActiveTableDumpsReset.ForeColor = System.Drawing.Color.Black;
             this.btnActiveTableDumpsReset.Location = new System.Drawing.Point(97, 9);
             this.btnActiveTableDumpsReset.Name = "btnActiveTableDumpsReset";
             this.btnActiveTableDumpsReset.Size = new System.Drawing.Size(83, 23);
@@ -470,6 +476,7 @@
             // btnActiveTableAddFile
             // 
             this.btnActiveTableAddFile.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(224)))), ((int)(((byte)(224)))), ((int)(((byte)(224)))));
+            this.btnActiveTableAddFile.Enabled = false;
             this.btnActiveTableAddFile.FlatAppearance.BorderSize = 0;
             this.btnActiveTableAddFile.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnActiveTableAddFile.Font = new System.Drawing.Font("Segoe UI", 8F);
