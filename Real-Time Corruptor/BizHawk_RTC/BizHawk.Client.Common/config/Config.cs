@@ -578,9 +578,11 @@ namespace BizHawk.Client.Common
 		// it hasn't been absorbed into the new system
 		public bool GB_AsSGB = false;
 		public bool NES_InQuickNES = true;
+		//RTC_Hijack - Change BSNES to default as it exposes more domains
 		public bool SNES_InSnes9x = true;
 		public bool GBA_UsemGBA = true;
-		public bool SGB_UseBsnes = false;
+		//RTC_Hijack - Change BSNES to default as it exposes more domains
+		public bool SGB_UseBsnes = true;
 		public bool GB_UseGBHawk = false;
 		public bool CoreForcingViaGameDB = true;
 		public string LibretroCore;
