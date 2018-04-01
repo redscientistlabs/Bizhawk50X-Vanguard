@@ -213,24 +213,33 @@ namespace RTC
 				{
 					var senderGrid = (DataGridView)sender;
 
+
+					StashKey sk = (StashKey)senderGrid.Rows[e.RowIndex].Cells["Item"].Value;
+
+					if (sk.Note != null)
+						tbNoteBox.Text = sk.Note.Replace("\n", Environment.NewLine);
+					else
+						tbNoteBox.Text = "";
+
 					if (senderGrid.Columns[e.ColumnIndex] is DataGridViewButtonColumn &&
 						e.RowIndex >= 0)
-					{
-						StashKey sk = (StashKey)senderGrid.Rows[e.RowIndex].Cells["Item"].Value;
+						{
+
 						if (RTC_NoteEditor_Form.currentlyOpenNoteForm == null)
-						{
-							RTC_NoteEditor_Form.currentlyOpenNoteForm = new RTC_NoteEditor_Form(sk, senderGrid);
-						}
-						else
-						{
-							if (RTC_NoteEditor_Form.currentlyOpenNoteForm.Visible)
-								RTC_NoteEditor_Form.currentlyOpenNoteForm.Close();
+							{
+								RTC_NoteEditor_Form.currentlyOpenNoteForm = new RTC_NoteEditor_Form(sk, senderGrid);
+							}
+							else
+							{
+								if (RTC_NoteEditor_Form.currentlyOpenNoteForm.Visible)
+									RTC_NoteEditor_Form.currentlyOpenNoteForm.Close();
 
-							RTC_NoteEditor_Form.currentlyOpenNoteForm = new RTC_NoteEditor_Form(sk, senderGrid);
+								RTC_NoteEditor_Form.currentlyOpenNoteForm = new RTC_NoteEditor_Form(sk, senderGrid);
+							}
+
+							return;
 						}
 
-						return;
-					}
 				}
 
 

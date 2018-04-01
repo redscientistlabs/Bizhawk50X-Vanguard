@@ -332,7 +332,7 @@
             this.btnEnableEverything.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnEnableEverything.Font = new System.Drawing.Font("Segoe UI Semibold", 9F, System.Drawing.FontStyle.Bold);
             this.btnEnableEverything.ForeColor = System.Drawing.Color.Black;
-            this.btnEnableEverything.Location = new System.Drawing.Point(370, 171);
+            this.btnEnableEverything.Location = new System.Drawing.Point(369, 171);
             this.btnEnableEverything.Name = "btnEnableEverything";
             this.btnEnableEverything.Size = new System.Drawing.Size(157, 23);
             this.btnEnableEverything.TabIndex = 129;
@@ -350,7 +350,7 @@
             this.btnDuplicateSelected.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnDuplicateSelected.Font = new System.Drawing.Font("Segoe UI Semibold", 9F, System.Drawing.FontStyle.Bold);
             this.btnDuplicateSelected.ForeColor = System.Drawing.Color.Black;
-            this.btnDuplicateSelected.Location = new System.Drawing.Point(370, 197);
+            this.btnDuplicateSelected.Location = new System.Drawing.Point(369, 197);
             this.btnDuplicateSelected.Name = "btnDuplicateSelected";
             this.btnDuplicateSelected.Size = new System.Drawing.Size(157, 23);
             this.btnDuplicateSelected.TabIndex = 130;
@@ -368,7 +368,7 @@
             this.btnSanitizeDuplicates.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnSanitizeDuplicates.Font = new System.Drawing.Font("Segoe UI Semibold", 9F, System.Drawing.FontStyle.Bold);
             this.btnSanitizeDuplicates.ForeColor = System.Drawing.Color.Black;
-            this.btnSanitizeDuplicates.Location = new System.Drawing.Point(370, 119);
+            this.btnSanitizeDuplicates.Location = new System.Drawing.Point(369, 119);
             this.btnSanitizeDuplicates.Name = "btnSanitizeDuplicates";
             this.btnSanitizeDuplicates.Size = new System.Drawing.Size(157, 23);
             this.btnSanitizeDuplicates.TabIndex = 131;

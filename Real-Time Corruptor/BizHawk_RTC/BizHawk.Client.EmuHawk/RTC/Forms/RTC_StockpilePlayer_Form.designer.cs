@@ -37,6 +37,7 @@
             this.label2 = new System.Windows.Forms.Label();
             this.btnBlastToggle = new System.Windows.Forms.Button();
             this.dgvStockpile = new System.Windows.Forms.DataGridView();
+            this.tbNoteBox = new System.Windows.Forms.TextBox();
             this.Item = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.GameName = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.SystemName = new System.Windows.Forms.DataGridViewTextBoxColumn();
@@ -55,7 +56,7 @@
             this.btnNextItem.ForeColor = System.Drawing.Color.Black;
             this.btnNextItem.Location = new System.Drawing.Point(582, 17);
             this.btnNextItem.Name = "btnNextItem";
-            this.btnNextItem.Size = new System.Drawing.Size(57, 32);
+            this.btnNextItem.Size = new System.Drawing.Size(58, 32);
             this.btnNextItem.TabIndex = 127;
             this.btnNextItem.Text = "Next";
             this.btnNextItem.UseVisualStyleBackColor = false;
@@ -113,7 +114,7 @@
             this.label2.AutoSize = true;
             this.label2.Font = new System.Drawing.Font("Segoe UI Semibold", 26.25F, System.Drawing.FontStyle.Bold);
             this.label2.ForeColor = System.Drawing.Color.Bisque;
-            this.label2.Location = new System.Drawing.Point(11, 9);
+            this.label2.Location = new System.Drawing.Point(12, 9);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(271, 47);
             this.label2.TabIndex = 83;
@@ -163,11 +164,29 @@
             this.dgvStockpile.RightToLeft = System.Windows.Forms.RightToLeft.No;
             this.dgvStockpile.RowHeadersVisible = false;
             this.dgvStockpile.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.dgvStockpile.Size = new System.Drawing.Size(627, 391);
+            this.dgvStockpile.Size = new System.Drawing.Size(627, 324);
             this.dgvStockpile.TabIndex = 142;
             this.dgvStockpile.Tag = "color:normal";
             this.dgvStockpile.CellClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dgvStockpile_CellClick);
             this.dgvStockpile.MouseDown += new System.Windows.Forms.MouseEventHandler(this.dgvStockpile_MouseDown);
+            // 
+            // tbNoteBox
+            // 
+            this.tbNoteBox.BackColor = System.Drawing.Color.Gray;
+            this.tbNoteBox.BorderStyle = System.Windows.Forms.BorderStyle.None;
+            this.tbNoteBox.CausesValidation = false;
+            this.tbNoteBox.Cursor = System.Windows.Forms.Cursors.Default;
+            this.tbNoteBox.Font = new System.Drawing.Font("Segoe UI", 8F);
+            this.tbNoteBox.ForeColor = System.Drawing.Color.White;
+            this.tbNoteBox.Location = new System.Drawing.Point(13, 394);
+            this.tbNoteBox.Multiline = true;
+            this.tbNoteBox.Name = "tbNoteBox";
+            this.tbNoteBox.ReadOnly = true;
+            this.tbNoteBox.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
+            this.tbNoteBox.Size = new System.Drawing.Size(627, 69);
+            this.tbNoteBox.TabIndex = 143;
+            this.tbNoteBox.Tag = "color:normal";
+            this.tbNoteBox.Text = "Notes will appear here...";
             // 
             // Item
             // 
@@ -181,14 +200,14 @@
             this.GameName.HeaderText = "Game";
             this.GameName.Name = "GameName";
             this.GameName.ReadOnly = true;
-            this.GameName.Width = 106;
+            this.GameName.Width = 108;
             // 
             // SystemName
             // 
             this.SystemName.HeaderText = "System";
             this.SystemName.Name = "SystemName";
             this.SystemName.ReadOnly = true;
-            this.SystemName.Width = 45;
+            this.SystemName.Width = 50;
             // 
             // SystemCore
             // 
@@ -206,7 +225,7 @@
             this.Note.Name = "Note";
             this.Note.Resizable = System.Windows.Forms.DataGridViewTriState.True;
             this.Note.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.Automatic;
-            this.Note.Width = 35;
+            this.Note.Width = 40;
             // 
             // RTC_StockpilePlayer_Form
             // 
@@ -214,6 +233,7 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
             this.ClientSize = new System.Drawing.Size(655, 515);
+            this.Controls.Add(this.tbNoteBox);
             this.Controls.Add(this.btnBlastToggle);
             this.Controls.Add(this.btnNextItem);
             this.Controls.Add(this.dgvStockpile);
@@ -243,10 +263,11 @@
 		private System.Windows.Forms.Button btnPreviousItem;
 		public System.Windows.Forms.Button btnBlastToggle;
 		public System.Windows.Forms.DataGridView dgvStockpile;
-        private System.Windows.Forms.DataGridViewTextBoxColumn Item;
-        private System.Windows.Forms.DataGridViewTextBoxColumn GameName;
-        private System.Windows.Forms.DataGridViewTextBoxColumn SystemName;
-        private System.Windows.Forms.DataGridViewTextBoxColumn SystemCore;
-        private System.Windows.Forms.DataGridViewButtonColumn Note;
-    }
+		private System.Windows.Forms.TextBox tbNoteBox;
+		private System.Windows.Forms.DataGridViewTextBoxColumn Item;
+		private System.Windows.Forms.DataGridViewTextBoxColumn GameName;
+		private System.Windows.Forms.DataGridViewTextBoxColumn SystemName;
+		private System.Windows.Forms.DataGridViewTextBoxColumn SystemCore;
+		private System.Windows.Forms.DataGridViewButtonColumn Note;
+	}
 }
