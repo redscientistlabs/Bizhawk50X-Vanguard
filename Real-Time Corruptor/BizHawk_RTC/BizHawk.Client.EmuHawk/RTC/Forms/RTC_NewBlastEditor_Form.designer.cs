@@ -41,6 +41,7 @@
             this.btnSanitizeDuplicates = new System.Windows.Forms.Button();
             this.lbBlastLayerSize = new System.Windows.Forms.Label();
             this.dgvBlastLayer = new System.Windows.Forms.DataGridView();
+            this.dgvBlastUnitReference = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.dgvBlastEnabled = new System.Windows.Forms.DataGridViewCheckBoxColumn();
             this.dgvPrecision = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.dgvBlastUnitType = new System.Windows.Forms.DataGridViewTextBoxColumn();
@@ -60,7 +61,7 @@
             this.btnCorrupt.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnCorrupt.Font = new System.Drawing.Font("Segoe UI Semibold", 9F, System.Drawing.FontStyle.Bold);
             this.btnCorrupt.ForeColor = System.Drawing.Color.OrangeRed;
-            this.btnCorrupt.Location = new System.Drawing.Point(815, 475);
+            this.btnCorrupt.Location = new System.Drawing.Point(759, 475);
             this.btnCorrupt.Name = "btnCorrupt";
             this.btnCorrupt.Size = new System.Drawing.Size(157, 23);
             this.btnCorrupt.TabIndex = 13;
@@ -78,7 +79,7 @@
             this.btnLoadCorrupt.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnLoadCorrupt.Font = new System.Drawing.Font("Segoe UI Semibold", 9F, System.Drawing.FontStyle.Bold);
             this.btnLoadCorrupt.ForeColor = System.Drawing.Color.OrangeRed;
-            this.btnLoadCorrupt.Location = new System.Drawing.Point(815, 449);
+            this.btnLoadCorrupt.Location = new System.Drawing.Point(759, 449);
             this.btnLoadCorrupt.Name = "btnLoadCorrupt";
             this.btnLoadCorrupt.Size = new System.Drawing.Size(157, 23);
             this.btnLoadCorrupt.TabIndex = 14;
@@ -96,7 +97,7 @@
             this.btnSendToStash.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnSendToStash.Font = new System.Drawing.Font("Segoe UI Semibold", 9F, System.Drawing.FontStyle.Bold);
             this.btnSendToStash.ForeColor = System.Drawing.Color.OrangeRed;
-            this.btnSendToStash.Location = new System.Drawing.Point(815, 501);
+            this.btnSendToStash.Location = new System.Drawing.Point(759, 501);
             this.btnSendToStash.Name = "btnSendToStash";
             this.btnSendToStash.Size = new System.Drawing.Size(157, 23);
             this.btnSendToStash.TabIndex = 12;
@@ -114,7 +115,7 @@
             this.btnDisable50.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnDisable50.Font = new System.Drawing.Font("Segoe UI Semibold", 9F, System.Drawing.FontStyle.Bold);
             this.btnDisable50.ForeColor = System.Drawing.Color.Black;
-            this.btnDisable50.Location = new System.Drawing.Point(814, 41);
+            this.btnDisable50.Location = new System.Drawing.Point(758, 41);
             this.btnDisable50.Name = "btnDisable50";
             this.btnDisable50.Size = new System.Drawing.Size(157, 23);
             this.btnDisable50.TabIndex = 114;
@@ -132,7 +133,7 @@
             this.btnRemoveDisabled.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnRemoveDisabled.Font = new System.Drawing.Font("Segoe UI Semibold", 9F, System.Drawing.FontStyle.Bold);
             this.btnRemoveDisabled.ForeColor = System.Drawing.Color.Black;
-            this.btnRemoveDisabled.Location = new System.Drawing.Point(814, 93);
+            this.btnRemoveDisabled.Location = new System.Drawing.Point(758, 93);
             this.btnRemoveDisabled.Name = "btnRemoveDisabled";
             this.btnRemoveDisabled.Size = new System.Drawing.Size(157, 23);
             this.btnRemoveDisabled.TabIndex = 115;
@@ -150,7 +151,7 @@
             this.btnInvertDisabled.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnInvertDisabled.Font = new System.Drawing.Font("Segoe UI Semibold", 9F, System.Drawing.FontStyle.Bold);
             this.btnInvertDisabled.ForeColor = System.Drawing.Color.Black;
-            this.btnInvertDisabled.Location = new System.Drawing.Point(814, 67);
+            this.btnInvertDisabled.Location = new System.Drawing.Point(758, 67);
             this.btnInvertDisabled.Name = "btnInvertDisabled";
             this.btnInvertDisabled.Size = new System.Drawing.Size(157, 23);
             this.btnInvertDisabled.TabIndex = 116;
@@ -168,7 +169,7 @@
             this.btnDisableEverything.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnDisableEverything.Font = new System.Drawing.Font("Segoe UI Semibold", 9F, System.Drawing.FontStyle.Bold);
             this.btnDisableEverything.ForeColor = System.Drawing.Color.Black;
-            this.btnDisableEverything.Location = new System.Drawing.Point(814, 146);
+            this.btnDisableEverything.Location = new System.Drawing.Point(758, 146);
             this.btnDisableEverything.Name = "btnDisableEverything";
             this.btnDisableEverything.Size = new System.Drawing.Size(157, 23);
             this.btnDisableEverything.TabIndex = 128;
@@ -186,7 +187,7 @@
             this.btnEnableEverything.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnEnableEverything.Font = new System.Drawing.Font("Segoe UI Semibold", 9F, System.Drawing.FontStyle.Bold);
             this.btnEnableEverything.ForeColor = System.Drawing.Color.Black;
-            this.btnEnableEverything.Location = new System.Drawing.Point(814, 171);
+            this.btnEnableEverything.Location = new System.Drawing.Point(758, 171);
             this.btnEnableEverything.Name = "btnEnableEverything";
             this.btnEnableEverything.Size = new System.Drawing.Size(157, 23);
             this.btnEnableEverything.TabIndex = 129;
@@ -204,7 +205,7 @@
             this.btnDuplicateSelected.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnDuplicateSelected.Font = new System.Drawing.Font("Segoe UI Semibold", 9F, System.Drawing.FontStyle.Bold);
             this.btnDuplicateSelected.ForeColor = System.Drawing.Color.Black;
-            this.btnDuplicateSelected.Location = new System.Drawing.Point(814, 197);
+            this.btnDuplicateSelected.Location = new System.Drawing.Point(758, 197);
             this.btnDuplicateSelected.Name = "btnDuplicateSelected";
             this.btnDuplicateSelected.Size = new System.Drawing.Size(157, 23);
             this.btnDuplicateSelected.TabIndex = 130;
@@ -222,7 +223,7 @@
             this.btnSanitizeDuplicates.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnSanitizeDuplicates.Font = new System.Drawing.Font("Segoe UI Semibold", 9F, System.Drawing.FontStyle.Bold);
             this.btnSanitizeDuplicates.ForeColor = System.Drawing.Color.Black;
-            this.btnSanitizeDuplicates.Location = new System.Drawing.Point(814, 119);
+            this.btnSanitizeDuplicates.Location = new System.Drawing.Point(758, 119);
             this.btnSanitizeDuplicates.Name = "btnSanitizeDuplicates";
             this.btnSanitizeDuplicates.Size = new System.Drawing.Size(157, 23);
             this.btnSanitizeDuplicates.TabIndex = 131;
@@ -238,7 +239,7 @@
             this.lbBlastLayerSize.AutoSize = true;
             this.lbBlastLayerSize.Font = new System.Drawing.Font("Segoe UI", 8F);
             this.lbBlastLayerSize.ForeColor = System.Drawing.Color.White;
-            this.lbBlastLayerSize.Location = new System.Drawing.Point(813, 18);
+            this.lbBlastLayerSize.Location = new System.Drawing.Point(757, 18);
             this.lbBlastLayerSize.Name = "lbBlastLayerSize";
             this.lbBlastLayerSize.Size = new System.Drawing.Size(83, 13);
             this.lbBlastLayerSize.TabIndex = 132;
@@ -250,6 +251,7 @@
             this.dgvBlastLayer.AllowUserToOrderColumns = true;
             this.dgvBlastLayer.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.dgvBlastLayer.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
+            this.dgvBlastUnitReference,
             this.dgvBlastEnabled,
             this.dgvPrecision,
             this.dgvBlastUnitType,
@@ -263,8 +265,15 @@
             this.dgvBlastLayer.Name = "dgvBlastLayer";
             this.dgvBlastLayer.RowHeadersVisible = false;
             this.dgvBlastLayer.RowTemplate.Height = 24;
-            this.dgvBlastLayer.Size = new System.Drawing.Size(801, 483);
+            this.dgvBlastLayer.Size = new System.Drawing.Size(740, 483);
             this.dgvBlastLayer.TabIndex = 133;
+            this.dgvBlastLayer.CellValueChanged += new System.Windows.Forms.DataGridViewCellEventHandler(this.dgvBlastLayer_CellValueChanged);
+            // 
+            // dgvBlastUnitReference
+            // 
+            this.dgvBlastUnitReference.HeaderText = "dgvBlastUnitReference";
+            this.dgvBlastUnitReference.Name = "dgvBlastUnitReference";
+            this.dgvBlastUnitReference.Visible = false;
             // 
             // dgvBlastEnabled
             // 
@@ -276,7 +285,7 @@
             // 
             this.dgvPrecision.HeaderText = "Precision";
             this.dgvPrecision.Name = "dgvPrecision";
-            this.dgvPrecision.Width = 75;
+            this.dgvPrecision.Width = 60;
             // 
             // dgvBlastUnitType
             // 
@@ -313,7 +322,7 @@
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.Gray;
-            this.ClientSize = new System.Drawing.Size(986, 536);
+            this.ClientSize = new System.Drawing.Size(930, 536);
             this.Controls.Add(this.dgvBlastLayer);
             this.Controls.Add(this.lbBlastLayerSize);
             this.Controls.Add(this.btnSanitizeDuplicates);
@@ -351,6 +360,7 @@
 		private System.Windows.Forms.Button btnSanitizeDuplicates;
 		private System.Windows.Forms.Label lbBlastLayerSize;
 		private System.Windows.Forms.DataGridView dgvBlastLayer;
+		private System.Windows.Forms.DataGridViewTextBoxColumn dgvBlastUnitReference;
 		private System.Windows.Forms.DataGridViewCheckBoxColumn dgvBlastEnabled;
 		private System.Windows.Forms.DataGridViewTextBoxColumn dgvPrecision;
 		private System.Windows.Forms.DataGridViewTextBoxColumn dgvBlastUnitType;

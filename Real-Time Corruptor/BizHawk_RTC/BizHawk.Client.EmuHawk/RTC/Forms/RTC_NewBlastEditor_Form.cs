@@ -13,6 +13,8 @@ namespace RTC
 	public partial class RTC_NewBlastEditor_Form : Form
 	{
 		StashKey sk = null;
+		bool initialized = false;
+		bool CurrentlyUpdating = false;
 
 		public RTC_NewBlastEditor_Form()
 		{
@@ -24,14 +26,7 @@ namespace RTC
 			if (_sk == null || _sk.BlastLayer == null || _sk.BlastLayer.Layer == null)
 				return;
 
-			//lbBlastLayer.Items.Clear();
 			sk = (StashKey)_sk.Clone();
-
-			//lbBlastLayer.DataSource = sk.BlastLayer.Layer;
-
-			//foreach (var item in sk.blastlayer.Layer)
-			//	lbBlastLayer.Items.Add(item);
-
 
 			RefreshBlastLayer();
 
@@ -40,16 +35,13 @@ namespace RTC
 
 		public void RefreshBlastLayer()
 		{
-			//dgvBlastLayer.DataSource = null;
-			//dgvBlastLayer.DataSource = sk.BlastLayer.Layer;
+			initialized = false;
 
-
-			//fill list controls
+			//Clear out whatever is there
 			dgvBlastLayer.Rows.Clear();
 
 
 			//Populate the different rows.
-
 			foreach (BlastUnit bu in sk.BlastLayer.Layer)
 			{
 				/*
@@ -110,11 +102,10 @@ namespace RTC
 					destAddress = bp.PipeAddress;
 					blastMode = "Tilt: " + Convert.ToString(bp.TiltValue);
 				}
-				dgvBlastLayer.Rows.Add(enabled, precision, blastType, blastMode, sourceDomain, sourceAddress, destDomain, destAddress);
+				dgvBlastLayer.Rows.Add(bu, enabled, precision, blastType, blastMode, sourceDomain, sourceAddress, destDomain, destAddress);
 			}
-
-
 			lbBlastLayerSize.Text = "BlastLayer size: " + sk.BlastLayer.Layer.Count.ToString();
+			initialized = true;
 
 		}
 
@@ -152,7 +143,14 @@ namespace RTC
 
 		private void btnLoadCorrupt_Click(object sender, EventArgs e)
 		{
-			BlastLayer bl = GenerateBlastLayer();
+			BlastLayer bl = new BlastLayer();
+			
+			foreach (DataGridViewRow row in dgvBlastLayer.Rows)
+			{
+				BlastUnit bu = (BlastUnit)row.Cells["dgvBlastUnitReference"].Value;
+				if (bu.IsEnabled)
+					bl.Layer.Add(bu);
+			}
 
 
 			StashKey newSk = (StashKey)sk.Clone();
@@ -166,8 +164,14 @@ namespace RTC
 
 		private void btnCorrupt_Click(object sender, EventArgs e)
 		{
-			BlastLayer bl = GenerateBlastLayer();
-			
+			BlastLayer bl = new BlastLayer();
+
+			foreach (DataGridViewRow row in dgvBlastLayer.Rows)
+			{
+				BlastUnit bu = (BlastUnit)row.Cells["dgvBlastUnitReference"].Value;
+				if (bu.IsEnabled)
+					bl.Layer.Add(bu);
+			}
 			GC.Collect();
 			GC.WaitForPendingFinalizers();
 
@@ -291,78 +295,57 @@ namespace RTC
 			RefreshBlastLayer();
 		}
 
-		private BlastLayer GenerateBlastLayer()
+		private void dgvBlastLayer_CellValueChanged(object sender, DataGridViewCellEventArgs e)
 		{
-			BlastLayer bl = new BlastLayer();
+			if (!initialized || dgvBlastLayer == null || dgvBlastLayer.SelectedCells == null)
+				return;
 
-			foreach (DataGridViewRow row in dgvBlastLayer.Rows)
+			if (!CurrentlyUpdating)
+			{
+				CurrentlyUpdating = true;
+				DataGridViewRow row = dgvBlastLayer.Rows[dgvBlastLayer.CurrentCell.RowIndex];
 
-				//Only generate if it's enabled
-				
-					switch (row.Cells["dgvBlastUnitType"].Value)
-					{
-						case "RTC.BlastByte":
-							BlastByte bb = new BlastByte();
-							bb.IsEnabled = Convert.ToBoolean((row.Cells["dgvBlastEnabled"].Value));
-							bb.Address = Convert.ToInt64(row.Cells["dgvParam1"].Value);
-							bb.Value = RTC_Extensions.getByteArrayValue(Convert.ToInt32(row.Cells["dgvPrecision"].Value), Convert.ToDecimal(row.Cells["dgvParam2"].Value));
-							bb.Domain = Convert.ToString(row.Cells["dgvParam1Domain"].Value);
-							Enum.TryParse(row.Cells["dgvBUMode"].Value.ToString().ToUpper(), out bb.Type);
-							bl.Layer.Add(bb);
-							break;
-						case "RTC.BlastCheat":
-						BlastCheat bc = new BlastCheat();
-							bc.IsEnabled = Convert.ToBoolean((row.Cells["dgvBlastEnabled"].Value));
-							bc.Address = Convert.ToInt64(row.Cells["dgvParam1"].Value);
-							bc.Value = RTC_Extensions.getByteArrayValue(Convert.ToInt32(row.Cells["dgvPrecision"].Value), Convert.ToDecimal(row.Cells["dgvParam2"].Value));
-							bc.Domain = Convert.ToString(row.Cells["dgvParam1Domain"].Value);
-							if(row.Cells["dgvBUMode"].Value.ToString() == "Freeze");
-								bc.IsFreeze = true;
-							bl.Layer.Add(bc);
-						break;
-						case "RTC.BlastPipe":
-							BlastPipe bp = new BlastPipe();
-							bp.IsEnabled = Convert.ToBoolean((row.Cells["dgvBlastEnabled"].Value));
-							bp.Address = Convert.ToInt64(row.Cells["dgvParam1"].Value);
-							bp.PipeAddress = Convert.ToInt64(row.Cells["dgvParam2"].Value);
-							bp.Domain = Convert.ToString(row.Cells["dgvParam1Domain"].Value);
-							bp.PipeDomain = Convert.ToString(row.Cells["dgvParam2Domain"].Value);
-							bp.TiltValue = Convert.ToInt32(row.Cells["dgvBUMode"].Value.ToString());
-							bl.Layer.Add(bp);
-							break;
-						default:
-							MessageBox.Show("You had an invalid blast unit type! Check your input. The invalid unit is: " + row.Cells["dgvBlastUnitType"].Value);
-							break;
-							
-					}
+				switch (row.Cells["dgvBlastUnitType"].Value)
+				{
+				case "RTC.BlastByte":
+					BlastByte bb = (BlastByte)row.Cells["dgvBlastUnitReference"].Value;
+					bb.IsEnabled = Convert.ToBoolean((row.Cells["dgvBlastEnabled"].Value));
+					bb.Address = Convert.ToInt64(row.Cells["dgvParam1"].Value);
+					bb.Value = RTC_Extensions.getByteArrayValue(Convert.ToInt32(row.Cells["dgvPrecision"].Value), Convert.ToDecimal(row.Cells["dgvParam2"].Value));
+					bb.Domain = Convert.ToString(row.Cells["dgvParam1Domain"].Value);
+					Enum.TryParse(row.Cells["dgvBUMode"].Value.ToString().ToUpper(), out bb.Type);
+					row.Cells["dgvBlastUnitReference"].Value = bb;
+					CurrentlyUpdating = false;
+					break;
+				case "RTC.BlastCheat":
+					BlastCheat bc = (BlastCheat)row.Cells["dgvBlastUnitReference"].Value;
+					bc.IsEnabled = Convert.ToBoolean((row.Cells["dgvBlastEnabled"].Value));
+					bc.Address = Convert.ToInt64(row.Cells["dgvParam1"].Value);
+					bc.Value = RTC_Extensions.getByteArrayValue(Convert.ToInt32(row.Cells["dgvPrecision"].Value), Convert.ToDecimal(row.Cells["dgvParam2"].Value));
+					bc.Domain = Convert.ToString(row.Cells["dgvParam1Domain"].Value);
+					if (row.Cells["dgvBUMode"].Value.ToString() == "Freeze") ;
+					bc.IsFreeze = true;
+					row.Cells["dgvBlastUnitReference"].Value = bc;
+					CurrentlyUpdating = false;
+					break;
+				case "RTC.BlastPipe":
+					BlastPipe bp = (BlastPipe)row.Cells["dgvBlastUnitReference"].Value;
+					bp.IsEnabled = Convert.ToBoolean((row.Cells["dgvBlastEnabled"].Value));
+					bp.Address = Convert.ToInt64(row.Cells["dgvParam1"].Value);
+					bp.PipeAddress = Convert.ToInt64(row.Cells["dgvParam2"].Value);
+					bp.Domain = Convert.ToString(row.Cells["dgvParam1Domain"].Value);
+					bp.PipeDomain = Convert.ToString(row.Cells["dgvParam2Domain"].Value);
+					bp.TiltValue = Convert.ToInt32(row.Cells["dgvBUMode"].Value.ToString());
+					row.Cells["dgvBlastUnitReference"].Value = bp;
+					CurrentlyUpdating = false;
+					break;
+				default:
+					MessageBox.Show("You had an invalid blast unit type! Check your input. The invalid unit is: " + row.Cells["dgvBlastUnitType"].Value);
+					CurrentlyUpdating = false;
+					break;
 
-					/*
-					else if (bu is BlastCheat)
-					{
-						BlastCheat bc = bu as BlastCheat;
-						precision = bc.Value.Length;
-						sourceAddress = bc.Address;
-						sourceDomain = bc.Domain;
-						destAddress = RTC_Extensions.getDecimalValue(bc.Value);
-						if (bc.IsFreeze)
-							blastMode = "Freeze";
-						else
-							blastMode = "HellGenie";
-
-					}
-					else if (bu is BlastPipe)
-					{
-						BlastPipe bp = bu as BlastPipe;
-						precision = bp.PipeSize;
-
-						sourceAddress = bp.Address;
-						sourceDomain = bp.Domain;
-						destDomain = bp.PipeDomain;
-						destAddress = bp.PipeAddress;
-						blastMode = "Tilt: " + Convert.ToString(bp.TiltValue);
-					}
-					*/
-			return bl;
+				}
+			}
 		}
 	}
 }
