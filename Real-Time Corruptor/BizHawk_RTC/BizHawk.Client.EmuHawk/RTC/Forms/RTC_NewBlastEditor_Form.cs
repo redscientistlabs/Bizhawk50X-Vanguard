@@ -166,15 +166,8 @@ namespace RTC
 
 		private void btnCorrupt_Click(object sender, EventArgs e)
 		{
-			BlastLayer bl = new BlastLayer();
-
-			foreach (var item in dgvBlastLayer.Rows)
-			{
-				BlastUnit bu = (item as BlastUnit);
-				if (bu.IsEnabled)
-					bl.Layer.Add(bu);
-			}
-
+			BlastLayer bl = GenerateBlastLayer();
+			
 			GC.Collect();
 			GC.WaitForPendingFinalizers();
 
@@ -318,8 +311,24 @@ namespace RTC
 							bl.Layer.Add(bb);
 							break;
 						case "RTC.BlastCheat":
-							break;
+						BlastCheat bc = new BlastCheat();
+							bc.IsEnabled = Convert.ToBoolean((row.Cells["dgvBlastEnabled"].Value));
+							bc.Address = Convert.ToInt64(row.Cells["dgvParam1"].Value);
+							bc.Value = RTC_Extensions.getByteArrayValue(Convert.ToInt32(row.Cells["dgvPrecision"].Value), Convert.ToDecimal(row.Cells["dgvParam2"].Value));
+							bc.Domain = Convert.ToString(row.Cells["dgvParam1Domain"].Value);
+							if(row.Cells["dgvBUMode"].Value.ToString() == "Freeze");
+								bc.IsFreeze = true;
+							bl.Layer.Add(bc);
+						break;
 						case "RTC.BlastPipe":
+							BlastPipe bp = new BlastPipe();
+							bp.IsEnabled = Convert.ToBoolean((row.Cells["dgvBlastEnabled"].Value));
+							bp.Address = Convert.ToInt64(row.Cells["dgvParam1"].Value);
+							bp.PipeAddress = Convert.ToInt64(row.Cells["dgvParam2"].Value);
+							bp.Domain = Convert.ToString(row.Cells["dgvParam1Domain"].Value);
+							bp.PipeDomain = Convert.ToString(row.Cells["dgvParam2Domain"].Value);
+							bp.TiltValue = Convert.ToInt32(row.Cells["dgvBUMode"].Value.ToString());
+							bl.Layer.Add(bp);
 							break;
 						default:
 							MessageBox.Show("You had an invalid blast unit type! Check your input. The invalid unit is: " + row.Cells["dgvBlastUnitType"].Value);
