@@ -142,36 +142,51 @@ namespace RTC
             return 0;
         }
 
-        public static byte[] getByteArrayValue(byte[] originalValue, decimal newValue)
-        {
-            switch (originalValue.Length)
-            {
-                case 1:
-                    return new byte[] { (byte)newValue };
-                case 2:
-                    return BitConverter.GetBytes(Convert.ToUInt16(newValue));
-                case 4:
-                    return BitConverter.GetBytes(Convert.ToUInt32(newValue));
-            }
+		public static byte[] getByteArrayValue(byte[] originalValue, decimal newValue)
+		{
+			switch (originalValue.Length)
+			{
+				case 1:
+					return new byte[] { (byte)newValue };
+				case 2:
+					return BitConverter.GetBytes(Convert.ToUInt16(newValue));
+				case 4:
+					return BitConverter.GetBytes(Convert.ToUInt32(newValue));
+			}
 
-            return null;
-        }
+			return null;
+		}
 
-        #endregion
+		public static byte[] getByteArrayValue(int precision, decimal newValue)
+		{
+			switch (precision)
+			{
+				case 1:
+					return new byte[] { (byte)newValue };
+				case 2:
+					return BitConverter.GetBytes(Convert.ToUInt16(newValue));
+				case 4:
+					return BitConverter.GetBytes(Convert.ToUInt32(newValue));
+			}
+
+			return null;
+		}
+
+		#endregion
 
 
-        #region COLOR EXTENSIONS
+		#region COLOR EXTENSIONS
 
-        /// <summary>
-        /// Creates color with corrected brightness.
-        /// </summary>
-        /// <param name="color">Color to correct.</param>
-        /// <param name="correctionFactor">The brightness correction factor. Must be between -1 and 1. 
-        /// Negative values produce darker colors.</param>
-        /// <returns>
-        /// Corrected <see cref="Color"/> structure.
-        /// </returns>
-        public static Color ChangeColorBrightness(this Color color, float correctionFactor)
+		/// <summary>
+		/// Creates color with corrected brightness.
+		/// </summary>
+		/// <param name="color">Color to correct.</param>
+		/// <param name="correctionFactor">The brightness correction factor. Must be between -1 and 1. 
+		/// Negative values produce darker colors.</param>
+		/// <returns>
+		/// Corrected <see cref="Color"/> structure.
+		/// </returns>
+		public static Color ChangeColorBrightness(this Color color, float correctionFactor)
         {
             float red = (float)color.R;
             float green = (float)color.G;

@@ -1052,7 +1052,7 @@ namespace RTC
                     {
                         var sk = (dgvStockpile.SelectedRows[0].Cells[0].Value as StashKey);
                         RTC_Core.beForm.Close();
-                        RTC_Core.beForm = new RTC_BlastEditor_Form();
+                        RTC_Core.beForm = new RTC_NewBlastEditor_Form();
                         RTC_Core.beForm.LoadStashkey(sk);
                     }
                 })) as ToolStripMenuItem).Enabled = (dgvStockpile.SelectedRows.Count == 1);
@@ -1379,7 +1379,7 @@ namespace RTC
                     {
                         var sk = RTC_StockpileManager.StashHistory[lbStashHistory.SelectedIndex];
                         RTC_Core.beForm.Close();
-                        RTC_Core.beForm = new RTC_BlastEditor_Form();
+                        RTC_Core.beForm = new RTC_NewBlastEditor_Form();
                         RTC_Core.beForm.LoadStashkey(sk);
                     }
                 })) as ToolStripMenuItem).Enabled = lbStashHistory.SelectedIndex != -1;

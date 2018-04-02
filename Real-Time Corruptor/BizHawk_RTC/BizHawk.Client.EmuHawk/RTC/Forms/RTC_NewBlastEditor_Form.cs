@@ -32,6 +32,7 @@ namespace RTC
 			//foreach (var item in sk.blastlayer.Layer)
 			//	lbBlastLayer.Items.Add(item);
 
+
 			RefreshBlastLayer();
 
 			this.Show();
@@ -39,10 +40,82 @@ namespace RTC
 
 		public void RefreshBlastLayer()
 		{
-			lbBlastLayer.DataSource = null;
-			lbBlastLayer.DataSource = sk.BlastLayer.Layer;
+			//dgvBlastLayer.DataSource = null;
+			//dgvBlastLayer.DataSource = sk.BlastLayer.Layer;
+
+
+			//fill list controls
+			dgvBlastLayer.Rows.Clear();
+
+
+			//Populate the different rows.
+
+			foreach (BlastUnit bu in sk.BlastLayer.Layer)
+			{
+				/*
+				 param1
+					Nightmare  = Address
+					BlastCheat = Address
+					BlastPipe  = Source Address
+				 param2
+					Nightmare  = Value
+					BlastCheat = Value
+					BlastPipe  = Destination Address
+
+				*/
+
+				//Valid for all types
+				bool enabled = bu.IsEnabled;
+				string blastType = Convert.ToString(bu.GetType());
+
+				//Dependent on blast type
+				int precision = -1;
+				string sourceDomain = "";
+				string destDomain = "";
+				long sourceAddress = -1;
+				decimal destAddress = -1;
+				string blastMode = "";
+
+				if (bu is BlastByte)
+				{
+					BlastByte bb = bu as BlastByte;
+					precision = bb.Value.Length;
+					sourceAddress = bb.Address;
+					sourceDomain = bb.Domain;
+					destAddress = RTC_Extensions.getDecimalValue(bb.Value);
+					blastMode = Convert.ToString(bb.Type);
+				}
+
+				else if (bu is BlastCheat)
+				{
+					BlastCheat bc = bu as BlastCheat;
+					precision = bc.Value.Length;
+					sourceAddress = bc.Address;
+					sourceDomain = bc.Domain;
+					destAddress = RTC_Extensions.getDecimalValue(bc.Value);
+					if (bc.IsFreeze)
+						blastMode = "Freeze";
+					else
+						blastMode = "HellGenie";
+
+				}
+				else if (bu is BlastPipe)
+				{
+					BlastPipe bp = bu as BlastPipe;
+					precision = bp.PipeSize;
+					
+					sourceAddress = bp.Address;
+					sourceDomain = bp.Domain;
+					destDomain = bp.PipeDomain;
+					destAddress = bp.PipeAddress;
+					blastMode = "Tilt: " + Convert.ToString(bp.TiltValue);
+				}
+				dgvBlastLayer.Rows.Add(enabled, precision, blastType, blastMode, sourceDomain, sourceAddress, destDomain, destAddress);
+			}
+
 
 			lbBlastLayerSize.Text = "BlastLayer size: " + sk.BlastLayer.Layer.Count.ToString();
+
 		}
 
 		private void btnDisable50_Click(object sender, EventArgs e)
@@ -52,6 +125,14 @@ namespace RTC
 
 			foreach (BlastUnit bu in sk.BlastLayer.Layer.OrderBy(x => RTC_Core.RND.Next()).Take(sk.BlastLayer.Layer.Count / 2))
 				bu.IsEnabled = false;
+
+			RefreshBlastLayer();
+		}
+
+		private void btnInvertDisabled_Click(object sender, EventArgs e)
+		{
+			for (int i = 0; i < sk.BlastLayer.Layer.Count(); i++)
+				sk.BlastLayer.Layer[i].IsEnabled = !sk.BlastLayer.Layer[i].IsEnabled;
 
 			RefreshBlastLayer();
 		}
@@ -71,14 +152,8 @@ namespace RTC
 
 		private void btnLoadCorrupt_Click(object sender, EventArgs e)
 		{
-			BlastLayer bl = new BlastLayer();
+			BlastLayer bl = GenerateBlastLayer();
 
-			foreach (var item in lbBlastLayer.Items)
-			{
-				BlastUnit bu = (item as BlastUnit);
-				if (bu.IsEnabled)
-					bl.Layer.Add(bu);
-			}
 
 			StashKey newSk = (StashKey)sk.Clone();
 			newSk.BlastLayer = (BlastLayer)bl.Clone();
@@ -93,7 +168,7 @@ namespace RTC
 		{
 			BlastLayer bl = new BlastLayer();
 
-			foreach (var item in lbBlastLayer.Items)
+			foreach (var item in dgvBlastLayer.Rows)
 			{
 				BlastUnit bu = (item as BlastUnit);
 				if (bu.IsEnabled)
@@ -121,99 +196,7 @@ namespace RTC
 			GC.Collect();
 			GC.WaitForPendingFinalizers();
 		}
-
-		private void lbBlastLayer_MouseDoubleClick(object sender, MouseEventArgs e)
-		{
-			if (lbBlastLayer.SelectedIndex == -1)
-				return;
-
-			(lbBlastLayer.SelectedItem as BlastUnit).IsEnabled = !(lbBlastLayer.SelectedItem as BlastUnit).IsEnabled;
-
-			RefreshBlastLayer();
-		}
-
-		private void btnInvertDisabled_Click(object sender, EventArgs e)
-		{
-			for (int i = 0; i < sk.BlastLayer.Layer.Count(); i++)
-				sk.BlastLayer.Layer[i].IsEnabled = !sk.BlastLayer.Layer[i].IsEnabled;
-
-			RefreshBlastLayer();
-		}
-
-		private void lbBlastLayer_SelectedIndexChanged(object sender, EventArgs e)
-		{
-			gbAddressEdit.Visible = false;
-			gbValueEdit.Visible = false;
-
-			lbAddressEdit.Text = "Address Edit:";
-			lbValueEdit.Text = "Value Edit:";
-
-			if (lbBlastLayer.SelectedIndex == -1)
-				return;
-
-			BlastUnit bu = (BlastUnit)lbBlastLayer.SelectedItem;
-			nmValueEdit.Value = 0;
-			nmValueEdit.Maximum = Int64.MaxValue;
-
-			if (lbBlastLayer.SelectedItem is BlastByte)
-			{
-				gbAddressEdit.Visible = true;
-				gbValueEdit.Visible = true;
-				nmAddressEdit.Value = (lbBlastLayer.SelectedItem as BlastByte).Address;
-
-				var bb = (bu as BlastByte);
-				nmValueEdit.Maximum = RTC_Extensions.getNumericMaxValue(bb.Value);
-				nmValueEdit.Value = RTC_Extensions.getDecimalValue(bb.Value);
-			}
-			else if (lbBlastLayer.SelectedItem is BlastCheat)
-			{
-				gbAddressEdit.Visible = true;
-				nmAddressEdit.Value = (lbBlastLayer.SelectedItem as BlastCheat).Address;
-				var bc = (bu as BlastCheat);
-				if (!bc.IsFreeze)
-				{
-					gbValueEdit.Visible = true;
-
-					nmValueEdit.Maximum = RTC_Extensions.getNumericMaxValue(bc.Value);
-					nmValueEdit.Value = RTC_Extensions.getDecimalValue(bc.Value);
-				}
-			}
-			else if (lbBlastLayer.SelectedItem is BlastPipe)
-			{
-				lbAddressEdit.Text = "Address Edit:";
-				lbValueEdit.Text = "PipeAddress Edit:";
-
-				gbAddressEdit.Visible = true;
-				gbValueEdit.Visible = true;
-				nmAddressEdit.Value = (bu as BlastPipe).Address;
-				nmValueEdit.Value = (bu as BlastPipe).PipeAddress;
-				nmValueEdit.Maximum = nmAddressEdit.Maximum;
-			}
-		}
-
-		private void btnAdressUpdate_Click(object sender, EventArgs e)
-		{
-			if (lbBlastLayer.SelectedItem is BlastByte)
-				(lbBlastLayer.SelectedItem as BlastByte).Address = Convert.ToInt64(nmAddressEdit.Value);
-			else if (lbBlastLayer.SelectedItem is BlastCheat)
-				(lbBlastLayer.SelectedItem as BlastCheat).Address = Convert.ToInt64(nmAddressEdit.Value);
-			else if (lbBlastLayer.SelectedItem is BlastPipe)
-				(lbBlastLayer.SelectedItem as BlastPipe).Address = Convert.ToInt64(nmAddressEdit.Value);
-
-			RefreshBlastLayer();
-		}
-
-		private void btnValueUpdate_Click(object sender, EventArgs e)
-		{
-			if (lbBlastLayer.SelectedItem is BlastByte)
-				(lbBlastLayer.SelectedItem as BlastByte).Value = RTC_Extensions.getByteArrayValue((lbBlastLayer.SelectedItem as BlastByte).Value, nmValueEdit.Value);
-			else if (lbBlastLayer.SelectedItem is BlastCheat)
-				(lbBlastLayer.SelectedItem as BlastCheat).Value = RTC_Extensions.getByteArrayValue((lbBlastLayer.SelectedItem as BlastCheat).Value, nmValueEdit.Value);
-			else if (lbBlastLayer.SelectedItem is BlastPipe)
-				(lbBlastLayer.SelectedItem as BlastPipe).PipeAddress = Convert.ToInt64(nmValueEdit.Value);
-
-			RefreshBlastLayer();
-		}
+		
 
 		private void btnDisableEverything_Click(object sender, EventArgs e)
 		{
@@ -274,60 +257,22 @@ namespace RTC
 		}
 
 
-		private void nmAddressEdit_MouseDown(object sender, MouseEventArgs e)
-		{
-			if (e.Button == MouseButtons.Right)
-			{
-				Point locate = new Point((sender as Control).Location.X + e.Location.X + gbAddressEdit.Location.X, (sender as Control).Location.Y + e.Location.Y + gbAddressEdit.Location.Y);
-
-				ContextMenuStrip columnsMenu = new ContextMenuStrip();
-				columnsMenu.Items.Add("Import from Hex", null, new EventHandler((ob, ev) => {
-					string value = "";
-					if (this.getInputBox("Import from Hex", "Enter Hexadecimal number:", ref value) == DialogResult.OK)
-					{
-						int newValue = int.Parse(value, NumberStyles.HexNumber);
-						nmAddressEdit.Value = Convert.ToDecimal(newValue);
-					}
-				}));
-				columnsMenu.Show(this, locate);
-			}
-		}
-
-		private void nmValueEdit_MouseDown(object sender, MouseEventArgs e)
-		{
-			if (e.Button == MouseButtons.Right)
-			{
-				Point locate = new Point((sender as Control).Location.X + e.Location.X + gbValueEdit.Location.X, (sender as Control).Location.Y + e.Location.Y + gbValueEdit.Location.Y);
-
-				ContextMenuStrip columnsMenu = new ContextMenuStrip();
-				columnsMenu.Items.Add("Import from Hex", null, new EventHandler((ob, ev) => {
-					string value = "";
-					if (this.getInputBox("Import from Hex", "Enter Hexadecimal number:", ref value) == DialogResult.OK)
-					{
-						int newValue = int.Parse(value, NumberStyles.HexNumber);
-						nmValueEdit.Value = Convert.ToDecimal(newValue);
-					}
-				}));
-				columnsMenu.Show(this, locate);
-			}
-		}
-
 		private void RTC_BlastEditorForm_Load(object sender, EventArgs e)
 		{
 			ContextMenu contextMenu = new ContextMenu();
-			this.nmAddressEdit.ContextMenu = contextMenu;
-			this.nmValueEdit.ContextMenu = contextMenu;
+			//this.nmAddressEdit.ContextMenu = contextMenu;
+			//this.nmValueEdit.ContextMenu = contextMenu;
 		}
 
 		private void btnDuplicateSelected_Click(object sender, EventArgs e)
 		{
-			if (lbBlastLayer.SelectedIndex == -1)
+			if (dgvBlastLayer.CurrentCell.RowIndex == -1)
 			{
 				MessageBox.Show("No unit was selected. Cannot duplicate.");
 				return;
 			}
 
-			int pos = lbBlastLayer.SelectedIndex;
+			int pos = dgvBlastLayer.CurrentCell.RowIndex;
 
 			BlastUnit bu = sk.BlastLayer.Layer[pos];
 			BlastUnit bu2 = ObjectCopier.Clone(bu);
@@ -351,6 +296,64 @@ namespace RTC
 			}
 
 			RefreshBlastLayer();
+		}
+
+		private BlastLayer GenerateBlastLayer()
+		{
+			BlastLayer bl = new BlastLayer();
+
+			foreach (DataGridViewRow row in dgvBlastLayer.Rows)
+
+				//Only generate if it's enabled
+				
+					switch (row.Cells["dgvBlastUnitType"].Value)
+					{
+						case "RTC.BlastByte":
+							BlastByte bb = new BlastByte();
+							bb.IsEnabled = Convert.ToBoolean((row.Cells["dgvBlastEnabled"].Value));
+							bb.Address = Convert.ToInt64(row.Cells["dgvParam1"].Value);
+							bb.Value = RTC_Extensions.getByteArrayValue(Convert.ToInt32(row.Cells["dgvPrecision"].Value), Convert.ToDecimal(row.Cells["dgvParam2"].Value));
+							bb.Domain = Convert.ToString(row.Cells["dgvParam1Domain"].Value);
+							Enum.TryParse(row.Cells["dgvBUMode"].Value.ToString().ToUpper(), out bb.Type);
+							bl.Layer.Add(bb);
+							break;
+						case "RTC.BlastCheat":
+							break;
+						case "RTC.BlastPipe":
+							break;
+						default:
+							MessageBox.Show("You had an invalid blast unit type! Check your input. The invalid unit is: " + row.Cells["dgvBlastUnitType"].Value);
+							break;
+							
+					}
+
+					/*
+					else if (bu is BlastCheat)
+					{
+						BlastCheat bc = bu as BlastCheat;
+						precision = bc.Value.Length;
+						sourceAddress = bc.Address;
+						sourceDomain = bc.Domain;
+						destAddress = RTC_Extensions.getDecimalValue(bc.Value);
+						if (bc.IsFreeze)
+							blastMode = "Freeze";
+						else
+							blastMode = "HellGenie";
+
+					}
+					else if (bu is BlastPipe)
+					{
+						BlastPipe bp = bu as BlastPipe;
+						precision = bp.PipeSize;
+
+						sourceAddress = bp.Address;
+						sourceDomain = bp.Domain;
+						destDomain = bp.PipeDomain;
+						destAddress = bp.PipeAddress;
+						blastMode = "Tilt: " + Convert.ToString(bp.TiltValue);
+					}
+					*/
+			return bl;
 		}
 	}
 }

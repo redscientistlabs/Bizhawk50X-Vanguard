@@ -62,7 +62,7 @@ namespace RTC
 		public static RTC_MultiPeerPopout_Form multipeerpopoutForm = null;
 		public static RTC_StockpileBlastBoard_Form sbForm = null;
 		public static RTC_ConnectionStatus_Form csForm = null;
-		public static RTC_BlastEditor_Form beForm = null;
+		public static RTC_NewBlastEditor_Form beForm = null;
 
 		public static Form standaloneForm = null;
         
@@ -220,7 +220,7 @@ namespace RTC
 			multiForm = new RTC_Multiplayer_Form();
 			multipeerpopoutForm = new RTC_MultiPeerPopout_Form();
 			sbForm = new RTC_StockpileBlastBoard_Form();
-			beForm = new RTC_BlastEditor_Form();
+			beForm = new RTC_NewBlastEditor_Form();
             vmdPoolForm = new RTC_VmdPool_Form();
             vmdGenForm = new RTC_VmdGen_Form();
             vmdActForm = new RTC_VmdAct_Form();
