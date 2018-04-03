@@ -259,6 +259,7 @@ namespace RTC
 			ContextMenu contextMenu = new ContextMenu();
 			//this.nmAddressEdit.ContextMenu = contextMenu;
 			//this.nmValueEdit.ContextMenu = contextMenu;
+			RTC_Core.SetRTCColor(RTC_Core.generalColor, this);
 		}
 
 		private void btnDuplicateSelected_Click(object sender, EventArgs e)

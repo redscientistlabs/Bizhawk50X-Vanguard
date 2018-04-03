@@ -95,14 +95,16 @@ namespace RTC
         {
             if (RTC_Core.isStandalone || !RTC_Hooks.isRemoteRTC)
             {
-                if (IsParamSet("COLOR"))
-                {
-                    string[] bytes = ReadParam("COLOR").Split(',');
-                    RTC_Core.SetRTCColor(Color.FromArgb(Convert.ToByte(bytes[0]), Convert.ToByte(bytes[1]), Convert.ToByte(bytes[2])));
-                }
-                else
-                    RTC_Core.SetRTCColor(Color.FromArgb(110, 150, 193));
-            }
+				if (IsParamSet("COLOR"))
+				{
+					string[] bytes = ReadParam("COLOR").Split(',');
+					RTC_Core.generalColor = Color.FromArgb(Convert.ToByte(bytes[0]), Convert.ToByte(bytes[1]), Convert.ToByte(bytes[2]));
+				}
+				else
+					RTC_Core.generalColor = Color.FromArgb(110, 150, 193);
+
+				RTC_Core.SetRTCColor(RTC_Core.generalColor);
+			}
         }
 
         public static void SaveRTCColor(Color color)

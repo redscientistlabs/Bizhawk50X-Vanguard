@@ -918,15 +918,18 @@ namespace RTC
 			if (form == null)
 			{
 
-                foreach(Form targetForm in allRtcForms)
-				    if (targetForm != null)
-				    {
-					    allControls.AddRange(targetForm.Controls.getControlsWithTag());
-					    allControls.Add(targetForm);
-				    }
-            }
+				foreach (Form targetForm in allRtcForms)
+					if (targetForm != null)
+					{
+						allControls.AddRange(targetForm.Controls.getControlsWithTag());
+						allControls.Add(targetForm);
+					}
+			}
 			else
+			{
 				allControls.AddRange(form.Controls.getControlsWithTag());
+				allControls.Add(form);
+			}
 
 			var lightColorControls = allControls.FindAll(it => ((it.Tag as string) ?? "").Contains("color:light"));
 			var normalColorControls = allControls.FindAll(it => ((it.Tag as string) ?? "").Contains("color:normal"));
