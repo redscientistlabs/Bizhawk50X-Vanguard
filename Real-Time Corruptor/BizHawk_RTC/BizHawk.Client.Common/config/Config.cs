@@ -579,7 +579,7 @@ namespace BizHawk.Client.Common
 		public bool GB_AsSGB = false;
 		public bool NES_InQuickNES = true;
 		//RTC_Hijack - Change BSNES to default as it exposes more domains
-		public bool SNES_InSnes9x = true;
+		public bool SNES_InSnes9x = false;
 		public bool GBA_UsemGBA = true;
 		//RTC_Hijack - Change BSNES to default as it exposes more domains
 		public bool SGB_UseBsnes = true;
