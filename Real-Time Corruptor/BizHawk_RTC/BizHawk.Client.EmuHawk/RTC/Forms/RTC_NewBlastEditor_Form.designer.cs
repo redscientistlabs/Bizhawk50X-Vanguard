@@ -249,6 +249,7 @@
             // 
             this.dgvBlastLayer.AllowUserToAddRows = false;
             this.dgvBlastLayer.AllowUserToOrderColumns = true;
+            this.dgvBlastLayer.AllowUserToResizeRows = false;
             this.dgvBlastLayer.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.dgvBlastLayer.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
             this.dgvBlastUnitReference,
@@ -321,7 +322,7 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.BackColor = System.Drawing.Color.Gray;
+            this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
             this.ClientSize = new System.Drawing.Size(930, 536);
             this.Controls.Add(this.dgvBlastLayer);
             this.Controls.Add(this.lbBlastLayerSize);
@@ -338,7 +339,7 @@
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.MinimumSize = new System.Drawing.Size(531, 531);
             this.Name = "RTC_NewBlastEditor_Form";
-            this.Tag = "color:normal";
+            this.Tag = "color:dark";
             this.Text = "Blast Editor";
             this.Load += new System.EventHandler(this.RTC_BlastEditorForm_Load);
             ((System.ComponentModel.ISupportInitialize)(this.dgvBlastLayer)).EndInit();
