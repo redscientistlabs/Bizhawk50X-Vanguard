@@ -45,11 +45,11 @@
             this.label3 = new System.Windows.Forms.Label();
             this.label4 = new System.Windows.Forms.Label();
             this.panel1 = new System.Windows.Forms.Panel();
-            this.label5 = new System.Windows.Forms.Label();
             this.label6 = new System.Windows.Forms.Label();
+            this.label5 = new System.Windows.Forms.Label();
             this.dgvBlastUnitReference = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.dgvBlastEnabled = new System.Windows.Forms.DataGridViewCheckBoxColumn();
-            this.dgvPrecision = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.dgvPrecision = new System.Windows.Forms.DataGridViewComboBoxColumn();
             this.dgvBlastUnitType = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.dgvBUMode = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.dgvParam1Domain = new System.Windows.Forms.DataGridViewTextBoxColumn();
@@ -69,9 +69,10 @@
             this.btnCorrupt.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnCorrupt.Font = new System.Drawing.Font("Segoe UI Semibold", 9F, System.Drawing.FontStyle.Bold);
             this.btnCorrupt.ForeColor = System.Drawing.Color.OrangeRed;
-            this.btnCorrupt.Location = new System.Drawing.Point(759, 444);
+            this.btnCorrupt.Location = new System.Drawing.Point(1012, 546);
+            this.btnCorrupt.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.btnCorrupt.Name = "btnCorrupt";
-            this.btnCorrupt.Size = new System.Drawing.Size(157, 23);
+            this.btnCorrupt.Size = new System.Drawing.Size(209, 28);
             this.btnCorrupt.TabIndex = 13;
             this.btnCorrupt.TabStop = false;
             this.btnCorrupt.Tag = "color:darker";
@@ -87,9 +88,10 @@
             this.btnLoadCorrupt.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnLoadCorrupt.Font = new System.Drawing.Font("Segoe UI Semibold", 9F, System.Drawing.FontStyle.Bold);
             this.btnLoadCorrupt.ForeColor = System.Drawing.Color.OrangeRed;
-            this.btnLoadCorrupt.Location = new System.Drawing.Point(759, 418);
+            this.btnLoadCorrupt.Location = new System.Drawing.Point(1012, 514);
+            this.btnLoadCorrupt.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.btnLoadCorrupt.Name = "btnLoadCorrupt";
-            this.btnLoadCorrupt.Size = new System.Drawing.Size(157, 23);
+            this.btnLoadCorrupt.Size = new System.Drawing.Size(209, 28);
             this.btnLoadCorrupt.TabIndex = 14;
             this.btnLoadCorrupt.TabStop = false;
             this.btnLoadCorrupt.Tag = "color:darker";
@@ -105,9 +107,10 @@
             this.btnSendToStash.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnSendToStash.Font = new System.Drawing.Font("Segoe UI Semibold", 9F, System.Drawing.FontStyle.Bold);
             this.btnSendToStash.ForeColor = System.Drawing.Color.OrangeRed;
-            this.btnSendToStash.Location = new System.Drawing.Point(759, 470);
+            this.btnSendToStash.Location = new System.Drawing.Point(1012, 578);
+            this.btnSendToStash.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.btnSendToStash.Name = "btnSendToStash";
-            this.btnSendToStash.Size = new System.Drawing.Size(157, 23);
+            this.btnSendToStash.Size = new System.Drawing.Size(209, 28);
             this.btnSendToStash.TabIndex = 12;
             this.btnSendToStash.TabStop = false;
             this.btnSendToStash.Tag = "color:darker";
@@ -123,9 +126,10 @@
             this.btnDisable50.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnDisable50.Font = new System.Drawing.Font("Segoe UI Semibold", 9F, System.Drawing.FontStyle.Bold);
             this.btnDisable50.ForeColor = System.Drawing.Color.Black;
-            this.btnDisable50.Location = new System.Drawing.Point(758, 227);
+            this.btnDisable50.Location = new System.Drawing.Point(1011, 279);
+            this.btnDisable50.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.btnDisable50.Name = "btnDisable50";
-            this.btnDisable50.Size = new System.Drawing.Size(157, 23);
+            this.btnDisable50.Size = new System.Drawing.Size(209, 28);
             this.btnDisable50.TabIndex = 114;
             this.btnDisable50.TabStop = false;
             this.btnDisable50.Tag = "color:light";
@@ -141,9 +145,10 @@
             this.btnRemoveDisabled.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnRemoveDisabled.Font = new System.Drawing.Font("Segoe UI Semibold", 9F, System.Drawing.FontStyle.Bold);
             this.btnRemoveDisabled.ForeColor = System.Drawing.Color.Black;
-            this.btnRemoveDisabled.Location = new System.Drawing.Point(758, 279);
+            this.btnRemoveDisabled.Location = new System.Drawing.Point(1011, 343);
+            this.btnRemoveDisabled.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.btnRemoveDisabled.Name = "btnRemoveDisabled";
-            this.btnRemoveDisabled.Size = new System.Drawing.Size(157, 23);
+            this.btnRemoveDisabled.Size = new System.Drawing.Size(209, 28);
             this.btnRemoveDisabled.TabIndex = 115;
             this.btnRemoveDisabled.TabStop = false;
             this.btnRemoveDisabled.Tag = "color:light";
@@ -159,9 +164,10 @@
             this.btnInvertDisabled.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnInvertDisabled.Font = new System.Drawing.Font("Segoe UI Semibold", 9F, System.Drawing.FontStyle.Bold);
             this.btnInvertDisabled.ForeColor = System.Drawing.Color.Black;
-            this.btnInvertDisabled.Location = new System.Drawing.Point(758, 253);
+            this.btnInvertDisabled.Location = new System.Drawing.Point(1011, 311);
+            this.btnInvertDisabled.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.btnInvertDisabled.Name = "btnInvertDisabled";
-            this.btnInvertDisabled.Size = new System.Drawing.Size(157, 23);
+            this.btnInvertDisabled.Size = new System.Drawing.Size(209, 28);
             this.btnInvertDisabled.TabIndex = 116;
             this.btnInvertDisabled.TabStop = false;
             this.btnInvertDisabled.Tag = "color:light";
@@ -177,9 +183,10 @@
             this.btnDisableEverything.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnDisableEverything.Font = new System.Drawing.Font("Segoe UI Semibold", 9F, System.Drawing.FontStyle.Bold);
             this.btnDisableEverything.ForeColor = System.Drawing.Color.Black;
-            this.btnDisableEverything.Location = new System.Drawing.Point(758, 331);
+            this.btnDisableEverything.Location = new System.Drawing.Point(1011, 407);
+            this.btnDisableEverything.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.btnDisableEverything.Name = "btnDisableEverything";
-            this.btnDisableEverything.Size = new System.Drawing.Size(157, 23);
+            this.btnDisableEverything.Size = new System.Drawing.Size(209, 28);
             this.btnDisableEverything.TabIndex = 128;
             this.btnDisableEverything.TabStop = false;
             this.btnDisableEverything.Tag = "color:light";
@@ -195,9 +202,10 @@
             this.btnEnableEverything.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnEnableEverything.Font = new System.Drawing.Font("Segoe UI Semibold", 9F, System.Drawing.FontStyle.Bold);
             this.btnEnableEverything.ForeColor = System.Drawing.Color.Black;
-            this.btnEnableEverything.Location = new System.Drawing.Point(758, 357);
+            this.btnEnableEverything.Location = new System.Drawing.Point(1011, 439);
+            this.btnEnableEverything.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.btnEnableEverything.Name = "btnEnableEverything";
-            this.btnEnableEverything.Size = new System.Drawing.Size(157, 23);
+            this.btnEnableEverything.Size = new System.Drawing.Size(209, 28);
             this.btnEnableEverything.TabIndex = 129;
             this.btnEnableEverything.TabStop = false;
             this.btnEnableEverything.Tag = "color:light";
@@ -213,9 +221,10 @@
             this.btnDuplicateSelected.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnDuplicateSelected.Font = new System.Drawing.Font("Segoe UI Semibold", 9F, System.Drawing.FontStyle.Bold);
             this.btnDuplicateSelected.ForeColor = System.Drawing.Color.Black;
-            this.btnDuplicateSelected.Location = new System.Drawing.Point(758, 383);
+            this.btnDuplicateSelected.Location = new System.Drawing.Point(1011, 471);
+            this.btnDuplicateSelected.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.btnDuplicateSelected.Name = "btnDuplicateSelected";
-            this.btnDuplicateSelected.Size = new System.Drawing.Size(157, 23);
+            this.btnDuplicateSelected.Size = new System.Drawing.Size(209, 28);
             this.btnDuplicateSelected.TabIndex = 130;
             this.btnDuplicateSelected.TabStop = false;
             this.btnDuplicateSelected.Tag = "color:light";
@@ -231,9 +240,10 @@
             this.btnSanitizeDuplicates.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnSanitizeDuplicates.Font = new System.Drawing.Font("Segoe UI Semibold", 9F, System.Drawing.FontStyle.Bold);
             this.btnSanitizeDuplicates.ForeColor = System.Drawing.Color.Black;
-            this.btnSanitizeDuplicates.Location = new System.Drawing.Point(758, 305);
+            this.btnSanitizeDuplicates.Location = new System.Drawing.Point(1011, 375);
+            this.btnSanitizeDuplicates.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.btnSanitizeDuplicates.Name = "btnSanitizeDuplicates";
-            this.btnSanitizeDuplicates.Size = new System.Drawing.Size(157, 23);
+            this.btnSanitizeDuplicates.Size = new System.Drawing.Size(209, 28);
             this.btnSanitizeDuplicates.TabIndex = 131;
             this.btnSanitizeDuplicates.TabStop = false;
             this.btnSanitizeDuplicates.Tag = "color:light";
@@ -247,9 +257,10 @@
             this.lbBlastLayerSize.AutoSize = true;
             this.lbBlastLayerSize.Font = new System.Drawing.Font("Segoe UI", 8F);
             this.lbBlastLayerSize.ForeColor = System.Drawing.Color.White;
-            this.lbBlastLayerSize.Location = new System.Drawing.Point(5, 5);
+            this.lbBlastLayerSize.Location = new System.Drawing.Point(7, 6);
+            this.lbBlastLayerSize.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.lbBlastLayerSize.Name = "lbBlastLayerSize";
-            this.lbBlastLayerSize.Size = new System.Drawing.Size(58, 13);
+            this.lbBlastLayerSize.Size = new System.Drawing.Size(71, 19);
             this.lbBlastLayerSize.TabIndex = 132;
             this.lbBlastLayerSize.Text = "Layer size:";
             // 
@@ -272,12 +283,12 @@
             this.dgvParam1,
             this.dgvParam2Domain,
             this.dgvParam2});
-            this.dgvBlastLayer.Location = new System.Drawing.Point(9, 10);
-            this.dgvBlastLayer.Margin = new System.Windows.Forms.Padding(2);
+            this.dgvBlastLayer.Location = new System.Drawing.Point(12, 12);
+            this.dgvBlastLayer.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.dgvBlastLayer.Name = "dgvBlastLayer";
             this.dgvBlastLayer.RowHeadersVisible = false;
             this.dgvBlastLayer.RowTemplate.Height = 24;
-            this.dgvBlastLayer.Size = new System.Drawing.Size(740, 483);
+            this.dgvBlastLayer.Size = new System.Drawing.Size(987, 594);
             this.dgvBlastLayer.TabIndex = 133;
             this.dgvBlastLayer.Tag = "color:normal";
             this.dgvBlastLayer.CellValueChanged += new System.Windows.Forms.DataGridViewCellEventHandler(this.dgvBlastLayer_CellValueChanged);
@@ -287,9 +298,10 @@
             this.pnMemoryTargetting.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.pnMemoryTargetting.BackColor = System.Drawing.Color.Gray;
             this.pnMemoryTargetting.Controls.Add(this.lbBlastLayerSize);
-            this.pnMemoryTargetting.Location = new System.Drawing.Point(758, 27);
+            this.pnMemoryTargetting.Location = new System.Drawing.Point(1011, 33);
+            this.pnMemoryTargetting.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.pnMemoryTargetting.Name = "pnMemoryTargetting";
-            this.pnMemoryTargetting.Size = new System.Drawing.Size(158, 82);
+            this.pnMemoryTargetting.Size = new System.Drawing.Size(211, 101);
             this.pnMemoryTargetting.TabIndex = 134;
             this.pnMemoryTargetting.Tag = "color:normal";
             // 
@@ -299,9 +311,10 @@
             this.label3.AutoSize = true;
             this.label3.Font = new System.Drawing.Font("Segoe UI", 8F);
             this.label3.ForeColor = System.Drawing.Color.White;
-            this.label3.Location = new System.Drawing.Point(760, 10);
+            this.label3.Location = new System.Drawing.Point(1013, 12);
+            this.label3.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(82, 13);
+            this.label3.Size = new System.Drawing.Size(99, 19);
             this.label3.TabIndex = 135;
             this.label3.Text = "BlastLayer Info";
             // 
@@ -311,9 +324,10 @@
             this.label4.AutoSize = true;
             this.label4.Font = new System.Drawing.Font("Segoe UI", 8F);
             this.label4.ForeColor = System.Drawing.Color.White;
-            this.label4.Location = new System.Drawing.Point(760, 117);
+            this.label4.Location = new System.Drawing.Point(1013, 144);
+            this.label4.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label4.Name = "label4";
-            this.label4.Size = new System.Drawing.Size(124, 13);
+            this.label4.Size = new System.Drawing.Size(146, 19);
             this.label4.TabIndex = 136;
             this.label4.Text = "Selected BlastUnit Info";
             // 
@@ -323,23 +337,12 @@
             this.panel1.BackColor = System.Drawing.Color.Gray;
             this.panel1.Controls.Add(this.label6);
             this.panel1.Controls.Add(this.label5);
-            this.panel1.Location = new System.Drawing.Point(758, 133);
+            this.panel1.Location = new System.Drawing.Point(1011, 164);
+            this.panel1.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(158, 81);
+            this.panel1.Size = new System.Drawing.Size(211, 100);
             this.panel1.TabIndex = 137;
             this.panel1.Tag = "color:normal";
-            // 
-            // label5
-            // 
-            this.label5.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.label5.AutoSize = true;
-            this.label5.Font = new System.Drawing.Font("Segoe UI", 8F);
-            this.label5.ForeColor = System.Drawing.Color.White;
-            this.label5.Location = new System.Drawing.Point(5, 5);
-            this.label5.Name = "label5";
-            this.label5.Size = new System.Drawing.Size(50, 13);
-            this.label5.TabIndex = 132;
-            this.label5.Text = "Param 1:";
             // 
             // label6
             // 
@@ -347,11 +350,25 @@
             this.label6.AutoSize = true;
             this.label6.Font = new System.Drawing.Font("Segoe UI", 8F);
             this.label6.ForeColor = System.Drawing.Color.White;
-            this.label6.Location = new System.Drawing.Point(5, 34);
+            this.label6.Location = new System.Drawing.Point(7, 42);
+            this.label6.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label6.Name = "label6";
-            this.label6.Size = new System.Drawing.Size(50, 13);
+            this.label6.Size = new System.Drawing.Size(63, 19);
             this.label6.TabIndex = 133;
             this.label6.Text = "Param 2:";
+            // 
+            // label5
+            // 
+            this.label5.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.label5.AutoSize = true;
+            this.label5.Font = new System.Drawing.Font("Segoe UI", 8F);
+            this.label5.ForeColor = System.Drawing.Color.White;
+            this.label5.Location = new System.Drawing.Point(7, 6);
+            this.label5.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            this.label5.Name = "label5";
+            this.label5.Size = new System.Drawing.Size(63, 19);
+            this.label5.TabIndex = 132;
+            this.label5.Text = "Param 1:";
             // 
             // dgvBlastUnitReference
             // 
@@ -368,7 +385,13 @@
             // dgvPrecision
             // 
             this.dgvPrecision.HeaderText = "Precision";
+            this.dgvPrecision.Items.AddRange(new object[] {
+            "8-bit",
+            "16-bit",
+            "32-bit"});
             this.dgvPrecision.Name = "dgvPrecision";
+            this.dgvPrecision.Resizable = System.Windows.Forms.DataGridViewTriState.True;
+            this.dgvPrecision.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.Automatic;
             this.dgvPrecision.Width = 60;
             // 
             // dgvBlastUnitType
@@ -413,10 +436,10 @@
             // 
             // RTC_NewBlastEditor_Form
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
-            this.ClientSize = new System.Drawing.Size(930, 504);
+            this.ClientSize = new System.Drawing.Size(1240, 620);
             this.Controls.Add(this.panel1);
             this.Controls.Add(this.label4);
             this.Controls.Add(this.label3);
@@ -433,7 +456,8 @@
             this.Controls.Add(this.btnCorrupt);
             this.Controls.Add(this.btnLoadCorrupt);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
-            this.MinimumSize = new System.Drawing.Size(531, 531);
+            this.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.MinimumSize = new System.Drawing.Size(702, 643);
             this.Name = "RTC_NewBlastEditor_Form";
             this.Tag = "color:dark";
             this.Text = "Blast Editor";
@@ -469,7 +493,7 @@
 		private System.Windows.Forms.Label label5;
 		private System.Windows.Forms.DataGridViewTextBoxColumn dgvBlastUnitReference;
 		private System.Windows.Forms.DataGridViewCheckBoxColumn dgvBlastEnabled;
-		private System.Windows.Forms.DataGridViewTextBoxColumn dgvPrecision;
+		private System.Windows.Forms.DataGridViewComboBoxColumn dgvPrecision;
 		private System.Windows.Forms.DataGridViewTextBoxColumn dgvBlastUnitType;
 		private System.Windows.Forms.DataGridViewTextBoxColumn dgvBUMode;
 		private System.Windows.Forms.DataGridViewTextBoxColumn dgvParam1Domain;

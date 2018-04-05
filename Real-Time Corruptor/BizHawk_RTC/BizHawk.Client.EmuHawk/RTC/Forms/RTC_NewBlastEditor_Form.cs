@@ -95,14 +95,14 @@ namespace RTC
 				{
 					BlastPipe bp = bu as BlastPipe;
 					precision = bp.PipeSize;
-					
+
 					sourceAddress = bp.Address;
 					sourceDomain = bp.Domain;
 					destDomain = bp.PipeDomain;
 					destAddress = bp.PipeAddress;
 					blastMode = "Tilt: " + Convert.ToString(bp.TiltValue);
 				}
-				dgvBlastLayer.Rows.Add(bu, enabled, precision, blastType, blastMode, sourceDomain, sourceAddress, destDomain, destAddress);
+				dgvBlastLayer.Rows.Add(bu, enabled, GetPrecisionNameFromSize(precision), blastType, blastMode, sourceDomain, sourceAddress, destDomain, destAddress);
 			}
 			lbBlastLayerSize.Text = "BlastLayer size: " + sk.BlastLayer.Layer.Count.ToString();
 			initialized = true;
@@ -144,7 +144,7 @@ namespace RTC
 		private void btnLoadCorrupt_Click(object sender, EventArgs e)
 		{
 			BlastLayer bl = new BlastLayer();
-			
+
 			foreach (DataGridViewRow row in dgvBlastLayer.Rows)
 			{
 				BlastUnit bu = (BlastUnit)row.Cells["dgvBlastUnitReference"].Value;
@@ -193,7 +193,7 @@ namespace RTC
 			GC.Collect();
 			GC.WaitForPendingFinalizers();
 		}
-		
+
 
 		private void btnDisableEverything_Click(object sender, EventArgs e)
 		{
@@ -305,9 +305,44 @@ namespace RTC
 			{
 				CurrentlyUpdating = true;
 				DataGridViewRow row = dgvBlastLayer.Rows[dgvBlastLayer.CurrentCell.RowIndex];
+				UpdateBlastUnitFromRow(row);
+			}
+			
+		}
 
-				switch (row.Cells["dgvBlastUnitType"].Value)
-				{
+		private string GetPrecisionNameFromSize(int precision)
+		{
+			switch (precision)
+			{
+				case 1:
+					return "8-bit";
+				case 2:
+					return "16-bit";
+				case 4:
+					return "32-bit";
+				default:
+					return null; 
+			}
+		}
+		private int GetPrecisionSizeFromName(string precision)
+		{
+			switch (precision)
+			{
+				case "8-bit":
+					return 1;
+				case "16-bit":
+					return 2;
+				case "32-bit":
+					return 4;
+				default:
+					return -1;
+			}
+		}
+
+		private void UpdateBlastUnitFromRow(DataGridViewRow row)
+		{
+			switch (row.Cells["dgvBlastUnitType"].Value)
+			{
 				case "RTC.BlastByte":
 					BlastByte bb = (BlastByte)row.Cells["dgvBlastUnitReference"].Value;
 					bb.IsEnabled = Convert.ToBoolean((row.Cells["dgvBlastEnabled"].Value));
@@ -344,8 +379,37 @@ namespace RTC
 					MessageBox.Show("You had an invalid blast unit type! Check your input. The invalid unit is: " + row.Cells["dgvBlastUnitType"].Value);
 					CurrentlyUpdating = false;
 					break;
+			}
+		}
+		
+	
 
-				}
+		//This is gonna be ugly because some engines re-use boxes. Sorry -Narry
+		private void ValidatePrecision(DataGridViewRow row)
+		{
+			switch (row.Cells["dgvBlastUnitType"].Value.ToString())
+			{
+				case "RTC.BlastByte":
+					if (row.Cells["dgvPrecision"].Value.ToString() == "8-bit"){
+						if ((int)row.Cells["dgvParam2"].Value > 255)
+							row.Cells["dgvParam2"].Value = 255;
+						else if ((int)row.Cells["dgvParam2"].Value < 0)
+							row.Cells["dgvParam2"].Value = 0;
+
+					}
+					else if (row.Cells["dgvPrecision"].Value.ToString() == "16-bit"){
+
+					}
+					else{
+					}
+
+					break;										
+				case "RTC.BlastCheat":
+					break;
+				case "RTC.BlastPipe":
+					break;
+				default:
+					break;
 			}
 		}
 	}
