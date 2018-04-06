@@ -19,6 +19,11 @@ namespace RTC
 		public RTC_NewBlastEditor_Form()
 		{
 			InitializeComponent();
+
+
+			//set its location and size to fit the cell
+			//	dtp.Location = dgvBlastLayer.GetCellDisplayRectangle(0, 3,true).Location;
+			//dtp.Size = dgvBlastLayer.GetCellDisplayRectangle(0, 3,true).Size;
 		}
 
 		public void LoadStashkey(StashKey _sk)
@@ -67,6 +72,9 @@ namespace RTC
 				long sourceAddress = -1;
 				decimal destAddress = -1;
 				string blastMode = "";
+				Panel test = panel2;
+
+				//add DateTimePicker into the control collection of the DataGridView
 
 				if (bu is BlastByte)
 				{
@@ -102,7 +110,7 @@ namespace RTC
 					destAddress = bp.PipeAddress;
 					blastMode = "Tilt: " + Convert.ToString(bp.TiltValue);
 				}
-				dgvBlastLayer.Rows.Add(bu, enabled, GetPrecisionNameFromSize(precision), blastType, blastMode, sourceDomain, sourceAddress, destDomain, destAddress);
+				dgvBlastLayer.Rows.Add(bu, enabled, GetPrecisionNameFromSize(precision), blastType, blastMode, sourceDomain, sourceAddress, destDomain, destAddress,test);
 			}
 			lbBlastLayerSize.Text = "BlastLayer size: " + sk.BlastLayer.Layer.Count.ToString();
 			initialized = true;
@@ -307,7 +315,7 @@ namespace RTC
 				DataGridViewRow row = dgvBlastLayer.Rows[dgvBlastLayer.CurrentCell.RowIndex];
 				UpdateBlastUnitFromRow(row);
 			}
-			
+
 		}
 
 		private string GetPrecisionNameFromSize(int precision)
@@ -321,7 +329,7 @@ namespace RTC
 				case 4:
 					return "32-bit";
 				default:
-					return null; 
+					return null;
 			}
 		}
 		private int GetPrecisionSizeFromName(string precision)
@@ -381,8 +389,8 @@ namespace RTC
 					break;
 			}
 		}
-		
-	
+
+
 
 		//This is gonna be ugly because some engines re-use boxes. Sorry -Narry
 		private void ValidatePrecision(DataGridViewRow row)
@@ -390,20 +398,23 @@ namespace RTC
 			switch (row.Cells["dgvBlastUnitType"].Value.ToString())
 			{
 				case "RTC.BlastByte":
-					if (row.Cells["dgvPrecision"].Value.ToString() == "8-bit"){
+					if (row.Cells["dgvPrecision"].Value.ToString() == "8-bit")
+					{
 						if ((int)row.Cells["dgvParam2"].Value > 255)
 							row.Cells["dgvParam2"].Value = 255;
 						else if ((int)row.Cells["dgvParam2"].Value < 0)
 							row.Cells["dgvParam2"].Value = 0;
 
 					}
-					else if (row.Cells["dgvPrecision"].Value.ToString() == "16-bit"){
+					else if (row.Cells["dgvPrecision"].Value.ToString() == "16-bit")
+					{
 
 					}
-					else{
+					else
+					{
 					}
 
-					break;										
+					break;
 				case "RTC.BlastCheat":
 					break;
 				case "RTC.BlastPipe":
@@ -411,6 +422,11 @@ namespace RTC
 				default:
 					break;
 			}
+		}
+
+		private void cbUseHex_CheckedChanged(object sender, EventArgs e)
+		{
+			
 		}
 	}
 }
