@@ -714,12 +714,12 @@ namespace RTC
 		private static Type defaultValueType = typeof(System.Decimal);
 
 		// The bitmap used to paint the non-edited cells via a call to NumericUpDown.DrawToBitmap
-		[ThreadStatic]
-		private static Bitmap renderingBitmap;
+		//[ThreadStatic]
+		private Bitmap renderingBitmap;
 
 		// The NumericUpDown control used to paint the non-edited cells via a call to NumericUpDown.DrawToBitmap
-		[ThreadStatic]
-		private static NumericUpDown paintingNumericUpDown;
+		//[ThreadStatic]
+		private NumericUpDown paintingNumericUpDown;
 
 		private int decimalPlaces;       // Caches the value of the DecimalPlaces property
 		private Decimal increment;       // Caches the value of the Increment property

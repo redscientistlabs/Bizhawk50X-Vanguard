@@ -47,8 +47,6 @@ namespace RTC
         public static bool AllowCrossCoreCorruption = false;
 
 
-
-
         //RTC Main Forms
         public static Color generalColor = Color.LightSteelBlue;
 		public static RTC_Core_Form coreForm = null;

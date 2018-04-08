@@ -26,6 +26,18 @@ namespace RTC
 			//dtp.Size = dgvBlastLayer.GetCellDisplayRectangle(0, 3,true).Size;
 		}
 
+		private void RTC_BlastEditorForm_Load(object sender, EventArgs e)
+		{
+			ContextMenu contextMenu = new ContextMenu();
+			//this.nmAddressEdit.ContextMenu = contextMenu;
+			//this.nmValueEdit.ContextMenu = contextMenu;
+			RTC_Core.SetRTCColor(RTC_Core.generalColor, this);
+
+			this.dgvBlastLayer.CellValidating += new DataGridViewCellValidatingEventHandler(dgvBlastLayer_CellValidating);
+			//this.dgvBlastLayer.RowPrePaint += new DataGridViewRowPrePaintEventHandler(dgvBlastLayer_RowPrePaint);
+			//this.dgvBlastLayer.RowsAdded += new DataGridViewRowsAddedEventHandler(dgvBlastLayer_RowsAdded);
+		}
+
 		public void LoadStashkey(StashKey _sk)
 		{
 			if (_sk == null || _sk.BlastLayer == null || _sk.BlastLayer.Layer == null)
@@ -72,7 +84,6 @@ namespace RTC
 				long sourceAddress = -1;
 				decimal destAddress = -1;
 				string blastMode = "";
-				Panel test = panel2;
 
 				//add DateTimePicker into the control collection of the DataGridView
 
@@ -110,11 +121,12 @@ namespace RTC
 					destAddress = bp.PipeAddress;
 					blastMode = "Tilt: " + Convert.ToString(bp.TiltValue);
 				}
-				dgvBlastLayer.Rows.Add(bu, enabled, GetPrecisionNameFromSize(precision), blastType, blastMode, sourceDomain, sourceAddress, destDomain, destAddress,test);
+				dgvBlastLayer.Rows.Add(bu, enabled, GetPrecisionNameFromSize(precision), blastType, blastMode, sourceDomain, sourceAddress, destDomain, destAddress);
+				//Update the precision
+				ValidatePrecision(dgvBlastLayer.Rows[dgvBlastLayer.Rows.Count - 1]);
 			}
 			lbBlastLayerSize.Text = "BlastLayer size: " + sk.BlastLayer.Layer.Count.ToString();
 			initialized = true;
-
 		}
 
 		private void btnDisable50_Click(object sender, EventArgs e)
@@ -262,13 +274,6 @@ namespace RTC
 		}
 
 
-		private void RTC_BlastEditorForm_Load(object sender, EventArgs e)
-		{
-			ContextMenu contextMenu = new ContextMenu();
-			//this.nmAddressEdit.ContextMenu = contextMenu;
-			//this.nmValueEdit.ContextMenu = contextMenu;
-			RTC_Core.SetRTCColor(RTC_Core.generalColor, this);
-		}
 
 		private void btnDuplicateSelected_Click(object sender, EventArgs e)
 		{
@@ -315,7 +320,6 @@ namespace RTC
 				DataGridViewRow row = dgvBlastLayer.Rows[dgvBlastLayer.CurrentCell.RowIndex];
 				UpdateBlastUnitFromRow(row);
 			}
-
 		}
 
 		private string GetPrecisionNameFromSize(int precision)
@@ -355,7 +359,7 @@ namespace RTC
 					BlastByte bb = (BlastByte)row.Cells["dgvBlastUnitReference"].Value;
 					bb.IsEnabled = Convert.ToBoolean((row.Cells["dgvBlastEnabled"].Value));
 					bb.Address = Convert.ToInt64(row.Cells["dgvParam1"].Value);
-					bb.Value = RTC_Extensions.getByteArrayValue(Convert.ToInt32(row.Cells["dgvPrecision"].Value), Convert.ToDecimal(row.Cells["dgvParam2"].Value));
+					bb.Value = RTC_Extensions.getByteArrayValue(GetPrecisionSizeFromName(row.Cells["dgvPrecision"].Value.ToString()), Convert.ToDecimal(row.Cells["dgvParam2"].Value));
 					bb.Domain = Convert.ToString(row.Cells["dgvParam1Domain"].Value);
 					Enum.TryParse(row.Cells["dgvBUMode"].Value.ToString().ToUpper(), out bb.Type);
 					row.Cells["dgvBlastUnitReference"].Value = bb;
@@ -365,7 +369,7 @@ namespace RTC
 					BlastCheat bc = (BlastCheat)row.Cells["dgvBlastUnitReference"].Value;
 					bc.IsEnabled = Convert.ToBoolean((row.Cells["dgvBlastEnabled"].Value));
 					bc.Address = Convert.ToInt64(row.Cells["dgvParam1"].Value);
-					bc.Value = RTC_Extensions.getByteArrayValue(Convert.ToInt32(row.Cells["dgvPrecision"].Value), Convert.ToDecimal(row.Cells["dgvParam2"].Value));
+					bc.Value = RTC_Extensions.getByteArrayValue(GetPrecisionSizeFromName(row.Cells["dgvPrecision"].Value.ToString()), Convert.ToDecimal(row.Cells["dgvParam2"].Value));
 					bc.Domain = Convert.ToString(row.Cells["dgvParam1Domain"].Value);
 					if (row.Cells["dgvBUMode"].Value.ToString() == "Freeze") ;
 					bc.IsFreeze = true;
@@ -400,29 +404,59 @@ namespace RTC
 				case "RTC.BlastByte":
 					if (row.Cells["dgvPrecision"].Value.ToString() == "8-bit")
 					{
-						if ((int)row.Cells["dgvParam2"].Value > 255)
-							row.Cells["dgvParam2"].Value = 255;
-						else if ((int)row.Cells["dgvParam2"].Value < 0)
-							row.Cells["dgvParam2"].Value = 0;
-
+						(row.Cells["dgvParam2"] as DataGridViewNumericUpDownCell).Maximum = 255;
 					}
 					else if (row.Cells["dgvPrecision"].Value.ToString() == "16-bit")
 					{
-
+						(row.Cells["dgvParam2"] as DataGridViewNumericUpDownCell).Maximum = 65535;
 					}
 					else
 					{
+						(row.Cells["dgvParam2"] as DataGridViewNumericUpDownCell).Maximum = 2147483647;
 					}
 
 					break;
 				case "RTC.BlastCheat":
+
+					if (row.Cells["dgvPrecision"].Value.ToString() == "8-bit")
+					{
+						(row.Cells["dgvParam2"] as DataGridViewNumericUpDownCell).Maximum = 255;
+					}
+					else if (row.Cells["dgvPrecision"].Value.ToString() == "16-bit")
+					{
+						(row.Cells["dgvParam2"] as DataGridViewNumericUpDownCell).Maximum = 65535;
+					}
+					else
+					{
+						(row.Cells["dgvParam2"] as DataGridViewNumericUpDownCell).Maximum = 2147483647;
+					}
 					break;
 				case "RTC.BlastPipe":
-					break;
+						(row.Cells["dgvParam2"] as DataGridViewNumericUpDownCell).Maximum = 2147483647;
+						break;
 				default:
 					break;
 			}
 		}
+
+		private void dgvBlastLayer_CellValidating(object sender, DataGridViewCellValidatingEventArgs e)
+		{
+			if (dgvBlastLayer.Columns[e.ColumnIndex].HeaderText.Equals("Precision"))
+				ValidatePrecision(dgvBlastLayer.Rows[e.RowIndex]);
+			/*	// Confirm that the cell is not empty.
+				if (string.IsNullOrEmpty(e.FormattedValue.ToString()))
+				{
+					dgvBlastLayer.Rows[e.RowIndex].ErrorText ="Row can not be empty";
+					e.Cancel = true;
+				}
+				*/
+		}
+
+		private void dgvBlastLayer_RowPrePaint(object sender, DataGridViewRowPrePaintEventArgs e)
+		{
+			ValidatePrecision(dgvBlastLayer.Rows[e.RowIndex]);
+		}
+
 
 		private void cbUseHex_CheckedChanged(object sender, EventArgs e)
 		{

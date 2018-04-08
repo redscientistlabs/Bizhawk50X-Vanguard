@@ -41,8 +41,15 @@
             this.btnSanitizeDuplicates = new System.Windows.Forms.Button();
             this.lbBlastLayerSize = new System.Windows.Forms.Label();
             this.dgvBlastLayer = new System.Windows.Forms.DataGridView();
+            this.dgvBlastUnitReference = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.dgvBlastEnabled = new System.Windows.Forms.DataGridViewCheckBoxColumn();
             this.dgvPrecision = new System.Windows.Forms.DataGridViewComboBoxColumn();
+            this.dgvBlastUnitType = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.dgvBUMode = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.dgvParam1Domain = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.dgvParam1 = new RTC.DataGridViewNumericUpDownColumn();
+            this.dgvParam2Domain = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.dgvParam2 = new RTC.DataGridViewNumericUpDownColumn();
             this.pnMemoryTargetting = new System.Windows.Forms.Panel();
             this.label3 = new System.Windows.Forms.Label();
             this.label4 = new System.Windows.Forms.Label();
@@ -50,28 +57,17 @@
             this.label6 = new System.Windows.Forms.Label();
             this.label5 = new System.Windows.Forms.Label();
             this.cbUseHex = new System.Windows.Forms.CheckBox();
-            this.panel2 = new System.Windows.Forms.Panel();
-            this.numericUpDown1 = new System.Windows.Forms.NumericUpDown();
             this.dataGridViewTextBoxColumn1 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.dataGridViewTextBoxColumn2 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.dataGridViewTextBoxColumn3 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.dataGridViewTextBoxColumn4 = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.dataGridViewTextBoxColumn5 = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.dataGridViewTextBoxColumn6 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.dataGridViewNumericUpDownColumn1 = new RTC.DataGridViewNumericUpDownColumn();
-            this.dgvBlastUnitReference = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.dgvBlastUnitType = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.dgvBUMode = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.dgvParam1Domain = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.dgvParam1 = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.dgvParam2Domain = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.dgvParam2 = new RTC.DataGridViewNumericUpDownColumn();
-            this.Column1 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.dataGridViewTextBoxColumn5 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.dataGridViewNumericUpDownColumn2 = new RTC.DataGridViewNumericUpDownColumn();
+            this.dataGridViewTextBoxColumn6 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             ((System.ComponentModel.ISupportInitialize)(this.dgvBlastLayer)).BeginInit();
             this.pnMemoryTargetting.SuspendLayout();
             this.panel1.SuspendLayout();
-            this.panel2.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.numericUpDown1)).BeginInit();
             this.SuspendLayout();
             // 
             // btnCorrupt
@@ -284,8 +280,7 @@
             this.dgvParam1Domain,
             this.dgvParam1,
             this.dgvParam2Domain,
-            this.dgvParam2,
-            this.Column1});
+            this.dgvParam2});
             this.dgvBlastLayer.Location = new System.Drawing.Point(9, 10);
             this.dgvBlastLayer.Margin = new System.Windows.Forms.Padding(2);
             this.dgvBlastLayer.Name = "dgvBlastLayer";
@@ -295,6 +290,12 @@
             this.dgvBlastLayer.TabIndex = 133;
             this.dgvBlastLayer.Tag = "color:normal";
             this.dgvBlastLayer.CellValueChanged += new System.Windows.Forms.DataGridViewCellEventHandler(this.dgvBlastLayer_CellValueChanged);
+            // 
+            // dgvBlastUnitReference
+            // 
+            this.dgvBlastUnitReference.HeaderText = "dgvBlastUnitReference";
+            this.dgvBlastUnitReference.Name = "dgvBlastUnitReference";
+            this.dgvBlastUnitReference.Visible = false;
             // 
             // dgvBlastEnabled
             // 
@@ -311,8 +312,52 @@
             "32-bit"});
             this.dgvPrecision.Name = "dgvPrecision";
             this.dgvPrecision.Resizable = System.Windows.Forms.DataGridViewTriState.True;
-            this.dgvPrecision.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.Automatic;
             this.dgvPrecision.Width = 60;
+            // 
+            // dgvBlastUnitType
+            // 
+            this.dgvBlastUnitType.HeaderText = "BlastUnit Type";
+            this.dgvBlastUnitType.Name = "dgvBlastUnitType";
+            // 
+            // dgvBUMode
+            // 
+            this.dgvBUMode.FillWeight = 90F;
+            this.dgvBUMode.HeaderText = "BlastUnit Mode";
+            this.dgvBUMode.Name = "dgvBUMode";
+            this.dgvBUMode.Width = 90;
+            // 
+            // dgvParam1Domain
+            // 
+            this.dgvParam1Domain.FillWeight = 90F;
+            this.dgvParam1Domain.HeaderText = "Param 1 Domain";
+            this.dgvParam1Domain.Name = "dgvParam1Domain";
+            this.dgvParam1Domain.Width = 90;
+            // 
+            // dgvParam1
+            // 
+            this.dgvParam1.FillWeight = 90F;
+            this.dgvParam1.HeaderText = "Param 1 Value";
+            this.dgvParam1.Maximum = new decimal(new int[] {
+            2147483647,
+            0,
+            0,
+            0});
+            this.dgvParam1.Name = "dgvParam1";
+            this.dgvParam1.Width = 90;
+            // 
+            // dgvParam2Domain
+            // 
+            this.dgvParam2Domain.FillWeight = 90F;
+            this.dgvParam2Domain.HeaderText = "Param 2 Domain";
+            this.dgvParam2Domain.Name = "dgvParam2Domain";
+            this.dgvParam2Domain.Width = 90;
+            // 
+            // dgvParam2
+            // 
+            this.dgvParam2.FillWeight = 90F;
+            this.dgvParam2.HeaderText = "Param 2 Value";
+            this.dgvParam2.Name = "dgvParam2";
+            this.dgvParam2.Width = 90;
             // 
             // pnMemoryTargetting
             // 
@@ -398,21 +443,6 @@
             this.cbUseHex.UseVisualStyleBackColor = true;
             this.cbUseHex.CheckedChanged += new System.EventHandler(this.cbUseHex_CheckedChanged);
             // 
-            // panel2
-            // 
-            this.panel2.Controls.Add(this.numericUpDown1);
-            this.panel2.Location = new System.Drawing.Point(423, 191);
-            this.panel2.Name = "panel2";
-            this.panel2.Size = new System.Drawing.Size(158, 59);
-            this.panel2.TabIndex = 139;
-            // 
-            // numericUpDown1
-            // 
-            this.numericUpDown1.Location = new System.Drawing.Point(3, 3);
-            this.numericUpDown1.Name = "numericUpDown1";
-            this.numericUpDown1.Size = new System.Drawing.Size(120, 20);
-            this.numericUpDown1.TabIndex = 0;
-            // 
             // dataGridViewTextBoxColumn1
             // 
             this.dataGridViewTextBoxColumn1.HeaderText = "dgvBlastUnitReference";
@@ -438,12 +468,31 @@
             this.dataGridViewTextBoxColumn4.Name = "dataGridViewTextBoxColumn4";
             this.dataGridViewTextBoxColumn4.Width = 90;
             // 
+            // dataGridViewNumericUpDownColumn1
+            // 
+            this.dataGridViewNumericUpDownColumn1.FillWeight = 90F;
+            this.dataGridViewNumericUpDownColumn1.HeaderText = "Param 1 Value";
+            this.dataGridViewNumericUpDownColumn1.Maximum = new decimal(new int[] {
+            2147483647,
+            0,
+            0,
+            0});
+            this.dataGridViewNumericUpDownColumn1.Name = "dataGridViewNumericUpDownColumn1";
+            this.dataGridViewNumericUpDownColumn1.Width = 90;
+            // 
             // dataGridViewTextBoxColumn5
             // 
             this.dataGridViewTextBoxColumn5.FillWeight = 90F;
             this.dataGridViewTextBoxColumn5.HeaderText = "Param 1 Value";
             this.dataGridViewTextBoxColumn5.Name = "dataGridViewTextBoxColumn5";
             this.dataGridViewTextBoxColumn5.Width = 90;
+            // 
+            // dataGridViewNumericUpDownColumn2
+            // 
+            this.dataGridViewNumericUpDownColumn2.FillWeight = 90F;
+            this.dataGridViewNumericUpDownColumn2.HeaderText = "Param 2 Value";
+            this.dataGridViewNumericUpDownColumn2.Name = "dataGridViewNumericUpDownColumn2";
+            this.dataGridViewNumericUpDownColumn2.Width = 90;
             // 
             // dataGridViewTextBoxColumn6
             // 
@@ -452,71 +501,12 @@
             this.dataGridViewTextBoxColumn6.Name = "dataGridViewTextBoxColumn6";
             this.dataGridViewTextBoxColumn6.Width = 90;
             // 
-            // dataGridViewNumericUpDownColumn1
-            // 
-            this.dataGridViewNumericUpDownColumn1.FillWeight = 90F;
-            this.dataGridViewNumericUpDownColumn1.HeaderText = "Param 2 Value";
-            this.dataGridViewNumericUpDownColumn1.Name = "dataGridViewNumericUpDownColumn1";
-            this.dataGridViewNumericUpDownColumn1.Width = 90;
-            // 
-            // dgvBlastUnitReference
-            // 
-            this.dgvBlastUnitReference.HeaderText = "dgvBlastUnitReference";
-            this.dgvBlastUnitReference.Name = "dgvBlastUnitReference";
-            this.dgvBlastUnitReference.Visible = false;
-            // 
-            // dgvBlastUnitType
-            // 
-            this.dgvBlastUnitType.HeaderText = "BlastUnit Type";
-            this.dgvBlastUnitType.Name = "dgvBlastUnitType";
-            // 
-            // dgvBUMode
-            // 
-            this.dgvBUMode.FillWeight = 90F;
-            this.dgvBUMode.HeaderText = "BlastUnit Mode";
-            this.dgvBUMode.Name = "dgvBUMode";
-            this.dgvBUMode.Width = 90;
-            // 
-            // dgvParam1Domain
-            // 
-            this.dgvParam1Domain.FillWeight = 90F;
-            this.dgvParam1Domain.HeaderText = "Param 1 Domain";
-            this.dgvParam1Domain.Name = "dgvParam1Domain";
-            this.dgvParam1Domain.Width = 90;
-            // 
-            // dgvParam1
-            // 
-            this.dgvParam1.FillWeight = 90F;
-            this.dgvParam1.HeaderText = "Param 1 Value";
-            this.dgvParam1.Name = "dgvParam1";
-            this.dgvParam1.Width = 90;
-            // 
-            // dgvParam2Domain
-            // 
-            this.dgvParam2Domain.FillWeight = 90F;
-            this.dgvParam2Domain.HeaderText = "Param 2 Domain";
-            this.dgvParam2Domain.Name = "dgvParam2Domain";
-            this.dgvParam2Domain.Width = 90;
-            // 
-            // dgvParam2
-            // 
-            this.dgvParam2.FillWeight = 90F;
-            this.dgvParam2.HeaderText = "Param 2 Value";
-            this.dgvParam2.Name = "dgvParam2";
-            this.dgvParam2.Width = 90;
-            // 
-            // Column1
-            // 
-            this.Column1.HeaderText = "Column1";
-            this.Column1.Name = "Column1";
-            // 
             // RTC_NewBlastEditor_Form
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
             this.ClientSize = new System.Drawing.Size(930, 504);
-            this.Controls.Add(this.panel2);
             this.Controls.Add(this.cbUseHex);
             this.Controls.Add(this.panel1);
             this.Controls.Add(this.label4);
@@ -544,8 +534,6 @@
             this.pnMemoryTargetting.PerformLayout();
             this.panel1.ResumeLayout(false);
             this.panel1.PerformLayout();
-            this.panel2.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.numericUpDown1)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -570,19 +558,7 @@
 		private System.Windows.Forms.Panel panel1;
 		private System.Windows.Forms.Label label6;
 		private System.Windows.Forms.Label label5;
-		private System.Windows.Forms.DataGridViewTextBoxColumn dgvBlastUnitReference;
-		private System.Windows.Forms.DataGridViewCheckBoxColumn dgvBlastEnabled;
-		private System.Windows.Forms.DataGridViewComboBoxColumn dgvPrecision;
-		private System.Windows.Forms.DataGridViewTextBoxColumn dgvBlastUnitType;
-		private System.Windows.Forms.DataGridViewTextBoxColumn dgvBUMode;
-		private System.Windows.Forms.DataGridViewTextBoxColumn dgvParam1Domain;
-		private System.Windows.Forms.DataGridViewTextBoxColumn dgvParam1;
-		private System.Windows.Forms.DataGridViewTextBoxColumn dgvParam2Domain;
-		private RTC.DataGridViewNumericUpDownColumn dgvParam2;
 		private System.Windows.Forms.CheckBox cbUseHex;
-		private System.Windows.Forms.Panel panel2;
-		private System.Windows.Forms.NumericUpDown numericUpDown1;
-		private System.Windows.Forms.DataGridViewTextBoxColumn Column1;
 		private System.Windows.Forms.DataGridViewTextBoxColumn dataGridViewTextBoxColumn1;
 		private System.Windows.Forms.DataGridViewTextBoxColumn dataGridViewTextBoxColumn2;
 		private System.Windows.Forms.DataGridViewTextBoxColumn dataGridViewTextBoxColumn3;
@@ -590,5 +566,15 @@
 		private System.Windows.Forms.DataGridViewTextBoxColumn dataGridViewTextBoxColumn5;
 		private System.Windows.Forms.DataGridViewTextBoxColumn dataGridViewTextBoxColumn6;
 		private DataGridViewNumericUpDownColumn dataGridViewNumericUpDownColumn1;
+		private DataGridViewNumericUpDownColumn dataGridViewNumericUpDownColumn2;
+		private System.Windows.Forms.DataGridViewTextBoxColumn dgvBlastUnitReference;
+		private System.Windows.Forms.DataGridViewCheckBoxColumn dgvBlastEnabled;
+		private System.Windows.Forms.DataGridViewComboBoxColumn dgvPrecision;
+		private System.Windows.Forms.DataGridViewTextBoxColumn dgvBlastUnitType;
+		private System.Windows.Forms.DataGridViewTextBoxColumn dgvBUMode;
+		private System.Windows.Forms.DataGridViewTextBoxColumn dgvParam1Domain;
+		private DataGridViewNumericUpDownColumn dgvParam1;
+		private System.Windows.Forms.DataGridViewTextBoxColumn dgvParam2Domain;
+		private DataGridViewNumericUpDownColumn dgvParam2;
 	}
 }
