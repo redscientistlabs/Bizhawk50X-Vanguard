@@ -10,17 +10,29 @@ using System.Windows.Forms;
 
 namespace RTC
 {
+	/* 
+	 * Column Indexes - Updated 4/8/2018
+	 * 
+	 * 0 dgvBlastUnitReference
+	 * 1 dgvEnabled
+	 * 2 dgvPrecision
+	 * 3 dgvBlastUnitType
+	 * 4 dgvBUMode
+	 * 5 dgvParam1Domain
+	 * 6 dvgParam1
+	 * 7 dvgParam2Domain
+	 * 8 dvgParam2
+	 */
 	public partial class RTC_NewBlastEditor_Form : Form
 	{
 		StashKey sk = null;
 		bool initialized = false;
 		bool CurrentlyUpdating = false;
+		ContextMenuStrip cmsDomain = null;
 
 		public RTC_NewBlastEditor_Form()
 		{
 			InitializeComponent();
-
-
 			//set its location and size to fit the cell
 			//	dtp.Location = dgvBlastLayer.GetCellDisplayRectangle(0, 3,true).Location;
 			//dtp.Size = dgvBlastLayer.GetCellDisplayRectangle(0, 3,true).Size;
@@ -28,36 +40,27 @@ namespace RTC
 
 		private void RTC_BlastEditorForm_Load(object sender, EventArgs e)
 		{
-			ContextMenu contextMenu = new ContextMenu();
-			//this.nmAddressEdit.ContextMenu = contextMenu;
-			//this.nmValueEdit.ContextMenu = contextMenu;
 			RTC_Core.SetRTCColor(RTC_Core.generalColor, this);
 
 			this.dgvBlastLayer.CellValidating += new DataGridViewCellValidatingEventHandler(dgvBlastLayer_CellValidating);
-			//this.dgvBlastLayer.RowPrePaint += new DataGridViewRowPrePaintEventHandler(dgvBlastLayer_RowPrePaint);
-			//this.dgvBlastLayer.RowsAdded += new DataGridViewRowsAddedEventHandler(dgvBlastLayer_RowsAdded);
+			this.dgvBlastLayer.MouseClick += new System.Windows.Forms.MouseEventHandler(dgvBlastLayer_MouseClick);
+			this.dgvBlastLayer.Sorted += dgvBlastLayer_Sorted;
 		}
 
 		public void LoadStashkey(StashKey _sk)
 		{
 			if (_sk == null || _sk.BlastLayer == null || _sk.BlastLayer.Layer == null)
 				return;
-
 			sk = (StashKey)_sk.Clone();
-
 			RefreshBlastLayer();
-
 			this.Show();
 		}
 
 		public void RefreshBlastLayer()
 		{
 			initialized = false;
-
 			//Clear out whatever is there
 			dgvBlastLayer.Rows.Clear();
-
-
 			//Populate the different rows.
 			foreach (BlastUnit bu in sk.BlastLayer.Layer)
 			{
@@ -81,8 +84,8 @@ namespace RTC
 				int precision = -1;
 				string sourceDomain = "";
 				string destDomain = "";
-				long sourceAddress = -1;
-				decimal destAddress = -1;
+				Decimal sourceAddress = 0;
+				Decimal destAddress = 0;
 				string blastMode = "";
 
 				//add DateTimePicker into the control collection of the DataGridView
@@ -91,9 +94,9 @@ namespace RTC
 				{
 					BlastByte bb = bu as BlastByte;
 					precision = bb.Value.Length;
-					sourceAddress = bb.Address;
+					sourceAddress = Convert.ToDecimal(bb.Address);
 					sourceDomain = bb.Domain;
-					destAddress = RTC_Extensions.getDecimalValue(bb.Value);
+					destAddress = (Decimal)RTC_Extensions.getDecimalValue(bb.Value);
 					blastMode = Convert.ToString(bb.Type);
 				}
 
@@ -103,7 +106,7 @@ namespace RTC
 					precision = bc.Value.Length;
 					sourceAddress = bc.Address;
 					sourceDomain = bc.Domain;
-					destAddress = RTC_Extensions.getDecimalValue(bc.Value);
+					//destAddress = RTC_Extensions.getDecimalValue(bc.Value);
 					if (bc.IsFreeze)
 						blastMode = "Freeze";
 					else
@@ -119,12 +122,17 @@ namespace RTC
 					sourceDomain = bp.Domain;
 					destDomain = bp.PipeDomain;
 					destAddress = bp.PipeAddress;
-					blastMode = "Tilt: " + Convert.ToString(bp.TiltValue);
+					blastMode = Convert.ToString(bp.TiltValue);
 				}
 				dgvBlastLayer.Rows.Add(bu, enabled, GetPrecisionNameFromSize(precision), blastType, blastMode, sourceDomain, sourceAddress, destDomain, destAddress);
 				//Update the precision
 				ValidatePrecision(dgvBlastLayer.Rows[dgvBlastLayer.Rows.Count - 1]);
 			}
+			//Param1 and Param2 only need to accept Decimal
+			dgvBlastLayer.Columns[6].ValueType = typeof(Decimal);
+			dgvBlastLayer.Columns[8].ValueType = typeof(Decimal);
+
+			PopulateDomainContextMenu();
 			lbBlastLayerSize.Text = "BlastLayer size: " + sk.BlastLayer.Layer.Count.ToString();
 			initialized = true;
 		}
@@ -230,50 +238,6 @@ namespace RTC
 
 			RefreshBlastLayer();
 		}
-
-		public DialogResult getInputBox(string title, string promptText, ref string value)
-		{
-			Form form = new Form();
-			Label label = new Label();
-			TextBox textBox = new TextBox();
-			Button buttonOk = new Button();
-			Button buttonCancel = new Button();
-
-			form.Text = title;
-			label.Text = promptText;
-			textBox.Text = value;
-
-			buttonOk.Text = "OK";
-			buttonCancel.Text = "Cancel";
-			buttonOk.DialogResult = DialogResult.OK;
-			buttonCancel.DialogResult = DialogResult.Cancel;
-
-			label.SetBounds(9, 20, 372, 13);
-			textBox.SetBounds(12, 36, 372, 20);
-			buttonOk.SetBounds(228, 72, 75, 23);
-			buttonCancel.SetBounds(309, 72, 75, 23);
-
-			label.AutoSize = true;
-			textBox.Anchor = textBox.Anchor | AnchorStyles.Right;
-			buttonOk.Anchor = AnchorStyles.Bottom | AnchorStyles.Right;
-			buttonCancel.Anchor = AnchorStyles.Bottom | AnchorStyles.Right;
-
-			form.ClientSize = new Size(396, 107);
-			form.Controls.AddRange(new Control[] { label, textBox, buttonOk, buttonCancel });
-			form.ClientSize = new Size(Math.Max(300, label.Right + 10), form.ClientSize.Height);
-			form.FormBorderStyle = FormBorderStyle.FixedDialog;
-			form.StartPosition = FormStartPosition.CenterScreen;
-			form.MinimizeBox = false;
-			form.MaximizeBox = false;
-			form.AcceptButton = buttonOk;
-			form.CancelButton = buttonCancel;
-
-			DialogResult dialogResult = form.ShowDialog();
-			value = textBox.Text;
-			return dialogResult;
-		}
-
-
 
 		private void btnDuplicateSelected_Click(object sender, EventArgs e)
 		{
@@ -441,26 +405,80 @@ namespace RTC
 
 		private void dgvBlastLayer_CellValidating(object sender, DataGridViewCellValidatingEventArgs e)
 		{
-			if (dgvBlastLayer.Columns[e.ColumnIndex].HeaderText.Equals("Precision"))
+			DataGridViewRow row = dgvBlastLayer.Rows[e.RowIndex];
+			DataGridViewColumn column = dgvBlastLayer.Columns[e.ColumnIndex];
+			
+			//Make sure the max and min is updated if the precision changed
+			if (column.HeaderText.Equals("Precision"))
 				ValidatePrecision(dgvBlastLayer.Rows[e.RowIndex]);
-			/*	// Confirm that the cell is not empty.
-				if (string.IsNullOrEmpty(e.FormattedValue.ToString()))
-				{
-					dgvBlastLayer.Rows[e.RowIndex].ErrorText ="Row can not be empty";
-					e.Cancel = true;
-				}
-				*/
+
+			if (!ValidateBlastUnitFromRow(row))
+			{
+				dgvBlastLayer.Rows[e.RowIndex].ErrorText = "There's something wrong with your input!";
+				e.Cancel = true;
+			}
+
 		}
 
-		private void dgvBlastLayer_RowPrePaint(object sender, DataGridViewRowPrePaintEventArgs e)
+		//Validates that a blast unit is valid from a dgv row
+		bool ValidateBlastUnitFromRow(DataGridViewRow row)
 		{
-			ValidatePrecision(dgvBlastLayer.Rows[e.RowIndex]);
+			return true;
 		}
 
+		private void PopulateDomainContextMenu()
+		{
+			String[] domains = RTC_MemoryDomains.MemoryInterfaces.Keys.ToArray();
+
+			if (cmsDomain == null)
+				cmsDomain = new ContextMenuStrip();
+
+			cmsDomain.Items.Clear();
+
+			foreach (string domain in domains)
+			{
+				//cmsDomain.Items.Add(domain, null, );
+				(cmsDomain.Items.Add(domain, null, new EventHandler((ob, ev) =>
+				{
+					dgvBlastLayer.SelectedCells[0].Value = domain;
+				})) as ToolStripMenuItem).Enabled = true;
+			}
+		}
+
+		private void dgvBlastLayer_MouseClick(object sender, MouseEventArgs e)
+		{
+			if (e.Button == MouseButtons.Right)
+			{
+				int currentMouseOverColumn = dgvBlastLayer.HitTest(e.X, e.Y).ColumnIndex;
+				if ((dgvBlastLayer.CurrentCell.ColumnIndex == 5 && currentMouseOverColumn == 5) || (dgvBlastLayer.CurrentCell.ColumnIndex == 7 && currentMouseOverColumn == 7))
+						cmsDomain.Show(dgvBlastLayer, new Point(e.X, e.Y));
+			}
+		}
+
+		private void dgvBlastLayer_Sorted(object sender, EventArgs e)
+		{
+			switch (dgvBlastLayer.SortedColumn.Name)
+			{
+				case "dgvParam1Domain":
+					sk.BlastLayer.Layer = sk.BlastLayer.Layer.OrderBy(it => it.Domain).ToList();
+					break;
+				case "dgvParam1":
+					sk.BlastLayer.Layer = sk.BlastLayer.Layer.OrderBy(it => it.Address).ToList();
+					break;
+				case "dgvParam2Domain":
+					break;
+				case "dgvParam2":
+					//BlastLayer.Layer = sk.BlastLayer.Layer.OrderBy(it => it.Value).Reverse().ToList();
+					break;
+				default:
+					break;
+			}
+		}
 
 		private void cbUseHex_CheckedChanged(object sender, EventArgs e)
 		{
-			
+			MessageBox.Show("Not yet implemented.");
 		}
+
 	}
 }

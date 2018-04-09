@@ -265,7 +265,6 @@
             // dgvBlastLayer
             // 
             this.dgvBlastLayer.AllowUserToAddRows = false;
-            this.dgvBlastLayer.AllowUserToOrderColumns = true;
             this.dgvBlastLayer.AllowUserToResizeRows = false;
             this.dgvBlastLayer.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
@@ -283,9 +282,11 @@
             this.dgvParam2});
             this.dgvBlastLayer.Location = new System.Drawing.Point(9, 10);
             this.dgvBlastLayer.Margin = new System.Windows.Forms.Padding(2);
+            this.dgvBlastLayer.MultiSelect = false;
             this.dgvBlastLayer.Name = "dgvBlastLayer";
             this.dgvBlastLayer.RowHeadersVisible = false;
             this.dgvBlastLayer.RowTemplate.Height = 24;
+            this.dgvBlastLayer.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.CellSelect;
             this.dgvBlastLayer.Size = new System.Drawing.Size(740, 483);
             this.dgvBlastLayer.TabIndex = 133;
             this.dgvBlastLayer.Tag = "color:normal";
@@ -343,6 +344,7 @@
             0,
             0});
             this.dgvParam1.Name = "dgvParam1";
+            this.dgvParam1.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.Automatic;
             this.dgvParam1.Width = 90;
             // 
             // dgvParam2Domain
@@ -357,6 +359,7 @@
             this.dgvParam2.FillWeight = 90F;
             this.dgvParam2.HeaderText = "Param 2 Value";
             this.dgvParam2.Name = "dgvParam2";
+            this.dgvParam2.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.Automatic;
             this.dgvParam2.Width = 90;
             // 
             // pnMemoryTargetting
