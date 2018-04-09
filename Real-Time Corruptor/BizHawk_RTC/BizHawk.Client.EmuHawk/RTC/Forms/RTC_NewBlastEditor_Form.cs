@@ -466,13 +466,39 @@ namespace RTC
 					sk.BlastLayer.Layer = sk.BlastLayer.Layer.OrderBy(it => it.Address).ToList();
 					break;
 				case "dgvParam2Domain":
+					sk.BlastLayer.Layer = sk.BlastLayer.Layer.OrderBy(it => GetParam2Domain(it)).ToList();
 					break;
 				case "dgvParam2":
-					//BlastLayer.Layer = sk.BlastLayer.Layer.OrderBy(it => it.Value).Reverse().ToList();
+					sk.BlastLayer.Layer = sk.BlastLayer.Layer.OrderBy(it => GetParam2Value(it)).ToList();
 					break;
 				default:
 					break;
 			}
+		}
+
+		private long GetParam2Value(BlastUnit bu)
+		{
+			if(bu is BlastByte || bu is BlastCheat)
+			{
+				BlastByte bb = bu as BlastByte;
+				decimal value = RTC_Extensions.getDecimalValue(bb.Value);				
+				return (long)value;
+			}
+			if (bu is BlastPipe)
+			{
+				BlastPipe bp = bu as BlastPipe;
+				return bp.PipeAddress;
+			}
+			return 0;
+		}
+		private string GetParam2Domain(BlastUnit bu)
+		{
+			if (bu is BlastPipe)
+			{
+				BlastPipe bp = bu as BlastPipe;
+				return bp.PipeDomain;
+			}
+			return null;
 		}
 
 		private void cbUseHex_CheckedChanged(object sender, EventArgs e)
