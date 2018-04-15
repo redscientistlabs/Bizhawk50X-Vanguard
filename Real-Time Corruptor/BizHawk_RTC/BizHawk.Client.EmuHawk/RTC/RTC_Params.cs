@@ -129,8 +129,14 @@ namespace RTC
             SetParam("BIZHAWK_LOCATION", $"{GlobalWin.MainForm.Location.X},{GlobalWin.MainForm.Location.Y}");
         }
 
+		public static void AutoLoadVMDs()
+		{
+			string currentGame = (string)RTC_Core.SendCommandToBizhawk(new RTC_Command(CommandType.REMOTE_KEY_GETGAMENAME), true);
+			SetParam((currentGame.GetHashCode().ToString()));
 
-        public static void SetParam(string paramName, string data = null)
+		}
+
+		public static void SetParam(string paramName, string data = null)
         {
             if(data == null)
             {

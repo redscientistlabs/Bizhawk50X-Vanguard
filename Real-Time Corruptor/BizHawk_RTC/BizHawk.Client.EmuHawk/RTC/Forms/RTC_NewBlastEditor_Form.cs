@@ -66,14 +66,15 @@ namespace RTC
 			{
 				/*
 				 param1
-					Nightmare  = Address
+					BlastByte  = Address
 					BlastCheat = Address
 					BlastPipe  = Source Address
+					BlastVector = Address
 				 param2
-					Nightmare  = Value
+					BlastByte  = Value
 					BlastCheat = Value
 					BlastPipe  = Destination Address
-
+					BlastBector = Value
 				*/
 
 				//Valid for all types
@@ -85,6 +86,8 @@ namespace RTC
 				string sourceDomain = "";
 				string destDomain = "";
 				Decimal sourceAddress = 0;
+
+				//This is both the value and the dest address depending on the engine
 				Decimal destAddress = 0;
 				string blastMode = "";
 
@@ -124,6 +127,16 @@ namespace RTC
 					destAddress = bp.PipeAddress;
 					blastMode = Convert.ToString(bp.TiltValue);
 				}
+				if (bu is BlastVector)
+				{
+					BlastVector bv = bu as BlastVector;
+					precision = bv.Values.Length;
+					sourceAddress = Convert.ToDecimal(bv.Address);
+					sourceDomain = bv.Domain;
+					destAddress = (Decimal)RTC_Extensions.getDecimalValue(bv.Values);
+					blastMode = Convert.ToString(bv.Type);
+				}
+
 				dgvBlastLayer.Rows.Add(bu, enabled, GetPrecisionNameFromSize(precision), blastType, blastMode, sourceDomain, sourceAddress, destDomain, destAddress);
 				//Update the precision
 				ValidatePrecision(dgvBlastLayer.Rows[dgvBlastLayer.Rows.Count - 1]);
@@ -351,6 +364,16 @@ namespace RTC
 					row.Cells["dgvBlastUnitReference"].Value = bp;
 					CurrentlyUpdating = false;
 					break;
+				case "RTC.BlastVector":
+					BlastVector bv = (BlastVector)row.Cells["dgvBlastUnitReference"].Value;
+					bv.IsEnabled = Convert.ToBoolean((row.Cells["dgvBlastEnabled"].Value));
+					bv.Address = Convert.ToInt64(row.Cells["dgvParam1"].Value);
+					bv.Values = RTC_Extensions.getByteArrayValue(GetPrecisionSizeFromName(row.Cells["dgvPrecision"].Value.ToString()), Convert.ToDecimal(row.Cells["dgvParam2"].Value));
+					bv.Domain = Convert.ToString(row.Cells["dgvParam1Domain"].Value);
+					Enum.TryParse(row.Cells["dgvBUMode"].Value.ToString().ToUpper(), out bv.Type);
+					row.Cells["dgvBlastUnitReference"].Value = bv;
+					CurrentlyUpdating = false;
+					break;
 				default:
 					MessageBox.Show("You had an invalid blast unit type! Check your input. The invalid unit is: " + row.Cells["dgvBlastUnitType"].Value);
 					CurrentlyUpdating = false;
@@ -366,22 +389,7 @@ namespace RTC
 			switch (row.Cells["dgvBlastUnitType"].Value.ToString())
 			{
 				case "RTC.BlastByte":
-					if (row.Cells["dgvPrecision"].Value.ToString() == "8-bit")
-					{
-						(row.Cells["dgvParam2"] as DataGridViewNumericUpDownCell).Maximum = 255;
-					}
-					else if (row.Cells["dgvPrecision"].Value.ToString() == "16-bit")
-					{
-						(row.Cells["dgvParam2"] as DataGridViewNumericUpDownCell).Maximum = 65535;
-					}
-					else
-					{
-						(row.Cells["dgvParam2"] as DataGridViewNumericUpDownCell).Maximum = 2147483647;
-					}
-
-					break;
 				case "RTC.BlastCheat":
-
 					if (row.Cells["dgvPrecision"].Value.ToString() == "8-bit")
 					{
 						(row.Cells["dgvParam2"] as DataGridViewNumericUpDownCell).Maximum = 255;
@@ -392,10 +400,11 @@ namespace RTC
 					}
 					else
 					{
-						(row.Cells["dgvParam2"] as DataGridViewNumericUpDownCell).Maximum = 2147483647;
+						(row.Cells["dgvParam2"] as DataGridViewNumericUpDownCell).Maximum = 4294967295;
 					}
 					break;
 				case "RTC.BlastPipe":
+						//Todo set this to the valid maximum address
 						(row.Cells["dgvParam2"] as DataGridViewNumericUpDownCell).Maximum = 2147483647;
 						break;
 				default:

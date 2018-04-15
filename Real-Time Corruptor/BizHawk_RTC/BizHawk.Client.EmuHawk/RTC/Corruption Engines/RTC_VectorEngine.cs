@@ -255,17 +255,17 @@ namespace RTC
 			try
 			{
 
-				BlastVector bv = null;
+				BlastByte bu = null;
 
 				lastValues = read32bits(mdp, safeAddress);
 				lastDomain = _domain;
 
 
-
+				//Enforce the safeaddress at generation
 				if (isConstant(lastValues, limiterList))
-					bv = new BlastVector(_domain, _address, getRandomConstant(valueList), true);
+					bu = new BlastByte(_domain, safeAddress, BlastByteType.VECTOR, getRandomConstant(valueList), true);
 
-				return bv;
+				return bu;
 
 
 

@@ -1183,7 +1183,11 @@ namespace RTC
                             mdp.PokeByte(targetAddress + i, (byte)(mdp.PeekByte(targetAddress + i) - Value[i]));
                             break;
 
-                        case BlastByteType.NONE:
+						case BlastByteType.VECTOR:
+							mdp.PokeByte(targetAddress + i, Value[i]);
+							break;
+
+						case BlastByteType.NONE:
                             return true;
                     }
 
@@ -1250,6 +1254,10 @@ namespace RTC
 						break;
 				}
 				
+			}
+			else if (Type == BlastByteType.VECTOR)
+			{
+				Value = RTC_VectorEngine.getRandomConstant(RTC_VectorEngine.valueList);
 			}
 		}
 

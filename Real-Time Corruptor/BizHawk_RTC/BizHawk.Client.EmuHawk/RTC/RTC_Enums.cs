@@ -21,6 +21,7 @@ namespace RTC
         SET,
         ADD,
         SUBSTRACT,
+		VECTOR,
         NONE
     }
 
@@ -29,6 +30,7 @@ namespace RTC
         RANDOM,
         RANDOMTILT,
         TILT,
+		VECTOR
     }
 
     public enum CorruptionEngine
