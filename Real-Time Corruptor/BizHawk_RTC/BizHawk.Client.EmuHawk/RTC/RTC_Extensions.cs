@@ -764,7 +764,7 @@ namespace RTC
 		// Type of this cell's editing control
 		private static Type defaultEditType = typeof(DataGridViewNumericUpDownEditingControl);
 		// Type of this cell's value. The formatted value type is string, the same as the base class DataGridViewTextBoxCell
-		private static Type defaultValueType = typeof(System.Decimal);
+		private static Type defaultValueType = typeof(System.String);
 
 		// The bitmap used to paint the non-edited cells via a call to NumericUpDown.DrawToBitmap
 		[ThreadStatic]
@@ -1470,7 +1470,7 @@ namespace RTC
 				this.EditingNumericUpDown.Maximum = value;
 			}
 		}
-
+		
 		/// Utility function that sets a new value for the Minimum property of the cell. This function is used by
 		/// the cell and column Minimum property. The column uses this method instead of the Minimum
 		/// property for performance reasons. This way the column can invalidate the entire column at once instead of 
@@ -1802,6 +1802,7 @@ namespace RTC
 				// Prevent the Value from being set to Maximum or Minimum when the cell is being painted.
 				this.UserEdit = (context & DataGridViewDataErrorContexts.Display) == 0;
 				return this.Value.ToString((this.ThousandsSeparator ? "N" : "F") + this.DecimalPlaces.ToString());
+
 			}
 			finally
 			{
@@ -1889,6 +1890,34 @@ namespace RTC
 			{
 				// Let the DataGridView know about the value change
 				NotifyDataGridViewOfValueChange();
+			}
+		}
+
+		protected override void UpdateEditText()
+		{
+			if (base.UserEdit) HexParseEditText();
+			if (!string.IsNullOrEmpty(base.Text))
+			{
+				base.ChangingText = true;
+				base.Text = string.Format("{0:X}", (uint)base.Value);
+			}
+		}
+		protected override void ValidateEditText()
+		{
+			HexParseEditText();
+			UpdateEditText();
+		}
+		private void HexParseEditText()
+		{
+			try
+			{
+				if (!string.IsNullOrEmpty(base.Text))
+					this.Value = Convert.ToInt64(base.Text, 16);
+			}
+			catch { }
+			finally
+			{
+				base.UserEdit = false;
 			}
 		}
 

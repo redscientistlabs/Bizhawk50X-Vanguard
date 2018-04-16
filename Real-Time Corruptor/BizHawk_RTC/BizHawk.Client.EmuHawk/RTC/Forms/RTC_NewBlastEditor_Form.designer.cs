@@ -41,15 +41,6 @@
             this.btnSanitizeDuplicates = new System.Windows.Forms.Button();
             this.lbBlastLayerSize = new System.Windows.Forms.Label();
             this.dgvBlastLayer = new System.Windows.Forms.DataGridView();
-            this.dgvBlastUnitReference = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.dgvBlastEnabled = new System.Windows.Forms.DataGridViewCheckBoxColumn();
-            this.dgvPrecision = new System.Windows.Forms.DataGridViewComboBoxColumn();
-            this.dgvBlastUnitType = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.dgvBUMode = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.dgvParam1Domain = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.dgvParam1 = new RTC.DataGridViewNumericUpDownColumn();
-            this.dgvParam2Domain = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.dgvParam2 = new RTC.DataGridViewNumericUpDownColumn();
             this.pnMemoryTargetting = new System.Windows.Forms.Panel();
             this.label3 = new System.Windows.Forms.Label();
             this.label4 = new System.Windows.Forms.Label();
@@ -65,6 +56,15 @@
             this.dataGridViewTextBoxColumn5 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.dataGridViewNumericUpDownColumn2 = new RTC.DataGridViewNumericUpDownColumn();
             this.dataGridViewTextBoxColumn6 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.dgvBlastUnitReference = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.dgvBlastEnabled = new System.Windows.Forms.DataGridViewCheckBoxColumn();
+            this.dgvPrecision = new System.Windows.Forms.DataGridViewComboBoxColumn();
+            this.dgvBlastUnitType = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.dgvBUMode = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.dgvParam1Domain = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.dgvParam1 = new RTC.DataGridViewNumericUpDownColumn();
+            this.dgvParam2Domain = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.dgvParam2 = new RTC.DataGridViewNumericUpDownColumn();
             ((System.ComponentModel.ISupportInitialize)(this.dgvBlastLayer)).BeginInit();
             this.pnMemoryTargetting.SuspendLayout();
             this.panel1.SuspendLayout();
@@ -292,80 +292,6 @@
             this.dgvBlastLayer.Tag = "color:normal";
             this.dgvBlastLayer.CellValueChanged += new System.Windows.Forms.DataGridViewCellEventHandler(this.dgvBlastLayer_CellValueChanged);
             // 
-            // dgvBlastUnitReference
-            // 
-            this.dgvBlastUnitReference.HeaderText = "dgvBlastUnitReference";
-            this.dgvBlastUnitReference.Name = "dgvBlastUnitReference";
-            this.dgvBlastUnitReference.Visible = false;
-            // 
-            // dgvBlastEnabled
-            // 
-            this.dgvBlastEnabled.HeaderText = "Enabled";
-            this.dgvBlastEnabled.Name = "dgvBlastEnabled";
-            this.dgvBlastEnabled.Width = 75;
-            // 
-            // dgvPrecision
-            // 
-            this.dgvPrecision.HeaderText = "Precision";
-            this.dgvPrecision.Items.AddRange(new object[] {
-            "8-bit",
-            "16-bit",
-            "32-bit"});
-            this.dgvPrecision.Name = "dgvPrecision";
-            this.dgvPrecision.Resizable = System.Windows.Forms.DataGridViewTriState.True;
-            this.dgvPrecision.Width = 60;
-            // 
-            // dgvBlastUnitType
-            // 
-            this.dgvBlastUnitType.HeaderText = "BlastUnit Type";
-            this.dgvBlastUnitType.Name = "dgvBlastUnitType";
-            this.dgvBlastUnitType.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
-            // 
-            // dgvBUMode
-            // 
-            this.dgvBUMode.FillWeight = 90F;
-            this.dgvBUMode.HeaderText = "BlastUnit Mode";
-            this.dgvBUMode.Name = "dgvBUMode";
-            this.dgvBUMode.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
-            this.dgvBUMode.Width = 90;
-            // 
-            // dgvParam1Domain
-            // 
-            this.dgvParam1Domain.FillWeight = 90F;
-            this.dgvParam1Domain.HeaderText = "Param 1 Domain";
-            this.dgvParam1Domain.Name = "dgvParam1Domain";
-            this.dgvParam1Domain.Width = 90;
-            // 
-            // dgvParam1
-            // 
-            this.dgvParam1.FillWeight = 90F;
-            this.dgvParam1.HeaderText = "Param 1 Value";
-            this.dgvParam1.Hexadecimal = true;
-            this.dgvParam1.Maximum = new decimal(new int[] {
-            -1,
-            0,
-            0,
-            0});
-            this.dgvParam1.Name = "dgvParam1";
-            this.dgvParam1.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.Automatic;
-            this.dgvParam1.Width = 90;
-            // 
-            // dgvParam2Domain
-            // 
-            this.dgvParam2Domain.FillWeight = 90F;
-            this.dgvParam2Domain.HeaderText = "Param 2 Domain";
-            this.dgvParam2Domain.Name = "dgvParam2Domain";
-            this.dgvParam2Domain.Width = 90;
-            // 
-            // dgvParam2
-            // 
-            this.dgvParam2.FillWeight = 90F;
-            this.dgvParam2.HeaderText = "Param 2 Value";
-            this.dgvParam2.Hexadecimal = true;
-            this.dgvParam2.Name = "dgvParam2";
-            this.dgvParam2.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.Automatic;
-            this.dgvParam2.Width = 90;
-            // 
             // pnMemoryTargetting
             // 
             this.pnMemoryTargetting.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
@@ -511,6 +437,85 @@
             this.dataGridViewTextBoxColumn6.HeaderText = "Param 2 Domain";
             this.dataGridViewTextBoxColumn6.Name = "dataGridViewTextBoxColumn6";
             this.dataGridViewTextBoxColumn6.Width = 90;
+            // 
+            // dgvBlastUnitReference
+            // 
+            this.dgvBlastUnitReference.HeaderText = "dgvBlastUnitReference";
+            this.dgvBlastUnitReference.Name = "dgvBlastUnitReference";
+            this.dgvBlastUnitReference.Visible = false;
+            // 
+            // dgvBlastEnabled
+            // 
+            this.dgvBlastEnabled.HeaderText = "Enabled";
+            this.dgvBlastEnabled.Name = "dgvBlastEnabled";
+            this.dgvBlastEnabled.Width = 75;
+            // 
+            // dgvPrecision
+            // 
+            this.dgvPrecision.HeaderText = "Precision";
+            this.dgvPrecision.Items.AddRange(new object[] {
+            "8-bit",
+            "16-bit",
+            "32-bit"});
+            this.dgvPrecision.Name = "dgvPrecision";
+            this.dgvPrecision.Resizable = System.Windows.Forms.DataGridViewTriState.True;
+            this.dgvPrecision.Width = 60;
+            // 
+            // dgvBlastUnitType
+            // 
+            this.dgvBlastUnitType.HeaderText = "BlastUnit Type";
+            this.dgvBlastUnitType.Name = "dgvBlastUnitType";
+            this.dgvBlastUnitType.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
+            // 
+            // dgvBUMode
+            // 
+            this.dgvBUMode.FillWeight = 90F;
+            this.dgvBUMode.HeaderText = "BlastUnit Mode";
+            this.dgvBUMode.Name = "dgvBUMode";
+            this.dgvBUMode.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
+            this.dgvBUMode.Width = 90;
+            // 
+            // dgvParam1Domain
+            // 
+            this.dgvParam1Domain.FillWeight = 90F;
+            this.dgvParam1Domain.HeaderText = "Param 1 Domain";
+            this.dgvParam1Domain.Name = "dgvParam1Domain";
+            this.dgvParam1Domain.Width = 90;
+            // 
+            // dgvParam1
+            // 
+            this.dgvParam1.FillWeight = 90F;
+            this.dgvParam1.HeaderText = "Param 1 Value";
+            this.dgvParam1.Hexadecimal = true;
+            this.dgvParam1.Maximum = new decimal(new int[] {
+            -1,
+            0,
+            0,
+            0});
+            this.dgvParam1.Name = "dgvParam1";
+            this.dgvParam1.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.Automatic;
+            this.dgvParam1.Width = 90;
+            // 
+            // dgvParam2Domain
+            // 
+            this.dgvParam2Domain.FillWeight = 90F;
+            this.dgvParam2Domain.HeaderText = "Param 2 Domain";
+            this.dgvParam2Domain.Name = "dgvParam2Domain";
+            this.dgvParam2Domain.Width = 90;
+            // 
+            // dgvParam2
+            // 
+            this.dgvParam2.FillWeight = 90F;
+            this.dgvParam2.HeaderText = "Param 2 Value";
+            this.dgvParam2.Hexadecimal = true;
+            this.dgvParam2.Maximum = new decimal(new int[] {
+            -559939584,
+            902409669,
+            54,
+            0});
+            this.dgvParam2.Name = "dgvParam2";
+            this.dgvParam2.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.Automatic;
+            this.dgvParam2.Width = 90;
             // 
             // RTC_NewBlastEditor_Form
             // 
