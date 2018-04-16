@@ -1,4 +1,7 @@
-﻿namespace BizHawk.Emulation.Cores.Nintendo.NES
+﻿using System;
+using BizHawk.Common;
+
+namespace BizHawk.Emulation.Cores.Nintendo.NES
 {
 	public sealed class Mapper219 : MMC3Board_Base
 	{
@@ -20,9 +23,10 @@
 
 			BaseSetup();
 
-			prgregs[1] = 1;
-			prgregs[2] = 2;
-			prgregs[3] = 3;
+			prgregs[0] = 0xFC;
+			prgregs[1] = 0xFD;
+			prgregs[2] = 0xFE;
+			prgregs[3] = 0xFF;
 
 			byte r0_0 = (byte)(0 & ~1);
 			byte r0_1 = (byte)(0 | 1);
@@ -53,7 +57,7 @@
 
 		public override void WritePRG(int addr, byte value)
 		{
-			if (addr<0x2000)
+			if (addr < 0x2000)
 			{
 				switch ((addr + 0x8000) & 0xE003)
 				{
@@ -100,24 +104,29 @@
 						}
 						break;
 				}
-			}		
-			else 
+			}
+			else
 				base.WritePRG(addr, value);
 		}
 
 		public override byte ReadPRG(int addr)
 		{
 			int bank_prg = addr >> 13;
-			bank_prg = prgregs[bank_prg];
+			bank_prg = prgregs[bank_prg] & prg_mask;
 			return ROM[((bank_prg << 13) + (addr & 0x1FFF))];
 		}
 
 		public override byte ReadPPU(int addr)
 		{
-			if (addr<0x2000)
+
+			if (addr < 0x2000)
 			{
 				int bank_chr = addr >> 10;
-				bank_chr = chrregs[bank_chr];
+				bank_chr = chrregs[bank_chr] & chr_mask;
+				if (VROM != null)
+				{
+					return VROM[((bank_chr << 10) + (addr & 0x3FF))];
+				}
 				return VRAM[((bank_chr << 10) + (addr & 0x3FF))];
 			}
 			else
@@ -130,10 +139,21 @@
 			{
 				int bank_chr = addr >> 10;
 				bank_chr = chrregs[bank_chr];
-				VRAM[((bank_chr << 10) + (addr & 0x3FF))]=value;
+				VRAM[((bank_chr << 10) + (addr & 0x3FF))] = value;
 			}
 			else
 				base.WritePPU(addr, value);
+		}
+
+		public override void SyncState(Serializer ser)
+		{
+			ser.Sync("exregs", ref exregs, false);
+			ser.Sync("prgregs", ref prgregs, false);
+			ser.Sync("chrregs", ref chrregs, false);
+			ser.Sync("bits_rev", ref bits_rev);
+			ser.Sync("reg_value", ref reg_value);
+
+			base.SyncState(ser);
 		}
 	}
 }
