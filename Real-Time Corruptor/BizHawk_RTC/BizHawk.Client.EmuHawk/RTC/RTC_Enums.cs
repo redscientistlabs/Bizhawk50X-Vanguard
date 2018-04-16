@@ -25,6 +25,13 @@ namespace RTC
         NONE
     }
 
+	public enum BlastCheatType
+	{
+		FREEZE,
+		HELLGENIE,
+		NONE
+	}
+
     public enum BlastByteAlgo
     {
         RANDOM,

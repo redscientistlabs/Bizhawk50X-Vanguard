@@ -512,7 +512,14 @@ namespace RTC
 
 		private void cbUseHex_CheckedChanged(object sender, EventArgs e)
 		{
-			MessageBox.Show("Not yet implemented.");
+			foreach (DataGridViewColumn column in dgvBlastLayer.Columns)
+			{
+				if(column.CellType.Name == "DataGridViewNumericUpDownCell")
+				{
+					DataGridViewNumericUpDownColumn _column = column as DataGridViewNumericUpDownColumn;
+					_column.Hexadecimal = cbUseHex.Checked;
+				}
+			}
 		}
 
 	}
