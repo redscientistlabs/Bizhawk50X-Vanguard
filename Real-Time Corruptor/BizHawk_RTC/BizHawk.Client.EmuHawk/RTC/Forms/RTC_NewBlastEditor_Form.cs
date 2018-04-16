@@ -29,6 +29,8 @@ namespace RTC
 		bool initialized = false;
 		bool CurrentlyUpdating = false;
 		ContextMenuStrip cmsDomain = null;
+		ContextMenuStrip cmsBlastUnitMode = null;
+		ContextMenuStrip cmsBlastUnitType = null;
 
 		public RTC_NewBlastEditor_Form()
 		{
@@ -53,6 +55,10 @@ namespace RTC
 				return;
 			sk = (StashKey)_sk.Clone();
 			RefreshBlastLayer();
+
+			PopulateBlastUnitModeContextMenu();
+			PopulateBlastUnitTypeContextMenu();
+
 			this.Show();
 		}
 
@@ -454,13 +460,66 @@ namespace RTC
 			}
 		}
 
+		private void PopulateBlastUnitModeContextMenu()
+		{
+			if (cmsBlastUnitMode == null)
+				cmsBlastUnitMode = new ContextMenuStrip();
+
+			cmsBlastUnitMode.Items.Clear();
+
+			foreach (BlastByteType type in Enum.GetValues(typeof(BlastByteType)))
+			{
+				//cmsDomain.Items.Add(domain, null, );
+				(cmsBlastUnitMode.Items.Add(type.ToString(), null, new EventHandler((ob, ev) =>
+				{
+					dgvBlastLayer.SelectedCells[0].Value = type.ToString();
+				})) as ToolStripMenuItem).Enabled = true;
+			}
+			cmsBlastUnitMode.Items.Add(new ToolStripSeparator());
+			foreach (BlastCheatType type in Enum.GetValues(typeof(BlastCheatType)))
+			{
+				//cmsDomain.Items.Add(domain, null, );
+				(cmsBlastUnitMode.Items.Add(type.ToString(), null, new EventHandler((ob, ev) =>
+				{
+					dgvBlastLayer.SelectedCells[0].Value = type.ToString();
+				})) as ToolStripMenuItem).Enabled = true;
+			}
+		}
+		private void PopulateBlastUnitTypeContextMenu()
+		{
+			if (cmsBlastUnitType == null)
+				cmsBlastUnitType = new ContextMenuStrip();
+
+			cmsBlastUnitType.Items.Clear();
+
+			//Adding these by hand
+
+			(cmsBlastUnitType.Items.Add("RTC.BlastByte", null, new EventHandler((ob, ev) =>
+			{
+				dgvBlastLayer.SelectedCells[0].Value = "RTC.BlastByte";
+			})) as ToolStripMenuItem).Enabled = true;
+			(cmsBlastUnitType.Items.Add("RTC.BlastCheat", null, new EventHandler((ob, ev) =>
+			{
+				dgvBlastLayer.SelectedCells[0].Value = "RTC.BlastByte";
+			})) as ToolStripMenuItem).Enabled = true;
+			(cmsBlastUnitType.Items.Add("RTC.BlastPipe", null, new EventHandler((ob, ev) =>
+			{
+				dgvBlastLayer.SelectedCells[0].Value = "RTC.BlastByte";
+			})) as ToolStripMenuItem).Enabled = true;
+
+		}
+
 		private void dgvBlastLayer_MouseClick(object sender, MouseEventArgs e)
 		{
 			if (e.Button == MouseButtons.Right)
 			{
 				int currentMouseOverColumn = dgvBlastLayer.HitTest(e.X, e.Y).ColumnIndex;
 				if ((dgvBlastLayer.CurrentCell.ColumnIndex == 5 && currentMouseOverColumn == 5) || (dgvBlastLayer.CurrentCell.ColumnIndex == 7 && currentMouseOverColumn == 7))
-						cmsDomain.Show(dgvBlastLayer, new Point(e.X, e.Y));
+					cmsDomain.Show(dgvBlastLayer, new Point(e.X, e.Y));
+				if ((dgvBlastLayer.CurrentCell.ColumnIndex == 4 && currentMouseOverColumn == 4))
+					cmsBlastUnitMode.Show(dgvBlastLayer, new Point(e.X, e.Y));
+				if ((dgvBlastLayer.CurrentCell.ColumnIndex == 3 && currentMouseOverColumn == 3))
+					cmsBlastUnitType.Show(dgvBlastLayer, new Point(e.X, e.Y));
 			}
 		}
 

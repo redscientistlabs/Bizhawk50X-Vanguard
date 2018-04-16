@@ -28,8 +28,7 @@ namespace RTC
 	public enum BlastCheatType
 	{
 		FREEZE,
-		HELLGENIE,
-		NONE
+		HELLGENIE
 	}
 
     public enum BlastByteAlgo
@@ -37,7 +36,8 @@ namespace RTC
         RANDOM,
         RANDOMTILT,
         TILT,
-		VECTOR
+		VECTOR,
+		NONE
     }
 
     public enum CorruptionEngine

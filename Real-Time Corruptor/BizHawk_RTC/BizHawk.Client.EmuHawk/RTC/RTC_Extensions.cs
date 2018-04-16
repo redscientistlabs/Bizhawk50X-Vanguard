@@ -654,6 +654,7 @@ namespace RTC
 		[
 			Category("Data"),
 			Description("Indicates if it should display as hexadecimal"),
+			DefaultValue(DataGridViewNumericUpDownCell.DATAGRIDVIEWNUMERICUPDOWNCELL_defaultHexadecimal),
 			RefreshProperties(RefreshProperties.All)
 		]
 		public bool Hexadecimal
@@ -697,7 +698,7 @@ namespace RTC
 		/// Indicates whether the Maximum property should be persisted.
 		private bool ShouldSerializeHexadecimal()
 		{
-			return !this.Hexadecimal.Equals(DataGridViewNumericUpDownCell.DATAGRIDVIEWNUMERICUPDOWNCELL__defaultHexadecimal);
+			return !this.Hexadecimal.Equals(DataGridViewNumericUpDownCell.DATAGRIDVIEWNUMERICUPDOWNCELL_defaultHexadecimal);
 		}
 
 		/// <summary>
@@ -758,7 +759,7 @@ namespace RTC
 		// Default value of the ThousandsSeparator property
 		internal const bool DATAGRIDVIEWNUMERICUPDOWNCELL_defaultThousandsSeparator = false;
 
-		internal const bool DATAGRIDVIEWNUMERICUPDOWNCELL__defaultHexadecimal = false;
+		internal const bool DATAGRIDVIEWNUMERICUPDOWNCELL_defaultHexadecimal = false;
 
 		// Type of this cell's editing control
 		private static Type defaultEditType = typeof(DataGridViewNumericUpDownEditingControl);
@@ -808,7 +809,7 @@ namespace RTC
 			this.minimum = DATAGRIDVIEWNUMERICUPDOWNCELL_defaultMinimum;
 			this.maximum = DATAGRIDVIEWNUMERICUPDOWNCELL_defaultMaximum;
 			this.thousandsSeparator = DATAGRIDVIEWNUMERICUPDOWNCELL_defaultThousandsSeparator;
-			this.hexadecimal = DATAGRIDVIEWNUMERICUPDOWNCELL__defaultHexadecimal;
+			this.hexadecimal = DATAGRIDVIEWNUMERICUPDOWNCELL_defaultHexadecimal;
 		}
 
 		/// <summary>
@@ -836,23 +837,6 @@ namespace RTC
 					SetDecimalPlaces(this.RowIndex, value);
 					OnCommonChange();  // Assure that the cell or column gets repainted and autosized if needed
 				}
-			}
-		}
-		[
-		  DefaultValue(DATAGRIDVIEWNUMERICUPDOWNCELL__defaultHexadecimal),
-		]
-		public bool Hexadecimal
-		{
-
-			get
-			{
-				return hexadecimal;
-			}
-
-			set
-			{
-				SetHexadecimal(this.RowIndex, hexadecimal);
-				OnCommonChange();
 			}
 		}
 		/// <summary>
@@ -964,7 +948,27 @@ namespace RTC
 				}
 			}
 		}
+		
+		[
+		  DefaultValue(DATAGRIDVIEWNUMERICUPDOWNCELL_defaultHexadecimal),
+		]
+		public bool Hexadecimal
+		{
 
+			get
+			{
+				return this.hexadecimal;
+			}
+
+			set
+			{
+				if (this.hexadecimal != value)
+				{ 
+					SetHexadecimal(this.RowIndex, value);
+					OnCommonChange();
+				}
+			}
+		}
 		/// <summary>
 		/// Returns the type of the cell's Value property
 		/// </summary>
@@ -1336,7 +1340,7 @@ namespace RTC
 					paintingNumericUpDown.Height = valBounds.Height;
 					paintingNumericUpDown.RightToLeft = this.DataGridView.RightToLeft;
 					paintingNumericUpDown.Location = new Point(0, -paintingNumericUpDown.Height - 100);
-					paintingNumericUpDown.Text = formattedValue as string;
+					paintingNumericUpDown.Value = Convert.ToDecimal(value);
 
 					Color backColor;
 					if (PartPainted(paintParts, DataGridViewPaintParts.SelectionBackground) && cellSelected)
@@ -1453,23 +1457,11 @@ namespace RTC
 			object cellValue = GetValue(rowIndex);
 			if (cellValue != null)
 			{
-				if (Hexadecimal)
+				Decimal currentValue = System.Convert.ToDecimal(cellValue);
+				Decimal constrainedValue = Constrain(currentValue);
+				if (constrainedValue != currentValue)
 				{
-					Decimal currentValue = Constrain(Convert.ToDecimal(Convert.ToInt32(cellValue.ToString(), 16)));
-					Decimal constrainedValue = Constrain(currentValue);
-					if (constrainedValue != currentValue)
-					{
-						SetValue(rowIndex, constrainedValue);
-					}
-				}
-				else
-				{
-					Decimal currentValue = System.Convert.ToDecimal(cellValue);
-					Decimal constrainedValue = Constrain(currentValue);
-					if (constrainedValue != currentValue)
-					{
-						SetValue(rowIndex, constrainedValue);
-					}
+					SetValue(rowIndex, constrainedValue);
 				}
 			}
 			Debug.Assert(this.maximum == value);
@@ -1496,7 +1488,7 @@ namespace RTC
 			{
 				if (Hexadecimal)
 				{
-					Decimal currentValue = Constrain(Convert.ToDecimal(Convert.ToInt32((string)cellValue, 16)));
+					Decimal currentValue = System.Convert.ToDecimal(cellValue);
 					Decimal constrainedValue = Constrain(currentValue);
 					if (constrainedValue != currentValue)
 					{
