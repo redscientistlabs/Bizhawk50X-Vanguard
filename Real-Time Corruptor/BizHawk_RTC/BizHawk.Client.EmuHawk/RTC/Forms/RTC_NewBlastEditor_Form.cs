@@ -28,16 +28,22 @@ namespace RTC
 		StashKey sk = null;
 		bool initialized = false;
 		bool CurrentlyUpdating = false;
-		ContextMenuStrip cmsDomain = null;
-		ContextMenuStrip cmsBlastUnitMode = null;
-		ContextMenuStrip cmsBlastUnitType = null;
+		ContextMenuStrip cmsDomain = new ContextMenuStrip();
+		ContextMenuStrip cmsBlastUnitMode = new ContextMenuStrip();
+		ContextMenuStrip cmsBlastUnitType = new ContextMenuStrip();
+		String[] domains;
+
+		Dictionary<BlastUnit, DataGridViewRow> bu2RowDico = new Dictionary<BlastUnit, DataGridViewRow>();
 
 		public RTC_NewBlastEditor_Form()
 		{
 			InitializeComponent();
 
-			this.dgvBlastLayer.DoubleBuffered(true);
+			dgvBlastLayer.DoubleBuffered(true);
 			this.dgvBlastLayer.AutoSizeRowsMode = System.Windows.Forms.DataGridViewAutoSizeRowsMode.DisplayedCells;
+
+			dgvBlastLayer.AlternatingRowsDefaultCellStyle.BackColor = Color.FromArgb(240, 240, 240);
+
 			//set its location and size to fit the cell
 			//	dtp.Location = dgvBlastLayer.GetCellDisplayRectangle(0, 3,true).Location;
 			//dtp.Size = dgvBlastLayer.GetCellDisplayRectangle(0, 3,true).Size;
@@ -49,6 +55,9 @@ namespace RTC
 
 			this.dgvBlastLayer.CellValidating += new DataGridViewCellValidatingEventHandler(dgvBlastLayer_CellValidating);
 			this.dgvBlastLayer.MouseClick += new System.Windows.Forms.MouseEventHandler(dgvBlastLayer_MouseClick);
+			this.dgvBlastLayer.RowsAdded += new DataGridViewRowsAddedEventHandler(dgvBlastLayer_RowsAdded);
+			this.dgvBlastLayer.RowsRemoved += new DataGridViewRowsRemovedEventHandler(dgvBlastLayer_RowsRemoved);
+			this.dgvBlastLayer.UserDeletingRow += new DataGridViewRowCancelEventHandler(dgvBlastLayer_UserDeletingRow);
 			this.dgvBlastLayer.Sorted += dgvBlastLayer_Sorted;
 		}
 
@@ -59,10 +68,14 @@ namespace RTC
 			sk = (StashKey)_sk.Clone();
 			RefreshBlastLayer();
 
-			PopulateBlastUnitModeContextMenu();
-			PopulateBlastUnitTypeContextMenu();
+			domains = RTC_MemoryDomains.MemoryInterfaces.Keys.ToArray();
 
 			this.Show();
+		}
+
+		public void UpdateBlastLayerSize()
+		{
+			lbBlastLayerSize.Text = "BlastLayer size: " + sk.BlastLayer.Layer.Count.ToString();
 		}
 
 		public void RefreshBlastLayer()
@@ -73,122 +86,146 @@ namespace RTC
 			//Populate the different rows.
 			foreach (BlastUnit bu in sk.BlastLayer.Layer)
 			{
-				/*
-				 param1
-					BlastByte  = Address
-					BlastCheat = Address
-					BlastPipe  = Source Address
-					BlastVector = Address
-				 param2
-					BlastByte  = Value
-					BlastCheat = Value
-					BlastPipe  = Destination Address
-					BlastBector = Value
-				*/
-
-				//Valid for all types
-				bool enabled = bu.IsEnabled;
-				string blastType = Convert.ToString(bu.GetType());
-
-				//Dependent on blast type
-				int precision = -1;
-				string sourceDomain = "";
-				string destDomain = "";
-				Decimal sourceAddress = 0;
-
-				//This is both the value and the dest address depending on the engine
-				Decimal destAddress = 0;
-				string blastMode = "";
-
-				//add DateTimePicker into the control collection of the DataGridView
-
-				if (bu is BlastByte)
-				{
-					BlastByte bb = bu as BlastByte;
-					precision = bb.Value.Length;
-					sourceAddress = Convert.ToDecimal(bb.Address);
-					sourceDomain = bb.Domain;
-					destAddress = (Decimal)RTC_Extensions.getDecimalValue(bb.Value);
-					blastMode = Convert.ToString(bb.Type);
-				}
-
-				else if (bu is BlastCheat)
-				{
-					BlastCheat bc = bu as BlastCheat;
-					precision = bc.Value.Length;
-					sourceAddress = bc.Address;
-					sourceDomain = bc.Domain;
-					//destAddress = RTC_Extensions.getDecimalValue(bc.Value);
-					if (bc.IsFreeze)
-						blastMode = "Freeze";
-					else
-						blastMode = "HellGenie";
-
-				}
-				else if (bu is BlastPipe)
-				{
-					BlastPipe bp = bu as BlastPipe;
-					precision = bp.PipeSize;
-
-					sourceAddress = bp.Address;
-					sourceDomain = bp.Domain;
-					destDomain = bp.PipeDomain;
-					destAddress = bp.PipeAddress;
-					blastMode = Convert.ToString(bp.TiltValue);
-				}
-				if (bu is BlastVector)
-				{
-					BlastVector bv = bu as BlastVector;
-					precision = bv.Values.Length;
-					sourceAddress = Convert.ToDecimal(bv.Address);
-					sourceDomain = bv.Domain;
-					destAddress = (Decimal)RTC_Extensions.getDecimalValue(bv.Values);
-					blastMode = Convert.ToString(bv.Type);
-				}
-
-				dgvBlastLayer.Rows.Add(bu, enabled, GetPrecisionNameFromSize(precision), blastType, blastMode, sourceDomain, sourceAddress, destDomain, destAddress);
-				//Update the precision
-				ValidatePrecision(dgvBlastLayer.Rows[dgvBlastLayer.Rows.Count - 1]);
+				AddBlastUnitToDGV(bu);
 			}
 			//Param1 and Param2 only need to accept Decimal
 			dgvBlastLayer.Columns[6].ValueType = typeof(Decimal);
 			dgvBlastLayer.Columns[8].ValueType = typeof(Decimal);
-
-			PopulateDomainContextMenu();
-			lbBlastLayerSize.Text = "BlastLayer size: " + sk.BlastLayer.Layer.Count.ToString();
+			
+			UpdateBlastLayerSize();
 			initialized = true;
 		}
+
+		private void AddBlastUnitToDGV(BlastUnit bu)
+		{
+
+			/*
+			 param1
+				BlastByte  = Address
+				BlastCheat = Address
+				BlastPipe  = Source Address
+				BlastVector = Address
+			 param2
+				BlastByte  = Value
+				BlastCheat = Value
+				BlastPipe  = Destination Address
+				BlastBector = Value
+			*/
+
+			//Valid for all types
+			bool enabled = bu.IsEnabled;
+			string blastType = Convert.ToString(bu.GetType());
+
+			//Dependent on blast type
+			int precision = -1;
+			string sourceDomain = "";
+			string destDomain = "";
+			Decimal sourceAddress = 0;
+
+			//This is both the value and the dest address depending on the engine
+			Decimal destAddress = 0;
+			string blastMode = "";
+
+			//add DateTimePicker into the control collection of the DataGridView
+
+			if (bu is BlastByte)
+			{
+				BlastByte bb = bu as BlastByte;
+				precision = bb.Value.Length;
+				sourceAddress = Convert.ToDecimal(bb.Address);
+				sourceDomain = bb.Domain;
+				destAddress = (Decimal)RTC_Extensions.getDecimalValue(bb.Value);
+				blastMode = Convert.ToString(bb.Type);
+			}
+
+			else if (bu is BlastCheat)
+			{
+				BlastCheat bc = bu as BlastCheat;
+				precision = bc.Value.Length;
+				sourceAddress = bc.Address;
+				sourceDomain = bc.Domain;
+				//destAddress = RTC_Extensions.getDecimalValue(bc.Value);
+				if (bc.IsFreeze)
+					blastMode = "Freeze";
+				else
+					blastMode = "HellGenie";
+
+			}
+			else if (bu is BlastPipe)
+			{
+				BlastPipe bp = bu as BlastPipe;
+				precision = bp.PipeSize;
+
+				sourceAddress = bp.Address;
+				sourceDomain = bp.Domain;
+				destDomain = bp.PipeDomain;
+				destAddress = bp.PipeAddress;
+				blastMode = Convert.ToString(bp.TiltValue);
+			}
+			if (bu is BlastVector)
+			{
+				BlastVector bv = bu as BlastVector;
+				precision = bv.Values.Length;
+				sourceAddress = Convert.ToDecimal(bv.Address);
+				sourceDomain = bv.Domain;
+				destAddress = (Decimal)RTC_Extensions.getDecimalValue(bv.Values);
+				blastMode = Convert.ToString(bv.Type);
+			}
+
+			dgvBlastLayer.Rows.Add(bu, enabled, GetPrecisionNameFromSize(precision), blastType, blastMode, sourceDomain, sourceAddress, destDomain, destAddress);
+
+			//update the BlastUnit to Cell dico.
+			var row = dgvBlastLayer.Rows[dgvBlastLayer.Rows.Count - 1];
+			bu2RowDico[bu] = row;
+
+			//Update the precision
+			ValidatePrecision(dgvBlastLayer.Rows[dgvBlastLayer.Rows.Count - 1]);
+		}
+
 
 		private void btnDisable50_Click(object sender, EventArgs e)
 		{
 			foreach (BlastUnit bu in sk.BlastLayer.Layer)
-				bu.IsEnabled = true;
+			{
+				bu2RowDico[bu].Cells[1].Value = true;
+				CurrentlyUpdating = false;
+				//bu.IsEnabled = true;
+			}
 
 			foreach (BlastUnit bu in sk.BlastLayer.Layer.OrderBy(x => RTC_Core.RND.Next()).Take(sk.BlastLayer.Layer.Count / 2))
-				bu.IsEnabled = false;
+			{
+				bu2RowDico[bu].Cells[1].Value = false;
+				CurrentlyUpdating = false;
+				//bu.IsEnabled = false;
+			}
 
-			RefreshBlastLayer();
 		}
 
 		private void btnInvertDisabled_Click(object sender, EventArgs e)
 		{
 			for (int i = 0; i < sk.BlastLayer.Layer.Count(); i++)
-				sk.BlastLayer.Layer[i].IsEnabled = !sk.BlastLayer.Layer[i].IsEnabled;
-
-			RefreshBlastLayer();
+			{
+				var bu = sk.BlastLayer.Layer[i];
+				bu2RowDico[bu].Cells[1].Value = !((bool)bu2RowDico[bu].Cells[1].Value);
+				CurrentlyUpdating = false;
+			}
+			//sk.BlastLayer.Layer[i].IsEnabled = !sk.BlastLayer.Layer[i].IsEnabled;
 		}
 
 		private void btnRemoveDisabled_Click(object sender, EventArgs e)
 		{
-			List<BlastUnit> newLayer = new List<BlastUnit>();
+			List<BlastUnit> buToRemove = new List<BlastUnit>();
 
 			foreach (BlastUnit bu in sk.BlastLayer.Layer)
-				if (bu.IsEnabled)
-					newLayer.Add(bu);
+				if (!bu.IsEnabled)
+					buToRemove.Add(bu);
 
-			sk.BlastLayer.Layer = newLayer;
-
-			RefreshBlastLayer();
+			foreach (BlastUnit bu in buToRemove)
+			{
+				sk.BlastLayer.Layer.Remove(bu);
+				dgvBlastLayer.Rows.Remove(bu2RowDico[bu]);
+				CurrentlyUpdating = false;
+			}
 		}
 
 		private void btnLoadCorrupt_Click(object sender, EventArgs e)
@@ -248,17 +285,19 @@ namespace RTC
 		private void btnDisableEverything_Click(object sender, EventArgs e)
 		{
 			foreach (BlastUnit bu in sk.BlastLayer.Layer)
-				bu.IsEnabled = false;
-
-			RefreshBlastLayer();
+			{
+				bu2RowDico[bu].Cells[1].Value = false;
+				CurrentlyUpdating = false;
+			}
 		}
 
 		private void btnEnableEverything_Click(object sender, EventArgs e)
 		{
 			foreach (BlastUnit bu in sk.BlastLayer.Layer)
-				bu.IsEnabled = true;
-
-			RefreshBlastLayer();
+			{
+				bu2RowDico[bu].Cells[1].Value = true;
+				CurrentlyUpdating = false;
+			}
 		}
 
 		private void btnDuplicateSelected_Click(object sender, EventArgs e)
@@ -275,8 +314,7 @@ namespace RTC
 			BlastUnit bu2 = ObjectCopier.Clone(bu);
 			sk.BlastLayer.Layer.Insert(pos, bu2);
 
-
-			RefreshBlastLayer();
+			AddBlastUnitToDGV(bu2);
 		}
 
 		private void btnSanitizeDuplicates_Click(object sender, EventArgs e)
@@ -289,10 +327,12 @@ namespace RTC
 				if (!usedAddresses.Contains(bu.Address))
 					usedAddresses.Add(bu.Address);
 				else
+				{
 					sk.BlastLayer.Layer.Remove(bu);
+					dgvBlastLayer.Rows.Remove(bu2RowDico[bu]);
+					CurrentlyUpdating = false;
+				}
 			}
-
-			RefreshBlastLayer();
 		}
 
 		private void dgvBlastLayer_CellValueChanged(object sender, DataGridViewCellEventArgs e)
@@ -303,8 +343,7 @@ namespace RTC
 			if (!CurrentlyUpdating)
 			{
 				CurrentlyUpdating = true;
-				DataGridViewRow row = dgvBlastLayer.Rows[dgvBlastLayer.CurrentCell.RowIndex];
-				UpdateBlastUnitFromRow(row);
+				UpdateBlastUnitFromRow(dgvBlastLayer.Rows[e.RowIndex]);
 			}
 		}
 
@@ -444,30 +483,22 @@ namespace RTC
 			return true;
 		}
 
-		private void PopulateDomainContextMenu()
+		private void PopulateDomainContextMenu(int column, int row)
 		{
-			String[] domains = RTC_MemoryDomains.MemoryInterfaces.Keys.ToArray();
-
-			if (cmsDomain == null)
-				cmsDomain = new ContextMenuStrip();
-
 			cmsDomain.Items.Clear();
-
+			
 			foreach (string domain in domains)
 			{
 				//cmsDomain.Items.Add(domain, null, );
 				(cmsDomain.Items.Add(domain, null, new EventHandler((ob, ev) =>
 				{
-					dgvBlastLayer.SelectedCells[0].Value = domain;
+					dgvBlastLayer[column, row].Value = domain;
 				})) as ToolStripMenuItem).Enabled = true;
 			}
 		}
 
-		private void PopulateBlastUnitModeContextMenu()
+		private void PopulateBlastUnitModeContextMenu(int column, int row)
 		{
-			if (cmsBlastUnitMode == null)
-				cmsBlastUnitMode = new ContextMenuStrip();
-
 			cmsBlastUnitMode.Items.Clear();
 
 			foreach (BlastByteType type in Enum.GetValues(typeof(BlastByteType)))
@@ -475,7 +506,7 @@ namespace RTC
 				//cmsDomain.Items.Add(domain, null, );
 				(cmsBlastUnitMode.Items.Add(type.ToString(), null, new EventHandler((ob, ev) =>
 				{
-					dgvBlastLayer.SelectedCells[0].Value = type.ToString();
+					dgvBlastLayer[column, row].Value = type.ToString();
 				})) as ToolStripMenuItem).Enabled = true;
 			}
 			cmsBlastUnitMode.Items.Add(new ToolStripSeparator());
@@ -484,30 +515,27 @@ namespace RTC
 				//cmsDomain.Items.Add(domain, null, );
 				(cmsBlastUnitMode.Items.Add(type.ToString(), null, new EventHandler((ob, ev) =>
 				{
-					dgvBlastLayer.SelectedCells[0].Value = type.ToString();
+					dgvBlastLayer[column, row].Value = type.ToString();
 				})) as ToolStripMenuItem).Enabled = true;
 			}
 		}
-		private void PopulateBlastUnitTypeContextMenu()
+		private void PopulateBlastUnitTypeContextMenu(int column, int row)
 		{
-			if (cmsBlastUnitType == null)
-				cmsBlastUnitType = new ContextMenuStrip();
-
 			cmsBlastUnitType.Items.Clear();
 
 			//Adding these by hand
 
 			(cmsBlastUnitType.Items.Add("RTC.BlastByte", null, new EventHandler((ob, ev) =>
 			{
-				dgvBlastLayer.SelectedCells[0].Value = "RTC.BlastByte";
+				dgvBlastLayer[column, row].Value = "RTC.BlastByte";
 			})) as ToolStripMenuItem).Enabled = true;
 			(cmsBlastUnitType.Items.Add("RTC.BlastCheat", null, new EventHandler((ob, ev) =>
 			{
-				dgvBlastLayer.SelectedCells[0].Value = "RTC.BlastByte";
+				dgvBlastLayer[column, row].Value  = "RTC.BlastByte";
 			})) as ToolStripMenuItem).Enabled = true;
 			(cmsBlastUnitType.Items.Add("RTC.BlastPipe", null, new EventHandler((ob, ev) =>
 			{
-				dgvBlastLayer.SelectedCells[0].Value = "RTC.BlastByte";
+				dgvBlastLayer[column, row].Value = "RTC.BlastByte";
 			})) as ToolStripMenuItem).Enabled = true;
 
 		}
@@ -517,12 +545,29 @@ namespace RTC
 			if (e.Button == MouseButtons.Right)
 			{
 				int currentMouseOverColumn = dgvBlastLayer.HitTest(e.X, e.Y).ColumnIndex;
-				if ((dgvBlastLayer.CurrentCell.ColumnIndex == 5 && currentMouseOverColumn == 5) || (dgvBlastLayer.CurrentCell.ColumnIndex == 7 && currentMouseOverColumn == 7))
-					cmsDomain.Show(dgvBlastLayer, new Point(e.X, e.Y));
-				if ((dgvBlastLayer.CurrentCell.ColumnIndex == 4 && currentMouseOverColumn == 4))
-					cmsBlastUnitMode.Show(dgvBlastLayer, new Point(e.X, e.Y));
-				if ((dgvBlastLayer.CurrentCell.ColumnIndex == 3 && currentMouseOverColumn == 3))
+				int currentMouseOverRow = dgvBlastLayer.HitTest(e.X, e.Y).RowIndex;
+
+				//BlastUnitType
+				if (currentMouseOverColumn == 3)
+				{
+					PopulateBlastUnitTypeContextMenu(currentMouseOverColumn, currentMouseOverRow);
 					cmsBlastUnitType.Show(dgvBlastLayer, new Point(e.X, e.Y));
+				}
+
+				//BlastUnitMode
+				if (currentMouseOverColumn == 4)
+				{
+
+					PopulateBlastUnitModeContextMenu(currentMouseOverColumn, currentMouseOverRow);
+					cmsBlastUnitMode.Show(dgvBlastLayer, new Point(e.X, e.Y));
+				}
+
+				//Domain1 Domain2
+				if (currentMouseOverColumn == 5 || currentMouseOverColumn == 7)
+				{
+					PopulateDomainContextMenu(currentMouseOverColumn, currentMouseOverRow);
+					cmsDomain.Show(dgvBlastLayer, new Point(e.X, e.Y));
+				}
 			}
 		}
 
@@ -582,6 +627,20 @@ namespace RTC
 					_column.Hexadecimal = cbUseHex.Checked;
 				}
 			}
+		}
+
+		private void dgvBlastLayer_RowsAdded(object sender, DataGridViewRowsAddedEventArgs e)
+		{
+			UpdateBlastLayerSize();
+		}
+		private void dgvBlastLayer_RowsRemoved(object sender, DataGridViewRowsRemovedEventArgs e)
+		{
+			UpdateBlastLayerSize();
+		}
+		private void dgvBlastLayer_UserDeletingRow(object sender, DataGridViewRowCancelEventArgs e)
+		{
+			sk.BlastLayer.Layer.Remove((BlastUnit)e.Row.Cells[0].Value);
+			UpdateBlastLayerSize();
 		}
 
 	}

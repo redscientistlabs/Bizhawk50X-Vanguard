@@ -1345,6 +1345,25 @@ namespace RTC
 					paintingNumericUpDown.Location = new Point(0, -paintingNumericUpDown.Height - 100);
 					paintingNumericUpDown.Value = Convert.ToDecimal(value);
 
+					Color foreColor;
+					if (PartPainted(paintParts, DataGridViewPaintParts.SelectionBackground) && cellSelected)
+					{
+						foreColor = cellStyle.SelectionForeColor;
+					}
+					else
+					{
+						foreColor = cellStyle.ForeColor;
+					}
+					if (PartPainted(paintParts, DataGridViewPaintParts.ContentForeground))
+					{
+						if (foreColor.A < 255)
+						{
+							// The NumericUpDown control does not support transparent fore colors
+							foreColor = Color.FromArgb(255, foreColor);
+						}
+						paintingNumericUpDown.ForeColor = foreColor;
+					}
+
 					Color backColor;
 					if (PartPainted(paintParts, DataGridViewPaintParts.SelectionBackground) && cellSelected)
 					{
@@ -1961,7 +1980,6 @@ namespace RTC
 	{
 		public static void DoubleBuffered(this DataGridView dgv, bool setting)
 		{
-
 			Type dgvType = dgv.GetType();
 			PropertyInfo pi = dgvType.GetProperty("DoubleBuffered",
 				BindingFlags.Instance | BindingFlags.NonPublic | BindingFlags.SetProperty);
