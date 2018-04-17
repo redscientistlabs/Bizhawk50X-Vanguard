@@ -21,7 +21,7 @@ namespace RTC
         public static Random RND = new Random();
 
         //General RTC Values
-        public static string RtcVersion = "3.15";
+        public static string RtcVersion = "3.16";
 
         //Directories
         public static string bizhawkDir = Directory.GetCurrentDirectory();
@@ -336,6 +336,8 @@ namespace RTC
                         }
 
 						RTC_GameProtection.Stop();
+						//Kill the active table autodumps
+						vmdActForm.cbAutoAddDump.Checked = false;
 
 					});
 
@@ -351,7 +353,8 @@ namespace RTC
 						ghForm.pnHideGlitchHarvester.Show();
 
 						RTC_GameProtection.Stop();
-
+						//Kill the active table autodumps
+						vmdActForm.cbAutoAddDump.Checked = false;
 					});
 
 					RemoteRTC.StartNetworking(NetworkSide.SERVER,false,false);

@@ -21,14 +21,23 @@ namespace RTC
         SET,
         ADD,
         SUBSTRACT,
+		VECTOR,
         NONE
     }
+
+	public enum BlastCheatType
+	{
+		FREEZE,
+		HELLGENIE
+	}
 
     public enum BlastByteAlgo
     {
         RANDOM,
         RANDOMTILT,
         TILT,
+		VECTOR,
+		NONE
     }
 
     public enum CorruptionEngine

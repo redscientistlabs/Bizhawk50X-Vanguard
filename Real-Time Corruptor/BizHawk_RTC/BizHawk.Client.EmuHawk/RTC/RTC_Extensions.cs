@@ -10,7 +10,7 @@ using System.Windows.Forms;
 using System.Diagnostics;
 using System.Globalization;
 using System.ComponentModel;
-
+using System.Reflection;
 
 namespace RTC
 {
@@ -648,6 +648,58 @@ namespace RTC
 				}
 			}
 		}
+		/// <summary>
+		/// Replicates the Maximum property of the DataGridViewNumericUpDownCell cell type.
+		/// </summary>
+		[
+			Category("Data"),
+			Description("Indicates if it should display as hexadecimal"),
+			DefaultValue(DataGridViewNumericUpDownCell.DATAGRIDVIEWNUMERICUPDOWNCELL_defaultHexadecimal),
+			RefreshProperties(RefreshProperties.All)
+		]
+		public bool Hexadecimal
+		{
+			get
+			{
+				if (this.NumericUpDownCellTemplate == null)
+				{
+					throw new InvalidOperationException("Operation cannot be completed because this DataGridViewColumn does not have a CellTemplate.");
+				}
+				return this.NumericUpDownCellTemplate.Hexadecimal;
+			}
+			set
+			{
+				if (this.NumericUpDownCellTemplate == null)
+				{
+					throw new InvalidOperationException("Operation cannot be completed because this DataGridViewColumn does not have a CellTemplate.");
+				}
+				this.NumericUpDownCellTemplate.Hexadecimal = value;
+				if (this.DataGridView != null)
+				{
+					DataGridViewRowCollection dataGridViewRows = this.DataGridView.Rows;
+					int rowCount = dataGridViewRows.Count;
+					for (int rowIndex = 0; rowIndex < rowCount; rowIndex++)
+					{
+						DataGridViewRow dataGridViewRow = dataGridViewRows.SharedRow(rowIndex);
+						DataGridViewNumericUpDownCell dataGridViewCell = dataGridViewRow.Cells[this.Index] as DataGridViewNumericUpDownCell;
+						if (dataGridViewCell != null)
+						{
+							dataGridViewCell.SetHexadecimal(rowIndex, value);
+						}
+					}
+					this.DataGridView.InvalidateColumn(this.Index);
+					// TODO: This column and/or grid rows may need to be autosized depending on their
+					//       autosize settings. Call the autosizing methods to autosize the column, rows, 
+					//       column headers / row headers as needed.
+				}
+			}
+		}
+
+		/// Indicates whether the Maximum property should be persisted.
+		private bool ShouldSerializeHexadecimal()
+		{
+			return !this.Hexadecimal.Equals(DataGridViewNumericUpDownCell.DATAGRIDVIEWNUMERICUPDOWNCELL_defaultHexadecimal);
+		}
 
 		/// <summary>
 		/// Small utility function that returns the template cell as a DataGridViewNumericUpDownCell
@@ -674,7 +726,6 @@ namespace RTC
 			return sb.ToString();
 		}
 	}
-
 	/// <summary>
 	/// Reference Article https://msdn.microsoft.com/en-us/library/aa730881(v=vs.80).aspx
 	/// Defines a NumericUpDown cell type for the System.Windows.Forms.DataGridView control
@@ -708,24 +759,29 @@ namespace RTC
 		// Default value of the ThousandsSeparator property
 		internal const bool DATAGRIDVIEWNUMERICUPDOWNCELL_defaultThousandsSeparator = false;
 
+		internal const bool DATAGRIDVIEWNUMERICUPDOWNCELL_defaultHexadecimal = false;
+
 		// Type of this cell's editing control
 		private static Type defaultEditType = typeof(DataGridViewNumericUpDownEditingControl);
 		// Type of this cell's value. The formatted value type is string, the same as the base class DataGridViewTextBoxCell
-		private static Type defaultValueType = typeof(System.Decimal);
+		private static Type defaultValueType = typeof(System.String);
 
 		// The bitmap used to paint the non-edited cells via a call to NumericUpDown.DrawToBitmap
-		//[ThreadStatic]
-		private Bitmap renderingBitmap;
+		[ThreadStatic]
+		private static Bitmap renderingBitmap;
 
 		// The NumericUpDown control used to paint the non-edited cells via a call to NumericUpDown.DrawToBitmap
-		//[ThreadStatic]
+		[ThreadStatic]
 		private NumericUpDown paintingNumericUpDown;
+
+
 
 		private int decimalPlaces;       // Caches the value of the DecimalPlaces property
 		private Decimal increment;       // Caches the value of the Increment property
 		private Decimal minimum;         // Caches the value of the Minimum property
 		private Decimal maximum;         // Caches the value of the Maximum property
 		private bool thousandsSeparator; // Caches the value of the ThousandsSeparator property
+		private bool hexadecimal;
 
 		/// <summary>
 		/// Constructor for the DataGridViewNumericUpDownCell cell type
@@ -746,6 +802,8 @@ namespace RTC
 				paintingNumericUpDown.BorderStyle = BorderStyle.None;
 				paintingNumericUpDown.Maximum = Decimal.MaxValue / 10;
 				paintingNumericUpDown.Minimum = Decimal.MinValue / 10;
+				//paintingNumericUpDown.DoubleBuffered(true);
+
 			}
 
 			// Set the default values of the properties:
@@ -754,6 +812,7 @@ namespace RTC
 			this.minimum = DATAGRIDVIEWNUMERICUPDOWNCELL_defaultMinimum;
 			this.maximum = DATAGRIDVIEWNUMERICUPDOWNCELL_defaultMaximum;
 			this.thousandsSeparator = DATAGRIDVIEWNUMERICUPDOWNCELL_defaultThousandsSeparator;
+			this.hexadecimal = DATAGRIDVIEWNUMERICUPDOWNCELL_defaultHexadecimal;
 		}
 
 		/// <summary>
@@ -783,7 +842,6 @@ namespace RTC
 				}
 			}
 		}
-
 		/// <summary>
 		/// Returns the current DataGridView EditingControl as a DataGridViewNumericUpDownEditingControl control
 		/// </summary>
@@ -894,6 +952,26 @@ namespace RTC
 			}
 		}
 
+		[
+		  DefaultValue(DATAGRIDVIEWNUMERICUPDOWNCELL_defaultHexadecimal),
+		]
+		public bool Hexadecimal
+		{
+
+			get
+			{
+				return this.hexadecimal;
+			}
+
+			set
+			{
+				if (this.hexadecimal != value)
+				{
+					SetHexadecimal(this.RowIndex, value);
+					OnCommonChange();
+				}
+			}
+		}
 		/// <summary>
 		/// Returns the type of the cell's Value property
 		/// </summary>
@@ -923,6 +1001,7 @@ namespace RTC
 				dataGridViewCell.Maximum = this.Maximum;
 				dataGridViewCell.Minimum = this.Minimum;
 				dataGridViewCell.ThousandsSeparator = this.ThousandsSeparator;
+				dataGridViewCell.Hexadecimal = this.Hexadecimal;
 			}
 			return dataGridViewCell;
 		}
@@ -1038,22 +1117,30 @@ namespace RTC
 													TypeConverter formattedValueTypeConverter,
 													DataGridViewDataErrorContexts context)
 		{
-			// By default, the base implementation converts the Decimal 1234.5 into the string "1234.5"
-			object formattedValue = base.GetFormattedValue(value, rowIndex, ref cellStyle, valueTypeConverter, formattedValueTypeConverter, context);
-			string formattedNumber = formattedValue as string;
-			if (!string.IsNullOrEmpty(formattedNumber) && value != null)
+			if (this.Hexadecimal)
 			{
-				Decimal unformattedDecimal = System.Convert.ToDecimal(value);
-				Decimal formattedDecimal = System.Convert.ToDecimal(formattedNumber);
-				if (unformattedDecimal == formattedDecimal)
+				UInt64 valueuint64 = System.Convert.ToUInt64(value);
+				return valueuint64.ToString("X");
+			}
+			else
+			{
+				// By default, the base implementation converts the Decimal 1234.5 into the string "1234.5"
+				object formattedValue = base.GetFormattedValue(value, rowIndex, ref cellStyle, valueTypeConverter, formattedValueTypeConverter, context);
+				string formattedNumber = formattedValue as string;
+				if (!string.IsNullOrEmpty(formattedNumber) && value != null)
 				{
-					// The base implementation of GetFormattedValue (which triggers the CellFormatting event) did nothing else than 
-					// the typical 1234.5 to "1234.5" conversion. But depending on the values of ThousandsSeparator and DecimalPlaces,
-					// this may not be the actual string displayed. The real formatted value may be "1,234.500"
-					return formattedDecimal.ToString((this.ThousandsSeparator ? "N" : "F") + this.DecimalPlaces.ToString());
+					Decimal unformattedDecimal = System.Convert.ToDecimal(value);
+					Decimal formattedDecimal = System.Convert.ToDecimal(formattedNumber);
+					if (unformattedDecimal == formattedDecimal)
+					{
+						// The base implementation of GetFormattedValue (which triggers the CellFormatting event) did nothing else than 
+						// the typical 1234.5 to "1234.5" conversion. But depending on the values of ThousandsSeparator and DecimalPlaces,
+						// this may not be the actual string displayed. The real formatted value may be "1,234.500"
+						return formattedDecimal.ToString((this.ThousandsSeparator ? "N" : "F") + this.DecimalPlaces.ToString());
+					}
 				}
 			}
-			return formattedValue;
+			return null;
 		}
 
 		/// <summary>
@@ -1094,6 +1181,7 @@ namespace RTC
 				numericUpDown.Maximum = this.Maximum;
 				numericUpDown.Minimum = this.Minimum;
 				numericUpDown.ThousandsSeparator = this.ThousandsSeparator;
+				numericUpDown.Hexadecimal = this.Hexadecimal;
 				string initialFormattedValueStr = initialFormattedValue as string;
 				if (initialFormattedValueStr == null)
 				{
@@ -1120,7 +1208,10 @@ namespace RTC
 			{
 				negativeSignKey = (Keys)(VkKeyScan(negativeSignStr[0]));
 			}
-
+			if (Hexadecimal && ((e.KeyCode >= Keys.A && e.KeyCode <= Keys.F)))
+			{
+				return true;
+			}
 			if ((char.IsDigit((char)e.KeyCode) ||
 				 (e.KeyCode >= Keys.NumPad0 && e.KeyCode <= Keys.NumPad9) ||
 				 negativeSignKey == e.KeyCode ||
@@ -1245,13 +1336,33 @@ namespace RTC
 					// Set all the relevant properties
 					paintingNumericUpDown.TextAlign = DataGridViewNumericUpDownCell.TranslateAlignment(cellStyle.Alignment);
 					paintingNumericUpDown.DecimalPlaces = this.DecimalPlaces;
+					paintingNumericUpDown.Hexadecimal = this.Hexadecimal;
 					paintingNumericUpDown.ThousandsSeparator = this.ThousandsSeparator;
 					paintingNumericUpDown.Font = cellStyle.Font;
 					paintingNumericUpDown.Width = valBounds.Width;
 					paintingNumericUpDown.Height = valBounds.Height;
 					paintingNumericUpDown.RightToLeft = this.DataGridView.RightToLeft;
 					paintingNumericUpDown.Location = new Point(0, -paintingNumericUpDown.Height - 100);
-					paintingNumericUpDown.Text = formattedValue as string;
+					paintingNumericUpDown.Value = Convert.ToDecimal(value);
+
+					Color foreColor;
+					if (PartPainted(paintParts, DataGridViewPaintParts.SelectionBackground) && cellSelected)
+					{
+						foreColor = cellStyle.SelectionForeColor;
+					}
+					else
+					{
+						foreColor = cellStyle.ForeColor;
+					}
+					if (PartPainted(paintParts, DataGridViewPaintParts.ContentForeground))
+					{
+						if (foreColor.A < 255)
+						{
+							// The NumericUpDown control does not support transparent fore colors
+							foreColor = Color.FromArgb(255, foreColor);
+						}
+						paintingNumericUpDown.ForeColor = foreColor;
+					}
 
 					Color backColor;
 					if (PartPainted(paintParts, DataGridViewPaintParts.SelectionBackground) && cellSelected)
@@ -1397,11 +1508,23 @@ namespace RTC
 			object cellValue = GetValue(rowIndex);
 			if (cellValue != null)
 			{
-				Decimal currentValue = System.Convert.ToDecimal(cellValue);
-				Decimal constrainedValue = Constrain(currentValue);
-				if (constrainedValue != currentValue)
+				if (Hexadecimal)
 				{
-					SetValue(rowIndex, constrainedValue);
+					Decimal currentValue = System.Convert.ToDecimal(cellValue);
+					Decimal constrainedValue = Constrain(currentValue);
+					if (constrainedValue != currentValue)
+					{
+						SetValue(rowIndex, constrainedValue);
+					}
+				}
+				else
+				{
+					Decimal currentValue = System.Convert.ToDecimal(cellValue);
+					Decimal constrainedValue = Constrain(currentValue);
+					if (constrainedValue != currentValue)
+					{
+						SetValue(rowIndex, constrainedValue);
+					}
 				}
 			}
 			Debug.Assert(this.minimum == value);
@@ -1422,6 +1545,15 @@ namespace RTC
 			if (OwnsEditingNumericUpDown(rowIndex))
 			{
 				this.EditingNumericUpDown.ThousandsSeparator = value;
+			}
+		}
+
+		internal void SetHexadecimal(int rowIndex, bool value)
+		{
+			this.hexadecimal = value;
+			if (OwnsEditingNumericUpDown(rowIndex))
+			{
+				this.EditingNumericUpDown.Hexadecimal = value;
 			}
 		}
 
@@ -1452,12 +1584,13 @@ namespace RTC
 				return HorizontalAlignment.Left;
 			}
 		}
-	}
 
+	}
 	/// <summary>
 	/// Reference Article https://msdn.microsoft.com/en-us/library/aa730881(v=vs.80).aspx
 	/// Defines the editing control for the DataGridViewNumericUpDownCell custom cell type.
-	/// </summary>
+	/// </summary>/// <summary>
+
 	class DataGridViewNumericUpDownEditingControl : NumericUpDown, IDataGridViewEditingControl
 	{
 		// Needed to forward keyboard messages to the child TextBox control.
@@ -1691,6 +1824,7 @@ namespace RTC
 				// Prevent the Value from being set to Maximum or Minimum when the cell is being painted.
 				this.UserEdit = (context & DataGridViewDataErrorContexts.Display) == 0;
 				return this.Value.ToString((this.ThousandsSeparator ? "N" : "F") + this.DecimalPlaces.ToString());
+
 			}
 			finally
 			{
@@ -1750,6 +1884,10 @@ namespace RTC
 			{
 				notifyValueChange = true;
 			}
+			else if (((e.KeyChar >= 'a' && e.KeyChar <= 'f') || e.KeyChar >= 'A' && e.KeyChar <= 'F'))
+			{
+				notifyValueChange = true;
+			}
 			else
 			{
 				System.Globalization.NumberFormatInfo numberFormatInfo = System.Globalization.CultureInfo.CurrentCulture.NumberFormat;
@@ -1774,6 +1912,34 @@ namespace RTC
 			{
 				// Let the DataGridView know about the value change
 				NotifyDataGridViewOfValueChange();
+			}
+		}
+
+		protected override void UpdateEditText()
+		{
+			if (base.UserEdit) HexParseEditText();
+			if (!string.IsNullOrEmpty(base.Text))
+			{
+				base.ChangingText = true;
+				base.Text = string.Format("{0:X}", (UInt64)base.Value);
+			}
+		}
+		protected override void ValidateEditText()
+		{
+			HexParseEditText();
+			UpdateEditText();
+		}
+		private void HexParseEditText()
+		{
+			try
+			{
+				if (!string.IsNullOrEmpty(base.Text))
+					this.Value = Convert.ToUInt64(base.Text, 16);
+			}
+			catch { }
+			finally
+			{
+				base.UserEdit = false;
 			}
 		}
 
@@ -1809,4 +1975,66 @@ namespace RTC
 		}
 	}
 
+	//Enables the doublebuffered flag for DGVs
+	public static class ExtensionMethods
+	{
+		public static void DoubleBuffered(this DataGridView dgv, bool setting)
+		{
+			Type dgvType = dgv.GetType();
+			PropertyInfo pi = dgvType.GetProperty("DoubleBuffered",
+				BindingFlags.Instance | BindingFlags.NonPublic | BindingFlags.SetProperty);
+			pi.SetValue(dgv, setting, null);
+		}
+		public static void DoubleBuffered(this NumericUpDown updown, bool setting)
+		{
+			Type updownType = updown.GetType();
+			PropertyInfo pi = updownType.GetProperty("DoubleBuffered",
+				BindingFlags.Instance | BindingFlags.NonPublic | BindingFlags.SetProperty);
+			pi.SetValue(updown, setting, null);
+		}
+	}
+
+	//Fixes microsoft's numericupdown hex issues. Thanks microsoft
+	public class NumericUpDownHexFix : NumericUpDown
+	{
+		public NumericUpDownHexFix()
+		{
+			base.Hexadecimal = true;
+			base.Minimum = 0;
+			base.Maximum = UInt64.MaxValue;
+		}
+		[DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
+		public new decimal Maximum
+		{    // Doesn't serialize properly 
+			get { return base.Maximum; }
+			set { base.Maximum = value; }
+		}
+		protected override void UpdateEditText()
+		{
+			if (base.UserEdit) HexParseEditText();
+			if (!string.IsNullOrEmpty(base.Text))
+			{
+				base.ChangingText = true;
+				base.Text = string.Format("{0:X}", (UInt64)base.Value);
+			}
+		}
+		protected override void ValidateEditText()
+		{
+			HexParseEditText();
+			UpdateEditText();
+		}
+		private void HexParseEditText()
+		{
+			try
+			{
+				if (!string.IsNullOrEmpty(base.Text))
+					this.Value = Convert.ToUInt64(base.Text, 16);
+			}
+			catch { }
+			finally
+			{
+				base.UserEdit = false;
+			}
+		}
+	}
 }

@@ -374,6 +374,7 @@
             // cbAutoAddDump
             // 
             this.cbAutoAddDump.AutoSize = true;
+            this.cbAutoAddDump.Enabled = false;
             this.cbAutoAddDump.Font = new System.Drawing.Font("Segoe UI", 8F);
             this.cbAutoAddDump.ForeColor = System.Drawing.Color.White;
             this.cbAutoAddDump.Location = new System.Drawing.Point(18, 97);
