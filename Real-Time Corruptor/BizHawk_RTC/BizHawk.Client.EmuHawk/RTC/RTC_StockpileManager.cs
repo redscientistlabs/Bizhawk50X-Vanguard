@@ -289,7 +289,7 @@ namespace RTC
 				currentStashkey.GameName = master.GameName;
 
                 //RTC_NetCore.HugeOperationEnd(token);
-                token = RTC_NetCore.HugeOperationStart("LAZY");
+              //  token = RTC_NetCore.HugeOperationStart("LAZY");
 
                 if (loadBeforeOperation)
 				{
