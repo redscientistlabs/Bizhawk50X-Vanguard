@@ -41,6 +41,7 @@ namespace RTC
 
 			dgvBlastLayer.DoubleBuffered(true);
 			this.dgvBlastLayer.AutoSizeRowsMode = System.Windows.Forms.DataGridViewAutoSizeRowsMode.DisplayedCells;
+			
 
 			dgvBlastLayer.AlternatingRowsDefaultCellStyle.BackColor = Color.FromArgb(240, 240, 240);
 
@@ -302,19 +303,22 @@ namespace RTC
 
 		private void btnDuplicateSelected_Click(object sender, EventArgs e)
 		{
-			if (dgvBlastLayer.CurrentCell.RowIndex == -1)
+			if (dgvBlastLayer.SelectedRows.Count < 1)
 			{
-				MessageBox.Show("No unit was selected. Cannot duplicate.");
+				MessageBox.Show("No rows were selected. Cannot duplicate.");
 				return;
 			}
+			foreach (DataGridViewRow row in dgvBlastLayer.SelectedRows)
+			{
+				int pos = row.Index;
 
-			int pos = dgvBlastLayer.CurrentCell.RowIndex;
+				BlastUnit bu = sk.BlastLayer.Layer[pos];
+				BlastUnit bu2 = ObjectCopier.Clone(bu);
+				sk.BlastLayer.Layer.Insert(pos, bu2);
 
-			BlastUnit bu = sk.BlastLayer.Layer[pos];
-			BlastUnit bu2 = ObjectCopier.Clone(bu);
-			sk.BlastLayer.Layer.Insert(pos, bu2);
+				AddBlastUnitToDGV(bu2);
+			}
 
-			AddBlastUnitToDGV(bu2);
 		}
 
 		private void btnSanitizeDuplicates_Click(object sender, EventArgs e)
@@ -396,8 +400,8 @@ namespace RTC
 					bc.Address = Convert.ToInt64(row.Cells["dgvParam1"].Value);
 					bc.Value = RTC_Extensions.getByteArrayValue(GetPrecisionSizeFromName(row.Cells["dgvPrecision"].Value.ToString()), Convert.ToDecimal(row.Cells["dgvParam2"].Value));
 					bc.Domain = Convert.ToString(row.Cells["dgvParam1Domain"].Value);
-					if (row.Cells["dgvBUMode"].Value.ToString() == "Freeze") ;
-					bc.IsFreeze = true;
+					if (row.Cells["dgvBUMode"].Value.ToString() == "Freeze")
+						bc.IsFreeze = true;
 					row.Cells["dgvBlastUnitReference"].Value = bc;
 					CurrentlyUpdating = false;
 					break;
@@ -643,5 +647,23 @@ namespace RTC
 			UpdateBlastLayerSize();
 		}
 
+		private void btnRemoveSelected_Click(object sender, EventArgs e)
+		{
+			if (dgvBlastLayer.SelectedRows.Count < 1)
+			{
+				MessageBox.Show("No rows were selected. Cannot remove.");
+				return;
+			}
+			foreach (DataGridViewRow row in dgvBlastLayer.SelectedRows)
+			{
+				int pos = row.Index;
+
+				BlastUnit bu = sk.BlastLayer.Layer[pos];
+
+				sk.BlastLayer.Layer.Remove(bu);
+				dgvBlastLayer.Rows.Remove(bu2RowDico[bu]);
+				CurrentlyUpdating = false;
+			}
+		}
 	}
 }
