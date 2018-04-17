@@ -10,7 +10,7 @@ using System.Windows.Forms;
 using System.Diagnostics;
 using System.Globalization;
 using System.ComponentModel;
-
+using System.Reflection;
 
 namespace RTC
 {
@@ -774,6 +774,8 @@ namespace RTC
 		[ThreadStatic]
 		private NumericUpDown paintingNumericUpDown;
 
+		
+
 		private int decimalPlaces;       // Caches the value of the DecimalPlaces property
 		private Decimal increment;       // Caches the value of the Increment property
 		private Decimal minimum;         // Caches the value of the Minimum property
@@ -800,6 +802,7 @@ namespace RTC
 				paintingNumericUpDown.BorderStyle = BorderStyle.None;
 				paintingNumericUpDown.Maximum = Decimal.MaxValue / 10;
 				paintingNumericUpDown.Minimum = Decimal.MinValue / 10;
+				//paintingNumericUpDown.DoubleBuffered(true);
 
 			}
 
@@ -1950,6 +1953,26 @@ namespace RTC
 			{
 				return base.ProcessKeyEventArgs(ref m);
 			}
+		}
+	}
+
+	//Enables the doublebuffered flag for DGVs
+	public static class ExtensionMethods
+	{
+		public static void DoubleBuffered(this DataGridView dgv, bool setting)
+		{
+
+			Type dgvType = dgv.GetType();
+			PropertyInfo pi = dgvType.GetProperty("DoubleBuffered",
+				BindingFlags.Instance | BindingFlags.NonPublic | BindingFlags.SetProperty);
+			pi.SetValue(dgv, setting, null);
+		}
+		public static void DoubleBuffered(this NumericUpDown updown, bool setting)
+		{
+			Type updownType = updown.GetType();
+			PropertyInfo pi = updownType.GetProperty("DoubleBuffered",
+				BindingFlags.Instance | BindingFlags.NonPublic | BindingFlags.SetProperty);
+			pi.SetValue(updown, setting, null);
 		}
 	}
 }

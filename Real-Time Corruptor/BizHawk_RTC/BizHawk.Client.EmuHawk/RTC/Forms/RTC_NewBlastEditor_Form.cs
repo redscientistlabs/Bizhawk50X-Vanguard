@@ -35,6 +35,9 @@ namespace RTC
 		public RTC_NewBlastEditor_Form()
 		{
 			InitializeComponent();
+
+			this.dgvBlastLayer.DoubleBuffered(true);
+			this.dgvBlastLayer.AutoSizeRowsMode = System.Windows.Forms.DataGridViewAutoSizeRowsMode.DisplayedCells;
 			//set its location and size to fit the cell
 			//	dtp.Location = dgvBlastLayer.GetCellDisplayRectangle(0, 3,true).Location;
 			//dtp.Size = dgvBlastLayer.GetCellDisplayRectangle(0, 3,true).Size;
