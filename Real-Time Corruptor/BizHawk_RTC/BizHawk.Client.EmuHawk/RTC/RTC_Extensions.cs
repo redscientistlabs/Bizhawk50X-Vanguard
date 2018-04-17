@@ -774,7 +774,7 @@ namespace RTC
 		[ThreadStatic]
 		private NumericUpDown paintingNumericUpDown;
 
-		
+
 
 		private int decimalPlaces;       // Caches the value of the DecimalPlaces property
 		private Decimal increment;       // Caches the value of the Increment property
@@ -951,7 +951,7 @@ namespace RTC
 				}
 			}
 		}
-		
+
 		[
 		  DefaultValue(DATAGRIDVIEWNUMERICUPDOWNCELL_defaultHexadecimal),
 		]
@@ -966,7 +966,7 @@ namespace RTC
 			set
 			{
 				if (this.hexadecimal != value)
-				{ 
+				{
 					SetHexadecimal(this.RowIndex, value);
 					OnCommonChange();
 				}
@@ -1119,8 +1119,8 @@ namespace RTC
 		{
 			if (this.Hexadecimal)
 			{
-				uint valueuint = System.Convert.ToUInt32(value);
-				return valueuint.ToString("X");
+				UInt64 valueuint64 = System.Convert.ToUInt64(value);
+				return valueuint64.ToString("X");
 			}
 			else
 			{
@@ -1492,7 +1492,7 @@ namespace RTC
 				this.EditingNumericUpDown.Maximum = value;
 			}
 		}
-		
+
 		/// Utility function that sets a new value for the Minimum property of the cell. This function is used by
 		/// the cell and column Minimum property. The column uses this method instead of the Minimum
 		/// property for performance reasons. This way the column can invalidate the entire column at once instead of 
@@ -1921,7 +1921,7 @@ namespace RTC
 			if (!string.IsNullOrEmpty(base.Text))
 			{
 				base.ChangingText = true;
-				base.Text = string.Format("{0:X}", (uint)base.Value);
+				base.Text = string.Format("{0:X}", (UInt64)base.Value);
 			}
 		}
 		protected override void ValidateEditText()
@@ -1934,7 +1934,7 @@ namespace RTC
 			try
 			{
 				if (!string.IsNullOrEmpty(base.Text))
-					this.Value = Convert.ToInt64(base.Text, 16);
+					this.Value = Convert.ToUInt64(base.Text, 16);
 			}
 			catch { }
 			finally
@@ -1991,6 +1991,50 @@ namespace RTC
 			PropertyInfo pi = updownType.GetProperty("DoubleBuffered",
 				BindingFlags.Instance | BindingFlags.NonPublic | BindingFlags.SetProperty);
 			pi.SetValue(updown, setting, null);
+		}
+	}
+
+	//Fixes microsoft's numericupdown hex issues. Thanks microsoft
+	public class NumericUpDownHexFix : NumericUpDown
+	{
+		public NumericUpDownHexFix()
+		{
+			base.Hexadecimal = true;
+			base.Minimum = 0;
+			base.Maximum = UInt64.MaxValue;
+		}
+		[DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
+		public new decimal Maximum
+		{    // Doesn't serialize properly 
+			get { return base.Maximum; }
+			set { base.Maximum = value; }
+		}
+		protected override void UpdateEditText()
+		{
+			if (base.UserEdit) HexParseEditText();
+			if (!string.IsNullOrEmpty(base.Text))
+			{
+				base.ChangingText = true;
+				base.Text = string.Format("{0:X}", (UInt64)base.Value);
+			}
+		}
+		protected override void ValidateEditText()
+		{
+			HexParseEditText();
+			UpdateEditText();
+		}
+		private void HexParseEditText()
+		{
+			try
+			{
+				if (!string.IsNullOrEmpty(base.Text))
+					this.Value = Convert.ToUInt64(base.Text, 16);
+			}
+			catch { }
+			finally
+			{
+				base.UserEdit = false;
+			}
 		}
 	}
 }

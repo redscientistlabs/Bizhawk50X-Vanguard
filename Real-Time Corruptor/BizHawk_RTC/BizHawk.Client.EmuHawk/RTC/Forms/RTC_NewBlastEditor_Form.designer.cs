@@ -66,6 +66,7 @@
             this.dgvParam2Domain = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.dgvParam2 = new RTC.DataGridViewNumericUpDownColumn();
             this.btnRemoveSelected = new System.Windows.Forms.Button();
+            this.btnSearchParam1 = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.dgvBlastLayer)).BeginInit();
             this.pnMemoryTargetting.SuspendLayout();
             this.panel1.SuspendLayout();
@@ -136,7 +137,7 @@
             this.btnDisable50.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnDisable50.Font = new System.Drawing.Font("Segoe UI Semibold", 9F, System.Drawing.FontStyle.Bold);
             this.btnDisable50.ForeColor = System.Drawing.Color.Black;
-            this.btnDisable50.Location = new System.Drawing.Point(730, 216);
+            this.btnDisable50.Location = new System.Drawing.Point(730, 199);
             this.btnDisable50.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.btnDisable50.Name = "btnDisable50";
             this.btnDisable50.Size = new System.Drawing.Size(209, 28);
@@ -155,7 +156,7 @@
             this.btnRemoveDisabled.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnRemoveDisabled.Font = new System.Drawing.Font("Segoe UI Semibold", 9F, System.Drawing.FontStyle.Bold);
             this.btnRemoveDisabled.ForeColor = System.Drawing.Color.Black;
-            this.btnRemoveDisabled.Location = new System.Drawing.Point(730, 280);
+            this.btnRemoveDisabled.Location = new System.Drawing.Point(730, 263);
             this.btnRemoveDisabled.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.btnRemoveDisabled.Name = "btnRemoveDisabled";
             this.btnRemoveDisabled.Size = new System.Drawing.Size(209, 28);
@@ -174,7 +175,7 @@
             this.btnInvertDisabled.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnInvertDisabled.Font = new System.Drawing.Font("Segoe UI Semibold", 9F, System.Drawing.FontStyle.Bold);
             this.btnInvertDisabled.ForeColor = System.Drawing.Color.Black;
-            this.btnInvertDisabled.Location = new System.Drawing.Point(730, 248);
+            this.btnInvertDisabled.Location = new System.Drawing.Point(730, 231);
             this.btnInvertDisabled.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.btnInvertDisabled.Name = "btnInvertDisabled";
             this.btnInvertDisabled.Size = new System.Drawing.Size(209, 28);
@@ -193,7 +194,7 @@
             this.btnDisableEverything.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnDisableEverything.Font = new System.Drawing.Font("Segoe UI Semibold", 9F, System.Drawing.FontStyle.Bold);
             this.btnDisableEverything.ForeColor = System.Drawing.Color.Black;
-            this.btnDisableEverything.Location = new System.Drawing.Point(730, 318);
+            this.btnDisableEverything.Location = new System.Drawing.Point(730, 301);
             this.btnDisableEverything.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.btnDisableEverything.Name = "btnDisableEverything";
             this.btnDisableEverything.Size = new System.Drawing.Size(209, 28);
@@ -212,7 +213,7 @@
             this.btnEnableEverything.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnEnableEverything.Font = new System.Drawing.Font("Segoe UI Semibold", 9F, System.Drawing.FontStyle.Bold);
             this.btnEnableEverything.ForeColor = System.Drawing.Color.Black;
-            this.btnEnableEverything.Location = new System.Drawing.Point(730, 350);
+            this.btnEnableEverything.Location = new System.Drawing.Point(730, 333);
             this.btnEnableEverything.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.btnEnableEverything.Name = "btnEnableEverything";
             this.btnEnableEverything.Size = new System.Drawing.Size(209, 28);
@@ -231,7 +232,7 @@
             this.btnDuplicateSelected.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnDuplicateSelected.Font = new System.Drawing.Font("Segoe UI Semibold", 9F, System.Drawing.FontStyle.Bold);
             this.btnDuplicateSelected.ForeColor = System.Drawing.Color.Black;
-            this.btnDuplicateSelected.Location = new System.Drawing.Point(730, 458);
+            this.btnDuplicateSelected.Location = new System.Drawing.Point(730, 441);
             this.btnDuplicateSelected.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.btnDuplicateSelected.Name = "btnDuplicateSelected";
             this.btnDuplicateSelected.Size = new System.Drawing.Size(209, 28);
@@ -250,7 +251,7 @@
             this.btnSanitizeDuplicates.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnSanitizeDuplicates.Font = new System.Drawing.Font("Segoe UI Semibold", 9F, System.Drawing.FontStyle.Bold);
             this.btnSanitizeDuplicates.ForeColor = System.Drawing.Color.Black;
-            this.btnSanitizeDuplicates.Location = new System.Drawing.Point(730, 420);
+            this.btnSanitizeDuplicates.Location = new System.Drawing.Point(730, 403);
             this.btnSanitizeDuplicates.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.btnSanitizeDuplicates.Name = "btnSanitizeDuplicates";
             this.btnSanitizeDuplicates.Size = new System.Drawing.Size(209, 28);
@@ -544,7 +545,7 @@
             this.btnRemoveSelected.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnRemoveSelected.Font = new System.Drawing.Font("Segoe UI Semibold", 9F, System.Drawing.FontStyle.Bold);
             this.btnRemoveSelected.ForeColor = System.Drawing.Color.Black;
-            this.btnRemoveSelected.Location = new System.Drawing.Point(730, 388);
+            this.btnRemoveSelected.Location = new System.Drawing.Point(730, 371);
             this.btnRemoveSelected.Margin = new System.Windows.Forms.Padding(4);
             this.btnRemoveSelected.Name = "btnRemoveSelected";
             this.btnRemoveSelected.Size = new System.Drawing.Size(209, 28);
@@ -555,12 +556,32 @@
             this.btnRemoveSelected.UseVisualStyleBackColor = false;
             this.btnRemoveSelected.Click += new System.EventHandler(this.btnRemoveSelected_Click);
             // 
+            // btnSearchParam1
+            // 
+            this.btnSearchParam1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.btnSearchParam1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(224)))), ((int)(((byte)(224)))), ((int)(((byte)(224)))));
+            this.btnSearchParam1.FlatAppearance.BorderSize = 0;
+            this.btnSearchParam1.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnSearchParam1.Font = new System.Drawing.Font("Segoe UI Semibold", 9F, System.Drawing.FontStyle.Bold);
+            this.btnSearchParam1.ForeColor = System.Drawing.Color.Black;
+            this.btnSearchParam1.Location = new System.Drawing.Point(730, 473);
+            this.btnSearchParam1.Margin = new System.Windows.Forms.Padding(4);
+            this.btnSearchParam1.Name = "btnSearchParam1";
+            this.btnSearchParam1.Size = new System.Drawing.Size(209, 28);
+            this.btnSearchParam1.TabIndex = 140;
+            this.btnSearchParam1.TabStop = false;
+            this.btnSearchParam1.Tag = "color:light";
+            this.btnSearchParam1.Text = "Search for Param1";
+            this.btnSearchParam1.UseVisualStyleBackColor = false;
+            this.btnSearchParam1.Click += new System.EventHandler(this.btnSearchParam1_Click);
+            // 
             // RTC_NewBlastEditor_Form
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
             this.ClientSize = new System.Drawing.Size(956, 620);
+            this.Controls.Add(this.btnSearchParam1);
             this.Controls.Add(this.btnRemoveSelected);
             this.Controls.Add(this.cbUseHex);
             this.Controls.Add(this.panel1);
@@ -633,5 +654,6 @@
 		private System.Windows.Forms.DataGridViewTextBoxColumn dgvParam2Domain;
 		private DataGridViewNumericUpDownColumn dgvParam2;
 		private System.Windows.Forms.Button btnRemoveSelected;
+		private System.Windows.Forms.Button btnSearchParam1;
 	}
 }

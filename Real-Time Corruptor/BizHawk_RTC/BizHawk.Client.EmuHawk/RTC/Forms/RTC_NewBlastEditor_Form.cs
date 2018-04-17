@@ -10,21 +10,34 @@ using System.Windows.Forms;
 
 namespace RTC
 {
-	/* 
-	 * Column Indexes - Updated 4/8/2018
-	 * 
-	 * 0 dgvBlastUnitReference
-	 * 1 dgvEnabled
-	 * 2 dgvPrecision
-	 * 3 dgvBlastUnitType
-	 * 4 dgvBUMode
-	 * 5 dgvParam1Domain
-	 * 6 dvgParam1
-	 * 7 dvgParam2Domain
-	 * 8 dvgParam2
-	 */
 	public partial class RTC_NewBlastEditor_Form : Form
 	{
+		/* 
+		 * Column Indexes - Updated 4/8/2018
+		 * 
+		 * 0 dgvBlastUnitReference
+		 * 1 dgvEnabled
+		 * 2 dgvPrecision
+		 * 3 dgvBlastUnitType
+		 * 4 dgvBUMode
+		 * 5 dgvSourceAddressDomain
+		 * 6 dvgSourceAddress
+		 * 7 dvgParam2Domain
+		 * 8 dvgParam2
+		 */
+		private enum BlastEditorColumn
+		{
+			BlastUnitReference,
+			Enabled,
+			Precision,
+			BlastUnitType,
+			BUMode,
+			SourceAddressDomain,
+			SourceAddress,
+			Param2Domain,
+			Param2
+		}
+
 		StashKey sk = null;
 		bool initialized = false;
 		bool CurrentlyUpdating = false;
@@ -41,7 +54,7 @@ namespace RTC
 
 			dgvBlastLayer.DoubleBuffered(true);
 			this.dgvBlastLayer.AutoSizeRowsMode = System.Windows.Forms.DataGridViewAutoSizeRowsMode.DisplayedCells;
-			
+
 
 			dgvBlastLayer.AlternatingRowsDefaultCellStyle.BackColor = Color.FromArgb(240, 240, 240);
 
@@ -89,10 +102,10 @@ namespace RTC
 			{
 				AddBlastUnitToDGV(bu);
 			}
-			//Param1 and Param2 only need to accept Decimal
+			//SourceAddress and Param2 only need to accept Decimal
 			dgvBlastLayer.Columns[6].ValueType = typeof(Decimal);
 			dgvBlastLayer.Columns[8].ValueType = typeof(Decimal);
-			
+
 			UpdateBlastLayerSize();
 			initialized = true;
 		}
@@ -101,7 +114,7 @@ namespace RTC
 		{
 
 			/*
-			 param1
+			 SourceAddress
 				BlastByte  = Address
 				BlastCheat = Address
 				BlastPipe  = Source Address
@@ -387,9 +400,9 @@ namespace RTC
 				case "RTC.BlastByte":
 					BlastByte bb = (BlastByte)row.Cells["dgvBlastUnitReference"].Value;
 					bb.IsEnabled = Convert.ToBoolean((row.Cells["dgvBlastEnabled"].Value));
-					bb.Address = Convert.ToInt64(row.Cells["dgvParam1"].Value);
+					bb.Address = Convert.ToInt64(row.Cells["dgvSourceAddress"].Value);
 					bb.Value = RTC_Extensions.getByteArrayValue(GetPrecisionSizeFromName(row.Cells["dgvPrecision"].Value.ToString()), Convert.ToDecimal(row.Cells["dgvParam2"].Value));
-					bb.Domain = Convert.ToString(row.Cells["dgvParam1Domain"].Value);
+					bb.Domain = Convert.ToString(row.Cells["dgvSourceAddressDomain"].Value);
 					Enum.TryParse(row.Cells["dgvBUMode"].Value.ToString().ToUpper(), out bb.Type);
 					row.Cells["dgvBlastUnitReference"].Value = bb;
 					CurrentlyUpdating = false;
@@ -397,9 +410,9 @@ namespace RTC
 				case "RTC.BlastCheat":
 					BlastCheat bc = (BlastCheat)row.Cells["dgvBlastUnitReference"].Value;
 					bc.IsEnabled = Convert.ToBoolean((row.Cells["dgvBlastEnabled"].Value));
-					bc.Address = Convert.ToInt64(row.Cells["dgvParam1"].Value);
+					bc.Address = Convert.ToInt64(row.Cells["dgvSourceAddress"].Value);
 					bc.Value = RTC_Extensions.getByteArrayValue(GetPrecisionSizeFromName(row.Cells["dgvPrecision"].Value.ToString()), Convert.ToDecimal(row.Cells["dgvParam2"].Value));
-					bc.Domain = Convert.ToString(row.Cells["dgvParam1Domain"].Value);
+					bc.Domain = Convert.ToString(row.Cells["dgvSourceAddressDomain"].Value);
 					if (row.Cells["dgvBUMode"].Value.ToString() == "Freeze")
 						bc.IsFreeze = true;
 					row.Cells["dgvBlastUnitReference"].Value = bc;
@@ -408,9 +421,9 @@ namespace RTC
 				case "RTC.BlastPipe":
 					BlastPipe bp = (BlastPipe)row.Cells["dgvBlastUnitReference"].Value;
 					bp.IsEnabled = Convert.ToBoolean((row.Cells["dgvBlastEnabled"].Value));
-					bp.Address = Convert.ToInt64(row.Cells["dgvParam1"].Value);
+					bp.Address = Convert.ToInt64(row.Cells["dgvSourceAddress"].Value);
 					bp.PipeAddress = Convert.ToInt64(row.Cells["dgvParam2"].Value);
-					bp.Domain = Convert.ToString(row.Cells["dgvParam1Domain"].Value);
+					bp.Domain = Convert.ToString(row.Cells["dgvSourceAddressDomain"].Value);
 					bp.PipeDomain = Convert.ToString(row.Cells["dgvParam2Domain"].Value);
 					bp.TiltValue = Convert.ToInt32(row.Cells["dgvBUMode"].Value.ToString());
 					row.Cells["dgvBlastUnitReference"].Value = bp;
@@ -419,9 +432,9 @@ namespace RTC
 				case "RTC.BlastVector":
 					BlastVector bv = (BlastVector)row.Cells["dgvBlastUnitReference"].Value;
 					bv.IsEnabled = Convert.ToBoolean((row.Cells["dgvBlastEnabled"].Value));
-					bv.Address = Convert.ToInt64(row.Cells["dgvParam1"].Value);
+					bv.Address = Convert.ToInt64(row.Cells["dgvSourceAddress"].Value);
 					bv.Values = RTC_Extensions.getByteArrayValue(GetPrecisionSizeFromName(row.Cells["dgvPrecision"].Value.ToString()), Convert.ToDecimal(row.Cells["dgvParam2"].Value));
-					bv.Domain = Convert.ToString(row.Cells["dgvParam1Domain"].Value);
+					bv.Domain = Convert.ToString(row.Cells["dgvSourceAddressDomain"].Value);
 					Enum.TryParse(row.Cells["dgvBUMode"].Value.ToString().ToUpper(), out bv.Type);
 					row.Cells["dgvBlastUnitReference"].Value = bv;
 					CurrentlyUpdating = false;
@@ -444,21 +457,21 @@ namespace RTC
 				case "RTC.BlastCheat":
 					if (row.Cells["dgvPrecision"].Value.ToString() == "8-bit")
 					{
-						(row.Cells["dgvParam2"] as DataGridViewNumericUpDownCell).Maximum = 255;
+						(row.Cells["dgvParam2"] as DataGridViewNumericUpDownCell).Maximum = Byte.MaxValue;
 					}
 					else if (row.Cells["dgvPrecision"].Value.ToString() == "16-bit")
 					{
-						(row.Cells["dgvParam2"] as DataGridViewNumericUpDownCell).Maximum = 65535;
+						(row.Cells["dgvParam2"] as DataGridViewNumericUpDownCell).Maximum = UInt16.MaxValue;
 					}
 					else
 					{
-						(row.Cells["dgvParam2"] as DataGridViewNumericUpDownCell).Maximum = 4294967295;
+						(row.Cells["dgvParam2"] as DataGridViewNumericUpDownCell).Maximum = UInt32.MaxValue;
 					}
 					break;
 				case "RTC.BlastPipe":
-						//Todo set this to the valid maximum address
-						(row.Cells["dgvParam2"] as DataGridViewNumericUpDownCell).Maximum = 2147483647;
-						break;
+					//Todo set this to the valid maximum address
+					(row.Cells["dgvParam2"] as DataGridViewNumericUpDownCell).Maximum = Int32.MaxValue;
+					break;
 				default:
 					break;
 			}
@@ -468,7 +481,7 @@ namespace RTC
 		{
 			DataGridViewRow row = dgvBlastLayer.Rows[e.RowIndex];
 			DataGridViewColumn column = dgvBlastLayer.Columns[e.ColumnIndex];
-			
+
 			//Make sure the max and min is updated if the precision changed
 			if (column.HeaderText.Equals("Precision"))
 				ValidatePrecision(dgvBlastLayer.Rows[e.RowIndex]);
@@ -490,7 +503,7 @@ namespace RTC
 		private void PopulateDomainContextMenu(int column, int row)
 		{
 			cmsDomain.Items.Clear();
-			
+
 			foreach (string domain in domains)
 			{
 				//cmsDomain.Items.Add(domain, null, );
@@ -535,7 +548,7 @@ namespace RTC
 			})) as ToolStripMenuItem).Enabled = true;
 			(cmsBlastUnitType.Items.Add("RTC.BlastCheat", null, new EventHandler((ob, ev) =>
 			{
-				dgvBlastLayer[column, row].Value  = "RTC.BlastByte";
+				dgvBlastLayer[column, row].Value = "RTC.BlastByte";
 			})) as ToolStripMenuItem).Enabled = true;
 			(cmsBlastUnitType.Items.Add("RTC.BlastPipe", null, new EventHandler((ob, ev) =>
 			{
@@ -579,10 +592,10 @@ namespace RTC
 		{
 			switch (dgvBlastLayer.SortedColumn.Name)
 			{
-				case "dgvParam1Domain":
+				case "dgvSourceAddressDomain":
 					sk.BlastLayer.Layer = sk.BlastLayer.Layer.OrderBy(it => it.Domain).ToList();
 					break;
-				case "dgvParam1":
+				case "dgvSourceAddress":
 					sk.BlastLayer.Layer = sk.BlastLayer.Layer.OrderBy(it => it.Address).ToList();
 					break;
 				case "dgvParam2Domain":
@@ -598,10 +611,10 @@ namespace RTC
 
 		private long GetParam2Value(BlastUnit bu)
 		{
-			if(bu is BlastByte || bu is BlastCheat)
+			if (bu is BlastByte || bu is BlastCheat)
 			{
 				BlastByte bb = bu as BlastByte;
-				decimal value = RTC_Extensions.getDecimalValue(bb.Value);				
+				decimal value = RTC_Extensions.getDecimalValue(bb.Value);
 				return (long)value;
 			}
 			if (bu is BlastPipe)
@@ -625,7 +638,7 @@ namespace RTC
 		{
 			foreach (DataGridViewColumn column in dgvBlastLayer.Columns)
 			{
-				if(column.CellType.Name == "DataGridViewNumericUpDownCell")
+				if (column.CellType.Name == "DataGridViewNumericUpDownCell")
 				{
 					DataGridViewNumericUpDownColumn _column = column as DataGridViewNumericUpDownColumn;
 					_column.Hexadecimal = cbUseHex.Checked;
@@ -663,6 +676,61 @@ namespace RTC
 				sk.BlastLayer.Layer.Remove(bu);
 				dgvBlastLayer.Rows.Remove(bu2RowDico[bu]);
 				CurrentlyUpdating = false;
+			}
+		}
+		public DialogResult getSearchBox(string title, string promptText, ref decimal value)
+		{
+			Form form = new Form();
+			Label label = new Label();
+			NumericUpDown updown = new NumericUpDown();
+			Button buttonOk = new Button();
+			Button buttonCancel = new Button();
+
+			form.Text = title;
+			label.Text = promptText;
+			updown.Value = value;
+
+
+
+			updown.Maximum = Int32.MaxValue;
+			updown.Hexadecimal = cbUseHex.Checked;
+
+			buttonOk.Text = "OK";
+			buttonCancel.Text = "Cancel";
+			buttonOk.DialogResult = DialogResult.OK;
+			buttonCancel.DialogResult = DialogResult.Cancel;
+
+			label.SetBounds(9, 20, 372, 13);
+			updown.SetBounds(12, 36, 372, 20);
+			buttonOk.SetBounds(228, 72, 75, 23);
+			buttonCancel.SetBounds(309, 72, 75, 23);
+
+			label.AutoSize = true;
+			updown.Anchor = updown.Anchor | AnchorStyles.Right;
+			buttonOk.Anchor = AnchorStyles.Bottom | AnchorStyles.Right;
+			buttonCancel.Anchor = AnchorStyles.Bottom | AnchorStyles.Right;
+
+			form.ClientSize = new Size(396, 107);
+			form.Controls.AddRange(new Control[] { label, updown, buttonOk, buttonCancel });
+			form.ClientSize = new Size(Math.Max(300, label.Right + 10), form.ClientSize.Height);
+			form.FormBorderStyle = FormBorderStyle.FixedDialog;
+			form.StartPosition = FormStartPosition.CenterScreen;
+			form.MinimizeBox = false;
+			form.MaximizeBox = false;
+			form.AcceptButton = buttonOk;
+			form.CancelButton = buttonCancel;
+
+			DialogResult dialogResult = form.ShowDialog();
+			value = updown.Value;
+			return dialogResult;
+		}
+
+		private void btnSearchSourceAddress_Click(object sender, EventArgs e)
+		{
+			decimal value = -1;
+			if (this.getSearchBox("Search for an address", "Enter an address:	", ref value) == DialogResult.OK)
+			{
+
 			}
 		}
 	}
