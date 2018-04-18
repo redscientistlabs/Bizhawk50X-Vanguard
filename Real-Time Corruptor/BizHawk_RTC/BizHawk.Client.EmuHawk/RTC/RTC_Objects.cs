@@ -1103,9 +1103,10 @@ namespace RTC
 
         public abstract void Rasterize();
 
-        public abstract bool IsEnabled { get; set; }
+		public abstract bool IsEnabled { get; set; }
+		public abstract bool IsLocked { get; set; }
 
-        public abstract string Domain { get; set; }
+		public abstract string Domain { get; set; }
         public abstract long Address { get; set; }
     }
 
@@ -1117,6 +1118,7 @@ namespace RTC
         public BlastByteType Type;
         public byte[] Value;
         public override bool IsEnabled { get; set; }
+		public override bool IsLocked { get; set; } = false;
 
 		public BlastByte(string _domain, long _address, BlastByteType _type, byte[] _value, bool _isEnabled)
         {
@@ -1277,7 +1279,8 @@ namespace RTC
 	{
 		public override string Domain { get; set; }
         public override long Address { get; set; }
-        public BlastByteType Type;
+		public override bool IsLocked { get; set; } = false;
+		public BlastByteType Type;
 
 		public byte[] Values;
 
@@ -1395,7 +1398,8 @@ namespace RTC
 	{
 		public override string Domain { get; set; }
         public override long Address { get; set; }
-        public string PipeDomain;
+		public override bool IsLocked { get; set; } = false;
+		public string PipeDomain;
 		public long PipeAddress;
         public int PipeSize;
         public int TiltValue;
@@ -1561,7 +1565,8 @@ namespace RTC
     {
         public override string Domain { get; set; }
         public override long Address { get; set; }
-        public BizHawk.Client.Common.DisplayType DisplayType;
+		public override bool IsLocked { get; set; } = false;
+		public BizHawk.Client.Common.DisplayType DisplayType;
         public bool BigEndian;
         public byte[] Value;
         public bool IsFreeze;
