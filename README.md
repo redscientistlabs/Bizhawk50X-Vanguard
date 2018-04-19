@@ -1,0 +1,22 @@
+# RTC3
+Real-Time Corruptor 3.x
+
+The Real-Time Corruptor for BizHawk is a Dynamic Corruptor for emulated games. It interfaced with the Open Source BizHawk Emulator and works by corrupting data into virtual memory chips of emulated systems. RTC3 Introduces new technologies such as NetCore, the Vector Engine and Virtual Memory Domains.
+
+Features:
+- Corrupts in real-time
+- Works with all of Bizhawk's emulated systems
+- Multiple corruption engines with customizable algorithms
+- Easy start option
+- Glitch Harvester (Corruption Savestate Manager)
+- Blast Editor (Corruption instruction editor)
+- Stockpile Player (Corruption replayer)
+- As of 3.x, can survive BizHawk crashes using Detached Mode
+- The new Pipe Engine can simulate digital short circuits
+- The Vector Engine is designed for 3D systems that support IEEE754 Floating Point values
+- RTC Multiplayer allows you to corrupt via the internet or locally
+- Comes bundled with standalone "Windows Glitch Harvester" for file corruption
+
+Please consult the Official Wiki for software documentation. https://corrupt.wiki
+
+Download link: http://redscientist.com/#/rtcorruptormod
