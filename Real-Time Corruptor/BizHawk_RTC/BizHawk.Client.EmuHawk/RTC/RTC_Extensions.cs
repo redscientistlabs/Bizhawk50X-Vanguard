@@ -2037,4 +2037,22 @@ namespace RTC
 			}
 		}
 	}
+
+	
+	public class CSVGenerator
+	{
+		public string GenerateFromDGV(DataGridView dgv)
+		{
+			var sb = new StringBuilder();
+			var headers = dgv.Columns.Cast<DataGridViewColumn>();
+
+			sb.AppendLine(string.Join(System.Globalization.CultureInfo.CurrentCulture.TextInfo.ListSeparator, headers.Select(column => "\"" + column.HeaderText + "\"").ToArray()));
+			foreach (DataGridViewRow row in dgv.Rows)
+			{
+				var cells = row.Cells.Cast<DataGridViewCell>();
+				sb.AppendLine(string.Join(System.Globalization.CultureInfo.CurrentCulture.TextInfo.ListSeparator, cells.Select(cell => "\"" + cell.Value + "\"").ToArray()));
+			}
+			return sb.ToString();
+		}
+	}
 }

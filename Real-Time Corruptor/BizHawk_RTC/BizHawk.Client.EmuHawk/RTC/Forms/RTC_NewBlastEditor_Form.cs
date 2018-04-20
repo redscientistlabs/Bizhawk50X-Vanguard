@@ -21,7 +21,7 @@ namespace RTC
 		 * 2 dgvBlastEnabled
 		 * 3 dgvPrecision
 		 * 4 dgvBlastUnitType
-		 * 5 dgvBUMode
+		 * 5 dgvBlastUnitMode
 		 * 6 dgvSourceAddressDomain
 		 * 7 dvgSourceAddress
 		 * 8 dvgParamDomain
@@ -30,27 +30,25 @@ namespace RTC
 
 		private enum BlastEditorColumn
 		{
-			Locked,
-			BlastUnitReference,
-			Enabled,
-			Precision,
-			BlastUnitType,
-			BUMode,
-			SourceAddressDomain,
-			SourceAddress,
-			ParamDomain,
-			Param
+			dgvBlastUnitReference,
+			dgvBlastUnitLocked,
+			dgvBlastEnabled,
+			dgvPrecision,
+			dgvBlastUnitType,
+			dgvBlastUnitMode,
+			dgvSourceAddressDomain,
+			dgvSourceAddress,
+			dgvParamDomain,
+			dgvParam
 		}
 
 		StashKey sk = null;
 		StashKey originalsk = null;
 		bool initialized = false;
 		bool CurrentlyUpdating = false;
-		ContextMenuStrip cmsDomain = new ContextMenuStrip();
-		ContextMenuStrip cmsBlastUnitMode = new ContextMenuStrip();
-		ContextMenuStrip cmsBlastUnitType = new ContextMenuStrip();
-		ContextMenuStrip cmsColumnHeader = new ContextMenuStrip();
+		ContextMenuStrip cmsBlastEditor = new ContextMenuStrip();
 		String[] domains;
+		int searchOffset = 0;
 
 		Dictionary<BlastUnit, DataGridViewRow> bu2RowDico = new Dictionary<BlastUnit, DataGridViewRow>();
 
@@ -210,7 +208,7 @@ namespace RTC
 		{
 			foreach (BlastUnit bu in sk.BlastLayer.Layer)
 			{
-				if(!(bool)bu2RowDico[bu].Cells["dgvBlastUnitLocked"].Value)
+				if (!(bool)bu2RowDico[bu].Cells["dgvBlastUnitLocked"].Value)
 					bu2RowDico[bu].Cells["dgvBlastEnabled"].Value = true;
 				CurrentlyUpdating = false;
 				//bu.IsEnabled = true;
@@ -416,7 +414,7 @@ namespace RTC
 					bb.Address = Convert.ToInt64(row.Cells["dgvSourceAddress"].Value);
 					bb.Value = RTC_Extensions.getByteArrayValue(GetPrecisionSizeFromName(row.Cells["dgvPrecision"].Value.ToString()), Convert.ToDecimal(row.Cells["dgvParam"].Value));
 					bb.Domain = Convert.ToString(row.Cells["dgvSourceAddressDomain"].Value);
-					Enum.TryParse(row.Cells["dgvBUMode"].Value.ToString().ToUpper(), out bb.Type);
+					Enum.TryParse(row.Cells["dgvBlastUnitMode"].Value.ToString().ToUpper(), out bb.Type);
 					bb.IsLocked = Convert.ToBoolean((row.Cells["dgvBlastUnitLocked"].Value));
 
 					row.Cells["dgvBlastUnitReference"].Value = bb;
@@ -428,7 +426,7 @@ namespace RTC
 					bc.Address = Convert.ToInt64(row.Cells["dgvSourceAddress"].Value);
 					bc.Value = RTC_Extensions.getByteArrayValue(GetPrecisionSizeFromName(row.Cells["dgvPrecision"].Value.ToString()), Convert.ToDecimal(row.Cells["dgvParam"].Value));
 					bc.Domain = Convert.ToString(row.Cells["dgvSourceAddressDomain"].Value);
-					if (row.Cells["dgvBUMode"].Value.ToString() == "Freeze")
+					if (row.Cells["dgvBlastUnitMode"].Value.ToString() == "Freeze")
 						bc.IsFreeze = true;
 					bc.IsLocked = Convert.ToBoolean((row.Cells["dgvBlastUnitLocked"].Value));
 
@@ -442,7 +440,7 @@ namespace RTC
 					bp.PipeAddress = Convert.ToInt64(row.Cells["dgvParam"].Value);
 					bp.Domain = Convert.ToString(row.Cells["dgvSourceAddressDomain"].Value);
 					bp.PipeDomain = Convert.ToString(row.Cells["dgvParamDomain"].Value);
-					bp.TiltValue = Convert.ToInt32(row.Cells["dgvBUMode"].Value.ToString());
+					bp.TiltValue = Convert.ToInt32(row.Cells["dgvBlastUnitMode"].Value.ToString());
 					bp.IsLocked = Convert.ToBoolean((row.Cells["dgvBlastUnitLocked"].Value));
 
 					row.Cells["dgvBlastUnitReference"].Value = bp;
@@ -455,7 +453,7 @@ namespace RTC
 					bv.Values = RTC_Extensions.getByteArrayValue(GetPrecisionSizeFromName(row.Cells["dgvPrecision"].Value.ToString()), Convert.ToDecimal(row.Cells["dgvParam"].Value));
 					bv.Domain = Convert.ToString(row.Cells["dgvSourceAddressDomain"].Value);
 					bv.IsLocked = Convert.ToBoolean((row.Cells["dgvBlastUnitLocked"].Value));
-					Enum.TryParse(row.Cells["dgvBUMode"].Value.ToString().ToUpper(), out bv.Type);
+					Enum.TryParse(row.Cells["dgvBlastUnitMode"].Value.ToString().ToUpper(), out bv.Type);
 
 					row.Cells["dgvBlastUnitReference"].Value = bv;
 					CurrentlyUpdating = false;
@@ -522,12 +520,12 @@ namespace RTC
 
 		private void PopulateDomainContextMenu(int column, int row)
 		{
-			cmsDomain.Items.Clear();
+			cmsBlastEditor.Items.Clear();
 
 			foreach (string domain in domains)
 			{
 				//cmsDomain.Items.Add(domain, null, );
-				(cmsDomain.Items.Add(domain, null, new EventHandler((ob, ev) =>
+				(cmsBlastEditor.Items.Add(domain, null, new EventHandler((ob, ev) =>
 				{
 					dgvBlastLayer[column, row].Value = domain;
 				})) as ToolStripMenuItem).Enabled = true;
@@ -536,21 +534,21 @@ namespace RTC
 
 		private void PopulateBlastUnitModeContextMenu(int column, int row)
 		{
-			cmsBlastUnitMode.Items.Clear();
+			cmsBlastEditor.Items.Clear();
 
 			foreach (BlastByteType type in Enum.GetValues(typeof(BlastByteType)))
 			{
 				//cmsDomain.Items.Add(domain, null, );
-				(cmsBlastUnitMode.Items.Add(type.ToString(), null, new EventHandler((ob, ev) =>
+				(cmsBlastEditor.Items.Add(type.ToString(), null, new EventHandler((ob, ev) =>
 				{
 					dgvBlastLayer[column, row].Value = type.ToString();
 				})) as ToolStripMenuItem).Enabled = true;
 			}
-			cmsBlastUnitMode.Items.Add(new ToolStripSeparator());
+			cmsBlastEditor.Items.Add(new ToolStripSeparator());
 			foreach (BlastCheatType type in Enum.GetValues(typeof(BlastCheatType)))
 			{
 				//cmsDomain.Items.Add(domain, null, );
-				(cmsBlastUnitMode.Items.Add(type.ToString(), null, new EventHandler((ob, ev) =>
+				(cmsBlastEditor.Items.Add(type.ToString(), null, new EventHandler((ob, ev) =>
 				{
 					dgvBlastLayer[column, row].Value = type.ToString();
 				})) as ToolStripMenuItem).Enabled = true;
@@ -558,19 +556,19 @@ namespace RTC
 		}
 		private void PopulateBlastUnitTypeContextMenu(int column, int row)
 		{
-			cmsBlastUnitType.Items.Clear();
+			cmsBlastEditor.Items.Clear();
 
 			//Adding these by hand
 
-			(cmsBlastUnitType.Items.Add("RTC.BlastByte", null, new EventHandler((ob, ev) =>
+			(cmsBlastEditor.Items.Add("RTC.BlastByte", null, new EventHandler((ob, ev) =>
 			{
 				dgvBlastLayer[column, row].Value = "RTC.BlastByte";
 			})) as ToolStripMenuItem).Enabled = true;
-			(cmsBlastUnitType.Items.Add("RTC.BlastCheat", null, new EventHandler((ob, ev) =>
+			(cmsBlastEditor.Items.Add("RTC.BlastCheat", null, new EventHandler((ob, ev) =>
 			{
 				dgvBlastLayer[column, row].Value = "RTC.BlastByte";
 			})) as ToolStripMenuItem).Enabled = true;
-			(cmsBlastUnitType.Items.Add("RTC.BlastPipe", null, new EventHandler((ob, ev) =>
+			(cmsBlastEditor.Items.Add("RTC.BlastPipe", null, new EventHandler((ob, ev) =>
 			{
 				dgvBlastLayer[column, row].Value = "RTC.BlastByte";
 			})) as ToolStripMenuItem).Enabled = true;
@@ -579,12 +577,13 @@ namespace RTC
 
 		private void PopulateColumnHeaderContextMenu(int column)
 		{
-			cmsColumnHeader.Items.Clear();
+			cmsBlastEditor.Items.Clear();
 
 			//Adding these by hand
 
-			(cmsBlastUnitType.Items.Add("Change Selected Rows", null, new EventHandler((ob, ev) =>
+			(cmsBlastEditor.Items.Add("Change Selected Rows", null, new EventHandler((ob, ev) =>
 			{
+
 			})) as ToolStripMenuItem).Enabled = true;
 		}
 
@@ -595,26 +594,34 @@ namespace RTC
 				int currentMouseOverColumn = dgvBlastLayer.HitTest(e.X, e.Y).ColumnIndex;
 				int currentMouseOverRow = dgvBlastLayer.HitTest(e.X, e.Y).RowIndex;
 
+				
+				//Column header
+				if (currentMouseOverRow == -1)
+				{
+					PopulateColumnHeaderContextMenu(currentMouseOverColumn);
+					cmsBlastEditor.Show(dgvBlastLayer, new Point(e.X, e.Y));
+				}
+
 				//BlastUnitType
-				if (currentMouseOverColumn == (int)BlastEditorColumn.BlastUnitType)
+				else if (currentMouseOverColumn == (int)BlastEditorColumn.dgvBlastUnitType)
 				{
 					PopulateBlastUnitTypeContextMenu(currentMouseOverColumn, currentMouseOverRow);
-					cmsBlastUnitType.Show(dgvBlastLayer, new Point(e.X, e.Y));
+					cmsBlastEditor.Show(dgvBlastLayer, new Point(e.X, e.Y));
 				}
 
 				//BlastUnitMode
-				if (currentMouseOverColumn == (int)BlastEditorColumn.BUMode)
+				else if (currentMouseOverColumn == (int)BlastEditorColumn.dgvBlastUnitMode)
 				{
 
 					PopulateBlastUnitModeContextMenu(currentMouseOverColumn, currentMouseOverRow);
-					cmsBlastUnitMode.Show(dgvBlastLayer, new Point(e.X, e.Y));
+					cmsBlastEditor.Show(dgvBlastLayer, new Point(e.X, e.Y));
 				}
 
 				//Domain1 Domain2
-				if (currentMouseOverColumn == (int)BlastEditorColumn.SourceAddressDomain || currentMouseOverColumn == (int)BlastEditorColumn.ParamDomain)
+				else if (currentMouseOverColumn == (int)BlastEditorColumn.dgvSourceAddressDomain || currentMouseOverColumn == (int)BlastEditorColumn.dgvParamDomain)
 				{
 					PopulateDomainContextMenu(currentMouseOverColumn, currentMouseOverRow);
-					cmsDomain.Show(dgvBlastLayer, new Point(e.X, e.Y));
+					cmsBlastEditor.Show(dgvBlastLayer, new Point(e.X, e.Y));
 				}
 			}
 		}
@@ -717,19 +724,44 @@ namespace RTC
 				CurrentlyUpdating = false;
 			}
 		}
-		public DialogResult getSearchBox(string title, string promptText, ref decimal value)
+
+		private class Item
+		{
+			public string Name;
+			public string Value;
+			public Item(string name, string value)
+			{
+				Name = name;
+				Value = value;
+			}
+			//Return the formatted name rather than the actual value.
+			public override string ToString()
+			{
+				return Name;
+			}
+		}
+		public DialogResult getSearchBox(string title, string promptText, ref string value, ref string columnName)
 		{
 			Form form = new Form();
 			Label label = new Label();
-			NumericUpDown updown = new NumericUpDown();
+			TextBox input = new TextBox();
+			ComboBox column = new ComboBox();
+
 			Button buttonOk = new Button();
 			Button buttonCancel = new Button();
 
+			column.Items.Add(new Item("Source Address", "dgvSourceAddress"));
+			column.Items.Add(new Item("Parameter Value", "dgvParam"));
+			column.Items.Add(new Item("Source Address Domain", "dgvSourceAddressDomain"));
+			column.Items.Add(new Item("Parameter Domain", "dgvParamDomain"));
+			column.Items.Add(new Item("Blast Unit Type", "dgvBlastUnitType"));
+			column.Items.Add(new Item("Blast Unit Mode", "dgvBlastUnitMode"));
+
+
+
 			form.Text = title;
 			label.Text = promptText;
-			updown.Value = value;
-			updown.Maximum = Int32.MaxValue;
-			updown.Hexadecimal = cbUseHex.Checked;
+			input.Text = value;
 
 			buttonOk.Text = "OK";
 			buttonCancel.Text = "Cancel";
@@ -737,17 +769,18 @@ namespace RTC
 			buttonCancel.DialogResult = DialogResult.Cancel;
 
 			label.SetBounds(9, 20, 372, 13);
-			updown.SetBounds(12, 36, 372, 20);
-			buttonOk.SetBounds(228, 72, 75, 23);
-			buttonCancel.SetBounds(309, 72, 75, 23);
+			input.SetBounds(12, 36, 372, 20);
+			column.SetBounds(12, 64, 60, 20);
+			buttonOk.SetBounds(228, 98, 75, 23);
+			buttonCancel.SetBounds(309, 98, 75, 23);
 
 			label.AutoSize = true;
-			updown.Anchor = updown.Anchor | AnchorStyles.Right;
+			input.Anchor = input.Anchor | AnchorStyles.Right;
 			buttonOk.Anchor = AnchorStyles.Bottom | AnchorStyles.Right;
 			buttonCancel.Anchor = AnchorStyles.Bottom | AnchorStyles.Right;
 
-			form.ClientSize = new Size(396, 107);
-			form.Controls.AddRange(new Control[] { label, updown, buttonOk, buttonCancel });
+			form.ClientSize = new Size(396, 130);
+			form.Controls.AddRange(new Control[] { label, input, column, buttonOk, buttonCancel });
 			form.ClientSize = new Size(Math.Max(300, label.Right + 10), form.ClientSize.Height);
 			form.FormBorderStyle = FormBorderStyle.FixedDialog;
 			form.StartPosition = FormStartPosition.CenterScreen;
@@ -757,17 +790,38 @@ namespace RTC
 			form.CancelButton = buttonCancel;
 
 			DialogResult dialogResult = form.ShowDialog();
-			value = updown.Value;
+			value = input.Text;
 			return dialogResult;
 		}
 
+
 		private void btnSearchSourceAddress_Click(object sender, EventArgs e)
 		{
-			decimal value = -1;
-			if (this.getSearchBox("Search for an address", "Enter an address:	", ref value) == DialogResult.OK)
+			string value = "";
+			string columnName = "";
+			
+			if (this.getSearchBox("Search for a value", "Choose a column and enter a value:", ref value, ref columnName) == DialogResult.OK)
 			{
-
+				dgvBlastLayer.ClearSelection();
+				DataGridViewRow row = SearchDataGridView(dgvBlastLayer, columnName, value);
+				if (row != null)
+					row.Selected = true;
 			}
+		}
+
+		private DataGridViewRow SearchDataGridView(DataGridView dgv, string column, string searchValue, bool findAgain = false)
+		{
+			if (!findAgain)
+				searchOffset = 0;
+
+			while (searchOffset < dgv.RowCount)
+			{
+				if (dgv[column, searchOffset].FormattedValue.ToString() == searchValue)
+					return dgv.Rows[searchOffset];
+			}
+
+			return null;
+
 		}
 
 		private void saveToFileblToolStripMenuItem_Click(object sender, EventArgs e)
@@ -799,6 +853,35 @@ namespace RTC
 		private void exportToCSVToolStripMenuItem_Click(object sender, EventArgs e)
 		{
 
+			string filename;
+
+			if (sk.BlastLayer.Layer.Count == 0)
+			{
+				MessageBox.Show("Can't save because the provided blastlayer is empty is empty");
+				return;
+			}
+
+			SaveFileDialog saveFileDialog1 = new SaveFileDialog();
+			saveFileDialog1.DefaultExt = "csv";
+			saveFileDialog1.Title = "Export to csv";
+			saveFileDialog1.Filter = "csv files|*.csv";
+			saveFileDialog1.RestoreDirectory = true;
+
+			if (saveFileDialog1.ShowDialog() == DialogResult.OK)
+			{
+				filename = saveFileDialog1.FileName;
+			}
+			else
+				return;
+			CSVGenerator csv = new CSVGenerator();
+
+			using (FileStream fs = new FileStream(filename, FileMode.Create))
+			{
+
+				byte[] output = csv.GenerateFromDGV(dgvBlastLayer).GetBytes();
+				fs.Write(output, 0, output.Length);
+			}
+
 		}
 
 		private void runOriginalSavestateToolStripMenuItem_Click(object sender, EventArgs e)
@@ -809,14 +892,24 @@ namespace RTC
 		private void replaceSavestateFromGHToolStripMenuItem_Click(object sender, EventArgs e)
 		{
 			StashKey temp = RTC_StockpileManager.getCurrentSavestateStashkey();
-			if(temp == null)
+			if (temp == null)
 			{
 				MessageBox.Show("There is no savestate selected in the glitch harvester, or the current selected box is empty");
 				return;
 			}
-			sk.StateFilename = temp.StateFilename;
-			sk.StateShortFilename = temp.StateShortFilename;
-			sk.StateData = temp.StateData;
+			if (sk.GameName != temp.GameName)
+			{
+				DialogResult dialogResult = MessageBox.Show("You're attempting to replace a savestate associated with " + sk.GameName + " with a savestate associated with " + temp.GameName + ".\n This probably won't work unless you also update the rom.\n Are you sure you want to continue?", "Game mismatch", MessageBoxButtons.YesNo);
+				if (dialogResult == DialogResult.Yes)
+				{
+					sk.ParentKey = temp.ParentKey;
+				}
+				else if (dialogResult == DialogResult.No)
+				{
+					return;
+				}
+			}
+
 		}
 
 		private void replaceSavestateFromFileToolStripMenuItem_Click(object sender, EventArgs e)
@@ -834,8 +927,12 @@ namespace RTC
 			}
 			else
 				return;
-			sk.StateFilename = filename;
-			sk.StateShortFilename = filename.Substring(filename.LastIndexOf("\\") + 1, filename.Length - (filename.LastIndexOf("\\") + 1));
+			//Get a new key
+			sk.ParentKey = RTC_Core.GetRandomKey();
+
+			//Let's hope the game name is correct!
+			File.Copy(filename, sk.getSavestateFullPath());
+
 		}
 
 		private void saveSavestateToToolStripMenuItem_Click(object sender, EventArgs e)
@@ -852,7 +949,8 @@ namespace RTC
 			}
 			else
 				return;
-			File.Copy(sk.StateFilename, filename);
+
+			File.Copy(sk.getSavestateFullPath(), filename);
 		}
 
 		private void runRomWithoutBlastlayerToolStripMenuItem_Click(object sender, EventArgs e)
@@ -874,20 +972,30 @@ namespace RTC
 
 		private void replaceRomFromFileToolStripMenuItem_Click(object sender, EventArgs e)
 		{
-			string filename;
-			OpenFileDialog ofd = new OpenFileDialog();
-			ofd.DefaultExt = "state";
-			ofd.Title = "Save Savestate File";
-			ofd.Filter = "state files|*.state";
-			ofd.RestoreDirectory = true;
-			if (ofd.ShowDialog() == DialogResult.OK)
+			DialogResult dialogResult = MessageBox.Show("Loading this rom will invalidate the associated savestate. You'll need to set a new savestate for the Blastlayer. Continue?", "Invalidate State?", MessageBoxButtons.YesNo);
+			if (dialogResult == DialogResult.Yes)
 			{
-				filename = ofd.FileName.ToString();
-			}
-			else
-				return;
+				string filename;
+				OpenFileDialog ofd = new OpenFileDialog();
+				ofd.Title = "Open ROM File";
+				ofd.Filter = "any file|*.*";
+				ofd.RestoreDirectory = true;
+				if (ofd.ShowDialog() == DialogResult.OK)
+				{
+					filename = ofd.FileName.ToString();
+				}
+				else
+					return;
+				RTC_Core.LoadRom(filename, true);
+				StashKey temp = new StashKey();
 
-			sk.RomFilename = filename;
+				sk.RomFilename = temp.RomFilename;
+				sk.GameName = temp.GameName;
+				sk.SystemName = temp.SystemName;
+				sk.SystemDeepName = temp.SystemDeepName;
+				sk.SystemCore = temp.SystemCore;
+
+			}
 		}
 
 		private void bakeROMBlastunitsToFileToolStripMenuItem_Click(object sender, EventArgs e)
@@ -905,19 +1013,25 @@ namespace RTC
 			else
 				return;
 			RomParts rp = RTC_MemoryDomains.GetRomParts(sk.SystemName, sk.RomFilename);
-			
+
 
 			File.Copy(sk.RomFilename, filename);
 			using (FileStream output = new FileStream(filename, FileMode.Open))
+			{
 				foreach (BlastByte bu in sk.BlastLayer.Layer)
 				{
-					if(bu.Domain == rp.primarydomain || bu.Domain == rp.seconddomain)
+					if (bu.Domain == rp.primarydomain)
 					{
-						output.Position = bu.Address;
+						output.Position = bu.Address + rp.skipbytes;
 						output.Write(bu.Value, 0, bu.Value.Length);
 					}
-						
+					else if (bu.Domain == rp.seconddomain)
+					{
+						output.Position = bu.Address + RTC_MemoryDomains.MemoryInterfaces["CHR VROM"].Size + rp.skipbytes;
+						output.Write(bu.Value, 0, bu.Value.Length);
+					}
 				}
+			}
 		}
 	}
 }
