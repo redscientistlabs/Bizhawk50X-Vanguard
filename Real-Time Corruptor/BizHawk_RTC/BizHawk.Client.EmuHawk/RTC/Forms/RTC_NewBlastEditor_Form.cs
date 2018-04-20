@@ -16,17 +16,18 @@ namespace RTC
 		/* 
 		 * Column Indexes - Updated 4/8/2018
 		 * 
-		 * 0 dgvLocked
+		 * 0 dgvBlastUnitLocked.
 		 * 1 dgvBlastUnitReference
-		 * 2 dgvEnabled
+		 * 2 dgvBlastEnabled
 		 * 3 dgvPrecision
 		 * 4 dgvBlastUnitType
 		 * 5 dgvBUMode
 		 * 6 dgvSourceAddressDomain
 		 * 7 dvgSourceAddress
 		 * 8 dvgParamDomain
-		 * dvgParam
+		 * 9 dvgParam
 		 */
+
 		private enum BlastEditorColumn
 		{
 			Locked,
@@ -110,8 +111,8 @@ namespace RTC
 				AddBlastUnitToDGV(bu);
 			}
 			//SourceAddress and Param only need to accept Decimal
-			dgvBlastLayer.Columns[(int)BlastEditorColumn.SourceAddress].ValueType = typeof(Decimal);
-			dgvBlastLayer.Columns[(int)BlastEditorColumn.Param].ValueType = typeof(Decimal);
+			dgvBlastLayer.Columns["dgvSourceAddress"].ValueType = typeof(Decimal);
+			dgvBlastLayer.Columns["dgvParam"].ValueType = typeof(Decimal);
 
 			UpdateBlastLayerSize();
 			initialized = true;
@@ -209,14 +210,16 @@ namespace RTC
 		{
 			foreach (BlastUnit bu in sk.BlastLayer.Layer)
 			{
-				bu2RowDico[bu].Cells[1].Value = true;
+				if(!(bool)bu2RowDico[bu].Cells["dgvBlastUnitLocked"].Value)
+					bu2RowDico[bu].Cells["dgvBlastEnabled"].Value = true;
 				CurrentlyUpdating = false;
 				//bu.IsEnabled = true;
 			}
 
 			foreach (BlastUnit bu in sk.BlastLayer.Layer.OrderBy(x => RTC_Core.RND.Next()).Take(sk.BlastLayer.Layer.Count / 2))
 			{
-				bu2RowDico[bu].Cells[1].Value = false;
+				if (!(bool)bu2RowDico[bu].Cells["dgvBlastUnitLocked"].Value)
+					bu2RowDico[bu].Cells["dgvBlastEnabled"].Value = false;
 				CurrentlyUpdating = false;
 				//bu.IsEnabled = false;
 			}
@@ -228,7 +231,8 @@ namespace RTC
 			for (int i = 0; i < sk.BlastLayer.Layer.Count(); i++)
 			{
 				var bu = sk.BlastLayer.Layer[i];
-				bu2RowDico[bu].Cells[1].Value = !((bool)bu2RowDico[bu].Cells[1].Value);
+				if (!(bool)bu2RowDico[bu].Cells["dgvBlastUnitLocked"].Value)
+					bu2RowDico[bu].Cells["dgvBlastEnabled"].Value = !((bool)bu2RowDico[bu].Cells["dgvBlastEnabled"].Value);
 				CurrentlyUpdating = false;
 			}
 			//sk.BlastLayer.Layer[i].IsEnabled = !sk.BlastLayer.Layer[i].IsEnabled;
@@ -239,7 +243,7 @@ namespace RTC
 			List<BlastUnit> buToRemove = new List<BlastUnit>();
 
 			foreach (BlastUnit bu in sk.BlastLayer.Layer)
-				if (!bu.IsEnabled)
+				if (!bu.IsEnabled && !bu.IsLocked)
 					buToRemove.Add(bu);
 
 			foreach (BlastUnit bu in buToRemove)
@@ -260,7 +264,6 @@ namespace RTC
 				if (bu.IsEnabled)
 					bl.Layer.Add(bu);
 			}
-
 
 			StashKey newSk = (StashKey)sk.Clone();
 			newSk.BlastLayer = (BlastLayer)bl.Clone();
@@ -308,7 +311,8 @@ namespace RTC
 		{
 			foreach (BlastUnit bu in sk.BlastLayer.Layer)
 			{
-				bu2RowDico[bu].Cells[1].Value = false;
+				if (!(bool)bu2RowDico[bu].Cells["dgvBlastUnitLocked"].Value)
+					bu2RowDico[bu].Cells["dgvBlastEnabled"].Value = false;
 				CurrentlyUpdating = false;
 			}
 		}
@@ -317,7 +321,8 @@ namespace RTC
 		{
 			foreach (BlastUnit bu in sk.BlastLayer.Layer)
 			{
-				bu2RowDico[bu].Cells[1].Value = true;
+				if (!(bool)bu2RowDico[bu].Cells["dgvBlastUnitLocked"].Value)
+					bu2RowDico[bu].Cells["dgvBlastEnabled"].Value = true;
 				CurrentlyUpdating = false;
 			}
 		}
@@ -335,7 +340,7 @@ namespace RTC
 
 				BlastUnit bu = sk.BlastLayer.Layer[pos];
 				BlastUnit bu2 = ObjectCopier.Clone(bu);
-				sk.BlastLayer.Layer.Insert(pos, bu2);
+				sk.BlastLayer.Layer.Add(bu2);
 
 				AddBlastUnitToDGV(bu2);
 			}
@@ -349,7 +354,7 @@ namespace RTC
 
 			foreach (BlastUnit bu in bul)
 			{
-				if (!usedAddresses.Contains(bu.Address))
+				if (!usedAddresses.Contains(bu.Address) || !bu.IsLocked)
 					usedAddresses.Add(bu.Address);
 				else
 				{
@@ -412,6 +417,8 @@ namespace RTC
 					bb.Value = RTC_Extensions.getByteArrayValue(GetPrecisionSizeFromName(row.Cells["dgvPrecision"].Value.ToString()), Convert.ToDecimal(row.Cells["dgvParam"].Value));
 					bb.Domain = Convert.ToString(row.Cells["dgvSourceAddressDomain"].Value);
 					Enum.TryParse(row.Cells["dgvBUMode"].Value.ToString().ToUpper(), out bb.Type);
+					bb.IsLocked = Convert.ToBoolean((row.Cells["dgvBlastUnitLocked"].Value));
+
 					row.Cells["dgvBlastUnitReference"].Value = bb;
 					CurrentlyUpdating = false;
 					break;
@@ -423,6 +430,8 @@ namespace RTC
 					bc.Domain = Convert.ToString(row.Cells["dgvSourceAddressDomain"].Value);
 					if (row.Cells["dgvBUMode"].Value.ToString() == "Freeze")
 						bc.IsFreeze = true;
+					bc.IsLocked = Convert.ToBoolean((row.Cells["dgvBlastUnitLocked"].Value));
+
 					row.Cells["dgvBlastUnitReference"].Value = bc;
 					CurrentlyUpdating = false;
 					break;
@@ -434,6 +443,8 @@ namespace RTC
 					bp.Domain = Convert.ToString(row.Cells["dgvSourceAddressDomain"].Value);
 					bp.PipeDomain = Convert.ToString(row.Cells["dgvParamDomain"].Value);
 					bp.TiltValue = Convert.ToInt32(row.Cells["dgvBUMode"].Value.ToString());
+					bp.IsLocked = Convert.ToBoolean((row.Cells["dgvBlastUnitLocked"].Value));
+
 					row.Cells["dgvBlastUnitReference"].Value = bp;
 					CurrentlyUpdating = false;
 					break;
@@ -443,7 +454,9 @@ namespace RTC
 					bv.Address = Convert.ToInt64(row.Cells["dgvSourceAddress"].Value);
 					bv.Values = RTC_Extensions.getByteArrayValue(GetPrecisionSizeFromName(row.Cells["dgvPrecision"].Value.ToString()), Convert.ToDecimal(row.Cells["dgvParam"].Value));
 					bv.Domain = Convert.ToString(row.Cells["dgvSourceAddressDomain"].Value);
+					bv.IsLocked = Convert.ToBoolean((row.Cells["dgvBlastUnitLocked"].Value));
 					Enum.TryParse(row.Cells["dgvBUMode"].Value.ToString().ToUpper(), out bv.Type);
+
 					row.Cells["dgvBlastUnitReference"].Value = bv;
 					CurrentlyUpdating = false;
 					break;
@@ -453,7 +466,6 @@ namespace RTC
 					break;
 			}
 		}
-
 
 
 		//This is gonna be ugly because some engines re-use boxes. Sorry -Narry
@@ -675,6 +687,12 @@ namespace RTC
 		}
 		private void dgvBlastLayer_UserDeletingRow(object sender, DataGridViewRowCancelEventArgs e)
 		{
+			if ((bool)e.Row.Cells["dgvBlastUnitLocked"].Value)
+			{
+				e.Cancel = true;
+				return;
+			}
+
 			sk.BlastLayer.Layer.Remove((BlastUnit)e.Row.Cells[0].Value);
 			UpdateBlastLayerSize();
 		}
@@ -688,8 +706,10 @@ namespace RTC
 			}
 			foreach (DataGridViewRow row in dgvBlastLayer.SelectedRows)
 			{
-				int pos = row.Index;
+				if ((bool)row.Cells["dgvBlastUnitLocked"].Value)
+					return;
 
+				int pos = row.Index;
 				BlastUnit bu = sk.BlastLayer.Layer[pos];
 
 				sk.BlastLayer.Layer.Remove(bu);
@@ -708,9 +728,6 @@ namespace RTC
 			form.Text = title;
 			label.Text = promptText;
 			updown.Value = value;
-
-
-
 			updown.Maximum = Int32.MaxValue;
 			updown.Hexadecimal = cbUseHex.Checked;
 
