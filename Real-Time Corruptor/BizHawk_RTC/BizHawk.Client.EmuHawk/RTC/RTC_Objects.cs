@@ -989,7 +989,12 @@ namespace RTC
         }
     }
 
-    [Serializable()]
+	[XmlInclude(typeof(BlastCheat))]
+	[XmlInclude(typeof(BlastByte))]
+	[XmlInclude(typeof(BlastPipe))]
+	[XmlInclude(typeof(BlastVector))]
+	[XmlInclude(typeof(BlastUnit))]
+	[Serializable()]
 	public class BlastLayer : ICloneable
 	{
 		public List<BlastUnit> Layer;

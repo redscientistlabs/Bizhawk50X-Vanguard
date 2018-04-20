@@ -72,20 +72,20 @@
             this.button1 = new System.Windows.Forms.Button();
             this.menuStripEx1 = new MenuStripEx();
             this.blastLayerToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.loadFromFileblToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.saveToFileblToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.importBlastlayerblToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.exportToCSVToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.saveStateToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.runOriginalSavestateToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.replaceSavestateFromGHToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.replaceSavestateFromFileToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.saveSavestateToToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.rOMToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.runRomWithoutBlastlayerToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.replaceRomFromGHToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.replaceRomFromFileToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.bakeROMBlastunitsToFileToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.loadFromFileblToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.saveToFileblToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.importBlastlayerblToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.exportToCSVToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.runOriginalSavestateToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.replaceSavestateFromGHToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.replaceSavestateFromFileToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.saveSavestateToToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             ((System.ComponentModel.ISupportInitialize)(this.dgvBlastLayer)).BeginInit();
             this.pnMemoryTargetting.SuspendLayout();
             this.panel1.SuspendLayout();
@@ -641,6 +641,34 @@
             this.blastLayerToolStripMenuItem.Size = new System.Drawing.Size(72, 20);
             this.blastLayerToolStripMenuItem.Text = "BlastLayer";
             // 
+            // loadFromFileblToolStripMenuItem
+            // 
+            this.loadFromFileblToolStripMenuItem.Name = "loadFromFileblToolStripMenuItem";
+            this.loadFromFileblToolStripMenuItem.Size = new System.Drawing.Size(187, 22);
+            this.loadFromFileblToolStripMenuItem.Text = "&Load From File (.bl)";
+            this.loadFromFileblToolStripMenuItem.Click += new System.EventHandler(this.loadFromFileblToolStripMenuItem_Click);
+            // 
+            // saveToFileblToolStripMenuItem
+            // 
+            this.saveToFileblToolStripMenuItem.Name = "saveToFileblToolStripMenuItem";
+            this.saveToFileblToolStripMenuItem.Size = new System.Drawing.Size(187, 22);
+            this.saveToFileblToolStripMenuItem.Text = "&Save to file (.bl)";
+            this.saveToFileblToolStripMenuItem.Click += new System.EventHandler(this.saveToFileblToolStripMenuItem_Click);
+            // 
+            // importBlastlayerblToolStripMenuItem
+            // 
+            this.importBlastlayerblToolStripMenuItem.Name = "importBlastlayerblToolStripMenuItem";
+            this.importBlastlayerblToolStripMenuItem.Size = new System.Drawing.Size(187, 22);
+            this.importBlastlayerblToolStripMenuItem.Text = "&Import Blastlayer (.bl)";
+            this.importBlastlayerblToolStripMenuItem.Click += new System.EventHandler(this.importBlastlayerblToolStripMenuItem_Click);
+            // 
+            // exportToCSVToolStripMenuItem
+            // 
+            this.exportToCSVToolStripMenuItem.Name = "exportToCSVToolStripMenuItem";
+            this.exportToCSVToolStripMenuItem.Size = new System.Drawing.Size(187, 22);
+            this.exportToCSVToolStripMenuItem.Text = "&Export to CSV";
+            this.exportToCSVToolStripMenuItem.Click += new System.EventHandler(this.exportToCSVToolStripMenuItem_Click);
+            // 
             // saveStateToolStripMenuItem
             // 
             this.saveStateToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
@@ -651,6 +679,34 @@
             this.saveStateToolStripMenuItem.Name = "saveStateToolStripMenuItem";
             this.saveStateToolStripMenuItem.Size = new System.Drawing.Size(69, 20);
             this.saveStateToolStripMenuItem.Text = "SaveState";
+            // 
+            // runOriginalSavestateToolStripMenuItem
+            // 
+            this.runOriginalSavestateToolStripMenuItem.Name = "runOriginalSavestateToolStripMenuItem";
+            this.runOriginalSavestateToolStripMenuItem.Size = new System.Drawing.Size(217, 22);
+            this.runOriginalSavestateToolStripMenuItem.Text = "Run Original Savestate";
+            this.runOriginalSavestateToolStripMenuItem.Click += new System.EventHandler(this.runOriginalSavestateToolStripMenuItem_Click);
+            // 
+            // replaceSavestateFromGHToolStripMenuItem
+            // 
+            this.replaceSavestateFromGHToolStripMenuItem.Name = "replaceSavestateFromGHToolStripMenuItem";
+            this.replaceSavestateFromGHToolStripMenuItem.Size = new System.Drawing.Size(217, 22);
+            this.replaceSavestateFromGHToolStripMenuItem.Text = "Replace Savestate from GH";
+            this.replaceSavestateFromGHToolStripMenuItem.Click += new System.EventHandler(this.replaceSavestateFromGHToolStripMenuItem_Click);
+            // 
+            // replaceSavestateFromFileToolStripMenuItem
+            // 
+            this.replaceSavestateFromFileToolStripMenuItem.Name = "replaceSavestateFromFileToolStripMenuItem";
+            this.replaceSavestateFromFileToolStripMenuItem.Size = new System.Drawing.Size(217, 22);
+            this.replaceSavestateFromFileToolStripMenuItem.Text = "Replace Savestate from File";
+            this.replaceSavestateFromFileToolStripMenuItem.Click += new System.EventHandler(this.replaceSavestateFromFileToolStripMenuItem_Click);
+            // 
+            // saveSavestateToToolStripMenuItem
+            // 
+            this.saveSavestateToToolStripMenuItem.Name = "saveSavestateToToolStripMenuItem";
+            this.saveSavestateToToolStripMenuItem.Size = new System.Drawing.Size(217, 22);
+            this.saveSavestateToToolStripMenuItem.Text = "Save Savestate to";
+            this.saveSavestateToToolStripMenuItem.Click += new System.EventHandler(this.saveSavestateToToolStripMenuItem_Click);
             // 
             // rOMToolStripMenuItem
             // 
@@ -668,73 +724,28 @@
             this.runRomWithoutBlastlayerToolStripMenuItem.Name = "runRomWithoutBlastlayerToolStripMenuItem";
             this.runRomWithoutBlastlayerToolStripMenuItem.Size = new System.Drawing.Size(222, 22);
             this.runRomWithoutBlastlayerToolStripMenuItem.Text = "Run Rom Without Blastlayer";
+            this.runRomWithoutBlastlayerToolStripMenuItem.Click += new System.EventHandler(this.runRomWithoutBlastlayerToolStripMenuItem_Click);
             // 
             // replaceRomFromGHToolStripMenuItem
             // 
             this.replaceRomFromGHToolStripMenuItem.Name = "replaceRomFromGHToolStripMenuItem";
             this.replaceRomFromGHToolStripMenuItem.Size = new System.Drawing.Size(222, 22);
             this.replaceRomFromGHToolStripMenuItem.Text = "Replace Rom from GH";
+            this.replaceRomFromGHToolStripMenuItem.Click += new System.EventHandler(this.replaceRomFromGHToolStripMenuItem_Click);
             // 
             // replaceRomFromFileToolStripMenuItem
             // 
             this.replaceRomFromFileToolStripMenuItem.Name = "replaceRomFromFileToolStripMenuItem";
             this.replaceRomFromFileToolStripMenuItem.Size = new System.Drawing.Size(222, 22);
             this.replaceRomFromFileToolStripMenuItem.Text = "Replace Rom from File";
+            this.replaceRomFromFileToolStripMenuItem.Click += new System.EventHandler(this.replaceRomFromFileToolStripMenuItem_Click);
             // 
             // bakeROMBlastunitsToFileToolStripMenuItem
             // 
             this.bakeROMBlastunitsToFileToolStripMenuItem.Name = "bakeROMBlastunitsToFileToolStripMenuItem";
             this.bakeROMBlastunitsToFileToolStripMenuItem.Size = new System.Drawing.Size(222, 22);
             this.bakeROMBlastunitsToFileToolStripMenuItem.Text = "Bake ROM Blastunits to File";
-            // 
-            // loadFromFileblToolStripMenuItem
-            // 
-            this.loadFromFileblToolStripMenuItem.Name = "loadFromFileblToolStripMenuItem";
-            this.loadFromFileblToolStripMenuItem.Size = new System.Drawing.Size(187, 22);
-            this.loadFromFileblToolStripMenuItem.Text = "&Load From File (.bl)";
-            // 
-            // saveToFileblToolStripMenuItem
-            // 
-            this.saveToFileblToolStripMenuItem.Name = "saveToFileblToolStripMenuItem";
-            this.saveToFileblToolStripMenuItem.Size = new System.Drawing.Size(187, 22);
-            this.saveToFileblToolStripMenuItem.Text = "&Save to file (.bl)";
-            this.saveToFileblToolStripMenuItem.Click += new System.EventHandler(this.saveToFileblToolStripMenuItem_Click);
-            // 
-            // importBlastlayerblToolStripMenuItem
-            // 
-            this.importBlastlayerblToolStripMenuItem.Name = "importBlastlayerblToolStripMenuItem";
-            this.importBlastlayerblToolStripMenuItem.Size = new System.Drawing.Size(187, 22);
-            this.importBlastlayerblToolStripMenuItem.Text = "&Import Blastlayer (.bl)";
-            // 
-            // exportToCSVToolStripMenuItem
-            // 
-            this.exportToCSVToolStripMenuItem.Name = "exportToCSVToolStripMenuItem";
-            this.exportToCSVToolStripMenuItem.Size = new System.Drawing.Size(187, 22);
-            this.exportToCSVToolStripMenuItem.Text = "&Export to CSV";
-            // 
-            // runOriginalSavestateToolStripMenuItem
-            // 
-            this.runOriginalSavestateToolStripMenuItem.Name = "runOriginalSavestateToolStripMenuItem";
-            this.runOriginalSavestateToolStripMenuItem.Size = new System.Drawing.Size(217, 22);
-            this.runOriginalSavestateToolStripMenuItem.Text = "Run Original Savestate";
-            // 
-            // replaceSavestateFromGHToolStripMenuItem
-            // 
-            this.replaceSavestateFromGHToolStripMenuItem.Name = "replaceSavestateFromGHToolStripMenuItem";
-            this.replaceSavestateFromGHToolStripMenuItem.Size = new System.Drawing.Size(217, 22);
-            this.replaceSavestateFromGHToolStripMenuItem.Text = "Replace Savestate from GH";
-            // 
-            // replaceSavestateFromFileToolStripMenuItem
-            // 
-            this.replaceSavestateFromFileToolStripMenuItem.Name = "replaceSavestateFromFileToolStripMenuItem";
-            this.replaceSavestateFromFileToolStripMenuItem.Size = new System.Drawing.Size(217, 22);
-            this.replaceSavestateFromFileToolStripMenuItem.Text = "Replace Savestate from File";
-            // 
-            // saveSavestateToToolStripMenuItem
-            // 
-            this.saveSavestateToToolStripMenuItem.Name = "saveSavestateToToolStripMenuItem";
-            this.saveSavestateToToolStripMenuItem.Size = new System.Drawing.Size(217, 22);
-            this.saveSavestateToToolStripMenuItem.Text = "Save Savestate to";
+            this.bakeROMBlastunitsToFileToolStripMenuItem.Click += new System.EventHandler(this.bakeROMBlastunitsToFileToolStripMenuItem_Click);
             // 
             // RTC_NewBlastEditor_Form
             // 

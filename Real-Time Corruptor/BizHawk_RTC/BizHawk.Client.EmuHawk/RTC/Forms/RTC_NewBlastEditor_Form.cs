@@ -7,6 +7,7 @@ using System.Globalization;
 using System.Linq;
 using System.Text;
 using System.Windows.Forms;
+using System.IO;
 
 namespace RTC
 {
@@ -85,7 +86,7 @@ namespace RTC
 				return;
 
 			originalsk = (StashKey)_sk.Clone();
-			sk = (StashKey)_sk.Clone();
+			sk = originalsk;
 			RefreshBlastLayer();
 
 			domains = RTC_MemoryDomains.MemoryInterfaces.Keys.ToArray();
@@ -109,8 +110,8 @@ namespace RTC
 				AddBlastUnitToDGV(bu);
 			}
 			//SourceAddress and Param only need to accept Decimal
-			dgvBlastLayer.Columns[6].ValueType = typeof(Decimal);
-			dgvBlastLayer.Columns[8].ValueType = typeof(Decimal);
+			dgvBlastLayer.Columns[(int)BlastEditorColumn.SourceAddress].ValueType = typeof(Decimal);
+			dgvBlastLayer.Columns[(int)BlastEditorColumn.Param].ValueType = typeof(Decimal);
 
 			UpdateBlastLayerSize();
 			initialized = true;
@@ -583,14 +584,14 @@ namespace RTC
 				int currentMouseOverRow = dgvBlastLayer.HitTest(e.X, e.Y).RowIndex;
 
 				//BlastUnitType
-				if (currentMouseOverColumn == 3)
+				if (currentMouseOverColumn == (int)BlastEditorColumn.BlastUnitType)
 				{
 					PopulateBlastUnitTypeContextMenu(currentMouseOverColumn, currentMouseOverRow);
 					cmsBlastUnitType.Show(dgvBlastLayer, new Point(e.X, e.Y));
 				}
 
 				//BlastUnitMode
-				if (currentMouseOverColumn == 4)
+				if (currentMouseOverColumn == (int)BlastEditorColumn.BUMode)
 				{
 
 					PopulateBlastUnitModeContextMenu(currentMouseOverColumn, currentMouseOverRow);
@@ -598,7 +599,7 @@ namespace RTC
 				}
 
 				//Domain1 Domain2
-				if (currentMouseOverColumn == 5 || currentMouseOverColumn == 7)
+				if (currentMouseOverColumn == (int)BlastEditorColumn.SourceAddressDomain || currentMouseOverColumn == (int)BlastEditorColumn.ParamDomain)
 				{
 					PopulateDomainContextMenu(currentMouseOverColumn, currentMouseOverRow);
 					cmsDomain.Show(dgvBlastLayer, new Point(e.X, e.Y));
@@ -754,7 +755,152 @@ namespace RTC
 
 		private void saveToFileblToolStripMenuItem_Click(object sender, EventArgs e)
 		{
+			RTC_BlastLayerTools.SaveBlastLayerToFile(sk.BlastLayer);
+		}
 
+		private void loadFromFileblToolStripMenuItem_Click(object sender, EventArgs e)
+		{
+			BlastLayer temp = RTC_BlastLayerTools.LoadBlastLayerFromFile();
+			if (temp != null)
+			{
+				sk.BlastLayer = temp;
+				RefreshBlastLayer();
+			}
+		}
+
+		private void importBlastlayerblToolStripMenuItem_Click(object sender, EventArgs e)
+		{
+			BlastLayer temp = RTC_BlastLayerTools.LoadBlastLayerFromFile();
+			if (temp != null)
+			{
+				foreach (BlastUnit bu in temp.Layer)
+					sk.BlastLayer.Layer.Add(bu);
+				RefreshBlastLayer();
+			}
+		}
+
+		private void exportToCSVToolStripMenuItem_Click(object sender, EventArgs e)
+		{
+
+		}
+
+		private void runOriginalSavestateToolStripMenuItem_Click(object sender, EventArgs e)
+		{
+			originalsk.RunOriginal();
+		}
+
+		private void replaceSavestateFromGHToolStripMenuItem_Click(object sender, EventArgs e)
+		{
+			StashKey temp = RTC_StockpileManager.getCurrentSavestateStashkey();
+			if(temp == null)
+			{
+				MessageBox.Show("There is no savestate selected in the glitch harvester, or the current selected box is empty");
+				return;
+			}
+			sk.StateFilename = temp.StateFilename;
+			sk.StateShortFilename = temp.StateShortFilename;
+			sk.StateData = temp.StateData;
+		}
+
+		private void replaceSavestateFromFileToolStripMenuItem_Click(object sender, EventArgs e)
+		{
+			string filename;
+
+			OpenFileDialog ofd = new OpenFileDialog();
+			ofd.DefaultExt = "state";
+			ofd.Title = "Open Savestate File";
+			ofd.Filter = "state files|*.state";
+			ofd.RestoreDirectory = true;
+			if (ofd.ShowDialog() == DialogResult.OK)
+			{
+				filename = ofd.FileName.ToString();
+			}
+			else
+				return;
+			sk.StateFilename = filename;
+			sk.StateShortFilename = filename.Substring(filename.LastIndexOf("\\") + 1, filename.Length - (filename.LastIndexOf("\\") + 1));
+		}
+
+		private void saveSavestateToToolStripMenuItem_Click(object sender, EventArgs e)
+		{
+			string filename;
+			SaveFileDialog ofd = new SaveFileDialog();
+			ofd.DefaultExt = "state";
+			ofd.Title = "Save Savestate File";
+			ofd.Filter = "state files|*.state";
+			ofd.RestoreDirectory = true;
+			if (ofd.ShowDialog() == DialogResult.OK)
+			{
+				filename = ofd.FileName.ToString();
+			}
+			else
+				return;
+			File.Copy(sk.StateFilename, filename);
+		}
+
+		private void runRomWithoutBlastlayerToolStripMenuItem_Click(object sender, EventArgs e)
+		{
+			RTC_Core.LoadRom(sk.RomFilename, true);
+		}
+
+		private void replaceRomFromGHToolStripMenuItem_Click(object sender, EventArgs e)
+		{
+			StashKey temp = RTC_StockpileManager.getCurrentSavestateStashkey();
+			if (temp == null)
+			{
+				MessageBox.Show("There is no savestate selected in the glitch harvester, or the current selected box is empty");
+				return;
+			}
+			sk.RomFilename = temp.RomFilename;
+			sk.RomData = temp.RomData;
+		}
+
+		private void replaceRomFromFileToolStripMenuItem_Click(object sender, EventArgs e)
+		{
+			string filename;
+			OpenFileDialog ofd = new OpenFileDialog();
+			ofd.DefaultExt = "state";
+			ofd.Title = "Save Savestate File";
+			ofd.Filter = "state files|*.state";
+			ofd.RestoreDirectory = true;
+			if (ofd.ShowDialog() == DialogResult.OK)
+			{
+				filename = ofd.FileName.ToString();
+			}
+			else
+				return;
+
+			sk.RomFilename = filename;
+		}
+
+		private void bakeROMBlastunitsToFileToolStripMenuItem_Click(object sender, EventArgs e)
+		{
+			string filename;
+			SaveFileDialog sfd = new SaveFileDialog();
+			sfd.DefaultExt = "rom";
+			sfd.Title = "Save rom File";
+			sfd.Filter = "rom files|*.rom";
+			sfd.RestoreDirectory = true;
+			if (sfd.ShowDialog() == DialogResult.OK)
+			{
+				filename = sfd.FileName.ToString();
+			}
+			else
+				return;
+			RomParts rp = RTC_MemoryDomains.GetRomParts(sk.SystemName, sk.RomFilename);
+			
+
+			File.Copy(sk.RomFilename, filename);
+			using (FileStream output = new FileStream(filename, FileMode.Open))
+				foreach (BlastByte bu in sk.BlastLayer.Layer)
+				{
+					if(bu.Domain == rp.primarydomain || bu.Domain == rp.seconddomain)
+					{
+						output.Position = bu.Address;
+						output.Write(bu.Value, 0, bu.Value.Length);
+					}
+						
+				}
 		}
 	}
 }
