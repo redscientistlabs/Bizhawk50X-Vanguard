@@ -5,6 +5,7 @@ using System.Drawing;
 using System.IO;
 using System.Linq;
 using System.Text;
+using System.Windows.Forms;
 
 namespace RTC
 {
@@ -111,19 +112,35 @@ namespace RTC
         {
             SetParam("COLOR", color.R.ToString() + "," + color.G.ToString() + "," + color.B.ToString());
         }
+		
+		public static void LoadBizhawkWindowState()
+		{
+			if (IsParamSet("BIZHAWK_SIZE"))
+			{
+				string[] size = ReadParam("BIZHAWK_SIZE").Split(',');
+				GlobalWin.MainForm.Size = new Size(Convert.ToInt32(size[0]), Convert.ToInt32(size[1]));
+				string[] location = ReadParam("BIZHAWK_LOCATION").Split(',');
+				GlobalWin.MainForm.Location = new Point(Convert.ToInt32(location[0]), Convert.ToInt32(location[1]));
+			}
+		}
 
-        public static void LoadBizhawkWindowState()
-        {
-            if(IsParamSet("BIZHAWK_SIZE"))
-            {
-                string[] size = ReadParam("BIZHAWK_SIZE").Split(',');
-                GlobalWin.MainForm.Size = new Size(Convert.ToInt32(size[0]), Convert.ToInt32(size[1]));
-                string[] location = ReadParam("BIZHAWK_LOCATION").Split(',');
-                GlobalWin.MainForm.Location = new Point(Convert.ToInt32(location[0]), Convert.ToInt32(location[1]));
-            }
-        }
+		public static void LoadHotkeys()
+		{
+			if (IsParamSet("RTC_HOTKEYS"))
+			{
+			}
+		}
 
-        public static void SaveBizhawkWindowState()
+		public static void SaveHotkeys()
+		{
+			string data = "";
+			foreach (var hotkey in RTC_Hotkeys.GetBoundHotkeys().container)
+				data = data + $"{hotkey.Key}\n";
+			SetParam("RTC_HOTKEYS", data);
+		}
+
+
+		public static void SaveBizhawkWindowState()
         {
             SetParam("BIZHAWK_SIZE", $"{GlobalWin.MainForm.Size.Width},{GlobalWin.MainForm.Size.Height}");
             SetParam("BIZHAWK_LOCATION", $"{GlobalWin.MainForm.Location.X},{GlobalWin.MainForm.Location.Y}");

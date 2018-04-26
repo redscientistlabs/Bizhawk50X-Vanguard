@@ -53,10 +53,11 @@ namespace RTC
         public static RTC_EngineConfig_Form ecForm = null;
         public static RTC_StockpilePlayer_Form spForm = null;
         public static RTC_GlitchHarvester_Form ghForm = null;
-        public static RTC_Settings_Form sForm = null;
+		public static RTC_Settings_Form sForm = null;
+		public static RTC_HotkeyConfig_Form hotkeyForm = null;
 
-        //RTC Extension Forms
-        public static RTC_Multiplayer_Form multiForm;
+		//RTC Extension Forms
+		public static RTC_Multiplayer_Form multiForm;
 		public static RTC_MultiPeerPopout_Form multipeerpopoutForm = null;
 		public static RTC_StockpileBlastBoard_Form sbForm = null;
 		public static RTC_ConnectionStatus_Form csForm = null;
@@ -214,6 +215,7 @@ namespace RTC
             spForm = new RTC_StockpilePlayer_Form();
             ghForm = new RTC_GlitchHarvester_Form();
             sForm = new RTC_Settings_Form();
+			hotkeyForm = new RTC_HotkeyConfig_Form();
 			
 			multiForm = new RTC_Multiplayer_Form();
 			multipeerpopoutForm = new RTC_MultiPeerPopout_Form();
@@ -244,8 +246,12 @@ namespace RTC
             RTC_Core.sForm.cbDisableBizhawkOSD.Checked = !RTC_Params.IsParamSet("ENABLE_BIZHAWK_OSD");
             RTC_Core.sForm.cbAllowCrossCoreCorruption.Checked = RTC_Params.IsParamSet("ALLOW_CROSS_CORE_CORRUPTION");
 
-            //Initiation of loopback TCP, only in DETACHED MODE
-            if (RTC_Hooks.isRemoteRTC || RTC_Core.isStandalone)
+			//Load and initialize Hotkeys
+			RTC_Params.LoadHotkeys();
+			RTC_Hotkeys.InitialzeHotkeyBindings();
+
+			//Initiation of loopback TCP, only in DETACHED MODE
+			if (RTC_Hooks.isRemoteRTC || RTC_Core.isStandalone)
 			{
 				RemoteRTC = new RTC_NetCore();
 				RemoteRTC.port = 42042;

@@ -11,6 +11,10 @@ using System.Diagnostics;
 using System.Globalization;
 using System.ComponentModel;
 using System.Reflection;
+using System.Drawing.Design;
+using System.Runtime.InteropServices;
+using System.Windows.Forms.Design;
+
 
 namespace RTC
 {
@@ -1590,7 +1594,6 @@ namespace RTC
 	/// Reference Article https://msdn.microsoft.com/en-us/library/aa730881(v=vs.80).aspx
 	/// Defines the editing control for the DataGridViewNumericUpDownCell custom cell type.
 	/// </summary>/// <summary>
-
 	class DataGridViewNumericUpDownEditingControl : NumericUpDown, IDataGridViewEditingControl
 	{
 		// Needed to forward keyboard messages to the child TextBox control.
@@ -2038,7 +2041,7 @@ namespace RTC
 		}
 	}
 
-	
+	//Export dgv to csv
 	public class CSVGenerator
 	{
 		public string GenerateFromDGV(DataGridView dgv)
@@ -2054,5 +2057,642 @@ namespace RTC
 			}
 			return sb.ToString();
 		}
+	}
+
+	//Provides the required classes for hotkeys
+	//Uses Shortcut by AlexArchive
+	//MIT Licensed, thanks!
+	//https://github.com/AlexArchive/Shortcut
+	namespace Shortcuts
+	{
+
+		//
+		/// <summary>
+		/// Represents a combination of keys that constitute a system-wide hotkey.
+		/// </summary>
+		[Serializable]
+		[Editor(typeof(HotkeyEditor), typeof(UITypeEditor))]
+		[TypeConverter(typeof(HotkeyConverter))]
+		public class Hotkey : IEquatable<Hotkey>
+		{
+			/// <summary>
+			/// The modifer keys that constitute this <see cref="Hotkey"/>.
+			/// </summary>
+			public Modifiers Modifier { get; private set; }
+
+			/// <summary>
+			/// The keys that constitute this <see cref="Hotkey"/>.
+			/// </summary>
+			public Keys Key { get; private set; }
+
+			/// <summary>
+			/// The name of the hotkey <see cref="Hotkey"/>.
+			/// </summary>
+			public string Name { get; private set; }
+
+			/// <summary>
+			/// Initializes a new instance of the <see cref="Hotkey"/> class.
+			/// </summary>
+			public Hotkey(Modifiers modifier, Keys key, string name = "")
+			{
+				Key = key;
+				Modifier = modifier;
+				Name = name;
+			}
+
+			#region IEquatable<HotkeyCombination> Members
+
+			/// <summary>
+			/// Indicates whether the value of this <see cref="Hotkey"/> is equal to the
+			/// value of the specified <see cref="Hotkey"/>.
+			/// </summary>
+			/// <param name="other">The value to compare with this instance.</param>
+			/// <returns>
+			/// <c>true</c> if the value of this <see cref="Hotkey"/> is equal to the 
+			/// value of the <paramref name="other"/> parameter; otherwise, false.
+			/// </returns>
+			public bool Equals(Hotkey other)
+			{
+				if (ReferenceEquals(null, other)) return false;
+				if (ReferenceEquals(this, other)) return true;
+				return Modifier.Equals(other.Modifier) && Key.Equals(other.Key);
+			}
+
+			#endregion
+
+			#region Object overrides
+
+			/// <summary>
+			/// Determines whether the specified <see cref="System.Object"/> is equal to
+			/// this instance.
+			/// </summary>
+			/// <param name="other">
+			/// The <see cref="System.Object"/> to compare with this instance.
+			/// </param>
+			/// <returns>
+			/// <c>true</c> if the specifed <see cref="System.Object"/> is equal to this 
+			/// instance; otherwise, <c>false</c>.
+			/// </returns>
+			public override bool Equals(object other)
+			{
+				if (ReferenceEquals(null, other)) return false;
+				if (ReferenceEquals(this, other)) return true;
+				if (other.GetType() != GetType()) return false;
+				return Equals((Hotkey)other);
+			}
+
+			/// <summary>
+			/// Returns the hash code for this <see cref="Hotkey"/>.
+			/// </summary>
+			public override int GetHashCode()
+			{
+				unchecked
+				{
+					return (Modifier.GetHashCode() * 397) ^ Key.GetHashCode();
+				}
+			}
+
+			/// <inheritdoc />
+			public override string ToString()
+			{
+				return Modifier + ", " + Key;
+			}
+
+			#endregion
+
+			#region Operators
+
+			/// <summary>
+			/// Implements the operator == (equality).
+			/// </summary>
+			/// <param name="left">The left-hand side of the operator.</param>
+			/// <param name="right">The right-hand side of the operator.</param>
+			/// <returns>
+			/// <c>true</c> if values are equal to each other, otherwise <c>false</c>.
+			/// </returns>
+			public static bool operator ==(Hotkey left, Hotkey right)
+			{
+				return Equals(left, right);
+			}
+
+			/// <summary>
+			/// Implements the operator != (inequality)
+			/// </summary>
+			/// <param name="left">The left-hand side of the operator.</param>
+			/// <param name="right">The right-hand side of the operator.</param>
+			/// <returns>
+			/// <c>true</c> if values are not equal to each other, otherwise <c>false</c>.
+			/// </returns>
+			public static bool operator !=(Hotkey left, Hotkey right)
+			{
+				return !Equals(left, right);
+			}
+
+			#endregion
+		}
+		//modifiers.cs
+		/// <summary>
+		/// Modifier Keys.
+		/// </summary>
+		[Flags]
+		public enum Modifiers
+		{
+			/// <summary>
+			/// No modifier key pressed.
+			/// </summary>
+			None = 0x0000,
+
+			/// <summary>
+			/// The ALT modifier key.
+			/// </summary>
+			Alt = 0x0001,
+
+			/// <summary>
+			/// The CTRL modifier key.
+			/// </summary>
+			Control = 0x0002,
+
+			/// <summary>
+			/// The SHIFT modifier key.
+			/// </summary>
+			Shift = 0x0004,
+
+			/// <summary>
+			/// The Windows logo key (Microsoft Natural Keyboard).
+			/// </summary>
+			Win = 0x0008
+		}
+		//HotkeyContainer.cs
+		public class HotkeyContainer 
+		{
+			public readonly IDictionary<Hotkey, HotkeyCallback> container;
+
+			internal HotkeyContainer()
+			{
+				container = new Dictionary<Hotkey, HotkeyCallback>();
+			}
+
+			internal void Add(Hotkey hotkey, HotkeyCallback callback)
+			{
+				if (container.ContainsKey(hotkey))
+				{
+					throw new HotkeyAlreadyBoundException(
+						"This hotkey cannot be bound because it has been previously bound either by this " +
+						"application or another running application.");
+				}
+
+				container.Add(hotkey, callback);
+			}
+
+			internal void Remove(Hotkey hotkey)
+			{
+				if (!container.ContainsKey(hotkey))
+				{
+					throw new HotkeyNotBoundException(
+						"This hotkey cannot be unbound because it has not previously been bound by this application");
+				}
+
+				container.Remove(hotkey);
+			}
+
+			internal HotkeyCallback Find(Hotkey hotkey)
+			{
+				return container[hotkey];
+			}
+		}
+		//HotkeyEditor.cs
+		internal class HotkeyEditor : ShortcutKeysEditor
+		{
+			public override object EditValue(ITypeDescriptorContext context, IServiceProvider provider, object value)
+			{
+				var converter = new HotkeyConverter();
+
+				var keys = (value == null) ? Keys.None : (Keys)converter.ConvertTo(value, typeof(Keys));
+				value = base.EditValue(context, provider, keys);
+
+				return converter.ConvertFrom(value);
+			}
+		}
+		//HotkeyAlreadyBoundException.cs
+		/// <summary>
+		/// Exception thrown to indicate that specified <see cref="Hotkey"/> cannot be 
+		/// bound because it has been previously bound either by this application or 
+		/// another running application.
+		/// </summary>
+		/// <remarks>
+		/// <para>
+		/// This exception normally occurs when you attempt to bind a 
+		/// <see cref="Hotkey"/> that has previously been bound by this application. 
+		/// </para>
+		/// <para>
+		/// This exception can also occur when another running application has already 
+		/// bound the specified <see cref="Hotkey"/>.  
+		/// </para>
+		/// <para>
+		/// Use the <see cref="HotkeyBinder.Unbind"/> method to unbind a 
+		/// <see cref="Hotkey"/> previously bound by this application.
+		/// </para>
+		/// <para>
+		/// Use the <see cref="HotkeyBinder.IsHotkeyAlreadyBound"/> function to 
+		/// determine whether the <see cref="Hotkey"/> in question has already been 
+		/// bound either by this application or another running application.
+		/// </para>
+		/// </remarks>
+		[Serializable]
+		public sealed class HotkeyAlreadyBoundException : Win32Exception
+		{
+			internal HotkeyAlreadyBoundException(int error) : base(error)
+			{
+			}
+
+			internal HotkeyAlreadyBoundException(string message) : base(message)
+			{
+			}
+		}
+		//HotkeyBinder.cs
+		/// <summary>
+		/// Used to bind and unbind <see cref="Hotkey"/>s to 
+		/// <see cref="HotkeyCallback"/>s.
+		/// </summary>
+		public class HotkeyBinder : IDisposable
+		{
+			private readonly HotkeyContainer container = new HotkeyContainer();
+			private readonly HotkeyWindow hotkeyWindow = new HotkeyWindow();
+
+			/// <summary>
+			/// Initializes a new instance of the <see cref="HotkeyBinder"/> class.
+			/// </summary>
+			public HotkeyBinder()
+			{
+				hotkeyWindow.HotkeyPressed += OnHotkeyPressed;
+			}
+
+			/// <summary>
+			/// Indicates whether a <see cref="Hotkey"/> has been bound already either 
+			/// by this application or another application.
+			/// </summary>
+			/// <param name="hotkeyCombo">
+			/// The <see cref="Hotkey"/> to evaluate.
+			/// </param>
+			/// <returns>
+			/// <c>true</c> if the <see cref="Hotkey"/> has not been previously bound 
+			/// and is available to be bound; otherwise, <c>false</c>.
+			/// </returns>
+			public bool IsHotkeyAlreadyBound(Hotkey hotkeyCombo)
+			{
+				bool successful =
+					NativeMethods.RegisterHotKey(
+						hotkeyWindow.Handle,
+						hotkeyCombo.GetHashCode(),
+						(uint)hotkeyCombo.Modifier,
+						(uint)hotkeyCombo.Key);
+
+				if (!successful)
+					return true;
+
+				NativeMethods.UnregisterHotKey(
+					hotkeyWindow.Handle,
+					hotkeyCombo.GetHashCode());
+
+				return false;
+			}
+
+			public HotkeyContainer GetBoundHotkeys()
+			{
+				return container;
+			}
+
+			/// <summary>
+			/// Binds a hotkey combination to a <see cref="HotkeyCallback"/>.
+			/// </summary>
+			/// <param name="modifiers">The modifers that constitute this hotkey.</param>
+			/// <param name="keys">The keys that constitute this hotkey.</param>
+			/// <exception cref="HotkeyAlreadyBoundException"></exception>
+			/// <exception cref="ArgumentNullException"></exception>
+			public HotkeyCallback Bind(Modifiers modifiers, Keys keys)
+			{
+				return Bind(new Hotkey(modifiers, keys));
+			}
+
+			/// <summary>
+			/// Binds a <see cref="Hotkey"/> to a <see cref="HotkeyCallback"/>.
+			/// </summary>
+			/// <exception cref="HotkeyAlreadyBoundException"></exception>
+			/// <exception cref="ArgumentNullException"></exception>
+			public HotkeyCallback Bind(Hotkey hotkeyCombo)
+			{
+				if (hotkeyCombo == null)
+					return null;
+
+				HotkeyCallback callback = new HotkeyCallback();
+				container.Add(hotkeyCombo, callback);
+				RegisterHotkey(hotkeyCombo);
+
+				return callback;
+			}
+
+			private void RegisterHotkey(Hotkey hotkeyCombo)
+			{
+				bool successful =
+					NativeMethods.RegisterHotKey(
+						hotkeyWindow.Handle,
+						hotkeyCombo.GetHashCode(),
+						(uint)hotkeyCombo.Modifier,
+						(uint)hotkeyCombo.Key);
+
+				if (!successful)
+					throw new Win32Exception(Marshal.GetLastWin32Error());
+			}
+
+			/// <summary>
+			/// Unbinds a previously bound hotkey combination.
+			/// </summary>
+			public void Unbind(Modifiers modifiers, Keys keys)
+			{
+				Unbind(new Hotkey(modifiers, keys));
+			}
+
+			/// <summary>
+			/// Unbinds a previously bound <see cref="Hotkey"/>.
+			/// </summary>
+			/// <exception cref="HotkeyNotBoundException"></exception>
+			/// <exception cref="ArgumentNullException"></exception>
+			public void Unbind(Hotkey hotkeyCombo)
+			{
+				container.Remove(hotkeyCombo);
+				UnregisterHotkey(hotkeyCombo);
+			}
+
+			private void UnregisterHotkey(Hotkey hotkeyCombo)
+			{
+				bool successful =
+					NativeMethods.UnregisterHotKey(
+						hotkeyWindow.Handle,
+						hotkeyCombo.GetHashCode());
+
+				if (!successful)
+					throw new HotkeyNotBoundException(Marshal.GetLastWin32Error());
+			}
+
+			private void OnHotkeyPressed(object sender, HotkeyPressedEventArgs e)
+			{
+				HotkeyCallback callback = container.Find(e.Hotkey);
+
+				if (!callback.Assigned)
+				{
+					throw new InvalidOperationException(
+						"You did not specify a callback for the hotkey: \"" + e.Hotkey + "\". It's not your fault, " +
+						"because it wasn't possible to design the HotkeyBinder class in such a way that this is " +
+						"a statically typed pre-condition, but please specify a callback.");
+				}
+
+				callback.Invoke();
+			}
+
+			/// <inheritdoc />
+			public void Dispose()
+			{
+				hotkeyWindow.Dispose();
+			}
+		}
+		//HotkeyCallback.cs
+		/// <summary>
+		/// Represents a callback for a <see cref="Hotkey"/> binding.
+		/// </summary>
+		public class HotkeyCallback
+		{
+			private Action callback;
+
+			public bool Assigned { get { return callback != null; } }
+
+			/// <summary>
+			/// Indicates that the <see cref="Hotkey"/> should be bound to the specified
+			/// <paramref name="callback"/>.
+			/// </summary>
+			public void To(Action callback)
+			{
+				if (callback == null) throw new ArgumentNullException("callback");
+				this.callback = callback;
+			}
+
+			internal void Invoke()
+			{
+				callback.Invoke();
+			}
+		}
+		//HotkeyNotBoundException.cs
+		/// <summary>
+		/// Exception thrown to indicate that the specified <see cref="Hotkey"/> cannot 
+		/// be unbound because it has not previously been bound by this application.
+		/// </summary>
+		/// <remarks>
+		/// <para>
+		/// This exception normally occurs when you attempt to unbind a 
+		/// <see cref="Hotkey"/> that was not previously bound by this application.
+		/// </para>
+		/// <para>
+		/// You cannot unbind a <see cref="Hotkey"/> registered by another application.
+		/// </para>
+		/// </remarks>
+		[Serializable]
+		public sealed class HotkeyNotBoundException : Win32Exception
+		{
+			internal HotkeyNotBoundException(int errorCode) : base(errorCode)
+			{
+			}
+
+			internal HotkeyNotBoundException(string message) : base(message)
+			{
+			}
+		}
+		//HotkeyPressedEventArgs.cs
+		internal class HotkeyPressedEventArgs : EventArgs
+		{
+			internal Hotkey Hotkey { get; private set; }
+
+			internal HotkeyPressedEventArgs(Hotkey hotkey)
+			{
+				Hotkey = hotkey;
+			}
+		}
+		//HotkeyWindow.cs
+		internal sealed class HotkeyWindow : NativeWindow, IDisposable
+		{
+			internal event EventHandler<HotkeyPressedEventArgs> HotkeyPressed = delegate { };
+
+			internal HotkeyWindow()
+			{
+				CreateHandle(new CreateParams());
+			}
+
+			// Unconventional, I know. But you can watch my screen-cast where I explain
+			// this particular method in more detail if you want: http://youtu.be/dvtV3jc4maY
+			protected override void WndProc(ref Message m)
+			{
+				const int WM_HOTKEY = 0x0312;
+				if (m.Msg == WM_HOTKEY)
+				{
+					var combination = ExtractHotkeyCombination(m);
+					HotkeyPressed(this, new HotkeyPressedEventArgs(combination));
+				}
+				base.WndProc(ref m);
+			}
+
+			private static Hotkey ExtractHotkeyCombination(Message m)
+			{
+				var modifier = (Modifiers)((int)m.LParam & 0xFFFF);
+				var key = (Keys)((int)m.LParam >> 16);
+				return new Hotkey(modifier, key);
+			}
+
+			public void Dispose()
+			{
+				DestroyHandle();
+			}
+		}
+		//NativeMethods.cs
+		internal static class NativeMethods
+		{
+			[DllImport("user32.dll", SetLastError = true)]
+			internal static extern bool RegisterHotKey(
+				IntPtr windowHandle,
+				int hotkeyId,
+				uint modifier,
+				uint key);
+
+			[DllImport("user32.dll", SetLastError = true)]
+			internal static extern bool UnregisterHotKey(
+				IntPtr windowHandle,
+				int hotkeyId);
+
+			[DllImport("user32.dll")]
+			internal static extern bool HideCaret(IntPtr controlHandle);
+		}
+		//HotkeyTextBox.cs
+		public sealed class HotkeyTextBox : TextBox
+		{
+			private Hotkey hotkey;
+			public Hotkey Hotkey
+			{
+				get { return hotkey; }
+				set
+				{
+					hotkey = value;
+
+					if (hotkey != null)
+					{
+						RenderText();
+					}
+				}
+			}
+
+			public HotkeyTextBox()
+			{
+				Text = "None";
+				GotFocus += delegate { NativeMethods.HideCaret(Handle); };
+			}
+
+			protected override void OnKeyPress(KeyPressEventArgs e)
+			{
+				e.Handled = true;
+			}
+
+			protected override void OnKeyDown(KeyEventArgs e)
+			{
+				if (e.KeyCode == Keys.Back)
+				{
+					Reset();
+					return;
+				}
+
+				var converter = new HotkeyConverter();
+				Hotkey = (Hotkey)converter.ConvertFrom(e.KeyData);
+				RenderText();
+			}
+
+			private void RenderText()
+			{
+				if (Hotkey.Modifier != Modifiers.None)
+				{
+					Text = Hotkey.Modifier.ToString().Replace(", ", " + ");
+
+					if (Hotkey.Key != Keys.None && !IsModifier(hotkey.Key))
+					{
+						Text += " + " + Hotkey.Key;
+					}
+					return;
+				}
+
+				Text = Hotkey.Key.ToString();
+			}
+
+			private static bool IsModifier(Keys keys)
+			{
+				// TODO: I feel as though there should be a clever way to do this using a binary operator.
+				return keys == Keys.ControlKey ||
+					   keys == Keys.Menu ||
+					   keys == Keys.ShiftKey;
+			}
+
+			private void Reset()
+			{
+				Hotkey = new Hotkey(Modifiers.None, Keys.None);
+				Text = "None";
+			}
+		}
+		//HotkeyConverter.cs
+		/// <summary>
+		/// Provides a type converter to convert Hotkey objects to and from other representations.
+		/// </summary>
+		public class HotkeyConverter : KeysConverter
+		{
+			public override object ConvertTo(ITypeDescriptorContext context, CultureInfo culture, object value, Type destinationType)
+			{
+				if (destinationType == typeof(Keys))
+				{
+					Hotkey hotkey = value as Hotkey;
+
+					if (hotkey != null)
+					{
+						Keys keys = Keys.None;
+						if (hotkey.Modifier.HasFlag(Modifiers.Alt)) keys |= Keys.Alt;
+						if (hotkey.Modifier.HasFlag(Modifiers.Control)) keys |= Keys.Control;
+						if (hotkey.Modifier.HasFlag(Modifiers.Shift)) keys |= Keys.Shift;
+						keys |= hotkey.Key;
+						return keys;
+					}
+				}
+
+				return base.ConvertTo(context, culture, value, destinationType);
+			}
+
+			public override object ConvertFrom(ITypeDescriptorContext context, CultureInfo culture, object value)
+			{
+				if (value is string)
+				{
+					value = base.ConvertFrom(context, culture, value);
+				}
+
+				if (value.GetType() == typeof(Keys))
+				{
+					Keys keys = (Keys)value;
+					Modifiers modifiers = Modifiers.None;
+					if (keys.HasFlag(Keys.Alt)) modifiers |= Modifiers.Alt;
+					if (keys.HasFlag(Keys.Control)) modifiers |= Modifiers.Control;
+					if (keys.HasFlag(Keys.Shift)) modifiers |= Modifiers.Shift;
+					keys = ExtractNonMods(keys);
+					return new Hotkey(modifiers, keys);
+				}
+
+				return base.ConvertFrom(context, culture, value);
+			}
+
+			private static Keys ExtractNonMods(Keys keys)
+			{
+				// Brian: Extract non-modifiers from the low word of keys
+				return (Keys)((int)keys & 0x0000FFFF);
+			}
+		}
+
 	}
 }
