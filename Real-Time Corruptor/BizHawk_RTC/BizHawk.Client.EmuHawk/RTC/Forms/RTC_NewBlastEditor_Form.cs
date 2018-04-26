@@ -1,4 +1,10 @@
-﻿using System;
+﻿/*
+ * The re-written blast editor for RTC 3.20
+ * Allows for direct manipulation of the blastunits within a blastlayer
+ * While I really should have used a data bound DGV, I went in blind not knowing about them
+ * There's a hidden column in the dgv (index 0) which contains a reference to the blastunit
+ */
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -16,8 +22,8 @@ namespace RTC
 		/* 
 		 * Column Indexes - Updated 4/8/2018
 		 * 
-		 * 0 dgvBlastUnitLocked.
-		 * 1 dgvBlastUnitReference
+		 * 1 dgvBlastUnitLocked.
+		 * 0 dgvBlastUnitReference
 		 * 2 dgvBlastEnabled
 		 * 3 dgvPrecision
 		 * 4 dgvBlastUnitType
@@ -49,6 +55,8 @@ namespace RTC
 		ContextMenuStrip cmsBlastEditor = new ContextMenuStrip();
 		String[] domains;
 		int searchOffset = 0;
+		string searchValue = "";
+		string searchColumn = "";
 
 		Dictionary<BlastUnit, DataGridViewRow> bu2RowDico = new Dictionary<BlastUnit, DataGridViewRow>();
 
@@ -345,20 +353,38 @@ namespace RTC
 
 		}
 
+		//For BlastPipe, sanitize duplicare valyes instead of addresses
 		private void btnSanitizeDuplicates_Click(object sender, EventArgs e)
 		{
 			List<BlastUnit> bul = new List<BlastUnit>(sk.BlastLayer.Layer.ToArray().Reverse());
 			List<long> usedAddresses = new List<long>();
+			List<long> usedPipeAddresses = new List<long>();
 
 			foreach (BlastUnit bu in bul)
 			{
-				if (!usedAddresses.Contains(bu.Address) || !bu.IsLocked)
-					usedAddresses.Add(bu.Address);
+				//Optimize by doing everything besides blastpipe first
+				if(!(bu is BlastPipe))
+				{
+					if (!usedAddresses.Contains(bu.Address) || !bu.IsLocked)
+						usedAddresses.Add(bu.Address);
+					else
+					{
+						sk.BlastLayer.Layer.Remove(bu);
+						dgvBlastLayer.Rows.Remove(bu2RowDico[bu]);
+						CurrentlyUpdating = false;
+					}
+				}
 				else
 				{
-					sk.BlastLayer.Layer.Remove(bu);
-					dgvBlastLayer.Rows.Remove(bu2RowDico[bu]);
-					CurrentlyUpdating = false;
+					BlastPipe bp = bu as BlastPipe;
+					if (!usedPipeAddresses.Contains(bp.PipeAddress) || !bu.IsLocked)
+						usedPipeAddresses.Add(bp.PipeAddress);
+					else
+					{
+						sk.BlastLayer.Layer.Remove(bu);
+						dgvBlastLayer.Rows.Remove(bu2RowDico[bu]);
+						CurrentlyUpdating = false;
+					}
 				}
 			}
 		}
@@ -725,52 +751,45 @@ namespace RTC
 			}
 		}
 
-		private class Item
-		{
-			public string Name;
-			public string Value;
-			public Item(string name, string value)
-			{
-				Name = name;
-				Value = value;
-			}
-			//Return the formatted name rather than the actual value.
-			public override string ToString()
-			{
-				return Name;
-			}
-		}
-		public DialogResult getSearchBox(string title, string promptText, ref string value, ref string columnName)
+		public DialogResult getSearchBox(string title, string promptText, bool filterColumn = false)
 		{
 			Form form = new Form();
 			Label label = new Label();
 			TextBox input = new TextBox();
-			ComboBox column = new ComboBox();
 
 			Button buttonOk = new Button();
 			Button buttonCancel = new Button();
-
-			column.Items.Add(new Item("Source Address", "dgvSourceAddress"));
-			column.Items.Add(new Item("Parameter Value", "dgvParam"));
-			column.Items.Add(new Item("Source Address Domain", "dgvSourceAddressDomain"));
-			column.Items.Add(new Item("Parameter Domain", "dgvParamDomain"));
-			column.Items.Add(new Item("Blast Unit Type", "dgvBlastUnitType"));
-			column.Items.Add(new Item("Blast Unit Mode", "dgvBlastUnitMode"));
+			ComboBox column = new ComboBox();
+			//Only draw the column combobox if the user wants the column
+			column.Hide();
 
 
+			if (filterColumn)
+			{
+				column.DisplayMember = "Text";
+				column.ValueMember = "Value";
+				column.Items.Add(new { Text = "Source Address", Value = "dgvSourceAddress" });
+				column.Items.Add(new { Text = "Parameter Value", Value = "dgvParam" });
+				column.Items.Add(new { Text = "Source Address Domain", Value = "dgvSourceAddressDomain" });
+				column.Items.Add(new { Text = "Parameter Domain", Value = "dgvParamDomain" });
+				column.Items.Add(new { Text = "Blast Unit Type", Value = "dgvBlastUnitType" });
+				column.Items.Add(new { Text = "Blast Unit Mode", Value = "dgvBlastUnitMode" });
+				column.SelectedIndex = 0;
+				column.SetBounds(48, 64, 200, 20);
+				column.Show();
+			}
 
 			form.Text = title;
 			label.Text = promptText;
-			input.Text = value;
+			//input.Text = value;
 
 			buttonOk.Text = "OK";
 			buttonCancel.Text = "Cancel";
 			buttonOk.DialogResult = DialogResult.OK;
 			buttonCancel.DialogResult = DialogResult.Cancel;
 
-			label.SetBounds(9, 20, 372, 13);
+			label.SetBounds(24, 20, 372, 13);
 			input.SetBounds(12, 36, 372, 20);
-			column.SetBounds(12, 64, 60, 20);
 			buttonOk.SetBounds(228, 98, 75, 23);
 			buttonCancel.SetBounds(309, 98, 75, 23);
 
@@ -790,38 +809,50 @@ namespace RTC
 			form.CancelButton = buttonCancel;
 
 			DialogResult dialogResult = form.ShowDialog();
-			value = input.Text;
+
+			searchValue = input.Text;
+			if(filterColumn)
+				searchColumn = (column.SelectedItem as dynamic).Value;
 			return dialogResult;
 		}
 
-
-		private void btnSearchSourceAddress_Click(object sender, EventArgs e)
-		{
-			string value = "";
-			string columnName = "";
-			
-			if (this.getSearchBox("Search for a value", "Choose a column and enter a value:", ref value, ref columnName) == DialogResult.OK)
+		//Provides a dialog box that searches for a row in the DGV
+		private void btnSearchRow_Click(object sender, EventArgs e)
+		{			
+			if (this.getSearchBox("Search for a value", "Choose a column and enter a value", true) == DialogResult.OK)
 			{
 				dgvBlastLayer.ClearSelection();
-				DataGridViewRow row = SearchDataGridView(dgvBlastLayer, columnName, value);
+				DataGridViewRow row = SearchDataGridView(dgvBlastLayer);
 				if (row != null)
 					row.Selected = true;
 			}
 		}
 
-		private DataGridViewRow SearchDataGridView(DataGridView dgv, string column, string searchValue, bool findAgain = false)
+		private void btnSearchAgain_Click(object sender, EventArgs e)
+		{
+			dgvBlastLayer.ClearSelection();
+			DataGridViewRow row = SearchDataGridView(dgvBlastLayer, true);
+			if (row != null)
+				row.Selected = true;
+		}
+
+		private DataGridViewRow SearchDataGridView(DataGridView dgv, bool findAgain = false)
 		{
 			if (!findAgain)
 				searchOffset = 0;
 
+			//Search for the formatted value and return the row
+			//We use the formatted value and expect the user to input the correct type.
 			while (searchOffset < dgv.RowCount)
 			{
-				if (dgv[column, searchOffset].FormattedValue.ToString() == searchValue)
-					return dgv.Rows[searchOffset];
+				if (dgv[searchColumn, searchOffset].FormattedValue.ToString() == searchValue) 
+					return dgv.Rows[searchOffset++];
+				searchOffset++;
 			}
 
+			MessageBox.Show("Reached the end of the Blastlayer and didn't find anything");
+			searchOffset = 0;
 			return null;
-
 		}
 
 		private void saveToFileblToolStripMenuItem_Click(object sender, EventArgs e)
@@ -1033,5 +1064,6 @@ namespace RTC
 				}
 			}
 		}
+
 	}
 }
