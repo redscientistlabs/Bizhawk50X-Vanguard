@@ -247,8 +247,9 @@ namespace RTC
             RTC_Core.sForm.cbAllowCrossCoreCorruption.Checked = RTC_Params.IsParamSet("ALLOW_CROSS_CORE_CORRUPTION");
 
 			//Load and initialize Hotkeys
+			RTC_Hotkeys.InitializeHotkeySystem();
 			RTC_Params.LoadHotkeys();
-			RTC_Hotkeys.InitialzeHotkeyBindings();
+		//	RTC_Hotkeys.Test("None", "D", "REMOTE_HOTKEY_MANUALBLAST");
 
 			//Initiation of loopback TCP, only in DETACHED MODE
 			if (RTC_Hooks.isRemoteRTC || RTC_Core.isStandalone)

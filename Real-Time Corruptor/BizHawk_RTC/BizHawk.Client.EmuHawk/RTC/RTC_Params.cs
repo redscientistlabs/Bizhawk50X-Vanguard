@@ -111,8 +111,21 @@ namespace RTC
         public static void SaveRTCColor(Color color)
         {
             SetParam("COLOR", color.R.ToString() + "," + color.G.ToString() + "," + color.B.ToString());
-        }
-		
+		}
+
+		public static void LoadHotkeys()
+		{
+			if (IsParamSet("RTC_HOTKEYS"))
+			{
+				RTC_Hotkeys.LoadHotkeys(ReadParam("RTC_HOTKEYS"));
+			}
+		}
+
+		public static void SaveHotkeys()
+		{
+			SetParam("RTC_HOTKEYS", RTC_Hotkeys.SaveHotkeys());
+		}
+
 		public static void LoadBizhawkWindowState()
 		{
 			if (IsParamSet("BIZHAWK_SIZE"))
@@ -122,21 +135,6 @@ namespace RTC
 				string[] location = ReadParam("BIZHAWK_LOCATION").Split(',');
 				GlobalWin.MainForm.Location = new Point(Convert.ToInt32(location[0]), Convert.ToInt32(location[1]));
 			}
-		}
-
-		public static void LoadHotkeys()
-		{
-			if (IsParamSet("RTC_HOTKEYS"))
-			{
-			}
-		}
-
-		public static void SaveHotkeys()
-		{
-			string data = "";
-			foreach (var hotkey in RTC_Hotkeys.GetBoundHotkeys().container)
-				data = data + $"{hotkey.Key}\n";
-			SetParam("RTC_HOTKEYS", data);
 		}
 
 

@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using System.Runtime.InteropServices;
 using RTC;
 using RTC.Shortcuts;
 
@@ -12,6 +13,8 @@ namespace RTC
 	public static class RTC_Hotkeys
 	{
 		private static HotkeyBinder _hotkeyBinder = new HotkeyBinder();
+		public static Dictionary<string, Hotkey> name2HotkeyDico = new Dictionary<string, Hotkey>();
+
 
 		#region HOTKEYDEFINITIONS
 		public static Hotkey REMOTE_HOTKEY_MANUALBLAST			= null;
@@ -31,7 +34,16 @@ namespace RTC
 		public static Hotkey REMOTE_HOTKEY_BLASTLAYERREBLAST	= null;
 		#endregion
 
-		public static void InitialzeHotkeyBindings()
+		public static void InitializeHotkeySystem()
+		{
+			//AddPreDefinedHotkeysToList();
+		}
+
+		public static void AddPreDefinedHotkeysToList()
+		{
+		}
+
+		public static void AssignAllHotkeyBindings()
 		{
 			_hotkeyBinder.Bind(REMOTE_HOTKEY_MANUALBLAST)?.To(()		=> RTC_Core.SendCommandToRTC(new RTC_Command(CommandType.REMOTE_HOTKEY_MANUALBLAST)));
 			_hotkeyBinder.Bind(REMOTE_HOTKEY_AUTOCORRUPTTOGGLE)?.To(()	=> RTC_Core.SendCommandToRTC(new RTC_Command(CommandType.REMOTE_HOTKEY_AUTOCORRUPTTOGGLE)));
@@ -48,10 +60,43 @@ namespace RTC
 			_hotkeyBinder.Bind(REMOTE_HOTKEY_BLASTRAWSTASH)?.To(()		=> RTC_Core.SendCommandToRTC(new RTC_Command(CommandType.REMOTE_HOTKEY_BLASTRAWSTASH)));
 			_hotkeyBinder.Bind(REMOTE_HOTKEY_BLASTLAYERTOGGLE)?.To(()	=> RTC_Core.SendCommandToRTC(new RTC_Command(CommandType.REMOTE_HOTKEY_BLASTLAYERTOGGLE)));
 			_hotkeyBinder.Bind(REMOTE_HOTKEY_BLASTLAYERREBLAST)?.To(()	=> RTC_Core.SendCommandToRTC(new RTC_Command(CommandType.REMOTE_HOTKEY_BLASTLAYERREBLAST)));
+		}		
+		
+		public static void AssignStaticHotkeyBinding(Hotkey key, string command)
+		{
+			_hotkeyBinder.Bind(key).To(() => RTC_Core.SendCommandToRTC(new RTC_Command((CommandType)Enum.Parse(typeof(CommandType),command))));
+			name2HotkeyDico[command] = key;
+
 			RTC_Params.SaveHotkeys();
 		}
 
 
+		public static string SaveHotkeys()
+		{
+			string data = "";
+			foreach (var hotkey in name2HotkeyDico)
+			{
+				data = data + $"{hotkey.Value},";
+			}
+			return data;
+		}
+
+		//The save works like this. Modifier,Key,Name, . There's always a trailing , so you have to subtract by 1 when iterating through. Increment by 3 every time
+		public static string LoadHotkeys(string data)
+		{
+			string[] _data = data.Split(',');
+			for (int i = 0; i < _data.Length-1; i = i + 3)
+			{
+				Modifiers modifier = (Modifiers)Enum.Parse(typeof(Modifiers), _data[i].ToString());
+				Keys keys = (Keys)Enum.Parse(typeof(Keys), _data[i + 1].ToString());
+				string command = _data[i + 2].ToString();
+
+				Hotkey key = new Hotkey(modifier,keys,command);
+
+				AssignStaticHotkeyBinding(key, _data[i + 2].ToString());
+			}
+			return data;
+		}
 	}
 }
 /*

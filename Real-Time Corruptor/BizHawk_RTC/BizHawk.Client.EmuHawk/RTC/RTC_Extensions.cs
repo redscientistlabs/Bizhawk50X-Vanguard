@@ -2155,7 +2155,7 @@ namespace RTC
 			/// <inheritdoc />
 			public override string ToString()
 			{
-				return Modifier + ", " + Key;
+				return Modifier + "," + Key + "," + Name;
 			}
 
 			#endregion
