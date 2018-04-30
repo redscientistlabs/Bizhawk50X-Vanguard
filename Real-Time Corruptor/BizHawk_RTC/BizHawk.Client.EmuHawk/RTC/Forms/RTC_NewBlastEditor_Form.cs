@@ -123,10 +123,13 @@ namespace RTC
 			UpdateBlastLayerSize();
 			initialized = true;
 		}
-
 		private void AddBlastUnitToDGV(BlastUnit bu)
 		{
+			InsertBlastUnitToDGV(dgvBlastLayer.Rows.Count, bu);
+		}
 
+		private void InsertBlastUnitToDGV(int index, BlastUnit bu)
+		{
 			/*
 			 SourceAddress
 				BlastByte  = Address
@@ -173,7 +176,7 @@ namespace RTC
 				precision = bc.Value.Length;
 				sourceAddress = bc.Address;
 				sourceDomain = bc.Domain;
-				//destAddress = RTC_Extensions.getDecimalValue(bc.Value);
+				destAddress = RTC_Extensions.getDecimalValue(bc.Value);
 				if (bc.IsFreeze)
 					blastMode = "Freeze";
 				else
@@ -201,7 +204,7 @@ namespace RTC
 				blastMode = Convert.ToString(bv.Type);
 			}
 
-			dgvBlastLayer.Rows.Add(bu, locked, enabled, GetPrecisionNameFromSize(precision), blastType, blastMode, sourceDomain, sourceAddress, destDomain, destAddress);
+			dgvBlastLayer.Rows.Insert(index, bu, locked, enabled, GetPrecisionNameFromSize(precision), blastType, blastMode, sourceDomain, sourceAddress, destDomain, destAddress);
 
 			//update the BlastUnit to Cell dico.
 			var row = dgvBlastLayer.Rows[dgvBlastLayer.Rows.Count - 1];
@@ -347,7 +350,6 @@ namespace RTC
 				BlastUnit bu = sk.BlastLayer.Layer[pos];
 				BlastUnit bu2 = ObjectCopier.Clone(bu);
 				sk.BlastLayer.Layer.Add(bu2);
-
 				AddBlastUnitToDGV(bu2);
 			}
 
@@ -397,7 +399,12 @@ namespace RTC
 			if (!CurrentlyUpdating)
 			{
 				CurrentlyUpdating = true;
-				UpdateBlastUnitFromRow(dgvBlastLayer.Rows[e.RowIndex]);
+
+				//Changing the blast unit type
+				if (e.ColumnIndex == 4)
+					ReplaceBlastUnitFromRow(dgvBlastLayer.Rows[e.RowIndex]);
+				else
+					UpdateBlastUnitFromRow(dgvBlastLayer.Rows[e.RowIndex]);
 			}
 		}
 
@@ -428,6 +435,62 @@ namespace RTC
 				default:
 					return -1;
 			}
+		}
+
+		private void ReplaceBlastUnitFromRow(DataGridViewRow row)
+		{
+			BlastUnit bu = (BlastUnit)row.Cells["dgvBlastUnitReference"].Value;
+			string column = row.Cells["dgvBlastUnitType"].Value.ToString();
+			int index = row.Index;
+			bu2RowDico[bu] = row;
+
+			//Remove the old one
+			RemoveBlastUnitFromBlastLayerAndDGV(bu);
+
+			switch (column)
+			{
+				case "RTC.BlastByte":
+					BlastByte bb = (BlastByte)RTC_BlastTools.ConvertBlastUnit(bu, typeof(BlastByte));
+					sk.BlastLayer.Layer.Insert(index, bb);
+					InsertBlastUnitToDGV(index, bb);
+					CurrentlyUpdating = false;
+					break;
+				case "RTC.BlastCheat":
+					BlastCheat bc = (BlastCheat)RTC_BlastTools.ConvertBlastUnit(bu, typeof(BlastCheat));
+					sk.BlastLayer.Layer.Insert(index, bc);
+					InsertBlastUnitToDGV(index, bc);
+					CurrentlyUpdating = false;
+					break;
+				case "RTC.BlastPipe":
+					BlastPipe bp = (BlastPipe)RTC_BlastTools.ConvertBlastUnit(bu, typeof(BlastPipe));
+					sk.BlastLayer.Layer.Insert(index, bp);
+					InsertBlastUnitToDGV(index, bp);
+					CurrentlyUpdating = false;
+					break;
+				case "RTC.BlastVector":
+					BlastVector bv = (BlastVector)RTC_BlastTools.ConvertBlastUnit(bu, typeof(BlastVector));
+					sk.BlastLayer.Layer.Insert(index, bv);
+					InsertBlastUnitToDGV(index, bv);
+					CurrentlyUpdating = false;
+					break;
+				default:
+					MessageBox.Show("You had an invalid blast unit type! Check your input. The invalid unit is: " + row.Cells["dgvBlastUnitType"].Value);
+					CurrentlyUpdating = false;
+					break;
+			}
+		}
+		
+
+		private void RemoveBlastUnitFromBlastLayerAndDGV(BlastUnit bu)
+		{
+			//Remove it from the dgv
+			dgvBlastLayer.Rows.Remove(bu2RowDico[bu]);
+			//Remove it from the dictionary
+			bu2RowDico.Remove(bu);
+			//Remove it from the blastlayer
+			sk.BlastLayer.Layer.Remove(bu);
+
+			UpdateBlastLayerSize();
 		}
 
 		private void UpdateBlastUnitFromRow(DataGridViewRow row)

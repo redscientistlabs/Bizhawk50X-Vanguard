@@ -223,6 +223,14 @@ namespace RTC
 			return null;
 		}
 
+		public static void FlipBytes(this byte[] array)
+		{
+			byte[] arrayClone = (byte[])array.Clone();
+
+			for (int i = 0; i < arrayClone.Length; i++)
+				array[i] = arrayClone[(arrayClone.Length - 1) - i];
+		///	return array;
+		}
 		#endregion
 
 

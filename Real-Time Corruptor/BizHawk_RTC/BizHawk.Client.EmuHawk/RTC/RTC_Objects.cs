@@ -1178,16 +1178,14 @@ namespace RTC
 
                 long targetAddress = RTC_MemoryDomains.getRealAddress(Domain, Address);
 
-				Byte[] _Values = Value;
+				byte[] _Values = (byte[])Value.Clone();
 				//Big endian  = left to right
 				//Little endian = right to left
 
+
 				//By default, the bytes are handled as if they're big endian, so flip them if they're not
 				if (!BigEndian)
-				{
-					for (int i = 0; i < Value.Length; i++)
-						_Values[i] = Value[(Value.Length - 1) - i];
-				}
+					_Values.FlipBytes();
 
                 for(int i=0; i< _Values.Length; i++)
                     switch (Type)
