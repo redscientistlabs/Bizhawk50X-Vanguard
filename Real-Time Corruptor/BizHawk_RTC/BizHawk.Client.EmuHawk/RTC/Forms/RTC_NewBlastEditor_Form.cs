@@ -956,12 +956,12 @@ namespace RTC
 
 		private void saveToFileblToolStripMenuItem_Click(object sender, EventArgs e)
 		{
-			RTC_BlastLayerTools.SaveBlastLayerToFile(sk.BlastLayer);
+			RTC_BlastTools.SaveBlastLayerToFile(sk.BlastLayer);
 		}
 
 		private void loadFromFileblToolStripMenuItem_Click(object sender, EventArgs e)
 		{
-			BlastLayer temp = RTC_BlastLayerTools.LoadBlastLayerFromFile();
+			BlastLayer temp = RTC_BlastTools.LoadBlastLayerFromFile();
 			if (temp != null)
 			{
 				sk.BlastLayer = temp;
@@ -971,7 +971,7 @@ namespace RTC
 
 		private void importBlastlayerblToolStripMenuItem_Click(object sender, EventArgs e)
 		{
-			BlastLayer temp = RTC_BlastLayerTools.LoadBlastLayerFromFile();
+			BlastLayer temp = RTC_BlastTools.LoadBlastLayerFromFile();
 			if (temp != null)
 			{
 				foreach (BlastUnit bu in temp.Layer)

@@ -711,7 +711,7 @@
     <Compile Include="RTC\Forms\RTC_HotkeyConfig_Form.Designer.cs">
       <DependentUpon>RTC_HotkeyConfig_Form.cs</DependentUpon>
     </Compile>
-    <Compile Include="RTC\RTC_BlastLayerTools.cs" />
+    <Compile Include="RTC\RTC_BlastTools.cs" />
     <Compile Include="RTC\Corruption Engines\RTC_DistortionEngine.cs" />
     <Compile Include="RTC\Corruption Engines\RTC_ExternalRomPlugin.cs" />
     <Compile Include="RTC\Corruption Engines\RTC_FreezeEngine.cs" />

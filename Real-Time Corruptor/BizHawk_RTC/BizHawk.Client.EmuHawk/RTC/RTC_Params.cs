@@ -117,13 +117,13 @@ namespace RTC
 		{
 			if (IsParamSet("RTC_HOTKEYS"))
 			{
-				RTC_Hotkeys.LoadHotkeys(ReadParam("RTC_HOTKEYS"));
+		//		RTC_Hotkeys.LoadHotkeys(ReadParam("RTC_HOTKEYS"));
 			}
 		}
 
 		public static void SaveHotkeys()
 		{
-			SetParam("RTC_HOTKEYS", RTC_Hotkeys.SaveHotkeys());
+		//	SetParam("RTC_HOTKEYS", RTC_Hotkeys.SaveHotkeys());
 		}
 
 		public static void LoadBizhawkWindowState()

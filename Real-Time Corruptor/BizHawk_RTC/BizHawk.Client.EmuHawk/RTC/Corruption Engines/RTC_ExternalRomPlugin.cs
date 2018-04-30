@@ -70,16 +70,17 @@ namespace RTC
                 return null;
             }
 
-            long maxaddress = RTC_MemoryDomains.getInterface(rp.primarydomain).Size;
+			RTC.MemoryInterface mi = RTC_MemoryDomains.getInterface(rp.primarydomain);
+			long maxaddress = mi.Size;
 
-            for (int i = 0; i < Original.Length; i++)
+			for (int i = 0; i < Original.Length; i++)
             {
                 if (Original[i] != Corrupt[i] && i >= rp.skipbytes)
                 {
                     if (i - rp.skipbytes >= maxaddress)
-                        bl.Layer.Add(new BlastByte(rp.seconddomain, (i - rp.skipbytes) - maxaddress, BlastByteType.SET, new byte[] {Corrupt[i]}, true));
+                        bl.Layer.Add(new BlastByte(rp.seconddomain, (i - rp.skipbytes) - maxaddress, BlastByteType.SET, new byte[] {Corrupt[i]}, mi.BigEndian, true));
                     else
-                        bl.Layer.Add(new BlastByte(rp.primarydomain, i - rp.skipbytes, BlastByteType.SET, new byte[] {Corrupt[i]}, true));
+                        bl.Layer.Add(new BlastByte(rp.primarydomain, i - rp.skipbytes, BlastByteType.SET, new byte[] {Corrupt[i]}, mi.BigEndian, true));
                 }
             }
 

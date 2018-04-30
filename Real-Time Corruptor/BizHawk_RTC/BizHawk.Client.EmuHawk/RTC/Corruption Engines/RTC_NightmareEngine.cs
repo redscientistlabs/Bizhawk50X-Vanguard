@@ -88,7 +88,7 @@ namespace RTC
                         _value[i] = 1;
                 }
 
-                return new BlastByte(_domain, safeAddress, Type, _value, true);
+                return new BlastByte(_domain, safeAddress, Type, _value, mdp.BigEndian, true);
 
             }
             catch (Exception ex)

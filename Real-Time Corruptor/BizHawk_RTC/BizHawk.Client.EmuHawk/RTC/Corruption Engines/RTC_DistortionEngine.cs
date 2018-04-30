@@ -49,7 +49,7 @@ namespace RTC
 
                 long safeAddress = _address - (_address % _value.Length);
 
-                BlastByte bb = new BlastByte(_domain, safeAddress, Type, _value, true);
+                BlastByte bb = new BlastByte(_domain, safeAddress, Type, _value, mdp.BigEndian, true);
                 return bb.GetBackup();
 
             }

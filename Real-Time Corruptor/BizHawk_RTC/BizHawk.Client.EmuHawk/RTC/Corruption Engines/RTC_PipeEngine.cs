@@ -84,7 +84,7 @@ namespace RTC
                     }
                     else
                     {
-                        BlastPipe bp = new BlastPipe(_domain, safeAddress, lastDomain, lastAddress, tiltValue, pipeSize, true);
+                        BlastPipe bp = new BlastPipe(_domain, safeAddress, lastDomain, lastAddress, tiltValue, pipeSize, mdp.BigEndian, true);
                         lastDomain = _domain;
                         lastAddress = safeAddress;
                         return bp;
@@ -96,7 +96,7 @@ namespace RTC
                     var pipeEnd = RTC_Core.GetBlastTarget();
                     long safepipeEndAddress = pipeEnd.address - (pipeEnd.address % pipeSize);
 
-                    BlastPipe bp = new BlastPipe(_domain, safeAddress, pipeEnd.domain, safepipeEndAddress, tiltValue, pipeSize, true);
+                    BlastPipe bp = new BlastPipe(_domain, safeAddress, pipeEnd.domain, safepipeEndAddress, tiltValue, pipeSize, mdp.BigEndian, true);
                     lastDomain = _domain;
                     lastAddress = safeAddress;
                     return bp;

@@ -263,7 +263,7 @@ namespace RTC
 
 				//Enforce the safeaddress at generation
 				if (isConstant(lastValues, limiterList))
-					bu = new BlastByte(_domain, safeAddress, BlastByteType.VECTOR, getRandomConstant(valueList), true);
+					bu = new BlastByte(_domain, safeAddress, BlastByteType.VECTOR, getRandomConstant(valueList), mdp.BigEndian, true);
 
 				return bu;
 

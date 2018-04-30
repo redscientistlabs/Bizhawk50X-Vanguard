@@ -1110,6 +1110,7 @@ namespace RTC
 
 		public abstract bool IsEnabled { get; set; }
 		public abstract bool IsLocked { get; set; }
+		public abstract bool BigEndian { get; set; }
 
 		public abstract string Domain { get; set; }
         public abstract long Address { get; set; }
@@ -1124,8 +1125,9 @@ namespace RTC
         public byte[] Value;
         public override bool IsEnabled { get; set; }
 		public override bool IsLocked { get; set; } = false;
+		public override bool BigEndian { get; set; }
 
-		public BlastByte(string _domain, long _address, BlastByteType _type, byte[] _value, bool _isEnabled)
+		public BlastByte(string _domain, long _address, BlastByteType _type, byte[] _value, bool _bigEndian, bool _isEnabled)
         {
             Domain = _domain;
             Address = _address - (_address % _value.Length);
@@ -1133,6 +1135,7 @@ namespace RTC
             Type = _type;
             Value = _value;
             IsEnabled = _isEnabled;
+			BigEndian = _bigEndian;
         }
 
         public BlastByte()
@@ -1175,23 +1178,34 @@ namespace RTC
 
                 long targetAddress = RTC_MemoryDomains.getRealAddress(Domain, Address);
 
-                for(int i=0; i<Value.Length; i++)
+				Byte[] _Values = Value;
+				//Big endian  = left to right
+				//Little endian = right to left
+
+				//By default, the bytes are handled as if they're big endian, so flip them if they're not
+				if (!BigEndian)
+				{
+					for (int i = 0; i < Value.Length; i++)
+						_Values[i] = Value[(Value.Length - 1) - i];
+				}
+
+                for(int i=0; i< _Values.Length; i++)
                     switch (Type)
                     {
                         case BlastByteType.SET:
-                            mdp.PokeByte(targetAddress + i, Value[i]);
+                            mdp.PokeByte(targetAddress + i, _Values[i]);
                             break;
 
                         case BlastByteType.ADD:
-                            mdp.PokeByte(targetAddress + i, (byte)(mdp.PeekByte(targetAddress + i) + Value[i]));
+                            mdp.PokeByte(targetAddress + i, (byte)(mdp.PeekByte(targetAddress + i) + _Values[i]));
                             break;
 
                         case BlastByteType.SUBSTRACT:
-                            mdp.PokeByte(targetAddress + i, (byte)(mdp.PeekByte(targetAddress + i) - Value[i]));
+                            mdp.PokeByte(targetAddress + i, (byte)(mdp.PeekByte(targetAddress + i) - _Values[i]));
                             break;
 
 						case BlastByteType.VECTOR:
-							mdp.PokeByte(targetAddress + i, Value[i]);
+							mdp.PokeByte(targetAddress + i, _Values[i]);
 							break;
 
 						case BlastByteType.NONE:
@@ -1228,7 +1242,7 @@ namespace RTC
                 for(int i=0; i<_value.Length; i++)
                     _value[i] = mdp.PeekByte(targetAddress + i);
 
-                return new BlastByte(Domain, Address, BlastByteType.SET, _value, true);
+                return new BlastByte(Domain, Address, BlastByteType.SET, _value, BigEndian, true);
 
             }
             catch (Exception ex)
@@ -1285,6 +1299,7 @@ namespace RTC
 		public override string Domain { get; set; }
         public override long Address { get; set; }
 		public override bool IsLocked { get; set; } = false;
+		public override bool BigEndian { get; set; } = true;
 		public BlastByteType Type;
 
 		public byte[] Values;
@@ -1403,15 +1418,17 @@ namespace RTC
 	{
 		public override string Domain { get; set; }
         public override long Address { get; set; }
+		public override bool BigEndian { get; set; }
 		public override bool IsLocked { get; set; } = false;
 		public string PipeDomain;
 		public long PipeAddress;
         public int PipeSize;
-        public int TiltValue;
+		public int TiltValue;
+		
 
-        public override bool IsEnabled { get; set; }
+		public override bool IsEnabled { get; set; }
 
-		public BlastPipe(string _domain, long _address, string _pipeDomain, long _pipeAddress, int _tiltValue, int _pipeSize, bool _isEnabled)
+		public BlastPipe(string _domain, long _address, string _pipeDomain, long _pipeAddress, int _tiltValue, int _pipeSize, bool _bigEndian, bool _isEnabled)
 		{
 			Domain = _domain;
 			Address = _address;
@@ -1420,6 +1437,7 @@ namespace RTC
             PipeSize = _pipeSize;
 			IsEnabled = _isEnabled;
             TiltValue = _tiltValue;
+			BigEndian = _bigEndian;
 		}
 
 		public BlastPipe()
@@ -1451,6 +1469,7 @@ namespace RTC
                         newValue = 0;
                     else if (newValue > 255)
                         newValue = 255;
+
 
                     mdp2.PokeByte(targetPipeAddress, (byte)newValue);
                 }
@@ -1531,7 +1550,7 @@ namespace RTC
                 for (int i = 0; i < _value.Length; i++)
                     _value[i] = mdp.PeekByte(PipeAddress + i);
 
-                return new BlastByte(PipeDomain, PipeAddress, BlastByteType.SET, _value, true);
+                return new BlastByte(PipeDomain, PipeAddress, BlastByteType.SET, _value, BigEndian, true);
 
 			}
 			catch (Exception ex)
@@ -1570,9 +1589,10 @@ namespace RTC
     {
         public override string Domain { get; set; }
         public override long Address { get; set; }
+		public override bool BigEndian { get; set; }
 		public override bool IsLocked { get; set; } = false;
 		public BizHawk.Client.Common.DisplayType DisplayType;
-        public bool BigEndian;
+        
         public byte[] Value;
         public bool IsFreeze;
 
