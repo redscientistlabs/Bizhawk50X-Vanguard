@@ -766,7 +766,7 @@
             this.btnHideSidebar.Name = "btnHideSidebar";
             this.btnHideSidebar.Size = new System.Drawing.Size(28, 24);
             this.btnHideSidebar.TabIndex = 144;
-            this.btnHideSidebar.Text = "▶";
+            this.btnHideSidebar.Text = "◀";
             this.btnHideSidebar.UseVisualStyleBackColor = true;
             this.btnHideSidebar.Click += new System.EventHandler(this.btnHideSidebar_Click);
             // 
