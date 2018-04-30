@@ -2102,6 +2102,7 @@ namespace RTC
 		}
 	}
 
+/*
 	//Provides the required classes for hotkeys
 	//Uses Shortcut by AlexArchive
 	//MIT Licensed, thanks!
@@ -2737,5 +2738,5 @@ namespace RTC
 			}
 		}
 
-	}
+	}*/
 }

@@ -8,7 +8,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using RTC;
-using RTC.Shortcuts;
+//using RTC.Shortcuts;
 
 namespace RTC
 {
