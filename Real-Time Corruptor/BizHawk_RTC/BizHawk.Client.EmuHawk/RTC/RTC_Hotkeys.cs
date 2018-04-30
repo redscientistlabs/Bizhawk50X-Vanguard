@@ -43,6 +43,7 @@ namespace RTC
 		{
 		}
 
+		/*
 		public static void AssignAllHotkeyBindings()
 		{
 			_hotkeyBinder.Bind(REMOTE_HOTKEY_MANUALBLAST)?.To(()		=> RTC_Core.SendCommandToRTC(new RTC_Command(CommandType.REMOTE_HOTKEY_MANUALBLAST)));
@@ -60,7 +61,7 @@ namespace RTC
 			_hotkeyBinder.Bind(REMOTE_HOTKEY_BLASTRAWSTASH)?.To(()		=> RTC_Core.SendCommandToRTC(new RTC_Command(CommandType.REMOTE_HOTKEY_BLASTRAWSTASH)));
 			_hotkeyBinder.Bind(REMOTE_HOTKEY_BLASTLAYERTOGGLE)?.To(()	=> RTC_Core.SendCommandToRTC(new RTC_Command(CommandType.REMOTE_HOTKEY_BLASTLAYERTOGGLE)));
 			_hotkeyBinder.Bind(REMOTE_HOTKEY_BLASTLAYERREBLAST)?.To(()	=> RTC_Core.SendCommandToRTC(new RTC_Command(CommandType.REMOTE_HOTKEY_BLASTLAYERREBLAST)));
-		}		
+		}	*/	
 		
 		public static void AssignStaticHotkeyBinding(Hotkey key, string command)
 		{

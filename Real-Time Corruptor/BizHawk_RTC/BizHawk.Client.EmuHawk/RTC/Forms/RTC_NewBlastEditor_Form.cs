@@ -365,7 +365,7 @@ namespace RTC
 				//Optimize by doing everything besides blastpipe first
 				if(!(bu is BlastPipe))
 				{
-					if (!usedAddresses.Contains(bu.Address) || !bu.IsLocked)
+					if (!usedAddresses.Contains(bu.Address) && !bu.IsLocked)
 						usedAddresses.Add(bu.Address);
 					else
 					{
@@ -377,7 +377,7 @@ namespace RTC
 				else
 				{
 					BlastPipe bp = bu as BlastPipe;
-					if (!usedPipeAddresses.Contains(bp.PipeAddress) || !bu.IsLocked)
+					if (!usedPipeAddresses.Contains(bp.PipeAddress) && !bu.IsLocked)
 						usedPipeAddresses.Add(bp.PipeAddress);
 					else
 					{
@@ -654,6 +654,10 @@ namespace RTC
 
 			  (cmsBlastEditor.Items.Add("Change Selected Rows", null, new EventHandler((ob, ev) =>
 			{
+
+				string newvalue = "";
+				decimal decimalvalue = 0;
+
 				switch (column)
 				{
 					//Blast unit locked
@@ -674,20 +678,23 @@ namespace RTC
 					case 5:
 					case 6:
 					case 8:
-						string newvalue = "";
 						if (RTC_Extensions.getInputBox("Replace Selected Rows", "Replacement input (make sure it's valid): ", ref newvalue) == DialogResult.OK)
 							foreach (DataGridViewRow row in dgvBlastLayer.SelectedRows)
 							{
 								row.Cells[column].Value = newvalue;
 							}
 						break;
-					/*
-					*7 dvgSourceAddress
-					* 9 dvgParam
-					*/
+					//7 dvgSourceAddress
 					case 7:
+						if (RTC_Extensions.getInputBox("Replace Selected Rows", "Replacement input (make sure it's valid): ", ref decimalvalue, cbUseHex.Checked) == DialogResult.OK)
+							foreach (DataGridViewRow row in dgvBlastLayer.SelectedRows)
+							{
+								row.Cells[column].Value = decimalvalue;
+							}
+						break;
+					//9 dvgParam
+					//Needs to be capped at the precision so it's separate from case 7 (the address)
 					case 9:
-						decimal decimalvalue = 0;
 						if(RTC_Extensions.getInputBox("Replace Selected Rows", "Replacement input (make sure it's valid): ", ref decimalvalue, cbUseHex.Checked) == DialogResult.OK)
 							foreach (DataGridViewRow row in dgvBlastLayer.SelectedRows)
 							{
