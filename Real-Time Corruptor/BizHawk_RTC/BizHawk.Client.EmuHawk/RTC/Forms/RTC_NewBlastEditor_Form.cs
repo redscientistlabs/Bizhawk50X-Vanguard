@@ -1166,20 +1166,20 @@ namespace RTC
 
 		private void btnHideSidebar_Click(object sender, EventArgs e)
 		{
-			if (btnHideSidebar.Text == "◀")
+			if (btnHideSidebar.Text == "▶")
 			{
 				panelSidebar.Visible = false;
-				this.Width = this.Width - 176;
-				dgvBlastLayer.Width = dgvBlastLayer.Width + 176;
-				btnHideSidebar.Text = "▶";
+				//this.Width = this.Width - 176;
+				//dgvBlastLayer.Width = dgvBlastLayer.Width + 176;
+				btnHideSidebar.Text = "◀";
 				
 			}
 			else
 			{
 				panelSidebar.Visible = true;
-				this.Width = this.Width + 176;
-				dgvBlastLayer.Width = dgvBlastLayer.Width - 176;
-				btnHideSidebar.Text = "◀";
+				//this.Width = this.Width + 176;
+				//dgvBlastLayer.Width = dgvBlastLayer.Width - 176;
+				btnHideSidebar.Text = "▶";
 			}
 		}
 	}

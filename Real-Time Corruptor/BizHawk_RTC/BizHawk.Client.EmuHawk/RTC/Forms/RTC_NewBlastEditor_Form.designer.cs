@@ -102,9 +102,10 @@
             this.btnCorrupt.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnCorrupt.Font = new System.Drawing.Font("Segoe UI Semibold", 9F, System.Drawing.FontStyle.Bold);
             this.btnCorrupt.ForeColor = System.Drawing.Color.OrangeRed;
-            this.btnCorrupt.Location = new System.Drawing.Point(7, 439);
+            this.btnCorrupt.Location = new System.Drawing.Point(9, 540);
+            this.btnCorrupt.Margin = new System.Windows.Forms.Padding(4);
             this.btnCorrupt.Name = "btnCorrupt";
-            this.btnCorrupt.Size = new System.Drawing.Size(157, 23);
+            this.btnCorrupt.Size = new System.Drawing.Size(209, 28);
             this.btnCorrupt.TabIndex = 13;
             this.btnCorrupt.TabStop = false;
             this.btnCorrupt.Tag = "color:darker";
@@ -120,9 +121,10 @@
             this.btnLoadCorrupt.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnLoadCorrupt.Font = new System.Drawing.Font("Segoe UI Semibold", 9F, System.Drawing.FontStyle.Bold);
             this.btnLoadCorrupt.ForeColor = System.Drawing.Color.OrangeRed;
-            this.btnLoadCorrupt.Location = new System.Drawing.Point(7, 413);
+            this.btnLoadCorrupt.Location = new System.Drawing.Point(9, 508);
+            this.btnLoadCorrupt.Margin = new System.Windows.Forms.Padding(4);
             this.btnLoadCorrupt.Name = "btnLoadCorrupt";
-            this.btnLoadCorrupt.Size = new System.Drawing.Size(157, 23);
+            this.btnLoadCorrupt.Size = new System.Drawing.Size(209, 28);
             this.btnLoadCorrupt.TabIndex = 14;
             this.btnLoadCorrupt.TabStop = false;
             this.btnLoadCorrupt.Tag = "color:darker";
@@ -138,9 +140,10 @@
             this.btnSendToStash.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnSendToStash.Font = new System.Drawing.Font("Segoe UI Semibold", 9F, System.Drawing.FontStyle.Bold);
             this.btnSendToStash.ForeColor = System.Drawing.Color.OrangeRed;
-            this.btnSendToStash.Location = new System.Drawing.Point(7, 465);
+            this.btnSendToStash.Location = new System.Drawing.Point(9, 572);
+            this.btnSendToStash.Margin = new System.Windows.Forms.Padding(4);
             this.btnSendToStash.Name = "btnSendToStash";
-            this.btnSendToStash.Size = new System.Drawing.Size(157, 23);
+            this.btnSendToStash.Size = new System.Drawing.Size(209, 28);
             this.btnSendToStash.TabIndex = 12;
             this.btnSendToStash.TabStop = false;
             this.btnSendToStash.Tag = "color:darker";
@@ -156,9 +159,10 @@
             this.btnDisable50.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnDisable50.Font = new System.Drawing.Font("Segoe UI Semibold", 9F, System.Drawing.FontStyle.Bold);
             this.btnDisable50.ForeColor = System.Drawing.Color.Black;
-            this.btnDisable50.Location = new System.Drawing.Point(7, 157);
+            this.btnDisable50.Location = new System.Drawing.Point(9, 193);
+            this.btnDisable50.Margin = new System.Windows.Forms.Padding(4);
             this.btnDisable50.Name = "btnDisable50";
-            this.btnDisable50.Size = new System.Drawing.Size(157, 23);
+            this.btnDisable50.Size = new System.Drawing.Size(209, 28);
             this.btnDisable50.TabIndex = 114;
             this.btnDisable50.TabStop = false;
             this.btnDisable50.Tag = "color:light";
@@ -174,9 +178,10 @@
             this.btnRemoveDisabled.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnRemoveDisabled.Font = new System.Drawing.Font("Segoe UI Semibold", 9F, System.Drawing.FontStyle.Bold);
             this.btnRemoveDisabled.ForeColor = System.Drawing.Color.Black;
-            this.btnRemoveDisabled.Location = new System.Drawing.Point(7, 209);
+            this.btnRemoveDisabled.Location = new System.Drawing.Point(9, 257);
+            this.btnRemoveDisabled.Margin = new System.Windows.Forms.Padding(4);
             this.btnRemoveDisabled.Name = "btnRemoveDisabled";
-            this.btnRemoveDisabled.Size = new System.Drawing.Size(157, 23);
+            this.btnRemoveDisabled.Size = new System.Drawing.Size(209, 28);
             this.btnRemoveDisabled.TabIndex = 115;
             this.btnRemoveDisabled.TabStop = false;
             this.btnRemoveDisabled.Tag = "color:light";
@@ -192,9 +197,10 @@
             this.btnInvertDisabled.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnInvertDisabled.Font = new System.Drawing.Font("Segoe UI Semibold", 9F, System.Drawing.FontStyle.Bold);
             this.btnInvertDisabled.ForeColor = System.Drawing.Color.Black;
-            this.btnInvertDisabled.Location = new System.Drawing.Point(7, 183);
+            this.btnInvertDisabled.Location = new System.Drawing.Point(9, 225);
+            this.btnInvertDisabled.Margin = new System.Windows.Forms.Padding(4);
             this.btnInvertDisabled.Name = "btnInvertDisabled";
-            this.btnInvertDisabled.Size = new System.Drawing.Size(157, 23);
+            this.btnInvertDisabled.Size = new System.Drawing.Size(209, 28);
             this.btnInvertDisabled.TabIndex = 116;
             this.btnInvertDisabled.TabStop = false;
             this.btnInvertDisabled.Tag = "color:light";
@@ -210,9 +216,10 @@
             this.btnDisableEverything.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnDisableEverything.Font = new System.Drawing.Font("Segoe UI Semibold", 9F, System.Drawing.FontStyle.Bold);
             this.btnDisableEverything.ForeColor = System.Drawing.Color.Black;
-            this.btnDisableEverything.Location = new System.Drawing.Point(7, 240);
+            this.btnDisableEverything.Location = new System.Drawing.Point(9, 295);
+            this.btnDisableEverything.Margin = new System.Windows.Forms.Padding(4);
             this.btnDisableEverything.Name = "btnDisableEverything";
-            this.btnDisableEverything.Size = new System.Drawing.Size(157, 23);
+            this.btnDisableEverything.Size = new System.Drawing.Size(209, 28);
             this.btnDisableEverything.TabIndex = 128;
             this.btnDisableEverything.TabStop = false;
             this.btnDisableEverything.Tag = "color:light";
@@ -228,9 +235,10 @@
             this.btnEnableEverything.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnEnableEverything.Font = new System.Drawing.Font("Segoe UI Semibold", 9F, System.Drawing.FontStyle.Bold);
             this.btnEnableEverything.ForeColor = System.Drawing.Color.Black;
-            this.btnEnableEverything.Location = new System.Drawing.Point(7, 266);
+            this.btnEnableEverything.Location = new System.Drawing.Point(9, 327);
+            this.btnEnableEverything.Margin = new System.Windows.Forms.Padding(4);
             this.btnEnableEverything.Name = "btnEnableEverything";
-            this.btnEnableEverything.Size = new System.Drawing.Size(157, 23);
+            this.btnEnableEverything.Size = new System.Drawing.Size(209, 28);
             this.btnEnableEverything.TabIndex = 129;
             this.btnEnableEverything.TabStop = false;
             this.btnEnableEverything.Tag = "color:light";
@@ -246,9 +254,10 @@
             this.btnDuplicateSelected.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnDuplicateSelected.Font = new System.Drawing.Font("Segoe UI Semibold", 9F, System.Drawing.FontStyle.Bold);
             this.btnDuplicateSelected.ForeColor = System.Drawing.Color.Black;
-            this.btnDuplicateSelected.Location = new System.Drawing.Point(7, 353);
+            this.btnDuplicateSelected.Location = new System.Drawing.Point(9, 434);
+            this.btnDuplicateSelected.Margin = new System.Windows.Forms.Padding(4);
             this.btnDuplicateSelected.Name = "btnDuplicateSelected";
-            this.btnDuplicateSelected.Size = new System.Drawing.Size(157, 23);
+            this.btnDuplicateSelected.Size = new System.Drawing.Size(209, 28);
             this.btnDuplicateSelected.TabIndex = 130;
             this.btnDuplicateSelected.TabStop = false;
             this.btnDuplicateSelected.Tag = "color:light";
@@ -264,9 +273,10 @@
             this.btnSanitizeDuplicates.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnSanitizeDuplicates.Font = new System.Drawing.Font("Segoe UI Semibold", 9F, System.Drawing.FontStyle.Bold);
             this.btnSanitizeDuplicates.ForeColor = System.Drawing.Color.Black;
-            this.btnSanitizeDuplicates.Location = new System.Drawing.Point(7, 322);
+            this.btnSanitizeDuplicates.Location = new System.Drawing.Point(9, 396);
+            this.btnSanitizeDuplicates.Margin = new System.Windows.Forms.Padding(4);
             this.btnSanitizeDuplicates.Name = "btnSanitizeDuplicates";
-            this.btnSanitizeDuplicates.Size = new System.Drawing.Size(157, 23);
+            this.btnSanitizeDuplicates.Size = new System.Drawing.Size(209, 28);
             this.btnSanitizeDuplicates.TabIndex = 131;
             this.btnSanitizeDuplicates.TabStop = false;
             this.btnSanitizeDuplicates.Tag = "color:light";
@@ -280,9 +290,10 @@
             this.lbBlastLayerSize.AutoSize = true;
             this.lbBlastLayerSize.Font = new System.Drawing.Font("Segoe UI", 8F);
             this.lbBlastLayerSize.ForeColor = System.Drawing.Color.White;
-            this.lbBlastLayerSize.Location = new System.Drawing.Point(5, 5);
+            this.lbBlastLayerSize.Location = new System.Drawing.Point(7, 6);
+            this.lbBlastLayerSize.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.lbBlastLayerSize.Name = "lbBlastLayerSize";
-            this.lbBlastLayerSize.Size = new System.Drawing.Size(58, 13);
+            this.lbBlastLayerSize.Size = new System.Drawing.Size(71, 19);
             this.lbBlastLayerSize.TabIndex = 132;
             this.lbBlastLayerSize.Text = "Layer size:";
             // 
@@ -290,9 +301,7 @@
             // 
             this.dgvBlastLayer.AllowUserToAddRows = false;
             this.dgvBlastLayer.AllowUserToResizeRows = false;
-            this.dgvBlastLayer.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
+            this.dgvBlastLayer.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
             this.dgvBlastLayer.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.dgvBlastLayer.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
             this.dgvBlastUnitReference,
@@ -305,13 +314,14 @@
             this.dgvSourceAddress,
             this.dgvParamDomain,
             this.dgvParam});
-            this.dgvBlastLayer.Location = new System.Drawing.Point(9, 28);
-            this.dgvBlastLayer.Margin = new System.Windows.Forms.Padding(2);
+            this.dgvBlastLayer.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.dgvBlastLayer.Location = new System.Drawing.Point(0, 28);
+            this.dgvBlastLayer.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.dgvBlastLayer.Name = "dgvBlastLayer";
             this.dgvBlastLayer.RowHeadersVisible = false;
             this.dgvBlastLayer.RowTemplate.Height = 24;
             this.dgvBlastLayer.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.dgvBlastLayer.Size = new System.Drawing.Size(709, 487);
+            this.dgvBlastLayer.Size = new System.Drawing.Size(947, 610);
             this.dgvBlastLayer.TabIndex = 133;
             this.dgvBlastLayer.Tag = "color:normal";
             this.dgvBlastLayer.CellValueChanged += new System.Windows.Forms.DataGridViewCellEventHandler(this.dgvBlastLayer_CellValueChanged);
@@ -324,18 +334,20 @@
             // 
             // dgvBlastUnitLocked
             // 
+            this.dgvBlastUnitLocked.FillWeight = 15F;
             this.dgvBlastUnitLocked.HeaderText = "🔒";
+            this.dgvBlastUnitLocked.MinimumWidth = 40;
             this.dgvBlastUnitLocked.Name = "dgvBlastUnitLocked";
-            this.dgvBlastUnitLocked.Width = 30;
             // 
             // dgvBlastEnabled
             // 
+            this.dgvBlastEnabled.FillWeight = 32.88744F;
             this.dgvBlastEnabled.HeaderText = "Enabled";
             this.dgvBlastEnabled.Name = "dgvBlastEnabled";
-            this.dgvBlastEnabled.Width = 65;
             // 
             // dgvPrecision
             // 
+            this.dgvPrecision.FillWeight = 36.99837F;
             this.dgvPrecision.HeaderText = "Precision";
             this.dgvPrecision.Items.AddRange(new object[] {
             "8-bit",
@@ -343,33 +355,30 @@
             "32-bit"});
             this.dgvPrecision.Name = "dgvPrecision";
             this.dgvPrecision.Resizable = System.Windows.Forms.DataGridViewTriState.True;
-            this.dgvPrecision.Width = 70;
             // 
             // dgvBlastUnitType
             // 
+            this.dgvBlastUnitType.FillWeight = 49.33116F;
             this.dgvBlastUnitType.HeaderText = "BlastUnit Type";
             this.dgvBlastUnitType.Name = "dgvBlastUnitType";
             this.dgvBlastUnitType.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
-            this.dgvBlastUnitType.Width = 90;
             // 
             // dgvBlastUnitMode
             // 
-            this.dgvBlastUnitMode.FillWeight = 90F;
+            this.dgvBlastUnitMode.FillWeight = 45F;
             this.dgvBlastUnitMode.HeaderText = "BlastUnit Mode";
             this.dgvBlastUnitMode.Name = "dgvBlastUnitMode";
             this.dgvBlastUnitMode.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
-            this.dgvBlastUnitMode.Width = 90;
             // 
             // dgvSourceAddressDomain
             // 
-            this.dgvSourceAddressDomain.FillWeight = 90F;
+            this.dgvSourceAddressDomain.FillWeight = 54.06395F;
             this.dgvSourceAddressDomain.HeaderText = "Source Domain";
             this.dgvSourceAddressDomain.Name = "dgvSourceAddressDomain";
-            this.dgvSourceAddressDomain.Width = 90;
             // 
             // dgvSourceAddress
             // 
-            this.dgvSourceAddress.FillWeight = 90F;
+            this.dgvSourceAddress.FillWeight = 54.06395F;
             this.dgvSourceAddress.HeaderText = "Source Address";
             this.dgvSourceAddress.Hexadecimal = true;
             this.dgvSourceAddress.Maximum = new decimal(new int[] {
@@ -379,18 +388,16 @@
             0});
             this.dgvSourceAddress.Name = "dgvSourceAddress";
             this.dgvSourceAddress.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.Automatic;
-            this.dgvSourceAddress.Width = 90;
             // 
             // dgvParamDomain
             // 
-            this.dgvParamDomain.FillWeight = 90F;
+            this.dgvParamDomain.FillWeight = 54.06395F;
             this.dgvParamDomain.HeaderText = "Parameter Domain";
             this.dgvParamDomain.Name = "dgvParamDomain";
-            this.dgvParamDomain.Width = 90;
             // 
             // dgvParam
             // 
-            this.dgvParam.FillWeight = 90F;
+            this.dgvParam.FillWeight = 54.06395F;
             this.dgvParam.HeaderText = "Parameter Value";
             this.dgvParam.Hexadecimal = true;
             this.dgvParam.Maximum = new decimal(new int[] {
@@ -400,16 +407,16 @@
             0});
             this.dgvParam.Name = "dgvParam";
             this.dgvParam.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.Automatic;
-            this.dgvParam.Width = 90;
             // 
             // pnMemoryTargetting
             // 
             this.pnMemoryTargetting.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.pnMemoryTargetting.BackColor = System.Drawing.Color.Gray;
             this.pnMemoryTargetting.Controls.Add(this.lbBlastLayerSize);
-            this.pnMemoryTargetting.Location = new System.Drawing.Point(7, 22);
+            this.pnMemoryTargetting.Location = new System.Drawing.Point(9, 27);
+            this.pnMemoryTargetting.Margin = new System.Windows.Forms.Padding(4);
             this.pnMemoryTargetting.Name = "pnMemoryTargetting";
-            this.pnMemoryTargetting.Size = new System.Drawing.Size(158, 24);
+            this.pnMemoryTargetting.Size = new System.Drawing.Size(211, 30);
             this.pnMemoryTargetting.TabIndex = 134;
             this.pnMemoryTargetting.Tag = "color:normal";
             // 
@@ -419,9 +426,10 @@
             this.label3.AutoSize = true;
             this.label3.Font = new System.Drawing.Font("Segoe UI", 8F);
             this.label3.ForeColor = System.Drawing.Color.White;
-            this.label3.Location = new System.Drawing.Point(7, 5);
+            this.label3.Location = new System.Drawing.Point(9, 6);
+            this.label3.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(82, 13);
+            this.label3.Size = new System.Drawing.Size(99, 19);
             this.label3.TabIndex = 135;
             this.label3.Text = "BlastLayer Info";
             // 
@@ -431,9 +439,10 @@
             this.label4.AutoSize = true;
             this.label4.Font = new System.Drawing.Font("Segoe UI", 8F);
             this.label4.ForeColor = System.Drawing.Color.White;
-            this.label4.Location = new System.Drawing.Point(7, 52);
+            this.label4.Location = new System.Drawing.Point(9, 64);
+            this.label4.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label4.Name = "label4";
-            this.label4.Size = new System.Drawing.Size(124, 13);
+            this.label4.Size = new System.Drawing.Size(146, 19);
             this.label4.TabIndex = 136;
             this.label4.Text = "Selected BlastUnit Info";
             // 
@@ -443,9 +452,10 @@
             this.panel1.BackColor = System.Drawing.Color.Gray;
             this.panel1.Controls.Add(this.label6);
             this.panel1.Controls.Add(this.label5);
-            this.panel1.Location = new System.Drawing.Point(7, 68);
+            this.panel1.Location = new System.Drawing.Point(9, 84);
+            this.panel1.Margin = new System.Windows.Forms.Padding(4);
             this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(158, 60);
+            this.panel1.Size = new System.Drawing.Size(211, 74);
             this.panel1.TabIndex = 137;
             this.panel1.Tag = "color:normal";
             // 
@@ -455,9 +465,10 @@
             this.label6.AutoSize = true;
             this.label6.Font = new System.Drawing.Font("Segoe UI", 8F);
             this.label6.ForeColor = System.Drawing.Color.White;
-            this.label6.Location = new System.Drawing.Point(5, 34);
+            this.label6.Location = new System.Drawing.Point(7, 42);
+            this.label6.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label6.Name = "label6";
-            this.label6.Size = new System.Drawing.Size(50, 13);
+            this.label6.Size = new System.Drawing.Size(63, 19);
             this.label6.TabIndex = 133;
             this.label6.Text = "Param 2:";
             // 
@@ -467,9 +478,10 @@
             this.label5.AutoSize = true;
             this.label5.Font = new System.Drawing.Font("Segoe UI", 8F);
             this.label5.ForeColor = System.Drawing.Color.White;
-            this.label5.Location = new System.Drawing.Point(5, 5);
+            this.label5.Location = new System.Drawing.Point(7, 6);
+            this.label5.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label5.Name = "label5";
-            this.label5.Size = new System.Drawing.Size(50, 13);
+            this.label5.Size = new System.Drawing.Size(63, 19);
             this.label5.TabIndex = 132;
             this.label5.Text = "Param 1:";
             // 
@@ -482,9 +494,10 @@
             this.cbUseHex.CheckState = System.Windows.Forms.CheckState.Checked;
             this.cbUseHex.Font = new System.Drawing.Font("Segoe UI", 8F);
             this.cbUseHex.ForeColor = System.Drawing.Color.White;
-            this.cbUseHex.Location = new System.Drawing.Point(7, 134);
+            this.cbUseHex.Location = new System.Drawing.Point(9, 165);
+            this.cbUseHex.Margin = new System.Windows.Forms.Padding(4);
             this.cbUseHex.Name = "cbUseHex";
-            this.cbUseHex.Size = new System.Drawing.Size(100, 17);
+            this.cbUseHex.Size = new System.Drawing.Size(121, 23);
             this.cbUseHex.TabIndex = 138;
             this.cbUseHex.Text = "Display As Hex";
             this.cbUseHex.UseVisualStyleBackColor = true;
@@ -556,9 +569,10 @@
             this.btnRemoveSelected.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnRemoveSelected.Font = new System.Drawing.Font("Segoe UI Semibold", 9F, System.Drawing.FontStyle.Bold);
             this.btnRemoveSelected.ForeColor = System.Drawing.Color.Black;
-            this.btnRemoveSelected.Location = new System.Drawing.Point(7, 296);
+            this.btnRemoveSelected.Location = new System.Drawing.Point(9, 364);
+            this.btnRemoveSelected.Margin = new System.Windows.Forms.Padding(4);
             this.btnRemoveSelected.Name = "btnRemoveSelected";
-            this.btnRemoveSelected.Size = new System.Drawing.Size(157, 23);
+            this.btnRemoveSelected.Size = new System.Drawing.Size(209, 28);
             this.btnRemoveSelected.TabIndex = 139;
             this.btnRemoveSelected.TabStop = false;
             this.btnRemoveSelected.Tag = "color:light";
@@ -574,9 +588,10 @@
             this.btnSearchRow.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnSearchRow.Font = new System.Drawing.Font("Segoe UI Semibold", 9F, System.Drawing.FontStyle.Bold);
             this.btnSearchRow.ForeColor = System.Drawing.Color.Black;
-            this.btnSearchRow.Location = new System.Drawing.Point(7, 379);
+            this.btnSearchRow.Location = new System.Drawing.Point(9, 466);
+            this.btnSearchRow.Margin = new System.Windows.Forms.Padding(4);
             this.btnSearchRow.Name = "btnSearchRow";
-            this.btnSearchRow.Size = new System.Drawing.Size(130, 23);
+            this.btnSearchRow.Size = new System.Drawing.Size(173, 28);
             this.btnSearchRow.TabIndex = 140;
             this.btnSearchRow.TabStop = false;
             this.btnSearchRow.Tag = "color:light";
@@ -605,9 +620,10 @@
             this.panelSidebar.Controls.Add(this.btnSanitizeDuplicates);
             this.panelSidebar.Controls.Add(this.btnDuplicateSelected);
             this.panelSidebar.Dock = System.Windows.Forms.DockStyle.Right;
-            this.panelSidebar.Location = new System.Drawing.Point(719, 24);
+            this.panelSidebar.Location = new System.Drawing.Point(947, 28);
+            this.panelSidebar.Margin = new System.Windows.Forms.Padding(4);
             this.panelSidebar.Name = "panelSidebar";
-            this.panelSidebar.Size = new System.Drawing.Size(176, 502);
+            this.panelSidebar.Size = new System.Drawing.Size(235, 610);
             this.panelSidebar.TabIndex = 142;
             // 
             // btnSearchAgain
@@ -618,9 +634,10 @@
             this.btnSearchAgain.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnSearchAgain.Font = new System.Drawing.Font("Segoe UI Semibold", 9F, System.Drawing.FontStyle.Bold);
             this.btnSearchAgain.ForeColor = System.Drawing.Color.Black;
-            this.btnSearchAgain.Location = new System.Drawing.Point(142, 379);
+            this.btnSearchAgain.Location = new System.Drawing.Point(189, 466);
+            this.btnSearchAgain.Margin = new System.Windows.Forms.Padding(4);
             this.btnSearchAgain.Name = "btnSearchAgain";
-            this.btnSearchAgain.Size = new System.Drawing.Size(21, 23);
+            this.btnSearchAgain.Size = new System.Drawing.Size(28, 28);
             this.btnSearchAgain.TabIndex = 141;
             this.btnSearchAgain.TabStop = false;
             this.btnSearchAgain.Tag = "color:light";
@@ -638,7 +655,8 @@
             this.rOMToolStripMenuItem});
             this.menuStripEx1.Location = new System.Drawing.Point(0, 0);
             this.menuStripEx1.Name = "menuStripEx1";
-            this.menuStripEx1.Size = new System.Drawing.Size(895, 24);
+            this.menuStripEx1.Padding = new System.Windows.Forms.Padding(8, 2, 0, 2);
+            this.menuStripEx1.Size = new System.Drawing.Size(1182, 28);
             this.menuStripEx1.TabIndex = 141;
             this.menuStripEx1.Text = "menuStripEx1";
             // 
@@ -650,34 +668,34 @@
             this.importBlastlayerblToolStripMenuItem,
             this.exportToCSVToolStripMenuItem});
             this.blastLayerToolStripMenuItem.Name = "blastLayerToolStripMenuItem";
-            this.blastLayerToolStripMenuItem.Size = new System.Drawing.Size(72, 20);
+            this.blastLayerToolStripMenuItem.Size = new System.Drawing.Size(88, 24);
             this.blastLayerToolStripMenuItem.Text = "BlastLayer";
             // 
             // loadFromFileblToolStripMenuItem
             // 
             this.loadFromFileblToolStripMenuItem.Name = "loadFromFileblToolStripMenuItem";
-            this.loadFromFileblToolStripMenuItem.Size = new System.Drawing.Size(187, 22);
+            this.loadFromFileblToolStripMenuItem.Size = new System.Drawing.Size(227, 26);
             this.loadFromFileblToolStripMenuItem.Text = "&Load From File (.bl)";
             this.loadFromFileblToolStripMenuItem.Click += new System.EventHandler(this.loadFromFileblToolStripMenuItem_Click);
             // 
             // saveToFileblToolStripMenuItem
             // 
             this.saveToFileblToolStripMenuItem.Name = "saveToFileblToolStripMenuItem";
-            this.saveToFileblToolStripMenuItem.Size = new System.Drawing.Size(187, 22);
+            this.saveToFileblToolStripMenuItem.Size = new System.Drawing.Size(227, 26);
             this.saveToFileblToolStripMenuItem.Text = "&Save to file (.bl)";
             this.saveToFileblToolStripMenuItem.Click += new System.EventHandler(this.saveToFileblToolStripMenuItem_Click);
             // 
             // importBlastlayerblToolStripMenuItem
             // 
             this.importBlastlayerblToolStripMenuItem.Name = "importBlastlayerblToolStripMenuItem";
-            this.importBlastlayerblToolStripMenuItem.Size = new System.Drawing.Size(187, 22);
+            this.importBlastlayerblToolStripMenuItem.Size = new System.Drawing.Size(227, 26);
             this.importBlastlayerblToolStripMenuItem.Text = "&Import Blastlayer (.bl)";
             this.importBlastlayerblToolStripMenuItem.Click += new System.EventHandler(this.importBlastlayerblToolStripMenuItem_Click);
             // 
             // exportToCSVToolStripMenuItem
             // 
             this.exportToCSVToolStripMenuItem.Name = "exportToCSVToolStripMenuItem";
-            this.exportToCSVToolStripMenuItem.Size = new System.Drawing.Size(187, 22);
+            this.exportToCSVToolStripMenuItem.Size = new System.Drawing.Size(227, 26);
             this.exportToCSVToolStripMenuItem.Text = "&Export to CSV";
             this.exportToCSVToolStripMenuItem.Click += new System.EventHandler(this.exportToCSVToolStripMenuItem_Click);
             // 
@@ -689,34 +707,34 @@
             this.replaceSavestateFromFileToolStripMenuItem,
             this.saveSavestateToToolStripMenuItem});
             this.saveStateToolStripMenuItem.Name = "saveStateToolStripMenuItem";
-            this.saveStateToolStripMenuItem.Size = new System.Drawing.Size(69, 20);
+            this.saveStateToolStripMenuItem.Size = new System.Drawing.Size(86, 24);
             this.saveStateToolStripMenuItem.Text = "SaveState";
             // 
             // runOriginalSavestateToolStripMenuItem
             // 
             this.runOriginalSavestateToolStripMenuItem.Name = "runOriginalSavestateToolStripMenuItem";
-            this.runOriginalSavestateToolStripMenuItem.Size = new System.Drawing.Size(217, 22);
+            this.runOriginalSavestateToolStripMenuItem.Size = new System.Drawing.Size(267, 26);
             this.runOriginalSavestateToolStripMenuItem.Text = "Run Original Savestate";
             this.runOriginalSavestateToolStripMenuItem.Click += new System.EventHandler(this.runOriginalSavestateToolStripMenuItem_Click);
             // 
             // replaceSavestateFromGHToolStripMenuItem
             // 
             this.replaceSavestateFromGHToolStripMenuItem.Name = "replaceSavestateFromGHToolStripMenuItem";
-            this.replaceSavestateFromGHToolStripMenuItem.Size = new System.Drawing.Size(217, 22);
+            this.replaceSavestateFromGHToolStripMenuItem.Size = new System.Drawing.Size(267, 26);
             this.replaceSavestateFromGHToolStripMenuItem.Text = "Replace Savestate from GH";
             this.replaceSavestateFromGHToolStripMenuItem.Click += new System.EventHandler(this.replaceSavestateFromGHToolStripMenuItem_Click);
             // 
             // replaceSavestateFromFileToolStripMenuItem
             // 
             this.replaceSavestateFromFileToolStripMenuItem.Name = "replaceSavestateFromFileToolStripMenuItem";
-            this.replaceSavestateFromFileToolStripMenuItem.Size = new System.Drawing.Size(217, 22);
+            this.replaceSavestateFromFileToolStripMenuItem.Size = new System.Drawing.Size(267, 26);
             this.replaceSavestateFromFileToolStripMenuItem.Text = "Replace Savestate from File";
             this.replaceSavestateFromFileToolStripMenuItem.Click += new System.EventHandler(this.replaceSavestateFromFileToolStripMenuItem_Click);
             // 
             // saveSavestateToToolStripMenuItem
             // 
             this.saveSavestateToToolStripMenuItem.Name = "saveSavestateToToolStripMenuItem";
-            this.saveSavestateToToolStripMenuItem.Size = new System.Drawing.Size(217, 22);
+            this.saveSavestateToToolStripMenuItem.Size = new System.Drawing.Size(267, 26);
             this.saveSavestateToToolStripMenuItem.Text = "Save Savestate to";
             this.saveSavestateToToolStripMenuItem.Click += new System.EventHandler(this.saveSavestateToToolStripMenuItem_Click);
             // 
@@ -728,61 +746,63 @@
             this.replaceRomFromFileToolStripMenuItem,
             this.bakeROMBlastunitsToFileToolStripMenuItem});
             this.rOMToolStripMenuItem.Name = "rOMToolStripMenuItem";
-            this.rOMToolStripMenuItem.Size = new System.Drawing.Size(46, 20);
+            this.rOMToolStripMenuItem.Size = new System.Drawing.Size(54, 24);
             this.rOMToolStripMenuItem.Text = "ROM";
             // 
             // runRomWithoutBlastlayerToolStripMenuItem
             // 
             this.runRomWithoutBlastlayerToolStripMenuItem.Name = "runRomWithoutBlastlayerToolStripMenuItem";
-            this.runRomWithoutBlastlayerToolStripMenuItem.Size = new System.Drawing.Size(222, 22);
+            this.runRomWithoutBlastlayerToolStripMenuItem.Size = new System.Drawing.Size(269, 26);
             this.runRomWithoutBlastlayerToolStripMenuItem.Text = "Run Rom Without Blastlayer";
             this.runRomWithoutBlastlayerToolStripMenuItem.Click += new System.EventHandler(this.runRomWithoutBlastlayerToolStripMenuItem_Click);
             // 
             // replaceRomFromGHToolStripMenuItem
             // 
             this.replaceRomFromGHToolStripMenuItem.Name = "replaceRomFromGHToolStripMenuItem";
-            this.replaceRomFromGHToolStripMenuItem.Size = new System.Drawing.Size(222, 22);
+            this.replaceRomFromGHToolStripMenuItem.Size = new System.Drawing.Size(269, 26);
             this.replaceRomFromGHToolStripMenuItem.Text = "Replace Rom from GH";
             this.replaceRomFromGHToolStripMenuItem.Click += new System.EventHandler(this.replaceRomFromGHToolStripMenuItem_Click);
             // 
             // replaceRomFromFileToolStripMenuItem
             // 
             this.replaceRomFromFileToolStripMenuItem.Name = "replaceRomFromFileToolStripMenuItem";
-            this.replaceRomFromFileToolStripMenuItem.Size = new System.Drawing.Size(222, 22);
+            this.replaceRomFromFileToolStripMenuItem.Size = new System.Drawing.Size(269, 26);
             this.replaceRomFromFileToolStripMenuItem.Text = "Replace Rom from File";
             this.replaceRomFromFileToolStripMenuItem.Click += new System.EventHandler(this.replaceRomFromFileToolStripMenuItem_Click);
             // 
             // bakeROMBlastunitsToFileToolStripMenuItem
             // 
             this.bakeROMBlastunitsToFileToolStripMenuItem.Name = "bakeROMBlastunitsToFileToolStripMenuItem";
-            this.bakeROMBlastunitsToFileToolStripMenuItem.Size = new System.Drawing.Size(222, 22);
+            this.bakeROMBlastunitsToFileToolStripMenuItem.Size = new System.Drawing.Size(269, 26);
             this.bakeROMBlastunitsToFileToolStripMenuItem.Text = "Bake ROM Blastunits to File";
             this.bakeROMBlastunitsToFileToolStripMenuItem.Click += new System.EventHandler(this.bakeROMBlastunitsToFileToolStripMenuItem_Click);
             // 
             // btnHideSidebar
             // 
             this.btnHideSidebar.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.btnHideSidebar.Location = new System.Drawing.Point(867, 0);
+            this.btnHideSidebar.Location = new System.Drawing.Point(1145, 0);
+            this.btnHideSidebar.Margin = new System.Windows.Forms.Padding(4);
             this.btnHideSidebar.Name = "btnHideSidebar";
-            this.btnHideSidebar.Size = new System.Drawing.Size(28, 24);
+            this.btnHideSidebar.Size = new System.Drawing.Size(37, 30);
             this.btnHideSidebar.TabIndex = 144;
-            this.btnHideSidebar.Text = "◀";
+            this.btnHideSidebar.Text = "▶";
             this.btnHideSidebar.UseVisualStyleBackColor = true;
             this.btnHideSidebar.Click += new System.EventHandler(this.btnHideSidebar_Click);
             // 
             // RTC_NewBlastEditor_Form
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
-            this.ClientSize = new System.Drawing.Size(895, 526);
+            this.ClientSize = new System.Drawing.Size(1182, 638);
+            this.Controls.Add(this.dgvBlastLayer);
             this.Controls.Add(this.btnHideSidebar);
             this.Controls.Add(this.panelSidebar);
-            this.Controls.Add(this.dgvBlastLayer);
             this.Controls.Add(this.menuStripEx1);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.MainMenuStrip = this.menuStripEx1;
-            this.MinimumSize = new System.Drawing.Size(530, 526);
+            this.Margin = new System.Windows.Forms.Padding(4);
+            this.MinimumSize = new System.Drawing.Size(1200, 685);
             this.Name = "RTC_NewBlastEditor_Form";
             this.Tag = "color:dark";
             this.Text = "Blast Editor";
@@ -849,6 +869,7 @@
 		private System.Windows.Forms.ToolStripMenuItem replaceSavestateFromFileToolStripMenuItem;
 		private System.Windows.Forms.ToolStripMenuItem saveSavestateToToolStripMenuItem;
 		private System.Windows.Forms.Button btnSearchAgain;
+		private System.Windows.Forms.Button btnHideSidebar;
 		private System.Windows.Forms.DataGridViewTextBoxColumn dgvBlastUnitReference;
 		private System.Windows.Forms.DataGridViewCheckBoxColumn dgvBlastUnitLocked;
 		private System.Windows.Forms.DataGridViewCheckBoxColumn dgvBlastEnabled;
@@ -859,6 +880,5 @@
 		private DataGridViewNumericUpDownColumn dgvSourceAddress;
 		private System.Windows.Forms.DataGridViewTextBoxColumn dgvParamDomain;
 		private DataGridViewNumericUpDownColumn dgvParam;
-		private System.Windows.Forms.Button btnHideSidebar;
 	}
 }
