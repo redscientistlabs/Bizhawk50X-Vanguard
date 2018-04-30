@@ -61,7 +61,50 @@ namespace RTC
 			value = textBox.Text;
 			return dialogResult;
 		}
+		public static DialogResult getInputBox(string title, string promptText, ref decimal value, bool hex = false, UInt64 maximum = UInt64.MaxValue)
+		{
+			Form form = new Form();
+			Label label = new Label();
+			NumericUpDownHexFix updown = new NumericUpDownHexFix();
+			Button buttonOk = new Button();
+			Button buttonCancel = new Button();
 
+			updown.Hexadecimal = hex;
+			updown.Maximum = maximum;
+
+			form.Text = title;
+			label.Text = promptText;
+			updown.Value = value;
+
+			buttonOk.Text = "OK";
+			buttonCancel.Text = "Cancel";
+			buttonOk.DialogResult = DialogResult.OK;
+			buttonCancel.DialogResult = DialogResult.Cancel;
+
+			label.SetBounds(9, 20, 372, 13);
+			updown.SetBounds(12, 36, 372, 20);
+			buttonOk.SetBounds(228, 72, 75, 23);
+			buttonCancel.SetBounds(309, 72, 75, 23);
+
+			label.AutoSize = true;
+			updown.Anchor = updown.Anchor | AnchorStyles.Right;
+			buttonOk.Anchor = AnchorStyles.Bottom | AnchorStyles.Right;
+			buttonCancel.Anchor = AnchorStyles.Bottom | AnchorStyles.Right;
+
+			form.ClientSize = new Size(396, 107);
+			form.Controls.AddRange(new Control[] { label, updown, buttonOk, buttonCancel });
+			form.ClientSize = new Size(Math.Max(300, label.Right + 10), form.ClientSize.Height);
+			form.FormBorderStyle = FormBorderStyle.FixedDialog;
+			form.StartPosition = FormStartPosition.CenterScreen;
+			form.MinimizeBox = false;
+			form.MaximizeBox = false;
+			form.AcceptButton = buttonOk;
+			form.CancelButton = buttonCancel;
+
+			DialogResult dialogResult = form.ShowDialog();
+			value = updown.Value;
+			return dialogResult;
+		}
 
 		#region ARRAY EXTENSIONS
 		public static T[] SubArray<T>(this T[] data, long index, long length)
