@@ -590,7 +590,7 @@ namespace RTC
 		{
 			RTC_Core.StopSound();
 
-			if (dgvStockpile.SelectedRows.Count != 0)
+			if (dgvStockpile.SelectedRows.Count != 0 && (MessageBox.Show("Are you sure you want to remove the selected stockpile entries?", "Delete Stockpile Entry?", MessageBoxButtons.YesNo) == DialogResult.Yes))
 					foreach (DataGridViewRow row in dgvStockpile.SelectedRows)
 						dgvStockpile.Rows.Remove(row);
 

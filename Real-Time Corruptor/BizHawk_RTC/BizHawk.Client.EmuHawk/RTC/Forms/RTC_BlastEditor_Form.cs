@@ -1,4 +1,5 @@
-﻿using System;
+﻿
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -163,7 +164,7 @@ namespace RTC
 
                 var bb = (bu as BlastByte);
                 nmValueEdit.Maximum = RTC_Extensions.getNumericMaxValue(bb.Value);
-                nmValueEdit.Value = RTC_Extensions.getDecimalValue(bb.Value);
+                nmValueEdit.Value = RTC_Extensions.getDecimalValue(bb.Value, bb.BigEndian);
 			}
 			else if (lbBlastLayer.SelectedItem is BlastCheat)
 			{
@@ -175,7 +176,7 @@ namespace RTC
 					gbValueEdit.Visible = true;
                     
                     nmValueEdit.Maximum = RTC_Extensions.getNumericMaxValue(bc.Value);
-                    nmValueEdit.Value = RTC_Extensions.getDecimalValue(bc.Value);
+                    nmValueEdit.Value = RTC_Extensions.getDecimalValue(bc.Value, bc.BigEndian);
 				}
 			}
 			else if (lbBlastLayer.SelectedItem is BlastPipe)
@@ -205,16 +206,17 @@ namespace RTC
 
 		private void btnValueUpdate_Click(object sender, EventArgs e)
 		{
-			if (lbBlastLayer.SelectedItem is BlastByte)
-				(lbBlastLayer.SelectedItem as BlastByte).Value = RTC_Extensions.getByteArrayValue((lbBlastLayer.SelectedItem as BlastByte).Value, nmValueEdit.Value);
-			else if (lbBlastLayer.SelectedItem is BlastCheat)
-				(lbBlastLayer.SelectedItem as BlastCheat).Value = RTC_Extensions.getByteArrayValue((lbBlastLayer.SelectedItem as BlastCheat).Value, nmValueEdit.Value);
-            else if (lbBlastLayer.SelectedItem is BlastPipe)
-				(lbBlastLayer.SelectedItem as BlastPipe).PipeAddress = Convert.ToInt64(nmValueEdit.Value);
+			/*
+				if (lbBlastLayer.SelectedItem is BlastByte)
+					(lbBlastLayer.SelectedItem as BlastByte).Value = RTC_Extensions.getByteArrayValue((lbBlastLayer.SelectedItem as BlastByte).Value, nmValueEdit.Value, (lbBlastLayer.SelectedItem as BlastByte).BigEndian);
+				else if (lbBlastLayer.SelectedItem is BlastCheat)
+					(lbBlastLayer.SelectedItem as BlastCheat).Value = RTC_Extensions.getByteArrayValue((lbBlastLayer.SelectedItem as BlastCheat).Value, nmValueEdit.Value, (lbBlastLayer.SelectedItem as BlastCheat).BigEndian);
+				else if (lbBlastLayer.SelectedItem is BlastPipe)
+					(lbBlastLayer.SelectedItem as BlastPipe).PipeAddress = Convert.ToInt64(nmValueEdit.Value);
 
+			*/
 			RefreshBlastLayer();
 		}
-
         private void btnDisableEverything_Click(object sender, EventArgs e)
         {
             foreach (BlastUnit bu in sk.BlastLayer.Layer)

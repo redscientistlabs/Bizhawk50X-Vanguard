@@ -166,7 +166,7 @@ namespace RTC
 				precision = bb.Value.Length;
 				sourceAddress = Convert.ToDecimal(bb.Address);
 				sourceDomain = bb.Domain;
-				destAddress = (Decimal)RTC_Extensions.getDecimalValue(bb.Value);
+				destAddress = (Decimal)RTC_Extensions.getDecimalValue(bb.Value, bb.BigEndian);
 				blastMode = Convert.ToString(bb.Type);
 			}
 
@@ -176,7 +176,7 @@ namespace RTC
 				precision = bc.Value.Length;
 				sourceAddress = bc.Address;
 				sourceDomain = bc.Domain;
-				destAddress = RTC_Extensions.getDecimalValue(bc.Value);
+				destAddress = RTC_Extensions.getDecimalValue(bc.Value, bc.BigEndian);
 				if (bc.IsFreeze)
 					blastMode = "Freeze";
 				else
@@ -200,7 +200,7 @@ namespace RTC
 				precision = bv.Values.Length;
 				sourceAddress = Convert.ToDecimal(bv.Address);
 				sourceDomain = bv.Domain;
-				destAddress = (Decimal)RTC_Extensions.getDecimalValue(bv.Values);
+				destAddress = (Decimal)RTC_Extensions.getDecimalValue(bv.Values, bv.BigEndian);
 				blastMode = Convert.ToString(bv.Type);
 			}
 
@@ -501,7 +501,7 @@ namespace RTC
 					BlastByte bb = (BlastByte)row.Cells["dgvBlastUnitReference"].Value;
 					bb.IsEnabled = Convert.ToBoolean((row.Cells["dgvBlastEnabled"].Value));
 					bb.Address = Convert.ToInt64(row.Cells["dgvSourceAddress"].Value);
-					bb.Value = RTC_Extensions.getByteArrayValue(GetPrecisionSizeFromName(row.Cells["dgvPrecision"].Value.ToString()), Convert.ToDecimal(row.Cells["dgvParam"].Value));
+					bb.Value = RTC_Extensions.getByteArrayValue(GetPrecisionSizeFromName(row.Cells["dgvPrecision"].Value.ToString()), Convert.ToDecimal(row.Cells["dgvParam"].Value), bb.BigEndian);
 					bb.Domain = Convert.ToString(row.Cells["dgvSourceAddressDomain"].Value);
 					Enum.TryParse(row.Cells["dgvBlastUnitMode"].Value.ToString().ToUpper(), out bb.Type);
 					bb.IsLocked = Convert.ToBoolean((row.Cells["dgvBlastUnitLocked"].Value));
@@ -513,7 +513,7 @@ namespace RTC
 					BlastCheat bc = (BlastCheat)row.Cells["dgvBlastUnitReference"].Value;
 					bc.IsEnabled = Convert.ToBoolean((row.Cells["dgvBlastEnabled"].Value));
 					bc.Address = Convert.ToInt64(row.Cells["dgvSourceAddress"].Value);
-					bc.Value = RTC_Extensions.getByteArrayValue(GetPrecisionSizeFromName(row.Cells["dgvPrecision"].Value.ToString()), Convert.ToDecimal(row.Cells["dgvParam"].Value));
+					bc.Value = RTC_Extensions.getByteArrayValue(GetPrecisionSizeFromName(row.Cells["dgvPrecision"].Value.ToString()), Convert.ToDecimal(row.Cells["dgvParam"].Value), bc.BigEndian);
 					bc.Domain = Convert.ToString(row.Cells["dgvSourceAddressDomain"].Value);
 					if (row.Cells["dgvBlastUnitMode"].Value.ToString() == "Freeze")
 						bc.IsFreeze = true;
@@ -539,7 +539,7 @@ namespace RTC
 					BlastVector bv = (BlastVector)row.Cells["dgvBlastUnitReference"].Value;
 					bv.IsEnabled = Convert.ToBoolean((row.Cells["dgvBlastEnabled"].Value));
 					bv.Address = Convert.ToInt64(row.Cells["dgvSourceAddress"].Value);
-					bv.Values = RTC_Extensions.getByteArrayValue(GetPrecisionSizeFromName(row.Cells["dgvPrecision"].Value.ToString()), Convert.ToDecimal(row.Cells["dgvParam"].Value));
+					bv.Values = RTC_Extensions.getByteArrayValue(GetPrecisionSizeFromName(row.Cells["dgvPrecision"].Value.ToString()), Convert.ToDecimal(row.Cells["dgvParam"].Value), bv.BigEndian);
 					bv.Domain = Convert.ToString(row.Cells["dgvSourceAddressDomain"].Value);
 					bv.IsLocked = Convert.ToBoolean((row.Cells["dgvBlastUnitLocked"].Value));
 					Enum.TryParse(row.Cells["dgvBlastUnitMode"].Value.ToString().ToUpper(), out bv.Type);
@@ -840,7 +840,7 @@ namespace RTC
 			if (bu is BlastByte || bu is BlastCheat)
 			{
 				BlastByte bb = bu as BlastByte;
-				decimal value = RTC_Extensions.getDecimalValue(bb.Value);
+				decimal value = RTC_Extensions.getDecimalValue(bb.Value, bb.BigEndian);
 				return (long)value;
 			}
 			if (bu is BlastPipe)
@@ -899,18 +899,19 @@ namespace RTC
 				MessageBox.Show("No rows were selected. Cannot remove.");
 				return;
 			}
-			foreach (DataGridViewRow row in dgvBlastLayer.SelectedRows)
-			{
-				if ((bool)row.Cells["dgvBlastUnitLocked"].Value)
-					return;
+			if(MessageBox.Show("Are you sure you want to clear the stockpile?", "Clearing stockpile", MessageBoxButtons.YesNo) == DialogResult.Yes)
+				foreach (DataGridViewRow row in dgvBlastLayer.SelectedRows)
+				{
+					if ((bool)row.Cells["dgvBlastUnitLocked"].Value)
+						return;
 
-				int pos = row.Index;
-				BlastUnit bu = sk.BlastLayer.Layer[pos];
+					int pos = row.Index;
+					BlastUnit bu = sk.BlastLayer.Layer[pos];
 
-				sk.BlastLayer.Layer.Remove(bu);
-				dgvBlastLayer.Rows.Remove(bu2RowDico[bu]);
-				CurrentlyUpdating = false;
-			}
+					sk.BlastLayer.Layer.Remove(bu);
+					dgvBlastLayer.Rows.Remove(bu2RowDico[bu]);
+					CurrentlyUpdating = false;
+				}
 		}
 
 		public DialogResult getSearchBox(string title, string promptText, bool filterColumn = false)

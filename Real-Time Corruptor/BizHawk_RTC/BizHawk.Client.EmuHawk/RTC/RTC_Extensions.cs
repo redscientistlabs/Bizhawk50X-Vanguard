@@ -178,8 +178,11 @@ namespace RTC
 			return 0;
 		}
 
-		public static decimal getDecimalValue(byte[] Value)
+		public static decimal getDecimalValue(byte[] Value, bool isInputBigEndian)
 		{
+			if (isInputBigEndian)
+				Array.Reverse(Value);
+
 			switch (Value.Length)
 			{
 				case 1:
@@ -193,31 +196,88 @@ namespace RTC
 			return 0;
 		}
 
-		public static byte[] getByteArrayValue(byte[] originalValue, decimal newValue)
+		public static byte[] addValueToByteArray(byte[] originalValue, decimal addValue, bool isInputBigEndian)
 		{
 			switch (originalValue.Length)
 			{
 				case 1:
-					return new byte[] { (byte)newValue };
+					decimal byteValue = originalValue[0];
+					byteValue += addValue;
+					return new byte[] { Convert.ToByte(mod(byteValue, 255)) };
 				case 2:
-					return BitConverter.GetBytes(Convert.ToUInt16(newValue));
+					{
+						decimal int16Value = getDecimalValue(originalValue, isInputBigEndian);
+
+						int16Value += addValue;
+						int16Value = mod(int16Value, UInt16.MaxValue);
+
+						byte[] newInt16Array = BitConverter.GetBytes(Convert.ToUInt16(int16Value));
+
+						if (isInputBigEndian)
+							Array.Reverse(newInt16Array);
+
+						return newInt16Array;
+					}
 				case 4:
-					return BitConverter.GetBytes(Convert.ToUInt32(newValue));
+					{
+						decimal int32Value = getDecimalValue(originalValue, isInputBigEndian);
+						int32Value += addValue;
+						int32Value = mod(int32Value, UInt32.MaxValue);
+
+						byte[] newInt32Array = BitConverter.GetBytes(Convert.ToUInt32(int32Value));
+
+						if (isInputBigEndian)
+							Array.Reverse(newInt32Array);
+
+						return newInt32Array;
+					}
+				case 8:
+					{
+						if (isInputBigEndian)
+							Array.Reverse(originalValue);
+
+						decimal int64Value = Convert.ToUInt64(originalValue);
+						int64Value += addValue;
+						int64Value = mod(int64Value, UInt32.MaxValue);
+
+						byte[] newInt64Array = BitConverter.GetBytes(Convert.ToUInt64(int64Value));
+
+						if (isInputBigEndian)
+							Array.Reverse(newInt64Array);
+
+						return newInt64Array;
+					}
 			}
 
 			return null;
 		}
 
-		public static byte[] getByteArrayValue(int precision, decimal newValue)
+		private static decimal mod(decimal x, long m)
+		{
+			return (x % m + m) % m;
+		}
+
+
+		public static byte[] getByteArrayValue(int precision, decimal newValue, bool isInputBigEndian)
 		{
 			switch (precision)
 			{
 				case 1:
 					return new byte[] { (byte)newValue };
 				case 2:
-					return BitConverter.GetBytes(Convert.ToUInt16(newValue));
+					{
+						byte[] Value = BitConverter.GetBytes(Convert.ToUInt16(newValue));
+						if (isInputBigEndian)
+							Array.Reverse(Value);
+						return Value;
+					}
 				case 4:
-					return BitConverter.GetBytes(Convert.ToUInt32(newValue));
+					{
+						byte[] Value = BitConverter.GetBytes(Convert.ToUInt32(newValue));
+						if (isInputBigEndian)
+							Array.Reverse(Value);
+						return Value;
+					}
 			}
 
 			return null;

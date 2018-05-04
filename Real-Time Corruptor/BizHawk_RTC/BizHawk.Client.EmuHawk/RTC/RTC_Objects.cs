@@ -1178,37 +1178,74 @@ namespace RTC
 
                 long targetAddress = RTC_MemoryDomains.getRealAddress(Domain, Address);
 
+
 				byte[] _Values = (byte[])Value.Clone();
+
+
 				//Big endian  = left to right
 				//Little endian = right to left
-
-
 				//By default, the bytes are handled as if they're big endian, so flip them if they're not
 				if (!BigEndian)
 					_Values.FlipBytes();
 
-                for(int i=0; i< _Values.Length; i++)
-                    switch (Type)
-                    {
-                        case BlastByteType.SET:
-                            mdp.PokeByte(targetAddress + i, _Values[i]);
-                            break;
+					//When using ADD and SUBSTRACT we need to properly handle multi-byte values.
+					//This means that it has to properly roll-over.
+					//00 00 00 FF needs to become 00 00 01 00,  FF FF FF FF needs to become 00 00 00 00, etc
+					//Now, endianess is important here. The workflow for the RTC is that we always handle things as big endian (left to right) and then flip when needed 
+					//That means when getting the values we're tilting, we need to flip the bytes we read from memory if it's little endian. 
 
-                        case BlastByteType.ADD:
-                            mdp.PokeByte(targetAddress + i, (byte)(mdp.PeekByte(targetAddress + i) + _Values[i]));
-                            break;
+					//We assume that the user is going to be using SET and VECTOR more than ADD and SUBSTRACT so check them first
+					switch (Type)
+					{
 
-                        case BlastByteType.SUBSTRACT:
-                            mdp.PokeByte(targetAddress + i, (byte)(mdp.PeekByte(targetAddress + i) - _Values[i]));
-                            break;
+					case (BlastByteType.SET):
+					case (BlastByteType.VECTOR):
+						break;
 
-						case BlastByteType.VECTOR:
-							mdp.PokeByte(targetAddress + i, _Values[i]);
-							break;
+					case (BlastByteType.ADD):
+						_Values = RTC_Extensions.addValueToByteArray(mdp.PeekBytes(targetAddress, targetAddress + _Values.Length), RTC_Extensions.getDecimalValue(_Values, BigEndian), BigEndian);
+						break;
+					case (BlastByteType.SUBSTRACT):
+						_Values = RTC_Extensions.addValueToByteArray(mdp.PeekBytes(targetAddress, targetAddress + _Values.Length), RTC_Extensions.getDecimalValue(_Values, BigEndian) * -1, BigEndian);
+						break;
+					/*
+					if (_Values.Length == 1)
+						//Don't actually have to do any of the conversions here
+						_Values[0] += (byte)(mdp.PeekByte(targetAddress));
+					else
+					{
+						decimal temp = RTC_Extensions.getDecimalValue(mdp.PeekBytes(targetAddress, targetAddress + _Values.Length), BigEndian);
 
-						case BlastByteType.NONE:
-                            return true;
-                    }
+						//The RTC handles everything as big endian internally, so make sure this is converting as big endian
+						decimal _valuesTemp = RTC_Extensions.getDecimalValue(_Values, true);
+							//for(int i = 0; i < _Values.Length; i++)
+						temp += _valuesTemp;
+						_Values = RTC_Extensions.addValueToByteArray(_Values, temp, BigEndian);
+					}
+					break;
+				case (BlastByteType.SUBSTRACT):
+					if (_Values.Length == 1)
+						//Don't actually have to do any of the conversions here
+						_Values[0] -= (byte)(mdp.PeekByte(targetAddress));
+					else
+					{
+						decimal temp = RTC_Extensions.getDecimalValue(mdp.PeekBytes(targetAddress, targetAddress + _Values.Length), BigEndian);
+						//The RTC handles everything as big endian internally, so make sure this is converting as big endian
+						decimal _valuesTemp = RTC_Extensions.getDecimalValue(_Values, true);
+						//for(int i = 0; i < _Values.Length; i++)
+						temp -= _valuesTemp;
+
+						_Values = RTC_Extensions.addValueToByteArray(_Values, temp, BigEndian);
+					}
+					break;*/
+					case (BlastByteType.NONE):
+						return true;
+				}
+
+
+				//As add and substract are accounted for already, we no longer need to check the type here. 
+				for (int i=0; i< _Values.Length; i++)
+					mdp.PokeByte(targetAddress + i, _Values[i]);
 
             }
             catch (Exception ex)
@@ -1287,7 +1324,7 @@ namespace RTC
                 EnabledString = "[x] BlastByte -> ";
 
             string cleanDomainName = Domain.Replace("(nametables)", ""); //Shortens the domain name if it contains "(nametables)"
-            return (EnabledString + cleanDomainName + "(" + Convert.ToInt32(Address).ToString() + ")." + Type.ToString() + "(" + RTC_Extensions.getDecimalValue(Value).ToString() + ")");
+            return (EnabledString + cleanDomainName + "(" + Convert.ToInt32(Address).ToString() + ")." + Type.ToString() + "(" + RTC_Extensions.getDecimalValue(Value, BigEndian).ToString() + ")");
         }
     }
 
@@ -1676,18 +1713,12 @@ namespace RTC
                     }
 
 
-                    if (BigEndian)
-                        _value = Convert.ToInt64(RTC_Extensions.getDecimalValue(RTC_Extensions.FlipWords(freezeValue, freezeValue.Length)));
-                    else
-                        _value = Convert.ToInt64(RTC_Extensions.getDecimalValue(freezeValue));
+                        _value = Convert.ToInt64(RTC_Extensions.getDecimalValue(freezeValue, BigEndian));
 
                 }
                 else
                 {
-                    if (BigEndian)
-                        _value = Convert.ToInt64(RTC_Extensions.getDecimalValue(RTC_Extensions.FlipWords(Value, Value.Length)));
-                    else
-                        _value = Convert.ToInt64(RTC_Extensions.getDecimalValue(Value));
+                        _value = Convert.ToInt64(RTC_Extensions.getDecimalValue(Value, BigEndian));
                 }
 
                 Watch somewatch = Watch.GenerateWatch(mdp.md, targetAddress, (WatchSize)Value.Length, DisplayType, BigEndian, cheatName, _value, 0, 0);
@@ -1725,7 +1756,7 @@ namespace RTC
             string cleanDomainName = Domain.Replace("(nametables)", ""); //Shortens the domain name if it contains "(nametables)"
 
             //RTC_TODO: Rewrite the toString method for this
-            return (EnabledString + cleanDomainName + "(" + Convert.ToInt32(Address).ToString() + ")" + (IsFreeze ? "" : ".Value(" + RTC_Extensions.getDecimalValue(Value).ToString() + ")"));
+            return (EnabledString + cleanDomainName + "(" + Convert.ToInt32(Address).ToString() + ")" + (IsFreeze ? "" : ".Value(" + RTC_Extensions.getDecimalValue(Value, BigEndian).ToString() + ")"));
         }
     }
 

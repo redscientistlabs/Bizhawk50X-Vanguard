@@ -84,8 +84,9 @@ namespace RTC
                 }
                 else //ADD, SUBSTRACT
                 {
-                    for (int i = 0; i < _value.Length; i++)  //1 by default because Add(1) or Substract(1) but more is still possible
-                        _value[i] = 1;
+						//Add and subtract only need the first byte set as we're only incrementing by 1. If we set all the bytes, it'd tilt far more than 1. 
+						//1 by default because Add(1) or Substract(1) but more is still possible
+                        _value[0] = 1;
                 }
 
                 return new BlastByte(_domain, safeAddress, Type, _value, mdp.BigEndian, true);

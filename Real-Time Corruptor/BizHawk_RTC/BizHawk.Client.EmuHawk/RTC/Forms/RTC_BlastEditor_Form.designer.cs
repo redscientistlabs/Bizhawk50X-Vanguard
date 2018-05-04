@@ -1,4 +1,5 @@
-﻿namespace RTC
+﻿
+namespace RTC
 {
 	partial class RTC_BlastEditor_Form
 	{

@@ -941,11 +941,11 @@ namespace RTC
             return PeekBytes(0, Size);
         }
 
-        public override byte[] PeekBytes(long startAdress, long endAddress)
+        public override byte[] PeekBytes(long startAddress, long endAddress)
         {
             //endAddress is exclusive
             List<byte> data = new List<byte>();
-            for (long i = startAdress; i < endAddress; i++)
+            for (long i = startAddress; i < endAddress; i++)
                 data.Add(PeekByte(i));
 
             return data.ToArray();
