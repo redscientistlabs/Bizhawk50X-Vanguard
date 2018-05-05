@@ -1387,7 +1387,7 @@ namespace RTC
 
                 long targetAddress = RTC_MemoryDomains.getRealAddress(Domain, Address);
 
-                return new BlastVector(Domain, Address, mdp.PeekBytes(targetAddress, targetAddress + 3), true);
+                return new BlastVector(Domain, Address, mdp.PeekBytes(targetAddress, targetAddress + 4), true);
 
 			}
 			catch (Exception ex)

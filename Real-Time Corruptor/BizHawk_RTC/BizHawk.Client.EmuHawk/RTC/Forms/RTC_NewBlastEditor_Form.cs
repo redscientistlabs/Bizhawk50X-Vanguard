@@ -178,9 +178,9 @@ namespace RTC
 				sourceDomain = bc.Domain;
 				destAddress = RTC_Extensions.getDecimalValue(bc.Value, bc.BigEndian);
 				if (bc.IsFreeze)
-					blastMode = "Freeze";
+					blastMode = "FREEZE";
 				else
-					blastMode = "HellGenie";
+					blastMode = "HELLGENIE";
 
 			}
 			else if (bu is BlastPipe)
@@ -515,8 +515,10 @@ namespace RTC
 					bc.Address = Convert.ToInt64(row.Cells["dgvSourceAddress"].Value);
 					bc.Value = RTC_Extensions.getByteArrayValue(GetPrecisionSizeFromName(row.Cells["dgvPrecision"].Value.ToString()), Convert.ToDecimal(row.Cells["dgvParam"].Value), bc.BigEndian);
 					bc.Domain = Convert.ToString(row.Cells["dgvSourceAddressDomain"].Value);
-					if (row.Cells["dgvBlastUnitMode"].Value.ToString() == "Freeze")
+					if (row.Cells["dgvBlastUnitMode"].Value.ToString().ToUpper() == "FREEZE")
 						bc.IsFreeze = true;
+					else
+						bc.IsFreeze = false;
 					bc.IsLocked = Convert.ToBoolean((row.Cells["dgvBlastUnitLocked"].Value));
 
 					row.Cells["dgvBlastUnitReference"].Value = bc;

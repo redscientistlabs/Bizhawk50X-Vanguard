@@ -257,7 +257,7 @@ namespace RTC
 
 				BlastByte bu = null;
 
-				lastValues = mdp.PeekBytes(safeAddress, safeAddress + 3);
+				lastValues = mdp.PeekBytes(safeAddress, safeAddress + 4);
 				lastDomain = _domain;
 
 				//Enforce the safeaddress at generation
