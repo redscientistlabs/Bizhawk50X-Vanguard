@@ -173,6 +173,8 @@ namespace RTC
 					return UInt16.MaxValue;
 				case 4:
 					return UInt32.MaxValue;
+				case 8:
+					return UInt64.MaxValue;
 			}
 
 			return 0;
