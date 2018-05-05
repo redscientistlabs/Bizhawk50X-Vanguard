@@ -257,18 +257,14 @@ namespace RTC
 
 				BlastByte bu = null;
 
-				lastValues = read32bits(mdp, safeAddress);
+				lastValues = mdp.PeekBytes(safeAddress, safeAddress + 3);
 				lastDomain = _domain;
 
-
 				//Enforce the safeaddress at generation
-				if (isConstant(lastValues, limiterList))
+				if (isConstant(lastValues, limiterList, mdp.BigEndian))
 					bu = new BlastByte(_domain, safeAddress, BlastByteType.VECTOR, getRandomConstant(valueList), mdp.BigEndian, true);
 
 				return bu;
-
-
-
 
 			}
 			catch (Exception ex)
@@ -280,26 +276,22 @@ namespace RTC
 			}
         }
 
-		public static bool isConstant(byte[] bytes, string[] list)
+		public static bool isConstant(byte[] bytes, string[] list, bool BigEndian)
 		{
             if (list == null)
                 return true;
-
-			return list.Contains(ByteArrayToString(bytes));
+			if(BigEndian)
+				return list.Contains(ByteArrayToString(bytes));
+			else
+			{
+				Array.Reverse(bytes);
+				return list.Contains(ByteArrayToString(bytes));
+			}
 		}
 
 		public static string ByteArrayToString(byte[] bytes)
 		{
 			return BitConverter.ToString(bytes).Replace("-", "").ToLower();
-		}
-
-		public static byte[] read32bits(MemoryDomainProxy mdp, long address)
-		{
-			return new byte[] { mdp.PeekByte(address),
-								mdp.PeekByte(address + 1),
-								mdp.PeekByte(address + 2),
-								mdp.PeekByte(address + 3)
-			};
 		}
 
 		public static byte[] getRandomConstant(string[] list)
