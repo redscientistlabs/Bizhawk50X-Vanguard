@@ -191,6 +191,8 @@ namespace RTC
 					return BitConverter.ToUInt16(Value, 0);
 				case 4:
 					return BitConverter.ToUInt32(Value, 0);
+				case 8:
+					return BitConverter.ToUInt64(Value, 0);
 			}
 
 			return 0;
