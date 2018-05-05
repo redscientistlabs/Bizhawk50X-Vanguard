@@ -198,20 +198,37 @@ namespace RTC
 
 		public static byte[] addValueToByteArray(byte[] originalValue, decimal addValue, bool isInputBigEndian)
 		{
+			if (isInputBigEndian)
+				Array.Reverse(originalValue);
+
+			bool isAdd = addValue >= 0;
+			decimal decimalAddValueAbs = Math.Abs(addValue);
+
 			switch (originalValue.Length)
 			{
 				case 1:
-					decimal byteValue = originalValue[0];
-					byteValue += addValue;
-					return new byte[] { Convert.ToByte(mod(byteValue, 255)) };
+					byte byteValue = originalValue[0];
+					byte addByteValue = (decimalAddValueAbs > byte.MaxValue ? byte.MaxValue : Convert.ToByte(decimalAddValueAbs));
+
+					if (isAdd)
+						unchecked { byteValue += addByteValue; }
+					else
+						unchecked { byteValue -= addByteValue; }
+
+					return new byte[] { byteValue };
+
 				case 2:
 					{
-						decimal int16Value = getDecimalValue(originalValue, isInputBigEndian);
+						UInt16 int16Value = BitConverter.ToUInt16(originalValue, 0);
+						UInt16 addInt16Value = (decimalAddValueAbs > UInt16.MaxValue ? UInt16.MaxValue : Convert.ToUInt16(decimalAddValueAbs));
 
-						int16Value += addValue;
-						int16Value = mod(int16Value, UInt16.MaxValue);
+						if (isAdd)
+							unchecked { int16Value += addInt16Value; }
+						else
+							unchecked { int16Value -= addInt16Value; }
 
-						byte[] newInt16Array = BitConverter.GetBytes(Convert.ToUInt16(int16Value));
+						byte[] newInt16Array = BitConverter.GetBytes(int16Value);
+
 
 						if (isInputBigEndian)
 							Array.Reverse(newInt16Array);
@@ -220,11 +237,16 @@ namespace RTC
 					}
 				case 4:
 					{
-						decimal int32Value = getDecimalValue(originalValue, isInputBigEndian);
-						int32Value += addValue;
-						int32Value = mod(int32Value, UInt32.MaxValue);
+						UInt32 int32Value = BitConverter.ToUInt32(originalValue, 0);
+						UInt32 addInt32Value = (decimalAddValueAbs > UInt32.MaxValue ? UInt32.MaxValue : Convert.ToUInt32(decimalAddValueAbs));
 
-						byte[] newInt32Array = BitConverter.GetBytes(Convert.ToUInt32(int32Value));
+						if (isAdd)
+							unchecked { int32Value += addInt32Value; }
+						else
+							unchecked { int32Value -= addInt32Value; }
+
+
+						byte[] newInt32Array = BitConverter.GetBytes(int32Value);
 
 						if (isInputBigEndian)
 							Array.Reverse(newInt32Array);
@@ -233,22 +255,24 @@ namespace RTC
 					}
 				case 8:
 					{
-						if (isInputBigEndian)
-							Array.Reverse(originalValue);
+						UInt64 int64Value = BitConverter.ToUInt64(originalValue, 0);
+						UInt64 addInt64Value = (decimalAddValueAbs > UInt64.MaxValue ? UInt64.MaxValue : Convert.ToUInt64(decimalAddValueAbs));
 
-						decimal int64Value = Convert.ToUInt64(originalValue);
-						int64Value += addValue;
-						int64Value = mod(int64Value, UInt32.MaxValue);
+						if (isAdd)
+							unchecked { int64Value += addInt64Value; }
+						else
+							unchecked { int64Value -= addInt64Value; }
 
-						byte[] newInt64Array = BitConverter.GetBytes(Convert.ToUInt64(int64Value));
+						byte[] newInt64Array = BitConverter.GetBytes(int64Value);
+
 
 						if (isInputBigEndian)
 							Array.Reverse(newInt64Array);
 
 						return newInt64Array;
 					}
-			}
 
+			}
 			return null;
 		}
 
@@ -267,15 +291,15 @@ namespace RTC
 				case 2:
 					{
 						byte[] Value = BitConverter.GetBytes(Convert.ToUInt16(newValue));
-						if (isInputBigEndian)
-							Array.Reverse(Value);
+			//			if (isInputBigEndian)
+				//			Array.Reverse(Value);
 						return Value;
 					}
 				case 4:
 					{
 						byte[] Value = BitConverter.GetBytes(Convert.ToUInt32(newValue));
-						if (isInputBigEndian)
-							Array.Reverse(Value);
+					//	if (isInputBigEndian)
+				//			Array.Reverse(Value);
 						return Value;
 					}
 			}

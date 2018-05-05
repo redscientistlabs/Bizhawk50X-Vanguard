@@ -1182,10 +1182,7 @@ namespace RTC
 				byte[] _Values = (byte[])Value.Clone();
 
 
-				//Big endian  = left to right
-				//Little endian = right to left
-				//By default, the bytes are handled as if they're big endian, so flip them if they're not
-				if (!BigEndian)
+				if ((Type == BlastByteType.ADD || Type == BlastByteType.SUBSTRACT) && BigEndian)
 					_Values.FlipBytes();
 
 					//When using ADD and SUBSTRACT we need to properly handle multi-byte values.
@@ -1208,36 +1205,7 @@ namespace RTC
 					case (BlastByteType.SUBSTRACT):
 						_Values = RTC_Extensions.addValueToByteArray(mdp.PeekBytes(targetAddress, targetAddress + _Values.Length), RTC_Extensions.getDecimalValue(_Values, BigEndian) * -1, BigEndian);
 						break;
-					/*
-					if (_Values.Length == 1)
-						//Don't actually have to do any of the conversions here
-						_Values[0] += (byte)(mdp.PeekByte(targetAddress));
-					else
-					{
-						decimal temp = RTC_Extensions.getDecimalValue(mdp.PeekBytes(targetAddress, targetAddress + _Values.Length), BigEndian);
 
-						//The RTC handles everything as big endian internally, so make sure this is converting as big endian
-						decimal _valuesTemp = RTC_Extensions.getDecimalValue(_Values, true);
-							//for(int i = 0; i < _Values.Length; i++)
-						temp += _valuesTemp;
-						_Values = RTC_Extensions.addValueToByteArray(_Values, temp, BigEndian);
-					}
-					break;
-				case (BlastByteType.SUBSTRACT):
-					if (_Values.Length == 1)
-						//Don't actually have to do any of the conversions here
-						_Values[0] -= (byte)(mdp.PeekByte(targetAddress));
-					else
-					{
-						decimal temp = RTC_Extensions.getDecimalValue(mdp.PeekBytes(targetAddress, targetAddress + _Values.Length), BigEndian);
-						//The RTC handles everything as big endian internally, so make sure this is converting as big endian
-						decimal _valuesTemp = RTC_Extensions.getDecimalValue(_Values, true);
-						//for(int i = 0; i < _Values.Length; i++)
-						temp -= _valuesTemp;
-
-						_Values = RTC_Extensions.addValueToByteArray(_Values, temp, BigEndian);
-					}
-					break;*/
 					case (BlastByteType.NONE):
 						return true;
 				}
