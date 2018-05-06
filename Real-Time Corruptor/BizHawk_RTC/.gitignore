@@ -7,6 +7,10 @@ svnrev.cs
 **/obj/**
 /output/**
 /output64/**
+
+!/output/dll/*
+!/output/dll/
+
 **/Release/**
 **/Debug/**
 **/ipch/**
