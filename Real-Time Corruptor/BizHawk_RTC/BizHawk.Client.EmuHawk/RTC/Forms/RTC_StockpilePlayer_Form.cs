@@ -158,9 +158,10 @@ namespace RTC
 				try
 				{
 					DontLoadSelectedStockpile = true;
-					Stockpile.Load(dgvStockpile);
+
+					if (Stockpile.Load(dgvStockpile))
+						RTC_Core.ghForm.dgvStockpile.Rows.Clear();
 					dgvStockpile.ClearSelection();
-					RTC_Core.ghForm.dgvStockpile.Rows.Clear();
 
 				}
 				catch(Exception ex)
