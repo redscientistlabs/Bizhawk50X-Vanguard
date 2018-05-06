@@ -163,7 +163,7 @@ namespace RTC
 
 		#region BYTE ARRAY EXTENSIONS
 
-		public static long getNumericMaxValue(byte[] Value)
+		public static ulong getNumericMaxValue(byte[] Value)
 		{
 			switch (Value.Length)
 			{

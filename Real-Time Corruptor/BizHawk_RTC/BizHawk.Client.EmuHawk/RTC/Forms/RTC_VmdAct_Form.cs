@@ -109,14 +109,14 @@ namespace RTC
 
 			ActiveTableObject act = new ActiveTableObject(ActiveTableGenerated);
 
-			FileStream FS;
-			//BinaryFormatter bformatter = new BinaryFormatter();
-			XmlSerializer xs = new XmlSerializer(typeof(ActiveTableObject));
-			FS = File.Open(currentFilename, FileMode.OpenOrCreate);
-			//bformatter.Serialize(FS, act);
-			xs.Serialize(FS, act);
-			FS.Close();
-
+			using(FileStream FS = File.Open(currentFilename, FileMode.OpenOrCreate))
+			{
+				XmlSerializer xs = new XmlSerializer(typeof(ActiveTableObject));
+				//bformatter.Serialize(FS, act);
+				xs.Serialize(FS, act);
+				FS.Close();
+			}
+			
 			GC.Collect();
 			GC.WaitForPendingFinalizers();
 
@@ -325,18 +325,14 @@ namespace RTC
 					return;
 				}
 
-				FileStream FS;
-				//BinaryFormatter bformatter = new BinaryFormatter();
-				XmlSerializer xs = new XmlSerializer(typeof(ActiveTableObject));
-				FS = File.Open(currentFilename, FileMode.OpenOrCreate);
-				//ActiveTableObject act = (ActiveTableObject)bformatter.Deserialize(FS);
-				ActiveTableObject act = (ActiveTableObject)xs.Deserialize(FS);
-				FS.Close();
-
-				SetActiveTable(act);
-				ActLoadedFromFile = true;
-
-
+				using(FileStream FS = File.Open(currentFilename, FileMode.OpenOrCreate))
+				{
+					XmlSerializer xs = new XmlSerializer(typeof(ActiveTableObject));
+					ActiveTableObject act = (ActiveTableObject)xs.Deserialize(FS);
+					FS.Close();
+					SetActiveTable(act);
+					ActLoadedFromFile = true;
+				}
 				RTC_Core.StartSound();
 			}
 			catch
@@ -371,15 +367,13 @@ namespace RTC
 			}
 			else
 				return;
-
-			FileStream FS;
-			//BinaryFormatter bformatter = new BinaryFormatter();
-			XmlSerializer xs = new XmlSerializer(typeof(ActiveTableObject));
-			FS = File.Open(tempFilename, FileMode.OpenOrCreate);
-			//ActiveTableObject act = (ActiveTableObject)bformatter.Deserialize(FS);
-			ActiveTableObject act = (ActiveTableObject)xs.Deserialize(FS);
-			FS.Close();
-
+			ActiveTableObject act = null;
+			using (FileStream FS = File.Open(tempFilename, FileMode.OpenOrCreate))
+			{
+				XmlSerializer xs = new XmlSerializer(typeof(ActiveTableObject));
+				act = (ActiveTableObject)xs.Deserialize(FS);
+				FS.Close();
+			}
 			long[] substractiveActiveTable = act.data;
 
 			List<long> newActiveTable = new List<long>();
@@ -422,14 +416,14 @@ namespace RTC
 				else
 					return;
 
-				FileStream FS;
-				//BinaryFormatter bformatter = new BinaryFormatter();
-				XmlSerializer xs = new XmlSerializer(typeof(ActiveTableObject));
-				FS = File.Open(tempFilename, FileMode.OpenOrCreate);
-				//ActiveTableObject act = (ActiveTableObject)bformatter.Deserialize(FS);
-				ActiveTableObject act = (ActiveTableObject)xs.Deserialize(FS);
-				FS.Close();
+				ActiveTableObject act = null;
 
+				using (FileStream FS = File.Open(tempFilename, FileMode.OpenOrCreate))
+				{
+					XmlSerializer xs = new XmlSerializer(typeof(ActiveTableObject));
+					act = (ActiveTableObject)xs.Deserialize(FS);
+					FS.Close();
+				}
 				long[] additiveActiveTable = act.data;
 
 				List<long> newActiveTable = new List<long>();

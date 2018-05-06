@@ -203,14 +203,13 @@ namespace RTC
 			for (int i = 0; i < sks.StashKeys.Count; i++) //changes RomFile to short filename
 				sks.StashKeys[i].RomFilename = RTC_Extensions.getShortFilenameFromPath(sks.StashKeys[i].RomFilename);
 
-			FileStream FS;
-			XmlSerializer xs = new XmlSerializer(typeof(Stockpile));
-
 			//creater stockpile.xml to temp folder from stockpile object
-			FS = File.Open(RTC_Core.rtcDir + "\\TEMP\\stockpile.xml", FileMode.OpenOrCreate);
-			xs.Serialize(FS, sks);
-            FS.Close();
-
+			using(FileStream FS = File.Open(RTC_Core.rtcDir + "\\TEMP\\stockpile.xml", FileMode.OpenOrCreate))
+			{
+				XmlSerializer xs = new XmlSerializer(typeof(Stockpile));
+				xs.Serialize(FS, sks);
+				FS.Close();
+			}
             //7z the temp folder to destination filename
             //string[] stringargs = { "-c", sks.Filename, RTC_Core.rtcDir + "\\TEMP\\" };
             //FastZipProgram.Exec(stringargs);
@@ -266,15 +265,16 @@ namespace RTC
 
             Extract(Filename, "TEMP", "stockpile.xml");
 
-			FileStream FS;
-			XmlSerializer xs = new XmlSerializer(typeof(Stockpile));
 			Stockpile sks;
 
 			try
 			{
-				FS = File.Open(RTC_Core.rtcDir + "\\TEMP\\stockpile.xml", FileMode.OpenOrCreate);
-				sks = (Stockpile)xs.Deserialize(FS);
-				FS.Close();
+				using(FileStream FS = File.Open(RTC_Core.rtcDir + "\\TEMP\\stockpile.xml", FileMode.OpenOrCreate))
+				{
+					XmlSerializer xs = new XmlSerializer(typeof(Stockpile));
+					sks = (Stockpile)xs.Deserialize(FS);
+					FS.Close();
+				}
 			}
 			catch
 			{
@@ -662,16 +662,17 @@ namespace RTC
 
 
 
-            //stockpile se deserialization
-            FileStream FS;
-			XmlSerializer xs = new XmlSerializer(typeof(Stockpile));
+            //stockpile deserialization
             Stockpile sks;
 
             try
             {
-                FS = File.Open(RTC_Core.rtcDir + "\\TEMP3\\stockpile.xml", FileMode.OpenOrCreate);
-				sks = (Stockpile)xs.Deserialize(FS);
-				FS.Close();
+				using(FileStream FS = File.Open(RTC_Core.rtcDir + "\\TEMP3\\stockpile.xml", FileMode.OpenOrCreate))
+				{
+					XmlSerializer xs = new XmlSerializer(typeof(Stockpile));
+					sks = (Stockpile)xs.Deserialize(FS);
+					FS.Close();
+				}
             }
             catch
             {

@@ -1091,84 +1091,93 @@ namespace RTC
 
 		private void btnSaveSavestateList_Click(object sender, EventArgs e)
 		{
-			SaveStateKeys ssk = new SaveStateKeys();
-
-			for(int i = 1; i<41; i++)
+			try
 			{
-				string key = i.ToString().PadLeft(2, '0');
 
-				if (RTC_StockpileManager.SavestateStashkeyDico.ContainsKey(key))
+				SaveStateKeys ssk = new SaveStateKeys();
+
+				for (int i = 1; i < 41; i++)
 				{
-					ssk.StashKeys[i] = RTC_StockpileManager.SavestateStashkeyDico[key];
-					ssk.Text[i] = StateBoxes[key].Text;
+					string key = i.ToString().PadLeft(2, '0');
+
+					if (RTC_StockpileManager.SavestateStashkeyDico.ContainsKey(key))
+					{
+						ssk.StashKeys[i] = RTC_StockpileManager.SavestateStashkeyDico[key];
+						ssk.Text[i] = StateBoxes[key].Text;
+					}
+					else
+					{
+						ssk.StashKeys[i] = null;
+						ssk.Text[i] = null;
+					}
+
+				}
+
+				string Filename;
+				string ShortFilename;
+
+				SaveFileDialog saveFileDialog1 = new SaveFileDialog();
+				saveFileDialog1.DefaultExt = "ssk";
+				saveFileDialog1.Title = "Savestate Keys File";
+				saveFileDialog1.Filter = "SSK files|*.ssk";
+				saveFileDialog1.RestoreDirectory = true;
+
+				if (saveFileDialog1.ShowDialog() == DialogResult.OK)
+				{
+					Filename = saveFileDialog1.FileName;
+					ShortFilename = Filename.Substring(Filename.LastIndexOf("\\") + 1, Filename.Length - (Filename.LastIndexOf("\\") + 1));
 				}
 				else
+					return;
+
+				//clean temp4 folder
+				foreach (string file in Directory.GetFiles(RTC_Core.rtcDir + "\\TEMP4"))
+					File.Delete(file);
+
+
+				for (int i = 1; i < 41; i++)
 				{
-					ssk.StashKeys[i] = null;
-					ssk.Text[i] = null;
+					StashKey key = ssk.StashKeys[i];
+
+					if (key == null)
+						continue;
+
+					string statefilename = key.GameName + "." + key.ParentKey + ".timejump.State"; // get savestate name
+
+					if (!File.Exists(RTC_Core.rtcDir + "\\TEMP4\\" + statefilename))
+						File.Copy(RTC_Core.bizhawkDir + "\\" + key.SystemName + "\\State\\" + statefilename, RTC_Core.rtcDir + "\\TEMP4\\" + statefilename); // copy savestates to temp folder
+
 				}
 
+				//creater stockpile.xml to temp folder from stockpile object
+
+				using (FileStream FS = File.Open(RTC_Core.rtcDir + "\\TEMP4\\keys.xml", FileMode.OpenOrCreate))
+				{
+					XmlSerializer xs = new XmlSerializer(typeof(SaveStateKeys));
+
+					xs.Serialize(FS, ssk);
+					FS.Close();
+				}
+
+
+				//7z the temp folder to destination filename
+				//string[] stringargs = { "-c", Filename, RTC_Core.rtcDir + "\\TEMP4\\" };
+				//FastZipProgram.Exec(stringargs);
+
+				string tempFilename = Filename + ".temp";
+
+				System.IO.Compression.ZipFile.CreateFromDirectory(RTC_Core.rtcDir + "\\TEMP4\\", tempFilename, System.IO.Compression.CompressionLevel.Fastest, false);
+
+				if (File.Exists(Filename))
+					File.Delete(Filename);
+
+				File.Move(tempFilename, Filename);
 			}
-
-			string Filename;
-			string ShortFilename;
-
-			SaveFileDialog saveFileDialog1 = new SaveFileDialog();
-			saveFileDialog1.DefaultExt = "ssk";
-			saveFileDialog1.Title = "Savestate Keys File";
-			saveFileDialog1.Filter = "SSK files|*.ssk";
-			saveFileDialog1.RestoreDirectory = true;
-
-			if (saveFileDialog1.ShowDialog() == DialogResult.OK)
+			catch
 			{
-				Filename = saveFileDialog1.FileName;
-				ShortFilename = Filename.Substring(Filename.LastIndexOf("\\") + 1, Filename.Length - (Filename.LastIndexOf("\\") + 1));
-			}
-			else
+				MessageBox.Show("The Savestate Keys file could not be saved");
 				return;
-
-			//clean temp4 folder
-			foreach (string file in Directory.GetFiles(RTC_Core.rtcDir + "\\TEMP4"))
-				File.Delete(file);
-
-
-			for(int i = 1; i < 41; i++)
-			{
-				StashKey key = ssk.StashKeys[i];
-
-				if (key == null)
-					continue;
-
-				string statefilename = key.GameName + "." + key.ParentKey + ".timejump.State"; // get savestate name
-
-				if (!File.Exists(RTC_Core.rtcDir + "\\TEMP4\\" + statefilename))
-					File.Copy(RTC_Core.bizhawkDir + "\\" + key.SystemName + "\\State\\" + statefilename, RTC_Core.rtcDir + "\\TEMP4\\" + statefilename); // copy savestates to temp folder
-
 			}
-
-			FileStream FS;
-			XmlSerializer xs = new XmlSerializer(typeof(SaveStateKeys));
-
-			//creater stockpile.xml to temp folder from stockpile object
-			FS = File.Open(RTC_Core.rtcDir + "\\TEMP4\\keys.xml", FileMode.OpenOrCreate);
-			xs.Serialize(FS, ssk);
-			FS.Close();
-
-
-
-            //7z the temp folder to destination filename
-            //string[] stringargs = { "-c", Filename, RTC_Core.rtcDir + "\\TEMP4\\" };
-            //FastZipProgram.Exec(stringargs);
-
-            string tempFilename = Filename + ".temp";
-
-            System.IO.Compression.ZipFile.CreateFromDirectory(RTC_Core.rtcDir + "\\TEMP4\\", tempFilename, System.IO.Compression.CompressionLevel.Fastest, false);
-
-            if (File.Exists(Filename))
-                File.Delete(Filename);
-
-            File.Move(tempFilename, Filename);
-
         }
 
 		private void btnLoadSavestateList_Click(object sender, EventArgs e)
@@ -1193,19 +1202,21 @@ namespace RTC
 				return;
 			}
 
-			FileStream FS;
-			XmlSerializer xs = new XmlSerializer(typeof(SaveStateKeys));
 			SaveStateKeys ssk;
 
             var token = RTC_NetCore.HugeOperationStart();
 
 			try
 			{
+				
 				Stockpile.Extract(Filename,"TEMP4","keys.xml");
 
-				FS = File.Open(RTC_Core.rtcDir + "\\TEMP4\\keys.xml", FileMode.OpenOrCreate);
-				ssk = (SaveStateKeys)xs.Deserialize(FS);
-				FS.Close();
+				using(FileStream FS = File.Open(RTC_Core.rtcDir + "\\TEMP4\\keys.xml", FileMode.OpenOrCreate))
+				{
+					XmlSerializer xs = new XmlSerializer(typeof(SaveStateKeys));
+					ssk = (SaveStateKeys)xs.Deserialize(FS);
+					FS.Close();
+				}
 			}
 			catch
 			{

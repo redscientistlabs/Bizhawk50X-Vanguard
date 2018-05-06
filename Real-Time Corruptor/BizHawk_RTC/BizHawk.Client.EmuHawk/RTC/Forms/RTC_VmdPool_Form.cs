@@ -78,13 +78,13 @@ namespace RTC
             {
                 string Filename = saveFileDialog1.FileName;
 
-                FileStream FS;
-                XmlSerializer xs = new XmlSerializer(typeof(VmdPrototype));
-
-                //creater stockpile.xml to temp folder from stockpile object
-                FS = File.Open(Filename, FileMode.OpenOrCreate);
-                xs.Serialize(FS, VMD.proto);
-                FS.Close();
+				//creater stockpile.xml to temp folder from stockpile object
+				using (FileStream FS = File.Open(Filename, FileMode.OpenOrCreate))
+				{
+					XmlSerializer xs = new XmlSerializer(typeof(VmdPrototype));
+					xs.Serialize(FS, VMD.proto);
+					FS.Close();
+				}
 
             }
             else
@@ -107,13 +107,14 @@ namespace RTC
                     try
                     {
 
-                        FileStream FS;
-                        XmlSerializer xs = new XmlSerializer(typeof(VmdPrototype));
-                        FS = File.Open(Filename, FileMode.OpenOrCreate);
-                        var proto = (VmdPrototype)xs.Deserialize(FS);
-                        FS.Close();
+						using (FileStream FS = File.Open(Filename, FileMode.OpenOrCreate))
+						{
+							XmlSerializer xs = new XmlSerializer(typeof(VmdPrototype));
+							var proto = (VmdPrototype)xs.Deserialize(FS);
+							FS.Close();
 
-                        RTC_MemoryDomains.AddVMD(proto);
+							RTC_MemoryDomains.AddVMD(proto);
+						}
                     }
                     catch
                     {
