@@ -8,8 +8,10 @@ svnrev.cs
 /output/**
 /output64/**
 
+
 !/output/dll/*
 !/output/dll/
+/output/dll/Bizhawk*
 
 **/Release/**
 **/Debug/**
