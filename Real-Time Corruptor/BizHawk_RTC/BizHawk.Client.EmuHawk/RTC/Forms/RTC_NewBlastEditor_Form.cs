@@ -79,6 +79,7 @@ namespace RTC
 		{
 			RTC_Core.SetRTCColor(RTC_Core.generalColor, this);
 
+			this.KeyDown += new KeyEventHandler(RTC_NewBlastEditor_Form_KeyDown);
 			this.dgvBlastLayer.CellValidating += new DataGridViewCellValidatingEventHandler(dgvBlastLayer_CellValidating);
 			this.dgvBlastLayer.MouseClick += new System.Windows.Forms.MouseEventHandler(dgvBlastLayer_MouseClick);
 			this.dgvBlastLayer.RowsAdded += new DataGridViewRowsAddedEventHandler(dgvBlastLayer_RowsAdded);
@@ -222,7 +223,6 @@ namespace RTC
 				if (!(bool)bu2RowDico[bu].Cells["dgvBlastUnitLocked"].Value)
 					bu2RowDico[bu].Cells["dgvBlastEnabled"].Value = true;
 				CurrentlyUpdating = false;
-				//bu.IsEnabled = true;
 			}
 
 			foreach (BlastUnit bu in sk.BlastLayer.Layer.OrderBy(x => RTC_Core.RND.Next()).Take(sk.BlastLayer.Layer.Count / 2))
@@ -230,7 +230,6 @@ namespace RTC
 				if (!(bool)bu2RowDico[bu].Cells["dgvBlastUnitLocked"].Value)
 					bu2RowDico[bu].Cells["dgvBlastEnabled"].Value = false;
 				CurrentlyUpdating = false;
-				//bu.IsEnabled = false;
 			}
 
 		}
@@ -953,7 +952,7 @@ namespace RTC
 			buttonOk.DialogResult = DialogResult.OK;
 			buttonCancel.DialogResult = DialogResult.Cancel;
 
-			label.SetBounds(24, 20, 372, 13);
+			label.SetBounds(36, 20, 372, 13);
 			input.SetBounds(12, 36, 372, 20);
 			buttonOk.SetBounds(228, 98, 75, 23);
 			buttonCancel.SetBounds(309, 98, 75, 23);
@@ -1246,6 +1245,18 @@ namespace RTC
 				//this.Width = this.Width + 176;
 				//dgvBlastLayer.Width = dgvBlastLayer.Width - 176;
 				btnHideSidebar.Text = "▶";
+			}
+		}
+
+		private void RTC_NewBlastEditor_Form_KeyDown(object sender, KeyEventArgs e)
+		{
+			if (e.Control && e.KeyCode == Keys.F)
+			{
+				btnSearchRow.PerformClick();
+			}
+			if (e.Control && e.KeyCode == Keys.G)
+			{
+				btnSearchAgain.PerformClick();
 			}
 		}
 	}

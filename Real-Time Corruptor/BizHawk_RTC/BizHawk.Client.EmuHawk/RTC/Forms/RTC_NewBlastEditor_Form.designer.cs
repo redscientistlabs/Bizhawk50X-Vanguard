@@ -305,7 +305,7 @@
             this.dgvParam});
             this.dgvBlastLayer.Dock = System.Windows.Forms.DockStyle.Fill;
             this.dgvBlastLayer.Location = new System.Drawing.Point(0, 24);
-            this.dgvBlastLayer.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.dgvBlastLayer.Margin = new System.Windows.Forms.Padding(2);
             this.dgvBlastLayer.Name = "dgvBlastLayer";
             this.dgvBlastLayer.RowHeadersVisible = false;
             this.dgvBlastLayer.RowTemplate.Height = 24;
@@ -776,6 +776,7 @@
             this.Controls.Add(this.panelSidebar);
             this.Controls.Add(this.menuStripEx1);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
+            this.KeyPreview = true;
             this.MainMenuStrip = this.menuStripEx1;
             this.MinimumSize = new System.Drawing.Size(904, 564);
             this.Name = "RTC_NewBlastEditor_Form";
