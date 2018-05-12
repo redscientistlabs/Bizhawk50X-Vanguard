@@ -51,6 +51,7 @@
             this.lbLoadedVmdList.Location = new System.Drawing.Point(12, 14);
             this.lbLoadedVmdList.Margin = new System.Windows.Forms.Padding(5);
             this.lbLoadedVmdList.Name = "lbLoadedVmdList";
+            this.lbLoadedVmdList.SelectionMode = System.Windows.Forms.SelectionMode.MultiExtended;
             this.lbLoadedVmdList.Size = new System.Drawing.Size(173, 221);
             this.lbLoadedVmdList.TabIndex = 12;
             this.lbLoadedVmdList.Tag = "color:dark";

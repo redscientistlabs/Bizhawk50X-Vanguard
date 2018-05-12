@@ -23,13 +23,15 @@ namespace RTC
             if (lbLoadedVmdList.SelectedIndex == -1)
                 return;
 
-            string VmdName = lbLoadedVmdList.SelectedItem.ToString();
+			foreach (var item in lbLoadedVmdList.SelectedItems)
+			{
+				string VmdName = lbLoadedVmdList.SelectedItem.ToString();
 
-            foreach (BlastPipe bp in RTC_PipeEngine.AllBlastPipes)
-                bp.Rasterize();
+				foreach (BlastPipe bp in RTC_PipeEngine.AllBlastPipes)
+					bp.Rasterize();
 
-            RTC_MemoryDomains.RemoveVMD(VmdName);
-
+				RTC_MemoryDomains.RemoveVMD(VmdName);
+			}
             RefreshVMDs();
         }
 

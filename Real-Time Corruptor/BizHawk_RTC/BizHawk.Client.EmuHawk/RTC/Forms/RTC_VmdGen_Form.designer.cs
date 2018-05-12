@@ -212,6 +212,11 @@
             this.nmPointerSpacer.Font = new System.Drawing.Font("Segoe UI", 9.75F);
             this.nmPointerSpacer.ForeColor = System.Drawing.Color.White;
             this.nmPointerSpacer.Location = new System.Drawing.Point(114, 149);
+            this.nmPointerSpacer.Maximum = new decimal(new int[] {
+            2147483647,
+            0,
+            0,
+            0});
             this.nmPointerSpacer.Minimum = new decimal(new int[] {
             2,
             0,
