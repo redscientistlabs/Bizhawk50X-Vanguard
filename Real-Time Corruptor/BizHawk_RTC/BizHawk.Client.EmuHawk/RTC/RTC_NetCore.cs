@@ -253,7 +253,14 @@ namespace RTC
 
                         try
                         {
-                            binaryFormatter.Serialize(networkStream, backCmd);
+							using (MemoryStream ms = new MemoryStream())
+							{
+								binaryFormatter.Serialize(ms, backCmd);
+								byte[] buf = ms.ToArray();
+								networkStream.Write(buf, 0, buf.Length);
+							}
+							
+							//binaryFormatter.Serialize(networkStream, backCmd);
                         }
                         catch(Exception ex)
                         {

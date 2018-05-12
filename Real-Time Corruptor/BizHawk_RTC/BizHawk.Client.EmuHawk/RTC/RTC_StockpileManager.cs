@@ -142,8 +142,10 @@ namespace RTC
 			}
 
 
-
+			var watch = System.Diagnostics.Stopwatch.StartNew();
 			BlastLayer bl = (BlastLayer)RTC_Core.SendCommandToBizhawk(new RTC_Command(CommandType.BLAST) { objectValue = RTC_MemoryDomains.SelectedDomains }, true);
+			watch.Stop();
+			Console.WriteLine($"It took " + watch.ElapsedMilliseconds + " ms to blastlayer");
 
 			currentStashkey = new StashKey(RTC_Core.GetRandomKey(), psk.ParentKey, bl);
 			currentStashkey.RomFilename = psk.RomFilename;
