@@ -503,7 +503,7 @@ namespace RTC
 				VmdPrototype proto = new VmdPrototype();
 
 				proto.GenDomain = cbSelectedMemoryDomain.SelectedItem.ToString();
-				proto.VmdName = RTC_Core.GetRandomKey();
+				proto.VmdName = mi.name + RTC_Core.GetRandomKey();
 				proto.BigEndian = mi.BigEndian;
 				proto.WordSize = mi.WordSize;
 				proto.PointerSpacer = 1;

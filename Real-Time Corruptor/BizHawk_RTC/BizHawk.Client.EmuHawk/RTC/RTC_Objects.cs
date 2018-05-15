@@ -420,19 +420,27 @@ namespace RTC
 
 		public static void Extract(string Filename, string Folder, string MasterFile)
         {
-            EmptyFolder(Folder);
+			try
+			{
+				EmptyFolder(Folder);
+				ZipFile.ExtractToDirectory(Filename, RTC_Core.rtcDir + $"\\{Folder}\\");
 
-            ZipFile.ExtractToDirectory(Filename, RTC_Core.rtcDir + $"\\{Folder}\\");
 
+				if (!File.Exists(RTC_Core.rtcDir + $"\\{Folder}\\{MasterFile}"))
+				{
+					MessageBox.Show("The file could not be read properly");
 
-			if (!File.Exists(RTC_Core.rtcDir + $"\\{Folder}\\{MasterFile}"))
-            {
-                MessageBox.Show("The file could not be read properly");
+					EmptyFolder(Folder);
 
-                EmptyFolder(Folder);
-
-                return;
-            }
+					return;
+				}
+			}
+			catch
+			{
+				//If it errors out, empty the folder
+				MessageBox.Show("The file could not be read properly");
+				EmptyFolder(Folder);
+			}
         }
 
         public static void LoadBizhawkKeyBindsFromIni(string Filename = null)

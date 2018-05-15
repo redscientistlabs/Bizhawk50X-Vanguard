@@ -25,7 +25,7 @@ namespace RTC
 
 			foreach (var item in lbLoadedVmdList.SelectedItems)
 			{
-				string VmdName = lbLoadedVmdList.SelectedItem.ToString();
+				string VmdName = item.ToString();
 
 				foreach (BlastPipe bp in RTC_PipeEngine.AllBlastPipes)
 					bp.Rasterize();
