@@ -1196,11 +1196,13 @@ namespace RTC
 
 		private void bakeROMBlastunitsToFileToolStripMenuItem_Click(object sender, EventArgs e)
 		{
+			string[] originalFilename = sk.RomFilename.Split('\\');
 			string filename;
 			SaveFileDialog sfd = new SaveFileDialog();
-			sfd.DefaultExt = "rom";
-			sfd.Title = "Save rom File";
-			sfd.Filter = "rom files|*.rom";
+			//sfd.DefaultExt = "rom";
+			sfd.FileName = originalFilename[originalFilename.Length - 1];
+			sfd.Title = "Save Rom File";
+			sfd.Filter = "rom files|*.*";
 			sfd.RestoreDirectory = true;
 			if (sfd.ShowDialog() == DialogResult.OK)
 			{
