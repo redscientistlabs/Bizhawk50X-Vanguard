@@ -1265,6 +1265,9 @@ namespace RTC
 
 		private void dgvBlastLayer_SelectionChanged(object sender, EventArgs e)
 		{
+			if (dgvBlastLayer.SelectedRows.Count < 1)
+				return;
+
 			lbSelectedParam1Info.Text = dgvBlastLayer[7, dgvBlastLayer.CurrentRow.Index].FormattedValue.ToString();
 			lbSelectedParam2Info.Text = dgvBlastLayer[9, dgvBlastLayer.CurrentRow.Index].FormattedValue.ToString();
 		} 
