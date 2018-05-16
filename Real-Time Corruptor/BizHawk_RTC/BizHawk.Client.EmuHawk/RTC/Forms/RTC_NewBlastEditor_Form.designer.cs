@@ -55,6 +55,8 @@
             this.label3 = new System.Windows.Forms.Label();
             this.label4 = new System.Windows.Forms.Label();
             this.panel1 = new System.Windows.Forms.Panel();
+            this.lbSelectedParam2Info = new System.Windows.Forms.Label();
+            this.lbSelectedParam1Info = new System.Windows.Forms.Label();
             this.label6 = new System.Windows.Forms.Label();
             this.label5 = new System.Windows.Forms.Label();
             this.cbUseHex = new System.Windows.Forms.CheckBox();
@@ -87,8 +89,6 @@
             this.replaceRomFromFileToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.bakeROMBlastunitsToFileToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.btnHideSidebar = new System.Windows.Forms.Button();
-            this.lbSelectedParam1Info = new System.Windows.Forms.Label();
-            this.lbSelectedParam2Info = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.dgvBlastLayer)).BeginInit();
             this.pnMemoryTargetting.SuspendLayout();
             this.panel1.SuspendLayout();
@@ -110,7 +110,7 @@
             this.btnCorrupt.TabIndex = 13;
             this.btnCorrupt.TabStop = false;
             this.btnCorrupt.Tag = "color:darker";
-            this.btnCorrupt.Text = "Corrupt";
+            this.btnCorrupt.Text = "Apply Corruption";
             this.btnCorrupt.UseVisualStyleBackColor = false;
             this.btnCorrupt.Click += new System.EventHandler(this.btnCorrupt_Click);
             // 
@@ -448,6 +448,30 @@
             this.panel1.TabIndex = 137;
             this.panel1.Tag = "color:normal";
             // 
+            // lbSelectedParam2Info
+            // 
+            this.lbSelectedParam2Info.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.lbSelectedParam2Info.AutoSize = true;
+            this.lbSelectedParam2Info.Font = new System.Drawing.Font("Segoe UI", 8F);
+            this.lbSelectedParam2Info.ForeColor = System.Drawing.Color.White;
+            this.lbSelectedParam2Info.Location = new System.Drawing.Point(61, 34);
+            this.lbSelectedParam2Info.Name = "lbSelectedParam2Info";
+            this.lbSelectedParam2Info.Size = new System.Drawing.Size(35, 13);
+            this.lbSelectedParam2Info.TabIndex = 135;
+            this.lbSelectedParam2Info.Text = "None";
+            // 
+            // lbSelectedParam1Info
+            // 
+            this.lbSelectedParam1Info.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.lbSelectedParam1Info.AutoSize = true;
+            this.lbSelectedParam1Info.Font = new System.Drawing.Font("Segoe UI", 8F);
+            this.lbSelectedParam1Info.ForeColor = System.Drawing.Color.White;
+            this.lbSelectedParam1Info.Location = new System.Drawing.Point(61, 5);
+            this.lbSelectedParam1Info.Name = "lbSelectedParam1Info";
+            this.lbSelectedParam1Info.Size = new System.Drawing.Size(35, 13);
+            this.lbSelectedParam1Info.TabIndex = 134;
+            this.lbSelectedParam1Info.Text = "None";
+            // 
             // label6
             // 
             this.label6.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
@@ -768,30 +792,6 @@
             this.btnHideSidebar.Text = "▶";
             this.btnHideSidebar.UseVisualStyleBackColor = true;
             this.btnHideSidebar.Click += new System.EventHandler(this.btnHideSidebar_Click);
-            // 
-            // lbSelectedParam1Info
-            // 
-            this.lbSelectedParam1Info.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.lbSelectedParam1Info.AutoSize = true;
-            this.lbSelectedParam1Info.Font = new System.Drawing.Font("Segoe UI", 8F);
-            this.lbSelectedParam1Info.ForeColor = System.Drawing.Color.White;
-            this.lbSelectedParam1Info.Location = new System.Drawing.Point(61, 5);
-            this.lbSelectedParam1Info.Name = "lbSelectedParam1Info";
-            this.lbSelectedParam1Info.Size = new System.Drawing.Size(35, 13);
-            this.lbSelectedParam1Info.TabIndex = 134;
-            this.lbSelectedParam1Info.Text = "None";
-            // 
-            // lbSelectedParam2Info
-            // 
-            this.lbSelectedParam2Info.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.lbSelectedParam2Info.AutoSize = true;
-            this.lbSelectedParam2Info.Font = new System.Drawing.Font("Segoe UI", 8F);
-            this.lbSelectedParam2Info.ForeColor = System.Drawing.Color.White;
-            this.lbSelectedParam2Info.Location = new System.Drawing.Point(61, 34);
-            this.lbSelectedParam2Info.Name = "lbSelectedParam2Info";
-            this.lbSelectedParam2Info.Size = new System.Drawing.Size(35, 13);
-            this.lbSelectedParam2Info.TabIndex = 135;
-            this.lbSelectedParam2Info.Text = "None";
             // 
             // RTC_NewBlastEditor_Form
             // 

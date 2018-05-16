@@ -22,8 +22,8 @@ namespace RTC
 		/* 
 		 * Column Indexes - Updated 4/8/2018
 		 * 
-		 * 1 dgvBlastUnitLocked.
 		 * 0 dgvBlastUnitReference
+		 * 1 dgvBlastUnitLocked.
 		 * 2 dgvBlastEnabled
 		 * 3 dgvPrecision
 		 * 4 dgvBlastUnitType
@@ -216,20 +216,22 @@ namespace RTC
 			UpdateRowPrecision(dgvBlastLayer.Rows[dgvBlastLayer.Rows.Count - 1]);
 		}
 
-
 		private void btnDisable50_Click(object sender, EventArgs e)
 		{
-			foreach (BlastUnit bu in sk.BlastLayer.Layer)
-			{
-				if (!(bool)bu2RowDico[bu].Cells["dgvBlastUnitLocked"].Value)
-					bu2RowDico[bu].Cells["dgvBlastEnabled"].Value = true;
-				CurrentlyUpdating = false;
-			}
+			dgvBlastLayer.ClearSelection();
+			int blCount = sk.BlastLayer.Layer.Count;
+			List<bool> blFlags = new List<bool>(blCount);
 
-			foreach (BlastUnit bu in sk.BlastLayer.Layer.OrderBy(x => RTC_Core.RND.Next()).Take(sk.BlastLayer.Layer.Count / 2))
+			for (int i = 0; i < blCount; i++)
+				blFlags.Add(i < (blCount / 2));
+
+			blFlags.Sort((x, y) => RTC_Core.RND.Next(-1, 1));
+
+			for (int i = 0; i < blCount; i++)
 			{
+				BlastUnit bu = sk.BlastLayer.Layer[i];
 				if (!(bool)bu2RowDico[bu].Cells["dgvBlastUnitLocked"].Value)
-					bu2RowDico[bu].Cells["dgvBlastEnabled"].Value = false;
+					bu2RowDico[bu].Cells["dgvBlastEnabled"].Value = blFlags[i];
 				CurrentlyUpdating = false;
 			}
 
@@ -242,7 +244,6 @@ namespace RTC
 				var bu = sk.BlastLayer.Layer[i];
 				if (!(bool)bu2RowDico[bu].Cells["dgvBlastUnitLocked"].Value)
 					bu2RowDico[bu].Cells["dgvBlastEnabled"].Value = !((bool)bu2RowDico[bu].Cells["dgvBlastEnabled"].Value);
-				CurrentlyUpdating = false;
 			}
 			//sk.BlastLayer.Layer[i].IsEnabled = !sk.BlastLayer.Layer[i].IsEnabled;
 		}
@@ -259,7 +260,6 @@ namespace RTC
 			{
 				sk.BlastLayer.Layer.Remove(bu);
 				dgvBlastLayer.Rows.Remove(bu2RowDico[bu]);
-				CurrentlyUpdating = false;
 			}
 		}
 
@@ -318,21 +318,21 @@ namespace RTC
 
 		private void btnDisableEverything_Click(object sender, EventArgs e)
 		{
+			dgvBlastLayer.ClearSelection();
 			foreach (BlastUnit bu in sk.BlastLayer.Layer)
 			{
 				if (!(bool)bu2RowDico[bu].Cells["dgvBlastUnitLocked"].Value)
 					bu2RowDico[bu].Cells["dgvBlastEnabled"].Value = false;
-				CurrentlyUpdating = false;
 			}
 		}
 
 		private void btnEnableEverything_Click(object sender, EventArgs e)
 		{
+			dgvBlastLayer.ClearSelection();
 			foreach (BlastUnit bu in sk.BlastLayer.Layer)
 			{
 				if (!(bool)bu2RowDico[bu].Cells["dgvBlastUnitLocked"].Value)
 					bu2RowDico[bu].Cells["dgvBlastEnabled"].Value = true;
-				CurrentlyUpdating = false;
 			}
 		}
 
@@ -393,7 +393,7 @@ namespace RTC
 
 		private void dgvBlastLayer_CellValueChanged(object sender, DataGridViewCellEventArgs e)
 		{
-			if (!initialized || dgvBlastLayer == null || dgvBlastLayer.SelectedCells == null)
+			if (!initialized || dgvBlastLayer == null )
 				return;
 
 			if (!CurrentlyUpdating)
@@ -1003,8 +1003,12 @@ namespace RTC
 
 		private DataGridViewRow SearchDataGridView(DataGridView dgv, bool findAgain = false)
 		{
+			if (searchColumn == "")
+				return null;
+
 			if (!findAgain)
 				searchOffset = 0;
+
 
 			//Search for the formatted value and return the row
 			//We use the formatted value and expect the user to input the correct type.

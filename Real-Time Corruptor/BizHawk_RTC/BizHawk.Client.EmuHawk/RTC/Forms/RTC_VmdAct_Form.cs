@@ -32,16 +32,17 @@ namespace RTC
 				if (value)
 				{
 					lbFreezeEngineActiveStatus.Text = "Active table status: READY";
-					btnActiveTableSubstractFile.ForeColor = Color.DarkGreen;
-					btnActiveTableAddFile.ForeColor = Color.DarkGreen;
+
+					btnActiveTableSubstractFile.Font = new Font("Segoe UI Semibold", 8);
+					btnActiveTableAddFile.Font = new Font("Segoe UI Semibold", 8);
 					btnActiveTableSubstractFile.Enabled = true;
 					btnActiveTableAddFile.Enabled = true;
 				}
 				else
 				{
 					lbFreezeEngineActiveStatus.Text = "Active table status: NOT READY";
-					btnActiveTableSubstractFile.ForeColor = Color.Red;
-					btnActiveTableAddFile.ForeColor = Color.Red;
+					btnActiveTableSubstractFile.Font = new Font("Segoe UI", 8);
+					btnActiveTableAddFile.Font = new Font("Segoe UI", 8);
 					btnActiveTableSubstractFile.Enabled = false;
 					btnActiveTableAddFile.Enabled = false;
 				}
@@ -275,7 +276,7 @@ namespace RTC
 				btnActiveTableDumpsReset.Text = "Reset";
 				btnActiveTableDumpsReset.ForeColor = Color.Black;
 
-				btnActiveTableAddDump.ForeColor = Color.FromArgb(192, 255, 192);
+				btnActiveTableAddDump.Font = new Font("Segoe UI Semibold", 8);
 				btnActiveTableGenerate.Enabled = true;
 				btnActiveTableAddDump.Enabled = true;
 				btnActiveTableLoad.Enabled = true;
@@ -495,7 +496,8 @@ namespace RTC
 		}
 
 		private void generateVMD() {
-
+			if (ActiveTableGenerated.Length == 0)
+				return;
 			try { 
 				var token = RTC_NetCore.HugeOperationStart("LAZY");
 				MemoryInterface mi = RTC_MemoryDomains.MemoryInterfaces[cbSelectedMemoryDomain.SelectedItem.ToString()];
@@ -503,7 +505,7 @@ namespace RTC
 				VmdPrototype proto = new VmdPrototype();
 
 				proto.GenDomain = cbSelectedMemoryDomain.SelectedItem.ToString();
-				proto.VmdName = mi.name + RTC_Core.GetRandomKey();
+				proto.VmdName = mi.name + " " + RTC_Core.GetRandomKey();
 				proto.BigEndian = mi.BigEndian;
 				proto.WordSize = mi.WordSize;
 				proto.PointerSpacer = 1;
@@ -561,7 +563,8 @@ namespace RTC
 			cbSelectedMemoryDomain.SelectedIndex = 0;
 
 			btnActiveTableDumpsReset.Enabled = true;
-			btnActiveTableDumpsReset.ForeColor = Color.DarkGreen;
+			btnActiveTableDumpsReset.Font = new Font("Segoe UI Semibold", 8);
+
 		}
 
 		private void nmActiveTableActivityThreshold_ValueChanged(object sender, EventArgs e)

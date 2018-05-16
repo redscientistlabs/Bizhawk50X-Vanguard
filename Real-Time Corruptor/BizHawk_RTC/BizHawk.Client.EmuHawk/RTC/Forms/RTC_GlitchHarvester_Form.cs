@@ -527,7 +527,7 @@ namespace RTC
             string value = "";
             if (askForName)
             {
-                if (RTC_Extensions.getInputBox("Harvester", "Enter the new Stash name:", ref value) == DialogResult.OK)
+                if (RTC_Extensions.getInputBox("Glitch Harvester", "Enter the new Stash name:", ref value) == DialogResult.OK)
                 {
                     Name = value.Trim();
                     RTC_Core.StartSound();
