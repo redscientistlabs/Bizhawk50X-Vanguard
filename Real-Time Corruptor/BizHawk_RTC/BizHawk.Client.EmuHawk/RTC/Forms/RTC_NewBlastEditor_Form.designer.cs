@@ -87,6 +87,8 @@
             this.replaceRomFromFileToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.bakeROMBlastunitsToFileToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.btnHideSidebar = new System.Windows.Forms.Button();
+            this.lbSelectedParam1Info = new System.Windows.Forms.Label();
+            this.lbSelectedParam2Info = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.dgvBlastLayer)).BeginInit();
             this.pnMemoryTargetting.SuspendLayout();
             this.panel1.SuspendLayout();
@@ -436,6 +438,8 @@
             // 
             this.panel1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.panel1.BackColor = System.Drawing.Color.Gray;
+            this.panel1.Controls.Add(this.lbSelectedParam2Info);
+            this.panel1.Controls.Add(this.lbSelectedParam1Info);
             this.panel1.Controls.Add(this.label6);
             this.panel1.Controls.Add(this.label5);
             this.panel1.Location = new System.Drawing.Point(9, 72);
@@ -765,6 +769,30 @@
             this.btnHideSidebar.UseVisualStyleBackColor = true;
             this.btnHideSidebar.Click += new System.EventHandler(this.btnHideSidebar_Click);
             // 
+            // lbSelectedParam1Info
+            // 
+            this.lbSelectedParam1Info.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.lbSelectedParam1Info.AutoSize = true;
+            this.lbSelectedParam1Info.Font = new System.Drawing.Font("Segoe UI", 8F);
+            this.lbSelectedParam1Info.ForeColor = System.Drawing.Color.White;
+            this.lbSelectedParam1Info.Location = new System.Drawing.Point(61, 5);
+            this.lbSelectedParam1Info.Name = "lbSelectedParam1Info";
+            this.lbSelectedParam1Info.Size = new System.Drawing.Size(35, 13);
+            this.lbSelectedParam1Info.TabIndex = 134;
+            this.lbSelectedParam1Info.Text = "None";
+            // 
+            // lbSelectedParam2Info
+            // 
+            this.lbSelectedParam2Info.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.lbSelectedParam2Info.AutoSize = true;
+            this.lbSelectedParam2Info.Font = new System.Drawing.Font("Segoe UI", 8F);
+            this.lbSelectedParam2Info.ForeColor = System.Drawing.Color.White;
+            this.lbSelectedParam2Info.Location = new System.Drawing.Point(61, 34);
+            this.lbSelectedParam2Info.Name = "lbSelectedParam2Info";
+            this.lbSelectedParam2Info.Size = new System.Drawing.Size(35, 13);
+            this.lbSelectedParam2Info.TabIndex = 135;
+            this.lbSelectedParam2Info.Text = "None";
+            // 
             // RTC_NewBlastEditor_Form
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -856,5 +884,7 @@
 		private DataGridViewNumericUpDownColumn dgvSourceAddress;
 		private System.Windows.Forms.DataGridViewTextBoxColumn dgvParamDomain;
 		private DataGridViewNumericUpDownColumn dgvParam;
+		private System.Windows.Forms.Label lbSelectedParam2Info;
+		private System.Windows.Forms.Label lbSelectedParam1Info;
 	}
 }

@@ -85,7 +85,8 @@ namespace RTC
 			this.dgvBlastLayer.RowsAdded += new DataGridViewRowsAddedEventHandler(dgvBlastLayer_RowsAdded);
 			this.dgvBlastLayer.RowsRemoved += new DataGridViewRowsRemovedEventHandler(dgvBlastLayer_RowsRemoved);
 			this.dgvBlastLayer.UserDeletingRow += new DataGridViewRowCancelEventHandler(dgvBlastLayer_UserDeletingRow);
-			this.dgvBlastLayer.Sorted += dgvBlastLayer_Sorted;
+			this.dgvBlastLayer.Sorted += new EventHandler(dgvBlastLayer_Sorted);
+			this.dgvBlastLayer.SelectionChanged += new EventHandler(dgvBlastLayer_SelectionChanged);
 		}
 
 		public void LoadStashkey(StashKey _sk)
@@ -1069,13 +1070,7 @@ namespace RTC
 			else
 				return;
 			CSVGenerator csv = new CSVGenerator();
-
-			using (FileStream fs = new FileStream(filename, FileMode.Create))
-			{
-
-				byte[] output = csv.GenerateFromDGV(dgvBlastLayer).GetBytes();
-				fs.Write(output, 0, output.Length);
-			}
+			File.WriteAllText(filename, csv.GenerateFromDGV(dgvBlastLayer), Encoding.UTF8);
 
 		}
 
@@ -1104,6 +1099,8 @@ namespace RTC
 					return;
 				}
 			}
+			else
+				sk.ParentKey = temp.ParentKey;
 
 		}
 
@@ -1259,5 +1256,12 @@ namespace RTC
 				btnSearchAgain.PerformClick();
 			}
 		}
+
+		private void dgvBlastLayer_SelectionChanged(object sender, EventArgs e)
+		{
+			lbSelectedParam1Info.Text = dgvBlastLayer[7, dgvBlastLayer.CurrentRow.Index].FormattedValue.ToString();
+			lbSelectedParam2Info.Text = dgvBlastLayer[9, dgvBlastLayer.CurrentRow.Index].FormattedValue.ToString();
+		} 
+
 	}
 }

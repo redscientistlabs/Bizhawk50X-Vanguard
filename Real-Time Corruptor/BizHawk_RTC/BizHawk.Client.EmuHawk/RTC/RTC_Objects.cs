@@ -1612,18 +1612,17 @@ namespace RTC
 
 		public BlastCheat(string _domain, long _address, BizHawk.Client.Common.DisplayType _displayType, bool _bigEndian, byte[] _value, bool _isEnabled, bool _isFreeze)
         {
-			//because of this, blastcheats can't be generated on standalone side.
-            var settings = new RamSearchEngine.Settings(RTC_MemoryDomains.MDRI.MemoryDomains);
-
-            Domain = _domain;
+		
+			Domain = _domain;
 
             //Address = _address - (_address % (int)settings.Size);
             Address = _address - (_address % _value.Length);
 
-            DisplayType = settings.Type;
-            BigEndian = settings.BigEndian;
+			DisplayType = _displayType;
+			BigEndian = _bigEndian;
 
-            Value = _value;
+
+			Value = _value;
             IsEnabled = _isEnabled;
             IsFreeze = _isFreeze;
             
