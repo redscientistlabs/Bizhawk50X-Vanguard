@@ -794,10 +794,12 @@ namespace RTC
 
 		public static void LoadRom_NET(string RomFile)
 		{
-            // -> EmuHawk Process only
-            //Loads a rom inside Bizhawk from a Filename.
 
-            RTC_Core.StopSound();
+			var loadRomWatch = System.Diagnostics.Stopwatch.StartNew();
+			// -> EmuHawk Process only
+			//Loads a rom inside Bizhawk from a Filename.
+
+			RTC_Core.StopSound();
 
 			var args = new BizHawk.Client.EmuHawk.MainForm.LoadRomArgs();
 
@@ -811,7 +813,8 @@ namespace RTC
 			RTC_Hooks.AllowCaptureRewindState = true;
 
 			RTC_Core.StartSound();
-
+			loadRomWatch.Stop();
+			Console.WriteLine($"Time taken for LoadRom_NET: {0}ms", loadRomWatch.ElapsedMilliseconds);
 		}
 
         public static string SaveSavestate_NET(string Key, bool threadSave = false)

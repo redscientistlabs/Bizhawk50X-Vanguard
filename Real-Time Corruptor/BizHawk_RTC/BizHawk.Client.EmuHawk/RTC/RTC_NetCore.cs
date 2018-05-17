@@ -61,8 +61,10 @@ namespace RTC
         public static int DefaultKeepAliveCounter = 5;
         public static int DefaultNetworkStreamTimeout = 2000;
         public static volatile int DefaultMaxRetries = 666;
+		private static bool showBoops = true;
 
-        System.Windows.Forms.Timer KeepAliveTimer = null;
+
+		System.Windows.Forms.Timer KeepAliveTimer = null;
 
 		private static object CommandQueueLock = new object();
         public static bool NetCoreCommandSynclock = false;
@@ -638,7 +640,8 @@ namespace RTC
 
 				RTC_Command cmdBack = null;
 
-				Console.WriteLine(expectedSide.ToString() + ":ProcessQueue -> " + cmd.Type.ToString());
+				if(!showBoops && cmd.Type.ToString() != "BOOP")
+					Console.WriteLine(expectedSide.ToString() + ":ProcessQueue -> " + cmd.Type.ToString());
 
 				switch (cmd.Type)
 				{
@@ -731,7 +734,9 @@ namespace RTC
 
 				LinkedList<RTC_Command> tempQueue = new LinkedList<RTC_Command>();
 				tempQueue.AddLast(cmd);
-				Console.WriteLine($"{expectedSide.ToString()}:SendCommand self:{self.ToString()} priority:{priority.ToString()} -> {cmd.Type.ToString()}" );
+
+				if (!showBoops && cmd.Type.ToString() != "BOOP")
+					Console.WriteLine($"{expectedSide.ToString()}:SendCommand self:{self.ToString()} priority:{priority.ToString()} -> {cmd.Type.ToString()}");
 				ProcessQueue(tempQueue);
 				return null;
 			}
@@ -747,7 +752,8 @@ namespace RTC
 			if (self)
 				cmdQueue = CommandQueue;
 
-			Console.WriteLine($"{expectedSide.ToString()}:SendCommand self:{self.ToString()} priority:{priority.ToString()} -> {cmd.Type.ToString()}");
+			if (!showBoops && cmd.Type.ToString() != "BOOP")
+				Console.WriteLine($"{expectedSide.ToString()}:SendCommand self:{self.ToString()} priority:{priority.ToString()} -> {cmd.Type.ToString()}");
 
 			if (priority)
 				cmdQueue.AddFirst(cmd);

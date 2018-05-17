@@ -914,13 +914,13 @@ namespace RTC
 			}
 			return null;
 		}
-		public static void putSyncSettings_NET(StashKey sk)
+		public static void putSyncSettings_NET(string ss)
 		{
 
 			var settable = new SettingsAdapter(Global.Emulator);
-			if (settable.HasSyncSettings && sk.SyncSettings != null)
+			if (settable.HasSyncSettings)
 			{
-				settable.PutSyncSettings(ConfigService.LoadWithType(sk.SyncSettings));
+				settable.PutSyncSettings(ConfigService.LoadWithType(ss));
 			}
 		}
 

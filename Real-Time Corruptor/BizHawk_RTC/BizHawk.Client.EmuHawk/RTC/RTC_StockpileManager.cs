@@ -348,6 +348,7 @@ namespace RTC
 
 		public static bool LoadState_NET(StashKey sk, bool ReloadRom = true)
 		{
+			var loadStateWatch = System.Diagnostics.Stopwatch.StartNew();
 			if (sk == null)
 				return false;
 
@@ -362,12 +363,17 @@ namespace RTC
 
 			if (ReloadRom)
 			{
-				string ss = null ;
+				string ss = null;
 				RTC_Core.LoadRom_NET(sk.RomFilename);
 
+				var ssWatch = System.Diagnostics.Stopwatch.StartNew();
+				ss = StashKey.getSyncSettings_NET(ss);
+				ssWatch.Stop();
+				Console.WriteLine($"Time taken to get the SyncSettings: {0}ms", ssWatch.ElapsedMilliseconds);
+
 				//If the syncsettings are different, update them and load it again. Otheriwse, leave as is
-				if(sk.SyncSettings != (ss = StashKey.getSyncSettings_NET(ss))){
-					StashKey.putSyncSettings_NET(sk);
+				if (sk.SyncSettings != ss){
+					StashKey.putSyncSettings_NET(sk.SyncSettings);
 					RTC_Core.LoadRom_NET(sk.RomFilename);
 				}
 				GameHasChanged = true;
@@ -399,6 +405,8 @@ namespace RTC
 				return false;
 			}
 
+			loadStateWatch.Stop();
+			Console.WriteLine($"Time taken for LoadState_NET: {0}ms", loadStateWatch.ElapsedMilliseconds);
 			return true;
 		}
 
