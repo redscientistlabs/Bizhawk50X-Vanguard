@@ -136,8 +136,9 @@ namespace RTC
                 case "PCE":     //PC Engine / Turbo Grafx
                 case "SGX":     //Super Grafx
                     DomainBlacklist.Add("ROM");
-                    DomainBlacklist.Add("System Bus"); //BAD THINGS HAPPEN WITH THIS DOMAIN
-                    break;
+					DomainBlacklist.Add("System Bus"); //BAD THINGS HAPPEN WITH THIS DOMAIN
+					DomainBlacklist.Add("System Bus (21 bit)");
+					break;
 
 
                 case "GBA":     //Gameboy Advance
@@ -149,22 +150,29 @@ namespace RTC
 					break;
 
                 case "SMS":     //Sega Master System
-                    DomainBlacklist.Add("System Bus"); // the game cartridge appears to be on the system bus
-                    break;
+					DomainBlacklist.Add("System Bus"); // the game cartridge appears to be on the system bus
+					DomainBlacklist.Add("ROM");
+					break;
 
-                case "GG":      //Sega GameGear
-                    //everything okay
-                    break;
+				case "GG":      //Sega GameGear
+					DomainBlacklist.Add("System Bus"); // the game cartridge appears to be on the system bus
+					break;
 
-                case "GEN":     //Sega Genesis and CD
-                    DomainBlacklist.Add("MD CART");
+				case "SG":      //Sega SG-1000
+					DomainBlacklist.Add("System Bus"); 
+					DomainBlacklist.Add("ROM"); 
+					break;
+
+				case "GEN":     //Sega Genesis and CD
+					DomainBlacklist.Add("MD CART");
                     DomainBlacklist.Add("CRAM"); //Color Ram
                     DomainBlacklist.Add("VSRAM"); //Vertical scroll ram. Do you like glitched scrolling? Have a dedicated domain...
                     DomainBlacklist.Add("SRAM"); //Save Ram
                     DomainBlacklist.Add("BOOT ROM"); //Genesis Boot Rom 
                     DomainBlacklist.Add("32X FB"); //32X Sprinkles
 					DomainBlacklist.Add("CD BOOT ROM"); //Sega CD boot rom
-					DomainBlacklist.Add("M68K Bus"); //Includes rom data
+					DomainBlacklist.Add("S68K BUS"); 
+					DomainBlacklist.Add("M68K BUS"); 
 					break;
 
 
@@ -174,12 +182,12 @@ namespace RTC
                     break;
 
                 case "A26":     //Atari 2600
-                    break;
+					DomainBlacklist.Add("System Bus");
+					break;
 
                 case "A78":     //Atari 7800
-                    DomainBlacklist.Add("BIOS ROM");
-                    DomainBlacklist.Add("HSC ROM");
-                    break;
+					DomainBlacklist.Add("System Bus");
+					break;
 
                 case "LYNX":    //Atari Lynx
                     DomainBlacklist.Add("Save RAM");
@@ -192,13 +200,12 @@ namespace RTC
                     break;
 
                 case "Coleco":  //Colecovision
-                case "SG":      //Sega SG-1000
-                    //everything okay
-                    break;
+					DomainBlacklist.Add("System Bus");
+					break;
+
 
                 case "VB":      //Virtualboy
                     DomainBlacklist.Add("ROM");
-                    DomainBlacklist.Add("CARTRAM");
                     break;
 
                 case "SAT":     //Sega Saturn
@@ -213,13 +220,21 @@ namespace RTC
                 case "INTV": //Intellivision
                     DomainBlacklist.Add("Graphics ROM");
                     DomainBlacklist.Add("System ROM");
-                    DomainBlacklist.Add("Executive ROM"); //??????    
+                    DomainBlacklist.Add("Executive Rom"); //??????    
                     break;
 
-                case "PCECD":   //PC-Engine CD / Turbo Grafx CD
+				case "APPLEII": //Apple II
+					DomainBlacklist.Add("System Bus");
+					break;
+
+				case "C64":     //Commodore 64
+					DomainBlacklist.Add("System Bus");
+					DomainBlacklist.Add("1541 Bus");
+					break;
+
+				case "PCECD":   //PC-Engine CD / Turbo Grafx CD
                 case "TI83":    //Ti-83 Calculator
-                case "C64":     //Commodore 64
-                case "SGB":     //Super Gameboy
+				case "SGB":     //Super Gameboy
                 case "DGB": 
                     break;
 
@@ -311,8 +326,10 @@ namespace RTC
                 case "PSX":     //Playstation
                     rp.error = "Unfortunately, Bizhawk doesn't support editing the ISOs while it is running. Maybe in a future version...";
                     break;
-
-            }
+				default:
+					rp.error = "The RTC devs haven't added support for this system. Go yell at them to make it work.";
+					break;
+			}
 
             return rp;
         }

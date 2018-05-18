@@ -466,9 +466,11 @@ namespace RTC
                     return"PSX";
                 case "GG":
                     return "Game Gear";
-                case "Commodore 64":
-                    return "C64";
-                default:
+				case "Commodore 64":
+					return "C64";
+				case "SG":
+					return "SG-1000";
+				default:
 					return SystemDisplayName;
 			}
             
