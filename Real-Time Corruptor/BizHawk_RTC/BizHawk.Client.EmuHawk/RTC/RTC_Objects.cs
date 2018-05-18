@@ -1191,7 +1191,7 @@ namespace RTC
 				byte[] _Values = (byte[])Value.Clone();
 
 
-				if ((Type == BlastByteType.ADD || Type == BlastByteType.SUBSTRACT) && BigEndian)
+				if ((Type == BlastByteType.VECTOR || Type == BlastByteType.ADD || Type == BlastByteType.SUBSTRACT) && BigEndian)
 					_Values.FlipBytes();
 
 					//When using ADD and SUBSTRACT we need to properly handle multi-byte values.
@@ -1203,7 +1203,6 @@ namespace RTC
 					//We assume that the user is going to be using SET and VECTOR more than ADD and SUBSTRACT so check them first
 					switch (Type)
 					{
-
 					case (BlastByteType.SET):
 					case (BlastByteType.VECTOR):
 						break;

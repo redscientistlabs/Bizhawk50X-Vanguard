@@ -152,11 +152,11 @@ namespace RTC
 				}
 				else if (destinationType == typeof(BlastByte))
 				{
-					return new BlastByte(bp.PipeDomain, bp.PipeAddress, BlastByteType.SET, BitConverter.GetBytes(0), bp.BigEndian, bp.IsEnabled);
+					return new BlastByte(bp.PipeDomain, bp.PipeAddress, BlastByteType.SET, getZeroedByteArray(bp.PipeSize), bp.BigEndian, bp.IsEnabled);
 				}
 				else if (destinationType == typeof(BlastCheat))
 				{
-					return new BlastCheat(bp.PipeDomain, bp.PipeAddress, BizHawk.Client.Common.DisplayType.Unsigned, bp.BigEndian, BitConverter.GetBytes(0), bp.IsEnabled, false);
+					return new BlastCheat(bp.PipeDomain, bp.PipeAddress, BizHawk.Client.Common.DisplayType.Unsigned, bp.BigEndian, getZeroedByteArray(bp.PipeSize), bp.IsEnabled, false);
 				}
 				else if (destinationType == typeof(BlastVector))
 				{
@@ -190,5 +190,14 @@ namespace RTC
 			return null;
 		}
 		
+		private static byte[] getZeroedByteArray(int size)
+		{
+			var temp = new byte[size];
+			for (int i = 0; i < temp.Length; i++)
+			{
+				temp[i] = 0x0;
+			}
+			return temp;
+		}
 	}
 }

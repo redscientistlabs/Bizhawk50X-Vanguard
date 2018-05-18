@@ -182,8 +182,8 @@ namespace RTC
 
 		public static decimal getDecimalValue(byte[] Value, bool isInputBigEndian)
 		{
-			if (isInputBigEndian)
-				Array.Reverse(Value);
+			//if (isInputBigEndian)
+			//	Array.Reverse(Value);
 
 			switch (Value.Length)
 			{

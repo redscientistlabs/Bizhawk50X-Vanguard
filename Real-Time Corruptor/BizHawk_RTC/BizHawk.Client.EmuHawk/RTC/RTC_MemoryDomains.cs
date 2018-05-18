@@ -108,12 +108,10 @@ namespace RTC
                 case "SNES":    //Super Nintendo
 
                     DomainBlacklist.Add("CARTROM"); //Cartridge
-                    DomainBlacklist.Add("CARTRAM"); //Cartridge Save data
                     DomainBlacklist.Add("APURAM"); //SPC700 memory
                     DomainBlacklist.Add("CGRAM"); //Color Memory (Useless and disgusting)
 					DomainBlacklist.Add("System Bus"); // maxvalue is not representative of chip (goes ridiculously high)
                     DomainBlacklist.Add("SGB CARTROM"); // Supergameboy cartridge
-                    DomainBlacklist.Add("SGB CARTRAM"); // Supergameboy catridge save data 
 
                     if(RTC_MemoryDomains.MemoryInterfaces.ContainsKey("SGB CARTROM"))
                     {
@@ -147,7 +145,8 @@ namespace RTC
                     DomainBlacklist.Add("BIOS");
                     DomainBlacklist.Add("PALRAM");
                     DomainBlacklist.Add("ROM");
-                    break;
+					DomainBlacklist.Add("System Bus");
+					break;
 
                 case "SMS":     //Sega Master System
                     DomainBlacklist.Add("System Bus"); // the game cartridge appears to be on the system bus
@@ -164,12 +163,12 @@ namespace RTC
                     DomainBlacklist.Add("SRAM"); //Save Ram
                     DomainBlacklist.Add("BOOT ROM"); //Genesis Boot Rom 
                     DomainBlacklist.Add("32X FB"); //32X Sprinkles
-                    DomainBlacklist.Add("CD BOOT ROM"); //Sega CD boot rom
-                    break;
+					DomainBlacklist.Add("CD BOOT ROM"); //Sega CD boot rom
+					DomainBlacklist.Add("M68K Bus"); //Includes rom data
+					break;
 
 
                 case "PSX":     //Sony Playstation 1
-                    DomainBlacklist.Add("MainRAM");
                     DomainBlacklist.Add("BiosROM");
                     DomainBlacklist.Add("PIOMem");
                     break;

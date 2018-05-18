@@ -527,6 +527,7 @@ namespace RTC
 				case "RTC.BlastPipe":
 					BlastPipe bp = (BlastPipe)row.Cells["dgvBlastUnitReference"].Value;
 					bp.IsEnabled = Convert.ToBoolean((row.Cells["dgvBlastEnabled"].Value));
+					bp.PipeSize = GetPrecisionSizeFromName(row.Cells["dgvPrecision"].Value.ToString());
 					bp.Address = Convert.ToInt64(row.Cells["dgvSourceAddress"].Value);
 					bp.PipeAddress = Convert.ToInt64(row.Cells["dgvParam"].Value);
 					bp.Domain = Convert.ToString(row.Cells["dgvSourceAddressDomain"].Value);

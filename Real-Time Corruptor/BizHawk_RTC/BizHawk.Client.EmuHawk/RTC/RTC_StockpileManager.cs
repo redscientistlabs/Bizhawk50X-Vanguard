@@ -372,7 +372,7 @@ namespace RTC
 				Console.WriteLine($"Time taken to get the SyncSettings: {0}ms", ssWatch.ElapsedMilliseconds);
 
 				//If the syncsettings are different, update them and load it again. Otheriwse, leave as is
-				if (sk.SyncSettings != ss){
+				if (sk.SyncSettings != ss && sk.SyncSettings != null){
 					StashKey.putSyncSettings_NET(sk.SyncSettings);
 					RTC_Core.LoadRom_NET(sk.RomFilename);
 				}
