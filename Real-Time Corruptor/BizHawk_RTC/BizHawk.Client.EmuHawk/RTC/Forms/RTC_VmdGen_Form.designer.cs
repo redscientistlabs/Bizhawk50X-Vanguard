@@ -116,7 +116,7 @@
             this.lbEndianTypeValue.AutoSize = true;
             this.lbEndianTypeValue.Font = new System.Drawing.Font("Segoe UI", 8F);
             this.lbEndianTypeValue.ForeColor = System.Drawing.Color.White;
-            this.lbEndianTypeValue.Location = new System.Drawing.Point(81, 57);
+            this.lbEndianTypeValue.Location = new System.Drawing.Point(82, 58);
             this.lbEndianTypeValue.Name = "lbEndianTypeValue";
             this.lbEndianTypeValue.Size = new System.Drawing.Size(42, 13);
             this.lbEndianTypeValue.TabIndex = 92;
@@ -127,7 +127,7 @@
             this.lbWordSizeValue.AutoSize = true;
             this.lbWordSizeValue.Font = new System.Drawing.Font("Segoe UI", 8F);
             this.lbWordSizeValue.ForeColor = System.Drawing.Color.White;
-            this.lbWordSizeValue.Location = new System.Drawing.Point(81, 38);
+            this.lbWordSizeValue.Location = new System.Drawing.Point(82, 39);
             this.lbWordSizeValue.Name = "lbWordSizeValue";
             this.lbWordSizeValue.Size = new System.Drawing.Size(42, 13);
             this.lbWordSizeValue.TabIndex = 91;
@@ -138,7 +138,7 @@
             this.lbDomainSizeValue.AutoSize = true;
             this.lbDomainSizeValue.Font = new System.Drawing.Font("Segoe UI", 8F);
             this.lbDomainSizeValue.ForeColor = System.Drawing.Color.White;
-            this.lbDomainSizeValue.Location = new System.Drawing.Point(81, 21);
+            this.lbDomainSizeValue.Location = new System.Drawing.Point(82, 22);
             this.lbDomainSizeValue.Name = "lbDomainSizeValue";
             this.lbDomainSizeValue.Size = new System.Drawing.Size(42, 13);
             this.lbDomainSizeValue.TabIndex = 90;
@@ -149,7 +149,7 @@
             this.lbEndianTypeLabel.AutoSize = true;
             this.lbEndianTypeLabel.Font = new System.Drawing.Font("Segoe UI", 9.75F);
             this.lbEndianTypeLabel.ForeColor = System.Drawing.Color.White;
-            this.lbEndianTypeLabel.Location = new System.Drawing.Point(1, 53);
+            this.lbEndianTypeLabel.Location = new System.Drawing.Point(2, 54);
             this.lbEndianTypeLabel.Name = "lbEndianTypeLabel";
             this.lbEndianTypeLabel.Size = new System.Drawing.Size(81, 17);
             this.lbEndianTypeLabel.TabIndex = 88;
@@ -160,7 +160,7 @@
             this.lbWordSizeLabel.AutoSize = true;
             this.lbWordSizeLabel.Font = new System.Drawing.Font("Segoe UI", 9.75F);
             this.lbWordSizeLabel.ForeColor = System.Drawing.Color.White;
-            this.lbWordSizeLabel.Location = new System.Drawing.Point(1, 35);
+            this.lbWordSizeLabel.Location = new System.Drawing.Point(2, 36);
             this.lbWordSizeLabel.Name = "lbWordSizeLabel";
             this.lbWordSizeLabel.Size = new System.Drawing.Size(70, 17);
             this.lbWordSizeLabel.TabIndex = 87;
@@ -171,7 +171,7 @@
             this.lbDomainSizeLabel.AutoSize = true;
             this.lbDomainSizeLabel.Font = new System.Drawing.Font("Segoe UI", 9.75F);
             this.lbDomainSizeLabel.ForeColor = System.Drawing.Color.White;
-            this.lbDomainSizeLabel.Location = new System.Drawing.Point(1, 17);
+            this.lbDomainSizeLabel.Location = new System.Drawing.Point(2, 18);
             this.lbDomainSizeLabel.Name = "lbDomainSizeLabel";
             this.lbDomainSizeLabel.Size = new System.Drawing.Size(83, 17);
             this.lbDomainSizeLabel.TabIndex = 86;
@@ -249,11 +249,11 @@
             this.tbCustomAddresses.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
             this.tbCustomAddresses.Font = new System.Drawing.Font("Segoe UI", 8F);
             this.tbCustomAddresses.ForeColor = System.Drawing.Color.White;
-            this.tbCustomAddresses.Location = new System.Drawing.Point(222, 24);
+            this.tbCustomAddresses.Location = new System.Drawing.Point(225, 24);
             this.tbCustomAddresses.Multiline = true;
             this.tbCustomAddresses.Name = "tbCustomAddresses";
             this.tbCustomAddresses.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
-            this.tbCustomAddresses.Size = new System.Drawing.Size(164, 222);
+            this.tbCustomAddresses.Size = new System.Drawing.Size(161, 222);
             this.tbCustomAddresses.TabIndex = 128;
             this.tbCustomAddresses.Tag = "color:dark";
             // 
@@ -298,7 +298,7 @@
             this.btnHelp.Font = new System.Drawing.Font("Segoe UI Semibold", 9.75F, System.Drawing.FontStyle.Bold);
             this.btnHelp.ForeColor = System.Drawing.Color.Black;
             this.btnHelp.Image = global::BizHawk.Client.EmuHawk.Properties.Resources.Help;
-            this.btnHelp.Location = new System.Drawing.Point(367, 4);
+            this.btnHelp.Location = new System.Drawing.Point(367, 5);
             this.btnHelp.Name = "btnHelp";
             this.btnHelp.Size = new System.Drawing.Size(19, 18);
             this.btnHelp.TabIndex = 134;
@@ -311,7 +311,7 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.BackColor = System.Drawing.Color.Black;
+            this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
             this.ClientSize = new System.Drawing.Size(390, 250);
             this.Controls.Add(this.btnHelp);
             this.Controls.Add(this.tbVmdName);
@@ -329,6 +329,7 @@
             this.DoubleBuffered = true;
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
             this.Name = "RTC_VmdGen_Form";
+            this.Tag = "color:darkerer";
             this.Text = "RTC_VmdGen_Form";
             this.groupBox1.ResumeLayout(false);
             this.groupBox1.PerformLayout();

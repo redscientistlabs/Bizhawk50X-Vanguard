@@ -44,7 +44,7 @@
             // lbLoadedVmdList
             // 
             this.lbLoadedVmdList.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
-            this.lbLoadedVmdList.BorderStyle = System.Windows.Forms.BorderStyle.None;
+            this.lbLoadedVmdList.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.lbLoadedVmdList.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F);
             this.lbLoadedVmdList.ForeColor = System.Drawing.Color.White;
             this.lbLoadedVmdList.FormattingEnabled = true;
@@ -52,7 +52,7 @@
             this.lbLoadedVmdList.Margin = new System.Windows.Forms.Padding(5);
             this.lbLoadedVmdList.Name = "lbLoadedVmdList";
             this.lbLoadedVmdList.SelectionMode = System.Windows.Forms.SelectionMode.MultiExtended;
-            this.lbLoadedVmdList.Size = new System.Drawing.Size(173, 221);
+            this.lbLoadedVmdList.Size = new System.Drawing.Size(173, 210);
             this.lbLoadedVmdList.TabIndex = 12;
             this.lbLoadedVmdList.Tag = "color:dark";
             this.lbLoadedVmdList.SelectedIndexChanged += new System.EventHandler(this.lbLoadedVmdList_SelectedIndexChanged);
@@ -70,7 +70,7 @@
             this.btnUnloadVmd.TabIndex = 13;
             this.btnUnloadVmd.TabStop = false;
             this.btnUnloadVmd.Tag = "color:light";
-            this.btnUnloadVmd.Text = "Unload Selected VMD";
+            this.btnUnloadVmd.Text = "Unload Selected VMDs";
             this.btnUnloadVmd.UseVisualStyleBackColor = false;
             this.btnUnloadVmd.Click += new System.EventHandler(this.btnUnloadVMD_Click);
             // 
@@ -188,7 +188,7 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.BackColor = System.Drawing.Color.Black;
+            this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
             this.ClientSize = new System.Drawing.Size(390, 250);
             this.Controls.Add(this.btnRenameVMD);
             this.Controls.Add(this.gbVmdSummary);
@@ -199,6 +199,7 @@
             this.DoubleBuffered = true;
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
             this.Name = "RTC_VmdPool_Form";
+            this.Tag = "color:darkerer";
             this.Text = "RTC_VmdPool_Form";
             this.Load += new System.EventHandler(this.RTC_VmdPool_Form_Load);
             this.gbVmdSummary.ResumeLayout(false);

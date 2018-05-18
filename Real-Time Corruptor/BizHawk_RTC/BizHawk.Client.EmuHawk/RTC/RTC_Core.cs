@@ -314,6 +314,8 @@ namespace RTC
                         else
                             coreForm.showPanelForm(coreForm.previousForm, false);
 
+
+						ghForm.pnHideGlitchHarvester.Size = ghForm.Size;
 						ghForm.pnHideGlitchHarvester.Hide();
 						csForm.btnStartEmuhawkDetached.Text = "Restart BizHawk";
 
@@ -946,6 +948,7 @@ namespace RTC
 			var normalColorControls = allControls.FindAll(it => ((it.Tag as string) ?? "").Contains("color:normal"));
 			var darkColorControls = allControls.FindAll(it => ((it.Tag as string) ?? "").Contains("color:dark"));
 			var darkerColorControls = allControls.FindAll(it => ((it.Tag as string) ?? "").Contains("color:darker"));
+			var darkererColorControls = allControls.FindAll(it => ((it.Tag as string) ?? "").Contains("color:darkerer"));
 
 			foreach (Control c in lightColorControls)
 				c.BackColor = color.ChangeColorBrightness(0.30f);
@@ -961,6 +964,9 @@ namespace RTC
 
 			foreach (Control c in darkerColorControls)
 				c.BackColor = color.ChangeColorBrightness(-0.75f);
+
+			foreach (Control c in darkererColorControls)
+				c.BackColor = color.ChangeColorBrightness(-0.825f);
 
 		}
 

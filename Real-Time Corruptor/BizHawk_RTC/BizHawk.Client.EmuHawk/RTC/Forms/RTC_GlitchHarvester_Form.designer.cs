@@ -166,13 +166,13 @@
             this.btnRerollSelected = new System.Windows.Forms.Button();
             this.label8 = new System.Windows.Forms.Label();
             this.dgvStockpile = new System.Windows.Forms.DataGridView();
-            this.cbCompressStockpiles = new System.Windows.Forms.CheckBox();
-            this.pnIntensity = new System.Windows.Forms.Panel();
             this.Item = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.GameName = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.SystemName = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.SystemCore = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.Note = new System.Windows.Forms.DataGridViewButtonColumn();
+            this.cbCompressStockpiles = new System.Windows.Forms.CheckBox();
+            this.pnIntensity = new System.Windows.Forms.Panel();
             this.pnSidebar.SuspendLayout();
             this.panel4.SuspendLayout();
             this.panel3.SuspendLayout();
@@ -2327,35 +2327,6 @@
             this.dgvStockpile.CellClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dgvStockpile_CellClick);
             this.dgvStockpile.MouseDown += new System.Windows.Forms.MouseEventHandler(this.dgvStockpile_MouseDown);
             // 
-            // cbCompressStockpiles
-            // 
-            this.cbCompressStockpiles.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.cbCompressStockpiles.AutoSize = true;
-            this.cbCompressStockpiles.Checked = true;
-            this.cbCompressStockpiles.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.cbCompressStockpiles.Font = new System.Drawing.Font("Segoe UI", 8F);
-            this.cbCompressStockpiles.ForeColor = System.Drawing.Color.White;
-            this.cbCompressStockpiles.Location = new System.Drawing.Point(696, 470);
-            this.cbCompressStockpiles.Name = "cbCompressStockpiles";
-            this.cbCompressStockpiles.Size = new System.Drawing.Size(78, 30);
-            this.cbCompressStockpiles.TabIndex = 144;
-            this.cbCompressStockpiles.TabStop = false;
-            this.cbCompressStockpiles.Text = "Compress\nStockpiles";
-            this.cbCompressStockpiles.UseVisualStyleBackColor = true;
-            // 
-            // pnIntensity
-            // 
-            this.pnIntensity.BackColor = System.Drawing.Color.Gray;
-            this.pnIntensity.Controls.Add(this.labelIntensityTimes);
-            this.pnIntensity.Controls.Add(this.track_Intensity);
-            this.pnIntensity.Controls.Add(this.nmIntensity);
-            this.pnIntensity.Controls.Add(this.labelIntensity);
-            this.pnIntensity.Location = new System.Drawing.Point(158, 30);
-            this.pnIntensity.Name = "pnIntensity";
-            this.pnIntensity.Size = new System.Drawing.Size(204, 58);
-            this.pnIntensity.TabIndex = 122;
-            this.pnIntensity.Tag = "color:normal";
-            // 
             // Item
             // 
             this.Item.FillWeight = 180F;
@@ -2396,6 +2367,35 @@
             this.Note.Resizable = System.Windows.Forms.DataGridViewTriState.True;
             this.Note.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.Automatic;
             this.Note.Text = "";
+            // 
+            // cbCompressStockpiles
+            // 
+            this.cbCompressStockpiles.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+            this.cbCompressStockpiles.AutoSize = true;
+            this.cbCompressStockpiles.Checked = true;
+            this.cbCompressStockpiles.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.cbCompressStockpiles.Font = new System.Drawing.Font("Segoe UI", 8F);
+            this.cbCompressStockpiles.ForeColor = System.Drawing.Color.White;
+            this.cbCompressStockpiles.Location = new System.Drawing.Point(696, 470);
+            this.cbCompressStockpiles.Name = "cbCompressStockpiles";
+            this.cbCompressStockpiles.Size = new System.Drawing.Size(78, 30);
+            this.cbCompressStockpiles.TabIndex = 144;
+            this.cbCompressStockpiles.TabStop = false;
+            this.cbCompressStockpiles.Text = "Compress\nStockpiles";
+            this.cbCompressStockpiles.UseVisualStyleBackColor = true;
+            // 
+            // pnIntensity
+            // 
+            this.pnIntensity.BackColor = System.Drawing.Color.Gray;
+            this.pnIntensity.Controls.Add(this.labelIntensityTimes);
+            this.pnIntensity.Controls.Add(this.track_Intensity);
+            this.pnIntensity.Controls.Add(this.nmIntensity);
+            this.pnIntensity.Controls.Add(this.labelIntensity);
+            this.pnIntensity.Location = new System.Drawing.Point(158, 30);
+            this.pnIntensity.Name = "pnIntensity";
+            this.pnIntensity.Size = new System.Drawing.Size(204, 58);
+            this.pnIntensity.TabIndex = 122;
+            this.pnIntensity.Tag = "color:normal";
             // 
             // RTC_GlitchHarvester_Form
             // 
