@@ -89,6 +89,7 @@
             this.replaceRomFromFileToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.bakeROMBlastunitsToFileToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.btnHideSidebar = new System.Windows.Forms.Button();
+            this.rasterizeVMDsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             ((System.ComponentModel.ISupportInitialize)(this.dgvBlastLayer)).BeginInit();
             this.pnMemoryTargetting.SuspendLayout();
             this.panel1.SuspendLayout();
@@ -671,7 +672,8 @@
             this.loadFromFileblToolStripMenuItem,
             this.saveToFileblToolStripMenuItem,
             this.importBlastlayerblToolStripMenuItem,
-            this.exportToCSVToolStripMenuItem});
+            this.exportToCSVToolStripMenuItem,
+            this.rasterizeVMDsToolStripMenuItem});
             this.blastLayerToolStripMenuItem.Name = "blastLayerToolStripMenuItem";
             this.blastLayerToolStripMenuItem.Size = new System.Drawing.Size(72, 20);
             this.blastLayerToolStripMenuItem.Text = "BlastLayer";
@@ -793,6 +795,13 @@
             this.btnHideSidebar.UseVisualStyleBackColor = true;
             this.btnHideSidebar.Click += new System.EventHandler(this.btnHideSidebar_Click);
             // 
+            // rasterizeVMDsToolStripMenuItem
+            // 
+            this.rasterizeVMDsToolStripMenuItem.Name = "rasterizeVMDsToolStripMenuItem";
+            this.rasterizeVMDsToolStripMenuItem.Size = new System.Drawing.Size(187, 22);
+            this.rasterizeVMDsToolStripMenuItem.Text = "Rasterize VMDs";
+            this.rasterizeVMDsToolStripMenuItem.Click += new System.EventHandler(this.rasterizeVMDsToolStripMenuItem_Click);
+            // 
             // RTC_NewBlastEditor_Form
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -886,5 +895,6 @@
 		private DataGridViewNumericUpDownColumn dgvParam;
 		private System.Windows.Forms.Label lbSelectedParam2Info;
 		private System.Windows.Forms.Label lbSelectedParam1Info;
+		private System.Windows.Forms.ToolStripMenuItem rasterizeVMDsToolStripMenuItem;
 	}
 }

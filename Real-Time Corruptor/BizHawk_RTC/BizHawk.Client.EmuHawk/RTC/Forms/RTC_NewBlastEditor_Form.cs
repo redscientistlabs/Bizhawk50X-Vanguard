@@ -1271,7 +1271,13 @@ namespace RTC
 
 			lbSelectedParam1Info.Text = dgvBlastLayer[7, dgvBlastLayer.CurrentRow.Index].FormattedValue.ToString();
 			lbSelectedParam2Info.Text = dgvBlastLayer[9, dgvBlastLayer.CurrentRow.Index].FormattedValue.ToString();
-		} 
+		}
 
+		private void rasterizeVMDsToolStripMenuItem_Click(object sender, EventArgs e)
+		{
+			foreach (BlastUnit bu in sk.BlastLayer.Layer)
+				bu.Rasterize();
+			RefreshBlastLayer();
+		}
 	}
 }
