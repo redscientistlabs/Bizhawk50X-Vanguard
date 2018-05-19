@@ -141,8 +141,10 @@ namespace BizHawk.Emulation.Cores.Waterbox
 
 			public override void PokeByte(long addr, byte val)
 			{
-				if (Writable)
-				{
+				//RTC_HIJACK
+				//Ignore the Writable flag 
+				//if (Writable)
+				//{
 					if ((ulong)addr < (ulong)Size)
 					{
 						using (_monitor.EnterExit())
@@ -154,7 +156,7 @@ namespace BizHawk.Emulation.Cores.Waterbox
 					{
 						throw new ArgumentOutOfRangeException(nameof(addr));
 					}
-				}
+				//}//HIJACK_END
 			}
 
 			public WaterboxMemoryDomain(MemoryArea m, IMonitor monitor)
