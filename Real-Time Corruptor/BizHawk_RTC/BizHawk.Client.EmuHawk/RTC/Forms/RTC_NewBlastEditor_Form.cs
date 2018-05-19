@@ -216,21 +216,17 @@ namespace RTC
 
 		private void btnDisable50_Click(object sender, EventArgs e)
 		{
-			dgvBlastLayer.ClearSelection();
-			int blCount = sk.BlastLayer.Layer.Count;
-			List<bool> blFlags = new List<bool>(blCount);
-
-			for (int i = 0; i < blCount; i++)
-				blFlags.Add(i < (blCount / 2));
-
-			blFlags.Sort((x, y) => RTC_Core.RND.Next(-1, 1));
-
-			for (int i = 0; i < blCount; i++)
+			foreach (BlastUnit bu in sk.BlastLayer.Layer)
 			{
-				BlastUnit bu = sk.BlastLayer.Layer[i];
 				if (!(bool)bu2RowDico[bu].Cells["dgvBlastUnitLocked"].Value)
-					bu2RowDico[bu].Cells["dgvBlastEnabled"].Value = blFlags[i];
+					bu2RowDico[bu].Cells["dgvBlastEnabled"].Value = true;
 				CurrentlyUpdating = false;
+			}
+			foreach (BlastUnit bu in sk.BlastLayer.Layer.OrderBy(x => RTC_Core.RND.Next()).Take(sk.BlastLayer.Layer.Count / 2))
+			{ 
+				if (!(bool)bu2RowDico[bu].Cells["dgvBlastUnitLocked"].Value)
+					bu2RowDico[bu].Cells["dgvBlastEnabled"].Value = false;
+					CurrentlyUpdating = false;
 			}
 		}
 
@@ -663,32 +659,37 @@ namespace RTC
 			}
 		}
 
-		private void PopulateBlastUnitModeContextMenu(int column)
+		private void PopulateBlastUnitModeContextMenu(int column, int row)
 		{
 			cmsBlastEditor.Items.Clear();
 
-			foreach (BlastByteType type in Enum.GetValues(typeof(BlastByteType)))
+			if(dgvBlastLayer[4, row].Value.ToString() == "RTC.BlastByte")
 			{
-				//cmsDomain.Items.Add(domain, null, );
-				(cmsBlastEditor.Items.Add(type.ToString(), null, new EventHandler((ob, ev) =>
+				foreach (BlastByteType type in Enum.GetValues(typeof(BlastByteType)))
 				{
-					foreach (DataGridViewRow row in dgvBlastLayer.SelectedRows)
-						row.Cells[column].Value = type.ToString();
-				})) as ToolStripMenuItem).Enabled = true;
+					//cmsDomain.Items.Add(domain, null, );
+					(cmsBlastEditor.Items.Add(type.ToString(), null, new EventHandler((ob, ev) =>
+					{
+						foreach (DataGridViewRow selected in dgvBlastLayer.SelectedRows)
+							selected.Cells[column].Value = type.ToString();
+					})) as ToolStripMenuItem).Enabled = true;
+				}
 			}
-			cmsBlastEditor.Items.Add(new ToolStripSeparator());
-			foreach (BlastCheatType type in Enum.GetValues(typeof(BlastCheatType)))
+			else if (dgvBlastLayer[4, row].Value.ToString() == "RTC.BlastCheat")
 			{
-				//cmsDomain.Items.Add(domain, null, );
-				(cmsBlastEditor.Items.Add(type.ToString(), null, new EventHandler((ob, ev) =>
+				foreach (BlastCheatType type in Enum.GetValues(typeof(BlastCheatType)))
 				{
-					foreach (DataGridViewRow row in dgvBlastLayer.SelectedRows)
-						row.Cells[column].Value = type.ToString();
-				})) as ToolStripMenuItem).Enabled = true;
+					//cmsDomain.Items.Add(domain, null, );
+					(cmsBlastEditor.Items.Add(type.ToString(), null, new EventHandler((ob, ev) =>
+					{
+						foreach (DataGridViewRow selected in dgvBlastLayer.SelectedRows)
+							selected.Cells[column].Value = type.ToString();
+					})) as ToolStripMenuItem).Enabled = true;
+				}
 			}
 		}
 
-		private void PopulateBlastUnitTypeContextMenu(int column)
+		private void PopulateBlastUnitTypeContextMenu(int column, int row)
 		{
 			cmsBlastEditor.Items.Clear();
 
@@ -696,18 +697,18 @@ namespace RTC
 
 			(cmsBlastEditor.Items.Add("RTC.BlastByte", null, new EventHandler((ob, ev) =>
 			{
-				foreach (DataGridViewRow row in dgvBlastLayer.SelectedRows)
-					row.Cells[column].Value = "RTC.BlastByte";
+				foreach (DataGridViewRow selected in dgvBlastLayer.SelectedRows)
+					selected.Cells[column].Value = "RTC.BlastByte";
 			})) as ToolStripMenuItem).Enabled = true;
 			(cmsBlastEditor.Items.Add("RTC.BlastCheat", null, new EventHandler((ob, ev) =>
 			{
-				foreach (DataGridViewRow row in dgvBlastLayer.SelectedRows)
-					row.Cells[column].Value = "RTC.BlastCheat";
+				foreach (DataGridViewRow selected in dgvBlastLayer.SelectedRows)
+					selected.Cells[column].Value = "RTC.BlastCheat";
 			})) as ToolStripMenuItem).Enabled = true;
 			(cmsBlastEditor.Items.Add("RTC.BlastPipe", null, new EventHandler((ob, ev) =>
 			{
-				foreach (DataGridViewRow row in dgvBlastLayer.SelectedRows)
-					row.Cells[column].Value = "RTC.BlastPipe";
+				foreach (DataGridViewRow selected in dgvBlastLayer.SelectedRows)
+					selected.Cells[column].Value = "RTC.BlastPipe";
 			})) as ToolStripMenuItem).Enabled = true;
 		}
 
@@ -806,14 +807,14 @@ namespace RTC
 				//BlastUnitType
 				else if (currentMouseOverColumn == (int)BlastEditorColumn.dgvBlastUnitType)
 				{
-					PopulateBlastUnitTypeContextMenu(currentMouseOverColumn);
+					PopulateBlastUnitTypeContextMenu(currentMouseOverColumn, currentMouseOverRow);
 					cmsBlastEditor.Show(dgvBlastLayer, new Point(e.X, e.Y));
 				}
 
 				//BlastUnitMode
 				else if (currentMouseOverColumn == (int)BlastEditorColumn.dgvBlastUnitMode)
 				{
-					PopulateBlastUnitModeContextMenu(currentMouseOverColumn);
+					PopulateBlastUnitModeContextMenu(currentMouseOverColumn, currentMouseOverRow);
 					cmsBlastEditor.Show(dgvBlastLayer, new Point(e.X, e.Y));
 				}
 
@@ -1288,6 +1289,10 @@ namespace RTC
 			if (e.Control && e.KeyCode == Keys.S)
 			{
 				saveToFileblToolStripMenuItem.PerformClick();
+			}
+			if (e.Control && e.KeyCode == Keys.C)
+			{
+				Clipboard.SetDataObject(dgvBlastLayer.CurrentCell.Value.ToString(), false);
 			}
 		}
 

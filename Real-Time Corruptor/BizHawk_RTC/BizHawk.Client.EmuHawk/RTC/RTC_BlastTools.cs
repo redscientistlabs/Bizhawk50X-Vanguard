@@ -121,7 +121,7 @@ namespace RTC
 						return getByteArray(2, 0xFF);
 					break;
 			}
-			return null;
+			return input;
 		}
 
 		public static BlastUnit ConvertBlastUnit(this BlastUnit bu, Type destinationType)
