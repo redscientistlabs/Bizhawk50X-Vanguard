@@ -96,8 +96,7 @@ namespace RTC
 			originalsk = (StashKey)_sk.Clone();
 			sk = originalsk;
 			RefreshBlastLayer();
-
-			domains = RTC_MemoryDomains.MemoryInterfaces.Keys.ToArray();
+			domains = RTC_MemoryDomains.MemoryInterfaces.Keys.Concat(RTC_MemoryDomains.VmdPool.Values.Select(it => it.ToString())).ToArray();
 
 			this.Show();
 		}
@@ -649,6 +648,8 @@ namespace RTC
 		{
 			cmsBlastEditor.Items.Clear();
 
+			domains = RTC_MemoryDomains.MemoryInterfaces.Keys.Concat(RTC_MemoryDomains.VmdPool.Values.Select(it => it.ToString())).ToArray();
+
 			foreach (string domain in domains)
 			{
 				(cmsBlastEditor.Items.Add(domain, null, new EventHandler((ob, ev) =>
@@ -798,7 +799,10 @@ namespace RTC
 			if (e.Button == MouseButtons.Left)
 			{
 				if (currentMouseOverRow == -1)
+				{
+					dgvBlastLayer.EndEdit();
 					dgvBlastLayer.ClearSelection();
+				}
 			}
 			else if (e.Button == MouseButtons.Right)
 			{
@@ -893,6 +897,7 @@ namespace RTC
 					_column.Hexadecimal = cbUseHex.Checked;
 				}
 			}
+			UpdateSelectedBlastUnitInfo();
 		}
 
 		private void dgvBlastLayer_RowsAdded(object sender, DataGridViewRowsAddedEventArgs e)

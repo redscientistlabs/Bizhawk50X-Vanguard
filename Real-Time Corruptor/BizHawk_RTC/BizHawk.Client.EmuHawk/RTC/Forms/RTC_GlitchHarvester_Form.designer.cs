@@ -29,6 +29,9 @@
         private void InitializeComponent()
         {
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle3 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle4 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(RTC_GlitchHarvester_Form));
             this.pnSidebar = new System.Windows.Forms.Panel();
             this.panel4 = new System.Windows.Forms.Panel();
@@ -166,13 +169,13 @@
             this.btnRerollSelected = new System.Windows.Forms.Button();
             this.label8 = new System.Windows.Forms.Label();
             this.dgvStockpile = new System.Windows.Forms.DataGridView();
-            this.cbCompressStockpiles = new System.Windows.Forms.CheckBox();
-            this.pnIntensity = new System.Windows.Forms.Panel();
             this.Item = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.GameName = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.SystemName = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.SystemCore = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.Note = new System.Windows.Forms.DataGridViewButtonColumn();
+            this.cbCompressStockpiles = new System.Windows.Forms.CheckBox();
+            this.pnIntensity = new System.Windows.Forms.Panel();
             this.pnSidebar.SuspendLayout();
             this.panel4.SuspendLayout();
             this.panel3.SuspendLayout();
@@ -1854,7 +1857,7 @@
             this.btnStockpileMoveSelectedDown.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(224)))), ((int)(((byte)(224)))), ((int)(((byte)(224)))));
             this.btnStockpileMoveSelectedDown.FlatAppearance.BorderSize = 0;
             this.btnStockpileMoveSelectedDown.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btnStockpileMoveSelectedDown.Font = new System.Drawing.Font("Microsoft Sans Serif", 7F);
+            this.btnStockpileMoveSelectedDown.Font = new System.Drawing.Font("Segoe UI Symbol", 7F);
             this.btnStockpileMoveSelectedDown.ForeColor = System.Drawing.Color.Black;
             this.btnStockpileMoveSelectedDown.Location = new System.Drawing.Point(814, 472);
             this.btnStockpileMoveSelectedDown.Name = "btnStockpileMoveSelectedDown";
@@ -1872,7 +1875,7 @@
             this.btnStockpileMoveSelectedUp.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(224)))), ((int)(((byte)(224)))), ((int)(((byte)(224)))));
             this.btnStockpileMoveSelectedUp.FlatAppearance.BorderSize = 0;
             this.btnStockpileMoveSelectedUp.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btnStockpileMoveSelectedUp.Font = new System.Drawing.Font("Microsoft Sans Serif", 7F);
+            this.btnStockpileMoveSelectedUp.Font = new System.Drawing.Font("Segoe UI Symbol", 7F);
             this.btnStockpileMoveSelectedUp.ForeColor = System.Drawing.Color.Black;
             this.btnStockpileMoveSelectedUp.Location = new System.Drawing.Point(778, 472);
             this.btnStockpileMoveSelectedUp.Margin = new System.Windows.Forms.Padding(0);
@@ -1961,7 +1964,7 @@
             this.btnStockpileDOWN.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(224)))), ((int)(((byte)(224)))), ((int)(((byte)(224)))));
             this.btnStockpileDOWN.FlatAppearance.BorderSize = 0;
             this.btnStockpileDOWN.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
-            this.btnStockpileDOWN.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F);
+            this.btnStockpileDOWN.Font = new System.Drawing.Font("Segoe UI Symbol", 8F);
             this.btnStockpileDOWN.ForeColor = System.Drawing.Color.Black;
             this.btnStockpileDOWN.Location = new System.Drawing.Point(824, 4);
             this.btnStockpileDOWN.Name = "btnStockpileDOWN";
@@ -1979,7 +1982,7 @@
             this.btnStockpileUP.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(224)))), ((int)(((byte)(224)))), ((int)(((byte)(224)))));
             this.btnStockpileUP.FlatAppearance.BorderSize = 0;
             this.btnStockpileUP.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
-            this.btnStockpileUP.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F);
+            this.btnStockpileUP.Font = new System.Drawing.Font("Segoe UI Symbol", 8F);
             this.btnStockpileUP.ForeColor = System.Drawing.Color.Black;
             this.btnStockpileUP.Location = new System.Drawing.Point(798, 4);
             this.btnStockpileUP.Name = "btnStockpileUP";
@@ -2025,7 +2028,7 @@
             this.btnAddStashToStockpile.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(224)))), ((int)(((byte)(224)))), ((int)(((byte)(224)))));
             this.btnAddStashToStockpile.FlatAppearance.BorderSize = 0;
             this.btnAddStashToStockpile.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btnAddStashToStockpile.Font = new System.Drawing.Font("Webdings", 18F, System.Drawing.FontStyle.Bold);
+            this.btnAddStashToStockpile.Font = new System.Drawing.Font("Segoe UI Symbol", 12F);
             this.btnAddStashToStockpile.ForeColor = System.Drawing.Color.Black;
             this.btnAddStashToStockpile.Location = new System.Drawing.Point(369, 285);
             this.btnAddStashToStockpile.Name = "btnAddStashToStockpile";
@@ -2033,7 +2036,7 @@
             this.btnAddStashToStockpile.TabIndex = 107;
             this.btnAddStashToStockpile.TabStop = false;
             this.btnAddStashToStockpile.Tag = "color:light";
-            this.btnAddStashToStockpile.Text = "4";
+            this.btnAddStashToStockpile.Text = "▶";
             this.btnAddStashToStockpile.UseVisualStyleBackColor = false;
             this.btnAddStashToStockpile.Click += new System.EventHandler(this.btnAddStashToStockpile_Click);
             // 
@@ -2307,6 +2310,14 @@
             this.dgvStockpile.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
             this.dgvStockpile.BackgroundColor = System.Drawing.Color.Gray;
             this.dgvStockpile.BorderStyle = System.Windows.Forms.BorderStyle.None;
+            dataGridViewCellStyle1.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle1.BackColor = System.Drawing.SystemColors.Control;
+            dataGridViewCellStyle1.Font = new System.Drawing.Font("Segoe UI Symbol", 8F);
+            dataGridViewCellStyle1.ForeColor = System.Drawing.SystemColors.WindowText;
+            dataGridViewCellStyle1.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle1.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle1.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+            this.dgvStockpile.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle1;
             this.dgvStockpile.ColumnHeadersHeight = 21;
             this.dgvStockpile.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.DisableResizing;
             this.dgvStockpile.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
@@ -2315,10 +2326,26 @@
             this.SystemName,
             this.SystemCore,
             this.Note});
+            dataGridViewCellStyle3.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle3.BackColor = System.Drawing.SystemColors.Window;
+            dataGridViewCellStyle3.Font = new System.Drawing.Font("Segoe UI Symbol", 8F);
+            dataGridViewCellStyle3.ForeColor = System.Drawing.SystemColors.ControlText;
+            dataGridViewCellStyle3.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle3.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle3.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
+            this.dgvStockpile.DefaultCellStyle = dataGridViewCellStyle3;
             this.dgvStockpile.GridColor = System.Drawing.Color.Black;
             this.dgvStockpile.Location = new System.Drawing.Point(401, 29);
             this.dgvStockpile.Name = "dgvStockpile";
             this.dgvStockpile.RightToLeft = System.Windows.Forms.RightToLeft.No;
+            dataGridViewCellStyle4.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle4.BackColor = System.Drawing.SystemColors.Control;
+            dataGridViewCellStyle4.Font = new System.Drawing.Font("Segoe UI Symbol", 8F);
+            dataGridViewCellStyle4.ForeColor = System.Drawing.SystemColors.WindowText;
+            dataGridViewCellStyle4.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle4.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle4.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+            this.dgvStockpile.RowHeadersDefaultCellStyle = dataGridViewCellStyle4;
             this.dgvStockpile.RowHeadersVisible = false;
             this.dgvStockpile.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
             this.dgvStockpile.Size = new System.Drawing.Size(451, 437);
@@ -2326,35 +2353,6 @@
             this.dgvStockpile.Tag = "color:normal";
             this.dgvStockpile.CellClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dgvStockpile_CellClick);
             this.dgvStockpile.MouseDown += new System.Windows.Forms.MouseEventHandler(this.dgvStockpile_MouseDown);
-            // 
-            // cbCompressStockpiles
-            // 
-            this.cbCompressStockpiles.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.cbCompressStockpiles.AutoSize = true;
-            this.cbCompressStockpiles.Checked = true;
-            this.cbCompressStockpiles.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.cbCompressStockpiles.Font = new System.Drawing.Font("Segoe UI", 8F);
-            this.cbCompressStockpiles.ForeColor = System.Drawing.Color.White;
-            this.cbCompressStockpiles.Location = new System.Drawing.Point(696, 470);
-            this.cbCompressStockpiles.Name = "cbCompressStockpiles";
-            this.cbCompressStockpiles.Size = new System.Drawing.Size(78, 30);
-            this.cbCompressStockpiles.TabIndex = 144;
-            this.cbCompressStockpiles.TabStop = false;
-            this.cbCompressStockpiles.Text = "Compress\nStockpiles";
-            this.cbCompressStockpiles.UseVisualStyleBackColor = true;
-            // 
-            // pnIntensity
-            // 
-            this.pnIntensity.BackColor = System.Drawing.Color.Gray;
-            this.pnIntensity.Controls.Add(this.labelIntensityTimes);
-            this.pnIntensity.Controls.Add(this.track_Intensity);
-            this.pnIntensity.Controls.Add(this.nmIntensity);
-            this.pnIntensity.Controls.Add(this.labelIntensity);
-            this.pnIntensity.Location = new System.Drawing.Point(158, 30);
-            this.pnIntensity.Name = "pnIntensity";
-            this.pnIntensity.Size = new System.Drawing.Size(204, 58);
-            this.pnIntensity.TabIndex = 122;
-            this.pnIntensity.Tag = "color:normal";
             // 
             // Item
             // 
@@ -2386,10 +2384,10 @@
             // 
             // Note
             // 
-            dataGridViewCellStyle1.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
-            dataGridViewCellStyle1.Font = new System.Drawing.Font("Segoe UI", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            dataGridViewCellStyle1.ForeColor = System.Drawing.Color.Black;
-            this.Note.DefaultCellStyle = dataGridViewCellStyle1;
+            dataGridViewCellStyle2.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
+            dataGridViewCellStyle2.Font = new System.Drawing.Font("Segoe UI", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            dataGridViewCellStyle2.ForeColor = System.Drawing.Color.Black;
+            this.Note.DefaultCellStyle = dataGridViewCellStyle2;
             this.Note.FillWeight = 30F;
             this.Note.HeaderText = "Note";
             this.Note.MinimumWidth = 30;
@@ -2397,6 +2395,35 @@
             this.Note.Resizable = System.Windows.Forms.DataGridViewTriState.True;
             this.Note.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.Automatic;
             this.Note.Text = "";
+            // 
+            // cbCompressStockpiles
+            // 
+            this.cbCompressStockpiles.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+            this.cbCompressStockpiles.AutoSize = true;
+            this.cbCompressStockpiles.Checked = true;
+            this.cbCompressStockpiles.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.cbCompressStockpiles.Font = new System.Drawing.Font("Segoe UI", 8F);
+            this.cbCompressStockpiles.ForeColor = System.Drawing.Color.White;
+            this.cbCompressStockpiles.Location = new System.Drawing.Point(696, 470);
+            this.cbCompressStockpiles.Name = "cbCompressStockpiles";
+            this.cbCompressStockpiles.Size = new System.Drawing.Size(78, 30);
+            this.cbCompressStockpiles.TabIndex = 144;
+            this.cbCompressStockpiles.TabStop = false;
+            this.cbCompressStockpiles.Text = "Compress\nStockpiles";
+            this.cbCompressStockpiles.UseVisualStyleBackColor = true;
+            // 
+            // pnIntensity
+            // 
+            this.pnIntensity.BackColor = System.Drawing.Color.Gray;
+            this.pnIntensity.Controls.Add(this.labelIntensityTimes);
+            this.pnIntensity.Controls.Add(this.track_Intensity);
+            this.pnIntensity.Controls.Add(this.nmIntensity);
+            this.pnIntensity.Controls.Add(this.labelIntensity);
+            this.pnIntensity.Location = new System.Drawing.Point(158, 30);
+            this.pnIntensity.Name = "pnIntensity";
+            this.pnIntensity.Size = new System.Drawing.Size(204, 58);
+            this.pnIntensity.TabIndex = 122;
+            this.pnIntensity.Tag = "color:normal";
             // 
             // RTC_GlitchHarvester_Form
             // 

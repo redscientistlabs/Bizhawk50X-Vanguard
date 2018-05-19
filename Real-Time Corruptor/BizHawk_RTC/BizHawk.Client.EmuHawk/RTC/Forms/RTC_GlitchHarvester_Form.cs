@@ -1051,12 +1051,7 @@ namespace RTC
                     if (RTC_Core.beForm != null)
                     {
                         var sk = (dgvStockpile.SelectedRows[0].Cells[0].Value as StashKey);
-                        RTC_Core.beForm.Close();
-                        RTC_Core.beForm = new RTC_NewBlastEditor_Form();
-
-						//If the blastlayer is big, prompt them before opening it. Let's go with 5k for now.
-						if (sk.BlastLayer.Layer.Count > 5000 && (DialogResult.Yes == MessageBox.Show($"You're trying to open a blastlayer of size " + sk.BlastLayer.Layer.Count + ". This could take a while. Are you sure you want to continue?", "Opening a large BlastLayer", MessageBoxButtons.YesNo)));
-							RTC_Core.beForm.LoadStashkey(sk);
+						OpenBlastEditor(sk);
                     }
                 })) as ToolStripMenuItem).Enabled = (dgvStockpile.SelectedRows.Count == 1);
 
@@ -1390,12 +1385,10 @@ namespace RTC
                 columnsMenu.Items.Add(new ToolStripSeparator());
                 (columnsMenu.Items.Add("Open Selected Item in Blast Editor", null, new EventHandler((ob, ev) => {
                     if (RTC_Core.beForm != null)
-                    {
-                        var sk = RTC_StockpileManager.StashHistory[lbStashHistory.SelectedIndex];
-                        RTC_Core.beForm.Close();
-                        RTC_Core.beForm = new RTC_NewBlastEditor_Form();
-                        RTC_Core.beForm.LoadStashkey(sk);
-                    }
+					{
+						var sk = RTC_StockpileManager.StashHistory[lbStashHistory.SelectedIndex];
+						OpenBlastEditor(sk);
+					}
                 })) as ToolStripMenuItem).Enabled = lbStashHistory.SelectedIndex != -1;
 
                 columnsMenu.Items.Add(new ToolStripSeparator());
@@ -1407,6 +1400,17 @@ namespace RTC
 
                 columnsMenu.Show(this, locate);
 			}
+		}
+
+		private void OpenBlastEditor(StashKey sk)
+		{
+			RTC_Core.beForm.Close();
+			RTC_Core.beForm = new RTC_NewBlastEditor_Form();
+			//If the blastlayer is big, prompt them before opening it. Let's go with 5k for now.
+			if (sk.BlastLayer.Layer.Count > 5000 && (DialogResult.Yes == MessageBox.Show($"You're trying to open a blastlayer of size " + sk.BlastLayer.Layer.Count + ". This could take a while. Are you sure you want to continue?", "Opening a large BlastLayer", MessageBoxButtons.YesNo)))
+				RTC_Core.beForm.LoadStashkey(sk);
+			else
+				RTC_Core.beForm.LoadStashkey(sk);
 		}
 
 		private void sendCurrentStockpileToTemp()
