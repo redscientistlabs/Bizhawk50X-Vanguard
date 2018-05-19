@@ -954,7 +954,7 @@ namespace RTC
 			buttonOk.DialogResult = DialogResult.OK;
 			buttonCancel.DialogResult = DialogResult.Cancel;
 
-			label.SetBounds(36, 20, 372, 13);
+			label.SetBounds(48, 20, 372, 13);
 			input.SetBounds(12, 36, 372, 20);
 			buttonOk.SetBounds(228, 98, 75, 23);
 			buttonCancel.SetBounds(309, 98, 75, 23);

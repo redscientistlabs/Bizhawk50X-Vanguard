@@ -166,13 +166,13 @@
             this.btnRerollSelected = new System.Windows.Forms.Button();
             this.label8 = new System.Windows.Forms.Label();
             this.dgvStockpile = new System.Windows.Forms.DataGridView();
+            this.cbCompressStockpiles = new System.Windows.Forms.CheckBox();
+            this.pnIntensity = new System.Windows.Forms.Panel();
             this.Item = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.GameName = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.SystemName = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.SystemCore = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.Note = new System.Windows.Forms.DataGridViewButtonColumn();
-            this.cbCompressStockpiles = new System.Windows.Forms.CheckBox();
-            this.pnIntensity = new System.Windows.Forms.Panel();
             this.pnSidebar.SuspendLayout();
             this.panel4.SuspendLayout();
             this.panel3.SuspendLayout();
@@ -2327,47 +2327,6 @@
             this.dgvStockpile.CellClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dgvStockpile_CellClick);
             this.dgvStockpile.MouseDown += new System.Windows.Forms.MouseEventHandler(this.dgvStockpile_MouseDown);
             // 
-            // Item
-            // 
-            this.Item.FillWeight = 180F;
-            this.Item.HeaderText = "Item Name";
-            this.Item.Name = "Item";
-            this.Item.ReadOnly = true;
-            // 
-            // GameName
-            // 
-            this.GameName.HeaderText = "Game";
-            this.GameName.Name = "GameName";
-            this.GameName.ReadOnly = true;
-            // 
-            // SystemName
-            // 
-            this.SystemName.FillWeight = 60F;
-            this.SystemName.HeaderText = "System";
-            this.SystemName.Name = "SystemName";
-            this.SystemName.ReadOnly = true;
-            // 
-            // SystemCore
-            // 
-            this.SystemCore.FillWeight = 60F;
-            this.SystemCore.HeaderText = "Core";
-            this.SystemCore.Name = "SystemCore";
-            this.SystemCore.Visible = false;
-            // 
-            // Note
-            // 
-            dataGridViewCellStyle1.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
-            dataGridViewCellStyle1.Font = new System.Drawing.Font("Segoe UI", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            dataGridViewCellStyle1.ForeColor = System.Drawing.Color.Black;
-            this.Note.DefaultCellStyle = dataGridViewCellStyle1;
-            this.Note.FillWeight = 30F;
-            this.Note.HeaderText = "Note";
-            this.Note.MinimumWidth = 30;
-            this.Note.Name = "Note";
-            this.Note.Resizable = System.Windows.Forms.DataGridViewTriState.True;
-            this.Note.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.Automatic;
-            this.Note.Text = "";
-            // 
             // cbCompressStockpiles
             // 
             this.cbCompressStockpiles.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
@@ -2396,6 +2355,48 @@
             this.pnIntensity.Size = new System.Drawing.Size(204, 58);
             this.pnIntensity.TabIndex = 122;
             this.pnIntensity.Tag = "color:normal";
+            // 
+            // Item
+            // 
+            this.Item.FillWeight = 180F;
+            this.Item.HeaderText = "Item Name";
+            this.Item.Name = "Item";
+            this.Item.ReadOnly = true;
+            // 
+            // GameName
+            // 
+            this.GameName.HeaderText = "Game";
+            this.GameName.Name = "GameName";
+            this.GameName.ReadOnly = true;
+            // 
+            // SystemName
+            // 
+            this.SystemName.FillWeight = 60F;
+            this.SystemName.HeaderText = "System";
+            this.SystemName.Name = "SystemName";
+            this.SystemName.ReadOnly = true;
+            // 
+            // SystemCore
+            // 
+            this.SystemCore.FillWeight = 60F;
+            this.SystemCore.HeaderText = "Core";
+            this.SystemCore.Name = "SystemCore";
+            this.SystemCore.ReadOnly = true;
+            this.SystemCore.Visible = false;
+            // 
+            // Note
+            // 
+            dataGridViewCellStyle1.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
+            dataGridViewCellStyle1.Font = new System.Drawing.Font("Segoe UI", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            dataGridViewCellStyle1.ForeColor = System.Drawing.Color.Black;
+            this.Note.DefaultCellStyle = dataGridViewCellStyle1;
+            this.Note.FillWeight = 30F;
+            this.Note.HeaderText = "Note";
+            this.Note.MinimumWidth = 30;
+            this.Note.Name = "Note";
+            this.Note.Resizable = System.Windows.Forms.DataGridViewTriState.True;
+            this.Note.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.Automatic;
+            this.Note.Text = "";
             // 
             // RTC_GlitchHarvester_Form
             // 
