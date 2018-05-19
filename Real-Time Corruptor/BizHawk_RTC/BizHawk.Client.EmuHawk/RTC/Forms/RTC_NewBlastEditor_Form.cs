@@ -878,16 +878,28 @@ namespace RTC
 
 		private long GetParamValue(BlastUnit bu)
 		{
-			if (bu is BlastByte || bu is BlastCheat)
+			if (bu is BlastByte)
 			{
 				BlastByte bb = bu as BlastByte;
 				decimal value = RTC_Extensions.getDecimalValue(bb.Value, bb.BigEndian);
 				return (long)value;
 			}
-			if (bu is BlastPipe)
+			else if (bu is BlastCheat)
+			{
+				BlastCheat bc = bu as BlastCheat;
+				decimal value = RTC_Extensions.getDecimalValue(bc.Value, bc.BigEndian);
+				return (long)value;
+			}
+			else if (bu is BlastPipe)
 			{
 				BlastPipe bp = bu as BlastPipe;
 				return bp.PipeAddress;
+			}
+			else if (bu is BlastVector)
+			{
+				BlastVector bv = bu as BlastVector;
+				decimal value = RTC_Extensions.getDecimalValue(bv.Values, bv.BigEndian);
+				return (long)value;
 			}
 			return 0;
 		}
