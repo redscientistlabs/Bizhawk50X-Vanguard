@@ -156,6 +156,7 @@ namespace RTC
 
 				case "GG":      //Sega GameGear
 					DomainBlacklist.Add("System Bus"); // the game cartridge appears to be on the system bus
+					DomainBlacklist.Add("ROM");
 					break;
 
 				case "SG":      //Sega SG-1000

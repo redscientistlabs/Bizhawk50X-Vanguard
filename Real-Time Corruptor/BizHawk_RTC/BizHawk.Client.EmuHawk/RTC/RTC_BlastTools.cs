@@ -104,6 +104,25 @@ namespace RTC
 			
 		}
 
+		private static byte[] CapBlastUnit(byte[] input)
+		{
+			switch (input.Length)
+			{
+				case 1:
+					if (RTC_Extensions.getDecimalValue(input, false) > Byte.MaxValue)
+						return getByteArray(1, 0xFF);
+					break;
+				case 2:
+					if (RTC_Extensions.getDecimalValue(input, false) > UInt16.MaxValue)
+						return getByteArray(2, 0xFF);
+					break;
+				case 4:
+					if (RTC_Extensions.getDecimalValue(input, false) > UInt32.MaxValue)
+						return getByteArray(2, 0xFF);
+					break;
+			}
+			return null;
+		}
 
 		public static BlastUnit ConvertBlastUnit(this BlastUnit bu, Type destinationType)
 		{
@@ -112,11 +131,11 @@ namespace RTC
 				BlastByte bb = bu as BlastByte;
 				if (destinationType == typeof(BlastByte))
 				{
-					return bb;
+					return new BlastByte(bb.Domain, bb.Address, BlastByteType.SET, CapBlastUnit(bb.Value), bb.BigEndian, bb.IsEnabled);
 				}
 				if (destinationType == typeof(BlastCheat))
 				{
-					return new BlastCheat(bb.Domain, bb.Address, BizHawk.Client.Common.DisplayType.Unsigned, bb.BigEndian, bb.Value, bb.IsEnabled, false);
+					return new BlastCheat(bb.Domain, bb.Address, BizHawk.Client.Common.DisplayType.Unsigned, bb.BigEndian, CapBlastUnit(bb.Value), bb.IsEnabled, false);
 				}
 				else if (destinationType == typeof(BlastPipe))
 				{
@@ -134,11 +153,11 @@ namespace RTC
 				BlastCheat bc = bu as BlastCheat;
 				if (destinationType == typeof(BlastCheat))
 				{
-					return bc;
+					return new BlastCheat(bc.Domain, bc.Address, BizHawk.Client.Common.DisplayType.Unsigned, bc.BigEndian, CapBlastUnit(bc.Value), bc.IsEnabled, false);
 				}
 				if (destinationType == typeof(BlastByte))
 				{
-					return new BlastByte(bc.Domain, bc.Address, BlastByteType.SET, bc.Value, bc.BigEndian, bc.IsEnabled);
+					return new BlastByte(bc.Domain, bc.Address, BlastByteType.SET, CapBlastUnit(bc.Value), bc.BigEndian, bc.IsEnabled);
 				}
 				else if (destinationType == typeof(BlastPipe))
 				{
@@ -155,15 +174,15 @@ namespace RTC
 				BlastPipe bp = bu as BlastPipe;
 				if (destinationType == typeof(BlastPipe))
 				{
-					return bp;
+					return new BlastPipe(bp.Domain, bp.Address, bp.PipeDomain, bp.PipeAddress, 0, bp.PipeSize, bp.BigEndian, bp.IsEnabled);
 				}
 				else if (destinationType == typeof(BlastByte))
 				{
-					return new BlastByte(bp.PipeDomain, bp.PipeAddress, BlastByteType.SET, getZeroedByteArray(bp.PipeSize), bp.BigEndian, bp.IsEnabled);
+					return new BlastByte(bp.PipeDomain, bp.PipeAddress, BlastByteType.SET, getByteArray(bp.PipeSize, 0x0), bp.BigEndian, bp.IsEnabled);
 				}
 				else if (destinationType == typeof(BlastCheat))
 				{
-					return new BlastCheat(bp.PipeDomain, bp.PipeAddress, BizHawk.Client.Common.DisplayType.Unsigned, bp.BigEndian, getZeroedByteArray(bp.PipeSize), bp.IsEnabled, false);
+					return new BlastCheat(bp.PipeDomain, bp.PipeAddress, BizHawk.Client.Common.DisplayType.Unsigned, bp.BigEndian, getByteArray(bp.PipeSize,0x0), bp.IsEnabled, false);
 				}
 				else if (destinationType == typeof(BlastVector))
 				{
@@ -176,17 +195,17 @@ namespace RTC
 				BlastVector bv = bu as BlastVector;
 				if (destinationType == typeof(BlastVector))
 				{
-					return bv;
+					MessageBox.Show("BlastVector is depricated.");
 				}
 				else if (destinationType == typeof(BlastByte))
 				{
 					//BlastVector is depricated. If converting into a blastbyte, convert it to a regular blastbyte not a blastbyte in vector mode. It can't be re-rolled but it's cleaner
 					//True to the endianess as BlastVector was always big endian
-					return new BlastByte(bv.Domain, bv.Address, BlastByteType.SET, bv.Values, true, bv.IsEnabled);
+					return new BlastByte(bv.Domain, bv.Address, BlastByteType.SET, CapBlastUnit(bv.Values), true, bv.IsEnabled);
 				}
 				else if (destinationType == typeof(BlastCheat))
 				{
-					return new BlastCheat(bv.Domain, bv.Address, BizHawk.Client.Common.DisplayType.Unsigned, true, bv.Values, bv.IsEnabled, false);
+					return new BlastCheat(bv.Domain, bv.Address, BizHawk.Client.Common.DisplayType.Unsigned, true, CapBlastUnit(bv.Values), bv.IsEnabled, false);
 				}
 				else if (destinationType == typeof(BlastPipe))
 				{
@@ -197,12 +216,12 @@ namespace RTC
 			return null;
 		}
 		
-		private static byte[] getZeroedByteArray(int size)
+		private static byte[] getByteArray(int size, byte value)
 		{
 			var temp = new byte[size];
 			for (int i = 0; i < temp.Length; i++)
 			{
-				temp[i] = 0x0;
+				temp[i] = value;
 			}
 			return temp;
 		}

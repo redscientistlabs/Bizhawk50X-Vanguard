@@ -4,24 +4,23 @@
  * While I really should have used a data bound DGV, I went in blind not knowing about them
  * There's a hidden column in the dgv (index 0) which contains a reference to the blastunit
  */
+
 using System;
 using System.Collections.Generic;
-using System.ComponentModel;
 using System.Data;
 using System.Drawing;
-using System.Globalization;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Windows.Forms;
-using System.IO;
 
 namespace RTC
 {
 	public partial class RTC_NewBlastEditor_Form : Form
 	{
-		/* 
+		/*
 		 * Column Indexes - Updated 4/8/2018
-		 * 
+		 *
 		 * 0 dgvBlastUnitReference
 		 * 1 dgvBlastUnitLocked.
 		 * 2 dgvBlastEnabled
@@ -48,18 +47,18 @@ namespace RTC
 			dgvParam
 		}
 
-		StashKey sk = null;
-		StashKey originalsk = null;
-		bool initialized = false;
-		bool CurrentlyUpdating = false;
-		ContextMenuStrip cmsBlastEditor = new ContextMenuStrip();
-		String[] domains;
-		int searchOffset = 0;
-		string searchValue = "";
-		string searchColumn = "";
+		private StashKey sk = null;
+		private StashKey originalsk = null;
+		private bool initialized = false;
+		private bool CurrentlyUpdating = false;
+		private ContextMenuStrip cmsBlastEditor = new ContextMenuStrip();
+		private String[] domains;
+		private int searchOffset = 0;
+		private string searchValue = "";
+		private string searchColumn = "";
 		public string currentBlastLayerFile = "";
 
-		Dictionary<BlastUnit, DataGridViewRow> bu2RowDico = new Dictionary<BlastUnit, DataGridViewRow>();
+		private Dictionary<BlastUnit, DataGridViewRow> bu2RowDico = new Dictionary<BlastUnit, DataGridViewRow>();
 
 		public RTC_NewBlastEditor_Form()
 		{
@@ -67,7 +66,6 @@ namespace RTC
 
 			dgvBlastLayer.DoubleBuffered(true);
 			this.dgvBlastLayer.AutoSizeRowsMode = System.Windows.Forms.DataGridViewAutoSizeRowsMode.DisplayedCells;
-
 
 			dgvBlastLayer.AlternatingRowsDefaultCellStyle.BackColor = Color.FromArgb(240, 240, 240);
 
@@ -126,6 +124,7 @@ namespace RTC
 			UpdateBlastLayerSize();
 			initialized = true;
 		}
+
 		private void AddBlastUnitToDGV(BlastUnit bu)
 		{
 			InsertBlastUnitToDGV(dgvBlastLayer.Rows.Count, bu);
@@ -172,7 +171,6 @@ namespace RTC
 				destAddress = (Decimal)RTC_Extensions.getDecimalValue(bb.Value, bb.BigEndian);
 				blastMode = Convert.ToString(bb.Type);
 			}
-
 			else if (bu is BlastCheat)
 			{
 				BlastCheat bc = bu as BlastCheat;
@@ -184,7 +182,6 @@ namespace RTC
 					blastMode = "FREEZE";
 				else
 					blastMode = "HELLGENIE";
-
 			}
 			else if (bu is BlastPipe)
 			{
@@ -235,7 +232,6 @@ namespace RTC
 					bu2RowDico[bu].Cells["dgvBlastEnabled"].Value = blFlags[i];
 				CurrentlyUpdating = false;
 			}
-
 		}
 
 		private void btnInvertDisabled_Click(object sender, EventArgs e)
@@ -316,7 +312,6 @@ namespace RTC
 			GC.WaitForPendingFinalizers();
 		}
 
-
 		private void btnDisableEverything_Click(object sender, EventArgs e)
 		{
 			dgvBlastLayer.ClearSelection();
@@ -353,7 +348,6 @@ namespace RTC
 				sk.BlastLayer.Layer.Add(bu2);
 				AddBlastUnitToDGV(bu2);
 			}
-
 		}
 
 		//For BlastPipe, sanitize duplicare valyes instead of addresses
@@ -366,7 +360,7 @@ namespace RTC
 			foreach (BlastUnit bu in bul)
 			{
 				//Optimize by doing everything besides blastpipe first
-				if(!(bu is BlastPipe))
+				if (!(bu is BlastPipe))
 				{
 					if (!usedAddresses.Contains(bu.Address) && !bu.IsLocked)
 						usedAddresses.Add(bu.Address);
@@ -394,12 +388,14 @@ namespace RTC
 
 		private void dgvBlastLayer_CellValueChanged(object sender, DataGridViewCellEventArgs e)
 		{
-			if (!initialized || dgvBlastLayer == null )
+			if (!initialized || dgvBlastLayer == null)
 				return;
 
 			if (!CurrentlyUpdating)
 			{
 				CurrentlyUpdating = true;
+
+				UpdateRowPrecision(dgvBlastLayer.Rows[e.RowIndex]);
 
 				//Changing the blast unit type
 				if (e.ColumnIndex == 4)
@@ -415,24 +411,31 @@ namespace RTC
 			{
 				case 1:
 					return "8-bit";
+
 				case 2:
 					return "16-bit";
+
 				case 4:
 					return "32-bit";
+
 				default:
 					return null;
 			}
 		}
+
 		private int GetPrecisionSizeFromName(string precision)
 		{
 			switch (precision)
 			{
 				case "8-bit":
 					return 1;
+
 				case "16-bit":
 					return 2;
+
 				case "32-bit":
 					return 4;
+
 				default:
 					return -1;
 			}
@@ -440,10 +443,12 @@ namespace RTC
 
 		private void ReplaceBlastUnitFromRow(DataGridViewRow row)
 		{
+
 			BlastUnit bu = (BlastUnit)row.Cells["dgvBlastUnitReference"].Value;
 			string column = row.Cells["dgvBlastUnitType"].Value.ToString();
 			int index = row.Index;
 			bu2RowDico[bu] = row;
+
 
 			//Remove the old one
 			RemoveBlastUnitFromBlastLayerAndDGV(bu);
@@ -456,31 +461,34 @@ namespace RTC
 					InsertBlastUnitToDGV(index, bb);
 					CurrentlyUpdating = false;
 					break;
+
 				case "RTC.BlastCheat":
 					BlastCheat bc = (BlastCheat)RTC_BlastTools.ConvertBlastUnit(bu, typeof(BlastCheat));
 					sk.BlastLayer.Layer.Insert(index, bc);
 					InsertBlastUnitToDGV(index, bc);
 					CurrentlyUpdating = false;
 					break;
+
 				case "RTC.BlastPipe":
 					BlastPipe bp = (BlastPipe)RTC_BlastTools.ConvertBlastUnit(bu, typeof(BlastPipe));
 					sk.BlastLayer.Layer.Insert(index, bp);
 					InsertBlastUnitToDGV(index, bp);
 					CurrentlyUpdating = false;
 					break;
+
 				case "RTC.BlastVector":
 					BlastVector bv = (BlastVector)RTC_BlastTools.ConvertBlastUnit(bu, typeof(BlastVector));
 					sk.BlastLayer.Layer.Insert(index, bv);
 					InsertBlastUnitToDGV(index, bv);
 					CurrentlyUpdating = false;
 					break;
+
 				default:
 					MessageBox.Show("You had an invalid blast unit type! Check your input. The invalid unit is: " + row.Cells["dgvBlastUnitType"].Value);
 					CurrentlyUpdating = false;
 					break;
 			}
 		}
-		
 
 		private void RemoveBlastUnitFromBlastLayerAndDGV(BlastUnit bu)
 		{
@@ -510,6 +518,7 @@ namespace RTC
 					row.Cells["dgvBlastUnitReference"].Value = bb;
 					CurrentlyUpdating = false;
 					break;
+
 				case "RTC.BlastCheat":
 					BlastCheat bc = (BlastCheat)row.Cells["dgvBlastUnitReference"].Value;
 					bc.IsEnabled = Convert.ToBoolean((row.Cells["dgvBlastEnabled"].Value));
@@ -525,6 +534,7 @@ namespace RTC
 					row.Cells["dgvBlastUnitReference"].Value = bc;
 					CurrentlyUpdating = false;
 					break;
+
 				case "RTC.BlastPipe":
 					BlastPipe bp = (BlastPipe)row.Cells["dgvBlastUnitReference"].Value;
 					bp.IsEnabled = Convert.ToBoolean((row.Cells["dgvBlastEnabled"].Value));
@@ -539,6 +549,7 @@ namespace RTC
 					row.Cells["dgvBlastUnitReference"].Value = bp;
 					CurrentlyUpdating = false;
 					break;
+
 				case "RTC.BlastVector":
 					BlastVector bv = (BlastVector)row.Cells["dgvBlastUnitReference"].Value;
 					bv.IsEnabled = Convert.ToBoolean((row.Cells["dgvBlastEnabled"].Value));
@@ -551,13 +562,13 @@ namespace RTC
 					row.Cells["dgvBlastUnitReference"].Value = bv;
 					CurrentlyUpdating = false;
 					break;
+
 				default:
 					MessageBox.Show("You had an invalid blast unit type! Check your input. The invalid unit is: " + row.Cells["dgvBlastUnitType"].Value);
 					CurrentlyUpdating = false;
 					break;
 			}
 		}
-
 
 		//This is gonna be ugly because some engines re-use boxes. Sorry -Narry
 		private void UpdateRowPrecision(DataGridViewRow row)
@@ -579,10 +590,12 @@ namespace RTC
 						(row.Cells["dgvParam"] as DataGridViewNumericUpDownCell).Maximum = UInt32.MaxValue;
 					}
 					break;
+
 				case "RTC.BlastPipe":
 					//Todo set this to the valid maximum address
 					(row.Cells["dgvParam"] as DataGridViewNumericUpDownCell).Maximum = Int32.MaxValue;
 					break;
+
 				default:
 					break;
 			}
@@ -610,7 +623,7 @@ namespace RTC
 					//Todo set this to the valid maximum address
 					return Int32.MaxValue;
 			}
-			//No precision set? 
+			//No precision set?
 			return UInt32.MaxValue;
 		}
 
@@ -628,11 +641,10 @@ namespace RTC
 				dgvBlastLayer.Rows[e.RowIndex].ErrorText = "There's something wrong with your input!";
 				e.Cancel = true;
 			}
-
 		}
 
 		//Validates that a blast unit is valid from a dgv row
-		bool ValidateBlastUnitFromRow(DataGridViewRow row)
+		private bool ValidateBlastUnitFromRow(DataGridViewRow row)
 		{
 			return true;
 		}
@@ -675,6 +687,7 @@ namespace RTC
 				})) as ToolStripMenuItem).Enabled = true;
 			}
 		}
+
 		private void PopulateBlastUnitTypeContextMenu(int column)
 		{
 			cmsBlastEditor.Items.Clear();
@@ -696,7 +709,6 @@ namespace RTC
 				foreach (DataGridViewRow row in dgvBlastLayer.SelectedRows)
 					row.Cells[column].Value = "RTC.BlastPipe";
 			})) as ToolStripMenuItem).Enabled = true;
-
 		}
 
 		private void PopulateColumnHeaderContextMenu(int column)
@@ -707,7 +719,7 @@ namespace RTC
 
 			/*
 			*1 dgvBlastUnitLocked.
-  
+
 		   * 0 dgvBlastUnitReference
 		   * 2 dgvBlastEnabled
 		   * 3 dgvPrecision
@@ -720,7 +732,6 @@ namespace RTC
 
 			(cmsBlastEditor.Items.Add("Change Selected Rows", null, new EventHandler((ob, ev) =>
 			{
-
 				string newvalue = "";
 				decimal decimalvalue = 0;
 
@@ -730,7 +741,8 @@ namespace RTC
 					//Blast unit enabled
 					case 1:
 					case 2:
-						foreach (DataGridViewRow row in dgvBlastLayer.SelectedRows){
+						foreach (DataGridViewRow row in dgvBlastLayer.SelectedRows)
+						{
 							row.Cells[column].Value = !(bool)(row.Cells[column].Value);
 						}
 						break;
@@ -761,7 +773,7 @@ namespace RTC
 					//9 dvgParam
 					//Needs to be capped at the precision so it's separate from case 7 (the address)
 					case 9:
-						if(RTC_Extensions.getInputBox("Replace Selected Rows", "Replacement input (make sure it's valid): ", ref decimalvalue, cbUseHex.Checked) == DialogResult.OK)
+						if (RTC_Extensions.getInputBox("Replace Selected Rows", "Replacement input (make sure it's valid): ", ref decimalvalue, cbUseHex.Checked) == DialogResult.OK)
 							foreach (DataGridViewRow row in dgvBlastLayer.SelectedRows)
 							{
 								uint precision = GetPrecisionMaxValue(row);
@@ -770,11 +782,10 @@ namespace RTC
 								row.Cells[column].Value = decimalvalue;
 							}
 						break;
+
 					default:
 						break;
 				}
-
-
 			})) as ToolStripMenuItem).Enabled = true;
 		}
 
@@ -785,7 +796,6 @@ namespace RTC
 				int currentMouseOverColumn = dgvBlastLayer.HitTest(e.X, e.Y).ColumnIndex;
 				int currentMouseOverRow = dgvBlastLayer.HitTest(e.X, e.Y).RowIndex;
 
-				
 				//Column header
 				if (currentMouseOverRow == -1)
 				{
@@ -803,7 +813,6 @@ namespace RTC
 				//BlastUnitMode
 				else if (currentMouseOverColumn == (int)BlastEditorColumn.dgvBlastUnitMode)
 				{
-
 					PopulateBlastUnitModeContextMenu(currentMouseOverColumn);
 					cmsBlastEditor.Show(dgvBlastLayer, new Point(e.X, e.Y));
 				}
@@ -824,15 +833,19 @@ namespace RTC
 				case "dgvSourceAddressDomain":
 					sk.BlastLayer.Layer = sk.BlastLayer.Layer.OrderBy(it => it.Domain).ToList();
 					break;
+
 				case "dgvSourceAddress":
 					sk.BlastLayer.Layer = sk.BlastLayer.Layer.OrderBy(it => it.Address).ToList();
 					break;
+
 				case "dgvParamDomain":
 					sk.BlastLayer.Layer = sk.BlastLayer.Layer.OrderBy(it => GetParamDomain(it)).ToList();
 					break;
+
 				case "dgvParam":
 					sk.BlastLayer.Layer = sk.BlastLayer.Layer.OrderBy(it => GetParamValue(it)).ToList();
 					break;
+
 				default:
 					break;
 			}
@@ -853,6 +866,7 @@ namespace RTC
 			}
 			return 0;
 		}
+
 		private string GetParamDomain(BlastUnit bu)
 		{
 			if (bu is BlastPipe)
@@ -879,10 +893,12 @@ namespace RTC
 		{
 			UpdateBlastLayerSize();
 		}
+
 		private void dgvBlastLayer_RowsRemoved(object sender, DataGridViewRowsRemovedEventArgs e)
 		{
 			UpdateBlastLayerSize();
 		}
+
 		private void dgvBlastLayer_UserDeletingRow(object sender, DataGridViewRowCancelEventArgs e)
 		{
 			if ((bool)e.Row.Cells["dgvBlastUnitLocked"].Value)
@@ -902,7 +918,7 @@ namespace RTC
 				MessageBox.Show("No rows were selected. Cannot remove.");
 				return;
 			}
-			if(MessageBox.Show("Are you sure you want to clear the stockpile?", "Clearing stockpile", MessageBoxButtons.YesNo) == DialogResult.Yes)
+			if (MessageBox.Show("Are you sure you want to clear the stockpile?", "Clearing stockpile", MessageBoxButtons.YesNo) == DialogResult.Yes)
 				foreach (DataGridViewRow row in dgvBlastLayer.SelectedRows)
 				{
 					if ((bool)row.Cells["dgvBlastUnitLocked"].Value)
@@ -928,7 +944,6 @@ namespace RTC
 			ComboBox column = new ComboBox();
 			//Only draw the column combobox if the user wants the column
 			column.Hide();
-
 
 			if (filterColumn)
 			{
@@ -977,14 +992,14 @@ namespace RTC
 			DialogResult dialogResult = form.ShowDialog();
 
 			searchValue = input.Text;
-			if(filterColumn)
+			if (filterColumn)
 				searchColumn = (column.SelectedItem as dynamic).Value;
 			return dialogResult;
 		}
 
 		//Provides a dialog box that searches for a row in the DGV
 		private void btnSearchRow_Click(object sender, EventArgs e)
-		{			
+		{
 			if (this.getSearchBox("Search for a value", "Choose a column and enter a value", true) == DialogResult.OK)
 			{
 				dgvBlastLayer.ClearSelection();
@@ -1010,12 +1025,11 @@ namespace RTC
 			if (!findAgain)
 				searchOffset = 0;
 
-
 			//Search for the formatted value and return the row
 			//We use the formatted value and expect the user to input the correct type.
 			while (searchOffset < dgv.RowCount)
 			{
-				if (dgv[searchColumn, searchOffset].FormattedValue.ToString() == searchValue) 
+				if (dgv[searchColumn, searchOffset].FormattedValue.ToString() == searchValue)
 					return dgv.Rows[searchOffset++];
 				searchOffset++;
 			}
@@ -1028,7 +1042,7 @@ namespace RTC
 		private void saveToFileblToolStripMenuItem_Click(object sender, EventArgs e)
 		{
 			//If there's no blastlayer file already set, don't quicksave
-			if(currentBlastLayerFile == "")
+			if (currentBlastLayerFile == "")
 				RTC_BlastTools.SaveBlastLayerToFile(sk.BlastLayer);
 			else
 				RTC_BlastTools.SaveBlastLayerToFile(sk.BlastLayer, true);
@@ -1036,7 +1050,6 @@ namespace RTC
 
 		private void saveAsToFileblToolStripMenuItem_Click(object sender, EventArgs e)
 		{
-
 			RTC_BlastTools.SaveBlastLayerToFile(sk.BlastLayer, false);
 		}
 
@@ -1063,7 +1076,6 @@ namespace RTC
 
 		private void exportToCSVToolStripMenuItem_Click(object sender, EventArgs e)
 		{
-
 			string filename;
 
 			if (sk.BlastLayer.Layer.Count == 0)
@@ -1086,7 +1098,6 @@ namespace RTC
 				return;
 			CSVGenerator csv = new CSVGenerator();
 			File.WriteAllText(filename, csv.GenerateFromDGV(dgvBlastLayer), Encoding.UTF8);
-
 		}
 
 		private void runOriginalSavestateToolStripMenuItem_Click(object sender, EventArgs e)
@@ -1123,7 +1134,6 @@ namespace RTC
 			}
 			else
 				sk.ParentKey = temp.ParentKey;
-
 		}
 
 		private void replaceSavestateFromFileToolStripMenuItem_Click(object sender, EventArgs e)
@@ -1146,7 +1156,6 @@ namespace RTC
 
 			//Let's hope the game name is correct!
 			File.Copy(filename, sk.getSavestateFullPath());
-
 		}
 
 		private void saveSavestateToToolStripMenuItem_Click(object sender, EventArgs e)
@@ -1208,7 +1217,6 @@ namespace RTC
 				sk.SystemName = temp.SystemName;
 				sk.SystemDeepName = temp.SystemDeepName;
 				sk.SystemCore = temp.SystemCore;
-
 			}
 		}
 
@@ -1229,7 +1237,6 @@ namespace RTC
 			else
 				return;
 			RomParts rp = RTC_MemoryDomains.GetRomParts(sk.SystemName, sk.RomFilename);
-
 
 			File.Copy(sk.RomFilename, filename);
 			using (FileStream output = new FileStream(filename, FileMode.Open))
@@ -1258,7 +1265,6 @@ namespace RTC
 				//this.Width = this.Width - 176;
 				//dgvBlastLayer.Width = dgvBlastLayer.Width + 176;
 				btnHideSidebar.Text = "◀";
-				
 			}
 			else
 			{
