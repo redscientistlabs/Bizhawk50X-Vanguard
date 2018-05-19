@@ -240,13 +240,23 @@ namespace RTC
 
                     //TODO: Add more domains for cores like gamegear, atari, turbo graphx
             }
-
-
 			return DomainBlacklist.ToArray();
+		}
 
-        }
+		private static bool checkNesHeader(string filename)
+		{
+			byte[] buffer = new byte[4];
+			using (Stream fs = File.OpenRead(filename))
+			{
+				fs.Read(buffer, 0, buffer.Length);
+			}
+			if (!buffer.SequenceEqual(Encoding.ASCII.GetBytes("NES\x1A")))
+				return false;
+			return true;
 
-        public static RomParts GetRomParts(string thisSystem, string romFilename)
+		}
+
+		public static RomParts GetRomParts(string thisSystem, string romFilename)
         {
             RomParts rp = new RomParts();
 
@@ -265,8 +275,9 @@ namespace RTC
 
 					if (RTC_MemoryDomains.MemoryInterfaces.ContainsKey("CHR VROM"))
                         rp.seconddomain = "CHR VROM";
-					//We're assuming there'll always be a header here. Let's hope we're right (we're not but bizhawk has issues loading headerless roms so we're fine probably)
-                    rp.skipbytes = 16;
+					//Skip the first 16 bytes if there's an iNES header
+					if(checkNesHeader(romFilename))
+	                    rp.skipbytes = 16;
                     break;
 
                 case "SNES":    //Super Nintendo

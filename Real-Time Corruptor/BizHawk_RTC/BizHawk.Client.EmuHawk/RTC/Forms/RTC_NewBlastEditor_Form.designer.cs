@@ -90,6 +90,7 @@
             this.bakeROMBlastunitsToFileToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.btnHideSidebar = new System.Windows.Forms.Button();
             this.rasterizeVMDsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.saveAsToFileblToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             ((System.ComponentModel.ISupportInitialize)(this.dgvBlastLayer)).BeginInit();
             this.pnMemoryTargetting.SuspendLayout();
             this.panel1.SuspendLayout();
@@ -671,6 +672,7 @@
             this.blastLayerToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.loadFromFileblToolStripMenuItem,
             this.saveToFileblToolStripMenuItem,
+            this.saveAsToFileblToolStripMenuItem,
             this.importBlastlayerblToolStripMenuItem,
             this.exportToCSVToolStripMenuItem,
             this.rasterizeVMDsToolStripMenuItem});
@@ -689,7 +691,7 @@
             // 
             this.saveToFileblToolStripMenuItem.Name = "saveToFileblToolStripMenuItem";
             this.saveToFileblToolStripMenuItem.Size = new System.Drawing.Size(187, 22);
-            this.saveToFileblToolStripMenuItem.Text = "&Save to file (.bl)";
+            this.saveToFileblToolStripMenuItem.Text = "&Save to File (.bl)";
             this.saveToFileblToolStripMenuItem.Click += new System.EventHandler(this.saveToFileblToolStripMenuItem_Click);
             // 
             // importBlastlayerblToolStripMenuItem
@@ -799,8 +801,15 @@
             // 
             this.rasterizeVMDsToolStripMenuItem.Name = "rasterizeVMDsToolStripMenuItem";
             this.rasterizeVMDsToolStripMenuItem.Size = new System.Drawing.Size(187, 22);
-            this.rasterizeVMDsToolStripMenuItem.Text = "Rasterize VMDs";
+            this.rasterizeVMDsToolStripMenuItem.Text = "&Rasterize VMDs";
             this.rasterizeVMDsToolStripMenuItem.Click += new System.EventHandler(this.rasterizeVMDsToolStripMenuItem_Click);
+            // 
+            // saveAsToFileblToolStripMenuItem
+            // 
+            this.saveAsToFileblToolStripMenuItem.Name = "saveAsToFileblToolStripMenuItem";
+            this.saveAsToFileblToolStripMenuItem.Size = new System.Drawing.Size(187, 22);
+            this.saveAsToFileblToolStripMenuItem.Text = "&Save As to File (.bl)";
+            this.saveAsToFileblToolStripMenuItem.Click += new System.EventHandler(this.saveAsToFileblToolStripMenuItem_Click);
             // 
             // RTC_NewBlastEditor_Form
             // 
@@ -896,5 +905,6 @@
 		private System.Windows.Forms.Label lbSelectedParam2Info;
 		private System.Windows.Forms.Label lbSelectedParam1Info;
 		private System.Windows.Forms.ToolStripMenuItem rasterizeVMDsToolStripMenuItem;
+		private System.Windows.Forms.ToolStripMenuItem saveAsToFileblToolStripMenuItem;
 	}
 }

@@ -17,7 +17,7 @@ namespace RTC
 	public static class RTC_BlastTools
 	{
 
-		public static bool SaveBlastLayerToFile(BlastLayer bl)
+		public static bool SaveBlastLayerToFile(BlastLayer bl, bool isQuickSave = false)
 		{
 			string filename;
 
@@ -27,18 +27,25 @@ namespace RTC
 				return false;
 			}
 
-			SaveFileDialog saveFileDialog1 = new SaveFileDialog();
-			saveFileDialog1.DefaultExt = "bl";
-			saveFileDialog1.Title = "Save BlastLayer File";
-			saveFileDialog1.Filter = "bl files|*.bl";
-			saveFileDialog1.RestoreDirectory = true;
-
-			if (saveFileDialog1.ShowDialog() == DialogResult.OK)
+			if (!isQuickSave)
 			{
-				filename = saveFileDialog1.FileName;
+
+				SaveFileDialog saveFileDialog1 = new SaveFileDialog();
+				saveFileDialog1.DefaultExt = "bl";
+				saveFileDialog1.Title = "Save BlastLayer File";
+				saveFileDialog1.Filter = "bl files|*.bl";
+				saveFileDialog1.RestoreDirectory = true;
+
+				if (saveFileDialog1.ShowDialog() == DialogResult.OK)
+				{
+					filename = saveFileDialog1.FileName;
+					RTC_Core.beForm.currentBlastLayerFile = saveFileDialog1.FileName;
+				}
+				else
+					return false;
 			}
 			else
-				return false;
+				filename = RTC_Core.beForm.currentBlastLayerFile;
 
 			XmlSerializer xs = new XmlSerializer(typeof(BlastLayer));
 

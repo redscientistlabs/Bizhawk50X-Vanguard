@@ -57,6 +57,7 @@ namespace RTC
 		int searchOffset = 0;
 		string searchValue = "";
 		string searchColumn = "";
+		public string currentBlastLayerFile = "";
 
 		Dictionary<BlastUnit, DataGridViewRow> bu2RowDico = new Dictionary<BlastUnit, DataGridViewRow>();
 
@@ -642,7 +643,6 @@ namespace RTC
 
 			foreach (string domain in domains)
 			{
-				//cmsDomain.Items.Add(domain, null, );
 				(cmsBlastEditor.Items.Add(domain, null, new EventHandler((ob, ev) =>
 				{
 					foreach (DataGridViewRow row in dgvBlastLayer.SelectedRows)
@@ -718,7 +718,7 @@ namespace RTC
 		   * 8 dvgParamDomain
 		   * 9 dvgParam*/
 
-			  (cmsBlastEditor.Items.Add("Change Selected Rows", null, new EventHandler((ob, ev) =>
+			(cmsBlastEditor.Items.Add("Change Selected Rows", null, new EventHandler((ob, ev) =>
 			{
 
 				string newvalue = "";
@@ -1027,7 +1027,17 @@ namespace RTC
 
 		private void saveToFileblToolStripMenuItem_Click(object sender, EventArgs e)
 		{
-			RTC_BlastTools.SaveBlastLayerToFile(sk.BlastLayer);
+			//If there's no blastlayer file already set, don't quicksave
+			if(currentBlastLayerFile == "")
+				RTC_BlastTools.SaveBlastLayerToFile(sk.BlastLayer);
+			else
+				RTC_BlastTools.SaveBlastLayerToFile(sk.BlastLayer, true);
+		}
+
+		private void saveAsToFileblToolStripMenuItem_Click(object sender, EventArgs e)
+		{
+
+			RTC_BlastTools.SaveBlastLayerToFile(sk.BlastLayer, false);
 		}
 
 		private void loadFromFileblToolStripMenuItem_Click(object sender, EventArgs e)
@@ -1082,6 +1092,13 @@ namespace RTC
 		private void runOriginalSavestateToolStripMenuItem_Click(object sender, EventArgs e)
 		{
 			originalsk.RunOriginal();
+		}
+
+		private void rasterizeVMDsToolStripMenuItem_Click(object sender, EventArgs e)
+		{
+			foreach (BlastUnit bu in sk.BlastLayer.Layer)
+				bu.Rasterize();
+			RefreshBlastLayer();
 		}
 
 		private void replaceSavestateFromGHToolStripMenuItem_Click(object sender, EventArgs e)
@@ -1262,6 +1279,10 @@ namespace RTC
 			{
 				btnSearchAgain.PerformClick();
 			}
+			if (e.Control && e.KeyCode == Keys.S)
+			{
+				saveToFileblToolStripMenuItem.PerformClick();
+			}
 		}
 
 		private void dgvBlastLayer_SelectionChanged(object sender, EventArgs e)
@@ -1271,13 +1292,6 @@ namespace RTC
 
 			lbSelectedParam1Info.Text = dgvBlastLayer[7, dgvBlastLayer.CurrentRow.Index].FormattedValue.ToString();
 			lbSelectedParam2Info.Text = dgvBlastLayer[9, dgvBlastLayer.CurrentRow.Index].FormattedValue.ToString();
-		}
-
-		private void rasterizeVMDsToolStripMenuItem_Click(object sender, EventArgs e)
-		{
-			foreach (BlastUnit bu in sk.BlastLayer.Layer)
-				bu.Rasterize();
-			RefreshBlastLayer();
 		}
 	}
 }
