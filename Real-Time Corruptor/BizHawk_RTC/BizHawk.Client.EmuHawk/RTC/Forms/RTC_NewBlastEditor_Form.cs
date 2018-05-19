@@ -388,18 +388,52 @@ namespace RTC
 			if (!initialized || dgvBlastLayer == null)
 				return;
 
+
 			if (!CurrentlyUpdating)
 			{
 				CurrentlyUpdating = true;
 
+				try
+				{
+					UpdateRowPrecision(dgvBlastLayer.Rows[e.RowIndex]);
+					//Changing the blast unit type
+					if (e.ColumnIndex == 4)
+						ReplaceBlastUnitFromRow(dgvBlastLayer.Rows[e.RowIndex]);
+					else
+						UpdateBlastUnitFromRow(dgvBlastLayer.Rows[e.RowIndex]);
+				}
+				catch (Exception ex)
+				{
+					CurrentlyUpdating = false;
+
+					throw new System.Exception("Something went wrong in when updating the blastunit \n" +
+					"Make sure your input is valid.\n\n" +
+					"If your input was valid, you should probably send a copy of this error and what you did to cause it to the RTC devs.\n\n" + 
+					ex.ToString());
+				}
+
+			}
+		}
+
+
+		private void dgvBlastLayer_CellValidating(object sender, DataGridViewCellValidatingEventArgs e)
+		{
+			/*
+			DataGridViewRow row = dgvBlastLayer.Rows[e.RowIndex];
+			DataGridViewColumn column = dgvBlastLayer.Columns[e.ColumnIndex];
+
+			//Make sure the max and min is updated if the precision changed
+			if (column.HeaderText.Equals("Precision"))
 				UpdateRowPrecision(dgvBlastLayer.Rows[e.RowIndex]);
 
-				//Changing the blast unit type
-				if (e.ColumnIndex == 4)
-					ReplaceBlastUnitFromRow(dgvBlastLayer.Rows[e.RowIndex]);
-				else
-					UpdateBlastUnitFromRow(dgvBlastLayer.Rows[e.RowIndex]);
-			}
+			*/
+		
+		}
+
+		//Validates that a blast unit is valid from a dgv row
+		private bool ValidateBlastUnitFromRow(DataGridViewRow row)
+		{
+			return true;
 		}
 
 		private string GetPrecisionNameFromSize(int precision)
@@ -444,44 +478,47 @@ namespace RTC
 			string column = row.Cells["dgvBlastUnitType"].Value.ToString();
 			int index = row.Index;
 			bu2RowDico[bu] = row;
-
-			//Remove the old one
-			RemoveBlastUnitFromBlastLayerAndDGV(bu);
-
-			switch (column)
+			try
 			{
-				case "RTC.BlastByte":
-					BlastByte bb = (BlastByte)RTC_BlastTools.ConvertBlastUnit(bu, typeof(BlastByte));
-					sk.BlastLayer.Layer.Insert(index, bb);
-					InsertBlastUnitToDGV(index, bb);
-					CurrentlyUpdating = false;
-					break;
+				switch (column)
+				{
+					case "RTC.BlastByte":
+						BlastByte bb = (BlastByte)RTC_BlastTools.ConvertBlastUnit(bu, typeof(BlastByte));
+						sk.BlastLayer.Layer.Insert(index, bb);
+						InsertBlastUnitToDGV(index, bb);
+						CurrentlyUpdating = false;
+						break;
 
-				case "RTC.BlastCheat":
-					BlastCheat bc = (BlastCheat)RTC_BlastTools.ConvertBlastUnit(bu, typeof(BlastCheat));
-					sk.BlastLayer.Layer.Insert(index, bc);
-					InsertBlastUnitToDGV(index, bc);
-					CurrentlyUpdating = false;
-					break;
+					case "RTC.BlastCheat":
+						BlastCheat bc = (BlastCheat)RTC_BlastTools.ConvertBlastUnit(bu, typeof(BlastCheat));
+						sk.BlastLayer.Layer.Insert(index, bc);
+						InsertBlastUnitToDGV(index, bc);
+						CurrentlyUpdating = false;
+						break;
 
-				case "RTC.BlastPipe":
-					BlastPipe bp = (BlastPipe)RTC_BlastTools.ConvertBlastUnit(bu, typeof(BlastPipe));
-					sk.BlastLayer.Layer.Insert(index, bp);
-					InsertBlastUnitToDGV(index, bp);
-					CurrentlyUpdating = false;
-					break;
+					case "RTC.BlastPipe":
+						BlastPipe bp = (BlastPipe)RTC_BlastTools.ConvertBlastUnit(bu, typeof(BlastPipe));
+						sk.BlastLayer.Layer.Insert(index, bp);
+						InsertBlastUnitToDGV(index, bp);
+						CurrentlyUpdating = false;
+						break;
 
-				case "RTC.BlastVector":
-					BlastVector bv = (BlastVector)RTC_BlastTools.ConvertBlastUnit(bu, typeof(BlastVector));
-					sk.BlastLayer.Layer.Insert(index, bv);
-					InsertBlastUnitToDGV(index, bv);
-					CurrentlyUpdating = false;
-					break;
+					case "RTC.BlastVector":
+						BlastVector bv = (BlastVector)RTC_BlastTools.ConvertBlastUnit(bu, typeof(BlastVector));
+						sk.BlastLayer.Layer.Insert(index, bv);
+						InsertBlastUnitToDGV(index, bv);
+						CurrentlyUpdating = false;
+						break;
 
-				default:
-					MessageBox.Show("You had an invalid blast unit type! Check your input. The invalid unit is: " + row.Cells["dgvBlastUnitType"].Value);
-					CurrentlyUpdating = false;
-					break;
+					default:
+						CurrentlyUpdating = false;
+						throw new Exception("Invalid BlastUnit Type");
+				}
+				//Remove the old one
+				RemoveBlastUnitFromBlastLayerAndDGV(bu);
+			}catch(Exception ex)
+			{
+				throw;
 			}
 		}
 
@@ -620,28 +657,6 @@ namespace RTC
 			}
 			//No precision set?
 			return UInt32.MaxValue;
-		}
-
-		private void dgvBlastLayer_CellValidating(object sender, DataGridViewCellValidatingEventArgs e)
-		{
-			DataGridViewRow row = dgvBlastLayer.Rows[e.RowIndex];
-			DataGridViewColumn column = dgvBlastLayer.Columns[e.ColumnIndex];
-
-			//Make sure the max and min is updated if the precision changed
-			if (column.HeaderText.Equals("Precision"))
-				UpdateRowPrecision(dgvBlastLayer.Rows[e.RowIndex]);
-
-			if (!ValidateBlastUnitFromRow(row))
-			{
-				dgvBlastLayer.Rows[e.RowIndex].ErrorText = "There's something wrong with your input!";
-				e.Cancel = true;
-			}
-		}
-
-		//Validates that a blast unit is valid from a dgv row
-		private bool ValidateBlastUnitFromRow(DataGridViewRow row)
-		{
-			return true;
 		}
 
 		private void PopulateDomainContextMenu(int column)

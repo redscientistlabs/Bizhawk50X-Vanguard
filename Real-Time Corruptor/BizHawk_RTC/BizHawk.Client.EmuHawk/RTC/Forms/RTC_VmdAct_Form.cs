@@ -489,7 +489,7 @@ namespace RTC
 			catch (Exception ex)
 			{
 				MessageBox.Show("Something went wrong in when generating the active table. \n" +
-								"This is not a BizHawk error so you should probably send a screenshot of this to the devs\n\n" +
+					"This is an RTC error, so you should probably send this to the RTC devs with instructions on what you did to cause it.\n\n" +
 								ex.ToString());
 				return;
 			}
@@ -532,7 +532,7 @@ namespace RTC
 			catch (Exception ex)
 			{
 				MessageBox.Show("Something went wrong in when generating the VMD table. \n" +
-								"This is not a BizHawk error so you should probably send a screenshot of this to the devs\n\n" +
+					"This is an RTC error, so you should probably send this to the RTC devs with instructions on what you did to cause it.\n\n" +
 								ex.ToString());
 				return;
 			}

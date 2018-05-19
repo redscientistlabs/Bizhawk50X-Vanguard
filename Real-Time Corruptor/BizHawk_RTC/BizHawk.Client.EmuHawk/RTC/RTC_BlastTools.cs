@@ -126,91 +126,98 @@ namespace RTC
 
 		public static BlastUnit ConvertBlastUnit(this BlastUnit bu, Type destinationType)
 		{
-			if(bu is BlastByte)
+			try
 			{
-				BlastByte bb = bu as BlastByte;
-				if (destinationType == typeof(BlastByte))
+
+				if (bu is BlastByte)
 				{
-					return new BlastByte(bb.Domain, bb.Address, BlastByteType.SET, CapBlastUnit(bb.Value), bb.BigEndian, bb.IsEnabled);
+					BlastByte bb = bu as BlastByte;
+					if (destinationType == typeof(BlastByte))
+					{
+						return new BlastByte(bb.Domain, bb.Address, BlastByteType.SET, CapBlastUnit(bb.Value), bb.BigEndian, bb.IsEnabled);
+					}
+					if (destinationType == typeof(BlastCheat))
+					{
+						return new BlastCheat(bb.Domain, bb.Address, BizHawk.Client.Common.DisplayType.Unsigned, bb.BigEndian, CapBlastUnit(bb.Value), bb.IsEnabled, false);
+					}
+					else if (destinationType == typeof(BlastPipe))
+					{
+						//Pipe to 0
+						return new BlastPipe(bb.Domain, bb.Address, bb.Domain, 0, 0, bb.Value.Length, bb.BigEndian, bb.IsEnabled);
+					}
+					else if (destinationType == typeof(BlastVector))
+					{
+						MessageBox.Show("BlastVector is depricated.");
+						return null;
+					}
 				}
-				if (destinationType == typeof(BlastCheat))
+				else if (bu is BlastCheat)
 				{
-					return new BlastCheat(bb.Domain, bb.Address, BizHawk.Client.Common.DisplayType.Unsigned, bb.BigEndian, CapBlastUnit(bb.Value), bb.IsEnabled, false);
+					BlastCheat bc = bu as BlastCheat;
+					if (destinationType == typeof(BlastCheat))
+					{
+						return new BlastCheat(bc.Domain, bc.Address, BizHawk.Client.Common.DisplayType.Unsigned, bc.BigEndian, CapBlastUnit(bc.Value), bc.IsEnabled, false);
+					}
+					if (destinationType == typeof(BlastByte))
+					{
+						return new BlastByte(bc.Domain, bc.Address, BlastByteType.SET, CapBlastUnit(bc.Value), bc.BigEndian, bc.IsEnabled);
+					}
+					else if (destinationType == typeof(BlastPipe))
+					{
+						return new BlastPipe(bc.Domain, bc.Address, bc.Domain, 0, 0, bc.Value.Length, bc.BigEndian, bc.IsEnabled);
+					}
+					else if (destinationType == typeof(BlastVector))
+					{
+						MessageBox.Show("BlastVector is depricated.");
+						return null;
+					}
 				}
-				else if (destinationType == typeof(BlastPipe))
+				else if (bu is BlastPipe)
 				{
-					//Pipe to 0
-					return new BlastPipe(bb.Domain, bb.Address, bb.Domain, 0, 0, bb.Value.Length, bb.BigEndian, bb.IsEnabled);
+					BlastPipe bp = bu as BlastPipe;
+					if (destinationType == typeof(BlastPipe))
+					{
+						return new BlastPipe(bp.Domain, bp.Address, bp.PipeDomain, bp.PipeAddress, 0, bp.PipeSize, bp.BigEndian, bp.IsEnabled);
+					}
+					else if (destinationType == typeof(BlastByte))
+					{
+						return new BlastByte(bp.PipeDomain, bp.PipeAddress, BlastByteType.SET, getByteArray(bp.PipeSize, 0x0), bp.BigEndian, bp.IsEnabled);
+					}
+					else if (destinationType == typeof(BlastCheat))
+					{
+						return new BlastCheat(bp.PipeDomain, bp.PipeAddress, BizHawk.Client.Common.DisplayType.Unsigned, bp.BigEndian, getByteArray(bp.PipeSize, 0x0), bp.IsEnabled, false);
+					}
+					else if (destinationType == typeof(BlastVector))
+					{
+						MessageBox.Show("BlastVector is depricated.");
+						return null;
+					}
 				}
-				else if (destinationType == typeof(BlastVector))
+				else if (bu is BlastVector)
 				{
-					MessageBox.Show("BlastVector is depricated.");
-					return null;
+					BlastVector bv = bu as BlastVector;
+					if (destinationType == typeof(BlastVector))
+					{
+						MessageBox.Show("BlastVector is depricated.");
+					}
+					else if (destinationType == typeof(BlastByte))
+					{
+						//BlastVector is depricated. If converting into a blastbyte, convert it to a regular blastbyte not a blastbyte in vector mode. It can't be re-rolled but it's cleaner
+						//True to the endianess as BlastVector was always big endian
+						return new BlastByte(bv.Domain, bv.Address, BlastByteType.SET, CapBlastUnit(bv.Values), true, bv.IsEnabled);
+					}
+					else if (destinationType == typeof(BlastCheat))
+					{
+						return new BlastCheat(bv.Domain, bv.Address, BizHawk.Client.Common.DisplayType.Unsigned, true, CapBlastUnit(bv.Values), bv.IsEnabled, false);
+					}
+					else if (destinationType == typeof(BlastPipe))
+					{
+						return new BlastPipe(bv.Domain, bv.Address, bv.Domain, 0, 0, bv.Values.Length, true, bv.IsEnabled);
+					}
 				}
-			}
-			else if (bu is BlastCheat)
+			}catch(Exception ex)
 			{
-				BlastCheat bc = bu as BlastCheat;
-				if (destinationType == typeof(BlastCheat))
-				{
-					return new BlastCheat(bc.Domain, bc.Address, BizHawk.Client.Common.DisplayType.Unsigned, bc.BigEndian, CapBlastUnit(bc.Value), bc.IsEnabled, false);
-				}
-				if (destinationType == typeof(BlastByte))
-				{
-					return new BlastByte(bc.Domain, bc.Address, BlastByteType.SET, CapBlastUnit(bc.Value), bc.BigEndian, bc.IsEnabled);
-				}
-				else if (destinationType == typeof(BlastPipe))
-				{
-					return new BlastPipe(bc.Domain, bc.Address, bc.Domain, 0, 0, bc.Value.Length, bc.BigEndian, bc.IsEnabled);
-				}
-				else if (destinationType == typeof(BlastVector))
-				{
-					MessageBox.Show("BlastVector is depricated.");
-					return null;
-				}
-			}
-			else if (bu is BlastPipe)
-			{
-				BlastPipe bp = bu as BlastPipe;
-				if (destinationType == typeof(BlastPipe))
-				{
-					return new BlastPipe(bp.Domain, bp.Address, bp.PipeDomain, bp.PipeAddress, 0, bp.PipeSize, bp.BigEndian, bp.IsEnabled);
-				}
-				else if (destinationType == typeof(BlastByte))
-				{
-					return new BlastByte(bp.PipeDomain, bp.PipeAddress, BlastByteType.SET, getByteArray(bp.PipeSize, 0x0), bp.BigEndian, bp.IsEnabled);
-				}
-				else if (destinationType == typeof(BlastCheat))
-				{
-					return new BlastCheat(bp.PipeDomain, bp.PipeAddress, BizHawk.Client.Common.DisplayType.Unsigned, bp.BigEndian, getByteArray(bp.PipeSize,0x0), bp.IsEnabled, false);
-				}
-				else if (destinationType == typeof(BlastVector))
-				{
-					MessageBox.Show("BlastVector is depricated.");
-					return null;
-				}
-			}
-			else if (bu is BlastVector)
-			{
-				BlastVector bv = bu as BlastVector;
-				if (destinationType == typeof(BlastVector))
-				{
-					MessageBox.Show("BlastVector is depricated.");
-				}
-				else if (destinationType == typeof(BlastByte))
-				{
-					//BlastVector is depricated. If converting into a blastbyte, convert it to a regular blastbyte not a blastbyte in vector mode. It can't be re-rolled but it's cleaner
-					//True to the endianess as BlastVector was always big endian
-					return new BlastByte(bv.Domain, bv.Address, BlastByteType.SET, CapBlastUnit(bv.Values), true, bv.IsEnabled);
-				}
-				else if (destinationType == typeof(BlastCheat))
-				{
-					return new BlastCheat(bv.Domain, bv.Address, BizHawk.Client.Common.DisplayType.Unsigned, true, CapBlastUnit(bv.Values), bv.IsEnabled, false);
-				}
-				else if (destinationType == typeof(BlastPipe))
-				{
-					return new BlastPipe(bv.Domain, bv.Address, bv.Domain, 0, 0, bv.Values.Length, true, bv.IsEnabled);
-				}
+				throw;
 			}
 
 			return null;

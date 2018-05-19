@@ -1147,7 +1147,8 @@ namespace RTC
 			catch (Exception ex)
 			{
 				throw new Exception("The BlastByte apply() function threw up. \n" +
-				"This is not a BizHawk error so you should probably send a screenshot of this to the RTC devs\nif you are able to reproduce this bug in a consistant manner\n\n" +
+					"This is an RTC error, so you should probably send this to the RTC devs.\n" +
+					"If you know the steps to reproduce this error it would be greatly appreciated.\n\n" +
 				ex.ToString());
 			}
 
@@ -1177,7 +1178,8 @@ namespace RTC
 			catch (Exception ex)
 			{
 				throw new Exception("The BlastByte GetBackup() function threw up. \n" +
-				"This is not a BizHawk error so you should probably send a screenshot of this to the RTC devs\nif you are able to reproduce this bug in a consistant manner\n\n" +
+					"This is an RTC error, so you should probably send this to the RTC devs.\n" +
+					"If you know the steps to reproduce this error it would be greatly appreciated.\n\n" +
 				ex.ToString());
 			}
 		}
@@ -1288,7 +1290,8 @@ namespace RTC
 			catch (Exception ex)
 			{
 				throw new Exception("The BlastVector apply() function threw up. \n" +
-				"This is not a BizHawk error so you should probably send a screenshot of this to the RTC devs\nif you are able to reproduce this bug in a consistant manner\n\n" +
+					"This is an RTC error, so you should probably send this to the RTC devs.\n" +
+					"If you know the steps to reproduce this error it would be greatly appreciated.\n\n" +
 				ex.ToString());
 			}
 
@@ -1313,7 +1316,8 @@ namespace RTC
 			catch (Exception ex)
 			{
 				throw new Exception("The BlastVector GetBackup() function threw up. \n" +
-				"This is not a BizHawk error so you should probably send a screenshot of this to the RTC devs\nif you are able to reproduce this bug in a consistant manner\n\n" +
+					"This is an RTC error, so you should probably send this to the RTC devs.\n" +
+					"If you know the steps to reproduce this error it would be greatly appreciated.\n\n" +
 				ex.ToString());
 			}
 		}
@@ -1395,7 +1399,8 @@ namespace RTC
 			catch (Exception ex)
 			{
 				throw new Exception("The BlastPipe apply() function threw up. \n" +
-				"This is not a BizHawk error so you should probably send a screenshot of this to the RTC devs\nif you are able to reproduce this bug in a consistant manner\n\n" +
+					"This is an RTC error, so you should probably send this to the RTC devs.\n" +
+					"If you know the steps to reproduce this error it would be greatly appreciated.\n\n" +
 				ex.ToString());
 			}
 		}
@@ -1470,7 +1475,8 @@ namespace RTC
 			catch (Exception ex)
 			{
 				throw new Exception("The BlastPipe GetBackup() function threw up. \n" +
-				"This is not a BizHawk error so you should probably send a screenshot of this to the RTC devs\nif you are able to reproduce this bug in a consistant manner\n\n" +
+					"This is an RTC error, so you should probably send this to the RTC devs.\n" +
+					"If you know the steps to reproduce this error it would be greatly appreciated.\n\n" +
 				ex.ToString());
 			}
 		}
@@ -1597,7 +1603,8 @@ namespace RTC
 			catch (Exception ex)
 			{
 				throw new Exception("The BlastCheat apply() function threw up. \n" +
-				"This is not a BizHawk error so you should probably send a screenshot of this to the RTC devs\nif you are able to reproduce this bug in a consistant manner\n\n" +
+					"This is an RTC error, so you should probably send this to the RTC devs.\n" +
+					"If you know the steps to reproduce this error it would be greatly appreciated.\n\n" +
 				ex.ToString());
 			}
 

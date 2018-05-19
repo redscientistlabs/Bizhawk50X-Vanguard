@@ -718,7 +718,7 @@ namespace RTC
             catch (Exception ex)
             {
 				DialogResult dr = MessageBox.Show("Something went wrong in the RTC Core. \n" +
-				"This is not a BizHawk error so you should probably send a screenshot of this to the devs\n\n" +
+					"This is an RTC error, so you should probably send this to the RTC devs.\n\n" +
 				"If you know the steps to reproduce this error it would be greatly appreaciated.\n\n" +
 				(RTC_Core.coreForm.AutoCorrupt ? ">> STOP AUTOCORRUPT ?.\n\n" : "") +
 				$"domain:{Domain.ToString()} maxaddress:{MaxAddress.ToString()} randomaddress:{RandomAddress.ToString()} \n\n" +
