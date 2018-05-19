@@ -2056,20 +2056,13 @@ namespace RTC
 				NotifyDataGridViewOfValueChange();
 			}
 		}
-
-		protected override void UpdateEditText()
-		{
-			if (base.UserEdit) HexParseEditText();
-			if (!string.IsNullOrEmpty(base.Text))
-			{
-				base.ChangingText = true;
-				base.Text = string.Format("{0:X}", (UInt64)base.Value);
-			}
-		}
 		protected override void ValidateEditText()
 		{
-			HexParseEditText();
-			UpdateEditText();
+			
+			if(this.Hexadecimal)
+				HexParseEditText();
+			else 
+				UpdateEditText();
 		}
 		private void HexParseEditText()
 		{

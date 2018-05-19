@@ -122,6 +122,8 @@ namespace RTC
 			dgvBlastLayer.Columns["dgvParam"].ValueType = typeof(Decimal);
 
 			UpdateBlastLayerSize();
+			UpdateSelectedBlastUnitInfo();
+
 			initialized = true;
 		}
 
@@ -207,7 +209,7 @@ namespace RTC
 			dgvBlastLayer.Rows.Insert(index, bu, locked, enabled, GetPrecisionNameFromSize(precision), blastType, blastMode, sourceDomain, sourceAddress, destDomain, destAddress);
 
 			//update the BlastUnit to Cell dico.
-			var row = dgvBlastLayer.Rows[dgvBlastLayer.Rows.Count - 1];
+			var row = dgvBlastLayer.Rows[index];
 			bu2RowDico[bu] = row;
 
 			//Update the precision
@@ -223,10 +225,10 @@ namespace RTC
 				CurrentlyUpdating = false;
 			}
 			foreach (BlastUnit bu in sk.BlastLayer.Layer.OrderBy(x => RTC_Core.RND.Next()).Take(sk.BlastLayer.Layer.Count / 2))
-			{ 
+			{
 				if (!(bool)bu2RowDico[bu].Cells["dgvBlastUnitLocked"].Value)
 					bu2RowDico[bu].Cells["dgvBlastEnabled"].Value = false;
-					CurrentlyUpdating = false;
+				CurrentlyUpdating = false;
 			}
 		}
 
@@ -439,12 +441,10 @@ namespace RTC
 
 		private void ReplaceBlastUnitFromRow(DataGridViewRow row)
 		{
-
 			BlastUnit bu = (BlastUnit)row.Cells["dgvBlastUnitReference"].Value;
 			string column = row.Cells["dgvBlastUnitType"].Value.ToString();
 			int index = row.Index;
 			bu2RowDico[bu] = row;
-
 
 			//Remove the old one
 			RemoveBlastUnitFromBlastLayerAndDGV(bu);
@@ -653,8 +653,8 @@ namespace RTC
 			{
 				(cmsBlastEditor.Items.Add(domain, null, new EventHandler((ob, ev) =>
 				{
-					foreach (DataGridViewRow row in dgvBlastLayer.SelectedRows)
-						row.Cells[column].Value = domain;
+					foreach (DataGridViewRow selected in dgvBlastLayer.SelectedRows.Cast<DataGridViewRow>().Where(item => (bool)item.Cells["dgvBlastUnitLocked"].Value != true))
+						selected.Cells[column].Value = domain;
 				})) as ToolStripMenuItem).Enabled = true;
 			}
 		}
@@ -663,14 +663,14 @@ namespace RTC
 		{
 			cmsBlastEditor.Items.Clear();
 
-			if(dgvBlastLayer[4, row].Value.ToString() == "RTC.BlastByte")
+			if (dgvBlastLayer[4, row].Value.ToString() == "RTC.BlastByte")
 			{
 				foreach (BlastByteType type in Enum.GetValues(typeof(BlastByteType)))
 				{
 					//cmsDomain.Items.Add(domain, null, );
 					(cmsBlastEditor.Items.Add(type.ToString(), null, new EventHandler((ob, ev) =>
 					{
-						foreach (DataGridViewRow selected in dgvBlastLayer.SelectedRows)
+						foreach (DataGridViewRow selected in dgvBlastLayer.SelectedRows.Cast<DataGridViewRow>().Where(item => (bool)item.Cells["dgvBlastUnitLocked"].Value != true))
 							selected.Cells[column].Value = type.ToString();
 					})) as ToolStripMenuItem).Enabled = true;
 				}
@@ -682,7 +682,7 @@ namespace RTC
 					//cmsDomain.Items.Add(domain, null, );
 					(cmsBlastEditor.Items.Add(type.ToString(), null, new EventHandler((ob, ev) =>
 					{
-						foreach (DataGridViewRow selected in dgvBlastLayer.SelectedRows)
+						foreach (DataGridViewRow selected in dgvBlastLayer.SelectedRows.Cast<DataGridViewRow>().Where(item => (bool)item.Cells["dgvBlastUnitLocked"].Value != true))
 							selected.Cells[column].Value = type.ToString();
 					})) as ToolStripMenuItem).Enabled = true;
 				}
@@ -697,17 +697,17 @@ namespace RTC
 
 			(cmsBlastEditor.Items.Add("RTC.BlastByte", null, new EventHandler((ob, ev) =>
 			{
-				foreach (DataGridViewRow selected in dgvBlastLayer.SelectedRows)
+				foreach (DataGridViewRow selected in dgvBlastLayer.SelectedRows.Cast<DataGridViewRow>().Where(item => (bool)item.Cells["dgvBlastUnitLocked"].Value != true))
 					selected.Cells[column].Value = "RTC.BlastByte";
 			})) as ToolStripMenuItem).Enabled = true;
 			(cmsBlastEditor.Items.Add("RTC.BlastCheat", null, new EventHandler((ob, ev) =>
 			{
-				foreach (DataGridViewRow selected in dgvBlastLayer.SelectedRows)
+				foreach (DataGridViewRow selected in dgvBlastLayer.SelectedRows.Cast<DataGridViewRow>().Where(item => (bool)item.Cells["dgvBlastUnitLocked"].Value != true))
 					selected.Cells[column].Value = "RTC.BlastCheat";
 			})) as ToolStripMenuItem).Enabled = true;
 			(cmsBlastEditor.Items.Add("RTC.BlastPipe", null, new EventHandler((ob, ev) =>
 			{
-				foreach (DataGridViewRow selected in dgvBlastLayer.SelectedRows)
+				foreach (DataGridViewRow selected in dgvBlastLayer.SelectedRows.Cast<DataGridViewRow>().Where(item => (bool)item.Cells["dgvBlastUnitLocked"].Value != true))
 					selected.Cells[column].Value = "RTC.BlastPipe";
 			})) as ToolStripMenuItem).Enabled = true;
 		}
@@ -792,11 +792,16 @@ namespace RTC
 
 		private void dgvBlastLayer_MouseClick(object sender, MouseEventArgs e)
 		{
-			if (e.Button == MouseButtons.Right)
-			{
-				int currentMouseOverColumn = dgvBlastLayer.HitTest(e.X, e.Y).ColumnIndex;
-				int currentMouseOverRow = dgvBlastLayer.HitTest(e.X, e.Y).RowIndex;
+			int currentMouseOverColumn = dgvBlastLayer.HitTest(e.X, e.Y).ColumnIndex;
+			int currentMouseOverRow = dgvBlastLayer.HitTest(e.X, e.Y).RowIndex;
 
+			if (e.Button == MouseButtons.Left)
+			{
+				if (currentMouseOverRow == -1)
+					dgvBlastLayer.ClearSelection();
+			}
+			else if (e.Button == MouseButtons.Right)
+			{
 				//Column header
 				if (currentMouseOverRow == -1)
 				{
@@ -919,7 +924,7 @@ namespace RTC
 				MessageBox.Show("No rows were selected. Cannot remove.");
 				return;
 			}
-			if (MessageBox.Show("Are you sure you want to clear the stockpile?", "Clearing stockpile", MessageBoxButtons.YesNo) == DialogResult.Yes)
+			if (MessageBox.Show("Are you sure you want to remove the selected rows?", "Remove Rows", MessageBoxButtons.YesNo) == DialogResult.Yes)
 				foreach (DataGridViewRow row in dgvBlastLayer.SelectedRows)
 				{
 					if ((bool)row.Cells["dgvBlastUnitLocked"].Value)
@@ -1296,13 +1301,18 @@ namespace RTC
 			}
 		}
 
+		private void UpdateSelectedBlastUnitInfo()
+		{
+			if (dgvBlastLayer.SelectedRows.Count >= 1)
+			{
+				lbSelectedParam1Info.Text = dgvBlastLayer[7, dgvBlastLayer.CurrentRow.Index].FormattedValue.ToString();
+				lbSelectedParam2Info.Text = dgvBlastLayer[9, dgvBlastLayer.CurrentRow.Index].FormattedValue.ToString();
+			}
+		}
+
 		private void dgvBlastLayer_SelectionChanged(object sender, EventArgs e)
 		{
-			if (dgvBlastLayer.SelectedRows.Count < 1)
-				return;
-
-			lbSelectedParam1Info.Text = dgvBlastLayer[7, dgvBlastLayer.CurrentRow.Index].FormattedValue.ToString();
-			lbSelectedParam2Info.Text = dgvBlastLayer[9, dgvBlastLayer.CurrentRow.Index].FormattedValue.ToString();
+			UpdateSelectedBlastUnitInfo();
 		}
 	}
 }
