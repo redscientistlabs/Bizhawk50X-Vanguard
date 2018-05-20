@@ -32,6 +32,7 @@
             this.btnActiveTableGenerate = new System.Windows.Forms.Button();
             this.btnActiveTableQuickSave = new System.Windows.Forms.Button();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
+            this.cbUseCorePrecision = new System.Windows.Forms.CheckBox();
             this.cbActiveTableExclude100percent = new System.Windows.Forms.CheckBox();
             this.track_ActiveTableActivityThreshold = new System.Windows.Forms.TrackBar();
             this.label15 = new System.Windows.Forms.Label();
@@ -60,7 +61,6 @@
             this.btnActiveTableAddFile = new System.Windows.Forms.Button();
             this.btnLoadDomains = new System.Windows.Forms.Button();
             this.lbAutoAddEvery = new System.Windows.Forms.Label();
-            this.cbUseCorePrecision = new System.Windows.Forms.CheckBox();
             this.groupBox2.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.track_ActiveTableActivityThreshold)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.nmActiveTableActivityThreshold)).BeginInit();
@@ -141,6 +141,19 @@
             this.groupBox2.TabIndex = 87;
             this.groupBox2.TabStop = false;
             this.groupBox2.Text = "Generation parameters";
+            // 
+            // cbUseCorePrecision
+            // 
+            this.cbUseCorePrecision.AutoSize = true;
+            this.cbUseCorePrecision.Font = new System.Drawing.Font("Segoe UI", 8F);
+            this.cbUseCorePrecision.ForeColor = System.Drawing.Color.White;
+            this.cbUseCorePrecision.Location = new System.Drawing.Point(14, 82);
+            this.cbUseCorePrecision.Name = "cbUseCorePrecision";
+            this.cbUseCorePrecision.Size = new System.Drawing.Size(121, 17);
+            this.cbUseCorePrecision.TabIndex = 123;
+            this.cbUseCorePrecision.Text = "Use Core Precision";
+            this.cbUseCorePrecision.UseVisualStyleBackColor = true;
+            this.cbUseCorePrecision.CheckedChanged += new System.EventHandler(this.cbUseCorePrecision_CheckedChanged);
             // 
             // cbActiveTableExclude100percent
             // 
@@ -520,21 +533,6 @@
             this.lbAutoAddEvery.Size = new System.Drawing.Size(85, 13);
             this.lbAutoAddEvery.TabIndex = 127;
             this.lbAutoAddEvery.Text = "Auto-add every";
-            // 
-            // cbUseCorePrecision
-            // 
-            this.cbUseCorePrecision.AutoSize = true;
-            this.cbUseCorePrecision.Checked = true;
-            this.cbUseCorePrecision.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.cbUseCorePrecision.Font = new System.Drawing.Font("Segoe UI", 8F);
-            this.cbUseCorePrecision.ForeColor = System.Drawing.Color.White;
-            this.cbUseCorePrecision.Location = new System.Drawing.Point(14, 82);
-            this.cbUseCorePrecision.Name = "cbUseCorePrecision";
-            this.cbUseCorePrecision.Size = new System.Drawing.Size(121, 17);
-            this.cbUseCorePrecision.TabIndex = 123;
-            this.cbUseCorePrecision.Text = "Use Core Precision";
-            this.cbUseCorePrecision.UseVisualStyleBackColor = true;
-            this.cbUseCorePrecision.CheckedChanged += new System.EventHandler(this.cbUseCorePrecision_CheckedChanged);
             // 
             // RTC_VmdAct_Form
             // 

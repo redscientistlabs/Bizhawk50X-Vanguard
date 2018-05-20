@@ -57,7 +57,7 @@ namespace RTC
 
 
 		public bool UseActiveTable = false;
-		public bool UseCorePrecision = true;
+		public bool UseCorePrecision = false;
 		public List<string> ActiveTableDumps = null;
 		public long[] ActiveTableActivity = null;
 		public long[] ActiveTableGenerated = null;
