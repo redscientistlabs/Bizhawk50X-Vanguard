@@ -60,6 +60,7 @@
             this.btnActiveTableAddFile = new System.Windows.Forms.Button();
             this.btnLoadDomains = new System.Windows.Forms.Button();
             this.lbAutoAddEvery = new System.Windows.Forms.Label();
+            this.cbUseCorePrecision = new System.Windows.Forms.CheckBox();
             this.groupBox2.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.track_ActiveTableActivityThreshold)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.nmActiveTableActivityThreshold)).BeginInit();
@@ -122,6 +123,7 @@
             // 
             // groupBox2
             // 
+            this.groupBox2.Controls.Add(this.cbUseCorePrecision);
             this.groupBox2.Controls.Add(this.cbActiveTableExclude100percent);
             this.groupBox2.Controls.Add(this.track_ActiveTableActivityThreshold);
             this.groupBox2.Controls.Add(this.label15);
@@ -207,9 +209,9 @@
             this.groupBox1.Controls.Add(this.rbActiveTableCapBlockStart);
             this.groupBox1.Controls.Add(this.rbActiveTableCapRandom);
             this.groupBox1.ForeColor = System.Drawing.Color.White;
-            this.groupBox1.Location = new System.Drawing.Point(14, 124);
+            this.groupBox1.Location = new System.Drawing.Point(14, 140);
             this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(165, 98);
+            this.groupBox1.Size = new System.Drawing.Size(165, 88);
             this.groupBox1.TabIndex = 85;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Capping distribution";
@@ -217,7 +219,7 @@
             // label12
             // 
             this.label12.AutoSize = true;
-            this.label12.Location = new System.Drawing.Point(8, 69);
+            this.label12.Location = new System.Drawing.Point(8, 65);
             this.label12.Name = "label12";
             this.label12.Size = new System.Drawing.Size(42, 13);
             this.label12.TabIndex = 80;
@@ -227,7 +229,7 @@
             // 
             this.nmActiveTableCapOffset.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
             this.nmActiveTableCapOffset.ForeColor = System.Drawing.Color.White;
-            this.nmActiveTableCapOffset.Location = new System.Drawing.Point(52, 67);
+            this.nmActiveTableCapOffset.Location = new System.Drawing.Point(52, 61);
             this.nmActiveTableCapOffset.Maximum = new decimal(new int[] {
             65536,
             0,
@@ -242,7 +244,7 @@
             // 
             this.rbActiveTableCapBlockEnd.AutoSize = true;
             this.rbActiveTableCapBlockEnd.Font = new System.Drawing.Font("Segoe UI", 8F);
-            this.rbActiveTableCapBlockEnd.Location = new System.Drawing.Point(8, 47);
+            this.rbActiveTableCapBlockEnd.Location = new System.Drawing.Point(8, 44);
             this.rbActiveTableCapBlockEnd.Name = "rbActiveTableCapBlockEnd";
             this.rbActiveTableCapBlockEnd.Size = new System.Drawing.Size(112, 17);
             this.rbActiveTableCapBlockEnd.TabIndex = 2;
@@ -253,7 +255,7 @@
             // 
             this.rbActiveTableCapBlockStart.AutoSize = true;
             this.rbActiveTableCapBlockStart.Font = new System.Drawing.Font("Segoe UI", 8F);
-            this.rbActiveTableCapBlockStart.Location = new System.Drawing.Point(8, 32);
+            this.rbActiveTableCapBlockStart.Location = new System.Drawing.Point(8, 29);
             this.rbActiveTableCapBlockStart.Name = "rbActiveTableCapBlockStart";
             this.rbActiveTableCapBlockStart.Size = new System.Drawing.Size(115, 17);
             this.rbActiveTableCapBlockStart.TabIndex = 1;
@@ -265,7 +267,7 @@
             this.rbActiveTableCapRandom.AutoSize = true;
             this.rbActiveTableCapRandom.Checked = true;
             this.rbActiveTableCapRandom.Font = new System.Drawing.Font("Segoe UI", 8F);
-            this.rbActiveTableCapRandom.Location = new System.Drawing.Point(8, 17);
+            this.rbActiveTableCapRandom.Location = new System.Drawing.Point(8, 14);
             this.rbActiveTableCapRandom.Name = "rbActiveTableCapRandom";
             this.rbActiveTableCapRandom.Size = new System.Drawing.Size(68, 17);
             this.rbActiveTableCapRandom.TabIndex = 0;
@@ -277,7 +279,7 @@
             // 
             this.nmActiveTableCapSize.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
             this.nmActiveTableCapSize.ForeColor = System.Drawing.Color.White;
-            this.nmActiveTableCapSize.Location = new System.Drawing.Point(66, 102);
+            this.nmActiveTableCapSize.Location = new System.Drawing.Point(66, 118);
             this.nmActiveTableCapSize.Maximum = new decimal(new int[] {
             -1,
             0,
@@ -301,7 +303,7 @@
             // label6
             // 
             this.label6.AutoSize = true;
-            this.label6.Location = new System.Drawing.Point(13, 105);
+            this.label6.Location = new System.Drawing.Point(13, 121);
             this.label6.Name = "label6";
             this.label6.Size = new System.Drawing.Size(52, 13);
             this.label6.TabIndex = 118;
@@ -312,7 +314,7 @@
             this.cbActiveTableCapSize.AutoSize = true;
             this.cbActiveTableCapSize.Font = new System.Drawing.Font("Segoe UI", 8F);
             this.cbActiveTableCapSize.ForeColor = System.Drawing.Color.White;
-            this.cbActiveTableCapSize.Location = new System.Drawing.Point(14, 82);
+            this.cbActiveTableCapSize.Location = new System.Drawing.Point(14, 97);
             this.cbActiveTableCapSize.Name = "cbActiveTableCapSize";
             this.cbActiveTableCapSize.Size = new System.Drawing.Size(129, 17);
             this.cbActiveTableCapSize.TabIndex = 77;
@@ -519,6 +521,21 @@
             this.lbAutoAddEvery.TabIndex = 127;
             this.lbAutoAddEvery.Text = "Auto-add every";
             // 
+            // cbUseCorePrecision
+            // 
+            this.cbUseCorePrecision.AutoSize = true;
+            this.cbUseCorePrecision.Checked = true;
+            this.cbUseCorePrecision.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.cbUseCorePrecision.Font = new System.Drawing.Font("Segoe UI", 8F);
+            this.cbUseCorePrecision.ForeColor = System.Drawing.Color.White;
+            this.cbUseCorePrecision.Location = new System.Drawing.Point(14, 82);
+            this.cbUseCorePrecision.Name = "cbUseCorePrecision";
+            this.cbUseCorePrecision.Size = new System.Drawing.Size(121, 17);
+            this.cbUseCorePrecision.TabIndex = 123;
+            this.cbUseCorePrecision.Text = "Use Core Precision";
+            this.cbUseCorePrecision.UseVisualStyleBackColor = true;
+            this.cbUseCorePrecision.CheckedChanged += new System.EventHandler(this.cbUseCorePrecision_CheckedChanged);
+            // 
             // RTC_VmdAct_Form
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -596,5 +613,6 @@
 		private System.Windows.Forms.Button btnLoadDomains;
 		public System.Windows.Forms.ComboBox cbSelectedMemoryDomain;
 		private System.Windows.Forms.Label lbAutoAddEvery;
+		public System.Windows.Forms.CheckBox cbUseCorePrecision;
 	}
 }

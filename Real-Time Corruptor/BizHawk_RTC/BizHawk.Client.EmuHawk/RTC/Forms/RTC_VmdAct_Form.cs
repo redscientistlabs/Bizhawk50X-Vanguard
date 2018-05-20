@@ -18,6 +18,7 @@ namespace RTC
             InitializeComponent();
         }
 
+		
 		public bool ActLoadedFromFile = false;
 		public bool FirstInit = false;
 		public bool _activeTableReady = false;
@@ -56,6 +57,7 @@ namespace RTC
 
 
 		public bool UseActiveTable = false;
+		public bool UseCorePrecision = true;
 		public List<string> ActiveTableDumps = null;
 		public long[] ActiveTableActivity = null;
 		public long[] ActiveTableGenerated = null;
@@ -504,13 +506,37 @@ namespace RTC
 				VirtualMemoryDomain VMD = new VirtualMemoryDomain();
 				VmdPrototype proto = new VmdPrototype();
 
+				int lastaddress = -1;
+
 				proto.GenDomain = cbSelectedMemoryDomain.SelectedItem.ToString();
 				proto.VmdName = mi.name + " " + RTC_Core.GetRandomKey();
 				proto.BigEndian = mi.BigEndian;
 				proto.WordSize = mi.WordSize;
 				proto.PointerSpacer = 1;
-				foreach (int address in ActiveTableGenerated)
-					proto.addSingles.Add(address);
+
+				if (UseCorePrecision)
+				{
+					foreach (int address in ActiveTableGenerated)
+					{
+						int safeaddress = (address - (address % 4));
+						if (safeaddress != lastaddress)
+						{
+							lastaddress = safeaddress;
+							for(int i = 0; i < mi.WordSize; i++)
+							{
+								proto.addSingles.Add(safeaddress + i);
+							}
+							//[] _addresses = { safeaddress, safeaddress + mi.WordSize };
+						//	proto.addRanges.Add(_addresses);
+						}
+					}
+				}
+				else
+				{
+					foreach (int address in ActiveTableGenerated)
+						proto.addSingles.Add(address);
+				}
+
 				VMD = proto.Generate();
 				if (VMD.PointerAddresses.Count == 0)
 				{
@@ -610,6 +636,11 @@ namespace RTC
 		{
 			if (ActiveTableAutodump != null)
 				ActiveTableAutodump.Interval = Convert.ToInt32(nmAutoAddSec.Value) * 1000;
+		}
+
+		private void cbUseCorePrecision_CheckedChanged(object sender, EventArgs e)
+		{
+			UseCorePrecision = cbUseCorePrecision.Checked;
 		}
 	}
 }
