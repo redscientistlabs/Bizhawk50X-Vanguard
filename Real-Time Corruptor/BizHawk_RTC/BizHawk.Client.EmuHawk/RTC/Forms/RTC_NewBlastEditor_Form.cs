@@ -994,7 +994,7 @@ namespace RTC
 				column.Items.Add(new { Text = "Blast Unit Type", Value = "dgvBlastUnitType" });
 				column.Items.Add(new { Text = "Blast Unit Mode", Value = "dgvBlastUnitMode" });
 				column.SelectedIndex = 0;
-				column.SetBounds(48, 64, 200, 20);
+				column.SetBounds(72, 64, 164, 20);
 				column.Show();
 			}
 
@@ -1007,17 +1007,18 @@ namespace RTC
 			buttonOk.DialogResult = DialogResult.OK;
 			buttonCancel.DialogResult = DialogResult.Cancel;
 
-			label.SetBounds(48, 20, 372, 13);
-			input.SetBounds(12, 36, 372, 20);
-			buttonOk.SetBounds(228, 98, 75, 23);
-			buttonCancel.SetBounds(309, 98, 75, 23);
+			label.SetBounds(64, 15, 164, 16);
+			input.SetBounds(48, 36, 164, 20);
+			buttonOk.SetBounds(96, 98, 75, 23);
+			buttonCancel.SetBounds(172, 98, 75, 23);
 
+			label.TextAlign = ContentAlignment.MiddleCenter;
 			label.AutoSize = true;
 			input.Anchor = input.Anchor | AnchorStyles.Right;
 			buttonOk.Anchor = AnchorStyles.Bottom | AnchorStyles.Right;
 			buttonCancel.Anchor = AnchorStyles.Bottom | AnchorStyles.Right;
 
-			form.ClientSize = new Size(396, 130);
+			form.ClientSize = new Size(256, 128);
 			form.Controls.AddRange(new Control[] { label, input, column, buttonOk, buttonCancel });
 			form.ClientSize = new Size(Math.Max(300, label.Right + 10), form.ClientSize.Height);
 			form.FormBorderStyle = FormBorderStyle.FixedDialog;
