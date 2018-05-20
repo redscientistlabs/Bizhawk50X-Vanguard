@@ -1749,7 +1749,6 @@
             this.btnSaveLoad.Text = "LOAD";
             this.btnSaveLoad.UseVisualStyleBackColor = false;
             this.btnSaveLoad.Click += new System.EventHandler(this.btnSaveLoad_Click);
-            this.btnSaveLoad.MouseDown += new System.Windows.Forms.MouseEventHandler(this.btnSaveLoad_MouseDown);
             // 
             // cbAutoLoadState
             // 
@@ -1849,7 +1848,7 @@
             this.lbStashHistory.TabIndex = 80;
             this.lbStashHistory.Tag = "color:normal";
             this.lbStashHistory.SelectedIndexChanged += new System.EventHandler(this.lbStashHistory_SelectedIndexChanged);
-            this.lbStashHistory.MouseDown += new System.Windows.Forms.MouseEventHandler(this.btnSaveLoad_MouseDown);
+            this.lbStashHistory.MouseDown += new System.Windows.Forms.MouseEventHandler(this.lbStashHistory_MouseDown);
             // 
             // btnStockpileMoveSelectedDown
             // 

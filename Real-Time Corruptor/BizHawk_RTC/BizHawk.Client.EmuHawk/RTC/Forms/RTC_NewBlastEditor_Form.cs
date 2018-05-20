@@ -862,26 +862,55 @@ namespace RTC
 
 		private void dgvBlastLayer_Sorted(object sender, EventArgs e)
 		{
-			switch (dgvBlastLayer.SortedColumn.Name)
+
+			if(dgvBlastLayer.SortOrder == SortOrder.Ascending)
 			{
-				case "dgvSourceAddressDomain":
-					sk.BlastLayer.Layer = sk.BlastLayer.Layer.OrderBy(it => it.Domain).ToList();
-					break;
+				switch (dgvBlastLayer.SortedColumn.Name)
+				{
+					case "dgvSourceAddressDomain":
+						sk.BlastLayer.Layer = sk.BlastLayer.Layer.OrderBy(it => it.Domain).ToList();
+						break;
 
-				case "dgvSourceAddress":
-					sk.BlastLayer.Layer = sk.BlastLayer.Layer.OrderBy(it => it.Address).ToList();
-					break;
+					case "dgvSourceAddress":
+						sk.BlastLayer.Layer = sk.BlastLayer.Layer.OrderBy(it => it.Address).ToList();
+						break;
 
-				case "dgvParamDomain":
-					sk.BlastLayer.Layer = sk.BlastLayer.Layer.OrderBy(it => GetParamDomain(it)).ToList();
-					break;
+					case "dgvParamDomain":
+						sk.BlastLayer.Layer = sk.BlastLayer.Layer.OrderBy(it => GetParamDomain(it)).ToList();
+						break;
 
-				case "dgvParam":
-					sk.BlastLayer.Layer = sk.BlastLayer.Layer.OrderBy(it => GetParamValue(it)).ToList();
-					break;
+					case "dgvParam":
+						sk.BlastLayer.Layer = sk.BlastLayer.Layer.OrderBy(it => GetParamValue(it)).ToList();
+						break;
 
-				default:
-					break;
+					default:
+						break;
+				}
+			}
+			else
+			{
+				switch (dgvBlastLayer.SortedColumn.Name)
+				{
+					case "dgvSourceAddressDomain":
+						sk.BlastLayer.Layer = sk.BlastLayer.Layer.OrderBy(it => it.Domain).Reverse().ToList();
+						break;
+
+					case "dgvSourceAddress":
+						sk.BlastLayer.Layer = sk.BlastLayer.Layer.OrderBy(it => it.Address).Reverse().ToList();
+						break;
+
+					case "dgvParamDomain":
+						sk.BlastLayer.Layer = sk.BlastLayer.Layer.OrderBy(it => GetParamDomain(it)).Reverse().ToList();
+						break;
+
+					case "dgvParam":
+						sk.BlastLayer.Layer = sk.BlastLayer.Layer.OrderBy(it => GetParamValue(it)).Reverse().ToList();
+						break;
+
+					default:
+						break;
+				}
+			
 			}
 		}
 

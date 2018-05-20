@@ -1354,21 +1354,9 @@ namespace RTC
             }
         }
 
+
+
 		private void lbStashHistory_MouseDown(object sender, MouseEventArgs e)
-		{
-
-			if (e.Button == MouseButtons.Right)
-			{
-				Point locate = new Point((sender as Control).Location.X + e.Location.X, (sender as Control).Location.Y + e.Location.Y);
-
-				ContextMenuStrip columnsMenu = new ContextMenuStrip();
-				(columnsMenu.Items.Add("[Multiplayer] Send Selected Item as a Blast", null, new EventHandler((ob, ev) => { RTC_Core.Multiplayer.SendBlastlayer(); })) as ToolStripMenuItem).Enabled = RTC_Core.Multiplayer.side != NetworkSide.DISCONNECTED;
-				(columnsMenu.Items.Add("[Multiplayer] Send Selected Item as a Game State", null, new EventHandler((ob, ev) => { RTC_Core.Multiplayer.SendStashkey(); })) as ToolStripMenuItem).Enabled = RTC_Core.Multiplayer.side != NetworkSide.DISCONNECTED;
-				columnsMenu.Show(this, locate);
-			}
-		}
-
-		private void btnSaveLoad_MouseDown(object sender, MouseEventArgs e)
 		{
 			if (e.Button == MouseButtons.Right)
 			{
@@ -1382,7 +1370,8 @@ namespace RTC
 
 				})) as ToolStripMenuItem).Enabled = RTC_Core.Multiplayer != null && RTC_Core.Multiplayer.side != NetworkSide.DISCONNECTED;
 
-                columnsMenu.Items.Add(new ToolStripSeparator());
+
+				columnsMenu.Items.Add(new ToolStripSeparator());
                 (columnsMenu.Items.Add("Open Selected Item in Blast Editor", null, new EventHandler((ob, ev) => {
                     if (RTC_Core.beForm != null)
 					{
