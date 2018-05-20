@@ -764,6 +764,15 @@ namespace RTC
 						}
 						break;
 
+					case 3:
+						string[] options = { "8-bit", "16-bit", "32-bit" };
+						if (RTC_Extensions.getComboInputBox("Replace Selected Rows", "Replacement input: ", options, ref newvalue) == DialogResult.OK)
+							foreach (DataGridViewRow row in dgvBlastLayer.SelectedRows)
+							{
+								row.Cells[column].Value = newvalue;
+							}
+						break;
+
 					/* 4 dgvBlastUnitType
 					 * 5 dgvBlastUnitMode
 					 * 6 dgvSourceAddressDomain

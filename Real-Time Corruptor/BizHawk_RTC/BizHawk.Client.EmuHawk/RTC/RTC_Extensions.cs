@@ -61,6 +61,53 @@ namespace RTC
 			value = textBox.Text;
 			return dialogResult;
 		}
+		public static DialogResult getComboInputBox(string title, string promptText, string[] options, ref string value)
+		{
+			Form form = new Form();
+			Label label = new Label();
+			Button buttonOk = new Button();
+			Button buttonCancel = new Button();
+			
+			ComboBox comboBox = new ComboBox();
+
+			foreach(string option in options)
+			{
+				comboBox.Items.Add(option);
+			}
+
+			comboBox.SelectedIndex = 0;
+
+			form.Text = title;
+			label.Text = promptText;
+
+			buttonOk.Text = "OK";
+			buttonCancel.Text = "Cancel";
+			buttonOk.DialogResult = DialogResult.OK;
+			buttonCancel.DialogResult = DialogResult.Cancel;
+
+			label.SetBounds(16, 6, 372, 13);
+			comboBox.SetBounds(42, 24, 96, 20);
+			buttonOk.SetBounds(12, 48, 75, 23);
+			buttonCancel.SetBounds(92, 48, 75, 23);
+
+			label.AutoSize = true;
+			comboBox.Anchor = comboBox.Anchor | AnchorStyles.Right;
+			buttonOk.Anchor = AnchorStyles.Bottom | AnchorStyles.Right;
+			buttonCancel.Anchor = AnchorStyles.Bottom | AnchorStyles.Right;
+
+			form.ClientSize = new Size(180, 80);
+			form.Controls.AddRange(new Control[] { label, comboBox, buttonOk, buttonCancel });
+			form.FormBorderStyle = FormBorderStyle.FixedDialog;
+			form.StartPosition = FormStartPosition.CenterScreen;
+			form.MinimizeBox = false;
+			form.MaximizeBox = false;
+			form.AcceptButton = buttonOk;
+			form.CancelButton = buttonCancel;
+
+			DialogResult dialogResult = form.ShowDialog();
+			value = comboBox.SelectedItem.ToString();
+			return dialogResult;
+		}
 		public static DialogResult getInputBox(string title, string promptText, ref decimal value, bool hex = false, UInt64 maximum = UInt64.MaxValue)
 		{
 			Form form = new Form();
