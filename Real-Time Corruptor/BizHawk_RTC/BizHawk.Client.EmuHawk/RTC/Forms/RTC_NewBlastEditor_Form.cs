@@ -994,7 +994,7 @@ namespace RTC
 				MessageBox.Show("No rows were selected. Cannot remove.");
 				return;
 			}
-			if (MessageBox.Show("Are you sure you want to remove the selected rows?", "Remove Rows", MessageBoxButtons.YesNo) == DialogResult.Yes)
+			if (Control.ModifierKeys == Keys.Control || (MessageBox.Show("Are you sure you want to remove the selected rows?", "Remove Rows", MessageBoxButtons.YesNo) == DialogResult.Yes))
 				foreach (DataGridViewRow row in dgvBlastLayer.SelectedRows)
 				{
 					if ((bool)row.Cells["dgvBlastUnitLocked"].Value)
