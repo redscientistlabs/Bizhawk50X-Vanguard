@@ -1409,7 +1409,7 @@ namespace RTC
 			//If the blastlayer is big, prompt them before opening it. Let's go with 5k for now.
 			if (sk.BlastLayer.Layer.Count > 5000 && (DialogResult.Yes == MessageBox.Show($"You're trying to open a blastlayer of size " + sk.BlastLayer.Layer.Count + ". This could take a while. Are you sure you want to continue?", "Opening a large BlastLayer", MessageBoxButtons.YesNo)))
 				RTC_Core.beForm.LoadStashkey(sk);
-			else
+			else if(sk.BlastLayer.Layer.Count <= 5000)
 				RTC_Core.beForm.LoadStashkey(sk);
 		}
 
