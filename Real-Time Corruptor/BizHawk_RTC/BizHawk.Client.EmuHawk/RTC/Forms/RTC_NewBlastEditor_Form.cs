@@ -58,7 +58,7 @@ namespace RTC
 		private string searchColumn = "";
 		public string currentBlastLayerFile = "";
 
-		private Dictionary<BlastUnit, DataGridViewRow> bu2RowDico = new Dictionary<BlastUnit, DataGridViewRow>();
+		private Dictionary<BlastUnit, DataGridViewRow> bu2RowDico = null;
 
 		public RTC_NewBlastEditor_Form()
 		{
@@ -93,6 +93,8 @@ namespace RTC
 			if (_sk == null || _sk.BlastLayer == null || _sk.BlastLayer.Layer == null)
 				return;
 
+			bu2RowDico = new Dictionary<BlastUnit, DataGridViewRow>();
+
 			originalsk = (StashKey)_sk.Clone();
 			sk = originalsk;
 			RefreshBlastLayer();
@@ -111,6 +113,8 @@ namespace RTC
 			initialized = false;
 			//Clear out whatever is there
 			dgvBlastLayer.Rows.Clear();
+			bu2RowDico = new Dictionary<BlastUnit, DataGridViewRow>();
+			
 			//Populate the different rows.
 			foreach (BlastUnit bu in sk.BlastLayer.Layer)
 			{
