@@ -343,7 +343,8 @@ namespace RTC
 				BlastUnit bu = sk.BlastLayer.Layer[pos];
 				BlastUnit bu2 = ObjectCopier.Clone(bu);
 				sk.BlastLayer.Layer.Add(bu2);
-				AddBlastUnitToDGV(bu2);
+				InsertBlastUnitToDGV(pos + 1, bu2);
+				//AddBlastUnitToDGV(bu2);
 			}
 		}
 

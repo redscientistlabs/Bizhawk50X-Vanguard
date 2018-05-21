@@ -1602,6 +1602,12 @@ namespace RTC
             }
         }
 
+		private void BlastRawStash()
+		{
+			RTC_Core.SendCommandToBizhawk(new RTC_Command(CommandType.ASYNCBLAST));
+			RTC_Core.ghForm.btnSendRaw_Click(null, null);
+		}
+
         private void btnCorrupt_MouseDown(object sender, MouseEventArgs e)
         {
             if (e.Button == MouseButtons.Right)
@@ -1610,8 +1616,8 @@ namespace RTC
 
                 ContextMenuStrip columnsMenu = new ContextMenuStrip();
                 columnsMenu.Items.Add("Blast + Send RAW To Stash", null, new EventHandler((ob, ev) => {
-                    RTC_Core.SendCommandToRTC(new RTC_Command(CommandType.REMOTE_HOTKEY_BLASTRAWSTASH));
-                }));
+					BlastRawStash();
+				}));
                 columnsMenu.Show(this, locate);
             }
         }
