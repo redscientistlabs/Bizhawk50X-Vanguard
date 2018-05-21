@@ -94,9 +94,8 @@ namespace RTC
 				return;
 
 			bu2RowDico = new Dictionary<BlastUnit, DataGridViewRow>();
-
 			originalsk = (StashKey)_sk.Clone();
-			sk = originalsk;
+			sk = (StashKey)_sk.Clone();
 			RefreshBlastLayer();
 			domains = RTC_MemoryDomains.MemoryInterfaces.Keys.Concat(RTC_MemoryDomains.VmdPool.Values.Select(it => it.ToString())).ToArray();
 

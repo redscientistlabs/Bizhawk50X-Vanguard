@@ -282,18 +282,19 @@ namespace RTC
 				foreach (StashKey item in sks)
 					bl.Layer.AddRange(item.BlastLayer.Layer);
 
-                
+				bl.Layer = bl.Layer.Distinct().ToList();
 
-                currentStashkey = new StashKey(RTC_Core.GetRandomKey(), master.ParentKey, bl);
+
+				currentStashkey = new StashKey(RTC_Core.GetRandomKey(), master.ParentKey, bl);
 				currentStashkey.RomFilename = master.RomFilename;
 				currentStashkey.SystemName = master.SystemName;
 				currentStashkey.SystemCore = master.SystemCore;
 				currentStashkey.GameName = master.GameName;
 
-                //RTC_NetCore.HugeOperationEnd(token);
-              //  token = RTC_NetCore.HugeOperationStart("LAZY");
+				//RTC_NetCore.HugeOperationEnd(token);
+				//  token = RTC_NetCore.HugeOperationStart("LAZY");
 
-                if (loadBeforeOperation)
+				if (loadBeforeOperation)
 				{
 					if (!LoadStateAndBlastLayer(currentStashkey))
                     {
