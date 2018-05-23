@@ -92,6 +92,7 @@ namespace RTC
 			this.cbShiftBlastlayer.ValueMember = "Value";
 			this.cbShiftBlastlayer.Items.Add(new { Text = "Source Address", Value = "dgvSourceAddress" });
 			this.cbShiftBlastlayer.Items.Add(new { Text = "Parameter Value", Value = "dgvParam" });
+			this.cbShiftBlastlayer.SelectedIndex = 0;
 		}
 
 		public void LoadStashkey(StashKey _sk)
@@ -1390,18 +1391,28 @@ namespace RTC
 		{
 			shiftBlastLayer(false);
 		}
-		private void shiftBlastLayer(bool shiftDown)
+		private void shiftBlastLayer(bool shiftDown = false)
 		{
-			if(shiftDown)
+			if (shiftDown)
 				foreach (DataGridViewRow selected in dgvBlastLayer.SelectedRows.Cast<DataGridViewRow>().Where((item => (bool)item.Cells["dgvBlastUnitLocked"].Value != true)))
 				{
-					selected.Cells[(cbShiftBlastlayer.SelectedItem as dynamic).Value].Value = (decimal)selected.Cells[(cbShiftBlastlayer.SelectedItem as dynamic).Value].Value - updownShiftBlastLayerAmount.Value;
+					if (((decimal)selected.Cells[(cbShiftBlastlayer.SelectedItem as dynamic).Value].Value - updownShiftBlastLayerAmount.Value) >= 0)
+						selected.Cells[(cbShiftBlastlayer.SelectedItem as dynamic).Value].Value = (decimal)selected.Cells[(cbShiftBlastlayer.SelectedItem as dynamic).Value].Value - updownShiftBlastLayerAmount.Value;
+					else
+						selected.Cells[(cbShiftBlastlayer.SelectedItem as dynamic).Value].Value = 0;
 				}
 			else
+			{
 				foreach (DataGridViewRow selected in dgvBlastLayer.SelectedRows.Cast<DataGridViewRow>().Where((item => (bool)item.Cells["dgvBlastUnitLocked"].Value != true)))
 				{
-					selected.Cells[(cbShiftBlastlayer.SelectedItem as dynamic).Value].Value = (decimal)selected.Cells[(cbShiftBlastlayer.SelectedItem as dynamic).Value].Value + updownShiftBlastLayerAmount.Value;
+					decimal max = selected.Cells[(cbShiftBlastlayer.SelectedItem as dynamic).Value].Maximum;
+
+					if (((decimal)selected.Cells[(cbShiftBlastlayer.SelectedItem as dynamic).Value].Value + (decimal)updownShiftBlastLayerAmount.Value) <= max)
+						selected.Cells[(cbShiftBlastlayer.SelectedItem as dynamic).Value].Value = (decimal)selected.Cells[(cbShiftBlastlayer.SelectedItem as dynamic).Value].Value + updownShiftBlastLayerAmount.Value;
+					else
+						selected.Cells[(cbShiftBlastlayer.SelectedItem as dynamic).Value].Value = max;
 				}
+			}
 		}
 	}	
 }
