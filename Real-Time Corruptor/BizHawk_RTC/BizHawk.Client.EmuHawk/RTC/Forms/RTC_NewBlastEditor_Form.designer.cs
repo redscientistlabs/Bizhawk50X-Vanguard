@@ -57,10 +57,10 @@
             this.label3 = new System.Windows.Forms.Label();
             this.label4 = new System.Windows.Forms.Label();
             this.panel1 = new System.Windows.Forms.Panel();
-            this.lbSelectedParam2Info = new System.Windows.Forms.Label();
-            this.lbSelectedParam1Info = new System.Windows.Forms.Label();
-            this.label6 = new System.Windows.Forms.Label();
-            this.label5 = new System.Windows.Forms.Label();
+            this.cbShiftBlastlayer = new System.Windows.Forms.ComboBox();
+            this.btnShiftBlastLayerDown = new System.Windows.Forms.Button();
+            this.btnShiftBlastLayerUp = new System.Windows.Forms.Button();
+            this.updownShiftBlastLayerAmount = new RTC.NumericUpDownHexFix();
             this.cbUseHex = new System.Windows.Forms.CheckBox();
             this.dataGridViewTextBoxColumn1 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.dataGridViewTextBoxColumn2 = new System.Windows.Forms.DataGridViewTextBoxColumn();
@@ -96,6 +96,7 @@
             ((System.ComponentModel.ISupportInitialize)(this.dgvBlastLayer)).BeginInit();
             this.pnMemoryTargetting.SuspendLayout();
             this.panel1.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.updownShiftBlastLayerAmount)).BeginInit();
             this.panelSidebar.SuspendLayout();
             this.menuStripEx1.SuspendLayout();
             this.SuspendLayout();
@@ -451,71 +452,76 @@
             this.label4.ForeColor = System.Drawing.Color.White;
             this.label4.Location = new System.Drawing.Point(9, 56);
             this.label4.Name = "label4";
-            this.label4.Size = new System.Drawing.Size(124, 13);
+            this.label4.Size = new System.Drawing.Size(108, 13);
             this.label4.TabIndex = 136;
-            this.label4.Text = "Selected BlastUnit Info";
+            this.label4.Text = "Shift Selected Rows";
             // 
             // panel1
             // 
             this.panel1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.panel1.BackColor = System.Drawing.Color.Gray;
-            this.panel1.Controls.Add(this.lbSelectedParam2Info);
-            this.panel1.Controls.Add(this.lbSelectedParam1Info);
-            this.panel1.Controls.Add(this.label6);
-            this.panel1.Controls.Add(this.label5);
+            this.panel1.Controls.Add(this.cbShiftBlastlayer);
+            this.panel1.Controls.Add(this.btnShiftBlastLayerDown);
+            this.panel1.Controls.Add(this.btnShiftBlastLayerUp);
+            this.panel1.Controls.Add(this.updownShiftBlastLayerAmount);
             this.panel1.Location = new System.Drawing.Point(9, 72);
             this.panel1.Name = "panel1";
             this.panel1.Size = new System.Drawing.Size(158, 60);
             this.panel1.TabIndex = 137;
             this.panel1.Tag = "color:normal";
             // 
-            // lbSelectedParam2Info
+            // cbShiftBlastlayer
             // 
-            this.lbSelectedParam2Info.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.lbSelectedParam2Info.AutoSize = true;
-            this.lbSelectedParam2Info.Font = new System.Drawing.Font("Segoe UI", 8F);
-            this.lbSelectedParam2Info.ForeColor = System.Drawing.Color.White;
-            this.lbSelectedParam2Info.Location = new System.Drawing.Point(61, 34);
-            this.lbSelectedParam2Info.Name = "lbSelectedParam2Info";
-            this.lbSelectedParam2Info.Size = new System.Drawing.Size(35, 13);
-            this.lbSelectedParam2Info.TabIndex = 135;
-            this.lbSelectedParam2Info.Text = "None";
+            this.cbShiftBlastlayer.FormattingEnabled = true;
+      
+            this.cbShiftBlastlayer.Location = new System.Drawing.Point(22, 7);
+            this.cbShiftBlastlayer.Name = "cbShiftBlastlayer";
+            this.cbShiftBlastlayer.Size = new System.Drawing.Size(114, 21);
+            this.cbShiftBlastlayer.TabIndex = 148;
             // 
-            // lbSelectedParam1Info
+            // btnShiftBlastLayerDown
             // 
-            this.lbSelectedParam1Info.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.lbSelectedParam1Info.AutoSize = true;
-            this.lbSelectedParam1Info.Font = new System.Drawing.Font("Segoe UI", 8F);
-            this.lbSelectedParam1Info.ForeColor = System.Drawing.Color.White;
-            this.lbSelectedParam1Info.Location = new System.Drawing.Point(61, 5);
-            this.lbSelectedParam1Info.Name = "lbSelectedParam1Info";
-            this.lbSelectedParam1Info.Size = new System.Drawing.Size(35, 13);
-            this.lbSelectedParam1Info.TabIndex = 134;
-            this.lbSelectedParam1Info.Text = "None";
+            this.btnShiftBlastLayerDown.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.btnShiftBlastLayerDown.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(224)))), ((int)(((byte)(224)))), ((int)(((byte)(224)))));
+            this.btnShiftBlastLayerDown.FlatAppearance.BorderSize = 0;
+            this.btnShiftBlastLayerDown.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnShiftBlastLayerDown.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F);
+            this.btnShiftBlastLayerDown.ForeColor = System.Drawing.Color.Black;
+            this.btnShiftBlastLayerDown.Location = new System.Drawing.Point(22, 33);
+            this.btnShiftBlastLayerDown.Name = "btnShiftBlastLayerDown";
+            this.btnShiftBlastLayerDown.Size = new System.Drawing.Size(21, 20);
+            this.btnShiftBlastLayerDown.TabIndex = 147;
+            this.btnShiftBlastLayerDown.TabStop = false;
+            this.btnShiftBlastLayerDown.Tag = "color:light";
+            this.btnShiftBlastLayerDown.Text = "◀";
+            this.btnShiftBlastLayerDown.UseVisualStyleBackColor = false;
+            this.btnShiftBlastLayerDown.Click += new System.EventHandler(this.btnShiftBlastLayerDown_Click);
             // 
-            // label6
+            // btnShiftBlastLayerUp
             // 
-            this.label6.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.label6.AutoSize = true;
-            this.label6.Font = new System.Drawing.Font("Segoe UI", 8F);
-            this.label6.ForeColor = System.Drawing.Color.White;
-            this.label6.Location = new System.Drawing.Point(5, 34);
-            this.label6.Name = "label6";
-            this.label6.Size = new System.Drawing.Size(50, 13);
-            this.label6.TabIndex = 133;
-            this.label6.Text = "Param 2:";
+            this.btnShiftBlastLayerUp.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.btnShiftBlastLayerUp.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(224)))), ((int)(((byte)(224)))), ((int)(((byte)(224)))));
+            this.btnShiftBlastLayerUp.FlatAppearance.BorderSize = 0;
+            this.btnShiftBlastLayerUp.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnShiftBlastLayerUp.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F);
+            this.btnShiftBlastLayerUp.ForeColor = System.Drawing.Color.Black;
+            this.btnShiftBlastLayerUp.Location = new System.Drawing.Point(115, 33);
+            this.btnShiftBlastLayerUp.Name = "btnShiftBlastLayerUp";
+            this.btnShiftBlastLayerUp.Size = new System.Drawing.Size(21, 20);
+            this.btnShiftBlastLayerUp.TabIndex = 146;
+            this.btnShiftBlastLayerUp.TabStop = false;
+            this.btnShiftBlastLayerUp.Tag = "color:light";
+            this.btnShiftBlastLayerUp.Text = "▶";
+            this.btnShiftBlastLayerUp.UseVisualStyleBackColor = false;
+            this.btnShiftBlastLayerUp.Click += new System.EventHandler(this.btnShiftBlastLayerUp_Click);
             // 
-            // label5
+            // updownShiftBlastLayerAmount
             // 
-            this.label5.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.label5.AutoSize = true;
-            this.label5.Font = new System.Drawing.Font("Segoe UI", 8F);
-            this.label5.ForeColor = System.Drawing.Color.White;
-            this.label5.Location = new System.Drawing.Point(5, 5);
-            this.label5.Name = "label5";
-            this.label5.Size = new System.Drawing.Size(50, 13);
-            this.label5.TabIndex = 132;
-            this.label5.Text = "Param 1:";
+            this.updownShiftBlastLayerAmount.Hexadecimal = true;
+            this.updownShiftBlastLayerAmount.Location = new System.Drawing.Point(50, 33);
+            this.updownShiftBlastLayerAmount.Name = "updownShiftBlastLayerAmount";
+            this.updownShiftBlastLayerAmount.Size = new System.Drawing.Size(59, 20);
+            this.updownShiftBlastLayerAmount.TabIndex = 145;
             // 
             // cbUseHex
             // 
@@ -853,7 +859,7 @@
             this.pnMemoryTargetting.ResumeLayout(false);
             this.pnMemoryTargetting.PerformLayout();
             this.panel1.ResumeLayout(false);
-            this.panel1.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.updownShiftBlastLayerAmount)).EndInit();
             this.panelSidebar.ResumeLayout(false);
             this.panelSidebar.PerformLayout();
             this.menuStripEx1.ResumeLayout(false);
@@ -880,8 +886,6 @@
 		private System.Windows.Forms.Label label3;
 		private System.Windows.Forms.Label label4;
 		private System.Windows.Forms.Panel panel1;
-		private System.Windows.Forms.Label label6;
-		private System.Windows.Forms.Label label5;
 		private System.Windows.Forms.CheckBox cbUseHex;
 		private System.Windows.Forms.DataGridViewTextBoxColumn dataGridViewTextBoxColumn1;
 		private System.Windows.Forms.DataGridViewTextBoxColumn dataGridViewTextBoxColumn2;
@@ -922,9 +926,11 @@
 		private DataGridViewNumericUpDownColumn dgvSourceAddress;
 		private System.Windows.Forms.DataGridViewTextBoxColumn dgvParamDomain;
 		private DataGridViewNumericUpDownColumn dgvParam;
-		private System.Windows.Forms.Label lbSelectedParam2Info;
-		private System.Windows.Forms.Label lbSelectedParam1Info;
 		private System.Windows.Forms.ToolStripMenuItem rasterizeVMDsToolStripMenuItem;
 		private System.Windows.Forms.ToolStripMenuItem saveAsToFileblToolStripMenuItem;
+		private System.Windows.Forms.ComboBox cbShiftBlastlayer;
+		private System.Windows.Forms.Button btnShiftBlastLayerDown;
+		private System.Windows.Forms.Button btnShiftBlastLayerUp;
+		private NumericUpDownHexFix updownShiftBlastLayerAmount;
 	}
 }

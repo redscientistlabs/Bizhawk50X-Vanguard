@@ -85,7 +85,13 @@ namespace RTC
 			this.dgvBlastLayer.RowsRemoved += new DataGridViewRowsRemovedEventHandler(dgvBlastLayer_RowsRemoved);
 			this.dgvBlastLayer.UserDeletingRow += new DataGridViewRowCancelEventHandler(dgvBlastLayer_UserDeletingRow);
 			this.dgvBlastLayer.Sorted += new EventHandler(dgvBlastLayer_Sorted);
-			this.dgvBlastLayer.SelectionChanged += new EventHandler(dgvBlastLayer_SelectionChanged);
+
+			//For the combobox for shifting blast units, we want an object that contains the column name and the readable name
+			//Do this here as I can't get it working in the designer
+			this.cbShiftBlastlayer.DisplayMember = "Text";
+			this.cbShiftBlastlayer.ValueMember = "Value";
+			this.cbShiftBlastlayer.Items.Add(new { Text = "Source Address", Value = "dgvSourceAddress" });
+			this.cbShiftBlastlayer.Items.Add(new { Text = "Parameter Value", Value = "dgvParam" });
 		}
 
 		public void LoadStashkey(StashKey _sk)
@@ -124,7 +130,6 @@ namespace RTC
 			dgvBlastLayer.Columns["dgvParam"].ValueType = typeof(Decimal);
 
 			UpdateBlastLayerSize();
-			UpdateSelectedBlastUnitInfo();
 
 			initialized = true;
 		}
@@ -958,6 +963,8 @@ namespace RTC
 
 		private void cbUseHex_CheckedChanged(object sender, EventArgs e)
 		{
+
+			updownShiftBlastLayerAmount.Hexadecimal = cbUseHex.Checked;
 			foreach (DataGridViewColumn column in dgvBlastLayer.Columns)
 			{
 				if (column.CellType.Name == "DataGridViewNumericUpDownCell")
@@ -966,7 +973,6 @@ namespace RTC
 					_column.Hexadecimal = cbUseHex.Checked;
 				}
 			}
-			UpdateSelectedBlastUnitInfo();
 		}
 
 		private void dgvBlastLayer_RowsAdded(object sender, DataGridViewRowsAddedEventArgs e)
@@ -1376,18 +1382,26 @@ namespace RTC
 			}
 		}
 
-		private void UpdateSelectedBlastUnitInfo()
+		private void btnShiftBlastLayerDown_Click(object sender, EventArgs e)
 		{
-			if (dgvBlastLayer.SelectedRows.Count >= 1)
-			{
-				lbSelectedParam1Info.Text = dgvBlastLayer[7, dgvBlastLayer.CurrentRow.Index].FormattedValue.ToString();
-				lbSelectedParam2Info.Text = dgvBlastLayer[9, dgvBlastLayer.CurrentRow.Index].FormattedValue.ToString();
-			}
+			shiftBlastLayer(true);
 		}
-
-		private void dgvBlastLayer_SelectionChanged(object sender, EventArgs e)
+		private void btnShiftBlastLayerUp_Click(object sender, EventArgs e)
 		{
-			UpdateSelectedBlastUnitInfo();
+			shiftBlastLayer(false);
 		}
-	}
+		private void shiftBlastLayer(bool shiftDown)
+		{
+			if(shiftDown)
+				foreach (DataGridViewRow selected in dgvBlastLayer.SelectedRows.Cast<DataGridViewRow>().Where((item => (bool)item.Cells["dgvBlastUnitLocked"].Value != true)))
+				{
+					selected.Cells[(cbShiftBlastlayer.SelectedItem as dynamic).Value].Value = (decimal)selected.Cells[(cbShiftBlastlayer.SelectedItem as dynamic).Value].Value - updownShiftBlastLayerAmount.Value;
+				}
+			else
+				foreach (DataGridViewRow selected in dgvBlastLayer.SelectedRows.Cast<DataGridViewRow>().Where((item => (bool)item.Cells["dgvBlastUnitLocked"].Value != true)))
+				{
+					selected.Cells[(cbShiftBlastlayer.SelectedItem as dynamic).Value].Value = (decimal)selected.Cells[(cbShiftBlastlayer.SelectedItem as dynamic).Value].Value + updownShiftBlastLayerAmount.Value;
+				}
+		}
+	}	
 }
