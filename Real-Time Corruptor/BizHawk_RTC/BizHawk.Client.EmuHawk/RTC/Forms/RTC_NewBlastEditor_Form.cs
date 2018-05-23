@@ -202,7 +202,7 @@ namespace RTC
 				sourceDomain = bp.Domain;
 				destDomain = bp.PipeDomain;
 				destAddress = bp.PipeAddress;
-				blastMode = bp.Type.ToString();
+				blastMode = Convert.ToString(bp.TiltValue);
 			}
 			if (bu is BlastVector)
 			{
@@ -585,7 +585,7 @@ namespace RTC
 					bp.PipeAddress = Convert.ToInt64(row.Cells["dgvParam"].Value);
 					bp.Domain = Convert.ToString(row.Cells["dgvSourceAddressDomain"].Value);
 					bp.PipeDomain = Convert.ToString(row.Cells["dgvParamDomain"].Value);
-					Enum.TryParse(row.Cells["dgvBlastUnitMode"].Value.ToString().ToUpper(), out bp.Type);
+					bp.TiltValue = Convert.ToInt32(row.Cells["dgvBlastUnitMode"].Value.ToString());
 					bp.IsLocked = Convert.ToBoolean((row.Cells["dgvBlastUnitLocked"].Value));
 
 					row.Cells["dgvBlastUnitReference"].Value = bp;

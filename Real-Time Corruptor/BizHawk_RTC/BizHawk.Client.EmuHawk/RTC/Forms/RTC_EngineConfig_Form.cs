@@ -246,29 +246,29 @@ namespace RTC
 
         }
 
-		private void cbBlastType_SelectedIndexChanged(object sender, EventArgs e)
-		{
-			switch (cbBlastType.SelectedItem.ToString())
-			{
-				case "RANDOM":
+        private void cbBlastType_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            switch (cbBlastType.SelectedItem.ToString())
+            {
+                case "RANDOM":
 
-					RTC_NightmareEngine.Algo = BlastByteAlgo.RANDOM;
-					break;
+                    RTC_NightmareEngine.Algo = BlastByteAlgo.RANDOM;
+                    break;
 
-				case "RANDOMTILT":
-					RTC_NightmareEngine.Algo = BlastByteAlgo.RANDOMTILT;
-					break;
+                case "RANDOMTILT":
+                    RTC_NightmareEngine.Algo = BlastByteAlgo.RANDOMTILT;
+                    break;
 
-				case "TILT":
-					RTC_NightmareEngine.Algo = BlastByteAlgo.TILT;
-					break;
-			}
+                case "TILT":
+                    RTC_NightmareEngine.Algo = BlastByteAlgo.TILT;
+                    break;
+            }
 
-			RTC_Core.SendCommandToBizhawk(new RTC_Command(CommandType.REMOTE_SET_NIGHTMARE_TYPE) { objectValue = RTC_NightmareEngine.Algo });
+            RTC_Core.SendCommandToBizhawk(new RTC_Command(CommandType.REMOTE_SET_NIGHTMARE_TYPE) { objectValue = RTC_NightmareEngine.Algo });
 
-		}
+        }
 
-		private void nmMaxCheats_ValueChanged(object sender, EventArgs e)
+        private void nmMaxCheats_ValueChanged(object sender, EventArgs e)
         {
             if (Convert.ToInt32(nmMaxCheats.Value) != RTC_HellgenieEngine.MaxCheats)
             {
@@ -868,27 +868,5 @@ namespace RTC
             }
 
         }
-
-		private void cbPipeBlastType_SelectedIndexChanged(object sender, EventArgs e)
-		{
-			switch (cbBlastType.SelectedItem.ToString())
-			{
-				case "VALUE":
-
-					RTC_PipeEngine.Algo = BlastPipeAlgo.VALUE;
-					break;
-
-				case "VALUETILT":
-					RTC_PipeEngine.Algo = BlastPipeAlgo.TILTVALUE;
-					break;
-
-				case "TILT":
-					RTC_PipeEngine.Algo = BlastPipeAlgo.TILT;
-					break;
-			}
-
-			RTC_Core.SendCommandToBizhawk(new RTC_Command(CommandType.REMOTE_SET_PIPE_TYPE) { objectValue = RTC_PipeEngine.Algo });
-
-		}
-	}
+    }
 }

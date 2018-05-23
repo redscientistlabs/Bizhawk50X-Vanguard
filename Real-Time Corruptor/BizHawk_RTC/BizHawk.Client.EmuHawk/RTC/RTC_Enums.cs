@@ -23,32 +23,15 @@ namespace RTC
         SUBSTRACT,
 		VECTOR,
         NONE
-	}
+    }
 
 	public enum BlastCheatType
 	{
 		FREEZE,
 		HELLGENIE
 	}
-	
-	public enum BlastPipeType
-	{
-		SET,
-		ADD,
-		SUBSTRACT,
-		MULTIPLY,
-		DIVIDE
-	}
 
-	public enum BlastPipeAlgo
-	{
-		VALUE,
-		TILTVALUE,
-		TILT,
-		NONE
-	}
-
-	public enum BlastByteAlgo
+    public enum BlastByteAlgo
     {
         RANDOM,
         RANDOMTILT,

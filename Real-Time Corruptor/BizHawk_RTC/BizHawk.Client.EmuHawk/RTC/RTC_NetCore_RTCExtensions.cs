@@ -377,14 +377,11 @@ namespace RTC
                         RTC_StockpileManager.lastBlastLayerBackup.Apply(true);
                     break;
 
-				case CommandType.REMOTE_SET_NIGHTMARE_TYPE:
-					RTC_NightmareEngine.Algo = (BlastByteAlgo)cmd.objectValue;
-					break;
-				case CommandType.REMOTE_SET_PIPE_TYPE:
-					RTC_PipeEngine.Algo = (BlastPipeAlgo)cmd.objectValue;
-					break;
+                case CommandType.REMOTE_SET_NIGHTMARE_TYPE:
+                    RTC_NightmareEngine.Algo = (BlastByteAlgo)cmd.objectValue;
+                    break;
 
-				case CommandType.REMOTE_SET_HELLGENIE_MAXCHEATS:
+                case CommandType.REMOTE_SET_HELLGENIE_MAXCHEATS:
                     RTC_HellgenieEngine.MaxCheats = (int)cmd.objectValue;
                     break;
 

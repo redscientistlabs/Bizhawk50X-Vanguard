@@ -143,7 +143,7 @@ namespace RTC
 					else if (destinationType == typeof(BlastPipe))
 					{
 						//Pipe to 0
-						return new BlastPipe(bb.Domain, bb.Address, bb.Domain, 0, 0, bb.Value.Length, BlastPipeType.SET, bb.BigEndian, bb.IsEnabled);
+						return new BlastPipe(bb.Domain, bb.Address, bb.Domain, 0, 0, bb.Value.Length, bb.BigEndian, bb.IsEnabled);
 					}
 					else if (destinationType == typeof(BlastVector))
 					{
@@ -164,7 +164,7 @@ namespace RTC
 					}
 					else if (destinationType == typeof(BlastPipe))
 					{
-						return new BlastPipe(bc.Domain, bc.Address, bc.Domain, 0, 0, bc.Value.Length, BlastPipeType.SET, bc.BigEndian, bc.IsEnabled);
+						return new BlastPipe(bc.Domain, bc.Address, bc.Domain, 0, 0, bc.Value.Length, bc.BigEndian, bc.IsEnabled);
 					}
 					else if (destinationType == typeof(BlastVector))
 					{
@@ -177,7 +177,7 @@ namespace RTC
 					BlastPipe bp = bu as BlastPipe;
 					if (destinationType == typeof(BlastPipe))
 					{
-						return new BlastPipe(bp.Domain, bp.Address, bp.PipeDomain, bp.PipeAddress, 0, bp.PipeSize, BlastPipeType.SET, bp.BigEndian, bp.IsEnabled);
+						return new BlastPipe(bp.Domain, bp.Address, bp.PipeDomain, bp.PipeAddress, 0, bp.PipeSize, bp.BigEndian, bp.IsEnabled);
 					}
 					else if (destinationType == typeof(BlastByte))
 					{
@@ -212,7 +212,7 @@ namespace RTC
 					}
 					else if (destinationType == typeof(BlastPipe))
 					{
-						return new BlastPipe(bv.Domain, bv.Address, bv.Domain, 0, 0, bv.Values.Length, BlastPipeType.SET, true, bv.IsEnabled);
+						return new BlastPipe(bv.Domain, bv.Address, bv.Domain, 0, 0, bv.Values.Length, true, bv.IsEnabled);
 					}
 				}
 			}catch(Exception ex)
