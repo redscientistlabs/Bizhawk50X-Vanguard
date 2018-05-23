@@ -23,7 +23,10 @@ namespace RTC
 		public static bool LockPipes = false;
 		public static bool ProcessOnStep = true;
 
-        public static void ExecutePipes()
+		public static BlastPipeAlgo Algo = BlastPipeAlgo.VALUE;
+
+
+		public static void ExecutePipes()
         {
 			foreach (BlastPipe pipe in AllBlastPipes)
 				pipe.Execute();
@@ -59,13 +62,59 @@ namespace RTC
         public static BlastUnit GenerateUnit(string _domain, long _address)
         {
 
-
-            // Randomly selects a memory operation according to the selected algorithm
-			
-            try
+			try
             {
                 MemoryDomainProxy mdp = RTC_MemoryDomains.getProxy(_domain, _address);
-                int pipeSize;
+
+				BlastPipeType Type = BlastPipeType.SET;
+
+				switch (Algo)
+				{
+					case BlastPipeAlgo.VALUE: //RANDOM always sets a random value
+						Type = BlastPipeType.SET;
+						break;
+
+					case BlastPipeAlgo.TILTVALUE: //RANDOMTILT may add 1,substract 1 or set a random value
+						int result = RTC_Core.RND.Next(1, 4);
+						switch (result)
+						{
+							case 1:
+								Type = BlastPipeType.ADD;
+								break;
+							case 2:
+								Type = BlastPipeType.SUBSTRACT;
+								break;
+							case 3:
+								Type = BlastPipeType.SET;
+								break;
+							default:
+								MessageBox.Show("Random returned an unexpected value (RTC_PipeEngine switch(Algo) RANDOMTILT)");
+								return null;
+						}
+
+						break;
+
+					case BlastPipeAlgo.TILT: //TILT can either add 1 or substract 1
+						result = RTC_Core.RND.Next(1, 3);
+						switch (result)
+						{
+							case 1:
+								Type = BlastPipeType.ADD;
+								break;
+
+							case 2:
+								Type = BlastPipeType.SUBSTRACT;
+								break;
+
+							default:
+								MessageBox.Show("Random returned an unexpected value (RTC_PipeEngine switch(Algo) TILT)");
+								return null;
+						}
+						break;
+				}
+
+
+				int pipeSize;
 
                 if (RTC_Core.CustomPrecision == -1)
                     pipeSize = mdp.WordSize;
@@ -84,7 +133,7 @@ namespace RTC
                     }
                     else
                     {
-                        BlastPipe bp = new BlastPipe(_domain, safeAddress, lastDomain, lastAddress, tiltValue, pipeSize, mdp.BigEndian, true);
+                        BlastPipe bp = new BlastPipe(_domain, safeAddress, lastDomain, lastAddress, tiltValue, pipeSize, Type, mdp.BigEndian, true);
                         lastDomain = _domain;
                         lastAddress = safeAddress;
                         return bp;
@@ -96,7 +145,7 @@ namespace RTC
                     var pipeEnd = RTC_Core.GetBlastTarget();
                     long safepipeEndAddress = pipeEnd.address - (pipeEnd.address % pipeSize);
 
-                    BlastPipe bp = new BlastPipe(_domain, safeAddress, pipeEnd.domain, safepipeEndAddress, tiltValue, pipeSize, mdp.BigEndian, true);
+                    BlastPipe bp = new BlastPipe(_domain, safeAddress, pipeEnd.domain, safepipeEndAddress, tiltValue, pipeSize, Type, mdp.BigEndian, true);
                     lastDomain = _domain;
                     lastAddress = safeAddress;
                     return bp;

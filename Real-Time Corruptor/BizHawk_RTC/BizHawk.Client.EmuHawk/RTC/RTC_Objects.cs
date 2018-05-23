@@ -1345,6 +1345,7 @@ namespace RTC
 		public override long Address { get; set; }
 		public override bool BigEndian { get; set; }
 		public override bool IsLocked { get; set; } = false;
+		public BlastPipeType Type;
 		public string PipeDomain;
 		public long PipeAddress;
 		public int PipeSize;
@@ -1352,13 +1353,14 @@ namespace RTC
 
 		public override bool IsEnabled { get; set; }
 
-		public BlastPipe(string _domain, long _address, string _pipeDomain, long _pipeAddress, int _tiltValue, int _pipeSize, bool _bigEndian, bool _isEnabled)
+		public BlastPipe(string _domain, long _address, string _pipeDomain, long _pipeAddress, int _tiltValue, int _pipeSize, BlastPipeType _type, bool _bigEndian, bool _isEnabled)
 		{
 			Domain = _domain;
 			Address = _address;
 			PipeDomain = _pipeDomain;
 			PipeAddress = _pipeAddress;
 			PipeSize = _pipeSize;
+			Type = _type;
 			IsEnabled = _isEnabled;
 			TiltValue = _tiltValue;
 			BigEndian = _bigEndian;
@@ -1379,22 +1381,69 @@ namespace RTC
 				if (mdp == null || mdp2 == null)
 					throw new Exception($"Memory Domain error, MD1 -> {mdp.ToString()}, md2 -> {mdp2.ToString()}");
 
-				for (int i = 0; i < PipeSize; i++)
+				switch (Type)
 				{
-					long targetAddress = RTC_MemoryDomains.getRealAddress(Domain, Address) + i;
-					long targetPipeAddress = RTC_MemoryDomains.getRealAddress(PipeDomain, PipeAddress) + i;
+					case (BlastPipeType.SET):
+						for (int i = 0; i < PipeSize; i++)
+						{
+							long targetAddress = RTC_MemoryDomains.getRealAddress(Domain, Address) + i;
+							long targetPipeAddress = RTC_MemoryDomains.getRealAddress(PipeDomain, PipeAddress) + i;
 
-					int currentValue = (int)mdp.PeekByte(targetAddress);
+							int currentValue = (int)mdp.PeekByte(targetAddress);
 
-					int newValue = currentValue + TiltValue;
+							int newValue = currentValue + TiltValue;
 
-					if (newValue < 0)
-						newValue = 0;
-					else if (newValue > 255)
-						newValue = 255;
+							if (newValue < 0)
+								newValue = 0;
+							else if (newValue > 255)
+								newValue = 255;
 
-					mdp2.PokeByte(targetPipeAddress, (byte)newValue);
+							mdp2.PokeByte(targetPipeAddress, (byte)newValue);
+						}
+						break;
+					case (BlastPipeType.ADD):
+						for (int i = 0; i < PipeSize; i++)
+						{
+							long targetAddress = RTC_MemoryDomains.getRealAddress(Domain, Address) + i;
+							long targetPipeAddress = RTC_MemoryDomains.getRealAddress(PipeDomain, PipeAddress) + i;
+
+							int currentValue = (int)mdp.PeekByte(targetAddress);
+
+							TiltValue = (int)mdp.PeekByte(targetPipeAddress);
+
+							int newValue = currentValue + TiltValue;
+
+							if (newValue < 0)
+								newValue = 255 - newValue;
+							else if (newValue > 255)
+								newValue = newValue - 255;
+
+							mdp2.PokeByte(targetPipeAddress, (byte)newValue);
+						}
+						break;
+					case (BlastPipeType.SUBSTRACT):
+						for (int i = 0; i < PipeSize; i++)
+						{
+							long targetAddress = RTC_MemoryDomains.getRealAddress(Domain, Address) + i;
+							long targetPipeAddress = RTC_MemoryDomains.getRealAddress(PipeDomain, PipeAddress) + i;
+
+							int currentValue = (int)mdp.PeekByte(targetAddress);
+
+							TiltValue = (int)mdp.PeekByte(targetPipeAddress);
+
+							int newValue = currentValue - TiltValue;
+
+							if (newValue < 0)
+								newValue = 255 - newValue;
+							else if (newValue > 255)
+								newValue = newValue - 255;
+
+							mdp2.PokeByte(targetPipeAddress, (byte)newValue);
+						}
+						break;
 				}
+
+				
 			}
 			catch (Exception ex)
 			{

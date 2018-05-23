@@ -69,6 +69,8 @@
             this.comboBox6 = new System.Windows.Forms.ComboBox();
             this.label19 = new System.Windows.Forms.Label();
             this.gbPipeEngine = new System.Windows.Forms.GroupBox();
+            this.cbPipeBlastType = new System.Windows.Forms.ComboBox();
+            this.label21 = new System.Windows.Forms.Label();
             this.panel8 = new System.Windows.Forms.Panel();
             this.label14 = new System.Windows.Forms.Label();
             this.comboBox5 = new System.Windows.Forms.ComboBox();
@@ -376,8 +378,8 @@
             this.cbMemoryDomainTool.Items.AddRange(new object[] {
             "No Tool Selected",
             "Virtual Memory Domain Pool",
-			"Virtual Memory Domain Generator",
-			"ActiveTable Generator"});
+            "Virtual Memory Domain Generator",
+            "ActiveTable Generator"});
             this.cbMemoryDomainTool.Location = new System.Drawing.Point(11, 11);
             this.cbMemoryDomainTool.Name = "cbMemoryDomainTool";
             this.cbMemoryDomainTool.Size = new System.Drawing.Size(390, 21);
@@ -538,8 +540,8 @@
             "Distortion Engine",
             "Freeze Engine",
             "Pipe Engine",
-			"Vector Engine",
-			"External ROM Plugin"});
+            "Vector Engine",
+            "External ROM Plugin"});
             this.cbSelectedEngine.Location = new System.Drawing.Point(10, 13);
             this.cbSelectedEngine.Name = "cbSelectedEngine";
             this.cbSelectedEngine.Size = new System.Drawing.Size(165, 21);
@@ -748,6 +750,8 @@
             // 
             // gbPipeEngine
             // 
+            this.gbPipeEngine.Controls.Add(this.cbPipeBlastType);
+            this.gbPipeEngine.Controls.Add(this.label21);
             this.gbPipeEngine.Controls.Add(this.panel8);
             this.gbPipeEngine.Controls.Add(this.label14);
             this.gbPipeEngine.Controls.Add(this.comboBox5);
@@ -767,6 +771,36 @@
             this.gbPipeEngine.Size = new System.Drawing.Size(391, 151);
             this.gbPipeEngine.TabIndex = 127;
             this.gbPipeEngine.TabStop = false;
+            // 
+            // cbPipeBlastType
+            // 
+            this.cbPipeBlastType.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
+            this.cbPipeBlastType.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.cbPipeBlastType.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.cbPipeBlastType.Font = new System.Drawing.Font("Segoe UI", 8F);
+            this.cbPipeBlastType.ForeColor = System.Drawing.Color.White;
+            this.cbPipeBlastType.FormattingEnabled = true;
+            this.cbPipeBlastType.Items.AddRange(new object[] {
+            "VALUE",
+            "TILTVALUE",
+            "TILT"});
+            this.cbPipeBlastType.Location = new System.Drawing.Point(75, 31);
+            this.cbPipeBlastType.Name = "cbPipeBlastType";
+            this.cbPipeBlastType.Size = new System.Drawing.Size(88, 21);
+            this.cbPipeBlastType.TabIndex = 142;
+			this.cbPipeBlastType.Tag = "color:dark";
+			this.cbPipeBlastType.SelectedIndex = 0;
+			this.cbPipeBlastType.SelectedIndexChanged += new System.EventHandler(this.cbPipeBlastType_SelectedIndexChanged);
+            // 
+            // label21
+            // 
+            this.label21.AutoSize = true;
+            this.label21.Font = new System.Drawing.Font("Segoe UI", 8F);
+            this.label21.Location = new System.Drawing.Point(9, 40);
+            this.label21.Name = "label21";
+            this.label21.Size = new System.Drawing.Size(60, 13);
+            this.label21.TabIndex = 141;
+            this.label21.Text = "Blast type:";
             // 
             // panel8
             // 
@@ -823,7 +857,7 @@
             this.nmTiltPipeValue.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
             this.nmTiltPipeValue.Font = new System.Drawing.Font("Segoe UI", 8F);
             this.nmTiltPipeValue.ForeColor = System.Drawing.Color.White;
-            this.nmTiltPipeValue.Location = new System.Drawing.Point(98, 63);
+            this.nmTiltPipeValue.Location = new System.Drawing.Point(96, 82);
             this.nmTiltPipeValue.Maximum = new decimal(new int[] {
             255,
             0,
@@ -846,7 +880,7 @@
             // 
             this.label25.AutoSize = true;
             this.label25.Font = new System.Drawing.Font("Segoe UI", 8F);
-            this.label25.Location = new System.Drawing.Point(4, 66);
+            this.label25.Location = new System.Drawing.Point(9, 84);
             this.label25.Name = "label25";
             this.label25.Size = new System.Drawing.Size(55, 13);
             this.label25.TabIndex = 80;
@@ -855,14 +889,15 @@
             // cbClearPipesOnRewind
             // 
             this.cbClearPipesOnRewind.AutoSize = true;
+            this.cbClearPipesOnRewind.BackColor = System.Drawing.Color.Transparent;
             this.cbClearPipesOnRewind.Font = new System.Drawing.Font("Segoe UI", 8F);
             this.cbClearPipesOnRewind.ForeColor = System.Drawing.Color.White;
-            this.cbClearPipesOnRewind.Location = new System.Drawing.Point(5, 100);
+            this.cbClearPipesOnRewind.Location = new System.Drawing.Point(11, 101);
             this.cbClearPipesOnRewind.Name = "cbClearPipesOnRewind";
             this.cbClearPipesOnRewind.Size = new System.Drawing.Size(142, 17);
             this.cbClearPipesOnRewind.TabIndex = 79;
             this.cbClearPipesOnRewind.Text = "Clear pipes on Rewind";
-            this.cbClearPipesOnRewind.UseVisualStyleBackColor = true;
+            this.cbClearPipesOnRewind.UseVisualStyleBackColor = false;
             this.cbClearPipesOnRewind.CheckedChanged += new System.EventHandler(this.cbClearPipesOnRewind_CheckedChanged);
             // 
             // cbProcessOnStep
@@ -915,7 +950,7 @@
             this.nmMaxPipes.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
             this.nmMaxPipes.Font = new System.Drawing.Font("Segoe UI", 8F);
             this.nmMaxPipes.ForeColor = System.Drawing.Color.White;
-            this.nmMaxPipes.Location = new System.Drawing.Point(98, 36);
+            this.nmMaxPipes.Location = new System.Drawing.Point(96, 55);
             this.nmMaxPipes.Maximum = new decimal(new int[] {
             65536,
             0,
@@ -943,7 +978,7 @@
             // 
             this.label8.AutoSize = true;
             this.label8.Font = new System.Drawing.Font("Segoe UI", 8F);
-            this.label8.Location = new System.Drawing.Point(4, 40);
+            this.label8.Location = new System.Drawing.Point(9, 64);
             this.label8.Name = "label8";
             this.label8.Size = new System.Drawing.Size(62, 13);
             this.label8.TabIndex = 0;
@@ -1694,5 +1729,7 @@
         private System.Windows.Forms.Panel panel5;
         private System.Windows.Forms.Panel panel4;
         public System.Windows.Forms.Label lbCoreDefault;
-    }
+		public System.Windows.Forms.ComboBox cbPipeBlastType;
+		private System.Windows.Forms.Label label21;
+	}
 }
