@@ -196,7 +196,7 @@ namespace RTC
 			}
 
 
-			if (psk.SystemCore != sk.SystemCore && !RTC_Core.AllowCrossCoreCorruption)
+			if (psk == null || psk.SystemCore != sk.SystemCore && !RTC_Core.AllowCrossCoreCorruption)
 			{
 				MessageBox.Show("Merge attempt failed: Core mismatch\n\n" + $"{psk.GameName} -> {psk.SystemName} -> {psk.SystemCore}\n{sk.GameName} -> {sk.SystemName} -> {sk.SystemCore}");
 				return isCorruptionApplied;
@@ -326,9 +326,6 @@ namespace RTC
 			}
 
 		}
-
-
-
 
 		public static bool LoadState(StashKey sk, bool ReloadRom = true, bool applyBlastLayer = true)
 		{
