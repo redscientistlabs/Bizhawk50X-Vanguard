@@ -187,7 +187,8 @@ namespace RTC
 
 			StashKey psk = RTC_StockpileManager.getCurrentSavestateStashkey();
 
-			if (psk == null && loadBeforeOperation && _loadBeforeOperation)
+
+			if (psk == null)
 			{
 				RTC_Core.StopSound();
                 MessageBox.Show("The Glitch Harvester could not perform the INJECT action\n\nEither no Savestate Box was selected in the Savestate Manager\nor the Savetate Box itself is empty.");
@@ -196,7 +197,7 @@ namespace RTC
 			}
 
 
-			if (psk == null || psk.SystemCore != sk.SystemCore && !RTC_Core.AllowCrossCoreCorruption)
+			if (psk.SystemCore != sk.SystemCore && !RTC_Core.AllowCrossCoreCorruption)
 			{
 				MessageBox.Show("Merge attempt failed: Core mismatch\n\n" + $"{psk.GameName} -> {psk.SystemName} -> {psk.SystemCore}\n{sk.GameName} -> {sk.SystemName} -> {sk.SystemCore}");
 				return isCorruptionApplied;
@@ -326,6 +327,9 @@ namespace RTC
 			}
 
 		}
+
+
+
 
 		public static bool LoadState(StashKey sk, bool ReloadRom = true, bool applyBlastLayer = true)
 		{
