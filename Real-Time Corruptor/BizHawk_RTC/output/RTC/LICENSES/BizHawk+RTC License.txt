@@ -1,0 +1,7 @@
+This Git contains multiple source projects and binaries.
+
+Some of them aren't our property and reside in the Git only for convenience.
+
+For the licencing on the developped projects, see license files at the following path:
+
+Real-Time Corruptor\BizHawk_RTC\output\RTC\LICENSES

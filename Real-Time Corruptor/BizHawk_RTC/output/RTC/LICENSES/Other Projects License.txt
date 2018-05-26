@@ -1,0 +1,1 @@
+Other projects that are developped by the RTC Dev team for the RTC project should be considered covered in the BizHawk+RTC License.txt file.

@@ -1,0 +1,9 @@
+The VineCorrupt Plugin is distributed in binary format.
+Source code for the plugin is not available. Additionnal information must be asked to maiddog.
+Source code for mdcorrupt is available at https://github.com/Roughsketch/mdcorrupt
+Webpage for maiddog's corruptor is http://www.maiddog.com/projects/corrupter
+
+No license was provided with the binary formats.
+It is expected that maiddog agrees usage of the plugin as long as it stays unmodified.
+
+Ask maiddog for additionnal information

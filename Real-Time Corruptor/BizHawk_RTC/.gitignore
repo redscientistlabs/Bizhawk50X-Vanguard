@@ -9,11 +9,11 @@ svnrev.cs
 /output64/**
 
 
-!/output/dll/*
+!/output/dll/**
 !/output/dll/
-!/output/dll/nlua/*
-!/output/dll/nlua
 /output/dll/Bizhawk*
+!/output/RTC/**
+!/output/RTC/
 
 **/Release/**
 **/Debug/**

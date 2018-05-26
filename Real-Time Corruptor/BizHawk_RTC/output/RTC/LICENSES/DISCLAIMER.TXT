@@ -1,0 +1,17 @@
+Welcome to the Real-Time Corruptor
+Version [ver]
+
+Disclaimer:
+This program comes with absolutely ZERO warranty.
+You may use it at your own risk.
+
+BizHawk+RTC is distributed under an MIT Licence.
+Detailed information about other licences available at the
+following path: BizHawk -> RTC -> LICENCES
+
+Known facts(and warnings):
+- Can generate incredible amounts of flashing and noise
+- Can cause windows to BSOD (extremely rarely)
+- Can write a significant amount of data to your hard drive depending on usage
+
+This message only appears once.
