@@ -962,7 +962,7 @@ namespace RTC
 
 		// The NumericUpDown control used to paint the non-edited cells via a call to NumericUpDown.DrawToBitmap
 		[ThreadStatic]
-		private NumericUpDown paintingNumericUpDown;
+		private NumericUpDownHexFix paintingNumericUpDown;
 
 
 
@@ -987,7 +987,7 @@ namespace RTC
 			// Create a thread specific NumericUpDown control used for the painting of the non-edited cells
 			if (paintingNumericUpDown == null)
 			{
-				paintingNumericUpDown = new NumericUpDown();
+				paintingNumericUpDown = new NumericUpDownHexFix();
 				// Some properties only need to be set once for the lifetime of the control:
 				paintingNumericUpDown.BorderStyle = BorderStyle.None;
 				paintingNumericUpDown.Maximum = Decimal.MaxValue / 10;
@@ -1227,7 +1227,7 @@ namespace RTC
 				throw new InvalidOperationException("Cell is detached or its grid has no editing control.");
 			}
 
-			NumericUpDown numericUpDown = dataGridView.EditingControl as NumericUpDown;
+			NumericUpDownHexFix numericUpDown = dataGridView.EditingControl as NumericUpDownHexFix;
 			if (numericUpDown != null)
 			{
 				// Editing controls get recycled. Indeed, when a DataGridViewNumericUpDownCell cell gets edited
@@ -2104,8 +2104,7 @@ namespace RTC
 			}
 		}
 		protected override void ValidateEditText()
-		{
-			
+		{			
 			if(this.Hexadecimal)
 				HexParseEditText();
 			else 
@@ -2191,19 +2190,12 @@ namespace RTC
 			get { return base.Maximum; }
 			set { base.Maximum = value; }
 		}
-		protected override void UpdateEditText()
-		{
-			if (base.UserEdit) HexParseEditText();
-			if (!string.IsNullOrEmpty(base.Text))
-			{
-				base.ChangingText = true;
-				base.Text = string.Format("{0:X}", (UInt64)base.Value);
-			}
-		}
 		protected override void ValidateEditText()
 		{
-			HexParseEditText();
-			UpdateEditText();
+			if (this.Hexadecimal)
+				HexParseEditText();
+			else
+				UpdateEditText();
 		}
 		private void HexParseEditText()
 		{
