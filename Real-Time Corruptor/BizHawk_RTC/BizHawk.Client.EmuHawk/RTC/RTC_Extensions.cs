@@ -2069,11 +2069,7 @@ namespace RTC
 			// The value changes when a digit, the decimal separator, the group separator or
 			// the negative sign is pressed.
 			bool notifyValueChange = false;
-			if (char.IsDigit(e.KeyChar))
-			{
-				notifyValueChange = true;
-			}
-			else if (((e.KeyChar >= 'a' && e.KeyChar <= 'f') || e.KeyChar >= 'A' && e.KeyChar <= 'F'))
+			if (char.IsDigit(e.KeyChar) || (e.KeyChar >= 'a' && e.KeyChar <= 'f') || (e.KeyChar >= 'A' && e.KeyChar <= 'F') || (e.KeyChar == '\b'))
 			{
 				notifyValueChange = true;
 			}
@@ -2110,6 +2106,7 @@ namespace RTC
 			else 
 				UpdateEditText();
 		}
+
 		private void HexParseEditText()
 		{
 			try

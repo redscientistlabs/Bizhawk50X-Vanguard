@@ -81,7 +81,6 @@
             this.saveAsToFileblToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.importBlastlayerblToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.exportToCSVToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.rasterizeVMDsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.saveStateToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.runOriginalSavestateToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.replaceSavestateFromGHToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -92,6 +91,9 @@
             this.replaceRomFromGHToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.replaceRomFromFileToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.bakeROMBlastunitsToFileToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.rasterizeVMDsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.bakeBlastByteToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.btnHideSidebar = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.dgvBlastLayer)).BeginInit();
             this.pnMemoryTargetting.SuspendLayout();
@@ -473,7 +475,6 @@
             // cbShiftBlastlayer
             // 
             this.cbShiftBlastlayer.FormattingEnabled = true;
-      
             this.cbShiftBlastlayer.Location = new System.Drawing.Point(22, 7);
             this.cbShiftBlastlayer.Name = "cbShiftBlastlayer";
             this.cbShiftBlastlayer.Size = new System.Drawing.Size(114, 21);
@@ -685,7 +686,8 @@
             this.menuStripEx1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.blastLayerToolStripMenuItem,
             this.saveStateToolStripMenuItem,
-            this.rOMToolStripMenuItem});
+            this.rOMToolStripMenuItem,
+            this.toolsToolStripMenuItem});
             this.menuStripEx1.Location = new System.Drawing.Point(0, 0);
             this.menuStripEx1.Name = "menuStripEx1";
             this.menuStripEx1.Size = new System.Drawing.Size(888, 24);
@@ -699,8 +701,7 @@
             this.saveToFileblToolStripMenuItem,
             this.saveAsToFileblToolStripMenuItem,
             this.importBlastlayerblToolStripMenuItem,
-            this.exportToCSVToolStripMenuItem,
-            this.rasterizeVMDsToolStripMenuItem});
+            this.exportToCSVToolStripMenuItem});
             this.blastLayerToolStripMenuItem.Name = "blastLayerToolStripMenuItem";
             this.blastLayerToolStripMenuItem.Size = new System.Drawing.Size(72, 20);
             this.blastLayerToolStripMenuItem.Text = "BlastLayer";
@@ -739,13 +740,6 @@
             this.exportToCSVToolStripMenuItem.Size = new System.Drawing.Size(187, 22);
             this.exportToCSVToolStripMenuItem.Text = "&Export to CSV";
             this.exportToCSVToolStripMenuItem.Click += new System.EventHandler(this.exportToCSVToolStripMenuItem_Click);
-            // 
-            // rasterizeVMDsToolStripMenuItem
-            // 
-            this.rasterizeVMDsToolStripMenuItem.Name = "rasterizeVMDsToolStripMenuItem";
-            this.rasterizeVMDsToolStripMenuItem.Size = new System.Drawing.Size(187, 22);
-            this.rasterizeVMDsToolStripMenuItem.Text = "&Rasterize VMDs";
-            this.rasterizeVMDsToolStripMenuItem.Click += new System.EventHandler(this.rasterizeVMDsToolStripMenuItem_Click);
             // 
             // saveStateToolStripMenuItem
             // 
@@ -824,6 +818,29 @@
             this.bakeROMBlastunitsToFileToolStripMenuItem.Size = new System.Drawing.Size(222, 22);
             this.bakeROMBlastunitsToFileToolStripMenuItem.Text = "Bake ROM Blastunits to File";
             this.bakeROMBlastunitsToFileToolStripMenuItem.Click += new System.EventHandler(this.bakeROMBlastunitsToFileToolStripMenuItem_Click);
+            // 
+            // toolsToolStripMenuItem
+            // 
+            this.toolsToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.rasterizeVMDsToolStripMenuItem,
+            this.bakeBlastByteToolStripMenuItem});
+            this.toolsToolStripMenuItem.Name = "toolsToolStripMenuItem";
+            this.toolsToolStripMenuItem.Size = new System.Drawing.Size(47, 20);
+            this.toolsToolStripMenuItem.Text = "Tools";
+            // 
+            // rasterizeVMDsToolStripMenuItem
+            // 
+            this.rasterizeVMDsToolStripMenuItem.Name = "rasterizeVMDsToolStripMenuItem";
+            this.rasterizeVMDsToolStripMenuItem.Size = new System.Drawing.Size(235, 22);
+            this.rasterizeVMDsToolStripMenuItem.Text = "Rasterize VMDs";
+            this.rasterizeVMDsToolStripMenuItem.Click += new System.EventHandler(this.rasterizeVMDsToolStripMenuItem_Click);
+            // 
+            // bakeBlastByteToolStripMenuItem
+            // 
+            this.bakeBlastByteToolStripMenuItem.Name = "bakeBlastByteToolStripMenuItem";
+            this.bakeBlastByteToolStripMenuItem.Size = new System.Drawing.Size(235, 22);
+            this.bakeBlastByteToolStripMenuItem.Text = "Bake Selected BlastBytes to Set";
+            this.bakeBlastByteToolStripMenuItem.Click += new System.EventHandler(this.bakeBlastByteToolStripMenuItem_Click);
             // 
             // btnHideSidebar
             // 
@@ -926,11 +943,13 @@
 		private DataGridViewNumericUpDownColumn dgvSourceAddress;
 		private System.Windows.Forms.DataGridViewTextBoxColumn dgvParamDomain;
 		private DataGridViewNumericUpDownColumn dgvParam;
-		private System.Windows.Forms.ToolStripMenuItem rasterizeVMDsToolStripMenuItem;
 		private System.Windows.Forms.ToolStripMenuItem saveAsToFileblToolStripMenuItem;
 		private System.Windows.Forms.ComboBox cbShiftBlastlayer;
 		private System.Windows.Forms.Button btnShiftBlastLayerDown;
 		private System.Windows.Forms.Button btnShiftBlastLayerUp;
 		private NumericUpDownHexFix updownShiftBlastLayerAmount;
+		private System.Windows.Forms.ToolStripMenuItem toolsToolStripMenuItem;
+		private System.Windows.Forms.ToolStripMenuItem rasterizeVMDsToolStripMenuItem;
+		private System.Windows.Forms.ToolStripMenuItem bakeBlastByteToolStripMenuItem;
 	}
 }

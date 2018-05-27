@@ -232,5 +232,40 @@ namespace RTC
 			}
 			return temp;
 		}
+
+		public static BlastLayer getBlastByteBackupLayer(BlastLayer bl)
+		{
+			BlastLayer newBlastLayer = new BlastLayer();
+
+			foreach(BlastUnit bu in bl.Layer)
+			{
+				if (bu is BlastByte){
+					BlastByte bb = bu as BlastByte;
+					newBlastLayer.Layer.Add(bb.GetBackup());
+				}
+			}
+			return newBlastLayer;
+		}
+
+		public static BlastLayer BakeBlastBytesToSet(StashKey sk, BlastLayer inputLayer)
+		{
+			try
+			{
+				//Load the SK
+				sk.Run();
+
+				//Bake them
+				var token = RTC_NetCore.HugeOperationStart();
+				BlastLayer newLayer = (BlastLayer)RTC_Core.SendCommandToBizhawk(new RTC_Command(CommandType.REMOTE_KEY_GETBLASTBYTEBACKUPLAYER) { objectValue = new object[] { inputLayer } }, true);
+				RTC_NetCore.HugeOperationEnd(token);
+
+				return newLayer;
+
+			}catch(Exception ex)
+			{
+				throw;
+			}
+			return null;
+		}
 	}
 }

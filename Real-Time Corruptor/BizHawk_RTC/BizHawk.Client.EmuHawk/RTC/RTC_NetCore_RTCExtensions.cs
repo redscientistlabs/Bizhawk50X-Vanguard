@@ -341,12 +341,17 @@ namespace RTC
                     cmdBack.objectValue = GlobalWin.MainForm.CurrentlyOpenRom;
                     break;
 
-                case CommandType.REMOTE_KEY_GETRAWBLASTLAYER:
-                    cmdBack = new RTC_Command(CommandType.RETURNVALUE);
-                    cmdBack.objectValue = RTC_StockpileManager.getRawBlastlayer();
-                    break;
+				case CommandType.REMOTE_KEY_GETRAWBLASTLAYER:
+					cmdBack = new RTC_Command(CommandType.RETURNVALUE);
+					cmdBack.objectValue = RTC_StockpileManager.getRawBlastlayer();
+					break;
+				case CommandType.REMOTE_KEY_GETBLASTBYTEBACKUPLAYER:
+					var _bl = (BlastLayer)(cmd.objectValue as object[])[0];
+					cmdBack = new RTC_Command(CommandType.RETURNVALUE);
+					cmdBack.objectValue = RTC_BlastTools.getBlastByteBackupLayer(_bl);
+					break;
 
-                case CommandType.BIZHAWK_SET_OSDDISABLED:
+				case CommandType.BIZHAWK_SET_OSDDISABLED:
                     RTC_Core.BizhawkOsdDisabled = (bool)cmd.objectValue;
                     break;
 
@@ -605,6 +610,7 @@ namespace RTC
                 case CommandType.REMOTE_RENDER_RENDERATLOAD:
                     RTC_StockpileManager.renderAtLoad = (bool)cmd.objectValue;
                     break;
+
             }
 
 

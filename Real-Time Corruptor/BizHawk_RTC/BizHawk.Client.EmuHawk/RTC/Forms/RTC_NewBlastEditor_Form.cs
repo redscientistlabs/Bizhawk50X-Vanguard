@@ -261,8 +261,7 @@ namespace RTC
 
 			foreach (BlastUnit bu in buToRemove)
 			{
-				sk.BlastLayer.Layer.Remove(bu);
-				dgvBlastLayer.Rows.Remove(bu2RowDico[bu]);
+				RemoveBlastUnitFromBlastLayerAndDGV(bu);
 			}
 		}
 
@@ -351,7 +350,7 @@ namespace RTC
 
 				BlastUnit bu = sk.BlastLayer.Layer[pos];
 				BlastUnit bu2 = ObjectCopier.Clone(bu);
-				sk.BlastLayer.Layer.Add(bu2);
+				sk.BlastLayer.Layer.Insert(pos + 1, bu2);
 				InsertBlastUnitToDGV(pos + 1, bu2);
 				//AddBlastUnitToDGV(bu2);
 			}
@@ -373,8 +372,7 @@ namespace RTC
 						usedAddresses.Add(bu.Address);
 					else
 					{
-						sk.BlastLayer.Layer.Remove(bu);
-						dgvBlastLayer.Rows.Remove(bu2RowDico[bu]);
+						RemoveBlastUnitFromBlastLayerAndDGV(bu);
 						CurrentlyUpdating = false;
 					}
 				}
@@ -385,8 +383,7 @@ namespace RTC
 						usedPipeAddresses.Add(bp.PipeAddress);
 					else
 					{
-						sk.BlastLayer.Layer.Remove(bu);
-						dgvBlastLayer.Rows.Remove(bu2RowDico[bu]);
+						RemoveBlastUnitFromBlastLayerAndDGV(bu);
 						CurrentlyUpdating = false;
 					}
 				}
@@ -541,6 +538,18 @@ namespace RTC
 			//Remove it from the blastlayer
 			sk.BlastLayer.Layer.Remove(bu);
 
+			UpdateBlastLayerSize();
+		}
+		private void RemoveBlastUnitFromBlastLayerAndDGV(DataGridViewRow row)
+		{
+			BlastUnit bu = (BlastUnit)row.Cells["dgvBlastUnitReference"].Value;
+			//Remove it from the blastlayer
+			sk.BlastLayer.Layer.Remove(bu);
+			//Remove it from the dictionary
+			bu2RowDico.Remove(bu);
+			//Remove it from the dgv
+			dgvBlastLayer.Rows.Remove(row);
+			
 			UpdateBlastLayerSize();
 		}
 
@@ -993,9 +1002,9 @@ namespace RTC
 				e.Cancel = true;
 				return;
 			}
-
-			sk.BlastLayer.Layer.Remove((BlastUnit)e.Row.Cells[0].Value);
-			UpdateBlastLayerSize();
+			//Override the default delete action then remove it ourselves
+			e.Cancel = true;
+			RemoveBlastUnitFromBlastLayerAndDGV(e.Row);
 		}
 
 		private void btnRemoveSelected_Click(object sender, EventArgs e)
@@ -1005,17 +1014,13 @@ namespace RTC
 				MessageBox.Show("No rows were selected. Cannot remove.");
 				return;
 			}
-			if (Control.ModifierKeys == Keys.Control || (MessageBox.Show("Are you sure you want to remove the selected rows?", "Remove Rows", MessageBoxButtons.YesNo) == DialogResult.Yes))
+			if (Control.ModifierKeys == Keys.Control || (MessageBox.Show("Are you sure you want to remove the selected row(s)?", "Remove Rows", MessageBoxButtons.YesNo) == DialogResult.Yes))
 				foreach (DataGridViewRow row in dgvBlastLayer.SelectedRows)
 				{
 					if ((bool)row.Cells["dgvBlastUnitLocked"].Value)
 						return;
 
-					int pos = row.Index;
-					BlastUnit bu = sk.BlastLayer.Layer[pos];
-
-					sk.BlastLayer.Layer.Remove(bu);
-					dgvBlastLayer.Rows.Remove(bu2RowDico[bu]);
+					RemoveBlastUnitFromBlastLayerAndDGV(row);
 					CurrentlyUpdating = false;
 				}
 		}
@@ -1391,6 +1396,7 @@ namespace RTC
 		{
 			shiftBlastLayer(false);
 		}
+
 		private void shiftBlastLayer(bool shiftDown = false)
 		{
 			if (shiftDown)
@@ -1414,5 +1420,41 @@ namespace RTC
 				}
 			}
 		}
+
+		private void bakeBlastByteToolStripMenuItem_Click(object sender, EventArgs e)
+		{
+			try
+			{
+				//Generate a blastlayer from the current selected rows
+				BlastLayer bl = new BlastLayer();
+				foreach (DataGridViewRow selected in dgvBlastLayer.SelectedRows.Cast<DataGridViewRow>().Where((item => (bool)item.Cells["dgvBlastUnitLocked"].Value != true)))
+				{
+					BlastUnit bu = (BlastUnit)selected.Cells["dgvBlastUnitReference"].Value;
+					if (bu.IsEnabled)
+						bl.Layer.Add(bu);
+				}
+
+				//Bake them
+				BlastLayer newBlastLayer = RTC_BlastTools.BakeBlastBytesToSet(sk, bl);
+				
+				int i = 0;
+				//Insert the new one where the old row was, then remove the old row.
+				foreach (DataGridViewRow selected in dgvBlastLayer.SelectedRows.Cast<DataGridViewRow>().Where(item => ((bool)item.Cells["dgvBlastUnitLocked"].Value != true) && ((BlastUnit)item.Cells["dgvBlastUnitReference"].Value) is BlastByte))
+				{
+					InsertBlastUnitToDGV(selected.Index, newBlastLayer.Layer[i]);
+					i++;
+					RemoveBlastUnitFromBlastLayerAndDGV((BlastUnit)selected.Cells["dgvBlastUnitReference"].Value);
+				}
+				
+			}
+			catch (Exception ex)
+			{
+				throw new System.Exception("Something went wrong in when baking to SET.\n" +
+				"Your blast editor session may be broke depending on when it failed.\n" +
+				"You should probably send a copy of this error and what you did to cause it to the RTC devs.\n\n" +
+				ex.ToString());
+			}
+		}
+
 	}	
 }

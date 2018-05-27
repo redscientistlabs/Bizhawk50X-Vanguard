@@ -470,7 +470,8 @@ namespace RTC
                 }
 
 
-                RTC_StockpileManager.currentStashkey = RTC_StockpileManager.StashHistory[lbStashHistory.SelectedIndex];
+
+				RTC_StockpileManager.currentStashkey = RTC_StockpileManager.StashHistory[lbStashHistory.SelectedIndex];
 
 				if (!cbLoadOnSelect.Checked && RTC_StockpileManager.loadBeforeOperation)
 					return;
@@ -515,16 +516,21 @@ namespace RTC
 
 		private void btnAddStashToStockpile_Click(object sender, EventArgs e) => AddStashToStockpile();
         public void AddStashToStockpile(bool askForName = true)
-        {
-            if (lbStashHistory.Items.Count == 0 || lbStashHistory.SelectedIndex == -1)
+		{
+			if (RTC_StockpileManager.currentStashkey.Alias != "")
+				askForName = false;
+
+			if (lbStashHistory.Items.Count == 0 || lbStashHistory.SelectedIndex == -1)
             {
                 MessageBox.Show("Can't add the Stash to the Stockpile because none is selected in the Stash History");
                 return;
             }
 
             RTC_Core.StopSound();
-            string Name = "";
-            string value = "";
+			string Name = RTC_StockpileManager.currentStashkey.Alias;
+			string value = "";
+
+
             if (askForName)
             {
                 if (RTC_Extensions.getInputBox("Glitch Harvester", "Enter the new Stash name:", ref value) == DialogResult.OK)
@@ -965,6 +971,23 @@ namespace RTC
 			}
         }
 
+
+		private void renameStashKey(StashKey sk)
+		{
+			string value = "";
+
+			if (RTC_Extensions.getInputBox("Glitch Harvester", "Enter the new Stash name:", ref value) == DialogResult.OK)
+			{
+				sk.Alias = value.Trim();
+			}
+			else
+			{
+				RTC_Core.StartSound();
+				return;
+			}
+
+		}
+
 		private void btnRenameSelected_Click(object sender, EventArgs e)
 		{
 			if (!btnRenameSelected.Visible)
@@ -975,20 +998,7 @@ namespace RTC
 			if (dgvStockpile.SelectedRows.Count != 0)
 			{
 
-				string Name = "";
-				string value = "";
-
-				if (RTC_Extensions.getInputBox("Glitch Harvester", "Enter the new Stash name:", ref value) == DialogResult.OK)
-				{
-					Name = value.Trim();
-				}
-				else
-				{
-					RTC_Core.StartSound();
-					return;
-				}
-
-				(dgvStockpile.SelectedRows[0].Cells[0].Value as StashKey).Alias = Name;
+				renameStashKey(dgvStockpile.SelectedRows[0].Cells[0].Value as StashKey);
 
 				dgvStockpile.Refresh();
 				//lbStockpile.RefreshItemsReal();
@@ -1380,14 +1390,33 @@ namespace RTC
 					}
                 })) as ToolStripMenuItem).Enabled = lbStashHistory.SelectedIndex != -1;
 
-                columnsMenu.Items.Add(new ToolStripSeparator());
-                (columnsMenu.Items.Add("Generate VMD from Selected Item", null, new EventHandler((ob, ev) => {
-                    var sk = RTC_StockpileManager.StashHistory[lbStashHistory.SelectedIndex];
-                    sk.BlastLayer.Rasterize();
-                    RTC_MemoryDomains.GenerateVmdFromStashkey(sk);
-                })) as ToolStripMenuItem).Enabled = lbStashHistory.SelectedIndex != -1;
+				columnsMenu.Items.Add(new ToolStripSeparator());
+				(columnsMenu.Items.Add("Generate VMD from Selected Item", null, new EventHandler((ob, ev) => {
+					var sk = RTC_StockpileManager.StashHistory[lbStashHistory.SelectedIndex];
+					sk.BlastLayer.Rasterize();
+					RTC_MemoryDomains.GenerateVmdFromStashkey(sk);
+				})) as ToolStripMenuItem).Enabled = lbStashHistory.SelectedIndex != -1;
+				columnsMenu.Items.Add(new ToolStripSeparator());
 
-                columnsMenu.Show(this, locate);
+				(columnsMenu.Items.Add("Rename selected item", null, new EventHandler((ob, ev) => {
+					var sk = RTC_StockpileManager.StashHistory[lbStashHistory.SelectedIndex];
+					renameStashKey(sk);
+					RefreshStashHistory();
+				})) as ToolStripMenuItem).Enabled = lbStashHistory.SelectedIndex != -1;
+
+				(columnsMenu.Items.Add("Merge Selected Stashkeys", null, new EventHandler((ob, ev) =>
+				{
+					List<StashKey> sks = new List<StashKey>();
+					foreach (StashKey sk in lbStashHistory.SelectedItems)
+						sks.Add((StashKey)sk);
+
+					RTC_StockpileManager.MergeStashkeys(sks);
+
+					RefreshStashHistory();
+				})) as ToolStripMenuItem).Enabled = (lbStashHistory.SelectedIndex != -1 && lbStashHistory.SelectedItems.Count > 1);
+
+
+				columnsMenu.Show(this, locate);
 			}
 		}
 
