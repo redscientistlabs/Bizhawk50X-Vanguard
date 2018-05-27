@@ -1053,10 +1053,13 @@ namespace RTC
 				(columnsMenu.Items.Add("Show Note", null, new EventHandler((ob, ev) => { dgvStockpile.Columns["Note"].Visible ^= true; })) as ToolStripMenuItem).Checked = dgvStockpile.Columns["Note"].Visible;
 
                 columnsMenu.Items.Add(new ToolStripSeparator());
-				(columnsMenu.Items.Add("[Multiplayer] Send Selected Item as a Blast", null, new EventHandler((ob, ev) => { RTC_Core.Multiplayer?.SendBlastlayer(); })) as ToolStripMenuItem).Enabled = RTC_Core.Multiplayer != null && RTC_Core.Multiplayer.side != NetworkSide.DISCONNECTED;
-				(columnsMenu.Items.Add("[Multiplayer] Send Selected Item as a Game State", null, new EventHandler((ob, ev) => { RTC_Core.Multiplayer?.SendStashkey(); })) as ToolStripMenuItem).Enabled = RTC_Core.Multiplayer != null && RTC_Core.Multiplayer.side != NetworkSide.DISCONNECTED;
+				if (!RTC_Hooks.isRemoteRTC)
+				{
+					(columnsMenu.Items.Add("[Multiplayer] Send Selected Item as a Blast", null, new EventHandler((ob, ev) => { RTC_Core.Multiplayer?.SendBlastlayer(); })) as ToolStripMenuItem).Enabled = RTC_Core.Multiplayer != null && RTC_Core.Multiplayer.side != NetworkSide.DISCONNECTED;
+					(columnsMenu.Items.Add("[Multiplayer] Send Selected Item as a Game State", null, new EventHandler((ob, ev) => { RTC_Core.Multiplayer?.SendStashkey(); })) as ToolStripMenuItem).Enabled = RTC_Core.Multiplayer != null && RTC_Core.Multiplayer.side != NetworkSide.DISCONNECTED;
+				}
 
-                columnsMenu.Items.Add(new ToolStripSeparator());
+				columnsMenu.Items.Add(new ToolStripSeparator());
 				(columnsMenu.Items.Add("Open Selected Item in Blast Editor", null, new EventHandler((ob, ev) => {
                     if (RTC_Core.beForm != null)
                     {
@@ -1070,6 +1073,16 @@ namespace RTC
                     var sk = (dgvStockpile.SelectedRows[0].Cells[0].Value as StashKey);
                     RTC_MemoryDomains.GenerateVmdFromStashkey(sk);
                 })) as ToolStripMenuItem).Enabled = (dgvStockpile.SelectedRows.Count == 1);
+				
+				(columnsMenu.Items.Add("Merge Selected Stashkeys", null, new EventHandler((ob, ev) =>
+				{
+					List<StashKey> sks = new List<StashKey>();
+					foreach (DataGridViewRow row in dgvStockpile.SelectedRows)
+						sks.Add((StashKey)row.Cells[0].Value);
+					RTC_StockpileManager.MergeStashkeys(sks);
+					RefreshStashHistory();
+
+				})) as ToolStripMenuItem).Enabled = (lbStashHistory.SelectedIndex != -1 && lbStashHistory.SelectedItems.Count > 1);
 
                 columnsMenu.Show(this, locate);
 			}
@@ -1373,16 +1386,8 @@ namespace RTC
 				Point locate = new Point((sender as Control).Location.X + e.Location.X, (sender as Control).Location.Y + e.Location.Y);
 
 				ContextMenuStrip columnsMenu = new ContextMenuStrip();
-				(columnsMenu.Items.Add("[Multiplayer] Pull State from peer", null, new EventHandler((ob, ev) => {
 
-					RTC_Core.multiForm.cbPullStateToGlitchHarvester.Checked = true;
-					RTC_Core.Multiplayer.SendCommand(new RTC_Command(CommandType.PULLSTATE), false);
-
-				})) as ToolStripMenuItem).Enabled = RTC_Core.Multiplayer != null && RTC_Core.Multiplayer.side != NetworkSide.DISCONNECTED;
-
-
-				columnsMenu.Items.Add(new ToolStripSeparator());
-                (columnsMenu.Items.Add("Open Selected Item in Blast Editor", null, new EventHandler((ob, ev) => {
+				(columnsMenu.Items.Add("Open Selected Item in Blast Editor", null, new EventHandler((ob, ev) => {
                     if (RTC_Core.beForm != null)
 					{
 						var sk = RTC_StockpileManager.StashHistory[lbStashHistory.SelectedIndex];
@@ -1390,7 +1395,13 @@ namespace RTC
 					}
                 })) as ToolStripMenuItem).Enabled = lbStashHistory.SelectedIndex != -1;
 
-				columnsMenu.Items.Add(new ToolStripSeparator());
+
+				(columnsMenu.Items.Add("Rename selected item", null, new EventHandler((ob, ev) => {
+					var sk = RTC_StockpileManager.StashHistory[lbStashHistory.SelectedIndex];
+					renameStashKey(sk);
+					RefreshStashHistory();
+				})) as ToolStripMenuItem).Enabled = lbStashHistory.SelectedIndex != -1;
+
 				(columnsMenu.Items.Add("Generate VMD from Selected Item", null, new EventHandler((ob, ev) => {
 					var sk = RTC_StockpileManager.StashHistory[lbStashHistory.SelectedIndex];
 					sk.BlastLayer.Rasterize();
@@ -1398,11 +1409,7 @@ namespace RTC
 				})) as ToolStripMenuItem).Enabled = lbStashHistory.SelectedIndex != -1;
 				columnsMenu.Items.Add(new ToolStripSeparator());
 
-				(columnsMenu.Items.Add("Rename selected item", null, new EventHandler((ob, ev) => {
-					var sk = RTC_StockpileManager.StashHistory[lbStashHistory.SelectedIndex];
-					renameStashKey(sk);
-					RefreshStashHistory();
-				})) as ToolStripMenuItem).Enabled = lbStashHistory.SelectedIndex != -1;
+				columnsMenu.Items.Add(new ToolStripSeparator());
 
 				(columnsMenu.Items.Add("Merge Selected Stashkeys", null, new EventHandler((ob, ev) =>
 				{
@@ -1414,6 +1421,19 @@ namespace RTC
 
 					RefreshStashHistory();
 				})) as ToolStripMenuItem).Enabled = (lbStashHistory.SelectedIndex != -1 && lbStashHistory.SelectedItems.Count > 1);
+
+
+				if (!RTC_Hooks.isRemoteRTC)
+				{
+					columnsMenu.Items.Add(new ToolStripSeparator());
+					(columnsMenu.Items.Add("[Multiplayer] Pull State from peer", null, new EventHandler((ob, ev) => {
+
+						RTC_Core.multiForm.cbPullStateToGlitchHarvester.Checked = true;
+						RTC_Core.Multiplayer.SendCommand(new RTC_Command(CommandType.PULLSTATE), false);
+
+					})) as ToolStripMenuItem).Enabled = RTC_Core.Multiplayer != null && RTC_Core.Multiplayer.side != NetworkSide.DISCONNECTED;
+
+				}
 
 
 				columnsMenu.Show(this, locate);
