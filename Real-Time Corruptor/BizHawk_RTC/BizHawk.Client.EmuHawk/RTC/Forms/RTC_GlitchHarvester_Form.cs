@@ -1396,6 +1396,9 @@ namespace RTC
                 })) as ToolStripMenuItem).Enabled = lbStashHistory.SelectedIndex != -1;
 
 
+				columnsMenu.Items.Add(new ToolStripSeparator());
+
+
 				(columnsMenu.Items.Add("Rename selected item", null, new EventHandler((ob, ev) => {
 					var sk = RTC_StockpileManager.StashHistory[lbStashHistory.SelectedIndex];
 					renameStashKey(sk);
@@ -1407,7 +1410,7 @@ namespace RTC
 					sk.BlastLayer.Rasterize();
 					RTC_MemoryDomains.GenerateVmdFromStashkey(sk);
 				})) as ToolStripMenuItem).Enabled = lbStashHistory.SelectedIndex != -1;
-				columnsMenu.Items.Add(new ToolStripSeparator());
+
 
 				columnsMenu.Items.Add(new ToolStripSeparator());
 

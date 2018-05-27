@@ -381,7 +381,6 @@ namespace RTC
 					ActiveForm is RTC.RTC_MultiPeerPopout_Form ||
                     ActiveForm is RTC.RTC_StockpileBlastBoard_Form ||
                     ActiveForm is RTC.RTC_ConnectionStatus_Form ||
-                    ActiveForm is RTC.RTC_BlastEditor_Form ||
                     ActiveForm is RTC.RTC_VmdPool_Form ||
                     ActiveForm is RTC.RTC_VmdGen_Form ||
                     ActiveForm is RTC.RTC_VmdAct_Form

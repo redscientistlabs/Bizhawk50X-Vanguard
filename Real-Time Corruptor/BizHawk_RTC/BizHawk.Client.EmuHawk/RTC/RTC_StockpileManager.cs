@@ -171,7 +171,8 @@ namespace RTC
 					StashHistory.Add(currentStashkey);
 					RTC_Core.ghForm.RefreshStashHistory();
 					RTC_Core.ghForm.dgvStockpile.ClearSelection();
-					RTC_Core.ghForm.DontLoadSelectedStash = true;
+						RTC_Core.ghForm.DontLoadSelectedStash = true;
+					RTC_Core.ghForm.lbStashHistory.ClearSelected();
 					RTC_Core.ghForm.lbStashHistory.SelectedIndex = RTC_Core.ghForm.lbStashHistory.Items.Count - 1;
 				}
 

@@ -84,6 +84,7 @@ namespace RTC
 			this.dgvBlastLayer.RowsAdded += new DataGridViewRowsAddedEventHandler(dgvBlastLayer_RowsAdded);
 			this.dgvBlastLayer.RowsRemoved += new DataGridViewRowsRemovedEventHandler(dgvBlastLayer_RowsRemoved);
 			this.dgvBlastLayer.UserDeletingRow += new DataGridViewRowCancelEventHandler(dgvBlastLayer_UserDeletingRow);
+			this.dgvBlastLayer.UserDeletedRow += new DataGridViewRowEventHandler(dgvBlastLayer_UserDeletedRow);
 			this.dgvBlastLayer.Sorted += new EventHandler(dgvBlastLayer_Sorted);
 
 			//For the combobox for shifting blast units, we want an object that contains the column name and the readable name
@@ -311,6 +312,7 @@ namespace RTC
 			RTC_Core.ghForm.RefreshStashHistory();
 			RTC_Core.ghForm.dgvStockpile.ClearSelection();
 			RTC_Core.ghForm.DontLoadSelectedStash = true;
+			RTC_Core.ghForm.lbStashHistory.ClearSelected();
 			RTC_Core.ghForm.lbStashHistory.SelectedIndex = RTC_Core.ghForm.lbStashHistory.Items.Count - 1;
 
 			GC.Collect();
@@ -549,7 +551,17 @@ namespace RTC
 			bu2RowDico.Remove(bu);
 			//Remove it from the dgv
 			dgvBlastLayer.Rows.Remove(row);
-			
+
+			UpdateBlastLayerSize();
+		}
+		private void RemoveBlastUnitFromBlastLayer(DataGridViewRow row)
+		{
+			BlastUnit bu = (BlastUnit)row.Cells["dgvBlastUnitReference"].Value;
+			//Remove it from the blastlayer
+			sk.BlastLayer.Layer.Remove(bu);
+			//Remove it from the dictionary
+			bu2RowDico.Remove(bu);
+
 			UpdateBlastLayerSize();
 		}
 
@@ -1002,9 +1014,12 @@ namespace RTC
 				e.Cancel = true;
 				return;
 			}
-			//Override the default delete action then remove it ourselves
-			e.Cancel = true;
-			RemoveBlastUnitFromBlastLayerAndDGV(e.Row);
+			//Make sure the row gets removed from the blastlayer as well
+			RemoveBlastUnitFromBlastLayer(e.Row);
+
+		}
+		private void dgvBlastLayer_UserDeletedRow(object sender, DataGridViewRowEventArgs e)
+		{
 		}
 
 		private void btnRemoveSelected_Click(object sender, EventArgs e)
