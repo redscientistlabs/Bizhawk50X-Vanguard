@@ -665,7 +665,7 @@ namespace RTC
 					}
 					catch { }
 
-			//EmptyFolder("TEMP3");
+			EmptyFolder("TEMP3");
 
 			//fill list controls
 

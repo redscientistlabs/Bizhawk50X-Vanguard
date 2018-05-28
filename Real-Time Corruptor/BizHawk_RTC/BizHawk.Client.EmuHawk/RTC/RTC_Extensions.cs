@@ -992,6 +992,7 @@ namespace RTC
 				paintingNumericUpDown.BorderStyle = BorderStyle.None;
 				paintingNumericUpDown.Maximum = Decimal.MaxValue / 10;
 				paintingNumericUpDown.Minimum = Decimal.MinValue / 10;
+				paintingNumericUpDown.Hexadecimal = DATAGRIDVIEWNUMERICUPDOWNCELL_defaultHexadecimal;
 				//paintingNumericUpDown.DoubleBuffered(true);
 
 			}
@@ -1230,6 +1231,7 @@ namespace RTC
 			NumericUpDownHexFix numericUpDown = dataGridView.EditingControl as NumericUpDownHexFix;
 			if (numericUpDown != null)
 			{
+				numericUpDown.Hexadecimal = hexadecimal;
 				// Editing controls get recycled. Indeed, when a DataGridViewNumericUpDownCell cell gets edited
 				// after another DataGridViewNumericUpDownCell cell, the same editing control gets reused for 
 				// performance reasons (to avoid an unnecessary control destruction and creation). 
@@ -1308,7 +1310,7 @@ namespace RTC
 													DataGridViewDataErrorContexts context)
 		{
 			if (this.Hexadecimal)
-			{
+			{ 
 				UInt64 valueuint64 = System.Convert.ToUInt64(value);
 				return valueuint64.ToString("X");
 			}
@@ -1362,7 +1364,7 @@ namespace RTC
 		public override void InitializeEditingControl(int rowIndex, object initialFormattedValue, DataGridViewCellStyle dataGridViewCellStyle)
 		{
 			base.InitializeEditingControl(rowIndex, initialFormattedValue, dataGridViewCellStyle);
-			NumericUpDown numericUpDown = this.DataGridView.EditingControl as NumericUpDown;
+			NumericUpDownHexFix numericUpDown = this.DataGridView.EditingControl as NumericUpDownHexFix;
 			if (numericUpDown != null)
 			{
 				numericUpDown.BorderStyle = BorderStyle.None;
@@ -1524,6 +1526,11 @@ namespace RTC
 						paintingNumericUpDown.Parent = this.DataGridView;
 					}
 					// Set all the relevant properties
+					paintingNumericUpDown.Value = Convert.ToDecimal(value);
+					if (this.Hexadecimal)
+						paintingNumericUpDown.Text = Convert.ToUInt64(value).ToString("X");
+					else
+						paintingNumericUpDown.Text = Value.ToString();
 					paintingNumericUpDown.TextAlign = DataGridViewNumericUpDownCell.TranslateAlignment(cellStyle.Alignment);
 					paintingNumericUpDown.DecimalPlaces = this.DecimalPlaces;
 					paintingNumericUpDown.Hexadecimal = this.Hexadecimal;
@@ -1533,7 +1540,6 @@ namespace RTC
 					paintingNumericUpDown.Height = valBounds.Height;
 					paintingNumericUpDown.RightToLeft = this.DataGridView.RightToLeft;
 					paintingNumericUpDown.Location = new Point(0, -paintingNumericUpDown.Height - 100);
-					paintingNumericUpDown.Value = Convert.ToDecimal(value);
 
 					Color foreColor;
 					if (PartPainted(paintParts, DataGridViewPaintParts.SelectionBackground) && cellSelected)
@@ -1780,7 +1786,7 @@ namespace RTC
 	/// Reference Article https://msdn.microsoft.com/en-us/library/aa730881(v=vs.80).aspx
 	/// Defines the editing control for the DataGridViewNumericUpDownCell custom cell type.
 	/// </summary>/// <summary>
-	class DataGridViewNumericUpDownEditingControl : NumericUpDown, IDataGridViewEditingControl
+	class DataGridViewNumericUpDownEditingControl : NumericUpDownHexFix, IDataGridViewEditingControl
 	{
 		// Needed to forward keyboard messages to the child TextBox control.
 		[System.Runtime.InteropServices.DllImport("USER32.DLL", CharSet = System.Runtime.InteropServices.CharSet.Auto)]
@@ -2109,27 +2115,7 @@ namespace RTC
 			}
 		}
 		*/
-		protected override void ValidateEditText()
-		{			
-			if(this.Hexadecimal)
-				HexParseEditText();
-			else 
-				UpdateEditText();
-		}
 
-		private void HexParseEditText()
-		{
-			try
-			{
-				if (!string.IsNullOrEmpty(base.Text))
-					this.Value = Convert.ToUInt64(base.Text, 16);
-			}
-			catch { }
-			finally
-			{
-				base.UserEdit = false;
-			}
-		}
 
 		/// <summary>
 		/// Listen to the ValueChanged notification to forward the change to the grid.
@@ -2187,7 +2173,7 @@ namespace RTC
 	{
 		public NumericUpDownHexFix()
 		{
-			base.Hexadecimal = true;
+			
 			base.Minimum = 0;
 			base.Maximum = UInt64.MaxValue;
 		}
@@ -2197,19 +2183,40 @@ namespace RTC
 			get { return base.Maximum; }
 			set { base.Maximum = value; }
 		}
+		protected override void UpdateEditText()
+		{
+			if (Hexadecimal)
+			{
+				HexParseEditText();
+				if (!string.IsNullOrEmpty(base.Text))
+				{
+					base.ChangingText = true;
+					base.Text = string.Format("{0:X}", (uint)base.Value);
+				}
+			}
+			else
+				ParseEditText();
+
+		}
+
 		protected override void ValidateEditText()
 		{
-			if (this.Hexadecimal)
+			if(Hexadecimal)
 				HexParseEditText();
-			else
-				UpdateEditText();
+			UpdateEditText();
 		}
+
 		private void HexParseEditText()
 		{
 			try
 			{
+				Int64 val = Convert.ToInt64(base.Text, 16);
+
+				if (val > Maximum)
+					base.Text = string.Format("{0:X}", (uint)Maximum);
+
 				if (!string.IsNullOrEmpty(base.Text))
-					this.Value = Convert.ToUInt64(base.Text, 16);
+					this.Value = val;
 			}
 			catch { }
 			finally
