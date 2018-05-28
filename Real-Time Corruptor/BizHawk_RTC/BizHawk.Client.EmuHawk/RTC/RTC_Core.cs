@@ -139,6 +139,16 @@ namespace RTC
 				p.Start();
 			}
 
+			//Clean out the temp folders
+			if(!RTC_Hooks.isRemoteRTC)
+			{
+				Stockpile.EmptyFolder("TEMP");
+				Stockpile.EmptyFolder("TEMP2");
+				Stockpile.EmptyFolder("TEMP3");
+				Stockpile.EmptyFolder("TEMP4");
+				Stockpile.EmptyFolder("MEMORYDUMPS");
+			}
+
 			Application.Exit();
 		}
 
