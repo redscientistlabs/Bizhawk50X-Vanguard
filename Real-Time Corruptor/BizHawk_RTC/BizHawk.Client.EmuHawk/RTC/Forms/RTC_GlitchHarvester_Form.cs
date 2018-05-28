@@ -23,6 +23,8 @@ namespace RTC
         public bool DontLoadSelectedStash = false;
         public bool DontLoadSelectedStockpile = false;
 
+		private bool loadBeforeOperation = true;
+
 		public Panel pnHideGlitchHarvester = new Panel();
 		public Label lbConnectionStatus = new Label();
         public Button btnEmergencySaveStockpile = new Button();
@@ -473,27 +475,32 @@ namespace RTC
 
 				RTC_StockpileManager.currentStashkey = RTC_StockpileManager.StashHistory[lbStashHistory.SelectedIndex];
 
-				if (!cbLoadOnSelect.Checked && RTC_StockpileManager.loadBeforeOperation)
+				if (!cbLoadOnSelect.Checked)
 					return;
+				OneTimeExecute();
 
-                var token = RTC_NetCore.HugeOperationStart("LAZY");
-
-                if (rbCorrupt.Checked)
-					RTC_StockpileManager.ApplyStashkey(RTC_StockpileManager.currentStashkey);
-				if (rbInject.Checked)
-					RTC_StockpileManager.InjectFromStashkey(RTC_StockpileManager.currentStashkey);
-				else if (rbOriginal.Checked)
-					RTC_StockpileManager.OriginalFromStashkey(RTC_StockpileManager.currentStashkey);
-
-                RTC_NetCore.HugeOperationEnd(token);
-
-            }
+			}
 			finally
 			{
 				lbStashHistory.Enabled = true;
                 btnStashUP.Enabled = true;
                 btnStashDOWN.Enabled = true;
 			}
+		}
+
+
+		private void OneTimeExecute()
+		{
+			var token = RTC_NetCore.HugeOperationStart("LAZY");
+
+			if (rbCorrupt.Checked)
+				RTC_StockpileManager.ApplyStashkey(RTC_StockpileManager.currentStashkey, loadBeforeOperation);
+			if (rbInject.Checked)
+				RTC_StockpileManager.InjectFromStashkey(RTC_StockpileManager.currentStashkey, loadBeforeOperation);
+			else if (rbOriginal.Checked)
+				RTC_StockpileManager.OriginalFromStashkey(RTC_StockpileManager.currentStashkey);
+
+			RTC_NetCore.HugeOperationEnd(token);
 		}
 
         private void rbInject_CheckedChanged(object sender, EventArgs e)
@@ -1018,7 +1025,7 @@ namespace RTC
 
 		private void cbAutoLoadState_CheckedChanged(object sender, EventArgs e)
 		{
-			RTC_StockpileManager.loadBeforeOperation = cbAutoLoadState.Checked;
+			loadBeforeOperation = cbAutoLoadState.Checked;
 		}
 
 		private void cbStashCorrupted_CheckedChanged(object sender, EventArgs e)
@@ -1053,7 +1060,7 @@ namespace RTC
 				(columnsMenu.Items.Add("Show Note", null, new EventHandler((ob, ev) => { dgvStockpile.Columns["Note"].Visible ^= true; })) as ToolStripMenuItem).Checked = dgvStockpile.Columns["Note"].Visible;
 
                 columnsMenu.Items.Add(new ToolStripSeparator());
-				if (!RTC_Hooks.isRemoteRTC)
+				if (!RTC_Core.isStandalone)
 				{
 					(columnsMenu.Items.Add("[Multiplayer] Send Selected Item as a Blast", null, new EventHandler((ob, ev) => { RTC_Core.Multiplayer?.SendBlastlayer(); })) as ToolStripMenuItem).Enabled = RTC_Core.Multiplayer != null && RTC_Core.Multiplayer.side != NetworkSide.DISCONNECTED;
 					(columnsMenu.Items.Add("[Multiplayer] Send Selected Item as a Game State", null, new EventHandler((ob, ev) => { RTC_Core.Multiplayer?.SendStashkey(); })) as ToolStripMenuItem).Enabled = RTC_Core.Multiplayer != null && RTC_Core.Multiplayer.side != NetworkSide.DISCONNECTED;
@@ -1426,7 +1433,7 @@ namespace RTC
 				})) as ToolStripMenuItem).Enabled = (lbStashHistory.SelectedIndex != -1 && lbStashHistory.SelectedItems.Count > 1);
 
 
-				if (!RTC_Hooks.isRemoteRTC)
+				if (!RTC_Core.isStandalone)
 				{
 					columnsMenu.Items.Add(new ToolStripSeparator());
 					(columnsMenu.Items.Add("[Multiplayer] Pull State from peer", null, new EventHandler((ob, ev) => {
@@ -1437,7 +1444,6 @@ namespace RTC
 					})) as ToolStripMenuItem).Enabled = RTC_Core.Multiplayer != null && RTC_Core.Multiplayer.side != NetworkSide.DISCONNECTED;
 
 				}
-
 
 				columnsMenu.Show(this, locate);
 			}
@@ -1496,8 +1502,6 @@ namespace RTC
 					}
 				}
 
-
-
 				lbStashHistory.ClearSelected();
 				RTC_Core.spForm.dgvStockpile.ClearSelection();
 
@@ -1516,7 +1520,6 @@ namespace RTC
 				// Merge Execution
 				if (dgvStockpile.SelectedRows.Count > 1)
 				{
-
                     List<StashKey> sks = new List<StashKey>();
 
 					foreach (DataGridViewRow row in dgvStockpile.SelectedRows)
@@ -1528,20 +1531,9 @@ namespace RTC
 				}
 
 
-                // One item Execution
+				OneTimeExecute();
 
-                var token = RTC_NetCore.HugeOperationStart("LAZY");
-
-                if (rbCorrupt.Checked)
-					RTC_StockpileManager.ApplyStashkey(RTC_StockpileManager.currentStashkey);
-				if (rbInject.Checked)
-					RTC_StockpileManager.InjectFromStashkey(RTC_StockpileManager.currentStashkey);
-				else if (rbOriginal.Checked)
-					RTC_StockpileManager.OriginalFromStashkey(RTC_StockpileManager.currentStashkey);
-
-                RTC_NetCore.HugeOperationEnd(token);
-
-            }
+			}
 			finally
 			{
 				dgvStockpile.Enabled = true;

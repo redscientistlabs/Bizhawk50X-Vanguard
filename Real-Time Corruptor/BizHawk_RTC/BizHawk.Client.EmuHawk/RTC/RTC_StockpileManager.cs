@@ -59,7 +59,6 @@ namespace RTC
 		}
 
 		public static bool stashAfterOperation = true;
-		public static bool loadBeforeOperation = true;
 
 		public static volatile List<StashKey> StashHistory = new List<StashKey>();
 
@@ -96,7 +95,7 @@ namespace RTC
 
             var token = RTC_NetCore.HugeOperationStart("LAZY");
 
-            if (loadBeforeOperation && _loadBeforeOperation)
+            if (_loadBeforeOperation)
 			{
                 if (!LoadStateAndBlastLayer(sk))
                 {
@@ -153,7 +152,7 @@ namespace RTC
 			currentStashkey.SystemCore = psk.SystemCore;
 			currentStashkey.GameName = psk.GameName;
 
-			if (loadBeforeOperation && _loadBeforeOperation)
+			if (_loadBeforeOperation)
 			{
                 if (!LoadStateAndBlastLayer(currentStashkey))
                 {
@@ -211,7 +210,7 @@ namespace RTC
 			currentStashkey.SystemCore = psk.SystemCore;
 			currentStashkey.GameName = psk.GameName;
 
-			if (loadBeforeOperation && _loadBeforeOperation)
+			if (_loadBeforeOperation)
 			{
 				if (!LoadStateAndBlastLayer(currentStashkey))
 					return false;
@@ -250,7 +249,7 @@ namespace RTC
 			return isCorruptionApplied;
 		}
 
-		public static bool MergeStashkeys(List<StashKey> sks, bool _stashAfterOperation = true)
+		public static bool MergeStashkeys(List<StashKey> sks, bool _loadBeforeOperation = true)
 		{
 			PreApplyStashkey();
 
@@ -296,7 +295,7 @@ namespace RTC
 				//RTC_NetCore.HugeOperationEnd(token);
 				//  token = RTC_NetCore.HugeOperationStart("LAZY");
 
-				if (loadBeforeOperation)
+				if (_loadBeforeOperation)
 				{
 					if (!LoadStateAndBlastLayer(currentStashkey))
                     {
@@ -310,7 +309,7 @@ namespace RTC
 
 				isCorruptionApplied = (currentStashkey.BlastLayer != null && currentStashkey.BlastLayer.Layer.Count > 0);
 
-				if (stashAfterOperation && _stashAfterOperation)
+				if (stashAfterOperation)
 				{
 					StashHistory.Add(currentStashkey);
 					RTC_Core.ghForm.RefreshStashHistory();
