@@ -521,11 +521,15 @@ namespace RTC
                 btnCorrupt.Text = "Original";
         }
 
-		private void btnAddStashToStockpile_Click(object sender, EventArgs e) => AddStashToStockpile();
+		private void btnAddStashToStockpile_Click(object sender, EventArgs e)
+		{
+			if (RTC_StockpileManager.currentStashkey.Alias != RTC_StockpileManager.currentStashkey.Key)
+				AddStashToStockpile(false);
+			else
+				AddStashToStockpile(true);
+		}
         public void AddStashToStockpile(bool askForName = true)
 		{
-			if (RTC_StockpileManager.currentStashkey.Alias != "")
-				askForName = false;
 
 			if (lbStashHistory.Items.Count == 0 || lbStashHistory.SelectedIndex == -1)
             {
@@ -534,7 +538,7 @@ namespace RTC
             }
 
             RTC_Core.StopSound();
-			string Name = RTC_StockpileManager.currentStashkey.Alias;
+			string Name = "";
 			string value = "";
 
 
@@ -551,8 +555,10 @@ namespace RTC
                     return;
                 }
             }
+			else
+				Name = RTC_StockpileManager.currentStashkey.Alias;
 
-            RTC_StockpileManager.currentStashkey = (StashKey)lbStashHistory.SelectedItem;
+			RTC_StockpileManager.currentStashkey = (StashKey)lbStashHistory.SelectedItem;
 
             if (Name != "")
 				RTC_StockpileManager.currentStashkey.Alias = Name;
