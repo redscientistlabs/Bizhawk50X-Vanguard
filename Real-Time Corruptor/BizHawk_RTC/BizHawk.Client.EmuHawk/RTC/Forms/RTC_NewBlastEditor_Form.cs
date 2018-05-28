@@ -80,6 +80,7 @@ namespace RTC
 
 			this.KeyDown += new KeyEventHandler(RTC_NewBlastEditor_Form_KeyDown);
 			this.dgvBlastLayer.CellValidating += new DataGridViewCellValidatingEventHandler(dgvBlastLayer_CellValidating);
+			this.dgvBlastLayer.CellEndEdit += new DataGridViewCellEventHandler(dgvBlastLayer_CellEndEdit);
 			this.dgvBlastLayer.MouseClick += new System.Windows.Forms.MouseEventHandler(dgvBlastLayer_MouseClick);
 			this.dgvBlastLayer.RowsAdded += new DataGridViewRowsAddedEventHandler(dgvBlastLayer_RowsAdded);
 			this.dgvBlastLayer.RowsRemoved += new DataGridViewRowsRemovedEventHandler(dgvBlastLayer_RowsRemoved);
@@ -392,7 +393,7 @@ namespace RTC
 			}
 		}
 
-		private void dgvBlastLayer_CellValueChanged(object sender, DataGridViewCellEventArgs e)
+		private void dgvBlastLayer_CellEndEdit(object sender, DataGridViewCellEventArgs e)
 		{
 			if (!initialized || dgvBlastLayer == null)
 				return;
@@ -656,7 +657,7 @@ namespace RTC
 
 				case "RTC.BlastPipe":
 					//Todo set this to the valid maximum address
-					(row.Cells["dgvParam"] as DataGridViewNumericUpDownCell).Maximum = Int32.MaxValue;
+					(row.Cells["dgvParam"] as DataGridViewNumericUpDownCell).Maximum = UInt32.MaxValue;
 					break;
 
 				default:

@@ -339,7 +339,7 @@
             this.dgvBlastLayer.Size = new System.Drawing.Size(712, 501);
             this.dgvBlastLayer.TabIndex = 133;
             this.dgvBlastLayer.Tag = "color:normal";
-            this.dgvBlastLayer.CellValueChanged += new System.Windows.Forms.DataGridViewCellEventHandler(this.dgvBlastLayer_CellValueChanged);
+            
             // 
             // dgvBlastUnitReference
             // 

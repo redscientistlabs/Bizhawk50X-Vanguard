@@ -2058,6 +2058,15 @@ namespace RTC
 			}
 		}
 
+
+		//Let's just assume it was always changed
+		protected override void OnKeyDown(KeyEventArgs e)
+		{
+				base.OnKeyDown(e);
+				NotifyDataGridViewOfValueChange();
+		}
+
+		/*
 		/// <summary>
 		/// Listen to the KeyPress notification to know when the value changed, and 
 		/// notify the grid of the change.
@@ -2069,7 +2078,7 @@ namespace RTC
 			// The value changes when a digit, the decimal separator, the group separator or
 			// the negative sign is pressed.
 			bool notifyValueChange = false;
-			if (char.IsDigit(e.KeyChar) || (e.KeyChar >= 'a' && e.KeyChar <= 'f') || (e.KeyChar >= 'A' && e.KeyChar <= 'F') || (e.KeyChar == '\b'))
+			if (char.IsDigit(e.KeyChar) || (e.KeyChar >= 'a' && e.KeyChar <= 'f') || (e.KeyChar >= 'A' && e.KeyChar <= 'F') || (e.KeyChar == '\b' || (e.KeyChar == (char)Keys.ControlKey && e.KeyChar == (char)Keys.V)))
 			{
 				notifyValueChange = true;
 			}
@@ -2099,6 +2108,7 @@ namespace RTC
 				NotifyDataGridViewOfValueChange();
 			}
 		}
+		*/
 		protected override void ValidateEditText()
 		{			
 			if(this.Hexadecimal)
