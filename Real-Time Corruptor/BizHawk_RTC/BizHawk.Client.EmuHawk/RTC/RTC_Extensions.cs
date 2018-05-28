@@ -1231,7 +1231,6 @@ namespace RTC
 			NumericUpDownHexFix numericUpDown = dataGridView.EditingControl as NumericUpDownHexFix;
 			if (numericUpDown != null)
 			{
-				numericUpDown.Hexadecimal = hexadecimal;
 				// Editing controls get recycled. Indeed, when a DataGridViewNumericUpDownCell cell gets edited
 				// after another DataGridViewNumericUpDownCell cell, the same editing control gets reused for 
 				// performance reasons (to avoid an unnecessary control destruction and creation). 
@@ -2187,7 +2186,7 @@ namespace RTC
 		{
 			if (Hexadecimal)
 			{
-				HexParseEditText();
+				if (base.UserEdit) HexParseEditText();
 				if (!string.IsNullOrEmpty(base.Text))
 				{
 					base.ChangingText = true;
@@ -2195,7 +2194,10 @@ namespace RTC
 				}
 			}
 			else
-				ParseEditText();
+			{
+				if (base.UserEdit) ParseEditText();
+				base.ChangingText = true;
+			}
 
 		}
 
