@@ -1065,12 +1065,6 @@ namespace RTC
 				(columnsMenu.Items.Add("Show System Core", null, new EventHandler((ob, ev) => { dgvStockpile.Columns["SystemCore"].Visible ^= true; })) as ToolStripMenuItem).Checked = dgvStockpile.Columns["SystemCore"].Visible;
 				(columnsMenu.Items.Add("Show Note", null, new EventHandler((ob, ev) => { dgvStockpile.Columns["Note"].Visible ^= true; })) as ToolStripMenuItem).Checked = dgvStockpile.Columns["Note"].Visible;
 
-                columnsMenu.Items.Add(new ToolStripSeparator());
-				if (!RTC_Core.isStandalone)
-				{
-					(columnsMenu.Items.Add("[Multiplayer] Send Selected Item as a Blast", null, new EventHandler((ob, ev) => { RTC_Core.Multiplayer?.SendBlastlayer(); })) as ToolStripMenuItem).Enabled = RTC_Core.Multiplayer != null && RTC_Core.Multiplayer.side != NetworkSide.DISCONNECTED;
-					(columnsMenu.Items.Add("[Multiplayer] Send Selected Item as a Game State", null, new EventHandler((ob, ev) => { RTC_Core.Multiplayer?.SendStashkey(); })) as ToolStripMenuItem).Enabled = RTC_Core.Multiplayer != null && RTC_Core.Multiplayer.side != NetworkSide.DISCONNECTED;
-				}
 
 				columnsMenu.Items.Add(new ToolStripSeparator());
 				(columnsMenu.Items.Add("Open Selected Item in Blast Editor", null, new EventHandler((ob, ev) => {
@@ -1095,9 +1089,16 @@ namespace RTC
 					RTC_StockpileManager.MergeStashkeys(sks);
 					RefreshStashHistory();
 
-				})) as ToolStripMenuItem).Enabled = (lbStashHistory.SelectedIndex != -1 && lbStashHistory.SelectedItems.Count > 1);
+				})) as ToolStripMenuItem).Enabled = (dgvStockpile.SelectedRows.Count > 1);
 
-                columnsMenu.Show(this, locate);
+				columnsMenu.Items.Add(new ToolStripSeparator());
+				if (!RTC_Core.isStandalone)
+				{
+					(columnsMenu.Items.Add("[Multiplayer] Send Selected Item as a Blast", null, new EventHandler((ob, ev) => { RTC_Core.Multiplayer?.SendBlastlayer(); })) as ToolStripMenuItem).Enabled = RTC_Core.Multiplayer != null && RTC_Core.Multiplayer.side != NetworkSide.DISCONNECTED;
+					(columnsMenu.Items.Add("[Multiplayer] Send Selected Item as a Game State", null, new EventHandler((ob, ev) => { RTC_Core.Multiplayer?.SendStashkey(); })) as ToolStripMenuItem).Enabled = RTC_Core.Multiplayer != null && RTC_Core.Multiplayer.side != NetworkSide.DISCONNECTED;
+				}
+
+				columnsMenu.Show(this, locate);
 			}
 		}
 
