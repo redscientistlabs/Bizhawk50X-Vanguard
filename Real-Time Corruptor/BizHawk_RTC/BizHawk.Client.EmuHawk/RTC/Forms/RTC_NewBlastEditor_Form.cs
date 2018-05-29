@@ -312,8 +312,9 @@ namespace RTC
 			RTC_StockpileManager.StashHistory.Add(newSk);
 			RTC_Core.ghForm.RefreshStashHistory();
 			RTC_Core.ghForm.dgvStockpile.ClearSelection();
-			RTC_Core.ghForm.DontLoadSelectedStash = true;
 			RTC_Core.ghForm.lbStashHistory.ClearSelected();
+
+			RTC_Core.ghForm.DontLoadSelectedStash = true;
 			RTC_Core.ghForm.lbStashHistory.SelectedIndex = RTC_Core.ghForm.lbStashHistory.Items.Count - 1;
 
 			GC.Collect();

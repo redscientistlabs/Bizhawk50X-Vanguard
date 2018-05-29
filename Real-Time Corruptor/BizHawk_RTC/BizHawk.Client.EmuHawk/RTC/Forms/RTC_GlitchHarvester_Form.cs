@@ -398,15 +398,15 @@ namespace RTC
                     if (RTC_Core.SelectedEngine == CorruptionEngine.EXTERNALROM)
                     {
                         if (sender == null)
-                            RTC_StockpileManager.Corrupt();
+                            RTC_StockpileManager.Corrupt(loadBeforeOperation);
                         else
                             RTC_RPC.CorruptPlugin();
                     }
                     else
-                        RTC_StockpileManager.Corrupt();
+                        RTC_StockpileManager.Corrupt(loadBeforeOperation);
                 }
 				else if (rbInject.Checked)
-					RTC_StockpileManager.InjectFromStashkey(RTC_StockpileManager.currentStashkey);
+					RTC_StockpileManager.InjectFromStashkey(RTC_StockpileManager.currentStashkey, loadBeforeOperation);
 				else if (rbOriginal.Checked)
 					RTC_StockpileManager.OriginalFromStashkey(RTC_StockpileManager.currentStashkey);
 

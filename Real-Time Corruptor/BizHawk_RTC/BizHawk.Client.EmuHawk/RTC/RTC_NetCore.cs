@@ -629,6 +629,7 @@ namespace RTC
                     catch(Exception ex)
                     {
                         MessageBox.Show("NetCore had a thread collision and threw up.\nIn theory this should fix itself after you close this window.\n\n" + ex.ToString());
+						ReturnWatch.SyncReturns.Clear();
                         return null;
                     }
                 }
