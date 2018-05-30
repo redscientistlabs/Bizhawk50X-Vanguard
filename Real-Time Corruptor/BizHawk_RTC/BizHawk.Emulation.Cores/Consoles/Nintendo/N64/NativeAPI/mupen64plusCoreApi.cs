@@ -731,7 +731,8 @@ namespace BizHawk.Emulation.Cores.Nintendo.N64.NativeApi
 
 		private BreakParams _breakparams;
 
-		public void frame_advance()
+		//RTC_HIJACK - Make this a bool so we can return false if it's crashed
+		public bool frame_advance()
 		{
 			event_frameend = false;
 			m64pCoreDoCommandPtr(m64p_command.M64CMD_ADVANCE_FRAME, 0, IntPtr.Zero);
@@ -751,7 +752,11 @@ namespace BizHawk.Emulation.Cores.Nintendo.N64.NativeApi
 
 			for(;;)
 			{
-				BizHawk.Common.Win32ThreadHacks.HackyPinvokeWaitOne(m64pEvent);
+				//RTC_Hijack. Return false if it's crashed
+				if (!BizHawk.Common.Win32ThreadHacks.HackyPinvokeWaitOne(m64pEvent))
+				{
+					return false;
+				}
 				if (event_frameend)
 					break;
 				if (event_breakpoint)
@@ -773,6 +778,8 @@ namespace BizHawk.Emulation.Cores.Nintendo.N64.NativeApi
 					Resume();
 				}
 			}
+			//RTC_HIJACK Always return something
+			return true;
 		}
 
 		public void OnBreakpoint(BreakParams breakparams)

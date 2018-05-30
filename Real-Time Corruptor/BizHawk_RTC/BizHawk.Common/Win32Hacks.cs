@@ -400,10 +400,16 @@ namespace BizHawk.Common
 		/// <summary>
 		/// functionally the same as WaitOne, but does not message pump
 		/// </summary>
-		public static void HackyPinvokeWaitOne(WaitHandle handle)
+		//RTC_HIJACK - Make this a bool so we can have it time out after 1000ms and then return if it failed
+		public static bool HackyPinvokeWaitOne(WaitHandle handle)
 		{
-			NativeMethods.WaitForSingleObject(handle.SafeWaitHandle, 0xFFFFFFFF);
-		}
+			if (NativeMethods.WaitForSingleObject(handle.SafeWaitHandle, 1000) != 0)
+			{
+				Console.WriteLine($"HackyPinvokeWaitOne timed out!");
+				return false;
+			}
+			return true;
+		}//HIJACK_END
 
 		/// <summary>
 		/// Functionally the same as WaitOne(), but pumps com messa
