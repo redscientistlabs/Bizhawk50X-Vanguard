@@ -359,9 +359,12 @@ namespace RTC
 					GlobalWin.Tools.Load<HexEditor>();
 					string domain = (string)(cmd.objectValue as object[])[0];
 					long address = (long)(cmd.objectValue as object[])[1];
+
+					long realAddress = RTC_MemoryDomains.getRealAddress(domain, address);
+
 					MemoryDomainProxy mdp = RTC_MemoryDomains.getProxy(domain, address);
 					GlobalWin.Tools.HexEditor.SetDomain(mdp.md);
-					GlobalWin.Tools.HexEditor.GoToAddress(address);
+					GlobalWin.Tools.HexEditor.GoToAddress(realAddress);
 					break;
 					
 				case CommandType.REMOTE_SET_SAVESTATEBOX:
