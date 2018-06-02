@@ -946,8 +946,11 @@ namespace RTC
 		GAMEOFSWAPSTART,
 		GAMEOFSWAPSTOP,
 
-        //Bizhawk Overrides
-        BIZHAWK_SET_OSDDISABLED,
+		//Bizhawk Overrides
+		BIZHAWK_SET_OSDDISABLED,
+
+		//Bizhawk Shortcuts
+		BIZHAWK_OPEN_HEXEDITOR_ADDRESS,
 
 		//General Corruption settings
 		REMOTE_SET_SAVESTATEBOX,

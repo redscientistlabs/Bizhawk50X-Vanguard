@@ -352,10 +352,19 @@ namespace RTC
 					break;
 
 				case CommandType.BIZHAWK_SET_OSDDISABLED:
-                    RTC_Core.BizhawkOsdDisabled = (bool)cmd.objectValue;
-                    break;
+					RTC_Core.BizhawkOsdDisabled = (bool)cmd.objectValue;
+					break;
 
-                case CommandType.REMOTE_SET_SAVESTATEBOX:
+				case CommandType.BIZHAWK_OPEN_HEXEDITOR_ADDRESS:
+					GlobalWin.Tools.Load<HexEditor>();
+					string domain = (string)(cmd.objectValue as object[])[0];
+					long address = (long)(cmd.objectValue as object[])[1];
+					MemoryDomainProxy mdp = RTC_MemoryDomains.getProxy(domain, address);
+					GlobalWin.Tools.HexEditor.SetDomain(mdp.md);
+					GlobalWin.Tools.HexEditor.GoToAddress(address);
+					break;
+					
+				case CommandType.REMOTE_SET_SAVESTATEBOX:
                     RTC_StockpileManager.currentSavestateKey = (string)cmd.objectValue;
                     break;
 

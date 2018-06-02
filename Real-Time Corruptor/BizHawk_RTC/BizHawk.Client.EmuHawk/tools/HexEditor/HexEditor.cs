@@ -685,8 +685,8 @@ namespace BizHawk.Client.EmuHawk
 			SetHeader();
 			UpdateValues();
 		}
-
-		private void SetDomain(MemoryDomain domain)
+		//RTC_HIJACK Make public
+		public void SetDomain(MemoryDomain domain)
 		{
 			SetMemoryDomain(domain.Name);
 		}
@@ -705,8 +705,8 @@ namespace BizHawk.Client.EmuHawk
 				_nibbles[i] = 'G';
 			}
 		}
-
-		private void GoToAddress(long address)
+		//RTC_HIJACK Make public
+		public void GoToAddress(long address)
 		{
 			if (address < 0)
 			{
