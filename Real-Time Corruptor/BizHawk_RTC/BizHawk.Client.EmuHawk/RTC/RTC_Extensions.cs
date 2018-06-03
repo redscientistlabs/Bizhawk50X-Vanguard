@@ -1529,7 +1529,7 @@ namespace RTC
 					if (this.Hexadecimal)
 						paintingNumericUpDown.Text = Convert.ToUInt64(value).ToString("X");
 					else
-						paintingNumericUpDown.Text = Value.ToString();
+						paintingNumericUpDown.Text = paintingNumericUpDown.Value.ToString();
 					paintingNumericUpDown.TextAlign = DataGridViewNumericUpDownCell.TranslateAlignment(cellStyle.Alignment);
 					paintingNumericUpDown.DecimalPlaces = this.DecimalPlaces;
 					paintingNumericUpDown.Hexadecimal = this.Hexadecimal;

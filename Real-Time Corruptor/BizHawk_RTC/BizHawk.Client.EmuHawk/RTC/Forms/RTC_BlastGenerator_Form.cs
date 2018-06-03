@@ -53,6 +53,20 @@ namespace RTC
 
 		private void cbUseHex_CheckedChanged(object sender, EventArgs e)
 		{
+			updownNudgeEndAddress.Hexadecimal = cbUseHex.Checked;
+			updownNudgeStartAddress.Hexadecimal = cbUseHex.Checked;
+			updownNudgeParam1.Hexadecimal = cbUseHex.Checked;
+			updownNudgeParam2.Hexadecimal = cbUseHex.Checked;
+
+			foreach (DataGridViewColumn column in dgvBlastGenerator.Columns)
+			{
+				if (column.CellType.Name == "DataGridViewNumericUpDownCell")
+				{
+					DataGridViewNumericUpDownColumn _column = column as DataGridViewNumericUpDownColumn;
+					_column.Hexadecimal = cbUseHex.Checked;
+				}
+			}
+
 		}
 
 		private void btnShiftBlastLayerDown_Click(object sender, EventArgs e)
