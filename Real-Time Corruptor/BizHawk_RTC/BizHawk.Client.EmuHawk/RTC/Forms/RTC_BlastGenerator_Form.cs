@@ -19,20 +19,22 @@ namespace RTC
 		public RTC_BlastGenerator_Form()
 		{
 			InitializeComponent();
+		}
 
-
+		private void RTC_BlastGeneratorForm_Load(object sender, EventArgs e)
+		{
 			//Set up the UI
 			Controls.Remove(gbBlastByteGenerator);
 			pnEngineMode.Controls.Add(gbBlastByteGenerator);
-			gbBlastByteGenerator.Location = new Point(pnEngineMode.Location.X, pnEngineMode.Location.Y);
+			gbBlastByteGenerator.Location = new Point(0, 0);
 
 			Controls.Remove(gbBlastCheatGenerator);
 			pnEngineMode.Controls.Add(gbBlastCheatGenerator);
-			gbBlastCheatGenerator.Location = new Point(pnEngineMode.Location.X, pnEngineMode.Location.Y);
+			gbBlastCheatGenerator.Location = new Point(0, 0);
 
 			Controls.Remove(gbBlastPipeGenerator);
 			pnEngineMode.Controls.Add(gbBlastPipeGenerator);
-			gbBlastPipeGenerator.Location = new Point(pnEngineMode.Location.X, pnEngineMode.Location.Y);
+			gbBlastPipeGenerator.Location = new Point(0, 0);
 
 			cbBlastByteModes.SelectedIndex = 0;
 			cbBlastCheatModes.SelectedIndex = 0;
@@ -40,6 +42,12 @@ namespace RTC
 
 			cbBlastUnitMode.SelectedIndex = 0;
 
+
+
+			updownBlastByteValue.Hexadecimal = cbUseHex.Checked;
+			updownBlastCheatValue.Hexadecimal = cbUseHex.Checked;
+			updownBlastPipeTilt.Hexadecimal = cbUseHex.Checked;
+			updownStepSize.Hexadecimal = cbUseHex.Checked;
 		}
 
 		public void LoadStashkey(StashKey _sk)
@@ -129,6 +137,14 @@ namespace RTC
 				default:
 					break;
 			}
+		}
+
+		private void cbUseHex_CheckedChanged(object sender, EventArgs e)
+		{
+			updownBlastByteValue.Hexadecimal = cbUseHex.Checked;
+			updownBlastCheatValue.Hexadecimal = cbUseHex.Checked;
+			updownBlastPipeTilt.Hexadecimal = cbUseHex.Checked;
+			updownStepSize.Hexadecimal = cbUseHex.Checked;
 		}
 	}
 }
