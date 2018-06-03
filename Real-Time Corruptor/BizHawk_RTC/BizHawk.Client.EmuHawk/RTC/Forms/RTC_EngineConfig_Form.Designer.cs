@@ -376,8 +376,8 @@
             this.cbMemoryDomainTool.Items.AddRange(new object[] {
             "No Tool Selected",
             "Virtual Memory Domain Pool",
-			"Virtual Memory Domain Generator",
-			"ActiveTable Generator"});
+            "Virtual Memory Domain Generator",
+            "ActiveTable Generator"});
             this.cbMemoryDomainTool.Location = new System.Drawing.Point(11, 11);
             this.cbMemoryDomainTool.Name = "cbMemoryDomainTool";
             this.cbMemoryDomainTool.Size = new System.Drawing.Size(390, 21);
@@ -538,8 +538,8 @@
             "Distortion Engine",
             "Freeze Engine",
             "Pipe Engine",
-			"Vector Engine",
-			"External ROM Plugin"});
+            "Vector Engine",
+            "External ROM Plugin"});
             this.cbSelectedEngine.Location = new System.Drawing.Point(10, 13);
             this.cbSelectedEngine.Name = "cbSelectedEngine";
             this.cbSelectedEngine.Size = new System.Drawing.Size(165, 21);

@@ -35,11 +35,8 @@ namespace RTC
             cbSelectedMemoryDomain.SelectedIndex = 0;
         }
 
-        private void cbSelectedEngine_SelectedIndexChanged(object sender, EventArgs e)
+        private void cbSelectedMemoryDomain_SelectedIndexChanged(object sender, EventArgs e)
         {
-
-
-
             if (string.IsNullOrWhiteSpace(cbSelectedMemoryDomain.SelectedItem?.ToString()) || !RTC_MemoryDomains.MemoryInterfaces.ContainsKey(cbSelectedMemoryDomain.SelectedItem.ToString()))
             {
                 cbSelectedMemoryDomain.Items.Clear();

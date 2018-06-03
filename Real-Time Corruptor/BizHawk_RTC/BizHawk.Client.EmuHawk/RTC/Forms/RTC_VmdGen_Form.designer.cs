@@ -64,7 +64,7 @@
             this.cbSelectedMemoryDomain.Size = new System.Drawing.Size(130, 25);
             this.cbSelectedMemoryDomain.TabIndex = 16;
             this.cbSelectedMemoryDomain.Tag = "color:dark";
-            this.cbSelectedMemoryDomain.SelectedIndexChanged += new System.EventHandler(this.cbSelectedEngine_SelectedIndexChanged);
+            this.cbSelectedMemoryDomain.SelectedIndexChanged += new System.EventHandler(this.cbSelectedMemoryDomain_SelectedIndexChanged);
             // 
             // btnLoadDomains
             // 

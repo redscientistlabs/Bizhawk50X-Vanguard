@@ -1518,5 +1518,11 @@ namespace RTC
 			}
 		}
 
+		private void openBlastLayerGeneratorToolStripMenuItem_Click(object sender, EventArgs e)
+		{
+			RTC_Core.bgForm.Close();
+			RTC_Core.bgForm = new RTC_BlastGenerator_Form();
+			RTC_Core.bgForm.LoadStashkey(sk);
+		}
 	}	
 }

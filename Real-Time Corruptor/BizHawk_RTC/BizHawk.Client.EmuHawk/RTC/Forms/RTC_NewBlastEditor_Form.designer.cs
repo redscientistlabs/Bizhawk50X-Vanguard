@@ -95,6 +95,7 @@
             this.rasterizeVMDsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.bakeBlastByteToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.btnHideSidebar = new System.Windows.Forms.Button();
+            this.openBlastLayerGeneratorToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             ((System.ComponentModel.ISupportInitialize)(this.dgvBlastLayer)).BeginInit();
             this.pnMemoryTargetting.SuspendLayout();
             this.panel1.SuspendLayout();
@@ -339,7 +340,6 @@
             this.dgvBlastLayer.Size = new System.Drawing.Size(712, 501);
             this.dgvBlastLayer.TabIndex = 133;
             this.dgvBlastLayer.Tag = "color:normal";
-            
             // 
             // dgvBlastUnitReference
             // 
@@ -822,6 +822,7 @@
             // toolsToolStripMenuItem
             // 
             this.toolsToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.openBlastLayerGeneratorToolStripMenuItem,
             this.rasterizeVMDsToolStripMenuItem,
             this.bakeBlastByteToolStripMenuItem});
             this.toolsToolStripMenuItem.Name = "toolsToolStripMenuItem";
@@ -853,6 +854,13 @@
             this.btnHideSidebar.Text = "▶";
             this.btnHideSidebar.UseVisualStyleBackColor = true;
             this.btnHideSidebar.Click += new System.EventHandler(this.btnHideSidebar_Click);
+            // 
+            // openBlastLayerGeneratorToolStripMenuItem
+            // 
+            this.openBlastLayerGeneratorToolStripMenuItem.Name = "openBlastLayerGeneratorToolStripMenuItem";
+            this.openBlastLayerGeneratorToolStripMenuItem.Size = new System.Drawing.Size(235, 22);
+            this.openBlastLayerGeneratorToolStripMenuItem.Text = "Open BlastLayer Generator";
+            this.openBlastLayerGeneratorToolStripMenuItem.Click += new System.EventHandler(this.openBlastLayerGeneratorToolStripMenuItem_Click);
             // 
             // RTC_NewBlastEditor_Form
             // 
@@ -951,5 +959,6 @@
 		private System.Windows.Forms.ToolStripMenuItem toolsToolStripMenuItem;
 		private System.Windows.Forms.ToolStripMenuItem rasterizeVMDsToolStripMenuItem;
 		private System.Windows.Forms.ToolStripMenuItem bakeBlastByteToolStripMenuItem;
+		private System.Windows.Forms.ToolStripMenuItem openBlastLayerGeneratorToolStripMenuItem;
 	}
 }

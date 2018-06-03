@@ -268,4 +268,74 @@ namespace RTC
 			return null;
 		}
 	}
+
+
+	/*
+	private bool GenerateBlastLayer()
+	{
+
+		if (string.IsNullOrWhiteSpace(cbSelectedMemoryDomain.SelectedItem?.ToString()) || !RTC_MemoryDomains.MemoryInterfaces.ContainsKey(cbSelectedMemoryDomain.SelectedItem.ToString()))
+		{
+			cbSelectedMemoryDomain.Items.Clear();
+			return false;
+		}
+
+		MemoryInterface mi = RTC_MemoryDomains.MemoryInterfaces[cbSelectedMemoryDomain.SelectedItem.ToString()];
+		BlastLayer bl = new BlastLayer();
+
+
+
+		foreach (string line in tbCustomAddresses.Lines)
+		{
+			if (string.IsNullOrWhiteSpace(line))
+				continue;
+
+			string trimmedLine = line.Trim();
+
+			bool remove = false;
+
+			if (trimmedLine[0] == '-')
+			{
+				remove = true;
+				trimmedLine = trimmedLine.Substring(1);
+			}
+
+			string[] lineParts = trimmedLine.Split('-');
+
+			if (lineParts.Length > 1)
+			{
+				int start = SafeStringToInt(lineParts[0]);
+				int end = SafeStringToInt(lineParts[1]);
+
+				if (end >= currentDomainSize)
+					end = Convert.ToInt32(currentDomainSize - 1);
+
+				if (remove)
+					proto.removeRanges.Add(new int[] { start, end });
+				else
+					proto.addRanges.Add(new int[] { start, end });
+
+			}
+			else
+			{
+				int address = SafeStringToInt(lineParts[0]);
+
+				if (address < currentDomainSize)
+				{
+					if (remove)
+						proto.removeSingles.Add(address);
+					else
+						proto.addSingles.Add(address);
+				}
+			}
+
+
+		}
+
+		if (proto.addRanges.Count == 0 && proto.addSingles.Count == 0)
+		{
+			//No add range was specified, use entire domain
+			proto.addRanges.Add(new int[] { 0, (currentDomainSize > int.MaxValue ? int.MaxValue : Convert.ToInt32(currentDomainSize)) });
+		}
+	}*/
 }
