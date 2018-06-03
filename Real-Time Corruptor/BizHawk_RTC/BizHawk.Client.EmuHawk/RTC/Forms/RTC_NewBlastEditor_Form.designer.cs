@@ -92,10 +92,10 @@
             this.replaceRomFromFileToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.bakeROMBlastunitsToFileToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.toolsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.openBlastLayerGeneratorToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.rasterizeVMDsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.bakeBlastByteToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.btnHideSidebar = new System.Windows.Forms.Button();
-            this.openBlastLayerGeneratorToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             ((System.ComponentModel.ISupportInitialize)(this.dgvBlastLayer)).BeginInit();
             this.pnMemoryTargetting.SuspendLayout();
             this.panel1.SuspendLayout();
@@ -829,6 +829,13 @@
             this.toolsToolStripMenuItem.Size = new System.Drawing.Size(47, 20);
             this.toolsToolStripMenuItem.Text = "Tools";
             // 
+            // openBlastLayerGeneratorToolStripMenuItem
+            // 
+            this.openBlastLayerGeneratorToolStripMenuItem.Name = "openBlastLayerGeneratorToolStripMenuItem";
+            this.openBlastLayerGeneratorToolStripMenuItem.Size = new System.Drawing.Size(235, 22);
+            this.openBlastLayerGeneratorToolStripMenuItem.Text = "Open BlastLayer Generator";
+            this.openBlastLayerGeneratorToolStripMenuItem.Click += new System.EventHandler(this.openBlastLayerGeneratorToolStripMenuItem_Click);
+            // 
             // rasterizeVMDsToolStripMenuItem
             // 
             this.rasterizeVMDsToolStripMenuItem.Name = "rasterizeVMDsToolStripMenuItem";
@@ -854,13 +861,6 @@
             this.btnHideSidebar.Text = "▶";
             this.btnHideSidebar.UseVisualStyleBackColor = true;
             this.btnHideSidebar.Click += new System.EventHandler(this.btnHideSidebar_Click);
-            // 
-            // openBlastLayerGeneratorToolStripMenuItem
-            // 
-            this.openBlastLayerGeneratorToolStripMenuItem.Name = "openBlastLayerGeneratorToolStripMenuItem";
-            this.openBlastLayerGeneratorToolStripMenuItem.Size = new System.Drawing.Size(235, 22);
-            this.openBlastLayerGeneratorToolStripMenuItem.Text = "Open BlastLayer Generator";
-            this.openBlastLayerGeneratorToolStripMenuItem.Click += new System.EventHandler(this.openBlastLayerGeneratorToolStripMenuItem_Click);
             // 
             // RTC_NewBlastEditor_Form
             // 
