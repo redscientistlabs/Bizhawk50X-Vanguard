@@ -49,30 +49,33 @@
             this.lbBlastUnitToGenerate = new System.Windows.Forms.Label();
             this.cbBlastUnitMode = new System.Windows.Forms.ComboBox();
             this.gbBlastByteGenerator = new System.Windows.Forms.GroupBox();
+            this.updownBlastByteValue = new RTC.NumericUpDownHexFix();
             this.label2 = new System.Windows.Forms.Label();
             this.label3 = new System.Windows.Forms.Label();
             this.cbBlastByteModes = new System.Windows.Forms.ComboBox();
             this.cbUseHex = new System.Windows.Forms.CheckBox();
             this.gbBlastCheatGenerator = new System.Windows.Forms.GroupBox();
+            this.updownBlastCheatValue = new RTC.NumericUpDownHexFix();
             this.label4 = new System.Windows.Forms.Label();
             this.label6 = new System.Windows.Forms.Label();
             this.cbBlastCheatModes = new System.Windows.Forms.ComboBox();
             this.gbBlastPipeGenerator = new System.Windows.Forms.GroupBox();
+            this.updownBlastPipeTilt = new RTC.NumericUpDownHexFix();
             this.label7 = new System.Windows.Forms.Label();
             this.label8 = new System.Windows.Forms.Label();
             this.cbBlastPipeMode = new System.Windows.Forms.ComboBox();
             this.pnEngineMode = new System.Windows.Forms.Panel();
-            this.updownBlastPipeTilt = new RTC.NumericUpDownHexFix();
-            this.updownBlastCheatValue = new RTC.NumericUpDownHexFix();
-            this.updownBlastByteValue = new RTC.NumericUpDownHexFix();
             this.updownStepSize = new RTC.NumericUpDownHexFix();
+            this.lbUsedDomains = new System.Windows.Forms.ListBox();
+            this.label9 = new System.Windows.Forms.Label();
+            this.btnAddStashToStockpile = new System.Windows.Forms.Button();
             this.groupBox1.SuspendLayout();
             this.gbBlastByteGenerator.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.updownBlastByteValue)).BeginInit();
             this.gbBlastCheatGenerator.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.updownBlastCheatValue)).BeginInit();
             this.gbBlastPipeGenerator.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.updownBlastPipeTilt)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.updownBlastCheatValue)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.updownBlastByteValue)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.updownStepSize)).BeginInit();
             this.SuspendLayout();
             // 
@@ -84,35 +87,37 @@
             this.btnHelp.Font = new System.Drawing.Font("Segoe UI Semibold", 9.75F, System.Drawing.FontStyle.Bold);
             this.btnHelp.ForeColor = System.Drawing.Color.Black;
             this.btnHelp.Image = global::BizHawk.Client.EmuHawk.Properties.Resources.Help;
-            this.btnHelp.Location = new System.Drawing.Point(375, 6);
+            this.btnHelp.Location = new System.Drawing.Point(398, 117);
             this.btnHelp.Name = "btnHelp";
             this.btnHelp.Size = new System.Drawing.Size(19, 18);
             this.btnHelp.TabIndex = 147;
             this.btnHelp.TabStop = false;
             this.btnHelp.Tag = "color:light";
             this.btnHelp.UseVisualStyleBackColor = false;
+            this.btnHelp.Click += new System.EventHandler(this.btnHelp_Click);
             // 
             // label5
             // 
             this.label5.AutoSize = true;
             this.label5.Font = new System.Drawing.Font("Segoe UI Semibold", 9F, System.Drawing.FontStyle.Bold);
             this.label5.ForeColor = System.Drawing.Color.White;
-            this.label5.Location = new System.Drawing.Point(230, 9);
+            this.label5.Location = new System.Drawing.Point(253, 120);
             this.label5.Name = "label5";
             this.label5.Size = new System.Drawing.Size(131, 15);
             this.label5.TabIndex = 144;
             this.label5.Text = "Remove/Add addresses";
+            this.label5.Click += new System.EventHandler(this.label5_Click);
             // 
             // tbCustomAddresses
             // 
             this.tbCustomAddresses.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
             this.tbCustomAddresses.Font = new System.Drawing.Font("Segoe UI", 8F);
             this.tbCustomAddresses.ForeColor = System.Drawing.Color.White;
-            this.tbCustomAddresses.Location = new System.Drawing.Point(233, 27);
+            this.tbCustomAddresses.Location = new System.Drawing.Point(256, 138);
             this.tbCustomAddresses.Multiline = true;
             this.tbCustomAddresses.Name = "tbCustomAddresses";
             this.tbCustomAddresses.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
-            this.tbCustomAddresses.Size = new System.Drawing.Size(161, 168);
+            this.tbCustomAddresses.Size = new System.Drawing.Size(161, 149);
             this.tbCustomAddresses.TabIndex = 143;
             this.tbCustomAddresses.Tag = "color:dark";
             // 
@@ -123,7 +128,7 @@
             this.btnLoadCorrupt.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnLoadCorrupt.Font = new System.Drawing.Font("Segoe UI Semibold", 9F, System.Drawing.FontStyle.Bold);
             this.btnLoadCorrupt.ForeColor = System.Drawing.Color.Black;
-            this.btnLoadCorrupt.Location = new System.Drawing.Point(233, 201);
+            this.btnLoadCorrupt.Location = new System.Drawing.Point(256, 297);
             this.btnLoadCorrupt.Name = "btnLoadCorrupt";
             this.btnLoadCorrupt.Size = new System.Drawing.Size(161, 30);
             this.btnLoadCorrupt.TabIndex = 139;
@@ -140,9 +145,9 @@
             this.label17.ForeColor = System.Drawing.Color.White;
             this.label17.Location = new System.Drawing.Point(98, 9);
             this.label17.Name = "label17";
-            this.label17.Size = new System.Drawing.Size(115, 19);
+            this.label17.Size = new System.Drawing.Size(84, 19);
             this.label17.TabIndex = 137;
-            this.label17.Text = "Memory Domain";
+            this.label17.Text = "Domain List";
             // 
             // btnLoadDomains
             // 
@@ -157,7 +162,7 @@
             this.btnLoadDomains.TabIndex = 136;
             this.btnLoadDomains.TabStop = false;
             this.btnLoadDomains.Tag = "color:light";
-            this.btnLoadDomains.Text = "Load Domains";
+            this.btnLoadDomains.Text = "Refresh Domains";
             this.btnLoadDomains.UseVisualStyleBackColor = false;
             this.btnLoadDomains.Click += new System.EventHandler(this.btnLoadDomains_Click);
             // 
@@ -181,7 +186,7 @@
             this.label1.AutoSize = true;
             this.label1.Font = new System.Drawing.Font("Segoe UI Semibold", 10F, System.Drawing.FontStyle.Bold);
             this.label1.ForeColor = System.Drawing.Color.White;
-            this.label1.Location = new System.Drawing.Point(13, 176);
+            this.label1.Location = new System.Drawing.Point(13, 179);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(70, 19);
             this.label1.TabIndex = 149;
@@ -194,7 +199,7 @@
             this.btnJustCorrupt.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnJustCorrupt.Font = new System.Drawing.Font("Segoe UI Semibold", 9F, System.Drawing.FontStyle.Bold);
             this.btnJustCorrupt.ForeColor = System.Drawing.Color.Black;
-            this.btnJustCorrupt.Location = new System.Drawing.Point(233, 237);
+            this.btnJustCorrupt.Location = new System.Drawing.Point(256, 333);
             this.btnJustCorrupt.Name = "btnJustCorrupt";
             this.btnJustCorrupt.Size = new System.Drawing.Size(161, 30);
             this.btnJustCorrupt.TabIndex = 150;
@@ -211,7 +216,7 @@
             this.btnSendBlastLayerToEditor.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnSendBlastLayerToEditor.Font = new System.Drawing.Font("Segoe UI Semibold", 9F, System.Drawing.FontStyle.Bold);
             this.btnSendBlastLayerToEditor.ForeColor = System.Drawing.Color.Black;
-            this.btnSendBlastLayerToEditor.Location = new System.Drawing.Point(233, 273);
+            this.btnSendBlastLayerToEditor.Location = new System.Drawing.Point(256, 369);
             this.btnSendBlastLayerToEditor.Name = "btnSendBlastLayerToEditor";
             this.btnSendBlastLayerToEditor.Size = new System.Drawing.Size(161, 30);
             this.btnSendBlastLayerToEditor.TabIndex = 151;
@@ -342,12 +347,33 @@
             this.gbBlastByteGenerator.Controls.Add(this.cbBlastByteModes);
             this.gbBlastByteGenerator.Font = new System.Drawing.Font("Segoe UI Semibold", 10F, System.Drawing.FontStyle.Bold);
             this.gbBlastByteGenerator.ForeColor = System.Drawing.Color.White;
-            this.gbBlastByteGenerator.Location = new System.Drawing.Point(441, 27);
+            this.gbBlastByteGenerator.Location = new System.Drawing.Point(883, 34);
             this.gbBlastByteGenerator.Name = "gbBlastByteGenerator";
-            this.gbBlastByteGenerator.Size = new System.Drawing.Size(210, 80);
+            this.gbBlastByteGenerator.Size = new System.Drawing.Size(210, 150);
             this.gbBlastByteGenerator.TabIndex = 156;
             this.gbBlastByteGenerator.TabStop = false;
             this.gbBlastByteGenerator.Text = "BlastByte Generator";
+            // 
+            // updownBlastByteValue
+            // 
+            this.updownBlastByteValue.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
+            this.updownBlastByteValue.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.updownBlastByteValue.Cursor = System.Windows.Forms.Cursors.Cross;
+            this.updownBlastByteValue.ForeColor = System.Drawing.Color.White;
+            this.updownBlastByteValue.Location = new System.Drawing.Point(57, 50);
+            this.updownBlastByteValue.Minimum = new decimal(new int[] {
+            1,
+            0,
+            0,
+            0});
+            this.updownBlastByteValue.Name = "updownBlastByteValue";
+            this.updownBlastByteValue.Size = new System.Drawing.Size(147, 25);
+            this.updownBlastByteValue.TabIndex = 157;
+            this.updownBlastByteValue.Value = new decimal(new int[] {
+            1,
+            0,
+            0,
+            0});
             // 
             // label2
             // 
@@ -402,7 +428,7 @@
             this.cbUseHex.CheckState = System.Windows.Forms.CheckState.Checked;
             this.cbUseHex.Font = new System.Drawing.Font("Segoe UI Semibold", 9F, System.Drawing.FontStyle.Bold);
             this.cbUseHex.ForeColor = System.Drawing.Color.White;
-            this.cbUseHex.Location = new System.Drawing.Point(12, 288);
+            this.cbUseHex.Location = new System.Drawing.Point(17, 389);
             this.cbUseHex.Name = "cbUseHex";
             this.cbUseHex.Size = new System.Drawing.Size(117, 19);
             this.cbUseHex.TabIndex = 157;
@@ -418,12 +444,33 @@
             this.gbBlastCheatGenerator.Controls.Add(this.cbBlastCheatModes);
             this.gbBlastCheatGenerator.Font = new System.Drawing.Font("Segoe UI Semibold", 10F, System.Drawing.FontStyle.Bold);
             this.gbBlastCheatGenerator.ForeColor = System.Drawing.Color.White;
-            this.gbBlastCheatGenerator.Location = new System.Drawing.Point(441, 113);
+            this.gbBlastCheatGenerator.Location = new System.Drawing.Point(1128, 35);
             this.gbBlastCheatGenerator.Name = "gbBlastCheatGenerator";
-            this.gbBlastCheatGenerator.Size = new System.Drawing.Size(210, 80);
+            this.gbBlastCheatGenerator.Size = new System.Drawing.Size(210, 150);
             this.gbBlastCheatGenerator.TabIndex = 159;
             this.gbBlastCheatGenerator.TabStop = false;
             this.gbBlastCheatGenerator.Text = "BlastCheat Generator";
+            // 
+            // updownBlastCheatValue
+            // 
+            this.updownBlastCheatValue.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
+            this.updownBlastCheatValue.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.updownBlastCheatValue.Cursor = System.Windows.Forms.Cursors.Cross;
+            this.updownBlastCheatValue.ForeColor = System.Drawing.Color.White;
+            this.updownBlastCheatValue.Location = new System.Drawing.Point(57, 50);
+            this.updownBlastCheatValue.Minimum = new decimal(new int[] {
+            1,
+            0,
+            0,
+            0});
+            this.updownBlastCheatValue.Name = "updownBlastCheatValue";
+            this.updownBlastCheatValue.Size = new System.Drawing.Size(147, 25);
+            this.updownBlastCheatValue.TabIndex = 157;
+            this.updownBlastCheatValue.Value = new decimal(new int[] {
+            1,
+            0,
+            0,
+            0});
             // 
             // label4
             // 
@@ -478,12 +525,33 @@
             this.gbBlastPipeGenerator.Controls.Add(this.cbBlastPipeMode);
             this.gbBlastPipeGenerator.Font = new System.Drawing.Font("Segoe UI Semibold", 10F, System.Drawing.FontStyle.Bold);
             this.gbBlastPipeGenerator.ForeColor = System.Drawing.Color.White;
-            this.gbBlastPipeGenerator.Location = new System.Drawing.Point(441, 201);
+            this.gbBlastPipeGenerator.Location = new System.Drawing.Point(1118, 201);
             this.gbBlastPipeGenerator.Name = "gbBlastPipeGenerator";
-            this.gbBlastPipeGenerator.Size = new System.Drawing.Size(210, 80);
+            this.gbBlastPipeGenerator.Size = new System.Drawing.Size(210, 150);
             this.gbBlastPipeGenerator.TabIndex = 160;
             this.gbBlastPipeGenerator.TabStop = false;
             this.gbBlastPipeGenerator.Text = "BlastPipe Generator";
+            // 
+            // updownBlastPipeTilt
+            // 
+            this.updownBlastPipeTilt.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
+            this.updownBlastPipeTilt.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.updownBlastPipeTilt.Cursor = System.Windows.Forms.Cursors.Cross;
+            this.updownBlastPipeTilt.ForeColor = System.Drawing.Color.White;
+            this.updownBlastPipeTilt.Location = new System.Drawing.Point(57, 50);
+            this.updownBlastPipeTilt.Minimum = new decimal(new int[] {
+            1,
+            0,
+            0,
+            0});
+            this.updownBlastPipeTilt.Name = "updownBlastPipeTilt";
+            this.updownBlastPipeTilt.Size = new System.Drawing.Size(147, 25);
+            this.updownBlastPipeTilt.TabIndex = 157;
+            this.updownBlastPipeTilt.Value = new decimal(new int[] {
+            1,
+            0,
+            0,
+            0});
             // 
             // label7
             // 
@@ -532,80 +600,17 @@
             // 
             // pnEngineMode
             // 
-            this.pnEngineMode.Location = new System.Drawing.Point(12, 202);
+            this.pnEngineMode.Location = new System.Drawing.Point(17, 213);
             this.pnEngineMode.Name = "pnEngineMode";
-            this.pnEngineMode.Size = new System.Drawing.Size(210, 80);
+            this.pnEngineMode.Size = new System.Drawing.Size(210, 150);
             this.pnEngineMode.TabIndex = 161;
-            // 
-            // updownBlastPipeTilt
-            // 
-            this.updownBlastPipeTilt.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
-            this.updownBlastPipeTilt.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.updownBlastPipeTilt.Cursor = System.Windows.Forms.Cursors.Cross;
-            this.updownBlastPipeTilt.ForeColor = System.Drawing.Color.White;
-            this.updownBlastPipeTilt.Location = new System.Drawing.Point(57, 50);
-            this.updownBlastPipeTilt.Minimum = new decimal(new int[] {
-            1,
-            0,
-            0,
-            0});
-            this.updownBlastPipeTilt.Name = "updownBlastPipeTilt";
-            this.updownBlastPipeTilt.Size = new System.Drawing.Size(147, 25);
-            this.updownBlastPipeTilt.TabIndex = 157;
-            this.updownBlastPipeTilt.Value = new decimal(new int[] {
-            1,
-            0,
-            0,
-            0});
-            // 
-            // updownBlastCheatValue
-            // 
-            this.updownBlastCheatValue.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
-            this.updownBlastCheatValue.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.updownBlastCheatValue.Cursor = System.Windows.Forms.Cursors.Cross;
-            this.updownBlastCheatValue.ForeColor = System.Drawing.Color.White;
-            this.updownBlastCheatValue.Location = new System.Drawing.Point(57, 50);
-            this.updownBlastCheatValue.Minimum = new decimal(new int[] {
-            1,
-            0,
-            0,
-            0});
-            this.updownBlastCheatValue.Name = "updownBlastCheatValue";
-            this.updownBlastCheatValue.Size = new System.Drawing.Size(147, 25);
-            this.updownBlastCheatValue.TabIndex = 157;
-            this.updownBlastCheatValue.Value = new decimal(new int[] {
-            1,
-            0,
-            0,
-            0});
-            // 
-            // updownBlastByteValue
-            // 
-            this.updownBlastByteValue.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
-            this.updownBlastByteValue.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.updownBlastByteValue.Cursor = System.Windows.Forms.Cursors.Cross;
-            this.updownBlastByteValue.ForeColor = System.Drawing.Color.White;
-            this.updownBlastByteValue.Location = new System.Drawing.Point(57, 50);
-            this.updownBlastByteValue.Minimum = new decimal(new int[] {
-            1,
-            0,
-            0,
-            0});
-            this.updownBlastByteValue.Name = "updownBlastByteValue";
-            this.updownBlastByteValue.Size = new System.Drawing.Size(147, 25);
-            this.updownBlastByteValue.TabIndex = 157;
-            this.updownBlastByteValue.Value = new decimal(new int[] {
-            1,
-            0,
-            0,
-            0});
             // 
             // updownStepSize
             // 
             this.updownStepSize.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
             this.updownStepSize.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.updownStepSize.ForeColor = System.Drawing.Color.White;
-            this.updownStepSize.Location = new System.Drawing.Point(84, 176);
+            this.updownStepSize.Location = new System.Drawing.Point(84, 179);
             this.updownStepSize.Minimum = new decimal(new int[] {
             1,
             0,
@@ -620,12 +625,52 @@
             0,
             0});
             // 
+            // lbUsedDomains
+            // 
+            this.lbUsedDomains.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
+            this.lbUsedDomains.ForeColor = System.Drawing.Color.White;
+            this.lbUsedDomains.FormattingEnabled = true;
+            this.lbUsedDomains.Location = new System.Drawing.Point(256, 31);
+            this.lbUsedDomains.Name = "lbUsedDomains";
+            this.lbUsedDomains.Size = new System.Drawing.Size(161, 82);
+            this.lbUsedDomains.TabIndex = 162;
+            // 
+            // label9
+            // 
+            this.label9.AutoSize = true;
+            this.label9.Font = new System.Drawing.Font("Segoe UI Semibold", 9F, System.Drawing.FontStyle.Bold);
+            this.label9.ForeColor = System.Drawing.Color.White;
+            this.label9.Location = new System.Drawing.Point(253, 13);
+            this.label9.Name = "label9";
+            this.label9.Size = new System.Drawing.Size(84, 15);
+            this.label9.TabIndex = 163;
+            this.label9.Text = "Used Domains";
+            // 
+            // btnAddStashToStockpile
+            // 
+            this.btnAddStashToStockpile.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(224)))), ((int)(((byte)(224)))), ((int)(((byte)(224)))));
+            this.btnAddStashToStockpile.FlatAppearance.BorderSize = 0;
+            this.btnAddStashToStockpile.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnAddStashToStockpile.Font = new System.Drawing.Font("Segoe UI Symbol", 9F);
+            this.btnAddStashToStockpile.ForeColor = System.Drawing.Color.Black;
+            this.btnAddStashToStockpile.Location = new System.Drawing.Point(228, 31);
+            this.btnAddStashToStockpile.Name = "btnAddStashToStockpile";
+            this.btnAddStashToStockpile.Size = new System.Drawing.Size(22, 25);
+            this.btnAddStashToStockpile.TabIndex = 164;
+            this.btnAddStashToStockpile.TabStop = false;
+            this.btnAddStashToStockpile.Tag = "color:light";
+            this.btnAddStashToStockpile.Text = "▶";
+            this.btnAddStashToStockpile.UseVisualStyleBackColor = false;
+            // 
             // RTC_BlastGenerator_Form
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
-            this.ClientSize = new System.Drawing.Size(404, 311);
+            this.ClientSize = new System.Drawing.Size(1398, 482);
+            this.Controls.Add(this.btnAddStashToStockpile);
+            this.Controls.Add(this.label9);
+            this.Controls.Add(this.lbUsedDomains);
             this.Controls.Add(this.gbBlastPipeGenerator);
             this.Controls.Add(this.gbBlastCheatGenerator);
             this.Controls.Add(this.cbUseHex);
@@ -655,13 +700,13 @@
             this.groupBox1.PerformLayout();
             this.gbBlastByteGenerator.ResumeLayout(false);
             this.gbBlastByteGenerator.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.updownBlastByteValue)).EndInit();
             this.gbBlastCheatGenerator.ResumeLayout(false);
             this.gbBlastCheatGenerator.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.updownBlastCheatValue)).EndInit();
             this.gbBlastPipeGenerator.ResumeLayout(false);
             this.gbBlastPipeGenerator.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.updownBlastPipeTilt)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.updownBlastCheatValue)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.updownBlastByteValue)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.updownStepSize)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
@@ -707,5 +752,8 @@
 		private System.Windows.Forms.Label label8;
 		private System.Windows.Forms.ComboBox cbBlastPipeMode;
 		private System.Windows.Forms.Panel pnEngineMode;
+		private System.Windows.Forms.ListBox lbUsedDomains;
+		private System.Windows.Forms.Label label9;
+		private System.Windows.Forms.Button btnAddStashToStockpile;
 	}
 }

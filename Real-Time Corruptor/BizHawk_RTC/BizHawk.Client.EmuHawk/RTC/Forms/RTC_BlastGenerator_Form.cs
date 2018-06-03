@@ -146,5 +146,15 @@ namespace RTC
 			updownBlastPipeTilt.Hexadecimal = cbUseHex.Checked;
 			updownStepSize.Hexadecimal = cbUseHex.Checked;
 		}
+
+		private void label5_Click(object sender, EventArgs e)
+		{
+
+		}
+
+		private void btnHelp_Click(object sender, EventArgs e)
+		{
+
+		}
 	}
 }
