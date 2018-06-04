@@ -55,6 +55,12 @@
             this.updownNudgeStartAddress = new RTC.NumericUpDownHexFix();
             this.label4 = new System.Windows.Forms.Label();
             this.dgvBlastGenerator = new System.Windows.Forms.DataGridView();
+            this.dataGridViewTextBoxColumn1 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.dataGridViewNumericUpDownColumn1 = new RTC.DataGridViewNumericUpDownColumn();
+            this.dataGridViewNumericUpDownColumn2 = new RTC.DataGridViewNumericUpDownColumn();
+            this.dataGridViewNumericUpDownColumn3 = new RTC.DataGridViewNumericUpDownColumn();
+            this.dataGridViewNumericUpDownColumn4 = new RTC.DataGridViewNumericUpDownColumn();
+            this.dataGridViewNumericUpDownColumn5 = new RTC.DataGridViewNumericUpDownColumn();
             this.menuStripEx1 = new MenuStripEx();
             this.blastLayerToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.loadFromFileblToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -154,7 +160,7 @@
             this.panel1.Controls.Add(this.btnSendBlastLayerToEditor);
             this.panel1.Controls.Add(this.btnLoadCorrupt);
             this.panel1.Dock = System.Windows.Forms.DockStyle.Right;
-            this.panel1.Location = new System.Drawing.Point(749, 24);
+            this.panel1.Location = new System.Drawing.Point(757, 24);
             this.panel1.Name = "panel1";
             this.panel1.Size = new System.Drawing.Size(159, 366);
             this.panel1.TabIndex = 166;
@@ -452,9 +458,89 @@
             this.dgvBlastGenerator.RowHeadersVisible = false;
             this.dgvBlastGenerator.RowTemplate.Height = 24;
             this.dgvBlastGenerator.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.dgvBlastGenerator.Size = new System.Drawing.Size(749, 366);
+            this.dgvBlastGenerator.Size = new System.Drawing.Size(757, 366);
             this.dgvBlastGenerator.TabIndex = 167;
             this.dgvBlastGenerator.Tag = "color:normal";
+            // 
+            // dataGridViewTextBoxColumn1
+            // 
+            this.dataGridViewTextBoxColumn1.FillWeight = 55F;
+            this.dataGridViewTextBoxColumn1.HeaderText = "Mode";
+            this.dataGridViewTextBoxColumn1.Name = "dataGridViewTextBoxColumn1";
+            this.dataGridViewTextBoxColumn1.Resizable = System.Windows.Forms.DataGridViewTriState.True;
+            this.dataGridViewTextBoxColumn1.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
+            this.dataGridViewTextBoxColumn1.Width = 92;
+            // 
+            // dataGridViewNumericUpDownColumn1
+            // 
+            this.dataGridViewNumericUpDownColumn1.FillWeight = 50F;
+            this.dataGridViewNumericUpDownColumn1.HeaderText = "Step Size";
+            this.dataGridViewNumericUpDownColumn1.Maximum = new decimal(new int[] {
+            -1,
+            0,
+            0,
+            0});
+            this.dataGridViewNumericUpDownColumn1.Minimum = new decimal(new int[] {
+            1,
+            0,
+            0,
+            0});
+            this.dataGridViewNumericUpDownColumn1.Name = "dataGridViewNumericUpDownColumn1";
+            this.dataGridViewNumericUpDownColumn1.Width = 82;
+            // 
+            // dataGridViewNumericUpDownColumn2
+            // 
+            this.dataGridViewNumericUpDownColumn2.FillWeight = 50F;
+            this.dataGridViewNumericUpDownColumn2.HeaderText = "Start Address";
+            this.dataGridViewNumericUpDownColumn2.Hexadecimal = true;
+            this.dataGridViewNumericUpDownColumn2.Maximum = new decimal(new int[] {
+            -1,
+            0,
+            0,
+            0});
+            this.dataGridViewNumericUpDownColumn2.Name = "dataGridViewNumericUpDownColumn2";
+            this.dataGridViewNumericUpDownColumn2.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.Automatic;
+            this.dataGridViewNumericUpDownColumn2.Width = 83;
+            // 
+            // dataGridViewNumericUpDownColumn3
+            // 
+            this.dataGridViewNumericUpDownColumn3.FillWeight = 50F;
+            this.dataGridViewNumericUpDownColumn3.HeaderText = "End Address";
+            this.dataGridViewNumericUpDownColumn3.Hexadecimal = true;
+            this.dataGridViewNumericUpDownColumn3.Maximum = new decimal(new int[] {
+            -1,
+            0,
+            0,
+            0});
+            this.dataGridViewNumericUpDownColumn3.Name = "dataGridViewNumericUpDownColumn3";
+            this.dataGridViewNumericUpDownColumn3.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.Automatic;
+            this.dataGridViewNumericUpDownColumn3.Width = 83;
+            // 
+            // dataGridViewNumericUpDownColumn4
+            // 
+            this.dataGridViewNumericUpDownColumn4.FillWeight = 50F;
+            this.dataGridViewNumericUpDownColumn4.HeaderText = "Param 1";
+            this.dataGridViewNumericUpDownColumn4.Hexadecimal = true;
+            this.dataGridViewNumericUpDownColumn4.Maximum = new decimal(new int[] {
+            -1,
+            0,
+            0,
+            0});
+            this.dataGridViewNumericUpDownColumn4.Name = "dataGridViewNumericUpDownColumn4";
+            this.dataGridViewNumericUpDownColumn4.Width = 83;
+            // 
+            // dataGridViewNumericUpDownColumn5
+            // 
+            this.dataGridViewNumericUpDownColumn5.FillWeight = 50F;
+            this.dataGridViewNumericUpDownColumn5.HeaderText = "Param 2";
+            this.dataGridViewNumericUpDownColumn5.Hexadecimal = true;
+            this.dataGridViewNumericUpDownColumn5.Maximum = new decimal(new int[] {
+            -1,
+            0,
+            0,
+            0});
+            this.dataGridViewNumericUpDownColumn5.Name = "dataGridViewNumericUpDownColumn5";
+            this.dataGridViewNumericUpDownColumn5.Width = 83;
             // 
             // menuStripEx1
             // 
@@ -464,7 +550,7 @@
             this.blastLayerToolStripMenuItem});
             this.menuStripEx1.Location = new System.Drawing.Point(0, 0);
             this.menuStripEx1.Name = "menuStripEx1";
-            this.menuStripEx1.Size = new System.Drawing.Size(908, 24);
+            this.menuStripEx1.Size = new System.Drawing.Size(916, 24);
             this.menuStripEx1.TabIndex = 168;
             this.menuStripEx1.Text = "menuStripEx1";
             // 
@@ -506,6 +592,7 @@
             // 
             this.dgvDomain.FillWeight = 55F;
             this.dgvDomain.HeaderText = "Domain";
+            this.dgvDomain.MaxDropDownItems = 20;
             this.dgvDomain.Name = "dgvDomain";
             this.dgvDomain.Resizable = System.Windows.Forms.DataGridViewTriState.True;
             // 
@@ -525,19 +612,21 @@
             this.dgvMode.FillWeight = 55F;
             this.dgvMode.HeaderText = "Mode";
             this.dgvMode.Items.AddRange(new object[] {
-            "Shift",
-            "Swap",
-            "Add",
-            "Set",
-            "Random",
-            "Bitwise Rotate Left",
-            "Bitwise Rotate Right",
-            "Bitwise AND",
-            "Bitwise OR",
-            "Bitwise XOR",
-            "Bitwise Complement"});
+            "SET",
+            "SWAP",
+            "ADD",
+            "SUBTRACT",
+            "RANDOM",
+            "BITWISE_ROTATE_LEFT",
+            "BITWISE_ROTATE_RIGHT",
+            "BITWISE_AND",
+            "BITWISE_OR",
+            "BITWISE_XOR",
+            "BITWISE_COMPLEMENT",
+            "REPLACE_X_WITH_Y"});
             this.dgvMode.Name = "dgvMode";
             this.dgvMode.Resizable = System.Windows.Forms.DataGridViewTriState.True;
+            this.dgvMode.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.Automatic;
             // 
             // dgvStepSize
             // 
@@ -610,7 +699,7 @@
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
-            this.ClientSize = new System.Drawing.Size(908, 390);
+            this.ClientSize = new System.Drawing.Size(916, 390);
             this.Controls.Add(this.dgvBlastGenerator);
             this.Controls.Add(this.panel1);
             this.Controls.Add(this.menuStripEx1);
@@ -666,6 +755,12 @@
 		private System.Windows.Forms.ToolStripMenuItem loadFromFileblToolStripMenuItem;
 		private System.Windows.Forms.ToolStripMenuItem saveAsToFileblToolStripMenuItem;
 		private System.Windows.Forms.ToolStripMenuItem importBlastlayerblToolStripMenuItem;
+		private System.Windows.Forms.DataGridViewTextBoxColumn dataGridViewTextBoxColumn1;
+		private DataGridViewNumericUpDownColumn dataGridViewNumericUpDownColumn1;
+		private DataGridViewNumericUpDownColumn dataGridViewNumericUpDownColumn2;
+		private DataGridViewNumericUpDownColumn dataGridViewNumericUpDownColumn3;
+		private DataGridViewNumericUpDownColumn dataGridViewNumericUpDownColumn4;
+		private DataGridViewNumericUpDownColumn dataGridViewNumericUpDownColumn5;
 		private System.Windows.Forms.DataGridViewCheckBoxColumn dgvEnabled;
 		private System.Windows.Forms.DataGridViewComboBoxColumn dgvDomain;
 		private System.Windows.Forms.DataGridViewComboBoxColumn dgvType;

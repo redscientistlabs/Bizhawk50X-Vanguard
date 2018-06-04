@@ -52,4 +52,29 @@ namespace RTC
         NONE
     }
 
+	public enum BGBlastModes
+	{
+		SHIFT,
+		SWAP,
+		ADD,
+		SUBTRACT,
+		SET,
+		RANDOM,
+		BITWISE_ROTATE_LEFT,
+		BITWISE_ROTATE_RIGHT,
+		BITWISE_AND,
+		BITWISE_OR,
+		BITWISE_XOR,
+		BITWISE_COMPLEMENT,
+		REPLACE_X_WITH_Y,
+	}
+	public enum BGBlastCheatModes
+	{
+		FREEZE
+	}
+	public enum BGBlastPipeModes
+	{
+		SHIFT
+	}
+
 }
