@@ -62,12 +62,11 @@ namespace RTC
 
 			//Set up the DGV based on the current state of Bizhawk
 			PopulateDomainCombobox(dgvBlastGenerator.Columns["dgvDomain"] as DataGridViewComboBoxColumn);
-			PopulateTypeCombobox(dgvBlastGenerator.Rows[0]);
-
-
 			(dgvBlastGenerator.Rows[0].Cells["dgvDomain"] as DataGridViewComboBoxCell).Value = (dgvBlastGenerator.Rows[0].Cells["dgvDomain"] as DataGridViewComboBoxCell).Items[0];
 			(dgvBlastGenerator.Rows[0].Cells["dgvType"] as DataGridViewComboBoxCell).Value = (dgvBlastGenerator.Rows[0].Cells["dgvType"] as DataGridViewComboBoxCell).Items[0];
 			(dgvBlastGenerator.Rows[0].Cells["dgvMode"] as DataGridViewComboBoxCell).Value = (dgvBlastGenerator.Rows[0].Cells["dgvMode"] as DataGridViewComboBoxCell).Items[0];
+			PopulateTypeCombobox(dgvBlastGenerator.Rows[0]);
+
 
 
 			this.Show();
@@ -89,7 +88,7 @@ namespace RTC
 
 		private void PopulateTypeCombobox(DataGridViewRow row)
 		{
-			DataGridViewComboBoxCell dgvType = (row.Cells["dgvMode"].Value as DataGridViewComboBoxCell);
+			DataGridViewComboBoxCell dgvType = (row.Cells["dgvMode"] as DataGridViewComboBoxCell);
 			dgvType.Items.Clear();
 
 			switch (row.Cells["dgvType"].Value.ToString())
