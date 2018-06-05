@@ -12,6 +12,7 @@ using System.Globalization;
 using System.ComponentModel;
 using System.Reflection;
 using System.Drawing.Design;
+using System.Collections;
 using System.Runtime.InteropServices;
 using System.Windows.Forms.Design;
 
@@ -246,7 +247,7 @@ namespace RTC
 
 			return 0;
 		}
-
+		
 		public static byte[] addValueToByteArray(byte[] originalValue, decimal addValue, bool isInputBigEndian)
 		{
 			if (isInputBigEndian)
@@ -342,15 +343,37 @@ namespace RTC
 				case 2:
 					{
 						byte[] Value = BitConverter.GetBytes(Convert.ToUInt16(newValue));
-			//			if (isInputBigEndian)
-				//			Array.Reverse(Value);
+						//			if (isInputBigEndian)
+						//			Array.Reverse(Value);
 						return Value;
 					}
 				case 4:
 					{
 						byte[] Value = BitConverter.GetBytes(Convert.ToUInt32(newValue));
-					//	if (isInputBigEndian)
-				//			Array.Reverse(Value);
+						//	if (isInputBigEndian)
+						//			Array.Reverse(Value);
+						return Value;
+					}
+			}
+
+			return null;
+		}
+
+
+		public static byte[] getByteArrayValue(int precision, long newValue, bool isInputBigEndian)
+		{
+			switch (precision)
+			{
+				case 1:
+					return new byte[] { (byte)newValue };
+				case 2:
+					{
+						byte[] Value = BitConverter.GetBytes(Convert.ToUInt16(newValue));
+						return Value;
+					}
+				case 4:
+					{
+						byte[] Value = BitConverter.GetBytes(Convert.ToUInt32(newValue));
 						return Value;
 					}
 			}
@@ -365,6 +388,33 @@ namespace RTC
 			for (int i = 0; i < arrayClone.Length; i++)
 				array[i] = arrayClone[(arrayClone.Length - 1) - i];
 		///	return array;
+		}
+		#endregion
+
+		#region BITARRAY EXTENSIONS
+
+		public static byte[] ToByteArray(this BitArray bits)
+		{
+			int numBytes = bits.Count / 8;
+			if (bits.Count % 8 != 0) numBytes++;
+
+			byte[] bytes = new byte[numBytes];
+			int byteIndex = 0, bitIndex = 0;
+
+			for (int i = 0; i < bits.Count; i++)
+			{
+				if (bits[i])
+					bytes[byteIndex] |= (byte)(1 << (7 - bitIndex));
+
+				bitIndex++;
+				if (bitIndex == 8)
+				{
+					bitIndex = 0;
+					byteIndex++;
+				}
+			}
+
+			return bytes;
 		}
 		#endregion
 

@@ -1650,4 +1650,55 @@ namespace RTC
 			data = _data;
 		}
 	}
+
+	[Serializable()]
+	public class BlastGeneratorProto
+	{
+		public BlastUnit BlastType;
+		public string Domain;
+		public int Precision;
+		public long StartAddress;
+		public long EndAddress;
+		public long Param1;
+		public long Param2;
+		public string Mode;
+
+		public BlastGeneratorProto()
+		{
+		}
+
+		public BlastGeneratorProto(BlastUnit _blastType, string _domain, int _precision, long _startAddress, long _endAddress, long _param1, long _param2, string _mode)
+		{
+			BlastType = _blastType;
+			Domain = _domain;
+			Precision = _precision;
+			StartAddress = _startAddress;
+			EndAddress = _endAddress;
+			Param1 = _param1;
+			Param2 = _param2;
+			Mode = _mode;
+		}
+
+		public BlastLayer GenerateBlastLayer()
+		{
+			BlastLayer bl = null;
+			switch (BlastType)
+			{
+				case BlastByte bb:
+					RTC_BlastByteGenerator generator = new RTC_BlastByteGenerator();
+					bl = generator.GenerateLayer(Domain, StartAddress, EndAddress, Param1, Param2, Precision, (BGBlastModes)Enum.Parse(typeof(BGBlastModes), Mode, true));
+					break;
+				case BlastCheat bc:
+					break;
+				case BlastPipe bp:
+					break;
+				default:
+					return null;
+			}
+
+			return bl;
+		}
+		
+	
+	}
 }
