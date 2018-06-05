@@ -92,16 +92,26 @@ namespace RTC
 							_value[i] = (byte)(_value[i] ^ _temp[i]);
 						break;
 					case BGBlastModes.BITWISE_SHIFT_LEFT:
-						_temp = RTC_Extensions.getByteArrayValue(precision, param1, mdp.BigEndian);
 						_value = mdp.PeekBytes(safeAddress, safeAddress + precision);
-						for (int i = 0; i < _value.Length; i++)
-							_value[i] = (byte)(_value[i] << _temp[i]);
+						for (int i = 0; i < param1; i++)
+							RTC_Extensions.ShiftLeft(_value);
 						break;
 					case BGBlastModes.BITWISE_SHIFT_RIGHT:
 						_temp = RTC_Extensions.getByteArrayValue(precision, param1, mdp.BigEndian);
 						_value = mdp.PeekBytes(safeAddress, safeAddress + precision);
-						for (int i = 0; i < _value.Length; i++)
-							_value[i] = (byte)(_value[i] >> _temp[i]);
+						for (int i = 0; i < param1; i++)
+							RTC_Extensions.ShiftRight(_value);
+						break;
+					case BGBlastModes.BITWISE_ROTATE_LEFT:
+						_value = mdp.PeekBytes(safeAddress, safeAddress + precision);
+						for (int i = 0; i < param1; i++)
+							RTC_Extensions.RotateLeft(_value);
+						break;
+					case BGBlastModes.BITWISE_ROTATE_RIGHT:
+						_temp = RTC_Extensions.getByteArrayValue(precision, param1, mdp.BigEndian);
+						_value = mdp.PeekBytes(safeAddress, safeAddress + precision);
+						for (int i = 0; i < param1; i++)
+							RTC_Extensions.RotateRight(_value);
 						break;
 				}
 
