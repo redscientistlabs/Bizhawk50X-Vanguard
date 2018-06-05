@@ -86,6 +86,8 @@ namespace RTC
 			(dgvBlastGenerator.Rows[lastrow].Cells["dgvDomain"] as DataGridViewComboBoxCell).Value = (dgvBlastGenerator.Rows[0].Cells["dgvDomain"] as DataGridViewComboBoxCell).Items[0];
 			(dgvBlastGenerator.Rows[lastrow].Cells["dgvType"] as DataGridViewComboBoxCell).Value = (dgvBlastGenerator.Rows[0].Cells["dgvType"] as DataGridViewComboBoxCell).Items[0];
 			(dgvBlastGenerator.Rows[lastrow].Cells["dgvMode"] as DataGridViewComboBoxCell).Value = (dgvBlastGenerator.Rows[0].Cells["dgvMode"] as DataGridViewComboBoxCell).Items[0];
+
+			PopulateTypeCombobox(dgvBlastGenerator.Rows[lastrow]);
 		}
 
 		private bool PopulateDomainCombobox(DataGridViewComboBoxColumn dgvColumn)
@@ -226,21 +228,20 @@ namespace RTC
 		//	try
 		//	{
 
-			//foreach (DataGridViewRow row in dgvBlastGenerator.Rows.Cast<DataGridViewRow>().Where(item => (bool)item.Cells["dgvRowDirty"].Value == true))
-				foreach (DataGridViewRow row in dgvBlastGenerator.Rows)
+			foreach (DataGridViewRow row in dgvBlastGenerator.Rows)
+			{
+				if ((bool)row.Cells["dgvRowDirty"].Value == true)
 				{
-					if(true)
-					//if ((bool)row.Cells["dgvRowDirty"].Value == true)
-					{
-						BlastGeneratorProto proto = CreateProtoFromRow(row);
-						row.Cells["dgvBlastLayerReference"].Value = proto.GenerateBlastLayer();
-						bl.Layer.AddRange(((BlastLayer)row.Cells["dgvBlastLayerReference"].Value).Layer);
-					}
-					else
-					{
-						bl.Layer.AddRange(((BlastLayer)row.Cells["dgvBlastLayerReference"].Value).Layer);
-					}
+					BlastGeneratorProto proto = CreateProtoFromRow(row);
+					row.Cells["dgvBlastLayerReference"].Value = proto.GenerateBlastLayer();
+					bl.Layer.AddRange(((BlastLayer)row.Cells["dgvBlastLayerReference"].Value).Layer);
+					row.Cells["dgvRowDirty"].Value = true;
 				}
+				else
+				{
+					bl.Layer.AddRange(((BlastLayer)row.Cells["dgvBlastLayerReference"].Value).Layer);
+				}
+			}
 		//	}catch(Exception ex)
 		//	{		
 		//        MessageBox.Show(ex.ToString());
