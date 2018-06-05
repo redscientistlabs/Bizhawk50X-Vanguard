@@ -1221,9 +1221,14 @@ namespace RTC
 		private void importBlastlayerblToolStripMenuItem_Click(object sender, EventArgs e)
 		{
 			BlastLayer temp = RTC_BlastTools.LoadBlastLayerFromFile();
-			if (temp != null)
+			ImportBlastLayer(temp);
+		}
+
+		public void ImportBlastLayer(BlastLayer bl)
+		{
+			if (bl != null)
 			{
-				foreach (BlastUnit bu in temp.Layer)
+				foreach (BlastUnit bu in bl.Layer)
 					sk.BlastLayer.Layer.Add(bu);
 				RefreshBlastLayer();
 			}

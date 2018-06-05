@@ -41,14 +41,10 @@ namespace RTC
 					case BGBlastModes.ADD:
 						Type = BlastByteType.ADD;
 						_value = RTC_Extensions.getByteArrayValue(precision, param1, mdp.BigEndian);
-						if (mdp.BigEndian)
-							_value.FlipBytes();
 						break;
 					case BGBlastModes.SUBTRACT:
 						Type = BlastByteType.SUBSTRACT;
 						_value = RTC_Extensions.getByteArrayValue(precision, param1, mdp.BigEndian);
-						if (mdp.BigEndian)
-							_value.FlipBytes();
 						break;
 					case BGBlastModes.RANDOM:
 						for (int i = 0; i < _value.Length; i++)

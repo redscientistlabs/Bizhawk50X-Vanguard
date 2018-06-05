@@ -536,32 +536,41 @@ namespace RTC
 
 			try
             {
-                if (_layer != null)
-                {
-                    _layer.Apply(); //If the BlastLayer was provided, there's no need to generate a new one.
+				if (_layer != null)
+				{
+					_layer.Apply(); //If the BlastLayer was provided, there's no need to generate a new one.
 
-                    return _layer;
-                }
-                else if (RTC_Core.SelectedEngine == CorruptionEngine.EXTERNALROM) 
-                {   //External ROM Plugin: Bypasses domains and uses an alternative algorithm to fetch corruption.
-                    //It will query a BlastLayer generated from a differential between an original and corrupted rom.
-                    bl = RTC_ExternalRomPlugin.GetBlastLayer();
-                    if (bl == null)
-                        return null;
-                    else
-                        return bl;
+					return _layer;
+				}
+				else if (RTC_Core.SelectedEngine == CorruptionEngine.EXTERNALROM)
+				{   //External ROM Plugin: Bypasses domains and uses an alternative algorithm to fetch corruption.
+					//It will query a BlastLayer generated from a differential between an original and corrupted rom.
+					bl = RTC_ExternalRomPlugin.GetBlastLayer();
+					if (bl == null)
+						return null;
+					else
+						return bl;
+				}
+				else if (RTC_Core.SelectedEngine == CorruptionEngine.BLASTGENERATORENGINE)
+				{   //External ROM Plugin: Bypasses domains and uses an alternative algorithm to fetch corruption.
+					//It will query a BlastLayer generated from a differential between an original and corrupted rom.
+					bl = RTC_BlastGeneratorEngine.GetBlastLayer();
+					if (bl == null)
+						return null;
+					else
+						return bl;
 
-                }
-                else
-                {
-                    bl = new BlastLayer();
+				}
+				else
+				{
+					bl = new BlastLayer();
 
-                    if (_selectedDomains == null || _selectedDomains.Count() == 0)
+					if (_selectedDomains == null || _selectedDomains.Count() == 0)
 						return null;
 
 					// Age distortion BlastBytes
-                    if (RTC_Core.SelectedEngine == CorruptionEngine.DISTORTION && RTC_DistortionEngine.CurrentAge < RTC_DistortionEngine.MaxAge)
-                        RTC_DistortionEngine.CurrentAge++;
+					if (RTC_Core.SelectedEngine == CorruptionEngine.DISTORTION && RTC_DistortionEngine.CurrentAge < RTC_DistortionEngine.MaxAge)
+						RTC_DistortionEngine.CurrentAge++;
 
 					//Run Pipes on Corrupt Step if required
 					if (RTC_Core.SelectedEngine == CorruptionEngine.PIPE && !RTC_PipeEngine.ProcessOnStep)
@@ -580,39 +589,39 @@ namespace RTC
 
 
 					switch (Radius) //Algorithm branching
-                    {
-                        case BlastRadius.SPREAD: //Randomly spreads all corruption bytes to all selected domains
+					{
+						case BlastRadius.SPREAD: //Randomly spreads all corruption bytes to all selected domains
 
-                            for (int i = 0; i < _Intensity; i++) 
-                            {
+							for (int i = 0; i < _Intensity; i++)
+							{
 								Domain = _selectedDomains[RND.Next(_selectedDomains.Length)];
 
-                                MaxAddress = RTC_MemoryDomains.getInterface(Domain).Size;
-                                RandomAddress = RTC_Core.RND.RandomLong(MaxAddress -1);
+								MaxAddress = RTC_MemoryDomains.getInterface(Domain).Size;
+								RandomAddress = RTC_Core.RND.RandomLong(MaxAddress - 1);
 
-                                bu = getBlastUnit(Domain, RandomAddress);
-                                if (bu != null)
-                                    bl.Layer.Add(bu);
-                            }
+								bu = getBlastUnit(Domain, RandomAddress);
+								if (bu != null)
+									bl.Layer.Add(bu);
+							}
 
-                            break;
+							break;
 
-                        case BlastRadius.CHUNK: //Randomly spreads the corruption bytes in one randomly selected domain
+						case BlastRadius.CHUNK: //Randomly spreads the corruption bytes in one randomly selected domain
 
 							Domain = _selectedDomains[RND.Next(_selectedDomains.Length)];
 
 							MaxAddress = RTC_MemoryDomains.getInterface(Domain).Size;
 
-                            for (int i = 0; i < _Intensity; i++)
-                            {
-                                RandomAddress = RTC_Core.RND.RandomLong(MaxAddress -1);
+							for (int i = 0; i < _Intensity; i++)
+							{
+								RandomAddress = RTC_Core.RND.RandomLong(MaxAddress - 1);
 
-                                bu = getBlastUnit(Domain, RandomAddress);
-                                if(bu != null)
-                                    bl.Layer.Add(bu);
-                            }
+								bu = getBlastUnit(Domain, RandomAddress);
+								if (bu != null)
+									bl.Layer.Add(bu);
+							}
 
-                            break;
+							break;
 
 						case BlastRadius.BURST: // 10 shots of 10% chunk
 
@@ -637,11 +646,11 @@ namespace RTC
 
 						case BlastRadius.NORMALIZED: // Blasts based on the size of the largest selected domain. Intensity =  Intensity / (domainSize[largestdomain]/domainSize[currentdomain])
 
-                            
+
 							//Find the smallest domain and base our normalization around it
 							//Domains aren't IComparable so I used keys
 
-							long[] domainSize = new long [_selectedDomains.Length];
+							long[] domainSize = new long[_selectedDomains.Length];
 							for (int i = 0; i < _selectedDomains.Length; i++)
 							{
 								Domain = _selectedDomains[i];
@@ -655,7 +664,7 @@ namespace RTC
 								Domain = _selectedDomains[i];
 
 								//Get the intensity divider. The size of the largest domain divided by the size of the current domain
-								long normalized = ((domainSize[_selectedDomains.Length-1] / (domainSize[i])));
+								long normalized = ((domainSize[_selectedDomains.Length - 1] / (domainSize[i])));
 
 								for (int j = 0; j < (_Intensity / normalized); j++)
 								{
@@ -704,7 +713,7 @@ namespace RTC
 							{
 								Domain = _selectedDomains[i];
 
-								for (int j = 0; j < (_Intensity/_selectedDomains.Length); j++)
+								for (int j = 0; j < (_Intensity / _selectedDomains.Length); j++)
 								{
 									MaxAddress = RTC_MemoryDomains.getInterface(Domain).Size;
 									RandomAddress = RTC_Core.RND.RandomLong(MaxAddress - 1);
@@ -718,16 +727,16 @@ namespace RTC
 							break;
 
 						case BlastRadius.NONE: //Shouldn't ever happen but handled anyway
-                            return null;
-                    }
-                    
-                    
-                    if (bl.Layer.Count == 0)
-                        return null;
-                    else
-                        return bl;
+							return null;
+					}
 
-                }
+
+					if (bl.Layer.Count == 0)
+						return null;
+					else
+						return bl;
+
+				}
             }
             catch (Exception ex)
             {

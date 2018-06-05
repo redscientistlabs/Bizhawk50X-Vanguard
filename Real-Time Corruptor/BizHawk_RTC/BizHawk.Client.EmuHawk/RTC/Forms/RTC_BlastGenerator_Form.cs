@@ -11,6 +11,8 @@ using System.Globalization;
 
 namespace RTC
 {
+	
+
 	// 0  dgvBlastLayerReference
 	// 1  dgvRowDirty
 	// 2  dgvEnabled
@@ -41,6 +43,8 @@ namespace RTC
 			dgvParam2
 		}
 
+		public static BlastLayer currentBlastLayer = null;
+		private bool openedFromBlastEditor = false;
 		private StashKey sk = null;
 		private ContextMenuStrip cms = new ContextMenuStrip();
 
@@ -54,6 +58,28 @@ namespace RTC
 			this.dgvBlastGenerator.MouseClick += new System.Windows.Forms.MouseEventHandler(dgvBlastGenerator_MouseClick);
 		}
 
+		public void LoadGHStashkey()
+		{
+			StashKey psk = RTC_StockpileManager.getCurrentSavestateStashkey();
+
+			if (psk == null)
+			{
+				RTC_Core.StopSound();
+				MessageBox.Show("The Glitch Harvester could not perform the CORRUPT action\n\nEither no Savestate Box was selected in the Savestate Manager\nor the Savetate Box itself is empty.");
+				RTC_Core.StartSound();
+				return;
+			}
+
+			sk = (StashKey)psk.Clone();
+			
+			PopulateDomainCombobox(dgvBlastGenerator.Columns["dgvDomain"] as DataGridViewComboBoxColumn);
+			AddDefaultRow();
+			PopulateTypeCombobox(dgvBlastGenerator.Rows[0]);
+			openedFromBlastEditor = false;
+
+			this.Show();
+		}
+
 		public void LoadStashkey(StashKey _sk)
 		{
 			if (_sk == null)
@@ -65,6 +91,7 @@ namespace RTC
 			PopulateDomainCombobox(dgvBlastGenerator.Columns["dgvDomain"] as DataGridViewComboBoxColumn);
 			AddDefaultRow();
 			PopulateTypeCombobox(dgvBlastGenerator.Rows[0]);
+			openedFromBlastEditor = true;
 
 			this.Show();
 		}
@@ -139,12 +166,19 @@ namespace RTC
 
 		private void btnSendTo_Click(object sender, EventArgs e)
 		{
-		//	try
-		//	{
-				GenerateBlastLayers();
+			sk.BlastLayer = GenerateBlastLayers();
 
-				StashKey newSk = (StashKey)sk.Clone();
+			StashKey newSk = (StashKey)sk.Clone();
 
+			if (openedFromBlastEditor)
+			{
+				if(RTC_Core.beForm != null)
+				{
+					RTC_Core.beForm.ImportBlastLayer(sk.BlastLayer);
+				}
+			}
+			else
+			{
 				RTC_StockpileManager.StashHistory.Add(newSk);
 				RTC_Core.ghForm.RefreshStashHistory();
 				RTC_Core.ghForm.dgvStockpile.ClearSelection();
@@ -153,12 +187,10 @@ namespace RTC
 				RTC_Core.ghForm.DontLoadSelectedStash = true;
 				RTC_Core.ghForm.lbStashHistory.SelectedIndex = RTC_Core.ghForm.lbStashHistory.Items.Count - 1;
 
-				GC.Collect();
-				GC.WaitForPendingFinalizers();
-		//	}catch(Exception ex)
-			//{
-			//	MessageBox.Show(ex.ToString());
-			//}
+			}		
+
+			GC.Collect();
+			GC.WaitForPendingFinalizers();
 		}
 
 		private void btnLoadCorrupt_Click(object sender, EventArgs e)
@@ -217,12 +249,11 @@ namespace RTC
 			}
 		}
 
-		private void GenerateBlastLayers()
+		public BlastLayer GenerateBlastLayers()
 		{
 			BlastLayer bl = new BlastLayer();
 			sk.RunOriginal();
-		//	try
-		//	{
+		
 
 			foreach (DataGridViewRow row in dgvBlastGenerator.Rows)
 			{
@@ -238,11 +269,7 @@ namespace RTC
 					bl.Layer.AddRange(((BlastLayer)row.Cells["dgvBlastLayerReference"].Value).Layer);
 				}
 			}
-		//	}catch(Exception ex)
-		//	{		
-		//        MessageBox.Show(ex.ToString());
-		//	}
-			sk.BlastLayer = bl;
+			return bl;
 		}
 
 		private BlastGeneratorProto CreateProtoFromRow(DataGridViewRow row)

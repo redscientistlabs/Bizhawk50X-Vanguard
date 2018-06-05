@@ -49,6 +49,7 @@ namespace RTC
 		PIPE,
 		VECTOR,
         EXTERNALROM,
+		BLASTGENERATORENGINE,
         NONE
     }
 
