@@ -15,7 +15,8 @@ namespace RTC
 		{
 			BlastLayer bl = new BlastLayer();
 
-			for (long Address = StartAddress; Address < EndAddress; Address = (Address + Precision + StepSize))
+			//We subtract 1 at the end as precision is 1,2,4, and we need to go 0,1,3
+			for (long Address = StartAddress; Address < EndAddress; Address = (Address + StepSize + Precision - 1))
 			{
 				bl.Layer.Add(GenerateUnit(Domain, Address, Param1, Param2, Precision, Mode));
 			}
@@ -40,14 +41,14 @@ namespace RTC
 					case BGBlastModes.ADD:
 						Type = BlastByteType.ADD;
 						_value = RTC_Extensions.getByteArrayValue(precision, param1, mdp.BigEndian);
-						if (mdp.BigEndian) ;
-						_value.FlipBytes();
+						if (mdp.BigEndian)
+							_value.FlipBytes();
 						break;
 					case BGBlastModes.SUBTRACT:
 						Type = BlastByteType.SUBSTRACT;
 						_value = RTC_Extensions.getByteArrayValue(precision, param1, mdp.BigEndian);
-						if (mdp.BigEndian) ;
-						_value.FlipBytes();
+						if (mdp.BigEndian)
+							_value.FlipBytes();
 						break;
 					case BGBlastModes.RANDOM:
 						for (int i = 0; i < _value.Length; i++)

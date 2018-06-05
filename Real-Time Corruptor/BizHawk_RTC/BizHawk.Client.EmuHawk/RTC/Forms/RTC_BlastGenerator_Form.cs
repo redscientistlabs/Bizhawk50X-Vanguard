@@ -64,18 +64,29 @@ namespace RTC
 				return;
 
 			sk = (StashKey)_sk.Clone();
+			sk.BlastLayer = null;
 
-			//Set up the DGV based on the current state of Bizhawk
-			PopulateDomainCombobox(dgvBlastGenerator.Columns["dgvDomain"] as DataGridViewComboBoxColumn);
-			(dgvBlastGenerator.Rows[0].Cells["dgvRowDirty"]).Value = true;
-			(dgvBlastGenerator.Rows[0].Cells["dgvDomain"] as DataGridViewComboBoxCell).Value = (dgvBlastGenerator.Rows[0].Cells["dgvDomain"] as DataGridViewComboBoxCell).Items[0];
-			(dgvBlastGenerator.Rows[0].Cells["dgvType"] as DataGridViewComboBoxCell).Value = (dgvBlastGenerator.Rows[0].Cells["dgvType"] as DataGridViewComboBoxCell).Items[0];
-			(dgvBlastGenerator.Rows[0].Cells["dgvMode"] as DataGridViewComboBoxCell).Value = (dgvBlastGenerator.Rows[0].Cells["dgvMode"] as DataGridViewComboBoxCell).Items[0];
+			AddDefaultRow();
 			PopulateTypeCombobox(dgvBlastGenerator.Rows[0]);
 
 			this.Show();
 		}
 
+		private void AddDefaultRow()
+		{
+
+			//Add an empty row and populate with default values
+			dgvBlastGenerator.Rows.Add();
+			int lastrow = dgvBlastGenerator.RowCount - 1;
+			//Set up the DGV based on the current state of Bizhawk
+			PopulateDomainCombobox(dgvBlastGenerator.Columns["dgvDomain"] as DataGridViewComboBoxColumn);
+			(dgvBlastGenerator.Rows[lastrow].Cells["dgvRowDirty"]).Value = true;
+			(dgvBlastGenerator.Rows[lastrow].Cells["dgvEnabled"]).Value = true;
+			(dgvBlastGenerator.Rows[lastrow].Cells["dgvPrecision"] as DataGridViewComboBoxCell).Value = (dgvBlastGenerator.Rows[0].Cells["dgvPrecision"] as DataGridViewComboBoxCell).Items[0];
+			(dgvBlastGenerator.Rows[lastrow].Cells["dgvDomain"] as DataGridViewComboBoxCell).Value = (dgvBlastGenerator.Rows[0].Cells["dgvDomain"] as DataGridViewComboBoxCell).Items[0];
+			(dgvBlastGenerator.Rows[lastrow].Cells["dgvType"] as DataGridViewComboBoxCell).Value = (dgvBlastGenerator.Rows[0].Cells["dgvType"] as DataGridViewComboBoxCell).Items[0];
+			(dgvBlastGenerator.Rows[lastrow].Cells["dgvMode"] as DataGridViewComboBoxCell).Value = (dgvBlastGenerator.Rows[0].Cells["dgvMode"] as DataGridViewComboBoxCell).Items[0];
+		}
 
 		private bool PopulateDomainCombobox(DataGridViewComboBoxColumn dgvColumn)
 		{
@@ -128,9 +139,28 @@ namespace RTC
 
 		}
 
-		private void btnSendBlastLayerToEditor_Click(object sender, EventArgs e)
+		private void btnSendTo_Click(object sender, EventArgs e)
 		{
+		//	try
+		//	{
+				GenerateBlastLayers();
 
+				StashKey newSk = (StashKey)sk.Clone();
+
+				RTC_StockpileManager.StashHistory.Add(newSk);
+				RTC_Core.ghForm.RefreshStashHistory();
+				RTC_Core.ghForm.dgvStockpile.ClearSelection();
+				RTC_Core.ghForm.lbStashHistory.ClearSelected();
+
+				RTC_Core.ghForm.DontLoadSelectedStash = true;
+				RTC_Core.ghForm.lbStashHistory.SelectedIndex = RTC_Core.ghForm.lbStashHistory.Items.Count - 1;
+
+				GC.Collect();
+				GC.WaitForPendingFinalizers();
+		//	}catch(Exception ex)
+			//{
+			//	MessageBox.Show(ex.ToString());
+			//}
 		}
 
 		private void btnLoadCorrupt_Click(object sender, EventArgs e)
@@ -192,22 +222,29 @@ namespace RTC
 		private void GenerateBlastLayers()
 		{
 			BlastLayer bl = new BlastLayer();
+			sk.RunOriginal();
+		//	try
+		//	{
 
 			//foreach (DataGridViewRow row in dgvBlastGenerator.Rows.Cast<DataGridViewRow>().Where(item => (bool)item.Cells["dgvRowDirty"].Value == true))
-			foreach (DataGridViewRow row in dgvBlastGenerator.Rows)
-			{
-				if(true)
-				//if ((bool)row.Cells["dgvRowDirty"].Value == true)
+				foreach (DataGridViewRow row in dgvBlastGenerator.Rows)
 				{
-					BlastGeneratorProto proto = CreateProtoFromRow(row);
-					row.Cells["dgvBlastLayerReference"].Value = proto.GenerateBlastLayer().Layer;
-					bl.Layer.Concat(((BlastLayer)row.Cells["dgvBlastLayerReference"].Value).Layer);
+					if(true)
+					//if ((bool)row.Cells["dgvRowDirty"].Value == true)
+					{
+						BlastGeneratorProto proto = CreateProtoFromRow(row);
+						row.Cells["dgvBlastLayerReference"].Value = proto.GenerateBlastLayer();
+						bl.Layer.AddRange(((BlastLayer)row.Cells["dgvBlastLayerReference"].Value).Layer);
+					}
+					else
+					{
+						bl.Layer.AddRange(((BlastLayer)row.Cells["dgvBlastLayerReference"].Value).Layer);
+					}
 				}
-				else
-				{
-					bl.Layer.Concat(((BlastLayer)row.Cells["dgvBlastLayerReference"].Value).Layer);
-				}
-			}
+		//	}catch(Exception ex)
+		//	{		
+		//        MessageBox.Show(ex.ToString());
+		//	}
 			sk.BlastLayer = bl;
 		}
 
@@ -227,18 +264,25 @@ namespace RTC
 			// 10  dgvParam1
 			// 11  dgvParam2
 
-			string domain = row.Cells["dgvDomain"].Value.ToString();
-			string type = row.Cells["dgvType"].Value.ToString();
-			string mode = row.Cells["dgvMode"].Value.ToString();
-			int precision = GetPrecisionSizeFromName(row.Cells["dgvPrecision"].Value.ToString());
-			int stepSize = Convert.ToInt32(row.Cells["dgvDomain"].Value);
-			long startAddress = Convert.ToInt64(row.Cells["dgvStartAddress"].Value);
-			long endAddress = Convert.ToInt64(row.Cells["dgvEndAddress"].Value);
-			long param1 = Convert.ToInt64(row.Cells["dgvParam1"].Value);
-			long param2 = Convert.ToInt64(row.Cells["dgvParam2"].Value);
+		//	try
+		//	{
 
-			return new BlastGeneratorProto(type, domain, mode, precision, stepSize, startAddress, endAddress, param1, param2);
+				string domain = row.Cells["dgvDomain"].Value.ToString();
+				string type = row.Cells["dgvType"].Value.ToString();
+				string mode = row.Cells["dgvMode"].Value.ToString();
+				int precision = GetPrecisionSizeFromName(row.Cells["dgvPrecision"].Value.ToString());
+				int stepSize = Convert.ToInt32(row.Cells["dgvStepSize"].Value);
+				long startAddress = Convert.ToInt64(row.Cells["dgvStartAddress"].Value);
+				long endAddress = Convert.ToInt64(row.Cells["dgvEndAddress"].Value);
+				long param1 = Convert.ToInt64(row.Cells["dgvParam1"].Value);
+				long param2 = Convert.ToInt64(row.Cells["dgvParam2"].Value);
 
+				return new BlastGeneratorProto(type, domain, mode, precision, stepSize, startAddress, endAddress, param1, param2);
+
+		//	}catch(Exception ex)
+		//	{
+		//		throw;
+		//	}
 		}
 
 		private void btnShiftBlastLayerDown_Click(object sender, EventArgs e)
@@ -280,6 +324,11 @@ namespace RTC
 				default:
 					return -1;
 			}
+		}
+
+		private void btnAddRow_Click(object sender, EventArgs e)
+		{
+			AddDefaultRow();
 		}
 	}
 }

@@ -33,9 +33,10 @@
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(RTC_BlastGenerator_Form));
             this.btnLoadCorrupt = new System.Windows.Forms.Button();
             this.btnJustCorrupt = new System.Windows.Forms.Button();
-            this.btnSendBlastLayerToEditor = new System.Windows.Forms.Button();
+            this.btnSendTo = new System.Windows.Forms.Button();
             this.cbUseHex = new System.Windows.Forms.CheckBox();
             this.panel1 = new System.Windows.Forms.Panel();
+            this.btnAddRow = new System.Windows.Forms.Button();
             this.panel2 = new System.Windows.Forms.Panel();
             this.label5 = new System.Windows.Forms.Label();
             this.label3 = new System.Windows.Forms.Label();
@@ -95,7 +96,7 @@
             this.btnLoadCorrupt.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnLoadCorrupt.Font = new System.Drawing.Font("Segoe UI Semibold", 9F, System.Drawing.FontStyle.Bold);
             this.btnLoadCorrupt.ForeColor = System.Drawing.Color.Black;
-            this.btnLoadCorrupt.Location = new System.Drawing.Point(5, 260);
+            this.btnLoadCorrupt.Location = new System.Drawing.Point(5, 273);
             this.btnLoadCorrupt.Name = "btnLoadCorrupt";
             this.btnLoadCorrupt.Size = new System.Drawing.Size(148, 30);
             this.btnLoadCorrupt.TabIndex = 139;
@@ -112,7 +113,7 @@
             this.btnJustCorrupt.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnJustCorrupt.Font = new System.Drawing.Font("Segoe UI Semibold", 9F, System.Drawing.FontStyle.Bold);
             this.btnJustCorrupt.ForeColor = System.Drawing.Color.Black;
-            this.btnJustCorrupt.Location = new System.Drawing.Point(5, 296);
+            this.btnJustCorrupt.Location = new System.Drawing.Point(5, 306);
             this.btnJustCorrupt.Name = "btnJustCorrupt";
             this.btnJustCorrupt.Size = new System.Drawing.Size(148, 30);
             this.btnJustCorrupt.TabIndex = 150;
@@ -122,22 +123,22 @@
             this.btnJustCorrupt.UseVisualStyleBackColor = false;
             this.btnJustCorrupt.Click += new System.EventHandler(this.btnJustCorrupt_Click);
             // 
-            // btnSendBlastLayerToEditor
+            // btnSendTo
             // 
-            this.btnSendBlastLayerToEditor.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(224)))), ((int)(((byte)(224)))), ((int)(((byte)(224)))));
-            this.btnSendBlastLayerToEditor.FlatAppearance.BorderSize = 0;
-            this.btnSendBlastLayerToEditor.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btnSendBlastLayerToEditor.Font = new System.Drawing.Font("Segoe UI Semibold", 9F, System.Drawing.FontStyle.Bold);
-            this.btnSendBlastLayerToEditor.ForeColor = System.Drawing.Color.Black;
-            this.btnSendBlastLayerToEditor.Location = new System.Drawing.Point(5, 332);
-            this.btnSendBlastLayerToEditor.Name = "btnSendBlastLayerToEditor";
-            this.btnSendBlastLayerToEditor.Size = new System.Drawing.Size(148, 30);
-            this.btnSendBlastLayerToEditor.TabIndex = 151;
-            this.btnSendBlastLayerToEditor.TabStop = false;
-            this.btnSendBlastLayerToEditor.Tag = "color:light";
-            this.btnSendBlastLayerToEditor.Text = "Send BlastLayer to Editor";
-            this.btnSendBlastLayerToEditor.UseVisualStyleBackColor = false;
-            this.btnSendBlastLayerToEditor.Click += new System.EventHandler(this.btnSendBlastLayerToEditor_Click);
+            this.btnSendTo.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(224)))), ((int)(((byte)(224)))), ((int)(((byte)(224)))));
+            this.btnSendTo.FlatAppearance.BorderSize = 0;
+            this.btnSendTo.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnSendTo.Font = new System.Drawing.Font("Segoe UI Semibold", 9F, System.Drawing.FontStyle.Bold);
+            this.btnSendTo.ForeColor = System.Drawing.Color.Black;
+            this.btnSendTo.Location = new System.Drawing.Point(5, 339);
+            this.btnSendTo.Name = "btnSendTo";
+            this.btnSendTo.Size = new System.Drawing.Size(148, 30);
+            this.btnSendTo.TabIndex = 151;
+            this.btnSendTo.TabStop = false;
+            this.btnSendTo.Tag = "color:light";
+            this.btnSendTo.Text = "Send to Stash";
+            this.btnSendTo.UseVisualStyleBackColor = false;
+            this.btnSendTo.Click += new System.EventHandler(this.btnSendTo_Click);
             // 
             // cbUseHex
             // 
@@ -146,7 +147,7 @@
             this.cbUseHex.CheckState = System.Windows.Forms.CheckState.Checked;
             this.cbUseHex.Font = new System.Drawing.Font("Segoe UI Semibold", 8F, System.Drawing.FontStyle.Bold);
             this.cbUseHex.ForeColor = System.Drawing.Color.White;
-            this.cbUseHex.Location = new System.Drawing.Point(5, 237);
+            this.cbUseHex.Location = new System.Drawing.Point(5, 253);
             this.cbUseHex.Name = "cbUseHex";
             this.cbUseHex.Size = new System.Drawing.Size(114, 17);
             this.cbUseHex.TabIndex = 157;
@@ -156,17 +157,35 @@
             // 
             // panel1
             // 
+            this.panel1.Controls.Add(this.btnAddRow);
             this.panel1.Controls.Add(this.panel2);
             this.panel1.Controls.Add(this.label4);
             this.panel1.Controls.Add(this.cbUseHex);
             this.panel1.Controls.Add(this.btnJustCorrupt);
-            this.panel1.Controls.Add(this.btnSendBlastLayerToEditor);
+            this.panel1.Controls.Add(this.btnSendTo);
             this.panel1.Controls.Add(this.btnLoadCorrupt);
             this.panel1.Dock = System.Windows.Forms.DockStyle.Right;
             this.panel1.Location = new System.Drawing.Point(762, 24);
             this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(159, 366);
+            this.panel1.Size = new System.Drawing.Size(159, 375);
             this.panel1.TabIndex = 166;
+            // 
+            // btnAddRow
+            // 
+            this.btnAddRow.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(224)))), ((int)(((byte)(224)))), ((int)(((byte)(224)))));
+            this.btnAddRow.FlatAppearance.BorderSize = 0;
+            this.btnAddRow.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnAddRow.Font = new System.Drawing.Font("Segoe UI Semibold", 9F, System.Drawing.FontStyle.Bold);
+            this.btnAddRow.ForeColor = System.Drawing.Color.Black;
+            this.btnAddRow.Location = new System.Drawing.Point(23, 222);
+            this.btnAddRow.Name = "btnAddRow";
+            this.btnAddRow.Size = new System.Drawing.Size(113, 25);
+            this.btnAddRow.TabIndex = 160;
+            this.btnAddRow.TabStop = false;
+            this.btnAddRow.Tag = "color:light";
+            this.btnAddRow.Text = "Add Row";
+            this.btnAddRow.UseVisualStyleBackColor = false;
+            this.btnAddRow.Click += new System.EventHandler(this.btnAddRow_Click);
             // 
             // panel2
             // 
@@ -424,6 +443,7 @@
             // 
             // dgvBlastGenerator
             // 
+            this.dgvBlastGenerator.AllowUserToAddRows = false;
             this.dgvBlastGenerator.AllowUserToResizeRows = false;
             this.dgvBlastGenerator.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
             this.dgvBlastGenerator.ClipboardCopyMode = System.Windows.Forms.DataGridViewClipboardCopyMode.Disable;
@@ -464,7 +484,7 @@
             this.dgvBlastGenerator.RowHeadersVisible = false;
             this.dgvBlastGenerator.RowTemplate.Height = 24;
             this.dgvBlastGenerator.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.dgvBlastGenerator.Size = new System.Drawing.Size(762, 366);
+            this.dgvBlastGenerator.Size = new System.Drawing.Size(762, 375);
             this.dgvBlastGenerator.TabIndex = 167;
             this.dgvBlastGenerator.Tag = "color:normal";
             // 
@@ -606,6 +626,7 @@
             this.dgvEnabled.FillWeight = 35F;
             this.dgvEnabled.HeaderText = "Enabled";
             this.dgvEnabled.Name = "dgvEnabled";
+            this.dgvEnabled.TrueValue = "true";
             // 
             // dgvDomain
             // 
@@ -619,6 +640,10 @@
             // 
             this.dgvPrecision.FillWeight = 55F;
             this.dgvPrecision.HeaderText = "Precision";
+            this.dgvPrecision.Items.AddRange(new object[] {
+            "8-bit",
+            "16-bit",
+            "32-bit"});
             this.dgvPrecision.Name = "dgvPrecision";
             // 
             // dgvType
@@ -724,7 +749,7 @@
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
-            this.ClientSize = new System.Drawing.Size(921, 390);
+            this.ClientSize = new System.Drawing.Size(921, 399);
             this.Controls.Add(this.dgvBlastGenerator);
             this.Controls.Add(this.panel1);
             this.Controls.Add(this.menuStripEx1);
@@ -753,7 +778,7 @@
 		#endregion
 		private System.Windows.Forms.Button btnLoadCorrupt;
 		private System.Windows.Forms.Button btnJustCorrupt;
-		private System.Windows.Forms.Button btnSendBlastLayerToEditor;
+		private System.Windows.Forms.Button btnSendTo;
 		private System.Windows.Forms.CheckBox cbUseHex;
 		private System.Windows.Forms.Panel panel1;
 		private System.Windows.Forms.DataGridView dgvBlastGenerator;
@@ -786,6 +811,7 @@
 		private DataGridViewNumericUpDownColumn dataGridViewNumericUpDownColumn3;
 		private DataGridViewNumericUpDownColumn dataGridViewNumericUpDownColumn4;
 		private DataGridViewNumericUpDownColumn dataGridViewNumericUpDownColumn5;
+		private System.Windows.Forms.Button btnAddRow;
 		private System.Windows.Forms.DataGridViewTextBoxColumn dgvBlastLayerReference;
 		private System.Windows.Forms.DataGridViewTextBoxColumn dgvRowDirty;
 		private System.Windows.Forms.DataGridViewCheckBoxColumn dgvEnabled;
