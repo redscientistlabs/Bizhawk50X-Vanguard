@@ -11,11 +11,11 @@ namespace RTC
 
 	public class RTC_BlastByteGenerator
 	{
-		public BlastLayer GenerateLayer(string Domain, long StartAddress, long EndAddress, long Param1, long Param2, int Precision, BGBlastModes Mode)
+		public BlastLayer GenerateLayer(string Domain, long StepSize, long StartAddress, long EndAddress, long Param1, long Param2, int Precision, BGBlastModes Mode)
 		{
 			BlastLayer bl = new BlastLayer();
 
-			for (long Address = StartAddress; Address < EndAddress; Address = (Address + Precision))
+			for (long Address = StartAddress; Address < EndAddress; Address = (Address + Precision + StepSize))
 			{
 				bl.Layer.Add(GenerateUnit(Domain, Address, Param1, Param2, Precision, Mode));
 			}

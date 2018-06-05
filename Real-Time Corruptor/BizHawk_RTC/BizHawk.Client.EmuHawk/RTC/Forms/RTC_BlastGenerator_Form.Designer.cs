@@ -68,6 +68,7 @@
             this.importBlastlayerblToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.dgvEnabled = new System.Windows.Forms.DataGridViewCheckBoxColumn();
             this.dgvDomain = new System.Windows.Forms.DataGridViewComboBoxColumn();
+            this.dgvPrecision = new System.Windows.Forms.DataGridViewComboBoxColumn();
             this.dgvType = new System.Windows.Forms.DataGridViewComboBoxColumn();
             this.dgvMode = new System.Windows.Forms.DataGridViewComboBoxColumn();
             this.dgvStepSize = new RTC.DataGridViewNumericUpDownColumn();
@@ -160,7 +161,7 @@
             this.panel1.Controls.Add(this.btnSendBlastLayerToEditor);
             this.panel1.Controls.Add(this.btnLoadCorrupt);
             this.panel1.Dock = System.Windows.Forms.DockStyle.Right;
-            this.panel1.Location = new System.Drawing.Point(757, 24);
+            this.panel1.Location = new System.Drawing.Point(762, 24);
             this.panel1.Name = "panel1";
             this.panel1.Size = new System.Drawing.Size(159, 366);
             this.panel1.TabIndex = 166;
@@ -436,6 +437,7 @@
             this.dgvBlastGenerator.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
             this.dgvEnabled,
             this.dgvDomain,
+            this.dgvPrecision,
             this.dgvType,
             this.dgvMode,
             this.dgvStepSize,
@@ -458,7 +460,7 @@
             this.dgvBlastGenerator.RowHeadersVisible = false;
             this.dgvBlastGenerator.RowTemplate.Height = 24;
             this.dgvBlastGenerator.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.dgvBlastGenerator.Size = new System.Drawing.Size(757, 366);
+            this.dgvBlastGenerator.Size = new System.Drawing.Size(762, 366);
             this.dgvBlastGenerator.TabIndex = 167;
             this.dgvBlastGenerator.Tag = "color:normal";
             // 
@@ -550,7 +552,7 @@
             this.blastLayerToolStripMenuItem});
             this.menuStripEx1.Location = new System.Drawing.Point(0, 0);
             this.menuStripEx1.Name = "menuStripEx1";
-            this.menuStripEx1.Size = new System.Drawing.Size(916, 24);
+            this.menuStripEx1.Size = new System.Drawing.Size(921, 24);
             this.menuStripEx1.TabIndex = 168;
             this.menuStripEx1.Text = "menuStripEx1";
             // 
@@ -595,6 +597,12 @@
             this.dgvDomain.MaxDropDownItems = 20;
             this.dgvDomain.Name = "dgvDomain";
             this.dgvDomain.Resizable = System.Windows.Forms.DataGridViewTriState.True;
+            // 
+            // dgvPrecision
+            // 
+            this.dgvPrecision.FillWeight = 55F;
+            this.dgvPrecision.HeaderText = "Precision";
+            this.dgvPrecision.Name = "dgvPrecision";
             // 
             // dgvType
             // 
@@ -699,7 +707,7 @@
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
-            this.ClientSize = new System.Drawing.Size(916, 390);
+            this.ClientSize = new System.Drawing.Size(921, 390);
             this.Controls.Add(this.dgvBlastGenerator);
             this.Controls.Add(this.panel1);
             this.Controls.Add(this.menuStripEx1);
@@ -763,6 +771,7 @@
 		private DataGridViewNumericUpDownColumn dataGridViewNumericUpDownColumn5;
 		private System.Windows.Forms.DataGridViewCheckBoxColumn dgvEnabled;
 		private System.Windows.Forms.DataGridViewComboBoxColumn dgvDomain;
+		private System.Windows.Forms.DataGridViewComboBoxColumn dgvPrecision;
 		private System.Windows.Forms.DataGridViewComboBoxColumn dgvType;
 		private System.Windows.Forms.DataGridViewComboBoxColumn dgvMode;
 		private DataGridViewNumericUpDownColumn dgvStepSize;
