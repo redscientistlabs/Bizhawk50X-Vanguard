@@ -662,7 +662,7 @@
             // 
             // dgvMode
             // 
-            this.dgvMode.DropDownWidth = 100;
+            this.dgvMode.DropDownWidth = 150;
             this.dgvMode.FillWeight = 65F;
             this.dgvMode.HeaderText = "Mode";
             this.dgvMode.Items.AddRange(new object[] {
