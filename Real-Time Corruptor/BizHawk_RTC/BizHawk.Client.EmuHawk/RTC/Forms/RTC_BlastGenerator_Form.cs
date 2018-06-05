@@ -51,11 +51,7 @@ namespace RTC
 
 		private void RTC_BlastGeneratorForm_Load(object sender, EventArgs e)
 		{
-			//Fill in a default row
-			//dgvBlastGenerator.Rows[0].Cells["dgvEnabled"].Value = true;
-
 			this.dgvBlastGenerator.MouseClick += new System.Windows.Forms.MouseEventHandler(dgvBlastGenerator_MouseClick);
-
 		}
 
 		public void LoadStashkey(StashKey _sk)
@@ -66,6 +62,7 @@ namespace RTC
 			sk = (StashKey)_sk.Clone();
 			sk.BlastLayer = null;
 
+			PopulateDomainCombobox(dgvBlastGenerator.Columns["dgvDomain"] as DataGridViewComboBoxColumn);
 			AddDefaultRow();
 			PopulateTypeCombobox(dgvBlastGenerator.Rows[0]);
 
@@ -79,7 +76,6 @@ namespace RTC
 			dgvBlastGenerator.Rows.Add();
 			int lastrow = dgvBlastGenerator.RowCount - 1;
 			//Set up the DGV based on the current state of Bizhawk
-			PopulateDomainCombobox(dgvBlastGenerator.Columns["dgvDomain"] as DataGridViewComboBoxColumn);
 			(dgvBlastGenerator.Rows[lastrow].Cells["dgvRowDirty"]).Value = true;
 			(dgvBlastGenerator.Rows[lastrow].Cells["dgvEnabled"]).Value = true;
 			(dgvBlastGenerator.Rows[lastrow].Cells["dgvPrecision"] as DataGridViewComboBoxCell).Value = (dgvBlastGenerator.Rows[0].Cells["dgvPrecision"] as DataGridViewComboBoxCell).Items[0];
