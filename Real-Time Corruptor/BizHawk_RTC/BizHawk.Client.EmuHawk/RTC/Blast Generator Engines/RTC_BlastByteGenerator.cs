@@ -91,13 +91,13 @@ namespace RTC
 						for (int i = 0; i < _value.Length; i++)
 							_value[i] = (byte)(_value[i] ^ _temp[i]);
 						break;
-					case BGBlastModes.BITWISE_ROTATE_LEFT:
+					case BGBlastModes.BITWISE_SHIFT_LEFT:
 						_temp = RTC_Extensions.getByteArrayValue(precision, param1, mdp.BigEndian);
 						_value = mdp.PeekBytes(safeAddress, safeAddress + precision);
 						for (int i = 0; i < _value.Length; i++)
 							_value[i] = (byte)(_value[i] << _temp[i]);
 						break;
-					case BGBlastModes.BITWISE_ROTATE_RIGHT:
+					case BGBlastModes.BITWISE_SHIFT_RIGHT:
 						_temp = RTC_Extensions.getByteArrayValue(precision, param1, mdp.BigEndian);
 						_value = mdp.PeekBytes(safeAddress, safeAddress + precision);
 						for (int i = 0; i < _value.Length; i++)

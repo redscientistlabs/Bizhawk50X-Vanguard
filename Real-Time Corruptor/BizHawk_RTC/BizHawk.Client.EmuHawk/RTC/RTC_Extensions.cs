@@ -2240,7 +2240,7 @@ namespace RTC
 				if (!string.IsNullOrEmpty(base.Text))
 				{
 					base.ChangingText = true;
-					base.Text = string.Format("{0:X}", (uint)base.Value);
+					base.Text = string.Format("{0:X}", (ulong)base.Value);
 				}
 			}
 			else
