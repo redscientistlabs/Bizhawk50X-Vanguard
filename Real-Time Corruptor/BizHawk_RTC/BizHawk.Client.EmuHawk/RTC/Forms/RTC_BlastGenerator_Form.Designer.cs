@@ -623,7 +623,7 @@
             // 
             // dgvEnabled
             // 
-            this.dgvEnabled.FillWeight = 35F;
+            this.dgvEnabled.FillWeight = 40F;
             this.dgvEnabled.HeaderText = "Enabled";
             this.dgvEnabled.Name = "dgvEnabled";
             this.dgvEnabled.TrueValue = "true";
@@ -638,7 +638,7 @@
             // 
             // dgvPrecision
             // 
-            this.dgvPrecision.FillWeight = 55F;
+            this.dgvPrecision.FillWeight = 45F;
             this.dgvPrecision.HeaderText = "Precision";
             this.dgvPrecision.Items.AddRange(new object[] {
             "8-bit",
@@ -659,7 +659,7 @@
             // 
             // dgvMode
             // 
-            this.dgvMode.FillWeight = 55F;
+            this.dgvMode.FillWeight = 65F;
             this.dgvMode.HeaderText = "Mode";
             this.dgvMode.Items.AddRange(new object[] {
             "SET",

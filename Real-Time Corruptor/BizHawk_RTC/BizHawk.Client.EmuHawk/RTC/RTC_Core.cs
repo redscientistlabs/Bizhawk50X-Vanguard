@@ -87,9 +87,10 @@ namespace RTC
                         multiForm,
                         multipeerpopoutForm,
                         sbForm,
-                        beForm,
+						beForm,
+						bgForm,
 
-                        vmdActForm,
+						vmdActForm,
                         vmdGenForm,
                         vmdPoolForm,
 
