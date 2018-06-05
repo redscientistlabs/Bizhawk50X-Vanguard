@@ -635,6 +635,7 @@
             this.dgvDomain.MaxDropDownItems = 20;
             this.dgvDomain.Name = "dgvDomain";
             this.dgvDomain.Resizable = System.Windows.Forms.DataGridViewTriState.True;
+            this.dgvDomain.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.Automatic;
             // 
             // dgvPrecision
             // 
@@ -645,6 +646,7 @@
             "16-bit",
             "32-bit"});
             this.dgvPrecision.Name = "dgvPrecision";
+            this.dgvPrecision.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.Automatic;
             // 
             // dgvType
             // 
@@ -656,9 +658,11 @@
             "BlastPipe"});
             this.dgvType.Name = "dgvType";
             this.dgvType.Resizable = System.Windows.Forms.DataGridViewTriState.True;
+            this.dgvType.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.Automatic;
             // 
             // dgvMode
             // 
+            this.dgvMode.DropDownWidth = 100;
             this.dgvMode.FillWeight = 65F;
             this.dgvMode.HeaderText = "Mode";
             this.dgvMode.Items.AddRange(new object[] {
@@ -674,6 +678,7 @@
             "BITWISE_XOR",
             "BITWISE_COMPLEMENT",
             "REPLACE_X_WITH_Y"});
+            this.dgvMode.MaxDropDownItems = 20;
             this.dgvMode.Name = "dgvMode";
             this.dgvMode.Resizable = System.Windows.Forms.DataGridViewTriState.True;
             this.dgvMode.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.Automatic;
@@ -693,6 +698,7 @@
             0,
             0});
             this.dgvStepSize.Name = "dgvStepSize";
+            this.dgvStepSize.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.Automatic;
             // 
             // dgvStartAddress
             // 
@@ -701,6 +707,11 @@
             this.dgvStartAddress.Hexadecimal = true;
             this.dgvStartAddress.Maximum = new decimal(new int[] {
             -1,
+            0,
+            0,
+            0});
+            this.dgvStartAddress.Minimum = new decimal(new int[] {
+            1,
             0,
             0,
             0});
@@ -731,6 +742,7 @@
             0,
             0});
             this.dgvParam1.Name = "dgvParam1";
+            this.dgvParam1.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.Automatic;
             // 
             // dgvParam2
             // 
@@ -743,6 +755,7 @@
             0,
             0});
             this.dgvParam2.Name = "dgvParam2";
+            this.dgvParam2.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.Automatic;
             // 
             // RTC_BlastGenerator_Form
             // 
