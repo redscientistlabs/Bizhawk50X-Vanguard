@@ -1654,7 +1654,7 @@ namespace RTC
 	[Serializable()]
 	public class BlastGeneratorProto
 	{
-		public BlastUnit BlastType;
+		public string BlastType;
 		public string Domain;
 		public int Precision;
 		public long StepSize;
@@ -1668,7 +1668,7 @@ namespace RTC
 		{
 		}
 
-		public BlastGeneratorProto(BlastUnit _blastType, string _domain, int _precision, long _stepSize, long _startAddress, long _endAddress, long _param1, long _param2, string _mode)
+		public BlastGeneratorProto(string _blastType, string _domain, string _mode, int _precision, long _stepSize, long _startAddress, long _endAddress, long _param1, long _param2)
 		{
 			BlastType = _blastType;
 			Domain = _domain;
@@ -1686,13 +1686,13 @@ namespace RTC
 			BlastLayer bl = null;
 			switch (BlastType)
 			{
-				case BlastByte bb:
+				case "BlastByte":
 					RTC_BlastByteGenerator generator = new RTC_BlastByteGenerator();
 					bl = generator.GenerateLayer(Domain, StepSize, StartAddress, EndAddress, Param1, Param2, Precision, (BGBlastModes)Enum.Parse(typeof(BGBlastModes), Mode, true));
 					break;
-				case BlastCheat bc:
+				case "BlastCheat":
 					break;
-				case BlastPipe bp:
+				case "BlastPipe":
 					break;
 				default:
 					return null;

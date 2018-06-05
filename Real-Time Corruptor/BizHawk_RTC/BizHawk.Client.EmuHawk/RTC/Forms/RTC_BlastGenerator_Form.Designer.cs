@@ -66,6 +66,8 @@
             this.loadFromFileblToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.saveAsToFileblToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.importBlastlayerblToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.dgvBlastLayerReference = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.dgvRowDirty = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.dgvEnabled = new System.Windows.Forms.DataGridViewCheckBoxColumn();
             this.dgvDomain = new System.Windows.Forms.DataGridViewComboBoxColumn();
             this.dgvPrecision = new System.Windows.Forms.DataGridViewComboBoxColumn();
@@ -435,6 +437,8 @@
             this.dgvBlastGenerator.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle1;
             this.dgvBlastGenerator.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.dgvBlastGenerator.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
+            this.dgvBlastLayerReference,
+            this.dgvRowDirty,
             this.dgvEnabled,
             this.dgvDomain,
             this.dgvPrecision,
@@ -583,6 +587,19 @@
             this.importBlastlayerblToolStripMenuItem.Name = "importBlastlayerblToolStripMenuItem";
             this.importBlastlayerblToolStripMenuItem.Size = new System.Drawing.Size(241, 22);
             this.importBlastlayerblToolStripMenuItem.Text = "&Import Generation Params (.bg)";
+            // 
+            // dgvBlastLayerReference
+            // 
+            this.dgvBlastLayerReference.HeaderText = "dgvBlastObjectReference";
+            this.dgvBlastLayerReference.Name = "dgvBlastLayerReference";
+            this.dgvBlastLayerReference.Visible = false;
+            // 
+            // dgvRowDirty
+            // 
+            this.dgvRowDirty.HeaderText = "dgvRowDirty";
+            this.dgvRowDirty.Name = "dgvRowDirty";
+            this.dgvRowDirty.Resizable = System.Windows.Forms.DataGridViewTriState.True;
+            this.dgvRowDirty.Visible = false;
             // 
             // dgvEnabled
             // 
@@ -769,6 +786,8 @@
 		private DataGridViewNumericUpDownColumn dataGridViewNumericUpDownColumn3;
 		private DataGridViewNumericUpDownColumn dataGridViewNumericUpDownColumn4;
 		private DataGridViewNumericUpDownColumn dataGridViewNumericUpDownColumn5;
+		private System.Windows.Forms.DataGridViewTextBoxColumn dgvBlastLayerReference;
+		private System.Windows.Forms.DataGridViewTextBoxColumn dgvRowDirty;
 		private System.Windows.Forms.DataGridViewCheckBoxColumn dgvEnabled;
 		private System.Windows.Forms.DataGridViewComboBoxColumn dgvDomain;
 		private System.Windows.Forms.DataGridViewComboBoxColumn dgvPrecision;
