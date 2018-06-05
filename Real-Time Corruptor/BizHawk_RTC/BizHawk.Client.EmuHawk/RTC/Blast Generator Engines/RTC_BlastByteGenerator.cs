@@ -62,8 +62,8 @@ namespace RTC
 						_value = RTC_Extensions.getByteArrayValue(precision, param1, mdp.BigEndian);
 						break;
 					case BGBlastModes.SHIFT:
+						_value = mdp.PeekBytes(safeAddress, safeAddress + precision);
 						safeAddress += param1;
-						_value = RTC_Extensions.getByteArrayValue(precision, param1, mdp.BigEndian);
 						break;
 
 					//Bitwise operations
