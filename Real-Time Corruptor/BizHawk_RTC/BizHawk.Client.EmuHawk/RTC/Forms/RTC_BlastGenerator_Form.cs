@@ -86,7 +86,7 @@ namespace RTC
 				return;
 
 			sk = (StashKey)_sk.Clone();
-			sk.BlastLayer = null;
+			sk.BlastLayer = new BlastLayer();
 
 			PopulateDomainCombobox(dgvBlastGenerator.Columns["dgvDomain"] as DataGridViewComboBoxColumn);
 			AddDefaultRow();
@@ -252,8 +252,20 @@ namespace RTC
 		public BlastLayer GenerateBlastLayers()
 		{
 			BlastLayer bl = new BlastLayer();
+			//If there was no SK served in we use the psk
+			if (!openedFromBlastEditor)
+			{
+				StashKey psk = RTC_StockpileManager.getCurrentSavestateStashkey();
+				if (psk == null)
+				{
+					RTC_Core.StopSound();
+					MessageBox.Show("The Glitch Harvester could not perform the CORRUPT action\n\nEither no Savestate Box was selected in the Savestate Manager\nor the Savetate Box itself is empty.");
+					RTC_Core.StartSound();
+					return null;
+				}
+				sk = (StashKey)psk.Clone();
+			}
 			sk.RunOriginal();
-		
 
 			foreach (DataGridViewRow row in dgvBlastGenerator.Rows)
 			{
