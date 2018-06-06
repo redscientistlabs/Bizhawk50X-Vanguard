@@ -337,7 +337,7 @@
             this.dgvBlastLayer.RowHeadersVisible = false;
             this.dgvBlastLayer.RowTemplate.Height = 24;
             this.dgvBlastLayer.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.dgvBlastLayer.Size = new System.Drawing.Size(712, 501);
+            this.dgvBlastLayer.Size = new System.Drawing.Size(748, 501);
             this.dgvBlastLayer.TabIndex = 133;
             this.dgvBlastLayer.Tag = "color:normal";
             // 
@@ -656,7 +656,7 @@
             this.panelSidebar.Controls.Add(this.btnSanitizeDuplicates);
             this.panelSidebar.Controls.Add(this.btnDuplicateSelected);
             this.panelSidebar.Dock = System.Windows.Forms.DockStyle.Right;
-            this.panelSidebar.Location = new System.Drawing.Point(712, 24);
+            this.panelSidebar.Location = new System.Drawing.Point(748, 24);
             this.panelSidebar.Name = "panelSidebar";
             this.panelSidebar.Size = new System.Drawing.Size(176, 501);
             this.panelSidebar.TabIndex = 142;
@@ -690,7 +690,7 @@
             this.toolsToolStripMenuItem});
             this.menuStripEx1.Location = new System.Drawing.Point(0, 0);
             this.menuStripEx1.Name = "menuStripEx1";
-            this.menuStripEx1.Size = new System.Drawing.Size(888, 24);
+            this.menuStripEx1.Size = new System.Drawing.Size(924, 24);
             this.menuStripEx1.TabIndex = 141;
             this.menuStripEx1.Text = "menuStripEx1";
             // 
@@ -854,7 +854,7 @@
             // 
             this.btnHideSidebar.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.btnHideSidebar.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F);
-            this.btnHideSidebar.Location = new System.Drawing.Point(860, 0);
+            this.btnHideSidebar.Location = new System.Drawing.Point(896, 0);
             this.btnHideSidebar.Name = "btnHideSidebar";
             this.btnHideSidebar.Size = new System.Drawing.Size(28, 24);
             this.btnHideSidebar.TabIndex = 144;
@@ -867,7 +867,7 @@
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
-            this.ClientSize = new System.Drawing.Size(888, 525);
+            this.ClientSize = new System.Drawing.Size(924, 525);
             this.Controls.Add(this.dgvBlastLayer);
             this.Controls.Add(this.btnHideSidebar);
             this.Controls.Add(this.panelSidebar);
@@ -875,7 +875,7 @@
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.KeyPreview = true;
             this.MainMenuStrip = this.menuStripEx1;
-            this.MinimumSize = new System.Drawing.Size(904, 564);
+            this.MinimumSize = new System.Drawing.Size(0, 564);
             this.Name = "RTC_NewBlastEditor_Form";
             this.Tag = "color:dark";
             this.Text = "Blast Editor";

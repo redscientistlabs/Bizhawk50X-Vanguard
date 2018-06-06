@@ -35,7 +35,7 @@
             this.btnJustCorrupt = new System.Windows.Forms.Button();
             this.btnSendTo = new System.Windows.Forms.Button();
             this.cbUseHex = new System.Windows.Forms.CheckBox();
-            this.panel1 = new System.Windows.Forms.Panel();
+            this.panelSidebar = new System.Windows.Forms.Panel();
             this.btnAddRow = new System.Windows.Forms.Button();
             this.panel2 = new System.Windows.Forms.Panel();
             this.label5 = new System.Windows.Forms.Label();
@@ -79,7 +79,8 @@
             this.dgvEndAddress = new RTC.DataGridViewNumericUpDownColumn();
             this.dgvParam1 = new RTC.DataGridViewNumericUpDownColumn();
             this.dgvParam2 = new RTC.DataGridViewNumericUpDownColumn();
-            this.panel1.SuspendLayout();
+            this.btnHideSidebar = new System.Windows.Forms.Button();
+            this.panelSidebar.SuspendLayout();
             this.panel2.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.updownNudgeParam2)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.updownNudgeParam1)).BeginInit();
@@ -155,20 +156,21 @@
             this.cbUseHex.UseVisualStyleBackColor = true;
             this.cbUseHex.CheckedChanged += new System.EventHandler(this.cbUseHex_CheckedChanged);
             // 
-            // panel1
+            // panelSidebar
             // 
-            this.panel1.Controls.Add(this.btnAddRow);
-            this.panel1.Controls.Add(this.panel2);
-            this.panel1.Controls.Add(this.label4);
-            this.panel1.Controls.Add(this.cbUseHex);
-            this.panel1.Controls.Add(this.btnJustCorrupt);
-            this.panel1.Controls.Add(this.btnSendTo);
-            this.panel1.Controls.Add(this.btnLoadCorrupt);
-            this.panel1.Dock = System.Windows.Forms.DockStyle.Right;
-            this.panel1.Location = new System.Drawing.Point(762, 24);
-            this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(159, 375);
-            this.panel1.TabIndex = 166;
+            this.panelSidebar.Controls.Add(this.btnAddRow);
+            this.panelSidebar.Controls.Add(this.panel2);
+            this.panelSidebar.Controls.Add(this.label4);
+            this.panelSidebar.Controls.Add(this.cbUseHex);
+            this.panelSidebar.Controls.Add(this.btnJustCorrupt);
+            this.panelSidebar.Controls.Add(this.btnSendTo);
+            this.panelSidebar.Controls.Add(this.btnLoadCorrupt);
+            this.panelSidebar.Dock = System.Windows.Forms.DockStyle.Right;
+            this.panelSidebar.Location = new System.Drawing.Point(765, 24);
+            this.panelSidebar.Name = "panelSidebar";
+            this.panelSidebar.Size = new System.Drawing.Size(159, 375);
+            this.panelSidebar.TabIndex = 166;
+            this.panelSidebar.Tag = "color:dark";
             // 
             // btnAddRow
             // 
@@ -492,7 +494,7 @@
             this.dgvBlastGenerator.RowHeadersVisible = false;
             this.dgvBlastGenerator.RowTemplate.Height = 24;
             this.dgvBlastGenerator.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.dgvBlastGenerator.Size = new System.Drawing.Size(762, 375);
+            this.dgvBlastGenerator.Size = new System.Drawing.Size(765, 375);
             this.dgvBlastGenerator.TabIndex = 167;
             this.dgvBlastGenerator.Tag = "color:normal";
             // 
@@ -584,7 +586,7 @@
             this.blastLayerToolStripMenuItem});
             this.menuStripEx1.Location = new System.Drawing.Point(0, 0);
             this.menuStripEx1.Name = "menuStripEx1";
-            this.menuStripEx1.Size = new System.Drawing.Size(921, 24);
+            this.menuStripEx1.Size = new System.Drawing.Size(924, 24);
             this.menuStripEx1.TabIndex = 168;
             this.menuStripEx1.Text = "menuStripEx1";
             // 
@@ -671,7 +673,7 @@
             // dgvMode
             // 
             this.dgvMode.DropDownWidth = 150;
-            this.dgvMode.FillWeight = 65F;
+            this.dgvMode.FillWeight = 60F;
             this.dgvMode.HeaderText = "Mode";
             this.dgvMode.Items.AddRange(new object[] {
             "SET",
@@ -761,23 +763,36 @@
             this.dgvParam2.Name = "dgvParam2";
             this.dgvParam2.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.Automatic;
             // 
+            // btnHideSidebar
+            // 
+            this.btnHideSidebar.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.btnHideSidebar.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F);
+            this.btnHideSidebar.Location = new System.Drawing.Point(896, 0);
+            this.btnHideSidebar.Name = "btnHideSidebar";
+            this.btnHideSidebar.Size = new System.Drawing.Size(28, 24);
+            this.btnHideSidebar.TabIndex = 170;
+            this.btnHideSidebar.Text = "▶";
+            this.btnHideSidebar.UseVisualStyleBackColor = true;
+            this.btnHideSidebar.Click += new System.EventHandler(this.btnHideSidebar_Click);
+            // 
             // RTC_BlastGenerator_Form
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
-            this.ClientSize = new System.Drawing.Size(921, 399);
+            this.ClientSize = new System.Drawing.Size(924, 399);
+            this.Controls.Add(this.btnHideSidebar);
             this.Controls.Add(this.dgvBlastGenerator);
-            this.Controls.Add(this.panel1);
+            this.Controls.Add(this.panelSidebar);
             this.Controls.Add(this.menuStripEx1);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
-            this.MinimumSize = new System.Drawing.Size(420, 350);
+            this.MinimumSize = new System.Drawing.Size(16, 350);
             this.Name = "RTC_BlastGenerator_Form";
             this.Tag = "color:dark";
             this.Text = "BlastLayer Generator";
             this.Load += new System.EventHandler(this.RTC_BlastGeneratorForm_Load);
-            this.panel1.ResumeLayout(false);
-            this.panel1.PerformLayout();
+            this.panelSidebar.ResumeLayout(false);
+            this.panelSidebar.PerformLayout();
             this.panel2.ResumeLayout(false);
             this.panel2.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.updownNudgeParam2)).EndInit();
@@ -797,7 +812,7 @@
 		private System.Windows.Forms.Button btnJustCorrupt;
 		private System.Windows.Forms.Button btnSendTo;
 		private System.Windows.Forms.CheckBox cbUseHex;
-		private System.Windows.Forms.Panel panel1;
+		private System.Windows.Forms.Panel panelSidebar;
 		private System.Windows.Forms.DataGridView dgvBlastGenerator;
 		private System.Windows.Forms.Panel panel2;
 		private System.Windows.Forms.Label label4;
@@ -841,5 +856,6 @@
 		private DataGridViewNumericUpDownColumn dgvEndAddress;
 		private DataGridViewNumericUpDownColumn dgvParam1;
 		private DataGridViewNumericUpDownColumn dgvParam2;
+		private System.Windows.Forms.Button btnHideSidebar;
 	}
 }

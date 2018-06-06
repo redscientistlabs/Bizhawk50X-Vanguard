@@ -11,8 +11,6 @@ using System.Globalization;
 
 namespace RTC
 {
-	
-
 	// 0  dgvBlastLayerReference
 	// 1  dgvRowDirty
 	// 2  dgvEnabled
@@ -25,6 +23,7 @@ namespace RTC
 	// 9  dgvEndAddress
 	// 10  dgvParam1
 	// 11  dgvParam2
+
 	public partial class RTC_BlastGenerator_Form : Form
 	{
 		private enum BlastGeneratorColumn
@@ -59,6 +58,8 @@ namespace RTC
 		{
 			this.dgvBlastGenerator.MouseClick += new System.Windows.Forms.MouseEventHandler(dgvBlastGenerator_MouseClick);
 			this.dgvBlastGenerator.CellValueChanged += new DataGridViewCellEventHandler(dgvBlastGenerator_CellValueChanged);
+
+			RTC_Core.SetRTCColor(RTC_Core.generalColor, this);
 		}
 
 		public void LoadNoStashKey()
@@ -119,7 +120,6 @@ namespace RTC
 			return false;
 		}
 
-
 		private void PopulateTypeCombobox(DataGridViewRow row)
 		{
 			DataGridViewComboBoxCell dgvType = (row.Cells["dgvMode"] as DataGridViewComboBoxCell);
@@ -152,7 +152,6 @@ namespace RTC
 			}
 		}
 
-
 		private void btnJustCorrupt_Click(object sender, EventArgs e)
 		{
 			BlastLayer bl = GenerateBlastLayers();
@@ -182,6 +181,7 @@ namespace RTC
 
 			newSk.Run();
 		}
+
 		private void btnSendTo_Click(object sender, EventArgs e)
 		{
 			if(sk == null)
@@ -251,7 +251,7 @@ namespace RTC
 			{
 				CurrentlyUpdating = true;
 				dgvBlastGenerator.Rows[e.RowIndex].Cells["dgvRowDirty"].Value = true;
-
+				/*
 				try
 				{
 				}
@@ -263,7 +263,7 @@ namespace RTC
 					"Make sure your input is valid.\n\n" +
 					"If your input was valid, you should probably send a copy of this error and what you did to cause it to the RTC devs.\n\n" +
 					ex.ToString());
-				}
+				}*/
 
 			}
 		}
@@ -281,24 +281,18 @@ namespace RTC
 					dgvBlastGenerator.ClearSelection();
 				}
 			}
+			/*
 			else if (e.Button == MouseButtons.Right)
 			{
-				/*	//Column header
-					if (currentMouseOverRow == -1)
-					{
-						cmsBlastEditor.Items.Clear();
-						PopulateColumnHeaderContextMenu(currentMouseOverColumn);
-						cmsBlastEditor.Show(dgvBlastLayer, new Point(e.X, e.Y));
-					}
-
-					//dgvType
-					if (currentMouseOverColumn == (int)BlastGeneratorColumn.dgvType)
-					{
-						PopulateBlastUnitModeContextMenu(currentMouseOverColumn, currentMouseOverRow);
-						cms.Show(dgvBlastGenerator, new Point(e.X, e.Y));
-					}
-					*/
+				//Column header
+				if (currentMouseOverRow == -1)
+				{
+					cmsBlastEditor.Items.Clear();
+					PopulateColumnHeaderContextMenu(currentMouseOverColumn);
+					cmsBlastEditor.Show(dgvBlastLayer, new Point(e.X, e.Y));
+				}
 			}
+				*/
 		}
 
 		public BlastLayer GenerateBlastLayers(bool useStashkey = false)
@@ -307,7 +301,7 @@ namespace RTC
 
 			if (useStashkey)
 			{
-				//If opened from engine config, use the GH
+				//If opened from engine config, use the GH state
 				if (!openedFromBlastEditor)
 				{
 					StashKey psk = RTC_StockpileManager.getCurrentSavestateStashkey();
@@ -342,23 +336,6 @@ namespace RTC
 
 		private BlastGeneratorProto CreateProtoFromRow(DataGridViewRow row)
 		{
-
-			// 0  dgvBlastLayerReference
-			// 1  dgvRowDirty
-			// 2  dgvEnabled
-			// 3  dgvDomain
-			// 4  dgvPrecision
-			// 5  dgvType
-			// 6  dgvMode
-			// 7  dgvStepSize
-			// 8  dgvStartAddress
-			// 9  dgvEndAddress
-			// 10  dgvParam1
-			// 11  dgvParam2
-
-		//	try
-		//	{
-
 				string domain = row.Cells["dgvDomain"].Value.ToString();
 				string type = row.Cells["dgvType"].Value.ToString();
 				string mode = row.Cells["dgvMode"].Value.ToString();
@@ -370,11 +347,6 @@ namespace RTC
 				long param2 = Convert.ToInt64(row.Cells["dgvParam2"].Value);
 
 				return new BlastGeneratorProto(type, domain, mode, precision, stepSize, startAddress, endAddress, param1, param2);
-
-		//	}catch(Exception ex)
-		//	{
-		//		throw;
-		//	}
 		}
 
 		private void btnShiftBlastLayerDown_Click(object sender, EventArgs e)
@@ -431,8 +403,6 @@ namespace RTC
 		{
 			nudgeParams("dgvStartAddress", updownNudgeStartAddress.Value, true);
 		}
-
-
 		private void btnNudgeEndAddressUp_Click(object sender, EventArgs e)
 		{
 			nudgeParams("dgvEndAddress", updownNudgeEndAddress.Value);
@@ -441,8 +411,6 @@ namespace RTC
 		{
 			nudgeParams("dgvEndAddress", updownNudgeEndAddress.Value, true);
 		}
-
-
 		private void btnNudgeParam1Up_Click(object sender, EventArgs e)
 		{
 			nudgeParams("dgvParam1", updownNudgeParam1.Value);
@@ -451,8 +419,6 @@ namespace RTC
 		{
 			nudgeParams("dgvParam1", updownNudgeParam1.Value, true);
 		}
-
-
 		private void btnNudgeParam2Up_Click(object sender, EventArgs e)
 		{
 			nudgeParams("dgvParam2", updownNudgeParam2.Value);
@@ -487,6 +453,20 @@ namespace RTC
 					else
 						selected.Cells[column].Value = max;
 				}
+			}
+		}
+
+		private void btnHideSidebar_Click(object sender, EventArgs e)
+		{
+			if (btnHideSidebar.Text == "▶")
+			{
+				panelSidebar.Visible = false;
+				btnHideSidebar.Text = "◀";
+			}
+			else
+			{
+				panelSidebar.Visible = true;
+				btnHideSidebar.Text = "▶";
 			}
 		}
 	}

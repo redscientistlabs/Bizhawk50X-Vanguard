@@ -957,11 +957,14 @@ namespace RTC
 			{
 
 				foreach (Form targetForm in allRtcForms)
+				{
 					if (targetForm != null)
 					{
-						allControls.AddRange(targetForm.Controls.getControlsWithTag());
-						allControls.Add(targetForm);
+							allControls.AddRange(targetForm.Controls.getControlsWithTag());
+							allControls.Add(targetForm);
 					}
+				}
+					
 			}
 			else
 			{
