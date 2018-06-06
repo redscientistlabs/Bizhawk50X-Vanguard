@@ -717,6 +717,7 @@
       <DependentUpon>RomStatusPicker.cs</DependentUpon>
     </Compile>
     <Compile Include="RTC\Blast Generator Engines\RTC_BlastByteGenerator.cs" />
+    <Compile Include="RTC\Corruption Engines\RTC_BlastGeneratorEngine.cs" />
     <Compile Include="RTC\Forms\RTC_BlastGenerator_Form.cs">
       <SubType>Form</SubType>
     </Compile>

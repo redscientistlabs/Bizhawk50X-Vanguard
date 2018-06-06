@@ -122,6 +122,10 @@
             this.label3 = new System.Windows.Forms.Label();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
             this.label6 = new System.Windows.Forms.Label();
+            this.gbBlastGeneratorEngine = new System.Windows.Forms.GroupBox();
+            this.comboBox8 = new System.Windows.Forms.ComboBox();
+            this.label21 = new System.Windows.Forms.Label();
+            this.btnOpenBlastGenerator = new System.Windows.Forms.Button();
             this.pnGeneralParameters.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.nmIntensity)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.nmErrorDelay)).BeginInit();
@@ -146,6 +150,7 @@
             this.gbNightmareEngine.SuspendLayout();
             this.panel1.SuspendLayout();
             this.groupBox1.SuspendLayout();
+            this.gbBlastGeneratorEngine.SuspendLayout();
             this.SuspendLayout();
             // 
             // pnGeneralParameters
@@ -539,7 +544,8 @@
             "Freeze Engine",
             "Pipe Engine",
             "Vector Engine",
-            "External ROM Plugin"});
+            "External ROM Plugin", 
+			"Blast Generator"});
             this.cbSelectedEngine.Location = new System.Drawing.Point(10, 13);
             this.cbSelectedEngine.Name = "cbSelectedEngine";
             this.cbSelectedEngine.Size = new System.Drawing.Size(165, 21);
@@ -1530,12 +1536,68 @@
             this.label6.Text = "Parameters unavailable with\nExternal ROM Plugin";
             this.label6.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
+            // gbBlastGeneratorEngine
+            // 
+            this.gbBlastGeneratorEngine.Controls.Add(this.comboBox8);
+            this.gbBlastGeneratorEngine.Controls.Add(this.label21);
+            this.gbBlastGeneratorEngine.Controls.Add(this.btnOpenBlastGenerator);
+            this.gbBlastGeneratorEngine.Font = new System.Drawing.Font("Segoe UI", 9.75F);
+            this.gbBlastGeneratorEngine.ForeColor = System.Drawing.Color.White;
+            this.gbBlastGeneratorEngine.Location = new System.Drawing.Point(1064, 454);
+            this.gbBlastGeneratorEngine.Name = "gbBlastGeneratorEngine";
+            this.gbBlastGeneratorEngine.Size = new System.Drawing.Size(391, 151);
+            this.gbBlastGeneratorEngine.TabIndex = 134;
+            this.gbBlastGeneratorEngine.TabStop = false;
+            // 
+            // comboBox8
+            // 
+            this.comboBox8.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
+            this.comboBox8.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.comboBox8.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.comboBox8.Font = new System.Drawing.Font("Segoe UI", 8F);
+            this.comboBox8.ForeColor = System.Drawing.Color.White;
+            this.comboBox8.FormattingEnabled = true;
+            this.comboBox8.Location = new System.Drawing.Point(0, 9);
+            this.comboBox8.Name = "comboBox8";
+            this.comboBox8.Size = new System.Drawing.Size(165, 21);
+            this.comboBox8.TabIndex = 79;
+            this.comboBox8.Tag = "color:dark";
+            this.comboBox8.Visible = false;
+            // 
+            // label21
+            // 
+            this.label21.AutoSize = true;
+            this.label21.Font = new System.Drawing.Font("Segoe UI", 8.25F, System.Drawing.FontStyle.Italic);
+            this.label21.Location = new System.Drawing.Point(169, 15);
+            this.label21.Name = "label21";
+            this.label21.Size = new System.Drawing.Size(216, 13);
+            this.label21.TabIndex = 78;
+            this.label21.Text = "Imports corruption from the Blast Generator";
+            // 
+            // btnOpenBlastGenerator
+            // 
+            this.btnOpenBlastGenerator.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(224)))), ((int)(((byte)(224)))), ((int)(((byte)(224)))));
+            this.btnOpenBlastGenerator.FlatAppearance.BorderSize = 0;
+            this.btnOpenBlastGenerator.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnOpenBlastGenerator.Font = new System.Drawing.Font("Segoe UI", 8F);
+            this.btnOpenBlastGenerator.ForeColor = System.Drawing.Color.Black;
+            this.btnOpenBlastGenerator.Location = new System.Drawing.Point(6, 119);
+            this.btnOpenBlastGenerator.Name = "btnOpenBlastGenerator";
+            this.btnOpenBlastGenerator.Size = new System.Drawing.Size(159, 24);
+            this.btnOpenBlastGenerator.TabIndex = 77;
+            this.btnOpenBlastGenerator.TabStop = false;
+            this.btnOpenBlastGenerator.Tag = "color:light";
+            this.btnOpenBlastGenerator.Text = "Open Blast Generator";
+            this.btnOpenBlastGenerator.UseVisualStyleBackColor = false;
+            this.btnOpenBlastGenerator.Click += new System.EventHandler(this.btnOpenBlastGenerator_Click);
+            // 
             // RTC_EngineConfig_Form
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
             this.ClientSize = new System.Drawing.Size(1467, 623);
+            this.Controls.Add(this.gbBlastGeneratorEngine);
             this.Controls.Add(this.label3);
             this.Controls.Add(this.label2);
             this.Controls.Add(this.panel1);
@@ -1594,6 +1656,8 @@
             this.panel1.ResumeLayout(false);
             this.groupBox1.ResumeLayout(false);
             this.groupBox1.PerformLayout();
+            this.gbBlastGeneratorEngine.ResumeLayout(false);
+            this.gbBlastGeneratorEngine.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -1694,5 +1758,9 @@
         private System.Windows.Forms.Panel panel5;
         private System.Windows.Forms.Panel panel4;
         public System.Windows.Forms.Label lbCoreDefault;
-    }
+		private System.Windows.Forms.GroupBox gbBlastGeneratorEngine;
+		public System.Windows.Forms.ComboBox comboBox8;
+		private System.Windows.Forms.Label label21;
+		private System.Windows.Forms.Button btnOpenBlastGenerator;
+	}
 }

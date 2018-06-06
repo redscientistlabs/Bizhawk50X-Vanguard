@@ -114,14 +114,18 @@ namespace RTC
             pnCorruptionEngine.Controls.Add(gbPipeEngine);
             gbPipeEngine.Location = new Point(gbSelectedEngine.Location.X, gbSelectedEngine.Location.Y);
 
-            Controls.Remove(gbVectorEngine);
-            pnCorruptionEngine.Controls.Add(gbVectorEngine);
-            gbVectorEngine.Location = new Point(gbSelectedEngine.Location.X, gbSelectedEngine.Location.Y);
+			Controls.Remove(gbVectorEngine);
+			pnCorruptionEngine.Controls.Add(gbVectorEngine);
+			gbVectorEngine.Location = new Point(gbSelectedEngine.Location.X, gbSelectedEngine.Location.Y);
+
+			Controls.Remove(gbBlastGeneratorEngine);
+			pnCorruptionEngine.Controls.Add(gbBlastGeneratorEngine);
+			gbBlastGeneratorEngine.Location = new Point(gbSelectedEngine.Location.X, gbSelectedEngine.Location.Y);
 
 
 
 
-            foreach (string item in Directory.GetDirectories(RTC_Core.rtcDir + "\\PLUGINS"))
+			foreach (string item in Directory.GetDirectories(RTC_Core.rtcDir + "\\PLUGINS"))
                 cbExternalSelectedPlugin.Items.Add(item.Substring(item.LastIndexOf("\\") + 1));
 
             cbSelectedEngine.SelectedIndex = 0;
@@ -440,23 +444,34 @@ namespace RTC
 
 				case "External ROM Plugin":
 
-                    RTC_Core.SelectedEngine = CorruptionEngine.EXTERNALROM;
-                    gbExternalRomPlugin.Visible = true;
+					RTC_Core.SelectedEngine = CorruptionEngine.EXTERNALROM;
+					gbExternalRomPlugin.Visible = true;
 
-                    RTC_Core.coreForm.AutoCorrupt = false;
-                    RTC_Core.coreForm.btnAutoCorrupt.Visible = false;
-                    RTC_Core.ecForm.pnGeneralParameters.Visible = false;
+					RTC_Core.coreForm.AutoCorrupt = false;
+					RTC_Core.coreForm.btnAutoCorrupt.Visible = false;
+					RTC_Core.ecForm.pnGeneralParameters.Visible = false;
 
-                    RTC_Core.ghForm.pnIntensity.Visible = false;
-                    break;
+					RTC_Core.ghForm.pnIntensity.Visible = false;
+					break;
 
-                default:
+				case "Blast Generator":
+					RTC_Core.SelectedEngine = CorruptionEngine.BLASTGENERATORENGINE;
+					gbBlastGeneratorEngine.Visible = true;
+
+					RTC_Core.coreForm.AutoCorrupt = false;
+					RTC_Core.coreForm.btnAutoCorrupt.Visible = false;
+					RTC_Core.ecForm.pnGeneralParameters.Visible = false;
+
+					RTC_Core.ghForm.pnIntensity.Visible = false;
+					break;
+
+				default:
                     break;
             }
 
             RTC_Core.SendCommandToBizhawk(new RTC_Command(CommandType.REMOTE_SET_ENGINE) { objectValue = RTC_Core.SelectedEngine });
 
-            if (cbSelectedEngine.SelectedItem.ToString() == "External ROM Plugin")
+            if (cbSelectedEngine.SelectedItem.ToString() == "External ROM Plugin" || cbSelectedEngine.SelectedItem.ToString() == "Blast Generator")
             {
                 labelBlastRadius.Visible = false;
                 labelIntensity.Visible = false;
@@ -868,5 +883,13 @@ namespace RTC
             }
 
         }
-    }
+
+		private void btnOpenBlastGenerator_Click(object sender, EventArgs e)
+		{
+			if (RTC_Core.bgForm != null)
+				RTC_Core.bgForm.Close();
+			RTC_Core.bgForm = new RTC_BlastGenerator_Form();
+			RTC_Core.bgForm.LoadGHStashkey();
+		}
+	}
 }
