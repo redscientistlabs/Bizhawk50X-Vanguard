@@ -136,6 +136,11 @@ namespace RTC
 
 			initialized = true;
 		}
+		private void InsertBlastUnitToBlastLayerAndDGV(int index, BlastUnit bu)
+		{
+			sk.BlastLayer.Layer.Add(bu);
+			InsertBlastUnitToDGV(index, bu);
+		}
 
 		private void AddBlastUnitToDGV(BlastUnit bu)
 		{
@@ -1508,7 +1513,7 @@ namespace RTC
 				//Insert the new one where the old row was, then remove the old row.
 				foreach (DataGridViewRow selected in dgvBlastLayer.SelectedRows.Cast<DataGridViewRow>().Where(item => ((bool)item.Cells["dgvBlastUnitLocked"].Value != true) && ((BlastUnit)item.Cells["dgvBlastUnitReference"].Value) is BlastByte))
 				{
-					InsertBlastUnitToDGV(selected.Index, newBlastLayer.Layer[i]);
+					InsertBlastUnitToBlastLayerAndDGV(selected.Index, newBlastLayer.Layer[i]);
 					i++;
 					RemoveBlastUnitFromBlastLayerAndDGV((BlastUnit)selected.Cells["dgvBlastUnitReference"].Value);
 				}

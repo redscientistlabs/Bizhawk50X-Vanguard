@@ -64,7 +64,7 @@ namespace RTC
 
 		public void LoadNoStashKey()
 		{
-			PopulateDomainCombobox(dgvBlastGenerator.Columns["dgvDomain"] as DataGridViewComboBoxColumn);
+			RefreshDomains();
 			AddDefaultRow();
 			PopulateTypeCombobox(dgvBlastGenerator.Rows[0]);
 			openedFromBlastEditor = false;
@@ -80,7 +80,7 @@ namespace RTC
 			sk = (StashKey)_sk.Clone();
 			sk.BlastLayer = new BlastLayer();
 
-			PopulateDomainCombobox(dgvBlastGenerator.Columns["dgvDomain"] as DataGridViewComboBoxColumn);
+			RefreshDomains();
 			AddDefaultRow();
 			PopulateTypeCombobox(dgvBlastGenerator.Rows[0]);
 			openedFromBlastEditor = true;
@@ -349,10 +349,6 @@ namespace RTC
 				return new BlastGeneratorProto(type, domain, mode, precision, stepSize, startAddress, endAddress, param1, param2);
 		}
 
-		private void btnShiftBlastLayerDown_Click(object sender, EventArgs e)
-		{
-
-		}
 
 		private string GetPrecisionNameFromSize(int precision)
 		{
@@ -468,6 +464,15 @@ namespace RTC
 				panelSidebar.Visible = true;
 				btnHideSidebar.Text = "▶";
 			}
+		}
+		private void RefreshDomains()
+		{
+			PopulateDomainCombobox(dgvBlastGenerator.Columns["dgvDomain"] as DataGridViewComboBoxColumn);
+		}
+
+		private void refreshDomainsToolStripMenuItem_Click(object sender, EventArgs e)
+		{
+			RefreshDomains();
 		}
 	}
 }
