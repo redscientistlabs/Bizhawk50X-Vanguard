@@ -547,19 +547,19 @@ namespace RTC
 					//It will query a BlastLayer generated from a differential between an original and corrupted rom.
 					bl = RTC_ExternalRomPlugin.GetBlastLayer();
 					if (bl == null)
-						return null;
+						//We return an empty blastlayer so when it goes to apply it, it doesn't find a null blastlayer and try and apply to the domains which aren't enabled resulting in an exception
+						return new BlastLayer();
 					else
 						return bl;
 				}
 				else if (RTC_Core.SelectedEngine == CorruptionEngine.BLASTGENERATORENGINE)
-				{   //External ROM Plugin: Bypasses domains and uses an alternative algorithm to fetch corruption.
-					//It will query a BlastLayer generated from a differential between an original and corrupted rom.
+				{ 
 					bl = RTC_BlastGeneratorEngine.GetBlastLayer();
 					if (bl == null)
-						return null;
+						//We return an empty blastlayer so when it goes to apply it, it doesn't find a null blastlayer and try and apply to the domains which aren't enabled resulting in an exception
+						return new BlastLayer();
 					else
 						return bl;
-
 				}
 				else
 				{
