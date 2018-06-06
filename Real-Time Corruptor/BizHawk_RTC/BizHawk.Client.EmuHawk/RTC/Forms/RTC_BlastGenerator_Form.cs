@@ -47,6 +47,8 @@ namespace RTC
 		private bool openedFromBlastEditor = false;
 		private StashKey sk = null;
 		private ContextMenuStrip cms = new ContextMenuStrip();
+		private bool initialized = false;
+		private bool CurrentlyUpdating = false;
 
 		public RTC_BlastGenerator_Form()
 		{
@@ -56,22 +58,11 @@ namespace RTC
 		private void RTC_BlastGeneratorForm_Load(object sender, EventArgs e)
 		{
 			this.dgvBlastGenerator.MouseClick += new System.Windows.Forms.MouseEventHandler(dgvBlastGenerator_MouseClick);
+			this.dgvBlastGenerator.CellValueChanged += new DataGridViewCellEventHandler(dgvBlastGenerator_CellValueChanged);
 		}
 
-		public void LoadGHStashkey()
+		public void LoadNoStashKey()
 		{
-			StashKey psk = RTC_StockpileManager.getCurrentSavestateStashkey();
-
-			if (psk == null)
-			{
-				RTC_Core.StopSound();
-				MessageBox.Show("The Glitch Harvester could not perform the CORRUPT action\n\nEither no Savestate Box was selected in the Savestate Manager\nor the Savetate Box itself is empty.");
-				RTC_Core.StartSound();
-				return;
-			}
-
-			sk = (StashKey)psk.Clone();
-			
 			PopulateDomainCombobox(dgvBlastGenerator.Columns["dgvDomain"] as DataGridViewComboBoxColumn);
 			AddDefaultRow();
 			PopulateTypeCombobox(dgvBlastGenerator.Rows[0]);
@@ -109,6 +100,9 @@ namespace RTC
 			(dgvBlastGenerator.Rows[lastrow].Cells["dgvDomain"] as DataGridViewComboBoxCell).Value = (dgvBlastGenerator.Rows[0].Cells["dgvDomain"] as DataGridViewComboBoxCell).Items[0];
 			(dgvBlastGenerator.Rows[lastrow].Cells["dgvType"] as DataGridViewComboBoxCell).Value = (dgvBlastGenerator.Rows[0].Cells["dgvType"] as DataGridViewComboBoxCell).Items[0];
 			(dgvBlastGenerator.Rows[lastrow].Cells["dgvMode"] as DataGridViewComboBoxCell).Value = (dgvBlastGenerator.Rows[0].Cells["dgvMode"] as DataGridViewComboBoxCell).Items[0];
+
+			//For some reason, setting the minimum on the DGV to 1 doesn't change the fact it inserts with a count of 0
+			(dgvBlastGenerator.Rows[lastrow].Cells["dgvStepSize"]).Value = 1;
 
 			PopulateTypeCombobox(dgvBlastGenerator.Rows[lastrow]);
 		}
@@ -161,14 +155,50 @@ namespace RTC
 
 		private void btnJustCorrupt_Click(object sender, EventArgs e)
 		{
-
+			BlastLayer bl = GenerateBlastLayers();
+			(bl.Clone() as BlastLayer).Apply();
 		}
 
-		private void btnSendTo_Click(object sender, EventArgs e)
+		private void btnLoadCorrupt_Click(object sender, EventArgs e)
 		{
-			sk.BlastLayer = GenerateBlastLayers();
+			if (sk == null)
+			{
+				StashKey psk = RTC_StockpileManager.getCurrentSavestateStashkey();
+				if (psk == null)
+				{
+					RTC_Core.StopSound();
+					MessageBox.Show("Could not perform the CORRUPT action\n\nEither no Savestate Box was selected in the Savestate Manager\nor the Savetate Box itself is empty.");
+					RTC_Core.StartSound();
+					return;
+				}
+				sk = (StashKey)psk.Clone();
+			}
 
 			StashKey newSk = (StashKey)sk.Clone();
+			newSk.BlastLayer = (BlastLayer)GenerateBlastLayers(true).Clone();
+
+			GC.Collect();
+			GC.WaitForPendingFinalizers();
+
+			newSk.Run();
+		}
+		private void btnSendTo_Click(object sender, EventArgs e)
+		{
+			if(sk == null)
+			{
+				StashKey psk = RTC_StockpileManager.getCurrentSavestateStashkey();
+				if (psk == null)
+				{
+					RTC_Core.StopSound();
+					MessageBox.Show("Could not perform the CORRUPT action\n\nEither no Savestate Box was selected in the Savestate Manager\nor the Savetate Box itself is empty.");
+					RTC_Core.StartSound();
+					return;
+				}
+				sk = (StashKey)psk.Clone();
+			}
+
+			StashKey newSk = (StashKey)sk.Clone();
+			newSk.BlastLayer = (BlastLayer)GenerateBlastLayers(true).Clone();
 
 			if (openedFromBlastEditor)
 			{
@@ -186,17 +216,12 @@ namespace RTC
 
 				RTC_Core.ghForm.DontLoadSelectedStash = true;
 				RTC_Core.ghForm.lbStashHistory.SelectedIndex = RTC_Core.ghForm.lbStashHistory.Items.Count - 1;
-
 			}		
 
 			GC.Collect();
 			GC.WaitForPendingFinalizers();
 		}
 
-		private void btnLoadCorrupt_Click(object sender, EventArgs e)
-		{
-
-		}
 
 		private void cbUseHex_CheckedChanged(object sender, EventArgs e)
 		{
@@ -214,6 +239,33 @@ namespace RTC
 				}
 			}
 
+		}
+
+		private void dgvBlastGenerator_CellValueChanged(object sender, DataGridViewCellEventArgs e)
+		{
+			if (!initialized || dgvBlastGenerator == null)
+				return;
+
+
+			if (!CurrentlyUpdating)
+			{
+				CurrentlyUpdating = true;
+				dgvBlastGenerator.Rows[e.RowIndex].Cells["dgvRowDirty"].Value = true;
+
+				try
+				{
+				}
+				catch (Exception ex)
+				{
+					CurrentlyUpdating = false;
+
+					throw new System.Exception("Something went wrong \n" +
+					"Make sure your input is valid.\n\n" +
+					"If your input was valid, you should probably send a copy of this error and what you did to cause it to the RTC devs.\n\n" +
+					ex.ToString());
+				}
+
+			}
 		}
 
 		private void dgvBlastGenerator_MouseClick(object sender, MouseEventArgs e)
@@ -249,23 +301,27 @@ namespace RTC
 			}
 		}
 
-		public BlastLayer GenerateBlastLayers()
+		public BlastLayer GenerateBlastLayers(bool useStashkey = false)
 		{
 			BlastLayer bl = new BlastLayer();
-			//If there was no SK served in we use the psk
-			if (!openedFromBlastEditor)
+
+			if (useStashkey)
 			{
-				StashKey psk = RTC_StockpileManager.getCurrentSavestateStashkey();
-				if (psk == null)
+				//If opened from engine config, use the GH
+				if (!openedFromBlastEditor)
 				{
-					RTC_Core.StopSound();
-					MessageBox.Show("The Glitch Harvester could not perform the CORRUPT action\n\nEither no Savestate Box was selected in the Savestate Manager\nor the Savetate Box itself is empty.");
-					RTC_Core.StartSound();
-					return null;
+					StashKey psk = RTC_StockpileManager.getCurrentSavestateStashkey();
+					if (psk == null)
+					{
+						RTC_Core.StopSound();
+						MessageBox.Show("The Glitch Harvester could not perform the CORRUPT action\n\nEither no Savestate Box was selected in the Savestate Manager\nor the Savetate Box itself is empty.");
+						RTC_Core.StartSound();
+						return null;
+					}
+					sk = (StashKey)psk.Clone();
 				}
-				sk = (StashKey)psk.Clone();
+				sk.RunOriginal();
 			}
-			sk.RunOriginal();
 
 			foreach (DataGridViewRow row in dgvBlastGenerator.Rows)
 			{
@@ -365,6 +421,73 @@ namespace RTC
 		private void btnAddRow_Click(object sender, EventArgs e)
 		{
 			AddDefaultRow();
+		}
+
+		private void btnNudgeStartAddressUp_Click(object sender, EventArgs e)
+		{
+			nudgeParams("dgvStartAddress", updownNudgeStartAddress.Value);
+		}
+		private void btnNudgeStartAddressDown_Click(object sender, EventArgs e)
+		{
+			nudgeParams("dgvStartAddress", updownNudgeStartAddress.Value, true);
+		}
+
+
+		private void btnNudgeEndAddressUp_Click(object sender, EventArgs e)
+		{
+			nudgeParams("dgvEndAddress", updownNudgeEndAddress.Value);
+		}
+		private void btnNudgeEndAddressDown_Click(object sender, EventArgs e)
+		{
+			nudgeParams("dgvEndAddress", updownNudgeEndAddress.Value, true);
+		}
+
+
+		private void btnNudgeParam1Up_Click(object sender, EventArgs e)
+		{
+			nudgeParams("dgvParam1", updownNudgeParam1.Value);
+		}
+		private void btnNudgeParam1Down_Click(object sender, EventArgs e)
+		{
+			nudgeParams("dgvParam1", updownNudgeParam1.Value, true);
+		}
+
+
+		private void btnNudgeParam2Up_Click(object sender, EventArgs e)
+		{
+			nudgeParams("dgvParam2", updownNudgeParam2.Value);
+		}
+		private void btnNudgeParam2Down_Click(object sender, EventArgs e)
+		{
+			nudgeParams("dgvParam2", updownNudgeParam2.Value, true);
+		}
+
+
+		private void nudgeParams(string column, decimal amount, bool shiftDown = false)
+		{
+			if (shiftDown)
+				foreach (DataGridViewRow selected in dgvBlastGenerator.SelectedRows)
+				{
+					if ((Convert.ToDecimal(selected.Cells[column].Value) - amount) >= 0)
+
+						selected.Cells[column].Value = Convert.ToDecimal(selected.Cells[column].Value) - amount;
+					else
+						selected.Cells[column].Value = 0;
+				}
+			else
+			{
+
+				foreach (DataGridViewRow selected in dgvBlastGenerator.SelectedRows)
+				{
+
+					decimal max = (selected.Cells[column] as DataGridViewNumericUpDownCell).Maximum;
+
+					if ((Convert.ToDecimal(selected.Cells[column].Value) - amount) <= max)
+						selected.Cells[column].Value = Convert.ToDecimal(selected.Cells[column].Value) + amount;
+					else
+						selected.Cells[column].Value = max;
+				}
+			}
 		}
 	}
 }

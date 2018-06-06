@@ -889,7 +889,7 @@ namespace RTC
 			if (RTC_Core.bgForm != null)
 				RTC_Core.bgForm.Close();
 			RTC_Core.bgForm = new RTC_BlastGenerator_Form();
-			RTC_Core.bgForm.LoadGHStashkey();
+			RTC_Core.bgForm.LoadNoStashKey();
 		}
 	}
 }

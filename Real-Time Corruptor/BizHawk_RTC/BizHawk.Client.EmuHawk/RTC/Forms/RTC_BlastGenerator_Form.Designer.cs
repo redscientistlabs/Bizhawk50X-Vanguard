@@ -42,17 +42,17 @@
             this.label3 = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
             this.label1 = new System.Windows.Forms.Label();
-            this.button5 = new System.Windows.Forms.Button();
-            this.button6 = new System.Windows.Forms.Button();
+            this.btnNudgeParam2Up = new System.Windows.Forms.Button();
+            this.btnNudgeParam2Down = new System.Windows.Forms.Button();
             this.updownNudgeParam2 = new RTC.NumericUpDownHexFix();
-            this.button3 = new System.Windows.Forms.Button();
-            this.button4 = new System.Windows.Forms.Button();
+            this.btnNudgeParam1Up = new System.Windows.Forms.Button();
+            this.btnNudgeParam1Down = new System.Windows.Forms.Button();
             this.updownNudgeParam1 = new RTC.NumericUpDownHexFix();
-            this.button1 = new System.Windows.Forms.Button();
-            this.button2 = new System.Windows.Forms.Button();
+            this.btnNudgeEndAddressUp = new System.Windows.Forms.Button();
+            this.btnNudgeEndAddressDown = new System.Windows.Forms.Button();
             this.updownNudgeEndAddress = new RTC.NumericUpDownHexFix();
-            this.btnShiftBlastLayerUp = new System.Windows.Forms.Button();
-            this.btnShiftBlastLayerDown = new System.Windows.Forms.Button();
+            this.btnNudgeStartAddressUp = new System.Windows.Forms.Button();
+            this.btnNudgeStartAddressDown = new System.Windows.Forms.Button();
             this.updownNudgeStartAddress = new RTC.NumericUpDownHexFix();
             this.label4 = new System.Windows.Forms.Label();
             this.dgvBlastGenerator = new System.Windows.Forms.DataGridView();
@@ -195,17 +195,17 @@
             this.panel2.Controls.Add(this.label3);
             this.panel2.Controls.Add(this.label2);
             this.panel2.Controls.Add(this.label1);
-            this.panel2.Controls.Add(this.button5);
-            this.panel2.Controls.Add(this.button6);
+            this.panel2.Controls.Add(this.btnNudgeParam2Up);
+            this.panel2.Controls.Add(this.btnNudgeParam2Down);
             this.panel2.Controls.Add(this.updownNudgeParam2);
-            this.panel2.Controls.Add(this.button3);
-            this.panel2.Controls.Add(this.button4);
+            this.panel2.Controls.Add(this.btnNudgeParam1Up);
+            this.panel2.Controls.Add(this.btnNudgeParam1Down);
             this.panel2.Controls.Add(this.updownNudgeParam1);
-            this.panel2.Controls.Add(this.button1);
-            this.panel2.Controls.Add(this.button2);
+            this.panel2.Controls.Add(this.btnNudgeEndAddressUp);
+            this.panel2.Controls.Add(this.btnNudgeEndAddressDown);
             this.panel2.Controls.Add(this.updownNudgeEndAddress);
-            this.panel2.Controls.Add(this.btnShiftBlastLayerUp);
-            this.panel2.Controls.Add(this.btnShiftBlastLayerDown);
+            this.panel2.Controls.Add(this.btnNudgeStartAddressUp);
+            this.panel2.Controls.Add(this.btnNudgeStartAddressDown);
             this.panel2.Controls.Add(this.updownNudgeStartAddress);
             this.panel2.Location = new System.Drawing.Point(5, 20);
             this.panel2.Name = "panel2";
@@ -261,39 +261,41 @@
             this.label1.TabIndex = 169;
             this.label1.Text = "Start Address";
             // 
-            // button5
+            // btnNudgeParam2Up
             // 
-            this.button5.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.button5.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(224)))), ((int)(((byte)(224)))), ((int)(((byte)(224)))));
-            this.button5.FlatAppearance.BorderSize = 0;
-            this.button5.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.button5.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F);
-            this.button5.ForeColor = System.Drawing.Color.Black;
-            this.button5.Location = new System.Drawing.Point(110, 167);
-            this.button5.Name = "button5";
-            this.button5.Size = new System.Drawing.Size(21, 20);
-            this.button5.TabIndex = 167;
-            this.button5.TabStop = false;
-            this.button5.Tag = "color:light";
-            this.button5.Text = "▶";
-            this.button5.UseVisualStyleBackColor = false;
+            this.btnNudgeParam2Up.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.btnNudgeParam2Up.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(224)))), ((int)(((byte)(224)))), ((int)(((byte)(224)))));
+            this.btnNudgeParam2Up.FlatAppearance.BorderSize = 0;
+            this.btnNudgeParam2Up.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnNudgeParam2Up.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F);
+            this.btnNudgeParam2Up.ForeColor = System.Drawing.Color.Black;
+            this.btnNudgeParam2Up.Location = new System.Drawing.Point(110, 167);
+            this.btnNudgeParam2Up.Name = "btnNudgeParam2Up";
+            this.btnNudgeParam2Up.Size = new System.Drawing.Size(21, 20);
+            this.btnNudgeParam2Up.TabIndex = 167;
+            this.btnNudgeParam2Up.TabStop = false;
+            this.btnNudgeParam2Up.Tag = "color:light";
+            this.btnNudgeParam2Up.Text = "▶";
+            this.btnNudgeParam2Up.UseVisualStyleBackColor = false;
+            this.btnNudgeParam2Up.Click += new System.EventHandler(this.btnNudgeParam2Up_Click);
             // 
-            // button6
+            // btnNudgeParam2Down
             // 
-            this.button6.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.button6.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(224)))), ((int)(((byte)(224)))), ((int)(((byte)(224)))));
-            this.button6.FlatAppearance.BorderSize = 0;
-            this.button6.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.button6.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F);
-            this.button6.ForeColor = System.Drawing.Color.Black;
-            this.button6.Location = new System.Drawing.Point(18, 167);
-            this.button6.Name = "button6";
-            this.button6.Size = new System.Drawing.Size(21, 20);
-            this.button6.TabIndex = 168;
-            this.button6.TabStop = false;
-            this.button6.Tag = "color:light";
-            this.button6.Text = "◀";
-            this.button6.UseVisualStyleBackColor = false;
+            this.btnNudgeParam2Down.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.btnNudgeParam2Down.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(224)))), ((int)(((byte)(224)))), ((int)(((byte)(224)))));
+            this.btnNudgeParam2Down.FlatAppearance.BorderSize = 0;
+            this.btnNudgeParam2Down.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnNudgeParam2Down.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F);
+            this.btnNudgeParam2Down.ForeColor = System.Drawing.Color.Black;
+            this.btnNudgeParam2Down.Location = new System.Drawing.Point(18, 167);
+            this.btnNudgeParam2Down.Name = "btnNudgeParam2Down";
+            this.btnNudgeParam2Down.Size = new System.Drawing.Size(21, 20);
+            this.btnNudgeParam2Down.TabIndex = 168;
+            this.btnNudgeParam2Down.TabStop = false;
+            this.btnNudgeParam2Down.Tag = "color:light";
+            this.btnNudgeParam2Down.Text = "◀";
+            this.btnNudgeParam2Down.UseVisualStyleBackColor = false;
+            this.btnNudgeParam2Down.Click += new System.EventHandler(this.btnNudgeParam2Down_Click);
             // 
             // updownNudgeParam2
             // 
@@ -303,39 +305,41 @@
             this.updownNudgeParam2.Size = new System.Drawing.Size(59, 20);
             this.updownNudgeParam2.TabIndex = 166;
             // 
-            // button3
+            // btnNudgeParam1Up
             // 
-            this.button3.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.button3.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(224)))), ((int)(((byte)(224)))), ((int)(((byte)(224)))));
-            this.button3.FlatAppearance.BorderSize = 0;
-            this.button3.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.button3.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F);
-            this.button3.ForeColor = System.Drawing.Color.Black;
-            this.button3.Location = new System.Drawing.Point(110, 115);
-            this.button3.Name = "button3";
-            this.button3.Size = new System.Drawing.Size(21, 20);
-            this.button3.TabIndex = 164;
-            this.button3.TabStop = false;
-            this.button3.Tag = "color:light";
-            this.button3.Text = "▶";
-            this.button3.UseVisualStyleBackColor = false;
+            this.btnNudgeParam1Up.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.btnNudgeParam1Up.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(224)))), ((int)(((byte)(224)))), ((int)(((byte)(224)))));
+            this.btnNudgeParam1Up.FlatAppearance.BorderSize = 0;
+            this.btnNudgeParam1Up.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnNudgeParam1Up.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F);
+            this.btnNudgeParam1Up.ForeColor = System.Drawing.Color.Black;
+            this.btnNudgeParam1Up.Location = new System.Drawing.Point(110, 115);
+            this.btnNudgeParam1Up.Name = "btnNudgeParam1Up";
+            this.btnNudgeParam1Up.Size = new System.Drawing.Size(21, 20);
+            this.btnNudgeParam1Up.TabIndex = 164;
+            this.btnNudgeParam1Up.TabStop = false;
+            this.btnNudgeParam1Up.Tag = "color:light";
+            this.btnNudgeParam1Up.Text = "▶";
+            this.btnNudgeParam1Up.UseVisualStyleBackColor = false;
+            this.btnNudgeParam1Up.Click += new System.EventHandler(this.btnNudgeParam1Up_Click);
             // 
-            // button4
+            // btnNudgeParam1Down
             // 
-            this.button4.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.button4.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(224)))), ((int)(((byte)(224)))), ((int)(((byte)(224)))));
-            this.button4.FlatAppearance.BorderSize = 0;
-            this.button4.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.button4.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F);
-            this.button4.ForeColor = System.Drawing.Color.Black;
-            this.button4.Location = new System.Drawing.Point(18, 117);
-            this.button4.Name = "button4";
-            this.button4.Size = new System.Drawing.Size(21, 20);
-            this.button4.TabIndex = 165;
-            this.button4.TabStop = false;
-            this.button4.Tag = "color:light";
-            this.button4.Text = "◀";
-            this.button4.UseVisualStyleBackColor = false;
+            this.btnNudgeParam1Down.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.btnNudgeParam1Down.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(224)))), ((int)(((byte)(224)))), ((int)(((byte)(224)))));
+            this.btnNudgeParam1Down.FlatAppearance.BorderSize = 0;
+            this.btnNudgeParam1Down.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnNudgeParam1Down.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F);
+            this.btnNudgeParam1Down.ForeColor = System.Drawing.Color.Black;
+            this.btnNudgeParam1Down.Location = new System.Drawing.Point(18, 117);
+            this.btnNudgeParam1Down.Name = "btnNudgeParam1Down";
+            this.btnNudgeParam1Down.Size = new System.Drawing.Size(21, 20);
+            this.btnNudgeParam1Down.TabIndex = 165;
+            this.btnNudgeParam1Down.TabStop = false;
+            this.btnNudgeParam1Down.Tag = "color:light";
+            this.btnNudgeParam1Down.Text = "◀";
+            this.btnNudgeParam1Down.UseVisualStyleBackColor = false;
+            this.btnNudgeParam1Down.Click += new System.EventHandler(this.btnNudgeParam1Down_Click);
             // 
             // updownNudgeParam1
             // 
@@ -345,39 +349,41 @@
             this.updownNudgeParam1.Size = new System.Drawing.Size(59, 20);
             this.updownNudgeParam1.TabIndex = 163;
             // 
-            // button1
+            // btnNudgeEndAddressUp
             // 
-            this.button1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.button1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(224)))), ((int)(((byte)(224)))), ((int)(((byte)(224)))));
-            this.button1.FlatAppearance.BorderSize = 0;
-            this.button1.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.button1.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F);
-            this.button1.ForeColor = System.Drawing.Color.Black;
-            this.button1.Location = new System.Drawing.Point(110, 69);
-            this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(21, 20);
-            this.button1.TabIndex = 161;
-            this.button1.TabStop = false;
-            this.button1.Tag = "color:light";
-            this.button1.Text = "▶";
-            this.button1.UseVisualStyleBackColor = false;
+            this.btnNudgeEndAddressUp.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.btnNudgeEndAddressUp.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(224)))), ((int)(((byte)(224)))), ((int)(((byte)(224)))));
+            this.btnNudgeEndAddressUp.FlatAppearance.BorderSize = 0;
+            this.btnNudgeEndAddressUp.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnNudgeEndAddressUp.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F);
+            this.btnNudgeEndAddressUp.ForeColor = System.Drawing.Color.Black;
+            this.btnNudgeEndAddressUp.Location = new System.Drawing.Point(110, 69);
+            this.btnNudgeEndAddressUp.Name = "btnNudgeEndAddressUp";
+            this.btnNudgeEndAddressUp.Size = new System.Drawing.Size(21, 20);
+            this.btnNudgeEndAddressUp.TabIndex = 161;
+            this.btnNudgeEndAddressUp.TabStop = false;
+            this.btnNudgeEndAddressUp.Tag = "color:light";
+            this.btnNudgeEndAddressUp.Text = "▶";
+            this.btnNudgeEndAddressUp.UseVisualStyleBackColor = false;
+            this.btnNudgeEndAddressUp.Click += new System.EventHandler(this.btnNudgeEndAddressUp_Click);
             // 
-            // button2
+            // btnNudgeEndAddressDown
             // 
-            this.button2.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.button2.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(224)))), ((int)(((byte)(224)))), ((int)(((byte)(224)))));
-            this.button2.FlatAppearance.BorderSize = 0;
-            this.button2.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.button2.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F);
-            this.button2.ForeColor = System.Drawing.Color.Black;
-            this.button2.Location = new System.Drawing.Point(18, 69);
-            this.button2.Name = "button2";
-            this.button2.Size = new System.Drawing.Size(21, 20);
-            this.button2.TabIndex = 162;
-            this.button2.TabStop = false;
-            this.button2.Tag = "color:light";
-            this.button2.Text = "◀";
-            this.button2.UseVisualStyleBackColor = false;
+            this.btnNudgeEndAddressDown.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.btnNudgeEndAddressDown.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(224)))), ((int)(((byte)(224)))), ((int)(((byte)(224)))));
+            this.btnNudgeEndAddressDown.FlatAppearance.BorderSize = 0;
+            this.btnNudgeEndAddressDown.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnNudgeEndAddressDown.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F);
+            this.btnNudgeEndAddressDown.ForeColor = System.Drawing.Color.Black;
+            this.btnNudgeEndAddressDown.Location = new System.Drawing.Point(18, 69);
+            this.btnNudgeEndAddressDown.Name = "btnNudgeEndAddressDown";
+            this.btnNudgeEndAddressDown.Size = new System.Drawing.Size(21, 20);
+            this.btnNudgeEndAddressDown.TabIndex = 162;
+            this.btnNudgeEndAddressDown.TabStop = false;
+            this.btnNudgeEndAddressDown.Tag = "color:light";
+            this.btnNudgeEndAddressDown.Text = "◀";
+            this.btnNudgeEndAddressDown.UseVisualStyleBackColor = false;
+            this.btnNudgeEndAddressDown.Click += new System.EventHandler(this.btnNudgeEndAddressDown_Click);
             // 
             // updownNudgeEndAddress
             // 
@@ -387,39 +393,41 @@
             this.updownNudgeEndAddress.Size = new System.Drawing.Size(59, 20);
             this.updownNudgeEndAddress.TabIndex = 160;
             // 
-            // btnShiftBlastLayerUp
+            // btnNudgeStartAddressUp
             // 
-            this.btnShiftBlastLayerUp.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.btnShiftBlastLayerUp.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(224)))), ((int)(((byte)(224)))), ((int)(((byte)(224)))));
-            this.btnShiftBlastLayerUp.FlatAppearance.BorderSize = 0;
-            this.btnShiftBlastLayerUp.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btnShiftBlastLayerUp.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F);
-            this.btnShiftBlastLayerUp.ForeColor = System.Drawing.Color.Black;
-            this.btnShiftBlastLayerUp.Location = new System.Drawing.Point(110, 19);
-            this.btnShiftBlastLayerUp.Name = "btnShiftBlastLayerUp";
-            this.btnShiftBlastLayerUp.Size = new System.Drawing.Size(21, 20);
-            this.btnShiftBlastLayerUp.TabIndex = 158;
-            this.btnShiftBlastLayerUp.TabStop = false;
-            this.btnShiftBlastLayerUp.Tag = "color:light";
-            this.btnShiftBlastLayerUp.Text = "▶";
-            this.btnShiftBlastLayerUp.UseVisualStyleBackColor = false;
+            this.btnNudgeStartAddressUp.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.btnNudgeStartAddressUp.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(224)))), ((int)(((byte)(224)))), ((int)(((byte)(224)))));
+            this.btnNudgeStartAddressUp.FlatAppearance.BorderSize = 0;
+            this.btnNudgeStartAddressUp.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnNudgeStartAddressUp.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F);
+            this.btnNudgeStartAddressUp.ForeColor = System.Drawing.Color.Black;
+            this.btnNudgeStartAddressUp.Location = new System.Drawing.Point(110, 19);
+            this.btnNudgeStartAddressUp.Name = "btnNudgeStartAddressUp";
+            this.btnNudgeStartAddressUp.Size = new System.Drawing.Size(21, 20);
+            this.btnNudgeStartAddressUp.TabIndex = 158;
+            this.btnNudgeStartAddressUp.TabStop = false;
+            this.btnNudgeStartAddressUp.Tag = "color:light";
+            this.btnNudgeStartAddressUp.Text = "▶";
+            this.btnNudgeStartAddressUp.UseVisualStyleBackColor = false;
+            this.btnNudgeStartAddressUp.Click += new System.EventHandler(this.btnNudgeStartAddressUp_Click);
             // 
-            // btnShiftBlastLayerDown
+            // btnNudgeStartAddressDown
             // 
-            this.btnShiftBlastLayerDown.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.btnShiftBlastLayerDown.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(224)))), ((int)(((byte)(224)))), ((int)(((byte)(224)))));
-            this.btnShiftBlastLayerDown.FlatAppearance.BorderSize = 0;
-            this.btnShiftBlastLayerDown.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btnShiftBlastLayerDown.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F);
-            this.btnShiftBlastLayerDown.ForeColor = System.Drawing.Color.Black;
-            this.btnShiftBlastLayerDown.Location = new System.Drawing.Point(18, 19);
-            this.btnShiftBlastLayerDown.Name = "btnShiftBlastLayerDown";
-            this.btnShiftBlastLayerDown.Size = new System.Drawing.Size(21, 20);
-            this.btnShiftBlastLayerDown.TabIndex = 159;
-            this.btnShiftBlastLayerDown.TabStop = false;
-            this.btnShiftBlastLayerDown.Tag = "color:light";
-            this.btnShiftBlastLayerDown.Text = "◀";
-            this.btnShiftBlastLayerDown.UseVisualStyleBackColor = false;
+            this.btnNudgeStartAddressDown.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.btnNudgeStartAddressDown.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(224)))), ((int)(((byte)(224)))), ((int)(((byte)(224)))));
+            this.btnNudgeStartAddressDown.FlatAppearance.BorderSize = 0;
+            this.btnNudgeStartAddressDown.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnNudgeStartAddressDown.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F);
+            this.btnNudgeStartAddressDown.ForeColor = System.Drawing.Color.Black;
+            this.btnNudgeStartAddressDown.Location = new System.Drawing.Point(18, 19);
+            this.btnNudgeStartAddressDown.Name = "btnNudgeStartAddressDown";
+            this.btnNudgeStartAddressDown.Size = new System.Drawing.Size(21, 20);
+            this.btnNudgeStartAddressDown.TabIndex = 159;
+            this.btnNudgeStartAddressDown.TabStop = false;
+            this.btnNudgeStartAddressDown.Tag = "color:light";
+            this.btnNudgeStartAddressDown.Text = "◀";
+            this.btnNudgeStartAddressDown.UseVisualStyleBackColor = false;
+            this.btnNudgeStartAddressDown.Click += new System.EventHandler(this.btnNudgeStartAddressDown_Click);
             // 
             // updownNudgeStartAddress
             // 
@@ -687,6 +695,7 @@
             // 
             this.dgvStepSize.FillWeight = 50F;
             this.dgvStepSize.HeaderText = "Step Size";
+            this.dgvStepSize.Hexadecimal = true;
             this.dgvStepSize.Maximum = new decimal(new int[] {
             -1,
             0,
@@ -707,11 +716,6 @@
             this.dgvStartAddress.Hexadecimal = true;
             this.dgvStartAddress.Maximum = new decimal(new int[] {
             -1,
-            0,
-            0,
-            0});
-            this.dgvStartAddress.Minimum = new decimal(new int[] {
-            1,
             0,
             0,
             0});
@@ -797,17 +801,17 @@
 		private System.Windows.Forms.DataGridView dgvBlastGenerator;
 		private System.Windows.Forms.Panel panel2;
 		private System.Windows.Forms.Label label4;
-		private System.Windows.Forms.Button button5;
-		private System.Windows.Forms.Button button6;
+		private System.Windows.Forms.Button btnNudgeParam2Up;
+		private System.Windows.Forms.Button btnNudgeParam2Down;
 		private NumericUpDownHexFix updownNudgeParam2;
-		private System.Windows.Forms.Button button3;
-		private System.Windows.Forms.Button button4;
+		private System.Windows.Forms.Button btnNudgeParam1Up;
+		private System.Windows.Forms.Button btnNudgeParam1Down;
 		private NumericUpDownHexFix updownNudgeParam1;
-		private System.Windows.Forms.Button button1;
-		private System.Windows.Forms.Button button2;
+		private System.Windows.Forms.Button btnNudgeEndAddressUp;
+		private System.Windows.Forms.Button btnNudgeEndAddressDown;
 		private NumericUpDownHexFix updownNudgeEndAddress;
-		private System.Windows.Forms.Button btnShiftBlastLayerUp;
-		private System.Windows.Forms.Button btnShiftBlastLayerDown;
+		private System.Windows.Forms.Button btnNudgeStartAddressUp;
+		private System.Windows.Forms.Button btnNudgeStartAddressDown;
 		private NumericUpDownHexFix updownNudgeStartAddress;
 		private System.Windows.Forms.Label label5;
 		private System.Windows.Forms.Label label3;
