@@ -117,7 +117,7 @@
             this.comboBox1 = new System.Windows.Forms.ComboBox();
             this.cbBlastType = new System.Windows.Forms.ComboBox();
             this.label9 = new System.Windows.Forms.Label();
-            this.panel1 = new System.Windows.Forms.Panel();
+            this.pnMemoryDomains = new System.Windows.Forms.Panel();
             this.label2 = new System.Windows.Forms.Label();
             this.label3 = new System.Windows.Forms.Label();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
@@ -126,6 +126,8 @@
             this.comboBox8 = new System.Windows.Forms.ComboBox();
             this.label21 = new System.Windows.Forms.Label();
             this.btnOpenBlastGenerator = new System.Windows.Forms.Button();
+            this.gbDomainsUnavailable = new System.Windows.Forms.GroupBox();
+            this.label22 = new System.Windows.Forms.Label();
             this.pnGeneralParameters.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.nmIntensity)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.nmErrorDelay)).BeginInit();
@@ -148,9 +150,10 @@
             this.gbHellgenieEngine.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.nmMaxCheats)).BeginInit();
             this.gbNightmareEngine.SuspendLayout();
-            this.panel1.SuspendLayout();
+            this.pnMemoryDomains.SuspendLayout();
             this.groupBox1.SuspendLayout();
             this.gbBlastGeneratorEngine.SuspendLayout();
+            this.gbDomainsUnavailable.SuspendLayout();
             this.SuspendLayout();
             // 
             // pnGeneralParameters
@@ -544,8 +547,8 @@
             "Freeze Engine",
             "Pipe Engine",
             "Vector Engine",
-            "External ROM Plugin", 
-			"Blast Generator"});
+            "External ROM Plugin",
+            "Blast Generator"});
             this.cbSelectedEngine.Location = new System.Drawing.Point(10, 13);
             this.cbSelectedEngine.Name = "cbSelectedEngine";
             this.cbSelectedEngine.Size = new System.Drawing.Size(165, 21);
@@ -1478,18 +1481,18 @@
             this.label9.TabIndex = 12;
             this.label9.Text = "Blast type:";
             // 
-            // panel1
+            // pnMemoryDomains
             // 
-            this.panel1.BackColor = System.Drawing.Color.Gray;
-            this.panel1.Controls.Add(this.lbMemoryDomains);
-            this.panel1.Controls.Add(this.btnAutoSelectDomains);
-            this.panel1.Controls.Add(this.btnRefreshDomains);
-            this.panel1.Controls.Add(this.btnSelectAll);
-            this.panel1.Location = new System.Drawing.Point(14, 212);
-            this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(200, 291);
-            this.panel1.TabIndex = 130;
-            this.panel1.Tag = "color:normal";
+            this.pnMemoryDomains.BackColor = System.Drawing.Color.Gray;
+            this.pnMemoryDomains.Controls.Add(this.lbMemoryDomains);
+            this.pnMemoryDomains.Controls.Add(this.btnAutoSelectDomains);
+            this.pnMemoryDomains.Controls.Add(this.btnRefreshDomains);
+            this.pnMemoryDomains.Controls.Add(this.btnSelectAll);
+            this.pnMemoryDomains.Location = new System.Drawing.Point(14, 212);
+            this.pnMemoryDomains.Name = "pnMemoryDomains";
+            this.pnMemoryDomains.Size = new System.Drawing.Size(200, 291);
+            this.pnMemoryDomains.TabIndex = 130;
+            this.pnMemoryDomains.Tag = "color:normal";
             // 
             // label2
             // 
@@ -1591,6 +1594,29 @@
             this.btnOpenBlastGenerator.UseVisualStyleBackColor = false;
             this.btnOpenBlastGenerator.Click += new System.EventHandler(this.btnOpenBlastGenerator_Click);
             // 
+            // gbDomainsUnavailable
+            // 
+            this.gbDomainsUnavailable.Controls.Add(this.label22);
+            this.gbDomainsUnavailable.Font = new System.Drawing.Font("Segoe UI", 9.75F);
+            this.gbDomainsUnavailable.ForeColor = System.Drawing.Color.White;
+            this.gbDomainsUnavailable.Location = new System.Drawing.Point(14, 203);
+            this.gbDomainsUnavailable.Name = "gbDomainsUnavailable";
+            this.gbDomainsUnavailable.Size = new System.Drawing.Size(200, 297);
+            this.gbDomainsUnavailable.TabIndex = 136;
+            this.gbDomainsUnavailable.TabStop = false;
+            // 
+            // label22
+            // 
+            this.label22.AutoSize = true;
+            this.label22.Font = new System.Drawing.Font("Segoe UI Semibold", 9F);
+            this.label22.ForeColor = System.Drawing.Color.White;
+            this.label22.Location = new System.Drawing.Point(5, 132);
+            this.label22.Name = "label22";
+            this.label22.Size = new System.Drawing.Size(192, 30);
+            this.label22.TabIndex = 132;
+            this.label22.Text = "Memory Domains unavailable with\n current engine";
+            this.label22.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            // 
             // RTC_EngineConfig_Form
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -1600,7 +1626,7 @@
             this.Controls.Add(this.gbBlastGeneratorEngine);
             this.Controls.Add(this.label3);
             this.Controls.Add(this.label2);
-            this.Controls.Add(this.panel1);
+            this.Controls.Add(this.pnMemoryDomains);
             this.Controls.Add(this.gbVectorEngine);
             this.Controls.Add(this.gbPipeEngine);
             this.Controls.Add(this.gbDistortionEngine);
@@ -1614,6 +1640,7 @@
             this.Controls.Add(this.pnCorruptionEngine);
             this.Controls.Add(this.label11);
             this.Controls.Add(this.groupBox1);
+            this.Controls.Add(this.gbDomainsUnavailable);
             this.DoubleBuffered = true;
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
             this.Name = "RTC_EngineConfig_Form";
@@ -1653,11 +1680,13 @@
             ((System.ComponentModel.ISupportInitialize)(this.nmMaxCheats)).EndInit();
             this.gbNightmareEngine.ResumeLayout(false);
             this.gbNightmareEngine.PerformLayout();
-            this.panel1.ResumeLayout(false);
+            this.pnMemoryDomains.ResumeLayout(false);
             this.groupBox1.ResumeLayout(false);
             this.groupBox1.PerformLayout();
             this.gbBlastGeneratorEngine.ResumeLayout(false);
             this.gbBlastGeneratorEngine.PerformLayout();
+            this.gbDomainsUnavailable.ResumeLayout(false);
+            this.gbDomainsUnavailable.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -1723,7 +1752,7 @@
         private System.Windows.Forms.GroupBox gbNightmareEngine;
         public System.Windows.Forms.ComboBox cbBlastType;
         private System.Windows.Forms.Label label9;
-        private System.Windows.Forms.Panel panel1;
+        private System.Windows.Forms.Panel pnMemoryDomains;
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.GroupBox groupBox1;
@@ -1762,5 +1791,7 @@
 		public System.Windows.Forms.ComboBox comboBox8;
 		private System.Windows.Forms.Label label21;
 		private System.Windows.Forms.Button btnOpenBlastGenerator;
+		private System.Windows.Forms.GroupBox gbDomainsUnavailable;
+		private System.Windows.Forms.Label label22;
 	}
 }

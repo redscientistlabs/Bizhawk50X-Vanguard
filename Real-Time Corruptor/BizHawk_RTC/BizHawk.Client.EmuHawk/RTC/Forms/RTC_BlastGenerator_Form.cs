@@ -68,6 +68,7 @@ namespace RTC
 			AddDefaultRow();
 			PopulateTypeCombobox(dgvBlastGenerator.Rows[0]);
 			openedFromBlastEditor = false;
+			btnSendTo.Text = "Send to Stash";
 
 			this.Show();
 		}
@@ -84,6 +85,7 @@ namespace RTC
 			AddDefaultRow();
 			PopulateTypeCombobox(dgvBlastGenerator.Rows[0]);
 			openedFromBlastEditor = true;
+			btnSendTo.Text = "Send to Blast Editor";
 
 			this.Show();
 		}
@@ -110,6 +112,7 @@ namespace RTC
 
 		private bool PopulateDomainCombobox(DataGridViewComboBoxColumn dgvColumn)
 		{
+			dgvColumn.Items.Clear();
 			string[] domains = RTC_MemoryDomains.MemoryInterfaces.Keys.Concat(RTC_MemoryDomains.VmdPool.Values.Select(it => it.ToString())).ToArray();
 
 			foreach (string domain in domains)
@@ -204,7 +207,7 @@ namespace RTC
 			{
 				if(RTC_Core.beForm != null)
 				{
-					RTC_Core.beForm.ImportBlastLayer(sk.BlastLayer);
+					RTC_Core.beForm.ImportBlastLayer(newSk.BlastLayer);
 				}
 			}
 			else

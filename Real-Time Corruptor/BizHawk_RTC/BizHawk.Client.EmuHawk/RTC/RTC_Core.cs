@@ -986,6 +986,9 @@ namespace RTC
 
 			spForm.dgvStockpile.BackgroundColor = color;
 			ghForm.dgvStockpile.BackgroundColor = color;
+			beForm.dgvBlastLayer.BackgroundColor = color;
+			bgForm.dgvBlastGenerator.BackgroundColor = color;
+			
 
 			foreach (Control c in darkColorControls)
 				c.BackColor = color.ChangeColorBrightness(-0.30f);

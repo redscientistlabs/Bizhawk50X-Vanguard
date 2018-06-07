@@ -30,6 +30,7 @@
 		{
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle3 = new System.Windows.Forms.DataGridViewCellStyle();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(RTC_NewBlastEditor_Form));
             this.btnCorrupt = new System.Windows.Forms.Button();
             this.btnLoadCorrupt = new System.Windows.Forms.Button();
@@ -40,7 +41,6 @@
             this.btnDisableEverything = new System.Windows.Forms.Button();
             this.btnEnableEverything = new System.Windows.Forms.Button();
             this.btnDuplicateSelected = new System.Windows.Forms.Button();
-            this.btnSanitizeDuplicates = new System.Windows.Forms.Button();
             this.lbBlastLayerSize = new System.Windows.Forms.Label();
             this.dgvBlastLayer = new System.Windows.Forms.DataGridView();
             this.dgvBlastUnitReference = new System.Windows.Forms.DataGridViewTextBoxColumn();
@@ -92,10 +92,11 @@
             this.replaceRomFromFileToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.bakeROMBlastunitsToFileToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.toolsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.openBlastLayerGeneratorToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.rasterizeVMDsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.bakeBlastByteToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.btnHideSidebar = new System.Windows.Forms.Button();
+            this.sanitizeDuplicatesToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.openBlastLayerGeneratorToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             ((System.ComponentModel.ISupportInitialize)(this.dgvBlastLayer)).BeginInit();
             this.pnMemoryTargetting.SuspendLayout();
             this.panel1.SuspendLayout();
@@ -112,7 +113,7 @@
             this.btnCorrupt.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnCorrupt.Font = new System.Drawing.Font("Segoe UI Semibold", 9F, System.Drawing.FontStyle.Bold);
             this.btnCorrupt.ForeColor = System.Drawing.Color.OrangeRed;
-            this.btnCorrupt.Location = new System.Drawing.Point(9, 443);
+            this.btnCorrupt.Location = new System.Drawing.Point(9, 403);
             this.btnCorrupt.Name = "btnCorrupt";
             this.btnCorrupt.Size = new System.Drawing.Size(157, 23);
             this.btnCorrupt.TabIndex = 13;
@@ -130,7 +131,7 @@
             this.btnLoadCorrupt.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnLoadCorrupt.Font = new System.Drawing.Font("Segoe UI Semibold", 9F, System.Drawing.FontStyle.Bold);
             this.btnLoadCorrupt.ForeColor = System.Drawing.Color.OrangeRed;
-            this.btnLoadCorrupt.Location = new System.Drawing.Point(9, 417);
+            this.btnLoadCorrupt.Location = new System.Drawing.Point(9, 377);
             this.btnLoadCorrupt.Name = "btnLoadCorrupt";
             this.btnLoadCorrupt.Size = new System.Drawing.Size(157, 23);
             this.btnLoadCorrupt.TabIndex = 14;
@@ -148,7 +149,7 @@
             this.btnSendToStash.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnSendToStash.Font = new System.Drawing.Font("Segoe UI Semibold", 9F, System.Drawing.FontStyle.Bold);
             this.btnSendToStash.ForeColor = System.Drawing.Color.OrangeRed;
-            this.btnSendToStash.Location = new System.Drawing.Point(9, 469);
+            this.btnSendToStash.Location = new System.Drawing.Point(9, 429);
             this.btnSendToStash.Name = "btnSendToStash";
             this.btnSendToStash.Size = new System.Drawing.Size(157, 23);
             this.btnSendToStash.TabIndex = 12;
@@ -166,7 +167,7 @@
             this.btnDisable50.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnDisable50.Font = new System.Drawing.Font("Segoe UI Semibold", 9F, System.Drawing.FontStyle.Bold);
             this.btnDisable50.ForeColor = System.Drawing.Color.Black;
-            this.btnDisable50.Location = new System.Drawing.Point(9, 161);
+            this.btnDisable50.Location = new System.Drawing.Point(9, 152);
             this.btnDisable50.Name = "btnDisable50";
             this.btnDisable50.Size = new System.Drawing.Size(157, 23);
             this.btnDisable50.TabIndex = 114;
@@ -184,7 +185,7 @@
             this.btnRemoveDisabled.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnRemoveDisabled.Font = new System.Drawing.Font("Segoe UI Semibold", 9F, System.Drawing.FontStyle.Bold);
             this.btnRemoveDisabled.ForeColor = System.Drawing.Color.Black;
-            this.btnRemoveDisabled.Location = new System.Drawing.Point(9, 213);
+            this.btnRemoveDisabled.Location = new System.Drawing.Point(9, 204);
             this.btnRemoveDisabled.Name = "btnRemoveDisabled";
             this.btnRemoveDisabled.Size = new System.Drawing.Size(157, 23);
             this.btnRemoveDisabled.TabIndex = 115;
@@ -202,7 +203,7 @@
             this.btnInvertDisabled.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnInvertDisabled.Font = new System.Drawing.Font("Segoe UI Semibold", 9F, System.Drawing.FontStyle.Bold);
             this.btnInvertDisabled.ForeColor = System.Drawing.Color.Black;
-            this.btnInvertDisabled.Location = new System.Drawing.Point(9, 187);
+            this.btnInvertDisabled.Location = new System.Drawing.Point(9, 178);
             this.btnInvertDisabled.Name = "btnInvertDisabled";
             this.btnInvertDisabled.Size = new System.Drawing.Size(157, 23);
             this.btnInvertDisabled.TabIndex = 116;
@@ -220,7 +221,7 @@
             this.btnDisableEverything.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnDisableEverything.Font = new System.Drawing.Font("Segoe UI Semibold", 9F, System.Drawing.FontStyle.Bold);
             this.btnDisableEverything.ForeColor = System.Drawing.Color.Black;
-            this.btnDisableEverything.Location = new System.Drawing.Point(9, 244);
+            this.btnDisableEverything.Location = new System.Drawing.Point(9, 233);
             this.btnDisableEverything.Name = "btnDisableEverything";
             this.btnDisableEverything.Size = new System.Drawing.Size(157, 23);
             this.btnDisableEverything.TabIndex = 128;
@@ -238,7 +239,7 @@
             this.btnEnableEverything.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnEnableEverything.Font = new System.Drawing.Font("Segoe UI Semibold", 9F, System.Drawing.FontStyle.Bold);
             this.btnEnableEverything.ForeColor = System.Drawing.Color.Black;
-            this.btnEnableEverything.Location = new System.Drawing.Point(9, 270);
+            this.btnEnableEverything.Location = new System.Drawing.Point(9, 259);
             this.btnEnableEverything.Name = "btnEnableEverything";
             this.btnEnableEverything.Size = new System.Drawing.Size(157, 23);
             this.btnEnableEverything.TabIndex = 129;
@@ -256,7 +257,7 @@
             this.btnDuplicateSelected.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnDuplicateSelected.Font = new System.Drawing.Font("Segoe UI Semibold", 9F, System.Drawing.FontStyle.Bold);
             this.btnDuplicateSelected.ForeColor = System.Drawing.Color.Black;
-            this.btnDuplicateSelected.Location = new System.Drawing.Point(9, 357);
+            this.btnDuplicateSelected.Location = new System.Drawing.Point(9, 319);
             this.btnDuplicateSelected.Name = "btnDuplicateSelected";
             this.btnDuplicateSelected.Size = new System.Drawing.Size(157, 23);
             this.btnDuplicateSelected.TabIndex = 130;
@@ -265,24 +266,6 @@
             this.btnDuplicateSelected.Text = "Duplicate Selected Rows";
             this.btnDuplicateSelected.UseVisualStyleBackColor = false;
             this.btnDuplicateSelected.Click += new System.EventHandler(this.btnDuplicateSelected_Click);
-            // 
-            // btnSanitizeDuplicates
-            // 
-            this.btnSanitizeDuplicates.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.btnSanitizeDuplicates.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(224)))), ((int)(((byte)(224)))), ((int)(((byte)(224)))));
-            this.btnSanitizeDuplicates.FlatAppearance.BorderSize = 0;
-            this.btnSanitizeDuplicates.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btnSanitizeDuplicates.Font = new System.Drawing.Font("Segoe UI Semibold", 9F, System.Drawing.FontStyle.Bold);
-            this.btnSanitizeDuplicates.ForeColor = System.Drawing.Color.Black;
-            this.btnSanitizeDuplicates.Location = new System.Drawing.Point(9, 326);
-            this.btnSanitizeDuplicates.Name = "btnSanitizeDuplicates";
-            this.btnSanitizeDuplicates.Size = new System.Drawing.Size(157, 23);
-            this.btnSanitizeDuplicates.TabIndex = 131;
-            this.btnSanitizeDuplicates.TabStop = false;
-            this.btnSanitizeDuplicates.Tag = "color:light";
-            this.btnSanitizeDuplicates.Text = "Sanitize Duplicate SourceAddress";
-            this.btnSanitizeDuplicates.UseVisualStyleBackColor = false;
-            this.btnSanitizeDuplicates.Click += new System.EventHandler(this.btnSanitizeDuplicates_Click);
             // 
             // lbBlastLayerSize
             // 
@@ -301,6 +284,8 @@
             this.dgvBlastLayer.AllowUserToAddRows = false;
             this.dgvBlastLayer.AllowUserToResizeRows = false;
             this.dgvBlastLayer.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
+            this.dgvBlastLayer.BackgroundColor = System.Drawing.Color.Gray;
+            this.dgvBlastLayer.BorderStyle = System.Windows.Forms.BorderStyle.None;
             this.dgvBlastLayer.ClipboardCopyMode = System.Windows.Forms.DataGridViewClipboardCopyMode.Disable;
             dataGridViewCellStyle1.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
             dataGridViewCellStyle1.BackColor = System.Drawing.SystemColors.Control;
@@ -331,13 +316,22 @@
             dataGridViewCellStyle2.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
             this.dgvBlastLayer.DefaultCellStyle = dataGridViewCellStyle2;
             this.dgvBlastLayer.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.dgvBlastLayer.GridColor = System.Drawing.Color.Black;
             this.dgvBlastLayer.Location = new System.Drawing.Point(0, 24);
             this.dgvBlastLayer.Margin = new System.Windows.Forms.Padding(2);
             this.dgvBlastLayer.Name = "dgvBlastLayer";
+            dataGridViewCellStyle3.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle3.BackColor = System.Drawing.SystemColors.Control;
+            dataGridViewCellStyle3.Font = new System.Drawing.Font("Segoe UI Symbol", 8.25F);
+            dataGridViewCellStyle3.ForeColor = System.Drawing.SystemColors.WindowText;
+            dataGridViewCellStyle3.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle3.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle3.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+            this.dgvBlastLayer.RowHeadersDefaultCellStyle = dataGridViewCellStyle3;
             this.dgvBlastLayer.RowHeadersVisible = false;
             this.dgvBlastLayer.RowTemplate.Height = 24;
             this.dgvBlastLayer.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.dgvBlastLayer.Size = new System.Drawing.Size(748, 501);
+            this.dgvBlastLayer.Size = new System.Drawing.Size(748, 457);
             this.dgvBlastLayer.TabIndex = 133;
             this.dgvBlastLayer.Tag = "color:normal";
             // 
@@ -428,7 +422,7 @@
             this.pnMemoryTargetting.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.pnMemoryTargetting.BackColor = System.Drawing.Color.Gray;
             this.pnMemoryTargetting.Controls.Add(this.lbBlastLayerSize);
-            this.pnMemoryTargetting.Location = new System.Drawing.Point(9, 26);
+            this.pnMemoryTargetting.Location = new System.Drawing.Point(9, 20);
             this.pnMemoryTargetting.Name = "pnMemoryTargetting";
             this.pnMemoryTargetting.Size = new System.Drawing.Size(158, 24);
             this.pnMemoryTargetting.TabIndex = 134;
@@ -440,7 +434,7 @@
             this.label3.AutoSize = true;
             this.label3.Font = new System.Drawing.Font("Segoe UI", 8F);
             this.label3.ForeColor = System.Drawing.Color.White;
-            this.label3.Location = new System.Drawing.Point(9, 9);
+            this.label3.Location = new System.Drawing.Point(9, 4);
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(82, 13);
             this.label3.TabIndex = 135;
@@ -452,7 +446,7 @@
             this.label4.AutoSize = true;
             this.label4.Font = new System.Drawing.Font("Segoe UI", 8F);
             this.label4.ForeColor = System.Drawing.Color.White;
-            this.label4.Location = new System.Drawing.Point(9, 56);
+            this.label4.Location = new System.Drawing.Point(9, 50);
             this.label4.Name = "label4";
             this.label4.Size = new System.Drawing.Size(108, 13);
             this.label4.TabIndex = 136;
@@ -466,7 +460,7 @@
             this.panel1.Controls.Add(this.btnShiftBlastLayerDown);
             this.panel1.Controls.Add(this.btnShiftBlastLayerUp);
             this.panel1.Controls.Add(this.updownShiftBlastLayerAmount);
-            this.panel1.Location = new System.Drawing.Point(9, 72);
+            this.panel1.Location = new System.Drawing.Point(9, 66);
             this.panel1.Name = "panel1";
             this.panel1.Size = new System.Drawing.Size(158, 60);
             this.panel1.TabIndex = 137;
@@ -474,11 +468,14 @@
             // 
             // cbShiftBlastlayer
             // 
+            this.cbShiftBlastlayer.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
+            this.cbShiftBlastlayer.ForeColor = System.Drawing.Color.White;
             this.cbShiftBlastlayer.FormattingEnabled = true;
-            this.cbShiftBlastlayer.Location = new System.Drawing.Point(22, 7);
+            this.cbShiftBlastlayer.Location = new System.Drawing.Point(22, 6);
             this.cbShiftBlastlayer.Name = "cbShiftBlastlayer";
             this.cbShiftBlastlayer.Size = new System.Drawing.Size(114, 21);
             this.cbShiftBlastlayer.TabIndex = 148;
+            this.cbShiftBlastlayer.Tag = "color:dark";
             // 
             // btnShiftBlastLayerDown
             // 
@@ -518,11 +515,14 @@
             // 
             // updownShiftBlastLayerAmount
             // 
+            this.updownShiftBlastLayerAmount.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
+            this.updownShiftBlastLayerAmount.ForeColor = System.Drawing.Color.White;
             this.updownShiftBlastLayerAmount.Hexadecimal = true;
             this.updownShiftBlastLayerAmount.Location = new System.Drawing.Point(50, 33);
             this.updownShiftBlastLayerAmount.Name = "updownShiftBlastLayerAmount";
             this.updownShiftBlastLayerAmount.Size = new System.Drawing.Size(59, 20);
             this.updownShiftBlastLayerAmount.TabIndex = 145;
+            this.updownShiftBlastLayerAmount.Tag = "color:dark";
             // 
             // cbUseHex
             // 
@@ -533,10 +533,11 @@
             this.cbUseHex.CheckState = System.Windows.Forms.CheckState.Checked;
             this.cbUseHex.Font = new System.Drawing.Font("Segoe UI", 8F);
             this.cbUseHex.ForeColor = System.Drawing.Color.White;
-            this.cbUseHex.Location = new System.Drawing.Point(11, 138);
+            this.cbUseHex.Location = new System.Drawing.Point(9, 132);
             this.cbUseHex.Name = "cbUseHex";
             this.cbUseHex.Size = new System.Drawing.Size(100, 17);
             this.cbUseHex.TabIndex = 138;
+            this.cbUseHex.Tag = "";
             this.cbUseHex.Text = "Display As Hex";
             this.cbUseHex.UseVisualStyleBackColor = true;
             this.cbUseHex.CheckedChanged += new System.EventHandler(this.cbUseHex_CheckedChanged);
@@ -607,7 +608,7 @@
             this.btnRemoveSelected.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnRemoveSelected.Font = new System.Drawing.Font("Segoe UI Semibold", 9F, System.Drawing.FontStyle.Bold);
             this.btnRemoveSelected.ForeColor = System.Drawing.Color.Black;
-            this.btnRemoveSelected.Location = new System.Drawing.Point(9, 300);
+            this.btnRemoveSelected.Location = new System.Drawing.Point(9, 289);
             this.btnRemoveSelected.Name = "btnRemoveSelected";
             this.btnRemoveSelected.Size = new System.Drawing.Size(157, 23);
             this.btnRemoveSelected.TabIndex = 139;
@@ -625,7 +626,7 @@
             this.btnSearchRow.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnSearchRow.Font = new System.Drawing.Font("Segoe UI Semibold", 9F, System.Drawing.FontStyle.Bold);
             this.btnSearchRow.ForeColor = System.Drawing.Color.Black;
-            this.btnSearchRow.Location = new System.Drawing.Point(9, 383);
+            this.btnSearchRow.Location = new System.Drawing.Point(9, 345);
             this.btnSearchRow.Name = "btnSearchRow";
             this.btnSearchRow.Size = new System.Drawing.Size(130, 23);
             this.btnSearchRow.TabIndex = 140;
@@ -653,12 +654,11 @@
             this.panelSidebar.Controls.Add(this.pnMemoryTargetting);
             this.panelSidebar.Controls.Add(this.btnDisableEverything);
             this.panelSidebar.Controls.Add(this.btnEnableEverything);
-            this.panelSidebar.Controls.Add(this.btnSanitizeDuplicates);
             this.panelSidebar.Controls.Add(this.btnDuplicateSelected);
             this.panelSidebar.Dock = System.Windows.Forms.DockStyle.Right;
             this.panelSidebar.Location = new System.Drawing.Point(748, 24);
             this.panelSidebar.Name = "panelSidebar";
-            this.panelSidebar.Size = new System.Drawing.Size(176, 501);
+            this.panelSidebar.Size = new System.Drawing.Size(176, 457);
             this.panelSidebar.TabIndex = 142;
             // 
             // btnSearchAgain
@@ -669,7 +669,7 @@
             this.btnSearchAgain.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnSearchAgain.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F);
             this.btnSearchAgain.ForeColor = System.Drawing.Color.Black;
-            this.btnSearchAgain.Location = new System.Drawing.Point(144, 383);
+            this.btnSearchAgain.Location = new System.Drawing.Point(144, 345);
             this.btnSearchAgain.Name = "btnSearchAgain";
             this.btnSearchAgain.Size = new System.Drawing.Size(21, 23);
             this.btnSearchAgain.TabIndex = 141;
@@ -687,11 +687,14 @@
             this.blastLayerToolStripMenuItem,
             this.saveStateToolStripMenuItem,
             this.rOMToolStripMenuItem,
-            this.toolsToolStripMenuItem});
+            this.toolsToolStripMenuItem,
+            this.openBlastLayerGeneratorToolStripMenuItem});
             this.menuStripEx1.Location = new System.Drawing.Point(0, 0);
             this.menuStripEx1.Name = "menuStripEx1";
+            this.menuStripEx1.RenderMode = System.Windows.Forms.ToolStripRenderMode.Professional;
             this.menuStripEx1.Size = new System.Drawing.Size(924, 24);
             this.menuStripEx1.TabIndex = 141;
+            this.menuStripEx1.Tag = "";
             this.menuStripEx1.Text = "menuStripEx1";
             // 
             // blastLayerToolStripMenuItem
@@ -704,6 +707,7 @@
             this.exportToCSVToolStripMenuItem});
             this.blastLayerToolStripMenuItem.Name = "blastLayerToolStripMenuItem";
             this.blastLayerToolStripMenuItem.Size = new System.Drawing.Size(72, 20);
+            this.blastLayerToolStripMenuItem.Tag = "";
             this.blastLayerToolStripMenuItem.Text = "BlastLayer";
             // 
             // loadFromFileblToolStripMenuItem
@@ -750,6 +754,7 @@
             this.saveSavestateToToolStripMenuItem});
             this.saveStateToolStripMenuItem.Name = "saveStateToolStripMenuItem";
             this.saveStateToolStripMenuItem.Size = new System.Drawing.Size(69, 20);
+            this.saveStateToolStripMenuItem.Tag = "";
             this.saveStateToolStripMenuItem.Text = "SaveState";
             // 
             // runOriginalSavestateToolStripMenuItem
@@ -789,6 +794,7 @@
             this.bakeROMBlastunitsToFileToolStripMenuItem});
             this.rOMToolStripMenuItem.Name = "rOMToolStripMenuItem";
             this.rOMToolStripMenuItem.Size = new System.Drawing.Size(46, 20);
+            this.rOMToolStripMenuItem.Tag = "";
             this.rOMToolStripMenuItem.Text = "ROM";
             // 
             // runRomWithoutBlastlayerToolStripMenuItem
@@ -822,19 +828,13 @@
             // toolsToolStripMenuItem
             // 
             this.toolsToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.openBlastLayerGeneratorToolStripMenuItem,
+            this.sanitizeDuplicatesToolStripMenuItem,
             this.rasterizeVMDsToolStripMenuItem,
             this.bakeBlastByteToolStripMenuItem});
             this.toolsToolStripMenuItem.Name = "toolsToolStripMenuItem";
             this.toolsToolStripMenuItem.Size = new System.Drawing.Size(47, 20);
+            this.toolsToolStripMenuItem.Tag = "";
             this.toolsToolStripMenuItem.Text = "Tools";
-            // 
-            // openBlastLayerGeneratorToolStripMenuItem
-            // 
-            this.openBlastLayerGeneratorToolStripMenuItem.Name = "openBlastLayerGeneratorToolStripMenuItem";
-            this.openBlastLayerGeneratorToolStripMenuItem.Size = new System.Drawing.Size(235, 22);
-            this.openBlastLayerGeneratorToolStripMenuItem.Text = "Open BlastLayer Generator";
-            this.openBlastLayerGeneratorToolStripMenuItem.Click += new System.EventHandler(this.openBlastLayerGeneratorToolStripMenuItem_Click);
             // 
             // rasterizeVMDsToolStripMenuItem
             // 
@@ -862,20 +862,34 @@
             this.btnHideSidebar.UseVisualStyleBackColor = true;
             this.btnHideSidebar.Click += new System.EventHandler(this.btnHideSidebar_Click);
             // 
+            // sanitizeDuplicatesToolStripMenuItem
+            // 
+            this.sanitizeDuplicatesToolStripMenuItem.Name = "sanitizeDuplicatesToolStripMenuItem";
+            this.sanitizeDuplicatesToolStripMenuItem.Size = new System.Drawing.Size(235, 22);
+            this.sanitizeDuplicatesToolStripMenuItem.Text = "Sanitize Duplicates";
+            this.sanitizeDuplicatesToolStripMenuItem.Click += new System.EventHandler(this.sanitizeDuplicatesToolStripMenuItem_Click);
+            // 
+            // openBlastLayerGeneratorToolStripMenuItem
+            // 
+            this.openBlastLayerGeneratorToolStripMenuItem.Name = "openBlastLayerGeneratorToolStripMenuItem";
+            this.openBlastLayerGeneratorToolStripMenuItem.Size = new System.Drawing.Size(159, 20);
+            this.openBlastLayerGeneratorToolStripMenuItem.Text = "Open BlastLayer Generator";
+            this.openBlastLayerGeneratorToolStripMenuItem.Click += new System.EventHandler(this.openBlastLayerGeneratorToolStripMenuItem_Click_1);
+            // 
             // RTC_NewBlastEditor_Form
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
-            this.ClientSize = new System.Drawing.Size(924, 525);
-            this.Controls.Add(this.dgvBlastLayer);
+            this.ClientSize = new System.Drawing.Size(924, 481);
             this.Controls.Add(this.btnHideSidebar);
+            this.Controls.Add(this.dgvBlastLayer);
             this.Controls.Add(this.panelSidebar);
             this.Controls.Add(this.menuStripEx1);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.KeyPreview = true;
             this.MainMenuStrip = this.menuStripEx1;
-            this.MinimumSize = new System.Drawing.Size(0, 564);
+            this.MinimumSize = new System.Drawing.Size(600, 520);
             this.Name = "RTC_NewBlastEditor_Form";
             this.Tag = "color:dark";
             this.Text = "Blast Editor";
@@ -904,9 +918,8 @@
 		private System.Windows.Forms.Button btnDisableEverything;
 		private System.Windows.Forms.Button btnEnableEverything;
 		private System.Windows.Forms.Button btnDuplicateSelected;
-		private System.Windows.Forms.Button btnSanitizeDuplicates;
 		private System.Windows.Forms.Label lbBlastLayerSize;
-		private System.Windows.Forms.DataGridView dgvBlastLayer;
+		public System.Windows.Forms.DataGridView dgvBlastLayer;
 		private System.Windows.Forms.Panel pnMemoryTargetting;
 		private System.Windows.Forms.Label label3;
 		private System.Windows.Forms.Label label4;
@@ -959,6 +972,7 @@
 		private System.Windows.Forms.ToolStripMenuItem toolsToolStripMenuItem;
 		private System.Windows.Forms.ToolStripMenuItem rasterizeVMDsToolStripMenuItem;
 		private System.Windows.Forms.ToolStripMenuItem bakeBlastByteToolStripMenuItem;
+		private System.Windows.Forms.ToolStripMenuItem sanitizeDuplicatesToolStripMenuItem;
 		private System.Windows.Forms.ToolStripMenuItem openBlastLayerGeneratorToolStripMenuItem;
 	}
 }

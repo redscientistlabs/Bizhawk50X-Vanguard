@@ -169,13 +169,17 @@
             this.btnRerollSelected = new System.Windows.Forms.Button();
             this.label8 = new System.Windows.Forms.Label();
             this.dgvStockpile = new System.Windows.Forms.DataGridView();
+            this.Note = new System.Windows.Forms.DataGridViewButtonColumn();
+            this.cbCompressStockpiles = new System.Windows.Forms.CheckBox();
+            this.pnIntensity = new System.Windows.Forms.Panel();
+            this.dataGridViewTextBoxColumn1 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.dataGridViewTextBoxColumn2 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.dataGridViewTextBoxColumn3 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.dataGridViewTextBoxColumn4 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.Item = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.GameName = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.SystemName = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.SystemCore = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.Note = new System.Windows.Forms.DataGridViewButtonColumn();
-            this.cbCompressStockpiles = new System.Windows.Forms.CheckBox();
-            this.pnIntensity = new System.Windows.Forms.Panel();
             this.pnSidebar.SuspendLayout();
             this.panel4.SuspendLayout();
             this.panel3.SuspendLayout();
@@ -212,7 +216,7 @@
             this.pnSidebar.Dock = System.Windows.Forms.DockStyle.Left;
             this.pnSidebar.Location = new System.Drawing.Point(0, 0);
             this.pnSidebar.Name = "pnSidebar";
-            this.pnSidebar.Size = new System.Drawing.Size(149, 513);
+            this.pnSidebar.Size = new System.Drawing.Size(149, 501);
             this.pnSidebar.TabIndex = 71;
             this.pnSidebar.Tag = "color:normal";
             // 
@@ -222,7 +226,7 @@
             this.panel4.Controls.Add(this.label9);
             this.panel4.Location = new System.Drawing.Point(-5, 407);
             this.panel4.Name = "panel4";
-            this.panel4.Size = new System.Drawing.Size(156, 27);
+            this.panel4.Size = new System.Drawing.Size(156, 22);
             this.panel4.TabIndex = 139;
             this.panel4.Tag = "color:dark";
             // 
@@ -231,7 +235,7 @@
             this.label9.AutoSize = true;
             this.label9.Font = new System.Drawing.Font("Segoe UI Semibold", 9F);
             this.label9.ForeColor = System.Drawing.Color.White;
-            this.label9.Location = new System.Drawing.Point(8, 9);
+            this.label9.Location = new System.Drawing.Point(8, 4);
             this.label9.Name = "label9";
             this.label9.Size = new System.Drawing.Size(85, 15);
             this.label9.TabIndex = 139;
@@ -242,7 +246,7 @@
             this.label4.AutoSize = true;
             this.label4.Font = new System.Drawing.Font("Segoe UI", 8F);
             this.label4.ForeColor = System.Drawing.Color.White;
-            this.label4.Location = new System.Drawing.Point(5, 444);
+            this.label4.Location = new System.Drawing.Point(5, 437);
             this.label4.Name = "label4";
             this.label4.Size = new System.Drawing.Size(32, 13);
             this.label4.TabIndex = 142;
@@ -256,7 +260,7 @@
             this.btnOpenRenderFolder.Font = new System.Drawing.Font("Segoe UI", 8F);
             this.btnOpenRenderFolder.ForeColor = System.Drawing.Color.White;
             this.btnOpenRenderFolder.Image = global::BizHawk.Client.EmuHawk.Properties.Resources.CopyFolderHS;
-            this.btnOpenRenderFolder.Location = new System.Drawing.Point(103, 482);
+            this.btnOpenRenderFolder.Location = new System.Drawing.Point(103, 474);
             this.btnOpenRenderFolder.Name = "btnOpenRenderFolder";
             this.btnOpenRenderFolder.Size = new System.Drawing.Size(38, 24);
             this.btnOpenRenderFolder.TabIndex = 143;
@@ -279,7 +283,7 @@
             "WAV",
             "AVI",
             "MPEG"});
-            this.cbRenderType.Location = new System.Drawing.Point(38, 440);
+            this.cbRenderType.Location = new System.Drawing.Point(38, 433);
             this.cbRenderType.Name = "cbRenderType";
             this.cbRenderType.Size = new System.Drawing.Size(102, 21);
             this.cbRenderType.TabIndex = 141;
@@ -313,7 +317,7 @@
             this.cbRenderAtLoad.AutoSize = true;
             this.cbRenderAtLoad.Font = new System.Drawing.Font("Segoe UI", 8F);
             this.cbRenderAtLoad.ForeColor = System.Drawing.Color.White;
-            this.cbRenderAtLoad.Location = new System.Drawing.Point(7, 464);
+            this.cbRenderAtLoad.Location = new System.Drawing.Point(7, 456);
             this.cbRenderAtLoad.Name = "cbRenderAtLoad";
             this.cbRenderAtLoad.Size = new System.Drawing.Size(121, 17);
             this.cbRenderAtLoad.TabIndex = 76;
@@ -348,7 +352,7 @@
             this.btnRender.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnRender.Font = new System.Drawing.Font("Segoe UI", 8F);
             this.btnRender.ForeColor = System.Drawing.Color.White;
-            this.btnRender.Location = new System.Drawing.Point(6, 482);
+            this.btnRender.Location = new System.Drawing.Point(6, 474);
             this.btnRender.Name = "btnRender";
             this.btnRender.Size = new System.Drawing.Size(93, 24);
             this.btnRender.TabIndex = 134;
@@ -1774,7 +1778,7 @@
             this.btnClearStashHistory.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnClearStashHistory.Font = new System.Drawing.Font("Segoe UI", 8F);
             this.btnClearStashHistory.ForeColor = System.Drawing.Color.Black;
-            this.btnClearStashHistory.Location = new System.Drawing.Point(160, 472);
+            this.btnClearStashHistory.Location = new System.Drawing.Point(160, 469);
             this.btnClearStashHistory.Name = "btnClearStashHistory";
             this.btnClearStashHistory.Size = new System.Drawing.Size(200, 24);
             this.btnClearStashHistory.TabIndex = 84;
@@ -1845,7 +1849,7 @@
             this.lbStashHistory.Name = "lbStashHistory";
             this.lbStashHistory.ScrollAlwaysVisible = true;
             this.lbStashHistory.SelectionMode = System.Windows.Forms.SelectionMode.MultiExtended;
-            this.lbStashHistory.Size = new System.Drawing.Size(200, 260);
+            this.lbStashHistory.Size = new System.Drawing.Size(200, 254);
             this.lbStashHistory.TabIndex = 80;
             this.lbStashHistory.Tag = "color:normal";
             this.lbStashHistory.SelectedIndexChanged += new System.EventHandler(this.lbStashHistory_SelectedIndexChanged);
@@ -1859,7 +1863,7 @@
             this.btnStockpileMoveSelectedDown.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnStockpileMoveSelectedDown.Font = new System.Drawing.Font("Segoe UI Symbol", 7F);
             this.btnStockpileMoveSelectedDown.ForeColor = System.Drawing.Color.Black;
-            this.btnStockpileMoveSelectedDown.Location = new System.Drawing.Point(814, 472);
+            this.btnStockpileMoveSelectedDown.Location = new System.Drawing.Point(816, 470);
             this.btnStockpileMoveSelectedDown.Name = "btnStockpileMoveSelectedDown";
             this.btnStockpileMoveSelectedDown.Size = new System.Drawing.Size(33, 24);
             this.btnStockpileMoveSelectedDown.TabIndex = 118;
@@ -1877,7 +1881,7 @@
             this.btnStockpileMoveSelectedUp.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnStockpileMoveSelectedUp.Font = new System.Drawing.Font("Segoe UI Symbol", 7F);
             this.btnStockpileMoveSelectedUp.ForeColor = System.Drawing.Color.Black;
-            this.btnStockpileMoveSelectedUp.Location = new System.Drawing.Point(778, 472);
+            this.btnStockpileMoveSelectedUp.Location = new System.Drawing.Point(778, 470);
             this.btnStockpileMoveSelectedUp.Margin = new System.Windows.Forms.Padding(0);
             this.btnStockpileMoveSelectedUp.Name = "btnStockpileMoveSelectedUp";
             this.btnStockpileMoveSelectedUp.Size = new System.Drawing.Size(33, 24);
@@ -1948,7 +1952,7 @@
             this.btnClearStockpile.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnClearStockpile.Font = new System.Drawing.Font("Segoe UI", 8F);
             this.btnClearStockpile.ForeColor = System.Drawing.Color.Black;
-            this.btnClearStockpile.Location = new System.Drawing.Point(401, 472);
+            this.btnClearStockpile.Location = new System.Drawing.Point(401, 469);
             this.btnClearStockpile.Name = "btnClearStockpile";
             this.btnClearStockpile.Size = new System.Drawing.Size(95, 24);
             this.btnClearStockpile.TabIndex = 115;
@@ -2013,7 +2017,7 @@
             this.btnRemoveSelectedStockpile.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnRemoveSelectedStockpile.Font = new System.Drawing.Font("Segoe UI", 8F);
             this.btnRemoveSelectedStockpile.ForeColor = System.Drawing.Color.Black;
-            this.btnRemoveSelectedStockpile.Location = new System.Drawing.Point(516, 472);
+            this.btnRemoveSelectedStockpile.Location = new System.Drawing.Point(506, 469);
             this.btnRemoveSelectedStockpile.Name = "btnRemoveSelectedStockpile";
             this.btnRemoveSelectedStockpile.Size = new System.Drawing.Size(83, 24);
             this.btnRemoveSelectedStockpile.TabIndex = 108;
@@ -2246,7 +2250,7 @@
             this.btnRenameSelected.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnRenameSelected.Font = new System.Drawing.Font("Segoe UI", 8F);
             this.btnRenameSelected.ForeColor = System.Drawing.Color.Black;
-            this.btnRenameSelected.Location = new System.Drawing.Point(601, 472);
+            this.btnRenameSelected.Location = new System.Drawing.Point(597, 469);
             this.btnRenameSelected.Name = "btnRenameSelected";
             this.btnRenameSelected.Size = new System.Drawing.Size(86, 24);
             this.btnRenameSelected.TabIndex = 135;
@@ -2348,11 +2352,86 @@
             this.dgvStockpile.RowHeadersDefaultCellStyle = dataGridViewCellStyle4;
             this.dgvStockpile.RowHeadersVisible = false;
             this.dgvStockpile.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.dgvStockpile.Size = new System.Drawing.Size(451, 437);
+            this.dgvStockpile.Size = new System.Drawing.Size(451, 432);
             this.dgvStockpile.TabIndex = 140;
             this.dgvStockpile.Tag = "color:normal";
             this.dgvStockpile.CellClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dgvStockpile_CellClick);
             this.dgvStockpile.MouseDown += new System.Windows.Forms.MouseEventHandler(this.dgvStockpile_MouseDown);
+            // 
+            // Note
+            // 
+            dataGridViewCellStyle2.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
+            dataGridViewCellStyle2.Font = new System.Drawing.Font("Segoe UI", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            dataGridViewCellStyle2.ForeColor = System.Drawing.Color.Black;
+            this.Note.DefaultCellStyle = dataGridViewCellStyle2;
+            this.Note.FillWeight = 23.01949F;
+            this.Note.HeaderText = "Note";
+            this.Note.MinimumWidth = 35;
+            this.Note.Name = "Note";
+            this.Note.Resizable = System.Windows.Forms.DataGridViewTriState.True;
+            this.Note.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.Automatic;
+            this.Note.Text = "";
+            // 
+            // cbCompressStockpiles
+            // 
+            this.cbCompressStockpiles.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+            this.cbCompressStockpiles.AutoSize = true;
+            this.cbCompressStockpiles.Checked = true;
+            this.cbCompressStockpiles.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.cbCompressStockpiles.Font = new System.Drawing.Font("Segoe UI", 8F);
+            this.cbCompressStockpiles.ForeColor = System.Drawing.Color.White;
+            this.cbCompressStockpiles.Location = new System.Drawing.Point(697, 467);
+            this.cbCompressStockpiles.Name = "cbCompressStockpiles";
+            this.cbCompressStockpiles.Size = new System.Drawing.Size(78, 30);
+            this.cbCompressStockpiles.TabIndex = 144;
+            this.cbCompressStockpiles.TabStop = false;
+            this.cbCompressStockpiles.Text = "Compress\nStockpiles";
+            this.cbCompressStockpiles.UseVisualStyleBackColor = true;
+            // 
+            // pnIntensity
+            // 
+            this.pnIntensity.BackColor = System.Drawing.Color.Gray;
+            this.pnIntensity.Controls.Add(this.labelIntensityTimes);
+            this.pnIntensity.Controls.Add(this.track_Intensity);
+            this.pnIntensity.Controls.Add(this.nmIntensity);
+            this.pnIntensity.Controls.Add(this.labelIntensity);
+            this.pnIntensity.Location = new System.Drawing.Point(158, 30);
+            this.pnIntensity.Name = "pnIntensity";
+            this.pnIntensity.Size = new System.Drawing.Size(204, 58);
+            this.pnIntensity.TabIndex = 122;
+            this.pnIntensity.Tag = "color:normal";
+            // 
+            // dataGridViewTextBoxColumn1
+            // 
+            this.dataGridViewTextBoxColumn1.FillWeight = 145F;
+            this.dataGridViewTextBoxColumn1.HeaderText = "Item Name";
+            this.dataGridViewTextBoxColumn1.Name = "dataGridViewTextBoxColumn1";
+            this.dataGridViewTextBoxColumn1.ReadOnly = true;
+            this.dataGridViewTextBoxColumn1.Width = 197;
+            // 
+            // dataGridViewTextBoxColumn2
+            // 
+            this.dataGridViewTextBoxColumn2.FillWeight = 76.73162F;
+            this.dataGridViewTextBoxColumn2.HeaderText = "Game";
+            this.dataGridViewTextBoxColumn2.Name = "dataGridViewTextBoxColumn2";
+            this.dataGridViewTextBoxColumn2.ReadOnly = true;
+            this.dataGridViewTextBoxColumn2.Width = 110;
+            // 
+            // dataGridViewTextBoxColumn3
+            // 
+            this.dataGridViewTextBoxColumn3.FillWeight = 60F;
+            this.dataGridViewTextBoxColumn3.HeaderText = "System";
+            this.dataGridViewTextBoxColumn3.Name = "dataGridViewTextBoxColumn3";
+            this.dataGridViewTextBoxColumn3.ReadOnly = true;
+            this.dataGridViewTextBoxColumn3.Width = 88;
+            // 
+            // dataGridViewTextBoxColumn4
+            // 
+            this.dataGridViewTextBoxColumn4.FillWeight = 60F;
+            this.dataGridViewTextBoxColumn4.HeaderText = "Core";
+            this.dataGridViewTextBoxColumn4.Name = "dataGridViewTextBoxColumn4";
+            this.dataGridViewTextBoxColumn4.ReadOnly = true;
+            this.dataGridViewTextBoxColumn4.Visible = false;
             // 
             // Item
             // 
@@ -2383,55 +2462,12 @@
             this.SystemCore.ReadOnly = true;
             this.SystemCore.Visible = false;
             // 
-            // Note
-            // 
-            dataGridViewCellStyle2.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
-            dataGridViewCellStyle2.Font = new System.Drawing.Font("Segoe UI", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            dataGridViewCellStyle2.ForeColor = System.Drawing.Color.Black;
-            this.Note.DefaultCellStyle = dataGridViewCellStyle2;
-            this.Note.FillWeight = 23.01949F;
-            this.Note.HeaderText = "Note";
-            this.Note.MinimumWidth = 35;
-            this.Note.Name = "Note";
-            this.Note.Resizable = System.Windows.Forms.DataGridViewTriState.True;
-            this.Note.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.Automatic;
-            this.Note.Text = "";
-            // 
-            // cbCompressStockpiles
-            // 
-            this.cbCompressStockpiles.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.cbCompressStockpiles.AutoSize = true;
-            this.cbCompressStockpiles.Checked = true;
-            this.cbCompressStockpiles.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.cbCompressStockpiles.Font = new System.Drawing.Font("Segoe UI", 8F);
-            this.cbCompressStockpiles.ForeColor = System.Drawing.Color.White;
-            this.cbCompressStockpiles.Location = new System.Drawing.Point(696, 470);
-            this.cbCompressStockpiles.Name = "cbCompressStockpiles";
-            this.cbCompressStockpiles.Size = new System.Drawing.Size(78, 30);
-            this.cbCompressStockpiles.TabIndex = 144;
-            this.cbCompressStockpiles.TabStop = false;
-            this.cbCompressStockpiles.Text = "Compress\nStockpiles";
-            this.cbCompressStockpiles.UseVisualStyleBackColor = true;
-            // 
-            // pnIntensity
-            // 
-            this.pnIntensity.BackColor = System.Drawing.Color.Gray;
-            this.pnIntensity.Controls.Add(this.labelIntensityTimes);
-            this.pnIntensity.Controls.Add(this.track_Intensity);
-            this.pnIntensity.Controls.Add(this.nmIntensity);
-            this.pnIntensity.Controls.Add(this.labelIntensity);
-            this.pnIntensity.Location = new System.Drawing.Point(158, 30);
-            this.pnIntensity.Name = "pnIntensity";
-            this.pnIntensity.Size = new System.Drawing.Size(204, 58);
-            this.pnIntensity.TabIndex = 122;
-            this.pnIntensity.Tag = "color:normal";
-            // 
             // RTC_GlitchHarvester_Form
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
-            this.ClientSize = new System.Drawing.Size(854, 513);
+            this.ClientSize = new System.Drawing.Size(854, 501);
             this.Controls.Add(this.pnSidebar);
             this.Controls.Add(this.dgvStockpile);
             this.Controls.Add(this.label8);
@@ -2458,7 +2494,7 @@
             this.Controls.Add(this.label6);
             this.Controls.Add(this.cbCompressStockpiles);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
-            this.MinimumSize = new System.Drawing.Size(870, 552);
+            this.MinimumSize = new System.Drawing.Size(870, 540);
             this.Name = "RTC_GlitchHarvester_Form";
             this.Tag = "color:dark";
             this.Text = "Glitch Harvester";
@@ -2631,5 +2667,9 @@
 		private System.Windows.Forms.DataGridViewTextBoxColumn SystemName;
 		private System.Windows.Forms.DataGridViewTextBoxColumn SystemCore;
 		private System.Windows.Forms.DataGridViewButtonColumn Note;
+		private System.Windows.Forms.DataGridViewTextBoxColumn dataGridViewTextBoxColumn1;
+		private System.Windows.Forms.DataGridViewTextBoxColumn dataGridViewTextBoxColumn2;
+		private System.Windows.Forms.DataGridViewTextBoxColumn dataGridViewTextBoxColumn3;
+		private System.Windows.Forms.DataGridViewTextBoxColumn dataGridViewTextBoxColumn4;
 	}
 }

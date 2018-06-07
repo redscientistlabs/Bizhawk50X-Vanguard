@@ -402,9 +402,10 @@ namespace RTC
 
             RTC_Core.coreForm.btnAutoCorrupt.Visible = true;
             RTC_Core.ghForm.pnIntensity.Visible = true;
-            RTC_Core.ecForm.pnGeneralParameters.Visible = true;
+			RTC_Core.ecForm.pnGeneralParameters.Visible = true;
+			RTC_Core.ecForm.pnMemoryDomains.Visible = true;
 
-            switch (cbSelectedEngine.SelectedItem.ToString())
+			switch (cbSelectedEngine.SelectedItem.ToString())
             {
                 case "Nightmare Engine":
                     RTC_Core.SelectedEngine = CorruptionEngine.NIGHTMARE;
@@ -461,6 +462,7 @@ namespace RTC
 					RTC_Core.coreForm.AutoCorrupt = false;
 					RTC_Core.coreForm.btnAutoCorrupt.Visible = false;
 					RTC_Core.ecForm.pnGeneralParameters.Visible = false;
+					RTC_Core.ecForm.pnMemoryDomains.Visible = false;
 
 					RTC_Core.ghForm.pnIntensity.Visible = false;
 					break;

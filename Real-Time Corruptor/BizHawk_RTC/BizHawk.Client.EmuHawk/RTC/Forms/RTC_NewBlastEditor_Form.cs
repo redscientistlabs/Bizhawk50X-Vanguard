@@ -365,39 +365,7 @@ namespace RTC
 			}
 		}
 
-		//For BlastPipe, sanitize duplicare valyes instead of addresses
-		private void btnSanitizeDuplicates_Click(object sender, EventArgs e)
-		{
-			List<BlastUnit> bul = new List<BlastUnit>(sk.BlastLayer.Layer.ToArray().Reverse());
-			List<long> usedAddresses = new List<long>();
-			List<long> usedPipeAddresses = new List<long>();
-
-			foreach (BlastUnit bu in bul)
-			{
-				//Optimize by doing everything besides blastpipe first
-				if (!(bu is BlastPipe))
-				{
-					if (!usedAddresses.Contains(bu.Address) && !bu.IsLocked)
-						usedAddresses.Add(bu.Address);
-					else
-					{
-						RemoveBlastUnitFromBlastLayerAndDGV(bu);
-						CurrentlyUpdating = false;
-					}
-				}
-				else
-				{
-					BlastPipe bp = bu as BlastPipe;
-					if (!usedPipeAddresses.Contains(bp.PipeAddress) && !bu.IsLocked)
-						usedPipeAddresses.Add(bp.PipeAddress);
-					else
-					{
-						RemoveBlastUnitFromBlastLayerAndDGV(bu);
-						CurrentlyUpdating = false;
-					}
-				}
-			}
-		}
+		
 
 		private void dgvBlastLayer_CellValueChanged(object sender, DataGridViewCellEventArgs e)
 		{
@@ -1528,9 +1496,44 @@ namespace RTC
 			}
 		}
 
-		private void openBlastLayerGeneratorToolStripMenuItem_Click(object sender, EventArgs e)
+		private void sanitizeDuplicatesToolStripMenuItem_Click(object sender, EventArgs e)
 		{
-			if(RTC_Core.bgForm != null)
+
+			List<BlastUnit> bul = new List<BlastUnit>(sk.BlastLayer.Layer.ToArray().Reverse());
+			List<long> usedAddresses = new List<long>();
+			List<long> usedPipeAddresses = new List<long>();
+
+			foreach (BlastUnit bu in bul)
+			{
+				//Optimize by doing everything besides blastpipe first
+				if (!(bu is BlastPipe))
+				{
+					if (!usedAddresses.Contains(bu.Address) && !bu.IsLocked)
+						usedAddresses.Add(bu.Address);
+					else
+					{
+						RemoveBlastUnitFromBlastLayerAndDGV(bu);
+						CurrentlyUpdating = false;
+					}
+				}
+				else
+				{
+					BlastPipe bp = bu as BlastPipe;
+					if (!usedPipeAddresses.Contains(bp.PipeAddress) && !bu.IsLocked)
+						usedPipeAddresses.Add(bp.PipeAddress);
+					else
+					{
+						RemoveBlastUnitFromBlastLayerAndDGV(bu);
+						CurrentlyUpdating = false;
+					}
+				}
+			}
+		}
+
+		private void openBlastLayerGeneratorToolStripMenuItem_Click_1(object sender, EventArgs e)
+		{
+
+			if (RTC_Core.bgForm != null)
 				RTC_Core.bgForm.Close();
 			RTC_Core.bgForm = new RTC_BlastGenerator_Form();
 			RTC_Core.bgForm.LoadStashkey(sk);
