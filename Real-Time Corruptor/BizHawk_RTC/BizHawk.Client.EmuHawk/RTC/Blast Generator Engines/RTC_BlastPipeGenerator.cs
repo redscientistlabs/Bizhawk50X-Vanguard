@@ -47,13 +47,16 @@ namespace RTC
 						else
 							destAddress = mdp.Size;
 						break;
-					case BGBlastPipeModes.RANDOM:
+					case BGBlastPipeModes.SOURCE_RANDOM:
 						destAddress = safeAddress;
 						safeAddress = RTC_Core.RND.Next(0, Convert.ToInt32(mdp.Size-1));
 						break;
-					case BGBlastPipeModes.SETSOURCE:
+					case BGBlastPipeModes.SOURCE_SET:
 						destAddress = safeAddress;
 						safeAddress = param1;
+						break;
+					case BGBlastPipeModes.DEST_RANDOM:
+						destAddress = RTC_Core.RND.Next(0, Convert.ToInt32(mdp.Size - 1));
 						break;
 				}
 

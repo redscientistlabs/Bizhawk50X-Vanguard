@@ -105,9 +105,9 @@ namespace RTC
 			(dgvBlastGenerator.Rows[lastrow].Cells["dgvRowDirty"]).Value = true;
 			(dgvBlastGenerator.Rows[lastrow].Cells["dgvEnabled"]).Value = true;
 			(dgvBlastGenerator.Rows[lastrow].Cells["dgvPrecision"] as DataGridViewComboBoxCell).Value = (dgvBlastGenerator.Rows[0].Cells["dgvPrecision"] as DataGridViewComboBoxCell).Items[0];
-			(dgvBlastGenerator.Rows[lastrow].Cells["dgvDomain"] as DataGridViewComboBoxCell).Value = (dgvBlastGenerator.Rows[0].Cells["dgvDomain"] as DataGridViewComboBoxCell).Items[0];
 			(dgvBlastGenerator.Rows[lastrow].Cells["dgvType"] as DataGridViewComboBoxCell).Value = (dgvBlastGenerator.Rows[0].Cells["dgvType"] as DataGridViewComboBoxCell).Items[0];
 
+			PopulateDomainCombobox(dgvBlastGenerator.Rows[lastrow]);
 			PopulateModeCombobox(dgvBlastGenerator.Rows[lastrow]);
 			// (dgvBlastGenerator.Rows[lastrow].Cells["dgvMode"] as DataGridViewComboBoxCell).Value = (dgvBlastGenerator.Rows[0].Cells["dgvMode"] as DataGridViewComboBoxCell).Items[0];
 
@@ -119,6 +119,9 @@ namespace RTC
 		private bool PopulateDomainCombobox(DataGridViewRow row)
 		{
 			int temp = dgvDomain.Items.Count;
+			string currentValue = "";
+			if ((row.Cells["dgvDomain"] as DataGridViewComboBoxCell).Value != null)
+				currentValue = (row.Cells["dgvDomain"] as DataGridViewComboBoxCell).Value.ToString();
 
 			//So this combobox is annoying. You need to have something selected or else the dgv throws up
 			//The (bad) solution I'm using is to insert a row at the beginning as a holdover until it's re-populated, then removing that row.
@@ -135,7 +138,14 @@ namespace RTC
 			{
 				dgvDomain.Items.Add(domain);
 			}
-			(row.Cells["dgvDomain"] as DataGridViewComboBoxCell).Value = (dgvBlastGenerator.Rows[0].Cells["dgvDomain"] as DataGridViewComboBoxCell).Items[1];
+
+			if (dgvDomain.Items.Contains(currentValue))
+			{
+				(row.Cells["dgvDomain"] as DataGridViewComboBoxCell).Value = currentValue;
+			}
+			else
+				(row.Cells["dgvDomain"] as DataGridViewComboBoxCell).Value = (dgvBlastGenerator.Rows[0].Cells["dgvDomain"] as DataGridViewComboBoxCell).Items[1];
+
 			dgvDomain.Items.Remove("NONE");
 
 			return false;
@@ -493,9 +503,10 @@ namespace RTC
 				PopulateDomainCombobox(row);
 		}
 
-		private void refreshDomainsToolStripMenuItem_Click(object sender, EventArgs e)
+		private void btnRefreshDomains_Click(object sender, EventArgs e)
 		{
 			RefreshDomains();
 		}
+
 	}
 }

@@ -91,8 +91,9 @@ namespace RTC
 	public enum BGBlastPipeModes
 	{
 		CHAINED,
-		SETSOURCE,
-		RANDOM	
+		SOURCE_SET,
+		SOURCE_RANDOM,
+		DEST_RANDOM
 	}
 
 }
