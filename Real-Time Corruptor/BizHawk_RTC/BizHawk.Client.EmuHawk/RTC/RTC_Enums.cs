@@ -53,7 +53,7 @@ namespace RTC
         NONE
     }
 
-	public enum BGBlastBytetModes
+	public enum BGBlastByteModes
 	{
 		SET,
 		ADD,

@@ -135,16 +135,12 @@ namespace RTC
 			switch (row.Cells["dgvType"].Value.ToString())
 			{
 				case "BlastByte":
-					foreach (BGBlastModes type in Enum.GetValues(typeof(BGBlastModes)))
+					foreach (BGBlastByteModes type in Enum.GetValues(typeof(BGBlastByteModes)))
 					{
 						dgvType.Items.Add(type.ToString());
 					}
 					break;
 				case "BlastCheat":
-					foreach (BGBlastModes type in Enum.GetValues(typeof(BGBlastModes)))
-					{
-						dgvType.Items.Add(type.ToString());
-					}
 					foreach (BGBlastCheatModes type in Enum.GetValues(typeof(BGBlastCheatModes)))
 					{
 						dgvType.Items.Add(type.ToString());

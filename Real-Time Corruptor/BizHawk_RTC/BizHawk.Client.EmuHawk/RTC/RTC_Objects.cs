@@ -1687,12 +1687,16 @@ namespace RTC
 			switch (BlastType)
 			{
 				case "BlastByte":
-					RTC_BlastByteGenerator generator = new RTC_BlastByteGenerator();
-					bl = generator.GenerateLayer(Domain, StepSize, StartAddress, EndAddress, Param1, Param2, Precision, (BGBlastModes)Enum.Parse(typeof(BGBlastModes), Mode, true));
+					RTC_BlastByteGenerator bbGenerator = new RTC_BlastByteGenerator();
+					bl = bbGenerator.GenerateLayer(Domain, StepSize, StartAddress, EndAddress, Param1, Param2, Precision, (BGBlastByteModes)Enum.Parse(typeof(BGBlastByteModes), Mode, true));
 					break;
 				case "BlastCheat":
+					RTC_BlastCheatGenerator bcGenerator = new RTC_BlastCheatGenerator();
+					bl = bcGenerator.GenerateLayer(Domain, StepSize, StartAddress, EndAddress, Param1, Param2, Precision, (BGBlastCheatModes)Enum.Parse(typeof(BGBlastCheatModes), Mode, true));
 					break;
 				case "BlastPipe":
+					RTC_BlastPipeGenerator bpGenerator = new RTC_BlastPipeGenerator();
+					bl = bpGenerator.GenerateLayer(Domain, StepSize, StartAddress, EndAddress, Param1, Param2, Precision, (BGBlastPipeModes)Enum.Parse(typeof(BGBlastPipeModes), Mode, true));
 					break;
 				default:
 					return null;
