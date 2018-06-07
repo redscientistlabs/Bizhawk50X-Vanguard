@@ -735,19 +735,6 @@
             this.dgvMode.DropDownWidth = 150;
             this.dgvMode.FillWeight = 55F;
             this.dgvMode.HeaderText = "Mode";
-            this.dgvMode.Items.AddRange(new object[] {
-            "SET",
-            "SWAP",
-            "ADD",
-            "SUBTRACT",
-            "RANDOM",
-            "BITWISE_ROTATE_LEFT",
-            "BITWISE_ROTATE_RIGHT",
-            "BITWISE_AND",
-            "BITWISE_OR",
-            "BITWISE_XOR",
-            "BITWISE_COMPLEMENT",
-            "REPLACE_X_WITH_Y"});
             this.dgvMode.MaxDropDownItems = 20;
             this.dgvMode.Name = "dgvMode";
             this.dgvMode.Resizable = System.Windows.Forms.DataGridViewTriState.True;

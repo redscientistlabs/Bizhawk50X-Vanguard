@@ -18,12 +18,12 @@ namespace RTC
 			//We subtract 1 at the end as precision is 1,2,4, and we need to go 0,1,3
 			for (long Address = StartAddress; Address < EndAddress; Address = (Address + StepSize + Precision - 1))
 			{
-				bl.Layer.Add(GenerateUnit(Domain, Address, Param1, Param2, Precision, Mode));
+				bl.Layer.Add(GenerateUnit(Domain, Address, Param1, Param2, StepSize, Precision, Mode));
 			}
 			return bl;
 		}
 
-		private BlastUnit GenerateUnit(string domain, long address, long param1, long param2, int precision, BGBlastPipeModes mode)
+		private BlastUnit GenerateUnit(string domain, long address, long param1, long param2, long stepSize, int precision, BGBlastPipeModes mode)
 		{
 
 			try
@@ -39,21 +39,22 @@ namespace RTC
 				switch (mode)
 				{
 					case BGBlastPipeModes.CHAINED:
-						long temp = safeAddress + param1;
+						long temp = safeAddress + stepSize;
 						if (temp <= mdp.Size)
+						{
 							destAddress = temp;
+						}
 						else
 							destAddress = mdp.Size;
 						break;
 					case BGBlastPipeModes.RANDOM:
-						destAddress = RTC_Core.RND.Next(0, Convert.ToInt32(mdp.Size));
+						destAddress = safeAddress;
+						safeAddress = RTC_Core.RND.Next(0, Convert.ToInt32(mdp.Size-1));
 						break;
 					case BGBlastPipeModes.SETSOURCE:
 						destAddress = safeAddress;
 						safeAddress = param1;
 						break;
-
-
 				}
 
 				return new BlastPipe(domain, safeAddress, domain, destAddress, 0, precision, mdp.BigEndian, true);

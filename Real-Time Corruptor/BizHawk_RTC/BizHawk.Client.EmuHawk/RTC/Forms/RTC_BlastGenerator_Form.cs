@@ -24,6 +24,9 @@ namespace RTC
 	// 10  dgvParam1
 	// 11  dgvParam2
 
+	//TYPE = BLASTUNITTYPE
+	//MODE = GENERATIONMODE
+
 	public partial class RTC_BlastGenerator_Form : Form
 	{
 		private enum BlastGeneratorColumn
@@ -66,9 +69,10 @@ namespace RTC
 		{
 			RefreshDomains();
 			AddDefaultRow();
-			PopulateTypeCombobox(dgvBlastGenerator.Rows[0]);
+			PopulateModeCombobox(dgvBlastGenerator.Rows[0]);
 			openedFromBlastEditor = false;
 			btnSendTo.Text = "Send to Stash";
+			initialized = true;
 
 			this.Show();
 		}
@@ -83,9 +87,10 @@ namespace RTC
 
 			RefreshDomains();
 			AddDefaultRow();
-			PopulateTypeCombobox(dgvBlastGenerator.Rows[0]);
+			PopulateModeCombobox(dgvBlastGenerator.Rows[0]);
 			openedFromBlastEditor = true;
 			btnSendTo.Text = "Send to Blast Editor";
+			initialized = true;
 
 			this.Show();
 		}
@@ -102,57 +107,78 @@ namespace RTC
 			(dgvBlastGenerator.Rows[lastrow].Cells["dgvPrecision"] as DataGridViewComboBoxCell).Value = (dgvBlastGenerator.Rows[0].Cells["dgvPrecision"] as DataGridViewComboBoxCell).Items[0];
 			(dgvBlastGenerator.Rows[lastrow].Cells["dgvDomain"] as DataGridViewComboBoxCell).Value = (dgvBlastGenerator.Rows[0].Cells["dgvDomain"] as DataGridViewComboBoxCell).Items[0];
 			(dgvBlastGenerator.Rows[lastrow].Cells["dgvType"] as DataGridViewComboBoxCell).Value = (dgvBlastGenerator.Rows[0].Cells["dgvType"] as DataGridViewComboBoxCell).Items[0];
-			(dgvBlastGenerator.Rows[lastrow].Cells["dgvMode"] as DataGridViewComboBoxCell).Value = (dgvBlastGenerator.Rows[0].Cells["dgvMode"] as DataGridViewComboBoxCell).Items[0];
+
+			PopulateModeCombobox(dgvBlastGenerator.Rows[lastrow]);
+			// (dgvBlastGenerator.Rows[lastrow].Cells["dgvMode"] as DataGridViewComboBoxCell).Value = (dgvBlastGenerator.Rows[0].Cells["dgvMode"] as DataGridViewComboBoxCell).Items[0];
 
 			//For some reason, setting the minimum on the DGV to 1 doesn't change the fact it inserts with a count of 0
 			(dgvBlastGenerator.Rows[lastrow].Cells["dgvStepSize"]).Value = 1;
 
-			PopulateTypeCombobox(dgvBlastGenerator.Rows[lastrow]);
 		}
 
-		private bool PopulateDomainCombobox(DataGridViewComboBoxColumn dgvColumn)
+		private bool PopulateDomainCombobox(DataGridViewRow row)
 		{
-			int temp = dgvColumn.Items.Count;
+			int temp = dgvDomain.Items.Count;
+
+			//So this combobox is annoying. You need to have something selected or else the dgv throws up
+			//The (bad) solution I'm using is to insert a row at the beginning as a holdover until it's re-populated, then removing that row.
+
+			dgvDomain.Items.Insert(0, "NONE");
+			(row.Cells["dgvDomain"] as DataGridViewComboBoxCell).Value = (dgvBlastGenerator.Rows[0].Cells["dgvDomain"] as DataGridViewComboBoxCell).Items[0];
+
+			for (int i = temp; i > 0; i--)
+				dgvDomain.Items.RemoveAt(1);
 
 			string[] domains = RTC_MemoryDomains.MemoryInterfaces.Keys.Concat(RTC_MemoryDomains.VmdPool.Values.Select(it => it.ToString())).ToArray();
 
 			foreach (string domain in domains)
 			{
-				dgvColumn.Items.Add(domain);
+				dgvDomain.Items.Add(domain);
 			}
-			//We use this method to remove the rows so it maintains the position for existing blasts
-			for (int i = 0; i < temp; i++)
-				dgvColumn.Items.RemoveAt(i);
+			(row.Cells["dgvDomain"] as DataGridViewComboBoxCell).Value = (dgvBlastGenerator.Rows[0].Cells["dgvDomain"] as DataGridViewComboBoxCell).Items[1];
+			dgvDomain.Items.Remove("NONE");
 
 			return false;
 		}
 
-		private void PopulateTypeCombobox(DataGridViewRow row)
+		private void PopulateModeCombobox(DataGridViewRow row)
 		{
-			DataGridViewComboBoxCell dgvType = (row.Cells["dgvMode"] as DataGridViewComboBoxCell);
-			dgvType.Items.Clear();
+			int temp = dgvMode.Items.Count;
+
+			//So this combobox is annoying. You need to have something selected or else the dgv throws up
+			//The (bad) solution I'm using is to insert a row at the beginning as a holdover until it's re-populated, then removing that row.
+
+			dgvMode.Items.Insert(0, "NONE");
+			(row.Cells["dgvMode"] as DataGridViewComboBoxCell).Value = (dgvBlastGenerator.Rows[0].Cells["dgvMode"] as DataGridViewComboBoxCell).Items[0];
+
+
+			for (int i = temp; i > 0 ; i--)
+				dgvMode.Items.RemoveAt(1);
 
 			switch (row.Cells["dgvType"].Value.ToString())
 			{
 				case "BlastByte":
 					foreach (BGBlastByteModes type in Enum.GetValues(typeof(BGBlastByteModes)))
 					{
-						dgvType.Items.Add(type.ToString());
+						dgvMode.Items.Add(type.ToString());
 					}
 					break;
 				case "BlastCheat":
 					foreach (BGBlastCheatModes type in Enum.GetValues(typeof(BGBlastCheatModes)))
 					{
-						dgvType.Items.Add(type.ToString());
+						dgvMode.Items.Add(type.ToString());
 					}
 					break;
-				case "BlasePipe":
+				case "BlastPipe":
 					foreach (BGBlastPipeModes type in Enum.GetValues(typeof(BGBlastPipeModes)))
 					{
-						dgvType.Items.Add(type.ToString());
+						dgvMode.Items.Add(type.ToString());
 					}
 					break;
 			}
+			(row.Cells["dgvMode"] as DataGridViewComboBoxCell).Value = (dgvBlastGenerator.Rows[0].Cells["dgvMode"] as DataGridViewComboBoxCell).Items[1];
+			dgvMode.Items.Remove("NONE");
+
 		}
 
 		private void btnJustCorrupt_Click(object sender, EventArgs e)
@@ -254,21 +280,14 @@ namespace RTC
 			{
 				CurrentlyUpdating = true;
 				dgvBlastGenerator.Rows[e.RowIndex].Cells["dgvRowDirty"].Value = true;
-				/*
-				try
+
+				if ((BlastGeneratorColumn)e.ColumnIndex == BlastGeneratorColumn.dgvType)
 				{
+					PopulateModeCombobox(dgvBlastGenerator.Rows[e.RowIndex]);
 				}
-				catch (Exception ex)
-				{
-					CurrentlyUpdating = false;
-
-					throw new System.Exception("Something went wrong \n" +
-					"Make sure your input is valid.\n\n" +
-					"If your input was valid, you should probably send a copy of this error and what you did to cause it to the RTC devs.\n\n" +
-					ex.ToString());
-				}*/
-
 			}
+
+			CurrentlyUpdating = false;
 		}
 
 		private void dgvBlastGenerator_MouseClick(object sender, MouseEventArgs e)
@@ -470,7 +489,8 @@ namespace RTC
 		}
 		private void RefreshDomains()
 		{
-			PopulateDomainCombobox(dgvBlastGenerator.Columns["dgvDomain"] as DataGridViewComboBoxColumn);
+			foreach(DataGridViewRow row in dgvBlastGenerator.Rows)
+				PopulateDomainCombobox(row);
 		}
 
 		private void refreshDomainsToolStripMenuItem_Click(object sender, EventArgs e)

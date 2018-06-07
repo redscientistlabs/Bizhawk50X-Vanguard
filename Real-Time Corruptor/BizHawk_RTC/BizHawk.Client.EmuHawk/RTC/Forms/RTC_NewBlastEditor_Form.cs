@@ -381,7 +381,7 @@ namespace RTC
 				{
 					UpdateRowPrecision(dgvBlastLayer.Rows[e.RowIndex]);
 					//Changing the blast unit type
-					if (e.ColumnIndex == 4)
+					if ((BlastEditorColumn)e.ColumnIndex == BlastEditorColumn.dgvBlastUnitType)
 						ReplaceBlastUnitFromRow(dgvBlastLayer.Rows[e.RowIndex]);
 					else
 						UpdateBlastUnitFromRow(dgvBlastLayer.Rows[e.RowIndex]);
