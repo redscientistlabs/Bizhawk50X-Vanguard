@@ -36,6 +36,9 @@ namespace RTC
 
 				long safeAddress = address - (address % _value.Length);
 
+				if (safeAddress >= mdp.Size)
+					return null;
+
 				switch (mode)
 				{
 					case BGBlastPipeModes.CHAINED:
@@ -59,6 +62,9 @@ namespace RTC
 						destAddress = RTC_Core.RND.Next(0, Convert.ToInt32(mdp.Size - 1));
 						break;
 				}
+
+				if (destAddress >= mdp.Size)
+					return null;
 
 				return new BlastPipe(domain, safeAddress, domain, destAddress, 0, precision, mdp.BigEndian, true);
 

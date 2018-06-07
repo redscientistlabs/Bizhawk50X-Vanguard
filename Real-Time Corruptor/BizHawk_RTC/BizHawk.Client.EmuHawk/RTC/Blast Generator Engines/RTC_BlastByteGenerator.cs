@@ -36,6 +36,10 @@ namespace RTC
 
 				long safeAddress = address - (address % _value.Length);
 
+				//Use >= as Size is 1 indexed whereas address is 0 indexed
+				if (safeAddress + _value.Length  >= mdp.Size)
+					return null;
+
 				switch (mode)
 				{							
 					case BGBlastByteModes.ADD:
