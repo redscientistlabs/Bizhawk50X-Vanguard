@@ -112,13 +112,17 @@ namespace RTC
 
 		private bool PopulateDomainCombobox(DataGridViewComboBoxColumn dgvColumn)
 		{
-			dgvColumn.Items.Clear();
+			int temp = dgvColumn.Items.Count;
+
 			string[] domains = RTC_MemoryDomains.MemoryInterfaces.Keys.Concat(RTC_MemoryDomains.VmdPool.Values.Select(it => it.ToString())).ToArray();
 
 			foreach (string domain in domains)
 			{
 				dgvColumn.Items.Add(domain);
 			}
+			//We use this method to remove the rows so it maintains the position for existing blasts
+			for (int i = 0; i < temp; i++)
+				dgvColumn.Items.RemoveAt(i);
 
 			return false;
 		}
