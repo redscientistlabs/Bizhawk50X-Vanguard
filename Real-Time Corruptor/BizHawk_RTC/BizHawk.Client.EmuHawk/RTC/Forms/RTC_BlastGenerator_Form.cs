@@ -97,7 +97,6 @@ namespace RTC
 
 		private void AddDefaultRow()
 		{
-
 			//Add an empty row and populate with default values
 			dgvBlastGenerator.Rows.Add();
 			int lastrow = dgvBlastGenerator.RowCount - 1;
@@ -127,7 +126,7 @@ namespace RTC
 			//The (bad) solution I'm using is to insert a row at the beginning as a holdover until it's re-populated, then removing that row.
 
 			dgvDomain.Items.Insert(0, "NONE");
-			(row.Cells["dgvDomain"] as DataGridViewComboBoxCell).Value = (dgvBlastGenerator.Rows[0].Cells["dgvDomain"] as DataGridViewComboBoxCell).Items[0];
+			(row.Cells["dgvDomain"] as DataGridViewComboBoxCell).Value = (row.Cells["dgvDomain"] as DataGridViewComboBoxCell).Items[0];
 
 			for (int i = temp; i > 0; i--)
 				dgvDomain.Items.RemoveAt(1);
@@ -140,11 +139,9 @@ namespace RTC
 			}
 
 			if (dgvDomain.Items.Contains(currentValue))
-			{
 				(row.Cells["dgvDomain"] as DataGridViewComboBoxCell).Value = currentValue;
-			}
 			else
-				(row.Cells["dgvDomain"] as DataGridViewComboBoxCell).Value = (dgvBlastGenerator.Rows[0].Cells["dgvDomain"] as DataGridViewComboBoxCell).Items[1];
+				(row.Cells["dgvDomain"] as DataGridViewComboBoxCell).Value = (row.Cells["dgvDomain"] as DataGridViewComboBoxCell).Items[1];
 
 			dgvDomain.Items.Remove("NONE");
 
@@ -158,8 +155,12 @@ namespace RTC
 			//So this combobox is annoying. You need to have something selected or else the dgv throws up
 			//The (bad) solution I'm using is to insert a row at the beginning as a holdover until it's re-populated, then removing that row.
 
+			string currentValue = "";
+			if ((row.Cells["dgvMode"] as DataGridViewComboBoxCell).Value != null)
+				currentValue = (row.Cells["dgvMode"] as DataGridViewComboBoxCell).Value.ToString();
+
 			dgvMode.Items.Insert(0, "NONE");
-			(row.Cells["dgvMode"] as DataGridViewComboBoxCell).Value = (dgvBlastGenerator.Rows[0].Cells["dgvMode"] as DataGridViewComboBoxCell).Items[0];
+			(row.Cells["dgvMode"] as DataGridViewComboBoxCell).Value = (row.Cells["dgvMode"] as DataGridViewComboBoxCell).Items[0];
 
 
 			for (int i = temp; i > 0 ; i--)
@@ -186,7 +187,13 @@ namespace RTC
 					}
 					break;
 			}
-			(row.Cells["dgvMode"] as DataGridViewComboBoxCell).Value = (dgvBlastGenerator.Rows[0].Cells["dgvMode"] as DataGridViewComboBoxCell).Items[1];
+
+
+			if (dgvDomain.Items.Contains(currentValue))
+				(row.Cells["dgvMode"] as DataGridViewComboBoxCell).Value = currentValue;
+			else
+				(row.Cells["dgvMode"] as DataGridViewComboBoxCell).Value = (row.Cells["dgvMode"] as DataGridViewComboBoxCell).Items[1];
+
 			dgvMode.Items.Remove("NONE");
 
 		}
@@ -507,6 +514,89 @@ namespace RTC
 		{
 			RefreshDomains();
 		}
+		
+		private void saveDataGridView(DataGridView dgv)
+		{
+			var dt = new DataTable();
+			foreach (DataGridViewColumn column in dgv.Columns)
+			{
+				if (column.Visible)
+				{
+					dt.Columns.Add();
+				}
+			}
 
+			object[] cellValues = new object[dgv.Columns.Count];
+			foreach (DataGridViewRow row in dgv.Rows)
+			{
+				for (int i = 0; i < row.Cells.Count; i++)
+				{
+					cellValues[i] = row.Cells[i].Value;
+				}
+				dt.Rows.Add(cellValues);
+			}
+
+			DataSet ds = new DataSet();
+			ds.Tables.Add(dt);
+			SaveFileDialog sfd = new SaveFileDialog();
+			sfd.Filter = "XML|*.xml";
+			if (sfd.ShowDialog() == DialogResult.OK)
+			{
+				try
+				{
+					ds.Tables[0].WriteXml(sfd.FileName);
+				}
+				catch (Exception ex)
+				{
+					Console.WriteLine(ex);
+				}
+			}
+		}
+
+		private bool importDataGridView(DataGridView dgv)
+		{
+			return loadDataGridView(dgv, true);
+		}
+
+		private bool loadDataGridView(DataGridView dgv, bool import = false)
+		{
+			DataSet ds = new DataSet();
+			OpenFileDialog ofd = new OpenFileDialog();
+			ofd.Filter = "XML|*.xml";
+			if (ofd.ShowDialog() == DialogResult.OK)
+			{
+				try
+				{
+					ds.Tables[0].ReadXml(ofd.FileName);
+					if (!import)
+						foreach (DataGridViewRow row in dgv.Rows)
+							dgv.Rows.Remove(row);
+					dgv.DataSource = ds;
+					dgv.DataSource = null;
+					
+				}
+				catch (Exception ex)
+				{
+					Console.WriteLine(ex);
+					return false;
+				}
+			}
+			return true;
+		}
+
+		private void loadFromFileblToolStripMenuItem_Click(object sender, EventArgs e)
+		{
+			loadDataGridView(dgvBlastGenerator);
+		}
+
+		private void saveAsToFileblToolStripMenuItem_Click(object sender, EventArgs e)
+		{
+			saveDataGridView(dgvBlastGenerator);
+		}
+
+		private void importBlastlayerblToolStripMenuItem_Click(object sender, EventArgs e)
+		{
+			importDataGridView(dgvBlastGenerator);
+		}
 	}
 }

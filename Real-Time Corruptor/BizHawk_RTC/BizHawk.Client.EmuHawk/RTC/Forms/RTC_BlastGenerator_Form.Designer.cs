@@ -31,6 +31,10 @@
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(RTC_BlastGenerator_Form));
             this.cbUseHex = new System.Windows.Forms.CheckBox();
             this.panelSidebar = new System.Windows.Forms.Panel();
+            this.btnLoadCorrupt = new System.Windows.Forms.Button();
+            this.btnJustCorrupt = new System.Windows.Forms.Button();
+            this.btnRefreshDomains = new System.Windows.Forms.Button();
+            this.btnSendTo = new System.Windows.Forms.Button();
             this.btnAddRow = new System.Windows.Forms.Button();
             this.panel2 = new System.Windows.Forms.Panel();
             this.label5 = new System.Windows.Forms.Label();
@@ -75,10 +79,6 @@
             this.saveAsToFileblToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.importBlastlayerblToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.btnHideSidebar = new System.Windows.Forms.Button();
-            this.btnRefreshDomains = new System.Windows.Forms.Button();
-            this.btnLoadCorrupt = new System.Windows.Forms.Button();
-            this.btnJustCorrupt = new System.Windows.Forms.Button();
-            this.btnSendTo = new System.Windows.Forms.Button();
             this.panelSidebar.SuspendLayout();
             this.panel2.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.updownNudgeParam2)).BeginInit();
@@ -121,6 +121,77 @@
             this.panelSidebar.Size = new System.Drawing.Size(159, 363);
             this.panelSidebar.TabIndex = 166;
             this.panelSidebar.Tag = "color:dark";
+            // 
+            // btnLoadCorrupt
+            // 
+            this.btnLoadCorrupt.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.btnLoadCorrupt.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(32)))), ((int)(((byte)(32)))), ((int)(((byte)(32)))));
+            this.btnLoadCorrupt.FlatAppearance.BorderSize = 0;
+            this.btnLoadCorrupt.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnLoadCorrupt.Font = new System.Drawing.Font("Segoe UI Semibold", 9F, System.Drawing.FontStyle.Bold);
+            this.btnLoadCorrupt.ForeColor = System.Drawing.Color.OrangeRed;
+            this.btnLoadCorrupt.Location = new System.Drawing.Point(5, 282);
+            this.btnLoadCorrupt.Name = "btnLoadCorrupt";
+            this.btnLoadCorrupt.Size = new System.Drawing.Size(148, 23);
+            this.btnLoadCorrupt.TabIndex = 173;
+            this.btnLoadCorrupt.TabStop = false;
+            this.btnLoadCorrupt.Tag = "color:darker";
+            this.btnLoadCorrupt.Text = "Load + Corrupt";
+            this.btnLoadCorrupt.UseVisualStyleBackColor = false;
+            this.btnLoadCorrupt.Click += new System.EventHandler(this.btnLoadCorrupt_Click);
+            // 
+            // btnJustCorrupt
+            // 
+            this.btnJustCorrupt.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.btnJustCorrupt.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(32)))), ((int)(((byte)(32)))), ((int)(((byte)(32)))));
+            this.btnJustCorrupt.FlatAppearance.BorderSize = 0;
+            this.btnJustCorrupt.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnJustCorrupt.Font = new System.Drawing.Font("Segoe UI Semibold", 9F, System.Drawing.FontStyle.Bold);
+            this.btnJustCorrupt.ForeColor = System.Drawing.Color.OrangeRed;
+            this.btnJustCorrupt.Location = new System.Drawing.Point(5, 308);
+            this.btnJustCorrupt.Name = "btnJustCorrupt";
+            this.btnJustCorrupt.Size = new System.Drawing.Size(148, 23);
+            this.btnJustCorrupt.TabIndex = 172;
+            this.btnJustCorrupt.TabStop = false;
+            this.btnJustCorrupt.Tag = "color:darker";
+            this.btnJustCorrupt.Text = "Apply Corruption";
+            this.btnJustCorrupt.UseVisualStyleBackColor = false;
+            this.btnJustCorrupt.Click += new System.EventHandler(this.btnJustCorrupt_Click);
+            // 
+            // btnRefreshDomains
+            // 
+            this.btnRefreshDomains.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(224)))), ((int)(((byte)(224)))), ((int)(((byte)(224)))));
+            this.btnRefreshDomains.FlatAppearance.BorderSize = 0;
+            this.btnRefreshDomains.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnRefreshDomains.Font = new System.Drawing.Font("Segoe UI Semibold", 9F, System.Drawing.FontStyle.Bold);
+            this.btnRefreshDomains.ForeColor = System.Drawing.Color.Black;
+            this.btnRefreshDomains.Location = new System.Drawing.Point(5, 244);
+            this.btnRefreshDomains.Name = "btnRefreshDomains";
+            this.btnRefreshDomains.Size = new System.Drawing.Size(148, 25);
+            this.btnRefreshDomains.TabIndex = 161;
+            this.btnRefreshDomains.TabStop = false;
+            this.btnRefreshDomains.Tag = "color:light";
+            this.btnRefreshDomains.Text = "Refresh Domains";
+            this.btnRefreshDomains.UseVisualStyleBackColor = false;
+            this.btnRefreshDomains.Click += new System.EventHandler(this.btnRefreshDomains_Click);
+            // 
+            // btnSendTo
+            // 
+            this.btnSendTo.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.btnSendTo.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(32)))), ((int)(((byte)(32)))), ((int)(((byte)(32)))));
+            this.btnSendTo.FlatAppearance.BorderSize = 0;
+            this.btnSendTo.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnSendTo.Font = new System.Drawing.Font("Segoe UI Semibold", 9F, System.Drawing.FontStyle.Bold);
+            this.btnSendTo.ForeColor = System.Drawing.Color.OrangeRed;
+            this.btnSendTo.Location = new System.Drawing.Point(5, 334);
+            this.btnSendTo.Name = "btnSendTo";
+            this.btnSendTo.Size = new System.Drawing.Size(148, 23);
+            this.btnSendTo.TabIndex = 171;
+            this.btnSendTo.TabStop = false;
+            this.btnSendTo.Tag = "color:darker";
+            this.btnSendTo.Text = "Send To Stash";
+            this.btnSendTo.UseVisualStyleBackColor = false;
+            this.btnSendTo.Click += new System.EventHandler(this.btnSendTo_Click);
             // 
             // btnAddRow
             // 
@@ -726,18 +797,21 @@
             this.loadFromFileblToolStripMenuItem.Name = "loadFromFileblToolStripMenuItem";
             this.loadFromFileblToolStripMenuItem.Size = new System.Drawing.Size(241, 22);
             this.loadFromFileblToolStripMenuItem.Text = "&Load From File (.bg)";
+            this.loadFromFileblToolStripMenuItem.Click += new System.EventHandler(this.loadFromFileblToolStripMenuItem_Click);
             // 
             // saveAsToFileblToolStripMenuItem
             // 
             this.saveAsToFileblToolStripMenuItem.Name = "saveAsToFileblToolStripMenuItem";
             this.saveAsToFileblToolStripMenuItem.Size = new System.Drawing.Size(241, 22);
             this.saveAsToFileblToolStripMenuItem.Text = "&Save As to File (.bg)";
+            this.saveAsToFileblToolStripMenuItem.Click += new System.EventHandler(this.saveAsToFileblToolStripMenuItem_Click);
             // 
             // importBlastlayerblToolStripMenuItem
             // 
             this.importBlastlayerblToolStripMenuItem.Name = "importBlastlayerblToolStripMenuItem";
             this.importBlastlayerblToolStripMenuItem.Size = new System.Drawing.Size(241, 22);
             this.importBlastlayerblToolStripMenuItem.Text = "&Import Generation Params (.bg)";
+            this.importBlastlayerblToolStripMenuItem.Click += new System.EventHandler(this.importBlastlayerblToolStripMenuItem_Click);
             // 
             // btnHideSidebar
             // 
@@ -750,77 +824,6 @@
             this.btnHideSidebar.Text = "▶";
             this.btnHideSidebar.UseVisualStyleBackColor = true;
             this.btnHideSidebar.Click += new System.EventHandler(this.btnHideSidebar_Click);
-            // 
-            // btnRefreshDomains
-            // 
-            this.btnRefreshDomains.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(224)))), ((int)(((byte)(224)))), ((int)(((byte)(224)))));
-            this.btnRefreshDomains.FlatAppearance.BorderSize = 0;
-            this.btnRefreshDomains.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btnRefreshDomains.Font = new System.Drawing.Font("Segoe UI Semibold", 9F, System.Drawing.FontStyle.Bold);
-            this.btnRefreshDomains.ForeColor = System.Drawing.Color.Black;
-            this.btnRefreshDomains.Location = new System.Drawing.Point(5, 244);
-            this.btnRefreshDomains.Name = "btnRefreshDomains";
-            this.btnRefreshDomains.Size = new System.Drawing.Size(148, 25);
-            this.btnRefreshDomains.TabIndex = 161;
-            this.btnRefreshDomains.TabStop = false;
-            this.btnRefreshDomains.Tag = "color:light";
-            this.btnRefreshDomains.Text = "Refresh Domains";
-            this.btnRefreshDomains.UseVisualStyleBackColor = false;
-            this.btnRefreshDomains.Click += new System.EventHandler(this.btnRefreshDomains_Click);
-            // 
-            // btnLoadCorrupt
-            // 
-            this.btnLoadCorrupt.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.btnLoadCorrupt.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(32)))), ((int)(((byte)(32)))), ((int)(((byte)(32)))));
-            this.btnLoadCorrupt.FlatAppearance.BorderSize = 0;
-            this.btnLoadCorrupt.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btnLoadCorrupt.Font = new System.Drawing.Font("Segoe UI Semibold", 9F, System.Drawing.FontStyle.Bold);
-            this.btnLoadCorrupt.ForeColor = System.Drawing.Color.OrangeRed;
-            this.btnLoadCorrupt.Location = new System.Drawing.Point(5, 282);
-            this.btnLoadCorrupt.Name = "btnLoadCorrupt";
-            this.btnLoadCorrupt.Size = new System.Drawing.Size(148, 23);
-            this.btnLoadCorrupt.TabIndex = 173;
-            this.btnLoadCorrupt.TabStop = false;
-            this.btnLoadCorrupt.Tag = "color:darker";
-            this.btnLoadCorrupt.Text = "Load + Corrupt";
-            this.btnLoadCorrupt.UseVisualStyleBackColor = false;
-            this.btnLoadCorrupt.Click += new System.EventHandler(this.btnLoadCorrupt_Click);
-            // 
-            // btnJustCorrupt
-            // 
-            this.btnJustCorrupt.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.btnJustCorrupt.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(32)))), ((int)(((byte)(32)))), ((int)(((byte)(32)))));
-            this.btnJustCorrupt.FlatAppearance.BorderSize = 0;
-            this.btnJustCorrupt.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btnJustCorrupt.Font = new System.Drawing.Font("Segoe UI Semibold", 9F, System.Drawing.FontStyle.Bold);
-            this.btnJustCorrupt.ForeColor = System.Drawing.Color.OrangeRed;
-            this.btnJustCorrupt.Location = new System.Drawing.Point(5, 308);
-            this.btnJustCorrupt.Name = "btnJustCorrupt";
-            this.btnJustCorrupt.Size = new System.Drawing.Size(148, 23);
-            this.btnJustCorrupt.TabIndex = 172;
-            this.btnJustCorrupt.TabStop = false;
-            this.btnJustCorrupt.Tag = "color:darker";
-            this.btnJustCorrupt.Text = "Apply Corruption";
-            this.btnJustCorrupt.UseVisualStyleBackColor = false;
-            this.btnJustCorrupt.Click += new System.EventHandler(this.btnJustCorrupt_Click);
-            // 
-            // btnSendTo
-            // 
-            this.btnSendTo.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.btnSendTo.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(32)))), ((int)(((byte)(32)))), ((int)(((byte)(32)))));
-            this.btnSendTo.FlatAppearance.BorderSize = 0;
-            this.btnSendTo.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btnSendTo.Font = new System.Drawing.Font("Segoe UI Semibold", 9F, System.Drawing.FontStyle.Bold);
-            this.btnSendTo.ForeColor = System.Drawing.Color.OrangeRed;
-            this.btnSendTo.Location = new System.Drawing.Point(5, 334);
-            this.btnSendTo.Name = "btnSendTo";
-            this.btnSendTo.Size = new System.Drawing.Size(148, 23);
-            this.btnSendTo.TabIndex = 171;
-            this.btnSendTo.TabStop = false;
-            this.btnSendTo.Tag = "color:darker";
-            this.btnSendTo.Text = "Send To Stash";
-            this.btnSendTo.UseVisualStyleBackColor = false;
-            this.btnSendTo.Click += new System.EventHandler(this.btnSendTo_Click);
             // 
             // RTC_BlastGenerator_Form
             // 

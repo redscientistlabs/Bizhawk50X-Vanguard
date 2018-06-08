@@ -1168,7 +1168,8 @@ namespace RTC
 		}
 
 		private void saveToFileblToolStripMenuItem_Click(object sender, EventArgs e)
-		{
+		{	
+
 			//If there's no blastlayer file already set, don't quicksave
 			if (currentBlastLayerFile == "")
 				RTC_BlastTools.SaveBlastLayerToFile(sk.BlastLayer);
