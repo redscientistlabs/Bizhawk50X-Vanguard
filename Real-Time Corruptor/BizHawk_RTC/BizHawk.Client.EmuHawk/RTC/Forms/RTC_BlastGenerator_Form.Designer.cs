@@ -784,8 +784,8 @@
             // blastLayerToolStripMenuItem
             // 
             this.blastLayerToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.loadFromFileblToolStripMenuItem,
             this.saveAsToFileblToolStripMenuItem,
+            this.loadFromFileblToolStripMenuItem,
             this.importBlastlayerblToolStripMenuItem});
             this.blastLayerToolStripMenuItem.Name = "blastLayerToolStripMenuItem";
             this.blastLayerToolStripMenuItem.Size = new System.Drawing.Size(37, 20);

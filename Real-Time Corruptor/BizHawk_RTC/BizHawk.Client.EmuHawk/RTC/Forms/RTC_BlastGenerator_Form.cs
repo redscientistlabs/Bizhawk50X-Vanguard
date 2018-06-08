@@ -106,6 +106,13 @@ namespace RTC
 			(dgvBlastGenerator.Rows[lastrow].Cells["dgvPrecision"] as DataGridViewComboBoxCell).Value = (dgvBlastGenerator.Rows[0].Cells["dgvPrecision"] as DataGridViewComboBoxCell).Items[0];
 			(dgvBlastGenerator.Rows[lastrow].Cells["dgvType"] as DataGridViewComboBoxCell).Value = (dgvBlastGenerator.Rows[0].Cells["dgvType"] as DataGridViewComboBoxCell).Items[0];
 
+			//These can't be null or else things go bad when trying to save and load them from a file
+			(dgvBlastGenerator.Rows[lastrow].Cells["dgvStartAddress"] as DataGridViewNumericUpDownCell).Value = 0;
+			(dgvBlastGenerator.Rows[lastrow].Cells["dgvEndAddress"] as DataGridViewNumericUpDownCell).Value = 0;
+			(dgvBlastGenerator.Rows[lastrow].Cells["dgvParam1"] as DataGridViewNumericUpDownCell).Value = 0;
+			(dgvBlastGenerator.Rows[lastrow].Cells["dgvParam2"] as DataGridViewNumericUpDownCell).Value = 0;
+
+
 			PopulateDomainCombobox(dgvBlastGenerator.Rows[lastrow]);
 			PopulateModeCombobox(dgvBlastGenerator.Rows[lastrow]);
 			// (dgvBlastGenerator.Rows[lastrow].Cells["dgvMode"] as DataGridViewComboBoxCell).Value = (dgvBlastGenerator.Rows[0].Cells["dgvMode"] as DataGridViewComboBoxCell).Items[0];
@@ -307,7 +314,6 @@ namespace RTC
 				}
 			}
 
-			CurrentlyUpdating = false;
 		}
 
 		private void dgvBlastGenerator_MouseClick(object sender, MouseEventArgs e)
@@ -523,10 +529,7 @@ namespace RTC
 			var dt = new DataTable();
 			foreach (DataGridViewColumn column in dgv.Columns)
 			{
-				if (column.Visible)
-				{
-					dt.Columns.Add();
-				}
+				dt.Columns.Add();
 			}
 
 			object[] cellValues = new object[dgv.Columns.Count];
@@ -542,7 +545,7 @@ namespace RTC
 			DataSet ds = new DataSet();
 			ds.Tables.Add(dt);
 			SaveFileDialog sfd = new SaveFileDialog();
-			sfd.Filter = "XML|*.xml";
+			sfd.Filter = "bg|*.bg";
 			if (sfd.ShowDialog() == DialogResult.OK)
 			{
 				try
@@ -565,22 +568,54 @@ namespace RTC
 		{
 			DataSet ds = new DataSet();
 			OpenFileDialog ofd = new OpenFileDialog();
-			ofd.Filter = "XML|*.xml";
+			ofd.Filter = "bg|*.bg";
 			if (ofd.ShowDialog() == DialogResult.OK)
 			{
 				try
 				{
+					var dt = new DataTable();
+					ds.Tables.Add(dt);
+					foreach (DataGridViewColumn column in dgv.Columns)
+						dt.Columns.Add();
 					ds.Tables[0].ReadXml(ofd.FileName);
 					if (!import)
+					{
 						foreach (DataGridViewRow row in dgv.Rows)
 							dgv.Rows.Remove(row);
-					dgv.DataSource = ds;
-					dgv.DataSource = null;
-					
+					}
+
+					foreach (DataRow row in ds.Tables[0].Rows)
+					{
+						CurrentlyUpdating = true;
+						dgv.Rows.Add();
+
+						int lastrow = dgvBlastGenerator.RowCount - 1;
+
+						//We need to populate the comboboxes or else things go bad
+						//To do this, we load the type first so we can populate the modes, then add the domain to the domain combobox.
+						//If it's invalid, they'll know on generation. If they load the correct core and press refresh, it'll maintain its selection
+						dgv[(int)BlastGeneratorColumn.dgvType, lastrow].Value = row.ItemArray[(int)BlastGeneratorColumn.dgvType];
+
+						PopulateModeCombobox(dgv.Rows[lastrow]);
+						(dgv.Rows[lastrow].Cells["dgvDomain"] as DataGridViewComboBoxCell).Items.Add(row.ItemArray[(int)BlastGeneratorColumn.dgvDomain]);
+
+						for(int i = 0; i < dgv.Rows[lastrow].Cells.Count; i++)
+						{
+							dgv.Rows[lastrow].Cells[i].Value = row.ItemArray[i];
+						}
+						//Override these two
+						dgv[(int)BlastGeneratorColumn.dgvBlastLayerReference, lastrow].Value = null;
+						dgv[(int)BlastGeneratorColumn.dgvRowDirty, lastrow].Value = true;
+
+
+						CurrentlyUpdating = false;
+					}
+						
+
 				}
 				catch (Exception ex)
 				{
-					Console.WriteLine(ex);
+					MessageBox.Show(ex.ToString());
 					return false;
 				}
 			}
