@@ -117,84 +117,87 @@ namespace RTC
 
 		private bool PopulateDomainCombobox(DataGridViewRow row)
 		{
-			int temp = dgvDomain.Items.Count;
+
+			DataGridViewComboBoxCell _cell = row.Cells["dgvDomain"] as DataGridViewComboBoxCell;
+
+			int temp = _cell.Items.Count;
 			string currentValue = "";
-			if ((row.Cells["dgvDomain"] as DataGridViewComboBoxCell).Value != null)
-				currentValue = (row.Cells["dgvDomain"] as DataGridViewComboBoxCell).Value.ToString();
+			if (_cell.Value != null)
+				currentValue = _cell.Value.ToString();
 
 			//So this combobox is annoying. You need to have something selected or else the dgv throws up
 			//The (bad) solution I'm using is to insert a row at the beginning as a holdover until it's re-populated, then removing that row.
 
-			dgvDomain.Items.Insert(0, "NONE");
-			(row.Cells["dgvDomain"] as DataGridViewComboBoxCell).Value = (row.Cells["dgvDomain"] as DataGridViewComboBoxCell).Items[0];
+			_cell.Items.Insert(0, "NONE");
+			_cell.Value = _cell.Items[0];
 
 			for (int i = temp; i > 0; i--)
-				dgvDomain.Items.RemoveAt(1);
+				_cell.Items.RemoveAt(1);
 
 			string[] domains = RTC_MemoryDomains.MemoryInterfaces.Keys.Concat(RTC_MemoryDomains.VmdPool.Values.Select(it => it.ToString())).ToArray();
 
 			foreach (string domain in domains)
 			{
-				dgvDomain.Items.Add(domain);
+				_cell.Items.Add(domain);
 			}
 
-			if (dgvDomain.Items.Contains(currentValue))
-				(row.Cells["dgvDomain"] as DataGridViewComboBoxCell).Value = currentValue;
+			if (_cell.Items.Contains(currentValue))
+				_cell.Value = currentValue;
 			else
-				(row.Cells["dgvDomain"] as DataGridViewComboBoxCell).Value = (row.Cells["dgvDomain"] as DataGridViewComboBoxCell).Items[1];
+				_cell.Value = _cell.Items[1];
 
-			dgvDomain.Items.Remove("NONE");
+			_cell.Items.Remove("NONE");
 
 			return false;
 		}
 
 		private void PopulateModeCombobox(DataGridViewRow row)
 		{
-			int temp = dgvMode.Items.Count;
+			DataGridViewComboBoxCell _cell = row.Cells["dgvMode"] as DataGridViewComboBoxCell;
+
+			int temp = _cell.Items.Count;
 
 			//So this combobox is annoying. You need to have something selected or else the dgv throws up
 			//The (bad) solution I'm using is to insert a row at the beginning as a holdover until it's re-populated, then removing that row.
 
 			string currentValue = "";
-			if ((row.Cells["dgvMode"] as DataGridViewComboBoxCell).Value != null)
-				currentValue = (row.Cells["dgvMode"] as DataGridViewComboBoxCell).Value.ToString();
+			if (_cell.Value != null)
+				currentValue = _cell.Value.ToString();
 
-			dgvMode.Items.Insert(0, "NONE");
-			(row.Cells["dgvMode"] as DataGridViewComboBoxCell).Value = (row.Cells["dgvMode"] as DataGridViewComboBoxCell).Items[0];
+			_cell.Items.Insert(0, "NONE");
+			_cell.Value = _cell.Items[0];
 
 
 			for (int i = temp; i > 0 ; i--)
-				dgvMode.Items.RemoveAt(1);
+				_cell.Items.RemoveAt(1);
 
 			switch (row.Cells["dgvType"].Value.ToString())
 			{
 				case "BlastByte":
 					foreach (BGBlastByteModes type in Enum.GetValues(typeof(BGBlastByteModes)))
 					{
-						dgvMode.Items.Add(type.ToString());
+						_cell.Items.Add(type.ToString());
 					}
 					break;
 				case "BlastCheat":
 					foreach (BGBlastCheatModes type in Enum.GetValues(typeof(BGBlastCheatModes)))
 					{
-						dgvMode.Items.Add(type.ToString());
+						_cell.Items.Add(type.ToString());
 					}
 					break;
 				case "BlastPipe":
 					foreach (BGBlastPipeModes type in Enum.GetValues(typeof(BGBlastPipeModes)))
 					{
-						dgvMode.Items.Add(type.ToString());
+						_cell.Items.Add(type.ToString());
 					}
 					break;
 			}
-
-
-			if (dgvDomain.Items.Contains(currentValue))
-				(row.Cells["dgvMode"] as DataGridViewComboBoxCell).Value = currentValue;
+			if (_cell.Items.Contains(currentValue))
+				_cell.Value = currentValue;
 			else
-				(row.Cells["dgvMode"] as DataGridViewComboBoxCell).Value = (row.Cells["dgvMode"] as DataGridViewComboBoxCell).Items[1];
+				_cell.Value = _cell.Items[1];
 
-			dgvMode.Items.Remove("NONE");
+			_cell.Items.Remove("NONE");
 
 		}
 
