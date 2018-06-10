@@ -50,9 +50,8 @@ namespace RTC
 		private StashKey sk = null;
 		private ContextMenuStrip cms = new ContextMenuStrip();
 		private bool initialized = false;
-		private bool CurrentlyUpdating = false;
-		private Dictionary<string, MemoryDomainProxy> domainToMDPDico = null;
 
+		private Dictionary<string, MemoryDomainProxy> domainToMDPDico = new Dictionary<string, MemoryDomainProxy>();
 		public string[] domains = RTC_MemoryDomains.MemoryInterfaces.Keys.Concat(RTC_MemoryDomains.VmdPool.Values.Select(it => it.ToString())).ToArray();
 
 		public RTC_BlastGenerator_Form()
