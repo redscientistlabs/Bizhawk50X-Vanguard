@@ -181,6 +181,9 @@ namespace RTC
 		{
 			try
 			{
+				if(row.Cells["dgvDomain"].Value.ToString() == "NONE")
+					return;
+
 				long size = domainToMDPDico[row.Cells["dgvDomain"].Value.ToString()].Size;
 
 				(row.Cells["dgvStartAddress"] as DataGridViewNumericUpDownCell).Maximum = size;

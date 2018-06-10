@@ -48,7 +48,7 @@ namespace RTC
 							destAddress = temp;
 						}
 						else
-							destAddress = mdp.Size;
+							destAddress = mdp.Size - 1;
 						break;
 					case BGBlastPipeModes.SOURCE_RANDOM:
 						destAddress = safeAddress;
