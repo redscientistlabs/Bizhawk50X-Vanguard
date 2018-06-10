@@ -51,6 +51,9 @@ namespace RTC
 		private ContextMenuStrip cms = new ContextMenuStrip();
 		private bool initialized = false;
 		private bool CurrentlyUpdating = false;
+		private Dictionary<string, MemoryDomainProxy> domainToMDPDico = null;
+
+		public string[] domains = RTC_MemoryDomains.MemoryInterfaces.Keys.Concat(RTC_MemoryDomains.VmdPool.Values.Select(it => it.ToString())).ToArray();
 
 		public RTC_BlastGenerator_Form()
 		{
@@ -61,7 +64,6 @@ namespace RTC
 		{
 			this.dgvBlastGenerator.MouseClick += new System.Windows.Forms.MouseEventHandler(dgvBlastGenerator_MouseClick);
 			this.dgvBlastGenerator.CellValueChanged += new DataGridViewCellEventHandler(dgvBlastGenerator_CellValueChanged);
-
 			RTC_Core.SetRTCColor(RTC_Core.generalColor, this);
 		}
 
@@ -97,33 +99,46 @@ namespace RTC
 
 		private void AddDefaultRow()
 		{
-			//Add an empty row and populate with default values
-			dgvBlastGenerator.Rows.Add();
-			int lastrow = dgvBlastGenerator.RowCount - 1;
-			//Set up the DGV based on the current state of Bizhawk
-			(dgvBlastGenerator.Rows[lastrow].Cells["dgvRowDirty"]).Value = true;
-			(dgvBlastGenerator.Rows[lastrow].Cells["dgvEnabled"]).Value = true;
-			(dgvBlastGenerator.Rows[lastrow].Cells["dgvPrecision"] as DataGridViewComboBoxCell).Value = (dgvBlastGenerator.Rows[0].Cells["dgvPrecision"] as DataGridViewComboBoxCell).Items[0];
-			(dgvBlastGenerator.Rows[lastrow].Cells["dgvType"] as DataGridViewComboBoxCell).Value = (dgvBlastGenerator.Rows[0].Cells["dgvType"] as DataGridViewComboBoxCell).Items[0];
+			try
+			{
+				//Add an empty row and populate with default values
+				dgvBlastGenerator.Rows.Add();
+				int lastrow = dgvBlastGenerator.RowCount - 1;
+				//Set up the DGV based on the current state of Bizhawk
+				(dgvBlastGenerator.Rows[lastrow].Cells["dgvRowDirty"]).Value = true;
+				(dgvBlastGenerator.Rows[lastrow].Cells["dgvEnabled"]).Value = true;
+				(dgvBlastGenerator.Rows[lastrow].Cells["dgvPrecision"] as DataGridViewComboBoxCell).Value = (dgvBlastGenerator.Rows[0].Cells["dgvPrecision"] as DataGridViewComboBoxCell).Items[0];
+				(dgvBlastGenerator.Rows[lastrow].Cells["dgvType"] as DataGridViewComboBoxCell).Value = (dgvBlastGenerator.Rows[0].Cells["dgvType"] as DataGridViewComboBoxCell).Items[0];
 
-			//These can't be null or else things go bad when trying to save and load them from a file
-			(dgvBlastGenerator.Rows[lastrow].Cells["dgvStartAddress"] as DataGridViewNumericUpDownCell).Value = 0;
-			(dgvBlastGenerator.Rows[lastrow].Cells["dgvEndAddress"] as DataGridViewNumericUpDownCell).Value = 0;
-			(dgvBlastGenerator.Rows[lastrow].Cells["dgvParam1"] as DataGridViewNumericUpDownCell).Value = 0;
-			(dgvBlastGenerator.Rows[lastrow].Cells["dgvParam2"] as DataGridViewNumericUpDownCell).Value = 0;
+				//These can't be null or else things go bad when trying to save and load them from a file
+				(dgvBlastGenerator.Rows[lastrow].Cells["dgvStartAddress"] as DataGridViewNumericUpDownCell).Value = 0;
+				(dgvBlastGenerator.Rows[lastrow].Cells["dgvEndAddress"] as DataGridViewNumericUpDownCell).Value = 1;
+				(dgvBlastGenerator.Rows[lastrow].Cells["dgvParam1"] as DataGridViewNumericUpDownCell).Value = 0;
+				(dgvBlastGenerator.Rows[lastrow].Cells["dgvParam2"] as DataGridViewNumericUpDownCell).Value = 0;
 
 
-			PopulateDomainCombobox(dgvBlastGenerator.Rows[lastrow]);
-			PopulateModeCombobox(dgvBlastGenerator.Rows[lastrow]);
-			// (dgvBlastGenerator.Rows[lastrow].Cells["dgvMode"] as DataGridViewComboBoxCell).Value = (dgvBlastGenerator.Rows[0].Cells["dgvMode"] as DataGridViewComboBoxCell).Items[0];
+				PopulateDomainCombobox(dgvBlastGenerator.Rows[lastrow]);
+				PopulateModeCombobox(dgvBlastGenerator.Rows[lastrow]);
+				// (dgvBlastGenerator.Rows[lastrow].Cells["dgvMode"] as DataGridViewComboBoxCell).Value = (dgvBlastGenerator.Rows[0].Cells["dgvMode"] as DataGridViewComboBoxCell).Items[0];
 
-			//For some reason, setting the minimum on the DGV to 1 doesn't change the fact it inserts with a count of 0
-			(dgvBlastGenerator.Rows[lastrow].Cells["dgvStepSize"]).Value = 1;
+				//For some reason, setting the minimum on the DGV to 1 doesn't change the fact it inserts with a count of 0
+				(dgvBlastGenerator.Rows[lastrow].Cells["dgvStepSize"]).Value = 1;
+
+			}catch(Exception ex)
+			{
+				throw new Exception(
+							"An error occurred in RTC while adding a new row.\n\n" +
+							"Your session is probably broken\n" +
+							ex.ToString()
+							);
+			}
 
 		}
 
 		private bool PopulateDomainCombobox(DataGridViewRow row)
 		{
+			try
+			{
 
 			DataGridViewComboBoxCell _cell = row.Cells["dgvDomain"] as DataGridViewComboBoxCell;
 
@@ -141,8 +156,6 @@ namespace RTC
 			for (int i = temp; i > 0; i--)
 				_cell.Items.RemoveAt(1);
 
-			string[] domains = RTC_MemoryDomains.MemoryInterfaces.Keys.Concat(RTC_MemoryDomains.VmdPool.Values.Select(it => it.ToString())).ToArray();
-
 			foreach (string domain in domains)
 			{
 				_cell.Items.Add(domain);
@@ -155,7 +168,29 @@ namespace RTC
 
 			_cell.Items.Remove("NONE");
 
-			return false;
+			UpdateAddressRange(row);
+
+			return true;
+			}catch(Exception ex)
+			{
+				throw;
+			}
+		}
+
+
+		private void UpdateAddressRange(DataGridViewRow row)
+		{
+			try
+			{
+				long size = domainToMDPDico[row.Cells["dgvDomain"].Value.ToString()].Size;
+
+				(row.Cells["dgvStartAddress"] as DataGridViewNumericUpDownCell).Maximum = size;
+				(row.Cells["dgvEndAddress"] as DataGridViewNumericUpDownCell).Maximum = size;
+			}
+			catch(Exception ex)
+			{
+				throw;
+			}
 		}
 
 		private void PopulateModeCombobox(DataGridViewRow row)
@@ -302,18 +337,16 @@ namespace RTC
 			if (!initialized || dgvBlastGenerator == null)
 				return;
 
+			dgvBlastGenerator.Rows[e.RowIndex].Cells["dgvRowDirty"].Value = true;
 
-			if (!CurrentlyUpdating)
+			if ((BlastGeneratorColumn)e.ColumnIndex == BlastGeneratorColumn.dgvType)
 			{
-				CurrentlyUpdating = true;
-				dgvBlastGenerator.Rows[e.RowIndex].Cells["dgvRowDirty"].Value = true;
-
-				if ((BlastGeneratorColumn)e.ColumnIndex == BlastGeneratorColumn.dgvType)
-				{
-					PopulateModeCombobox(dgvBlastGenerator.Rows[e.RowIndex]);
-				}
+				PopulateModeCombobox(dgvBlastGenerator.Rows[e.RowIndex]);
 			}
-
+			if ((BlastGeneratorColumn)e.ColumnIndex == BlastGeneratorColumn.dgvDomain)
+			{
+				UpdateAddressRange(dgvBlastGenerator.Rows[e.RowIndex]);
+			}
 		}
 
 		private void dgvBlastGenerator_MouseClick(object sender, MouseEventArgs e)
@@ -434,6 +467,7 @@ namespace RTC
 			}
 		}
 
+
 		private void btnAddRow_Click(object sender, EventArgs e)
 		{
 			AddDefaultRow();
@@ -515,8 +549,26 @@ namespace RTC
 		}
 		private void RefreshDomains()
 		{
-			foreach(DataGridViewRow row in dgvBlastGenerator.Rows)
-				PopulateDomainCombobox(row);
+			try
+			{
+				domainToMDPDico.Clear();
+				domains = RTC_MemoryDomains.MemoryInterfaces.Keys.Concat(RTC_MemoryDomains.VmdPool.Values.Select(it => it.ToString())).ToArray();
+				for (int i = 0; i < domains.Length; i++)
+				{
+					domainToMDPDico.Add(domains[i], RTC_MemoryDomains.getProxy(domains[i], 0));
+				}
+
+				foreach (DataGridViewRow row in dgvBlastGenerator.Rows)
+					PopulateDomainCombobox(row);
+			}catch(Exception ex)
+			{
+				throw new Exception(
+							"An error occurred in RTC while refreshing the domains\n" +
+							"Are you sure you don't have an invalid domain selected?\n" +
+							"Make sure any VMDs are loaded and you have the correct core loaded in Bizhawk\n" +
+							ex.ToString()
+							);
+			}
 		}
 
 		private void btnRefreshDomains_Click(object sender, EventArgs e)

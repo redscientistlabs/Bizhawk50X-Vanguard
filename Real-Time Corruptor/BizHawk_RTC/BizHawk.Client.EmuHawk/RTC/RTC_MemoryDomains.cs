@@ -937,6 +937,7 @@ namespace RTC
 
             name = md.ToString();
 
+			//Bizhawk always displays 8MB of ram even if only 4 are in use.
             if (Global.Emulator is N64 && !(Global.Emulator as N64).UsingExpansionSlot && name == "RDRAM")
 				Size = Size / 2;
 

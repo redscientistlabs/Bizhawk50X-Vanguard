@@ -75,8 +75,8 @@
             this.dataGridViewNumericUpDownColumn5 = new RTC.DataGridViewNumericUpDownColumn();
             this.menuStripEx1 = new MenuStripEx();
             this.blastLayerToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.loadFromFileblToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.saveAsToFileblToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.loadFromFileblToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.importBlastlayerblToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.btnHideSidebar = new System.Windows.Forms.Button();
             this.panelSidebar.SuspendLayout();
@@ -598,7 +598,7 @@
             // 
             // dgvType
             // 
-            this.dgvType.FillWeight = 52F;
+            this.dgvType.FillWeight = 55F;
             this.dgvType.HeaderText = "Type";
             this.dgvType.Items.AddRange(new object[] {
             "BlastByte",
@@ -620,7 +620,7 @@
             // 
             // dgvStepSize
             // 
-            this.dgvStepSize.FillWeight = 50F;
+            this.dgvStepSize.FillWeight = 45F;
             this.dgvStepSize.HeaderText = "Step Size";
             this.dgvStepSize.Hexadecimal = true;
             this.dgvStepSize.Maximum = new decimal(new int[] {
@@ -792,19 +792,19 @@
             this.blastLayerToolStripMenuItem.Tag = "";
             this.blastLayerToolStripMenuItem.Text = "File";
             // 
-            // loadFromFileblToolStripMenuItem
-            // 
-            this.loadFromFileblToolStripMenuItem.Name = "loadFromFileblToolStripMenuItem";
-            this.loadFromFileblToolStripMenuItem.Size = new System.Drawing.Size(241, 22);
-            this.loadFromFileblToolStripMenuItem.Text = "&Load From File (.bg)";
-            this.loadFromFileblToolStripMenuItem.Click += new System.EventHandler(this.loadFromFileblToolStripMenuItem_Click);
-            // 
             // saveAsToFileblToolStripMenuItem
             // 
             this.saveAsToFileblToolStripMenuItem.Name = "saveAsToFileblToolStripMenuItem";
             this.saveAsToFileblToolStripMenuItem.Size = new System.Drawing.Size(241, 22);
             this.saveAsToFileblToolStripMenuItem.Text = "&Save As to File (.bg)";
             this.saveAsToFileblToolStripMenuItem.Click += new System.EventHandler(this.saveAsToFileblToolStripMenuItem_Click);
+            // 
+            // loadFromFileblToolStripMenuItem
+            // 
+            this.loadFromFileblToolStripMenuItem.Name = "loadFromFileblToolStripMenuItem";
+            this.loadFromFileblToolStripMenuItem.Size = new System.Drawing.Size(241, 22);
+            this.loadFromFileblToolStripMenuItem.Text = "&Load From File (.bg)";
+            this.loadFromFileblToolStripMenuItem.Click += new System.EventHandler(this.loadFromFileblToolStripMenuItem_Click);
             // 
             // importBlastlayerblToolStripMenuItem
             // 
@@ -894,6 +894,10 @@
 		private System.Windows.Forms.Button btnAddRow;
 		private System.Windows.Forms.Button btnHideSidebar;
 		private MenuStripEx menuStripEx1;
+		private System.Windows.Forms.Button btnRefreshDomains;
+		private System.Windows.Forms.Button btnLoadCorrupt;
+		private System.Windows.Forms.Button btnJustCorrupt;
+		private System.Windows.Forms.Button btnSendTo;
 		private System.Windows.Forms.DataGridViewTextBoxColumn dgvBlastLayerReference;
 		private System.Windows.Forms.DataGridViewTextBoxColumn dgvRowDirty;
 		private System.Windows.Forms.DataGridViewCheckBoxColumn dgvEnabled;
@@ -906,9 +910,5 @@
 		private DataGridViewNumericUpDownColumn dgvEndAddress;
 		private DataGridViewNumericUpDownColumn dgvParam1;
 		private DataGridViewNumericUpDownColumn dgvParam2;
-		private System.Windows.Forms.Button btnRefreshDomains;
-		private System.Windows.Forms.Button btnLoadCorrupt;
-		private System.Windows.Forms.Button btnJustCorrupt;
-		private System.Windows.Forms.Button btnSendTo;
 	}
 }
