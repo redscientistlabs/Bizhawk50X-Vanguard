@@ -637,7 +637,6 @@ namespace RTC
 
 					foreach (DataRow row in ds.Tables[0].Rows)
 					{
-						CurrentlyUpdating = true;
 						dgv.Rows.Add();
 
 						int lastrow = dgvBlastGenerator.RowCount - 1;
@@ -658,8 +657,6 @@ namespace RTC
 						dgv[(int)BlastGeneratorColumn.dgvBlastLayerReference, lastrow].Value = null;
 						dgv[(int)BlastGeneratorColumn.dgvRowDirty, lastrow].Value = true;
 
-
-						CurrentlyUpdating = false;
 					}
 						
 
