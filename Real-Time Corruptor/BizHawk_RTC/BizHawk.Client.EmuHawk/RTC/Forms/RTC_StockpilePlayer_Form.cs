@@ -1,35 +1,27 @@
-﻿using BizHawk.Client.EmuHawk;
-using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
+﻿using System;
 using System.Drawing;
 using System.IO;
-using System.Linq;
-using System.Text;
 using System.Windows.Forms;
 
 namespace RTC
 {
-    public partial class RTC_StockpilePlayer_Form : Form
-    {
+	public partial class RTC_StockpilePlayer_Form : Form
+	{
 		public bool DontLoadSelectedStockpile = false;
 
-
 		public RTC_StockpilePlayer_Form()
-        {
-            InitializeComponent();
-        }
+		{
+			InitializeComponent();
+		}
 
-        private void RTC_BE_Form_FormClosing(object sender, FormClosingEventArgs e)
-        {
-            if (e.CloseReason != CloseReason.FormOwnerClosing)
-            {
-                e.Cancel = true;
-                this.Hide();
-            }
-        }
-
+		private void RTC_BE_Form_FormClosing(object sender, FormClosingEventArgs e)
+		{
+			if (e.CloseReason != CloseReason.FormOwnerClosing)
+			{
+				e.Cancel = true;
+				this.Hide();
+			}
+		}
 
 		private void btnPreviousItem_Click(object sender, EventArgs e)
 		{
@@ -54,7 +46,6 @@ namespace RTC
 				}
 
 				dgvStockpile_CellClick(null, null);
-
 			}
 			finally
 			{
@@ -85,7 +76,6 @@ namespace RTC
 				}
 
 				dgvStockpile_CellClick(null, null);
-
 			}
 			finally
 			{
@@ -128,14 +118,14 @@ namespace RTC
 				(columnsMenu.Items.Add("Show Note", null, new EventHandler((ob, ev) => { dgvStockpile.Columns["Note"].Visible ^= true; })) as ToolStripMenuItem).Checked = dgvStockpile.Columns["Note"].Visible;
 				columnsMenu.Items.Add(stripSeparator);
 				(columnsMenu.Items.Add("Load on Select", null, new EventHandler((ob, ev) => { RTC_Core.ghForm.cbLoadOnSelect.Checked ^= true; })) as ToolStripMenuItem).Checked = RTC_Core.ghForm.cbLoadOnSelect.Checked;
-                (columnsMenu.Items.Add("Clear Cheats/Freezes on Rewind", null, new EventHandler((ob, ev) => { RTC_Core.ecForm.cbClearCheatsOnRewind.Checked ^= true; })) as ToolStripMenuItem).Checked = RTC_Core.ecForm.cbClearCheatsOnRewind.Checked;
-                (columnsMenu.Items.Add("Clear Pipes on Rewind", null, new EventHandler((ob, ev) => { RTC_Core.ecForm.cbClearPipesOnRewind.Checked ^= true; })) as ToolStripMenuItem).Checked = RTC_Core.ecForm.cbClearPipesOnRewind.Checked;
+				(columnsMenu.Items.Add("Clear Cheats/Freezes on Rewind", null, new EventHandler((ob, ev) => { RTC_Core.ecForm.cbClearCheatsOnRewind.Checked ^= true; })) as ToolStripMenuItem).Checked = RTC_Core.ecForm.cbClearCheatsOnRewind.Checked;
+				(columnsMenu.Items.Add("Clear Pipes on Rewind", null, new EventHandler((ob, ev) => { RTC_Core.ecForm.cbClearPipesOnRewind.Checked ^= true; })) as ToolStripMenuItem).Checked = RTC_Core.ecForm.cbClearPipesOnRewind.Checked;
 
-                columnsMenu.Show(this, locate);
+				columnsMenu.Show(this, locate);
 			}
 		}
 
-		void stripSeparator_Paint(object sender, PaintEventArgs e)
+		private void stripSeparator_Paint(object sender, PaintEventArgs e)
 		{
 			ToolStripSeparator stripSeparator = sender as ToolStripSeparator;
 			ContextMenuStrip menuStrip = stripSeparator.Owner as ContextMenuStrip;
@@ -146,15 +136,13 @@ namespace RTC
 			}
 		}
 
-
 		private void btnLoadStockpile_MouseDown(object sender, MouseEventArgs e)
 		{
-
 			Point locate = new Point((sender as Control).Location.X + e.Location.X, (sender as Control).Location.Y + e.Location.Y);
 
 			ContextMenuStrip LoadMenuItems = new ContextMenuStrip();
-			LoadMenuItems.Items.Add("Load Stockpile", null, new EventHandler((ob, ev) => {
-
+			LoadMenuItems.Items.Add("Load Stockpile", null, new EventHandler((ob, ev) =>
+			{
 				try
 				{
 					DontLoadSelectedStockpile = true;
@@ -162,18 +150,15 @@ namespace RTC
 					if (Stockpile.Load(dgvStockpile))
 						RTC_Core.ghForm.dgvStockpile.Rows.Clear();
 					dgvStockpile.ClearSelection();
-
 				}
-				catch(Exception ex)
+				catch (Exception ex)
 				{
 					MessageBox.Show("Loading Failure ->\n\n" + ex.ToString());
 				}
-
-
 			}));
 
-			LoadMenuItems.Items.Add("Load Bizhawk settings from Stockpile", null, new EventHandler((ob, ev) => {
-
+			LoadMenuItems.Items.Add("Load Bizhawk settings from Stockpile", null, new EventHandler((ob, ev) =>
+			{
 				try
 				{
 					Stockpile.LoadBizhawkConfigFromStockpile();
@@ -182,12 +167,10 @@ namespace RTC
 				{
 					MessageBox.Show("Loading Settings Failure ->\n\n" + ex.ToString());
 				}
-
 			}));
 
 			LoadMenuItems.Items.Add("Restore Bizhawk config Backup", null, new EventHandler((ob, ev) =>
 			{
-
 				try
 				{
 					RTC_Core.StopSound();
@@ -197,11 +180,9 @@ namespace RTC
 				{
 					RTC_Core.StartSound();
 				}
-
 			})).Enabled = (File.Exists(RTC_Core.bizhawkDir + "\\backup_config.ini"));
 
 			LoadMenuItems.Show(this, locate);
-
 		}
 
 		private void dgvStockpile_CellClick(object sender, DataGridViewCellEventArgs e)
@@ -214,7 +195,6 @@ namespace RTC
 				{
 					var senderGrid = (DataGridView)sender;
 
-
 					StashKey sk = (StashKey)senderGrid.Rows[e.RowIndex].Cells["Item"].Value;
 
 					if (sk.Note != null)
@@ -224,26 +204,22 @@ namespace RTC
 
 					if (senderGrid.Columns[e.ColumnIndex] is DataGridViewButtonColumn &&
 						e.RowIndex >= 0)
-						{
-
+					{
 						if (RTC_NoteEditor_Form.currentlyOpenNoteForm == null)
-							{
-								RTC_NoteEditor_Form.currentlyOpenNoteForm = new RTC_NoteEditor_Form(sk, senderGrid);
-							}
-							else
-							{
-								if (RTC_NoteEditor_Form.currentlyOpenNoteForm.Visible)
-									RTC_NoteEditor_Form.currentlyOpenNoteForm.Close();
+						{
+							RTC_NoteEditor_Form.currentlyOpenNoteForm = new RTC_NoteEditor_Form(sk, senderGrid);
+						}
+						else
+						{
+							if (RTC_NoteEditor_Form.currentlyOpenNoteForm.Visible)
+								RTC_NoteEditor_Form.currentlyOpenNoteForm.Close();
 
-								RTC_NoteEditor_Form.currentlyOpenNoteForm = new RTC_NoteEditor_Form(sk, senderGrid);
-							}
-
-							return;
+							RTC_NoteEditor_Form.currentlyOpenNoteForm = new RTC_NoteEditor_Form(sk, senderGrid);
 						}
 
+						return;
+					}
 				}
-
-
 
 				if ((sender == null) && dgvStockpile.SelectedRows.Count > 0)
 				{
@@ -256,13 +232,11 @@ namespace RTC
 
 					RTC_Core.ghForm.IsCorruptionApplied = !(RTC_StockpileManager.currentStashkey.BlastLayer == null || RTC_StockpileManager.currentStashkey.BlastLayer.Layer.Count == 0);
 				}
-
 			}
 			finally
 			{
 				dgvStockpile.Enabled = true;
 			}
 		}
-
 	}
 }

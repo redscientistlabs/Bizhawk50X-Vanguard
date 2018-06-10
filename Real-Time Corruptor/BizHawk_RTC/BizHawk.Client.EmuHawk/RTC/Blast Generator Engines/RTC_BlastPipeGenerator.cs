@@ -1,14 +1,8 @@
-﻿using BizHawk.Client.Common;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+﻿using System;
 using System.Windows.Forms;
-using System.Collections;
 
 namespace RTC
 {
-
 	public class RTC_BlastPipeGenerator
 	{
 		public BlastLayer GenerateLayer(string Domain, long StepSize, long StartAddress, long EndAddress, long Param1, long Param2, int Precision, BGBlastPipeModes Mode)
@@ -25,7 +19,6 @@ namespace RTC
 
 		private BlastUnit GenerateUnit(string domain, long address, long param1, long param2, long stepSize, int precision, BGBlastPipeModes mode)
 		{
-
 			try
 			{
 				MemoryDomainProxy mdp = RTC_MemoryDomains.getProxy(domain, address);
@@ -52,7 +45,7 @@ namespace RTC
 						break;
 					case BGBlastPipeModes.SOURCE_RANDOM:
 						destAddress = safeAddress;
-						safeAddress = RTC_Core.RND.Next(0, Convert.ToInt32(mdp.Size-1));
+						safeAddress = RTC_Core.RND.Next(0, Convert.ToInt32(mdp.Size - 1));
 						break;
 					case BGBlastPipeModes.SOURCE_SET:
 						destAddress = safeAddress;
@@ -67,7 +60,6 @@ namespace RTC
 					return null;
 
 				return new BlastPipe(domain, safeAddress, domain, destAddress, 0, precision, mdp.BigEndian, true);
-
 			}
 			catch (Exception ex)
 			{
@@ -78,6 +70,5 @@ namespace RTC
 				return null;
 			}
 		}
-
 	}
 }

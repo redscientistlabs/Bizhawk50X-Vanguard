@@ -1,14 +1,8 @@
-﻿using BizHawk.Client.Common;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+﻿using System;
 using System.Windows.Forms;
-using System.Collections;
 
 namespace RTC
 {
-
 	public class RTC_BlastCheatGenerator
 	{
 		public BlastLayer GenerateLayer(string Domain, long StepSize, long StartAddress, long EndAddress, long Param1, long Param2, int Precision, BGBlastCheatModes Mode)
@@ -25,11 +19,9 @@ namespace RTC
 
 		private BlastUnit GenerateUnit(string domain, long address, long param1, long param2, int precision, BGBlastCheatModes mode)
 		{
-
 			try
 			{
 				MemoryDomainProxy mdp = RTC_MemoryDomains.getProxy(domain, address);
-				
 
 				byte[] _value = new byte[precision];
 				byte[] _temp = new byte[precision];
@@ -42,11 +34,10 @@ namespace RTC
 				if (safeAddress + _value.Length > mdp.Size)
 					return null;
 
-
 				switch (mode)
 				{
 					case BGBlastCheatModes.ADD:
-							_value = RTC_Extensions.addValueToByteArray(mdp.PeekBytes(safeAddress, safeAddress + _value.Length), RTC_Extensions.getDecimalValue(_value, mdp.BigEndian), mdp.BigEndian);
+						_value = RTC_Extensions.addValueToByteArray(mdp.PeekBytes(safeAddress, safeAddress + _value.Length), RTC_Extensions.getDecimalValue(_value, mdp.BigEndian), mdp.BigEndian);
 						break;
 					case BGBlastCheatModes.SUBTRACT:
 						_value = RTC_Extensions.addValueToByteArray(mdp.PeekBytes(safeAddress, safeAddress + _value.Length), RTC_Extensions.getDecimalValue(_value, mdp.BigEndian) * -1, mdp.BigEndian);
@@ -120,7 +111,6 @@ namespace RTC
 				}
 
 				return new BlastCheat(domain, safeAddress, _displaytype, mdp.BigEndian, _value, true, freeze);
-
 			}
 			catch (Exception ex)
 			{
@@ -131,6 +121,5 @@ namespace RTC
 				return null;
 			}
 		}
-
 	}
 }

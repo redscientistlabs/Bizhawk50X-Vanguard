@@ -1,22 +1,12 @@
-﻿using BizHawk.Client.Common;
-using BizHawk.Client.EmuHawk;
-using BizHawk.Emulation.Common;
-using System;
-using System.Collections.Generic;
+﻿using System;
 using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading;
 using System.Windows.Forms;
 using System.Xml.Serialization;
-using System.IO.Compression;
-using RTC;
 
 namespace RTC
 {
 	public static class RTC_BlastTools
 	{
-
 		public static bool SaveBlastLayerToFile(BlastLayer bl, bool isQuickSave = false)
 		{
 			string filename;
@@ -29,7 +19,6 @@ namespace RTC
 
 			if (!isQuickSave)
 			{
-
 				SaveFileDialog saveFileDialog1 = new SaveFileDialog();
 				saveFileDialog1.DefaultExt = "bl";
 				saveFileDialog1.Title = "Save BlastLayer File";
@@ -54,7 +43,6 @@ namespace RTC
 				xs.Serialize(fs, bl);
 			}
 			return true;
-			
 		}
 
 		public static BlastLayer LoadBlastLayerFromFile(string filename = null)
@@ -82,7 +70,6 @@ namespace RTC
 				return null;
 			}
 
-
 			var token = RTC_NetCore.HugeOperationStart();
 
 			XmlSerializer xs = new XmlSerializer(typeof(BlastLayer));
@@ -101,7 +88,6 @@ namespace RTC
 				RTC_NetCore.HugeOperationEnd(token);
 				return null;
 			}
-			
 		}
 
 		private static byte[] CapBlastUnit(byte[] input)
@@ -128,7 +114,6 @@ namespace RTC
 		{
 			try
 			{
-
 				if (bu is BlastByte)
 				{
 					BlastByte bb = bu as BlastByte;
@@ -215,14 +200,15 @@ namespace RTC
 						return new BlastPipe(bv.Domain, bv.Address, bv.Domain, 0, 0, bv.Values.Length, true, bv.IsEnabled);
 					}
 				}
-			}catch(Exception ex)
+			}
+			catch (Exception ex)
 			{
 				throw;
 			}
 
 			return null;
 		}
-		
+
 		private static byte[] getByteArray(int size, byte value)
 		{
 			var temp = new byte[size];
@@ -237,9 +223,10 @@ namespace RTC
 		{
 			BlastLayer newBlastLayer = new BlastLayer();
 
-			foreach(BlastUnit bu in bl.Layer)
+			foreach (BlastUnit bu in bl.Layer)
 			{
-				if (bu is BlastByte){
+				if (bu is BlastByte)
+				{
 					BlastByte bb = bu as BlastByte;
 					newBlastLayer.Layer.Add(bb.GetBackup());
 				}
@@ -260,8 +247,8 @@ namespace RTC
 				RTC_NetCore.HugeOperationEnd(token);
 
 				return newLayer;
-
-			}catch(Exception ex)
+			}
+			catch (Exception ex)
 			{
 				throw;
 			}
@@ -269,11 +256,9 @@ namespace RTC
 		}
 	}
 
-
 	/*
 	private bool GenerateBlastLayer()
 	{
-
 		if (string.IsNullOrWhiteSpace(cbSelectedMemoryDomain.SelectedItem?.ToString()) || !RTC_MemoryDomains.MemoryInterfaces.ContainsKey(cbSelectedMemoryDomain.SelectedItem.ToString()))
 		{
 			cbSelectedMemoryDomain.Items.Clear();
@@ -282,8 +267,6 @@ namespace RTC
 
 		MemoryInterface mi = RTC_MemoryDomains.MemoryInterfaces[cbSelectedMemoryDomain.SelectedItem.ToString()];
 		BlastLayer bl = new BlastLayer();
-
-
 
 		foreach (string line in tbCustomAddresses.Lines)
 		{
@@ -314,7 +297,6 @@ namespace RTC
 					proto.removeRanges.Add(new int[] { start, end });
 				else
 					proto.addRanges.Add(new int[] { start, end });
-
 			}
 			else
 			{
@@ -328,8 +310,6 @@ namespace RTC
 						proto.addSingles.Add(address);
 				}
 			}
-
-
 		}
 
 		if (proto.addRanges.Count == 0 && proto.addSingles.Count == 0)

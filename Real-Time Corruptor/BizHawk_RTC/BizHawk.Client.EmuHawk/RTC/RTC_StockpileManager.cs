@@ -5,44 +5,41 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Text;
-using System.Threading;
 using System.Windows.Forms;
 
 namespace RTC
 {
 	public static class RTC_StockpileManager
 	{
-
 		//Object references
 		public static Stockpile currentStockpile = null;
 
 		public static StashKey currentStashkey
-        {
-            get
-            {
-                return _currentStashkey;
-            }
-            set
-            {
-                _currentStashkey = value;
+		{
+			get
+			{
+				return _currentStashkey;
+			}
+			set
+			{
+				_currentStashkey = value;
 
-                GC.Collect();
-                GC.WaitForPendingFinalizers();
+				GC.Collect();
+				GC.WaitForPendingFinalizers();
+			}
+		}
 
-            }
-        }
-        private static StashKey _currentStashkey = null;
+		private static StashKey _currentStashkey = null;
 
-        public static StashKey backupedState = null;
+		public static StashKey backupedState = null;
 		public static Stack<StashKey> allBackupStates = new Stack<StashKey>();
 		public static BlastLayer lastBlastLayerBackup = null;
 		public static string currentGameSystem = "";
 		public static string currentGameName = "";
 
-        public static bool unsavedEdits = false;
+		public static bool unsavedEdits = false;
 
-        private static bool _isCorruptionApplied = false;
+		private static bool _isCorruptionApplied = false;
 
 		public static bool isCorruptionApplied
 		{
@@ -64,6 +61,7 @@ namespace RTC
 
 		// key: some key or guid, value: [0] savestate key [1] rom file
 		public static volatile Dictionary<string, StashKey> SavestateStashkeyDico = new Dictionary<string, StashKey>();
+
 		public static volatile string currentSavestateKey = null;
 		public static bool renderAtLoad = false;
 
@@ -72,13 +70,13 @@ namespace RTC
 			RTC_HellgenieEngine.ClearCheats(true);
 			RTC_PipeEngine.ClearPipes(true);
 		}
+
 		private static void PostApplyStashkey()
 		{
 			if (renderAtLoad)
 			{
 				RTC_Render.StartRender();
 			}
-
 		}
 
 		public static StashKey getCurrentSavestateStashkey()
@@ -93,23 +91,22 @@ namespace RTC
 		{
 			PreApplyStashkey();
 
-            var token = RTC_NetCore.HugeOperationStart("LAZY");
+			var token = RTC_NetCore.HugeOperationStart("LAZY");
 
-            if (_loadBeforeOperation)
+			if (_loadBeforeOperation)
 			{
-                if (!LoadStateAndBlastLayer(sk))
-                {
-                    RTC_NetCore.HugeOperationEnd(token);
-                    return isCorruptionApplied;
-                }
+				if (!LoadStateAndBlastLayer(sk))
+				{
+					RTC_NetCore.HugeOperationEnd(token);
+					return isCorruptionApplied;
+				}
 			}
 			else
-				RTC_Core.SendCommandToBizhawk(new RTC_Command(CommandType.BLAST) { blastlayer = sk.BlastLayer, isReplay = true});
+				RTC_Core.SendCommandToBizhawk(new RTC_Command(CommandType.BLAST) { blastlayer = sk.BlastLayer, isReplay = true });
 
+			RTC_NetCore.HugeOperationEnd(token);
 
-            RTC_NetCore.HugeOperationEnd(token);
-
-            isCorruptionApplied = (sk.BlastLayer != null && sk.BlastLayer.Layer.Count > 0);
+			isCorruptionApplied = (sk.BlastLayer != null && sk.BlastLayer.Layer.Count > 0);
 
 			PostApplyStashkey();
 			return isCorruptionApplied;
@@ -119,7 +116,7 @@ namespace RTC
 		{
 			PreApplyStashkey();
 
-            var token = RTC_NetCore.HugeOperationStart("LAZY");
+			var token = RTC_NetCore.HugeOperationStart("LAZY");
 
 			StashKey psk = RTC_StockpileManager.getCurrentSavestateStashkey();
 
@@ -128,8 +125,8 @@ namespace RTC
 				RTC_Core.StopSound();
 				MessageBox.Show("The Glitch Harvester could not perform the CORRUPT action\n\nEither no Savestate Box was selected in the Savestate Manager\nor the Savetate Box itself is empty.");
 				RTC_Core.StartSound();
-                RTC_NetCore.HugeOperationEnd(token);
-                return false;
+				RTC_NetCore.HugeOperationEnd(token);
+				return false;
 			}
 
 			string currentGame = (string)RTC_Core.SendCommandToBizhawk(new RTC_Command(CommandType.REMOTE_KEY_GETGAMENAME), true);
@@ -139,7 +136,6 @@ namespace RTC
 				RTC_Core.ecForm.RefreshDomains();
 				RTC_Core.ecForm.setMemoryDomainsAllButSelectedDomains(RTC_MemoryDomains.GetBlacklistedDomains());
 			}
-
 
 			var watch = System.Diagnostics.Stopwatch.StartNew();
 			BlastLayer bl = (BlastLayer)RTC_Core.SendCommandToBizhawk(new RTC_Command(CommandType.BLAST) { objectValue = RTC_MemoryDomains.SelectedDomains }, true);
@@ -154,32 +150,32 @@ namespace RTC
 
 			if (_loadBeforeOperation)
 			{
-                if (!LoadStateAndBlastLayer(currentStashkey))
-                {
-                    RTC_NetCore.HugeOperationEnd(token);
-                    return isCorruptionApplied;
-                }
+				if (!LoadStateAndBlastLayer(currentStashkey))
+				{
+					RTC_NetCore.HugeOperationEnd(token);
+					return isCorruptionApplied;
+				}
 			}
 			else
 				RTC_Core.SendCommandToBizhawk(new RTC_Command(CommandType.BLAST) { blastlayer = bl });
 
 			isCorruptionApplied = (bl != null);
-			
-				if (stashAfterOperation && bl != null)
-				{
-					StashHistory.Add(currentStashkey);
-					RTC_Core.ghForm.RefreshStashHistory();
-					RTC_Core.ghForm.dgvStockpile.ClearSelection();
 
-					RTC_Core.ghForm.lbStashHistory.ClearSelected();
+			if (stashAfterOperation && bl != null)
+			{
+				StashHistory.Add(currentStashkey);
+				RTC_Core.ghForm.RefreshStashHistory();
+				RTC_Core.ghForm.dgvStockpile.ClearSelection();
 
-					RTC_Core.ghForm.DontLoadSelectedStash = true;
-					RTC_Core.ghForm.lbStashHistory.SelectedIndex = RTC_Core.ghForm.lbStashHistory.Items.Count - 1;
-				}
+				RTC_Core.ghForm.lbStashHistory.ClearSelected();
 
-            RTC_NetCore.HugeOperationEnd(token);
+				RTC_Core.ghForm.DontLoadSelectedStash = true;
+				RTC_Core.ghForm.lbStashHistory.SelectedIndex = RTC_Core.ghForm.lbStashHistory.Items.Count - 1;
+			}
 
-            PostApplyStashkey();
+			RTC_NetCore.HugeOperationEnd(token);
+
+			PostApplyStashkey();
 			return isCorruptionApplied;
 		}
 
@@ -189,22 +185,19 @@ namespace RTC
 
 			StashKey psk = RTC_StockpileManager.getCurrentSavestateStashkey();
 
-
 			if (psk == null)
 			{
 				RTC_Core.StopSound();
-                MessageBox.Show("The Glitch Harvester could not perform the INJECT action\n\nEither no Savestate Box was selected in the Savestate Manager\nor the Savetate Box itself is empty.");
-                RTC_Core.StartSound();
+				MessageBox.Show("The Glitch Harvester could not perform the INJECT action\n\nEither no Savestate Box was selected in the Savestate Manager\nor the Savetate Box itself is empty.");
+				RTC_Core.StartSound();
 				return false;
 			}
-
 
 			if (psk.SystemCore != sk.SystemCore && !RTC_Core.AllowCrossCoreCorruption)
 			{
 				MessageBox.Show("Merge attempt failed: Core mismatch\n\n" + $"{psk.GameName} -> {psk.SystemName} -> {psk.SystemCore}\n{sk.GameName} -> {sk.SystemName} -> {sk.SystemCore}");
 				return isCorruptionApplied;
 			}
-
 
 			currentStashkey = new StashKey(RTC_Core.GetRandomKey(), psk.ParentKey, sk.BlastLayer);
 			currentStashkey.RomFilename = psk.RomFilename;
@@ -218,7 +211,7 @@ namespace RTC
 					return false;
 			}
 			else
-				RTC_Core.SendCommandToBizhawk(new RTC_Command(CommandType.BLAST) { blastlayer = sk.BlastLayer}, true);
+				RTC_Core.SendCommandToBizhawk(new RTC_Command(CommandType.BLAST) { blastlayer = sk.BlastLayer }, true);
 
 			isCorruptionApplied = (sk.BlastLayer != null);
 
@@ -236,13 +229,13 @@ namespace RTC
 		{
 			PreApplyStashkey();
 
-            if(sk == null)
-            {
-                MessageBox.Show("No StashKey could be loaded");
-                 return false;
-            }
+			if (sk == null)
+			{
+				MessageBox.Show("No StashKey could be loaded");
+				return false;
+			}
 
-            if (!LoadState(sk, true, false))
+			if (!LoadState(sk, true, false))
 				return isCorruptionApplied;
 
 			isCorruptionApplied = false;
@@ -257,27 +250,26 @@ namespace RTC
 
 			if (sks != null && sks.Count > 1)
 			{
-                var token = RTC_NetCore.HugeOperationStart();
+				var token = RTC_NetCore.HugeOperationStart();
 
-
-                StashKey master = sks[0];
+				StashKey master = sks[0];
 
 				string masterSystemCore = master.SystemCore;
 				bool allCoresIdentical = true;
 
 				foreach (StashKey item in sks)
-					if(item.SystemCore != master.SystemCore)
+					if (item.SystemCore != master.SystemCore)
 					{
 						allCoresIdentical = false;
 						break;
 					}
 
-				if(!allCoresIdentical && !RTC_Core.AllowCrossCoreCorruption)
+				if (!allCoresIdentical && !RTC_Core.AllowCrossCoreCorruption)
 				{
 					MessageBox.Show("Merge attempt failed: Core mismatch\n\n" + string.Join("\n", sks.Select(it => $"{it.GameName} -> {it.SystemName} -> {it.SystemCore}")));
-                    RTC_NetCore.HugeOperationEnd(token);
+					RTC_NetCore.HugeOperationEnd(token);
 
-                    return false;
+					return false;
 				}
 
 				BlastLayer bl = new BlastLayer();
@@ -286,7 +278,6 @@ namespace RTC
 					bl.Layer.AddRange(item.BlastLayer.Layer);
 
 				bl.Layer = bl.Layer.Distinct().ToList();
-
 
 				currentStashkey = new StashKey(RTC_Core.GetRandomKey(), master.ParentKey, bl);
 				currentStashkey.RomFilename = master.RomFilename;
@@ -300,14 +291,13 @@ namespace RTC
 				if (_loadBeforeOperation)
 				{
 					if (!LoadStateAndBlastLayer(currentStashkey))
-                    {
-                        RTC_NetCore.HugeOperationEnd(token);
-                        return isCorruptionApplied;
-                    }
-						
+					{
+						RTC_NetCore.HugeOperationEnd(token);
+						return isCorruptionApplied;
+					}
 				}
 				else
-					RTC_Core.SendCommandToBizhawk(new RTC_Command(CommandType.BLAST) { blastlayer = currentStashkey.BlastLayer});
+					RTC_Core.SendCommandToBizhawk(new RTC_Command(CommandType.BLAST) { blastlayer = currentStashkey.BlastLayer });
 
 				isCorruptionApplied = (currentStashkey.BlastLayer != null && currentStashkey.BlastLayer.Layer.Count > 0);
 
@@ -317,9 +307,9 @@ namespace RTC
 					RTC_Core.ghForm.RefreshStashHistory();
 				}
 
-                RTC_NetCore.HugeOperationEnd(token);
+				RTC_NetCore.HugeOperationEnd(token);
 
-                PostApplyStashkey();
+				PostApplyStashkey();
 				return true;
 			}
 			else
@@ -327,23 +317,20 @@ namespace RTC
 				MessageBox.Show("You need 2 or more items for Merging");
 				return false;
 			}
-
 		}
-
-
-
 
 		public static bool LoadState(StashKey sk, bool ReloadRom = true, bool applyBlastLayer = true)
 		{
 			return (bool)RTC_Core.SendCommandToBizhawk(new RTC_Command(CommandType.REMOTE_LOADSTATE)
 			{
 				objectValue = new object[] { sk, ReloadRom, false, applyBlastLayer }
-			},true);
+			}, true);
 		}
 
 		public static bool LoadStateAndBlastLayer(StashKey sk, bool ReloadRom = true)
 		{
-			object returnValue = RTC_Core.SendCommandToBizhawk(new RTC_Command(CommandType.REMOTE_LOADSTATE){
+			object returnValue = RTC_Core.SendCommandToBizhawk(new RTC_Command(CommandType.REMOTE_LOADSTATE)
+			{
 				objectValue = new object[] { sk, ReloadRom, (sk.BlastLayer != null && sk.BlastLayer.Layer.Count > 0) }
 			}, true);
 
@@ -356,7 +343,7 @@ namespace RTC
 			if (sk == null)
 				return false;
 
-            StashKey.setCore(sk);
+			StashKey.setCore(sk);
 			string GameSystem = sk.SystemName;
 			string GameName = sk.GameName;
 			string Key = sk.ParentKey;
@@ -376,17 +363,15 @@ namespace RTC
 				Console.WriteLine($"Time taken to get the SyncSettings: {0}ms", ssWatch.ElapsedMilliseconds);
 
 				//If the syncsettings are different, update them and load it again. Otheriwse, leave as is
-				if (sk.SyncSettings != ss && sk.SyncSettings != null){
+				if (sk.SyncSettings != ss && sk.SyncSettings != null)
+				{
 					StashKey.putSyncSettings_NET(sk.SyncSettings);
 					RTC_Core.LoadRom_NET(sk.RomFilename);
 				}
 				GameHasChanged = true;
 			}
 
-
-
 			RTC_Core.StartSound();
-
 
 			PathEntry pathEntry = Global.Config.PathEntries[Global.Game.System, "Savestates"] ??
 			Global.Config.PathEntries[Global.Game.System, "Base"];
@@ -395,7 +380,6 @@ namespace RTC
 				TheoricalSaveStateFilename = RTC_Core.bizhawkDir + "\\" + GameSystem + "\\State\\" + GameName + "." + Key + ".timejump.State";
 			else
 				TheoricalSaveStateFilename = RTC_Core.bizhawkDir + "\\" + RTC_Core.EmuFolderCheck(pathEntry.SystemDisplayName) + "\\State\\" + PathManager.FilesystemSafeName(Global.Game) + "." + Key + ".timejump.State";
-
 
 			if (File.Exists(TheoricalSaveStateFilename))
 			{
@@ -416,7 +400,7 @@ namespace RTC
 
 		public static StashKey SaveState(bool SendToStashDico, StashKey _sk = null, bool sync = true)
 		{
-			return (StashKey)RTC_Core.SendCommandToBizhawk(new RTC_Command(CommandType.REMOTE_SAVESTATE) { objectValue = new object[] { SendToStashDico, _sk} }, sync);
+			return (StashKey)RTC_Core.SendCommandToBizhawk(new RTC_Command(CommandType.REMOTE_SAVESTATE) { objectValue = new object[] { SendToStashDico, _sk } }, sync);
 		}
 
 		public static StashKey SaveState_NET(bool SendToStashDico, StashKey _sk = null, bool threadSave = false)
@@ -426,7 +410,8 @@ namespace RTC
 
 			StashKey sk;
 
-			if (_sk == null) {
+			if (_sk == null)
+			{
 				Key = RTC_Core.GetRandomKey();
 				statePath = RTC_Core.SaveSavestate_NET(Key, threadSave);
 				sk = new StashKey(Key, Key, null);
@@ -448,12 +433,11 @@ namespace RTC
 			{
 				RTC_Core.SendCommandToRTC(new RTC_Command(CommandType.REMOTE_KEY_PUSHSAVESTATEDICO) { objectValue = new object[] { sk, currentSavestateKey } });
 
-				if(RTC_Hooks.isRemoteRTC)
+				if (RTC_Hooks.isRemoteRTC)
 					RTC_StockpileManager.SavestateStashkeyDico[currentSavestateKey] = sk;
 			}
 
 			return sk;
-
 		}
 
 		public static bool ChangeGameWarning(string rom, bool dontask = false)
@@ -476,7 +460,6 @@ namespace RTC
 
 			if (btnFilename != currentFilename)
 			{
-
 				string cctext =
 					"Loading this savestate will change the game\n" +
 					"\n" +
@@ -484,7 +467,6 @@ namespace RTC
 					"Target Rom: " + rom + "\n" +
 					"\n" +
 					"Do you wish to continue ? (Yes/No)";
-
 
 				if (MessageBox.Show(cctext, "Switching to another game", MessageBoxButtons.YesNo, MessageBoxIcon.Warning) == DialogResult.No)
 					return false;
@@ -500,7 +482,7 @@ namespace RTC
 
 		public static StashKey getRawBlastlayer()
 		{
-            RTC_Core.StopSound();
+			RTC_Core.StopSound();
 
 			StashKey sk = RTC_StockpileManager.SaveState_NET(false);
 
@@ -528,67 +510,65 @@ namespace RTC
 
 			bl.Layer.AddRange(RTC_PipeEngine.AllBlastPipes);
 
-            string thisSystem = Global.Game.System;
-            string romFilename = GlobalWin.MainForm.CurrentlyOpenRom;
+			string thisSystem = Global.Game.System;
+			string romFilename = GlobalWin.MainForm.CurrentlyOpenRom;
 
-            var rp = RTC_MemoryDomains.GetRomParts(thisSystem, romFilename);
+			var rp = RTC_MemoryDomains.GetRomParts(thisSystem, romFilename);
 
-            if (rp.error == null)
-            {
+			if (rp.error == null)
+			{
+				if (rp.primarydomain != null)
+				{
+					List<byte> addData = new List<byte>();
 
-                if (rp.primarydomain != null)
-                {
-                    List<byte> addData = new List<byte>();
+					if (rp.skipbytes != 0)
+					{
+						byte[] padding = new byte[rp.skipbytes];
+						for (int i = 0; i < rp.skipbytes; i++)
+							padding[i] = 0;
 
-                    if (rp.skipbytes != 0)
-                    {
-                        byte[] padding = new byte[rp.skipbytes];
-                        for (int i = 0; i < rp.skipbytes; i++)
-                            padding[i] = 0;
+						addData.AddRange(padding);
+					}
 
-                        addData.AddRange(padding);
-                    }
+					addData.AddRange(RTC_MemoryDomains.getDomainData(rp.primarydomain));
+					if (rp.seconddomain != null)
+						addData.AddRange(RTC_MemoryDomains.getDomainData(rp.seconddomain));
 
-                    addData.AddRange(RTC_MemoryDomains.getDomainData(rp.primarydomain));
-                    if (rp.seconddomain != null)
-                        addData.AddRange(RTC_MemoryDomains.getDomainData(rp.seconddomain));
+					byte[] corrupted = addData.ToArray();
+					byte[] original = File.ReadAllBytes(GlobalWin.MainForm.CurrentlyOpenRom);
 
-                    byte[] corrupted = addData.ToArray();
-                    byte[] original = File.ReadAllBytes(GlobalWin.MainForm.CurrentlyOpenRom);
+					if (RTC_MemoryDomains.MemoryInterfaces.ContainsKey("32X FB")) //Flip 16-bit words on 32X rom
+						original = original.FlipWords(2);
+					else if (thisSystem.ToUpper() == "N64")
+						original = BizHawk.Client.Common.RomGame.MutateSwapN64(original);
+					else if (GlobalWin.MainForm.CurrentlyOpenRom.ToUpper().Contains(".SMD"))
+						original = BizHawk.Client.Common.RomGame.DeInterleaveSMD(original);
 
-                    if (RTC_MemoryDomains.MemoryInterfaces.ContainsKey("32X FB")) //Flip 16-bit words on 32X rom
-                        original = original.FlipWords(2);
-                    else if (thisSystem.ToUpper() == "N64")
-                        original = BizHawk.Client.Common.RomGame.MutateSwapN64(original);
-                    else if(GlobalWin.MainForm.CurrentlyOpenRom.ToUpper().Contains(".SMD"))
-                        original = BizHawk.Client.Common.RomGame.DeInterleaveSMD(original);
+					for (int i = 0; i < rp.skipbytes; i++)
+						original[i] = 0;
 
-                    for (int i = 0; i < rp.skipbytes; i++)
-                        original[i] = 0;
+					BlastLayer romBlast = RTC_ExternalRomPlugin.GetBlastLayer(original, corrupted);
 
-                    BlastLayer romBlast = RTC_ExternalRomPlugin.GetBlastLayer(original, corrupted);
+					if (romBlast != null && romBlast.Layer.Count > 0)
+						bl.Layer.AddRange(romBlast.Layer);
+				}
+			}
 
-                    if (romBlast != null && romBlast.Layer.Count > 0)
-                        bl.Layer.AddRange(romBlast.Layer);
-
-                }
-            }
-
-            sk.BlastLayer = bl;
-            RTC_Core.StartSound();
+			sk.BlastLayer = bl;
+			RTC_Core.StartSound();
 
 			return sk;
 		}
 
-        public static void AddCurrentStashkeyToStash(bool _stashAfterOperation = true)
-        {
-            isCorruptionApplied = (currentStashkey.BlastLayer != null && currentStashkey.BlastLayer.Layer.Count > 0);
+		public static void AddCurrentStashkeyToStash(bool _stashAfterOperation = true)
+		{
+			isCorruptionApplied = (currentStashkey.BlastLayer != null && currentStashkey.BlastLayer.Layer.Count > 0);
 
-            if (stashAfterOperation && _stashAfterOperation)
-            {
-                StashHistory.Add(currentStashkey);
-                RTC_Core.ghForm.RefreshStashHistory();
-            }
-        }
-    }
+			if (stashAfterOperation && _stashAfterOperation)
+			{
+				StashHistory.Add(currentStashkey);
+				RTC_Core.ghForm.RefreshStashHistory();
+			}
+		}
+	}
 }

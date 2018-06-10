@@ -1184,7 +1184,6 @@ namespace RTC
 			}
 		}
 
-
 		public override void Reroll()
 		{
 			if (Type == BlastByteType.SET)
@@ -1704,7 +1703,5 @@ namespace RTC
 
 			return bl;
 		}
-		
-	
 	}
 }

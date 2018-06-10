@@ -1,27 +1,25 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel;
 using System.Data;
 using System.Drawing;
+using System.IO;
 using System.Linq;
-using System.Text;
 using System.Windows.Forms;
 using System.Xml.Serialization;
-using System.IO;
 
 namespace RTC
 {
-    public partial class RTC_VmdAct_Form : Form
-    {
-        public RTC_VmdAct_Form()
-        {
-            InitializeComponent();
-        }
+	public partial class RTC_VmdAct_Form : Form
+	{
+		public RTC_VmdAct_Form()
+		{
+			InitializeComponent();
+		}
 
-		
 		public bool ActLoadedFromFile = false;
 		public bool FirstInit = false;
 		public bool _activeTableReady = false;
+
 		public bool ActiveTableReady
 		{
 			get
@@ -55,7 +53,6 @@ namespace RTC
 			}
 		}
 
-
 		public bool UseActiveTable = false;
 		public bool UseCorePrecision = false;
 		public List<string> ActiveTableDumps = null;
@@ -80,8 +77,8 @@ namespace RTC
 				_currentFilename = value;
 			}
 		}
+
 		public string _currentFilename = null;
-		
 
 		public void SaveActiveTable(bool IsQuickSave)
 		{
@@ -112,20 +109,19 @@ namespace RTC
 
 			ActiveTableObject act = new ActiveTableObject(ActiveTableGenerated);
 
-			using(FileStream FS = File.Open(currentFilename, FileMode.OpenOrCreate))
+			using (FileStream FS = File.Open(currentFilename, FileMode.OpenOrCreate))
 			{
 				XmlSerializer xs = new XmlSerializer(typeof(ActiveTableObject));
 				//bformatter.Serialize(FS, act);
 				xs.Serialize(FS, act);
 				FS.Close();
 			}
-			
+
 			GC.Collect();
 			GC.WaitForPendingFinalizers();
 
 			RTC_Core.StartSound();
 		}
-		
 
 		public void SetActiveTable(ActiveTableObject act)
 		{
@@ -134,7 +130,7 @@ namespace RTC
 			ActiveTableReady = true;
 			lbFreezeEngineActiveTableSize.Text = "Active table size: " + ActiveTableGenerated.Length.ToString();
 		}
-		
+
 		public byte[] GetDumpFromFile(string key)
 		{
 			return File.ReadAllBytes(RTC_Core.rtcDir + "\\MEMORYDUMPS\\" + key + ".dmp");
@@ -150,7 +146,6 @@ namespace RTC
 
 			if (rbActiveTableCapRandom.Checked)
 			{
-
 				for (int i = 0; i < CapSize; i++)
 				{
 					DuplicateFound = true;
@@ -168,7 +163,6 @@ namespace RTC
 							DuplicateFound = true;
 					}
 				}
-
 			}
 			else if (rbActiveTableCapBlockStart.Checked)
 			{
@@ -198,7 +192,7 @@ namespace RTC
 
 			List<long> newActiveTableActivity = new List<long>();
 
-		//	long domainSize = (long)RTC_Core.SendCommandToBizhawk(new RTC_Command(CommandType.REMOTE_DOMAIN_GETSIZE) { objectValue = cbSelectedMemoryDomain.SelectedItem.ToString()}, true);
+			//	long domainSize = (long)RTC_Core.SendCommandToBizhawk(new RTC_Command(CommandType.REMOTE_DOMAIN_GETSIZE) { objectValue = cbSelectedMemoryDomain.SelectedItem.ToString()}, true);
 
 			for (long i = 0; i < RTC_MemoryDomains.getInterface(cbSelectedMemoryDomain.SelectedItem.ToString()).Size; i++)
 			{
@@ -211,7 +205,6 @@ namespace RTC
 
 			for (int i = 0; i < ActiveTableDumps.Count; i++)
 			{
-
 				if (i == 0)
 				{
 					lastDump = GetDumpFromFile(ActiveTableDumps[i]);
@@ -225,7 +218,6 @@ namespace RTC
 					if (lastDump[j] != currentDump[j])
 						ActiveTableActivity[j]++;
 				}
-
 			}
 
 			GC.Collect();
@@ -243,7 +235,6 @@ namespace RTC
 			else
 				return 0;
 		}
-
 
 		private void btnActiveTableAddDump_Click(object sender, EventArgs e)
 		{
@@ -304,12 +295,9 @@ namespace RTC
 			GC.WaitForPendingFinalizers();
 		}
 
-
 		private void btnActiveTableLoad_Click(object sender, EventArgs e)
 		{
-
 			RTC_Core.StopSound();
-
 
 			try
 			{
@@ -328,7 +316,7 @@ namespace RTC
 					return;
 				}
 
-				using(FileStream FS = File.Open(currentFilename, FileMode.OpenOrCreate))
+				using (FileStream FS = File.Open(currentFilename, FileMode.OpenOrCreate))
 				{
 					XmlSerializer xs = new XmlSerializer(typeof(ActiveTableObject));
 					ActiveTableObject act = (ActiveTableObject)xs.Deserialize(FS);
@@ -354,7 +342,6 @@ namespace RTC
 
 		private void btnActiveTableSubstractFile_Click(object sender, EventArgs e)
 		{
-			
 			RTC_Core.StopSound();
 
 			string tempFilename;
@@ -388,7 +375,6 @@ namespace RTC
 				if (!substractiveActiveTable.Contains(item))
 					newActiveTable.Add(item);
 
-
 			ActiveTableGenerated = newActiveTable.ToArray();
 			lbFreezeEngineActiveTableSize.Text = "Active table size: " + ActiveTableGenerated.Length.ToString();
 
@@ -402,7 +388,6 @@ namespace RTC
 		{
 			try
 			{
-
 				RTC_Core.StopSound();
 
 				string tempFilename;
@@ -438,7 +423,6 @@ namespace RTC
 					if (additiveActiveTable.Contains(item))
 						newActiveTable.Add(item);
 
-
 				ActiveTableGenerated = newActiveTable.ToArray();
 				lbFreezeEngineActiveTableSize.Text = "Active table size: " + ActiveTableGenerated.Length.ToString();
 
@@ -455,14 +439,14 @@ namespace RTC
 
 		private void generateActiveTable()
 		{
-			try { 
+			try
+			{
 				if (!ComputeActiveTableActivity())
 					return; //exit generation if activity computation failed
 
 				List<long> newActiveTable = new List<long>();
 				double computedThreshold = (double)ActiveTableDumps.Count * (ActivityThreshold / 100d) + 1d;
 				bool ExcludeEverchanging = cbActiveTableExclude100percent.Checked;
-
 
 				for (int i = 0; i < ActiveTableActivity.Length; i++)
 				{
@@ -472,7 +456,6 @@ namespace RTC
 
 				long[] tempActiveTable = newActiveTable.ToArray();
 
-
 				if (cbActiveTableCapSize.Checked && nmActiveTableCapSize.Value < tempActiveTable.Length)
 					ActiveTableGenerated = CapActiveTable(tempActiveTable);
 				else
@@ -480,13 +463,11 @@ namespace RTC
 
 				lbFreezeEngineActiveTableSize.Text = "Active table size: " + ActiveTableGenerated.Length.ToString();
 
-
 				ActiveTableReady = true;
 				currentFilename = null;
 
 				GC.Collect();
 				GC.WaitForPendingFinalizers();
-
 			}
 			catch (Exception ex)
 			{
@@ -497,10 +478,12 @@ namespace RTC
 			}
 		}
 
-		private void generateVMD() {
+		private void generateVMD()
+		{
 			if (ActiveTableGenerated.Length == 0)
 				return;
-			try { 
+			try
+			{
 				var token = RTC_NetCore.HugeOperationStart("LAZY");
 				MemoryInterface mi = RTC_MemoryDomains.MemoryInterfaces[cbSelectedMemoryDomain.SelectedItem.ToString()];
 				VirtualMemoryDomain VMD = new VirtualMemoryDomain();
@@ -522,12 +505,12 @@ namespace RTC
 						if (safeaddress != lastaddress)
 						{
 							lastaddress = safeaddress;
-							for(int i = 0; i < mi.WordSize; i++)
+							for (int i = 0; i < mi.WordSize; i++)
 							{
 								proto.addSingles.Add(safeaddress + i);
 							}
 							//[] _addresses = { safeaddress, safeaddress + mi.WordSize };
-						//	proto.addRanges.Add(_addresses);
+							//	proto.addRanges.Add(_addresses);
 						}
 					}
 				}
@@ -564,10 +547,8 @@ namespace RTC
 			}
 		}
 
-
 		private void btnActiveTableGenerate_Click(object sender, EventArgs e)
 		{
-
 			if (cbSelectedMemoryDomain == null || RTC_MemoryDomains.getInterface(cbSelectedMemoryDomain.SelectedItem.ToString()).Size.ToString() == null)
 			{
 				MessageBox.Show("Select a valid domain before continuing!");
@@ -590,7 +571,6 @@ namespace RTC
 
 			btnActiveTableDumpsReset.Enabled = true;
 			btnActiveTableDumpsReset.Font = new Font("Segoe UI Semibold", 8);
-
 		}
 
 		private void nmActiveTableActivityThreshold_ValueChanged(object sender, EventArgs e)
@@ -600,23 +580,19 @@ namespace RTC
 
 			track_ActiveTableActivityThreshold.Value = Convert.ToInt32(nmActiveTableActivityThreshold.Value * 100);
 			ActivityThreshold = Convert.ToDouble(nmActiveTableActivityThreshold.Value);
-
 		}
 
 		private void track_ActiveTableActivityThreshold_Scroll(object sender, EventArgs e)
 		{
-
 			if (Convert.ToInt32(track_ActiveTableActivityThreshold.Value) == Convert.ToInt32(nmActiveTableActivityThreshold.Value * 100))
 				return;
 
 			nmActiveTableActivityThreshold.Value = Convert.ToDecimal((double)track_ActiveTableActivityThreshold.Value / 100);
 			ActivityThreshold = Convert.ToDouble(nmActiveTableActivityThreshold.Value);
-
 		}
 
 		private void cbAutoAddDump_CheckedChanged(object sender, EventArgs e)
 		{
-
 			if (ActiveTableAutodump != null)
 			{
 				ActiveTableAutodump.Stop();

@@ -1,42 +1,33 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
 using System.Diagnostics;
-using System.Drawing;
 using System.IO;
-using System.Linq;
-using System.Media;
-using System.Text;
 using System.Windows.Forms;
 
 namespace RTC
 {
 	public partial class RTC_ConnectionStatus_Form : Form
 	{
-
 		public RTC_ConnectionStatus_Form()
 		{
 			InitializeComponent();
-        }
+		}
 
 		private void RTC_ConnectionStatus_Form_Load(object sender, EventArgs e)
 		{
+			int crashSound = 0;
 
-            int crashSound = 0;
+			if (RTC_Params.IsParamSet("CRASHSOUND"))
+				crashSound = Convert.ToInt32(RTC_Params.ReadParam("CRASHSOUND"));
 
-            if (RTC_Params.IsParamSet("CRASHSOUND"))
-                crashSound = Convert.ToInt32(RTC_Params.ReadParam("CRASHSOUND"));
+			RTC_Core.sForm.cbCrashSoundEffect.SelectedIndex = crashSound;
 
-            RTC_Core.sForm.cbCrashSoundEffect.SelectedIndex = crashSound;
+			RTC_Core.sForm.cbNetCoreCommandTimeout.SelectedIndex = 0;
 
-            RTC_Core.sForm.cbNetCoreCommandTimeout.SelectedIndex = 0;
-
-            if(File.Exists(RTC_Core.bizhawkDir + "\\WGH\\WindowsGlitchHarvester.exe"))
-            {
-                lbWindowsGlitchHarvester.Visible = true;
-                pnWindowsGlitchHarvester.Visible = true;
-            }
+			if (File.Exists(RTC_Core.bizhawkDir + "\\WGH\\WindowsGlitchHarvester.exe"))
+			{
+				lbWindowsGlitchHarvester.Visible = true;
+				pnWindowsGlitchHarvester.Visible = true;
+			}
 		}
 
 		public void btnStartEmuhawkDetached_Click(object sender, EventArgs e)
@@ -49,16 +40,14 @@ namespace RTC
 			RTC.RTC_Core.coreForm.pbAutoKillSwitchTimeout.Value = RTC.RTC_Core.coreForm.pbAutoKillSwitchTimeout.Maximum;
 			RTC.RTC_RPC.Freeze = true;
 
-            RTC_NetCoreSettings.PlayCrashSound();
-
+			RTC_NetCoreSettings.PlayCrashSound();
 
 			Process.Start("RESTARTDETACHEDRTC.bat");
 		}
 
 		private void btnReturnToSession_Click(object sender, EventArgs e)
 		{
-            RTC_Core.coreForm.showPanelForm(RTC_Core.coreForm.previousForm);
-
+			RTC_Core.coreForm.showPanelForm(RTC_Core.coreForm.previousForm);
 		}
 
 		private void btnStopGameProtection_Click(object sender, EventArgs e)
@@ -82,6 +71,5 @@ namespace RTC
 		{
 			Process.Start("http://virus.run/");
 		}
-
-    }
+	}
 }

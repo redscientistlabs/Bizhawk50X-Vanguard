@@ -1,23 +1,17 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using BizHawk.Client.Common;
-using BizHawk.Emulation.Common;
 using System.Windows.Forms;
 
 namespace RTC
 {
-
-    public static class RTC_VectorEngine
-    {
-
+	public static class RTC_VectorEngine
+	{
 		public static string lastDomain = null;
 		public static byte[] lastValues = null;
 
 		public static string[] limiterList = null;
 		public static string[] valueList = null;
-	
+
 		#region constant lists
 
 		public static string[] listOfTinyConstants = new string[]
@@ -46,7 +40,6 @@ namespace RTC
 		{
 			"0000803f" // = 1
 		};
-
 
 		public static string[] constantPositiveTwo = new string[]
 		{
@@ -237,24 +230,21 @@ namespace RTC
 			"000080c7" // = -65536
 		};
 
-		#endregion
+		#endregion constant lists
 
 		public static BlastUnit GenerateUnit(string _domain, long _address)
-        {
+		{
+			// Randomly selects a memory operation according to the selected algorithm
 
-            // Randomly selects a memory operation according to the selected algorithm
+			//long safeAddress = _address - (_address % 8); //64-bit trunk
+			long safeAddress = _address - (_address % 4); //32-bit trunk
 
-            //long safeAddress = _address - (_address % 8); //64-bit trunk
-            long safeAddress = _address - (_address % 4); //32-bit trunk
-
-            MemoryDomainProxy mdp = RTC_MemoryDomains.getProxy(_domain, safeAddress);
+			MemoryDomainProxy mdp = RTC_MemoryDomains.getProxy(_domain, safeAddress);
 			if (mdp == null)
 				return null;
 
-
 			try
 			{
-
 				BlastByte bu = null;
 
 				lastValues = mdp.PeekBytes(safeAddress, safeAddress + 4);
@@ -265,7 +255,6 @@ namespace RTC
 					bu = new BlastByte(_domain, safeAddress, BlastByteType.VECTOR, getRandomConstant(valueList), mdp.BigEndian, true);
 
 				return bu;
-
 			}
 			catch (Exception ex)
 			{
@@ -275,13 +264,13 @@ namespace RTC
 								ex.ToString());
 				return null;
 			}
-        }
+		}
 
 		public static bool isConstant(byte[] bytes, string[] list, bool BigEndian)
 		{
-            if (list == null)
-                return true;
-			if(!BigEndian)
+			if (list == null)
+				return true;
+			if (!BigEndian)
 				return list.Contains(ByteArrayToString(bytes));
 			else
 			{

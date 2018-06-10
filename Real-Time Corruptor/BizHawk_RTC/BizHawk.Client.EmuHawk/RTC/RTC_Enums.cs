@@ -1,29 +1,24 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
-namespace RTC
+﻿namespace RTC
 {
-    public enum BlastRadius
-    {
-        SPREAD,
-        CHUNK,
-        BURST,
+	public enum BlastRadius
+	{
+		SPREAD,
+		CHUNK,
+		BURST,
 		NORMALIZED,
 		PROPORTIONAL,
 		EVEN,
 		NONE
-    }
+	}
 
-    public enum BlastByteType
-    {
-        SET,
-        ADD,
-        SUBSTRACT,
+	public enum BlastByteType
+	{
+		SET,
+		ADD,
+		SUBSTRACT,
 		VECTOR,
-        NONE
-    }
+		NONE
+	}
 
 	public enum BlastCheatType
 	{
@@ -31,27 +26,27 @@ namespace RTC
 		HELLGENIE
 	}
 
-    public enum BlastByteAlgo
-    {
-        RANDOM,
-        RANDOMTILT,
-        TILT,
+	public enum BlastByteAlgo
+	{
+		RANDOM,
+		RANDOMTILT,
+		TILT,
 		VECTOR,
 		NONE
-    }
+	}
 
-    public enum CorruptionEngine
-    {
-        NIGHTMARE,
-        HELLGENIE,
-        DISTORTION,
-        FREEZE,
+	public enum CorruptionEngine
+	{
+		NIGHTMARE,
+		HELLGENIE,
+		DISTORTION,
+		FREEZE,
 		PIPE,
 		VECTOR,
-        EXTERNALROM,
+		EXTERNALROM,
 		BLASTGENERATORENGINE,
-        NONE
-    }
+		NONE
+	}
 
 	public enum BGBlastByteModes
 	{
@@ -70,6 +65,7 @@ namespace RTC
 		BITWISE_ROTATE_LEFT,
 		BITWISE_ROTATE_RIGHT
 	}
+
 	public enum BGBlastCheatModes
 	{
 		SET,
@@ -88,6 +84,7 @@ namespace RTC
 		BITWISE_ROTATE_LEFT,
 		BITWISE_ROTATE_RIGHT
 	}
+
 	public enum BGBlastPipeModes
 	{
 		CHAINED,
@@ -95,5 +92,4 @@ namespace RTC
 		SOURCE_RANDOM,
 		DEST_RANDOM
 	}
-
 }

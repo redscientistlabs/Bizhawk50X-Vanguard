@@ -1,8 +1,5 @@
 ﻿using BizHawk.Client.EmuHawk;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 
 namespace RTC
 {
@@ -67,6 +64,7 @@ namespace RTC
 			isRendering = false;
 			RTC_Core.SendCommandToBizhawk(new RTC_Command(CommandType.REMOTE_RENDER_STOP));
 		}
+
 		public static void StopRender_NET()
 		{
 			isRendering = false;

@@ -1,49 +1,41 @@
 ﻿using BizHawk.Client.Common;
 using BizHawk.Client.EmuHawk;
 using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
 using System.Drawing;
-using System.Linq;
-using System.Text;
 using System.Windows.Forms;
 
 namespace RTC
 {
 	public partial class RTC_MultiPeerPopout_Form : Form
 	{
-
 		Size BizhawkMainformLastSize;
 		Point BizhawkMainformLastLocation;
-        public bool BizhawkMainformDispFixScaleInteger;
-        public bool BizhawkMainformDispFixAspectRatio;
+		public bool BizhawkMainformDispFixScaleInteger;
+		public bool BizhawkMainformDispFixAspectRatio;
 
-        public RTC_MultiPeerPopout_Form()
+		public RTC_MultiPeerPopout_Form()
 		{
 			InitializeComponent();
-        }
+		}
 
 		private void RTC_MultiPeerPopout_Form_Load(object sender, EventArgs e)
 		{
-
 		}
 
 		private void RTC_MultiPeerPopout_Form_FormClosing(object sender, FormClosingEventArgs e)
 		{
 			if (e.CloseReason != CloseReason.FormOwnerClosing)
 			{
-                if (RTC_Core.multiForm.btnSplitscreen.ForeColor == Color.Red)
-                    RTC_Core.multiForm.btnSplitscreen_Click(sender, e);
+				if (RTC_Core.multiForm.btnSplitscreen.ForeColor == Color.Red)
+					RTC_Core.multiForm.btnSplitscreen_Click(sender, e);
 
-                RTC_Core.multiForm.btnPopoutPeerGameScreen.Visible = true;
-                RTC_Core.multiForm.pnPeerRedBar.Visible = true;
-                RTC_Core.multiForm.pbPeerScreen.Visible = true;
+				RTC_Core.multiForm.btnPopoutPeerGameScreen.Visible = true;
+				RTC_Core.multiForm.pnPeerRedBar.Visible = true;
+				RTC_Core.multiForm.pbPeerScreen.Visible = true;
 
-                e.Cancel = true;
+				e.Cancel = true;
 				this.Hide();
 			}
-
 		}
 
 		private void RTC_MultiPeerPopout_Form_MouseDoubleClick(object sender, MouseEventArgs e)
@@ -63,17 +55,17 @@ namespace RTC
 
 		public void SetSplitscreen(bool state)
 		{
-			if(state)
+			if (state)
 			{
 				this.Size = new Size(554, 297);
 				this.pbPeerScreen.Size = new Size(256, 224);
 
 				BizhawkMainformLastSize = GlobalWin.MainForm.Size;
 				BizhawkMainformLastLocation = GlobalWin.MainForm.Location;
-                BizhawkMainformDispFixAspectRatio = Global.Config.DispFixAspectRatio;
-                BizhawkMainformDispFixScaleInteger = Global.Config.DispFixScaleInteger;
+				BizhawkMainformDispFixAspectRatio = Global.Config.DispFixAspectRatio;
+				BizhawkMainformDispFixScaleInteger = Global.Config.DispFixScaleInteger;
 
-                GlobalWin.MainForm.Hide();
+				GlobalWin.MainForm.Hide();
 				GlobalWin.MainForm.MainformMenu.Visible = false;
 				GlobalWin.MainForm.MainStatusBar.Visible = false;
 				GlobalWin.MainForm.FormBorderStyle = FormBorderStyle.None;
@@ -93,17 +85,14 @@ namespace RTC
 
 				this.RTC_MultiPeerPopout_Form_Resize(null, null);
 				this.pbPeerScreen.Location = new Point(12 + 256, 19);
-
 			}
 			else
 			{
-
 				GlobalWin.MainForm.FormBorderStyle = FormBorderStyle.Sizable;
 
 				this.Controls.Remove(GlobalWin.MainForm);
 				GlobalWin.MainForm.Anchor = ((AnchorStyles)AnchorStyles.Top | AnchorStyles.Left);
 				GlobalWin.MainForm.TopLevel = true;
-				
 
 				GlobalWin.MainForm.Size = BizhawkMainformLastSize;
 				GlobalWin.MainForm.Location = BizhawkMainformLastLocation;
@@ -112,10 +101,10 @@ namespace RTC
 
 				GlobalWin.MainForm.Show();
 
-                Global.Config.DispFixAspectRatio = BizhawkMainformDispFixAspectRatio;
-                Global.Config.DispFixScaleInteger = BizhawkMainformDispFixScaleInteger;
+				Global.Config.DispFixAspectRatio = BizhawkMainformDispFixAspectRatio;
+				Global.Config.DispFixScaleInteger = BizhawkMainformDispFixScaleInteger;
 
-                this.pbPeerScreen.Size = new Size(512, 448);
+				this.pbPeerScreen.Size = new Size(512, 448);
 				RTC_Hooks.BIZHAWK_ALLOWED_DOUBLECLICK_FULLSCREEN = true;
 
 				this.pbPeerScreen.Location = new Point(12, 19);
@@ -160,12 +149,9 @@ namespace RTC
 
 				GlobalWin.MainForm.Location = new Point(10, 20);
 				pbPeerScreen.Location = new Point(10 + Convert.ToInt32(Width), 20);
-
 			}
 
 			this.Size = new Size(FullWidth + 38, Convert.ToInt32(Height) + 72);
-
-
 		}
 	}
 }

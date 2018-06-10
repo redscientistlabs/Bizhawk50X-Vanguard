@@ -1,10 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
 using System.Drawing;
-using System.Linq;
-using System.Text;
 using System.Windows.Forms;
 
 namespace RTC
@@ -21,17 +17,20 @@ namespace RTC
 		public RTC_StockpileBlastBoard_Form()
 		{
 			InitializeComponent();
-        }
+		}
 
 		private void RTC_StockpileBoard_Load(object sender, EventArgs e) => RefreshButtons();
+
 		private void RTC_StockpileBoard_Shown(object sender, EventArgs e) => RefreshButtons();
+
 		private void RTC_StockpileBoard_ResizeEnd(object sender, EventArgs e) => RefreshButtons();
+
 		public void RefreshButtons()
 		{
 			if (!this.Visible)
 				return;
 
-			foreach(Button btn in allButtons)
+			foreach (Button btn in allButtons)
 				this.Controls.Remove(btn);
 
 			allButtons.Clear();
@@ -44,7 +43,7 @@ namespace RTC
 				lbEmptyStockpile.Visible = false;
 
 			double i = 0;
-			foreach(DataGridViewRow dataRow in RTC_Core.ghForm.dgvStockpile.Rows)
+			foreach (DataGridViewRow dataRow in RTC_Core.ghForm.dgvStockpile.Rows)
 			{
 				StashKey sk = (StashKey)dataRow.Cells["Item"].Value;
 
@@ -63,9 +62,7 @@ namespace RTC
 				allButtons.Add(btn);
 
 				i++;
-				
 			}
-
 		}
 
 		public double calculateMaxColumns()
@@ -80,7 +77,6 @@ namespace RTC
 			RTC_Command cmd = new RTC_Command(CommandType.BLAST);
 			cmd.blastlayer = sk.BlastLayer;
 			RTC_Core.Multiplayer.SendCommand(cmd, false, true);
-
 		}
 
 		private void RTC_StockpileBoard_FormClosing(object sender, FormClosingEventArgs e)
@@ -90,7 +86,6 @@ namespace RTC
 				e.Cancel = true;
 				this.Hide();
 			}
-
 		}
 
 		private void RTC_StockpileBoard_Resize(object sender, EventArgs e)

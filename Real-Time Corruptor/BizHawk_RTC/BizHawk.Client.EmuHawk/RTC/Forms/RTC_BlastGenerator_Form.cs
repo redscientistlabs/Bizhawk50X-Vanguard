@@ -1,13 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel;
 using System.Data;
-using System.Drawing;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
-using System.Globalization;
 
 namespace RTC
 {
@@ -115,15 +110,14 @@ namespace RTC
 				(dgvBlastGenerator.Rows[lastrow].Cells["dgvParam1"] as DataGridViewNumericUpDownCell).Value = 0;
 				(dgvBlastGenerator.Rows[lastrow].Cells["dgvParam2"] as DataGridViewNumericUpDownCell).Value = 0;
 
-
 				PopulateDomainCombobox(dgvBlastGenerator.Rows[lastrow]);
 				PopulateModeCombobox(dgvBlastGenerator.Rows[lastrow]);
 				// (dgvBlastGenerator.Rows[lastrow].Cells["dgvMode"] as DataGridViewComboBoxCell).Value = (dgvBlastGenerator.Rows[0].Cells["dgvMode"] as DataGridViewComboBoxCell).Items[0];
 
 				//For some reason, setting the minimum on the DGV to 1 doesn't change the fact it inserts with a count of 0
 				(dgvBlastGenerator.Rows[lastrow].Cells["dgvStepSize"]).Value = 1;
-
-			}catch(Exception ex)
+			}
+			catch (Exception ex)
 			{
 				throw new Exception(
 							"An error occurred in RTC while adding a new row.\n\n" +
@@ -131,57 +125,55 @@ namespace RTC
 							ex.ToString()
 							);
 			}
-
 		}
 
 		private bool PopulateDomainCombobox(DataGridViewRow row)
 		{
 			try
 			{
+				DataGridViewComboBoxCell _cell = row.Cells["dgvDomain"] as DataGridViewComboBoxCell;
 
-			DataGridViewComboBoxCell _cell = row.Cells["dgvDomain"] as DataGridViewComboBoxCell;
+				int temp = _cell.Items.Count;
+				string currentValue = "";
+				if (_cell.Value != null)
+					currentValue = _cell.Value.ToString();
 
-			int temp = _cell.Items.Count;
-			string currentValue = "";
-			if (_cell.Value != null)
-				currentValue = _cell.Value.ToString();
+				//So this combobox is annoying. You need to have something selected or else the dgv throws up
+				//The (bad) solution I'm using is to insert a row at the beginning as a holdover until it's re-populated, then removing that row.
 
-			//So this combobox is annoying. You need to have something selected or else the dgv throws up
-			//The (bad) solution I'm using is to insert a row at the beginning as a holdover until it's re-populated, then removing that row.
+				_cell.Items.Insert(0, "NONE");
+				_cell.Value = _cell.Items[0];
 
-			_cell.Items.Insert(0, "NONE");
-			_cell.Value = _cell.Items[0];
+				for (int i = temp; i > 0; i--)
+					_cell.Items.RemoveAt(1);
 
-			for (int i = temp; i > 0; i--)
-				_cell.Items.RemoveAt(1);
+				foreach (string domain in domains)
+				{
+					_cell.Items.Add(domain);
+				}
 
-			foreach (string domain in domains)
-			{
-				_cell.Items.Add(domain);
+				if (_cell.Items.Contains(currentValue))
+					_cell.Value = currentValue;
+				else
+					_cell.Value = _cell.Items[1];
+
+				_cell.Items.Remove("NONE");
+
+				UpdateAddressRange(row);
+
+				return true;
 			}
-
-			if (_cell.Items.Contains(currentValue))
-				_cell.Value = currentValue;
-			else
-				_cell.Value = _cell.Items[1];
-
-			_cell.Items.Remove("NONE");
-
-			UpdateAddressRange(row);
-
-			return true;
-			}catch(Exception ex)
+			catch (Exception ex)
 			{
 				throw;
 			}
 		}
 
-
 		private void UpdateAddressRange(DataGridViewRow row)
 		{
 			try
 			{
-				if(row.Cells["dgvDomain"].Value.ToString() == "NONE")
+				if (row.Cells["dgvDomain"].Value.ToString() == "NONE")
 					return;
 
 				long size = domainToMDPDico[row.Cells["dgvDomain"].Value.ToString()].Size;
@@ -189,7 +181,7 @@ namespace RTC
 				(row.Cells["dgvStartAddress"] as DataGridViewNumericUpDownCell).Maximum = size;
 				(row.Cells["dgvEndAddress"] as DataGridViewNumericUpDownCell).Maximum = size;
 			}
-			catch(Exception ex)
+			catch (Exception ex)
 			{
 				throw;
 			}
@@ -211,8 +203,7 @@ namespace RTC
 			_cell.Items.Insert(0, "NONE");
 			_cell.Value = _cell.Items[0];
 
-
-			for (int i = temp; i > 0 ; i--)
+			for (int i = temp; i > 0; i--)
 				_cell.Items.RemoveAt(1);
 
 			switch (row.Cells["dgvType"].Value.ToString())
@@ -242,7 +233,6 @@ namespace RTC
 				_cell.Value = _cell.Items[1];
 
 			_cell.Items.Remove("NONE");
-
 		}
 
 		private void btnJustCorrupt_Click(object sender, EventArgs e)
@@ -277,7 +267,7 @@ namespace RTC
 
 		private void btnSendTo_Click(object sender, EventArgs e)
 		{
-			if(sk == null)
+			if (sk == null)
 			{
 				StashKey psk = RTC_StockpileManager.getCurrentSavestateStashkey();
 				if (psk == null)
@@ -295,7 +285,7 @@ namespace RTC
 
 			if (openedFromBlastEditor)
 			{
-				if(RTC_Core.beForm != null)
+				if (RTC_Core.beForm != null)
 				{
 					RTC_Core.beForm.ImportBlastLayer(newSk.BlastLayer);
 				}
@@ -309,12 +299,11 @@ namespace RTC
 
 				RTC_Core.ghForm.DontLoadSelectedStash = true;
 				RTC_Core.ghForm.lbStashHistory.SelectedIndex = RTC_Core.ghForm.lbStashHistory.Items.Count - 1;
-			}		
+			}
 
 			GC.Collect();
 			GC.WaitForPendingFinalizers();
 		}
-
 
 		private void cbUseHex_CheckedChanged(object sender, EventArgs e)
 		{
@@ -331,7 +320,6 @@ namespace RTC
 					_column.Hexadecimal = cbUseHex.Checked;
 				}
 			}
-
 		}
 
 		private void dgvBlastGenerator_CellValueChanged(object sender, DataGridViewCellEventArgs e)
@@ -419,19 +407,18 @@ namespace RTC
 
 		private BlastGeneratorProto CreateProtoFromRow(DataGridViewRow row)
 		{
-				string domain = row.Cells["dgvDomain"].Value.ToString();
-				string type = row.Cells["dgvType"].Value.ToString();
-				string mode = row.Cells["dgvMode"].Value.ToString();
-				int precision = GetPrecisionSizeFromName(row.Cells["dgvPrecision"].Value.ToString());
-				int stepSize = Convert.ToInt32(row.Cells["dgvStepSize"].Value);
-				long startAddress = Convert.ToInt64(row.Cells["dgvStartAddress"].Value);
-				long endAddress = Convert.ToInt64(row.Cells["dgvEndAddress"].Value);
-				long param1 = Convert.ToInt64(row.Cells["dgvParam1"].Value);
-				long param2 = Convert.ToInt64(row.Cells["dgvParam2"].Value);
+			string domain = row.Cells["dgvDomain"].Value.ToString();
+			string type = row.Cells["dgvType"].Value.ToString();
+			string mode = row.Cells["dgvMode"].Value.ToString();
+			int precision = GetPrecisionSizeFromName(row.Cells["dgvPrecision"].Value.ToString());
+			int stepSize = Convert.ToInt32(row.Cells["dgvStepSize"].Value);
+			long startAddress = Convert.ToInt64(row.Cells["dgvStartAddress"].Value);
+			long endAddress = Convert.ToInt64(row.Cells["dgvEndAddress"].Value);
+			long param1 = Convert.ToInt64(row.Cells["dgvParam1"].Value);
+			long param2 = Convert.ToInt64(row.Cells["dgvParam2"].Value);
 
-				return new BlastGeneratorProto(type, domain, mode, precision, stepSize, startAddress, endAddress, param1, param2);
+			return new BlastGeneratorProto(type, domain, mode, precision, stepSize, startAddress, endAddress, param1, param2);
 		}
-
 
 		private string GetPrecisionNameFromSize(int precision)
 		{
@@ -469,7 +456,6 @@ namespace RTC
 			}
 		}
 
-
 		private void btnAddRow_Click(object sender, EventArgs e)
 		{
 			AddDefaultRow();
@@ -479,35 +465,41 @@ namespace RTC
 		{
 			nudgeParams("dgvStartAddress", updownNudgeStartAddress.Value);
 		}
+
 		private void btnNudgeStartAddressDown_Click(object sender, EventArgs e)
 		{
 			nudgeParams("dgvStartAddress", updownNudgeStartAddress.Value, true);
 		}
+
 		private void btnNudgeEndAddressUp_Click(object sender, EventArgs e)
 		{
 			nudgeParams("dgvEndAddress", updownNudgeEndAddress.Value);
 		}
+
 		private void btnNudgeEndAddressDown_Click(object sender, EventArgs e)
 		{
 			nudgeParams("dgvEndAddress", updownNudgeEndAddress.Value, true);
 		}
+
 		private void btnNudgeParam1Up_Click(object sender, EventArgs e)
 		{
 			nudgeParams("dgvParam1", updownNudgeParam1.Value);
 		}
+
 		private void btnNudgeParam1Down_Click(object sender, EventArgs e)
 		{
 			nudgeParams("dgvParam1", updownNudgeParam1.Value, true);
 		}
+
 		private void btnNudgeParam2Up_Click(object sender, EventArgs e)
 		{
 			nudgeParams("dgvParam2", updownNudgeParam2.Value);
 		}
+
 		private void btnNudgeParam2Down_Click(object sender, EventArgs e)
 		{
 			nudgeParams("dgvParam2", updownNudgeParam2.Value, true);
 		}
-
 
 		private void nudgeParams(string column, decimal amount, bool shiftDown = false)
 		{
@@ -522,10 +514,8 @@ namespace RTC
 				}
 			else
 			{
-
 				foreach (DataGridViewRow selected in dgvBlastGenerator.SelectedRows)
 				{
-
 					decimal max = (selected.Cells[column] as DataGridViewNumericUpDownCell).Maximum;
 
 					if ((Convert.ToDecimal(selected.Cells[column].Value) - amount) <= max)
@@ -549,6 +539,7 @@ namespace RTC
 				btnHideSidebar.Text = "▶";
 			}
 		}
+
 		private void RefreshDomains()
 		{
 			try
@@ -562,7 +553,8 @@ namespace RTC
 
 				foreach (DataGridViewRow row in dgvBlastGenerator.Rows)
 					PopulateDomainCombobox(row);
-			}catch(Exception ex)
+			}
+			catch (Exception ex)
 			{
 				throw new Exception(
 							"An error occurred in RTC while refreshing the domains\n" +
@@ -577,7 +569,7 @@ namespace RTC
 		{
 			RefreshDomains();
 		}
-		
+
 		private void saveDataGridView(DataGridView dgv)
 		{
 			var dt = new DataTable();
@@ -652,17 +644,14 @@ namespace RTC
 						PopulateModeCombobox(dgv.Rows[lastrow]);
 						(dgv.Rows[lastrow].Cells["dgvDomain"] as DataGridViewComboBoxCell).Items.Add(row.ItemArray[(int)BlastGeneratorColumn.dgvDomain]);
 
-						for(int i = 0; i < dgv.Rows[lastrow].Cells.Count; i++)
+						for (int i = 0; i < dgv.Rows[lastrow].Cells.Count; i++)
 						{
 							dgv.Rows[lastrow].Cells[i].Value = row.ItemArray[i];
 						}
 						//Override these two
 						dgv[(int)BlastGeneratorColumn.dgvBlastLayerReference, lastrow].Value = null;
 						dgv[(int)BlastGeneratorColumn.dgvRowDirty, lastrow].Value = true;
-
 					}
-						
-
 				}
 				catch (Exception ex)
 				{

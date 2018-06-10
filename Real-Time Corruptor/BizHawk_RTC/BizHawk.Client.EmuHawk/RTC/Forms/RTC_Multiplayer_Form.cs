@@ -1,27 +1,16 @@
-﻿using BizHawk.Client.Common;
-using BizHawk.Client.EmuHawk;
+﻿using BizHawk.Client.EmuHawk;
 using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
 using System.Drawing;
 using System.Drawing.Imaging;
 using System.IO;
-using System.Linq;
 using System.Net;
-using System.Net.Sockets;
-using System.Runtime.Serialization.Formatters.Binary;
-using System.Text;
-using System.Threading;
 using System.Windows.Forms;
 
 namespace RTC
 {
 	public partial class RTC_Multiplayer_Form : Form
 	{
-		
 		System.Windows.Forms.Timer streamTimer = null;
-
 
 		public int GameOfSwapCounter
 		{
@@ -39,6 +28,7 @@ namespace RTC
 					UpdateRedBar(0);
 			}
 		}
+
 		int _GameOfSwapCounter = 0;
 		bool GameOfSwapHost = false;
 		public System.Windows.Forms.Timer GameOfSwapTimer = null;
@@ -48,7 +38,7 @@ namespace RTC
 		public RTC_Multiplayer_Form()
 		{
 			InitializeComponent();
-        }
+		}
 
 		private void RTC_Multi_Form_Load(object sender, EventArgs e)
 		{
@@ -91,7 +81,6 @@ namespace RTC
 			};
 
 			lbCheekyHeadline.Text = cheekyHeadlines[RTC_Core.RND.Next(cheekyHeadlines.Length)];
-
 		}
 
 		private void Multiplayer_ServerConnectionLost(object sender, EventArgs e)
@@ -125,7 +114,7 @@ namespace RTC
 
 			btnStartServer.Text = "Stop Server";
 
-			if(!lbServerStatus.Text.Contains("dropped"))
+			if (!lbServerStatus.Text.Contains("dropped"))
 				lbServerStatus.Text = "Server Status : the thing started or something";
 		}
 
@@ -168,44 +157,32 @@ namespace RTC
 			lbClientStatus.Text = "Client Status : Trying to spot the server from afar";
 		}
 
-
 		private void btnStartClient_Click(object sender, EventArgs e)
 		{
-			if(btnStartClient.Text == "Disconnect" || btnStartClient.Text == "Reconnecting" || btnStartClient.Text == "Connecting")
+			if (btnStartClient.Text == "Disconnect" || btnStartClient.Text == "Reconnecting" || btnStartClient.Text == "Connecting")
 			{
 				RTC_Core.Multiplayer.StopNetworking();
 				return;
 			}
 
 			RTC_Core.Multiplayer.StartNetworking(NetworkSide.CLIENT);
-
 		}
-
-
-
-
-
-
-
 
 		private void btnStartServer_Click(object sender, EventArgs e)
 		{
-			if(btnStartServer.Text == "Stop Server")
+			if (btnStartServer.Text == "Stop Server")
 			{
 				RTC_Core.Multiplayer.StopNetworking();
 				return;
 			}
 
 			RTC_Core.Multiplayer.StartNetworking(NetworkSide.SERVER);
-
 		}
-
 
 		private void btnPushBlastToServer_Click(object sender, EventArgs e)
 		{
 			RTC_Core.Multiplayer.SendBlastlayer();
 		}
-
 
 		private void tbShowIp_TextChanged(object sender, EventArgs e)
 		{
@@ -224,14 +201,11 @@ namespace RTC
 
 		private void btnPullStateFromServer_Click(object sender, EventArgs e)
 		{
-
-
 			RTC_Core.Multiplayer.SendCommand(new RTC_Command(CommandType.PULLSTATE), false);
 		}
 
 		private void btnPushStateToServer_Click(object sender, EventArgs e)
 		{
-
 			RTC_Core.Multiplayer.SendCommand(new RTC_Command(CommandType.PULLSTATE), true);
 		}
 
@@ -248,11 +222,9 @@ namespace RTC
 			RTC_Core.Multiplayer.SwapGameState();
 		}
 
-
-
 		private void btnPushScreenToPear_Click(object sender, EventArgs e)
 		{
-			RTC_Core.Multiplayer.SendCommand(new RTC_Command(CommandType.PULLSCREEN) , true);
+			RTC_Core.Multiplayer.SendCommand(new RTC_Command(CommandType.PULLSCREEN), true);
 		}
 
 		private void btnPullScreenToPear_Click(object sender, EventArgs e)
@@ -262,9 +234,7 @@ namespace RTC
 
 		public void cbStreamScreenToPeer_CheckedChanged(object sender, EventArgs e)
 		{
-			
-
-			if(cbStreamScreenToPeer.Checked)
+			if (cbStreamScreenToPeer.Checked)
 			{
 				streamTimer = new System.Windows.Forms.Timer();
 				streamTimer.Interval = (1000 / fps);
@@ -280,22 +250,19 @@ namespace RTC
 
 		private void StreamTimer_Tick(object sender, EventArgs e)
 		{
-			if(GlobalWin.MainForm.Visible)
+			if (GlobalWin.MainForm.Visible)
 			{
-
 				RTC_Command cmdBack = new RTC_Command(CommandType.PUSHSCREEN);
 
 				Bitmap bmp = GlobalWin.MainForm.MakeScreenshotImage().ToSysdrawingBitmap();
 
-				if(cbCompressStream.Checked)
-				cmdBack.screen = SaveJPG100(bmp, 60);
+				if (cbCompressStream.Checked)
+					cmdBack.screen = SaveJPG100(bmp, 60);
 				else
-				cmdBack.screen = bmp;
+					cmdBack.screen = bmp;
 				RTC_Core.Multiplayer.PeerCommandQueue.AddLast(cmdBack);
-
 			}
 		}
-
 
 		public static void SaveJPG100(Bitmap bmp, Stream stream)
 		{
@@ -329,12 +296,11 @@ namespace RTC
 			return null;
 		}
 
-
 		public void SetStreamingFPS(int _fps)
 		{
 			fps = _fps;
 
-			if(streamTimer != null)
+			if (streamTimer != null)
 			{
 				streamTimer.Interval = (1000 / fps);
 			}
@@ -362,7 +328,7 @@ namespace RTC
 
 		private void btnGameOfSwap_Click(object sender, EventArgs e)
 		{
-			if(btnGameOfSwap.ForeColor == Color.Red)
+			if (btnGameOfSwap.ForeColor == Color.Red)
 			{
 				StopGameOfSwap();
 				return;
@@ -372,13 +338,11 @@ namespace RTC
 				return;
 
 			StartGameOfSwap(true);
-
-			
 		}
 
 		public void StopGameOfSwap(bool fromStopCommand = false)
 		{
-			if(GameOfSwapTimer != null)
+			if (GameOfSwapTimer != null)
 			{
 				GameOfSwapTimer.Stop();
 				GameOfSwapTimer = null;
@@ -408,7 +372,6 @@ namespace RTC
 				cbStreamScreenToPeer.Checked = true;
 
 			btnGameOfSwap.ForeColor = Color.Red;
-
 		}
 
 		private void GameOfSwapTimer_Tick(object sender, EventArgs e)
@@ -417,7 +380,6 @@ namespace RTC
 
 			if (GameOfSwapCounter == 0 && GameOfSwapHost)
 				RTC_Core.Multiplayer.SwapGameState();
-
 		}
 
 		private void btnPopoutPeerGameScreen_Click(object sender, EventArgs e)
@@ -427,13 +389,12 @@ namespace RTC
 			pbPeerScreen.Visible = false;
 			pnPeerRedBar.Visible = false;
 			btnPopoutPeerGameScreen.Visible = false;
-
 		}
 
 		public void UpdateRedBar(int sizeX)
 		{
-				pnPeerRedBar.Size = new Size(sizeX, 3);
-				RTC_Core.multipeerpopoutForm.pnPeerRedBar.Size = new Size(Convert.ToInt32((Convert.ToDouble(sizeX) / 256f) * Convert.ToDouble(RTC_Core.multipeerpopoutForm.pnPlacer.Size.Width)), 5);
+			pnPeerRedBar.Size = new Size(sizeX, 3);
+			RTC_Core.multipeerpopoutForm.pnPeerRedBar.Size = new Size(Convert.ToInt32((Convert.ToDouble(sizeX) / 256f) * Convert.ToDouble(RTC_Core.multipeerpopoutForm.pnPlacer.Size.Width)), 5);
 		}
 
 		private void RTC_Multi_Form_FormClosing(object sender, FormClosingEventArgs e)
@@ -484,7 +445,6 @@ namespace RTC
 			RTC_Core.Multiplayer.SendCommand(new RTC_Command(CommandType.REQUESTSTREAM), false);
 			cbStreamScreenToPeer.Checked = true;
 			btnSplitscreen.ForeColor = Color.Red;
-
 		}
 
 		private void btnBlastBoard_Click(object sender, EventArgs e)
@@ -525,5 +485,4 @@ namespace RTC
 			Type = _Type;
 		}
 	}
-
 }

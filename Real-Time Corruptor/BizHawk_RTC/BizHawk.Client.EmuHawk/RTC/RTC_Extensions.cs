@@ -1,21 +1,17 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
+using System.ComponentModel;
+using System.Diagnostics;
 using System.Drawing;
+using System.Globalization;
 using System.IO;
 using System.Linq;
+using System.Reflection;
 using System.Runtime.Serialization;
 using System.Runtime.Serialization.Formatters.Binary;
 using System.Text;
 using System.Windows.Forms;
-using System.Diagnostics;
-using System.Globalization;
-using System.ComponentModel;
-using System.Reflection;
-using System.Drawing.Design;
-using System.Collections;
-using System.Runtime.InteropServices;
-using System.Windows.Forms.Design;
-
 
 namespace RTC
 {
@@ -62,16 +58,17 @@ namespace RTC
 			value = textBox.Text;
 			return dialogResult;
 		}
+
 		public static DialogResult getComboInputBox(string title, string promptText, string[] options, ref string value)
 		{
 			Form form = new Form();
 			Label label = new Label();
 			Button buttonOk = new Button();
 			Button buttonCancel = new Button();
-			
+
 			ComboBox comboBox = new ComboBox();
 
-			foreach(string option in options)
+			foreach (string option in options)
 			{
 				comboBox.Items.Add(option);
 			}
@@ -109,6 +106,7 @@ namespace RTC
 			value = comboBox.SelectedItem.ToString();
 			return dialogResult;
 		}
+
 		public static DialogResult getInputBox(string title, string promptText, ref decimal value, bool hex = false, UInt64 maximum = UInt64.MaxValue)
 		{
 			Form form = new Form();
@@ -155,6 +153,7 @@ namespace RTC
 		}
 
 		#region ARRAY EXTENSIONS
+
 		public static T[] SubArray<T>(this T[] data, long index, long length)
 		{
 			T[] result = new T[length];
@@ -186,9 +185,10 @@ namespace RTC
 			return result;
 		}
 
-		#endregion
+		#endregion ARRAY EXTENSIONS
 
 		#region STRING EXTENSIONS
+
 		public static string ToBase64(this string str)
 		{
 			var bytes = Encoding.UTF8.GetBytes(str);
@@ -207,9 +207,11 @@ namespace RTC
 			System.Buffer.BlockCopy(str.ToCharArray(), 0, bytes, 0, bytes.Length);
 			return bytes;
 		}
-		#endregion
+
+		#endregion STRING EXTENSIONS
 
 		#region BYTE ARRAY EXTENSIONS
+
 		//Thanks to JamieSee https://stackoverflow.com/questions/8440938/c-sharp-left-shift-an-entire-byte-array
 		/// <summary>
 		/// Rotates the bits in an array of bytes to the left.
@@ -342,7 +344,7 @@ namespace RTC
 
 			return 0;
 		}
-		
+
 		public static byte[] addValueToByteArray(byte[] originalValue, decimal addValue, bool isInputBigEndian)
 		{
 			if (isInputBigEndian)
@@ -376,7 +378,6 @@ namespace RTC
 
 						byte[] newInt16Array = BitConverter.GetBytes(int16Value);
 
-
 						if (isInputBigEndian)
 							Array.Reverse(newInt16Array);
 
@@ -391,7 +392,6 @@ namespace RTC
 							unchecked { int32Value += addInt32Value; }
 						else
 							unchecked { int32Value -= addInt32Value; }
-
 
 						byte[] newInt32Array = BitConverter.GetBytes(int32Value);
 
@@ -412,13 +412,11 @@ namespace RTC
 
 						byte[] newInt64Array = BitConverter.GetBytes(int64Value);
 
-
 						if (isInputBigEndian)
 							Array.Reverse(newInt64Array);
 
 						return newInt64Array;
 					}
-
 			}
 			return null;
 		}
@@ -427,7 +425,6 @@ namespace RTC
 		{
 			return (x % m + m) % m;
 		}
-
 
 		public static byte[] getByteArrayValue(int precision, decimal newValue, bool isInputBigEndian)
 		{
@@ -453,7 +450,6 @@ namespace RTC
 
 			return null;
 		}
-
 
 		public static byte[] getByteArrayValue(int precision, long newValue, bool isInputBigEndian)
 		{
@@ -482,9 +478,10 @@ namespace RTC
 
 			for (int i = 0; i < arrayClone.Length; i++)
 				array[i] = arrayClone[(arrayClone.Length - 1) - i];
-		///	return array;
+			///	return array;
 		}
-		#endregion
+
+		#endregion BYTE ARRAY EXTENSIONS
 
 		#region BITARRAY EXTENSIONS
 
@@ -511,8 +508,8 @@ namespace RTC
 
 			return bytes;
 		}
-		#endregion
 
+		#endregion BITARRAY EXTENSIONS
 
 		#region COLOR EXTENSIONS
 
@@ -520,7 +517,7 @@ namespace RTC
 		/// Creates color with corrected brightness.
 		/// </summary>
 		/// <param name="color">Color to correct.</param>
-		/// <param name="correctionFactor">The brightness correction factor. Must be between -1 and 1. 
+		/// <param name="correctionFactor">The brightness correction factor. Must be between -1 and 1.
 		/// Negative values produce darker colors.</param>
 		/// <returns>
 		/// Corrected <see cref="Color"/> structure.
@@ -548,7 +545,7 @@ namespace RTC
 			return Color.FromArgb(color.A, (int)red, (int)green, (int)blue);
 		}
 
-		#endregion
+		#endregion COLOR EXTENSIONS
 
 		#region CONTROL EXTENSIONS
 
@@ -568,7 +565,7 @@ namespace RTC
 			return allControls;
 		}
 
-		#endregion
+		#endregion CONTROL EXTENSIONS
 
 		#region PATH EXTENSIONS
 
@@ -604,12 +601,12 @@ namespace RTC
 				return longFilenamePath;
 		}
 
-		#endregion
+		#endregion PATH EXTENSIONS
 	}
 
 	// Used code from this https://github.com/wasabii/Cogito/blob/master/Cogito.Core/RandomExtensions.cs
 	// MIT Licensed. thank you very much.
-	static class RandomExtensions
+	internal static class RandomExtensions
 	{
 		public static long RandomLong(this Random rnd)
 		{
@@ -637,13 +634,13 @@ namespace RTC
 			return rnd.RandomLong(0, max);
 		}
 
-		static bool IsModuloBiased(long randomOffset, long numbersInRange)
+		private static bool IsModuloBiased(long randomOffset, long numbersInRange)
 		{
 			long greatestCompleteRange = numbersInRange * (long.MaxValue / numbersInRange);
 			return randomOffset > greatestCompleteRange;
 		}
 
-		static long PositiveModuloOrZero(long dividend, long divisor)
+		private static long PositiveModuloOrZero(long dividend, long divisor)
 		{
 			long mod;
 			Math.DivRem(dividend, divisor, out mod);
@@ -652,7 +649,7 @@ namespace RTC
 			return mod;
 		}
 
-		static void EnsureMinLEQMax(ref long min, ref long max)
+		private static void EnsureMinLEQMax(ref long min, ref long max)
 		{
 			if (min <= max)
 				return;
@@ -698,7 +695,6 @@ namespace RTC
 			}
 		}
 	}
-
 
 	/// <summary>
 	/// Reference Article https://msdn.microsoft.com/en-us/library/aa730881(v=vs.80).aspx
@@ -770,13 +766,13 @@ namespace RTC
 					int rowCount = dataGridViewRows.Count;
 					for (int rowIndex = 0; rowIndex < rowCount; rowIndex++)
 					{
-						// Be careful not to unshare rows unnecessarily. 
+						// Be careful not to unshare rows unnecessarily.
 						// This could have severe performance repercussions.
 						DataGridViewRow dataGridViewRow = dataGridViewRows.SharedRow(rowIndex);
 						DataGridViewNumericUpDownCell dataGridViewCell = dataGridViewRow.Cells[this.Index] as DataGridViewNumericUpDownCell;
 						if (dataGridViewCell != null)
 						{
-							// Call the internal SetDecimalPlaces method instead of the property to avoid invalidation 
+							// Call the internal SetDecimalPlaces method instead of the property to avoid invalidation
 							// of each cell. The whole column is invalidated later in a single operation for better performance.
 							dataGridViewCell.SetDecimalPlaces(rowIndex, value);
 						}
@@ -874,7 +870,7 @@ namespace RTC
 					}
 					this.DataGridView.InvalidateColumn(this.Index);
 					// TODO: This column and/or grid rows may need to be autosized depending on their
-					//       autosize settings. Call the autosizing methods to autosize the column, rows, 
+					//       autosize settings. Call the autosizing methods to autosize the column, rows,
 					//       column headers / row headers as needed.
 				}
 			}
@@ -926,7 +922,7 @@ namespace RTC
 					}
 					this.DataGridView.InvalidateColumn(this.Index);
 					// TODO: This column and/or grid rows may need to be autosized depending on their
-					//       autosize settings. Call the autosizing methods to autosize the column, rows, 
+					//       autosize settings. Call the autosizing methods to autosize the column, rows,
 					//       column headers / row headers as needed.
 				}
 			}
@@ -978,11 +974,12 @@ namespace RTC
 					}
 					this.DataGridView.InvalidateColumn(this.Index);
 					// TODO: This column and/or grid rows may need to be autosized depending on their
-					//       autosize settings. Call the autosizing methods to autosize the column, rows, 
+					//       autosize settings. Call the autosizing methods to autosize the column, rows,
 					//       column headers / row headers as needed.
 				}
 			}
 		}
+
 		/// <summary>
 		/// Replicates the Maximum property of the DataGridViewNumericUpDownCell cell type.
 		/// </summary>
@@ -1024,7 +1021,7 @@ namespace RTC
 					}
 					this.DataGridView.InvalidateColumn(this.Index);
 					// TODO: This column and/or grid rows may need to be autosized depending on their
-					//       autosize settings. Call the autosizing methods to autosize the column, rows, 
+					//       autosize settings. Call the autosizing methods to autosize the column, rows,
 					//       column headers / row headers as needed.
 				}
 			}
@@ -1061,6 +1058,7 @@ namespace RTC
 			return sb.ToString();
 		}
 	}
+
 	/// <summary>
 	/// Reference Article https://msdn.microsoft.com/en-us/library/aa730881(v=vs.80).aspx
 	/// Defines a NumericUpDown cell type for the System.Windows.Forms.DataGridView control
@@ -1075,22 +1073,28 @@ namespace RTC
 		private static readonly DataGridViewContentAlignment anyRight = DataGridViewContentAlignment.TopRight |
 																		DataGridViewContentAlignment.MiddleRight |
 																		DataGridViewContentAlignment.BottomRight;
+
 		private static readonly DataGridViewContentAlignment anyCenter = DataGridViewContentAlignment.TopCenter |
 																		 DataGridViewContentAlignment.MiddleCenter |
 																		 DataGridViewContentAlignment.BottomCenter;
 
 		// Default dimensions of the static rendering bitmap used for the painting of the non-edited cells
 		private const int DATAGRIDVIEWNUMERICUPDOWNCELL_defaultRenderingBitmapWidth = 100;
+
 		private const int DATAGRIDVIEWNUMERICUPDOWNCELL_defaultRenderingBitmapHeight = 22;
 
 		// Default value of the DecimalPlaces property
 		internal const int DATAGRIDVIEWNUMERICUPDOWNCELL_defaultDecimalPlaces = 0;
+
 		// Default value of the Increment property
 		internal const Decimal DATAGRIDVIEWNUMERICUPDOWNCELL_defaultIncrement = Decimal.One;
+
 		// Default value of the Maximum property
 		internal const Decimal DATAGRIDVIEWNUMERICUPDOWNCELL_defaultMaximum = (Decimal)100.0;
+
 		// Default value of the Minimum property
 		internal const Decimal DATAGRIDVIEWNUMERICUPDOWNCELL_defaultMinimum = Decimal.Zero;
+
 		// Default value of the ThousandsSeparator property
 		internal const bool DATAGRIDVIEWNUMERICUPDOWNCELL_defaultThousandsSeparator = false;
 
@@ -1098,6 +1102,7 @@ namespace RTC
 
 		// Type of this cell's editing control
 		private static Type defaultEditType = typeof(DataGridViewNumericUpDownEditingControl);
+
 		// Type of this cell's value. The formatted value type is string, the same as the base class DataGridViewTextBoxCell
 		private static Type defaultValueType = typeof(System.String);
 
@@ -1108,8 +1113,6 @@ namespace RTC
 		// The NumericUpDown control used to paint the non-edited cells via a call to NumericUpDown.DrawToBitmap
 		[ThreadStatic]
 		private NumericUpDownHexFix paintingNumericUpDown;
-
-
 
 		private int decimalPlaces;       // Caches the value of the DecimalPlaces property
 		private Decimal increment;       // Caches the value of the Increment property
@@ -1139,7 +1142,6 @@ namespace RTC
 				paintingNumericUpDown.Minimum = Decimal.MinValue / 10;
 				paintingNumericUpDown.Hexadecimal = DATAGRIDVIEWNUMERICUPDOWNCELL_defaultHexadecimal;
 				//paintingNumericUpDown.DoubleBuffered(true);
-
 			}
 
 			// Set the default values of the properties:
@@ -1159,7 +1161,6 @@ namespace RTC
 		]
 		public int DecimalPlaces
 		{
-
 			get
 			{
 				return this.decimalPlaces;
@@ -1178,6 +1179,7 @@ namespace RTC
 				}
 			}
 		}
+
 		/// <summary>
 		/// Returns the current DataGridView EditingControl as a DataGridViewNumericUpDownEditingControl control
 		/// </summary>
@@ -1205,7 +1207,6 @@ namespace RTC
 		/// </summary>
 		public Decimal Increment
 		{
-
 			get
 			{
 				return this.increment;
@@ -1227,7 +1228,6 @@ namespace RTC
 		/// </summary>
 		public Decimal Maximum
 		{
-
 			get
 			{
 				return this.maximum;
@@ -1248,7 +1248,6 @@ namespace RTC
 		/// </summary>
 		public Decimal Minimum
 		{
-
 			get
 			{
 				return this.minimum;
@@ -1272,7 +1271,6 @@ namespace RTC
 		]
 		public bool ThousandsSeparator
 		{
-
 			get
 			{
 				return this.thousandsSeparator;
@@ -1293,7 +1291,6 @@ namespace RTC
 		]
 		public bool Hexadecimal
 		{
-
 			get
 			{
 				return this.hexadecimal;
@@ -1308,6 +1305,7 @@ namespace RTC
 				}
 			}
 		}
+
 		/// <summary>
 		/// Returns the type of the cell's Value property
 		/// </summary>
@@ -1343,7 +1341,7 @@ namespace RTC
 		}
 
 		/// <summary>
-		/// Returns the provided value constrained to be within the min and max. 
+		/// Returns the provided value constrained to be within the min and max.
 		/// </summary>
 		private Decimal Constrain(Decimal value)
 		{
@@ -1377,8 +1375,8 @@ namespace RTC
 			if (numericUpDown != null)
 			{
 				// Editing controls get recycled. Indeed, when a DataGridViewNumericUpDownCell cell gets edited
-				// after another DataGridViewNumericUpDownCell cell, the same editing control gets reused for 
-				// performance reasons (to avoid an unnecessary control destruction and creation). 
+				// after another DataGridViewNumericUpDownCell cell, the same editing control gets reused for
+				// performance reasons (to avoid an unnecessary control destruction and creation).
 				// Here the undo buffer of the TextBox inside the NumericUpDown control gets cleared to avoid
 				// interferences between the editing sessions.
 				TextBox textBox = numericUpDown.Controls[1] as TextBox;
@@ -1423,7 +1421,7 @@ namespace RTC
 		}
 
 		/// <summary>
-		/// Customized implementation of the GetErrorIconBounds function in order to draw the potential 
+		/// Customized implementation of the GetErrorIconBounds function in order to draw the potential
 		/// error icon next to the up/down buttons and not on top of them.
 		/// </summary>
 		protected override Rectangle GetErrorIconBounds(Graphics graphics, DataGridViewCellStyle cellStyle, int rowIndex)
@@ -1454,7 +1452,7 @@ namespace RTC
 													DataGridViewDataErrorContexts context)
 		{
 			if (this.Hexadecimal)
-			{ 
+			{
 				UInt64 valueuint64 = System.Convert.ToUInt64(value);
 				return valueuint64.ToString("X");
 			}
@@ -1469,7 +1467,7 @@ namespace RTC
 					Decimal formattedDecimal = System.Convert.ToDecimal(formattedNumber);
 					if (unformattedDecimal == formattedDecimal)
 					{
-						// The base implementation of GetFormattedValue (which triggers the CellFormatting event) did nothing else than 
+						// The base implementation of GetFormattedValue (which triggers the CellFormatting event) did nothing else than
 						// the typical 1234.5 to "1234.5" conversion. But depending on the values of ThousandsSeparator and DecimalPlaces,
 						// this may not be the actual string displayed. The real formatted value may be "1,234.500"
 						return formattedDecimal.ToString((this.ThousandsSeparator ? "N" : "F") + this.DecimalPlaces.ToString());
@@ -1480,7 +1478,7 @@ namespace RTC
 		}
 
 		/// <summary>
-		/// Custom implementation of the GetPreferredSize function. This implementation uses the preferred size of the base 
+		/// Custom implementation of the GetPreferredSize function. This implementation uses the preferred size of the base
 		/// DataGridViewTextBoxCell cell and adds room for the up/down buttons.
 		/// </summary>
 		protected override Size GetPreferredSize(Graphics graphics, DataGridViewCellStyle cellStyle, int rowIndex, Size constraintSize)
@@ -1501,8 +1499,8 @@ namespace RTC
 		}
 
 		/// <summary>
-		/// Custom implementation of the InitializeEditingControl function. This function is called by the DataGridView control 
-		/// at the beginning of an editing session. It makes sure that the properties of the NumericUpDown editing control are 
+		/// Custom implementation of the InitializeEditingControl function. This function is called by the DataGridView control
+		/// at the beginning of an editing session. It makes sure that the properties of the NumericUpDown editing control are
 		/// set according to the cell properties.
 		/// </summary>
 		public override void InitializeEditingControl(int rowIndex, object initialFormattedValue, DataGridViewCellStyle dataGridViewCellStyle)
@@ -1573,7 +1571,7 @@ namespace RTC
 					// Invalidate and autosize column
 					this.DataGridView.InvalidateColumn(this.ColumnIndex);
 
-					// TODO: Add code to autosize the cell's column, the rows, the column headers 
+					// TODO: Add code to autosize the cell's column, the rows, the column headers
 					// and the row headers depending on their autosize settings.
 					// The DataGridView control does not expose a public method that takes care of this.
 				}
@@ -1741,7 +1739,7 @@ namespace RTC
 		}
 
 		/// <summary>
-		/// Little utility function called by the Paint function to see if a particular part needs to be painted. 
+		/// Little utility function called by the Paint function to see if a particular part needs to be painted.
 		/// </summary>
 		private static bool PartPainted(DataGridViewPaintParts paintParts, DataGridViewPaintParts paintPart)
 		{
@@ -1777,7 +1775,7 @@ namespace RTC
 		/// <summary>
 		/// Utility function that sets a new value for the DecimalPlaces property of the cell. This function is used by
 		/// the cell and column DecimalPlaces property. The column uses this method instead of the DecimalPlaces
-		/// property for performance reasons. This way the column can invalidate the entire column at once instead of 
+		/// property for performance reasons. This way the column can invalidate the entire column at once instead of
 		/// invalidating each cell of the column individually. A row index needs to be provided as a parameter because
 		/// this cell may be shared among multiple rows.
 		/// </summary>
@@ -1806,7 +1804,7 @@ namespace RTC
 
 		/// Utility function that sets a new value for the Maximum property of the cell. This function is used by
 		/// the cell and column Maximum property. The column uses this method instead of the Maximum
-		/// property for performance reasons. This way the column can invalidate the entire column at once instead of 
+		/// property for performance reasons. This way the column can invalidate the entire column at once instead of
 		/// invalidating each cell of the column individually. A row index needs to be provided as a parameter because
 		/// this cell may be shared among multiple rows.
 		internal void SetMaximum(int rowIndex, Decimal value)
@@ -1835,7 +1833,7 @@ namespace RTC
 
 		/// Utility function that sets a new value for the Minimum property of the cell. This function is used by
 		/// the cell and column Minimum property. The column uses this method instead of the Minimum
-		/// property for performance reasons. This way the column can invalidate the entire column at once instead of 
+		/// property for performance reasons. This way the column can invalidate the entire column at once instead of
 		/// invalidating each cell of the column individually. A row index needs to be provided as a parameter because
 		/// this cell may be shared among multiple rows.
 		internal void SetMinimum(int rowIndex, Decimal value)
@@ -1876,7 +1874,7 @@ namespace RTC
 
 		/// Utility function that sets a new value for the ThousandsSeparator property of the cell. This function is used by
 		/// the cell and column ThousandsSeparator property. The column uses this method instead of the ThousandsSeparator
-		/// property for performance reasons. This way the column can invalidate the entire column at once instead of 
+		/// property for performance reasons. This way the column can invalidate the entire column at once instead of
 		/// invalidating each cell of the column individually. A row index needs to be provided as a parameter because
 		/// this cell may be shared among multiple rows.
 		internal void SetThousandsSeparator(int rowIndex, bool value)
@@ -1924,13 +1922,13 @@ namespace RTC
 				return HorizontalAlignment.Left;
 			}
 		}
-
 	}
+
 	/// <summary>
 	/// Reference Article https://msdn.microsoft.com/en-us/library/aa730881(v=vs.80).aspx
 	/// Defines the editing control for the DataGridViewNumericUpDownCell custom cell type.
 	/// </summary>/// <summary>
-	class DataGridViewNumericUpDownEditingControl : NumericUpDownHexFix, IDataGridViewEditingControl
+	internal class DataGridViewNumericUpDownEditingControl : NumericUpDownHexFix, IDataGridViewEditingControl
 	{
 		// Needed to forward keyboard messages to the child TextBox control.
 		[System.Runtime.InteropServices.DllImport("USER32.DLL", CharSet = System.Runtime.InteropServices.CharSet.Auto)]
@@ -1938,8 +1936,10 @@ namespace RTC
 
 		// The grid that owns this editing control
 		private DataGridView dataGridView;
+
 		// Stores whether the editing control's value has changed or not
 		private bool valueChanged;
+
 		// Stores the row index in which the editing control resides
 		private int rowIndex;
 
@@ -2027,7 +2027,7 @@ namespace RTC
 		}
 
 		/// <summary>
-		/// Property which indicates whether the editing control needs to be repositioned 
+		/// Property which indicates whether the editing control needs to be repositioned
 		/// when its value changes.
 		/// </summary>
 		public virtual bool RepositionEditingControlOnValueChange
@@ -2039,7 +2039,7 @@ namespace RTC
 		}
 
 		/// <summary>
-		/// Method called by the grid before the editing control is shown so it can adapt to the 
+		/// Method called by the grid before the editing control is shown so it can adapt to the
 		/// provided cell style.
 		/// </summary>
 		public virtual void ApplyCellStyleToEditingControl(DataGridViewCellStyle dataGridViewCellStyle)
@@ -2163,7 +2163,6 @@ namespace RTC
 				// Prevent the Value from being set to Maximum or Minimum when the cell is being painted.
 				this.UserEdit = (context & DataGridViewDataErrorContexts.Display) == 0;
 				return this.Value.ToString((this.ThousandsSeparator ? "N" : "F") + this.DecimalPlaces.ToString());
-
 			}
 			finally
 			{
@@ -2196,7 +2195,7 @@ namespace RTC
 		// End of the IDataGridViewEditingControl interface implementation
 
 		/// <summary>
-		/// Small utility function that updates the local dirty state and 
+		/// Small utility function that updates the local dirty state and
 		/// notifies the grid of the value change.
 		/// </summary>
 		private void NotifyDataGridViewOfValueChange()
@@ -2208,17 +2207,16 @@ namespace RTC
 			}
 		}
 
-
 		//Let's just assume it was always changed
 		protected override void OnKeyDown(KeyEventArgs e)
 		{
-				base.OnKeyDown(e);
-				NotifyDataGridViewOfValueChange();
+			base.OnKeyDown(e);
+			NotifyDataGridViewOfValueChange();
 		}
 
 		/*
 		/// <summary>
-		/// Listen to the KeyPress notification to know when the value changed, and 
+		/// Listen to the KeyPress notification to know when the value changed, and
 		/// notify the grid of the change.
 		/// </summary>
 		protected override void OnKeyPress(KeyPressEventArgs e)
@@ -2259,7 +2257,6 @@ namespace RTC
 			}
 		}
 		*/
-
 
 		/// <summary>
 		/// Listen to the ValueChanged notification to forward the change to the grid.
@@ -2303,6 +2300,7 @@ namespace RTC
 				BindingFlags.Instance | BindingFlags.NonPublic | BindingFlags.SetProperty);
 			pi.SetValue(dgv, setting, null);
 		}
+
 		public static void DoubleBuffered(this NumericUpDown updown, bool setting)
 		{
 			Type updownType = updown.GetType();
@@ -2317,16 +2315,17 @@ namespace RTC
 	{
 		public NumericUpDownHexFix()
 		{
-			
 			base.Minimum = 0;
 			base.Maximum = UInt64.MaxValue;
 		}
+
 		[DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
 		public new decimal Maximum
-		{    // Doesn't serialize properly 
+		{    // Doesn't serialize properly
 			get { return base.Maximum; }
 			set { base.Maximum = value; }
 		}
+
 		protected override void UpdateEditText()
 		{
 			if (Hexadecimal)
@@ -2343,12 +2342,11 @@ namespace RTC
 				if (base.UserEdit) ParseEditText();
 				base.ChangingText = true;
 			}
-
 		}
 
 		protected override void ValidateEditText()
 		{
-			if(Hexadecimal)
+			if (Hexadecimal)
 				HexParseEditText();
 			UpdateEditText();
 		}
@@ -2391,641 +2389,639 @@ namespace RTC
 		}
 	}
 
-/*
-	//Provides the required classes for hotkeys
-	//Uses Shortcut by AlexArchive
-	//MIT Licensed, thanks!
-	//https://github.com/AlexArchive/Shortcut
-	namespace Shortcuts
-	{
-
-		//
-		/// <summary>
-		/// Represents a combination of keys that constitute a system-wide hotkey.
-		/// </summary>
-		[Serializable]
-		[Editor(typeof(HotkeyEditor), typeof(UITypeEditor))]
-		[TypeConverter(typeof(HotkeyConverter))]
-		public class Hotkey : IEquatable<Hotkey>
+	/*
+		//Provides the required classes for hotkeys
+		//Uses Shortcut by AlexArchive
+		//MIT Licensed, thanks!
+		//https://github.com/AlexArchive/Shortcut
+		namespace Shortcuts
 		{
+			//
 			/// <summary>
-			/// The modifer keys that constitute this <see cref="Hotkey"/>.
+			/// Represents a combination of keys that constitute a system-wide hotkey.
 			/// </summary>
-			public Modifiers Modifier { get; private set; }
-
-			/// <summary>
-			/// The keys that constitute this <see cref="Hotkey"/>.
-			/// </summary>
-			public Keys Key { get; private set; }
-
-			/// <summary>
-			/// The name of the hotkey <see cref="Hotkey"/>.
-			/// </summary>
-			public string Name { get; private set; }
-
-			/// <summary>
-			/// Initializes a new instance of the <see cref="Hotkey"/> class.
-			/// </summary>
-			public Hotkey(Modifiers modifier, Keys key, string name = "")
+			[Serializable]
+			[Editor(typeof(HotkeyEditor), typeof(UITypeEditor))]
+			[TypeConverter(typeof(HotkeyConverter))]
+			public class Hotkey : IEquatable<Hotkey>
 			{
-				Key = key;
-				Modifier = modifier;
-				Name = name;
-			}
+				/// <summary>
+				/// The modifer keys that constitute this <see cref="Hotkey"/>.
+				/// </summary>
+				public Modifiers Modifier { get; private set; }
 
-			#region IEquatable<HotkeyCombination> Members
+				/// <summary>
+				/// The keys that constitute this <see cref="Hotkey"/>.
+				/// </summary>
+				public Keys Key { get; private set; }
 
-			/// <summary>
-			/// Indicates whether the value of this <see cref="Hotkey"/> is equal to the
-			/// value of the specified <see cref="Hotkey"/>.
-			/// </summary>
-			/// <param name="other">The value to compare with this instance.</param>
-			/// <returns>
-			/// <c>true</c> if the value of this <see cref="Hotkey"/> is equal to the 
-			/// value of the <paramref name="other"/> parameter; otherwise, false.
-			/// </returns>
-			public bool Equals(Hotkey other)
-			{
-				if (ReferenceEquals(null, other)) return false;
-				if (ReferenceEquals(this, other)) return true;
-				return Modifier.Equals(other.Modifier) && Key.Equals(other.Key);
-			}
+				/// <summary>
+				/// The name of the hotkey <see cref="Hotkey"/>.
+				/// </summary>
+				public string Name { get; private set; }
 
-			#endregion
-
-			#region Object overrides
-
-			/// <summary>
-			/// Determines whether the specified <see cref="System.Object"/> is equal to
-			/// this instance.
-			/// </summary>
-			/// <param name="other">
-			/// The <see cref="System.Object"/> to compare with this instance.
-			/// </param>
-			/// <returns>
-			/// <c>true</c> if the specifed <see cref="System.Object"/> is equal to this 
-			/// instance; otherwise, <c>false</c>.
-			/// </returns>
-			public override bool Equals(object other)
-			{
-				if (ReferenceEquals(null, other)) return false;
-				if (ReferenceEquals(this, other)) return true;
-				if (other.GetType() != GetType()) return false;
-				return Equals((Hotkey)other);
-			}
-
-			/// <summary>
-			/// Returns the hash code for this <see cref="Hotkey"/>.
-			/// </summary>
-			public override int GetHashCode()
-			{
-				unchecked
+				/// <summary>
+				/// Initializes a new instance of the <see cref="Hotkey"/> class.
+				/// </summary>
+				public Hotkey(Modifiers modifier, Keys key, string name = "")
 				{
-					return (Modifier.GetHashCode() * 397) ^ Key.GetHashCode();
-				}
-			}
-
-			/// <inheritdoc />
-			public override string ToString()
-			{
-				return Modifier + "," + Key + "," + Name;
-			}
-
-			#endregion
-
-			#region Operators
-
-			/// <summary>
-			/// Implements the operator == (equality).
-			/// </summary>
-			/// <param name="left">The left-hand side of the operator.</param>
-			/// <param name="right">The right-hand side of the operator.</param>
-			/// <returns>
-			/// <c>true</c> if values are equal to each other, otherwise <c>false</c>.
-			/// </returns>
-			public static bool operator ==(Hotkey left, Hotkey right)
-			{
-				return Equals(left, right);
-			}
-
-			/// <summary>
-			/// Implements the operator != (inequality)
-			/// </summary>
-			/// <param name="left">The left-hand side of the operator.</param>
-			/// <param name="right">The right-hand side of the operator.</param>
-			/// <returns>
-			/// <c>true</c> if values are not equal to each other, otherwise <c>false</c>.
-			/// </returns>
-			public static bool operator !=(Hotkey left, Hotkey right)
-			{
-				return !Equals(left, right);
-			}
-
-			#endregion
-		}
-		//modifiers.cs
-		/// <summary>
-		/// Modifier Keys.
-		/// </summary>
-		[Flags]
-		public enum Modifiers
-		{
-			/// <summary>
-			/// No modifier key pressed.
-			/// </summary>
-			None = 0x0000,
-
-			/// <summary>
-			/// The ALT modifier key.
-			/// </summary>
-			Alt = 0x0001,
-
-			/// <summary>
-			/// The CTRL modifier key.
-			/// </summary>
-			Control = 0x0002,
-
-			/// <summary>
-			/// The SHIFT modifier key.
-			/// </summary>
-			Shift = 0x0004,
-
-			/// <summary>
-			/// The Windows logo key (Microsoft Natural Keyboard).
-			/// </summary>
-			Win = 0x0008
-		}
-		//HotkeyContainer.cs
-		public class HotkeyContainer 
-		{
-			public readonly IDictionary<Hotkey, HotkeyCallback> container;
-
-			internal HotkeyContainer()
-			{
-				container = new Dictionary<Hotkey, HotkeyCallback>();
-			}
-
-			internal void Add(Hotkey hotkey, HotkeyCallback callback)
-			{
-				if (container.ContainsKey(hotkey))
-				{
-					throw new HotkeyAlreadyBoundException(
-						"This hotkey cannot be bound because it has been previously bound either by this " +
-						"application or another running application.");
+					Key = key;
+					Modifier = modifier;
+					Name = name;
 				}
 
-				container.Add(hotkey, callback);
-			}
+				#region IEquatable<HotkeyCombination> Members
 
-			internal void Remove(Hotkey hotkey)
-			{
-				if (!container.ContainsKey(hotkey))
+				/// <summary>
+				/// Indicates whether the value of this <see cref="Hotkey"/> is equal to the
+				/// value of the specified <see cref="Hotkey"/>.
+				/// </summary>
+				/// <param name="other">The value to compare with this instance.</param>
+				/// <returns>
+				/// <c>true</c> if the value of this <see cref="Hotkey"/> is equal to the
+				/// value of the <paramref name="other"/> parameter; otherwise, false.
+				/// </returns>
+				public bool Equals(Hotkey other)
 				{
-					throw new HotkeyNotBoundException(
-						"This hotkey cannot be unbound because it has not previously been bound by this application");
+					if (ReferenceEquals(null, other)) return false;
+					if (ReferenceEquals(this, other)) return true;
+					return Modifier.Equals(other.Modifier) && Key.Equals(other.Key);
 				}
 
-				container.Remove(hotkey);
-			}
+				#endregion IEquatable<HotkeyCombination> Members
 
-			internal HotkeyCallback Find(Hotkey hotkey)
-			{
-				return container[hotkey];
-			}
-		}
-		//HotkeyEditor.cs
-		internal class HotkeyEditor : ShortcutKeysEditor
-		{
-			public override object EditValue(ITypeDescriptorContext context, IServiceProvider provider, object value)
-			{
-				var converter = new HotkeyConverter();
+				#region Object overrides
 
-				var keys = (value == null) ? Keys.None : (Keys)converter.ConvertTo(value, typeof(Keys));
-				value = base.EditValue(context, provider, keys);
+				/// <summary>
+				/// Determines whether the specified <see cref="System.Object"/> is equal to
+				/// this instance.
+				/// </summary>
+				/// <param name="other">
+				/// The <see cref="System.Object"/> to compare with this instance.
+				/// </param>
+				/// <returns>
+				/// <c>true</c> if the specifed <see cref="System.Object"/> is equal to this
+				/// instance; otherwise, <c>false</c>.
+				/// </returns>
+				public override bool Equals(object other)
+				{
+					if (ReferenceEquals(null, other)) return false;
+					if (ReferenceEquals(this, other)) return true;
+					if (other.GetType() != GetType()) return false;
+					return Equals((Hotkey)other);
+				}
 
-				return converter.ConvertFrom(value);
-			}
-		}
-		//HotkeyAlreadyBoundException.cs
-		/// <summary>
-		/// Exception thrown to indicate that specified <see cref="Hotkey"/> cannot be 
-		/// bound because it has been previously bound either by this application or 
-		/// another running application.
-		/// </summary>
-		/// <remarks>
-		/// <para>
-		/// This exception normally occurs when you attempt to bind a 
-		/// <see cref="Hotkey"/> that has previously been bound by this application. 
-		/// </para>
-		/// <para>
-		/// This exception can also occur when another running application has already 
-		/// bound the specified <see cref="Hotkey"/>.  
-		/// </para>
-		/// <para>
-		/// Use the <see cref="HotkeyBinder.Unbind"/> method to unbind a 
-		/// <see cref="Hotkey"/> previously bound by this application.
-		/// </para>
-		/// <para>
-		/// Use the <see cref="HotkeyBinder.IsHotkeyAlreadyBound"/> function to 
-		/// determine whether the <see cref="Hotkey"/> in question has already been 
-		/// bound either by this application or another running application.
-		/// </para>
-		/// </remarks>
-		[Serializable]
-		public sealed class HotkeyAlreadyBoundException : Win32Exception
-		{
-			internal HotkeyAlreadyBoundException(int error) : base(error)
-			{
-			}
+				/// <summary>
+				/// Returns the hash code for this <see cref="Hotkey"/>.
+				/// </summary>
+				public override int GetHashCode()
+				{
+					unchecked
+					{
+						return (Modifier.GetHashCode() * 397) ^ Key.GetHashCode();
+					}
+				}
 
-			internal HotkeyAlreadyBoundException(string message) : base(message)
-			{
-			}
-		}
-		//HotkeyBinder.cs
-		/// <summary>
-		/// Used to bind and unbind <see cref="Hotkey"/>s to 
-		/// <see cref="HotkeyCallback"/>s.
-		/// </summary>
-		public class HotkeyBinder : IDisposable
-		{
-			private readonly HotkeyContainer container = new HotkeyContainer();
-			private readonly HotkeyWindow hotkeyWindow = new HotkeyWindow();
+				/// <inheritdoc />
+				public override string ToString()
+				{
+					return Modifier + "," + Key + "," + Name;
+				}
 
+				#endregion Object overrides
+
+				#region Operators
+
+				/// <summary>
+				/// Implements the operator == (equality).
+				/// </summary>
+				/// <param name="left">The left-hand side of the operator.</param>
+				/// <param name="right">The right-hand side of the operator.</param>
+				/// <returns>
+				/// <c>true</c> if values are equal to each other, otherwise <c>false</c>.
+				/// </returns>
+				public static bool operator ==(Hotkey left, Hotkey right)
+				{
+					return Equals(left, right);
+				}
+
+				/// <summary>
+				/// Implements the operator != (inequality)
+				/// </summary>
+				/// <param name="left">The left-hand side of the operator.</param>
+				/// <param name="right">The right-hand side of the operator.</param>
+				/// <returns>
+				/// <c>true</c> if values are not equal to each other, otherwise <c>false</c>.
+				/// </returns>
+				public static bool operator !=(Hotkey left, Hotkey right)
+				{
+					return !Equals(left, right);
+				}
+
+				#endregion Operators
+			}
+			//modifiers.cs
 			/// <summary>
-			/// Initializes a new instance of the <see cref="HotkeyBinder"/> class.
+			/// Modifier Keys.
 			/// </summary>
-			public HotkeyBinder()
+			[Flags]
+			public enum Modifiers
 			{
-				hotkeyWindow.HotkeyPressed += OnHotkeyPressed;
-			}
+				/// <summary>
+				/// No modifier key pressed.
+				/// </summary>
+				None = 0x0000,
 
+				/// <summary>
+				/// The ALT modifier key.
+				/// </summary>
+				Alt = 0x0001,
+
+				/// <summary>
+				/// The CTRL modifier key.
+				/// </summary>
+				Control = 0x0002,
+
+				/// <summary>
+				/// The SHIFT modifier key.
+				/// </summary>
+				Shift = 0x0004,
+
+				/// <summary>
+				/// The Windows logo key (Microsoft Natural Keyboard).
+				/// </summary>
+				Win = 0x0008
+			}
+			//HotkeyContainer.cs
+			public class HotkeyContainer
+			{
+				public readonly IDictionary<Hotkey, HotkeyCallback> container;
+
+				internal HotkeyContainer()
+				{
+					container = new Dictionary<Hotkey, HotkeyCallback>();
+				}
+
+				internal void Add(Hotkey hotkey, HotkeyCallback callback)
+				{
+					if (container.ContainsKey(hotkey))
+					{
+						throw new HotkeyAlreadyBoundException(
+							"This hotkey cannot be bound because it has been previously bound either by this " +
+							"application or another running application.");
+					}
+
+					container.Add(hotkey, callback);
+				}
+
+				internal void Remove(Hotkey hotkey)
+				{
+					if (!container.ContainsKey(hotkey))
+					{
+						throw new HotkeyNotBoundException(
+							"This hotkey cannot be unbound because it has not previously been bound by this application");
+					}
+
+					container.Remove(hotkey);
+				}
+
+				internal HotkeyCallback Find(Hotkey hotkey)
+				{
+					return container[hotkey];
+				}
+			}
+			//HotkeyEditor.cs
+			internal class HotkeyEditor : ShortcutKeysEditor
+			{
+				public override object EditValue(ITypeDescriptorContext context, IServiceProvider provider, object value)
+				{
+					var converter = new HotkeyConverter();
+
+					var keys = (value == null) ? Keys.None : (Keys)converter.ConvertTo(value, typeof(Keys));
+					value = base.EditValue(context, provider, keys);
+
+					return converter.ConvertFrom(value);
+				}
+			}
+			//HotkeyAlreadyBoundException.cs
 			/// <summary>
-			/// Indicates whether a <see cref="Hotkey"/> has been bound already either 
-			/// by this application or another application.
+			/// Exception thrown to indicate that specified <see cref="Hotkey"/> cannot be
+			/// bound because it has been previously bound either by this application or
+			/// another running application.
 			/// </summary>
-			/// <param name="hotkeyCombo">
-			/// The <see cref="Hotkey"/> to evaluate.
-			/// </param>
-			/// <returns>
-			/// <c>true</c> if the <see cref="Hotkey"/> has not been previously bound 
-			/// and is available to be bound; otherwise, <c>false</c>.
-			/// </returns>
-			public bool IsHotkeyAlreadyBound(Hotkey hotkeyCombo)
+			/// <remarks>
+			/// <para>
+			/// This exception normally occurs when you attempt to bind a
+			/// <see cref="Hotkey"/> that has previously been bound by this application.
+			/// </para>
+			/// <para>
+			/// This exception can also occur when another running application has already
+			/// bound the specified <see cref="Hotkey"/>.
+			/// </para>
+			/// <para>
+			/// Use the <see cref="HotkeyBinder.Unbind"/> method to unbind a
+			/// <see cref="Hotkey"/> previously bound by this application.
+			/// </para>
+			/// <para>
+			/// Use the <see cref="HotkeyBinder.IsHotkeyAlreadyBound"/> function to
+			/// determine whether the <see cref="Hotkey"/> in question has already been
+			/// bound either by this application or another running application.
+			/// </para>
+			/// </remarks>
+			[Serializable]
+			public sealed class HotkeyAlreadyBoundException : Win32Exception
 			{
-				bool successful =
-					NativeMethods.RegisterHotKey(
-						hotkeyWindow.Handle,
-						hotkeyCombo.GetHashCode(),
-						(uint)hotkeyCombo.Modifier,
-						(uint)hotkeyCombo.Key);
+				internal HotkeyAlreadyBoundException(int error) : base(error)
+				{
+				}
 
-				if (!successful)
-					return true;
-
-				NativeMethods.UnregisterHotKey(
-					hotkeyWindow.Handle,
-					hotkeyCombo.GetHashCode());
-
-				return false;
+				internal HotkeyAlreadyBoundException(string message) : base(message)
+				{
+				}
 			}
-
-			public HotkeyContainer GetBoundHotkeys()
-			{
-				return container;
-			}
-
+			//HotkeyBinder.cs
 			/// <summary>
-			/// Binds a hotkey combination to a <see cref="HotkeyCallback"/>.
+			/// Used to bind and unbind <see cref="Hotkey"/>s to
+			/// <see cref="HotkeyCallback"/>s.
 			/// </summary>
-			/// <param name="modifiers">The modifers that constitute this hotkey.</param>
-			/// <param name="keys">The keys that constitute this hotkey.</param>
-			/// <exception cref="HotkeyAlreadyBoundException"></exception>
-			/// <exception cref="ArgumentNullException"></exception>
-			public HotkeyCallback Bind(Modifiers modifiers, Keys keys)
+			public class HotkeyBinder : IDisposable
 			{
-				return Bind(new Hotkey(modifiers, keys));
-			}
+				private readonly HotkeyContainer container = new HotkeyContainer();
+				private readonly HotkeyWindow hotkeyWindow = new HotkeyWindow();
 
-			/// <summary>
-			/// Binds a <see cref="Hotkey"/> to a <see cref="HotkeyCallback"/>.
-			/// </summary>
-			/// <exception cref="HotkeyAlreadyBoundException"></exception>
-			/// <exception cref="ArgumentNullException"></exception>
-			public HotkeyCallback Bind(Hotkey hotkeyCombo)
-			{
-				if (hotkeyCombo == null)
-					return null;
+				/// <summary>
+				/// Initializes a new instance of the <see cref="HotkeyBinder"/> class.
+				/// </summary>
+				public HotkeyBinder()
+				{
+					hotkeyWindow.HotkeyPressed += OnHotkeyPressed;
+				}
 
-				HotkeyCallback callback = new HotkeyCallback();
-				container.Add(hotkeyCombo, callback);
-				RegisterHotkey(hotkeyCombo);
+				/// <summary>
+				/// Indicates whether a <see cref="Hotkey"/> has been bound already either
+				/// by this application or another application.
+				/// </summary>
+				/// <param name="hotkeyCombo">
+				/// The <see cref="Hotkey"/> to evaluate.
+				/// </param>
+				/// <returns>
+				/// <c>true</c> if the <see cref="Hotkey"/> has not been previously bound
+				/// and is available to be bound; otherwise, <c>false</c>.
+				/// </returns>
+				public bool IsHotkeyAlreadyBound(Hotkey hotkeyCombo)
+				{
+					bool successful =
+						NativeMethods.RegisterHotKey(
+							hotkeyWindow.Handle,
+							hotkeyCombo.GetHashCode(),
+							(uint)hotkeyCombo.Modifier,
+							(uint)hotkeyCombo.Key);
 
-				return callback;
-			}
+					if (!successful)
+						return true;
 
-			private void RegisterHotkey(Hotkey hotkeyCombo)
-			{
-				bool successful =
-					NativeMethods.RegisterHotKey(
-						hotkeyWindow.Handle,
-						hotkeyCombo.GetHashCode(),
-						(uint)hotkeyCombo.Modifier,
-						(uint)hotkeyCombo.Key);
-
-				if (!successful)
-					throw new Win32Exception(Marshal.GetLastWin32Error());
-			}
-
-			/// <summary>
-			/// Unbinds a previously bound hotkey combination.
-			/// </summary>
-			public void Unbind(Modifiers modifiers, Keys keys)
-			{
-				Unbind(new Hotkey(modifiers, keys));
-			}
-
-			/// <summary>
-			/// Unbinds a previously bound <see cref="Hotkey"/>.
-			/// </summary>
-			/// <exception cref="HotkeyNotBoundException"></exception>
-			/// <exception cref="ArgumentNullException"></exception>
-			public void Unbind(Hotkey hotkeyCombo)
-			{
-				container.Remove(hotkeyCombo);
-				UnregisterHotkey(hotkeyCombo);
-			}
-
-			private void UnregisterHotkey(Hotkey hotkeyCombo)
-			{
-				bool successful =
 					NativeMethods.UnregisterHotKey(
 						hotkeyWindow.Handle,
 						hotkeyCombo.GetHashCode());
 
-				if (!successful)
-					throw new HotkeyNotBoundException(Marshal.GetLastWin32Error());
-			}
-
-			private void OnHotkeyPressed(object sender, HotkeyPressedEventArgs e)
-			{
-				HotkeyCallback callback = container.Find(e.Hotkey);
-
-				if (!callback.Assigned)
-				{
-					throw new InvalidOperationException(
-						"You did not specify a callback for the hotkey: \"" + e.Hotkey + "\". It's not your fault, " +
-						"because it wasn't possible to design the HotkeyBinder class in such a way that this is " +
-						"a statically typed pre-condition, but please specify a callback.");
+					return false;
 				}
 
-				callback.Invoke();
+				public HotkeyContainer GetBoundHotkeys()
+				{
+					return container;
+				}
+
+				/// <summary>
+				/// Binds a hotkey combination to a <see cref="HotkeyCallback"/>.
+				/// </summary>
+				/// <param name="modifiers">The modifers that constitute this hotkey.</param>
+				/// <param name="keys">The keys that constitute this hotkey.</param>
+				/// <exception cref="HotkeyAlreadyBoundException"></exception>
+				/// <exception cref="ArgumentNullException"></exception>
+				public HotkeyCallback Bind(Modifiers modifiers, Keys keys)
+				{
+					return Bind(new Hotkey(modifiers, keys));
+				}
+
+				/// <summary>
+				/// Binds a <see cref="Hotkey"/> to a <see cref="HotkeyCallback"/>.
+				/// </summary>
+				/// <exception cref="HotkeyAlreadyBoundException"></exception>
+				/// <exception cref="ArgumentNullException"></exception>
+				public HotkeyCallback Bind(Hotkey hotkeyCombo)
+				{
+					if (hotkeyCombo == null)
+						return null;
+
+					HotkeyCallback callback = new HotkeyCallback();
+					container.Add(hotkeyCombo, callback);
+					RegisterHotkey(hotkeyCombo);
+
+					return callback;
+				}
+
+				private void RegisterHotkey(Hotkey hotkeyCombo)
+				{
+					bool successful =
+						NativeMethods.RegisterHotKey(
+							hotkeyWindow.Handle,
+							hotkeyCombo.GetHashCode(),
+							(uint)hotkeyCombo.Modifier,
+							(uint)hotkeyCombo.Key);
+
+					if (!successful)
+						throw new Win32Exception(Marshal.GetLastWin32Error());
+				}
+
+				/// <summary>
+				/// Unbinds a previously bound hotkey combination.
+				/// </summary>
+				public void Unbind(Modifiers modifiers, Keys keys)
+				{
+					Unbind(new Hotkey(modifiers, keys));
+				}
+
+				/// <summary>
+				/// Unbinds a previously bound <see cref="Hotkey"/>.
+				/// </summary>
+				/// <exception cref="HotkeyNotBoundException"></exception>
+				/// <exception cref="ArgumentNullException"></exception>
+				public void Unbind(Hotkey hotkeyCombo)
+				{
+					container.Remove(hotkeyCombo);
+					UnregisterHotkey(hotkeyCombo);
+				}
+
+				private void UnregisterHotkey(Hotkey hotkeyCombo)
+				{
+					bool successful =
+						NativeMethods.UnregisterHotKey(
+							hotkeyWindow.Handle,
+							hotkeyCombo.GetHashCode());
+
+					if (!successful)
+						throw new HotkeyNotBoundException(Marshal.GetLastWin32Error());
+				}
+
+				private void OnHotkeyPressed(object sender, HotkeyPressedEventArgs e)
+				{
+					HotkeyCallback callback = container.Find(e.Hotkey);
+
+					if (!callback.Assigned)
+					{
+						throw new InvalidOperationException(
+							"You did not specify a callback for the hotkey: \"" + e.Hotkey + "\". It's not your fault, " +
+							"because it wasn't possible to design the HotkeyBinder class in such a way that this is " +
+							"a statically typed pre-condition, but please specify a callback.");
+					}
+
+					callback.Invoke();
+				}
+
+				/// <inheritdoc />
+				public void Dispose()
+				{
+					hotkeyWindow.Dispose();
+				}
 			}
-
-			/// <inheritdoc />
-			public void Dispose()
-			{
-				hotkeyWindow.Dispose();
-			}
-		}
-		//HotkeyCallback.cs
-		/// <summary>
-		/// Represents a callback for a <see cref="Hotkey"/> binding.
-		/// </summary>
-		public class HotkeyCallback
-		{
-			private Action callback;
-
-			public bool Assigned { get { return callback != null; } }
-
+			//HotkeyCallback.cs
 			/// <summary>
-			/// Indicates that the <see cref="Hotkey"/> should be bound to the specified
-			/// <paramref name="callback"/>.
+			/// Represents a callback for a <see cref="Hotkey"/> binding.
 			/// </summary>
-			public void To(Action callback)
+			public class HotkeyCallback
 			{
-				if (callback == null) throw new ArgumentNullException("callback");
-				this.callback = callback;
-			}
+				private Action callback;
 
-			internal void Invoke()
-			{
-				callback.Invoke();
-			}
-		}
-		//HotkeyNotBoundException.cs
-		/// <summary>
-		/// Exception thrown to indicate that the specified <see cref="Hotkey"/> cannot 
-		/// be unbound because it has not previously been bound by this application.
-		/// </summary>
-		/// <remarks>
-		/// <para>
-		/// This exception normally occurs when you attempt to unbind a 
-		/// <see cref="Hotkey"/> that was not previously bound by this application.
-		/// </para>
-		/// <para>
-		/// You cannot unbind a <see cref="Hotkey"/> registered by another application.
-		/// </para>
-		/// </remarks>
-		[Serializable]
-		public sealed class HotkeyNotBoundException : Win32Exception
-		{
-			internal HotkeyNotBoundException(int errorCode) : base(errorCode)
-			{
-			}
+				public bool Assigned { get { return callback != null; } }
 
-			internal HotkeyNotBoundException(string message) : base(message)
-			{
-			}
-		}
-		//HotkeyPressedEventArgs.cs
-		internal class HotkeyPressedEventArgs : EventArgs
-		{
-			internal Hotkey Hotkey { get; private set; }
-
-			internal HotkeyPressedEventArgs(Hotkey hotkey)
-			{
-				Hotkey = hotkey;
-			}
-		}
-		//HotkeyWindow.cs
-		internal sealed class HotkeyWindow : NativeWindow, IDisposable
-		{
-			internal event EventHandler<HotkeyPressedEventArgs> HotkeyPressed = delegate { };
-
-			internal HotkeyWindow()
-			{
-				CreateHandle(new CreateParams());
-			}
-
-			// Unconventional, I know. But you can watch my screen-cast where I explain
-			// this particular method in more detail if you want: http://youtu.be/dvtV3jc4maY
-			protected override void WndProc(ref Message m)
-			{
-				const int WM_HOTKEY = 0x0312;
-				if (m.Msg == WM_HOTKEY)
+				/// <summary>
+				/// Indicates that the <see cref="Hotkey"/> should be bound to the specified
+				/// <paramref name="callback"/>.
+				/// </summary>
+				public void To(Action callback)
 				{
-					var combination = ExtractHotkeyCombination(m);
-					HotkeyPressed(this, new HotkeyPressedEventArgs(combination));
+					if (callback == null) throw new ArgumentNullException("callback");
+					this.callback = callback;
 				}
-				base.WndProc(ref m);
-			}
 
-			private static Hotkey ExtractHotkeyCombination(Message m)
-			{
-				var modifier = (Modifiers)((int)m.LParam & 0xFFFF);
-				var key = (Keys)((int)m.LParam >> 16);
-				return new Hotkey(modifier, key);
-			}
-
-			public void Dispose()
-			{
-				DestroyHandle();
-			}
-		}
-		//NativeMethods.cs
-		internal static class NativeMethods
-		{
-			[DllImport("user32.dll", SetLastError = true)]
-			internal static extern bool RegisterHotKey(
-				IntPtr windowHandle,
-				int hotkeyId,
-				uint modifier,
-				uint key);
-
-			[DllImport("user32.dll", SetLastError = true)]
-			internal static extern bool UnregisterHotKey(
-				IntPtr windowHandle,
-				int hotkeyId);
-
-			[DllImport("user32.dll")]
-			internal static extern bool HideCaret(IntPtr controlHandle);
-		}
-		//HotkeyTextBox.cs
-		public sealed class HotkeyTextBox : TextBox
-		{
-			private Hotkey hotkey;
-			public Hotkey Hotkey
-			{
-				get { return hotkey; }
-				set
+				internal void Invoke()
 				{
-					hotkey = value;
+					callback.Invoke();
+				}
+			}
+			//HotkeyNotBoundException.cs
+			/// <summary>
+			/// Exception thrown to indicate that the specified <see cref="Hotkey"/> cannot
+			/// be unbound because it has not previously been bound by this application.
+			/// </summary>
+			/// <remarks>
+			/// <para>
+			/// This exception normally occurs when you attempt to unbind a
+			/// <see cref="Hotkey"/> that was not previously bound by this application.
+			/// </para>
+			/// <para>
+			/// You cannot unbind a <see cref="Hotkey"/> registered by another application.
+			/// </para>
+			/// </remarks>
+			[Serializable]
+			public sealed class HotkeyNotBoundException : Win32Exception
+			{
+				internal HotkeyNotBoundException(int errorCode) : base(errorCode)
+				{
+				}
 
-					if (hotkey != null)
+				internal HotkeyNotBoundException(string message) : base(message)
+				{
+				}
+			}
+			//HotkeyPressedEventArgs.cs
+			internal class HotkeyPressedEventArgs : EventArgs
+			{
+				internal Hotkey Hotkey { get; private set; }
+
+				internal HotkeyPressedEventArgs(Hotkey hotkey)
+				{
+					Hotkey = hotkey;
+				}
+			}
+			//HotkeyWindow.cs
+			internal sealed class HotkeyWindow : NativeWindow, IDisposable
+			{
+				internal event EventHandler<HotkeyPressedEventArgs> HotkeyPressed = delegate { };
+
+				internal HotkeyWindow()
+				{
+					CreateHandle(new CreateParams());
+				}
+
+				// Unconventional, I know. But you can watch my screen-cast where I explain
+				// this particular method in more detail if you want: http://youtu.be/dvtV3jc4maY
+				protected override void WndProc(ref Message m)
+				{
+					const int WM_HOTKEY = 0x0312;
+					if (m.Msg == WM_HOTKEY)
 					{
-						RenderText();
+						var combination = ExtractHotkeyCombination(m);
+						HotkeyPressed(this, new HotkeyPressedEventArgs(combination));
 					}
-				}
-			}
-
-			public HotkeyTextBox()
-			{
-				Text = "None";
-				GotFocus += delegate { NativeMethods.HideCaret(Handle); };
-			}
-
-			protected override void OnKeyPress(KeyPressEventArgs e)
-			{
-				e.Handled = true;
-			}
-
-			protected override void OnKeyDown(KeyEventArgs e)
-			{
-				if (e.KeyCode == Keys.Back)
-				{
-					Reset();
-					return;
+					base.WndProc(ref m);
 				}
 
-				var converter = new HotkeyConverter();
-				Hotkey = (Hotkey)converter.ConvertFrom(e.KeyData);
-				RenderText();
-			}
-
-			private void RenderText()
-			{
-				if (Hotkey.Modifier != Modifiers.None)
+				private static Hotkey ExtractHotkeyCombination(Message m)
 				{
-					Text = Hotkey.Modifier.ToString().Replace(", ", " + ");
+					var modifier = (Modifiers)((int)m.LParam & 0xFFFF);
+					var key = (Keys)((int)m.LParam >> 16);
+					return new Hotkey(modifier, key);
+				}
 
-					if (Hotkey.Key != Keys.None && !IsModifier(hotkey.Key))
+				public void Dispose()
+				{
+					DestroyHandle();
+				}
+			}
+			//NativeMethods.cs
+			internal static class NativeMethods
+			{
+				[DllImport("user32.dll", SetLastError = true)]
+				internal static extern bool RegisterHotKey(
+					IntPtr windowHandle,
+					int hotkeyId,
+					uint modifier,
+					uint key);
+
+				[DllImport("user32.dll", SetLastError = true)]
+				internal static extern bool UnregisterHotKey(
+					IntPtr windowHandle,
+					int hotkeyId);
+
+				[DllImport("user32.dll")]
+				internal static extern bool HideCaret(IntPtr controlHandle);
+			}
+			//HotkeyTextBox.cs
+			public sealed class HotkeyTextBox : TextBox
+			{
+				private Hotkey hotkey;
+				public Hotkey Hotkey
+				{
+					get { return hotkey; }
+					set
 					{
-						Text += " + " + Hotkey.Key;
-					}
-					return;
-				}
+						hotkey = value;
 
-				Text = Hotkey.Key.ToString();
-			}
-
-			private static bool IsModifier(Keys keys)
-			{
-				// TODO: I feel as though there should be a clever way to do this using a binary operator.
-				return keys == Keys.ControlKey ||
-					   keys == Keys.Menu ||
-					   keys == Keys.ShiftKey;
-			}
-
-			private void Reset()
-			{
-				Hotkey = new Hotkey(Modifiers.None, Keys.None);
-				Text = "None";
-			}
-		}
-		//HotkeyConverter.cs
-		/// <summary>
-		/// Provides a type converter to convert Hotkey objects to and from other representations.
-		/// </summary>
-		public class HotkeyConverter : KeysConverter
-		{
-			public override object ConvertTo(ITypeDescriptorContext context, CultureInfo culture, object value, Type destinationType)
-			{
-				if (destinationType == typeof(Keys))
-				{
-					Hotkey hotkey = value as Hotkey;
-
-					if (hotkey != null)
-					{
-						Keys keys = Keys.None;
-						if (hotkey.Modifier.HasFlag(Modifiers.Alt)) keys |= Keys.Alt;
-						if (hotkey.Modifier.HasFlag(Modifiers.Control)) keys |= Keys.Control;
-						if (hotkey.Modifier.HasFlag(Modifiers.Shift)) keys |= Keys.Shift;
-						keys |= hotkey.Key;
-						return keys;
+						if (hotkey != null)
+						{
+							RenderText();
+						}
 					}
 				}
 
-				return base.ConvertTo(context, culture, value, destinationType);
-			}
-
-			public override object ConvertFrom(ITypeDescriptorContext context, CultureInfo culture, object value)
-			{
-				if (value is string)
+				public HotkeyTextBox()
 				{
-					value = base.ConvertFrom(context, culture, value);
+					Text = "None";
+					GotFocus += delegate { NativeMethods.HideCaret(Handle); };
 				}
 
-				if (value.GetType() == typeof(Keys))
+				protected override void OnKeyPress(KeyPressEventArgs e)
 				{
-					Keys keys = (Keys)value;
-					Modifiers modifiers = Modifiers.None;
-					if (keys.HasFlag(Keys.Alt)) modifiers |= Modifiers.Alt;
-					if (keys.HasFlag(Keys.Control)) modifiers |= Modifiers.Control;
-					if (keys.HasFlag(Keys.Shift)) modifiers |= Modifiers.Shift;
-					keys = ExtractNonMods(keys);
-					return new Hotkey(modifiers, keys);
+					e.Handled = true;
 				}
 
-				return base.ConvertFrom(context, culture, value);
-			}
+				protected override void OnKeyDown(KeyEventArgs e)
+				{
+					if (e.KeyCode == Keys.Back)
+					{
+						Reset();
+						return;
+					}
 
-			private static Keys ExtractNonMods(Keys keys)
+					var converter = new HotkeyConverter();
+					Hotkey = (Hotkey)converter.ConvertFrom(e.KeyData);
+					RenderText();
+				}
+
+				private void RenderText()
+				{
+					if (Hotkey.Modifier != Modifiers.None)
+					{
+						Text = Hotkey.Modifier.ToString().Replace(", ", " + ");
+
+						if (Hotkey.Key != Keys.None && !IsModifier(hotkey.Key))
+						{
+							Text += " + " + Hotkey.Key;
+						}
+						return;
+					}
+
+					Text = Hotkey.Key.ToString();
+				}
+
+				private static bool IsModifier(Keys keys)
+				{
+					// TODO: I feel as though there should be a clever way to do this using a binary operator.
+					return keys == Keys.ControlKey ||
+						   keys == Keys.Menu ||
+						   keys == Keys.ShiftKey;
+				}
+
+				private void Reset()
+				{
+					Hotkey = new Hotkey(Modifiers.None, Keys.None);
+					Text = "None";
+				}
+			}
+			//HotkeyConverter.cs
+			/// <summary>
+			/// Provides a type converter to convert Hotkey objects to and from other representations.
+			/// </summary>
+			public class HotkeyConverter : KeysConverter
 			{
-				// Brian: Extract non-modifiers from the low word of keys
-				return (Keys)((int)keys & 0x0000FFFF);
-			}
-		}
+				public override object ConvertTo(ITypeDescriptorContext context, CultureInfo culture, object value, Type destinationType)
+				{
+					if (destinationType == typeof(Keys))
+					{
+						Hotkey hotkey = value as Hotkey;
 
-	}*/
+						if (hotkey != null)
+						{
+							Keys keys = Keys.None;
+							if (hotkey.Modifier.HasFlag(Modifiers.Alt)) keys |= Keys.Alt;
+							if (hotkey.Modifier.HasFlag(Modifiers.Control)) keys |= Keys.Control;
+							if (hotkey.Modifier.HasFlag(Modifiers.Shift)) keys |= Keys.Shift;
+							keys |= hotkey.Key;
+							return keys;
+						}
+					}
+
+					return base.ConvertTo(context, culture, value, destinationType);
+				}
+
+				public override object ConvertFrom(ITypeDescriptorContext context, CultureInfo culture, object value)
+				{
+					if (value is string)
+					{
+						value = base.ConvertFrom(context, culture, value);
+					}
+
+					if (value.GetType() == typeof(Keys))
+					{
+						Keys keys = (Keys)value;
+						Modifiers modifiers = Modifiers.None;
+						if (keys.HasFlag(Keys.Alt)) modifiers |= Modifiers.Alt;
+						if (keys.HasFlag(Keys.Control)) modifiers |= Modifiers.Control;
+						if (keys.HasFlag(Keys.Shift)) modifiers |= Modifiers.Shift;
+						keys = ExtractNonMods(keys);
+						return new Hotkey(modifiers, keys);
+					}
+
+					return base.ConvertFrom(context, culture, value);
+				}
+
+				private static Keys ExtractNonMods(Keys keys)
+				{
+					// Brian: Extract non-modifiers from the low word of keys
+					return (Keys)((int)keys & 0x0000FFFF);
+				}
+			}
+		}*/
 }

@@ -1,27 +1,21 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Net.Sockets;
-using System.Text;
-using System.Threading;
-using System.Runtime.Serialization.Formatters.Binary;
-using System.Drawing;
-using System.Net;
-using BizHawk.Client.EmuHawk;
-using System.Windows;
 using System.IO;
-using BizHawk.Client.Common;
-using System.Threading.Tasks;
+using System.Linq;
+using System.Net;
+using System.Net.Sockets;
+using System.Runtime.Serialization.Formatters.Binary;
+using System.Threading;
 using System.Windows.Forms;
 
 namespace RTC
 {
 	public partial class RTC_NetCore
 	{
-        /*
+		/*
         NetCore is a side-agnostic TCP library for executing functions between processes whether locally or over the internet.
         It is the base of Detached Mode and RTC Multiplayer in Attached Mode.
-        
+
         As of RTC 3.0, Every function that links RTC and Bizhawk must be routed Through NetCore Commands.
         While this renders debugging harder, it also allows normal functionality in both Detached and Attached mode.
 
@@ -38,7 +32,6 @@ namespace RTC
 
         A setting called "Aggressiveness" in the main menu can either TRIPLE the timeout values or even Disable any timeout (not recommended).
         */
-
 
 		volatile TcpClient client;
 		volatile NetworkStream clientStream;
@@ -58,104 +51,109 @@ namespace RTC
 		static volatile bool isStreamReadingThreadAlive = false;
 
 		public static int KeepAliveCounter = 5;
-        public static int DefaultKeepAliveCounter = 5;
-        public static int DefaultNetworkStreamTimeout = 2000;
-        public static volatile int DefaultMaxRetries = 666;
+		public static int DefaultKeepAliveCounter = 5;
+		public static int DefaultNetworkStreamTimeout = 2000;
+		public static volatile int DefaultMaxRetries = 666;
 		private static bool showBoops = true;
-
 
 		System.Windows.Forms.Timer KeepAliveTimer = null;
 
 		private static object CommandQueueLock = new object();
-        public static bool NetCoreCommandSynclock = false;
+		public static bool NetCoreCommandSynclock = false;
 
-        public event EventHandler ClientConnecting;
+		public event EventHandler ClientConnecting;
+
 		protected virtual void OnClientConnecting(EventArgs e) => ClientConnecting?.Invoke(this, e);
 
 		public event EventHandler ClientConnected;
+
 		protected virtual void OnClientConnected(EventArgs e) => ClientConnected?.Invoke(this, e);
 
 		public event EventHandler ClientDisconnected;
+
 		protected virtual void OnClientDisconnected(EventArgs e) => ClientDisconnected?.Invoke(this, e);
 
 		public event EventHandler ClientConnectionLost;
+
 		protected virtual void OnClientConnectionLost(EventArgs e) => ClientConnectionLost?.Invoke(this, e);
 
 		public event EventHandler ClientReconnecting;
+
 		protected virtual void OnClientReconnecting(EventArgs e) => ClientReconnecting?.Invoke(this, e);
 
-
-
 		public event EventHandler ServerStarted;
+
 		protected virtual void OnServerStarted(EventArgs e) => ServerStarted?.Invoke(this, e);
 
 		public event EventHandler ServerConnected;
+
 		protected virtual void OnServerConnected(EventArgs e) => ServerConnected?.Invoke(this, e);
 
 		public event EventHandler ServerDisconnected;
+
 		protected virtual void OnServerDisconnected(EventArgs e) => ServerDisconnected?.Invoke(this, e);
 
 		public event EventHandler ServerConnectionLost;
+
 		protected virtual void OnServerConnectionLost(EventArgs e) => ServerConnectionLost?.Invoke(this, e);
 
-        static int? lastNetCoreAggressivity = null;
-        static Guid? lastNetCoreAggressivityGuid = null;
-        public static Guid HugeOperationStart(string targetAggressiveness = "DISABLED")
-        {
-            RTC_RPC.SendToKillSwitch("FREEZE");
+		static int? lastNetCoreAggressivity = null;
+		static Guid? lastNetCoreAggressivityGuid = null;
 
-            if (RTC_Core.isStandalone)
-            {
-                if(lastNetCoreAggressivity == null)
-                    lastNetCoreAggressivity = RTC_Core.sForm.cbNetCoreCommandTimeout.SelectedIndex;
+		public static Guid HugeOperationStart(string targetAggressiveness = "DISABLED")
+		{
+			RTC_RPC.SendToKillSwitch("FREEZE");
 
-                if(targetAggressiveness == "DISABLED")
-                    RTC_Core.sForm.cbNetCoreCommandTimeout.SelectedIndex = RTC_Core.sForm.cbNetCoreCommandTimeout.Items.Count - 1;
-                else
-                    RTC_Core.sForm.cbNetCoreCommandTimeout.SelectedIndex = RTC_Core.sForm.cbNetCoreCommandTimeout.Items.Count - 2;
+			if (RTC_Core.isStandalone)
+			{
+				if (lastNetCoreAggressivity == null)
+					lastNetCoreAggressivity = RTC_Core.sForm.cbNetCoreCommandTimeout.SelectedIndex;
 
-            }
+				if (targetAggressiveness == "DISABLED")
+					RTC_Core.sForm.cbNetCoreCommandTimeout.SelectedIndex = RTC_Core.sForm.cbNetCoreCommandTimeout.Items.Count - 1;
+				else
+					RTC_Core.sForm.cbNetCoreCommandTimeout.SelectedIndex = RTC_Core.sForm.cbNetCoreCommandTimeout.Items.Count - 2;
+			}
 
-            var token = Guid.NewGuid();
+			var token = Guid.NewGuid();
 
-            if (lastNetCoreAggressivityGuid == null)
-                lastNetCoreAggressivityGuid = token;
+			if (lastNetCoreAggressivityGuid == null)
+				lastNetCoreAggressivityGuid = token;
 
-            return token;
-        }
-        public static void HugeOperationEnd(Guid? operationGuid = null)
-        {
-            RTC_RPC.SendToKillSwitch("UNFREEZE");
+			return token;
+		}
 
-            if (RTC_Core.isStandalone)
-            {
-                if (operationGuid != null && operationGuid != lastNetCoreAggressivityGuid)
-                    return;
+		public static void HugeOperationEnd(Guid? operationGuid = null)
+		{
+			RTC_RPC.SendToKillSwitch("UNFREEZE");
 
-                if (lastNetCoreAggressivity != null)
-                {
-                    RTC_Core.sForm.cbNetCoreCommandTimeout.SelectedIndex = (int)lastNetCoreAggressivity;
-                    lastNetCoreAggressivity = null;
-                    lastNetCoreAggressivityGuid = null;
-                }
-            }
+			if (RTC_Core.isStandalone)
+			{
+				if (operationGuid != null && operationGuid != lastNetCoreAggressivityGuid)
+					return;
 
-        }
+				if (lastNetCoreAggressivity != null)
+				{
+					RTC_Core.sForm.cbNetCoreCommandTimeout.SelectedIndex = (int)lastNetCoreAggressivity;
+					lastNetCoreAggressivity = null;
+					lastNetCoreAggressivityGuid = null;
+				}
+			}
+		}
 
-        public static void HugeOperationReset()
-        {
-            RTC_RPC.SendToKillSwitch("UNFREEZE");
+		public static void HugeOperationReset()
+		{
+			RTC_RPC.SendToKillSwitch("UNFREEZE");
 
-            if (RTC_Core.isStandalone)
-            {
-                RTC_Core.sForm.cbNetCoreCommandTimeout.SelectedIndex = 0;
-                lastNetCoreAggressivity = null;
-                lastNetCoreAggressivityGuid = null;
-            }
+			if (RTC_Core.isStandalone)
+			{
+				RTC_Core.sForm.cbNetCoreCommandTimeout.SelectedIndex = 0;
+				lastNetCoreAggressivity = null;
+				lastNetCoreAggressivityGuid = null;
+			}
+		}
 
-        }
-
-        public Socket KillableAcceptSocket(TcpListener listener)
+		public Socket KillableAcceptSocket(TcpListener listener)
 		{
 			Socket socket = null;
 
@@ -171,8 +169,7 @@ namespace RTC
 						socket = listener.EndAcceptSocket(ar);
 						clientConnected.Set();
 					}
-					catch(Exception ex) { OutputException(ex); }
-
+					catch (Exception ex) { OutputException(ex); }
 				}, null);
 				clientConnected.WaitOne();
 
@@ -201,7 +198,6 @@ namespace RTC
 
 			try
 			{
-
 				if (networkStream == null && !dontCreateNetworkStream)
 				{
 					server = new TcpListener(IPAddress.Any, port);
@@ -209,7 +205,6 @@ namespace RTC
 					socket = KillableAcceptSocket(server);
 					networkStream = new NetworkStream(socket);
 					server.Stop();
-
 				}
 
 				networkStream.ReadTimeout = DefaultNetworkStreamTimeout;
@@ -220,23 +215,22 @@ namespace RTC
 
 				while (true)
 				{
-
 					if (networkStream != null && networkStream.DataAvailable)
 					{
-                        RTC_Command cmd;
+						RTC_Command cmd;
 
-                        try
-                        {
-                            cmd = (RTC_Command)binaryFormatter.Deserialize(networkStream);
-                        }
-                        catch(Exception ex)
-                        {
-                            throw ex;
-                        }
+						try
+						{
+							cmd = (RTC_Command)binaryFormatter.Deserialize(networkStream);
+						}
+						catch (Exception ex)
+						{
+							throw ex;
+						}
 
 						if (cmd != null)
 						{
-							if(cmd.Type == CommandType.RETURNVALUE)
+							if (cmd.Type == CommandType.RETURNVALUE)
 								ReturnWatch.SyncReturns.Add((Guid)cmd.requestGuid, cmd.objectValue);
 							else
 								CommandQueue.AddLast(cmd);
@@ -253,21 +247,21 @@ namespace RTC
 							PeerCommandQueue.RemoveFirst();
 						}
 
-                        try
-                        {
+						try
+						{
 							using (MemoryStream ms = new MemoryStream())
 							{
 								binaryFormatter.Serialize(ms, backCmd);
 								byte[] buf = ms.ToArray();
 								networkStream.Write(buf, 0, buf.Length);
 							}
-							
+
 							//binaryFormatter.Serialize(networkStream, backCmd);
-                        }
-                        catch(Exception ex)
-                        {
-                            throw ex;
-                        }
+						}
+						catch (Exception ex)
+						{
+							throw ex;
+						}
 
 						if (backCmd.Type == CommandType.BYE)
 						{
@@ -290,7 +284,6 @@ namespace RTC
 
 					Thread.Sleep(5);
 				}
-
 			}
 			catch (Exception ex)
 			{
@@ -298,11 +291,9 @@ namespace RTC
 
 				if (side == NetworkSide.CLIENT || side == NetworkSide.SERVER)
 					side = NetworkSide.CONNECTIONLOST;
-
 			}
 			finally
 			{
-
 				if (networkStream != null)
 				{
 					try
@@ -334,9 +325,7 @@ namespace RTC
 				}
 
 				isStreamReadingThreadAlive = false;
-
 			}
-
 		}
 
 		public void OutputException(Exception ex)
@@ -384,7 +373,6 @@ namespace RTC
 				streamReadingThread = null;
 			}
 
-
 			if (clientStream != null)
 			{
 				clientStream.Close();
@@ -416,12 +404,10 @@ namespace RTC
 
 			if (!stayConnected)
 				supposedToBeConnected = false;
-
 		}
 
 		private bool StartClient(bool clientDefaultReconnect = false)
 		{
-
 			try
 			{
 				client = new TcpClient();
@@ -439,7 +425,6 @@ namespace RTC
 				streamReadingThread.Name = "CLIENT";
 				streamReadingThread.Start();
 				isStreamReadingThreadAlive = true;
-
 			}
 			catch (Exception ex)
 			{
@@ -497,7 +482,6 @@ namespace RTC
 
 			var md_bck = CommandQueue.ToArray();
 			CommandQueue.Clear();
-
 		}
 
 		public bool StartNetworking(NetworkSide _side, bool clientDefaultReconnect = false, bool dontUseNetworkStream = false)
@@ -595,8 +579,6 @@ namespace RTC
 					StartNetworking(expectedSide);
 				}
 			}
-
-
 		}
 
 		private void CommandQueueProcessorTimer_Tick(object sender, EventArgs e)
@@ -611,28 +593,27 @@ namespace RTC
 
 		public object ProcessQueue(LinkedList<RTC_Command> cmdQueue, bool snatchReturn = false)
 		{
-
 			while (cmdQueue.Count > 0 && cmdQueue.First != null)
 			{
 				RTC_Command cmd = cmdQueue.First.Value;
 
-                if (cmd.Type == CommandType.PUSHSCREEN)
-                {
-                    cmd = GetLatestScreenFrame(cmdQueue);
-                }
-                else
-                {
-                    try
-                    {
-                        cmdQueue.RemoveFirst();
-                    }
-                    catch(Exception ex)
-                    {
-                        MessageBox.Show("NetCore had a thread collision and threw up.\nIn theory this should fix itself after you close this window.\n\n" + ex.ToString());
+				if (cmd.Type == CommandType.PUSHSCREEN)
+				{
+					cmd = GetLatestScreenFrame(cmdQueue);
+				}
+				else
+				{
+					try
+					{
+						cmdQueue.RemoveFirst();
+					}
+					catch (Exception ex)
+					{
+						MessageBox.Show("NetCore had a thread collision and threw up.\nIn theory this should fix itself after you close this window.\n\n" + ex.ToString());
 						ReturnWatch.SyncReturns.Clear();
-                        return null;
-                    }
-                }
+						return null;
+					}
+				}
 
 				if (cmd == null)
 				{
@@ -641,13 +622,12 @@ namespace RTC
 
 				RTC_Command cmdBack = null;
 
-				if(!showBoops && cmd.Type.ToString() != "BOOP")
+				if (!showBoops && cmd.Type.ToString() != "BOOP")
 					Console.WriteLine(expectedSide.ToString() + ":ProcessQueue -> " + cmd.Type.ToString());
 
 				switch (cmd.Type)
 				{
-
-                    // NetCore Commands
+					// NetCore Commands
 
 					case CommandType.HI:
 						if (side == NetworkSide.SERVER)
@@ -674,37 +654,32 @@ namespace RTC
 						StopNetworking(true);
 						return null;
 
-
 					case CommandType.CONNECTIONLOST:
 						StopNetworking(true, true);
 						break;
-
 
 					case CommandType.BOOP:
 						KeepAliveCounter = DefaultKeepAliveCounter;
 						break;
 
-                    case CommandType.AGGRESSIVENESS:
-                        RTC_NetCoreSettings.changeNetCoreSettings((string)cmd.objectValue);
-                        break;
+					case CommandType.AGGRESSIVENESS:
+						RTC_NetCoreSettings.changeNetCoreSettings((string)cmd.objectValue);
+						break;
 
-                    case CommandType.GETAGGRESSIVENESS:
-                        string setting = RTC_Core.sForm.cbNetCoreCommandTimeout.SelectedItem.ToString().ToUpper();
-                        RTC_Core.SendCommandToBizhawk(new RTC_Command(CommandType.AGGRESSIVENESS) { objectValue = setting });
-                        break;
+					case CommandType.GETAGGRESSIVENESS:
+						string setting = RTC_Core.sForm.cbNetCoreCommandTimeout.SelectedItem.ToString().ToUpper();
+						RTC_Core.SendCommandToBizhawk(new RTC_Command(CommandType.AGGRESSIVENESS) { objectValue = setting });
+						break;
 
-
-                    default:
-                        // NetCore Extension Commands (Comment to detach Netcore from Extensions)
-                        cmdBack = Process_RTCExtensions(cmd);
-                        break;
+					default:
+						// NetCore Extension Commands (Comment to detach Netcore from Extensions)
+						cmdBack = Process_RTCExtensions(cmd);
+						break;
 				}
-
 
 				// Create backcommand if a sync request was issued
 				if (cmdBack == null && cmd.requestGuid != null)
 					cmdBack = new RTC_Command(CommandType.RETURNVALUE);
-
 
 				//send command back or return value if from bizhawk to bizhawk
 				if (cmdBack != null)
@@ -716,8 +691,6 @@ namespace RTC
 					cmdBack.requestGuid = cmd.requestGuid;
 					SendCommand(cmdBack, false);
 				}
-
-				
 			}
 
 			return null;
@@ -742,7 +715,7 @@ namespace RTC
 				return null;
 			}
 
-			if(!RTC_Core.isStandalone && !RTC_Hooks.isRemoteRTC && cmd.Type == CommandType.RETURNVALUE)
+			if (!RTC_Core.isStandalone && !RTC_Hooks.isRemoteRTC && cmd.Type == CommandType.RETURNVALUE)
 			{
 				ReturnWatch.SyncReturns.Add((Guid)cmd.requestGuid, cmd.objectValue);
 				return null;
@@ -793,8 +766,6 @@ namespace RTC
 				}
 			}
 
-
-
 			var cmdQueue = PeerCommandQueue;
 
 			if (self)
@@ -810,22 +781,21 @@ namespace RTC
 			Console.WriteLine(expectedSide.ToString() + " -> GETVALUE");
 			return ReturnWatch.GetValue((Guid)cmd.requestGuid, cmd.Type);
 		}
-
 	}
 
 	public static class ReturnWatch
 	{
 		public static volatile Dictionary<Guid, object> SyncReturns = new Dictionary<Guid, object>();
-        public static volatile int maxtries = 0;
+		public static volatile int maxtries = 0;
 
 		public static object GetValue(Guid WatchedGuid, CommandType type)
 		{
 			//await Task.Factory.StartNew(() => WaitForValue(WatchedGuid));
 			Console.WriteLine("GetValue:Awaiting -> " + type.ToString());
 
-            maxtries = 0;
+			maxtries = 0;
 
-            while (!SyncReturns.ContainsKey(WatchedGuid) && maxtries < RTC_NetCore.DefaultMaxRetries)
+			while (!SyncReturns.ContainsKey(WatchedGuid) && maxtries < RTC_NetCore.DefaultMaxRetries)
 			{
 				maxtries++;
 				//WaitMiliseconds(2);
@@ -853,7 +823,6 @@ namespace RTC
 			return ret;
 		}
 
-
 		private static void WaitMiliseconds(int ms)
 		{
 			DateTime _desired = DateTime.Now.AddMilliseconds(ms);
@@ -864,41 +833,42 @@ namespace RTC
 		}
 	}
 
-    public enum NetworkSide
-    {
-        DISCONNECTED,
-        CONNECTIONLOST,
-        PENDINGCLIENT,
-        CLIENT,
-        SERVER
-    }
+	public enum NetworkSide
+	{
+		DISCONNECTED,
+		CONNECTIONLOST,
+		PENDINGCLIENT,
+		CLIENT,
+		SERVER
+	}
 
-    [Serializable()]
+	[Serializable()]
 	public enum CommandType
 	{
-        //===============================================
-        //NetCore commands
-        //===============================================
-        HI,
+		//===============================================
+		//NetCore commands
+		//===============================================
+		HI,
+
 		BYE,
 		SAYBYE,
 		SAIDBYE,
 		CONNECTIONLOST,
 		RETURNVALUE,
 		BOOP,
-        AGGRESSIVENESS,
-        GETAGGRESSIVENESS,
+		AGGRESSIVENESS,
+		GETAGGRESSIVENESS,
 
+		//===============================================
+		//Extension commands
+		//===============================================
 
-        //===============================================
-        //Extension commands
-        //===============================================
+		//General RTC commands
+		BLAST,
 
-        //General RTC commands
-        BLAST,
 		ASYNCBLAST,
 		STASHKEY,
-		
+
 		REMOTE_KEY_PUSHSAVESTATEDICO,
 		REMOTE_KEY_GETSYSTEMNAME,
 		REMOTE_KEY_GETSYSTEMCORE,
@@ -919,13 +889,13 @@ namespace RTC
 		REMOTE_DOMAIN_POKEBYTE,
 		REMOTE_DOMAIN_GETSIZE,
 		REMOTE_PUSHPARAMS,
-        REMOTE_PUSHVMDS,
+		REMOTE_PUSHVMDS,
 		REMOTE_LOADROM,
 		REMOTE_LOADSTATE,
 		REMOTE_SAVESTATE,
-        REMOTE_MERGECONFIG,
-        REMOTE_IMPORTKEYBINDS,
-        REMOTE_BACKUPKEY_REQUEST,
+		REMOTE_MERGECONFIG,
+		REMOTE_IMPORTKEYBINDS,
+		REMOTE_BACKUPKEY_REQUEST,
 		REMOTE_BACKUPKEY_STASH,
 		REMOTE_EVENT_LOADGAMEDONE_NEWGAME,
 		REMOTE_EVENT_LOADGAMEDONE_SAMEGAME,
@@ -935,6 +905,7 @@ namespace RTC
 
 		//Multiplayer commands
 		PULLROM,
+
 		PUSHROM,
 		PULLSTATE,
 		PUSHSTATE,
@@ -954,8 +925,9 @@ namespace RTC
 
 		//General Corruption settings
 		REMOTE_SET_SAVESTATEBOX,
+
 		REMOTE_SET_AUTOCORRUPT,
-        REMOTE_SET_CUSTOMPRECISION,
+		REMOTE_SET_CUSTOMPRECISION,
 		REMOTE_SET_INTENSITY,
 		REMOTE_SET_ERRORDELAY,
 		REMOTE_SET_ENGINE,
@@ -964,6 +936,7 @@ namespace RTC
 
 		// Corruption Core settings and commands
 		REMOTE_SET_NIGHTMARE_TYPE,
+
 		REMOTE_SET_HELLGENIE_MAXCHEATS,
 		REMOTE_SET_HELLGENIE_CLEARALLCHEATS,
 		REMOTE_SET_HELLGENIE_REMOVEEXCESSCHEATS,
@@ -971,12 +944,12 @@ namespace RTC
 		REMOTE_SET_DISTORTION_DELAY,
 		REMOTE_SET_DISTORTION_RESYNC,
 		REMOTE_SET_PIPE_MAXPIPES,
-        REMOTE_SET_PIPE_TILTVALUE,
+		REMOTE_SET_PIPE_TILTVALUE,
 
-        REMOTE_SET_PIPE_CLEARPIPES,
+		REMOTE_SET_PIPE_CLEARPIPES,
 		REMOTE_SET_PIPE_LOCKPIPES,
-        REMOTE_SET_PIPE_CHAINEDPIPES,
-        REMOTE_SET_PIPE_PROCESSONSTEP,
+		REMOTE_SET_PIPE_CHAINEDPIPES,
+		REMOTE_SET_PIPE_PROCESSONSTEP,
 		REMOTE_SET_PIPE_CLEARPIPESREWIND,
 		REMOTE_SET_VECTOR_LIMITER,
 		REMOTE_SET_VECTOR_VALUES,
@@ -991,9 +964,9 @@ namespace RTC
 		REMOTE_HOTKEY_GHCORRUPT,
 		REMOTE_HOTKEY_GHLOAD,
 		REMOTE_HOTKEY_GHSAVE,
-        REMOTE_HOTKEY_GHSTASHTOSTOCKPILE,
-        REMOTE_HOTKEY_BLASTRAWSTASH,
-        REMOTE_HOTKEY_SENDRAWSTASH,
+		REMOTE_HOTKEY_GHSTASHTOSTOCKPILE,
+		REMOTE_HOTKEY_BLASTRAWSTASH,
+		REMOTE_HOTKEY_SENDRAWSTASH,
 		REMOTE_HOTKEY_BLASTLAYERTOGGLE,
 		REMOTE_HOTKEY_BLASTLAYERREBLAST,
 
@@ -1003,6 +976,4 @@ namespace RTC
 		REMOTE_RENDER_STARTED,
 		REMOTE_RENDER_RENDERATLOAD,
 	}
-
-
 }

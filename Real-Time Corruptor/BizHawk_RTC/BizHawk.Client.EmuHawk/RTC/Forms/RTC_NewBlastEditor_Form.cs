@@ -122,7 +122,7 @@ namespace RTC
 			//Clear out whatever is there
 			dgvBlastLayer.Rows.Clear();
 			bu2RowDico = new Dictionary<BlastUnit, DataGridViewRow>();
-			
+
 			//Populate the different rows.
 			foreach (BlastUnit bu in sk.BlastLayer.Layer)
 			{
@@ -136,6 +136,7 @@ namespace RTC
 
 			initialized = true;
 		}
+
 		private void InsertBlastUnitToBlastLayerAndDGV(int index, BlastUnit bu)
 		{
 			sk.BlastLayer.Layer.Add(bu);
@@ -365,13 +366,10 @@ namespace RTC
 			}
 		}
 
-		
-
 		private void dgvBlastLayer_CellValueChanged(object sender, DataGridViewCellEventArgs e)
 		{
 			if (!initialized || dgvBlastLayer == null)
 				return;
-
 
 			if (!CurrentlyUpdating)
 			{
@@ -392,13 +390,11 @@ namespace RTC
 
 					throw new System.Exception("Something went wrong in when updating the blastunit \n" +
 					"Make sure your input is valid.\n\n" +
-					"If your input was valid, you should probably send a copy of this error and what you did to cause it to the RTC devs.\n\n" + 
+					"If your input was valid, you should probably send a copy of this error and what you did to cause it to the RTC devs.\n\n" +
 					ex.ToString());
 				}
-
 			}
 		}
-
 
 		private void dgvBlastLayer_CellValidating(object sender, DataGridViewCellValidatingEventArgs e)
 		{
@@ -411,7 +407,6 @@ namespace RTC
 				UpdateRowPrecision(dgvBlastLayer.Rows[e.RowIndex]);
 
 			*/
-		
 		}
 
 		//Validates that a blast unit is valid from a dgv row
@@ -500,7 +495,8 @@ namespace RTC
 				}
 				//Remove the old one
 				RemoveBlastUnitFromBlastLayerAndDGV(bu);
-			}catch(Exception ex)
+			}
+			catch (Exception ex)
 			{
 				throw;
 			}
@@ -517,6 +513,7 @@ namespace RTC
 
 			UpdateBlastLayerSize();
 		}
+
 		private void RemoveBlastUnitFromBlastLayerAndDGV(DataGridViewRow row)
 		{
 			BlastUnit bu = (BlastUnit)row.Cells["dgvBlastUnitReference"].Value;
@@ -529,6 +526,7 @@ namespace RTC
 
 			UpdateBlastLayerSize();
 		}
+
 		private void RemoveBlastUnitFromBlastLayer(DataGridViewRow row)
 		{
 			BlastUnit bu = (BlastUnit)row.Cells["dgvBlastUnitReference"].Value;
@@ -696,6 +694,7 @@ namespace RTC
 
 			PopulateColumnHeaderContextMenu(column);
 		}
+
 		private void PopulateParamContextMenu(int column, int row)
 		{
 			cmsBlastEditor.Items.Clear();
@@ -703,7 +702,7 @@ namespace RTC
 			{
 				string domain = dgvBlastLayer["dgvParamDomain", row].Value.ToString();
 				long address = Convert.ToInt64(dgvBlastLayer["dgvParam", row].Value);
-								
+
 				{
 					(cmsBlastEditor.Items.Add("Open Selected Address in Hex Editor", null, new EventHandler((ob, ev) =>
 					{
@@ -913,8 +912,7 @@ namespace RTC
 
 		private void dgvBlastLayer_Sorted(object sender, EventArgs e)
 		{
-
-			if(dgvBlastLayer.SortOrder == SortOrder.Ascending)
+			if (dgvBlastLayer.SortOrder == SortOrder.Ascending)
 			{
 				switch (dgvBlastLayer.SortedColumn.Name)
 				{
@@ -961,7 +959,6 @@ namespace RTC
 					default:
 						break;
 				}
-			
 			}
 		}
 
@@ -1005,7 +1002,6 @@ namespace RTC
 
 		private void cbUseHex_CheckedChanged(object sender, EventArgs e)
 		{
-
 			updownShiftBlastLayerAmount.Hexadecimal = cbUseHex.Checked;
 			foreach (DataGridViewColumn column in dgvBlastLayer.Columns)
 			{
@@ -1036,8 +1032,8 @@ namespace RTC
 			}
 			//Make sure the row gets removed from the blastlayer as well
 			RemoveBlastUnitFromBlastLayer(e.Row);
-
 		}
+
 		private void dgvBlastLayer_UserDeletedRow(object sender, DataGridViewRowEventArgs e)
 		{
 		}
@@ -1168,8 +1164,7 @@ namespace RTC
 		}
 
 		private void saveToFileblToolStripMenuItem_Click(object sender, EventArgs e)
-		{	
-
+		{
 			//If there's no blastlayer file already set, don't quicksave
 			if (currentBlastLayerFile == "")
 				RTC_BlastTools.SaveBlastLayerToFile(sk.BlastLayer);
@@ -1433,6 +1428,7 @@ namespace RTC
 		{
 			shiftBlastLayer(true);
 		}
+
 		private void btnShiftBlastLayerUp_Click(object sender, EventArgs e)
 		{
 			shiftBlastLayer(false);
@@ -1477,7 +1473,7 @@ namespace RTC
 
 				//Bake them
 				BlastLayer newBlastLayer = RTC_BlastTools.BakeBlastBytesToSet(sk, bl);
-				
+
 				int i = 0;
 				//Insert the new one where the old row was, then remove the old row.
 				foreach (DataGridViewRow selected in dgvBlastLayer.SelectedRows.Cast<DataGridViewRow>().Where(item => ((bool)item.Cells["dgvBlastUnitLocked"].Value != true) && ((BlastUnit)item.Cells["dgvBlastUnitReference"].Value) is BlastByte))
@@ -1486,7 +1482,6 @@ namespace RTC
 					i++;
 					RemoveBlastUnitFromBlastLayerAndDGV((BlastUnit)selected.Cells["dgvBlastUnitReference"].Value);
 				}
-				
 			}
 			catch (Exception ex)
 			{
@@ -1499,7 +1494,6 @@ namespace RTC
 
 		private void sanitizeDuplicatesToolStripMenuItem_Click(object sender, EventArgs e)
 		{
-
 			List<BlastUnit> bul = new List<BlastUnit>(sk.BlastLayer.Layer.ToArray().Reverse());
 			List<long> usedAddresses = new List<long>();
 			List<long> usedPipeAddresses = new List<long>();
@@ -1533,11 +1527,10 @@ namespace RTC
 
 		private void openBlastLayerGeneratorToolStripMenuItem_Click_1(object sender, EventArgs e)
 		{
-
 			if (RTC_Core.bgForm != null)
 				RTC_Core.bgForm.Close();
 			RTC_Core.bgForm = new RTC_BlastGenerator_Form();
 			RTC_Core.bgForm.LoadStashkey(sk);
 		}
-	}	
+	}
 }

@@ -1,14 +1,8 @@
-﻿using BizHawk.Client.Common;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+﻿using System;
 using System.Windows.Forms;
-using System.Collections;
 
 namespace RTC
 {
-
 	public class RTC_BlastByteGenerator
 	{
 		public BlastLayer GenerateLayer(string Domain, long StepSize, long StartAddress, long EndAddress, long Param1, long Param2, int Precision, BGBlastByteModes Mode)
@@ -25,23 +19,22 @@ namespace RTC
 
 		private BlastUnit GenerateUnit(string domain, long address, long param1, long param2, int precision, BGBlastByteModes mode)
 		{
-
 			try
 			{
 				MemoryDomainProxy mdp = RTC_MemoryDomains.getProxy(domain, address);
 				BlastByteType Type = BlastByteType.SET;
-				
+
 				byte[] _value = new byte[precision];
 				byte[] _temp = new byte[precision];
 
 				long safeAddress = address - (address % _value.Length);
 
 				//Use >= as Size is 1 indexed whereas address is 0 indexed
-				if (safeAddress + _value.Length  > mdp.Size)
+				if (safeAddress + _value.Length > mdp.Size)
 					return null;
 
 				switch (mode)
-				{							
+				{
 					case BGBlastByteModes.ADD:
 						Type = BlastByteType.ADD;
 						_value = RTC_Extensions.getByteArrayValue(precision, param1, mdp.BigEndian);
@@ -116,7 +109,6 @@ namespace RTC
 				}
 
 				return new BlastByte(domain, safeAddress, Type, _value, mdp.BigEndian, true);
-
 			}
 			catch (Exception ex)
 			{
@@ -127,6 +119,5 @@ namespace RTC
 				return null;
 			}
 		}
-
 	}
 }
