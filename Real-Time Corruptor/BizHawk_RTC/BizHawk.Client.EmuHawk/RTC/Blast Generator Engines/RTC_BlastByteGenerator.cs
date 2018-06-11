@@ -51,8 +51,8 @@ namespace RTC
 							_value[i] = (byte)RTC_Core.RND.Next(0, 255);
 						break;
 					case BGBlastByteModes.REPLACE_X_WITH_Y:
-						if (mdp.PeekBytes(safeAddress, safeAddress + precision).SequenceEqual(RTC_Extensions.getByteArrayValue(precision, param1, mdp.BigEndian)))
-							_value = RTC_Extensions.getByteArrayValue(precision, param2, mdp.BigEndian);
+						if (mdp.PeekBytes(safeAddress, safeAddress + precision).SequenceEqual(RTC_Extensions.getByteArrayValue(precision, param1, true)))
+							_value = RTC_Extensions.getByteArrayValue(precision, param2, true);
 						else
 							return null;
 						break;

@@ -426,7 +426,7 @@ namespace RTC
 			return (x % m + m) % m;
 		}
 
-		public static byte[] getByteArrayValue(int precision, decimal newValue, bool isInputBigEndian)
+		public static byte[] getByteArrayValue(int precision, decimal newValue, bool needsBytesFlipped = false)
 		{
 			switch (precision)
 			{
@@ -435,15 +435,15 @@ namespace RTC
 				case 2:
 					{
 						byte[] Value = BitConverter.GetBytes(Convert.ToUInt16(newValue));
-						//			if (isInputBigEndian)
-						//			Array.Reverse(Value);
+						if (needsBytesFlipped)
+							Array.Reverse(Value);
 						return Value;
 					}
 				case 4:
 					{
 						byte[] Value = BitConverter.GetBytes(Convert.ToUInt32(newValue));
-						//	if (isInputBigEndian)
-						//			Array.Reverse(Value);
+						if (needsBytesFlipped)
+							Array.Reverse(Value);
 						return Value;
 					}
 			}
@@ -451,25 +451,57 @@ namespace RTC
 			return null;
 		}
 
-		public static byte[] getByteArrayValue(int precision, long newValue, bool isInputBigEndian)
+		public static byte[] getByteArrayValue(int precision, long newValue, bool needsBytesFlipped = false, int leadingZeroes = 0)
 		{
-			switch (precision)
+			if (leadingZeroes == 0)
 			{
-				case 1:
-					return new byte[] { (byte)newValue };
-				case 2:
-					{
-						byte[] Value = BitConverter.GetBytes(Convert.ToUInt16(newValue));
-						return Value;
-					}
-				case 4:
-					{
-						byte[] Value = BitConverter.GetBytes(Convert.ToUInt32(newValue));
-						return Value;
-					}
-			}
+				switch (precision)
+				{
+					case 1:
+						return new byte[] { (byte)newValue };
+					case 2:
+						{
+							byte[] Value = BitConverter.GetBytes(Convert.ToUInt16(newValue));
+							if (needsBytesFlipped)
+								Array.Reverse(Value);
+							return Value;
+						}
+					case 4:
+						{
+							byte[] Value = BitConverter.GetBytes(Convert.ToUInt32(newValue));
+							if (needsBytesFlipped)
+								Array.Reverse(Value);
+							return Value;
+						}
+				}
 
-			return null;
+				return null;
+			}
+			else
+			{
+				switch (precision)
+				{
+					case 1:
+						return new byte[] { (byte)newValue };
+					case 2:
+						{
+							byte[] Value = BitConverter.GetBytes(Convert.ToUInt16(newValue));
+							if (needsBytesFlipped)
+								Array.Reverse(Value);
+							return Value;
+						}
+					case 4:
+						{
+							byte[] Value = BitConverter.GetBytes(Convert.ToUInt32(newValue));
+							if (needsBytesFlipped)
+								Array.Reverse(Value);
+							return Value;
+						}
+				}
+
+				return null;
+
+			}
 		}
 
 		public static void FlipBytes(this byte[] array)
