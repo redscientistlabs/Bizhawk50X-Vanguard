@@ -238,7 +238,8 @@ namespace RTC
 		private void btnJustCorrupt_Click(object sender, EventArgs e)
 		{
 			BlastLayer bl = GenerateBlastLayers();
-			(bl.Clone() as BlastLayer).Apply();
+			if (bl != null)
+				(bl.Clone() as BlastLayer).Apply();
 		}
 
 		private void btnLoadCorrupt_Click(object sender, EventArgs e)
@@ -257,7 +258,11 @@ namespace RTC
 			}
 
 			StashKey newSk = (StashKey)sk.Clone();
-			newSk.BlastLayer = (BlastLayer)GenerateBlastLayers(true).Clone();
+
+			BlastLayer bl = GenerateBlastLayers(true);
+			if (bl == null)
+				return;
+			newSk.BlastLayer = bl;
 
 			GC.Collect();
 			GC.WaitForPendingFinalizers();
@@ -281,7 +286,10 @@ namespace RTC
 			}
 
 			StashKey newSk = (StashKey)sk.Clone();
-			newSk.BlastLayer = (BlastLayer)GenerateBlastLayers(true).Clone();
+			BlastLayer bl = GenerateBlastLayers(true);
+			if (bl == null)
+				return;
+			newSk.BlastLayer = bl;
 
 			if (openedFromBlastEditor)
 			{
