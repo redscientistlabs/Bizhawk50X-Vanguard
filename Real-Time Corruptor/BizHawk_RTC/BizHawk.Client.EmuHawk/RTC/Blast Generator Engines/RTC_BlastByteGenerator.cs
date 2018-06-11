@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using System.Windows.Forms;
 
 namespace RTC
@@ -12,7 +13,9 @@ namespace RTC
 			//We subtract 1 at the end as precision is 1,2,4, and we need to go 0,1,3
 			for (long Address = StartAddress; Address < EndAddress; Address = (Address + StepSize + Precision - 1))
 			{
-				bl.Layer.Add(GenerateUnit(Domain, Address, Param1, Param2, Precision, Mode));
+				BlastUnit bu = GenerateUnit(Domain, Address, Param1, Param2, Precision, Mode);
+				if (bu != null)
+					bl.Layer.Add(bu);
 			}
 			return bl;
 		}
@@ -48,9 +51,12 @@ namespace RTC
 							_value[i] = (byte)RTC_Core.RND.Next(0, 255);
 						break;
 					case BGBlastByteModes.REPLACE_X_WITH_Y:
-						if (mdp.PeekBytes(safeAddress, safeAddress + precision) == RTC_Extensions.getByteArrayValue(precision, param1, mdp.BigEndian))
+						if (mdp.PeekBytes(safeAddress, safeAddress + precision).SequenceEqual(RTC_Extensions.getByteArrayValue(precision, param1, mdp.BigEndian)))
 							_value = RTC_Extensions.getByteArrayValue(precision, param2, mdp.BigEndian);
+						else
+							return null;
 						break;
+
 					case BGBlastByteModes.SET:
 						_value = RTC_Extensions.getByteArrayValue(precision, param1, mdp.BigEndian);
 						break;
@@ -116,7 +122,7 @@ namespace RTC
 					"This is an RTC error, so you should probably send this to the RTC devs.\n" +
 					"If you know the steps to reproduce this error it would be greatly appreciated.\n\n" +
 								ex.ToString());
-				return null;
+				throw;
 			}
 		}
 	}

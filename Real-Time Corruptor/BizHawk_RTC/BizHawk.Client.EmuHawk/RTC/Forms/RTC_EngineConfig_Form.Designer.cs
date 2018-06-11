@@ -547,8 +547,9 @@
             "Freeze Engine",
             "Pipe Engine",
             "Vector Engine",
-            "External ROM Plugin",
-            "Blast Generator"});
+			"Blast Generator",
+			"External ROM Plugin"
+           });
             this.cbSelectedEngine.Location = new System.Drawing.Point(10, 13);
             this.cbSelectedEngine.Name = "cbSelectedEngine";
             this.cbSelectedEngine.Size = new System.Drawing.Size(165, 21);

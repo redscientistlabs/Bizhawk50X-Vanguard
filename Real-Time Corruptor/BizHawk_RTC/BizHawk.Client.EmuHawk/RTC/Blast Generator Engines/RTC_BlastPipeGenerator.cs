@@ -12,7 +12,9 @@ namespace RTC
 			//We subtract 1 at the end as precision is 1,2,4, and we need to go 0,1,3
 			for (long Address = StartAddress; Address < EndAddress; Address = (Address + StepSize + Precision - 1))
 			{
-				bl.Layer.Add(GenerateUnit(Domain, Address, Param1, Param2, StepSize, Precision, Mode));
+				BlastUnit bu = GenerateUnit(Domain, Address, Param1, Param2, StepSize, Precision, Mode);
+				if (bu != null)
+					bl.Layer.Add(bu);
 			}
 			return bl;
 		}
@@ -67,7 +69,7 @@ namespace RTC
 					"This is an RTC error, so you should probably send this to the RTC devs.\n" +
 					"If you know the steps to reproduce this error it would be greatly appreciated.\n\n" +
 								ex.ToString());
-				return null;
+				throw;
 			}
 		}
 	}

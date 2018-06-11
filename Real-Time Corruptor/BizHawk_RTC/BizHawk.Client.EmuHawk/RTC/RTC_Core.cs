@@ -18,7 +18,7 @@ namespace RTC
 		public static Random RND = new Random();
 
 		//General RTC Values
-		public static string RtcVersion = "3.20k";
+		public static string RtcVersion = "3.20L";
 
 		//Directories
 		public static string bizhawkDir = Directory.GetCurrentDirectory();

@@ -368,41 +368,51 @@ namespace RTC
 
 		public BlastLayer GenerateBlastLayers(bool useStashkey = false)
 		{
-			BlastLayer bl = new BlastLayer();
-
-			if (useStashkey)
+			try
 			{
-				//If opened from engine config, use the GH state
-				if (!openedFromBlastEditor)
+				BlastLayer bl = new BlastLayer();
+
+				if (useStashkey)
 				{
-					StashKey psk = RTC_StockpileManager.getCurrentSavestateStashkey();
-					if (psk == null)
+					//If opened from engine config, use the GH state
+					if (!openedFromBlastEditor)
 					{
-						RTC_Core.StopSound();
-						MessageBox.Show("The Glitch Harvester could not perform the CORRUPT action\n\nEither no Savestate Box was selected in the Savestate Manager\nor the Savetate Box itself is empty.");
-						RTC_Core.StartSound();
-						return null;
+						StashKey psk = RTC_StockpileManager.getCurrentSavestateStashkey();
+						if (psk == null)
+						{
+							RTC_Core.StopSound();
+							MessageBox.Show("The Glitch Harvester could not perform the CORRUPT action\n\nEither no Savestate Box was selected in the Savestate Manager\nor the Savetate Box itself is empty.");
+							RTC_Core.StartSound();
+							return null;
+						}
+						sk = (StashKey)psk.Clone();
 					}
-					sk = (StashKey)psk.Clone();
+					sk.RunOriginal();
 				}
-				sk.RunOriginal();
-			}
 
-			foreach (DataGridViewRow row in dgvBlastGenerator.Rows)
-			{
-				if ((bool)row.Cells["dgvRowDirty"].Value == true)
+				foreach (DataGridViewRow row in dgvBlastGenerator.Rows)
 				{
-					BlastGeneratorProto proto = CreateProtoFromRow(row);
-					row.Cells["dgvBlastLayerReference"].Value = proto.GenerateBlastLayer();
-					bl.Layer.AddRange(((BlastLayer)row.Cells["dgvBlastLayerReference"].Value).Layer);
-					row.Cells["dgvRowDirty"].Value = true;
+					if ((bool)row.Cells["dgvRowDirty"].Value == true)
+					{
+						BlastGeneratorProto proto = CreateProtoFromRow(row);
+						row.Cells["dgvBlastLayerReference"].Value = proto.GenerateBlastLayer();
+						bl.Layer.AddRange(((BlastLayer)row.Cells["dgvBlastLayerReference"].Value).Layer);
+						row.Cells["dgvRowDirty"].Value = true;
+					}
+					else
+					{
+						bl.Layer.AddRange(((BlastLayer)row.Cells["dgvBlastLayerReference"].Value).Layer);
+					}
 				}
-				else
-				{
-					bl.Layer.AddRange(((BlastLayer)row.Cells["dgvBlastLayerReference"].Value).Layer);
-				}
+				return bl;
 			}
-			return bl;
+			catch (Exception ex)
+			{
+				MessageBox.Show("Something went wrong when generating the blastlayers. \n" +
+					"Are you sure your input is correct and you have the correct core loaded?\n\n" +
+					ex.ToString());
+				return null;
+			}
 		}
 
 		private BlastGeneratorProto CreateProtoFromRow(DataGridViewRow row)
