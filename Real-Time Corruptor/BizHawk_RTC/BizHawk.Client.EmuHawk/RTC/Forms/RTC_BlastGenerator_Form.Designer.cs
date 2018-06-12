@@ -79,6 +79,7 @@
             this.loadFromFileblToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.importBlastlayerblToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.btnHideSidebar = new System.Windows.Forms.Button();
+            this.btnHelp = new System.Windows.Forms.Button();
             this.panelSidebar.SuspendLayout();
             this.panel2.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.updownNudgeParam2)).BeginInit();
@@ -96,7 +97,7 @@
             this.cbUseHex.CheckState = System.Windows.Forms.CheckState.Checked;
             this.cbUseHex.Font = new System.Drawing.Font("Segoe UI Semibold", 8F, System.Drawing.FontStyle.Bold);
             this.cbUseHex.ForeColor = System.Drawing.Color.White;
-            this.cbUseHex.Location = new System.Drawing.Point(5, 191);
+            this.cbUseHex.Location = new System.Drawing.Point(5, 200);
             this.cbUseHex.Name = "cbUseHex";
             this.cbUseHex.Size = new System.Drawing.Size(114, 17);
             this.cbUseHex.TabIndex = 157;
@@ -107,6 +108,7 @@
             // 
             // panelSidebar
             // 
+            this.panelSidebar.Controls.Add(this.btnHelp);
             this.panelSidebar.Controls.Add(this.btnLoadCorrupt);
             this.panelSidebar.Controls.Add(this.btnJustCorrupt);
             this.panelSidebar.Controls.Add(this.btnRefreshDomains);
@@ -165,7 +167,7 @@
             this.btnRefreshDomains.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnRefreshDomains.Font = new System.Drawing.Font("Segoe UI Semibold", 9F, System.Drawing.FontStyle.Bold);
             this.btnRefreshDomains.ForeColor = System.Drawing.Color.Black;
-            this.btnRefreshDomains.Location = new System.Drawing.Point(5, 244);
+            this.btnRefreshDomains.Location = new System.Drawing.Point(5, 253);
             this.btnRefreshDomains.Name = "btnRefreshDomains";
             this.btnRefreshDomains.Size = new System.Drawing.Size(148, 25);
             this.btnRefreshDomains.TabIndex = 161;
@@ -200,7 +202,7 @@
             this.btnAddRow.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnAddRow.Font = new System.Drawing.Font("Segoe UI Semibold", 9F, System.Drawing.FontStyle.Bold);
             this.btnAddRow.ForeColor = System.Drawing.Color.Black;
-            this.btnAddRow.Location = new System.Drawing.Point(5, 213);
+            this.btnAddRow.Location = new System.Drawing.Point(5, 222);
             this.btnAddRow.Name = "btnAddRow";
             this.btnAddRow.Size = new System.Drawing.Size(148, 25);
             this.btnAddRow.TabIndex = 160;
@@ -230,7 +232,7 @@
             this.panel2.Controls.Add(this.btnNudgeStartAddressUp);
             this.panel2.Controls.Add(this.btnNudgeStartAddressDown);
             this.panel2.Controls.Add(this.updownNudgeStartAddress);
-            this.panel2.Location = new System.Drawing.Point(5, 19);
+            this.panel2.Location = new System.Drawing.Point(5, 28);
             this.panel2.Name = "panel2";
             this.panel2.Size = new System.Drawing.Size(148, 166);
             this.panel2.TabIndex = 159;
@@ -518,7 +520,7 @@
             this.label4.AutoSize = true;
             this.label4.Font = new System.Drawing.Font("Segoe UI", 8F);
             this.label4.ForeColor = System.Drawing.Color.White;
-            this.label4.Location = new System.Drawing.Point(2, 3);
+            this.label4.Location = new System.Drawing.Point(2, 10);
             this.label4.Name = "label4";
             this.label4.Size = new System.Drawing.Size(108, 13);
             this.label4.TabIndex = 158;
@@ -825,6 +827,23 @@
             this.btnHideSidebar.UseVisualStyleBackColor = true;
             this.btnHideSidebar.Click += new System.EventHandler(this.btnHideSidebar_Click);
             // 
+            // btnHelp
+            // 
+            this.btnHelp.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
+            this.btnHelp.FlatAppearance.BorderSize = 0;
+            this.btnHelp.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnHelp.Font = new System.Drawing.Font("Segoe UI Semibold", 9.75F, System.Drawing.FontStyle.Bold);
+            this.btnHelp.ForeColor = System.Drawing.Color.Black;
+            this.btnHelp.Image = global::BizHawk.Client.EmuHawk.Properties.Resources.Help;
+            this.btnHelp.Location = new System.Drawing.Point(132, 1);
+            this.btnHelp.Name = "btnHelp";
+            this.btnHelp.Size = new System.Drawing.Size(27, 22);
+            this.btnHelp.TabIndex = 174;
+            this.btnHelp.TabStop = false;
+            this.btnHelp.Tag = "color:dark";
+            this.btnHelp.UseVisualStyleBackColor = false;
+            this.btnHelp.Click += new System.EventHandler(this.btnHelp_Click);
+            // 
             // RTC_BlastGenerator_Form
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -910,5 +929,6 @@
 		private DataGridViewNumericUpDownColumn dgvEndAddress;
 		private DataGridViewNumericUpDownColumn dgvParam1;
 		private DataGridViewNumericUpDownColumn dgvParam2;
+		private System.Windows.Forms.Button btnHelp;
 	}
 }

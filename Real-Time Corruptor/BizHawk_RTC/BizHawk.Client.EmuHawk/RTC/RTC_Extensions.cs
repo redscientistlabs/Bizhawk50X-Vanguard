@@ -325,21 +325,23 @@ namespace RTC
 			return 0;
 		}
 
-		public static decimal getDecimalValue(byte[] Value, bool isInputBigEndian)
+		public static decimal getDecimalValue(byte[] Value, bool NeedsBytesFlipped)
 		{
-			//if (isInputBigEndian)
-			//	Array.Reverse(Value);
+			byte[] _Value = (byte[])Value.Clone();
+
+			if (NeedsBytesFlipped)
+				Array.Reverse(_Value);
 
 			switch (Value.Length)
 			{
 				case 1:
-					return (int)Value[0];
+					return (int)_Value[0];
 				case 2:
-					return BitConverter.ToUInt16(Value, 0);
+					return BitConverter.ToUInt16(_Value, 0);
 				case 4:
-					return BitConverter.ToUInt32(Value, 0);
+					return BitConverter.ToUInt32(_Value, 0);
 				case 8:
-					return BitConverter.ToUInt64(Value, 0);
+					return BitConverter.ToUInt64(_Value, 0);
 			}
 
 			return 0;
@@ -347,16 +349,18 @@ namespace RTC
 
 		public static byte[] addValueToByteArray(byte[] originalValue, decimal addValue, bool isInputBigEndian)
 		{
+			byte[] _Value = (byte[])originalValue.Clone();
+
 			if (isInputBigEndian)
-				Array.Reverse(originalValue);
+				Array.Reverse(_Value);
 
 			bool isAdd = addValue >= 0;
 			decimal decimalAddValueAbs = Math.Abs(addValue);
 
-			switch (originalValue.Length)
+			switch (_Value.Length)
 			{
 				case 1:
-					byte byteValue = originalValue[0];
+					byte byteValue = _Value[0];
 					byte addByteValue = (decimalAddValueAbs > byte.MaxValue ? byte.MaxValue : Convert.ToByte(decimalAddValueAbs));
 
 					if (isAdd)
@@ -368,7 +372,7 @@ namespace RTC
 
 				case 2:
 					{
-						UInt16 int16Value = BitConverter.ToUInt16(originalValue, 0);
+						UInt16 int16Value = BitConverter.ToUInt16(_Value, 0);
 						UInt16 addInt16Value = (decimalAddValueAbs > UInt16.MaxValue ? UInt16.MaxValue : Convert.ToUInt16(decimalAddValueAbs));
 
 						if (isAdd)
@@ -385,7 +389,7 @@ namespace RTC
 					}
 				case 4:
 					{
-						UInt32 int32Value = BitConverter.ToUInt32(originalValue, 0);
+						UInt32 int32Value = BitConverter.ToUInt32(_Value, 0);
 						UInt32 addInt32Value = (decimalAddValueAbs > UInt32.MaxValue ? UInt32.MaxValue : Convert.ToUInt32(decimalAddValueAbs));
 
 						if (isAdd)
@@ -402,7 +406,7 @@ namespace RTC
 					}
 				case 8:
 					{
-						UInt64 int64Value = BitConverter.ToUInt64(originalValue, 0);
+						UInt64 int64Value = BitConverter.ToUInt64(_Value, 0);
 						UInt64 addInt64Value = (decimalAddValueAbs > UInt64.MaxValue ? UInt64.MaxValue : Convert.ToUInt64(decimalAddValueAbs));
 
 						if (isAdd)

@@ -175,7 +175,7 @@ namespace RTC
 			Decimal sourceAddress = 0;
 
 			//This is both the value and the dest address depending on the engine
-			Decimal destAddress = 0;
+			Decimal param = 0;
 			string blastMode = "";
 
 			//add DateTimePicker into the control collection of the DataGridView
@@ -186,7 +186,7 @@ namespace RTC
 				precision = bb.Value.Length;
 				sourceAddress = Convert.ToDecimal(bb.Address);
 				sourceDomain = bb.Domain;
-				destAddress = (Decimal)RTC_Extensions.getDecimalValue(bb.Value, bb.BigEndian);
+				param = RTC_Extensions.getDecimalValue(bb.Value, true);
 				blastMode = Convert.ToString(bb.Type);
 			}
 			else if (bu is BlastCheat)
@@ -195,7 +195,7 @@ namespace RTC
 				precision = bc.Value.Length;
 				sourceAddress = bc.Address;
 				sourceDomain = bc.Domain;
-				destAddress = RTC_Extensions.getDecimalValue(bc.Value, bc.BigEndian);
+				param = RTC_Extensions.getDecimalValue(bc.Value, true);
 				if (bc.IsFreeze)
 					blastMode = "FREEZE";
 				else
@@ -209,7 +209,7 @@ namespace RTC
 				sourceAddress = bp.Address;
 				sourceDomain = bp.Domain;
 				destDomain = bp.PipeDomain;
-				destAddress = bp.PipeAddress;
+				param = bp.PipeAddress;
 				blastMode = Convert.ToString(bp.TiltValue);
 			}
 			if (bu is BlastVector)
@@ -218,11 +218,11 @@ namespace RTC
 				precision = bv.Values.Length;
 				sourceAddress = Convert.ToDecimal(bv.Address);
 				sourceDomain = bv.Domain;
-				destAddress = (Decimal)RTC_Extensions.getDecimalValue(bv.Values, bv.BigEndian);
+				param = (Decimal)RTC_Extensions.getDecimalValue(bv.Values, bv.BigEndian);
 				blastMode = Convert.ToString(bv.Type);
 			}
 
-			dgvBlastLayer.Rows.Insert(index, bu, locked, enabled, GetPrecisionNameFromSize(precision), blastType, blastMode, sourceDomain, sourceAddress, destDomain, destAddress);
+			dgvBlastLayer.Rows.Insert(index, bu, locked, enabled, GetPrecisionNameFromSize(precision), blastType, blastMode, sourceDomain, sourceAddress, destDomain, param);
 
 			//update the BlastUnit to Cell dico.
 			var row = dgvBlastLayer.Rows[index];
@@ -546,7 +546,7 @@ namespace RTC
 					BlastByte bb = (BlastByte)row.Cells["dgvBlastUnitReference"].Value;
 					bb.IsEnabled = Convert.ToBoolean((row.Cells["dgvBlastEnabled"].Value));
 					bb.Address = Convert.ToInt64(row.Cells["dgvSourceAddress"].Value);
-					bb.Value = RTC_Extensions.getByteArrayValue(GetPrecisionSizeFromName(row.Cells["dgvPrecision"].Value.ToString()), Convert.ToDecimal(row.Cells["dgvParam"].Value));
+					bb.Value = RTC_Extensions.getByteArrayValue(GetPrecisionSizeFromName(row.Cells["dgvPrecision"].Value.ToString()), Convert.ToDecimal(row.Cells["dgvParam"].Value), true);
 					bb.Domain = Convert.ToString(row.Cells["dgvSourceAddressDomain"].Value);
 					Enum.TryParse(row.Cells["dgvBlastUnitMode"].Value.ToString().ToUpper(), out bb.Type);
 					bb.IsLocked = Convert.ToBoolean((row.Cells["dgvBlastUnitLocked"].Value));
@@ -559,7 +559,7 @@ namespace RTC
 					BlastCheat bc = (BlastCheat)row.Cells["dgvBlastUnitReference"].Value;
 					bc.IsEnabled = Convert.ToBoolean((row.Cells["dgvBlastEnabled"].Value));
 					bc.Address = Convert.ToInt64(row.Cells["dgvSourceAddress"].Value);
-					bc.Value = RTC_Extensions.getByteArrayValue(GetPrecisionSizeFromName(row.Cells["dgvPrecision"].Value.ToString()), Convert.ToDecimal(row.Cells["dgvParam"].Value));
+					bc.Value = RTC_Extensions.getByteArrayValue(GetPrecisionSizeFromName(row.Cells["dgvPrecision"].Value.ToString()), Convert.ToDecimal(row.Cells["dgvParam"].Value), true);
 					bc.Domain = Convert.ToString(row.Cells["dgvSourceAddressDomain"].Value);
 					if (row.Cells["dgvBlastUnitMode"].Value.ToString().ToUpper() == "FREEZE")
 						bc.IsFreeze = true;
@@ -590,7 +590,7 @@ namespace RTC
 					BlastVector bv = (BlastVector)row.Cells["dgvBlastUnitReference"].Value;
 					bv.IsEnabled = Convert.ToBoolean((row.Cells["dgvBlastEnabled"].Value));
 					bv.Address = Convert.ToInt64(row.Cells["dgvSourceAddress"].Value);
-					bv.Values = RTC_Extensions.getByteArrayValue(GetPrecisionSizeFromName(row.Cells["dgvPrecision"].Value.ToString()), Convert.ToDecimal(row.Cells["dgvParam"].Value));
+					bv.Values = RTC_Extensions.getByteArrayValue(GetPrecisionSizeFromName(row.Cells["dgvPrecision"].Value.ToString()), Convert.ToDecimal(row.Cells["dgvParam"].Value), true);
 					bv.Domain = Convert.ToString(row.Cells["dgvSourceAddressDomain"].Value);
 					bv.IsLocked = Convert.ToBoolean((row.Cells["dgvBlastUnitLocked"].Value));
 					Enum.TryParse(row.Cells["dgvBlastUnitMode"].Value.ToString().ToUpper(), out bv.Type);

@@ -1118,9 +1118,6 @@ namespace RTC
 				//When using ADD and SUBSTRACT we need to properly handle multi-byte values.
 				//This means that it has to properly roll-over.
 				//00 00 00 FF needs to become 00 00 01 00,  FF FF FF FF needs to become 00 00 00 00, etc
-				//Now, endianess is important here. The workflow for the RTC is that we always handle things as big endian (left to right) and then flip when needed
-				//That means when getting the values we're tilting, we need to flip the bytes we read from memory if it's little endian.
-
 				//We assume that the user is going to be using SET and VECTOR more than ADD and SUBSTRACT so check them first
 				switch (Type)
 				{
@@ -1129,11 +1126,11 @@ namespace RTC
 						break;
 
 					case (BlastByteType.ADD):
-						_Values = RTC_Extensions.addValueToByteArray(mdp.PeekBytes(targetAddress, targetAddress + _Values.Length), RTC_Extensions.getDecimalValue(_Values, BigEndian), BigEndian);
+						_Values = RTC_Extensions.addValueToByteArray(mdp.PeekBytes(targetAddress, targetAddress + _Values.Length), RTC_Extensions.getDecimalValue(_Values, !(BigEndian)), BigEndian);
 						break;
 
 					case (BlastByteType.SUBSTRACT):
-						_Values = RTC_Extensions.addValueToByteArray(mdp.PeekBytes(targetAddress, targetAddress + _Values.Length), RTC_Extensions.getDecimalValue(_Values, BigEndian) * -1, BigEndian);
+						_Values = RTC_Extensions.addValueToByteArray(mdp.PeekBytes(targetAddress, targetAddress + _Values.Length), RTC_Extensions.getDecimalValue(_Values, !(BigEndian)) * -1, BigEndian);
 						break;
 
 					case (BlastByteType.NONE):
@@ -1572,6 +1569,7 @@ namespace RTC
 				long targetAddress = RTC_MemoryDomains.getRealAddress(Domain, Address);
 
 				string cheatName = "RTC Cheat|" + targetDomain + "|" + (targetAddress).ToString() + "|" + DisplayType.ToString() + "|" + BigEndian.ToString() + "|" + String.Join(",", Value.Select(it => it.ToString())) + "|" + IsEnabled.ToString() + "|" + IsFreeze.ToString();
+
 
 				//VERY IMPORTANT MESSAGE FOR ENDIANESS
 				//Endianess used to be borked in cheats for bizhawk 2.2

@@ -9,6 +9,9 @@ namespace RTC
 		public BlastLayer GenerateLayer(string Domain, long StepSize, long StartAddress, long EndAddress, long Param1, long Param2, int Precision, BGBlastCheatModes Mode)
 		{
 			BlastLayer bl = new BlastLayer();
+			
+			//We need to clear any cheats out first
+			RTC_HellgenieEngine.ClearCheats();
 
 			//We subtract 1 at the end as precision is 1,2,4, and we need to go 0,1,3
 			for (long Address = StartAddress; Address < EndAddress; Address = (Address + StepSize + Precision - 1))
@@ -40,10 +43,10 @@ namespace RTC
 				switch (mode)
 				{
 					case BGBlastCheatModes.ADD:
-						_value = RTC_Extensions.addValueToByteArray(mdp.PeekBytes(safeAddress, safeAddress + _value.Length), RTC_Extensions.getDecimalValue(_value, mdp.BigEndian), mdp.BigEndian);
+						_value = RTC_Extensions.addValueToByteArray(mdp.PeekBytes(safeAddress, safeAddress + _value.Length), param1, mdp.BigEndian);
 						break;
 					case BGBlastCheatModes.SUBTRACT:
-						_value = RTC_Extensions.addValueToByteArray(mdp.PeekBytes(safeAddress, safeAddress + _value.Length), RTC_Extensions.getDecimalValue(_value, mdp.BigEndian) * -1, mdp.BigEndian);
+						_value = RTC_Extensions.addValueToByteArray(mdp.PeekBytes(safeAddress, safeAddress + _value.Length), param1 * -1, mdp.BigEndian);
 						break;
 					case BGBlastCheatModes.RANDOM:
 						for (int i = 0; i < _value.Length; i++)
@@ -56,7 +59,7 @@ namespace RTC
 							return null;
 						break;
 					case BGBlastCheatModes.SET:
-						_value = RTC_Extensions.getByteArrayValue(precision, param1, mdp.BigEndian);
+						_value = RTC_Extensions.getByteArrayValue(precision, param1, true);
 						break;
 					case BGBlastCheatModes.SHIFT:
 						_value = mdp.PeekBytes(safeAddress, safeAddress + precision);
@@ -65,25 +68,25 @@ namespace RTC
 
 					//Bitwise operations
 					case BGBlastCheatModes.BITWISE_AND:
-						_temp = RTC_Extensions.getByteArrayValue(precision, param1, mdp.BigEndian);
+						_temp = RTC_Extensions.getByteArrayValue(precision, param1, true);
 						_value = mdp.PeekBytes(safeAddress, safeAddress + precision);
 						for (int i = 0; i < _value.Length; i++)
 							_value[i] = (byte)(_value[i] & _temp[i]);
 						break;
 					case BGBlastCheatModes.BITWISE_COMPLEMENT:
-						_temp = RTC_Extensions.getByteArrayValue(precision, param1, mdp.BigEndian);
+						_temp = RTC_Extensions.getByteArrayValue(precision, param1, true);
 						_value = mdp.PeekBytes(safeAddress, safeAddress + precision);
 						for (int i = 0; i < _value.Length; i++)
 							_value[i] = (byte)(_value[i] & _temp[i]);
 						break;
 					case BGBlastCheatModes.BITWISE_OR:
-						_temp = RTC_Extensions.getByteArrayValue(precision, param1, mdp.BigEndian);
+						_temp = RTC_Extensions.getByteArrayValue(precision, param1, true);
 						_value = mdp.PeekBytes(safeAddress, safeAddress + precision);
 						for (int i = 0; i < _value.Length; i++)
 							_value[i] = (byte)(_value[i] | _temp[i]);
 						break;
 					case BGBlastCheatModes.BITWISE_XOR:
-						_temp = RTC_Extensions.getByteArrayValue(precision, param1, mdp.BigEndian);
+						_temp = RTC_Extensions.getByteArrayValue(precision, param1, true);
 						_value = mdp.PeekBytes(safeAddress, safeAddress + precision);
 						for (int i = 0; i < _value.Length; i++)
 							_value[i] = (byte)(_value[i] ^ _temp[i]);
@@ -94,7 +97,6 @@ namespace RTC
 							RTC_Extensions.ShiftLeft(_value);
 						break;
 					case BGBlastCheatModes.BITWISE_SHIFT_RIGHT:
-						_temp = RTC_Extensions.getByteArrayValue(precision, param1, mdp.BigEndian);
 						_value = mdp.PeekBytes(safeAddress, safeAddress + precision);
 						for (int i = 0; i < param1; i++)
 							RTC_Extensions.ShiftRight(_value);
@@ -105,7 +107,6 @@ namespace RTC
 							RTC_Extensions.RotateLeft(_value);
 						break;
 					case BGBlastCheatModes.BITWISE_ROTATE_RIGHT:
-						_temp = RTC_Extensions.getByteArrayValue(precision, param1, mdp.BigEndian);
 						_value = mdp.PeekBytes(safeAddress, safeAddress + precision);
 						for (int i = 0; i < param1; i++)
 							RTC_Extensions.RotateRight(_value);
