@@ -703,20 +703,20 @@ namespace RTC
 		private void btnHelp_Click(object sender, EventArgs e)
 		{
 			MessageBox.Show(
-			@"Blast Generator instructions help and examples
-			-----------------------------------------------
-			>Endianess is always handled as little endian, or right -> left
-			This is completely agnostic of core endianess
-			That means that:
-			10 on 16-bit precision will be treated as 00 10
-			1000 on 16-bit precision will be treated as 10 00
-			etc...
+@"Blast Generator instructions help and examples
+-----------------------------------------------
+>Endianess is always handled as little endian, or right -> left
+This is completely agnostic of core endianess
+That means that:
+10 on 16-bit precision will be treated as 00 10
+1000 on 16-bit precision will be treated as 10 00
+etc...
 
-			> Ranges are exclusive, meaning that the last
-			address is excluded from the range.
-			This means that:
-			Start Address of 10, End address of 16, step size of 1
-			would generate blasts for addresses 10,11,12,13,14,15"
+> Ranges are exclusive, meaning that the last
+address is excluded from the range.
+This means that:
+Start Address of 10, End address of 16, step size of 1
+would generate blasts for addresses 10,11,12,13,14,15"
 			);
 		}
 	}

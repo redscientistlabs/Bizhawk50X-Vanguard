@@ -272,6 +272,17 @@ namespace RTC
 					return false;
 				}
 
+				foreach (StashKey item in sks)
+					if (item.GameName != master.GameName)
+					{
+						MessageBox.Show("Merge attempt failed: game mismatch\n\n" + string.Join("\n", sks.Select(it => $"{it.GameName} -> {it.SystemName} -> {it.SystemCore}")));
+						RTC_NetCore.HugeOperationEnd(token);
+
+						return false;
+					}
+
+
+
 				BlastLayer bl = new BlastLayer();
 
 				foreach (StashKey item in sks)
@@ -284,6 +295,7 @@ namespace RTC
 				currentStashkey.SystemName = master.SystemName;
 				currentStashkey.SystemCore = master.SystemCore;
 				currentStashkey.GameName = master.GameName;
+				currentStashkey.SyncSettings = master.SyncSettings;
 
 				//RTC_NetCore.HugeOperationEnd(token);
 				//  token = RTC_NetCore.HugeOperationStart("LAZY");
