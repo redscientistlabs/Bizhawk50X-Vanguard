@@ -207,14 +207,14 @@ namespace RTC
 					{
 						if (RTC_NoteEditor_Form.currentlyOpenNoteForm == null)
 						{
-							RTC_NoteEditor_Form.currentlyOpenNoteForm = new RTC_NoteEditor_Form(sk, senderGrid);
+							RTC_NoteEditor_Form.currentlyOpenNoteForm = new RTC_NoteEditor_Form(sk.Note, "StockpilePlayer", sk);
 						}
 						else
 						{
 							if (RTC_NoteEditor_Form.currentlyOpenNoteForm.Visible)
 								RTC_NoteEditor_Form.currentlyOpenNoteForm.Close();
 
-							RTC_NoteEditor_Form.currentlyOpenNoteForm = new RTC_NoteEditor_Form(sk, senderGrid);
+							RTC_NoteEditor_Form.currentlyOpenNoteForm = new RTC_NoteEditor_Form(sk.Note, "StockpilePlayer", sk);
 						}
 
 						return;
@@ -236,6 +236,22 @@ namespace RTC
 			finally
 			{
 				dgvStockpile.Enabled = true;
+			}
+		}
+
+		public void RefreshNoteIcons()
+		{
+			foreach (DataGridViewRow dataRow in dgvStockpile.Rows)
+			{
+				StashKey sk = (StashKey)dataRow.Cells["Item"].Value;
+				if (sk.Note == null)
+				{
+					dataRow.Cells["Note"].Value = "";
+				}
+				else
+				{
+					dataRow.Cells["Note"].Value = "📝";
+				}
 			}
 		}
 	}

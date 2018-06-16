@@ -7,25 +7,26 @@ namespace RTC
 {
 	public partial class RTC_NoteEditor_Form : Form
 	{
-		DataGridView dgv;
-		StashKey sk;
+		string Note;
+		string Source;
+		object Item;
+		
 
 		public static Form currentlyOpenNoteForm = null;
 
-		public RTC_NoteEditor_Form(StashKey _sk, DataGridView _dgv)
+		public RTC_NoteEditor_Form(string _note, string _source, object _item)
 		{
-			sk = _sk;
-			dgv = _dgv;
-
+			Note = _note;
+			Source = _source;
+			Item = _item;
 			InitializeComponent();
-
 			this.Show();
 		}
 
 		private void RTC_NE_Form_Load(object sender, EventArgs e)
 		{
-			if (sk.Note != null)
-				tbNote.Text = sk.Note.Replace("\n", Environment.NewLine);
+			if(Note != null)
+				tbNote.Text = Note.Replace("\n", Environment.NewLine);
 		}
 
 		private void RTC_NE_Form_FormClosing(object sender, FormClosingEventArgs e)
@@ -34,14 +35,27 @@ namespace RTC
 
 			string cleanText = string.Join("\n", tbNote.Lines.Select(it => it.Trim()));
 
-			sk.Note = null;
+			Note = "";
 
 			if (cleanText != "")
 			{
-				sk.Note = cleanText;
+				Note = cleanText;
 			}
-
-			RTC_Core.ghForm.RefreshNoteIcons(dgv);
+			switch (Source)
+			{
+				case ("GlitchHarvester"):
+					(Item as StashKey).Note = Note;
+					RTC_Core.ghForm.RefreshNoteIcons();
+					break;
+				case ("StockpilePlayer"):
+					(Item as StashKey).Note = Note;
+					RTC_Core.spForm.RefreshNoteIcons();
+					break;
+				case ("BlastEditor"):
+					(Item as BlastUnit).Note = Note;
+					RTC_Core.beForm.RefreshNoteIcons();
+					break;
+			}
 		}
 
 		private void RTC_NE_Form_Shown(object sender, EventArgs e)

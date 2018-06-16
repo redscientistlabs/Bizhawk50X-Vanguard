@@ -58,12 +58,9 @@ namespace RTC
 			}
 		}
 
-		public void RefreshNoteIcons(DataGridView dgv)
+		public void RefreshNoteIcons()
 		{
-			if (dgv == null)
-				return;
-
-			foreach (DataGridViewRow dataRow in dgv.Rows)
+			foreach (DataGridViewRow dataRow in dgvStockpile.Rows)
 			{
 				StashKey sk = (StashKey)dataRow.Cells["Item"].Value;
 				if (sk.Note == null)
@@ -538,7 +535,7 @@ namespace RTC
 			dataRow.Cells["SystemName"].Value = sk.SystemName;
 			dataRow.Cells["SystemCore"].Value = sk.SystemCore;
 
-			RefreshNoteIcons(dgvStockpile);
+			RefreshNoteIcons();
 
 			RTC_StockpileManager.StashHistory.Remove(sk);
 
@@ -1408,14 +1405,14 @@ namespace RTC
 						StashKey sk = (StashKey)senderGrid.Rows[e.RowIndex].Cells["Item"].Value;
 						if (RTC_NoteEditor_Form.currentlyOpenNoteForm == null)
 						{
-							RTC_NoteEditor_Form.currentlyOpenNoteForm = new RTC_NoteEditor_Form(sk, senderGrid);
+							RTC_NoteEditor_Form.currentlyOpenNoteForm = new RTC_NoteEditor_Form(sk.Note, "GlitchHarvester", sk);
 						}
 						else
 						{
 							if (RTC_NoteEditor_Form.currentlyOpenNoteForm.Visible)
 								RTC_NoteEditor_Form.currentlyOpenNoteForm.Close();
 
-							RTC_NoteEditor_Form.currentlyOpenNoteForm = new RTC_NoteEditor_Form(sk, senderGrid);
+							RTC_NoteEditor_Form.currentlyOpenNoteForm = new RTC_NoteEditor_Form(sk.Note, "GlitchHarvester", sk);
 						}
 
 						return;

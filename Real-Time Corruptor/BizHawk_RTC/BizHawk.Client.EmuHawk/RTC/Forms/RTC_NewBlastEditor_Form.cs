@@ -30,7 +30,8 @@ namespace RTC
 		 * 6 dgvSourceAddressDomain
 		 * 7 dvgSourceAddress
 		 * 8 dvgParamDomain
-		 * 9 dvgParam
+		 * 9 dvgParam 
+		 * 10 dvgNoteButton
 		 */
 
 		private enum BlastEditorColumn
@@ -44,7 +45,8 @@ namespace RTC
 			dgvSourceAddressDomain,
 			dgvSourceAddress,
 			dgvParamDomain,
-			dgvParam
+			dgvParam,
+			dvgNoteButton,
 		}
 
 		private StashKey sk = null;
@@ -82,6 +84,7 @@ namespace RTC
 			this.dgvBlastLayer.CellValidating += new DataGridViewCellValidatingEventHandler(dgvBlastLayer_CellValidating);
 			this.dgvBlastLayer.CellValueChanged += new DataGridViewCellEventHandler(dgvBlastLayer_CellValueChanged);
 			this.dgvBlastLayer.MouseClick += new System.Windows.Forms.MouseEventHandler(dgvBlastLayer_MouseClick);
+			this.dgvBlastLayer.CellClick += new DataGridViewCellEventHandler(dgvBlastLayer_CellClick);
 			this.dgvBlastLayer.RowsAdded += new DataGridViewRowsAddedEventHandler(dgvBlastLayer_RowsAdded);
 			this.dgvBlastLayer.RowsRemoved += new DataGridViewRowsRemovedEventHandler(dgvBlastLayer_RowsRemoved);
 			this.dgvBlastLayer.UserDeletingRow += new DataGridViewRowCancelEventHandler(dgvBlastLayer_UserDeletingRow);
@@ -133,6 +136,7 @@ namespace RTC
 			dgvBlastLayer.Columns["dgvParam"].ValueType = typeof(Decimal);
 
 			UpdateBlastLayerSize();
+			RefreshNoteIcons();
 
 			initialized = true;
 		}
@@ -1531,6 +1535,50 @@ namespace RTC
 				RTC_Core.bgForm.Close();
 			RTC_Core.bgForm = new RTC_BlastGenerator_Form();
 			RTC_Core.bgForm.LoadStashkey(sk);
+		}
+		private void dgvBlastLayer_CellClick(object sender, DataGridViewCellEventArgs e)
+		{
+			// Note handling
+			if (e != null)
+			{
+				var senderGrid = (DataGridView)sender;
+
+				if (senderGrid.Columns[e.ColumnIndex] is DataGridViewButtonColumn &&
+					e.RowIndex >= 0)
+				{
+					DataGridViewRow row = dgvBlastLayer.Rows[e.RowIndex];
+					BlastUnit bu = (BlastUnit)row.Cells["dgvBlastUnitReference"].Value;
+					if (RTC_NoteEditor_Form.currentlyOpenNoteForm == null)
+					{
+						RTC_NoteEditor_Form.currentlyOpenNoteForm = new RTC_NoteEditor_Form(bu.Note, "BlastEditor", bu);
+					}
+					else
+					{
+						if (RTC_NoteEditor_Form.currentlyOpenNoteForm.Visible)
+							RTC_NoteEditor_Form.currentlyOpenNoteForm.Close();
+
+						RTC_NoteEditor_Form.currentlyOpenNoteForm = new RTC_NoteEditor_Form(bu.Note, "BlastEditor", bu);
+					}
+
+					return;
+				}
+			}
+		}
+
+		public void RefreshNoteIcons()
+		{
+			if(sk != null) 
+				foreach (BlastUnit bu in sk.BlastLayer.Layer)
+				{
+					if (bu.Note == null)
+					{
+						bu2RowDico[bu].Cells["dgvNoteButton"].Value = "";
+					}
+					else
+					{
+						bu2RowDico[bu].Cells["dgvNoteButton"].Value = "📝";
+					}
+				}
 		}
 	}
 }

@@ -289,8 +289,8 @@ namespace RTC
 			foreach (StashKey key in sks.StashKeys)
 				dgvStockpile.Rows.Add(key, key.GameName, key.SystemName, key.SystemCore, key.Note);
 
-			RTC_Core.ghForm.RefreshNoteIcons(RTC_Core.ghForm.dgvStockpile);
-			RTC_Core.ghForm.RefreshNoteIcons(RTC_Core.spForm.dgvStockpile);
+			RTC_Core.ghForm.RefreshNoteIcons();
+			RTC_Core.spForm.RefreshNoteIcons();
 
 			sks.Filename = Filename;
 
@@ -678,7 +678,7 @@ namespace RTC
 				dataRow.Cells["SystemCore"].Value = sk.SystemCore;
 			}
 
-			RTC_Core.ghForm.RefreshNoteIcons(RTC_Core.ghForm.dgvStockpile);
+			RTC_Core.ghForm.RefreshNoteIcons();
 			CheckCompatibility(sks);
 
 			RTC_StockpileManager.StockpileChanged();
@@ -1047,6 +1047,7 @@ namespace RTC
 
 		public abstract string Domain { get; set; }
 		public abstract long Address { get; set; }
+		public abstract string Note { get; set; }
 	}
 
 	[Serializable()]
@@ -1059,6 +1060,7 @@ namespace RTC
 		public override bool IsEnabled { get; set; }
 		public override bool IsLocked { get; set; } = false;
 		public override bool BigEndian { get; set; }
+		public override string Note { get; set; } = "";
 
 		public BlastByte(string _domain, long _address, BlastByteType _type, byte[] _value, bool _bigEndian, bool _isEnabled)
 		{
@@ -1226,6 +1228,7 @@ namespace RTC
 		public override long Address { get; set; }
 		public override bool IsLocked { get; set; } = false;
 		public override bool BigEndian { get; set; } = true;
+		public override string Note { get; set; } = "";
 		public BlastByteType Type;
 
 		public byte[] Values;
@@ -1342,6 +1345,7 @@ namespace RTC
 		public override long Address { get; set; }
 		public override bool BigEndian { get; set; }
 		public override bool IsLocked { get; set; } = false;
+		public override string Note { get; set; } = "";
 		public string PipeDomain;
 		public long PipeAddress;
 		public int PipeSize;
@@ -1505,6 +1509,7 @@ namespace RTC
 		public override long Address { get; set; }
 		public override bool BigEndian { get; set; }
 		public override bool IsLocked { get; set; } = false;
+		public override string Note { get; set; } = "";
 		public BizHawk.Client.Common.DisplayType DisplayType;
 
 		public byte[] Value;
