@@ -312,6 +312,7 @@ namespace RTC
 
 				RTC_Core.ghForm.DontLoadSelectedStash = true;
 				RTC_Core.ghForm.lbStashHistory.SelectedIndex = RTC_Core.ghForm.lbStashHistory.Items.Count - 1;
+				RTC_StockpileManager.currentStashkey = RTC_StockpileManager.StashHistory[RTC_Core.ghForm.lbStashHistory.SelectedIndex];
 			}
 
 			GC.Collect();
@@ -779,7 +780,7 @@ would generate blasts for addresses 10,11,12,13,14,15"
 				DataGridViewCell textCell = row.Cells["dgvNoteText"];
 				DataGridViewCell buttonCell = row.Cells["dgvNoteButton"];
 
-				if (textCell.Value == null)
+				if (textCell.Value == null || textCell.Value.ToString() == "")
 				{
 					buttonCell.Value = "";
 				}

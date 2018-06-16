@@ -318,14 +318,16 @@ namespace RTC
 			StashKey newSk = (StashKey)sk.Clone();
 			//newSk.Key = RTC_Core.GetRandomKey();
 			//newSk.Alias = null;
-
+			
 			RTC_StockpileManager.StashHistory.Add(newSk);
+
 			RTC_Core.ghForm.RefreshStashHistory();
 			RTC_Core.ghForm.dgvStockpile.ClearSelection();
 			RTC_Core.ghForm.lbStashHistory.ClearSelected();
 
 			RTC_Core.ghForm.DontLoadSelectedStash = true;
 			RTC_Core.ghForm.lbStashHistory.SelectedIndex = RTC_Core.ghForm.lbStashHistory.Items.Count - 1;
+			RTC_StockpileManager.currentStashkey = RTC_StockpileManager.StashHistory[RTC_Core.ghForm.lbStashHistory.SelectedIndex];
 
 			GC.Collect();
 			GC.WaitForPendingFinalizers();
@@ -1570,7 +1572,7 @@ namespace RTC
 			if(sk != null) 
 				foreach (BlastUnit bu in sk.BlastLayer.Layer)
 				{
-					if (bu.Note == null)
+					if (bu.Note == null || bu.Note == "")
 					{
 						bu2RowDico[bu].Cells["dgvNoteButton"].Value = "";
 					}
