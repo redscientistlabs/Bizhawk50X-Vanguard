@@ -10,6 +10,7 @@ Features:
 - Easy start option
 - Glitch Harvester (Corruption Savestate Manager)
 - Blast Editor (Corruption instruction editor)
+- Blast Generator (Corruption instruction generation tool in the vein of classic rom corruptors)
 - Stockpile Player (Corruption replayer)
 - As of 3.x, can survive BizHawk crashes using Detached Mode
 - The new Pipe Engine can simulate digital short circuits
