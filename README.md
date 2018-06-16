@@ -15,7 +15,7 @@ Features:
 - The new Pipe Engine can simulate digital short circuits
 - The Vector Engine is designed for 3D systems that support IEEE754 Floating Point values
 - RTC Multiplayer allows you to corrupt via the internet or locally
-- Comes bundled with standalone "Windows Glitch Harvester" for file corruption
+- Comes bundled with standalone "Windows Glitch Harvester" for file corruption (Source available here: https://github.com/ircluzar/WGH)
 
 Please consult the Official Wiki for software documentation. https://corrupt.wiki
 
