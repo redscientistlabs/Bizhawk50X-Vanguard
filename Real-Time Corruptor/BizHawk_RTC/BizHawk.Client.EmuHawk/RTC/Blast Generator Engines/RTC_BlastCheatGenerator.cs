@@ -6,7 +6,7 @@ namespace RTC
 {
 	public class RTC_BlastCheatGenerator
 	{
-		public BlastLayer GenerateLayer(string Domain, long StepSize, long StartAddress, long EndAddress, long Param1, long Param2, int Precision, BGBlastCheatModes Mode)
+		public BlastLayer GenerateLayer(string Note, string Domain, long StepSize, long StartAddress, long EndAddress, long Param1, long Param2, int Precision, BGBlastCheatModes Mode)
 		{
 			BlastLayer bl = new BlastLayer();
 			
@@ -16,14 +16,14 @@ namespace RTC
 			//We subtract 1 at the end as precision is 1,2,4, and we need to go 0,1,3
 			for (long Address = StartAddress; Address < EndAddress; Address = (Address + StepSize + Precision - 1))
 			{
-				BlastUnit bu = (GenerateUnit(Domain, Address, Param1, Param2, Precision, Mode));
+				BlastUnit bu = (GenerateUnit(Domain, Address, Param1, Param2, Precision, Mode, Note));
 				if (bu != null)
 					bl.Layer.Add(bu);
 			}
 			return bl;
 		}
 
-		private BlastUnit GenerateUnit(string domain, long address, long param1, long param2, int precision, BGBlastCheatModes mode)
+		private BlastUnit GenerateUnit(string domain, long address, long param1, long param2, int precision, BGBlastCheatModes mode, string note)
 		{
 			try
 			{
@@ -116,7 +116,7 @@ namespace RTC
 						break;
 				}
 
-				return new BlastCheat(domain, safeAddress, _displaytype, mdp.BigEndian, _value, true, freeze);
+				return new BlastCheat(domain, safeAddress, _displaytype, mdp.BigEndian, _value, true, freeze, note);
 			}
 			catch (Exception ex)
 			{

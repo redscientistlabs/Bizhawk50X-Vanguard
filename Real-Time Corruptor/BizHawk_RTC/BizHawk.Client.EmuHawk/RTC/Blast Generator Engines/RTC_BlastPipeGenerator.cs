@@ -5,21 +5,21 @@ namespace RTC
 {
 	public class RTC_BlastPipeGenerator
 	{
-		public BlastLayer GenerateLayer(string Domain, long StepSize, long StartAddress, long EndAddress, long Param1, long Param2, int Precision, BGBlastPipeModes Mode)
+		public BlastLayer GenerateLayer(string Note, string Domain, long StepSize, long StartAddress, long EndAddress, long Param1, long Param2, int Precision, BGBlastPipeModes Mode)
 		{
 			BlastLayer bl = new BlastLayer();
 
 			//We subtract 1 at the end as precision is 1,2,4, and we need to go 0,1,3
 			for (long Address = StartAddress; Address < EndAddress; Address = (Address + StepSize + Precision - 1))
 			{
-				BlastUnit bu = GenerateUnit(Domain, Address, Param1, Param2, StepSize, Precision, Mode);
+				BlastUnit bu = GenerateUnit(Domain, Address, Param1, Param2, StepSize, Precision, Mode, Note);
 				if (bu != null)
 					bl.Layer.Add(bu);
 			}
 			return bl;
 		}
 
-		private BlastUnit GenerateUnit(string domain, long address, long param1, long param2, long stepSize, int precision, BGBlastPipeModes mode)
+		private BlastUnit GenerateUnit(string domain, long address, long param1, long param2, long stepSize, int precision, BGBlastPipeModes mode, string note)
 		{
 			try
 			{
@@ -61,7 +61,7 @@ namespace RTC
 				if (destAddress >= mdp.Size)
 					return null;
 
-				return new BlastPipe(domain, safeAddress, domain, destAddress, 0, precision, mdp.BigEndian, true);
+				return new BlastPipe(domain, safeAddress, domain, destAddress, 0, precision, mdp.BigEndian, true, note);
 			}
 			catch (Exception ex)
 			{

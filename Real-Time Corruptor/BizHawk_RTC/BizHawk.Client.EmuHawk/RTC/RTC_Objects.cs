@@ -1062,7 +1062,7 @@ namespace RTC
 		public override bool BigEndian { get; set; }
 		public override string Note { get; set; } = "";
 
-		public BlastByte(string _domain, long _address, BlastByteType _type, byte[] _value, bool _bigEndian, bool _isEnabled)
+		public BlastByte(string _domain, long _address, BlastByteType _type, byte[] _value, bool _bigEndian, bool _isEnabled, string _note = "")
 		{
 			Domain = _domain;
 			Address = _address - (_address % _value.Length);
@@ -1071,6 +1071,7 @@ namespace RTC
 			Value = _value;
 			IsEnabled = _isEnabled;
 			BigEndian = _bigEndian;
+			Note = _note;
 		}
 
 		public BlastByte()
@@ -1235,12 +1236,13 @@ namespace RTC
 
 		public override bool IsEnabled { get; set; }
 
-		public BlastVector(string _domain, long _address, byte[] _values, bool _isEnabled)
+		public BlastVector(string _domain, long _address, byte[] _values, bool _isEnabled, string _note = "")
 		{
 			Domain = _domain;
 			Address = (_address - (_address % 4));
 			Values = _values;
 			IsEnabled = _isEnabled;
+			Note = _note;
 		}
 
 		public BlastVector()
@@ -1353,7 +1355,7 @@ namespace RTC
 
 		public override bool IsEnabled { get; set; }
 
-		public BlastPipe(string _domain, long _address, string _pipeDomain, long _pipeAddress, int _tiltValue, int _pipeSize, bool _bigEndian, bool _isEnabled)
+		public BlastPipe(string _domain, long _address, string _pipeDomain, long _pipeAddress, int _tiltValue, int _pipeSize, bool _bigEndian, bool _isEnabled, string _note = "")
 		{
 			Domain = _domain;
 			Address = _address;
@@ -1363,6 +1365,7 @@ namespace RTC
 			IsEnabled = _isEnabled;
 			TiltValue = _tiltValue;
 			BigEndian = _bigEndian;
+			Note = _note;
 		}
 
 		public BlastPipe()
@@ -1517,7 +1520,7 @@ namespace RTC
 
 		public override bool IsEnabled { get; set; }
 
-		public BlastCheat(string _domain, long _address, BizHawk.Client.Common.DisplayType _displayType, bool _bigEndian, byte[] _value, bool _isEnabled, bool _isFreeze)
+		public BlastCheat(string _domain, long _address, BizHawk.Client.Common.DisplayType _displayType, bool _bigEndian, byte[] _value, bool _isEnabled, bool _isFreeze, string _note = "")
 		{
 			Domain = _domain;
 
@@ -1530,6 +1533,8 @@ namespace RTC
 			Value = _value;
 			IsEnabled = _isEnabled;
 			IsFreeze = _isFreeze;
+
+			Note = _note;
 		}
 
 		public BlastCheat()
@@ -1665,13 +1670,15 @@ namespace RTC
 		public long Param1;
 		public long Param2;
 		public string Mode;
+		public string Note;
 
 		public BlastGeneratorProto()
 		{
 		}
 
-		public BlastGeneratorProto(string _blastType, string _domain, string _mode, int _precision, long _stepSize, long _startAddress, long _endAddress, long _param1, long _param2)
+		public BlastGeneratorProto(string _note, string _blastType, string _domain, string _mode, int _precision, long _stepSize, long _startAddress, long _endAddress, long _param1, long _param2)
 		{
+			Note = _note;
 			BlastType = _blastType;
 			Domain = _domain;
 			Precision = _precision;
@@ -1690,15 +1697,15 @@ namespace RTC
 			{
 				case "BlastByte":
 					RTC_BlastByteGenerator bbGenerator = new RTC_BlastByteGenerator();
-					bl = bbGenerator.GenerateLayer(Domain, StepSize, StartAddress, EndAddress, Param1, Param2, Precision, (BGBlastByteModes)Enum.Parse(typeof(BGBlastByteModes), Mode, true));
+					bl = bbGenerator.GenerateLayer(Note, Domain, StepSize, StartAddress, EndAddress, Param1, Param2, Precision, (BGBlastByteModes)Enum.Parse(typeof(BGBlastByteModes), Mode, true));
 					break;
 				case "BlastCheat":
 					RTC_BlastCheatGenerator bcGenerator = new RTC_BlastCheatGenerator();
-					bl = bcGenerator.GenerateLayer(Domain, StepSize, StartAddress, EndAddress, Param1, Param2, Precision, (BGBlastCheatModes)Enum.Parse(typeof(BGBlastCheatModes), Mode, true));
+					bl = bcGenerator.GenerateLayer(Note, Domain, StepSize, StartAddress, EndAddress, Param1, Param2, Precision, (BGBlastCheatModes)Enum.Parse(typeof(BGBlastCheatModes), Mode, true));
 					break;
 				case "BlastPipe":
 					RTC_BlastPipeGenerator bpGenerator = new RTC_BlastPipeGenerator();
-					bl = bpGenerator.GenerateLayer(Domain, StepSize, StartAddress, EndAddress, Param1, Param2, Precision, (BGBlastPipeModes)Enum.Parse(typeof(BGBlastPipeModes), Mode, true));
+					bl = bpGenerator.GenerateLayer(Note, Domain, StepSize, StartAddress, EndAddress, Param1, Param2, Precision, (BGBlastPipeModes)Enum.Parse(typeof(BGBlastPipeModes), Mode, true));
 					break;
 				default:
 					return null;

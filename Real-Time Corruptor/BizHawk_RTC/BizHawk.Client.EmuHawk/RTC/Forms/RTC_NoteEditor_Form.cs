@@ -43,6 +43,7 @@ namespace RTC
 			}
 			switch (Source)
 			{
+				//We update a stashkey for the GH and Stockpile Player
 				case ("GlitchHarvester"):
 					(Item as StashKey).Note = Note;
 					RTC_Core.ghForm.RefreshNoteIcons();
@@ -51,9 +52,15 @@ namespace RTC
 					(Item as StashKey).Note = Note;
 					RTC_Core.spForm.RefreshNoteIcons();
 					break;
+				//We update individual blastunits for the blast editor
 				case ("BlastEditor"):
 					(Item as BlastUnit).Note = Note;
 					RTC_Core.beForm.RefreshNoteIcons();
+					break;
+				//We update a DGV cell for the Blast Generator
+				case ("BlastGenerator"):
+					(Item as DataGridViewCell).Value = Note;
+					RTC_Core.bgForm.RefreshNoteIcons();
 					break;
 			}
 		}

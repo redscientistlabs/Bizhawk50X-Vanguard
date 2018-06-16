@@ -9,15 +9,17 @@ namespace RTC
 	// 0  dgvBlastLayerReference
 	// 1  dgvRowDirty
 	// 2  dgvEnabled
-	// 3  dgvDomain
-	// 4  dgvPrecision
-	// 5  dgvType
-	// 6  dgvMode
-	// 7  dgvStepSize
-	// 8  dgvStartAddress
-	// 9  dgvEndAddress
-	// 10  dgvParam1
-	// 11  dgvParam2
+	// 3  dgvNoteText
+	// 4  dgvDomain
+	// 5  dgvPrecision
+	// 6  dgvType
+	// 7  dgvMode
+	// 8  dgvStepSize
+	// 9  dgvStartAddress
+	// 10 dgvEndAddress
+	// 11 dgvParam1
+	// 12 dgvParam2
+	// 13 dgvNoteButton
 
 	//TYPE = BLASTUNITTYPE
 	//MODE = GENERATIONMODE
@@ -29,6 +31,7 @@ namespace RTC
 			dgvBlastLayerReference,
 			dgvRowDirty,
 			dgvEnabled,
+			dgvNoteText,
 			dgvDomain,
 			dgvPrecision,
 			dgvType,
@@ -37,7 +40,8 @@ namespace RTC
 			dgvStartAddress,
 			dgvEndAddress,
 			dgvParam1,
-			dgvParam2
+			dgvParam2,
+			dgvNoteButton
 		}
 
 		public static BlastLayer currentBlastLayer = null;
@@ -58,6 +62,7 @@ namespace RTC
 		{
 			this.dgvBlastGenerator.MouseClick += new System.Windows.Forms.MouseEventHandler(dgvBlastGenerator_MouseClick);
 			this.dgvBlastGenerator.CellValueChanged += new DataGridViewCellEventHandler(dgvBlastGenerator_CellValueChanged);
+			this.dgvBlastGenerator.CellClick += new DataGridViewCellEventHandler(dgvBlastGenerator_CellClick);
 			RTC_Core.SetRTCColor(RTC_Core.generalColor, this);
 		}
 
@@ -430,6 +435,15 @@ namespace RTC
 		//As such, we always create the prototype with the raw value.
 		private BlastGeneratorProto CreateProtoFromRow(DataGridViewRow row)
 		{
+			try
+			{
+
+			string note;
+			if (cbUnitsShareNote.Checked)
+				note = row.Cells["dgvNoteText"].Value.ToString();
+			else
+				note = "";
+
 			string domain = row.Cells["dgvDomain"].Value.ToString();
 			string type = row.Cells["dgvType"].Value.ToString();
 			string mode = row.Cells["dgvMode"].Value.ToString();
@@ -440,7 +454,11 @@ namespace RTC
 			long param1 = Convert.ToInt64(row.Cells["dgvParam1"].Value);
 			long param2 = Convert.ToInt64(row.Cells["dgvParam2"].Value);
 
-			return new BlastGeneratorProto(type, domain, mode, precision, stepSize, startAddress, endAddress, param1, param2);
+			return new BlastGeneratorProto(note, type, domain, mode, precision, stepSize, startAddress, endAddress, param1, param2);
+			}catch(Exception ex)
+			{
+				throw;
+			}
 		}
 
 		private string GetPrecisionNameFromSize(int precision)
@@ -718,6 +736,58 @@ This means that:
 Start Address of 10, End address of 16, step size of 1
 would generate blasts for addresses 10,11,12,13,14,15"
 			);
+		}
+		
+		private void dgvBlastGenerator_CellClick(object sender, DataGridViewCellEventArgs e)
+		{
+			// Note handling
+			if (e != null)
+			{
+				var senderGrid = (DataGridView)sender;
+
+				if (senderGrid.Columns[e.ColumnIndex] is DataGridViewButtonColumn &&
+					e.RowIndex >= 0)
+				{
+					DataGridViewCell cell = dgvBlastGenerator.Rows[e.RowIndex].Cells["dgvNoteText"];
+					string note;
+					if (cell.Value == null)
+						note = "";
+					else						
+						note = cell.Value.ToString();
+
+					if (RTC_NoteEditor_Form.currentlyOpenNoteForm == null)
+					{
+						RTC_NoteEditor_Form.currentlyOpenNoteForm = new RTC_NoteEditor_Form(note, "BlastGenerator", cell);
+					}
+					else
+					{
+						if (RTC_NoteEditor_Form.currentlyOpenNoteForm.Visible)
+							RTC_NoteEditor_Form.currentlyOpenNoteForm.Close();
+
+						RTC_NoteEditor_Form.currentlyOpenNoteForm = new RTC_NoteEditor_Form(note, "BlastGenerator", cell);
+					}
+
+					return;
+				}
+			}
+		}
+
+		public void RefreshNoteIcons()
+		{
+			foreach (DataGridViewRow row in dgvBlastGenerator.Rows)
+			{
+				DataGridViewCell textCell = row.Cells["dgvNoteText"];
+				DataGridViewCell buttonCell = row.Cells["dgvNoteButton"];
+
+				if (textCell.Value == null)
+				{
+					buttonCell.Value = "";
+				}
+				else
+				{
+					buttonCell.Value = "📝";
+				}
+			}
 		}
 	}
 }

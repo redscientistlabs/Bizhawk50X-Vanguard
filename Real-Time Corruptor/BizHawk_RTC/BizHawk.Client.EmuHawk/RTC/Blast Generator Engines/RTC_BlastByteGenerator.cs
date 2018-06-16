@@ -6,14 +6,14 @@ namespace RTC
 {
 	public class RTC_BlastByteGenerator
 	{
-		public BlastLayer GenerateLayer(string Domain, long StepSize, long StartAddress, long EndAddress, long Param1, long Param2, int Precision, BGBlastByteModes Mode)
+		public BlastLayer GenerateLayer(string Note, string Domain, long StepSize, long StartAddress, long EndAddress, long Param1, long Param2, int Precision, BGBlastByteModes Mode)
 		{
 			BlastLayer bl = new BlastLayer();
 
 			//We subtract 1 at the end as precision is 1,2,4, and we need to go 0,1,3
 			for (long Address = StartAddress; Address < EndAddress; Address = (Address + StepSize + Precision - 1))
 			{
-				BlastUnit bu = GenerateUnit(Domain, Address, Param1, Param2, Precision, Mode);
+				BlastUnit bu = GenerateUnit(Domain, Address, Param1, Param2, Precision, Mode, Note);
 				if (bu != null)
 					bl.Layer.Add(bu);
 			}
@@ -24,7 +24,7 @@ namespace RTC
 		//If it's an address, we can leave it as is.
 		//If it's something such as SET or Replace X with Y, we always flip as we need to go to big endian
 		//If it's something like a bitwise operation, we read the values from left to right when pulling them from memory. As such, we also always convert to big endian
-		private BlastUnit GenerateUnit(string domain, long address, long param1, long param2, int precision, BGBlastByteModes mode)
+		private BlastUnit GenerateUnit(string domain, long address, long param1, long param2, int precision, BGBlastByteModes mode, string note)
 		{
 			try
 			{
@@ -116,7 +116,7 @@ namespace RTC
 						break;
 				}
 
-				return new BlastByte(domain, safeAddress, Type, _value, mdp.BigEndian, true);
+				return new BlastByte(domain, safeAddress, Type, _value, mdp.BigEndian, true, note);
 			}
 			catch (Exception ex)
 			{
