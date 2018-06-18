@@ -1582,5 +1582,11 @@ namespace RTC
 					}
 				}
 		}
+
+		private void btnHelp_Click(object sender, EventArgs e)
+		{
+			System.Diagnostics.ProcessStartInfo sInfo = new System.Diagnostics.ProcessStartInfo("https://corrupt.wiki/corruptors/rtc-real-time-corruptor/blast-editor.html");
+			System.Diagnostics.Process.Start(sInfo);
+		}
 	}
 }

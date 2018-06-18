@@ -32,6 +32,7 @@
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(RTC_BlastGenerator_Form));
             this.cbUseHex = new System.Windows.Forms.CheckBox();
             this.panelSidebar = new System.Windows.Forms.Panel();
+            this.cbUnitsShareNote = new System.Windows.Forms.CheckBox();
             this.btnHelp = new System.Windows.Forms.Button();
             this.btnLoadCorrupt = new System.Windows.Forms.Button();
             this.btnJustCorrupt = new System.Windows.Forms.Button();
@@ -57,19 +58,6 @@
             this.updownNudgeStartAddress = new RTC.NumericUpDownHexFix();
             this.label4 = new System.Windows.Forms.Label();
             this.dgvBlastGenerator = new System.Windows.Forms.DataGridView();
-            this.dataGridViewTextBoxColumn1 = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.dataGridViewNumericUpDownColumn1 = new RTC.DataGridViewNumericUpDownColumn();
-            this.dataGridViewNumericUpDownColumn2 = new RTC.DataGridViewNumericUpDownColumn();
-            this.dataGridViewNumericUpDownColumn3 = new RTC.DataGridViewNumericUpDownColumn();
-            this.dataGridViewNumericUpDownColumn4 = new RTC.DataGridViewNumericUpDownColumn();
-            this.dataGridViewNumericUpDownColumn5 = new RTC.DataGridViewNumericUpDownColumn();
-            this.menuStripEx1 = new MenuStripEx();
-            this.blastLayerToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.saveAsToFileblToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.loadFromFileblToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.importBlastlayerblToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.btnHideSidebar = new System.Windows.Forms.Button();
-            this.cbUnitsShareNote = new System.Windows.Forms.CheckBox();
             this.dgvBlastLayerReference = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.dgvRowDirty = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.dgvNoteText = new System.Windows.Forms.DataGridViewTextBoxColumn();
@@ -84,6 +72,18 @@
             this.dgvParam1 = new RTC.DataGridViewNumericUpDownColumn();
             this.dgvParam2 = new RTC.DataGridViewNumericUpDownColumn();
             this.dgvNoteButton = new System.Windows.Forms.DataGridViewButtonColumn();
+            this.dataGridViewTextBoxColumn1 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.dataGridViewNumericUpDownColumn1 = new RTC.DataGridViewNumericUpDownColumn();
+            this.dataGridViewNumericUpDownColumn2 = new RTC.DataGridViewNumericUpDownColumn();
+            this.dataGridViewNumericUpDownColumn3 = new RTC.DataGridViewNumericUpDownColumn();
+            this.dataGridViewNumericUpDownColumn4 = new RTC.DataGridViewNumericUpDownColumn();
+            this.dataGridViewNumericUpDownColumn5 = new RTC.DataGridViewNumericUpDownColumn();
+            this.menuStripEx1 = new MenuStripEx();
+            this.blastLayerToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.saveAsToFileblToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.loadFromFileblToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.importBlastlayerblToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.btnHideSidebar = new System.Windows.Forms.Button();
             this.panelSidebar.SuspendLayout();
             this.panel2.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.updownNudgeParam2)).BeginInit();
@@ -128,6 +128,21 @@
             this.panelSidebar.Size = new System.Drawing.Size(159, 381);
             this.panelSidebar.TabIndex = 166;
             this.panelSidebar.Tag = "color:dark";
+            // 
+            // cbUnitsShareNote
+            // 
+            this.cbUnitsShareNote.AutoSize = true;
+            this.cbUnitsShareNote.Checked = true;
+            this.cbUnitsShareNote.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.cbUnitsShareNote.Font = new System.Drawing.Font("Segoe UI Semibold", 8F, System.Drawing.FontStyle.Bold);
+            this.cbUnitsShareNote.ForeColor = System.Drawing.Color.White;
+            this.cbUnitsShareNote.Location = new System.Drawing.Point(5, 220);
+            this.cbUnitsShareNote.Name = "cbUnitsShareNote";
+            this.cbUnitsShareNote.Size = new System.Drawing.Size(111, 17);
+            this.cbUnitsShareNote.TabIndex = 175;
+            this.cbUnitsShareNote.Tag = "";
+            this.cbUnitsShareNote.Text = "Units Share Note";
+            this.cbUnitsShareNote.UseVisualStyleBackColor = true;
             // 
             // btnHelp
             // 
@@ -582,158 +597,6 @@
             this.dgvBlastGenerator.TabIndex = 167;
             this.dgvBlastGenerator.Tag = "color:normal";
             // 
-            // dataGridViewTextBoxColumn1
-            // 
-            this.dataGridViewTextBoxColumn1.FillWeight = 55F;
-            this.dataGridViewTextBoxColumn1.HeaderText = "Mode";
-            this.dataGridViewTextBoxColumn1.Name = "dataGridViewTextBoxColumn1";
-            this.dataGridViewTextBoxColumn1.Resizable = System.Windows.Forms.DataGridViewTriState.True;
-            this.dataGridViewTextBoxColumn1.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
-            this.dataGridViewTextBoxColumn1.Width = 92;
-            // 
-            // dataGridViewNumericUpDownColumn1
-            // 
-            this.dataGridViewNumericUpDownColumn1.FillWeight = 50F;
-            this.dataGridViewNumericUpDownColumn1.HeaderText = "Step Size";
-            this.dataGridViewNumericUpDownColumn1.Maximum = new decimal(new int[] {
-            -1,
-            0,
-            0,
-            0});
-            this.dataGridViewNumericUpDownColumn1.Minimum = new decimal(new int[] {
-            1,
-            0,
-            0,
-            0});
-            this.dataGridViewNumericUpDownColumn1.Name = "dataGridViewNumericUpDownColumn1";
-            this.dataGridViewNumericUpDownColumn1.Width = 82;
-            // 
-            // dataGridViewNumericUpDownColumn2
-            // 
-            this.dataGridViewNumericUpDownColumn2.FillWeight = 50F;
-            this.dataGridViewNumericUpDownColumn2.HeaderText = "Start Address";
-            this.dataGridViewNumericUpDownColumn2.Hexadecimal = true;
-            this.dataGridViewNumericUpDownColumn2.Maximum = new decimal(new int[] {
-            -1,
-            0,
-            0,
-            0});
-            this.dataGridViewNumericUpDownColumn2.Name = "dataGridViewNumericUpDownColumn2";
-            this.dataGridViewNumericUpDownColumn2.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.Automatic;
-            this.dataGridViewNumericUpDownColumn2.Width = 83;
-            // 
-            // dataGridViewNumericUpDownColumn3
-            // 
-            this.dataGridViewNumericUpDownColumn3.FillWeight = 50F;
-            this.dataGridViewNumericUpDownColumn3.HeaderText = "End Address";
-            this.dataGridViewNumericUpDownColumn3.Hexadecimal = true;
-            this.dataGridViewNumericUpDownColumn3.Maximum = new decimal(new int[] {
-            -1,
-            0,
-            0,
-            0});
-            this.dataGridViewNumericUpDownColumn3.Name = "dataGridViewNumericUpDownColumn3";
-            this.dataGridViewNumericUpDownColumn3.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.Automatic;
-            this.dataGridViewNumericUpDownColumn3.Width = 83;
-            // 
-            // dataGridViewNumericUpDownColumn4
-            // 
-            this.dataGridViewNumericUpDownColumn4.FillWeight = 50F;
-            this.dataGridViewNumericUpDownColumn4.HeaderText = "Param 1";
-            this.dataGridViewNumericUpDownColumn4.Hexadecimal = true;
-            this.dataGridViewNumericUpDownColumn4.Maximum = new decimal(new int[] {
-            -1,
-            0,
-            0,
-            0});
-            this.dataGridViewNumericUpDownColumn4.Name = "dataGridViewNumericUpDownColumn4";
-            this.dataGridViewNumericUpDownColumn4.Width = 83;
-            // 
-            // dataGridViewNumericUpDownColumn5
-            // 
-            this.dataGridViewNumericUpDownColumn5.FillWeight = 50F;
-            this.dataGridViewNumericUpDownColumn5.HeaderText = "Param 2";
-            this.dataGridViewNumericUpDownColumn5.Hexadecimal = true;
-            this.dataGridViewNumericUpDownColumn5.Maximum = new decimal(new int[] {
-            -1,
-            0,
-            0,
-            0});
-            this.dataGridViewNumericUpDownColumn5.Name = "dataGridViewNumericUpDownColumn5";
-            this.dataGridViewNumericUpDownColumn5.Width = 83;
-            // 
-            // menuStripEx1
-            // 
-            this.menuStripEx1.ClickThrough = true;
-            this.menuStripEx1.ImageScalingSize = new System.Drawing.Size(20, 20);
-            this.menuStripEx1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.blastLayerToolStripMenuItem});
-            this.menuStripEx1.Location = new System.Drawing.Point(0, 0);
-            this.menuStripEx1.Name = "menuStripEx1";
-            this.menuStripEx1.Size = new System.Drawing.Size(924, 24);
-            this.menuStripEx1.TabIndex = 168;
-            this.menuStripEx1.Tag = "";
-            this.menuStripEx1.Text = "menuStripEx1";
-            // 
-            // blastLayerToolStripMenuItem
-            // 
-            this.blastLayerToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.saveAsToFileblToolStripMenuItem,
-            this.loadFromFileblToolStripMenuItem,
-            this.importBlastlayerblToolStripMenuItem});
-            this.blastLayerToolStripMenuItem.Name = "blastLayerToolStripMenuItem";
-            this.blastLayerToolStripMenuItem.Size = new System.Drawing.Size(37, 20);
-            this.blastLayerToolStripMenuItem.Tag = "";
-            this.blastLayerToolStripMenuItem.Text = "File";
-            // 
-            // saveAsToFileblToolStripMenuItem
-            // 
-            this.saveAsToFileblToolStripMenuItem.Name = "saveAsToFileblToolStripMenuItem";
-            this.saveAsToFileblToolStripMenuItem.Size = new System.Drawing.Size(241, 22);
-            this.saveAsToFileblToolStripMenuItem.Text = "&Save As to File (.bg)";
-            this.saveAsToFileblToolStripMenuItem.Click += new System.EventHandler(this.saveAsToFileblToolStripMenuItem_Click);
-            // 
-            // loadFromFileblToolStripMenuItem
-            // 
-            this.loadFromFileblToolStripMenuItem.Name = "loadFromFileblToolStripMenuItem";
-            this.loadFromFileblToolStripMenuItem.Size = new System.Drawing.Size(241, 22);
-            this.loadFromFileblToolStripMenuItem.Text = "&Load From File (.bg)";
-            this.loadFromFileblToolStripMenuItem.Click += new System.EventHandler(this.loadFromFileblToolStripMenuItem_Click);
-            // 
-            // importBlastlayerblToolStripMenuItem
-            // 
-            this.importBlastlayerblToolStripMenuItem.Name = "importBlastlayerblToolStripMenuItem";
-            this.importBlastlayerblToolStripMenuItem.Size = new System.Drawing.Size(241, 22);
-            this.importBlastlayerblToolStripMenuItem.Text = "&Import Generation Params (.bg)";
-            this.importBlastlayerblToolStripMenuItem.Click += new System.EventHandler(this.importBlastlayerblToolStripMenuItem_Click);
-            // 
-            // btnHideSidebar
-            // 
-            this.btnHideSidebar.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.btnHideSidebar.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F);
-            this.btnHideSidebar.Location = new System.Drawing.Point(896, 0);
-            this.btnHideSidebar.Name = "btnHideSidebar";
-            this.btnHideSidebar.Size = new System.Drawing.Size(28, 24);
-            this.btnHideSidebar.TabIndex = 170;
-            this.btnHideSidebar.Text = "▶";
-            this.btnHideSidebar.UseVisualStyleBackColor = true;
-            this.btnHideSidebar.Click += new System.EventHandler(this.btnHideSidebar_Click);
-            // 
-            // cbUnitsShareNote
-            // 
-            this.cbUnitsShareNote.AutoSize = true;
-            this.cbUnitsShareNote.Checked = true;
-            this.cbUnitsShareNote.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.cbUnitsShareNote.Font = new System.Drawing.Font("Segoe UI Semibold", 8F, System.Drawing.FontStyle.Bold);
-            this.cbUnitsShareNote.ForeColor = System.Drawing.Color.White;
-            this.cbUnitsShareNote.Location = new System.Drawing.Point(5, 220);
-            this.cbUnitsShareNote.Name = "cbUnitsShareNote";
-            this.cbUnitsShareNote.Size = new System.Drawing.Size(111, 17);
-            this.cbUnitsShareNote.TabIndex = 175;
-            this.cbUnitsShareNote.Tag = "";
-            this.cbUnitsShareNote.Text = "Units Share Note";
-            this.cbUnitsShareNote.UseVisualStyleBackColor = true;
-            // 
             // dgvBlastLayerReference
             // 
             this.dgvBlastLayerReference.HeaderText = "dgvBlastObjectReference";
@@ -881,6 +744,143 @@
             this.dgvNoteButton.MinimumWidth = 15;
             this.dgvNoteButton.Name = "dgvNoteButton";
             // 
+            // dataGridViewTextBoxColumn1
+            // 
+            this.dataGridViewTextBoxColumn1.FillWeight = 55F;
+            this.dataGridViewTextBoxColumn1.HeaderText = "Mode";
+            this.dataGridViewTextBoxColumn1.Name = "dataGridViewTextBoxColumn1";
+            this.dataGridViewTextBoxColumn1.Resizable = System.Windows.Forms.DataGridViewTriState.True;
+            this.dataGridViewTextBoxColumn1.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
+            this.dataGridViewTextBoxColumn1.Width = 92;
+            // 
+            // dataGridViewNumericUpDownColumn1
+            // 
+            this.dataGridViewNumericUpDownColumn1.FillWeight = 50F;
+            this.dataGridViewNumericUpDownColumn1.HeaderText = "Step Size";
+            this.dataGridViewNumericUpDownColumn1.Maximum = new decimal(new int[] {
+            -1,
+            0,
+            0,
+            0});
+            this.dataGridViewNumericUpDownColumn1.Minimum = new decimal(new int[] {
+            1,
+            0,
+            0,
+            0});
+            this.dataGridViewNumericUpDownColumn1.Name = "dataGridViewNumericUpDownColumn1";
+            this.dataGridViewNumericUpDownColumn1.Width = 82;
+            // 
+            // dataGridViewNumericUpDownColumn2
+            // 
+            this.dataGridViewNumericUpDownColumn2.FillWeight = 50F;
+            this.dataGridViewNumericUpDownColumn2.HeaderText = "Start Address";
+            this.dataGridViewNumericUpDownColumn2.Hexadecimal = true;
+            this.dataGridViewNumericUpDownColumn2.Maximum = new decimal(new int[] {
+            -1,
+            0,
+            0,
+            0});
+            this.dataGridViewNumericUpDownColumn2.Name = "dataGridViewNumericUpDownColumn2";
+            this.dataGridViewNumericUpDownColumn2.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.Automatic;
+            this.dataGridViewNumericUpDownColumn2.Width = 83;
+            // 
+            // dataGridViewNumericUpDownColumn3
+            // 
+            this.dataGridViewNumericUpDownColumn3.FillWeight = 50F;
+            this.dataGridViewNumericUpDownColumn3.HeaderText = "End Address";
+            this.dataGridViewNumericUpDownColumn3.Hexadecimal = true;
+            this.dataGridViewNumericUpDownColumn3.Maximum = new decimal(new int[] {
+            -1,
+            0,
+            0,
+            0});
+            this.dataGridViewNumericUpDownColumn3.Name = "dataGridViewNumericUpDownColumn3";
+            this.dataGridViewNumericUpDownColumn3.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.Automatic;
+            this.dataGridViewNumericUpDownColumn3.Width = 83;
+            // 
+            // dataGridViewNumericUpDownColumn4
+            // 
+            this.dataGridViewNumericUpDownColumn4.FillWeight = 50F;
+            this.dataGridViewNumericUpDownColumn4.HeaderText = "Param 1";
+            this.dataGridViewNumericUpDownColumn4.Hexadecimal = true;
+            this.dataGridViewNumericUpDownColumn4.Maximum = new decimal(new int[] {
+            -1,
+            0,
+            0,
+            0});
+            this.dataGridViewNumericUpDownColumn4.Name = "dataGridViewNumericUpDownColumn4";
+            this.dataGridViewNumericUpDownColumn4.Width = 83;
+            // 
+            // dataGridViewNumericUpDownColumn5
+            // 
+            this.dataGridViewNumericUpDownColumn5.FillWeight = 50F;
+            this.dataGridViewNumericUpDownColumn5.HeaderText = "Param 2";
+            this.dataGridViewNumericUpDownColumn5.Hexadecimal = true;
+            this.dataGridViewNumericUpDownColumn5.Maximum = new decimal(new int[] {
+            -1,
+            0,
+            0,
+            0});
+            this.dataGridViewNumericUpDownColumn5.Name = "dataGridViewNumericUpDownColumn5";
+            this.dataGridViewNumericUpDownColumn5.Width = 83;
+            // 
+            // menuStripEx1
+            // 
+            this.menuStripEx1.ClickThrough = true;
+            this.menuStripEx1.ImageScalingSize = new System.Drawing.Size(20, 20);
+            this.menuStripEx1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.blastLayerToolStripMenuItem});
+            this.menuStripEx1.Location = new System.Drawing.Point(0, 0);
+            this.menuStripEx1.Name = "menuStripEx1";
+            this.menuStripEx1.Size = new System.Drawing.Size(924, 24);
+            this.menuStripEx1.TabIndex = 168;
+            this.menuStripEx1.Tag = "";
+            this.menuStripEx1.Text = "menuStripEx1";
+            // 
+            // blastLayerToolStripMenuItem
+            // 
+            this.blastLayerToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.saveAsToFileblToolStripMenuItem,
+            this.loadFromFileblToolStripMenuItem,
+            this.importBlastlayerblToolStripMenuItem});
+            this.blastLayerToolStripMenuItem.Name = "blastLayerToolStripMenuItem";
+            this.blastLayerToolStripMenuItem.Size = new System.Drawing.Size(37, 20);
+            this.blastLayerToolStripMenuItem.Tag = "";
+            this.blastLayerToolStripMenuItem.Text = "File";
+            // 
+            // saveAsToFileblToolStripMenuItem
+            // 
+            this.saveAsToFileblToolStripMenuItem.Name = "saveAsToFileblToolStripMenuItem";
+            this.saveAsToFileblToolStripMenuItem.Size = new System.Drawing.Size(241, 22);
+            this.saveAsToFileblToolStripMenuItem.Text = "&Save As to File (.bg)";
+            this.saveAsToFileblToolStripMenuItem.Click += new System.EventHandler(this.saveAsToFileblToolStripMenuItem_Click);
+            // 
+            // loadFromFileblToolStripMenuItem
+            // 
+            this.loadFromFileblToolStripMenuItem.Name = "loadFromFileblToolStripMenuItem";
+            this.loadFromFileblToolStripMenuItem.Size = new System.Drawing.Size(241, 22);
+            this.loadFromFileblToolStripMenuItem.Text = "&Load From File (.bg)";
+            this.loadFromFileblToolStripMenuItem.Click += new System.EventHandler(this.loadFromFileblToolStripMenuItem_Click);
+            // 
+            // importBlastlayerblToolStripMenuItem
+            // 
+            this.importBlastlayerblToolStripMenuItem.Name = "importBlastlayerblToolStripMenuItem";
+            this.importBlastlayerblToolStripMenuItem.Size = new System.Drawing.Size(241, 22);
+            this.importBlastlayerblToolStripMenuItem.Text = "&Import Generation Params (.bg)";
+            this.importBlastlayerblToolStripMenuItem.Click += new System.EventHandler(this.importBlastlayerblToolStripMenuItem_Click);
+            // 
+            // btnHideSidebar
+            // 
+            this.btnHideSidebar.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.btnHideSidebar.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F);
+            this.btnHideSidebar.Location = new System.Drawing.Point(896, 0);
+            this.btnHideSidebar.Name = "btnHideSidebar";
+            this.btnHideSidebar.Size = new System.Drawing.Size(28, 24);
+            this.btnHideSidebar.TabIndex = 170;
+            this.btnHideSidebar.Text = "▶";
+            this.btnHideSidebar.UseVisualStyleBackColor = true;
+            this.btnHideSidebar.Click += new System.EventHandler(this.btnHideSidebar_Click);
+            // 
             // RTC_BlastGenerator_Form
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -894,7 +894,7 @@
             this.Font = new System.Drawing.Font("Segoe UI", 8.25F);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.MainMenuStrip = this.menuStripEx1;
-            this.MinimumSize = new System.Drawing.Size(16, 410);
+            this.MinimumSize = new System.Drawing.Size(16, 444);
             this.Name = "RTC_BlastGenerator_Form";
             this.Tag = "color:dark";
             this.Text = "Blast Generator";
