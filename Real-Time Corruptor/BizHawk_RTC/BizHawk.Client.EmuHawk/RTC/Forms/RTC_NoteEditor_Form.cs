@@ -25,7 +25,7 @@ namespace RTC
 
 		private void RTC_NE_Form_Load(object sender, EventArgs e)
 		{
-			if(Note != null)
+			if (Note != null)
 				tbNote.Text = Note.Replace("\n", Environment.NewLine);
 		}
 
@@ -45,22 +45,35 @@ namespace RTC
 			{
 				//We update a stashkey for the GH and Stockpile Player
 				case ("GlitchHarvester"):
-					(Item as StashKey).Note = Note;
-					RTC_Core.ghForm.RefreshNoteIcons();
+					if (RTC_Core.ghForm.Visible)
+					{
+						(Item as StashKey).Note = Note;
+						RTC_Core.ghForm.RefreshNoteIcons();
+					}
 					break;
 				case ("StockpilePlayer"):
-					(Item as StashKey).Note = Note;
-					RTC_Core.spForm.RefreshNoteIcons();
+					if (RTC_Core.spForm.Visible)
+					{
+						(Item as StashKey).Note = Note;
+						RTC_Core.spForm.RefreshNoteIcons();
+					}
 					break;
 				//We update individual blastunits for the blast editor
 				case ("BlastEditor"):
-					(Item as BlastUnit).Note = Note;
-					RTC_Core.beForm.RefreshNoteIcons();
+					if (RTC_Core.beForm.Visible)
+					{
+						(Item as BlastUnit).Note = Note;
+						RTC_Core.beForm.RefreshNoteIcons();
+					}
 					break;
 				//We update a DGV cell for the Blast Generator
 				case ("BlastGenerator"):
-					(Item as DataGridViewCell).Value = Note;
-					RTC_Core.bgForm.RefreshNoteIcons();
+					if (RTC_Core.bgForm.Visible)
+					{
+						(Item as DataGridViewCell).Value = Note;
+						RTC_Core.bgForm.RefreshNoteIcons();
+					}
+						
 					break;
 			}
 		}
