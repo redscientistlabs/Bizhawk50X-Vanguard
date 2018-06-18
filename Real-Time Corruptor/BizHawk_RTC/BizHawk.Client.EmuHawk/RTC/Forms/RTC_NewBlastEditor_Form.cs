@@ -719,6 +719,13 @@ namespace RTC
 				}
 			}
 
+			{
+				(cmsBlastEditor.Items.Add("Flip Bytes", null, new EventHandler((ob, ev) =>
+				{
+					(dgvBlastLayer["dgvParam", row].Value as byte[]).FlipBytes();
+				})) as ToolStripMenuItem).Enabled = true;
+			}
+
 			PopulateColumnHeaderContextMenu(column);
 		}
 
