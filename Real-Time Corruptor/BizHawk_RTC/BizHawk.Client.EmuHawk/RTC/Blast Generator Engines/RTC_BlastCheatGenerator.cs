@@ -52,6 +52,10 @@ namespace RTC
 						for (int i = 0; i < _value.Length; i++)
 							_value[i] = (byte)RTC_Core.RND.Next(0, 255);
 						break;
+					case BGBlastCheatModes.RANDOM_RANGE:
+						long temp = RTC_Core.RND.RandomLong(param1, param2);
+						_value = RTC_Extensions.getByteArrayValue(precision, temp, true);
+						break;
 					case BGBlastCheatModes.REPLACE_X_WITH_Y:
 						if (mdp.PeekBytes(safeAddress, safeAddress + precision).SequenceEqual(RTC_Extensions.getByteArrayValue(precision, param1, true)))
 							_value = RTC_Extensions.getByteArrayValue(precision, param2, true);
@@ -61,9 +65,17 @@ namespace RTC
 					case BGBlastCheatModes.SET:
 						_value = RTC_Extensions.getByteArrayValue(precision, param1, true);
 						break;
-					case BGBlastCheatModes.SHIFT:
+					case BGBlastCheatModes.SHIFT_RIGHT:
 						_value = mdp.PeekBytes(safeAddress, safeAddress + precision);
 						safeAddress += param1;
+						if (safeAddress >= mdp.Size)
+							safeAddress = mdp.Size - _value.Length;
+						break;
+					case BGBlastCheatModes.SHIFT_LEFT:
+						_value = mdp.PeekBytes(safeAddress, safeAddress + precision);
+						safeAddress -= param1;
+						if (safeAddress < 0)
+							safeAddress = 0;
 						break;
 
 					//Bitwise operations

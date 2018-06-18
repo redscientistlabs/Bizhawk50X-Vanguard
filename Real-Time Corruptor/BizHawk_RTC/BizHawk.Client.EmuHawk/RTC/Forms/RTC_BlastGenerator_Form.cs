@@ -109,15 +109,24 @@ namespace RTC
 				(dgvBlastGenerator.Rows[lastrow].Cells["dgvPrecision"] as DataGridViewComboBoxCell).Value = (dgvBlastGenerator.Rows[0].Cells["dgvPrecision"] as DataGridViewComboBoxCell).Items[0];
 				(dgvBlastGenerator.Rows[lastrow].Cells["dgvType"] as DataGridViewComboBoxCell).Value = (dgvBlastGenerator.Rows[0].Cells["dgvType"] as DataGridViewComboBoxCell).Items[0];
 
-				//These can't be null or else things go bad when trying to save and load them from a file
-				(dgvBlastGenerator.Rows[lastrow].Cells["dgvStartAddress"] as DataGridViewNumericUpDownCell).Value = 0;
-				(dgvBlastGenerator.Rows[lastrow].Cells["dgvEndAddress"] as DataGridViewNumericUpDownCell).Value = 1;
-				(dgvBlastGenerator.Rows[lastrow].Cells["dgvParam1"] as DataGridViewNumericUpDownCell).Value = 0;
-				(dgvBlastGenerator.Rows[lastrow].Cells["dgvParam2"] as DataGridViewNumericUpDownCell).Value = 0;
+
+				//We need to make the rows type decimal as the NumericUpDown is formatted as string by default (due to the potential for commas)
+				dgvBlastGenerator.Rows[lastrow].Cells["dgvStartAddress"].ValueType = typeof(System.Decimal);
+				dgvBlastGenerator.Rows[lastrow].Cells["dgvEndAddress"].ValueType = typeof(System.Decimal);
+				dgvBlastGenerator.Rows[lastrow].Cells["dgvParam1"].ValueType = typeof(System.Decimal);
+				dgvBlastGenerator.Rows[lastrow].Cells["dgvParam2"].ValueType = typeof(System.Decimal);
+
+
+				//These can't be null or else things go bad when trying to save and load them from a file. Include an M as they NEED to be decimal.
+				(dgvBlastGenerator.Rows[lastrow].Cells["dgvStartAddress"] as DataGridViewNumericUpDownCell).Value = 0M;
+				(dgvBlastGenerator.Rows[lastrow].Cells["dgvEndAddress"] as DataGridViewNumericUpDownCell).Value = 1M;
+				(dgvBlastGenerator.Rows[lastrow].Cells["dgvParam1"] as DataGridViewNumericUpDownCell).Value = 0M;
+				(dgvBlastGenerator.Rows[lastrow].Cells["dgvParam2"] as DataGridViewNumericUpDownCell).Value = 0M;
 
 				PopulateDomainCombobox(dgvBlastGenerator.Rows[lastrow]);
 				PopulateModeCombobox(dgvBlastGenerator.Rows[lastrow]);
 				// (dgvBlastGenerator.Rows[lastrow].Cells["dgvMode"] as DataGridViewComboBoxCell).Value = (dgvBlastGenerator.Rows[0].Cells["dgvMode"] as DataGridViewComboBoxCell).Items[0];
+
 
 				//For some reason, setting the minimum on the DGV to 1 doesn't change the fact it inserts with a count of 0
 				(dgvBlastGenerator.Rows[lastrow].Cells["dgvStepSize"]).Value = 1;
@@ -441,7 +450,7 @@ namespace RTC
 
 			string note;
 			if (cbUnitsShareNote.Checked)
-				note = row.Cells["dgvNoteText"].Value.ToString();
+				note = row.Cells["dgvNoteText"].Value?.ToString() ?? "";
 			else
 				note = "";
 
@@ -721,22 +730,8 @@ namespace RTC
 
 		private void btnHelp_Click(object sender, EventArgs e)
 		{
-			MessageBox.Show(
-@"Blast Generator instructions help and examples
------------------------------------------------
->Endianess is always handled as little endian, or right -> left
-This is completely agnostic of core endianess
-That means that:
-10 on 16-bit precision will be treated as 00 10
-1000 on 16-bit precision will be treated as 10 00
-etc...
-
-> Ranges are exclusive, meaning that the last
-address is excluded from the range.
-This means that:
-Start Address of 10, End address of 16, step size of 1
-would generate blasts for addresses 10,11,12,13,14,15"
-			);
+			System.Diagnostics.ProcessStartInfo sInfo = new System.Diagnostics.ProcessStartInfo("https://corrupt.wiki/corruptors/rtc-real-time-corruptor/blast-generator.html");
+			System.Diagnostics.Process.Start(sInfo);
 		}
 		
 		private void dgvBlastGenerator_CellClick(object sender, DataGridViewCellEventArgs e)
