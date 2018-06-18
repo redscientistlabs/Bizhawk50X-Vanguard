@@ -368,6 +368,8 @@ namespace RTC
 				BlastUnit bu2 = ObjectCopier.Clone(bu);
 				sk.BlastLayer.Layer.Insert(pos + 1, bu2);
 				InsertBlastUnitToDGV(pos + 1, bu2);
+				SetNoteIcon(bu2);
+
 				//AddBlastUnitToDGV(bu2);
 			}
 		}
@@ -1567,20 +1569,19 @@ namespace RTC
 			}
 		}
 
+		private void SetNoteIcon(BlastUnit bu)
+		{
+			if (!String.IsNullOrWhiteSpace(bu.Note))
+				bu2RowDico[bu].Cells["dgvNoteButton"].Value = "";
+			else
+				bu2RowDico[bu].Cells["dgvNoteButton"].Value = "📝";
+		}
+
 		public void RefreshNoteIcons()
 		{
 			if(sk != null) 
 				foreach (BlastUnit bu in sk.BlastLayer.Layer)
-				{
-					if (bu.Note == null || bu.Note == "")
-					{
-						bu2RowDico[bu].Cells["dgvNoteButton"].Value = "";
-					}
-					else
-					{
-						bu2RowDico[bu].Cells["dgvNoteButton"].Value = "📝";
-					}
-				}
+					SetNoteIcon(bu);
 		}
 
 		private void btnHelp_Click(object sender, EventArgs e)

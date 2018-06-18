@@ -775,7 +775,7 @@ namespace RTC
 				DataGridViewCell textCell = row.Cells["dgvNoteText"];
 				DataGridViewCell buttonCell = row.Cells["dgvNoteButton"];
 
-				if (textCell.Value == null || textCell.Value.ToString() == "")
+				if (String.IsNullOrWhiteSpace(textCell.Value?.ToString()))
 				{
 					buttonCell.Value = "";
 				}

@@ -63,7 +63,7 @@ namespace RTC
 			foreach (DataGridViewRow dataRow in dgvStockpile.Rows)
 			{
 				StashKey sk = (StashKey)dataRow.Cells["Item"].Value;
-				if (sk.Note == null)
+				if (String.IsNullOrWhiteSpace(sk.Note))
 				{
 					dataRow.Cells["Note"].Value = "";
 				}

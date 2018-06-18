@@ -1028,6 +1028,7 @@ namespace RTC
 						}
 					}
 					this.DataGridView.InvalidateColumn(this.Index);
+					
 					// TODO: This column and/or grid rows may need to be autosized depending on their
 					//       autosize settings. Call the autosizing methods to autosize the column, rows,
 					//       column headers / row headers as needed.
@@ -2221,6 +2222,16 @@ namespace RTC
 			base.OnKeyDown(e);
 			NotifyDataGridViewOfValueChange();
 		}
+		
+		
+		protected override void OnLostFocus(EventArgs e)
+		{
+			base.OnLostFocus(e);
+			if (UserEdit)
+			{
+				UpdateEditText();
+			}
+		}
 
 		/*
 		/// <summary>
@@ -2336,26 +2347,22 @@ namespace RTC
 
 		protected override void UpdateEditText()
 		{
-			if (Hexadecimal)
+			if (base.Hexadecimal)
 			{
-				if (base.UserEdit) HexParseEditText();
-				if (!string.IsNullOrEmpty(base.Text))
-				{
-					base.ChangingText = true;
-					base.Text = string.Format("{0:X}", (ulong)base.Value);
-				}
+				if (base.UserEdit)
+					HexParseEditText();
+				base.ChangingText = true;
 			}
 			else
 			{
-				if (base.UserEdit) ParseEditText();
+				if (base.UserEdit)
+					ParseEditText();
 				base.ChangingText = true;
 			}
 		}
 
 		protected override void ValidateEditText()
 		{
-			if (Hexadecimal)
-				HexParseEditText();
 			UpdateEditText();
 		}
 
@@ -2363,13 +2370,16 @@ namespace RTC
 		{
 			try
 			{
-				Int64 val = Convert.ToInt64(base.Text, 16);
+				if (!string.IsNullOrEmpty(Text) && !(Text.Length == 1 && Text == "-"))
+				{
+					Int64 val = Convert.ToInt64(base.Text, 16);
 
-				if (val > Maximum)
-					base.Text = string.Format("{0:X}", (uint)Maximum);
+					if (val > Maximum)
+						base.Text = string.Format("{0:X}", (uint)Maximum);
 
-				if (!string.IsNullOrEmpty(base.Text))
-					this.Value = val;
+					if (!string.IsNullOrEmpty(base.Text))
+						this.Value = val;
+				}
 			}
 			catch { }
 			finally

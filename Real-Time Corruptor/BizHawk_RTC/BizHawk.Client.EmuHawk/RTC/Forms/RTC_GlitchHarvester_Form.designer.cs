@@ -169,7 +169,6 @@
             this.btnRerollSelected = new System.Windows.Forms.Button();
             this.label8 = new System.Windows.Forms.Label();
             this.dgvStockpile = new System.Windows.Forms.DataGridView();
-            this.Note = new System.Windows.Forms.DataGridViewButtonColumn();
             this.cbCompressStockpiles = new System.Windows.Forms.CheckBox();
             this.pnIntensity = new System.Windows.Forms.Panel();
             this.dataGridViewTextBoxColumn1 = new System.Windows.Forms.DataGridViewTextBoxColumn();
@@ -180,6 +179,7 @@
             this.GameName = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.SystemName = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.SystemCore = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Note = new System.Windows.Forms.DataGridViewButtonColumn();
             this.pnSidebar.SuspendLayout();
             this.panel4.SuspendLayout();
             this.panel3.SuspendLayout();
@@ -2358,20 +2358,6 @@
             this.dgvStockpile.CellClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dgvStockpile_CellClick);
             this.dgvStockpile.MouseDown += new System.Windows.Forms.MouseEventHandler(this.dgvStockpile_MouseDown);
             // 
-            // Note
-            // 
-            dataGridViewCellStyle2.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
-            dataGridViewCellStyle2.Font = new System.Drawing.Font("Segoe UI", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            dataGridViewCellStyle2.ForeColor = System.Drawing.Color.Black;
-            this.Note.DefaultCellStyle = dataGridViewCellStyle2;
-            this.Note.FillWeight = 23.01949F;
-            this.Note.HeaderText = "Note";
-            this.Note.MinimumWidth = 35;
-            this.Note.Name = "Note";
-            this.Note.Resizable = System.Windows.Forms.DataGridViewTriState.True;
-            this.Note.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.Automatic;
-            this.Note.Text = "";
-            // 
             // cbCompressStockpiles
             // 
             this.cbCompressStockpiles.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
@@ -2461,6 +2447,20 @@
             this.SystemCore.Name = "SystemCore";
             this.SystemCore.ReadOnly = true;
             this.SystemCore.Visible = false;
+            // 
+            // Note
+            // 
+            dataGridViewCellStyle2.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
+            dataGridViewCellStyle2.Font = new System.Drawing.Font("Segoe UI Symbol", 14.25F);
+            dataGridViewCellStyle2.ForeColor = System.Drawing.Color.Black;
+            this.Note.DefaultCellStyle = dataGridViewCellStyle2;
+            this.Note.FillWeight = 23.01949F;
+            this.Note.HeaderText = "Note";
+            this.Note.MinimumWidth = 35;
+            this.Note.Name = "Note";
+            this.Note.Resizable = System.Windows.Forms.DataGridViewTriState.True;
+            this.Note.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.Automatic;
+            this.Note.Text = "";
             // 
             // RTC_GlitchHarvester_Form
             // 
@@ -2662,14 +2662,14 @@
         public System.Windows.Forms.CheckBox cbCompressStockpiles;
         private System.Windows.Forms.Panel panel4;
         public System.Windows.Forms.Panel pnIntensity;
+		private System.Windows.Forms.DataGridViewTextBoxColumn dataGridViewTextBoxColumn1;
+		private System.Windows.Forms.DataGridViewTextBoxColumn dataGridViewTextBoxColumn2;
+		private System.Windows.Forms.DataGridViewTextBoxColumn dataGridViewTextBoxColumn3;
+		private System.Windows.Forms.DataGridViewTextBoxColumn dataGridViewTextBoxColumn4;
 		private System.Windows.Forms.DataGridViewTextBoxColumn Item;
 		private System.Windows.Forms.DataGridViewTextBoxColumn GameName;
 		private System.Windows.Forms.DataGridViewTextBoxColumn SystemName;
 		private System.Windows.Forms.DataGridViewTextBoxColumn SystemCore;
 		private System.Windows.Forms.DataGridViewButtonColumn Note;
-		private System.Windows.Forms.DataGridViewTextBoxColumn dataGridViewTextBoxColumn1;
-		private System.Windows.Forms.DataGridViewTextBoxColumn dataGridViewTextBoxColumn2;
-		private System.Windows.Forms.DataGridViewTextBoxColumn dataGridViewTextBoxColumn3;
-		private System.Windows.Forms.DataGridViewTextBoxColumn dataGridViewTextBoxColumn4;
 	}
 }
