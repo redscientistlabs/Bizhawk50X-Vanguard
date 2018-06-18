@@ -119,16 +119,16 @@ namespace RTC
 					BlastByte bb = bu as BlastByte;
 					if (destinationType == typeof(BlastByte))
 					{
-						return new BlastByte(bb.Domain, bb.Address, BlastByteType.SET, CapBlastUnit(bb.Value), bb.BigEndian, bb.IsEnabled);
+						return new BlastByte(bb.Domain, bb.Address, BlastByteType.SET, CapBlastUnit(bb.Value), bb.BigEndian, bb.IsEnabled, bb.Note);
 					}
 					if (destinationType == typeof(BlastCheat))
 					{
-						return new BlastCheat(bb.Domain, bb.Address, BizHawk.Client.Common.DisplayType.Unsigned, bb.BigEndian, CapBlastUnit(bb.Value), bb.IsEnabled, false);
+						return new BlastCheat(bb.Domain, bb.Address, BizHawk.Client.Common.DisplayType.Unsigned, bb.BigEndian, CapBlastUnit(bb.Value), bb.IsEnabled, false, bb.Note);
 					}
 					else if (destinationType == typeof(BlastPipe))
 					{
 						//Pipe to 0
-						return new BlastPipe(bb.Domain, bb.Address, bb.Domain, 0, 0, bb.Value.Length, bb.BigEndian, bb.IsEnabled);
+						return new BlastPipe(bb.Domain, bb.Address, bb.Domain, 0, 0, bb.Value.Length, bb.BigEndian, bb.IsEnabled, bb.Note);
 					}
 					else if (destinationType == typeof(BlastVector))
 					{
@@ -141,15 +141,15 @@ namespace RTC
 					BlastCheat bc = bu as BlastCheat;
 					if (destinationType == typeof(BlastCheat))
 					{
-						return new BlastCheat(bc.Domain, bc.Address, BizHawk.Client.Common.DisplayType.Unsigned, bc.BigEndian, CapBlastUnit(bc.Value), bc.IsEnabled, false);
+						return new BlastCheat(bc.Domain, bc.Address, BizHawk.Client.Common.DisplayType.Unsigned, bc.BigEndian, CapBlastUnit(bc.Value), bc.IsEnabled, false, bc.Note);
 					}
 					if (destinationType == typeof(BlastByte))
 					{
-						return new BlastByte(bc.Domain, bc.Address, BlastByteType.SET, CapBlastUnit(bc.Value), bc.BigEndian, bc.IsEnabled);
+						return new BlastByte(bc.Domain, bc.Address, BlastByteType.SET, CapBlastUnit(bc.Value), bc.BigEndian, bc.IsEnabled, bc.Note);
 					}
 					else if (destinationType == typeof(BlastPipe))
 					{
-						return new BlastPipe(bc.Domain, bc.Address, bc.Domain, 0, 0, bc.Value.Length, bc.BigEndian, bc.IsEnabled);
+						return new BlastPipe(bc.Domain, bc.Address, bc.Domain, 0, 0, bc.Value.Length, bc.BigEndian, bc.IsEnabled, bc.Note);
 					}
 					else if (destinationType == typeof(BlastVector))
 					{
@@ -162,15 +162,15 @@ namespace RTC
 					BlastPipe bp = bu as BlastPipe;
 					if (destinationType == typeof(BlastPipe))
 					{
-						return new BlastPipe(bp.Domain, bp.Address, bp.PipeDomain, bp.PipeAddress, 0, bp.PipeSize, bp.BigEndian, bp.IsEnabled);
+						return new BlastPipe(bp.Domain, bp.Address, bp.PipeDomain, bp.PipeAddress, 0, bp.PipeSize, bp.BigEndian, bp.IsEnabled, bp.Note);
 					}
 					else if (destinationType == typeof(BlastByte))
 					{
-						return new BlastByte(bp.PipeDomain, bp.PipeAddress, BlastByteType.SET, getByteArray(bp.PipeSize, 0x0), bp.BigEndian, bp.IsEnabled);
+						return new BlastByte(bp.PipeDomain, bp.PipeAddress, BlastByteType.SET, getByteArray(bp.PipeSize, 0x0), bp.BigEndian, bp.IsEnabled, bp.Note);
 					}
 					else if (destinationType == typeof(BlastCheat))
 					{
-						return new BlastCheat(bp.PipeDomain, bp.PipeAddress, BizHawk.Client.Common.DisplayType.Unsigned, bp.BigEndian, getByteArray(bp.PipeSize, 0x0), bp.IsEnabled, false);
+						return new BlastCheat(bp.PipeDomain, bp.PipeAddress, BizHawk.Client.Common.DisplayType.Unsigned, bp.BigEndian, getByteArray(bp.PipeSize, 0x0), bp.IsEnabled, false, bp.Note);
 					}
 					else if (destinationType == typeof(BlastVector))
 					{
@@ -187,17 +187,15 @@ namespace RTC
 					}
 					else if (destinationType == typeof(BlastByte))
 					{
-						//BlastVector is depricated. If converting into a blastbyte, convert it to a regular blastbyte not a blastbyte in vector mode. It can't be re-rolled but it's cleaner
-						//True to the endianess as BlastVector was always big endian
-						return new BlastByte(bv.Domain, bv.Address, BlastByteType.SET, CapBlastUnit(bv.Values), true, bv.IsEnabled);
+						return new BlastByte(bv.Domain, bv.Address, BlastByteType.VECTOR, CapBlastUnit(bv.Values), true, bv.IsEnabled, bv.Note);
 					}
 					else if (destinationType == typeof(BlastCheat))
 					{
-						return new BlastCheat(bv.Domain, bv.Address, BizHawk.Client.Common.DisplayType.Unsigned, true, CapBlastUnit(bv.Values), bv.IsEnabled, false);
+						return new BlastCheat(bv.Domain, bv.Address, BizHawk.Client.Common.DisplayType.Unsigned, true, CapBlastUnit(bv.Values), bv.IsEnabled, false, bv.Note);
 					}
 					else if (destinationType == typeof(BlastPipe))
 					{
-						return new BlastPipe(bv.Domain, bv.Address, bv.Domain, 0, 0, bv.Values.Length, true, bv.IsEnabled);
+						return new BlastPipe(bv.Domain, bv.Address, bv.Domain, 0, 0, bv.Values.Length, true, bv.IsEnabled, bv.Note);
 					}
 				}
 			}
