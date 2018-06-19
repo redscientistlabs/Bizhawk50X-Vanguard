@@ -720,12 +720,18 @@ namespace RTC
 			}
 
 			{
-				(cmsBlastEditor.Items.Add("Flip Bytes", null, new EventHandler((ob, ev) =>
+				(cmsBlastEditor.Items.Add("Flip Param Bytes in Selected Rows", null, new EventHandler((ob, ev) =>
 				{
-					(dgvBlastLayer["dgvParam", row].Value as byte[]).FlipBytes();
+					foreach(DataGridViewRow _row in dgvBlastLayer.SelectedRows)
+					{
+						byte[] temp = RTC_Extensions.getByteArrayValue(GetPrecisionSizeFromName(_row.Cells["dgvPrecision"].Value.ToString()), Convert.ToDecimal(_row.Cells["dgvParam"].Value.ToString()), true);
+						temp.FlipBytes();
+						_row.Cells["dgvParam"].Value = RTC_Extensions.getDecimalValue(temp, true);
+					}
 				})) as ToolStripMenuItem).Enabled = true;
 			}
 
+			cmsBlastEditor.Items.Add(new ToolStripSeparator());
 			PopulateColumnHeaderContextMenu(column);
 		}
 
