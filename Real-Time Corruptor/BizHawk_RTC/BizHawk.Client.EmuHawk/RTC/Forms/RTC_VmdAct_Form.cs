@@ -128,7 +128,7 @@ namespace RTC
 			FirstInit = true;
 			ActiveTableGenerated = act.data;
 			ActiveTableReady = true;
-			lbFreezeEngineActiveTableSize.Text = "Active table size: " + ActiveTableGenerated.Length.ToString();
+			lbFreezeEngineActiveTableSize.Text = "Active table size: " + ActiveTableGenerated.Length.ToString() + "(0x" + ActiveTableGenerated.Length.ToString("X") + ")";
 		}
 
 		public byte[] GetDumpFromFile(string key)

@@ -50,7 +50,7 @@ namespace RTC
 		private ContextMenuStrip cms = new ContextMenuStrip();
 		private bool initialized = false;
 
-		private Dictionary<string, MemoryDomainProxy> domainToMDPDico = new Dictionary<string, MemoryDomainProxy>();
+		private Dictionary<string, MemoryInterface> domainToMIDico = new Dictionary<string, MemoryInterface>();
 		public string[] domains = RTC_MemoryDomains.MemoryInterfaces.Keys.Concat(RTC_MemoryDomains.VmdPool.Values.Select(it => it.ToString())).ToArray();
 
 		public RTC_BlastGenerator_Form()
@@ -190,7 +190,7 @@ namespace RTC
 				if (row.Cells["dgvDomain"].Value.ToString() == "NONE")
 					return;
 
-				long size = domainToMDPDico[row.Cells["dgvDomain"].Value.ToString()].Size;
+				long size = domainToMIDico[row.Cells["dgvDomain"].Value.ToString()].Size;
 
 				(row.Cells["dgvStartAddress"] as DataGridViewNumericUpDownCell).Maximum = size;
 				(row.Cells["dgvEndAddress"] as DataGridViewNumericUpDownCell).Maximum = size;
@@ -595,11 +595,11 @@ namespace RTC
 		{
 			try
 			{
-				domainToMDPDico.Clear();
+				domainToMIDico.Clear();
 				domains = RTC_MemoryDomains.MemoryInterfaces.Keys.Concat(RTC_MemoryDomains.VmdPool.Values.Select(it => it.ToString())).ToArray();
 				for (int i = 0; i < domains.Length; i++)
 				{
-					domainToMDPDico.Add(domains[i], RTC_MemoryDomains.getProxy(domains[i], 0));
+					domainToMIDico.Add(domains[i], RTC_MemoryDomains.getInterface(domains[i]));
 				}
 
 				foreach (DataGridViewRow row in dgvBlastGenerator.Rows)
