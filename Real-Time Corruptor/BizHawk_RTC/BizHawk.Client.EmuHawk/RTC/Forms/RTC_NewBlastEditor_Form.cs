@@ -279,6 +279,11 @@ namespace RTC
 
 		private void btnLoadCorrupt_Click(object sender, EventArgs e)
 		{
+			if (sk.ParentKey == null)
+			{
+				MessageBox.Show("There's no savestate associated with this Stashkey!\nAssociate one in the menu to be able to load.");
+				return;
+			}
 			BlastLayer bl = new BlastLayer();
 
 			foreach (DataGridViewRow row in dgvBlastLayer.Rows)
@@ -315,6 +320,11 @@ namespace RTC
 
 		private void btnSendToStash_Click(object sender, EventArgs e)
 		{
+			if (sk.ParentKey == null)
+			{
+				MessageBox.Show("There's no savestate associated with this Stashkey!\nAssociate one in the menu to send this to the stash.");
+				return;
+			}
 			StashKey newSk = (StashKey)sk.Clone();
 			//newSk.Key = RTC_Core.GetRandomKey();
 			//newSk.Alias = null;
@@ -325,7 +335,7 @@ namespace RTC
 			RTC_Core.ghForm.dgvStockpile.ClearSelection();
 			RTC_Core.ghForm.lbStashHistory.ClearSelected();
 
-			RTC_Core.ghForm.DontLoadSelectedStash = true;
+			RTC_Core.ghForm.DontLoadSelectedStash = true;   
 			RTC_Core.ghForm.lbStashHistory.SelectedIndex = RTC_Core.ghForm.lbStashHistory.Items.Count - 1;
 			RTC_StockpileManager.currentStashkey = RTC_StockpileManager.StashHistory[RTC_Core.ghForm.lbStashHistory.SelectedIndex];
 
@@ -1272,7 +1282,7 @@ namespace RTC
 			}
 			if (sk.GameName != temp.GameName)
 			{
-				DialogResult dialogResult = MessageBox.Show("You're attempting to replace a savestate associated with " + sk.GameName + " with a savestate associated with " + temp.GameName + ".\n This probably won't work unless you also update the rom.\n Are you sure you want to continue?", "Game mismatch", MessageBoxButtons.YesNo);
+				DialogResult dialogResult = MessageBox.Show("You're attempting to replace a savestate associated with " + sk.GameName + " with a savestate associated with " + temp.GameName + ".\nThis probably won't work unless you also update the rom.\n Are you sure you want to continue?", "Game mismatch", MessageBoxButtons.YesNo);
 				if (dialogResult == DialogResult.Yes)
 				{
 					sk.ParentKey = temp.ParentKey;
@@ -1305,7 +1315,7 @@ namespace RTC
 			sk.ParentKey = RTC_Core.GetRandomKey();
 
 			//Let's hope the game name is correct!
-			File.Copy(filename, sk.getSavestateFullPath());
+			File.Copy(filename, sk.getSavestateFullPath(), true);
 		}
 
 		private void saveSavestateToToolStripMenuItem_Click(object sender, EventArgs e)
@@ -1323,7 +1333,7 @@ namespace RTC
 			else
 				return;
 
-			File.Copy(sk.getSavestateFullPath(), filename);
+			File.Copy(sk.getSavestateFullPath(), filename, true);
 		}
 
 		private void runRomWithoutBlastlayerToolStripMenuItem_Click(object sender, EventArgs e)
@@ -1334,13 +1344,19 @@ namespace RTC
 		private void replaceRomFromGHToolStripMenuItem_Click(object sender, EventArgs e)
 		{
 			StashKey temp = RTC_StockpileManager.getCurrentSavestateStashkey();
+
 			if (temp == null)
 			{
 				MessageBox.Show("There is no savestate selected in the glitch harvester, or the current selected box is empty");
 				return;
 			}
+			sk.ParentKey = null;
 			sk.RomFilename = temp.RomFilename;
 			sk.RomData = temp.RomData;
+			sk.GameName = temp.GameName;
+			sk.SystemName = temp.SystemName;
+			sk.SystemDeepName = temp.SystemDeepName;
+			sk.SystemCore = temp.SystemCore;
 		}
 
 		private void replaceRomFromFileToolStripMenuItem_Click(object sender, EventArgs e)
@@ -1360,7 +1376,11 @@ namespace RTC
 				else
 					return;
 				RTC_Core.LoadRom(filename, true);
-				StashKey temp = new StashKey();
+
+				StashKey temp = new StashKey(RTC_Core.GetRandomKey(), sk.ParentKey, sk.BlastLayer);
+
+				//We have to null this as to properly create a stashkey, we need to use it in the constructor
+				sk.ParentKey = null;
 
 				sk.RomFilename = temp.RomFilename;
 				sk.GameName = temp.GameName;
@@ -1381,27 +1401,29 @@ namespace RTC
 			sfd.Filter = "rom files|*.*";
 			sfd.RestoreDirectory = true;
 			if (sfd.ShowDialog() == DialogResult.OK)
-			{
 				filename = sfd.FileName.ToString();
-			}
 			else
 				return;
 			RomParts rp = RTC_MemoryDomains.GetRomParts(sk.SystemName, sk.RomFilename);
 
-			File.Copy(sk.RomFilename, filename);
+			File.Copy(sk.RomFilename, filename, true);
 			using (FileStream output = new FileStream(filename, FileMode.Open))
 			{
-				foreach (BlastByte bu in sk.BlastLayer.Layer)
+				foreach (BlastUnit bu in sk.BlastLayer.Layer)
 				{
-					if (bu.Domain == rp.primarydomain)
+					if (bu is BlastByte)
 					{
-						output.Position = bu.Address + rp.skipbytes;
-						output.Write(bu.Value, 0, bu.Value.Length);
-					}
-					else if (bu.Domain == rp.seconddomain)
-					{
-						output.Position = bu.Address + RTC_MemoryDomains.MemoryInterfaces["CHR VROM"].Size + rp.skipbytes;
-						output.Write(bu.Value, 0, bu.Value.Length);
+						BlastByte bb = bu as BlastByte;
+						if (bu.Domain == rp.primarydomain)
+						{
+							output.Position = bb.Address + rp.skipbytes;
+							output.Write(bb.Value, 0, bb.Value.Length);
+						}
+						else if (bu.Domain == rp.seconddomain)
+						{
+							output.Position = bu.Address + RTC_MemoryDomains.MemoryInterfaces[rp.seconddomain].Size + rp.skipbytes;
+							output.Write(bb.Value, 0, bb.Value.Length);
+						}
 					}
 				}
 			}

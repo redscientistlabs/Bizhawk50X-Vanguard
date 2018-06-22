@@ -75,6 +75,7 @@
             this.btnRemoveSelected = new System.Windows.Forms.Button();
             this.btnSearchRow = new System.Windows.Forms.Button();
             this.panelSidebar = new System.Windows.Forms.Panel();
+            this.btnHelp = new System.Windows.Forms.Button();
             this.btnSearchAgain = new System.Windows.Forms.Button();
             this.menuStripEx1 = new MenuStripEx();
             this.blastLayerToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -99,7 +100,6 @@
             this.bakeBlastByteToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.openBlastLayerGeneratorToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.btnHideSidebar = new System.Windows.Forms.Button();
-            this.btnHelp = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.dgvBlastLayer)).BeginInit();
             this.pnMemoryTargetting.SuspendLayout();
             this.panel1.SuspendLayout();
@@ -585,6 +585,7 @@
             // 
             this.dataGridViewNumericUpDownColumn1.FillWeight = 90F;
             this.dataGridViewNumericUpDownColumn1.HeaderText = "Param 1 Value";
+            this.dataGridViewNumericUpDownColumn1.Hexadecimal = false;
             this.dataGridViewNumericUpDownColumn1.Maximum = new decimal(new int[] {
             2147483647,
             0,
@@ -604,6 +605,7 @@
             // 
             this.dataGridViewNumericUpDownColumn2.FillWeight = 90F;
             this.dataGridViewNumericUpDownColumn2.HeaderText = "Param 2 Value";
+            this.dataGridViewNumericUpDownColumn2.Hexadecimal = false;
             this.dataGridViewNumericUpDownColumn2.Name = "dataGridViewNumericUpDownColumn2";
             this.dataGridViewNumericUpDownColumn2.Width = 90;
             // 
@@ -675,6 +677,23 @@
             this.panelSidebar.Name = "panelSidebar";
             this.panelSidebar.Size = new System.Drawing.Size(176, 457);
             this.panelSidebar.TabIndex = 142;
+            // 
+            // btnHelp
+            // 
+            this.btnHelp.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
+            this.btnHelp.FlatAppearance.BorderSize = 0;
+            this.btnHelp.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnHelp.Font = new System.Drawing.Font("Segoe UI Semibold", 9.75F, System.Drawing.FontStyle.Bold);
+            this.btnHelp.ForeColor = System.Drawing.Color.Black;
+            this.btnHelp.Image = global::BizHawk.Client.EmuHawk.Properties.Resources.Help;
+            this.btnHelp.Location = new System.Drawing.Point(148, 6);
+            this.btnHelp.Name = "btnHelp";
+            this.btnHelp.Size = new System.Drawing.Size(27, 22);
+            this.btnHelp.TabIndex = 176;
+            this.btnHelp.TabStop = false;
+            this.btnHelp.Tag = "color:dark";
+            this.btnHelp.UseVisualStyleBackColor = false;
+            this.btnHelp.Click += new System.EventHandler(this.btnHelp_Click);
             // 
             // btnSearchAgain
             // 
@@ -837,7 +856,7 @@
             // 
             this.bakeROMBlastunitsToFileToolStripMenuItem.Name = "bakeROMBlastunitsToFileToolStripMenuItem";
             this.bakeROMBlastunitsToFileToolStripMenuItem.Size = new System.Drawing.Size(222, 22);
-            this.bakeROMBlastunitsToFileToolStripMenuItem.Text = "Bake ROM Blastunits to File";
+            this.bakeROMBlastunitsToFileToolStripMenuItem.Text = "Bake ROM BlastBytes to File";
             this.bakeROMBlastunitsToFileToolStripMenuItem.Click += new System.EventHandler(this.bakeROMBlastunitsToFileToolStripMenuItem_Click);
             // 
             // toolsToolStripMenuItem
@@ -890,23 +909,6 @@
             this.btnHideSidebar.Text = "▶";
             this.btnHideSidebar.UseVisualStyleBackColor = true;
             this.btnHideSidebar.Click += new System.EventHandler(this.btnHideSidebar_Click);
-            // 
-            // btnHelp
-            // 
-            this.btnHelp.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
-            this.btnHelp.FlatAppearance.BorderSize = 0;
-            this.btnHelp.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btnHelp.Font = new System.Drawing.Font("Segoe UI Semibold", 9.75F, System.Drawing.FontStyle.Bold);
-            this.btnHelp.ForeColor = System.Drawing.Color.Black;
-            this.btnHelp.Image = global::BizHawk.Client.EmuHawk.Properties.Resources.Help;
-            this.btnHelp.Location = new System.Drawing.Point(148, 6);
-            this.btnHelp.Name = "btnHelp";
-            this.btnHelp.Size = new System.Drawing.Size(27, 22);
-            this.btnHelp.TabIndex = 176;
-            this.btnHelp.TabStop = false;
-            this.btnHelp.Tag = "color:dark";
-            this.btnHelp.UseVisualStyleBackColor = false;
-            this.btnHelp.Click += new System.EventHandler(this.btnHelp_Click);
             // 
             // RTC_NewBlastEditor_Form
             // 
