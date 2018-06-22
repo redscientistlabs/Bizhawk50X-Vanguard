@@ -117,6 +117,7 @@
             // Column1
             // 
             this.Column1.HeaderText = "Column1";
+            this.Column1.Hexadecimal = false;
             this.Column1.Name = "Column1";
             // 
             // checkBox2
@@ -134,7 +135,7 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(800, 450);
+            this.ClientSize = new System.Drawing.Size(513, 178);
             this.Controls.Add(this.checkBox2);
             this.Controls.Add(this.dataGridView1);
             this.Controls.Add(this.label3);
