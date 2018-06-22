@@ -1449,6 +1449,7 @@ namespace RTC
 			return errorIconBounds;
 		}
 
+		
 		/// <summary>
 		/// Customized implementation of the GetFormattedValue function in order to include the decimal and thousand separator
 		/// characters in the formatted representation of the cell value.
@@ -1533,6 +1534,15 @@ namespace RTC
 				else
 				{
 					numericUpDown.Text = initialFormattedValueStr;
+				}
+
+				if (initialFormattedValueStr == null)
+				{
+					numericUpDown.Value = this.Minimum;
+				}
+				else
+				{
+					numericUpDown.Value = Convert.ToDecimal(this.Value);
 				}
 			}
 		}
@@ -1676,12 +1686,7 @@ namespace RTC
 					{
 						paintingNumericUpDown.Parent = this.DataGridView;
 					}
-					// Set all the relevant properties
-					paintingNumericUpDown.Value = Convert.ToDecimal(value);
-					if (this.Hexadecimal)
-						paintingNumericUpDown.Text = Convert.ToUInt64(value).ToString("X");
-					else
-						paintingNumericUpDown.Text = paintingNumericUpDown.Value.ToString();
+					paintingNumericUpDown.Text = formattedValue as string;
 					paintingNumericUpDown.TextAlign = DataGridViewNumericUpDownCell.TranslateAlignment(cellStyle.Alignment);
 					paintingNumericUpDown.DecimalPlaces = this.DecimalPlaces;
 					paintingNumericUpDown.Hexadecimal = this.Hexadecimal;
@@ -2171,7 +2176,14 @@ namespace RTC
 			{
 				// Prevent the Value from being set to Maximum or Minimum when the cell is being painted.
 				this.UserEdit = (context & DataGridViewDataErrorContexts.Display) == 0;
-				return this.Value.ToString((this.ThousandsSeparator ? "N" : "F") + this.DecimalPlaces.ToString());
+
+				if (this.Hexadecimal)
+				{
+					UInt64 valueuint64 = System.Convert.ToUInt64(this.Value);
+					return valueuint64.ToString("X");
+				}
+				else
+					return this.Value.ToString((this.ThousandsSeparator ? "N" : "F") + this.DecimalPlaces.ToString());
 			}
 			finally
 			{
@@ -2277,9 +2289,9 @@ namespace RTC
 		}
 		*/
 
-		/// <summary>
-		/// Listen to the ValueChanged notification to forward the change to the grid.
-		/// </summary>
+					/// <summary>
+					/// Listen to the ValueChanged notification to forward the change to the grid.
+					/// </summary>
 		protected override void OnValueChanged(EventArgs e)
 		{
 			base.OnValueChanged(e);
@@ -2332,10 +2344,20 @@ namespace RTC
 	//Fixes microsoft's numericupdown hex issues. Thanks microsoft
 	public class NumericUpDownHexFix : NumericUpDown
 	{
+		bool currentValueChanged = false;
+
 		public NumericUpDownHexFix()
 		{
 			base.Minimum = 0;
 			base.Maximum = UInt64.MaxValue;
+			
+			this.ValueChanged += new EventHandler(OnValueChanged);
+
+		}
+
+		private void OnValueChanged(object sender, EventArgs e)
+		{
+			currentValueChanged = true;
 		}
 
 		[DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
@@ -2344,27 +2366,52 @@ namespace RTC
 			get { return base.Maximum; }
 			set { base.Maximum = value; }
 		}
-
+		
 		protected override void UpdateEditText()
 		{
-			if (base.Hexadecimal)
-			{
-				if (base.UserEdit)
+			if(UserEdit)
+				if (base.Hexadecimal)
 					HexParseEditText();
-				base.ChangingText = true;
-			}
-			else
-			{
-				if (base.UserEdit)
+				else
 					ParseEditText();
-				base.ChangingText = true;
+			if (currentValueChanged || (!string.IsNullOrEmpty(Text) &&	!(Text.Length == 1 && Text == "-")))
+			{
+				currentValueChanged = false;
+				ChangingText = true;
+				Text = GetNumberText(Value);
+				ChangingText = false;
 			}
+
+			//	if(base.Hexadecimal)
+			//	base.Text = GetNumberText(base.Value);
+
 		}
 
 		protected override void ValidateEditText()
 		{
+			if (base.Hexadecimal)
+				HexParseEditText();
+			else
+				ParseEditText();
 			UpdateEditText();
 		}
+
+		private string GetNumberText(decimal num)
+		{
+			string text;
+
+			if (Hexadecimal)
+			{
+				text = ((Int64)num).ToString("X", CultureInfo.InvariantCulture);
+				Debug.Assert(text == text.ToUpper(CultureInfo.InvariantCulture), "GetPreferredSize assumes hex digits to be uppercase.");
+			}
+			else
+			{
+				text = num.ToString((ThousandsSeparator ? "N" : "F") + DecimalPlaces.ToString(CultureInfo.CurrentCulture), CultureInfo.CurrentCulture);
+			}
+			return text;
+		}
+
 
 		private void HexParseEditText()
 		{
@@ -2372,8 +2419,8 @@ namespace RTC
 			{
 				if (!string.IsNullOrEmpty(Text) && !(Text.Length == 1 && Text == "-"))
 				{
-					Int64 val = Convert.ToInt64(base.Text, 16);
-
+					var val = Convert.ToDecimal(Convert.ToInt64(base.Text, 16));
+					
 					if (val > Maximum)
 						base.Text = string.Format("{0:X}", (uint)Maximum);
 

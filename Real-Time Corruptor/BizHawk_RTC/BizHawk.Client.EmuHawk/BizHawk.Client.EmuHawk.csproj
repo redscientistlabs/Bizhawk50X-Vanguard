@@ -732,6 +732,12 @@
     <Compile Include="RTC\Forms\RTC_HotkeyConfig_Form.Designer.cs">
       <DependentUpon>RTC_HotkeyConfig_Form.cs</DependentUpon>
     </Compile>
+    <Compile Include="RTC\Forms\RTC_Test_Form.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="RTC\Forms\RTC_Test_Form.Designer.cs">
+      <DependentUpon>RTC_Test_Form.cs</DependentUpon>
+    </Compile>
     <Compile Include="RTC\RTC_BlastTools.cs" />
     <Compile Include="RTC\Corruption Engines\RTC_DistortionEngine.cs" />
     <Compile Include="RTC\Corruption Engines\RTC_ExternalRomPlugin.cs" />
@@ -1628,6 +1634,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="RTC\Forms\RTC_StockpilePlayer_Form.resx">
       <DependentUpon>RTC_StockpilePlayer_Form.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="RTC\Forms\RTC_Test_Form.resx">
+      <DependentUpon>RTC_Test_Form.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="RTC\Forms\RTC_VmdAct_Form.resx">
       <DependentUpon>RTC_VmdAct_Form.cs</DependentUpon>

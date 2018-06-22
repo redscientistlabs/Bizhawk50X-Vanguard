@@ -158,5 +158,11 @@ namespace RTC
 				RTC_Core.StartSound();
 			}
 		}
+
+		private void button2_Click(object sender, EventArgs e)
+		{
+			Form form = new RTC_Test_Form();
+			form.Show();
+		}
 	}
 }
