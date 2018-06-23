@@ -180,6 +180,8 @@ namespace RTC
 			RTC_Core.lastOpenRom = GlobalWin.MainForm.CurrentlyOpenRom;
 			RTC_RPC.RefreshPlugin();
 
+			//Sleep for 10ms in case Bizhawk hung for a moment after the game loaded
+			System.Threading.Thread.Sleep(10);
 			//prepare memory domains in advance on bizhawk side
 			RTC_MemoryDomains.RefreshDomains(false);
 

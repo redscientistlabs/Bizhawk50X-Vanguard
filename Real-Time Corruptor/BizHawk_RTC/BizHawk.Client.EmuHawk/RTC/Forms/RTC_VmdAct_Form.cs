@@ -549,7 +549,7 @@ namespace RTC
 
 		private void btnActiveTableGenerate_Click(object sender, EventArgs e)
 		{
-			if (cbSelectedMemoryDomain == null || RTC_MemoryDomains.getInterface(cbSelectedMemoryDomain.SelectedItem.ToString()).Size.ToString() == null)
+			if (cbSelectedMemoryDomain == null || RTC_MemoryDomains.getInterface(cbSelectedMemoryDomain.SelectedItem.ToString())?.Size.ToString() == null)
 			{
 				MessageBox.Show("Select a valid domain before continuing!");
 				return;
