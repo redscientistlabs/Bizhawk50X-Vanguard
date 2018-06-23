@@ -6,6 +6,7 @@ using System.IO;
 using System.Linq;
 using System.Windows.Forms;
 using System.Xml.Serialization;
+using System.Runtime.InteropServices;
 
 namespace RTC
 {
@@ -15,6 +16,7 @@ namespace RTC
 		{
 			InitializeComponent();
 		}
+
 
 		public bool ActLoadedFromFile = false;
 		public bool FirstInit = false;
@@ -84,8 +86,6 @@ namespace RTC
 		{
 			RTC_Core.StopSound();
 
-			GC.Collect();
-			GC.WaitForPendingFinalizers();
 
 			if (!IsQuickSave)
 			{
@@ -117,8 +117,6 @@ namespace RTC
 				FS.Close();
 			}
 
-			GC.Collect();
-			GC.WaitForPendingFinalizers();
 
 			RTC_Core.StartSound();
 		}
@@ -220,9 +218,6 @@ namespace RTC
 				}
 			}
 
-			GC.Collect();
-			GC.WaitForPendingFinalizers();
-
 			return true;
 		}
 
@@ -255,8 +250,6 @@ namespace RTC
 			ActiveTableDumps.Add(key);
 			lbFreezeEngineNbDumps.Text = "Memory dumps collected: " + ActiveTableDumps.Count.ToString();
 
-			GC.Collect();
-			GC.WaitForPendingFinalizers();
 		}
 
 		private void btnActiveTableDumpsReset_Click(object sender, EventArgs e)
@@ -290,9 +283,6 @@ namespace RTC
 				File.Delete(file);
 
 			currentFilename = null;
-
-			GC.Collect();
-			GC.WaitForPendingFinalizers();
 		}
 
 		private void btnActiveTableLoad_Click(object sender, EventArgs e)
@@ -368,8 +358,6 @@ namespace RTC
 
 			List<long> newActiveTable = new List<long>();
 
-			GC.Collect();
-			GC.WaitForPendingFinalizers();
 
 			foreach (long item in ActiveTableGenerated)
 				if (!substractiveActiveTable.Contains(item))
@@ -377,9 +365,6 @@ namespace RTC
 
 			ActiveTableGenerated = newActiveTable.ToArray();
 			lbFreezeEngineActiveTableSize.Text = "Active table size: " + ActiveTableGenerated.Length.ToString();
-
-			GC.Collect();
-			GC.WaitForPendingFinalizers();
 
 			RTC_Core.StartSound();
 		}
@@ -416,8 +401,6 @@ namespace RTC
 
 				List<long> newActiveTable = new List<long>();
 
-				GC.Collect();
-				GC.WaitForPendingFinalizers();
 
 				foreach (long item in ActiveTableGenerated)
 					if (additiveActiveTable.Contains(item))
@@ -426,8 +409,6 @@ namespace RTC
 				ActiveTableGenerated = newActiveTable.ToArray();
 				lbFreezeEngineActiveTableSize.Text = "Active table size: " + ActiveTableGenerated.Length.ToString();
 
-				GC.Collect();
-				GC.WaitForPendingFinalizers();
 
 				RTC_Core.StartSound();
 			}
@@ -439,6 +420,7 @@ namespace RTC
 
 		private void generateActiveTable()
 		{
+			var token = RTC_NetCore.HugeOperationStart("DISABLED");
 			try
 			{
 				if (!ComputeActiveTableActivity())
@@ -450,7 +432,7 @@ namespace RTC
 
 				for (int i = 0; i < ActiveTableActivity.Length; i++)
 				{
-					if ((double)ActiveTableActivity[i] > computedThreshold && (!ExcludeEverchanging || ActiveTableActivity[i] != (long)ActiveTableDumps.Count))
+					if ((double)ActiveTableActivity[i] >= computedThreshold && (!ExcludeEverchanging || ActiveTableActivity[i] != ((long)ActiveTableDumps.Count - 1)))
 						newActiveTable.Add(i);
 				}
 
@@ -466,8 +448,6 @@ namespace RTC
 				ActiveTableReady = true;
 				currentFilename = null;
 
-				GC.Collect();
-				GC.WaitForPendingFinalizers();
 			}
 			catch (Exception ex)
 			{
@@ -476,15 +456,20 @@ namespace RTC
 								ex.ToString());
 				return;
 			}
+			finally
+			{
+				RTC_NetCore.HugeOperationEnd(token);
+			}
 		}
 
 		private void generateVMD()
 		{
-			if (ActiveTableGenerated.Length == 0)
-				return;
+            if (ActiveTableGenerated == null || ActiveTableGenerated.Length == 0)
+                return;
+
+			var token = RTC_NetCore.HugeOperationStart("DISABLED");
 			try
 			{
-				var token = RTC_NetCore.HugeOperationStart("LAZY");
 				MemoryInterface mi = RTC_MemoryDomains.MemoryInterfaces[cbSelectedMemoryDomain.SelectedItem.ToString()];
 				VirtualMemoryDomain VMD = new VirtualMemoryDomain();
 				VmdPrototype proto = new VmdPrototype();
@@ -532,10 +517,6 @@ namespace RTC
 
 				RTC_Core.vmdPoolForm.RefreshVMDs();
 
-				GC.Collect();
-				GC.WaitForPendingFinalizers();
-
-				RTC_NetCore.HugeOperationEnd(token);
 				return;
 			}
 			catch (Exception ex)
@@ -544,6 +525,10 @@ namespace RTC
 					"This is an RTC error, so you should probably send this to the RTC devs with instructions on what you did to cause it.\n\n" +
 								ex.ToString());
 				return;
+			}
+			finally
+			{
+				RTC_NetCore.HugeOperationEnd(token);
 			}
 		}
 
@@ -555,9 +540,11 @@ namespace RTC
 				return;
 			}
 
+			btnActiveTableGenerate.Enabled = false;
 			if (!ActLoadedFromFile)
 				generateActiveTable();
 			generateVMD();
+			btnActiveTableGenerate.Enabled = true;
 		}
 
 		private void btnLoadDomains_Click(object sender, EventArgs e)
