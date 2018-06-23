@@ -168,9 +168,6 @@ namespace RTC
 			RTC_Core.vmdPoolForm.RefreshVMDs();
 			RTC_Core.ecForm.cbMemoryDomainTool.SelectedIndex = 1;
 
-			GC.Collect();
-			GC.WaitForPendingFinalizers();
-
 			return true;
 		}
 

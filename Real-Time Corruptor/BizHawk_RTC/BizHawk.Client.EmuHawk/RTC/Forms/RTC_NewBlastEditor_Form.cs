@@ -296,9 +296,6 @@ namespace RTC
 			StashKey newSk = (StashKey)sk.Clone();
 			newSk.BlastLayer = (BlastLayer)bl.Clone();
 
-			GC.Collect();
-			GC.WaitForPendingFinalizers();
-
 			newSk.Run();
 		}
 
@@ -312,8 +309,6 @@ namespace RTC
 				if (bu.IsEnabled)
 					bl.Layer.Add(bu);
 			}
-			GC.Collect();
-			GC.WaitForPendingFinalizers();
 
 			(bl.Clone() as BlastLayer).Apply();
 		}
@@ -339,8 +334,6 @@ namespace RTC
 			RTC_Core.ghForm.lbStashHistory.SelectedIndex = RTC_Core.ghForm.lbStashHistory.Items.Count - 1;
 			RTC_StockpileManager.currentStashkey = RTC_StockpileManager.StashHistory[RTC_Core.ghForm.lbStashHistory.SelectedIndex];
 
-			GC.Collect();
-			GC.WaitForPendingFinalizers();
 		}
 
 		private void btnDisableEverything_Click(object sender, EventArgs e)

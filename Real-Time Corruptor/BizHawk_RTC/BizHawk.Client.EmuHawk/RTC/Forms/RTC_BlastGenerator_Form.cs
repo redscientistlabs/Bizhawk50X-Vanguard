@@ -278,9 +278,6 @@ namespace RTC
 				return;
 			newSk.BlastLayer = bl;
 
-			GC.Collect();
-			GC.WaitForPendingFinalizers();
-
 			newSk.Run();
 		}
 
@@ -323,9 +320,6 @@ namespace RTC
 				RTC_Core.ghForm.lbStashHistory.SelectedIndex = RTC_Core.ghForm.lbStashHistory.Items.Count - 1;
 				RTC_StockpileManager.currentStashkey = RTC_StockpileManager.StashHistory[RTC_Core.ghForm.lbStashHistory.SelectedIndex];
 			}
-
-			GC.Collect();
-			GC.WaitForPendingFinalizers();
 		}
 
 		private void cbUseHex_CheckedChanged(object sender, EventArgs e)

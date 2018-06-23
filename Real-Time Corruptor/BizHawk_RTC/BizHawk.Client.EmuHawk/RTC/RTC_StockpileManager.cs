@@ -23,9 +23,7 @@ namespace RTC
 			set
 			{
 				_currentStashkey = value;
-
-				GC.Collect();
-				GC.WaitForPendingFinalizers();
+				
 			}
 		}
 
