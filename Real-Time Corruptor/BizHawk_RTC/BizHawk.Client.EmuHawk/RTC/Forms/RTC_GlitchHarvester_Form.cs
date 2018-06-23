@@ -484,7 +484,7 @@ namespace RTC
 
 		private void btnAddStashToStockpile_Click(object sender, EventArgs e)
 		{
-			if (RTC_StockpileManager.currentStashkey.Alias != RTC_StockpileManager.currentStashkey.Key)
+			if (RTC_StockpileManager.currentStashkey != null && RTC_StockpileManager.currentStashkey.Alias != RTC_StockpileManager.currentStashkey.Key)
 				AddStashToStockpile(false);
 			else
 				AddStashToStockpile(true);
