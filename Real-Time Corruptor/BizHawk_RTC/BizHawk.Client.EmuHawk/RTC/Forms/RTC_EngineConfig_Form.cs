@@ -236,14 +236,20 @@ namespace RTC
 				case "RANDOM":
 
 					RTC_NightmareEngine.Algo = BlastByteAlgo.RANDOM;
+					nmMinValueNightmare.Enabled = true;
+					nmMaxValueNightmare.Enabled = true;
 					break;
 
 				case "RANDOMTILT":
 					RTC_NightmareEngine.Algo = BlastByteAlgo.RANDOMTILT;
+					nmMinValueNightmare.Enabled = true;
+					nmMaxValueNightmare.Enabled = true;
 					break;
 
 				case "TILT":
 					RTC_NightmareEngine.Algo = BlastByteAlgo.TILT;
+					nmMinValueNightmare.Enabled = false;
+					nmMaxValueNightmare.Enabled = false;
 					break;
 			}
 
@@ -809,12 +815,39 @@ namespace RTC
 				{
 					case 0:
 						RTC_Core.CustomPrecision = 1;
+
+						nmMinValueNightmare.Maximum = byte.MaxValue;
+						nmMinValueHellgenie.Maximum = byte.MaxValue;
+
+						nmMaxValueNightmare.Maximum = byte.MaxValue;
+						nmMaxValueHellgenie.Maximum = byte.MaxValue;
+
+						nmMaxValueNightmare.Value = byte.MaxValue;
+						nmMaxValueHellgenie.Value = byte.MaxValue;
 						break;
 					case 1:
 						RTC_Core.CustomPrecision = 2;
+
+						nmMinValueNightmare.Maximum = UInt16.MaxValue;
+						nmMinValueHellgenie.Maximum = UInt16.MaxValue;
+
+						nmMaxValueNightmare.Maximum = UInt16.MaxValue;
+						nmMaxValueHellgenie.Maximum = UInt16.MaxValue;
+
+						nmMaxValueNightmare.Value = UInt16.MaxValue;
+						nmMaxValueHellgenie.Value = UInt16.MaxValue;
 						break;
 					case 2:
 						RTC_Core.CustomPrecision = 4;
+
+						nmMinValueNightmare.Maximum = UInt32.MaxValue;
+						nmMinValueHellgenie.Maximum = UInt32.MaxValue;
+
+						nmMaxValueNightmare.Maximum = UInt32.MaxValue;
+						nmMaxValueHellgenie.Maximum = UInt32.MaxValue;
+
+						nmMaxValueNightmare.Value = UInt32.MaxValue;
+						nmMaxValueHellgenie.Value = UInt32.MaxValue;
 						break;
 				}
 
@@ -828,6 +861,18 @@ namespace RTC
 				RTC_Core.bgForm.Close();
 			RTC_Core.bgForm = new RTC_BlastGenerator_Form();
 			RTC_Core.bgForm.LoadNoStashKey();
+		}
+
+		private void cbUseHexHellgenie_CheckedChanged(object sender, EventArgs e)
+		{
+			nmMinValueHellgenie.Hexadecimal = cbUseHexHellgenie.Checked;
+			nmMaxValueHellgenie.Hexadecimal = cbUseHexHellgenie.Checked;
+		}
+
+		private void cbUseHexNightmare_CheckedChanged(object sender, EventArgs e)
+		{
+			nmMinValueNightmare.Hexadecimal = cbUseHexNightmare.Checked;
+			nmMaxValueNightmare.Hexadecimal = cbUseHexNightmare.Checked;
 		}
 	}
 }

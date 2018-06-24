@@ -104,14 +104,24 @@
             this.nmMaxFreezes = new System.Windows.Forms.NumericUpDown();
             this.label4 = new System.Windows.Forms.Label();
             this.gbHellgenieEngine = new System.Windows.Forms.GroupBox();
+            this.cbUseHexHellgenie = new System.Windows.Forms.CheckBox();
+            this.label26 = new System.Windows.Forms.Label();
+            this.label27 = new System.Windows.Forms.Label();
             this.panel5 = new System.Windows.Forms.Panel();
+            this.nmMaxValueHellgenie = new RTC.NumericUpDownHexFix();
             this.label16 = new System.Windows.Forms.Label();
+            this.nmMinValueHellgenie = new RTC.NumericUpDownHexFix();
             this.comboBox2 = new System.Windows.Forms.ComboBox();
             this.cbClearCheatsOnRewind = new System.Windows.Forms.CheckBox();
             this.btnClearCheats = new System.Windows.Forms.Button();
             this.nmMaxCheats = new System.Windows.Forms.NumericUpDown();
             this.label1 = new System.Windows.Forms.Label();
             this.gbNightmareEngine = new System.Windows.Forms.GroupBox();
+            this.cbUseHexNightmare = new System.Windows.Forms.CheckBox();
+            this.label24 = new System.Windows.Forms.Label();
+            this.label23 = new System.Windows.Forms.Label();
+            this.nmMaxValueNightmare = new RTC.NumericUpDownHexFix();
+            this.nmMinValueNightmare = new RTC.NumericUpDownHexFix();
             this.panel4 = new System.Windows.Forms.Panel();
             this.label15 = new System.Windows.Forms.Label();
             this.comboBox1 = new System.Windows.Forms.ComboBox();
@@ -148,8 +158,12 @@
             this.gbFreezeEngine.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.nmMaxFreezes)).BeginInit();
             this.gbHellgenieEngine.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.nmMaxValueHellgenie)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.nmMinValueHellgenie)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.nmMaxCheats)).BeginInit();
             this.gbNightmareEngine.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.nmMaxValueNightmare)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.nmMinValueNightmare)).BeginInit();
             this.pnMemoryDomains.SuspendLayout();
             this.groupBox1.SuspendLayout();
             this.gbBlastGeneratorEngine.SuspendLayout();
@@ -547,9 +561,8 @@
             "Freeze Engine",
             "Pipe Engine",
             "Vector Engine",
-			"Blast Generator",
-			"External ROM Plugin"
-           });
+            "Blast Generator",
+            "External ROM Plugin"});
             this.cbSelectedEngine.Location = new System.Drawing.Point(10, 13);
             this.cbSelectedEngine.Name = "cbSelectedEngine";
             this.cbSelectedEngine.Size = new System.Drawing.Size(165, 21);
@@ -820,7 +833,7 @@
             this.cbGenerateChainedPipes.CheckState = System.Windows.Forms.CheckState.Checked;
             this.cbGenerateChainedPipes.Font = new System.Drawing.Font("Segoe UI", 8F);
             this.cbGenerateChainedPipes.ForeColor = System.Drawing.Color.White;
-            this.cbGenerateChainedPipes.Location = new System.Drawing.Point(182, 36);
+            this.cbGenerateChainedPipes.Location = new System.Drawing.Point(182, 34);
             this.cbGenerateChainedPipes.Name = "cbGenerateChainedPipes";
             this.cbGenerateChainedPipes.Size = new System.Drawing.Size(150, 17);
             this.cbGenerateChainedPipes.TabIndex = 82;
@@ -833,7 +846,7 @@
             this.nmTiltPipeValue.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
             this.nmTiltPipeValue.Font = new System.Drawing.Font("Segoe UI", 8F);
             this.nmTiltPipeValue.ForeColor = System.Drawing.Color.White;
-            this.nmTiltPipeValue.Location = new System.Drawing.Point(98, 63);
+            this.nmTiltPipeValue.Location = new System.Drawing.Point(95, 63);
             this.nmTiltPipeValue.Maximum = new decimal(new int[] {
             255,
             0,
@@ -845,7 +858,7 @@
             0,
             -2147483648});
             this.nmTiltPipeValue.Name = "nmTiltPipeValue";
-            this.nmTiltPipeValue.Size = new System.Drawing.Size(67, 22);
+            this.nmTiltPipeValue.Size = new System.Drawing.Size(70, 22);
             this.nmTiltPipeValue.TabIndex = 81;
             this.nmTiltPipeValue.Tag = "color:dark";
             this.nmTiltPipeValue.ValueChanged += new System.EventHandler(this.nmTiltPipeValue_ValueChanged);
@@ -895,7 +908,7 @@
             this.cbLockPipes.AutoSize = true;
             this.cbLockPipes.Font = new System.Drawing.Font("Segoe UI", 8F);
             this.cbLockPipes.ForeColor = System.Drawing.Color.White;
-            this.cbLockPipes.Location = new System.Drawing.Point(182, 69);
+            this.cbLockPipes.Location = new System.Drawing.Point(182, 72);
             this.cbLockPipes.Name = "cbLockPipes";
             this.cbLockPipes.Size = new System.Drawing.Size(79, 17);
             this.cbLockPipes.TabIndex = 77;
@@ -925,7 +938,7 @@
             this.nmMaxPipes.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
             this.nmMaxPipes.Font = new System.Drawing.Font("Segoe UI", 8F);
             this.nmMaxPipes.ForeColor = System.Drawing.Color.White;
-            this.nmMaxPipes.Location = new System.Drawing.Point(98, 36);
+            this.nmMaxPipes.Location = new System.Drawing.Point(95, 36);
             this.nmMaxPipes.Maximum = new decimal(new int[] {
             65536,
             0,
@@ -937,7 +950,7 @@
             0,
             0});
             this.nmMaxPipes.Name = "nmMaxPipes";
-            this.nmMaxPipes.Size = new System.Drawing.Size(67, 22);
+            this.nmMaxPipes.Size = new System.Drawing.Size(70, 22);
             this.nmMaxPipes.TabIndex = 9;
             this.nmMaxPipes.Tag = "color:dark";
             this.nmMaxPipes.Value = new decimal(new int[] {
@@ -1032,7 +1045,7 @@
             this.nmDistortionDelay.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
             this.nmDistortionDelay.Font = new System.Drawing.Font("Segoe UI", 8F);
             this.nmDistortionDelay.ForeColor = System.Drawing.Color.White;
-            this.nmDistortionDelay.Location = new System.Drawing.Point(98, 36);
+            this.nmDistortionDelay.Location = new System.Drawing.Point(95, 36);
             this.nmDistortionDelay.Maximum = new decimal(new int[] {
             65536,
             0,
@@ -1044,7 +1057,7 @@
             0,
             0});
             this.nmDistortionDelay.Name = "nmDistortionDelay";
-            this.nmDistortionDelay.Size = new System.Drawing.Size(67, 22);
+            this.nmDistortionDelay.Size = new System.Drawing.Size(70, 22);
             this.nmDistortionDelay.TabIndex = 9;
             this.nmDistortionDelay.Tag = "color:dark";
             this.nmDistortionDelay.Value = new decimal(new int[] {
@@ -1248,7 +1261,7 @@
             this.nmMaxFreezes.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
             this.nmMaxFreezes.Font = new System.Drawing.Font("Segoe UI", 8F);
             this.nmMaxFreezes.ForeColor = System.Drawing.Color.White;
-            this.nmMaxFreezes.Location = new System.Drawing.Point(98, 36);
+            this.nmMaxFreezes.Location = new System.Drawing.Point(95, 36);
             this.nmMaxFreezes.Maximum = new decimal(new int[] {
             65536,
             0,
@@ -1260,7 +1273,7 @@
             0,
             0});
             this.nmMaxFreezes.Name = "nmMaxFreezes";
-            this.nmMaxFreezes.Size = new System.Drawing.Size(67, 22);
+            this.nmMaxFreezes.Size = new System.Drawing.Size(70, 22);
             this.nmMaxFreezes.TabIndex = 9;
             this.nmMaxFreezes.Tag = "color:dark";
             this.nmMaxFreezes.Value = new decimal(new int[] {
@@ -1284,8 +1297,13 @@
             // 
             // gbHellgenieEngine
             // 
+            this.gbHellgenieEngine.Controls.Add(this.cbUseHexHellgenie);
+            this.gbHellgenieEngine.Controls.Add(this.label26);
+            this.gbHellgenieEngine.Controls.Add(this.label27);
             this.gbHellgenieEngine.Controls.Add(this.panel5);
+            this.gbHellgenieEngine.Controls.Add(this.nmMaxValueHellgenie);
             this.gbHellgenieEngine.Controls.Add(this.label16);
+            this.gbHellgenieEngine.Controls.Add(this.nmMinValueHellgenie);
             this.gbHellgenieEngine.Controls.Add(this.comboBox2);
             this.gbHellgenieEngine.Controls.Add(this.cbClearCheatsOnRewind);
             this.gbHellgenieEngine.Controls.Add(this.btnClearCheats);
@@ -1299,6 +1317,41 @@
             this.gbHellgenieEngine.TabIndex = 124;
             this.gbHellgenieEngine.TabStop = false;
             // 
+            // cbUseHexHellgenie
+            // 
+            this.cbUseHexHellgenie.AutoSize = true;
+            this.cbUseHexHellgenie.Checked = true;
+            this.cbUseHexHellgenie.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.cbUseHexHellgenie.Font = new System.Drawing.Font("Segoe UI", 8F);
+            this.cbUseHexHellgenie.ForeColor = System.Drawing.Color.White;
+            this.cbUseHexHellgenie.Location = new System.Drawing.Point(183, 57);
+            this.cbUseHexHellgenie.Name = "cbUseHexHellgenie";
+            this.cbUseHexHellgenie.Size = new System.Drawing.Size(129, 17);
+            this.cbUseHexHellgenie.TabIndex = 148;
+            this.cbUseHexHellgenie.Text = "Use Hex for MinMax";
+            this.cbUseHexHellgenie.UseVisualStyleBackColor = true;
+            this.cbUseHexHellgenie.CheckedChanged += new System.EventHandler(this.cbUseHexHellgenie_CheckedChanged);
+            // 
+            // label26
+            // 
+            this.label26.AutoSize = true;
+            this.label26.Font = new System.Drawing.Font("Segoe UI", 8F);
+            this.label26.Location = new System.Drawing.Point(4, 92);
+            this.label26.Name = "label26";
+            this.label26.Size = new System.Drawing.Size(87, 13);
+            this.label26.TabIndex = 147;
+            this.label26.Text = "Maximum Value";
+            // 
+            // label27
+            // 
+            this.label27.AutoSize = true;
+            this.label27.Font = new System.Drawing.Font("Segoe UI", 8F);
+            this.label27.Location = new System.Drawing.Point(4, 66);
+            this.label27.Name = "label27";
+            this.label27.Size = new System.Drawing.Size(86, 13);
+            this.label27.TabIndex = 144;
+            this.label27.Text = "Minimum Value";
+            // 
             // panel5
             // 
             this.panel5.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(32)))), ((int)(((byte)(32)))), ((int)(((byte)(32)))));
@@ -1309,6 +1362,23 @@
             this.panel5.Tag = "color:darker";
             this.panel5.Visible = false;
             // 
+            // nmMaxValueHellgenie
+            // 
+            this.nmMaxValueHellgenie.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
+            this.nmMaxValueHellgenie.Font = new System.Drawing.Font("Segoe UI", 8F);
+            this.nmMaxValueHellgenie.ForeColor = System.Drawing.Color.White;
+            this.nmMaxValueHellgenie.Hexadecimal = true;
+            this.nmMaxValueHellgenie.Location = new System.Drawing.Point(94, 90);
+            this.nmMaxValueHellgenie.Name = "nmMaxValueHellgenie";
+            this.nmMaxValueHellgenie.Size = new System.Drawing.Size(70, 22);
+            this.nmMaxValueHellgenie.TabIndex = 146;
+            this.nmMaxValueHellgenie.Tag = "color:dark";
+            this.nmMaxValueHellgenie.Value = new decimal(new int[] {
+            255,
+            0,
+            0,
+            0});
+            // 
             // label16
             // 
             this.label16.AutoSize = true;
@@ -1318,6 +1388,18 @@
             this.label16.Size = new System.Drawing.Size(218, 13);
             this.label16.TabIndex = 86;
             this.label16.Text = "Edits values and makes them keep their value";
+            // 
+            // nmMinValueHellgenie
+            // 
+            this.nmMinValueHellgenie.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
+            this.nmMinValueHellgenie.Font = new System.Drawing.Font("Segoe UI", 8F);
+            this.nmMinValueHellgenie.ForeColor = System.Drawing.Color.White;
+            this.nmMinValueHellgenie.Hexadecimal = true;
+            this.nmMinValueHellgenie.Location = new System.Drawing.Point(94, 63);
+            this.nmMinValueHellgenie.Name = "nmMinValueHellgenie";
+            this.nmMinValueHellgenie.Size = new System.Drawing.Size(70, 22);
+            this.nmMinValueHellgenie.TabIndex = 145;
+            this.nmMinValueHellgenie.Tag = "color:dark";
             // 
             // comboBox2
             // 
@@ -1339,7 +1421,7 @@
             this.cbClearCheatsOnRewind.AutoSize = true;
             this.cbClearCheatsOnRewind.Font = new System.Drawing.Font("Segoe UI", 8F);
             this.cbClearCheatsOnRewind.ForeColor = System.Drawing.Color.White;
-            this.cbClearCheatsOnRewind.Location = new System.Drawing.Point(5, 100);
+            this.cbClearCheatsOnRewind.Location = new System.Drawing.Point(183, 36);
             this.cbClearCheatsOnRewind.Name = "cbClearCheatsOnRewind";
             this.cbClearCheatsOnRewind.Size = new System.Drawing.Size(147, 17);
             this.cbClearCheatsOnRewind.TabIndex = 75;
@@ -1369,7 +1451,7 @@
             this.nmMaxCheats.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
             this.nmMaxCheats.Font = new System.Drawing.Font("Segoe UI", 8F);
             this.nmMaxCheats.ForeColor = System.Drawing.Color.White;
-            this.nmMaxCheats.Location = new System.Drawing.Point(98, 36);
+            this.nmMaxCheats.Location = new System.Drawing.Point(94, 36);
             this.nmMaxCheats.Maximum = new decimal(new int[] {
             65536,
             0,
@@ -1381,7 +1463,7 @@
             0,
             0});
             this.nmMaxCheats.Name = "nmMaxCheats";
-            this.nmMaxCheats.Size = new System.Drawing.Size(67, 22);
+            this.nmMaxCheats.Size = new System.Drawing.Size(70, 22);
             this.nmMaxCheats.TabIndex = 9;
             this.nmMaxCheats.Tag = "color:dark";
             this.nmMaxCheats.Value = new decimal(new int[] {
@@ -1405,6 +1487,11 @@
             // 
             // gbNightmareEngine
             // 
+            this.gbNightmareEngine.Controls.Add(this.cbUseHexNightmare);
+            this.gbNightmareEngine.Controls.Add(this.label24);
+            this.gbNightmareEngine.Controls.Add(this.label23);
+            this.gbNightmareEngine.Controls.Add(this.nmMaxValueNightmare);
+            this.gbNightmareEngine.Controls.Add(this.nmMinValueNightmare);
             this.gbNightmareEngine.Controls.Add(this.panel4);
             this.gbNightmareEngine.Controls.Add(this.label15);
             this.gbNightmareEngine.Controls.Add(this.comboBox1);
@@ -1417,6 +1504,70 @@
             this.gbNightmareEngine.Size = new System.Drawing.Size(391, 151);
             this.gbNightmareEngine.TabIndex = 123;
             this.gbNightmareEngine.TabStop = false;
+            // 
+            // cbUseHexNightmare
+            // 
+            this.cbUseHexNightmare.AutoSize = true;
+            this.cbUseHexNightmare.Checked = true;
+            this.cbUseHexNightmare.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.cbUseHexNightmare.Font = new System.Drawing.Font("Segoe UI", 8F);
+            this.cbUseHexNightmare.ForeColor = System.Drawing.Color.White;
+            this.cbUseHexNightmare.Location = new System.Drawing.Point(172, 36);
+            this.cbUseHexNightmare.Name = "cbUseHexNightmare";
+            this.cbUseHexNightmare.Size = new System.Drawing.Size(129, 17);
+            this.cbUseHexNightmare.TabIndex = 149;
+            this.cbUseHexNightmare.Text = "Use Hex for MinMax";
+            this.cbUseHexNightmare.UseVisualStyleBackColor = true;
+            this.cbUseHexNightmare.CheckedChanged += new System.EventHandler(this.cbUseHexNightmare_CheckedChanged);
+            // 
+            // label24
+            // 
+            this.label24.AutoSize = true;
+            this.label24.Font = new System.Drawing.Font("Segoe UI", 8F);
+            this.label24.Location = new System.Drawing.Point(4, 94);
+            this.label24.Name = "label24";
+            this.label24.Size = new System.Drawing.Size(87, 13);
+            this.label24.TabIndex = 143;
+            this.label24.Text = "Maximum Value";
+            // 
+            // label23
+            // 
+            this.label23.AutoSize = true;
+            this.label23.Font = new System.Drawing.Font("Segoe UI", 8F);
+            this.label23.Location = new System.Drawing.Point(4, 67);
+            this.label23.Name = "label23";
+            this.label23.Size = new System.Drawing.Size(86, 13);
+            this.label23.TabIndex = 140;
+            this.label23.Text = "Minimum Value";
+            // 
+            // nmMaxValueNightmare
+            // 
+            this.nmMaxValueNightmare.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
+            this.nmMaxValueNightmare.Font = new System.Drawing.Font("Segoe UI", 8F);
+            this.nmMaxValueNightmare.ForeColor = System.Drawing.Color.White;
+            this.nmMaxValueNightmare.Hexadecimal = true;
+            this.nmMaxValueNightmare.Location = new System.Drawing.Point(94, 91);
+            this.nmMaxValueNightmare.Name = "nmMaxValueNightmare";
+            this.nmMaxValueNightmare.Size = new System.Drawing.Size(70, 22);
+            this.nmMaxValueNightmare.TabIndex = 142;
+            this.nmMaxValueNightmare.Tag = "color:dark";
+            this.nmMaxValueNightmare.Value = new decimal(new int[] {
+            255,
+            0,
+            0,
+            0});
+            // 
+            // nmMinValueNightmare
+            // 
+            this.nmMinValueNightmare.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
+            this.nmMinValueNightmare.Font = new System.Drawing.Font("Segoe UI", 8F);
+            this.nmMinValueNightmare.ForeColor = System.Drawing.Color.White;
+            this.nmMinValueNightmare.Hexadecimal = true;
+            this.nmMinValueNightmare.Location = new System.Drawing.Point(94, 64);
+            this.nmMinValueNightmare.Name = "nmMinValueNightmare";
+            this.nmMinValueNightmare.Size = new System.Drawing.Size(70, 22);
+            this.nmMinValueNightmare.TabIndex = 141;
+            this.nmMinValueNightmare.Tag = "color:dark";
             // 
             // panel4
             // 
@@ -1678,9 +1829,13 @@
             ((System.ComponentModel.ISupportInitialize)(this.nmMaxFreezes)).EndInit();
             this.gbHellgenieEngine.ResumeLayout(false);
             this.gbHellgenieEngine.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.nmMaxValueHellgenie)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.nmMinValueHellgenie)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.nmMaxCheats)).EndInit();
             this.gbNightmareEngine.ResumeLayout(false);
             this.gbNightmareEngine.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.nmMaxValueNightmare)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.nmMinValueNightmare)).EndInit();
             this.pnMemoryDomains.ResumeLayout(false);
             this.groupBox1.ResumeLayout(false);
             this.groupBox1.PerformLayout();
@@ -1794,5 +1949,15 @@
 		private System.Windows.Forms.Button btnOpenBlastGenerator;
 		private System.Windows.Forms.GroupBox gbDomainsUnavailable;
 		private System.Windows.Forms.Label label22;
+		private System.Windows.Forms.Label label24;
+		private System.Windows.Forms.Label label23;
+		public RTC.NumericUpDownHexFix nmMaxValueNightmare;
+		public RTC.NumericUpDownHexFix nmMinValueNightmare;
+		private System.Windows.Forms.Label label26;
+		private System.Windows.Forms.Label label27;
+		public RTC.NumericUpDownHexFix nmMaxValueHellgenie;
+		public RTC.NumericUpDownHexFix nmMinValueHellgenie;
+		public System.Windows.Forms.CheckBox cbUseHexHellgenie;
+		public System.Windows.Forms.CheckBox cbUseHexNightmare;
 	}
 }

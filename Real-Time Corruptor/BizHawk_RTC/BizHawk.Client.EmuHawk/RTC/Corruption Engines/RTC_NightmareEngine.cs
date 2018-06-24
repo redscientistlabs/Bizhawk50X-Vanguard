@@ -62,6 +62,7 @@ namespace RTC
 				}
 
 				byte[] _value;
+				int precision;
 				if (RTC_Core.CustomPrecision == -1)
 					_value = new byte[mdp.WordSize];
 				else
@@ -71,8 +72,9 @@ namespace RTC
 
 				if (Type == BlastByteType.SET)
 				{
-					for (int i = 0; i < _value.Length; i++)
-						_value[i] = (byte)RTC_Core.RND.Next(0, 255);
+					long randomValue = RTC_Core.RND.RandomLong(Convert.ToInt64(RTC_Core.ecForm.nmMinValueNightmare.Value), Convert.ToInt64(RTC_Core.ecForm.nmMaxValueNightmare.Value));
+
+					_value = RTC_Extensions.getByteArrayValue(_value.Length, randomValue, true);
 				}
 				else //ADD, SUBSTRACT
 				{
