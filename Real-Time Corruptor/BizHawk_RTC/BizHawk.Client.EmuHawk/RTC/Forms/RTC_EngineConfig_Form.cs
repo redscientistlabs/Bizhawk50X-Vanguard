@@ -710,28 +710,29 @@ namespace RTC
 			}
 		}
 
-		Guid? token = null;
+		Guid? ErrorDelayToken = null;
+		Guid? IntensityToken = null;
 
 		private void track_ErrorDelay_MouseDown(object sender, MouseEventArgs e)
 		{
-			RTC_NetCore.HugeOperationStart("LAZY");
+			ErrorDelayToken = RTC_NetCore.HugeOperationStart("LAZY");
 		}
 
 		private void track_ErrorDelay_MouseUp(object sender, MouseEventArgs e)
 		{
-			RTC_NetCore.HugeOperationEnd();
+			RTC_NetCore.HugeOperationEnd(ErrorDelayToken);
 
 			track_ErrorDelay_Scroll(sender, e);
 		}
 
 		private void track_Intensity_MouseDown(object sender, MouseEventArgs e)
 		{
-			RTC_NetCore.HugeOperationStart("LAZY");
+			IntensityToken = RTC_NetCore.HugeOperationStart("LAZY");
 		}
 
 		private void track_Intensity_MouseUp(object sender, MouseEventArgs e)
 		{
-			RTC_NetCore.HugeOperationEnd();
+			RTC_NetCore.HugeOperationEnd(IntensityToken);
 
 			track_Intensity_Scroll(sender, e);
 		}

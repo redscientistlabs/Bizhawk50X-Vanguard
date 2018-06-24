@@ -359,6 +359,8 @@ namespace RTC
 				if (rbCorrupt.Checked)
 				{
 					var RomFilename = (string)RTC_Core.SendCommandToBizhawk(new RTC_Command(CommandType.REMOTE_KEY_GETOPENROMFILENAME), true);
+					if (RomFilename == null)
+						return;
 					if (RomFilename.Contains("|"))
 					{
 						MessageBox.Show($"The Glitch Harvester attempted to corrupt a game bound to the following file:\n{RomFilename}\n\nIt cannot be processed because the rom seems to be inside a Zip Archive\n(Bizhawk returned a filename with the chracter | in it)");
@@ -1576,14 +1578,16 @@ namespace RTC
 			}
 		}
 
+		Guid? intensitySliderToken = null;
+
 		private void track_Intensity_MouseDown(object sender, MouseEventArgs e)
 		{
-			RTC_NetCore.HugeOperationStart("LAZY");
+			intensitySliderToken = RTC_NetCore.HugeOperationStart("LAZY");
 		}
 
 		private void track_Intensity_MouseUp(object sender, MouseEventArgs e)
 		{
-			RTC_NetCore.HugeOperationEnd();
+			RTC_NetCore.HugeOperationEnd(intensitySliderToken);
 
 			track_Intensity_Scroll(sender, e);
 		}

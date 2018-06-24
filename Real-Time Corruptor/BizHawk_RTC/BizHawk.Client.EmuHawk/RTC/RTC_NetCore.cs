@@ -97,29 +97,22 @@ namespace RTC
 
 		protected virtual void OnServerConnectionLost(EventArgs e) => ServerConnectionLost?.Invoke(this, e);
 
-		static int? lastNetCoreAggressivity = null;
-		static Guid? lastNetCoreAggressivityGuid = null;
+		static Dictionary<Guid?, int> guid2LastAggressivity = new Dictionary<Guid?, int>();
 
 		public static Guid HugeOperationStart(string targetAggressiveness = "DISABLED")
 		{
 			RTC_RPC.SendToKillSwitch("FREEZE");
 
+			var token = Guid.NewGuid();
 			if (RTC_Core.isStandalone)
 			{
-				if (lastNetCoreAggressivity == null)
-					lastNetCoreAggressivity = RTC_Core.sForm.cbNetCoreCommandTimeout.SelectedIndex;
+				guid2LastAggressivity.Add(token, RTC_Core.sForm.cbNetCoreCommandTimeout.SelectedIndex);
 
 				if (targetAggressiveness == "DISABLED")
 					RTC_Core.sForm.cbNetCoreCommandTimeout.SelectedIndex = RTC_Core.sForm.cbNetCoreCommandTimeout.Items.Count - 1;
 				else
 					RTC_Core.sForm.cbNetCoreCommandTimeout.SelectedIndex = RTC_Core.sForm.cbNetCoreCommandTimeout.Items.Count - 2;
 			}
-
-			var token = Guid.NewGuid();
-
-			if (lastNetCoreAggressivityGuid == null)
-				lastNetCoreAggressivityGuid = token;
-
 			return token;
 		}
 
@@ -129,15 +122,11 @@ namespace RTC
 
 			if (RTC_Core.isStandalone)
 			{
-				if (operationGuid != null && operationGuid != lastNetCoreAggressivityGuid)
+				if (operationGuid == null || !(guid2LastAggressivity.ContainsKey(operationGuid)))
 					return;
 
-				if (lastNetCoreAggressivity != null)
-				{
-					RTC_Core.sForm.cbNetCoreCommandTimeout.SelectedIndex = (int)lastNetCoreAggressivity;
-					lastNetCoreAggressivity = null;
-					lastNetCoreAggressivityGuid = null;
-				}
+				RTC_Core.sForm.cbNetCoreCommandTimeout.SelectedIndex = guid2LastAggressivity[operationGuid];
+				guid2LastAggressivity.Remove(operationGuid);
 			}
 		}
 
@@ -148,8 +137,8 @@ namespace RTC
 			if (RTC_Core.isStandalone)
 			{
 				RTC_Core.sForm.cbNetCoreCommandTimeout.SelectedIndex = 0;
-				lastNetCoreAggressivity = null;
-				lastNetCoreAggressivityGuid = null;
+				guid2LastAggressivity.Clear();
+
 			}
 		}
 

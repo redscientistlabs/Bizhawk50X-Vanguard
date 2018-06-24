@@ -1,6 +1,7 @@
 ﻿using BizHawk.Client.Common;
 using BizHawk.Client.EmuHawk;
 using BizHawk.Emulation.Common;
+using System;
 using System.Linq;
 using System.Windows.Forms;
 
@@ -16,6 +17,8 @@ namespace RTC
 		static bool DisableRTC;
 		public static bool isRemoteRTC = false;
 		public static bool isNormalAdvance = false;
+		private static Guid? loadGameToken = null;
+		private static Guid? loadSavestateToken = null;
 
 		public static System.Diagnostics.Stopwatch watch = null;
 
@@ -144,13 +147,14 @@ namespace RTC
 			RTC_Core.SendCommandToBizhawk(new RTC_Command(CommandType.REMOTE_EVENT_SAVEBIZHAWKCONFIG));
 		}
 
+
 		public static void LOAD_GAME_BEGIN()
 		{
 			if (DisableRTC) return;
 
 			isNormalAdvance = false;
 
-			RTC_NetCore.HugeOperationStart();
+			loadGameToken = RTC_NetCore.HugeOperationStart();
 
 			RTC_HellgenieEngine.ClearCheats(true);
 			RTC_PipeEngine.ClearPipes(true);
@@ -198,14 +202,14 @@ namespace RTC
 
 			//RTC_Restore.SaveRestore();
 
-			RTC_NetCore.HugeOperationEnd();
+			RTC_NetCore.HugeOperationEnd(loadGameToken);
 		}
 
 		public static void LOAD_GAME_FAILED()
 		{
 			if (DisableRTC) return;
 
-			RTC_NetCore.HugeOperationEnd();
+			RTC_NetCore.HugeOperationEnd(loadGameToken);
 		}
 
 		static bool CLOSE_GAME_loop_flag = false;
@@ -245,14 +249,14 @@ namespace RTC
 		{
 			if (DisableRTC) return;
 
-			RTC_NetCore.HugeOperationStart();
+			loadSavestateToken = RTC_NetCore.HugeOperationStart();
 		}
 
 		public static void LOAD_SAVESTATE_END()
 		{
 			if (DisableRTC) return;
 
-			RTC_NetCore.HugeOperationEnd();
+			RTC_NetCore.HugeOperationEnd(loadSavestateToken);
 		}
 
 		public static void EMU_CRASH(string msg)
