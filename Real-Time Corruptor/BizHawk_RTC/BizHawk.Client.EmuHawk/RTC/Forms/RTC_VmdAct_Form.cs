@@ -32,7 +32,7 @@ namespace RTC
 			{
 				if (value)
 				{
-					lbFreezeEngineActiveStatus.Text = "Active table status: READY";
+					lbActiveStatus.Text = "Active table status: READY";
 
 					btnActiveTableSubstractFile.Font = new Font("Segoe UI Semibold", 8);
 					btnActiveTableAddFile.Font = new Font("Segoe UI Semibold", 8);
@@ -41,7 +41,7 @@ namespace RTC
 				}
 				else
 				{
-					lbFreezeEngineActiveStatus.Text = "Active table status: NOT READY";
+					lbActiveStatus.Text = "Active table status: NOT READY";
 					btnActiveTableSubstractFile.Font = new Font("Segoe UI", 8);
 					btnActiveTableAddFile.Font = new Font("Segoe UI", 8);
 					btnActiveTableSubstractFile.Enabled = false;
@@ -126,7 +126,7 @@ namespace RTC
 			FirstInit = true;
 			ActiveTableGenerated = act.data;
 			ActiveTableReady = true;
-			lbFreezeEngineActiveTableSize.Text = "Active table size: " + ActiveTableGenerated.Length.ToString() + "(0x" + ActiveTableGenerated.Length.ToString("X") + ")";
+			lbActiveTableSize.Text = "Active table size: " + ActiveTableGenerated.Length.ToString() + "(0x" + ActiveTableGenerated.Length.ToString("X") + ")";
 		}
 
 		public byte[] GetDumpFromFile(string key)
@@ -270,9 +270,19 @@ namespace RTC
 				cbAutoAddDump.Enabled = true;
 			}
 
-			lbFreezeEngineDomainAddressSize.Text = "Domain size: " + RTC_MemoryDomains.getInterface(cbSelectedMemoryDomain.SelectedItem.ToString()).Size.ToString();
+			decimal memoryDomainSize = RTC_MemoryDomains.getInterface(cbSelectedMemoryDomain.SelectedItem.ToString()).Size;
+			
+			//Verify they want to continue if the domain size is larger than 32MB
+			if (memoryDomainSize > 0x2000000)
+			{
+				DialogResult result = MessageBox.Show("Large Domain Detected", "The domain you have selected is larger than 32MB\n The domain size is " + (memoryDomainSize / 1024) + "MB.\n Are you sure you want to continue?", MessageBoxButtons.YesNo);
+				if (result == DialogResult.No)
+					return;
+			}
+
+			lbDomainAddressSize.Text = "Domain size: " + RTC_MemoryDomains.getInterface(cbSelectedMemoryDomain.SelectedItem.ToString()).Size.ToString();
 			lbFreezeEngineNbDumps.Text = "Memory dumps collected: 0";
-			lbFreezeEngineActiveTableSize.Text = "Active table size: 0";
+			lbActiveTableSize.Text = "Active table size: 0";
 			ActiveTableReady = false;
 
 			ActiveTableGenerated = null;
@@ -364,7 +374,7 @@ namespace RTC
 					newActiveTable.Add(item);
 
 			ActiveTableGenerated = newActiveTable.ToArray();
-			lbFreezeEngineActiveTableSize.Text = "Active table size: " + ActiveTableGenerated.Length.ToString();
+			lbActiveTableSize.Text = "Active table size: " + ActiveTableGenerated.Length.ToString();
 
 			RTC_Core.StartSound();
 		}
@@ -407,7 +417,7 @@ namespace RTC
 						newActiveTable.Add(item);
 
 				ActiveTableGenerated = newActiveTable.ToArray();
-				lbFreezeEngineActiveTableSize.Text = "Active table size: " + ActiveTableGenerated.Length.ToString();
+				lbActiveTableSize.Text = "Active table size: " + ActiveTableGenerated.Length.ToString();
 
 
 				RTC_Core.StartSound();
@@ -443,7 +453,7 @@ namespace RTC
 				else
 					ActiveTableGenerated = tempActiveTable;
 
-				lbFreezeEngineActiveTableSize.Text = "Active table size: " + ActiveTableGenerated.Length.ToString();
+				lbActiveTableSize.Text = "Active table size: " + ActiveTableGenerated.Length.ToString();
 
 				ActiveTableReady = true;
 				currentFilename = null;

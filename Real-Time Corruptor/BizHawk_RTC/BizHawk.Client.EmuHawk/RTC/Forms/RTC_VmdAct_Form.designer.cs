@@ -50,14 +50,14 @@
             this.cbSelectedMemoryDomain = new System.Windows.Forms.ComboBox();
             this.btnActiveTableLoad = new System.Windows.Forms.Button();
             this.lbFreezeEngineNbDumps = new System.Windows.Forms.Label();
-            this.lbFreezeEngineActiveTableSize = new System.Windows.Forms.Label();
+            this.lbActiveTableSize = new System.Windows.Forms.Label();
             this.cbAutoAddDump = new System.Windows.Forms.CheckBox();
-            this.lbFreezeEngineDomainAddressSize = new System.Windows.Forms.Label();
+            this.lbDomainAddressSize = new System.Windows.Forms.Label();
             this.btnActiveTableAddDump = new System.Windows.Forms.Button();
             this.label16 = new System.Windows.Forms.Label();
             this.btnActiveTableDumpsReset = new System.Windows.Forms.Button();
             this.nmAutoAddSec = new System.Windows.Forms.NumericUpDown();
-            this.lbFreezeEngineActiveStatus = new System.Windows.Forms.Label();
+            this.lbActiveStatus = new System.Windows.Forms.Label();
             this.btnActiveTableAddFile = new System.Windows.Forms.Button();
             this.btnLoadDomains = new System.Windows.Forms.Button();
             this.lbAutoAddEvery = new System.Windows.Forms.Label();
@@ -376,16 +376,16 @@
             this.lbFreezeEngineNbDumps.TabIndex = 86;
             this.lbFreezeEngineNbDumps.Text = "Memory dumps collected:";
             // 
-            // lbFreezeEngineActiveTableSize
+            // lbActiveTableSize
             // 
-            this.lbFreezeEngineActiveTableSize.AutoSize = true;
-            this.lbFreezeEngineActiveTableSize.Font = new System.Drawing.Font("Segoe UI", 8F);
-            this.lbFreezeEngineActiveTableSize.ForeColor = System.Drawing.Color.White;
-            this.lbFreezeEngineActiveTableSize.Location = new System.Drawing.Point(14, 148);
-            this.lbFreezeEngineActiveTableSize.Name = "lbFreezeEngineActiveTableSize";
-            this.lbFreezeEngineActiveTableSize.Size = new System.Drawing.Size(91, 13);
-            this.lbFreezeEngineActiveTableSize.TabIndex = 85;
-            this.lbFreezeEngineActiveTableSize.Text = "Active table size:";
+            this.lbActiveTableSize.AutoSize = true;
+            this.lbActiveTableSize.Font = new System.Drawing.Font("Segoe UI", 8F);
+            this.lbActiveTableSize.ForeColor = System.Drawing.Color.White;
+            this.lbActiveTableSize.Location = new System.Drawing.Point(14, 148);
+            this.lbActiveTableSize.Name = "lbActiveTableSize";
+            this.lbActiveTableSize.Size = new System.Drawing.Size(91, 13);
+            this.lbActiveTableSize.TabIndex = 85;
+            this.lbActiveTableSize.Text = "Active table size:";
             // 
             // cbAutoAddDump
             // 
@@ -400,16 +400,16 @@
             this.cbAutoAddDump.UseVisualStyleBackColor = true;
             this.cbAutoAddDump.CheckedChanged += new System.EventHandler(this.cbAutoAddDump_CheckedChanged);
             // 
-            // lbFreezeEngineDomainAddressSize
+            // lbDomainAddressSize
             // 
-            this.lbFreezeEngineDomainAddressSize.AutoSize = true;
-            this.lbFreezeEngineDomainAddressSize.Font = new System.Drawing.Font("Segoe UI", 8F);
-            this.lbFreezeEngineDomainAddressSize.ForeColor = System.Drawing.Color.White;
-            this.lbFreezeEngineDomainAddressSize.Location = new System.Drawing.Point(14, 132);
-            this.lbFreezeEngineDomainAddressSize.Name = "lbFreezeEngineDomainAddressSize";
-            this.lbFreezeEngineDomainAddressSize.Size = new System.Drawing.Size(115, 13);
-            this.lbFreezeEngineDomainAddressSize.TabIndex = 82;
-            this.lbFreezeEngineDomainAddressSize.Text = "Domain address size:";
+            this.lbDomainAddressSize.AutoSize = true;
+            this.lbDomainAddressSize.Font = new System.Drawing.Font("Segoe UI", 8F);
+            this.lbDomainAddressSize.ForeColor = System.Drawing.Color.White;
+            this.lbDomainAddressSize.Location = new System.Drawing.Point(14, 132);
+            this.lbDomainAddressSize.Name = "lbDomainAddressSize";
+            this.lbDomainAddressSize.Size = new System.Drawing.Size(115, 13);
+            this.lbDomainAddressSize.TabIndex = 82;
+            this.lbDomainAddressSize.Text = "Domain address size:";
             // 
             // btnActiveTableAddDump
             // 
@@ -478,16 +478,16 @@
             0});
             this.nmAutoAddSec.ValueChanged += new System.EventHandler(this.nmAutoAddSec_ValueChanged);
             // 
-            // lbFreezeEngineActiveStatus
+            // lbActiveStatus
             // 
-            this.lbFreezeEngineActiveStatus.AutoSize = true;
-            this.lbFreezeEngineActiveStatus.Font = new System.Drawing.Font("Segoe UI", 8F);
-            this.lbFreezeEngineActiveStatus.ForeColor = System.Drawing.Color.White;
-            this.lbFreezeEngineActiveStatus.Location = new System.Drawing.Point(14, 164);
-            this.lbFreezeEngineActiveStatus.Name = "lbFreezeEngineActiveStatus";
-            this.lbFreezeEngineActiveStatus.Size = new System.Drawing.Size(164, 13);
-            this.lbFreezeEngineActiveStatus.TabIndex = 87;
-            this.lbFreezeEngineActiveStatus.Text = "Active table status: NOT READY";
+            this.lbActiveStatus.AutoSize = true;
+            this.lbActiveStatus.Font = new System.Drawing.Font("Segoe UI", 8F);
+            this.lbActiveStatus.ForeColor = System.Drawing.Color.White;
+            this.lbActiveStatus.Location = new System.Drawing.Point(14, 164);
+            this.lbActiveStatus.Name = "lbActiveStatus";
+            this.lbActiveStatus.Size = new System.Drawing.Size(164, 13);
+            this.lbActiveStatus.TabIndex = 87;
+            this.lbActiveStatus.Text = "Active table status: NOT READY";
             // 
             // btnActiveTableAddFile
             // 
@@ -548,12 +548,12 @@
             this.Controls.Add(this.btnActiveTableGenerate);
             this.Controls.Add(this.btnActiveTableDumpsReset);
             this.Controls.Add(this.lbFreezeEngineNbDumps);
-            this.Controls.Add(this.lbFreezeEngineActiveStatus);
-            this.Controls.Add(this.lbFreezeEngineActiveTableSize);
+            this.Controls.Add(this.lbActiveStatus);
+            this.Controls.Add(this.lbActiveTableSize);
             this.Controls.Add(this.nmAutoAddSec);
             this.Controls.Add(this.cbAutoAddDump);
             this.Controls.Add(this.btnActiveTableLoad);
-            this.Controls.Add(this.lbFreezeEngineDomainAddressSize);
+            this.Controls.Add(this.lbDomainAddressSize);
             this.Controls.Add(this.btnActiveTableAddDump);
             this.Controls.Add(this.groupBox2);
             this.Controls.Add(this.btnActiveTableQuickSave);
@@ -599,14 +599,14 @@
         public System.Windows.Forms.CheckBox cbActiveTableCapSize;
         private System.Windows.Forms.Button btnActiveTableLoad;
         public System.Windows.Forms.Label lbFreezeEngineNbDumps;
-        public System.Windows.Forms.Label lbFreezeEngineActiveTableSize;
+        public System.Windows.Forms.Label lbActiveTableSize;
         public System.Windows.Forms.CheckBox cbAutoAddDump;
-        public System.Windows.Forms.Label lbFreezeEngineDomainAddressSize;
+        public System.Windows.Forms.Label lbDomainAddressSize;
         public System.Windows.Forms.Button btnActiveTableAddDump;
         private System.Windows.Forms.Label label16;
         private System.Windows.Forms.Button btnActiveTableDumpsReset;
         public System.Windows.Forms.NumericUpDown nmAutoAddSec;
-        public System.Windows.Forms.Label lbFreezeEngineActiveStatus;
+        public System.Windows.Forms.Label lbActiveStatus;
         public System.Windows.Forms.Button btnActiveTableAddFile;
 		private System.Windows.Forms.Button btnLoadDomains;
 		public System.Windows.Forms.ComboBox cbSelectedMemoryDomain;

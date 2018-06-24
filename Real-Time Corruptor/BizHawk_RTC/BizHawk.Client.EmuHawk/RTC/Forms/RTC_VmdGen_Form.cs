@@ -58,6 +58,14 @@ namespace RTC
 
 		private bool GenerateVMD()
 		{
+			//Verify they want to continue if the domain is larger than 32MB
+			if (currentDomainSize > 0x2000000)
+			{
+				DialogResult result = MessageBox.Show("Large Domain Detected", "The domain you have selected is larger than 32MB\n The domain size is " + (currentDomainSize / 1024) + "MB.\n Are you sure you want to continue?", MessageBoxButtons.YesNo);
+				if (result == DialogResult.No)
+					return false;
+			}
+
 			if (string.IsNullOrWhiteSpace(cbSelectedMemoryDomain.SelectedItem?.ToString()) || !RTC_MemoryDomains.MemoryInterfaces.ContainsKey(cbSelectedMemoryDomain.SelectedItem.ToString()))
 			{
 				cbSelectedMemoryDomain.Items.Clear();
