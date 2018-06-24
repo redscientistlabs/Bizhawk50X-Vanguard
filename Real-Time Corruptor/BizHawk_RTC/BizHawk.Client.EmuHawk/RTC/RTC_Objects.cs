@@ -1188,8 +1188,8 @@ namespace RTC
 		{
 			if (Type == BlastByteType.SET)
 			{
-				for (int i = 0; i < Value.Length; i++)
-					Value[i] = (byte)RTC_Core.RND.Next(0, 255);
+				long randomValue = RTC_Core.RND.RandomLong(Convert.ToInt64(RTC_Core.ecForm.nmMinValueNightmare.Value), Convert.ToInt64(RTC_Core.ecForm.nmMaxValueNightmare.Value));
+				Value = RTC_Extensions.getByteArrayValue(Value.Length, randomValue, true);
 			}
 			else if (Type == BlastByteType.ADD || Type == BlastByteType.SUBSTRACT)
 			{
@@ -1584,6 +1584,8 @@ namespace RTC
 				//VERY IMPORTANT MESSAGE FOR ENDIANESS
 				//Endianess used to be borked in cheats for bizhawk 2.2
 				//So we handle it ourselves and all cheats become little endian
+				
+				//I don't think this is true any more 6/4/2018.
 
 				long _value = 0;
 				if (IsFreeze)
@@ -1626,8 +1628,12 @@ namespace RTC
 
 		public override void Reroll()
 		{
-			for (int i = 0; i < Value.Length; i++)
-				Value[i] = (byte)RTC_Core.RND.Next(0, 255);
+			//No reason to re-roll freeze
+			if (!IsFreeze)
+			{
+				long randomValue = RTC_Core.RND.RandomLong(Convert.ToInt64(RTC_Core.ecForm.nmMinValueHellgenie.Value), Convert.ToInt64(RTC_Core.ecForm.nmMaxValueHellgenie.Value));
+				Value = RTC_Extensions.getByteArrayValue(Value.Length, randomValue, true);
+			}
 		}
 
 		public override string ToString()

@@ -22,8 +22,7 @@ namespace RTC
 
 				long safeAddress = _address - (_address % _value.Length);
 
-				long randomValue = RTC_Core.RND.RandomLong(Convert.ToInt64(RTC_Core.ecForm.nmMaxValueHellgenie.Value), Convert.ToInt64(RTC_Core.ecForm.nmMaxValueHellgenie.Value));
-
+				long randomValue = RTC_Core.RND.RandomLong(Convert.ToInt64(RTC_Core.ecForm.nmMinValueHellgenie.Value), Convert.ToInt64(RTC_Core.ecForm.nmMaxValueHellgenie.Value));
 				_value = RTC_Extensions.getByteArrayValue(_value.Length, randomValue, true);
 
 				return new BlastCheat(_domain, safeAddress, _displaytype, mdp.BigEndian, _value, true, false);
