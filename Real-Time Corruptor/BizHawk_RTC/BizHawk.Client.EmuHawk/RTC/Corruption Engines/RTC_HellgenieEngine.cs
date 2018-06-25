@@ -7,6 +7,9 @@ namespace RTC
 	{
 		public static int MaxCheats = 50;
 
+		public static long MinValue = 0;
+		public static long MaxValue = 255;
+
 		public static BlastCheat GenerateUnit(string _domain, long _address)
 		{
 			try
@@ -22,7 +25,7 @@ namespace RTC
 
 				long safeAddress = _address - (_address % _value.Length);
 
-				long randomValue = RTC_Core.RND.RandomLong(Convert.ToInt64(RTC_Core.ecForm.nmMinValueHellgenie.Value), Convert.ToInt64(RTC_Core.ecForm.nmMaxValueHellgenie.Value));
+				long randomValue = RTC_Core.RND.RandomLong(MinValue, MaxValue);
 				_value = RTC_Extensions.getByteArrayValue(_value.Length, randomValue, true);
 
 				return new BlastCheat(_domain, safeAddress, _displaytype, mdp.BigEndian, _value, true, false);

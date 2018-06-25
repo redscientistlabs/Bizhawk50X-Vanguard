@@ -1378,6 +1378,7 @@
             0,
             0,
             0});
+            this.nmMaxValueHellgenie.ValueChanged += new System.EventHandler(this.nmMaxValueHellgenie_ValueChanged);
             // 
             // label16
             // 
@@ -1400,6 +1401,7 @@
             this.nmMinValueHellgenie.Size = new System.Drawing.Size(70, 22);
             this.nmMinValueHellgenie.TabIndex = 145;
             this.nmMinValueHellgenie.Tag = "color:dark";
+            this.nmMinValueHellgenie.ValueChanged += new System.EventHandler(this.nmMinValueHellgenie_ValueChanged);
             // 
             // comboBox2
             // 
@@ -1556,6 +1558,7 @@
             0,
             0,
             0});
+            this.nmMaxValueNightmare.ValueChanged += new System.EventHandler(this.nmMaxValueNightmare_ValueChanged);
             // 
             // nmMinValueNightmare
             // 
@@ -1568,6 +1571,7 @@
             this.nmMinValueNightmare.Size = new System.Drawing.Size(70, 22);
             this.nmMinValueNightmare.TabIndex = 141;
             this.nmMinValueNightmare.Tag = "color:dark";
+            this.nmMinValueNightmare.ValueChanged += new System.EventHandler(this.nmMinValueNightmare_ValueChanged);
             // 
             // panel4
             // 

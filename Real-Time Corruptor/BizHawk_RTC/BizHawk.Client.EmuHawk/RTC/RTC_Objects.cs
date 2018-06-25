@@ -1188,7 +1188,7 @@ namespace RTC
 		{
 			if (Type == BlastByteType.SET)
 			{
-				long randomValue = RTC_Core.RND.RandomLong(Convert.ToInt64(RTC_Core.ecForm.nmMinValueNightmare.Value), Convert.ToInt64(RTC_Core.ecForm.nmMaxValueNightmare.Value));
+				long randomValue = RTC_Core.RND.RandomLong(RTC_NightmareEngine.MinValue, RTC_NightmareEngine.MaxValue);
 				Value = RTC_Extensions.getByteArrayValue(Value.Length, randomValue, true);
 			}
 			else if (Type == BlastByteType.ADD || Type == BlastByteType.SUBSTRACT)
@@ -1631,7 +1631,7 @@ namespace RTC
 			//No reason to re-roll freeze
 			if (!IsFreeze)
 			{
-				long randomValue = RTC_Core.RND.RandomLong(Convert.ToInt64(RTC_Core.ecForm.nmMinValueHellgenie.Value), Convert.ToInt64(RTC_Core.ecForm.nmMaxValueHellgenie.Value));
+				long randomValue = RTC_Core.RND.RandomLong(RTC_HellgenieEngine.MinValue, RTC_HellgenieEngine.MaxValue);
 				Value = RTC_Extensions.getByteArrayValue(Value.Length, randomValue, true);
 			}
 		}

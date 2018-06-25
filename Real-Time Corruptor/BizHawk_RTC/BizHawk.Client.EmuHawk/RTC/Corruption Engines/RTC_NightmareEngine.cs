@@ -6,6 +6,8 @@ namespace RTC
 	public static class RTC_NightmareEngine
 	{
 		public static BlastByteAlgo Algo = BlastByteAlgo.RANDOM;
+		public static long MinValue = 0;
+		public static long MaxValue = 255;
 
 		public static BlastUnit GenerateUnit(string _domain, long _address)
 		{

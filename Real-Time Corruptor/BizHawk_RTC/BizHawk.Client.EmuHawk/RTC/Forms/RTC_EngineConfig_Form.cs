@@ -874,5 +874,25 @@ namespace RTC
 			nmMinValueNightmare.Hexadecimal = cbUseHexNightmare.Checked;
 			nmMaxValueNightmare.Hexadecimal = cbUseHexNightmare.Checked;
 		}
+
+		private void nmMinValueNightmare_ValueChanged(object sender, EventArgs e)
+		{
+			RTC_NightmareEngine.MinValue = Convert.ToInt64(nmMinValueNightmare.Value);
+		}
+
+		private void nmMaxValueNightmare_ValueChanged(object sender, EventArgs e)
+		{
+			RTC_NightmareEngine.MaxValue = Convert.ToInt64(nmMaxValueNightmare.Value);
+		}
+
+		private void nmMinValueHellgenie_ValueChanged(object sender, EventArgs e)
+		{
+			RTC_HellgenieEngine.MinValue = Convert.ToInt64(nmMinValueHellgenie.Value);
+		}
+
+		private void nmMaxValueHellgenie_ValueChanged(object sender, EventArgs e)
+		{
+			RTC_HellgenieEngine.MaxValue = Convert.ToInt64(nmMaxValueHellgenie.Value);
+		}
 	}
 }
