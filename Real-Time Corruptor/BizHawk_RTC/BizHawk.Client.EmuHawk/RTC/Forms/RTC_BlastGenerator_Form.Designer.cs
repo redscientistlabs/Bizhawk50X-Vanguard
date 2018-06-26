@@ -322,7 +322,7 @@
             this.btnNudgeParam2Up.ForeColor = System.Drawing.Color.Black;
             this.btnNudgeParam2Up.Location = new System.Drawing.Point(110, 138);
             this.btnNudgeParam2Up.Name = "btnNudgeParam2Up";
-            this.btnNudgeParam2Up.Size = new System.Drawing.Size(21, 22);
+            this.btnNudgeParam2Up.Size = new System.Drawing.Size(21, 20);
             this.btnNudgeParam2Up.TabIndex = 167;
             this.btnNudgeParam2Up.TabStop = false;
             this.btnNudgeParam2Up.Tag = "color:light";
@@ -340,7 +340,7 @@
             this.btnNudgeParam2Down.ForeColor = System.Drawing.Color.Black;
             this.btnNudgeParam2Down.Location = new System.Drawing.Point(18, 139);
             this.btnNudgeParam2Down.Name = "btnNudgeParam2Down";
-            this.btnNudgeParam2Down.Size = new System.Drawing.Size(21, 21);
+            this.btnNudgeParam2Down.Size = new System.Drawing.Size(21, 19);
             this.btnNudgeParam2Down.TabIndex = 168;
             this.btnNudgeParam2Down.TabStop = false;
             this.btnNudgeParam2Down.Tag = "color:light";
@@ -351,7 +351,7 @@
             // updownNudgeParam2
             // 
             this.updownNudgeParam2.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
-            this.updownNudgeParam2.Font = new System.Drawing.Font("Consolas", 9F);
+            this.updownNudgeParam2.Font = new System.Drawing.Font("Consolas", 8F);
             this.updownNudgeParam2.ForeColor = System.Drawing.Color.White;
             this.updownNudgeParam2.Hexadecimal = true;
             this.updownNudgeParam2.Location = new System.Drawing.Point(45, 138);
@@ -361,7 +361,7 @@
             0,
             0});
             this.updownNudgeParam2.Name = "updownNudgeParam2";
-            this.updownNudgeParam2.Size = new System.Drawing.Size(59, 22);
+            this.updownNudgeParam2.Size = new System.Drawing.Size(59, 20);
             this.updownNudgeParam2.TabIndex = 166;
             this.updownNudgeParam2.Tag = "color:dark hex";
             this.updownNudgeParam2.Value = new decimal(new int[] {
@@ -380,7 +380,7 @@
             this.btnNudgeParam1Up.ForeColor = System.Drawing.Color.Black;
             this.btnNudgeParam1Up.Location = new System.Drawing.Point(110, 98);
             this.btnNudgeParam1Up.Name = "btnNudgeParam1Up";
-            this.btnNudgeParam1Up.Size = new System.Drawing.Size(21, 22);
+            this.btnNudgeParam1Up.Size = new System.Drawing.Size(21, 20);
             this.btnNudgeParam1Up.TabIndex = 164;
             this.btnNudgeParam1Up.TabStop = false;
             this.btnNudgeParam1Up.Tag = "color:light";
@@ -398,7 +398,7 @@
             this.btnNudgeParam1Down.ForeColor = System.Drawing.Color.Black;
             this.btnNudgeParam1Down.Location = new System.Drawing.Point(18, 98);
             this.btnNudgeParam1Down.Name = "btnNudgeParam1Down";
-            this.btnNudgeParam1Down.Size = new System.Drawing.Size(21, 22);
+            this.btnNudgeParam1Down.Size = new System.Drawing.Size(21, 20);
             this.btnNudgeParam1Down.TabIndex = 165;
             this.btnNudgeParam1Down.TabStop = false;
             this.btnNudgeParam1Down.Tag = "color:light";
@@ -409,7 +409,7 @@
             // updownNudgeParam1
             // 
             this.updownNudgeParam1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
-            this.updownNudgeParam1.Font = new System.Drawing.Font("Consolas", 9F);
+            this.updownNudgeParam1.Font = new System.Drawing.Font("Consolas", 8F);
             this.updownNudgeParam1.ForeColor = System.Drawing.Color.White;
             this.updownNudgeParam1.Hexadecimal = true;
             this.updownNudgeParam1.Location = new System.Drawing.Point(45, 98);
@@ -419,7 +419,7 @@
             0,
             0});
             this.updownNudgeParam1.Name = "updownNudgeParam1";
-            this.updownNudgeParam1.Size = new System.Drawing.Size(59, 22);
+            this.updownNudgeParam1.Size = new System.Drawing.Size(59, 20);
             this.updownNudgeParam1.TabIndex = 163;
             this.updownNudgeParam1.Tag = "color:dark hex";
             this.updownNudgeParam1.Value = new decimal(new int[] {
@@ -438,7 +438,7 @@
             this.btnNudgeEndAddressUp.ForeColor = System.Drawing.Color.Black;
             this.btnNudgeEndAddressUp.Location = new System.Drawing.Point(110, 58);
             this.btnNudgeEndAddressUp.Name = "btnNudgeEndAddressUp";
-            this.btnNudgeEndAddressUp.Size = new System.Drawing.Size(21, 22);
+            this.btnNudgeEndAddressUp.Size = new System.Drawing.Size(21, 20);
             this.btnNudgeEndAddressUp.TabIndex = 161;
             this.btnNudgeEndAddressUp.TabStop = false;
             this.btnNudgeEndAddressUp.Tag = "color:light";
@@ -456,7 +456,7 @@
             this.btnNudgeEndAddressDown.ForeColor = System.Drawing.Color.Black;
             this.btnNudgeEndAddressDown.Location = new System.Drawing.Point(18, 58);
             this.btnNudgeEndAddressDown.Name = "btnNudgeEndAddressDown";
-            this.btnNudgeEndAddressDown.Size = new System.Drawing.Size(21, 22);
+            this.btnNudgeEndAddressDown.Size = new System.Drawing.Size(21, 20);
             this.btnNudgeEndAddressDown.TabIndex = 162;
             this.btnNudgeEndAddressDown.TabStop = false;
             this.btnNudgeEndAddressDown.Tag = "color:light";
@@ -467,7 +467,7 @@
             // updownNudgeEndAddress
             // 
             this.updownNudgeEndAddress.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
-            this.updownNudgeEndAddress.Font = new System.Drawing.Font("Consolas", 9F);
+            this.updownNudgeEndAddress.Font = new System.Drawing.Font("Consolas", 8F);
             this.updownNudgeEndAddress.ForeColor = System.Drawing.Color.White;
             this.updownNudgeEndAddress.Hexadecimal = true;
             this.updownNudgeEndAddress.Location = new System.Drawing.Point(45, 58);
@@ -477,7 +477,7 @@
             0,
             0});
             this.updownNudgeEndAddress.Name = "updownNudgeEndAddress";
-            this.updownNudgeEndAddress.Size = new System.Drawing.Size(59, 22);
+            this.updownNudgeEndAddress.Size = new System.Drawing.Size(59, 20);
             this.updownNudgeEndAddress.TabIndex = 160;
             this.updownNudgeEndAddress.Tag = "color:dark hex";
             this.updownNudgeEndAddress.Value = new decimal(new int[] {
@@ -496,7 +496,7 @@
             this.btnNudgeStartAddressUp.ForeColor = System.Drawing.Color.Black;
             this.btnNudgeStartAddressUp.Location = new System.Drawing.Point(110, 19);
             this.btnNudgeStartAddressUp.Name = "btnNudgeStartAddressUp";
-            this.btnNudgeStartAddressUp.Size = new System.Drawing.Size(21, 22);
+            this.btnNudgeStartAddressUp.Size = new System.Drawing.Size(21, 20);
             this.btnNudgeStartAddressUp.TabIndex = 158;
             this.btnNudgeStartAddressUp.TabStop = false;
             this.btnNudgeStartAddressUp.Tag = "color:light";
@@ -514,7 +514,7 @@
             this.btnNudgeStartAddressDown.ForeColor = System.Drawing.Color.Black;
             this.btnNudgeStartAddressDown.Location = new System.Drawing.Point(18, 19);
             this.btnNudgeStartAddressDown.Name = "btnNudgeStartAddressDown";
-            this.btnNudgeStartAddressDown.Size = new System.Drawing.Size(21, 22);
+            this.btnNudgeStartAddressDown.Size = new System.Drawing.Size(21, 20);
             this.btnNudgeStartAddressDown.TabIndex = 159;
             this.btnNudgeStartAddressDown.TabStop = false;
             this.btnNudgeStartAddressDown.Tag = "color:light";
@@ -525,7 +525,7 @@
             // updownNudgeStartAddress
             // 
             this.updownNudgeStartAddress.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
-            this.updownNudgeStartAddress.Font = new System.Drawing.Font("Consolas", 9F);
+            this.updownNudgeStartAddress.Font = new System.Drawing.Font("Consolas", 8F);
             this.updownNudgeStartAddress.ForeColor = System.Drawing.Color.White;
             this.updownNudgeStartAddress.Hexadecimal = true;
             this.updownNudgeStartAddress.Location = new System.Drawing.Point(45, 19);
@@ -535,7 +535,7 @@
             0,
             0});
             this.updownNudgeStartAddress.Name = "updownNudgeStartAddress";
-            this.updownNudgeStartAddress.Size = new System.Drawing.Size(59, 22);
+            this.updownNudgeStartAddress.Size = new System.Drawing.Size(59, 20);
             this.updownNudgeStartAddress.TabIndex = 157;
             this.updownNudgeStartAddress.Tag = "color:dark hex";
             this.updownNudgeStartAddress.Value = new decimal(new int[] {

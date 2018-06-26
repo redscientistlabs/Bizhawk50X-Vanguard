@@ -222,7 +222,7 @@ namespace RTC
 			bu2RowDico[bu] = row;
 
 			//Update the precision
-			UpdateRowPrecision(dgvBlastLayer.Rows[dgvBlastLayer.Rows.Count - 1]);
+			UpdateRowPrecision(dgvBlastLayer.Rows[index]);
 		}
 
 		private void btnDisable50_Click(object sender, EventArgs e)
@@ -230,14 +230,19 @@ namespace RTC
 			foreach (BlastUnit bu in sk.BlastLayer.Layer)
 			{
 				if (!(bool)bu2RowDico[bu].Cells["dgvBlastUnitLocked"].Value)
+				{
 					bu2RowDico[bu].Cells["dgvBlastEnabled"].Value = true;
-				currentlyUpdating = false;
+					currentlyUpdating = false;
+				}
+
 			}
 			foreach (BlastUnit bu in sk.BlastLayer.Layer.OrderBy(x => RTC_Core.RND.Next()).Take(sk.BlastLayer.Layer.Count / 2))
 			{
 				if (!(bool)bu2RowDico[bu].Cells["dgvBlastUnitLocked"].Value)
+				{
 					bu2RowDico[bu].Cells["dgvBlastEnabled"].Value = false;
-				currentlyUpdating = false;
+					currentlyUpdating = false;
+				}
 			}
 		}
 
@@ -377,7 +382,8 @@ namespace RTC
 
 				try
 				{
-					UpdateRowPrecision(dgvBlastLayer.Rows[e.RowIndex]);
+					if((BlastEditorColumn)e.ColumnIndex == BlastEditorColumn.DgvPrecision)
+						UpdateRowPrecision(dgvBlastLayer.Rows[e.RowIndex]);
 					//Changing the blast unit type
 					if ((BlastEditorColumn)e.ColumnIndex == BlastEditorColumn.DgvBlastUnitType)
 						ReplaceBlastUnitFromRow(dgvBlastLayer.Rows[e.RowIndex]);
@@ -606,27 +612,25 @@ namespace RTC
 			}
 		}
 
-		//This is gonna be ugly because some engines re-use boxes. Sorry -Narry
 		private void UpdateRowPrecision(DataGridViewRow row)
 		{
 			switch (row.Cells["dgvBlastUnitType"].Value.ToString())
 			{
 				case "RTC.BlastByte":
 				case "RTC.BlastCheat":
-					if (row.Cells["dgvPrecision"].Value.ToString() == "8-bit")
+					switch (row.Cells["dgvPrecision"].Value.ToString())
 					{
-						((DataGridViewNumericUpDownCell)row.Cells["dgvParam"]).Maximum = Byte.MaxValue;
-					}
-					else if (row.Cells["dgvPrecision"].Value.ToString() == "16-bit")
-					{
-						((DataGridViewNumericUpDownCell)row.Cells["dgvParam"]).Maximum = UInt16.MaxValue;
-					}
-					else
-					{
-						((DataGridViewNumericUpDownCell)row.Cells["dgvParam"]).Maximum = UInt32.MaxValue;
+						case "8-bit":
+							((DataGridViewNumericUpDownCell)row.Cells["dgvParam"]).Maximum = Byte.MaxValue;
+							break;
+						case "16-bit":
+							((DataGridViewNumericUpDownCell)row.Cells["dgvParam"]).Maximum = UInt16.MaxValue;
+							break;
+						case "32-bit":
+							((DataGridViewNumericUpDownCell)row.Cells["dgvParam"]).Maximum = UInt32.MaxValue;
+							break;
 					}
 					break;
-
 				case "RTC.BlastPipe":
 					//Todo set this to the valid maximum address
 					((DataGridViewNumericUpDownCell)row.Cells["dgvParam"]).Maximum = UInt32.MaxValue;
@@ -785,18 +789,7 @@ namespace RTC
 		private void PopulateColumnHeaderContextMenu(int column)
 		{
 			//Adding these by hand
-
-			/*
-			* 0 dgvBlastUnitReference
-			* 1 dgvBlastUnitLocked.
-			* 2 dgvBlastEnabled
-			* 3 dgvPrecision
-			* 4 dgvBlastUnitType
-			* 5 dgvBlastUnitMode
-			* 6 dgvSourceAddressDomain
-			* 7 dvgSourceAddress
-			* 8 dvgParamDomain
-			* 9 dvgParam*/
+			//See file header for column details
 
 			((ToolStripMenuItem)cmsBlastEditor.Items.Add("Change Selected Rows", null, new EventHandler((ob, ev) =>
 			{
