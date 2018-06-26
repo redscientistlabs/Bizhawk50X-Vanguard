@@ -28,13 +28,14 @@
 		/// </summary>
 		private void InitializeComponent()
 		{
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle7 = new System.Windows.Forms.DataGridViewCellStyle();
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle8 = new System.Windows.Forms.DataGridViewCellStyle();
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle3 = new System.Windows.Forms.DataGridViewCellStyle();
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle4 = new System.Windows.Forms.DataGridViewCellStyle();
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle5 = new System.Windows.Forms.DataGridViewCellStyle();
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle6 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle7 = new System.Windows.Forms.DataGridViewCellStyle();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(RTC_BlastGenerator_Form));
             this.panelSidebar = new System.Windows.Forms.Panel();
             this.cbUnitsShareNote = new System.Windows.Forms.CheckBox();
@@ -559,6 +560,8 @@
             // 
             this.dgvBlastGenerator.AllowUserToAddRows = false;
             this.dgvBlastGenerator.AllowUserToResizeRows = false;
+            dataGridViewCellStyle1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(240)))), ((int)(((byte)(240)))), ((int)(((byte)(240)))));
+            this.dgvBlastGenerator.AlternatingRowsDefaultCellStyle = dataGridViewCellStyle1;
             this.dgvBlastGenerator.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
             this.dgvBlastGenerator.BackgroundColor = System.Drawing.Color.Gray;
             this.dgvBlastGenerator.ClipboardCopyMode = System.Windows.Forms.DataGridViewClipboardCopyMode.Disable;
@@ -583,8 +586,8 @@
             this.dgvBlastGenerator.Margin = new System.Windows.Forms.Padding(2);
             this.dgvBlastGenerator.Name = "dgvBlastGenerator";
             this.dgvBlastGenerator.RowHeadersVisible = false;
-            dataGridViewCellStyle7.Font = new System.Drawing.Font("Segoe UI Symbol", 8.25F);
-            this.dgvBlastGenerator.RowsDefaultCellStyle = dataGridViewCellStyle7;
+            dataGridViewCellStyle8.Font = new System.Drawing.Font("Segoe UI Symbol", 8.25F);
+            this.dgvBlastGenerator.RowsDefaultCellStyle = dataGridViewCellStyle8;
             this.dgvBlastGenerator.RowTemplate.Height = 24;
             this.dgvBlastGenerator.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
             this.dgvBlastGenerator.Size = new System.Drawing.Size(765, 367);
@@ -606,8 +609,8 @@
             // 
             // dgvNoteText
             // 
-            dataGridViewCellStyle1.Font = new System.Drawing.Font("Segoe UI Symbol", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.dgvNoteText.DefaultCellStyle = dataGridViewCellStyle1;
+            dataGridViewCellStyle2.Font = new System.Drawing.Font("Segoe UI Symbol", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.dgvNoteText.DefaultCellStyle = dataGridViewCellStyle2;
             this.dgvNoteText.HeaderText = "dgvNoteText";
             this.dgvNoteText.Name = "dgvNoteText";
             this.dgvNoteText.Visible = false;
@@ -663,8 +666,8 @@
             // 
             // dgvStepSize
             // 
-            dataGridViewCellStyle2.Font = new System.Drawing.Font("Consolas", 8.25F);
-            this.dgvStepSize.DefaultCellStyle = dataGridViewCellStyle2;
+            dataGridViewCellStyle3.Font = new System.Drawing.Font("Consolas", 8.25F);
+            this.dgvStepSize.DefaultCellStyle = dataGridViewCellStyle3;
             this.dgvStepSize.FillWeight = 45F;
             this.dgvStepSize.HeaderText = "Step Size";
             this.dgvStepSize.Hexadecimal = true;
@@ -683,8 +686,8 @@
             // 
             // dgvStartAddress
             // 
-            dataGridViewCellStyle3.Font = new System.Drawing.Font("Consolas", 8.25F);
-            this.dgvStartAddress.DefaultCellStyle = dataGridViewCellStyle3;
+            dataGridViewCellStyle4.Font = new System.Drawing.Font("Consolas", 8.25F);
+            this.dgvStartAddress.DefaultCellStyle = dataGridViewCellStyle4;
             this.dgvStartAddress.FillWeight = 50F;
             this.dgvStartAddress.HeaderText = "Start Address";
             this.dgvStartAddress.Hexadecimal = true;
@@ -698,8 +701,8 @@
             // 
             // dgvEndAddress
             // 
-            dataGridViewCellStyle4.Font = new System.Drawing.Font("Consolas", 8.25F);
-            this.dgvEndAddress.DefaultCellStyle = dataGridViewCellStyle4;
+            dataGridViewCellStyle5.Font = new System.Drawing.Font("Consolas", 8.25F);
+            this.dgvEndAddress.DefaultCellStyle = dataGridViewCellStyle5;
             this.dgvEndAddress.FillWeight = 50F;
             this.dgvEndAddress.HeaderText = "End Address";
             this.dgvEndAddress.Hexadecimal = true;
@@ -713,8 +716,8 @@
             // 
             // dgvParam1
             // 
-            dataGridViewCellStyle5.Font = new System.Drawing.Font("Consolas", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.dgvParam1.DefaultCellStyle = dataGridViewCellStyle5;
+            dataGridViewCellStyle6.Font = new System.Drawing.Font("Consolas", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.dgvParam1.DefaultCellStyle = dataGridViewCellStyle6;
             this.dgvParam1.FillWeight = 50F;
             this.dgvParam1.HeaderText = "Param 1";
             this.dgvParam1.Hexadecimal = true;
@@ -728,8 +731,8 @@
             // 
             // dgvParam2
             // 
-            dataGridViewCellStyle6.Font = new System.Drawing.Font("Consolas", 8.25F);
-            this.dgvParam2.DefaultCellStyle = dataGridViewCellStyle6;
+            dataGridViewCellStyle7.Font = new System.Drawing.Font("Consolas", 8.25F);
+            this.dgvParam2.DefaultCellStyle = dataGridViewCellStyle7;
             this.dgvParam2.FillWeight = 50F;
             this.dgvParam2.HeaderText = "Param 2";
             this.dgvParam2.Hexadecimal = true;

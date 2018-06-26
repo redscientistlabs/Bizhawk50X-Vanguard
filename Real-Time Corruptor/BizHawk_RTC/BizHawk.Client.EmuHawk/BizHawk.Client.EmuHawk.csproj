@@ -745,11 +745,11 @@
     <Compile Include="RTC\Corruption Engines\RTC_NightmareEngine.cs" />
     <Compile Include="RTC\Corruption Engines\RTC_PipeEngine.cs" />
     <Compile Include="RTC\Corruption Engines\RTC_VectorEngine.cs" />
-    <Compile Include="RTC\Forms\RTC_NewBlastEditor_Form.cs">
+    <Compile Include="RTC\Forms\RTC_BlastEditor_Form.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="RTC\Forms\RTC_NewBlastEditor_Form.designer.cs">
-      <DependentUpon>RTC_NewBlastEditor_Form.cs</DependentUpon>
+    <Compile Include="RTC\Forms\RTC_BlastEditor_Form.designer.cs">
+      <DependentUpon>RTC_BlastEditor_Form.cs</DependentUpon>
     </Compile>
     <Compile Include="RTC\Forms\RTC_ConnectionStatus_Form.cs">
       <SubType>Form</SubType>
@@ -1601,8 +1601,8 @@
     <EmbeddedResource Include="RTC\Forms\RTC_HotkeyConfig_Form.resx">
       <DependentUpon>RTC_HotkeyConfig_Form.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="RTC\Forms\RTC_NewBlastEditor_Form.resx">
-      <DependentUpon>RTC_NewBlastEditor_Form.cs</DependentUpon>
+    <EmbeddedResource Include="RTC\Forms\RTC_BlastEditor_Form.resx">
+      <DependentUpon>RTC_BlastEditor_Form.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="RTC\Forms\RTC_ConnectionStatus_Form.resx">
       <DependentUpon>RTC_ConnectionStatus_Form.cs</DependentUpon>

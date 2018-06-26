@@ -16,7 +16,7 @@ using System.Windows.Forms;
 
 namespace RTC
 {
-	public partial class RTC_NewBlastEditor_Form : Form
+	public partial class RTC_BlastEditor_Form : Form
 	{
 		/*
 		 * Column Indexes - Updated 4/8/2018
@@ -69,7 +69,7 @@ namespace RTC
 			dgvBlastLayer.DoubleBuffered(true);
 			this.dgvBlastLayer.AutoSizeRowsMode = System.Windows.Forms.DataGridViewAutoSizeRowsMode.DisplayedCells;
 
-			dgvBlastLayer.AlternatingRowsDefaultCellStyle.BackColor = Color.FromArgb(240, 240, 240);
+			//dgvBlastLayer.AlternatingRowsDefaultCellStyle.BackColor = Color.FromArgb(240, 240, 240);
 
 			//set its location and size to fit the cell
 			//	dtp.Location = dgvBlastLayer.GetCellDisplayRectangle(0, 3,true).Location;
