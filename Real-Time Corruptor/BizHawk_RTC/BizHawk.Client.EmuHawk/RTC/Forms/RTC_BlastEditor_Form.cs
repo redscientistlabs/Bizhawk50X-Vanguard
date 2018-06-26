@@ -21,40 +21,40 @@ namespace RTC
 		/*
 		 * Column Indexes - Updated 4/8/2018
 		 *
-		 * 0 dgvBlastUnitReference
-		 * 1 dgvBlastUnitLocked.
-		 * 2 dgvBlastEnabled
-		 * 3 dgvPrecision
-		 * 4 dgvBlastUnitType
-		 * 5 dgvBlastUnitMode
-		 * 6 dgvSourceAddressDomain
-		 * 7 dvgSourceAddress
-		 * 8 dvgParamDomain
-		 * 9 dvgParam 
-		 * 10 dvgNoteButton
+		 * 0 DgvBlastUnitReference
+		 * 1 DgvBlastUnitLocked.
+		 * 2 DgvBlastEnabled
+		 * 3 DgvPrecision
+		 * 4 DgvBlastUnitType
+		 * 5 DgvBlastUnitMode
+		 * 6 DgvSourceAddressDomain
+		 * 7 DgvSourceAddress
+		 * 8 DgvParamDomain
+		 * 9 DgvParam 
+		 * 10 DgvNoteButton
 		 */
 
 		private enum BlastEditorColumn
 		{
-			dgvBlastUnitReference,
-			dgvBlastUnitLocked,
-			dgvBlastEnabled,
-			dgvPrecision,
-			dgvBlastUnitType,
-			dgvBlastUnitMode,
-			dgvSourceAddressDomain,
-			dgvSourceAddress,
-			dgvParamDomain,
-			dgvParam,
-			dvgNoteButton,
+			DgvBlastUnitReference,
+			DgvBlastUnitLocked,
+			DgvBlastEnabled,
+			DgvPrecision,
+			DgvBlastUnitType,
+			DgvBlastUnitMode,
+			DgvSourceAddressDomain,
+			DgvSourceAddress,
+			DgvParamDomain,
+			DgvParam,
+			DvgNoteButton,
 		}
 
 		private StashKey sk = null;
-		private StashKey originalsk = null;
+		private StashKey originalSk = null;
 		private bool initialized = false;
 		private bool currentlyUpdating = false;
 		private ContextMenuStrip cmsBlastEditor = new ContextMenuStrip();
-		private String[] domains;
+		private string[] domains;
 		private int searchOffset = 0;
 		private string searchValue = "";
 		private string searchColumn = "";
@@ -101,7 +101,7 @@ namespace RTC
 				return;
 
 			bu2RowDico = new Dictionary<BlastUnit, DataGridViewRow>();
-			originalsk = (StashKey)_sk.Clone();
+			originalSk = (StashKey)_sk.Clone();
 			sk = (StashKey)_sk.Clone();
 			RefreshBlastLayer();
 			domains = RTC_MemoryDomains.MemoryInterfaces.Keys.Concat(RTC_MemoryDomains.VmdPool.Values.Select(it => it.ToString())).ToArray();
@@ -124,11 +124,14 @@ namespace RTC
 			//Populate the different rows.
 			foreach (BlastUnit bu in sk.BlastLayer.Layer)
 			{
-				AddBlastUnitToDGV(bu);
+				AddBlastUnitToDgv(bu);
 			}
 			//SourceAddress and Param only need to accept Decimal
-			dgvBlastLayer.Columns["dgvSourceAddress"].ValueType = typeof(Decimal);
-			dgvBlastLayer.Columns["dgvParam"].ValueType = typeof(Decimal);
+			if (dgvBlastLayer != null)
+			{
+				dgvBlastLayer.Columns["dgvSourceAddress"].ValueType = typeof(decimal);
+				dgvBlastLayer.Columns["dgvParam"].ValueType = typeof(decimal);
+			}
 
 			UpdateBlastLayerSize();
 			RefreshNoteIcons();
@@ -136,18 +139,18 @@ namespace RTC
 			initialized = true;
 		}
 
-		private void InsertBlastUnitToBlastLayerAndDGV(int index, BlastUnit bu)
+		private void InsertBlastUnitToBlastLayerAndDgv(int index, BlastUnit bu)
 		{
 			sk.BlastLayer.Layer.Add(bu);
-			InsertBlastUnitToDGV(index, bu);
+			InsertBlastUnitToDgv(index, bu);
 		}
 
-		private void AddBlastUnitToDGV(BlastUnit bu)
+		private void AddBlastUnitToDgv(BlastUnit bu)
 		{
-			InsertBlastUnitToDGV(dgvBlastLayer.Rows.Count, bu);
+			InsertBlastUnitToDgv(dgvBlastLayer.Rows.Count, bu);
 		}
 
-		private void InsertBlastUnitToDGV(int index, BlastUnit bu)
+		private void InsertBlastUnitToDgv(int index, BlastUnit bu)
 		{
 			/*
 			 SourceAddress
@@ -215,7 +218,7 @@ namespace RTC
 			dgvBlastLayer.Rows.Insert(index, bu, locked, enabled, GetPrecisionNameFromSize(precision), blastType, blastMode, sourceDomain, sourceAddress, destDomain, param);
 
 			//update the BlastUnit to Cell dico.
-			var row = dgvBlastLayer.Rows[index];
+			DataGridViewRow row = dgvBlastLayer.Rows[index];
 			bu2RowDico[bu] = row;
 
 			//Update the precision
@@ -242,7 +245,7 @@ namespace RTC
 		{
 			for (int i = 0; i < sk.BlastLayer.Layer.Count(); i++)
 			{
-				var bu = sk.BlastLayer.Layer[i];
+				BlastUnit bu = sk.BlastLayer.Layer[i];
 				if (!(bool)bu2RowDico[bu].Cells["dgvBlastUnitLocked"].Value)
 					bu2RowDico[bu].Cells["dgvBlastEnabled"].Value = !((bool)bu2RowDico[bu].Cells["dgvBlastEnabled"].Value);
 			}
@@ -259,7 +262,7 @@ namespace RTC
 
 			foreach (BlastUnit bu in buToRemove)
 			{
-				RemoveBlastUnitFromBlastLayerAndDGV(bu);
+				RemoveBlastUnitFromBlastLayerAndDgv(bu);
 			}
 		}
 
@@ -296,7 +299,7 @@ namespace RTC
 					bl.Layer.Add(bu);
 			}
 
-			(bl.Clone() as BlastLayer).Apply();
+			(bl.Clone() as BlastLayer)?.Apply();
 		}
 
 		private void btnSendToStash_Click(object sender, EventArgs e)
@@ -356,7 +359,7 @@ namespace RTC
 				BlastUnit bu = sk.BlastLayer.Layer[pos];
 				BlastUnit bu2 = ObjectCopier.Clone(bu);
 				sk.BlastLayer.Layer.Insert(pos + 1, bu2);
-				InsertBlastUnitToDGV(pos + 1, bu2);
+				InsertBlastUnitToDgv(pos + 1, bu2);
 				SetNoteIcon(bu2);
 
 				//AddBlastUnitToDGV(bu2);
@@ -376,7 +379,7 @@ namespace RTC
 				{
 					UpdateRowPrecision(dgvBlastLayer.Rows[e.RowIndex]);
 					//Changing the blast unit type
-					if ((BlastEditorColumn)e.ColumnIndex == BlastEditorColumn.dgvBlastUnitType)
+					if ((BlastEditorColumn)e.ColumnIndex == BlastEditorColumn.DgvBlastUnitType)
 						ReplaceBlastUnitFromRow(dgvBlastLayer.Rows[e.RowIndex]);
 					else
 						UpdateBlastUnitFromRow(dgvBlastLayer.Rows[e.RowIndex]);
@@ -461,28 +464,28 @@ namespace RTC
 					case "RTC.BlastByte":
 						BlastByte bb = (BlastByte)bu.ConvertBlastUnit(typeof(BlastByte));
 						sk.BlastLayer.Layer.Insert(index, bb);
-						InsertBlastUnitToDGV(index, bb);
+						InsertBlastUnitToDgv(index, bb);
 						currentlyUpdating = false;
 						break;
 
 					case "RTC.BlastCheat":
 						BlastCheat bc = (BlastCheat)bu.ConvertBlastUnit(typeof(BlastCheat));
 						sk.BlastLayer.Layer.Insert(index, bc);
-						InsertBlastUnitToDGV(index, bc);
+						InsertBlastUnitToDgv(index, bc);
 						currentlyUpdating = false;
 						break;
 
 					case "RTC.BlastPipe":
 						BlastPipe bp = (BlastPipe)bu.ConvertBlastUnit(typeof(BlastPipe));
 						sk.BlastLayer.Layer.Insert(index, bp);
-						InsertBlastUnitToDGV(index, bp);
+						InsertBlastUnitToDgv(index, bp);
 						currentlyUpdating = false;
 						break;
 
 					case "RTC.BlastVector":
 						BlastVector bv = (BlastVector)bu.ConvertBlastUnit(typeof(BlastVector));
 						sk.BlastLayer.Layer.Insert(index, bv);
-						InsertBlastUnitToDGV(index, bv);
+						InsertBlastUnitToDgv(index, bv);
 						currentlyUpdating = false;
 						break;
 
@@ -491,7 +494,7 @@ namespace RTC
 						throw new Exception("Invalid BlastUnit Type");
 				}
 				//Remove the old one
-				RemoveBlastUnitFromBlastLayerAndDGV(bu);
+				RemoveBlastUnitFromBlastLayerAndDgv(bu);
 			}
 			catch (Exception ex)
 			{
@@ -499,7 +502,7 @@ namespace RTC
 			}
 		}
 
-		private void RemoveBlastUnitFromBlastLayerAndDGV(BlastUnit bu)
+		private void RemoveBlastUnitFromBlastLayerAndDgv(BlastUnit bu)
 		{
 			//Remove it from the dgv
 			dgvBlastLayer.Rows.Remove(bu2RowDico[bu]);
@@ -511,7 +514,7 @@ namespace RTC
 			UpdateBlastLayerSize();
 		}
 
-		private void RemoveBlastUnitFromBlastLayerAndDGV(DataGridViewRow row)
+		private void RemoveBlastUnitFromBlastLayerAndDgv(DataGridViewRow row)
 		{
 			BlastUnit bu = (BlastUnit)row.Cells["dgvBlastUnitReference"].Value;
 			//Remove it from the blastlayer
@@ -626,7 +629,7 @@ namespace RTC
 
 				case "RTC.BlastPipe":
 					//Todo set this to the valid maximum address
-					(row.Cells["dgvParam"] as DataGridViewNumericUpDownCell).Maximum = UInt32.MaxValue;
+					((DataGridViewNumericUpDownCell)row.Cells["dgvParam"]).Maximum = UInt32.MaxValue;
 					break;
 
 				default:
@@ -784,17 +787,16 @@ namespace RTC
 			//Adding these by hand
 
 			/*
-			*1 dgvBlastUnitLocked.
-
-		   * 0 dgvBlastUnitReference
-		   * 2 dgvBlastEnabled
-		   * 3 dgvPrecision
-		   * 4 dgvBlastUnitType
-		   * 5 dgvBlastUnitMode
-		   * 6 dgvSourceAddressDomain
-		   * 7 dvgSourceAddress
-		   * 8 dvgParamDomain
-		   * 9 dvgParam*/
+			* 0 dgvBlastUnitReference
+			* 1 dgvBlastUnitLocked.
+			* 2 dgvBlastEnabled
+			* 3 dgvPrecision
+			* 4 dgvBlastUnitType
+			* 5 dgvBlastUnitMode
+			* 6 dgvSourceAddressDomain
+			* 7 dvgSourceAddress
+			* 8 dvgParamDomain
+			* 9 dvgParam*/
 
 			((ToolStripMenuItem)cmsBlastEditor.Items.Add("Change Selected Rows", null, new EventHandler((ob, ev) =>
 			{
@@ -888,28 +890,29 @@ namespace RTC
 						cmsBlastEditor.Show(dgvBlastLayer, new Point(e.X, e.Y));
 						break;
 					//BlastUnitType
-					case (int)BlastEditorColumn.dgvBlastUnitType:
+					case (int)BlastEditorColumn.DgvBlastUnitType:
 						PopulateBlastUnitTypeContextMenu(currentMouseOverColumn, currentMouseOverRow);
 						cmsBlastEditor.Show(dgvBlastLayer, new Point(e.X, e.Y));
 						break;
 					//BlastUnitMode
-					case (int)BlastEditorColumn.dgvBlastUnitMode:
+					case (int)BlastEditorColumn.DgvBlastUnitMode:
 						PopulateBlastUnitModeContextMenu(currentMouseOverColumn, currentMouseOverRow);
 						cmsBlastEditor.Show(dgvBlastLayer, new Point(e.X, e.Y));
 						break;
 
 					//Domain1 Domain2
-					case (int)BlastEditorColumn.dgvSourceAddressDomain:
-					case (int)BlastEditorColumn.dgvParamDomain:
+					case (int)BlastEditorColumn.DgvSourceAddressDomain:
+					case (int)BlastEditorColumn.DgvParamDomain:
 						PopulateDomainContextMenu(currentMouseOverColumn);
 						cmsBlastEditor.Show(dgvBlastLayer, new Point(e.X, e.Y));
 						break;
 					//Source Address
-					case (int)BlastEditorColumn.dgvSourceAddress:
+					case (int)BlastEditorColumn.DgvSourceAddress:
 						PopulateAddressContextMenu(currentMouseOverColumn, currentMouseOverRow);
 						cmsBlastEditor.Show(dgvBlastLayer, new Point(e.X, e.Y));
 						break;
-					case (int)BlastEditorColumn.dgvParam:
+					//Param
+					case (int)BlastEditorColumn.DgvParam:
 						PopulateParamContextMenu(currentMouseOverColumn, currentMouseOverRow);
 						cmsBlastEditor.Show(dgvBlastLayer, new Point(e.X, e.Y));
 						break;
@@ -919,6 +922,7 @@ namespace RTC
 			}
 		}
 
+		//We manually sort the blastlayer alongside the DGV
 		private void dgvBlastLayer_Sorted(object sender, EventArgs e)
 		{
 			if (dgvBlastLayer.SortOrder == SortOrder.Ascending)
@@ -1009,8 +1013,8 @@ namespace RTC
 			{
 				if (column.CellType.Name == "DataGridViewNumericUpDownCell")
 				{
-					DataGridViewNumericUpDownColumn _column = column as DataGridViewNumericUpDownColumn;
-					_column.Hexadecimal = useHex;
+					if (column is DataGridViewNumericUpDownColumn _column)
+						_column.Hexadecimal = useHex;
 				}
 			}
 		}
@@ -1054,7 +1058,7 @@ namespace RTC
 					if ((bool)row.Cells["dgvBlastUnitLocked"].Value)
 						return;
 
-					RemoveBlastUnitFromBlastLayerAndDGV(row);
+					RemoveBlastUnitFromBlastLayerAndDgv(row);
 					currentlyUpdating = false;
 				}
 			}
@@ -1235,7 +1239,7 @@ namespace RTC
 
 		private void runOriginalSavestateToolStripMenuItem_Click(object sender, EventArgs e)
 		{
-			originalsk.RunOriginal();
+			originalSk.RunOriginal();
 		}
 
 		private void rasterizeVMDsToolStripMenuItem_Click(object sender, EventArgs e)
@@ -1491,9 +1495,9 @@ namespace RTC
 				//Insert the new one where the old row was, then remove the old row.
 				foreach (DataGridViewRow selected in dgvBlastLayer.SelectedRows.Cast<DataGridViewRow>().Where(item => ((bool)item.Cells["dgvBlastUnitLocked"].Value != true) && ((BlastUnit)item.Cells["dgvBlastUnitReference"].Value) is BlastByte))
 				{
-					InsertBlastUnitToBlastLayerAndDGV(selected.Index, newBlastLayer.Layer[i]);
+					InsertBlastUnitToBlastLayerAndDgv(selected.Index, newBlastLayer.Layer[i]);
 					i++;
-					RemoveBlastUnitFromBlastLayerAndDGV((BlastUnit)selected.Cells["dgvBlastUnitReference"].Value);
+					RemoveBlastUnitFromBlastLayerAndDgv((BlastUnit)selected.Cells["dgvBlastUnitReference"].Value);
 				}
 			}
 			catch (Exception ex)
@@ -1520,7 +1524,7 @@ namespace RTC
 						usedAddresses.Add(bu.Address);
 					else
 					{
-						RemoveBlastUnitFromBlastLayerAndDGV(bu);
+						RemoveBlastUnitFromBlastLayerAndDgv(bu);
 						currentlyUpdating = false;
 					}
 				}
@@ -1531,7 +1535,7 @@ namespace RTC
 						usedPipeAddresses.Add(bp.PipeAddress);
 					else
 					{
-						RemoveBlastUnitFromBlastLayerAndDGV(bu);
+						RemoveBlastUnitFromBlastLayerAndDgv(bu);
 						currentlyUpdating = false;
 					}
 				}
@@ -1580,9 +1584,11 @@ namespace RTC
 
 		public void RefreshNoteIcons()
 		{
-			if(sk != null) 
+			if(sk != null)
+			{
 				foreach (BlastUnit bu in sk.BlastLayer.Layer)
 					SetNoteIcon(bu);
+			}
 		}
 
 		private void btnHelp_Click(object sender, EventArgs e)

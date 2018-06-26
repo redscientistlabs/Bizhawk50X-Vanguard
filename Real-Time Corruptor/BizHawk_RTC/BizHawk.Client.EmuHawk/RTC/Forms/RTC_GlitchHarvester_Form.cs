@@ -186,13 +186,13 @@ namespace RTC
 		{
 			try
 			{
-				(sender as Button).Visible = false;
+				((Button)sender).Visible = false;
 
 				foreach (var item in pnSavestateHolder.Controls)
-					if (item is Button)
-						(item as Button).ForeColor = Color.FromArgb(192, 255, 192);
+					if (item is Button button)
+						button.ForeColor = Color.FromArgb(192, 255, 192);
 
-				Button clickedButton = (sender as Button);
+				Button clickedButton = ((Button)sender);
 				clickedButton.ForeColor = Color.OrangeRed;
 				clickedButton.BringToFront();
 
@@ -203,14 +203,16 @@ namespace RTC
 				{
 					if (DialogResult.Yes == MessageBox.Show($"Can't find file {psk.RomFilename}\nGame name: {psk.GameName}\nSystem name: {psk.SystemName}\n\n Would you like to provide a new file for replacement?", "Error: File not found", MessageBoxButtons.YesNo))
 					{
-						OpenFileDialog ofd = new OpenFileDialog();
-						ofd.DefaultExt = "*";
-						ofd.Title = "Select Replacement File";
-						ofd.Filter = "Any file|*.*";
-						ofd.RestoreDirectory = true;
+						OpenFileDialog ofd = new OpenFileDialog
+						{
+							DefaultExt = "*",
+							Title = "Select Replacement File",
+							Filter = "Any file|*.*",
+							RestoreDirectory = true
+						};
 						if (ofd.ShowDialog() == DialogResult.OK)
 						{
-							string Filename = ofd.FileName.ToString();
+							string filename = ofd.FileName.ToString();
 							string oldFilename = psk.RomFilename;
 							for (int i = 1; i < 41; i++)
 							{
@@ -220,7 +222,7 @@ namespace RTC
 								{
 									StashKey sk = RTC_StockpileManager.SavestateStashkeyDico[key];
 									if (sk.RomFilename == oldFilename)
-										sk.RomFilename = Filename;
+										sk.RomFilename = filename;
 								}
 							}
 						}
@@ -250,7 +252,7 @@ namespace RTC
 			}
 			finally
 			{
-				(sender as Button).Visible = true;
+				((Button)sender).Visible = true;
 			}
 		}
 
@@ -285,7 +287,7 @@ namespace RTC
 							ofd.RestoreDirectory = true;
 							if (ofd.ShowDialog() == DialogResult.OK)
 							{
-								string Filename = ofd.FileName.ToString();
+								string filename = ofd.FileName.ToString();
 								string oldFilename = psk.RomFilename;
 								for (int i = 1; i < 41; i++)
 								{
@@ -295,7 +297,7 @@ namespace RTC
 									{
 										StashKey sk = RTC_StockpileManager.SavestateStashkeyDico[key];
 										if (sk.RomFilename == oldFilename)
-											sk.RomFilename = Filename;
+											sk.RomFilename = filename;
 									}
 								}
 							}
@@ -358,12 +360,12 @@ namespace RTC
 
 				if (rbCorrupt.Checked)
 				{
-					var RomFilename = (string)RTC_Core.SendCommandToBizhawk(new RTC_Command(CommandType.REMOTE_KEY_GETOPENROMFILENAME), true);
-					if (RomFilename == null)
+					string romFilename = (string)RTC_Core.SendCommandToBizhawk(new RTC_Command(CommandType.REMOTE_KEY_GETOPENROMFILENAME), true);
+					if (romFilename == null)
 						return;
-					if (RomFilename.Contains("|"))
+					if (romFilename.Contains("|"))
 					{
-						MessageBox.Show($"The Glitch Harvester attempted to corrupt a game bound to the following file:\n{RomFilename}\n\nIt cannot be processed because the rom seems to be inside a Zip Archive\n(Bizhawk returned a filename with the chracter | in it)");
+						MessageBox.Show($"The Glitch Harvester attempted to corrupt a game bound to the following file:\n{romFilename}\n\nIt cannot be processed because the rom seems to be inside a Zip Archive\n(Bizhawk returned a filename with the chracter | in it)");
 						return;
 					}
 
@@ -514,16 +516,16 @@ namespace RTC
 
 			RTC_StockpileManager.currentStashkey = (StashKey)lbStashHistory.SelectedItem;
 
-			if (Name != "")
+			if (String.IsNullOrWhiteSpace(Name))
 				RTC_StockpileManager.currentStashkey.Alias = Name;
 			else
 				RTC_StockpileManager.currentStashkey.Alias = RTC_StockpileManager.currentStashkey.Key;
 
-			var sk = RTC_StockpileManager.currentStashkey;
+			StashKey sk = RTC_StockpileManager.currentStashkey;
 
 			sk.BlastLayer.Rasterize();
 
-			var dataRow = dgvStockpile.Rows[dgvStockpile.Rows.Add()];
+			DataGridViewRow dataRow = dgvStockpile.Rows[dgvStockpile.Rows.Add()];
 			dataRow.Cells["Item"].Value = sk;
 			dataRow.Cells["GameName"].Value = sk.GameName;
 			dataRow.Cells["SystemName"].Value = sk.SystemName;
@@ -608,10 +610,10 @@ namespace RTC
 		{
 			RTC_Core.CheckForProblematicProcesses();
 
-			Point locate = new Point((sender as Control).Location.X + e.Location.X, (sender as Control).Location.Y + e.Location.Y);
+			Point locate = new Point(((Control)sender).Location.X + e.Location.X, ((Control)sender).Location.Y + e.Location.Y);
 
-			ContextMenuStrip LoadMenuItems = new ContextMenuStrip();
-			LoadMenuItems.Items.Add("Load Stockpile", null, new EventHandler((ob, ev) =>
+			ContextMenuStrip loadMenuItems = new ContextMenuStrip();
+			loadMenuItems.Items.Add("Load Stockpile", null, new EventHandler((ob, ev) =>
 			{
 				try
 				{
@@ -637,7 +639,7 @@ namespace RTC
 				}
 			}));
 
-			LoadMenuItems.Items.Add("Load Bizhawk settings from Stockpile", null, new EventHandler((ob, ev) =>
+			loadMenuItems.Items.Add("Load Bizhawk settings from Stockpile", null, new EventHandler((ob, ev) =>
 			{
 				try
 				{
@@ -650,7 +652,7 @@ namespace RTC
 				}
 			}));
 
-			LoadMenuItems.Items.Add("Restore Bizhawk config Backup", null, new EventHandler((ob, ev) =>
+			loadMenuItems.Items.Add("Restore Bizhawk config Backup", null, new EventHandler((ob, ev) =>
 			{
 				try
 				{
@@ -663,7 +665,7 @@ namespace RTC
 				}
 			})).Enabled = (File.Exists(RTC_Core.bizhawkDir + "\\backup_config.ini"));
 
-			LoadMenuItems.Show(this, locate);
+			loadMenuItems.Show(this, locate);
 		}
 
 		private void btnSaveStockpileAs_Click(object sender, EventArgs e)
@@ -764,9 +766,9 @@ namespace RTC
 			if (dgvStockpile.SelectedRows.Count == 0)
 				return;
 
-			int CurrentSelectedIndex = dgvStockpile.SelectedRows[0].Index;
+			int currentSelectedIndex = dgvStockpile.SelectedRows[0].Index;
 
-			if (CurrentSelectedIndex == 0)
+			if (currentSelectedIndex == 0)
 			{
 				dgvStockpile.ClearSelection();
 				dgvStockpile.Rows[dgvStockpile.Rows.Count - 1].Selected = true;
@@ -774,7 +776,7 @@ namespace RTC
 			else
 			{
 				dgvStockpile.ClearSelection();
-				dgvStockpile.Rows[CurrentSelectedIndex - 1].Selected = true;
+				dgvStockpile.Rows[currentSelectedIndex - 1].Selected = true;
 			}
 
 			dgvStockpile_CellClick(dgvStockpile, null);
@@ -785,9 +787,9 @@ namespace RTC
 			if (dgvStockpile.SelectedRows.Count == 0)
 				return;
 
-			int CurrentSelectedIndex = dgvStockpile.SelectedRows[0].Index;
+			int currentSelectedIndex = dgvStockpile.SelectedRows[0].Index;
 
-			if (CurrentSelectedIndex == dgvStockpile.Rows.Count - 1)
+			if (currentSelectedIndex == dgvStockpile.Rows.Count - 1)
 			{
 				dgvStockpile.ClearSelection();
 				dgvStockpile.Rows[0].Selected = true;
@@ -795,7 +797,7 @@ namespace RTC
 			else
 			{
 				dgvStockpile.ClearSelection();
-				dgvStockpile.Rows[CurrentSelectedIndex + 1].Selected = true;
+				dgvStockpile.Rows[currentSelectedIndex + 1].Selected = true;
 			}
 
 			dgvStockpile_CellClick(dgvStockpile, null);
@@ -812,7 +814,7 @@ namespace RTC
 				return;
 
 			int pos = dgvStockpile.SelectedRows[0].Index;
-			var row = dgvStockpile.Rows[pos];
+			DataGridViewRow row = dgvStockpile.Rows[pos];
 
 			dgvStockpile.Rows.RemoveAt(pos);
 
@@ -888,6 +890,8 @@ namespace RTC
 			double fx = Math.Floor(Math.Pow((track_Intensity.Value * 0.0005d), 2));
 			int _fx = Convert.ToInt32(fx);
 
+			// This is NOT a redundent check. Setting intensity requires a netcore call so we don't want to do it if we don't have to
+			// ReSharper disable once RedundantCheckBeforeAssignment
 			if (_fx != RTC_Core.ecForm.Intensity)
 				RTC_Core.ecForm.Intensity = _fx;
 		}

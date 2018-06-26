@@ -62,8 +62,11 @@ namespace RTC
 
 		private void btnStartWGH_Click(object sender, EventArgs e)
 		{
-			ProcessStartInfo psi = new ProcessStartInfo(RTC_Core.bizhawkDir + "\\WGH\\WindowsGlitchHarvester.exe");
-			psi.WorkingDirectory = RTC_Core.bizhawkDir + "\\WGH";
+			ProcessStartInfo psi =
+				new ProcessStartInfo(RTC_Core.bizhawkDir + "\\WGH\\WindowsGlitchHarvester.exe")
+				{
+					WorkingDirectory = RTC_Core.bizhawkDir + "\\WGH"
+				};
 			Process.Start(psi);
 		}
 

@@ -28,30 +28,30 @@ namespace RTC
 	{
 		private enum BlastGeneratorColumn
 		{
-			dgvBlastLayerReference,
-			dgvRowDirty,
-			dgvEnabled,
-			dgvNoteText,
-			dgvDomain,
-			dgvPrecision,
-			dgvType,
-			dgvMode,
-			dgvStepSize,
-			dgvStartAddress,
-			dgvEndAddress,
-			dgvParam1,
-			dgvParam2,
-			dgvNoteButton
+			DgvBlastLayerReference,
+			DgvRowDirty,
+			DgvEnabled,
+			DgvNoteText,
+			DgvDomain,
+			DgvPrecision,
+			DgvType,
+			DgvMode,
+			DgvStepSize,
+			DgvStartAddress,
+			DgvEndAddress,
+			DgvParam1,
+			DgvParam2,
+			DgvNoteButton
 		}
 
-		public static BlastLayer currentBlastLayer = null;
+		public static BlastLayer CurrentBlastLayer = null;
 		private bool openedFromBlastEditor = false;
 		private StashKey sk = null;
 		private ContextMenuStrip cms = new ContextMenuStrip();
 		private bool initialized = false;
 
-		private Dictionary<string, MemoryInterface> domainToMIDico = new Dictionary<string, MemoryInterface>();
-		public string[] domains = RTC_MemoryDomains.MemoryInterfaces.Keys.Concat(RTC_MemoryDomains.VmdPool.Values.Select(it => it.ToString())).ToArray();
+		private static Dictionary<string, MemoryInterface> domainToMiDico = new Dictionary<string, MemoryInterface>();
+		public string[] Domains = RTC_MemoryDomains.MemoryInterfaces.Keys.Concat(RTC_MemoryDomains.VmdPool.Values.Select(it => it.ToString())).ToArray();
 
 		public RTC_BlastGenerator_Form()
 		{
@@ -148,27 +148,31 @@ namespace RTC
 			{
 				DataGridViewComboBoxCell cell = row.Cells["dgvDomain"] as DataGridViewComboBoxCell;
 
-				int temp = cell.Items.Count;
-				string currentValue = "";
-				if (cell.Value != null)
-					currentValue = cell.Value.ToString();
-
-				//So this combobox is annoying. You need to have something selected or else the dgv throws up
-				//The (bad) solution I'm using is to insert a row at the beginning as a holdover until it's re-populated, then removing that row.
-
-				cell.Items.Insert(0, "NONE");
-				cell.Value = cell.Items[0];
-
-				for (int i = temp; i > 0; i--)
-					cell.Items.RemoveAt(1);
-
-				foreach (string domain in domains)
+				if (cell != null)
 				{
-					cell.Items.Add(domain);
+					int temp = cell.Items.Count;
+					string currentValue = "";
+					if (cell.Value != null)
+						currentValue = cell.Value.ToString();
+
+					//So this combobox is annoying. You need to have something selected or else the dgv throws up
+					//The (bad) solution I'm using is to insert a row at the beginning as a holdover until it's re-populated, then removing that row.
+
+					cell.Items.Insert(0, "NONE");
+					cell.Value = cell.Items[0];
+
+					for (int i = temp; i > 0; i--)
+						cell.Items.RemoveAt(1);
+
+					foreach (string domain in Domains)
+					{
+						cell.Items.Add(domain);
+					}
+
+					cell.Value = cell.Items.Contains(currentValue) ? currentValue : cell.Items[1];
+					cell.Items.Remove("NONE");
 				}
 
-				cell.Value = cell.Items.Contains(currentValue) ? currentValue : cell.Items[1];
-				cell.Items.Remove("NONE");
 				UpdateAddressRange(row);
 
 				return true;
@@ -179,14 +183,14 @@ namespace RTC
 			}
 		}
 
-		private void UpdateAddressRange(DataGridViewRow row)
+		private static void UpdateAddressRange(DataGridViewRow row)
 		{
 			try
 			{
 				if (row.Cells["dgvDomain"].Value.ToString() == "NONE")
 					return;
 
-				long size = domainToMIDico[row.Cells["dgvDomain"].Value.ToString()].Size;
+				long size = domainToMiDico[row.Cells["dgvDomain"].Value.ToString()].Size;
 
 				((DataGridViewNumericUpDownCell)row.Cells["dgvStartAddress"]).Maximum = size;
 				((DataGridViewNumericUpDownCell)row.Cells["dgvEndAddress"]).Maximum = size;
@@ -197,7 +201,7 @@ namespace RTC
 			}
 		}
 
-		private void PopulateModeCombobox(DataGridViewRow row)
+		private static void PopulateModeCombobox(DataGridViewRow row)
 		{
 			DataGridViewComboBoxCell cell = row.Cells["dgvMode"] as DataGridViewComboBoxCell;
 
@@ -330,8 +334,7 @@ namespace RTC
 			{
 				if (column.CellType.Name == "DataGridViewNumericUpDownCell")
 				{
-					DataGridViewNumericUpDownColumn _column = column as DataGridViewNumericUpDownColumn;
-					_column.Hexadecimal = useHex;
+					((DataGridViewNumericUpDownColumn)column).Hexadecimal = useHex;
 				}
 			}
 		}
@@ -343,11 +346,11 @@ namespace RTC
 
 			dgvBlastGenerator.Rows[e.RowIndex].Cells["dgvRowDirty"].Value = true;
 
-			if ((BlastGeneratorColumn)e.ColumnIndex == BlastGeneratorColumn.dgvType)
+			if ((BlastGeneratorColumn)e.ColumnIndex == BlastGeneratorColumn.DgvType)
 			{
 				PopulateModeCombobox(dgvBlastGenerator.Rows[e.RowIndex]);
 			}
-			if ((BlastGeneratorColumn)e.ColumnIndex == BlastGeneratorColumn.dgvDomain)
+			if ((BlastGeneratorColumn)e.ColumnIndex == BlastGeneratorColumn.DgvDomain)
 			{
 				UpdateAddressRange(dgvBlastGenerator.Rows[e.RowIndex]);
 			}
@@ -426,24 +429,18 @@ namespace RTC
 		{
 			try
 			{
+				string note = cbUnitsShareNote.Checked ? (row.Cells["dgvNoteText"].Value?.ToString() ?? String.Empty) : String.Empty;
+				string domain = row.Cells["dgvDomain"].Value.ToString();
+				string type = row.Cells["dgvType"].Value.ToString();
+				string mode = row.Cells["dgvMode"].Value.ToString();
+				int precision = GetPrecisionSizeFromName(row.Cells["dgvPrecision"].Value.ToString());
+				int stepSize = Convert.ToInt32(row.Cells["dgvStepSize"].Value);
+				long startAddress = Convert.ToInt64(row.Cells["dgvStartAddress"].Value);
+				long endAddress = Convert.ToInt64(row.Cells["dgvEndAddress"].Value);
+				long param1 = Convert.ToInt64(row.Cells["dgvParam1"].Value);
+				long param2 = Convert.ToInt64(row.Cells["dgvParam2"].Value);
 
-			string note;
-			if (cbUnitsShareNote.Checked)
-				note = row.Cells["dgvNoteText"].Value?.ToString() ?? "";
-			else
-				note = "";
-
-			string domain = row.Cells["dgvDomain"].Value.ToString();
-			string type = row.Cells["dgvType"].Value.ToString();
-			string mode = row.Cells["dgvMode"].Value.ToString();
-			int precision = GetPrecisionSizeFromName(row.Cells["dgvPrecision"].Value.ToString());
-			int stepSize = Convert.ToInt32(row.Cells["dgvStepSize"].Value);
-			long startAddress = Convert.ToInt64(row.Cells["dgvStartAddress"].Value);
-			long endAddress = Convert.ToInt64(row.Cells["dgvEndAddress"].Value);
-			long param1 = Convert.ToInt64(row.Cells["dgvParam1"].Value);
-			long param2 = Convert.ToInt64(row.Cells["dgvParam2"].Value);
-
-			return new BlastGeneratorProto(note, type, domain, mode, precision, stepSize, startAddress, endAddress, param1, param2);
+				return new BlastGeneratorProto(note, type, domain, mode, precision, stepSize, startAddress, endAddress, param1, param2);
 			}catch(Exception ex)
 			{
 				throw;
@@ -574,11 +571,11 @@ namespace RTC
 		{
 			try
 			{
-				domainToMIDico.Clear();
-				domains = RTC_MemoryDomains.MemoryInterfaces.Keys.Concat(RTC_MemoryDomains.VmdPool.Values.Select(it => it.ToString())).ToArray();
-				foreach (string domain in domains)
+				domainToMiDico.Clear();
+				Domains = RTC_MemoryDomains.MemoryInterfaces.Keys.Concat(RTC_MemoryDomains.VmdPool.Values.Select(it => it.ToString())).ToArray();
+				foreach (string domain in Domains)
 				{
-					domainToMIDico.Add(domain, RTC_MemoryDomains.GetInterface(domain));
+					domainToMiDico.Add(domain, RTC_MemoryDomains.GetInterface(domain));
 				}
 
 				foreach (DataGridViewRow row in dgvBlastGenerator.Rows)
@@ -669,18 +666,18 @@ namespace RTC
 						//We need to populate the comboboxes or else things go bad
 						//To do this, we load the type first so we can populate the modes, then add the domain to the domain combobox.
 						//If it's invalid, they'll know on generation. If they load the correct core and press refresh, it'll maintain its selection
-						dgv[(int)BlastGeneratorColumn.dgvType, lastrow].Value = row.ItemArray[(int)BlastGeneratorColumn.dgvType];
+						dgv[(int)BlastGeneratorColumn.DgvType, lastrow].Value = row.ItemArray[(int)BlastGeneratorColumn.DgvType];
 
 						PopulateModeCombobox(dgv.Rows[lastrow]);
-						(dgv.Rows[lastrow].Cells["dgvDomain"] as DataGridViewComboBoxCell)?.Items.Add(row.ItemArray[(int)BlastGeneratorColumn.dgvDomain]);
+						(dgv.Rows[lastrow].Cells["dgvDomain"] as DataGridViewComboBoxCell)?.Items.Add(row.ItemArray[(int)BlastGeneratorColumn.DgvDomain]);
 
 						for (int i = 0; i < dgv.Rows[lastrow].Cells.Count; i++)
 						{
 							dgv.Rows[lastrow].Cells[i].Value = row.ItemArray[i];
 						}
 						//Override these two
-						dgv[(int)BlastGeneratorColumn.dgvBlastLayerReference, lastrow].Value = null;
-						dgv[(int)BlastGeneratorColumn.dgvRowDirty, lastrow].Value = true;
+						dgv[(int)BlastGeneratorColumn.DgvBlastLayerReference, lastrow].Value = null;
+						dgv[(int)BlastGeneratorColumn.DgvRowDirty, lastrow].Value = true;
 					}
 				}
 				catch (Exception ex)
