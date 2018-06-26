@@ -367,15 +367,7 @@ namespace RTC
 						return;
 					}
 
-					if (RTC_Core.SelectedEngine == CorruptionEngine.EXTERNALROM)
-					{
-						if (sender == null)
-							RTC_StockpileManager.Corrupt(loadBeforeOperation);
-						else
-							RTC_RPC.CorruptPlugin();
-					}
-					else
-						RTC_StockpileManager.Corrupt(loadBeforeOperation);
+					RTC_StockpileManager.Corrupt(loadBeforeOperation);
 				}
 				else if (rbInject.Checked)
 					RTC_StockpileManager.InjectFromStashkey(RTC_StockpileManager.currentStashkey, loadBeforeOperation);

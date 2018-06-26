@@ -11,15 +11,9 @@ namespace RTC
 	public static class RTC_RPC
 	{
 		private static string ip = "127.0.0.1";
-		private static int pluginPortOUT = 56664;
-		private static int pluginPortIN = 56665;
-		private static int bridgePortIN = 56666;
 		private static int killswitchPort = 56667;
 		private static System.Windows.Forms.Timer time;
-		private static Thread bridgeThread;
-		private static Thread pluginThread;
 		private static volatile Queue<String> messages = new Queue<string>();
-		private static UdpClient pluginSender = new UdpClient(ip, pluginPortOUT);
 		private static UdpClient killswitchSender = new UdpClient(ip, killswitchPort);
 		private static volatile bool Running = false;
 		private static Thread t;
@@ -39,16 +33,6 @@ namespace RTC
 			{
 				RTC_RPC.SendToKillSwitch("UNFREEZE");
 			}
-			else
-			{
-				bridgeThread = new Thread(new ThreadStart(ListenToBridge));
-				bridgeThread.IsBackground = true;
-				bridgeThread.Start();
-
-				pluginThread = new Thread(new ThreadStart(ListenToPlugin));
-				pluginThread.IsBackground = true;
-				pluginThread.Start();
-			}
 		}
 
 		public static void StartKillswitch()
@@ -61,85 +45,6 @@ namespace RTC
 		public static void Stop()
 		{
 			Running = false;
-		}
-
-		private static void ListenToBridge()
-		{
-			bool done = false;
-
-			UdpClient Listener;
-			IPEndPoint groupEP;
-
-			try
-			{
-				Listener = new UdpClient(bridgePortIN);
-				groupEP = new IPEndPoint(IPAddress.Parse(ip), bridgePortIN);
-			}
-			catch (Exception ex)
-			{
-				MessageBox.Show(ex.ToString());
-				return;
-			}
-
-			try
-			{
-				while (!done)
-				{
-					if (!Running)
-						break;
-
-					byte[] bytes = Listener.Receive(ref groupEP);
-
-					messages.Enqueue(Encoding.ASCII.GetString(bytes, 0, bytes.Length));
-				}
-			}
-			catch (Exception e)
-			{
-				Console.WriteLine(e.ToString());
-			}
-			finally
-			{
-				Listener.Close();
-			}
-		}
-
-		private static void ListenToPlugin()
-		{
-			bool done = false;
-			UdpClient Listener;
-			IPEndPoint groupEP;
-
-			try
-			{
-				Listener = new UdpClient(pluginPortIN);
-				groupEP = new IPEndPoint(IPAddress.Parse(ip), pluginPortIN);
-			}
-			catch (Exception ex)
-			{
-				MessageBox.Show(ex.ToString());
-				return;
-			}
-
-			try
-			{
-				while (!done)
-				{
-					if (!Running)
-						break;
-
-					byte[] bytes = Listener.Receive(ref groupEP);
-
-					messages.Enqueue(Encoding.ASCII.GetString(bytes, 0, bytes.Length));
-				}
-			}
-			catch (Exception e)
-			{
-				Console.WriteLine(e.ToString());
-			}
-			finally
-			{
-				Listener.Close();
-			}
 		}
 
 		private static void ListenToKillSwitch()
@@ -201,69 +106,11 @@ namespace RTC
 
 		public static void CheckMessages(object sender, EventArgs e)
 		{
-			if (RTC_Hooks.isRemoteRTC)
+			//Send the heartbeat unless it's the StandaloneRTC process
+			if (!RTC_Core.isStandalone)
 				SendHeartbeat();
-			else
-			{
-				string msg = "";
-				while (messages.Count != 0)
-				{
-					msg = messages.Dequeue();
-					string[] splits = msg.Split('|');
-
-					switch (splits[0])
-					{
-						default:
-							break;
-
-						case "RTC":
-							switch (splits[1])
-							{
-								default:
-									break;
-
-								case "CORRUPT":
-									RTC_Core.ghForm.btnCorrupt_Click(null, null);
-									break;
-								case "ASK_PLUGIN_SET":
-									if (RTC_Core.SendCommandToBizhawk(new RTC_Command(CommandType.REMOTE_KEY_GETOPENROMFILENAME), true) != null)
-										RefreshPlugin();
-									break;
-							}
-							break;
-					}
-				}
-
-				if (!RTC_Core.isStandalone && !RTC_Hooks.isRemoteRTC)
-					SendHeartbeat();
-			}
 		}
 
-		public static void RefreshPlugin()
-		{
-			var openRomFilename = RTC_Core.SendCommandToBizhawk(new RTC_Command(CommandType.REMOTE_KEY_GETOPENROMFILENAME), true)?.ToString();
-			if(openRomFilename != null)
-				SendToPlugin("RTC_Plugin|SET|" + openRomFilename + "|" + RTC_Core.bizhawkDir + "\\CorruptedROM.rom" + "|" + RTC_Core.bizhawkDir + "\\ExternalCorrupt.exe");
-		}
-
-		public static void CorruptPlugin()
-		{
-			SendToPlugin("RTC_Plugin|CORRUPT");
-		}
-
-		public static void ClosePlugin()
-		{
-			SendToPlugin("RTC_Plugin|CLOSE");
-		}
-
-		public static void SendToPlugin(string msg)
-		{
-			if (!Running)
-				return;
-
-			Byte[] sdata = Encoding.ASCII.GetBytes(msg);
-			pluginSender.Send(sdata, sdata.Length);
-		}
 
 		public static void SendHeartbeat()
 		{

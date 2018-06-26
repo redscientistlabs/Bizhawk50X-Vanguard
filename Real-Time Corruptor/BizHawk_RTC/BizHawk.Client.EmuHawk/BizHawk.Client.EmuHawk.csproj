@@ -740,7 +740,6 @@
     </Compile>
     <Compile Include="RTC\RTC_BlastTools.cs" />
     <Compile Include="RTC\Corruption Engines\RTC_DistortionEngine.cs" />
-    <Compile Include="RTC\Corruption Engines\RTC_ExternalRomPlugin.cs" />
     <Compile Include="RTC\Corruption Engines\RTC_FreezeEngine.cs" />
     <Compile Include="RTC\Corruption Engines\RTC_HellgenieEngine.cs" />
     <Compile Include="RTC\Corruption Engines\RTC_NightmareEngine.cs" />

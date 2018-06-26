@@ -39,7 +39,7 @@ namespace RTC
 
 			MemoryInterface mi = RTC_MemoryDomains.MemoryInterfaces[cbSelectedMemoryDomain.SelectedItem.ToString()];
 
-			lbDomainSizeValue.Text = mi.Size.ToString();
+			lbDomainSizeValue.Text = "0x" + mi.Size.ToString("X");
 			lbWordSizeValue.Text = $"{mi.WordSize * 8} bits";
 			lbEndianTypeValue.Text = (mi.BigEndian ? "Big" : "Little");
 
@@ -51,7 +51,7 @@ namespace RTC
 			if (input.ToUpper().Contains("0X"))
 				return int.Parse(input.Substring(2), NumberStyles.HexNumber);
 			else
-				return Convert.ToInt32(input);
+				return int.Parse(input, NumberStyles.HexNumber);
 		}
 
 		private void btnGenerateVMD_Click(object sender, EventArgs e) => GenerateVMD();
@@ -185,14 +185,14 @@ namespace RTC
 @"VMD Generator instructions help and examples
 -----------------------------------------------
 Adding an address range:
-50-100
+5F-FF
 Adding a single address:
-55
+5F
 
 Removing an address range:
--60-110
+-6D-110
 Removing a single address:
--66
+-6D
 
 > If no initial range is specified,
 the removals will be done on the entire range.
@@ -203,9 +203,7 @@ address is excluded from the range.
 > Single added addresses will bypass removal ranges
 
 > Single addresses aren't affected by the
-pointer spacer parameter
-
-> add 0x in front of addresses to use Hexadecimal");
+pointer spacer parameter");
 		}
 	}
 }

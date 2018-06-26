@@ -64,7 +64,7 @@ namespace RTC
 
 		public static string[] GetBlacklistedDomains()
 		{
-			// Returns the list of Domains that can't be rewinded.
+			// Returns the list of Domains that can't be rewinded and/or are just not good to use
 
 			List<string> DomainBlacklist = new List<string>();
 

@@ -851,7 +851,7 @@ namespace RTC
 						break;
 					//7 dvgSourceAddress
 					case 7:
-						if (RTC_Extensions.getInputBox("Replace Selected Rows", "Replacement input (make sure it's valid): ", ref decimalvalue, cbUseHex.Checked) == DialogResult.OK)
+						if (RTC_Extensions.getInputBox("Replace Selected Rows", "Replacement input (make sure it's valid): ", ref decimalvalue, RTC_Core.UseHexadecimal) == DialogResult.OK)
 							foreach (DataGridViewRow row in dgvBlastLayer.SelectedRows)
 							{
 								row.Cells[column].Value = decimalvalue;
@@ -860,7 +860,7 @@ namespace RTC
 					//9 dvgParam
 					//Needs to be capped at the precision so it's separate from case 7 (the address)
 					case 9:
-						if (RTC_Extensions.getInputBox("Replace Selected Rows", "Replacement input (make sure it's valid): ", ref decimalvalue, cbUseHex.Checked) == DialogResult.OK)
+						if (RTC_Extensions.getInputBox("Replace Selected Rows", "Replacement input (make sure it's valid): ", ref decimalvalue, RTC_Core.UseHexadecimal) == DialogResult.OK)
 							foreach (DataGridViewRow row in dgvBlastLayer.SelectedRows)
 							{
 								uint precision = GetPrecisionMaxValue(row);
@@ -1022,21 +1022,21 @@ namespace RTC
 				return bp.PipeDomain;
 			}
 			return null;
-		}
 
-		private void cbUseHex_CheckedChanged(object sender, EventArgs e)
+		}
+		public void SetHexadecimal (bool useHex)
 		{
-			updownShiftBlastLayerAmount.Hexadecimal = cbUseHex.Checked;
+			updownShiftBlastLayerAmount.Hexadecimal = useHex;
 			foreach (DataGridViewColumn column in dgvBlastLayer.Columns)
 			{
 				if (column.CellType.Name == "DataGridViewNumericUpDownCell")
 				{
 					DataGridViewNumericUpDownColumn _column = column as DataGridViewNumericUpDownColumn;
-					_column.Hexadecimal = cbUseHex.Checked;
+					_column.Hexadecimal = useHex;
 				}
 			}
 		}
-
+		
 		private void dgvBlastLayer_RowsAdded(object sender, DataGridViewRowsAddedEventArgs e)
 		{
 			UpdateBlastLayerSize();

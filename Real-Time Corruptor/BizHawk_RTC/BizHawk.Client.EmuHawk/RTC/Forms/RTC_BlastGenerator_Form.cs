@@ -64,6 +64,7 @@ namespace RTC
 			this.dgvBlastGenerator.CellValueChanged += new DataGridViewCellEventHandler(dgvBlastGenerator_CellValueChanged);
 			this.dgvBlastGenerator.CellClick += new DataGridViewCellEventHandler(dgvBlastGenerator_CellClick);
 			RTC_Core.SetRTCColor(RTC_Core.generalColor, this);
+			SetHexadecimal(RTC_Core.UseHexadecimal);
 		}
 
 		public void LoadNoStashKey()
@@ -322,19 +323,19 @@ namespace RTC
 			}
 		}
 
-		private void cbUseHex_CheckedChanged(object sender, EventArgs e)
+		public void SetHexadecimal(bool useHex)
 		{
-			updownNudgeEndAddress.Hexadecimal = cbUseHex.Checked;
-			updownNudgeStartAddress.Hexadecimal = cbUseHex.Checked;
-			updownNudgeParam1.Hexadecimal = cbUseHex.Checked;
-			updownNudgeParam2.Hexadecimal = cbUseHex.Checked;
+			updownNudgeEndAddress.Hexadecimal = useHex;
+			updownNudgeStartAddress.Hexadecimal = useHex;
+			updownNudgeParam1.Hexadecimal = useHex;
+			updownNudgeParam2.Hexadecimal = useHex;
 
 			foreach (DataGridViewColumn column in dgvBlastGenerator.Columns)
 			{
 				if (column.CellType.Name == "DataGridViewNumericUpDownCell")
 				{
 					DataGridViewNumericUpDownColumn _column = column as DataGridViewNumericUpDownColumn;
-					_column.Hexadecimal = cbUseHex.Checked;
+					_column.Hexadecimal = useHex;
 				}
 			}
 		}

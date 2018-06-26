@@ -3,6 +3,9 @@ using System.IO;
 using System.Windows.Forms;
 using System.Xml.Serialization;
 
+using BizHawk.Client.Common;
+using BizHawk.Client.EmuHawk;
+
 namespace RTC
 {
 	public static class RTC_BlastTools
@@ -252,6 +255,49 @@ namespace RTC
 			}
 			return null;
 		}
+
+
+		public static BlastLayer GetBlastLayerFromDiff(byte[] Original, byte[] Corrupt)
+		{
+			BlastLayer bl = new BlastLayer();
+
+			string thisSystem = Global.Game.System;
+			string romFilename = GlobalWin.MainForm.CurrentlyOpenRom;
+
+			var rp = RTC_MemoryDomains.GetRomParts(thisSystem, romFilename);
+
+			if (rp.error != null)
+			{
+				MessageBox.Show(rp.error);
+				return null;
+			}
+
+			if (Original.Length != Corrupt.Length)
+			{
+				MessageBox.Show("ERROR, ROM SIZE MISMATCH");
+				return null;
+			}
+
+			RTC.MemoryInterface mi = RTC_MemoryDomains.getInterface(rp.primarydomain);
+			long maxaddress = mi.Size;
+
+			for (int i = 0; i < Original.Length; i++)
+			{
+				if (Original[i] != Corrupt[i] && i >= rp.skipbytes)
+				{
+					if (i - rp.skipbytes >= maxaddress)
+						bl.Layer.Add(new BlastByte(rp.seconddomain, (i - rp.skipbytes) - maxaddress, BlastByteType.SET, new byte[] { Corrupt[i] }, mi.BigEndian, true));
+					else
+						bl.Layer.Add(new BlastByte(rp.primarydomain, i - rp.skipbytes, BlastByteType.SET, new byte[] { Corrupt[i] }, mi.BigEndian, true));
+				}
+			}
+
+			if (bl.Layer.Count == 0)
+				return null;
+			else
+				return bl;
+		}
+
 	}
 
 	/*

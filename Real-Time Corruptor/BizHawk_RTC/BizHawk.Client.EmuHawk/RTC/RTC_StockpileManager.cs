@@ -557,7 +557,7 @@ namespace RTC
 					for (int i = 0; i < rp.skipbytes; i++)
 						original[i] = 0;
 
-					BlastLayer romBlast = RTC_ExternalRomPlugin.GetBlastLayer(original, corrupted);
+					BlastLayer romBlast = RTC_BlastTools.GetBlastLayerFromDiff(original, corrupted);
 
 					if (romBlast != null && romBlast.Layer.Count > 0)
 						bl.Layer.AddRange(romBlast.Layer);

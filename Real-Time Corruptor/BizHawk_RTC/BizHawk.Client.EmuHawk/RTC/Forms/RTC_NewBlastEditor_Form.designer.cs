@@ -63,7 +63,6 @@
             this.btnShiftBlastLayerDown = new System.Windows.Forms.Button();
             this.btnShiftBlastLayerUp = new System.Windows.Forms.Button();
             this.updownShiftBlastLayerAmount = new RTC.NumericUpDownHexFix();
-            this.cbUseHex = new System.Windows.Forms.CheckBox();
             this.dataGridViewTextBoxColumn1 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.dataGridViewTextBoxColumn2 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.dataGridViewTextBoxColumn3 = new System.Windows.Forms.DataGridViewTextBoxColumn();
@@ -538,24 +537,6 @@
             this.updownShiftBlastLayerAmount.TabIndex = 145;
             this.updownShiftBlastLayerAmount.Tag = "color:dark";
             // 
-            // cbUseHex
-            // 
-            this.cbUseHex.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.cbUseHex.AutoSize = true;
-            this.cbUseHex.Checked = true;
-            this.cbUseHex.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.cbUseHex.Font = new System.Drawing.Font("Segoe UI", 8F);
-            this.cbUseHex.ForeColor = System.Drawing.Color.White;
-            this.cbUseHex.Location = new System.Drawing.Point(9, 132);
-            this.cbUseHex.Name = "cbUseHex";
-            this.cbUseHex.Size = new System.Drawing.Size(100, 17);
-            this.cbUseHex.TabIndex = 138;
-            this.cbUseHex.Tag = "";
-            this.cbUseHex.Text = "Display As Hex";
-            this.cbUseHex.UseVisualStyleBackColor = true;
-            this.cbUseHex.CheckedChanged += new System.EventHandler(this.cbUseHex_CheckedChanged);
-            // 
             // dataGridViewTextBoxColumn1
             // 
             this.dataGridViewTextBoxColumn1.HeaderText = "dgvBlastUnitReference";
@@ -585,7 +566,6 @@
             // 
             this.dataGridViewNumericUpDownColumn1.FillWeight = 90F;
             this.dataGridViewNumericUpDownColumn1.HeaderText = "Param 1 Value";
-            this.dataGridViewNumericUpDownColumn1.Hexadecimal = false;
             this.dataGridViewNumericUpDownColumn1.Maximum = new decimal(new int[] {
             2147483647,
             0,
@@ -605,7 +585,6 @@
             // 
             this.dataGridViewNumericUpDownColumn2.FillWeight = 90F;
             this.dataGridViewNumericUpDownColumn2.HeaderText = "Param 2 Value";
-            this.dataGridViewNumericUpDownColumn2.Hexadecimal = false;
             this.dataGridViewNumericUpDownColumn2.Name = "dataGridViewNumericUpDownColumn2";
             this.dataGridViewNumericUpDownColumn2.Width = 90;
             // 
@@ -661,7 +640,6 @@
             this.panelSidebar.Controls.Add(this.btnLoadCorrupt);
             this.panelSidebar.Controls.Add(this.btnRemoveSelected);
             this.panelSidebar.Controls.Add(this.btnCorrupt);
-            this.panelSidebar.Controls.Add(this.cbUseHex);
             this.panelSidebar.Controls.Add(this.btnSendToStash);
             this.panelSidebar.Controls.Add(this.panel1);
             this.panelSidebar.Controls.Add(this.btnRemoveDisabled);
@@ -958,7 +936,6 @@
 		private System.Windows.Forms.Label label3;
 		private System.Windows.Forms.Label label4;
 		private System.Windows.Forms.Panel panel1;
-		private System.Windows.Forms.CheckBox cbUseHex;
 		private System.Windows.Forms.DataGridViewTextBoxColumn dataGridViewTextBoxColumn1;
 		private System.Windows.Forms.DataGridViewTextBoxColumn dataGridViewTextBoxColumn2;
 		private System.Windows.Forms.DataGridViewTextBoxColumn dataGridViewTextBoxColumn3;

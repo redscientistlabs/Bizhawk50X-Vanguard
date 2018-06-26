@@ -2239,7 +2239,7 @@
             this.label6.Name = "label6";
             this.label6.Size = new System.Drawing.Size(139, 26);
             this.label6.TabIndex = 123;
-            this.label6.Text = "Parameters unavailable with\nExternal ROM Plugin";
+            this.label6.Text = "Parameters unavailable with\ncurrent engine";
             this.label6.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
             // btnRenameSelected

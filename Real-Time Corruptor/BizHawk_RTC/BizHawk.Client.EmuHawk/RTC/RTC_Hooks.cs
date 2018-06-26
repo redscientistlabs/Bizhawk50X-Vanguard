@@ -182,8 +182,7 @@ namespace RTC
 			RTC_StockpileManager.currentGameSystem = RTC_Core.EmuFolderCheck(pathEntry.SystemDisplayName);
 			RTC_StockpileManager.currentGameName = PathManager.FilesystemSafeName(Global.Game);
 			RTC_Core.lastOpenRom = GlobalWin.MainForm.CurrentlyOpenRom;
-			RTC_RPC.RefreshPlugin();
-
+			
 			//Sleep for 10ms in case Bizhawk hung for a moment after the game loaded
 			System.Threading.Thread.Sleep(10);
 			//prepare memory domains in advance on bizhawk side

@@ -10,6 +10,11 @@ using System.Linq;
 using System.Threading;
 using System.Windows.Forms;
 
+/*
+IsRemoteRTC = Bool stating that the process is emuhawk.exe in detached
+isStandalone = Bool stating the process is standalonertc in detached
+*/
+
 namespace RTC
 {
 	public static class RTC_Core
@@ -43,7 +48,7 @@ namespace RTC
 
 		//RTC Settings
 		public static bool BizhawkOsdDisabled = true;
-
+		public static bool UseHexadecimal = true;
 		public static bool AllowCrossCoreCorruption = false;
 
 		//RTC Main Forms
@@ -384,7 +389,7 @@ namespace RTC
 				coreForm.Show();
 			}
 
-			//Starting UDP loopback for Killswitch and External Rom Plugins
+			//Starting UDP loopback for Killswitch 
 			RTC_RPC.Start();
 
 			//Refocus on Bizhawk
@@ -524,16 +529,6 @@ namespace RTC
 					_layer.Apply(); //If the BlastLayer was provided, there's no need to generate a new one.
 
 					return _layer;
-				}
-				else if (RTC_Core.SelectedEngine == CorruptionEngine.EXTERNALROM)
-				{   //External ROM Plugin: Bypasses domains and uses an alternative algorithm to fetch corruption.
-					//It will query a BlastLayer generated from a differential between an original and corrupted rom.
-					bl = RTC_ExternalRomPlugin.GetBlastLayer();
-					if (bl == null)
-						//We return an empty blastlayer so when it goes to apply it, it doesn't find a null blastlayer and try and apply to the domains which aren't enabled resulting in an exception
-						return new BlastLayer();
-					else
-						return bl;
 				}
 				else if (RTC_Core.SelectedEngine == CorruptionEngine.BLASTGENERATORENGINE)
 				{
@@ -742,10 +737,7 @@ namespace RTC
 
 			string[] _selectedDomains = RTC_MemoryDomains.SelectedDomains;
 
-			if (RTC_Core.SelectedEngine != CorruptionEngine.FREEZE)
-				Domain = _selectedDomains[RND.Next(_selectedDomains.Length)];
-			else
-				Domain = RTC_MemoryDomains.MainDomain.ToString();
+			Domain = _selectedDomains[RND.Next(_selectedDomains.Length)];
 
 			MaxAddress = RTC_MemoryDomains.getInterface(Domain).Size;
 			RandomAddress = RTC_Core.RND.RandomLong(MaxAddress - 1);
@@ -914,6 +906,47 @@ namespace RTC
 					break;
 				}
 		}
+
+
+		public static void SetRTCHexadecimal(bool useHex, Form form = null)
+		{
+			//Sets the interface to use Hex across the board
+
+			List<Control> allControls = new List<Control>();
+
+			if (form == null)
+			{
+				foreach (Form targetForm in allRtcForms)
+				{
+					if (targetForm != null)
+					{
+						allControls.AddRange(targetForm.Controls.getControlsWithTag());
+						allControls.Add(targetForm);
+					}
+				}
+			}
+			else
+			{
+				allControls.AddRange(form.Controls.getControlsWithTag());
+				allControls.Add(form);
+			}
+
+			var hexadecimal = allControls.FindAll(it => ((it.Tag as string) ?? "").Contains("hex"));
+
+			foreach (NumericUpDownHexFix updown in hexadecimal)
+				updown.Hexadecimal = true;
+
+			foreach(DataGridView dgv in hexadecimal)
+				foreach (DataGridViewColumn column in dgv.Columns)
+				{
+					if (column.CellType.Name == "DataGridViewNumericUpDownCell")
+					{
+						DataGridViewNumericUpDownColumn _column = column as DataGridViewNumericUpDownColumn;
+						_column.Hexadecimal = useHex;
+					}
+				}
+		}
+
 
 		public static void SetRTCColor(Color color, Form form = null)
 		{

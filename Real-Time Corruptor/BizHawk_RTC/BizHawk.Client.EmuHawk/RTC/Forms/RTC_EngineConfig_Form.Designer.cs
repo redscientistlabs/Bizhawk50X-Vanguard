@@ -73,7 +73,7 @@
             this.label14 = new System.Windows.Forms.Label();
             this.comboBox5 = new System.Windows.Forms.ComboBox();
             this.cbGenerateChainedPipes = new System.Windows.Forms.CheckBox();
-            this.nmTiltPipeValue = new System.Windows.Forms.NumericUpDown();
+            this.nmTiltPipeValue = new RTC.NumericUpDownHexFix();
             this.label25 = new System.Windows.Forms.Label();
             this.cbClearPipesOnRewind = new System.Windows.Forms.CheckBox();
             this.cbProcessOnStep = new System.Windows.Forms.CheckBox();
@@ -88,13 +88,6 @@
             this.btnResyncDistortionEngine = new System.Windows.Forms.Button();
             this.nmDistortionDelay = new System.Windows.Forms.NumericUpDown();
             this.label7 = new System.Windows.Forms.Label();
-            this.gbExternalRomPlugin = new System.Windows.Forms.GroupBox();
-            this.panel9 = new System.Windows.Forms.Panel();
-            this.comboBox7 = new System.Windows.Forms.ComboBox();
-            this.label12 = new System.Windows.Forms.Label();
-            this.btnExternalOpenWindow = new System.Windows.Forms.Button();
-            this.cbExternalSelectedPlugin = new System.Windows.Forms.ComboBox();
-            this.label10 = new System.Windows.Forms.Label();
             this.gbFreezeEngine = new System.Windows.Forms.GroupBox();
             this.panel7 = new System.Windows.Forms.Panel();
             this.label20 = new System.Windows.Forms.Label();
@@ -104,7 +97,6 @@
             this.nmMaxFreezes = new System.Windows.Forms.NumericUpDown();
             this.label4 = new System.Windows.Forms.Label();
             this.gbHellgenieEngine = new System.Windows.Forms.GroupBox();
-            this.cbUseHexHellgenie = new System.Windows.Forms.CheckBox();
             this.label26 = new System.Windows.Forms.Label();
             this.label27 = new System.Windows.Forms.Label();
             this.panel5 = new System.Windows.Forms.Panel();
@@ -117,7 +109,6 @@
             this.nmMaxCheats = new System.Windows.Forms.NumericUpDown();
             this.label1 = new System.Windows.Forms.Label();
             this.gbNightmareEngine = new System.Windows.Forms.GroupBox();
-            this.cbUseHexNightmare = new System.Windows.Forms.CheckBox();
             this.label24 = new System.Windows.Forms.Label();
             this.label23 = new System.Windows.Forms.Label();
             this.nmMaxValueNightmare = new RTC.NumericUpDownHexFix();
@@ -154,7 +145,6 @@
             ((System.ComponentModel.ISupportInitialize)(this.nmMaxPipes)).BeginInit();
             this.gbDistortionEngine.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.nmDistortionDelay)).BeginInit();
-            this.gbExternalRomPlugin.SuspendLayout();
             this.gbFreezeEngine.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.nmMaxFreezes)).BeginInit();
             this.gbHellgenieEngine.SuspendLayout();
@@ -561,8 +551,7 @@
             "Freeze Engine",
             "Pipe Engine",
             "Vector Engine",
-            "Blast Generator",
-            "External ROM Plugin"});
+            "Blast Generator"});
             this.cbSelectedEngine.Location = new System.Drawing.Point(10, 13);
             this.cbSelectedEngine.Name = "cbSelectedEngine";
             this.cbSelectedEngine.Size = new System.Drawing.Size(165, 21);
@@ -846,6 +835,7 @@
             this.nmTiltPipeValue.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
             this.nmTiltPipeValue.Font = new System.Drawing.Font("Segoe UI", 8F);
             this.nmTiltPipeValue.ForeColor = System.Drawing.Color.White;
+            this.nmTiltPipeValue.Hexadecimal = true;
             this.nmTiltPipeValue.Location = new System.Drawing.Point(95, 63);
             this.nmTiltPipeValue.Maximum = new decimal(new int[] {
             255,
@@ -1079,101 +1069,6 @@
             this.label7.TabIndex = 0;
             this.label7.Text = "Distortion delay:";
             // 
-            // gbExternalRomPlugin
-            // 
-            this.gbExternalRomPlugin.Controls.Add(this.panel9);
-            this.gbExternalRomPlugin.Controls.Add(this.comboBox7);
-            this.gbExternalRomPlugin.Controls.Add(this.label12);
-            this.gbExternalRomPlugin.Controls.Add(this.btnExternalOpenWindow);
-            this.gbExternalRomPlugin.Controls.Add(this.cbExternalSelectedPlugin);
-            this.gbExternalRomPlugin.Controls.Add(this.label10);
-            this.gbExternalRomPlugin.Font = new System.Drawing.Font("Segoe UI", 9.75F);
-            this.gbExternalRomPlugin.ForeColor = System.Drawing.Color.White;
-            this.gbExternalRomPlugin.Location = new System.Drawing.Point(1065, 305);
-            this.gbExternalRomPlugin.Name = "gbExternalRomPlugin";
-            this.gbExternalRomPlugin.Size = new System.Drawing.Size(391, 151);
-            this.gbExternalRomPlugin.TabIndex = 125;
-            this.gbExternalRomPlugin.TabStop = false;
-            // 
-            // panel9
-            // 
-            this.panel9.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(32)))), ((int)(((byte)(32)))), ((int)(((byte)(32)))));
-            this.panel9.Location = new System.Drawing.Point(169, 92);
-            this.panel9.Name = "panel9";
-            this.panel9.Size = new System.Drawing.Size(221, 57);
-            this.panel9.TabIndex = 140;
-            this.panel9.Tag = "color:darker";
-            this.panel9.Visible = false;
-            // 
-            // comboBox7
-            // 
-            this.comboBox7.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
-            this.comboBox7.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.comboBox7.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.comboBox7.Font = new System.Drawing.Font("Segoe UI", 8F);
-            this.comboBox7.ForeColor = System.Drawing.Color.White;
-            this.comboBox7.FormattingEnabled = true;
-            this.comboBox7.Location = new System.Drawing.Point(0, 9);
-            this.comboBox7.Name = "comboBox7";
-            this.comboBox7.Size = new System.Drawing.Size(165, 21);
-            this.comboBox7.TabIndex = 79;
-            this.comboBox7.Tag = "color:dark";
-            this.comboBox7.Visible = false;
-            // 
-            // label12
-            // 
-            this.label12.AutoSize = true;
-            this.label12.Font = new System.Drawing.Font("Segoe UI", 8.25F, System.Drawing.FontStyle.Italic);
-            this.label12.Location = new System.Drawing.Point(169, 15);
-            this.label12.Name = "label12";
-            this.label12.Size = new System.Drawing.Size(194, 13);
-            this.label12.TabIndex = 78;
-            this.label12.Text = "Imports corruption from another source";
-            // 
-            // btnExternalOpenWindow
-            // 
-            this.btnExternalOpenWindow.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(224)))), ((int)(((byte)(224)))), ((int)(((byte)(224)))));
-            this.btnExternalOpenWindow.FlatAppearance.BorderSize = 0;
-            this.btnExternalOpenWindow.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btnExternalOpenWindow.Font = new System.Drawing.Font("Segoe UI", 8F);
-            this.btnExternalOpenWindow.ForeColor = System.Drawing.Color.Black;
-            this.btnExternalOpenWindow.Location = new System.Drawing.Point(6, 119);
-            this.btnExternalOpenWindow.Name = "btnExternalOpenWindow";
-            this.btnExternalOpenWindow.Size = new System.Drawing.Size(159, 24);
-            this.btnExternalOpenWindow.TabIndex = 77;
-            this.btnExternalOpenWindow.TabStop = false;
-            this.btnExternalOpenWindow.Tag = "color:light";
-            this.btnExternalOpenWindow.Text = "Start/Restart Plugin";
-            this.btnExternalOpenWindow.UseVisualStyleBackColor = false;
-            this.btnExternalOpenWindow.Click += new System.EventHandler(this.btnExternalOpenWindow_Click);
-            // 
-            // cbExternalSelectedPlugin
-            // 
-            this.cbExternalSelectedPlugin.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
-            this.cbExternalSelectedPlugin.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.cbExternalSelectedPlugin.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.cbExternalSelectedPlugin.Font = new System.Drawing.Font("Segoe UI", 8F);
-            this.cbExternalSelectedPlugin.ForeColor = System.Drawing.Color.White;
-            this.cbExternalSelectedPlugin.FormattingEnabled = true;
-            this.cbExternalSelectedPlugin.Items.AddRange(new object[] {
-            "NULL"});
-            this.cbExternalSelectedPlugin.Location = new System.Drawing.Point(7, 68);
-            this.cbExternalSelectedPlugin.Name = "cbExternalSelectedPlugin";
-            this.cbExternalSelectedPlugin.Size = new System.Drawing.Size(158, 21);
-            this.cbExternalSelectedPlugin.TabIndex = 14;
-            this.cbExternalSelectedPlugin.Tag = "color:dark";
-            this.cbExternalSelectedPlugin.SelectedIndexChanged += new System.EventHandler(this.cbExternalSelectedPlugin_SelectedIndexChanged);
-            // 
-            // label10
-            // 
-            this.label10.AutoSize = true;
-            this.label10.Font = new System.Drawing.Font("Segoe UI", 8F);
-            this.label10.Location = new System.Drawing.Point(4, 52);
-            this.label10.Name = "label10";
-            this.label10.Size = new System.Drawing.Size(90, 13);
-            this.label10.TabIndex = 77;
-            this.label10.Text = "Selected plugin:";
-            // 
             // gbFreezeEngine
             // 
             this.gbFreezeEngine.Controls.Add(this.panel7);
@@ -1297,7 +1192,6 @@
             // 
             // gbHellgenieEngine
             // 
-            this.gbHellgenieEngine.Controls.Add(this.cbUseHexHellgenie);
             this.gbHellgenieEngine.Controls.Add(this.label26);
             this.gbHellgenieEngine.Controls.Add(this.label27);
             this.gbHellgenieEngine.Controls.Add(this.panel5);
@@ -1316,21 +1210,6 @@
             this.gbHellgenieEngine.Size = new System.Drawing.Size(391, 151);
             this.gbHellgenieEngine.TabIndex = 124;
             this.gbHellgenieEngine.TabStop = false;
-            // 
-            // cbUseHexHellgenie
-            // 
-            this.cbUseHexHellgenie.AutoSize = true;
-            this.cbUseHexHellgenie.Checked = true;
-            this.cbUseHexHellgenie.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.cbUseHexHellgenie.Font = new System.Drawing.Font("Segoe UI", 8F);
-            this.cbUseHexHellgenie.ForeColor = System.Drawing.Color.White;
-            this.cbUseHexHellgenie.Location = new System.Drawing.Point(183, 57);
-            this.cbUseHexHellgenie.Name = "cbUseHexHellgenie";
-            this.cbUseHexHellgenie.Size = new System.Drawing.Size(129, 17);
-            this.cbUseHexHellgenie.TabIndex = 148;
-            this.cbUseHexHellgenie.Text = "Use Hex for MinMax";
-            this.cbUseHexHellgenie.UseVisualStyleBackColor = true;
-            this.cbUseHexHellgenie.CheckedChanged += new System.EventHandler(this.cbUseHexHellgenie_CheckedChanged);
             // 
             // label26
             // 
@@ -1489,7 +1368,6 @@
             // 
             // gbNightmareEngine
             // 
-            this.gbNightmareEngine.Controls.Add(this.cbUseHexNightmare);
             this.gbNightmareEngine.Controls.Add(this.label24);
             this.gbNightmareEngine.Controls.Add(this.label23);
             this.gbNightmareEngine.Controls.Add(this.nmMaxValueNightmare);
@@ -1506,21 +1384,6 @@
             this.gbNightmareEngine.Size = new System.Drawing.Size(391, 151);
             this.gbNightmareEngine.TabIndex = 123;
             this.gbNightmareEngine.TabStop = false;
-            // 
-            // cbUseHexNightmare
-            // 
-            this.cbUseHexNightmare.AutoSize = true;
-            this.cbUseHexNightmare.Checked = true;
-            this.cbUseHexNightmare.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.cbUseHexNightmare.Font = new System.Drawing.Font("Segoe UI", 8F);
-            this.cbUseHexNightmare.ForeColor = System.Drawing.Color.White;
-            this.cbUseHexNightmare.Location = new System.Drawing.Point(172, 36);
-            this.cbUseHexNightmare.Name = "cbUseHexNightmare";
-            this.cbUseHexNightmare.Size = new System.Drawing.Size(129, 17);
-            this.cbUseHexNightmare.TabIndex = 149;
-            this.cbUseHexNightmare.Text = "Use Hex for MinMax";
-            this.cbUseHexNightmare.UseVisualStyleBackColor = true;
-            this.cbUseHexNightmare.CheckedChanged += new System.EventHandler(this.cbUseHexNightmare_CheckedChanged);
             // 
             // label24
             // 
@@ -1702,7 +1565,7 @@
             this.gbBlastGeneratorEngine.Controls.Add(this.btnOpenBlastGenerator);
             this.gbBlastGeneratorEngine.Font = new System.Drawing.Font("Segoe UI", 9.75F);
             this.gbBlastGeneratorEngine.ForeColor = System.Drawing.Color.White;
-            this.gbBlastGeneratorEngine.Location = new System.Drawing.Point(1064, 454);
+            this.gbBlastGeneratorEngine.Location = new System.Drawing.Point(1064, 310);
             this.gbBlastGeneratorEngine.Name = "gbBlastGeneratorEngine";
             this.gbBlastGeneratorEngine.Size = new System.Drawing.Size(391, 151);
             this.gbBlastGeneratorEngine.TabIndex = 134;
@@ -1786,7 +1649,6 @@
             this.Controls.Add(this.gbVectorEngine);
             this.Controls.Add(this.gbPipeEngine);
             this.Controls.Add(this.gbDistortionEngine);
-            this.Controls.Add(this.gbExternalRomPlugin);
             this.Controls.Add(this.gbFreezeEngine);
             this.Controls.Add(this.gbHellgenieEngine);
             this.Controls.Add(this.gbNightmareEngine);
@@ -1826,8 +1688,6 @@
             this.gbDistortionEngine.ResumeLayout(false);
             this.gbDistortionEngine.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.nmDistortionDelay)).EndInit();
-            this.gbExternalRomPlugin.ResumeLayout(false);
-            this.gbExternalRomPlugin.PerformLayout();
             this.gbFreezeEngine.ResumeLayout(false);
             this.gbFreezeEngine.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.nmMaxFreezes)).EndInit();
@@ -1883,7 +1743,7 @@
         private System.Windows.Forms.Label label13;
         private System.Windows.Forms.GroupBox gbPipeEngine;
         public System.Windows.Forms.CheckBox cbGenerateChainedPipes;
-        public System.Windows.Forms.NumericUpDown nmTiltPipeValue;
+        public RTC.NumericUpDownHexFix nmTiltPipeValue;
         private System.Windows.Forms.Label label25;
         public System.Windows.Forms.CheckBox cbClearPipesOnRewind;
         public System.Windows.Forms.CheckBox cbProcessOnStep;
@@ -1895,10 +1755,6 @@
         private System.Windows.Forms.Button btnResyncDistortionEngine;
         public System.Windows.Forms.NumericUpDown nmDistortionDelay;
         private System.Windows.Forms.Label label7;
-        private System.Windows.Forms.GroupBox gbExternalRomPlugin;
-        private System.Windows.Forms.Button btnExternalOpenWindow;
-        public System.Windows.Forms.ComboBox cbExternalSelectedPlugin;
-        private System.Windows.Forms.Label label10;
         private System.Windows.Forms.GroupBox gbFreezeEngine;
         public System.Windows.Forms.CheckBox cbClearFreezesOnRewind;
         private System.Windows.Forms.Button btnClearAllFreezes;
@@ -1918,13 +1774,11 @@
         private System.Windows.Forms.GroupBox groupBox1;
         private System.Windows.Forms.Label label6;
         public System.Windows.Forms.Panel pnGeneralParameters;
-        private System.Windows.Forms.Label label12;
         public System.Windows.Forms.ComboBox comboBox6;
         private System.Windows.Forms.Label label14;
         public System.Windows.Forms.ComboBox comboBox5;
         private System.Windows.Forms.Label label17;
         public System.Windows.Forms.ComboBox comboBox3;
-        public System.Windows.Forms.ComboBox comboBox7;
         private System.Windows.Forms.Label label20;
         public System.Windows.Forms.ComboBox comboBox4;
         private System.Windows.Forms.Label label16;
@@ -1942,7 +1796,6 @@
         public System.Windows.Forms.ComboBox cbCustomPrecision;
         private System.Windows.Forms.Panel panel8;
         private System.Windows.Forms.Panel panel6;
-        private System.Windows.Forms.Panel panel9;
         private System.Windows.Forms.Panel panel7;
         private System.Windows.Forms.Panel panel5;
         private System.Windows.Forms.Panel panel4;
@@ -1961,7 +1814,5 @@
 		private System.Windows.Forms.Label label27;
 		public RTC.NumericUpDownHexFix nmMaxValueHellgenie;
 		public RTC.NumericUpDownHexFix nmMinValueHellgenie;
-		public System.Windows.Forms.CheckBox cbUseHexHellgenie;
-		public System.Windows.Forms.CheckBox cbUseHexNightmare;
 	}
 }

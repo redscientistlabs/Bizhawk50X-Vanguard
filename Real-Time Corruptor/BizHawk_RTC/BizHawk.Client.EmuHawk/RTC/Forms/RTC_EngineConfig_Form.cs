@@ -97,11 +97,6 @@ namespace RTC
 			Controls.Remove(gbFreezeEngine);
 			pnCorruptionEngine.Controls.Add(gbFreezeEngine);
 			gbFreezeEngine.Location = new Point(gbSelectedEngine.Location.X, gbSelectedEngine.Location.Y);
-
-			Controls.Remove(gbExternalRomPlugin);
-			pnCorruptionEngine.Controls.Add(gbExternalRomPlugin);
-			gbExternalRomPlugin.Location = new Point(gbSelectedEngine.Location.X, gbSelectedEngine.Location.Y);
-
 			Controls.Remove(gbPipeEngine);
 			pnCorruptionEngine.Controls.Add(gbPipeEngine);
 			gbPipeEngine.Location = new Point(gbSelectedEngine.Location.X, gbSelectedEngine.Location.Y);
@@ -114,16 +109,12 @@ namespace RTC
 			pnCorruptionEngine.Controls.Add(gbBlastGeneratorEngine);
 			gbBlastGeneratorEngine.Location = new Point(gbSelectedEngine.Location.X, gbSelectedEngine.Location.Y);
 
-			foreach (string item in Directory.GetDirectories(RTC_Core.rtcDir + "\\PLUGINS"))
-				cbExternalSelectedPlugin.Items.Add(item.Substring(item.LastIndexOf("\\") + 1));
-
 			cbSelectedEngine.SelectedIndex = 0;
 			cbVectorLimiterList.SelectedIndex = 0;
 			cbVectorValueList.SelectedIndex = 0;
 			cbBlastRadius.SelectedIndex = 0;
 			cbBlastType.SelectedIndex = 0;
 			cbMemoryDomainTool.SelectedIndex = 0;
-			cbExternalSelectedPlugin.SelectedIndex = 0;
 			cbCustomPrecision.SelectedIndex = 0;
 		}
 
@@ -323,10 +314,6 @@ namespace RTC
 			RTC_DistortionEngine.Resync();
 		}
 
-		private void btnExternalOpenWindow_Click(object sender, EventArgs e)
-		{
-			RTC_ExternalRomPlugin.OpenWindow();
-		}
 
 		public void RefreshDomains()
 		{
@@ -353,12 +340,6 @@ namespace RTC
 			setMemoryDomainsSelectedDomains(copy);
 		}
 
-		private void cbExternalSelectedPlugin_SelectedIndexChanged(object sender, EventArgs e)
-		{
-			RTC_ExternalRomPlugin.SelectedPlugin = (sender as ComboBox).SelectedItem.ToString();
-
-			RTC_ExternalRomPlugin.KillLastPlugin();
-		}
 
 		private void cbSelectedEngine_SelectedIndexChanged(object sender, EventArgs e)
 		{
@@ -368,7 +349,6 @@ namespace RTC
 			gbFreezeEngine.Visible = false;
 			gbPipeEngine.Visible = false;
 			gbVectorEngine.Visible = false;
-			gbExternalRomPlugin.Visible = false;
 
 			pnCustomPrecision.Visible = false;
 
@@ -414,18 +394,6 @@ namespace RTC
 					gbVectorEngine.Visible = true;
 					break;
 
-				case "External ROM Plugin":
-
-					RTC_Core.SelectedEngine = CorruptionEngine.EXTERNALROM;
-					gbExternalRomPlugin.Visible = true;
-
-					RTC_Core.coreForm.AutoCorrupt = false;
-					RTC_Core.coreForm.btnAutoCorrupt.Visible = false;
-					RTC_Core.ecForm.pnGeneralParameters.Visible = false;
-
-					RTC_Core.ghForm.pnIntensity.Visible = false;
-					break;
-
 				case "Blast Generator":
 					RTC_Core.SelectedEngine = CorruptionEngine.BLASTGENERATORENGINE;
 					gbBlastGeneratorEngine.Visible = true;
@@ -444,7 +412,7 @@ namespace RTC
 
 			RTC_Core.SendCommandToBizhawk(new RTC_Command(CommandType.REMOTE_SET_ENGINE) { objectValue = RTC_Core.SelectedEngine });
 
-			if (cbSelectedEngine.SelectedItem.ToString() == "External ROM Plugin" || cbSelectedEngine.SelectedItem.ToString() == "Blast Generator")
+			if (cbSelectedEngine.SelectedItem.ToString() == "Blast Generator")
 			{
 				labelBlastRadius.Visible = false;
 				labelIntensity.Visible = false;
@@ -861,18 +829,6 @@ namespace RTC
 				RTC_Core.bgForm.Close();
 			RTC_Core.bgForm = new RTC_BlastGenerator_Form();
 			RTC_Core.bgForm.LoadNoStashKey();
-		}
-
-		private void cbUseHexHellgenie_CheckedChanged(object sender, EventArgs e)
-		{
-			nmMinValueHellgenie.Hexadecimal = cbUseHexHellgenie.Checked;
-			nmMaxValueHellgenie.Hexadecimal = cbUseHexHellgenie.Checked;
-		}
-
-		private void cbUseHexNightmare_CheckedChanged(object sender, EventArgs e)
-		{
-			nmMinValueNightmare.Hexadecimal = cbUseHexNightmare.Checked;
-			nmMaxValueNightmare.Hexadecimal = cbUseHexNightmare.Checked;
 		}
 
 		private void nmMinValueNightmare_ValueChanged(object sender, EventArgs e)

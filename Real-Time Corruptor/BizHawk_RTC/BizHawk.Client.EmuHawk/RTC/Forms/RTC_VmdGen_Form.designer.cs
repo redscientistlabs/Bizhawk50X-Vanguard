@@ -40,7 +40,7 @@
             this.lbDomainSizeLabel = new System.Windows.Forms.Label();
             this.btnGenerateVMD = new System.Windows.Forms.Button();
             this.cbUsePointerSpacer = new System.Windows.Forms.CheckBox();
-            this.nmPointerSpacer = new System.Windows.Forms.NumericUpDown();
+            this.nmPointerSpacer = new RTC.NumericUpDownHexFix();
             this.label4 = new System.Windows.Forms.Label();
             this.tbCustomAddresses = new System.Windows.Forms.TextBox();
             this.label5 = new System.Windows.Forms.Label();
@@ -211,6 +211,7 @@
             this.nmPointerSpacer.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
             this.nmPointerSpacer.Font = new System.Drawing.Font("Segoe UI", 9.75F);
             this.nmPointerSpacer.ForeColor = System.Drawing.Color.White;
+            this.nmPointerSpacer.Hexadecimal = true;
             this.nmPointerSpacer.Location = new System.Drawing.Point(114, 149);
             this.nmPointerSpacer.Maximum = new decimal(new int[] {
             2147483647,
@@ -350,7 +351,7 @@
         public System.Windows.Forms.Label lbEndianTypeLabel;
         private System.Windows.Forms.Button btnGenerateVMD;
         public System.Windows.Forms.CheckBox cbUsePointerSpacer;
-        public System.Windows.Forms.NumericUpDown nmPointerSpacer;
+        public RTC.NumericUpDownHexFix nmPointerSpacer;
         public System.Windows.Forms.Label lbDomainSizeValue;
         private System.Windows.Forms.Label label4;
         public System.Windows.Forms.Label lbEndianTypeValue;

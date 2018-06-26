@@ -64,7 +64,6 @@ namespace RTC
 				}
 
 				byte[] _value;
-				int precision;
 				if (RTC_Core.CustomPrecision == -1)
 					_value = new byte[mdp.WordSize];
 				else

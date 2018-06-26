@@ -192,6 +192,14 @@ namespace RTC
 
 			//	long domainSize = (long)RTC_Core.SendCommandToBizhawk(new RTC_Command(CommandType.REMOTE_DOMAIN_GETSIZE) { objectValue = cbSelectedMemoryDomain.SelectedItem.ToString()}, true);
 
+			MemoryInterface mi = RTC_MemoryDomains.getInterface(cbSelectedMemoryDomain.SelectedItem.ToString());
+			if(mi == null)
+			{
+				MessageBox.Show("The currently selected domain doesn't exist!\nMake sure you have the correct core loaded and you've refreshed the domains.");
+					return false;
+			}
+
+
 			for (long i = 0; i < RTC_MemoryDomains.getInterface(cbSelectedMemoryDomain.SelectedItem.ToString()).Size; i++)
 			{
 				newActiveTableActivity.Add(0);
@@ -269,8 +277,13 @@ namespace RTC
 				btnActiveTableQuickSave.Enabled = true;
 				cbAutoAddDump.Enabled = true;
 			}
-
-			decimal memoryDomainSize = RTC_MemoryDomains.getInterface(cbSelectedMemoryDomain.SelectedItem.ToString()).Size;
+			MemoryInterface mi = RTC_MemoryDomains.getInterface(cbSelectedMemoryDomain.SelectedItem.ToString());
+			if (mi == null)
+			{
+				MessageBox.Show("The currently selected domain doesn't exist!\nMake sure you have the correct core loaded and have refreshed the domains.");
+				return;
+			}
+			decimal memoryDomainSize = mi.Size;
 			
 			//Verify they want to continue if the domain size is larger than 32MB
 			if (memoryDomainSize > 0x2000000)
@@ -280,9 +293,9 @@ namespace RTC
 					return;
 			}
 
-			lbDomainAddressSize.Text = "Domain size: " + RTC_MemoryDomains.getInterface(cbSelectedMemoryDomain.SelectedItem.ToString()).Size.ToString();
+			lbDomainAddressSize.Text = "Domain size: 0x" + mi.Size.ToString("X");
 			lbFreezeEngineNbDumps.Text = "Memory dumps collected: 0";
-			lbActiveTableSize.Text = "Active table size: 0";
+			lbActiveTableSize.Text = "Active table size: 0x0";
 			ActiveTableReady = false;
 
 			ActiveTableGenerated = null;
@@ -374,7 +387,7 @@ namespace RTC
 					newActiveTable.Add(item);
 
 			ActiveTableGenerated = newActiveTable.ToArray();
-			lbActiveTableSize.Text = "Active table size: " + ActiveTableGenerated.Length.ToString();
+			lbActiveTableSize.Text = "Active table size: " + ActiveTableGenerated.Length.ToString("X");
 
 			RTC_Core.StartSound();
 		}
@@ -417,7 +430,7 @@ namespace RTC
 						newActiveTable.Add(item);
 
 				ActiveTableGenerated = newActiveTable.ToArray();
-				lbActiveTableSize.Text = "Active table size: " + ActiveTableGenerated.Length.ToString();
+				lbActiveTableSize.Text = "Active table size: " + ActiveTableGenerated.Length.ToString("X");
 
 
 				RTC_Core.StartSound();
@@ -428,13 +441,13 @@ namespace RTC
 			}
 		}
 
-		private void generateActiveTable()
+		private bool generateActiveTable()
 		{
 			var token = RTC_NetCore.HugeOperationStart("DISABLED");
 			try
 			{
 				if (!ComputeActiveTableActivity())
-					return; //exit generation if activity computation failed
+					return false; //exit generation if activity computation failed
 
 				List<long> newActiveTable = new List<long>();
 				double computedThreshold = (double)ActiveTableDumps.Count * (ActivityThreshold / 100d) + 1d;
@@ -457,14 +470,14 @@ namespace RTC
 
 				ActiveTableReady = true;
 				currentFilename = null;
-
+				return true;
 			}
 			catch (Exception ex)
 			{
 				MessageBox.Show("Something went wrong in when generating the active table. \n" +
 					"This is an RTC error, so you should probably send this to the RTC devs with instructions on what you did to cause it.\n\n" +
 								ex.ToString());
-				return;
+				return false;
 			}
 			finally
 			{
@@ -551,23 +564,38 @@ namespace RTC
 			}
 
 			btnActiveTableGenerate.Enabled = false;
+
+			//If they didn't load from file, compute then generate. Otherwise just generate
 			if (!ActLoadedFromFile)
-				generateActiveTable();
-			generateVMD();
+			{
+				if (generateActiveTable())
+					generateVMD();
+			}
+			else
+				generateVMD();
+
 			btnActiveTableGenerate.Enabled = true;
 		}
-
-		private void btnLoadDomains_Click(object sender, EventArgs e)
+		private void RefreshDomains()
 		{
 			RTC_Core.ecForm.RefreshDomainsAndKeepSelected();
+			var temp = cbSelectedMemoryDomain.SelectedItem;
 
 			cbSelectedMemoryDomain.Items.Clear();
 			cbSelectedMemoryDomain.Items.AddRange(RTC_MemoryDomains.MemoryInterfaces.Keys.Where(it => !it.Contains("[V]")).ToArray());
 
-			cbSelectedMemoryDomain.SelectedIndex = 0;
+			if (temp != null && cbSelectedMemoryDomain.Items.Contains(temp))
+				cbSelectedMemoryDomain.SelectedItem = temp;
+			else
+				cbSelectedMemoryDomain.SelectedIndex = 0;
+		}
 
+		private void btnLoadDomains_Click(object sender, EventArgs e)
+		{
+			RefreshDomains();
 			btnActiveTableDumpsReset.Enabled = true;
 			btnActiveTableDumpsReset.Font = new Font("Segoe UI Semibold", 8);
+			btnLoadDomains.Text = "Refresh Domains";
 		}
 
 		private void nmActiveTableActivityThreshold_ValueChanged(object sender, EventArgs e)
