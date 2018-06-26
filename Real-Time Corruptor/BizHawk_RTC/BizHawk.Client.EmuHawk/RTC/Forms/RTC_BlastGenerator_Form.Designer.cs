@@ -63,18 +63,6 @@
             this.updownNudgeStartAddress = new RTC.NumericUpDownHexFix();
             this.label4 = new System.Windows.Forms.Label();
             this.dgvBlastGenerator = new System.Windows.Forms.DataGridView();
-            this.dataGridViewTextBoxColumn1 = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.dataGridViewNumericUpDownColumn1 = new RTC.DataGridViewNumericUpDownColumn();
-            this.dataGridViewNumericUpDownColumn2 = new RTC.DataGridViewNumericUpDownColumn();
-            this.dataGridViewNumericUpDownColumn3 = new RTC.DataGridViewNumericUpDownColumn();
-            this.dataGridViewNumericUpDownColumn4 = new RTC.DataGridViewNumericUpDownColumn();
-            this.dataGridViewNumericUpDownColumn5 = new RTC.DataGridViewNumericUpDownColumn();
-            this.menuStripEx1 = new MenuStripEx();
-            this.blastLayerToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.saveAsToFileblToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.loadFromFileblToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.importBlastlayerblToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.btnHideSidebar = new System.Windows.Forms.Button();
             this.dgvBlastLayerReference = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.dgvRowDirty = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.dgvNoteText = new System.Windows.Forms.DataGridViewTextBoxColumn();
@@ -89,6 +77,18 @@
             this.dgvParam1 = new RTC.DataGridViewNumericUpDownColumn();
             this.dgvParam2 = new RTC.DataGridViewNumericUpDownColumn();
             this.dgvNoteButton = new System.Windows.Forms.DataGridViewButtonColumn();
+            this.dataGridViewTextBoxColumn1 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.dataGridViewNumericUpDownColumn1 = new RTC.DataGridViewNumericUpDownColumn();
+            this.dataGridViewNumericUpDownColumn2 = new RTC.DataGridViewNumericUpDownColumn();
+            this.dataGridViewNumericUpDownColumn3 = new RTC.DataGridViewNumericUpDownColumn();
+            this.dataGridViewNumericUpDownColumn4 = new RTC.DataGridViewNumericUpDownColumn();
+            this.dataGridViewNumericUpDownColumn5 = new RTC.DataGridViewNumericUpDownColumn();
+            this.menuStripEx1 = new MenuStripEx();
+            this.blastLayerToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.saveAsToFileblToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.loadFromFileblToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.importBlastlayerblToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.btnHideSidebar = new System.Windows.Forms.Button();
             this.panelSidebar.SuspendLayout();
             this.panel2.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.updownNudgeParam2)).BeginInit();
@@ -113,7 +113,7 @@
             this.panelSidebar.Dock = System.Windows.Forms.DockStyle.Right;
             this.panelSidebar.Location = new System.Drawing.Point(765, 24);
             this.panelSidebar.Name = "panelSidebar";
-            this.panelSidebar.Size = new System.Drawing.Size(159, 381);
+            this.panelSidebar.Size = new System.Drawing.Size(159, 367);
             this.panelSidebar.TabIndex = 166;
             this.panelSidebar.Tag = "color:dark";
             // 
@@ -157,7 +157,7 @@
             this.btnLoadCorrupt.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnLoadCorrupt.Font = new System.Drawing.Font("Segoe UI Semibold", 9F, System.Drawing.FontStyle.Bold);
             this.btnLoadCorrupt.ForeColor = System.Drawing.Color.OrangeRed;
-            this.btnLoadCorrupt.Location = new System.Drawing.Point(5, 303);
+            this.btnLoadCorrupt.Location = new System.Drawing.Point(5, 287);
             this.btnLoadCorrupt.Name = "btnLoadCorrupt";
             this.btnLoadCorrupt.Size = new System.Drawing.Size(148, 23);
             this.btnLoadCorrupt.TabIndex = 173;
@@ -175,7 +175,7 @@
             this.btnJustCorrupt.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnJustCorrupt.Font = new System.Drawing.Font("Segoe UI Semibold", 9F, System.Drawing.FontStyle.Bold);
             this.btnJustCorrupt.ForeColor = System.Drawing.Color.OrangeRed;
-            this.btnJustCorrupt.Location = new System.Drawing.Point(5, 329);
+            this.btnJustCorrupt.Location = new System.Drawing.Point(5, 313);
             this.btnJustCorrupt.Name = "btnJustCorrupt";
             this.btnJustCorrupt.Size = new System.Drawing.Size(148, 23);
             this.btnJustCorrupt.TabIndex = 172;
@@ -192,7 +192,7 @@
             this.btnRefreshDomains.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnRefreshDomains.Font = new System.Drawing.Font("Segoe UI Semibold", 9F, System.Drawing.FontStyle.Bold);
             this.btnRefreshDomains.ForeColor = System.Drawing.Color.Black;
-            this.btnRefreshDomains.Location = new System.Drawing.Point(5, 274);
+            this.btnRefreshDomains.Location = new System.Drawing.Point(5, 251);
             this.btnRefreshDomains.Name = "btnRefreshDomains";
             this.btnRefreshDomains.Size = new System.Drawing.Size(148, 25);
             this.btnRefreshDomains.TabIndex = 161;
@@ -210,7 +210,7 @@
             this.btnSendTo.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnSendTo.Font = new System.Drawing.Font("Segoe UI Semibold", 9F, System.Drawing.FontStyle.Bold);
             this.btnSendTo.ForeColor = System.Drawing.Color.OrangeRed;
-            this.btnSendTo.Location = new System.Drawing.Point(5, 355);
+            this.btnSendTo.Location = new System.Drawing.Point(5, 339);
             this.btnSendTo.Name = "btnSendTo";
             this.btnSendTo.Size = new System.Drawing.Size(148, 23);
             this.btnSendTo.TabIndex = 171;
@@ -227,7 +227,7 @@
             this.btnAddRow.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnAddRow.Font = new System.Drawing.Font("Segoe UI Semibold", 9F, System.Drawing.FontStyle.Bold);
             this.btnAddRow.ForeColor = System.Drawing.Color.Black;
-            this.btnAddRow.Location = new System.Drawing.Point(5, 243);
+            this.btnAddRow.Location = new System.Drawing.Point(5, 220);
             this.btnAddRow.Name = "btnAddRow";
             this.btnAddRow.Size = new System.Drawing.Size(148, 25);
             this.btnAddRow.TabIndex = 160;
@@ -269,7 +269,7 @@
             this.label5.AutoSize = true;
             this.label5.Font = new System.Drawing.Font("Segoe UI", 8F);
             this.label5.ForeColor = System.Drawing.Color.White;
-            this.label5.Location = new System.Drawing.Point(15, 123);
+            this.label5.Location = new System.Drawing.Point(14, 123);
             this.label5.Name = "label5";
             this.label5.Size = new System.Drawing.Size(47, 13);
             this.label5.TabIndex = 172;
@@ -281,7 +281,7 @@
             this.label3.AutoSize = true;
             this.label3.Font = new System.Drawing.Font("Segoe UI", 8F);
             this.label3.ForeColor = System.Drawing.Color.White;
-            this.label3.Location = new System.Drawing.Point(15, 83);
+            this.label3.Location = new System.Drawing.Point(14, 83);
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(47, 13);
             this.label3.TabIndex = 171;
@@ -293,7 +293,7 @@
             this.label2.AutoSize = true;
             this.label2.Font = new System.Drawing.Font("Segoe UI", 8F);
             this.label2.ForeColor = System.Drawing.Color.White;
-            this.label2.Location = new System.Drawing.Point(15, 44);
+            this.label2.Location = new System.Drawing.Point(14, 44);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(71, 13);
             this.label2.TabIndex = 170;
@@ -305,7 +305,7 @@
             this.label1.AutoSize = true;
             this.label1.Font = new System.Drawing.Font("Segoe UI", 8F);
             this.label1.ForeColor = System.Drawing.Color.White;
-            this.label1.Location = new System.Drawing.Point(15, 3);
+            this.label1.Location = new System.Drawing.Point(14, 3);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(75, 13);
             this.label1.TabIndex = 169;
@@ -321,7 +321,7 @@
             this.btnNudgeParam2Up.ForeColor = System.Drawing.Color.Black;
             this.btnNudgeParam2Up.Location = new System.Drawing.Point(110, 138);
             this.btnNudgeParam2Up.Name = "btnNudgeParam2Up";
-            this.btnNudgeParam2Up.Size = new System.Drawing.Size(21, 20);
+            this.btnNudgeParam2Up.Size = new System.Drawing.Size(21, 22);
             this.btnNudgeParam2Up.TabIndex = 167;
             this.btnNudgeParam2Up.TabStop = false;
             this.btnNudgeParam2Up.Tag = "color:light";
@@ -337,9 +337,9 @@
             this.btnNudgeParam2Down.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnNudgeParam2Down.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F);
             this.btnNudgeParam2Down.ForeColor = System.Drawing.Color.Black;
-            this.btnNudgeParam2Down.Location = new System.Drawing.Point(18, 138);
+            this.btnNudgeParam2Down.Location = new System.Drawing.Point(18, 139);
             this.btnNudgeParam2Down.Name = "btnNudgeParam2Down";
-            this.btnNudgeParam2Down.Size = new System.Drawing.Size(21, 20);
+            this.btnNudgeParam2Down.Size = new System.Drawing.Size(21, 21);
             this.btnNudgeParam2Down.TabIndex = 168;
             this.btnNudgeParam2Down.TabStop = false;
             this.btnNudgeParam2Down.Tag = "color:light";
@@ -350,6 +350,7 @@
             // updownNudgeParam2
             // 
             this.updownNudgeParam2.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
+            this.updownNudgeParam2.Font = new System.Drawing.Font("Consolas", 9F);
             this.updownNudgeParam2.ForeColor = System.Drawing.Color.White;
             this.updownNudgeParam2.Hexadecimal = true;
             this.updownNudgeParam2.Location = new System.Drawing.Point(45, 138);
@@ -378,7 +379,7 @@
             this.btnNudgeParam1Up.ForeColor = System.Drawing.Color.Black;
             this.btnNudgeParam1Up.Location = new System.Drawing.Point(110, 98);
             this.btnNudgeParam1Up.Name = "btnNudgeParam1Up";
-            this.btnNudgeParam1Up.Size = new System.Drawing.Size(21, 20);
+            this.btnNudgeParam1Up.Size = new System.Drawing.Size(21, 22);
             this.btnNudgeParam1Up.TabIndex = 164;
             this.btnNudgeParam1Up.TabStop = false;
             this.btnNudgeParam1Up.Tag = "color:light";
@@ -396,7 +397,7 @@
             this.btnNudgeParam1Down.ForeColor = System.Drawing.Color.Black;
             this.btnNudgeParam1Down.Location = new System.Drawing.Point(18, 98);
             this.btnNudgeParam1Down.Name = "btnNudgeParam1Down";
-            this.btnNudgeParam1Down.Size = new System.Drawing.Size(21, 20);
+            this.btnNudgeParam1Down.Size = new System.Drawing.Size(21, 22);
             this.btnNudgeParam1Down.TabIndex = 165;
             this.btnNudgeParam1Down.TabStop = false;
             this.btnNudgeParam1Down.Tag = "color:light";
@@ -407,6 +408,7 @@
             // updownNudgeParam1
             // 
             this.updownNudgeParam1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
+            this.updownNudgeParam1.Font = new System.Drawing.Font("Consolas", 9F);
             this.updownNudgeParam1.ForeColor = System.Drawing.Color.White;
             this.updownNudgeParam1.Hexadecimal = true;
             this.updownNudgeParam1.Location = new System.Drawing.Point(45, 98);
@@ -435,7 +437,7 @@
             this.btnNudgeEndAddressUp.ForeColor = System.Drawing.Color.Black;
             this.btnNudgeEndAddressUp.Location = new System.Drawing.Point(110, 58);
             this.btnNudgeEndAddressUp.Name = "btnNudgeEndAddressUp";
-            this.btnNudgeEndAddressUp.Size = new System.Drawing.Size(21, 20);
+            this.btnNudgeEndAddressUp.Size = new System.Drawing.Size(21, 22);
             this.btnNudgeEndAddressUp.TabIndex = 161;
             this.btnNudgeEndAddressUp.TabStop = false;
             this.btnNudgeEndAddressUp.Tag = "color:light";
@@ -453,7 +455,7 @@
             this.btnNudgeEndAddressDown.ForeColor = System.Drawing.Color.Black;
             this.btnNudgeEndAddressDown.Location = new System.Drawing.Point(18, 58);
             this.btnNudgeEndAddressDown.Name = "btnNudgeEndAddressDown";
-            this.btnNudgeEndAddressDown.Size = new System.Drawing.Size(21, 20);
+            this.btnNudgeEndAddressDown.Size = new System.Drawing.Size(21, 22);
             this.btnNudgeEndAddressDown.TabIndex = 162;
             this.btnNudgeEndAddressDown.TabStop = false;
             this.btnNudgeEndAddressDown.Tag = "color:light";
@@ -464,6 +466,7 @@
             // updownNudgeEndAddress
             // 
             this.updownNudgeEndAddress.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
+            this.updownNudgeEndAddress.Font = new System.Drawing.Font("Consolas", 9F);
             this.updownNudgeEndAddress.ForeColor = System.Drawing.Color.White;
             this.updownNudgeEndAddress.Hexadecimal = true;
             this.updownNudgeEndAddress.Location = new System.Drawing.Point(45, 58);
@@ -492,7 +495,7 @@
             this.btnNudgeStartAddressUp.ForeColor = System.Drawing.Color.Black;
             this.btnNudgeStartAddressUp.Location = new System.Drawing.Point(110, 19);
             this.btnNudgeStartAddressUp.Name = "btnNudgeStartAddressUp";
-            this.btnNudgeStartAddressUp.Size = new System.Drawing.Size(21, 20);
+            this.btnNudgeStartAddressUp.Size = new System.Drawing.Size(21, 22);
             this.btnNudgeStartAddressUp.TabIndex = 158;
             this.btnNudgeStartAddressUp.TabStop = false;
             this.btnNudgeStartAddressUp.Tag = "color:light";
@@ -510,7 +513,7 @@
             this.btnNudgeStartAddressDown.ForeColor = System.Drawing.Color.Black;
             this.btnNudgeStartAddressDown.Location = new System.Drawing.Point(18, 19);
             this.btnNudgeStartAddressDown.Name = "btnNudgeStartAddressDown";
-            this.btnNudgeStartAddressDown.Size = new System.Drawing.Size(21, 20);
+            this.btnNudgeStartAddressDown.Size = new System.Drawing.Size(21, 22);
             this.btnNudgeStartAddressDown.TabIndex = 159;
             this.btnNudgeStartAddressDown.TabStop = false;
             this.btnNudgeStartAddressDown.Tag = "color:light";
@@ -521,6 +524,7 @@
             // updownNudgeStartAddress
             // 
             this.updownNudgeStartAddress.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
+            this.updownNudgeStartAddress.Font = new System.Drawing.Font("Consolas", 9F);
             this.updownNudgeStartAddress.ForeColor = System.Drawing.Color.White;
             this.updownNudgeStartAddress.Hexadecimal = true;
             this.updownNudgeStartAddress.Location = new System.Drawing.Point(45, 19);
@@ -583,146 +587,9 @@
             this.dgvBlastGenerator.RowsDefaultCellStyle = dataGridViewCellStyle7;
             this.dgvBlastGenerator.RowTemplate.Height = 24;
             this.dgvBlastGenerator.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.dgvBlastGenerator.Size = new System.Drawing.Size(765, 381);
+            this.dgvBlastGenerator.Size = new System.Drawing.Size(765, 367);
             this.dgvBlastGenerator.TabIndex = 167;
             this.dgvBlastGenerator.Tag = "color:normal hex";
-            // 
-            // dataGridViewTextBoxColumn1
-            // 
-            this.dataGridViewTextBoxColumn1.FillWeight = 55F;
-            this.dataGridViewTextBoxColumn1.HeaderText = "Mode";
-            this.dataGridViewTextBoxColumn1.Name = "dataGridViewTextBoxColumn1";
-            this.dataGridViewTextBoxColumn1.Resizable = System.Windows.Forms.DataGridViewTriState.True;
-            this.dataGridViewTextBoxColumn1.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
-            this.dataGridViewTextBoxColumn1.Width = 92;
-            // 
-            // dataGridViewNumericUpDownColumn1
-            // 
-            this.dataGridViewNumericUpDownColumn1.FillWeight = 50F;
-            this.dataGridViewNumericUpDownColumn1.HeaderText = "Step Size";
-            this.dataGridViewNumericUpDownColumn1.Maximum = new decimal(new int[] {
-            -1,
-            0,
-            0,
-            0});
-            this.dataGridViewNumericUpDownColumn1.Minimum = new decimal(new int[] {
-            1,
-            0,
-            0,
-            0});
-            this.dataGridViewNumericUpDownColumn1.Name = "dataGridViewNumericUpDownColumn1";
-            this.dataGridViewNumericUpDownColumn1.Width = 82;
-            // 
-            // dataGridViewNumericUpDownColumn2
-            // 
-            this.dataGridViewNumericUpDownColumn2.FillWeight = 50F;
-            this.dataGridViewNumericUpDownColumn2.HeaderText = "Start Address";
-            this.dataGridViewNumericUpDownColumn2.Hexadecimal = true;
-            this.dataGridViewNumericUpDownColumn2.Maximum = new decimal(new int[] {
-            -1,
-            0,
-            0,
-            0});
-            this.dataGridViewNumericUpDownColumn2.Name = "dataGridViewNumericUpDownColumn2";
-            this.dataGridViewNumericUpDownColumn2.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.Automatic;
-            this.dataGridViewNumericUpDownColumn2.Width = 83;
-            // 
-            // dataGridViewNumericUpDownColumn3
-            // 
-            this.dataGridViewNumericUpDownColumn3.FillWeight = 50F;
-            this.dataGridViewNumericUpDownColumn3.HeaderText = "End Address";
-            this.dataGridViewNumericUpDownColumn3.Hexadecimal = true;
-            this.dataGridViewNumericUpDownColumn3.Maximum = new decimal(new int[] {
-            -1,
-            0,
-            0,
-            0});
-            this.dataGridViewNumericUpDownColumn3.Name = "dataGridViewNumericUpDownColumn3";
-            this.dataGridViewNumericUpDownColumn3.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.Automatic;
-            this.dataGridViewNumericUpDownColumn3.Width = 83;
-            // 
-            // dataGridViewNumericUpDownColumn4
-            // 
-            this.dataGridViewNumericUpDownColumn4.FillWeight = 50F;
-            this.dataGridViewNumericUpDownColumn4.HeaderText = "Param 1";
-            this.dataGridViewNumericUpDownColumn4.Hexadecimal = true;
-            this.dataGridViewNumericUpDownColumn4.Maximum = new decimal(new int[] {
-            -1,
-            0,
-            0,
-            0});
-            this.dataGridViewNumericUpDownColumn4.Name = "dataGridViewNumericUpDownColumn4";
-            this.dataGridViewNumericUpDownColumn4.Width = 83;
-            // 
-            // dataGridViewNumericUpDownColumn5
-            // 
-            this.dataGridViewNumericUpDownColumn5.FillWeight = 50F;
-            this.dataGridViewNumericUpDownColumn5.HeaderText = "Param 2";
-            this.dataGridViewNumericUpDownColumn5.Hexadecimal = true;
-            this.dataGridViewNumericUpDownColumn5.Maximum = new decimal(new int[] {
-            -1,
-            0,
-            0,
-            0});
-            this.dataGridViewNumericUpDownColumn5.Name = "dataGridViewNumericUpDownColumn5";
-            this.dataGridViewNumericUpDownColumn5.Width = 83;
-            // 
-            // menuStripEx1
-            // 
-            this.menuStripEx1.ClickThrough = true;
-            this.menuStripEx1.ImageScalingSize = new System.Drawing.Size(20, 20);
-            this.menuStripEx1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.blastLayerToolStripMenuItem});
-            this.menuStripEx1.Location = new System.Drawing.Point(0, 0);
-            this.menuStripEx1.Name = "menuStripEx1";
-            this.menuStripEx1.Size = new System.Drawing.Size(924, 24);
-            this.menuStripEx1.TabIndex = 168;
-            this.menuStripEx1.Tag = "";
-            this.menuStripEx1.Text = "menuStripEx1";
-            // 
-            // blastLayerToolStripMenuItem
-            // 
-            this.blastLayerToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.saveAsToFileblToolStripMenuItem,
-            this.loadFromFileblToolStripMenuItem,
-            this.importBlastlayerblToolStripMenuItem});
-            this.blastLayerToolStripMenuItem.Name = "blastLayerToolStripMenuItem";
-            this.blastLayerToolStripMenuItem.Size = new System.Drawing.Size(37, 20);
-            this.blastLayerToolStripMenuItem.Tag = "";
-            this.blastLayerToolStripMenuItem.Text = "File";
-            // 
-            // saveAsToFileblToolStripMenuItem
-            // 
-            this.saveAsToFileblToolStripMenuItem.Name = "saveAsToFileblToolStripMenuItem";
-            this.saveAsToFileblToolStripMenuItem.Size = new System.Drawing.Size(241, 22);
-            this.saveAsToFileblToolStripMenuItem.Text = "&Save As to File (.bg)";
-            this.saveAsToFileblToolStripMenuItem.Click += new System.EventHandler(this.saveAsToFileblToolStripMenuItem_Click);
-            // 
-            // loadFromFileblToolStripMenuItem
-            // 
-            this.loadFromFileblToolStripMenuItem.Name = "loadFromFileblToolStripMenuItem";
-            this.loadFromFileblToolStripMenuItem.Size = new System.Drawing.Size(241, 22);
-            this.loadFromFileblToolStripMenuItem.Text = "&Load From File (.bg)";
-            this.loadFromFileblToolStripMenuItem.Click += new System.EventHandler(this.loadFromFileblToolStripMenuItem_Click);
-            // 
-            // importBlastlayerblToolStripMenuItem
-            // 
-            this.importBlastlayerblToolStripMenuItem.Name = "importBlastlayerblToolStripMenuItem";
-            this.importBlastlayerblToolStripMenuItem.Size = new System.Drawing.Size(241, 22);
-            this.importBlastlayerblToolStripMenuItem.Text = "&Import Generation Params (.bg)";
-            this.importBlastlayerblToolStripMenuItem.Click += new System.EventHandler(this.importBlastlayerblToolStripMenuItem_Click);
-            // 
-            // btnHideSidebar
-            // 
-            this.btnHideSidebar.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.btnHideSidebar.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F);
-            this.btnHideSidebar.Location = new System.Drawing.Point(896, 0);
-            this.btnHideSidebar.Name = "btnHideSidebar";
-            this.btnHideSidebar.Size = new System.Drawing.Size(28, 24);
-            this.btnHideSidebar.TabIndex = 170;
-            this.btnHideSidebar.Text = "▶";
-            this.btnHideSidebar.UseVisualStyleBackColor = true;
-            this.btnHideSidebar.Click += new System.EventHandler(this.btnHideSidebar_Click);
             // 
             // dgvBlastLayerReference
             // 
@@ -881,12 +748,149 @@
             this.dgvNoteButton.MinimumWidth = 15;
             this.dgvNoteButton.Name = "dgvNoteButton";
             // 
+            // dataGridViewTextBoxColumn1
+            // 
+            this.dataGridViewTextBoxColumn1.FillWeight = 55F;
+            this.dataGridViewTextBoxColumn1.HeaderText = "Mode";
+            this.dataGridViewTextBoxColumn1.Name = "dataGridViewTextBoxColumn1";
+            this.dataGridViewTextBoxColumn1.Resizable = System.Windows.Forms.DataGridViewTriState.True;
+            this.dataGridViewTextBoxColumn1.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
+            this.dataGridViewTextBoxColumn1.Width = 92;
+            // 
+            // dataGridViewNumericUpDownColumn1
+            // 
+            this.dataGridViewNumericUpDownColumn1.FillWeight = 50F;
+            this.dataGridViewNumericUpDownColumn1.HeaderText = "Step Size";
+            this.dataGridViewNumericUpDownColumn1.Maximum = new decimal(new int[] {
+            -1,
+            0,
+            0,
+            0});
+            this.dataGridViewNumericUpDownColumn1.Minimum = new decimal(new int[] {
+            1,
+            0,
+            0,
+            0});
+            this.dataGridViewNumericUpDownColumn1.Name = "dataGridViewNumericUpDownColumn1";
+            this.dataGridViewNumericUpDownColumn1.Width = 82;
+            // 
+            // dataGridViewNumericUpDownColumn2
+            // 
+            this.dataGridViewNumericUpDownColumn2.FillWeight = 50F;
+            this.dataGridViewNumericUpDownColumn2.HeaderText = "Start Address";
+            this.dataGridViewNumericUpDownColumn2.Hexadecimal = true;
+            this.dataGridViewNumericUpDownColumn2.Maximum = new decimal(new int[] {
+            -1,
+            0,
+            0,
+            0});
+            this.dataGridViewNumericUpDownColumn2.Name = "dataGridViewNumericUpDownColumn2";
+            this.dataGridViewNumericUpDownColumn2.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.Automatic;
+            this.dataGridViewNumericUpDownColumn2.Width = 83;
+            // 
+            // dataGridViewNumericUpDownColumn3
+            // 
+            this.dataGridViewNumericUpDownColumn3.FillWeight = 50F;
+            this.dataGridViewNumericUpDownColumn3.HeaderText = "End Address";
+            this.dataGridViewNumericUpDownColumn3.Hexadecimal = true;
+            this.dataGridViewNumericUpDownColumn3.Maximum = new decimal(new int[] {
+            -1,
+            0,
+            0,
+            0});
+            this.dataGridViewNumericUpDownColumn3.Name = "dataGridViewNumericUpDownColumn3";
+            this.dataGridViewNumericUpDownColumn3.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.Automatic;
+            this.dataGridViewNumericUpDownColumn3.Width = 83;
+            // 
+            // dataGridViewNumericUpDownColumn4
+            // 
+            this.dataGridViewNumericUpDownColumn4.FillWeight = 50F;
+            this.dataGridViewNumericUpDownColumn4.HeaderText = "Param 1";
+            this.dataGridViewNumericUpDownColumn4.Hexadecimal = true;
+            this.dataGridViewNumericUpDownColumn4.Maximum = new decimal(new int[] {
+            -1,
+            0,
+            0,
+            0});
+            this.dataGridViewNumericUpDownColumn4.Name = "dataGridViewNumericUpDownColumn4";
+            this.dataGridViewNumericUpDownColumn4.Width = 83;
+            // 
+            // dataGridViewNumericUpDownColumn5
+            // 
+            this.dataGridViewNumericUpDownColumn5.FillWeight = 50F;
+            this.dataGridViewNumericUpDownColumn5.HeaderText = "Param 2";
+            this.dataGridViewNumericUpDownColumn5.Hexadecimal = true;
+            this.dataGridViewNumericUpDownColumn5.Maximum = new decimal(new int[] {
+            -1,
+            0,
+            0,
+            0});
+            this.dataGridViewNumericUpDownColumn5.Name = "dataGridViewNumericUpDownColumn5";
+            this.dataGridViewNumericUpDownColumn5.Width = 83;
+            // 
+            // menuStripEx1
+            // 
+            this.menuStripEx1.ClickThrough = true;
+            this.menuStripEx1.ImageScalingSize = new System.Drawing.Size(20, 20);
+            this.menuStripEx1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.blastLayerToolStripMenuItem});
+            this.menuStripEx1.Location = new System.Drawing.Point(0, 0);
+            this.menuStripEx1.Name = "menuStripEx1";
+            this.menuStripEx1.Size = new System.Drawing.Size(924, 24);
+            this.menuStripEx1.TabIndex = 168;
+            this.menuStripEx1.Tag = "";
+            this.menuStripEx1.Text = "menuStripEx1";
+            // 
+            // blastLayerToolStripMenuItem
+            // 
+            this.blastLayerToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.saveAsToFileblToolStripMenuItem,
+            this.loadFromFileblToolStripMenuItem,
+            this.importBlastlayerblToolStripMenuItem});
+            this.blastLayerToolStripMenuItem.Name = "blastLayerToolStripMenuItem";
+            this.blastLayerToolStripMenuItem.Size = new System.Drawing.Size(37, 20);
+            this.blastLayerToolStripMenuItem.Tag = "";
+            this.blastLayerToolStripMenuItem.Text = "File";
+            // 
+            // saveAsToFileblToolStripMenuItem
+            // 
+            this.saveAsToFileblToolStripMenuItem.Name = "saveAsToFileblToolStripMenuItem";
+            this.saveAsToFileblToolStripMenuItem.Size = new System.Drawing.Size(241, 22);
+            this.saveAsToFileblToolStripMenuItem.Text = "&Save As to File (.bg)";
+            this.saveAsToFileblToolStripMenuItem.Click += new System.EventHandler(this.saveAsToFileblToolStripMenuItem_Click);
+            // 
+            // loadFromFileblToolStripMenuItem
+            // 
+            this.loadFromFileblToolStripMenuItem.Name = "loadFromFileblToolStripMenuItem";
+            this.loadFromFileblToolStripMenuItem.Size = new System.Drawing.Size(241, 22);
+            this.loadFromFileblToolStripMenuItem.Text = "&Load From File (.bg)";
+            this.loadFromFileblToolStripMenuItem.Click += new System.EventHandler(this.loadFromFileblToolStripMenuItem_Click);
+            // 
+            // importBlastlayerblToolStripMenuItem
+            // 
+            this.importBlastlayerblToolStripMenuItem.Name = "importBlastlayerblToolStripMenuItem";
+            this.importBlastlayerblToolStripMenuItem.Size = new System.Drawing.Size(241, 22);
+            this.importBlastlayerblToolStripMenuItem.Text = "&Import Generation Params (.bg)";
+            this.importBlastlayerblToolStripMenuItem.Click += new System.EventHandler(this.importBlastlayerblToolStripMenuItem_Click);
+            // 
+            // btnHideSidebar
+            // 
+            this.btnHideSidebar.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.btnHideSidebar.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F);
+            this.btnHideSidebar.Location = new System.Drawing.Point(896, 0);
+            this.btnHideSidebar.Name = "btnHideSidebar";
+            this.btnHideSidebar.Size = new System.Drawing.Size(28, 24);
+            this.btnHideSidebar.TabIndex = 170;
+            this.btnHideSidebar.Text = "▶";
+            this.btnHideSidebar.UseVisualStyleBackColor = true;
+            this.btnHideSidebar.Click += new System.EventHandler(this.btnHideSidebar_Click);
+            // 
             // RTC_BlastGenerator_Form
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
-            this.ClientSize = new System.Drawing.Size(924, 405);
+            this.ClientSize = new System.Drawing.Size(924, 391);
             this.Controls.Add(this.btnHideSidebar);
             this.Controls.Add(this.dgvBlastGenerator);
             this.Controls.Add(this.panelSidebar);
@@ -894,7 +898,7 @@
             this.Font = new System.Drawing.Font("Segoe UI", 8.25F);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.MainMenuStrip = this.menuStripEx1;
-            this.MinimumSize = new System.Drawing.Size(16, 444);
+            this.MinimumSize = new System.Drawing.Size(16, 430);
             this.Name = "RTC_BlastGenerator_Form";
             this.Tag = "color:dark";
             this.Text = "Blast Generator";

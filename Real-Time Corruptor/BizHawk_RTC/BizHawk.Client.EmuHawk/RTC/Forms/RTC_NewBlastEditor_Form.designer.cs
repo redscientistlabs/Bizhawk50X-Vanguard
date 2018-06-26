@@ -117,7 +117,7 @@
             this.btnCorrupt.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnCorrupt.Font = new System.Drawing.Font("Segoe UI Semibold", 9F, System.Drawing.FontStyle.Bold);
             this.btnCorrupt.ForeColor = System.Drawing.Color.OrangeRed;
-            this.btnCorrupt.Location = new System.Drawing.Point(9, 403);
+            this.btnCorrupt.Location = new System.Drawing.Point(9, 391);
             this.btnCorrupt.Name = "btnCorrupt";
             this.btnCorrupt.Size = new System.Drawing.Size(157, 23);
             this.btnCorrupt.TabIndex = 13;
@@ -135,7 +135,7 @@
             this.btnLoadCorrupt.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnLoadCorrupt.Font = new System.Drawing.Font("Segoe UI Semibold", 9F, System.Drawing.FontStyle.Bold);
             this.btnLoadCorrupt.ForeColor = System.Drawing.Color.OrangeRed;
-            this.btnLoadCorrupt.Location = new System.Drawing.Point(9, 377);
+            this.btnLoadCorrupt.Location = new System.Drawing.Point(9, 365);
             this.btnLoadCorrupt.Name = "btnLoadCorrupt";
             this.btnLoadCorrupt.Size = new System.Drawing.Size(157, 23);
             this.btnLoadCorrupt.TabIndex = 14;
@@ -153,7 +153,7 @@
             this.btnSendToStash.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnSendToStash.Font = new System.Drawing.Font("Segoe UI Semibold", 9F, System.Drawing.FontStyle.Bold);
             this.btnSendToStash.ForeColor = System.Drawing.Color.OrangeRed;
-            this.btnSendToStash.Location = new System.Drawing.Point(9, 429);
+            this.btnSendToStash.Location = new System.Drawing.Point(9, 417);
             this.btnSendToStash.Name = "btnSendToStash";
             this.btnSendToStash.Size = new System.Drawing.Size(157, 23);
             this.btnSendToStash.TabIndex = 12;
@@ -171,7 +171,7 @@
             this.btnDisable50.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnDisable50.Font = new System.Drawing.Font("Segoe UI Semibold", 9F, System.Drawing.FontStyle.Bold);
             this.btnDisable50.ForeColor = System.Drawing.Color.Black;
-            this.btnDisable50.Location = new System.Drawing.Point(9, 152);
+            this.btnDisable50.Location = new System.Drawing.Point(9, 134);
             this.btnDisable50.Name = "btnDisable50";
             this.btnDisable50.Size = new System.Drawing.Size(157, 23);
             this.btnDisable50.TabIndex = 114;
@@ -189,7 +189,7 @@
             this.btnRemoveDisabled.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnRemoveDisabled.Font = new System.Drawing.Font("Segoe UI Semibold", 9F, System.Drawing.FontStyle.Bold);
             this.btnRemoveDisabled.ForeColor = System.Drawing.Color.Black;
-            this.btnRemoveDisabled.Location = new System.Drawing.Point(9, 204);
+            this.btnRemoveDisabled.Location = new System.Drawing.Point(9, 186);
             this.btnRemoveDisabled.Name = "btnRemoveDisabled";
             this.btnRemoveDisabled.Size = new System.Drawing.Size(157, 23);
             this.btnRemoveDisabled.TabIndex = 115;
@@ -207,7 +207,7 @@
             this.btnInvertDisabled.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnInvertDisabled.Font = new System.Drawing.Font("Segoe UI Semibold", 9F, System.Drawing.FontStyle.Bold);
             this.btnInvertDisabled.ForeColor = System.Drawing.Color.Black;
-            this.btnInvertDisabled.Location = new System.Drawing.Point(9, 178);
+            this.btnInvertDisabled.Location = new System.Drawing.Point(9, 160);
             this.btnInvertDisabled.Name = "btnInvertDisabled";
             this.btnInvertDisabled.Size = new System.Drawing.Size(157, 23);
             this.btnInvertDisabled.TabIndex = 116;
@@ -225,7 +225,7 @@
             this.btnDisableEverything.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnDisableEverything.Font = new System.Drawing.Font("Segoe UI Semibold", 9F, System.Drawing.FontStyle.Bold);
             this.btnDisableEverything.ForeColor = System.Drawing.Color.Black;
-            this.btnDisableEverything.Location = new System.Drawing.Point(9, 233);
+            this.btnDisableEverything.Location = new System.Drawing.Point(9, 215);
             this.btnDisableEverything.Name = "btnDisableEverything";
             this.btnDisableEverything.Size = new System.Drawing.Size(157, 23);
             this.btnDisableEverything.TabIndex = 128;
@@ -243,7 +243,7 @@
             this.btnEnableEverything.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnEnableEverything.Font = new System.Drawing.Font("Segoe UI Semibold", 9F, System.Drawing.FontStyle.Bold);
             this.btnEnableEverything.ForeColor = System.Drawing.Color.Black;
-            this.btnEnableEverything.Location = new System.Drawing.Point(9, 259);
+            this.btnEnableEverything.Location = new System.Drawing.Point(9, 241);
             this.btnEnableEverything.Name = "btnEnableEverything";
             this.btnEnableEverything.Size = new System.Drawing.Size(157, 23);
             this.btnEnableEverything.TabIndex = 129;
@@ -261,7 +261,7 @@
             this.btnDuplicateSelected.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnDuplicateSelected.Font = new System.Drawing.Font("Segoe UI Semibold", 9F, System.Drawing.FontStyle.Bold);
             this.btnDuplicateSelected.ForeColor = System.Drawing.Color.Black;
-            this.btnDuplicateSelected.Location = new System.Drawing.Point(9, 319);
+            this.btnDuplicateSelected.Location = new System.Drawing.Point(9, 301);
             this.btnDuplicateSelected.Name = "btnDuplicateSelected";
             this.btnDuplicateSelected.Size = new System.Drawing.Size(157, 23);
             this.btnDuplicateSelected.TabIndex = 130;
@@ -336,7 +336,7 @@
             this.dgvBlastLayer.RowHeadersVisible = false;
             this.dgvBlastLayer.RowTemplate.Height = 24;
             this.dgvBlastLayer.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.dgvBlastLayer.Size = new System.Drawing.Size(748, 457);
+            this.dgvBlastLayer.Size = new System.Drawing.Size(748, 447);
             this.dgvBlastLayer.TabIndex = 133;
             this.dgvBlastLayer.Tag = "color:normal";
             // 
@@ -410,7 +410,7 @@
             this.btnShiftBlastLayerDown.ForeColor = System.Drawing.Color.Black;
             this.btnShiftBlastLayerDown.Location = new System.Drawing.Point(22, 33);
             this.btnShiftBlastLayerDown.Name = "btnShiftBlastLayerDown";
-            this.btnShiftBlastLayerDown.Size = new System.Drawing.Size(21, 20);
+            this.btnShiftBlastLayerDown.Size = new System.Drawing.Size(21, 21);
             this.btnShiftBlastLayerDown.TabIndex = 147;
             this.btnShiftBlastLayerDown.TabStop = false;
             this.btnShiftBlastLayerDown.Tag = "color:light";
@@ -428,7 +428,7 @@
             this.btnShiftBlastLayerUp.ForeColor = System.Drawing.Color.Black;
             this.btnShiftBlastLayerUp.Location = new System.Drawing.Point(115, 33);
             this.btnShiftBlastLayerUp.Name = "btnShiftBlastLayerUp";
-            this.btnShiftBlastLayerUp.Size = new System.Drawing.Size(21, 20);
+            this.btnShiftBlastLayerUp.Size = new System.Drawing.Size(21, 21);
             this.btnShiftBlastLayerUp.TabIndex = 146;
             this.btnShiftBlastLayerUp.TabStop = false;
             this.btnShiftBlastLayerUp.Tag = "color:light";
@@ -439,11 +439,12 @@
             // updownShiftBlastLayerAmount
             // 
             this.updownShiftBlastLayerAmount.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
+            this.updownShiftBlastLayerAmount.Font = new System.Drawing.Font("Consolas", 9F);
             this.updownShiftBlastLayerAmount.ForeColor = System.Drawing.Color.White;
             this.updownShiftBlastLayerAmount.Hexadecimal = true;
-            this.updownShiftBlastLayerAmount.Location = new System.Drawing.Point(50, 33);
+            this.updownShiftBlastLayerAmount.Location = new System.Drawing.Point(50, 32);
             this.updownShiftBlastLayerAmount.Name = "updownShiftBlastLayerAmount";
-            this.updownShiftBlastLayerAmount.Size = new System.Drawing.Size(59, 20);
+            this.updownShiftBlastLayerAmount.Size = new System.Drawing.Size(59, 22);
             this.updownShiftBlastLayerAmount.TabIndex = 145;
             this.updownShiftBlastLayerAmount.Tag = "color:dark";
             // 
@@ -513,7 +514,7 @@
             this.btnRemoveSelected.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnRemoveSelected.Font = new System.Drawing.Font("Segoe UI Semibold", 9F, System.Drawing.FontStyle.Bold);
             this.btnRemoveSelected.ForeColor = System.Drawing.Color.Black;
-            this.btnRemoveSelected.Location = new System.Drawing.Point(9, 289);
+            this.btnRemoveSelected.Location = new System.Drawing.Point(9, 271);
             this.btnRemoveSelected.Name = "btnRemoveSelected";
             this.btnRemoveSelected.Size = new System.Drawing.Size(157, 23);
             this.btnRemoveSelected.TabIndex = 139;
@@ -531,7 +532,7 @@
             this.btnSearchRow.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnSearchRow.Font = new System.Drawing.Font("Segoe UI Semibold", 9F, System.Drawing.FontStyle.Bold);
             this.btnSearchRow.ForeColor = System.Drawing.Color.Black;
-            this.btnSearchRow.Location = new System.Drawing.Point(9, 345);
+            this.btnSearchRow.Location = new System.Drawing.Point(9, 327);
             this.btnSearchRow.Name = "btnSearchRow";
             this.btnSearchRow.Size = new System.Drawing.Size(130, 23);
             this.btnSearchRow.TabIndex = 140;
@@ -563,7 +564,7 @@
             this.panelSidebar.Dock = System.Windows.Forms.DockStyle.Right;
             this.panelSidebar.Location = new System.Drawing.Point(748, 24);
             this.panelSidebar.Name = "panelSidebar";
-            this.panelSidebar.Size = new System.Drawing.Size(176, 457);
+            this.panelSidebar.Size = new System.Drawing.Size(176, 447);
             this.panelSidebar.TabIndex = 142;
             // 
             // btnHelp
@@ -591,7 +592,7 @@
             this.btnSearchAgain.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnSearchAgain.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F);
             this.btnSearchAgain.ForeColor = System.Drawing.Color.Black;
-            this.btnSearchAgain.Location = new System.Drawing.Point(144, 345);
+            this.btnSearchAgain.Location = new System.Drawing.Point(144, 327);
             this.btnSearchAgain.Name = "btnSearchAgain";
             this.btnSearchAgain.Size = new System.Drawing.Size(21, 23);
             this.btnSearchAgain.TabIndex = 141;
@@ -852,7 +853,7 @@
             // 
             dataGridViewCellStyle2.Font = new System.Drawing.Font("Consolas", 9F);
             this.dgvSourceAddress.DefaultCellStyle = dataGridViewCellStyle2;
-            this.dgvSourceAddress.FillWeight = 46.14497F;
+            this.dgvSourceAddress.FillWeight = 40F;
             this.dgvSourceAddress.HeaderText = "Source Address";
             this.dgvSourceAddress.Hexadecimal = true;
             this.dgvSourceAddress.Maximum = new decimal(new int[] {
@@ -873,7 +874,7 @@
             // 
             dataGridViewCellStyle3.Font = new System.Drawing.Font("Consolas", 9F);
             this.dgvParam.DefaultCellStyle = dataGridViewCellStyle3;
-            this.dgvParam.FillWeight = 46.14497F;
+            this.dgvParam.FillWeight = 40F;
             this.dgvParam.HeaderText = "Parameter Value";
             this.dgvParam.Hexadecimal = true;
             this.dgvParam.Maximum = new decimal(new int[] {
@@ -899,7 +900,7 @@
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
-            this.ClientSize = new System.Drawing.Size(924, 481);
+            this.ClientSize = new System.Drawing.Size(924, 471);
             this.Controls.Add(this.btnHideSidebar);
             this.Controls.Add(this.dgvBlastLayer);
             this.Controls.Add(this.panelSidebar);
@@ -907,7 +908,7 @@
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.KeyPreview = true;
             this.MainMenuStrip = this.menuStripEx1;
-            this.MinimumSize = new System.Drawing.Size(600, 520);
+            this.MinimumSize = new System.Drawing.Size(600, 510);
             this.Name = "RTC_NewBlastEditor_Form";
             this.Tag = "color:dark";
             this.Text = "Blast Editor";
