@@ -66,159 +66,159 @@ namespace RTC
 		{
 			// Returns the list of Domains that can't be rewinded and/or are just not good to use
 
-			List<string> DomainBlacklist = new List<string>();
+			List<string> domainBlacklist = new List<string>();
 
-			string SystemName;
+			string systemName;
 
 			if (RTC_Core.isStandalone)
-				SystemName = (string)RTC_Core.SendCommandToBizhawk(new RTC_Command(CommandType.REMOTE_DOMAIN_SYSTEM), true);
+				systemName = (string)RTC_Core.SendCommandToBizhawk(new RTC_Command(CommandType.REMOTE_DOMAIN_SYSTEM), true);
 			else
-				SystemName = Global.Game.System.ToString().ToUpper();
+				systemName = Global.Game.System.ToString().ToUpper();
 
-			switch (SystemName)
+			switch (systemName)
 			{
 				case "NES":     //Nintendo Entertainment system
 
-					DomainBlacklist.Add("System Bus");
-					DomainBlacklist.Add("PRG ROM");
-					DomainBlacklist.Add("PALRAM"); //Color Memory (Useless and disgusting)
-					DomainBlacklist.Add("CHR VROM"); //Cartridge
-					DomainBlacklist.Add("Battery RAM"); //Cartridge Save Data
-					DomainBlacklist.Add("FDS Side"); //ROM data for the FDS. Sadly uncorruptable.
+					domainBlacklist.Add("System Bus");
+					domainBlacklist.Add("PRG ROM");
+					domainBlacklist.Add("PALRAM"); //Color Memory (Useless and disgusting)
+					domainBlacklist.Add("CHR VROM"); //Cartridge
+					domainBlacklist.Add("Battery RAM"); //Cartridge Save Data
+					domainBlacklist.Add("FDS Side"); //ROM data for the FDS. Sadly uncorruptable.
 					break;
 
 				case "GB":      //Gameboy
 				case "GBC":     //Gameboy Color
-					DomainBlacklist.Add("ROM"); //Cartridge
-					DomainBlacklist.Add("System Bus");
-					DomainBlacklist.Add("OBP"); //SGB dummy domain doesn't do anything in sameboy
-					DomainBlacklist.Add("BGP");  //SGB dummy domain doesn't do anything in sameboy
-					DomainBlacklist.Add("BOOTROM"); //Sameboy SGB Bootrom
+					domainBlacklist.Add("ROM"); //Cartridge
+					domainBlacklist.Add("System Bus");
+					domainBlacklist.Add("OBP"); //SGB dummy domain doesn't do anything in sameboy
+					domainBlacklist.Add("BGP");  //SGB dummy domain doesn't do anything in sameboy
+					domainBlacklist.Add("BOOTROM"); //Sameboy SGB Bootrom
 					break;
 
 				case "SNES":    //Super Nintendo
 
-					DomainBlacklist.Add("CARTROM"); //Cartridge
-					DomainBlacklist.Add("APURAM"); //SPC700 memory
-					DomainBlacklist.Add("CGRAM"); //Color Memory (Useless and disgusting)
-					DomainBlacklist.Add("System Bus"); // maxvalue is not representative of chip (goes ridiculously high)
-					DomainBlacklist.Add("SGB CARTROM"); // Supergameboy cartridge
+					domainBlacklist.Add("CARTROM"); //Cartridge
+					domainBlacklist.Add("APURAM"); //SPC700 memory
+					domainBlacklist.Add("CGRAM"); //Color Memory (Useless and disgusting)
+					domainBlacklist.Add("System Bus"); // maxvalue is not representative of chip (goes ridiculously high)
+					domainBlacklist.Add("SGB CARTROM"); // Supergameboy cartridge
 
 					if (RTC_MemoryDomains.MemoryInterfaces.ContainsKey("SGB CARTROM"))
 					{
-						DomainBlacklist.Add("VRAM");
-						DomainBlacklist.Add("WRAM");
-						DomainBlacklist.Add("CARTROM");
+						domainBlacklist.Add("VRAM");
+						domainBlacklist.Add("WRAM");
+						domainBlacklist.Add("CARTROM");
 					}
 
 					break;
 
 				case "N64":     //Nintendo 64
-					DomainBlacklist.Add("System Bus");
-					DomainBlacklist.Add("PI Register");
-					DomainBlacklist.Add("EEPROM");
-					DomainBlacklist.Add("ROM");
-					DomainBlacklist.Add("SI Register");
-					DomainBlacklist.Add("VI Register");
-					DomainBlacklist.Add("RI Register");
-					DomainBlacklist.Add("AI Register");
+					domainBlacklist.Add("System Bus");
+					domainBlacklist.Add("PI Register");
+					domainBlacklist.Add("EEPROM");
+					domainBlacklist.Add("ROM");
+					domainBlacklist.Add("SI Register");
+					domainBlacklist.Add("VI Register");
+					domainBlacklist.Add("RI Register");
+					domainBlacklist.Add("AI Register");
 					break;
 
 				case "PCE":     //PC Engine / Turbo Grafx
 				case "SGX":     //Super Grafx
-					DomainBlacklist.Add("ROM");
-					DomainBlacklist.Add("System Bus"); //BAD THINGS HAPPEN WITH THIS DOMAIN
-					DomainBlacklist.Add("System Bus (21 bit)");
+					domainBlacklist.Add("ROM");
+					domainBlacklist.Add("System Bus"); //BAD THINGS HAPPEN WITH THIS DOMAIN
+					domainBlacklist.Add("System Bus (21 bit)");
 					break;
 
 				case "GBA":     //Gameboy Advance
-					DomainBlacklist.Add("OAM");
-					DomainBlacklist.Add("BIOS");
-					DomainBlacklist.Add("PALRAM");
-					DomainBlacklist.Add("ROM");
-					DomainBlacklist.Add("System Bus");
+					domainBlacklist.Add("OAM");
+					domainBlacklist.Add("BIOS");
+					domainBlacklist.Add("PALRAM");
+					domainBlacklist.Add("ROM");
+					domainBlacklist.Add("System Bus");
 					break;
 
 				case "SMS":     //Sega Master System
-					DomainBlacklist.Add("System Bus"); // the game cartridge appears to be on the system bus
-					DomainBlacklist.Add("ROM");
+					domainBlacklist.Add("System Bus"); // the game cartridge appears to be on the system bus
+					domainBlacklist.Add("ROM");
 					break;
 
 				case "GG":      //Sega GameGear
-					DomainBlacklist.Add("System Bus"); // the game cartridge appears to be on the system bus
-					DomainBlacklist.Add("ROM");
+					domainBlacklist.Add("System Bus"); // the game cartridge appears to be on the system bus
+					domainBlacklist.Add("ROM");
 					break;
 
 				case "SG":      //Sega SG-1000
-					DomainBlacklist.Add("System Bus");
-					DomainBlacklist.Add("ROM");
+					domainBlacklist.Add("System Bus");
+					domainBlacklist.Add("ROM");
 					break;
 
 				case "GEN":     //Sega Genesis and CD
-					DomainBlacklist.Add("MD CART");
-					DomainBlacklist.Add("CRAM"); //Color Ram
-					DomainBlacklist.Add("VSRAM"); //Vertical scroll ram. Do you like glitched scrolling? Have a dedicated domain...
-					DomainBlacklist.Add("SRAM"); //Save Ram
-					DomainBlacklist.Add("BOOT ROM"); //Genesis Boot Rom
-					DomainBlacklist.Add("32X FB"); //32X Sprinkles
-					DomainBlacklist.Add("CD BOOT ROM"); //Sega CD boot rom
-					DomainBlacklist.Add("S68K BUS");
-					DomainBlacklist.Add("M68K BUS");
+					domainBlacklist.Add("MD CART");
+					domainBlacklist.Add("CRAM"); //Color Ram
+					domainBlacklist.Add("VSRAM"); //Vertical scroll ram. Do you like glitched scrolling? Have a dedicated domain...
+					domainBlacklist.Add("SRAM"); //Save Ram
+					domainBlacklist.Add("BOOT ROM"); //Genesis Boot Rom
+					domainBlacklist.Add("32X FB"); //32X Sprinkles
+					domainBlacklist.Add("CD BOOT ROM"); //Sega CD boot rom
+					domainBlacklist.Add("S68K BUS");
+					domainBlacklist.Add("M68K BUS");
 					break;
 
 				case "PSX":     //Sony Playstation 1
-					DomainBlacklist.Add("BiosROM");
-					DomainBlacklist.Add("PIOMem");
+					domainBlacklist.Add("BiosROM");
+					domainBlacklist.Add("PIOMem");
 					break;
 
 				case "A26":     //Atari 2600
-					DomainBlacklist.Add("System Bus");
+					domainBlacklist.Add("System Bus");
 					break;
 
 				case "A78":     //Atari 7800
-					DomainBlacklist.Add("System Bus");
+					domainBlacklist.Add("System Bus");
 					break;
 
 				case "LYNX":    //Atari Lynx
-					DomainBlacklist.Add("Save RAM");
-					DomainBlacklist.Add("Cart B");
-					DomainBlacklist.Add("Cart A");
+					domainBlacklist.Add("Save RAM");
+					domainBlacklist.Add("Cart B");
+					domainBlacklist.Add("Cart A");
 					break;
 
 				case "WSWAN":   //Wonderswan
-					DomainBlacklist.Add("ROM");
+					domainBlacklist.Add("ROM");
 					break;
 
 				case "Coleco":  //Colecovision
-					DomainBlacklist.Add("System Bus");
+					domainBlacklist.Add("System Bus");
 					break;
 
 				case "VB":      //Virtualboy
-					DomainBlacklist.Add("ROM");
+					domainBlacklist.Add("ROM");
 					break;
 
 				case "SAT":     //Sega Saturn
-					DomainBlacklist.Add("Backup RAM");
-					DomainBlacklist.Add("Boot Rom");
-					DomainBlacklist.Add("Backup Cart");
-					DomainBlacklist.Add("VDP1 Framebuffer"); //Sprinkles
-					DomainBlacklist.Add("VDP2 CRam"); //VDP 2 color ram (pallettes)
-					DomainBlacklist.Add("Sound Ram"); //90% chance of killing the audio
+					domainBlacklist.Add("Backup RAM");
+					domainBlacklist.Add("Boot Rom");
+					domainBlacklist.Add("Backup Cart");
+					domainBlacklist.Add("VDP1 Framebuffer"); //Sprinkles
+					domainBlacklist.Add("VDP2 CRam"); //VDP 2 color ram (pallettes)
+					domainBlacklist.Add("Sound Ram"); //90% chance of killing the audio
 					break;
 
 				case "INTV": //Intellivision
-					DomainBlacklist.Add("Graphics ROM");
-					DomainBlacklist.Add("System ROM");
-					DomainBlacklist.Add("Executive Rom"); //??????
+					domainBlacklist.Add("Graphics ROM");
+					domainBlacklist.Add("System ROM");
+					domainBlacklist.Add("Executive Rom"); //??????
 					break;
 
 				case "APPLEII": //Apple II
-					DomainBlacklist.Add("System Bus");
+					domainBlacklist.Add("System Bus");
 					break;
 
 				case "C64":     //Commodore 64
-					DomainBlacklist.Add("System Bus");
-					DomainBlacklist.Add("1541 Bus");
+					domainBlacklist.Add("System Bus");
+					domainBlacklist.Add("1541 Bus");
 					break;
 
 				case "PCECD":   //PC-Engine CD / Turbo Grafx CD
@@ -229,10 +229,10 @@ namespace RTC
 
 					//TODO: Add more domains for cores like gamegear, atari, turbo graphx
 			}
-			return DomainBlacklist.ToArray();
+			return domainBlacklist.ToArray();
 		}
 
-		private static bool checkNesHeader(string filename)
+		private static bool CheckNesHeader(string filename)
 		{
 			byte[] buffer = new byte[4];
 			using (Stream fs = File.OpenRead(filename))
@@ -254,38 +254,38 @@ namespace RTC
 
 					//There's no easy way to discern NES from FDS so just check for the domain name
 					if (RTC_MemoryDomains.MemoryInterfaces.ContainsKey("PRG ROM"))
-						rp.primarydomain = "PRG ROM";
+						rp.PrimaryDomain = "PRG ROM";
 					else
 					{
-						rp.error = "Unfortunately, Bizhawk doesn't support editing the ROM (FDS Side) domain of FDS games. Maybe in a future version...";
+						rp.Error = "Unfortunately, Bizhawk doesn't support editing the ROM (FDS Side) domain of FDS games. Maybe in a future version...";
 						break;
 					}
 
 					if (RTC_MemoryDomains.MemoryInterfaces.ContainsKey("CHR VROM"))
-						rp.seconddomain = "CHR VROM";
+						rp.SecondDomain = "CHR VROM";
 					//Skip the first 16 bytes if there's an iNES header
-					if (checkNesHeader(romFilename))
-						rp.skipbytes = 16;
+					if (CheckNesHeader(romFilename))
+						rp.SkipBytes = 16;
 					break;
 
 				case "SNES":    //Super Nintendo
 					if (RTC_MemoryDomains.MemoryInterfaces.ContainsKey("SGB CARTROM")) //BSNES SGB Mode
-						rp.primarydomain = "SGB CARTROM";
+						rp.PrimaryDomain = "SGB CARTROM";
 					else
 					{
-						rp.primarydomain = "CARTROM";
+						rp.PrimaryDomain = "CARTROM";
 
-						long Filesize = new System.IO.FileInfo(romFilename).Length;
+						long filesize = new System.IO.FileInfo(romFilename).Length;
 
-						if (Filesize % 1024 != 0)
-							rp.skipbytes = 512;
+						if (filesize % 1024 != 0)
+							rp.SkipBytes = 512;
 					}
 
 					break;
 
 				case "LYNX":    //Atari Lynx
-					rp.primarydomain = "Cart A";
-					rp.skipbytes = 64;
+					rp.PrimaryDomain = "Cart A";
+					rp.SkipBytes = 64;
 					break;
 
 				case "N64":     //Nintendo 64
@@ -300,20 +300,20 @@ namespace RTC
 				case "WSWAN":   //Wonderswan
 				case "VB":      //Virtualboy
 				case "NGP":     //Neo Geo Pocket
-					rp.primarydomain = "ROM";
+					rp.PrimaryDomain = "ROM";
 					break;
 
 				case "GEN":     // Sega Genesis
 					if (RTC_MemoryDomains.MemoryInterfaces.ContainsKey("MD CART"))  //If it's regular Genesis or 32X
 					{
-						rp.primarydomain = "MD CART";
+						rp.PrimaryDomain = "MD CART";
 
 						if (romFilename.ToUpper().Contains(".SMD"))
-							rp.skipbytes = 512;
+							rp.SkipBytes = 512;
 					}
 					else
 					{    //If it's in Sega CD mode
-						rp.error = "Unfortunately, Bizhawk doesn't support editing the ISOs while it is running. Maybe in a future version...";
+						rp.Error = "Unfortunately, Bizhawk doesn't support editing the ISOs while it is running. Maybe in a future version...";
 					}
 					break;
 
@@ -321,10 +321,10 @@ namespace RTC
 				case "PCECD":   //PC Engine CD
 				case "SAT":     //Sega Saturn
 				case "PSX":     //Playstation
-					rp.error = "Unfortunately, Bizhawk doesn't support editing the ISOs while it is running. Maybe in a future version...";
+					rp.Error = "Unfortunately, Bizhawk doesn't support editing the ISOs while it is running. Maybe in a future version...";
 					break;
 				default:
-					rp.error = "The RTC devs haven't added support for this system. Go yell at them to make it work.";
+					rp.Error = "The RTC devs haven't added support for this system. Go yell at them to make it work.";
 					break;
 			}
 
@@ -339,7 +339,7 @@ namespace RTC
 			object[] returns;
 
 			if (!RTC_Core.isStandalone)
-				returns = (object[])getInterfaces();
+				returns = (object[])GetInterfaces();
 			else
 				returns = (object[])RTC_Core.SendCommandToBizhawk(new RTC_Command(CommandType.REMOTE_DOMAIN_GETDOMAINS), true);
 
@@ -366,7 +366,7 @@ namespace RTC
 			}
 		}
 
-		public static object getInterfaces()
+		public static object GetInterfaces()
 		{
 			Console.WriteLine($"{RTC_Core.RemoteRTC?.expectedSide.ToString()} -> getInterfaces()");
 
@@ -379,8 +379,8 @@ namespace RTC
 					MemoryInterfaces.Add(_domain.ToString(), new MemoryDomainProxy(_domain));
 
 			MainDomain = MDRI.MemoryDomains.MainMemory.ToString();
-			DataSize = (MemoryInterfaces[MainDomain] as MemoryDomainProxy).md.WordSize;
-			BigEndian = (MemoryInterfaces[MainDomain] as MemoryDomainProxy).md.EndianType == MemoryDomain.Endian.Big;
+			DataSize = ((MemoryDomainProxy)MemoryInterfaces[MainDomain]).md.WordSize;
+			BigEndian = ((MemoryDomainProxy)MemoryInterfaces[MainDomain]).md.EndianType == MemoryDomain.Endian.Big;
 
 			//RefreshDomains();
 
@@ -404,27 +404,26 @@ namespace RTC
 				RTC_Core.ecForm.lbMemoryDomains.Items.Clear();
 		}
 
-		public static MemoryDomainProxy getProxy(string _domain, long _address)
+		public static MemoryDomainProxy GetProxy(string domain, long address)
 		{
 			if (MemoryInterfaces.Count == 0)
 				RefreshDomains();
 
-			if (MemoryInterfaces.ContainsKey(_domain))
+			if (MemoryInterfaces.ContainsKey(domain))
 			{
-				MemoryInterface mi = MemoryInterfaces[_domain];
+				MemoryInterface mi = MemoryInterfaces[domain];
 				return (MemoryDomainProxy)mi;
 			}
-			else if (VmdPool.ContainsKey(_domain))
+			else if (VmdPool.ContainsKey(domain))
 			{
-				MemoryInterface mi = VmdPool[_domain];
-				var vmd = (mi as VirtualMemoryDomain);
-				return getProxy(vmd.getRealDomain(_address), vmd.getRealAddress(_address));
+				MemoryInterface mi = VmdPool[domain];
+				if (mi is VirtualMemoryDomain vmd)
+					return GetProxy(vmd.GetRealDomain(address), vmd.GetRealAddress(address));
 			}
-			else
-				return null;
+			return null;
 		}
 
-		public static MemoryInterface getInterface(string _domain)
+		public static MemoryInterface GetInterface(string _domain)
 		{
 			if (MemoryInterfaces.Count == 0)
 				RefreshDomains();
@@ -453,7 +452,7 @@ namespace RTC
 			if (address >= 0)
 			{
 				var watch = Watch.GenerateWatch(
-					getProxy(MainDomain, address).md,
+					GetProxy(MainDomain, address).md,
 					address,
 					WatchSize,
 					BizHawk.Client.Common.DisplayType.Hex,
@@ -467,25 +466,25 @@ namespace RTC
 			}
 		}
 
-		public static long getRealAddress(string domain, long address)
+		public static long GetRealAddress(string domain, long address)
 		{
 			if (domain.Contains("[V]"))
 			{
 				MemoryInterface mi = VmdPool[domain];
-				var vmd = (mi as VirtualMemoryDomain);
-				return vmd.getRealAddress(address);
+				VirtualMemoryDomain vmd = ((VirtualMemoryDomain)mi);
+				return vmd.GetRealAddress(address);
 			}
 			else
 				return address;
 		}
 
-		public static string getRealDomain(string domain, long address)
+		public static string GetRealDomain(string domain, long address)
 		{
 			if (domain.Contains("[V]"))
 			{
 				MemoryInterface mi = VmdPool[domain];
-				var vmd = (mi as VirtualMemoryDomain);
-				return vmd.getRealDomain(address);
+				VirtualMemoryDomain vmd = ((VirtualMemoryDomain)mi);
+				return vmd.GetRealDomain(address);
 			}
 			else
 				return domain;
@@ -493,7 +492,7 @@ namespace RTC
 
 		public static void GenerateVmdFromStashkey(StashKey sk)
 		{
-			var proto = new VmdPrototype(sk.BlastLayer);
+			VmdPrototype proto = new VmdPrototype(sk.BlastLayer);
 			AddVMD(proto);
 
 			RTC_Core.vmdPoolForm.RefreshVMDs();
@@ -509,7 +508,7 @@ namespace RTC
 			{
 				var token = RTC_NetCore.HugeOperationStart();
 
-				RTC_Core.SendCommandToBizhawk(new RTC_Command(CommandType.REMOTE_DOMAIN_VMD_ADD) { objectValue = VMD.proto }, true);
+				RTC_Core.SendCommandToBizhawk(new RTC_Command(CommandType.REMOTE_DOMAIN_VMD_ADD) { objectValue = VMD.Proto }, true);
 
 				RTC_NetCore.HugeOperationEnd(token);
 			}
@@ -540,11 +539,11 @@ namespace RTC
 				return;
 
 			RTC_Core.StopSound();
-			string Name = "";
+			string name = "";
 			string value = "";
-			if (RTC_Extensions.getInputBox("BlastLayer to VMD", "Enter the new VMD name:", ref value) == DialogResult.OK)
+			if (RTC_Extensions.GetInputBox("BlastLayer to VMD", "Enter the new VMD name:", ref value) == DialogResult.OK)
 			{
-				Name = value.Trim();
+				name = value.Trim();
 				RTC_Core.StartSound();
 			}
 			else
@@ -553,53 +552,44 @@ namespace RTC
 				return;
 			}
 
-			if (string.IsNullOrWhiteSpace(Name))
-				Name = RTC_Core.GetRandomKey();
+			if (string.IsNullOrWhiteSpace(name))
+				name = RTC_Core.GetRandomKey();
 
 			VirtualMemoryDomain VMD = (VirtualMemoryDomain)RTC_MemoryDomains.VmdPool[vmdName];
 
 			RemoveVMD(VMD);
-			VMD.name = Name;
-			VMD.proto.VmdName = Name;
+			VMD.Name = name;
+			VMD.Proto.VmdName = name;
 			AddVMD(VMD);
 		}
 
 		public static void generateActiveTableDump(string domain, string key)
 		{
 			var token = RTC_NetCore.HugeOperationStart("LAZY");
-			MemoryInterface mi;
-			mi = MemoryInterfaces[domain];
+			MemoryInterface mi = MemoryInterfaces[domain];
 
-			byte[] dump = new byte[mi.Size];
-			dump = mi.getDump();
+			byte[] dump = mi.GetDump();
 
 			File.WriteAllBytes(RTC_Core.rtcDir + "\\MEMORYDUMPS\\" + key + ".dmp", dump.ToArray());
 			RTC_NetCore.HugeOperationEnd(token);
 		}
 
-		public static byte[] getDomainData(string domain)
+		public static byte[] GetDomainData(string domain)
 		{
 			MemoryInterface mi;
 
-			if (domain.Contains("[V]"))
-			{
-				mi = VmdPool[domain];
-			}
-			else
-			{
-				mi = MemoryInterfaces[domain];
-			}
+			mi = domain.Contains("[V]") ? VmdPool[domain] : MemoryInterfaces[domain];
 
-			return mi.getDump();
+			return mi.GetDump();
 		}
 	}
 
 	public class RomParts
 	{
-		public string error = null;
-		public string primarydomain = null;
-		public string seconddomain = null;
-		public int skipbytes = 0;
+		public string Error = null;
+		public string PrimaryDomain = null;
+		public string SecondDomain = null;
+		public int SkipBytes = 0;
 	}
 
 	[Serializable()]
@@ -607,10 +597,10 @@ namespace RTC
 	{
 		public abstract long Size { get; set; }
 		public int WordSize { get; set; }
-		public string name { get; set; }
+		public string Name { get; set; }
 		public bool BigEndian { get; set; }
 
-		public abstract byte[] getDump();
+		public abstract byte[] GetDump();
 
 		public abstract byte[] PeekBytes(long startAddress, long endAddress);
 
@@ -634,11 +624,11 @@ namespace RTC
 		public int WordSize { get; set; }
 		public int PointerSpacer { get; set; }
 
-		public List<int> addSingles = new List<int>();
-		public List<int> removeSingles = new List<int>();
+		public List<int> AddSingles = new List<int>();
+		public List<int> RemoveSingles = new List<int>();
 
-		public List<int[]> addRanges = new List<int[]>();
-		public List<int[]> removeRanges = new List<int[]>();
+		public List<int[]> AddRanges = new List<int[]>();
+		public List<int[]> RemoveRanges = new List<int[]>();
 
 		public BlastLayer SuppliedBlastLayer = null;
 
@@ -652,7 +642,7 @@ namespace RTC
 			GenDomain = "Hybrid";
 
 			BlastUnit bu = bl.Layer[0];
-			var mi = RTC_MemoryDomains.getInterface(bu.Domain);
+			MemoryInterface mi = RTC_MemoryDomains.GetInterface(bu.Domain);
 			BigEndian = mi.BigEndian;
 			WordSize = mi.WordSize;
 			SuppliedBlastLayer = bl;
@@ -660,12 +650,14 @@ namespace RTC
 
 		public VirtualMemoryDomain Generate()
 		{
-			VirtualMemoryDomain VMD = new VirtualMemoryDomain();
+			VirtualMemoryDomain VMD = new VirtualMemoryDomain
+			{
+				Proto = this,
+				Name = VmdName,
+				BigEndian = BigEndian,
+				WordSize = WordSize
+			};
 
-			VMD.proto = this;
-			VMD.name = VmdName;
-			VMD.BigEndian = BigEndian;
-			VMD.WordSize = WordSize;
 
 			if (SuppliedBlastLayer != null)
 			{
@@ -675,14 +667,14 @@ namespace RTC
 
 			int addressCount = 0;
 
-			foreach (int[] range in addRanges)
+			foreach (int[] range in AddRanges)
 			{
 				int start = range[0];
 				int end = range[1];
 
 				for (int i = start; i < end; i++)
 				{
-					if (!isAddressInRanges(i, removeSingles, removeRanges))
+					if (!IsAddressInRanges(i, RemoveSingles, RemoveRanges))
 						if (PointerSpacer == 1 || addressCount % PointerSpacer == 0)
 						{
 							//VMD.MemoryPointers.Add(new Tuple<string, long>(Domain, i));
@@ -693,7 +685,7 @@ namespace RTC
 				}
 			}
 
-			foreach (int single in addSingles)
+			foreach (int single in AddSingles)
 			{
 				//VMD.MemoryPointers.Add(new Tuple<string, long>(Domain, single));
 				VMD.PointerDomains.Add(GenDomain);
@@ -704,17 +696,17 @@ namespace RTC
 			return VMD;
 		}
 
-		public bool isAddressInRanges(int Address, List<int> Singles, List<int[]> Ranges)
+		public bool IsAddressInRanges(int address, List<int> singles, List<int[]> ranges)
 		{
-			if (Singles.Contains(Address))
+			if (singles.Contains(address))
 				return true;
 
-			foreach (int[] range in Ranges)
+			foreach (int[] range in ranges)
 			{
 				int start = range[0];
 				int end = range[1];
 
-				if (Address >= start && Address < end)
+				if (address >= start && address < end)
 					return true;
 			}
 
@@ -730,9 +722,10 @@ namespace RTC
 		public List<string> PointerDomains = new List<string>();
 
 		public List<long> PointerAddresses = new List<long>();
-		public VmdPrototype proto;
+		public VmdPrototype Proto;
 
-		public override long Size { get { return PointerDomains.Count; } set { } }
+		public override long Size { get => PointerDomains.Count;
+			set { } }
 
 		public void AddFromBlastLayer(BlastLayer bl)
 		{
@@ -748,7 +741,7 @@ namespace RTC
 			}
 		}
 
-		public string getRealDomain(long address)
+		public string GetRealDomain(long address)
 		{
 			if (address < 0 || address >= PointerDomains.Count)
 				return null;
@@ -756,7 +749,7 @@ namespace RTC
 			return PointerDomains[(int)address];
 		}
 
-		public long getRealAddress(long address)
+		public long GetRealAddress(long address)
 		{
 			if (address < 0 || address >= PointerAddresses.Count)
 				return 0;
@@ -770,7 +763,7 @@ namespace RTC
 
 			using (MemoryStream serialized = new MemoryStream())
 			{
-				var binaryFormatter = new BinaryFormatter();
+				BinaryFormatter binaryFormatter = new BinaryFormatter();
 				binaryFormatter.Serialize(serialized, VMD);
 
 				using (MemoryStream input = new MemoryStream(serialized.ToArray()))
@@ -808,11 +801,11 @@ namespace RTC
 
 		public override string ToString()
 		{
-			return "[V]" + name;
+			return "[V]" + Name;
 			//Virtual Memory Domains always start with [V]
 		}
 
-		public override byte[] getDump()
+		public override byte[] GetDump()
 		{
 			return PeekBytes(0, Size);
 		}
@@ -829,28 +822,22 @@ namespace RTC
 
 		public override byte PeekByte(long address)
 		{
-			string targetDomain = getRealDomain(address);
-			long targetAddress = getRealAddress(address);
+			string targetDomain = GetRealDomain(address);
+			long targetAddress = GetRealAddress(address);
 
-			var mdp = RTC_MemoryDomains.getProxy(targetDomain, targetAddress);
+			MemoryDomainProxy mdp = RTC_MemoryDomains.GetProxy(targetDomain, targetAddress);
 
-			if (mdp == null)
-				return 0;
-
-			return mdp.PeekByte(targetAddress);
+			return mdp?.PeekByte(targetAddress) ?? 0;
 		}
 
 		public override void PokeByte(long address, byte value)
 		{
-			string targetDomain = getRealDomain(address);
-			long targetAddress = getRealAddress(address);
+			string targetDomain = GetRealDomain(address);
+			long targetAddress = GetRealAddress(address);
 
-			var mdp = RTC_MemoryDomains.getProxy(targetDomain, targetAddress);
+			MemoryDomainProxy mdp = RTC_MemoryDomains.GetProxy(targetDomain, targetAddress);
 
-			if (mdp == null)
-				return;
-
-			mdp.PokeByte(targetAddress, value);
+			mdp?.PokeByte(targetAddress, value);
 		}
 	}
 
@@ -908,20 +895,20 @@ namespace RTC
 			md = _md;
 			Size = md.Size;
 
-			name = md.ToString();
+			Name = md.ToString();
 
 			//Bizhawk always displays 8MB of ram even if only 4 are in use.
-			if (Global.Emulator is N64 && !(Global.Emulator as N64).UsingExpansionSlot && name == "RDRAM")
+			if (Global.Emulator is N64 && !(Global.Emulator as N64).UsingExpansionSlot && Name == "RDRAM")
 				Size = Size / 2;
 
 			WordSize = md.WordSize;
-			name = md.ToString();
+			Name = md.ToString();
 			BigEndian = _md.EndianType == MemoryDomain.Endian.Big;
 		}
 
 		public override string ToString()
 		{
-			return name;
+			return Name;
 		}
 
 		public void Detach()
@@ -931,14 +918,14 @@ namespace RTC
 
 		public void Reattach()
 		{
-			md = RTC_MemoryDomains.MDRI.MemoryDomains.FirstOrDefault(it => it.ToString() == name);
+			md = RTC_MemoryDomains.MDRI.MemoryDomains.FirstOrDefault(it => it.ToString() == Name);
 			Size = md.Size;
 			WordSize = md.WordSize;
-			name = md.ToString();
+			Name = md.ToString();
 			BigEndian = md.EndianType == MemoryDomain.Endian.Big;
 		}
 
-		public override byte[] getDump()
+		public override byte[] GetDump()
 		{
 			return PeekBytes(0, Size);
 		}
@@ -956,7 +943,7 @@ namespace RTC
 		public override byte PeekByte(long address)
 		{
 			if (md == null)
-				return (byte)RTC_Core.SendCommandToBizhawk(new RTC_Command(CommandType.REMOTE_DOMAIN_PEEKBYTE) { objectValue = new object[] { name, address } }, true);
+				return (byte)RTC_Core.SendCommandToBizhawk(new RTC_Command(CommandType.REMOTE_DOMAIN_PEEKBYTE) { objectValue = new object[] { Name, address } }, true);
 			else
 				return md.PeekByte(address);
 		}
@@ -964,7 +951,7 @@ namespace RTC
 		public override void PokeByte(long address, byte value)
 		{
 			if (md == null)
-				RTC_Core.SendCommandToBizhawk(new RTC_Command(CommandType.REMOTE_DOMAIN_POKEBYTE) { objectValue = new object[] { name, address, value } });
+				RTC_Core.SendCommandToBizhawk(new RTC_Command(CommandType.REMOTE_DOMAIN_POKEBYTE) { objectValue = new object[] { Name, address, value } });
 			else
 				md.PokeByte(address, value);
 		}

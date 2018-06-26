@@ -185,8 +185,8 @@ namespace RTC
 
 		public object Value
 		{
-			get { return getter(); }
-			set { setter(value); }
+			get => getter();
+			set => setter(value);
 		}
 	}
 }

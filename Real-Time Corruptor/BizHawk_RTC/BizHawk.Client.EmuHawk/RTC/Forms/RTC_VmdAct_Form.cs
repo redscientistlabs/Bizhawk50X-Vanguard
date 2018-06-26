@@ -192,7 +192,7 @@ namespace RTC
 
 			//	long domainSize = (long)RTC_Core.SendCommandToBizhawk(new RTC_Command(CommandType.REMOTE_DOMAIN_GETSIZE) { objectValue = cbSelectedMemoryDomain.SelectedItem.ToString()}, true);
 
-			MemoryInterface mi = RTC_MemoryDomains.getInterface(cbSelectedMemoryDomain.SelectedItem.ToString());
+			MemoryInterface mi = RTC_MemoryDomains.GetInterface(cbSelectedMemoryDomain.SelectedItem.ToString());
 			if(mi == null)
 			{
 				MessageBox.Show("The currently selected domain doesn't exist!\nMake sure you have the correct core loaded and you've refreshed the domains.");
@@ -200,7 +200,7 @@ namespace RTC
 			}
 
 
-			for (long i = 0; i < RTC_MemoryDomains.getInterface(cbSelectedMemoryDomain.SelectedItem.ToString()).Size; i++)
+			for (long i = 0; i < RTC_MemoryDomains.GetInterface(cbSelectedMemoryDomain.SelectedItem.ToString()).Size; i++)
 			{
 				newActiveTableActivity.Add(0);
 			}
@@ -241,7 +241,7 @@ namespace RTC
 
 		private void btnActiveTableAddDump_Click(object sender, EventArgs e)
 		{
-			if (cbSelectedMemoryDomain == null || RTC_MemoryDomains.getInterface(cbSelectedMemoryDomain.SelectedItem.ToString()).Size.ToString() == null)
+			if (cbSelectedMemoryDomain == null || RTC_MemoryDomains.GetInterface(cbSelectedMemoryDomain.SelectedItem.ToString()).Size.ToString() == null)
 			{
 				MessageBox.Show("Select a valid domain before continuing!");
 				return;
@@ -277,7 +277,7 @@ namespace RTC
 				btnActiveTableQuickSave.Enabled = true;
 				cbAutoAddDump.Enabled = true;
 			}
-			MemoryInterface mi = RTC_MemoryDomains.getInterface(cbSelectedMemoryDomain.SelectedItem.ToString());
+			MemoryInterface mi = RTC_MemoryDomains.GetInterface(cbSelectedMemoryDomain.SelectedItem.ToString());
 			if (mi == null)
 			{
 				MessageBox.Show("The currently selected domain doesn't exist!\nMake sure you have the correct core loaded and have refreshed the domains.");
@@ -500,7 +500,7 @@ namespace RTC
 				int lastaddress = -1;
 
 				proto.GenDomain = cbSelectedMemoryDomain.SelectedItem.ToString();
-				proto.VmdName = mi.name + " " + RTC_Core.GetRandomKey();
+				proto.VmdName = mi.Name + " " + RTC_Core.GetRandomKey();
 				proto.BigEndian = mi.BigEndian;
 				proto.WordSize = mi.WordSize;
 				proto.PointerSpacer = 1;
@@ -515,7 +515,7 @@ namespace RTC
 							lastaddress = safeaddress;
 							for (int i = 0; i < mi.WordSize; i++)
 							{
-								proto.addSingles.Add(safeaddress + i);
+								proto.AddSingles.Add(safeaddress + i);
 							}
 							//[] _addresses = { safeaddress, safeaddress + mi.WordSize };
 							//	proto.addRanges.Add(_addresses);
@@ -525,7 +525,7 @@ namespace RTC
 				else
 				{
 					foreach (int address in ActiveTableGenerated)
-						proto.addSingles.Add(address);
+						proto.AddSingles.Add(address);
 				}
 
 				VMD = proto.Generate();
@@ -557,7 +557,7 @@ namespace RTC
 
 		private void btnActiveTableGenerate_Click(object sender, EventArgs e)
 		{
-			if (cbSelectedMemoryDomain == null || RTC_MemoryDomains.getInterface(cbSelectedMemoryDomain.SelectedItem.ToString())?.Size.ToString() == null)
+			if (cbSelectedMemoryDomain == null || RTC_MemoryDomains.GetInterface(cbSelectedMemoryDomain.SelectedItem.ToString())?.Size.ToString() == null)
 			{
 				MessageBox.Show("Select a valid domain before continuing!");
 				return;

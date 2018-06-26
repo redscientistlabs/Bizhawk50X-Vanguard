@@ -12,10 +12,7 @@ namespace RTC
 
 		public static BlastUnit GetUnit()
 		{
-			if (CurrentAge >= MaxAge)
-				return AllDistortionBytes.Dequeue();
-			else
-				return null;
+			return CurrentAge >= MaxAge ? AllDistortionBytes.Dequeue() : null;
 		}
 
 		public static void AddUnit(BlastUnit bu)
@@ -23,27 +20,23 @@ namespace RTC
 			AllDistortionBytes.Enqueue(bu);
 		}
 
-		public static BlastUnit GenerateUnit(string _domain, long _address)
+		public static BlastUnit GenerateUnit(string domain, long address)
 		{
 			// Randomly selects a memory operation according to the selected algorithm
 
 			try
 			{
-				MemoryDomainProxy mdp = RTC_MemoryDomains.getProxy(_domain, _address);
+				MemoryDomainProxy mdp = RTC_MemoryDomains.GetProxy(domain, address);
 				BlastByteType Type = BlastByteType.SET;
 
-				byte[] _value; ;
-				if (RTC_Core.CustomPrecision == -1)
-					_value = new byte[mdp.WordSize];
-				else
-					_value = new byte[RTC_Core.CustomPrecision];
+				byte[] value = RTC_Core.CustomPrecision == -1 ? new byte[mdp.WordSize] : new byte[RTC_Core.CustomPrecision];
 
-				for (int i = 0; i < _value.Length; i++)
-					_value[i] = 1;
+				for (int i = 0; i < value.Length; i++)
+					value[i] = 1;
 
-				long safeAddress = _address - (_address % _value.Length);
+				long safeAddress = address - (address % value.Length);
 
-				BlastByte bb = new BlastByte(_domain, safeAddress, Type, _value, mdp.BigEndian, true);
+				BlastByte bb = new BlastByte(domain, safeAddress, Type, value, mdp.BigEndian, true);
 				return bb.GetBackup();
 			}
 			catch (Exception ex)

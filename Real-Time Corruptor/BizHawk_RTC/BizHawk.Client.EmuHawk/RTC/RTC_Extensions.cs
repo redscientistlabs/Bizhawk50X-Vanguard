@@ -17,7 +17,7 @@ namespace RTC
 {
 	public static class RTC_Extensions
 	{
-		public static DialogResult getInputBox(string title, string promptText, ref string value)
+		public static DialogResult GetInputBox(string title, string promptText, ref string value)
 		{
 			Form form = new Form();
 			Label label = new Label();
@@ -58,8 +58,51 @@ namespace RTC
 			value = textBox.Text;
 			return dialogResult;
 		}
+		public static DialogResult GetInputBox(string title, string promptText, ref decimal value, bool hex = false, UInt64 maximum = UInt64.MaxValue)
+		{
+			Form form = new Form();
+			Label label = new Label();
+			NumericUpDownHexFix updown = new NumericUpDownHexFix();
+			Button buttonOk = new Button();
+			Button buttonCancel = new Button();
 
-		public static DialogResult getComboInputBox(string title, string promptText, string[] options, ref string value)
+			updown.Hexadecimal = hex;
+			updown.Maximum = maximum;
+
+			form.Text = title;
+			label.Text = promptText;
+			updown.Value = value;
+
+			buttonOk.Text = "OK";
+			buttonCancel.Text = "Cancel";
+			buttonOk.DialogResult = DialogResult.OK;
+			buttonCancel.DialogResult = DialogResult.Cancel;
+
+			label.SetBounds(9, 20, 372, 13);
+			updown.SetBounds(12, 36, 372, 20);
+			buttonOk.SetBounds(228, 72, 75, 23);
+			buttonCancel.SetBounds(309, 72, 75, 23);
+
+			label.AutoSize = true;
+			updown.Anchor = updown.Anchor | AnchorStyles.Right;
+			buttonOk.Anchor = AnchorStyles.Bottom | AnchorStyles.Right;
+			buttonCancel.Anchor = AnchorStyles.Bottom | AnchorStyles.Right;
+
+			form.ClientSize = new Size(396, 107);
+			form.Controls.AddRange(new Control[] { label, updown, buttonOk, buttonCancel });
+			form.ClientSize = new Size(Math.Max(300, label.Right + 10), form.ClientSize.Height);
+			form.FormBorderStyle = FormBorderStyle.FixedDialog;
+			form.StartPosition = FormStartPosition.CenterScreen;
+			form.MinimizeBox = false;
+			form.MaximizeBox = false;
+			form.AcceptButton = buttonOk;
+			form.CancelButton = buttonCancel;
+
+			DialogResult dialogResult = form.ShowDialog();
+			value = updown.Value;
+			return dialogResult;
+		}
+		public static DialogResult GetComboInputBox(string title, string promptText, string[] options, ref string value)
 		{
 			Form form = new Form();
 			Label label = new Label();
@@ -104,51 +147,6 @@ namespace RTC
 
 			DialogResult dialogResult = form.ShowDialog();
 			value = comboBox.SelectedItem.ToString();
-			return dialogResult;
-		}
-
-		public static DialogResult getInputBox(string title, string promptText, ref decimal value, bool hex = false, UInt64 maximum = UInt64.MaxValue)
-		{
-			Form form = new Form();
-			Label label = new Label();
-			NumericUpDownHexFix updown = new NumericUpDownHexFix();
-			Button buttonOk = new Button();
-			Button buttonCancel = new Button();
-
-			updown.Hexadecimal = hex;
-			updown.Maximum = maximum;
-
-			form.Text = title;
-			label.Text = promptText;
-			updown.Value = value;
-
-			buttonOk.Text = "OK";
-			buttonCancel.Text = "Cancel";
-			buttonOk.DialogResult = DialogResult.OK;
-			buttonCancel.DialogResult = DialogResult.Cancel;
-
-			label.SetBounds(9, 20, 372, 13);
-			updown.SetBounds(12, 36, 372, 20);
-			buttonOk.SetBounds(228, 72, 75, 23);
-			buttonCancel.SetBounds(309, 72, 75, 23);
-
-			label.AutoSize = true;
-			updown.Anchor = updown.Anchor | AnchorStyles.Right;
-			buttonOk.Anchor = AnchorStyles.Bottom | AnchorStyles.Right;
-			buttonCancel.Anchor = AnchorStyles.Bottom | AnchorStyles.Right;
-
-			form.ClientSize = new Size(396, 107);
-			form.Controls.AddRange(new Control[] { label, updown, buttonOk, buttonCancel });
-			form.ClientSize = new Size(Math.Max(300, label.Right + 10), form.ClientSize.Height);
-			form.FormBorderStyle = FormBorderStyle.FixedDialog;
-			form.StartPosition = FormStartPosition.CenterScreen;
-			form.MinimizeBox = false;
-			form.MaximizeBox = false;
-			form.AcceptButton = buttonOk;
-			form.CancelButton = buttonCancel;
-
-			DialogResult dialogResult = form.ShowDialog();
-			value = updown.Value;
 			return dialogResult;
 		}
 
@@ -308,7 +306,7 @@ namespace RTC
 			return rightMostCarryFlag;
 		}
 
-		public static ulong getNumericMaxValue(byte[] Value)
+		public static ulong GetNumericMaxValue(byte[] Value)
 		{
 			switch (Value.Length)
 			{
@@ -325,42 +323,42 @@ namespace RTC
 			return 0;
 		}
 
-		public static decimal getDecimalValue(byte[] Value, bool NeedsBytesFlipped)
+		public static decimal GetDecimalValue(byte[] value, bool needsBytesFlipped)
 		{
-			byte[] _Value = (byte[])Value.Clone();
+			byte[] _value = (byte[])value.Clone();
 
-			if (NeedsBytesFlipped)
-				Array.Reverse(_Value);
+			if (needsBytesFlipped)
+				Array.Reverse(_value);
 
-			switch (Value.Length)
+			switch (value.Length)
 			{
 				case 1:
-					return (int)_Value[0];
+					return (int)_value[0];
 				case 2:
-					return BitConverter.ToUInt16(_Value, 0);
+					return BitConverter.ToUInt16(_value, 0);
 				case 4:
-					return BitConverter.ToUInt32(_Value, 0);
+					return BitConverter.ToUInt32(_value, 0);
 				case 8:
-					return BitConverter.ToUInt64(_Value, 0);
+					return BitConverter.ToUInt64(_value, 0);
 			}
 
 			return 0;
 		}
 
-		public static byte[] addValueToByteArray(byte[] originalValue, decimal addValue, bool isInputBigEndian)
+		public static byte[] AddValueToByteArray(byte[] originalValue, decimal addValue, bool isInputBigEndian)
 		{
-			byte[] _Value = (byte[])originalValue.Clone();
+			byte[] value = (byte[])originalValue.Clone();
 
 			if (isInputBigEndian)
-				Array.Reverse(_Value);
+				Array.Reverse(value);
 
 			bool isAdd = addValue >= 0;
 			decimal decimalAddValueAbs = Math.Abs(addValue);
 
-			switch (_Value.Length)
+			switch (value.Length)
 			{
 				case 1:
-					byte byteValue = _Value[0];
+					byte byteValue = value[0];
 					byte addByteValue = (decimalAddValueAbs > byte.MaxValue ? byte.MaxValue : Convert.ToByte(decimalAddValueAbs));
 
 					if (isAdd)
@@ -372,7 +370,7 @@ namespace RTC
 
 				case 2:
 					{
-						UInt16 int16Value = BitConverter.ToUInt16(_Value, 0);
+						UInt16 int16Value = BitConverter.ToUInt16(value, 0);
 						UInt16 addInt16Value = (decimalAddValueAbs > UInt16.MaxValue ? UInt16.MaxValue : Convert.ToUInt16(decimalAddValueAbs));
 
 						if (isAdd)
@@ -389,7 +387,7 @@ namespace RTC
 					}
 				case 4:
 					{
-						UInt32 int32Value = BitConverter.ToUInt32(_Value, 0);
+						UInt32 int32Value = BitConverter.ToUInt32(value, 0);
 						UInt32 addInt32Value = (decimalAddValueAbs > UInt32.MaxValue ? UInt32.MaxValue : Convert.ToUInt32(decimalAddValueAbs));
 
 						if (isAdd)
@@ -406,7 +404,7 @@ namespace RTC
 					}
 				case 8:
 					{
-						UInt64 int64Value = BitConverter.ToUInt64(_Value, 0);
+						UInt64 int64Value = BitConverter.ToUInt64(value, 0);
 						UInt64 addInt64Value = (decimalAddValueAbs > UInt64.MaxValue ? UInt64.MaxValue : Convert.ToUInt64(decimalAddValueAbs));
 
 						if (isAdd)
@@ -425,12 +423,12 @@ namespace RTC
 			return null;
 		}
 
-		private static decimal mod(decimal x, long m)
+		private static decimal Mod(decimal x, long m)
 		{
 			return (x % m + m) % m;
 		}
 
-		public static byte[] getByteArrayValue(int precision, decimal newValue, bool needsBytesFlipped = false)
+		public static byte[] GetByteArrayValue(int precision, decimal newValue, bool needsBytesFlipped = false)
 		{
 			switch (precision)
 			{
@@ -438,24 +436,24 @@ namespace RTC
 					return new byte[] { (byte)newValue };
 				case 2:
 					{
-						byte[] Value = BitConverter.GetBytes(Convert.ToUInt16(newValue));
+						byte[] value = BitConverter.GetBytes(Convert.ToUInt16(newValue));
 						if (needsBytesFlipped)
-							Array.Reverse(Value);
-						return Value;
+							Array.Reverse(value);
+						return value;
 					}
 				case 4:
 					{
-						byte[] Value = BitConverter.GetBytes(Convert.ToUInt32(newValue));
+						byte[] value = BitConverter.GetBytes(Convert.ToUInt32(newValue));
 						if (needsBytesFlipped)
-							Array.Reverse(Value);
-						return Value;
+							Array.Reverse(value);
+						return value;
 					}
 			}
 
 			return null;
 		}
 
-		public static byte[] getByteArrayValue(int precision, long newValue, bool needsBytesFlipped = false)
+		public static byte[] GetByteArrayValue(int precision, long newValue, bool needsBytesFlipped = false)
 		{
 			switch (precision)
 			{
@@ -463,17 +461,17 @@ namespace RTC
 					return new byte[] { (byte)newValue };
 				case 2:
 					{
-						byte[] Value = BitConverter.GetBytes(Convert.ToUInt16(newValue));
+						byte[] value = BitConverter.GetBytes(Convert.ToUInt16(newValue));
 						if (needsBytesFlipped)
-							Array.Reverse(Value);
-						return Value;
+							Array.Reverse(value);
+						return value;
 					}
 				case 4:
 					{
-						byte[] Value = BitConverter.GetBytes(Convert.ToUInt32(newValue));
+						byte[] value = BitConverter.GetBytes(Convert.ToUInt32(newValue));
 						if (needsBytesFlipped)
-							Array.Reverse(Value);
-						return Value;
+							Array.Reverse(value);
+						return value;
 					}
 			}
 
@@ -486,7 +484,7 @@ namespace RTC
 
 			for (int i = 0; i < arrayClone.Length; i++)
 				array[i] = arrayClone[(arrayClone.Length - 1) - i];
-			///	return array;
+			//	return array;
 		}
 
 		#endregion BYTE ARRAY EXTENSIONS

@@ -68,15 +68,12 @@ namespace RTC
 			if (btnAutoCorrupt.ForeColor == Color.Silver)
 				return;
 
-			if (!this.AutoCorrupt)
-				this.AutoCorrupt = true;
-			else
-				this.AutoCorrupt = false;
+			this.AutoCorrupt = !this.AutoCorrupt;
 		}
 
 		private void RTC_Form_Load(object sender, EventArgs e)
 		{
-			btnLogo.Text = "    Version " + RTC_Core.RtcVersion;
+			btnLogo.Text = "   Version " + RTC_Core.RtcVersion;
 
 			if (!RTC_Params.IsParamSet("DISCLAIMER_READ"))
 			{
@@ -240,27 +237,27 @@ namespace RTC
 		private void btnLogo_MouseClick(object sender, MouseEventArgs e)
 		{
 			if (RTC_Core.isStandalone)
-				showPanelForm(RTC_Core.csForm, false);
+				ShowPanelForm(RTC_Core.csForm, false);
 		}
 
 		private void btnEasyMode_MouseDown(object sender, MouseEventArgs e)
 		{
-			Point locate = new Point((sender as Button).Location.X + e.Location.X, (sender as Button).Location.Y + e.Location.Y);
+			Point locate = new Point(((Button)sender).Location.X + e.Location.X, ((Button)sender).Location.Y + e.Location.Y);
 
-			ContextMenuStrip EasyButtonMenu = new ContextMenuStrip();
-			EasyButtonMenu.Items.Add("Start with Recommended Settings", null, new EventHandler(btnEasyModeTemplate_Click));
-			EasyButtonMenu.Items.Add(new ToolStripSeparator());
+			ContextMenuStrip easyButtonMenu = new ContextMenuStrip();
+			easyButtonMenu.Items.Add("Start with Recommended Settings", null, new EventHandler(btnEasyModeTemplate_Click));
+			easyButtonMenu.Items.Add(new ToolStripSeparator());
 			//EasyButtonMenu.Items.Add("Watch a tutorial video", null, new EventHandler((ob,ev) => Process.Start("https://www.youtube.com/watch?v=sIELpn4-Umw"))).Enabled = false;
-			EasyButtonMenu.Items.Add("Open the online wiki", null, new EventHandler((ob, ev) => Process.Start("https://corrupt.wiki/")));
-			EasyButtonMenu.Show(this, locate);
+			easyButtonMenu.Items.Add("Open the online wiki", null, new EventHandler((ob, ev) => Process.Start("https://corrupt.wiki/")));
+			easyButtonMenu.Show(this, locate);
 		}
 
 		public void GhostBoxInvisible(Control ctrl)
 		{
 			Panel pn = new Panel();
-			var col = ctrl.Parent.BackColor;
+			Color col = ctrl.Parent.BackColor;
 			pn.BorderStyle = BorderStyle.None;
-			pn.BackColor = RTC_Extensions.ChangeColorBrightness(col, -0.10f);
+			pn.BackColor = col.ChangeColorBrightness(-0.10f);
 			pn.Tag = "GHOST";
 			pn.Location = ctrl.Location;
 			pn.Size = ctrl.Size;
@@ -279,9 +276,9 @@ namespace RTC
 				Controls.Remove(ctrl);
 		}
 
-		public void showPanelForm(Form frm, bool HideButtons = true)
+		public void ShowPanelForm(Form frm, bool hideButtons = true)
 		{
-			if (HideButtons && frm is RTC_ConnectionStatus_Form)
+			if (hideButtons && frm is RTC_ConnectionStatus_Form)
 			{
 				GhostBoxInvisible(btnEasyMode);
 				GhostBoxInvisible(btnEngineConfig);
@@ -324,9 +321,9 @@ namespace RTC
 				frm.Show();
 			}
 
-			if (!(frm is RTC_ConnectionStatus_Form) || !HideButtons)
+			if (!(frm is RTC_ConnectionStatus_Form) || !hideButtons)
 			{
-				if (!(frm is RTC_Settings_Form) || !HideButtons)
+				if (!(frm is RTC_Settings_Form) || !hideButtons)
 				{
 					btnEasyMode.Visible = true;
 					btnEngineConfig.Visible = true;
@@ -344,18 +341,18 @@ namespace RTC
 			}
 		}
 
-		public void btnEngineConfig_Click(object sender, EventArgs e) => showPanelForm(RTC_Core.ecForm);
+		public void btnEngineConfig_Click(object sender, EventArgs e) => ShowPanelForm(RTC_Core.ecForm);
 
-		private void btnSettings_Click(object sender, EventArgs e) => showPanelForm(RTC_Core.sForm);
+		private void btnSettings_Click(object sender, EventArgs e) => ShowPanelForm(RTC_Core.sForm);
 
-		private void btnStockPilePlayer_Click(object sender, EventArgs e) => showPanelForm(RTC_Core.spForm);
+		private void btnStockPilePlayer_Click(object sender, EventArgs e) => ShowPanelForm(RTC_Core.spForm);
 
 		private void btnRTCMultiplayer_Click(object sender, EventArgs e)
 		{
 			if (RTC_Core.isStandalone)
 				MessageBox.Show("Multiplayer unsupported in Detached mode");
 			else
-				showPanelForm(RTC_Core.multiForm);
+				ShowPanelForm(RTC_Core.multiForm);
 		}
 
 		private void btnGpJumpBack_Click(object sender, EventArgs e)
@@ -369,8 +366,7 @@ namespace RTC
 
 				StashKey sk = RTC_StockpileManager.allBackupStates.Pop();
 
-				if (sk != null)
-					sk.Run();
+				sk?.Run();
 
 				RTC_GameProtection.Reset();
 			}
@@ -408,7 +404,7 @@ namespace RTC
 		{
 			if (e.Button == MouseButtons.Right)
 			{
-				Point locate = new Point((sender as Control).Location.X + e.Location.X, (sender as Control).Location.Y + e.Location.Y);
+				Point locate = new Point(((Control)sender).Location.X + e.Location.X, ((Control)sender).Location.Y + e.Location.Y);
 
 				ContextMenuStrip columnsMenu = new ContextMenuStrip();
 				columnsMenu.Items.Add("Blast + Send RAW To Stash (Glitch Harvester)", null, new EventHandler((ob, ev) =>
@@ -433,7 +429,7 @@ namespace RTC
 		{
 			RTC_NetCore.HugeOperationReset();
 
-			showPanelForm(RTC_Core.csForm);
+			ShowPanelForm(RTC_Core.csForm);
 
 			RTC.RTC_RPC.Heartbeat = false;
 			RTC.RTC_Core.coreForm.pbAutoKillSwitchTimeout.Value = RTC.RTC_Core.coreForm.pbAutoKillSwitchTimeout.Maximum;

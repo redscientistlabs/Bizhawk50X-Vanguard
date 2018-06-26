@@ -7,26 +7,21 @@ namespace RTC
 	{
 		//The freeze engine is very similar to the Hellgenie and shares common functions with it. See RTC_HellgenieEngine.cs for cheat-related methods.
 
-		public static BlastCheat GenerateUnit(string _domain, long _address)
+		public static BlastCheat GenerateUnit(string domain, long address)
 		{
 			try
 			{
-				MemoryDomainProxy mdp = RTC_MemoryDomains.getProxy(_domain, _address);
+				MemoryDomainProxy mdp = RTC_MemoryDomains.GetProxy(domain, address);
 				BizHawk.Client.Common.DisplayType _displaytype = BizHawk.Client.Common.DisplayType.Unsigned;
 
-				byte[] _value;
-				if (RTC_Core.CustomPrecision == -1)
-					_value = new byte[mdp.WordSize];
-				else
-					_value = new byte[RTC_Core.CustomPrecision];
+				byte[] value = RTC_Core.CustomPrecision == -1 ? new byte[mdp.WordSize] : new byte[RTC_Core.CustomPrecision];
 
-				long safeAddress = _address - (_address % _value.Length);
+				long safeAddress = address - (address % value.Length);
 
-				for (int i = 0; i < _value.Length; i++)
-					_value[i] = 0;
-				//_value[i] = mdp.PeekByte(safeAddress + i);
+				for (int i = 0; i < value.Length; i++)
+					value[i] = 0;
 
-				return new BlastCheat(_domain, safeAddress, _displaytype, mdp.BigEndian, _value, true, true);
+				return new BlastCheat(domain, safeAddress, _displaytype, mdp.BigEndian, value, true, true);
 			}
 			catch (Exception ex)
 			{

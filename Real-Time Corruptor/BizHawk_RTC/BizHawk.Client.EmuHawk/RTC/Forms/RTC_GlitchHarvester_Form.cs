@@ -498,7 +498,7 @@ namespace RTC
 
 			if (askForName)
 			{
-				if (RTC_Extensions.getInputBox("Glitch Harvester", "Enter the new Stash name:", ref value) == DialogResult.OK)
+				if (RTC_Extensions.GetInputBox("Glitch Harvester", "Enter the new Stash name:", ref value) == DialogResult.OK)
 				{
 					Name = value.Trim();
 					RTC_Core.StartSound();
@@ -921,7 +921,7 @@ namespace RTC
 		{
 			string value = "";
 
-			if (RTC_Extensions.getInputBox("Glitch Harvester", "Enter the new Stash name:", ref value) == DialogResult.OK)
+			if (RTC_Extensions.GetInputBox("Glitch Harvester", "Enter the new Stash name:", ref value) == DialogResult.OK)
 			{
 				sk.Alias = value.Trim();
 			}
@@ -1344,16 +1344,16 @@ namespace RTC
 						e.RowIndex >= 0)
 					{
 						StashKey sk = (StashKey)senderGrid.Rows[e.RowIndex].Cells["Item"].Value;
-						if (RTC_NoteEditor_Form.currentlyOpenNoteForm == null)
+						if (RTC_NoteEditor_Form.CurrentlyOpenNoteForm == null)
 						{
-							RTC_NoteEditor_Form.currentlyOpenNoteForm = new RTC_NoteEditor_Form(sk.Note, "GlitchHarvester", sk);
+							RTC_NoteEditor_Form.CurrentlyOpenNoteForm = new RTC_NoteEditor_Form(sk.Note, "GlitchHarvester", sk);
 						}
 						else
 						{
-							if (RTC_NoteEditor_Form.currentlyOpenNoteForm.Visible)
-								RTC_NoteEditor_Form.currentlyOpenNoteForm.Close();
+							if (RTC_NoteEditor_Form.CurrentlyOpenNoteForm.Visible)
+								RTC_NoteEditor_Form.CurrentlyOpenNoteForm.Close();
 
-							RTC_NoteEditor_Form.currentlyOpenNoteForm = new RTC_NoteEditor_Form(sk.Note, "GlitchHarvester", sk);
+							RTC_NoteEditor_Form.CurrentlyOpenNoteForm = new RTC_NoteEditor_Form(sk.Note, "GlitchHarvester", sk);
 						}
 
 						return;

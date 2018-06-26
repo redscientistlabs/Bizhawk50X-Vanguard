@@ -4,9 +4,9 @@ namespace RTC
 {
 	public static class RTC_NetCoreSettings
 	{
-		public static SoundPlayer[] loadedSounds = null;
+		public static SoundPlayer[] LoadedSounds = null;
 
-		public static void changeNetCoreSettings(string setting)
+		public static void ChangeNetCoreSettings(string setting)
 		{
 			if (RTC_Core.isStandalone && RTC_Core.sForm.cbNetCoreCommandTimeout.SelectedItem.ToString() == setting)
 				return;
@@ -45,6 +45,8 @@ namespace RTC
 						RTC_Core.coreForm.pbAutoKillSwitchTimeout.Maximum = int.MaxValue;
 
 					break;
+				default:
+					break;
 			}
 
 			RTC_NetCore.KeepAliveCounter = RTC_NetCore.DefaultKeepAliveCounter;
@@ -52,8 +54,8 @@ namespace RTC
 
 		public static void PlayCrashSound(bool forcePlay = false)
 		{
-			if (loadedSounds != null && (forcePlay || RTC_Core.csForm.btnStartEmuhawkDetached.Text == "Restart BizHawk"))
-				loadedSounds[RTC_Core.RND.Next(loadedSounds.Length)].Play();
+			if (LoadedSounds != null && (forcePlay || RTC_Core.csForm.btnStartEmuhawkDetached.Text == "Restart BizHawk"))
+				LoadedSounds[RTC_Core.RND.Next(LoadedSounds.Length)].Play();
 		}
 	}
 }

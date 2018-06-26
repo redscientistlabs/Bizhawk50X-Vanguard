@@ -26,13 +26,12 @@ namespace RTC
 		{
 			try
 			{
-				MemoryDomainProxy mdp = RTC_MemoryDomains.getProxy(domain, address);
+				MemoryDomainProxy mdp = RTC_MemoryDomains.GetProxy(domain, address);
 
-				byte[] _value = new byte[precision];
-				byte[] _temp = new byte[precision];
+				byte[] value = new byte[precision];
 				long destAddress = 0;
 
-				long safeAddress = address - address % _value.Length;
+				long safeAddress = address - address % value.Length;
 
 				if (safeAddress >= mdp.Size)
 					return null;
@@ -57,6 +56,8 @@ namespace RTC
 					case BGBlastPipeModes.DEST_RANDOM:
 						destAddress = RTC_Core.RND.Next(0, Convert.ToInt32(mdp.Size - 1));
 						break;
+					default:
+						throw new ArgumentOutOfRangeException(nameof(mode), mode, null);
 				}
 
 				if (destAddress >= mdp.Size)

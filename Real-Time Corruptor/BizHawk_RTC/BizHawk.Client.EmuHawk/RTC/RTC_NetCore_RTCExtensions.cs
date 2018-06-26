@@ -253,16 +253,16 @@ namespace RTC
 
 				case CommandType.REMOTE_DOMAIN_PEEKBYTE:
 					cmdBack = new RTC_Command(CommandType.RETURNVALUE);
-					cmdBack.objectValue = RTC_MemoryDomains.getInterface((string)(cmd.objectValue as object[])[0]).PeekByte((long)(cmd.objectValue as object[])[1]);
+					cmdBack.objectValue = RTC_MemoryDomains.GetInterface((string)(cmd.objectValue as object[])[0]).PeekByte((long)(cmd.objectValue as object[])[1]);
 					break;
 
 				case CommandType.REMOTE_DOMAIN_POKEBYTE:
-					RTC_MemoryDomains.getInterface((string)(cmd.objectValue as object[])[0]).PokeByte((long)(cmd.objectValue as object[])[1], (byte)(cmd.objectValue as object[])[2]);
+					RTC_MemoryDomains.GetInterface((string)(cmd.objectValue as object[])[0]).PokeByte((long)(cmd.objectValue as object[])[1], (byte)(cmd.objectValue as object[])[2]);
 					break;
 
 				case CommandType.REMOTE_DOMAIN_GETDOMAINS:
 					cmdBack = new RTC_Command(CommandType.RETURNVALUE);
-					cmdBack.objectValue = RTC_MemoryDomains.getInterfaces();
+					cmdBack.objectValue = RTC_MemoryDomains.GetInterfaces();
 
 					break;
 
@@ -297,7 +297,7 @@ namespace RTC
 						var key = (string)(cmd.objectValue as object[])[1];
 						var sk = (StashKey)((cmd.objectValue as object[])[0]);
 						RTC_StockpileManager.SavestateStashkeyDico[key] = sk;
-						RTC_Core.ghForm.refreshSavestateTextboxes();
+						RTC_Core.ghForm.RefreshSavestateTextboxes();
 					}
 					break;
 
@@ -349,9 +349,9 @@ namespace RTC
 					string domain = (string)(cmd.objectValue as object[])[0];
 					long address = (long)(cmd.objectValue as object[])[1];
 
-					long realAddress = RTC_MemoryDomains.getRealAddress(domain, address);
+					long realAddress = RTC_MemoryDomains.GetRealAddress(domain, address);
 
-					MemoryDomainProxy mdp = RTC_MemoryDomains.getProxy(domain, address);
+					MemoryDomainProxy mdp = RTC_MemoryDomains.GetProxy(domain, address);
 					GlobalWin.Tools.HexEditor.SetDomain(mdp.md);
 					GlobalWin.Tools.HexEditor.GoToAddress(realAddress);
 					break;
@@ -463,7 +463,7 @@ namespace RTC
 					RTC_Core.AutoCorrupt = false;
 					//RTC_StockpileManager.isCorruptionApplied = false;
 					RTC_Core.ecForm.RefreshDomains();
-					RTC_Core.ecForm.setMemoryDomainsAllButSelectedDomains(RTC_MemoryDomains.GetBlacklistedDomains());
+					RTC_Core.ecForm.SetMemoryDomainsAllButSelectedDomains(RTC_MemoryDomains.GetBlacklistedDomains());
 					RTC_Core.ecForm.lbCoreDefault.Text = $"Core default: { RTC_MemoryDomains.MemoryInterfaces[RTC_MemoryDomains.MainDomain].WordSize * 8}-bit";
 					break;
 				case CommandType.REMOTE_EVENT_LOADGAMEDONE_SAMEGAME:
@@ -487,7 +487,7 @@ namespace RTC
 
 					RTC_Core.SendCommandToBizhawk(new RTC_Command(CommandType.REMOTE_PUSHPARAMS) { objectValue = new RTC_Params() }, true, true);
 
-					RTC_Core.SendCommandToBizhawk(new RTC_Command(CommandType.REMOTE_PUSHVMDS) { objectValue = RTC_MemoryDomains.VmdPool.Values.Select(it => (it as VirtualMemoryDomain).proto).ToArray() }, true, true);
+					RTC_Core.SendCommandToBizhawk(new RTC_Command(CommandType.REMOTE_PUSHVMDS) { objectValue = RTC_MemoryDomains.VmdPool.Values.Select(it => (it as VirtualMemoryDomain).Proto).ToArray() }, true, true);
 
 					Thread.Sleep(100);
 

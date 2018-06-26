@@ -14,7 +14,7 @@ namespace RTC
 
 		// Here are the keywords for searching hooks and fixes: //RTC_HIJACK
 
-		static bool DisableRTC;
+		static bool disableRTC;
 		public static bool isRemoteRTC = false;
 		public static bool isNormalAdvance = false;
 		private static Guid? loadGameToken = null;
@@ -28,7 +28,7 @@ namespace RTC
 
 		public static void CPU_STEP(bool _isRewinding, bool _isFastForwarding, bool _isPaused)
 		{
-			if (DisableRTC || Global.Emulator is NullEmulator)
+			if (disableRTC || Global.Emulator is NullEmulator)
 				return;
 
 			isNormalAdvance = !(_isRewinding || _isFastForwarding || _isPaused);
@@ -49,17 +49,17 @@ namespace RTC
 
 		private static void STEP_PAUSED()
 		{
-			if (DisableRTC) return;
+			if (disableRTC) return;
 		}
 
 		private static void STEP_FORWARD()
 		{
-			if (DisableRTC) return;
+			if (disableRTC) return;
 		}
 
 		private static void STEP_REWIND()
 		{
-			if (DisableRTC) return;
+			if (disableRTC) return;
 
 			if (RTC_Core.ClearCheatsOnRewind)
 				RTC_HellgenieEngine.ClearCheats();
@@ -70,12 +70,12 @@ namespace RTC
 
 		private static void STEP_FASTFORWARD()
 		{
-			if (DisableRTC) return;
+			if (disableRTC) return;
 		}
 
 		private static void STEP_CORRUPT(bool _isRewinding, bool _isFastForwarding, bool _isPaused)
 		{
-			if (DisableRTC) return;
+			if (disableRTC) return;
 
 			if (!_isRewinding && !_isPaused)
 				if (RTC_PipeEngine.ProcessOnStep)
@@ -107,13 +107,13 @@ namespace RTC
 
 			RTC_Core.args = args;
 
-			DisableRTC = RTC_Core.args.Contains("-DISABLERTC");
+			disableRTC = RTC_Core.args.Contains("-DISABLERTC");
 			isRemoteRTC = RTC_Core.args.Contains("-REMOTERTC");
 		}
 
 		public static void MAINFORM_FORM_LOAD_END()
 		{
-			if (DisableRTC) return;
+			if (disableRTC) return;
 
 			//RTC_Hooks.LOAD_GAME_DONE();
 
@@ -128,21 +128,21 @@ namespace RTC
 
 		public static void MAINFORM_RESIZEEND()
 		{
-			if (DisableRTC) return;
+			if (disableRTC) return;
 
 			RTC_Params.SaveBizhawkWindowState();
 		}
 
 		public static void MAINFORM_CLOSING()
 		{
-			if (DisableRTC) return;
+			if (disableRTC) return;
 
 			RTC_Core.CloseAllRtcForms();
 		}
 
 		public static void BIZHAWK_SAVE_CONFIG()
 		{
-			if (DisableRTC) return;
+			if (disableRTC) return;
 
 			RTC_Core.SendCommandToBizhawk(new RTC_Command(CommandType.REMOTE_EVENT_SAVEBIZHAWKCONFIG));
 		}
@@ -150,7 +150,7 @@ namespace RTC
 
 		public static void LOAD_GAME_BEGIN()
 		{
-			if (DisableRTC) return;
+			if (disableRTC) return;
 
 			isNormalAdvance = false;
 
@@ -164,7 +164,7 @@ namespace RTC
 
 		public static void LOAD_GAME_DONE()
 		{
-			if (DisableRTC) return;
+			if (disableRTC) return;
 
 			//RTC_HellgenieEngine.ClearCheats();
 			//RTC_PipeEngine.ClearPipes();
@@ -206,7 +206,7 @@ namespace RTC
 
 		public static void LOAD_GAME_FAILED()
 		{
-			if (DisableRTC) return;
+			if (disableRTC) return;
 
 			RTC_NetCore.HugeOperationEnd(loadGameToken);
 		}
@@ -217,7 +217,7 @@ namespace RTC
 
 		public static void CLOSE_GAME(bool loadDefault = false)
 		{
-			if (DisableRTC) return;
+			if (disableRTC) return;
 
 			if (CLOSE_GAME_loop_flag == true)
 				return;
@@ -241,26 +241,26 @@ namespace RTC
 
 		public static void RESET()
 		{
-			if (DisableRTC) return;
+			if (disableRTC) return;
 		}
 
 		public static void LOAD_SAVESTATE_BEGIN()
 		{
-			if (DisableRTC) return;
+			if (disableRTC) return;
 
 			loadSavestateToken = RTC_NetCore.HugeOperationStart();
 		}
 
 		public static void LOAD_SAVESTATE_END()
 		{
-			if (DisableRTC) return;
+			if (disableRTC) return;
 
 			RTC_NetCore.HugeOperationEnd(loadSavestateToken);
 		}
 
 		public static void EMU_CRASH(string msg)
 		{
-			if (DisableRTC) return;
+			if (disableRTC) return;
 
 			RTC_RPC.Stop();
 			MessageBox.Show("SORRY EMULATOR CRASHED\n\n" + msg);
@@ -268,7 +268,7 @@ namespace RTC
 
 		public static bool HOTKEY_CHECK(string trigger)
 		{// You can go to the injected Hotkey Hijack by searching #HotkeyHijack
-			if (DisableRTC) return false;
+			if (disableRTC) return false;
 
 			if (watch != null)
 			{
@@ -356,22 +356,22 @@ namespace RTC
 			return true;
 		}
 
-		public static bool IsAllowedBackgroundInputForm(Form ActiveForm)
+		public static bool IsAllowedBackgroundInputForm(Form activeForm)
 		{
-			if (DisableRTC) return false;
+			if (disableRTC) return false;
 
-			return (ActiveForm is RTC.RTC_Core_Form ||
-					ActiveForm is RTC.RTC_Settings_Form ||
-					ActiveForm is RTC.RTC_GlitchHarvester_Form ||
-					ActiveForm is RTC.RTC_StockpilePlayer_Form ||
-					ActiveForm is RTC.RTC_Multiplayer_Form ||
-					ActiveForm is RTC.RTC_MultiPeerPopout_Form ||
-					ActiveForm is RTC.RTC_StockpileBlastBoard_Form ||
-					ActiveForm is RTC.RTC_ConnectionStatus_Form ||
-					ActiveForm is RTC.RTC_NewBlastEditor_Form ||
-					ActiveForm is RTC.RTC_VmdPool_Form ||
-					ActiveForm is RTC.RTC_VmdGen_Form ||
-					ActiveForm is RTC.RTC_VmdAct_Form
+			return (activeForm is RTC.RTC_Core_Form ||
+					activeForm is RTC.RTC_Settings_Form ||
+					activeForm is RTC.RTC_GlitchHarvester_Form ||
+					activeForm is RTC.RTC_StockpilePlayer_Form ||
+					activeForm is RTC.RTC_Multiplayer_Form ||
+					activeForm is RTC.RTC_MultiPeerPopout_Form ||
+					activeForm is RTC.RTC_StockpileBlastBoard_Form ||
+					activeForm is RTC.RTC_ConnectionStatus_Form ||
+					activeForm is RTC.RTC_BlastEditor_Form ||
+					activeForm is RTC.RTC_VmdPool_Form ||
+					activeForm is RTC.RTC_VmdGen_Form ||
+					activeForm is RTC.RTC_VmdAct_Form
 					);
 		}
 	}

@@ -47,7 +47,7 @@ namespace RTC
 
 		private void btnReturnToSession_Click(object sender, EventArgs e)
 		{
-			RTC_Core.coreForm.showPanelForm(RTC_Core.coreForm.previousForm);
+			RTC_Core.coreForm.ShowPanelForm(RTC_Core.coreForm.previousForm);
 		}
 
 		private void btnStopGameProtection_Click(object sender, EventArgs e)

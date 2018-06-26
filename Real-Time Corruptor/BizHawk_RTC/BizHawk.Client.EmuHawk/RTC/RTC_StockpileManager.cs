@@ -14,20 +14,7 @@ namespace RTC
 		//Object references
 		public static Stockpile currentStockpile = null;
 
-		public static StashKey currentStashkey
-		{
-			get
-			{
-				return _currentStashkey;
-			}
-			set
-			{
-				_currentStashkey = value;
-				
-			}
-		}
-
-		private static StashKey _currentStashkey = null;
+		public static StashKey currentStashkey { get; set; } = null;
 
 		public static StashKey backupedState = null;
 		public static Stack<StashKey> allBackupStates = new Stack<StashKey>();
@@ -132,7 +119,7 @@ namespace RTC
 			{
 				RTC_Core.LoadRom(psk.RomFilename, true);
 				RTC_Core.ecForm.RefreshDomains();
-				RTC_Core.ecForm.setMemoryDomainsAllButSelectedDomains(RTC_MemoryDomains.GetBlacklistedDomains());
+				RTC_Core.ecForm.SetMemoryDomainsAllButSelectedDomains(RTC_MemoryDomains.GetBlacklistedDomains());
 			}
 
 			var watch = System.Diagnostics.Stopwatch.StartNew();
@@ -353,7 +340,7 @@ namespace RTC
 			if (sk == null)
 				return false;
 
-			StashKey.setCore(sk);
+			StashKey.SetCore(sk);
 			string GameSystem = sk.SystemName;
 			string GameName = sk.GameName;
 			string Key = sk.ParentKey;
@@ -525,24 +512,24 @@ namespace RTC
 
 			var rp = RTC_MemoryDomains.GetRomParts(thisSystem, romFilename);
 
-			if (rp.error == null)
+			if (rp.Error == null)
 			{
-				if (rp.primarydomain != null)
+				if (rp.PrimaryDomain != null)
 				{
 					List<byte> addData = new List<byte>();
 
-					if (rp.skipbytes != 0)
+					if (rp.SkipBytes != 0)
 					{
-						byte[] padding = new byte[rp.skipbytes];
-						for (int i = 0; i < rp.skipbytes; i++)
+						byte[] padding = new byte[rp.SkipBytes];
+						for (int i = 0; i < rp.SkipBytes; i++)
 							padding[i] = 0;
 
 						addData.AddRange(padding);
 					}
 
-					addData.AddRange(RTC_MemoryDomains.getDomainData(rp.primarydomain));
-					if (rp.seconddomain != null)
-						addData.AddRange(RTC_MemoryDomains.getDomainData(rp.seconddomain));
+					addData.AddRange(RTC_MemoryDomains.GetDomainData(rp.PrimaryDomain));
+					if (rp.SecondDomain != null)
+						addData.AddRange(RTC_MemoryDomains.GetDomainData(rp.SecondDomain));
 
 					byte[] corrupted = addData.ToArray();
 					byte[] original = File.ReadAllBytes(GlobalWin.MainForm.CurrentlyOpenRom);
@@ -554,7 +541,7 @@ namespace RTC
 					else if (GlobalWin.MainForm.CurrentlyOpenRom.ToUpper().Contains(".SMD"))
 						original = BizHawk.Client.Common.RomGame.DeInterleaveSMD(original);
 
-					for (int i = 0; i < rp.skipbytes; i++)
+					for (int i = 0; i < rp.SkipBytes; i++)
 						original[i] = 0;
 
 					BlastLayer romBlast = RTC_BlastTools.GetBlastLayerFromDiff(original, corrupted);

@@ -6,11 +6,11 @@ namespace RTC
 {
 	public static class RTC_VectorEngine
 	{
-		public static string lastDomain = null;
-		public static byte[] lastValues = null;
+		public static string LastDomain = null;
+		public static byte[] LastValues = null;
 
-		public static string[] limiterList = null;
-		public static string[] valueList = null;
+		public static string[] LimiterList = null;
+		public static string[] ValueList = null;
 
 		#region constant lists
 
@@ -232,14 +232,14 @@ namespace RTC
 
 		#endregion constant lists
 
-		public static BlastUnit GenerateUnit(string _domain, long _address)
+		public static BlastUnit GenerateUnit(string domain, long address)
 		{
 			// Randomly selects a memory operation according to the selected algorithm
 
 			//long safeAddress = _address - (_address % 8); //64-bit trunk
-			long safeAddress = _address - (_address % 4); //32-bit trunk
+			long safeAddress = address - (address % 4); //32-bit trunk
 
-			MemoryDomainProxy mdp = RTC_MemoryDomains.getProxy(_domain, safeAddress);
+			MemoryDomainProxy mdp = RTC_MemoryDomains.GetProxy(domain, safeAddress);
 			if (mdp == null)
 				return null;
 
@@ -247,12 +247,12 @@ namespace RTC
 			{
 				BlastByte bu = null;
 
-				lastValues = mdp.PeekBytes(safeAddress, safeAddress + 4);
-				lastDomain = _domain;
+				LastValues = mdp.PeekBytes(safeAddress, safeAddress + 4);
+				LastDomain = domain;
 
 				//Enforce the safeaddress at generation
-				if (isConstant(lastValues, limiterList, mdp.BigEndian))
-					bu = new BlastByte(_domain, safeAddress, BlastByteType.VECTOR, getRandomConstant(valueList), mdp.BigEndian, true);
+				if (IsConstant(LastValues, LimiterList, mdp.BigEndian))
+					bu = new BlastByte(domain, safeAddress, BlastByteType.VECTOR, GetRandomConstant(ValueList), mdp.BigEndian, true);
 
 				return bu;
 			}
@@ -266,11 +266,11 @@ namespace RTC
 			}
 		}
 
-		public static bool isConstant(byte[] bytes, string[] list, bool BigEndian)
+		public static bool IsConstant(byte[] bytes, string[] list, bool bigEndian)
 		{
 			if (list == null)
 				return true;
-			if (!BigEndian)
+			if (!bigEndian)
 				return list.Contains(ByteArrayToString(bytes));
 			else
 			{
@@ -284,7 +284,7 @@ namespace RTC
 			return BitConverter.ToString(bytes).Replace("-", "").ToLower();
 		}
 
-		public static byte[] getRandomConstant(string[] list)
+		public static byte[] GetRandomConstant(string[] list)
 		{
 			if (list == null)
 			{

@@ -33,13 +33,13 @@ namespace RTC
 				if (RTC_Core.ghForm.nmIntensity.Value != RTC_Core.Intensity)
 					RTC_Core.ghForm.nmIntensity.Value = RTC_Core.Intensity;
 
-				int _fx = Convert.ToInt32(Math.Sqrt(value) * 2000d);
+				int fx = Convert.ToInt32(Math.Sqrt(value) * 2000d);
 
-				if (track_Intensity.Value != _fx)
-					track_Intensity.Value = _fx;
+				if (track_Intensity.Value != fx)
+					track_Intensity.Value = fx;
 
-				if (RTC_Core.ghForm.track_Intensity.Value != _fx)
-					RTC_Core.ghForm.track_Intensity.Value = _fx;
+				if (RTC_Core.ghForm.track_Intensity.Value != fx)
+					RTC_Core.ghForm.track_Intensity.Value = fx;
 
 				DontUpdateIntensity = false;
 			}
@@ -118,7 +118,7 @@ namespace RTC
 			cbCustomPrecision.SelectedIndex = 0;
 		}
 
-		public void setMemoryDomainsSelectedDomains(string[] _domains)
+		public void SetMemoryDomainsSelectedDomains(string[] _domains)
 		{
 			lbMemoryDomains_DontExecute_SelectedIndexChanged = true;
 
@@ -132,7 +132,7 @@ namespace RTC
 			lbMemoryDomains_SelectedIndexChanged(null, null);
 		}
 
-		public void setMemoryDomainsAllButSelectedDomains(string[] _blacklistedDomains)
+		public void SetMemoryDomainsAllButSelectedDomains(string[] _blacklistedDomains)
 		{
 			lbMemoryDomains_DontExecute_SelectedIndexChanged = true;
 
@@ -150,8 +150,6 @@ namespace RTC
 		private void btnRefreshDomains_Click(object sender, EventArgs e)
 		{
 			RefreshDomains();
-
-			//RTC_Restore.SaveRestore();
 		}
 
 		public void track_ErrorDelay_Scroll(object sender, EventArgs e)
@@ -290,7 +288,7 @@ namespace RTC
 		private void btnAutoSelectDomains_Click(object sender, EventArgs e)
 		{
 			RefreshDomains();
-			setMemoryDomainsAllButSelectedDomains(RTC_MemoryDomains.GetBlacklistedDomains());
+			SetMemoryDomainsAllButSelectedDomains(RTC_MemoryDomains.GetBlacklistedDomains());
 		}
 
 		private void cbClearCheatsOnRewind_CheckedChanged(object sender, EventArgs e)
@@ -320,7 +318,8 @@ namespace RTC
 			RTC_MemoryDomains.RefreshDomains();
 
 			lbMemoryDomains.Items.Clear();
-			lbMemoryDomains.Items.AddRange(RTC_MemoryDomains.MemoryInterfaces.Keys.ToArray());
+			if (RTC_MemoryDomains.MemoryInterfaces != null)
+				lbMemoryDomains.Items.AddRange(RTC_MemoryDomains.MemoryInterfaces.Keys.ToArray());
 
 			if (RTC_MemoryDomains.VmdPool.Count > 0)
 				lbMemoryDomains.Items.AddRange(RTC_MemoryDomains.VmdPool.Values.Select(it => it.ToString()).ToArray());
@@ -337,7 +336,7 @@ namespace RTC
 
 			RTC_MemoryDomains.UpdateSelectedDomains(copy);
 
-			setMemoryDomainsSelectedDomains(copy);
+			SetMemoryDomainsSelectedDomains(copy);
 		}
 
 
@@ -425,19 +424,6 @@ namespace RTC
 				track_Intensity.Visible = false;
 				cbBlastRadius.Visible = false;
 			}
-			else if (cbSelectedEngine.SelectedItem.ToString() == "Freeze Engine")
-			{
-				labelBlastRadius.Visible = true;
-				labelIntensity.Visible = true;
-				labelIntensityTimes.Visible = true;
-				labelErrorDelay.Visible = true;
-				labelErrorDelaySteps.Visible = true;
-				nmErrorDelay.Visible = true;
-				nmIntensity.Visible = true;
-				track_ErrorDelay.Visible = true;
-				track_Intensity.Visible = true;
-				cbBlastRadius.Visible = true;
-			}
 			else
 			{
 				labelBlastRadius.Visible = true;
@@ -510,7 +496,7 @@ namespace RTC
 
 		private void cbVectorLimiterList_SelectedIndexChanged(object sender, EventArgs e)
 		{
-			string selectedText = (sender as ComboBox).SelectedItem.ToString();
+			string selectedText = ((ComboBox)sender).SelectedItem.ToString();
 
 			switch (selectedText)
 			{
@@ -571,7 +557,7 @@ namespace RTC
 
 		private void cbVectorValueList_SelectedIndexChanged(object sender, EventArgs e)
 		{
-			string selectedText = (sender as ComboBox).SelectedItem.ToString();
+			string selectedText = (sender as ComboBox)?.SelectedItem.ToString();
 
 			switch (selectedText)
 			{
@@ -684,29 +670,29 @@ namespace RTC
 			}
 		}
 
-		Guid? ErrorDelayToken = null;
-		Guid? IntensityToken = null;
+		Guid? errorDelayToken = null;
+		Guid? intensityToken = null;
 
 		private void track_ErrorDelay_MouseDown(object sender, MouseEventArgs e)
 		{
-			ErrorDelayToken = RTC_NetCore.HugeOperationStart("LAZY");
+			errorDelayToken = RTC_NetCore.HugeOperationStart("LAZY");
 		}
 
 		private void track_ErrorDelay_MouseUp(object sender, MouseEventArgs e)
 		{
-			RTC_NetCore.HugeOperationEnd(ErrorDelayToken);
+			RTC_NetCore.HugeOperationEnd(errorDelayToken);
 
 			track_ErrorDelay_Scroll(sender, e);
 		}
 
 		private void track_Intensity_MouseDown(object sender, MouseEventArgs e)
 		{
-			IntensityToken = RTC_NetCore.HugeOperationStart("LAZY");
+			intensityToken = RTC_NetCore.HugeOperationStart("LAZY");
 		}
 
 		private void track_Intensity_MouseUp(object sender, MouseEventArgs e)
 		{
-			RTC_NetCore.HugeOperationEnd(IntensityToken);
+			RTC_NetCore.HugeOperationEnd(intensityToken);
 
 			track_Intensity_Scroll(sender, e);
 		}
@@ -714,8 +700,6 @@ namespace RTC
 		private void btnClearCheats_Click(object sender, EventArgs e)
 		{
 			RTC_HellgenieEngine.ClearCheats();
-
-			//RTC_Restore.SaveRestore();
 		}
 
 		private void nmMaxCheats_ValueChanged(object sender, KeyPressEventArgs e)

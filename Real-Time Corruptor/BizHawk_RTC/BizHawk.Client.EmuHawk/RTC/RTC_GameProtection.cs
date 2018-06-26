@@ -30,8 +30,7 @@ namespace RTC
 
 		public static void Stop()
 		{
-			if (t != null)
-				t.Stop();
+			t?.Stop();
 
 			isRunning = false;
 		}
@@ -42,7 +41,7 @@ namespace RTC
 			Start();
 		}
 
-		private static void Tick(object Sender, EventArgs e)
+		private static void Tick(object sender, EventArgs e)
 		{
 			RTC_Core.SendCommandToBizhawk(new RTC_Command(CommandType.REMOTE_BACKUPKEY_REQUEST));
 		}

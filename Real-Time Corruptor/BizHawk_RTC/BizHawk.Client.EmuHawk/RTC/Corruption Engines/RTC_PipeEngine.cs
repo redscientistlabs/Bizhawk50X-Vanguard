@@ -7,13 +7,13 @@ namespace RTC
 	public static class RTC_PipeEngine
 	{
 		public static int MaxPipes = 20;
-		public static int tiltValue = 0;
+		public static int TiltValue = 0;
 		public static Queue<BlastUnit> AllBlastPipes = new Queue<BlastUnit>();
 
 		public static bool ChainedPipes = true;
 
-		public static string lastDomain = null;
-		public static long lastAddress = 0;
+		public static string LastDomain = null;
+		public static long LastAddress = 0;
 
 		public static bool LockPipes = false;
 		public static bool ProcessOnStep = true;
@@ -53,40 +53,36 @@ namespace RTC
 
 			try
 			{
-				MemoryDomainProxy mdp = RTC_MemoryDomains.getProxy(_domain, _address);
-				int pipeSize;
+				MemoryDomainProxy mdp = RTC_MemoryDomains.GetProxy(_domain, _address);
 
-				if (RTC_Core.CustomPrecision == -1)
-					pipeSize = mdp.WordSize;
-				else
-					pipeSize = RTC_Core.CustomPrecision;
+				int pipeSize = RTC_Core.CustomPrecision == -1 ? mdp.WordSize : RTC_Core.CustomPrecision;
 
 				long safeAddress = _address - (_address % pipeSize);
 
 				if (ChainedPipes)
 				{
-					if (lastDomain == null) // The first unit will always be null
+					if (LastDomain == null) // The first unit will always be null
 					{
-						lastDomain = _domain;
-						lastAddress = safeAddress;
+						LastDomain = _domain;
+						LastAddress = safeAddress;
 						return null;
 					}
 					else
 					{
-						BlastPipe bp = new BlastPipe(_domain, safeAddress, lastDomain, lastAddress, tiltValue, pipeSize, mdp.BigEndian, true);
-						lastDomain = _domain;
-						lastAddress = safeAddress;
+						BlastPipe bp = new BlastPipe(_domain, safeAddress, LastDomain, LastAddress, TiltValue, pipeSize, mdp.BigEndian, true);
+						LastDomain = _domain;
+						LastAddress = safeAddress;
 						return bp;
 					}
 				}
 				else
 				{
-					var pipeEnd = RTC_Core.GetBlastTarget();
+					BlastTarget pipeEnd = RTC_Core.GetBlastTarget();
 					long safepipeEndAddress = pipeEnd.address - (pipeEnd.address % pipeSize);
 
-					BlastPipe bp = new BlastPipe(_domain, safeAddress, pipeEnd.domain, safepipeEndAddress, tiltValue, pipeSize, mdp.BigEndian, true);
-					lastDomain = _domain;
-					lastAddress = safeAddress;
+					BlastPipe bp = new BlastPipe(_domain, safeAddress, pipeEnd.domain, safepipeEndAddress, TiltValue, pipeSize, mdp.BigEndian, true);
+					LastDomain = _domain;
+					LastAddress = safeAddress;
 					return bp;
 				}
 			}

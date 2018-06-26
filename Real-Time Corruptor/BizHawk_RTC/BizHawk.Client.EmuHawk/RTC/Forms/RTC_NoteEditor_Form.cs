@@ -7,54 +7,54 @@ namespace RTC
 {
 	public partial class RTC_NoteEditor_Form : Form
 	{
-		string Note;
-		string Source;
-		object Item;
+		private string note;
+		private string source;
+		private object item;
 		
 
-		public static Form currentlyOpenNoteForm = null;
+		public static Form CurrentlyOpenNoteForm = null;
 
 		public RTC_NoteEditor_Form(string _note, string _source, object _item)
 		{
-			Note = _note;
-			Source = _source;
-			Item = _item;
+			note = _note;
+			source = _source;
+			item = _item;
 			InitializeComponent();
 			this.Show();
 		}
 
 		private void RTC_NE_Form_Load(object sender, EventArgs e)
 		{
-			if (Note != null)
-				tbNote.Text = Note.Replace("\n", Environment.NewLine);
+			if (note != null)
+				tbNote.Text = note.Replace("\n", Environment.NewLine);
 		}
 
 		private void RTC_NE_Form_FormClosing(object sender, FormClosingEventArgs e)
 		{
-			currentlyOpenNoteForm = null;
+			CurrentlyOpenNoteForm = null;
 
 			string cleanText = string.Join("\n", tbNote.Lines.Select(it => it.Trim()));
 
-			Note = "";
+			note = "";
 
 			if (cleanText != "")
 			{
-				Note = cleanText;
+				note = cleanText;
 			}
-			switch (Source)
+			switch (source)
 			{
 				//We update a stashkey for the GH and Stockpile Player
 				case ("GlitchHarvester"):
 					if (RTC_Core.ghForm.Visible)
 					{
-						(Item as StashKey).Note = Note;
+						((StashKey)item).Note = note;
 						RTC_Core.ghForm.RefreshNoteIcons();
 					}
 					break;
 				case ("StockpilePlayer"):
 					if (RTC_Core.spForm.Visible)
 					{
-						(Item as StashKey).Note = Note;
+						((StashKey)item).Note = note;
 						RTC_Core.spForm.RefreshNoteIcons();
 					}
 					break;
@@ -62,7 +62,7 @@ namespace RTC
 				case ("BlastEditor"):
 					if (RTC_Core.beForm.Visible)
 					{
-						(Item as BlastUnit).Note = Note;
+						((BlastUnit)item).Note = note;
 						RTC_Core.beForm.RefreshNoteIcons();
 					}
 					break;
@@ -70,7 +70,7 @@ namespace RTC
 				case ("BlastGenerator"):
 					if (RTC_Core.bgForm.Visible)
 					{
-						(Item as DataGridViewCell).Value = Note;
+						((DataGridViewCell)item).Value = note;
 						RTC_Core.bgForm.RefreshNoteIcons();
 					}
 						

@@ -9,19 +9,19 @@ namespace RTC
 		public static long MinValue = 0;
 		public static long MaxValue = 255;
 
-		public static BlastUnit GenerateUnit(string _domain, long _address)
+		public static BlastUnit GenerateUnit(string domain, long address)
 		{
 			// Randomly selects a memory operation according to the selected algorithm
 
 			try
 			{
-				MemoryDomainProxy mdp = RTC_MemoryDomains.getProxy(_domain, _address);
-				BlastByteType Type = BlastByteType.NONE;
+				MemoryDomainProxy mdp = RTC_MemoryDomains.GetProxy(domain, address);
+				BlastByteType type = BlastByteType.NONE;
 
 				switch (Algo)
 				{
 					case BlastByteAlgo.RANDOM: //RANDOM always sets a random value
-						Type = BlastByteType.SET;
+						type = BlastByteType.SET;
 						break;
 
 					case BlastByteAlgo.RANDOMTILT: //RANDOMTILT may add 1,substract 1 or set a random value
@@ -29,13 +29,13 @@ namespace RTC
 						switch (result)
 						{
 							case 1:
-								Type = BlastByteType.ADD;
+								type = BlastByteType.ADD;
 								break;
 							case 2:
-								Type = BlastByteType.SUBSTRACT;
+								type = BlastByteType.SUBSTRACT;
 								break;
 							case 3:
-								Type = BlastByteType.SET;
+								type = BlastByteType.SET;
 								break;
 							default:
 								MessageBox.Show("Random returned an unexpected value (RTC_NightmareEngine switch(Algo) RANDOMTILT)");
@@ -49,11 +49,11 @@ namespace RTC
 						switch (result)
 						{
 							case 1:
-								Type = BlastByteType.ADD;
+								type = BlastByteType.ADD;
 								break;
 
 							case 2:
-								Type = BlastByteType.SUBSTRACT;
+								type = BlastByteType.SUBSTRACT;
 								break;
 
 							default:
@@ -63,28 +63,24 @@ namespace RTC
 						break;
 				}
 
-				byte[] _value;
-				if (RTC_Core.CustomPrecision == -1)
-					_value = new byte[mdp.WordSize];
-				else
-					_value = new byte[RTC_Core.CustomPrecision];
+				byte[] value = RTC_Core.CustomPrecision == -1 ? new byte[mdp.WordSize] : new byte[RTC_Core.CustomPrecision];
 
-				long safeAddress = _address - (_address % _value.Length);
+				long safeAddress = address - (address % value.Length);
 
-				if (Type == BlastByteType.SET)
+				if (type == BlastByteType.SET)
 				{
 					long randomValue = RTC_Core.RND.RandomLong(Convert.ToInt64(RTC_Core.ecForm.nmMinValueNightmare.Value), Convert.ToInt64(RTC_Core.ecForm.nmMaxValueNightmare.Value));
 
-					_value = RTC_Extensions.getByteArrayValue(_value.Length, randomValue, true);
+					value = RTC_Extensions.GetByteArrayValue(value.Length, randomValue, true);
 				}
 				else //ADD, SUBSTRACT
 				{
 					//Add and subtract only need the last byte set as we're only incrementing by 1. If we set all the bytes, it'd tilt far more than 1.
 					//1 by default because Add(1) or Substract(1) but more is still possible
-					_value[_value.Length - 1] = 1;
+					value[value.Length - 1] = 1;
 				}
 
-				return new BlastByte(_domain, safeAddress, Type, _value, mdp.BigEndian, true);
+				return new BlastByte(domain, safeAddress, type, value, mdp.BigEndian, true);
 			}
 			catch (Exception ex)
 			{

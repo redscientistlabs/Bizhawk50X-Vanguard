@@ -652,7 +652,7 @@ namespace RTC
 						break;
 
 					case CommandType.AGGRESSIVENESS:
-						RTC_NetCoreSettings.changeNetCoreSettings((string)cmd.objectValue);
+						RTC_NetCoreSettings.ChangeNetCoreSettings((string)cmd.objectValue);
 						break;
 
 					case CommandType.GETAGGRESSIVENESS:

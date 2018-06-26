@@ -10,25 +10,21 @@ namespace RTC
 		public static long MinValue = 0;
 		public static long MaxValue = 255;
 
-		public static BlastCheat GenerateUnit(string _domain, long _address)
+		public static BlastCheat GenerateUnit(string domain, long address)
 		{
 			try
 			{
-				MemoryDomainProxy mdp = RTC_MemoryDomains.getProxy(_domain, _address);
-				BizHawk.Client.Common.DisplayType _displaytype = BizHawk.Client.Common.DisplayType.Unsigned;
+				MemoryDomainProxy mdp = RTC_MemoryDomains.GetProxy(domain, address);
+				BizHawk.Client.Common.DisplayType displaytype = BizHawk.Client.Common.DisplayType.Unsigned;
 
-				byte[] _value;
-				if (RTC_Core.CustomPrecision == -1)
-					_value = new byte[mdp.WordSize];
-				else
-					_value = new byte[RTC_Core.CustomPrecision];
+				byte[] value = RTC_Core.CustomPrecision == -1 ? new byte[mdp.WordSize] : new byte[RTC_Core.CustomPrecision];
 
-				long safeAddress = _address - (_address % _value.Length);
+				long safeAddress = address - (address % value.Length);
 
 				long randomValue = RTC_Core.RND.RandomLong(MinValue, MaxValue);
-				_value = RTC_Extensions.getByteArrayValue(_value.Length, randomValue, true);
+				value = RTC_Extensions.GetByteArrayValue(value.Length, randomValue, true);
 
-				return new BlastCheat(_domain, safeAddress, _displaytype, mdp.BigEndian, _value, true, false);
+				return new BlastCheat(domain, safeAddress, displaytype, mdp.BigEndian, value, true, false);
 			}
 			catch (Exception ex)
 			{

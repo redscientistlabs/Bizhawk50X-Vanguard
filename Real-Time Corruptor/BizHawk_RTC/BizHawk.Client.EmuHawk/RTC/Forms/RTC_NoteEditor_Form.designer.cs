@@ -57,7 +57,7 @@
 			this.MaximizeBox = false;
 			this.MinimizeBox = false;
 			this.Name = "RTC_NE_Form";
-			this.Text = "Note:";
+			this.Text = "note:";
 			this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.RTC_NE_Form_FormClosing);
 			this.Load += new System.EventHandler(this.RTC_NE_Form_Load);
 			this.Shown += new System.EventHandler(this.RTC_NE_Form_Shown);

@@ -35,18 +35,18 @@ namespace RTC
 			{
 				case 0:
 					var PlatesHdFiles = Directory.GetFiles(RTC_Core.rtcDir + "\\ASSETS\\PLATESHD");
-					RTC_NetCoreSettings.loadedSounds = PlatesHdFiles.Select(it => new SoundPlayer(it)).ToArray();
+					RTC_NetCoreSettings.LoadedSounds = PlatesHdFiles.Select(it => new SoundPlayer(it)).ToArray();
 					break;
 				case 1:
-					RTC_NetCoreSettings.loadedSounds = new SoundPlayer[] { new SoundPlayer(RTC_Core.rtcDir + "\\ASSETS\\crash.wav") };
+					RTC_NetCoreSettings.LoadedSounds = new SoundPlayer[] { new SoundPlayer(RTC_Core.rtcDir + "\\ASSETS\\crash.wav") };
 					break;
 
 				case 2:
-					RTC_NetCoreSettings.loadedSounds = null;
+					RTC_NetCoreSettings.LoadedSounds = null;
 					break;
 				case 3:
 					var CrashSoundsFiles = Directory.GetFiles(RTC_Core.rtcDir + "\\ASSETS\\CRASHSOUNDS");
-					RTC_NetCoreSettings.loadedSounds = CrashSoundsFiles.Select(it => new SoundPlayer(it)).ToArray();
+					RTC_NetCoreSettings.LoadedSounds = CrashSoundsFiles.Select(it => new SoundPlayer(it)).ToArray();
 					break;
 			}
 
@@ -56,7 +56,7 @@ namespace RTC
 		public void cbNetCoreCommandTimeout_SelectedIndexChanged(object sender, EventArgs e)
 		{
 			string setting = cbNetCoreCommandTimeout.SelectedItem.ToString().ToUpper();
-			RTC_NetCoreSettings.changeNetCoreSettings(setting);
+			RTC_NetCoreSettings.ChangeNetCoreSettings(setting);
 			RTC_Core.SendCommandToBizhawk(new RTC_Command(CommandType.AGGRESSIVENESS) { objectValue = setting }, true);
 		}
 
@@ -96,7 +96,7 @@ namespace RTC
 
 		private void button1_Click(object sender, EventArgs e)
 		{
-			RTC_Core.coreForm.showPanelForm(RTC_Core.coreForm.previousForm, false);
+			RTC_Core.coreForm.ShowPanelForm(RTC_Core.coreForm.previousForm, false);
 		}
 
 		private void cbDisableBizhawkOSD_CheckedChanged(object sender, EventArgs e)

@@ -43,15 +43,15 @@ namespace RTC
 
 		public override string ToString()
 		{
-			return (Name != null ? Name : "");
+			return Name ?? "";
 		}
 
-		public void Save(bool IsQuickSave = false)
+		public void Save(bool isQuickSave = false)
 		{
-			Save(this, IsQuickSave);
+			Save(this, isQuickSave);
 		}
 
-		public static bool Save(Stockpile sks, bool IsQuickSave = false)
+		public static bool Save(Stockpile sks, bool isQuickSave = false)
 		{
 			if (sks.StashKeys.Count == 0)
 			{
@@ -59,13 +59,15 @@ namespace RTC
 				return false;
 			}
 
-			if (!IsQuickSave)
+			if (!isQuickSave)
 			{
-				SaveFileDialog saveFileDialog1 = new SaveFileDialog();
-				saveFileDialog1.DefaultExt = "sks";
-				saveFileDialog1.Title = "Save Stockpile File";
-				saveFileDialog1.Filter = "SKS files|*.sks";
-				saveFileDialog1.RestoreDirectory = true;
+				SaveFileDialog saveFileDialog1 = new SaveFileDialog
+				{
+					DefaultExt = "sks",
+					Title = "Save Stockpile File",
+					Filter = "SKS files|*.sks",
+					RestoreDirectory = true
+				};
 
 				if (saveFileDialog1.ShowDialog() == DialogResult.OK)
 				{
@@ -87,13 +89,13 @@ namespace RTC
 			//Watermarking RTC Version
 			sks.RtcVersion = RTC_Core.RtcVersion;
 
-			List<string> AllRoms = new List<string>();
+			List<string> allRoms = new List<string>();
 
 			//populating Allroms array
 			foreach (StashKey key in sks.StashKeys)
-				if (!AllRoms.Contains(key.RomFilename))
+				if (!allRoms.Contains(key.RomFilename))
 				{
-					AllRoms.Add(key.RomFilename);
+					allRoms.Add(key.RomFilename);
 
 					if (key.RomFilename.ToUpper().Contains(".CUE"))
 					{
@@ -101,7 +103,7 @@ namespace RTC
 						string[] cueLines = File.ReadAllLines(key.RomFilename);
 						List<string> binFiles = new List<string>();
 
-						foreach (var line in cueLines)
+						foreach (string line in cueLines)
 							if (line.Contains("FILE") && line.Contains("BINARY"))
 							{
 								int startFilename = line.IndexOf('"') + 1;
@@ -110,7 +112,7 @@ namespace RTC
 								binFiles.Add(line.Substring(startFilename, endFilename - startFilename));
 							}
 
-						AllRoms.AddRange(binFiles.Select(it => cueFolder + it));
+						allRoms.AddRange(binFiles.Select(it => cueFolder + it));
 					}
 
 					if (key.RomFilename.ToUpper().Contains(".CCD"))
@@ -123,7 +125,7 @@ namespace RTC
 						if (File.Exists(RTC_Extensions.removeFileExtension(key.RomFilename) + ".img"))
 							binFiles.Add(RTC_Extensions.removeFileExtension(key.RomFilename) + ".img");
 
-						AllRoms.AddRange(binFiles);
+						allRoms.AddRange(binFiles);
 					}
 				}
 
@@ -135,9 +137,9 @@ namespace RTC
 			}
 
 			//populating temp2 folder with roms
-			for (int i = 0; i < AllRoms.Count; i++)
+			for (int i = 0; i < allRoms.Count; i++)
 			{
-				string rom = AllRoms[i];
+				string rom = allRoms[i];
 				string romTempfilename = RTC_Core.rtcDir + "\\TEMP2\\" + (rom.Substring(rom.LastIndexOf("\\") + 1, rom.Length - (rom.LastIndexOf("\\") + 1)));
 
 				if (!rom.Contains("\\"))
@@ -178,15 +180,15 @@ namespace RTC
 			if (File.Exists(RTC_Core.bizhawkDir + "\\config.ini"))
 				File.Copy(RTC_Core.bizhawkDir + "\\config.ini", RTC_Core.rtcDir + "\\TEMP\\config.ini");
 
-			for (int i = 0; i < sks.StashKeys.Count; i++) //changes RomFile to short filename
-				sks.StashKeys[i].RomFilename = RTC_Extensions.getShortFilenameFromPath(sks.StashKeys[i].RomFilename);
+			foreach (StashKey sk in sks.StashKeys)
+				sk.RomFilename = RTC_Extensions.getShortFilenameFromPath(sk.RomFilename);
 
 			//creater stockpile.xml to temp folder from stockpile object
-			using (FileStream FS = File.Open(RTC_Core.rtcDir + "\\TEMP\\stockpile.xml", FileMode.OpenOrCreate))
+			using (FileStream fs = File.Open(RTC_Core.rtcDir + "\\TEMP\\stockpile.xml", FileMode.OpenOrCreate))
 			{
 				XmlSerializer xs = new XmlSerializer(typeof(Stockpile));
-				xs.Serialize(FS, sks);
-				FS.Close();
+				xs.Serialize(fs, sks);
+				fs.Close();
 			}
 			//7z the temp folder to destination filename
 			//string[] stringargs = { "-c", sks.Filename, RTC_Core.rtcDir + "\\TEMP\\" };
@@ -194,7 +196,7 @@ namespace RTC
 
 			string tempFilename = sks.Filename + ".temp";
 
-			var comp = System.IO.Compression.CompressionLevel.Fastest;
+			CompressionLevel comp = System.IO.Compression.CompressionLevel.Fastest;
 
 			if (!RTC_Core.ghForm.cbCompressStockpiles.Checked)
 				comp = System.IO.Compression.CompressionLevel.NoCompression;
@@ -217,11 +219,13 @@ namespace RTC
 		{
 			if (Filename == null)
 			{
-				OpenFileDialog ofd = new OpenFileDialog();
-				ofd.DefaultExt = "sks";
-				ofd.Title = "Open Stockpile File";
-				ofd.Filter = "SKS files|*.sks";
-				ofd.RestoreDirectory = true;
+				OpenFileDialog ofd = new OpenFileDialog
+				{
+					DefaultExt = "sks",
+					Title = "Open Stockpile File",
+					Filter = "SKS files|*.sks",
+					RestoreDirectory = true
+				};
 				if (ofd.ShowDialog() == DialogResult.OK)
 				{
 					Filename = ofd.FileName.ToString();
@@ -236,7 +240,7 @@ namespace RTC
 				return false;
 			}
 
-			var token = RTC_NetCore.HugeOperationStart();
+			Guid token = RTC_NetCore.HugeOperationStart();
 
 			Extract(Filename, "TEMP", "stockpile.xml");
 
@@ -244,11 +248,11 @@ namespace RTC
 
 			try
 			{
-				using (FileStream FS = File.Open(RTC_Core.rtcDir + "\\TEMP\\stockpile.xml", FileMode.OpenOrCreate))
+				using (FileStream fs = File.Open(RTC_Core.rtcDir + "\\TEMP\\stockpile.xml", FileMode.OpenOrCreate))
 				{
 					XmlSerializer xs = new XmlSerializer(typeof(Stockpile));
-					sks = (Stockpile)xs.Deserialize(FS);
-					FS.Close();
+					sks = (Stockpile)xs.Deserialize(fs);
+					fs.Close();
 				}
 			}
 			catch
@@ -265,22 +269,22 @@ namespace RTC
 			{
 				string statefilename = key.GameName + "." + key.ParentKey + ".timejump.State"; // get savestate name
 
-				string SystemFolder = RTC_Core.bizhawkDir + "\\" + key.SystemName;
-				string SystemStateFolder = RTC_Core.bizhawkDir + "\\" + key.SystemName + "\\State\\";
+				string systemFolder = RTC_Core.bizhawkDir + "\\" + key.SystemName;
+				string systemStateFolder = RTC_Core.bizhawkDir + "\\" + key.SystemName + "\\State\\";
 
-				if (!Directory.Exists(SystemFolder))
-					Directory.CreateDirectory(SystemFolder);
+				if (!Directory.Exists(systemFolder))
+					Directory.CreateDirectory(systemFolder);
 
-				if (!Directory.Exists(SystemStateFolder))
-					Directory.CreateDirectory(SystemStateFolder);
+				if (!Directory.Exists(systemStateFolder))
+					Directory.CreateDirectory(systemStateFolder);
 
 				if (!File.Exists(RTC_Core.bizhawkDir + "\\" + key.SystemName + "\\State\\" + statefilename))
 					File.Copy(RTC_Core.rtcDir + "\\TEMP\\" + statefilename, RTC_Core.bizhawkDir + "\\" + key.SystemName + "\\State\\" + statefilename); // copy savestates to temp folder
 			}
 
-			for (int i = 0; i < sks.StashKeys.Count; i++)
+			foreach (StashKey t in sks.StashKeys)
 			{
-				sks.StashKeys[i].RomFilename = RTC_Core.rtcDir + "\\TEMP\\" + sks.StashKeys[i].RomFilename;
+				t.RomFilename = RTC_Core.rtcDir + "\\TEMP\\" + t.RomFilename;
 			}
 
 			//fill list controls
@@ -303,50 +307,22 @@ namespace RTC
 
 		public static void CheckCompatibility(Stockpile sks)
 		{
-			List<string> ErrorMessages = new List<string>();
+			List<string> errorMessages = new List<string>();
 
 			if (sks.RtcVersion != RTC_Core.RtcVersion)
 			{
 				if (sks.RtcVersion == null)
-					ErrorMessages.Add("You have loaded a broken stockpile that didn't contain an RTC Version number\n. There is no reason to believe that these items will work.");
+					errorMessages.Add("You have loaded a broken stockpile that didn't contain an RTC Version number\n. There is no reason to believe that these items will work.");
 				else
-					ErrorMessages.Add("You have loaded a stockpile created with RTC " + sks.RtcVersion + " using RTC " + RTC_Core.RtcVersion + "\n" + "Items might not appear identical to how they when they were created or it is possible that they don't work if BizHawk was upgraded.");
+					errorMessages.Add("You have loaded a stockpile created with RTC " + sks.RtcVersion + " using RTC " + RTC_Core.RtcVersion + "\n" + "Items might not appear identical to how they when they were created or it is possible that they don't work if BizHawk was upgraded.");
 			}
 
-			/*
-            // We switch cores on the fly now, no more need for checking core mismatch
-
-            Dictionary<string, string> StashkeySystemNameToCurrentCore = new Dictionary<string, string>();
-
-			foreach(StashKey sk in sks.StashKeys)
-			{
-                string currentCore;
-                string systemName = sk.SystemName;
-
-                if (StashkeySystemNameToCurrentCore.ContainsKey(systemName))
-                    currentCore = StashkeySystemNameToCurrentCore[systemName];
-                else
-                {
-                    currentCore = (string)RTC_Core.SendCommandToBizhawk(new RTC_Command(CommandType.REMOTE_KEY_GETSYSTEMCORE) { objectValue = systemName }, true);
-                    StashkeySystemNameToCurrentCore.Add(systemName, currentCore);
-                }
-
-				if(sk.SystemCore != currentCore)
-				{
-					string errorMessage = $"Core mismatch for System [{sk.SystemName}]\n Current Bizhawk core -> {currentCore}\n Stockpile core -> {sk.SystemCore}";
-
-					if (!ErrorMessages.Contains(errorMessage))
-						ErrorMessages.Add(errorMessage);
-				}
-			}
-            */
-
-			if (ErrorMessages.Count == 0)
+			if (errorMessages.Count == 0)
 				return;
 
 			string message = "The loaded stockpile returned the following errors:\n\n";
 
-			foreach (string line in ErrorMessages)
+			foreach (string line in errorMessages)
 				message += $"•  {line} \n\n";
 
 			MessageBox.Show(message, "Compatibility Checker", MessageBoxButtons.OK, MessageBoxIcon.Warning);
@@ -357,24 +333,24 @@ namespace RTC
 			if (!baseDir.Exists)
 				return;
 
-			foreach (var dir in baseDir.EnumerateDirectories())
+			foreach (DirectoryInfo dir in baseDir.EnumerateDirectories())
 			{
 				RecursiveDelete(dir);
 			}
 			baseDir.Delete(true);
 		}
 
-		public static void EmptyFolder(string Folder)
+		public static void EmptyFolder(string folder)
 		{
 			try
 			{
-				foreach (string file in Directory.GetFiles(RTC_Core.rtcDir + $"\\{Folder}"))
+				foreach (string file in Directory.GetFiles(RTC_Core.rtcDir + $"\\{folder}"))
 				{
 					File.SetAttributes(file, FileAttributes.Normal);
 					File.Delete(file);
 				}
 
-				foreach (string dir in Directory.GetDirectories(RTC_Core.rtcDir + $"\\{Folder}"))
+				foreach (string dir in Directory.GetDirectories(RTC_Core.rtcDir + $"\\{folder}"))
 					RecursiveDelete(new DirectoryInfo(dir));
 			}
 			catch (System.IO.IOException ex)
@@ -384,27 +360,25 @@ namespace RTC
 			}
 		}
 
-		public static void Extract(string Filename, string Folder, string MasterFile)
+		public static void Extract(string filename, string folder, string masterFile)
 		{
 			try
 			{
-				EmptyFolder(Folder);
-				ZipFile.ExtractToDirectory(Filename, RTC_Core.rtcDir + $"\\{Folder}\\");
+				EmptyFolder(folder);
+				ZipFile.ExtractToDirectory(filename, RTC_Core.rtcDir + $"\\{folder}\\");
 
-				if (!File.Exists(RTC_Core.rtcDir + $"\\{Folder}\\{MasterFile}"))
+				if (!File.Exists(RTC_Core.rtcDir + $"\\{folder}\\{masterFile}"))
 				{
 					MessageBox.Show("The file could not be read properly");
 
-					EmptyFolder(Folder);
-
-					return;
+					EmptyFolder(folder);
 				}
 			}
 			catch
 			{
 				//If it errors out, empty the folder
 				MessageBox.Show("The file could not be read properly");
-				EmptyFolder(Folder);
+				EmptyFolder(folder);
 			}
 		}
 
@@ -412,11 +386,13 @@ namespace RTC
 		{
 			if (Filename == null)
 			{
-				OpenFileDialog ofd = new OpenFileDialog();
-				ofd.DefaultExt = "ini";
-				ofd.Title = "Open ini File";
-				ofd.Filter = "Bizhawk config file|*.ini";
-				ofd.RestoreDirectory = true;
+				OpenFileDialog ofd = new OpenFileDialog
+				{
+					DefaultExt = "ini",
+					Title = "Open ini File",
+					Filter = "Bizhawk config file|*.ini",
+					RestoreDirectory = true
+				};
 				if (ofd.ShowDialog() == DialogResult.OK)
 				{
 					Filename = ofd.FileName.ToString();
@@ -442,11 +418,13 @@ namespace RTC
 		{
 			if (Filename == null)
 			{
-				OpenFileDialog ofd = new OpenFileDialog();
-				ofd.DefaultExt = "sks";
-				ofd.Title = "Open Stockpile File";
-				ofd.Filter = "SKS files|*.sks";
-				ofd.RestoreDirectory = true;
+				OpenFileDialog ofd = new OpenFileDialog
+				{
+					DefaultExt = "sks",
+					Title = "Open Stockpile File",
+					Filter = "SKS files|*.sks",
+					RestoreDirectory = true
+				};
 				if (ofd.ShowDialog() == DialogResult.OK)
 				{
 					Filename = ofd.FileName.ToString();
@@ -482,18 +460,18 @@ namespace RTC
 			Config bc;
 			Config sc;
 
-			var fileBc = new FileInfo(RTC_Core.bizhawkDir + "\\backup_config.ini");
-			var fileSc = new FileInfo(RTC_Core.bizhawkDir + "\\stockpile_config.ini");
+			FileInfo fileBc = new FileInfo(RTC_Core.bizhawkDir + "\\backup_config.ini");
+			FileInfo fileSc = new FileInfo(RTC_Core.bizhawkDir + "\\stockpile_config.ini");
 
-			using (var reader = fileBc.OpenText())
+			using (StreamReader reader = fileBc.OpenText())
 			{
-				var r = new JsonTextReader(reader);
+				JsonTextReader r = new JsonTextReader(reader);
 				bc = (Config)ConfigService.Serializer.Deserialize(r, typeof(Config));
 			}
 
-			using (var reader = fileSc.OpenText())
+			using (StreamReader reader = fileSc.OpenText())
 			{
-				var r = new JsonTextReader(reader);
+				JsonTextReader r = new JsonTextReader(reader);
 				sc = (Config)ConfigService.Serializer.Deserialize(r, typeof(Config));
 			}
 
@@ -510,9 +488,9 @@ namespace RTC
 
 			try
 			{
-				using (var writer = fileSc.CreateText())
+				using (StreamWriter writer = fileSc.CreateText())
 				{
-					var w = new JsonTextWriter(writer) { Formatting = Formatting.Indented };
+					JsonTextWriter w = new JsonTextWriter(writer) { Formatting = Formatting.Indented };
 					ConfigService.Serializer.Serialize(w, sc);
 				}
 			}
@@ -527,18 +505,18 @@ namespace RTC
 			Config bc;
 			Config sc;
 
-			var fileBc = new FileInfo(RTC_Core.bizhawkDir + "\\import_config.ini");
-			var fileSc = new FileInfo(RTC_Core.bizhawkDir + "\\stockpile_config.ini");
+			FileInfo fileBc = new FileInfo(RTC_Core.bizhawkDir + "\\import_config.ini");
+			FileInfo fileSc = new FileInfo(RTC_Core.bizhawkDir + "\\stockpile_config.ini");
 
-			using (var reader = fileBc.OpenText())
+			using (StreamReader reader = fileBc.OpenText())
 			{
-				var r = new JsonTextReader(reader);
+				JsonTextReader r = new JsonTextReader(reader);
 				bc = (Config)ConfigService.Serializer.Deserialize(r, typeof(Config));
 			}
 
-			using (var reader = fileSc.OpenText())
+			using (StreamReader reader = fileSc.OpenText())
 			{
-				var r = new JsonTextReader(reader);
+				JsonTextReader r = new JsonTextReader(reader);
 				sc = (Config)ConfigService.Serializer.Deserialize(r, typeof(Config));
 			}
 
@@ -555,9 +533,9 @@ namespace RTC
 
 			try
 			{
-				using (var writer = fileSc.CreateText())
+				using (StreamWriter writer = fileSc.CreateText())
 				{
-					var w = new JsonTextWriter(writer) { Formatting = Formatting.Indented };
+					JsonTextWriter w = new JsonTextWriter(writer) { Formatting = Formatting.Indented };
 					ConfigService.Serializer.Serialize(w, sc);
 				}
 			}
@@ -577,35 +555,37 @@ namespace RTC
 			Import(null, false);
 		}
 
-		public static void Import(string Filename, bool CorruptCloud)
+		public static void Import(string filename, bool corruptCloud)
 		{
 			//clean temp folder
 			EmptyFolder("TEMP3");
 			//foreach (string file in Directory.GetFiles(RTC_Core.rtcDir + "\\TEMP3"))
 			//    File.Delete(file);
 
-			if (Filename == null)
+			if (filename == null)
 			{
-				OpenFileDialog OpenFileDialog1 = new OpenFileDialog();
-				OpenFileDialog1.DefaultExt = "sks";
-				OpenFileDialog1.Title = "Open Stockpile File";
-				OpenFileDialog1.Filter = "SKS files|*.sks";
-				OpenFileDialog1.RestoreDirectory = true;
-				if (OpenFileDialog1.ShowDialog() == DialogResult.OK)
+				OpenFileDialog openFileDialog1 = new OpenFileDialog
 				{
-					Filename = OpenFileDialog1.FileName.ToString();
+					DefaultExt = "sks",
+					Title = "Open Stockpile File",
+					Filter = "SKS files|*.sks",
+					RestoreDirectory = true
+				};
+				if (openFileDialog1.ShowDialog() == DialogResult.OK)
+				{
+					filename = openFileDialog1.FileName.ToString();
 				}
 				else
 					return;
 			}
 
-			if (!File.Exists(Filename))
+			if (!File.Exists(filename))
 			{
 				MessageBox.Show("The Stockpile file wasn't found");
 				return;
 			}
 
-			ZipFile.ExtractToDirectory(Filename, RTC_Core.rtcDir + $"\\TEMP3\\");
+			ZipFile.ExtractToDirectory(filename, RTC_Core.rtcDir + $"\\TEMP3\\");
 
 			if (!File.Exists(RTC_Core.rtcDir + "\\TEMP3\\stockpile.xml"))
 			{
@@ -639,22 +619,22 @@ namespace RTC
 			{
 				string statefilename = key.GameName + "." + key.ParentKey + ".timejump.State"; // get savestate name
 
-				string SystemFolder = RTC_Core.bizhawkDir + "\\" + key.SystemName;
-				string SystemStateFolder = RTC_Core.bizhawkDir + "\\" + key.SystemName + "\\State\\";
+				string systemFolder = RTC_Core.bizhawkDir + "\\" + key.SystemName;
+				string systemStateFolder = RTC_Core.bizhawkDir + "\\" + key.SystemName + "\\State\\";
 
-				if (!Directory.Exists(SystemFolder))
-					Directory.CreateDirectory(SystemFolder);
+				if (!Directory.Exists(systemFolder))
+					Directory.CreateDirectory(systemFolder);
 
-				if (!Directory.Exists(SystemStateFolder))
-					Directory.CreateDirectory(SystemStateFolder);
+				if (!Directory.Exists(systemStateFolder))
+					Directory.CreateDirectory(systemStateFolder);
 
 				if (!File.Exists(RTC_Core.bizhawkDir + "\\" + key.SystemName + "\\State\\" + statefilename))
 					File.Copy(RTC_Core.rtcDir + "\\TEMP3\\" + statefilename, RTC_Core.bizhawkDir + "\\" + key.SystemName + "\\State\\" + statefilename); // copy savestates to temp folder
 			}
 
-			for (int i = 0; i < sks.StashKeys.Count; i++)
+			foreach (StashKey sk in sks.StashKeys)
 			{
-				sks.StashKeys[i].RomFilename = RTC_Core.rtcDir + "\\TEMP\\" + sks.StashKeys[i].RomFilename;
+				sk.RomFilename = RTC_Core.rtcDir + "\\TEMP\\" + sk.RomFilename;
 			}
 
 			foreach (string file in Directory.GetFiles(RTC_Core.rtcDir + "\\TEMP3\\"))
@@ -671,11 +651,11 @@ namespace RTC
 
 			foreach (StashKey sk in sks.StashKeys)
 			{
-				var dataRow = RTC_Core.ghForm.dgvStockpile.Rows[RTC_Core.ghForm.dgvStockpile.Rows.Add()];
-				dataRow.Cells["Item"].Value = sk;
-				dataRow.Cells["GameName"].Value = sk.GameName;
-				dataRow.Cells["SystemName"].Value = sk.SystemName;
-				dataRow.Cells["SystemCore"].Value = sk.SystemCore;
+				DataGridViewRow dgvRow = RTC_Core.ghForm.dgvStockpile.Rows[RTC_Core.ghForm.dgvStockpile.Rows.Add()];
+				dgvRow.Cells["Item"].Value = sk;
+				dgvRow.Cells["GameName"].Value = sk.GameName;
+				dgvRow.Cells["SystemName"].Value = sk.SystemName;
+				dgvRow.Cells["SystemCore"].Value = sk.SystemCore;
 			}
 
 			RTC_Core.ghForm.RefreshNoteIcons();
@@ -709,23 +689,17 @@ namespace RTC
 
 		public string Alias
 		{
-			get
-			{
-				return _Alias ?? Key;
-			}
-			set
-			{
-				_Alias = value;
-			}
+			get => alias ?? Key;
+			set => alias = value;
 		}
 
-		private string _Alias;
+		private string alias;
 
-		public StashKey(string _key, string _parentkey, BlastLayer _blastlayer)
+		public StashKey(string key, string parentkey, BlastLayer blastlayer)
 		{
-			Key = _key;
-			ParentKey = _parentkey;
-			BlastLayer = _blastlayer;
+			Key = key;
+			ParentKey = parentkey;
+			BlastLayer = blastlayer;
 
 			RomFilename = (string)RTC_Core.SendCommandToBizhawk(new RTC_Command(CommandType.REMOTE_KEY_GETOPENROMFILENAME), true);
 			SystemName = RTC_Core.EmuFolderCheck((string)RTC_Core.SendCommandToBizhawk(new RTC_Command(CommandType.REMOTE_KEY_GETSYSTEMNAME), true));
@@ -743,49 +717,49 @@ namespace RTC
 		public object Clone()
 		{
 			object sk = ObjectCopier.Clone(this);
-			(sk as StashKey).Key = RTC_Core.GetRandomKey();
-			(sk as StashKey).Alias = null;
+			((StashKey)sk).Key = RTC_Core.GetRandomKey();
+			((StashKey)sk).Alias = null;
 			return sk;
 		}
 
-		public static void setCore(StashKey sk) => setCore(sk.SystemName, sk.SystemCore);
+		public static void SetCore(StashKey sk) => SetCore(sk.SystemName, sk.SystemCore);
 
-		public static void setCore(string _systemName, string _systemCore)
+		public static void SetCore(string systemName, string systemCore)
 		{
-			switch (_systemName.ToUpper())
+			switch (systemName.ToUpper())
 			{
 				case "GAMEBOY":
-					Global.Config.GB_AsSGB = _systemCore == "sameboy";
+					Global.Config.GB_AsSGB = systemCore == "sameboy";
 					Global.Config.SGB_UseBsnes = false;
-					Global.Config.GB_UseGBHawk = _systemCore == "gbhawk";
+					Global.Config.GB_UseGBHawk = systemCore == "gbhawk";
 
 					break;
 
 				case "NES":
-					Global.Config.NES_InQuickNES = _systemCore == "quicknes";
+					Global.Config.NES_InQuickNES = systemCore == "quicknes";
 					break;
 
 				case "SNES":
 
-					if (_systemCore == "bsnes_SGB")
+					if (systemCore == "bsnes_SGB")
 					{
 						Global.Config.GB_AsSGB = true;
 						Global.Config.SGB_UseBsnes = true;
 					}
 					else
-						Global.Config.SNES_InSnes9x = _systemCore == "snes9x";
+						Global.Config.SNES_InSnes9x = systemCore == "snes9x";
 
 					break;
 
 				case "GBA":
-					Global.Config.GBA_UsemGBA = _systemCore == "mgba";
+					Global.Config.GBA_UsemGBA = systemCore == "mgba";
 					break;
 
 				case "N64":
 
 					//Leaving this here for backwards compatability with 3.10
 					//TODO: Remove this
-					string[] coreParts = _systemCore.Split('/');
+					string[] coreParts = systemCore.Split('/');
 					N64SyncSettings ss = (N64SyncSettings)Global.Config.GetCoreSyncSettings<N64>()
 					?? new N64SyncSettings();
 					ss.VideoPlugin = (PluginType)Enum.Parse(typeof(PluginType), coreParts[0], true);
@@ -798,11 +772,11 @@ namespace RTC
 			}
 		}
 
-		public static string getCoreName_NET(string _systemName)
+		public static string getCoreName_NET(string systemName)
 		{
-			var settable = new SettingsAdapter(Global.Emulator);
+			SettingsAdapter settable = new SettingsAdapter(Global.Emulator);
 
-			switch (_systemName.ToUpper())
+			switch (systemName.ToUpper())
 			{
 				case "GAMEBOY":
 
@@ -832,14 +806,16 @@ namespace RTC
 					?? new N64SyncSettings();
 
 					return $"{ss.VideoPlugin}/{ss.Rsp}/{ss.Core}/{(ss.DisableExpansionSlot ? "NoExp" : "Exp")}";
+				default:
+					break;
 			}
 
-			return _systemName;
+			return systemName;
 		}
 
 		public static string getSyncSettings_NET(string ss)
 		{
-			var settable = new SettingsAdapter(Global.Emulator);
+			SettingsAdapter settable = new SettingsAdapter(Global.Emulator);
 			if (settable.HasSyncSettings)
 			{
 				ss = ConfigService.SaveWithType(settable.GetSyncSettings());
@@ -850,7 +826,7 @@ namespace RTC
 
 		public static void putSyncSettings_NET(string ss)
 		{
-			var settable = new SettingsAdapter(Global.Emulator);
+			SettingsAdapter settable = new SettingsAdapter(Global.Emulator);
 			if (settable.HasSyncSettings)
 			{
 				settable.PutSyncSettings(ConfigService.LoadWithType(ss));
@@ -893,7 +869,7 @@ namespace RTC
 			if (StateShortFilename == null || this.StateData == null)
 				return false;
 
-			string deployedStatePath = getSavestateFullPath();
+			string deployedStatePath = GetSavestateFullPath();
 
 			if (File.Exists(deployedStatePath))
 				return true;
@@ -903,7 +879,7 @@ namespace RTC
 			return true;
 		}
 
-		public string getSavestateFullPath()
+		public string GetSavestateFullPath()
 		{
 			return RTC_Core.bizhawkDir + "\\" + this.SystemName + "\\State\\" + this.GameName + "." + this.ParentKey + ".timejump.State"; // get savestate name
 		}
@@ -1106,12 +1082,12 @@ namespace RTC
 
 			try
 			{
-				MemoryDomainProxy mdp = RTC_MemoryDomains.getProxy(Domain, Address);
+				MemoryDomainProxy mdp = RTC_MemoryDomains.GetProxy(Domain, Address);
 
 				if (mdp == null)
 					return true;
 
-				long targetAddress = RTC_MemoryDomains.getRealAddress(Domain, Address);
+				long targetAddress = RTC_MemoryDomains.GetRealAddress(Domain, Address);
 
 				byte[] _Values = (byte[])Value.Clone();
 
@@ -1129,11 +1105,11 @@ namespace RTC
 						break;
 
 					case (BlastByteType.ADD):
-						_Values = RTC_Extensions.addValueToByteArray(mdp.PeekBytes(targetAddress, targetAddress + _Values.Length), RTC_Extensions.getDecimalValue(_Values, !(BigEndian)), BigEndian);
+						_Values = RTC_Extensions.AddValueToByteArray(mdp.PeekBytes(targetAddress, targetAddress + _Values.Length), RTC_Extensions.GetDecimalValue(_Values, !(BigEndian)), BigEndian);
 						break;
 
 					case (BlastByteType.SUBSTRACT):
-						_Values = RTC_Extensions.addValueToByteArray(mdp.PeekBytes(targetAddress, targetAddress + _Values.Length), RTC_Extensions.getDecimalValue(_Values, !(BigEndian)) * -1, BigEndian);
+						_Values = RTC_Extensions.AddValueToByteArray(mdp.PeekBytes(targetAddress, targetAddress + _Values.Length), RTC_Extensions.GetDecimalValue(_Values, !(BigEndian)) * -1, BigEndian);
 						break;
 
 					case (BlastByteType.NONE):
@@ -1162,8 +1138,8 @@ namespace RTC
 
 			try
 			{
-				MemoryDomainProxy mdp = RTC_MemoryDomains.getProxy(Domain, Address);
-				long targetAddress = RTC_MemoryDomains.getRealAddress(Domain, Address);
+				MemoryDomainProxy mdp = RTC_MemoryDomains.GetProxy(Domain, Address);
+				long targetAddress = RTC_MemoryDomains.GetRealAddress(Domain, Address);
 
 				if (mdp == null || Type == BlastByteType.NONE)
 					return null;
@@ -1189,7 +1165,7 @@ namespace RTC
 			if (Type == BlastByteType.SET)
 			{
 				long randomValue = RTC_Core.RND.RandomLong(RTC_NightmareEngine.MinValue, RTC_NightmareEngine.MaxValue);
-				Value = RTC_Extensions.getByteArrayValue(Value.Length, randomValue, true);
+				Value = RTC_Extensions.GetByteArrayValue(Value.Length, randomValue, true);
 			}
 			else if (Type == BlastByteType.ADD || Type == BlastByteType.SUBSTRACT)
 			{
@@ -1218,7 +1194,7 @@ namespace RTC
 				EnabledString = "[x] BlastByte -> ";
 
 			string cleanDomainName = Domain.Replace("(nametables)", ""); //Shortens the domain name if it contains "(nametables)"
-			return (EnabledString + cleanDomainName + "(" + Convert.ToInt32(Address).ToString() + ")." + Type.ToString() + "(" + RTC_Extensions.getDecimalValue(Value, BigEndian).ToString() + ")");
+			return (EnabledString + cleanDomainName + "(" + Convert.ToInt32(Address).ToString() + ")." + Type.ToString() + "(" + RTC_Extensions.GetDecimalValue(Value, BigEndian).ToString() + ")");
 		}
 	}
 
@@ -1277,12 +1253,12 @@ namespace RTC
 
 			try
 			{
-				MemoryDomainProxy mdp = RTC_MemoryDomains.getProxy(Domain, Address);
+				MemoryDomainProxy mdp = RTC_MemoryDomains.GetProxy(Domain, Address);
 
 				if (mdp == null)
 					return true;
 
-				long targetAddress = RTC_MemoryDomains.getRealAddress(Domain, Address);
+				long targetAddress = RTC_MemoryDomains.GetRealAddress(Domain, Address);
 
 				mdp.PokeByte(targetAddress, Values[0]);
 				mdp.PokeByte(targetAddress + 1, Values[1]);
@@ -1307,11 +1283,11 @@ namespace RTC
 
 			try
 			{
-				MemoryDomainProxy mdp = RTC_MemoryDomains.getProxy(Domain, Address);
+				MemoryDomainProxy mdp = RTC_MemoryDomains.GetProxy(Domain, Address);
 				if (mdp == null)
 					return null;
 
-				long targetAddress = RTC_MemoryDomains.getRealAddress(Domain, Address);
+				long targetAddress = RTC_MemoryDomains.GetRealAddress(Domain, Address);
 
 				return new BlastVector(Domain, Address, mdp.PeekBytes(targetAddress, targetAddress + 4), true);
 			}
@@ -1377,16 +1353,16 @@ namespace RTC
 		{
 			try
 			{
-				MemoryDomainProxy mdp = RTC_MemoryDomains.getProxy(Domain, Address);
-				MemoryDomainProxy mdp2 = RTC_MemoryDomains.getProxy(PipeDomain, PipeAddress);
+				MemoryDomainProxy mdp = RTC_MemoryDomains.GetProxy(Domain, Address);
+				MemoryDomainProxy mdp2 = RTC_MemoryDomains.GetProxy(PipeDomain, PipeAddress);
 
 				if (mdp == null || mdp2 == null)
 					throw new Exception($"Memory Domain error, MD1 -> {mdp.ToString()}, md2 -> {mdp2.ToString()}");
 
 				for (int i = 0; i < PipeSize; i++)
 				{
-					long targetAddress = RTC_MemoryDomains.getRealAddress(Domain, Address) + i;
-					long targetPipeAddress = RTC_MemoryDomains.getRealAddress(PipeDomain, PipeAddress) + i;
+					long targetAddress = RTC_MemoryDomains.GetRealAddress(Domain, Address) + i;
+					long targetPipeAddress = RTC_MemoryDomains.GetRealAddress(PipeDomain, PipeAddress) + i;
 
 					int currentValue = (int)mdp.PeekByte(targetAddress);
 
@@ -1464,7 +1440,7 @@ namespace RTC
 
 			try
 			{
-				MemoryDomainProxy mdp = RTC_MemoryDomains.getProxy(PipeDomain, PipeAddress);
+				MemoryDomainProxy mdp = RTC_MemoryDomains.GetProxy(PipeDomain, PipeAddress);
 
 				if (mdp == null)
 					return null;
@@ -1569,14 +1545,14 @@ namespace RTC
 				if (!IsEnabled)
 					return true;
 
-				MemoryDomainProxy mdp = RTC_MemoryDomains.getProxy(Domain, Address);
+				MemoryDomainProxy mdp = RTC_MemoryDomains.GetProxy(Domain, Address);
 				var settings = new RamSearchEngine.Settings(RTC_MemoryDomains.MDRI.MemoryDomains);
 
 				if (mdp == null)
 					return true;
 
-				string targetDomain = RTC_MemoryDomains.getRealDomain(Domain, Address);
-				long targetAddress = RTC_MemoryDomains.getRealAddress(Domain, Address);
+				string targetDomain = RTC_MemoryDomains.GetRealDomain(Domain, Address);
+				long targetAddress = RTC_MemoryDomains.GetRealAddress(Domain, Address);
 
 				string cheatName = "RTC Cheat|" + targetDomain + "|" + (targetAddress).ToString() + "|" + DisplayType.ToString() + "|" + BigEndian.ToString() + "|" + String.Join(",", Value.Select(it => it.ToString())) + "|" + IsEnabled.ToString() + "|" + IsFreeze.ToString();
 
@@ -1592,18 +1568,18 @@ namespace RTC
 				{
 					byte[] freezeValue = new byte[Value.Length];
 
-					MemoryDomainProxy targetMdp = RTC_MemoryDomains.getProxy(targetDomain, targetAddress);
+					MemoryDomainProxy targetMdp = RTC_MemoryDomains.GetProxy(targetDomain, targetAddress);
 
 					for (int i = 0; i < Value.Length; i++)
 					{
 						freezeValue[i] = targetMdp.PeekByte(targetAddress + i);
 					}
 
-					_value = Convert.ToInt64(RTC_Extensions.getDecimalValue(freezeValue, BigEndian));
+					_value = Convert.ToInt64(RTC_Extensions.GetDecimalValue(freezeValue, BigEndian));
 				}
 				else
 				{
-					_value = Convert.ToInt64(RTC_Extensions.getDecimalValue(Value, BigEndian));
+					_value = Convert.ToInt64(RTC_Extensions.GetDecimalValue(Value, BigEndian));
 				}
 
 				Watch somewatch = Watch.GenerateWatch(mdp.md, targetAddress, (WatchSize)Value.Length, DisplayType, BigEndian, cheatName, _value, 0, 0);
@@ -1632,7 +1608,7 @@ namespace RTC
 			if (!IsFreeze)
 			{
 				long randomValue = RTC_Core.RND.RandomLong(RTC_HellgenieEngine.MinValue, RTC_HellgenieEngine.MaxValue);
-				Value = RTC_Extensions.getByteArrayValue(Value.Length, randomValue, true);
+				Value = RTC_Extensions.GetByteArrayValue(Value.Length, randomValue, true);
 			}
 		}
 
@@ -1645,7 +1621,7 @@ namespace RTC
 			string cleanDomainName = Domain.Replace("(nametables)", ""); //Shortens the domain name if it contains "(nametables)"
 
 			//RTC_TODO: Rewrite the toString method for this
-			return (EnabledString + cleanDomainName + "(" + Convert.ToInt32(Address).ToString() + ")" + (IsFreeze ? "" : ".Value(" + RTC_Extensions.getDecimalValue(Value, BigEndian).ToString() + ")"));
+			return (EnabledString + cleanDomainName + "(" + Convert.ToInt32(Address).ToString() + ")" + (IsFreeze ? "" : ".Value(" + RTC_Extensions.GetDecimalValue(Value, BigEndian).ToString() + ")"));
 		}
 	}
 

@@ -31,13 +31,13 @@ namespace RTC
 				if (saveFileDialog1.ShowDialog() == DialogResult.OK)
 				{
 					filename = saveFileDialog1.FileName;
-					RTC_Core.beForm.currentBlastLayerFile = saveFileDialog1.FileName;
+					RTC_Core.beForm.CurrentBlastLayerFile = saveFileDialog1.FileName;
 				}
 				else
 					return false;
 			}
 			else
-				filename = RTC_Core.beForm.currentBlastLayerFile;
+				filename = RTC_Core.beForm.CurrentBlastLayerFile;
 
 			XmlSerializer xs = new XmlSerializer(typeof(BlastLayer));
 
@@ -98,15 +98,15 @@ namespace RTC
 			switch (input.Length)
 			{
 				case 1:
-					if (RTC_Extensions.getDecimalValue(input, false) > Byte.MaxValue)
+					if (RTC_Extensions.GetDecimalValue(input, false) > Byte.MaxValue)
 						return getByteArray(1, 0xFF);
 					break;
 				case 2:
-					if (RTC_Extensions.getDecimalValue(input, false) > UInt16.MaxValue)
+					if (RTC_Extensions.GetDecimalValue(input, false) > UInt16.MaxValue)
 						return getByteArray(2, 0xFF);
 					break;
 				case 4:
-					if (RTC_Extensions.getDecimalValue(input, false) > UInt32.MaxValue)
+					if (RTC_Extensions.GetDecimalValue(input, false) > UInt32.MaxValue)
 						return getByteArray(2, 0xFF);
 					break;
 			}
@@ -266,9 +266,9 @@ namespace RTC
 
 			var rp = RTC_MemoryDomains.GetRomParts(thisSystem, romFilename);
 
-			if (rp.error != null)
+			if (rp.Error != null)
 			{
-				MessageBox.Show(rp.error);
+				MessageBox.Show(rp.Error);
 				return null;
 			}
 
@@ -278,17 +278,17 @@ namespace RTC
 				return null;
 			}
 
-			RTC.MemoryInterface mi = RTC_MemoryDomains.getInterface(rp.primarydomain);
+			RTC.MemoryInterface mi = RTC_MemoryDomains.GetInterface(rp.PrimaryDomain);
 			long maxaddress = mi.Size;
 
 			for (int i = 0; i < Original.Length; i++)
 			{
-				if (Original[i] != Corrupt[i] && i >= rp.skipbytes)
+				if (Original[i] != Corrupt[i] && i >= rp.SkipBytes)
 				{
-					if (i - rp.skipbytes >= maxaddress)
-						bl.Layer.Add(new BlastByte(rp.seconddomain, (i - rp.skipbytes) - maxaddress, BlastByteType.SET, new byte[] { Corrupt[i] }, mi.BigEndian, true));
+					if (i - rp.SkipBytes >= maxaddress)
+						bl.Layer.Add(new BlastByte(rp.SecondDomain, (i - rp.SkipBytes) - maxaddress, BlastByteType.SET, new byte[] { Corrupt[i] }, mi.BigEndian, true));
 					else
-						bl.Layer.Add(new BlastByte(rp.primarydomain, i - rp.skipbytes, BlastByteType.SET, new byte[] { Corrupt[i] }, mi.BigEndian, true));
+						bl.Layer.Add(new BlastByte(rp.PrimaryDomain, i - rp.SkipBytes, BlastByteType.SET, new byte[] { Corrupt[i] }, mi.BigEndian, true));
 				}
 			}
 

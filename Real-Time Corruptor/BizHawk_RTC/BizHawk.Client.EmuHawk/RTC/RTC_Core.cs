@@ -11,7 +11,7 @@ using System.Threading;
 using System.Windows.Forms;
 
 /*
-IsRemoteRTC = Bool stating that the process is emuhawk.exe in detached
+isRemoteRTC = Bool stating that the process is emuhawk.exe in detached
 isStandalone = Bool stating the process is standalonertc in detached
 */
 
@@ -67,7 +67,7 @@ namespace RTC
 		public static RTC_MultiPeerPopout_Form multipeerpopoutForm = null;
 		public static RTC_StockpileBlastBoard_Form sbForm = null;
 		public static RTC_ConnectionStatus_Form csForm = null;
-		public static RTC_NewBlastEditor_Form beForm = null;
+		public static RTC_BlastEditor_Form beForm = null;
 		public static RTC_BlastGenerator_Form bgForm = null;
 
 		public static Form standaloneForm = null;
@@ -239,7 +239,7 @@ namespace RTC
 			multiForm = new RTC_Multiplayer_Form();
 			multipeerpopoutForm = new RTC_MultiPeerPopout_Form();
 			sbForm = new RTC_StockpileBlastBoard_Form();
-			beForm = new RTC_NewBlastEditor_Form();
+			beForm = new RTC_BlastEditor_Form();
 			bgForm = new RTC_BlastGenerator_Form();
 
 			vmdPoolForm = new RTC_VmdPool_Form();
@@ -295,7 +295,7 @@ namespace RTC
 					if (csForm == null)
 						csForm = new RTC_ConnectionStatus_Form();
 
-					RTC_Core.coreForm.showPanelForm(csForm);
+					RTC_Core.coreForm.ShowPanelForm(csForm);
 
 					RemoteRTC.ServerStarted += new EventHandler((ob, ev) =>
 					{
@@ -307,7 +307,7 @@ namespace RTC
 							if (RTC_Core.csForm == null)
 								csForm = new RTC_ConnectionStatus_Form();
 
-							RTC_Core.coreForm.showPanelForm(csForm);
+							RTC_Core.coreForm.ShowPanelForm(csForm);
 						}
 
 						if (ghForm != null && !ghForm.IsDisposed)
@@ -329,7 +329,7 @@ namespace RTC
 							coreForm.btnEngineConfig_Click(ob, ev);
 						}
 						else
-							coreForm.showPanelForm(coreForm.previousForm, false);
+							coreForm.ShowPanelForm(coreForm.previousForm, false);
 
 						ghForm.pnHideGlitchHarvester.Size = ghForm.Size;
 						ghForm.pnHideGlitchHarvester.Hide();
@@ -347,7 +347,7 @@ namespace RTC
 						if (csForm != null && !csForm.IsDisposed)
 						{
 							csForm.lbConnectionStatus.Text = "Connection status: Bizhawk timed out";
-							coreForm.showPanelForm(csForm);
+							coreForm.ShowPanelForm(csForm);
 						}
 
 						if (ghForm != null && !ghForm.IsDisposed)
@@ -368,7 +368,7 @@ namespace RTC
 						Console.WriteLine("RemoteRTC.ServerDisconnected");
 						csForm.lbConnectionStatus.Text = "Connection status: NetCore Shutdown";
 						ghForm.lbConnectionStatus.Text = "Connection status: NetCore Shutdown";
-						coreForm.showPanelForm(csForm);
+						coreForm.ShowPanelForm(csForm);
 
 						ghForm.pnHideGlitchHarvester.BringToFront();
 						ghForm.pnHideGlitchHarvester.Show();
@@ -573,7 +573,7 @@ namespace RTC
 							{
 								Domain = _selectedDomains[RND.Next(_selectedDomains.Length)];
 
-								MaxAddress = RTC_MemoryDomains.getInterface(Domain).Size;
+								MaxAddress = RTC_MemoryDomains.GetInterface(Domain).Size;
 								RandomAddress = RTC_Core.RND.RandomLong(MaxAddress - 1);
 
 								bu = getBlastUnit(Domain, RandomAddress);
@@ -587,7 +587,7 @@ namespace RTC
 
 							Domain = _selectedDomains[RND.Next(_selectedDomains.Length)];
 
-							MaxAddress = RTC_MemoryDomains.getInterface(Domain).Size;
+							MaxAddress = RTC_MemoryDomains.GetInterface(Domain).Size;
 
 							for (int i = 0; i < _Intensity; i++)
 							{
@@ -606,7 +606,7 @@ namespace RTC
 							{
 								Domain = _selectedDomains[RND.Next(_selectedDomains.Length)];
 
-								MaxAddress = RTC_MemoryDomains.getInterface(Domain).Size;
+								MaxAddress = RTC_MemoryDomains.GetInterface(Domain).Size;
 
 								for (int i = 0; i < (int)((double)_Intensity / 10); i++)
 								{
@@ -629,7 +629,7 @@ namespace RTC
 							for (int i = 0; i < _selectedDomains.Length; i++)
 							{
 								Domain = _selectedDomains[i];
-								domainSize[i] = RTC_MemoryDomains.getInterface(Domain).Size;
+								domainSize[i] = RTC_MemoryDomains.GetInterface(Domain).Size;
 							}
 							//Sort the arrays
 							Array.Sort(domainSize, _selectedDomains);
@@ -643,7 +643,7 @@ namespace RTC
 
 								for (int j = 0; j < (_Intensity / normalized); j++)
 								{
-									MaxAddress = RTC_MemoryDomains.getInterface(Domain).Size;
+									MaxAddress = RTC_MemoryDomains.GetInterface(Domain).Size;
 									RandomAddress = RTC_Core.RND.RandomLong(MaxAddress - 1);
 
 									bu = getBlastUnit(Domain, RandomAddress);
@@ -656,12 +656,12 @@ namespace RTC
 
 						case BlastRadius.PROPORTIONAL: //Blasts proportionally based on the total size of all selected domains
 
-							long totalSize = _selectedDomains.Select(it => RTC_MemoryDomains.getInterface(it).Size).Sum(); //Gets the total size of all selected domains
+							long totalSize = _selectedDomains.Select(it => RTC_MemoryDomains.GetInterface(it).Size).Sum(); //Gets the total size of all selected domains
 
 							long[] normalizedIntensity = new long[_selectedDomains.Length]; //matches the index of selectedDomains
 							for (int i = 0; i < _selectedDomains.Length; i++)
 							{   //calculates the proportionnal normalized Intensity based on total selected domains size
-								double proportion = (double)RTC_MemoryDomains.getInterface(_selectedDomains[i]).Size / (double)totalSize;
+								double proportion = (double)RTC_MemoryDomains.GetInterface(_selectedDomains[i]).Size / (double)totalSize;
 								normalizedIntensity[i] = Convert.ToInt64((double)_Intensity * proportion);
 							}
 
@@ -671,7 +671,7 @@ namespace RTC
 
 								for (int j = 0; j < normalizedIntensity[i]; j++)
 								{
-									MaxAddress = RTC_MemoryDomains.getInterface(Domain).Size;
+									MaxAddress = RTC_MemoryDomains.GetInterface(Domain).Size;
 									RandomAddress = RTC_Core.RND.RandomLong(MaxAddress - 1);
 
 									bu = getBlastUnit(Domain, RandomAddress);
@@ -690,7 +690,7 @@ namespace RTC
 
 								for (int j = 0; j < (_Intensity / _selectedDomains.Length); j++)
 								{
-									MaxAddress = RTC_MemoryDomains.getInterface(Domain).Size;
+									MaxAddress = RTC_MemoryDomains.GetInterface(Domain).Size;
 									RandomAddress = RTC_Core.RND.RandomLong(MaxAddress - 1);
 
 									bu = getBlastUnit(Domain, RandomAddress);
@@ -739,7 +739,7 @@ namespace RTC
 
 			Domain = _selectedDomains[RND.Next(_selectedDomains.Length)];
 
-			MaxAddress = RTC_MemoryDomains.getInterface(Domain).Size;
+			MaxAddress = RTC_MemoryDomains.GetInterface(Domain).Size;
 			RandomAddress = RTC_Core.RND.RandomLong(MaxAddress - 1);
 
 			return new BlastTarget(Domain, RandomAddress);
