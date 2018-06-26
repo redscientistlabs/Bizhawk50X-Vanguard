@@ -52,8 +52,8 @@ namespace RTC
 			string VmdName = lbLoadedVmdList.SelectedItem.ToString();
 			MemoryInterface mi = RTC_MemoryDomains.VmdPool[VmdName];
 
+			lbVmdSizeValue.Text = mi.Size.ToString() + " (0x" + mi.Size.ToString("X") + ")";
 			lbRealDomainValue.Text = (mi as VirtualMemoryDomain).PointerDomains[0];
-			lbVmdSizeValue.Text = "0x" + mi.Size.ToString("X");
 		}
 
 		private void btnSaveVmd_Click(object sender, EventArgs e)

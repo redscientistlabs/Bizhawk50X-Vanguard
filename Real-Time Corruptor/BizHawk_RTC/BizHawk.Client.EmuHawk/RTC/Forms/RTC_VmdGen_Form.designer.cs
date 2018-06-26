@@ -40,13 +40,13 @@
             this.lbDomainSizeLabel = new System.Windows.Forms.Label();
             this.btnGenerateVMD = new System.Windows.Forms.Button();
             this.cbUsePointerSpacer = new System.Windows.Forms.CheckBox();
-            this.nmPointerSpacer = new RTC.NumericUpDownHexFix();
             this.label4 = new System.Windows.Forms.Label();
             this.tbCustomAddresses = new System.Windows.Forms.TextBox();
             this.label5 = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
             this.tbVmdName = new System.Windows.Forms.TextBox();
             this.btnHelp = new System.Windows.Forms.Button();
+			this.nmPointerSpacer = new System.Windows.Forms.NumericUpDown();
             this.groupBox1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.nmPointerSpacer)).BeginInit();
             this.SuspendLayout();
@@ -206,34 +206,6 @@
             this.cbUsePointerSpacer.Text = "Set pointer every";
             this.cbUsePointerSpacer.UseVisualStyleBackColor = true;
             // 
-            // nmPointerSpacer
-            // 
-            this.nmPointerSpacer.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
-            this.nmPointerSpacer.Font = new System.Drawing.Font("Segoe UI", 9.75F);
-            this.nmPointerSpacer.ForeColor = System.Drawing.Color.White;
-            this.nmPointerSpacer.Hexadecimal = true;
-            this.nmPointerSpacer.Location = new System.Drawing.Point(114, 149);
-            this.nmPointerSpacer.Maximum = new decimal(new int[] {
-            2147483647,
-            0,
-            0,
-            0});
-            this.nmPointerSpacer.Minimum = new decimal(new int[] {
-            2,
-            0,
-            0,
-            0});
-            this.nmPointerSpacer.Name = "nmPointerSpacer";
-            this.nmPointerSpacer.Size = new System.Drawing.Size(47, 25);
-            this.nmPointerSpacer.TabIndex = 126;
-            this.nmPointerSpacer.Tag = "color:dark";
-            this.nmPointerSpacer.Value = new decimal(new int[] {
-            2,
-            0,
-            0,
-            0});
-            this.nmPointerSpacer.ValueChanged += new System.EventHandler(this.numericUpDown2_ValueChanged);
-            // 
             // label4
             // 
             this.label4.AutoSize = true;
@@ -308,6 +280,28 @@
             this.btnHelp.UseVisualStyleBackColor = false;
             this.btnHelp.Click += new System.EventHandler(this.btnHelp_Click);
             // 
+            // nmPointerSpacer
+            // 
+            this.nmPointerSpacer.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
+            this.nmPointerSpacer.Font = new System.Drawing.Font("Segoe UI", 9.75F);
+            this.nmPointerSpacer.ForeColor = System.Drawing.Color.White;
+            this.nmPointerSpacer.Location = new System.Drawing.Point(114, 149);
+            this.nmPointerSpacer.Minimum = new decimal(new int[] {
+            2,
+            0,
+            0,
+            0});
+            this.nmPointerSpacer.Name = "nmPointerSpacer";
+            this.nmPointerSpacer.Size = new System.Drawing.Size(47, 25);
+            this.nmPointerSpacer.TabIndex = 126;
+            this.nmPointerSpacer.Tag = "color:dark";
+            this.nmPointerSpacer.Value = new decimal(new int[] {
+            2,
+            0,
+            0,
+            0});
+            this.nmPointerSpacer.ValueChanged += new System.EventHandler(this.numericUpDown2_ValueChanged);
+            // 
             // RTC_VmdGen_Form
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -351,7 +345,7 @@
         public System.Windows.Forms.Label lbEndianTypeLabel;
         private System.Windows.Forms.Button btnGenerateVMD;
         public System.Windows.Forms.CheckBox cbUsePointerSpacer;
-        public RTC.NumericUpDownHexFix nmPointerSpacer;
+        public System.Windows.Forms.NumericUpDown nmPointerSpacer;
         public System.Windows.Forms.Label lbDomainSizeValue;
         private System.Windows.Forms.Label label4;
         public System.Windows.Forms.Label lbEndianTypeValue;

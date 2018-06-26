@@ -40,11 +40,9 @@
             this.label14 = new System.Windows.Forms.Label();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
             this.label12 = new System.Windows.Forms.Label();
-            this.nmActiveTableCapOffset = new RTC.NumericUpDownHexFix();
             this.rbActiveTableCapBlockEnd = new System.Windows.Forms.RadioButton();
             this.rbActiveTableCapBlockStart = new System.Windows.Forms.RadioButton();
             this.rbActiveTableCapRandom = new System.Windows.Forms.RadioButton();
-            this.nmActiveTableCapSize = new RTC.NumericUpDownHexFix();
             this.label6 = new System.Windows.Forms.Label();
             this.cbActiveTableCapSize = new System.Windows.Forms.CheckBox();
             this.cbSelectedMemoryDomain = new System.Windows.Forms.ComboBox();
@@ -61,13 +59,15 @@
             this.btnActiveTableAddFile = new System.Windows.Forms.Button();
             this.btnLoadDomains = new System.Windows.Forms.Button();
             this.lbAutoAddEvery = new System.Windows.Forms.Label();
+            this.nmActiveTableCapOffset = new RTC.NumericUpDownHexFix();
+            this.nmActiveTableCapSize = new System.Windows.Forms.NumericUpDown();
             this.groupBox2.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.track_ActiveTableActivityThreshold)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.nmActiveTableActivityThreshold)).BeginInit();
             this.groupBox1.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.nmAutoAddSec)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.nmActiveTableCapOffset)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.nmActiveTableCapSize)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.nmAutoAddSec)).BeginInit();
             this.SuspendLayout();
             // 
             // btnActiveTableSubstractFile
@@ -238,17 +238,6 @@
             this.label12.TabIndex = 80;
             this.label12.Text = "Offset:";
             // 
-            // nmActiveTableCapOffset
-            // 
-            this.nmActiveTableCapOffset.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
-            this.nmActiveTableCapOffset.ForeColor = System.Drawing.Color.White;
-            this.nmActiveTableCapOffset.Hexadecimal = true;
-            this.nmActiveTableCapOffset.Location = new System.Drawing.Point(52, 61);
-            this.nmActiveTableCapOffset.Name = "nmActiveTableCapOffset";
-            this.nmActiveTableCapOffset.Size = new System.Drawing.Size(64, 22);
-            this.nmActiveTableCapOffset.TabIndex = 119;
-            this.nmActiveTableCapOffset.Tag = "color:dark";
-            // 
             // rbActiveTableCapBlockEnd
             // 
             this.rbActiveTableCapBlockEnd.AutoSize = true;
@@ -283,27 +272,6 @@
             this.rbActiveTableCapRandom.TabStop = true;
             this.rbActiveTableCapRandom.Text = "Random";
             this.rbActiveTableCapRandom.UseVisualStyleBackColor = true;
-            // 
-            // nmActiveTableCapSize
-            // 
-            this.nmActiveTableCapSize.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
-            this.nmActiveTableCapSize.ForeColor = System.Drawing.Color.White;
-            this.nmActiveTableCapSize.Hexadecimal = true;
-            this.nmActiveTableCapSize.Location = new System.Drawing.Point(66, 118);
-            this.nmActiveTableCapSize.Minimum = new decimal(new int[] {
-            1,
-            0,
-            0,
-            0});
-            this.nmActiveTableCapSize.Name = "nmActiveTableCapSize";
-            this.nmActiveTableCapSize.Size = new System.Drawing.Size(113, 22);
-            this.nmActiveTableCapSize.TabIndex = 77;
-            this.nmActiveTableCapSize.Tag = "color:dark";
-            this.nmActiveTableCapSize.Value = new decimal(new int[] {
-            2048,
-            0,
-            0,
-            0});
             // 
             // label6
             // 
@@ -526,6 +494,38 @@
             this.lbAutoAddEvery.TabIndex = 127;
             this.lbAutoAddEvery.Text = "Auto-add every";
             // 
+            // nmActiveTableCapOffset
+            // 
+            this.nmActiveTableCapOffset.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
+            this.nmActiveTableCapOffset.Font = new System.Drawing.Font("Consolas", 8F);
+            this.nmActiveTableCapOffset.ForeColor = System.Drawing.Color.White;
+            this.nmActiveTableCapOffset.Hexadecimal = true;
+            this.nmActiveTableCapOffset.Location = new System.Drawing.Point(52, 62);
+            this.nmActiveTableCapOffset.Name = "nmActiveTableCapOffset";
+            this.nmActiveTableCapOffset.Size = new System.Drawing.Size(64, 20);
+            this.nmActiveTableCapOffset.TabIndex = 119;
+            this.nmActiveTableCapOffset.Tag = "color:dark";
+            // 
+            // nmActiveTableCapSize
+            // 
+            this.nmActiveTableCapSize.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
+            this.nmActiveTableCapSize.ForeColor = System.Drawing.Color.White;
+            this.nmActiveTableCapSize.Location = new System.Drawing.Point(66, 118);
+            this.nmActiveTableCapSize.Minimum = new decimal(new int[] {
+            1,
+            0,
+            0,
+            0});
+            this.nmActiveTableCapSize.Name = "nmActiveTableCapSize";
+            this.nmActiveTableCapSize.Size = new System.Drawing.Size(113, 22);
+            this.nmActiveTableCapSize.TabIndex = 77;
+            this.nmActiveTableCapSize.Tag = "color:dark";
+            this.nmActiveTableCapSize.Value = new decimal(new int[] {
+            2048,
+            0,
+            0,
+            0});
+            // 
             // RTC_VmdAct_Form
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -561,9 +561,9 @@
             ((System.ComponentModel.ISupportInitialize)(this.nmActiveTableActivityThreshold)).EndInit();
             this.groupBox1.ResumeLayout(false);
             this.groupBox1.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.nmAutoAddSec)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.nmActiveTableCapOffset)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.nmActiveTableCapSize)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.nmAutoAddSec)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -586,7 +586,7 @@
         public System.Windows.Forms.RadioButton rbActiveTableCapBlockEnd;
         public System.Windows.Forms.RadioButton rbActiveTableCapBlockStart;
         public System.Windows.Forms.RadioButton rbActiveTableCapRandom;
-        public RTC.NumericUpDownHexFix nmActiveTableCapSize;
+        public System.Windows.Forms.NumericUpDown nmActiveTableCapSize;
         private System.Windows.Forms.Label label6;
         public System.Windows.Forms.CheckBox cbActiveTableCapSize;
         private System.Windows.Forms.Button btnActiveTableLoad;

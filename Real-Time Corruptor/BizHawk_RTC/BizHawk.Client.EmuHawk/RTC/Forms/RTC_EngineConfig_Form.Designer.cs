@@ -833,15 +833,10 @@
             // nmTiltPipeValue
             // 
             this.nmTiltPipeValue.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
-            this.nmTiltPipeValue.Font = new System.Drawing.Font("Segoe UI", 8F);
+            this.nmTiltPipeValue.Font = new System.Drawing.Font("Consolas", 9F);
             this.nmTiltPipeValue.ForeColor = System.Drawing.Color.White;
             this.nmTiltPipeValue.Hexadecimal = true;
             this.nmTiltPipeValue.Location = new System.Drawing.Point(95, 63);
-            this.nmTiltPipeValue.Maximum = new decimal(new int[] {
-            255,
-            0,
-            0,
-            0});
             this.nmTiltPipeValue.Minimum = new decimal(new int[] {
             255,
             0,
@@ -1215,7 +1210,7 @@
             // 
             this.label26.AutoSize = true;
             this.label26.Font = new System.Drawing.Font("Segoe UI", 8F);
-            this.label26.Location = new System.Drawing.Point(4, 92);
+            this.label26.Location = new System.Drawing.Point(4, 90);
             this.label26.Name = "label26";
             this.label26.Size = new System.Drawing.Size(87, 13);
             this.label26.TabIndex = 147;
@@ -1244,12 +1239,12 @@
             // nmMaxValueHellgenie
             // 
             this.nmMaxValueHellgenie.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
-            this.nmMaxValueHellgenie.Font = new System.Drawing.Font("Segoe UI", 8F);
+            this.nmMaxValueHellgenie.Font = new System.Drawing.Font("Consolas", 8.25F);
             this.nmMaxValueHellgenie.ForeColor = System.Drawing.Color.White;
             this.nmMaxValueHellgenie.Hexadecimal = true;
-            this.nmMaxValueHellgenie.Location = new System.Drawing.Point(94, 90);
+            this.nmMaxValueHellgenie.Location = new System.Drawing.Point(94, 88);
             this.nmMaxValueHellgenie.Name = "nmMaxValueHellgenie";
-            this.nmMaxValueHellgenie.Size = new System.Drawing.Size(70, 22);
+            this.nmMaxValueHellgenie.Size = new System.Drawing.Size(70, 20);
             this.nmMaxValueHellgenie.TabIndex = 146;
             this.nmMaxValueHellgenie.Tag = "color:dark";
             this.nmMaxValueHellgenie.Value = new decimal(new int[] {
@@ -1272,12 +1267,12 @@
             // nmMinValueHellgenie
             // 
             this.nmMinValueHellgenie.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
-            this.nmMinValueHellgenie.Font = new System.Drawing.Font("Segoe UI", 8F);
+            this.nmMinValueHellgenie.Font = new System.Drawing.Font("Consolas", 8.25F);
             this.nmMinValueHellgenie.ForeColor = System.Drawing.Color.White;
             this.nmMinValueHellgenie.Hexadecimal = true;
             this.nmMinValueHellgenie.Location = new System.Drawing.Point(94, 63);
             this.nmMinValueHellgenie.Name = "nmMinValueHellgenie";
-            this.nmMinValueHellgenie.Size = new System.Drawing.Size(70, 22);
+            this.nmMinValueHellgenie.Size = new System.Drawing.Size(70, 20);
             this.nmMinValueHellgenie.TabIndex = 145;
             this.nmMinValueHellgenie.Tag = "color:dark";
             this.nmMinValueHellgenie.ValueChanged += new System.EventHandler(this.nmMinValueHellgenie_ValueChanged);
@@ -1389,7 +1384,7 @@
             // 
             this.label24.AutoSize = true;
             this.label24.Font = new System.Drawing.Font("Segoe UI", 8F);
-            this.label24.Location = new System.Drawing.Point(4, 94);
+            this.label24.Location = new System.Drawing.Point(4, 91);
             this.label24.Name = "label24";
             this.label24.Size = new System.Drawing.Size(87, 13);
             this.label24.TabIndex = 143;
@@ -1408,12 +1403,12 @@
             // nmMaxValueNightmare
             // 
             this.nmMaxValueNightmare.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
-            this.nmMaxValueNightmare.Font = new System.Drawing.Font("Segoe UI", 8F);
+            this.nmMaxValueNightmare.Font = new System.Drawing.Font("Consolas", 8.25F);
             this.nmMaxValueNightmare.ForeColor = System.Drawing.Color.White;
             this.nmMaxValueNightmare.Hexadecimal = true;
-            this.nmMaxValueNightmare.Location = new System.Drawing.Point(94, 91);
+            this.nmMaxValueNightmare.Location = new System.Drawing.Point(94, 88);
             this.nmMaxValueNightmare.Name = "nmMaxValueNightmare";
-            this.nmMaxValueNightmare.Size = new System.Drawing.Size(70, 22);
+            this.nmMaxValueNightmare.Size = new System.Drawing.Size(70, 20);
             this.nmMaxValueNightmare.TabIndex = 142;
             this.nmMaxValueNightmare.Tag = "color:dark";
             this.nmMaxValueNightmare.Value = new decimal(new int[] {
@@ -1426,12 +1421,12 @@
             // nmMinValueNightmare
             // 
             this.nmMinValueNightmare.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
-            this.nmMinValueNightmare.Font = new System.Drawing.Font("Segoe UI", 8F);
+            this.nmMinValueNightmare.Font = new System.Drawing.Font("Consolas", 8.25F);
             this.nmMinValueNightmare.ForeColor = System.Drawing.Color.White;
             this.nmMinValueNightmare.Hexadecimal = true;
             this.nmMinValueNightmare.Location = new System.Drawing.Point(94, 64);
             this.nmMinValueNightmare.Name = "nmMinValueNightmare";
-            this.nmMinValueNightmare.Size = new System.Drawing.Size(70, 22);
+            this.nmMinValueNightmare.Size = new System.Drawing.Size(70, 20);
             this.nmMinValueNightmare.TabIndex = 141;
             this.nmMinValueNightmare.Tag = "color:dark";
             this.nmMinValueNightmare.ValueChanged += new System.EventHandler(this.nmMinValueNightmare_ValueChanged);
