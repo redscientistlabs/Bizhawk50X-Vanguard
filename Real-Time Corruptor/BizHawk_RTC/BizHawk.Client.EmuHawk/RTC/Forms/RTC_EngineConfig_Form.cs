@@ -501,58 +501,58 @@ namespace RTC
 			switch (selectedText)
 			{
 				case "Extended":
-					RTC_VectorEngine.limiterList = RTC_VectorEngine.extendedListOfConstants;
+					RTC_VectorEngine.LimiterList = RTC_VectorEngine.extendedListOfConstants;
 					lbVectorEngineLimiterText1.Text = "-65536.00 to +65536.00 in low res";
 					lbVectorEngineLimiterText2.Text = "including tiny decimals";
 					break;
 				case "Extended+":
-					RTC_VectorEngine.limiterList = RTC_VectorEngine.listOfPositiveConstants;
+					RTC_VectorEngine.LimiterList = RTC_VectorEngine.listOfPositiveConstants;
 					lbVectorEngineLimiterText1.Text = "0 to +65536 in low res";
 					lbVectorEngineLimiterText2.Text = "including tiny decimals";
 					break;
 				case "Extended-":
-					RTC_VectorEngine.limiterList = RTC_VectorEngine.listOfNegativeConstants;
+					RTC_VectorEngine.LimiterList = RTC_VectorEngine.listOfNegativeConstants;
 					lbVectorEngineLimiterText1.Text = "0 to -65536 in low res";
 					lbVectorEngineLimiterText2.Text = "including tiny decimals";
 					break;
 				case "Whole":
-					RTC_VectorEngine.limiterList = RTC_VectorEngine.listOfWholeConstants;
+					RTC_VectorEngine.LimiterList = RTC_VectorEngine.listOfWholeConstants;
 					lbVectorEngineLimiterText1.Text = "-65536.00 to +65536.00 in low res";
 					lbVectorEngineLimiterText2.Text = "integral numbers";
 					break;
 				case "Whole+":
-					RTC_VectorEngine.limiterList = RTC_VectorEngine.listOfWholePositiveConstants;
+					RTC_VectorEngine.LimiterList = RTC_VectorEngine.listOfWholePositiveConstants;
 					lbVectorEngineLimiterText1.Text = "0 to +65536.00 in low res";
 					lbVectorEngineLimiterText2.Text = "integral numbers";
 					break;
 				case "Tiny":
-					RTC_VectorEngine.limiterList = RTC_VectorEngine.listOfTinyConstants;
+					RTC_VectorEngine.LimiterList = RTC_VectorEngine.listOfTinyConstants;
 					lbVectorEngineLimiterText1.Text = "tiny decimals between";
 					lbVectorEngineLimiterText2.Text = "-1.00 and +1.00";
 					break;
 				case "One":
-					RTC_VectorEngine.limiterList = RTC_VectorEngine.constantPositiveOne;
+					RTC_VectorEngine.LimiterList = RTC_VectorEngine.constantPositiveOne;
 					lbVectorEngineLimiterText1.Text = "The number 1.00";
 					lbVectorEngineLimiterText2.Text = "";
 					break;
 				case "One*":
-					RTC_VectorEngine.limiterList = RTC_VectorEngine.constantOne;
+					RTC_VectorEngine.LimiterList = RTC_VectorEngine.constantOne;
 					lbVectorEngineLimiterText1.Text = "The numbers 1.00 and -1.00";
 					lbVectorEngineLimiterText2.Text = "";
 					break;
 				case "Two":
-					RTC_VectorEngine.limiterList = RTC_VectorEngine.constantPositiveTwo;
+					RTC_VectorEngine.LimiterList = RTC_VectorEngine.constantPositiveTwo;
 					lbVectorEngineLimiterText1.Text = "The number 2.00";
 					lbVectorEngineLimiterText2.Text = "";
 					break;
 				case "AnyFloat":
-					RTC_VectorEngine.limiterList = null;
+					RTC_VectorEngine.LimiterList = null;
 					lbVectorEngineLimiterText1.Text = "Any address is legal";
 					lbVectorEngineLimiterText2.Text = "";
 					break;
 			}
 
-			RTC_Core.SendCommandToBizhawk(new RTC_Command(CommandType.REMOTE_SET_VECTOR_LIMITER) { objectValue = RTC_VectorEngine.limiterList });
+			RTC_Core.SendCommandToBizhawk(new RTC_Command(CommandType.REMOTE_SET_VECTOR_LIMITER) { objectValue = RTC_VectorEngine.LimiterList });
 		}
 
 		private void cbVectorValueList_SelectedIndexChanged(object sender, EventArgs e)
@@ -562,64 +562,64 @@ namespace RTC
 			switch (selectedText)
 			{
 				case "Extended":
-					RTC_VectorEngine.valueList = RTC_VectorEngine.extendedListOfConstants;
+					RTC_VectorEngine.ValueList = RTC_VectorEngine.extendedListOfConstants;
 					lbVectorEngineValueText1.Text = "-65536.00 to +65536.00 in low res";
 					lbVectorEngineValueText2.Text = "including tiny decimals";
 					break;
 				case "Extended+":
-					RTC_VectorEngine.valueList = RTC_VectorEngine.listOfPositiveConstants;
+					RTC_VectorEngine.ValueList = RTC_VectorEngine.listOfPositiveConstants;
 					lbVectorEngineValueText1.Text = "0 to +65536 in low res";
 					lbVectorEngineValueText2.Text = "including tiny decimals";
 					break;
 				case "Extended-":
-					RTC_VectorEngine.valueList = RTC_VectorEngine.listOfNegativeConstants;
+					RTC_VectorEngine.ValueList = RTC_VectorEngine.listOfNegativeConstants;
 					lbVectorEngineValueText1.Text = "0 to -65536 in low res";
 					lbVectorEngineValueText2.Text = "including tiny decimals";
 					break;
 				case "Whole":
-					RTC_VectorEngine.valueList = RTC_VectorEngine.listOfWholeConstants;
+					RTC_VectorEngine.ValueList = RTC_VectorEngine.listOfWholeConstants;
 					lbVectorEngineValueText1.Text = "-65536.00 to +65536.00 in low res";
 					lbVectorEngineValueText2.Text = "integral numbers";
 					break;
 				case "Whole+":
-					RTC_VectorEngine.valueList = RTC_VectorEngine.listOfWholePositiveConstants;
+					RTC_VectorEngine.ValueList = RTC_VectorEngine.listOfWholePositiveConstants;
 					lbVectorEngineValueText1.Text = "0 to +65536.00 in low res";
 					lbVectorEngineValueText2.Text = "integral numbers";
 					break;
 				case "Tiny":
-					RTC_VectorEngine.valueList = RTC_VectorEngine.listOfTinyConstants;
+					RTC_VectorEngine.ValueList = RTC_VectorEngine.listOfTinyConstants;
 					lbVectorEngineValueText1.Text = "tiny decimals between";
 					lbVectorEngineValueText2.Text = "-1.00 and +1.00";
 					break;
 				case "One":
-					RTC_VectorEngine.valueList = RTC_VectorEngine.constantPositiveOne;
+					RTC_VectorEngine.ValueList = RTC_VectorEngine.constantPositiveOne;
 					lbVectorEngineValueText1.Text = "The number 1.00";
 					lbVectorEngineValueText2.Text = "";
 					break;
 				case "One*":
-					RTC_VectorEngine.valueList = RTC_VectorEngine.constantOne;
+					RTC_VectorEngine.ValueList = RTC_VectorEngine.constantOne;
 					lbVectorEngineValueText1.Text = "The numbers 1.00 and -1.00";
 					lbVectorEngineValueText2.Text = "";
 					break;
 				case "Two":
-					RTC_VectorEngine.valueList = RTC_VectorEngine.constantPositiveTwo;
+					RTC_VectorEngine.ValueList = RTC_VectorEngine.constantPositiveTwo;
 					lbVectorEngineValueText1.Text = "The number 2.00";
 					lbVectorEngineValueText2.Text = "";
 					break;
 				case "AnyFloat":
-					RTC_VectorEngine.valueList = null;
+					RTC_VectorEngine.ValueList = null;
 					lbVectorEngineValueText1.Text = "Randomly generated Float";
 					lbVectorEngineValueText2.Text = "";
 					break;
 			}
 
-			RTC_Core.SendCommandToBizhawk(new RTC_Command(CommandType.REMOTE_SET_VECTOR_VALUES) { objectValue = RTC_VectorEngine.valueList });
+			RTC_Core.SendCommandToBizhawk(new RTC_Command(CommandType.REMOTE_SET_VECTOR_VALUES) { objectValue = RTC_VectorEngine.ValueList });
 		}
 
 		private void nmTiltPipeValue_ValueChanged(object sender, EventArgs e)
 		{
-			RTC_PipeEngine.tiltValue = Convert.ToInt32(nmTiltPipeValue.Value);
-			RTC_Core.SendCommandToBizhawk(new RTC_Command(CommandType.REMOTE_SET_PIPE_TILTVALUE) { objectValue = RTC_PipeEngine.tiltValue });
+			RTC_PipeEngine.TiltValue = Convert.ToInt32(nmTiltPipeValue.Value);
+			RTC_Core.SendCommandToBizhawk(new RTC_Command(CommandType.REMOTE_SET_PIPE_TILTVALUE) { objectValue = RTC_PipeEngine.TiltValue });
 		}
 
 		private void cbGenerateChainedPipes_CheckedChanged(object sender, EventArgs e)

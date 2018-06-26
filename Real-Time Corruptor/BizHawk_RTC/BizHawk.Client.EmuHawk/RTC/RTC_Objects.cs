@@ -1183,7 +1183,7 @@ namespace RTC
 			}
 			else if (Type == BlastByteType.VECTOR)
 			{
-				Value = RTC_VectorEngine.getRandomConstant(RTC_VectorEngine.valueList);
+				Value = RTC_VectorEngine.GetRandomConstant(RTC_VectorEngine.ValueList);
 			}
 		}
 
@@ -1302,7 +1302,7 @@ namespace RTC
 
 		public override void Reroll()
 		{
-			Values = RTC_VectorEngine.getRandomConstant(RTC_VectorEngine.valueList);
+			Values = RTC_VectorEngine.GetRandomConstant(RTC_VectorEngine.ValueList);
 		}
 
 		public override string ToString()

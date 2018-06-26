@@ -409,12 +409,12 @@ namespace RTC
 					break;
 
 				case CommandType.REMOTE_SET_PIPE_TILTVALUE:
-					RTC_PipeEngine.tiltValue = (int)cmd.objectValue;
+					RTC_PipeEngine.TiltValue = (int)cmd.objectValue;
 					break;
 
 				case CommandType.REMOTE_SET_PIPE_CLEARPIPES:
 					RTC_PipeEngine.AllBlastPipes.Clear();
-					RTC_PipeEngine.lastDomain = null;
+					RTC_PipeEngine.LastDomain = null;
 					break;
 
 				case CommandType.REMOTE_SET_PIPE_LOCKPIPES:
@@ -449,10 +449,10 @@ namespace RTC
 					break;
 
 				case CommandType.REMOTE_SET_VECTOR_LIMITER:
-					RTC_VectorEngine.limiterList = (string[])cmd.objectValue;
+					RTC_VectorEngine.LimiterList = (string[])cmd.objectValue;
 					break;
 				case CommandType.REMOTE_SET_VECTOR_VALUES:
-					RTC_VectorEngine.valueList = (string[])cmd.objectValue;
+					RTC_VectorEngine.ValueList = (string[])cmd.objectValue;
 					break;
 
 				case CommandType.REMOTE_EVENT_LOADGAMEDONE_NEWGAME:
