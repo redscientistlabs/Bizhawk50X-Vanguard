@@ -146,9 +146,7 @@ namespace RTC
 		{
 			try
 			{
-				DataGridViewComboBoxCell cell = row.Cells["dgvDomain"] as DataGridViewComboBoxCell;
-
-				if (cell != null)
+				if (row.Cells["dgvDomain"] is DataGridViewComboBoxCell cell)
 				{
 					int temp = cell.Items.Count;
 					string currentValue = "";
@@ -652,13 +650,15 @@ namespace RTC
 		private bool loadDataGridView(DataGridView dgv, bool import = false)
 		{
 			DataSet ds = new DataSet();
-			OpenFileDialog ofd = new OpenFileDialog();
-			ofd.Filter = "bg|*.bg";
+			OpenFileDialog ofd = new OpenFileDialog
+			{
+				Filter = "bg|*.bg"
+			};
 			if (ofd.ShowDialog() == DialogResult.OK)
 			{
 				try
 				{
-					var dt = new DataTable();
+					DataTable dt = new DataTable();
 					ds.Tables.Add(dt);
 					foreach (DataGridViewColumn column in dgv.Columns)
 						dt.Columns.Add();
