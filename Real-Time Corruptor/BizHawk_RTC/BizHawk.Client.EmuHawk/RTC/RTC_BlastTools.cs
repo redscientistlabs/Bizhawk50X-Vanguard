@@ -117,9 +117,8 @@ namespace RTC
 		{
 			try
 			{
-				if (bu is BlastByte)
+				if (bu is BlastByte bb)
 				{
-					BlastByte bb = bu as BlastByte;
 					if (destinationType == typeof(BlastByte))
 					{
 						return new BlastByte(bb.Domain, bb.Address, BlastByteType.SET, CapBlastUnit(bb.Value), bb.BigEndian, bb.IsEnabled, bb.Note);
@@ -139,9 +138,8 @@ namespace RTC
 						return null;
 					}
 				}
-				else if (bu is BlastCheat)
+				else if (bu is BlastCheat bc)
 				{
-					BlastCheat bc = bu as BlastCheat;
 					if (destinationType == typeof(BlastCheat))
 					{
 						return new BlastCheat(bc.Domain, bc.Address, BizHawk.Client.Common.DisplayType.Unsigned, bc.BigEndian, CapBlastUnit(bc.Value), bc.IsEnabled, false, bc.Note);
@@ -160,9 +158,8 @@ namespace RTC
 						return null;
 					}
 				}
-				else if (bu is BlastPipe)
+				else if (bu is BlastPipe bp)
 				{
-					BlastPipe bp = bu as BlastPipe;
 					if (destinationType == typeof(BlastPipe))
 					{
 						return new BlastPipe(bp.Domain, bp.Address, bp.PipeDomain, bp.PipeAddress, 0, bp.PipeSize, bp.BigEndian, bp.IsEnabled, bp.Note);
@@ -181,9 +178,8 @@ namespace RTC
 						return null;
 					}
 				}
-				else if (bu is BlastVector)
+				else if (bu is BlastVector bv)
 				{
-					BlastVector bv = bu as BlastVector;
 					if (destinationType == typeof(BlastVector))
 					{
 						MessageBox.Show("BlastVector is depricated.");

@@ -43,7 +43,7 @@ namespace RTC
 
 		public override string ToString()
 		{
-			return Name ?? "";
+			return Name ?? String.Empty;
 		}
 
 		public void Save(bool isQuickSave = false)

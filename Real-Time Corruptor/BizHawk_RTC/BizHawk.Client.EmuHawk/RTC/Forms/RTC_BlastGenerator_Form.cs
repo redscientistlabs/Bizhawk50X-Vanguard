@@ -429,7 +429,19 @@ namespace RTC
 		{
 			try
 			{
-				string note = cbUnitsShareNote.Checked ? (row.Cells["dgvNoteText"].Value?.ToString() ?? String.Empty) : String.Empty;
+				string note;
+				if (cbUnitsShareNote.Checked)
+				{
+					var value = row.Cells["dgvNoteText"].Value;
+					if (value != null)
+						note = value.ToString();
+					else
+						note = String.Empty;
+				}
+				else
+					note = String.Empty;
+
+
 				string domain = row.Cells["dgvDomain"].Value.ToString();
 				string type = row.Cells["dgvType"].Value.ToString();
 				string mode = row.Cells["dgvMode"].Value.ToString();

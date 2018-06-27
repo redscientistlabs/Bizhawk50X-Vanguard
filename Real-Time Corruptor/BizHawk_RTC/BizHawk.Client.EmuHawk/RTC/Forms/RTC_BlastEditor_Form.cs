@@ -1572,7 +1572,7 @@ namespace RTC
 
 		private void SetNoteIcon(BlastUnit bu)
 		{
-			bu2RowDico[bu].Cells["dgvNoteButton"].Value = !string.IsNullOrWhiteSpace(bu.Note) ? string.Empty : "📝";
+			bu2RowDico[bu].Cells["dgvNoteButton"].Value = string.IsNullOrWhiteSpace(bu.Note) ? string.Empty : "📝";
 		}
 
 		public void RefreshNoteIcons()

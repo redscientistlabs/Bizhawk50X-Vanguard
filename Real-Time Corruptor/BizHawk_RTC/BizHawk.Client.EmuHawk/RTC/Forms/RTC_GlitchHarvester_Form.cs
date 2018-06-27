@@ -517,9 +517,10 @@ namespace RTC
 			RTC_StockpileManager.currentStashkey = (StashKey)lbStashHistory.SelectedItem;
 
 			if (String.IsNullOrWhiteSpace(Name))
-				RTC_StockpileManager.currentStashkey.Alias = Name;
-			else
 				RTC_StockpileManager.currentStashkey.Alias = RTC_StockpileManager.currentStashkey.Key;
+			else
+				RTC_StockpileManager.currentStashkey.Alias = Name;
+				
 
 			StashKey sk = RTC_StockpileManager.currentStashkey;
 
