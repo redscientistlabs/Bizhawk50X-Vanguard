@@ -46,7 +46,6 @@
             this.btnStartWGH = new System.Windows.Forms.Button();
             this.lbVrun = new System.Windows.Forms.Label();
             this.pnVrun = new System.Windows.Forms.Panel();
-            this.button1 = new System.Windows.Forms.Button();
             this.btnStartVrun = new System.Windows.Forms.Button();
             this.label9 = new System.Windows.Forms.Label();
             this.lbVrunAddress = new System.Windows.Forms.Label();
@@ -150,7 +149,7 @@
             this.btnStartEmuhawkAttached.ForeColor = System.Drawing.Color.Black;
             this.btnStartEmuhawkAttached.Image = global::BizHawk.Client.EmuHawk.Properties.Resources.CorpHawkSmall;
             this.btnStartEmuhawkAttached.ImageAlign = System.Drawing.ContentAlignment.MiddleRight;
-            this.btnStartEmuhawkAttached.Location = new System.Drawing.Point(22, 32);
+            this.btnStartEmuhawkAttached.Location = new System.Drawing.Point(24, 32);
             this.btnStartEmuhawkAttached.Name = "btnStartEmuhawkAttached";
             this.btnStartEmuhawkAttached.Size = new System.Drawing.Size(184, 29);
             this.btnStartEmuhawkAttached.TabIndex = 19;
@@ -262,7 +261,6 @@
             // 
             this.pnVrun.BackColor = System.Drawing.Color.Transparent;
             this.pnVrun.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.pnVrun.Controls.Add(this.button1);
             this.pnVrun.Controls.Add(this.btnStartVrun);
             this.pnVrun.Controls.Add(this.label9);
             this.pnVrun.Location = new System.Drawing.Point(401, 331);
@@ -270,24 +268,6 @@
             this.pnVrun.Size = new System.Drawing.Size(232, 159);
             this.pnVrun.TabIndex = 126;
             this.pnVrun.Tag = "";
-            // 
-            // button1
-            // 
-            this.button1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(224)))), ((int)(((byte)(224)))), ((int)(((byte)(224)))));
-            this.button1.Enabled = false;
-            this.button1.FlatAppearance.BorderSize = 0;
-            this.button1.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.button1.Font = new System.Drawing.Font("Segoe UI Semibold", 11F, System.Drawing.FontStyle.Bold);
-            this.button1.ForeColor = System.Drawing.Color.Black;
-            this.button1.Image = global::BizHawk.Client.EmuHawk.Properties.Resources.ToolBox;
-            this.button1.ImageAlign = System.Drawing.ContentAlignment.MiddleRight;
-            this.button1.Location = new System.Drawing.Point(22, 110);
-            this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(185, 29);
-            this.button1.TabIndex = 122;
-            this.button1.Text = "  VRUN Editor";
-            this.button1.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageBeforeText;
-            this.button1.UseVisualStyleBackColor = false;
             // 
             // btnStartVrun
             // 
@@ -425,7 +405,6 @@
 		public System.Windows.Forms.Button btnStartVrun;
 		private System.Windows.Forms.Label lbVrunAddress;
 		private System.Windows.Forms.Label label3;
-        public System.Windows.Forms.Button button1;
         private System.Windows.Forms.Label label6;
         private System.Windows.Forms.Label lbRTC;
         private System.Windows.Forms.Label lbRTCver;
