@@ -17,7 +17,8 @@ using BizHawk.Client.Common;
 
 namespace BizHawk.Client.EmuHawk
 {
-	static class LogConsole
+	//RTC_HIJACK - Make public
+	public static class LogConsole
 	{
 		public static bool ConsoleVisible
 		{

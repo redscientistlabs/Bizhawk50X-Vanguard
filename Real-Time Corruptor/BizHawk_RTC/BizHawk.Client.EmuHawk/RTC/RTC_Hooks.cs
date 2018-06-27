@@ -17,6 +17,7 @@ namespace RTC
 		static bool disableRTC;
 		public static bool isRemoteRTC = false;
 		public static bool isNormalAdvance = false;
+		public static bool showConsole = false;
 		private static Guid? loadGameToken = null;
 		private static Guid? loadSavestateToken = null;
 
@@ -109,6 +110,7 @@ namespace RTC
 
 			disableRTC = RTC_Core.args.Contains("-DISABLERTC");
 			isRemoteRTC = RTC_Core.args.Contains("-REMOTERTC");
+			showConsole = RTC_Core.args.Contains("-CONSOLE");
 		}
 
 		public static void MAINFORM_FORM_LOAD_END()

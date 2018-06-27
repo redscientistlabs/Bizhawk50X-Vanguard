@@ -54,7 +54,7 @@ namespace RTC
 		public static int DefaultKeepAliveCounter = 5;
 		public static int DefaultNetworkStreamTimeout = 2000;
 		public static volatile int DefaultMaxRetries = 666;
-		private static bool showBoops = true;
+		private static bool showBoops = false;
 
 		System.Windows.Forms.Timer KeepAliveTimer = null;
 

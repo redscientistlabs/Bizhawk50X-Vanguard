@@ -13,11 +13,15 @@ namespace StandaloneRTC
 	{
 		Timer t;
 
-		public Loader()
+		public Loader(string[] args)
 		{
 			InitializeComponent();
 
 			RTC.RTC_Core.isStandalone = true;
+
+			if (args.Contains("-CONSOLE"))
+				BizHawk.Client.EmuHawk.LogConsole.CreateConsole();
+
 			RTC.RTC_Core.Start(this);
 			this.Hide();
 

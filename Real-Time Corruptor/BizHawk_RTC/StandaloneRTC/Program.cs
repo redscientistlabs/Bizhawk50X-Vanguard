@@ -12,10 +12,10 @@ namespace StandaloneRTC
 		/// The main entry point for the application.
 		/// </summary>
 		[STAThread]
-		static void Main()
+		static void Main(string[] args)
 		{
 
-            var processes = Process.GetProcesses().Select(it => $"{it.ProcessName.ToUpper()}").OrderBy(x => x).ToArray();
+			var processes = Process.GetProcesses().Select(it => $"{it.ProcessName.ToUpper()}").OrderBy(x => x).ToArray();
 
             int nbInstances = 0;
             foreach (var prc in processes)
@@ -31,7 +31,7 @@ namespace StandaloneRTC
 
             Application.EnableVisualStyles();
 			Application.SetCompatibleTextRenderingDefault(false);
-			Application.Run(new Loader());
+			Application.Run(new Loader(args));
 			//RTC.RTC_Core.coreForm = new RTC.RTC_Form();
 			//RTC.RTC_Core.isStandalone = true;
 			//RTC.RTC_Core.Start();
