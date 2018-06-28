@@ -52,22 +52,7 @@ namespace RTC
 					}
 				}
 
-					break;
-
-				case CommandType.BLASTGENERATORBLAST:
-					List<BlastGeneratorProto> returnList;
-
-					List<BlastGeneratorProto> blastGeneratorProtos = (List<BlastGeneratorProto>)(cmd.objectValue as object);
-					StashKey _sk = (StashKey)(cmd.stashkey as object);
-
-					returnList = RTC_BlastTools.GenerateBlastLayersFromBlastGeneratorProtos(blastGeneratorProtos, _sk);
-
-					if (cmd.requestGuid != null)
-					{
-						cmdBack = new RTC_Command(CommandType.RETURNVALUE);
-						cmdBack.objectValue = returnList;
-					}
-					break;
+				break;
 
 				case CommandType.STASHKEY:
 
@@ -194,8 +179,26 @@ namespace RTC
 					RTC_MemoryDomains.VmdPool.Clear();
 					foreach (var proto in (cmd.objectValue as VmdPrototype[]))
 						RTC_MemoryDomains.AddVMD(proto);
+					break;
+
+				case CommandType.BLASTGENERATOR_BLAST:
+				{
+					List<BlastGeneratorProto> returnList;
+
+					List<BlastGeneratorProto> blastGeneratorProtos =
+						(List<BlastGeneratorProto>)(cmd.objectValue as object);
+					StashKey _sk = (StashKey)(cmd.stashkey as object);
+
+					returnList = RTC_BlastTools.GenerateBlastLayersFromBlastGeneratorProtos(blastGeneratorProtos, _sk);
+
+					if (cmd.requestGuid != null)
+					{
+						cmdBack = new RTC_Command(CommandType.RETURNVALUE);
+						cmdBack.objectValue = returnList;
+					}
 
 					break;
+				}
 
 				case CommandType.REMOTE_LOADROM:
 					RTC_Core.LoadRom_NET(cmd.romFilename);
@@ -350,10 +353,13 @@ namespace RTC
 					cmdBack.objectValue = RTC_StockpileManager.getRawBlastlayer();
 					break;
 				case CommandType.REMOTE_KEY_GETBLASTBYTEBACKUPLAYER:
-					var _bl = (BlastLayer)(cmd.objectValue as object[])[0];
-					cmdBack = new RTC_Command(CommandType.RETURNVALUE);
-					cmdBack.objectValue = RTC_BlastTools.getBlastByteBackupLayer(_bl);
-					break;
+					{
+						var _bl = (BlastLayer)(cmd.objectValue as object[])[0];
+						var sk = cmd.stashkey;
+						cmdBack = new RTC_Command(CommandType.RETURNVALUE);
+						cmdBack.objectValue = RTC_BlastTools.GetBlastByteBackupLayer(_bl, sk);
+						break;
+					}
 
 				case CommandType.BIZHAWK_SET_OSDDISABLED:
 					RTC_Core.BizhawkOsdDisabled = (bool)cmd.objectValue;

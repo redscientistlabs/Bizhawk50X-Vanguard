@@ -64,7 +64,6 @@ namespace RTC
 			dgvBlastGenerator.CellValueChanged += dgvBlastGenerator_CellValueChanged;
 			dgvBlastGenerator.CellClick += dgvBlastGenerator_CellClick;
 			RTC_Core.SetRTCColor(RTC_Core.generalColor, this);
-			SetHexadecimal(RTC_Core.UseHexadecimal);
 		}
 
 		public void LoadNoStashKey()
@@ -321,21 +320,6 @@ namespace RTC
 			}
 		}
 
-		public void SetHexadecimal(bool useHex)
-		{
-			updownNudgeEndAddress.Hexadecimal = useHex;
-			updownNudgeStartAddress.Hexadecimal = useHex;
-			updownNudgeParam1.Hexadecimal = useHex;
-			updownNudgeParam2.Hexadecimal = useHex;
-
-			foreach (DataGridViewColumn column in dgvBlastGenerator.Columns)
-			{
-				if (column.CellType.Name == "DataGridViewNumericUpDownCell")
-				{
-					((DataGridViewNumericUpDownColumn)column).Hexadecimal = useHex;
-				}
-			}
-		}
 
 		private void dgvBlastGenerator_CellValueChanged(object sender, DataGridViewCellEventArgs e)
 		{
@@ -418,7 +402,7 @@ namespace RTC
 				List<BlastGeneratorProto> returnList = new List<BlastGeneratorProto>();
 
 				returnList = (List<BlastGeneratorProto>)RTC_Core.SendCommandToBizhawk(
-					new RTC_Command(CommandType.BLASTGENERATORBLAST)
+					new RTC_Command(CommandType.BLASTGENERATOR_BLAST)
 					{
 						objectValue = protoList,
 						stashkey = sk,
