@@ -34,7 +34,6 @@
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle4 = new System.Windows.Forms.DataGridViewCellStyle();
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle5 = new System.Windows.Forms.DataGridViewCellStyle();
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle6 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle7 = new System.Windows.Forms.DataGridViewCellStyle();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(RTC_BlastGenerator_Form));
             this.panelSidebar = new System.Windows.Forms.Panel();
             this.cbUnitsShareNote = new System.Windows.Forms.CheckBox();
@@ -63,7 +62,19 @@
             this.updownNudgeStartAddress = new RTC.NumericUpDownHexFix();
             this.label4 = new System.Windows.Forms.Label();
             this.dgvBlastGenerator = new System.Windows.Forms.DataGridView();
-            this.dgvBlastLayerReference = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.dataGridViewTextBoxColumn1 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.dataGridViewNumericUpDownColumn1 = new RTC.DataGridViewNumericUpDownColumn();
+            this.dataGridViewNumericUpDownColumn2 = new RTC.DataGridViewNumericUpDownColumn();
+            this.dataGridViewNumericUpDownColumn3 = new RTC.DataGridViewNumericUpDownColumn();
+            this.dataGridViewNumericUpDownColumn4 = new RTC.DataGridViewNumericUpDownColumn();
+            this.dataGridViewNumericUpDownColumn5 = new RTC.DataGridViewNumericUpDownColumn();
+            this.menuStripEx1 = new MenuStripEx();
+            this.blastLayerToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.saveAsToFileblToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.loadFromFileblToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.importBlastlayerblToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.btnHideSidebar = new System.Windows.Forms.Button();
+            this.dgvBlastProtoReference = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.dgvRowDirty = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.dgvNoteText = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.dgvEnabled = new System.Windows.Forms.DataGridViewCheckBoxColumn();
@@ -77,18 +88,6 @@
             this.dgvParam1 = new RTC.DataGridViewNumericUpDownColumn();
             this.dgvParam2 = new RTC.DataGridViewNumericUpDownColumn();
             this.dgvNoteButton = new System.Windows.Forms.DataGridViewButtonColumn();
-            this.dataGridViewTextBoxColumn1 = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.dataGridViewNumericUpDownColumn1 = new RTC.DataGridViewNumericUpDownColumn();
-            this.dataGridViewNumericUpDownColumn2 = new RTC.DataGridViewNumericUpDownColumn();
-            this.dataGridViewNumericUpDownColumn3 = new RTC.DataGridViewNumericUpDownColumn();
-            this.dataGridViewNumericUpDownColumn4 = new RTC.DataGridViewNumericUpDownColumn();
-            this.dataGridViewNumericUpDownColumn5 = new RTC.DataGridViewNumericUpDownColumn();
-            this.menuStripEx1 = new MenuStripEx();
-            this.blastLayerToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.saveAsToFileblToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.loadFromFileblToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.importBlastlayerblToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.btnHideSidebar = new System.Windows.Forms.Button();
             this.panelSidebar.SuspendLayout();
             this.panel2.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.updownNudgeParam2)).BeginInit();
@@ -113,7 +112,7 @@
             this.panelSidebar.Dock = System.Windows.Forms.DockStyle.Right;
             this.panelSidebar.Location = new System.Drawing.Point(765, 24);
             this.panelSidebar.Name = "panelSidebar";
-            this.panelSidebar.Size = new System.Drawing.Size(159, 367);
+            this.panelSidebar.Size = new System.Drawing.Size(159, 365);
             this.panelSidebar.TabIndex = 166;
             this.panelSidebar.Tag = "color:dark";
             // 
@@ -155,7 +154,7 @@
             this.btnLoadCorrupt.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnLoadCorrupt.Font = new System.Drawing.Font("Segoe UI Semibold", 9F, System.Drawing.FontStyle.Bold);
             this.btnLoadCorrupt.ForeColor = System.Drawing.Color.OrangeRed;
-            this.btnLoadCorrupt.Location = new System.Drawing.Point(5, 287);
+            this.btnLoadCorrupt.Location = new System.Drawing.Point(5, 284);
             this.btnLoadCorrupt.Name = "btnLoadCorrupt";
             this.btnLoadCorrupt.Size = new System.Drawing.Size(148, 23);
             this.btnLoadCorrupt.TabIndex = 173;
@@ -173,7 +172,7 @@
             this.btnJustCorrupt.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnJustCorrupt.Font = new System.Drawing.Font("Segoe UI Semibold", 9F, System.Drawing.FontStyle.Bold);
             this.btnJustCorrupt.ForeColor = System.Drawing.Color.OrangeRed;
-            this.btnJustCorrupt.Location = new System.Drawing.Point(5, 313);
+            this.btnJustCorrupt.Location = new System.Drawing.Point(5, 310);
             this.btnJustCorrupt.Name = "btnJustCorrupt";
             this.btnJustCorrupt.Size = new System.Drawing.Size(148, 23);
             this.btnJustCorrupt.TabIndex = 172;
@@ -190,7 +189,7 @@
             this.btnRefreshDomains.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnRefreshDomains.Font = new System.Drawing.Font("Segoe UI Semibold", 9F, System.Drawing.FontStyle.Bold);
             this.btnRefreshDomains.ForeColor = System.Drawing.Color.Black;
-            this.btnRefreshDomains.Location = new System.Drawing.Point(5, 252);
+            this.btnRefreshDomains.Location = new System.Drawing.Point(5, 248);
             this.btnRefreshDomains.Name = "btnRefreshDomains";
             this.btnRefreshDomains.Size = new System.Drawing.Size(148, 25);
             this.btnRefreshDomains.TabIndex = 161;
@@ -208,7 +207,7 @@
             this.btnSendTo.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnSendTo.Font = new System.Drawing.Font("Segoe UI Semibold", 9F, System.Drawing.FontStyle.Bold);
             this.btnSendTo.ForeColor = System.Drawing.Color.OrangeRed;
-            this.btnSendTo.Location = new System.Drawing.Point(5, 339);
+            this.btnSendTo.Location = new System.Drawing.Point(5, 336);
             this.btnSendTo.Name = "btnSendTo";
             this.btnSendTo.Size = new System.Drawing.Size(148, 23);
             this.btnSendTo.TabIndex = 171;
@@ -225,7 +224,7 @@
             this.btnAddRow.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnAddRow.Font = new System.Drawing.Font("Segoe UI Semibold", 9F, System.Drawing.FontStyle.Bold);
             this.btnAddRow.ForeColor = System.Drawing.Color.Black;
-            this.btnAddRow.Location = new System.Drawing.Point(5, 222);
+            this.btnAddRow.Location = new System.Drawing.Point(5, 218);
             this.btnAddRow.Name = "btnAddRow";
             this.btnAddRow.Size = new System.Drawing.Size(148, 25);
             this.btnAddRow.TabIndex = 160;
@@ -564,7 +563,7 @@
             this.dgvBlastGenerator.ClipboardCopyMode = System.Windows.Forms.DataGridViewClipboardCopyMode.Disable;
             this.dgvBlastGenerator.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.dgvBlastGenerator.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
-            this.dgvBlastLayerReference,
+            this.dgvBlastProtoReference,
             this.dgvRowDirty,
             this.dgvNoteText,
             this.dgvEnabled,
@@ -585,166 +584,9 @@
             this.dgvBlastGenerator.RowHeadersVisible = false;
             this.dgvBlastGenerator.RowTemplate.Height = 24;
             this.dgvBlastGenerator.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.dgvBlastGenerator.Size = new System.Drawing.Size(765, 367);
+            this.dgvBlastGenerator.Size = new System.Drawing.Size(765, 365);
             this.dgvBlastGenerator.TabIndex = 167;
             this.dgvBlastGenerator.Tag = "color:normal hex";
-            // 
-            // dgvBlastLayerReference
-            // 
-            this.dgvBlastLayerReference.HeaderText = "dgvBlastObjectReference";
-            this.dgvBlastLayerReference.Name = "dgvBlastLayerReference";
-            this.dgvBlastLayerReference.Visible = false;
-            // 
-            // dgvRowDirty
-            // 
-            this.dgvRowDirty.HeaderText = "dgvRowDirty";
-            this.dgvRowDirty.Name = "dgvRowDirty";
-            this.dgvRowDirty.Resizable = System.Windows.Forms.DataGridViewTriState.True;
-            this.dgvRowDirty.Visible = false;
-            // 
-            // dgvNoteText
-            // 
-            dataGridViewCellStyle2.Font = new System.Drawing.Font("Segoe UI Symbol", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.dgvNoteText.DefaultCellStyle = dataGridViewCellStyle2;
-            this.dgvNoteText.HeaderText = "dgvNoteText";
-            this.dgvNoteText.Name = "dgvNoteText";
-            this.dgvNoteText.Visible = false;
-            // 
-            // dgvEnabled
-            // 
-            this.dgvEnabled.FillWeight = 40F;
-            this.dgvEnabled.HeaderText = "Enabled";
-            this.dgvEnabled.Name = "dgvEnabled";
-            this.dgvEnabled.TrueValue = "true";
-            // 
-            // dgvDomain
-            // 
-            this.dgvDomain.FillWeight = 52F;
-            this.dgvDomain.HeaderText = "Domain";
-            this.dgvDomain.MaxDropDownItems = 20;
-            this.dgvDomain.Name = "dgvDomain";
-            this.dgvDomain.Resizable = System.Windows.Forms.DataGridViewTriState.True;
-            this.dgvDomain.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.Automatic;
-            // 
-            // dgvPrecision
-            // 
-            this.dgvPrecision.FillWeight = 45F;
-            this.dgvPrecision.HeaderText = "Precision";
-            this.dgvPrecision.Items.AddRange(new object[] {
-            "8-bit",
-            "16-bit",
-            "32-bit"});
-            this.dgvPrecision.Name = "dgvPrecision";
-            this.dgvPrecision.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.Automatic;
-            // 
-            // dgvType
-            // 
-            this.dgvType.FillWeight = 55F;
-            this.dgvType.HeaderText = "Type";
-            this.dgvType.Items.AddRange(new object[] {
-            "BlastByte",
-            "BlastCheat",
-            "BlastPipe"});
-            this.dgvType.Name = "dgvType";
-            this.dgvType.Resizable = System.Windows.Forms.DataGridViewTriState.True;
-            this.dgvType.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.Automatic;
-            // 
-            // dgvMode
-            // 
-            this.dgvMode.DropDownWidth = 150;
-            this.dgvMode.FillWeight = 55F;
-            this.dgvMode.HeaderText = "Mode";
-            this.dgvMode.MaxDropDownItems = 20;
-            this.dgvMode.Name = "dgvMode";
-            this.dgvMode.Resizable = System.Windows.Forms.DataGridViewTriState.True;
-            this.dgvMode.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.Automatic;
-            // 
-            // dgvStepSize
-            // 
-            dataGridViewCellStyle3.Font = new System.Drawing.Font("Consolas", 9F);
-            this.dgvStepSize.DefaultCellStyle = dataGridViewCellStyle3;
-            this.dgvStepSize.FillWeight = 45F;
-            this.dgvStepSize.HeaderText = "Step Size";
-            this.dgvStepSize.Hexadecimal = true;
-            this.dgvStepSize.Maximum = new decimal(new int[] {
-            -1,
-            0,
-            0,
-            0});
-            this.dgvStepSize.Minimum = new decimal(new int[] {
-            1,
-            0,
-            0,
-            0});
-            this.dgvStepSize.Name = "dgvStepSize";
-            this.dgvStepSize.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.Automatic;
-            // 
-            // dgvStartAddress
-            // 
-            dataGridViewCellStyle4.Font = new System.Drawing.Font("Consolas", 9F);
-            this.dgvStartAddress.DefaultCellStyle = dataGridViewCellStyle4;
-            this.dgvStartAddress.FillWeight = 50F;
-            this.dgvStartAddress.HeaderText = "Start Address";
-            this.dgvStartAddress.Hexadecimal = true;
-            this.dgvStartAddress.Maximum = new decimal(new int[] {
-            -1,
-            0,
-            0,
-            0});
-            this.dgvStartAddress.Name = "dgvStartAddress";
-            this.dgvStartAddress.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.Automatic;
-            // 
-            // dgvEndAddress
-            // 
-            dataGridViewCellStyle5.Font = new System.Drawing.Font("Consolas", 9F);
-            this.dgvEndAddress.DefaultCellStyle = dataGridViewCellStyle5;
-            this.dgvEndAddress.FillWeight = 50F;
-            this.dgvEndAddress.HeaderText = "End Address";
-            this.dgvEndAddress.Hexadecimal = true;
-            this.dgvEndAddress.Maximum = new decimal(new int[] {
-            -1,
-            0,
-            0,
-            0});
-            this.dgvEndAddress.Name = "dgvEndAddress";
-            this.dgvEndAddress.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.Automatic;
-            // 
-            // dgvParam1
-            // 
-            dataGridViewCellStyle6.Font = new System.Drawing.Font("Consolas", 9F);
-            this.dgvParam1.DefaultCellStyle = dataGridViewCellStyle6;
-            this.dgvParam1.FillWeight = 50F;
-            this.dgvParam1.HeaderText = "Param 1";
-            this.dgvParam1.Hexadecimal = true;
-            this.dgvParam1.Maximum = new decimal(new int[] {
-            -1,
-            0,
-            0,
-            0});
-            this.dgvParam1.Name = "dgvParam1";
-            this.dgvParam1.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.Automatic;
-            // 
-            // dgvParam2
-            // 
-            dataGridViewCellStyle7.Font = new System.Drawing.Font("Consolas", 9F);
-            this.dgvParam2.DefaultCellStyle = dataGridViewCellStyle7;
-            this.dgvParam2.FillWeight = 50F;
-            this.dgvParam2.HeaderText = "Param 2";
-            this.dgvParam2.Hexadecimal = true;
-            this.dgvParam2.Maximum = new decimal(new int[] {
-            -1,
-            0,
-            0,
-            0});
-            this.dgvParam2.Name = "dgvParam2";
-            this.dgvParam2.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.Automatic;
-            // 
-            // dgvNoteButton
-            // 
-            this.dgvNoteButton.FillWeight = 15F;
-            this.dgvNoteButton.HeaderText = "📝";
-            this.dgvNoteButton.MinimumWidth = 15;
-            this.dgvNoteButton.Name = "dgvNoteButton";
             // 
             // dataGridViewTextBoxColumn1
             // 
@@ -883,12 +725,166 @@
             this.btnHideSidebar.UseVisualStyleBackColor = true;
             this.btnHideSidebar.Click += new System.EventHandler(this.btnHideSidebar_Click);
             // 
+            // dgvBlastProtoReference
+            // 
+            this.dgvBlastProtoReference.HeaderText = "dgvBlastProtoReference";
+            this.dgvBlastProtoReference.Name = "dgvBlastProtoReference";
+            this.dgvBlastProtoReference.Visible = false;
+            // 
+            // dgvRowDirty
+            // 
+            this.dgvRowDirty.HeaderText = "dgvRowDirty";
+            this.dgvRowDirty.Name = "dgvRowDirty";
+            this.dgvRowDirty.Resizable = System.Windows.Forms.DataGridViewTriState.True;
+            this.dgvRowDirty.Visible = false;
+            // 
+            // dgvNoteText
+            // 
+            dataGridViewCellStyle2.Font = new System.Drawing.Font("Segoe UI Symbol", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.dgvNoteText.DefaultCellStyle = dataGridViewCellStyle2;
+            this.dgvNoteText.HeaderText = "dgvNoteText";
+            this.dgvNoteText.Name = "dgvNoteText";
+            this.dgvNoteText.Visible = false;
+            // 
+            // dgvEnabled
+            // 
+            this.dgvEnabled.FillWeight = 38F;
+            this.dgvEnabled.HeaderText = "Enabled";
+            this.dgvEnabled.Name = "dgvEnabled";
+            this.dgvEnabled.TrueValue = "true";
+            // 
+            // dgvDomain
+            // 
+            this.dgvDomain.FillWeight = 55F;
+            this.dgvDomain.HeaderText = "Domain";
+            this.dgvDomain.MaxDropDownItems = 20;
+            this.dgvDomain.Name = "dgvDomain";
+            this.dgvDomain.Resizable = System.Windows.Forms.DataGridViewTriState.True;
+            this.dgvDomain.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.Automatic;
+            // 
+            // dgvPrecision
+            // 
+            this.dgvPrecision.FillWeight = 45F;
+            this.dgvPrecision.HeaderText = "Precision";
+            this.dgvPrecision.Items.AddRange(new object[] {
+            "8-bit",
+            "16-bit",
+            "32-bit"});
+            this.dgvPrecision.Name = "dgvPrecision";
+            this.dgvPrecision.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.Automatic;
+            // 
+            // dgvType
+            // 
+            this.dgvType.FillWeight = 55F;
+            this.dgvType.HeaderText = "Type";
+            this.dgvType.Items.AddRange(new object[] {
+            "BlastByte",
+            "BlastCheat",
+            "BlastPipe"});
+            this.dgvType.Name = "dgvType";
+            this.dgvType.Resizable = System.Windows.Forms.DataGridViewTriState.True;
+            this.dgvType.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.Automatic;
+            // 
+            // dgvMode
+            // 
+            this.dgvMode.DropDownWidth = 150;
+            this.dgvMode.FillWeight = 60F;
+            this.dgvMode.HeaderText = "Mode";
+            this.dgvMode.MaxDropDownItems = 20;
+            this.dgvMode.Name = "dgvMode";
+            this.dgvMode.Resizable = System.Windows.Forms.DataGridViewTriState.True;
+            this.dgvMode.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.Automatic;
+            // 
+            // dgvStepSize
+            // 
+            this.dgvStepSize.FillWeight = 45F;
+            this.dgvStepSize.HeaderText = "Step Size";
+            this.dgvStepSize.Maximum = new decimal(new int[] {
+            -1,
+            0,
+            0,
+            0});
+            this.dgvStepSize.Minimum = new decimal(new int[] {
+            1,
+            0,
+            0,
+            0});
+            this.dgvStepSize.Name = "dgvStepSize";
+            this.dgvStepSize.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.Automatic;
+            // 
+            // dgvStartAddress
+            // 
+            dataGridViewCellStyle3.Font = new System.Drawing.Font("Consolas", 9F);
+            this.dgvStartAddress.DefaultCellStyle = dataGridViewCellStyle3;
+            this.dgvStartAddress.FillWeight = 50F;
+            this.dgvStartAddress.HeaderText = "Start Address";
+            this.dgvStartAddress.Hexadecimal = true;
+            this.dgvStartAddress.Maximum = new decimal(new int[] {
+            -1,
+            0,
+            0,
+            0});
+            this.dgvStartAddress.Name = "dgvStartAddress";
+            this.dgvStartAddress.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.Automatic;
+            // 
+            // dgvEndAddress
+            // 
+            dataGridViewCellStyle4.Font = new System.Drawing.Font("Consolas", 9F);
+            this.dgvEndAddress.DefaultCellStyle = dataGridViewCellStyle4;
+            this.dgvEndAddress.FillWeight = 50F;
+            this.dgvEndAddress.HeaderText = "End Address";
+            this.dgvEndAddress.Hexadecimal = true;
+            this.dgvEndAddress.Maximum = new decimal(new int[] {
+            -1,
+            0,
+            0,
+            0});
+            this.dgvEndAddress.Name = "dgvEndAddress";
+            this.dgvEndAddress.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.Automatic;
+            // 
+            // dgvParam1
+            // 
+            dataGridViewCellStyle5.Font = new System.Drawing.Font("Consolas", 9F);
+            this.dgvParam1.DefaultCellStyle = dataGridViewCellStyle5;
+            this.dgvParam1.FillWeight = 50F;
+            this.dgvParam1.HeaderText = "Param 1";
+            this.dgvParam1.Hexadecimal = true;
+            this.dgvParam1.Maximum = new decimal(new int[] {
+            -1,
+            0,
+            0,
+            0});
+            this.dgvParam1.Name = "dgvParam1";
+            this.dgvParam1.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.Automatic;
+            // 
+            // dgvParam2
+            // 
+            dataGridViewCellStyle6.Font = new System.Drawing.Font("Consolas", 9F);
+            this.dgvParam2.DefaultCellStyle = dataGridViewCellStyle6;
+            this.dgvParam2.FillWeight = 50F;
+            this.dgvParam2.HeaderText = "Param 2";
+            this.dgvParam2.Hexadecimal = true;
+            this.dgvParam2.Maximum = new decimal(new int[] {
+            -1,
+            0,
+            0,
+            0});
+            this.dgvParam2.Name = "dgvParam2";
+            this.dgvParam2.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.Automatic;
+            // 
+            // dgvNoteButton
+            // 
+            this.dgvNoteButton.FillWeight = 15F;
+            this.dgvNoteButton.HeaderText = "📝";
+            this.dgvNoteButton.MinimumWidth = 15;
+            this.dgvNoteButton.Name = "dgvNoteButton";
+            // 
             // RTC_BlastGenerator_Form
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
-            this.ClientSize = new System.Drawing.Size(924, 391);
+            this.ClientSize = new System.Drawing.Size(924, 389);
             this.Controls.Add(this.btnHideSidebar);
             this.Controls.Add(this.dgvBlastGenerator);
             this.Controls.Add(this.panelSidebar);
@@ -896,7 +892,7 @@
             this.Font = new System.Drawing.Font("Segoe UI", 8.25F);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.MainMenuStrip = this.menuStripEx1;
-            this.MinimumSize = new System.Drawing.Size(16, 430);
+            this.MinimumSize = new System.Drawing.Size(16, 428);
             this.Name = "RTC_BlastGenerator_Form";
             this.Tag = "color:dark";
             this.Text = "Blast Generator";
@@ -957,7 +953,7 @@
 		private System.Windows.Forms.Button btnSendTo;
 		private System.Windows.Forms.Button btnHelp;
 		private System.Windows.Forms.CheckBox cbUnitsShareNote;
-		private System.Windows.Forms.DataGridViewTextBoxColumn dgvBlastLayerReference;
+		private System.Windows.Forms.DataGridViewTextBoxColumn dgvBlastProtoReference;
 		private System.Windows.Forms.DataGridViewTextBoxColumn dgvRowDirty;
 		private System.Windows.Forms.DataGridViewTextBoxColumn dgvNoteText;
 		private System.Windows.Forms.DataGridViewCheckBoxColumn dgvEnabled;

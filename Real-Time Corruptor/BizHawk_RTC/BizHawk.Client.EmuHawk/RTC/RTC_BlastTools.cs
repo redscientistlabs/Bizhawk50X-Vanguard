@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Windows.Forms;
 using System.Xml.Serialization;
@@ -294,6 +295,21 @@ namespace RTC
 				return bl;
 		}
 
+		public static List<BlastGeneratorProto> GenerateBlastLayersFromBlastGeneratorProtos(List<BlastGeneratorProto> blastLayers, StashKey sk)
+		{
+			//Load the game first for stuff like REPLACE_X_WITH_Y
+			sk.RunOriginal();
+			foreach (BlastGeneratorProto bgp in blastLayers)
+			{
+				//Only generate if there's no BlastLayer.
+				//A new proto is always generated if the cell is dirty which means no BlastLayer will exist
+				//Otherwise, we just return the existing BlastLayer
+				if (bgp.bl == null)
+					bgp.bl = bgp.GenerateBlastLayer();
+			}
+
+			return blastLayers;
+		}
 	}
 
 	/*

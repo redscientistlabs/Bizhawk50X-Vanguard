@@ -774,46 +774,51 @@ namespace RTC
 
 		public static string getCoreName_NET(string systemName)
 		{
-			if (Global.Emulator == null)
-				return "NULL";
-
-			SettingsAdapter settable = new SettingsAdapter(Global.Emulator);
-
-			switch (systemName.ToUpper())
+			try
 			{
-				case "GAMEBOY":
 
-					if (Global.Config.GB_AsSGB)
-						return "sameboy";
-					else if (Global.Config.GB_UseGBHawk)
-						return "gbhawk";
-					else
-						return "gambatte";
+				SettingsAdapter settable = new SettingsAdapter(Global.Emulator);
 
-				case "NES":
-					return (Global.Config.NES_InQuickNES ? "quicknes" : "neshawk");
+				switch (systemName.ToUpper())
+				{
+					case "GAMEBOY":
 
-				case "SNES":
+						if (Global.Config.GB_AsSGB)
+							return "sameboy";
+						else if (Global.Config.GB_UseGBHawk)
+							return "gbhawk";
+						else
+							return "gambatte";
 
-					if (RTC_MemoryDomains.MemoryInterfaces.ContainsKey("SGB WRAM"))
-						return "bsnes_SGB";
+					case "NES":
+						return (Global.Config.NES_InQuickNES ? "quicknes" : "neshawk");
 
-					return (Global.Config.SNES_InSnes9x ? "snes9x" : "bsnes");
+					case "SNES":
 
-				case "GBA":
-					return (Global.Config.GBA_UsemGBA ? "mgba" : "vba-next");
+						if (RTC_MemoryDomains.MemoryInterfaces.ContainsKey("SGB WRAM"))
+							return "bsnes_SGB";
 
-				case "N64":
+						return (Global.Config.SNES_InSnes9x ? "snes9x" : "bsnes");
 
-					N64SyncSettings ss = (N64SyncSettings)Global.Config.GetCoreSyncSettings<N64>()
-					?? new N64SyncSettings();
+					case "GBA":
+						return (Global.Config.GBA_UsemGBA ? "mgba" : "vba-next");
 
-					return $"{ss.VideoPlugin}/{ss.Rsp}/{ss.Core}/{(ss.DisableExpansionSlot ? "NoExp" : "Exp")}";
-				default:
-					break;
+					case "N64":
+
+						N64SyncSettings ss = (N64SyncSettings)Global.Config.GetCoreSyncSettings<N64>()
+						                     ?? new N64SyncSettings();
+
+						return $"{ss.VideoPlugin}/{ss.Rsp}/{ss.Core}/{(ss.DisableExpansionSlot ? "NoExp" : "Exp")}";
+					default:
+						break;
+				}
+
+				return systemName;
 			}
-
-			return systemName;
+			catch (Exception ex)
+			{
+				throw;
+			}
 		}
 
 		public static string getSyncSettings_NET(string ss)
@@ -1656,6 +1661,7 @@ namespace RTC
 		public long Param2;
 		public string Mode;
 		public string Note;
+		public BlastLayer bl;
 
 		public BlastGeneratorProto()
 		{
@@ -1677,7 +1683,6 @@ namespace RTC
 
 		public BlastLayer GenerateBlastLayer()
 		{
-			BlastLayer bl = null;
 			switch (BlastType)
 			{
 				case "BlastByte":
@@ -1698,5 +1703,6 @@ namespace RTC
 
 			return bl;
 		}
+
 	}
 }

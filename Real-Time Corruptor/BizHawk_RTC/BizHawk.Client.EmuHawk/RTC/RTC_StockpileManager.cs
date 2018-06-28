@@ -115,7 +115,7 @@ namespace RTC
 			}
 
 			string currentGame = (string)RTC_Core.SendCommandToBizhawk(new RTC_Command(CommandType.REMOTE_KEY_GETGAMENAME), true);
-			if (psk.GameName != currentGame)
+			if (currentGame == null || psk.GameName != currentGame) 
 			{
 				RTC_Core.LoadRom(psk.RomFilename, true);
 				RTC_Core.ecForm.RefreshDomains();

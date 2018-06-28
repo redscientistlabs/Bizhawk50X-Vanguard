@@ -29,29 +29,44 @@ namespace RTC
 					break;
 
 				case CommandType.BLAST:
+				{
+					BlastLayer bl = null;
+					string[] _domains = (string[])cmd.objectValue;
+
+					if (_domains == null)
+						_domains = RTC_MemoryDomains.SelectedDomains;
+
+					if (cmd.blastlayer != null)
 					{
-						BlastLayer bl = null;
-						string[] _domains = (string[])cmd.objectValue;
-
-						if (_domains == null)
-							_domains = RTC_MemoryDomains.SelectedDomains;
-
-						if (cmd.blastlayer != null)
-						{
-							cmd.blastlayer.Apply(cmd.isReplay);
-						}
-						else
-						{
-							bl = RTC_Core.Blast(null, _domains);
-						}
-
-						if (cmd.requestGuid != null)
-						{
-							cmdBack = new RTC_Command(CommandType.RETURNVALUE);
-							cmdBack.objectValue = bl;
-						}
+						cmd.blastlayer.Apply(cmd.isReplay);
+					}
+					else
+					{
+						bl = RTC_Core.Blast(null, _domains);
 					}
 
+					if (cmd.requestGuid != null)
+					{
+						cmdBack = new RTC_Command(CommandType.RETURNVALUE);
+						cmdBack.objectValue = bl;
+					}
+				}
+
+					break;
+
+				case CommandType.BLASTGENERATORBLAST:
+					List<BlastGeneratorProto> returnList;
+
+					List<BlastGeneratorProto> blastGeneratorProtos = (List<BlastGeneratorProto>)(cmd.objectValue as object);
+					StashKey _sk = (StashKey)(cmd.stashkey as object);
+
+					returnList = RTC_BlastTools.GenerateBlastLayersFromBlastGeneratorProtos(blastGeneratorProtos, _sk);
+
+					if (cmd.requestGuid != null)
+					{
+						cmdBack = new RTC_Command(CommandType.RETURNVALUE);
+						cmdBack.objectValue = returnList;
+					}
 					break;
 
 				case CommandType.STASHKEY:

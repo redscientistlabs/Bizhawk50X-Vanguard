@@ -6,7 +6,7 @@ using System.Windows.Forms;
 
 namespace RTC
 {
-	// 0  dgvBlastLayerReference
+	// 0  dgvBlastProtoReference
 	// 1  dgvRowDirty
 	// 2  dgvEnabled
 	// 3  dgvNoteText
@@ -28,7 +28,7 @@ namespace RTC
 	{
 		private enum BlastGeneratorColumn
 		{
-			DgvBlastLayerReference,
+			dgvBlastProtoReference,
 			DgvRowDirty,
 			DgvEnabled,
 			DgvNoteText,
@@ -371,6 +371,7 @@ namespace RTC
 
 		public BlastLayer GenerateBlastLayers(bool useStashkey = false)
 		{
+			var token = RTC_NetCore.HugeOperationStart("LAZY");
 			try
 			{
 				BlastLayer bl = new BlastLayer();
@@ -384,37 +385,66 @@ namespace RTC
 						if (psk == null)
 						{
 							RTC_Core.StopSound();
-							MessageBox.Show("The Glitch Harvester could not perform the CORRUPT action\n\nEither no Savestate Box was selected in the Savestate Manager\nor the Savetate Box itself is empty.");
+							MessageBox.Show(
+								"The Blast Generator could not perform the CORRUPT action\n\nEither no Savestate Box was selected in the Savestate Manager\nor the Savetate Box itself is empty.");
 							RTC_Core.StartSound();
 							return null;
 						}
+
 						sk = (StashKey)psk.Clone();
 					}
-					sk.RunOriginal();
 				}
+
+				List<BlastGeneratorProto> protoList = new List<BlastGeneratorProto>();
 
 				foreach (DataGridViewRow row in dgvBlastGenerator.Rows)
 				{
+					BlastGeneratorProto proto;
 					if ((bool)row.Cells["dgvRowDirty"].Value == true)
 					{
-						BlastGeneratorProto proto = CreateProtoFromRow(row);
-						row.Cells["dgvBlastLayerReference"].Value = proto.GenerateBlastLayer();
-						bl.Layer.AddRange(((BlastLayer)row.Cells["dgvBlastLayerReference"].Value).Layer);
+						proto = CreateProtoFromRow(row);
+						row.Cells["dgvBlastProtoReference"].Value = proto;
 						row.Cells["dgvRowDirty"].Value = true;
 					}
 					else
 					{
-						bl.Layer.AddRange(((BlastLayer)row.Cells["dgvBlastLayerReference"].Value).Layer);
+						proto = (BlastGeneratorProto)row.Cells["dgvBlastProtoReference"].Value;
 					}
+
+					protoList.Add(proto);
 				}
+
+
+				List<BlastGeneratorProto> returnList = new List<BlastGeneratorProto>();
+
+				returnList = (List<BlastGeneratorProto>)RTC_Core.SendCommandToBizhawk(
+					new RTC_Command(CommandType.BLASTGENERATORBLAST)
+					{
+						objectValue = protoList,
+						stashkey = sk,
+					}, true);
+
+				if (returnList == null) return null;
+
+				//The return list is in the same order as the original list so we can go by index here
+				for (int i = 0; i < dgvBlastGenerator.RowCount; i++)
+				{
+					dgvBlastGenerator.Rows[i].Cells["dgvBlastProtoReference"].Value = returnList[i];
+					bl.Layer.AddRange(returnList[i].bl.Layer);
+				}
+
 				return bl;
 			}
 			catch (Exception ex)
 			{
 				MessageBox.Show("Something went wrong when generating the blastlayers. \n" +
-					"Are you sure your input is correct and you have the correct core loaded?\n\n" +
-					ex.ToString());
+				                "Are you sure your input is correct and you have the correct core loaded?\n\n" +
+				                ex.ToString());
 				return null;
+			}
+			finally
+			{
+				RTC_NetCore.HugeOperationEnd(token);
 			}
 		}
 
@@ -688,7 +718,7 @@ namespace RTC
 							dgv.Rows[lastrow].Cells[i].Value = row.ItemArray[i];
 						}
 						//Override these two
-						dgv[(int)BlastGeneratorColumn.DgvBlastLayerReference, lastrow].Value = null;
+						dgv[(int)BlastGeneratorColumn.dgvBlastProtoReference, lastrow].Value = null;
 						dgv[(int)BlastGeneratorColumn.DgvRowDirty, lastrow].Value = true;
 					}
 				}

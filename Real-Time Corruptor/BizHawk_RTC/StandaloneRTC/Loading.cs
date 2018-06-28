@@ -60,9 +60,6 @@ namespace StandaloneRTC
 				RTC.RTC_Core.coreForm.pbAutoKillSwitchTimeout.Value = 0;
 				RTC.RTC_RPC.Heartbeat = false;
 			}
-
-
-
 		}
 
 
