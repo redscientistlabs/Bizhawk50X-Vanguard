@@ -118,7 +118,7 @@
             this.btnCorrupt.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnCorrupt.Font = new System.Drawing.Font("Segoe UI Semibold", 9F, System.Drawing.FontStyle.Bold);
             this.btnCorrupt.ForeColor = System.Drawing.Color.OrangeRed;
-            this.btnCorrupt.Location = new System.Drawing.Point(9, 391);
+            this.btnCorrupt.Location = new System.Drawing.Point(9, 390);
             this.btnCorrupt.Name = "btnCorrupt";
             this.btnCorrupt.Size = new System.Drawing.Size(157, 23);
             this.btnCorrupt.TabIndex = 13;
@@ -136,7 +136,7 @@
             this.btnLoadCorrupt.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnLoadCorrupt.Font = new System.Drawing.Font("Segoe UI Semibold", 9F, System.Drawing.FontStyle.Bold);
             this.btnLoadCorrupt.ForeColor = System.Drawing.Color.OrangeRed;
-            this.btnLoadCorrupt.Location = new System.Drawing.Point(9, 365);
+            this.btnLoadCorrupt.Location = new System.Drawing.Point(9, 364);
             this.btnLoadCorrupt.Name = "btnLoadCorrupt";
             this.btnLoadCorrupt.Size = new System.Drawing.Size(157, 23);
             this.btnLoadCorrupt.TabIndex = 14;
@@ -154,7 +154,7 @@
             this.btnSendToStash.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnSendToStash.Font = new System.Drawing.Font("Segoe UI Semibold", 9F, System.Drawing.FontStyle.Bold);
             this.btnSendToStash.ForeColor = System.Drawing.Color.OrangeRed;
-            this.btnSendToStash.Location = new System.Drawing.Point(9, 417);
+            this.btnSendToStash.Location = new System.Drawing.Point(9, 416);
             this.btnSendToStash.Name = "btnSendToStash";
             this.btnSendToStash.Size = new System.Drawing.Size(157, 23);
             this.btnSendToStash.TabIndex = 12;
@@ -226,7 +226,7 @@
             this.btnDisableEverything.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnDisableEverything.Font = new System.Drawing.Font("Segoe UI Semibold", 9F, System.Drawing.FontStyle.Bold);
             this.btnDisableEverything.ForeColor = System.Drawing.Color.Black;
-            this.btnDisableEverything.Location = new System.Drawing.Point(9, 215);
+            this.btnDisableEverything.Location = new System.Drawing.Point(9, 216);
             this.btnDisableEverything.Name = "btnDisableEverything";
             this.btnDisableEverything.Size = new System.Drawing.Size(157, 23);
             this.btnDisableEverything.TabIndex = 128;
@@ -244,7 +244,7 @@
             this.btnEnableEverything.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnEnableEverything.Font = new System.Drawing.Font("Segoe UI Semibold", 9F, System.Drawing.FontStyle.Bold);
             this.btnEnableEverything.ForeColor = System.Drawing.Color.Black;
-            this.btnEnableEverything.Location = new System.Drawing.Point(9, 241);
+            this.btnEnableEverything.Location = new System.Drawing.Point(9, 242);
             this.btnEnableEverything.Name = "btnEnableEverything";
             this.btnEnableEverything.Size = new System.Drawing.Size(157, 23);
             this.btnEnableEverything.TabIndex = 129;
@@ -262,7 +262,7 @@
             this.btnDuplicateSelected.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnDuplicateSelected.Font = new System.Drawing.Font("Segoe UI Semibold", 9F, System.Drawing.FontStyle.Bold);
             this.btnDuplicateSelected.ForeColor = System.Drawing.Color.Black;
-            this.btnDuplicateSelected.Location = new System.Drawing.Point(9, 301);
+            this.btnDuplicateSelected.Location = new System.Drawing.Point(9, 303);
             this.btnDuplicateSelected.Name = "btnDuplicateSelected";
             this.btnDuplicateSelected.Size = new System.Drawing.Size(157, 23);
             this.btnDuplicateSelected.TabIndex = 130;
@@ -278,7 +278,7 @@
             this.lbBlastLayerSize.AutoSize = true;
             this.lbBlastLayerSize.Font = new System.Drawing.Font("Segoe UI", 8F);
             this.lbBlastLayerSize.ForeColor = System.Drawing.Color.White;
-            this.lbBlastLayerSize.Location = new System.Drawing.Point(2, 5);
+            this.lbBlastLayerSize.Location = new System.Drawing.Point(3, 5);
             this.lbBlastLayerSize.Name = "lbBlastLayerSize";
             this.lbBlastLayerSize.Size = new System.Drawing.Size(58, 13);
             this.lbBlastLayerSize.TabIndex = 132;
@@ -446,7 +446,7 @@
             this.pnMemoryTargetting.Controls.Add(this.lbBlastLayerSize);
             this.pnMemoryTargetting.Location = new System.Drawing.Point(9, 20);
             this.pnMemoryTargetting.Name = "pnMemoryTargetting";
-            this.pnMemoryTargetting.Size = new System.Drawing.Size(136, 24);
+            this.pnMemoryTargetting.Size = new System.Drawing.Size(157, 24);
             this.pnMemoryTargetting.TabIndex = 134;
             this.pnMemoryTargetting.Tag = "color:normal";
             // 
@@ -468,7 +468,7 @@
             this.label4.AutoSize = true;
             this.label4.Font = new System.Drawing.Font("Segoe UI", 8F);
             this.label4.ForeColor = System.Drawing.Color.White;
-            this.label4.Location = new System.Drawing.Point(9, 50);
+            this.label4.Location = new System.Drawing.Point(9, 48);
             this.label4.Name = "label4";
             this.label4.Size = new System.Drawing.Size(108, 13);
             this.label4.TabIndex = 136;
@@ -482,7 +482,7 @@
             this.panel1.Controls.Add(this.btnShiftBlastLayerDown);
             this.panel1.Controls.Add(this.btnShiftBlastLayerUp);
             this.panel1.Controls.Add(this.updownShiftBlastLayerAmount);
-            this.panel1.Location = new System.Drawing.Point(9, 66);
+            this.panel1.Location = new System.Drawing.Point(9, 63);
             this.panel1.Name = "panel1";
             this.panel1.Size = new System.Drawing.Size(158, 60);
             this.panel1.TabIndex = 137;
@@ -525,9 +525,9 @@
             this.btnShiftBlastLayerUp.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnShiftBlastLayerUp.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F);
             this.btnShiftBlastLayerUp.ForeColor = System.Drawing.Color.Black;
-            this.btnShiftBlastLayerUp.Location = new System.Drawing.Point(115, 33);
+            this.btnShiftBlastLayerUp.Location = new System.Drawing.Point(115, 32);
             this.btnShiftBlastLayerUp.Name = "btnShiftBlastLayerUp";
-            this.btnShiftBlastLayerUp.Size = new System.Drawing.Size(21, 21);
+            this.btnShiftBlastLayerUp.Size = new System.Drawing.Size(21, 22);
             this.btnShiftBlastLayerUp.TabIndex = 146;
             this.btnShiftBlastLayerUp.TabStop = false;
             this.btnShiftBlastLayerUp.Tag = "color:light";
@@ -613,7 +613,7 @@
             this.btnRemoveSelected.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnRemoveSelected.Font = new System.Drawing.Font("Segoe UI Semibold", 9F, System.Drawing.FontStyle.Bold);
             this.btnRemoveSelected.ForeColor = System.Drawing.Color.Black;
-            this.btnRemoveSelected.Location = new System.Drawing.Point(9, 271);
+            this.btnRemoveSelected.Location = new System.Drawing.Point(9, 273);
             this.btnRemoveSelected.Name = "btnRemoveSelected";
             this.btnRemoveSelected.Size = new System.Drawing.Size(157, 23);
             this.btnRemoveSelected.TabIndex = 139;
@@ -631,7 +631,7 @@
             this.btnSearchRow.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnSearchRow.Font = new System.Drawing.Font("Segoe UI Semibold", 9F, System.Drawing.FontStyle.Bold);
             this.btnSearchRow.ForeColor = System.Drawing.Color.Black;
-            this.btnSearchRow.Location = new System.Drawing.Point(9, 327);
+            this.btnSearchRow.Location = new System.Drawing.Point(9, 329);
             this.btnSearchRow.Name = "btnSearchRow";
             this.btnSearchRow.Size = new System.Drawing.Size(130, 23);
             this.btnSearchRow.TabIndex = 140;
@@ -674,7 +674,7 @@
             this.btnHelp.Font = new System.Drawing.Font("Segoe UI Semibold", 9.75F, System.Drawing.FontStyle.Bold);
             this.btnHelp.ForeColor = System.Drawing.Color.Black;
             this.btnHelp.Image = global::BizHawk.Client.EmuHawk.Properties.Resources.Help;
-            this.btnHelp.Location = new System.Drawing.Point(148, 6);
+            this.btnHelp.Location = new System.Drawing.Point(150, 0);
             this.btnHelp.Name = "btnHelp";
             this.btnHelp.Size = new System.Drawing.Size(27, 22);
             this.btnHelp.TabIndex = 176;
@@ -691,7 +691,7 @@
             this.btnSearchAgain.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnSearchAgain.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F);
             this.btnSearchAgain.ForeColor = System.Drawing.Color.Black;
-            this.btnSearchAgain.Location = new System.Drawing.Point(144, 327);
+            this.btnSearchAgain.Location = new System.Drawing.Point(145, 329);
             this.btnSearchAgain.Name = "btnSearchAgain";
             this.btnSearchAgain.Size = new System.Drawing.Size(21, 23);
             this.btnSearchAgain.TabIndex = 141;
@@ -898,7 +898,7 @@
             this.btnHideSidebar.UseVisualStyleBackColor = true;
             this.btnHideSidebar.Click += new System.EventHandler(this.btnHideSidebar_Click);
             // 
-            // RTC_NewBlastEditor_Form
+            // RTC_BlastEditor_Form
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
@@ -912,7 +912,7 @@
             this.KeyPreview = true;
             this.MainMenuStrip = this.menuStripEx1;
             this.MinimumSize = new System.Drawing.Size(600, 510);
-            this.Name = "RTC_NewBlastEditor_Form";
+            this.Name = "RTC_BlastEditor_Form";
             this.Tag = "color:dark";
             this.Text = "Blast Editor";
             this.Load += new System.EventHandler(this.RTC_BlastEditorForm_Load);

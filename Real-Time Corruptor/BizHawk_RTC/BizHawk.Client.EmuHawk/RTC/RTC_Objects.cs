@@ -774,6 +774,9 @@ namespace RTC
 
 		public static string getCoreName_NET(string systemName)
 		{
+			if (Global.Emulator == null)
+				return "NULL";
+
 			SettingsAdapter settable = new SettingsAdapter(Global.Emulator);
 
 			switch (systemName.ToUpper())
@@ -1189,12 +1192,12 @@ namespace RTC
 
 		public override string ToString()
 		{
-			string EnabledString = "[ ] BlastByte -> ";
+			string enabledString = "[ ] BlastByte -> ";
 			if (IsEnabled)
-				EnabledString = "[x] BlastByte -> ";
+				enabledString = "[x] BlastByte -> ";
 
 			string cleanDomainName = Domain.Replace("(nametables)", ""); //Shortens the domain name if it contains "(nametables)"
-			return (EnabledString + cleanDomainName + "(" + Convert.ToInt32(Address).ToString() + ")." + Type.ToString() + "(" + RTC_Extensions.GetDecimalValue(Value, BigEndian).ToString() + ")");
+			return (enabledString + cleanDomainName + "(" + Convert.ToInt32(Address).ToString() + ")." + Type.ToString() + "(" + RTC_Extensions.GetDecimalValue(Value, BigEndian).ToString() + ")");
 		}
 	}
 

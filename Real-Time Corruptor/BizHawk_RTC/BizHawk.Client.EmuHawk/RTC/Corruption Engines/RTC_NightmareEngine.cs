@@ -69,7 +69,7 @@ namespace RTC
 
 				if (type == BlastByteType.SET)
 				{
-					long randomValue = RTC_Core.RND.RandomLong(Convert.ToInt64(RTC_Core.ecForm.nmMinValueNightmare.Value), Convert.ToInt64(RTC_Core.ecForm.nmMaxValueNightmare.Value));
+					long randomValue = RTC_Core.RND.RandomLong(MinValue, MaxValue);
 
 					value = RTC_Extensions.GetByteArrayValue(value.Length, randomValue, true);
 				}

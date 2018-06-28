@@ -386,9 +386,22 @@ namespace RTC
 				case CommandType.REMOTE_SET_NIGHTMARE_TYPE:
 					RTC_NightmareEngine.Algo = (BlastByteAlgo)cmd.objectValue;
 					break;
+				case CommandType.REMOTE_SET_NIGHTMARE_MINVALUE:
+					RTC_NightmareEngine.MinValue = (long)cmd.objectValue;
+					break;
+				case CommandType.REMOTE_SET_NIGHTMARE_MAXVALUE:
+					RTC_NightmareEngine.MaxValue = (long)cmd.objectValue;
+					break;
 
 				case CommandType.REMOTE_SET_HELLGENIE_MAXCHEATS:
 					RTC_HellgenieEngine.MaxCheats = (int)cmd.objectValue;
+					break;
+
+				case CommandType.REMOTE_SET_HELLGENIE_MINVALUE:
+					RTC_HellgenieEngine.MinValue = (long)cmd.objectValue;
+					break;
+				case CommandType.REMOTE_SET_HELLGENIE_MAXVALUE:
+					RTC_HellgenieEngine.MaxValue = (long)cmd.objectValue;
 					break;
 
 				case CommandType.REMOTE_SET_HELLGENIE_CHEARCHEATSREWIND:

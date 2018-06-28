@@ -126,7 +126,7 @@ namespace RTC
 			FirstInit = true;
 			ActiveTableGenerated = act.data;
 			ActiveTableReady = true;
-			lbActiveTableSize.Text = "Active table size: " + ActiveTableGenerated.Length.ToString() + "(0x" + ActiveTableGenerated.Length.ToString("X") + ")";
+			lbActiveTableSize.Text = "Active table size (0x" + ActiveTableGenerated.Length.ToString("X") + ")";
 		}
 
 		public byte[] GetDumpFromFile(string key)
@@ -387,7 +387,7 @@ namespace RTC
 					newActiveTable.Add(item);
 
 			ActiveTableGenerated = newActiveTable.ToArray();
-			lbActiveTableSize.Text = "Active table size: " + ActiveTableGenerated.Length.ToString("X");
+			lbActiveTableSize.Text = "Active table size (0x" + ActiveTableGenerated.Length.ToString("X") + ")";
 
 			RTC_Core.StartSound();
 		}
@@ -430,7 +430,7 @@ namespace RTC
 						newActiveTable.Add(item);
 
 				ActiveTableGenerated = newActiveTable.ToArray();
-				lbActiveTableSize.Text = "Active table size: " + ActiveTableGenerated.Length.ToString("X");
+				lbActiveTableSize.Text = "Active table size (0x" + ActiveTableGenerated.Length.ToString("X") + ")";
 
 
 				RTC_Core.StartSound();

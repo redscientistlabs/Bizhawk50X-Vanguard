@@ -817,22 +817,42 @@ namespace RTC
 
 		private void nmMinValueNightmare_ValueChanged(object sender, EventArgs e)
 		{
-			RTC_NightmareEngine.MinValue = Convert.ToInt64(nmMinValueNightmare.Value);
+			//This is not a redundant check due to netcore
+			if (Convert.ToInt64(nmMinValueNightmare.Value) != RTC_NightmareEngine.MinValue)
+			{
+				RTC_NightmareEngine.MinValue = Convert.ToInt64(nmMinValueNightmare.Value);
+				RTC_Core.SendCommandToBizhawk(new RTC_Command(CommandType.REMOTE_SET_NIGHTMARE_MINVALUE) { objectValue = RTC_NightmareEngine.MinValue });
+			}
 		}
 
 		private void nmMaxValueNightmare_ValueChanged(object sender, EventArgs e)
 		{
-			RTC_NightmareEngine.MaxValue = Convert.ToInt64(nmMaxValueNightmare.Value);
+			//This is not a redundant check due to netcore
+			if (Convert.ToInt64(nmMaxValueNightmare.Value) != RTC_NightmareEngine.MaxValue)
+			{
+				RTC_NightmareEngine.MaxValue = Convert.ToInt64(nmMaxValueNightmare.Value);
+				RTC_Core.SendCommandToBizhawk(new RTC_Command(CommandType.REMOTE_SET_NIGHTMARE_MAXVALUE) { objectValue = RTC_NightmareEngine.MaxValue });
+			}
 		}
 
 		private void nmMinValueHellgenie_ValueChanged(object sender, EventArgs e)
 		{
-			RTC_HellgenieEngine.MinValue = Convert.ToInt64(nmMinValueHellgenie.Value);
+			//This is not a redundant check due to netcore
+			if (Convert.ToInt64(nmMinValueHellgenie.Value) != RTC_HellgenieEngine.MinValue)
+			{
+				RTC_HellgenieEngine.MinValue = Convert.ToInt64(nmMinValueHellgenie.Value);
+				RTC_Core.SendCommandToBizhawk(new RTC_Command(CommandType.REMOTE_SET_HELLGENIE_MINVALUE) { objectValue = RTC_HellgenieEngine.MinValue });
+			}
 		}
 
 		private void nmMaxValueHellgenie_ValueChanged(object sender, EventArgs e)
 		{
-			RTC_HellgenieEngine.MaxValue = Convert.ToInt64(nmMaxValueHellgenie.Value);
+			//This is not a redundant check due to netcore
+			if (Convert.ToInt64(nmMaxValueHellgenie.Value) != RTC_HellgenieEngine.MaxValue)
+			{
+				RTC_HellgenieEngine.MaxValue = Convert.ToInt64(nmMaxValueHellgenie.Value);
+				RTC_Core.SendCommandToBizhawk(new RTC_Command(CommandType.REMOTE_SET_HELLGENIE_MAXVALUE) { objectValue = RTC_HellgenieEngine.MaxValue });
+			}
 		}
 	}
 }

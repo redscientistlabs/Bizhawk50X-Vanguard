@@ -107,7 +107,10 @@ namespace RTC
 		public static void CheckMessages(object sender, EventArgs e)
 		{
 			//Send the heartbeat unless it's the StandaloneRTC process
-			if (!RTC_Core.isStandalone)
+			if (RTC_Hooks.isRemoteRTC)
+				SendHeartbeat();
+
+			if (!RTC_Core.isStandalone && !RTC_Hooks.isRemoteRTC)
 				SendHeartbeat();
 		}
 
