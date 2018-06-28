@@ -892,7 +892,6 @@ namespace RTC
 			int _fx = Convert.ToInt32(fx);
 
 			// This is NOT a redundent check. Setting intensity requires a netcore call so we don't want to do it if we don't have to
-			// ReSharper disable once RedundantCheckBeforeAssignment
 			if (_fx != RTC_Core.ecForm.Intensity)
 				RTC_Core.ecForm.Intensity = _fx;
 		}

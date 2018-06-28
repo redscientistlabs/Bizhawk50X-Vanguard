@@ -141,8 +141,9 @@ namespace RTC
 			}
 			catch (Exception ex)
 			{
-				MessageBox.Show("Something went wrong in the RTC BlastCheat Generator. \n" +
-				                "This is an RTC error, so you should probably send this to the RTC devs.\n" +
+				MessageBox.Show("Something went wrong in the RTC BlastCheat Generator. \n\n" +
+				                "Make sure the domain selected is a valid domain for the core!\n\n" +
+								"This is an RTC error, so you should probably send this to the RTC devs.\n" +
 				                "If you know the steps to reproduce this error it would be greatly appreciated.\n\n" +
 				                ex);
 				throw;

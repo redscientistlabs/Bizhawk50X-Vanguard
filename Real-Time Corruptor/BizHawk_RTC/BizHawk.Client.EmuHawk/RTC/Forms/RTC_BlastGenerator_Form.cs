@@ -326,7 +326,8 @@ namespace RTC
 			if (!initialized || dgvBlastGenerator == null)
 				return;
 
-			dgvBlastGenerator.Rows[e.RowIndex].Cells["dgvRowDirty"].Value = true;
+			if (e.ColumnIndex != (int)BlastGeneratorColumn.DgvRowDirty)
+				dgvBlastGenerator.Rows[e.RowIndex].Cells["dgvRowDirty"].Value = true;
 
 			if ((BlastGeneratorColumn)e.ColumnIndex == BlastGeneratorColumn.DgvType)
 			{
@@ -355,7 +356,7 @@ namespace RTC
 
 		public BlastLayer GenerateBlastLayers(bool useStashkey = false)
 		{
-			var token = RTC_NetCore.HugeOperationStart("LAZY");
+			var token = RTC_NetCore.HugeOperationStart("DISABLED");
 			try
 			{
 				BlastLayer bl = new BlastLayer();
@@ -388,7 +389,6 @@ namespace RTC
 					{
 						proto = CreateProtoFromRow(row);
 						row.Cells["dgvBlastProtoReference"].Value = proto;
-						row.Cells["dgvRowDirty"].Value = true;
 					}
 					else
 					{
@@ -414,6 +414,8 @@ namespace RTC
 				for (int i = 0; i < dgvBlastGenerator.RowCount; i++)
 				{
 					dgvBlastGenerator.Rows[i].Cells["dgvBlastProtoReference"].Value = returnList[i];
+					dgvBlastGenerator.Rows[i].Cells["dgvRowDirty"].Value = false;
+
 					bl.Layer.AddRange(returnList[i].bl.Layer);
 				}
 

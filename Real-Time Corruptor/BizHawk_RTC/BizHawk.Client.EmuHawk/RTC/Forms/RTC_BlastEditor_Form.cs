@@ -1470,11 +1470,13 @@ namespace RTC
 
 		private void bakeBlastByteToolStripMenuItem_Click(object sender, EventArgs e)
 		{
+			var token = RTC_NetCore.HugeOperationStart("DISABLED");
 			try
 			{
 				//Generate a blastlayer from the current selected rows
 				BlastLayer bl = new BlastLayer();
-				foreach (DataGridViewRow selected in dgvBlastLayer.SelectedRows.Cast<DataGridViewRow>().Where((item => (bool)item.Cells["dgvBlastUnitLocked"].Value != true)))
+				foreach (DataGridViewRow selected in dgvBlastLayer.SelectedRows.Cast<DataGridViewRow>()
+					.Where((item => (bool)item.Cells["dgvBlastUnitLocked"].Value != true)))
 				{
 					BlastUnit bu = (BlastUnit)selected.Cells["dgvBlastUnitReference"].Value;
 					if (bu.IsEnabled)
@@ -1486,7 +1488,9 @@ namespace RTC
 
 				int i = 0;
 				//Insert the new one where the old row was, then remove the old row.
-				foreach (DataGridViewRow selected in dgvBlastLayer.SelectedRows.Cast<DataGridViewRow>().Where(item => ((bool)item.Cells["dgvBlastUnitLocked"].Value != true) && ((BlastUnit)item.Cells["dgvBlastUnitReference"].Value) is BlastByte))
+				foreach (DataGridViewRow selected in dgvBlastLayer.SelectedRows.Cast<DataGridViewRow>().Where(item =>
+					((bool)item.Cells["dgvBlastUnitLocked"].Value != true) &&
+					((BlastUnit)item.Cells["dgvBlastUnitReference"].Value) is BlastByte))
 				{
 					InsertBlastUnitToBlastLayerAndDgv(selected.Index, newBlastLayer.Layer[i]);
 					i++;
@@ -1496,9 +1500,13 @@ namespace RTC
 			catch (Exception ex)
 			{
 				throw new System.Exception("Something went wrong in when baking to SET.\n" +
-				"Your blast editor session may be broke depending on when it failed.\n" +
-				"You should probably send a copy of this error and what you did to cause it to the RTC devs.\n\n" +
-				ex.ToString());
+				                           "Your blast editor session may be broke depending on when it failed.\n" +
+				                           "You should probably send a copy of this error and what you did to cause it to the RTC devs.\n\n" +
+				                           ex.ToString());
+			}
+			finally
+			{
+				RTC_NetCore.HugeOperationEnd(token);
 			}
 		}
 
