@@ -51,7 +51,8 @@ namespace RTC
 		private bool initialized = false;
 
 		private static Dictionary<string, MemoryInterface> domainToMiDico = new Dictionary<string, MemoryInterface>();
-		public string[] Domains = RTC_MemoryDomains.MemoryInterfaces.Keys.Concat(RTC_MemoryDomains.VmdPool.Values.Select(it => it.ToString())).ToArray();
+		private string[] domains = RTC_MemoryDomains.MemoryInterfaces?.Keys?.Concat(RTC_MemoryDomains.VmdPool.Values.Select(it => it.ToString())).ToArray();
+		private string mainDomain = RTC_MemoryDomains.MDRI?.MemoryDomains?.MainMemory?.ToString();
 
 		public RTC_BlastGenerator_Form()
 		{
@@ -133,11 +134,10 @@ namespace RTC
 			}
 			catch (Exception ex)
 			{
-				throw new Exception(
-							"An error occurred in RTC while adding a new row.\n\n" +
-							"Your session is probably broken\n\n" +
-							ex.ToString()
-							);
+				MessageBox.Show(
+					"An error occurred in RTC while adding a new row.\n\n" +
+					"Your session is probably broken\n\n\n" +
+					ex.ToString());
 			}
 		}
 
@@ -145,31 +145,33 @@ namespace RTC
 		{
 			try
 			{
-				if (row.Cells["dgvDomain"] is DataGridViewComboBoxCell cell)
+				if (row.Cells["dgvDomain"] is DataGridViewComboBoxCell)
 				{
+					DataGridViewComboBoxCell cell = (DataGridViewComboBoxCell)row.Cells["dgvDomain"];
+					object currentValue = cell.Value;
 
-					int temp = cell.Items.Count;
-					string currentValue = "";
-					if (cell.Value != null)
-						currentValue = cell.Value.ToString();
+					//We create a new cell with the correct values then replace the cell
+					//Clone to copy any properties of the cell
+					DataGridViewComboBoxCell newCell = (DataGridViewComboBoxCell)cell.Clone();
+					newCell.Items.Clear();
 
-					//So this combobox is annoying. You need to have something selected or else the dgv throws up
-					//The (bad) solution I'm using is to insert a row at the beginning as a holdover until it's re-populated, then removing that row.
-
-					cell.Items.Insert(0, "NONE");
-					cell.Value = cell.Items[0];
-
-					foreach (string item in cell.Items)
-						if (item != "NONE")
-							cell.Items.Remove(item);
-
-					foreach (string domain in Domains)
+					foreach (string domain in domains)
 					{
-						cell.Items.Add(domain);
+						newCell.Items.Add(domain);
 					}
 
-					cell.Value = cell.Items.Contains(currentValue) ? currentValue : cell.Items[1];
-					cell.Items.Remove("NONE");
+					cell = (DataGridViewComboBoxCell)newCell.Clone();
+
+					if (currentValue != null && cell.Items.Contains(currentValue))
+						cell.Value = currentValue;
+					else if (mainDomain != null)
+						cell.Value = mainDomain;
+					else if (newCell.Items.Count > 0)
+						cell.Value = newCell.Items[0];
+					else
+						cell.Value = null;
+
+					row.Cells["dgvDomain"] = cell;
 				}
 
 				UpdateAddressRange(row);
@@ -186,7 +188,7 @@ namespace RTC
 		{
 			try
 			{
-				if (row.Cells["dgvDomain"].Value.ToString() == "NONE")
+				if (row.Cells["dgvDomain"].Value == null)
 					return;
 
 				long size = domainToMiDico[row.Cells["dgvDomain"].Value.ToString()].Size;
@@ -206,49 +208,38 @@ namespace RTC
 
 			if (cell != null)
 			{
-				int temp = cell.Items.Count;
+				DataGridViewComboBoxCell newCell = (DataGridViewComboBoxCell)cell.Clone();
+				newCell.Items.Clear();
 
-				//So this combobox is annoying. You need to have something selected or else the dgv throws up
-				//The (bad) solution I'm using is to insert a row at the beginning as a holdover until it's re-populated, then removing that row.
-
-				string currentValue = "";
-				if (cell.Value != null)
-					currentValue = cell.Value.ToString();
-
-				cell.Items.Insert(0, "NONE");
-				cell.Value = cell.Items[0];
-
-				foreach(string item in cell.Items)
-					if(item != "NONE")
-						cell.Items.Remove(item);
 
 				switch (row.Cells["dgvType"].Value.ToString())
 				{
 					case "BlastByte":
 						foreach (BGBlastByteModes type in Enum.GetValues(typeof(BGBlastByteModes)))
 						{
-							cell.Items.Add(type.ToString());
+							newCell.Items.Add(type.ToString());
 						}
 						break;
 					case "BlastCheat":
 						foreach (BGBlastCheatModes type in Enum.GetValues(typeof(BGBlastCheatModes)))
 						{
-							cell.Items.Add(type.ToString());
+							newCell.Items.Add(type.ToString());
 						}
 						break;
 					case "BlastPipe":
 						foreach (BGBlastPipeModes type in Enum.GetValues(typeof(BGBlastPipeModes)))
 						{
-							cell.Items.Add(type.ToString());
+							newCell.Items.Add(type.ToString());
 						}
 						break;
 					default:
 						break;
 				}
-				cell.Value = cell.Items.Contains(currentValue) ? currentValue : cell.Items[1];
-			}
 
-			cell?.Items.Remove("NONE");
+				cell = newCell;
+				cell.Value = cell.Items[0];
+				row.Cells["dgvMode"] = cell;
+			}
 		}
 
 		private void btnJustCorrupt_Click(object sender, EventArgs e)
@@ -600,9 +591,10 @@ namespace RTC
 		{
 			try
 			{
+				RTC_MemoryDomains.RefreshDomains();
 				domainToMiDico.Clear();
-				Domains = RTC_MemoryDomains.MemoryInterfaces.Keys.Concat(RTC_MemoryDomains.VmdPool.Values.Select(it => it.ToString())).ToArray();
-				foreach (string domain in Domains)
+				domains = RTC_MemoryDomains.MemoryInterfaces.Keys.Concat(RTC_MemoryDomains.VmdPool.Values.Select(it => it.ToString())).ToArray();
+				foreach (string domain in domains)
 				{
 					domainToMiDico.Add(domain, RTC_MemoryDomains.GetInterface(domain));
 				}
