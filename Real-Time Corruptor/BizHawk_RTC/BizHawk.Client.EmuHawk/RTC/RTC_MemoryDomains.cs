@@ -624,6 +624,8 @@ namespace RTC
 		public int WordSize { get; set; }
 		public int PointerSpacer { get; set; }
 
+		public int Padding { get; set; }
+
 		public List<int> AddSingles = new List<int>();
 		public List<int> RemoveSingles = new List<int>();
 
@@ -666,6 +668,11 @@ namespace RTC
 			}
 
 			int addressCount = 0;
+			for (int i = 0; i < Padding; i++)
+			{
+				VMD.PointerDomains.Add(GenDomain);
+				VMD.PointerAddresses.Add(i);
+			}
 
 			foreach (int[] range in AddRanges)
 			{
@@ -751,9 +758,8 @@ namespace RTC
 
 		public long GetRealAddress(long address)
 		{
-			if (address < 0 || address >= PointerAddresses.Count)
+			if (address < 0 || address >= PointerAddresses.Count || address < Proto.Padding)
 				return 0;
-
 			return PointerAddresses[(int)address];
 		}
 
@@ -822,6 +828,8 @@ namespace RTC
 
 		public override byte PeekByte(long address)
 		{
+			if (address < this.Proto.Padding)
+				return (byte)0;
 			string targetDomain = GetRealDomain(address);
 			long targetAddress = GetRealAddress(address);
 
@@ -832,6 +840,9 @@ namespace RTC
 
 		public override void PokeByte(long address, byte value)
 		{
+			if (address < this.Proto.Padding)
+				return;
+
 			string targetDomain = GetRealDomain(address);
 			long targetAddress = GetRealAddress(address);
 

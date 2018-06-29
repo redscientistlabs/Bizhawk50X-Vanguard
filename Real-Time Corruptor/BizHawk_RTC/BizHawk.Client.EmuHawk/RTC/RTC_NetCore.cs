@@ -277,7 +277,7 @@ namespace RTC
 			catch (Exception ex)
 			{
 				OutputException(ex);
-
+				
 				if (side == NetworkSide.CLIENT || side == NetworkSide.SERVER)
 					side = NetworkSide.CONNECTIONLOST;
 			}

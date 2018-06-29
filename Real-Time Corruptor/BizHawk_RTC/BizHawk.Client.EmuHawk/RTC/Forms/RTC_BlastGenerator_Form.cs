@@ -135,7 +135,7 @@ namespace RTC
 			{
 				throw new Exception(
 							"An error occurred in RTC while adding a new row.\n\n" +
-							"Your session is probably broken\n" +
+							"Your session is probably broken\n\n" +
 							ex.ToString()
 							);
 			}
@@ -147,6 +147,7 @@ namespace RTC
 			{
 				if (row.Cells["dgvDomain"] is DataGridViewComboBoxCell cell)
 				{
+
 					int temp = cell.Items.Count;
 					string currentValue = "";
 					if (cell.Value != null)
@@ -158,8 +159,9 @@ namespace RTC
 					cell.Items.Insert(0, "NONE");
 					cell.Value = cell.Items[0];
 
-					for (int i = temp; i > 0; i--)
-						cell.Items.RemoveAt(1);
+					foreach (string item in cell.Items)
+						if (item != "NONE")
+							cell.Items.Remove(item);
 
 					foreach (string domain in Domains)
 					{
@@ -216,8 +218,9 @@ namespace RTC
 				cell.Items.Insert(0, "NONE");
 				cell.Value = cell.Items[0];
 
-				for (int i = temp; i > 0; i--)
-					cell.Items.RemoveAt(1);
+				foreach(string item in cell.Items)
+					if(item != "NONE")
+						cell.Items.Remove(item);
 
 				switch (row.Cells["dgvType"].Value.ToString())
 				{

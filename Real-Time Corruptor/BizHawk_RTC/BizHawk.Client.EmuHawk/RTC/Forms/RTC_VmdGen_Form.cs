@@ -97,6 +97,11 @@ namespace RTC
 			else
 				proto.PointerSpacer = 1;
 
+			if (cbUsePadding.Checked && nmPadding.Value > 0)
+			{
+				proto.Padding = Convert.ToInt32(nmPadding.Value);
+			}
+
 			foreach (string line in tbCustomAddresses.Lines)
 			{
 				if (string.IsNullOrWhiteSpace(line))
@@ -123,9 +128,7 @@ namespace RTC
 						end = Convert.ToInt32(currentDomainSize - 1);
 
 					if (remove)
-						proto.RemoveRanges.Add(new int[] { start, end });
-					else
-						proto.AddRanges.Add(new int[] { start, end });
+						proto.RemoveRanges.Add(new int[] {start, end});
 				}
 				else
 				{
@@ -138,6 +141,7 @@ namespace RTC
 						else
 							proto.AddSingles.Add(address);
 					}
+
 				}
 			}
 

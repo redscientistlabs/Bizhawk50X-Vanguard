@@ -56,7 +56,11 @@ namespace RTC
 			MemoryInterface mi = RTC_MemoryDomains.VmdPool[vmdName];
 
 			lbVmdSizeValue.Text = mi.Size.ToString() + " (0x" + mi.Size.ToString("X") + ")";
-			lbRealDomainValue.Text = (mi as VirtualMemoryDomain)?.PointerDomains[0];
+
+			if ((mi as VirtualMemoryDomain)?.PointerDomains.Count > 1)
+				lbRealDomainValue.Text = "Hybrid";
+			else
+				lbRealDomainValue.Text = (mi as VirtualMemoryDomain)?.PointerDomains[0];
 		}
 
 		private void btnSaveVmd_Click(object sender, EventArgs e)

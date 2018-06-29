@@ -46,9 +46,13 @@
             this.label2 = new System.Windows.Forms.Label();
             this.tbVmdName = new System.Windows.Forms.TextBox();
             this.btnHelp = new System.Windows.Forms.Button();
-			this.nmPointerSpacer = new System.Windows.Forms.NumericUpDown();
+            this.nmPointerSpacer = new System.Windows.Forms.NumericUpDown();
+            this.label1 = new System.Windows.Forms.Label();
+            this.nmPadding = new System.Windows.Forms.NumericUpDown();
+            this.cbUsePadding = new System.Windows.Forms.CheckBox();
             this.groupBox1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.nmPointerSpacer)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.nmPadding)).BeginInit();
             this.SuspendLayout();
             // 
             // cbSelectedMemoryDomain
@@ -104,7 +108,7 @@
             this.groupBox1.Controls.Add(this.lbDomainSizeLabel);
             this.groupBox1.Font = new System.Drawing.Font("Segoe UI Semibold", 10F, System.Drawing.FontStyle.Bold);
             this.groupBox1.ForeColor = System.Drawing.Color.White;
-            this.groupBox1.Location = new System.Drawing.Point(4, 58);
+            this.groupBox1.Location = new System.Drawing.Point(4, 54);
             this.groupBox1.Name = "groupBox1";
             this.groupBox1.Size = new System.Drawing.Size(215, 81);
             this.groupBox1.TabIndex = 123;
@@ -199,7 +203,7 @@
             this.cbUsePointerSpacer.AutoSize = true;
             this.cbUsePointerSpacer.Font = new System.Drawing.Font("Segoe UI", 8F);
             this.cbUsePointerSpacer.ForeColor = System.Drawing.Color.White;
-            this.cbUsePointerSpacer.Location = new System.Drawing.Point(4, 153);
+            this.cbUsePointerSpacer.Location = new System.Drawing.Point(4, 143);
             this.cbUsePointerSpacer.Name = "cbUsePointerSpacer";
             this.cbUsePointerSpacer.Size = new System.Drawing.Size(112, 17);
             this.cbUsePointerSpacer.TabIndex = 125;
@@ -211,7 +215,7 @@
             this.label4.AutoSize = true;
             this.label4.Font = new System.Drawing.Font("Segoe UI", 8F);
             this.label4.ForeColor = System.Drawing.Color.White;
-            this.label4.Location = new System.Drawing.Point(163, 154);
+            this.label4.Location = new System.Drawing.Point(163, 144);
             this.label4.Name = "label4";
             this.label4.Size = new System.Drawing.Size(58, 13);
             this.label4.TabIndex = 127;
@@ -246,7 +250,7 @@
             this.label2.AutoSize = true;
             this.label2.Font = new System.Drawing.Font("Segoe UI", 8F);
             this.label2.ForeColor = System.Drawing.Color.White;
-            this.label2.Location = new System.Drawing.Point(4, 189);
+            this.label2.Location = new System.Drawing.Point(4, 197);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(67, 13);
             this.label2.TabIndex = 131;
@@ -257,7 +261,7 @@
             this.tbVmdName.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
             this.tbVmdName.Font = new System.Drawing.Font("Segoe UI", 8F);
             this.tbVmdName.ForeColor = System.Drawing.Color.White;
-            this.tbVmdName.Location = new System.Drawing.Point(72, 183);
+            this.tbVmdName.Location = new System.Drawing.Point(72, 191);
             this.tbVmdName.Name = "tbVmdName";
             this.tbVmdName.Size = new System.Drawing.Size(147, 22);
             this.tbVmdName.TabIndex = 132;
@@ -283,16 +287,16 @@
             // nmPointerSpacer
             // 
             this.nmPointerSpacer.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
-            this.nmPointerSpacer.Font = new System.Drawing.Font("Segoe UI", 9.75F);
+            this.nmPointerSpacer.Font = new System.Drawing.Font("Segoe UI", 9F);
             this.nmPointerSpacer.ForeColor = System.Drawing.Color.White;
-            this.nmPointerSpacer.Location = new System.Drawing.Point(114, 149);
+            this.nmPointerSpacer.Location = new System.Drawing.Point(114, 140);
             this.nmPointerSpacer.Minimum = new decimal(new int[] {
             2,
             0,
             0,
             0});
             this.nmPointerSpacer.Name = "nmPointerSpacer";
-            this.nmPointerSpacer.Size = new System.Drawing.Size(47, 25);
+            this.nmPointerSpacer.Size = new System.Drawing.Size(47, 23);
             this.nmPointerSpacer.TabIndex = 126;
             this.nmPointerSpacer.Tag = "color:dark";
             this.nmPointerSpacer.Value = new decimal(new int[] {
@@ -302,12 +306,59 @@
             0});
             this.nmPointerSpacer.ValueChanged += new System.EventHandler(this.numericUpDown2_ValueChanged);
             // 
+            // label1
+            // 
+            this.label1.AutoSize = true;
+            this.label1.Font = new System.Drawing.Font("Segoe UI", 8F);
+            this.label1.ForeColor = System.Drawing.Color.White;
+            this.label1.Location = new System.Drawing.Point(98, 168);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(95, 13);
+            this.label1.TabIndex = 137;
+            this.label1.Text = "bytes of padding";
+            // 
+            // nmPadding
+            // 
+            this.nmPadding.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
+            this.nmPadding.Font = new System.Drawing.Font("Segoe UI", 8F);
+            this.nmPadding.ForeColor = System.Drawing.Color.White;
+            this.nmPadding.Location = new System.Drawing.Point(49, 164);
+            this.nmPadding.Maximum = new decimal(new int[] {
+            8192,
+            0,
+            0,
+            0});
+            this.nmPadding.Name = "nmPadding";
+            this.nmPadding.Size = new System.Drawing.Size(47, 22);
+            this.nmPadding.TabIndex = 136;
+            this.nmPadding.Tag = "color:dark";
+            this.nmPadding.Value = new decimal(new int[] {
+            1,
+            0,
+            0,
+            0});
+            // 
+            // cbUsePadding
+            // 
+            this.cbUsePadding.AutoSize = true;
+            this.cbUsePadding.Font = new System.Drawing.Font("Segoe UI", 8F);
+            this.cbUsePadding.ForeColor = System.Drawing.Color.White;
+            this.cbUsePadding.Location = new System.Drawing.Point(4, 167);
+            this.cbUsePadding.Name = "cbUsePadding";
+            this.cbUsePadding.Size = new System.Drawing.Size(47, 17);
+            this.cbUsePadding.TabIndex = 135;
+            this.cbUsePadding.Text = "Add";
+            this.cbUsePadding.UseVisualStyleBackColor = true;
+            // 
             // RTC_VmdGen_Form
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
             this.ClientSize = new System.Drawing.Size(390, 250);
+            this.Controls.Add(this.label1);
+            this.Controls.Add(this.nmPadding);
+            this.Controls.Add(this.cbUsePadding);
             this.Controls.Add(this.btnHelp);
             this.Controls.Add(this.tbVmdName);
             this.Controls.Add(this.label2);
@@ -329,6 +380,7 @@
             this.groupBox1.ResumeLayout(false);
             this.groupBox1.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.nmPointerSpacer)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.nmPadding)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -355,5 +407,8 @@
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.TextBox tbVmdName;
         private System.Windows.Forms.Button btnHelp;
-    }
+		private System.Windows.Forms.Label label1;
+		public System.Windows.Forms.NumericUpDown nmPadding;
+		public System.Windows.Forms.CheckBox cbUsePadding;
+	}
 }

@@ -757,6 +757,8 @@
             // 
             this.dgvDomain.FillWeight = 55F;
             this.dgvDomain.HeaderText = "Domain";
+            this.dgvDomain.Items.AddRange(new object[] {
+            "IF_YOU_SEE_THIS_OPEN_A_BUG_REPORT"});
             this.dgvDomain.MaxDropDownItems = 20;
             this.dgvDomain.Name = "dgvDomain";
             this.dgvDomain.Resizable = System.Windows.Forms.DataGridViewTriState.True;
@@ -790,6 +792,8 @@
             this.dgvMode.DropDownWidth = 150;
             this.dgvMode.FillWeight = 60F;
             this.dgvMode.HeaderText = "Mode";
+            this.dgvMode.Items.AddRange(new object[] {
+            "IF_YOU_SEE_THIS_OPEN_A_BUG_REPORT"});
             this.dgvMode.MaxDropDownItems = 20;
             this.dgvMode.Name = "dgvMode";
             this.dgvMode.Resizable = System.Windows.Forms.DataGridViewTriState.True;
