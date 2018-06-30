@@ -150,28 +150,24 @@ namespace RTC
 					DataGridViewComboBoxCell cell = (DataGridViewComboBoxCell)row.Cells["dgvDomain"];
 					object currentValue = cell.Value;
 
-					//We create a new cell with the correct values then replace the cell
-					//Clone to copy any properties of the cell
-					DataGridViewComboBoxCell newCell = (DataGridViewComboBoxCell)cell.Clone();
-					newCell.Items.Clear();
+					cell.Value = null;
+					cell.Items.Clear();
 
 					foreach (string domain in domains)
 					{
-						newCell.Items.Add(domain);
+						cell.Items.Add(domain);
 					}
 
-					cell = (DataGridViewComboBoxCell)newCell.Clone();
 
 					if (currentValue != null && cell.Items.Contains(currentValue))
 						cell.Value = currentValue;
 					else if (mainDomain != null)
 						cell.Value = mainDomain;
-					else if (newCell.Items.Count > 0)
-						cell.Value = newCell.Items[0];
+					else if (cell.Items.Count > 0)
+						cell.Value = cell.Items[0];
 					else
 						cell.Value = null;
 
-					row.Cells["dgvDomain"] = cell;
 				}
 
 				UpdateAddressRange(row);
@@ -208,8 +204,8 @@ namespace RTC
 
 			if (cell != null)
 			{
-				DataGridViewComboBoxCell newCell = (DataGridViewComboBoxCell)cell.Clone();
-				newCell.Items.Clear();
+				cell.Value = null;
+				cell.Items.Clear();
 
 
 				switch (row.Cells["dgvType"].Value.ToString())
@@ -217,28 +213,25 @@ namespace RTC
 					case "BlastByte":
 						foreach (BGBlastByteModes type in Enum.GetValues(typeof(BGBlastByteModes)))
 						{
-							newCell.Items.Add(type.ToString());
+							cell.Items.Add(type.ToString());
 						}
 						break;
 					case "BlastCheat":
 						foreach (BGBlastCheatModes type in Enum.GetValues(typeof(BGBlastCheatModes)))
 						{
-							newCell.Items.Add(type.ToString());
+							cell.Items.Add(type.ToString());
 						}
 						break;
 					case "BlastPipe":
 						foreach (BGBlastPipeModes type in Enum.GetValues(typeof(BGBlastPipeModes)))
 						{
-							newCell.Items.Add(type.ToString());
+							cell.Items.Add(type.ToString());
 						}
 						break;
 					default:
 						break;
 				}
-
-				cell = newCell;
 				cell.Value = cell.Items[0];
-				row.Cells["dgvMode"] = cell;
 			}
 		}
 
