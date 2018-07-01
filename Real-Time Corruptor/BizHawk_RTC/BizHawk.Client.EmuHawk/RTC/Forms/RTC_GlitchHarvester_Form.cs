@@ -400,11 +400,16 @@ namespace RTC
 
 		private void lbStashHistory_SelectedIndexChanged(object sender, EventArgs e)
 		{
+			if (currentlyLoading)
+				return;
 			try
 			{
-				lbStashHistory.Enabled = false;
-				btnStashUP.Enabled = false;
-				btnStashDOWN.Enabled = false;
+				currentlyLoading = true;
+
+				//lbStashHistory.Enabled = false;
+				//btnStashUP.Enabled = false;
+				//btnStashDOWN.Enabled = false;
+
 
 				if (DontLoadSelectedStash || lbStashHistory.SelectedIndex == -1)
 				{
@@ -442,9 +447,10 @@ namespace RTC
 			}
 			finally
 			{
-				lbStashHistory.Enabled = true;
-				btnStashUP.Enabled = true;
-				btnStashDOWN.Enabled = true;
+				currentlyLoading = false;
+				//lbStashHistory.Enabled = true;
+				//btnStashUP.Enabled = true;
+				//btnStashDOWN.Enabled = true;
 			}
 		}
 
@@ -744,6 +750,9 @@ namespace RTC
 
 		private void btnStashUP_Click(object sender, EventArgs e)
 		{
+			if (currentlyLoading)
+				return;
+
 			if (lbStashHistory.SelectedIndex == -1)
 				return;
 
@@ -755,6 +764,9 @@ namespace RTC
 
 		private void btnStashDOWN_Click(object sender, EventArgs e)
 		{
+			if (currentlyLoading)
+				return;
+
 			if (lbStashHistory.SelectedIndex == -1)
 				return;
 
@@ -768,6 +780,7 @@ namespace RTC
 		{
 			if (currentlyLoading)
 				return;
+
 			if (dgvStockpile.SelectedRows.Count == 0)
 				return;
 
