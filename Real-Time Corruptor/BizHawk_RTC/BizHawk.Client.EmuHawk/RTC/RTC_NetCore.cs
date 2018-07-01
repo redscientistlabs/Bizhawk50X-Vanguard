@@ -58,7 +58,8 @@ namespace RTC
 		public static volatile int DefaultMaxRetries = 666;
 		private static bool showBoops = false;
 
-		System.Windows.Forms.Timer KeepAliveTimer = null;
+		private System.Windows.Forms.Timer KeepAliveTimer = null;
+		public static Stopwatch timeElapsed = new Stopwatch();
 
 		private static object CommandQueueLock = new object();
 		public static bool NetCoreCommandSynclock = false;
@@ -220,10 +221,10 @@ namespace RTC
 								networkStream.Read(_lengthToReceive, 0, _lengthToReceive.Length);
 								lengthToReceive = BitConverter.ToInt32(_lengthToReceive, 0);
 
-								Console.WriteLine("I want this many bytes: " + lengthToReceive);
+								//Console.WriteLine("I want this many bytes: " + lengthToReceive);
 								//Now read until we have that many bytes
 								long bytesRead = RTC_Extensions.CopyBytes(lengthToReceive, networkStream, ms);
-								Console.WriteLine("I got this many bytes: " + bytesRead);
+								//Console.WriteLine("I got this many bytes: " + bytesRead);
 
 								//Deserialize it
 								ms.Position = 0;
@@ -269,13 +270,13 @@ namespace RTC
 								//Write the length of the incoming object to the NetworkStream
 								byte[] length = BitConverter.GetBytes(ms.ToArray().Length);
 								networkStream.Write(length, 0, length.Length);
-								Console.WriteLine("I am giving you this many bytes " + BitConverter.ToInt32(length, 0));
+								//Console.WriteLine("I am giving you this many bytes " + BitConverter.ToInt32(length, 0));
 								//Write the data itself
 								//ms.Position = 0;
 								//ms.CopyTo(networkStream);
 								byte[] buf = ms.ToArray();
 								networkStream.Write(buf, 0, buf.Length);
-								Console.WriteLine("It took " + sw.ElapsedMilliseconds + " ms to serialize backCmd " + backCmd.Type + " of " + ms.ToArray().Length + "	bytes");
+								//Console.WriteLine("It took " + sw.ElapsedMilliseconds + " ms to serialize backCmd " + backCmd.Type + " of " + ms.ToArray().Length + "	bytes");
 							}
 
 							//binaryFormatter.Serialize(networkStream, backCmd);
@@ -511,6 +512,8 @@ namespace RTC
 			if (supposedToBeConnected && !(side == NetworkSide.DISCONNECTED || side == NetworkSide.CONNECTIONLOST))
 				return false;
 
+			timeElapsed.Start();
+
 			//if (side != NetworkSide.CONNECTIONLOST)
 			//{
 			//	CommandQueue.Clear();
@@ -645,7 +648,7 @@ namespace RTC
 				RTC_Command cmdBack = null;
 
 				if (!showBoops && cmd.Type.ToString() != "BOOP")
-					Console.WriteLine(expectedSide.ToString() + ":ProcessQueue -> " + cmd.Type.ToString());
+					Console.WriteLine(timeElapsed.Elapsed.TotalSeconds + " " + expectedSide.ToString() + ":ProcessQueue -> " + cmd.Type.ToString());
 
 				switch (cmd.Type)
 				{
@@ -732,7 +735,7 @@ namespace RTC
 				tempQueue.AddLast(cmd);
 
 				if (!showBoops && cmd.Type.ToString() != "BOOP")
-					Console.WriteLine($"{expectedSide.ToString()}:SendCommand self:{self.ToString()} priority:{priority.ToString()} -> {cmd.Type.ToString()}");
+					Console.WriteLine($"{RTC.RTC_NetCore.timeElapsed.Elapsed.TotalSeconds}: {expectedSide.ToString()}:SendCommand self:{self.ToString()} priority:{priority.ToString()} -> {cmd.Type.ToString()}");
 				ProcessQueue(tempQueue);
 				return null;
 			}
@@ -749,7 +752,7 @@ namespace RTC
 				cmdQueue = CommandQueue;
 
 			if (!showBoops && cmd.Type.ToString() != "BOOP")
-				Console.WriteLine($"{expectedSide.ToString()}:SendCommand self:{self.ToString()} priority:{priority.ToString()} -> {cmd.Type.ToString()}");
+				Console.WriteLine($"{RTC.RTC_NetCore.timeElapsed.Elapsed.TotalSeconds}: {expectedSide.ToString()}:SendCommand self:{self.ToString()} priority:{priority.ToString()} -> {cmd.Type.ToString()}");
 
 			if (priority)
 				cmdQueue.AddFirst(cmd);
@@ -774,7 +777,7 @@ namespace RTC
 				if (!RTC_Hooks.isRemoteRTC)
 				{
 					LinkedList<RTC_Command> tempQueue = new LinkedList<RTC_Command>(new[] { cmd });
-					Console.WriteLine($"{expectedSide.ToString()}:SendSyncCommand self:{self.ToString()} priority:{priority.ToString()} -> {cmd.Type.ToString()}");
+					Console.WriteLine($"{RTC.RTC_NetCore.timeElapsed.Elapsed.TotalSeconds}: {expectedSide.ToString()}:SendSyncCommand self:{self.ToString()} priority:{priority.ToString()} -> {cmd.Type.ToString()}");
 					ProcessQueue(tempQueue);
 
 					Console.WriteLine(expectedSide.ToString() + " -> GETVALUE");
@@ -783,7 +786,7 @@ namespace RTC
 				else
 				{
 					LinkedList<RTC_Command> tempQueue = new LinkedList<RTC_Command>(new[] { cmd });
-					Console.WriteLine($"{expectedSide.ToString()}:SendSyncCommand self:{self.ToString()} priority:{priority.ToString()} -> {cmd.Type.ToString()}");
+					Console.WriteLine($"{RTC.RTC_NetCore.timeElapsed.Elapsed.TotalSeconds}  {expectedSide.ToString()}:SendSyncCommand self:{self.ToString()} priority:{priority.ToString()} -> {cmd.Type.ToString()}");
 					return ProcessQueue(tempQueue, true);
 				}
 			}
@@ -793,14 +796,14 @@ namespace RTC
 			if (self)
 				cmdQueue = CommandQueue;
 
-			Console.WriteLine($"{expectedSide.ToString()}:SendSyncCommand self:{self.ToString()} priority:{priority.ToString()} -> {cmd.Type.ToString()}");
+			Console.WriteLine($"{RTC.RTC_NetCore.timeElapsed.Elapsed.TotalSeconds} {expectedSide.ToString()}:SendSyncCommand self:{self.ToString()} priority:{priority.ToString()} -> {cmd.Type.ToString()}");
 
 			if (priority)
 				cmdQueue.AddFirst(cmd);
 			else
 				cmdQueue.AddLast(cmd);
 
-			Console.WriteLine(expectedSide.ToString() + " -> GETVALUE");
+			Console.WriteLine(RTC.RTC_NetCore.timeElapsed.Elapsed.TotalSeconds + " " + expectedSide.ToString() + " -> GETVALUE");
 			return ReturnWatch.GetValue((Guid)cmd.requestGuid, cmd.Type);
 		}
 	}
@@ -813,7 +816,7 @@ namespace RTC
 		public static object GetValue(Guid WatchedGuid, CommandType type)
 		{
 			//await Task.Factory.StartNew(() => WaitForValue(WatchedGuid));
-			Console.WriteLine("GetValue:Awaiting -> " + type.ToString());
+			Console.WriteLine(RTC.RTC_NetCore.timeElapsed.Elapsed.TotalSeconds + " GetValue:Awaiting -> " + type.ToString());
 
 			maxtries = 0;
 
@@ -840,7 +843,7 @@ namespace RTC
 			object ret = SyncReturns[WatchedGuid];
 			SyncReturns.Remove(WatchedGuid);
 
-			Console.WriteLine("GetValue:Returned -> " + type.ToString());
+			Console.WriteLine(RTC.RTC_NetCore.timeElapsed.Elapsed.TotalSeconds + " GetValue:Returned -> " + type.ToString());
 
 			return ret;
 		}
