@@ -464,7 +464,7 @@ namespace RTC
 		}
 	}
 
-	[Serializable()]
+	[Serializable]
 	public class RTC_Command
 	{
 		public CommandType Type;

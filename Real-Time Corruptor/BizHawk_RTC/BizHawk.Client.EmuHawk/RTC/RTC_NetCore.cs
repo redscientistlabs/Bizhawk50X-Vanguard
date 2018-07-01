@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.IO;
 using System.Linq;
 using System.Net;
@@ -7,6 +8,7 @@ using System.Net.Sockets;
 using System.Runtime.Serialization.Formatters.Binary;
 using System.Threading;
 using System.Windows.Forms;
+using System.Diagnostics;
 
 namespace RTC
 {
@@ -206,11 +208,35 @@ namespace RTC
 				{
 					if (networkStream != null && networkStream.DataAvailable)
 					{
-						RTC_Command cmd;
+						RTC_Command cmd = null;
 
 						try
 						{
-							cmd = (RTC_Command)binaryFormatter.Deserialize(networkStream);
+							using (MemoryStream ms = new MemoryStream())
+							{
+								Stopwatch sw = new Stopwatch();
+								sw.Start();
+								int length = 0;
+
+								// read the size
+								byte[] size = new byte[4];
+								networkStream.Read(size, 0, size.Length);
+								length = BitConverter.ToInt32(size, 0);
+								Console.WriteLine("I want this many bytes" + length);
+								//Now read until we have that many bytes
+								byte[] buffer = new byte[length];
+								networkStream.Read(buffer, 0, length);
+								//Copy it into a MemoryStream
+								ms.Write(buffer, 0, buffer.Length);
+								ms.Position = 0;
+								//Deserialize
+								cmd = (RTC_Command)binaryFormatter.Deserialize(ms);
+
+								sw.Stop();
+
+								Console.WriteLine("It took " + sw.ElapsedMilliseconds + " ms to deserialize cmd " +
+								                  cmd.Type + " of " + ms.ToArray().Length + "	bytes");
+							}
 						}
 						catch (Exception ex)
 						{
@@ -218,7 +244,7 @@ namespace RTC
 						}
 
 						if (cmd != null)
-						{
+							{
 							if (cmd.Type == CommandType.RETURNVALUE)
 								ReturnWatch.SyncReturns.Add((Guid)cmd.requestGuid, cmd.objectValue);
 							else
@@ -240,9 +266,21 @@ namespace RTC
 						{
 							using (MemoryStream ms = new MemoryStream())
 							{
+								Stopwatch sw = new Stopwatch();
+								sw.Start();
+								//Write the length of the command to the first four bytes
 								binaryFormatter.Serialize(ms, backCmd);
+								
+								//Write the length of the incoming object to the NetworkStream
+								byte[] length = BitConverter.GetBytes(ms.ToArray().Length);
+								networkStream.Write(length, 0, length.Length);
+								Console.WriteLine("I am giving you this many bytes " + BitConverter.ToInt32(length, 0));
+								//Write the data itself
+								//ms.Position = 0;
+								//ms.CopyTo(networkStream);
 								byte[] buf = ms.ToArray();
 								networkStream.Write(buf, 0, buf.Length);
+								Console.WriteLine("It took " + sw.ElapsedMilliseconds + " ms to serialize backCmd " + backCmd.Type + " of " + ms.ToArray().Length + "	bytes");
 							}
 
 							//binaryFormatter.Serialize(networkStream, backCmd);

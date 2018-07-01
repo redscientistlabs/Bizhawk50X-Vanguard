@@ -460,7 +460,7 @@ namespace RTC
 
 			if (rbCorrupt.Checked)
 				RTC_StockpileManager.ApplyStashkey(RTC_StockpileManager.currentStashkey, loadBeforeOperation);
-			if (rbInject.Checked)
+			else if (rbInject.Checked)
 				RTC_StockpileManager.InjectFromStashkey(RTC_StockpileManager.currentStashkey, loadBeforeOperation);
 			else if (rbOriginal.Checked)
 				RTC_StockpileManager.OriginalFromStashkey(RTC_StockpileManager.currentStashkey);
