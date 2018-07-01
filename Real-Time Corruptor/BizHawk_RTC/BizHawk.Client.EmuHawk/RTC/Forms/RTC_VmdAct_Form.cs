@@ -199,8 +199,8 @@ namespace RTC
 					return false;
 			}
 
-
-			for (long i = 0; i < RTC_MemoryDomains.GetInterface(cbSelectedMemoryDomain.SelectedItem.ToString()).Size; i++)
+			long domainSize = RTC_MemoryDomains.GetInterface(cbSelectedMemoryDomain.SelectedItem.ToString()).Size;
+			for (long i = 0; i < domainSize; i++)
 			{
 				newActiveTableActivity.Add(0);
 			}

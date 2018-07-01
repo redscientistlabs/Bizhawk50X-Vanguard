@@ -8,6 +8,7 @@ namespace RTC
 	public partial class RTC_StockpilePlayer_Form : Form
 	{
 		public bool DontLoadSelectedStockpile = false;
+		private bool currentlyLoading;
 
 		public RTC_StockpilePlayer_Form()
 		{
@@ -187,9 +188,12 @@ namespace RTC
 
 		private void dgvStockpile_CellClick(object sender, DataGridViewCellEventArgs e)
 		{
-			try
+			if (currentlyLoading)
+				return;
+   			try
 			{
-				dgvStockpile.Enabled = false;
+				//dgvStockpile.Enabled = false;
+				currentlyLoading = true;
 
 				if (e != null)
 				{
@@ -235,7 +239,8 @@ namespace RTC
 			}
 			finally
 			{
-				dgvStockpile.Enabled = true;
+				currentlyLoading = false;
+				//dgvStockpile.Enabled = true;
 			}
 		}
 

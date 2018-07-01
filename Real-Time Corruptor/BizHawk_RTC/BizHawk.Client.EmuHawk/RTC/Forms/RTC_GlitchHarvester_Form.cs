@@ -18,6 +18,8 @@ namespace RTC
 
 		private bool loadBeforeOperation = true;
 
+		private bool currentlyLoading = false;
+
 		public Panel pnHideGlitchHarvester = new Panel();
 		public Label lbConnectionStatus = new Label();
 		public Button btnEmergencySaveStockpile = new Button();
@@ -764,6 +766,8 @@ namespace RTC
 
 		private void btnStockpileUP_Click(object sender, EventArgs e)
 		{
+			if (currentlyLoading)
+				return;
 			if (dgvStockpile.SelectedRows.Count == 0)
 				return;
 
@@ -785,6 +789,9 @@ namespace RTC
 
 		private void btnStockpileDOWN_Click(object sender, EventArgs e)
 		{
+			if (currentlyLoading)
+				return;
+
 			if (dgvStockpile.SelectedRows.Count == 0)
 				return;
 
@@ -1333,11 +1340,15 @@ namespace RTC
 
 		private void dgvStockpile_CellClick(object sender, DataGridViewCellEventArgs e)
 		{
+			if (currentlyLoading)
+				return;
 			try
 			{
-				dgvStockpile.Enabled = false;
-				btnStockpileUP.Enabled = false;
-				btnStockpileDOWN.Enabled = false;
+				currentlyLoading = true;
+
+				//dgvStockpile.Enabled = false;
+				//btnStockpileUP.Enabled = false;
+				//btnStockpileDOWN.Enabled = false;
 
 				// Stockpile Note handling
 				if (e != null)
@@ -1394,9 +1405,10 @@ namespace RTC
 			}
 			finally
 			{
-				dgvStockpile.Enabled = true;
-				btnStockpileUP.Enabled = true;
-				btnStockpileDOWN.Enabled = true;
+			//	dgvStockpile.Enabled = true;
+			//	btnStockpileUP.Enabled = true;
+			//	btnStockpileDOWN.Enabled = true;
+				currentlyLoading = false;
 			}
 		}
 

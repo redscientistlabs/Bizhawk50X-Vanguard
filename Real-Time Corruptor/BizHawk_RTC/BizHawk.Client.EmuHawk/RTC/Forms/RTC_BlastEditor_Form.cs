@@ -119,6 +119,9 @@ namespace RTC
 			initialized = false;
 			//Clear out whatever is there
 			dgvBlastLayer.Rows.Clear();
+
+			dgvBlastLayer.SuspendLayout();
+
 			bu2RowDico = new Dictionary<BlastUnit, DataGridViewRow>();
 
 			//Populate the different rows.
@@ -136,6 +139,7 @@ namespace RTC
 			UpdateBlastLayerSize();
 			RefreshNoteIcons();
 
+			dgvBlastLayer.ResumeLayout();
 			initialized = true;
 		}
 

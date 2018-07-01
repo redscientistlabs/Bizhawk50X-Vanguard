@@ -26,6 +26,8 @@ namespace RTC
 				foreach (var item in RTC_Core.RemoteRTC.PeerCommandQueue)
 					if (item.Type == CommandType.REMOTE_BACKUPKEY_REQUEST)
 						RTC_Core.RemoteRTC.PeerCommandQueue.Remove(item);
+
+			RTC_Core.SendCommandToBizhawk(new RTC_Command(CommandType.REMOTE_BACKUPKEY_REQUEST));
 		}
 
 		public static void Stop()

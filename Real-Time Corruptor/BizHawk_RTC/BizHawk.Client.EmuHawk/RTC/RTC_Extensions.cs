@@ -1669,29 +1669,29 @@ namespace RTC
 						renderingBitmap.Dispose();
 						renderingBitmap = new Bitmap(valBounds.Width, valBounds.Height);
 					}
+
+					//7/1/2018
+					//OPTIMIZE PAINTING BY REMOVING UNUSED FUNCTIONALITY
+					//IF ANY OF THESE FUNCTIONS ARE USED, THEY NEED TO BE RE-ENABLED
+					/*
 					// Make sure the NumericUpDown control is parented to a visible control
 					if (paintingNumericUpDown.Parent == null || !paintingNumericUpDown.Parent.Visible)
 					{
 						paintingNumericUpDown.Parent = this.DataGridView;
 					}
+
+					paintingNumericUpDown.RightToLeft = this.DataGridView.RightToLeft;
+					paintingNumericUpDown.ThousandsSeparator = this.ThousandsSeparator;
+					paintingNumericUpDown.TextAlign = DataGridViewNumericUpDownCell.TranslateAlignment(cellStyle.Alignment);
+					paintingNumericUpDown.DecimalPlaces = this.DecimalPlaces;
+					*/
 					
 					// Set all the relevant properties
 					paintingNumericUpDown.Value = Convert.ToDecimal(value);
-					/*
-					if (this.Hexadecimal)
-						paintingNumericUpDown.Text = Convert.ToUInt64(value).ToString("X");
-					else
-						paintingNumericUpDown.Text = paintingNumericUpDown.Value.ToString();
-						*/
-
-					paintingNumericUpDown.TextAlign = DataGridViewNumericUpDownCell.TranslateAlignment(cellStyle.Alignment);
-					paintingNumericUpDown.DecimalPlaces = this.DecimalPlaces;
 					paintingNumericUpDown.Hexadecimal = this.Hexadecimal;
-					paintingNumericUpDown.ThousandsSeparator = this.ThousandsSeparator;
 					paintingNumericUpDown.Font = cellStyle.Font;
 					paintingNumericUpDown.Width = valBounds.Width;
 					paintingNumericUpDown.Height = valBounds.Height;
-					paintingNumericUpDown.RightToLeft = this.DataGridView.RightToLeft;
 					paintingNumericUpDown.Location = new Point(0, -paintingNumericUpDown.Height - 100);
 
 					Color foreColor;
@@ -2321,7 +2321,7 @@ namespace RTC
 			pi.SetValue(dgv, setting, null);
 		}
 
-		public static void DoubleBuffered(this NumericUpDown updown, bool setting)
+		public static void DoubleBuffered(this NumericUpDownHexFix updown, bool setting)
 		{
 			Type updownType = updown.GetType();
 			PropertyInfo pi = updownType.GetProperty("DoubleBuffered",
