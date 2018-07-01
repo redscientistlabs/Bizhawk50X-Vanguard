@@ -592,7 +592,7 @@ namespace RTC
 		public int SkipBytes = 0;
 	}
 
-	[Serializable()]
+	[Serializable]
 	public abstract class MemoryInterface
 	{
 		public abstract long Size { get; set; }
@@ -615,7 +615,7 @@ namespace RTC
 	[XmlInclude(typeof(BlastPipe))]
 	[XmlInclude(typeof(BlastVector))]
 	[XmlInclude(typeof(BlastUnit))]
-	[Serializable()]
+	[Serializable]
 	public class VmdPrototype
 	{
 		public string VmdName { get; set; }
@@ -721,7 +721,7 @@ namespace RTC
 		}
 	}
 
-	[Serializable()]
+	[Serializable]
 	public class VirtualMemoryDomain : MemoryInterface
 	{
 		//public List<MemoryPointer> MemoryPointers = new List<MemoryPointer>();
@@ -853,7 +853,7 @@ namespace RTC
 	}
 
 	/*
-    [Serializable()]
+    [Serializable]
     [XmlType("MP")]
     public class MemoryPointer
     {
@@ -888,7 +888,7 @@ namespace RTC
     }
     */
 
-	[Serializable()]
+	[Serializable]
 	public class MemoryDomainProxy : MemoryInterface
 	{
 		[NonSerialized]

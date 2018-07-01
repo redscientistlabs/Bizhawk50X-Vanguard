@@ -608,6 +608,25 @@ namespace RTC
 		}
 
 		#endregion PATH EXTENSIONS
+
+		#region STREAM EXTENSIONS
+		//Thanks! https://stackoverflow.com/a/13021983
+		public static long CopyBytes(long bytesRequired, Stream inStream, Stream outStream)
+		{
+			long readSoFar = 0L;
+			var buffer = new byte[64 * 1024];
+			do
+			{
+				var toRead = Math.Min(bytesRequired - readSoFar, buffer.Length);
+				var readNow = inStream.Read(buffer, 0, (int)toRead);
+				if (readNow == 0)
+					break; // End of stream
+				outStream.Write(buffer, 0, readNow);
+				readSoFar += readNow;
+			} while (readSoFar < bytesRequired);
+			return readSoFar;
+		}
+		#endregion
 	}
 
 	// Used code from this https://github.com/wasabii/Cogito/blob/master/Cogito.Core/RandomExtensions.cs

@@ -214,28 +214,23 @@ namespace RTC
 						{
 							using (MemoryStream ms = new MemoryStream())
 							{
-								Stopwatch sw = new Stopwatch();
-								sw.Start();
-								int length = 0;
+								//Read the size
+								int lengthToReceive = 0;
+								byte[] _lengthToReceive = new byte[4];
+								networkStream.Read(_lengthToReceive, 0, _lengthToReceive.Length);
+								lengthToReceive = BitConverter.ToInt32(_lengthToReceive, 0);
 
-								// read the size
-								byte[] size = new byte[4];
-								networkStream.Read(size, 0, size.Length);
-								length = BitConverter.ToInt32(size, 0);
-								Console.WriteLine("I want this many bytes" + length);
+								Console.WriteLine("I want this many bytes: " + lengthToReceive);
 								//Now read until we have that many bytes
-								byte[] buffer = new byte[length];
-								networkStream.Read(buffer, 0, length);
-								//Copy it into a MemoryStream
-								ms.Write(buffer, 0, buffer.Length);
+								long bytesRead = RTC_Extensions.CopyBytes(lengthToReceive, networkStream, ms);
+								Console.WriteLine("I got this many bytes: " + bytesRead);
+
+								//Deserialize it
 								ms.Position = 0;
-								//Deserialize
 								cmd = (RTC_Command)binaryFormatter.Deserialize(ms);
 
-								sw.Stop();
-
-								Console.WriteLine("It took " + sw.ElapsedMilliseconds + " ms to deserialize cmd " +
-								                  cmd.Type + " of " + ms.ToArray().Length + "	bytes");
+								//sw.Stop();
+								//Console.WriteLine("It took " + sw.ElapsedMilliseconds + " ms to deserialize cmd " + cmd.Type + " of " + ms.ToArray().Length + " bytes");
 							}
 						}
 						catch (Exception ex)
@@ -869,7 +864,7 @@ namespace RTC
 		SERVER
 	}
 
-	[Serializable()]
+	[Serializable]
 	public enum CommandType
 	{
 		//===============================================

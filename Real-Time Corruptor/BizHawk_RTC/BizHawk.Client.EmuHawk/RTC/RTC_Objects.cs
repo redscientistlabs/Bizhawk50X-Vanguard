@@ -21,7 +21,7 @@ namespace RTC
 	[XmlInclude(typeof(BlastPipe))]
 	[XmlInclude(typeof(BlastVector))]
 	[XmlInclude(typeof(BlastUnit))]
-	[Serializable()]
+	[Serializable]
 	public class Stockpile
 	{
 		public List<StashKey> StashKeys = new List<StashKey>();
@@ -665,7 +665,7 @@ namespace RTC
 		}
 	}
 
-	[Serializable()]
+	[Serializable]
 	public class StashKey : ICloneable
 	{
 		public string RomFilename;
@@ -893,14 +893,14 @@ namespace RTC
 		}
 	}
 
-	[Serializable()]
+	[Serializable]
 	public class SaveStateKeys
 	{
 		public StashKey[] StashKeys = new StashKey[41];
 		public string[] Text = new string[41];
 	}
 
-	[Serializable()]
+	[Serializable]
 	public class BlastTarget
 	{
 		public string domain = null;
@@ -918,7 +918,7 @@ namespace RTC
 	[XmlInclude(typeof(BlastPipe))]
 	[XmlInclude(typeof(BlastVector))]
 	[XmlInclude(typeof(BlastUnit))]
-	[Serializable()]
+	[Serializable]
 	public class BlastLayer : ICloneable
 	{
 		public List<BlastUnit> Layer;
@@ -1014,7 +1014,7 @@ namespace RTC
 		}
 	}
 
-	[Serializable()]
+	[Serializable]
 	public abstract class BlastUnit
 	{
 		public abstract bool Apply();
@@ -1034,7 +1034,7 @@ namespace RTC
 		public abstract string Note { get; set; }
 	}
 
-	[Serializable()]
+	[Serializable]
 	public class BlastByte : BlastUnit
 	{
 		public override string Domain { get; set; }
@@ -1206,7 +1206,7 @@ namespace RTC
 		}
 	}
 
-	[Serializable()]
+	[Serializable]
 	public class BlastVector : BlastUnit
 	{
 		public override string Domain { get; set; }
@@ -1324,7 +1324,7 @@ namespace RTC
 		}
 	}
 
-	[Serializable()]
+	[Serializable]
 	public class BlastPipe : BlastUnit
 	{
 		public override string Domain { get; set; }
@@ -1489,7 +1489,7 @@ namespace RTC
 		}
 	}
 
-	[Serializable()]
+	[Serializable]
 	public class BlastCheat : BlastUnit
 	{
 		public override string Domain { get; set; }
@@ -1633,7 +1633,7 @@ namespace RTC
 		}
 	}
 
-	[Serializable()]
+	[Serializable]
 	public class ActiveTableObject
 	{
 		public long[] data;
@@ -1648,7 +1648,7 @@ namespace RTC
 		}
 	}
 
-	[Serializable()]
+	[Serializable]
 	public class BlastGeneratorProto
 	{
 		public string BlastType;

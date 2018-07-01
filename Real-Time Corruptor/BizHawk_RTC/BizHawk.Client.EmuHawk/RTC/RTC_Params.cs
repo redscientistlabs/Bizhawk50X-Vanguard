@@ -6,7 +6,7 @@ using System.IO;
 
 namespace RTC
 {
-	[Serializable()]
+	[Serializable]
 	public class RTC_Params
 	{
 		List<object> objectList = new List<object>();
@@ -175,7 +175,7 @@ namespace RTC
 		}
 	}
 
-	[Serializable()]
+	[Serializable]
 	internal class Ref //Serializable pointer object
 	{
 		private Func<object> getter;
