@@ -353,13 +353,13 @@ namespace RTC
 					cmdBack.objectValue = RTC_StockpileManager.getRawBlastlayer();
 					break;
 				case CommandType.REMOTE_KEY_GETBLASTBYTEBACKUPLAYER:
-					{
-						var _bl = (BlastLayer)(cmd.objectValue as object[])[0];
-						var sk = cmd.stashkey;
-						cmdBack = new RTC_Command(CommandType.RETURNVALUE);
-						cmdBack.objectValue = RTC_BlastTools.GetBlastByteBackupLayer(_bl, sk);
-						break;
-					}
+				{
+					var _bl = cmd.blastlayer;
+					var sk = cmd.stashkey;
+					cmdBack = new RTC_Command(CommandType.RETURNVALUE);
+					cmdBack.objectValue = RTC_BlastTools.GetBlastByteBackupLayer(_bl, sk);
+					break;
+				}
 
 				case CommandType.BIZHAWK_SET_OSDDISABLED:
 					RTC_Core.BizhawkOsdDisabled = (bool)cmd.objectValue;

@@ -220,7 +220,7 @@ namespace RTC
 		public static BlastLayer GetBlastByteBackupLayer(BlastLayer bl, StashKey sk)
 		{
 			BlastLayer newBlastLayer = new BlastLayer();
-			sk.RunOriginal();
+			sk.Run();
 
 			foreach (BlastUnit bu in bl.Layer)
 			{
@@ -239,7 +239,11 @@ namespace RTC
 			{
 				//Bake them
 				var token = RTC_NetCore.HugeOperationStart();
-				BlastLayer newLayer = (BlastLayer)RTC_Core.SendCommandToBizhawk(new RTC_Command(CommandType.REMOTE_KEY_GETBLASTBYTEBACKUPLAYER) { objectValue = new object[] { inputLayer } }, true);
+				BlastLayer newLayer = (BlastLayer)RTC_Core.SendCommandToBizhawk(new RTC_Command(CommandType.REMOTE_KEY_GETBLASTBYTEBACKUPLAYER)
+				{
+					blastlayer =  inputLayer,
+					stashkey = sk
+				}, true);
 				RTC_NetCore.HugeOperationEnd(token);
 
 				return newLayer;

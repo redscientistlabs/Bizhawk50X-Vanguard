@@ -61,7 +61,7 @@ namespace RTC
 			//Verify they want to continue if the domain is larger than 32MB
 			if (currentDomainSize > 0x2000000)
 			{
-				DialogResult result = MessageBox.Show("Large Domain Detected", "The domain you have selected is larger than 32MB\n The domain size is " + (currentDomainSize / 1024) + "MB.\n Are you sure you want to continue?", MessageBoxButtons.YesNo);
+				DialogResult result = MessageBox.Show("The domain you have selected is larger than 32MB\n The domain size is " + (currentDomainSize / 1024) + "MB.\n Are you sure you want to continue?", "Large Domain Detected", MessageBoxButtons.YesNo);
 				if (result == DialogResult.No)
 					return false;
 			}
