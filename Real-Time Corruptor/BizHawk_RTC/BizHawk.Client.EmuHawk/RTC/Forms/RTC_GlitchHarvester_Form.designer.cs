@@ -2355,7 +2355,7 @@
             this.dgvStockpile.Size = new System.Drawing.Size(451, 432);
             this.dgvStockpile.TabIndex = 140;
             this.dgvStockpile.Tag = "color:normal";
-            this.dgvStockpile.CellClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dgvStockpile_CellClick);
+            this.dgvStockpile.CellMouseUp += new System.Windows.Forms.DataGridViewCellMouseEventHandler(this.dgvStockpile_CellMouseUp);
             this.dgvStockpile.MouseDown += new System.Windows.Forms.MouseEventHandler(this.dgvStockpile_MouseDown);
             // 
             // cbCompressStockpiles

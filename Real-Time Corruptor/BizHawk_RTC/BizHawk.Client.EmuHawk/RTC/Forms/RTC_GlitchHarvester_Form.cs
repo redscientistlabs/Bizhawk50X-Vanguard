@@ -797,7 +797,7 @@ namespace RTC
 				dgvStockpile.Rows[currentSelectedIndex - 1].Selected = true;
 			}
 
-			dgvStockpile_CellClick(dgvStockpile, null);
+			dgvStockpile_CellMouseUp(dgvStockpile, null);
 		}
 
 		private void btnStockpileDOWN_Click(object sender, EventArgs e)
@@ -821,7 +821,7 @@ namespace RTC
 				dgvStockpile.Rows[currentSelectedIndex + 1].Selected = true;
 			}
 
-			dgvStockpile_CellClick(dgvStockpile, null);
+			dgvStockpile_CellMouseUp(dgvStockpile, null);
 		}
 
 		private void btnStockpileMoveSelectedUp_Click(object sender, EventArgs e)
@@ -1351,7 +1351,7 @@ namespace RTC
 			}
 		}
 
-		private void dgvStockpile_CellClick(object sender, DataGridViewCellEventArgs e)
+		private void dgvStockpile_CellMouseUp(object sender, DataGridViewCellMouseEventArgs e)
 		{
 			if (currentlyLoading)
 				return;
