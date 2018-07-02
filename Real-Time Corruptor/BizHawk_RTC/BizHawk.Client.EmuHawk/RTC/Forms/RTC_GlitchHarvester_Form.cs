@@ -18,8 +18,6 @@ namespace RTC
 
 		private bool loadBeforeOperation = true;
 
-		private bool currentlyLoading = false;
-
 		public Panel pnHideGlitchHarvester = new Panel();
 		public Label lbConnectionStatus = new Label();
 		public Button btnEmergencySaveStockpile = new Button();
@@ -400,15 +398,11 @@ namespace RTC
 
 		private void lbStashHistory_SelectedIndexChanged(object sender, EventArgs e)
 		{
-			if (currentlyLoading)
-				return;
 			try
 			{
-				currentlyLoading = true;
-
-				//lbStashHistory.Enabled = false;
-				//btnStashUP.Enabled = false;
-				//btnStashDOWN.Enabled = false;
+				lbStashHistory.Enabled = false;
+				btnStashUP.Enabled = false;
+				btnStashDOWN.Enabled = false;
 
 
 				if (DontLoadSelectedStash || lbStashHistory.SelectedIndex == -1)
@@ -447,10 +441,9 @@ namespace RTC
 			}
 			finally
 			{
-				currentlyLoading = false;
-				//lbStashHistory.Enabled = true;
-				//btnStashUP.Enabled = true;
-				//btnStashDOWN.Enabled = true;
+				lbStashHistory.Enabled = true;
+				btnStashUP.Enabled = true;
+				btnStashDOWN.Enabled = true;
 			}
 		}
 
@@ -750,9 +743,6 @@ namespace RTC
 
 		private void btnStashUP_Click(object sender, EventArgs e)
 		{
-			if (currentlyLoading)
-				return;
-
 			if (lbStashHistory.SelectedIndex == -1)
 				return;
 
@@ -764,8 +754,6 @@ namespace RTC
 
 		private void btnStashDOWN_Click(object sender, EventArgs e)
 		{
-			if (currentlyLoading)
-				return;
 
 			if (lbStashHistory.SelectedIndex == -1)
 				return;
@@ -778,8 +766,6 @@ namespace RTC
 
 		private void btnStockpileUP_Click(object sender, EventArgs e)
 		{
-			if (currentlyLoading)
-				return;
 
 			if (dgvStockpile.SelectedRows.Count == 0)
 				return;
@@ -802,8 +788,6 @@ namespace RTC
 
 		private void btnStockpileDOWN_Click(object sender, EventArgs e)
 		{
-			if (currentlyLoading)
-				return;
 
 			if (dgvStockpile.SelectedRows.Count == 0)
 				return;
@@ -1353,15 +1337,11 @@ namespace RTC
 
 		private void dgvStockpile_CellClick(object sender, DataGridViewCellEventArgs e)
 		{
-			if (currentlyLoading)
-				return;
 			try
 			{
-				currentlyLoading = true;
-
-				//dgvStockpile.Enabled = false;
-				//btnStockpileUP.Enabled = false;
-				//btnStockpileDOWN.Enabled = false;
+				dgvStockpile.Enabled = false;
+				btnStockpileUP.Enabled = false;
+				btnStockpileDOWN.Enabled = false;
 
 				// Stockpile Note handling
 				if (e != null)
@@ -1418,10 +1398,9 @@ namespace RTC
 			}
 			finally
 			{
-			//	dgvStockpile.Enabled = true;
-			//	btnStockpileUP.Enabled = true;
-			//	btnStockpileDOWN.Enabled = true;
-				currentlyLoading = false;
+				dgvStockpile.Enabled = true;
+				btnStockpileUP.Enabled = true;
+				btnStockpileDOWN.Enabled = true;
 			}
 		}
 
