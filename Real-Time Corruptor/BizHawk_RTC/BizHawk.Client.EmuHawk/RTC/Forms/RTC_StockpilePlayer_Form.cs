@@ -188,7 +188,7 @@ namespace RTC
 
 		private void dgvStockpile_CellClick(object sender, DataGridViewCellEventArgs e)
 		{
-			if (currentlyLoading)
+			if (currentlyLoading || e.RowIndex == -1)
 				return;
    			try
 			{
@@ -249,9 +249,9 @@ namespace RTC
 			foreach (DataGridViewRow dataRow in dgvStockpile.Rows)
 			{
 				StashKey sk = (StashKey)dataRow.Cells["Item"].Value;
-				if (sk.Note == null)
+				if (String.IsNullOrWhiteSpace(sk.Note))
 				{
-					dataRow.Cells["Note"].Value = "";
+					dataRow.Cells["Note"].Value = String.Empty;
 				}
 				else
 				{
