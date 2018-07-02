@@ -58,6 +58,9 @@ namespace BizHawk.Client.EmuHawk
 			Save();
 			GlobalWin.OSD.AddMessage("Hotkey settings saved");
 			DialogResult = DialogResult.OK;
+
+			//RTC_Hijack : Force save Hotkey config
+			RTC.RTC_Hooks.BIZHAWK_SAVE_CONFIG();
 			Close();
 		}
 
