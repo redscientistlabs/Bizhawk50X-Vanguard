@@ -225,7 +225,7 @@ namespace RTC
 					}
 				}
 
-				if ((sender == null) && dgvStockpile.SelectedRows.Count > 0)
+				if ((sender != null) && dgvStockpile.SelectedRows.Count > 0)
 				{
 					RTC_Core.ghForm.rbCorrupt.Checked = true;
 					RTC_StockpileManager.currentStashkey = (dgvStockpile.SelectedRows[0].Cells[0].Value as StashKey);
