@@ -156,6 +156,7 @@ namespace RTC
 				Stockpile.EmptyFolder("TEMP2");
 				Stockpile.EmptyFolder("TEMP3");
 				Stockpile.EmptyFolder("TEMP4");
+				Stockpile.EmptyFolder("TEMP5");
 				Stockpile.EmptyFolder("MEMORYDUMPS");
 			}
 
@@ -260,7 +261,10 @@ namespace RTC
 			if (!Directory.Exists(RTC_Core.rtcDir + "\\TEMP4\\"))
 				Directory.CreateDirectory(RTC_Core.rtcDir + "\\TEMP4\\");
 
-			//Loading RTC PArams
+			if (!Directory.Exists(RTC_Core.rtcDir + "\\TEMP5\\"))
+				Directory.CreateDirectory(RTC_Core.rtcDir + "\\TEMP5\\");
+
+			//Loading RTC Params
 			RTC_Params.LoadRTCColor();
 			RTC_Core.sForm.cbDisableBizhawkOSD.Checked = !RTC_Params.IsParamSet("ENABLE_BIZHAWK_OSD");
 			RTC_Core.sForm.cbAllowCrossCoreCorruption.Checked = RTC_Params.IsParamSet("ALLOW_CROSS_CORE_CORRUPTION");
