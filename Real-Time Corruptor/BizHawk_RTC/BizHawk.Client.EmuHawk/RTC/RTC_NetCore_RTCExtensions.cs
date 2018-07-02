@@ -97,7 +97,7 @@ namespace RTC
 
 				case CommandType.PUSHSTATE:
 					cmd.stashkey.DeployState();
-					RTC_StockpileManager.LoadState(cmd.stashkey, false);
+					RTC_StockpileManager.LoadState(cmd.stashkey, true);
 
 					if (RTC_Core.multiForm.cbPullStateToGlitchHarvester.Checked)
 					{

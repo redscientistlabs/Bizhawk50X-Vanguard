@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Data;
+using System.Drawing;
 using System.Linq;
 using System.Windows.Forms;
 
@@ -10,7 +11,7 @@ namespace RTC
 		private string note;
 		private string source;
 		private object item;
-		
+
 
 		public static Form CurrentlyOpenNoteForm = null;
 
@@ -27,11 +28,24 @@ namespace RTC
 		{
 			if (note != null)
 				tbNote.Text = note.Replace("\n", Environment.NewLine);
+
+			// Set window location
+			if (RTC_Core.NoteBoxPosition != new Point(0, 0))
+			{
+				this.Location = RTC_Core.NoteBoxPosition;
+			}
+			if (RTC_Core.NoteBoxSize != new Size(0,0))
+			{
+				this.Size = RTC_Core.NoteBoxSize;
+			}
 		}
 
 		private void RTC_NE_Form_FormClosing(object sender, FormClosingEventArgs e)
 		{
 			CurrentlyOpenNoteForm = null;
+
+			RTC_Core.NoteBoxSize = this.Size;
+			RTC_Core.NoteBoxPosition = this.Location;
 
 			string cleanText = string.Join("\n", tbNote.Lines.Select(it => it.Trim()));
 

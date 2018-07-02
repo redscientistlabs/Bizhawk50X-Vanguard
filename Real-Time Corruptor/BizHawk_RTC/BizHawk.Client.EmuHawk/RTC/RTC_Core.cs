@@ -51,6 +51,10 @@ namespace RTC
 		public static bool UseHexadecimal = true;
 		public static bool AllowCrossCoreCorruption = false;
 
+		//Note Box Settings
+		public static System.Drawing.Point NoteBoxPosition;
+		public static System.Drawing.Size NoteBoxSize;
+
 		//RTC Main Forms
 		public static Color generalColor = Color.LightSteelBlue;
 
