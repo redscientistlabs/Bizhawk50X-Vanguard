@@ -23,7 +23,7 @@ namespace RTC
 		public static Random RND = new Random();
 
 		//General RTC Values
-		public static string RtcVersion = "3.22";
+		public static string RtcVersion = "3.22a";
 
 		//Directories
 		public static string bizhawkDir = Directory.GetCurrentDirectory();
@@ -868,39 +868,50 @@ namespace RTC
 			return path;
 		}
 
-		public static void LoadSavestate_NET(string Key, bool fromLua = false)
+		public static bool LoadSavestate_NET(string Key, bool fromLua = false)
 		{
-			// -> EmuHawk Process only
-			// Loads a Savestate from a key
-
-			if (Global.Emulator is NullEmulator)
-				return;
-
-			string quickSlotName = Key + ".timejump";
-
-			//string prefix = (string)SendCommandRTC(new RTC_Command(CommandType.REMOTE_DOMAINS_SYSTEMPREFIX), true);
-			string prefix = PathManager.SaveStatePrefix(Global.Game);
-
-			var path = prefix + "." + quickSlotName + ".State";
-
-			//Filtering out parts
-			path = path.Replace(".Performance.", ".");
-			path = path.Replace(".Compatibility.", ".");
-			path = path.Replace(".QuickNes.", ".");
-			path = path.Replace(".NesHawk.", ".");
-			path = path.Replace(".VBA-Next.", ".");
-			path = path.Replace(".mGBA.", ".");
-			path = path.Replace(".Snes9x.", ".");
-			path = path.Replace(".Gambatte.", ".");
-			path = path.Replace(".GBHawk.", ".");
-
-			if (File.Exists(path) == false)
+			try
 			{
-				GlobalWin.OSD.AddMessage("Unable to load " + quickSlotName + ".State");
-				return;
-			}
 
-			GlobalWin.MainForm.LoadState(path, quickSlotName, fromLua);
+				// -> EmuHawk Process only
+				// Loads a Savestate from a key
+
+				if (Global.Emulator is NullEmulator)
+					return false;
+
+				string quickSlotName = Key + ".timejump";
+
+				//string prefix = (string)SendCommandRTC(new RTC_Command(CommandType.REMOTE_DOMAINS_SYSTEMPREFIX), true);
+				string prefix = PathManager.SaveStatePrefix(Global.Game);
+
+				var path = prefix + "." + quickSlotName + ".State";
+
+				//Filtering out parts
+				path = path.Replace(".Performance.", ".");
+				path = path.Replace(".Compatibility.", ".");
+				path = path.Replace(".QuickNes.", ".");
+				path = path.Replace(".NesHawk.", ".");
+				path = path.Replace(".VBA-Next.", ".");
+				path = path.Replace(".mGBA.", ".");
+				path = path.Replace(".Snes9x.", ".");
+				path = path.Replace(".Gambatte.", ".");
+				path = path.Replace(".GBHawk.", ".");
+
+				if (File.Exists(path) == false)
+				{
+					GlobalWin.OSD.AddMessage("Unable to load " + quickSlotName + ".State");
+					return false;
+				}
+
+				GlobalWin.MainForm.LoadState(path, quickSlotName, fromLua);
+
+				return true;
+			}
+			catch(Exception ex)
+			{
+				MessageBox.Show(ex.ToString());
+				return false;
+			}
 		}
 
 		public static void SetEngineByName(string name)

@@ -1132,24 +1132,20 @@ namespace RTC
 			if (GetSearchBox("Search for a value", "Choose a column and enter a value", true) == DialogResult.OK)
 			{
 				dgvBlastLayer.ClearSelection();
-				DataGridViewRow row = SearchDataGridView(dgvBlastLayer);
-				if (row != null)
-					row.Selected = true;
+				SearchDataGridView(dgvBlastLayer);
 			}
 		}
 
 		private void btnSearchAgain_Click(object sender, EventArgs e)
 		{
 			dgvBlastLayer.ClearSelection();
-			DataGridViewRow row = SearchDataGridView(dgvBlastLayer, true);
-			if (row != null)
-				row.Selected = true;
+			SearchDataGridView(dgvBlastLayer, true);
 		}
 
-		private DataGridViewRow SearchDataGridView(DataGridView dgv, bool findAgain = false)
+		private void SearchDataGridView(DataGridView dgv, bool findAgain = false)
 		{
 			if (searchColumn == "")
-				return null;
+				return;
 
 			if (!findAgain)
 				searchOffset = 0;
@@ -1159,13 +1155,16 @@ namespace RTC
 			while (searchOffset < dgv.RowCount)
 			{
 				if (dgv[searchColumn, searchOffset].FormattedValue?.ToString() == searchValue)
-					return dgv.Rows[searchOffset++];
+				{
+					dgvBlastLayer.CurrentCell = dgvBlastLayer.Rows[searchOffset].Cells[searchColumn];
+					return;
+				}
 				searchOffset++;
 			}
 
 			MessageBox.Show("Reached the end of the Blastlayer and didn't find anything");
 			searchOffset = 0;
-			return null;
+			return;
 		}
 
 		private void saveToFileblToolStripMenuItem_Click(object sender, EventArgs e)
@@ -1254,16 +1253,35 @@ namespace RTC
 				MessageBox.Show("There is no savestate selected in the glitch harvester, or the current selected box is empty");
 				return;
 			}
+
+			//If the core doesn't match, abort
+			if (sk.SystemCore != temp.SystemCore)
+			{
+				MessageBox.Show("The core associated with the current ROM and the core associated with the selected savestate don't match. Aborting!");
+				return;
+			}
+
+			//If the game name differs, make sure they know what they're doing
+			//There are times it'd be fine with a differing name yet savestates would still work (romhacks)
 			if (sk.GameName != temp.GameName)
 			{
-				DialogResult dialogResult = MessageBox.Show("You're attempting to replace a savestate associated with " + sk.GameName + " with a savestate associated with " + temp.GameName + ".\nThis probably won't work unless you also update the rom.\n Are you sure you want to continue?", "Game mismatch", MessageBoxButtons.YesNo);
-				if (dialogResult == DialogResult.Yes)
+				DialogResult dialogResult = MessageBox.Show(
+					"You're attempting to replace a savestate associated with " +
+					sk.GameName +
+					" with a savestate associated with " +
+					temp.GameName + ".\n" +
+					"This probably won't work unless you also update the ROM.\n" +
+					"Updating the ROM will invalidate the savestate, so if you're changing both ROM and state, do that first.\n\n" +
+					"Are you sure you want to continue?", "Game mismatch", MessageBoxButtons.YesNo);
+				if (dialogResult == DialogResult.No)
 				{
-					sk.ParentKey = temp.ParentKey;
+					return;
 				}
 			}
-			else
-				sk.ParentKey = temp.ParentKey;
+
+			//We only need the ParentKey and the SyncSettings here as everything else will match
+			sk.ParentKey = temp.ParentKey;
+			sk.SyncSettings = temp.SyncSettings;
 		}
 
 		private void replaceSavestateFromFileToolStripMenuItem_Click(object sender, EventArgs e)
@@ -1283,11 +1301,31 @@ namespace RTC
 			}
 			else
 				return;
+
+			string oldKey = sk.ParentKey;
+			string oldSS = sk.SyncSettings;
+
 			//Get a new key
 			sk.ParentKey = RTC_Core.GetRandomKey();
 
 			//Let's hope the game name is correct!
 			File.Copy(filename, sk.GetSavestateFullPath(), true);
+
+			//Null the syncsettings out
+			sk.SyncSettings = null;
+
+
+			//Attempt to load and if it fails, don't let them update it.
+			if (!RTC_StockpileManager.LoadState(sk))
+			{
+				sk.ParentKey = oldKey;
+				sk.SyncSettings = oldSS;
+				return;
+			}
+
+			//Grab the syncsettings
+			StashKey temp = new StashKey(RTC_Core.GetRandomKey(), sk.ParentKey, sk.BlastLayer);
+			sk.SyncSettings = temp.SyncSettings;
 		}
 
 		private void saveSavestateToToolStripMenuItem_Click(object sender, EventArgs e)
@@ -1331,6 +1369,7 @@ namespace RTC
 			sk.SystemName = temp.SystemName;
 			sk.SystemDeepName = temp.SystemDeepName;
 			sk.SystemCore = temp.SystemCore;
+			sk.SyncSettings = temp.SyncSettings;
 		}
 
 		private void replaceRomFromFileToolStripMenuItem_Click(object sender, EventArgs e)
@@ -1355,7 +1394,8 @@ namespace RTC
 
 				StashKey temp = new StashKey(RTC_Core.GetRandomKey(), sk.ParentKey, sk.BlastLayer);
 
-				//We have to null this as to properly create a stashkey, we need to use it in the constructor
+				// We have to null this as to properly create a stashkey, we need to use it in the constructor,
+				// but then the user needs to provide a savestate
 				sk.ParentKey = null;
 
 				sk.RomFilename = temp.RomFilename;
@@ -1363,6 +1403,7 @@ namespace RTC
 				sk.SystemName = temp.SystemName;
 				sk.SystemDeepName = temp.SystemDeepName;
 				sk.SystemCore = temp.SystemCore;
+				sk.SyncSettings = temp.SyncSettings;
 			}
 		}
 
