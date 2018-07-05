@@ -1681,30 +1681,29 @@ namespace RTC
 
 					bool cellSelected = (cellState & DataGridViewElementStates.Selected) != 0;
 
-					if (renderingBitmap.Width < valBounds.Width ||
+					/*if (renderingBitmap.Width < valBounds.Width ||
 						renderingBitmap.Height < valBounds.Height)
 					{
 						// The static bitmap is too small, a bigger one needs to be allocated.
 						renderingBitmap.Dispose();
 						renderingBitmap = new Bitmap(valBounds.Width, valBounds.Height);
-					}
+					}*/
 
 					//7/1/2018
 					//OPTIMIZE PAINTING BY REMOVING UNUSED FUNCTIONALITY
 					//IF ANY OF THESE FUNCTIONS ARE USED, THEY NEED TO BE RE-ENABLED
-					/*
+
 					// Make sure the NumericUpDown control is parented to a visible control
+					/*
 					if (paintingNumericUpDown.Parent == null || !paintingNumericUpDown.Parent.Visible)
 					{
 						paintingNumericUpDown.Parent = this.DataGridView;
 					}
-
 					paintingNumericUpDown.RightToLeft = this.DataGridView.RightToLeft;
 					paintingNumericUpDown.ThousandsSeparator = this.ThousandsSeparator;
 					paintingNumericUpDown.TextAlign = DataGridViewNumericUpDownCell.TranslateAlignment(cellStyle.Alignment);
-					paintingNumericUpDown.DecimalPlaces = this.DecimalPlaces;
-					*/
-					
+					paintingNumericUpDown.DecimalPlaces = this.DecimalPlaces;*/
+
 					// Set all the relevant properties
 					paintingNumericUpDown.Value = Convert.ToDecimal(value);
 					paintingNumericUpDown.Hexadecimal = this.Hexadecimal;
@@ -1730,6 +1729,9 @@ namespace RTC
 							foreColor = Color.FromArgb(255, foreColor);
 						}
 						paintingNumericUpDown.ForeColor = foreColor;
+
+						base.Paint(graphics, clipBounds, cellBounds, rowIndex, cellState, value, formattedValue, errorText,
+								   cellStyle, advancedBorderStyle, DataGridViewPaintParts.ContentForeground);
 					}
 
 					Color backColor;
@@ -1751,13 +1753,15 @@ namespace RTC
 						paintingNumericUpDown.BackColor = backColor;
 					}
 					// Finally paint the NumericUpDown control
+					/*
 					Rectangle srcRect = new Rectangle(0, 0, valBounds.Width, valBounds.Height);
 					if (srcRect.Width > 0 && srcRect.Height > 0)
 					{
+						
 						paintingNumericUpDown.DrawToBitmap(renderingBitmap, srcRect);
 						graphics.DrawImage(renderingBitmap, new Rectangle(valBounds.Location, valBounds.Size),
 										   srcRect, GraphicsUnit.Pixel);
-					}
+					}*/
 				}
 				if (PartPainted(paintParts, DataGridViewPaintParts.ErrorIcon))
 				{
@@ -2340,13 +2344,13 @@ namespace RTC
 			pi.SetValue(dgv, setting, null);
 		}
 
-		public static void DoubleBuffered(this NumericUpDownHexFix updown, bool setting)
+		/*public static void DoubleBuffered(this NumericUpDownHexFix updown, bool setting)
 		{
 			Type updownType = updown.GetType();
 			PropertyInfo pi = updownType.GetProperty("DoubleBuffered",
 				BindingFlags.Instance | BindingFlags.NonPublic | BindingFlags.SetProperty);
 			pi.SetValue(updown, setting, null);
-		}
+		}*/
 	}
 
 	//Fixes microsoft's numericupdown hex issues. Thanks microsoft

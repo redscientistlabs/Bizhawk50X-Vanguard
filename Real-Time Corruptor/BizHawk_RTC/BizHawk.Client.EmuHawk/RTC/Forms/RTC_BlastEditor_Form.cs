@@ -59,6 +59,7 @@ namespace RTC
 		private string searchValue = "";
 		private string searchColumn = "";
 		public string CurrentBlastLayerFile = "";
+		private Guid? scrollToken = null;
 
 		private Dictionary<BlastUnit, DataGridViewRow> bu2RowDico = null;
 
@@ -85,6 +86,7 @@ namespace RTC
 			dgvBlastLayer.UserDeletingRow += dgvBlastLayer_UserDeletingRow;
 			dgvBlastLayer.UserDeletedRow += dgvBlastLayer_UserDeletedRow;
 			dgvBlastLayer.Sorted += dgvBlastLayer_Sorted;
+
 
 			//For the combobox for shifting blast units, we want an object that contains the column name and the readable name
 			//Do this here as I can't get it working in the designer
