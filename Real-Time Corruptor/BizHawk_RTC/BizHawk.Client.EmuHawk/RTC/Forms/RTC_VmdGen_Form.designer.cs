@@ -224,7 +224,7 @@
             // tbCustomAddresses
             // 
             this.tbCustomAddresses.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
-            this.tbCustomAddresses.Font = new System.Drawing.Font("Segoe UI", 8F);
+            this.tbCustomAddresses.Font = new System.Drawing.Font("Consolas", 8F);
             this.tbCustomAddresses.ForeColor = System.Drawing.Color.White;
             this.tbCustomAddresses.Location = new System.Drawing.Point(225, 24);
             this.tbCustomAddresses.Multiline = true;

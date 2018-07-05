@@ -91,13 +91,14 @@ namespace RTC
 
 			proto.BigEndian = mi.BigEndian;
 			proto.WordSize = mi.WordSize;
+			proto.Padding = 0;
 
 			if (cbUsePointerSpacer.Checked && nmPointerSpacer.Value > 1)
 				proto.PointerSpacer = Convert.ToInt32(nmPointerSpacer.Value);
 			else
 				proto.PointerSpacer = 1;
 
-			if (cbUsePadding.Checked && nmPadding.Value > 0)
+			if (cbUsePadding && nmPadding.Value > 0)
 			{
 				proto.Padding = Convert.ToInt32(nmPadding.Value);
 			}
@@ -129,6 +130,8 @@ namespace RTC
 
 					if (remove)
 						proto.RemoveRanges.Add(new int[] {start, end});
+					else
+						proto.AddRanges.Add(new int[] { start, end });
 				}
 				else
 				{
