@@ -17,6 +17,8 @@ namespace RTC
 
 		public RTC_NoteEditor_Form(string _note, string _source, object _item)
 		{
+			KeyDown += RTC_NE_Form_KeyDown;
+
 			note = _note;
 			source = _source;
 			item = _item;
@@ -37,6 +39,19 @@ namespace RTC
 			if (RTC_Core.NoteBoxSize != new Size(0,0))
 			{
 				this.Size = RTC_Core.NoteBoxSize;
+			}
+		}
+
+
+		private void RTC_NE_Form_KeyDown(object sender, KeyEventArgs e)
+		{
+			if (e.Control && e.KeyCode == Keys.S)
+			{
+				this.Close();
+			}
+			if (e.KeyCode == Keys.Escape)
+			{
+				this.Close();
 			}
 		}
 

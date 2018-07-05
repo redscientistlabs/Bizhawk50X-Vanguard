@@ -227,6 +227,9 @@ namespace RTC
 
 				if ((sender != null) && dgvStockpile.SelectedRows.Count > 0)
 				{
+					//Shut autocorrupt off because people (Vinny) kept turning it on to add to corruptions then forgetting to turn it off
+					RTC_Core.coreForm.AutoCorrupt = false; 
+
 					RTC_Core.ghForm.rbCorrupt.Checked = true;
 					RTC_StockpileManager.currentStashkey = (dgvStockpile.SelectedRows[0].Cells[0].Value as StashKey);
 					RTC_StockpileManager.ApplyStashkey(RTC_StockpileManager.currentStashkey);

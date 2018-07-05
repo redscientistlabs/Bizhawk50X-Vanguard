@@ -352,17 +352,26 @@ namespace RTC
 					cmdBack = new RTC_Command(CommandType.RETURNVALUE);
 					cmdBack.objectValue = RTC_StockpileManager.getRawBlastlayer();
 					break;
-				case CommandType.REMOTE_KEY_GETBLASTBYTEBACKUPLAYER:
+				case CommandType.REMOTE_KEY_GETBLASTBYTESETFROMLAYER:
 				{
-					var _bl = cmd.blastlayer;
+					//We need a stashkey to load the game 
+					BlastLayer _bl = cmd.blastlayer;
 					var sk = cmd.stashkey;
 					cmdBack = new RTC_Command(CommandType.RETURNVALUE);
-					cmdBack.objectValue = RTC_BlastTools.GetBlastByteBackupLayer(_bl, sk);
+					cmdBack.objectValue = RTC_BlastTools.GetAppliedBackupLayer(_bl, sk);
 					break;
 				}
 
 				case CommandType.BIZHAWK_SET_OSDDISABLED:
 					RTC_Core.BizhawkOsdDisabled = (bool)cmd.objectValue;
+					break;
+
+				case CommandType.BIZHAWK_SET_CLEAN_AT_START:
+					RTC_Core.CleanOnStartup = (bool)cmd.objectValue;
+					break;
+
+				case CommandType.ENABLE_CONSOLE:
+					RTC_Hooks.showConsole = (bool)cmd.objectValue;
 					break;
 
 				case CommandType.BIZHAWK_OPEN_HEXEDITOR_ADDRESS:

@@ -3006,6 +3006,11 @@ namespace BizHawk.Client.EmuHawk
 					GlobalWin.Tools.LuaConsole.LuaImp.CallFrameAfterEvent();
 				}
 
+
+				//RTC_HIJACK : Hooking the step here as it's just before the tools update
+				RTC.RTC_Hooks.CPU_STEP(Global.ClientControls["Rewind"], Global.ClientControls["Fast Forward"], EmulatorPaused);
+				//---------------------------------------
+
 				if (IsTurboing)
 				{
 					GlobalWin.Tools.FastUpdateAfter(SuppressLua);
@@ -3045,6 +3050,7 @@ namespace BizHawk.Client.EmuHawk
 						GlobalWin.Tools.TAStudio.StopSeeking();
 					}
 				}
+
 			}
 
 			if (Global.ClientControls["Rewind"] || PressRewind)
@@ -3054,9 +3060,6 @@ namespace BizHawk.Client.EmuHawk
 
 			GlobalWin.Sound.UpdateSound(atten);
 
-			//RTC_HIJACK : Hooking at the end of the Core Step
-			RTC.RTC_Hooks.CPU_STEP(Global.ClientControls["Rewind"], Global.ClientControls["Fast Forward"], EmulatorPaused);
-			//---------------------------------------
 		}
 
 		private void UpdateFpsDisplay(long currentTimestamp, bool isRewinding, bool isFastForwarding)

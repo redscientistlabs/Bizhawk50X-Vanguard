@@ -741,6 +741,9 @@ namespace RTC
 
 		private void PopulateBlastUnitModeContextMenu(int column, int row)
 		{
+			if (row == -1)
+				return;
+
 			cmsBlastEditor.Items.Clear();
 
 			if (dgvBlastLayer["dgvBlastUnitType", row].Value.ToString() == "RTC.BlastByte")
@@ -1526,18 +1529,21 @@ namespace RTC
 					.Where((item => (bool)item.Cells["dgvBlastUnitLocked"].Value != true)))
 				{
 					BlastUnit bu = (BlastUnit)selected.Cells["dgvBlastUnitReference"].Value;
-					if (bu.IsEnabled)
+					if (!bu.IsLocked)
+					{
+						//They have to be enabled to get a backup
+						bu.IsEnabled = true;
 						bl.Layer.Add(bu);
+					}
 				}
 
 				//Bake them
-				BlastLayer newBlastLayer = RTC_BlastTools.BakeBlastBytesToSet(sk, bl);
+				BlastLayer newBlastLayer = RTC_BlastTools.BakeBlastUnitsToSet(sk, bl);
 
 				int i = 0;
 				//Insert the new one where the old row was, then remove the old row.
 				foreach (DataGridViewRow selected in dgvBlastLayer.SelectedRows.Cast<DataGridViewRow>().Where(item =>
-					((bool)item.Cells["dgvBlastUnitLocked"].Value != true) &&
-					((BlastUnit)item.Cells["dgvBlastUnitReference"].Value) is BlastByte))
+					((bool)item.Cells["dgvBlastUnitLocked"].Value != true)))
 				{
 					InsertBlastUnitToBlastLayerAndDgv(selected.Index, newBlastLayer.Layer[i]);
 					i++;

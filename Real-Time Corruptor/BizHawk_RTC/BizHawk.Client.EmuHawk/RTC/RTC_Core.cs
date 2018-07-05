@@ -23,7 +23,7 @@ namespace RTC
 		public static Random RND = new Random();
 
 		//General RTC Values
-		public static string RtcVersion = "3.23";
+		public static string RtcVersion = "3.23a";
 
 		//Directories
 		public static string bizhawkDir = Directory.GetCurrentDirectory();
@@ -50,6 +50,7 @@ namespace RTC
 		public static bool BizhawkOsdDisabled = true;
 		public static bool UseHexadecimal = true;
 		public static bool AllowCrossCoreCorruption = false;
+		public static bool CleanOnStartup = true;
 
 		//Note Box Settings
 		public static System.Drawing.Point NoteBoxPosition;
@@ -154,7 +155,7 @@ namespace RTC
 			}
 
 			//Clean out the temp folders
-			if (!RTC_Hooks.isRemoteRTC)
+			if (!RTC_Hooks.isRemoteRTC && CleanOnStartup)
 			{
 				Stockpile.EmptyFolder("TEMP");
 				Stockpile.EmptyFolder("TEMP2");
@@ -272,6 +273,7 @@ namespace RTC
 			RTC_Params.LoadRTCColor();
 			RTC_Core.sForm.cbDisableBizhawkOSD.Checked = !RTC_Params.IsParamSet("ENABLE_BIZHAWK_OSD");
 			RTC_Core.sForm.cbAllowCrossCoreCorruption.Checked = RTC_Params.IsParamSet("ALLOW_CROSS_CORE_CORRUPTION");
+			RTC_Core.sForm.cbCleanAtStart.Checked = RTC_Params.IsParamSet("CLEAN_AT_START");
 
 			//Load and initialize Hotkeys
 			//RTC_Hotkeys.InitializeHotkeySystem();

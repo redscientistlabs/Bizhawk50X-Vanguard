@@ -1607,7 +1607,31 @@ namespace RTC
 
 		public override BlastUnit GetBackup()
 		{
-			return null;
+			if (!IsEnabled)
+				return null;
+
+			try
+			{
+				MemoryDomainProxy mdp = RTC_MemoryDomains.GetProxy(Domain, Address);
+				long targetAddress = RTC_MemoryDomains.GetRealAddress(Domain, Address);
+
+				if (mdp == null)
+					return null;
+
+				byte[] _value = new byte[Value.Length];
+
+				for (int i = 0; i < _value.Length; i++)
+					_value[i] = mdp.PeekByte(targetAddress + i);
+
+				return new BlastByte(Domain, Address, BlastByteType.SET, _value, BigEndian, true);
+			}
+			catch (Exception ex)
+			{
+				throw new Exception("The BlastCheat GetBackup() function threw up. \n" +
+				                    "This is an RTC error, so you should probably send this to the RTC devs.\n" +
+				                    "If you know the steps to reproduce this error it would be greatly appreciated.\n\n" +
+				                    ex.ToString());
+			}
 		}
 
 		public override void Reroll()

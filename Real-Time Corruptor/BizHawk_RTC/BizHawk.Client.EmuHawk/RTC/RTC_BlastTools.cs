@@ -217,29 +217,29 @@ namespace RTC
 			return temp;
 		}
 
-		public static BlastLayer GetBlastByteBackupLayer(BlastLayer bl, StashKey sk)
+		public static BlastLayer GetAppliedBackupLayer(BlastLayer bl, StashKey sk)
 		{
 			BlastLayer newBlastLayer = new BlastLayer();
-			sk.Run();
+			//So basically due to how netcore handles synced commands, we can't actually call sk.Run()
+			//from within emuhawk or else it'll apply the blastlayer AFTER this code completes
+			//So we manually apply the blastlayer
+			sk.RunOriginal();
+			sk.BlastLayer.Apply();
 
 			foreach (BlastUnit bu in bl.Layer)
 			{
-				if (bu is BlastByte)
-				{
-					BlastByte bb = bu as BlastByte;
-					newBlastLayer.Layer.Add(bb.GetBackup());
-				}
+				newBlastLayer.Layer.Add(bu.GetBackup());
 			}
 			return newBlastLayer;
 		}
 
-		public static BlastLayer BakeBlastBytesToSet(StashKey sk, BlastLayer inputLayer)
+		public static BlastLayer BakeBlastUnitsToSet(StashKey sk, BlastLayer inputLayer)
 		{
 			try
 			{
 				//Bake them
 				var token = RTC_NetCore.HugeOperationStart();
-				BlastLayer newLayer = (BlastLayer)RTC_Core.SendCommandToBizhawk(new RTC_Command(CommandType.REMOTE_KEY_GETBLASTBYTEBACKUPLAYER)
+				BlastLayer newLayer = (BlastLayer)RTC_Core.SendCommandToBizhawk(new RTC_Command(CommandType.REMOTE_KEY_GETBLASTBYTESETFROMLAYER)
 				{
 					blastlayer =  inputLayer,
 					stashkey = sk

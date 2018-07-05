@@ -53,6 +53,7 @@ namespace RTC
 			RTC_Params.SetParam("CRASHSOUND", cbCrashSoundEffect.SelectedIndex.ToString());
 		}
 
+
 		public void cbNetCoreCommandTimeout_SelectedIndexChanged(object sender, EventArgs e)
 		{
 			string setting = cbNetCoreCommandTimeout.SelectedItem.ToString().ToUpper();
@@ -119,6 +120,16 @@ namespace RTC
 			RTC_Core.AllowCrossCoreCorruption = cbAllowCrossCoreCorruption.Checked;
 		}
 
+		private void cbCleanAtStart_CheckedChanged(object sender, EventArgs e)
+		{
+			if (cbCleanAtStart.Checked)
+				RTC_Params.RemoveParam("CLEAN_AT_START");
+			else
+				RTC_Params.SetParam("CLEAN_AT_START");
+
+			RTC_Core.SendCommandToBizhawk(new RTC_Command(CommandType.BIZHAWK_SET_CLEAN_AT_START) { objectValue = cbCleanAtStart.Checked });
+		}
+
 		private void btnImportKeyBindings_Click(object sender, EventArgs e)
 		{
 			if (RTC_Hooks.isRemoteRTC && (RTC_Core.RemoteRTC != null ? RTC_Core.RemoteRTC.expectedSide != NetworkSide.SERVER : false))
@@ -164,5 +175,6 @@ namespace RTC
 			Form form = new RTC_Test_Form();
 			form.Show();
 		}
+
 	}
 }

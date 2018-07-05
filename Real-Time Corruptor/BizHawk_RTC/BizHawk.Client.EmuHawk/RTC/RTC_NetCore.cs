@@ -32,6 +32,7 @@ namespace RTC
         Executing Sync commands accross processes will JAM the mainthread of one while waiting for the second process to respond.
         This makes detection of infinite loop, errors and innacceptable timeouts crucial for it to work well.
 
+
         A setting called "Aggressiveness" in the main menu can either TRIPLE the timeout values or even Disable any timeout (not recommended).
         */
 
@@ -903,7 +904,7 @@ namespace RTC
 		REMOTE_KEY_PUTSYNCSETTINGS,
 		REMOTE_KEY_GETOPENROMFILENAME,
 		REMOTE_KEY_GETRAWBLASTLAYER,
-		REMOTE_KEY_GETBLASTBYTEBACKUPLAYER,
+		REMOTE_KEY_GETBLASTBYTESETFROMLAYER,
 		REMOTE_DOMAIN_GETDOMAINS,
 		REMOTE_DOMAIN_VMD_ADD,
 		REMOTE_DOMAIN_VMD_REMOVE,
@@ -945,6 +946,8 @@ namespace RTC
 
 		//Bizhawk Overrides
 		BIZHAWK_SET_OSDDISABLED,
+		BIZHAWK_SET_CLEAN_AT_START,
+		ENABLE_CONSOLE,
 
 		//Bizhawk Shortcuts
 		BIZHAWK_OPEN_HEXEDITOR_ADDRESS,

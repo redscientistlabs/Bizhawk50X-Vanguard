@@ -47,6 +47,17 @@
             this.btnDuplicateSelected = new System.Windows.Forms.Button();
             this.lbBlastLayerSize = new System.Windows.Forms.Label();
             this.dgvBlastLayer = new System.Windows.Forms.DataGridView();
+            this.dgvBlastUnitReference = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.dgvBlastUnitLocked = new System.Windows.Forms.DataGridViewCheckBoxColumn();
+            this.dgvBlastEnabled = new System.Windows.Forms.DataGridViewCheckBoxColumn();
+            this.dgvPrecision = new System.Windows.Forms.DataGridViewComboBoxColumn();
+            this.dgvBlastUnitType = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.dgvBlastUnitMode = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.dgvSourceAddressDomain = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.dgvSourceAddress = new RTC.DataGridViewNumericUpDownColumn();
+            this.dgvParamDomain = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.dgvParam = new RTC.DataGridViewNumericUpDownColumn();
+            this.dgvNoteButton = new System.Windows.Forms.DataGridViewButtonColumn();
             this.pnMemoryTargetting = new System.Windows.Forms.Panel();
             this.label3 = new System.Windows.Forms.Label();
             this.label4 = new System.Windows.Forms.Label();
@@ -91,17 +102,6 @@
             this.bakeBlastByteToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.openBlastLayerGeneratorToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.btnHideSidebar = new System.Windows.Forms.Button();
-            this.dgvBlastUnitReference = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.dgvBlastUnitLocked = new System.Windows.Forms.DataGridViewCheckBoxColumn();
-            this.dgvBlastEnabled = new System.Windows.Forms.DataGridViewCheckBoxColumn();
-            this.dgvPrecision = new System.Windows.Forms.DataGridViewComboBoxColumn();
-            this.dgvBlastUnitType = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.dgvBlastUnitMode = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.dgvSourceAddressDomain = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.dgvSourceAddress = new RTC.DataGridViewNumericUpDownColumn();
-            this.dgvParamDomain = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.dgvParam = new RTC.DataGridViewNumericUpDownColumn();
-            this.dgvNoteButton = new System.Windows.Forms.DataGridViewButtonColumn();
             ((System.ComponentModel.ISupportInitialize)(this.dgvBlastLayer)).BeginInit();
             this.pnMemoryTargetting.SuspendLayout();
             this.panel1.SuspendLayout();
@@ -342,6 +342,112 @@
             this.dgvBlastLayer.Size = new System.Drawing.Size(733, 447);
             this.dgvBlastLayer.TabIndex = 133;
             this.dgvBlastLayer.Tag = "color:normal";
+            // 
+            // dgvBlastUnitReference
+            // 
+            this.dgvBlastUnitReference.HeaderText = "dgvBlastUnitReference";
+            this.dgvBlastUnitReference.Name = "dgvBlastUnitReference";
+            this.dgvBlastUnitReference.Visible = false;
+            // 
+            // dgvBlastUnitLocked
+            // 
+            this.dgvBlastUnitLocked.FillWeight = 12F;
+            this.dgvBlastUnitLocked.HeaderText = "🔒";
+            this.dgvBlastUnitLocked.MinimumWidth = 30;
+            this.dgvBlastUnitLocked.Name = "dgvBlastUnitLocked";
+            this.dgvBlastUnitLocked.ToolTipText = "BlastUnit Locked";
+            // 
+            // dgvBlastEnabled
+            // 
+            this.dgvBlastEnabled.FillWeight = 12F;
+            this.dgvBlastEnabled.HeaderText = "✔";
+            this.dgvBlastEnabled.Name = "dgvBlastEnabled";
+            this.dgvBlastEnabled.ToolTipText = "BlastUnit Enabled";
+            // 
+            // dgvPrecision
+            // 
+            this.dgvPrecision.FillWeight = 31.57906F;
+            this.dgvPrecision.HeaderText = "Precision";
+            this.dgvPrecision.Items.AddRange(new object[] {
+            "8-bit",
+            "16-bit",
+            "32-bit"});
+            this.dgvPrecision.Name = "dgvPrecision";
+            this.dgvPrecision.Resizable = System.Windows.Forms.DataGridViewTriState.True;
+            this.dgvPrecision.ToolTipText = "BlastUnit Precision";
+            // 
+            // dgvBlastUnitType
+            // 
+            this.dgvBlastUnitType.FillWeight = 42.10541F;
+            this.dgvBlastUnitType.HeaderText = "BlastUnit Type";
+            this.dgvBlastUnitType.Name = "dgvBlastUnitType";
+            this.dgvBlastUnitType.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
+            this.dgvBlastUnitType.ToolTipText = "The type of BlastUnit";
+            // 
+            // dgvBlastUnitMode
+            // 
+            this.dgvBlastUnitMode.FillWeight = 38.40865F;
+            this.dgvBlastUnitMode.HeaderText = "BlastUnit Mode";
+            this.dgvBlastUnitMode.Name = "dgvBlastUnitMode";
+            this.dgvBlastUnitMode.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
+            this.dgvBlastUnitMode.ToolTipText = "The mode of the BlastUnit";
+            // 
+            // dgvSourceAddressDomain
+            // 
+            this.dgvSourceAddressDomain.FillWeight = 46.14497F;
+            this.dgvSourceAddressDomain.HeaderText = "Source Domain";
+            this.dgvSourceAddressDomain.Name = "dgvSourceAddressDomain";
+            this.dgvSourceAddressDomain.ToolTipText = "The domain to corrupt/use as a source (for Pipe)";
+            // 
+            // dgvSourceAddress
+            // 
+            dataGridViewCellStyle3.Font = new System.Drawing.Font("Consolas", 9F);
+            this.dgvSourceAddress.DefaultCellStyle = dataGridViewCellStyle3;
+            this.dgvSourceAddress.FillWeight = 38F;
+            this.dgvSourceAddress.HeaderText = "Source Address";
+            this.dgvSourceAddress.Hexadecimal = true;
+            this.dgvSourceAddress.Maximum = new decimal(new int[] {
+            -1,
+            0,
+            0,
+            0});
+            this.dgvSourceAddress.Name = "dgvSourceAddress";
+            this.dgvSourceAddress.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.Automatic;
+            this.dgvSourceAddress.ToolTipText = "The address to corrupt (or use as a source for Pipe)";
+            // 
+            // dgvParamDomain
+            // 
+            this.dgvParamDomain.FillWeight = 46.14497F;
+            this.dgvParamDomain.HeaderText = "Parameter Domain";
+            this.dgvParamDomain.Name = "dgvParamDomain";
+            this.dgvParamDomain.ToolTipText = "The domain used as a destination for any source/destination BlastUnits (pipe)";
+            // 
+            // dgvParam
+            // 
+            dataGridViewCellStyle4.Font = new System.Drawing.Font("Consolas", 9F);
+            this.dgvParam.DefaultCellStyle = dataGridViewCellStyle4;
+            this.dgvParam.FillWeight = 38F;
+            this.dgvParam.HeaderText = "Parameter Value";
+            this.dgvParam.Hexadecimal = true;
+            this.dgvParam.Maximum = new decimal(new int[] {
+            -559939584,
+            902409669,
+            54,
+            0});
+            this.dgvParam.Name = "dgvParam";
+            this.dgvParam.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.Automatic;
+            this.dgvParam.ToolTipText = "The value of the BlastUnit (destination address for Pipe)";
+            // 
+            // dgvNoteButton
+            // 
+            dataGridViewCellStyle5.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
+            dataGridViewCellStyle5.Font = new System.Drawing.Font("Segoe UI Symbol", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.dgvNoteButton.DefaultCellStyle = dataGridViewCellStyle5;
+            this.dgvNoteButton.FillWeight = 12F;
+            this.dgvNoteButton.HeaderText = "📝";
+            this.dgvNoteButton.MinimumWidth = 10;
+            this.dgvNoteButton.Name = "dgvNoteButton";
+            this.dgvNoteButton.ToolTipText = "Notes";
             // 
             // pnMemoryTargetting
             // 
@@ -765,22 +871,22 @@
             // sanitizeDuplicatesToolStripMenuItem
             // 
             this.sanitizeDuplicatesToolStripMenuItem.Name = "sanitizeDuplicatesToolStripMenuItem";
-            this.sanitizeDuplicatesToolStripMenuItem.Size = new System.Drawing.Size(235, 22);
+            this.sanitizeDuplicatesToolStripMenuItem.Size = new System.Drawing.Size(285, 22);
             this.sanitizeDuplicatesToolStripMenuItem.Text = "Sanitize Duplicates";
             this.sanitizeDuplicatesToolStripMenuItem.Click += new System.EventHandler(this.sanitizeDuplicatesToolStripMenuItem_Click);
             // 
             // rasterizeVMDsToolStripMenuItem
             // 
             this.rasterizeVMDsToolStripMenuItem.Name = "rasterizeVMDsToolStripMenuItem";
-            this.rasterizeVMDsToolStripMenuItem.Size = new System.Drawing.Size(235, 22);
+            this.rasterizeVMDsToolStripMenuItem.Size = new System.Drawing.Size(285, 22);
             this.rasterizeVMDsToolStripMenuItem.Text = "Rasterize VMDs";
             this.rasterizeVMDsToolStripMenuItem.Click += new System.EventHandler(this.rasterizeVMDsToolStripMenuItem_Click);
             // 
             // bakeBlastByteToolStripMenuItem
             // 
             this.bakeBlastByteToolStripMenuItem.Name = "bakeBlastByteToolStripMenuItem";
-            this.bakeBlastByteToolStripMenuItem.Size = new System.Drawing.Size(235, 22);
-            this.bakeBlastByteToolStripMenuItem.Text = "Bake Selected BlastBytes to Set";
+            this.bakeBlastByteToolStripMenuItem.Size = new System.Drawing.Size(285, 22);
+            this.bakeBlastByteToolStripMenuItem.Text = "Bake Selected BlastUnits to BlastByte Set";
             this.bakeBlastByteToolStripMenuItem.Click += new System.EventHandler(this.bakeBlastByteToolStripMenuItem_Click);
             // 
             // openBlastLayerGeneratorToolStripMenuItem
@@ -801,112 +907,6 @@
             this.btnHideSidebar.Text = "▶";
             this.btnHideSidebar.UseVisualStyleBackColor = true;
             this.btnHideSidebar.Click += new System.EventHandler(this.btnHideSidebar_Click);
-            // 
-            // dgvBlastUnitReference
-            // 
-            this.dgvBlastUnitReference.HeaderText = "dgvBlastUnitReference";
-            this.dgvBlastUnitReference.Name = "dgvBlastUnitReference";
-            this.dgvBlastUnitReference.Visible = false;
-            // 
-            // dgvBlastUnitLocked
-            // 
-            this.dgvBlastUnitLocked.FillWeight = 12F;
-            this.dgvBlastUnitLocked.HeaderText = "🔒";
-            this.dgvBlastUnitLocked.MinimumWidth = 30;
-            this.dgvBlastUnitLocked.Name = "dgvBlastUnitLocked";
-            this.dgvBlastUnitLocked.ToolTipText = "BlastUnit Locked";
-            // 
-            // dgvBlastEnabled
-            // 
-            this.dgvBlastEnabled.FillWeight = 12F;
-            this.dgvBlastEnabled.HeaderText = "✔";
-            this.dgvBlastEnabled.Name = "dgvBlastEnabled";
-            this.dgvBlastEnabled.ToolTipText = "BlastUnit Enabled";
-            // 
-            // dgvPrecision
-            // 
-            this.dgvPrecision.FillWeight = 31.57906F;
-            this.dgvPrecision.HeaderText = "Precision";
-            this.dgvPrecision.Items.AddRange(new object[] {
-            "8-bit",
-            "16-bit",
-            "32-bit"});
-            this.dgvPrecision.Name = "dgvPrecision";
-            this.dgvPrecision.Resizable = System.Windows.Forms.DataGridViewTriState.True;
-            this.dgvPrecision.ToolTipText = "BlastUnit Precision";
-            // 
-            // dgvBlastUnitType
-            // 
-            this.dgvBlastUnitType.FillWeight = 42.10541F;
-            this.dgvBlastUnitType.HeaderText = "BlastUnit Type";
-            this.dgvBlastUnitType.Name = "dgvBlastUnitType";
-            this.dgvBlastUnitType.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
-            this.dgvBlastUnitType.ToolTipText = "The type of BlastUnit";
-            // 
-            // dgvBlastUnitMode
-            // 
-            this.dgvBlastUnitMode.FillWeight = 38.40865F;
-            this.dgvBlastUnitMode.HeaderText = "BlastUnit Mode";
-            this.dgvBlastUnitMode.Name = "dgvBlastUnitMode";
-            this.dgvBlastUnitMode.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
-            this.dgvBlastUnitMode.ToolTipText = "The mode of the BlastUnit";
-            // 
-            // dgvSourceAddressDomain
-            // 
-            this.dgvSourceAddressDomain.FillWeight = 46.14497F;
-            this.dgvSourceAddressDomain.HeaderText = "Source Domain";
-            this.dgvSourceAddressDomain.Name = "dgvSourceAddressDomain";
-            this.dgvSourceAddressDomain.ToolTipText = "The domain to corrupt/use as a source (for Pipe)";
-            // 
-            // dgvSourceAddress
-            // 
-            dataGridViewCellStyle3.Font = new System.Drawing.Font("Consolas", 9F);
-            this.dgvSourceAddress.DefaultCellStyle = dataGridViewCellStyle3;
-            this.dgvSourceAddress.FillWeight = 38F;
-            this.dgvSourceAddress.HeaderText = "Source Address";
-            this.dgvSourceAddress.Hexadecimal = true;
-            this.dgvSourceAddress.Maximum = new decimal(new int[] {
-            -1,
-            0,
-            0,
-            0});
-            this.dgvSourceAddress.Name = "dgvSourceAddress";
-            this.dgvSourceAddress.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.Automatic;
-            this.dgvSourceAddress.ToolTipText = "The address to corrupt (or use as a source for Pipe)";
-            // 
-            // dgvParamDomain
-            // 
-            this.dgvParamDomain.FillWeight = 46.14497F;
-            this.dgvParamDomain.HeaderText = "Parameter Domain";
-            this.dgvParamDomain.Name = "dgvParamDomain";
-            this.dgvParamDomain.ToolTipText = "The domain used as a destination for any source/destination BlastUnits (pipe)";
-            // 
-            // dgvParam
-            // 
-            dataGridViewCellStyle4.Font = new System.Drawing.Font("Consolas", 9F);
-            this.dgvParam.DefaultCellStyle = dataGridViewCellStyle4;
-            this.dgvParam.FillWeight = 38F;
-            this.dgvParam.HeaderText = "Parameter Value";
-            this.dgvParam.Hexadecimal = true;
-            this.dgvParam.Maximum = new decimal(new int[] {
-            -559939584,
-            902409669,
-            54,
-            0});
-            this.dgvParam.Name = "dgvParam";
-            this.dgvParam.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.Automatic;
-            this.dgvParam.ToolTipText = "The value of the BlastUnit (destination address for Pipe)";
-            // 
-            // dgvNoteButton
-            // 
-            dataGridViewCellStyle5.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
-            dataGridViewCellStyle5.Font = new System.Drawing.Font("Segoe UI Symbol", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.dgvNoteButton.DefaultCellStyle = dataGridViewCellStyle5;
-            this.dgvNoteButton.FillWeight = 12F;
-            this.dgvNoteButton.HeaderText = "📝";
-            this.dgvNoteButton.MinimumWidth = 10;
-            this.dgvNoteButton.Name = "dgvNoteButton";
-            this.dgvNoteButton.ToolTipText = "Notes";
             // 
             // RTC_BlastEditor_Form
             // 

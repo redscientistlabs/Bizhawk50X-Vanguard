@@ -49,6 +49,7 @@
             this.lbAttachedModeSettings = new System.Windows.Forms.Label();
             this.button1 = new System.Windows.Forms.Button();
             this.panel1 = new System.Windows.Forms.Panel();
+            this.cbCleanAtStart = new System.Windows.Forms.CheckBox();
             this.cbAllowCrossCoreCorruption = new System.Windows.Forms.CheckBox();
             this.cbDisableBizhawkOSD = new System.Windows.Forms.CheckBox();
             this.label4 = new System.Windows.Forms.Label();
@@ -362,6 +363,7 @@
             // panel1
             // 
             this.panel1.BackColor = System.Drawing.Color.Gray;
+            this.panel1.Controls.Add(this.cbCleanAtStart);
             this.panel1.Controls.Add(this.cbAllowCrossCoreCorruption);
             this.panel1.Controls.Add(this.cbDisableBizhawkOSD);
             this.panel1.Location = new System.Drawing.Point(19, 301);
@@ -369,6 +371,21 @@
             this.panel1.Size = new System.Drawing.Size(215, 116);
             this.panel1.TabIndex = 132;
             this.panel1.Tag = "color:normal";
+            // 
+            // cbCleanAtStart
+            // 
+            this.cbCleanAtStart.AutoSize = true;
+            this.cbCleanAtStart.Checked = true;
+            this.cbCleanAtStart.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.cbCleanAtStart.Font = new System.Drawing.Font("Segoe UI", 8F);
+            this.cbCleanAtStart.ForeColor = System.Drawing.Color.White;
+            this.cbCleanAtStart.Location = new System.Drawing.Point(11, 56);
+            this.cbCleanAtStart.Name = "cbCleanAtStart";
+            this.cbCleanAtStart.Size = new System.Drawing.Size(147, 17);
+            this.cbCleanAtStart.TabIndex = 2;
+            this.cbCleanAtStart.Text = "Clean folders at startup";
+            this.cbCleanAtStart.UseVisualStyleBackColor = true;
+            this.cbCleanAtStart.CheckedChanged += new System.EventHandler(this.cbCleanAtStart_CheckedChanged);
             // 
             // cbAllowCrossCoreCorruption
             // 
@@ -504,5 +521,6 @@
         public System.Windows.Forms.CheckBox cbAllowCrossCoreCorruption;
         public System.Windows.Forms.Button btnImportKeyBindings;
 		private System.Windows.Forms.Button button2;
+		public System.Windows.Forms.CheckBox cbCleanAtStart;
 	}
 }

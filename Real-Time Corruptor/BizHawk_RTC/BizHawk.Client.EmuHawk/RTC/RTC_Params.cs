@@ -31,6 +31,8 @@ namespace RTC
 			new Ref(() => RTC_Core.AutoCorrupt, x => { RTC_Core.AutoCorrupt = (bool)x; }),
 
 			new Ref(() => RTC_Core.BizhawkOsdDisabled, x => { RTC_Core.BizhawkOsdDisabled = (bool)x; }),
+			new Ref(() => RTC_Hooks.showConsole, x => { RTC_Hooks.showConsole = (bool)x; }),
+			new Ref(() => RTC_Core.CleanOnStartup, x => { RTC_Core.CleanOnStartup = (bool)x; }),
 
 			new Ref(() => RTC_NightmareEngine.Algo, x => { RTC_NightmareEngine.Algo = (BlastByteAlgo)x; }),
 			new Ref(() => RTC_NightmareEngine.MinValue, x => { RTC_NightmareEngine.MinValue = (long)x; }),

@@ -726,11 +726,9 @@ namespace RTC
 			{
 				IsCorruptionApplied = false;
 
-				//RTC_Core.SendCommandToRTC(new RTC_Command(CommandType.REMOTE_SET_HELLGENIE_CLEARALLCHEATS) {});
+				RTC_Core.SendCommandToRTC(new RTC_Command(CommandType.REMOTE_SET_RESTOREBLASTLAYERBACKUP) { });
 				RTC_HellgenieEngine.ClearCheats();
 				RTC_PipeEngine.ClearPipes();
-
-				RTC_Core.SendCommandToRTC(new RTC_Command(CommandType.REMOTE_SET_RESTOREBLASTLAYERBACKUP) { });
 			}
 		}
 
