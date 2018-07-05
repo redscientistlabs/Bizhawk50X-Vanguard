@@ -11,6 +11,8 @@ namespace RTC
 		{
 			try
 			{
+				if (domain == null)
+					return null;
 				MemoryDomainProxy mdp = RTC_MemoryDomains.GetProxy(domain, address);
 				BizHawk.Client.Common.DisplayType displaytype = BizHawk.Client.Common.DisplayType.Unsigned;
 

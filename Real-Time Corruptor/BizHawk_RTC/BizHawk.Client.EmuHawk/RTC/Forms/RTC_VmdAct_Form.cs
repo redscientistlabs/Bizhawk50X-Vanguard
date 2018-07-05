@@ -515,7 +515,7 @@ namespace RTC
 							lastaddress = safeaddress;
 							for (int i = 0; i < mi.WordSize; i++)
 							{
-								proto.AddSingles.Add(safeaddress + i);
+								proto.addSingles.Add(safeaddress + i);
 							}
 							//[] _addresses = { safeaddress, safeaddress + mi.WordSize };
 							//	proto.addRanges.Add(_addresses);
@@ -525,7 +525,7 @@ namespace RTC
 				else
 				{
 					foreach (int address in ActiveTableGenerated)
-						proto.AddSingles.Add(address);
+						proto.addSingles.Add(address);
 				}
 
 				VMD = proto.Generate();

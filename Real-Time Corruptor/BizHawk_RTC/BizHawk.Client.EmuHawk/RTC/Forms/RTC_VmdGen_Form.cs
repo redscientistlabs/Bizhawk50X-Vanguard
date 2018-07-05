@@ -98,7 +98,7 @@ namespace RTC
 			else
 				proto.PointerSpacer = 1;
 
-			if (cbUsePadding && nmPadding.Value > 0)
+			if (cbUsePadding.Checked && nmPadding.Value > 0)
 			{
 				proto.Padding = Convert.ToInt32(nmPadding.Value);
 			}
@@ -129,9 +129,9 @@ namespace RTC
 						end = Convert.ToInt32(currentDomainSize - 1);
 
 					if (remove)
-						proto.RemoveRanges.Add(new int[] {start, end});
+						proto.removeRanges.Add(new int[] {start, end});
 					else
-						proto.AddRanges.Add(new int[] { start, end });
+						proto.addRanges.Add(new int[] { start, end });
 				}
 				else
 				{
@@ -140,18 +140,18 @@ namespace RTC
 					if (address < currentDomainSize)
 					{
 						if (remove)
-							proto.RemoveSingles.Add(address);
+							proto.removeSingles.Add(address);
 						else
-							proto.AddSingles.Add(address);
+							proto.addSingles.Add(address);
 					}
 
 				}
 			}
 
-			if (proto.AddRanges.Count == 0 && proto.AddSingles.Count == 0)
+			if (proto.addRanges.Count == 0 && proto.addSingles.Count == 0)
 			{
 				//No add range was specified, use entire domain
-				proto.AddRanges.Add(new int[] { 0, (currentDomainSize > int.MaxValue ? int.MaxValue : Convert.ToInt32(currentDomainSize)) });
+				proto.addRanges.Add(new int[] { 0, (currentDomainSize > int.MaxValue ? int.MaxValue : Convert.ToInt32(currentDomainSize)) });
 			}
 
 			VMD = proto.Generate();

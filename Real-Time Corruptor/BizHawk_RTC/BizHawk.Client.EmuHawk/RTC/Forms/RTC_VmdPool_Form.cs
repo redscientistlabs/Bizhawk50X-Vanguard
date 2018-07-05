@@ -49,7 +49,7 @@ namespace RTC
 
 		private void lbLoadedVmdList_SelectedIndexChanged(object sender, EventArgs e)
 		{
-			if (lbLoadedVmdList.SelectedIndex == -1)
+			if (lbLoadedVmdList.SelectedItem == null)
 				return;
 
 			string vmdName = lbLoadedVmdList.SelectedItem.ToString();
@@ -57,7 +57,7 @@ namespace RTC
 
 			lbVmdSizeValue.Text = mi.Size.ToString() + " (0x" + mi.Size.ToString("X") + ")";
 
-			if ((mi as VirtualMemoryDomain)?.PointerDomains.Count > 1)
+			if ((mi as VirtualMemoryDomain)?.PointerDomains.Distinct().Count() > 1)
 				lbRealDomainValue.Text = "Hybrid";
 			else
 				lbRealDomainValue.Text = (mi as VirtualMemoryDomain)?.PointerDomains[0];

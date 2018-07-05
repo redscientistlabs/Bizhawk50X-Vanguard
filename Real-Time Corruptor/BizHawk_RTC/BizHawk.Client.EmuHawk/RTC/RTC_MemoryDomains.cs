@@ -626,11 +626,11 @@ namespace RTC
 
 		public int Padding { get; set; }
 
-		public List<int> AddSingles = new List<int>();
-		public List<int> RemoveSingles = new List<int>();
+		public List<int> addSingles = new List<int>();
+		public List<int> removeSingles = new List<int>();
 
-		public List<int[]> AddRanges = new List<int[]>();
-		public List<int[]> RemoveRanges = new List<int[]>();
+		public List<int[]> addRanges = new List<int[]>();
+		public List<int[]> removeRanges = new List<int[]>();
 
 		public BlastLayer SuppliedBlastLayer = null;
 
@@ -674,14 +674,14 @@ namespace RTC
 				VMD.PointerAddresses.Add(i);
 			}
 
-			foreach (int[] range in AddRanges)
+			foreach (int[] range in addRanges)
 			{
 				int start = range[0];
 				int end = range[1];
 
 				for (int i = start; i < end; i++)
 				{
-					if (!IsAddressInRanges(i, RemoveSingles, RemoveRanges))
+					if (!IsAddressInRanges(i, removeSingles, removeRanges))
 						if (PointerSpacer == 1 || addressCount % PointerSpacer == 0)
 						{
 							//VMD.MemoryPointers.Add(new Tuple<string, long>(Domain, i));
@@ -692,7 +692,7 @@ namespace RTC
 				}
 			}
 
-			foreach (int single in AddSingles)
+			foreach (int single in addSingles)
 			{
 				//VMD.MemoryPointers.Add(new Tuple<string, long>(Domain, single));
 				VMD.PointerDomains.Add(GenDomain);

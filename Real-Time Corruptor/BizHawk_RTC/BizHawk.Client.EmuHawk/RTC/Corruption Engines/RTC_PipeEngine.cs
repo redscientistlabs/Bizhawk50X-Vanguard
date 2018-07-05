@@ -53,6 +53,8 @@ namespace RTC
 
 			try
 			{
+				if (_domain == null)
+					return null;
 				MemoryDomainProxy mdp = RTC_MemoryDomains.GetProxy(_domain, _address);
 
 				int pipeSize = RTC_Core.CustomPrecision == -1 ? mdp.WordSize : RTC_Core.CustomPrecision;

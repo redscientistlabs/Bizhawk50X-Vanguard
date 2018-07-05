@@ -15,6 +15,8 @@ namespace RTC
 
 			try
 			{
+				if (domain == null)
+					return null;
 				MemoryDomainProxy mdp = RTC_MemoryDomains.GetProxy(domain, address);
 				BlastByteType type = BlastByteType.NONE;
 

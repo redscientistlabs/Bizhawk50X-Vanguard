@@ -234,6 +234,8 @@ namespace RTC
 
 		public static BlastUnit GenerateUnit(string domain, long address)
 		{
+			if (domain == null)
+				return null;
 			// Randomly selects a memory operation according to the selected algorithm
 
 			//long safeAddress = _address - (_address % 8); //64-bit trunk
