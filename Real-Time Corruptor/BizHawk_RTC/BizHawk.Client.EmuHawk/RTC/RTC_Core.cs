@@ -561,9 +561,6 @@ namespace RTC
 					if (RTC_Core.SelectedEngine == CorruptionEngine.DISTORTION && RTC_DistortionEngine.CurrentAge < RTC_DistortionEngine.MaxAge)
 						RTC_DistortionEngine.CurrentAge++;
 
-					//Run Pipes on Corrupt Step if required
-					if (RTC_Core.SelectedEngine == CorruptionEngine.PIPE && !RTC_PipeEngine.ProcessOnStep)
-						RTC_PipeEngine.ExecutePipes();
 
 					// Capping intensity at engine-specific maximums
 

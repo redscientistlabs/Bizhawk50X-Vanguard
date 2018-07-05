@@ -482,11 +482,6 @@ namespace RTC
 			RTC_Core.SendCommandToBizhawk(new RTC_Command(CommandType.REMOTE_SET_PIPE_LOCKPIPES) { objectValue = RTC_PipeEngine.LockPipes });
 		}
 
-		private void cbProcessOnStep_CheckedChanged(object sender, EventArgs e)
-		{
-			RTC_PipeEngine.ProcessOnStep = cbProcessOnStep.Checked;
-			RTC_Core.SendCommandToBizhawk(new RTC_Command(CommandType.REMOTE_SET_PIPE_PROCESSONSTEP) { objectValue = RTC_PipeEngine.ProcessOnStep });
-		}
 
 		private void cbClearPipesOnRewind_CheckedChanged(object sender, EventArgs e)
 		{

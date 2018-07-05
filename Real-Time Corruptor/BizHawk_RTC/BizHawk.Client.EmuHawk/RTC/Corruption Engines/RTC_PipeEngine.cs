@@ -16,7 +16,6 @@ namespace RTC
 		public static long LastAddress = 0;
 
 		public static bool LockPipes = false;
-		public static bool ProcessOnStep = true;
 
 		public static void ExecutePipes()
 		{

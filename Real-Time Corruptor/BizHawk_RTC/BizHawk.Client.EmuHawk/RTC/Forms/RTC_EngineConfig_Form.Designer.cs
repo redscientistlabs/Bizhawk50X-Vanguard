@@ -77,7 +77,6 @@
             this.nmTiltPipeValue = new RTC.NumericUpDownHexFix();
             this.label25 = new System.Windows.Forms.Label();
             this.cbClearPipesOnRewind = new System.Windows.Forms.CheckBox();
-            this.cbProcessOnStep = new System.Windows.Forms.CheckBox();
             this.cbLockPipes = new System.Windows.Forms.CheckBox();
             this.btnClearPipes = new System.Windows.Forms.Button();
             this.nmMaxPipes = new System.Windows.Forms.NumericUpDown();
@@ -125,12 +124,12 @@
             this.groupBox1 = new System.Windows.Forms.GroupBox();
             this.label6 = new System.Windows.Forms.Label();
             this.gbBlastGeneratorEngine = new System.Windows.Forms.GroupBox();
+            this.label10 = new System.Windows.Forms.Label();
             this.comboBox8 = new System.Windows.Forms.ComboBox();
             this.label21 = new System.Windows.Forms.Label();
             this.btnOpenBlastGenerator = new System.Windows.Forms.Button();
             this.gbDomainsUnavailable = new System.Windows.Forms.GroupBox();
             this.label22 = new System.Windows.Forms.Label();
-            this.label10 = new System.Windows.Forms.Label();
             this.pnGeneralParameters.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.nmIntensity)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.nmErrorDelay)).BeginInit();
@@ -769,7 +768,6 @@
             this.gbPipeEngine.Controls.Add(this.nmTiltPipeValue);
             this.gbPipeEngine.Controls.Add(this.label25);
             this.gbPipeEngine.Controls.Add(this.cbClearPipesOnRewind);
-            this.gbPipeEngine.Controls.Add(this.cbProcessOnStep);
             this.gbPipeEngine.Controls.Add(this.cbLockPipes);
             this.gbPipeEngine.Controls.Add(this.btnClearPipes);
             this.gbPipeEngine.Controls.Add(this.nmMaxPipes);
@@ -824,7 +822,7 @@
             this.cbGenerateChainedPipes.CheckState = System.Windows.Forms.CheckState.Checked;
             this.cbGenerateChainedPipes.Font = new System.Drawing.Font("Segoe UI", 8F);
             this.cbGenerateChainedPipes.ForeColor = System.Drawing.Color.White;
-            this.cbGenerateChainedPipes.Location = new System.Drawing.Point(182, 34);
+            this.cbGenerateChainedPipes.Location = new System.Drawing.Point(183, 34);
             this.cbGenerateChainedPipes.Name = "cbGenerateChainedPipes";
             this.cbGenerateChainedPipes.Size = new System.Drawing.Size(150, 17);
             this.cbGenerateChainedPipes.TabIndex = 82;
@@ -867,7 +865,7 @@
             this.cbClearPipesOnRewind.AutoSize = true;
             this.cbClearPipesOnRewind.Font = new System.Drawing.Font("Segoe UI", 8F);
             this.cbClearPipesOnRewind.ForeColor = System.Drawing.Color.White;
-            this.cbClearPipesOnRewind.Location = new System.Drawing.Point(5, 100);
+            this.cbClearPipesOnRewind.Location = new System.Drawing.Point(183, 74);
             this.cbClearPipesOnRewind.Name = "cbClearPipesOnRewind";
             this.cbClearPipesOnRewind.Size = new System.Drawing.Size(142, 17);
             this.cbClearPipesOnRewind.TabIndex = 79;
@@ -875,27 +873,12 @@
             this.cbClearPipesOnRewind.UseVisualStyleBackColor = true;
             this.cbClearPipesOnRewind.CheckedChanged += new System.EventHandler(this.cbClearPipesOnRewind_CheckedChanged);
             // 
-            // cbProcessOnStep
-            // 
-            this.cbProcessOnStep.AutoSize = true;
-            this.cbProcessOnStep.Checked = true;
-            this.cbProcessOnStep.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.cbProcessOnStep.Font = new System.Drawing.Font("Segoe UI", 8F);
-            this.cbProcessOnStep.ForeColor = System.Drawing.Color.White;
-            this.cbProcessOnStep.Location = new System.Drawing.Point(182, 53);
-            this.cbProcessOnStep.Name = "cbProcessOnStep";
-            this.cbProcessOnStep.Size = new System.Drawing.Size(132, 17);
-            this.cbProcessOnStep.TabIndex = 78;
-            this.cbProcessOnStep.Text = "Process on Emu Step";
-            this.cbProcessOnStep.UseVisualStyleBackColor = true;
-            this.cbProcessOnStep.CheckedChanged += new System.EventHandler(this.cbProcessOnStep_CheckedChanged);
-            // 
             // cbLockPipes
             // 
             this.cbLockPipes.AutoSize = true;
             this.cbLockPipes.Font = new System.Drawing.Font("Segoe UI", 8F);
             this.cbLockPipes.ForeColor = System.Drawing.Color.White;
-            this.cbLockPipes.Location = new System.Drawing.Point(182, 72);
+            this.cbLockPipes.Location = new System.Drawing.Point(183, 54);
             this.cbLockPipes.Name = "cbLockPipes";
             this.cbLockPipes.Size = new System.Drawing.Size(79, 17);
             this.cbLockPipes.TabIndex = 77;
@@ -1123,7 +1106,7 @@
             this.cbClearFreezesOnRewind.AutoSize = true;
             this.cbClearFreezesOnRewind.Font = new System.Drawing.Font("Segoe UI", 8F);
             this.cbClearFreezesOnRewind.ForeColor = System.Drawing.Color.White;
-            this.cbClearFreezesOnRewind.Location = new System.Drawing.Point(5, 100);
+            this.cbClearFreezesOnRewind.Location = new System.Drawing.Point(183, 34);
             this.cbClearFreezesOnRewind.Name = "cbClearFreezesOnRewind";
             this.cbClearFreezesOnRewind.Size = new System.Drawing.Size(150, 17);
             this.cbClearFreezesOnRewind.TabIndex = 75;
@@ -1299,7 +1282,7 @@
             this.cbClearCheatsOnRewind.AutoSize = true;
             this.cbClearCheatsOnRewind.Font = new System.Drawing.Font("Segoe UI", 8F);
             this.cbClearCheatsOnRewind.ForeColor = System.Drawing.Color.White;
-            this.cbClearCheatsOnRewind.Location = new System.Drawing.Point(183, 36);
+            this.cbClearCheatsOnRewind.Location = new System.Drawing.Point(183, 34);
             this.cbClearCheatsOnRewind.Name = "cbClearCheatsOnRewind";
             this.cbClearCheatsOnRewind.Size = new System.Drawing.Size(147, 17);
             this.cbClearCheatsOnRewind.TabIndex = 75;
@@ -1569,6 +1552,17 @@
             this.gbBlastGeneratorEngine.TabIndex = 134;
             this.gbBlastGeneratorEngine.TabStop = false;
             // 
+            // label10
+            // 
+            this.label10.AutoSize = true;
+            this.label10.Font = new System.Drawing.Font("Segoe UI", 8F, System.Drawing.FontStyle.Italic);
+            this.label10.Location = new System.Drawing.Point(188, 37);
+            this.label10.MaximumSize = new System.Drawing.Size(205, 0);
+            this.label10.Name = "label10";
+            this.label10.Size = new System.Drawing.Size(197, 104);
+            this.label10.TabIndex = 80;
+            this.label10.Text = resources.GetString("label10.Text");
+            // 
             // comboBox8
             // 
             this.comboBox8.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
@@ -1633,17 +1627,6 @@
             this.label22.TabIndex = 132;
             this.label22.Text = "Memory Domains unavailable with\n current engine";
             this.label22.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            // 
-            // label10
-            // 
-            this.label10.AutoSize = true;
-            this.label10.Font = new System.Drawing.Font("Segoe UI", 8F, System.Drawing.FontStyle.Italic);
-            this.label10.Location = new System.Drawing.Point(188, 37);
-            this.label10.MaximumSize = new System.Drawing.Size(205, 0);
-            this.label10.Name = "label10";
-            this.label10.Size = new System.Drawing.Size(197, 104);
-            this.label10.TabIndex = 80;
-            this.label10.Text = resources.GetString("label10.Text");
             // 
             // RTC_EngineConfig_Form
             // 
@@ -1755,7 +1738,6 @@
         public RTC.NumericUpDownHexFix nmTiltPipeValue;
         private System.Windows.Forms.Label label25;
         public System.Windows.Forms.CheckBox cbClearPipesOnRewind;
-        public System.Windows.Forms.CheckBox cbProcessOnStep;
         public System.Windows.Forms.CheckBox cbLockPipes;
         private System.Windows.Forms.Button btnClearPipes;
         public System.Windows.Forms.NumericUpDown nmMaxPipes;

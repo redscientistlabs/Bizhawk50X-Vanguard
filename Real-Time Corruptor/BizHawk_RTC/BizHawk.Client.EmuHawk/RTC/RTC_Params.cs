@@ -31,7 +31,7 @@ namespace RTC
 			new Ref(() => RTC_Core.AutoCorrupt, x => { RTC_Core.AutoCorrupt = (bool)x; }),
 
 			new Ref(() => RTC_Core.BizhawkOsdDisabled, x => { RTC_Core.BizhawkOsdDisabled = (bool)x; }),
-			new Ref(() => RTC_Hooks.showConsole, x => { RTC_Hooks.showConsole = (bool)x; }),
+			new Ref(() => RTC_Hooks.ShowConsole, x => { RTC_Hooks.ShowConsole = (bool)x; }),
 			new Ref(() => RTC_Core.CleanOnStartup, x => { RTC_Core.CleanOnStartup = (bool)x; }),
 
 			new Ref(() => RTC_NightmareEngine.Algo, x => { RTC_NightmareEngine.Algo = (BlastByteAlgo)x; }),
@@ -44,7 +44,6 @@ namespace RTC
 			new Ref(() => RTC_DistortionEngine.CurrentAge, x => { RTC_DistortionEngine.CurrentAge = (int)x; }),
 			new Ref(() => RTC_PipeEngine.MaxPipes, x => { RTC_PipeEngine.MaxPipes = (int)x; }),
 			new Ref(() => RTC_PipeEngine.LockPipes, x => { RTC_PipeEngine.LockPipes = (bool)x; }),
-			new Ref(() => RTC_PipeEngine.ProcessOnStep, x => { RTC_PipeEngine.ProcessOnStep = (bool)x; }),
 			new Ref(() => RTC_PipeEngine.ChainedPipes, x => { RTC_PipeEngine.ChainedPipes = (bool)x; }),
 			new Ref(() => RTC_VectorEngine.LimiterList, x => { RTC_VectorEngine.LimiterList = (string[])x; }),
 			new Ref(() => RTC_VectorEngine.ValueList, x => { RTC_VectorEngine.ValueList = (string[])x; }),

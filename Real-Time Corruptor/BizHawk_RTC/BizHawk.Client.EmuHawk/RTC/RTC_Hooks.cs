@@ -17,7 +17,7 @@ namespace RTC
 		static bool disableRTC;
 		public static bool isRemoteRTC = false;
 		public static bool isNormalAdvance = false;
-		public static bool showConsole = false;
+		public static bool ShowConsole = false;
 		private static Guid? loadGameToken = null;
 		private static Guid? loadSavestateToken = null;
 
@@ -27,17 +27,15 @@ namespace RTC
 
 		static int CPU_STEP_Count = 0;
 
-		public static void CPU_STEP(bool _isRewinding, bool _isFastForwarding, bool _isPaused)
+		public static void CPU_STEP(bool _isRewinding, bool _isFastForwarding)
 		{
 			if (disableRTC || Global.Emulator is NullEmulator)
 				return;
 
-			isNormalAdvance = !(_isRewinding || _isFastForwarding || _isPaused);
+			isNormalAdvance = !(_isRewinding || _isFastForwarding);
 
 			// Unique step hooks
-			if (_isPaused)
-				STEP_PAUSED();
-			else if (!_isRewinding && !_isFastForwarding)
+			if (!_isRewinding && !_isFastForwarding)
 				STEP_FORWARD();
 			else if (_isRewinding)
 				STEP_REWIND();
@@ -45,12 +43,7 @@ namespace RTC
 				STEP_FASTFORWARD();
 
 			//Any step hook for corruption
-			STEP_CORRUPT(_isRewinding, _isFastForwarding, _isPaused);
-		}
-
-		private static void STEP_PAUSED()
-		{
-			if (disableRTC) return;
+			STEP_CORRUPT(_isRewinding, _isFastForwarding);
 		}
 
 		private static void STEP_FORWARD()
@@ -74,15 +67,14 @@ namespace RTC
 			if (disableRTC) return;
 		}
 
-		private static void STEP_CORRUPT(bool _isRewinding, bool _isFastForwarding, bool _isPaused)
+		private static void STEP_CORRUPT(bool _isRewinding, bool _isFastForwarding)
 		{
 			if (disableRTC) return;
 
-			if (!_isRewinding && !_isPaused)
-				if (RTC_PipeEngine.ProcessOnStep)
-					RTC_PipeEngine.ExecutePipes();
+			if (!_isRewinding)
+				RTC_PipeEngine.ExecutePipes();
 
-			if (_isRewinding || _isFastForwarding || _isPaused)
+			if (_isRewinding || _isFastForwarding)
 				return;
 
 			CPU_STEP_Count++;
@@ -110,7 +102,7 @@ namespace RTC
 
 			disableRTC = RTC_Core.args.Contains("-DISABLERTC");
 			isRemoteRTC = RTC_Core.args.Contains("-REMOTERTC");
-			showConsole = RTC_Core.args.Contains("-CONSOLE");
+			ShowConsole = RTC_Core.args.Contains("-CONSOLE");
 		}
 
 		public static void MAINFORM_FORM_LOAD_END()
