@@ -371,7 +371,7 @@ namespace RTC
 					break;
 
 				case CommandType.ENABLE_CONSOLE:
-					RTC_Hooks.showConsole = (bool)cmd.objectValue;
+					RTC_Hooks.ShowConsole = (bool)cmd.objectValue;
 					break;
 
 				case CommandType.BIZHAWK_OPEN_HEXEDITOR_ADDRESS:
@@ -468,9 +468,6 @@ namespace RTC
 					RTC_PipeEngine.ChainedPipes = (bool)cmd.objectValue;
 					break;
 
-				case CommandType.REMOTE_SET_PIPE_PROCESSONSTEP:
-					RTC_PipeEngine.ProcessOnStep = (bool)cmd.objectValue;
-					break;
 
 				case CommandType.REMOTE_SET_PIPE_CLEARPIPESREWIND:
 					RTC_Core.ClearPipesOnRewind = (bool)cmd.objectValue;

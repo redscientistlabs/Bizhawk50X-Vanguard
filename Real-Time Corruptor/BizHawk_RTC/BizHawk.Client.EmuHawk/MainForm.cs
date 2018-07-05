@@ -127,7 +127,7 @@ namespace BizHawk.Client.EmuHawk
 			Global.Game = GameInfo.NullInstance;
 
 			//RTC_Hijack - Check for manually triggered console
-			if (Global.Config.ShowLogWindow || RTC.RTC_Hooks.showConsole)
+			if (Global.Config.ShowLogWindow || RTC.RTC_Hooks.ShowConsole)
 			{
 				LogConsole.ShowConsole();
 				DisplayLogWindowMenuItem.Checked = true;
@@ -3008,7 +3008,7 @@ namespace BizHawk.Client.EmuHawk
 
 
 				//RTC_HIJACK : Hooking the step here as it's just before the tools update
-				RTC.RTC_Hooks.CPU_STEP(Global.ClientControls["Rewind"], Global.ClientControls["Fast Forward"], EmulatorPaused);
+				RTC.RTC_Hooks.CPU_STEP(Global.ClientControls["Rewind"], Global.ClientControls["Fast Forward"]);
 				//---------------------------------------
 
 				if (IsTurboing)
