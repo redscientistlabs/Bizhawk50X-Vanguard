@@ -50,7 +50,7 @@ namespace RTC
 		public static bool BizhawkOsdDisabled = true;
 		public static bool UseHexadecimal = true;
 		public static bool AllowCrossCoreCorruption = false;
-		public static bool CleanOnStartup = true;
+		public static bool DontCleanSavestatesOnQuit = false;
 
 		//Note Box Settings
 		public static System.Drawing.Point NoteBoxPosition;
@@ -145,7 +145,7 @@ namespace RTC
 			if (RTC_Core.standaloneForm != null)
 				RTC_Core.standaloneForm.Close();
 
-			if (!RTC_Hooks.isRemoteRTC && File.Exists(RTC_Core.bizhawkDir + "\\StateClean.bat")) //We force useless savestates to clear on quit to prevent disk usage to inflate too much
+			if (!RTC_Hooks.isRemoteRTC && !RTC_Core.DontCleanSavestatesOnQuit && File.Exists(RTC_Core.bizhawkDir + "\\StateClean.bat")) //We force useless savestates to clear on quit to prevent disk usage to inflate too much
 			{
 				Process p = new Process();
 				p.StartInfo.FileName = RTC_Core.bizhawkDir + "\\StateClean.bat";
@@ -155,7 +155,7 @@ namespace RTC
 			}
 
 			//Clean out the temp folders
-			if (!RTC_Hooks.isRemoteRTC && CleanOnStartup)
+			if (!RTC_Hooks.isRemoteRTC)
 			{
 				Stockpile.EmptyFolder("TEMP");
 				Stockpile.EmptyFolder("TEMP2");
@@ -273,7 +273,7 @@ namespace RTC
 			RTC_Params.LoadRTCColor();
 			RTC_Core.sForm.cbDisableBizhawkOSD.Checked = !RTC_Params.IsParamSet("ENABLE_BIZHAWK_OSD");
 			RTC_Core.sForm.cbAllowCrossCoreCorruption.Checked = RTC_Params.IsParamSet("ALLOW_CROSS_CORE_CORRUPTION");
-			RTC_Core.sForm.cbCleanAtStart.Checked = RTC_Params.IsParamSet("CLEAN_AT_START");
+			RTC_Core.sForm.cbDontCleanAtQuit.Checked = RTC_Params.IsParamSet("DONT_CLEAN_SAVESTATES_AT_QUIT");
 
 			//Load and initialize Hotkeys
 			//RTC_Hotkeys.InitializeHotkeySystem();

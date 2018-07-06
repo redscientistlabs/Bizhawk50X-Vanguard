@@ -120,14 +120,14 @@ namespace RTC
 			RTC_Core.AllowCrossCoreCorruption = cbAllowCrossCoreCorruption.Checked;
 		}
 
-		private void cbCleanAtStart_CheckedChanged(object sender, EventArgs e)
+		private void cbDontCleanAtQuit_CheckedChanged(object sender, EventArgs e)
 		{
-			if (cbCleanAtStart.Checked)
-				RTC_Params.RemoveParam("CLEAN_AT_START");
+			if (cbDontCleanAtQuit.Checked)
+				RTC_Params.SetParam("DONT_CLEAN_SAVESTATES_AT_QUIT");
 			else
-				RTC_Params.SetParam("CLEAN_AT_START");
+				RTC_Params.RemoveParam("DONT_CLEAN_SAVESTATES_AT_QUIT");
 
-			RTC_Core.SendCommandToBizhawk(new RTC_Command(CommandType.BIZHAWK_SET_CLEAN_AT_START) { objectValue = cbCleanAtStart.Checked });
+			RTC_Core.SendCommandToBizhawk(new RTC_Command(CommandType.BIZHAWK_SET_DONT_CLEAN_SAVESTATES_AT_QUIT) { objectValue = cbDontCleanAtQuit.Checked });
 		}
 
 		private void btnImportKeyBindings_Click(object sender, EventArgs e)

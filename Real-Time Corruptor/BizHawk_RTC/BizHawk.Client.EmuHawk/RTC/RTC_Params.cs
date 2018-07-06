@@ -32,7 +32,7 @@ namespace RTC
 
 			new Ref(() => RTC_Core.BizhawkOsdDisabled, x => { RTC_Core.BizhawkOsdDisabled = (bool)x; }),
 			new Ref(() => RTC_Hooks.ShowConsole, x => { RTC_Hooks.ShowConsole = (bool)x; }),
-			new Ref(() => RTC_Core.CleanOnStartup, x => { RTC_Core.CleanOnStartup = (bool)x; }),
+			new Ref(() => RTC_Core.DontCleanSavestatesOnQuit, x => { RTC_Core.DontCleanSavestatesOnQuit = (bool)x; }),
 
 			new Ref(() => RTC_NightmareEngine.Algo, x => { RTC_NightmareEngine.Algo = (BlastByteAlgo)x; }),
 			new Ref(() => RTC_NightmareEngine.MinValue, x => { RTC_NightmareEngine.MinValue = (long)x; }),

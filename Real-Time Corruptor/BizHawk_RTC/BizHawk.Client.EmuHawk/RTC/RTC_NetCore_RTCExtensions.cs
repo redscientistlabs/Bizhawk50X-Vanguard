@@ -366,8 +366,8 @@ namespace RTC
 					RTC_Core.BizhawkOsdDisabled = (bool)cmd.objectValue;
 					break;
 
-				case CommandType.BIZHAWK_SET_CLEAN_AT_START:
-					RTC_Core.CleanOnStartup = (bool)cmd.objectValue;
+				case CommandType.BIZHAWK_SET_DONT_CLEAN_SAVESTATES_AT_QUIT:
+					RTC_Core.DontCleanSavestatesOnQuit = (bool)cmd.objectValue;
 					break;
 
 				case CommandType.ENABLE_CONSOLE:

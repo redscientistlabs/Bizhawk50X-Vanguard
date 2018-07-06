@@ -49,7 +49,7 @@
             this.lbAttachedModeSettings = new System.Windows.Forms.Label();
             this.button1 = new System.Windows.Forms.Button();
             this.panel1 = new System.Windows.Forms.Panel();
-            this.cbCleanAtStart = new System.Windows.Forms.CheckBox();
+            this.cbDontCleanAtQuit = new System.Windows.Forms.CheckBox();
             this.cbAllowCrossCoreCorruption = new System.Windows.Forms.CheckBox();
             this.cbDisableBizhawkOSD = new System.Windows.Forms.CheckBox();
             this.label4 = new System.Windows.Forms.Label();
@@ -363,7 +363,7 @@
             // panel1
             // 
             this.panel1.BackColor = System.Drawing.Color.Gray;
-            this.panel1.Controls.Add(this.cbCleanAtStart);
+            this.panel1.Controls.Add(this.cbDontCleanAtQuit);
             this.panel1.Controls.Add(this.cbAllowCrossCoreCorruption);
             this.panel1.Controls.Add(this.cbDisableBizhawkOSD);
             this.panel1.Location = new System.Drawing.Point(19, 301);
@@ -372,20 +372,18 @@
             this.panel1.TabIndex = 132;
             this.panel1.Tag = "color:normal";
             // 
-            // cbCleanAtStart
+            // cbDontCleanAtQuit
             // 
-            this.cbCleanAtStart.AutoSize = true;
-            this.cbCleanAtStart.Checked = true;
-            this.cbCleanAtStart.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.cbCleanAtStart.Font = new System.Drawing.Font("Segoe UI", 8F);
-            this.cbCleanAtStart.ForeColor = System.Drawing.Color.White;
-            this.cbCleanAtStart.Location = new System.Drawing.Point(11, 56);
-            this.cbCleanAtStart.Name = "cbCleanAtStart";
-            this.cbCleanAtStart.Size = new System.Drawing.Size(147, 17);
-            this.cbCleanAtStart.TabIndex = 2;
-            this.cbCleanAtStart.Text = "Clean folders at startup";
-            this.cbCleanAtStart.UseVisualStyleBackColor = true;
-            this.cbCleanAtStart.CheckedChanged += new System.EventHandler(this.cbCleanAtStart_CheckedChanged);
+            this.cbDontCleanAtQuit.AutoSize = true;
+            this.cbDontCleanAtQuit.Font = new System.Drawing.Font("Segoe UI", 8F);
+            this.cbDontCleanAtQuit.ForeColor = System.Drawing.Color.White;
+            this.cbDontCleanAtQuit.Location = new System.Drawing.Point(11, 56);
+            this.cbDontCleanAtQuit.Name = "cbDontCleanAtQuit";
+            this.cbDontCleanAtQuit.Size = new System.Drawing.Size(177, 17);
+            this.cbDontCleanAtQuit.TabIndex = 2;
+            this.cbDontCleanAtQuit.Text = "Don\'t clean savestates at quit";
+            this.cbDontCleanAtQuit.UseVisualStyleBackColor = true;
+            this.cbDontCleanAtQuit.CheckedChanged += new System.EventHandler(this.cbDontCleanAtQuit_CheckedChanged);
             // 
             // cbAllowCrossCoreCorruption
             // 
@@ -521,6 +519,6 @@
         public System.Windows.Forms.CheckBox cbAllowCrossCoreCorruption;
         public System.Windows.Forms.Button btnImportKeyBindings;
 		private System.Windows.Forms.Button button2;
-		public System.Windows.Forms.CheckBox cbCleanAtStart;
+		public System.Windows.Forms.CheckBox cbDontCleanAtQuit;
 	}
 }
