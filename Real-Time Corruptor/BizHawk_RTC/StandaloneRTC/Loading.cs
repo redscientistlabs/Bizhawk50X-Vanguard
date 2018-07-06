@@ -21,7 +21,7 @@ namespace StandaloneRTC
 
 			if (args.Contains("-CONSOLE"))
 			{
-				RTC.RTC_Hooks.showConsole = true;
+				RTC.RTC_Hooks.ShowConsole = true;
 				BizHawk.Client.EmuHawk.LogConsole.CreateConsole();
 			}
 

@@ -27,23 +27,23 @@ namespace RTC
 
 		static int CPU_STEP_Count = 0;
 
-		public static void CPU_STEP(bool _isRewinding, bool _isFastForwarding)
+		public static void CPU_STEP(bool isRewinding, bool isFastForwarding)
 		{
 			if (disableRTC || Global.Emulator is NullEmulator)
 				return;
 
-			isNormalAdvance = !(_isRewinding || _isFastForwarding);
+			isNormalAdvance = !(isRewinding || isFastForwarding);
 
 			// Unique step hooks
-			if (!_isRewinding && !_isFastForwarding)
+			if (!isRewinding && !isFastForwarding)
 				STEP_FORWARD();
-			else if (_isRewinding)
+			else if (isRewinding)
 				STEP_REWIND();
-			else if (_isFastForwarding)
+			else if (isFastForwarding)
 				STEP_FASTFORWARD();
 
 			//Any step hook for corruption
-			STEP_CORRUPT(_isRewinding, _isFastForwarding);
+			STEP_CORRUPT(isRewinding, isFastForwarding);
 		}
 
 		private static void STEP_FORWARD()
