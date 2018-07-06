@@ -118,6 +118,17 @@ namespace RTC
 			RTC_Params.LoadBizhawkWindowState();
 
 			GlobalWin.MainForm.Focus();
+
+			//Yell at the user if they're using audio throttle as it's buggy
+			//We have to do this in the bizhawk process
+			if (Global.Config.SoundThrottle)
+			{
+				MessageBox.Show("Sound throttle is buggy and can result in crashes.\nSwapping to clock throttle.");
+				Global.Config.SoundThrottle = false;
+				Global.Config.ClockThrottle = true;
+				RTC_Hooks.BIZHAWK_SAVE_CONFIG();
+			}
+
 		}
 
 		public static void MAINFORM_RESIZEEND()
