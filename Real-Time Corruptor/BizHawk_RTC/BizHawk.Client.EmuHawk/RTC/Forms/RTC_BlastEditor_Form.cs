@@ -693,6 +693,11 @@ namespace RTC
 
 		private void PopulateAddressContextMenu(int column, int row)
 		{
+			if (row == -1)
+			{
+				PopulateColumnHeaderContextMenu(column);
+				return;
+			}
 			string domain = dgvBlastLayer["dgvSourceAddressDomain", row].Value.ToString();
 			long address = Convert.ToInt64(dgvBlastLayer["dgvSourceAddress", row].Value);
 
@@ -710,6 +715,12 @@ namespace RTC
 		private void PopulateParamContextMenu(int column, int row)
 		{
 			cmsBlastEditor.Items.Clear();
+			if (row == -1)
+			{
+				PopulateColumnHeaderContextMenu(column);
+				return;
+			}
+
 			if (dgvBlastLayer["dgvBlastUnitType", row].Value.ToString() == "RTC.BlastPipe")
 			{
 				string domain = dgvBlastLayer["dgvParamDomain", row].Value.ToString();
@@ -726,11 +737,28 @@ namespace RTC
 			{
 				((ToolStripMenuItem)cmsBlastEditor.Items.Add("Flip Param Bytes in Selected Rows", null, new EventHandler((ob, ev) =>
 				{
-					foreach(DataGridViewRow _row in dgvBlastLayer.SelectedRows)
+					foreach (DataGridViewRow _row in dgvBlastLayer.SelectedRows)
 					{
 						byte[] temp = RTC_Extensions.GetByteArrayValue(GetPrecisionSizeFromName(_row.Cells["dgvPrecision"].Value.ToString()), Convert.ToDecimal(_row.Cells["dgvParam"].Value.ToString()), true);
 						temp.FlipBytes();
 						_row.Cells["dgvParam"].Value = RTC_Extensions.GetDecimalValue(temp, true);
+					}
+				}))).Enabled = true;
+
+				((ToolStripMenuItem)cmsBlastEditor.Items.Add("Reroll Param in Selected Rows", null, new EventHandler((ob, ev) =>
+				{
+					foreach (DataGridViewRow _row in dgvBlastLayer.SelectedRows)
+					{
+						//Since we want the reroll to obey the engine params, we use the blastunit's reroll functionality
+						BlastUnit bu = ((BlastUnit)(_row.Cells["dgvBlastUnitReference"].Value));
+						bu.Reroll();
+						_row.Cells["dgvParam"].Value = GetParamValue(bu);
+
+						//If it's a BlastPipe, we need to make sure we also update the domain
+						if (bu is BlastPipe bp)
+							_row.Cells["dgvParamDomain"].Value = bp.PipeDomain;
+
+
 					}
 				}))).Enabled = true;
 			}
@@ -741,10 +769,12 @@ namespace RTC
 
 		private void PopulateBlastUnitModeContextMenu(int column, int row)
 		{
-			if (row == -1)
-				return;
-
 			cmsBlastEditor.Items.Clear();
+			if (row == -1)
+			{
+				PopulateColumnHeaderContextMenu(column);
+				return;
+			}
 
 			if (dgvBlastLayer["dgvBlastUnitType", row].Value.ToString() == "RTC.BlastByte")
 			{
@@ -775,6 +805,11 @@ namespace RTC
 		private void PopulateBlastUnitTypeContextMenu(int column, int row)
 		{
 			cmsBlastEditor.Items.Clear();
+			if (row == -1)
+			{
+				PopulateColumnHeaderContextMenu(column);
+				return;
+			}
 
 			//Adding these by hand
 
@@ -983,12 +1018,12 @@ namespace RTC
 			{
 				case BlastByte bb:
 				{
-					decimal value = RTC_Extensions.GetDecimalValue(bb.Value, bb.BigEndian);
+					decimal value = RTC_Extensions.GetDecimalValue(bb.Value, true);
 					return (long)value;
 				}
 				case BlastCheat bc:
 				{
-					decimal value = RTC_Extensions.GetDecimalValue(bc.Value, bc.BigEndian);
+					decimal value = RTC_Extensions.GetDecimalValue(bc.Value, true);
 					return (long)value;
 				}
 				case BlastPipe bp:

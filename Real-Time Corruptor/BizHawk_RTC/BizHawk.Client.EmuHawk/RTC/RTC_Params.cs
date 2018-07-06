@@ -35,10 +35,23 @@ namespace RTC
 			new Ref(() => RTC_Core.DontCleanSavestatesOnQuit, x => { RTC_Core.DontCleanSavestatesOnQuit = (bool)x; }),
 
 			new Ref(() => RTC_NightmareEngine.Algo, x => { RTC_NightmareEngine.Algo = (BlastByteAlgo)x; }),
-			new Ref(() => RTC_NightmareEngine.MinValue, x => { RTC_NightmareEngine.MinValue = (long)x; }),
-			new Ref(() => RTC_NightmareEngine.MaxValue, x => { RTC_NightmareEngine.MaxValue = (long)x; }),
-			new Ref(() => RTC_HellgenieEngine.MinValue, x => { RTC_HellgenieEngine.MinValue = (long)x; }),
-			new Ref(() => RTC_HellgenieEngine.MaxValue, x => { RTC_HellgenieEngine.MaxValue = (long)x; }),
+
+			new Ref(() => RTC_NightmareEngine.MinValue8Bit, x => { RTC_NightmareEngine.MinValue8Bit = (long)x; }),
+			new Ref(() => RTC_NightmareEngine.MaxValue8Bit, x => { RTC_NightmareEngine.MaxValue8Bit = (long)x; }),
+			new Ref(() => RTC_HellgenieEngine.MinValue8Bit, x => { RTC_HellgenieEngine.MinValue8Bit = (long)x; }),
+			new Ref(() => RTC_HellgenieEngine.MaxValue8Bit, x => { RTC_HellgenieEngine.MaxValue8Bit = (long)x; }),
+			new Ref(() => RTC_NightmareEngine.MinValue8Bit, x => { RTC_NightmareEngine.MinValue8Bit = (long)x; }),
+
+			new Ref(() => RTC_NightmareEngine.MaxValue16Bit, x => { RTC_NightmareEngine.MaxValue16Bit = (long)x; }),
+			new Ref(() => RTC_HellgenieEngine.MinValue16Bit, x => { RTC_HellgenieEngine.MinValue16Bit = (long)x; }),
+			new Ref(() => RTC_HellgenieEngine.MaxValue16Bit, x => { RTC_HellgenieEngine.MaxValue16Bit = (long)x; }),
+			new Ref(() => RTC_NightmareEngine.MinValue16Bit, x => { RTC_NightmareEngine.MinValue16Bit = (long)x; }),
+
+			new Ref(() => RTC_NightmareEngine.MaxValue32Bit, x => { RTC_NightmareEngine.MaxValue32Bit = (long)x; }),
+			new Ref(() => RTC_HellgenieEngine.MinValue32Bit, x => { RTC_HellgenieEngine.MinValue32Bit = (long)x; }),
+			new Ref(() => RTC_HellgenieEngine.MaxValue32Bit, x => { RTC_HellgenieEngine.MaxValue32Bit = (long)x; }),
+			new Ref(() => RTC_NightmareEngine.MinValue32Bit, x => { RTC_NightmareEngine.MinValue32Bit = (long)x; }),
+
 			new Ref(() => RTC_HellgenieEngine.MaxCheats, x => { RTC_HellgenieEngine.MaxCheats = (int)x; }),
 			new Ref(() => RTC_DistortionEngine.MaxAge, x => { RTC_DistortionEngine.MaxAge = (int)x; }),
 			new Ref(() => RTC_DistortionEngine.CurrentAge, x => { RTC_DistortionEngine.CurrentAge = (int)x; }),

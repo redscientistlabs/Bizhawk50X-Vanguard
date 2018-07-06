@@ -10,6 +10,8 @@ namespace RTC
 	public partial class RTC_EngineConfig_Form : Form
 	{
 		public bool DontUpdateIntensity = false;
+		private int defaultPrecision = -1;
+		private bool updatingMinMax = false;
 
 		public int Intensity
 		{
@@ -312,6 +314,13 @@ namespace RTC
 			RTC_DistortionEngine.Resync();
 		}
 
+		public void UpdateDefaultPrecision()
+		{
+			defaultPrecision = RTC_MemoryDomains.MemoryInterfaces[RTC_MemoryDomains.MainDomain].WordSize;
+			RTC_Core.ecForm.lbCoreDefault.Text = $"Core default: { defaultPrecision * 8}-bit";
+
+			updateMinMaxBoxes(defaultPrecision);
+		}
 
 		public void RefreshDomains()
 		{
@@ -748,12 +757,67 @@ namespace RTC
 			{
 				cbCustomPrecision.SelectedIndex = -1;
 				RTC_Core.CustomPrecision = -1;
-				RTC_Core.SendCommandToBizhawk(new RTC_Command(CommandType.REMOTE_SET_CUSTOMPRECISION) { objectValue = RTC_Core.CustomPrecision });
+				RTC_Core.SendCommandToBizhawk(new RTC_Command(CommandType.REMOTE_SET_CUSTOMPRECISION) { objectValue = RTC_Core.CustomPrecision }, true);
 			}
+		}
+
+		private void updateMinMaxBoxes(int precision)
+		{
+			updatingMinMax = true;
+			switch (precision)
+			{
+				case 1:
+					nmMinValueNightmare.Maximum = byte.MaxValue;
+					nmMaxValueNightmare.Maximum = byte.MaxValue;
+
+					nmMinValueHellgenie.Maximum = byte.MaxValue;
+					nmMaxValueHellgenie.Maximum = byte.MaxValue;
+
+
+					nmMinValueNightmare.Value = RTC_NightmareEngine.MinValue8Bit;
+					nmMaxValueNightmare.Value = RTC_NightmareEngine.MaxValue8Bit;
+
+					nmMinValueHellgenie.Value = RTC_HellgenieEngine.MinValue8Bit;
+					nmMaxValueHellgenie.Value = RTC_HellgenieEngine.MaxValue8Bit;
+					break;
+
+				case 2:
+					nmMinValueNightmare.Maximum = UInt16.MaxValue;
+					nmMaxValueNightmare.Maximum = UInt16.MaxValue;
+
+					nmMinValueHellgenie.Maximum = UInt16.MaxValue;
+					nmMaxValueHellgenie.Maximum = UInt16.MaxValue;
+
+					nmMinValueNightmare.Value = RTC_NightmareEngine.MinValue16Bit;
+					nmMaxValueNightmare.Value = RTC_NightmareEngine.MaxValue16Bit;
+
+					nmMinValueHellgenie.Value = RTC_HellgenieEngine.MinValue16Bit;
+					nmMaxValueHellgenie.Value = RTC_HellgenieEngine.MaxValue16Bit;
+					break;
+				case 4:
+					nmMinValueNightmare.Maximum = UInt32.MaxValue;
+					nmMaxValueNightmare.Maximum = UInt32.MaxValue;
+
+					nmMinValueHellgenie.Maximum = UInt32.MaxValue;
+					nmMaxValueHellgenie.Maximum = UInt32.MaxValue;
+
+					nmMinValueNightmare.Value = RTC_NightmareEngine.MinValue32Bit;
+					nmMaxValueNightmare.Value = RTC_NightmareEngine.MaxValue32Bit;
+
+					nmMinValueHellgenie.Value = RTC_HellgenieEngine.MinValue32Bit;
+					nmMaxValueHellgenie.Value = RTC_HellgenieEngine.MaxValue32Bit;
+
+					break;
+			}
+			updatingMinMax = false;
 		}
 
 		private void cbCustomPrecision_SelectedIndexChanged(object sender, EventArgs e)
 		{
+			//Deselect the updown boxes so they commit if they're selected.
+			//As you can use the scroll wheel over the combobox while the textbox is focused, this is required
+			cbCustomPrecision.Focus();
+
 			if (cbCustomPrecision.SelectedIndex != -1)
 			{
 				cbUseCustomPrecision.Checked = true;
@@ -762,43 +826,17 @@ namespace RTC
 				{
 					case 0:
 						RTC_Core.CustomPrecision = 1;
-
-						nmMinValueNightmare.Maximum = byte.MaxValue;
-						nmMinValueHellgenie.Maximum = byte.MaxValue;
-
-						nmMaxValueNightmare.Maximum = byte.MaxValue;
-						nmMaxValueHellgenie.Maximum = byte.MaxValue;
-
-						nmMaxValueNightmare.Value = byte.MaxValue;
-						nmMaxValueHellgenie.Value = byte.MaxValue;
 						break;
 					case 1:
 						RTC_Core.CustomPrecision = 2;
-
-						nmMinValueNightmare.Maximum = UInt16.MaxValue;
-						nmMinValueHellgenie.Maximum = UInt16.MaxValue;
-
-						nmMaxValueNightmare.Maximum = UInt16.MaxValue;
-						nmMaxValueHellgenie.Maximum = UInt16.MaxValue;
-
-						nmMaxValueNightmare.Value = UInt16.MaxValue;
-						nmMaxValueHellgenie.Value = UInt16.MaxValue;
 						break;
 					case 2:
 						RTC_Core.CustomPrecision = 4;
 
-						nmMinValueNightmare.Maximum = UInt32.MaxValue;
-						nmMinValueHellgenie.Maximum = UInt32.MaxValue;
-
-						nmMaxValueNightmare.Maximum = UInt32.MaxValue;
-						nmMaxValueHellgenie.Maximum = UInt32.MaxValue;
-
-						nmMaxValueNightmare.Value = UInt32.MaxValue;
-						nmMaxValueHellgenie.Value = UInt32.MaxValue;
 						break;
 				}
-
-				RTC_Core.SendCommandToBizhawk(new RTC_Command(CommandType.REMOTE_SET_CUSTOMPRECISION) { objectValue = RTC_Core.CustomPrecision });
+				RTC_Core.SendCommandToBizhawk(new RTC_Command(CommandType.REMOTE_SET_CUSTOMPRECISION) { objectValue = RTC_Core.CustomPrecision }, true);
+				updateMinMaxBoxes(RTC_Core.CustomPrecision);
 			}
 		}
 
@@ -810,44 +848,125 @@ namespace RTC
 			RTC_Core.bgForm.LoadNoStashKey();
 		}
 
+		//TODO
+		//Refactor this into a struct or something
+
 		private void nmMinValueNightmare_ValueChanged(object sender, EventArgs e)
 		{
-			//This is not a redundant check due to netcore
-			if (Convert.ToInt64(nmMinValueNightmare.Value) != RTC_NightmareEngine.MinValue)
+			//We don't want to trigger this if it caps when stepping downwards
+			if (updatingMinMax)
+				return;
+
+			int precision = 0;
+			long value = Convert.ToInt64(nmMinValueNightmare.Value);
+
+			if (RTC_Core.CustomPrecision == -1)
+				precision = defaultPrecision;
+			else
+				precision = RTC_Core.CustomPrecision;
+
+			switch (precision)
 			{
-				RTC_NightmareEngine.MinValue = Convert.ToInt64(nmMinValueNightmare.Value);
-				RTC_Core.SendCommandToBizhawk(new RTC_Command(CommandType.REMOTE_SET_NIGHTMARE_MINVALUE) { objectValue = RTC_NightmareEngine.MinValue });
+				case 1:
+					RTC_NightmareEngine.MinValue8Bit = value;
+					break;
+				case 2:
+					RTC_NightmareEngine.MinValue16Bit = value;
+					break;
+				case 4:
+					RTC_NightmareEngine.MinValue32Bit = value;
+					break;
 			}
+
+			RTC_Core.SendCommandToBizhawk(new RTC_Command(CommandType.REMOTE_SET_NIGHTMARE_MINVALUE) { objectValue = new object[] { precision, value } });
 		}
 
 		private void nmMaxValueNightmare_ValueChanged(object sender, EventArgs e)
 		{
-			//This is not a redundant check due to netcore
-			if (Convert.ToInt64(nmMaxValueNightmare.Value) != RTC_NightmareEngine.MaxValue)
+			//We don't want to trigger this if it caps when stepping downwards
+			if (updatingMinMax)
+				return;
+			int precision = 0;
+			long value = Convert.ToInt64(nmMaxValueNightmare.Value);
+
+			if (RTC_Core.CustomPrecision == -1)
+				precision = defaultPrecision;
+			else
+				precision = RTC_Core.CustomPrecision;
+
+			switch (precision)
 			{
-				RTC_NightmareEngine.MaxValue = Convert.ToInt64(nmMaxValueNightmare.Value);
-				RTC_Core.SendCommandToBizhawk(new RTC_Command(CommandType.REMOTE_SET_NIGHTMARE_MAXVALUE) { objectValue = RTC_NightmareEngine.MaxValue });
+				case 1:
+					RTC_NightmareEngine.MaxValue8Bit = value;
+					break;
+				case 2:
+					RTC_NightmareEngine.MaxValue16Bit = value;
+					break;
+				case 4:
+					RTC_NightmareEngine.MaxValue32Bit = value;
+					break;
 			}
+
+			RTC_Core.SendCommandToBizhawk(new RTC_Command(CommandType.REMOTE_SET_NIGHTMARE_MAXVALUE) { objectValue = new object[] { precision, value } });
 		}
 
 		private void nmMinValueHellgenie_ValueChanged(object sender, EventArgs e)
 		{
-			//This is not a redundant check due to netcore
-			if (Convert.ToInt64(nmMinValueHellgenie.Value) != RTC_HellgenieEngine.MinValue)
+			//We don't want to trigger this if it caps when stepping downwards
+			if (updatingMinMax)
+				return;
+			long value = Convert.ToInt64(nmMinValueHellgenie.Value);
+			int precision = 0;
+
+			if (RTC_Core.CustomPrecision == -1)
+				precision = defaultPrecision;
+			else
+				precision = RTC_Core.CustomPrecision;
+
+			switch (precision)
 			{
-				RTC_HellgenieEngine.MinValue = Convert.ToInt64(nmMinValueHellgenie.Value);
-				RTC_Core.SendCommandToBizhawk(new RTC_Command(CommandType.REMOTE_SET_HELLGENIE_MINVALUE) { objectValue = RTC_HellgenieEngine.MinValue });
+				case 1:
+					RTC_HellgenieEngine.MinValue8Bit = value;
+					break;
+				case 2:
+					RTC_HellgenieEngine.MinValue16Bit = value;
+					break;
+				case 4:
+					RTC_HellgenieEngine.MinValue32Bit = value;
+					break;
 			}
+
+			RTC_Core.SendCommandToBizhawk(new RTC_Command(CommandType.REMOTE_SET_HELLGENIE_MINVALUE) { objectValue = new object[] { precision, value } });
 		}
 
 		private void nmMaxValueHellgenie_ValueChanged(object sender, EventArgs e)
 		{
-			//This is not a redundant check due to netcore
-			if (Convert.ToInt64(nmMaxValueHellgenie.Value) != RTC_HellgenieEngine.MaxValue)
+			//We don't want to trigger this if it caps when stepping downwards
+			if (updatingMinMax)
+				return;
+
+			long value = Convert.ToInt64(nmMaxValueHellgenie.Value);
+			int precision = 0;
+
+			if (RTC_Core.CustomPrecision == -1)
+				precision = defaultPrecision;
+			else
+				precision = RTC_Core.CustomPrecision;
+
+			switch (precision)
 			{
-				RTC_HellgenieEngine.MaxValue = Convert.ToInt64(nmMaxValueHellgenie.Value);
-				RTC_Core.SendCommandToBizhawk(new RTC_Command(CommandType.REMOTE_SET_HELLGENIE_MAXVALUE) { objectValue = RTC_HellgenieEngine.MaxValue });
+				case 1:
+					RTC_HellgenieEngine.MaxValue8Bit = value;
+					break;
+				case 2:
+					RTC_HellgenieEngine.MaxValue16Bit = value;
+					break;
+				case 4:
+					RTC_HellgenieEngine.MaxValue32Bit = value;
+					break;
 			}
+
+			RTC_Core.SendCommandToBizhawk(new RTC_Command(CommandType.REMOTE_SET_HELLGENIE_MAXVALUE) { objectValue = new object[] { precision, value } });
 		}
 	}
 }

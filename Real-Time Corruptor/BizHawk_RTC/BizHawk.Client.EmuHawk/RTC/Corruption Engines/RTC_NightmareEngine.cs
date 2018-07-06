@@ -6,8 +6,14 @@ namespace RTC
 	public static class RTC_NightmareEngine
 	{
 		public static BlastByteAlgo Algo = BlastByteAlgo.RANDOM;
-		public static long MinValue = 0;
-		public static long MaxValue = 255;
+		public static long MinValue8Bit = 0;
+		public static long MaxValue8Bit = 0xFF;
+
+		public static long MinValue16Bit = 0;
+		public static long MaxValue16Bit = 0xFFFF;
+
+		public static long MinValue32Bit = 0;
+		public static long MaxValue32Bit = 0xFFFFFFFF;
 
 		public static BlastUnit GenerateUnit(string domain, long address)
 		{
@@ -71,7 +77,19 @@ namespace RTC
 
 				if (type == BlastByteType.SET)
 				{
-					long randomValue = RTC_Core.RND.RandomLong(MinValue, MaxValue);
+					long randomValue = 0;
+					switch (value.Length)
+					{
+						case (1):
+							randomValue = RTC_Core.RND.RandomLong(MinValue8Bit, MaxValue8Bit);
+							break;
+						case (2):
+							randomValue = RTC_Core.RND.RandomLong(MinValue16Bit, MaxValue16Bit);
+							break;
+						case (4):
+							randomValue = RTC_Core.RND.RandomLong(MinValue32Bit, MaxValue32Bit);
+							break;
+					}
 
 					value = RTC_Extensions.GetByteArrayValue(value.Length, randomValue, true);
 				}

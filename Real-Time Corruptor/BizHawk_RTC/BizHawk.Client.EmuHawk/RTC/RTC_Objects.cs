@@ -1015,7 +1015,7 @@ namespace RTC
 	}
 
 	[Serializable]
-	public abstract class BlastUnit
+	public abstract class BlastUnit 
 	{
 		public abstract bool Apply();
 
@@ -1032,6 +1032,7 @@ namespace RTC
 		public abstract string Domain { get; set; }
 		public abstract long Address { get; set; }
 		public abstract string Note { get; set; }
+
 	}
 
 	[Serializable]
@@ -1172,7 +1173,19 @@ namespace RTC
 		{
 			if (Type == BlastByteType.SET)
 			{
-				long randomValue = RTC_Core.RND.RandomLong(RTC_NightmareEngine.MinValue, RTC_NightmareEngine.MaxValue);
+				long randomValue = 0;
+				switch (Value.Length)
+				{
+					case (1):
+						randomValue = RTC_Core.RND.RandomLong(RTC_NightmareEngine.MinValue8Bit, RTC_NightmareEngine.MaxValue8Bit);
+						break;
+					case (2):
+						randomValue = RTC_Core.RND.RandomLong(RTC_NightmareEngine.MinValue16Bit, RTC_NightmareEngine.MaxValue16Bit);
+						break;
+					case (4):
+						randomValue = RTC_Core.RND.RandomLong(RTC_NightmareEngine.MinValue32Bit, RTC_NightmareEngine.MaxValue32Bit);
+						break;
+				}
 				Value = RTC_Extensions.GetByteArrayValue(Value.Length, randomValue, true);
 			}
 			else if (Type == BlastByteType.ADD || Type == BlastByteType.SUBSTRACT)
@@ -1639,7 +1652,19 @@ namespace RTC
 			//No reason to re-roll freeze
 			if (!IsFreeze)
 			{
-				long randomValue = RTC_Core.RND.RandomLong(RTC_HellgenieEngine.MinValue, RTC_HellgenieEngine.MaxValue);
+				long randomValue = 0;
+				switch (Value.Length)
+				{
+					case (1):
+						randomValue = RTC_Core.RND.RandomLong(RTC_HellgenieEngine.MinValue8Bit, RTC_HellgenieEngine.MaxValue8Bit);
+						break;
+					case (2):
+						randomValue = RTC_Core.RND.RandomLong(RTC_HellgenieEngine.MinValue16Bit, RTC_HellgenieEngine.MaxValue16Bit);
+						break;
+					case (4):
+						randomValue = RTC_Core.RND.RandomLong(RTC_HellgenieEngine.MinValue32Bit, RTC_HellgenieEngine.MaxValue32Bit);
+						break;
+				}
 				Value = RTC_Extensions.GetByteArrayValue(Value.Length, randomValue, true);
 			}
 		}

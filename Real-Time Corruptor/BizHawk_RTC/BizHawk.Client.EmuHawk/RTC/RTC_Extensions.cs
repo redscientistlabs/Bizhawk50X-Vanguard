@@ -2431,7 +2431,10 @@ namespace RTC
 					var val = Convert.ToDecimal(Convert.ToInt64(base.Text, 16));
 
 					if (val > Maximum)
+					{
 						base.Text = string.Format("{0:X}", (uint)Maximum);
+					//	val = (uint)Maximum;
+					}
 
 					if (!string.IsNullOrEmpty(base.Text))
 						this.Value = val;

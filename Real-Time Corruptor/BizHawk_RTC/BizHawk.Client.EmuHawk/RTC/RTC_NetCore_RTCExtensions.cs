@@ -375,6 +375,8 @@ namespace RTC
 					break;
 
 				case CommandType.BIZHAWK_OPEN_HEXEDITOR_ADDRESS:
+				{
+
 					GlobalWin.Tools.Load<HexEditor>();
 					string domain = (string)(cmd.objectValue as object[])[0];
 					long address = (long)(cmd.objectValue as object[])[1];
@@ -385,6 +387,7 @@ namespace RTC
 					GlobalWin.Tools.HexEditor.SetDomain(mdp.md);
 					GlobalWin.Tools.HexEditor.GoToAddress(realAddress);
 					break;
+				}
 
 				case CommandType.REMOTE_SET_SAVESTATEBOX:
 					RTC_StockpileManager.currentSavestateKey = (string)cmd.objectValue;
@@ -417,22 +420,85 @@ namespace RTC
 					RTC_NightmareEngine.Algo = (BlastByteAlgo)cmd.objectValue;
 					break;
 				case CommandType.REMOTE_SET_NIGHTMARE_MINVALUE:
-					RTC_NightmareEngine.MinValue = (long)cmd.objectValue;
-					break;
-				case CommandType.REMOTE_SET_NIGHTMARE_MAXVALUE:
-					RTC_NightmareEngine.MaxValue = (long)cmd.objectValue;
-					break;
+				{
+					int precision = (int)(cmd.objectValue as object[])[0];
+					long value = (long)(cmd.objectValue as object[])[1];
 
+					switch (precision)
+					{
+						case 1:
+							RTC_NightmareEngine.MinValue8Bit = value;
+							break;
+						case 2:
+							RTC_NightmareEngine.MinValue16Bit = value;
+							break;
+						case 4:
+							RTC_NightmareEngine.MinValue32Bit = value;
+							break;
+					}
+					break;
+				}
+				case CommandType.REMOTE_SET_NIGHTMARE_MAXVALUE:
+				{
+					int precision = (int)(cmd.objectValue as object[])[0];
+					long value = (long)(cmd.objectValue as object[])[1];
+
+					switch (precision)
+					{
+						case 1:
+							RTC_NightmareEngine.MaxValue8Bit = value;
+							break;
+						case 2:
+							RTC_NightmareEngine.MaxValue16Bit = value;
+							break;
+						case 4:
+							RTC_NightmareEngine.MaxValue32Bit = value;
+							break;
+					}
+					break;
+				}
 				case CommandType.REMOTE_SET_HELLGENIE_MAXCHEATS:
 					RTC_HellgenieEngine.MaxCheats = (int)cmd.objectValue;
 					break;
 
 				case CommandType.REMOTE_SET_HELLGENIE_MINVALUE:
-					RTC_HellgenieEngine.MinValue = (long)cmd.objectValue;
+				{
+					int precision = (int)(cmd.objectValue as object[])[0];
+					long value = (long)(cmd.objectValue as object[])[1];
+
+					switch (precision)
+					{
+						case 1:
+							RTC_HellgenieEngine.MinValue8Bit = value;
+							break;
+						case 2:
+							RTC_HellgenieEngine.MinValue16Bit = value;
+							break;
+						case 4:
+							RTC_HellgenieEngine.MinValue32Bit = value;
+							break;
+					}
 					break;
+				}
 				case CommandType.REMOTE_SET_HELLGENIE_MAXVALUE:
-					RTC_HellgenieEngine.MaxValue = (long)cmd.objectValue;
+				{
+					int precision = (int)(cmd.objectValue as object[])[0];
+					long value = (long)(cmd.objectValue as object[])[1];
+
+					switch (precision)
+					{
+						case 1:
+							RTC_HellgenieEngine.MaxValue8Bit = value;
+							break;
+						case 2:
+							RTC_HellgenieEngine.MaxValue16Bit = value;
+							break;
+						case 4:
+							RTC_HellgenieEngine.MaxValue32Bit = value;
+							break;
+					}
 					break;
+				}
 
 				case CommandType.REMOTE_SET_HELLGENIE_CHEARCHEATSREWIND:
 					RTC_Core.ClearCheatsOnRewind = (bool)cmd.objectValue;
@@ -504,12 +570,12 @@ namespace RTC
 					//RTC_StockpileManager.isCorruptionApplied = false;
 					RTC_Core.ecForm.RefreshDomains();
 					RTC_Core.ecForm.SetMemoryDomainsAllButSelectedDomains(RTC_MemoryDomains.GetBlacklistedDomains());
-					RTC_Core.ecForm.lbCoreDefault.Text = $"Core default: { RTC_MemoryDomains.MemoryInterfaces[RTC_MemoryDomains.MainDomain].WordSize * 8}-bit";
+					RTC_Core.ecForm.UpdateDefaultPrecision();
 					break;
 				case CommandType.REMOTE_EVENT_LOADGAMEDONE_SAMEGAME:
 					//RTC_StockpileManager.isCorruptionApplied = false;
 					RTC_Core.ecForm.RefreshDomainsAndKeepSelected();
-					RTC_Core.ecForm.lbCoreDefault.Text = $"Core default: { RTC_MemoryDomains.MemoryInterfaces[RTC_MemoryDomains.MainDomain].WordSize * 8}-bit";
+					RTC_Core.ecForm.UpdateDefaultPrecision();
 					break;
 
 				case CommandType.REMOTE_EVENT_CLOSEBIZHAWK:
