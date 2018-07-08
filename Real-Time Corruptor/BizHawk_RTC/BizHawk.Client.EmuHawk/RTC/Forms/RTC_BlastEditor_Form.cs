@@ -23,7 +23,7 @@ namespace RTC
 		 *
 		 * 0 DgvBlastUnitReference
 		 * 1 DgvBlastUnitLocked.
-		 * 2 DgvBlastEnabled
+		 * 2 DgvBlastUnitEnabled
 		 * 3 DgvPrecision
 		 * 4 DgvBlastUnitType
 		 * 5 DgvBlastUnitMode
@@ -38,7 +38,7 @@ namespace RTC
 		{
 			DgvBlastUnitReference,
 			DgvBlastUnitLocked,
-			DgvBlastEnabled,
+			DgvBlastUnitEnabled,
 			DgvPrecision,
 			DgvBlastUnitType,
 			DgvBlastUnitMode,
@@ -717,7 +717,6 @@ namespace RTC
 			cmsBlastEditor.Items.Clear();
 			if (row == -1)
 			{
-				PopulateColumnHeaderContextMenu(column);
 				return;
 			}
 
@@ -772,7 +771,6 @@ namespace RTC
 			cmsBlastEditor.Items.Clear();
 			if (row == -1)
 			{
-				PopulateColumnHeaderContextMenu(column);
 				return;
 			}
 
@@ -807,7 +805,6 @@ namespace RTC
 			cmsBlastEditor.Items.Clear();
 			if (row == -1)
 			{
-				PopulateColumnHeaderContextMenu(column);
 				return;
 			}
 
@@ -844,15 +841,15 @@ namespace RTC
 				{
 					//Blast unit locked
 					//Blast unit enabled
-					case 1:
-					case 2:
+					case (int)BlastEditorColumn.DgvBlastUnitLocked:
+					case (int)BlastEditorColumn.DgvBlastUnitEnabled:
 						foreach (DataGridViewRow row in dgvBlastLayer.SelectedRows)
 						{
 							row.Cells[column].Value = !(bool)(row.Cells[column].Value);
 						}
 						break;
 
-					case 3:
+					case (int)BlastEditorColumn.DgvPrecision:
 						string[] options = { "8-bit", "16-bit", "32-bit" };
 						if (RTC_Extensions.GetComboInputBox("Replace Selected Rows", "Replacement input: ", options, ref newvalue) == DialogResult.OK)
 							foreach (DataGridViewRow row in dgvBlastLayer.SelectedRows)
@@ -861,15 +858,15 @@ namespace RTC
 							}
 						break;
 
-					/* 4 dgvBlastUnitType
-					 * 5 dgvBlastUnitMode
-					 * 6 dgvSourceAddressDomain
-					 * 8 dvgParamDomain
+					/* 4 
+					 * 5 
+					 * 6 
+					 * 8 
 					 */
-					case 4:
-					case 5:
-					case 6:
-					case 8:
+					case (int)BlastEditorColumn.DgvBlastUnitType:
+					case (int)BlastEditorColumn.DgvBlastUnitMode:
+					case (int)BlastEditorColumn.DgvSourceAddressDomain:
+					case (int)BlastEditorColumn.DgvParamDomain:
 						if (RTC_Extensions.GetInputBox("Replace Selected Rows", "Replacement input (make sure it's valid): ", ref newvalue) == DialogResult.OK)
 							foreach (DataGridViewRow row in dgvBlastLayer.SelectedRows)
 							{
@@ -877,7 +874,7 @@ namespace RTC
 							}
 						break;
 					//7 dvgSourceAddress
-					case 7:
+					case (int)BlastEditorColumn.DgvSourceAddress:
 						if (RTC_Extensions.GetInputBox("Replace Selected Rows", "Replacement input (make sure it's valid): ", ref decimalvalue, RTC_Core.UseHexadecimal) == DialogResult.OK)
 							foreach (DataGridViewRow row in dgvBlastLayer.SelectedRows)
 							{
@@ -886,7 +883,7 @@ namespace RTC
 						break;
 					//9 dvgParam
 					//Needs to be capped at the precision so it's separate from case 7 (the address)
-					case 9:
+					case (int)BlastEditorColumn.DgvParam:
 						if (RTC_Extensions.GetInputBox("Replace Selected Rows", "Replacement input (make sure it's valid): ", ref decimalvalue, RTC_Core.UseHexadecimal) == DialogResult.OK)
 							foreach (DataGridViewRow row in dgvBlastLayer.SelectedRows)
 							{
@@ -919,43 +916,35 @@ namespace RTC
 			else if (e.Button == MouseButtons.Right)
 			{
 				switch (currentMouseOverColumn)
-				{
-					//Nothing
-					case -1:
-						cmsBlastEditor.Items.Clear();
-						PopulateColumnHeaderContextMenu(currentMouseOverColumn);
-						cmsBlastEditor.Show(dgvBlastLayer, new Point(e.X, e.Y));
-						break;
-					//BlastUnitType
+				{					//BlastUnitType
 					case (int)BlastEditorColumn.DgvBlastUnitType:
 						PopulateBlastUnitTypeContextMenu(currentMouseOverColumn, currentMouseOverRow);
-						cmsBlastEditor.Show(dgvBlastLayer, new Point(e.X, e.Y));
 						break;
 					//BlastUnitMode
 					case (int)BlastEditorColumn.DgvBlastUnitMode:
 						PopulateBlastUnitModeContextMenu(currentMouseOverColumn, currentMouseOverRow);
-						cmsBlastEditor.Show(dgvBlastLayer, new Point(e.X, e.Y));
 						break;
 
 					//Domain1 Domain2
 					case (int)BlastEditorColumn.DgvSourceAddressDomain:
 					case (int)BlastEditorColumn.DgvParamDomain:
 						PopulateDomainContextMenu(currentMouseOverColumn);
-						cmsBlastEditor.Show(dgvBlastLayer, new Point(e.X, e.Y));
 						break;
 					//Source Address
 					case (int)BlastEditorColumn.DgvSourceAddress:
 						PopulateAddressContextMenu(currentMouseOverColumn, currentMouseOverRow);
-						cmsBlastEditor.Show(dgvBlastLayer, new Point(e.X, e.Y));
 						break;
 					//Param
 					case (int)BlastEditorColumn.DgvParam:
 						PopulateParamContextMenu(currentMouseOverColumn, currentMouseOverRow);
-						cmsBlastEditor.Show(dgvBlastLayer, new Point(e.X, e.Y));
 						break;
 					default:
+						cmsBlastEditor.Items.Clear();
+						PopulateColumnHeaderContextMenu(currentMouseOverColumn);
 						break;
 				}
+
+				cmsBlastEditor.Show(dgvBlastLayer, new Point(e.X, e.Y));
 			}
 		}
 
