@@ -193,7 +193,13 @@ namespace RTC
 			{
 				if (networkStream == null && !dontCreateNetworkStream)
 				{
-					server = new TcpListener(IPAddress.Any, port);
+					//We use loopback if in detached mode, otherwise use any
+					if(RTC_Core.isStandalone || RTC_Hooks.isRemoteRTC)
+						server = new TcpListener(IPAddress.Loopback, port);
+					else
+					{
+						server = new TcpListener(IPAddress.Any, port);
+					}
 					server.Start();
 					socket = KillableAcceptSocket(server);
 					networkStream = new NetworkStream(socket);
@@ -436,7 +442,12 @@ namespace RTC
 			{
 				client = new TcpClient();
 
+				//Use loopback in detached
+				if (RTC_Core.isStandalone || RTC_Hooks.isRemoteRTC)
+					address = IPAddress.Loopback.ToString();
+
 				var result = client.BeginConnect(address, port, null, null);
+
 				var success = result.AsyncWaitHandle.WaitOne(TimeSpan.FromMilliseconds(DefaultMaxRetries));
 
 				if (!success)

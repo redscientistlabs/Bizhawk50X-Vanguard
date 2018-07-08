@@ -710,7 +710,7 @@ namespace RTC
 			//if (Global.Emulator is NullEmulator)
 			//   return;
 
-			if (RTC_StockpileManager.currentStashkey == null || RTC_StockpileManager.currentStashkey.BlastLayer.Layer.Count == 0)
+			if ( RTC_StockpileManager.currentStashkey?.BlastLayer?.Layer?.Count == 0)
 			{
 				IsCorruptionApplied = false;
 				return;

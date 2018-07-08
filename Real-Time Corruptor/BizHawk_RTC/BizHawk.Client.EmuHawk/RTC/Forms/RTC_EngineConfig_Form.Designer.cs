@@ -1520,9 +1520,9 @@
             this.groupBox1.Controls.Add(this.label6);
             this.groupBox1.Font = new System.Drawing.Font("Segoe UI", 9.75F);
             this.groupBox1.ForeColor = System.Drawing.Color.White;
-            this.groupBox1.Location = new System.Drawing.Point(23, 29);
+            this.groupBox1.Location = new System.Drawing.Point(14, 16);
             this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(181, 151);
+            this.groupBox1.Size = new System.Drawing.Size(200, 176);
             this.groupBox1.TabIndex = 133;
             this.groupBox1.TabStop = false;
             // 
@@ -1531,7 +1531,7 @@
             this.label6.AutoSize = true;
             this.label6.Font = new System.Drawing.Font("Segoe UI Semibold", 9F);
             this.label6.ForeColor = System.Drawing.Color.White;
-            this.label6.Location = new System.Drawing.Point(14, 64);
+            this.label6.Location = new System.Drawing.Point(26, 73);
             this.label6.Name = "label6";
             this.label6.Size = new System.Drawing.Size(155, 30);
             this.label6.TabIndex = 132;
@@ -1634,6 +1634,7 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
             this.ClientSize = new System.Drawing.Size(1467, 623);
+            this.Controls.Add(this.pnGeneralParameters);
             this.Controls.Add(this.gbBlastGeneratorEngine);
             this.Controls.Add(this.label3);
             this.Controls.Add(this.label2);
@@ -1644,13 +1645,12 @@
             this.Controls.Add(this.gbFreezeEngine);
             this.Controls.Add(this.gbHellgenieEngine);
             this.Controls.Add(this.gbNightmareEngine);
-            this.Controls.Add(this.pnGeneralParameters);
             this.Controls.Add(this.label5);
             this.Controls.Add(this.pnMemoryTargetting);
             this.Controls.Add(this.pnCorruptionEngine);
             this.Controls.Add(this.label11);
-            this.Controls.Add(this.groupBox1);
             this.Controls.Add(this.gbDomainsUnavailable);
+            this.Controls.Add(this.groupBox1);
             this.DoubleBuffered = true;
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
             this.Name = "RTC_EngineConfig_Form";
