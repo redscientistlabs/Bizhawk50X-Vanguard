@@ -86,9 +86,13 @@ namespace RTC
 			return bl;
 		}
 
-		public static void AddBlastUnit(BlastUnit bu) 
+		public static void AddBlastUnit(BlastUnit bu)
 		{
-			List<BlastUnit> collection = buListCollection.FirstOrDefault(it => (it[0].ApplyFrame == bu.ApplyFrame) && (it[0].Lifetime == bu.Lifetime));
+			bu.ApplyFrameQueued = bu.ApplyFrame + currentFrame;
+			bu.LastFrame = bu.ApplyFrameQueued + bu.Lifetime;
+
+			List<BlastUnit> collection = buListCollection.FirstOrDefault(it => (it[0].ApplyFrameQueued == bu.ApplyFrameQueued) && (it[0].Lifetime == bu.Lifetime));
+			
 			if (collection == null)
 			{
 				collection = new List<BlastUnit>();
@@ -109,7 +113,7 @@ namespace RTC
 			foreach (List<BlastUnit> buList in queued)
 				buListCollection.Add(buList);
 
-			buListCollection = buListCollection.OrderBy(it => it[0].ApplyFrame).ToList();
+			buListCollection = buListCollection.OrderBy(it => it[0].ApplyFrameQueued).ToList();
 
 
 			foreach(List<BlastUnit> buList in buListCollection)
@@ -129,7 +133,7 @@ namespace RTC
 			
 			//Peek to know the next frame we'll need to dequeue on
 			if (currentFrame > nextFrame)
-				nextFrame = (queued.First())[0].ApplyFrame;
+				nextFrame = (queued.First())[0].ApplyFrameQueued;
 
 			//Dequeue the next BlastunitList and add it to the active list
 			while(currentFrame == nextFrame)

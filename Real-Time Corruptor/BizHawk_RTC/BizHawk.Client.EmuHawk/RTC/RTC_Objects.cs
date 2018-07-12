@@ -1036,8 +1036,11 @@ namespace RTC
 		public int ApplyFrame = 0;
 		public int Lifetime = -1;
 		
-		//Inclusive
+		//Working data
+		//We Calculate a LastFrame at the beginning of execute
+		//We calculate ApplyFrameQueued which is the ApplyFrame + the currentframe that was calculated at the time of it entering the execution pool
 		public int LastFrame = -1;
+		public int ApplyFrameQueued = 0;
 	}
 
 	[Serializable]
@@ -1105,13 +1108,13 @@ namespace RTC
 
 				byte[] _Values = (byte[])Value.Clone();
 
-				if ((Type == BlastByteType.VECTOR || Type == BlastByteType.ADD || Type == BlastByteType.SUBSTRACT) && BigEndian)
+				if ((Type == BlastByteType.VECTOR || Type == BlastByteType.ADD || Type == BlastByteType.SUBTRACT) && BigEndian)
 					_Values.FlipBytes();
 
-				//When using ADD and SUBSTRACT we need to properly handle multi-byte values.
+				//When using ADD and SUBTRACT we need to properly handle multi-byte values.
 				//This means that it has to properly roll-over.
 				//00 00 00 FF needs to become 00 00 01 00,  FF FF FF FF needs to become 00 00 00 00, etc
-				//We assume that the user is going to be using SET and VECTOR more than ADD and SUBSTRACT so check them first
+				//We assume that the user is going to be using SET and VECTOR more than ADD and SUBTRACT so check them first
 				switch (Type)
 				{
 					case (BlastByteType.SET):
@@ -1122,7 +1125,7 @@ namespace RTC
 						_Values = RTC_Extensions.AddValueToByteArray(mdp.PeekBytes(targetAddress, targetAddress + _Values.Length), RTC_Extensions.GetDecimalValue(_Values, !(BigEndian)), BigEndian);
 						break;
 
-					case (BlastByteType.SUBSTRACT):
+					case (BlastByteType.SUBTRACT):
 						_Values = RTC_Extensions.AddValueToByteArray(mdp.PeekBytes(targetAddress, targetAddress + _Values.Length), RTC_Extensions.GetDecimalValue(_Values, !(BigEndian)) * -1, BigEndian);
 						break;
 
@@ -1130,7 +1133,7 @@ namespace RTC
 						return true;
 				}
 
-				//As add and substract are accounted for already, we no longer need to check the type here.
+				//As add and subtract are accounted for already, we no longer need to check the type here.
 				for (int i = 0; i < _Values.Length; i++)
 					mdp.PokeByte(targetAddress + i, _Values[i]);
 			}
@@ -1193,7 +1196,7 @@ namespace RTC
 				}
 				Value = RTC_Extensions.GetByteArrayValue(Value.Length, randomValue, true);
 			}
-			else if (Type == BlastByteType.ADD || Type == BlastByteType.SUBSTRACT)
+			else if (Type == BlastByteType.ADD || Type == BlastByteType.SUBTRACT)
 			{
 				var result = RTC_Core.RND.Next(1, 3);
 				switch (result)
@@ -1203,7 +1206,7 @@ namespace RTC
 						break;
 
 					case 2:
-						Type = BlastByteType.SUBSTRACT;
+						Type = BlastByteType.SUBTRACT;
 						break;
 				}
 			}
