@@ -855,6 +855,7 @@
     <Compile Include="RTC\RTC_Params.cs" />
     <Compile Include="RTC\RTC_Render.cs" />
     <Compile Include="RTC\RTC_RPC.cs" />
+    <Compile Include="RTC\RTC_StepActions.cs" />
     <Compile Include="RTC\RTC_StockpileManager.cs" />
     <Compile Include="Sound\Interfaces\IBufferedSoundProvider.cs" />
     <Compile Include="Sound\Interfaces\ISoundOutput.cs" />
