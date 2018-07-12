@@ -613,7 +613,6 @@ namespace RTC
 	[XmlInclude(typeof(BlastCheat))]
 	[XmlInclude(typeof(BlastByte))]
 	[XmlInclude(typeof(BlastPipe))]
-	[XmlInclude(typeof(BlastVector))]
 	[XmlInclude(typeof(BlastUnit))]
 	[Serializable]
 	public class VmdPrototype

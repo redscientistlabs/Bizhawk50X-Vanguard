@@ -23,8 +23,7 @@ namespace RTC
 			new Ref(() => RTC_Core.ErrorDelay, x => { RTC_Core.ErrorDelay = (int)x; }),
 			new Ref(() => RTC_Core.Radius, x => { RTC_Core.Radius = (BlastRadius)x; }),
 
-			new Ref(() => RTC_Core.ClearCheatsOnRewind, x => { RTC_Core.ClearCheatsOnRewind = (bool)x; }),
-			new Ref(() => RTC_Core.ClearPipesOnRewind, x => { RTC_Core.ClearPipesOnRewind = (bool)x; }),
+			new Ref(() => RTC_Core.ClearStepActionsOnRewind, x => { RTC_Core.ClearStepActionsOnRewind = (bool)x; }),
 			new Ref(() => RTC_Core.ExtractBlastLayer, x => { RTC_Core.ExtractBlastLayer = (bool)x; }),
 			new Ref(() => RTC_Core.lastOpenRom, x => { RTC_Core.lastOpenRom = (string)x; }),
 			new Ref(() => RTC_Core.lastLoaderRom, x => { RTC_Core.lastLoaderRom = (int)x; }),

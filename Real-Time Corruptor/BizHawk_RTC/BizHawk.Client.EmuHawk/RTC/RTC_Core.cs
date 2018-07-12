@@ -40,8 +40,7 @@ namespace RTC
 		public static BlastRadius Radius = BlastRadius.SPREAD;
 		public static bool AutoCorrupt = false;
 
-		public static bool ClearCheatsOnRewind = false;
-		public static bool ClearPipesOnRewind = false;
+		public static bool ClearStepActionsOnRewind = false;
 		public static bool ExtractBlastLayer = false;
 		public static string lastOpenRom = null;
 		public static int lastLoaderRom = 0;

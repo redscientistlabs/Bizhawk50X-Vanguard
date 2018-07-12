@@ -13,7 +13,7 @@ namespace RTC
 			BlastLayer bl = new BlastLayer();
 
 			//We need to clear any cheats out first
-			RTC_HellgenieEngine.ClearCheats();
+			RTC_StepActions.ClearStepBlastUnits();
 
 			//We subtract 1 at the end as precision is 1,2,4, and we need to go 0,1,3
 			for (long address = startAddress; address < endAddress; address = address + stepSize + precision - 1)
@@ -137,7 +137,7 @@ namespace RTC
 						throw new ArgumentOutOfRangeException(nameof(mode), mode, null);
 				}
 
-				return new BlastCheat(domain, safeAddress, _displaytype, mdp.BigEndian, _value, true, freeze, note);
+				return new BlastCheat(domain, safeAddress, mdp.BigEndian, _value, true, freeze, note);
 			}
 			catch (Exception ex)
 			{

@@ -52,8 +52,7 @@ namespace RTC
 
 		private static void PreApplyStashkey()
 		{
-			RTC_HellgenieEngine.ClearCheats(true);
-			RTC_PipeEngine.ClearPipes(true);
+			RTC_StepActions.ClearStepBlastUnits();
 		}
 
 		private static void PostApplyStashkey()
@@ -491,27 +490,8 @@ namespace RTC
 
 			BlastLayer bl = new BlastLayer();
 
-			foreach (var item in Global.CheatList)
-			{
-				string[] disassembleCheat = item.Name.Split('|');
 
-				if (disassembleCheat[0] == "RTC Cheat")
-				{
-					string _domain = disassembleCheat[1];
-					long _address = Convert.ToInt64(disassembleCheat[2]);
-
-					BizHawk.Client.Common.DisplayType _displayType = BizHawk.Client.Common.DisplayType.Unsigned;
-
-					bool _bigEndian = Convert.ToBoolean(disassembleCheat[4]);
-					byte[] _value = disassembleCheat[5].Split(',').Select(it => Convert.ToByte(it)).ToArray();
-					bool _isEnabled = Convert.ToBoolean(disassembleCheat[6]);
-					bool _isFreeze = Convert.ToBoolean(disassembleCheat[7]);
-
-					bl.Layer.Add(new BlastCheat(_domain, _address, _displayType, _bigEndian, _value, _isEnabled, _isFreeze));
-				}
-			}
-
-			bl.Layer.AddRange(RTC_PipeEngine.AllBlastPipes);
+			bl.Layer.AddRange(RTC_StepActions.GetRawBlastLayer().Layer);
 
 			string thisSystem = Global.Game.System;
 			string romFilename = GlobalWin.MainForm.CurrentlyOpenRom;

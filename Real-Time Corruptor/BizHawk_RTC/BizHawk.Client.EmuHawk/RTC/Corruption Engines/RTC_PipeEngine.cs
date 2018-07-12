@@ -8,7 +8,6 @@ namespace RTC
 	{
 		public static int MaxPipes = 20;
 		public static int TiltValue = 0;
-		public static Queue<BlastUnit> AllBlastPipes = new Queue<BlastUnit>();
 
 		public static bool ChainedPipes = true;
 
@@ -17,34 +16,6 @@ namespace RTC
 
 		public static bool LockPipes = false;
 
-		public static void ExecutePipes()
-		{
-			foreach (BlastPipe pipe in AllBlastPipes)
-				pipe.Execute();
-		}
-
-		public static void ClearPipes(bool sync = false)
-		{
-			if (!LockPipes)
-			{
-				RTC_Core.SendCommandToBizhawk(new RTC_Command(CommandType.REMOTE_SET_PIPE_CLEARPIPES), sync);
-			}
-		}
-
-		public static void AddUnit(BlastUnit bu)
-		{
-			if (!LockPipes)
-			{
-				if (bu != null)
-					AllBlastPipes.Enqueue(bu);
-			}
-		}
-
-		public static void RemoveExcessPipes()
-		{
-			while (AllBlastPipes.Count > MaxPipes)
-				AllBlastPipes.Dequeue();
-		}
 
 		public static BlastUnit GenerateUnit(string _domain, long _address)
 		{

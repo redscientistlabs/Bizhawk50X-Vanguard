@@ -19,7 +19,6 @@ namespace RTC
 	[XmlInclude(typeof(BlastCheat))]
 	[XmlInclude(typeof(BlastByte))]
 	[XmlInclude(typeof(BlastPipe))]
-	[XmlInclude(typeof(BlastVector))]
 	[XmlInclude(typeof(BlastUnit))]
 	[Serializable]
 	public class Stockpile
@@ -916,7 +915,6 @@ namespace RTC
 	[XmlInclude(typeof(BlastCheat))]
 	[XmlInclude(typeof(BlastByte))]
 	[XmlInclude(typeof(BlastPipe))]
-	[XmlInclude(typeof(BlastVector))]
 	[XmlInclude(typeof(BlastUnit))]
 	[Serializable]
 	public class BlastLayer : ICloneable
@@ -973,6 +971,7 @@ namespace RTC
 						"One of the BlastUnits in the BlastLayer failed to Apply().\n\n" +
 						"The operation was cancelled");
 				}
+				RTC_StepActions.FilterBuListCollection();
 			}
 			catch (Exception ex)
 			{
@@ -986,8 +985,7 @@ namespace RTC
 			{
 				if (!ignoreMaximums)
 				{
-					RTC_HellgenieEngine.RemoveExcessCheats();
-					RTC_PipeEngine.RemoveExcessPipes();
+					RTC_StepActions.RemoveExcessInfiniteStepUnits();
 				}
 			}
 		}
@@ -1035,7 +1033,7 @@ namespace RTC
 		public abstract long Address { get; set; }
 		public abstract string Note { get; set; }
 
-		public int ApplyFrame = -1;
+		public int ApplyFrame = 0;
 		public int Lifetime = -1;
 		
 		//Inclusive
@@ -1338,7 +1336,7 @@ namespace RTC
 			if (!IsEnabled)
 				return true;
 
-			RTC_PipeEngine.AddUnit(this);
+			RTC_StepActions.AddBlastUnit(this);
 
 			return true;
 		}
@@ -1403,6 +1401,7 @@ namespace RTC
 		public byte[] Value;
 		public bool IsFreeze;
 
+
 		public override bool IsEnabled { get; set; }
 
 		public BlastCheat(string _domain, long _address, bool _bigEndian, byte[] _value, bool _isEnabled, bool _isFreeze, string _note = "")
@@ -1453,6 +1452,17 @@ namespace RTC
 				if (!IsEnabled)
 					return true;
 
+				//If it's freeze, we grab the value at apply so it knows what to set during execute.
+				if (IsFreeze)
+				{
+						MemoryDomainProxy mdp = RTC_MemoryDomains.GetProxy(Domain, Address);
+						long targetAddress = RTC_MemoryDomains.GetRealAddress(Domain, Address);
+
+						if (mdp == null)
+							return false;
+						Value = mdp.PeekBytes(targetAddress, targetAddress + Value.Length);
+				}
+
 				RTC_StepActions.AddBlastUnit(this);
 				
 			}
@@ -1484,16 +1494,9 @@ namespace RTC
 				if (BigEndian)
 					_Values.FlipBytes();
 
-				if (IsFreeze)
-				{
-					_Values = mdp.PeekBytes(targetAddress, targetAddress + _Values.Length);
-											
-				}
-				else
-				{
-					for (int i = 0; i < _Values.Length; i++)
-						mdp.PokeByte(targetAddress + i, _Values[i]);
-				}
+
+				for (int i = 0; i < _Values.Length; i++)
+					mdp.PokeByte(targetAddress + i, _Values[i]);
 					
 			}
 			catch (Exception ex)

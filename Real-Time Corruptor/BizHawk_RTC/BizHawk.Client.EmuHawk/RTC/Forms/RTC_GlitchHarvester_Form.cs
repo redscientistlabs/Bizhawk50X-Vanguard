@@ -727,8 +727,7 @@ namespace RTC
 				IsCorruptionApplied = false;
 
 				RTC_Core.SendCommandToRTC(new RTC_Command(CommandType.REMOTE_SET_RESTOREBLASTLAYERBACKUP) { });
-				RTC_HellgenieEngine.ClearCheats();
-				RTC_PipeEngine.ClearPipes();
+				RTC_StepActions.ClearStepBlastUnits();
 			}
 		}
 

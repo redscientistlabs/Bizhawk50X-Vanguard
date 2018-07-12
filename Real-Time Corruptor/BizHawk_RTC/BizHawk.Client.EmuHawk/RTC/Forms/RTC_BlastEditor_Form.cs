@@ -212,13 +212,6 @@ namespace RTC
 					param = bp.PipeAddress;
 					blastMode = Convert.ToString(bp.TiltValue);
 					break;
-				case BlastVector bv:
-					precision = bv.Values.Length;
-					sourceAddress = Convert.ToDecimal(bv.Address);
-					sourceDomain = bv.Domain;
-					param = RTC_Extensions.GetDecimalValue(bv.Values, bv.BigEndian);
-					blastMode = Convert.ToString(bv.Type);
-					break;
 			}
 
 			dgvBlastLayer.Rows.Insert(index, bu, locked, enabled, GetPrecisionNameFromSize(precision), blastType, blastMode, sourceDomain, sourceAddress, destDomain, param);
@@ -494,12 +487,6 @@ namespace RTC
 						currentlyUpdating = false;
 						break;
 
-					case "RTC.BlastVector":
-						BlastVector bv = (BlastVector)bu.ConvertBlastUnit(typeof(BlastVector));
-						sk.BlastLayer.Layer.Insert(index, bv);
-						InsertBlastUnitToDgv(index, bv);
-						currentlyUpdating = false;
-						break;
 
 					default:
 						currentlyUpdating = false;
@@ -595,19 +582,6 @@ namespace RTC
 					bp.IsLocked = Convert.ToBoolean((row.Cells["dgvBlastUnitLocked"].Value));
 
 					row.Cells["dgvBlastUnitReference"].Value = bp;
-					currentlyUpdating = false;
-					break;
-
-				case "RTC.BlastVector":
-					BlastVector bv = (BlastVector)row.Cells["dgvBlastUnitReference"].Value;
-					bv.IsEnabled = Convert.ToBoolean((row.Cells["dgvBlastEnabled"].Value));
-					bv.Address = Convert.ToInt64(row.Cells["dgvSourceAddress"].Value);
-					bv.Values = RTC_Extensions.GetByteArrayValue(GetPrecisionSizeFromName(row.Cells["dgvPrecision"].Value.ToString()), Convert.ToDecimal(row.Cells["dgvParam"].Value), true);
-					bv.Domain = Convert.ToString(row.Cells["dgvSourceAddressDomain"].Value);
-					bv.IsLocked = Convert.ToBoolean((row.Cells["dgvBlastUnitLocked"].Value));
-					Enum.TryParse(row.Cells["dgvBlastUnitMode"].Value.ToString().ToUpper(), out bv.Type);
-
-					row.Cells["dgvBlastUnitReference"].Value = bv;
 					currentlyUpdating = false;
 					break;
 
@@ -1017,11 +991,6 @@ namespace RTC
 				}
 				case BlastPipe bp:
 					return bp.PipeAddress;
-				case BlastVector bv:
-				{
-					decimal value = RTC_Extensions.GetDecimalValue(bv.Values, bv.BigEndian);
-					return (long)value;
-				}
 			}
 
 			return 0;

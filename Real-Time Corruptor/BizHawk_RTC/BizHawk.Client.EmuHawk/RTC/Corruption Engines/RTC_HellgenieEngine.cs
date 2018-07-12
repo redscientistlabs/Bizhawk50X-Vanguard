@@ -23,7 +23,6 @@ namespace RTC
 				if (domain == null)
 					return null;
 				MemoryDomainProxy mdp = RTC_MemoryDomains.GetProxy(domain, address);
-				BizHawk.Client.Common.DisplayType displaytype = BizHawk.Client.Common.DisplayType.Unsigned;
 
 				byte[] value = RTC_Core.CustomPrecision == -1 ? new byte[mdp.WordSize] : new byte[RTC_Core.CustomPrecision];
 
@@ -44,7 +43,7 @@ namespace RTC
 				}
 				value = RTC_Extensions.GetByteArrayValue(value.Length, randomValue, true);
 
-				return new BlastCheat(domain, safeAddress, displaytype, mdp.BigEndian, value, true, false);
+				return new BlastCheat(domain, safeAddress, mdp.BigEndian, value, true, false);
 			}
 			catch (Exception ex)
 			{
@@ -56,15 +55,5 @@ namespace RTC
 			}
 		}
 
-		public static void RemoveExcessCheats()
-		{
-			RTC_Command cmd = new RTC_Command(CommandType.REMOTE_SET_HELLGENIE_REMOVEEXCESSCHEATS);
-			RTC_Core.SendCommandToBizhawk(cmd);
-		}
-
-		public static void ClearCheats(bool sync = false)
-		{
-			RTC_Core.SendCommandToBizhawk(new RTC_Command(CommandType.REMOTE_SET_HELLGENIE_CLEARALLCHEATS), sync);
-		}
 	}
 }

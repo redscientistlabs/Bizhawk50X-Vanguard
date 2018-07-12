@@ -23,7 +23,7 @@ namespace RTC
 				for (int i = 0; i < value.Length; i++)
 					value[i] = 0;
 
-				return new BlastCheat(domain, safeAddress, displaytype, mdp.BigEndian, value, true, true);
+				return new BlastCheat(domain, safeAddress, mdp.BigEndian, value, true, true);
 			}
 			catch (Exception ex)
 			{

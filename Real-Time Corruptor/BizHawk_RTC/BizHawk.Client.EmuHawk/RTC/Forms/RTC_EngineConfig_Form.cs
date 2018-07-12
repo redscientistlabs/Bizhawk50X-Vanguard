@@ -251,8 +251,7 @@ namespace RTC
 		{
 			if (Convert.ToInt32(nmMaxCheats.Value) != RTC_HellgenieEngine.MaxCheats)
 			{
-				RTC_HellgenieEngine.MaxCheats = Convert.ToInt32(nmMaxCheats.Value);
-				RTC_Core.SendCommandToBizhawk(new RTC_Command(CommandType.REMOTE_SET_HELLGENIE_MAXCHEATS) { objectValue = RTC_HellgenieEngine.MaxCheats });
+				RTC_StepActions.SetMaxLifetimeBlastUnits(Convert.ToInt32(nmMaxCheats.Value));
 			}
 
 			if (nmMaxCheats.Value != nmMaxFreezes.Value)
@@ -298,9 +297,7 @@ namespace RTC
 			if (cbClearFreezesOnRewind.Checked != cbClearCheatsOnRewind.Checked)
 				cbClearFreezesOnRewind.Checked = cbClearCheatsOnRewind.Checked;
 
-			RTC_Core.ClearCheatsOnRewind = cbClearCheatsOnRewind.Checked;
-
-			RTC_Core.SendCommandToBizhawk(new RTC_Command(CommandType.REMOTE_SET_HELLGENIE_CHEARCHEATSREWIND) { objectValue = RTC_Core.ClearCheatsOnRewind });
+			RTC_StepActions.ClearStepActionsOnRewind(true);
 		}
 
 		private void nmDistortionDelay_ValueChanged(object sender, EventArgs e)
@@ -449,8 +446,7 @@ namespace RTC
 
 			cbSelectedEngine.BringToFront();
 
-			RTC_HellgenieEngine.ClearCheats();
-			RTC_PipeEngine.ClearPipes();
+			RTC_StepActions.ClearStepBlastUnits();
 		}
 
 		private void cbClearFreezesOnRewind_CheckedChanged(object sender, EventArgs e)
@@ -458,16 +454,15 @@ namespace RTC
 			if (RTC_Core.ecForm.cbClearFreezesOnRewind.Checked != RTC_Core.ecForm.cbClearCheatsOnRewind.Checked)
 				RTC_Core.ecForm.cbClearCheatsOnRewind.Checked = RTC_Core.ecForm.cbClearFreezesOnRewind.Checked;
 
-			RTC_Core.ClearCheatsOnRewind = RTC_Core.ecForm.cbClearFreezesOnRewind.Checked;
-			RTC_Core.SendCommandToBizhawk(new RTC_Command(CommandType.REMOTE_SET_HELLGENIE_CHEARCHEATSREWIND) { objectValue = RTC_Core.ClearCheatsOnRewind });
+			RTC_Core.ClearStepActionsOnRewind = RTC_Core.ecForm.cbClearFreezesOnRewind.Checked;
+			RTC_Core.SendCommandToBizhawk(new RTC_Command(CommandType.REMOTE_SET_STEPACTIONS_CLEARREWIND) { objectValue = RTC_Core.ClearStepActionsOnRewind });
 		}
 
 		private void nmMaxFreezes_ValueChanged(object sender, EventArgs e)
 		{
 			if (Convert.ToInt32(RTC_Core.ecForm.nmMaxFreezes.Value) != RTC_HellgenieEngine.MaxCheats)
 			{
-				RTC_HellgenieEngine.MaxCheats = Convert.ToInt32(RTC_Core.ecForm.nmMaxFreezes.Value);
-				RTC_Core.SendCommandToBizhawk(new RTC_Command(CommandType.REMOTE_SET_HELLGENIE_MAXCHEATS) { objectValue = RTC_HellgenieEngine.MaxCheats });
+				RTC_StepActions.SetMaxLifetimeBlastUnits(Convert.ToInt32(RTC_Core.ecForm.nmMaxFreezes.Value));
 			}
 
 			if (RTC_Core.ecForm.nmMaxCheats.Value != RTC_Core.ecForm.nmMaxFreezes.Value)
@@ -476,13 +471,12 @@ namespace RTC
 
 		private void nmMaxPipes_ValueChanged(object sender, EventArgs e)
 		{
-			RTC_PipeEngine.MaxPipes = Convert.ToInt32(nmMaxPipes.Value);
-			RTC_Core.SendCommandToBizhawk(new RTC_Command(CommandType.REMOTE_SET_PIPE_MAXPIPES) { objectValue = RTC_PipeEngine.MaxPipes });
+			RTC_StepActions.SetMaxLifetimeBlastUnits(Convert.ToInt32(nmMaxPipes.Value));
 		}
 
 		private void btnClearPipes_Click(object sender, EventArgs e)
 		{
-			RTC_PipeEngine.ClearPipes();
+			RTC_StepActions.ClearStepBlastUnits();
 		}
 
 		private void cbLockPipes_CheckedChanged(object sender, EventArgs e)
@@ -494,8 +488,7 @@ namespace RTC
 
 		private void cbClearPipesOnRewind_CheckedChanged(object sender, EventArgs e)
 		{
-			RTC_Core.ClearPipesOnRewind = cbClearPipesOnRewind.Checked;
-			RTC_Core.SendCommandToBizhawk(new RTC_Command(CommandType.REMOTE_SET_PIPE_CLEARPIPESREWIND) { objectValue = RTC_Core.ClearPipesOnRewind });
+			RTC_StepActions.ClearStepActionsOnRewind(cbClearPipesOnRewind.Checked);
 		}
 
 		private void cbVectorLimiterList_SelectedIndexChanged(object sender, EventArgs e)
@@ -703,7 +696,7 @@ namespace RTC
 
 		private void btnClearCheats_Click(object sender, EventArgs e)
 		{
-			RTC_HellgenieEngine.ClearCheats();
+			RTC_StepActions.ClearStepBlastUnits();
 		}
 
 		private void nmMaxCheats_ValueChanged(object sender, KeyPressEventArgs e)

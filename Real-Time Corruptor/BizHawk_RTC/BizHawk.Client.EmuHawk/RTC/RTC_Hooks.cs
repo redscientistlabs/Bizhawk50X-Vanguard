@@ -55,11 +55,8 @@ namespace RTC
 		{
 			if (disableRTC) return;
 
-			if (RTC_Core.ClearCheatsOnRewind)
-				RTC_HellgenieEngine.ClearCheats();
-
-			if (RTC_Core.ClearPipesOnRewind)
-				RTC_PipeEngine.ClearPipes();
+			if (RTC_Core.ClearStepActionsOnRewind)
+				RTC_StepActions.ClearStepBlastUnits();
 		}
 
 		private static void STEP_FASTFORWARD()
@@ -72,7 +69,9 @@ namespace RTC
 			if (disableRTC) return;
 
 			if (!_isRewinding)
-				RTC_PipeEngine.ExecutePipes();
+			{
+				RTC_StepActions.Execute();
+			}
 
 			if (_isRewinding || _isFastForwarding)
 				return;
@@ -161,8 +160,7 @@ namespace RTC
 
 			loadGameToken = RTC_NetCore.HugeOperationStart();
 
-			RTC_HellgenieEngine.ClearCheats(true);
-			RTC_PipeEngine.ClearPipes(true);
+			RTC_StepActions.ClearStepBlastUnits();
 		}
 
 		static string lastGameName = "";
@@ -231,7 +229,8 @@ namespace RTC
 
 			//RTC_Core.AutoCorrupt = false;
 
-			RTC_PipeEngine.ClearPipes();
+			RTC_StepActions.ClearStepBlastUnits();
+
 			RTC_MemoryDomains.Clear();
 
 			RTC_Core.lastOpenRom = null;

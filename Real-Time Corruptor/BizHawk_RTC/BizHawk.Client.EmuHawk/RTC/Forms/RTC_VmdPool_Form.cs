@@ -23,10 +23,10 @@ namespace RTC
 			{
 				string VmdName = item.ToString();
 
-				foreach (BlastUnit blastUnit in RTC_PipeEngine.AllBlastPipes)
+				foreach (BlastUnit bu in RTC_StepActions.GetRawBlastLayer().Layer)
 				{
-					BlastPipe bp = (BlastPipe)blastUnit;
-					bp.Rasterize();
+					if(bu is BlastPipe bp)
+						bp.Rasterize();
 				}
 
 				RTC_MemoryDomains.RemoveVMD(VmdName);

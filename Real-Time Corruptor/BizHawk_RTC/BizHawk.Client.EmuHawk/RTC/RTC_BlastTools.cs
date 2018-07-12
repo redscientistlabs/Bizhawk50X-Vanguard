@@ -126,24 +126,19 @@ namespace RTC
 					}
 					if (destinationType == typeof(BlastCheat))
 					{
-						return new BlastCheat(bb.Domain, bb.Address, BizHawk.Client.Common.DisplayType.Unsigned, bb.BigEndian, CapBlastUnit(bb.Value), bb.IsEnabled, false, bb.Note);
+						return new BlastCheat(bb.Domain, bb.Address, bb.BigEndian, CapBlastUnit(bb.Value), bb.IsEnabled, false, bb.Note);
 					}
 					else if (destinationType == typeof(BlastPipe))
 					{
 						//Pipe to 0
 						return new BlastPipe(bb.Domain, bb.Address, bb.Domain, 0, 0, bb.Value.Length, bb.BigEndian, bb.IsEnabled, bb.Note);
 					}
-					else if (destinationType == typeof(BlastVector))
-					{
-						MessageBox.Show("BlastVector is depricated.");
-						return null;
-					}
 				}
 				else if (bu is BlastCheat bc)
 				{
 					if (destinationType == typeof(BlastCheat))
 					{
-						return new BlastCheat(bc.Domain, bc.Address, BizHawk.Client.Common.DisplayType.Unsigned, bc.BigEndian, CapBlastUnit(bc.Value), bc.IsEnabled, false, bc.Note);
+						return new BlastCheat(bc.Domain, bc.Address, bc.BigEndian, CapBlastUnit(bc.Value), bc.IsEnabled, false, bc.Note);
 					}
 					if (destinationType == typeof(BlastByte))
 					{
@@ -152,11 +147,6 @@ namespace RTC
 					else if (destinationType == typeof(BlastPipe))
 					{
 						return new BlastPipe(bc.Domain, bc.Address, bc.Domain, 0, 0, bc.Value.Length, bc.BigEndian, bc.IsEnabled, bc.Note);
-					}
-					else if (destinationType == typeof(BlastVector))
-					{
-						MessageBox.Show("BlastVector is depricated.");
-						return null;
 					}
 				}
 				else if (bu is BlastPipe bp)
@@ -171,31 +161,7 @@ namespace RTC
 					}
 					else if (destinationType == typeof(BlastCheat))
 					{
-						return new BlastCheat(bp.PipeDomain, bp.PipeAddress, BizHawk.Client.Common.DisplayType.Unsigned, bp.BigEndian, getByteArray(bp.PipeSize, 0x0), bp.IsEnabled, false, bp.Note);
-					}
-					else if (destinationType == typeof(BlastVector))
-					{
-						MessageBox.Show("BlastVector is depricated.");
-						return null;
-					}
-				}
-				else if (bu is BlastVector bv)
-				{
-					if (destinationType == typeof(BlastVector))
-					{
-						MessageBox.Show("BlastVector is depricated.");
-					}
-					else if (destinationType == typeof(BlastByte))
-					{
-						return new BlastByte(bv.Domain, bv.Address, BlastByteType.VECTOR, CapBlastUnit(bv.Values), true, bv.IsEnabled, bv.Note);
-					}
-					else if (destinationType == typeof(BlastCheat))
-					{
-						return new BlastCheat(bv.Domain, bv.Address, BizHawk.Client.Common.DisplayType.Unsigned, true, CapBlastUnit(bv.Values), bv.IsEnabled, false, bv.Note);
-					}
-					else if (destinationType == typeof(BlastPipe))
-					{
-						return new BlastPipe(bv.Domain, bv.Address, bv.Domain, 0, 0, bv.Values.Length, true, bv.IsEnabled, bv.Note);
+						return new BlastCheat(bp.PipeDomain, bp.PipeAddress, bp.BigEndian, getByteArray(bp.PipeSize, 0x0), bp.IsEnabled, false, bp.Note);
 					}
 				}
 			}

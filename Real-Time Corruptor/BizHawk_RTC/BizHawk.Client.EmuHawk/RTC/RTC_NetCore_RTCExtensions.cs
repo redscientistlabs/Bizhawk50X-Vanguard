@@ -457,9 +457,6 @@ namespace RTC
 					}
 					break;
 				}
-				case CommandType.REMOTE_SET_HELLGENIE_MAXCHEATS:
-					RTC_HellgenieEngine.MaxCheats = (int)cmd.objectValue;
-					break;
 
 				case CommandType.REMOTE_SET_HELLGENIE_MINVALUE:
 				{
@@ -500,30 +497,22 @@ namespace RTC
 					break;
 				}
 
-				case CommandType.REMOTE_SET_HELLGENIE_CHEARCHEATSREWIND:
-					RTC_Core.ClearCheatsOnRewind = (bool)cmd.objectValue;
+				case CommandType.REMOTE_SET_STEPACTIONS_CLEARREWIND:
+					RTC_Core.ClearStepActionsOnRewind = (bool)cmd.objectValue;
 					break;
 
-				case CommandType.REMOTE_SET_HELLGENIE_CLEARALLCHEATS:
-					if (Global.CheatList != null)
-						Global.CheatList.Clear();
+				case CommandType.REMOTE_SET_STEPACTIONS_CLEARALLBLASTUNITS:
+					RTC_StepActions.ClearStepBlastUnits();
 					break;
-				case CommandType.REMOTE_SET_HELLGENIE_REMOVEEXCESSCHEATS:
-					while (Global.CheatList.Count > RTC_HellgenieEngine.MaxCheats)
-						Global.CheatList.Remove(Global.CheatList[0]);
+				case CommandType.REMOTE_SET_STEPACTIONS_REMOVEEXCESSINFINITEUNITS:
+					RTC_StepActions.RemoveExcessInfiniteStepUnits();
 					break;
-
-				case CommandType.REMOTE_SET_PIPE_MAXPIPES:
-					RTC_PipeEngine.MaxPipes = (int)cmd.objectValue;
+				case CommandType.REMOTE_SET_STEPACTIONS_MAXLIFETIMEUNITS:
+					RTC_StepActions.MaxLifetimeBlastUnits = (int)cmd.objectValue;
 					break;
-
+					
 				case CommandType.REMOTE_SET_PIPE_TILTVALUE:
 					RTC_PipeEngine.TiltValue = (int)cmd.objectValue;
-					break;
-
-				case CommandType.REMOTE_SET_PIPE_CLEARPIPES:
-					RTC_PipeEngine.AllBlastPipes.Clear();
-					RTC_PipeEngine.LastDomain = null;
 					break;
 
 				case CommandType.REMOTE_SET_PIPE_LOCKPIPES:
@@ -532,11 +521,6 @@ namespace RTC
 
 				case CommandType.REMOTE_SET_PIPE_CHAINEDPIPES:
 					RTC_PipeEngine.ChainedPipes = (bool)cmd.objectValue;
-					break;
-
-
-				case CommandType.REMOTE_SET_PIPE_CLEARPIPESREWIND:
-					RTC_Core.ClearPipesOnRewind = (bool)cmd.objectValue;
 					break;
 
 				case CommandType.REMOTE_SET_ENGINE:
