@@ -1039,8 +1039,10 @@ namespace RTC
 		//Working data
 		//We Calculate a LastFrame at the beginning of execute
 		//We calculate ApplyFrameQueued which is the ApplyFrame + the currentframe that was calculated at the time of it entering the execution pool
+		//We set IsExecuting to true while the blastunit is within the execution pool so we know not to repeat operations
 		public int LastFrame = -1;
 		public int ApplyFrameQueued = 0;
+		public abstract void EnteringExecution();
 	}
 
 	[Serializable]
@@ -1225,6 +1227,11 @@ namespace RTC
 			string cleanDomainName = Domain.Replace("(nametables)", ""); //Shortens the domain name if it contains "(nametables)"
 			return (enabledString + cleanDomainName + "(" + Convert.ToInt32(Address).ToString() + ")." + Type.ToString() + "(" + RTC_Extensions.GetDecimalValue(Value, BigEndian).ToString() + ")");
 		}
+
+		public override void EnteringExecution()
+		{
+
+		}
 	}
 	
 	[Serializable]
@@ -1390,6 +1397,11 @@ namespace RTC
 			string cleanDomainName2 = PipeDomain.Replace("(nametables)", ""); //Shortens the domain name if it contains "(nametables)"
 			return (EnabledString + cleanDomainName + "(" + Convert.ToInt32(Address).ToString() + ")piped->" + cleanDomainName2 + "(" + Convert.ToInt32(PipeAddress).ToString() + "), tilt->" + TiltValue.ToString());
 		}
+
+		public override void EnteringExecution()
+		{
+
+		}
 	}
 
 	[Serializable]
@@ -1454,17 +1466,6 @@ namespace RTC
 			{
 				if (!IsEnabled)
 					return true;
-
-				//If it's freeze, we grab the value at apply so it knows what to set during execute.
-				if (IsFreeze)
-				{
-						MemoryDomainProxy mdp = RTC_MemoryDomains.GetProxy(Domain, Address);
-						long targetAddress = RTC_MemoryDomains.GetRealAddress(Domain, Address);
-
-						if (mdp == null)
-							return false;
-						Value = mdp.PeekBytes(targetAddress, targetAddress + Value.Length);
-				}
 
 				RTC_StepActions.AddBlastUnit(this);
 				
@@ -1573,6 +1574,21 @@ namespace RTC
 
 			//RTC_TODO: Rewrite the toString method for this
 			return (EnabledString + cleanDomainName + "(" + Convert.ToInt32(Address).ToString() + ")" + (IsFreeze ? "" : ".Value(" + RTC_Extensions.GetDecimalValue(Value, BigEndian).ToString() + ")"));
+		}
+
+		public override void EnteringExecution()
+		{
+			//We need to grab the value to freeze
+			if (IsFreeze)
+			{
+				MemoryDomainProxy mdp = RTC_MemoryDomains.GetProxy(Domain, Address);
+				long targetAddress = RTC_MemoryDomains.GetRealAddress(Domain, Address);
+
+				if (mdp == null)
+					return;
+				Value = mdp.PeekBytes(targetAddress, targetAddress + Value.Length);
+			}
+
 		}
 	}
 

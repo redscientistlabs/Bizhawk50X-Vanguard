@@ -128,30 +128,36 @@ namespace RTC
 
 		private static void CheckApply()
 		{
+			//If there's nothing to dequeue, return
 			if (currentFrame < nextFrame || queued.Count == 0)
 				return;
 			
-			//Peek to know the next frame we'll need to dequeue on
+			//There's something in the queue that applies on a future frame (or this frame). Find out when it applies.
 			if (currentFrame > nextFrame)
 				nextFrame = (queued.First())[0].ApplyFrameQueued;
 
-			//Dequeue the next BlastunitList and add it to the active list
+			//Dequeue any BlastUnitLists that need to enter the execution pool this frame
 			while(currentFrame == nextFrame)
 			{
-				if (queued.Count == 0)
-					break;
-
-				if ((queued.First())[0].Lifetime == -1)
+				List<BlastUnit> buList = queued.First();
+				//Add it to the infinite pool
+				if (buList[0].Lifetime == -1)
 				{
-					appliedInfinite.Add(queued.First());
+
+					appliedInfinite.Add(buList);
 					queued.RemoveFirst();
 				}
+				//Add it to the Lifetime pool
 				else
 				{
-					appliedLifetime.Add(queued.First());
+					appliedLifetime.Add(buList);
 					queued.RemoveFirst();
 				}
 
+				//Call EnteringExecution so any BlastUnits that need to do something before they start executing can
+				//This could be optimized by only running it if the BlastUnits are of a type that needs this run.
+				foreach(BlastUnit bu in buList)
+					bu.EnteringExecution();
 			}
 		}
 		public static void Execute()
