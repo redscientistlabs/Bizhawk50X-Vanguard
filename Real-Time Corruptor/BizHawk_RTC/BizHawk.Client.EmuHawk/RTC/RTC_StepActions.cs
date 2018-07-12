@@ -14,7 +14,7 @@ namespace RTC
 	///We have four lists and a linked list.
 	///preProcess contains all the blastunits as they're queued up
 	///buListCollection is the collection of all blast unit lists once they've been filtered into groups of shared StartFrame and Lifetime
-	///queuedLifetime is a linked list that contains a sorted version of all the blastunit arrays with a limited lifetime that have let to be applied
+	///queuedLifetime is a linked list that contains a sorted version of all the blastunit lists with a limited lifetime that have let to be applied
 	///appliedLifetime and appliedInfinite are the two collections where we store what we want to actually be applied
 	public static class RTC_StepActions
 	{

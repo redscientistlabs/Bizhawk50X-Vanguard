@@ -32,7 +32,7 @@ namespace RTC
 						type = BlastByteType.SET;
 						break;
 
-					case BlastByteAlgo.RANDOMTILT: //RANDOMTILT may add 1,substract 1 or set a random value
+					case BlastByteAlgo.RANDOMTILT: //RANDOMTILT may add 1,subtract 1 or set a random value
 						int result = RTC_Core.RND.Next(1, 4);
 						switch (result)
 						{
@@ -40,7 +40,7 @@ namespace RTC
 								type = BlastByteType.ADD;
 								break;
 							case 2:
-								type = BlastByteType.SUBSTRACT;
+								type = BlastByteType.SUBTRACT;
 								break;
 							case 3:
 								type = BlastByteType.SET;
@@ -52,7 +52,7 @@ namespace RTC
 
 						break;
 
-					case BlastByteAlgo.TILT: //TILT can either add 1 or substract 1
+					case BlastByteAlgo.TILT: //TILT can either add 1 or subtract 1
 						result = RTC_Core.RND.Next(1, 3);
 						switch (result)
 						{
@@ -61,7 +61,7 @@ namespace RTC
 								break;
 
 							case 2:
-								type = BlastByteType.SUBSTRACT;
+								type = BlastByteType.SUBTRACT;
 								break;
 
 							default:
@@ -93,10 +93,10 @@ namespace RTC
 
 					value = RTC_Extensions.GetByteArrayValue(value.Length, randomValue, true);
 				}
-				else //ADD, SUBSTRACT
+				else //ADD, SUBTRACT
 				{
 					//Add and subtract only need the last byte set as we're only incrementing by 1. If we set all the bytes, it'd tilt far more than 1.
-					//1 by default because Add(1) or Substract(1) but more is still possible
+					//1 by default because Add(1) or Subtract(1) but more is still possible
 					value[value.Length - 1] = 1;
 				}
 
