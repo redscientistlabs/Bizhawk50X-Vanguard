@@ -15,7 +15,7 @@
 	{
 		SET,
 		ADD,
-		SUBSTRACT,
+		SUBTRACT,
 		VECTOR,
 		NONE
 	}

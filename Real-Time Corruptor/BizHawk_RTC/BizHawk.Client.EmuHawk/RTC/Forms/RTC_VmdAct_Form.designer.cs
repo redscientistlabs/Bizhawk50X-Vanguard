@@ -28,7 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.btnActiveTableSubstractFile = new System.Windows.Forms.Button();
+            this.btnActiveTableSubtractFile = new System.Windows.Forms.Button();
             this.btnActiveTableGenerate = new System.Windows.Forms.Button();
             this.btnActiveTableQuickSave = new System.Windows.Forms.Button();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
@@ -70,22 +70,22 @@
             ((System.ComponentModel.ISupportInitialize)(this.nmAutoAddSec)).BeginInit();
             this.SuspendLayout();
             // 
-            // btnActiveTableSubstractFile
+            // btnActiveTableSubtractFile
             // 
-            this.btnActiveTableSubstractFile.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(224)))), ((int)(((byte)(224)))), ((int)(((byte)(224)))));
-            this.btnActiveTableSubstractFile.Enabled = false;
-            this.btnActiveTableSubstractFile.FlatAppearance.BorderSize = 0;
-            this.btnActiveTableSubstractFile.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btnActiveTableSubstractFile.Font = new System.Drawing.Font("Segoe UI", 8F);
-            this.btnActiveTableSubstractFile.ForeColor = System.Drawing.Color.Black;
-            this.btnActiveTableSubstractFile.Location = new System.Drawing.Point(17, 180);
-            this.btnActiveTableSubstractFile.Name = "btnActiveTableSubstractFile";
-            this.btnActiveTableSubstractFile.Size = new System.Drawing.Size(88, 20);
-            this.btnActiveTableSubstractFile.TabIndex = 123;
-            this.btnActiveTableSubstractFile.Tag = "color:light";
-            this.btnActiveTableSubstractFile.Text = "Substract ACT";
-            this.btnActiveTableSubstractFile.UseVisualStyleBackColor = false;
-            this.btnActiveTableSubstractFile.Click += new System.EventHandler(this.btnActiveTableSubstractFile_Click);
+            this.btnActiveTableSubtractFile.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(224)))), ((int)(((byte)(224)))), ((int)(((byte)(224)))));
+            this.btnActiveTableSubtractFile.Enabled = false;
+            this.btnActiveTableSubtractFile.FlatAppearance.BorderSize = 0;
+            this.btnActiveTableSubtractFile.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnActiveTableSubtractFile.Font = new System.Drawing.Font("Segoe UI", 8F);
+            this.btnActiveTableSubtractFile.ForeColor = System.Drawing.Color.Black;
+            this.btnActiveTableSubtractFile.Location = new System.Drawing.Point(17, 180);
+            this.btnActiveTableSubtractFile.Name = "btnActiveTableSubtractFile";
+            this.btnActiveTableSubtractFile.Size = new System.Drawing.Size(88, 20);
+            this.btnActiveTableSubtractFile.TabIndex = 123;
+            this.btnActiveTableSubtractFile.Tag = "color:light";
+            this.btnActiveTableSubtractFile.Text = "Subtract ACT";
+            this.btnActiveTableSubtractFile.UseVisualStyleBackColor = false;
+            this.btnActiveTableSubtractFile.Click += new System.EventHandler(this.btnActiveTableSubtractFile_Click);
             // 
             // btnActiveTableGenerate
             // 
@@ -541,7 +541,7 @@
             this.Controls.Add(this.btnLoadDomains);
             this.Controls.Add(this.cbSelectedMemoryDomain);
             this.Controls.Add(this.btnActiveTableAddFile);
-            this.Controls.Add(this.btnActiveTableSubstractFile);
+            this.Controls.Add(this.btnActiveTableSubtractFile);
             this.Controls.Add(this.btnActiveTableGenerate);
             this.Controls.Add(this.btnActiveTableDumpsReset);
             this.Controls.Add(this.lbFreezeEngineNbDumps);
@@ -576,7 +576,7 @@
 
         #endregion
 
-        public System.Windows.Forms.Button btnActiveTableSubstractFile;
+        public System.Windows.Forms.Button btnActiveTableSubtractFile;
         public System.Windows.Forms.Button btnActiveTableGenerate;
         public System.Windows.Forms.Button btnActiveTableQuickSave;
         private System.Windows.Forms.GroupBox groupBox2;

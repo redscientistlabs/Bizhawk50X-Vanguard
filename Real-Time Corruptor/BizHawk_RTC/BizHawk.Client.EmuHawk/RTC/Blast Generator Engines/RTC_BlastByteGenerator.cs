@@ -50,7 +50,7 @@ namespace RTC
 						value = RTC_Extensions.GetByteArrayValue(precision, param1, true);
 						break;
 					case BGBlastByteModes.SUBTRACT:
-						type = BlastByteType.SUBSTRACT;
+						type = BlastByteType.SUBTRACT;
 						value = RTC_Extensions.GetByteArrayValue(precision, param1, true);
 						break;
 					case BGBlastByteModes.RANDOM:

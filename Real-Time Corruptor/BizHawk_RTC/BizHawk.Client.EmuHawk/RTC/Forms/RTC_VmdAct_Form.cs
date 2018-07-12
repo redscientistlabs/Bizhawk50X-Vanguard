@@ -34,17 +34,17 @@ namespace RTC
 				{
 					lbActiveStatus.Text = "Active table status: READY";
 
-					btnActiveTableSubstractFile.Font = new Font("Segoe UI Semibold", 8);
+					btnActiveTableSubtractFile.Font = new Font("Segoe UI Semibold", 8);
 					btnActiveTableAddFile.Font = new Font("Segoe UI Semibold", 8);
-					btnActiveTableSubstractFile.Enabled = true;
+					btnActiveTableSubtractFile.Enabled = true;
 					btnActiveTableAddFile.Enabled = true;
 				}
 				else
 				{
 					lbActiveStatus.Text = "Active table status: NOT READY";
-					btnActiveTableSubstractFile.Font = new Font("Segoe UI", 8);
+					btnActiveTableSubtractFile.Font = new Font("Segoe UI", 8);
 					btnActiveTableAddFile.Font = new Font("Segoe UI", 8);
-					btnActiveTableSubstractFile.Enabled = false;
+					btnActiveTableSubtractFile.Enabled = false;
 					btnActiveTableAddFile.Enabled = false;
 				}
 
@@ -353,7 +353,7 @@ namespace RTC
 				SaveActiveTable(true);
 		}
 
-		private void btnActiveTableSubstractFile_Click(object sender, EventArgs e)
+		private void btnActiveTableSubtractFile_Click(object sender, EventArgs e)
 		{
 			RTC_Core.StopSound();
 
@@ -377,13 +377,13 @@ namespace RTC
 				act = (ActiveTableObject)xs.Deserialize(FS);
 				FS.Close();
 			}
-			long[] substractiveActiveTable = act.data;
+			long[] subtractiveActiveTable = act.data;
 
 			List<long> newActiveTable = new List<long>();
 
 
 			foreach (long item in ActiveTableGenerated)
-				if (!substractiveActiveTable.Contains(item))
+				if (!subtractiveActiveTable.Contains(item))
 					newActiveTable.Add(item);
 
 			ActiveTableGenerated = newActiveTable.ToArray();
