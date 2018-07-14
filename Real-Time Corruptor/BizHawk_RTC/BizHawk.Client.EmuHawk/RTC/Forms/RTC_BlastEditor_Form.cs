@@ -1149,7 +1149,7 @@ namespace RTC
 
 			DialogResult dialogResult = form.ShowDialog();
 
-			searchValue = input.Text;
+			searchValue = input.Text.ToUpper();
 			if (filterColumn)
 				searchColumn = (column.SelectedItem as dynamic).Value;
 			return dialogResult;
