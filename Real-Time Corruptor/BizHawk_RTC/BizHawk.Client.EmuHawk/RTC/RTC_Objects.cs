@@ -1034,12 +1034,11 @@ namespace RTC
 		public abstract string Note { get; set; }
 
 		public int ApplyFrame = 0;
-		public int Lifetime = -1;
+		public int Lifetime = 0;
 		
 		//Working data
 		//We Calculate a LastFrame at the beginning of execute
 		//We calculate ApplyFrameQueued which is the ApplyFrame + the currentframe that was calculated at the time of it entering the execution pool
-		//We set IsExecuting to true while the blastunit is within the execution pool so we know not to repeat operations
 		public int LastFrame = -1;
 		public int ApplyFrameQueued = 0;
 		public abstract void EnteringExecution();
@@ -1057,16 +1056,21 @@ namespace RTC
 		public override bool BigEndian { get; set; }
 		public override string Note { get; set; } = "";
 
-		public BlastByte(string _domain, long _address, BlastByteType _type, byte[] _value, bool _bigEndian, bool _isEnabled, string _note = "")
+		public BlastByte(string _domain, long _address, int _applyFrame, int _lifetime, BlastByteType _type, byte[] _value, bool _bigEndian, bool _isEnabled, string _note = "")
 		{
 			Domain = _domain;
 			Address = _address - (_address % _value.Length);
 
 			Type = _type;
 			Value = _value;
+
+			ApplyFrame = _applyFrame;
+			Lifetime = _lifetime;
+
 			IsEnabled = _isEnabled;
 			BigEndian = _bigEndian;
 			Note = _note;
+
 		}
 
 		public BlastByte()
@@ -1091,20 +1095,29 @@ namespace RTC
 
 				Domain = (RTC_MemoryDomains.VmdPool[_domain] as VirtualMemoryDomain)?.PointerDomains[(int)_address] ?? "ERROR";
 				Address = (RTC_MemoryDomains.VmdPool[_domain] as VirtualMemoryDomain)?.PointerAddresses[(int)_address] ?? -1;
+
 			}
 		}
-		public override void Execute() => Apply();
 		public override bool Apply()
 		{
 			if (!IsEnabled)
 				return true;
+
+			RTC_StepActions.AddBlastUnit(this);
+
+			return true;
+		}
+		public override void Execute()
+		{
+			if (!IsEnabled)
+				return;
 
 			try
 			{
 				MemoryDomainProxy mdp = RTC_MemoryDomains.GetProxy(Domain, Address);
 
 				if (mdp == null)
-					return true;
+					return;
 
 				long targetAddress = RTC_MemoryDomains.GetRealAddress(Domain, Address);
 
@@ -1132,7 +1145,7 @@ namespace RTC
 						break;
 
 					case (BlastByteType.NONE):
-						return true;
+						return;
 				}
 
 				//As add and subtract are accounted for already, we no longer need to check the type here.
@@ -1147,7 +1160,7 @@ namespace RTC
 				ex.ToString());
 			}
 
-			return true;
+			return;
 		}
 
 		public override BlastUnit GetBackup()
@@ -1230,6 +1243,16 @@ namespace RTC
 
 		public override void EnteringExecution()
 		{
+			//We need to grab the value to freeze
+			if (BlastByteType.FREEZE)
+			{
+				MemoryDomainProxy mdp = RTC_MemoryDomains.GetProxy(Domain, Address);
+				long targetAddress = RTC_MemoryDomains.GetRealAddress(Domain, Address);
+
+				if (mdp == null)
+					return;
+				Value = mdp.PeekBytes(targetAddress, targetAddress + Value.Length);
+			}
 
 		}
 	}
@@ -1249,13 +1272,15 @@ namespace RTC
 
 		public override bool IsEnabled { get; set; }
 
-		public BlastPipe(string _domain, long _address, string _pipeDomain, long _pipeAddress, int _tiltValue, int _pipeSize, bool _bigEndian, bool _isEnabled, string _note = "")
+		public BlastPipe(string _domain, long _address, int _applyFrame, int _lifetime, string _pipeDomain, long _pipeAddress, int _tiltValue, int _pipeSize,  bool _bigEndian, bool _isEnabled, string _note = "")
 		{
 			Domain = _domain;
 			Address = _address;
 			PipeDomain = _pipeDomain;
 			PipeAddress = _pipeAddress;
 			PipeSize = _pipeSize;
+			Lifetime = _lifetime;
+			ApplyFrame = _applyFrame;
 			IsEnabled = _isEnabled;
 			TiltValue = _tiltValue;
 			BigEndian = _bigEndian;
@@ -1400,194 +1425,6 @@ namespace RTC
 
 		public override void EnteringExecution()
 		{
-
-		}
-	}
-
-	[Serializable]
-	public class BlastCheat : BlastUnit
-	{
-		public override string Domain { get; set; }
-		public override long Address { get; set; }
-		public override bool BigEndian { get; set; }
-		public override bool IsLocked { get; set; } = false;
-		public override string Note { get; set; } = "";
-
-		public byte[] Value;
-		public bool IsFreeze;
-
-
-		public override bool IsEnabled { get; set; }
-
-		public BlastCheat(string _domain, long _address, bool _bigEndian, byte[] _value, bool _isEnabled, bool _isFreeze, string _note = "")
-		{
-			Domain = _domain;
-
-			//Address = _address - (_address % (int)settings.Size);
-			Address = _address - (_address % _value.Length);
-
-			BigEndian = _bigEndian;
-
-			Value = _value;
-			IsEnabled = _isEnabled;
-			IsFreeze = _isFreeze;
-
-			Note = _note;
-		}
-
-		public BlastCheat()
-		{
-		}
-
-		public override void Rasterize()
-		{
-			if (Domain.Contains("[V]"))
-			{
-				/*
-                Tuple<string, long> mp = (RTC_MemoryDomains.VmdPool[Domain] as VirtualMemoryDomain)?.MemoryPointers[(int)Address];
-                if (mp == null)
-                    return;
-
-                Domain = mp.Item1;
-                Address = mp.Item2;
-                */
-
-				string _domain = (string)Domain.Clone();
-				long _address = Address;
-
-				Domain = (RTC_MemoryDomains.VmdPool[_domain] as VirtualMemoryDomain)?.PointerDomains[(int)_address] ?? "ERROR";
-				Address = (RTC_MemoryDomains.VmdPool[_domain] as VirtualMemoryDomain)?.PointerAddresses[(int)_address] ?? -1;
-			}
-		}
-
-		public override bool Apply()
-		{
-			try
-			{
-				if (!IsEnabled)
-					return true;
-
-				RTC_StepActions.AddBlastUnit(this);
-				
-			}
-			catch (Exception ex)
-			{
-				throw new Exception("The BlastCheat apply() function threw up. \n" +
-					"This is an RTC error, so you should probably send this to the RTC devs.\n" +
-					"If you know the steps to reproduce this error it would be greatly appreciated.\n\n" +
-				ex.ToString());
-			}
-
-			return true;
-		}
-
-
-		public override void Execute()
-		{
-			try
-			{
-				MemoryDomainProxy mdp = RTC_MemoryDomains.GetProxy(Domain, Address);
-				
-				if (mdp == null)
-					return;
-
-				long targetAddress = RTC_MemoryDomains.GetRealAddress(Domain, Address);
-
-				byte[] _Values = (byte[])Value.Clone();
-
-				if (BigEndian)
-					_Values.FlipBytes();
-
-
-				for (int i = 0; i < _Values.Length; i++)
-					mdp.PokeByte(targetAddress + i, _Values[i]);
-					
-			}
-			catch (Exception ex)
-			{
-				throw new Exception("The BlastCheat Execute() function threw up. \n" +
-					"This is an RTC error, so you should probably send this to the RTC devs.\n" +
-					"If you know the steps to reproduce this error it would be greatly appreciated.\n\n" +
-				ex.ToString());
-			}
-
-		}
-
-		public override BlastUnit GetBackup()
-		{
-			if (!IsEnabled)
-				return null;
-
-			try
-			{
-				MemoryDomainProxy mdp = RTC_MemoryDomains.GetProxy(Domain, Address);
-				long targetAddress = RTC_MemoryDomains.GetRealAddress(Domain, Address);
-
-				if (mdp == null)
-					return null;
-
-				byte[] _value = new byte[Value.Length];
-
-				for (int i = 0; i < _value.Length; i++)
-					_value[i] = mdp.PeekByte(targetAddress + i);
-
-				return new BlastByte(Domain, Address, BlastByteType.SET, _value, BigEndian, true);
-			}
-			catch (Exception ex)
-			{
-				throw new Exception("The BlastCheat GetBackup() function threw up. \n" +
-				                    "This is an RTC error, so you should probably send this to the RTC devs.\n" +
-				                    "If you know the steps to reproduce this error it would be greatly appreciated.\n\n" +
-				                    ex.ToString());
-			}
-		}
-
-		public override void Reroll()
-		{
-			//No reason to re-roll freeze
-			if (!IsFreeze)
-			{
-				long randomValue = 0;
-				switch (Value.Length)
-				{
-					case (1):
-						randomValue = RTC_Core.RND.RandomLong(RTC_HellgenieEngine.MinValue8Bit, RTC_HellgenieEngine.MaxValue8Bit);
-						break;
-					case (2):
-						randomValue = RTC_Core.RND.RandomLong(RTC_HellgenieEngine.MinValue16Bit, RTC_HellgenieEngine.MaxValue16Bit);
-						break;
-					case (4):
-						randomValue = RTC_Core.RND.RandomLong(RTC_HellgenieEngine.MinValue32Bit, RTC_HellgenieEngine.MaxValue32Bit);
-						break;
-				}
-				Value = RTC_Extensions.GetByteArrayValue(Value.Length, randomValue, true);
-			}
-		}
-
-		public override string ToString()
-		{
-			string EnabledString = $"[ ] BlastCheat{(IsFreeze ? ":Freeze" : "")} -> ";
-			if (IsEnabled)
-				EnabledString = $"[x] BlastCheat{(IsFreeze ? ":Freeze" : "")} -> ";
-
-			string cleanDomainName = Domain.Replace("(nametables)", ""); //Shortens the domain name if it contains "(nametables)"
-
-			//RTC_TODO: Rewrite the toString method for this
-			return (EnabledString + cleanDomainName + "(" + Convert.ToInt32(Address).ToString() + ")" + (IsFreeze ? "" : ".Value(" + RTC_Extensions.GetDecimalValue(Value, BigEndian).ToString() + ")"));
-		}
-
-		public override void EnteringExecution()
-		{
-			//We need to grab the value to freeze
-			if (IsFreeze)
-			{
-				MemoryDomainProxy mdp = RTC_MemoryDomains.GetProxy(Domain, Address);
-				long targetAddress = RTC_MemoryDomains.GetRealAddress(Domain, Address);
-
-				if (mdp == null)
-					return;
-				Value = mdp.PeekBytes(targetAddress, targetAddress + Value.Length);
-			}
 
 		}
 	}
