@@ -254,8 +254,8 @@ namespace BizHawk.Client.Common
 
 		public bool Rewind_IsThreaded = Environment.ProcessorCount > 1;
 
-		//RTC_HIJACK : Put RewindSpeedMultiplier to 2
-		public int RewindSpeedMultiplier = 2;
+		//RTC_HIJACK : Put RewindSpeedMultiplier to 3
+		public int RewindSpeedMultiplier = 3;
 
 		// Savestate settings
 		public SaveStateTypeE SaveStateType = SaveStateTypeE.Default;
