@@ -27,9 +27,13 @@ namespace RTC
 
 		static int CPU_STEP_Count = 0;
 
-		public static void CPU_STEP(bool isRewinding, bool isFastForwarding)
+		public static void CPU_STEP(bool isRewinding, bool isFastForwarding, bool isBeforeStep = false)
 		{
 			if (disableRTC || Global.Emulator is NullEmulator)
+				return;
+
+			//Return out if it's being called from before the step and we're not on frame 0. If we're on frame 0, then we go as normal
+			if (isBeforeStep && CPU_STEP_Count != 0)
 				return;
 
 			isNormalAdvance = !(isRewinding || isFastForwarding);
