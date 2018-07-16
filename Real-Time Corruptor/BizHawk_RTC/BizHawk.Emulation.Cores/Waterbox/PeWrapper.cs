@@ -421,7 +421,11 @@ namespace BizHawk.Emulation.Cores.Waterbox
 			if (!br.ReadBytes(Memory.XorHash.Length).SequenceEqual(Memory.XorHash))
 				// the post-Seal memory state is different. probable cause:  different rom or different version of rom,
 				// different syncsettings
-				throw new InvalidOperationException("Memory consistency check failed.  Is this savestate from different SyncSettings?");
+				
+				//RTC_HIJACK - Change this from being an exception to just a warning so if a user replaces the rom, it doesn't error out.
+				//This is dangerous in that it could allow for mismatched syncsettings, but the syncsettings checker should solve that
+				Console.WriteLine("Memory consistency check failed.  Is this savestate from different SyncSettings?");
+
 			if (br.ReadUInt64() != Start)
 				// dll loaded somewhere else.  probable cause: internal logic error.
 				// unlikely to get this far if the previous checks pssed
