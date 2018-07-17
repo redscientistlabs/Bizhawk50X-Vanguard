@@ -253,20 +253,20 @@ namespace RTC
 
 			standaloneForm = _standaloneForm;
 
+			if (!Directory.Exists(RTC_Core.rtcDir + "\\SKS\\"))
+				Directory.CreateDirectory(RTC_Core.rtcDir + "\\SKS\\");
+
 			if (!Directory.Exists(RTC_Core.rtcDir + "\\TEMP\\"))
 				Directory.CreateDirectory(RTC_Core.rtcDir + "\\TEMP\\");
 
-			if (!Directory.Exists(RTC_Core.rtcDir + "\\TEMP2\\"))
-				Directory.CreateDirectory(RTC_Core.rtcDir + "\\TEMP2\\");
-
-			if (!Directory.Exists(RTC_Core.rtcDir + "\\TEMP3\\"))
-				Directory.CreateDirectory(RTC_Core.rtcDir + "\\TEMP3\\");
+			if (!Directory.Exists(RTC_Core.rtcDir + "\\TEMP\\"))
+				Directory.CreateDirectory(RTC_Core.rtcDir + "\\TEMP\\");
 
 			if (!Directory.Exists(RTC_Core.rtcDir + "\\TEMP4\\"))
 				Directory.CreateDirectory(RTC_Core.rtcDir + "\\TEMP4\\");
 
-			if (!Directory.Exists(RTC_Core.rtcDir + "\\TEMP5\\"))
-				Directory.CreateDirectory(RTC_Core.rtcDir + "\\TEMP5\\");
+			if (!Directory.Exists(RTC_Core.rtcDir + "\\MP\\"))
+				Directory.CreateDirectory(RTC_Core.rtcDir + "\\MP\\");
 
 			//Loading RTC Params
 			RTC_Params.LoadRTCColor();

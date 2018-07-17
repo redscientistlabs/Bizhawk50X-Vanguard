@@ -56,10 +56,10 @@ namespace RTC
 
 				case CommandType.STASHKEY:
 
-					if (!File.Exists(RTC_Core.rtcDir + "\\TEMP\\" + cmd.romFilename))
-						File.WriteAllBytes(RTC_Core.rtcDir + "\\TEMP\\" + cmd.romFilename, cmd.romData);
+					if (!File.Exists(RTC_Core.rtcDir + "\\SKS\\" + cmd.romFilename))
+						File.WriteAllBytes(RTC_Core.rtcDir + "\\SKS\\" + cmd.romFilename, cmd.romData);
 
-					cmd.stashkey.RomFilename = RTC_Core.rtcDir + "\\TEMP\\" + RTC_Extensions.getShortFilenameFromPath(cmd.romFilename);
+					cmd.stashkey.RomFilename = RTC_Core.rtcDir + "\\SKS\\" + RTC_Extensions.getShortFilenameFromPath(cmd.romFilename);
 
 					cmd.stashkey.DeployState();
 
@@ -80,11 +80,11 @@ namespace RTC
 					if (cmd.romData != null)
 					{
 						cmd.romFilename = RTC_Extensions.getShortFilenameFromPath(cmd.romFilename);
-						if (!File.Exists(RTC_Core.rtcDir + "\\TEMP5\\" + cmd.romFilename))
-							File.WriteAllBytes(RTC_Core.rtcDir + "\\TEMP5\\" + cmd.romFilename, cmd.romData);
+						if (!File.Exists(RTC_Core.rtcDir + "\\MP\\" + cmd.romFilename))
+							File.WriteAllBytes(RTC_Core.rtcDir + "\\MP\\" + cmd.romFilename, cmd.romData);
 					}
 
-					RTC_Core.LoadRom(RTC_Core.rtcDir + "\\TEMP5\\" + cmd.romFilename);
+					RTC_Core.LoadRom(RTC_Core.rtcDir + "\\MP\\" + cmd.romFilename);
 					break;
 
 				case CommandType.PULLSTATE:
@@ -121,9 +121,9 @@ namespace RTC
 
 					cmd.romFilename = RTC_Extensions.getShortFilenameFromPath(cmd.romFilename);
 
-					if (!File.Exists(RTC_Core.rtcDir + "\\TEMP5\\" + cmd.romFilename))
-						File.WriteAllBytes(RTC_Core.rtcDir + "\\TEMP5\\" + cmd.romFilename, cmd.romData);
-					RTC_Core.LoadRom(RTC_Core.rtcDir + "\\TEMP5\\" + cmd.romFilename);
+					if (!File.Exists(RTC_Core.rtcDir + "\\MP\\" + cmd.romFilename))
+						File.WriteAllBytes(RTC_Core.rtcDir + "\\MP\\" + cmd.romFilename, cmd.romData);
+					RTC_Core.LoadRom(RTC_Core.rtcDir + "\\MP\\" + cmd.romFilename);
 
 					cmd.stashkey.DeployState();
 					RTC_StockpileManager.LoadState(cmd.stashkey, false);
@@ -138,10 +138,10 @@ namespace RTC
 					cmd.romFilename = RTC_Extensions.getShortFilenameFromPath(cmd.romFilename);
 
 					if (cmd.romData != null)
-						if (!File.Exists(RTC_Core.rtcDir + "\\TEMP5\\" + cmd.romFilename))
-							File.WriteAllBytes(RTC_Core.rtcDir + "\\TEMP5\\" + cmd.romFilename, cmd.romData);
+						if (!File.Exists(RTC_Core.rtcDir + "\\MP\\" + cmd.romFilename))
+							File.WriteAllBytes(RTC_Core.rtcDir + "\\MP\\" + cmd.romFilename, cmd.romData);
 
-					RTC_Core.LoadRom(RTC_Core.rtcDir + "\\TEMP5\\" + cmd.romFilename);
+					RTC_Core.LoadRom(RTC_Core.rtcDir + "\\MP\\" + cmd.romFilename);
 
 					cmd.stashkey.DeployState();
 					RTC_StockpileManager.LoadState(cmd.stashkey, false);
