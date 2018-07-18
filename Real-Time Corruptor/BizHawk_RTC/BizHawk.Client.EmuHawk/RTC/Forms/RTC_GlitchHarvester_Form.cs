@@ -134,7 +134,7 @@ namespace RTC
 			lbConnectionStatus.Size = new Size(500, 32);
 			lbConnectionStatus.ForeColor = Color.FromArgb(255, 192, 128);
 
-			btnEmergencySaveStockpile.Text = "Emergency Save Stockpile";
+			btnEmergencySaveStockpile.Text = "Emergency Save-As Stockpile";
 			btnEmergencySaveStockpile.Location = new Point(32, 64);
 			btnEmergencySaveStockpile.Size = new Size(200, 32);
 			btnEmergencySaveStockpile.BackColor = Color.OrangeRed;
