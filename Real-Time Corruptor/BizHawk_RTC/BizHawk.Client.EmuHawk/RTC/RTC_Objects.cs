@@ -53,166 +53,213 @@ namespace RTC
 
 		public static bool Save(Stockpile sks, bool isQuickSave = false)
 		{
-			if (sks.StashKeys.Count == 0)
+			string tempFilename = "";
+			try
 			{
-				MessageBox.Show("Can't save because the Current Stockpile is empty");
+
+				if (sks.StashKeys.Count == 0)
+				{
+					MessageBox.Show("Can't save because the Current Stockpile is empty");
+					return false;
+				}
+
+				if (!isQuickSave)
+				{
+					SaveFileDialog saveFileDialog1 = new SaveFileDialog
+					{
+						DefaultExt = "sks",
+						Title = "Save Stockpile File",
+						Filter = "SKS files|*.sks",
+						RestoreDirectory = true
+					};
+
+					if (saveFileDialog1.ShowDialog() == DialogResult.OK)
+					{
+						sks.Filename = saveFileDialog1.FileName;
+						sks.ShortFilename = sks.Filename.Substring(sks.Filename.LastIndexOf("\\") + 1,
+							sks.Filename.Length - (sks.Filename.LastIndexOf("\\") + 1));
+					}
+					else
+						return false;
+				}
+				else
+				{
+					sks.Filename = RTC_StockpileManager.currentStockpile.Filename;
+					sks.ShortFilename = RTC_StockpileManager.currentStockpile.ShortFilename;
+				}
+
+				//Backuping bizhawk settings
+				RTC_Core.SendCommandToBizhawk(new RTC_Command(CommandType.REMOTE_EVENT_SAVEBIZHAWKCONFIG), true);
+
+				//Watermarking RTC Version
+				sks.RtcVersion = RTC_Core.RtcVersion;
+
+				List<string> allRoms = new List<string>();
+
+				//populating Allroms array
+				foreach (StashKey key in sks.StashKeys)
+					if (!allRoms.Contains(key.RomFilename))
+					{
+						allRoms.Add(key.RomFilename);
+
+						if (key.RomFilename.ToUpper().Contains(".CUE"))
+						{
+							string cueFolder = RTC_Extensions.getLongDirectoryFromPath(key.RomFilename);
+							string[] cueLines = File.ReadAllLines(key.RomFilename);
+							List<string> binFiles = new List<string>();
+
+							foreach (string line in cueLines)
+								if (line.Contains("FILE") && line.Contains("BINARY"))
+								{
+									int startFilename = line.IndexOf('"') + 1;
+									int endFilename = line.LastIndexOf('"');
+
+									binFiles.Add(line.Substring(startFilename, endFilename - startFilename));
+								}
+
+							allRoms.AddRange(binFiles.Select(it => cueFolder + it));
+						}
+
+						if (key.RomFilename.ToUpper().Contains(".CCD"))
+						{
+							List<string> binFiles = new List<string>();
+
+							if (File.Exists(RTC_Extensions.removeFileExtension(key.RomFilename) + ".sub"))
+								binFiles.Add(RTC_Extensions.removeFileExtension(key.RomFilename) + ".sub");
+
+							if (File.Exists(RTC_Extensions.removeFileExtension(key.RomFilename) + ".img"))
+								binFiles.Add(RTC_Extensions.removeFileExtension(key.RomFilename) + ".img");
+
+							allRoms.AddRange(binFiles);
+						}
+					}
+
+				//clean temp2 folder
+				foreach (string file in Directory.GetFiles(RTC_Core.rtcDir + "\\TEMP2"))
+				{
+					File.SetAttributes(file, FileAttributes.Normal);
+					File.Delete(file);
+				}
+
+				//populating temp2 folder with roms
+				for (int i = 0; i < allRoms.Count; i++)
+				{
+					string rom = allRoms[i];
+					string romTempfilename = RTC_Core.rtcDir + "\\TEMP2\\" + (rom.Substring(rom.LastIndexOf("\\") + 1,
+						                         rom.Length - (rom.LastIndexOf("\\") + 1)));
+
+					if (!rom.Contains("\\"))
+						rom = RTC_Core.rtcDir + "\\TEMP\\" + rom;
+
+					if (File.Exists(romTempfilename))
+					{
+						File.SetAttributes(romTempfilename, FileAttributes.Normal);
+						File.Delete(romTempfilename);
+						File.Copy(rom, romTempfilename);
+					}
+					else
+						File.Copy(rom, romTempfilename);
+				}
+
+				//clean temp folder
+				EmptyFolder("TEMP");
+				//foreach (string file in Directory.GetFiles(RTC_Core.rtcDir + "\\TEMP"))
+				//    File.Delete(file);
+
+				//sending back filtered files from temp2 folder to temp
+				foreach (string file in Directory.GetFiles(RTC_Core.rtcDir + "\\TEMP2"))
+					File.Move(file,
+						RTC_Core.rtcDir + "\\TEMP\\" + (file.Substring(file.LastIndexOf("\\") + 1,
+							file.Length - (file.LastIndexOf("\\") + 1))));
+
+				//clean temp2 folder again
+				EmptyFolder("TEMP2");
+				//foreach (string file in Directory.GetFiles(RTC_Core.rtcDir + "\\TEMP2"))
+				//    File.Delete(file);
+
+				foreach (StashKey key in sks.StashKeys)
+				{
+					string statefilename = key.GameName + "." + key.ParentKey + ".timejump.State"; // get savestate name
+
+					if (!File.Exists(RTC_Core.rtcDir + "\\TEMP\\" + statefilename))
+						File.Copy(RTC_Core.bizhawkDir + "\\" + key.SystemName + "\\State\\" + statefilename,
+							RTC_Core.rtcDir + "\\TEMP\\" + statefilename); // copy savestates to temp folder
+				}
+
+				if (File.Exists(RTC_Core.bizhawkDir + "\\config.ini"))
+					File.Copy(RTC_Core.bizhawkDir + "\\config.ini", RTC_Core.rtcDir + "\\TEMP\\config.ini");
+
+				foreach (StashKey sk in sks.StashKeys)
+					sk.RomFilename = RTC_Extensions.getShortFilenameFromPath(sk.RomFilename);
+
+				//creater stockpile.xml to temp folder from stockpile object
+				using (FileStream fs = File.Open(RTC_Core.rtcDir + "\\TEMP\\stockpile.xml", FileMode.OpenOrCreate))
+				{
+					XmlSerializer xs = new XmlSerializer(typeof(Stockpile));
+					xs.Serialize(fs, sks);
+					fs.Close();
+				}
+				//7z the temp folder to destination filename
+				//string[] stringargs = { "-c", sks.Filename, RTC_Core.rtcDir + "\\TEMP\\" };
+				//FastZipProgram.Exec(stringargs);
+
+				tempFilename = sks.Filename + ".temp";
+
+				CompressionLevel comp = System.IO.Compression.CompressionLevel.Fastest;
+
+				if (!RTC_Core.ghForm.cbCompressStockpiles.Checked)
+					comp = System.IO.Compression.CompressionLevel.NoCompression;
+
+
+				if (File.Exists(tempFilename))
+				{
+					if(MessageBox.Show("There is an existing temp stockpile.\nThis may be the result of a previously failed save.\nThat temp file is named " + tempFilename + " in case you want to back it up.\nDo you want to continue saving?", "WARNING", MessageBoxButtons.YesNo) == DialogResult.No)
+					{
+						return false;
+					}
+					File.Delete(tempFilename);
+				}
+
+
+				System.IO.Compression.ZipFile.CreateFromDirectory(RTC_Core.rtcDir + "\\TEMP\\", tempFilename, comp,
+					false);
+
+				if (File.Exists(sks.Filename))
+					File.Delete(sks.Filename);
+
+				File.Move(tempFilename, sks.Filename);
+
+				RTC_StockpileManager.currentStockpile = sks;
+
+				RTC_StockpileManager.unsavedEdits = false;
+
+				return true;
+			}
+			catch (Exception ex)
+			{
+				MessageBox.Show("Something went wrong while saving your stockpile!\n");
+
+				if (File.Exists(tempFilename) && File.Exists((sks.Filename)))
+				{
+					MessageBox.Show(
+						"Your original file should be untouched. The temporary file we were trying to save to is named " +
+						tempFilename + "\n It's possible that the save completed and it failed to overwrite the original file.\nIf this is the case, the .temp file should work if you rename it to .sks\n\n" + ex);
+				}
+
+				else if (File.Exists(tempFilename) && !File.Exists(sks.Filename))
+				{
+					MessageBox.Show(
+						"Something went wrong when trying to rename the temp file" + tempFilename + " to " + sks.Filename + "!\n If it got this far, the temporary file should be intact and you can just remove .temp from the end yourself.\nMake sure nothing is locking the original file to prevent this.\n\n" + ex);
+				}
+
+				else if (!File.Exists(tempFilename) && File.Exists(sks.Filename))
+				{
+					MessageBox.Show(
+						"Something went wrong when trying to write to the temp file " + tempFilename + ". Make sure nothing is locking that file. Your original stockpile should be intact.\n\n" + ex);
+				}
+
 				return false;
 			}
-
-			if (!isQuickSave)
-			{
-				SaveFileDialog saveFileDialog1 = new SaveFileDialog
-				{
-					DefaultExt = "sks",
-					Title = "Save Stockpile File",
-					Filter = "SKS files|*.sks",
-					RestoreDirectory = true
-				};
-
-				if (saveFileDialog1.ShowDialog() == DialogResult.OK)
-				{
-					sks.Filename = saveFileDialog1.FileName;
-					sks.ShortFilename = sks.Filename.Substring(sks.Filename.LastIndexOf("\\") + 1, sks.Filename.Length - (sks.Filename.LastIndexOf("\\") + 1));
-				}
-				else
-					return false;
-			}
-			else
-			{
-				sks.Filename = RTC_StockpileManager.currentStockpile.Filename;
-				sks.ShortFilename = RTC_StockpileManager.currentStockpile.ShortFilename;
-			}
-
-			//Backuping bizhawk settings
-			RTC_Core.SendCommandToBizhawk(new RTC_Command(CommandType.REMOTE_EVENT_SAVEBIZHAWKCONFIG), true);
-
-			//Watermarking RTC Version
-			sks.RtcVersion = RTC_Core.RtcVersion;
-
-			List<string> allRoms = new List<string>();
-
-			//populating Allroms array
-			foreach (StashKey key in sks.StashKeys)
-				if (!allRoms.Contains(key.RomFilename))
-				{
-					allRoms.Add(key.RomFilename);
-
-					if (key.RomFilename.ToUpper().Contains(".CUE"))
-					{
-						string cueFolder = RTC_Extensions.getLongDirectoryFromPath(key.RomFilename);
-						string[] cueLines = File.ReadAllLines(key.RomFilename);
-						List<string> binFiles = new List<string>();
-
-						foreach (string line in cueLines)
-							if (line.Contains("FILE") && line.Contains("BINARY"))
-							{
-								int startFilename = line.IndexOf('"') + 1;
-								int endFilename = line.LastIndexOf('"');
-
-								binFiles.Add(line.Substring(startFilename, endFilename - startFilename));
-							}
-
-						allRoms.AddRange(binFiles.Select(it => cueFolder + it));
-					}
-
-					if (key.RomFilename.ToUpper().Contains(".CCD"))
-					{
-						List<string> binFiles = new List<string>();
-
-						if (File.Exists(RTC_Extensions.removeFileExtension(key.RomFilename) + ".sub"))
-							binFiles.Add(RTC_Extensions.removeFileExtension(key.RomFilename) + ".sub");
-
-						if (File.Exists(RTC_Extensions.removeFileExtension(key.RomFilename) + ".img"))
-							binFiles.Add(RTC_Extensions.removeFileExtension(key.RomFilename) + ".img");
-
-						allRoms.AddRange(binFiles);
-					}
-				}
-
-			//clean temp2 folder
-			foreach (string file in Directory.GetFiles(RTC_Core.rtcDir + "\\TEMP2"))
-			{
-				File.SetAttributes(file, FileAttributes.Normal);
-				File.Delete(file);
-			}
-
-			//populating temp2 folder with roms
-			for (int i = 0; i < allRoms.Count; i++)
-			{
-				string rom = allRoms[i];
-				string romTempfilename = RTC_Core.rtcDir + "\\TEMP2\\" + (rom.Substring(rom.LastIndexOf("\\") + 1, rom.Length - (rom.LastIndexOf("\\") + 1)));
-
-				if (!rom.Contains("\\"))
-					rom = RTC_Core.rtcDir + "\\TEMP\\" + rom;
-
-				if (File.Exists(romTempfilename))
-				{
-					File.SetAttributes(romTempfilename, FileAttributes.Normal);
-					File.Delete(romTempfilename);
-					File.Copy(rom, romTempfilename);
-				}
-				else
-					File.Copy(rom, romTempfilename);
-			}
-
-			//clean temp folder
-			EmptyFolder("TEMP");
-			//foreach (string file in Directory.GetFiles(RTC_Core.rtcDir + "\\TEMP"))
-			//    File.Delete(file);
-
-			//sending back filtered files from temp2 folder to temp
-			foreach (string file in Directory.GetFiles(RTC_Core.rtcDir + "\\TEMP2"))
-				File.Move(file, RTC_Core.rtcDir + "\\TEMP\\" + (file.Substring(file.LastIndexOf("\\") + 1, file.Length - (file.LastIndexOf("\\") + 1))));
-
-			//clean temp2 folder again
-			EmptyFolder("TEMP2");
-			//foreach (string file in Directory.GetFiles(RTC_Core.rtcDir + "\\TEMP2"))
-			//    File.Delete(file);
-
-			foreach (StashKey key in sks.StashKeys)
-			{
-				string statefilename = key.GameName + "." + key.ParentKey + ".timejump.State"; // get savestate name
-
-				if (!File.Exists(RTC_Core.rtcDir + "\\TEMP\\" + statefilename))
-					File.Copy(RTC_Core.bizhawkDir + "\\" + key.SystemName + "\\State\\" + statefilename, RTC_Core.rtcDir + "\\TEMP\\" + statefilename); // copy savestates to temp folder
-			}
-
-			if (File.Exists(RTC_Core.bizhawkDir + "\\config.ini"))
-				File.Copy(RTC_Core.bizhawkDir + "\\config.ini", RTC_Core.rtcDir + "\\TEMP\\config.ini");
-
-			foreach (StashKey sk in sks.StashKeys)
-				sk.RomFilename = RTC_Extensions.getShortFilenameFromPath(sk.RomFilename);
-
-			//creater stockpile.xml to temp folder from stockpile object
-			using (FileStream fs = File.Open(RTC_Core.rtcDir + "\\TEMP\\stockpile.xml", FileMode.OpenOrCreate))
-			{
-				XmlSerializer xs = new XmlSerializer(typeof(Stockpile));
-				xs.Serialize(fs, sks);
-				fs.Close();
-			}
-			//7z the temp folder to destination filename
-			//string[] stringargs = { "-c", sks.Filename, RTC_Core.rtcDir + "\\TEMP\\" };
-			//FastZipProgram.Exec(stringargs);
-
-			string tempFilename = sks.Filename + ".temp";
-
-			CompressionLevel comp = System.IO.Compression.CompressionLevel.Fastest;
-
-			if (!RTC_Core.ghForm.cbCompressStockpiles.Checked)
-				comp = System.IO.Compression.CompressionLevel.NoCompression;
-
-			System.IO.Compression.ZipFile.CreateFromDirectory(RTC_Core.rtcDir + "\\TEMP\\", tempFilename, comp, false);
-
-			if (File.Exists(sks.Filename))
-				File.Delete(sks.Filename);
-
-			File.Move(tempFilename, sks.Filename);
-
-			RTC_StockpileManager.currentStockpile = sks;
-
-			RTC_StockpileManager.unsavedEdits = false;
-
-			return true;
 		}
 
 		public static bool Load(DataGridView dgvStockpile, string Filename = null)
