@@ -768,12 +768,17 @@ namespace RTC
 
 			while (newNumber == lastLoaderRom)
 			{
-				newNumber = RTC_Core.RND.Next(1, 17);
+				int nbNesFiles = Directory.GetFiles(RTC_Core.rtcDir + "\\ASSETS\\", "*.nes").Length;
+				
+				newNumber = RTC_Core.RND.Next(1, nbNesFiles + 1);
 
 				if (newNumber != lastLoaderRom)
 				{
 					if (File.Exists(RTC_Core.rtcDir + "\\ASSETS\\" + "overridedefault.nes"))
 						RTC_Core.LoadRom(RTC_Core.rtcDir + "\\ASSETS\\" + "overridedefault.nes");
+					//Please ignore
+					else if (RTC_Core.RND.Next(0, 420) == 7)
+						RTC_Core.LoadRom(RTC_Core.rtcDir + "\\ASSETS\\" + "gd.fds");
 					else
 						RTC_Core.LoadRom(RTC_Core.rtcDir + "\\ASSETS\\" + newNumber.ToString() + "default.nes");
 
