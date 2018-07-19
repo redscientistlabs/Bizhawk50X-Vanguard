@@ -37,12 +37,12 @@
             this.label2 = new System.Windows.Forms.Label();
             this.btnBlastToggle = new System.Windows.Forms.Button();
             this.dgvStockpile = new System.Windows.Forms.DataGridView();
+            this.tbNoteBox = new System.Windows.Forms.RichTextBox();
             this.Item = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.GameName = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.SystemName = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.SystemCore = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.Note = new System.Windows.Forms.DataGridViewButtonColumn();
-            this.tbNoteBox = new System.Windows.Forms.RichTextBox();
             ((System.ComponentModel.ISupportInitialize)(this.dgvStockpile)).BeginInit();
             this.SuspendLayout();
             // 
@@ -147,6 +147,7 @@
             this.dgvStockpile.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
+            this.dgvStockpile.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
             this.dgvStockpile.BackgroundColor = System.Drawing.Color.Gray;
             this.dgvStockpile.BorderStyle = System.Windows.Forms.BorderStyle.None;
             this.dgvStockpile.ColumnHeadersHeight = 21;
@@ -170,45 +171,6 @@
             this.dgvStockpile.CellClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dgvStockpile_CellClick);
             this.dgvStockpile.MouseDown += new System.Windows.Forms.MouseEventHandler(this.dgvStockpile_MouseDown);
             // 
-            // Item
-            // 
-            this.Item.HeaderText = "Item Name";
-            this.Item.Name = "Item";
-            this.Item.ReadOnly = true;
-            this.Item.Width = 260;
-            // 
-            // GameName
-            // 
-            this.GameName.HeaderText = "Game";
-            this.GameName.Name = "GameName";
-            this.GameName.ReadOnly = true;
-            this.GameName.Width = 108;
-            // 
-            // SystemName
-            // 
-            this.SystemName.HeaderText = "System";
-            this.SystemName.Name = "SystemName";
-            this.SystemName.ReadOnly = true;
-            this.SystemName.Width = 50;
-            // 
-            // SystemCore
-            // 
-            this.SystemCore.HeaderText = "Core";
-            this.SystemCore.Name = "SystemCore";
-            this.SystemCore.Width = 150;
-            // 
-            // Note
-            // 
-            dataGridViewCellStyle1.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
-            dataGridViewCellStyle1.Font = new System.Drawing.Font("Segoe UI", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            dataGridViewCellStyle1.ForeColor = System.Drawing.Color.Black;
-            this.Note.DefaultCellStyle = dataGridViewCellStyle1;
-            this.Note.HeaderText = "Note";
-            this.Note.Name = "Note";
-            this.Note.Resizable = System.Windows.Forms.DataGridViewTriState.True;
-            this.Note.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.Automatic;
-            this.Note.Width = 40;
-            // 
             // tbNoteBox
             // 
             this.tbNoteBox.BackColor = System.Drawing.Color.Gray;
@@ -223,6 +185,45 @@
             this.tbNoteBox.TabIndex = 143;
             this.tbNoteBox.Tag = "color:normal";
             this.tbNoteBox.Text = "Notes will appear here...";
+            // 
+            // Item
+            // 
+            this.Item.HeaderText = "Item Name";
+            this.Item.Name = "Item";
+            this.Item.ReadOnly = true;
+            // 
+            // GameName
+            // 
+            this.GameName.FillWeight = 45F;
+            this.GameName.HeaderText = "Game";
+            this.GameName.Name = "GameName";
+            this.GameName.ReadOnly = true;
+            // 
+            // SystemName
+            // 
+            this.SystemName.FillWeight = 45F;
+            this.SystemName.HeaderText = "System";
+            this.SystemName.Name = "SystemName";
+            this.SystemName.ReadOnly = true;
+            // 
+            // SystemCore
+            // 
+            this.SystemCore.FillWeight = 40F;
+            this.SystemCore.HeaderText = "Core";
+            this.SystemCore.Name = "SystemCore";
+            // 
+            // Note
+            // 
+            dataGridViewCellStyle1.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
+            dataGridViewCellStyle1.Font = new System.Drawing.Font("Segoe UI", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            dataGridViewCellStyle1.ForeColor = System.Drawing.Color.Black;
+            this.Note.DefaultCellStyle = dataGridViewCellStyle1;
+            this.Note.FillWeight = 15F;
+            this.Note.HeaderText = "Note";
+            this.Note.MinimumWidth = 35;
+            this.Note.Name = "Note";
+            this.Note.Resizable = System.Windows.Forms.DataGridViewTriState.True;
+            this.Note.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.Automatic;
             // 
             // RTC_StockpilePlayer_Form
             // 
@@ -260,11 +261,11 @@
 		private System.Windows.Forms.Button btnPreviousItem;
 		public System.Windows.Forms.Button btnBlastToggle;
 		public System.Windows.Forms.DataGridView dgvStockpile;
+		private System.Windows.Forms.RichTextBox tbNoteBox;
 		private System.Windows.Forms.DataGridViewTextBoxColumn Item;
 		private System.Windows.Forms.DataGridViewTextBoxColumn GameName;
 		private System.Windows.Forms.DataGridViewTextBoxColumn SystemName;
 		private System.Windows.Forms.DataGridViewTextBoxColumn SystemCore;
 		private System.Windows.Forms.DataGridViewButtonColumn Note;
-		private System.Windows.Forms.RichTextBox tbNoteBox;
 	}
 }
