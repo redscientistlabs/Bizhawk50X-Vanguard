@@ -651,8 +651,6 @@ namespace RTC
 
 		private void PopulateDomainContextMenu(int column)
 		{
-			cmsBlastEditor.Items.Clear();
-
 			domains = RTC_MemoryDomains.MemoryInterfaces.Keys.Concat(RTC_MemoryDomains.VmdPool.Values.Select(it => it.ToString())).ToArray();
 
 			foreach (string domain in domains)
@@ -669,26 +667,22 @@ namespace RTC
 		{
 			if (row == -1)
 			{
-				PopulateColumnHeaderContextMenu(column);
 				return;
 			}
 			string domain = dgvBlastLayer["dgvSourceAddressDomain", row].Value.ToString();
 			long address = Convert.ToInt64(dgvBlastLayer["dgvSourceAddress", row].Value);
 
-			cmsBlastEditor.Items.Clear();
 			{
 				((ToolStripMenuItem)cmsBlastEditor.Items.Add("Open Selected Address in Hex Editor", null, new EventHandler((ob, ev) =>
 				{
 					RTC_Core.SendCommandToRTC(new RTC_Command(CommandType.BIZHAWK_OPEN_HEXEDITOR_ADDRESS) { objectValue = new object[] { domain, address } });
 				}))).Enabled = true;
 			}
-
-			PopulateColumnHeaderContextMenu(column);
+			
 		}
 
 		private void PopulateParamContextMenu(int column, int row)
 		{
-			cmsBlastEditor.Items.Clear();
 			if (row == -1)
 			{
 				return;
@@ -735,14 +729,10 @@ namespace RTC
 					}
 				}))).Enabled = true;
 			}
-
-			cmsBlastEditor.Items.Add(new ToolStripSeparator());
-			PopulateColumnHeaderContextMenu(column);
 		}
 
 		private void PopulateBlastUnitModeContextMenu(int column, int row)
 		{
-			cmsBlastEditor.Items.Clear();
 			if (row == -1)
 			{
 				return;
@@ -776,7 +766,6 @@ namespace RTC
 
 		private void PopulateBlastUnitTypeContextMenu(int column, int row)
 		{
-			cmsBlastEditor.Items.Clear();
 			if (row == -1)
 			{
 				return;
@@ -889,34 +878,40 @@ namespace RTC
 			}
 			else if (e.Button == MouseButtons.Right)
 			{
+				cmsBlastEditor = new ContextMenuStrip();
+
+				PopulateColumnHeaderContextMenu(currentMouseOverColumn);
+
 				switch (currentMouseOverColumn)
-				{					//BlastUnitType
+				{	//BlastUnitType
 					case (int)BlastEditorColumn.DgvBlastUnitType:
+						cmsBlastEditor.Items.Add(new ToolStripSeparator());
 						PopulateBlastUnitTypeContextMenu(currentMouseOverColumn, currentMouseOverRow);
 						break;
 					//BlastUnitMode
 					case (int)BlastEditorColumn.DgvBlastUnitMode:
+						cmsBlastEditor.Items.Add(new ToolStripSeparator());
 						PopulateBlastUnitModeContextMenu(currentMouseOverColumn, currentMouseOverRow);
 						break;
 
 					//Domain1 Domain2
 					case (int)BlastEditorColumn.DgvSourceAddressDomain:
 					case (int)BlastEditorColumn.DgvParamDomain:
+						cmsBlastEditor.Items.Add(new ToolStripSeparator());
 						PopulateDomainContextMenu(currentMouseOverColumn);
 						break;
 					//Source Address
 					case (int)BlastEditorColumn.DgvSourceAddress:
+						cmsBlastEditor.Items.Add(new ToolStripSeparator());
 						PopulateAddressContextMenu(currentMouseOverColumn, currentMouseOverRow);
 						break;
 					//Param
 					case (int)BlastEditorColumn.DgvParam:
+						cmsBlastEditor.Items.Add(new ToolStripSeparator());
 						PopulateParamContextMenu(currentMouseOverColumn, currentMouseOverRow);
 						break;
-					default:
-						cmsBlastEditor.Items.Clear();
-						PopulateColumnHeaderContextMenu(currentMouseOverColumn);
-						break;
 				}
+
 
 				cmsBlastEditor.Show(dgvBlastLayer, new Point(e.X, e.Y));
 			}

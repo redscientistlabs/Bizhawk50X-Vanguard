@@ -19,6 +19,7 @@ namespace RTC
 	[XmlInclude(typeof(BlastCheat))]
 	[XmlInclude(typeof(BlastByte))]
 	[XmlInclude(typeof(BlastPipe))]
+	[XmlInclude(typeof(BlastVector))]
 	[XmlInclude(typeof(BlastUnit))]
 	[Serializable]
 	public class Stockpile
@@ -52,166 +53,213 @@ namespace RTC
 
 		public static bool Save(Stockpile sks, bool isQuickSave = false)
 		{
-			if (sks.StashKeys.Count == 0)
+			string tempFilename = "";
+			try
 			{
-				MessageBox.Show("Can't save because the Current Stockpile is empty");
+
+				if (sks.StashKeys.Count == 0)
+				{
+					MessageBox.Show("Can't save because the Current Stockpile is empty");
+					return false;
+				}
+
+				if (!isQuickSave)
+				{
+					SaveFileDialog saveFileDialog1 = new SaveFileDialog
+					{
+						DefaultExt = "sks",
+						Title = "Save Stockpile File",
+						Filter = "SKS files|*.sks",
+						RestoreDirectory = true
+					};
+
+					if (saveFileDialog1.ShowDialog() == DialogResult.OK)
+					{
+						sks.Filename = saveFileDialog1.FileName;
+						sks.ShortFilename = sks.Filename.Substring(sks.Filename.LastIndexOf("\\") + 1,
+							sks.Filename.Length - (sks.Filename.LastIndexOf("\\") + 1));
+					}
+					else
+						return false;
+				}
+				else
+				{
+					sks.Filename = RTC_StockpileManager.currentStockpile.Filename;
+					sks.ShortFilename = RTC_StockpileManager.currentStockpile.ShortFilename;
+				}
+
+				//Backuping bizhawk settings
+				RTC_Core.SendCommandToBizhawk(new RTC_Command(CommandType.REMOTE_EVENT_SAVEBIZHAWKCONFIG), true);
+
+				//Watermarking RTC Version
+				sks.RtcVersion = RTC_Core.RtcVersion;
+
+				List<string> allRoms = new List<string>();
+
+				//populating Allroms array
+				foreach (StashKey key in sks.StashKeys)
+					if (!allRoms.Contains(key.RomFilename))
+					{
+						allRoms.Add(key.RomFilename);
+
+						if (key.RomFilename.ToUpper().Contains(".CUE"))
+						{
+							string cueFolder = RTC_Extensions.getLongDirectoryFromPath(key.RomFilename);
+							string[] cueLines = File.ReadAllLines(key.RomFilename);
+							List<string> binFiles = new List<string>();
+
+							foreach (string line in cueLines)
+								if (line.Contains("FILE") && line.Contains("BINARY"))
+								{
+									int startFilename = line.IndexOf('"') + 1;
+									int endFilename = line.LastIndexOf('"');
+
+									binFiles.Add(line.Substring(startFilename, endFilename - startFilename));
+								}
+
+							allRoms.AddRange(binFiles.Select(it => cueFolder + it));
+						}
+
+						if (key.RomFilename.ToUpper().Contains(".CCD"))
+						{
+							List<string> binFiles = new List<string>();
+
+							if (File.Exists(RTC_Extensions.removeFileExtension(key.RomFilename) + ".sub"))
+								binFiles.Add(RTC_Extensions.removeFileExtension(key.RomFilename) + ".sub");
+
+							if (File.Exists(RTC_Extensions.removeFileExtension(key.RomFilename) + ".img"))
+								binFiles.Add(RTC_Extensions.removeFileExtension(key.RomFilename) + ".img");
+
+							allRoms.AddRange(binFiles);
+						}
+					}
+
+				//clean temp2 folder
+				foreach (string file in Directory.GetFiles(RTC_Core.rtcDir + "\\TEMP2"))
+				{
+					File.SetAttributes(file, FileAttributes.Normal);
+					File.Delete(file);
+				}
+
+				//populating temp2 folder with roms
+				for (int i = 0; i < allRoms.Count; i++)
+				{
+					string rom = allRoms[i];
+					string romTempfilename = RTC_Core.rtcDir + "\\TEMP2\\" + (rom.Substring(rom.LastIndexOf("\\") + 1,
+						                         rom.Length - (rom.LastIndexOf("\\") + 1)));
+
+					if (!rom.Contains("\\"))
+						rom = RTC_Core.rtcDir + "\\SKS\\" + rom;
+
+					if (File.Exists(romTempfilename))
+					{
+						File.SetAttributes(romTempfilename, FileAttributes.Normal);
+						File.Delete(romTempfilename);
+						File.Copy(rom, romTempfilename);
+					}
+					else
+						File.Copy(rom, romTempfilename);
+				}
+
+				//clean temp folder
+				EmptyFolder("TEMP");
+				//foreach (string file in Directory.GetFiles(RTC_Core.rtcDir + "\\TEMP"))
+				//    File.Delete(file);
+
+				//sending back filtered files from temp2 folder to temp
+				foreach (string file in Directory.GetFiles(RTC_Core.rtcDir + "\\TEMP2"))
+					File.Move(file,
+						RTC_Core.rtcDir + "\\SKS\\" + (file.Substring(file.LastIndexOf("\\") + 1,
+							file.Length - (file.LastIndexOf("\\") + 1))));
+
+				//clean temp2 folder again
+				EmptyFolder("TEMP2");
+				//foreach (string file in Directory.GetFiles(RTC_Core.rtcDir + "\\TEMP2"))
+				//    File.Delete(file);
+
+				foreach (StashKey key in sks.StashKeys)
+				{
+					string statefilename = key.GameName + "." + key.ParentKey + ".timejump.State"; // get savestate name
+
+					if (!File.Exists(RTC_Core.rtcDir + "\\SKS\\" + statefilename))
+						File.Copy(RTC_Core.bizhawkDir + "\\" + key.SystemName + "\\State\\" + statefilename,
+							RTC_Core.rtcDir + "\\SKS\\" + statefilename); // copy savestates to temp folder
+				}
+
+				if (File.Exists(RTC_Core.bizhawkDir + "\\config.ini"))
+					File.Copy(RTC_Core.bizhawkDir + "\\config.ini", RTC_Core.rtcDir + "\\SKS\\config.ini");
+
+				foreach (StashKey sk in sks.StashKeys)
+					sk.RomFilename = RTC_Extensions.getShortFilenameFromPath(sk.RomFilename);
+
+				//creater stockpile.xml to temp folder from stockpile object
+				using (FileStream fs = File.Open(RTC_Core.rtcDir + "\\SKS\\stockpile.xml", FileMode.OpenOrCreate))
+				{
+					XmlSerializer xs = new XmlSerializer(typeof(Stockpile));
+					xs.Serialize(fs, sks);
+					fs.Close();
+				}
+				//7z the temp folder to destination filename
+				//string[] stringargs = { "-c", sks.Filename, RTC_Core.rtcDir + "\\SKS\\" };
+				//FastZipProgram.Exec(stringargs);
+
+				tempFilename = sks.Filename + ".temp";
+
+				CompressionLevel comp = System.IO.Compression.CompressionLevel.Fastest;
+
+				if (!RTC_Core.ghForm.cbCompressStockpiles.Checked)
+					comp = System.IO.Compression.CompressionLevel.NoCompression;
+
+
+				if (File.Exists(tempFilename))
+				{
+					if(MessageBox.Show("There is an existing temp stockpile.\nThis may be the result of a previously failed save.\nThat temp file is named " + tempFilename + " in case you want to back it up.\nDo you want to continue saving?", "WARNING", MessageBoxButtons.YesNo) == DialogResult.No)
+					{
+						return false;
+					}
+					File.Delete(tempFilename);
+				}
+
+
+				System.IO.Compression.ZipFile.CreateFromDirectory(RTC_Core.rtcDir + "\\SKS\\", tempFilename, comp,
+					false);
+
+				if (File.Exists(sks.Filename))
+					File.Delete(sks.Filename);
+
+				File.Move(tempFilename, sks.Filename);
+
+				RTC_StockpileManager.currentStockpile = sks;
+
+				RTC_StockpileManager.unsavedEdits = false;
+
+				return true;
+			}
+			catch (Exception ex)
+			{
+				MessageBox.Show("Something went wrong while saving your stockpile!\n");
+
+				if (File.Exists(tempFilename) && File.Exists((sks.Filename)))
+				{
+					MessageBox.Show(
+						"Your original file should be untouched. The temporary file we were trying to save to is named " +
+						tempFilename + "\n It's possible that the save completed and it failed to overwrite the original file.\nIf this is the case, the .temp file should work if you rename it to .sks\n\n" + ex);
+				}
+
+				else if (File.Exists(tempFilename) && !File.Exists(sks.Filename))
+				{
+					MessageBox.Show(
+						"Something went wrong when trying to rename the temp file" + tempFilename + " to " + sks.Filename + "!\n If it got this far, the temporary file should be intact and you can just remove .temp from the end yourself.\nMake sure nothing is locking the original file to prevent this.\n\n" + ex);
+				}
+
+				else if (!File.Exists(tempFilename) && File.Exists(sks.Filename))
+				{
+					MessageBox.Show(
+						"Something went wrong when trying to write to the temp file " + tempFilename + ". Make sure nothing is locking that file. Your original stockpile should be intact.\n\n" + ex);
+				}
+
 				return false;
 			}
-
-			if (!isQuickSave)
-			{
-				SaveFileDialog saveFileDialog1 = new SaveFileDialog
-				{
-					DefaultExt = "sks",
-					Title = "Save Stockpile File",
-					Filter = "SKS files|*.sks",
-					RestoreDirectory = true
-				};
-
-				if (saveFileDialog1.ShowDialog() == DialogResult.OK)
-				{
-					sks.Filename = saveFileDialog1.FileName;
-					sks.ShortFilename = sks.Filename.Substring(sks.Filename.LastIndexOf("\\") + 1, sks.Filename.Length - (sks.Filename.LastIndexOf("\\") + 1));
-				}
-				else
-					return false;
-			}
-			else
-			{
-				sks.Filename = RTC_StockpileManager.currentStockpile.Filename;
-				sks.ShortFilename = RTC_StockpileManager.currentStockpile.ShortFilename;
-			}
-
-			//Backuping bizhawk settings
-			RTC_Core.SendCommandToBizhawk(new RTC_Command(CommandType.REMOTE_EVENT_SAVEBIZHAWKCONFIG), true);
-
-			//Watermarking RTC Version
-			sks.RtcVersion = RTC_Core.RtcVersion;
-
-			List<string> allRoms = new List<string>();
-
-			//populating Allroms array
-			foreach (StashKey key in sks.StashKeys)
-				if (!allRoms.Contains(key.RomFilename))
-				{
-					allRoms.Add(key.RomFilename);
-
-					if (key.RomFilename.ToUpper().Contains(".CUE"))
-					{
-						string cueFolder = RTC_Extensions.getLongDirectoryFromPath(key.RomFilename);
-						string[] cueLines = File.ReadAllLines(key.RomFilename);
-						List<string> binFiles = new List<string>();
-
-						foreach (string line in cueLines)
-							if (line.Contains("FILE") && line.Contains("BINARY"))
-							{
-								int startFilename = line.IndexOf('"') + 1;
-								int endFilename = line.LastIndexOf('"');
-
-								binFiles.Add(line.Substring(startFilename, endFilename - startFilename));
-							}
-
-						allRoms.AddRange(binFiles.Select(it => cueFolder + it));
-					}
-
-					if (key.RomFilename.ToUpper().Contains(".CCD"))
-					{
-						List<string> binFiles = new List<string>();
-
-						if (File.Exists(RTC_Extensions.removeFileExtension(key.RomFilename) + ".sub"))
-							binFiles.Add(RTC_Extensions.removeFileExtension(key.RomFilename) + ".sub");
-
-						if (File.Exists(RTC_Extensions.removeFileExtension(key.RomFilename) + ".img"))
-							binFiles.Add(RTC_Extensions.removeFileExtension(key.RomFilename) + ".img");
-
-						allRoms.AddRange(binFiles);
-					}
-				}
-
-			//clean temp2 folder
-			foreach (string file in Directory.GetFiles(RTC_Core.rtcDir + "\\TEMP2"))
-			{
-				File.SetAttributes(file, FileAttributes.Normal);
-				File.Delete(file);
-			}
-
-			//populating temp2 folder with roms
-			for (int i = 0; i < allRoms.Count; i++)
-			{
-				string rom = allRoms[i];
-				string romTempfilename = RTC_Core.rtcDir + "\\TEMP\\" + (rom.Substring(rom.LastIndexOf("\\") + 1, rom.Length - (rom.LastIndexOf("\\") + 1)));
-
-				if (!rom.Contains("\\"))
-					rom = RTC_Core.rtcDir + "\\SKS\\" + rom;
-
-				if (File.Exists(romTempfilename))
-				{
-					File.SetAttributes(romTempfilename, FileAttributes.Normal);
-					File.Delete(romTempfilename);
-					File.Copy(rom, romTempfilename);
-				}
-				else
-					File.Copy(rom, romTempfilename);
-			}
-
-			//clean temp folder
-			EmptyFolder("TEMP");
-			//foreach (string file in Directory.GetFiles(RTC_Core.rtcDir + "\\TEMP"))
-			//    File.Delete(file);
-
-			//sending back filtered files from temp2 folder to temp
-			foreach (string file in Directory.GetFiles(RTC_Core.rtcDir + "\\TEMP2"))
-				File.Move(file, RTC_Core.rtcDir + "\\SKS\\" + (file.Substring(file.LastIndexOf("\\") + 1, file.Length - (file.LastIndexOf("\\") + 1))));
-
-			//clean temp2 folder again
-			EmptyFolder("TEMP2");
-			//foreach (string file in Directory.GetFiles(RTC_Core.rtcDir + "\\TEMP2"))
-			//    File.Delete(file);
-
-			foreach (StashKey key in sks.StashKeys)
-			{
-				string statefilename = key.GameName + "." + key.ParentKey + ".timejump.State"; // get savestate name
-
-				if (!File.Exists(RTC_Core.rtcDir + "\\SKS\\" + statefilename))
-					File.Copy(RTC_Core.bizhawkDir + "\\" + key.SystemName + "\\State\\" + statefilename, RTC_Core.rtcDir + "\\SKS\\" + statefilename); // copy savestates to temp folder
-			}
-
-			if (File.Exists(RTC_Core.bizhawkDir + "\\config.ini"))
-				File.Copy(RTC_Core.bizhawkDir + "\\config.ini", RTC_Core.rtcDir + "\\SKS\\config.ini");
-
-			foreach (StashKey sk in sks.StashKeys)
-				sk.RomFilename = RTC_Extensions.getShortFilenameFromPath(sk.RomFilename);
-
-			//creater stockpile.xml to temp folder from stockpile object
-			using (FileStream fs = File.Open(RTC_Core.rtcDir + "\\SKS\\stockpile.xml", FileMode.OpenOrCreate))
-			{
-				XmlSerializer xs = new XmlSerializer(typeof(Stockpile));
-				xs.Serialize(fs, sks);
-				fs.Close();
-			}
-			//7z the temp folder to destination filename
-			//string[] stringargs = { "-c", sks.Filename, RTC_Core.rtcDir + "\\SKS\\" };
-			//FastZipProgram.Exec(stringargs);
-
-			string tempFilename = sks.Filename + ".temp";
-
-			CompressionLevel comp = System.IO.Compression.CompressionLevel.Fastest;
-
-			if (!RTC_Core.ghForm.cbCompressStockpiles.Checked)
-				comp = System.IO.Compression.CompressionLevel.NoCompression;
-
-			System.IO.Compression.ZipFile.CreateFromDirectory(RTC_Core.rtcDir + "\\SKS\\", tempFilename, comp, false);
-
-			if (File.Exists(sks.Filename))
-				File.Delete(sks.Filename);
-
-			File.Move(tempFilename, sks.Filename);
-
-			RTC_StockpileManager.currentStockpile = sks;
-
-			RTC_StockpileManager.unsavedEdits = false;
-
-			return true;
 		}
 
 		public static bool Load(DataGridView dgvStockpile, string Filename = null)
@@ -915,6 +963,7 @@ namespace RTC
 	[XmlInclude(typeof(BlastCheat))]
 	[XmlInclude(typeof(BlastByte))]
 	[XmlInclude(typeof(BlastPipe))]
+	[XmlInclude(typeof(BlastVector))]
 	[XmlInclude(typeof(BlastUnit))]
 	[Serializable]
 	public class BlastLayer : ICloneable
@@ -971,7 +1020,6 @@ namespace RTC
 						"One of the BlastUnits in the BlastLayer failed to Apply().\n\n" +
 						"The operation was cancelled");
 				}
-				RTC_StepActions.FilterBuListCollection();
 			}
 			catch (Exception ex)
 			{
@@ -985,7 +1033,8 @@ namespace RTC
 			{
 				if (!ignoreMaximums)
 				{
-					RTC_StepActions.RemoveExcessInfiniteStepUnits();
+					RTC_HellgenieEngine.RemoveExcessCheats();
+					RTC_PipeEngine.RemoveExcessPipes();
 				}
 			}
 		}
@@ -1013,11 +1062,9 @@ namespace RTC
 	}
 
 	[Serializable]
-	public abstract class BlastUnit
+	public abstract class BlastUnit 
 	{
 		public abstract bool Apply();
-
-		public abstract void Execute();
 
 		public abstract BlastUnit GetBackup();
 
@@ -1033,15 +1080,6 @@ namespace RTC
 		public abstract long Address { get; set; }
 		public abstract string Note { get; set; }
 
-		public int ApplyFrame = 0;
-		public int Lifetime = 0;
-		
-		//Working data
-		//We Calculate a LastFrame at the beginning of execute
-		//We calculate ApplyFrameQueued which is the ApplyFrame + the currentframe that was calculated at the time of it entering the execution pool
-		public int LastFrame = -1;
-		public int ApplyFrameQueued = 0;
-		public abstract void EnteringExecution();
 	}
 
 	[Serializable]
@@ -1056,21 +1094,16 @@ namespace RTC
 		public override bool BigEndian { get; set; }
 		public override string Note { get; set; } = "";
 
-		public BlastByte(string _domain, long _address, int _applyFrame, int _lifetime, BlastByteType _type, byte[] _value, bool _bigEndian, bool _isEnabled, string _note = "")
+		public BlastByte(string _domain, long _address, BlastByteType _type, byte[] _value, bool _bigEndian, bool _isEnabled, string _note = "")
 		{
 			Domain = _domain;
 			Address = _address - (_address % _value.Length);
 
 			Type = _type;
 			Value = _value;
-
-			ApplyFrame = _applyFrame;
-			Lifetime = _lifetime;
-
 			IsEnabled = _isEnabled;
 			BigEndian = _bigEndian;
 			Note = _note;
-
 		}
 
 		public BlastByte()
@@ -1095,41 +1128,32 @@ namespace RTC
 
 				Domain = (RTC_MemoryDomains.VmdPool[_domain] as VirtualMemoryDomain)?.PointerDomains[(int)_address] ?? "ERROR";
 				Address = (RTC_MemoryDomains.VmdPool[_domain] as VirtualMemoryDomain)?.PointerAddresses[(int)_address] ?? -1;
-
 			}
 		}
+
 		public override bool Apply()
 		{
 			if (!IsEnabled)
 				return true;
-
-			RTC_StepActions.AddBlastUnit(this);
-
-			return true;
-		}
-		public override void Execute()
-		{
-			if (!IsEnabled)
-				return;
 
 			try
 			{
 				MemoryDomainProxy mdp = RTC_MemoryDomains.GetProxy(Domain, Address);
 
 				if (mdp == null)
-					return;
+					return true;
 
 				long targetAddress = RTC_MemoryDomains.GetRealAddress(Domain, Address);
 
 				byte[] _Values = (byte[])Value.Clone();
 
-				if ((Type == BlastByteType.VECTOR || Type == BlastByteType.ADD || Type == BlastByteType.SUBTRACT) && BigEndian)
+				if ((Type == BlastByteType.VECTOR || Type == BlastByteType.ADD || Type == BlastByteType.SUBSTRACT) && BigEndian)
 					_Values.FlipBytes();
 
-				//When using ADD and SUBTRACT we need to properly handle multi-byte values.
+				//When using ADD and SUBSTRACT we need to properly handle multi-byte values.
 				//This means that it has to properly roll-over.
 				//00 00 00 FF needs to become 00 00 01 00,  FF FF FF FF needs to become 00 00 00 00, etc
-				//We assume that the user is going to be using SET and VECTOR more than ADD and SUBTRACT so check them first
+				//We assume that the user is going to be using SET and VECTOR more than ADD and SUBSTRACT so check them first
 				switch (Type)
 				{
 					case (BlastByteType.SET):
@@ -1140,15 +1164,15 @@ namespace RTC
 						_Values = RTC_Extensions.AddValueToByteArray(mdp.PeekBytes(targetAddress, targetAddress + _Values.Length), RTC_Extensions.GetDecimalValue(_Values, !(BigEndian)), BigEndian);
 						break;
 
-					case (BlastByteType.SUBTRACT):
+					case (BlastByteType.SUBSTRACT):
 						_Values = RTC_Extensions.AddValueToByteArray(mdp.PeekBytes(targetAddress, targetAddress + _Values.Length), RTC_Extensions.GetDecimalValue(_Values, !(BigEndian)) * -1, BigEndian);
 						break;
 
 					case (BlastByteType.NONE):
-						return;
+						return true;
 				}
 
-				//As add and subtract are accounted for already, we no longer need to check the type here.
+				//As add and substract are accounted for already, we no longer need to check the type here.
 				for (int i = 0; i < _Values.Length; i++)
 					mdp.PokeByte(targetAddress + i, _Values[i]);
 			}
@@ -1160,7 +1184,7 @@ namespace RTC
 				ex.ToString());
 			}
 
-			return;
+			return true;
 		}
 
 		public override BlastUnit GetBackup()
@@ -1211,7 +1235,7 @@ namespace RTC
 				}
 				Value = RTC_Extensions.GetByteArrayValue(Value.Length, randomValue, true);
 			}
-			else if (Type == BlastByteType.ADD || Type == BlastByteType.SUBTRACT)
+			else if (Type == BlastByteType.ADD || Type == BlastByteType.SUBSTRACT)
 			{
 				var result = RTC_Core.RND.Next(1, 3);
 				switch (result)
@@ -1221,7 +1245,7 @@ namespace RTC
 						break;
 
 					case 2:
-						Type = BlastByteType.SUBTRACT;
+						Type = BlastByteType.SUBSTRACT;
 						break;
 				}
 			}
@@ -1240,23 +1264,126 @@ namespace RTC
 			string cleanDomainName = Domain.Replace("(nametables)", ""); //Shortens the domain name if it contains "(nametables)"
 			return (enabledString + cleanDomainName + "(" + Convert.ToInt32(Address).ToString() + ")." + Type.ToString() + "(" + RTC_Extensions.GetDecimalValue(Value, BigEndian).ToString() + ")");
 		}
+	}
 
-		public override void EnteringExecution()
+	[Serializable]
+	public class BlastVector : BlastUnit
+	{
+		public override string Domain { get; set; }
+		public override long Address { get; set; }
+		public override bool IsLocked { get; set; } = false;
+		public override bool BigEndian { get; set; } = true;
+		public override string Note { get; set; } = "";
+		public BlastByteType Type;
+
+		public byte[] Values;
+
+		public override bool IsEnabled { get; set; }
+
+		public BlastVector(string _domain, long _address, byte[] _values, bool _isEnabled, string _note = "")
 		{
-			//We need to grab the value to freeze
-			if (BlastByteType.FREEZE)
+			Domain = _domain;
+			Address = (_address - (_address % 4));
+			Values = _values;
+			IsEnabled = _isEnabled;
+			Note = _note;
+		}
+
+		public BlastVector()
+		{
+		}
+
+		public override void Rasterize()
+		{
+			if (Domain.Contains("[V]"))
+			{
+				/*
+                Tuple<string,long> mp = (RTC_MemoryDomains.VmdPool[Domain] as VirtualMemoryDomain)?.MemoryPointers[(int)Address];
+                if (mp == null)
+                    return;
+
+                Domain = mp.Item1;
+                Address = mp.Item2;
+                */
+
+				string _domain = (string)Domain.Clone();
+				long _address = Address;
+
+				Domain = (RTC_MemoryDomains.VmdPool[_domain] as VirtualMemoryDomain)?.PointerDomains[(int)_address] ?? "ERROR";
+				Address = (RTC_MemoryDomains.VmdPool[_domain] as VirtualMemoryDomain)?.PointerAddresses[(int)_address] ?? -1;
+			}
+		}
+
+		public override bool Apply()
+		{
+			if (!IsEnabled)
+				return true;
+
+			try
 			{
 				MemoryDomainProxy mdp = RTC_MemoryDomains.GetProxy(Domain, Address);
-				long targetAddress = RTC_MemoryDomains.GetRealAddress(Domain, Address);
 
 				if (mdp == null)
-					return;
-				Value = mdp.PeekBytes(targetAddress, targetAddress + Value.Length);
+					return true;
+
+				long targetAddress = RTC_MemoryDomains.GetRealAddress(Domain, Address);
+
+				mdp.PokeByte(targetAddress, Values[0]);
+				mdp.PokeByte(targetAddress + 1, Values[1]);
+				mdp.PokeByte(targetAddress + 2, Values[2]);
+				mdp.PokeByte(targetAddress + 3, Values[3]);
+			}
+			catch (Exception ex)
+			{
+				throw new Exception("The BlastVector apply() function threw up. \n" +
+					"This is an RTC error, so you should probably send this to the RTC devs.\n" +
+					"If you know the steps to reproduce this error it would be greatly appreciated.\n\n" +
+				ex.ToString());
 			}
 
+			return true;
+		}
+
+		public override BlastUnit GetBackup()
+		{
+			if (!IsEnabled)
+				return null;
+
+			try
+			{
+				MemoryDomainProxy mdp = RTC_MemoryDomains.GetProxy(Domain, Address);
+				if (mdp == null)
+					return null;
+
+				long targetAddress = RTC_MemoryDomains.GetRealAddress(Domain, Address);
+
+				return new BlastVector(Domain, Address, mdp.PeekBytes(targetAddress, targetAddress + 4), true);
+			}
+			catch (Exception ex)
+			{
+				throw new Exception("The BlastVector GetBackup() function threw up. \n" +
+					"This is an RTC error, so you should probably send this to the RTC devs.\n" +
+					"If you know the steps to reproduce this error it would be greatly appreciated.\n\n" +
+				ex.ToString());
+			}
+		}
+
+		public override void Reroll()
+		{
+			Values = RTC_VectorEngine.GetRandomConstant(RTC_VectorEngine.ValueList);
+		}
+
+		public override string ToString()
+		{
+			string EnabledString = "[ ] BlastVector -> ";
+			if (IsEnabled)
+				EnabledString = "[x] BlastVector -> ";
+
+			string cleanDomainName = Domain.Replace("(nametables)", ""); //Shortens the domain name if it contains "(nametables)"
+			return (EnabledString + cleanDomainName + "(" + Convert.ToUInt32(Address).ToString() + ")." + Type.ToString() + "(" + RTC_VectorEngine.ByteArrayToString(Values) + ")");
 		}
 	}
-	
+
 	[Serializable]
 	public class BlastPipe : BlastUnit
 	{
@@ -1272,15 +1399,13 @@ namespace RTC
 
 		public override bool IsEnabled { get; set; }
 
-		public BlastPipe(string _domain, long _address, int _applyFrame, int _lifetime, string _pipeDomain, long _pipeAddress, int _tiltValue, int _pipeSize,  bool _bigEndian, bool _isEnabled, string _note = "")
+		public BlastPipe(string _domain, long _address, string _pipeDomain, long _pipeAddress, int _tiltValue, int _pipeSize, bool _bigEndian, bool _isEnabled, string _note = "")
 		{
 			Domain = _domain;
 			Address = _address;
 			PipeDomain = _pipeDomain;
 			PipeAddress = _pipeAddress;
 			PipeSize = _pipeSize;
-			Lifetime = _lifetime;
-			ApplyFrame = _applyFrame;
 			IsEnabled = _isEnabled;
 			TiltValue = _tiltValue;
 			BigEndian = _bigEndian;
@@ -1292,7 +1417,7 @@ namespace RTC
 			new object();
 		}
 
-		public override void Execute()
+		public void Execute()
 		{
 			try
 			{
@@ -1371,7 +1496,7 @@ namespace RTC
 			if (!IsEnabled)
 				return true;
 
-			RTC_StepActions.AddBlastUnit(this);
+			RTC_PipeEngine.AddUnit(this);
 
 			return true;
 		}
@@ -1422,10 +1547,185 @@ namespace RTC
 			string cleanDomainName2 = PipeDomain.Replace("(nametables)", ""); //Shortens the domain name if it contains "(nametables)"
 			return (EnabledString + cleanDomainName + "(" + Convert.ToInt32(Address).ToString() + ")piped->" + cleanDomainName2 + "(" + Convert.ToInt32(PipeAddress).ToString() + "), tilt->" + TiltValue.ToString());
 		}
+	}
 
-		public override void EnteringExecution()
+	[Serializable]
+	public class BlastCheat : BlastUnit
+	{
+		public override string Domain { get; set; }
+		public override long Address { get; set; }
+		public override bool BigEndian { get; set; }
+		public override bool IsLocked { get; set; } = false;
+		public override string Note { get; set; } = "";
+		public BizHawk.Client.Common.DisplayType DisplayType;
+
+		public byte[] Value;
+		public bool IsFreeze;
+
+		public override bool IsEnabled { get; set; }
+
+		public BlastCheat(string _domain, long _address, BizHawk.Client.Common.DisplayType _displayType, bool _bigEndian, byte[] _value, bool _isEnabled, bool _isFreeze, string _note = "")
 		{
+			Domain = _domain;
 
+			//Address = _address - (_address % (int)settings.Size);
+			Address = _address - (_address % _value.Length);
+
+			DisplayType = _displayType;
+			BigEndian = _bigEndian;
+
+			Value = _value;
+			IsEnabled = _isEnabled;
+			IsFreeze = _isFreeze;
+
+			Note = _note;
+		}
+
+		public BlastCheat()
+		{
+		}
+
+		public override void Rasterize()
+		{
+			if (Domain.Contains("[V]"))
+			{
+				/*
+                Tuple<string, long> mp = (RTC_MemoryDomains.VmdPool[Domain] as VirtualMemoryDomain)?.MemoryPointers[(int)Address];
+                if (mp == null)
+                    return;
+
+                Domain = mp.Item1;
+                Address = mp.Item2;
+                */
+
+				string _domain = (string)Domain.Clone();
+				long _address = Address;
+
+				Domain = (RTC_MemoryDomains.VmdPool[_domain] as VirtualMemoryDomain)?.PointerDomains[(int)_address] ?? "ERROR";
+				Address = (RTC_MemoryDomains.VmdPool[_domain] as VirtualMemoryDomain)?.PointerAddresses[(int)_address] ?? -1;
+			}
+		}
+
+		public override bool Apply()
+		{
+			try
+			{
+				if (!IsEnabled)
+					return true;
+
+				MemoryDomainProxy mdp = RTC_MemoryDomains.GetProxy(Domain, Address);
+				var settings = new RamSearchEngine.Settings(RTC_MemoryDomains.MDRI.MemoryDomains);
+
+				if (mdp == null)
+					return true;
+
+				string targetDomain = RTC_MemoryDomains.GetRealDomain(Domain, Address);
+				long targetAddress = RTC_MemoryDomains.GetRealAddress(Domain, Address);
+
+				string cheatName = "RTC Cheat|" + targetDomain + "|" + (targetAddress).ToString() + "|" + DisplayType.ToString() + "|" + BigEndian.ToString() + "|" + String.Join(",", Value.Select(it => it.ToString())) + "|" + IsEnabled.ToString() + "|" + IsFreeze.ToString();
+
+
+				//VERY IMPORTANT MESSAGE FOR ENDIANESS
+				//Endianess used to be borked in cheats for bizhawk 2.2
+				//So we handle it ourselves and all cheats become little endian
+				
+				//I don't think this is true any more 6/4/2018.
+
+				long _value = 0;
+				if (IsFreeze)
+				{
+					byte[] freezeValue = new byte[Value.Length];
+
+					MemoryDomainProxy targetMdp = RTC_MemoryDomains.GetProxy(targetDomain, targetAddress);
+
+					for (int i = 0; i < Value.Length; i++)
+					{
+						freezeValue[i] = targetMdp.PeekByte(targetAddress + i);
+					}
+
+					_value = Convert.ToInt64(RTC_Extensions.GetDecimalValue(freezeValue, BigEndian));
+				}
+				else
+				{
+					_value = Convert.ToInt64(RTC_Extensions.GetDecimalValue(Value, BigEndian));
+				}
+
+				Watch somewatch = Watch.GenerateWatch(mdp.md, targetAddress, (WatchSize)Value.Length, DisplayType, BigEndian, cheatName, _value, 0, 0);
+				Cheat ch = new Cheat(somewatch, unchecked((int)_value), null, true);
+				Global.CheatList.Add(ch);
+			}
+			catch (Exception ex)
+			{
+				throw new Exception("The BlastCheat apply() function threw up. \n" +
+					"This is an RTC error, so you should probably send this to the RTC devs.\n" +
+					"If you know the steps to reproduce this error it would be greatly appreciated.\n\n" +
+				ex.ToString());
+			}
+
+			return true;
+		}
+
+		public override BlastUnit GetBackup()
+		{
+			if (!IsEnabled)
+				return null;
+
+			try
+			{
+				MemoryDomainProxy mdp = RTC_MemoryDomains.GetProxy(Domain, Address);
+				long targetAddress = RTC_MemoryDomains.GetRealAddress(Domain, Address);
+
+				if (mdp == null)
+					return null;
+
+				byte[] _value = new byte[Value.Length];
+
+				for (int i = 0; i < _value.Length; i++)
+					_value[i] = mdp.PeekByte(targetAddress + i);
+
+				return new BlastByte(Domain, Address, BlastByteType.SET, _value, BigEndian, true);
+			}
+			catch (Exception ex)
+			{
+				throw new Exception("The BlastCheat GetBackup() function threw up. \n" +
+				                    "This is an RTC error, so you should probably send this to the RTC devs.\n" +
+				                    "If you know the steps to reproduce this error it would be greatly appreciated.\n\n" +
+				                    ex.ToString());
+			}
+		}
+
+		public override void Reroll()
+		{
+			//No reason to re-roll freeze
+			if (!IsFreeze)
+			{
+				long randomValue = 0;
+				switch (Value.Length)
+				{
+					case (1):
+						randomValue = RTC_Core.RND.RandomLong(RTC_HellgenieEngine.MinValue8Bit, RTC_HellgenieEngine.MaxValue8Bit);
+						break;
+					case (2):
+						randomValue = RTC_Core.RND.RandomLong(RTC_HellgenieEngine.MinValue16Bit, RTC_HellgenieEngine.MaxValue16Bit);
+						break;
+					case (4):
+						randomValue = RTC_Core.RND.RandomLong(RTC_HellgenieEngine.MinValue32Bit, RTC_HellgenieEngine.MaxValue32Bit);
+						break;
+				}
+				Value = RTC_Extensions.GetByteArrayValue(Value.Length, randomValue, true);
+			}
+		}
+
+		public override string ToString()
+		{
+			string EnabledString = $"[ ] BlastCheat{(IsFreeze ? ":Freeze" : "")} -> ";
+			if (IsEnabled)
+				EnabledString = $"[x] BlastCheat{(IsFreeze ? ":Freeze" : "")} -> ";
+
+			string cleanDomainName = Domain.Replace("(nametables)", ""); //Shortens the domain name if it contains "(nametables)"
+
+			//RTC_TODO: Rewrite the toString method for this
+			return (EnabledString + cleanDomainName + "(" + Convert.ToInt32(Address).ToString() + ")" + (IsFreeze ? "" : ".Value(" + RTC_Extensions.GetDecimalValue(Value, BigEndian).ToString() + ")"));
 		}
 	}
 
