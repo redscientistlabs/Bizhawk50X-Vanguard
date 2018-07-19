@@ -904,6 +904,12 @@ namespace RTC
 			}
 			else if (e.Button == MouseButtons.Right)
 			{
+				//End the edit if they're right clicking somewhere else
+				if (dgvBlastLayer.CurrentCell.ColumnIndex != currentMouseOverColumn)
+				{
+					dgvBlastLayer.EndEdit();
+				}
+
 				cmsBlastEditor = new ContextMenuStrip();
 
 				PopulateColumnHeaderContextMenu(currentMouseOverColumn);
