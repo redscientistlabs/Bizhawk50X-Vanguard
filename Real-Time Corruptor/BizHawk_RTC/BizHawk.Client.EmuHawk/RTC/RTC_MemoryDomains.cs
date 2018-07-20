@@ -154,6 +154,7 @@ namespace RTC
 					domainBlacklist.Add("ROM");
 					break;
 
+				case "32X_INTERIM":
 				case "GEN":     //Sega Genesis and CD
 					domainBlacklist.Add("MD CART");
 					domainBlacklist.Add("CRAM"); //Color Ram
