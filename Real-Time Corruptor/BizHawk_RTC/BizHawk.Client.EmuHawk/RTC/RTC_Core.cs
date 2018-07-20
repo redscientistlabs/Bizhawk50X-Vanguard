@@ -471,6 +471,13 @@ namespace RTC
 		{
 			//Workaround for Bizhawk's folder name quirk
 
+			if (SystemDisplayName.Contains("(INTERIM)"))
+			{
+				char[] delimiters = {'(', ' ', ')'};
+
+				string temp = SystemDisplayName.Split(delimiters)[0];
+					SystemDisplayName = temp + "_INTERIM";
+			}
 			switch (SystemDisplayName)
 			{
 				case "Playstation":

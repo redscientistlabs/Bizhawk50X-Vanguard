@@ -8,7 +8,7 @@ namespace RTC
 	public partial class RTC_StockpilePlayer_Form : Form
 	{
 		public bool DontLoadSelectedStockpile = false;
-		private bool currentlyLoading;
+		private bool currentlyLoading = false;
 
 		public RTC_StockpilePlayer_Form()
 		{
@@ -188,7 +188,7 @@ namespace RTC
 
 		private void dgvStockpile_CellClick(object sender, DataGridViewCellEventArgs e)
 		{
-			if (currentlyLoading || e.RowIndex == -1)
+			if (currentlyLoading || e?.RowIndex == -1)
 				return;
    			try
 			{
@@ -225,7 +225,7 @@ namespace RTC
 					}
 				}
 
-				if ((sender != null) && dgvStockpile.SelectedRows.Count > 0)
+				if (dgvStockpile.SelectedRows.Count > 0)
 				{
 					//Shut autocorrupt off because people (Vinny) kept turning it on to add to corruptions then forgetting to turn it off
 					RTC_Core.coreForm.AutoCorrupt = false; 
