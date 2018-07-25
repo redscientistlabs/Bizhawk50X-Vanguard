@@ -24,12 +24,12 @@ namespace RTC
 				if (domain == null)
 					return null;
 				MemoryDomainProxy mdp = RTC_MemoryDomains.GetProxy(domain, address);
-				BlastByteType type = BlastByteType.NONE;
+				BlastUnitSource type = BlastUnitSource.NONE;
 
 				switch (Algo)
 				{
 					case BlastByteAlgo.RANDOM: //RANDOM always sets a random value
-						type = BlastByteType.SET;
+						type = BlastUnitSource.SET;
 						break;
 
 					case BlastByteAlgo.RANDOMTILT: //RANDOMTILT may add 1,subtract 1 or set a random value
@@ -37,13 +37,13 @@ namespace RTC
 						switch (result)
 						{
 							case 1:
-								type = BlastByteType.ADD;
+								type = BlastUnitSource.ADD;
 								break;
 							case 2:
-								type = BlastByteType.SUBTRACT;
+								type = BlastUnitSource.SUBTRACT;
 								break;
 							case 3:
-								type = BlastByteType.SET;
+								type = BlastUnitSource.SET;
 								break;
 							default:
 								MessageBox.Show("Random returned an unexpected value (RTC_NightmareEngine switch(Algo) RANDOMTILT)");
@@ -57,11 +57,11 @@ namespace RTC
 						switch (result)
 						{
 							case 1:
-								type = BlastByteType.ADD;
+								type = BlastUnitSource.ADD;
 								break;
 
 							case 2:
-								type = BlastByteType.SUBTRACT;
+								type = BlastUnitSource.SUBTRACT;
 								break;
 
 							default:
@@ -75,7 +75,7 @@ namespace RTC
 
 				long safeAddress = address - (address % value.Length);
 
-				if (type == BlastByteType.SET)
+				if (type == BlastUnitSource.SET)
 				{
 					long randomValue = 0;
 					switch (value.Length)

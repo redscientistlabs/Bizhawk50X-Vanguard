@@ -32,7 +32,7 @@ namespace RTC
 			try
 			{
 				MemoryDomainProxy mdp = RTC_MemoryDomains.GetProxy(domain, address);
-				BlastByteType type = BlastByteType.SET;
+				BlastUnitSource type = BlastUnitSource.SET;
 
 				byte[] value = new byte[precision];
 				byte[] _temp = new byte[precision];
@@ -46,11 +46,11 @@ namespace RTC
 				switch (mode)
 				{
 					case BGBlastByteModes.ADD:
-						type = BlastByteType.ADD;
+						type = BlastUnitSource.ADD;
 						value = RTC_Extensions.GetByteArrayValue(precision, param1, true);
 						break;
 					case BGBlastByteModes.SUBTRACT:
-						type = BlastByteType.SUBTRACT;
+						type = BlastUnitSource.SUBTRACT;
 						value = RTC_Extensions.GetByteArrayValue(precision, param1, true);
 						break;
 					case BGBlastByteModes.RANDOM:

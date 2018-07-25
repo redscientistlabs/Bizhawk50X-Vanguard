@@ -1013,92 +1013,156 @@ namespace RTC
 	}
 
 	[Serializable]
-	public abstract class BlastUnit
+	public class BlastUnit
 	{
-		public abstract bool Apply();
 
-		public abstract void Execute();
+		public bool IsEnabled { get; set; } = true;
+		public bool IsLocked { get; set; } = false;
+		public bool BigEndian { get; set; }
+			   
+		public string Domain { get; set; }
+		public long Address { get; set; }
+		public int Precision { get; set; }
 
-		public abstract BlastUnit GetBackup();
+		public BlastUnitSource Source { get; set; }
+		public BackupSource BackupSource { get; set; }
 
-		public abstract void Reroll();
+		public byte[] Value { get; set; }
+		public byte[] Backup { get; set; }
 
-		public abstract void Rasterize();
+		public string DestDomain { get; set; }
+		public long DestAddress { get; set; }
 
-		public abstract bool IsEnabled { get; set; }
-		public abstract bool IsLocked { get; set; }
-		public abstract bool BigEndian { get; set; }
+		public long TiltValue;
 
-		public abstract string Domain { get; set; }
-		public abstract long Address { get; set; }
-		public abstract string Note { get; set; }
+		public string Note { get; set; }
 
-		public int ApplyFrame = 0;
-		public int Lifetime = 0;
-		
-		//Working data
+		public int ExecuteFrame { get; set; }
+		public int Lifetime { get; set; }
+
+		//Working data. Not persistent beyond a single execution
+
 		//We Calculate a LastFrame at the beginning of execute
-		//We calculate ApplyFrameQueued which is the ApplyFrame + the currentframe that was calculated at the time of it entering the execution pool
 		public int LastFrame = -1;
-		public int ApplyFrameQueued = 0;
-		public abstract void EnteringExecution();
-	}
+		//We calculate ExecuteFrameQueued which is the ExecuteFrame + the currentframe that was calculated at the time of it entering the execution pool
+		public int ExecuteFrameQueued = 0;
+		//We use ApplyValue so we don't need to keep re-calculating the tiled value every execute if we don't have to.
+		private byte[] ApplyValue;
 
-	[Serializable]
-	public class BlastByte : BlastUnit
-	{
-		public override string Domain { get; set; }
-		public override long Address { get; set; }
-		public BlastByteType Type;
-		public byte[] Value;
-		public override bool IsEnabled { get; set; }
-		public override bool IsLocked { get; set; } = false;
-		public override bool BigEndian { get; set; }
-		public override string Note { get; set; } = "";
+		
 
-		public BlastByte(string _domain, long _address, int _applyFrame, int _lifetime, BlastByteType _type, byte[] _value, bool _bigEndian, bool _isEnabled, string _note = "")
+		/// <summary>
+		/// Creates a Blastunit that utilizes a backup. 
+		/// </summary>
+		/// <param name="backupSource">The type of backup</param>
+		/// <param name="domain">The domain of the blastunit</param>
+		/// <param name="address">The address of the blastunit</param>
+		/// <param name="bigEndian">If the Blastunit is being applied to a big endian system. Results in the bytes being flipped before apply</param>
+		/// <param name="applyFrame">The frame on which the BlastUnit will start executing</param>
+		/// <param name="lifetime">How many frames the BlastUnit will execute for. 0 for infinite</param>
+		/// <param name="note"></param>
+		/// <param name="isEnabled"></param>
+		/// <param name="isLocked"></param>
+		public BlastUnit(BackupSource backupSource, 
+			string domain, long address, int precision, bool bigEndian, int executeFrame = 0, int lifetime = 1,
+			string note = null, bool isEnabled = true, bool isLocked = false)
 		{
-			Domain = _domain;
-			Address = _address - (_address % _value.Length);
+			Source = BlastUnitSource.BACKUP;
 
-			Type = _type;
-			Value = _value;
-
-			ApplyFrame = _applyFrame;
-			Lifetime = _lifetime;
-
-			IsEnabled = _isEnabled;
-			BigEndian = _bigEndian;
-			Note = _note;
+			Domain = domain;
+			Address = address;
+			Precision = precision;
+			BigEndian = bigEndian;
+			ExecuteFrame = executeFrame;
+			Lifetime = lifetime;
+			Note = note;
+			IsEnabled = isEnabled;
+			IsLocked = isLocked;
 
 		}
+		/// <summary>
+		/// Creates a BlastUnit that utilizes another address as its source
+		/// </summary>
+		/// <param name="sourceDomain">The domain your source address lies in</param>
+		/// <param name="sourceAddress">The address to copy the value from</param>
+		/// <param name="domain">The domain your target address lies in</param>
+		/// <param name="address">The target address</param>
+		/// <param name="executeFrame"></param>
+		/// <param name="lifetime"></param>
+		/// <param name="note"></param>
+		/// <param name="isEnabled"></param>
+		/// <param name="isLocked"></param>
+		public BlastUnit(string sourceDomain, long sourceAddress,
+			string domain, long address, int precision, int executeFrame = 0, int lifetime = 1,
+			string note = null, bool isEnabled = true, bool isLocked = false)
+		{
+			Source = BlastUnitSource.ADDRESS;
+			DestDomain = sourceDomain;
+			DestAddress = sourceAddress;
 
-		public BlastByte()
+			Domain = domain;
+			Address = address;
+			Precision = precision;
+			ExecuteFrame = executeFrame;
+			Lifetime = lifetime;
+			Note = note;
+			IsEnabled = isEnabled;
+			IsLocked = isLocked;
+		}
+		/// <summary>
+		/// Creates a BlastUnit that uses a byte array value as the value
+		/// </summary>
+		/// <param name="value">The value of the BlastUnit</param>
+		/// <param name="domain">The domain the blastunit lies in</param>
+		/// <param name="address"></param>
+		/// <param name="bigEndian"></param>
+		/// <param name="executeFrame"></param>
+		/// <param name="lifetime"></param>
+		/// <param name="note"></param>
+		/// <param name="isEnabled"></param>
+		/// <param name="isLocked"></param>
+		public BlastUnit(byte[] value,
+			string domain, long address, int precision, bool bigEndian, int executeFrame = 0, int lifetime = 1,
+			string note = null, bool isEnabled = true, bool isLocked = false)
+		{
+			Source = BlastUnitSource.VALUE;
+			Value = value;
+
+			Domain = domain;
+			Address = address;
+			Precision = precision;
+			ExecuteFrame = executeFrame;
+			Lifetime = lifetime;
+			Note = note;
+			IsEnabled = isEnabled;
+			IsLocked = isLocked;
+		}
+
+		public BlastUnit()
 		{
 		}
 
-		public override void Rasterize()
+		public void Rasterize()
 		{
 			if (Domain.Contains("[V]"))
 			{
-				/*
-                Tuple<string,long> mp = (RTC_MemoryDomains.VmdPool[Domain] as VirtualMemoryDomain)?.MemoryPointers[(int)Address];
-                if (mp == null)
-                    return;
+				string domain = (string)Domain.Clone();
+				long address = Address;
 
-                Domain = mp.Item1;
-                Address = mp.Item2;
-                */
+				Domain = (RTC_MemoryDomains.VmdPool[domain] as VirtualMemoryDomain)?.PointerDomains[(int)address] ?? "ERROR";
+				Address = (RTC_MemoryDomains.VmdPool[domain] as VirtualMemoryDomain)?.PointerAddresses[(int)address] ?? -1;
+			}
+			if (DestDomain?.Contains("[V]") ?? false)
+			{
+				string sourceDomain = (string)DestDomain.Clone();
+				long sourceAddress = DestAddress;
 
-				string _domain = (string)Domain.Clone();
-				long _address = Address;
-
-				Domain = (RTC_MemoryDomains.VmdPool[_domain] as VirtualMemoryDomain)?.PointerDomains[(int)_address] ?? "ERROR";
-				Address = (RTC_MemoryDomains.VmdPool[_domain] as VirtualMemoryDomain)?.PointerAddresses[(int)_address] ?? -1;
-
+				Domain = (RTC_MemoryDomains.VmdPool[sourceDomain] as VirtualMemoryDomain)?.PointerDomains[(int)sourceAddress] ?? "ERROR";
+				Address = (RTC_MemoryDomains.VmdPool[sourceDomain] as VirtualMemoryDomain)?.PointerAddresses[(int)sourceAddress] ?? -1;
 			}
 		}
-		public override bool Apply()
+
+		public bool Apply()
 		{
 			if (!IsEnabled)
 				return true;
@@ -1107,7 +1171,8 @@ namespace RTC
 
 			return true;
 		}
-		public override void Execute()
+
+		public void Execute()
 		{
 			if (!IsEnabled)
 				return;
@@ -1119,42 +1184,51 @@ namespace RTC
 				if (mdp == null)
 					return;
 
-				long targetAddress = RTC_MemoryDomains.GetRealAddress(Domain, Address);
+				byte[] values;
 
-				byte[] _Values = (byte[])Value.Clone();
-
-				if ((Type == BlastByteType.VECTOR || Type == BlastByteType.ADD || Type == BlastByteType.SUBTRACT) && BigEndian)
-					_Values.FlipBytes();
-
-				//When using ADD and SUBTRACT we need to properly handle multi-byte values.
-				//This means that it has to properly roll-over.
+				//When tilting, we need to properly handle multi-byte values. This means that it has to properly roll-over.
 				//00 00 00 FF needs to become 00 00 01 00,  FF FF FF FF needs to become 00 00 00 00, etc
-				//We assume that the user is going to be using SET and VECTOR more than ADD and SUBTRACT so check them first
-				switch (Type)
+				switch (Source)
 				{
-					case (BlastByteType.SET):
-					case (BlastByteType.VECTOR):
-						break;
+					case (BlastUnitSource.ADDRESS):
+						{
+							MemoryDomainProxy mdp2 = RTC_MemoryDomains.GetProxy(DestDomain, DestAddress);
 
-					case (BlastByteType.ADD):
-						_Values = RTC_Extensions.AddValueToByteArray(mdp.PeekBytes(targetAddress, targetAddress + _Values.Length), RTC_Extensions.GetDecimalValue(_Values, !(BigEndian)), BigEndian);
-						break;
+							if (mdp == null || mdp2 == null)
+								throw new Exception($"Memory Domain error, MD1 -> {mdp.ToString()}, md2 -> {mdp2.ToString()}");
 
-					case (BlastByteType.SUBTRACT):
-						_Values = RTC_Extensions.AddValueToByteArray(mdp.PeekBytes(targetAddress, targetAddress + _Values.Length), RTC_Extensions.GetDecimalValue(_Values, !(BigEndian)) * -1, BigEndian);
-						break;
+							for (int i = 0; i < Precision; i++)
+							{
+								long realSourceAddress = RTC_MemoryDomains.GetRealAddress(Domain, Address) + i;
+								long realDestAddress = RTC_MemoryDomains.GetRealAddress(DestDomain, DestAddress) + i;
 
-					case (BlastByteType.NONE):
-						return;
+								int currentValue = (int)mdp.PeekByte(DestAddress);
+
+
+								if (newValue < 0)
+									newValue = 0;
+								else if (newValue > 255)
+									newValue = 255;
+
+								mdp2.PokeByte(targetPipeAddress, (byte)newValue);
+							}
+						}
+						break;
+					case (BlastUnitSource.BACKUP):
+						{
+							RTC_Extensions.AddValueToByteArray(mdp.PeekBytes(targetAddress, targetAddress + _Values.Length), RTC_Extensions.GetDecimalValue(_Values, !(BigEndian)), BigEndian);
+						}
+						break;
+					case (BlastUnitSource.VALUE):
+						{
+
+						}
+						break;
 				}
-
-				//As add and subtract are accounted for already, we no longer need to check the type here.
-				for (int i = 0; i < _Values.Length; i++)
-					mdp.PokeByte(targetAddress + i, _Values[i]);
 			}
 			catch (Exception ex)
 			{
-				throw new Exception("The BlastByte apply() function threw up. \n" +
+				throw new Exception("The BlastUnit apply() function threw up. \n" +
 					"This is an RTC error, so you should probably send this to the RTC devs.\n" +
 					"If you know the steps to reproduce this error it would be greatly appreciated.\n\n" +
 				ex.ToString());
@@ -1163,7 +1237,7 @@ namespace RTC
 			return;
 		}
 
-		public override BlastUnit GetBackup()
+		public BlastUnit GetBakedUnit()
 		{
 			if (!IsEnabled)
 				return null;
@@ -1173,7 +1247,7 @@ namespace RTC
 				MemoryDomainProxy mdp = RTC_MemoryDomains.GetProxy(Domain, Address);
 				long targetAddress = RTC_MemoryDomains.GetRealAddress(Domain, Address);
 
-				if (mdp == null || Type == BlastByteType.NONE)
+				if (mdp == null || Type == BlastUnitSource.NONE)
 					return null;
 
 				byte[] _value = new byte[Value.Length];
@@ -1181,7 +1255,7 @@ namespace RTC
 				for (int i = 0; i < _value.Length; i++)
 					_value[i] = mdp.PeekByte(targetAddress + i);
 
-				return new BlastByte(Domain, Address, BlastByteType.SET, _value, BigEndian, true);
+				return new BlastByte(Domain, Address, BlastUnitSource.SET, _value, BigEndian, true);
 			}
 			catch (Exception ex)
 			{
@@ -1192,9 +1266,9 @@ namespace RTC
 			}
 		}
 
-		public override void Reroll()
+		public void Reroll()
 		{
-			if (Type == BlastByteType.SET)
+			if (Type == BlastUnitSource.SET)
 			{
 				long randomValue = 0;
 				switch (Value.Length)
@@ -1211,27 +1285,27 @@ namespace RTC
 				}
 				Value = RTC_Extensions.GetByteArrayValue(Value.Length, randomValue, true);
 			}
-			else if (Type == BlastByteType.ADD || Type == BlastByteType.SUBTRACT)
+			else if (Type == BlastUnitSource.ADD || Type == BlastUnitSource.SUBTRACT)
 			{
 				var result = RTC_Core.RND.Next(1, 3);
 				switch (result)
 				{
 					case 1:
-						Type = BlastByteType.ADD;
+						Type = BlastUnitSource.ADD;
 						break;
 
 					case 2:
-						Type = BlastByteType.SUBTRACT;
+						Type = BlastUnitSource.SUBTRACT;
 						break;
 				}
 			}
-			else if (Type == BlastByteType.VECTOR)
+			else if (Type == BlastUnitSource.VECTOR)
 			{
 				Value = RTC_VectorEngine.GetRandomConstant(RTC_VectorEngine.ValueList);
 			}
 		}
 
-		public override string ToString()
+		public string ToString()
 		{
 			string enabledString = "[ ] BlastByte -> ";
 			if (IsEnabled)
@@ -1241,10 +1315,10 @@ namespace RTC
 			return (enabledString + cleanDomainName + "(" + Convert.ToInt32(Address).ToString() + ")." + Type.ToString() + "(" + RTC_Extensions.GetDecimalValue(Value, BigEndian).ToString() + ")");
 		}
 
-		public override void EnteringExecution()
+		public void EnteringExecution()
 		{
 			//We need to grab the value to freeze
-			if (BlastByteType.FREEZE)
+			if (BlastUnitSource.FREEZE)
 			{
 				MemoryDomainProxy mdp = RTC_MemoryDomains.GetProxy(Domain, Address);
 				long targetAddress = RTC_MemoryDomains.GetRealAddress(Domain, Address);
@@ -1256,7 +1330,7 @@ namespace RTC
 
 		}
 	}
-	
+
 	[Serializable]
 	public class BlastPipe : BlastUnit
 	{
@@ -1393,7 +1467,7 @@ namespace RTC
 				for (int i = 0; i < _value.Length; i++)
 					_value[i] = mdp.PeekByte(PipeAddress + i);
 
-				return new BlastByte(PipeDomain, PipeAddress, BlastByteType.SET, _value, BigEndian, true);
+				return new BlastByte(PipeDomain, PipeAddress, BlastUnitSource.SET, _value, BigEndian, true);
 			}
 			catch (Exception ex)
 			{
@@ -1414,7 +1488,7 @@ namespace RTC
 
 		public override string ToString()
 		{
-			string EnabledString = "[ ] BlastPipe -> ";
+			string EnabledString =	 "[ ] BlastPipe -> ";
 			if (IsEnabled)
 				EnabledString = "[x] BlastPipe -> ";
 

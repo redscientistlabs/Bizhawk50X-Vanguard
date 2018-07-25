@@ -122,7 +122,7 @@ namespace RTC
 				{
 					if (destinationType == typeof(BlastByte))
 					{
-						return new BlastByte(bb.Domain, bb.Address, BlastByteType.SET, CapBlastUnit(bb.Value), bb.BigEndian, bb.IsEnabled, bb.Note);
+						return new BlastByte(bb.Domain, bb.Address, BlastUnitSource.SET, CapBlastUnit(bb.Value), bb.BigEndian, bb.IsEnabled, bb.Note);
 					}
 					if (destinationType == typeof(BlastCheat))
 					{
@@ -142,7 +142,7 @@ namespace RTC
 					}
 					if (destinationType == typeof(BlastByte))
 					{
-						return new BlastByte(bc.Domain, bc.Address, BlastByteType.SET, CapBlastUnit(bc.Value), bc.BigEndian, bc.IsEnabled, bc.Note);
+						return new BlastByte(bc.Domain, bc.Address, BlastUnitSource.SET, CapBlastUnit(bc.Value), bc.BigEndian, bc.IsEnabled, bc.Note);
 					}
 					else if (destinationType == typeof(BlastPipe))
 					{
@@ -157,7 +157,7 @@ namespace RTC
 					}
 					else if (destinationType == typeof(BlastByte))
 					{
-						return new BlastByte(bp.PipeDomain, bp.PipeAddress, BlastByteType.SET, getByteArray(bp.PipeSize, 0x0), bp.BigEndian, bp.IsEnabled, bp.Note);
+						return new BlastByte(bp.PipeDomain, bp.PipeAddress, BlastUnitSource.SET, getByteArray(bp.PipeSize, 0x0), bp.BigEndian, bp.IsEnabled, bp.Note);
 					}
 					else if (destinationType == typeof(BlastCheat))
 					{
@@ -251,9 +251,9 @@ namespace RTC
 				if (Original[i] != Corrupt[i] && i >= rp.SkipBytes)
 				{
 					if (i - rp.SkipBytes >= maxaddress)
-						bl.Layer.Add(new BlastByte(rp.SecondDomain, (i - rp.SkipBytes) - maxaddress, BlastByteType.SET, new byte[] { Corrupt[i] }, mi.BigEndian, true));
+						bl.Layer.Add(new BlastByte(rp.SecondDomain, (i - rp.SkipBytes) - maxaddress, BlastUnitSource.SET, new byte[] { Corrupt[i] }, mi.BigEndian, true));
 					else
-						bl.Layer.Add(new BlastByte(rp.PrimaryDomain, i - rp.SkipBytes, BlastByteType.SET, new byte[] { Corrupt[i] }, mi.BigEndian, true));
+						bl.Layer.Add(new BlastByte(rp.PrimaryDomain, i - rp.SkipBytes, BlastUnitSource.SET, new byte[] { Corrupt[i] }, mi.BigEndian, true));
 				}
 			}
 

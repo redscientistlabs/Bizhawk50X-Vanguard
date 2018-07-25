@@ -750,7 +750,7 @@ namespace RTC
 
 			if (dgvBlastLayer["dgvBlastUnitType", row].Value.ToString() == "RTC.BlastByte")
 			{
-				foreach (BlastByteType type in Enum.GetValues(typeof(BlastByteType)))
+				foreach (BlastUnitSource type in Enum.GetValues(typeof(BlastUnitSource)))
 				{
 					//cmsDomain.Items.Add(domain, null, );
 					((ToolStripMenuItem)cmsBlastEditor.Items.Add(type.ToString(), null, new EventHandler((ob, ev) =>

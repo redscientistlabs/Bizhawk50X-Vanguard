@@ -3701,7 +3701,7 @@ namespace BizHawk.Client.EmuHawk
 					}
 
 					//RTC_Hijack ignoring default.nes for Recent Menu
-					if (!(loader.CanonicalFullPath.Contains("default.nes") || loader.CanonicalFullPath.Contains("\\TEMP\\") || loader.CanonicalFullPath.Contains("\\TEMP4\\")))
+					if (!(loader.CanonicalFullPath.Contains("default.nes") || loader.CanonicalFullPath.Contains("\\SKS\\") || loader.CanonicalFullPath.Contains("\\TEMP4\\")))
 					{
 						Global.Config.RecentRoms.Add(loaderName);
 						JumpLists.AddRecentItem(loaderName, ioa.DisplayName);

@@ -11,22 +11,20 @@
 		NONE
 	}
 
-	public enum BlastByteType
+	public enum BlastUnitSource
 	{
-		SET,
-		ADD,
-		SUBTRACT,
-		VECTOR,
+		VALUE,
+		ADDRESS,
+		BACKUP
+	}
+	public enum BackupSource
+	{
+		IMMEDIATE,  //Frame 0 for the blastunit. Right when it's applied. Used for Distortion
+		PREEXECUTE, //The frame where the blastunit is going to start executing. Used for freeze
 		NONE
 	}
 
-	public enum BlastCheatType
-	{
-		FREEZE,
-		HELLGENIE
-	}
-
-	public enum BlastByteAlgo
+	public enum BlastUnitAlgo
 	{
 		RANDOM,
 		RANDOMTILT,

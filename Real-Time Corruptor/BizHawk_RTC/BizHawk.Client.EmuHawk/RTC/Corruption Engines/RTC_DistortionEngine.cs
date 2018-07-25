@@ -29,7 +29,7 @@ namespace RTC
 				if (domain == null)
 					return null;
 				MemoryDomainProxy mdp = RTC_MemoryDomains.GetProxy(domain, address);
-				BlastByteType Type = BlastByteType.SET;
+				BlastUnitSource Type = BlastUnitSource.SET;
 
 				byte[] value = RTC_Core.CustomPrecision == -1 ? new byte[mdp.WordSize] : new byte[RTC_Core.CustomPrecision];
 
