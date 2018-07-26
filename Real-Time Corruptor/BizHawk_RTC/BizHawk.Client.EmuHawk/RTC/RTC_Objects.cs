@@ -10,15 +10,13 @@ using System.IO;
 using System.IO.Compression;
 using System.Linq;
 using System.Windows.Forms;
+using System.Numerics;
 using System.Xml.Serialization;
 
 namespace RTC
 {
 	[XmlInclude(typeof(StashKey))]
 	[XmlInclude(typeof(BlastLayer))]
-	[XmlInclude(typeof(BlastCheat))]
-	[XmlInclude(typeof(BlastByte))]
-	[XmlInclude(typeof(BlastPipe))]
 	[XmlInclude(typeof(BlastUnit))]
 	[Serializable]
 	public class Stockpile
@@ -912,9 +910,6 @@ namespace RTC
 		}
 	}
 
-	[XmlInclude(typeof(BlastCheat))]
-	[XmlInclude(typeof(BlastByte))]
-	[XmlInclude(typeof(BlastPipe))]
 	[XmlInclude(typeof(BlastUnit))]
 	[Serializable]
 	public class BlastLayer : ICloneable
@@ -1033,7 +1028,7 @@ namespace RTC
 		public string DestDomain { get; set; }
 		public long DestAddress { get; set; }
 
-		public long TiltValue;
+		public BigInteger TiltValue;
 
 		public string Note { get; set; }
 
@@ -1197,21 +1192,20 @@ namespace RTC
 							if (mdp == null || mdp2 == null)
 								throw new Exception($"Memory Domain error, MD1 -> {mdp.ToString()}, md2 -> {mdp2.ToString()}");
 
+							Byte[] value = new byte[Precision];
+
 							for (int i = 0; i < Precision; i++)
 							{
 								long realSourceAddress = RTC_MemoryDomains.GetRealAddress(Domain, Address) + i;
-								long realDestAddress = RTC_MemoryDomains.GetRealAddress(DestDomain, DestAddress) + i;
-
-								int currentValue = (int)mdp.PeekByte(DestAddress);
-
-
-								if (newValue < 0)
-									newValue = 0;
-								else if (newValue > 255)
-									newValue = 255;
-
-								mdp2.PokeByte(targetPipeAddress, (byte)newValue);
+								value[i] = mdp.PeekByte(realSourceAddress);
 							}
+							if (mdp.BigEndian)
+								value.FlipBytes();
+							BigInteger _value = new BigInteger(value);
+
+							RTC_Extensions.AddValueToByteArray()
+
+							mdp2.PokeBytes(realDestAddress, (byte)newValue);
 						}
 						break;
 					case (BlastUnitSource.BACKUP):
@@ -1268,10 +1262,10 @@ namespace RTC
 
 		public void Reroll()
 		{
-			if (Type == BlastUnitSource.SET)
+			if (Source == BlastUnitSource.VALUE)
 			{
-				long randomValue = 0;
-				switch (Value.Length)
+				BigInteger randomValue;
+				switch (Precision)
 				{
 					case (1):
 						randomValue = RTC_Core.RND.RandomLong(RTC_NightmareEngine.MinValue8Bit, RTC_NightmareEngine.MaxValue8Bit);
@@ -1282,26 +1276,14 @@ namespace RTC
 					case (4):
 						randomValue = RTC_Core.RND.RandomLong(RTC_NightmareEngine.MinValue32Bit, RTC_NightmareEngine.MaxValue32Bit);
 						break;
-				}
-				Value = RTC_Extensions.GetByteArrayValue(Value.Length, randomValue, true);
-			}
-			else if (Type == BlastUnitSource.ADD || Type == BlastUnitSource.SUBTRACT)
-			{
-				var result = RTC_Core.RND.Next(1, 3);
-				switch (result)
-				{
-					case 1:
-						Type = BlastUnitSource.ADD;
-						break;
-
-					case 2:
-						Type = BlastUnitSource.SUBTRACT;
+					//No limits if out of normal range
+					default:
+						byte[] _randomValue = new byte[Precision];
+						RTC_Core.RND.NextBytes(_randomValue);
+						randomValue = new BigInteger(_randomValue);
 						break;
 				}
-			}
-			else if (Type == BlastUnitSource.VECTOR)
-			{
-				Value = RTC_VectorEngine.GetRandomConstant(RTC_VectorEngine.ValueList);
+				Value = randomValue.ToByteArray();
 			}
 		}
 
@@ -1327,178 +1309,6 @@ namespace RTC
 					return;
 				Value = mdp.PeekBytes(targetAddress, targetAddress + Value.Length);
 			}
-
-		}
-	}
-
-	[Serializable]
-	public class BlastPipe : BlastUnit
-	{
-		public override string Domain { get; set; }
-		public override long Address { get; set; }
-		public override bool BigEndian { get; set; }
-		public override bool IsLocked { get; set; } = false;
-		public override string Note { get; set; } = "";
-		public string PipeDomain;
-		public long PipeAddress;
-		public int PipeSize;
-		public int TiltValue;
-
-		public override bool IsEnabled { get; set; }
-
-		public BlastPipe(string _domain, long _address, int _applyFrame, int _lifetime, string _pipeDomain, long _pipeAddress, int _tiltValue, int _pipeSize,  bool _bigEndian, bool _isEnabled, string _note = "")
-		{
-			Domain = _domain;
-			Address = _address;
-			PipeDomain = _pipeDomain;
-			PipeAddress = _pipeAddress;
-			PipeSize = _pipeSize;
-			Lifetime = _lifetime;
-			ApplyFrame = _applyFrame;
-			IsEnabled = _isEnabled;
-			TiltValue = _tiltValue;
-			BigEndian = _bigEndian;
-			Note = _note;
-		}
-
-		public BlastPipe()
-		{
-			new object();
-		}
-
-		public override void Execute()
-		{
-			try
-			{
-				MemoryDomainProxy mdp = RTC_MemoryDomains.GetProxy(Domain, Address);
-				MemoryDomainProxy mdp2 = RTC_MemoryDomains.GetProxy(PipeDomain, PipeAddress);
-
-				if (mdp == null || mdp2 == null)
-					throw new Exception($"Memory Domain error, MD1 -> {mdp.ToString()}, md2 -> {mdp2.ToString()}");
-
-				for (int i = 0; i < PipeSize; i++)
-				{
-					long targetAddress = RTC_MemoryDomains.GetRealAddress(Domain, Address) + i;
-					long targetPipeAddress = RTC_MemoryDomains.GetRealAddress(PipeDomain, PipeAddress) + i;
-
-					int currentValue = (int)mdp.PeekByte(targetAddress);
-
-					int newValue = currentValue + TiltValue;
-
-					if (newValue < 0)
-						newValue = 0;
-					else if (newValue > 255)
-						newValue = 255;
-
-					mdp2.PokeByte(targetPipeAddress, (byte)newValue);
-				}
-			}
-			catch (Exception ex)
-			{
-				throw new Exception("The BlastPipe apply() function threw up. \n" +
-					"This is an RTC error, so you should probably send this to the RTC devs.\n" +
-					"If you know the steps to reproduce this error it would be greatly appreciated.\n\n" +
-				ex.ToString());
-			}
-		}
-
-		public override void Rasterize()
-		{
-			if (Domain.Contains("[V]"))
-			{
-				/*
-                Tuple<string,long> mp = (RTC_MemoryDomains.VmdPool[Domain] as VirtualMemoryDomain)?.MemoryPointers[(int)Address];
-                if (mp != null)
-                {
-                    Domain = mp.Item1;
-                    Address = mp.Item2;
-                }
-                */
-
-				string _domain = (string)Domain.Clone();
-				long _address = Address;
-
-				Domain = (RTC_MemoryDomains.VmdPool[_domain] as VirtualMemoryDomain)?.PointerDomains[(int)_address] ?? "ERROR";
-				Address = (RTC_MemoryDomains.VmdPool[_domain] as VirtualMemoryDomain)?.PointerAddresses[(int)_address] ?? -1;
-			}
-
-			if (PipeDomain.Contains("[V]"))
-			{
-				/*
-                Tuple<string, long> mp = (RTC_MemoryDomains.VmdPool[PipeDomain] as VirtualMemoryDomain)?.MemoryPointers[(int)PipeAddress];
-                if (mp != null)
-                {
-                    PipeDomain = mp.Item1;
-                    PipeAddress = mp.Item2;
-                }
-                */
-				string _domain = (string)PipeDomain.Clone();
-				long _address = PipeAddress;
-
-				PipeDomain = (RTC_MemoryDomains.VmdPool[_domain] as VirtualMemoryDomain)?.PointerDomains[(int)_address] ?? "ERROR";
-				PipeAddress = (RTC_MemoryDomains.VmdPool[_domain] as VirtualMemoryDomain)?.PointerAddresses[(int)_address] ?? -1;
-			}
-		}
-
-		public override bool Apply()
-		{
-			if (!IsEnabled)
-				return true;
-
-			RTC_StepActions.AddBlastUnit(this);
-
-			return true;
-		}
-
-		public override BlastUnit GetBackup()
-		{
-			if (!IsEnabled)
-				return null;
-
-			try
-			{
-				MemoryDomainProxy mdp = RTC_MemoryDomains.GetProxy(PipeDomain, PipeAddress);
-
-				if (mdp == null)
-					return null;
-
-				byte[] _value = new byte[PipeSize];
-
-				for (int i = 0; i < _value.Length; i++)
-					_value[i] = mdp.PeekByte(PipeAddress + i);
-
-				return new BlastByte(PipeDomain, PipeAddress, BlastUnitSource.SET, _value, BigEndian, true);
-			}
-			catch (Exception ex)
-			{
-				throw new Exception("The BlastPipe GetBackup() function threw up. \n" +
-					"This is an RTC error, so you should probably send this to the RTC devs.\n" +
-					"If you know the steps to reproduce this error it would be greatly appreciated.\n\n" +
-				ex.ToString());
-			}
-		}
-
-		public override void Reroll()
-		{
-			var pipeEnd = RTC_Core.GetBlastTarget();
-
-			PipeDomain = pipeEnd.domain;
-			PipeAddress = pipeEnd.address;
-		}
-
-		public override string ToString()
-		{
-			string EnabledString =	 "[ ] BlastPipe -> ";
-			if (IsEnabled)
-				EnabledString = "[x] BlastPipe -> ";
-
-			string cleanDomainName = Domain.Replace("(nametables)", ""); //Shortens the domain name if it contains "(nametables)"
-			string cleanDomainName2 = PipeDomain.Replace("(nametables)", ""); //Shortens the domain name if it contains "(nametables)"
-			return (EnabledString + cleanDomainName + "(" + Convert.ToInt32(Address).ToString() + ")piped->" + cleanDomainName2 + "(" + Convert.ToInt32(PipeAddress).ToString() + "), tilt->" + TiltValue.ToString());
-		}
-
-		public override void EnteringExecution()
-		{
 
 		}
 	}
