@@ -15,8 +15,8 @@ namespace RTC
 			{
 				case "STANDARD":
 					ReturnWatch.maxtries = 0;
-					RTC_NetCore.DefaultKeepAliveCounter = 5;
-					RTC_NetCore.DefaultNetworkStreamTimeout = 2000;
+					RTC_NetCore.DefaultKeepAliveCounter = 7;
+					RTC_NetCore.DefaultNetworkStreamTimeout = 3000;
 					RTC_NetCore.DefaultMaxRetries = 666;
 
 					if (RTC_Core.isStandalone)

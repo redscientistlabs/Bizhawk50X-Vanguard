@@ -22,13 +22,7 @@ namespace RTC
 			foreach (var item in lbLoadedVmdList.SelectedItems)
 			{
 				string VmdName = item.ToString();
-
-				foreach (BlastUnit blastUnit in RTC_PipeEngine.AllBlastPipes)
-				{
-					BlastPipe bp = (BlastPipe)blastUnit;
-					bp.Rasterize();
-				}
-
+				RTC_PipeEngine.RasterizePipes();
 				RTC_MemoryDomains.RemoveVMD(VmdName);
 			}
 			RefreshVMDs();

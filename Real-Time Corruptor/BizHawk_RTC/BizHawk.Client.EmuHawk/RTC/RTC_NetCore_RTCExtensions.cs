@@ -269,6 +269,10 @@ namespace RTC
 					RTC_Core.coreForm.btnGpJumpNow.Visible = true;
 					break;
 
+				case CommandType.REMOTE_RASTERIZE_PIPES:
+					RTC_PipeEngine.RasterizePipes();
+					break;
+
 				case CommandType.REMOTE_DOMAIN_PEEKBYTE:
 					cmdBack = new RTC_Command(CommandType.RETURNVALUE);
 					cmdBack.objectValue = RTC_MemoryDomains.GetInterface((string)(cmd.objectValue as object[])[0]).PeekByte((long)(cmd.objectValue as object[])[1]);
@@ -534,7 +538,6 @@ namespace RTC
 					RTC_PipeEngine.ChainedPipes = (bool)cmd.objectValue;
 					break;
 
-
 				case CommandType.REMOTE_SET_PIPE_CLEARPIPESREWIND:
 					RTC_Core.ClearPipesOnRewind = (bool)cmd.objectValue;
 					break;
@@ -572,6 +575,7 @@ namespace RTC
 					RTC_Core.ecForm.SetMemoryDomainsAllButSelectedDomains(RTC_MemoryDomains.GetBlacklistedDomains());
 					RTC_Core.ecForm.UpdateDefaultPrecision();
 					break;
+
 				case CommandType.REMOTE_EVENT_LOADGAMEDONE_SAMEGAME:
 					//RTC_StockpileManager.isCorruptionApplied = false;
 					RTC_Core.ecForm.RefreshDomainsAndKeepSelected();

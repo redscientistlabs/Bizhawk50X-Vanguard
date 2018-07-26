@@ -1425,7 +1425,7 @@ namespace RTC
 				MemoryDomainProxy mdp2 = RTC_MemoryDomains.GetProxy(PipeDomain, PipeAddress);
 
 				if (mdp == null || mdp2 == null)
-					throw new Exception($"Memory Domain error, MD1 -> {mdp.ToString()}, md2 -> {mdp2.ToString()}");
+					throw new Exception($"Memory Domain error, MD1 -> {mdp?.ToString()}, md2 -> {mdp2?.ToString()}");
 
 				for (int i = 0; i < PipeSize; i++)
 				{
@@ -1446,10 +1446,12 @@ namespace RTC
 			}
 			catch (Exception ex)
 			{
-				throw new Exception("The BlastPipe apply() function threw up. \n" +
+				throw new Exception("The BlastPipe apply() function threw up. Clearing the execution pool to prevent further issues. \n" +
 					"This is an RTC error, so you should probably send this to the RTC devs.\n" +
 					"If you know the steps to reproduce this error it would be greatly appreciated.\n\n" +
 				ex.ToString());
+
+				RTC_PipeEngine.ClearPipes();
 			}
 		}
 
