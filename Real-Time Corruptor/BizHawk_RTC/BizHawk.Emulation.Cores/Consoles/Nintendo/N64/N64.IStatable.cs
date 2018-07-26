@@ -32,6 +32,10 @@ namespace BizHawk.Emulation.Cores.Nintendo.N64
 			byte[] data = SaveStatePrivateBuff;
 			int bytes_used = api.SaveState(data);
 
+			//RTC_Hijack return out if there's no data here as we changed api.SaveState to return -1 if it failed
+			if (bytes_used == -1)
+				return;
+
 			writer.Write(bytes_used);
 			writer.Write(data, 0, bytes_used);
 

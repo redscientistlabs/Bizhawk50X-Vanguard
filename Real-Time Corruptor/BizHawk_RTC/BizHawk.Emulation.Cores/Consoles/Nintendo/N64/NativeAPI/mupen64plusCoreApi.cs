@@ -588,14 +588,29 @@ namespace BizHawk.Emulation.Cores.Nintendo.N64.NativeApi
 		/// Starts execution of mupen64plus
 		/// Does not return until the emulator stops
 		/// </summary>
+		
+		//RTC_Hijack - Add this property so the try-catch works
+		[System.Runtime.ExceptionServices.HandleProcessCorruptedStateExceptionsAttribute()]
 		private void ExecuteEmulator()
 		{
 			emulator_running = true;
 			var cb = new StartupCallback(() => m64pStartupComplete.Set());
-			m64pCoreDoCommandPtr(m64p_command.M64CMD_EXECUTE, 0,
-				Marshal.GetFunctionPointerForDelegate(cb));
-			emulator_running = false;
-			cb.GetType();
+
+			//RTC_Hijack - Catch mupen crashing
+			try
+			{
+				m64pCoreDoCommandPtr(m64p_command.M64CMD_EXECUTE, 0,
+					Marshal.GetFunctionPointerForDelegate(cb));
+			}
+			catch (Exception ex)
+			{
+				Console.WriteLine("RTC HIjack: Mupen sad during ExecuteEmulator :( " + ex.ToString());
+			}
+			finally
+			{
+				emulator_running = false;
+				cb.GetType();
+			} //Hijack_End
 		}
 
 		/// <summary>
@@ -780,7 +795,7 @@ namespace BizHawk.Emulation.Cores.Nintendo.N64.NativeApi
 			}
 			//RTC_HIJACK Always return something
 			return true;
-		}
+		}//Hijack_End
 
 		public void OnBreakpoint(BreakParams breakparams)
 		{
@@ -788,10 +803,27 @@ namespace BizHawk.Emulation.Cores.Nintendo.N64.NativeApi
 			event_breakpoint = true; //order important
 			m64pEvent.Set(); //order important
 		}
-
+		//RTC_Hijack - Add this attribute
+		[System.Runtime.ExceptionServices.HandleProcessCorruptedStateExceptionsAttribute()]
 		public int SaveState(byte[] buffer)
 		{
-			return m64pCoreSaveState(buffer);
+			//RTC_Hijack - Catch exceptions here and return -1
+			try
+			{
+				int state = m64pCoreSaveState(buffer);
+				return state;
+			}
+			catch (Exception ex)
+			{
+				Console.WriteLine("RTC Hijack: Mupen sad during Savestate  :(" + ex.ToString());
+				if (AttachedCore != null)
+				{
+					AttachedCore.Dispose();
+					AttachedCore = null;
+				}
+				return -1;
+			}
+			//Hijack_End
 		}
 
 		public void LoadState(byte[] buffer)

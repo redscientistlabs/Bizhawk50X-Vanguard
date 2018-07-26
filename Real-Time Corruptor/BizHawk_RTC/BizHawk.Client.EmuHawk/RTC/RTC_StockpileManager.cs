@@ -318,10 +318,12 @@ namespace RTC
 
 		public static bool LoadState(StashKey sk, bool ReloadRom = true, bool applyBlastLayer = true)
 		{
-			return (bool)RTC_Core.SendCommandToBizhawk(new RTC_Command(CommandType.REMOTE_LOADSTATE)
+			object returnValue = (bool)RTC_Core.SendCommandToBizhawk(new RTC_Command(CommandType.REMOTE_LOADSTATE)
 			{
 				objectValue = new object[] { sk, ReloadRom, false, applyBlastLayer }
 			}, true);
+
+			return (returnValue != null ? (bool)returnValue : false);
 		}
 
 		public static bool LoadStateAndBlastLayer(StashKey sk, bool ReloadRom = true)
