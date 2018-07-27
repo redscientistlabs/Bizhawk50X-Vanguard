@@ -81,7 +81,7 @@ namespace RTC
 				RTC_Params.SetParam("DISCLAIMER_READ");
 			}
 
-			RTC_Core.CheckForProblematicItems();
+			RTC_Core.CheckForProblematicProcesses();
 
 			if (RTC_Core.isStandalone)
 			{

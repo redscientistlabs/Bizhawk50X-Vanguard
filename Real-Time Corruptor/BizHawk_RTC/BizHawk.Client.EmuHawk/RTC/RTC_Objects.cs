@@ -1805,7 +1805,7 @@ namespace RTC
 	}
 
 
-	public class ProblematicItem
+	public class ProblematicProcess
 	{
 		public string Name;
 		public string Message;

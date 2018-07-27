@@ -610,7 +610,7 @@ namespace RTC
 
 		private void btnLoadStockpile_Click(object sender, MouseEventArgs e)
 		{
-			RTC_Core.CheckForProblematicItems();
+			RTC_Core.CheckForProblematicProcesses();
 
 			Point locate = new Point(((Control)sender).Location.X + e.Location.X, ((Control)sender).Location.Y + e.Location.Y);
 
