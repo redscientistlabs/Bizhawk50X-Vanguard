@@ -7,8 +7,10 @@ using System.Diagnostics;
 using System.Drawing;
 using System.IO;
 using System.Linq;
+using System.Net;
 using System.Threading;
 using System.Windows.Forms;
+using Newtonsoft.Json;
 
 /*
 isRemoteRTC = Bool stating that the process is emuhawk.exe in detached
@@ -21,6 +23,7 @@ namespace RTC
 	{
 		public static string[] args;
 		public static Random RND = new Random();
+		public static List<ProblematicProcess> ProblematicProcesses;
 
 		//General RTC Values
 		public static string RtcVersion = "3.25a";
@@ -180,42 +183,56 @@ namespace RTC
 		}
 
 		//Checks if any problematic processes are found
-		public static bool Warned = false;
-
+		public static volatile bool Warned = false;
 		public static void CheckForProblematicProcesses()
 		{
 			if (Warned)
 				return;
+			//Do this in its own thread as loading the json is slow and there's no reason for it to block the main thread
+			(new Thread(() =>
+			{
 
-			/*
-            // PROCESS CHECKUP IS NO LONGER AVAILABLE WITH BIZHAWK 2.2
-            try
-            {
-                var processes = Process.GetProcesses().Select(it => $"{it.ProcessName.ToUpper()}").OrderBy(x => x).ToArray();
+				string LocalPath = RTC_Core.paramsDir + "\\BADPROCESSES";
+				string json = "";
+				try
+				{
+					WebClient client = new WebClient();
+					json = client.DownloadString("https://raw.githubusercontent.com/ircluzar/RTC3/master/ProblematicProcesses.json");
+					File.WriteAllText(LocalPath, json);
+				}
+				catch (WebException ex)
+				{
+					Console.WriteLine(ex.ToString());
+					if (File.Exists(LocalPath))
+						json = File.ReadAllText(LocalPath);
+					else
+						return;
+				}
 
-                if (processes.Contains("XGS32") || processes.Contains("XGS64"))
-                {
-                    MessageBox.Show("XSplit Game Capture detected. XSplit's Game Capture is incompatible with BizHawk's N64 Emulator. Disable it via the XSplit options and restart XSplit.");
-                    Warned = true;
-                }
+				try
+				{
+					ProblematicProcesses = JsonConvert.DeserializeObject<List<ProblematicProcess>>(json);
+				}
+				catch (Exception ex)
+				{
+					MessageBox.Show("Something went wrong when parsing the process checker json!\n\n" + ex);
+					if (File.Exists(LocalPath))
+						File.Delete(LocalPath);
+				}
 
-                if (processes.Contains("RTSS") || processes.Contains("RIVATUNERSTATISTICSSERVER"))
-                {
-                    MessageBox.Show("Rivatuner Statistics Server OSD Detected. The RTSS OSD is incompatible with BizHawk's N64 Emulator. If you're using any GPU overclocking software such as MSI Afterburner, disable the OSD while running the RTC or blacklist emuhawk.exe in the RTSS Settings");
-                    Warned = true;
-                }
 
-                if (processes.Contains("PRECISIONXSERVER"))
-                {
-                    MessageBox.Show("EVGA Precision X OSD detected. The OSD is incompatible with BizHawk's N64 Emulator. Disable the OSD in the Precision X menu or blacklist emuhawk.exe in PrecisionX Server.");
-                    Warned = true;
-                }
-            }
-            catch
-            {
-                //Let's just do nothing in that case.
-            }
-            */
+				var processes = Process.GetProcesses().Select(it => $"{it.ProcessName.ToUpper()}").OrderBy(x => x).ToArray();
+
+				//Warn based on loaded processes
+				foreach (var item in ProblematicProcesses)
+				{
+					if (processes.Contains(item.Name))
+					{
+						MessageBox.Show(item.Message, "Incompatible Program Detected!");
+						Warned = true;
+					}
+				}
+			})).Start();
 		}
 
 		//This is the entry point of RTC. Without this method, nothing will load.

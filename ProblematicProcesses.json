@@ -1,0 +1,10 @@
+[  
+   {  
+      "Name": "OBS32",
+      "Message" : "OBS detected. OBS's Game Capture is incompatible with BizHawk's N64 Emulator when in Direct3D mode. Either use OpenGL mode or use Window Capture."
+   },
+   {  
+      "Name" : "OBS64",
+      "Message" : "OBS detected. OBS's Game Capture is incompatible with BizHawk's N64 Emulator when in Direct3D mode. Either use OpenGL mode or use Window Capture."
+   }
+]

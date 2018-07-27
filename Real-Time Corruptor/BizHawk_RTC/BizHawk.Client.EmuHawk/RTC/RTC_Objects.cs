@@ -1803,4 +1803,11 @@ namespace RTC
 		}
 
 	}
+
+
+	public class ProblematicItem
+	{
+		public string Name;
+		public string Message;
+	}
 }
