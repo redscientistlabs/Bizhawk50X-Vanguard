@@ -293,6 +293,9 @@ namespace RTC
 			if (!Directory.Exists(RTC_Core.rtcDir + "\\PARAMS\\"))
 				Directory.CreateDirectory(RTC_Core.rtcDir + "\\PARAMS\\");
 
+			if (!Directory.Exists(RTC_Core.rtcDir + "\\MEMORYDUMPS\\"))
+				Directory.CreateDirectory(RTC_Core.rtcDir + "\\MEMORYDUMPS\\");
+
 
 			//Loading RTC Params
 			RTC_Params.LoadRTCColor();
