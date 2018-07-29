@@ -9,16 +9,6 @@ svnrev.cs
 /output64/**
 
 
-!/output/**/**/**
-/output/WGH/**
-/output/Shaders/**
-/output/Lua/**
-/output/NES/Palettes/**
-/output/Gameboy/Palettes/**
-/output/gamedb/**
-/output/ExternalTools/**
-
-
 !/output/dll/**
 !/output/dll/
 /output/dll/Bizhawk*
@@ -32,9 +22,6 @@ svnrev.cs
 /output/RTC/TEMP4/*
 !/output/*.bat
 !/output/AutoKillSwitch.exe
-
-
-
 
 **/Release/**
 **/Debug/**
