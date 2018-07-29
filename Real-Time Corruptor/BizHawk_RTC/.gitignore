@@ -20,6 +20,8 @@ svnrev.cs
 /output/RTC/TEMP2/*
 /output/RTC/TEMP3/*
 /output/RTC/TEMP4/*
+!/output/*.bat
+!/output/AutoKillSwitch.exe
 
 **/Release/**
 **/Debug/**
