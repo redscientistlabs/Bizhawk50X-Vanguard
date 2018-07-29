@@ -919,9 +919,25 @@ namespace BizHawk.Emulation.Cores.Nintendo.N64.NativeApi
 			m64pDebugBreakpointCommand(m64p_dbg_bkp_command.M64P_BKP_CMD_REMOVE_IDX, (uint)index, ref unused);
 		}
 
+		//RTC_Hijack - Add this attribute
+		[System.Runtime.ExceptionServices.HandleProcessCorruptedStateExceptionsAttribute()]
 		public void setTraceCallback(TraceCallback callback)
 		{
-			m64pSetTraceCallback(callback);
+			//RTC_Hijack try-catch this
+			try
+			{
+				m64pSetTraceCallback(callback);
+			}
+			catch (Exception ex)
+			{
+				Console.WriteLine("RTC Hijack: Mupen sad during setTraceCallback  :(" + ex.ToString());
+				if (AttachedCore != null)
+				{
+					AttachedCore.Dispose();
+					AttachedCore = null;
+				}
+			}//Hijack_End
+			
 		}
 
 		public void getRegisters(byte[] dest)

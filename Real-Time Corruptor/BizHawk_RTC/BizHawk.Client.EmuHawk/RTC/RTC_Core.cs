@@ -26,7 +26,7 @@ namespace RTC
 		public static List<ProblematicProcess> ProblematicProcesses;
 
 		//General RTC Values
-		public static string RtcVersion = "3.25a";
+		public static string RtcVersion = "3.26";
 
 		//Directories
 		public static string bizhawkDir = Directory.GetCurrentDirectory();
@@ -292,6 +292,9 @@ namespace RTC
 
 			if (!Directory.Exists(RTC_Core.rtcDir + "\\PARAMS\\"))
 				Directory.CreateDirectory(RTC_Core.rtcDir + "\\PARAMS\\");
+
+			if (!Directory.Exists(RTC_Core.rtcDir + "\\MEMORYDUMPS\\"))
+				Directory.CreateDirectory(RTC_Core.rtcDir + "\\MEMORYDUMPS\\");
 
 
 			//Loading RTC Params
