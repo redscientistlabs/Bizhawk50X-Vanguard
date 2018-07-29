@@ -197,7 +197,7 @@ namespace RTC
 				try
 				{
 					WebClient client = new WebClient();
-					json = client.DownloadString("https://raw.githubusercontent.com/ircluzar/RTC3/master/ProblematicProcesses.json");
+					json = client.DownloadString("https://raw.githubusercontent.com/ircluzar/RTC3/RTC3.2X/ProblematicProcesses.json");
 					File.WriteAllText(LocalPath, json);
 				}
 				catch (WebException ex)
