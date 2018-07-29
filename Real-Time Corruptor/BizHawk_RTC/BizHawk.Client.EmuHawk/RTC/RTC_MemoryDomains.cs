@@ -339,10 +339,14 @@ namespace RTC
 
 			object[] returns;
 
+
+			Guid token = RTC_NetCore.HugeOperationStart();
 			if (!RTC_Core.isStandalone)
 				returns = (object[])GetInterfaces();
 			else
 				returns = (object[])RTC_Core.SendCommandToBizhawk(new RTC_Command(CommandType.REMOTE_DOMAIN_GETDOMAINS), true);
+
+			RTC_NetCore.HugeOperationEnd(token);
 
 			if (returns == null)
 			{

@@ -93,4 +93,10 @@
 		SOURCE_RANDOM,
 		DEST_RANDOM
 	}
+
+	public enum ProblematicItemTypes
+	{
+		PROCESS,
+		ASSEMBLY
+	}
 }

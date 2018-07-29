@@ -584,7 +584,7 @@ namespace RTC
 		{
 			try
 			{
-				RTC_MemoryDomains.RefreshDomains();
+				RTC_Core.ecForm.RefreshDomainsAndKeepSelected();
 				domainToMiDico.Clear();
 				domains = RTC_MemoryDomains.MemoryInterfaces.Keys.Concat(RTC_MemoryDomains.VmdPool.Values.Select(it => it.ToString())).ToArray();
 				foreach (string domain in domains)

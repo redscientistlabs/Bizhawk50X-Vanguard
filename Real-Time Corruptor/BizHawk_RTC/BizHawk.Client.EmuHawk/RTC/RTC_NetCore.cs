@@ -53,9 +53,9 @@ namespace RTC
 		public bool expectingSomeone = false;
 		static volatile bool isStreamReadingThreadAlive = false;
 
-		public static int KeepAliveCounter = 5;
-		public static int DefaultKeepAliveCounter = 5;
-		public static int DefaultNetworkStreamTimeout = 2000;
+		public static int KeepAliveCounter = 7;
+		public static int DefaultKeepAliveCounter = 7;
+		public static int DefaultNetworkStreamTimeout = 3000;
 		public static volatile int DefaultMaxRetries = 666;
 		private static bool showBoops = false;
 
@@ -935,6 +935,7 @@ namespace RTC
 		REMOTE_IMPORTKEYBINDS,
 		REMOTE_BACKUPKEY_REQUEST,
 		REMOTE_BACKUPKEY_STASH,
+		REMOTE_RASTERIZE_PIPES,
 		REMOTE_EVENT_LOADGAMEDONE_NEWGAME,
 		REMOTE_EVENT_LOADGAMEDONE_SAMEGAME,
 		REMOTE_EVENT_CLOSEBIZHAWK,

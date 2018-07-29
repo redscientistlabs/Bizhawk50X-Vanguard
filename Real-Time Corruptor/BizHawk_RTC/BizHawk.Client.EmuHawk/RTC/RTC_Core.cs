@@ -7,8 +7,10 @@ using System.Diagnostics;
 using System.Drawing;
 using System.IO;
 using System.Linq;
+using System.Net;
 using System.Threading;
 using System.Windows.Forms;
+using Newtonsoft.Json;
 
 /*
 isRemoteRTC = Bool stating that the process is emuhawk.exe in detached
@@ -21,9 +23,10 @@ namespace RTC
 	{
 		public static string[] args;
 		public static Random RND = new Random();
+		public static List<ProblematicProcess> ProblematicProcesses;
 
 		//General RTC Values
-		public static string RtcVersion = "3.26";
+		public static string RtcVersion = "3.25a";
 
 		//Directories
 		public static string bizhawkDir = Directory.GetCurrentDirectory();
@@ -40,7 +43,8 @@ namespace RTC
 		public static BlastRadius Radius = BlastRadius.SPREAD;
 		public static bool AutoCorrupt = false;
 
-		public static bool ClearStepActionsOnRewind = false;
+		public static bool ClearCheatsOnRewind = false;
+		public static bool ClearPipesOnRewind = false;
 		public static bool ExtractBlastLayer = false;
 		public static string lastOpenRom = null;
 		public static int lastLoaderRom = 0;
@@ -157,6 +161,7 @@ namespace RTC
 			if (!RTC_Hooks.isRemoteRTC)
 			{
 				Stockpile.EmptyFolder("TEMP");
+				Stockpile.EmptyFolder("TEMP2");
 				Stockpile.EmptyFolder("TEMP3");
 				Stockpile.EmptyFolder("TEMP4");
 				Stockpile.EmptyFolder("TEMP5");
@@ -178,42 +183,57 @@ namespace RTC
 		}
 
 		//Checks if any problematic processes are found
-		public static bool Warned = false;
-
+		public static volatile bool Warned = false;
 		public static void CheckForProblematicProcesses()
 		{
 			if (Warned)
 				return;
+			//Do this in its own thread as loading the json is slow and there's no reason for it to block the main thread
+			(new Thread(() =>
+			{
 
-			/*
-            // PROCESS CHECKUP IS NO LONGER AVAILABLE WITH BIZHAWK 2.2
-            try
-            {
-                var processes = Process.GetProcesses().Select(it => $"{it.ProcessName.ToUpper()}").OrderBy(x => x).ToArray();
+				string LocalPath = RTC_Core.paramsDir + "\\BADPROCESSES";
+				string json = "";
+				try
+				{
+					WebClient client = new WebClient();
+					json = client.DownloadString("https://raw.githubusercontent.com/ircluzar/RTC3/RTC3.2X/ProblematicProcesses.json");
+					File.WriteAllText(LocalPath, json);
+				}
+				catch (WebException ex)
+				{
+					Console.WriteLine(ex.ToString());
+					if (File.Exists(LocalPath))
+						json = File.ReadAllText(LocalPath);
+					else
+						return;
+				}
 
-                if (processes.Contains("XGS32") || processes.Contains("XGS64"))
-                {
-                    MessageBox.Show("XSplit Game Capture detected. XSplit's Game Capture is incompatible with BizHawk's N64 Emulator. Disable it via the XSplit options and restart XSplit.");
-                    Warned = true;
-                }
+				try
+				{
+					ProblematicProcesses = JsonConvert.DeserializeObject<List<ProblematicProcess>>(json);
+				}
+				catch (Exception ex)
+				{
+					MessageBox.Show("Something went wrong when parsing the process checker json!\n\n" + ex);
+					if (File.Exists(LocalPath))
+						File.Delete(LocalPath);
+					return;
+				}
 
-                if (processes.Contains("RTSS") || processes.Contains("RIVATUNERSTATISTICSSERVER"))
-                {
-                    MessageBox.Show("Rivatuner Statistics Server OSD Detected. The RTSS OSD is incompatible with BizHawk's N64 Emulator. If you're using any GPU overclocking software such as MSI Afterburner, disable the OSD while running the RTC or blacklist emuhawk.exe in the RTSS Settings");
-                    Warned = true;
-                }
 
-                if (processes.Contains("PRECISIONXSERVER"))
-                {
-                    MessageBox.Show("EVGA Precision X OSD detected. The OSD is incompatible with BizHawk's N64 Emulator. Disable the OSD in the Precision X menu or blacklist emuhawk.exe in PrecisionX Server.");
-                    Warned = true;
-                }
-            }
-            catch
-            {
-                //Let's just do nothing in that case.
-            }
-            */
+				var processes = Process.GetProcesses().Select(it => $"{it.ProcessName.ToUpper()}").OrderBy(x => x).ToArray();
+
+				//Warn based on loaded processes
+				foreach (var item in ProblematicProcesses)
+				{
+					if (processes.Contains(item.Name))
+					{
+						MessageBox.Show(item.Message, "Incompatible Program Detected!");
+						Warned = true;
+					}
+				}
+			})).Start();
 		}
 
 		//This is the entry point of RTC. Without this method, nothing will load.
@@ -252,20 +272,20 @@ namespace RTC
 
 			standaloneForm = _standaloneForm;
 
-			if (!Directory.Exists(RTC_Core.rtcDir + "\\SKS\\"))
-				Directory.CreateDirectory(RTC_Core.rtcDir + "\\SKS\\");
-
 			if (!Directory.Exists(RTC_Core.rtcDir + "\\TEMP\\"))
 				Directory.CreateDirectory(RTC_Core.rtcDir + "\\TEMP\\");
 
-			if (!Directory.Exists(RTC_Core.rtcDir + "\\TEMP\\"))
-				Directory.CreateDirectory(RTC_Core.rtcDir + "\\TEMP\\");
+			if (!Directory.Exists(RTC_Core.rtcDir + "\\TEMP2\\"))
+				Directory.CreateDirectory(RTC_Core.rtcDir + "\\TEMP2\\");
+
+			if (!Directory.Exists(RTC_Core.rtcDir + "\\TEMP3\\"))
+				Directory.CreateDirectory(RTC_Core.rtcDir + "\\TEMP3\\");
 
 			if (!Directory.Exists(RTC_Core.rtcDir + "\\TEMP4\\"))
 				Directory.CreateDirectory(RTC_Core.rtcDir + "\\TEMP4\\");
 
-			if (!Directory.Exists(RTC_Core.rtcDir + "\\MP\\"))
-				Directory.CreateDirectory(RTC_Core.rtcDir + "\\MP\\");
+			if (!Directory.Exists(RTC_Core.rtcDir + "\\TEMP5\\"))
+				Directory.CreateDirectory(RTC_Core.rtcDir + "\\TEMP5\\");
 
 			//Loading RTC Params
 			RTC_Params.LoadRTCColor();
@@ -562,6 +582,7 @@ namespace RTC
 					if (_selectedDomains == null || _selectedDomains.Count() == 0)
 						return null;
 
+
 					// Age distortion BlastBytes
 					if (RTC_Core.SelectedEngine == CorruptionEngine.DISTORTION && RTC_DistortionEngine.CurrentAge < RTC_DistortionEngine.MaxAge)
 						RTC_DistortionEngine.CurrentAge++;
@@ -725,11 +746,19 @@ namespace RTC
 			}
 			catch (Exception ex)
 			{
+				string additionalInfo = "";
+
+				if (RTC_MemoryDomains.GetInterface(Domain) == null)
+				{
+					additionalInfo = "Unable to get an interface to the selected memory domain! Try clicking the Auto-Select Domains button to refresh the domains!\n\n";
+				}
+
 				DialogResult dr = MessageBox.Show("Something went wrong in the RTC Core. \n" +
+					additionalInfo +
 					"This is an RTC error, so you should probably send this to the RTC devs.\n\n" +
-				"If you know the steps to reproduce this error it would be greatly appreaciated.\n\n" +
+				"If you know the steps to reproduce this error it would be greatly appreciated.\n\n" +
 				(RTC_Core.coreForm.AutoCorrupt ? ">> STOP AUTOCORRUPT ?.\n\n" : "") +
-				$"domain:{Domain.ToString()} maxaddress:{MaxAddress.ToString()} randomaddress:{RandomAddress.ToString()} \n\n" +
+				$"domain:{Domain?.ToString()} maxaddress:{MaxAddress.ToString()} randomaddress:{RandomAddress.ToString()} \n\n" +
 				ex.ToString(), "Error", (RTC_Core.coreForm.AutoCorrupt ? MessageBoxButtons.YesNo : MessageBoxButtons.OK));
 
 				if (dr == DialogResult.Yes || dr == DialogResult.OK)

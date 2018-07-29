@@ -316,7 +316,8 @@ namespace RTC
 			defaultPrecision = RTC_MemoryDomains.MemoryInterfaces[RTC_MemoryDomains.MainDomain].WordSize;
 			RTC_Core.ecForm.lbCoreDefault.Text = $"Core default: { defaultPrecision * 8}-bit";
 
-			updateMinMaxBoxes(defaultPrecision);
+			if(RTC_Core.CustomPrecision == -1)
+				updateMinMaxBoxes(defaultPrecision);
 		}
 
 		public void RefreshDomains()

@@ -17,6 +17,18 @@ namespace RTC
 		public static bool LockPipes = false;
 
 
+		public static void RasterizePipes()
+		{
+			if(RTC_Core.isStandalone)
+				RTC_Core.SendCommandToBizhawk(new RTC_Command(CommandType.REMOTE_RASTERIZE_PIPES), true);
+
+			foreach (BlastUnit blastUnit in RTC_PipeEngine.AllBlastPipes)
+			{
+				BlastPipe bp = (BlastPipe)blastUnit;
+				bp.Rasterize();
+			}
+		}
+
 		public static BlastUnit GenerateUnit(string _domain, long _address)
 		{
 			// Randomly selects a memory operation according to the selected algorithm
