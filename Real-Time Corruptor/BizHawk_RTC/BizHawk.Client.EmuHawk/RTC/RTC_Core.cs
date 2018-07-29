@@ -287,6 +287,13 @@ namespace RTC
 			if (!Directory.Exists(RTC_Core.rtcDir + "\\TEMP5\\"))
 				Directory.CreateDirectory(RTC_Core.rtcDir + "\\TEMP5\\");
 
+			if (!Directory.Exists(RTC_Core.rtcDir + "\\ASSETS\\CRASHSOUNDS"))
+				Directory.CreateDirectory(RTC_Core.rtcDir + "\\ASSETS\\CRASHSOUNDS");
+
+			if (!Directory.Exists(RTC_Core.rtcDir + "\\PARAMS\\"))
+				Directory.CreateDirectory(RTC_Core.rtcDir + "\\PARAMS\\");
+
+
 			//Loading RTC Params
 			RTC_Params.LoadRTCColor();
 			RTC_Core.sForm.cbDisableBizhawkOSD.Checked = !RTC_Params.IsParamSet("ENABLE_BIZHAWK_OSD");
