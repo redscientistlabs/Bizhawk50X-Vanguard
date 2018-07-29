@@ -218,6 +218,7 @@ namespace RTC
 					MessageBox.Show("Something went wrong when parsing the process checker json!\n\n" + ex);
 					if (File.Exists(LocalPath))
 						File.Delete(LocalPath);
+					return;
 				}
 
 
@@ -581,6 +582,7 @@ namespace RTC
 					if (_selectedDomains == null || _selectedDomains.Count() == 0)
 						return null;
 
+
 					// Age distortion BlastBytes
 					if (RTC_Core.SelectedEngine == CorruptionEngine.DISTORTION && RTC_DistortionEngine.CurrentAge < RTC_DistortionEngine.MaxAge)
 						RTC_DistortionEngine.CurrentAge++;
@@ -744,11 +746,19 @@ namespace RTC
 			}
 			catch (Exception ex)
 			{
+				string additionalInfo = "";
+
+				if (RTC_MemoryDomains.GetInterface(Domain) == null)
+				{
+					additionalInfo = "Unable to get an interface to the selected memory domain! Try clicking the Auto-Select Domains button to refresh the domains!\n\n";
+				}
+
 				DialogResult dr = MessageBox.Show("Something went wrong in the RTC Core. \n" +
+					additionalInfo +
 					"This is an RTC error, so you should probably send this to the RTC devs.\n\n" +
-				"If you know the steps to reproduce this error it would be greatly appreaciated.\n\n" +
+				"If you know the steps to reproduce this error it would be greatly appreciated.\n\n" +
 				(RTC_Core.coreForm.AutoCorrupt ? ">> STOP AUTOCORRUPT ?.\n\n" : "") +
-				$"domain:{Domain.ToString()} maxaddress:{MaxAddress.ToString()} randomaddress:{RandomAddress.ToString()} \n\n" +
+				$"domain:{Domain?.ToString()} maxaddress:{MaxAddress.ToString()} randomaddress:{RandomAddress.ToString()} \n\n" +
 				ex.ToString(), "Error", (RTC_Core.coreForm.AutoCorrupt ? MessageBoxButtons.YesNo : MessageBoxButtons.OK));
 
 				if (dr == DialogResult.Yes || dr == DialogResult.OK)
