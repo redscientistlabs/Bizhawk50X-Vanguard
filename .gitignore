@@ -5,3 +5,7 @@ bin
 obj
 packages
 Real-Time Corruptor/Output RTC
+Real-Time Corruptor/BizHawk_RTC/Bizware/output/dll/BizHawk.Common.dll
+Real-Time Corruptor/BizHawk_RTC/Bizware/output/dll/BizHawk.Bizware.BizwareGL.GdiPlus.dll
+Real-Time Corruptor/BizHawk_RTC/Bizware/output/dll/BizHawk.Bizware.BizwareGL.dll
+Real-Time Corruptor/BizHawk_RTC/Bizware/output/dll/OpenTK.dll
