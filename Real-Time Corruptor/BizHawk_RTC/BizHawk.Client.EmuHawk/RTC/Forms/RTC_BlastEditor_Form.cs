@@ -19,6 +19,7 @@ namespace RTC
 	public partial class RTC_BlastEditor_Form : Form
 	{
 		/*
+		 
 		 * Column Indexes - Updated 4/8/2018
 		 *
 		 * 0 DgvBlastUnitReference
@@ -34,6 +35,8 @@ namespace RTC
 		 * 10 DgvNoteButton
 		 */
 
+		/*
+		 
 		private enum BlastEditorColumn
 		{
 			DgvBlastUnitReference,
@@ -158,21 +161,9 @@ namespace RTC
 
 		private void InsertBlastUnitToDgv(int index, BlastUnit bu)
 		{
-			/*
-			 SourceAddress
-				BlastByte  = Address
-				BlastCheat = Address
-				BlastPipe  = Source Address
-				BlastVector = Address
-			 Param
-				BlastByte  = Value
-				BlastCheat = Value
-				BlastPipe  = Destination Address
-				BlastBector = Value
-			*/
 
-			//Valid for all types
-			bool enabled = bu.IsEnabled;
+		//Valid for all types
+		bool enabled = bu.IsEnabled;
 			bool locked = bu.IsLocked;
 			string blastType = Convert.ToString(bu.GetType());
 
@@ -403,15 +394,6 @@ namespace RTC
 
 		private void dgvBlastLayer_CellValidating(object sender, DataGridViewCellValidatingEventArgs e)
 		{
-			/*
-			DataGridViewRow row = dgvBlastLayer.Rows[e.RowIndex];
-			DataGridViewColumn column = dgvBlastLayer.Columns[e.ColumnIndex];
-
-			//Make sure the max and min is updated if the precision changed
-			if (column.HeaderText.Equals("Precision"))
-				UpdateRowPrecision(dgvBlastLayer.Rows[e.RowIndex]);
-
-			*/
 		}
 
 		//Validates that a blast unit is valid from a dgv row
@@ -821,11 +803,11 @@ namespace RTC
 							}
 						break;
 
-					/* 4 
-					 * 5 
-					 * 6 
-					 * 8 
-					 */
+					//4 
+					//5 
+					//6 
+					//8 
+					//
 					case (int)BlastEditorColumn.DgvBlastUnitType:
 					case (int)BlastEditorColumn.DgvBlastUnitMode:
 					case (int)BlastEditorColumn.DgvSourceAddressDomain:
@@ -939,7 +921,7 @@ namespace RTC
 						break;
 
 					case "dgvParamDomain":
-						sk.BlastLayer.Layer = sk.BlastLayer.Layer.OrderBy(GetParamDomain).ToList();
+						sk.BlastLayer.Layer = sk.BlastLayer.Layer.OrderBy(it => it.DestAddress).ToList();
 						break;
 
 					case "dgvParam":
@@ -963,7 +945,7 @@ namespace RTC
 						break;
 
 					case "dgvParamDomain":
-						sk.BlastLayer.Layer = sk.BlastLayer.Layer.OrderBy(GetParamDomain).Reverse().ToList();
+						sk.BlastLayer.Layer = sk.BlastLayer.Layer.OrderBy(it => it.DestAddress).Reverse().ToList();
 						break;
 
 					case "dgvParam":
@@ -978,29 +960,20 @@ namespace RTC
 
 		private long GetParamValue(BlastUnit bu)
 		{
-			switch (bu)
+			switch (bu.Source)
 			{
-				case BlastByte bb:
+				case BlastUnitSource.VALUE:
 				{
-					decimal value = RTC_Extensions.GetDecimalValue(bb.Value, true);
+					decimal value = RTC_Extensions.GetDecimalValue(bu.Value, true);
 					return (long)value;
-				}
-				case BlastCheat bc:
-				{
-					decimal value = RTC_Extensions.GetDecimalValue(bc.Value, true);
-					return (long)value;
-				}
-				case BlastPipe bp:
-					return bp.PipeAddress;
+					}
+				case BlastUnitSource.ADDRESS:
+					return bu.DestAddress;
 			}
 
 			return 0;
 		}
 
-		private string GetParamDomain(BlastUnit bu)
-		{
-			return bu is BlastPipe bp ? bp.PipeDomain : null;
-		}
 
 		public void SetHexadecimal (bool useHex)
 		{
@@ -1427,17 +1400,17 @@ namespace RTC
 			{
 				foreach (BlastUnit bu in sk.BlastLayer.Layer)
 				{
-					if (bu is BlastByte bb)
+					if (bu.Source == BlastUnitSource.VALUE)
 					{
-						if (bb.Domain == rp.PrimaryDomain)
+						if (bu.Domain == rp.PrimaryDomain)
 						{
-							output.Position = bb.Address + rp.SkipBytes;
-							output.Write(bb.Value, 0, bb.Value.Length);
+							output.Position = bu.Address + rp.SkipBytes;
+							output.Write(bu.Value, 0, bu.Precision);
 						}
-						else if (bb.Domain == rp.SecondDomain)
+						else if (bu.Domain == rp.SecondDomain)
 						{
-							output.Position = bb.Address + RTC_MemoryDomains.MemoryInterfaces[rp.SecondDomain].Size + rp.SkipBytes;
-							output.Write(bb.Value, 0, bb.Value.Length);
+							output.Position = bu.Address + RTC_MemoryDomains.MemoryInterfaces[rp.SecondDomain].Size + rp.SkipBytes;
+							output.Write(bu.Value, 0, bu.Precision);
 						}
 					}
 				}
@@ -1566,7 +1539,7 @@ namespace RTC
 			foreach (BlastUnit bu in bul)
 			{
 				//Optimize by doing everything besides blastpipe first
-				if (!(bu is BlastPipe))
+				if (bu.Source != BlastUnitSource.ADDRESS)
 				{
 					if (!usedAddresses.Contains(bu.Address) && !bu.IsLocked)
 						usedAddresses.Add(bu.Address);
@@ -1578,9 +1551,8 @@ namespace RTC
 				}
 				else
 				{
-					BlastPipe bp = bu as BlastPipe;
-					if (!usedPipeAddresses.Contains(bp.PipeAddress) && !bu.IsLocked)
-						usedPipeAddresses.Add(bp.PipeAddress);
+					if (!usedPipeAddresses.Contains(bu.DestAddress) && !bu.IsLocked)
+						usedPipeAddresses.Add(bu.DestAddress);
 					else
 					{
 						RemoveBlastUnitFromBlastLayerAndDgv(bu);
@@ -1644,5 +1616,7 @@ namespace RTC
 			System.Diagnostics.ProcessStartInfo sInfo = new System.Diagnostics.ProcessStartInfo("https://corrupt.wiki/corruptors/rtc-real-time-corruptor/blast-editor.html");
 			System.Diagnostics.Process.Start(sInfo);
 		}
+		*/
 	}
+
 }

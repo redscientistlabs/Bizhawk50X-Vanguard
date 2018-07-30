@@ -615,9 +615,6 @@ namespace RTC
 	}
 
 	[XmlInclude(typeof(BlastLayer))]
-	[XmlInclude(typeof(BlastCheat))]
-	[XmlInclude(typeof(BlastByte))]
-	[XmlInclude(typeof(BlastPipe))]
 	[XmlInclude(typeof(BlastUnit))]
 	[Serializable]
 	public class VmdPrototype
@@ -954,6 +951,7 @@ namespace RTC
 
 			return data.ToArray();
 		}
+
 
 		public override byte PeekByte(long address)
 		{

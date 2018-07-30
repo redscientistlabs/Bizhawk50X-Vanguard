@@ -30,7 +30,7 @@ namespace RTC
 
 		private static bool isRunning = false;
 
-		public static int MaxLifetimeBlastUnits = 50;
+		public static int MaxInfiniteBlastUnits = 50;
 
 		public static void ClearStepBlastUnits()
 		{
@@ -55,13 +55,13 @@ namespace RTC
 
 		public static void RemoveExcessInfiniteStepUnits()
 		{
-			while (appliedInfinite.Count > RTC_HellgenieEngine.MaxCheats)
+			while (appliedInfinite.Count > RTC_StepActions.MaxInfiniteBlastUnits)
 				appliedInfinite.Remove(appliedInfinite[0]);
 		}
 
 		public static void SetMaxLifetimeBlastUnits(int value)
 		{
-			RTC_StepActions.MaxLifetimeBlastUnits = value;
+			RTC_StepActions.MaxInfiniteBlastUnits = value;
 			RTC_Core.SendCommandToBizhawk(new RTC_Command(CommandType.REMOTE_SET_STEPACTIONS_MAXLIFETIMEUNITS) { objectValue = value });
 		}
 
@@ -88,10 +88,10 @@ namespace RTC
 
 		public static void AddBlastUnit(BlastUnit bu)
 		{
-			bu.ApplyFrameQueued = bu.ApplyFrame + currentFrame;
-			bu.LastFrame = bu.ApplyFrameQueued + bu.Lifetime;
+			bu.ExecuteFrameQueued = bu.ExecuteFrame + currentFrame;
+			bu.LastFrame = bu.ExecuteFrameQueued + bu.Lifetime;
 
-			List<BlastUnit> collection = buListCollection.FirstOrDefault(it => (it[0].ApplyFrameQueued == bu.ApplyFrameQueued) && (it[0].Lifetime == bu.Lifetime));
+			List<BlastUnit> collection = buListCollection.FirstOrDefault(it => (it[0].ExecuteFrameQueued == bu.ExecuteFrameQueued) && (it[0].Lifetime == bu.Lifetime));
 			
 			if (collection == null)
 			{
@@ -113,7 +113,7 @@ namespace RTC
 			foreach (List<BlastUnit> buList in queued)
 				buListCollection.Add(buList);
 
-			buListCollection = buListCollection.OrderBy(it => it[0].ApplyFrameQueued).ToList();
+			buListCollection = buListCollection.OrderBy(it => it[0].ExecuteFrameQueued).ToList();
 
 
 			foreach(List<BlastUnit> buList in buListCollection)
@@ -140,7 +140,7 @@ namespace RTC
 				if (queued.Count == 0)
 					return;
 
-				nextFrame = (queued.First())[0].ApplyFrameQueued;
+				nextFrame = (queued.First())[0].ExecuteFrameQueued;
 
 				List<BlastUnit> buList = queued.First();
 				//Add it to the infinite pool

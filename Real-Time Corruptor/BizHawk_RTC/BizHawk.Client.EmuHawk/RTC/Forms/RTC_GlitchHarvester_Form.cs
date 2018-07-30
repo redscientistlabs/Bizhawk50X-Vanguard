@@ -525,7 +525,7 @@ namespace RTC
 
 			StashKey sk = RTC_StockpileManager.currentStashkey;
 
-			sk.BlastLayer.Rasterize();
+			sk.BlastLayer.RasterizeVMDs();
 
 			DataGridViewRow dataRow = dgvStockpile.Rows[dgvStockpile.Rows.Add()];
 			dataRow.Cells["Item"].Value = sk;
@@ -1283,7 +1283,7 @@ namespace RTC
 
 						var token = RTC_NetCore.HugeOperationStart("LAZY");
 						StashKey sk = RTC_StockpileManager.StashHistory[lbStashHistory.SelectedIndex];
-						sk.BlastLayer.Rasterize();
+						sk.BlastLayer.RasterizeVMDs();
 						RTC_MemoryDomains.GenerateVmdFromStashkey(sk);
 						RTC_NetCore.HugeOperationEnd(token);
 					}))).Enabled = lbStashHistory.SelectedIndex != -1;
@@ -1322,10 +1322,14 @@ namespace RTC
 
 			var token = RTC_NetCore.HugeOperationStart("DISABLED");
 			//If the blastlayer is big, prompt them before opening it. Let's go with 5k for now.
+
+			//TODO
+			/*
 			if (sk.BlastLayer.Layer.Count > 5000 && (DialogResult.Yes == MessageBox.Show($"You're trying to open a blastlayer of size " + sk.BlastLayer.Layer.Count + ". This could take a while. Are you sure you want to continue?", "Opening a large BlastLayer", MessageBoxButtons.YesNo)))
 				RTC_Core.beForm.LoadStashkey(sk);
 			else if (sk.BlastLayer.Layer.Count <= 5000)
 				RTC_Core.beForm.LoadStashkey(sk);
+			*/
 			RTC_NetCore.HugeOperationEnd(token);
 		}
 

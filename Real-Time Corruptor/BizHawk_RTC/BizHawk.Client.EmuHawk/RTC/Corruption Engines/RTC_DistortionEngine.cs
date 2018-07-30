@@ -6,21 +6,9 @@ namespace RTC
 {
 	public static class RTC_DistortionEngine
 	{
-		public static int MaxAge = 50;
-		public static int CurrentAge = 0;
-		public static Queue<BlastUnit> AllDistortionBytes = new Queue<BlastUnit>();
+		public static int Delay = 50;
 
-		public static BlastUnit GetUnit()
-		{
-			return CurrentAge >= MaxAge ? AllDistortionBytes.Dequeue() : null;
-		}
-
-		public static void AddUnit(BlastUnit bu)
-		{
-			AllDistortionBytes.Enqueue(bu);
-		}
-
-		public static BlastUnit GenerateUnit(string domain, long address)
+		public static BlastUnit GenerateUnit(string domain, long address, int precision)
 		{
 			// Randomly selects a memory operation according to the selected algorithm
 
@@ -29,17 +17,12 @@ namespace RTC
 				if (domain == null)
 					return null;
 				MemoryDomainProxy mdp = RTC_MemoryDomains.GetProxy(domain, address);
-				BlastUnitSource Type = BlastUnitSource.SET;
 
-				byte[] value = RTC_Core.CustomPrecision == -1 ? new byte[mdp.WordSize] : new byte[RTC_Core.CustomPrecision];
+				byte[] value = new byte[precision];
 
-				for (int i = 0; i < value.Length; i++)
-					value[i] = 1;
+				long safeAddress = address - (address % precision);
 
-				long safeAddress = address - (address % value.Length);
-
-				BlastByte bb = new BlastByte(domain, safeAddress, Type, value, mdp.BigEndian, true);
-				return bb.GetBackup();
+				return new BlastUnit(BackupSource.IMMEDIATE, domain, address, precision, mdp.BigEndian, Delay, 1);
 			}
 			catch (Exception ex)
 			{

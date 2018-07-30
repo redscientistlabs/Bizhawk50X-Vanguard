@@ -416,9 +416,6 @@ namespace RTC
 						RTC_StockpileManager.lastBlastLayerBackup.Apply(true);
 					break;
 
-				case CommandType.REMOTE_SET_NIGHTMARE_TYPE:
-					RTC_NightmareEngine.Algo = (BlastByteAlgo)cmd.objectValue;
-					break;
 				case CommandType.REMOTE_SET_NIGHTMARE_MINVALUE:
 				{
 					int precision = (int)(cmd.objectValue as object[])[0];
@@ -508,19 +505,11 @@ namespace RTC
 					RTC_StepActions.RemoveExcessInfiniteStepUnits();
 					break;
 				case CommandType.REMOTE_SET_STEPACTIONS_MAXLIFETIMEUNITS:
-					RTC_StepActions.MaxLifetimeBlastUnits = (int)cmd.objectValue;
+					RTC_StepActions.MaxInfiniteBlastUnits = (int)cmd.objectValue;
 					break;
 					
-				case CommandType.REMOTE_SET_PIPE_TILTVALUE:
-					RTC_PipeEngine.TiltValue = (int)cmd.objectValue;
-					break;
-
 				case CommandType.REMOTE_SET_PIPE_LOCKPIPES:
 					RTC_PipeEngine.LockPipes = (bool)cmd.objectValue;
-					break;
-
-				case CommandType.REMOTE_SET_PIPE_CHAINEDPIPES:
-					RTC_PipeEngine.ChainedPipes = (bool)cmd.objectValue;
 					break;
 
 				case CommandType.REMOTE_SET_ENGINE:
@@ -528,14 +517,11 @@ namespace RTC
 					break;
 
 				case CommandType.REMOTE_SET_DISTORTION_DELAY:
-					RTC_DistortionEngine.MaxAge = (int)cmd.objectValue;
-					RTC_DistortionEngine.CurrentAge = 0;
-					RTC_DistortionEngine.AllDistortionBytes.Clear();
+					RTC_DistortionEngine.Delay = (int)cmd.objectValue;
 					break;
 
 				case CommandType.REMOTE_SET_DISTORTION_RESYNC:
-					RTC_DistortionEngine.CurrentAge = 0;
-					RTC_DistortionEngine.AllDistortionBytes.Clear();
+					//TODO
 					break;
 
 				case CommandType.REMOTE_SET_VECTOR_LIMITER:

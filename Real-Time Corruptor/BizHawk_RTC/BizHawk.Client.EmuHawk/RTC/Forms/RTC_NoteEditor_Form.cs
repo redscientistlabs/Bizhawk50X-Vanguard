@@ -92,7 +92,8 @@ namespace RTC
 					if (RTC_Core.beForm.Visible)
 					{
 						((BlastUnit)item).Note = note;
-						RTC_Core.beForm.RefreshNoteIcons();
+						//TODO
+						//RTC_Core.beForm.RefreshNoteIcons();
 					}
 					break;
 				//We update a DGV cell for the Blast Generator

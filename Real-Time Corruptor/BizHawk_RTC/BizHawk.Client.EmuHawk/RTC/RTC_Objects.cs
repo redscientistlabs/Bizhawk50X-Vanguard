@@ -985,6 +985,15 @@ namespace RTC
 			}
 		}
 
+		public BlastLayer GetBakedLayer()
+		{
+			List<BlastUnit> BackupLayer = new List<BlastUnit>(); ;
+
+			BackupLayer.AddRange(Layer.Select(it => it.GetBakedUnit()));
+
+			return new BlastLayer(BackupLayer);
+		}
+
 		public BlastLayer GetBackup()
 		{
 			List<BlastUnit> BackupLayer = new List<BlastUnit>(); ;
@@ -1000,10 +1009,15 @@ namespace RTC
 				bu.Reroll();
 		}
 
-		public void Rasterize()
+		public void RasterizeVMDs()
 		{
 			foreach (BlastUnit bu in Layer)
-				bu.Rasterize();
+				bu.RasterizeVMDs();
+		}
+		public void RasterizeAddress()
+		{
+			foreach (BlastUnit bu in Layer)
+				bu.RasterizeSourceAddress();
 		}
 	}
 
@@ -1087,13 +1101,13 @@ namespace RTC
 		/// <param name="note"></param>
 		/// <param name="isEnabled"></param>
 		/// <param name="isLocked"></param>
-		public BlastUnit(string sourceDomain, long sourceAddress,
+		public BlastUnit(string destDomain, long destAddress,
 			string domain, long address, int precision, int executeFrame = 0, int lifetime = 1,
 			string note = null, bool isEnabled = true, bool isLocked = false)
 		{
 			Source = BlastUnitSource.ADDRESS;
-			DestDomain = sourceDomain;
-			DestAddress = sourceAddress;
+			DestDomain = destDomain;
+			DestAddress = destAddress;
 
 			Domain = domain;
 			Address = address;
@@ -1137,7 +1151,7 @@ namespace RTC
 		{
 		}
 
-		public void Rasterize()
+		public void RasterizeVMDs()
 		{
 			if (Domain.Contains("[V]"))
 			{
@@ -1155,12 +1169,52 @@ namespace RTC
 				Domain = (RTC_MemoryDomains.VmdPool[sourceDomain] as VirtualMemoryDomain)?.PointerDomains[(int)sourceAddress] ?? "ERROR";
 				Address = (RTC_MemoryDomains.VmdPool[sourceDomain] as VirtualMemoryDomain)?.PointerAddresses[(int)sourceAddress] ?? -1;
 			}
+
+		}
+
+		public void RasterizeSourceAddress()
+		{
+			if (Source == BlastUnitSource.ADDRESS)
+			{
+
+				MemoryDomainProxy mdp = RTC_MemoryDomains.GetProxy(Domain, Address);
+				long targetAddress = RTC_MemoryDomains.GetRealAddress(Domain, Address);
+
+
+				byte[] _value = new byte[Precision];
+
+				for (int i = 0; i < Precision; i++)
+					_value[i] = mdp.PeekByte(targetAddress + i);
+				Source = BlastUnitSource.VALUE;
+
+				Value = _value;
+				Backup = null;
+				DestAddress = -1;
+				DestDomain = null;
+
+			}
 		}
 
 		public bool Apply()
 		{
 			if (!IsEnabled)
 				return true;
+
+			ApplyValue = null;
+			LastFrame = -1;
+			ExecuteFrameQueued = 0;
+
+
+			//We need to grab the value to freeze
+			if (Source == BlastUnitSource.BACKUP && BackupSource == BackupSource.IMMEDIATE)
+			{
+				MemoryDomainProxy mdp = RTC_MemoryDomains.GetProxy(Domain, Address);
+				long targetAddress = RTC_MemoryDomains.GetRealAddress(Domain, Address);
+
+				if (mdp == null)
+					return false;
+				Backup = mdp.PeekBytes(targetAddress, targetAddress + Value.Length);
+			}
 
 			RTC_StepActions.AddBlastUnit(this);
 
@@ -1186,38 +1240,90 @@ namespace RTC
 				switch (Source)
 				{
 					case (BlastUnitSource.ADDRESS):
+					{
+						MemoryDomainProxy mdp2 = RTC_MemoryDomains.GetProxy(DestDomain, DestAddress);
+
+						if (mdp == null || mdp2 == null)
+							throw new Exception(
+								$"Memory Domain error, MD1 -> {mdp.ToString()}, md2 -> {mdp2.ToString()}");
+
+						Byte[] value = new byte[Precision];
+
+						for (int i = 0; i < Precision; i++)
 						{
-							MemoryDomainProxy mdp2 = RTC_MemoryDomains.GetProxy(DestDomain, DestAddress);
-
-							if (mdp == null || mdp2 == null)
-								throw new Exception($"Memory Domain error, MD1 -> {mdp.ToString()}, md2 -> {mdp2.ToString()}");
-
-							Byte[] value = new byte[Precision];
-
-							for (int i = 0; i < Precision; i++)
-							{
-								long realSourceAddress = RTC_MemoryDomains.GetRealAddress(Domain, Address) + i;
-								value[i] = mdp.PeekByte(realSourceAddress);
-							}
-							if (mdp.BigEndian)
-								value.FlipBytes();
-							BigInteger _value = new BigInteger(value);
-
-							RTC_Extensions.AddValueToByteArray()
-
-							mdp2.PokeBytes(realDestAddress, (byte)newValue);
+							long realSourceAddress = RTC_MemoryDomains.GetRealAddress(Domain, Address) + i;
+							value[i] = mdp.PeekByte(realSourceAddress);
 						}
+
+						if (mdp.BigEndian)
+							value.FlipBytes();
+
+						BigInteger _value = new BigInteger(value);
+						ApplyValue = (_value + TiltValue).ToByteArray();
+
+						if (mdp.BigEndian)
+							ApplyValue.FlipBytes();
+
+						for (int i = 0; i < Precision; i++)
+						{
+							long realDestAddress = RTC_MemoryDomains.GetRealAddress(DestDomain, DestAddress) + i;
+							mdp2.PokeByte(realDestAddress, ApplyValue[i]);
+						}
+					}
 						break;
 					case (BlastUnitSource.BACKUP):
+					{
+						//We only calculate it once for Backup and Value and then store it in ApplyValue
+						if (ApplyValue == null)
 						{
-							RTC_Extensions.AddValueToByteArray(mdp.PeekBytes(targetAddress, targetAddress + _Values.Length), RTC_Extensions.GetDecimalValue(_Values, !(BigEndian)), BigEndian);
-						}
-						break;
-					case (BlastUnitSource.VALUE):
-						{
+							Byte[] value = (Byte[])Backup.Clone();
+
+							//We need to do this as BigInteger takes Little Endian
+							if (mdp.BigEndian)
+								value.FlipBytes();
+
+							BigInteger _value = new BigInteger(value);
+							BigInteger tempValue = _value + TiltValue;
+							ApplyValue = tempValue.ToByteArray();
+
+							//Flip it back
+							if (mdp.BigEndian)
+								ApplyValue.FlipBytes();
 
 						}
+
+						for (int i = 0; i < Precision; i++)
+						{
+							mdp.PokeByte(Address + i, ApplyValue[i]);
+						}
+					}
 						break;
+					case (BlastUnitSource.VALUE):
+					{
+						//We only calculate it once for Backup and Value and then store it in ApplyValue
+							if (ApplyValue == null)
+						{
+							Byte[] value = (Byte[])Value.Clone();
+
+							//We need to do this as BigInteger takes Little Endian
+							if (mdp.BigEndian)
+								value.FlipBytes();
+
+							BigInteger _value = new BigInteger(value);
+							BigInteger tempValue = _value + TiltValue;
+							ApplyValue = tempValue.ToByteArray();
+
+							//Flip it back
+							if (mdp.BigEndian)
+								ApplyValue.FlipBytes();
+						}
+							for (int i = 0; i < Precision; i++)
+						{
+							mdp.PokeByte(Address + i, ApplyValue[i]);
+						}
+
+						break;
+					}
 				}
 			}
 			catch (Exception ex)
@@ -1241,23 +1347,31 @@ namespace RTC
 				MemoryDomainProxy mdp = RTC_MemoryDomains.GetProxy(Domain, Address);
 				long targetAddress = RTC_MemoryDomains.GetRealAddress(Domain, Address);
 
-				if (mdp == null || Type == BlastUnitSource.NONE)
+				if (mdp == null)
 					return null;
 
-				byte[] _value = new byte[Value.Length];
+				byte[] _value = new byte[Precision];
 
 				for (int i = 0; i < _value.Length; i++)
 					_value[i] = mdp.PeekByte(targetAddress + i);
 
-				return new BlastByte(Domain, Address, BlastUnitSource.SET, _value, BigEndian, true);
+				return new BlastUnit(_value, Domain, Address, Precision, BigEndian, 0, 1, Note, IsEnabled, IsLocked);
+
 			}
 			catch (Exception ex)
 			{
-				throw new Exception("The BlastByte GetBackup() function threw up. \n" +
+				throw new Exception("The BlastUnit GetBakedUnit() function threw up. \n" +
 					"This is an RTC error, so you should probably send this to the RTC devs.\n" +
 					"If you know the steps to reproduce this error it would be greatly appreciated.\n\n" +
 				ex.ToString());
 			}
+		}
+
+
+		public BlastUnit GetBackup()
+		{
+			//TODO
+			return GetBakedUnit();
 		}
 
 		public void Reroll()
@@ -1294,22 +1408,21 @@ namespace RTC
 				enabledString = "[x] BlastByte -> ";
 
 			string cleanDomainName = Domain.Replace("(nametables)", ""); //Shortens the domain name if it contains "(nametables)"
-			return (enabledString + cleanDomainName + "(" + Convert.ToInt32(Address).ToString() + ")." + Type.ToString() + "(" + RTC_Extensions.GetDecimalValue(Value, BigEndian).ToString() + ")");
+			return (enabledString + cleanDomainName + "(" + Convert.ToInt32(Address).ToString() + ")." + Source.ToString() + "(" + RTC_Extensions.GetDecimalValue(Value, BigEndian).ToString() + ")");
 		}
 
 		public void EnteringExecution()
 		{
 			//We need to grab the value to freeze
-			if (BlastUnitSource.FREEZE)
+			if (Source == BlastUnitSource.BACKUP && BackupSource == BackupSource.PREEXECUTE)
 			{
 				MemoryDomainProxy mdp = RTC_MemoryDomains.GetProxy(Domain, Address);
 				long targetAddress = RTC_MemoryDomains.GetRealAddress(Domain, Address);
 
 				if (mdp == null)
 					return;
-				Value = mdp.PeekBytes(targetAddress, targetAddress + Value.Length);
+				Backup = mdp.PeekBytes(targetAddress, targetAddress + Value.Length);
 			}
-
 		}
 	}
 
@@ -1384,5 +1497,11 @@ namespace RTC
 			return bl;
 		}
 
+	}
+
+	public class ProblematicProcess
+	{
+		public string Name;
+		public string Message;
 	}
 }

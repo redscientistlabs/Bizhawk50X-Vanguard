@@ -33,7 +33,6 @@ namespace RTC
 			new Ref(() => RTC_Hooks.ShowConsole, x => { RTC_Hooks.ShowConsole = (bool)x; }),
 			new Ref(() => RTC_Core.DontCleanSavestatesOnQuit, x => { RTC_Core.DontCleanSavestatesOnQuit = (bool)x; }),
 
-			new Ref(() => RTC_NightmareEngine.Algo, x => { RTC_NightmareEngine.Algo = (BlastByteAlgo)x; }),
 
 			new Ref(() => RTC_NightmareEngine.MinValue8Bit, x => { RTC_NightmareEngine.MinValue8Bit = (long)x; }),
 			new Ref(() => RTC_NightmareEngine.MaxValue8Bit, x => { RTC_NightmareEngine.MaxValue8Bit = (long)x; }),
@@ -51,12 +50,9 @@ namespace RTC
 			new Ref(() => RTC_HellgenieEngine.MaxValue32Bit, x => { RTC_HellgenieEngine.MaxValue32Bit = (long)x; }),
 			new Ref(() => RTC_NightmareEngine.MinValue32Bit, x => { RTC_NightmareEngine.MinValue32Bit = (long)x; }),
 
-			new Ref(() => RTC_HellgenieEngine.MaxCheats, x => { RTC_HellgenieEngine.MaxCheats = (int)x; }),
-			new Ref(() => RTC_DistortionEngine.MaxAge, x => { RTC_DistortionEngine.MaxAge = (int)x; }),
-			new Ref(() => RTC_DistortionEngine.CurrentAge, x => { RTC_DistortionEngine.CurrentAge = (int)x; }),
-			new Ref(() => RTC_PipeEngine.MaxPipes, x => { RTC_PipeEngine.MaxPipes = (int)x; }),
+			new Ref(() => RTC_StepActions.MaxInfiniteBlastUnits, x => { RTC_StepActions.MaxInfiniteBlastUnits = (int)x; }),
+
 			new Ref(() => RTC_PipeEngine.LockPipes, x => { RTC_PipeEngine.LockPipes = (bool)x; }),
-			new Ref(() => RTC_PipeEngine.ChainedPipes, x => { RTC_PipeEngine.ChainedPipes = (bool)x; }),
 			new Ref(() => RTC_VectorEngine.LimiterList, x => { RTC_VectorEngine.LimiterList = (string[])x; }),
 			new Ref(() => RTC_VectorEngine.ValueList, x => { RTC_VectorEngine.ValueList = (string[])x; }),
 

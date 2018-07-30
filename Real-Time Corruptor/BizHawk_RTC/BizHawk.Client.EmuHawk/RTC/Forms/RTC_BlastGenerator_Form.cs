@@ -291,7 +291,8 @@ namespace RTC
 			{
 				if (RTC_Core.beForm != null)
 				{
-					RTC_Core.beForm.ImportBlastLayer(newSk.BlastLayer);
+					//TODO
+					//	RTC_Core.beForm.ImportBlastLayer(newSk.BlastLayer);
 				}
 			}
 			else

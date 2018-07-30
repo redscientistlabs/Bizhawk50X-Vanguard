@@ -26,7 +26,7 @@ namespace RTC
 		public static List<ProblematicProcess> ProblematicProcesses;
 
 		//General RTC Values
-		public static string RtcVersion = "3.26";
+		public static string RtcVersion = "3.30";
 
 		//Directories
 		public static string bizhawkDir = Directory.GetCurrentDirectory();
@@ -37,14 +37,23 @@ namespace RTC
 		//Engine Values
 		public static CorruptionEngine SelectedEngine = CorruptionEngine.NIGHTMARE;
 
-		public static int CustomPrecision = 1;
+		private static int customPrecision;
+		public static int CustomPrecision
+		{
+			get { return customPrecision; }
+			set
+			{
+				customPrecision = value;
+				CurrentPrecision = value;
+			}
+	}
+		public static int CurrentPrecision = 1;
 		public static int Intensity = 1;
 		public static int ErrorDelay = 1;
 		public static BlastRadius Radius = BlastRadius.SPREAD;
 		public static bool AutoCorrupt = false;
 
-		public static bool ClearCheatsOnRewind = false;
-		public static bool ClearPipesOnRewind = false;
+		public static bool ClearStepActionsOnRewind = false;
 		public static bool ExtractBlastLayer = false;
 		public static string lastOpenRom = null;
 		public static int lastLoaderRom = 0;
@@ -523,7 +532,7 @@ namespace RTC
 			}
 		}
 
-		public static BlastUnit getBlastUnit(string _domain, long _address)
+		public static BlastUnit getBlastUnit(string _domain, long _address, int precision)
 		{
 			//Will generate a blast unit depending on which Corruption Engine is currently set.
 			//Some engines like Distortion may not return an Unit depending on the current state on things.
@@ -533,20 +542,19 @@ namespace RTC
 			switch (SelectedEngine)
 			{
 				case CorruptionEngine.NIGHTMARE:
-					bu = RTC_NightmareEngine.GenerateUnit(_domain, _address);
+					bu = RTC_NightmareEngine.GenerateUnit(_domain, _address, precision);
 					break;
 				case CorruptionEngine.HELLGENIE:
-					bu = RTC_HellgenieEngine.GenerateUnit(_domain, _address);
+					bu = RTC_HellgenieEngine.GenerateUnit(_domain, _address, precision);
 					break;
 				case CorruptionEngine.DISTORTION:
-					RTC_DistortionEngine.AddUnit(RTC_DistortionEngine.GenerateUnit(_domain, _address));
-					bu = RTC_DistortionEngine.GetUnit();
+					bu = RTC_DistortionEngine.GenerateUnit(_domain, _address, precision);
 					break;
 				case CorruptionEngine.FREEZE:
-					bu = RTC_FreezeEngine.GenerateUnit(_domain, _address);
+					bu = RTC_FreezeEngine.GenerateUnit(_domain, _address, precision);
 					break;
 				case CorruptionEngine.PIPE:
-					bu = RTC_PipeEngine.GenerateUnit(_domain, _address);
+					bu = RTC_PipeEngine.GenerateUnit(_domain, _address, precision);
 					break;
 				case CorruptionEngine.VECTOR:
 					bu = RTC_VectorEngine.GenerateUnit(_domain, _address);
@@ -591,22 +599,13 @@ namespace RTC
 
 					if (_selectedDomains == null || _selectedDomains.Count() == 0)
 						return null;
-
-
-					// Age distortion BlastBytes
-					if (RTC_Core.SelectedEngine == CorruptionEngine.DISTORTION && RTC_DistortionEngine.CurrentAge < RTC_DistortionEngine.MaxAge)
-						RTC_DistortionEngine.CurrentAge++;
-
-
+					
 					// Capping intensity at engine-specific maximums
 
 					int _Intensity = Intensity; //general RTC intensity
 
-					if ((RTC_Core.SelectedEngine == CorruptionEngine.HELLGENIE || RTC_Core.SelectedEngine == CorruptionEngine.FREEZE) && _Intensity > RTC_HellgenieEngine.MaxCheats)
-						_Intensity = RTC_HellgenieEngine.MaxCheats; //Capping for cheat max
-
-					if (RTC_Core.SelectedEngine == CorruptionEngine.PIPE && _Intensity > RTC_PipeEngine.MaxPipes)
-						_Intensity = RTC_PipeEngine.MaxPipes; //Capping for pipe max
+					if ((RTC_Core.SelectedEngine == CorruptionEngine.HELLGENIE || RTC_Core.SelectedEngine == CorruptionEngine.FREEZE || RTC_Core.SelectedEngine == CorruptionEngine.PIPE) && _Intensity > RTC_StepActions.MaxInfiniteBlastUnits)
+						_Intensity = RTC_StepActions.MaxInfiniteBlastUnits; //Capping for cheat max
 
 					switch (Radius) //Algorithm branching
 					{
@@ -619,7 +618,7 @@ namespace RTC
 								MaxAddress = RTC_MemoryDomains.GetInterface(Domain).Size;
 								RandomAddress = RTC_Core.RND.RandomLong(MaxAddress - 1);
 
-								bu = getBlastUnit(Domain, RandomAddress);
+								bu = getBlastUnit(Domain, RandomAddress, RTC_Core.CurrentPrecision);
 								if (bu != null)
 									bl.Layer.Add(bu);
 							}
@@ -636,7 +635,7 @@ namespace RTC
 							{
 								RandomAddress = RTC_Core.RND.RandomLong(MaxAddress - 1);
 
-								bu = getBlastUnit(Domain, RandomAddress);
+								bu = getBlastUnit(Domain, RandomAddress, RTC_Core.CurrentPrecision);
 								if (bu != null)
 									bl.Layer.Add(bu);
 							}
@@ -655,7 +654,7 @@ namespace RTC
 								{
 									RandomAddress = RTC_Core.RND.RandomLong(MaxAddress - 1);
 
-									bu = getBlastUnit(Domain, RandomAddress);
+									bu = getBlastUnit(Domain, RandomAddress, RTC_Core.CurrentPrecision);
 									if (bu != null)
 										bl.Layer.Add(bu);
 								}
@@ -689,7 +688,7 @@ namespace RTC
 									MaxAddress = RTC_MemoryDomains.GetInterface(Domain).Size;
 									RandomAddress = RTC_Core.RND.RandomLong(MaxAddress - 1);
 
-									bu = getBlastUnit(Domain, RandomAddress);
+									bu = getBlastUnit(Domain, RandomAddress, RTC_Core.CurrentPrecision);
 									if (bu != null)
 										bl.Layer.Add(bu);
 								}
@@ -717,7 +716,7 @@ namespace RTC
 									MaxAddress = RTC_MemoryDomains.GetInterface(Domain).Size;
 									RandomAddress = RTC_Core.RND.RandomLong(MaxAddress - 1);
 
-									bu = getBlastUnit(Domain, RandomAddress);
+									bu = getBlastUnit(Domain, RandomAddress, RTC_Core.CurrentPrecision);
 									if (bu != null)
 										bl.Layer.Add(bu);
 								}
@@ -736,7 +735,7 @@ namespace RTC
 									MaxAddress = RTC_MemoryDomains.GetInterface(Domain).Size;
 									RandomAddress = RTC_Core.RND.RandomLong(MaxAddress - 1);
 
-									bu = getBlastUnit(Domain, RandomAddress);
+									bu = getBlastUnit(Domain, RandomAddress, RTC_Core.CurrentPrecision);
 									if (bu != null)
 										bl.Layer.Add(bu);
 								}
@@ -1052,7 +1051,10 @@ namespace RTC
 
 			spForm.dgvStockpile.BackgroundColor = color;
 			ghForm.dgvStockpile.BackgroundColor = color;
-			beForm.dgvBlastLayer.BackgroundColor = color;
+			
+			//TODO
+			//beForm.dgvBlastLayer.BackgroundColor = color;
+
 			bgForm.dgvBlastGenerator.BackgroundColor = color;
 
 			foreach (Control c in darkColorControls)

@@ -13,7 +13,7 @@ namespace RTC
 	{
 		public static bool SaveBlastLayerToFile(BlastLayer bl, bool isQuickSave = false)
 		{
-			string filename;
+			string filename = "";
 
 			if (bl.Layer.Count == 0)
 			{
@@ -32,13 +32,15 @@ namespace RTC
 				if (saveFileDialog1.ShowDialog() == DialogResult.OK)
 				{
 					filename = saveFileDialog1.FileName;
-					RTC_Core.beForm.CurrentBlastLayerFile = saveFileDialog1.FileName;
+					//TODO
+					//	RTC_Core.beForm.CurrentBlastLayerFile = saveFileDialog1.FileName;
 				}
 				else
 					return false;
 			}
-			else
-				filename = RTC_Core.beForm.CurrentBlastLayerFile;
+			//TODO
+			//else
+			//	filename = RTC_Core.beForm.CurrentBlastLayerFile;
 
 			XmlSerializer xs = new XmlSerializer(typeof(BlastLayer));
 
@@ -116,6 +118,8 @@ namespace RTC
 
 		public static BlastUnit ConvertBlastUnit(this BlastUnit bu, Type destinationType)
 		{
+			//TODO
+			/*
 			try
 			{
 				if (bu is BlastByte bb)
@@ -169,7 +173,7 @@ namespace RTC
 			{
 				throw;
 			}
-
+			*/
 			return null;
 		}
 
@@ -251,9 +255,9 @@ namespace RTC
 				if (Original[i] != Corrupt[i] && i >= rp.SkipBytes)
 				{
 					if (i - rp.SkipBytes >= maxaddress)
-						bl.Layer.Add(new BlastByte(rp.SecondDomain, (i - rp.SkipBytes) - maxaddress, BlastUnitSource.SET, new byte[] { Corrupt[i] }, mi.BigEndian, true));
+						bl.Layer.Add(new BlastUnit(new byte[] { Corrupt[i] }, rp.SecondDomain, (i - rp.SkipBytes) - maxaddress, 1, mi.BigEndian));
 					else
-						bl.Layer.Add(new BlastByte(rp.PrimaryDomain, i - rp.SkipBytes, BlastUnitSource.SET, new byte[] { Corrupt[i] }, mi.BigEndian, true));
+						bl.Layer.Add(new BlastUnit(new byte[] { Corrupt[i] }, rp.PrimaryDomain, (i - rp.SkipBytes) - maxaddress, 1, mi.BigEndian));
 				}
 			}
 

@@ -5,7 +5,6 @@ namespace RTC
 {
 	public static class RTC_HellgenieEngine
 	{
-		public static int MaxCheats = 50;
 
 		public static long MinValue8Bit = 0;
 		public static long MaxValue8Bit = 0xFF;
@@ -16,7 +15,7 @@ namespace RTC
 		public static long MinValue32Bit = 0;
 		public static long MaxValue32Bit = 0xFFFFFFFF;
 
-		public static BlastCheat GenerateUnit(string domain, long address)
+		public static BlastUnit GenerateUnit(string domain, long address, int precision)
 		{
 			try
 			{
@@ -24,12 +23,12 @@ namespace RTC
 					return null;
 				MemoryDomainProxy mdp = RTC_MemoryDomains.GetProxy(domain, address);
 
-				byte[] value = RTC_Core.CustomPrecision == -1 ? new byte[mdp.WordSize] : new byte[RTC_Core.CustomPrecision];
+				Byte[] value = new Byte[precision];
 
-				long safeAddress = address - (address % value.Length);
+				long safeAddress = address - (address % precision);
 
-				long randomValue = 0;
-				switch (value.Length)
+				long randomValue = -1;
+				switch (precision)
 				{
 					case (1):
 						randomValue = RTC_Core.RND.RandomLong(MinValue8Bit, MaxValue8Bit);
@@ -41,9 +40,20 @@ namespace RTC
 						randomValue = RTC_Core.RND.RandomLong(MinValue32Bit, MaxValue32Bit);
 						break;
 				}
-				value = RTC_Extensions.GetByteArrayValue(value.Length, randomValue, true);
 
-				return new BlastCheat(domain, safeAddress, mdp.BigEndian, value, true, false);
+				if (randomValue != -1)
+				{
+					value = RTC_Extensions.GetByteArrayValue(precision, randomValue, true);
+				}
+				else
+				{
+					for (int i = 0; i < precision; i++)
+					{
+						value[i] = (byte)RTC_Core.RND.Next();
+					}
+				}
+
+				return new BlastUnit(value, domain, safeAddress, precision, mdp.BigEndian, 0, -1);
 			}
 			catch (Exception ex)
 			{

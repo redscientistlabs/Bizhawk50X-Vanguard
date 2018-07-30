@@ -6,69 +6,26 @@ namespace RTC
 {
 	public static class RTC_PipeEngine
 	{
-		public static int MaxPipes = 20;
-		public static int TiltValue = 0;
 
-		public static bool ChainedPipes = true;
-
-		public static string LastDomain = null;
-		public static long LastAddress = 0;
 
 		public static bool LockPipes = false;
 
-
-		public static void RasterizePipes()
-		{
-			if(RTC_Core.isStandalone)
-				RTC_Core.SendCommandToBizhawk(new RTC_Command(CommandType.REMOTE_RASTERIZE_PIPES), true);
-
-			foreach (BlastUnit blastUnit in RTC_PipeEngine.AllBlastPipes)
-			{
-				BlastPipe bp = (BlastPipe)blastUnit;
-				bp.Rasterize();
-			}
-		}
-
-		public static BlastUnit GenerateUnit(string _domain, long _address)
+		public static BlastUnit GenerateUnit(string domain, long address, int precision)
 		{
 			// Randomly selects a memory operation according to the selected algorithm
 
 			try
 			{
-				if (_domain == null)
+				if (domain == null)
 					return null;
-				MemoryDomainProxy mdp = RTC_MemoryDomains.GetProxy(_domain, _address);
+				MemoryDomainProxy mdp = RTC_MemoryDomains.GetProxy(domain, address);
+				
+				long safeAddress = address - (address % precision);
 
-				int pipeSize = RTC_Core.CustomPrecision == -1 ? mdp.WordSize : RTC_Core.CustomPrecision;
+				BlastTarget pipeEnd = RTC_Core.GetBlastTarget();
+				long safepipeEndAddress = pipeEnd.address - (pipeEnd.address % precision);
 
-				long safeAddress = _address - (_address % pipeSize);
-
-				if (ChainedPipes)
-				{
-					if (LastDomain == null) // The first unit will always be null
-					{
-						LastDomain = _domain;
-						LastAddress = safeAddress;
-						return null;
-					}
-					else
-					{
-						BlastPipe bp = new BlastPipe(_domain, safeAddress, LastDomain, LastAddress, TiltValue, pipeSize, mdp.BigEndian, true);
-						LastDomain = _domain;
-						LastAddress = safeAddress;
-						return bp;
-					}
-				}
-				else
-				{
-					BlastTarget pipeEnd = RTC_Core.GetBlastTarget();
-					long safepipeEndAddress = pipeEnd.address - (pipeEnd.address % pipeSize);
-
-					BlastPipe bp = new BlastPipe(_domain, safeAddress, pipeEnd.domain, safepipeEndAddress, TiltValue, pipeSize, mdp.BigEndian, true);
-					LastDomain = _domain;
-					LastAddress = safeAddress;
-					return bp;
-				}
+				return new BlastUnit(pipeEnd.domain, safepipeEndAddress, domain, safeAddress, precision, 0, -1);
 			}
 			catch (Exception ex)
 			{

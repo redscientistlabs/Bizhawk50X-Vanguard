@@ -29,6 +29,8 @@ namespace RTC
 		private BlastUnit GenerateUnit(string domain, long address, long param1, long param2, int precision,
 			BGBlastCheatModes mode, string note)
 		{
+			//TODO
+			/*
 			try
 			{
 				MemoryDomainProxy mdp = RTC_MemoryDomains.GetProxy(domain, address);
@@ -148,6 +150,9 @@ namespace RTC
 				                ex);
 				throw;
 			}
+		}
+		*/
+			return null;
 		}
 	}
 }

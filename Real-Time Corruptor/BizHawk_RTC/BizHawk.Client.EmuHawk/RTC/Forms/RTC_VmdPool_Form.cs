@@ -25,8 +25,7 @@ namespace RTC
 
 				foreach (BlastUnit bu in RTC_StepActions.GetRawBlastLayer().Layer)
 				{
-					if(bu is BlastPipe bp)
-						bp.Rasterize();
+					bu.RasterizeSourceAddress();
 				}
 
 				RTC_MemoryDomains.RemoveVMD(VmdName);

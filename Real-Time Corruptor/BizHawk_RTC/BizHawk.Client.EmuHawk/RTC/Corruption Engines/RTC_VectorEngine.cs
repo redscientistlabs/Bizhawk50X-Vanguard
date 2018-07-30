@@ -247,14 +247,14 @@ namespace RTC
 
 			try
 			{
-				BlastByte bu = null;
+				BlastUnit bu = null;
 
 				LastValues = mdp.PeekBytes(safeAddress, safeAddress + 4);
 				LastDomain = domain;
 
 				//Enforce the safeaddress at generation
 				if (IsConstant(LastValues, LimiterList, mdp.BigEndian))
-					bu = new BlastByte(domain, safeAddress, BlastUnitSource.VECTOR, GetRandomConstant(ValueList), mdp.BigEndian, true);
+					bu = new BlastUnit(GetRandomConstant(ValueList), domain, safeAddress, 4, mdp.BigEndian);
 
 				return bu;
 			}

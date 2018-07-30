@@ -15,7 +15,8 @@
 	{
 		VALUE,
 		ADDRESS,
-		BACKUP
+		BACKUP,
+		VECTOR
 	}
 	public enum BackupSource
 	{

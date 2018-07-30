@@ -73,7 +73,6 @@
             this.panel8 = new System.Windows.Forms.Panel();
             this.label14 = new System.Windows.Forms.Label();
             this.comboBox5 = new System.Windows.Forms.ComboBox();
-            this.cbGenerateChainedPipes = new System.Windows.Forms.CheckBox();
             this.nmTiltPipeValue = new RTC.NumericUpDownHexFix();
             this.label25 = new System.Windows.Forms.Label();
             this.cbClearPipesOnRewind = new System.Windows.Forms.CheckBox();
@@ -764,7 +763,6 @@
             this.gbPipeEngine.Controls.Add(this.panel8);
             this.gbPipeEngine.Controls.Add(this.label14);
             this.gbPipeEngine.Controls.Add(this.comboBox5);
-            this.gbPipeEngine.Controls.Add(this.cbGenerateChainedPipes);
             this.gbPipeEngine.Controls.Add(this.nmTiltPipeValue);
             this.gbPipeEngine.Controls.Add(this.label25);
             this.gbPipeEngine.Controls.Add(this.cbClearPipesOnRewind);
@@ -815,21 +813,6 @@
             this.comboBox5.Tag = "color:dark";
             this.comboBox5.Visible = false;
             // 
-            // cbGenerateChainedPipes
-            // 
-            this.cbGenerateChainedPipes.AutoSize = true;
-            this.cbGenerateChainedPipes.Checked = true;
-            this.cbGenerateChainedPipes.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.cbGenerateChainedPipes.Font = new System.Drawing.Font("Segoe UI", 8F);
-            this.cbGenerateChainedPipes.ForeColor = System.Drawing.Color.White;
-            this.cbGenerateChainedPipes.Location = new System.Drawing.Point(183, 34);
-            this.cbGenerateChainedPipes.Name = "cbGenerateChainedPipes";
-            this.cbGenerateChainedPipes.Size = new System.Drawing.Size(150, 17);
-            this.cbGenerateChainedPipes.TabIndex = 82;
-            this.cbGenerateChainedPipes.Text = "Generate Chained pipes";
-            this.cbGenerateChainedPipes.UseVisualStyleBackColor = true;
-            this.cbGenerateChainedPipes.CheckedChanged += new System.EventHandler(this.cbGenerateChainedPipes_CheckedChanged);
-            // 
             // nmTiltPipeValue
             // 
             this.nmTiltPipeValue.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
@@ -846,7 +829,6 @@
             this.nmTiltPipeValue.Size = new System.Drawing.Size(70, 22);
             this.nmTiltPipeValue.TabIndex = 81;
             this.nmTiltPipeValue.Tag = "color:dark";
-            this.nmTiltPipeValue.ValueChanged += new System.EventHandler(this.nmTiltPipeValue_ValueChanged);
             this.nmTiltPipeValue.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.nmTiltPipeValue_ValueChanged);
             this.nmTiltPipeValue.KeyUp += new System.Windows.Forms.KeyEventHandler(this.nmTiltPipeValue_ValueChanged);
             // 
@@ -865,7 +847,7 @@
             this.cbClearPipesOnRewind.AutoSize = true;
             this.cbClearPipesOnRewind.Font = new System.Drawing.Font("Segoe UI", 8F);
             this.cbClearPipesOnRewind.ForeColor = System.Drawing.Color.White;
-            this.cbClearPipesOnRewind.Location = new System.Drawing.Point(183, 74);
+            this.cbClearPipesOnRewind.Location = new System.Drawing.Point(172, 55);
             this.cbClearPipesOnRewind.Name = "cbClearPipesOnRewind";
             this.cbClearPipesOnRewind.Size = new System.Drawing.Size(142, 17);
             this.cbClearPipesOnRewind.TabIndex = 79;
@@ -878,7 +860,7 @@
             this.cbLockPipes.AutoSize = true;
             this.cbLockPipes.Font = new System.Drawing.Font("Segoe UI", 8F);
             this.cbLockPipes.ForeColor = System.Drawing.Color.White;
-            this.cbLockPipes.Location = new System.Drawing.Point(183, 54);
+            this.cbLockPipes.Location = new System.Drawing.Point(172, 35);
             this.cbLockPipes.Name = "cbLockPipes";
             this.cbLockPipes.Size = new System.Drawing.Size(79, 17);
             this.cbLockPipes.TabIndex = 77;
@@ -1734,7 +1716,6 @@
         public System.Windows.Forms.ComboBox cbVectorLimiterList;
         private System.Windows.Forms.Label label13;
         private System.Windows.Forms.GroupBox gbPipeEngine;
-        public System.Windows.Forms.CheckBox cbGenerateChainedPipes;
         public RTC.NumericUpDownHexFix nmTiltPipeValue;
         private System.Windows.Forms.Label label25;
         public System.Windows.Forms.CheckBox cbClearPipesOnRewind;

@@ -24,6 +24,8 @@ namespace RTC
 		private BlastUnit GenerateUnit(string domain, long address, long param1, long param2, long stepSize,
 			int precision, BGBlastPipeModes mode, string note)
 		{
+			//TODO
+			/*
 			try
 			{
 				MemoryDomainProxy mdp = RTC_MemoryDomains.GetProxy(domain, address);
@@ -73,7 +75,8 @@ namespace RTC
 				                "If you know the steps to reproduce this error it would be greatly appreciated.\n\n" +
 				                ex);
 				throw;
-			}
+			}*/
+			return null;
 		}
 	}
 }
