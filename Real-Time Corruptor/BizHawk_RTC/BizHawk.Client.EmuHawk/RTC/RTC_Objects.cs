@@ -1213,7 +1213,7 @@ namespace RTC
 
 				if (mdp == null)
 					return false;
-				Backup = mdp.PeekBytes(targetAddress, targetAddress + Value.Length);
+				Backup = mdp.PeekBytes(targetAddress, targetAddress + Precision);
 			}
 
 			RTC_StepActions.AddBlastUnit(this);
@@ -1352,7 +1352,7 @@ namespace RTC
 
 				byte[] _value = new byte[Precision];
 
-				for (int i = 0; i < _value.Length; i++)
+				for (int i = 0; i < Precision; i++)
 					_value[i] = mdp.PeekByte(targetAddress + i);
 
 				return new BlastUnit(_value, Domain, Address, Precision, BigEndian, 0, 1, Note, IsEnabled, IsLocked);
@@ -1421,7 +1421,7 @@ namespace RTC
 
 				if (mdp == null)
 					return;
-				Backup = mdp.PeekBytes(targetAddress, targetAddress + Value.Length);
+				Backup = mdp.PeekBytes(targetAddress, targetAddress + Precision);
 			}
 		}
 	}
