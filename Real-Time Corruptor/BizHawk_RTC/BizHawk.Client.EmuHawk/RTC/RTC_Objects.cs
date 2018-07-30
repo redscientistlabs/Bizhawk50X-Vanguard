@@ -1301,23 +1301,16 @@ namespace RTC
 					case (BlastUnitSource.VALUE):
 					{
 						//We only calculate it once for Backup and Value and then store it in ApplyValue
-							if (ApplyValue == null)
+						if (ApplyValue == null)
 						{
-							Byte[] value = (Byte[])Value.Clone();
 
-							//We need to do this as BigInteger takes Little Endian
-							if (mdp.BigEndian)
-								value.FlipBytes();
-
-							BigInteger _value = new BigInteger(value);
-							BigInteger tempValue = _value + TiltValue;
-							ApplyValue = tempValue.ToByteArray();
+							ApplyValue = RTC_Extensions.AddValueToByteArray(Value, TiltValue, mdp.BigEndian);
 
 							//Flip it back
 							if (mdp.BigEndian)
 								ApplyValue.FlipBytes();
 						}
-							for (int i = 0; i < Precision; i++)
+						for (int i = 0; i < Precision; i++)
 						{
 							mdp.PokeByte(Address + i, ApplyValue[i]);
 						}

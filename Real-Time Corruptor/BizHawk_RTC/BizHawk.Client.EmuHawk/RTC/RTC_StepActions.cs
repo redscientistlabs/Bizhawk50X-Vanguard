@@ -113,6 +113,8 @@ namespace RTC
 			foreach (List<BlastUnit> buList in queued)
 				buListCollection.Add(buList);
 
+			queued.Clear();
+
 			buListCollection = buListCollection.OrderBy(it => it[0].ExecuteFrameQueued).ToList();
 
 
@@ -120,28 +122,22 @@ namespace RTC
 			{
 				queued.AddLast(buList);
 			}
+			buListCollection.Clear();
 
 			//There's data so have the execute loop actually do something
+			nextFrame = (queued.First())[0].ExecuteFrameQueued;
 			isRunning = true;			
 		}
 
 
 		private static void CheckApply()
-		{
-			//If there's nothing to dequeue, return
-			if (currentFrame < nextFrame)
+		{ 
+			//We need to do this twice because the while loop is vital on the nextFrame being set from the very beginning.
+			if (queued.Count == 0)
 				return;
-
 			//This will only occur if the queue has something in it due to the check above
 			while (currentFrame >= nextFrame)
 			{
-				//Make sure there's something actually in the queue.
-				//We do this here rather than above so we break out of the while loop once the queue has been emptied
-				if (queued.Count == 0)
-					return;
-
-				nextFrame = (queued.First())[0].ExecuteFrameQueued;
-
 				List<BlastUnit> buList = queued.First();
 				//Add it to the infinite pool
 				if (buList[0].Lifetime == -1)
@@ -161,6 +157,11 @@ namespace RTC
 				foreach(BlastUnit bu in buList)
 					bu.EnteringExecution();
 
+				//Check if the queue is empty
+				if (queued.Count == 0)
+					return;
+				//It's not empty so set the next frame
+				nextFrame = (queued.First())[0].ExecuteFrameQueued;
 			}
 		}
 		public static void Execute()
@@ -188,8 +189,6 @@ namespace RTC
 			//Remove any temp units that have expired
 			foreach (List<BlastUnit> buList in itemsToRemove)
 			{
-				//Clean up
-				buList[0].LastFrame = -1;
 				//Remove it
 				appliedLifetime.Remove(buList);
 			}
