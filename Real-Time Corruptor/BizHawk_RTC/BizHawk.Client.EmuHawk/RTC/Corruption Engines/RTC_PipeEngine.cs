@@ -7,9 +7,6 @@ namespace RTC
 	public static class RTC_PipeEngine
 	{
 
-
-		public static bool LockPipes = false;
-
 		public static BlastUnit GenerateUnit(string domain, long address, int precision)
 		{
 			// Randomly selects a memory operation according to the selected algorithm
@@ -22,10 +19,10 @@ namespace RTC
 				
 				long safeAddress = address - (address % precision);
 
-				BlastTarget pipeEnd = RTC_Core.GetBlastTarget();
-				long safepipeEndAddress = pipeEnd.address - (pipeEnd.address % precision);
+				BlastTarget pipeStart = RTC_Core.GetBlastTarget();
+				long safePipeStartAddress = pipeStart.Address - (pipeStart.Address % precision);
 
-				return new BlastUnit(pipeEnd.domain, safepipeEndAddress, domain, safeAddress, precision, 0, -1);
+				return new BlastUnit(StoreType.LIFETIME, StoreTime.PREEXECUTE, domain, safeAddress, pipeStart.Domain, safePipeStartAddress, precision, mdp.BigEndian, 0, -1);
 			}
 			catch (Exception ex)
 			{

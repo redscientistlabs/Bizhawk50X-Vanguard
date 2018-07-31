@@ -14,15 +14,17 @@
 	public enum BlastUnitSource
 	{
 		VALUE,
-		ADDRESS,
-		BACKUP,
-		VECTOR
+		STORE
 	}
-	public enum BackupSource
+	public enum StoreTime
 	{
 		IMMEDIATE,  //Frame 0 for the blastunit. Right when it's applied. Used for Distortion
-		PREEXECUTE, //The frame where the blastunit is going to start executing. Used for freeze
-		NONE
+		PREEXECUTE //The frame where the blastunit is going to start executing. Used for freeze
+	}
+	public enum StoreType
+	{
+		ONCE, 
+		LIFETIME
 	}
 
 	public enum BlastUnitAlgo

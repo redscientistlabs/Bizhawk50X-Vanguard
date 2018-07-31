@@ -24,6 +24,9 @@ namespace RTC
 			new Ref(() => RTC_Core.Radius, x => { RTC_Core.Radius = (BlastRadius)x; }),
 
 			new Ref(() => RTC_Core.ClearStepActionsOnRewind, x => { RTC_Core.ClearStepActionsOnRewind = (bool)x; }),
+			new Ref(() => RTC_StepActions.LockExecution, x => { RTC_StepActions.LockExecution = (bool)x; }),
+
+
 			new Ref(() => RTC_Core.ExtractBlastLayer, x => { RTC_Core.ExtractBlastLayer = (bool)x; }),
 			new Ref(() => RTC_Core.lastOpenRom, x => { RTC_Core.lastOpenRom = (string)x; }),
 			new Ref(() => RTC_Core.lastLoaderRom, x => { RTC_Core.lastLoaderRom = (int)x; }),
@@ -52,7 +55,6 @@ namespace RTC
 
 			new Ref(() => RTC_StepActions.MaxInfiniteBlastUnits, x => { RTC_StepActions.MaxInfiniteBlastUnits = (int)x; }),
 
-			new Ref(() => RTC_PipeEngine.LockPipes, x => { RTC_PipeEngine.LockPipes = (bool)x; }),
 			new Ref(() => RTC_VectorEngine.LimiterList, x => { RTC_VectorEngine.LimiterList = (string[])x; }),
 			new Ref(() => RTC_VectorEngine.ValueList, x => { RTC_VectorEngine.ValueList = (string[])x; }),
 

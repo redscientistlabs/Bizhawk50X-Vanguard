@@ -509,7 +509,7 @@ namespace RTC
 					break;
 					
 				case CommandType.REMOTE_SET_PIPE_LOCKPIPES:
-					RTC_PipeEngine.LockPipes = (bool)cmd.objectValue;
+					RTC_StepActions.LockExecution = (bool)cmd.objectValue;
 					break;
 
 				case CommandType.REMOTE_SET_ENGINE:

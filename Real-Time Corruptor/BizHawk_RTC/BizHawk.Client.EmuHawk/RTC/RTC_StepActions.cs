@@ -25,12 +25,17 @@ namespace RTC
 		private static List<List<BlastUnit>> appliedLifetime = new List<List<BlastUnit>>();
 		private static List<List<BlastUnit>> appliedInfinite = new List<List<BlastUnit>>();
 
+
+		public static List<BlastUnit> StoreDataPool = new List<BlastUnit>();
+
 		private static int currentFrame = 0;
 		private static int nextFrame = -1;
 
 		private static bool isRunning = false;
 
 		public static int MaxInfiniteBlastUnits = 50;
+
+		public static bool LockExecution;
 
 		public static void ClearStepBlastUnits()
 		{
@@ -129,6 +134,13 @@ namespace RTC
 			isRunning = true;			
 		}
 
+		private static void GetStoreBackups()
+		{
+			foreach (var bu in StoreDataPool)
+			{
+				bu.StoreBackup();
+			}
+		}
 
 		private static void CheckApply()
 		{ 
@@ -154,9 +166,19 @@ namespace RTC
 
 				//Call EnteringExecution so any BlastUnits that need to do something before they start executing can
 				//This could be optimized by only running it if the BlastUnits are of a type that needs this run.
-				foreach(BlastUnit bu in buList)
-					bu.EnteringExecution();
-
+				foreach (BlastUnit bu in buList)
+				{
+					//Queue it for the backup pool if it needs to go there, take a single backup if it needs that, otherwise do nothing.
+					//Since we're within buList, it only goes off the current list
+					if (bu.Source == BlastUnitSource.STORE && bu.StoreTime == StoreTime.PREEXECUTE)
+					{
+						if(bu.StoreType == StoreType.ONCE)
+							bu.StoreBackup();
+						else
+							StoreDataPool.Add(bu);
+					}
+				}
+				
 				//Check if the queue is empty
 				if (queued.Count == 0)
 					return;
@@ -171,6 +193,8 @@ namespace RTC
 
 			//Queue everything up
 			CheckApply();
+
+			GetStoreBackups();
 
 			//Execute all infinite lifetime units
 			foreach (List<BlastUnit> buList in appliedInfinite)

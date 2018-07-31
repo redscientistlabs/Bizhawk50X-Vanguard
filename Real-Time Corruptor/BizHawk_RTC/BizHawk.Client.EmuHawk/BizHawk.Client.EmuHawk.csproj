@@ -731,6 +731,7 @@
     <Compile Include="RTC\Blast Generator Engines\RTC_BlastCheatGenerator.cs" />
     <Compile Include="RTC\Blast Generator Engines\RTC_BlastPipeGenerator.cs" />
     <Compile Include="RTC\Corruption Engines\RTC_BlastGeneratorEngine.cs" />
+    <Compile Include="RTC\Corruption Engines\RTC_CustomEngine.cs" />
     <Compile Include="RTC\Forms\RTC_BlastGenerator_Form.cs">
       <SubType>Form</SubType>
     </Compile>

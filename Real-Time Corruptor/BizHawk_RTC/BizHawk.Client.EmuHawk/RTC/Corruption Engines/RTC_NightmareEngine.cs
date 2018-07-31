@@ -29,10 +29,10 @@ namespace RTC
 				long safeAddress = address - (address % precision);
 
 				long randomValue = -1;
-				switch (value.Length)
+				switch (precision)
 				{
 					case (1):
-						randomValue = RTC_Core.RND.RandomLong(MinValue8Bit, MaxValue8Bit);
+						randomValue = RTC_Core.RND.RandomLong(MinValue8Bit, MaxValue8Bit);	
 						break;
 					case (2):
 						randomValue = RTC_Core.RND.RandomLong(MinValue16Bit, MaxValue16Bit);

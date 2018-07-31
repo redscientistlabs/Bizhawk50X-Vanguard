@@ -484,8 +484,8 @@ namespace RTC
 
 		private void cbLockPipes_CheckedChanged(object sender, EventArgs e)
 		{
-			RTC_PipeEngine.LockPipes = cbLockPipes.Checked;
-			RTC_Core.SendCommandToBizhawk(new RTC_Command(CommandType.REMOTE_SET_PIPE_LOCKPIPES) { objectValue = RTC_PipeEngine.LockPipes });
+			RTC_StepActions.LockExecution = cbLockPipes.Checked;
+			RTC_Core.SendCommandToBizhawk(new RTC_Command(CommandType.REMOTE_SET_PIPE_LOCKPIPES) { objectValue = RTC_StepActions.LockExecution });
 		}
 
 

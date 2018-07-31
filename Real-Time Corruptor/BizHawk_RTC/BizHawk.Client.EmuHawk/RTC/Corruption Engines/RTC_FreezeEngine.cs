@@ -5,8 +5,6 @@ namespace RTC
 {
 	public static class RTC_FreezeEngine
 	{
-		//The freeze engine is very similar to the Hellgenie and shares common functions with it. See RTC_HellgenieEngine.cs for cheat-related methods.
-
 		public static BlastUnit GenerateUnit(string domain, long address, int precision)
 		{
 			try
@@ -14,10 +12,8 @@ namespace RTC
 				if (domain == null)
 					return null;
 				MemoryDomainProxy mdp = RTC_MemoryDomains.GetProxy(domain, address);
-
 				long safeAddress = address - (address % precision);
-
-				return new BlastUnit(BackupSource.PREEXECUTE, domain, safeAddress, precision, mdp.BigEndian, 0, -1);
+				return new BlastUnit(StoreType.ONCE, StoreTime.PREEXECUTE, domain, safeAddress, domain, safeAddress, precision, mdp.BigEndian, 0, -1);
 			}
 			catch (Exception ex)
 			{
