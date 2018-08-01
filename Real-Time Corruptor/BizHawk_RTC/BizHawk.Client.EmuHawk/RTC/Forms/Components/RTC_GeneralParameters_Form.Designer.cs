@@ -70,6 +70,9 @@
             0,
             0,
             0});
+            this.nmIntensity.ValueChanged += new System.EventHandler(this.nmIntensity_ValueChanged);
+            this.nmIntensity.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.nmIntensity_ValueChanged);
+            this.nmIntensity.KeyUp += new System.Windows.Forms.KeyEventHandler(this.nmIntensity_ValueChanged);
             // 
             // nmErrorDelay
             // 
@@ -97,6 +100,9 @@
             0,
             0,
             0});
+            this.nmErrorDelay.ValueChanged += new System.EventHandler(this.nmErrorDelay_ValueChanged);
+            this.nmErrorDelay.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.nmErrorDelay_ValueChanged);
+            this.nmErrorDelay.KeyUp += new System.Windows.Forms.KeyEventHandler(this.nmErrorDelay_ValueChanged);
             // 
             // labelIntensityTimes
             // 
@@ -140,6 +146,7 @@
             this.cbBlastRadius.Size = new System.Drawing.Size(100, 21);
             this.cbBlastRadius.TabIndex = 21;
             this.cbBlastRadius.Tag = "color:dark";
+            this.cbBlastRadius.SelectedIndexChanged += new System.EventHandler(this.cbBlastRadius_SelectedIndexChanged);
             // 
             // labelBlastRadius
             // 
@@ -186,6 +193,10 @@
             this.track_Intensity.TabIndex = 24;
             this.track_Intensity.TickFrequency = 32000;
             this.track_Intensity.Value = 2000;
+            this.track_Intensity.Scroll += new System.EventHandler(this.track_Intensity_Scroll);
+            this.track_Intensity.ValueChanged += new System.EventHandler(this.track_Intensity_Scroll);
+            this.track_Intensity.MouseDown += new System.Windows.Forms.MouseEventHandler(this.track_Intensity_MouseDown);
+            this.track_Intensity.MouseUp += new System.Windows.Forms.MouseEventHandler(this.track_Intensity_MouseUp);
             // 
             // track_ErrorDelay
             // 
@@ -199,6 +210,10 @@
             this.track_ErrorDelay.TabIndex = 23;
             this.track_ErrorDelay.TickFrequency = 32000;
             this.track_ErrorDelay.Value = 2000;
+            this.track_ErrorDelay.Scroll += new System.EventHandler(this.track_ErrorDelay_Scroll);
+            this.track_ErrorDelay.ValueChanged += new System.EventHandler(this.track_ErrorDelay_Scroll);
+            this.track_ErrorDelay.MouseDown += new System.Windows.Forms.MouseEventHandler(this.track_ErrorDelay_MouseDown);
+            this.track_ErrorDelay.MouseUp += new System.Windows.Forms.MouseEventHandler(this.track_ErrorDelay_MouseUp);
             // 
             // RTC_GeneralParameters_Form
             // 

@@ -53,6 +53,7 @@
             this.lbMemoryDomains.Size = new System.Drawing.Size(181, 208);
             this.lbMemoryDomains.TabIndex = 15;
             this.lbMemoryDomains.Tag = "color:dark";
+            this.lbMemoryDomains.SelectedIndexChanged += new System.EventHandler(this.lbMemoryDomains_SelectedIndexChanged);
             // 
             // btnAutoSelectDomains
             // 
@@ -71,6 +72,7 @@
             this.btnAutoSelectDomains.Tag = "color:light";
             this.btnAutoSelectDomains.Text = "Auto-select domains";
             this.btnAutoSelectDomains.UseVisualStyleBackColor = false;
+            this.btnAutoSelectDomains.Click += new System.EventHandler(this.btnAutoSelectDomains_Click);
             // 
             // btnRefreshDomains
             // 
@@ -88,6 +90,7 @@
             this.btnRefreshDomains.Tag = "color:light";
             this.btnRefreshDomains.Text = "Unselect all";
             this.btnRefreshDomains.UseVisualStyleBackColor = false;
+            this.btnRefreshDomains.Click += new System.EventHandler(this.btnRefreshDomains_Click);
             // 
             // btnSelectAll
             // 
@@ -105,6 +108,7 @@
             this.btnSelectAll.Tag = "color:light";
             this.btnSelectAll.Text = "Select all";
             this.btnSelectAll.UseVisualStyleBackColor = false;
+            this.btnSelectAll.Click += new System.EventHandler(this.btnSelectAll_Click);
             // 
             // RTC_MemoryDomains_Form
             // 
