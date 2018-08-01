@@ -30,16 +30,6 @@
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(RTC_EngineConfig_Form));
             this.pnGeneralParameters = new System.Windows.Forms.Panel();
-            this.nmIntensity = new System.Windows.Forms.NumericUpDown();
-            this.nmErrorDelay = new System.Windows.Forms.NumericUpDown();
-            this.labelIntensityTimes = new System.Windows.Forms.Label();
-            this.labelErrorDelay = new System.Windows.Forms.Label();
-            this.cbBlastRadius = new System.Windows.Forms.ComboBox();
-            this.labelBlastRadius = new System.Windows.Forms.Label();
-            this.labelIntensity = new System.Windows.Forms.Label();
-            this.labelErrorDelaySteps = new System.Windows.Forms.Label();
-            this.track_Intensity = new System.Windows.Forms.TrackBar();
-            this.track_ErrorDelay = new System.Windows.Forms.TrackBar();
             this.label5 = new System.Windows.Forms.Label();
             this.pnMemoryTargetting = new System.Windows.Forms.Panel();
             this.pnAdvancedTool = new System.Windows.Forms.Panel();
@@ -125,11 +115,6 @@
             this.btnOpenBlastGenerator = new System.Windows.Forms.Button();
             this.gbDomainsUnavailable = new System.Windows.Forms.GroupBox();
             this.label22 = new System.Windows.Forms.Label();
-            this.pnGeneralParameters.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.nmIntensity)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.nmErrorDelay)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.track_Intensity)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.track_ErrorDelay)).BeginInit();
             this.pnMemoryTargetting.SuspendLayout();
             this.pnCorruptionEngine.SuspendLayout();
             this.pnCustomPrecision.SuspendLayout();
@@ -158,188 +143,11 @@
             // pnGeneralParameters
             // 
             this.pnGeneralParameters.BackColor = System.Drawing.Color.Gray;
-            this.pnGeneralParameters.Controls.Add(this.nmIntensity);
-            this.pnGeneralParameters.Controls.Add(this.nmErrorDelay);
-            this.pnGeneralParameters.Controls.Add(this.labelIntensityTimes);
-            this.pnGeneralParameters.Controls.Add(this.labelErrorDelay);
-            this.pnGeneralParameters.Controls.Add(this.cbBlastRadius);
-            this.pnGeneralParameters.Controls.Add(this.labelBlastRadius);
-            this.pnGeneralParameters.Controls.Add(this.labelIntensity);
-            this.pnGeneralParameters.Controls.Add(this.labelErrorDelaySteps);
-            this.pnGeneralParameters.Controls.Add(this.track_Intensity);
-            this.pnGeneralParameters.Controls.Add(this.track_ErrorDelay);
             this.pnGeneralParameters.Location = new System.Drawing.Point(14, 25);
             this.pnGeneralParameters.Name = "pnGeneralParameters";
             this.pnGeneralParameters.Size = new System.Drawing.Size(200, 167);
             this.pnGeneralParameters.TabIndex = 117;
             this.pnGeneralParameters.Tag = "color:normal";
-            // 
-            // nmIntensity
-            // 
-            this.nmIntensity.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
-            this.nmIntensity.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.nmIntensity.Font = new System.Drawing.Font("Segoe UI", 8F);
-            this.nmIntensity.ForeColor = System.Drawing.Color.White;
-            this.nmIntensity.Location = new System.Drawing.Point(90, 70);
-            this.nmIntensity.Maximum = new decimal(new int[] {
-            65536,
-            0,
-            0,
-            0});
-            this.nmIntensity.Minimum = new decimal(new int[] {
-            1,
-            0,
-            0,
-            0});
-            this.nmIntensity.Name = "nmIntensity";
-            this.nmIntensity.Size = new System.Drawing.Size(60, 22);
-            this.nmIntensity.TabIndex = 5;
-            this.nmIntensity.Tag = "color:dark";
-            this.nmIntensity.Value = new decimal(new int[] {
-            1,
-            0,
-            0,
-            0});
-            this.nmIntensity.ValueChanged += new System.EventHandler(this.nmIntensity_ValueChanged);
-            this.nmIntensity.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.nmIntensity_ValueChanged);
-            this.nmIntensity.KeyUp += new System.Windows.Forms.KeyEventHandler(this.nmIntensity_ValueChanged);
-            // 
-            // nmErrorDelay
-            // 
-            this.nmErrorDelay.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
-            this.nmErrorDelay.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.nmErrorDelay.Font = new System.Drawing.Font("Segoe UI", 8F);
-            this.nmErrorDelay.ForeColor = System.Drawing.Color.White;
-            this.nmErrorDelay.Location = new System.Drawing.Point(90, 10);
-            this.nmErrorDelay.Maximum = new decimal(new int[] {
-            65536,
-            0,
-            0,
-            0});
-            this.nmErrorDelay.Minimum = new decimal(new int[] {
-            1,
-            0,
-            0,
-            0});
-            this.nmErrorDelay.Name = "nmErrorDelay";
-            this.nmErrorDelay.Size = new System.Drawing.Size(60, 22);
-            this.nmErrorDelay.TabIndex = 3;
-            this.nmErrorDelay.Tag = "color:dark";
-            this.nmErrorDelay.Value = new decimal(new int[] {
-            1,
-            0,
-            0,
-            0});
-            this.nmErrorDelay.ValueChanged += new System.EventHandler(this.nmErrorDelay_ValueChanged);
-            this.nmErrorDelay.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.nmErrorDelay_ValueChanged);
-            this.nmErrorDelay.KeyUp += new System.Windows.Forms.KeyEventHandler(this.nmErrorDelay_ValueChanged);
-            // 
-            // labelIntensityTimes
-            // 
-            this.labelIntensityTimes.AutoSize = true;
-            this.labelIntensityTimes.Font = new System.Drawing.Font("Segoe UI", 9.75F);
-            this.labelIntensityTimes.ForeColor = System.Drawing.Color.White;
-            this.labelIntensityTimes.Location = new System.Drawing.Point(155, 72);
-            this.labelIntensityTimes.Name = "labelIntensityTimes";
-            this.labelIntensityTimes.Size = new System.Drawing.Size(39, 17);
-            this.labelIntensityTimes.TabIndex = 12;
-            this.labelIntensityTimes.Text = "times";
-            // 
-            // labelErrorDelay
-            // 
-            this.labelErrorDelay.AutoSize = true;
-            this.labelErrorDelay.Font = new System.Drawing.Font("Segoe UI", 9.75F);
-            this.labelErrorDelay.ForeColor = System.Drawing.Color.White;
-            this.labelErrorDelay.Location = new System.Drawing.Point(6, 10);
-            this.labelErrorDelay.Name = "labelErrorDelay";
-            this.labelErrorDelay.Size = new System.Drawing.Size(80, 17);
-            this.labelErrorDelay.TabIndex = 2;
-            this.labelErrorDelay.Text = "Error delay :";
-            // 
-            // cbBlastRadius
-            // 
-            this.cbBlastRadius.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
-            this.cbBlastRadius.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.cbBlastRadius.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.cbBlastRadius.Font = new System.Drawing.Font("Segoe UI", 8F);
-            this.cbBlastRadius.ForeColor = System.Drawing.Color.White;
-            this.cbBlastRadius.FormattingEnabled = true;
-            this.cbBlastRadius.Items.AddRange(new object[] {
-            "SPREAD",
-            "CHUNK",
-            "BURST",
-            "EVEN",
-            "PROPORTIONAL",
-            "NORMALIZED"});
-            this.cbBlastRadius.Location = new System.Drawing.Point(90, 133);
-            this.cbBlastRadius.Name = "cbBlastRadius";
-            this.cbBlastRadius.Size = new System.Drawing.Size(100, 21);
-            this.cbBlastRadius.TabIndex = 11;
-            this.cbBlastRadius.Tag = "color:dark";
-            this.cbBlastRadius.SelectedIndexChanged += new System.EventHandler(this.cbBlastRadius_SelectedIndexChanged);
-            // 
-            // labelBlastRadius
-            // 
-            this.labelBlastRadius.AutoSize = true;
-            this.labelBlastRadius.Font = new System.Drawing.Font("Segoe UI", 9.75F);
-            this.labelBlastRadius.ForeColor = System.Drawing.Color.White;
-            this.labelBlastRadius.Location = new System.Drawing.Point(6, 135);
-            this.labelBlastRadius.Name = "labelBlastRadius";
-            this.labelBlastRadius.Size = new System.Drawing.Size(81, 17);
-            this.labelBlastRadius.TabIndex = 9;
-            this.labelBlastRadius.Text = "Blast Radius:";
-            // 
-            // labelIntensity
-            // 
-            this.labelIntensity.AutoSize = true;
-            this.labelIntensity.Font = new System.Drawing.Font("Segoe UI", 9.75F);
-            this.labelIntensity.ForeColor = System.Drawing.Color.White;
-            this.labelIntensity.Location = new System.Drawing.Point(6, 73);
-            this.labelIntensity.Name = "labelIntensity";
-            this.labelIntensity.Size = new System.Drawing.Size(62, 17);
-            this.labelIntensity.TabIndex = 7;
-            this.labelIntensity.Text = "Intensity :";
-            // 
-            // labelErrorDelaySteps
-            // 
-            this.labelErrorDelaySteps.AutoSize = true;
-            this.labelErrorDelaySteps.Font = new System.Drawing.Font("Segoe UI", 9.75F);
-            this.labelErrorDelaySteps.ForeColor = System.Drawing.Color.White;
-            this.labelErrorDelaySteps.Location = new System.Drawing.Point(153, 10);
-            this.labelErrorDelaySteps.Name = "labelErrorDelaySteps";
-            this.labelErrorDelaySteps.Size = new System.Drawing.Size(39, 17);
-            this.labelErrorDelaySteps.TabIndex = 4;
-            this.labelErrorDelaySteps.Text = "steps";
-            // 
-            // track_Intensity
-            // 
-            this.track_Intensity.Location = new System.Drawing.Point(0, 91);
-            this.track_Intensity.Maximum = 512000;
-            this.track_Intensity.Minimum = 2000;
-            this.track_Intensity.Name = "track_Intensity";
-            this.track_Intensity.Size = new System.Drawing.Size(195, 45);
-            this.track_Intensity.TabIndex = 14;
-            this.track_Intensity.TickFrequency = 32000;
-            this.track_Intensity.Value = 2000;
-            this.track_Intensity.Scroll += new System.EventHandler(this.track_Intensity_Scroll);
-            this.track_Intensity.ValueChanged += new System.EventHandler(this.track_Intensity_Scroll);
-            this.track_Intensity.MouseDown += new System.Windows.Forms.MouseEventHandler(this.track_Intensity_MouseDown);
-            this.track_Intensity.MouseUp += new System.Windows.Forms.MouseEventHandler(this.track_Intensity_MouseUp);
-            // 
-            // track_ErrorDelay
-            // 
-            this.track_ErrorDelay.Location = new System.Drawing.Point(0, 31);
-            this.track_ErrorDelay.Maximum = 512000;
-            this.track_ErrorDelay.Minimum = 2000;
-            this.track_ErrorDelay.Name = "track_ErrorDelay";
-            this.track_ErrorDelay.Size = new System.Drawing.Size(194, 45);
-            this.track_ErrorDelay.TabIndex = 13;
-            this.track_ErrorDelay.TickFrequency = 32000;
-            this.track_ErrorDelay.Value = 2000;
-            this.track_ErrorDelay.Scroll += new System.EventHandler(this.track_ErrorDelay_Scroll);
-            this.track_ErrorDelay.ValueChanged += new System.EventHandler(this.track_ErrorDelay_Scroll);
-            this.track_ErrorDelay.MouseDown += new System.Windows.Forms.MouseEventHandler(this.track_ErrorDelay_MouseDown);
-            this.track_ErrorDelay.MouseUp += new System.Windows.Forms.MouseEventHandler(this.track_ErrorDelay_MouseUp);
             // 
             // label5
             // 
@@ -1561,12 +1369,6 @@
             this.Tag = "color:dark";
             this.Text = "RTC : Engine Config";
             this.Load += new System.EventHandler(this.RTC_EC_Form_Load);
-            this.pnGeneralParameters.ResumeLayout(false);
-            this.pnGeneralParameters.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.nmIntensity)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.nmErrorDelay)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.track_Intensity)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.track_ErrorDelay)).EndInit();
             this.pnMemoryTargetting.ResumeLayout(false);
             this.pnCorruptionEngine.ResumeLayout(false);
             this.pnCustomPrecision.ResumeLayout(false);
@@ -1608,16 +1410,6 @@
         }
 
         #endregion
-        public System.Windows.Forms.NumericUpDown nmIntensity;
-        public System.Windows.Forms.NumericUpDown nmErrorDelay;
-        private System.Windows.Forms.Label labelIntensityTimes;
-        private System.Windows.Forms.Label labelErrorDelay;
-        public System.Windows.Forms.ComboBox cbBlastRadius;
-        private System.Windows.Forms.Label labelBlastRadius;
-        private System.Windows.Forms.Label labelIntensity;
-        private System.Windows.Forms.Label labelErrorDelaySteps;
-        public System.Windows.Forms.TrackBar track_Intensity;
-        public System.Windows.Forms.TrackBar track_ErrorDelay;
         private System.Windows.Forms.Label label5;
         private System.Windows.Forms.Panel pnMemoryTargetting;
         private System.Windows.Forms.Panel pnAdvancedTool;

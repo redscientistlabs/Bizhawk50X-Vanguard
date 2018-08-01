@@ -583,23 +583,23 @@ namespace RTC
 					RTC_Core.coreForm.btnAutoCorrupt_Click(null, null);
 					break;
 				case CommandType.REMOTE_HOTKEY_ERRORDELAYDECREASE:
-					if (RTC_Core.ecForm.nmErrorDelay.Value > 1)
-						RTC_Core.ecForm.nmErrorDelay.Value--;
+					if (RTC_Core.gpForm.nmErrorDelay.Value > 1)
+						RTC_Core.gpForm.nmErrorDelay.Value--;
 					break;
 
 				case CommandType.REMOTE_HOTKEY_ERRORDELAYINCREASE:
-					if (RTC_Core.ecForm.nmErrorDelay.Value < RTC_Core.ecForm.track_ErrorDelay.Maximum)
-						RTC_Core.ecForm.nmErrorDelay.Value++;
+					if (RTC_Core.gpForm.nmErrorDelay.Value < RTC_Core.gpForm.track_ErrorDelay.Maximum)
+						RTC_Core.gpForm.nmErrorDelay.Value++;
 					break;
 
 				case CommandType.REMOTE_HOTKEY_INTENSITYDECREASE:
-					if (RTC_Core.ecForm.nmIntensity.Value > 1)
-						RTC_Core.ecForm.nmIntensity.Value--;
+					if (RTC_Core.gpForm.nmIntensity.Value > 1)
+						RTC_Core.gpForm.nmIntensity.Value--;
 					break;
 
 				case CommandType.REMOTE_HOTKEY_INTENSITYINCREASE:
-					if (RTC_Core.ecForm.nmIntensity.Value < RTC_Core.ecForm.track_Intensity.Maximum)
-						RTC_Core.ecForm.nmIntensity.Value++;
+					if (RTC_Core.gpForm.nmIntensity.Value < RTC_Core.gpForm.track_Intensity.Maximum)
+						RTC_Core.gpForm.nmIntensity.Value++;
 					break;
 
 				case CommandType.REMOTE_HOTKEY_GHLOADCORRUPT:

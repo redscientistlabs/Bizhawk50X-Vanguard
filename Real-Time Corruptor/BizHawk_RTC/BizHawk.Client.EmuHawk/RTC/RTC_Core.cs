@@ -94,6 +94,7 @@ namespace RTC
 		public static RTC_VmdGen_Form vmdGenForm = null;
 		public static RTC_VmdAct_Form vmdActForm = null;
 		public static RTC_MemoryDomains_Form mdForm = null;
+		public static RTC_GeneralParameters_Form gpForm = null;
 
 		//All RTC forms
 		public static Form[] allRtcForms
@@ -118,6 +119,7 @@ namespace RTC
 						vmdGenForm,
 						vmdPoolForm,
 						mdForm,
+						gpForm,
 
 						standaloneForm,
 					};
@@ -279,6 +281,7 @@ namespace RTC
 			vmdPoolForm = new RTC_VmdPool_Form();
 			vmdGenForm = new RTC_VmdGen_Form();
 			vmdActForm = new RTC_VmdAct_Form();
+			gpForm = new RTC_GeneralParameters_Form();
 			mdForm = new RTC_MemoryDomains_Form();
 
 			standaloneForm = _standaloneForm;

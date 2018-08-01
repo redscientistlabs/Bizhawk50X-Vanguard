@@ -9,73 +9,10 @@ namespace RTC
 {
 	public partial class RTC_EngineConfig_Form : Form
 	{
-		public bool DontUpdateIntensity = false;
+		
 		private int defaultPrecision = -1;
 		private bool updatingMinMax = false;
 
-		public int Intensity
-		{
-			get
-			{
-				return RTC_Core.Intensity;
-			}
-			set
-			{
-				if (DontUpdateIntensity)
-					return;
-
-				RTC_Core.Intensity = value;
-				RTC_Core.SendCommandToBizhawk(new RTC_Command(CommandType.REMOTE_SET_INTENSITY) { objectValue = RTC_Core.Intensity });
-
-				DontUpdateIntensity = true;
-
-				if (nmIntensity.Value != RTC_Core.Intensity)
-					nmIntensity.Value = RTC_Core.Intensity;
-
-				if (RTC_Core.ghForm.nmIntensity.Value != RTC_Core.Intensity)
-					RTC_Core.ghForm.nmIntensity.Value = RTC_Core.Intensity;
-
-				int fx = Convert.ToInt32(Math.Sqrt(value) * 2000d);
-
-				if (track_Intensity.Value != fx)
-					track_Intensity.Value = fx;
-
-				if (RTC_Core.ghForm.track_Intensity.Value != fx)
-					RTC_Core.ghForm.track_Intensity.Value = fx;
-
-				DontUpdateIntensity = false;
-			}
-		}
-
-		public bool DontUpdateErrorDelay = false;
-
-		public int ErrorDelay
-		{
-			get
-			{
-				return RTC_Core.ErrorDelay;
-			}
-			set
-			{
-				if (DontUpdateErrorDelay)
-					return;
-
-				RTC_Core.ErrorDelay = Convert.ToInt32(value);
-				RTC_Core.SendCommandToBizhawk(new RTC_Command(CommandType.REMOTE_SET_ERRORDELAY) { objectValue = RTC_Core.ErrorDelay });
-
-				DontUpdateErrorDelay = true;
-
-				if (nmErrorDelay.Value != RTC_Core.ErrorDelay)
-					nmErrorDelay.Value = RTC_Core.ErrorDelay;
-
-				int _fx = Convert.ToInt32(Math.Sqrt(value) * 2000d);
-
-				if (track_ErrorDelay.Value != _fx)
-					track_ErrorDelay.Value = _fx;
-
-				DontUpdateErrorDelay = false;
-			}
-		}
 
 		public RTC_EngineConfig_Form()
 		{
@@ -111,84 +48,18 @@ namespace RTC
 			pnCorruptionEngine.Controls.Add(gbBlastGeneratorEngine);
 			gbBlastGeneratorEngine.Location = new Point(gbSelectedEngine.Location.X, gbSelectedEngine.Location.Y);
 
+			AnchorGeneralParameters();
 			AnchorMemoryDomains();
 
 
 			cbSelectedEngine.SelectedIndex = 0;
 			cbVectorLimiterList.SelectedIndex = 0;
 			cbVectorValueList.SelectedIndex = 0;
-			cbBlastRadius.SelectedIndex = 0;
 			cbBlastType.SelectedIndex = 0;
 			cbMemoryDomainTool.SelectedIndex = 0;
 			cbCustomPrecision.SelectedIndex = 0;
 		}
 
-
-		public void track_ErrorDelay_Scroll(object sender, EventArgs e)
-		{
-			double fx = Math.Ceiling(Math.Pow((track_ErrorDelay.Value * 0.0005d), 2));
-			int _fx = Convert.ToInt32(fx);
-
-			if (_fx != ErrorDelay)
-				ErrorDelay = _fx;
-		}
-
-		public void nmErrorDelay_ValueChanged(object sender, EventArgs e)
-		{
-			int _fx = Convert.ToInt32(nmErrorDelay.Value);
-
-			if (_fx != ErrorDelay)
-				ErrorDelay = _fx;
-		}
-
-		public void track_Intensity_Scroll(object sender, EventArgs e)
-		{
-			double fx = Math.Floor(Math.Pow((track_Intensity.Value * 0.0005d), 2));
-			int _fx = Convert.ToInt32(fx);
-
-			if (_fx != Intensity)
-				Intensity = _fx;
-		}
-
-		public void nmIntensity_ValueChanged(object sender, EventArgs e)
-		{
-			int _fx = Convert.ToInt32(nmIntensity.Value);
-
-			if (Intensity != _fx)
-				Intensity = _fx;
-		}
-
-		private void cbBlastRadius_SelectedIndexChanged(object sender, EventArgs e)
-		{
-			switch (cbBlastRadius.SelectedItem.ToString())
-			{
-				case "SPREAD":
-					RTC_Core.Radius = BlastRadius.SPREAD;
-					break;
-
-				case "CHUNK":
-					RTC_Core.Radius = BlastRadius.CHUNK;
-					break;
-
-				case "BURST":
-					RTC_Core.Radius = BlastRadius.BURST;
-					break;
-
-				case "NORMALIZED":
-					RTC_Core.Radius = BlastRadius.NORMALIZED;
-					break;
-
-				case "PROPORTIONAL":
-					RTC_Core.Radius = BlastRadius.PROPORTIONAL;
-					break;
-
-				case "EVEN":
-					RTC_Core.Radius = BlastRadius.EVEN;
-					break;
-			}
-
-			RTC_Core.SendCommandToBizhawk(new RTC_Command(CommandType.REMOTE_SET_BLASTRADIUS) { objectValue = RTC_Core.Radius });
-		}
 
 		private void cbBlastType_SelectedIndexChanged(object sender, EventArgs e)
 		{
@@ -341,29 +212,29 @@ namespace RTC
 
 			if (cbSelectedEngine.SelectedItem.ToString() == "Blast Generator")
 			{
-				labelBlastRadius.Visible = false;
-				labelIntensity.Visible = false;
-				labelIntensityTimes.Visible = false;
-				labelErrorDelay.Visible = false;
-				labelErrorDelaySteps.Visible = false;
-				nmErrorDelay.Visible = false;
-				nmIntensity.Visible = false;
-				track_ErrorDelay.Visible = false;
-				track_Intensity.Visible = false;
-				cbBlastRadius.Visible = false;
+				RTC_Core.gpForm.labelBlastRadius.Visible = false;
+				RTC_Core.gpForm.labelIntensity.Visible = false;
+				RTC_Core.gpForm.labelIntensityTimes.Visible = false;
+				RTC_Core.gpForm.labelErrorDelay.Visible = false;
+				RTC_Core.gpForm.labelErrorDelaySteps.Visible = false;
+				RTC_Core.gpForm.nmErrorDelay.Visible = false;
+				RTC_Core.gpForm.nmIntensity.Visible = false;
+				RTC_Core.gpForm.track_ErrorDelay.Visible = false;
+				RTC_Core.gpForm.track_Intensity.Visible = false;
+				RTC_Core.gpForm.cbBlastRadius.Visible = false;
 			}
 			else
 			{
-				labelBlastRadius.Visible = true;
-				labelIntensity.Visible = true;
-				labelIntensityTimes.Visible = true;
-				labelErrorDelay.Visible = true;
-				labelErrorDelaySteps.Visible = true;
-				nmErrorDelay.Visible = true;
-				nmIntensity.Visible = true;
-				track_ErrorDelay.Visible = true;
-				track_Intensity.Visible = true;
-				cbBlastRadius.Visible = true;
+				RTC_Core.gpForm.labelBlastRadius.Visible = true;
+				RTC_Core.gpForm.labelIntensity.Visible = true;
+				RTC_Core.gpForm.labelIntensityTimes.Visible = true;
+				RTC_Core.gpForm.labelErrorDelay.Visible = true;
+				RTC_Core.gpForm.labelErrorDelaySteps.Visible = true;
+				RTC_Core.gpForm.nmErrorDelay.Visible = true;
+				RTC_Core.gpForm.nmIntensity.Visible = true;
+				RTC_Core.gpForm.track_ErrorDelay.Visible = true;
+				RTC_Core.gpForm.track_Intensity.Visible = true;
+				RTC_Core.gpForm.cbBlastRadius.Visible = true;
 			}
 
 			cbSelectedEngine.BringToFront();
@@ -576,33 +447,6 @@ namespace RTC
 					RTC_Core.vmdActForm.Show();
 					break;
 			}
-		}
-
-		Guid? errorDelayToken = null;
-		Guid? intensityToken = null;
-
-		private void track_ErrorDelay_MouseDown(object sender, MouseEventArgs e)
-		{
-			errorDelayToken = RTC_NetCore.HugeOperationStart("LAZY");
-		}
-
-		private void track_ErrorDelay_MouseUp(object sender, MouseEventArgs e)
-		{
-			RTC_NetCore.HugeOperationEnd(errorDelayToken);
-
-			track_ErrorDelay_Scroll(sender, e);
-		}
-
-		private void track_Intensity_MouseDown(object sender, MouseEventArgs e)
-		{
-			intensityToken = RTC_NetCore.HugeOperationStart("LAZY");
-		}
-
-		private void track_Intensity_MouseUp(object sender, MouseEventArgs e)
-		{
-			RTC_NetCore.HugeOperationEnd(intensityToken);
-
-			track_Intensity_Scroll(sender, e);
 		}
 
 		private void btnClearCheats_Click(object sender, EventArgs e)
@@ -861,6 +705,18 @@ namespace RTC
 			RTC_Core.mdForm.TopLevel = false;
 			pnMemoryDomains.Controls.Add(RTC_Core.mdForm);
 			RTC_Core.mdForm.Show();
+		}
+
+		public void AnchorGeneralParameters()
+		{
+			if (RTC_Core.gpForm.TopLevel)
+				RTC_Core.gpForm.Hide();
+
+			RTC_Core.gpForm.Parent?.Controls.Remove(RTC_Core.gpForm);
+
+			RTC_Core.gpForm.TopLevel = false;
+			pnGeneralParameters.Controls.Add(RTC_Core.gpForm);
+			RTC_Core.gpForm.Show();
 		}
 
 	}

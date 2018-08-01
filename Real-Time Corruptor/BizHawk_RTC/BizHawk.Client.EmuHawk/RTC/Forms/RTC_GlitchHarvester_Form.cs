@@ -883,8 +883,8 @@ namespace RTC
 		{
 			int _fx = Convert.ToInt32(nmIntensity.Value);
 
-			if (RTC_Core.ecForm.Intensity != _fx)
-				RTC_Core.ecForm.Intensity = _fx;
+			if (RTC_Core.gpForm.Intensity != _fx)
+				RTC_Core.gpForm.Intensity = _fx;
 		}
 
 		private void track_Intensity_Scroll(object sender, EventArgs e)
@@ -893,8 +893,8 @@ namespace RTC
 			int _fx = Convert.ToInt32(fx);
 
 			// This is NOT a redundent check. Setting intensity requires a netcore call so we don't want to do it if we don't have to
-			if (_fx != RTC_Core.ecForm.Intensity)
-				RTC_Core.ecForm.Intensity = _fx;
+			if (_fx != RTC_Core.gpForm.Intensity)
+				RTC_Core.gpForm.Intensity = _fx;
 		}
 
 		public void btnSendRaw_Click(object sender, EventArgs e)

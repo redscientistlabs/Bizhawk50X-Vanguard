@@ -160,33 +160,33 @@ namespace RTC
 				{
 					case "NES":     //Nintendo Entertainment system
 						RTC_Core.SetEngineByName("Nightmare Engine");
-						RTC_Core.ecForm.Intensity = 2;
-						RTC_Core.ecForm.ErrorDelay = 1;
+						RTC_Core.gpForm.Intensity = 2;
+						RTC_Core.gpForm.ErrorDelay = 1;
 						break;
 
 					case "GB":      //Gameboy
 					case "GBC":     //Gameboy Color
 						RTC_Core.SetEngineByName("Nightmare Engine");
-						RTC_Core.ecForm.Intensity = 1;
-						RTC_Core.ecForm.ErrorDelay = 4;
+						RTC_Core.gpForm.Intensity = 1;
+						RTC_Core.gpForm.ErrorDelay = 4;
 						break;
 
 					case "SNES":    //Super Nintendo
 						RTC_Core.SetEngineByName("Nightmare Engine");
-						RTC_Core.ecForm.Intensity = 1;
-						RTC_Core.ecForm.ErrorDelay = 2;
+						RTC_Core.gpForm.Intensity = 1;
+						RTC_Core.gpForm.ErrorDelay = 2;
 						break;
 
 					case "GBA":     //Gameboy Advance
 						RTC_Core.SetEngineByName("Nightmare Engine");
-						RTC_Core.ecForm.Intensity = 1;
-						RTC_Core.ecForm.ErrorDelay = 1;
+						RTC_Core.gpForm.Intensity = 1;
+						RTC_Core.gpForm.ErrorDelay = 1;
 						break;
 
 					case "N64":     //Nintendo 64
 						RTC_Core.SetEngineByName("Vector Engine");
-						RTC_Core.ecForm.Intensity = 75;
-						RTC_Core.ecForm.ErrorDelay = 1;
+						RTC_Core.gpForm.Intensity = 75;
+						RTC_Core.gpForm.ErrorDelay = 1;
 						break;
 
 					case "SG":      //Sega SG-1000
