@@ -48,8 +48,8 @@ namespace RTC
 			pnCorruptionEngine.Controls.Add(gbBlastGeneratorEngine);
 			gbBlastGeneratorEngine.Location = new Point(gbSelectedEngine.Location.X, gbSelectedEngine.Location.Y);
 
-			AnchorGeneralParameters();
-			AnchorMemoryDomains();
+			RTC_Core.gpForm.AnchorToPanel(pnGeneralParameters);
+			RTC_Core.mdForm.AnchorToPanel(pnMemoryDomains);
 
 
 			cbSelectedEngine.SelectedIndex = 0;
@@ -694,30 +694,7 @@ namespace RTC
 
 			RTC_Core.SendCommandToBizhawk(new RTC_Command(CommandType.REMOTE_SET_HELLGENIE_MAXVALUE) { objectValue = new object[] { RTC_Core.CurrentPrecision, value } });
 		}
-
-		public void AnchorMemoryDomains()
-		{
-			if (RTC_Core.mdForm.TopLevel)
-				RTC_Core.mdForm.Hide();
-
-			RTC_Core.mdForm.Parent?.Controls.Remove(RTC_Core.mdForm);
-
-			RTC_Core.mdForm.TopLevel = false;
-			pnMemoryDomains.Controls.Add(RTC_Core.mdForm);
-			RTC_Core.mdForm.Show();
-		}
-
-		public void AnchorGeneralParameters()
-		{
-			if (RTC_Core.gpForm.TopLevel)
-				RTC_Core.gpForm.Hide();
-
-			RTC_Core.gpForm.Parent?.Controls.Remove(RTC_Core.gpForm);
-
-			RTC_Core.gpForm.TopLevel = false;
-			pnGeneralParameters.Controls.Add(RTC_Core.gpForm);
-			RTC_Core.gpForm.Show();
-		}
+		
 
 	}
 }

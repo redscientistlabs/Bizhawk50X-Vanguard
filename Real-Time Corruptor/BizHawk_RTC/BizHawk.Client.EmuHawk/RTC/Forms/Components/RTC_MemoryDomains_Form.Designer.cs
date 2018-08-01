@@ -36,6 +36,9 @@
             // 
             // lbMemoryDomains
             // 
+            this.lbMemoryDomains.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.lbMemoryDomains.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
             this.lbMemoryDomains.BorderStyle = System.Windows.Forms.BorderStyle.None;
             this.lbMemoryDomains.Font = new System.Drawing.Font("Segoe UI", 8F);
@@ -53,6 +56,8 @@
             // 
             // btnAutoSelectDomains
             // 
+            this.btnAutoSelectDomains.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.btnAutoSelectDomains.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(224)))), ((int)(((byte)(224)))), ((int)(((byte)(224)))));
             this.btnAutoSelectDomains.FlatAppearance.BorderSize = 0;
             this.btnAutoSelectDomains.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
@@ -69,6 +74,7 @@
             // 
             // btnRefreshDomains
             // 
+            this.btnRefreshDomains.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.btnRefreshDomains.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(224)))), ((int)(((byte)(224)))), ((int)(((byte)(224)))));
             this.btnRefreshDomains.FlatAppearance.BorderSize = 0;
             this.btnRefreshDomains.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
@@ -85,6 +91,7 @@
             // 
             // btnSelectAll
             // 
+            this.btnSelectAll.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.btnSelectAll.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(224)))), ((int)(((byte)(224)))), ((int)(((byte)(224)))));
             this.btnSelectAll.FlatAppearance.BorderSize = 0;
             this.btnSelectAll.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
@@ -113,6 +120,8 @@
             this.Name = "RTC_MemoryDomains_Form";
             this.Tag = "color:normal";
             this.Text = "Memory Domains";
+            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.RTC_MemoryDomains_Form_FormClosing);
+            this.MouseDown += new System.Windows.Forms.MouseEventHandler(this.RTC_MemoryDomains_Form_MouseDown);
             this.ResumeLayout(false);
 
 		}

@@ -628,7 +628,62 @@ namespace RTC
 			return readSoFar;
 		}
 		#endregion
+
 	}
+
+	public class ComponentForm : Form
+	{
+
+		Panel defaultPanel = null;
+		Panel previousPanel = null;
+
+		public void AnchorToPanel(Panel pn)
+		{
+			if (defaultPanel == null)
+				defaultPanel = pn;
+
+			previousPanel = pn;
+
+			this.Hide();
+			this.Parent?.Controls.Remove(this);
+
+			this.FormBorderStyle = FormBorderStyle.None;
+
+			this.TopLevel = false;
+			this.TopMost = false;
+			pn.Controls.Add(this);
+
+			this.Size = this.Parent.Size;
+			this.Location = new Point(0, 0);
+
+			this.Show();
+		}
+
+		public void SwitchToWindow()
+		{
+			this.Hide();
+			this.Parent?.Controls.Remove(this);
+
+			this.TopLevel = true;
+			this.TopMost = true;
+
+			this.FormBorderStyle = FormBorderStyle.Sizable;
+
+			this.Show();
+		}
+
+		public void RestoreToPreviousPanel()
+		{
+			if (defaultPanel == null)
+				throw new Exception("Default panel unset");
+
+			if(previousPanel?.Parent?.Visible ?? false)
+				AnchorToPanel(previousPanel);
+			else
+				AnchorToPanel(defaultPanel);
+		}
+	}
+
 
 	// Used code from this https://github.com/wasabii/Cogito/blob/master/Cogito.Core/RandomExtensions.cs
 	// MIT Licensed. thank you very much.

@@ -176,6 +176,8 @@
             // 
             // track_Intensity
             // 
+            this.track_Intensity.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.track_Intensity.Location = new System.Drawing.Point(3, 92);
             this.track_Intensity.Maximum = 512000;
             this.track_Intensity.Minimum = 2000;
@@ -187,6 +189,8 @@
             // 
             // track_ErrorDelay
             // 
+            this.track_ErrorDelay.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.track_ErrorDelay.Location = new System.Drawing.Point(3, 32);
             this.track_ErrorDelay.Maximum = 512000;
             this.track_ErrorDelay.Minimum = 2000;
@@ -216,7 +220,9 @@
             this.Name = "RTC_GeneralParameters_Form";
             this.Tag = "color:normal";
             this.Text = "General Parameters";
+            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.RTC_GeneralParameters_Form_FormClosing);
             this.Load += new System.EventHandler(this.RTC_GeneralParameters_Form_Load);
+            this.MouseDown += new System.Windows.Forms.MouseEventHandler(this.RTC_GeneralParameters_Form_MouseDown);
             ((System.ComponentModel.ISupportInitialize)(this.nmIntensity)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.nmErrorDelay)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.track_Intensity)).EndInit();
