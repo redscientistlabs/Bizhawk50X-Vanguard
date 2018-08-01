@@ -1064,7 +1064,8 @@ namespace RTC
 		/// <summary>
 		/// Creates a Blastunit that utilizes a backup. 
 		/// </summary>
-		/// <param name="storeTime">The type of backup</param>
+		/// <param name="storeType">The type of store</param>
+		/// <param name="storeTime">The time of the store</param>
 		/// <param name="domain">The domain of the blastunit</param>
 		/// <param name="address">The address of the blastunit</param>
 		/// <param name="bigEndian">If the Blastunit is being applied to a big endian system. Results in the bytes being flipped before apply</param>
