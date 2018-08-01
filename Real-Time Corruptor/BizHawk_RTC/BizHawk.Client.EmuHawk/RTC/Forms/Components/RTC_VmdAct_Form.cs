@@ -578,7 +578,7 @@ namespace RTC
 		}
 		private void RefreshDomains()
 		{
-			RTC_Core.ecForm.RefreshDomainsAndKeepSelected();
+			RTC_Core.mdForm.RefreshDomainsAndKeepSelected();
 			var temp = cbSelectedMemoryDomain.SelectedItem;
 
 			cbSelectedMemoryDomain.Items.Clear();

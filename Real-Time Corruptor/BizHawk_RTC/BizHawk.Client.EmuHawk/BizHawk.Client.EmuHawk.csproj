@@ -732,6 +732,12 @@
     <Compile Include="RTC\Blast Generator Engines\RTC_BlastPipeGenerator.cs" />
     <Compile Include="RTC\Corruption Engines\RTC_BlastGeneratorEngine.cs" />
     <Compile Include="RTC\Corruption Engines\RTC_CustomEngine.cs" />
+    <Compile Include="RTC\Forms\Components\RTC_MemoryDomains_Form.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="RTC\Forms\Components\RTC_MemoryDomains_Form.Designer.cs">
+      <DependentUpon>RTC_MemoryDomains_Form.cs</DependentUpon>
+    </Compile>
     <Compile Include="RTC\Forms\RTC_BlastGenerator_Form.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -823,22 +829,22 @@
     <Compile Include="RTC\Forms\RTC_StockpilePlayer_Form.designer.cs">
       <DependentUpon>RTC_StockpilePlayer_Form.cs</DependentUpon>
     </Compile>
-    <Compile Include="RTC\Forms\RTC_VmdAct_Form.cs">
+    <Compile Include="RTC\Forms\Components\RTC_VmdAct_Form.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="RTC\Forms\RTC_VmdAct_Form.designer.cs">
+    <Compile Include="RTC\Forms\Components\RTC_VmdAct_Form.designer.cs">
       <DependentUpon>RTC_VmdAct_Form.cs</DependentUpon>
     </Compile>
-    <Compile Include="RTC\Forms\RTC_VmdGen_Form.cs">
+    <Compile Include="RTC\Forms\Components\RTC_VmdGen_Form.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="RTC\Forms\RTC_VmdGen_Form.designer.cs">
+    <Compile Include="RTC\Forms\Components\RTC_VmdGen_Form.designer.cs">
       <DependentUpon>RTC_VmdGen_Form.cs</DependentUpon>
     </Compile>
-    <Compile Include="RTC\Forms\RTC_VmdPool_Form.cs">
+    <Compile Include="RTC\Forms\Components\RTC_VmdPool_Form.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="RTC\Forms\RTC_VmdPool_Form.designer.cs">
+    <Compile Include="RTC\Forms\Components\RTC_VmdPool_Form.designer.cs">
       <DependentUpon>RTC_VmdPool_Form.cs</DependentUpon>
     </Compile>
     <Compile Include="RTC\RTC_Core.cs" />
@@ -1608,6 +1614,9 @@
     <EmbeddedResource Include="RomStatusPicker.resx">
       <DependentUpon>RomStatusPicker.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="RTC\Forms\Components\RTC_MemoryDomains_Form.resx">
+      <DependentUpon>RTC_MemoryDomains_Form.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="RTC\Forms\RTC_BlastGenerator_Form.resx">
       <DependentUpon>RTC_BlastGenerator_Form.cs</DependentUpon>
     </EmbeddedResource>
@@ -1650,13 +1659,13 @@
     <EmbeddedResource Include="RTC\Forms\RTC_Test_Form.resx">
       <DependentUpon>RTC_Test_Form.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="RTC\Forms\RTC_VmdAct_Form.resx">
+    <EmbeddedResource Include="RTC\Forms\Components\RTC_VmdAct_Form.resx">
       <DependentUpon>RTC_VmdAct_Form.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="RTC\Forms\RTC_VmdGen_Form.resx">
+    <EmbeddedResource Include="RTC\Forms\Components\RTC_VmdGen_Form.resx">
       <DependentUpon>RTC_VmdGen_Form.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="RTC\Forms\RTC_VmdPool_Form.resx">
+    <EmbeddedResource Include="RTC\Forms\Components\RTC_VmdPool_Form.resx">
       <DependentUpon>RTC_VmdPool_Form.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="tools\AutoHawk.resx">

@@ -44,10 +44,6 @@
             this.pnMemoryTargetting = new System.Windows.Forms.Panel();
             this.pnAdvancedTool = new System.Windows.Forms.Panel();
             this.cbMemoryDomainTool = new System.Windows.Forms.ComboBox();
-            this.lbMemoryDomains = new System.Windows.Forms.ListBox();
-            this.btnSelectAll = new System.Windows.Forms.Button();
-            this.btnAutoSelectDomains = new System.Windows.Forms.Button();
-            this.btnRefreshDomains = new System.Windows.Forms.Button();
             this.pnCorruptionEngine = new System.Windows.Forms.Panel();
             this.pnCustomPrecision = new System.Windows.Forms.Panel();
             this.lbCoreDefault = new System.Windows.Forms.Label();
@@ -154,7 +150,6 @@
             this.gbNightmareEngine.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.nmMaxValueNightmare)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.nmMinValueNightmare)).BeginInit();
-            this.pnMemoryDomains.SuspendLayout();
             this.groupBox1.SuspendLayout();
             this.gbBlastGeneratorEngine.SuspendLayout();
             this.gbDomainsUnavailable.SuspendLayout();
@@ -397,75 +392,6 @@
             this.cbMemoryDomainTool.TabStop = false;
             this.cbMemoryDomainTool.Tag = "color:dark";
             this.cbMemoryDomainTool.SelectedIndexChanged += new System.EventHandler(this.cbMemoryDomainTool_SelectedIndexChanged);
-            // 
-            // lbMemoryDomains
-            // 
-            this.lbMemoryDomains.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
-            this.lbMemoryDomains.BorderStyle = System.Windows.Forms.BorderStyle.None;
-            this.lbMemoryDomains.Font = new System.Drawing.Font("Segoe UI", 8F);
-            this.lbMemoryDomains.ForeColor = System.Drawing.Color.White;
-            this.lbMemoryDomains.FormattingEnabled = true;
-            this.lbMemoryDomains.IntegralHeight = false;
-            this.lbMemoryDomains.Location = new System.Drawing.Point(9, 41);
-            this.lbMemoryDomains.Margin = new System.Windows.Forms.Padding(5);
-            this.lbMemoryDomains.Name = "lbMemoryDomains";
-            this.lbMemoryDomains.ScrollAlwaysVisible = true;
-            this.lbMemoryDomains.SelectionMode = System.Windows.Forms.SelectionMode.MultiSimple;
-            this.lbMemoryDomains.Size = new System.Drawing.Size(181, 208);
-            this.lbMemoryDomains.TabIndex = 11;
-            this.lbMemoryDomains.Tag = "color:dark";
-            this.lbMemoryDomains.SelectedIndexChanged += new System.EventHandler(this.lbMemoryDomains_SelectedIndexChanged);
-            // 
-            // btnSelectAll
-            // 
-            this.btnSelectAll.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(224)))), ((int)(((byte)(224)))), ((int)(((byte)(224)))));
-            this.btnSelectAll.FlatAppearance.BorderSize = 0;
-            this.btnSelectAll.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btnSelectAll.Font = new System.Drawing.Font("Segoe UI", 8F);
-            this.btnSelectAll.ForeColor = System.Drawing.Color.Black;
-            this.btnSelectAll.Location = new System.Drawing.Point(9, 255);
-            this.btnSelectAll.Name = "btnSelectAll";
-            this.btnSelectAll.Size = new System.Drawing.Size(88, 24);
-            this.btnSelectAll.TabIndex = 13;
-            this.btnSelectAll.TabStop = false;
-            this.btnSelectAll.Tag = "color:light";
-            this.btnSelectAll.Text = "Select all";
-            this.btnSelectAll.UseVisualStyleBackColor = false;
-            this.btnSelectAll.Click += new System.EventHandler(this.btnSelectAll_Click);
-            // 
-            // btnAutoSelectDomains
-            // 
-            this.btnAutoSelectDomains.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(224)))), ((int)(((byte)(224)))), ((int)(((byte)(224)))));
-            this.btnAutoSelectDomains.FlatAppearance.BorderSize = 0;
-            this.btnAutoSelectDomains.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btnAutoSelectDomains.Font = new System.Drawing.Font("Segoe UI", 8F);
-            this.btnAutoSelectDomains.ForeColor = System.Drawing.Color.Black;
-            this.btnAutoSelectDomains.Location = new System.Drawing.Point(9, 12);
-            this.btnAutoSelectDomains.Name = "btnAutoSelectDomains";
-            this.btnAutoSelectDomains.Size = new System.Drawing.Size(181, 24);
-            this.btnAutoSelectDomains.TabIndex = 14;
-            this.btnAutoSelectDomains.TabStop = false;
-            this.btnAutoSelectDomains.Tag = "color:light";
-            this.btnAutoSelectDomains.Text = "Auto-select domains";
-            this.btnAutoSelectDomains.UseVisualStyleBackColor = false;
-            this.btnAutoSelectDomains.Click += new System.EventHandler(this.btnAutoSelectDomains_Click);
-            // 
-            // btnRefreshDomains
-            // 
-            this.btnRefreshDomains.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(224)))), ((int)(((byte)(224)))), ((int)(((byte)(224)))));
-            this.btnRefreshDomains.FlatAppearance.BorderSize = 0;
-            this.btnRefreshDomains.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btnRefreshDomains.Font = new System.Drawing.Font("Segoe UI", 8F);
-            this.btnRefreshDomains.ForeColor = System.Drawing.Color.Black;
-            this.btnRefreshDomains.Location = new System.Drawing.Point(102, 255);
-            this.btnRefreshDomains.Name = "btnRefreshDomains";
-            this.btnRefreshDomains.Size = new System.Drawing.Size(88, 24);
-            this.btnRefreshDomains.TabIndex = 12;
-            this.btnRefreshDomains.TabStop = false;
-            this.btnRefreshDomains.Tag = "color:light";
-            this.btnRefreshDomains.Text = "Unselect all";
-            this.btnRefreshDomains.UseVisualStyleBackColor = false;
-            this.btnRefreshDomains.Click += new System.EventHandler(this.btnRefreshDomains_Click);
             // 
             // pnCorruptionEngine
             // 
@@ -1465,10 +1391,6 @@
             // pnMemoryDomains
             // 
             this.pnMemoryDomains.BackColor = System.Drawing.Color.Gray;
-            this.pnMemoryDomains.Controls.Add(this.lbMemoryDomains);
-            this.pnMemoryDomains.Controls.Add(this.btnAutoSelectDomains);
-            this.pnMemoryDomains.Controls.Add(this.btnRefreshDomains);
-            this.pnMemoryDomains.Controls.Add(this.btnSelectAll);
             this.pnMemoryDomains.Location = new System.Drawing.Point(14, 212);
             this.pnMemoryDomains.Name = "pnMemoryDomains";
             this.pnMemoryDomains.Size = new System.Drawing.Size(200, 291);
@@ -1674,7 +1596,6 @@
             this.gbNightmareEngine.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.nmMaxValueNightmare)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.nmMinValueNightmare)).EndInit();
-            this.pnMemoryDomains.ResumeLayout(false);
             this.groupBox1.ResumeLayout(false);
             this.groupBox1.PerformLayout();
             this.gbBlastGeneratorEngine.ResumeLayout(false);
@@ -1701,10 +1622,6 @@
         private System.Windows.Forms.Panel pnMemoryTargetting;
         private System.Windows.Forms.Panel pnAdvancedTool;
         public System.Windows.Forms.ComboBox cbMemoryDomainTool;
-        public System.Windows.Forms.ListBox lbMemoryDomains;
-        private System.Windows.Forms.Button btnSelectAll;
-        private System.Windows.Forms.Button btnAutoSelectDomains;
-        private System.Windows.Forms.Button btnRefreshDomains;
         private System.Windows.Forms.Panel pnCorruptionEngine;
         public System.Windows.Forms.ComboBox cbSelectedEngine;
         private System.Windows.Forms.GroupBox gbSelectedEngine;

@@ -89,11 +89,11 @@ namespace RTC
 
 		public static Form standaloneForm = null;
 
-		//RTC Advanced Tool Forms
+		//RTC Component Forms
 		public static RTC_VmdPool_Form vmdPoolForm = null;
-
 		public static RTC_VmdGen_Form vmdGenForm = null;
 		public static RTC_VmdAct_Form vmdActForm = null;
+		public static RTC_MemoryDomains_Form mdForm = null;
 
 		//All RTC forms
 		public static Form[] allRtcForms
@@ -117,6 +117,7 @@ namespace RTC
 						vmdActForm,
 						vmdGenForm,
 						vmdPoolForm,
+						mdForm,
 
 						standaloneForm,
 					};
@@ -278,6 +279,7 @@ namespace RTC
 			vmdPoolForm = new RTC_VmdPool_Form();
 			vmdGenForm = new RTC_VmdGen_Form();
 			vmdActForm = new RTC_VmdAct_Form();
+			mdForm = new RTC_MemoryDomains_Form();
 
 			standaloneForm = _standaloneForm;
 

@@ -21,7 +21,7 @@ namespace RTC
 
 		private void btnSelectAll_Click(object sender, EventArgs e)
 		{
-			RTC_Core.ecForm.RefreshDomainsAndKeepSelected();
+			RTC_Core.mdForm.RefreshDomainsAndKeepSelected();
 
 			cbSelectedMemoryDomain.Items.Clear();
 			cbSelectedMemoryDomain.Items.AddRange(RTC_MemoryDomains.MemoryInterfaces.Keys.Where(it => !it.Contains("[V]")).ToArray());

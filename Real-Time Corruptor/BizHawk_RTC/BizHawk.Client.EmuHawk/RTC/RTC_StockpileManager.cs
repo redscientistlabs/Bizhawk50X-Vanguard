@@ -117,8 +117,8 @@ namespace RTC
 			if (currentGame == null || psk.GameName != currentGame) 
 			{
 				RTC_Core.LoadRom(psk.RomFilename, true);
-				RTC_Core.ecForm.RefreshDomains();
-				RTC_Core.ecForm.SetMemoryDomainsAllButSelectedDomains(RTC_MemoryDomains.GetBlacklistedDomains());
+				RTC_Core.mdForm.RefreshDomains();
+				RTC_Core.mdForm.SetMemoryDomainsAllButSelectedDomains(RTC_MemoryDomains.GetBlacklistedDomains());
 			}
 
 			var watch = System.Diagnostics.Stopwatch.StartNew();

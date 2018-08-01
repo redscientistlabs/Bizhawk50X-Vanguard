@@ -406,7 +406,7 @@ namespace RTC
 			SelectedDomains = new string[] { };
 
 			if (RTC_Core.ecForm != null)
-				RTC_Core.ecForm.lbMemoryDomains.Items.Clear();
+				RTC_Core.mdForm.lbMemoryDomains.Items.Clear();
 		}
 
 		public static MemoryDomainProxy GetProxy(string domain, long address)
@@ -519,7 +519,7 @@ namespace RTC
 			}
 
 			if (!RTC_Hooks.isRemoteRTC)
-				RTC_Core.ecForm.RefreshDomainsAndKeepSelected();
+				RTC_Core.mdForm.RefreshDomainsAndKeepSelected();
 		}
 
 		public static void RemoveVMD(VirtualMemoryDomain VMD) => RemoveVMD(VMD.ToString());
@@ -533,7 +533,7 @@ namespace RTC
 			}
 
 			if (!RTC_Hooks.isRemoteRTC)
-				RTC_Core.ecForm.RefreshDomainsAndKeepSelected();
+				RTC_Core.mdForm.RefreshDomainsAndKeepSelected();
 		}
 
 		public static void RenameVMD(VirtualMemoryDomain VMD) => RenameVMD(VMD.ToString());
