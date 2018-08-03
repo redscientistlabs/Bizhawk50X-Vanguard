@@ -377,6 +377,8 @@
             this.Name = "RTC_VmdGen_Form";
             this.Tag = "color:darkerer";
             this.Text = "RTC_VmdGen_Form";
+            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.RTC_VmdGen_Form_FormClosing);
+            this.MouseDown += new System.Windows.Forms.MouseEventHandler(this.RTC_VmdGen_Form_MouseDown);
             this.groupBox1.ResumeLayout(false);
             this.groupBox1.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.nmPointerSpacer)).EndInit();

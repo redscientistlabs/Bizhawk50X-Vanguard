@@ -93,6 +93,8 @@ namespace RTC
 		public static RTC_VmdPool_Form vmdPoolForm = null;
 		public static RTC_VmdGen_Form vmdGenForm = null;
 		public static RTC_VmdAct_Form vmdActForm = null;
+		public static RTC_VmdNoTool_Form vmdNoToolForm = null;
+
 		public static RTC_MemoryDomains_Form mdForm = null;
 		public static RTC_GeneralParameters_Form gpForm = null;
 
@@ -118,6 +120,8 @@ namespace RTC
 						vmdActForm,
 						vmdGenForm,
 						vmdPoolForm,
+						vmdNoToolForm,
+
 						mdForm,
 						gpForm,
 
@@ -281,6 +285,8 @@ namespace RTC
 			vmdPoolForm = new RTC_VmdPool_Form();
 			vmdGenForm = new RTC_VmdGen_Form();
 			vmdActForm = new RTC_VmdAct_Form();
+			vmdNoToolForm = new RTC_VmdNoTool_Form();
+
 			gpForm = new RTC_GeneralParameters_Form();
 			mdForm = new RTC_MemoryDomains_Form();
 

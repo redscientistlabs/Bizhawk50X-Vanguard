@@ -560,6 +560,8 @@
             this.Name = "RTC_VmdAct_Form";
             this.Tag = "color:darker";
             this.Text = "RTC_VmdAct_Form";
+            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.RTC_VmdAct_Form_FormClosing);
+            this.MouseDown += new System.Windows.Forms.MouseEventHandler(this.RTC_VmdAct_Form_MouseDown);
             this.groupBox2.ResumeLayout(false);
             this.groupBox2.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.track_ActiveTableActivityThreshold)).EndInit();

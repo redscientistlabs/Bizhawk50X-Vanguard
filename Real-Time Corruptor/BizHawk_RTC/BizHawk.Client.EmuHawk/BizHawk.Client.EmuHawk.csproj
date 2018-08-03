@@ -744,6 +744,12 @@
     <Compile Include="RTC\Forms\Components\RTC_MemoryDomains_Form.Designer.cs">
       <DependentUpon>RTC_MemoryDomains_Form.cs</DependentUpon>
     </Compile>
+    <Compile Include="RTC\Forms\Components\RTC_VmdNoTool_Form.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="RTC\Forms\Components\RTC_VmdNoTool_Form.designer.cs">
+      <DependentUpon>RTC_VmdNoTool_Form.cs</DependentUpon>
+    </Compile>
     <Compile Include="RTC\Forms\RTC_BlastGenerator_Form.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -1631,6 +1637,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="RTC\Forms\Components\RTC_MemoryDomains_Form.resx">
       <DependentUpon>RTC_MemoryDomains_Form.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="RTC\Forms\Components\RTC_VmdNoTool_Form.resx">
+      <DependentUpon>RTC_VmdNoTool_Form.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="RTC\Forms\RTC_BlastGenerator_Form.resx">
       <DependentUpon>RTC_BlastGenerator_Form.cs</DependentUpon>

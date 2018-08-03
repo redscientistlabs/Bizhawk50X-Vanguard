@@ -201,7 +201,9 @@
             this.Name = "RTC_VmdPool_Form";
             this.Tag = "color:darkerer";
             this.Text = "RTC_VmdPool_Form";
+            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.RTC_VmdPool_Form_FormClosing);
             this.Load += new System.EventHandler(this.RTC_VmdPool_Form_Load);
+            this.MouseDown += new System.Windows.Forms.MouseEventHandler(this.RTC_VmdPool_Form_MouseDown);
             this.gbVmdSummary.ResumeLayout(false);
             this.gbVmdSummary.PerformLayout();
             this.ResumeLayout(false);

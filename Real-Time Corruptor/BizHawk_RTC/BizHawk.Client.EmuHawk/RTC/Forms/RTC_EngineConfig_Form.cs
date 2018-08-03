@@ -409,6 +409,30 @@ namespace RTC
 
 		private void cbMemoryDomainTool_SelectedIndexChanged(object sender, EventArgs e)
 		{
+			ComponentForm component = null;
+
+			switch (cbMemoryDomainTool.SelectedItem.ToString())
+			{
+				case "Virtual Memory Domain Pool":
+					component = RTC_Core.vmdPoolForm;
+					break;
+				case "Virtual Memory Domain Generator":
+					component = RTC_Core.vmdGenForm;
+					break;
+				case "ActiveTable Generator":
+					component = RTC_Core.vmdActForm;
+					break;
+
+
+				case "No Tool Selected":
+				default:
+					component = RTC_Core.vmdNoToolForm;
+					break;
+			}
+
+			component?.AnchorToPanel(pnAdvancedTool);
+
+			/*
 			if (!pnAdvancedTool.Controls.Contains(RTC_Core.vmdPoolForm))
 			{
 				RTC_Core.vmdPoolForm.TopLevel = false;
@@ -432,21 +456,8 @@ namespace RTC
 			}
 			if (RTC_Core.vmdActForm.Visible)
 				RTC_Core.vmdActForm.Hide();
-
-			switch (cbMemoryDomainTool.SelectedItem.ToString())
-			{
-				case "No Tool Selected":
-					break;
-				case "Virtual Memory Domain Pool":
-					RTC_Core.vmdPoolForm.Show();
-					break;
-				case "Virtual Memory Domain Generator":
-					RTC_Core.vmdGenForm.Show();
-					break;
-				case "ActiveTable Generator":
-					RTC_Core.vmdActForm.Show();
-					break;
-			}
+			*/
+			
 		}
 
 		private void btnClearCheats_Click(object sender, EventArgs e)

@@ -639,6 +639,7 @@ namespace RTC
 
 		public void AnchorToPanel(Panel pn)
 		{
+
 			if (defaultPanel == null)
 				defaultPanel = pn;
 
@@ -648,6 +649,11 @@ namespace RTC
 			this.Parent?.Controls.Remove(this);
 
 			this.FormBorderStyle = FormBorderStyle.None;
+
+			//Remove ComponentForm from target panel if required
+			ComponentForm componentFormInTargetPanel = (pn?.Controls.Cast<Control>().FirstOrDefault(it => it is ComponentForm) as ComponentForm);
+			if (componentFormInTargetPanel != null && componentFormInTargetPanel != this)
+				pn.Controls.Remove(componentFormInTargetPanel);
 
 			this.TopLevel = false;
 			this.TopMost = false;
@@ -677,10 +683,20 @@ namespace RTC
 			if (defaultPanel == null)
 				throw new Exception("Default panel unset");
 
-			if(previousPanel?.Parent?.Visible ?? false)
-				AnchorToPanel(previousPanel);
-			else
-				AnchorToPanel(defaultPanel);
+			Panel targetPanel;
+
+			//We select which panel we want to restore the ComponentForm to
+			if (previousPanel?.Parent?.Visible ?? false)
+				targetPanel = previousPanel;
+			else                            //If the ComponentForm was moved to another panel than the default one
+				targetPanel = defaultPanel; //and that panel was hidden, then we move it back to the original panel.
+
+			//This searches for a ComponentForm in the target Panel
+			ComponentForm componentFormInTargetPanel = (targetPanel?.Controls.Cast<Control>().FirstOrDefault(it => it is ComponentForm) as ComponentForm);
+			if (componentFormInTargetPanel != null && componentFormInTargetPanel != this)
+				this.Hide();				//If the target panel hosts another ComponentForm, we won't override it
+			else							//This is most likely going to happen if a VMD ComponentForm was changed to a window, 
+				AnchorToPanel(targetPanel); //then another VMD tool was selected and that window was closed
 		}
 	}
 

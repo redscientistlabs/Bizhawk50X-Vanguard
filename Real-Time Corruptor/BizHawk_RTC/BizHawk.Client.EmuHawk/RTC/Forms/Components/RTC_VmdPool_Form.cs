@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Data;
+using System.Drawing;
 using System.IO;
 using System.Linq;
 using System.Windows.Forms;
@@ -7,7 +8,7 @@ using System.Xml.Serialization;
 
 namespace RTC
 {
-	public partial class RTC_VmdPool_Form : Form
+	public partial class RTC_VmdPool_Form : ComponentForm
 	{
 		public RTC_VmdPool_Form()
 		{
@@ -142,6 +143,30 @@ namespace RTC
 			RTC_MemoryDomains.RenameVMD(vmdName);
 
 			RefreshVMDs();
+		}
+
+		private void RTC_VmdPool_Form_FormClosing(object sender, FormClosingEventArgs e)
+		{
+			if (e.CloseReason != CloseReason.FormOwnerClosing)
+			{
+				e.Cancel = true;
+				this.RestoreToPreviousPanel();
+				return;
+			}
+		}
+
+		private void RTC_VmdPool_Form_MouseDown(object sender, MouseEventArgs e)
+		{
+			if (e.Button == MouseButtons.Right && (sender as ComponentForm).FormBorderStyle == FormBorderStyle.None)
+			{
+				Point locate = new Point(((Control)sender).Location.X + e.Location.X, ((Control)sender).Location.Y + e.Location.Y);
+				ContextMenuStrip columnsMenu = new ContextMenuStrip();
+				columnsMenu.Items.Add("Detach to window", null, new EventHandler((ob, ev) =>
+				{
+					(sender as ComponentForm).SwitchToWindow();
+				}));
+				columnsMenu.Show(this, locate);
+			}
 		}
 	}
 }
