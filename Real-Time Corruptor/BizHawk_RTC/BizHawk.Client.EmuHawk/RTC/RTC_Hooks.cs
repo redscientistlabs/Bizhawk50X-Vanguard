@@ -1,7 +1,11 @@
 ﻿using BizHawk.Client.Common;
 using BizHawk.Client.EmuHawk;
 using BizHawk.Emulation.Common;
+using BizHawk.Emulation.Cores.Nintendo.N64;
+using Newtonsoft.Json;
 using System;
+using System.Drawing;
+using System.IO;
 using System.Linq;
 using System.Windows.Forms;
 
@@ -154,7 +158,6 @@ namespace RTC
 
 			RTC_Core.SendCommandToBizhawk(new RTC_Command(CommandType.REMOTE_EVENT_SAVEBIZHAWKCONFIG));
 		}
-
 
 		public static void LOAD_GAME_BEGIN()
 		{
@@ -381,6 +384,360 @@ namespace RTC
 					activeForm is RTC.RTC_VmdGen_Form ||
 					activeForm is RTC.RTC_VmdAct_Form
 					);
+		}
+
+		public static Bitmap BIZHAWK_GET_SCREENSHOT()
+		{
+			return GlobalWin.MainForm.MakeScreenshotImage().ToSysdrawingBitmap();
+		}
+
+
+		public static string BIZHAWK_GET_FILESYSTEMCORENAME()
+		{
+			//This returns the folder name of the currently loaded system core
+
+			PathEntry pathEntry = Global.Config.PathEntries[Global.Game.System, "Savestates"] ??
+			Global.Config.PathEntries[Global.Game.System, "Base"];
+
+			return pathEntry.SystemDisplayName;
+		}
+
+		public static string BIZHAWK_GET_FILESYSTEMGAMENAME()
+		{
+			//This returns the filename of the currently loaded game before extension
+
+			PathEntry pathEntry = Global.Config.PathEntries[Global.Game.System, "Savestates"] ??
+			Global.Config.PathEntries[Global.Game.System, "Base"];
+
+			return PathManager.FilesystemSafeName(Global.Game);
+		}
+
+		public static string BIZHAWK_GET_CURRENTLYLOADEDSYSTEMNAME()
+		{
+			//returns the currently loaded core's name
+
+			return Global.Game.System;
+		}
+
+		public static string BIZHAWK_GET_CURRENTLYOPENEDROM()
+		{
+			//This returns the filename of the currently opened rom
+
+			return GlobalWin.MainForm.CurrentlyOpenRom;
+		}
+
+		public static bool BIZHAWK_ISNULLEMULATORCORE()
+		{
+			//This checks if the currently loaded emulator core is the Null emulator
+
+			return Global.Emulator is NullEmulator;
+		}
+
+		public static bool BIZHAWK_ISMAINFORMVISIBLE()
+		{
+			return GlobalWin.MainForm.Visible;
+		}
+
+		public static void BIZHAWK_LOADROM(string RomFile)
+		{
+			var lra = new BizHawk.Client.EmuHawk.MainForm.LoadRomArgs { OpenAdvanced = new OpenAdvanced_OpenRom { Path = RomFile } };
+			GlobalWin.MainForm.LoadRom(RomFile, lra);
+		}
+
+		public static void BIZHAWK_OPEN_HEXEDITOR_ADDRESS(MemoryDomainProxy mdp, long address)
+		{
+			GlobalWin.Tools.Load<HexEditor>();
+			GlobalWin.Tools.HexEditor.SetDomain(mdp.md);
+			GlobalWin.Tools.HexEditor.GoToAddress(address);
+		}
+
+		public static Size BIZHAWK_GETSET_MAINFORMSIZE
+		{
+			get
+			{
+				return GlobalWin.MainForm.Size;
+			}
+			set
+			{
+				GlobalWin.MainForm.Size = value;
+			}
+		}
+
+		public static Point BIZHAWK_GETSET_MAINFORMLOCATION
+		{
+			get
+			{
+				return GlobalWin.MainForm.Location;
+			}
+			set
+			{
+				GlobalWin.MainForm.Location = value;
+			}
+		}
+
+
+		public static void BIZHAWK_STARTSOUND()
+		{
+			if (GlobalWin.MainForm != null) { GlobalWin.Sound.StartSound(); }
+		}
+
+		public static void BIZHAWK_STOPSOUND()
+		{
+			if (GlobalWin.MainForm != null) { GlobalWin.Sound.StopSound(); }
+		}
+
+		public static void BIZHAWK_MAINFORM_CLOSE()
+		{
+			GlobalWin.MainForm?.Close();
+		}
+
+		public static void BIZHAWK_MAINFORM_FOCUS()
+		{
+			GlobalWin.MainForm?.Focus();
+		}
+
+		public static void BIZHAWK_MAINFORM_SAVECONFIG()
+		{
+			GlobalWin.MainForm?.SaveConfig();
+		}
+
+		public static string BIZHAWK_GET_SAVESTATEPREFIX()
+		{
+			return PathManager.SaveStatePrefix(Global.Game);
+		}
+
+		public static void BIZHAWK_LOADSTATE(string path, string quickSlotName)
+		{
+			GlobalWin.MainForm.LoadState(path, quickSlotName, false);
+		}
+
+		public static void BIZHAWK_SAVESTATE(string path, string quickSlotName)
+		{
+			GlobalWin.MainForm.SaveState(path, quickSlotName, false);
+		}
+
+		public static void BIZHAWK_OSDMESSAGE(string message)
+		{
+			GlobalWin.OSD.AddMessage(message);
+		}
+
+		public static void BIZHAWK_MERGECONFIGINI(string backupConfigPath, string stockpileConfigPath)
+		{
+			Config bc;
+			Config sc;
+
+			FileInfo fileBc = new FileInfo(backupConfigPath);
+			FileInfo fileSc = new FileInfo(stockpileConfigPath);
+
+			using (StreamReader reader = fileBc.OpenText())
+			{
+				JsonTextReader r = new JsonTextReader(reader);
+				bc = (Config)ConfigService.Serializer.Deserialize(r, typeof(Config));
+			}
+
+			using (StreamReader reader = fileSc.OpenText())
+			{
+				JsonTextReader r = new JsonTextReader(reader);
+				sc = (Config)ConfigService.Serializer.Deserialize(r, typeof(Config));
+			}
+
+			//bc = (JObject)JsonConvert.DeserializeObject(backupConfig);
+			//sc = (JObject)JsonConvert.DeserializeObject(stockpileConfig);
+
+			sc.HotkeyBindings = bc.HotkeyBindings;
+			sc.AllTrollers = bc.AllTrollers;
+			sc.AllTrollersAutoFire = bc.AllTrollersAutoFire;
+			sc.AllTrollersAnalog = bc.AllTrollersAnalog;
+
+			if (File.Exists(stockpileConfigPath))
+				File.Delete(stockpileConfigPath);
+
+			try
+			{
+				using (StreamWriter writer = fileSc.CreateText())
+				{
+					JsonTextWriter w = new JsonTextWriter(writer) { Formatting = Formatting.Indented };
+					ConfigService.Serializer.Serialize(w, sc);
+				}
+			}
+			catch
+			{
+				/* Eat it */
+			}
+		}
+
+		public static void BIZHAWK_IMPORTCONFIGINI(string importConfigPath, string stockpileConfigPath)
+		{
+			Config bc;
+			Config sc;
+
+			FileInfo fileBc = new FileInfo(importConfigPath);
+			FileInfo fileSc = new FileInfo(stockpileConfigPath);
+
+			using (StreamReader reader = fileBc.OpenText())
+			{
+				JsonTextReader r = new JsonTextReader(reader);
+				bc = (Config)ConfigService.Serializer.Deserialize(r, typeof(Config));
+			}
+
+			using (StreamReader reader = fileSc.OpenText())
+			{
+				JsonTextReader r = new JsonTextReader(reader);
+				sc = (Config)ConfigService.Serializer.Deserialize(r, typeof(Config));
+			}
+
+			//bc = (JObject)JsonConvert.DeserializeObject(backupConfig);
+			//sc = (JObject)JsonConvert.DeserializeObject(stockpileConfig);
+
+			sc.HotkeyBindings = bc.HotkeyBindings;
+			sc.AllTrollers = bc.AllTrollers;
+			sc.AllTrollersAutoFire = bc.AllTrollersAutoFire;
+			sc.AllTrollersAnalog = bc.AllTrollersAnalog;
+
+			if (File.Exists(stockpileConfigPath))
+				File.Delete(stockpileConfigPath);
+
+			try
+			{
+				using (StreamWriter writer = fileSc.CreateText())
+				{
+					JsonTextWriter w = new JsonTextWriter(writer) { Formatting = Formatting.Indented };
+					ConfigService.Serializer.Serialize(w, sc);
+				}
+			}
+			catch
+			{
+				/* Eat it */
+			}
+		}
+
+		public static void BIZHAWK_SET_SYSTEMCORE(string systemName, string systemCore)
+		{
+			switch (systemName.ToUpper())
+			{
+				case "GAMEBOY":
+					Global.Config.GB_AsSGB = systemCore == "sameboy";
+					Global.Config.SGB_UseBsnes = false;
+					Global.Config.GB_UseGBHawk = systemCore == "gbhawk";
+
+					break;
+
+				case "NES":
+					Global.Config.NES_InQuickNES = systemCore == "quicknes";
+					break;
+
+				case "SNES":
+
+					if (systemCore == "bsnes_SGB")
+					{
+						Global.Config.GB_AsSGB = true;
+						Global.Config.SGB_UseBsnes = true;
+					}
+					else
+						Global.Config.SNES_InSnes9x = systemCore == "snes9x";
+
+					break;
+
+				case "GBA":
+					Global.Config.GBA_UsemGBA = systemCore == "mgba";
+					break;
+
+				case "N64":
+
+					//Leaving this here for backwards compatability with 3.10
+					//TODO: Remove this
+					string[] coreParts = systemCore.Split('/');
+					N64SyncSettings ss = (N64SyncSettings)Global.Config.GetCoreSyncSettings<N64>()
+					?? new N64SyncSettings();
+					ss.VideoPlugin = (PluginType)Enum.Parse(typeof(PluginType), coreParts[0], true);
+					ss.Rsp = (N64SyncSettings.RspType)Enum.Parse(typeof(N64SyncSettings.RspType), coreParts[1], true);
+					ss.Core = (N64SyncSettings.CoreType)Enum.Parse(typeof(N64SyncSettings.CoreType), coreParts[2], true);
+					ss.DisableExpansionSlot = (coreParts[3] == "NoExp");
+					N64VideoPluginconfig.PutSyncSettings(ss);
+
+					break;
+			}
+		}
+
+		public static string BIZHAWK_GET_SYSTEMCORENAME(string systemName)
+		{
+			try
+			{
+
+				SettingsAdapter settable = new SettingsAdapter(Global.Emulator);
+
+				switch (systemName.ToUpper())
+				{
+					case "GAMEBOY":
+
+						if (Global.Config.GB_AsSGB)
+							return "sameboy";
+						else if (Global.Config.GB_UseGBHawk)
+							return "gbhawk";
+						else
+							return "gambatte";
+
+					case "NES":
+						return (Global.Config.NES_InQuickNES ? "quicknes" : "neshawk");
+
+					case "SNES":
+
+						if (RTC_MemoryDomains.MemoryInterfaces.ContainsKey("SGB WRAM"))
+							return "bsnes_SGB";
+
+						return (Global.Config.SNES_InSnes9x ? "snes9x" : "bsnes");
+
+					case "GBA":
+						return (Global.Config.GBA_UsemGBA ? "mgba" : "vba-next");
+
+					case "N64":
+
+						N64SyncSettings ss = (N64SyncSettings)Global.Config.GetCoreSyncSettings<N64>()
+											 ?? new N64SyncSettings();
+
+						return $"{ss.VideoPlugin}/{ss.Rsp}/{ss.Core}/{(ss.DisableExpansionSlot ? "NoExp" : "Exp")}";
+					default:
+						break;
+				}
+
+				return systemName;
+			}
+			catch (Exception ex)
+			{
+				throw;
+			}
+		}
+
+		public static string BIZHAWK_GETSET_SYNCSETTINGS
+		{
+			get
+			{
+				SettingsAdapter settable = new SettingsAdapter(Global.Emulator);
+				if (settable.HasSyncSettings)
+				{
+					string ss = ConfigService.SaveWithType(settable.GetSyncSettings());
+					return ss;
+				}
+				return null;
+			}
+			set
+			{
+				SettingsAdapter settable = new SettingsAdapter(Global.Emulator);
+				if (settable.HasSyncSettings)
+				{
+					settable.PutSyncSettings(ConfigService.LoadWithType(value));
+				}
+			}
+		}
+
+		public static void BIZHAWK_STARTRECORDAV(string videowritername, string filename, bool unattended)
+		{
+			GlobalWin.MainForm.RecordAvBase(videowritername, filename, unattended);
+		}
+
+		public static void BIZHAWK_STOPRECORDAV()
+		{
+			GlobalWin.MainForm.StopAv();
 		}
 	}
 }

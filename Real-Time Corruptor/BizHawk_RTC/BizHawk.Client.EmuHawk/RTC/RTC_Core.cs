@@ -1,6 +1,4 @@
-﻿using BizHawk.Client.Common;
-using BizHawk.Client.EmuHawk;
-using BizHawk.Emulation.Common;
+﻿using BizHawk.Emulation.Common;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -189,16 +187,7 @@ namespace RTC
 			Application.Exit();
 		}
 
-		//Process-safe methods for starting/stopping sound in Bizhawk
-		public static void StartSound()
-		{
-			if (GlobalWin.MainForm != null) { GlobalWin.Sound.StartSound(); }
-		}
 
-		public static void StopSound()
-		{
-			if (GlobalWin.MainForm != null) { GlobalWin.Sound.StopSound(); }
-		}
 
 		//Checks if any problematic processes are found
 		public static volatile bool Warned = false;
@@ -254,6 +243,16 @@ namespace RTC
 			})).Start();
 		}
 
+		public static void StartSound()
+		{
+			RTC_Hooks.BIZHAWK_STARTSOUND();
+		}
+
+		public static void StopSound()
+		{
+			RTC_Hooks.BIZHAWK_STOPSOUND();
+		}
+
 		//This is the entry point of RTC. Without this method, nothing will load.
 		public static void Start(Form _standaloneForm = null)
 		{
@@ -264,7 +263,7 @@ namespace RTC
 			{
 				RTC_RPC.SendToKillSwitch("CLOSE");
 				MessageBox.Show("This version has expired");
-				GlobalWin.MainForm.Close();
+				RTC_Hooks.BIZHAWK_MAINFORM_CLOSE();
 				RTC_Core.coreForm.Close();
 				RTC_Core.ghForm.Close();
 				Application.Exit();
@@ -454,8 +453,7 @@ namespace RTC
 			RTC_RPC.Start();
 
 			//Refocus on Bizhawk
-			if (GlobalWin.MainForm != null)
-				GlobalWin.MainForm.Focus();
+			RTC_Hooks.BIZHAWK_MAINFORM_FOCUS();
 
 			//Force create bizhawk config file if it doesn't exist
 			if (!File.Exists(RTC_Core.bizhawkDir + "\\config.ini"))
@@ -866,12 +864,11 @@ namespace RTC
 			var args = new BizHawk.Client.EmuHawk.MainForm.LoadRomArgs();
 
 			if (RomFile == null)
-				RomFile = GlobalWin.MainForm.CurrentlyOpenRom;
+				RomFile = RTC_Hooks.BIZHAWK_GET_CURRENTLYOPENEDROM(); ;
 
-			var lra = new BizHawk.Client.EmuHawk.MainForm.LoadRomArgs { OpenAdvanced = new OpenAdvanced_OpenRom { Path = RomFile } };
 
 			RTC_Hooks.AllowCaptureRewindState = false;
-			GlobalWin.MainForm.LoadRom(RomFile, lra);
+			RTC_Hooks.BIZHAWK_LOADROM(RomFile);
 			RTC_Hooks.AllowCaptureRewindState = true;
 
 			RTC_Core.StartSound();
@@ -884,13 +881,13 @@ namespace RTC
 			// -> EmuHawk Process only
 			//Creates a new savestate and returns the key to it.
 
-			if (Global.Emulator is NullEmulator)
+			if (RTC_Hooks.BIZHAWK_ISNULLEMULATORCORE())
 				return null;
 
 			string quickSlotName = Key + ".timejump";
 
 			//string prefix = (string)SendCommandRTC(new RTC_Command(CommandType.REMOTE_DOMAINS_SYSTEMPREFIX), true);
-			string prefix = PathManager.SaveStatePrefix(Global.Game);
+			string prefix = RTC_Hooks.BIZHAWK_GET_SAVESTATEPREFIX();
 
 			var path = prefix + "." + quickSlotName + ".State";
 
@@ -915,7 +912,7 @@ namespace RTC
 				{
 					try
 					{
-						GlobalWin.MainForm.SaveState(path, quickSlotName, false);
+						RTC_Hooks.BIZHAWK_SAVESTATE(path, quickSlotName);
 					}
 					catch (Exception ex)
 					{
@@ -924,12 +921,12 @@ namespace RTC
 				})).Start();
 			}
 			else
-				GlobalWin.MainForm.SaveState(path, quickSlotName, false);
+				RTC_Hooks.BIZHAWK_SAVESTATE(path, quickSlotName);
 
 			return path;
 		}
 
-		public static bool LoadSavestate_NET(string Key, bool fromLua = false)
+		public static bool LoadSavestate_NET(string Key)
 		{
 			try
 			{
@@ -937,13 +934,13 @@ namespace RTC
 				// -> EmuHawk Process only
 				// Loads a Savestate from a key
 
-				if (Global.Emulator is NullEmulator)
+				if (RTC_Hooks.BIZHAWK_ISNULLEMULATORCORE())
 					return false;
 
 				string quickSlotName = Key + ".timejump";
 
 				//string prefix = (string)SendCommandRTC(new RTC_Command(CommandType.REMOTE_DOMAINS_SYSTEMPREFIX), true);
-				string prefix = PathManager.SaveStatePrefix(Global.Game);
+				string prefix = RTC_Hooks.BIZHAWK_GET_SAVESTATEPREFIX();
 
 				var path = prefix + "." + quickSlotName + ".State";
 
@@ -960,11 +957,11 @@ namespace RTC
 
 				if (File.Exists(path) == false)
 				{
-					GlobalWin.OSD.AddMessage("Unable to load " + quickSlotName + ".State");
+					RTC_Hooks.BIZHAWK_OSDMESSAGE("Unable to load " + quickSlotName + ".State");
 					return false;
 				}
 
-				GlobalWin.MainForm.LoadState(path, quickSlotName, fromLua);
+				RTC_Hooks.BIZHAWK_LOADSTATE(path, quickSlotName);
 
 				return true;
 			}

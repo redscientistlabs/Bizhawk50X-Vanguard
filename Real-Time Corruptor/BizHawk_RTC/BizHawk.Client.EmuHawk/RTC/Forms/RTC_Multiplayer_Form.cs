@@ -1,5 +1,4 @@
-﻿using BizHawk.Client.EmuHawk;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Drawing.Imaging;
@@ -251,11 +250,11 @@ namespace RTC
 
 		private void StreamTimer_Tick(object sender, EventArgs e)
 		{
-			if (GlobalWin.MainForm.Visible)
+			if (RTC_Hooks.BIZHAWK_ISMAINFORMVISIBLE())
 			{
 				RTC_Command cmdBack = new RTC_Command(CommandType.PUSHSCREEN);
 
-				Bitmap bmp = GlobalWin.MainForm.MakeScreenshotImage().ToSysdrawingBitmap();
+				Bitmap bmp = RTC_Hooks.BIZHAWK_GET_SCREENSHOT();
 
 				if (cbCompressStream.Checked)
 					cmdBack.screen = SaveJPG100(bmp, 60);

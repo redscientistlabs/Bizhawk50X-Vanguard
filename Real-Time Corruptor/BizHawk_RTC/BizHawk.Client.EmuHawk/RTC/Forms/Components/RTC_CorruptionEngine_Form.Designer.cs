@@ -130,6 +130,7 @@
             this.pnCustomPrecision.Size = new System.Drawing.Size(221, 57);
             this.pnCustomPrecision.TabIndex = 139;
             this.pnCustomPrecision.Tag = "color:darker";
+            this.pnCustomPrecision.MouseDown += new System.Windows.Forms.MouseEventHandler(this.HandleMouseDown);
             // 
             // lbCoreDefault
             // 
@@ -141,6 +142,7 @@
             this.lbCoreDefault.TabIndex = 83;
             this.lbCoreDefault.Text = "Core default: 8-bit";
             this.lbCoreDefault.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.lbCoreDefault.MouseDown += new System.Windows.Forms.MouseEventHandler(this.HandleMouseDown);
             // 
             // cbUseCustomPrecision
             // 
@@ -156,6 +158,7 @@
             this.cbUseCustomPrecision.Text = "Use custom precision for corruption";
             this.cbUseCustomPrecision.UseVisualStyleBackColor = true;
             this.cbUseCustomPrecision.CheckedChanged += new System.EventHandler(this.cbUseCustomPrecision_CheckedChanged);
+            this.cbUseCustomPrecision.MouseDown += new System.Windows.Forms.MouseEventHandler(this.HandleMouseDown);
             // 
             // cbCustomPrecision
             // 
@@ -175,6 +178,7 @@
             this.cbCustomPrecision.TabIndex = 81;
             this.cbCustomPrecision.Tag = "color:dark";
             this.cbCustomPrecision.SelectedIndexChanged += new System.EventHandler(this.cbCustomPrecision_SelectedIndexChanged);
+            this.cbCustomPrecision.MouseDown += new System.Windows.Forms.MouseEventHandler(this.HandleMouseDown);
             // 
             // cbSelectedEngine
             // 
@@ -198,6 +202,7 @@
             this.cbSelectedEngine.TabIndex = 138;
             this.cbSelectedEngine.Tag = "color:dark";
             this.cbSelectedEngine.SelectedIndexChanged += new System.EventHandler(this.cbSelectedEngine_SelectedIndexChanged);
+            this.cbSelectedEngine.MouseDown += new System.Windows.Forms.MouseEventHandler(this.HandleMouseDown);
             // 
             // gbSelectedEngine
             // 
@@ -209,10 +214,11 @@
             this.gbSelectedEngine.TabIndex = 137;
             this.gbSelectedEngine.TabStop = false;
             this.gbSelectedEngine.Visible = false;
-            // 
-            // gbBlastGeneratorEngine
-            // 
-            this.gbBlastGeneratorEngine.Controls.Add(this.label10);
+            this.gbSelectedEngine.MouseDown += new System.Windows.Forms.MouseEventHandler(this.HandleMouseDown);
+			// 
+			// gbBlastGeneratorEngine
+			// 
+			this.gbBlastGeneratorEngine.Controls.Add(this.label10);
             this.gbBlastGeneratorEngine.Controls.Add(this.comboBox8);
             this.gbBlastGeneratorEngine.Controls.Add(this.label21);
             this.gbBlastGeneratorEngine.Controls.Add(this.btnOpenBlastGenerator);
@@ -224,10 +230,11 @@
             this.gbBlastGeneratorEngine.TabIndex = 146;
             this.gbBlastGeneratorEngine.TabStop = false;
             this.gbBlastGeneratorEngine.Visible = false;
-            // 
-            // label10
-            // 
-            this.label10.AutoSize = true;
+            this.gbBlastGeneratorEngine.MouseDown += new System.Windows.Forms.MouseEventHandler(this.HandleMouseDown);
+			// 
+			// label10
+			// 
+			this.label10.AutoSize = true;
             this.label10.Font = new System.Drawing.Font("Segoe UI", 8F, System.Drawing.FontStyle.Italic);
             this.label10.Location = new System.Drawing.Point(188, 37);
             this.label10.MaximumSize = new System.Drawing.Size(205, 0);
@@ -235,6 +242,7 @@
             this.label10.Size = new System.Drawing.Size(197, 104);
             this.label10.TabIndex = 80;
             this.label10.Text = resources.GetString("label10.Text");
+            this.label10.MouseDown += new System.Windows.Forms.MouseEventHandler(this.HandleMouseDown);
             // 
             // comboBox8
             // 
@@ -250,6 +258,7 @@
             this.comboBox8.TabIndex = 79;
             this.comboBox8.Tag = "color:dark";
             this.comboBox8.Visible = false;
+            this.comboBox8.MouseDown += new System.Windows.Forms.MouseEventHandler(this.HandleMouseDown);
             // 
             // label21
             // 
@@ -260,6 +269,7 @@
             this.label21.Size = new System.Drawing.Size(216, 13);
             this.label21.TabIndex = 78;
             this.label21.Text = "Imports corruption from the Blast Generator";
+            this.label21.MouseDown += new System.Windows.Forms.MouseEventHandler(this.HandleMouseDown);
             // 
             // btnOpenBlastGenerator
             // 
@@ -277,6 +287,7 @@
             this.btnOpenBlastGenerator.Text = "Open Blast Generator";
             this.btnOpenBlastGenerator.UseVisualStyleBackColor = false;
             this.btnOpenBlastGenerator.Click += new System.EventHandler(this.btnOpenBlastGenerator_Click);
+            this.btnOpenBlastGenerator.MouseDown += new System.Windows.Forms.MouseEventHandler(this.HandleMouseDown);
             // 
             // gbVectorEngine
             // 
@@ -292,10 +303,11 @@
             this.gbVectorEngine.TabIndex = 144;
             this.gbVectorEngine.TabStop = false;
             this.gbVectorEngine.Visible = false;
-            // 
-            // panel2
-            // 
-            this.panel2.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(32)))), ((int)(((byte)(32)))), ((int)(((byte)(32)))));
+            this.gbVectorEngine.MouseDown += new System.Windows.Forms.MouseEventHandler(this.HandleMouseDown);
+			// 
+			// panel2
+			// 
+			this.panel2.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(32)))), ((int)(((byte)(32)))), ((int)(((byte)(32)))));
             this.panel2.Controls.Add(this.lbVectorEngineValueText2);
             this.panel2.Controls.Add(this.lbVectorEngineValueText1);
             this.panel2.Controls.Add(this.cbVectorValueList);
@@ -305,6 +317,7 @@
             this.panel2.Size = new System.Drawing.Size(379, 47);
             this.panel2.TabIndex = 135;
             this.panel2.Tag = "color:darker";
+            this.panel2.MouseDown += new System.Windows.Forms.MouseEventHandler(this.HandleMouseDown);
             // 
             // lbVectorEngineValueText2
             // 
@@ -315,6 +328,7 @@
             this.lbVectorEngineValueText2.Size = new System.Drawing.Size(162, 13);
             this.lbVectorEngineValueText2.TabIndex = 139;
             this.lbVectorEngineValueText2.Text = "Line where there are examples";
+            this.lbVectorEngineValueText2.MouseDown += new System.Windows.Forms.MouseEventHandler(this.HandleMouseDown);
             // 
             // lbVectorEngineValueText1
             // 
@@ -325,6 +339,7 @@
             this.lbVectorEngineValueText1.Size = new System.Drawing.Size(192, 13);
             this.lbVectorEngineValueText1.TabIndex = 138;
             this.lbVectorEngineValueText1.Text = "Long text that explains the numbers";
+            this.lbVectorEngineValueText1.MouseDown += new System.Windows.Forms.MouseEventHandler(this.HandleMouseDown);
             // 
             // cbVectorValueList
             // 
@@ -351,6 +366,7 @@
             this.cbVectorValueList.TabIndex = 81;
             this.cbVectorValueList.Tag = "color:dark";
             this.cbVectorValueList.SelectedIndexChanged += new System.EventHandler(this.cbVectorValueList_SelectedIndexChanged);
+            this.cbVectorValueList.MouseDown += new System.Windows.Forms.MouseEventHandler(this.HandleMouseDown);
             // 
             // label18
             // 
@@ -361,6 +377,7 @@
             this.label18.Size = new System.Drawing.Size(56, 13);
             this.label18.TabIndex = 80;
             this.label18.Text = "Value list:";
+            this.label18.MouseDown += new System.Windows.Forms.MouseEventHandler(this.HandleMouseDown);
             // 
             // pnLimiterList
             // 
@@ -374,6 +391,7 @@
             this.pnLimiterList.Size = new System.Drawing.Size(379, 47);
             this.pnLimiterList.TabIndex = 134;
             this.pnLimiterList.Tag = "color:darker";
+            this.pnLimiterList.MouseDown += new System.Windows.Forms.MouseEventHandler(this.HandleMouseDown);
             // 
             // lbVectorEngineLimiterText2
             // 
@@ -384,6 +402,7 @@
             this.lbVectorEngineLimiterText2.Size = new System.Drawing.Size(162, 13);
             this.lbVectorEngineLimiterText2.TabIndex = 142;
             this.lbVectorEngineLimiterText2.Text = "Line where there are examples";
+            this.lbVectorEngineLimiterText2.MouseDown += new System.Windows.Forms.MouseEventHandler(this.HandleMouseDown);
             // 
             // lbVectorEngineLimiterText1
             // 
@@ -394,6 +413,7 @@
             this.lbVectorEngineLimiterText1.Size = new System.Drawing.Size(192, 13);
             this.lbVectorEngineLimiterText1.TabIndex = 141;
             this.lbVectorEngineLimiterText1.Text = "Long text that explains the numbers";
+            this.lbVectorEngineLimiterText1.MouseDown += new System.Windows.Forms.MouseEventHandler(this.HandleMouseDown);
             // 
             // cbVectorLimiterList
             // 
@@ -420,6 +440,7 @@
             this.cbVectorLimiterList.TabIndex = 78;
             this.cbVectorLimiterList.Tag = "color:dark";
             this.cbVectorLimiterList.SelectedIndexChanged += new System.EventHandler(this.cbVectorLimiterList_SelectedIndexChanged);
+            this.cbVectorLimiterList.MouseDown += new System.Windows.Forms.MouseEventHandler(this.HandleMouseDown);
             // 
             // label13
             // 
@@ -430,6 +451,7 @@
             this.label13.Size = new System.Drawing.Size(62, 13);
             this.label13.TabIndex = 79;
             this.label13.Text = "Limiter list:";
+            this.label13.MouseDown += new System.Windows.Forms.MouseEventHandler(this.HandleMouseDown);
             // 
             // comboBox6
             // 
@@ -445,6 +467,7 @@
             this.comboBox6.TabIndex = 82;
             this.comboBox6.Tag = "color:dark";
             this.comboBox6.Visible = false;
+            this.comboBox6.MouseDown += new System.Windows.Forms.MouseEventHandler(this.HandleMouseDown);
             // 
             // label19
             // 
@@ -455,6 +478,7 @@
             this.label19.Size = new System.Drawing.Size(158, 13);
             this.label19.TabIndex = 77;
             this.label19.Text = "Corrupts 32-bit floats using lists";
+            this.label19.MouseDown += new System.Windows.Forms.MouseEventHandler(this.HandleMouseDown);
             // 
             // gbPipeEngine
             // 
@@ -474,16 +498,18 @@
             this.gbPipeEngine.TabIndex = 143;
             this.gbPipeEngine.TabStop = false;
             this.gbPipeEngine.Visible = false;
-            // 
-            // panel8
-            // 
-            this.panel8.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(32)))), ((int)(((byte)(32)))), ((int)(((byte)(32)))));
+            this.gbPipeEngine.MouseDown += new System.Windows.Forms.MouseEventHandler(this.HandleMouseDown);
+			// 
+			// panel8
+			// 
+			this.panel8.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(32)))), ((int)(((byte)(32)))), ((int)(((byte)(32)))));
             this.panel8.Location = new System.Drawing.Point(169, 92);
             this.panel8.Name = "panel8";
             this.panel8.Size = new System.Drawing.Size(221, 57);
             this.panel8.TabIndex = 140;
             this.panel8.Tag = "color:darker";
             this.panel8.Visible = false;
+            this.panel8.MouseDown += new System.Windows.Forms.MouseEventHandler(this.HandleMouseDown);
             // 
             // label14
             // 
@@ -494,6 +520,7 @@
             this.label14.Size = new System.Drawing.Size(201, 13);
             this.label14.TabIndex = 84;
             this.label14.Text = "Copies values from an address to another";
+            this.label14.MouseDown += new System.Windows.Forms.MouseEventHandler(this.HandleMouseDown);
             // 
             // comboBox5
             // 
@@ -509,6 +536,7 @@
             this.comboBox5.TabIndex = 83;
             this.comboBox5.Tag = "color:dark";
             this.comboBox5.Visible = false;
+            this.comboBox5.MouseDown += new System.Windows.Forms.MouseEventHandler(this.HandleMouseDown);
             // 
             // cbClearPipesOnRewind
             // 
@@ -522,6 +550,7 @@
             this.cbClearPipesOnRewind.Text = "Clear pipes on Rewind";
             this.cbClearPipesOnRewind.UseVisualStyleBackColor = true;
             this.cbClearPipesOnRewind.CheckedChanged += new System.EventHandler(this.cbClearPipesOnRewind_CheckedChanged);
+            this.cbClearPipesOnRewind.MouseDown += new System.Windows.Forms.MouseEventHandler(this.HandleMouseDown);
             // 
             // cbLockPipes
             // 
@@ -535,6 +564,7 @@
             this.cbLockPipes.Text = "Lock Pipes";
             this.cbLockPipes.UseVisualStyleBackColor = true;
             this.cbLockPipes.CheckedChanged += new System.EventHandler(this.cbLockPipes_CheckedChanged);
+            this.cbLockPipes.MouseDown += new System.Windows.Forms.MouseEventHandler(this.HandleMouseDown);
             // 
             // btnClearPipes
             // 
@@ -552,6 +582,7 @@
             this.btnClearPipes.Text = "Clear Pipes";
             this.btnClearPipes.UseVisualStyleBackColor = false;
             this.btnClearPipes.Click += new System.EventHandler(this.btnClearPipes_Click);
+            this.btnClearPipes.MouseDown += new System.Windows.Forms.MouseEventHandler(this.HandleMouseDown);
             // 
             // nmMaxPipes
             // 
@@ -579,6 +610,7 @@
             0,
             0});
             this.nmMaxPipes.ValueChanged += new System.EventHandler(this.nmMaxPipes_ValueChanged);
+            this.nmMaxPipes.MouseDown += new System.Windows.Forms.MouseEventHandler(this.HandleMouseDown);
             // 
             // label8
             // 
@@ -589,6 +621,7 @@
             this.label8.Size = new System.Drawing.Size(62, 13);
             this.label8.TabIndex = 0;
             this.label8.Text = "Max pipes:";
+            this.label8.MouseDown += new System.Windows.Forms.MouseEventHandler(this.HandleMouseDown);
             // 
             // gbDistortionEngine
             // 
@@ -606,16 +639,18 @@
             this.gbDistortionEngine.TabIndex = 142;
             this.gbDistortionEngine.TabStop = false;
             this.gbDistortionEngine.Visible = false;
-            // 
-            // panel6
-            // 
-            this.panel6.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(32)))), ((int)(((byte)(32)))), ((int)(((byte)(32)))));
+            this.gbDistortionEngine.MouseDown += new System.Windows.Forms.MouseEventHandler(this.HandleMouseDown);
+			// 
+			// panel6
+			// 
+			this.panel6.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(32)))), ((int)(((byte)(32)))), ((int)(((byte)(32)))));
             this.panel6.Location = new System.Drawing.Point(169, 92);
             this.panel6.Name = "panel6";
             this.panel6.Size = new System.Drawing.Size(221, 57);
             this.panel6.TabIndex = 139;
             this.panel6.Tag = "color:darker";
             this.panel6.Visible = false;
+            this.panel6.MouseDown += new System.Windows.Forms.MouseEventHandler(this.HandleMouseDown);
             // 
             // label17
             // 
@@ -626,6 +661,7 @@
             this.label17.Size = new System.Drawing.Size(189, 13);
             this.label17.TabIndex = 87;
             this.label17.Text = "Backups values and restores them later";
+            this.label17.MouseDown += new System.Windows.Forms.MouseEventHandler(this.HandleMouseDown);
             // 
             // comboBox3
             // 
@@ -641,6 +677,7 @@
             this.comboBox3.TabIndex = 77;
             this.comboBox3.Tag = "color:dark";
             this.comboBox3.Visible = false;
+            this.comboBox3.MouseDown += new System.Windows.Forms.MouseEventHandler(this.HandleMouseDown);
             // 
             // btnResyncDistortionEngine
             // 
@@ -658,6 +695,7 @@
             this.btnResyncDistortionEngine.Text = "Resync Distortion Engine";
             this.btnResyncDistortionEngine.UseVisualStyleBackColor = false;
             this.btnResyncDistortionEngine.Click += new System.EventHandler(this.btnResyncDistortionEngine_Click);
+            this.btnResyncDistortionEngine.MouseDown += new System.Windows.Forms.MouseEventHandler(this.HandleMouseDown);
             // 
             // nmDistortionDelay
             // 
@@ -685,6 +723,7 @@
             0,
             0});
             this.nmDistortionDelay.ValueChanged += new System.EventHandler(this.nmDistortionDelay_ValueChanged);
+            this.nmDistortionDelay.MouseDown += new System.Windows.Forms.MouseEventHandler(this.HandleMouseDown);
             // 
             // label7
             // 
@@ -695,6 +734,7 @@
             this.label7.Size = new System.Drawing.Size(92, 13);
             this.label7.TabIndex = 0;
             this.label7.Text = "Distortion delay:";
+            this.label7.MouseDown += new System.Windows.Forms.MouseEventHandler(this.HandleMouseDown);
             // 
             // gbFreezeEngine
             // 
@@ -713,16 +753,18 @@
             this.gbFreezeEngine.TabIndex = 145;
             this.gbFreezeEngine.TabStop = false;
             this.gbFreezeEngine.Visible = false;
-            // 
-            // panel7
-            // 
-            this.panel7.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(32)))), ((int)(((byte)(32)))), ((int)(((byte)(32)))));
+            this.gbFreezeEngine.MouseDown += new System.Windows.Forms.MouseEventHandler(this.HandleMouseDown);
+			// 
+			// panel7
+			// 
+			this.panel7.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(32)))), ((int)(((byte)(32)))), ((int)(((byte)(32)))));
             this.panel7.Location = new System.Drawing.Point(169, 92);
             this.panel7.Name = "panel7";
             this.panel7.Size = new System.Drawing.Size(221, 57);
             this.panel7.TabIndex = 139;
             this.panel7.Tag = "color:darker";
             this.panel7.Visible = false;
+            this.panel7.MouseDown += new System.Windows.Forms.MouseEventHandler(this.HandleMouseDown);
             // 
             // label20
             // 
@@ -733,6 +775,7 @@
             this.label20.Size = new System.Drawing.Size(112, 13);
             this.label20.TabIndex = 88;
             this.label20.Text = "Freezes values in place";
+            this.label20.MouseDown += new System.Windows.Forms.MouseEventHandler(this.HandleMouseDown);
             // 
             // comboBox4
             // 
@@ -748,6 +791,7 @@
             this.comboBox4.TabIndex = 77;
             this.comboBox4.Tag = "color:dark";
             this.comboBox4.Visible = false;
+            this.comboBox4.MouseDown += new System.Windows.Forms.MouseEventHandler(this.HandleMouseDown);
             // 
             // cbClearFreezesOnRewind
             // 
@@ -761,6 +805,7 @@
             this.cbClearFreezesOnRewind.Text = "Clear freezes on Rewind";
             this.cbClearFreezesOnRewind.UseVisualStyleBackColor = true;
             this.cbClearFreezesOnRewind.CheckedChanged += new System.EventHandler(this.cbClearFreezesOnRewind_CheckedChanged);
+            this.cbClearFreezesOnRewind.MouseDown += new System.Windows.Forms.MouseEventHandler(this.HandleMouseDown);
             // 
             // btnClearAllFreezes
             // 
@@ -778,6 +823,7 @@
             this.btnClearAllFreezes.Text = "Clear all freezes";
             this.btnClearAllFreezes.UseVisualStyleBackColor = false;
             this.btnClearAllFreezes.Click += new System.EventHandler(this.btnClearCheats_Click);
+            this.btnClearAllFreezes.MouseDown += new System.Windows.Forms.MouseEventHandler(this.HandleMouseDown);
             // 
             // nmMaxFreezes
             // 
@@ -805,6 +851,7 @@
             0,
             0});
             this.nmMaxFreezes.ValueChanged += new System.EventHandler(this.nmMaxFreezes_ValueChanged);
+            this.nmMaxFreezes.MouseDown += new System.Windows.Forms.MouseEventHandler(this.HandleMouseDown);
             // 
             // label4
             // 
@@ -815,6 +862,7 @@
             this.label4.Size = new System.Drawing.Size(70, 13);
             this.label4.TabIndex = 0;
             this.label4.Text = "Max freezes:";
+            this.label4.MouseDown += new System.Windows.Forms.MouseEventHandler(this.HandleMouseDown);
             // 
             // gbHellgenieEngine
             // 
@@ -837,16 +885,18 @@
             this.gbHellgenieEngine.TabIndex = 141;
             this.gbHellgenieEngine.TabStop = false;
             this.gbHellgenieEngine.Visible = false;
-            // 
-            // label26
-            // 
-            this.label26.AutoSize = true;
+            this.gbHellgenieEngine.MouseDown += new System.Windows.Forms.MouseEventHandler(this.HandleMouseDown);
+			// 
+			// label26
+			// 
+			this.label26.AutoSize = true;
             this.label26.Font = new System.Drawing.Font("Segoe UI", 8F);
             this.label26.Location = new System.Drawing.Point(4, 90);
             this.label26.Name = "label26";
             this.label26.Size = new System.Drawing.Size(87, 13);
             this.label26.TabIndex = 147;
             this.label26.Text = "Maximum Value";
+            this.label26.MouseDown += new System.Windows.Forms.MouseEventHandler(this.HandleMouseDown);
             // 
             // label27
             // 
@@ -857,6 +907,7 @@
             this.label27.Size = new System.Drawing.Size(86, 13);
             this.label27.TabIndex = 144;
             this.label27.Text = "Minimum Value";
+            this.label27.MouseDown += new System.Windows.Forms.MouseEventHandler(this.HandleMouseDown);
             // 
             // panel5
             // 
@@ -867,6 +918,7 @@
             this.panel5.TabIndex = 138;
             this.panel5.Tag = "color:darker";
             this.panel5.Visible = false;
+            this.panel5.MouseDown += new System.Windows.Forms.MouseEventHandler(this.HandleMouseDown);
             // 
             // nmMaxValueHellgenie
             // 
@@ -885,6 +937,7 @@
             0,
             0});
             this.nmMaxValueHellgenie.ValueChanged += new System.EventHandler(this.nmMaxValueHellgenie_ValueChanged);
+            this.nmMaxValueHellgenie.MouseDown += new System.Windows.Forms.MouseEventHandler(this.HandleMouseDown);
             // 
             // label16
             // 
@@ -895,6 +948,7 @@
             this.label16.Size = new System.Drawing.Size(218, 13);
             this.label16.TabIndex = 86;
             this.label16.Text = "Edits values and makes them keep their value";
+            this.label16.MouseDown += new System.Windows.Forms.MouseEventHandler(this.HandleMouseDown);
             // 
             // nmMinValueHellgenie
             // 
@@ -908,6 +962,7 @@
             this.nmMinValueHellgenie.TabIndex = 145;
             this.nmMinValueHellgenie.Tag = "color:dark";
             this.nmMinValueHellgenie.ValueChanged += new System.EventHandler(this.nmMinValueHellgenie_ValueChanged);
+            this.nmMinValueHellgenie.MouseDown += new System.Windows.Forms.MouseEventHandler(this.HandleMouseDown);
             // 
             // comboBox2
             // 
@@ -923,6 +978,7 @@
             this.comboBox2.TabIndex = 76;
             this.comboBox2.Tag = "color:dark";
             this.comboBox2.Visible = false;
+            this.comboBox2.MouseDown += new System.Windows.Forms.MouseEventHandler(this.HandleMouseDown);
             // 
             // cbClearCheatsOnRewind
             // 
@@ -935,6 +991,7 @@
             this.cbClearCheatsOnRewind.TabIndex = 75;
             this.cbClearCheatsOnRewind.Text = "Clear cheats on Rewind";
             this.cbClearCheatsOnRewind.UseVisualStyleBackColor = true;
+            this.cbClearCheatsOnRewind.MouseDown += new System.Windows.Forms.MouseEventHandler(this.HandleMouseDown);
             // 
             // btnClearCheats
             // 
@@ -952,6 +1009,7 @@
             this.btnClearCheats.Text = "Clear all cheats";
             this.btnClearCheats.UseVisualStyleBackColor = false;
             this.btnClearCheats.Click += new System.EventHandler(this.btnClearCheats_Click);
+            this.btnClearCheats.MouseDown += new System.Windows.Forms.MouseEventHandler(this.HandleMouseDown);
             // 
             // nmMaxCheats
             // 
@@ -979,6 +1037,7 @@
             0,
             0});
             this.nmMaxCheats.ValueChanged += new System.EventHandler(this.nmMaxCheats_ValueChanged);
+            this.nmMaxCheats.MouseDown += new System.Windows.Forms.MouseEventHandler(this.HandleMouseDown);
             // 
             // label1
             // 
@@ -989,6 +1048,7 @@
             this.label1.Size = new System.Drawing.Size(67, 13);
             this.label1.TabIndex = 0;
             this.label1.Text = "Max cheats:";
+            this.label1.MouseDown += new System.Windows.Forms.MouseEventHandler(this.HandleMouseDown);
             // 
             // gbNightmareEngine
             // 
@@ -1009,16 +1069,18 @@
             this.gbNightmareEngine.TabIndex = 140;
             this.gbNightmareEngine.TabStop = false;
             this.gbNightmareEngine.Visible = false;
-            // 
-            // label24
-            // 
-            this.label24.AutoSize = true;
+            this.gbNightmareEngine.MouseDown += new System.Windows.Forms.MouseEventHandler(this.HandleMouseDown);
+			// 
+			// label24
+			// 
+			this.label24.AutoSize = true;
             this.label24.Font = new System.Drawing.Font("Segoe UI", 8F);
             this.label24.Location = new System.Drawing.Point(4, 90);
             this.label24.Name = "label24";
             this.label24.Size = new System.Drawing.Size(87, 13);
             this.label24.TabIndex = 143;
             this.label24.Text = "Maximum Value";
+            this.label24.MouseDown += new System.Windows.Forms.MouseEventHandler(this.HandleMouseDown);
             // 
             // label23
             // 
@@ -1029,6 +1091,7 @@
             this.label23.Size = new System.Drawing.Size(86, 13);
             this.label23.TabIndex = 140;
             this.label23.Text = "Minimum Value";
+            this.label23.MouseDown += new System.Windows.Forms.MouseEventHandler(this.HandleMouseDown);
             // 
             // nmMaxValueNightmare
             // 
@@ -1047,6 +1110,7 @@
             0,
             0});
             this.nmMaxValueNightmare.ValueChanged += new System.EventHandler(this.nmMinValueNightmare_ValueChanged);
+            this.nmMaxValueNightmare.MouseDown += new System.Windows.Forms.MouseEventHandler(this.HandleMouseDown);
             // 
             // nmMinValueNightmare
             // 
@@ -1060,6 +1124,7 @@
             this.nmMinValueNightmare.TabIndex = 141;
             this.nmMinValueNightmare.Tag = "color:dark";
             this.nmMinValueNightmare.ValueChanged += new System.EventHandler(this.nmMinValueNightmare_ValueChanged);
+            this.nmMinValueNightmare.MouseDown += new System.Windows.Forms.MouseEventHandler(this.HandleMouseDown);
             // 
             // panel4
             // 
@@ -1070,6 +1135,7 @@
             this.panel4.TabIndex = 137;
             this.panel4.Tag = "color:darker";
             this.panel4.Visible = false;
+            this.panel4.MouseDown += new System.Windows.Forms.MouseEventHandler(this.HandleMouseDown);
             // 
             // label15
             // 
@@ -1080,6 +1146,7 @@
             this.label15.Size = new System.Drawing.Size(117, 13);
             this.label15.TabIndex = 85;
             this.label15.Text = "Replaces or edits values";
+            this.label15.MouseDown += new System.Windows.Forms.MouseEventHandler(this.HandleMouseDown);
             // 
             // comboBox1
             // 
@@ -1095,6 +1162,7 @@
             this.comboBox1.TabIndex = 16;
             this.comboBox1.Tag = "color:dark";
             this.comboBox1.Visible = false;
+            this.comboBox1.MouseDown += new System.Windows.Forms.MouseEventHandler(this.HandleMouseDown);
             // 
             // cbBlastType
             // 
@@ -1114,6 +1182,7 @@
             this.cbBlastType.TabIndex = 13;
             this.cbBlastType.Tag = "color:dark";
             this.cbBlastType.SelectedIndexChanged += new System.EventHandler(this.cbBlastType_SelectedIndexChanged);
+            this.cbBlastType.MouseDown += new System.Windows.Forms.MouseEventHandler(this.HandleMouseDown);
             // 
             // label9
             // 
@@ -1124,6 +1193,7 @@
             this.label9.Size = new System.Drawing.Size(60, 13);
             this.label9.TabIndex = 12;
             this.label9.Text = "Blast type:";
+            this.label9.MouseDown += new System.Windows.Forms.MouseEventHandler(this.HandleMouseDown);
             // 
             // RTC_CorruptionEngine_Form
             // 
@@ -1145,9 +1215,9 @@
             this.Name = "RTC_CorruptionEngine_Form";
             this.Tag = "color:normal";
             this.Text = "Corruption Engine";
-            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.RTC_CorruptionEngine_Form_FormClosing);
+            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.HandleFormClosing);
             this.Load += new System.EventHandler(this.RTC_CorruptionEngine_Form_Load);
-            this.MouseDown += new System.Windows.Forms.MouseEventHandler(this.RTC_CorruptionEngine_Form_MouseDown);
+            this.MouseDown += new System.Windows.Forms.MouseEventHandler(this.HandleMouseDown);
             this.pnCustomPrecision.ResumeLayout(false);
             this.pnCustomPrecision.PerformLayout();
             this.gbBlastGeneratorEngine.ResumeLayout(false);

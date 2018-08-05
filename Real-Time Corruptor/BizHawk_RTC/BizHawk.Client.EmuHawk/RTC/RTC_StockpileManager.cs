@@ -1,7 +1,4 @@
-﻿using BizHawk.Client.Common;
-using BizHawk.Client.EmuHawk;
-using BizHawk.Emulation.Common;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -352,18 +349,17 @@ namespace RTC
 
 			if (ReloadRom)
 			{
-				string ss = null;
 				RTC_Core.LoadRom_NET(sk.RomFilename);
 
 				var ssWatch = System.Diagnostics.Stopwatch.StartNew();
-				ss = StashKey.getSyncSettings_NET(ss);
+				string ss = RTC_Hooks.BIZHAWK_GETSET_SYNCSETTINGS;
 				ssWatch.Stop();
 				Console.WriteLine($"Time taken to get the SyncSettings: {0}ms", ssWatch.ElapsedMilliseconds);
 
 				//If the syncsettings are different, update them and load it again. Otheriwse, leave as is
 				if (sk.SyncSettings != ss && sk.SyncSettings != null)
 				{
-					StashKey.putSyncSettings_NET(sk.SyncSettings);
+					RTC_Hooks.BIZHAWK_GETSET_SYNCSETTINGS = sk.SyncSettings;
 					RTC_Core.LoadRom_NET(sk.RomFilename);
 				}
 				GameHasChanged = true;
@@ -371,13 +367,10 @@ namespace RTC
 
 			RTC_Core.StartSound();
 
-			PathEntry pathEntry = Global.Config.PathEntries[Global.Game.System, "Savestates"] ??
-			Global.Config.PathEntries[Global.Game.System, "Base"];
-
 			if (!GameHasChanged)
 				TheoricalSaveStateFilename = RTC_Core.bizhawkDir + "\\" + GameSystem + "\\State\\" + GameName + "." + Key + ".timejump.State";
 			else
-				TheoricalSaveStateFilename = RTC_Core.bizhawkDir + "\\" + RTC_Core.EmuFolderCheck(pathEntry.SystemDisplayName) + "\\State\\" + PathManager.FilesystemSafeName(Global.Game) + "." + Key + ".timejump.State";
+				TheoricalSaveStateFilename = RTC_Core.bizhawkDir + "\\" + RTC_Core.EmuFolderCheck(RTC_Hooks.BIZHAWK_GET_FILESYSTEMCORENAME()) + "\\State\\" + RTC_Hooks.BIZHAWK_GET_FILESYSTEMGAMENAME() + "." + Key + ".timejump.State";
 
 			if (File.Exists(TheoricalSaveStateFilename))
 			{
@@ -446,13 +439,13 @@ namespace RTC
 
 		public static bool ChangeGameWarning(string rom, bool dontask = false)
 		{
-			if (Global.Emulator is NullEmulator || GlobalWin.MainForm.CurrentlyOpenRom.ToString().Contains("default.nes") || dontask)
+			if (RTC_Hooks.BIZHAWK_ISNULLEMULATORCORE() || RTC_Hooks.BIZHAWK_GET_CURRENTLYOPENEDROM().Contains("default.nes") || dontask)
 				return true;
 
 			if (rom == null)
 				return false;
 
-			string currentFilename = GlobalWin.MainForm.CurrentlyOpenRom.ToString();
+			string currentFilename = RTC_Hooks.BIZHAWK_GET_CURRENTLYOPENEDROM();
 
 			if (currentFilename.IndexOf("\\") != -1)
 				currentFilename = currentFilename.Substring(currentFilename.LastIndexOf("\\") + 1);
@@ -495,8 +488,8 @@ namespace RTC
 
 			bl.Layer.AddRange(RTC_StepActions.GetRawBlastLayer().Layer);
 
-			string thisSystem = Global.Game.System;
-			string romFilename = GlobalWin.MainForm.CurrentlyOpenRom;
+			string thisSystem = RTC_Hooks.BIZHAWK_GET_CURRENTLYLOADEDSYSTEMNAME();
+			string romFilename = RTC_Hooks.BIZHAWK_GET_CURRENTLYOPENEDROM();
 
 			var rp = RTC_MemoryDomains.GetRomParts(thisSystem, romFilename);
 
@@ -520,13 +513,13 @@ namespace RTC
 						addData.AddRange(RTC_MemoryDomains.GetDomainData(rp.SecondDomain));
 
 					byte[] corrupted = addData.ToArray();
-					byte[] original = File.ReadAllBytes(GlobalWin.MainForm.CurrentlyOpenRom);
+					byte[] original = File.ReadAllBytes(romFilename);
 
 					if (RTC_MemoryDomains.MemoryInterfaces.ContainsKey("32X FB")) //Flip 16-bit words on 32X rom
 						original = original.FlipWords(2);
 					else if (thisSystem.ToUpper() == "N64")
 						original = BizHawk.Client.Common.RomGame.MutateSwapN64(original);
-					else if (GlobalWin.MainForm.CurrentlyOpenRom.ToUpper().Contains(".SMD"))
+					else if (romFilename.ToUpper().Contains(".SMD"))
 						original = BizHawk.Client.Common.RomGame.DeInterleaveSMD(original);
 
 					for (int i = 0; i < rp.SkipBytes; i++)

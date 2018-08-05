@@ -69,6 +69,7 @@
             this.cbSelectedMemoryDomain.TabIndex = 16;
             this.cbSelectedMemoryDomain.Tag = "color:dark";
             this.cbSelectedMemoryDomain.SelectedIndexChanged += new System.EventHandler(this.cbSelectedMemoryDomain_SelectedIndexChanged);
+            this.cbSelectedMemoryDomain.MouseDown += new System.Windows.Forms.MouseEventHandler(this.HandleMouseDown);
             // 
             // btnLoadDomains
             // 
@@ -86,6 +87,7 @@
             this.btnLoadDomains.Text = "Load Domains";
             this.btnLoadDomains.UseVisualStyleBackColor = false;
             this.btnLoadDomains.Click += new System.EventHandler(this.btnSelectAll_Click);
+            this.btnLoadDomains.MouseDown += new System.Windows.Forms.MouseEventHandler(this.HandleMouseDown);
             // 
             // label17
             // 
@@ -97,6 +99,7 @@
             this.label17.Size = new System.Drawing.Size(115, 19);
             this.label17.TabIndex = 117;
             this.label17.Text = "Memory Domain";
+            this.label17.MouseDown += new System.Windows.Forms.MouseEventHandler(this.HandleMouseDown);
             // 
             // groupBox1
             // 
@@ -114,6 +117,7 @@
             this.groupBox1.TabIndex = 123;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Domain summary";
+            this.groupBox1.MouseDown += new System.Windows.Forms.MouseEventHandler(this.HandleMouseDown);
             // 
             // lbEndianTypeValue
             // 
@@ -125,6 +129,7 @@
             this.lbEndianTypeValue.Size = new System.Drawing.Size(42, 13);
             this.lbEndianTypeValue.TabIndex = 92;
             this.lbEndianTypeValue.Text = "#####";
+            this.lbEndianTypeValue.MouseDown += new System.Windows.Forms.MouseEventHandler(this.HandleMouseDown);
             // 
             // lbWordSizeValue
             // 
@@ -136,6 +141,7 @@
             this.lbWordSizeValue.Size = new System.Drawing.Size(42, 13);
             this.lbWordSizeValue.TabIndex = 91;
             this.lbWordSizeValue.Text = "#####";
+            this.lbWordSizeValue.MouseDown += new System.Windows.Forms.MouseEventHandler(this.HandleMouseDown);
             // 
             // lbDomainSizeValue
             // 
@@ -147,6 +153,7 @@
             this.lbDomainSizeValue.Size = new System.Drawing.Size(42, 13);
             this.lbDomainSizeValue.TabIndex = 90;
             this.lbDomainSizeValue.Text = "#####";
+            this.lbDomainSizeValue.MouseDown += new System.Windows.Forms.MouseEventHandler(this.HandleMouseDown);
             // 
             // lbEndianTypeLabel
             // 
@@ -158,6 +165,7 @@
             this.lbEndianTypeLabel.Size = new System.Drawing.Size(81, 17);
             this.lbEndianTypeLabel.TabIndex = 88;
             this.lbEndianTypeLabel.Text = "Endian Type:";
+            this.lbEndianTypeLabel.MouseDown += new System.Windows.Forms.MouseEventHandler(this.HandleMouseDown);
             // 
             // lbWordSizeLabel
             // 
@@ -169,6 +177,7 @@
             this.lbWordSizeLabel.Size = new System.Drawing.Size(70, 17);
             this.lbWordSizeLabel.TabIndex = 87;
             this.lbWordSizeLabel.Text = "Word Size:";
+            this.lbWordSizeLabel.MouseDown += new System.Windows.Forms.MouseEventHandler(this.HandleMouseDown);
             // 
             // lbDomainSizeLabel
             // 
@@ -180,6 +189,7 @@
             this.lbDomainSizeLabel.Size = new System.Drawing.Size(83, 17);
             this.lbDomainSizeLabel.TabIndex = 86;
             this.lbDomainSizeLabel.Text = "Domain Size:";
+            this.lbDomainSizeLabel.MouseDown += new System.Windows.Forms.MouseEventHandler(this.HandleMouseDown);
             // 
             // btnGenerateVMD
             // 
@@ -197,6 +207,7 @@
             this.btnGenerateVMD.Text = "Generate VMD";
             this.btnGenerateVMD.UseVisualStyleBackColor = false;
             this.btnGenerateVMD.Click += new System.EventHandler(this.btnGenerateVMD_Click);
+            this.btnGenerateVMD.MouseDown += new System.Windows.Forms.MouseEventHandler(this.HandleMouseDown);
             // 
             // cbUsePointerSpacer
             // 
@@ -209,6 +220,7 @@
             this.cbUsePointerSpacer.TabIndex = 125;
             this.cbUsePointerSpacer.Text = "Set pointer every";
             this.cbUsePointerSpacer.UseVisualStyleBackColor = true;
+            this.cbUsePointerSpacer.MouseDown += new System.Windows.Forms.MouseEventHandler(this.HandleMouseDown);
             // 
             // label4
             // 
@@ -220,6 +232,7 @@
             this.label4.Size = new System.Drawing.Size(58, 13);
             this.label4.TabIndex = 127;
             this.label4.Text = "addresses";
+            this.label4.MouseDown += new System.Windows.Forms.MouseEventHandler(this.HandleMouseDown);
             // 
             // tbCustomAddresses
             // 
@@ -236,6 +249,7 @@
             this.tbCustomAddresses.Size = new System.Drawing.Size(161, 222);
             this.tbCustomAddresses.TabIndex = 128;
             this.tbCustomAddresses.Tag = "color:dark";
+            this.tbCustomAddresses.MouseDown += new System.Windows.Forms.MouseEventHandler(this.HandleMouseDown);
             // 
             // label5
             // 
@@ -247,6 +261,7 @@
             this.label5.Size = new System.Drawing.Size(131, 15);
             this.label5.TabIndex = 129;
             this.label5.Text = "Remove/Add addresses";
+            this.label5.MouseDown += new System.Windows.Forms.MouseEventHandler(this.HandleMouseDown);
             // 
             // label2
             // 
@@ -258,6 +273,7 @@
             this.label2.Size = new System.Drawing.Size(67, 13);
             this.label2.TabIndex = 131;
             this.label2.Text = "VMD Name:";
+            this.label2.MouseDown += new System.Windows.Forms.MouseEventHandler(this.HandleMouseDown);
             // 
             // tbVmdName
             // 
@@ -269,6 +285,7 @@
             this.tbVmdName.Size = new System.Drawing.Size(147, 22);
             this.tbVmdName.TabIndex = 132;
             this.tbVmdName.Tag = "color:dark";
+            this.tbVmdName.MouseDown += new System.Windows.Forms.MouseEventHandler(this.HandleMouseDown);
             // 
             // btnHelp
             // 
@@ -286,6 +303,7 @@
             this.btnHelp.Tag = "color:light";
             this.btnHelp.UseVisualStyleBackColor = false;
             this.btnHelp.Click += new System.EventHandler(this.btnHelp_Click);
+            this.btnHelp.MouseDown += new System.Windows.Forms.MouseEventHandler(this.HandleMouseDown);
             // 
             // nmPointerSpacer
             // 
@@ -308,6 +326,7 @@
             0,
             0});
             this.nmPointerSpacer.ValueChanged += new System.EventHandler(this.numericUpDown2_ValueChanged);
+            this.nmPointerSpacer.MouseDown += new System.Windows.Forms.MouseEventHandler(this.HandleMouseDown);
             // 
             // label1
             // 
@@ -319,6 +338,7 @@
             this.label1.Size = new System.Drawing.Size(95, 13);
             this.label1.TabIndex = 137;
             this.label1.Text = "bytes of padding";
+            this.label1.MouseDown += new System.Windows.Forms.MouseEventHandler(this.HandleMouseDown);
             // 
             // nmPadding
             // 
@@ -340,6 +360,7 @@
             0,
             0,
             0});
+            this.nmPadding.MouseDown += new System.Windows.Forms.MouseEventHandler(this.HandleMouseDown);
             // 
             // cbUsePadding
             // 
@@ -352,6 +373,7 @@
             this.cbUsePadding.TabIndex = 135;
             this.cbUsePadding.Text = "Add";
             this.cbUsePadding.UseVisualStyleBackColor = true;
+            this.cbUsePadding.MouseDown += new System.Windows.Forms.MouseEventHandler(this.HandleMouseDown);
             // 
             // RTC_VmdGen_Form
             // 

@@ -59,6 +59,7 @@
             this.lbLoadedVmdList.TabIndex = 12;
             this.lbLoadedVmdList.Tag = "color:dark";
             this.lbLoadedVmdList.SelectedIndexChanged += new System.EventHandler(this.lbLoadedVmdList_SelectedIndexChanged);
+            this.lbLoadedVmdList.MouseDown += new System.Windows.Forms.MouseEventHandler(this.HandleMouseDown);
             // 
             // btnUnloadVmd
             // 
@@ -77,6 +78,7 @@
             this.btnUnloadVmd.Text = "Unload Selected VMDs";
             this.btnUnloadVmd.UseVisualStyleBackColor = false;
             this.btnUnloadVmd.Click += new System.EventHandler(this.btnUnloadVMD_Click);
+            this.btnUnloadVmd.MouseDown += new System.Windows.Forms.MouseEventHandler(this.HandleMouseDown);
             // 
             // btnLoadVmd
             // 
@@ -95,6 +97,7 @@
             this.btnLoadVmd.Text = "Load VMD from File";
             this.btnLoadVmd.UseVisualStyleBackColor = false;
             this.btnLoadVmd.Click += new System.EventHandler(this.btnLoadVmd_Click);
+            this.btnLoadVmd.MouseDown += new System.Windows.Forms.MouseEventHandler(this.HandleMouseDown);
             // 
             // btnSaveVmd
             // 
@@ -113,6 +116,7 @@
             this.btnSaveVmd.Text = "Save Selected VMD to File";
             this.btnSaveVmd.UseVisualStyleBackColor = false;
             this.btnSaveVmd.Click += new System.EventHandler(this.btnSaveVmd_Click);
+            this.btnSaveVmd.MouseDown += new System.Windows.Forms.MouseEventHandler(this.HandleMouseDown);
             // 
             // gbVmdSummary
             // 
@@ -129,10 +133,11 @@
             this.gbVmdSummary.TabIndex = 129;
             this.gbVmdSummary.TabStop = false;
             this.gbVmdSummary.Text = "Selected VMD Summary";
-            // 
-            // lbRealDomainValue
-            // 
-            this.lbRealDomainValue.AutoSize = true;
+            this.gbVmdSummary.MouseDown += new System.Windows.Forms.MouseEventHandler(this.HandleMouseDown);
+			// 
+			// lbRealDomainValue
+			// 
+			this.lbRealDomainValue.AutoSize = true;
             this.lbRealDomainValue.Font = new System.Drawing.Font("Segoe UI", 8F);
             this.lbRealDomainValue.ForeColor = System.Drawing.Color.White;
             this.lbRealDomainValue.Location = new System.Drawing.Point(8, 72);
@@ -140,6 +145,7 @@
             this.lbRealDomainValue.Size = new System.Drawing.Size(42, 13);
             this.lbRealDomainValue.TabIndex = 95;
             this.lbRealDomainValue.Text = "#####";
+            this.lbRealDomainValue.MouseDown += new System.Windows.Forms.MouseEventHandler(this.HandleMouseDown);
             // 
             // lbRealDomainLabel
             // 
@@ -151,6 +157,7 @@
             this.lbRealDomainLabel.Size = new System.Drawing.Size(85, 17);
             this.lbRealDomainLabel.TabIndex = 94;
             this.lbRealDomainLabel.Text = "Real Domain:";
+            this.lbRealDomainLabel.MouseDown += new System.Windows.Forms.MouseEventHandler(this.HandleMouseDown);
             // 
             // lbVmdSizeValue
             // 
@@ -162,6 +169,7 @@
             this.lbVmdSizeValue.Size = new System.Drawing.Size(42, 13);
             this.lbVmdSizeValue.TabIndex = 93;
             this.lbVmdSizeValue.Text = "#####";
+            this.lbVmdSizeValue.MouseDown += new System.Windows.Forms.MouseEventHandler(this.HandleMouseDown);
             // 
             // lbVmdSizeLabel
             // 
@@ -173,6 +181,7 @@
             this.lbVmdSizeLabel.Size = new System.Drawing.Size(67, 17);
             this.lbVmdSizeLabel.TabIndex = 89;
             this.lbVmdSizeLabel.Text = "VMD Size:";
+            this.lbVmdSizeLabel.MouseDown += new System.Windows.Forms.MouseEventHandler(this.HandleMouseDown);
             // 
             // btnRenameVMD
             // 
@@ -191,6 +200,7 @@
             this.btnRenameVMD.Text = "Rename Selected VMD";
             this.btnRenameVMD.UseVisualStyleBackColor = false;
             this.btnRenameVMD.Click += new System.EventHandler(this.btnRenameVMD_Click);
+            this.btnRenameVMD.MouseDown += new System.Windows.Forms.MouseEventHandler(this.HandleMouseDown);
             // 
             // RTC_VmdPool_Form
             // 
@@ -209,9 +219,9 @@
             this.Name = "RTC_VmdPool_Form";
             this.Tag = "color:darkerer";
             this.Text = "VMD Pool";
-            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.RTC_VmdPool_Form_FormClosing);
+            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.HandleFormClosing);
             this.Load += new System.EventHandler(this.RTC_VmdPool_Form_Load);
-            this.MouseDown += new System.Windows.Forms.MouseEventHandler(this.RTC_VmdPool_Form_MouseDown);
+            this.MouseDown += new System.Windows.Forms.MouseEventHandler(this.HandleMouseDown);
             this.gbVmdSummary.ResumeLayout(false);
             this.gbVmdSummary.PerformLayout();
             this.ResumeLayout(false);

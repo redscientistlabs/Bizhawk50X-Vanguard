@@ -54,6 +54,7 @@
             this.lbMemoryDomains.TabIndex = 15;
             this.lbMemoryDomains.Tag = "color:dark";
             this.lbMemoryDomains.SelectedIndexChanged += new System.EventHandler(this.lbMemoryDomains_SelectedIndexChanged);
+            this.lbMemoryDomains.MouseDown += new System.Windows.Forms.MouseEventHandler(base.HandleMouseDown);
             // 
             // btnAutoSelectDomains
             // 
@@ -73,6 +74,7 @@
             this.btnAutoSelectDomains.Text = "Auto-select domains";
             this.btnAutoSelectDomains.UseVisualStyleBackColor = false;
             this.btnAutoSelectDomains.Click += new System.EventHandler(this.btnAutoSelectDomains_Click);
+            this.btnAutoSelectDomains.MouseDown += new System.Windows.Forms.MouseEventHandler(base.HandleMouseDown);
             // 
             // btnRefreshDomains
             // 
@@ -91,6 +93,7 @@
             this.btnRefreshDomains.Text = "Unselect all";
             this.btnRefreshDomains.UseVisualStyleBackColor = false;
             this.btnRefreshDomains.Click += new System.EventHandler(this.btnRefreshDomains_Click);
+            this.btnRefreshDomains.MouseDown += new System.Windows.Forms.MouseEventHandler(base.HandleMouseDown);
             // 
             // btnSelectAll
             // 
@@ -109,6 +112,7 @@
             this.btnSelectAll.Text = "Select all";
             this.btnSelectAll.UseVisualStyleBackColor = false;
             this.btnSelectAll.Click += new System.EventHandler(this.btnSelectAll_Click);
+            this.btnSelectAll.MouseDown += new System.Windows.Forms.MouseEventHandler(base.HandleMouseDown);
             // 
             // RTC_MemoryDomains_Form
             // 
@@ -124,8 +128,8 @@
             this.Name = "RTC_MemoryDomains_Form";
             this.Tag = "color:normal";
             this.Text = "Memory Domains";
-            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.RTC_MemoryDomains_Form_FormClosing);
-            this.MouseDown += new System.Windows.Forms.MouseEventHandler(this.RTC_MemoryDomains_Form_MouseDown);
+            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(base.HandleFormClosing);
+            this.MouseDown += new System.Windows.Forms.MouseEventHandler(base.HandleMouseDown);
             this.ResumeLayout(false);
 
 		}

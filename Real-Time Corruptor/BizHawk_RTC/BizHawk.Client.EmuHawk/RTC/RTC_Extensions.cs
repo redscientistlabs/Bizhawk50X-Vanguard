@@ -572,6 +572,7 @@ namespace RTC
 			return allControls;
 		}
 
+
 		#endregion CONTROL EXTENSIONS
 
 		#region PATH EXTENSIONS
@@ -710,6 +711,51 @@ namespace RTC
 				this.Hide();				//If the target panel hosts another ComponentForm, we won't override it
 			else							//This is most likely going to happen if a VMD ComponentForm was changed to a window, 
 				AnchorToPanel(targetPanel); //then another VMD tool was selected and that window was closed
+		}
+
+
+		/* Note: Visual studio is so dumb, the designer won't allow to bind an event to a method in the base class
+		   Just paste the following code at the beginning of the ComponentForm class to fix this stupid shit
+
+		public new void HandleMouseDown(object s, MouseEventArgs e) => base.HandleMouseDown(s, e);
+		public new void HandleFormClosing(object s, FormClosingEventArgs e) => base.HandleFormClosing(s, e);
+		 
+		ALSO, GroupBox does have an event handler for MouseDown but michaelsoft are too high on crack to let
+		us bind something to it in the properties panel. Gotta add it manually in the designer.cs ffs.
+		*/
+
+		public void HandleMouseDown(object sender, MouseEventArgs e)
+		{
+			if (sender is NumericUpDown || sender is TextBox)
+				return;
+
+			while (!(sender is ComponentForm))
+			{
+				Control c = (Control)sender;
+				sender = c.Parent;
+				e = new MouseEventArgs(e.Button, e.Clicks, e.X + c.Location.X, e.Y + c.Location.Y, e.Delta);
+			}
+
+			if (e.Button == MouseButtons.Right && (sender as ComponentForm).FormBorderStyle == FormBorderStyle.None)
+			{
+				Point locate = new Point(((Control)sender).Location.X + e.Location.X, ((Control)sender).Location.Y + e.Location.Y);
+				ContextMenuStrip columnsMenu = new ContextMenuStrip();
+				columnsMenu.Items.Add("Detach to window", null, new EventHandler((ob, ev) =>
+				{
+					(sender as ComponentForm).SwitchToWindow();
+				}));
+				columnsMenu.Show(this, locate);
+			}
+		}
+
+		public void HandleFormClosing(object sender, FormClosingEventArgs e)
+		{
+			if (e.CloseReason != CloseReason.FormOwnerClosing)
+			{
+				e.Cancel = true;
+				this.RestoreToPreviousPanel();
+				return;
+			}
 		}
 	}
 

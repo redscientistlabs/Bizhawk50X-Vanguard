@@ -1,5 +1,4 @@
-﻿using BizHawk.Client.EmuHawk;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.IO;
@@ -137,16 +136,19 @@ namespace RTC
 			if (IsParamSet("BIZHAWK_SIZE"))
 			{
 				string[] size = ReadParam("BIZHAWK_SIZE").Split(',');
-				GlobalWin.MainForm.Size = new Size(Convert.ToInt32(size[0]), Convert.ToInt32(size[1]));
+				RTC_Hooks.BIZHAWK_GETSET_MAINFORMSIZE = new Size(Convert.ToInt32(size[0]), Convert.ToInt32(size[1]));
 				string[] location = ReadParam("BIZHAWK_LOCATION").Split(',');
-				GlobalWin.MainForm.Location = new Point(Convert.ToInt32(location[0]), Convert.ToInt32(location[1]));
+				RTC_Hooks.BIZHAWK_GETSET_MAINFORMLOCATION = new Point(Convert.ToInt32(location[0]), Convert.ToInt32(location[1]));
 			}
 		}
 
 		public static void SaveBizhawkWindowState()
 		{
-			SetParam("BIZHAWK_SIZE", $"{GlobalWin.MainForm.Size.Width},{GlobalWin.MainForm.Size.Height}");
-			SetParam("BIZHAWK_LOCATION", $"{GlobalWin.MainForm.Location.X},{GlobalWin.MainForm.Location.Y}");
+			var size = RTC_Hooks.BIZHAWK_GETSET_MAINFORMSIZE;
+			var location = RTC_Hooks.BIZHAWK_GETSET_MAINFORMLOCATION;
+
+			SetParam("BIZHAWK_SIZE", $"{size.Width},{size.Height}");
+			SetParam("BIZHAWK_LOCATION", $"{location.X},{location.Y}");
 		}
 
 		public static void AutoLoadVMDs()

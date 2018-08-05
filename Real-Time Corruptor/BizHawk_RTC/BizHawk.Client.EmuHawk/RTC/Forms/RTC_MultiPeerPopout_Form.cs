@@ -1,8 +1,10 @@
-﻿using BizHawk.Client.Common;
-using BizHawk.Client.EmuHawk;
-using System;
+﻿using System;
 using System.Drawing;
 using System.Windows.Forms;
+
+//Note: This should remain in the bizhawk assembly when we end up detaching RTC with vanguard.
+using BizHawk.Client.Common;
+using BizHawk.Client.EmuHawk;
 
 namespace RTC
 {

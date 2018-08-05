@@ -1,8 +1,4 @@
-﻿using BizHawk.Client.Common;
-using BizHawk.Client.EmuHawk;
-using BizHawk.Emulation.Common;
-using BizHawk.Emulation.Cores.Nintendo.N64;
-using Newtonsoft.Json;
+﻿using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -454,92 +450,16 @@ namespace RTC
 
 		public static void MergeBizhawkConfig_NET()
 		{
-			Config bc;
-			Config sc;
 
-			FileInfo fileBc = new FileInfo(RTC_Core.bizhawkDir + "\\backup_config.ini");
-			FileInfo fileSc = new FileInfo(RTC_Core.bizhawkDir + "\\stockpile_config.ini");
+			RTC_Hooks.BIZHAWK_MERGECONFIGINI(RTC_Core.bizhawkDir + "\\backup_config.ini", RTC_Core.bizhawkDir + "\\stockpile_config.ini");
 
-			using (StreamReader reader = fileBc.OpenText())
-			{
-				JsonTextReader r = new JsonTextReader(reader);
-				bc = (Config)ConfigService.Serializer.Deserialize(r, typeof(Config));
-			}
-
-			using (StreamReader reader = fileSc.OpenText())
-			{
-				JsonTextReader r = new JsonTextReader(reader);
-				sc = (Config)ConfigService.Serializer.Deserialize(r, typeof(Config));
-			}
-
-			//bc = (JObject)JsonConvert.DeserializeObject(backupConfig);
-			//sc = (JObject)JsonConvert.DeserializeObject(stockpileConfig);
-
-			sc.HotkeyBindings = bc.HotkeyBindings;
-			sc.AllTrollers = bc.AllTrollers;
-			sc.AllTrollersAutoFire = bc.AllTrollersAutoFire;
-			sc.AllTrollersAnalog = bc.AllTrollersAnalog;
-
-			if (File.Exists(RTC_Core.bizhawkDir + "\\stockpile_config.ini"))
-				File.Delete(RTC_Core.bizhawkDir + "\\stockpile_config.ini");
-
-			try
-			{
-				using (StreamWriter writer = fileSc.CreateText())
-				{
-					JsonTextWriter w = new JsonTextWriter(writer) { Formatting = Formatting.Indented };
-					ConfigService.Serializer.Serialize(w, sc);
-				}
-			}
-			catch
-			{
-				/* Eat it */
-			}
 		}
 
 		public static void ImportBizhawkKeybinds_NET()
 		{
-			Config bc;
-			Config sc;
 
-			FileInfo fileBc = new FileInfo(RTC_Core.bizhawkDir + "\\import_config.ini");
-			FileInfo fileSc = new FileInfo(RTC_Core.bizhawkDir + "\\stockpile_config.ini");
-
-			using (StreamReader reader = fileBc.OpenText())
-			{
-				JsonTextReader r = new JsonTextReader(reader);
-				bc = (Config)ConfigService.Serializer.Deserialize(r, typeof(Config));
-			}
-
-			using (StreamReader reader = fileSc.OpenText())
-			{
-				JsonTextReader r = new JsonTextReader(reader);
-				sc = (Config)ConfigService.Serializer.Deserialize(r, typeof(Config));
-			}
-
-			//bc = (JObject)JsonConvert.DeserializeObject(backupConfig);
-			//sc = (JObject)JsonConvert.DeserializeObject(stockpileConfig);
-
-			sc.HotkeyBindings = bc.HotkeyBindings;
-			sc.AllTrollers = bc.AllTrollers;
-			sc.AllTrollersAutoFire = bc.AllTrollersAutoFire;
-			sc.AllTrollersAnalog = bc.AllTrollersAnalog;
-
-			if (File.Exists(RTC_Core.bizhawkDir + "\\stockpile_config.ini"))
-				File.Delete(RTC_Core.bizhawkDir + "\\stockpile_config.ini");
-
-			try
-			{
-				using (StreamWriter writer = fileSc.CreateText())
-				{
-					JsonTextWriter w = new JsonTextWriter(writer) { Formatting = Formatting.Indented };
-					ConfigService.Serializer.Serialize(w, sc);
-				}
-			}
-			catch
-			{
-				/* Eat it */
-			}
+			RTC_Hooks.BIZHAWK_IMPORTCONFIGINI(RTC_Core.bizhawkDir + "\\import_config.ini", RTC_Core.bizhawkDir + "\\stockpile_config.ini");
+			
 		}
 
 		public static void RestoreBizhawkConfig()
@@ -720,122 +640,9 @@ namespace RTC
 		}
 
 		public static void SetCore(StashKey sk) => SetCore(sk.SystemName, sk.SystemCore);
-
 		public static void SetCore(string systemName, string systemCore)
 		{
-			switch (systemName.ToUpper())
-			{
-				case "GAMEBOY":
-					Global.Config.GB_AsSGB = systemCore == "sameboy";
-					Global.Config.SGB_UseBsnes = false;
-					Global.Config.GB_UseGBHawk = systemCore == "gbhawk";
-
-					break;
-
-				case "NES":
-					Global.Config.NES_InQuickNES = systemCore == "quicknes";
-					break;
-
-				case "SNES":
-
-					if (systemCore == "bsnes_SGB")
-					{
-						Global.Config.GB_AsSGB = true;
-						Global.Config.SGB_UseBsnes = true;
-					}
-					else
-						Global.Config.SNES_InSnes9x = systemCore == "snes9x";
-
-					break;
-
-				case "GBA":
-					Global.Config.GBA_UsemGBA = systemCore == "mgba";
-					break;
-
-				case "N64":
-
-					//Leaving this here for backwards compatability with 3.10
-					//TODO: Remove this
-					string[] coreParts = systemCore.Split('/');
-					N64SyncSettings ss = (N64SyncSettings)Global.Config.GetCoreSyncSettings<N64>()
-					?? new N64SyncSettings();
-					ss.VideoPlugin = (PluginType)Enum.Parse(typeof(PluginType), coreParts[0], true);
-					ss.Rsp = (N64SyncSettings.RspType)Enum.Parse(typeof(N64SyncSettings.RspType), coreParts[1], true);
-					ss.Core = (N64SyncSettings.CoreType)Enum.Parse(typeof(N64SyncSettings.CoreType), coreParts[2], true);
-					ss.DisableExpansionSlot = (coreParts[3] == "NoExp");
-					N64VideoPluginconfig.PutSyncSettings(ss);
-
-					break;
-			}
-		}
-
-		public static string getCoreName_NET(string systemName)
-		{
-			try
-			{
-
-				SettingsAdapter settable = new SettingsAdapter(Global.Emulator);
-
-				switch (systemName.ToUpper())
-				{
-					case "GAMEBOY":
-
-						if (Global.Config.GB_AsSGB)
-							return "sameboy";
-						else if (Global.Config.GB_UseGBHawk)
-							return "gbhawk";
-						else
-							return "gambatte";
-
-					case "NES":
-						return (Global.Config.NES_InQuickNES ? "quicknes" : "neshawk");
-
-					case "SNES":
-
-						if (RTC_MemoryDomains.MemoryInterfaces.ContainsKey("SGB WRAM"))
-							return "bsnes_SGB";
-
-						return (Global.Config.SNES_InSnes9x ? "snes9x" : "bsnes");
-
-					case "GBA":
-						return (Global.Config.GBA_UsemGBA ? "mgba" : "vba-next");
-
-					case "N64":
-
-						N64SyncSettings ss = (N64SyncSettings)Global.Config.GetCoreSyncSettings<N64>()
-						                     ?? new N64SyncSettings();
-
-						return $"{ss.VideoPlugin}/{ss.Rsp}/{ss.Core}/{(ss.DisableExpansionSlot ? "NoExp" : "Exp")}";
-					default:
-						break;
-				}
-
-				return systemName;
-			}
-			catch (Exception ex)
-			{
-				throw;
-			}
-		}
-
-		public static string getSyncSettings_NET(string ss)
-		{
-			SettingsAdapter settable = new SettingsAdapter(Global.Emulator);
-			if (settable.HasSyncSettings)
-			{
-				ss = ConfigService.SaveWithType(settable.GetSyncSettings());
-				return ss;
-			}
-			return null;
-		}
-
-		public static void putSyncSettings_NET(string ss)
-		{
-			SettingsAdapter settable = new SettingsAdapter(Global.Emulator);
-			if (settable.HasSyncSettings)
-			{
-				settable.PutSyncSettings(ConfigService.LoadWithType(ss));
-			}
+			RTC_Hooks.BIZHAWK_SET_SYSTEMCORE(systemName, systemCore);
 		}
 
 		public override string ToString()

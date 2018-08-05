@@ -9,6 +9,9 @@ namespace RTC
 {
 	public partial class RTC_VmdGen_Form : ComponentForm
 	{
+		public new void HandleMouseDown(object s, MouseEventArgs e) => base.HandleMouseDown(s, e);
+		public new void HandleFormClosing(object s, FormClosingEventArgs e) => base.HandleFormClosing(s, e);
+
 		long currentDomainSize = 0;
 
 		public RTC_VmdGen_Form()
@@ -237,5 +240,6 @@ pointer spacer parameter");
 				columnsMenu.Show(this, locate);
 			}
 		}
+
 	}
 }

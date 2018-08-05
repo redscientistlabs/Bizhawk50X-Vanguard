@@ -86,6 +86,7 @@
             this.btnActiveTableSubtractFile.Text = "Subtract ACT";
             this.btnActiveTableSubtractFile.UseVisualStyleBackColor = false;
             this.btnActiveTableSubtractFile.Click += new System.EventHandler(this.btnActiveTableSubtractFile_Click);
+            this.btnActiveTableSubtractFile.MouseDown += new System.Windows.Forms.MouseEventHandler(this.HandleMouseDown);
             // 
             // btnActiveTableGenerate
             // 
@@ -103,6 +104,7 @@
             this.btnActiveTableGenerate.Text = "Generate VMD from ACT";
             this.btnActiveTableGenerate.UseVisualStyleBackColor = false;
             this.btnActiveTableGenerate.Click += new System.EventHandler(this.btnActiveTableGenerate_Click);
+            this.btnActiveTableGenerate.MouseDown += new System.Windows.Forms.MouseEventHandler(this.HandleMouseDown);
             // 
             // btnActiveTableQuickSave
             // 
@@ -120,6 +122,7 @@
             this.btnActiveTableQuickSave.Text = "Save ACT";
             this.btnActiveTableQuickSave.UseVisualStyleBackColor = false;
             this.btnActiveTableQuickSave.Click += new System.EventHandler(this.btnActiveTableQuickSave_Click);
+            this.btnActiveTableQuickSave.MouseDown += new System.Windows.Forms.MouseEventHandler(this.HandleMouseDown);
             // 
             // groupBox2
             // 
@@ -141,10 +144,11 @@
             this.groupBox2.TabIndex = 87;
             this.groupBox2.TabStop = false;
             this.groupBox2.Text = "Generation parameters";
-            // 
-            // cbUseCorePrecision
-            // 
-            this.cbUseCorePrecision.AutoSize = true;
+            this.groupBox2.MouseDown += new System.Windows.Forms.MouseEventHandler(this.HandleMouseDown);
+			// 
+			// cbUseCorePrecision
+			// 
+			this.cbUseCorePrecision.AutoSize = true;
             this.cbUseCorePrecision.Font = new System.Drawing.Font("Segoe UI", 8F);
             this.cbUseCorePrecision.ForeColor = System.Drawing.Color.White;
             this.cbUseCorePrecision.Location = new System.Drawing.Point(14, 82);
@@ -154,6 +158,7 @@
             this.cbUseCorePrecision.Text = "Use Core Precision";
             this.cbUseCorePrecision.UseVisualStyleBackColor = true;
             this.cbUseCorePrecision.CheckedChanged += new System.EventHandler(this.cbUseCorePrecision_CheckedChanged);
+            this.cbUseCorePrecision.MouseDown += new System.Windows.Forms.MouseEventHandler(this.HandleMouseDown);
             // 
             // cbActiveTableExclude100percent
             // 
@@ -168,6 +173,7 @@
             this.cbActiveTableExclude100percent.TabIndex = 122;
             this.cbActiveTableExclude100percent.Text = "Exclude ever-changing %";
             this.cbActiveTableExclude100percent.UseVisualStyleBackColor = true;
+            this.cbActiveTableExclude100percent.MouseDown += new System.Windows.Forms.MouseEventHandler(this.HandleMouseDown);
             // 
             // track_ActiveTableActivityThreshold
             // 
@@ -178,6 +184,7 @@
             this.track_ActiveTableActivityThreshold.TabIndex = 85;
             this.track_ActiveTableActivityThreshold.TickFrequency = 0;
             this.track_ActiveTableActivityThreshold.Scroll += new System.EventHandler(this.track_ActiveTableActivityThreshold_Scroll);
+            this.track_ActiveTableActivityThreshold.MouseDown += new System.Windows.Forms.MouseEventHandler(this.HandleMouseDown);
             // 
             // label15
             // 
@@ -187,6 +194,7 @@
             this.label15.Size = new System.Drawing.Size(16, 13);
             this.label15.TabIndex = 121;
             this.label15.Text = "%";
+            this.label15.MouseDown += new System.Windows.Forms.MouseEventHandler(this.HandleMouseDown);
             // 
             // nmActiveTableActivityThreshold
             // 
@@ -204,6 +212,7 @@
             this.nmActiveTableActivityThreshold.TabIndex = 120;
             this.nmActiveTableActivityThreshold.Tag = "color:dark";
             this.nmActiveTableActivityThreshold.ValueChanged += new System.EventHandler(this.nmActiveTableActivityThreshold_ValueChanged);
+            this.nmActiveTableActivityThreshold.MouseDown += new System.Windows.Forms.MouseEventHandler(this.HandleMouseDown);
             // 
             // label14
             // 
@@ -213,6 +222,7 @@
             this.label14.Size = new System.Drawing.Size(100, 13);
             this.label14.TabIndex = 119;
             this.label14.Text = "Activity Threshold:";
+            this.label14.MouseDown += new System.Windows.Forms.MouseEventHandler(this.HandleMouseDown);
             // 
             // groupBox1
             // 
@@ -228,15 +238,17 @@
             this.groupBox1.TabIndex = 85;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Capping distribution";
-            // 
-            // label12
-            // 
-            this.label12.AutoSize = true;
+            this.groupBox1.MouseDown += new System.Windows.Forms.MouseEventHandler(this.HandleMouseDown);
+			// 
+			// label12
+			// 
+			this.label12.AutoSize = true;
             this.label12.Location = new System.Drawing.Point(8, 65);
             this.label12.Name = "label12";
             this.label12.Size = new System.Drawing.Size(42, 13);
             this.label12.TabIndex = 80;
             this.label12.Text = "Offset:";
+            this.label12.MouseDown += new System.Windows.Forms.MouseEventHandler(this.HandleMouseDown);
             // 
             // nmActiveTableCapOffset
             // 
@@ -249,6 +261,7 @@
             this.nmActiveTableCapOffset.Size = new System.Drawing.Size(64, 20);
             this.nmActiveTableCapOffset.TabIndex = 119;
             this.nmActiveTableCapOffset.Tag = "color:dark";
+            this.nmActiveTableCapOffset.MouseDown += new System.Windows.Forms.MouseEventHandler(this.HandleMouseDown);
             // 
             // rbActiveTableCapBlockEnd
             // 
@@ -260,6 +273,7 @@
             this.rbActiveTableCapBlockEnd.TabIndex = 2;
             this.rbActiveTableCapBlockEnd.Text = "Block - From end";
             this.rbActiveTableCapBlockEnd.UseVisualStyleBackColor = true;
+            this.rbActiveTableCapBlockEnd.MouseDown += new System.Windows.Forms.MouseEventHandler(this.HandleMouseDown);
             // 
             // rbActiveTableCapBlockStart
             // 
@@ -271,6 +285,7 @@
             this.rbActiveTableCapBlockStart.TabIndex = 1;
             this.rbActiveTableCapBlockStart.Text = "Block - From start";
             this.rbActiveTableCapBlockStart.UseVisualStyleBackColor = true;
+            this.rbActiveTableCapBlockStart.MouseDown += new System.Windows.Forms.MouseEventHandler(this.HandleMouseDown);
             // 
             // rbActiveTableCapRandom
             // 
@@ -284,6 +299,7 @@
             this.rbActiveTableCapRandom.TabStop = true;
             this.rbActiveTableCapRandom.Text = "Random";
             this.rbActiveTableCapRandom.UseVisualStyleBackColor = true;
+            this.rbActiveTableCapRandom.MouseDown += new System.Windows.Forms.MouseEventHandler(this.HandleMouseDown);
             // 
             // nmActiveTableCapSize
             // 
@@ -309,6 +325,7 @@
             0,
             0,
             0});
+            this.nmActiveTableCapSize.MouseDown += new System.Windows.Forms.MouseEventHandler(this.HandleMouseDown);
             // 
             // label6
             // 
@@ -318,6 +335,7 @@
             this.label6.Size = new System.Drawing.Size(52, 13);
             this.label6.TabIndex = 118;
             this.label6.Text = "Cap size:";
+            this.label6.MouseDown += new System.Windows.Forms.MouseEventHandler(this.HandleMouseDown);
             // 
             // cbActiveTableCapSize
             // 
@@ -330,6 +348,7 @@
             this.cbActiveTableCapSize.TabIndex = 77;
             this.cbActiveTableCapSize.Text = "Cap active table size";
             this.cbActiveTableCapSize.UseVisualStyleBackColor = true;
+            this.cbActiveTableCapSize.MouseDown += new System.Windows.Forms.MouseEventHandler(this.HandleMouseDown);
             // 
             // cbSelectedMemoryDomain
             // 
@@ -344,6 +363,7 @@
             this.cbSelectedMemoryDomain.Size = new System.Drawing.Size(169, 25);
             this.cbSelectedMemoryDomain.TabIndex = 125;
             this.cbSelectedMemoryDomain.Tag = "color:dark";
+            this.cbSelectedMemoryDomain.MouseDown += new System.Windows.Forms.MouseEventHandler(this.HandleMouseDown);
             // 
             // btnActiveTableLoad
             // 
@@ -361,6 +381,7 @@
             this.btnActiveTableLoad.Text = "Load ACT";
             this.btnActiveTableLoad.UseVisualStyleBackColor = false;
             this.btnActiveTableLoad.Click += new System.EventHandler(this.btnActiveTableLoad_Click);
+            this.btnActiveTableLoad.MouseDown += new System.Windows.Forms.MouseEventHandler(this.HandleMouseDown);
             // 
             // lbFreezeEngineNbDumps
             // 
@@ -372,6 +393,7 @@
             this.lbFreezeEngineNbDumps.Size = new System.Drawing.Size(148, 13);
             this.lbFreezeEngineNbDumps.TabIndex = 86;
             this.lbFreezeEngineNbDumps.Text = "Memory dumps collected: #";
+            this.lbFreezeEngineNbDumps.MouseDown += new System.Windows.Forms.MouseEventHandler(this.HandleMouseDown);
             // 
             // lbActiveTableSize
             // 
@@ -383,6 +405,7 @@
             this.lbActiveTableSize.Size = new System.Drawing.Size(136, 13);
             this.lbActiveTableSize.TabIndex = 85;
             this.lbActiveTableSize.Text = "Active table size: ######";
+            this.lbActiveTableSize.MouseDown += new System.Windows.Forms.MouseEventHandler(this.HandleMouseDown);
             // 
             // cbAutoAddDump
             // 
@@ -396,6 +419,7 @@
             this.cbAutoAddDump.TabIndex = 122;
             this.cbAutoAddDump.UseVisualStyleBackColor = true;
             this.cbAutoAddDump.CheckedChanged += new System.EventHandler(this.cbAutoAddDump_CheckedChanged);
+            this.cbAutoAddDump.MouseDown += new System.Windows.Forms.MouseEventHandler(this.HandleMouseDown);
             // 
             // lbDomainAddressSize
             // 
@@ -407,6 +431,7 @@
             this.lbDomainAddressSize.Size = new System.Drawing.Size(160, 13);
             this.lbDomainAddressSize.TabIndex = 82;
             this.lbDomainAddressSize.Text = "Domain address size: ######";
+            this.lbDomainAddressSize.MouseDown += new System.Windows.Forms.MouseEventHandler(this.HandleMouseDown);
             // 
             // btnActiveTableAddDump
             // 
@@ -424,6 +449,7 @@
             this.btnActiveTableAddDump.Text = "Add state";
             this.btnActiveTableAddDump.UseVisualStyleBackColor = false;
             this.btnActiveTableAddDump.Click += new System.EventHandler(this.btnActiveTableAddDump_Click);
+            this.btnActiveTableAddDump.MouseDown += new System.Windows.Forms.MouseEventHandler(this.HandleMouseDown);
             // 
             // label16
             // 
@@ -435,6 +461,7 @@
             this.label16.Size = new System.Drawing.Size(23, 13);
             this.label16.TabIndex = 122;
             this.label16.Text = "sec";
+            this.label16.MouseDown += new System.Windows.Forms.MouseEventHandler(this.HandleMouseDown);
             // 
             // btnActiveTableDumpsReset
             // 
@@ -452,6 +479,7 @@
             this.btnActiveTableDumpsReset.Text = "Initialize";
             this.btnActiveTableDumpsReset.UseVisualStyleBackColor = false;
             this.btnActiveTableDumpsReset.Click += new System.EventHandler(this.btnActiveTableDumpsReset_Click);
+            this.btnActiveTableDumpsReset.MouseDown += new System.Windows.Forms.MouseEventHandler(this.HandleMouseDown);
             // 
             // nmAutoAddSec
             // 
@@ -474,6 +502,7 @@
             0,
             0});
             this.nmAutoAddSec.ValueChanged += new System.EventHandler(this.nmAutoAddSec_ValueChanged);
+            this.nmAutoAddSec.MouseDown += new System.Windows.Forms.MouseEventHandler(this.HandleMouseDown);
             // 
             // lbActiveStatus
             // 
@@ -485,6 +514,7 @@
             this.lbActiveStatus.Size = new System.Drawing.Size(164, 13);
             this.lbActiveStatus.TabIndex = 87;
             this.lbActiveStatus.Text = "Active table status: NOT READY";
+            this.lbActiveStatus.MouseDown += new System.Windows.Forms.MouseEventHandler(this.HandleMouseDown);
             // 
             // btnActiveTableAddFile
             // 
@@ -502,6 +532,7 @@
             this.btnActiveTableAddFile.Text = "Add ACT";
             this.btnActiveTableAddFile.UseVisualStyleBackColor = false;
             this.btnActiveTableAddFile.Click += new System.EventHandler(this.btnActiveTableAddFile_Click);
+            this.btnActiveTableAddFile.MouseDown += new System.Windows.Forms.MouseEventHandler(this.HandleMouseDown);
             // 
             // btnLoadDomains
             // 
@@ -519,6 +550,7 @@
             this.btnLoadDomains.Text = "Load Domains";
             this.btnLoadDomains.UseVisualStyleBackColor = false;
             this.btnLoadDomains.Click += new System.EventHandler(this.btnLoadDomains_Click);
+            this.btnLoadDomains.MouseDown += new System.Windows.Forms.MouseEventHandler(this.HandleMouseDown);
             // 
             // lbAutoAddEvery
             // 
@@ -530,6 +562,7 @@
             this.lbAutoAddEvery.Size = new System.Drawing.Size(85, 13);
             this.lbAutoAddEvery.TabIndex = 127;
             this.lbAutoAddEvery.Text = "Auto-add every";
+            this.lbAutoAddEvery.MouseDown += new System.Windows.Forms.MouseEventHandler(this.HandleMouseDown);
             // 
             // RTC_VmdAct_Form
             // 
@@ -560,8 +593,8 @@
             this.Name = "RTC_VmdAct_Form";
             this.Tag = "color:darker";
             this.Text = "Active Table Generator";
-            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.RTC_VmdAct_Form_FormClosing);
-            this.MouseDown += new System.Windows.Forms.MouseEventHandler(this.RTC_VmdAct_Form_MouseDown);
+            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.HandleFormClosing);
+            this.MouseDown += new System.Windows.Forms.MouseEventHandler(this.HandleMouseDown);
             this.groupBox2.ResumeLayout(false);
             this.groupBox2.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.track_ActiveTableActivityThreshold)).EndInit();

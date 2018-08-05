@@ -12,6 +12,9 @@ namespace RTC
 {
 	public partial class RTC_VmdNoTool_Form : ComponentForm
 	{
+		public new void HandleMouseDown(object s, MouseEventArgs e) => base.HandleMouseDown(s, e);
+		public new void HandleFormClosing(object s, FormClosingEventArgs e) => base.HandleFormClosing(s, e);
+
 		public RTC_VmdNoTool_Form()
 		{
 			InitializeComponent();

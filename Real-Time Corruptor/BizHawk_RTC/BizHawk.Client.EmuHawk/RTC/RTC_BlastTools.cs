@@ -4,8 +4,6 @@ using System.IO;
 using System.Windows.Forms;
 using System.Xml.Serialization;
 
-using BizHawk.Client.Common;
-using BizHawk.Client.EmuHawk;
 
 namespace RTC
 {
@@ -230,8 +228,8 @@ namespace RTC
 		{
 			BlastLayer bl = new BlastLayer();
 
-			string thisSystem = Global.Game.System;
-			string romFilename = GlobalWin.MainForm.CurrentlyOpenRom;
+			string thisSystem = RTC_Hooks.BIZHAWK_GET_CURRENTLYLOADEDSYSTEMNAME();
+			string romFilename = RTC_Hooks.BIZHAWK_GET_CURRENTLYOPENEDROM();
 
 			var rp = RTC_MemoryDomains.GetRomParts(thisSystem, romFilename);
 

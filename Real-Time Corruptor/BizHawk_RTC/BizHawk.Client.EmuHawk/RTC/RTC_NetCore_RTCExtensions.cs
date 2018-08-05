@@ -1,6 +1,4 @@
-﻿using BizHawk.Client.Common;
-using BizHawk.Client.EmuHawk;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.IO;
@@ -69,10 +67,10 @@ namespace RTC
 
 				case CommandType.PULLROM:
 					cmdBack = new RTC_Command(CommandType.PUSHROM);
-					cmdBack.romFilename = RTC_Extensions.getShortFilenameFromPath(GlobalWin.MainForm.CurrentlyOpenRom);
+					cmdBack.romFilename = RTC_Extensions.getShortFilenameFromPath(RTC_Hooks.BIZHAWK_GET_CURRENTLYOPENEDROM());
 
 					if (!PeerHasRom(cmdBack.romFilename))
-						cmdBack.romData = File.ReadAllBytes(GlobalWin.MainForm.CurrentlyOpenRom);
+						cmdBack.romData = File.ReadAllBytes(RTC_Hooks.BIZHAWK_GET_CURRENTLYOPENEDROM());
 
 					break;
 
@@ -102,7 +100,7 @@ namespace RTC
 					if (RTC_Core.multiForm.cbPullStateToGlitchHarvester.Checked)
 					{
 						StashKey sk_PUSHSTATE = RTC_StockpileManager.SaveState(true, cmd.stashkey);
-						sk_PUSHSTATE.RomFilename = GlobalWin.MainForm.CurrentlyOpenRom;
+						sk_PUSHSTATE.RomFilename = RTC_Hooks.BIZHAWK_GET_CURRENTLYOPENEDROM();
 					}
 
 					break;
@@ -110,10 +108,10 @@ namespace RTC
 				case CommandType.PULLSWAPSTATE:
 
 					cmdBack = new RTC_Command(CommandType.PUSHSWAPSTATE);
-					cmdBack.romFilename = RTC_Extensions.getShortFilenameFromPath(GlobalWin.MainForm.CurrentlyOpenRom);
+					cmdBack.romFilename = RTC_Extensions.getShortFilenameFromPath(RTC_Hooks.BIZHAWK_GET_CURRENTLYOPENEDROM());
 
 					if (!PeerHasRom(cmdBack.romFilename))
-						cmdBack.romData = File.ReadAllBytes(GlobalWin.MainForm.CurrentlyOpenRom);
+						cmdBack.romData = File.ReadAllBytes(RTC_Hooks.BIZHAWK_GET_CURRENTLYOPENEDROM());
 
 					StashKey sk_PULLSWAPSTATE = RTC_StockpileManager.SaveState(false);
 					cmdBack.stashkey = sk_PULLSWAPSTATE;
@@ -152,7 +150,7 @@ namespace RTC
 					break;
 				case CommandType.PULLSCREEN:
 					cmdBack = new RTC_Command(CommandType.PUSHSCREEN);
-					cmdBack.screen = GlobalWin.MainForm.MakeScreenshotImage().ToSysdrawingBitmap();
+					cmdBack.screen = RTC_Hooks.BIZHAWK_GET_SCREENSHOT();
 					break;
 
 				case CommandType.REQUESTSTREAM:
@@ -302,12 +300,12 @@ namespace RTC
 
 				case CommandType.REMOTE_DOMAIN_SYSTEM:
 					cmdBack = new RTC_Command(CommandType.RETURNVALUE);
-					cmdBack.objectValue = Global.Game.System.ToString().ToUpper();
+					cmdBack.objectValue = RTC_Hooks.BIZHAWK_GET_CURRENTLYLOADEDSYSTEMNAME().ToUpper();
 					break;
 
 				case CommandType.REMOTE_DOMAIN_SYSTEMPREFIX:
 					cmdBack = new RTC_Command(CommandType.RETURNVALUE);
-					cmdBack.objectValue = PathManager.SaveStatePrefix(Global.Game);
+					cmdBack.objectValue = RTC_Hooks.BIZHAWK_GET_SAVESTATEPREFIX();
 					break;
 
 				case CommandType.REMOTE_KEY_PUSHSAVESTATEDICO:
@@ -321,22 +319,22 @@ namespace RTC
 
 				case CommandType.REMOTE_KEY_GETSYSTEMNAME:
 					cmdBack = new RTC_Command(CommandType.RETURNVALUE);
-					cmdBack.objectValue = (Global.Config.PathEntries[Global.Game.System, "Savestates"] ?? Global.Config.PathEntries[Global.Game.System, "Base"]).SystemDisplayName;
+					cmdBack.objectValue = RTC_Hooks.BIZHAWK_GET_FILESYSTEMCORENAME();
 					break;
 
 				case CommandType.REMOTE_KEY_GETSYSTEMCORE:
 					cmdBack = new RTC_Command(CommandType.RETURNVALUE);
-					cmdBack.objectValue = StashKey.getCoreName_NET((string)cmd.objectValue);
+					cmdBack.objectValue = RTC_Hooks.BIZHAWK_GET_SYSTEMCORENAME((string)cmd.objectValue);
 					break;
 
 				case CommandType.REMOTE_KEY_GETGAMENAME:
 					cmdBack = new RTC_Command(CommandType.RETURNVALUE);
-					cmdBack.objectValue = PathManager.FilesystemSafeName(Global.Game);
+					cmdBack.objectValue = RTC_Hooks.BIZHAWK_GET_FILESYSTEMGAMENAME();
 					break;
 
 				case CommandType.REMOTE_KEY_GETSYNCSETTINGS:
 					cmdBack = new RTC_Command(CommandType.RETURNVALUE);
-					cmdBack.objectValue = StashKey.getSyncSettings_NET((string)cmd.objectValue);
+					cmdBack.objectValue = RTC_Hooks.BIZHAWK_GETSET_SYNCSETTINGS;
 					break;
 
 				case CommandType.REMOTE_KEY_PUTSYNCSETTINGS:
@@ -345,7 +343,7 @@ namespace RTC
 
 				case CommandType.REMOTE_KEY_GETOPENROMFILENAME:
 					cmdBack = new RTC_Command(CommandType.RETURNVALUE);
-					cmdBack.objectValue = GlobalWin.MainForm.CurrentlyOpenRom;
+					cmdBack.objectValue = RTC_Hooks.BIZHAWK_GET_CURRENTLYOPENEDROM();
 					break;
 
 				case CommandType.REMOTE_KEY_GETRAWBLASTLAYER:
@@ -375,19 +373,17 @@ namespace RTC
 					break;
 
 				case CommandType.BIZHAWK_OPEN_HEXEDITOR_ADDRESS:
-				{
+					{
+						string domain = (string)(cmd.objectValue as object[])[0];
+						long address = (long)(cmd.objectValue as object[])[1];
+						
+						MemoryDomainProxy mdp = RTC_MemoryDomains.GetProxy(domain, address);
+						long realAddress = RTC_MemoryDomains.GetRealAddress(domain, address);
 
-					GlobalWin.Tools.Load<HexEditor>();
-					string domain = (string)(cmd.objectValue as object[])[0];
-					long address = (long)(cmd.objectValue as object[])[1];
+						RTC_Hooks.BIZHAWK_OPEN_HEXEDITOR_ADDRESS(mdp, realAddress);
 
-					long realAddress = RTC_MemoryDomains.GetRealAddress(domain, address);
-
-					MemoryDomainProxy mdp = RTC_MemoryDomains.GetProxy(domain, address);
-					GlobalWin.Tools.HexEditor.SetDomain(mdp.md);
-					GlobalWin.Tools.HexEditor.GoToAddress(realAddress);
-					break;
-				}
+						break;
+					}
 
 				case CommandType.REMOTE_SET_SAVESTATEBOX:
 					RTC_StockpileManager.currentSavestateKey = (string)cmd.objectValue;
@@ -549,11 +545,11 @@ namespace RTC
 					break;
 
 				case CommandType.REMOTE_EVENT_CLOSEBIZHAWK:
-					GlobalWin.MainForm.Close();
+					RTC_Hooks.BIZHAWK_MAINFORM_CLOSE();
 					break;
 
 				case CommandType.REMOTE_EVENT_SAVEBIZHAWKCONFIG:
-					GlobalWin.MainForm.SaveConfig();
+					RTC_Hooks.BIZHAWK_MAINFORM_SAVECONFIG();
 					break;
 
 				case CommandType.REMOTE_EVENT_BIZHAWKSTARTED:
@@ -704,11 +700,11 @@ namespace RTC
 
 			RTC_Command cmd = new RTC_Command(CommandType.PULLSWAPSTATE);
 
-			string romFullFilename = GlobalWin.MainForm.CurrentlyOpenRom;
+			string romFullFilename = RTC_Hooks.BIZHAWK_GET_CURRENTLYOPENEDROM();
 			cmd.romFilename = romFullFilename.Substring(romFullFilename.LastIndexOf("\\") + 1, romFullFilename.Length - (romFullFilename.LastIndexOf("\\") + 1));
 
 			if (!PeerHasRom(cmd.romFilename))
-				cmd.romData = File.ReadAllBytes(GlobalWin.MainForm.CurrentlyOpenRom);
+				cmd.romData = File.ReadAllBytes(romFullFilename);
 
 			StashKey sk = RTC_StockpileManager.SaveState(false);
 			cmd.stashkey = sk;
@@ -731,10 +727,10 @@ namespace RTC
 
 			RTC_Command cmd = new RTC_Command(CommandType.STASHKEY);
 
-			cmd.romFilename = RTC_Extensions.getShortFilenameFromPath(GlobalWin.MainForm.CurrentlyOpenRom);
+			cmd.romFilename = RTC_Extensions.getShortFilenameFromPath(RTC_Hooks.BIZHAWK_GET_CURRENTLYOPENEDROM());
 
 			if (!PeerHasRom(cmd.romFilename))
-				cmd.romData = File.ReadAllBytes(GlobalWin.MainForm.CurrentlyOpenRom);
+				cmd.romData = File.ReadAllBytes(cmd.romFilename);
 
 			cmd.stashkey = RTC_StockpileManager.currentStashkey;
 			cmd.stashkey.EmbedState();

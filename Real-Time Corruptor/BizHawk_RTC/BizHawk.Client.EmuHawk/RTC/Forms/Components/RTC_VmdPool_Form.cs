@@ -10,6 +10,9 @@ namespace RTC
 {
 	public partial class RTC_VmdPool_Form : ComponentForm
 	{
+		public new void HandleMouseDown(object s, MouseEventArgs e) => base.HandleMouseDown(s, e);
+		public new void HandleFormClosing(object s, FormClosingEventArgs e) => base.HandleFormClosing(s, e);
+		
 		public RTC_VmdPool_Form()
 		{
 			InitializeComponent();
@@ -145,28 +148,5 @@ namespace RTC
 			RefreshVMDs();
 		}
 
-		private void RTC_VmdPool_Form_FormClosing(object sender, FormClosingEventArgs e)
-		{
-			if (e.CloseReason != CloseReason.FormOwnerClosing)
-			{
-				e.Cancel = true;
-				this.RestoreToPreviousPanel();
-				return;
-			}
-		}
-
-		private void RTC_VmdPool_Form_MouseDown(object sender, MouseEventArgs e)
-		{
-			if (e.Button == MouseButtons.Right && (sender as ComponentForm).FormBorderStyle == FormBorderStyle.None)
-			{
-				Point locate = new Point(((Control)sender).Location.X + e.Location.X, ((Control)sender).Location.Y + e.Location.Y);
-				ContextMenuStrip columnsMenu = new ContextMenuStrip();
-				columnsMenu.Items.Add("Detach to window", null, new EventHandler((ob, ev) =>
-				{
-					(sender as ComponentForm).SwitchToWindow();
-				}));
-				columnsMenu.Show(this, locate);
-			}
-		}
 	}
 }

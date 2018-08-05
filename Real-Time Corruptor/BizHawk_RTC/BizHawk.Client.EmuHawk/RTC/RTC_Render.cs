@@ -1,5 +1,4 @@
-﻿using BizHawk.Client.EmuHawk;
-using System;
+﻿using System;
 
 namespace RTC
 {
@@ -27,12 +26,12 @@ namespace RTC
 			string Key = "RENDER_" + (RTC_Core.GetRandomKey());
 
 			if (lastType == RENDERTYPE.WAV)
-				GlobalWin.MainForm.RecordAvBase("wave", RTC_Core.rtcDir + "\\RENDEROUTPUT\\" + Key + ".wav", true);
+				RTC_Hooks.BIZHAWK_STARTRECORDAV("wave", RTC_Core.rtcDir + "\\RENDEROUTPUT\\" + Key + ".wav", true);
 			else if (lastType == RENDERTYPE.AVI)
 			{
 				try
 				{
-					GlobalWin.MainForm.RecordAvBase("vfwavi", RTC_Core.rtcDir + "\\RENDEROUTPUT\\" + Key + ".avi", true);
+					RTC_Hooks.BIZHAWK_STARTRECORDAV("vfwavi", RTC_Core.rtcDir + "\\RENDEROUTPUT\\" + Key + ".avi", true);
 				}
 				catch (Exception ex)
 				{
@@ -40,7 +39,7 @@ namespace RTC
 				}
 			}
 			else if (lastType == RENDERTYPE.MPEG)
-				GlobalWin.MainForm.RecordAvBase("ffmpeg", RTC_Core.rtcDir + "\\RENDEROUTPUT\\" + Key + ".mpg", true);
+				RTC_Hooks.BIZHAWK_STARTRECORDAV("ffmpeg", RTC_Core.rtcDir + "\\RENDEROUTPUT\\" + Key + ".mpg", true);
 
 			RTC_Core.SendCommandToRTC(new RTC_Command(CommandType.REMOTE_RENDER_STARTED));
 		}
@@ -68,7 +67,7 @@ namespace RTC
 		public static void StopRender_NET()
 		{
 			isRendering = false;
-			GlobalWin.MainForm.StopAv();
+			RTC_Hooks.BIZHAWK_STOPRECORDAV();
 		}
 	}
 

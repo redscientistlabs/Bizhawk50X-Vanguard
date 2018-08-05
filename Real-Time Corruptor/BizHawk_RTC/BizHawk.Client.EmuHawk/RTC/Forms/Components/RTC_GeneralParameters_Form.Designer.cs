@@ -73,6 +73,7 @@
             this.nmIntensity.ValueChanged += new System.EventHandler(this.nmIntensity_ValueChanged);
             this.nmIntensity.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.nmIntensity_ValueChanged);
             this.nmIntensity.KeyUp += new System.Windows.Forms.KeyEventHandler(this.nmIntensity_ValueChanged);
+            this.nmIntensity.MouseDown += new System.Windows.Forms.MouseEventHandler(base.HandleMouseDown);
             // 
             // nmErrorDelay
             // 
@@ -103,6 +104,7 @@
             this.nmErrorDelay.ValueChanged += new System.EventHandler(this.nmErrorDelay_ValueChanged);
             this.nmErrorDelay.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.nmErrorDelay_ValueChanged);
             this.nmErrorDelay.KeyUp += new System.Windows.Forms.KeyEventHandler(this.nmErrorDelay_ValueChanged);
+            this.nmErrorDelay.MouseDown += new System.Windows.Forms.MouseEventHandler(base.HandleMouseDown);
             // 
             // labelIntensityTimes
             // 
@@ -114,6 +116,7 @@
             this.labelIntensityTimes.Size = new System.Drawing.Size(39, 17);
             this.labelIntensityTimes.TabIndex = 22;
             this.labelIntensityTimes.Text = "times";
+            this.labelIntensityTimes.MouseDown += new System.Windows.Forms.MouseEventHandler(base.HandleMouseDown);
             // 
             // labelErrorDelay
             // 
@@ -125,6 +128,7 @@
             this.labelErrorDelay.Size = new System.Drawing.Size(80, 17);
             this.labelErrorDelay.TabIndex = 15;
             this.labelErrorDelay.Text = "Error delay :";
+            this.labelErrorDelay.MouseDown += new System.Windows.Forms.MouseEventHandler(base.HandleMouseDown);
             // 
             // cbBlastRadius
             // 
@@ -147,6 +151,7 @@
             this.cbBlastRadius.TabIndex = 21;
             this.cbBlastRadius.Tag = "color:dark";
             this.cbBlastRadius.SelectedIndexChanged += new System.EventHandler(this.cbBlastRadius_SelectedIndexChanged);
+            this.cbBlastRadius.MouseDown += new System.Windows.Forms.MouseEventHandler(base.HandleMouseDown);
             // 
             // labelBlastRadius
             // 
@@ -158,6 +163,7 @@
             this.labelBlastRadius.Size = new System.Drawing.Size(81, 17);
             this.labelBlastRadius.TabIndex = 20;
             this.labelBlastRadius.Text = "Blast Radius:";
+            this.labelBlastRadius.MouseDown += new System.Windows.Forms.MouseEventHandler(base.HandleMouseDown);
             // 
             // labelIntensity
             // 
@@ -169,6 +175,7 @@
             this.labelIntensity.Size = new System.Drawing.Size(62, 17);
             this.labelIntensity.TabIndex = 19;
             this.labelIntensity.Text = "Intensity :";
+            this.labelIntensity.MouseDown += new System.Windows.Forms.MouseEventHandler(base.HandleMouseDown);
             // 
             // labelErrorDelaySteps
             // 
@@ -180,6 +187,7 @@
             this.labelErrorDelaySteps.Size = new System.Drawing.Size(39, 17);
             this.labelErrorDelaySteps.TabIndex = 17;
             this.labelErrorDelaySteps.Text = "steps";
+            this.labelErrorDelaySteps.MouseDown += new System.Windows.Forms.MouseEventHandler(base.HandleMouseDown);
             // 
             // track_Intensity
             // 
@@ -195,7 +203,7 @@
             this.track_Intensity.Value = 2000;
             this.track_Intensity.Scroll += new System.EventHandler(this.track_Intensity_Scroll);
             this.track_Intensity.ValueChanged += new System.EventHandler(this.track_Intensity_Scroll);
-            this.track_Intensity.MouseDown += new System.Windows.Forms.MouseEventHandler(this.track_Intensity_MouseDown);
+            this.track_Intensity.MouseDown += new System.Windows.Forms.MouseEventHandler(base.HandleMouseDown);
             this.track_Intensity.MouseUp += new System.Windows.Forms.MouseEventHandler(this.track_Intensity_MouseUp);
             // 
             // track_ErrorDelay
@@ -212,7 +220,7 @@
             this.track_ErrorDelay.Value = 2000;
             this.track_ErrorDelay.Scroll += new System.EventHandler(this.track_ErrorDelay_Scroll);
             this.track_ErrorDelay.ValueChanged += new System.EventHandler(this.track_ErrorDelay_Scroll);
-            this.track_ErrorDelay.MouseDown += new System.Windows.Forms.MouseEventHandler(this.track_ErrorDelay_MouseDown);
+            this.track_ErrorDelay.MouseDown += new System.Windows.Forms.MouseEventHandler(base.HandleMouseDown);
             this.track_ErrorDelay.MouseUp += new System.Windows.Forms.MouseEventHandler(this.track_ErrorDelay_MouseUp);
             // 
             // RTC_GeneralParameters_Form
@@ -235,9 +243,9 @@
             this.Name = "RTC_GeneralParameters_Form";
             this.Tag = "color:normal";
             this.Text = "General Parameters";
-            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.RTC_GeneralParameters_Form_FormClosing);
+            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(base.HandleFormClosing);
             this.Load += new System.EventHandler(this.RTC_GeneralParameters_Form_Load);
-            this.MouseDown += new System.Windows.Forms.MouseEventHandler(this.RTC_GeneralParameters_Form_MouseDown);
+            this.MouseDown += new System.Windows.Forms.MouseEventHandler(base.HandleMouseDown);
             ((System.ComponentModel.ISupportInitialize)(this.nmIntensity)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.nmErrorDelay)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.track_Intensity)).EndInit();
