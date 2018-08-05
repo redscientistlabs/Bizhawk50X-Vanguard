@@ -732,6 +732,12 @@
     <Compile Include="RTC\Blast Generator Engines\RTC_BlastPipeGenerator.cs" />
     <Compile Include="RTC\Corruption Engines\RTC_BlastGeneratorEngine.cs" />
     <Compile Include="RTC\Corruption Engines\RTC_CustomEngine.cs" />
+    <Compile Include="RTC\Forms\Components\RTC_CorruptionEngine_Form.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="RTC\Forms\Components\RTC_CorruptionEngine_Form.Designer.cs">
+      <DependentUpon>RTC_CorruptionEngine_Form.cs</DependentUpon>
+    </Compile>
     <Compile Include="RTC\Forms\Components\RTC_GeneralParameters_Form.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -1631,6 +1637,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="RomStatusPicker.resx">
       <DependentUpon>RomStatusPicker.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="RTC\Forms\Components\RTC_CorruptionEngine_Form.resx">
+      <DependentUpon>RTC_CorruptionEngine_Form.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="RTC\Forms\Components\RTC_GeneralParameters_Form.resx">
       <DependentUpon>RTC_GeneralParameters_Form.cs</DependentUpon>

@@ -223,6 +223,9 @@
             // 
             // tbCustomAddresses
             // 
+            this.tbCustomAddresses.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.tbCustomAddresses.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
             this.tbCustomAddresses.Font = new System.Drawing.Font("Consolas", 8F);
             this.tbCustomAddresses.ForeColor = System.Drawing.Color.White;
@@ -376,7 +379,7 @@
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
             this.Name = "RTC_VmdGen_Form";
             this.Tag = "color:darkerer";
-            this.Text = "RTC_VmdGen_Form";
+            this.Text = "VMD Generator";
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.RTC_VmdGen_Form_FormClosing);
             this.MouseDown += new System.Windows.Forms.MouseEventHandler(this.RTC_VmdGen_Form_MouseDown);
             this.groupBox1.ResumeLayout(false);

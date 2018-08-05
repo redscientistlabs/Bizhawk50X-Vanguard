@@ -43,6 +43,9 @@
             // 
             // lbLoadedVmdList
             // 
+            this.lbLoadedVmdList.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.lbLoadedVmdList.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
             this.lbLoadedVmdList.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.lbLoadedVmdList.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F);
@@ -59,6 +62,7 @@
             // 
             // btnUnloadVmd
             // 
+            this.btnUnloadVmd.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.btnUnloadVmd.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(224)))), ((int)(((byte)(224)))), ((int)(((byte)(224)))));
             this.btnUnloadVmd.FlatAppearance.BorderSize = 0;
             this.btnUnloadVmd.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
@@ -76,6 +80,7 @@
             // 
             // btnLoadVmd
             // 
+            this.btnLoadVmd.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.btnLoadVmd.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(224)))), ((int)(((byte)(224)))), ((int)(((byte)(224)))));
             this.btnLoadVmd.FlatAppearance.BorderSize = 0;
             this.btnLoadVmd.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
@@ -93,6 +98,7 @@
             // 
             // btnSaveVmd
             // 
+            this.btnSaveVmd.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.btnSaveVmd.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(224)))), ((int)(((byte)(224)))), ((int)(((byte)(224)))));
             this.btnSaveVmd.FlatAppearance.BorderSize = 0;
             this.btnSaveVmd.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
@@ -110,6 +116,7 @@
             // 
             // gbVmdSummary
             // 
+            this.gbVmdSummary.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.gbVmdSummary.Controls.Add(this.lbRealDomainValue);
             this.gbVmdSummary.Controls.Add(this.lbRealDomainLabel);
             this.gbVmdSummary.Controls.Add(this.lbVmdSizeValue);
@@ -169,6 +176,7 @@
             // 
             // btnRenameVMD
             // 
+            this.btnRenameVMD.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.btnRenameVMD.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(224)))), ((int)(((byte)(224)))), ((int)(((byte)(224)))));
             this.btnRenameVMD.FlatAppearance.BorderSize = 0;
             this.btnRenameVMD.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
@@ -200,7 +208,7 @@
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
             this.Name = "RTC_VmdPool_Form";
             this.Tag = "color:darkerer";
-            this.Text = "RTC_VmdPool_Form";
+            this.Text = "VMD Pool";
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.RTC_VmdPool_Form_FormClosing);
             this.Load += new System.EventHandler(this.RTC_VmdPool_Form_Load);
             this.MouseDown += new System.Windows.Forms.MouseEventHandler(this.RTC_VmdPool_Form_MouseDown);

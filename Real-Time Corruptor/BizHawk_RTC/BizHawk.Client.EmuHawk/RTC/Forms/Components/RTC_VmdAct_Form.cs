@@ -15,8 +15,9 @@ namespace RTC
 		public RTC_VmdAct_Form()
 		{
 			InitializeComponent();
-		}
 
+			this.undockedSizable = false;
+		}
 
 		public bool ActLoadedFromFile = false;
 		public bool FirstInit = false;
@@ -667,5 +668,6 @@ namespace RTC
 				columnsMenu.Show(this, locate);
 			}
 		}
+
 	}
 }

@@ -540,12 +540,12 @@ namespace RTC
 					//RTC_StockpileManager.isCorruptionApplied = false;
 					RTC_Core.mdForm.RefreshDomains();
 					RTC_Core.mdForm.SetMemoryDomainsAllButSelectedDomains(RTC_MemoryDomains.GetBlacklistedDomains());
-					RTC_Core.ecForm.UpdateDefaultPrecision();
+					RTC_Core.ceForm.UpdateDefaultPrecision();
 					break;
 				case CommandType.REMOTE_EVENT_LOADGAMEDONE_SAMEGAME:
 					//RTC_StockpileManager.isCorruptionApplied = false;
 					RTC_Core.mdForm.RefreshDomainsAndKeepSelected();
-					RTC_Core.ecForm.UpdateDefaultPrecision();
+					RTC_Core.ceForm.UpdateDefaultPrecision();
 					break;
 
 				case CommandType.REMOTE_EVENT_CLOSEBIZHAWK:

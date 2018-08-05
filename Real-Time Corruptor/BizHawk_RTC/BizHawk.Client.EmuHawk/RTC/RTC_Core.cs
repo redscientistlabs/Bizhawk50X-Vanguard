@@ -97,6 +97,7 @@ namespace RTC
 
 		public static RTC_MemoryDomains_Form mdForm = null;
 		public static RTC_GeneralParameters_Form gpForm = null;
+		public static RTC_CorruptionEngine_Form ceForm = null;
 
 		//All RTC forms
 		public static Form[] allRtcForms
@@ -124,6 +125,7 @@ namespace RTC
 
 						mdForm,
 						gpForm,
+						ceForm,
 
 						standaloneForm,
 					};
@@ -289,6 +291,7 @@ namespace RTC
 
 			gpForm = new RTC_GeneralParameters_Form();
 			mdForm = new RTC_MemoryDomains_Form();
+			ceForm = new RTC_CorruptionEngine_Form();
 
 			standaloneForm = _standaloneForm;
 
@@ -976,10 +979,10 @@ namespace RTC
 		{
 			//Selects an engine from a given string name
 
-			for (int i = 0; i < ecForm.cbSelectedEngine.Items.Count; i++)
-				if (ecForm.cbSelectedEngine.Items[i].ToString() == name)
+			for (int i = 0; i < ceForm.cbSelectedEngine.Items.Count; i++)
+				if (ceForm.cbSelectedEngine.Items[i].ToString() == name)
 				{
-					ecForm.cbSelectedEngine.SelectedIndex = i;
+					ceForm.cbSelectedEngine.SelectedIndex = i;
 					break;
 				}
 		}
@@ -1055,10 +1058,16 @@ namespace RTC
 			var darkererColorControls = allControls.FindAll(it => ((it.Tag as string) ?? "").Contains("color:darkerer"));
 
 			foreach (Control c in lightColorControls)
-				c.BackColor = color.ChangeColorBrightness(0.30f);
+				if(c is Label)
+					c.ForeColor = color.ChangeColorBrightness(0.30f);
+				else
+					c.BackColor = color.ChangeColorBrightness(0.30f);
 
 			foreach (Control c in normalColorControls)
-				c.BackColor = color;
+				if (c is Label)
+					c.ForeColor = color;
+				else
+					c.BackColor = color;
 
 			spForm.dgvStockpile.BackgroundColor = color;
 			ghForm.dgvStockpile.BackgroundColor = color;
@@ -1069,13 +1078,22 @@ namespace RTC
 			bgForm.dgvBlastGenerator.BackgroundColor = color;
 
 			foreach (Control c in darkColorControls)
-				c.BackColor = color.ChangeColorBrightness(-0.30f);
+				if (c is Label)
+					c.ForeColor = color.ChangeColorBrightness(-0.30f);
+				else
+					c.BackColor = color.ChangeColorBrightness(-0.30f);
 
 			foreach (Control c in darkerColorControls)
-				c.BackColor = color.ChangeColorBrightness(-0.75f);
+				if (c is Label)
+					c.ForeColor = color.ChangeColorBrightness(-0.75f);
+				else
+					c.BackColor = color.ChangeColorBrightness(-0.75f);
 
 			foreach (Control c in darkererColorControls)
-				c.BackColor = color.ChangeColorBrightness(-0.825f);
+				if (c is Label)
+					c.ForeColor = color.ChangeColorBrightness(-0.825f);
+				else
+					c.BackColor = color.ChangeColorBrightness(-0.825f);
 		}
 
 		public static void SelectRTCColor()

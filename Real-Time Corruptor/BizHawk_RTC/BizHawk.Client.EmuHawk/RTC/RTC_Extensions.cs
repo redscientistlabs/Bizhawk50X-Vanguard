@@ -637,6 +637,8 @@ namespace RTC
 		Panel defaultPanel = null;
 		Panel previousPanel = null;
 
+		public bool undockedSizable = true;
+
 		public void AnchorToPanel(Panel pn)
 		{
 
@@ -663,6 +665,7 @@ namespace RTC
 			this.Location = new Point(0, 0);
 
 			this.Show();
+			this.BringToFront();
 		}
 
 		public void SwitchToWindow()
@@ -673,7 +676,17 @@ namespace RTC
 			this.TopLevel = true;
 			this.TopMost = true;
 
-			this.FormBorderStyle = FormBorderStyle.Sizable;
+			if(undockedSizable)
+			{
+				this.FormBorderStyle = FormBorderStyle.Sizable;
+				this.MaximizeBox = true;
+			}
+			else
+			{
+				this.FormBorderStyle = FormBorderStyle.FixedSingle;
+				this.MaximizeBox = false;
+			}
+			
 
 			this.Show();
 		}
