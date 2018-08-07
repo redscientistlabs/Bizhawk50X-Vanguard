@@ -169,7 +169,7 @@ namespace RTC
 				{
 					//Queue it for the backup pool if it needs to go there, take a single backup if it needs that, otherwise do nothing.
 					//Since we're within buList, it only goes off the current list
-					if (bu.Source == BlastUnitSource.STORE && bu.StoreTime == StoreTime.PREEXECUTE)
+					if (bu.Source == BlastUnitSource.STORE && bu.StoreTime == ActionTime.PREEXECUTE)
 					{
 						if(bu.StoreType == StoreType.ONCE)
 							bu.StoreBackup();

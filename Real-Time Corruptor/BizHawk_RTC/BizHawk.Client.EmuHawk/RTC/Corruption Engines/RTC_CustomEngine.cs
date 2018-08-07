@@ -300,7 +300,7 @@ namespace RTC
 						long safeStartAddress = bt.Address - (bt.Address % precision);
 
 						bu.StoreType = StoreType;
-						bu.StoreTime = StoreTime;
+						bu.ActionTime = StoreTime;
 						bu.SourceDomain = bt.Domain;
 						bu.SourceAddress = safeStartAddress;
 					}

@@ -7,6 +7,7 @@ using System.IO.Compression;
 using System.Linq;
 using System.Windows.Forms;
 using System.Numerics;
+using System.Security.Cryptography;
 using System.Xml.Serialization;
 
 namespace RTC
@@ -841,7 +842,7 @@ namespace RTC
 		public int Precision { get; set; }
 
 		public BlastUnitSource Source { get; set; }
-		public StoreTime StoreTime { get; set; }
+		public ActionTime StoreTime { get; set; }
 		public StoreType StoreType { get; set; }
 
 		public byte[] Value { get; set; }
@@ -857,6 +858,10 @@ namespace RTC
 		public int Lifetime { get; set; }
 		public bool Loop { get; set; } = false;
 
+		public ActionTime LimiterTime { get; set; }
+		public MD5 LimiterList { get; set; }
+
+
 		//Working data. Not persistent beyond a single execution
 
 		//We Calculate a LastFrame at the beginning of execute
@@ -865,7 +870,8 @@ namespace RTC
 		public int ExecuteFrameQueued = 0;
 		//We use ApplyValue so we don't need to keep re-calculating the tiled value every execute if we don't have to.
 		private byte[] ApplyValue;
-		private List<byte[]> StoreData = new List<byte[]>();
+		//The data that has been backed up. This is a list of bytes so if they start backing up at IMMEDIATE, they can have historical backups
+		private List<byte[]> StoreData;
 
 
 
@@ -882,7 +888,7 @@ namespace RTC
 		/// <param name="note"></param>
 		/// <param name="isEnabled"></param>
 		/// <param name="isLocked"></param>
-		public BlastUnit(StoreType storeType, StoreTime storeTime,
+		public BlastUnit(StoreType storeType, ActionTime storeTime,
 			string domain, long address, string sourceDomain, long sourceAddress,  int precision, bool bigEndian, int executeFrame = 0, int lifetime = 1,
 			string note = null, bool isEnabled = true, bool isLocked = false)
 		{
@@ -971,13 +977,15 @@ namespace RTC
 			if (!IsEnabled)
 				return true;
 
+			//Prepare the working data
 			ApplyValue = null;
 			LastFrame = -1;
 			ExecuteFrameQueued = 0;
+			StoreData = new List<byte[]>();
 
 
 			//We need to grab the value to freeze
-			if (Source == BlastUnitSource.STORE && StoreTime == StoreTime.IMMEDIATE)
+			if (Source == BlastUnitSource.STORE && StoreTime == ActionTime.IMMEDIATE)
 			{
 				//If it's one time, store the backup. Otherwise add it to the pool 
 				if(StoreType == StoreType.ONCE)

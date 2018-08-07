@@ -875,6 +875,7 @@
     <Compile Include="RTC\RTC_Diff.cs" />
     <Compile Include="RTC\RTC_Enums.cs" />
     <Compile Include="RTC\RTC_Extensions.cs" />
+    <Compile Include="RTC\RTC_Filtering.cs" />
     <Compile Include="RTC\RTC_GameProtection.cs" />
     <Compile Include="RTC\RTC_Hooks.cs" />
     <Compile Include="RTC\RTC_Hotkeys.cs" />

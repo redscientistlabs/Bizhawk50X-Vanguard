@@ -16,10 +16,12 @@
 		VALUE,
 		STORE
 	}
-	public enum StoreTime
+	public enum ActionTime
 	{
+		GENERATE,   //For when something is happening at generate time
 		IMMEDIATE,  //Frame 0 for the blastunit. Right when it's applied. Used for Distortion
-		PREEXECUTE //The frame where the blastunit is going to start executing. Used for freeze
+		PREEXECUTE, //For when you want it to happen right before the first step
+		EXECUTE     //For when you want it to happen every step
 	}
 	public enum StoreType
 	{

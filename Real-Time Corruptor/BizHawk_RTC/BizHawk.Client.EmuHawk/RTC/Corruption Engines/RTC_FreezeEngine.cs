@@ -13,7 +13,7 @@ namespace RTC
 					return null;
 				MemoryDomainProxy mdp = RTC_MemoryDomains.GetProxy(domain, address);
 				long safeAddress = address - (address % precision);
-				return new BlastUnit(StoreType.ONCE, StoreTime.PREEXECUTE, domain, safeAddress, domain, safeAddress, precision, mdp.BigEndian, 0, -1);
+				return new BlastUnit(StoreType.ONCE, ActionTime.PREEXECUTE, domain, safeAddress, domain, safeAddress, precision, mdp.BigEndian, 0, -1);
 			}
 			catch (Exception ex)
 			{
