@@ -855,6 +855,7 @@ namespace RTC
 
 		public int ExecuteFrame { get; set; }
 		public int Lifetime { get; set; }
+		public bool Loop { get; set; } = false;
 
 		//Working data. Not persistent beyond a single execution
 

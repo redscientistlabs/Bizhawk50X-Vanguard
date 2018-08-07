@@ -95,7 +95,7 @@ namespace RTC
 			bu.ExecuteFrameQueued = bu.ExecuteFrame + currentFrame;
 			bu.LastFrame = bu.ExecuteFrameQueued + bu.Lifetime;
 
-			List<BlastUnit> collection = buListCollection.FirstOrDefault(it => (it[0].ExecuteFrameQueued == bu.ExecuteFrameQueued) && (it[0].Lifetime == bu.Lifetime));
+			List<BlastUnit> collection = buListCollection.FirstOrDefault(it => (it[0].ExecuteFrameQueued == bu.ExecuteFrameQueued) && (it[0].Lifetime == bu.Lifetime) && (it[0].Loop == bu.Loop));
 			
 			if (collection == null)
 			{
@@ -209,12 +209,31 @@ namespace RTC
 				if (buList[0].LastFrame == currentFrame)
 					itemsToRemove.Add(buList);
 			}
+
+			bool needsRefilter = false;
 			//Remove any temp units that have expired
 			foreach (List<BlastUnit> buList in itemsToRemove)
 			{
 				//Remove it
 				appliedLifetime.Remove(buList);
+
+				//Add any that loop back to the starting pool.
+				//Since we already have it filtered as a list, there's no reason to build a new list
+				//We just update the ExecuteFrameQueued and LastFrame, then just add it back to buListCollection
+				if(buList[0].Loop)
+				{
+					//We have to add 1 since currentFrame hasn't been incremented yet
+					buList[0].ExecuteFrameQueued = buList[0].ExecuteFrame + currentFrame + 1; 
+					buList[0].LastFrame = buList[0].ExecuteFrameQueued + buList[0].Lifetime + 1;
+					buListCollection.Add(buList);
+					needsRefilter = true;
+				}
+				
 			}
+			//We only call this if there's a loop layer for optimization purposes.
+			if(needsRefilter)
+				FilterBuListCollection();
+
 			currentFrame++;
 		}
 	}
