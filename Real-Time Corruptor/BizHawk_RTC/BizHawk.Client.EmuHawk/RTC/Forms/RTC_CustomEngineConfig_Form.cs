@@ -243,5 +243,14 @@ namespace RTC
 			updatingMinMax = false;
 		}
 
+		private void nmLifetime_ValueChanged(object sender, EventArgs e)
+		{
+			RTC_CustomEngine.Lifetime = Convert.ToInt32(nmLifetime.Value);
+		}
+
+		private void nmDelay_ValueChanged(object sender, EventArgs e)
+		{
+			RTC_CustomEngine.Delay = Convert.ToInt32(nmDelay.Value);
+		}
 	}
 }
