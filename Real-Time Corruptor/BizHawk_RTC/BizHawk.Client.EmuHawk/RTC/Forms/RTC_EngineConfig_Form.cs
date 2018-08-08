@@ -39,8 +39,8 @@ namespace RTC
 			for (int i = 0; i < md5s.Count; i++)
 			{
 				string[] _paths = paths[i].Split('.');
-				RTC_Core.filterListsComboSource.Add(new { Text = _paths[_paths.Length-1], Value = md5s[i] });
-
+				//RTC_Core.filterListsComboSource.Add(new { Text = _paths[_paths.Length-1], Value = md5s[i] });
+				RTC_Core.filterListsComboSource.Add(new ComboBoxTextValue<string, MD5>(_paths[_paths.Length - 1], md5s[i]));
 			}
 		}
 		
