@@ -11,6 +11,7 @@
 		NONE
 	}
 
+
 	public enum BlastUnitSource
 	{
 		VALUE,
@@ -26,16 +27,38 @@
 	public enum StoreType
 	{
 		ONCE, 
-		LIFETIME
+		CONTINUOUS
 	}
 
-	public enum BlastUnitAlgo
+	public enum NightmareAlgo
 	{
 		RANDOM,
 		RANDOMTILT,
-		TILT,
-		VECTOR,
-		NONE
+		TILT
+	}
+	public enum NightmareType
+	{
+		SET,
+		ADD,
+		SUBTRACT
+	}
+
+	public enum CustomUnitSource
+	{
+		VALUE,
+		STORE
+	}
+
+	public enum CustomValueSource
+	{
+		RANDOM,
+		VALUELIST,
+		RANGE
+	}
+	public enum CustomStoreAddress
+	{
+		SAME,
+		RANDOM
 	}
 
 	public enum CorruptionEngine
@@ -47,6 +70,7 @@
 		PIPE,
 		VECTOR,
 		BLASTGENERATORENGINE,
+		CUSTOM,
 		NONE
 	}
 

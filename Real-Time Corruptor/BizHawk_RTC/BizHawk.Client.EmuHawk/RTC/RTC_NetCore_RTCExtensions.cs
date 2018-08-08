@@ -412,6 +412,10 @@ namespace RTC
 						RTC_StockpileManager.lastBlastLayerBackup.Apply(true);
 					break;
 
+				case CommandType.REMOTE_SET_NIGHTMARE_TYPE:
+					RTC_NightmareEngine.Algo = (NightmareAlgo)cmd.objectValue;
+					break;
+
 				case CommandType.REMOTE_SET_NIGHTMARE_MINVALUE:
 				{
 					int precision = (int)(cmd.objectValue as object[])[0];
@@ -521,10 +525,10 @@ namespace RTC
 					break;
 
 				case CommandType.REMOTE_SET_VECTOR_LIMITER:
-					//RTC_VectorEngine.LimiterList = (string[])cmd.objectValue;
+					RTC_VectorEngine.LimiterList = (System.Security.Cryptography.MD5)cmd.objectValue;
 					break;
 				case CommandType.REMOTE_SET_VECTOR_VALUES:
-					//RTC_VectorEngine.ValueList = (string[])cmd.objectValue;
+					RTC_VectorEngine.ValueList = (System.Security.Cryptography.MD5)cmd.objectValue;
 					break;
 
 				case CommandType.REMOTE_EVENT_LOADGAMEDONE_NEWGAME:

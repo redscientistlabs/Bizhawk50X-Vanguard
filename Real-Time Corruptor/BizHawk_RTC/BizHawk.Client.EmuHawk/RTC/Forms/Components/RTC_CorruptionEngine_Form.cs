@@ -4,6 +4,7 @@ using System.ComponentModel;
 using System.Data;
 using System.Drawing;
 using System.Linq;
+using System.Security.Cryptography;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
@@ -37,14 +38,25 @@ namespace RTC
 			gbPipeEngine.Location = new Point(gbSelectedEngine.Location.X, gbSelectedEngine.Location.Y);
 			gbVectorEngine.Location = new Point(gbSelectedEngine.Location.X, gbSelectedEngine.Location.Y);
 			gbBlastGeneratorEngine.Location = new Point(gbSelectedEngine.Location.X, gbSelectedEngine.Location.Y);
+			gbCustomEngine.Location = new Point(gbSelectedEngine.Location.X, gbSelectedEngine.Location.Y);
 
 
 			cbSelectedEngine.SelectedIndex = 0;
-			//cbVectorLimiterList.SelectedIndex = 0;
-			//cbVectorValueList.SelectedIndex = 0;
 			cbBlastType.SelectedIndex = 0;
 			cbCustomPrecision.SelectedIndex = 0;
 
+			//Do this here as if it's stuck into the designer, it keeps defaulting out
+			cbVectorValueList.DataSource = RTC_Core.ValueListBindingSource;
+			cbVectorLimiterList.DataSource = RTC_Core.LimiterListBindingSource;
+
+			if (RTC_Core.LimiterListBindingSource.Count > 0)
+			{
+				cbVectorLimiterList_SelectedIndexChanged(cbVectorLimiterList, null);
+			}
+			if (RTC_Core.ValueListBindingSource.Count > 0)
+			{
+				cbVectorValueList_SelectedIndexChanged(cbVectorValueList, null);
+			}
 
 		}
 
@@ -88,6 +100,7 @@ namespace RTC
 				RTC_Core.CurrentPrecision = defaultPrecision;
 
 			updateMinMaxBoxes(defaultPrecision);
+			RTC_Core.cecForm.UpdateMinMaxBoxes(defaultPrecision);
 		}
 
 
@@ -102,6 +115,8 @@ namespace RTC
 			gbFreezeEngine.Visible = false;
 			gbPipeEngine.Visible = false;
 			gbVectorEngine.Visible = false;
+			gbBlastGeneratorEngine.Visible = false;
+			gbCustomEngine.Visible = false;
 
 			pnCustomPrecision.Visible = false;
 			
@@ -158,6 +173,11 @@ namespace RTC
 					RTC_Core.ecForm.pnMemoryDomains.Visible = false;
 
 					RTC_Core.ghForm.pnIntensity.Visible = false;
+					break;
+				case "Custom Engine":
+					RTC_Core.SelectedEngine = CorruptionEngine.CUSTOM;
+					gbCustomEngine.Visible = true;
+
 					break;
 
 				default:
@@ -244,26 +264,15 @@ namespace RTC
 
 		private void cbVectorLimiterList_SelectedIndexChanged(object sender, EventArgs e)
 		{
-			string selectedText = ((ComboBox)sender).SelectedItem.ToString();
-
-			switch (selectedText)
-			{
-			}
-
-		//	RTC_Core.SendCommandToBizhawk(new RTC_Command(CommandType.REMOTE_SET_VECTOR_LIMITER) { objectValue = RTC_VectorEngine.LimiterList });
+			RTC_VectorEngine.LimiterList = (MD5)((ComboBox)sender).SelectedValue;
+			RTC_Core.SendCommandToBizhawk(new RTC_Command(CommandType.REMOTE_SET_VECTOR_LIMITER) { objectValue = RTC_VectorEngine.LimiterList });
 		}
 
 		private void cbVectorValueList_SelectedIndexChanged(object sender, EventArgs e)
 		{
-			string selectedText = (sender as ComboBox)?.SelectedItem.ToString();
-
-			switch (selectedText)
-			{
-			}
-
-			//RTC_Core.SendCommandToBizhawk(new RTC_Command(CommandType.REMOTE_SET_VECTOR_VALUES) { objectValue = RTC_VectorEngine.ValueList });
+			RTC_VectorEngine.ValueList = (MD5)((ComboBox)sender).SelectedValue;
+			RTC_Core.SendCommandToBizhawk(new RTC_Command(CommandType.REMOTE_SET_VECTOR_VALUES) { objectValue = RTC_VectorEngine.ValueList });
 		}
-
 
 
 		private void btnClearCheats_Click(object sender, EventArgs e)
@@ -361,7 +370,9 @@ namespace RTC
 						break;
 				}
 				RTC_Core.SendCommandToBizhawk(new RTC_Command(CommandType.REMOTE_SET_CUSTOMPRECISION) { objectValue = RTC_Core.CustomPrecision }, true);
+
 				updateMinMaxBoxes(RTC_Core.CustomPrecision);
+				RTC_Core.cecForm.UpdateMinMaxBoxes(RTC_Core.CustomPrecision);
 			}
 		}
 
@@ -475,31 +486,34 @@ namespace RTC
 
 		private void cbBlastType_SelectedIndexChanged(object sender, EventArgs e)
 		{
-			/*
 			switch (cbBlastType.SelectedItem.ToString())
 			{
 				case "RANDOM":
 
-					RTC_NightmareEngine.Algo = BlastByteAlgo.RANDOM;
+					RTC_NightmareEngine.Algo = NightmareAlgo.RANDOM;
 					nmMinValueNightmare.Enabled = true;
 					nmMaxValueNightmare.Enabled = true;
 					break;
 
 				case "RANDOMTILT":
-					RTC_NightmareEngine.Algo = BlastByteAlgo.RANDOMTILT;
+					RTC_NightmareEngine.Algo = NightmareAlgo.RANDOMTILT;
 					nmMinValueNightmare.Enabled = true;
 					nmMaxValueNightmare.Enabled = true;
 					break;
 
 				case "TILT":
-					RTC_NightmareEngine.Algo = BlastByteAlgo.TILT;
+					RTC_NightmareEngine.Algo = NightmareAlgo.TILT;
 					nmMinValueNightmare.Enabled = false;
 					nmMaxValueNightmare.Enabled = false;
 					break;
+			}
 			RTC_Core.SendCommandToBizhawk(new RTC_Command(CommandType.REMOTE_SET_NIGHTMARE_TYPE) { objectValue = RTC_NightmareEngine.Algo });
-			}*/
 
 		}
 
+		private void btnOpenCustomEngine_Click(object sender, EventArgs e)
+		{
+			RTC_Core.cecForm.Show();
+		}
 	}
 }

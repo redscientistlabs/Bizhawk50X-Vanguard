@@ -28,24 +28,25 @@
         /// </summary>
         private void InitializeComponent()
         {
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(RTC_EngineConfig_Form));
             this.pnGeneralParameters = new System.Windows.Forms.Panel();
+            this.label1 = new System.Windows.Forms.Label();
             this.label5 = new System.Windows.Forms.Label();
             this.pnMemoryTargetting = new System.Windows.Forms.Panel();
             this.pnAdvancedTool = new System.Windows.Forms.Panel();
+            this.label8 = new System.Windows.Forms.Label();
             this.cbMemoryDomainTool = new System.Windows.Forms.ComboBox();
             this.pnCorruptionEngine = new System.Windows.Forms.Panel();
+            this.label7 = new System.Windows.Forms.Label();
             this.label11 = new System.Windows.Forms.Label();
             this.pnMemoryDomains = new System.Windows.Forms.Panel();
+            this.label4 = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
             this.label3 = new System.Windows.Forms.Label();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
             this.label6 = new System.Windows.Forms.Label();
             this.gbDomainsUnavailable = new System.Windows.Forms.GroupBox();
             this.label22 = new System.Windows.Forms.Label();
-            this.label1 = new System.Windows.Forms.Label();
-            this.label4 = new System.Windows.Forms.Label();
-            this.label7 = new System.Windows.Forms.Label();
-            this.label8 = new System.Windows.Forms.Label();
             this.pnGeneralParameters.SuspendLayout();
             this.pnMemoryTargetting.SuspendLayout();
             this.pnAdvancedTool.SuspendLayout();
@@ -64,6 +65,18 @@
             this.pnGeneralParameters.Size = new System.Drawing.Size(200, 167);
             this.pnGeneralParameters.TabIndex = 117;
             this.pnGeneralParameters.Tag = "color:normal";
+            // 
+            // label1
+            // 
+            this.label1.AutoSize = true;
+            this.label1.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F);
+            this.label1.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
+            this.label1.Location = new System.Drawing.Point(7, 8);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(170, 13);
+            this.label1.TabIndex = 119;
+            this.label1.Tag = "color:dark";
+            this.label1.Text = "Component is detached to window";
             // 
             // label5
             // 
@@ -97,6 +110,18 @@
             this.pnAdvancedTool.TabIndex = 115;
             this.pnAdvancedTool.Tag = "color:dark";
             // 
+            // label8
+            // 
+            this.label8.AutoSize = true;
+            this.label8.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F);
+            this.label8.ForeColor = System.Drawing.Color.Gray;
+            this.label8.Location = new System.Drawing.Point(8, 8);
+            this.label8.Name = "label8";
+            this.label8.Size = new System.Drawing.Size(170, 13);
+            this.label8.TabIndex = 120;
+            this.label8.Tag = "color:normal";
+            this.label8.Text = "Component is detached to window";
+            // 
             // cbMemoryDomainTool
             // 
             this.cbMemoryDomainTool.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
@@ -128,6 +153,18 @@
             this.pnCorruptionEngine.TabIndex = 119;
             this.pnCorruptionEngine.Tag = "color:normal";
             // 
+            // label7
+            // 
+            this.label7.AutoSize = true;
+            this.label7.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F);
+            this.label7.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
+            this.label7.Location = new System.Drawing.Point(10, 8);
+            this.label7.Name = "label7";
+            this.label7.Size = new System.Drawing.Size(170, 13);
+            this.label7.TabIndex = 121;
+            this.label7.Tag = "color:dark";
+            this.label7.Text = "Component is detached to window";
+            // 
             // label11
             // 
             this.label11.AutoSize = true;
@@ -148,6 +185,18 @@
             this.pnMemoryDomains.Size = new System.Drawing.Size(200, 291);
             this.pnMemoryDomains.TabIndex = 130;
             this.pnMemoryDomains.Tag = "color:normal";
+            // 
+            // label4
+            // 
+            this.label4.AutoSize = true;
+            this.label4.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F);
+            this.label4.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
+            this.label4.Location = new System.Drawing.Point(6, 11);
+            this.label4.Name = "label4";
+            this.label4.Size = new System.Drawing.Size(170, 13);
+            this.label4.TabIndex = 120;
+            this.label4.Tag = "color:dark";
+            this.label4.Text = "Component is detached to window";
             // 
             // label2
             // 
@@ -217,54 +266,6 @@
             this.label22.Text = "Memory Domains unavailable with\n current engine";
             this.label22.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
-            // label1
-            // 
-            this.label1.AutoSize = true;
-            this.label1.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F);
-            this.label1.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
-            this.label1.Location = new System.Drawing.Point(7, 8);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(170, 13);
-            this.label1.TabIndex = 119;
-            this.label1.Tag = "color:dark";
-            this.label1.Text = "Component is detached to window";
-            // 
-            // label4
-            // 
-            this.label4.AutoSize = true;
-            this.label4.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F);
-            this.label4.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
-            this.label4.Location = new System.Drawing.Point(6, 11);
-            this.label4.Name = "label4";
-            this.label4.Size = new System.Drawing.Size(170, 13);
-            this.label4.TabIndex = 120;
-            this.label4.Tag = "color:dark";
-            this.label4.Text = "Component is detached to window";
-            // 
-            // label7
-            // 
-            this.label7.AutoSize = true;
-            this.label7.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F);
-            this.label7.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
-            this.label7.Location = new System.Drawing.Point(10, 8);
-            this.label7.Name = "label7";
-            this.label7.Size = new System.Drawing.Size(170, 13);
-            this.label7.TabIndex = 121;
-            this.label7.Tag = "color:dark";
-            this.label7.Text = "Component is detached to window";
-            // 
-            // label8
-            // 
-            this.label8.AutoSize = true;
-            this.label8.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F);
-            this.label8.ForeColor = System.Drawing.Color.Gray;
-            this.label8.Location = new System.Drawing.Point(8, 8);
-            this.label8.Name = "label8";
-            this.label8.Size = new System.Drawing.Size(170, 13);
-            this.label8.TabIndex = 120;
-            this.label8.Tag = "color:normal";
-            this.label8.Text = "Component is detached to window";
-            // 
             // RTC_EngineConfig_Form
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -283,6 +284,7 @@
             this.Controls.Add(this.groupBox1);
             this.DoubleBuffered = true;
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
+            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Name = "RTC_EngineConfig_Form";
             this.Tag = "color:dark";
             this.Text = "RTC : Engine Config";

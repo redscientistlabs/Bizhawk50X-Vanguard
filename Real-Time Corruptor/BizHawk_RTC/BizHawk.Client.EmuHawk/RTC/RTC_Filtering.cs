@@ -12,12 +12,6 @@ namespace RTC
 	public static class RTC_Filtering
 	{
 
-		#region constant lists
-
-		
-
-		#endregion constant lists
-
 		private static Dictionary<MD5, String[]> hash2LimiterDico = new Dictionary<MD5, string[]>();
 		private static Dictionary<MD5, String[]> hash2ValueDico = new Dictionary<MD5, string[]>();
 
@@ -76,8 +70,8 @@ namespace RTC
 		public static bool LimiterPeekBytes(long startAddress, long endAddress, MD5 hash, MemoryDomainProxy mdp)
 		{
 			byte[] values = mdp.PeekBytes(startAddress, endAddress);
-			//The compare is done as big endian
-			if (!mdp.BigEndian)
+			//The compare is done as little endian
+			if (mdp.BigEndian)
 				values = values.FlipBytes();
 
 			if (LimiterContainsValue(values, hash))

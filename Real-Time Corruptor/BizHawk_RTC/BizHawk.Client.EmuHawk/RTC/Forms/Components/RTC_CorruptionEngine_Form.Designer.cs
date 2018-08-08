@@ -42,12 +42,10 @@
             this.btnOpenBlastGenerator = new System.Windows.Forms.Button();
             this.gbVectorEngine = new System.Windows.Forms.GroupBox();
             this.panel2 = new System.Windows.Forms.Panel();
-            this.lbVectorEngineValueText2 = new System.Windows.Forms.Label();
             this.lbVectorEngineValueText1 = new System.Windows.Forms.Label();
             this.cbVectorValueList = new System.Windows.Forms.ComboBox();
             this.label18 = new System.Windows.Forms.Label();
             this.pnLimiterList = new System.Windows.Forms.Panel();
-            this.lbVectorEngineLimiterText2 = new System.Windows.Forms.Label();
             this.lbVectorEngineLimiterText1 = new System.Windows.Forms.Label();
             this.cbVectorLimiterList = new System.Windows.Forms.ComboBox();
             this.label13 = new System.Windows.Forms.Label();
@@ -99,6 +97,11 @@
             this.comboBox1 = new System.Windows.Forms.ComboBox();
             this.cbBlastType = new System.Windows.Forms.ComboBox();
             this.label9 = new System.Windows.Forms.Label();
+            this.gbCustomEngine = new System.Windows.Forms.GroupBox();
+            this.label2 = new System.Windows.Forms.Label();
+            this.comboBox7 = new System.Windows.Forms.ComboBox();
+            this.label3 = new System.Windows.Forms.Label();
+            this.btnOpenCustomEngine = new System.Windows.Forms.Button();
             this.pnCustomPrecision.SuspendLayout();
             this.gbBlastGeneratorEngine.SuspendLayout();
             this.gbVectorEngine.SuspendLayout();
@@ -117,6 +120,7 @@
             this.gbNightmareEngine.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.nmMaxValueNightmare)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.nmMinValueNightmare)).BeginInit();
+            this.gbCustomEngine.SuspendLayout();
             this.SuspendLayout();
             // 
             // pnCustomPrecision
@@ -195,7 +199,8 @@
             "Freeze Engine",
             "Pipe Engine",
             "Vector Engine",
-            "Blast Generator"});
+            "Blast Generator",
+            "Custom Engine"});
             this.cbSelectedEngine.Location = new System.Drawing.Point(12, 12);
             this.cbSelectedEngine.Name = "cbSelectedEngine";
             this.cbSelectedEngine.Size = new System.Drawing.Size(165, 21);
@@ -308,7 +313,6 @@
             // panel2
             // 
             this.panel2.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(32)))), ((int)(((byte)(32)))), ((int)(((byte)(32)))));
-            this.panel2.Controls.Add(this.lbVectorEngineValueText2);
             this.panel2.Controls.Add(this.lbVectorEngineValueText1);
             this.panel2.Controls.Add(this.cbVectorValueList);
             this.panel2.Controls.Add(this.label18);
@@ -319,31 +323,22 @@
             this.panel2.Tag = "color:darker";
             this.panel2.MouseDown += new System.Windows.Forms.MouseEventHandler(this.HandleMouseDown);
             // 
-            // lbVectorEngineValueText2
-            // 
-            this.lbVectorEngineValueText2.AutoSize = true;
-            this.lbVectorEngineValueText2.Font = new System.Drawing.Font("Segoe UI", 8F);
-            this.lbVectorEngineValueText2.Location = new System.Drawing.Point(164, 28);
-            this.lbVectorEngineValueText2.Name = "lbVectorEngineValueText2";
-            this.lbVectorEngineValueText2.Size = new System.Drawing.Size(162, 13);
-            this.lbVectorEngineValueText2.TabIndex = 139;
-            this.lbVectorEngineValueText2.Text = "Line where there are examples";
-            this.lbVectorEngineValueText2.MouseDown += new System.Windows.Forms.MouseEventHandler(this.HandleMouseDown);
-            // 
             // lbVectorEngineValueText1
             // 
             this.lbVectorEngineValueText1.AutoSize = true;
             this.lbVectorEngineValueText1.Font = new System.Drawing.Font("Segoe UI", 8F);
-            this.lbVectorEngineValueText1.Location = new System.Drawing.Point(164, 13);
+            this.lbVectorEngineValueText1.Location = new System.Drawing.Point(164, 21);
             this.lbVectorEngineValueText1.Name = "lbVectorEngineValueText1";
-            this.lbVectorEngineValueText1.Size = new System.Drawing.Size(192, 13);
+            this.lbVectorEngineValueText1.Size = new System.Drawing.Size(108, 13);
             this.lbVectorEngineValueText1.TabIndex = 138;
-            this.lbVectorEngineValueText1.Text = "Long text that explains the numbers";
+            this.lbVectorEngineValueText1.Text = "Replacement values";
             this.lbVectorEngineValueText1.MouseDown += new System.Windows.Forms.MouseEventHandler(this.HandleMouseDown);
             // 
             // cbVectorValueList
             // 
             this.cbVectorValueList.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
+            this.cbVectorValueList.DataSource = ((object)(resources.GetObject("cbVectorValueList.DataSource")));
+            this.cbVectorValueList.DisplayMember = "Text";
             this.cbVectorValueList.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.cbVectorValueList.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.cbVectorValueList.Font = new System.Drawing.Font("Segoe UI", 8F);
@@ -354,13 +349,13 @@
             this.cbVectorValueList.Size = new System.Drawing.Size(152, 21);
             this.cbVectorValueList.TabIndex = 81;
             this.cbVectorValueList.Tag = "color:dark";
+            this.cbVectorValueList.ValueMember = "Value";
             this.cbVectorValueList.SelectedIndexChanged += new System.EventHandler(this.cbVectorValueList_SelectedIndexChanged);
             this.cbVectorValueList.MouseDown += new System.Windows.Forms.MouseEventHandler(this.HandleMouseDown);
-			this.cbVectorValueList.DataSource = RTC_Core.filterListsComboSource;
-			// 
-			// label18
-			// 
-			this.label18.AutoSize = true;
+            // 
+            // label18
+            // 
+            this.label18.AutoSize = true;
             this.label18.Font = new System.Drawing.Font("Segoe UI", 8F);
             this.label18.Location = new System.Drawing.Point(4, 3);
             this.label18.Name = "label18";
@@ -372,7 +367,6 @@
             // pnLimiterList
             // 
             this.pnLimiterList.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(32)))), ((int)(((byte)(32)))), ((int)(((byte)(32)))));
-            this.pnLimiterList.Controls.Add(this.lbVectorEngineLimiterText2);
             this.pnLimiterList.Controls.Add(this.lbVectorEngineLimiterText1);
             this.pnLimiterList.Controls.Add(this.cbVectorLimiterList);
             this.pnLimiterList.Controls.Add(this.label13);
@@ -383,31 +377,22 @@
             this.pnLimiterList.Tag = "color:darker";
             this.pnLimiterList.MouseDown += new System.Windows.Forms.MouseEventHandler(this.HandleMouseDown);
             // 
-            // lbVectorEngineLimiterText2
-            // 
-            this.lbVectorEngineLimiterText2.AutoSize = true;
-            this.lbVectorEngineLimiterText2.Font = new System.Drawing.Font("Segoe UI", 8F);
-            this.lbVectorEngineLimiterText2.Location = new System.Drawing.Point(164, 27);
-            this.lbVectorEngineLimiterText2.Name = "lbVectorEngineLimiterText2";
-            this.lbVectorEngineLimiterText2.Size = new System.Drawing.Size(162, 13);
-            this.lbVectorEngineLimiterText2.TabIndex = 142;
-            this.lbVectorEngineLimiterText2.Text = "Line where there are examples";
-            this.lbVectorEngineLimiterText2.MouseDown += new System.Windows.Forms.MouseEventHandler(this.HandleMouseDown);
-            // 
             // lbVectorEngineLimiterText1
             // 
             this.lbVectorEngineLimiterText1.AutoSize = true;
             this.lbVectorEngineLimiterText1.Font = new System.Drawing.Font("Segoe UI", 8F);
-            this.lbVectorEngineLimiterText1.Location = new System.Drawing.Point(164, 12);
+            this.lbVectorEngineLimiterText1.Location = new System.Drawing.Point(164, 20);
             this.lbVectorEngineLimiterText1.Name = "lbVectorEngineLimiterText1";
-            this.lbVectorEngineLimiterText1.Size = new System.Drawing.Size(192, 13);
+            this.lbVectorEngineLimiterText1.Size = new System.Drawing.Size(104, 13);
             this.lbVectorEngineLimiterText1.TabIndex = 141;
-            this.lbVectorEngineLimiterText1.Text = "Long text that explains the numbers";
+            this.lbVectorEngineLimiterText1.Text = "Comparison values";
             this.lbVectorEngineLimiterText1.MouseDown += new System.Windows.Forms.MouseEventHandler(this.HandleMouseDown);
             // 
             // cbVectorLimiterList
             // 
             this.cbVectorLimiterList.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
+            this.cbVectorLimiterList.DataSource = ((object)(resources.GetObject("cbVectorLimiterList.DataSource")));
+            this.cbVectorLimiterList.DisplayMember = "Text";
             this.cbVectorLimiterList.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.cbVectorLimiterList.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.cbVectorLimiterList.Font = new System.Drawing.Font("Segoe UI", 8F);
@@ -418,14 +403,13 @@
             this.cbVectorLimiterList.Size = new System.Drawing.Size(152, 21);
             this.cbVectorLimiterList.TabIndex = 78;
             this.cbVectorLimiterList.Tag = "color:dark";
+            this.cbVectorLimiterList.ValueMember = "Value";
             this.cbVectorLimiterList.SelectedIndexChanged += new System.EventHandler(this.cbVectorLimiterList_SelectedIndexChanged);
             this.cbVectorLimiterList.MouseDown += new System.Windows.Forms.MouseEventHandler(this.HandleMouseDown);
-			this.cbVectorLimiterList.DataSource = RTC_Core.filterListsComboSource
-				;
-			// 
-			// label13
-			// 
-			this.label13.AutoSize = true;
+            // 
+            // label13
+            // 
+            this.label13.AutoSize = true;
             this.label13.Font = new System.Drawing.Font("Segoe UI", 8F);
             this.label13.Location = new System.Drawing.Point(5, 3);
             this.label13.Name = "label13";
@@ -1176,12 +1160,81 @@
             this.label9.Text = "Blast type:";
             this.label9.MouseDown += new System.Windows.Forms.MouseEventHandler(this.HandleMouseDown);
             // 
+            // gbCustomEngine
+            // 
+            this.gbCustomEngine.Controls.Add(this.label2);
+            this.gbCustomEngine.Controls.Add(this.comboBox7);
+            this.gbCustomEngine.Controls.Add(this.label3);
+            this.gbCustomEngine.Controls.Add(this.btnOpenCustomEngine);
+            this.gbCustomEngine.Font = new System.Drawing.Font("Segoe UI", 9.75F);
+            this.gbCustomEngine.ForeColor = System.Drawing.Color.White;
+            this.gbCustomEngine.Location = new System.Drawing.Point(853, 459);
+            this.gbCustomEngine.Name = "gbCustomEngine";
+            this.gbCustomEngine.Size = new System.Drawing.Size(391, 151);
+            this.gbCustomEngine.TabIndex = 147;
+            this.gbCustomEngine.TabStop = false;
+            this.gbCustomEngine.Visible = false;
+            // 
+            // label2
+            // 
+            this.label2.AutoSize = true;
+            this.label2.Font = new System.Drawing.Font("Segoe UI", 8F, System.Drawing.FontStyle.Italic);
+            this.label2.Location = new System.Drawing.Point(181, 32);
+            this.label2.MaximumSize = new System.Drawing.Size(205, 0);
+            this.label2.Name = "label2";
+            this.label2.Size = new System.Drawing.Size(204, 26);
+            this.label2.TabIndex = 81;
+            this.label2.Text = "It has so many options, there\'s no way we could fit them all here!";
+            // 
+            // comboBox7
+            // 
+            this.comboBox7.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
+            this.comboBox7.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.comboBox7.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.comboBox7.Font = new System.Drawing.Font("Segoe UI", 8F);
+            this.comboBox7.ForeColor = System.Drawing.Color.White;
+            this.comboBox7.FormattingEnabled = true;
+            this.comboBox7.Location = new System.Drawing.Point(0, 9);
+            this.comboBox7.Name = "comboBox7";
+            this.comboBox7.Size = new System.Drawing.Size(165, 21);
+            this.comboBox7.TabIndex = 79;
+            this.comboBox7.Tag = "color:dark";
+            this.comboBox7.Visible = false;
+            // 
+            // label3
+            // 
+            this.label3.AutoSize = true;
+            this.label3.Font = new System.Drawing.Font("Segoe UI", 8.25F, System.Drawing.FontStyle.Italic);
+            this.label3.Location = new System.Drawing.Point(169, 15);
+            this.label3.Name = "label3";
+            this.label3.Size = new System.Drawing.Size(123, 13);
+            this.label3.TabIndex = 78;
+            this.label3.Text = "Create your own engine!";
+            // 
+            // btnOpenCustomEngine
+            // 
+            this.btnOpenCustomEngine.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(224)))), ((int)(((byte)(224)))), ((int)(((byte)(224)))));
+            this.btnOpenCustomEngine.FlatAppearance.BorderSize = 0;
+            this.btnOpenCustomEngine.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnOpenCustomEngine.Font = new System.Drawing.Font("Segoe UI", 8F);
+            this.btnOpenCustomEngine.ForeColor = System.Drawing.Color.Black;
+            this.btnOpenCustomEngine.Location = new System.Drawing.Point(6, 119);
+            this.btnOpenCustomEngine.Name = "btnOpenCustomEngine";
+            this.btnOpenCustomEngine.Size = new System.Drawing.Size(159, 24);
+            this.btnOpenCustomEngine.TabIndex = 77;
+            this.btnOpenCustomEngine.TabStop = false;
+            this.btnOpenCustomEngine.Tag = "color:light";
+            this.btnOpenCustomEngine.Text = "Open Custom Engine";
+            this.btnOpenCustomEngine.UseVisualStyleBackColor = false;
+            this.btnOpenCustomEngine.Click += new System.EventHandler(this.btnOpenCustomEngine_Click);
+            // 
             // RTC_CorruptionEngine_Form
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
             this.ClientSize = new System.Drawing.Size(1273, 646);
+            this.Controls.Add(this.gbCustomEngine);
             this.Controls.Add(this.gbBlastGeneratorEngine);
             this.Controls.Add(this.gbVectorEngine);
             this.Controls.Add(this.gbPipeEngine);
@@ -1227,6 +1280,8 @@
             this.gbNightmareEngine.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.nmMaxValueNightmare)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.nmMinValueNightmare)).EndInit();
+            this.gbCustomEngine.ResumeLayout(false);
+            this.gbCustomEngine.PerformLayout();
             this.ResumeLayout(false);
 
 		}
@@ -1246,12 +1301,10 @@
 		private System.Windows.Forms.Button btnOpenBlastGenerator;
 		private System.Windows.Forms.GroupBox gbVectorEngine;
 		private System.Windows.Forms.Panel panel2;
-		private System.Windows.Forms.Label lbVectorEngineValueText2;
 		private System.Windows.Forms.Label lbVectorEngineValueText1;
 		public System.Windows.Forms.ComboBox cbVectorValueList;
 		private System.Windows.Forms.Label label18;
 		private System.Windows.Forms.Panel pnLimiterList;
-		private System.Windows.Forms.Label lbVectorEngineLimiterText2;
 		private System.Windows.Forms.Label lbVectorEngineLimiterText1;
 		public System.Windows.Forms.ComboBox cbVectorLimiterList;
 		private System.Windows.Forms.Label label13;
@@ -1303,5 +1356,10 @@
 		public System.Windows.Forms.ComboBox comboBox1;
 		public System.Windows.Forms.ComboBox cbBlastType;
 		private System.Windows.Forms.Label label9;
+		private System.Windows.Forms.GroupBox gbCustomEngine;
+		private System.Windows.Forms.Label label2;
+		public System.Windows.Forms.ComboBox comboBox7;
+		private System.Windows.Forms.Label label3;
+		private System.Windows.Forms.Button btnOpenCustomEngine;
 	}
 }

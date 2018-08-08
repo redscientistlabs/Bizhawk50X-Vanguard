@@ -15,6 +15,7 @@ namespace RTC
 		public RTC_EngineConfig_Form()
 		{
 			InitializeComponent();
+			LoadLists();
 		}
 
 		private void RTC_EC_Form_Load(object sender, EventArgs e)
@@ -25,22 +26,24 @@ namespace RTC
 			RTC_Core.ceForm.AnchorToPanel(pnCorruptionEngine);
 
 			cbMemoryDomainTool.SelectedIndex = 0;
-			LoadLists();
 
 		}
 
 		private void LoadLists()
 		{
-			RTC_Core.filterListsComboSource.Clear();
+			RTC_Core.LimiterListBindingSource.Clear();
+			RTC_Core.ValueListBindingSource.Clear();
 
 			string[] paths = System.IO.Directory.GetFiles(RTC_Core.listsDir);
+
+			paths = paths.OrderBy(x => x).ToArray();
 
 			List<MD5> md5s = RTC_Filtering.LoadListsFromPaths(paths);
 			for (int i = 0; i < md5s.Count; i++)
 			{
-				string[] _paths = paths[i].Split('.');
-				RTC_Core.filterListsComboSource.Add(new { Text = _paths[_paths.Length-1], Value = md5s[i] });
-
+				string[] _paths = paths[i].Split('\\' , '.');
+				RTC_Core.LimiterListBindingSource.Add(new { Text = _paths[_paths.Length - 2], Value = md5s[i] });
+				RTC_Core.ValueListBindingSource.Add(new { Text = _paths[_paths.Length - 2], Value = md5s[i] });
 			}
 		}
 		

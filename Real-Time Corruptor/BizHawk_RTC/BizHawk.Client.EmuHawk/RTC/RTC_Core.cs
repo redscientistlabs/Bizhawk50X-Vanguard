@@ -8,6 +8,7 @@ using System.Linq;
 using System.Net;
 using System.Threading;
 using System.Windows.Forms;
+using BizHawk.Client.EmuHawk;
 using Newtonsoft.Json;
 
 /*
@@ -36,7 +37,8 @@ namespace RTC
 		//Engine Values
 		public static CorruptionEngine SelectedEngine = CorruptionEngine.NIGHTMARE;
 
-		public static BindingList<Object> filterListsComboSource = new BindingList<Object>();
+		public static BindingList<Object> LimiterListBindingSource = new BindingList<Object>();
+		public static BindingList<Object> ValueListBindingSource = new BindingList<Object>();
 
 		private static int customPrecision;
 		public static int CustomPrecision
@@ -276,6 +278,7 @@ namespace RTC
 
 			coreForm = new RTC_Core_Form();
 			ecForm = new RTC_EngineConfig_Form();
+			cecForm = new RTC_CustomEngineConfig_Form();
 			spForm = new RTC_StockpilePlayer_Form();
 			ghForm = new RTC_GlitchHarvester_Form();
 			sForm = new RTC_Settings_Form();
@@ -577,6 +580,9 @@ namespace RTC
 					break;
 				case CorruptionEngine.VECTOR:
 					bu = RTC_VectorEngine.GenerateUnit(_domain, _address);
+					break;
+				case CorruptionEngine.CUSTOM:
+					bu = RTC_CustomEngine.GenerateUnit(_domain, _address, precision);
 					break;
 				case CorruptionEngine.NONE:
 					return null;

@@ -7,8 +7,8 @@ namespace RTC
 {
 	public static class RTC_VectorEngine
 	{
-		public static MD5 currentLimiterList = null;
-		public static MD5 currentValueList = null;
+		public static MD5 LimiterList = null;
+		public static MD5 ValueList = null;
 
 		public static BlastUnit GenerateUnit(string domain, long address)
 		{
@@ -24,8 +24,8 @@ namespace RTC
 			try
 			{
 				//Enforce the safeaddress at generation
-				if (RTC_Filtering.LimiterPeekBytes(safeAddress, safeAddress + 4, currentLimiterList, mdp))
-					return new BlastUnit(RTC_Filtering.GetRandomConstant(currentValueList), domain, safeAddress, 4, mdp.BigEndian);
+				if (RTC_Filtering.LimiterPeekBytes(safeAddress, safeAddress + 4, LimiterList, mdp))
+					return new BlastUnit(RTC_Filtering.GetRandomConstant(ValueList), domain, safeAddress, 4, mdp.BigEndian);
 				return null;
 			}
 			catch (Exception ex)
