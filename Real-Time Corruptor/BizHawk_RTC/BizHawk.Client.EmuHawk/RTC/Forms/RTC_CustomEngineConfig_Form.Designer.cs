@@ -74,16 +74,17 @@
             this.cbClearRewind = new System.Windows.Forms.CheckBox();
             this.cbLoopUnit = new System.Windows.Forms.CheckBox();
             this.pnStepSettings = new System.Windows.Forms.Panel();
-            this.nmLifetime = new System.Windows.Forms.NumericUpDown();
-            this.nmDelay = new System.Windows.Forms.NumericUpDown();
-            this.label9 = new System.Windows.Forms.Label();
-            this.label10 = new System.Windows.Forms.Label();
             this.panel1 = new System.Windows.Forms.Panel();
             this.label11 = new System.Windows.Forms.Label();
             this.label12 = new System.Windows.Forms.Label();
             this.numericUpDown1 = new System.Windows.Forms.NumericUpDown();
             this.numericUpDown2 = new System.Windows.Forms.NumericUpDown();
+            this.label9 = new System.Windows.Forms.Label();
+            this.label10 = new System.Windows.Forms.Label();
+            this.nmDelay = new System.Windows.Forms.NumericUpDown();
+            this.nmLifetime = new System.Windows.Forms.NumericUpDown();
             this.pnCheckBoxes = new System.Windows.Forms.Panel();
+            this.label13 = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.nmMaxInfinite)).BeginInit();
             this.gbUnitSource.SuspendLayout();
             this.pnMinMax.SuspendLayout();
@@ -97,11 +98,11 @@
             this.pnStoreTime.SuspendLayout();
             this.pnLimiterList.SuspendLayout();
             this.pnStepSettings.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.nmLifetime)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.nmDelay)).BeginInit();
             this.panel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDown1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDown2)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.nmDelay)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.nmLifetime)).BeginInit();
             this.pnCheckBoxes.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -167,7 +168,7 @@
             this.label1.AutoSize = true;
             this.label1.Font = new System.Drawing.Font("Segoe UI Symbol", 8F);
             this.label1.ForeColor = System.Drawing.Color.White;
-            this.label1.Location = new System.Drawing.Point(235, 273);
+            this.label1.Location = new System.Drawing.Point(227, 273);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(98, 13);
             this.label1.TabIndex = 148;
@@ -309,7 +310,7 @@
             this.cbValueList.Font = new System.Drawing.Font("Segoe UI Symbol", 8F);
             this.cbValueList.ForeColor = System.Drawing.Color.White;
             this.cbValueList.FormattingEnabled = true;
-            this.cbValueList.Location = new System.Drawing.Point(12, 25);
+            this.cbValueList.Location = new System.Drawing.Point(12, 24);
             this.cbValueList.Name = "cbValueList";
             this.cbValueList.Size = new System.Drawing.Size(130, 21);
             this.cbValueList.TabIndex = 87;
@@ -575,7 +576,7 @@
             // 
             this.rbLimiterExecute.AutoSize = true;
             this.rbLimiterExecute.Font = new System.Drawing.Font("Segoe UI Symbol", 8F);
-            this.rbLimiterExecute.Location = new System.Drawing.Point(12, 113);
+            this.rbLimiterExecute.Location = new System.Drawing.Point(12, 112);
             this.rbLimiterExecute.Name = "rbLimiterExecute";
             this.rbLimiterExecute.Size = new System.Drawing.Size(64, 17);
             this.rbLimiterExecute.TabIndex = 186;
@@ -596,7 +597,7 @@
             // 
             this.rbLimiterFirstExecute.AutoSize = true;
             this.rbLimiterFirstExecute.Font = new System.Drawing.Font("Segoe UI Symbol", 8F);
-            this.rbLimiterFirstExecute.Location = new System.Drawing.Point(12, 97);
+            this.rbLimiterFirstExecute.Location = new System.Drawing.Point(12, 96);
             this.rbLimiterFirstExecute.Name = "rbLimiterFirstExecute";
             this.rbLimiterFirstExecute.Size = new System.Drawing.Size(89, 17);
             this.rbLimiterFirstExecute.TabIndex = 184;
@@ -684,44 +685,77 @@
             this.pnStepSettings.Size = new System.Drawing.Size(154, 69);
             this.pnStepSettings.TabIndex = 188;
             // 
-            // nmLifetime
+            // panel1
             // 
-            this.nmLifetime.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
-            this.nmLifetime.Font = new System.Drawing.Font("Segoe UI Symbol", 8F);
-            this.nmLifetime.ForeColor = System.Drawing.Color.White;
-            this.nmLifetime.Location = new System.Drawing.Point(75, 10);
-            this.nmLifetime.Maximum = new decimal(new int[] {
+            this.panel1.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.panel1.Controls.Add(this.label13);
+            this.panel1.Controls.Add(this.label11);
+            this.panel1.Controls.Add(this.label12);
+            this.panel1.Controls.Add(this.numericUpDown1);
+            this.panel1.Controls.Add(this.numericUpDown2);
+            this.panel1.Location = new System.Drawing.Point(-1, -1);
+            this.panel1.Name = "panel1";
+            this.panel1.Size = new System.Drawing.Size(154, 69);
+            this.panel1.TabIndex = 190;
+            // 
+            // label11
+            // 
+            this.label11.AutoSize = true;
+            this.label11.Font = new System.Drawing.Font("Segoe UI Symbol", 8F);
+            this.label11.ForeColor = System.Drawing.Color.White;
+            this.label11.Location = new System.Drawing.Point(9, 26);
+            this.label11.Name = "label11";
+            this.label11.Size = new System.Drawing.Size(47, 13);
+            this.label11.TabIndex = 188;
+            this.label11.Text = "Lifetime";
+            // 
+            // label12
+            // 
+            this.label12.AutoSize = true;
+            this.label12.Font = new System.Drawing.Font("Segoe UI Symbol", 8F);
+            this.label12.ForeColor = System.Drawing.Color.White;
+            this.label12.Location = new System.Drawing.Point(9, 45);
+            this.label12.Name = "label12";
+            this.label12.Size = new System.Drawing.Size(35, 13);
+            this.label12.TabIndex = 189;
+            this.label12.Text = "Delay";
+            // 
+            // numericUpDown1
+            // 
+            this.numericUpDown1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
+            this.numericUpDown1.Font = new System.Drawing.Font("Segoe UI Symbol", 8F);
+            this.numericUpDown1.ForeColor = System.Drawing.Color.White;
+            this.numericUpDown1.Location = new System.Drawing.Point(75, 44);
+            this.numericUpDown1.Maximum = new decimal(new int[] {
             -1981284353,
             -1966660860,
             0,
             0});
-            this.nmLifetime.Name = "nmLifetime";
-            this.nmLifetime.Size = new System.Drawing.Size(70, 22);
-            this.nmLifetime.TabIndex = 185;
-            this.nmLifetime.Tag = "color:dark";
-            this.nmLifetime.Value = new decimal(new int[] {
+            this.numericUpDown1.Name = "numericUpDown1";
+            this.numericUpDown1.Size = new System.Drawing.Size(70, 22);
+            this.numericUpDown1.TabIndex = 187;
+            this.numericUpDown1.Tag = "color:dark";
+            // 
+            // numericUpDown2
+            // 
+            this.numericUpDown2.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
+            this.numericUpDown2.Font = new System.Drawing.Font("Segoe UI Symbol", 8F);
+            this.numericUpDown2.ForeColor = System.Drawing.Color.White;
+            this.numericUpDown2.Location = new System.Drawing.Point(75, 18);
+            this.numericUpDown2.Maximum = new decimal(new int[] {
+            -1981284353,
+            -1966660860,
+            0,
+            0});
+            this.numericUpDown2.Name = "numericUpDown2";
+            this.numericUpDown2.Size = new System.Drawing.Size(70, 22);
+            this.numericUpDown2.TabIndex = 185;
+            this.numericUpDown2.Tag = "color:dark";
+            this.numericUpDown2.Value = new decimal(new int[] {
             1,
             0,
             0,
             0});
-            this.nmLifetime.ValueChanged += new System.EventHandler(this.nmLifetime_ValueChanged);
-            // 
-            // nmDelay
-            // 
-            this.nmDelay.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
-            this.nmDelay.Font = new System.Drawing.Font("Segoe UI Symbol", 8F);
-            this.nmDelay.ForeColor = System.Drawing.Color.White;
-            this.nmDelay.Location = new System.Drawing.Point(75, 37);
-            this.nmDelay.Maximum = new decimal(new int[] {
-            -1981284353,
-            -1966660860,
-            0,
-            0});
-            this.nmDelay.Name = "nmDelay";
-            this.nmDelay.Size = new System.Drawing.Size(70, 22);
-            this.nmDelay.TabIndex = 187;
-            this.nmDelay.Tag = "color:dark";
-            this.nmDelay.ValueChanged += new System.EventHandler(this.nmDelay_ValueChanged);
             // 
             // label9
             // 
@@ -745,76 +779,44 @@
             this.label10.TabIndex = 189;
             this.label10.Text = "Delay";
             // 
-            // panel1
+            // nmDelay
             // 
-            this.panel1.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.panel1.Controls.Add(this.label11);
-            this.panel1.Controls.Add(this.label12);
-            this.panel1.Controls.Add(this.numericUpDown1);
-            this.panel1.Controls.Add(this.numericUpDown2);
-            this.panel1.Location = new System.Drawing.Point(-1, -1);
-            this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(154, 69);
-            this.panel1.TabIndex = 190;
-            // 
-            // label11
-            // 
-            this.label11.AutoSize = true;
-            this.label11.Font = new System.Drawing.Font("Segoe UI Symbol", 8F);
-            this.label11.ForeColor = System.Drawing.Color.White;
-            this.label11.Location = new System.Drawing.Point(9, 13);
-            this.label11.Name = "label11";
-            this.label11.Size = new System.Drawing.Size(47, 13);
-            this.label11.TabIndex = 188;
-            this.label11.Text = "Lifetime";
-            // 
-            // label12
-            // 
-            this.label12.AutoSize = true;
-            this.label12.Font = new System.Drawing.Font("Segoe UI Symbol", 8F);
-            this.label12.ForeColor = System.Drawing.Color.White;
-            this.label12.Location = new System.Drawing.Point(9, 41);
-            this.label12.Name = "label12";
-            this.label12.Size = new System.Drawing.Size(35, 13);
-            this.label12.TabIndex = 189;
-            this.label12.Text = "Delay";
-            // 
-            // numericUpDown1
-            // 
-            this.numericUpDown1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
-            this.numericUpDown1.Font = new System.Drawing.Font("Segoe UI Symbol", 8F);
-            this.numericUpDown1.ForeColor = System.Drawing.Color.White;
-            this.numericUpDown1.Location = new System.Drawing.Point(75, 37);
-            this.numericUpDown1.Maximum = new decimal(new int[] {
+            this.nmDelay.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
+            this.nmDelay.Font = new System.Drawing.Font("Segoe UI Symbol", 8F);
+            this.nmDelay.ForeColor = System.Drawing.Color.White;
+            this.nmDelay.Location = new System.Drawing.Point(75, 37);
+            this.nmDelay.Maximum = new decimal(new int[] {
             -1981284353,
             -1966660860,
             0,
             0});
-            this.numericUpDown1.Name = "numericUpDown1";
-            this.numericUpDown1.Size = new System.Drawing.Size(70, 22);
-            this.numericUpDown1.TabIndex = 187;
-            this.numericUpDown1.Tag = "color:dark";
+            this.nmDelay.Name = "nmDelay";
+            this.nmDelay.Size = new System.Drawing.Size(70, 22);
+            this.nmDelay.TabIndex = 187;
+            this.nmDelay.Tag = "color:dark";
+            this.nmDelay.ValueChanged += new System.EventHandler(this.nmDelay_ValueChanged);
             // 
-            // numericUpDown2
+            // nmLifetime
             // 
-            this.numericUpDown2.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
-            this.numericUpDown2.Font = new System.Drawing.Font("Segoe UI Symbol", 8F);
-            this.numericUpDown2.ForeColor = System.Drawing.Color.White;
-            this.numericUpDown2.Location = new System.Drawing.Point(75, 10);
-            this.numericUpDown2.Maximum = new decimal(new int[] {
+            this.nmLifetime.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
+            this.nmLifetime.Font = new System.Drawing.Font("Segoe UI Symbol", 8F);
+            this.nmLifetime.ForeColor = System.Drawing.Color.White;
+            this.nmLifetime.Location = new System.Drawing.Point(75, 10);
+            this.nmLifetime.Maximum = new decimal(new int[] {
             -1981284353,
             -1966660860,
             0,
             0});
-            this.numericUpDown2.Name = "numericUpDown2";
-            this.numericUpDown2.Size = new System.Drawing.Size(70, 22);
-            this.numericUpDown2.TabIndex = 185;
-            this.numericUpDown2.Tag = "color:dark";
-            this.numericUpDown2.Value = new decimal(new int[] {
+            this.nmLifetime.Name = "nmLifetime";
+            this.nmLifetime.Size = new System.Drawing.Size(70, 22);
+            this.nmLifetime.TabIndex = 185;
+            this.nmLifetime.Tag = "color:dark";
+            this.nmLifetime.Value = new decimal(new int[] {
             1,
             0,
             0,
             0});
+            this.nmLifetime.ValueChanged += new System.EventHandler(this.nmLifetime_ValueChanged);
             // 
             // pnCheckBoxes
             // 
@@ -826,6 +828,17 @@
             this.pnCheckBoxes.Name = "pnCheckBoxes";
             this.pnCheckBoxes.Size = new System.Drawing.Size(154, 69);
             this.pnCheckBoxes.TabIndex = 189;
+            // 
+            // label13
+            // 
+            this.label13.AutoSize = true;
+            this.label13.Font = new System.Drawing.Font("Segoe UI Symbol", 8F);
+            this.label13.ForeColor = System.Drawing.Color.White;
+            this.label13.Location = new System.Drawing.Point(9, 4);
+            this.label13.Name = "label13";
+            this.label13.Size = new System.Drawing.Size(43, 13);
+            this.label13.TabIndex = 190;
+            this.label13.Text = "Range:";
             // 
             // RTC_CustomEngineConfig_Form
             // 
@@ -844,6 +857,7 @@
             this.Controls.Add(this.btnClearActive);
             this.Controls.Add(this.nmMaxInfinite);
             this.Controls.Add(this.label1);
+            this.Font = new System.Drawing.Font("Segoe UI Symbol", 8.25F);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Name = "RTC_CustomEngineConfig_Form";
             this.Text = "Custom Engine Config";
@@ -870,12 +884,12 @@
             this.pnLimiterList.PerformLayout();
             this.pnStepSettings.ResumeLayout(false);
             this.pnStepSettings.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.nmLifetime)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.nmDelay)).EndInit();
             this.panel1.ResumeLayout(false);
             this.panel1.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDown1)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDown2)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.nmDelay)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.nmLifetime)).EndInit();
             this.pnCheckBoxes.ResumeLayout(false);
             this.pnCheckBoxes.PerformLayout();
             this.ResumeLayout(false);
@@ -939,5 +953,6 @@
 		public System.Windows.Forms.NumericUpDown nmDelay;
 		public System.Windows.Forms.NumericUpDown nmLifetime;
 		private System.Windows.Forms.Panel pnCheckBoxes;
+		private System.Windows.Forms.Label label13;
 	}
 }
