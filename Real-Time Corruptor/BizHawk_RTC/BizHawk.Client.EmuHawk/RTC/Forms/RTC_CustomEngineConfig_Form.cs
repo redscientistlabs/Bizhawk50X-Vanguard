@@ -4,6 +4,7 @@ using System.ComponentModel;
 using System.Data;
 using System.Drawing;
 using System.Linq;
+using System.Numerics;
 using System.Security.Cryptography;
 using System.Text;
 using System.Threading.Tasks;
@@ -210,6 +211,20 @@ namespace RTC
 			RTC_StepActions.ClearStepBlastUnits();
 		}
 
+		private void nmLifetime_ValueChanged(object sender, EventArgs e)
+		{
+			RTC_CustomEngine.Lifetime = Convert.ToInt32(nmLifetime.Value);
+		}
+
+		private void nmDelay_ValueChanged(object sender, EventArgs e)
+		{
+			RTC_CustomEngine.Delay = Convert.ToInt32(nmDelay.Value);
+		}
+
+		private void nmTilt_ValueChanged(object sender, EventArgs e)
+		{
+			RTC_CustomEngine.TiltValue = (BigInteger)nmTilt.Value;
+		}
 
 		public void UpdateMinMaxBoxes(int precision)
 		{
@@ -243,14 +258,5 @@ namespace RTC
 			updatingMinMax = false;
 		}
 
-		private void nmLifetime_ValueChanged(object sender, EventArgs e)
-		{
-			RTC_CustomEngine.Lifetime = Convert.ToInt32(nmLifetime.Value);
-		}
-
-		private void nmDelay_ValueChanged(object sender, EventArgs e)
-		{
-			RTC_CustomEngine.Delay = Convert.ToInt32(nmDelay.Value);
-		}
 	}
 }

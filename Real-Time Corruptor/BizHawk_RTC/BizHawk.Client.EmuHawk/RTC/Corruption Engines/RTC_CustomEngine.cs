@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Diagnostics;
 using System.Linq;
+using System.Numerics;
 using System.Security.Cryptography;
 using System.Windows.Forms;
 
@@ -25,6 +26,8 @@ namespace RTC
 
 		public static int Delay = 0;
 		public static int Lifetime = 1;
+
+		public static BigInteger TiltValue = 1;
 
 		public static ActionTime LimiterTime = ActionTime.GENERATE;
 
