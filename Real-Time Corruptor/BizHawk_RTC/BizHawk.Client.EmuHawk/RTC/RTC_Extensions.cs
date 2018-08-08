@@ -3232,24 +3232,4 @@ namespace RTC
 				}
 			}
 		}*/
-
-	public class ComboBoxTextValue<String, T>
-	{
-		public String Text { get { return _text; }}
-		private String _text;
-
-		public T Value{ get { return _value; }}
-		private T _value;
-
-		public ComboBoxTextValue(String textInput, T valueInput)
-		{
-			_text = textInput;
-			_value = valueInput;
-		}
-
-		public override string ToString()
-		{
-			return Text.ToString();
-		}
-	}
 }
