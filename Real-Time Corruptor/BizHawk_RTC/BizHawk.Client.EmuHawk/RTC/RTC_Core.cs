@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Diagnostics;
 using System.Drawing;
 using System.IO;
@@ -30,9 +31,12 @@ namespace RTC
 
 		public static string rtcDir = bizhawkDir + "\\RTC";
 		public static string paramsDir = rtcDir + "\\PARAMS";
+		public static string listsDir = rtcDir + "\\LISTS";
 
 		//Engine Values
 		public static CorruptionEngine SelectedEngine = CorruptionEngine.NIGHTMARE;
+
+		public static BindingList<Object> filterListsComboSource = new BindingList<Object>();
 
 		private static int customPrecision;
 		public static int CustomPrecision
@@ -70,6 +74,7 @@ namespace RTC
 
 		public static RTC_Core_Form coreForm = null;
 		public static RTC_EngineConfig_Form ecForm = null;
+		public static RTC_CustomEngineConfig_Form cecForm = null;
 		public static RTC_StockpilePlayer_Form spForm = null;
 		public static RTC_GlitchHarvester_Form ghForm = null;
 		public static RTC_Settings_Form sForm = null;
@@ -316,6 +321,9 @@ namespace RTC
 
 			if (!Directory.Exists(RTC_Core.rtcDir + "\\MEMORYDUMPS\\"))
 				Directory.CreateDirectory(RTC_Core.rtcDir + "\\MEMORYDUMPS\\");
+
+			if (!Directory.Exists(RTC_Core.rtcDir + "\\LISTS\\"))
+				Directory.CreateDirectory(RTC_Core.rtcDir + "\\LISTS\\");
 
 
 			//Loading RTC Params

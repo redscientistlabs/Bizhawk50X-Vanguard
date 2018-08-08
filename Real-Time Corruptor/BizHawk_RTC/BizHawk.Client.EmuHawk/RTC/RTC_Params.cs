@@ -54,8 +54,8 @@ namespace RTC
 
 			new Ref(() => RTC_StepActions.MaxInfiniteBlastUnits, x => { RTC_StepActions.MaxInfiniteBlastUnits = (int)x; }),
 
-			new Ref(() => RTC_VectorEngine.LimiterList, x => { RTC_VectorEngine.LimiterList = (string[])x; }),
-			new Ref(() => RTC_VectorEngine.ValueList, x => { RTC_VectorEngine.ValueList = (string[])x; }),
+			//new Ref(() => RTC_VectorEngine.LimiterList, x => { RTC_VectorEngine.LimiterList = (string[])x; }),
+			//new Ref(() => RTC_VectorEngine.ValueList, x => { RTC_VectorEngine.ValueList = (string[])x; }),
 
 			new Ref(() => RTC_StockpileManager.currentSavestateKey, x => { RTC_StockpileManager.currentSavestateKey = (string)x; }),
 			new Ref(() => RTC_StockpileManager.currentGameSystem, x => { RTC_StockpileManager.currentGameSystem = (string)x; }),

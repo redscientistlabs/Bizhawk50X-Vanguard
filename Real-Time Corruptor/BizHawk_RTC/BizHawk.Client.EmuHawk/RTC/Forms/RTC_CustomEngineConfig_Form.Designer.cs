@@ -41,7 +41,7 @@
             this.nmMaxValueHellgenie = new RTC.NumericUpDownHexFix();
             this.nmMinValueHellgenie = new RTC.NumericUpDownHexFix();
             this.pnValueList = new System.Windows.Forms.Panel();
-            this.cbVectorValueList = new System.Windows.Forms.ComboBox();
+            this.cbValueList = new System.Windows.Forms.ComboBox();
             this.label18 = new System.Windows.Forms.Label();
             this.pnValueSource = new System.Windows.Forms.Panel();
             this.radioButton12 = new System.Windows.Forms.RadioButton();
@@ -66,7 +66,7 @@
             this.label7 = new System.Windows.Forms.Label();
             this.radioButton9 = new System.Windows.Forms.RadioButton();
             this.radioButton10 = new System.Windows.Forms.RadioButton();
-            this.comboBox1 = new System.Windows.Forms.ComboBox();
+            this.cbLimiterList = new System.Windows.Forms.ComboBox();
             this.label6 = new System.Windows.Forms.Label();
             this.checkBox1 = new System.Windows.Forms.CheckBox();
             ((System.ComponentModel.ISupportInitialize)(this.nmMaxInfinite)).BeginInit();
@@ -250,41 +250,31 @@
             // 
             // pnValueList
             // 
-            this.pnValueList.Controls.Add(this.cbVectorValueList);
+            this.pnValueList.Controls.Add(this.cbValueList);
             this.pnValueList.Controls.Add(this.label18);
             this.pnValueList.Location = new System.Drawing.Point(284, 73);
             this.pnValueList.Name = "pnValueList";
             this.pnValueList.Size = new System.Drawing.Size(154, 69);
             this.pnValueList.TabIndex = 167;
             // 
-            // cbVectorValueList
+            // cbValueList
             // 
-            this.cbVectorValueList.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
-            this.cbVectorValueList.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.cbVectorValueList.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.cbVectorValueList.Font = new System.Drawing.Font("Segoe UI Symbol", 8F);
-            this.cbVectorValueList.ForeColor = System.Drawing.Color.White;
-            this.cbVectorValueList.FormattingEnabled = true;
-            this.cbVectorValueList.Items.AddRange(new object[] {
-            "Extended",
-            "Extended+",
-            "Extended-",
-            "Whole",
-            "Whole+",
-            "Tiny",
-            "One",
-            "One*",
-            "Two",
-            "AnyFloat"});
-            this.cbVectorValueList.Location = new System.Drawing.Point(12, 25);
-            this.cbVectorValueList.Name = "cbVectorValueList";
-            this.cbVectorValueList.Size = new System.Drawing.Size(130, 21);
-            this.cbVectorValueList.TabIndex = 87;
-            this.cbVectorValueList.Tag = "color:dark";
-            // 
-            // label18
-            // 
-            this.label18.AutoSize = true;
+            this.cbValueList.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
+            this.cbValueList.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.cbValueList.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.cbValueList.Font = new System.Drawing.Font("Segoe UI Symbol", 8F);
+            this.cbValueList.ForeColor = System.Drawing.Color.White;
+            this.cbValueList.FormattingEnabled = true;
+            this.cbValueList.Location = new System.Drawing.Point(12, 25);
+            this.cbValueList.Name = "cbValueList";
+            this.cbValueList.Size = new System.Drawing.Size(130, 21);
+            this.cbValueList.TabIndex = 87;
+            this.cbValueList.Tag = "color:dark";
+			this.cbValueList.DataSource = RTC_Core.filterListsComboSource;
+			// 
+			// label18
+			// 
+			this.label18.AutoSize = true;
             this.label18.Font = new System.Drawing.Font("Segoe UI Symbol", 8F);
             this.label18.ForeColor = System.Drawing.Color.White;
             this.label18.Location = new System.Drawing.Point(9, 9);
@@ -500,7 +490,7 @@
             this.panel5.Controls.Add(this.label7);
             this.panel5.Controls.Add(this.radioButton9);
             this.panel5.Controls.Add(this.radioButton10);
-            this.panel5.Controls.Add(this.comboBox1);
+            this.panel5.Controls.Add(this.cbLimiterList);
             this.panel5.Controls.Add(this.label6);
             this.panel5.Font = new System.Drawing.Font("Segoe UI", 8F);
             this.panel5.ForeColor = System.Drawing.Color.White;
@@ -554,34 +544,25 @@
             this.radioButton10.Text = "Generate";
             this.radioButton10.UseVisualStyleBackColor = true;
             // 
-            // comboBox1
+            // cbLimiterList
             // 
-            this.comboBox1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
-            this.comboBox1.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.comboBox1.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.comboBox1.Font = new System.Drawing.Font("Segoe UI Symbol", 8F);
-            this.comboBox1.ForeColor = System.Drawing.Color.White;
-            this.comboBox1.FormattingEnabled = true;
-            this.comboBox1.Items.AddRange(new object[] {
-            "Extended",
-            "Extended+",
-            "Extended-",
-            "Whole",
-            "Whole+",
-            "Tiny",
-            "One",
-            "One*",
-            "Two",
-            "AnyFloat"});
-            this.comboBox1.Location = new System.Drawing.Point(12, 25);
-            this.comboBox1.Name = "comboBox1";
-            this.comboBox1.Size = new System.Drawing.Size(130, 21);
-            this.comboBox1.TabIndex = 87;
-            this.comboBox1.Tag = "color:dark";
-            // 
-            // label6
-            // 
-            this.label6.AutoSize = true;
+            this.cbLimiterList.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
+            this.cbLimiterList.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.cbLimiterList.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.cbLimiterList.Font = new System.Drawing.Font("Segoe UI Symbol", 8F);
+            this.cbLimiterList.ForeColor = System.Drawing.Color.White;
+            this.cbLimiterList.FormattingEnabled = true;
+            this.cbLimiterList.Location = new System.Drawing.Point(12, 25);
+            this.cbLimiterList.Name = "cbLimiterList";
+            this.cbLimiterList.Size = new System.Drawing.Size(130, 21);
+            this.cbLimiterList.TabIndex = 87;
+            this.cbLimiterList.Tag = "color:dark";
+			this.cbLimiterList.DataSource = RTC_Core.filterListsComboSource;
+
+			// 
+			// label6
+			// 
+			this.label6.AutoSize = true;
             this.label6.Font = new System.Drawing.Font("Segoe UI Symbol", 8F);
             this.label6.ForeColor = System.Drawing.Color.White;
             this.label6.Location = new System.Drawing.Point(9, 9);
@@ -660,7 +641,7 @@
 		public NumericUpDownHexFix nmMaxValueHellgenie;
 		public NumericUpDownHexFix nmMinValueHellgenie;
 		private System.Windows.Forms.Panel pnValueList;
-		public System.Windows.Forms.ComboBox cbVectorValueList;
+		public System.Windows.Forms.ComboBox cbValueList;
 		private System.Windows.Forms.Label label18;
 		private System.Windows.Forms.Panel pnValueSource;
 		private System.Windows.Forms.RadioButton rbValueList;
@@ -685,7 +666,7 @@
 		private System.Windows.Forms.Label label7;
 		private System.Windows.Forms.RadioButton radioButton9;
 		private System.Windows.Forms.RadioButton radioButton10;
-		public System.Windows.Forms.ComboBox comboBox1;
+		public System.Windows.Forms.ComboBox cbLimiterList;
 		private System.Windows.Forms.Label label6;
 		public System.Windows.Forms.CheckBox checkBox1;
 	}

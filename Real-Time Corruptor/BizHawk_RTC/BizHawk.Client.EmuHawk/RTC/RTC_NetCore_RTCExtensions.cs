@@ -521,10 +521,10 @@ namespace RTC
 					break;
 
 				case CommandType.REMOTE_SET_VECTOR_LIMITER:
-					RTC_VectorEngine.LimiterList = (string[])cmd.objectValue;
+					//RTC_VectorEngine.LimiterList = (string[])cmd.objectValue;
 					break;
 				case CommandType.REMOTE_SET_VECTOR_VALUES:
-					RTC_VectorEngine.ValueList = (string[])cmd.objectValue;
+					//RTC_VectorEngine.ValueList = (string[])cmd.objectValue;
 					break;
 
 				case CommandType.REMOTE_EVENT_LOADGAMEDONE_NEWGAME:

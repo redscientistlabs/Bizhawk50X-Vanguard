@@ -215,10 +215,10 @@
             this.gbSelectedEngine.TabStop = false;
             this.gbSelectedEngine.Visible = false;
             this.gbSelectedEngine.MouseDown += new System.Windows.Forms.MouseEventHandler(this.HandleMouseDown);
-			// 
-			// gbBlastGeneratorEngine
-			// 
-			this.gbBlastGeneratorEngine.Controls.Add(this.label10);
+            // 
+            // gbBlastGeneratorEngine
+            // 
+            this.gbBlastGeneratorEngine.Controls.Add(this.label10);
             this.gbBlastGeneratorEngine.Controls.Add(this.comboBox8);
             this.gbBlastGeneratorEngine.Controls.Add(this.label21);
             this.gbBlastGeneratorEngine.Controls.Add(this.btnOpenBlastGenerator);
@@ -231,10 +231,10 @@
             this.gbBlastGeneratorEngine.TabStop = false;
             this.gbBlastGeneratorEngine.Visible = false;
             this.gbBlastGeneratorEngine.MouseDown += new System.Windows.Forms.MouseEventHandler(this.HandleMouseDown);
-			// 
-			// label10
-			// 
-			this.label10.AutoSize = true;
+            // 
+            // label10
+            // 
+            this.label10.AutoSize = true;
             this.label10.Font = new System.Drawing.Font("Segoe UI", 8F, System.Drawing.FontStyle.Italic);
             this.label10.Location = new System.Drawing.Point(188, 37);
             this.label10.MaximumSize = new System.Drawing.Size(205, 0);
@@ -304,10 +304,10 @@
             this.gbVectorEngine.TabStop = false;
             this.gbVectorEngine.Visible = false;
             this.gbVectorEngine.MouseDown += new System.Windows.Forms.MouseEventHandler(this.HandleMouseDown);
-			// 
-			// panel2
-			// 
-			this.panel2.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(32)))), ((int)(((byte)(32)))), ((int)(((byte)(32)))));
+            // 
+            // panel2
+            // 
+            this.panel2.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(32)))), ((int)(((byte)(32)))), ((int)(((byte)(32)))));
             this.panel2.Controls.Add(this.lbVectorEngineValueText2);
             this.panel2.Controls.Add(this.lbVectorEngineValueText1);
             this.panel2.Controls.Add(this.cbVectorValueList);
@@ -349,17 +349,6 @@
             this.cbVectorValueList.Font = new System.Drawing.Font("Segoe UI", 8F);
             this.cbVectorValueList.ForeColor = System.Drawing.Color.White;
             this.cbVectorValueList.FormattingEnabled = true;
-            this.cbVectorValueList.Items.AddRange(new object[] {
-            "Extended",
-            "Extended+",
-            "Extended-",
-            "Whole",
-            "Whole+",
-            "Tiny",
-            "One",
-            "One*",
-            "Two",
-            "AnyFloat"});
             this.cbVectorValueList.Location = new System.Drawing.Point(7, 18);
             this.cbVectorValueList.Name = "cbVectorValueList";
             this.cbVectorValueList.Size = new System.Drawing.Size(152, 21);
@@ -367,10 +356,11 @@
             this.cbVectorValueList.Tag = "color:dark";
             this.cbVectorValueList.SelectedIndexChanged += new System.EventHandler(this.cbVectorValueList_SelectedIndexChanged);
             this.cbVectorValueList.MouseDown += new System.Windows.Forms.MouseEventHandler(this.HandleMouseDown);
-            // 
-            // label18
-            // 
-            this.label18.AutoSize = true;
+			this.cbVectorValueList.DataSource = RTC_Core.filterListsComboSource;
+			// 
+			// label18
+			// 
+			this.label18.AutoSize = true;
             this.label18.Font = new System.Drawing.Font("Segoe UI", 8F);
             this.label18.Location = new System.Drawing.Point(4, 3);
             this.label18.Name = "label18";
@@ -423,17 +413,6 @@
             this.cbVectorLimiterList.Font = new System.Drawing.Font("Segoe UI", 8F);
             this.cbVectorLimiterList.ForeColor = System.Drawing.Color.White;
             this.cbVectorLimiterList.FormattingEnabled = true;
-            this.cbVectorLimiterList.Items.AddRange(new object[] {
-            "Extended",
-            "Extended+",
-            "Extended-",
-            "Whole",
-            "Whole+",
-            "Tiny",
-            "One",
-            "One*",
-            "Two",
-            "AnyFloat"});
             this.cbVectorLimiterList.Location = new System.Drawing.Point(7, 18);
             this.cbVectorLimiterList.Name = "cbVectorLimiterList";
             this.cbVectorLimiterList.Size = new System.Drawing.Size(152, 21);
@@ -441,10 +420,12 @@
             this.cbVectorLimiterList.Tag = "color:dark";
             this.cbVectorLimiterList.SelectedIndexChanged += new System.EventHandler(this.cbVectorLimiterList_SelectedIndexChanged);
             this.cbVectorLimiterList.MouseDown += new System.Windows.Forms.MouseEventHandler(this.HandleMouseDown);
-            // 
-            // label13
-            // 
-            this.label13.AutoSize = true;
+			this.cbVectorLimiterList.DataSource = RTC_Core.filterListsComboSource
+				;
+			// 
+			// label13
+			// 
+			this.label13.AutoSize = true;
             this.label13.Font = new System.Drawing.Font("Segoe UI", 8F);
             this.label13.Location = new System.Drawing.Point(5, 3);
             this.label13.Name = "label13";
@@ -499,10 +480,10 @@
             this.gbPipeEngine.TabStop = false;
             this.gbPipeEngine.Visible = false;
             this.gbPipeEngine.MouseDown += new System.Windows.Forms.MouseEventHandler(this.HandleMouseDown);
-			// 
-			// panel8
-			// 
-			this.panel8.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(32)))), ((int)(((byte)(32)))), ((int)(((byte)(32)))));
+            // 
+            // panel8
+            // 
+            this.panel8.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(32)))), ((int)(((byte)(32)))), ((int)(((byte)(32)))));
             this.panel8.Location = new System.Drawing.Point(169, 92);
             this.panel8.Name = "panel8";
             this.panel8.Size = new System.Drawing.Size(221, 57);
@@ -640,10 +621,10 @@
             this.gbDistortionEngine.TabStop = false;
             this.gbDistortionEngine.Visible = false;
             this.gbDistortionEngine.MouseDown += new System.Windows.Forms.MouseEventHandler(this.HandleMouseDown);
-			// 
-			// panel6
-			// 
-			this.panel6.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(32)))), ((int)(((byte)(32)))), ((int)(((byte)(32)))));
+            // 
+            // panel6
+            // 
+            this.panel6.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(32)))), ((int)(((byte)(32)))), ((int)(((byte)(32)))));
             this.panel6.Location = new System.Drawing.Point(169, 92);
             this.panel6.Name = "panel6";
             this.panel6.Size = new System.Drawing.Size(221, 57);
@@ -754,10 +735,10 @@
             this.gbFreezeEngine.TabStop = false;
             this.gbFreezeEngine.Visible = false;
             this.gbFreezeEngine.MouseDown += new System.Windows.Forms.MouseEventHandler(this.HandleMouseDown);
-			// 
-			// panel7
-			// 
-			this.panel7.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(32)))), ((int)(((byte)(32)))), ((int)(((byte)(32)))));
+            // 
+            // panel7
+            // 
+            this.panel7.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(32)))), ((int)(((byte)(32)))), ((int)(((byte)(32)))));
             this.panel7.Location = new System.Drawing.Point(169, 92);
             this.panel7.Name = "panel7";
             this.panel7.Size = new System.Drawing.Size(221, 57);
@@ -886,10 +867,10 @@
             this.gbHellgenieEngine.TabStop = false;
             this.gbHellgenieEngine.Visible = false;
             this.gbHellgenieEngine.MouseDown += new System.Windows.Forms.MouseEventHandler(this.HandleMouseDown);
-			// 
-			// label26
-			// 
-			this.label26.AutoSize = true;
+            // 
+            // label26
+            // 
+            this.label26.AutoSize = true;
             this.label26.Font = new System.Drawing.Font("Segoe UI", 8F);
             this.label26.Location = new System.Drawing.Point(4, 90);
             this.label26.Name = "label26";
@@ -1070,10 +1051,10 @@
             this.gbNightmareEngine.TabStop = false;
             this.gbNightmareEngine.Visible = false;
             this.gbNightmareEngine.MouseDown += new System.Windows.Forms.MouseEventHandler(this.HandleMouseDown);
-			// 
-			// label24
-			// 
-			this.label24.AutoSize = true;
+            // 
+            // label24
+            // 
+            this.label24.AutoSize = true;
             this.label24.Font = new System.Drawing.Font("Segoe UI", 8F);
             this.label24.Location = new System.Drawing.Point(4, 90);
             this.label24.Name = "label24";
@@ -1199,7 +1180,7 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.BackColor = System.Drawing.Color.Gray;
+            this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
             this.ClientSize = new System.Drawing.Size(1273, 646);
             this.Controls.Add(this.gbBlastGeneratorEngine);
             this.Controls.Add(this.gbVectorEngine);

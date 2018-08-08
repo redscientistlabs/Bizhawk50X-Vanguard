@@ -18,7 +18,7 @@ namespace RTC
 		public static BlastUnitSource Source = BlastUnitSource.VALUE;
 
 		public static StoreType StoreType = StoreType.ONCE;
-		public static StoreTime StoreTime = StoreTime.IMMEDIATE;
+		public static ActionTime StoreTime = ActionTime.IMMEDIATE;
 
 		public static int Delay = 0;
 		public static int Lifetime = 1;
@@ -300,7 +300,7 @@ namespace RTC
 						long safeStartAddress = bt.Address - (bt.Address % precision);
 
 						bu.StoreType = StoreType;
-						bu.ActionTime = StoreTime;
+						bu.StoreTime = StoreTime;
 						bu.SourceDomain = bt.Domain;
 						bu.SourceAddress = safeStartAddress;
 					}
