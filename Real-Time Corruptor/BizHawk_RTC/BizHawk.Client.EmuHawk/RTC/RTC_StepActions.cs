@@ -150,34 +150,38 @@ namespace RTC
 			while (currentFrame >= nextFrame)
 			{
 				List<BlastUnit> buList = queued.First();
-				//Add it to the infinite pool
-				if (buList[0].Lifetime == -1)
-				{
-					appliedInfinite.Add(buList);
-					queued.RemoveFirst();
-				}
-				//Add it to the Lifetime pool
-				else
-				{
-					appliedLifetime.Add(buList);
-					queued.RemoveFirst();
-				}
 
-				//Call EnteringExecution so any BlastUnits that need to do something before they start executing can
-				//This could be optimized by only running it if the BlastUnits are of a type that needs this run.
+				bool dontApply = false;
+				//This is our EnteringExecution
 				foreach (BlastUnit bu in buList)
 				{
-					//Queue it for the backup pool if it needs to go there, take a single backup if it needs that, otherwise do nothing.
-					//Since we're within buList, it only goes off the current list
-					if (bu.Source == BlastUnitSource.STORE && bu.StoreTime == ActionTime.PREEXECUTE)
+					//If it returns false, that means the layer shouldn't apply
+					//This is primarily for if a limiter returns false 
+					//If this happens, we need to remove it from the pool and then return out
+					if (!bu.EnteringExecution())
 					{
-						if(bu.StoreType == StoreType.ONCE)
-							bu.StoreBackup();
-						else
-							StoreDataPool.Add(bu);
+						queued.RemoveFirst();
+						dontApply = true;
+						break;
 					}
 				}
-				
+
+				if (!dontApply)
+				{
+					//Add it to the infinite pool
+					if (buList[0].Lifetime == -1)
+					{
+						appliedInfinite.Add(buList);
+						queued.RemoveFirst();
+					}
+					//Add it to the Lifetime pool
+					else
+					{
+						appliedLifetime.Add(buList);
+						queued.RemoveFirst();
+					}
+				}
+
 				//Check if the queue is empty
 				if (queued.Count == 0)
 					return;

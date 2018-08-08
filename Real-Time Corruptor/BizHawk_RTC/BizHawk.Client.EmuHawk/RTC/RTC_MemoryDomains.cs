@@ -607,7 +607,7 @@ namespace RTC
 
 		public abstract byte[] GetDump();
 
-		public abstract byte[] PeekBytes(long startAddress, long endAddress);
+		public abstract byte[] PeekBytes(long startAddress, long endAddress, bool bigEndian);
 
 		public abstract byte PeekByte(long address);
 
@@ -817,14 +817,17 @@ namespace RTC
 			return PeekBytes(0, Size);
 		}
 
-		public override byte[] PeekBytes(long startAdress, long endAddress)
+		public override byte[] PeekBytes(long startAdress, long endAddress, bool raw = true)
 		{
 			//endAddress is exclusive
 			List<byte> data = new List<byte>();
 			for (long i = startAdress; i < endAddress; i++)
 				data.Add(PeekByte(i));
 
-			return data.ToArray();
+			if (raw || BigEndian)
+				return data.ToArray();
+			else
+				return data.ToArray().FlipBytes();
 		}
 
 		public override byte PeekByte(long address)
@@ -942,14 +945,17 @@ namespace RTC
 			return PeekBytes(0, Size);
 		}
 
-		public override byte[] PeekBytes(long startAddress, long endAddress)
+		public override byte[] PeekBytes(long startAddress, long endAddress, bool raw = true)
 		{
 			//endAddress is exclusive
 			List<byte> data = new List<byte>();
 			for (long i = startAddress; i < endAddress; i++)
 				data.Add(PeekByte(i));
 
-			return data.ToArray();
+			if(raw || BigEndian)
+				return data.ToArray();
+			else
+				return data.ToArray().FlipBytes();
 		}
 
 

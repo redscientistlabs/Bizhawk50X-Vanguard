@@ -1013,10 +1013,12 @@ namespace RTC
 				if (mdp == null)
 					return;
 
+				//Don't do anything if we don't match the limiter
+				if (LimiterTime == ActionTime.EXECUTE && !RTC_Filtering.LimiterPeekBytes(Address, Address + Precision, LimiterList, mdp))
+					return;
+
 				byte[] values;
 
-				//When tilting, we need to properly handle multi-byte values. This means that it has to properly roll-over.
-				//00 00 00 FF needs to become 00 00 01 00,  FF FF FF FF needs to become 00 00 00 00, etc
 				switch (Source)
 				{
 					case (BlastUnitSource.STORE):
@@ -1162,13 +1164,26 @@ namespace RTC
 			return (enabledString + cleanDomainName + "(" + Convert.ToInt32(Address).ToString() + ")." + Source.ToString() + "(" + RTC_Extensions.GetDecimalValue(Value, BigEndian).ToString() + ")");
 		}
 
-		/*
-		public void EnteringExecution()
+		public bool EnteringExecution()
 		{
-			//We need to grab the value to freeze
-			if (Source == BlastUnitSource.STORE && StoreTime == StoreTime.PREEXECUTE)
-				StoreBackup();
-		}*/
+			MemoryDomainProxy mdp = RTC_MemoryDomains.GetProxy(Domain, Address);
+			if (mdp == null)
+				return false;
+
+			if (Source == BlastUnitSource.STORE && StoreTime == ActionTime.PREEXECUTE)
+			{
+				if (StoreType == StoreType.ONCE)
+					StoreBackup();
+				else
+					RTC_StepActions.StoreDataPool.Add(this);
+			
+}
+			//Don't do anything if we don't match the limiter
+			if (LimiterTime == ActionTime.PREEXECUTE && !RTC_Filtering.LimiterPeekBytes(Address, Address + Precision, LimiterList, mdp))
+				return false;
+
+			return true;
+		}
 	}
 
 	[Serializable]
