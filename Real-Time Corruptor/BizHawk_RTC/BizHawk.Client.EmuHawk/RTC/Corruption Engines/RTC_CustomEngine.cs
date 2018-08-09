@@ -29,9 +29,8 @@ namespace RTC
 
 		public static BigInteger TiltValue = 1;
 
-		public static ActionTime LimiterTime = ActionTime.GENERATE;
+		public static ActionTime LimiterTime = ActionTime.NONE;
 
-		public static bool UseLimiterList = false;
 
 		public static bool Loop = false;
 		
@@ -53,7 +52,7 @@ namespace RTC
 				long safeAddress = address - (address % precision);
 
 				//If it's generation time limiter, return null if it's not on the list
-				if (UseLimiterList && LimiterTime == ActionTime.GENERATE &&
+				if (LimiterTime == ActionTime.GENERATE &&
 				    !RTC_Filtering.LimiterPeekBytes(safeAddress, safeAddress + precision, LimiterList, mdp))
 					return null;
 
@@ -138,9 +137,12 @@ namespace RTC
 				bu.ExecuteFrame = Delay;
 				bu.Lifetime = Lifetime;
 				bu.Precision = precision;
-				bu.LimiterList = LimiterList;
 				bu.LimiterTime = LimiterTime;
 				bu.Loop = Loop;
+				//Only set a list if it's used to save on memory
+				if (LimiterTime != ActionTime.NONE)
+					bu.LimiterList = LimiterList;
+				
 
 				return bu;
 			}

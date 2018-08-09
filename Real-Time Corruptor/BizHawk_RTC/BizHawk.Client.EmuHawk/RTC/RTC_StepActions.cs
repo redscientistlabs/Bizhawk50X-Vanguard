@@ -32,8 +32,13 @@ namespace RTC
 
 		private static bool isRunning = false;
 
+		/// <summary>
+		/// Don't set this manually
+		/// </summary>
 		public static int MaxInfiniteBlastUnits = 50;
-
+		/// <summary>
+		/// Don't set this manually
+		/// </summary>
 		public static bool LockExecution;
 
 		public static void ClearStepBlastUnits()
@@ -59,6 +64,9 @@ namespace RTC
 
 		public static void RemoveExcessInfiniteStepUnits()
 		{
+			if (LockExecution == true)
+				return;
+
 			while (appliedInfinite.Count > RTC_StepActions.MaxInfiniteBlastUnits)
 				appliedInfinite.Remove(appliedInfinite[0]);
 		}
@@ -71,8 +79,13 @@ namespace RTC
 
 		public static void ClearStepActionsOnRewind(bool value)
 		{
-				RTC_Core.ClearStepActionsOnRewind = value;
-				RTC_Core.SendCommandToBizhawk(new RTC_Command(CommandType.REMOTE_SET_STEPACTIONS_CLEARREWIND) { objectValue = value });
+			RTC_Core.ClearStepActionsOnRewind = value;
+			RTC_Core.SendCommandToBizhawk(new RTC_Command(CommandType.REMOTE_SET_STEPACTIONS_CLEARREWIND) { objectValue = value });
+		}
+		public static void SetLockExecution(bool value)
+		{
+			RTC_StepActions.LockExecution = value;
+			RTC_Core.SendCommandToBizhawk(new RTC_Command(CommandType.REMOTE_SET_STEPACTIONS_LOCKEXECUTION) { objectValue = value });
 		}
 
 		public static BlastLayer GetRawBlastLayer()

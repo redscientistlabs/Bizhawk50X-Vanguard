@@ -364,14 +364,14 @@
             this.label18.Text = "Value list:";
             this.label18.MouseDown += new System.Windows.Forms.MouseEventHandler(this.HandleMouseDown);
             // 
-            // pnLimiterList
+            // gbLimiterList
             // 
             this.pnLimiterList.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(32)))), ((int)(((byte)(32)))), ((int)(((byte)(32)))));
             this.pnLimiterList.Controls.Add(this.lbVectorEngineLimiterText1);
             this.pnLimiterList.Controls.Add(this.cbVectorLimiterList);
             this.pnLimiterList.Controls.Add(this.label13);
             this.pnLimiterList.Location = new System.Drawing.Point(5, 39);
-            this.pnLimiterList.Name = "pnLimiterList";
+            this.pnLimiterList.Name = "gbLimiterList";
             this.pnLimiterList.Size = new System.Drawing.Size(379, 47);
             this.pnLimiterList.TabIndex = 134;
             this.pnLimiterList.Tag = "color:darker";

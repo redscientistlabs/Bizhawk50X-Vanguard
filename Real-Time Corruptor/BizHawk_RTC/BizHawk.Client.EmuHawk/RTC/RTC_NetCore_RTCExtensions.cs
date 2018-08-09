@@ -507,7 +507,10 @@ namespace RTC
 				case CommandType.REMOTE_SET_STEPACTIONS_MAXLIFETIMEUNITS:
 					RTC_StepActions.MaxInfiniteBlastUnits = (int)cmd.objectValue;
 					break;
-					
+				case CommandType.REMOTE_SET_STEPACTIONS_LOCKEXECUTION:
+					RTC_StepActions.LockExecution = (bool)cmd.objectValue;
+					break;
+
 				case CommandType.REMOTE_SET_PIPE_LOCKPIPES:
 					RTC_StepActions.LockExecution = (bool)cmd.objectValue;
 					break;
@@ -530,6 +533,83 @@ namespace RTC
 				case CommandType.REMOTE_SET_VECTOR_VALUES:
 					RTC_VectorEngine.ValueList = (System.Security.Cryptography.MD5)cmd.objectValue;
 					break;
+
+				case CommandType.REMOTE_SET_CUSTOM_UNIT_SOURCE:
+					RTC_CustomEngine.Source = (BlastUnitSource)cmd.objectValue;
+					break;
+				case CommandType.REMOTE_SET_CUSTOM_VALUE_SOURCE:
+					RTC_CustomEngine.ValueSource = (CustomValueSource)cmd.objectValue;
+					break;
+				case CommandType.REMOTE_SET_CUSTOM_STORE_TIME:
+					RTC_CustomEngine.StoreTime = (ActionTime)cmd.objectValue;
+					break;
+				case CommandType.REMOTE_SET_CUSTOM_STORE_ADDRESS:
+					RTC_CustomEngine.StoreAddress = (CustomStoreAddress)cmd.objectValue;
+					break;
+				case CommandType.REMOTE_SET_CUSTOM_STORE_TYPE:
+					RTC_CustomEngine.StoreType = (StoreType)cmd.objectValue;
+					break;
+
+				case CommandType.REMOTE_SET_CUSTOM_LIFETIME:
+					RTC_CustomEngine.Lifetime = (int)cmd.objectValue;
+					break;
+
+				case CommandType.REMOTE_SET_CUSTOM_DELAY:
+					RTC_CustomEngine.Delay = (int)cmd.objectValue;
+					break;
+					
+				case CommandType.REMOTE_SET_CUSTOM_LOOP:
+					RTC_CustomEngine.Loop = (bool)cmd.objectValue;
+					break;
+
+				case CommandType.REMOTE_SET_CUSTOM_LIMITERLIST:
+					RTC_CustomEngine.LimiterList = (System.Security.Cryptography.MD5)cmd.objectValue;
+					break;
+				case CommandType.REMOTE_SET_CUSTOM_VALUELIST:
+					RTC_CustomEngine.ValueList = (System.Security.Cryptography.MD5)cmd.objectValue;
+					break;
+
+
+				case CommandType.REMOTE_SET_CUSTOM_RANGE_MINVALUE:
+					{
+						int precision = (int)(cmd.objectValue as object[])[0];
+						long value = (long)(cmd.objectValue as object[])[1];
+
+						switch (precision)
+						{
+							case 1:
+								RTC_CustomEngine.MinValue8Bit = value;
+								break;
+							case 2:
+								RTC_CustomEngine.MinValue16Bit = value;
+								break;
+							case 4:
+								RTC_CustomEngine.MinValue32Bit = value;
+								break;
+						}
+						break;
+					}
+				case CommandType.REMOTE_SET_CUSTOM_RANGE_MAXVALUE:
+					{
+						int precision = (int)(cmd.objectValue as object[])[0];
+						long value = (long)(cmd.objectValue as object[])[1];
+
+						switch (precision)
+						{
+							case 1:
+								RTC_CustomEngine.MaxValue8Bit = value;
+								break;
+							case 2:
+								RTC_CustomEngine.MaxValue16Bit = value;
+								break;
+							case 4:
+								RTC_CustomEngine.MaxValue32Bit = value;
+								break;
+						}
+						break;
+					}
+
+
 
 				case CommandType.REMOTE_EVENT_LOADGAMEDONE_NEWGAME:
 

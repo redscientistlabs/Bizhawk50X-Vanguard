@@ -121,6 +121,7 @@ namespace RTC
 						sbForm,
 						beForm,
 						bgForm,
+						cecForm,
 
 						vmdActForm,
 						vmdGenForm,
@@ -1082,6 +1083,7 @@ namespace RTC
 			spForm.dgvStockpile.BackgroundColor = color;
 			ghForm.dgvStockpile.BackgroundColor = color;
 			
+
 			//TODO
 			//beForm.dgvBlastLayer.BackgroundColor = color;
 

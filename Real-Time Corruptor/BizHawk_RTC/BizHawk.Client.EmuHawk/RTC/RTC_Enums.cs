@@ -19,6 +19,7 @@
 	}
 	public enum ActionTime
 	{
+		NONE,		//For when something will never happen
 		GENERATE,   //For when something is happening at generate time
 		IMMEDIATE,  //Frame 0 for the blastunit. Right when it's applied. Used for Distortion
 		PREEXECUTE, //For when you want it to happen right before the first step
@@ -28,6 +29,17 @@
 	{
 		ONCE, 
 		CONTINUOUS
+	}
+	public enum CustomValueSource
+	{
+		RANDOM,
+		VALUELIST,
+		RANGE
+	}
+	public enum CustomStoreAddress
+	{
+		SAME,
+		RANDOM
 	}
 
 	public enum NightmareAlgo
@@ -41,24 +53,6 @@
 		SET,
 		ADD,
 		SUBTRACT
-	}
-
-	public enum CustomUnitSource
-	{
-		VALUE,
-		STORE
-	}
-
-	public enum CustomValueSource
-	{
-		RANDOM,
-		VALUELIST,
-		RANGE
-	}
-	public enum CustomStoreAddress
-	{
-		SAME,
-		RANDOM
 	}
 
 	public enum CorruptionEngine

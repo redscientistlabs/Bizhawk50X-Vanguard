@@ -30,8 +30,6 @@ namespace RTC
 
 		private void RTC_CustomEngineConfig_Form_Load(object sender, EventArgs e)
 		{
-			
-
 
 			if (RTC_Core.ValueListBindingSource.Count > 0)
 			{
@@ -45,74 +43,64 @@ namespace RTC
 
 		private void nmMaxInfinite_ValueChanged(object sender, EventArgs e)
 		{
+			//This is a netcore redundant method
 			RTC_StepActions.SetMaxLifetimeBlastUnits(Convert.ToInt32(nmMaxInfinite.Value));
 		}
 
-		private void rbUnitSourceValue_CheckedChanged(object sender, EventArgs e)
+		//I'm using if-else's rather than switch statements on purpose.
+		//The switch statements required more lines and were harder to read.
+		private void unitSource_CheckedChanged(object sender, EventArgs e)
 		{
-			if (rbUnitSourceValue.Checked)
-				RTC_CustomEngine.Source = BlastUnitSource.VALUE;
-		}
-
-		private void rbUnitSourceStore_CheckedChanged(object sender, EventArgs e)
-		{
-			if(rbUnitSourceStore.Checked)
+			if (rbUnitSourceStore.Checked)
 				RTC_CustomEngine.Source = BlastUnitSource.STORE;
+
+			else if (rbUnitSourceValue.Checked)
+				RTC_CustomEngine.Source = BlastUnitSource.VALUE;
+
+
 		}
 
-		private void rbRandom_CheckedChanged(object sender, EventArgs e)
+		private void valueSource_CheckedChanged(object sender, EventArgs e)
 		{
 			if (rbRandom.Checked)
 				RTC_CustomEngine.ValueSource = CustomValueSource.RANDOM;
-		}
 
-		private void rbValueList_CheckedChanged(object sender, EventArgs e)
-		{
-			if (rbValueList.Checked)
+			else if (rbValueList.Checked)
 				RTC_CustomEngine.ValueSource = CustomValueSource.VALUELIST;
-		}
 
-		private void rbRange_CheckedChanged(object sender, EventArgs e)
-		{
-			if (rbRange.Checked)
+			else if (rbRange.Checked)
 				RTC_CustomEngine.ValueSource = CustomValueSource.RANGE;
 		}
 
-		private void rbStoreImmediate_CheckedChanged(object sender, EventArgs e)
+
+		private void storeTime_CheckedChanged(object sender, EventArgs e)
 		{
 			if (rbStoreImmediate.Checked)
 				RTC_CustomEngine.StoreTime = ActionTime.IMMEDIATE;
-		}
 
-		private void rbStoreFirstExecute_CheckedChanged(object sender, EventArgs e)
-		{
-			if (rbStoreFirstExecute.Checked)
+			else if (rbStoreFirstExecute.Checked)
 				RTC_CustomEngine.StoreTime = ActionTime.PREEXECUTE;
 		}
-
-		private void rbStoreRandom_CheckedChanged(object sender, EventArgs e)
+		
+		private void storeAddress_CheckedChanged(object sender, EventArgs e)
 		{
 			if (rbStoreRandom.Checked)
 				RTC_CustomEngine.StoreAddress = CustomStoreAddress.RANDOM;
-		}
 
-		private void rbStoreSame_CheckedChanged(object sender, EventArgs e)
-		{
-			if (rbStoreSame.Checked)
+			else if (rbStoreSame.Checked)
 				RTC_CustomEngine.StoreAddress = CustomStoreAddress.SAME;
 		}
 
-		private void rbStoreOnce_CheckedChanged(object sender, EventArgs e)
+
+		private void storeType_CheckedChanged(object sender, EventArgs e)
 		{
 			if (rbStoreOnce.Checked)
 				RTC_CustomEngine.StoreType = StoreType.ONCE;
-		}
 
-		private void rbStoreStep_CheckedChanged(object sender, EventArgs e)
-		{
 			if (rbStoreStep.Checked)
 				RTC_CustomEngine.StoreType = StoreType.CONTINUOUS;
 		}
+
 
 		private void nmMaxValue_ValueChanged(object sender, EventArgs e)
 		{
@@ -155,15 +143,18 @@ namespace RTC
 					RTC_CustomEngine.MinValue32Bit = value;
 					break;
 			}
+
 		}
 
 		private void cbLockUnits_CheckedChanged(object sender, EventArgs e)
 		{
-			RTC_StepActions.LockExecution = cbLockUnits.Checked;
+			//Netcore redundant method
+			RTC_StepActions.SetLockExecution(cbLockUnits.Checked);
 		}
 
 		private void cbClearRewind_CheckedChanged(object sender, EventArgs e)
 		{
+			//Netcore redundant method
 			RTC_StepActions.ClearStepActionsOnRewind(cbClearRewind.Checked);
 		}
 
@@ -181,33 +172,25 @@ namespace RTC
 		{
 			RTC_CustomEngine.LimiterList = (MD5)cbLimiterList.SelectedValue;
 		}
+		private void limiterTime_CheckedChanged(object sender, EventArgs e)
+		{
 
-		private void rbLimiterNone_CheckedChanged(object sender, EventArgs e)
-		{
-			RTC_CustomEngine.UseLimiterList = (!rbLimiterNone.Checked);
-		}
-		private void rbLimiterGenerate_CheckedChanged(object sender, EventArgs e)
-		{
+			if (rbLimiterNone.Checked)
+				RTC_CustomEngine.LimiterTime = ActionTime.NONE;
+
 			if (rbLimiterGenerate.Checked)
 				RTC_CustomEngine.LimiterTime = ActionTime.GENERATE;
-		}
 
-		private void rbLimiterFirstExecute_CheckedChanged(object sender, EventArgs e)
-		{
-			if (rbLimiterFirstExecute.Checked)
+			else if (rbLimiterFirstExecute.Checked)
 				RTC_CustomEngine.LimiterTime = ActionTime.PREEXECUTE;
-		}
 
-		private void rbLimiterExecute_CheckedChanged(object sender, EventArgs e)
-		{
-			if (rbLimiterExecute.Checked)
+			else if (rbLimiterExecute.Checked)
 				RTC_CustomEngine.LimiterTime = ActionTime.EXECUTE;
-
 		}
-
-
+		
 		private void btnClearActive_Click(object sender, EventArgs e)
 		{
+			//Netcore redundant method
 			RTC_StepActions.ClearStepBlastUnits();
 		}
 
