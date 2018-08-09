@@ -872,7 +872,7 @@ namespace RTC
 		//We use ApplyValue so we don't need to keep re-calculating the tiled value every execute if we don't have to.
 		private byte[] ApplyValue;
 		//The data that has been backed up. This is a list of bytes so if they start backing up at IMMEDIATE, they can have historical backups
-		private List<byte[]> StoreData;
+		private LinkedList<byte[]> StoreData;
 
 
 
@@ -982,7 +982,7 @@ namespace RTC
 			ApplyValue = null;
 			LastFrame = -1;
 			ExecuteFrameQueued = 0;
-			StoreData = new List<byte[]>();
+			StoreData = new LinkedList<byte[]>();
 
 
 			//We need to grab the value to freeze
@@ -1048,7 +1048,9 @@ namespace RTC
 				{
 					case (BlastUnitSource.STORE):
 					{
-						//All the data is already handled by GetStoreBackup, including tilt calculation and ApplyValue handling
+						ApplyValue = StoreData.First();
+						StoreData.RemoveFirst();
+						//All the data is already handled by GetStoreBackup. We just take the first in the linkedlist and then remove it so the garbage collector can clean it up to prevent a memory leak
 						for (int i = 0; i < Precision; i++)
 						{
 							mdp.PokeByte(Address + i, ApplyValue[i]);
@@ -1100,7 +1102,7 @@ namespace RTC
 			for (int i = 0; i < Precision; i++)
 			{
 				long realSourceAddress = RTC_MemoryDomains.GetRealAddress(SourceDomain, SourceAddress) + i;
-				Console.WriteLine("Storing realSourceAddress " + realSourceAddress + " from SourceAddress " + SourceAddress + " + " + i);
+				//Console.WriteLine("Storing realSourceAddress " + realSourceAddress + " from SourceAddress " + SourceAddress + " + " + i);
 				value[i] = mdp.PeekByte(realSourceAddress);
 			}
 
@@ -1108,12 +1110,12 @@ namespace RTC
 				value.FlipBytes();
 
 			BigInteger _value = new BigInteger(value);
-			ApplyValue = (_value + TiltValue).ToByteArray();
+			byte[] temp = (_value + TiltValue).ToByteArray();
 
 			if (mdp.BigEndian)
-				ApplyValue.FlipBytes();
+				temp.FlipBytes();
 
-			StoreData.Add(ApplyValue);
+			StoreData.AddLast(temp);
 		}
 
 		public BlastUnit GetBakedUnit()
