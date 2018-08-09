@@ -2612,6 +2612,15 @@ namespace RTC
 			return innerDico.ContainsKey(key);
 		}
 
+		public SerializableDico()
+		{
+
+		}
+		protected SerializableDico(SerializationInfo info, StreamingContext context)
+		{
+
+		}
+
 		public T2 this[T key]
 		{
 			get

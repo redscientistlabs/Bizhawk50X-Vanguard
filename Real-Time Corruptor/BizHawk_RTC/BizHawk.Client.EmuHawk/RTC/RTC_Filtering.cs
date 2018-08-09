@@ -12,13 +12,13 @@ namespace RTC
 	public static class RTC_Filtering
 	{
 
-		public static SerializableDico<MD5, String[]> Hash2LimiterDico = new SerializableDico<MD5, string[]>();
-		public static SerializableDico<MD5, String[]> Hash2ValueDico = new SerializableDico<MD5, string[]>();
+		public static SerializableDico<string, String[]> Hash2LimiterDico = new SerializableDico<string, string[]>();
+		public static SerializableDico<string, String[]> Hash2ValueDico = new SerializableDico<string, string[]>();
 
 		
-		public static List<MD5> LoadListsFromPaths(string[] paths)
+		public static List<string> LoadListsFromPaths(string[] paths)
 		{
-			List<MD5> md5s = new List<MD5>();
+			List<string> md5s = new List<string>();
 
 			foreach(string path in paths)
 			{
@@ -29,7 +29,7 @@ namespace RTC
 		}
 
 		//This is private as it won't update the netcore. The netcore call is in LoadListsFromPaths. Use that
-		private static MD5 LoadListFromPath(string path)
+		private static string LoadListFromPath(string path)
 		{
 			string[] temp = File.ReadAllLines(path);
 			bool flipBytes = path.StartsWith("_");
@@ -50,7 +50,7 @@ namespace RTC
 			return RegisterList(temp);
 		}
 
-		private static MD5 RegisterList(String[] list)
+		private static string RegisterList(String[] list)
 		{
 			//Make one giant string to hash
 			string _list = String.Empty;
@@ -60,16 +60,17 @@ namespace RTC
 			//Hash it
 			MD5 hash = MD5.Create();
 			hash.ComputeHash(_list.GetBytes());
+			string hashStr = Convert.ToBase64String(hash.Hash);
 
-			if (!Hash2ValueDico.ContainsKey(hash))
-				Hash2ValueDico[hash] = list;
-			if (!Hash2LimiterDico.ContainsKey(hash))
-				Hash2LimiterDico[hash] = list;
+			if (!Hash2ValueDico.ContainsKey(hashStr))
+				Hash2ValueDico[hashStr] = list;
+			if (!Hash2LimiterDico.ContainsKey(hashStr))
+				Hash2LimiterDico[hashStr] = list;
 
-			return hash;
+			return hashStr;
 		}
 
-		public static bool LimiterPeekBytes(long startAddress, long endAddress, MD5 hash, MemoryDomainProxy mdp)
+		public static bool LimiterPeekBytes(long startAddress, long endAddress, string hash, MemoryDomainProxy mdp)
 		{
 			byte[] values = mdp.PeekBytes(startAddress, endAddress);
 			//The compare is done as little endian
@@ -82,7 +83,7 @@ namespace RTC
 			return false;
 		}
 
-		public static bool LimiterContainsValue(byte[] bytes, MD5 hash)
+		public static bool LimiterContainsValue(byte[] bytes, string hash)
 		{
 			if (!Hash2LimiterDico.ContainsKey(hash))
 				return false;
@@ -93,7 +94,7 @@ namespace RTC
 		}
 
 
-		public static byte[] GetRandomConstant(MD5 hash)
+		public static byte[] GetRandomConstant(string hash)
 		{
 			if (!Hash2ValueDico.ContainsKey(hash))
 			{

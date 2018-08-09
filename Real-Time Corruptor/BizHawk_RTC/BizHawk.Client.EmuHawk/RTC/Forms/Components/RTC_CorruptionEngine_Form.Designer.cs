@@ -102,6 +102,7 @@
             this.comboBox7 = new System.Windows.Forms.ComboBox();
             this.label3 = new System.Windows.Forms.Label();
             this.btnOpenCustomEngine = new System.Windows.Forms.Button();
+            this.panel1 = new System.Windows.Forms.Panel();
             this.pnCustomPrecision.SuspendLayout();
             this.gbBlastGeneratorEngine.SuspendLayout();
             this.gbVectorEngine.SuspendLayout();
@@ -199,8 +200,8 @@
             "Freeze Engine",
             "Pipe Engine",
             "Vector Engine",
-            "Blast Generator",
-            "Custom Engine"});
+            "Custom Engine",
+            "Blast Generator"});
             this.cbSelectedEngine.Location = new System.Drawing.Point(12, 12);
             this.cbSelectedEngine.Name = "cbSelectedEngine";
             this.cbSelectedEngine.Size = new System.Drawing.Size(165, 21);
@@ -229,7 +230,7 @@
             this.gbBlastGeneratorEngine.Controls.Add(this.btnOpenBlastGenerator);
             this.gbBlastGeneratorEngine.Font = new System.Drawing.Font("Segoe UI", 9.75F);
             this.gbBlastGeneratorEngine.ForeColor = System.Drawing.Color.White;
-            this.gbBlastGeneratorEngine.Location = new System.Drawing.Point(853, 308);
+            this.gbBlastGeneratorEngine.Location = new System.Drawing.Point(853, 459);
             this.gbBlastGeneratorEngine.Name = "gbBlastGeneratorEngine";
             this.gbBlastGeneratorEngine.Size = new System.Drawing.Size(391, 151);
             this.gbBlastGeneratorEngine.TabIndex = 146;
@@ -364,14 +365,14 @@
             this.label18.Text = "Value list:";
             this.label18.MouseDown += new System.Windows.Forms.MouseEventHandler(this.HandleMouseDown);
             // 
-            // gbLimiterList
+            // pnLimiterList
             // 
             this.pnLimiterList.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(32)))), ((int)(((byte)(32)))), ((int)(((byte)(32)))));
             this.pnLimiterList.Controls.Add(this.lbVectorEngineLimiterText1);
             this.pnLimiterList.Controls.Add(this.cbVectorLimiterList);
             this.pnLimiterList.Controls.Add(this.label13);
             this.pnLimiterList.Location = new System.Drawing.Point(5, 39);
-            this.pnLimiterList.Name = "gbLimiterList";
+            this.pnLimiterList.Name = "pnLimiterList";
             this.pnLimiterList.Size = new System.Drawing.Size(379, 47);
             this.pnLimiterList.TabIndex = 134;
             this.pnLimiterList.Tag = "color:darker";
@@ -1162,13 +1163,14 @@
             // 
             // gbCustomEngine
             // 
+            this.gbCustomEngine.Controls.Add(this.panel1);
             this.gbCustomEngine.Controls.Add(this.label2);
             this.gbCustomEngine.Controls.Add(this.comboBox7);
             this.gbCustomEngine.Controls.Add(this.label3);
             this.gbCustomEngine.Controls.Add(this.btnOpenCustomEngine);
             this.gbCustomEngine.Font = new System.Drawing.Font("Segoe UI", 9.75F);
             this.gbCustomEngine.ForeColor = System.Drawing.Color.White;
-            this.gbCustomEngine.Location = new System.Drawing.Point(853, 459);
+            this.gbCustomEngine.Location = new System.Drawing.Point(853, 308);
             this.gbCustomEngine.Name = "gbCustomEngine";
             this.gbCustomEngine.Size = new System.Drawing.Size(391, 151);
             this.gbCustomEngine.TabIndex = 147;
@@ -1227,6 +1229,16 @@
             this.btnOpenCustomEngine.Text = "Open Custom Engine";
             this.btnOpenCustomEngine.UseVisualStyleBackColor = false;
             this.btnOpenCustomEngine.Click += new System.EventHandler(this.btnOpenCustomEngine_Click);
+            // 
+            // panel1
+            // 
+            this.panel1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(32)))), ((int)(((byte)(32)))), ((int)(((byte)(32)))));
+            this.panel1.Location = new System.Drawing.Point(169, 92);
+            this.panel1.Name = "panel1";
+            this.panel1.Size = new System.Drawing.Size(221, 57);
+            this.panel1.TabIndex = 140;
+            this.panel1.Tag = "color:darker";
+            this.panel1.Visible = false;
             // 
             // RTC_CorruptionEngine_Form
             // 
@@ -1361,5 +1373,6 @@
 		public System.Windows.Forms.ComboBox comboBox7;
 		private System.Windows.Forms.Label label3;
 		private System.Windows.Forms.Button btnOpenCustomEngine;
+		private System.Windows.Forms.Panel panel1;
 	}
 }

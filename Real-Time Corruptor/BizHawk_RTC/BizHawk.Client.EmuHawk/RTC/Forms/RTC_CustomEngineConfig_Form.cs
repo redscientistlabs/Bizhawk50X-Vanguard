@@ -188,13 +188,13 @@ namespace RTC
 
 		private void cbValueList_SelectedIndexChanged(object sender, EventArgs e)
 		{
-			RTC_CustomEngine.ValueList = (MD5)cbValueList.SelectedValue;
-			RTC_Core.SendCommandToBizhawk(new RTC_Command(CommandType.REMOTE_SET_CUSTOM_VALUELIST) { objectValue = RTC_CustomEngine.ValueList });
+			RTC_CustomEngine.ValueListHash = (string)cbValueList.SelectedValue;
+			RTC_Core.SendCommandToBizhawk(new RTC_Command(CommandType.REMOTE_SET_CUSTOM_VALUELIST) { objectValue = RTC_CustomEngine.ValueListHash });
 		}
 		private void cbLimiterList_SelectedIndexChanged(object sender, EventArgs e)
 		{
-			RTC_CustomEngine.LimiterList = (MD5)cbLimiterList.SelectedValue;
-			RTC_Core.SendCommandToBizhawk(new RTC_Command(CommandType.REMOTE_SET_CUSTOM_LIMITERLIST) { objectValue = RTC_CustomEngine.LimiterList });
+			RTC_CustomEngine.LimiterListHash = (string)cbLimiterList.SelectedValue;
+			RTC_Core.SendCommandToBizhawk(new RTC_Command(CommandType.REMOTE_SET_CUSTOM_LIMITERLIST) { objectValue = RTC_CustomEngine.LimiterListHash });
 		}
 		private void limiterTime_CheckedChanged(object sender, EventArgs e)
 		{

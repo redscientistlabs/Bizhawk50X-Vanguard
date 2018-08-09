@@ -57,7 +57,7 @@ namespace RTC
 
 			new Ref(() => RTC_CustomEngine.Delay,           x => { RTC_CustomEngine.Delay           = (int)x; }),
 			new Ref(() => RTC_CustomEngine.Lifetime,        x => { RTC_CustomEngine.Lifetime        = (int)x; }),
-			new Ref(() => RTC_CustomEngine.LimiterList,     x => { RTC_CustomEngine.LimiterList     = (MD5)x; }),
+			new Ref(() => RTC_CustomEngine.LimiterListHash,     x => { RTC_CustomEngine.LimiterListHash     = (string)x; }),
 			new Ref(() => RTC_CustomEngine.LimiterTime,     x => { RTC_CustomEngine.LimiterTime		= (ActionTime)x; }),
 			new Ref(() => RTC_CustomEngine.Loop,			x => { RTC_CustomEngine.Loop			= (bool)x; }),
 			new Ref(() => RTC_CustomEngine.MinValue8Bit,    x => { RTC_CustomEngine.MinValue8Bit    = (long)x; }),
@@ -71,16 +71,16 @@ namespace RTC
 			new Ref(() => RTC_CustomEngine.StoreTime,		x => { RTC_CustomEngine.StoreTime		= (ActionTime)x; }),
 			new Ref(() => RTC_CustomEngine.StoreType,		x => { RTC_CustomEngine.StoreType		= (StoreType)x; }),
 			new Ref(() => RTC_CustomEngine.TiltValue,		x => { RTC_CustomEngine.TiltValue		= (BigInteger)x; }),
-			new Ref(() => RTC_CustomEngine.ValueList,       x => { RTC_CustomEngine.ValueList       = (MD5)x; }),
+			new Ref(() => RTC_CustomEngine.ValueListHash,       x => { RTC_CustomEngine.ValueListHash       = (string)x; }),
 			new Ref(() => RTC_CustomEngine.ValueSource,     x => { RTC_CustomEngine.ValueSource     = (CustomValueSource)x; }),
 
-			new Ref(() => RTC_Filtering.Hash2LimiterDico,   x => { RTC_Filtering.Hash2LimiterDico   = (SerializableDico<MD5, string[]>)x; }),
-			new Ref(() => RTC_Filtering.Hash2ValueDico,     x => { RTC_Filtering.Hash2ValueDico     = (SerializableDico<MD5, string[]>)x; }),
+			new Ref(() => RTC_Filtering.Hash2LimiterDico,   x => { RTC_Filtering.Hash2LimiterDico   = (SerializableDico<string, string[]>)x; }),
+			new Ref(() => RTC_Filtering.Hash2ValueDico,     x => { RTC_Filtering.Hash2ValueDico     = (SerializableDico<string, string[]>)x; }),
 
 
 
-			new Ref(() => RTC_VectorEngine.LimiterList, x => { RTC_VectorEngine.LimiterList = (MD5)x; }),
-			new Ref(() => RTC_VectorEngine.ValueList, x => { RTC_VectorEngine.ValueList = (MD5)x; }),
+			new Ref(() => RTC_VectorEngine.LimiterListHash, x => { RTC_VectorEngine.LimiterListHash = (string)x; }),
+			new Ref(() => RTC_VectorEngine.ValueListHash, x => { RTC_VectorEngine.ValueListHash = (string)x; }),
 
 			new Ref(() => RTC_StockpileManager.currentSavestateKey, x => { RTC_StockpileManager.currentSavestateKey = (string)x; }),
 			new Ref(() => RTC_StockpileManager.currentGameSystem, x => { RTC_StockpileManager.currentGameSystem = (string)x; }),

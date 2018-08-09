@@ -36,8 +36,8 @@ namespace RTC
 		
 		public static CustomValueSource ValueSource = CustomValueSource.RANDOM;
 		
-		public static MD5 LimiterList = null;
-		public static MD5 ValueList = null;
+		public static string LimiterListHash = null;
+		public static string ValueListHash = null;
 
 		public static BlastUnit GenerateUnit(string domain, long address, int precision)
 		{
@@ -53,7 +53,7 @@ namespace RTC
 
 				//If it's generation time limiter, return null if it's not on the list
 				if (LimiterTime == ActionTime.GENERATE &&
-				    !RTC_Filtering.LimiterPeekBytes(safeAddress, safeAddress + precision, LimiterList, mdp))
+				    !RTC_Filtering.LimiterPeekBytes(safeAddress, safeAddress + precision, LimiterListHash, mdp))
 					return null;
 
 				BlastUnit bu = new BlastUnit();
@@ -66,7 +66,7 @@ namespace RTC
 						{
 							case CustomValueSource.VALUELIST:
 							{
-								value = RTC_Filtering.GetRandomConstant(ValueList);
+								value = RTC_Filtering.GetRandomConstant(ValueListHash);
 							}
 							break;
 
@@ -141,7 +141,7 @@ namespace RTC
 				bu.Loop = Loop;
 				//Only set a list if it's used to save on memory
 				if (LimiterTime != ActionTime.NONE)
-					bu.LimiterList = LimiterList;
+					bu.LimiterListHash = LimiterListHash;
 				
 
 				return bu;

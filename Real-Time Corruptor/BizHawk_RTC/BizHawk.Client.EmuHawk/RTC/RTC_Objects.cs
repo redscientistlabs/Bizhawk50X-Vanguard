@@ -859,7 +859,7 @@ namespace RTC
 		public bool Loop { get; set; } = false;
 
 		public ActionTime LimiterTime { get; set; }
-		public MD5 LimiterList { get; set; }
+		public string LimiterListHash { get; set; }
 
 
 		//Working data. Not persistent beyond a single execution
@@ -1014,7 +1014,7 @@ namespace RTC
 					return;
 
 				//Don't do anything if we don't match the limiter
-				if (LimiterTime == ActionTime.EXECUTE && !RTC_Filtering.LimiterPeekBytes(Address, Address + Precision, LimiterList, mdp))
+				if (LimiterTime == ActionTime.EXECUTE && !RTC_Filtering.LimiterPeekBytes(Address, Address + Precision, LimiterListHash, mdp))
 					return;
 
 				byte[] values;
@@ -1179,7 +1179,7 @@ namespace RTC
 			
 }
 			//Don't do anything if we don't match the limiter
-			if (LimiterTime == ActionTime.PREEXECUTE && !RTC_Filtering.LimiterPeekBytes(Address, Address + Precision, LimiterList, mdp))
+			if (LimiterTime == ActionTime.PREEXECUTE && !RTC_Filtering.LimiterPeekBytes(Address, Address + Precision, LimiterListHash, mdp))
 				return false;
 
 			return true;

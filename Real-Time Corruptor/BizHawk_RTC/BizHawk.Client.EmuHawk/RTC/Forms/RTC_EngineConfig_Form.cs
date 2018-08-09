@@ -38,12 +38,12 @@ namespace RTC
 
 			paths = paths.OrderBy(x => x).ToArray();
 
-			List<MD5> md5s = RTC_Filtering.LoadListsFromPaths(paths);
-			for (int i = 0; i < md5s.Count; i++)
+			List<string> hashes = RTC_Filtering.LoadListsFromPaths(paths);
+			for (int i = 0; i < hashes.Count; i++)
 			{
 				string[] _paths = paths[i].Split('\\' , '.');
-				RTC_Core.LimiterListBindingSource.Add(new { Text = _paths[_paths.Length - 2], Value = md5s[i] });
-				RTC_Core.ValueListBindingSource.Add(new { Text = _paths[_paths.Length - 2], Value = md5s[i] });
+				RTC_Core.LimiterListBindingSource.Add(new { Text = _paths[_paths.Length - 2], Value = hashes[i] });
+				RTC_Core.ValueListBindingSource.Add(new { Text = _paths[_paths.Length - 2], Value = hashes[i] });
 			}
 		}
 		

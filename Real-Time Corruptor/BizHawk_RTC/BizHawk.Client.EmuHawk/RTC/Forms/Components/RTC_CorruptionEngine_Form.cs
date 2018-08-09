@@ -160,6 +160,12 @@ namespace RTC
 					gbVectorEngine.Visible = true;
 					break;
 
+				case "Custom Engine":
+					RTC_Core.SelectedEngine = CorruptionEngine.CUSTOM;
+					gbCustomEngine.Visible = true;
+					pnCustomPrecision.Visible = true;
+					break;
+
 				case "Blast Generator":
 					RTC_Core.SelectedEngine = CorruptionEngine.BLASTGENERATORENGINE;
 					gbBlastGeneratorEngine.Visible = true;
@@ -170,11 +176,6 @@ namespace RTC
 					RTC_Core.ecForm.pnMemoryDomains.Visible = false;
 
 					RTC_Core.ghForm.pnIntensity.Visible = false;
-					break;
-				case "Custom Engine":
-					RTC_Core.SelectedEngine = CorruptionEngine.CUSTOM;
-					gbCustomEngine.Visible = true;
-
 					break;
 
 				default:
@@ -261,14 +262,14 @@ namespace RTC
 
 		private void cbVectorLimiterList_SelectedIndexChanged(object sender, EventArgs e)
 		{
-			RTC_VectorEngine.LimiterList = (MD5)((ComboBox)sender).SelectedValue;
-			RTC_Core.SendCommandToBizhawk(new RTC_Command(CommandType.REMOTE_SET_VECTOR_LIMITER) { objectValue = RTC_VectorEngine.LimiterList });
+			RTC_VectorEngine.LimiterListHash = (string)((ComboBox)sender).SelectedValue;
+			RTC_Core.SendCommandToBizhawk(new RTC_Command(CommandType.REMOTE_SET_VECTOR_LIMITER) { objectValue = RTC_VectorEngine.LimiterListHash });
 		}
 
 		private void cbVectorValueList_SelectedIndexChanged(object sender, EventArgs e)
 		{
-			RTC_VectorEngine.ValueList = (MD5)((ComboBox)sender).SelectedValue;
-			RTC_Core.SendCommandToBizhawk(new RTC_Command(CommandType.REMOTE_SET_VECTOR_VALUES) { objectValue = RTC_VectorEngine.ValueList });
+			RTC_VectorEngine.ValueListHash = (string)((ComboBox)sender).SelectedValue;
+			RTC_Core.SendCommandToBizhawk(new RTC_Command(CommandType.REMOTE_SET_VECTOR_VALUES) { objectValue = RTC_VectorEngine.ValueListHash });
 		}
 
 
