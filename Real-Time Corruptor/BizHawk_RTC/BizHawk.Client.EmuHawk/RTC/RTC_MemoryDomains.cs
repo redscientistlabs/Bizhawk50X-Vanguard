@@ -751,7 +751,7 @@ namespace RTC
 
 		public string GetRealDomain(long address)
 		{
-			if (address < 0 || address >= PointerDomains.Count)
+			if (address < 0 || address > PointerDomains.Count)
 				return null;
 
 			return PointerDomains[(int)address];
@@ -759,7 +759,7 @@ namespace RTC
 
 		public long GetRealAddress(long address)
 		{
-			if (address < 0 || address >= PointerAddresses.Count || address < Proto.Padding)
+			if (address < 0 || address > PointerAddresses.Count || address < Proto.Padding)
 				return 0;
 			return PointerAddresses[(int)address];
 		}

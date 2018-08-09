@@ -566,8 +566,15 @@ namespace RTC
 				case CommandType.REMOTE_SET_CUSTOM_LIMITERLIST:
 					RTC_CustomEngine.LimiterListHash = (string)cmd.objectValue;
 					break;
+				case CommandType.REMOTE_SET_CUSTOM_LIMITERTIME:
+					RTC_CustomEngine.LimiterTime = (ActionTime)cmd.objectValue;
+					break;
 				case CommandType.REMOTE_SET_CUSTOM_VALUELIST:
 					RTC_CustomEngine.ValueListHash = (string)cmd.objectValue;
+					break;
+
+				case CommandType.REMOTE_SET_CUSTOM_LIMITERINVERTED:
+					RTC_CustomEngine.LimiterInverted = (bool)cmd.objectValue;
 					break;
 
 

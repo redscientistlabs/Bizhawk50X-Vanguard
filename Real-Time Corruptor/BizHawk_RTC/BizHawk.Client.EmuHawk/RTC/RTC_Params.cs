@@ -59,6 +59,7 @@ namespace RTC
 			new Ref(() => RTC_CustomEngine.Lifetime,        x => { RTC_CustomEngine.Lifetime        = (int)x; }),
 			new Ref(() => RTC_CustomEngine.LimiterListHash,     x => { RTC_CustomEngine.LimiterListHash     = (string)x; }),
 			new Ref(() => RTC_CustomEngine.LimiterTime,     x => { RTC_CustomEngine.LimiterTime		= (ActionTime)x; }),
+			new Ref(() => RTC_CustomEngine.LimiterInverted,     x => { RTC_CustomEngine.LimiterInverted    = (bool)x; }),
 			new Ref(() => RTC_CustomEngine.Loop,			x => { RTC_CustomEngine.Loop			= (bool)x; }),
 			new Ref(() => RTC_CustomEngine.MinValue8Bit,    x => { RTC_CustomEngine.MinValue8Bit    = (long)x; }),
 			new Ref(() => RTC_CustomEngine.MinValue16Bit,   x => { RTC_CustomEngine.MinValue16Bit   = (long)x; }),
@@ -73,6 +74,7 @@ namespace RTC
 			new Ref(() => RTC_CustomEngine.TiltValue,		x => { RTC_CustomEngine.TiltValue		= (BigInteger)x; }),
 			new Ref(() => RTC_CustomEngine.ValueListHash,       x => { RTC_CustomEngine.ValueListHash       = (string)x; }),
 			new Ref(() => RTC_CustomEngine.ValueSource,     x => { RTC_CustomEngine.ValueSource     = (CustomValueSource)x; }),
+			
 
 			new Ref(() => RTC_Filtering.Hash2LimiterDico,   x => { RTC_Filtering.Hash2LimiterDico   = (SerializableDico<string, string[]>)x; }),
 			new Ref(() => RTC_Filtering.Hash2ValueDico,     x => { RTC_Filtering.Hash2ValueDico     = (SerializableDico<string, string[]>)x; }),

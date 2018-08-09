@@ -70,9 +70,17 @@ namespace RTC
 			return hashStr;
 		}
 
-		public static bool LimiterPeekBytes(long startAddress, long endAddress, string hash, MemoryDomainProxy mdp)
+		public static bool LimiterPeekBytes(long startAddress, long endAddress, string domain, string hash, MemoryDomainProxy mdp)
 		{
-			byte[] values = mdp.PeekBytes(startAddress, endAddress);
+			long precision = endAddress - startAddress;
+			byte[] values = new byte[precision];
+
+			for (long i = 0; i < precision; i++)
+			{
+				long targetAddress = RTC_MemoryDomains.GetRealAddress(domain, startAddress + i);
+				values[i] = mdp.PeekByte(targetAddress);
+			}
+
 			//The compare is done as little endian
 			if (mdp.BigEndian)
 				values = values.FlipBytes();

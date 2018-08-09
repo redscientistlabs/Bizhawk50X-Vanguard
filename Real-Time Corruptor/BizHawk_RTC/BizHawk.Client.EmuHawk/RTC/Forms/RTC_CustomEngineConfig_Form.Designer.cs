@@ -73,6 +73,8 @@
             this.rbStoreStep = new System.Windows.Forms.RadioButton();
             this.rbStoreOnce = new System.Windows.Forms.RadioButton();
             this.gbBackupSource = new System.Windows.Forms.GroupBox();
+            this.bookmarksBranchesBox1 = new BizHawk.Client.EmuHawk.BookmarksBranchesBox();
+            this.cbLimiterInverted = new System.Windows.Forms.CheckBox();
             ((System.ComponentModel.ISupportInitialize)(this.nmMaxInfinite)).BeginInit();
             this.gbUnitSource.SuspendLayout();
             this.gbValueList.SuspendLayout();
@@ -111,7 +113,7 @@
             this.btnClearActive.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnClearActive.Font = new System.Drawing.Font("Segoe UI", 8F);
             this.btnClearActive.ForeColor = System.Drawing.Color.Black;
-            this.btnClearActive.Location = new System.Drawing.Point(12, 301);
+            this.btnClearActive.Location = new System.Drawing.Point(12, 303);
             this.btnClearActive.Name = "btnClearActive";
             this.btnClearActive.Size = new System.Drawing.Size(123, 24);
             this.btnClearActive.TabIndex = 150;
@@ -233,6 +235,7 @@
             // 
             // gbValueSource
             // 
+            this.gbValueSource.Controls.Add(this.bookmarksBranchesBox1);
             this.gbValueSource.Controls.Add(this.rbRange);
             this.gbValueSource.Controls.Add(this.rbValueList);
             this.gbValueSource.Controls.Add(this.rbRandom);
@@ -358,6 +361,7 @@
             // 
             // gbLimiterList
             // 
+            this.gbLimiterList.Controls.Add(this.cbLimiterInverted);
             this.gbLimiterList.Controls.Add(this.rbLimiterNone);
             this.gbLimiterList.Controls.Add(this.rbLimiterExecute);
             this.gbLimiterList.Controls.Add(this.label7);
@@ -368,7 +372,7 @@
             this.gbLimiterList.ForeColor = System.Drawing.Color.White;
             this.gbLimiterList.Location = new System.Drawing.Point(297, 182);
             this.gbLimiterList.Name = "gbLimiterList";
-            this.gbLimiterList.Size = new System.Drawing.Size(134, 134);
+            this.gbLimiterList.Size = new System.Drawing.Size(134, 145);
             this.gbLimiterList.TabIndex = 181;
             this.gbLimiterList.TabStop = false;
             this.gbLimiterList.Text = "Limiter List";
@@ -379,7 +383,7 @@
             this.rbLimiterNone.Checked = true;
             this.rbLimiterNone.Font = new System.Drawing.Font("Segoe UI", 8F);
             this.rbLimiterNone.ForeColor = System.Drawing.Color.White;
-            this.rbLimiterNone.Location = new System.Drawing.Point(9, 64);
+            this.rbLimiterNone.Location = new System.Drawing.Point(9, 78);
             this.rbLimiterNone.Name = "rbLimiterNone";
             this.rbLimiterNone.Size = new System.Drawing.Size(53, 17);
             this.rbLimiterNone.TabIndex = 187;
@@ -393,7 +397,7 @@
             this.rbLimiterExecute.AutoSize = true;
             this.rbLimiterExecute.Font = new System.Drawing.Font("Segoe UI", 8F);
             this.rbLimiterExecute.ForeColor = System.Drawing.Color.White;
-            this.rbLimiterExecute.Location = new System.Drawing.Point(9, 112);
+            this.rbLimiterExecute.Location = new System.Drawing.Point(9, 125);
             this.rbLimiterExecute.Name = "rbLimiterExecute";
             this.rbLimiterExecute.Size = new System.Drawing.Size(64, 17);
             this.rbLimiterExecute.TabIndex = 186;
@@ -406,7 +410,7 @@
             this.label7.AutoSize = true;
             this.label7.Font = new System.Drawing.Font("Segoe UI", 8F);
             this.label7.ForeColor = System.Drawing.Color.White;
-            this.label7.Location = new System.Drawing.Point(6, 50);
+            this.label7.Location = new System.Drawing.Point(6, 64);
             this.label7.Name = "label7";
             this.label7.Size = new System.Drawing.Size(67, 13);
             this.label7.TabIndex = 185;
@@ -417,7 +421,7 @@
             this.rbLimiterFirstExecute.AutoSize = true;
             this.rbLimiterFirstExecute.Font = new System.Drawing.Font("Segoe UI", 8F);
             this.rbLimiterFirstExecute.ForeColor = System.Drawing.Color.White;
-            this.rbLimiterFirstExecute.Location = new System.Drawing.Point(9, 96);
+            this.rbLimiterFirstExecute.Location = new System.Drawing.Point(9, 110);
             this.rbLimiterFirstExecute.Name = "rbLimiterFirstExecute";
             this.rbLimiterFirstExecute.Size = new System.Drawing.Size(89, 17);
             this.rbLimiterFirstExecute.TabIndex = 184;
@@ -430,7 +434,7 @@
             this.rbLimiterGenerate.AutoSize = true;
             this.rbLimiterGenerate.Font = new System.Drawing.Font("Segoe UI", 8F);
             this.rbLimiterGenerate.ForeColor = System.Drawing.Color.White;
-            this.rbLimiterGenerate.Location = new System.Drawing.Point(9, 80);
+            this.rbLimiterGenerate.Location = new System.Drawing.Point(9, 94);
             this.rbLimiterGenerate.Name = "rbLimiterGenerate";
             this.rbLimiterGenerate.Size = new System.Drawing.Size(72, 17);
             this.rbLimiterGenerate.TabIndex = 183;
@@ -448,7 +452,7 @@
             this.cbLimiterList.Font = new System.Drawing.Font("Segoe UI", 8F);
             this.cbLimiterList.ForeColor = System.Drawing.Color.White;
             this.cbLimiterList.FormattingEnabled = true;
-            this.cbLimiterList.Location = new System.Drawing.Point(9, 22);
+            this.cbLimiterList.Location = new System.Drawing.Point(9, 18);
             this.cbLimiterList.Name = "cbLimiterList";
             this.cbLimiterList.Size = new System.Drawing.Size(115, 21);
             this.cbLimiterList.TabIndex = 87;
@@ -734,6 +738,31 @@
             this.gbBackupSource.TabStop = false;
             this.gbBackupSource.Text = "Store Source";
             // 
+            // bookmarksBranchesBox1
+            // 
+            this.bookmarksBranchesBox1.HoverInterval = 750;
+            this.bookmarksBranchesBox1.LoadedCallback = null;
+            this.bookmarksBranchesBox1.Location = new System.Drawing.Point(407, 18);
+            this.bookmarksBranchesBox1.Name = "bookmarksBranchesBox1";
+            this.bookmarksBranchesBox1.RemovedCallback = null;
+            this.bookmarksBranchesBox1.SavedCallback = null;
+            this.bookmarksBranchesBox1.Size = new System.Drawing.Size(204, 281);
+            this.bookmarksBranchesBox1.TabIndex = 181;
+            this.bookmarksBranchesBox1.Tastudio = null;
+            // 
+            // cbLimiterInverted
+            // 
+            this.cbLimiterInverted.AutoSize = true;
+            this.cbLimiterInverted.Font = new System.Drawing.Font("Segoe UI", 8F);
+            this.cbLimiterInverted.ForeColor = System.Drawing.Color.White;
+            this.cbLimiterInverted.Location = new System.Drawing.Point(9, 42);
+            this.cbLimiterInverted.Name = "cbLimiterInverted";
+            this.cbLimiterInverted.Size = new System.Drawing.Size(68, 17);
+            this.cbLimiterInverted.TabIndex = 183;
+            this.cbLimiterInverted.Text = "Inverted";
+            this.cbLimiterInverted.UseVisualStyleBackColor = true;
+            this.cbLimiterInverted.CheckedChanged += new System.EventHandler(this.cbLimiterInverted_CheckedChanged);
+            // 
             // RTC_CustomEngineConfig_Form
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -829,5 +858,7 @@
 		private System.Windows.Forms.Label label27;
 		public NumericUpDownHexFix nmMaxValue;
 		public NumericUpDownHexFix nmMinValue;
+		private BizHawk.Client.EmuHawk.BookmarksBranchesBox bookmarksBranchesBox1;
+		public System.Windows.Forms.CheckBox cbLimiterInverted;
 	}
 }

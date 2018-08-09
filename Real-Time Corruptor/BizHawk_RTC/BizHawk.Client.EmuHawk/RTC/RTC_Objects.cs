@@ -860,6 +860,7 @@ namespace RTC
 
 		public ActionTime LimiterTime { get; set; }
 		public string LimiterListHash { get; set; }
+		public bool InvertLimiter { get; set; }
 
 
 		//Working data. Not persistent beyond a single execution
@@ -1013,9 +1014,33 @@ namespace RTC
 				if (mdp == null)
 					return;
 
-				//Don't do anything if we don't match the limiter
-				if (LimiterTime == ActionTime.EXECUTE && !RTC_Filtering.LimiterPeekBytes(Address, Address + Precision, LimiterListHash, mdp))
-					return;
+				
+				//Limiter handling
+				if (LimiterTime == ActionTime.EXECUTE)
+				{
+					if (InvertLimiter)
+					{
+						//If it's store, we need to use the sourceaddress and sourcedomain
+						if (Source == BlastUnitSource.STORE && RTC_Filtering.LimiterPeekBytes(SourceAddress,
+							    SourceAddress + Precision, SourceDomain, LimiterListHash, mdp))
+							return;
+						//If it's VALUE, we need to use the address and domain
+						else if (Source == BlastUnitSource.VALUE && RTC_Filtering.LimiterPeekBytes(Address,
+							         Address + Precision, Domain, LimiterListHash, mdp))
+							return;
+					}
+					else
+					{
+						//If it's store, we need to use the sourceaddress and sourcedomain
+						if (Source == BlastUnitSource.STORE && !RTC_Filtering.LimiterPeekBytes(SourceAddress,
+							    SourceAddress + Precision, SourceDomain, LimiterListHash, mdp))
+							return;
+						//If it's VALUE, we need to use the address and domain
+						else if (Source == BlastUnitSource.VALUE && !RTC_Filtering.LimiterPeekBytes(Address,
+							         Address + Precision, Domain, LimiterListHash, mdp))
+							return;
+					}
+				}
 
 				byte[] values;
 
@@ -1075,6 +1100,7 @@ namespace RTC
 			for (int i = 0; i < Precision; i++)
 			{
 				long realSourceAddress = RTC_MemoryDomains.GetRealAddress(SourceDomain, SourceAddress) + i;
+				Console.WriteLine("Storing realSourceAddress " + realSourceAddress + " from SourceAddress " + SourceAddress + " + " + i);
 				value[i] = mdp.PeekByte(realSourceAddress);
 			}
 
@@ -1099,16 +1125,19 @@ namespace RTC
 			{
 				MemoryDomainProxy mdp = RTC_MemoryDomains.GetProxy(Domain, Address);
 				long targetAddress = RTC_MemoryDomains.GetRealAddress(Domain, Address);
-
+				
 				if (mdp == null)
 					return null;
 
 				byte[] _value = new byte[Precision];
 
 				for (int i = 0; i < Precision; i++)
-					_value[i] = mdp.PeekByte(targetAddress + i);
+				{
+					long _targetAddress = RTC_MemoryDomains.GetRealAddress(Domain, Address);
+					_value[i] = mdp.PeekByte(_targetAddress + i);
+				}
 
-				return new BlastUnit(_value, Domain, Address, Precision, BigEndian, 0, 1, Note, IsEnabled, IsLocked);
+				return new BlastUnit(_value, Domain, targetAddress, Precision, BigEndian, 0, 1, Note, IsEnabled, IsLocked);
 
 			}
 			catch (Exception ex)
@@ -1178,9 +1207,32 @@ namespace RTC
 					RTC_StepActions.StoreDataPool.Add(this);
 			
 }
-			//Don't do anything if we don't match the limiter
-			if (LimiterTime == ActionTime.PREEXECUTE && !RTC_Filtering.LimiterPeekBytes(Address, Address + Precision, LimiterListHash, mdp))
-				return false;
+			//Limiter handling. Normal operation is to not do anything if it doesn't match the limiter. Inverted is to only continue if it doesn't match
+			if (LimiterTime == ActionTime.PREEXECUTE)
+			{
+				if (InvertLimiter)
+				{
+					//If it's store, we need to use the sourceaddress and sourcedomain
+					if (Source == BlastUnitSource.STORE && RTC_Filtering.LimiterPeekBytes(SourceAddress,
+						    SourceAddress + Precision, SourceDomain, LimiterListHash, mdp))
+						return false;
+					//If it's VALUE, we need to use the address and domain
+					else if (Source == BlastUnitSource.VALUE && RTC_Filtering.LimiterPeekBytes(Address,
+						         Address + Precision, Domain, LimiterListHash, mdp))
+						return false;
+				}
+				else
+				{
+					//If it's store, we need to use the sourceaddress and sourcedomain
+					if (Source == BlastUnitSource.STORE && !RTC_Filtering.LimiterPeekBytes(SourceAddress,
+						    SourceAddress + Precision, SourceDomain, LimiterListHash, mdp))
+						return false;
+					//If it's VALUE, we need to use the address and domain
+					else if (Source == BlastUnitSource.VALUE && !RTC_Filtering.LimiterPeekBytes(Address,
+						         Address + Precision, Domain, LimiterListHash, mdp))
+						return false;
+				}
+			}
 
 			return true;
 		}

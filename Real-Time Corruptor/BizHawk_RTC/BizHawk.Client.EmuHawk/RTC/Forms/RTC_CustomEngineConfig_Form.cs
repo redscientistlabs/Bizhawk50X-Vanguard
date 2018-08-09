@@ -201,7 +201,7 @@ namespace RTC
 			if (rbLimiterNone.Checked)
 				RTC_CustomEngine.LimiterTime = ActionTime.NONE;
 
-			if (rbLimiterGenerate.Checked)
+			else if (rbLimiterGenerate.Checked)
 				RTC_CustomEngine.LimiterTime = ActionTime.GENERATE;
 
 			else if (rbLimiterFirstExecute.Checked)
@@ -269,5 +269,11 @@ namespace RTC
 			updatingMinMax = false;
 		}
 
+		private void cbLimiterInverted_CheckedChanged(object sender, EventArgs e)
+		{
+			RTC_CustomEngine.LimiterInverted = cbLimiterInverted.Checked;
+			RTC_Core.SendCommandToBizhawk(new RTC_Command(CommandType.REMOTE_SET_CUSTOM_LIMITERINVERTED) { objectValue = RTC_CustomEngine.LimiterInverted });
+
+		}
 	}
 }

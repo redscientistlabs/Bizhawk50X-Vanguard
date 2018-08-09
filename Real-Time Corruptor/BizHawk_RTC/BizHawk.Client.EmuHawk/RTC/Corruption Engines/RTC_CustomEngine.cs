@@ -30,6 +30,7 @@ namespace RTC
 		public static BigInteger TiltValue = 1;
 
 		public static ActionTime LimiterTime = ActionTime.NONE;
+		public static bool LimiterInverted = false;
 
 
 		public static bool Loop = false;
@@ -52,11 +53,7 @@ namespace RTC
 				byte[] value = new byte[precision];
 				long safeAddress = address - (address % precision);
 
-				//If it's generation time limiter, return null if it's not on the list
-				if (LimiterTime == ActionTime.GENERATE &&
-				    !RTC_Filtering.LimiterPeekBytes(safeAddress, safeAddress + precision, LimiterListHash, mdp))
-					return null;
-
+			
 				BlastUnit bu = new BlastUnit();
 
 				switch (Source)
@@ -140,10 +137,38 @@ namespace RTC
 				bu.Precision = precision;
 				bu.LimiterTime = LimiterTime;
 				bu.Loop = Loop;
+				bu.InvertLimiter = LimiterInverted;
+
 				//Only set a list if it's used to save on memory
 				if (LimiterTime != ActionTime.NONE)
 					bu.LimiterListHash = LimiterListHash;
-				
+
+				//Limiter handling
+				if (LimiterTime == ActionTime.GENERATE)
+				{
+					if (LimiterInverted)
+					{
+						//If it's store, we need to use the sourceaddress and sourcedomain
+						if (Source == BlastUnitSource.STORE && RTC_Filtering.LimiterPeekBytes(bu.SourceAddress,
+							    bu.SourceAddress + bu.Precision, bu.SourceDomain, LimiterListHash, mdp))
+							return null;
+						//If it's VALUE, we need to use the address and domain
+						else if (Source == BlastUnitSource.VALUE && RTC_Filtering.LimiterPeekBytes(bu.Address,
+							         bu.Address + bu.Precision, bu.Domain, LimiterListHash, mdp))
+							return null;
+					}
+					else
+					{
+						//If it's store, we need to use the sourceaddress and sourcedomain
+						if (Source == BlastUnitSource.STORE && !RTC_Filtering.LimiterPeekBytes(bu.SourceAddress,
+							    bu.SourceAddress + bu.Precision, bu.SourceDomain, LimiterListHash, mdp))
+							return null;
+						//If it's VALUE, we need to use the address and domain
+						else if (Source == BlastUnitSource.VALUE && !RTC_Filtering.LimiterPeekBytes(bu.Address,
+							         bu.Address + bu.Precision, bu.Domain, LimiterListHash, mdp))
+							return null;
+					}
+				}
 
 				return bu;
 			}
