@@ -55,6 +55,7 @@ namespace RTC
 				queued.Clear();
 				appliedLifetime.Clear();
 				appliedInfinite.Clear();
+				StoreDataPool.Clear();
 
 				nextFrame = -1;
 				currentFrame = 0;
