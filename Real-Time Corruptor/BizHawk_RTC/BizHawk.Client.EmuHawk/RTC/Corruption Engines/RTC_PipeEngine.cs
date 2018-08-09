@@ -22,7 +22,7 @@ namespace RTC
 				BlastTarget pipeStart = RTC_Core.GetBlastTarget();
 				long safePipeStartAddress = pipeStart.Address - (pipeStart.Address % precision);
 
-				return new BlastUnit(StoreType.CONTINUOUS, ActionTime.PREEXECUTE, domain, safeAddress, pipeStart.Domain, safePipeStartAddress, precision, mdp.BigEndian, 0, -1);
+				return new BlastUnit(StoreType.CONTINUOUS, ActionTime.PREEXECUTE, domain, safeAddress, pipeStart.Domain, safePipeStartAddress, precision, mdp.BigEndian, 0, 0);
 			}
 			catch (Exception ex)
 			{

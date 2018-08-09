@@ -106,7 +106,8 @@ namespace RTC
 		public static void AddBlastUnit(BlastUnit bu)
 		{
 			bu.ExecuteFrameQueued = bu.ExecuteFrame + currentFrame;
-			bu.LastFrame = bu.ExecuteFrameQueued + bu.Lifetime;
+			//We subtract 1 here as we want lifetime to be exclusive. 1 means 1 apply, not applies 0 > applies 1 > done
+			bu.LastFrame = bu.ExecuteFrameQueued + bu.Lifetime - 1;
 
 			List<BlastUnit> collection = buListCollection.FirstOrDefault(it => (it[0].ExecuteFrameQueued == bu.ExecuteFrameQueued) && (it[0].Lifetime == bu.Lifetime) && (it[0].Loop == bu.Loop));
 			
@@ -182,7 +183,7 @@ namespace RTC
 				if (!dontApply)
 				{
 					//Add it to the infinite pool
-					if (buList[0].Lifetime == -1)
+					if (buList[0].Lifetime == 0)
 					{
 						appliedInfinite.Add(buList);
 						queued.RemoveFirst();

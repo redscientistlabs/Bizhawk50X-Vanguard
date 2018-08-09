@@ -36,8 +36,8 @@ namespace RTC
 
 			for (int i = 0; i < temp.Length; i++)
 			{
-				temp[i].Trim();
-				temp[i].ToUpper();
+				temp[i] = temp[i].Trim();
+				temp[i] = temp[i].ToUpper();
 				//If it's big endian, flip it. this is ugly and slow but it works
 				if (flipBytes)
 				{

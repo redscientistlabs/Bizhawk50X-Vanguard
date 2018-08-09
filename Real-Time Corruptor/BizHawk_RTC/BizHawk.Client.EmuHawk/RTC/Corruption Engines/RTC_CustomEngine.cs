@@ -48,6 +48,7 @@ namespace RTC
 
 				MemoryDomainProxy mdp = RTC_MemoryDomains.GetProxy(domain, address);
 
+
 				byte[] value = new byte[precision];
 				long safeAddress = address - (address % precision);
 

@@ -53,7 +53,7 @@ namespace RTC
 					}
 				}
 
-				return new BlastUnit(value, domain, safeAddress, precision, mdp.BigEndian, 0, -1);
+				return new BlastUnit(value, domain, safeAddress, precision, mdp.BigEndian, 0, 0);
 			}
 			catch (Exception ex)
 			{
