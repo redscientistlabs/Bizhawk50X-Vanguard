@@ -102,7 +102,7 @@
             // 
             // pnAdvancedTool
             // 
-            this.pnAdvancedTool.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
+            this.pnAdvancedTool.BackColor = System.Drawing.Color.Gray;
             this.pnAdvancedTool.Controls.Add(this.label8);
             this.pnAdvancedTool.Location = new System.Drawing.Point(11, 32);
             this.pnAdvancedTool.Name = "pnAdvancedTool";

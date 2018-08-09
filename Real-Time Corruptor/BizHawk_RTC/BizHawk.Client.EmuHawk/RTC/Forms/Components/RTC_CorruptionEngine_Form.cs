@@ -104,9 +104,6 @@ namespace RTC
 		}
 
 
-
-
-
 		private void cbSelectedEngine_SelectedIndexChanged(object sender, EventArgs e)
 		{
 			gbNightmareEngine.Visible = false;

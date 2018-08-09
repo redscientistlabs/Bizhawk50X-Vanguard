@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Drawing;
 using System.IO;
 using System.Linq;
+using System.Security.Cryptography;
 using System.Threading;
 using System.Windows.Forms;
 
@@ -528,10 +529,10 @@ namespace RTC
 					break;
 
 				case CommandType.REMOTE_SET_VECTOR_LIMITER:
-					RTC_VectorEngine.LimiterList = (System.Security.Cryptography.MD5)cmd.objectValue;
+					RTC_VectorEngine.LimiterList = (MD5)cmd.objectValue;
 					break;
 				case CommandType.REMOTE_SET_VECTOR_VALUES:
-					RTC_VectorEngine.ValueList = (System.Security.Cryptography.MD5)cmd.objectValue;
+					RTC_VectorEngine.ValueList = (MD5)cmd.objectValue;
 					break;
 
 				case CommandType.REMOTE_SET_CUSTOM_UNIT_SOURCE:
@@ -563,30 +564,19 @@ namespace RTC
 					break;
 
 				case CommandType.REMOTE_SET_CUSTOM_LIMITERLIST:
-					RTC_CustomEngine.LimiterList = (System.Security.Cryptography.MD5)cmd.objectValue;
+					RTC_CustomEngine.LimiterList = (MD5)cmd.objectValue;
 					break;
 				case CommandType.REMOTE_SET_CUSTOM_VALUELIST:
-					RTC_CustomEngine.ValueList = (System.Security.Cryptography.MD5)cmd.objectValue;
+					RTC_CustomEngine.ValueList = (MD5)cmd.objectValue;
 					break;
 
 
-				case CommandType.REMOTE_SET_CUSTOM_RANGE_MINVALUE:
+				case CommandType.REMOTE_UPDATE_FILTERING_DICTIONARIES:
 					{
-						int precision = (int)(cmd.objectValue as object[])[0];
-						long value = (long)(cmd.objectValue as object[])[1];
-
-						switch (precision)
-						{
-							case 1:
-								RTC_CustomEngine.MinValue8Bit = value;
-								break;
-							case 2:
-								RTC_CustomEngine.MinValue16Bit = value;
-								break;
-							case 4:
-								RTC_CustomEngine.MinValue32Bit = value;
-								break;
-						}
+						SerializableDico<MD5, String[]> hash2LimiterDico = (SerializableDico<MD5, String[]>)(cmd.objectValue as object[])[0];
+						SerializableDico<MD5, String[]> hash2ValueDico = (SerializableDico<MD5, String[]>)(cmd.objectValue as object[])[1];
+						RTC_Filtering.Hash2LimiterDico = hash2LimiterDico;
+						RTC_Filtering.Hash2ValueDico = hash2ValueDico;
 						break;
 					}
 				case CommandType.REMOTE_SET_CUSTOM_RANGE_MAXVALUE:

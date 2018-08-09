@@ -12,8 +12,8 @@ namespace RTC
 	public static class RTC_Filtering
 	{
 
-		private static Dictionary<MD5, String[]> hash2LimiterDico = new Dictionary<MD5, string[]>();
-		private static Dictionary<MD5, String[]> hash2ValueDico = new Dictionary<MD5, string[]>();
+		public static SerializableDico<MD5, String[]> Hash2LimiterDico = new SerializableDico<MD5, string[]>();
+		public static SerializableDico<MD5, String[]> Hash2ValueDico = new SerializableDico<MD5, string[]>();
 
 		
 		public static List<MD5> LoadListsFromPaths(string[] paths)
@@ -24,10 +24,12 @@ namespace RTC
 			{
 				md5s.Add(LoadListFromPath(path));
 			}
+			RTC_Core.SendCommandToBizhawk(new RTC_Command(CommandType.REMOTE_SET_CUSTOM_RANGE_MINVALUE) { objectValue = new object[] { RTC_Filtering.Hash2LimiterDico, RTC_Filtering.Hash2ValueDico } });
 			return md5s;
 		}
 
-		public static MD5 LoadListFromPath(string path)
+		//This is private as it won't update the netcore. The netcore call is in LoadListsFromPaths. Use that
+		private static MD5 LoadListFromPath(string path)
 		{
 			string[] temp = File.ReadAllLines(path);
 			bool flipBytes = path.StartsWith("_");
@@ -59,10 +61,10 @@ namespace RTC
 			MD5 hash = MD5.Create();
 			hash.ComputeHash(_list.GetBytes());
 
-			if (!hash2ValueDico.ContainsKey(hash))
-				hash2ValueDico.Add(hash, list);
-			if (!hash2LimiterDico.ContainsKey(hash))
-				hash2LimiterDico.Add(hash, list);
+			if (!Hash2ValueDico.ContainsKey(hash))
+				Hash2ValueDico[hash] = list;
+			if (!Hash2LimiterDico.ContainsKey(hash))
+				Hash2LimiterDico[hash] = list;
 
 			return hash;
 		}
@@ -82,23 +84,23 @@ namespace RTC
 
 		public static bool LimiterContainsValue(byte[] bytes, MD5 hash)
 		{
-			if (!hash2LimiterDico.ContainsKey(hash))
+			if (!Hash2LimiterDico.ContainsKey(hash))
 				return false;
 
 			string str = BitConverter.ToString(bytes).Replace("-", "").ToUpper();
 
-			return hash2LimiterDico[hash].Contains(str);
+			return Hash2LimiterDico[hash].Contains(str);
 		}
 
 
 		public static byte[] GetRandomConstant(MD5 hash)
 		{
-			if (!hash2ValueDico.ContainsKey(hash))
+			if (!Hash2ValueDico.ContainsKey(hash))
 			{
 				return null;
 			}
 
-			return StringToByteArray(hash2ValueDico[hash][RTC_Core.RND.Next(hash2ValueDico[hash].Length)]);
+			return StringToByteArray(Hash2ValueDico[hash][RTC_Core.RND.Next(Hash2ValueDico[hash].Length)]);
 		}
 
 		private static byte[] StringToByteArray(string hex)

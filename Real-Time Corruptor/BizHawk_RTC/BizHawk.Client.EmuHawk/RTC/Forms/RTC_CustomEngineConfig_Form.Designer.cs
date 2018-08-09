@@ -753,8 +753,9 @@
             this.Name = "RTC_CustomEngineConfig_Form";
             this.Tag = "color:normal";
             this.Text = "Custom Engine Config";
-            this.Load += new System.EventHandler(this.RTC_CustomEngineConfig_Form_Load);
-            ((System.ComponentModel.ISupportInitialize)(this.nmMaxInfinite)).EndInit();
+			this.Load += new System.EventHandler(this.RTC_CustomEngineConfig_Form_Load);
+			this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.RTC_CustomEngineConfig_Form_FormClosing);
+			((System.ComponentModel.ISupportInitialize)(this.nmMaxInfinite)).EndInit();
             this.gbUnitSource.ResumeLayout(false);
             this.gbUnitSource.PerformLayout();
             this.gbValueList.ResumeLayout(false);
