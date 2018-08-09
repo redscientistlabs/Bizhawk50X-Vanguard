@@ -26,44 +26,52 @@ namespace RTC
 		{
 			try
 			{
-				MemoryDomainProxy mdp = RTC_MemoryDomains.GetProxy(domain, address);
+				
+				MemoryInterface mi = null;
+
+				if (RTC_MemoryDomains.MemoryInterfaces.ContainsKey(domain))
+					mi = RTC_MemoryDomains.MemoryInterfaces[domain];
+				else if (RTC_MemoryDomains.VmdPool.ContainsKey(domain))
+					 mi = RTC_MemoryDomains.VmdPool[domain];
 
 				byte[] value = new byte[precision];
 				long destAddress = 0;
 
-				long safeAddress = address - address % value.Length;
 
-				if (safeAddress >= mdp.Size)
+				long targetAddress = RTC_MemoryDomains.GetRealAddress(domain, address);
+				long safeAddress = targetAddress - targetAddress % value.Length;
+
+				if (safeAddress >= mi.Size)
 					return null;
 
 				switch (mode)
 				{
 					case BGBlastPipeModes.CHAINED:
 						long temp = safeAddress + stepSize;
-						if (temp <= mdp.Size)
+						if (temp <= mi.Size)
 							destAddress = temp;
 						else
-							destAddress = mdp.Size - 1;
+							destAddress = mi.Size - 1;
 						break;
 					case BGBlastPipeModes.SOURCE_RANDOM:
 						destAddress = safeAddress;
-						safeAddress = RTC_Core.RND.Next(0, Convert.ToInt32(mdp.Size - 1));
+						safeAddress = RTC_Core.RND.Next(0, Convert.ToInt32(mi.Size - 1));
 						break;
 					case BGBlastPipeModes.SOURCE_SET:
 						destAddress = safeAddress;
 						safeAddress = param1;
 						break;
 					case BGBlastPipeModes.DEST_RANDOM:
-						destAddress = RTC_Core.RND.Next(0, Convert.ToInt32(mdp.Size - 1));
+						destAddress = RTC_Core.RND.Next(0, Convert.ToInt32(mi.Size - 1));
 						break;
 					default:
 						throw new ArgumentOutOfRangeException(nameof(mode), mode, null);
 				}
 
-				if (destAddress >= mdp.Size)
+				if (destAddress >= mi.Size)
 					return null;
 
-				return new BlastPipe(domain, safeAddress, domain, destAddress, 0, precision, mdp.BigEndian, true, note);
+				return new BlastPipe(domain, safeAddress, domain, destAddress, 0, precision, mi.BigEndian, true, note);
 			}
 			catch (Exception ex)
 			{

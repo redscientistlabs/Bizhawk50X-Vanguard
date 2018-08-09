@@ -38,7 +38,8 @@ namespace RTC
 				bool freeze = false;
 				DisplayType _displaytype = DisplayType.Unsigned;
 
-				long safeAddress = address - address % _value.Length;
+				long targetAddress = RTC_MemoryDomains.GetRealAddress(domain, address);
+				long safeAddress = targetAddress - targetAddress % _value.Length;
 
 				//Use >= as Size is 1 indexed whereas address is 0 indexed
 				if (safeAddress + _value.Length > mdp.Size)

@@ -37,7 +37,8 @@ namespace RTC
 				byte[] value = new byte[precision];
 				byte[] _temp = new byte[precision];
 
-				long safeAddress = address - address % value.Length;
+				long targetAddress = RTC_MemoryDomains.GetRealAddress(domain, address);
+				long safeAddress = targetAddress - targetAddress % value.Length;
 
 				//Use >= as Size is 1 indexed whereas address is 0 indexed
 				if (safeAddress + value.Length > mdp.Size)
