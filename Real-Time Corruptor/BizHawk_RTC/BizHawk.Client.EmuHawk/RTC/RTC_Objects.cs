@@ -829,6 +829,18 @@ namespace RTC
 		}
 	}
 
+	public class BlastUnitWorkingData
+	{
+		//We Calculate a LastFrame at the beginning of execute
+		public int LastFrame = -1;
+		//We calculate ExecuteFrameQueued which is the ExecuteFrame + the currentframe that was calculated at the time of it entering the execution pool
+		public int ExecuteFrameQueued = 0;
+		//We use ApplyValue so we don't need to keep re-calculating the tiled value every execute if we don't have to.
+		public byte[] ApplyValue;
+		//The data that has been backed up. This is a list of bytes so if they start backing up at IMMEDIATE, they can have historical backups
+		public LinkedList<byte[]> StoreData;
+	}
+
 	[Serializable]
 	public class BlastUnit
 	{
@@ -850,7 +862,7 @@ namespace RTC
 		public string SourceDomain { get; set; }
 		public long SourceAddress { get; set; }
 
-		public BigInteger TiltValue;
+		public BigInteger TiltValue { get; set; }
 
 		public string Note { get; set; }
 
@@ -862,17 +874,7 @@ namespace RTC
 		public string LimiterListHash { get; set; }
 		public bool InvertLimiter { get; set; }
 
-
-		//Working data. Not persistent beyond a single execution
-
-		//We Calculate a LastFrame at the beginning of execute
-		public int LastFrame = -1;
-		//We calculate ExecuteFrameQueued which is the ExecuteFrame + the currentframe that was calculated at the time of it entering the execution pool
-		public int ExecuteFrameQueued = 0;
-		//We use ApplyValue so we don't need to keep re-calculating the tiled value every execute if we don't have to.
-		private byte[] ApplyValue;
-		//The data that has been backed up. This is a list of bytes so if they start backing up at IMMEDIATE, they can have historical backups
-		private LinkedList<byte[]> StoreData;
+		public BlastUnitWorkingData Working;
 
 
 
@@ -978,12 +980,7 @@ namespace RTC
 			if (!IsEnabled)
 				return true;
 
-			//Prepare the working data
-			ApplyValue = null;
-			LastFrame = -1;
-			ExecuteFrameQueued = 0;
-			StoreData = new LinkedList<byte[]>();
-
+			Working = new BlastUnitWorkingData();
 
 			//We need to grab the value to freeze
 			if (Source == BlastUnitSource.STORE && StoreTime == ActionTime.IMMEDIATE)
@@ -1001,6 +998,7 @@ namespace RTC
 
 			return true;
 		}
+
 
 		public void Execute()
 		{
@@ -1048,29 +1046,29 @@ namespace RTC
 				{
 					case (BlastUnitSource.STORE):
 					{
-						ApplyValue = StoreData.First();
-						StoreData.RemoveFirst();
+						Working.ApplyValue = Working.StoreData.First();
+						Working.StoreData.RemoveFirst();
 						//All the data is already handled by GetStoreBackup. We just take the first in the linkedlist and then remove it so the garbage collector can clean it up to prevent a memory leak
 						for (int i = 0; i < Precision; i++)
 						{
-							mdp.PokeByte(Address + i, ApplyValue[i]);
+							mdp.PokeByte(Address + i, Working.ApplyValue[i]);
 						}
 					}
 					break;
 					case (BlastUnitSource.VALUE):
 					{
 						//We only calculate it once for Backup and Value and then store it in ApplyValue
-						if (ApplyValue == null)
+						if (Working.ApplyValue == null)
 						{
-							ApplyValue = RTC_Extensions.AddValueToByteArray(Value, TiltValue, mdp.BigEndian);
+							Working.ApplyValue = RTC_Extensions.AddValueToByteArray(Value, TiltValue, mdp.BigEndian);
 
 							//Flip it back
 							if (mdp.BigEndian)
-								ApplyValue.FlipBytes();
+								Working.ApplyValue.FlipBytes();
 						}
 						for (int i = 0; i < Precision; i++)
 						{
-							mdp.PokeByte(Address + i, ApplyValue[i]);
+							mdp.PokeByte(Address + i, Working.ApplyValue[i]);
 						}
 
 						break;
@@ -1115,7 +1113,7 @@ namespace RTC
 			if (mdp.BigEndian)
 				temp.FlipBytes();
 
-			StoreData.AddLast(temp);
+			Working.StoreData.AddLast(temp);
 		}
 
 		public BlastUnit GetBakedUnit()

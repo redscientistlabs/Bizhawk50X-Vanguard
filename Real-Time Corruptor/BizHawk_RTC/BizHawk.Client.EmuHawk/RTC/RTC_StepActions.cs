@@ -50,12 +50,23 @@ namespace RTC
 			}
 			else
 			{
-				preProcess.Clear();
-				buListCollection.Clear();
-				queued.Clear();
-				appliedLifetime.Clear();
-				appliedInfinite.Clear();
-				StoreDataPool.Clear();
+				//Clean out the working data to prevent memory leaks
+				foreach (List<BlastUnit> buList in appliedLifetime)
+				{
+					foreach (BlastUnit bu in buList)
+						bu.Working = null;
+				}
+				foreach (List<BlastUnit> buList in appliedInfinite)
+				{
+					foreach (BlastUnit bu in buList)
+						bu.Working = null;
+				}
+
+				buListCollection = new List<List<BlastUnit>>();
+				queued = new LinkedList<List<BlastUnit>>();
+				appliedLifetime = new List<List<BlastUnit>>();
+				appliedInfinite = new List<List<BlastUnit>>();
+				StoreDataPool = new List<BlastUnit>();
 
 				nextFrame = -1;
 				currentFrame = 0;
@@ -106,11 +117,11 @@ namespace RTC
 
 		public static void AddBlastUnit(BlastUnit bu)
 		{
-			bu.ExecuteFrameQueued = bu.ExecuteFrame + currentFrame;
+			bu.Working.ExecuteFrameQueued = bu.ExecuteFrame + currentFrame;
 			//We subtract 1 here as we want lifetime to be exclusive. 1 means 1 apply, not applies 0 > applies 1 > done
-			bu.LastFrame = bu.ExecuteFrameQueued + bu.Lifetime - 1;
+			bu.Working.LastFrame = bu.Working.ExecuteFrameQueued + bu.Lifetime - 1;
 
-			List<BlastUnit> collection = buListCollection.FirstOrDefault(it => (it[0].ExecuteFrameQueued == bu.ExecuteFrameQueued) && (it[0].Lifetime == bu.Lifetime) && (it[0].Loop == bu.Loop));
+			List<BlastUnit> collection = buListCollection.FirstOrDefault(it => (it[0].Working.ExecuteFrameQueued == bu.Working.ExecuteFrameQueued) && (it[0].Lifetime == bu.Lifetime) && (it[0].Loop == bu.Loop));
 			
 			if (collection == null)
 			{
@@ -132,19 +143,20 @@ namespace RTC
 			foreach (List<BlastUnit> buList in queued)
 				buListCollection.Add(buList);
 
-			queued.Clear();
+			queued = new LinkedList<List<BlastUnit>>();
 
-			buListCollection = buListCollection.OrderBy(it => it[0].ExecuteFrameQueued).ToList();
+			buListCollection = buListCollection.OrderBy(it => it[0].Working.ExecuteFrameQueued).ToList();
 
 
 			foreach(List<BlastUnit> buList in buListCollection)
 			{
 				queued.AddLast(buList);
 			}
-			buListCollection.Clear();
+			//Nuke the list 
+			buListCollection = new List<List<BlastUnit>>();
 
 			//There's data so have the execute loop actually do something
-			nextFrame = (queued.First())[0].ExecuteFrameQueued;
+			nextFrame = (queued.First())[0].Working.ExecuteFrameQueued;
 			isRunning = true;			
 		}
 
@@ -201,7 +213,7 @@ namespace RTC
 				if (queued.Count == 0)
 					return;
 				//It's not empty so set the next frame
-				nextFrame = (queued.First())[0].ExecuteFrameQueued;
+				nextFrame = (queued.First())[0].Working.ExecuteFrameQueued;
 			}
 		}
 		public static void Execute()
@@ -225,7 +237,7 @@ namespace RTC
 			{
 				foreach (BlastUnit bu in buList)
 					bu.Execute();
-				if (buList[0].LastFrame == currentFrame)
+				if (buList[0].Working.LastFrame == currentFrame)
 					itemsToRemove.Add(buList);
 			}
 
@@ -236,16 +248,25 @@ namespace RTC
 				//Remove it
 				appliedLifetime.Remove(buList);
 
-				//Add any that loop back to the starting pool.
 				//Since we already have it filtered as a list, there's no reason to build a new list
 				//We just update the ExecuteFrameQueued and LastFrame, then just add it back to buListCollection
-				if(buList[0].Loop)
+				if (buList[0].Loop)
 				{
+					//Clean out the working data for all units
+					foreach (BlastUnit bu in buList)
+						bu.Working = new BlastUnitWorkingData();
+
 					//We have to add 1 since currentFrame hasn't been incremented yet
-					buList[0].ExecuteFrameQueued = buList[0].ExecuteFrame + currentFrame + 1; 
-					buList[0].LastFrame = buList[0].ExecuteFrameQueued + buList[0].Lifetime + 1;
+					buList[0].Working.ExecuteFrameQueued = buList[0].ExecuteFrame + currentFrame + 1;
+					buList[0].Working.LastFrame = buList[0].Working.ExecuteFrameQueued + buList[0].Lifetime + 1;
 					buListCollection.Add(buList);
 					needsRefilter = true;
+				}
+				//If we're not looping, set the working data to null instead of instantiating a new one
+				else
+				{
+					foreach (BlastUnit bu in buList)
+						bu.Working = null;
 				}
 				
 			}
