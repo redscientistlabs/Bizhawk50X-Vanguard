@@ -1195,7 +1195,6 @@ namespace RTC
 			try
 			{
 				MemoryDomainProxy mdp = RTC_MemoryDomains.GetProxy(Domain, Address);
-				long targetAddress = RTC_MemoryDomains.GetRealAddress(Domain, Address);
 
 				if (mdp == null || Type == BlastByteType.NONE)
 					return null;
@@ -1203,7 +1202,10 @@ namespace RTC
 				byte[] _value = new byte[Value.Length];
 
 				for (int i = 0; i < _value.Length; i++)
+				{
+					long targetAddress = RTC_MemoryDomains.GetRealAddress(Domain, Address + i);
 					_value[i] = mdp.PeekByte(targetAddress + i);
+				}
 
 				return new BlastByte(Domain, Address, BlastByteType.SET, _value, BigEndian, true);
 			}

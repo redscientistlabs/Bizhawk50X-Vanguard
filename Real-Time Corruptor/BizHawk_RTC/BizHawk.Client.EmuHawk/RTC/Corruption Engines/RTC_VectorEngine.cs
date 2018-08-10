@@ -238,10 +238,7 @@ namespace RTC
 				return null;
 			// Randomly selects a memory operation according to the selected algorithm
 
-			//long safeAddress = _address - (_address % 8); //64-bit trunk
-			long targetAddress = RTC_MemoryDomains.GetRealAddress(domain, address);
-
-			long safeAddress = targetAddress - (targetAddress % 4); //32-bit trunk
+			long safeAddress = address - (address % 4); //32-bit trunk
 			MemoryDomainProxy mdp = RTC_MemoryDomains.GetProxy(domain, safeAddress);
 			if (mdp == null)
 				return null;
@@ -250,8 +247,13 @@ namespace RTC
 			{
 				BlastByte bu = null;
 
+				LastValues = new byte[4];
+				for (long i = 0; i < 4; i++)
+				{
+					long targetAddress = RTC_MemoryDomains.GetRealAddress(domain, safeAddress + i);
+					LastValues[i] = mdp.PeekByte(targetAddress);
+				}
 
-				LastValues = mdp.PeekBytes(safeAddress, safeAddress + 4);
 				LastDomain = domain;
 
 				//Enforce the safeaddress at generation
