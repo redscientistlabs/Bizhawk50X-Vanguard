@@ -31,17 +31,16 @@ namespace RTC
 		{
 			try
 			{
-				MemoryDomainProxy mdp = RTC_MemoryDomains.GetProxy(domain, address);
+				MemoryInterface mi = RTC_MemoryDomains.GetInterface(domain);
 				BlastByteType type = BlastByteType.SET;
 
 				byte[] value = new byte[precision];
 				byte[] _temp = new byte[precision];
 
-				long targetAddress = RTC_MemoryDomains.GetRealAddress(domain, address);
-				long safeAddress = targetAddress - targetAddress % value.Length;
+				long safeAddress = address - address % value.Length;
 
 				//Use >= as Size is 1 indexed whereas address is 0 indexed
-				if (safeAddress + value.Length > mdp.Size)
+				if (safeAddress + value.Length > mi.Size)
 					return null;
 
 				switch (mode)
@@ -63,7 +62,7 @@ namespace RTC
 						value = RTC_Extensions.GetByteArrayValue(precision, temp, true);
 						break;
 					case BGBlastByteModes.REPLACE_X_WITH_Y:
-						if (mdp.PeekBytes(safeAddress, safeAddress + precision)
+						if (mi.PeekBytes(safeAddress, safeAddress + precision)
 							.SequenceEqual(RTC_Extensions.GetByteArrayValue(precision, param1, true)))
 							value = RTC_Extensions.GetByteArrayValue(precision, param2, true);
 						else
@@ -73,13 +72,13 @@ namespace RTC
 						value = RTC_Extensions.GetByteArrayValue(precision, param1, true);
 						break;
 					case BGBlastByteModes.SHIFT_RIGHT:
-						value = mdp.PeekBytes(safeAddress, safeAddress + precision);
+						value = mi.PeekBytes(safeAddress, safeAddress + precision);
 						safeAddress += param1;
-						if (safeAddress >= mdp.Size)
-							safeAddress = mdp.Size - value.Length;
+						if (safeAddress >= mi.Size)
+							safeAddress = mi.Size - value.Length;
 						break;
 					case BGBlastByteModes.SHIFT_LEFT:
-						value = mdp.PeekBytes(safeAddress, safeAddress + precision);
+						value = mi.PeekBytes(safeAddress, safeAddress + precision);
 						safeAddress -= param1;
 						if (safeAddress < 0)
 							safeAddress = 0;
@@ -89,45 +88,45 @@ namespace RTC
 					//Bitwise operations
 					case BGBlastByteModes.BITWISE_AND:
 						_temp = RTC_Extensions.GetByteArrayValue(precision, param1, true);
-						value = mdp.PeekBytes(safeAddress, safeAddress + precision);
+						value = mi.PeekBytes(safeAddress, safeAddress + precision);
 						for (int i = 0; i < value.Length; i++)
 							value[i] = (byte) (value[i] & _temp[i]);
 						break;
 					case BGBlastByteModes.BITWISE_COMPLEMENT:
 						_temp = RTC_Extensions.GetByteArrayValue(precision, param1, true);
-						value = mdp.PeekBytes(safeAddress, safeAddress + precision);
+						value = mi.PeekBytes(safeAddress, safeAddress + precision);
 						for (int i = 0; i < value.Length; i++)
 							value[i] = (byte) (value[i] & _temp[i]);
 						break;
 					case BGBlastByteModes.BITWISE_OR:
 						_temp = RTC_Extensions.GetByteArrayValue(precision, param1, true);
-						value = mdp.PeekBytes(safeAddress, safeAddress + precision);
+						value = mi.PeekBytes(safeAddress, safeAddress + precision);
 						for (int i = 0; i < value.Length; i++)
 							value[i] = (byte) (value[i] | _temp[i]);
 						break;
 					case BGBlastByteModes.BITWISE_XOR:
 						_temp = RTC_Extensions.GetByteArrayValue(precision, param1, true);
-						value = mdp.PeekBytes(safeAddress, safeAddress + precision);
+						value = mi.PeekBytes(safeAddress, safeAddress + precision);
 						for (int i = 0; i < value.Length; i++)
 							value[i] = (byte) (value[i] ^ _temp[i]);
 						break;
 					case BGBlastByteModes.BITWISE_SHIFT_LEFT:
-						value = mdp.PeekBytes(safeAddress, safeAddress + precision);
+						value = mi.PeekBytes(safeAddress, safeAddress + precision);
 						for (int i = 0; i < param1; i++)
 							RTC_Extensions.ShiftLeft(value);
 						break;
 					case BGBlastByteModes.BITWISE_SHIFT_RIGHT:
-						value = mdp.PeekBytes(safeAddress, safeAddress + precision);
+						value = mi.PeekBytes(safeAddress, safeAddress + precision);
 						for (int i = 0; i < param1; i++)
 							RTC_Extensions.ShiftRight(value);
 						break;
 					case BGBlastByteModes.BITWISE_ROTATE_LEFT:
-						value = mdp.PeekBytes(safeAddress, safeAddress + precision);
+						value = mi.PeekBytes(safeAddress, safeAddress + precision);
 						for (int i = 0; i < param1; i++)
 							RTC_Extensions.RotateLeft(value);
 						break;
 					case BGBlastByteModes.BITWISE_ROTATE_RIGHT:
-						value = mdp.PeekBytes(safeAddress, safeAddress + precision);
+						value = mi.PeekBytes(safeAddress, safeAddress + precision);
 						for (int i = 0; i < param1; i++)
 							RTC_Extensions.RotateRight(value);
 						break;
@@ -135,7 +134,7 @@ namespace RTC
 						throw new ArgumentOutOfRangeException(nameof(mode), mode, null);
 				}
 
-				return new BlastByte(domain, safeAddress, type, value, mdp.BigEndian, true, note);
+				return new BlastByte(domain, safeAddress, type, value, mi.BigEndian, true, note);
 			}
 			catch (Exception ex)
 			{

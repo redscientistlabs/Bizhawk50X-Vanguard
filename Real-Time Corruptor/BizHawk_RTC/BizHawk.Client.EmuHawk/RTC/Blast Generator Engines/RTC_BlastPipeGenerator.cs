@@ -26,20 +26,13 @@ namespace RTC
 		{
 			try
 			{
-				
-				MemoryInterface mi = null;
-
-				if (RTC_MemoryDomains.MemoryInterfaces.ContainsKey(domain))
-					mi = RTC_MemoryDomains.MemoryInterfaces[domain];
-				else if (RTC_MemoryDomains.VmdPool.ContainsKey(domain))
-					 mi = RTC_MemoryDomains.VmdPool[domain];
+				MemoryInterface mi = RTC_MemoryDomains.GetInterface(domain);
 
 				byte[] value = new byte[precision];
 				long destAddress = 0;
 
 
-				long targetAddress = RTC_MemoryDomains.GetRealAddress(domain, address);
-				long safeAddress = targetAddress - targetAddress % value.Length;
+				long safeAddress = address - address % precision;
 
 				if (safeAddress >= mi.Size)
 					return null;

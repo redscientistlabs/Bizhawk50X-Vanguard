@@ -1138,12 +1138,10 @@ namespace RTC
 
 			try
 			{
-				MemoryDomainProxy mdp = RTC_MemoryDomains.GetProxy(Domain, Address);
+				MemoryInterface mi = RTC_MemoryDomains.GetProxy(Domain, this.Address);
 
-				if (mdp == null)
-					return true;
-
-				long targetAddress = RTC_MemoryDomains.GetRealAddress(Domain, Address);
+				if (mi == null)
+					return false;
 
 				byte[] _Values = (byte[])Value.Clone();
 
@@ -1161,11 +1159,11 @@ namespace RTC
 						break;
 
 					case (BlastByteType.ADD):
-						_Values = RTC_Extensions.AddValueToByteArray(mdp.PeekBytes(targetAddress, targetAddress + _Values.Length), RTC_Extensions.GetDecimalValue(_Values, !(BigEndian)), BigEndian);
+						_Values = RTC_Extensions.AddValueToByteArray(mi.PeekBytes(Address, Address + _Values.Length), RTC_Extensions.GetDecimalValue(_Values, !(BigEndian)), BigEndian);
 						break;
 
 					case (BlastByteType.SUBSTRACT):
-						_Values = RTC_Extensions.AddValueToByteArray(mdp.PeekBytes(targetAddress, targetAddress + _Values.Length), RTC_Extensions.GetDecimalValue(_Values, !(BigEndian)) * -1, BigEndian);
+						_Values = RTC_Extensions.AddValueToByteArray(mi.PeekBytes(Address, Address + _Values.Length), RTC_Extensions.GetDecimalValue(_Values, !(BigEndian)) * -1, BigEndian);
 						break;
 
 					case (BlastByteType.NONE):
@@ -1174,7 +1172,7 @@ namespace RTC
 
 				//As add and substract are accounted for already, we no longer need to check the type here.
 				for (int i = 0; i < _Values.Length; i++)
-					mdp.PokeByte(targetAddress + i, _Values[i]);
+					mi.PokeByte(Address + i, _Values[i]);
 			}
 			catch (Exception ex)
 			{
@@ -1194,16 +1192,16 @@ namespace RTC
 
 			try
 			{
-				MemoryDomainProxy mdp = RTC_MemoryDomains.GetProxy(Domain, Address);
-				long targetAddress = RTC_MemoryDomains.GetRealAddress(Domain, Address);
+				MemoryInterface mi = RTC_MemoryDomains.GetProxy(Domain, Address);
+				
 
-				if (mdp == null || Type == BlastByteType.NONE)
+				if (mi == null || Type == BlastByteType.NONE)
 					return null;
 
 				byte[] _value = new byte[Value.Length];
 
 				for (int i = 0; i < _value.Length; i++)
-					_value[i] = mdp.PeekByte(targetAddress + i);
+					_value[i] = mi.PeekByte(Address + i);
 
 				return new BlastByte(Domain, Address, BlastByteType.SET, _value, BigEndian, true);
 			}
@@ -1321,17 +1319,14 @@ namespace RTC
 
 			try
 			{
-				MemoryDomainProxy mdp = RTC_MemoryDomains.GetProxy(Domain, Address);
+				MemoryInterface mi = RTC_MemoryDomains.GetInterface(Domain);
 
-				if (mdp == null)
+				if (mi == null)
 					return true;
 
-				long targetAddress = RTC_MemoryDomains.GetRealAddress(Domain, Address);
 
-				mdp.PokeByte(targetAddress, Values[0]);
-				mdp.PokeByte(targetAddress + 1, Values[1]);
-				mdp.PokeByte(targetAddress + 2, Values[2]);
-				mdp.PokeByte(targetAddress + 3, Values[3]);
+				for(int i = 0; i < 4; i++)
+					mi.PokeByte(Address + i, Values[i]);
 			}
 			catch (Exception ex)
 			{
@@ -1351,13 +1346,11 @@ namespace RTC
 
 			try
 			{
-				MemoryDomainProxy mdp = RTC_MemoryDomains.GetProxy(Domain, Address);
-				if (mdp == null)
+				MemoryInterface mi = RTC_MemoryDomains.GetInterface(Domain);
+				if (mi == null)
 					return null;
 
-				long targetAddress = RTC_MemoryDomains.GetRealAddress(Domain, Address);
-
-				return new BlastVector(Domain, Address, mdp.PeekBytes(targetAddress, targetAddress + 4), true);
+				return new BlastVector(Domain, Address, mi.PeekBytes(Address, Address + 4), true);
 			}
 			catch (Exception ex)
 			{
@@ -1421,18 +1414,15 @@ namespace RTC
 		{
 			try
 			{
-				MemoryDomainProxy mdp = RTC_MemoryDomains.GetProxy(Domain, Address);
-				MemoryDomainProxy mdp2 = RTC_MemoryDomains.GetProxy(PipeDomain, PipeAddress);
+				MemoryInterface mi = RTC_MemoryDomains.GetInterface(Domain);
+				MemoryInterface mi2 = RTC_MemoryDomains.GetInterface(PipeDomain);
 
-				if (mdp == null || mdp2 == null)
-					throw new Exception($"Memory Domain error, MD1 -> {mdp?.ToString()}, md2 -> {mdp2?.ToString()}");
+				if (mi == null || mi2 == null)
+					throw new Exception($"Memory Domain error, MD1 -> {mi?.ToString()}, md2 -> {mi2?.ToString()}");
 
 				for (int i = 0; i < PipeSize; i++)
 				{
-					long targetAddress = RTC_MemoryDomains.GetRealAddress(Domain, Address) + i;
-					long targetPipeAddress = RTC_MemoryDomains.GetRealAddress(PipeDomain, PipeAddress) + i;
-
-					int currentValue = (int)mdp.PeekByte(targetAddress);
+					int currentValue = (int)mi.PeekByte(Address);
 
 					int newValue = currentValue + TiltValue;
 
@@ -1441,7 +1431,7 @@ namespace RTC
 					else if (newValue > 255)
 						newValue = 255;
 
-					mdp2.PokeByte(targetPipeAddress, (byte)newValue);
+					mi2.PokeByte(PipeAddress, (byte)newValue);
 				}
 			}
 			catch (Exception ex)
@@ -1510,15 +1500,15 @@ namespace RTC
 
 			try
 			{
-				MemoryDomainProxy mdp = RTC_MemoryDomains.GetProxy(PipeDomain, PipeAddress);
+				MemoryInterface mi = RTC_MemoryDomains.GetInterface(PipeDomain);
 
-				if (mdp == null)
+				if (mi == null)
 					return null;
 
 				byte[] _value = new byte[PipeSize];
 
 				for (int i = 0; i < _value.Length; i++)
-					_value[i] = mdp.PeekByte(PipeAddress + i);
+					_value[i] = mi.PeekByte(PipeAddress + i);
 
 				return new BlastByte(PipeDomain, PipeAddress, BlastByteType.SET, _value, BigEndian, true);
 			}
@@ -1614,7 +1604,7 @@ namespace RTC
 			{
 				if (!IsEnabled)
 					return true;
-
+				//This technically doesn't work properly with hybrid VMDs, but can't be fixed with the BlastCheat implementation in this branch
 				MemoryDomainProxy mdp = RTC_MemoryDomains.GetProxy(Domain, Address);
 				var settings = new RamSearchEngine.Settings(RTC_MemoryDomains.MDRI.MemoryDomains);
 
@@ -1674,6 +1664,7 @@ namespace RTC
 
 			try
 			{
+				//This technically doesn't work properly, but can't be fixed with the BlastCheat implementation in this branch
 				MemoryDomainProxy mdp = RTC_MemoryDomains.GetProxy(Domain, Address);
 				long targetAddress = RTC_MemoryDomains.GetRealAddress(Domain, Address);
 

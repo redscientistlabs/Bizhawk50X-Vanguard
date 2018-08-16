@@ -899,11 +899,6 @@ namespace RTC
 		[NonSerialized]
 		public MemoryDomain md = null;
 
-		//public long Size;
-		//public int WordSize;
-		//public string name;
-		//public bool BigEndian;
-
 		public override long Size { get; set; }
 
 		public MemoryDomainProxy(MemoryDomain _md)
