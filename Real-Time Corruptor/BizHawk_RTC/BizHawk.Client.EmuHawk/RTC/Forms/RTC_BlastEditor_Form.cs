@@ -233,88 +233,152 @@ namespace RTC
 
 		private void btnDisable50_Click(object sender, EventArgs e)
 		{
-			foreach (BlastUnit bu in sk.BlastLayer.Layer)
+			try
 			{
-				if (!(bool)bu2RowDico[bu].Cells["dgvBlastUnitLocked"].Value)
+				toggleButtons(false);
+				foreach (BlastUnit bu in sk.BlastLayer.Layer)
 				{
-					bu2RowDico[bu].Cells["dgvBlastEnabled"].Value = true;
-					currentlyUpdating = false;
+					if (!(bool)bu2RowDico[bu].Cells["dgvBlastUnitLocked"].Value)
+					{
+						bu2RowDico[bu].Cells["dgvBlastEnabled"].Value = true;
+						currentlyUpdating = false;
+					}
+
 				}
 
-			}
-			foreach (BlastUnit bu in sk.BlastLayer.Layer.OrderBy(x => RTC_Core.RND.Next()).Take(sk.BlastLayer.Layer.Count / 2))
-			{
-				if (!(bool)bu2RowDico[bu].Cells["dgvBlastUnitLocked"].Value)
+				foreach (BlastUnit bu in sk.BlastLayer.Layer.OrderBy(x => RTC_Core.RND.Next())
+					.Take(sk.BlastLayer.Layer.Count / 2))
 				{
-					bu2RowDico[bu].Cells["dgvBlastEnabled"].Value = false;
-					currentlyUpdating = false;
+					if (!(bool)bu2RowDico[bu].Cells["dgvBlastUnitLocked"].Value)
+					{
+						bu2RowDico[bu].Cells["dgvBlastEnabled"].Value = false;
+						currentlyUpdating = false;
+					}
 				}
+			}
+			catch (Exception ex)
+			{
+				MessageBox.Show(ex.ToString());
+			}
+			finally
+			{
+				toggleButtons(true);
 			}
 		}
 
 		private void btnInvertDisabled_Click(object sender, EventArgs e)
 		{
-			for (int i = 0; i < sk.BlastLayer.Layer.Count(); i++)
+			try
 			{
-				BlastUnit bu = sk.BlastLayer.Layer[i];
-				if (!(bool)bu2RowDico[bu].Cells["dgvBlastUnitLocked"].Value)
-					bu2RowDico[bu].Cells["dgvBlastEnabled"].Value = !((bool)bu2RowDico[bu].Cells["dgvBlastEnabled"].Value);
+				toggleButtons(false);
+				for (int i = 0; i < sk.BlastLayer.Layer.Count(); i++)
+				{
+					BlastUnit bu = sk.BlastLayer.Layer[i];
+					if (!(bool)bu2RowDico[bu].Cells["dgvBlastUnitLocked"].Value)
+						bu2RowDico[bu].Cells["dgvBlastEnabled"].Value = !((bool)bu2RowDico[bu].Cells["dgvBlastEnabled"].Value);
+				}
+				//sk.BlastLayer.Layer[i].IsEnabled = !sk.BlastLayer.Layer[i].IsEnabled;
+
 			}
-			//sk.BlastLayer.Layer[i].IsEnabled = !sk.BlastLayer.Layer[i].IsEnabled;
+			catch (Exception ex)
+			{
+				MessageBox.Show(ex.ToString());
+			}
+			finally
+			{
+				toggleButtons(true);
+			}
 		}
 
 		private void btnRemoveDisabled_Click(object sender, EventArgs e)
 		{
-			List<BlastUnit> buToRemove = new List<BlastUnit>();
-
-			foreach (BlastUnit bu in sk.BlastLayer.Layer)
-				if (!bu.IsEnabled && !bu.IsLocked)
-					buToRemove.Add(bu);
-
-			foreach (BlastUnit bu in buToRemove)
+			try
 			{
-				RemoveBlastUnitFromBlastLayerAndDgv(bu);
+				toggleButtons(false);
+				List<BlastUnit> buToRemove = new List<BlastUnit>();
+
+				foreach (BlastUnit bu in sk.BlastLayer.Layer)
+					if (!bu.IsEnabled && !bu.IsLocked)
+						buToRemove.Add(bu);
+
+				foreach (BlastUnit bu in buToRemove)
+				{
+					RemoveBlastUnitFromBlastLayerAndDgv(bu);
+				}
+			}
+			catch (Exception ex)
+			{
+				MessageBox.Show(ex.ToString());
+			}
+			finally
+			{
+				toggleButtons(true);
 			}
 		}
 
 		private void btnLoadCorrupt_Click(object sender, EventArgs e)
 		{
-			if (sk.ParentKey == null)
+			try
 			{
-				MessageBox.Show("There's no savestate associated with this Stashkey!\nAssociate one in the menu to be able to load.");
-				return;
-			}
-			BlastLayer bl = new BlastLayer();
+				toggleButtons(false);
+				if (sk.ParentKey == null)
+				{
+					MessageBox.Show("There's no savestate associated with this Stashkey!\nAssociate one in the menu to be able to load.");
+					return;
+				}
+				BlastLayer bl = new BlastLayer();
 
-			foreach (DataGridViewRow row in dgvBlastLayer.Rows)
+				foreach (DataGridViewRow row in dgvBlastLayer.Rows)
+				{
+					BlastUnit bu = (BlastUnit)row.Cells["dgvBlastUnitReference"].Value;
+					if (bu.IsEnabled)
+						bl.Layer.Add(bu);
+				}
+
+				StashKey newSk = (StashKey)sk.Clone();
+				newSk.BlastLayer = (BlastLayer)bl.Clone();
+				newSk.Run();
+
+			}
+			catch (Exception ex)
 			{
-				BlastUnit bu = (BlastUnit)row.Cells["dgvBlastUnitReference"].Value;
-				if (bu.IsEnabled)
-					bl.Layer.Add(bu);
+				MessageBox.Show(ex.ToString());
 			}
-
-			StashKey newSk = (StashKey)sk.Clone();
-			newSk.BlastLayer = (BlastLayer)bl.Clone();
-
-			newSk.Run();
+			finally
+			{
+				toggleButtons(true);
+			}
 		}
 
 		private void btnCorrupt_Click(object sender, EventArgs e)
 		{
-			BlastLayer bl = new BlastLayer();
-
-			foreach (DataGridViewRow row in dgvBlastLayer.Rows)
+			try
 			{
-				BlastUnit bu = (BlastUnit)row.Cells["dgvBlastUnitReference"].Value;
-				if (bu.IsEnabled)
-					bl.Layer.Add(bu);
-			}
+				toggleButtons(false);
+				BlastLayer bl = new BlastLayer();
 
-			(bl.Clone() as BlastLayer)?.Apply();
+				foreach (DataGridViewRow row in dgvBlastLayer.Rows)
+				{
+					BlastUnit bu = (BlastUnit)row.Cells["dgvBlastUnitReference"].Value;
+					if (bu.IsEnabled)
+						bl.Layer.Add(bu);
+				}
+
+				(bl.Clone() as BlastLayer)?.Apply();
+			}
+			catch (Exception ex)
+			{
+				MessageBox.Show(ex.ToString());
+			}
+			finally
+			{
+				toggleButtons(true);
+			}
 		}
 
 		private void btnSendToStash_Click(object sender, EventArgs e)
 		{
+			toggleButtons(false);
 			if (sk.ParentKey == null)
 			{
 				MessageBox.Show("There's no savestate associated with this Stashkey!\nAssociate one in the menu to send this to the stash.");
@@ -334,47 +398,100 @@ namespace RTC
 			RTC_Core.ghForm.lbStashHistory.SelectedIndex = RTC_Core.ghForm.lbStashHistory.Items.Count - 1;
 			RTC_StockpileManager.currentStashkey = RTC_StockpileManager.StashHistory[RTC_Core.ghForm.lbStashHistory.SelectedIndex];
 
+
+			catch (Exception ex)
+			{
+				MessageBox.Show(ex.ToString());
+			}
+			finally
+			{
+				toggleButtons(true);
+			}
+
 		}
 
 		private void btnDisableEverything_Click(object sender, EventArgs e)
 		{
+			toggleButtons(false);
 			dgvBlastLayer.ClearSelection();
 			foreach (BlastUnit bu in sk.BlastLayer.Layer)
 			{
 				if (!(bool)bu2RowDico[bu].Cells["dgvBlastUnitLocked"].Value)
 					bu2RowDico[bu].Cells["dgvBlastEnabled"].Value = false;
 			}
+			catch (Exception ex)
+			{
+				MessageBox.Show(ex.ToString());
+			}
+			finally
+			{
+				toggleButtons(true);
+			}
 		}
 
 		private void btnEnableEverything_Click(object sender, EventArgs e)
 		{
+			toggleButtons(false);
 			dgvBlastLayer.ClearSelection();
 			foreach (BlastUnit bu in sk.BlastLayer.Layer)
 			{
 				if (!(bool)bu2RowDico[bu].Cells["dgvBlastUnitLocked"].Value)
 					bu2RowDico[bu].Cells["dgvBlastEnabled"].Value = true;
 			}
+			catch (Exception ex)
+			{
+				MessageBox.Show(ex.ToString());
+			}
+			finally
+			{
+				toggleButtons(true);
+			}
 		}
 
 		private void btnDuplicateSelected_Click(object sender, EventArgs e)
 		{
-			if (dgvBlastLayer.SelectedRows.Count < 1)
+			try
 			{
-				MessageBox.Show("No rows were selected. Cannot duplicate.");
-				return;
+				toggleButtons(false);
+				if (dgvBlastLayer.SelectedRows.Count < 1)
+				{
+					MessageBox.Show("No rows were selected. Cannot duplicate.");
+					return;
+				}
+				foreach (DataGridViewRow row in dgvBlastLayer.SelectedRows)
+				{
+					int pos = row.Index;
+
+					BlastUnit bu = sk.BlastLayer.Layer[pos];
+					BlastUnit bu2 = ObjectCopier.Clone(bu);
+					sk.BlastLayer.Layer.Insert(pos + 1, bu2);
+					InsertBlastUnitToDgv(pos + 1, bu2);
+					SetNoteIcon(bu2);
+
+					//AddBlastUnitToDGV(bu2);
+				}
 			}
-			foreach (DataGridViewRow row in dgvBlastLayer.SelectedRows)
+			catch(Exception ex)
 			{
-				int pos = row.Index;
-
-				BlastUnit bu = sk.BlastLayer.Layer[pos];
-				BlastUnit bu2 = ObjectCopier.Clone(bu);
-				sk.BlastLayer.Layer.Insert(pos + 1, bu2);
-				InsertBlastUnitToDgv(pos + 1, bu2);
-				SetNoteIcon(bu2);
-
-				//AddBlastUnitToDGV(bu2);
+				MessageBox.Show(ex.ToString());
 			}
+			finally
+			{
+				toggleButtons(true);
+			}
+		}
+
+		private void toggleButtons(bool enabled)
+		{
+			btnRemoveDisabled.Enabled = enabled;
+			btnInvertDisabled.Enabled = enabled;
+			btnDisable50.Enabled = enabled;
+			btnDuplicateSelected.Enabled = enabled;
+			btnEnableEverything.Enabled = enabled;
+			btnDisableEverything.Enabled = enabled;
+			btnCorrupt.Enabled = enabled;
+			btnLoadCorrupt.Enabled = enabled;
+			btnSendToStash.Enabled = enabled;
 		}
 
 		private void dgvBlastLayer_CellValueChanged(object sender, DataGridViewCellEventArgs e)
