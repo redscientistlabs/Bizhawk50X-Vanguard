@@ -97,10 +97,11 @@ namespace RTC
 			lbCoreDefault.Text = $"Core default: { defaultPrecision * 8}-bit";
 
 			if (RTC_Core.CustomPrecision == -1)
+			{
+				updateMinMaxBoxes(defaultPrecision);
 				RTC_Core.CurrentPrecision = defaultPrecision;
+			}
 
-			updateMinMaxBoxes(defaultPrecision);
-			RTC_Core.cecForm.UpdateMinMaxBoxes(defaultPrecision);
 		}
 
 
