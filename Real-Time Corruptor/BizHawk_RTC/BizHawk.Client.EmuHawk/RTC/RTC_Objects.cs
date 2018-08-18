@@ -1121,16 +1121,15 @@ namespace RTC
 				value[i] = mdp.PeekByte(realSourceAddress);
 			}
 
-			if (mdp.BigEndian)
-				value.FlipBytes();
+			//if (mdp.BigEndian)
+			//	value.FlipBytes();
 
-			BigInteger _value = new BigInteger(value);
-			byte[] temp = (_value + TiltValue).ToByteArray();
+			RTC_Extensions.AddValueToByteArray(value, TiltValue, mdp.BigEndian);
 
-			if (mdp.BigEndian)
-				temp.FlipBytes();
+			//if (mdp.BigEndian)
+			//	value.FlipBytes();
 
-			Working.StoreData.AddLast(temp);
+			Working.StoreData.AddLast(value);
 		}
 
 		public BlastUnit GetBakedUnit()
