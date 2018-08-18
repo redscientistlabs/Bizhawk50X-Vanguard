@@ -17,7 +17,6 @@ namespace RTC
 	///appliedLifetime and appliedInfinite are the two collections where we store what we want to actually be applied
 	public static class RTC_StepActions
 	{
-		private static List<BlastUnit> preProcess = new List<BlastUnit>();
 		private static List<List<BlastUnit>> buListCollection = new List<List<BlastUnit>>();
 
 		private static LinkedList<List<BlastUnit>> queued = new LinkedList<List<BlastUnit>>();

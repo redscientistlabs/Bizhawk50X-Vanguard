@@ -28,9 +28,5 @@ namespace RTC
 			}
 		}
 
-		public static void Resync()
-		{
-			RTC_Core.SendCommandToBizhawk(new RTC_Command(CommandType.REMOTE_SET_DISTORTION_RESYNC));
-		}
 	}
 }

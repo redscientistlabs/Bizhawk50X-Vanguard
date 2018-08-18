@@ -88,7 +88,7 @@ namespace RTC
 
 		private void btnResyncDistortionEngine_Click(object sender, EventArgs e)
 		{
-			RTC_DistortionEngine.Resync();
+			RTC_StepActions.ClearStepBlastUnits();
 		}
 
 		public void UpdateDefaultPrecision()
