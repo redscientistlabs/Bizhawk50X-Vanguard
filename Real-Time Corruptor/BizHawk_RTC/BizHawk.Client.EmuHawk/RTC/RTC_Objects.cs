@@ -848,8 +848,7 @@ namespace RTC
 
 		//The data that has been backed up. This is a list of bytes so if they start backing up at IMMEDIATE, they can have historical backups
 		[XmlIgnore, NonSerialized]
-		public LinkedList<byte[]> StoreData;
-
+		public LinkedList<byte[]> StoreData = new LinkedList<byte[]>();
 	}
 
 	[Serializable]
@@ -1061,7 +1060,11 @@ namespace RTC
 					case (BlastUnitSource.STORE):
 					{
 						Working.ApplyValue = Working.StoreData.First();
-						Working.StoreData.RemoveFirst();
+
+						//Remove it if it's some form of continuous backup
+						if(StoreTime != ActionTime.PREEXECUTE)
+							Working.StoreData.RemoveFirst();
+
 						//All the data is already handled by GetStoreBackup. We just take the first in the linkedlist and then remove it so the garbage collector can clean it up to prevent a memory leak
 						for (int i = 0; i < Precision; i++)
 						{
