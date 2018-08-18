@@ -848,7 +848,7 @@ namespace RTC
 
 		//The data that has been backed up. This is a list of bytes so if they start backing up at IMMEDIATE, they can have historical backups
 		[XmlIgnore, NonSerialized]
-		public LinkedList<byte[]> StoreData = new LinkedList<byte[]>();
+		public Queue<byte[]> StoreData = new Queue<byte[]>();
 	}
 
 	[Serializable]
@@ -993,7 +993,7 @@ namespace RTC
 			if (!IsEnabled)
 				return true;
 
-			Working = new BlastUnitWorkingData();
+			this.Working = new BlastUnitWorkingData();
 
 			//We need to grab the value to freeze
 			if (Source == BlastUnitSource.STORE && StoreTime == ActionTime.IMMEDIATE)
@@ -1063,7 +1063,7 @@ namespace RTC
 
 						//Remove it if it's some form of continuous backup
 						if(StoreTime != ActionTime.PREEXECUTE)
-							Working.StoreData.RemoveFirst();
+							Working.StoreData.Dequeue();
 
 						//All the data is already handled by GetStoreBackup. We just take the first in the linkedlist and then remove it so the garbage collector can clean it up to prevent a memory leak
 						for (int i = 0; i < Precision; i++)
@@ -1129,7 +1129,7 @@ namespace RTC
 			//if (mdp.BigEndian)
 			//	value.FlipBytes();
 
-			Working.StoreData.AddLast(value);
+			Working.StoreData.Enqueue(value);
 		}
 
 		public BlastUnit GetBakedUnit()
@@ -1222,7 +1222,7 @@ namespace RTC
 				else
 					RTC_StepActions.StoreDataPool.Add(this);
 			
-}
+			}
 			//Limiter handling. Normal operation is to not do anything if it doesn't match the limiter. Inverted is to only continue if it doesn't match
 			if (LimiterTime == ActionTime.PREEXECUTE)
 			{

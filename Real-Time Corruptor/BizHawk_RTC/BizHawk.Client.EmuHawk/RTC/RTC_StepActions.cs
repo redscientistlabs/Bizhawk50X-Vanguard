@@ -266,9 +266,13 @@ namespace RTC
 				else
 				{
 					foreach (BlastUnit bu in buList)
+					{
 						bu.Working = null;
+						//Remove it from the store pool
+						if (bu.Source == BlastUnitSource.STORE)
+							StoreDataPool.Remove(bu);
+					}
 				}
-				
 			}
 			//We only call this if there's a loop layer for optimization purposes.
 			if(needsRefilter)
