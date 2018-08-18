@@ -829,6 +829,10 @@ namespace RTC
 		}
 	}
 
+	/// <summary>
+	/// Working data for BlastUnits.
+	/// Not serialized
+	/// </summary>
 	public class BlastUnitWorkingData
 	{
 		//We Calculate a LastFrame at the beginning of execute
@@ -882,6 +886,7 @@ namespace RTC
 		public bool InvertLimiter { get; set; }
 
 		//Don't serialize this
+		//Use both attributes because XMLSerializer wants XmlIgnore and BinarySerializer wants NonSerialized
 		[XmlIgnore, NonSerialized]
 		public BlastUnitWorkingData Working;
 
