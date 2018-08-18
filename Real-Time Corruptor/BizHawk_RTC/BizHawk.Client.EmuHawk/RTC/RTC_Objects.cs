@@ -832,13 +832,20 @@ namespace RTC
 	public class BlastUnitWorkingData
 	{
 		//We Calculate a LastFrame at the beginning of execute
+		[XmlIgnore, NonSerialized]
 		public int LastFrame = -1;
 		//We calculate ExecuteFrameQueued which is the ExecuteFrame + the currentframe that was calculated at the time of it entering the execution pool
+		[XmlIgnore, NonSerialized]
 		public int ExecuteFrameQueued = 0;
+
 		//We use ApplyValue so we don't need to keep re-calculating the tiled value every execute if we don't have to.
+		[XmlIgnore, NonSerialized]
 		public byte[] ApplyValue;
+
 		//The data that has been backed up. This is a list of bytes so if they start backing up at IMMEDIATE, they can have historical backups
+		[XmlIgnore, NonSerialized]
 		public LinkedList<byte[]> StoreData;
+
 	}
 
 	[Serializable]
@@ -874,6 +881,8 @@ namespace RTC
 		public string LimiterListHash { get; set; }
 		public bool InvertLimiter { get; set; }
 
+		//Don't serialize this
+		[XmlIgnore, NonSerialized]
 		public BlastUnitWorkingData Working;
 
 

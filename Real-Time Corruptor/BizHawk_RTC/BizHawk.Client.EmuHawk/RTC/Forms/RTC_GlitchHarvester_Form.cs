@@ -1143,9 +1143,9 @@ namespace RTC
 
 				File.Move(tempFilename, Filename);
 			}
-			catch
+			catch(Exception ex)
 			{
-				MessageBox.Show("The Savestate Keys file could not be saved");
+				MessageBox.Show("The Savestate Keys file could not be saved\n\n" + ex);
 				return;
 			}
 		}
@@ -1187,9 +1187,9 @@ namespace RTC
 					fs.Close();
 				}
 			}
-			catch
+			catch(Exception ex)
 			{
-				MessageBox.Show("The Savestate Keys file could not be loaded");
+				MessageBox.Show("The Savestate Keys file could not be loaded\n\n" + ex);
 				return;
 			}
 
