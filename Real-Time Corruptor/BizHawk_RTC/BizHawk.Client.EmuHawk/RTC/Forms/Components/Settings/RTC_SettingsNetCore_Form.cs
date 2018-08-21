@@ -20,8 +20,6 @@ namespace RTC
 		public RTC_SettingsNetCore_Form()
 		{
 			InitializeComponent();
-
-			this.undockedSizable = false;
 		}
 
 		private void cbCrashSoundEffect_SelectedIndexChanged(object sender, EventArgs e)

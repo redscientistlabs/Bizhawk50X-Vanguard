@@ -289,7 +289,7 @@ namespace RTC
 			}
 
 			coreForm = new RTC_Core_Form();
-			ecForm = new RTC_EngineConfig_Form();
+			
 			cecForm = new RTC_CustomEngineConfig_Form();
 			spForm = new RTC_StockpilePlayer_Form();
 			ghForm = new RTC_GlitchHarvester_Form();
@@ -302,14 +302,15 @@ namespace RTC
 			beForm = new RTC_BlastEditor_Form();
 			bgForm = new RTC_BlastGenerator_Form();
 
-			vmdPoolForm = new RTC_VmdPool_Form();
-			vmdGenForm = new RTC_VmdGen_Form();
-			vmdActForm = new RTC_VmdAct_Form();
-			vmdNoToolForm = new RTC_VmdNoTool_Form();
 
 			gpForm = new RTC_GeneralParameters_Form();
 			mdForm = new RTC_MemoryDomains_Form();
 			ceForm = new RTC_CorruptionEngine_Form();
+			vmdPoolForm = new RTC_VmdPool_Form();
+			vmdGenForm = new RTC_VmdGen_Form();
+			vmdActForm = new RTC_VmdAct_Form();
+			vmdNoToolForm = new RTC_VmdNoTool_Form();
+			ecForm = new RTC_EngineConfig_Form();
 
 			saForm = new RTC_SettingsAestethics_Form();
 			sgForm = new RTC_SettingsGeneral_Form();

@@ -40,7 +40,7 @@
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
             this.Name = "RTC_VmdNoTool_Form";
             this.Tag = "color:dark";
-            this.Text = "RTC_VmdNoTool_Form";
+            this.Text = "No Tool Selected";
             this.ResumeLayout(false);
 
         }

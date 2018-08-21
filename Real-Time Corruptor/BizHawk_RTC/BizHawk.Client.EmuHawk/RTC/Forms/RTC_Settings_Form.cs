@@ -23,6 +23,7 @@ namespace RTC
 				RTC_Core.sncForm,
 				RTC_Core.saForm,
 			});
+			lbForm.popoutAllowed = false;
 
 			lbForm.AnchorToPanel(pnListBoxForm);
 		}

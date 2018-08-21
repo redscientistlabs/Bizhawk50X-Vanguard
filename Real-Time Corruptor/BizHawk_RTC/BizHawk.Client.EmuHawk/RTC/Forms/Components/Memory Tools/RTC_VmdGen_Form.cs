@@ -1,4 +1,5 @@
 ﻿using System;
+using System.ComponentModel;
 using System.Data;
 using System.Drawing;
 using System.Globalization;
@@ -185,7 +186,15 @@ namespace RTC
 
 			//send to vmd pool menu
 			RTC_Core.vmdPoolForm.RefreshVMDs();
-			RTC_Core.ecForm.cbMemoryDomainTool.SelectedIndex = 1;
+
+			//Selects back the VMD Pool menu
+			foreach(var item in RTC_Core.ecForm.mtForm.cbSelectBox.Items)
+				if(((dynamic)item).value is RTC_VmdPool_Form)
+				{
+					RTC_Core.ecForm.mtForm.cbSelectBox.SelectedItem = item;
+					break;
+				}
+
 
 			return true;
 		}

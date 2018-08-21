@@ -30,6 +30,8 @@
         {
             this.lbComponentForms = new System.Windows.Forms.ListBox();
             this.pnTargetComponentForm = new System.Windows.Forms.Panel();
+            this.label8 = new System.Windows.Forms.Label();
+            this.pnTargetComponentForm.SuspendLayout();
             this.SuspendLayout();
             // 
             // lbComponentForms
@@ -57,10 +59,24 @@
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.pnTargetComponentForm.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
+            this.pnTargetComponentForm.Controls.Add(this.label8);
             this.pnTargetComponentForm.Location = new System.Drawing.Point(198, 14);
             this.pnTargetComponentForm.Name = "pnTargetComponentForm";
             this.pnTargetComponentForm.Size = new System.Drawing.Size(218, 209);
             this.pnTargetComponentForm.TabIndex = 17;
+            this.pnTargetComponentForm.Tag = "color:dark";
+            // 
+            // label8
+            // 
+            this.label8.AutoSize = true;
+            this.label8.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F);
+            this.label8.ForeColor = System.Drawing.Color.Gray;
+            this.label8.Location = new System.Drawing.Point(13, 15);
+            this.label8.Name = "label8";
+            this.label8.Size = new System.Drawing.Size(170, 13);
+            this.label8.TabIndex = 121;
+            this.label8.Tag = "color:normal";
+            this.label8.Text = "Component is detached to window";
             // 
             // RTC_ListBox_Form
             // 
@@ -78,6 +94,8 @@
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.HandleFormClosing);
             this.Load += new System.EventHandler(this.RTC_ListBox_Form_Load);
             this.MouseDown += new System.Windows.Forms.MouseEventHandler(this.HandleMouseDown);
+            this.pnTargetComponentForm.ResumeLayout(false);
+            this.pnTargetComponentForm.PerformLayout();
             this.ResumeLayout(false);
 
         }
@@ -86,5 +104,6 @@
 
 		public System.Windows.Forms.ListBox lbComponentForms;
 		private System.Windows.Forms.Panel pnTargetComponentForm;
+		private System.Windows.Forms.Label label8;
 	}
 }

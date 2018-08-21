@@ -20,7 +20,7 @@ namespace RTC
 		{
 			InitializeComponent();
 
-			this.undockedSizable = false;
+			popoutAllowed = false;
 		}
 
 		private void btnImportKeyBindings_Click(object sender, EventArgs e)

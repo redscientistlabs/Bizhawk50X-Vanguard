@@ -677,6 +677,7 @@ namespace RTC
 		Panel previousPanel = null;
 
 		public bool undockedSizable = true;
+		public bool popoutAllowed = true;
 
 		public void AnchorToPanel(Panel pn)
 		{
@@ -774,7 +775,7 @@ namespace RTC
 				e = new MouseEventArgs(e.Button, e.Clicks, e.X + c.Location.X, e.Y + c.Location.Y, e.Delta);
 			}
 
-			if (e.Button == MouseButtons.Right && (sender as ComponentForm).FormBorderStyle == FormBorderStyle.None)
+			if (popoutAllowed && e.Button == MouseButtons.Right && (sender as ComponentForm).FormBorderStyle == FormBorderStyle.None)
 			{
 				Point locate = new Point(((Control)sender).Location.X + e.Location.X, ((Control)sender).Location.Y + e.Location.Y);
 				ContextMenuStrip columnsMenu = new ContextMenuStrip();

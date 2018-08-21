@@ -18,6 +18,8 @@ namespace RTC
 		public RTC_VmdNoTool_Form()
 		{
 			InitializeComponent();
+
+			popoutAllowed = false;
 		}
 
 		

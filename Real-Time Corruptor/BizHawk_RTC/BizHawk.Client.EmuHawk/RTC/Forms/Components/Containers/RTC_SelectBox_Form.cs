@@ -15,12 +15,30 @@ namespace RTC
 		public new void HandleMouseDown(object s, MouseEventArgs e) => base.HandleMouseDown(s, e);
 		public new void HandleFormClosing(object s, FormClosingEventArgs e) => base.HandleFormClosing(s, e);
 
-		public RTC_SelectBox_Form()
+		ComponentForm[] childForms;
+
+		public RTC_SelectBox_Form(ComponentForm[] _childForms)
 		{
 			InitializeComponent();
 
-			this.undockedSizable = false;
+			childForms = _childForms;
+
+			cbSelectBox.DisplayMember = "text";
+			cbSelectBox.ValueMember = "value";
+
+			foreach (var item in childForms)
+				cbSelectBox.Items.Add(new { text = item.Text, value = item });
+
 		}
-		
+
+		private void cbSelectBox_SelectedIndexChanged(object sender, EventArgs e)
+		{
+			((cbSelectBox.SelectedItem as dynamic).value as ComponentForm)?.AnchorToPanel(pnComponentForm);
+		}
+
+		private void RTC_SelectBox_Form_Load(object sender, EventArgs e)
+		{
+			cbSelectBox.SelectedIndex = 0;
+		}
 	}
 }

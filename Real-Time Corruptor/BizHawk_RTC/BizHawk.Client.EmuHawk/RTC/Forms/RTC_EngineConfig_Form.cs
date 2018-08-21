@@ -11,23 +11,28 @@ namespace RTC
 {
 	public partial class RTC_EngineConfig_Form : Form
 	{
+
+		public RTC_SelectBox_Form mtForm;
 		
 		public RTC_EngineConfig_Form()
 		{
 			InitializeComponent();
 			LoadLists();
-		}
 
-		private void RTC_EC_Form_Load(object sender, EventArgs e)
-		{
+			mtForm = new RTC_SelectBox_Form(new ComponentForm[] {
+				RTC_Core.vmdNoToolForm,
+				RTC_Core.vmdPoolForm,
+				RTC_Core.vmdGenForm,
+				RTC_Core.vmdActForm,
+			});
+			mtForm.popoutAllowed = false;
 
 			RTC_Core.gpForm.AnchorToPanel(pnGeneralParameters);
 			RTC_Core.mdForm.AnchorToPanel(pnMemoryDomains);
 			RTC_Core.ceForm.AnchorToPanel(pnCorruptionEngine);
-
-			cbMemoryDomainTool.SelectedIndex = 0;
-
+			mtForm.AnchorToPanel(pnAdvancedMemoryTools);
 		}
+
 
 		private void LoadLists()
 		{
@@ -46,34 +51,10 @@ namespace RTC
 				RTC_Core.ValueListBindingSource.Add(new { Text = _paths[_paths.Length - 2], Value = hashes[i] });
 			}
 		}
-		
+
 		private void cbMemoryDomainTool_SelectedIndexChanged(object sender, EventArgs e)
 		{
-			ComponentForm component = null;
-
-			switch (cbMemoryDomainTool.SelectedItem.ToString())
-			{
-				case "Virtual Memory Domain Pool":
-					component = RTC_Core.vmdPoolForm;
-					break;
-				case "Virtual Memory Domain Generator":
-					component = RTC_Core.vmdGenForm;
-					break;
-				case "ActiveTable Generator":
-					component = RTC_Core.vmdActForm;
-					break;
-
-
-				case "No Tool Selected":
-				default:
-					component = RTC_Core.vmdNoToolForm;
-					break;
-			}
-
-			component?.AnchorToPanel(pnAdvancedTool);
 
 		}
-
-
 	}
 }

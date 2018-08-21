@@ -32,10 +32,7 @@
             this.pnGeneralParameters = new System.Windows.Forms.Panel();
             this.label1 = new System.Windows.Forms.Label();
             this.label5 = new System.Windows.Forms.Label();
-            this.pnMemoryTargetting = new System.Windows.Forms.Panel();
-            this.pnAdvancedTool = new System.Windows.Forms.Panel();
-            this.label8 = new System.Windows.Forms.Label();
-            this.cbMemoryDomainTool = new System.Windows.Forms.ComboBox();
+            this.pnAdvancedMemoryTools = new System.Windows.Forms.Panel();
             this.pnCorruptionEngine = new System.Windows.Forms.Panel();
             this.label7 = new System.Windows.Forms.Label();
             this.label11 = new System.Windows.Forms.Label();
@@ -47,9 +44,10 @@
             this.label6 = new System.Windows.Forms.Label();
             this.gbDomainsUnavailable = new System.Windows.Forms.GroupBox();
             this.label22 = new System.Windows.Forms.Label();
+            this.pnMemoryTools = new System.Windows.Forms.Panel();
+            this.label8 = new System.Windows.Forms.Label();
             this.pnGeneralParameters.SuspendLayout();
-            this.pnMemoryTargetting.SuspendLayout();
-            this.pnAdvancedTool.SuspendLayout();
+            this.pnAdvancedMemoryTools.SuspendLayout();
             this.pnCorruptionEngine.SuspendLayout();
             this.pnMemoryDomains.SuspendLayout();
             this.groupBox1.SuspendLayout();
@@ -89,59 +87,15 @@
             this.label5.TabIndex = 118;
             this.label5.Text = "General Parameters";
             // 
-            // pnMemoryTargetting
+            // pnAdvancedMemoryTools
             // 
-            this.pnMemoryTargetting.BackColor = System.Drawing.Color.Gray;
-            this.pnMemoryTargetting.Controls.Add(this.pnAdvancedTool);
-            this.pnMemoryTargetting.Controls.Add(this.cbMemoryDomainTool);
-            this.pnMemoryTargetting.Location = new System.Drawing.Point(227, 212);
-            this.pnMemoryTargetting.Name = "pnMemoryTargetting";
-            this.pnMemoryTargetting.Size = new System.Drawing.Size(413, 291);
-            this.pnMemoryTargetting.TabIndex = 121;
-            this.pnMemoryTargetting.Tag = "color:normal";
-            // 
-            // pnAdvancedTool
-            // 
-            this.pnAdvancedTool.BackColor = System.Drawing.Color.Gray;
-            this.pnAdvancedTool.Controls.Add(this.label8);
-            this.pnAdvancedTool.Location = new System.Drawing.Point(11, 32);
-            this.pnAdvancedTool.Name = "pnAdvancedTool";
-            this.pnAdvancedTool.Size = new System.Drawing.Size(390, 250);
-            this.pnAdvancedTool.TabIndex = 115;
-            this.pnAdvancedTool.Tag = "color:dark";
-            // 
-            // label8
-            // 
-            this.label8.AutoSize = true;
-            this.label8.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F);
-            this.label8.ForeColor = System.Drawing.Color.Gray;
-            this.label8.Location = new System.Drawing.Point(8, 8);
-            this.label8.Name = "label8";
-            this.label8.Size = new System.Drawing.Size(170, 13);
-            this.label8.TabIndex = 120;
-            this.label8.Tag = "color:normal";
-            this.label8.Text = "Component is detached to window";
-            // 
-            // cbMemoryDomainTool
-            // 
-            this.cbMemoryDomainTool.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
-            this.cbMemoryDomainTool.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.cbMemoryDomainTool.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.cbMemoryDomainTool.Font = new System.Drawing.Font("Segoe UI", 8F);
-            this.cbMemoryDomainTool.ForeColor = System.Drawing.Color.White;
-            this.cbMemoryDomainTool.FormattingEnabled = true;
-            this.cbMemoryDomainTool.Items.AddRange(new object[] {
-            "No Tool Selected",
-            "Virtual Memory Domain Pool",
-            "Virtual Memory Domain Generator",
-            "ActiveTable Generator"});
-            this.cbMemoryDomainTool.Location = new System.Drawing.Point(11, 11);
-            this.cbMemoryDomainTool.Name = "cbMemoryDomainTool";
-            this.cbMemoryDomainTool.Size = new System.Drawing.Size(390, 21);
-            this.cbMemoryDomainTool.TabIndex = 114;
-            this.cbMemoryDomainTool.TabStop = false;
-            this.cbMemoryDomainTool.Tag = "color:dark";
-            this.cbMemoryDomainTool.SelectedIndexChanged += new System.EventHandler(this.cbMemoryDomainTool_SelectedIndexChanged);
+            this.pnAdvancedMemoryTools.BackColor = System.Drawing.Color.Gray;
+            this.pnAdvancedMemoryTools.Controls.Add(this.label8);
+            this.pnAdvancedMemoryTools.Location = new System.Drawing.Point(227, 212);
+            this.pnAdvancedMemoryTools.Name = "pnAdvancedMemoryTools";
+            this.pnAdvancedMemoryTools.Size = new System.Drawing.Size(413, 291);
+            this.pnAdvancedMemoryTools.TabIndex = 121;
+            this.pnAdvancedMemoryTools.Tag = "color:normal";
             // 
             // pnCorruptionEngine
             // 
@@ -266,6 +220,27 @@
             this.label22.Text = "Memory Domains unavailable with\n current engine";
             this.label22.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
+            // pnMemoryTools
+            // 
+            this.pnMemoryTools.BackColor = System.Drawing.Color.Gray;
+            this.pnMemoryTools.Location = new System.Drawing.Point(227, 212);
+            this.pnMemoryTools.Name = "pnMemoryTools";
+            this.pnMemoryTools.Size = new System.Drawing.Size(413, 291);
+            this.pnMemoryTools.TabIndex = 121;
+            this.pnMemoryTools.Tag = "color:normal";
+            // 
+            // label8
+            // 
+            this.label8.AutoSize = true;
+            this.label8.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F);
+            this.label8.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
+            this.label8.Location = new System.Drawing.Point(10, 11);
+            this.label8.Name = "label8";
+            this.label8.Size = new System.Drawing.Size(170, 13);
+            this.label8.TabIndex = 122;
+            this.label8.Tag = "color:dark";
+            this.label8.Text = "Component is detached to window";
+            // 
             // RTC_EngineConfig_Form
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -277,7 +252,7 @@
             this.Controls.Add(this.label2);
             this.Controls.Add(this.pnMemoryDomains);
             this.Controls.Add(this.label5);
-            this.Controls.Add(this.pnMemoryTargetting);
+            this.Controls.Add(this.pnAdvancedMemoryTools);
             this.Controls.Add(this.pnCorruptionEngine);
             this.Controls.Add(this.label11);
             this.Controls.Add(this.gbDomainsUnavailable);
@@ -288,12 +263,10 @@
             this.Name = "RTC_EngineConfig_Form";
             this.Tag = "color:dark";
             this.Text = "RTC : Engine Config";
-            this.Load += new System.EventHandler(this.RTC_EC_Form_Load);
             this.pnGeneralParameters.ResumeLayout(false);
             this.pnGeneralParameters.PerformLayout();
-            this.pnMemoryTargetting.ResumeLayout(false);
-            this.pnAdvancedTool.ResumeLayout(false);
-            this.pnAdvancedTool.PerformLayout();
+            this.pnAdvancedMemoryTools.ResumeLayout(false);
+            this.pnAdvancedMemoryTools.PerformLayout();
             this.pnCorruptionEngine.ResumeLayout(false);
             this.pnCorruptionEngine.PerformLayout();
             this.pnMemoryDomains.ResumeLayout(false);
@@ -309,9 +282,6 @@
 
         #endregion
         private System.Windows.Forms.Label label5;
-        private System.Windows.Forms.Panel pnMemoryTargetting;
-        private System.Windows.Forms.Panel pnAdvancedTool;
-        public System.Windows.Forms.ComboBox cbMemoryDomainTool;
         private System.Windows.Forms.Panel pnCorruptionEngine;
         private System.Windows.Forms.Label label11;
         private System.Windows.Forms.Label label2;
@@ -326,5 +296,7 @@
 		private System.Windows.Forms.Label label8;
 		private System.Windows.Forms.Label label7;
 		private System.Windows.Forms.Label label4;
+		private System.Windows.Forms.Panel pnAdvancedMemoryTools;
+		private System.Windows.Forms.Panel pnMemoryTools;
 	}
 }
