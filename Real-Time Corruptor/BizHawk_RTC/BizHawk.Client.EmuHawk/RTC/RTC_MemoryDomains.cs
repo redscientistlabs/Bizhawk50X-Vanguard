@@ -623,15 +623,15 @@ namespace RTC
 		public string GenDomain { get; set; }
 		public bool BigEndian { get; set; }
 		public int WordSize { get; set; }
-		public int PointerSpacer { get; set; }
+		public long PointerSpacer { get; set; }
 
-		public int Padding { get; set; }
+		public long Padding { get; set; }
 
-		public List<int> addSingles = new List<int>();
-		public List<int> removeSingles = new List<int>();
+		public List<long> addSingles = new List<long>();
+		public List<long> removeSingles = new List<long>();
 
-		public List<int[]> addRanges = new List<int[]>();
-		public List<int[]> removeRanges = new List<int[]>();
+		public List<long[]> addRanges = new List<long[]>();
+		public List<long[]> removeRanges = new List<long[]>();
 
 		public BlastLayer SuppliedBlastLayer = null;
 
@@ -675,12 +675,12 @@ namespace RTC
 				VMD.PointerAddresses.Add(i);
 			}
 
-			foreach (int[] range in addRanges)
+			foreach (long[] range in addRanges)
 			{
-				int start = range[0];
-				int end = range[1];
+				long start = range[0];
+				long end = range[1];
 
-				for (int i = start; i < end; i++)
+				for (long i = start; i < end; i++)
 				{
 					if (!IsAddressInRanges(i, removeSingles, removeRanges))
 						if (PointerSpacer == 1 || addressCount % PointerSpacer == 0)
@@ -693,7 +693,7 @@ namespace RTC
 				}
 			}
 
-			foreach (int single in addSingles)
+			foreach (long single in addSingles)
 			{
 				//VMD.MemoryPointers.Add(new Tuple<string, long>(Domain, single));
 				VMD.PointerDomains.Add(GenDomain);
@@ -704,15 +704,15 @@ namespace RTC
 			return VMD;
 		}
 
-		public bool IsAddressInRanges(int address, List<int> singles, List<int[]> ranges)
+		public bool IsAddressInRanges(long address, List<long> singles, List<long[]> ranges)
 		{
 			if (singles.Contains(address))
 				return true;
 
-			foreach (int[] range in ranges)
+			foreach (long[] range in ranges)
 			{
-				int start = range[0];
-				int end = range[1];
+				long start = range[0];
+				long end = range[1];
 
 				if (address >= start && address < end)
 					return true;

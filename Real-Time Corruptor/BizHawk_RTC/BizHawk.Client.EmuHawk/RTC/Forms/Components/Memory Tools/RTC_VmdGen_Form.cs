@@ -51,25 +51,19 @@ namespace RTC
 			currentDomainSize = Convert.ToInt64(mi.Size);
 		}
 
-		public int SafeStringToInt(string input)
+		public long SafeStringToLong(string input)
 		{
 			if (input.ToUpper().Contains("0X"))
-				return int.Parse(input.Substring(2), NumberStyles.HexNumber);
+				return long.Parse(input.Substring(2), NumberStyles.HexNumber);
 			else
-				return int.Parse(input, NumberStyles.HexNumber);
+				return long.Parse(input, NumberStyles.HexNumber);
 		}
 
 		private void btnGenerateVMD_Click(object sender, EventArgs e) => GenerateVMD();
 
 		private bool GenerateVMD()
 		{
-			//Verify they want to continue if the domain is larger than 32MB
-			if (currentDomainSize > 0x2000000)
-			{
-				DialogResult result = MessageBox.Show("The domain you have selected is larger than 32MB\n The domain size is " + (currentDomainSize / 1024) + "MB.\n Are you sure you want to continue?", "Large Domain Detected", MessageBoxButtons.YesNo);
-				if (result == DialogResult.No)
-					return false;
-			}
+
 
 			if (string.IsNullOrWhiteSpace(cbSelectedMemoryDomain.SelectedItem?.ToString()) || !RTC_MemoryDomains.MemoryInterfaces.ContainsKey(cbSelectedMemoryDomain.SelectedItem.ToString()))
 			{
@@ -99,13 +93,13 @@ namespace RTC
 			proto.Padding = 0;
 
 			if (cbUsePointerSpacer.Checked && nmPointerSpacer.Value > 1)
-				proto.PointerSpacer = Convert.ToInt32(nmPointerSpacer.Value);
+				proto.PointerSpacer = Convert.ToInt64(nmPointerSpacer.Value);
 			else
 				proto.PointerSpacer = 1;
 
 			if (cbUsePadding.Checked && nmPadding.Value > 0)
 			{
-				proto.Padding = Convert.ToInt32(nmPadding.Value);
+				proto.Padding = Convert.ToInt64(nmPadding.Value);
 			}
 
 			foreach (string line in tbCustomAddresses.Lines)
@@ -127,20 +121,20 @@ namespace RTC
 
 				if (lineParts.Length > 1)
 				{
-					int start = SafeStringToInt(lineParts[0]);
-					int end = SafeStringToInt(lineParts[1]);
+					long start = SafeStringToLong(lineParts[0]);
+					long end = SafeStringToLong(lineParts[1]);
 
 					if (end >= currentDomainSize)
-						end = Convert.ToInt32(currentDomainSize - 1);
+						end = Convert.ToInt64(currentDomainSize - 1);
 
 					if (remove)
-						proto.removeRanges.Add(new int[] {start, end});
+						proto.removeRanges.Add(new long[] {start, end});
 					else
-						proto.addRanges.Add(new int[] { start, end });
+						proto.addRanges.Add(new long[] { start, end });
 				}
 				else
 				{
-					int address = SafeStringToInt(lineParts[0]);
+					long address = SafeStringToLong(lineParts[0]);
 
 					if (address < currentDomainSize)
 					{
@@ -156,7 +150,7 @@ namespace RTC
 			if (proto.addRanges.Count == 0 && proto.addSingles.Count == 0)
 			{
 				//No add range was specified, use entire domain
-				proto.addRanges.Add(new int[] { 0, (currentDomainSize > int.MaxValue ? int.MaxValue : Convert.ToInt32(currentDomainSize)) });
+				proto.addRanges.Add(new long[] { 0, (currentDomainSize > long.MaxValue ? long.MaxValue : Convert.ToInt64(currentDomainSize)) });
 			}
 
 			VMD = proto.Generate();
