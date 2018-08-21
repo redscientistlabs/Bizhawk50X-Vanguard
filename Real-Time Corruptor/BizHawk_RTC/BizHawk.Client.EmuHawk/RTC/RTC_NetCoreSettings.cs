@@ -8,7 +8,7 @@ namespace RTC
 
 		public static void ChangeNetCoreSettings(string setting)
 		{
-			if (RTC_Core.isStandalone && RTC_Core.sForm.cbNetCoreCommandTimeout.SelectedItem.ToString() == setting)
+			if (RTC_Core.isStandalone && RTC_Core.sncForm.cbNetCoreCommandTimeout.SelectedItem.ToString() == setting)
 				return;
 
 			switch (setting)

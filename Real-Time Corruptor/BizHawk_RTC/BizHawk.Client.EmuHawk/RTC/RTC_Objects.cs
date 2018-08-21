@@ -1053,7 +1053,6 @@ namespace RTC
 					}
 				}
 
-				byte[] values;
 
 				switch (Source)
 				{
@@ -1199,7 +1198,7 @@ namespace RTC
 			}
 		}
 
-		public string ToString()
+		public override string ToString()
 		{
 			string enabledString = "[ ] BlastByte -> ";
 			if (IsEnabled)

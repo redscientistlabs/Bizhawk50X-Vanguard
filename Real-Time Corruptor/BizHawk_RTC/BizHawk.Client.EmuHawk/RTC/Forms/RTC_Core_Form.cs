@@ -151,6 +151,7 @@ namespace RTC
 			if (RTC_Core.isStandalone && !RTC_Core.coreForm.cbUseGameProtection.Checked)
 				RTC_Core.coreForm.cbUseGameProtection.Checked = true;
 
+
 			if (useTemplate)
 			{
 				//Put Console templates HERE

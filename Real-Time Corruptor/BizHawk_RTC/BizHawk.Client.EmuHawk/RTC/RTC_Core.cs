@@ -74,6 +74,8 @@ namespace RTC
 		//RTC Main Forms
 		public static Color generalColor = Color.LightSteelBlue;
 
+
+		
 		public static RTC_Core_Form coreForm = null;
 		public static RTC_EngineConfig_Form ecForm = null;
 		public static RTC_CustomEngineConfig_Form cecForm = null;
@@ -102,6 +104,11 @@ namespace RTC
 		public static RTC_MemoryDomains_Form mdForm = null;
 		public static RTC_GeneralParameters_Form gpForm = null;
 		public static RTC_CorruptionEngine_Form ceForm = null;
+		
+		public static RTC_SettingsAestethics_Form saForm = null;
+		public static RTC_SettingsGeneral_Form sgForm = null;
+		public static RTC_SettingsNetCore_Form sncForm = null;
+
 
 		//All RTC forms
 		public static Form[] allRtcForms
@@ -133,6 +140,10 @@ namespace RTC
 						ceForm,
 
 						standaloneForm,
+
+						saForm,
+						sgForm,
+						sncForm,
 					};
 			}
 		}
@@ -282,7 +293,7 @@ namespace RTC
 			cecForm = new RTC_CustomEngineConfig_Form();
 			spForm = new RTC_StockpilePlayer_Form();
 			ghForm = new RTC_GlitchHarvester_Form();
-			sForm = new RTC_Settings_Form();
+			
 			hotkeyForm = new RTC_HotkeyConfig_Form();
 
 			multiForm = new RTC_Multiplayer_Form();
@@ -299,6 +310,11 @@ namespace RTC
 			gpForm = new RTC_GeneralParameters_Form();
 			mdForm = new RTC_MemoryDomains_Form();
 			ceForm = new RTC_CorruptionEngine_Form();
+
+			saForm = new RTC_SettingsAestethics_Form();
+			sgForm = new RTC_SettingsGeneral_Form();
+			sncForm = new RTC_SettingsNetCore_Form();
+			sForm = new RTC_Settings_Form();
 
 			standaloneForm = _standaloneForm;
 
@@ -332,9 +348,9 @@ namespace RTC
 
 			//Loading RTC Params
 			RTC_Params.LoadRTCColor();
-			RTC_Core.sForm.cbDisableBizhawkOSD.Checked = !RTC_Params.IsParamSet("ENABLE_BIZHAWK_OSD");
-			RTC_Core.sForm.cbAllowCrossCoreCorruption.Checked = RTC_Params.IsParamSet("ALLOW_CROSS_CORE_CORRUPTION");
-			RTC_Core.sForm.cbDontCleanAtQuit.Checked = RTC_Params.IsParamSet("DONT_CLEAN_SAVESTATES_AT_QUIT");
+			RTC_Core.sgForm.cbDisableBizhawkOSD.Checked = !RTC_Params.IsParamSet("ENABLE_BIZHAWK_OSD");
+			RTC_Core.sgForm.cbAllowCrossCoreCorruption.Checked = RTC_Params.IsParamSet("ALLOW_CROSS_CORE_CORRUPTION");
+			RTC_Core.sgForm.cbDontCleanAtQuit.Checked = RTC_Params.IsParamSet("DONT_CLEAN_SAVESTATES_AT_QUIT");
 
 			//Load and initialize Hotkeys
 			//RTC_Hotkeys.InitializeHotkeySystem();

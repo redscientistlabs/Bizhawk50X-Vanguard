@@ -19,9 +19,9 @@ namespace RTC
 			if (RTC_Params.IsParamSet("CRASHSOUND"))
 				crashSound = Convert.ToInt32(RTC_Params.ReadParam("CRASHSOUND"));
 
-			RTC_Core.sForm.cbCrashSoundEffect.SelectedIndex = crashSound;
+			RTC_Core.sncForm.cbCrashSoundEffect.SelectedIndex = crashSound;
 
-			RTC_Core.sForm.cbNetCoreCommandTimeout.SelectedIndex = 0;
+			RTC_Core.sncForm.cbNetCoreCommandTimeout.SelectedIndex = 0;
 
 			if (File.Exists(RTC_Core.bizhawkDir + "\\WGH\\WindowsGlitchHarvester.exe"))
 			{

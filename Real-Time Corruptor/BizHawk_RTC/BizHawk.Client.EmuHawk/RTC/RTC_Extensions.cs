@@ -634,6 +634,42 @@ namespace RTC
 
 	}
 
+	public interface ISF<T>
+	{
+		//Interface for Singleton Form
+		T Me();
+		T NewMe();
+	}
+
+	public interface IColorable
+	{
+
+	}
+
+
+	//Static singleton manager
+	//Call or create a singleton using class type
+	public static class SIN
+	{
+		static Dictionary<Type, object> instances = new Dictionary<Type, object>();
+
+		public static T GLE<T>()
+		{
+			Type typ = typeof(T);
+
+			if (!instances.ContainsKey(typ))
+				instances[typ] = Activator.CreateInstance(typ);
+
+			return (T)instances[typ];
+		}
+
+		public static void SET<T>(T newTyp)
+		{
+			Type typ = typeof(T);
+			instances[typ] = newTyp;
+		}
+	}
+
 	public class ComponentForm : Form
 	{
 
@@ -758,6 +794,11 @@ namespace RTC
 				this.RestoreToPreviousPanel();
 				return;
 			}
+		}
+
+		public sealed override string ToString()
+		{
+			return Text;
 		}
 	}
 

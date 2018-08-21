@@ -110,12 +110,12 @@ namespace RTC
 			var token = Guid.NewGuid();
 			if (RTC_Core.isStandalone)
 			{
-				guid2LastAggressivity.Add(token, RTC_Core.sForm.cbNetCoreCommandTimeout.SelectedIndex);
+				guid2LastAggressivity.Add(token, RTC_Core.sncForm.cbNetCoreCommandTimeout.SelectedIndex);
 
 				if (targetAggressiveness == "DISABLED")
-					RTC_Core.sForm.cbNetCoreCommandTimeout.SelectedIndex = RTC_Core.sForm.cbNetCoreCommandTimeout.Items.Count - 1;
+					RTC_Core.sncForm.cbNetCoreCommandTimeout.SelectedIndex = RTC_Core.sncForm.cbNetCoreCommandTimeout.Items.Count - 1;
 				else
-					RTC_Core.sForm.cbNetCoreCommandTimeout.SelectedIndex = RTC_Core.sForm.cbNetCoreCommandTimeout.Items.Count - 2;
+					RTC_Core.sncForm.cbNetCoreCommandTimeout.SelectedIndex = RTC_Core.sncForm.cbNetCoreCommandTimeout.Items.Count - 2;
 			}
 			return token;
 		}
@@ -129,7 +129,7 @@ namespace RTC
 				if (operationGuid == null || !(guid2LastAggressivity.ContainsKey(operationGuid)))
 					return;
 
-				RTC_Core.sForm.cbNetCoreCommandTimeout.SelectedIndex = guid2LastAggressivity[operationGuid];
+				RTC_Core.sncForm.cbNetCoreCommandTimeout.SelectedIndex = guid2LastAggressivity[operationGuid];
 				guid2LastAggressivity.Remove(operationGuid);
 			}
 		}
@@ -140,7 +140,7 @@ namespace RTC
 
 			if (RTC_Core.isStandalone)
 			{
-				RTC_Core.sForm.cbNetCoreCommandTimeout.SelectedIndex = 0;
+				RTC_Core.sncForm.cbNetCoreCommandTimeout.SelectedIndex = 0;
 				guid2LastAggressivity.Clear();
 
 			}
@@ -704,7 +704,7 @@ namespace RTC
 						break;
 
 					case CommandType.GETAGGRESSIVENESS:
-						string setting = RTC_Core.sForm.cbNetCoreCommandTimeout.SelectedItem.ToString().ToUpper();
+						string setting = RTC_Core.sncForm.cbNetCoreCommandTimeout.SelectedItem.ToString().ToUpper();
 						RTC_Core.SendCommandToBizhawk(new RTC_Command(CommandType.AGGRESSIVENESS) { objectValue = setting });
 						break;
 
