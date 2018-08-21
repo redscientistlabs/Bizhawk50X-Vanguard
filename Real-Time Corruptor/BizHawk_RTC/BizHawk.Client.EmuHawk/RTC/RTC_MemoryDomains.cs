@@ -718,7 +718,7 @@ namespace RTC
 				int start = range[0];
 				int end = range[1];
 
-				if (address >= start && address < end)
+				if (address >= start && address < end && address >= 0)
 					return true;
 			}
 

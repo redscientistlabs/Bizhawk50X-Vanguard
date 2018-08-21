@@ -125,8 +125,12 @@ namespace RTC
 					int start = SafeStringToInt(lineParts[0]);
 					int end = SafeStringToInt(lineParts[1]);
 
-					if (end >= currentDomainSize)
+					//int.parse can return a negative so we need to ensure it's within range
+					if (end >= currentDomainSize || end < 0)
 						end = Convert.ToInt32(currentDomainSize - 1);
+					if (start < 0)
+						start = 0;
+
 
 					if (remove)
 						proto.removeRanges.Add(new int[] {start, end});
@@ -137,7 +141,8 @@ namespace RTC
 				{
 					int address = SafeStringToInt(lineParts[0]);
 
-					if (address < currentDomainSize)
+					//int.parse can return a negative number if they go too large. We need to check both 
+					if (address < currentDomainSize && address >= 0)
 					{
 						if (remove)
 							proto.removeSingles.Add(address);

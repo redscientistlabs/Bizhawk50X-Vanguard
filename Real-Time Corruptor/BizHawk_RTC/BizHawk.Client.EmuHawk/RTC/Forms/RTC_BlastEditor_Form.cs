@@ -378,27 +378,32 @@ namespace RTC
 
 		private void btnSendToStash_Click(object sender, EventArgs e)
 		{
-			toggleButtons(false);
-			if (sk.ParentKey == null)
+			try
 			{
-				MessageBox.Show("There's no savestate associated with this Stashkey!\nAssociate one in the menu to send this to the stash.");
-				return;
+				toggleButtons(false);
+				if (sk.ParentKey == null)
+				{
+					MessageBox.Show(
+						"There's no savestate associated with this Stashkey!\nAssociate one in the menu to send this to the stash.");
+					return;
+				}
+
+				StashKey newSk = (StashKey)sk.Clone();
+				//newSk.Key = RTC_Core.GetRandomKey();
+				//newSk.Alias = null;
+
+				RTC_StockpileManager.StashHistory.Add(newSk);
+
+				RTC_Core.ghForm.RefreshStashHistory();
+				RTC_Core.ghForm.dgvStockpile.ClearSelection();
+				RTC_Core.ghForm.lbStashHistory.ClearSelected();
+
+				RTC_Core.ghForm.DontLoadSelectedStash = true;
+				RTC_Core.ghForm.lbStashHistory.SelectedIndex = RTC_Core.ghForm.lbStashHistory.Items.Count - 1;
+				RTC_StockpileManager.currentStashkey =
+					RTC_StockpileManager.StashHistory[RTC_Core.ghForm.lbStashHistory.SelectedIndex];
+
 			}
-			StashKey newSk = (StashKey)sk.Clone();
-			//newSk.Key = RTC_Core.GetRandomKey();
-			//newSk.Alias = null;
-			
-			RTC_StockpileManager.StashHistory.Add(newSk);
-
-			RTC_Core.ghForm.RefreshStashHistory();
-			RTC_Core.ghForm.dgvStockpile.ClearSelection();
-			RTC_Core.ghForm.lbStashHistory.ClearSelected();
-
-			RTC_Core.ghForm.DontLoadSelectedStash = true;   
-			RTC_Core.ghForm.lbStashHistory.SelectedIndex = RTC_Core.ghForm.lbStashHistory.Items.Count - 1;
-			RTC_StockpileManager.currentStashkey = RTC_StockpileManager.StashHistory[RTC_Core.ghForm.lbStashHistory.SelectedIndex];
-
-
 			catch (Exception ex)
 			{
 				MessageBox.Show(ex.ToString());
@@ -412,12 +417,15 @@ namespace RTC
 
 		private void btnDisableEverything_Click(object sender, EventArgs e)
 		{
-			toggleButtons(false);
-			dgvBlastLayer.ClearSelection();
-			foreach (BlastUnit bu in sk.BlastLayer.Layer)
+			try
 			{
-				if (!(bool)bu2RowDico[bu].Cells["dgvBlastUnitLocked"].Value)
-					bu2RowDico[bu].Cells["dgvBlastEnabled"].Value = false;
+				toggleButtons(false);
+				dgvBlastLayer.ClearSelection();
+				foreach (BlastUnit bu in sk.BlastLayer.Layer)
+				{
+					if (!(bool)bu2RowDico[bu].Cells["dgvBlastUnitLocked"].Value)
+						bu2RowDico[bu].Cells["dgvBlastEnabled"].Value = false;
+				}
 			}
 			catch (Exception ex)
 			{
@@ -431,12 +439,15 @@ namespace RTC
 
 		private void btnEnableEverything_Click(object sender, EventArgs e)
 		{
-			toggleButtons(false);
-			dgvBlastLayer.ClearSelection();
-			foreach (BlastUnit bu in sk.BlastLayer.Layer)
+			try
 			{
-				if (!(bool)bu2RowDico[bu].Cells["dgvBlastUnitLocked"].Value)
-					bu2RowDico[bu].Cells["dgvBlastEnabled"].Value = true;
+				toggleButtons(false);
+				dgvBlastLayer.ClearSelection();
+				foreach (BlastUnit bu in sk.BlastLayer.Layer)
+				{
+					if (!(bool)bu2RowDico[bu].Cells["dgvBlastUnitLocked"].Value)
+						bu2RowDico[bu].Cells["dgvBlastEnabled"].Value = true;
+				}
 			}
 			catch (Exception ex)
 			{
