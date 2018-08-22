@@ -24,7 +24,7 @@ namespace RTC
 	//TYPE = BLASTUNITTYPE
 	//MODE = GENERATIONMODE
 
-	public partial class RTC_BlastGenerator_Form : Form
+	public partial class RTC_BlastGenerator_Form : Form, IAutoColorize
 	{
 		private enum BlastGeneratorColumn
 		{
@@ -289,22 +289,22 @@ namespace RTC
 
 			if (openedFromBlastEditor)
 			{
-				if (RTC_Core.beForm != null)
+				if (S.GET<RTC_BlastEditor_Form>() != null)
 				{
 					//TODO
-					//	RTC_Core.beForm.ImportBlastLayer(newSk.BlastLayer);
+					//	S.GET<RTC_BlastEditor_Form>().ImportBlastLayer(newSk.BlastLayer);
 				}
 			}
 			else
 			{
 				RTC_StockpileManager.StashHistory.Add(newSk);
-				RTC_Core.ghForm.RefreshStashHistory();
-				RTC_Core.ghForm.dgvStockpile.ClearSelection();
-				RTC_Core.ghForm.lbStashHistory.ClearSelected();
+				S.GET<RTC_GlitchHarvester_Form>().RefreshStashHistory();
+				S.GET<RTC_GlitchHarvester_Form>().dgvStockpile.ClearSelection();
+				S.GET<RTC_GlitchHarvester_Form>().lbStashHistory.ClearSelected();
 
-				RTC_Core.ghForm.DontLoadSelectedStash = true;
-				RTC_Core.ghForm.lbStashHistory.SelectedIndex = RTC_Core.ghForm.lbStashHistory.Items.Count - 1;
-				RTC_StockpileManager.currentStashkey = RTC_StockpileManager.StashHistory[RTC_Core.ghForm.lbStashHistory.SelectedIndex];
+				S.GET<RTC_GlitchHarvester_Form>().DontLoadSelectedStash = true;
+				S.GET<RTC_GlitchHarvester_Form>().lbStashHistory.SelectedIndex = S.GET<RTC_GlitchHarvester_Form>().lbStashHistory.Items.Count - 1;
+				RTC_StockpileManager.currentStashkey = RTC_StockpileManager.StashHistory[S.GET<RTC_GlitchHarvester_Form>().lbStashHistory.SelectedIndex];
 			}
 		}
 
@@ -585,7 +585,7 @@ namespace RTC
 		{
 			try
 			{
-				RTC_Core.mdForm.RefreshDomainsAndKeepSelected();
+				S.GET<RTC_MemoryDomains_Form>().RefreshDomainsAndKeepSelected();
 				domainToMiDico.Clear();
 				domains = RTC_MemoryDomains.MemoryInterfaces.Keys.Concat(RTC_MemoryDomains.VmdPool.Values.Select(it => it.ToString())).ToArray();
 				foreach (string domain in domains)

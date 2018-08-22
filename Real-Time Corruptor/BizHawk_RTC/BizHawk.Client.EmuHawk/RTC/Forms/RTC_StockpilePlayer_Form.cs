@@ -5,7 +5,7 @@ using System.Windows.Forms;
 
 namespace RTC
 {
-	public partial class RTC_StockpilePlayer_Form : Form
+	public partial class RTC_StockpilePlayer_Form : Form, IAutoColorize
 	{
 		public bool DontLoadSelectedStockpile = false;
 		private bool currentlyLoading = false;
@@ -99,7 +99,7 @@ namespace RTC
 
 		private void btnBlastToggle_Click(object sender, EventArgs e)
 		{
-			RTC_Core.ghForm.btnBlastToggle_Click(null, null);
+			S.GET<RTC_GlitchHarvester_Form>().btnBlastToggle_Click(null, null);
 		}
 
 		private void dgvStockpile_MouseDown(object sender, MouseEventArgs e)
@@ -118,9 +118,9 @@ namespace RTC
 				(columnsMenu.Items.Add("Show System Core", null, new EventHandler((ob, ev) => { dgvStockpile.Columns["SystemCore"].Visible ^= true; })) as ToolStripMenuItem).Checked = dgvStockpile.Columns["SystemCore"].Visible;
 				(columnsMenu.Items.Add("Show Note", null, new EventHandler((ob, ev) => { dgvStockpile.Columns["Note"].Visible ^= true; })) as ToolStripMenuItem).Checked = dgvStockpile.Columns["Note"].Visible;
 				columnsMenu.Items.Add(stripSeparator);
-				(columnsMenu.Items.Add("Load on Select", null, new EventHandler((ob, ev) => { RTC_Core.ghForm.cbLoadOnSelect.Checked ^= true; })) as ToolStripMenuItem).Checked = RTC_Core.ghForm.cbLoadOnSelect.Checked;
-				(columnsMenu.Items.Add("Clear Cheats/Freezes on Rewind", null, new EventHandler((ob, ev) => { RTC_Core.ceForm.cbClearCheatsOnRewind.Checked ^= true; })) as ToolStripMenuItem).Checked = RTC_Core.ceForm.cbClearCheatsOnRewind.Checked;
-				(columnsMenu.Items.Add("Clear Pipes on Rewind", null, new EventHandler((ob, ev) => { RTC_Core.ceForm.cbClearPipesOnRewind.Checked ^= true; })) as ToolStripMenuItem).Checked = RTC_Core.ceForm.cbClearPipesOnRewind.Checked;
+				(columnsMenu.Items.Add("Load on Select", null, new EventHandler((ob, ev) => { S.GET<RTC_GlitchHarvester_Form>().cbLoadOnSelect.Checked ^= true; })) as ToolStripMenuItem).Checked = S.GET<RTC_GlitchHarvester_Form>().cbLoadOnSelect.Checked;
+				(columnsMenu.Items.Add("Clear Cheats/Freezes on Rewind", null, new EventHandler((ob, ev) => { S.GET<RTC_CorruptionEngine_Form>().cbClearCheatsOnRewind.Checked ^= true; })) as ToolStripMenuItem).Checked = S.GET<RTC_CorruptionEngine_Form>().cbClearCheatsOnRewind.Checked;
+				(columnsMenu.Items.Add("Clear Pipes on Rewind", null, new EventHandler((ob, ev) => { S.GET<RTC_CorruptionEngine_Form>().cbClearPipesOnRewind.Checked ^= true; })) as ToolStripMenuItem).Checked = S.GET<RTC_CorruptionEngine_Form>().cbClearPipesOnRewind.Checked;
 
 				columnsMenu.Show(this, locate);
 			}
@@ -149,7 +149,7 @@ namespace RTC
 					DontLoadSelectedStockpile = true;
 
 					if (Stockpile.Load(dgvStockpile))
-						RTC_Core.ghForm.dgvStockpile.Rows.Clear();
+						S.GET<RTC_GlitchHarvester_Form>().dgvStockpile.Rows.Clear();
 					dgvStockpile.ClearSelection();
 				}
 				catch (Exception ex)
@@ -228,16 +228,16 @@ namespace RTC
 				if (dgvStockpile.SelectedRows.Count > 0)
 				{
 					//Shut autocorrupt off because people (Vinny) kept turning it on to add to corruptions then forgetting to turn it off
-					RTC_Core.coreForm.AutoCorrupt = false; 
+					S.GET<RTC_Core_Form>().AutoCorrupt = false; 
 
-					RTC_Core.ghForm.rbCorrupt.Checked = true;
+					S.GET<RTC_GlitchHarvester_Form>().rbCorrupt.Checked = true;
 					RTC_StockpileManager.currentStashkey = (dgvStockpile.SelectedRows[0].Cells[0].Value as StashKey);
 					RTC_StockpileManager.ApplyStashkey(RTC_StockpileManager.currentStashkey);
 
-					RTC_Core.ghForm.lbStashHistory.ClearSelected();
-					RTC_Core.ghForm.dgvStockpile.ClearSelection();
+					S.GET<RTC_GlitchHarvester_Form>().lbStashHistory.ClearSelected();
+					S.GET<RTC_GlitchHarvester_Form>().dgvStockpile.ClearSelection();
 
-					RTC_Core.ghForm.IsCorruptionApplied = !(RTC_StockpileManager.currentStashkey.BlastLayer == null || RTC_StockpileManager.currentStashkey.BlastLayer.Layer.Count == 0);
+					S.GET<RTC_GlitchHarvester_Form>().IsCorruptionApplied = !(RTC_StockpileManager.currentStashkey.BlastLayer == null || RTC_StockpileManager.currentStashkey.BlastLayer.Layer.Count == 0);
 				}
 			}
 			finally

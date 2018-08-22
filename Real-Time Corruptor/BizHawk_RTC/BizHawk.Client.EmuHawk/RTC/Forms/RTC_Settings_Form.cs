@@ -9,7 +9,7 @@ using System.Windows.Forms;
 
 namespace RTC
 {
-	public partial class RTC_Settings_Form : Form
+	public partial class RTC_Settings_Form : Form, IAutoColorize
 	{
 
 		RTC_ListBox_Form lbForm;
@@ -19,9 +19,9 @@ namespace RTC
 			InitializeComponent();
 
 			lbForm = new RTC_ListBox_Form(new ComponentForm[]{
-				RTC_Core.sgForm,
-				RTC_Core.sncForm,
-				RTC_Core.saForm,
+				S.GET<RTC_SettingsGeneral_Form>(),
+				S.GET<RTC_SettingsNetCore_Form>(),
+				S.GET<RTC_SettingsAestethics_Form>(),
 			});
 			lbForm.popoutAllowed = false;
 
@@ -41,7 +41,7 @@ namespace RTC
 
 		private void button1_Click(object sender, EventArgs e)
 		{
-			RTC_Core.coreForm.ShowPanelForm(RTC_Core.coreForm.previousForm, false);
+			S.GET<RTC_Core_Form>().ShowPanelForm(S.GET<RTC_Core_Form>().previousForm, false);
 		}
 
 

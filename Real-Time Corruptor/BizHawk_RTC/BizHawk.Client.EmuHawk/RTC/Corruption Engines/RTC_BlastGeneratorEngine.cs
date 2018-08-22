@@ -9,7 +9,7 @@
 
 		public static BlastLayer GetBlastLayer()
 		{
-			return RTC_Core.bgForm.GenerateBlastLayers();
+			return S.GET<RTC_BlastGenerator_Form>().GenerateBlastLayers();
 		}
 	}
 }

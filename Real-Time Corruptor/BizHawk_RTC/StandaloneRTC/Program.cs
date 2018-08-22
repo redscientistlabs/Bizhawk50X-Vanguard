@@ -32,10 +32,10 @@ namespace StandaloneRTC
             Application.EnableVisualStyles();
 			Application.SetCompatibleTextRenderingDefault(false);
 			Application.Run(new Loader(args));
-			//RTC.RTC_Core.coreForm = new RTC.RTC_Form();
+			//RTC.S.GET<RTC.RTC_Core_Form>() = new RTC.RTC_Form();
 			//RTC.RTC_Core.isStandalone = true;
 			//RTC.RTC_Core.Start();
-			//Application.Run(RTC.RTC_Core.coreForm);
+			//Application.Run(RTC.S.GET<RTC.RTC_Core_Form>());
 		}
 	}
 }

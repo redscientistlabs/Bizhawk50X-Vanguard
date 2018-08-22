@@ -9,7 +9,7 @@ using System.Windows.Forms;
 
 namespace RTC
 {
-	public partial class RTC_EngineConfig_Form : Form
+	public partial class RTC_EngineConfig_Form : Form, IAutoColorize
 	{
 
 		public RTC_SelectBox_Form mtForm;
@@ -20,16 +20,16 @@ namespace RTC
 			LoadLists();
 
 			mtForm = new RTC_SelectBox_Form(new ComponentForm[] {
-				RTC_Core.vmdNoToolForm,
-				RTC_Core.vmdPoolForm,
-				RTC_Core.vmdGenForm,
-				RTC_Core.vmdActForm,
+				S.GET<RTC_VmdNoTool_Form>(),
+				S.GET<RTC_VmdPool_Form>(),
+				S.GET<RTC_VmdGen_Form>(),
+				S.GET<RTC_VmdAct_Form>(),
 			});
 			mtForm.popoutAllowed = false;
 
-			RTC_Core.gpForm.AnchorToPanel(pnGeneralParameters);
-			RTC_Core.mdForm.AnchorToPanel(pnMemoryDomains);
-			RTC_Core.ceForm.AnchorToPanel(pnCorruptionEngine);
+			S.GET<RTC_GeneralParameters_Form>().AnchorToPanel(pnGeneralParameters);
+			S.GET<RTC_MemoryDomains_Form>().AnchorToPanel(pnMemoryDomains);
+			S.GET<RTC_CorruptionEngine_Form>().AnchorToPanel(pnCorruptionEngine);
 			mtForm.AnchorToPanel(pnAdvancedMemoryTools);
 		}
 

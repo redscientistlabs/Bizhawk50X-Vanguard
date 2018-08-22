@@ -98,7 +98,7 @@ namespace RTC
 					cmd.stashkey.DeployState();
 					RTC_StockpileManager.LoadState(cmd.stashkey, true);
 
-					if (RTC_Core.multiForm.cbPullStateToGlitchHarvester.Checked)
+					if (S.GET<RTC_Multiplayer_Form>().cbPullStateToGlitchHarvester.Checked)
 					{
 						StashKey sk_PUSHSTATE = RTC_StockpileManager.SaveState(true, cmd.stashkey);
 						sk_PUSHSTATE.RomFilename = RTC_Hooks.BIZHAWK_GET_CURRENTLYOPENEDROM();
@@ -127,8 +127,8 @@ namespace RTC
 					cmd.stashkey.DeployState();
 					RTC_StockpileManager.LoadState(cmd.stashkey, false);
 
-					if (RTC_Core.multiForm.GameOfSwapTimer != null)
-						RTC_Core.multiForm.GameOfSwapCounter = 64;
+					if (S.GET<RTC_Multiplayer_Form>().GameOfSwapTimer != null)
+						S.GET<RTC_Multiplayer_Form>().GameOfSwapCounter = 64;
 
 					break;
 
@@ -145,8 +145,8 @@ namespace RTC
 					cmd.stashkey.DeployState();
 					RTC_StockpileManager.LoadState(cmd.stashkey, false);
 
-					if (RTC_Core.multiForm.GameOfSwapTimer != null)
-						RTC_Core.multiForm.GameOfSwapCounter = 64;
+					if (S.GET<RTC_Multiplayer_Form>().GameOfSwapTimer != null)
+						S.GET<RTC_Multiplayer_Form>().GameOfSwapCounter = 64;
 
 					break;
 				case CommandType.PULLSCREEN:
@@ -155,7 +155,7 @@ namespace RTC
 					break;
 
 				case CommandType.REQUESTSTREAM:
-					RTC_Core.multiForm.cbStreamScreenToPeer.Checked = true;
+					S.GET<RTC_Multiplayer_Form>().cbStreamScreenToPeer.Checked = true;
 					break;
 
 				case CommandType.PUSHSCREEN:
@@ -163,11 +163,11 @@ namespace RTC
 					break;
 
 				case CommandType.GAMEOFSWAPSTART:
-					RTC_Core.multiForm.StartGameOfSwap(false);
+					S.GET<RTC_Multiplayer_Form>().StartGameOfSwap(false);
 					break;
 
 				case CommandType.GAMEOFSWAPSTOP:
-					RTC_Core.multiForm.StopGameOfSwap(true);
+					S.GET<RTC_Multiplayer_Form>().StopGameOfSwap(true);
 					break;
 
 				case CommandType.REMOTE_PUSHPARAMS:
@@ -264,8 +264,8 @@ namespace RTC
 				case CommandType.REMOTE_BACKUPKEY_STASH:
 					RTC_StockpileManager.backupedState = (StashKey)cmd.objectValue;
 					RTC_StockpileManager.allBackupStates.Push((StashKey)cmd.objectValue);
-					RTC_Core.coreForm.btnGpJumpBack.Visible = true;
-					RTC_Core.coreForm.btnGpJumpNow.Visible = true;
+					S.GET<RTC_Core_Form>().btnGpJumpBack.Visible = true;
+					S.GET<RTC_Core_Form>().btnGpJumpNow.Visible = true;
 					break;
 
 				case CommandType.REMOTE_DOMAIN_PEEKBYTE:
@@ -314,7 +314,7 @@ namespace RTC
 						var key = (string)(cmd.objectValue as object[])[1];
 						var sk = (StashKey)((cmd.objectValue as object[])[0]);
 						RTC_StockpileManager.SavestateStashkeyDico[key] = sk;
-						RTC_Core.ghForm.RefreshSavestateTextboxes();
+						S.GET<RTC_GlitchHarvester_Form>().RefreshSavestateTextboxes();
 					}
 					break;
 
@@ -613,14 +613,14 @@ namespace RTC
 
 					RTC_Core.AutoCorrupt = false;
 					//RTC_StockpileManager.isCorruptionApplied = false;
-					RTC_Core.mdForm.RefreshDomains();
-					RTC_Core.mdForm.SetMemoryDomainsAllButSelectedDomains(RTC_MemoryDomains.GetBlacklistedDomains());
-					RTC_Core.ceForm.UpdateDefaultPrecision();
+					S.GET<RTC_MemoryDomains_Form>().RefreshDomains();
+					S.GET<RTC_MemoryDomains_Form>().SetMemoryDomainsAllButSelectedDomains(RTC_MemoryDomains.GetBlacklistedDomains());
+					S.GET<RTC_CorruptionEngine_Form>().UpdateDefaultPrecision();
 					break;
 				case CommandType.REMOTE_EVENT_LOADGAMEDONE_SAMEGAME:
 					//RTC_StockpileManager.isCorruptionApplied = false;
-					RTC_Core.mdForm.RefreshDomainsAndKeepSelected();
-					RTC_Core.ceForm.UpdateDefaultPrecision();
+					S.GET<RTC_MemoryDomains_Form>().RefreshDomainsAndKeepSelected();
+					S.GET<RTC_CorruptionEngine_Form>().UpdateDefaultPrecision();
 					break;
 
 				case CommandType.REMOTE_EVENT_CLOSEBIZHAWK:
@@ -634,7 +634,7 @@ namespace RTC
 				case CommandType.REMOTE_EVENT_BIZHAWKSTARTED:
 
 					if (RTC_StockpileManager.backupedState == null)
-						RTC_Core.coreForm.AutoCorrupt = false;
+						S.GET<RTC_Core_Form>().AutoCorrupt = false;
 
 					RTC_Core.SendCommandToBizhawk(new RTC_Command(CommandType.REMOTE_PUSHPARAMS) { objectValue = new RTC_Params() }, true, true);
 
@@ -643,38 +643,38 @@ namespace RTC
 					Thread.Sleep(100);
 
 					if (RTC_StockpileManager.backupedState != null)
-						RTC_Core.mdForm.RefreshDomainsAndKeepSelected(RTC_StockpileManager.backupedState.SelectedDomains.ToArray());
+						S.GET<RTC_MemoryDomains_Form>().RefreshDomainsAndKeepSelected(RTC_StockpileManager.backupedState.SelectedDomains.ToArray());
 
-					if (RTC_Core.coreForm.cbUseGameProtection.Checked)
+					if (S.GET<RTC_Core_Form>().cbUseGameProtection.Checked)
 						RTC_GameProtection.Start();
 
 					break;
 
 				case CommandType.REMOTE_HOTKEY_MANUALBLAST:
-					RTC_Core.coreForm.btnManualBlast_Click(null, null);
+					S.GET<RTC_Core_Form>().btnManualBlast_Click(null, null);
 					break;
 
 				case CommandType.REMOTE_HOTKEY_AUTOCORRUPTTOGGLE:
-					RTC_Core.coreForm.btnAutoCorrupt_Click(null, null);
+					S.GET<RTC_Core_Form>().btnAutoCorrupt_Click(null, null);
 					break;
 				case CommandType.REMOTE_HOTKEY_ERRORDELAYDECREASE:
-					if (RTC_Core.gpForm.nmErrorDelay.Value > 1)
-						RTC_Core.gpForm.nmErrorDelay.Value--;
+					if (S.GET<RTC_GeneralParameters_Form>().nmErrorDelay.Value > 1)
+						S.GET<RTC_GeneralParameters_Form>().nmErrorDelay.Value--;
 					break;
 
 				case CommandType.REMOTE_HOTKEY_ERRORDELAYINCREASE:
-					if (RTC_Core.gpForm.nmErrorDelay.Value < RTC_Core.gpForm.track_ErrorDelay.Maximum)
-						RTC_Core.gpForm.nmErrorDelay.Value++;
+					if (S.GET<RTC_GeneralParameters_Form>().nmErrorDelay.Value < S.GET<RTC_GeneralParameters_Form>().track_ErrorDelay.Maximum)
+						S.GET<RTC_GeneralParameters_Form>().nmErrorDelay.Value++;
 					break;
 
 				case CommandType.REMOTE_HOTKEY_INTENSITYDECREASE:
-					if (RTC_Core.gpForm.nmIntensity.Value > 1)
-						RTC_Core.gpForm.nmIntensity.Value--;
+					if (S.GET<RTC_GeneralParameters_Form>().nmIntensity.Value > 1)
+						S.GET<RTC_GeneralParameters_Form>().nmIntensity.Value--;
 					break;
 
 				case CommandType.REMOTE_HOTKEY_INTENSITYINCREASE:
-					if (RTC_Core.gpForm.nmIntensity.Value < RTC_Core.gpForm.track_Intensity.Maximum)
-						RTC_Core.gpForm.nmIntensity.Value++;
+					if (S.GET<RTC_GeneralParameters_Form>().nmIntensity.Value < S.GET<RTC_GeneralParameters_Form>().track_Intensity.Maximum)
+						S.GET<RTC_GeneralParameters_Form>().nmIntensity.Value++;
 					break;
 
 				case CommandType.REMOTE_HOTKEY_GHLOADCORRUPT:
@@ -682,8 +682,8 @@ namespace RTC
 					{
 						RTC_NetCore.NetCoreCommandSynclock = true;
 
-						RTC_Core.ghForm.cbAutoLoadState.Checked = true;
-						RTC_Core.ghForm.btnCorrupt_Click(null, null);
+						S.GET<RTC_GlitchHarvester_Form>().cbAutoLoadState.Checked = true;
+						S.GET<RTC_GlitchHarvester_Form>().btnCorrupt_Click(null, null);
 
 						RTC_NetCore.NetCoreCommandSynclock = false;
 					}
@@ -694,47 +694,47 @@ namespace RTC
 					{
 						RTC_NetCore.NetCoreCommandSynclock = true;
 
-						bool isload = RTC_Core.ghForm.cbAutoLoadState.Checked;
-						RTC_Core.ghForm.cbAutoLoadState.Checked = false;
-						RTC_Core.ghForm.btnCorrupt_Click(null, null);
-						RTC_Core.ghForm.cbAutoLoadState.Checked = isload;
+						bool isload = S.GET<RTC_GlitchHarvester_Form>().cbAutoLoadState.Checked;
+						S.GET<RTC_GlitchHarvester_Form>().cbAutoLoadState.Checked = false;
+						S.GET<RTC_GlitchHarvester_Form>().btnCorrupt_Click(null, null);
+						S.GET<RTC_GlitchHarvester_Form>().cbAutoLoadState.Checked = isload;
 
 						RTC_NetCore.NetCoreCommandSynclock = false;
 					}
 					break;
 
 				case CommandType.REMOTE_HOTKEY_GHLOAD:
-					RTC_Core.ghForm.btnSaveLoad.Text = "LOAD";
-					RTC_Core.ghForm.btnSaveLoad_Click(null, null);
+					S.GET<RTC_GlitchHarvester_Form>().btnSaveLoad.Text = "LOAD";
+					S.GET<RTC_GlitchHarvester_Form>().btnSaveLoad_Click(null, null);
 					break;
 				case CommandType.REMOTE_HOTKEY_GHSAVE:
-					RTC_Core.ghForm.btnSaveLoad.Text = "SAVE";
-					RTC_Core.ghForm.btnSaveLoad_Click(null, null);
+					S.GET<RTC_GlitchHarvester_Form>().btnSaveLoad.Text = "SAVE";
+					S.GET<RTC_GlitchHarvester_Form>().btnSaveLoad_Click(null, null);
 					break;
 				case CommandType.REMOTE_HOTKEY_GHSTASHTOSTOCKPILE:
-					RTC_Core.ghForm.AddStashToStockpile(false);
+					S.GET<RTC_GlitchHarvester_Form>().AddStashToStockpile(false);
 					break;
 
 				case CommandType.REMOTE_HOTKEY_SENDRAWSTASH:
-					RTC_Core.ghForm.btnSendRaw_Click(null, null);
+					S.GET<RTC_GlitchHarvester_Form>().btnSendRaw_Click(null, null);
 					break;
 
 				case CommandType.REMOTE_HOTKEY_BLASTRAWSTASH:
 					RTC_Core.SendCommandToBizhawk(new RTC_Command(CommandType.ASYNCBLAST));
-					RTC_Core.ghForm.btnSendRaw_Click(null, null);
+					S.GET<RTC_GlitchHarvester_Form>().btnSendRaw_Click(null, null);
 					break;
 				case CommandType.REMOTE_HOTKEY_BLASTLAYERTOGGLE:
-					RTC_Core.ghForm.btnBlastToggle_Click(null, null);
+					S.GET<RTC_GlitchHarvester_Form>().btnBlastToggle_Click(null, null);
 					break;
 				case CommandType.REMOTE_HOTKEY_BLASTLAYERREBLAST:
 
 					if (RTC_StockpileManager.currentStashkey == null || RTC_StockpileManager.currentStashkey.BlastLayer.Layer.Count == 0)
 					{
-						RTC_Core.ghForm.IsCorruptionApplied = false;
+						S.GET<RTC_GlitchHarvester_Form>().IsCorruptionApplied = false;
 						break;
 					}
 
-					RTC_Core.ghForm.IsCorruptionApplied = true;
+					S.GET<RTC_GlitchHarvester_Form>().IsCorruptionApplied = true;
 					RTC_Core.SendCommandToRTC(new RTC_Command(CommandType.BLAST) { blastlayer = RTC_StockpileManager.currentStashkey.BlastLayer });
 					break;
 
@@ -751,8 +751,8 @@ namespace RTC
 					break;
 
 				case CommandType.REMOTE_RENDER_STARTED:
-					RTC_Core.ghForm.btnRender.Text = "Stop Render";
-					RTC_Core.ghForm.btnRender.ForeColor = Color.GreenYellow;
+					S.GET<RTC_GlitchHarvester_Form>().btnRender.Text = "Stop Render";
+					S.GET<RTC_GlitchHarvester_Form>().btnRender.ForeColor = Color.GreenYellow;
 					break;
 
 				case CommandType.REMOTE_RENDER_RENDERATLOAD:
@@ -846,10 +846,10 @@ namespace RTC
 
 		public void UpdatePeerScreen(Image img)
 		{
-			if (RTC_Core.multiForm.btnPopoutPeerGameScreen.Visible == false)
-				RTC_Core.multipeerpopoutForm.pbPeerScreen.Image = img;
+			if (S.GET<RTC_Multiplayer_Form>().btnPopoutPeerGameScreen.Visible == false)
+				S.GET<RTC_MultiPeerPopout_Form>().pbPeerScreen.Image = img;
 			else
-				RTC_Core.multiForm.pbPeerScreen.Image = img;
+				S.GET<RTC_Multiplayer_Form>().pbPeerScreen.Image = img;
 		}
 
 		public void SendBlastlayer()

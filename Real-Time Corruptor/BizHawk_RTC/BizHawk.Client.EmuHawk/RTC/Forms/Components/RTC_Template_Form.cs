@@ -10,7 +10,7 @@ using System.Runtime.InteropServices;
 
 namespace RTC
 {
-	public partial class RTC_Template_Form : ComponentForm
+	public partial class RTC_Template_Form : ComponentForm, IAutoColorize
 	{
 		public new void HandleMouseDown(object s, MouseEventArgs e) => base.HandleMouseDown(s, e);
 		public new void HandleFormClosing(object s, FormClosingEventArgs e) => base.HandleFormClosing(s, e);

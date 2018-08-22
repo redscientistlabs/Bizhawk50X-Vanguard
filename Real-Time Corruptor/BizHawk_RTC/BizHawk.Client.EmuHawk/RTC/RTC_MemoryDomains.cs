@@ -405,8 +405,8 @@ namespace RTC
 			lastSelectedDomains = SelectedDomains;
 			SelectedDomains = new string[] { };
 
-			if (RTC_Core.ecForm != null)
-				RTC_Core.mdForm.lbMemoryDomains.Items.Clear();
+			if (!S.ISNULL<RTC_EngineConfig_Form>())
+				S.GET<RTC_MemoryDomains_Form>().lbMemoryDomains.Items.Clear();
 		}
 
 		public static MemoryDomainProxy GetProxy(string domain, long address)
@@ -500,7 +500,7 @@ namespace RTC
 			VmdPrototype proto = new VmdPrototype(sk.BlastLayer);
 			AddVMD(proto);
 
-			RTC_Core.vmdPoolForm.RefreshVMDs();
+			S.GET<RTC_VmdPool_Form>().RefreshVMDs();
 		}
 
 		public static void AddVMD(VmdPrototype proto) => AddVMD(proto.Generate());
@@ -519,7 +519,7 @@ namespace RTC
 			}
 
 			if (!RTC_Hooks.isRemoteRTC)
-				RTC_Core.mdForm.RefreshDomainsAndKeepSelected();
+				S.GET<RTC_MemoryDomains_Form>().RefreshDomainsAndKeepSelected();
 		}
 
 		public static void RemoveVMD(VirtualMemoryDomain VMD) => RemoveVMD(VMD.ToString());
@@ -533,7 +533,7 @@ namespace RTC
 			}
 
 			if (!RTC_Hooks.isRemoteRTC)
-				RTC_Core.mdForm.RefreshDomainsAndKeepSelected();
+				S.GET<RTC_MemoryDomains_Form>().RefreshDomainsAndKeepSelected();
 		}
 
 		public static void RenameVMD(VirtualMemoryDomain VMD) => RenameVMD(VMD.ToString());

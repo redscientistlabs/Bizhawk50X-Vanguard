@@ -8,7 +8,7 @@ using System.Xml.Serialization;
 
 namespace RTC
 {
-	public partial class RTC_GlitchHarvester_Form : Form
+	public partial class RTC_GlitchHarvester_Form : Form, IAutoColorize
 	{
 		public string[] btnParentKeys = { null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null };
 		public string[] btnAttachedRom = { null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null };
@@ -38,19 +38,19 @@ namespace RTC
 					btnBlastToggle.ForeColor = Color.Black;
 					btnBlastToggle.Text = "BlastLayer : ON";
 
-					RTC_Core.spForm.btnBlastToggle.BackColor = Color.FromArgb(224, 128, 128);
-					RTC_Core.spForm.btnBlastToggle.ForeColor = Color.Black;
-					RTC_Core.spForm.btnBlastToggle.Text = "BlastLayer : ON     (Attempts to uncorrupt/recorrupt in real-time)";
+					S.GET<RTC_StockpilePlayer_Form>().btnBlastToggle.BackColor = Color.FromArgb(224, 128, 128);
+					S.GET<RTC_StockpilePlayer_Form>().btnBlastToggle.ForeColor = Color.Black;
+					S.GET<RTC_StockpilePlayer_Form>().btnBlastToggle.Text = "BlastLayer : ON     (Attempts to uncorrupt/recorrupt in real-time)";
 				}
 				else
 				{
-					btnBlastToggle.BackColor = RTC_Core.coreForm.btnLogo.BackColor;
+					btnBlastToggle.BackColor = S.GET<RTC_Core_Form>().btnLogo.BackColor;
 					btnBlastToggle.ForeColor = Color.White;
 					btnBlastToggle.Text = "BlastLayer : OFF";
 
-					RTC_Core.spForm.btnBlastToggle.BackColor = RTC_Core.coreForm.btnLogo.BackColor;
-					RTC_Core.spForm.btnBlastToggle.ForeColor = Color.White;
-					RTC_Core.spForm.btnBlastToggle.Text = "BlastLayer : OFF    (Attempts to uncorrupt/recorrupt in real-time)";
+					S.GET<RTC_StockpilePlayer_Form>().btnBlastToggle.BackColor = S.GET<RTC_Core_Form>().btnLogo.BackColor;
+					S.GET<RTC_StockpilePlayer_Form>().btnBlastToggle.ForeColor = Color.White;
+					S.GET<RTC_StockpilePlayer_Form>().btnBlastToggle.Text = "BlastLayer : OFF    (Attempts to uncorrupt/recorrupt in real-time)";
 				}
 
 				if (RTC_StockpileManager.isCorruptionApplied != value)
@@ -390,7 +390,7 @@ namespace RTC
 		{
 			if (e.CloseReason != CloseReason.FormOwnerClosing)
 			{
-				RTC_Core.coreForm.btnGlitchHarvester.Text = RTC_Core.coreForm.btnGlitchHarvester.Text.Replace("○ ", "");
+				S.GET<RTC_Core_Form>().btnGlitchHarvester.Text = S.GET<RTC_Core_Form>().btnGlitchHarvester.Text.Replace("○ ", "");
 				e.Cancel = true;
 				this.Hide();
 			}
@@ -412,7 +412,7 @@ namespace RTC
 				}
 
 				dgvStockpile.ClearSelection();
-				RTC_Core.spForm.dgvStockpile.ClearSelection();
+				S.GET<RTC_StockpilePlayer_Form>().dgvStockpile.ClearSelection();
 
 				if (!rbCorrupt.Checked && !rbInject.Checked && !rbOriginal.Checked)
 					rbCorrupt.Checked = true;
@@ -594,9 +594,9 @@ namespace RTC
 					RTC_StockpileManager.currentStockpile.ShortFilename = null;
 				}
 
-				RTC_Core.ghForm.btnSaveStockpile.Enabled = false;
-				RTC_Core.ghForm.btnSaveStockpile.BackColor = Color.Gray;
-				RTC_Core.ghForm.btnSaveStockpile.ForeColor = Color.DimGray;
+				S.GET<RTC_GlitchHarvester_Form>().btnSaveStockpile.Enabled = false;
+				S.GET<RTC_GlitchHarvester_Form>().btnSaveStockpile.BackColor = Color.Gray;
+				S.GET<RTC_GlitchHarvester_Form>().btnSaveStockpile.ForeColor = Color.DimGray;
 
 				RTC_StockpileManager.StockpileChanged();
 
@@ -623,12 +623,12 @@ namespace RTC
 
 					if (Stockpile.Load(dgvStockpile))
 					{
-						RTC_Core.ghForm.btnSaveStockpile.Enabled = true;
-						RTC_Core.ghForm.btnSaveStockpile.BackColor = Color.Tomato;
-						RTC_Core.ghForm.btnSaveStockpile.ForeColor = Color.Black;
+						S.GET<RTC_GlitchHarvester_Form>().btnSaveStockpile.Enabled = true;
+						S.GET<RTC_GlitchHarvester_Form>().btnSaveStockpile.BackColor = Color.Tomato;
+						S.GET<RTC_GlitchHarvester_Form>().btnSaveStockpile.ForeColor = Color.Black;
 					}
 
-					RTC_Core.spForm.dgvStockpile.Rows.Clear();
+					S.GET<RTC_StockpilePlayer_Form>().dgvStockpile.Rows.Clear();
 
 					dgvStockpile.ClearSelection();
 					RTC_StockpileManager.StockpileChanged();
@@ -686,9 +686,9 @@ namespace RTC
 			if (Stockpile.Save(sks))
 			{
 				sendCurrentStockpileToTemp();
-				RTC_Core.ghForm.btnSaveStockpile.Enabled = true;
-				RTC_Core.ghForm.btnSaveStockpile.BackColor = Color.Tomato;
-				RTC_Core.ghForm.btnSaveStockpile.ForeColor = Color.Black;
+				S.GET<RTC_GlitchHarvester_Form>().btnSaveStockpile.Enabled = true;
+				S.GET<RTC_GlitchHarvester_Form>().btnSaveStockpile.BackColor = Color.Tomato;
+				S.GET<RTC_GlitchHarvester_Form>().btnSaveStockpile.ForeColor = Color.Black;
 			}
 
 			RTC_Core.StartSound();
@@ -883,8 +883,8 @@ namespace RTC
 		{
 			int _fx = Convert.ToInt32(nmIntensity.Value);
 
-			if (RTC_Core.gpForm.Intensity != _fx)
-				RTC_Core.gpForm.Intensity = _fx;
+			if (S.GET<RTC_GeneralParameters_Form>().Intensity != _fx)
+				S.GET<RTC_GeneralParameters_Form>().Intensity = _fx;
 		}
 
 		private void track_Intensity_Scroll(object sender, EventArgs e)
@@ -893,8 +893,8 @@ namespace RTC
 			int _fx = Convert.ToInt32(fx);
 
 			// This is NOT a redundent check. Setting intensity requires a netcore call so we don't want to do it if we don't have to
-			if (_fx != RTC_Core.gpForm.Intensity)
-				RTC_Core.gpForm.Intensity = _fx;
+			if (_fx != S.GET<RTC_GeneralParameters_Form>().Intensity)
+				S.GET<RTC_GeneralParameters_Form>().Intensity = _fx;
 		}
 
 		public void btnSendRaw_Click(object sender, EventArgs e)
@@ -1009,7 +1009,7 @@ namespace RTC
 				columnsMenu.Items.Add(new ToolStripSeparator());
 				((ToolStripMenuItem)columnsMenu.Items.Add("Open Selected Item in Blast Editor", null, new EventHandler((ob, ev) =>
 				{
-					if (RTC_Core.beForm != null)
+					if (S.GET<RTC_BlastEditor_Form>() != null)
 					{
 						var sk = (dgvStockpile.SelectedRows[0].Cells[0].Value as StashKey);
 						OpenBlastEditor(sk);
@@ -1262,7 +1262,7 @@ namespace RTC
 
 				((ToolStripMenuItem)columnsMenu.Items.Add("Open Selected Item in Blast Editor", null, new EventHandler((ob, ev) =>
 					{
-						if (RTC_Core.beForm != null)
+						if (S.GET<RTC_BlastEditor_Form>() != null)
 						{
 							StashKey sk = RTC_StockpileManager.StashHistory[lbStashHistory.SelectedIndex];
 							OpenBlastEditor(sk);
@@ -1306,7 +1306,7 @@ namespace RTC
 					columnsMenu.Items.Add(new ToolStripSeparator());
 					((ToolStripMenuItem)columnsMenu.Items.Add("[Multiplayer] Pull State from peer", null, new EventHandler((ob, ev) =>
 						{
-							RTC_Core.multiForm.cbPullStateToGlitchHarvester.Checked = true;
+							S.GET<RTC_Multiplayer_Form>().cbPullStateToGlitchHarvester.Checked = true;
 							RTC_Core.Multiplayer.SendCommand(new RTC_Command(CommandType.PULLSTATE), false);
 						}))).Enabled = RTC_Core.Multiplayer != null && RTC_Core.Multiplayer.side != NetworkSide.DISCONNECTED;
 				}
@@ -1317,8 +1317,8 @@ namespace RTC
 
 		private void OpenBlastEditor(StashKey sk)
 		{
-			RTC_Core.beForm.Close();
-			RTC_Core.beForm = new RTC_BlastEditor_Form();
+			S.GET<RTC_BlastEditor_Form>().Close();
+			S.SET(new RTC_BlastEditor_Form());
 
 			var token = RTC_NetCore.HugeOperationStart("DISABLED");
 			//If the blastlayer is big, prompt them before opening it. Let's go with 5k for now.
@@ -1326,16 +1326,16 @@ namespace RTC
 			//TODO
 			/*
 			if (sk.BlastLayer.Layer.Count > 5000 && (DialogResult.Yes == MessageBox.Show($"You're trying to open a blastlayer of size " + sk.BlastLayer.Layer.Count + ". This could take a while. Are you sure you want to continue?", "Opening a large BlastLayer", MessageBoxButtons.YesNo)))
-				RTC_Core.beForm.LoadStashkey(sk);
+				S.GET<RTC_BlastEditor_Form>().LoadStashkey(sk);
 			else if (sk.BlastLayer.Layer.Count <= 5000)
-				RTC_Core.beForm.LoadStashkey(sk);
+				S.GET<RTC_BlastEditor_Form>().LoadStashkey(sk);
 			*/
 			RTC_NetCore.HugeOperationEnd(token);
 		}
 
 		private void sendCurrentStockpileToTemp()
 		{
-			foreach (DataGridViewRow dataRow in RTC_Core.ghForm.dgvStockpile.Rows)
+			foreach (DataGridViewRow dataRow in S.GET<RTC_GlitchHarvester_Form>().dgvStockpile.Rows)
 			{
 				StashKey sk = (StashKey)dataRow.Cells["Item"].Value;
 				sk.RomFilename = RTC_Core.rtcDir + "\\SKS\\" + RTC_Extensions.getShortFilenameFromPath(sk.RomFilename);
@@ -1376,7 +1376,7 @@ namespace RTC
 				}
 
 				lbStashHistory.ClearSelected();
-				RTC_Core.spForm.dgvStockpile.ClearSelection();
+				S.GET<RTC_StockpilePlayer_Form>().dgvStockpile.ClearSelection();
 
 				RedrawActionUI();
 
@@ -1514,7 +1514,7 @@ namespace RTC
 		private void BlastRawStash()
 		{
 			RTC_Core.SendCommandToBizhawk(new RTC_Command(CommandType.ASYNCBLAST));
-			RTC_Core.ghForm.btnSendRaw_Click(null, null);
+			S.GET<RTC_GlitchHarvester_Form>().btnSendRaw_Click(null, null);
 		}
 
 		private void btnCorrupt_MouseDown(object sender, MouseEventArgs e)

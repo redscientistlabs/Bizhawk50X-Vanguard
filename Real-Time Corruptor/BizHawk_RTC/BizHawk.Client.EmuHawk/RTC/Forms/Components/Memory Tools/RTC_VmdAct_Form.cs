@@ -10,7 +10,7 @@ using System.Runtime.InteropServices;
 
 namespace RTC
 {
-	public partial class RTC_VmdAct_Form : ComponentForm
+	public partial class RTC_VmdAct_Form : ComponentForm, IAutoColorize
 	{
 		public new void HandleMouseDown(object s, MouseEventArgs e) => base.HandleMouseDown(s, e);
 		public new void HandleFormClosing(object s, FormClosingEventArgs e) => base.HandleFormClosing(s, e);
@@ -542,7 +542,7 @@ namespace RTC
 
 				RTC_MemoryDomains.AddVMD(VMD);
 
-				RTC_Core.vmdPoolForm.RefreshVMDs();
+				S.GET<RTC_VmdPool_Form>().RefreshVMDs();
 
 				return;
 			}
@@ -582,7 +582,7 @@ namespace RTC
 		}
 		private void RefreshDomains()
 		{
-			RTC_Core.mdForm.RefreshDomainsAndKeepSelected();
+			S.GET<RTC_MemoryDomains_Form>().RefreshDomainsAndKeepSelected();
 			var temp = cbSelectedMemoryDomain.SelectedItem;
 
 			cbSelectedMemoryDomain.Items.Clear();

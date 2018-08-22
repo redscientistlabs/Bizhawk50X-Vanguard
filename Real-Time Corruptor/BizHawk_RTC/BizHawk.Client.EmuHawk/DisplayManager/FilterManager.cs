@@ -31,9 +31,9 @@ namespace BizHawk.Client.EmuHawk.FilterManager
 	public class SurfaceState
 	{
 		public SurfaceState() { }
-		public SurfaceState(SurfaceFormat surfaceFormat, SurfaceDisposition surfaceDisposition = SurfaceDisposition.Unspecified)
+		public SurfaceState(SurfaceFormat SurfaceFormat, SurfaceDisposition surfaceDisposition = SurfaceDisposition.Unspecified)
 		{
-			this.SurfaceFormat = surfaceFormat;
+			this.SurfaceFormat = SurfaceFormat;
 			this.SurfaceDisposition = surfaceDisposition;
 		}
 		public SurfaceFormat SurfaceFormat;

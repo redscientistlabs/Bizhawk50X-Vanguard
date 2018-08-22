@@ -74,34 +74,34 @@ namespace RTC
 			{
 				//We update a stashkey for the GH and Stockpile Player
 				case ("GlitchHarvester"):
-					if (RTC_Core.ghForm.Visible)
+					if (S.GET<RTC_GlitchHarvester_Form>().Visible)
 					{
 						((StashKey)item).Note = note;
-						RTC_Core.ghForm.RefreshNoteIcons();
+						S.GET<RTC_GlitchHarvester_Form>().RefreshNoteIcons();
 					}
 					break;
 				case ("StockpilePlayer"):
-					if (RTC_Core.spForm.Visible)
+					if (S.GET<RTC_StockpilePlayer_Form>().Visible)
 					{
 						((StashKey)item).Note = note;
-						RTC_Core.spForm.RefreshNoteIcons();
+						S.GET<RTC_StockpilePlayer_Form>().RefreshNoteIcons();
 					}
 					break;
 				//We update individual blastunits for the blast editor
 				case ("BlastEditor"):
-					if (RTC_Core.beForm.Visible)
+					if (S.GET<RTC_BlastEditor_Form>().Visible)
 					{
 						((BlastUnit)item).Note = note;
 						//TODO
-						//RTC_Core.beForm.RefreshNoteIcons();
+						//S.GET<RTC_BlastEditor_Form>().RefreshNoteIcons();
 					}
 					break;
 				//We update a DGV cell for the Blast Generator
 				case ("BlastGenerator"):
-					if (RTC_Core.bgForm.Visible)
+					if (S.GET<RTC_BlastGenerator_Form>().Visible)
 					{
 						((DataGridViewCell)item).Value = note;
-						RTC_Core.bgForm.RefreshNoteIcons();
+						S.GET<RTC_BlastGenerator_Form>().RefreshNoteIcons();
 					}
 						
 					break;

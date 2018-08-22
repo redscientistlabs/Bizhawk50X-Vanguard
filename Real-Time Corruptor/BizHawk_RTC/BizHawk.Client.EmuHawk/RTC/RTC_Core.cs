@@ -6,6 +6,7 @@ using System.Drawing;
 using System.IO;
 using System.Linq;
 using System.Net;
+using System.Reflection;
 using System.Threading;
 using System.Windows.Forms;
 using BizHawk.Client.EmuHawk;
@@ -75,76 +76,21 @@ namespace RTC
 		public static Color generalColor = Color.LightSteelBlue;
 
 
-		
-		public static RTC_Core_Form coreForm = null;
-		public static RTC_EngineConfig_Form ecForm = null;
-		public static RTC_CustomEngineConfig_Form cecForm = null;
-		public static RTC_StockpilePlayer_Form spForm = null;
-		public static RTC_GlitchHarvester_Form ghForm = null;
-		public static RTC_Settings_Form sForm = null;
-		public static RTC_HotkeyConfig_Form hotkeyForm = null;
-
-		//RTC Extension Forms
-		public static RTC_Multiplayer_Form multiForm;
-
-		public static RTC_MultiPeerPopout_Form multipeerpopoutForm = null;
-		public static RTC_StockpileBlastBoard_Form sbForm = null;
-		public static RTC_ConnectionStatus_Form csForm = null;
-		public static RTC_BlastEditor_Form beForm = null;
-		public static RTC_BlastGenerator_Form bgForm = null;
-
-		public static Form standaloneForm = null;
-
-		//RTC Component Forms
-		public static RTC_VmdPool_Form vmdPoolForm = null;
-		public static RTC_VmdGen_Form vmdGenForm = null;
-		public static RTC_VmdAct_Form vmdActForm = null;
-		public static RTC_VmdNoTool_Form vmdNoToolForm = null;
-
-		public static RTC_MemoryDomains_Form mdForm = null;
-		public static RTC_GeneralParameters_Form gpForm = null;
-		public static RTC_CorruptionEngine_Form ceForm = null;
-		
-		public static RTC_SettingsAestethics_Form saForm = null;
-		public static RTC_SettingsGeneral_Form sgForm = null;
-		public static RTC_SettingsNetCore_Form sncForm = null;
-
-
 		//All RTC forms
 		public static Form[] allRtcForms
 		{
 			get
 			{
-				return new Form[]
-					{
-						coreForm,
-						sForm,
-						ecForm,
-						ghForm,
-						spForm,
+				//This fetches all singletons of interface IAutoColorized
 
-						multiForm,
-						multipeerpopoutForm,
-						sbForm,
-						beForm,
-						bgForm,
-						cecForm,
+				List<Form> all = new List<Form>();
 
-						vmdActForm,
-						vmdGenForm,
-						vmdPoolForm,
-						vmdNoToolForm,
+				foreach (Type t in Assembly.GetAssembly(typeof(S)).GetTypes())
+					if (typeof(IAutoColorize).IsAssignableFrom(t) && t != typeof(IAutoColorize))
+						all.Add((Form)S.GET(Type.GetType(t.ToString())));
 
-						mdForm,
-						gpForm,
-						ceForm,
-
-						standaloneForm,
-
-						saForm,
-						sgForm,
-						sncForm,
-					};
+				return all.ToArray();
+				
 			}
 		}
 
@@ -179,8 +125,8 @@ namespace RTC
 					frm.Close();
 			}
 
-			if (RTC_Core.standaloneForm != null)
-				RTC_Core.standaloneForm.Close();
+			if (S.GET<RTC_Standalone_Form>() != null)
+				S.GET<RTC_Standalone_Form>().Close();
 
 			if (!RTC_Hooks.isRemoteRTC && !RTC_Core.DontCleanSavestatesOnQuit && File.Exists(RTC_Core.bizhawkDir + "\\StateClean.bat")) //We force useless savestates to clear on quit to prevent disk usage to inflate too much
 			{
@@ -272,7 +218,7 @@ namespace RTC
 		}
 
 		//This is the entry point of RTC. Without this method, nothing will load.
-		public static void Start(Form _standaloneForm = null)
+		public static void Start(RTC_Standalone_Form _standaloneForm = null)
 		{
 			//Timed releases. Only for exceptionnal cases.
 			bool Expires = false;
@@ -282,17 +228,17 @@ namespace RTC
 				RTC_RPC.SendToKillSwitch("CLOSE");
 				MessageBox.Show("This version has expired");
 				RTC_Hooks.BIZHAWK_MAINFORM_CLOSE();
-				RTC_Core.coreForm.Close();
-				RTC_Core.ghForm.Close();
+				S.GET<RTC_Core_Form>().Close();
+				S.GET<RTC_GlitchHarvester_Form>().Close();
 				Application.Exit();
 				return;
 			}
-
-			coreForm = new RTC_Core_Form();
+			/*
+			S.GET<RTC_Core_Form>() = new RTC_Core_Form();
 			
 			cecForm = new RTC_CustomEngineConfig_Form();
-			spForm = new RTC_StockpilePlayer_Form();
-			ghForm = new RTC_GlitchHarvester_Form();
+			S.GET<RTC_StockpilePlayer_Form>() = new RTC_StockpilePlayer_Form();
+			S.GET<RTC_GlitchHarvester_Form>() = new RTC_GlitchHarvester_Form();
 			
 			hotkeyForm = new RTC_HotkeyConfig_Form();
 
@@ -300,15 +246,15 @@ namespace RTC
 			multipeerpopoutForm = new RTC_MultiPeerPopout_Form();
 			sbForm = new RTC_StockpileBlastBoard_Form();
 			beForm = new RTC_BlastEditor_Form();
-			bgForm = new RTC_BlastGenerator_Form();
+			S.GET<RTC_BlastGenerator_Form>() = new RTC_BlastGenerator_Form();
 
 
 			gpForm = new RTC_GeneralParameters_Form();
 			mdForm = new RTC_MemoryDomains_Form();
-			ceForm = new RTC_CorruptionEngine_Form();
+			S.GET<RTC_CorruptionEngine_Form>() = new RTC_CorruptionEngine_Form();
 			vmdPoolForm = new RTC_VmdPool_Form();
 			vmdGenForm = new RTC_VmdGen_Form();
-			vmdActForm = new RTC_VmdAct_Form();
+			S.GET<RTC_VmdAct_Form>() = new RTC_VmdAct_Form();
 			vmdNoToolForm = new RTC_VmdNoTool_Form();
 			ecForm = new RTC_EngineConfig_Form();
 
@@ -316,8 +262,10 @@ namespace RTC
 			sgForm = new RTC_SettingsGeneral_Form();
 			sncForm = new RTC_SettingsNetCore_Form();
 			sForm = new RTC_Settings_Form();
+			*/
 
-			standaloneForm = _standaloneForm;
+			S.SET<RTC_Standalone_Form>(_standaloneForm);
+			//standaloneForm = _standaloneForm;
 
 			if (!Directory.Exists(RTC_Core.rtcDir + "\\TEMP\\"))
 				Directory.CreateDirectory(RTC_Core.rtcDir + "\\TEMP\\");
@@ -349,9 +297,9 @@ namespace RTC
 
 			//Loading RTC Params
 			RTC_Params.LoadRTCColor();
-			RTC_Core.sgForm.cbDisableBizhawkOSD.Checked = !RTC_Params.IsParamSet("ENABLE_BIZHAWK_OSD");
-			RTC_Core.sgForm.cbAllowCrossCoreCorruption.Checked = RTC_Params.IsParamSet("ALLOW_CROSS_CORE_CORRUPTION");
-			RTC_Core.sgForm.cbDontCleanAtQuit.Checked = RTC_Params.IsParamSet("DONT_CLEAN_SAVESTATES_AT_QUIT");
+			S.GET<RTC_SettingsGeneral_Form>().cbDisableBizhawkOSD.Checked = !RTC_Params.IsParamSet("ENABLE_BIZHAWK_OSD");
+			S.GET<RTC_SettingsGeneral_Form>().cbAllowCrossCoreCorruption.Checked = RTC_Params.IsParamSet("ALLOW_CROSS_CORE_CORRUPTION");
+			S.GET<RTC_SettingsGeneral_Form>().cbDontCleanAtQuit.Checked = RTC_Params.IsParamSet("DONT_CLEAN_SAVESTATES_AT_QUIT");
 
 			//Load and initialize Hotkeys
 			//RTC_Hotkeys.InitializeHotkeySystem();
@@ -378,30 +326,30 @@ namespace RTC
 				//Setup of Detached-exclusive features
 				if (RTC_Core.isStandalone)
 				{
-					coreForm.Text = "RTC : Detached Mode";
+					S.GET<RTC_Core_Form>().Text = "RTC : Detached Mode";
 
-					if (csForm == null)
-						csForm = new RTC_ConnectionStatus_Form();
+					if (S.ISNULL<RTC_ConnectionStatus_Form>())
+						S.SET(new RTC_ConnectionStatus_Form());
 
-					RTC_Core.coreForm.ShowPanelForm(csForm);
+					S.GET<RTC_Core_Form>().ShowPanelForm(S.GET<RTC_ConnectionStatus_Form>());
 
 					RemoteRTC.ServerStarted += new EventHandler((ob, ev) =>
 					{
 						RemoteRTC_SupposedToBeConnected = false;
 						Console.WriteLine("RemoteRTC.ServerStarted");
 
-						if (csForm != null && !csForm.IsDisposed)
+						if (S.GET<RTC_ConnectionStatus_Form>() != null && !S.GET<RTC_ConnectionStatus_Form>().IsDisposed)
 						{
-							if (RTC_Core.csForm == null)
-								csForm = new RTC_ConnectionStatus_Form();
+							if (S.ISNULL<RTC_ConnectionStatus_Form>())
+								S.SET(new RTC_ConnectionStatus_Form());
 
-							RTC_Core.coreForm.ShowPanelForm(csForm);
+							S.GET<RTC_Core_Form>().ShowPanelForm(S.GET<RTC_ConnectionStatus_Form>());
 						}
 
-						if (ghForm != null && !ghForm.IsDisposed)
+						if (!S.ISNULL<RTC_GlitchHarvester_Form>() && !S.GET<RTC_GlitchHarvester_Form>().IsDisposed)
 						{
-							ghForm.pnHideGlitchHarvester.BringToFront();
-							ghForm.pnHideGlitchHarvester.Show();
+							S.GET<RTC_GlitchHarvester_Form>().pnHideGlitchHarvester.BringToFront();
+							S.GET<RTC_GlitchHarvester_Form>().pnHideGlitchHarvester.Show();
 						}
 					});
 
@@ -409,19 +357,19 @@ namespace RTC
 					{
 						RemoteRTC_SupposedToBeConnected = true;
 						Console.WriteLine("RemoteRTC.ServerConnected");
-						csForm.lbConnectionStatus.Text = "Connection status: Connected";
+						S.GET<RTC_ConnectionStatus_Form>().lbConnectionStatus.Text = "Connection status: Connected";
 
 						if (FirstConnection)
 						{
 							FirstConnection = false;
-							coreForm.btnEngineConfig_Click(ob, ev);
+							S.GET<RTC_Core_Form>().btnEngineConfig_Click(ob, ev);
 						}
 						else
-							coreForm.ShowPanelForm(coreForm.previousForm, false);
+							S.GET<RTC_Core_Form>().ShowPanelForm(S.GET<RTC_Core_Form>().previousForm, false);
 
-						ghForm.pnHideGlitchHarvester.Size = ghForm.Size;
-						ghForm.pnHideGlitchHarvester.Hide();
-						csForm.btnStartEmuhawkDetached.Text = "Restart BizHawk";
+						S.GET<RTC_GlitchHarvester_Form>().pnHideGlitchHarvester.Size = S.GET<RTC_GlitchHarvester_Form>().Size;
+						S.GET<RTC_GlitchHarvester_Form>().pnHideGlitchHarvester.Hide();
+						S.GET<RTC_ConnectionStatus_Form>().btnStartEmuhawkDetached.Text = "Restart BizHawk";
 
 						RTC_RPC.Heartbeat = true;
 						RTC_RPC.Freeze = false;
@@ -432,38 +380,38 @@ namespace RTC
 						RemoteRTC_SupposedToBeConnected = false;
 						Console.WriteLine("RemoteRTC.ServerConnectionLost");
 
-						if (csForm != null && !csForm.IsDisposed)
+						if (S.GET<RTC_ConnectionStatus_Form>() != null && !S.GET<RTC_ConnectionStatus_Form>().IsDisposed)
 						{
-							csForm.lbConnectionStatus.Text = "Connection status: Bizhawk timed out";
-							coreForm.ShowPanelForm(csForm);
+							S.GET<RTC_ConnectionStatus_Form>().lbConnectionStatus.Text = "Connection status: Bizhawk timed out";
+							S.GET<RTC_Core_Form>().ShowPanelForm(S.GET<RTC_ConnectionStatus_Form>());
 						}
 
-						if (ghForm != null && !ghForm.IsDisposed)
+						if (S.GET<RTC_GlitchHarvester_Form>() != null && !S.GET<RTC_GlitchHarvester_Form>().IsDisposed)
 						{
-							ghForm.lbConnectionStatus.Text = "Connection status: Bizhawk timed out";
-							ghForm.pnHideGlitchHarvester.BringToFront();
-							ghForm.pnHideGlitchHarvester.Show();
+							S.GET<RTC_GlitchHarvester_Form>().lbConnectionStatus.Text = "Connection status: Bizhawk timed out";
+							S.GET<RTC_GlitchHarvester_Form>().pnHideGlitchHarvester.BringToFront();
+							S.GET<RTC_GlitchHarvester_Form>().pnHideGlitchHarvester.Show();
 						}
 
 						RTC_GameProtection.Stop();
 						//Kill the active table autodumps
-						vmdActForm.cbAutoAddDump.Checked = false;
+						S.GET<RTC_VmdAct_Form>().cbAutoAddDump.Checked = false;
 					});
 
 					RemoteRTC.ServerDisconnected += new EventHandler((ob, ev) =>
 					{
 						RemoteRTC_SupposedToBeConnected = false;
 						Console.WriteLine("RemoteRTC.ServerDisconnected");
-						csForm.lbConnectionStatus.Text = "Connection status: NetCore Shutdown";
-						ghForm.lbConnectionStatus.Text = "Connection status: NetCore Shutdown";
-						coreForm.ShowPanelForm(csForm);
+						S.GET<RTC_ConnectionStatus_Form>().lbConnectionStatus.Text = "Connection status: NetCore Shutdown";
+						S.GET<RTC_GlitchHarvester_Form>().lbConnectionStatus.Text = "Connection status: NetCore Shutdown";
+						S.GET<RTC_Core_Form>().ShowPanelForm(S.GET<RTC_ConnectionStatus_Form>());
 
-						ghForm.pnHideGlitchHarvester.BringToFront();
-						ghForm.pnHideGlitchHarvester.Show();
+						S.GET<RTC_GlitchHarvester_Form>().pnHideGlitchHarvester.BringToFront();
+						S.GET<RTC_GlitchHarvester_Form>().pnHideGlitchHarvester.Show();
 
 						RTC_GameProtection.Stop();
 						//Kill the active table autodumps
-						vmdActForm.cbAutoAddDump.Checked = false;
+						S.GET<RTC_VmdAct_Form>().cbAutoAddDump.Checked = false;
 					});
 
 					RemoteRTC.StartNetworking(NetworkSide.SERVER, false, false);
@@ -474,7 +422,7 @@ namespace RTC
 				}
 
 				// Show the main RTC Form
-				coreForm.Show();
+				S.GET<RTC_Core_Form>().Show();
 			}
 
 			//Starting UDP loopback for Killswitch 
@@ -809,12 +757,12 @@ namespace RTC
 					additionalInfo +
 					"This is an RTC error, so you should probably send this to the RTC devs.\n\n" +
 				"If you know the steps to reproduce this error it would be greatly appreciated.\n\n" +
-				(RTC_Core.coreForm.AutoCorrupt ? ">> STOP AUTOCORRUPT ?.\n\n" : "") +
+				(S.GET<RTC_Core_Form>().AutoCorrupt ? ">> STOP AUTOCORRUPT ?.\n\n" : "") +
 				$"domain:{Domain?.ToString()} maxaddress:{MaxAddress.ToString()} randomaddress:{RandomAddress.ToString()} \n\n" +
-				ex.ToString(), "Error", (RTC_Core.coreForm.AutoCorrupt ? MessageBoxButtons.YesNo : MessageBoxButtons.OK));
+				ex.ToString(), "Error", (S.GET<RTC_Core_Form>().AutoCorrupt ? MessageBoxButtons.YesNo : MessageBoxButtons.OK));
 
 				if (dr == DialogResult.Yes || dr == DialogResult.OK)
-					RTC_Core.coreForm.AutoCorrupt = false;
+					S.GET<RTC_Core_Form>().AutoCorrupt = false;
 
 				return null;
 			}
@@ -1007,10 +955,10 @@ namespace RTC
 		{
 			//Selects an engine from a given string name
 
-			for (int i = 0; i < ceForm.cbSelectedEngine.Items.Count; i++)
-				if (ceForm.cbSelectedEngine.Items[i].ToString() == name)
+			for (int i = 0; i < S.GET<RTC_CorruptionEngine_Form>().cbSelectedEngine.Items.Count; i++)
+				if (S.GET<RTC_CorruptionEngine_Form>().cbSelectedEngine.Items[i].ToString() == name)
 				{
-					ceForm.cbSelectedEngine.SelectedIndex = i;
+					S.GET<RTC_CorruptionEngine_Form>().cbSelectedEngine.SelectedIndex = i;
 					break;
 				}
 		}
@@ -1097,14 +1045,14 @@ namespace RTC
 				else
 					c.BackColor = color;
 
-			spForm.dgvStockpile.BackgroundColor = color;
-			ghForm.dgvStockpile.BackgroundColor = color;
+			S.GET<RTC_StockpilePlayer_Form>().dgvStockpile.BackgroundColor = color;
+			S.GET<RTC_GlitchHarvester_Form>().dgvStockpile.BackgroundColor = color;
 			
 
 			//TODO
 			//beForm.dgvBlastLayer.BackgroundColor = color;
 
-			bgForm.dgvBlastGenerator.BackgroundColor = color;
+			S.GET<RTC_BlastGenerator_Form>().dgvBlastGenerator.BackgroundColor = color;
 
 			foreach (Control c in darkColorControls)
 				if (c is Label)

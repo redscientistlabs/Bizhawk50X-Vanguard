@@ -31,14 +31,14 @@ namespace RTC
 				{
 					filename = saveFileDialog1.FileName;
 					//TODO
-					//	RTC_Core.beForm.CurrentBlastLayerFile = saveFileDialog1.FileName;
+					//	S.GET<RTC_BlastEditor_Form>().CurrentBlastLayerFile = saveFileDialog1.FileName;
 				}
 				else
 					return false;
 			}
 			//TODO
 			//else
-			//	filename = RTC_Core.beForm.CurrentBlastLayerFile;
+			//	filename = S.GET<RTC_BlastEditor_Form>().CurrentBlastLayerFile;
 
 			XmlSerializer xs = new XmlSerializer(typeof(BlastLayer));
 

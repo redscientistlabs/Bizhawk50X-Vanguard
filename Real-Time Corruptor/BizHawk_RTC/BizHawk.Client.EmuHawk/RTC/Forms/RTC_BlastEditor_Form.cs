@@ -16,7 +16,7 @@ using System.Windows.Forms;
 
 namespace RTC
 {
-	public partial class RTC_BlastEditor_Form : Form
+	public partial class RTC_BlastEditor_Form : Form, IAutoColorize
 	{
 		/*
 		 
@@ -310,13 +310,13 @@ namespace RTC
 			
 			RTC_StockpileManager.StashHistory.Add(newSk);
 
-			RTC_Core.ghForm.RefreshStashHistory();
-			RTC_Core.ghForm.dgvStockpile.ClearSelection();
-			RTC_Core.ghForm.lbStashHistory.ClearSelected();
+			S.GET<RTC_GlitchHarvester_Form>().RefreshStashHistory();
+			S.GET<RTC_GlitchHarvester_Form>().dgvStockpile.ClearSelection();
+			S.GET<RTC_GlitchHarvester_Form>().lbStashHistory.ClearSelected();
 
-			RTC_Core.ghForm.DontLoadSelectedStash = true;   
-			RTC_Core.ghForm.lbStashHistory.SelectedIndex = RTC_Core.ghForm.lbStashHistory.Items.Count - 1;
-			RTC_StockpileManager.currentStashkey = RTC_StockpileManager.StashHistory[RTC_Core.ghForm.lbStashHistory.SelectedIndex];
+			S.GET<RTC_GlitchHarvester_Form>().DontLoadSelectedStash = true;   
+			S.GET<RTC_GlitchHarvester_Form>().lbStashHistory.SelectedIndex = S.GET<RTC_GlitchHarvester_Form>().lbStashHistory.Items.Count - 1;
+			RTC_StockpileManager.currentStashkey = RTC_StockpileManager.StashHistory[S.GET<RTC_GlitchHarvester_Form>().lbStashHistory.SelectedIndex];
 
 		}
 
@@ -1564,10 +1564,10 @@ namespace RTC
 
 		private void openBlastLayerGeneratorToolStripMenuItem_Click_1(object sender, EventArgs e)
 		{
-			if (RTC_Core.bgForm != null)
-				RTC_Core.bgForm.Close();
-			RTC_Core.bgForm = new RTC_BlastGenerator_Form();
-			RTC_Core.bgForm.LoadStashkey(sk);
+			if (S.GET<RTC_BlastGenerator_Form>() != null)
+				S.GET<RTC_BlastGenerator_Form>().Close();
+			S.GET<RTC_BlastGenerator_Form>() = new RTC_BlastGenerator_Form();
+			S.GET<RTC_BlastGenerator_Form>().LoadStashkey(sk);
 		}
 		private void dgvBlastLayer_CellClick(object sender, DataGridViewCellEventArgs e)
 		{

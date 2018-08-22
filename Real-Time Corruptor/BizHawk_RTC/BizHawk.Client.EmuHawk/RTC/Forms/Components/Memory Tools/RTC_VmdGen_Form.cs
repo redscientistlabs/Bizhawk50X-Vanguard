@@ -8,7 +8,7 @@ using System.Windows.Forms;
 
 namespace RTC
 {
-	public partial class RTC_VmdGen_Form : ComponentForm
+	public partial class RTC_VmdGen_Form : ComponentForm, IAutoColorize
 	{
 		public new void HandleMouseDown(object s, MouseEventArgs e) => base.HandleMouseDown(s, e);
 		public new void HandleFormClosing(object s, FormClosingEventArgs e) => base.HandleFormClosing(s, e);
@@ -26,7 +26,7 @@ namespace RTC
 
 		private void btnSelectAll_Click(object sender, EventArgs e)
 		{
-			RTC_Core.mdForm.RefreshDomainsAndKeepSelected();
+			S.GET<RTC_MemoryDomains_Form>().RefreshDomainsAndKeepSelected();
 
 			cbSelectedMemoryDomain.Items.Clear();
 			cbSelectedMemoryDomain.Items.AddRange(RTC_MemoryDomains.MemoryInterfaces.Keys.Where(it => !it.Contains("[V]")).ToArray());
@@ -185,13 +185,13 @@ namespace RTC
 			lbWordSizeValue.Text = "######";
 
 			//send to vmd pool menu
-			RTC_Core.vmdPoolForm.RefreshVMDs();
+			S.GET<RTC_VmdPool_Form>().RefreshVMDs();
 
 			//Selects back the VMD Pool menu
-			foreach(var item in RTC_Core.ecForm.mtForm.cbSelectBox.Items)
+			foreach(var item in S.GET<RTC_EngineConfig_Form>().mtForm.cbSelectBox.Items)
 				if(((dynamic)item).value is RTC_VmdPool_Form)
 				{
-					RTC_Core.ecForm.mtForm.cbSelectBox.SelectedItem = item;
+					S.GET<RTC_EngineConfig_Form>().mtForm.cbSelectBox.SelectedItem = item;
 					break;
 				}
 

@@ -12,7 +12,7 @@ using System.Diagnostics;
 
 namespace RTC
 {
-	public partial class RTC_SettingsNetCore_Form : ComponentForm
+	public partial class RTC_SettingsNetCore_Form : ComponentForm, IAutoColorize
 	{
 		public new void HandleMouseDown(object s, MouseEventArgs e) => base.HandleMouseDown(s, e);
 		public new void HandleFormClosing(object s, FormClosingEventArgs e) => base.HandleFormClosing(s, e);
@@ -66,7 +66,7 @@ namespace RTC
 
 		public void UpdateGameProtectionDelay()
 		{
-			RTC_GameProtection.BackupInterval = Convert.ToInt32(RTC_Core.sncForm.nmGameProtectionDelay.Value);
+			RTC_GameProtection.BackupInterval = Convert.ToInt32(S.GET<RTC_SettingsNetCore_Form>().nmGameProtectionDelay.Value);
 			if (RTC_GameProtection.isRunning)
 				RTC_GameProtection.Reset();
 		}

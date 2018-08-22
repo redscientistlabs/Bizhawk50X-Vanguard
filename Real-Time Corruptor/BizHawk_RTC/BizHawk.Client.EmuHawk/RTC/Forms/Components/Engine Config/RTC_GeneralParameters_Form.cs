@@ -10,7 +10,7 @@ using System.Windows.Forms;
 
 namespace RTC
 {
-	public partial class RTC_GeneralParameters_Form : ComponentForm
+	public partial class RTC_GeneralParameters_Form : ComponentForm, IAutoColorize
 	{
 		public new void HandleMouseDown(object s, MouseEventArgs e) => base.HandleMouseDown(s, e);
 		public new void HandleFormClosing(object s, FormClosingEventArgs e) => base.HandleFormClosing(s, e);
@@ -35,16 +35,16 @@ namespace RTC
 				if (nmIntensity.Value != RTC_Core.Intensity)
 					nmIntensity.Value = RTC_Core.Intensity;
 
-				if (RTC_Core.ghForm.nmIntensity.Value != RTC_Core.Intensity)
-					RTC_Core.ghForm.nmIntensity.Value = RTC_Core.Intensity;
+				if (S.GET<RTC_GlitchHarvester_Form>().nmIntensity.Value != RTC_Core.Intensity)
+					S.GET<RTC_GlitchHarvester_Form>().nmIntensity.Value = RTC_Core.Intensity;
 
 				int fx = Convert.ToInt32(Math.Sqrt(value) * 2000d);
 
 				if (track_Intensity.Value != fx)
 					track_Intensity.Value = fx;
 
-				if (RTC_Core.ghForm.track_Intensity.Value != fx)
-					RTC_Core.ghForm.track_Intensity.Value = fx;
+				if (S.GET<RTC_GlitchHarvester_Form>().track_Intensity.Value != fx)
+					S.GET<RTC_GlitchHarvester_Form>().track_Intensity.Value = fx;
 
 				DontUpdateIntensity = false;
 			}

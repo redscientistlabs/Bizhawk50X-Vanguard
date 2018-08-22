@@ -10,7 +10,7 @@ using System.Windows.Forms;
 
 namespace RTC
 {
-	public partial class RTC_MemoryDomains_Form : ComponentForm
+	public partial class RTC_MemoryDomains_Form : ComponentForm, IAutoColorize
 	{
 		public new void HandleMouseDown(object s, MouseEventArgs e) => base.HandleMouseDown(s, e);
 		public new void HandleFormClosing(object s, FormClosingEventArgs e) => base.HandleFormClosing(s, e);
