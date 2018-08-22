@@ -15,11 +15,8 @@ svnrev.cs
 !/output/RTC/**
 !/output/RTC/
 /output/RTC/PARAMS/*
-/output/RTC/MEMORYDUMPS/*
-/output/RTC/TEMP/*
-/output/RTC/TEMP2/*
-/output/RTC/TEMP3/*
-/output/RTC/TEMP4/*
+/output/RTC/WORKING/*
+
 !/output/*.bat
 !/output/AutoKillSwitch.exe
 

@@ -141,7 +141,7 @@ namespace RTC
 			//Clean out the working folders
 			if (!RTC_Hooks.isRemoteRTC)
 			{
-				Stockpile.EmptyFolder(RTC_Core.workingDir);
+				Stockpile.EmptyFolder("\\WORKING\\");
 			}
 
 			Application.Exit();

@@ -685,7 +685,7 @@ namespace RTC
 			Stockpile sks = new Stockpile(dgvStockpile);
 			if (Stockpile.Save(sks))
 			{
-				sendCurrentStockpileToTemp();
+				sendCurrentStockpileToSKS();
 				S.GET<RTC_GlitchHarvester_Form>().btnSaveStockpile.Enabled = true;
 				S.GET<RTC_GlitchHarvester_Form>().btnSaveStockpile.BackColor = Color.Tomato;
 				S.GET<RTC_GlitchHarvester_Form>().btnSaveStockpile.ForeColor = Color.Black;
@@ -700,7 +700,7 @@ namespace RTC
 
 			Stockpile sks = new Stockpile(dgvStockpile);
 			if (Stockpile.Save(sks, true))
-				sendCurrentStockpileToTemp();
+				sendCurrentStockpileToSKS();
 
 			RTC_Core.StartSound();
 		}
@@ -1104,7 +1104,7 @@ namespace RTC
 					return;
 
 				//clean temp folder
-				Stockpile.EmptyFolder("TEMP");
+				Stockpile.EmptyFolder("\\WORKING\\TEMP");
 
 				for (int i = 1; i < 41; i++)
 				{
@@ -1115,9 +1115,26 @@ namespace RTC
 
 					string statefilename = key.GameName + "." + key.ParentKey + ".timejump.State"; // get savestate name
 					
-					if (!File.Exists(RTC_Core.workingDir + "\\" + key.StateLocation.ToString() + "\\" + statefilename))
-						File.Copy(RTC_Core.workingDir + "\\" + key.StateLocation.ToString() + "\\" +  statefilename, RTC_Core.rtcDir + "\\TEMP\\" + statefilename); // copy savestates to temp folder
+					if (File.Exists(RTC_Core.workingDir + "\\" + key.StateLocation.ToString() + "\\" + statefilename))
+						File.Copy(RTC_Core.workingDir + "\\" + key.StateLocation.ToString() + "\\" +  statefilename, RTC_Core.workingDir + "\\TEMP\\" + statefilename); // copy savestates to temp folder
+					else
+					{
+						MessageBox.Show("Couldn't find savestate " + RTC_Core.workingDir + "\\" +
+						                key.StateLocation.ToString() + "\\" + statefilename +
+						                "!\n\n. This is savestate index " + i + 1 + ".\nAborting save");
+						Stockpile.EmptyFolder("\\WORKING\\TEMP");
+						return;
+					}
 
+				}
+
+				//Use two separate loops here in case the first one aborts. We don't want to update the StateLocation unless we know we're good
+				for (int i = 1; i < 41; i++)
+				{
+					StashKey key = ssk.StashKeys[i];
+
+					if (key == null)
+						continue;
 					key.StateLocation = StashKeySavestateLocation.SSK;
 				}
 
@@ -1137,12 +1154,17 @@ namespace RTC
 
 				string tempFilename = Filename + ".temp";
 
-				System.IO.Compression.ZipFile.CreateFromDirectory(RTC_Core.rtcDir + "\\TEMP\\", tempFilename, System.IO.Compression.CompressionLevel.Fastest, false);
+				System.IO.Compression.ZipFile.CreateFromDirectory(RTC_Core.workingDir + "\\TEMP\\", tempFilename, System.IO.Compression.CompressionLevel.Fastest, false);
 
 				if (File.Exists(Filename))
 					File.Delete(Filename);
 
 				File.Move(tempFilename, Filename);
+
+				//Move all the files from temp into SSK
+				Stockpile.EmptyFolder("\\WORKING\\SSK");
+				foreach (string file in Directory.GetFiles(RTC_Core.workingDir + "\\TEMP"))
+					File.Move(file, RTC_Core.workingDir + "\\SSK\\" + (file.Substring(file.LastIndexOf("\\") + 1, file.Length - (file.LastIndexOf("\\") + 1))));
 			}
 			catch(Exception ex)
 			{
@@ -1179,10 +1201,11 @@ namespace RTC
 
 			try
 			{
-				Stockpile.EmptyFolder("TEMP");
-				Stockpile.Extract(filename, "SKS", "keys.xml");
+				Stockpile.EmptyFolder("\\WORKING\\TEMP");
+				if (!Stockpile.Extract(filename, "\\WORKING\\SSK", "keys.xml"))
+					return;
 
-				using (FileStream fs = File.Open(RTC_Core.rtcDir + "\\SKS\\keys.xml", FileMode.OpenOrCreate))
+				using (FileStream fs = File.Open(RTC_Core.workingDir + "\\SSK\\keys.xml", FileMode.OpenOrCreate))
 				{
 					XmlSerializer xs = new XmlSerializer(typeof(SaveStateKeys));
 					ssk = (SaveStateKeys)xs.Deserialize(fs);
@@ -1196,7 +1219,6 @@ namespace RTC
 			}
 
 			
-			// repopulating savestates out of SKS folder
 			for (int i = 1; i < 41; i++)
 			{
 				StashKey key = ssk.StashKeys[i];
@@ -1332,12 +1354,11 @@ namespace RTC
 			RTC_NetCore.HugeOperationEnd(token);
 		}
 
-		private void sendCurrentStockpileToTemp()
+		private void sendCurrentStockpileToSKS()
 		{
 			foreach (DataGridViewRow dataRow in S.GET<RTC_GlitchHarvester_Form>().dgvStockpile.Rows)
 			{
 				StashKey sk = (StashKey)dataRow.Cells["Item"].Value;
-				sk.RomFilename = RTC_Core.rtcDir + "\\SKS\\" + RTC_Extensions.getShortFilenameFromPath(sk.RomFilename);
 			}
 		}
 
@@ -1499,6 +1520,7 @@ namespace RTC
 
 						if (RTC_StockpileManager.SavestateStashkeyDico.ContainsKey(key))
 							RTC_StockpileManager.SavestateStashkeyDico.Remove(key);
+
 					}
 
 					RTC_StockpileManager.currentSavestateKey = null;
