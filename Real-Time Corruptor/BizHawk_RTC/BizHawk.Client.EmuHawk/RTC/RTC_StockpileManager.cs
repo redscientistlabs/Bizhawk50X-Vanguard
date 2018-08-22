@@ -342,6 +342,8 @@ namespace RTC
 			string GameSystem = sk.SystemName;
 			string GameName = sk.GameName;
 			string Key = sk.ParentKey;
+			StashKeySavestateLocation StateLocation = sk.StateLocation;
+
 			bool GameHasChanged = false;
 			string TheoricalSaveStateFilename;
 
@@ -367,10 +369,7 @@ namespace RTC
 
 			RTC_Core.StartSound();
 
-			if (!GameHasChanged)
-				TheoricalSaveStateFilename = RTC_Core.bizhawkDir + "\\" + GameSystem + "\\State\\" + GameName + "." + Key + ".timejump.State";
-			else
-				TheoricalSaveStateFilename = RTC_Core.bizhawkDir + "\\" + RTC_Core.EmuFolderCheck(RTC_Hooks.BIZHAWK_GET_FILESYSTEMCORENAME()) + "\\State\\" + RTC_Hooks.BIZHAWK_GET_FILESYSTEMGAMENAME() + "." + Key + ".timejump.State";
+			TheoricalSaveStateFilename = RTC_Core.workingDir + "\\" + StateLocation.ToString() + "\\" + GameName + "." + Key + ".timejump.State";
 
 			if (File.Exists(TheoricalSaveStateFilename))
 			{

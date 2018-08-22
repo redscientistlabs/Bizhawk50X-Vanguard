@@ -861,25 +861,15 @@ namespace RTC
 
 			string quickSlotName = Key + ".timejump";
 
-			//string prefix = (string)SendCommandRTC(new RTC_Command(CommandType.REMOTE_DOMAINS_SYSTEMPREFIX), true);
 			string prefix = RTC_Hooks.BIZHAWK_GET_SAVESTATEPREFIX();
+			prefix = prefix.Substring(prefix.LastIndexOf('\\') + 1);
 
-			var path = prefix + "." + quickSlotName + ".State";
+			var path = RTC_Core.workingDir + "\\SESSION\\" + prefix + "." + quickSlotName + ".State";
 
 			var file = new FileInfo(path);
 			if (file.Directory != null && file.Directory.Exists == false)
 				file.Directory.Create();
 
-			//Filtering out filename parts
-			path = path.Replace(".Performance.", ".");
-			path = path.Replace(".Compatibility.", ".");
-			path = path.Replace(".QuickNes.", ".");
-			path = path.Replace(".NesHawk.", ".");
-			path = path.Replace(".VBA-Next.", ".");
-			path = path.Replace(".mGBA.", ".");
-			path = path.Replace(".Snes9x.", ".");
-			path = path.Replace(".Gambatte.", ".");
-			path = path.Replace(".GBHawk.", ".");
 
 			if (threadSave)
 			{
@@ -914,21 +904,11 @@ namespace RTC
 
 				string quickSlotName = Key + ".timejump";
 
-				//string prefix = (string)SendCommandRTC(new RTC_Command(CommandType.REMOTE_DOMAINS_SYSTEMPREFIX), true);
 				string prefix = RTC_Hooks.BIZHAWK_GET_SAVESTATEPREFIX();
+				prefix = prefix.Substring(prefix.LastIndexOf('\\') + 1);
 
-				var path = prefix + "." + quickSlotName + ".State";
+				var path = RTC_Core.workingDir + "\\SESSION\\" + prefix + "." + quickSlotName + ".State";
 
-				//Filtering out parts
-				path = path.Replace(".Performance.", ".");
-				path = path.Replace(".Compatibility.", ".");
-				path = path.Replace(".QuickNes.", ".");
-				path = path.Replace(".NesHawk.", ".");
-				path = path.Replace(".VBA-Next.", ".");
-				path = path.Replace(".mGBA.", ".");
-				path = path.Replace(".Snes9x.", ".");
-				path = path.Replace(".Gambatte.", ".");
-				path = path.Replace(".GBHawk.", ".");
 
 				if (File.Exists(path) == false)
 				{

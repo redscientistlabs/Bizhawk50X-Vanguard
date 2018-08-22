@@ -130,7 +130,7 @@ namespace RTC
 			for (int i = 0; i < allRoms.Count; i++)
 			{
 				string rom = allRoms[i];
-				string romTempfilename = RTC_Core.rtcDir + "\\TEMP\\" + (rom.Substring(rom.LastIndexOf("\\") + 1, rom.Length - (rom.LastIndexOf("\\") + 1)));
+				string romTempfilename = RTC_Core.workingDir + "\\TEMP\\" + (rom.Substring(rom.LastIndexOf("\\") + 1, rom.Length - (rom.LastIndexOf("\\") + 1)));
 
 				if (!rom.Contains("\\"))
 					rom = RTC_Core.rtcDir + "\\SKS\\" + rom;
@@ -145,32 +145,34 @@ namespace RTC
 					File.Copy(rom, romTempfilename);
 			}
 
-			//clean SKS folder
-			EmptyFolder("sks");
+			//clean TEMP folder
+			//EmptyFolder("SKS");
 
-			//Send the filtered files from temp to sks
-			foreach (string file in Directory.GetFiles(RTC_Core.rtcDir + "\\TEMP"))
-				File.Move(file, RTC_Core.rtcDir + "\\SKS\\" + (file.Substring(file.LastIndexOf("\\") + 1, file.Length - (file.LastIndexOf("\\") + 1))));
+			//Send the filtered files from wherever they are to temp
+			//foreach (string file in Directory.GetFiles(RTC_Core.rtcDir + "\\TEMP"))
+			//	File.Move(file, RTC_Core.rtcDir + "\\SKS\\" + (file.Substring(file.LastIndexOf("\\") + 1, file.Length - (file.LastIndexOf("\\") + 1))));
 
 			//clean temp folder 
-			EmptyFolder("TEMP");
+			//EmptyFolder("TEMP");
 
 			foreach (StashKey key in sks.StashKeys)
 			{
 				string statefilename = key.GameName + "." + key.ParentKey + ".timejump.State"; // get savestate name
 
-				if (!File.Exists(RTC_Core.rtcDir + "\\SKS\\" + statefilename))
-					File.Copy(RTC_Core.bizhawkDir + "\\" + key.SystemName + "\\State\\" + statefilename, RTC_Core.rtcDir + "\\SKS\\" + statefilename); // copy savestates to temp folder
+				File.Copy(RTC_Core.workingDir + "\\" + key.StateLocation + "\\" + statefilename, RTC_Core.workingDir + "\\TEMP\\" + statefilename); // copy savestates to temp folder
 			}
 
 			if (File.Exists(RTC_Core.bizhawkDir + "\\config.ini"))
-				File.Copy(RTC_Core.bizhawkDir + "\\config.ini", RTC_Core.rtcDir + "\\SKS\\config.ini");
+				File.Copy(RTC_Core.bizhawkDir + "\\config.ini", RTC_Core.workingDir + "\\TEMP\\config.ini");
 
 			foreach (StashKey sk in sks.StashKeys)
+			{
 				sk.RomFilename = RTC_Extensions.getShortFilenameFromPath(sk.RomFilename);
+				sk.StateLocation = StashKeySavestateLocation.SKS;
+			}
 
 			//creater stockpile.xml to temp folder from stockpile object
-			using (FileStream fs = File.Open(RTC_Core.rtcDir + "\\SKS\\stockpile.xml", FileMode.OpenOrCreate))
+			using (FileStream fs = File.Open(RTC_Core.workingDir + "\\TEMP\\stockpile.xml", FileMode.OpenOrCreate))
 			{
 				XmlSerializer xs = new XmlSerializer(typeof(Stockpile));
 				xs.Serialize(fs, sks);
@@ -582,6 +584,7 @@ namespace RTC
 		public string StateShortFilename = null;
 		public string StateFilename = null;
 		public byte[] StateData = null;
+		public StashKeySavestateLocation StateLocation = StashKeySavestateLocation.SESSION;
 
 		public string SystemName;
 		public string SystemDeepName;

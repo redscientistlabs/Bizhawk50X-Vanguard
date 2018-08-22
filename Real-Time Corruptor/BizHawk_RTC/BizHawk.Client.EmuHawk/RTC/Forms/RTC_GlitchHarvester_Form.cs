@@ -1114,9 +1114,11 @@ namespace RTC
 						continue;
 
 					string statefilename = key.GameName + "." + key.ParentKey + ".timejump.State"; // get savestate name
+					
+					if (!File.Exists(RTC_Core.workingDir + "\\" + key.StateLocation.ToString() + "\\" + statefilename))
+						File.Copy(RTC_Core.workingDir + "\\" + key.StateLocation.ToString() + "\\" +  statefilename, RTC_Core.rtcDir + "\\TEMP\\" + statefilename); // copy savestates to temp folder
 
-					if (!File.Exists(RTC_Core.workingDir + "\\TEMP\\" + statefilename))
-						File.Copy(RTC_Core.workingDir + "\\SESSION\\" +  statefilename, RTC_Core.rtcDir + "\\TEMP\\" + statefilename); // copy savestates to temp folder
+					key.StateLocation = StashKeySavestateLocation.SSK;
 				}
 
 				//creater stockpile.xml to temp folder from stockpile object
@@ -1193,6 +1195,7 @@ namespace RTC
 				return;
 			}
 
+			
 			// repopulating savestates out of SKS folder
 			for (int i = 1; i < 41; i++)
 			{
@@ -1202,11 +1205,8 @@ namespace RTC
 					continue;
 
 				string statefilename = key.GameName + "." + key.ParentKey + ".timejump.State"; // get savestate name
-				string newStatePath = RTC_Core.workingDir + "\\SESSION\\" + statefilename;
+				string newStatePath = RTC_Core.workingDir + "\\" + key.StateLocation + "\\" +  statefilename;
 				string shortRomFilename = key.RomFilename.Substring(key.RomFilename.LastIndexOf("\\") + 1);
-
-				if (!File.Exists(newStatePath))
-					File.Copy(RTC_Core.workingDir + "\\SKS\\" + statefilename, newStatePath); // copy savestates to	session folder
 
 				key.StateFilename = newStatePath;
 			}

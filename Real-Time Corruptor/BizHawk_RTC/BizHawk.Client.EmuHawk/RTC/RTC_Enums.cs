@@ -11,7 +11,6 @@
 		NONE
 	}
 
-
 	public enum BlastUnitSource
 	{
 		VALUE,
@@ -121,5 +120,12 @@
 	{
 		PROCESS,
 		ASSEMBLY
+	}
+	public enum StashKeySavestateLocation
+	{
+		SKS,
+		SSK,
+		MP,
+		SESSION
 	}
 }

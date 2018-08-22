@@ -503,7 +503,7 @@ namespace RTC
 
 		public static string BIZHAWK_GET_SAVESTATEPREFIX()
 		{
-			return PathManager.SaveStatePrefix(Global.Game);
+			return PathManager.FilesystemSafeName(Global.Game);
 		}
 
 		public static void BIZHAWK_LOADSTATE(string path, string quickSlotName)
