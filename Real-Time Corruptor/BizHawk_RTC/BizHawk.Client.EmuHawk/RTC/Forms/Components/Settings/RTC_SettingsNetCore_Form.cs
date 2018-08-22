@@ -27,18 +27,18 @@ namespace RTC
 			switch (cbCrashSoundEffect.SelectedIndex)
 			{
 				case 0:
-					var PlatesHdFiles = Directory.GetFiles(RTC_Core.rtcDir + "\\ASSETS\\PLATESHD");
+					var PlatesHdFiles = Directory.GetFiles(RTC_Core.assetsDir + "\\PLATESHD\\");
 					RTC_NetCoreSettings.LoadedSounds = PlatesHdFiles.Select(it => new SoundPlayer(it)).ToArray();
 					break;
 				case 1:
-					RTC_NetCoreSettings.LoadedSounds = new SoundPlayer[] { new SoundPlayer(RTC_Core.rtcDir + "\\ASSETS\\crash.wav") };
+					RTC_NetCoreSettings.LoadedSounds = new SoundPlayer[] { new SoundPlayer(RTC_Core.assetsDir + "\\crash.wav") };
 					break;
 
 				case 2:
 					RTC_NetCoreSettings.LoadedSounds = null;
 					break;
 				case 3:
-					var CrashSoundsFiles = Directory.GetFiles(RTC_Core.rtcDir + "\\ASSETS\\CRASHSOUNDS");
+					var CrashSoundsFiles = Directory.GetFiles(RTC_Core.assetsDir + "\\CRASHSOUNDS");
 					RTC_NetCoreSettings.LoadedSounds = CrashSoundsFiles.Select(it => new SoundPlayer(it)).ToArray();
 					break;
 			}

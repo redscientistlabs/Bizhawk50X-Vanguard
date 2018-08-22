@@ -135,7 +135,7 @@ namespace RTC
 
 		public byte[] GetDumpFromFile(string key)
 		{
-			return File.ReadAllBytes(RTC_Core.rtcDir + "\\MEMORYDUMPS\\" + key + ".dmp");
+			return File.ReadAllBytes(RTC_Core.workingDir + "\\MEMORYDUMPS\\" + key + ".dmp");
 		}
 
 		public long[] CapActiveTable(long[] tempActiveTable)
@@ -306,7 +306,7 @@ namespace RTC
 
 			ActiveTableDumps = new List<string>();
 
-			foreach (string file in Directory.GetFiles(RTC_Core.rtcDir + "\\MEMORYDUMPS"))
+			foreach (string file in Directory.GetFiles(RTC_Core.workingDir + "\\MEMORYDUMPS"))
 				File.Delete(file);
 
 			currentFilename = null;

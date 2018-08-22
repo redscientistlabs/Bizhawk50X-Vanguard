@@ -8,7 +8,6 @@ using System.Linq;
 using System.Net;
 using System.Threading;
 using System.Windows.Forms;
-using BizHawk.Client.EmuHawk;
 using Newtonsoft.Json;
 
 /*
@@ -30,9 +29,11 @@ namespace RTC
 		//Directories
 		public static string bizhawkDir = Directory.GetCurrentDirectory();
 
-		public static string rtcDir = bizhawkDir + "\\RTC";
-		public static string paramsDir = rtcDir + "\\PARAMS";
-		public static string listsDir = rtcDir + "\\LISTS";
+		public static string rtcDir = bizhawkDir + "\\RTC\\";
+		public static string workingDir = rtcDir + "\\WORKING\\";
+		public static string assetsDir = rtcDir + "\\ASSETS\\";
+		public static string paramsDir = rtcDir + "\\PARAMS\\";
+		public static string listsDir = rtcDir + "\\LISTS\\";
 
 		//Engine Values
 		public static CorruptionEngine SelectedEngine = CorruptionEngine.NIGHTMARE;
@@ -191,15 +192,10 @@ namespace RTC
 				p.Start();
 			}
 
-			//Clean out the temp folders
+			//Clean out the working folders
 			if (!RTC_Hooks.isRemoteRTC)
 			{
-				Stockpile.EmptyFolder("TEMP");
-				Stockpile.EmptyFolder("TEMP2");
-				Stockpile.EmptyFolder("TEMP3");
-				Stockpile.EmptyFolder("TEMP4");
-				Stockpile.EmptyFolder("TEMP5");
-				Stockpile.EmptyFolder("MEMORYDUMPS");
+				Stockpile.EmptyFolder(RTC_Core.workingDir);
 			}
 
 			Application.Exit();
@@ -319,29 +315,29 @@ namespace RTC
 
 			standaloneForm = _standaloneForm;
 
-			if (!Directory.Exists(RTC_Core.rtcDir + "\\TEMP\\"))
-				Directory.CreateDirectory(RTC_Core.rtcDir + "\\TEMP\\");
+			if (!Directory.Exists(RTC_Core.workingDir))
+				Directory.CreateDirectory(RTC_Core.workingDir);
 
-			if (!Directory.Exists(RTC_Core.rtcDir + "\\TEMP2\\"))
-				Directory.CreateDirectory(RTC_Core.rtcDir + "\\TEMP2\\");
+			if (!Directory.Exists(RTC_Core.workingDir + "\\TEMP\\"))
+				Directory.CreateDirectory(RTC_Core.workingDir + "\\TEMP\\");
 
-			if (!Directory.Exists(RTC_Core.rtcDir + "\\TEMP3\\"))
-				Directory.CreateDirectory(RTC_Core.rtcDir + "\\TEMP3\\");
+			if (!Directory.Exists(RTC_Core.workingDir + "\\SKS\\"))
+				Directory.CreateDirectory(RTC_Core.workingDir + "\\SKS\\");
 
-			if (!Directory.Exists(RTC_Core.rtcDir + "\\TEMP4\\"))
-				Directory.CreateDirectory(RTC_Core.rtcDir + "\\TEMP4\\");
+			if (!Directory.Exists(RTC_Core.workingDir + "\\SSK\\"))
+				Directory.CreateDirectory(RTC_Core.workingDir + "\\SSK\\");
 
-			if (!Directory.Exists(RTC_Core.rtcDir + "\\TEMP5\\"))
-				Directory.CreateDirectory(RTC_Core.rtcDir + "\\TEMP5\\");
+			if (!Directory.Exists(RTC_Core.workingDir + "\\SESSION\\"))
+				Directory.CreateDirectory(RTC_Core.workingDir + "\\SESSION\\");
 
-			if (!Directory.Exists(RTC_Core.rtcDir + "\\ASSETS\\CRASHSOUNDS"))
-				Directory.CreateDirectory(RTC_Core.rtcDir + "\\ASSETS\\CRASHSOUNDS");
+			if (!Directory.Exists(RTC_Core.workingDir + "\\MEMORYDUMPS\\"))
+				Directory.CreateDirectory(RTC_Core.workingDir + "\\MEMORYDUMPS\\");
+
+			if (!Directory.Exists(RTC_Core.assetsDir + "\\CRASHSOUNDS\\"))
+				Directory.CreateDirectory(RTC_Core.assetsDir + "\\CRASHSOUNDS\\");
 
 			if (!Directory.Exists(RTC_Core.rtcDir + "\\PARAMS\\"))
 				Directory.CreateDirectory(RTC_Core.rtcDir + "\\PARAMS\\");
-
-			if (!Directory.Exists(RTC_Core.rtcDir + "\\MEMORYDUMPS\\"))
-				Directory.CreateDirectory(RTC_Core.rtcDir + "\\MEMORYDUMPS\\");
 
 			if (!Directory.Exists(RTC_Core.rtcDir + "\\LISTS\\"))
 				Directory.CreateDirectory(RTC_Core.rtcDir + "\\LISTS\\");
@@ -854,19 +850,19 @@ namespace RTC
 
 			while (newNumber == lastLoaderRom)
 			{
-				int nbNesFiles = Directory.GetFiles(RTC_Core.rtcDir + "\\ASSETS\\", "*.nes").Length;
+				int nbNesFiles = Directory.GetFiles(RTC_Core.assetsDir, "*.nes").Length;
 				
 				newNumber = RTC_Core.RND.Next(1, nbNesFiles + 1);
 
 				if (newNumber != lastLoaderRom)
 				{
-					if (File.Exists(RTC_Core.rtcDir + "\\ASSETS\\" + "overridedefault.nes"))
-						RTC_Core.LoadRom(RTC_Core.rtcDir + "\\ASSETS\\" + "overridedefault.nes");
+					if (File.Exists(RTC_Core.assetsDir + "overridedefault.nes"))
+						RTC_Core.LoadRom(RTC_Core.assetsDir + "overridedefault.nes");
 					//Please ignore
 					else if (RTC_Core.RND.Next(0, 420) == 7)
-						RTC_Core.LoadRom(RTC_Core.rtcDir + "\\ASSETS\\" + "gd.fds");
+						RTC_Core.LoadRom(RTC_Core.assetsDir + "gd.fds");
 					else
-						RTC_Core.LoadRom(RTC_Core.rtcDir + "\\ASSETS\\" + newNumber.ToString() + "default.nes");
+						RTC_Core.LoadRom(RTC_Core.assetsDir + newNumber.ToString() + "default.nes");
 
 					lastLoaderRom = newNumber;
 					break;

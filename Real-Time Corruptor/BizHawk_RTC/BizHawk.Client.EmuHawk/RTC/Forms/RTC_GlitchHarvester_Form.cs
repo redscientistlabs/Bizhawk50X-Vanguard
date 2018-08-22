@@ -1103,9 +1103,8 @@ namespace RTC
 				else
 					return;
 
-				//clean temp4 folder
-				foreach (string file in Directory.GetFiles(RTC_Core.rtcDir + "\\TEMP4"))
-					File.Delete(file);
+				//clean temp folder
+				Stockpile.EmptyFolder("TEMP");
 
 				for (int i = 1; i < 41; i++)
 				{
@@ -1116,13 +1115,13 @@ namespace RTC
 
 					string statefilename = key.GameName + "." + key.ParentKey + ".timejump.State"; // get savestate name
 
-					if (!File.Exists(RTC_Core.rtcDir + "\\TEMP4\\" + statefilename))
-						File.Copy(RTC_Core.bizhawkDir + "\\" + key.SystemName + "\\State\\" + statefilename, RTC_Core.rtcDir + "\\TEMP4\\" + statefilename); // copy savestates to temp folder
+					if (!File.Exists(RTC_Core.workingDir + "\\TEMP\\" + statefilename))
+						File.Copy(RTC_Core.workingDir + "\\SESSION\\" +  statefilename, RTC_Core.rtcDir + "\\TEMP\\" + statefilename); // copy savestates to temp folder
 				}
 
 				//creater stockpile.xml to temp folder from stockpile object
 
-				using (FileStream FS = File.Open(RTC_Core.rtcDir + "\\TEMP4\\keys.xml", FileMode.OpenOrCreate))
+				using (FileStream FS = File.Open(RTC_Core.workingDir + "\\TEMP\\keys.xml", FileMode.OpenOrCreate))
 				{
 					XmlSerializer xs = new XmlSerializer(typeof(SaveStateKeys));
 
@@ -1136,7 +1135,7 @@ namespace RTC
 
 				string tempFilename = Filename + ".temp";
 
-				System.IO.Compression.ZipFile.CreateFromDirectory(RTC_Core.rtcDir + "\\TEMP4\\", tempFilename, System.IO.Compression.CompressionLevel.Fastest, false);
+				System.IO.Compression.ZipFile.CreateFromDirectory(RTC_Core.rtcDir + "\\TEMP\\", tempFilename, System.IO.Compression.CompressionLevel.Fastest, false);
 
 				if (File.Exists(Filename))
 					File.Delete(Filename);
@@ -1178,9 +1177,10 @@ namespace RTC
 
 			try
 			{
-				Stockpile.Extract(filename, "TEMP4", "keys.xml");
+				Stockpile.EmptyFolder("TEMP");
+				Stockpile.Extract(filename, "SKS", "keys.xml");
 
-				using (FileStream fs = File.Open(RTC_Core.rtcDir + "\\TEMP4\\keys.xml", FileMode.OpenOrCreate))
+				using (FileStream fs = File.Open(RTC_Core.rtcDir + "\\SKS\\keys.xml", FileMode.OpenOrCreate))
 				{
 					XmlSerializer xs = new XmlSerializer(typeof(SaveStateKeys));
 					ssk = (SaveStateKeys)xs.Deserialize(fs);
@@ -1193,7 +1193,7 @@ namespace RTC
 				return;
 			}
 
-			// repopulating savestates out of temp4 folder
+			// repopulating savestates out of SKS folder
 			for (int i = 1; i < 41; i++)
 			{
 				StashKey key = ssk.StashKeys[i];
@@ -1202,13 +1202,12 @@ namespace RTC
 					continue;
 
 				string statefilename = key.GameName + "." + key.ParentKey + ".timejump.State"; // get savestate name
-				string newStatePath = RTC_Core.bizhawkDir + "\\" + key.SystemName + "\\State\\" + statefilename;
+				string newStatePath = RTC_Core.workingDir + "\\SESSION\\" + statefilename;
 				string shortRomFilename = key.RomFilename.Substring(key.RomFilename.LastIndexOf("\\") + 1);
 
-				if (!File.Exists(RTC_Core.bizhawkDir + "\\" + key.SystemName + "\\State\\" + statefilename))
-					File.Copy(RTC_Core.rtcDir + "\\TEMP4\\" + statefilename, newStatePath); // copy savestates to temp folder
+				if (!File.Exists(newStatePath))
+					File.Copy(RTC_Core.workingDir + "\\SKS\\" + statefilename, newStatePath); // copy savestates to	session folder
 
-				//key.RomFilename = RTC_Core.rtcDir + "\\TEMP4\\" + shortRomFilename;
 				key.StateFilename = newStatePath;
 			}
 

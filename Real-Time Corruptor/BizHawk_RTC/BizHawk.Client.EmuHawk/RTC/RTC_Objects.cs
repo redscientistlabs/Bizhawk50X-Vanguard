@@ -123,14 +123,10 @@ namespace RTC
 					}
 				}
 
-			//clean temp2 folder
-			foreach (string file in Directory.GetFiles(RTC_Core.rtcDir + "\\TEMP2"))
-			{
-				File.SetAttributes(file, FileAttributes.Normal);
-				File.Delete(file);
-			}
+			//clean temp folder
+			EmptyFolder("TEMP");
 
-			//populating temp2 folder with roms
+			//populating temp folder with roms
 			for (int i = 0; i < allRoms.Count; i++)
 			{
 				string rom = allRoms[i];
@@ -149,19 +145,15 @@ namespace RTC
 					File.Copy(rom, romTempfilename);
 			}
 
-			//clean temp folder
-			EmptyFolder("TEMP");
-			//foreach (string file in Directory.GetFiles(RTC_Core.rtcDir + "\\TEMP"))
-			//    File.Delete(file);
+			//clean SKS folder
+			EmptyFolder("sks");
 
-			//sending back filtered files from temp2 folder to temp
-			foreach (string file in Directory.GetFiles(RTC_Core.rtcDir + "\\TEMP2"))
+			//Send the filtered files from temp to sks
+			foreach (string file in Directory.GetFiles(RTC_Core.rtcDir + "\\TEMP"))
 				File.Move(file, RTC_Core.rtcDir + "\\SKS\\" + (file.Substring(file.LastIndexOf("\\") + 1, file.Length - (file.LastIndexOf("\\") + 1))));
 
-			//clean temp2 folder again
-			EmptyFolder("TEMP2");
-			//foreach (string file in Directory.GetFiles(RTC_Core.rtcDir + "\\TEMP2"))
-			//    File.Delete(file);
+			//clean temp folder 
+			EmptyFolder("TEMP");
 
 			foreach (StashKey key in sks.StashKeys)
 			{
@@ -236,7 +228,7 @@ namespace RTC
 
 			Guid token = RTC_NetCore.HugeOperationStart();
 
-			Extract(Filename, "TEMP", "stockpile.xml");
+			Extract(Filename, "sks", "stockpile.xml");
 
 			Stockpile sks;
 
@@ -338,13 +330,13 @@ namespace RTC
 		{
 			try
 			{
-				foreach (string file in Directory.GetFiles(RTC_Core.rtcDir + $"\\{folder}"))
+				foreach (string file in Directory.GetFiles(RTC_Core.workingDir + $"\\{folder}"))
 				{
 					File.SetAttributes(file, FileAttributes.Normal);
 					File.Delete(file);
 				}
 
-				foreach (string dir in Directory.GetDirectories(RTC_Core.rtcDir + $"\\{folder}"))
+				foreach (string dir in Directory.GetDirectories(RTC_Core.workingDir + $"\\{folder}"))
 					RecursiveDelete(new DirectoryInfo(dir));
 			}
 			catch (System.IO.IOException ex)
@@ -476,9 +468,7 @@ namespace RTC
 		public static void Import(string filename, bool corruptCloud)
 		{
 			//clean temp folder
-			EmptyFolder("TEMP3");
-			//foreach (string file in Directory.GetFiles(RTC_Core.rtcDir + "\\TEMP3"))
-			//    File.Delete(file);
+			EmptyFolder("TEMP");
 
 			if (filename == null)
 			{
@@ -509,7 +499,7 @@ namespace RTC
 			{
 				MessageBox.Show("The file could not be read properly");
 
-				EmptyFolder("TEMP3");
+				EmptyFolder("TEMP");
 
 				return;
 			}
@@ -559,11 +549,11 @@ namespace RTC
 				if (!file.Contains(".sk") && !file.Contains(".timejump.State"))
 					try
 					{
-						File.Copy(file, RTC_Core.rtcDir + "\\SKS\\" + file.Substring(file.LastIndexOf('\\'), file.Length - file.LastIndexOf('\\'))); // copy roms to temp
+						File.Copy(file, RTC_Core.rtcDir + "\\SKS\\" + file.Substring(file.LastIndexOf('\\'), file.Length - file.LastIndexOf('\\'))); // copy roms to sks folder
 					}
 					catch { }
 
-			EmptyFolder("TEMP3");
+			EmptyFolder("TEMP");
 
 			//fill list controls
 
