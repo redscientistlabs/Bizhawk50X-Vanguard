@@ -129,17 +129,8 @@ namespace RTC
 			if (S.GET<RTC_Standalone_Form>() != null)
 				S.GET<RTC_Standalone_Form>().Close();
 
-			if (!RTC_Hooks.isRemoteRTC && !RTC_Core.DontCleanSavestatesOnQuit && File.Exists(RTC_Core.bizhawkDir + "\\StateClean.bat")) //We force useless savestates to clear on quit to prevent disk usage to inflate too much
-			{
-				Process p = new Process();
-				p.StartInfo.FileName = RTC_Core.bizhawkDir + "\\StateClean.bat";
-				p.StartInfo.WindowStyle = ProcessWindowStyle.Hidden;
-				p.StartInfo.CreateNoWindow = true;
-				p.Start();
-			}
-
 			//Clean out the working folders
-			if (!RTC_Hooks.isRemoteRTC)
+			if (!RTC_Hooks.isRemoteRTC && !RTC_Core.DontCleanSavestatesOnQuit)
 			{
 				Stockpile.EmptyFolder("\\WORKING\\");
 			}
