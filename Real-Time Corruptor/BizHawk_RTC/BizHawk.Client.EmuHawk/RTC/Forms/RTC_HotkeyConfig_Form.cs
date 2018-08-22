@@ -4,7 +4,7 @@
 
 namespace RTC
 {
-	public partial class RTC_HotkeyConfig_Form : Form
+	public partial class RTC_HotkeyConfig_Form : Form, IAutoColorize
 	{
 		public RTC_HotkeyConfig_Form()
 		{

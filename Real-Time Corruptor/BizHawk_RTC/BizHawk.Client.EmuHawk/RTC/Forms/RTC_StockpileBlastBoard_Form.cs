@@ -5,7 +5,7 @@ using System.Windows.Forms;
 
 namespace RTC
 {
-	public partial class RTC_StockpileBlastBoard_Form : Form
+	public partial class RTC_StockpileBlastBoard_Form : Form, IAutoColorize
 	{
 		List<Button> allButtons = new List<Button>();
 		int btnWidth = 200;
@@ -37,13 +37,13 @@ namespace RTC
 
 			maxColumns = calculateMaxColumns();
 
-			if (RTC_Core.ghForm.dgvStockpile.Rows.Count == 0)
+			if (S.GET<RTC_GlitchHarvester_Form>().dgvStockpile.Rows.Count == 0)
 				lbEmptyStockpile.Visible = true;
 			else
 				lbEmptyStockpile.Visible = false;
 
 			double i = 0;
-			foreach (DataGridViewRow dataRow in RTC_Core.ghForm.dgvStockpile.Rows)
+			foreach (DataGridViewRow dataRow in S.GET<RTC_GlitchHarvester_Form>().dgvStockpile.Rows)
 			{
 				StashKey sk = (StashKey)dataRow.Cells["Item"].Value;
 

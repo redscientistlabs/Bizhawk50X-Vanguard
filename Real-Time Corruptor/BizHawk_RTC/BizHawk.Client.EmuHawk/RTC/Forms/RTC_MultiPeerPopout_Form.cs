@@ -8,7 +8,7 @@ using BizHawk.Client.EmuHawk;
 
 namespace RTC
 {
-	public partial class RTC_MultiPeerPopout_Form : Form
+	public partial class RTC_MultiPeerPopout_Form : Form, IAutoColorize
 	{
 		Size BizhawkMainformLastSize;
 		Point BizhawkMainformLastLocation;
@@ -28,12 +28,12 @@ namespace RTC
 		{
 			if (e.CloseReason != CloseReason.FormOwnerClosing)
 			{
-				if (RTC_Core.multiForm.btnSplitscreen.ForeColor == Color.Red)
-					RTC_Core.multiForm.btnSplitscreen_Click(sender, e);
+				if (S.GET<RTC_Multiplayer_Form>().btnSplitscreen.ForeColor == Color.Red)
+					S.GET<RTC_Multiplayer_Form>().btnSplitscreen_Click(sender, e);
 
-				RTC_Core.multiForm.btnPopoutPeerGameScreen.Visible = true;
-				RTC_Core.multiForm.pnPeerRedBar.Visible = true;
-				RTC_Core.multiForm.pbPeerScreen.Visible = true;
+				S.GET<RTC_Multiplayer_Form>().btnPopoutPeerGameScreen.Visible = true;
+				S.GET<RTC_Multiplayer_Form>().pnPeerRedBar.Visible = true;
+				S.GET<RTC_Multiplayer_Form>().pbPeerScreen.Visible = true;
 
 				e.Cancel = true;
 				this.Hide();

@@ -8,7 +8,7 @@ using System.Windows.Forms;
 
 namespace RTC
 {
-	public partial class RTC_Core_Form : Form // replace by : UserControl for panel
+	public partial class RTC_Core_Form : Form, IAutoColorize // replace by : UserControl for panel
 	{
 		public Form previousForm = null;
 		public Form activeForm = null;
@@ -106,8 +106,8 @@ namespace RTC
 			if (!btnGlitchHarvester.Text.Contains("○"))
 				btnGlitchHarvester.Text = "○ " + btnGlitchHarvester.Text;
 
-			RTC_Core.ghForm.Show();
-			RTC_Core.ghForm.Focus();
+			S.GET<RTC_GlitchHarvester_Form>().Show();
+			S.GET<RTC_GlitchHarvester_Form>().Focus();
 		}
 
 		private void RTC_Form_FormClosing(object sender, FormClosingEventArgs e)
@@ -148,8 +148,8 @@ namespace RTC
 
 		public void StartEasyMode(bool useTemplate)
 		{
-			if (RTC_Core.isStandalone && !RTC_Core.coreForm.cbUseGameProtection.Checked)
-				RTC_Core.coreForm.cbUseGameProtection.Checked = true;
+			if (RTC_Core.isStandalone && !S.GET<RTC_Core_Form>().cbUseGameProtection.Checked)
+				S.GET<RTC_Core_Form>().cbUseGameProtection.Checked = true;
 
 
 			if (useTemplate)
@@ -161,33 +161,33 @@ namespace RTC
 				{
 					case "NES":     //Nintendo Entertainment system
 						RTC_Core.SetEngineByName("Nightmare Engine");
-						RTC_Core.gpForm.Intensity = 2;
-						RTC_Core.gpForm.ErrorDelay = 1;
+						S.GET<RTC_GeneralParameters_Form>().Intensity = 2;
+						S.GET<RTC_GeneralParameters_Form>().ErrorDelay = 1;
 						break;
 
 					case "GB":      //Gameboy
 					case "GBC":     //Gameboy Color
 						RTC_Core.SetEngineByName("Nightmare Engine");
-						RTC_Core.gpForm.Intensity = 1;
-						RTC_Core.gpForm.ErrorDelay = 4;
+						S.GET<RTC_GeneralParameters_Form>().Intensity = 1;
+						S.GET<RTC_GeneralParameters_Form>().ErrorDelay = 4;
 						break;
 
 					case "SNES":    //Super Nintendo
 						RTC_Core.SetEngineByName("Nightmare Engine");
-						RTC_Core.gpForm.Intensity = 1;
-						RTC_Core.gpForm.ErrorDelay = 2;
+						S.GET<RTC_GeneralParameters_Form>().Intensity = 1;
+						S.GET<RTC_GeneralParameters_Form>().ErrorDelay = 2;
 						break;
 
 					case "GBA":     //Gameboy Advance
 						RTC_Core.SetEngineByName("Nightmare Engine");
-						RTC_Core.gpForm.Intensity = 1;
-						RTC_Core.gpForm.ErrorDelay = 1;
+						S.GET<RTC_GeneralParameters_Form>().Intensity = 1;
+						S.GET<RTC_GeneralParameters_Form>().ErrorDelay = 1;
 						break;
 
 					case "N64":     //Nintendo 64
 						RTC_Core.SetEngineByName("Vector Engine");
-						RTC_Core.gpForm.Intensity = 75;
-						RTC_Core.gpForm.ErrorDelay = 1;
+						S.GET<RTC_GeneralParameters_Form>().Intensity = 75;
+						S.GET<RTC_GeneralParameters_Form>().ErrorDelay = 1;
 						break;
 
 					case "SG":      //Sega SG-1000
@@ -238,7 +238,7 @@ namespace RTC
 		private void btnLogo_MouseClick(object sender, MouseEventArgs e)
 		{
 			if (RTC_Core.isStandalone)
-				ShowPanelForm(RTC_Core.csForm, false);
+				ShowPanelForm(S.GET<RTC_ConnectionStatus_Form>(), false);
 		}
 
 		private void btnEasyMode_MouseDown(object sender, MouseEventArgs e)
@@ -342,18 +342,18 @@ namespace RTC
 			}
 		}
 
-		public void btnEngineConfig_Click(object sender, EventArgs e) => ShowPanelForm(RTC_Core.ecForm);
+		public void btnEngineConfig_Click(object sender, EventArgs e) => ShowPanelForm(S.GET<RTC_EngineConfig_Form>());
 
-		private void btnSettings_Click(object sender, EventArgs e) => ShowPanelForm(RTC_Core.sForm);
+		private void btnSettings_Click(object sender, EventArgs e) => ShowPanelForm(S.GET<RTC_Settings_Form>());
 
-		private void btnStockPilePlayer_Click(object sender, EventArgs e) => ShowPanelForm(RTC_Core.spForm);
+		private void btnStockPilePlayer_Click(object sender, EventArgs e) => ShowPanelForm(S.GET<RTC_StockpilePlayer_Form>());
 
 		private void btnRTCMultiplayer_Click(object sender, EventArgs e)
 		{
 			if (RTC_Core.isStandalone)
 				MessageBox.Show("Multiplayer unsupported in Detached mode");
 			else
-				ShowPanelForm(RTC_Core.multiForm);
+				ShowPanelForm(S.GET<RTC_Multiplayer_Form>());
 		}
 
 		private void btnGpJumpBack_Click(object sender, EventArgs e)
@@ -398,7 +398,7 @@ namespace RTC
 		private void BlastRawStash()
 		{
 			RTC_Core.SendCommandToBizhawk(new RTC_Command(CommandType.ASYNCBLAST));
-			RTC_Core.ghForm.btnSendRaw_Click(null, null);
+			S.GET<RTC_GlitchHarvester_Form>().btnSendRaw_Click(null, null);
 		}
 
 		private void btnManualBlast_MouseDown(object sender, MouseEventArgs e)
@@ -430,10 +430,10 @@ namespace RTC
 		{
 			RTC_NetCore.HugeOperationReset();
 
-			ShowPanelForm(RTC_Core.csForm);
+			ShowPanelForm(S.GET<RTC_ConnectionStatus_Form>());
 
 			RTC.RTC_RPC.Heartbeat = false;
-			RTC.RTC_Core.coreForm.pbAutoKillSwitchTimeout.Value = RTC.RTC_Core.coreForm.pbAutoKillSwitchTimeout.Maximum;
+			RTC.S.GET<RTC_Core_Form>().pbAutoKillSwitchTimeout.Value = RTC.S.GET<RTC_Core_Form>().pbAutoKillSwitchTimeout.Maximum;
 			RTC.RTC_RPC.Freeze = true;
 
 			RTC_NetCoreSettings.PlayCrashSound(true);

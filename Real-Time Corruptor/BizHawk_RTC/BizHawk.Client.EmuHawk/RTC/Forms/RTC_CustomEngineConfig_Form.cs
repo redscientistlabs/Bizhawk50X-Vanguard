@@ -12,7 +12,7 @@ using System.Windows.Forms;
 
 namespace RTC
 {
-	public partial class RTC_CustomEngineConfig_Form : Form
+	public partial class RTC_CustomEngineConfig_Form : Form, IAutoColorize
 	{
 
 		private bool updatingMinMax = false;

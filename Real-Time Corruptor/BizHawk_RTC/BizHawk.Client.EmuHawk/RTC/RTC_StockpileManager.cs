@@ -33,7 +33,7 @@ namespace RTC
 			{
 				_isCorruptionApplied = value;
 
-				RTC_Core.ghForm.IsCorruptionApplied = value;
+				S.GET<RTC_GlitchHarvester_Form>().IsCorruptionApplied = value;
 			}
 		}
 
@@ -114,8 +114,8 @@ namespace RTC
 			if (currentGame == null || psk.GameName != currentGame) 
 			{
 				RTC_Core.LoadRom(psk.RomFilename, true);
-				RTC_Core.mdForm.RefreshDomains();
-				RTC_Core.mdForm.SetMemoryDomainsAllButSelectedDomains(RTC_MemoryDomains.GetBlacklistedDomains());
+				S.GET<RTC_MemoryDomains_Form>().RefreshDomains();
+				S.GET<RTC_MemoryDomains_Form>().SetMemoryDomainsAllButSelectedDomains(RTC_MemoryDomains.GetBlacklistedDomains());
 			}
 
 			var watch = System.Diagnostics.Stopwatch.StartNew();
@@ -145,13 +145,13 @@ namespace RTC
 			if (stashAfterOperation && bl != null)
 			{
 				StashHistory.Add(currentStashkey);
-				RTC_Core.ghForm.RefreshStashHistory();
-				RTC_Core.ghForm.dgvStockpile.ClearSelection();
+				S.GET<RTC_GlitchHarvester_Form>().RefreshStashHistory();
+				S.GET<RTC_GlitchHarvester_Form>().dgvStockpile.ClearSelection();
 
-				RTC_Core.ghForm.lbStashHistory.ClearSelected();
+				S.GET<RTC_GlitchHarvester_Form>().lbStashHistory.ClearSelected();
 
-				RTC_Core.ghForm.DontLoadSelectedStash = true;
-				RTC_Core.ghForm.lbStashHistory.SelectedIndex = RTC_Core.ghForm.lbStashHistory.Items.Count - 1;
+				S.GET<RTC_GlitchHarvester_Form>().DontLoadSelectedStash = true;
+				S.GET<RTC_GlitchHarvester_Form>().lbStashHistory.SelectedIndex = S.GET<RTC_GlitchHarvester_Form>().lbStashHistory.Items.Count - 1;
 			}
 
 			RTC_NetCore.HugeOperationEnd(token);
@@ -199,7 +199,7 @@ namespace RTC
 			if (stashAfterOperation)
 			{
 				StashHistory.Add(currentStashkey);
-				RTC_Core.ghForm.RefreshStashHistory();
+				S.GET<RTC_GlitchHarvester_Form>().RefreshStashHistory();
 			}
 
 			PostApplyStashkey();
@@ -297,7 +297,7 @@ namespace RTC
 				if (stashAfterOperation)
 				{
 					StashHistory.Add(currentStashkey);
-					RTC_Core.ghForm.RefreshStashHistory();
+					S.GET<RTC_GlitchHarvester_Form>().RefreshStashHistory();
 				}
 
 				RTC_NetCore.HugeOperationEnd(token);
@@ -474,7 +474,7 @@ namespace RTC
 
 		public static void StockpileChanged()
 		{
-			RTC_Core.sbForm.RefreshButtons();
+			S.GET<RTC_StockpileBlastBoard_Form>().RefreshButtons();
 		}
 
 		public static StashKey getRawBlastlayer()
@@ -545,7 +545,7 @@ namespace RTC
 			if (stashAfterOperation && _stashAfterOperation)
 			{
 				StashHistory.Add(currentStashkey);
-				RTC_Core.ghForm.RefreshStashHistory();
+				S.GET<RTC_GlitchHarvester_Form>().RefreshStashHistory();
 			}
 		}
 	}

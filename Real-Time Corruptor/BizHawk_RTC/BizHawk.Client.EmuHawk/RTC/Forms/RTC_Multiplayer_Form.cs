@@ -8,7 +8,7 @@ using System.Windows.Forms;
 
 namespace RTC
 {
-	public partial class RTC_Multiplayer_Form : Form
+	public partial class RTC_Multiplayer_Form : Form, IAutoColorize
 	{
 		System.Windows.Forms.Timer streamTimer = null;
 
@@ -384,7 +384,7 @@ namespace RTC
 
 		private void btnPopoutPeerGameScreen_Click(object sender, EventArgs e)
 		{
-			RTC_Core.multipeerpopoutForm.Show();
+			S.GET<RTC_MultiPeerPopout_Form>().Show();
 
 			pbPeerScreen.Visible = false;
 			pnPeerRedBar.Visible = false;
@@ -394,7 +394,7 @@ namespace RTC
 		public void UpdateRedBar(int sizeX)
 		{
 			pnPeerRedBar.Size = new Size(sizeX, 3);
-			RTC_Core.multipeerpopoutForm.pnPeerRedBar.Size = new Size(Convert.ToInt32((Convert.ToDouble(sizeX) / 256f) * Convert.ToDouble(RTC_Core.multipeerpopoutForm.pnPlacer.Size.Width)), 5);
+			S.GET<RTC_MultiPeerPopout_Form>().pnPeerRedBar.Size = new Size(Convert.ToInt32((Convert.ToDouble(sizeX) / 256f) * Convert.ToDouble(S.GET<RTC_MultiPeerPopout_Form>().pnPlacer.Size.Width)), 5);
 		}
 
 		private void RTC_Multi_Form_FormClosing(object sender, FormClosingEventArgs e)
@@ -432,12 +432,12 @@ namespace RTC
 		{
 			if (btnSplitscreen.ForeColor == Color.Red)
 			{
-				RTC_Core.multipeerpopoutForm.SetSplitscreen(false);
+				S.GET<RTC_MultiPeerPopout_Form>().SetSplitscreen(false);
 				btnSplitscreen.ForeColor = Color.White;
 				return;
 			}
 
-			RTC_Core.multipeerpopoutForm.SetSplitscreen(true);
+			S.GET<RTC_MultiPeerPopout_Form>().SetSplitscreen(true);
 
 			if (btnPopoutPeerGameScreen.Visible)
 				btnPopoutPeerGameScreen_Click(null, null);
@@ -449,7 +449,7 @@ namespace RTC
 
 		private void btnBlastBoard_Click(object sender, EventArgs e)
 		{
-			RTC_Core.sbForm.Show();
+			S.GET<RTC_StockpileBlastBoard_Form>().Show();
 		}
 
 		private void tbClientAdress_TextChanged(object sender, EventArgs e)

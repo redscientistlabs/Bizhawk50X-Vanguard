@@ -9,8 +9,8 @@ using System.Windows.Forms;
 
 namespace StandaloneRTC
 {
-	public partial class Loader : Form
-	{
+	public partial class Loader : RTC.RTC_Standalone_Form
+	{ 
 		Timer t;
 
 		public Loader(string[] args)
@@ -42,17 +42,17 @@ namespace StandaloneRTC
 
 		private void CheckHeartbeat(object sender, EventArgs e)
 		{
-			if ((RTC.RTC_Core.coreForm.pbAutoKillSwitchTimeout.Value == RTC.RTC_Core.coreForm.pbAutoKillSwitchTimeout.Maximum && !RTC.RTC_RPC.Heartbeat) || RTC.RTC_RPC.Freeze || !RTC.RTC_Core.coreForm.cbUseAutoKillSwitch.Checked)
+			if ((RTC.S.GET<RTC.RTC_Core_Form>().pbAutoKillSwitchTimeout.Value == RTC.S.GET<RTC.RTC_Core_Form>().pbAutoKillSwitchTimeout.Maximum && !RTC.RTC_RPC.Heartbeat) || RTC.RTC_RPC.Freeze || !RTC.S.GET<RTC.RTC_Core_Form>().cbUseAutoKillSwitch.Checked)
 				return;
 
 			if (!RTC.RTC_RPC.Heartbeat)
 			{
-				RTC.RTC_Core.coreForm.pbAutoKillSwitchTimeout.PerformStep();
+				RTC.S.GET<RTC.RTC_Core_Form>().pbAutoKillSwitchTimeout.PerformStep();
 
-				if (RTC.RTC_Core.coreForm.pbAutoKillSwitchTimeout.Value == RTC.RTC_Core.coreForm.pbAutoKillSwitchTimeout.Maximum)
+				if (RTC.S.GET<RTC.RTC_Core_Form>().pbAutoKillSwitchTimeout.Value == RTC.S.GET<RTC.RTC_Core_Form>().pbAutoKillSwitchTimeout.Maximum)
 				{
 					//this.Focused = false;
-					RTC.RTC_Core.csForm.btnStartEmuhawkDetached_Click(null, null);
+					RTC.S.GET<RTC.RTC_ConnectionStatus_Form>().btnStartEmuhawkDetached_Click(null, null);
 					//this.Focused = false;
 				}
 
@@ -60,7 +60,7 @@ namespace StandaloneRTC
 			}
 			else
 			{
-				RTC.RTC_Core.coreForm.pbAutoKillSwitchTimeout.Value = 0;
+				RTC.S.GET<RTC.RTC_Core_Form>().pbAutoKillSwitchTimeout.Value = 0;
 				RTC.RTC_RPC.Heartbeat = false;
 			}
 		}

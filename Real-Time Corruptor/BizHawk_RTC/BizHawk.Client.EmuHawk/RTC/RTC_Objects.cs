@@ -184,7 +184,7 @@ namespace RTC
 
 			CompressionLevel comp = System.IO.Compression.CompressionLevel.Fastest;
 
-			if (!RTC_Core.ghForm.cbCompressStockpiles.Checked)
+			if (!S.GET<RTC_GlitchHarvester_Form>().cbCompressStockpiles.Checked)
 				comp = System.IO.Compression.CompressionLevel.NoCompression;
 
 			System.IO.Compression.ZipFile.CreateFromDirectory(RTC_Core.rtcDir + "\\SKS\\", tempFilename, comp, false);
@@ -279,8 +279,8 @@ namespace RTC
 			foreach (StashKey key in sks.StashKeys)
 				dgvStockpile.Rows.Add(key, key.GameName, key.SystemName, key.SystemCore, key.Note);
 
-			RTC_Core.ghForm.RefreshNoteIcons();
-			RTC_Core.spForm.RefreshNoteIcons();
+			S.GET<RTC_GlitchHarvester_Form>().RefreshNoteIcons();
+			S.GET<RTC_StockpilePlayer_Form>().RefreshNoteIcons();
 
 			sks.Filename = Filename;
 
@@ -559,14 +559,14 @@ namespace RTC
 
 			foreach (StashKey sk in sks.StashKeys)
 			{
-				DataGridViewRow dgvRow = RTC_Core.ghForm.dgvStockpile.Rows[RTC_Core.ghForm.dgvStockpile.Rows.Add()];
+				DataGridViewRow dgvRow = S.GET<RTC_GlitchHarvester_Form>().dgvStockpile.Rows[S.GET<RTC_GlitchHarvester_Form>().dgvStockpile.Rows.Add()];
 				dgvRow.Cells["Item"].Value = sk;
 				dgvRow.Cells["GameName"].Value = sk.GameName;
 				dgvRow.Cells["SystemName"].Value = sk.SystemName;
 				dgvRow.Cells["SystemCore"].Value = sk.SystemCore;
 			}
 
-			RTC_Core.ghForm.RefreshNoteIcons();
+			S.GET<RTC_GlitchHarvester_Form>().RefreshNoteIcons();
 			CheckCompatibility(sks);
 
 			RTC_StockpileManager.StockpileChanged();
