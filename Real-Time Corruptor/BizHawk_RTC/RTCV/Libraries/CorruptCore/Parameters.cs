@@ -26,10 +26,6 @@ namespace RTCV.CorruptCore
 
         public string[] Limiter = null;         //Use values encoded in Hex, Length/2 must match Custom Precision or Emulator Default Precision
                                                 //Set empty Array for no Limiter, otherwise sending null in an update will not remove any set Limiter
-        public LimiterCaching LimiterCache = null;
-        public ValueProcessor Value = null;    //Sets parameters for fetching/generating values
-        public PostProcessor Transformer = null;//Sets parameters for a runtime value transformation
-        public IteratorBinding? Binder = null;  //Sets the binding for runtime iteration
 
     }
 

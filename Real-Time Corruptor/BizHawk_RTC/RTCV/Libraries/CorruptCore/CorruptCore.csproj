@@ -43,21 +43,9 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Extensions.cs" />
-    <Compile Include="Generator\Lifecycle.cs" />
-    <Compile Include="Generator\Workflow.cs" />
     <Compile Include="Connector.cs" />
-    <Compile Include="DataAnalysis.cs" />
-    <Compile Include="MemoryInterfaces.cs" />
-    <Compile Include="StandaloneTools\KillSwitch.cs" />
-    <Compile Include="StandaloneTools\ExternalPlugin.cs" />
-    <Compile Include="Generator\Limiter.cs" />
-    <Compile Include="Generator\ValueProcessing.cs" />
-    <Compile Include="Generator\PostProcessing.cs" />
-    <Compile Include="Generator\SourceSelector.cs" />
-    <Compile Include="Generator\Iterator.cs" />
     <Compile Include="Parameters.cs" />
     <Compile Include="Objects.cs" />
-    <Compile Include="Encapsulation.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup />

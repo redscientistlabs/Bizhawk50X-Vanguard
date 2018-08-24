@@ -16,7 +16,6 @@ namespace RTCV.CorruptCore
     {
         public CC_Source source = null;
         public CC_Value value = null;
-        public PostProcessor Transformer = null;
     }
 
     public abstract class CC_Source
