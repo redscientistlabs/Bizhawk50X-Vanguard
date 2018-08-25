@@ -274,7 +274,6 @@ namespace BizHawk.Client.Common
 						Bind("RTC","GH Load", toolTip: "For RTC" ),
 						Bind("RTC","GH Save", toolTip: "For RTC" ),
 						Bind("RTC","Stash->Stockpile", toolTip: "For RTC" ),
-						Bind("RTC","Induce KS Crash", toolTip: "For RTC" ),
 						Bind("RTC","Blast+RawStash", toolTip: "For RTC" ),
 						Bind("RTC","Send Raw to Stash", toolTip: "For RTC" ),
 						Bind("RTC","BlastLayer Toggle", toolTip: "For RTC" ),

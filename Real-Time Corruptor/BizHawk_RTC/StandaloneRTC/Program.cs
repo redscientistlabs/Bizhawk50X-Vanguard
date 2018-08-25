@@ -33,7 +33,7 @@ namespace StandaloneRTC
 			Application.SetCompatibleTextRenderingDefault(false);
 			Application.Run(new Loader(args));
 			//RTC.S.GET<RTC.RTC_Core_Form>() = new RTC.RTC_Form();
-			//RTC.RTC_Core.isStandalone = true;
+			//RTC.NetCoreImplementation.isStandalone = true;
 			//RTC.RTC_Core.Start();
 			//Application.Run(RTC.S.GET<RTC.RTC_Core_Form>());
 		}
