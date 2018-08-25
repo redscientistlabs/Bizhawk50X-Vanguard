@@ -7,6 +7,7 @@ using System.Drawing;
 using System.Globalization;
 using System.IO;
 using System.Linq;
+using System.Net;
 using System.Reflection;
 using System.Runtime.Serialization;
 using System.Runtime.Serialization.Formatters.Binary;
@@ -2466,6 +2467,17 @@ namespace RTC
 		}
 	}
 
+	public class WebClientTimeout : WebClient
+	{
+		public int Timeout = 5000;
+
+		protected override WebRequest GetWebRequest(Uri address)
+		{
+			WebRequest wr = base.GetWebRequest(address);
+			wr.Timeout = Timeout;
+			return wr;
+		}
+	}
 	/*
 		//Provides the required classes for hotkeys
 		//Uses Shortcut by AlexArchive

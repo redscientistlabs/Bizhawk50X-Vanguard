@@ -8,6 +8,8 @@ using System.Drawing;
 using System.IO;
 using System.Linq;
 using System.Net;
+using System.Net.Http;
+using System.Runtime.Remoting;
 using System.Threading;
 using System.Windows.Forms;
 using Newtonsoft.Json;
@@ -26,7 +28,7 @@ namespace RTC
 		public static List<ProblematicProcess> ProblematicProcesses;
 
 		//General RTC Values
-		public static string RtcVersion = "3.26";
+		public static string RtcVersion = "3.27";
 
 		//Directories
 		public static string bizhawkDir = Directory.GetCurrentDirectory();
@@ -182,58 +184,91 @@ namespace RTC
 			if (GlobalWin.MainForm != null) { GlobalWin.Sound.StopSound(); }
 		}
 
-		//Checks if any problematic processes are found
-		public static volatile bool Warned = false;
-		public static void CheckForProblematicProcesses()
-		{
-			if (Warned)
-				return;
-			//Do this in its own thread as loading the json is slow and there's no reason for it to block the main thread
-			(new Thread(() =>
-			{
 
-				string LocalPath = RTC_Core.paramsDir + "\\BADPROCESSES";
-				string json = "";
-				try
+		public static void DownloadProblematicProcesses()
+		{
+			string LocalPath = RTC_Core.paramsDir + "\\BADPROCESSES";
+			string json = "";
+			try
+			{
+				if (File.Exists(LocalPath))
 				{
-					WebClient client = new WebClient();
-					json = client.DownloadString("https://raw.githubusercontent.com/ircluzar/RTC3/RTC3.2X/ProblematicProcesses.json");
-					File.WriteAllText(LocalPath, json);
+					DateTime lastModified = File.GetLastWriteTime(LocalPath);
+					if (lastModified.Date == DateTime.Today)
+						return;
 				}
-				catch (WebException ex)
+				WebClientTimeout client = new WebClientTimeout();
+				client.Headers[HttpRequestHeader.Accept] = "text/html, image/png, image/jpeg, image/gif, */*;q=0.1";
+				client.Headers[HttpRequestHeader.UserAgent] = "Mozilla/5.0 (Windows; U; Windows NT 6.1; de; rv:1.9.2.12) Gecko/20101026 Firefox/3.6.12";
+				json = client.DownloadString("https://raw.githubusercontent.com/ircluzar/RTC3/RTC3.2X/ProblematicProcesses.json");
+				File.WriteAllText(LocalPath, json);
+			}
+			catch (Exception ex)
+			{
+				if (ex is WebException)
 				{
+					//Couldn't download the new one so just fall back to the old one if it's there
 					Console.WriteLine(ex.ToString());
 					if (File.Exists(LocalPath))
-						json = File.ReadAllText(LocalPath);
+					{
+						try
+						{
+							json = File.ReadAllText(LocalPath);
+						}
+						catch (Exception _ex)
+						{
+							Console.WriteLine("Couldn't read BADPROCESSES\n\n" + _ex.ToString());
+							return;
+						}
+					}
 					else
 						return;
 				}
+				else
+				{
+					Console.WriteLine(ex.ToString());
+				}
+			}
+
+			try
+			{
+				ProblematicProcesses = JsonConvert.DeserializeObject<List<ProblematicProcess>>(json);
+			}
+			catch (Exception ex)
+			{
+				Console.WriteLine(ex.ToString());
+				if (File.Exists(LocalPath))
+					File.Delete(LocalPath);
+				return;
+			}
+		}
+
+		//Checks if any problematic processes are found
+		public static bool Warned = false;
+		public static void CheckForProblematicProcesses()
+		{
+			if (Warned || ProblematicProcesses == null)
+				return;
 
 				try
 				{
-					ProblematicProcesses = JsonConvert.DeserializeObject<List<ProblematicProcess>>(json);
+					var processes = Process.GetProcesses().Select(it => $"{it.ProcessName.ToUpper()}").OrderBy(x => x).ToArray();
+
+					//Warn based on loaded processes
+					foreach (var item in ProblematicProcesses)
+					{
+						if (processes.Contains(item.Name))
+						{
+							MessageBox.Show(item.Message, "Incompatible Program Detected!");
+							Warned = true;
+						}
+					}
 				}
 				catch (Exception ex)
 				{
-					MessageBox.Show("Something went wrong when parsing the process checker json!\n\n" + ex);
-					if (File.Exists(LocalPath))
-						File.Delete(LocalPath);
+					MessageBox.Show(ex.ToString());
 					return;
 				}
-
-
-				var processes = Process.GetProcesses().Select(it => $"{it.ProcessName.ToUpper()}").OrderBy(x => x).ToArray();
-
-				//Warn based on loaded processes
-				foreach (var item in ProblematicProcesses)
-				{
-					if (processes.Contains(item.Name))
-					{
-						MessageBox.Show(item.Message, "Incompatible Program Detected!");
-						Warned = true;
-					}
-				}
-			})).Start();
 		}
 
 		//This is the entry point of RTC. Without this method, nothing will load.
