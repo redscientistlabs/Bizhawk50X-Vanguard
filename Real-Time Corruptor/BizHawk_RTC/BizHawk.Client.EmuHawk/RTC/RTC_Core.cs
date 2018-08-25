@@ -139,47 +139,73 @@ namespace RTC
 		}
 
 
+		public static void DownloadProblematicProcesses()
+		{
+			string LocalPath = RTC_Core.paramsDir + "\\BADPROCESSES";
+			string json = "";
+			try
+			{
+				if (File.Exists(LocalPath))
+				{
+					DateTime lastModified = File.GetLastWriteTime(LocalPath);
+					if (lastModified.Date == DateTime.Today)
+						return;
+				}
+				WebClientTimeout client = new WebClientTimeout();
+				client.Headers[HttpRequestHeader.Accept] = "text/html, image/png, image/jpeg, image/gif, */*;q=0.1";
+				client.Headers[HttpRequestHeader.UserAgent] = "Mozilla/5.0 (Windows; U; Windows NT 6.1; de; rv:1.9.2.12) Gecko/20101026 Firefox/3.6.12";
+				json = client.DownloadString("https://raw.githubusercontent.com/ircluzar/RTC3/master/ProblematicProcesses.json");
+				File.WriteAllText(LocalPath, json);
+			}
+			catch (Exception ex)
+			{
+				if (ex is WebException)
+				{
+					//Couldn't download the new one so just fall back to the old one if it's there
+					Console.WriteLine(ex.ToString());
+					if (File.Exists(LocalPath))
+					{
+						try
+						{
+							json = File.ReadAllText(LocalPath);
+						}
+						catch (Exception _ex)
+						{
+							Console.WriteLine("Couldn't read BADPROCESSES\n\n" + _ex.ToString());
+							return;
+						}
+					}
+					else
+						return;
+				}
+				else
+				{
+					Console.WriteLine(ex.ToString());
+				}
+			}
+
+			try
+			{
+				ProblematicProcesses = JsonConvert.DeserializeObject<List<ProblematicProcess>>(json);
+			}
+			catch (Exception ex)
+			{
+				Console.WriteLine(ex.ToString());
+				if (File.Exists(LocalPath))
+					File.Delete(LocalPath);
+				return;
+			}
+		}
 
 		//Checks if any problematic processes are found
 		public static volatile bool Warned = false;
 		public static void CheckForProblematicProcesses()
 		{
-			if (Warned)
+			if (Warned || ProblematicProcesses == null)
 				return;
-			//Do this in its own thread as loading the json is slow and there's no reason for it to block the main thread
-			(new Thread(() =>
+
+			try
 			{
-
-				string LocalPath = RTC_Core.paramsDir + "\\BADPROCESSES";
-				string json = "";
-				try
-				{
-					WebClient client = new WebClient();
-					json = client.DownloadString("https://raw.githubusercontent.com/ircluzar/RTC3/RTC3.2X/ProblematicProcesses.json");
-					File.WriteAllText(LocalPath, json);
-				}
-				catch (WebException ex)
-				{
-					Console.WriteLine(ex.ToString());
-					if (File.Exists(LocalPath))
-						json = File.ReadAllText(LocalPath);
-					else
-						return;
-				}
-
-				try
-				{
-					ProblematicProcesses = JsonConvert.DeserializeObject<List<ProblematicProcess>>(json);
-				}
-				catch (Exception ex)
-				{
-					MessageBox.Show("Something went wrong when parsing the process checker json!\n\n" + ex);
-					if (File.Exists(LocalPath))
-						File.Delete(LocalPath);
-					return;
-				}
-
-
 				var processes = Process.GetProcesses().Select(it => $"{it.ProcessName.ToUpper()}").OrderBy(x => x).ToArray();
 
 				//Warn based on loaded processes
@@ -191,7 +217,12 @@ namespace RTC
 						Warned = true;
 					}
 				}
-			})).Start();
+			}
+			catch (Exception ex)
+			{
+				MessageBox.Show(ex.ToString());
+				return;
+			}
 		}
 
 		public static void StartSound()
