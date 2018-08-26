@@ -127,8 +127,19 @@ namespace RTC
 
 				if (lineParts.Length > 1)
 				{
-					long start = SafeStringToLong(lineParts[0]);
-					long end = SafeStringToLong(lineParts[1]);
+					long start = 0;
+					long end = 0;
+
+					try
+					{
+						start = SafeStringToLong(lineParts[0]);
+						end = SafeStringToLong(lineParts[1]);
+					}
+					catch (Exception ex)
+					{
+						MessageBox.Show("There was invalid data in your input!\nThe bad text was + " + trimmedLine + "\n" + ex.ToString());
+						return false;
+					}
 
 					if (end >= currentDomainSize)
 						end = Convert.ToInt64(currentDomainSize - 1);
@@ -140,7 +151,17 @@ namespace RTC
 				}
 				else
 				{
-					long address = SafeStringToLong(lineParts[0]);
+					long address = 0;
+					try
+					{
+						address = SafeStringToLong(lineParts[0]);
+					}
+					catch (Exception ex)
+					{
+						MessageBox.Show("There was invalid data in your input!\nThe bad text was + " + trimmedLine + "\n" + ex.ToString());
+						return false;
+					}
+
 
 					if (address < currentDomainSize)
 					{
@@ -156,7 +177,8 @@ namespace RTC
 			if (proto.addRanges.Count == 0 && proto.addSingles.Count == 0)
 			{
 				//No add range was specified, use entire domain
-				proto.addRanges.Add(new long[] { 0, (currentDomainSize > long.MaxValue ? long.MaxValue : Convert.ToInt64(currentDomainSize)) });
+				//Use Int32 here since VMDs have a size limit of Int32.MaxValue due to usage of lists
+				proto.addRanges.Add(new long[] { 0, (currentDomainSize > int.MaxValue ? int.MaxValue : Convert.ToInt32(currentDomainSize)) });
 			}
 
 			VMD = proto.Generate();

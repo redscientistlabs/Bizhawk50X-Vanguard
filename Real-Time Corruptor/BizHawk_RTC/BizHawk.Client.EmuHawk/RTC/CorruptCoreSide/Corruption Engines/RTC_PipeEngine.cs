@@ -15,14 +15,14 @@ namespace RTC
 			{
 				if (domain == null)
 					return null;
-				MemoryDomainProxy mdp = RTC_MemoryDomains.GetProxy(domain, address);
-				
+				MemoryInterface mi = RTC_MemoryDomains.GetInterface(domain);
+
 				long safeAddress = address - (address % precision);
 
 				BlastTarget pipeStart = RTC_CorruptCore.GetBlastTarget();
 				long safePipeStartAddress = pipeStart.Address - (pipeStart.Address % precision);
 
-				return new BlastUnit(StoreType.CONTINUOUS, ActionTime.PREEXECUTE, domain, safeAddress, pipeStart.Domain, safePipeStartAddress, precision, mdp.BigEndian, 0, 0);
+				return new BlastUnit(StoreType.CONTINUOUS, ActionTime.PREEXECUTE, domain, safeAddress, pipeStart.Domain, safePipeStartAddress, precision, mi.BigEndian, 0, 0);
 			}
 			catch (Exception ex)
 			{

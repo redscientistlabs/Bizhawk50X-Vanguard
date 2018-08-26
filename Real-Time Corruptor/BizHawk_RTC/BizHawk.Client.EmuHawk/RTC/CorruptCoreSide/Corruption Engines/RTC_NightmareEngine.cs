@@ -72,7 +72,7 @@ namespace RTC
 
 				if (domain == null)
 					return null;
-				MemoryDomainProxy mdp = RTC_MemoryDomains.GetProxy(domain, address);
+				MemoryInterface mi = RTC_MemoryDomains.GetInterface(domain);
 
 				byte[] value = new byte[precision];
 
@@ -106,12 +106,12 @@ namespace RTC
 						}
 					}
 
-					return new BlastUnit(value, domain, safeAddress, precision, mdp.BigEndian, 0, 1);
+					return new BlastUnit(value, domain, safeAddress, precision, mi.BigEndian, 0, 1);
 				}
 				//Tilt. Backup with a + or -
 				else
 				{
-					BlastUnit bu = new BlastUnit(StoreType.ONCE, ActionTime.GENERATE, domain, safeAddress, domain, safeAddress, precision, mdp.BigEndian);
+					BlastUnit bu = new BlastUnit(StoreType.ONCE, ActionTime.GENERATE, domain, safeAddress, domain, safeAddress, precision, mi.BigEndian);
 					if (type == NightmareType.ADD)
 						bu.TiltValue = 1;
 					else

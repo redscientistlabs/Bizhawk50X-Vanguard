@@ -18,16 +18,17 @@ namespace RTC
 			long safeAddress = address - (address % 4); //32-bit trunk
 
 
-			MemoryDomainProxy mdp = RTC_MemoryDomains.GetProxy(domain, safeAddress);
-			if (mdp == null)
+			MemoryInterface mi = RTC_MemoryDomains.GetInterface(domain);
+
+			if (mi == null)
 				return null;
 
 
 			try
 			{
 				//Enforce the safeaddress at generation
-				if (RTC_Filtering.LimiterPeekBytes(safeAddress, safeAddress + 4, domain, LimiterListHash, mdp))
-					return new BlastUnit(RTC_Filtering.GetRandomConstant(ValueListHash), domain, safeAddress, 4, mdp.BigEndian);
+				if (RTC_Filtering.LimiterPeekBytes(safeAddress, safeAddress + 4, domain, LimiterListHash, mi))
+					return new BlastUnit(RTC_Filtering.GetRandomConstant(ValueListHash), domain, safeAddress, 4, mi.BigEndian);
 				return null;
 			}
 			catch (Exception ex)

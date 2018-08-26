@@ -21,7 +21,7 @@ namespace RTC
 			{
 				if (domain == null)
 					return null;
-				MemoryDomainProxy mdp = RTC_MemoryDomains.GetProxy(domain, address);
+				MemoryInterface mi = RTC_MemoryDomains.GetInterface(domain);
 
 				Byte[] value = new Byte[precision];
 
@@ -53,7 +53,7 @@ namespace RTC
 					}
 				}
 
-				return new BlastUnit(value, domain, safeAddress, precision, mdp.BigEndian, 0, 0);
+				return new BlastUnit(value, domain, safeAddress, precision, mi.BigEndian, 0, 0);
 			}
 			catch (Exception ex)
 			{

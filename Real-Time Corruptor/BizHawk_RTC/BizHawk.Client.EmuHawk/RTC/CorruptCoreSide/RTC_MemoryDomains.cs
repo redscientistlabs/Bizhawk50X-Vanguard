@@ -653,55 +653,72 @@ namespace RTC
 
 		public VirtualMemoryDomain Generate()
 		{
-			VirtualMemoryDomain VMD = new VirtualMemoryDomain
+			try
 			{
-				Proto = this,
-				Name = VmdName,
-				BigEndian = BigEndian,
-				WordSize = WordSize
-			};
-
-
-			if (SuppliedBlastLayer != null)
-			{
-				VMD.AddFromBlastLayer(SuppliedBlastLayer);
-				return VMD;
-			}
-
-			int addressCount = 0;
-			for (int i = 0; i < Padding; i++)
-			{
-				VMD.PointerDomains.Add(GenDomain);
-				VMD.PointerAddresses.Add(i);
-			}
-
-			foreach (long[] range in addRanges)
-			{
-				long start = range[0];
-				long end = range[1];
-
-				for (long i = start; i < end; i++)
+				VirtualMemoryDomain VMD = new VirtualMemoryDomain
 				{
-					if (!IsAddressInRanges(i, removeSingles, removeRanges))
-						if (PointerSpacer == 1 || addressCount % PointerSpacer == 0)
-						{
-							//VMD.MemoryPointers.Add(new Tuple<string, long>(Domain, i));
-							VMD.PointerDomains.Add(GenDomain);
-							VMD.PointerAddresses.Add(i);
-						}
+					Proto = this,
+					Name = VmdName,
+					BigEndian = BigEndian,
+					WordSize = WordSize
+				};
+
+
+				if (SuppliedBlastLayer != null)
+				{
+					VMD.AddFromBlastLayer(SuppliedBlastLayer);
+					return VMD;
+				}
+
+				int addressCount = 0;
+				for (int i = 0; i < Padding; i++)
+				{
+					VMD.PointerDomains.Add(GenDomain);
+					VMD.PointerAddresses.Add(i);
+				}
+
+				foreach (long[] range in addRanges)
+				{
+					long start = range[0];
+					long end = range[1];
+
+					for (long i = start; i < end; i++)
+					{
+						if (!IsAddressInRanges(i, removeSingles, removeRanges))
+							if (PointerSpacer == 1 || addressCount % PointerSpacer == 0)
+							{
+								//VMD.MemoryPointers.Add(new Tuple<string, long>(Domain, i));
+								VMD.PointerDomains.Add(GenDomain);
+								VMD.PointerAddresses.Add(i);
+							}
+
+						addressCount++;
+					}
+				}
+
+				foreach (long single in addSingles)
+				{
+					//VMD.MemoryPointers.Add(new Tuple<string, long>(Domain, single));
+					VMD.PointerDomains.Add(GenDomain);
+					VMD.PointerAddresses.Add(single);
 					addressCount++;
 				}
-			}
 
-			foreach (long single in addSingles)
+				return VMD;
+			}
+			catch (Exception ex)
 			{
-				//VMD.MemoryPointers.Add(new Tuple<string, long>(Domain, single));
-				VMD.PointerDomains.Add(GenDomain);
-				VMD.PointerAddresses.Add(single);
-				addressCount++;
-			}
+				if (ex is OverflowException)
+				{
+					MessageBox.Show("Your VMD has overflowed! VMDs have a limit of 2GB due to technical limitations.\nIf your VMD isn't greater than 2147483647 addresses long, contact the devs with the following exception.\n\n" + ex.ToString());
+				}
+				else
+				{
+					MessageBox.Show("Something went wrong when generating the VMD! Send this error to the RTC devs with instructions on what caused it.\n\n" + ex.ToString());
+				}
 
-			return VMD;
+				return null;
+			}
 		}
 
 		public bool IsAddressInRanges(long address, List<long> singles, List<long[]> ranges)
@@ -830,13 +847,14 @@ namespace RTC
 				return data.ToArray().FlipBytes();
 		}
 
+		
 		public override byte PeekByte(long address)
 		{
 			if (address < this.Proto.Padding)
 				return (byte)0;
 			string targetDomain = GetRealDomain(address);
 			long targetAddress = GetRealAddress(address);
-
+			//We use MDPs here as we have to extract the real address and domain from the VMD
 			MemoryDomainProxy mdp = RTC_MemoryDomains.GetProxy(targetDomain, targetAddress);
 
 			return mdp?.PeekByte(targetAddress) ?? 0;
@@ -849,7 +867,7 @@ namespace RTC
 
 			string targetDomain = GetRealDomain(address);
 			long targetAddress = GetRealAddress(address);
-
+			//We use MDPs here as we have to extract the real address and domain from the VMD
 			MemoryDomainProxy mdp = RTC_MemoryDomains.GetProxy(targetDomain, targetAddress);
 
 			mdp?.PokeByte(targetAddress, value);
