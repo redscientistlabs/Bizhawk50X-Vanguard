@@ -10,6 +10,10 @@ namespace RTC
 	public static class RTC_CorruptCore
 	{
 		public static Random RND = new Random();
+
+		public static RTCV.CorruptCore.
+
+
 		public static CorruptionEngine SelectedEngine = CorruptionEngine.NIGHTMARE;
 
 		private static int customPrecision = 1;

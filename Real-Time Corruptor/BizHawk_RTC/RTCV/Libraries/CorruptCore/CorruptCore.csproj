@@ -46,6 +46,7 @@
     <Compile Include="Connector.cs" />
     <Compile Include="Objects.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="UniSpec.cs" />
   </ItemGroup>
   <ItemGroup />
   <ItemGroup>
