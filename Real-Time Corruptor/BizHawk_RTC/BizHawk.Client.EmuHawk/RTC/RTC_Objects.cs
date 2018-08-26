@@ -1138,7 +1138,7 @@ namespace RTC
 
 			try
 			{
-				MemoryInterface mi = RTC_MemoryDomains.GetProxy(Domain, this.Address);
+				MemoryInterface mi = RTC_MemoryDomains.GetInterface(Domain);
 
 				if (mi == null)
 					return false;
@@ -1192,7 +1192,7 @@ namespace RTC
 
 			try
 			{
-				MemoryInterface mi = RTC_MemoryDomains.GetProxy(Domain, Address);
+				MemoryInterface mi = RTC_MemoryDomains.GetInterface(Domain);
 				
 
 				if (mi == null || Type == BlastByteType.NONE)
@@ -1604,15 +1604,18 @@ namespace RTC
 			{
 				if (!IsEnabled)
 					return true;
-				//This technically doesn't work properly with hybrid VMDs, but can't be fixed with the BlastCheat implementation in this branch
-				MemoryDomainProxy mdp = RTC_MemoryDomains.GetProxy(Domain, Address);
+
+				//This technically doesn't work properly with hybrid VMDs, but can't be fixed with the BlastCheat implementation in this branch. We stick with an MDP as we need to pass the domain along.
+				string targetDomain = RTC_MemoryDomains.GetRealDomain(Domain, Address);
+				long targetAddress = RTC_MemoryDomains.GetRealAddress(Domain, Address);
+
+				MemoryDomainProxy mdp = RTC_MemoryDomains.GetProxy(Domain, targetAddress);
+
 				var settings = new RamSearchEngine.Settings(RTC_MemoryDomains.MDRI.MemoryDomains);
 
 				if (mdp == null)
 					return true;
 
-				string targetDomain = RTC_MemoryDomains.GetRealDomain(Domain, Address);
-				long targetAddress = RTC_MemoryDomains.GetRealAddress(Domain, Address);
 
 				string cheatName = "RTC Cheat|" + targetDomain + "|" + (targetAddress).ToString() + "|" + DisplayType.ToString() + "|" + BigEndian.ToString() + "|" + String.Join(",", Value.Select(it => it.ToString())) + "|" + IsEnabled.ToString() + "|" + IsFreeze.ToString();
 

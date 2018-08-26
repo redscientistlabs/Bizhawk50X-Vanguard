@@ -122,8 +122,18 @@ namespace RTC
 
 				if (lineParts.Length > 1)
 				{
-					int start = SafeStringToInt(lineParts[0]);
-					int end = SafeStringToInt(lineParts[1]);
+					int start = 0;
+					int end = 0;
+					try
+					{
+						start = SafeStringToInt(lineParts[0]);
+						end = SafeStringToInt(lineParts[1]);
+					}
+					catch (Exception ex)
+					{
+						MessageBox.Show("There was invalid data in your input!\nThe bad text was + " + trimmedLine + "\n" + ex.ToString());
+						return false;
+					}
 
 					//int.parse can return a negative so we need to ensure it's within range
 					if (end >= currentDomainSize || end < 0)
@@ -139,7 +149,16 @@ namespace RTC
 				}
 				else
 				{
-					int address = SafeStringToInt(lineParts[0]);
+					int address = 0;
+					try
+					{
+						address = SafeStringToInt(lineParts[0]);
+					}
+					catch (Exception ex)
+					{
+						MessageBox.Show("There was invalid data in your input!\nThe bad text was + " + trimmedLine + "\n" + ex.ToString());
+						return false;
+					}
 
 					//int.parse can return a negative number if they go too large. We need to check both 
 					if (address < currentDomainSize && address >= 0)
