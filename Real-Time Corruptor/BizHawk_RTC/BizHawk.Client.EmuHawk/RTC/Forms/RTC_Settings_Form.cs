@@ -176,5 +176,10 @@ namespace RTC
 			form.Show();
 		}
 
+		private void btnToggleConsole_Click(object sender, EventArgs e)
+		{
+			if(RTC_Core.isStandalone)
+				LogConsole.ToggleConsole();
+		}
 	}
 }

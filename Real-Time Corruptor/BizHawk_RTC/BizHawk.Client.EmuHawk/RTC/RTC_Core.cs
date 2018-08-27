@@ -274,6 +274,14 @@ namespace RTC
 		//This is the entry point of RTC. Without this method, nothing will load.
 		public static void Start(Form _standaloneForm = null)
 		{
+			//Spawn a console for standalonertc
+			if(isStandalone)
+			{
+				LogConsole.CreateConsole();
+				if (!RTC_Hooks.ShowConsole)
+					LogConsole.HideConsole();
+			}
+
 			//Timed releases. Only for exceptionnal cases.
 			bool Expires = false;
 			DateTime ExpiringDate = DateTime.Parse("2017-03-03");

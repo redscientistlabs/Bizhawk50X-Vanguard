@@ -27,7 +27,7 @@ namespace RTC
 					ReturnWatch.maxtries = 0;
 					RTC_NetCore.DefaultKeepAliveCounter = 15;
 					RTC_NetCore.DefaultNetworkStreamTimeout = 6000;
-					RTC_NetCore.DefaultMaxRetries = 2000;
+					RTC_NetCore.DefaultMaxRetries = 6666;
 
 					if (RTC_Core.isStandalone)
 						RTC_Core.coreForm.pbAutoKillSwitchTimeout.Maximum = 20;

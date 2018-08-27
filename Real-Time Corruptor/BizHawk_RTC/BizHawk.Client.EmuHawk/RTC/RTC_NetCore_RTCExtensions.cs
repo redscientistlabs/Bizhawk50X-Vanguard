@@ -717,6 +717,7 @@ namespace RTC
 				case CommandType.REMOTE_RENDER_RENDERATLOAD:
 					RTC_StockpileManager.renderAtLoad = (bool)cmd.objectValue;
 					break;
+
 			}
 
 			return cmdBack;

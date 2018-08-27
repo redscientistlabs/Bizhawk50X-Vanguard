@@ -9,10 +9,12 @@ using System.IO;
 using System.Linq;
 using System.Net;
 using System.Reflection;
+using System.Runtime.InteropServices;
 using System.Runtime.Serialization;
 using System.Runtime.Serialization.Formatters.Binary;
 using System.Text;
 using System.Windows.Forms;
+using Microsoft.Win32.SafeHandles;
 
 namespace RTC
 {
@@ -2478,6 +2480,229 @@ namespace RTC
 			return wr;
 		}
 	}
+
+
+	//Lifted from Bizhawk https://github.com/TASVideos/BizHawk
+
+	#pragma warning disable 162
+	public static class LogConsole
+	{
+		public static bool ConsoleVisible
+		{
+			get;
+			private set;
+		}
+
+		static bool NeedToRelease;
+		static string SkipEverythingButProgramInCommandLine(string cmdLine)
+		{
+			//skip past the program name. can anyone think of a better way to do this?
+			//we could use CommandLineToArgvW (commented out below) but then we would just have to re-assemble and potentially re-quote it
+			int childCmdLine = 0;
+			int lastSlash = 0;
+			int lastGood = 0;
+			bool quote = false;
+			for (; ; )
+			{
+				char cur = cmdLine[childCmdLine];
+				childCmdLine++;
+				if (childCmdLine == cmdLine.Length) break;
+				bool thisIsQuote = (cur == '\"');
+				if (cur == '\\' || cur == '/')
+					lastSlash = childCmdLine;
+				if (quote)
+				{
+					if (thisIsQuote)
+						quote = false;
+					else lastGood = childCmdLine;
+				}
+				else
+				{
+					if (cur == ' ' || cur == '\t')
+						break;
+					if (thisIsQuote)
+						quote = true;
+					lastGood = childCmdLine;
+				}
+			}
+			string remainder = cmdLine.Substring(childCmdLine);
+			string path = cmdLine.Substring(lastSlash, lastGood - lastSlash);
+			return path + " " + remainder;
+		}
+
+		static IntPtr oldOut, conOut;
+		static bool hasConsole;
+		static bool attachedConsole;
+		static bool shouldRedirectStdout;
+		public static void CreateConsole()
+		{
+			//(see desmume for the basis of some of this logic)
+
+			if (hasConsole)
+				return;
+
+			if (oldOut == IntPtr.Zero)
+				oldOut = Win32.GetStdHandle(-11); //STD_OUTPUT_HANDLE
+
+			Win32.FileType fileType = Win32.GetFileType(oldOut);
+
+			//stdout is already connected to something. keep using it and dont let the console interfere
+			shouldRedirectStdout = true;
+
+			//attach to an existing console
+			attachedConsole = false;
+
+			//ever since a recent KB, XP-based systems glitch out when attachconsole is called and theres no console to attach to.
+			if (Environment.OSVersion.Version.Major != 5)
+			{
+				if (Win32.AttachConsole(-1))
+				{
+					hasConsole = true;
+					attachedConsole = true;
+				}
+			}
+
+			if (!attachedConsole)
+			{
+				Win32.FreeConsole();
+				if (Win32.AllocConsole())
+				{
+					//set icons for the console so we can tell them apart from the main window
+			//		Win32.SendMessage(Win32.GetConsoleWindow(), 0x0080/*WM_SETICON*/, (IntPtr)0/*ICON_SMALL*/, Properties.Resources.console16x16.GetHicon());
+			//		Win32.SendMessage(Win32.GetConsoleWindow(), 0x0080/*WM_SETICON*/, (IntPtr)1/*ICON_LARGE*/, Properties.Resources.console32x32.GetHicon());
+					hasConsole = true;
+				}
+				else
+					System.Windows.Forms.MessageBox.Show(string.Format("Couldn't allocate win32 console: {0}", Marshal.GetLastWin32Error()));
+			}
+
+			if (hasConsole)
+			{
+				IntPtr ptr = Win32.GetCommandLine();
+				string commandLine = Marshal.PtrToStringAuto(ptr);
+				Console.Title = SkipEverythingButProgramInCommandLine(commandLine);
+			}
+
+			if (shouldRedirectStdout)
+			{
+				conOut = Win32.CreateFile("CONOUT$", 0x40000000, 2, IntPtr.Zero, 3, 0, IntPtr.Zero);
+
+				if (!Win32.SetStdHandle(-11, conOut))
+					throw new Exception("SetStdHandle() failed");
+			}
+
+			//DotNetRewireConout();
+			hasConsole = true;
+
+			if (attachedConsole)
+			{
+				Console.WriteLine();
+			}
+
+			ConsoleVisible = true;
+		}
+
+		static void ReleaseConsole()
+		{
+			if (!hasConsole)
+				return;
+
+			if (shouldRedirectStdout) Win32.CloseHandle(conOut);
+			if (!attachedConsole) Win32.FreeConsole();
+			Win32.SetStdHandle(-11, oldOut);
+
+			conOut = IntPtr.Zero;
+			hasConsole = false;
+		}
+
+
+		public static void ShowConsole()
+		{
+			
+			var handle = Win32.GetConsoleWindow();
+			Win32.ShowWindow(handle, Win32.SW_SHOW);
+			ConsoleVisible = true;
+		}
+
+		public static void HideConsole()
+		{
+			var handle = Win32.GetConsoleWindow();
+			Win32.ShowWindow(handle, Win32.SW_HIDE);
+			ConsoleVisible = false;
+		}
+
+		public static void ToggleConsole()
+		{
+			if(ConsoleVisible)
+				HideConsole();
+			else
+				ShowConsole();
+		}
+
+	}
+	//Lifted from Bizhawk https://github.com/TASVideos/BizHawk
+	public unsafe static class Win32
+	{
+		[DllImport("kernel32.dll")]
+		public static extern FileType GetFileType(IntPtr hFile);
+
+		[DllImport("kernel32.dll", CharSet = CharSet.Auto)]
+		public static extern IntPtr GetCommandLine();
+
+		public enum FileType : uint
+		{
+			FileTypeChar = 0x0002,
+			FileTypeDisk = 0x0001,
+			FileTypePipe = 0x0003,
+			FileTypeRemote = 0x8000,
+			FileTypeUnknown = 0x0000,
+		}
+
+		public const int SW_HIDE = 0;
+		public const int SW_SHOW = 5;
+
+		[DllImport("kernel32.dll", SetLastError = true)]
+		public static extern IntPtr GetConsoleWindow();
+
+		[DllImport("user32.dll")]
+		public static extern bool ShowWindow(IntPtr hWnd, int nCmdShow);
+
+		[DllImport("user32.dll", SetLastError = true)]
+		public static extern bool SetForegroundWindow(IntPtr hWnd);
+
+		[DllImport("user32.dll", SetLastError = true)]
+		public static extern IntPtr SetActiveWindow(IntPtr hWnd);
+
+		[DllImport("kernel32.dll", SetLastError = true)]
+		public static extern bool AttachConsole(int dwProcessId);
+
+		[DllImport("kernel32.dll", SetLastError = true)]
+		public static extern bool AllocConsole();
+
+		[DllImport("kernel32.dll", SetLastError = false)]
+		public static extern bool FreeConsole();
+
+		[DllImport("kernel32.dll", SetLastError = true)]
+		public static extern IntPtr GetStdHandle(int nStdHandle);
+
+		[DllImport("kernel32.dll", SetLastError = true)]
+		public static extern bool SetStdHandle(int nStdHandle, IntPtr hConsoleOutput);
+
+		[DllImport("kernel32.dll", CharSet = CharSet.Auto, SetLastError = true)]
+		public static extern IntPtr CreateFile(
+			string fileName,
+			int desiredAccess,
+			int shareMode,
+			IntPtr securityAttributes,
+			int creationDisposition,
+			int flagsAndAttributes,
+			IntPtr templateFile);
+
+		[DllImport("kernel32.dll", ExactSpelling = true, SetLastError = true)]
+		public static extern bool CloseHandle(IntPtr handle);
+	}
+}
+
 	/*
 		//Provides the required classes for hotkeys
 		//Uses Shortcut by AlexArchive
@@ -3113,4 +3338,3 @@ namespace RTC
 				}
 			}
 		}*/
-}

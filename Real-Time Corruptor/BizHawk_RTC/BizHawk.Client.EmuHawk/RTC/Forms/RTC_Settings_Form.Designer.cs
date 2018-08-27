@@ -55,6 +55,7 @@
             this.label4 = new System.Windows.Forms.Label();
             this.btnImportKeyBindings = new System.Windows.Forms.Button();
             this.button2 = new System.Windows.Forms.Button();
+            this.btnToggleConsole = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.nmGameProtectionDelay)).BeginInit();
             this.groupBox1.SuspendLayout();
             this.groupBox2.SuspendLayout();
@@ -285,11 +286,12 @@
             // pnDetachedModeSettings
             // 
             this.pnDetachedModeSettings.BackColor = System.Drawing.Color.Gray;
+            this.pnDetachedModeSettings.Controls.Add(this.btnToggleConsole);
             this.pnDetachedModeSettings.Controls.Add(this.groupBox2);
             this.pnDetachedModeSettings.Controls.Add(this.groupBox1);
             this.pnDetachedModeSettings.Location = new System.Drawing.Point(401, 84);
             this.pnDetachedModeSettings.Name = "pnDetachedModeSettings";
-            this.pnDetachedModeSettings.Size = new System.Drawing.Size(232, 244);
+            this.pnDetachedModeSettings.Size = new System.Drawing.Size(232, 279);
             this.pnDetachedModeSettings.TabIndex = 128;
             this.pnDetachedModeSettings.Tag = "color:normal";
             // 
@@ -308,7 +310,7 @@
             // 
             this.pnAttachedModeSettings.BackColor = System.Drawing.Color.Gray;
             this.pnAttachedModeSettings.Controls.Add(this.btnStartAutoKillSwitch);
-            this.pnAttachedModeSettings.Location = new System.Drawing.Point(401, 357);
+            this.pnAttachedModeSettings.Location = new System.Drawing.Point(401, 387);
             this.pnAttachedModeSettings.Name = "pnAttachedModeSettings";
             this.pnAttachedModeSettings.Size = new System.Drawing.Size(232, 60);
             this.pnAttachedModeSettings.TabIndex = 130;
@@ -335,7 +337,7 @@
             this.lbAttachedModeSettings.AutoSize = true;
             this.lbAttachedModeSettings.Font = new System.Drawing.Font("Segoe UI Semibold", 9F);
             this.lbAttachedModeSettings.ForeColor = System.Drawing.Color.White;
-            this.lbAttachedModeSettings.Location = new System.Drawing.Point(405, 340);
+            this.lbAttachedModeSettings.Location = new System.Drawing.Point(405, 370);
             this.lbAttachedModeSettings.Name = "lbAttachedModeSettings";
             this.lbAttachedModeSettings.Size = new System.Drawing.Size(135, 15);
             this.lbAttachedModeSettings.TabIndex = 131;
@@ -453,6 +455,24 @@
             this.button2.UseVisualStyleBackColor = true;
             this.button2.Click += new System.EventHandler(this.button2_Click);
             // 
+            // btnToggleConsole
+            // 
+            this.btnToggleConsole.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(224)))), ((int)(((byte)(224)))), ((int)(((byte)(224)))));
+            this.btnToggleConsole.FlatAppearance.BorderSize = 0;
+            this.btnToggleConsole.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnToggleConsole.Font = new System.Drawing.Font("Segoe UI", 8F);
+            this.btnToggleConsole.ForeColor = System.Drawing.Color.Black;
+            this.btnToggleConsole.ImageAlign = System.Drawing.ContentAlignment.MiddleRight;
+            this.btnToggleConsole.Location = new System.Drawing.Point(15, 238);
+            this.btnToggleConsole.Name = "btnToggleConsole";
+            this.btnToggleConsole.Size = new System.Drawing.Size(201, 29);
+            this.btnToggleConsole.TabIndex = 137;
+            this.btnToggleConsole.Tag = "color:light";
+            this.btnToggleConsole.Text = "Toggle Console";
+            this.btnToggleConsole.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageBeforeText;
+            this.btnToggleConsole.UseVisualStyleBackColor = false;
+            this.btnToggleConsole.Click += new System.EventHandler(this.btnToggleConsole_Click);
+            // 
             // RTC_Settings_Form
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -520,5 +540,6 @@
         public System.Windows.Forms.Button btnImportKeyBindings;
 		private System.Windows.Forms.Button button2;
 		public System.Windows.Forms.CheckBox cbDontCleanAtQuit;
+		public System.Windows.Forms.Button btnToggleConsole;
 	}
 }
