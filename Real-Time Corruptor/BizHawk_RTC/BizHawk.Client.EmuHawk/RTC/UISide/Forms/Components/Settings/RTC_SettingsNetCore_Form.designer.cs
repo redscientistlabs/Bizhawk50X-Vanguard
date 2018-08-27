@@ -43,6 +43,7 @@
             this.label21 = new System.Windows.Forms.Label();
             this.nmGameProtectionDelay = new System.Windows.Forms.NumericUpDown();
             this.lbDetachedModeSettings = new System.Windows.Forms.Label();
+            this.btnToggleConsole = new System.Windows.Forms.Button();
             this.pnAttachedModeSettings.SuspendLayout();
             this.pnDetachedModeSettings.SuspendLayout();
             this.groupBox2.SuspendLayout();
@@ -54,7 +55,7 @@
             // 
             this.pnAttachedModeSettings.BackColor = System.Drawing.Color.Gray;
             this.pnAttachedModeSettings.Controls.Add(this.btnStartAutoKillSwitch);
-            this.pnAttachedModeSettings.Location = new System.Drawing.Point(8, 265);
+            this.pnAttachedModeSettings.Location = new System.Drawing.Point(8, 276);
             this.pnAttachedModeSettings.Name = "pnAttachedModeSettings";
             this.pnAttachedModeSettings.Size = new System.Drawing.Size(232, 60);
             this.pnAttachedModeSettings.TabIndex = 134;
@@ -81,7 +82,7 @@
             this.lbAttachedModeSettings.AutoSize = true;
             this.lbAttachedModeSettings.Font = new System.Drawing.Font("Segoe UI Semibold", 9F);
             this.lbAttachedModeSettings.ForeColor = System.Drawing.Color.White;
-            this.lbAttachedModeSettings.Location = new System.Drawing.Point(12, 247);
+            this.lbAttachedModeSettings.Location = new System.Drawing.Point(12, 260);
             this.lbAttachedModeSettings.Name = "lbAttachedModeSettings";
             this.lbAttachedModeSettings.Size = new System.Drawing.Size(135, 15);
             this.lbAttachedModeSettings.TabIndex = 135;
@@ -90,11 +91,12 @@
             // pnDetachedModeSettings
             // 
             this.pnDetachedModeSettings.BackColor = System.Drawing.Color.Gray;
+            this.pnDetachedModeSettings.Controls.Add(this.btnToggleConsole);
             this.pnDetachedModeSettings.Controls.Add(this.groupBox2);
             this.pnDetachedModeSettings.Controls.Add(this.groupBox1);
             this.pnDetachedModeSettings.Location = new System.Drawing.Point(8, 25);
             this.pnDetachedModeSettings.Name = "pnDetachedModeSettings";
-            this.pnDetachedModeSettings.Size = new System.Drawing.Size(232, 219);
+            this.pnDetachedModeSettings.Size = new System.Drawing.Size(232, 229);
             this.pnDetachedModeSettings.TabIndex = 132;
             this.pnDetachedModeSettings.Tag = "color:normal";
             // 
@@ -108,7 +110,7 @@
             this.groupBox2.ForeColor = System.Drawing.Color.White;
             this.groupBox2.Location = new System.Drawing.Point(15, 7);
             this.groupBox2.Name = "groupBox2";
-            this.groupBox2.Size = new System.Drawing.Size(201, 120);
+            this.groupBox2.Size = new System.Drawing.Size(201, 112);
             this.groupBox2.TabIndex = 125;
             this.groupBox2.TabStop = false;
             this.groupBox2.Text = "NetCore";
@@ -125,7 +127,7 @@
             "Standard",
             "Lazy",
             "Disabled"});
-            this.cbNetCoreCommandTimeout.Location = new System.Drawing.Point(18, 85);
+            this.cbNetCoreCommandTimeout.Location = new System.Drawing.Point(17, 76);
             this.cbNetCoreCommandTimeout.Name = "cbNetCoreCommandTimeout";
             this.cbNetCoreCommandTimeout.Size = new System.Drawing.Size(163, 21);
             this.cbNetCoreCommandTimeout.TabIndex = 129;
@@ -156,7 +158,7 @@
             // 
             this.label5.AutoSize = true;
             this.label5.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F);
-            this.label5.Location = new System.Drawing.Point(15, 67);
+            this.label5.Location = new System.Drawing.Point(14, 58);
             this.label5.Name = "label5";
             this.label5.Size = new System.Drawing.Size(173, 13);
             this.label5.TabIndex = 128;
@@ -180,9 +182,9 @@
             this.groupBox1.Controls.Add(this.nmGameProtectionDelay);
             this.groupBox1.Font = new System.Drawing.Font("Segoe UI Semibold", 9F);
             this.groupBox1.ForeColor = System.Drawing.Color.White;
-            this.groupBox1.Location = new System.Drawing.Point(15, 128);
+            this.groupBox1.Location = new System.Drawing.Point(15, 119);
             this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(201, 81);
+            this.groupBox1.Size = new System.Drawing.Size(201, 68);
             this.groupBox1.TabIndex = 124;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Game Protection";
@@ -192,7 +194,7 @@
             this.label20.AutoSize = true;
             this.label20.Font = new System.Drawing.Font("Segoe UI", 8F);
             this.label20.ForeColor = System.Drawing.Color.White;
-            this.label20.Location = new System.Drawing.Point(15, 24);
+            this.label20.Location = new System.Drawing.Point(15, 20);
             this.label20.Name = "label20";
             this.label20.Size = new System.Drawing.Size(129, 13);
             this.label20.TabIndex = 116;
@@ -203,7 +205,7 @@
             this.label3.AutoSize = true;
             this.label3.Font = new System.Drawing.Font("Segoe UI", 8F);
             this.label3.ForeColor = System.Drawing.Color.White;
-            this.label3.Location = new System.Drawing.Point(95, 45);
+            this.label3.Location = new System.Drawing.Point(95, 41);
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(49, 13);
             this.label3.TabIndex = 115;
@@ -214,7 +216,7 @@
             this.label21.AutoSize = true;
             this.label21.Font = new System.Drawing.Font("Segoe UI", 8F);
             this.label21.ForeColor = System.Drawing.Color.White;
-            this.label21.Location = new System.Drawing.Point(14, 45);
+            this.label21.Location = new System.Drawing.Point(14, 41);
             this.label21.Name = "label21";
             this.label21.Size = new System.Drawing.Size(33, 13);
             this.label21.TabIndex = 117;
@@ -225,7 +227,7 @@
             this.nmGameProtectionDelay.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
             this.nmGameProtectionDelay.Font = new System.Drawing.Font("Segoe UI", 9.75F);
             this.nmGameProtectionDelay.ForeColor = System.Drawing.Color.White;
-            this.nmGameProtectionDelay.Location = new System.Drawing.Point(54, 42);
+            this.nmGameProtectionDelay.Location = new System.Drawing.Point(54, 38);
             this.nmGameProtectionDelay.Maximum = new decimal(new int[] {
             60,
             0,
@@ -259,6 +261,22 @@
             this.lbDetachedModeSettings.Size = new System.Drawing.Size(138, 15);
             this.lbDetachedModeSettings.TabIndex = 133;
             this.lbDetachedModeSettings.Text = "Detached Mode Settings";
+            // 
+            // btnToggleConsole
+            // 
+            this.btnToggleConsole.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(224)))), ((int)(((byte)(224)))), ((int)(((byte)(224)))));
+            this.btnToggleConsole.FlatAppearance.BorderSize = 0;
+            this.btnToggleConsole.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnToggleConsole.Font = new System.Drawing.Font("Segoe UI", 8F);
+            this.btnToggleConsole.ForeColor = System.Drawing.Color.Black;
+            this.btnToggleConsole.Location = new System.Drawing.Point(15, 192);
+            this.btnToggleConsole.Name = "btnToggleConsole";
+            this.btnToggleConsole.Size = new System.Drawing.Size(201, 29);
+            this.btnToggleConsole.TabIndex = 127;
+            this.btnToggleConsole.Tag = "color:light";
+            this.btnToggleConsole.Text = "Toggle Console";
+            this.btnToggleConsole.UseVisualStyleBackColor = false;
+            this.btnToggleConsole.Click += new System.EventHandler(this.btnToggleConsole_Click);
             // 
             // RTC_SettingsNetCore_Form
             // 
@@ -307,5 +325,6 @@
 		private System.Windows.Forms.Label label21;
 		public System.Windows.Forms.NumericUpDown nmGameProtectionDelay;
 		private System.Windows.Forms.Label lbDetachedModeSettings;
+		public System.Windows.Forms.Button btnToggleConsole;
 	}
 }

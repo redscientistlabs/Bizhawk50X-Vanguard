@@ -84,5 +84,12 @@ namespace RTC
 				lbDetachedModeSettings.ForeColor = Color.Gray;
 			}
 		}
+
+		private void btnToggleConsole_Click(object sender, EventArgs e)
+		{
+			//We only have a console in standalone mode
+			if (NetCoreImplementation.isStandalone)
+				LogConsole.ToggleConsole();
+		}
 	}
 }

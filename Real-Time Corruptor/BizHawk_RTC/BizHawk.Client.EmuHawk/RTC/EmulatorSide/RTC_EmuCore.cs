@@ -214,6 +214,15 @@ namespace RTC
 		//This is the entry point of RTC. Without this method, nothing will load.
 		public static void Start(RTC_Standalone_Form _standaloneForm = null)
 		{
+			//Spawn a console for StandaloneRTC.
+			//If we're in attached mode, we can't do this as the emulator itself may have something overriding stdout (Bizhawk)
+			if (NetCoreImplementation.isStandalone)
+			{
+				LogConsole.CreateConsole();
+				if (!RTC_Hooks.ShowConsole)
+					LogConsole.HideConsole();
+			}
+
 			//Timed releases. Only for exceptionnal cases.
 			bool Expires = false;
 			DateTime ExpiringDate = DateTime.Parse("2017-03-03");
