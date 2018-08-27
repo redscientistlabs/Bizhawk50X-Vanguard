@@ -235,7 +235,7 @@ namespace RTC
 		{
 			try
 			{
-				toggleButtons(false);
+				sidebarEnabled(false);
 				foreach (BlastUnit bu in sk.BlastLayer.Layer)
 				{
 					if (!(bool)bu2RowDico[bu].Cells["dgvBlastUnitLocked"].Value)
@@ -262,7 +262,7 @@ namespace RTC
 			}
 			finally
 			{
-				toggleButtons(true);
+				sidebarEnabled(true);
 			}
 		}
 
@@ -270,7 +270,7 @@ namespace RTC
 		{
 			try
 			{
-				toggleButtons(false);
+				sidebarEnabled(false);
 				for (int i = 0; i < sk.BlastLayer.Layer.Count(); i++)
 				{
 					BlastUnit bu = sk.BlastLayer.Layer[i];
@@ -286,7 +286,7 @@ namespace RTC
 			}
 			finally
 			{
-				toggleButtons(true);
+				sidebarEnabled(true);
 			}
 		}
 
@@ -294,7 +294,7 @@ namespace RTC
 		{
 			try
 			{
-				toggleButtons(false);
+				sidebarEnabled(false);
 				List<BlastUnit> buToRemove = new List<BlastUnit>();
 
 				foreach (BlastUnit bu in sk.BlastLayer.Layer)
@@ -312,7 +312,7 @@ namespace RTC
 			}
 			finally
 			{
-				toggleButtons(true);
+				sidebarEnabled(true);
 			}
 		}
 
@@ -320,7 +320,7 @@ namespace RTC
 		{
 			try
 			{
-				toggleButtons(false);
+				sidebarEnabled(false);
 				if (sk.ParentKey == null)
 				{
 					MessageBox.Show("There's no savestate associated with this Stashkey!\nAssociate one in the menu to be able to load.");
@@ -328,6 +328,7 @@ namespace RTC
 				}
 				BlastLayer bl = new BlastLayer();
 
+				Console.WriteLine("Blast Editor: Prepping the BlastLayer from the rows");
 				foreach (DataGridViewRow row in dgvBlastLayer.Rows)
 				{
 					BlastUnit bu = (BlastUnit)row.Cells["dgvBlastUnitReference"].Value;
@@ -337,6 +338,7 @@ namespace RTC
 
 				StashKey newSk = (StashKey)sk.Clone();
 				newSk.BlastLayer = (BlastLayer)bl.Clone();
+				Console.WriteLine("Blast Editor: Running newSK");
 				newSk.Run();
 
 			}
@@ -346,7 +348,7 @@ namespace RTC
 			}
 			finally
 			{
-				toggleButtons(true);
+				sidebarEnabled(true);
 			}
 		}
 
@@ -354,7 +356,7 @@ namespace RTC
 		{
 			try
 			{
-				toggleButtons(false);
+				sidebarEnabled(false);
 				BlastLayer bl = new BlastLayer();
 
 				foreach (DataGridViewRow row in dgvBlastLayer.Rows)
@@ -372,7 +374,7 @@ namespace RTC
 			}
 			finally
 			{
-				toggleButtons(true);
+				sidebarEnabled(true);
 			}
 		}
 
@@ -380,7 +382,7 @@ namespace RTC
 		{
 			try
 			{
-				toggleButtons(false);
+				sidebarEnabled(false);
 				if (sk.ParentKey == null)
 				{
 					MessageBox.Show(
@@ -410,7 +412,7 @@ namespace RTC
 			}
 			finally
 			{
-				toggleButtons(true);
+				sidebarEnabled(true);
 			}
 
 		}
@@ -419,7 +421,7 @@ namespace RTC
 		{
 			try
 			{
-				toggleButtons(false);
+				sidebarEnabled(false);
 				dgvBlastLayer.ClearSelection();
 				foreach (BlastUnit bu in sk.BlastLayer.Layer)
 				{
@@ -433,7 +435,7 @@ namespace RTC
 			}
 			finally
 			{
-				toggleButtons(true);
+				sidebarEnabled(true);
 			}
 		}
 
@@ -441,7 +443,7 @@ namespace RTC
 		{
 			try
 			{
-				toggleButtons(false);
+				sidebarEnabled(false);
 				dgvBlastLayer.ClearSelection();
 				foreach (BlastUnit bu in sk.BlastLayer.Layer)
 				{
@@ -455,7 +457,7 @@ namespace RTC
 			}
 			finally
 			{
-				toggleButtons(true);
+				sidebarEnabled(true);
 			}
 		}
 
@@ -463,7 +465,7 @@ namespace RTC
 		{
 			try
 			{
-				toggleButtons(false);
+				sidebarEnabled(false);
 				if (dgvBlastLayer.SelectedRows.Count < 1)
 				{
 					MessageBox.Show("No rows were selected. Cannot duplicate.");
@@ -488,21 +490,13 @@ namespace RTC
 			}
 			finally
 			{
-				toggleButtons(true);
+				sidebarEnabled(true);
 			}
 		}
 
-		private void toggleButtons(bool enabled)
+		private void sidebarEnabled(bool enabled)
 		{
-			btnRemoveDisabled.Enabled = enabled;
-			btnInvertDisabled.Enabled = enabled;
-			btnDisable50.Enabled = enabled;
-			btnDuplicateSelected.Enabled = enabled;
-			btnEnableEverything.Enabled = enabled;
-			btnDisableEverything.Enabled = enabled;
-			btnCorrupt.Enabled = enabled;
-			btnLoadCorrupt.Enabled = enabled;
-			btnSendToStash.Enabled = enabled;
+			panelSidebar.Enabled = enabled;
 		}
 
 		private void dgvBlastLayer_CellValueChanged(object sender, DataGridViewCellEventArgs e)
