@@ -2547,7 +2547,7 @@ namespace RTC
 			Win32.FileType fileType = Win32.GetFileType(oldOut);
 
 			//stdout is already connected to something. keep using it and dont let the console interfere
-			shouldRedirectStdout = true;
+			shouldRedirectStdout = (fileType == Win32.FileType.FileTypeUnknown || fileType == Win32.FileType.FileTypePipe);
 
 			//attach to an existing console
 			attachedConsole = false;
@@ -2599,6 +2599,9 @@ namespace RTC
 				Console.WriteLine();
 			}
 
+			//Disable the X button on the console window
+			Win32.EnableMenuItem(Win32.GetSystemMenu(Win32.GetConsoleWindow(), false), Win32.SC_CLOSE, Win32.MF_DISABLED);
+
 			ConsoleVisible = true;
 		}
 
@@ -2618,7 +2621,6 @@ namespace RTC
 
 		public static void ShowConsole()
 		{
-			
 			var handle = Win32.GetConsoleWindow();
 			Win32.ShowWindow(handle, Win32.SW_SHOW);
 			ConsoleVisible = true;
@@ -2661,11 +2663,22 @@ namespace RTC
 		public const int SW_HIDE = 0;
 		public const int SW_SHOW = 5;
 
+		internal const int SC_CLOSE = 0xF060;           //close button's code in Windows API
+		internal const int MF_ENABLED = 0x00000000;     //enabled button status
+		internal const int MF_GRAYED = 0x1;             //disabled button status (enabled = false)
+		internal const int MF_DISABLED = 0x00000002;    //disabled button status
+
 		[DllImport("kernel32.dll", SetLastError = true)]
 		public static extern IntPtr GetConsoleWindow();
 
 		[DllImport("user32.dll")]
 		public static extern bool ShowWindow(IntPtr hWnd, int nCmdShow);
+
+		[DllImport("user32.dll")]
+		public static extern IntPtr GetSystemMenu(IntPtr HWNDValue, bool isRevert);
+
+		[DllImport("user32.dll")]
+		public static extern int EnableMenuItem(IntPtr tMenu, int targetItem, int targetStatus);
 
 		[DllImport("user32.dll", SetLastError = true)]
 		public static extern bool SetForegroundWindow(IntPtr hWnd);
