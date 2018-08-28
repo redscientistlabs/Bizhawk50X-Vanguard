@@ -187,6 +187,9 @@ namespace RTC
 
 		public static void DownloadProblematicProcesses()
 		{
+			//Windows does the big dumb: part 11
+			WebRequest.DefaultWebProxy = null;
+
 			string LocalPath = RTC_Core.paramsDir + "\\BADPROCESSES";
 			string json = "";
 			try
@@ -197,10 +200,12 @@ namespace RTC
 					if (lastModified.Date == DateTime.Today)
 						return;
 				}
-				WebClientTimeout client = new WebClientTimeout();
-				client.Headers[HttpRequestHeader.Accept] = "text/html, image/png, image/jpeg, image/gif, */*;q=0.1";
-				client.Headers[HttpRequestHeader.UserAgent] = "Mozilla/5.0 (Windows; U; Windows NT 6.1; de; rv:1.9.2.12) Gecko/20101026 Firefox/3.6.12";
-				json = client.DownloadString("https://raw.githubusercontent.com/ircluzar/RTC3/RTC3.2X/ProblematicProcesses.json");
+				using (HttpClient client = new HttpClient())
+				{
+					client.Timeout = TimeSpan.FromMilliseconds(5000);
+					//Using .Result makes it synchronous
+                    json = client.GetStringAsync("http://redscientist.com/software/rtc/ProblematicProcesses.json").Result;
+				}
 				File.WriteAllText(LocalPath, json);
 			}
 			catch (Exception ex)
@@ -239,7 +244,6 @@ namespace RTC
 				Console.WriteLine(ex.ToString());
 				if (File.Exists(LocalPath))
 					File.Delete(LocalPath);
-				return;
 			}
 		}
 
@@ -247,39 +251,55 @@ namespace RTC
 		public static bool Warned = false;
 		public static void CheckForProblematicProcesses()
 		{
-			if (Warned || ProblematicProcesses == null)
+			Console.WriteLine(DateTime.Now + "Entering CheckForProblematicProcesses");
+			if (Warned || ProblematicProcesses  == null)
 				return;
 
-				try
-				{
-					var processes = Process.GetProcesses().Select(it => $"{it.ProcessName.ToUpper()}").OrderBy(x => x).ToArray();
+			try
+			{
+				var processes = Process.GetProcesses().Select(it => $"{it.ProcessName.ToUpper()}").OrderBy(x => x)
+					.ToArray();
 
-					//Warn based on loaded processes
-					foreach (var item in ProblematicProcesses)
+				//Warn based on loaded processes
+				foreach (var item in ProblematicProcesses)
+				{
+					if (processes.Contains(item.Name))
 					{
-						if (processes.Contains(item.Name))
-						{
-							MessageBox.Show(item.Message, "Incompatible Program Detected!");
-							Warned = true;
-						}
+						MessageBox.Show(item.Message, "Incompatible Program Detected!");
+						Warned = true;
 					}
 				}
-				catch (Exception ex)
-				{
-					MessageBox.Show(ex.ToString());
-					return;
-				}
+			}
+			catch (Exception ex)
+			{
+				MessageBox.Show(ex.ToString());
+				return;
+			}
+			finally
+			{
+				Console.WriteLine(DateTime.Now + "Exiting CheckForProblematicProcesses");
+			}
 		}
 
 		//This is the entry point of RTC. Without this method, nothing will load.
 		public static void Start(Form _standaloneForm = null)
 		{
+			/*
 			//Spawn a console for standalonertc
 			if(isStandalone)
 			{
 				LogConsole.CreateConsole();
 				if (!RTC_Hooks.ShowConsole)
 					LogConsole.HideConsole();
+			}*/
+
+			if (RTC_Hooks.isRemoteRTC)
+			{
+				FileStream filestream = new FileStream("emuhawk.txt", FileMode.Create);
+				var streamwriter = new StreamWriter(filestream);
+				streamwriter.AutoFlush = true;
+				Console.SetOut(streamwriter);
+				Console.SetError(streamwriter);
 			}
 
 			//Timed releases. Only for exceptionnal cases.
