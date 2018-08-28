@@ -218,9 +218,9 @@ namespace RTC
 			}
 			catch (Exception ex)
 			{
-				throw;
+				throw ex;
 			}
-			return null;
+
 		}
 
 

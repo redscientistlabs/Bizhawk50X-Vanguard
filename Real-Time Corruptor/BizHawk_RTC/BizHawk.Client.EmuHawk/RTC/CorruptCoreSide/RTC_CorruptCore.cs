@@ -1,4 +1,6 @@
-﻿using System;
+﻿using RTCV.CorruptCore;
+using RTCV.NetCore;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -11,7 +13,7 @@ namespace RTC
 	{
 		public static Random RND = new Random();
 
-		public static RTCV.CorruptCore.
+		public static FullSpec spec;
 
 
 		public static CorruptionEngine SelectedEngine = CorruptionEngine.NIGHTMARE;
@@ -33,6 +35,28 @@ namespace RTC
 		public static bool AutoCorrupt = false;
 
 
+		public static void Start()
+		{
+			var partial = new PartialSpec("CorruptCore");
+
+			partial["SelectedEngine"] = CorruptionEngine.NIGHTMARE;
+			partial["CustomPrecision"] = 1;
+			partial["CurrentPrecision"] = 1;
+			partial["Intensity"] = 1;
+			partial["ErrorDelay"] = 1;
+			partial["Radius"] = BlastRadius.SPREAD;
+			partial["AutoCorrupt"] = false;
+
+			spec = new FullSpec(partial);
+			spec.SpecUpdated += (object o, SpecUpdateEventArgs e) =>
+			{
+				//Propagate partial to netcore if UI
+				if(NetCoreImplementation.isStandalone)
+					NetCoreImplementation.SendCommandToBizhawk(new RTC_Command(CommandType.SPECUPDATE) { objectValue = e.partialSpec }, true);
+				
+			};
+			
+		}
 
 		public static BlastUnit getBlastUnit(string _domain, long _address, int precision)
 		{

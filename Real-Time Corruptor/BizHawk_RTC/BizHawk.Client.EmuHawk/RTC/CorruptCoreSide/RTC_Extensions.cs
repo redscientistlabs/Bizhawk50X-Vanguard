@@ -2757,7 +2757,6 @@ namespace RTC
 			private set;
 		}
 
-		static bool NeedToRelease;
 		static string SkipEverythingButProgramInCommandLine(string cmdLine)
 		{
 			//skip past the program name. can anyone think of a better way to do this?

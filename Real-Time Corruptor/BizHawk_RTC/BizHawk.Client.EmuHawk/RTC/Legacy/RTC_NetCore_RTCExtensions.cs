@@ -1,4 +1,5 @@
-﻿using System;
+﻿using RTCV.NetCore;
+using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.IO;
@@ -757,6 +758,11 @@ namespace RTC
 
 				case CommandType.REMOTE_RENDER_RENDERATLOAD:
 					RTC_StockpileManager.renderAtLoad = (bool)cmd.objectValue;
+					break;
+
+				case CommandType.SPECUPDATE:
+					//change to a static FullSpec dictionary managment
+					RTC_CorruptCore.spec.Update((PartialSpec)cmd.objectValue,false);
 					break;
 			}
 

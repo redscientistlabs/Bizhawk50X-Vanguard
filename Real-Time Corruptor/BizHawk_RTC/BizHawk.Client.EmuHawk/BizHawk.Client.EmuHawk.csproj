@@ -734,7 +734,6 @@
     <Compile Include="RTC\CorruptCoreSide\RTC_CorruptCore.cs" />
     <Compile Include="RTC\CorruptCoreSide\Corruption Engines\RTC_BlastGeneratorEngine.cs" />
     <Compile Include="RTC\CorruptCoreSide\Corruption Engines\RTC_CustomEngine.cs" />
-    <Compile Include="RTC\CorruptCoreSide\UniSpec.cs" />
     <Compile Include="RTC\Legacy\RTC_NetCoreImplementation.cs" />
     <Compile Include="RTC\UISide\Forms\Components\Containers\RTC_ListBox_Form.cs">
       <SubType>Form</SubType>

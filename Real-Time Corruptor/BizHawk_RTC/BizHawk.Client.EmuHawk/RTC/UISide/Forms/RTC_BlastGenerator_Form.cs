@@ -176,7 +176,7 @@ namespace RTC
 			}
 			catch (Exception ex)
 			{
-				throw;
+				throw ex;
 			}
 		}
 
@@ -194,7 +194,7 @@ namespace RTC
 			}
 			catch (Exception ex)
 			{
-				throw;
+				throw ex;
 			}
 		}
 
@@ -457,7 +457,7 @@ namespace RTC
 				return new BlastGeneratorProto(note, type, domain, mode, precision, stepSize, startAddress, endAddress, param1, param2);
 			}catch(Exception ex)
 			{
-				throw;
+				throw ex;
 			}
 		}
 

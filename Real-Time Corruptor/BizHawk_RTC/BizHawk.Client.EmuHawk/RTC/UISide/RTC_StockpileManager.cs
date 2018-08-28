@@ -344,7 +344,6 @@ namespace RTC
 			string Key = sk.ParentKey;
 			StashKeySavestateLocation StateLocation = sk.StateLocation;
 
-			bool GameHasChanged = false;
 			string TheoricalSaveStateFilename;
 
 			RTC_Core.StopSound();
@@ -364,7 +363,6 @@ namespace RTC
 					RTC_Hooks.BIZHAWK_GETSET_SYNCSETTINGS = sk.SyncSettings;
 					RTC_Core.LoadRom_NET(sk.RomFilename);
 				}
-				GameHasChanged = true;
 			}
 
 			RTC_Core.StartSound();
