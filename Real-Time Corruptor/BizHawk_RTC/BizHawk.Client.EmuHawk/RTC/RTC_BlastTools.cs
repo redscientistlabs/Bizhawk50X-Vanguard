@@ -228,6 +228,10 @@ namespace RTC
 
 			foreach (BlastUnit bu in bl.Layer)
 			{
+				//Since BlastLayer.Apply() doesn't actually run the BlastPipe, we need to call execute before backing it up
+				if(bu is BlastPipe bp)
+					bp.Execute();
+
 				newBlastLayer.Layer.Add(bu.GetBackup());
 			}
 			return newBlastLayer;

@@ -1609,7 +1609,7 @@ namespace RTC
 				string targetDomain = RTC_MemoryDomains.GetRealDomain(Domain, Address);
 				long targetAddress = RTC_MemoryDomains.GetRealAddress(Domain, Address);
 
-				MemoryDomainProxy mdp = RTC_MemoryDomains.GetProxy(Domain, targetAddress);
+				MemoryDomainProxy mdp = RTC_MemoryDomains.GetProxy(targetDomain, targetAddress);
 
 				var settings = new RamSearchEngine.Settings(RTC_MemoryDomains.MDRI.MemoryDomains);
 

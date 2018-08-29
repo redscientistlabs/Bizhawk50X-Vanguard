@@ -2756,7 +2756,7 @@ namespace RTC
 		{
 			var rowIndex = base.HitTest(e.X, e.Y).RowIndex;
 			_delayedMouseDown = (rowIndex >= 0 &&
-				(SelectedRows.Contains(Rows[rowIndex]) || (ModifierKeys & Keys.Control) > 0));
+				(ModifierKeys & Keys.Alt) > 0);
 
 			if (!_delayedMouseDown)
 			{
@@ -2772,7 +2772,7 @@ namespace RTC
 					// Create a rectangle using the DragSize, with the mouse position being
 					// at the center of the rectangle.
 					_dragBoxFromMouseDown = new Rectangle(
-						new Point(e.X - (dragSize.Width / 2), e.Y - (dragSize.Height / 2)), dragSize);
+						new Point(e.X - (dragSize.Width / 4), e.Y - (dragSize.Height / 4)), dragSize);
 				}
 				else
 					// Reset the rectangle if the mouse is not over an item in the datagridview.
@@ -2819,8 +2819,6 @@ namespace RTC
 			// converted to client coordinates.
 			Point clientPoint = this.PointToClient(new Point(e.X, e.Y));
 
-			// Get the row index of the item the mouse is below. 
-			var hitTest = this.HitTest(clientPoint.X, clientPoint.Y);
 
 
 
@@ -2842,6 +2840,8 @@ namespace RTC
 					}
 
 
+					// Get the row index of the item the mouse is below. 
+					var hitTest = this.HitTest(clientPoint.X, clientPoint.Y);
 					rowIndexOfItemUnderMouseToDrop = hitTest.RowIndex;
 					if (rowIndexOfItemUnderMouseToDrop == -1)
 					{
@@ -2850,11 +2850,21 @@ namespace RTC
 						if (clientPoint.Y <= this.ColumnHeadersHeight)
 							rowIndexOfItemUnderMouseToDrop = 0;
 						else
-							rowIndexOfItemUnderMouseToDrop = this.RowCount - 1;
+						{
+							int temp = this.Rows.Count;
+							if (temp >= 0)
+								rowIndexOfItemUnderMouseToDrop = temp;
+							else
+							{
+								rowIndexOfItemUnderMouseToDrop = 0;
+							}
+
+						}
 					}
 
 					//We InsertRange rather than inserting in the iterator so we don't have to deal with the edge case of moving two items up by one position goofing the indexes
 					this.Rows.InsertRange(rowIndexOfItemUnderMouseToDrop, _rows);
+
 				}
 
 			}
