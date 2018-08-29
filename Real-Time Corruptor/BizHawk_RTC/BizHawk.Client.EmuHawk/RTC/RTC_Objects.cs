@@ -1431,7 +1431,7 @@ namespace RTC
 					else if (newValue > 255)
 						newValue = 255;
 
-					mi2.PokeByte(PipeAddress, (byte)newValue);
+					mi2.PokeByte(PipeAddress + i, (byte)newValue);
 				}
 			}
 			catch (Exception ex)

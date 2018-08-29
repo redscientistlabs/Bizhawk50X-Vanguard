@@ -224,6 +224,7 @@ namespace RTC
 							{
 								//Read the size
 								int lengthToReceive = 0;
+								//Nothing is longer than 4 bytes 
 								byte[] _lengthToReceive = new byte[4];
 								networkStream.Read(_lengthToReceive, 0, _lengthToReceive.Length);
 								lengthToReceive = BitConverter.ToInt32(_lengthToReceive, 0);
@@ -275,14 +276,17 @@ namespace RTC
 								binaryFormatter.Serialize(ms, backCmd);
 								
 								//Write the length of the incoming object to the NetworkStream
-								byte[] length = BitConverter.GetBytes(ms.ToArray().Length);
+								//Nothing is longer than 4 bytes 
+								byte[] length = RTC_Extensions.GetByteArrayValue(4, ms.Length);
+								Console.WriteLine("I am giving you this many bytes " + BitConverter.ToInt32(length, 0));
 								networkStream.Write(length, 0, length.Length);
-								//Console.WriteLine("I am giving you this many bytes " + BitConverter.ToInt32(length, 0));
+								
 								//Write the data itself
-								//ms.Position = 0;
-								//ms.CopyTo(networkStream);
-								byte[] buf = ms.ToArray();
-								networkStream.Write(buf, 0, buf.Length);
+								ms.Position = 0;
+								ms.CopyTo(networkStream);
+								//byte[] buf = ms.ToArray();
+								//networkStream.Write(buf, 0, buf.Length);
+								Console.WriteLine("I gave you this many bytes " + BitConverter.ToInt32(length, 0));
 								//Console.WriteLine("It took " + sw.ElapsedMilliseconds + " ms to serialize backCmd " + backCmd.Type + " of " + ms.ToArray().Length + "	bytes");
 							}
 
