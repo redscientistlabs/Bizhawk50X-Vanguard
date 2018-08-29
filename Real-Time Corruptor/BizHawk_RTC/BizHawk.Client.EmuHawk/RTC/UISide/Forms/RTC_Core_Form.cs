@@ -73,16 +73,16 @@ namespace RTC
 
 		private void RTC_Form_Load(object sender, EventArgs e)
 		{
-			btnLogo.Text = "   Version " + RTC_Core.RtcVersion;
+			btnLogo.Text = "   Version " + RTC_EmuCore.RtcVersion;
 
 			if (!RTC_Params.IsParamSet("DISCLAIMER_READ"))
 			{
-				MessageBox.Show(File.ReadAllText(RTC_Core.rtcDir + "\\LICENSES\\DISCLAIMER.TXT").Replace("[ver]", RTC_Core.RtcVersion), "RTC", MessageBoxButtons.OK, MessageBoxIcon.Information);
+				MessageBox.Show(File.ReadAllText(RTC_EmuCore.rtcDir + "\\LICENSES\\DISCLAIMER.TXT").Replace("[ver]", RTC_EmuCore.RtcVersion), "RTC", MessageBoxButtons.OK, MessageBoxIcon.Information);
 				RTC_Params.SetParam("DISCLAIMER_READ");
 			}
 
-			RTC_Core.DownloadProblematicProcesses();
-			RTC_Core.CheckForProblematicProcesses();
+			RTC_EmuCore.DownloadProblematicProcesses();
+			RTC_EmuCore.CheckForProblematicProcesses();
 
 			if (NetCoreImplementation.isStandalone)
 			{
@@ -121,7 +121,7 @@ namespace RTC
 			}
 			else if (NetCoreImplementation.isStandalone)
 			{
-				if (RTC_StockpileManager.unsavedEdits && !RTC_Core.isClosing && MessageBox.Show("You have unsaved edits in the Glitch Harvester Stockpile. \n\n Are you sure you want to close RTC without saving?", "Unsaved edits in Stockpile", MessageBoxButtons.YesNo) == DialogResult.No)
+				if (RTC_StockpileManager.unsavedEdits && !RTC_UICore.isClosing && MessageBox.Show("You have unsaved edits in the Glitch Harvester Stockpile. \n\n Are you sure you want to close RTC without saving?", "Unsaved edits in Stockpile", MessageBoxButtons.YesNo) == DialogResult.No)
 				{
 					e.Cancel = true;
 					return;
@@ -133,7 +133,7 @@ namespace RTC
 					Thread.Sleep(1000);
 				}
 
-				RTC_Core.CloseAllRtcForms();
+				RTC_UICore.CloseAllRtcForms();
 			}
 		}
 

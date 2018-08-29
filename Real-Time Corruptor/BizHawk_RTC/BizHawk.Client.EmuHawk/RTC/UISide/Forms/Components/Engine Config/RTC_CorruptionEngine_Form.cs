@@ -46,14 +46,14 @@ namespace RTC
 			cbCustomPrecision.SelectedIndex = 0;
 
 			//Do this here as if it's stuck into the designer, it keeps defaulting out
-			cbVectorValueList.DataSource = RTC_Core.ValueListBindingSource;
-			cbVectorLimiterList.DataSource = RTC_Core.LimiterListBindingSource;
+			cbVectorValueList.DataSource = RTC_EmuCore.ValueListBindingSource;
+			cbVectorLimiterList.DataSource = RTC_EmuCore.LimiterListBindingSource;
 
-			if (RTC_Core.LimiterListBindingSource.Count > 0)
+			if (RTC_EmuCore.LimiterListBindingSource.Count > 0)
 			{
 				cbVectorLimiterList_SelectedIndexChanged(cbVectorLimiterList, null);
 			}
-			if (RTC_Core.ValueListBindingSource.Count > 0)
+			if (RTC_EmuCore.ValueListBindingSource.Count > 0)
 			{
 				cbVectorValueList_SelectedIndexChanged(cbVectorValueList, null);
 			}
@@ -224,8 +224,8 @@ namespace RTC
 			if (cbClearFreezesOnRewind.Checked != cbClearCheatsOnRewind.Checked)
 				cbClearCheatsOnRewind.Checked = cbClearFreezesOnRewind.Checked;
 
-			RTC_Core.ClearStepActionsOnRewind = cbClearFreezesOnRewind.Checked;
-			NetCoreImplementation.SendCommandToBizhawk(new RTC_Command(CommandType.REMOTE_SET_STEPACTIONS_CLEARREWIND) { objectValue = RTC_Core.ClearStepActionsOnRewind });
+			RTC_CorruptCore.ClearStepActionsOnRewind = cbClearFreezesOnRewind.Checked;
+			NetCoreImplementation.SendCommandToBizhawk(new RTC_Command(CommandType.REMOTE_SET_STEPACTIONS_CLEARREWIND) { objectValue = RTC_CorruptCore.ClearStepActionsOnRewind });
 		}
 
 		private void nmMaxFreezes_ValueChanged(object sender, EventArgs e)

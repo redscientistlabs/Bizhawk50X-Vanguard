@@ -9,7 +9,11 @@ using System.Net;
 using System.Reflection;
 using System.Threading;
 using System.Windows.Forms;
+using BizHawk.Client.Common;
+using BizHawk.Emulation.Common;
+using BizHawk.Emulation.Cores.Nintendo.N64;
 using Newtonsoft.Json;
+using RTCV.NetCore;
 
 /*
 isRemoteRTC = Bool stating that the process is emuhawk.exe in detached
@@ -18,14 +22,16 @@ isStandalone = Bool stating the process is standalonertc in detached
 
 namespace RTC
 {
-	public static class RTC_Core
-	{
+	public static class RTC_EmuCore
+	{ 
+		//General RTC Values
+		public static string RtcVersion = "3.30";
 		public static string[] args;
+
+		public static FullSpec spec = null;
 		
 		public static List<ProblematicProcess> ProblematicProcesses;
 
-		//General RTC Values
-		public static string RtcVersion = "3.30";
 
 		//Directories
 		public static string bizhawkDir = Directory.GetCurrentDirectory();
@@ -36,89 +42,101 @@ namespace RTC
 		public static string paramsDir = rtcDir + "\\PARAMS\\";
 		public static string listsDir = rtcDir + "\\LISTS\\";
 
-		//Engine Values
 
 
 		public static BindingList<Object> LimiterListBindingSource = new BindingList<Object>();
 		public static BindingList<Object> ValueListBindingSource = new BindingList<Object>();
 
 
-
-		public static bool ClearStepActionsOnRewind = false;
-		public static bool ExtractBlastLayer = false;
+		//RTC Settings
+		public static bool BizhawkOsdDisabled = true;
+		public static bool AllowCrossCoreCorruption = false;
+		public static bool DontCleanSavestatesOnQuit = false;
+		public static string currentGameSystem = "";
+		public static string currentGameName = "";
 		public static string lastOpenRom = null;
 		public static int lastLoaderRom = 0;
 
-		//RTC Settings
-		public static bool BizhawkOsdDisabled = true;
-		public static bool UseHexadecimal = true;
-		public static bool AllowCrossCoreCorruption = false;
-		public static bool DontCleanSavestatesOnQuit = false;
 
-		//Note Box Settings
-		public static System.Drawing.Point NoteBoxPosition;
-		public static System.Drawing.Size NoteBoxSize;
-
-		//RTC Main Forms
-		public static Color generalColor = Color.LightSteelBlue;
-
-
-		//All RTC forms
-		public static Form[] allRtcForms
+		//This is the entry point of RTC. Without this method, nothing will load.
+		public static void Start(RTC_Standalone_Form _standaloneForm = null)
 		{
-			get
+			//Spawn a console for StandaloneRTC.
+			//If we're in attached mode, we can't do this as the emulator itself may have something overriding stdout (Bizhawk)
+			if (NetCoreImplementation.isStandalone)
 			{
-				//This fetches all singletons of interface IAutoColorized
-
-				List<Form> all = new List<Form>();
-
-				foreach (Type t in Assembly.GetAssembly(typeof(S)).GetTypes())
-					if (typeof(IAutoColorize).IsAssignableFrom(t) && t != typeof(IAutoColorize))
-						all.Add((Form)S.GET(Type.GetType(t.ToString())));
-
-				return all.ToArray();
-				
+				LogConsole.CreateConsole();
+				if (!RTC_Hooks.ShowConsole)
+					LogConsole.HideConsole();
 			}
-		}
 
-
-		public static volatile bool isClosing = false;
-
-		public static void CloseAllRtcForms() //This allows every form to get closed to prevent RTC from hanging
-		{
-			if (isClosing)
+			//Timed releases. Only for exceptionnal cases.
+			bool Expires = false;
+			DateTime ExpiringDate = DateTime.Parse("2017-03-03");
+			if (Expires && DateTime.Now > ExpiringDate)
+			{
+				//RTC_RPC.SendToKillSwitch("CLOSE");
+				MessageBox.Show("This version has expired");
+				RTC_Hooks.BIZHAWK_MAINFORM_CLOSE();
+				S.GET<RTC_Core_Form>().Close();
+				S.GET<RTC_GlitchHarvester_Form>().Close();
+				Application.Exit();
 				return;
-
-			isClosing = true;
-
-			if (NetCoreImplementation.Multiplayer != null && NetCoreImplementation.Multiplayer.streamReadingThread != null)
-				NetCoreImplementation.Multiplayer.streamReadingThread.Abort();
-
-			if (NetCoreImplementation.RemoteRTC != null && NetCoreImplementation.RemoteRTC.streamReadingThread != null)
-				NetCoreImplementation.RemoteRTC.streamReadingThread.Abort();
-
-			foreach (Form frm in allRtcForms)
-			{
-				if (frm != null)
-					frm.Close();
 			}
 
-			if (S.GET<RTC_Standalone_Form>() != null)
-				S.GET<RTC_Standalone_Form>().Close();
 
-			//Clean out the working folders
-			if (!NetCoreImplementation.isRemoteRTC && !RTC_Core.DontCleanSavestatesOnQuit)
-			{
-				Stockpile.EmptyFolder("\\WORKING\\");
-			}
+			S.SET(_standaloneForm);
 
-			Application.Exit();
+				RTC_Extensions.DirectoryRequired(new string[] {
+					workingDir,
+					workingDir + "\\TEMP\\",
+					workingDir + "\\SKS\\",
+					workingDir + "\\SSK\\",
+					workingDir + "\\SESSION\\",
+					workingDir + "\\MEMORYDUMPS\\",
+					assetsDir + "\\CRASHSOUNDS\\",
+					rtcDir + "\\PARAMS\\",
+					rtcDir + "\\LISTS\\",
+					});
+
+
+
+			//Start other components here
+			RTC_CorruptCore.Start();
+			RTC_UICore.Start();
+
+			//Loading RTC Params
+			RTC_Params.LoadRTCColor();
+			S.GET<RTC_SettingsGeneral_Form>().cbDisableBizhawkOSD.Checked = !RTC_Params.IsParamSet("ENABLE_BIZHAWK_OSD");
+			S.GET<RTC_SettingsGeneral_Form>().cbAllowCrossCoreCorruption.Checked = RTC_Params.IsParamSet("ALLOW_CROSS_CORE_CORRUPTION");
+			S.GET<RTC_SettingsGeneral_Form>().cbDontCleanAtQuit.Checked = RTC_Params.IsParamSet("DONT_CLEAN_SAVESTATES_AT_QUIT");
+
+			//Load and initialize Hotkeys
+			//RTC_Hotkeys.InitializeHotkeySystem();
+			//RTC_Params.LoadHotkeys();
+			//	RTC_Hotkeys.Test("None", "D", "REMOTE_HOTKEY_MANUALBLAST");
+
+			NetCoreImplementation.Start();
+
+			if (NetCoreImplementation.isRemoteRTC && !NetCoreImplementation.isStandalone)
+				S.GET<RTC_Core_Form>().Show();
+
+			//Refocus on Bizhawk
+			RTC_Hooks.BIZHAWK_MAINFORM_FOCUS();
+
+			//Force create bizhawk config file if it doesn't exist
+			if (!File.Exists(RTC_EmuCore.bizhawkDir + "\\config.ini"))
+				RTC_Hooks.BIZHAWK_SAVE_CONFIG();
+
+			//Fetch NetCore aggressiveness
+			if (NetCoreImplementation.isRemoteRTC)
+				NetCoreImplementation.SendCommandToRTC(new RTC_Command(CommandType.GETAGGRESSIVENESS));
 		}
 
 
 		public static void DownloadProblematicProcesses()
 		{
-			string LocalPath = RTC_Core.paramsDir + "\\BADPROCESSES";
+			string LocalPath = RTC_EmuCore.paramsDir + "\\BADPROCESSES";
 			string json = "";
 			try
 			{
@@ -176,6 +194,7 @@ namespace RTC
 
 		//Checks if any problematic processes are found
 		public static volatile bool Warned = false;
+
 		public static void CheckForProblematicProcesses()
 		{
 			if (Warned || ProblematicProcesses == null)
@@ -211,92 +230,6 @@ namespace RTC
 			RTC_Hooks.BIZHAWK_STOPSOUND();
 		}
 
-		//This is the entry point of RTC. Without this method, nothing will load.
-		public static void Start(RTC_Standalone_Form _standaloneForm = null)
-		{
-			//Spawn a console for StandaloneRTC.
-			//If we're in attached mode, we can't do this as the emulator itself may have something overriding stdout (Bizhawk)
-			if (NetCoreImplementation.isStandalone)
-			{
-				LogConsole.CreateConsole();
-				if (!RTC_Hooks.ShowConsole)
-					LogConsole.HideConsole();
-			}
-
-			//Timed releases. Only for exceptionnal cases.
-			bool Expires = false;
-			DateTime ExpiringDate = DateTime.Parse("2017-03-03");
-			if (Expires && DateTime.Now > ExpiringDate)
-			{
-				//RTC_RPC.SendToKillSwitch("CLOSE");
-				MessageBox.Show("This version has expired");
-				RTC_Hooks.BIZHAWK_MAINFORM_CLOSE();
-				S.GET<RTC_Core_Form>().Close();
-				S.GET<RTC_GlitchHarvester_Form>().Close();
-				Application.Exit();
-				return;
-			}
-			
-
-			S.SET<RTC_Standalone_Form>(_standaloneForm);
-
-
-			if (!Directory.Exists(RTC_Core.workingDir))
-				Directory.CreateDirectory(RTC_Core.workingDir);
-
-			if (!Directory.Exists(RTC_Core.workingDir + "\\TEMP\\"))
-				Directory.CreateDirectory(RTC_Core.workingDir + "\\TEMP\\");
-
-			if (!Directory.Exists(RTC_Core.workingDir + "\\SKS\\"))
-				Directory.CreateDirectory(RTC_Core.workingDir + "\\SKS\\");
-
-			if (!Directory.Exists(RTC_Core.workingDir + "\\SSK\\"))
-				Directory.CreateDirectory(RTC_Core.workingDir + "\\SSK\\");
-
-			if (!Directory.Exists(RTC_Core.workingDir + "\\SESSION\\"))
-				Directory.CreateDirectory(RTC_Core.workingDir + "\\SESSION\\");
-
-			if (!Directory.Exists(RTC_Core.workingDir + "\\MEMORYDUMPS\\"))
-				Directory.CreateDirectory(RTC_Core.workingDir + "\\MEMORYDUMPS\\");
-
-			if (!Directory.Exists(RTC_Core.assetsDir + "\\CRASHSOUNDS\\"))
-				Directory.CreateDirectory(RTC_Core.assetsDir + "\\CRASHSOUNDS\\");
-
-			if (!Directory.Exists(RTC_Core.rtcDir + "\\PARAMS\\"))
-				Directory.CreateDirectory(RTC_Core.rtcDir + "\\PARAMS\\");
-
-			if (!Directory.Exists(RTC_Core.rtcDir + "\\LISTS\\"))
-				Directory.CreateDirectory(RTC_Core.rtcDir + "\\LISTS\\");
-
-
-			//Loading RTC Params
-			RTC_Params.LoadRTCColor();
-			S.GET<RTC_SettingsGeneral_Form>().cbDisableBizhawkOSD.Checked = !RTC_Params.IsParamSet("ENABLE_BIZHAWK_OSD");
-			S.GET<RTC_SettingsGeneral_Form>().cbAllowCrossCoreCorruption.Checked = RTC_Params.IsParamSet("ALLOW_CROSS_CORE_CORRUPTION");
-			S.GET<RTC_SettingsGeneral_Form>().cbDontCleanAtQuit.Checked = RTC_Params.IsParamSet("DONT_CLEAN_SAVESTATES_AT_QUIT");
-
-			//Load and initialize Hotkeys
-			//RTC_Hotkeys.InitializeHotkeySystem();
-			//RTC_Params.LoadHotkeys();
-			//	RTC_Hotkeys.Test("None", "D", "REMOTE_HOTKEY_MANUALBLAST");
-
-			NetCoreImplementation.Start();
-
-			if (NetCoreImplementation.isRemoteRTC && !NetCoreImplementation.isStandalone)
-				S.GET<RTC_Core_Form>().Show();
-
-			//Refocus on Bizhawk
-			RTC_Hooks.BIZHAWK_MAINFORM_FOCUS();
-
-			//Force create bizhawk config file if it doesn't exist
-			if (!File.Exists(RTC_Core.bizhawkDir + "\\config.ini"))
-				RTC_Hooks.BIZHAWK_SAVE_CONFIG();
-
-			//Fetch NetCore aggressiveness
-			if (NetCoreImplementation.isRemoteRTC)
-				NetCoreImplementation.SendCommandToRTC(new RTC_Command(CommandType.GETAGGRESSIVENESS));
-		}
-
 		public static string EmuFolderCheck(string SystemDisplayName)
 		{
 			//Workaround for Bizhawk's folder name quirk
@@ -329,7 +262,7 @@ namespace RTC
 			// -> EmuHawk Process only
 			//Loads a rom inside Bizhawk from a Filename.
 
-			RTC_Core.StopSound();
+			RTC_EmuCore.StopSound();
 
 			var args = new BizHawk.Client.EmuHawk.MainForm.LoadRomArgs();
 
@@ -341,7 +274,7 @@ namespace RTC
 			RTC_Hooks.BIZHAWK_LOADROM(RomFile);
 			RTC_Hooks.AllowCaptureRewindState = true;
 
-			RTC_Core.StartSound();
+			RTC_EmuCore.StartSound();
 			loadRomWatch.Stop();
 			Console.WriteLine($"Time taken for LoadRom_NET: {0}ms", loadRomWatch.ElapsedMilliseconds);
 		}
@@ -359,7 +292,7 @@ namespace RTC
 			string prefix = RTC_Hooks.BIZHAWK_GET_SAVESTATEPREFIX();
 			prefix = prefix.Substring(prefix.LastIndexOf('\\') + 1);
 
-			var path = RTC_Core.workingDir + "\\SESSION\\" + prefix + "." + quickSlotName + ".State";
+			var path = RTC_EmuCore.workingDir + "\\SESSION\\" + prefix + "." + quickSlotName + ".State";
 
 			var file = new FileInfo(path);
 			if (file.Directory != null && file.Directory.Exists == false)
@@ -402,7 +335,7 @@ namespace RTC
 				string prefix = RTC_Hooks.BIZHAWK_GET_SAVESTATEPREFIX();
 				prefix = prefix.Substring(prefix.LastIndexOf('\\') + 1);
 
-				var path = RTC_Core.workingDir + "\\SESSION\\" + prefix + "." + quickSlotName + ".State";
+				var path = RTC_EmuCore.workingDir + "\\SESSION\\" + prefix + "." + quickSlotName + ".State";
 
 
 				if (File.Exists(path) == false)
@@ -431,19 +364,19 @@ namespace RTC
 
 			while (newNumber == lastLoaderRom)
 			{
-				int nbNesFiles = Directory.GetFiles(RTC_Core.assetsDir, "*.nes").Length;
+				int nbNesFiles = Directory.GetFiles(RTC_EmuCore.assetsDir, "*.nes").Length;
 
 				newNumber = RTC_CorruptCore.RND.Next(1, nbNesFiles + 1);
 
 				if (newNumber != lastLoaderRom)
 				{
-					if (File.Exists(RTC_Core.assetsDir + "overridedefault.nes"))
-						LoadRom_NET(RTC_Core.assetsDir + "overridedefault.nes");
+					if (File.Exists(RTC_EmuCore.assetsDir + "overridedefault.nes"))
+						LoadRom_NET(RTC_EmuCore.assetsDir + "overridedefault.nes");
 					//Please ignore
 					else if (RTC_CorruptCore.RND.Next(0, 420) == 7)
-						LoadRom_NET(RTC_Core.assetsDir + "gd.fds");
+						LoadRom_NET(RTC_EmuCore.assetsDir + "gd.fds");
 					else
-						LoadRom_NET(RTC_Core.assetsDir + newNumber.ToString() + "default.nes");
+						LoadRom_NET(RTC_EmuCore.assetsDir + newNumber.ToString() + "default.nes");
 
 					lastLoaderRom = newNumber;
 					break;

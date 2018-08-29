@@ -927,7 +927,7 @@
     <Compile Include="RTC\EmulatorSide\RTC_Render.cs" />
     <Compile Include="RTC\CorruptCoreSide\Corruption Processing\RTC_StepActions.cs" />
     <Compile Include="RTC\UISide\RTC_StockpileManager.cs" />
-    <Compile Include="RTC\UISide\UICore.cs" />
+    <Compile Include="RTC\UISide\RTC_UICore.cs" />
     <Compile Include="Sound\Interfaces\IBufferedSoundProvider.cs" />
     <Compile Include="Sound\Interfaces\ISoundOutput.cs" />
     <Compile Include="Sound\Output\DirectSoundSoundOutput.cs" />

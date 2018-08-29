@@ -1,6 +1,5 @@
 ﻿using BizHawk.Client.Common;
 using BizHawk.Emulation.Common;
-using BizHawk.Emulation.Cores.Nintendo.N64;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -15,19 +14,19 @@ namespace RTC
 {
 	public static class RTC_MemoryDomains
 	{
-		public static volatile MemoryDomainRTCInterface MDRI = new MemoryDomainRTCInterface();
+
 		public static volatile Dictionary<string, MemoryInterface> MemoryInterfaces = new Dictionary<string, MemoryInterface>();
 		public static volatile Dictionary<string, MemoryInterface> VmdPool = new Dictionary<string, MemoryInterface>();
 
 		public static string MainDomain = null;
 		public static bool BigEndian { get; set; }
-		public static int DataSize { get; set; }
+		public static int WordSize { get; set; }
 
 		public static WatchSize WatchSize
 		{
 			get
 			{
-				return (WatchSize)DataSize;
+				return (WatchSize)WordSize;
 			}
 		}
 
@@ -366,7 +365,7 @@ namespace RTC
 						MemoryInterfaces.Add(mi.ToString(), mi);
 
 				MainDomain = (string)returns[1];
-				DataSize = MemoryInterfaces[MainDomain].WordSize;
+				WordSize = MemoryInterfaces[MainDomain].WordSize;
 				BigEndian = MemoryInterfaces[MainDomain].BigEndian;
 			}
 		}
@@ -377,23 +376,20 @@ namespace RTC
 
 			MemoryInterfaces.Clear();
 
-			ServiceInjector.UpdateServices(Global.Emulator.ServiceProvider, MDRI);
 
-			foreach (MemoryDomain _domain in MDRI.MemoryDomains)
-				if (!MemoryInterfaces.ContainsKey(_domain.ToString()))
-					MemoryInterfaces.Add(_domain.ToString(), new MemoryDomainProxy(_domain));
+			foreach (MemoryDomainProto proto in (MemoryDomainProto[])RTC_EmuCore.spec["domains"])
+			{
+				var mdp = new MemoryDomainProxy(proto);
 
-			MainDomain = MDRI.MemoryDomains.MainMemory.ToString();
-			DataSize = ((MemoryDomainProxy)MemoryInterfaces[MainDomain]).md.WordSize;
-			BigEndian = ((MemoryDomainProxy)MemoryInterfaces[MainDomain]).md.EndianType == MemoryDomain.Endian.Big;
+				if(proto.Main)
+				{
+					MainDomain = proto.Name;
+					WordSize = proto.WordSize;
+					BigEndian = proto.BigEndian;
+				}
 
-			//RefreshDomains();
-
-			/*
-            if(VmdPool.Count > 0)
-                foreach (string VmdKey in VmdPool.Keys)
-                    MemoryInterfaces.Add(VmdKey, VmdPool[VmdKey]);
-            */
+				MemoryInterfaces.Add(mdp.Name, mdp);
+			}
 
 			return new object[] { MemoryInterfaces.Values.ToArray(), MainDomain };
 		}
@@ -449,25 +445,6 @@ namespace RTC
 				// TODO: can't unfreeze address 0??
 				Global.CheatList.RemoveRange(
 					Global.CheatList.Where(x => x.Contains(address)).ToList());
-			}
-		}
-
-		public static void FreezeAddress(long address, string freezename = "")
-		{
-			if (address >= 0)
-			{
-				var watch = Watch.GenerateWatch(
-					GetProxy(MainDomain, address).md,
-					address,
-					WatchSize,
-					BizHawk.Client.Common.DisplayType.Hex,
-					BigEndian,
-					//RTC_HIJACK : change string.empty to freezename
-					freezename);
-
-				Global.CheatList.Add(new Cheat(
-					watch,
-					watch.Value));
 			}
 		}
 
@@ -543,17 +520,17 @@ namespace RTC
 			if (!RTC_MemoryDomains.VmdPool.ContainsKey(vmdName))
 				return;
 
-			RTC_Core.StopSound();
+			RTC_EmuCore.StopSound();
 			string name = "";
 			string value = "";
 			if (RTC_Extensions.GetInputBox("BlastLayer to VMD", "Enter the new VMD name:", ref value) == DialogResult.OK)
 			{
 				name = value.Trim();
-				RTC_Core.StartSound();
+				RTC_EmuCore.StartSound();
 			}
 			else
 			{
-				RTC_Core.StartSound();
+				RTC_EmuCore.StartSound();
 				return;
 			}
 
@@ -575,7 +552,7 @@ namespace RTC
 
 			byte[] dump = mi.GetDump();
 
-			File.WriteAllBytes(RTC_Core.rtcDir + "\\MEMORYDUMPS\\" + key + ".dmp", dump.ToArray());
+			File.WriteAllBytes(RTC_EmuCore.rtcDir + "\\MEMORYDUMPS\\" + key + ".dmp", dump.ToArray());
 			RTC_NetCore.HugeOperationEnd(token);
 		}
 
@@ -911,32 +888,33 @@ namespace RTC
     */
 
 	[Serializable]
+	public class MemoryDomainProto
+	{
+		public bool Main = false;
+
+		public long Size = 0;
+		public int WordSize = 1;
+		public string Name = "UNASSIGNED";
+		public bool BigEndian = true;
+	}
+
+	[Serializable]
 	public class MemoryDomainProxy : MemoryInterface
 	{
 		[NonSerialized]
-		public MemoryDomain md = null;
-
-		//public long Size;
-		//public int WordSize;
-		//public string name;
-		//public bool BigEndian;
+		public MemoryDomainProto proto = null;
 
 		public override long Size { get; set; }
 
-		public MemoryDomainProxy(MemoryDomain _md)
+		public MemoryDomainProxy(MemoryDomainProto _proto)
 		{
-			md = _md;
-			Size = md.Size;
+			proto = _proto;
 
-			Name = md.ToString();
 
-			//Bizhawk always displays 8MB of ram even if only 4 are in use.
-			if (Global.Emulator is N64 && !(Global.Emulator as N64).UsingExpansionSlot && Name == "RDRAM")
-				Size = Size / 2;
-
-			WordSize = md.WordSize;
-			Name = md.ToString();
-			BigEndian = _md.EndianType == MemoryDomain.Endian.Big;
+			Name = proto.ToString();
+			Size = proto.Size;
+			WordSize = proto.WordSize;
+			BigEndian = proto.BigEndian;
 		}
 
 		public override string ToString()
@@ -946,16 +924,7 @@ namespace RTC
 
 		public void Detach()
 		{
-			md = null;
-		}
-
-		public void Reattach()
-		{
-			md = RTC_MemoryDomains.MDRI.MemoryDomains.FirstOrDefault(it => it.ToString() == Name);
-			Size = md.Size;
-			WordSize = md.WordSize;
-			Name = md.ToString();
-			BigEndian = md.EndianType == MemoryDomain.Endian.Big;
+			proto = null;
 		}
 
 		public override byte[] GetDump()
@@ -979,27 +948,24 @@ namespace RTC
 
 		public override byte PeekByte(long address)
 		{
-			if (md == null)
+			//change this to a local router call
+
+			if (proto == null)
 				return (byte)NetCoreImplementation.SendCommandToBizhawk(new RTC_Command(CommandType.REMOTE_DOMAIN_PEEKBYTE) { objectValue = new object[] { Name, address } }, true);
 			else
-				return md.PeekByte(address);
+				return proto.PeekByte(address);
 		}
 
 		public override void PokeByte(long address, byte value)
 		{
-			if (md == null)
+			//change this to a local router call
+
+			if (proto == null)
 				NetCoreImplementation.SendCommandToBizhawk(new RTC_Command(CommandType.REMOTE_DOMAIN_POKEBYTE) { objectValue = new object[] { Name, address, value } });
 			else
-				md.PokeByte(address, value);
+				proto.PokeByte(address, value);
 		}
 	}
 
-	public class MemoryDomainRTCInterface
-	{
-		[RequiredService]
-		public IMemoryDomains MemoryDomains { get; set; }
 
-		[RequiredService]
-		private IEmulator Emulator { get; set; }
-	}
 }

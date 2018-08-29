@@ -90,7 +90,7 @@ namespace RTC
 
 		public static void ClearStepActionsOnRewind(bool value)
 		{
-			RTC_Core.ClearStepActionsOnRewind = value;
+			RTC_CorruptCore.ClearStepActionsOnRewind = value;
 			NetCoreImplementation.SendCommandToBizhawk(new RTC_Command(CommandType.REMOTE_SET_STEPACTIONS_CLEARREWIND) { objectValue = value });
 		}
 		public static void SetLockExecution(bool value)

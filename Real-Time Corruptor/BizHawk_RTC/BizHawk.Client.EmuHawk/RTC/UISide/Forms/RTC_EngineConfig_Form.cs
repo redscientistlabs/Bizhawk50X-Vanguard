@@ -36,10 +36,10 @@ namespace RTC
 
 		private void LoadLists()
 		{
-			RTC_Core.LimiterListBindingSource.Clear();
-			RTC_Core.ValueListBindingSource.Clear();
+			RTC_EmuCore.LimiterListBindingSource.Clear();
+			RTC_EmuCore.ValueListBindingSource.Clear();
 
-			string[] paths = System.IO.Directory.GetFiles(RTC_Core.listsDir);
+			string[] paths = System.IO.Directory.GetFiles(RTC_EmuCore.listsDir);
 
 			paths = paths.OrderBy(x => x).ToArray();
 
@@ -47,8 +47,8 @@ namespace RTC
 			for (int i = 0; i < hashes.Count; i++)
 			{
 				string[] _paths = paths[i].Split('\\' , '.');
-				RTC_Core.LimiterListBindingSource.Add(new { Text = _paths[_paths.Length - 2], Value = hashes[i] });
-				RTC_Core.ValueListBindingSource.Add(new { Text = _paths[_paths.Length - 2], Value = hashes[i] });
+				RTC_EmuCore.LimiterListBindingSource.Add(new { Text = _paths[_paths.Length - 2], Value = hashes[i] });
+				RTC_EmuCore.ValueListBindingSource.Add(new { Text = _paths[_paths.Length - 2], Value = hashes[i] });
 			}
 		}
 

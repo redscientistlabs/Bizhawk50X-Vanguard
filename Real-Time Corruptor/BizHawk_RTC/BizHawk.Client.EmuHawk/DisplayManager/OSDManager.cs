@@ -133,7 +133,7 @@ namespace BizHawk.Client.EmuHawk
 		public void AddMessage(string message)
 		{
 			//RTC_HIJACK : Disable OSD Messages (Add this block)
-			if (RTC.RTC_Core.BizhawkOsdDisabled)
+			if (RTC.RTC_EmuCore.BizhawkOsdDisabled)
 				return;
 			//--------------------------------
 

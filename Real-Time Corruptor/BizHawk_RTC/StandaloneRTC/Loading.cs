@@ -31,7 +31,7 @@ namespace StandaloneRTC
 				RTC.LogConsole.HideConsole();
 			}
 
-			RTC.RTC_Core.Start(this);
+			RTC.RTC_EmuCore.Start(this);
 			this.Hide();
 
 		}

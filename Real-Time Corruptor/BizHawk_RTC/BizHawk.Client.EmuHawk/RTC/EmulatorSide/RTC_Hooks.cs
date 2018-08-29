@@ -3,7 +3,9 @@ using BizHawk.Client.EmuHawk;
 using BizHawk.Emulation.Common;
 using BizHawk.Emulation.Cores.Nintendo.N64;
 using Newtonsoft.Json;
+using RTCV.NetCore;
 using System;
+using System.Collections.Generic;
 using System.Drawing;
 using System.IO;
 using System.Linq;
@@ -13,6 +15,8 @@ namespace RTC
 {
 	public static class RTC_Hooks
 	{
+		
+
 		//Instead of writing code inside bizhawk, hooks are placed inside of it so will be easier
 		//to upgrade BizHawk when they'll release a new version.
 
@@ -62,7 +66,7 @@ namespace RTC
 		{
 			if (disableRTC) return;
 
-			if (RTC_Core.ClearStepActionsOnRewind)
+			if (RTC_CorruptCore.ClearStepActionsOnRewind)
 				RTC_StepActions.ClearStepBlastUnits();
 		}
 
@@ -104,11 +108,11 @@ namespace RTC
 				Application.Exit();
 			}
 
-			RTC_Core.args = args;
+			RTC_EmuCore.args = args;
 
-			disableRTC = RTC_Core.args.Contains("-DISABLERTC");
-			NetCoreImplementation.isRemoteRTC = RTC_Core.args.Contains("-REMOTERTC");
-			ShowConsole = RTC_Core.args.Contains("-CONSOLE");
+			disableRTC = RTC_EmuCore.args.Contains("-DISABLERTC");
+			NetCoreImplementation.isRemoteRTC = RTC_EmuCore.args.Contains("-REMOTERTC");
+			ShowConsole = RTC_EmuCore.args.Contains("-CONSOLE");
 		}
 
 		public static void MAINFORM_FORM_LOAD_END()
@@ -117,9 +121,9 @@ namespace RTC
 
 			//RTC_Hooks.LOAD_GAME_DONE();
 
-			RTC_Core.Start();
+			RTC_EmuCore.Start();
 
-			RTC_Core.LoadDefaultRom();
+			RTC_EmuCore.LoadDefaultRom();
 
 			RTC_Params.LoadBizhawkWindowState();
 
@@ -148,7 +152,7 @@ namespace RTC
 		{
 			if (disableRTC) return;
 
-			RTC_Core.CloseAllRtcForms();
+			RTC_UICore.CloseAllRtcForms();
 		}
 
 		public static void BIZHAWK_SAVE_CONFIG()
@@ -175,29 +179,32 @@ namespace RTC
 		{
 			if (disableRTC) return;
 
-			//RTC_HellgenieEngine.ClearCheats();
-			//RTC_PipeEngine.ClearPipes();
-
 			//Glitch Harvester warning for archives
-
 			string uppercaseFilename = GlobalWin.MainForm.CurrentlyOpenRom.ToUpper();
 			if (S.GET<RTC_GlitchHarvester_Form>().Visible && (uppercaseFilename.Contains(".ZIP") || uppercaseFilename.Contains(".7Z")))
 				MessageBox.Show($"The rom {RTC_Extensions.getShortFilenameFromPath(uppercaseFilename)} is in an archive and can't be added to a Stockpile");
+
 
 			//Load Game vars into RTC_Core
 			PathEntry pathEntry = Global.Config.PathEntries[Global.Game.System, "Savestates"] ??
 			Global.Config.PathEntries[Global.Game.System, "Base"];
 
-			RTC_StockpileManager.currentGameSystem = RTC_Core.EmuFolderCheck(pathEntry.SystemDisplayName);
-			RTC_StockpileManager.currentGameName = PathManager.FilesystemSafeName(Global.Game);
-			RTC_Core.lastOpenRom = GlobalWin.MainForm.CurrentlyOpenRom;
+			PartialSpec partial = new PartialSpec("EmuSpec");
+			partial["currentGameSystem"] = RTC_EmuCore.EmuFolderCheck(pathEntry.SystemDisplayName);
+			partial["currentGameName"] = PathManager.FilesystemSafeName(Global.Game);
+			partial["lastOpenRom"] = GlobalWin.MainForm.CurrentlyOpenRom;
 			
+
+
 			//Sleep for 10ms in case Bizhawk hung for a moment after the game loaded
 			System.Threading.Thread.Sleep(10);
 			//prepare memory domains in advance on bizhawk side
-			RTC_MemoryDomains.RefreshDomains(false);
 
-			if (RTC_StockpileManager.currentGameName != lastGameName)
+			partial["domains"] = QUERY_DOMAINS();
+
+			RTC_EmuCore.spec.Update(partial);
+
+			if (RTC_EmuCore.currentGameName != lastGameName)
 			{
 				NetCoreImplementation.SendCommandToRTC(new RTC_Command(CommandType.REMOTE_EVENT_LOADGAMEDONE_NEWGAME));
 			}
@@ -206,7 +213,7 @@ namespace RTC
 				NetCoreImplementation.SendCommandToRTC(new RTC_Command(CommandType.REMOTE_EVENT_LOADGAMEDONE_SAMEGAME));
 			}
 
-			lastGameName = RTC_StockpileManager.currentGameName;
+			lastGameName = RTC_EmuCore.currentGameName;
 
 			//RTC_Restore.SaveRestore();
 
@@ -235,16 +242,19 @@ namespace RTC
 
 			//RTC_CorruptCore.AutoCorrupt = false;
 
+
 			RTC_StepActions.ClearStepBlastUnits();
 
-			RTC_MemoryDomains.Clear();
+			PartialSpec partial = new PartialSpec("EmuSpec");
+			partial["currentGameSystem"] = null;
+			partial["currentGameName"] = null;
+			partial["lastOpenRom"] = null;
+			partial["domains"] = new MemoryDomainProto[0];
+			RTC_EmuCore.spec.Update(partial);
 
-			RTC_Core.lastOpenRom = null;
 
 			if (loadDefault)
-				RTC_Core.LoadDefaultRom();
-
-			//RTC_RPC.SendToKillSwitch("UNFREEZE");
+				RTC_EmuCore.LoadDefaultRom();
 
 			CLOSE_GAME_loop_flag = false;
 		}
@@ -442,7 +452,7 @@ namespace RTC
 		public static void BIZHAWK_OPEN_HEXEDITOR_ADDRESS(MemoryDomainProxy mdp, long address)
 		{
 			GlobalWin.Tools.Load<HexEditor>();
-			GlobalWin.Tools.HexEditor.SetDomain(mdp.md);
+			GlobalWin.Tools.HexEditor.SetDomain(BizhawkDomainsInterface.IT.MemoryDomains[mdp.Name]);
 			GlobalWin.Tools.HexEditor.GoToAddress(address);
 		}
 
@@ -734,5 +744,54 @@ namespace RTC
 		{
 			GlobalWin.MainForm.StopAv();
 		}
+
+		public static MemoryDomainProto[] QUERY_DOMAINS()
+		{
+			List<MemoryDomainProto> protos = new List<MemoryDomainProto>();
+
+			if (Global.Emulator is NullEmulator)
+				return protos.ToArray();
+
+			ServiceInjector.UpdateServices(Global.Emulator.ServiceProvider, BizhawkDomainsInterface.IT);
+
+			foreach (var domain in BizhawkDomainsInterface.IT.MemoryDomains)
+			{
+				string MainDomain = BizhawkDomainsInterface.IT.MemoryDomains.MainMemory.ToString();
+
+				var proto = new MemoryDomainProto();
+
+				proto.Name = domain.Name;
+				proto.Size = domain.Size;
+				proto.BigEndian = domain.EndianType != MemoryDomain.Endian.Little;
+				proto.WordSize = domain.WordSize;
+
+				if (Global.Emulator is N64 && !(Global.Emulator as N64).UsingExpansionSlot && proto.Name == "RDRAM")
+					proto.Size = proto.Size / 2;
+
+				if (proto.Name == MainDomain)
+				{
+					proto.Main = true;
+					protos.Insert(0,proto);
+				}
+				else
+					protos.Add(proto);
+			}
+
+			return protos.ToArray();
+		}
+
 	}
+
+	public class BizhawkDomainsInterface
+	{
+		public static volatile BizhawkDomainsInterface IT = new BizhawkDomainsInterface();
+
+		[RequiredService]
+		public IMemoryDomains MemoryDomains { get; set; }
+
+		[RequiredService]
+		private IEmulator Emulator { get; set; }
+	}
+
+
 }

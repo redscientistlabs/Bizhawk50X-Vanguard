@@ -52,7 +52,7 @@ namespace RTC
 
 		private static Dictionary<string, MemoryInterface> domainToMiDico = new Dictionary<string, MemoryInterface>();
 		private string[] domains = RTC_MemoryDomains.MemoryInterfaces?.Keys?.Concat(RTC_MemoryDomains.VmdPool.Values.Select(it => it.ToString())).ToArray();
-		private string mainDomain = RTC_MemoryDomains.MDRI?.MemoryDomains?.MainMemory?.ToString();
+		private string mainDomain = RTC_MemoryDomains.MainDomain;
 
 		public RTC_BlastGenerator_Form()
 		{
@@ -64,7 +64,7 @@ namespace RTC
 			dgvBlastGenerator.MouseClick += dgvBlastGenerator_MouseClick;
 			dgvBlastGenerator.CellValueChanged += dgvBlastGenerator_CellValueChanged;
 			dgvBlastGenerator.CellClick += dgvBlastGenerator_CellClick;
-			RTC_UICore.SetRTCColor(RTC_Core.generalColor, this);
+			RTC_UICore.SetRTCColor(RTC_UICore.generalColor, this);
 		}
 
 		public void LoadNoStashKey()
@@ -248,9 +248,9 @@ namespace RTC
 				StashKey psk = RTC_StockpileManager.getCurrentSavestateStashkey();
 				if (psk == null)
 				{
-					RTC_Core.StartSound();
+					RTC_EmuCore.StartSound();
 					MessageBox.Show("Could not perform the CORRUPT action\n\nEither no Savestate Box was selected in the Savestate Manager\nor the Savetate Box itself is empty.");
-					RTC_Core.StopSound();
+					RTC_EmuCore.StopSound();
 					return;
 				}
 				sk = (StashKey)psk.Clone();
@@ -273,9 +273,9 @@ namespace RTC
 				StashKey psk = RTC_StockpileManager.getCurrentSavestateStashkey();
 				if (psk == null)
 				{
-					RTC_Core.StopSound();
+					RTC_EmuCore.StopSound();
 					MessageBox.Show("Could not perform the CORRUPT action\n\nEither no Savestate Box was selected in the Savestate Manager\nor the Savetate Box itself is empty.");
-					RTC_Core.StartSound();
+					RTC_EmuCore.StartSound();
 					return;
 				}
 				sk = (StashKey)psk.Clone();
@@ -357,10 +357,10 @@ namespace RTC
 						StashKey psk = RTC_StockpileManager.getCurrentSavestateStashkey();
 						if (psk == null)
 						{
-							RTC_Core.StopSound();
+							RTC_EmuCore.StopSound();
 							MessageBox.Show(
 								"The Blast Generator could not perform the CORRUPT action\n\nEither no Savestate Box was selected in the Savestate Manager\nor the Savetate Box itself is empty.");
-							RTC_Core.StartSound();
+							RTC_EmuCore.StartSound();
 							return null;
 						}
 

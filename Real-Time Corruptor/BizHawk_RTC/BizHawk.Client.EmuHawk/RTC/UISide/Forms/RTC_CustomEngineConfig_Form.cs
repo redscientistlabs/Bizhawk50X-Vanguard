@@ -22,19 +22,19 @@ namespace RTC
 			InitializeComponent();
 
 			//Do this here as if it's stuck into the designer, it keeps defaulting out
-			cbValueList.DataSource = RTC_Core.ValueListBindingSource;
-			cbLimiterList.DataSource = RTC_Core.LimiterListBindingSource;
+			cbValueList.DataSource = RTC_EmuCore.ValueListBindingSource;
+			cbLimiterList.DataSource = RTC_EmuCore.LimiterListBindingSource;
 
 		}
 
 
 		private void RTC_CustomEngineConfig_Form_Load(object sender, EventArgs e)
 		{
-			if (RTC_Core.ValueListBindingSource.Count > 0)
+			if (RTC_EmuCore.ValueListBindingSource.Count > 0)
 			{
 				cbValueList_SelectedIndexChanged(cbValueList, null);
 			}
-			if (RTC_Core.LimiterListBindingSource.Count > 0)
+			if (RTC_EmuCore.LimiterListBindingSource.Count > 0)
 			{
 				cbLimiterList_SelectedIndexChanged(cbLimiterList, null);
 			}

@@ -24,18 +24,20 @@ namespace RTC
 			new Ref(() => RTC_CorruptCore.ErrorDelay, x => { RTC_CorruptCore.ErrorDelay = (int)x; }),
 			new Ref(() => RTC_CorruptCore.Radius, x => { RTC_CorruptCore.Radius = (BlastRadius)x; }),
 
-			new Ref(() => RTC_Core.ClearStepActionsOnRewind, x => { RTC_Core.ClearStepActionsOnRewind = (bool)x; }),
+			new Ref(() => RTC_CorruptCore.AutoCorrupt, x => { RTC_CorruptCore.AutoCorrupt = (bool)x; }),
+
+			new Ref(() => RTC_CorruptCore.ClearStepActionsOnRewind, x => { RTC_CorruptCore.ClearStepActionsOnRewind = (bool)x; }),
 			new Ref(() => RTC_StepActions.MaxInfiniteBlastUnits, x => { RTC_StepActions.MaxInfiniteBlastUnits   = (int)x; }),
 			new Ref(() => RTC_StepActions.LockExecution, x => { RTC_StepActions.LockExecution = (bool)x; }),
 
-			new Ref(() => RTC_Core.ExtractBlastLayer, x => { RTC_Core.ExtractBlastLayer = (bool)x; }),
-			new Ref(() => RTC_Core.lastOpenRom, x => { RTC_Core.lastOpenRom = (string)x; }),
-			new Ref(() => RTC_Core.lastLoaderRom, x => { RTC_Core.lastLoaderRom = (int)x; }),
-			new Ref(() => RTC_CorruptCore.AutoCorrupt, x => { RTC_CorruptCore.AutoCorrupt = (bool)x; }),
+			new Ref(() => RTC_EmuCore.lastOpenRom, x => { RTC_EmuCore.lastOpenRom = (string)x; }),
+			new Ref(() => RTC_EmuCore.lastLoaderRom, x => { RTC_EmuCore.lastLoaderRom = (int)x; }),
+			new Ref(() => RTC_EmuCore.currentGameSystem, x => { RTC_EmuCore.currentGameSystem = (string)x; }),
+			new Ref(() => RTC_EmuCore.currentGameName, x => { RTC_EmuCore.currentGameName = (string)x; }),
 
-			new Ref(() => RTC_Core.BizhawkOsdDisabled, x => { RTC_Core.BizhawkOsdDisabled = (bool)x; }),
+			new Ref(() => RTC_EmuCore.BizhawkOsdDisabled, x => { RTC_EmuCore.BizhawkOsdDisabled = (bool)x; }),
 			new Ref(() => RTC_Hooks.ShowConsole, x => { RTC_Hooks.ShowConsole = (bool)x; }),
-			new Ref(() => RTC_Core.DontCleanSavestatesOnQuit, x => { RTC_Core.DontCleanSavestatesOnQuit = (bool)x; }),
+			new Ref(() => RTC_EmuCore.DontCleanSavestatesOnQuit, x => { RTC_EmuCore.DontCleanSavestatesOnQuit = (bool)x; }),
 
 
 			new Ref(() => RTC_NightmareEngine.MinValue8Bit, x => { RTC_NightmareEngine.MinValue8Bit = (long)x; }),
@@ -85,8 +87,6 @@ namespace RTC
 			new Ref(() => RTC_VectorEngine.ValueListHash, x => { RTC_VectorEngine.ValueListHash = (string)x; }),
 
 			new Ref(() => RTC_StockpileManager.currentSavestateKey, x => { RTC_StockpileManager.currentSavestateKey = (string)x; }),
-			new Ref(() => RTC_StockpileManager.currentGameSystem, x => { RTC_StockpileManager.currentGameSystem = (string)x; }),
-			new Ref(() => RTC_StockpileManager.currentGameName, x => { RTC_StockpileManager.currentGameName = (string)x; }),
 			new Ref(() => RTC_StockpileManager.backupedState, x => { RTC_StockpileManager.backupedState = (StashKey)x; }),
 
 			new Ref(() => RTC_MemoryDomains.SelectedDomains, x => { RTC_MemoryDomains.SelectedDomains = (string[])x; }),
@@ -131,12 +131,12 @@ namespace RTC
 				if (IsParamSet("COLOR"))
 				{
 					string[] bytes = ReadParam("COLOR").Split(',');
-					RTC_Core.generalColor = Color.FromArgb(Convert.ToByte(bytes[0]), Convert.ToByte(bytes[1]), Convert.ToByte(bytes[2]));
+					RTC_UICore.generalColor = Color.FromArgb(Convert.ToByte(bytes[0]), Convert.ToByte(bytes[1]), Convert.ToByte(bytes[2]));
 				}
 				else
-					RTC_Core.generalColor = Color.FromArgb(110, 150, 193);
+					RTC_UICore.generalColor = Color.FromArgb(110, 150, 193);
 
-				RTC_UICore.SetRTCColor(RTC_Core.generalColor);
+				RTC_UICore.SetRTCColor(RTC_UICore.generalColor);
 			}
 		}
 
@@ -192,26 +192,26 @@ namespace RTC
 					SetParam(paramName, "");
 			}
 			else
-				File.WriteAllText(RTC_Core.paramsDir + "\\" + paramName, data);
+				File.WriteAllText(RTC_EmuCore.paramsDir + "\\" + paramName, data);
 		}
 
 		public static void RemoveParam(string paramName)
 		{
 			if (IsParamSet(paramName))
-				File.Delete(RTC_Core.paramsDir + "\\" + paramName);
+				File.Delete(RTC_EmuCore.paramsDir + "\\" + paramName);
 		}
 
 		public static string ReadParam(string paramName)
 		{
 			if (IsParamSet(paramName))
-				return File.ReadAllText(RTC_Core.paramsDir + "\\" + paramName);
+				return File.ReadAllText(RTC_EmuCore.paramsDir + "\\" + paramName);
 
 			return null;
 		}
 
 		public static bool IsParamSet(string paramName)
 		{
-			return File.Exists(RTC_Core.paramsDir + "\\" + paramName);
+			return File.Exists(RTC_EmuCore.paramsDir + "\\" + paramName);
 		}
 	}
 

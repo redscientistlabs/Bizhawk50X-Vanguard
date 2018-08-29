@@ -56,10 +56,10 @@ namespace RTC
 
 				case CommandType.STASHKEY:
 
-					if (!File.Exists(RTC_Core.rtcDir + "\\SKS\\" + cmd.romFilename))
-						File.WriteAllBytes(RTC_Core.rtcDir + "\\SKS\\" + cmd.romFilename, cmd.romData);
+					if (!File.Exists(RTC_EmuCore.rtcDir + "\\SKS\\" + cmd.romFilename))
+						File.WriteAllBytes(RTC_EmuCore.rtcDir + "\\SKS\\" + cmd.romFilename, cmd.romData);
 
-					cmd.stashkey.RomFilename = RTC_Core.rtcDir + "\\SKS\\" + RTC_Extensions.getShortFilenameFromPath(cmd.romFilename);
+					cmd.stashkey.RomFilename = RTC_EmuCore.rtcDir + "\\SKS\\" + RTC_Extensions.getShortFilenameFromPath(cmd.romFilename);
 
 					cmd.stashkey.DeployState();
 
@@ -80,11 +80,11 @@ namespace RTC
 					if (cmd.romData != null)
 					{
 						cmd.romFilename = RTC_Extensions.getShortFilenameFromPath(cmd.romFilename);
-						if (!File.Exists(RTC_Core.rtcDir + "\\MP\\" + cmd.romFilename))
-							File.WriteAllBytes(RTC_Core.rtcDir + "\\MP\\" + cmd.romFilename, cmd.romData);
+						if (!File.Exists(RTC_EmuCore.rtcDir + "\\MP\\" + cmd.romFilename))
+							File.WriteAllBytes(RTC_EmuCore.rtcDir + "\\MP\\" + cmd.romFilename, cmd.romData);
 					}
 
-					RTC_UICore.LoadRom(RTC_Core.rtcDir + "\\MP\\" + cmd.romFilename);
+					RTC_UICore.LoadRom(RTC_EmuCore.rtcDir + "\\MP\\" + cmd.romFilename);
 					break;
 
 				case CommandType.PULLSTATE:
@@ -121,9 +121,9 @@ namespace RTC
 
 					cmd.romFilename = RTC_Extensions.getShortFilenameFromPath(cmd.romFilename);
 
-					if (!File.Exists(RTC_Core.rtcDir + "\\MP\\" + cmd.romFilename))
-						File.WriteAllBytes(RTC_Core.rtcDir + "\\MP\\" + cmd.romFilename, cmd.romData);
-					RTC_UICore.LoadRom(RTC_Core.rtcDir + "\\MP\\" + cmd.romFilename);
+					if (!File.Exists(RTC_EmuCore.rtcDir + "\\MP\\" + cmd.romFilename))
+						File.WriteAllBytes(RTC_EmuCore.rtcDir + "\\MP\\" + cmd.romFilename, cmd.romData);
+					RTC_UICore.LoadRom(RTC_EmuCore.rtcDir + "\\MP\\" + cmd.romFilename);
 
 					cmd.stashkey.DeployState();
 					RTC_StockpileManager.LoadState(cmd.stashkey, false);
@@ -138,10 +138,10 @@ namespace RTC
 					cmd.romFilename = RTC_Extensions.getShortFilenameFromPath(cmd.romFilename);
 
 					if (cmd.romData != null)
-						if (!File.Exists(RTC_Core.rtcDir + "\\MP\\" + cmd.romFilename))
-							File.WriteAllBytes(RTC_Core.rtcDir + "\\MP\\" + cmd.romFilename, cmd.romData);
+						if (!File.Exists(RTC_EmuCore.rtcDir + "\\MP\\" + cmd.romFilename))
+							File.WriteAllBytes(RTC_EmuCore.rtcDir + "\\MP\\" + cmd.romFilename, cmd.romData);
 
-					RTC_UICore.LoadRom(RTC_Core.rtcDir + "\\MP\\" + cmd.romFilename);
+					RTC_UICore.LoadRom(RTC_EmuCore.rtcDir + "\\MP\\" + cmd.romFilename);
 
 					cmd.stashkey.DeployState();
 					RTC_StockpileManager.LoadState(cmd.stashkey, false);
@@ -201,7 +201,7 @@ namespace RTC
 				}
 
 				case CommandType.REMOTE_LOADROM:
-					RTC_Core.LoadRom_NET(cmd.romFilename);
+					RTC_EmuCore.LoadRom_NET(cmd.romFilename);
 					break;
 				case CommandType.REMOTE_LOADSTATE:
 					{
@@ -363,11 +363,11 @@ namespace RTC
 				}
 
 				case CommandType.BIZHAWK_SET_OSDDISABLED:
-					RTC_Core.BizhawkOsdDisabled = (bool)cmd.objectValue;
+					RTC_EmuCore.BizhawkOsdDisabled = (bool)cmd.objectValue;
 					break;
 
 				case CommandType.BIZHAWK_SET_DONT_CLEAN_SAVESTATES_AT_QUIT:
-					RTC_Core.DontCleanSavestatesOnQuit = (bool)cmd.objectValue;
+					RTC_EmuCore.DontCleanSavestatesOnQuit = (bool)cmd.objectValue;
 					break;
 
 				case CommandType.ENABLE_CONSOLE:
@@ -497,7 +497,7 @@ namespace RTC
 				}
 
 				case CommandType.REMOTE_SET_STEPACTIONS_CLEARREWIND:
-					RTC_Core.ClearStepActionsOnRewind = (bool)cmd.objectValue;
+					RTC_CorruptCore.ClearStepActionsOnRewind = (bool)cmd.objectValue;
 					break;
 
 				case CommandType.REMOTE_SET_STEPACTIONS_CLEARALLBLASTUNITS:

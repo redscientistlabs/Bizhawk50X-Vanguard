@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
@@ -11,6 +12,69 @@ namespace RTC
 	public static class RTC_UICore
 	{
 
+		//Note Box Settings
+		public static System.Drawing.Point NoteBoxPosition;
+		public static System.Drawing.Size NoteBoxSize;
+
+		//RTC Main Forms
+		public static Color generalColor = Color.LightSteelBlue;
+
+		public static bool UseHexadecimal = true;
+
+		//All RTC forms
+		public static Form[] allRtcForms
+		{
+			get
+			{
+				//This fetches all singletons of interface IAutoColorized
+
+				List<Form> all = new List<Form>();
+
+				foreach (Type t in Assembly.GetAssembly(typeof(S)).GetTypes())
+					if (typeof(IAutoColorize).IsAssignableFrom(t) && t != typeof(IAutoColorize))
+						all.Add((Form)S.GET(Type.GetType(t.ToString())));
+
+				return all.ToArray();
+
+			}
+		}
+
+
+
+		public static volatile bool isClosing = false;
+		public static void CloseAllRtcForms() //This allows every form to get closed to prevent RTC from hanging
+		{
+			if (isClosing)
+				return;
+
+			isClosing = true;
+
+			if (NetCoreImplementation.Multiplayer != null && NetCoreImplementation.Multiplayer.streamReadingThread != null)
+				NetCoreImplementation.Multiplayer.streamReadingThread.Abort();
+
+			if (NetCoreImplementation.RemoteRTC != null && NetCoreImplementation.RemoteRTC.streamReadingThread != null)
+				NetCoreImplementation.RemoteRTC.streamReadingThread.Abort();
+
+			foreach (Form frm in allRtcForms)
+			{
+				if (frm != null)
+					frm.Close();
+			}
+
+			if (S.GET<RTC_Standalone_Form>() != null)
+				S.GET<RTC_Standalone_Form>().Close();
+
+			//Clean out the working folders
+			if (!NetCoreImplementation.isRemoteRTC && !RTC_EmuCore.DontCleanSavestatesOnQuit)
+			{
+				Stockpile.EmptyFolder("\\WORKING\\");
+			}
+
+			Application.Exit();
+		}
+
+
+
 		public static void SetRTCHexadecimal(bool useHex, Form form = null)
 		{
 			//Sets the interface to use Hex across the board
@@ -19,7 +83,7 @@ namespace RTC
 
 			if (form == null)
 			{
-				foreach (Form targetForm in RTC_Core.allRtcForms)
+				foreach (Form targetForm in RTC_UICore.allRtcForms)
 				{
 					if (targetForm != null)
 					{
@@ -59,7 +123,7 @@ namespace RTC
 
 			if (form == null)
 			{
-				foreach (Form targetForm in RTC_Core.allRtcForms)
+				foreach (Form targetForm in RTC_UICore.allRtcForms)
 				{
 					if (targetForm != null)
 					{
@@ -140,6 +204,10 @@ namespace RTC
 			RTC_Params.SaveRTCColor(color);
 		}
 
+		public static void Start()
+		{
+			//throw new NotImplementedException();
+		}
 
 		public static void SetEngineByName(string name)
 		{

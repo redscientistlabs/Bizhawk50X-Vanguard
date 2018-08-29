@@ -495,7 +495,7 @@ namespace RTC
 				return;
 			}
 
-			RTC_Core.StopSound();
+			RTC_EmuCore.StopSound();
 			string Name = "";
 			string value = "";
 
@@ -504,11 +504,11 @@ namespace RTC
 				if (RTC_Extensions.GetInputBox("Glitch Harvester", "Enter the new Stash name:", ref value) == DialogResult.OK)
 				{
 					Name = value.Trim();
-					RTC_Core.StartSound();
+					RTC_EmuCore.StartSound();
 				}
 				else
 				{
-					RTC_Core.StartSound();
+					RTC_EmuCore.StartSound();
 					return;
 				}
 			}
@@ -563,7 +563,7 @@ namespace RTC
 
 		public void RemoveSelected(bool force = false)
 		{
-			RTC_Core.StopSound();
+			RTC_EmuCore.StopSound();
 
 			if (Control.ModifierKeys == Keys.Control || (dgvStockpile.SelectedRows.Count != 0 && (MessageBox.Show("Are you sure you want to remove the selected stockpile entries?", "Delete Stockpile Entry?", MessageBoxButtons.YesNo) == DialogResult.Yes)))
 				foreach (DataGridViewRow row in dgvStockpile.SelectedRows)
@@ -575,14 +575,14 @@ namespace RTC
 
 			RedrawActionUI();
 
-			RTC_Core.StartSound();
+			RTC_EmuCore.StartSound();
 		}
 
 		private void btnClearStockpile_Click(object sender, EventArgs e) => ClearStockpile();
 
 		public void ClearStockpile(bool force = false)
 		{
-			RTC_Core.StopSound();
+			RTC_EmuCore.StopSound();
 
 			if (force || MessageBox.Show("Are you sure you want to clear the stockpile?", "Clearing stockpile", MessageBoxButtons.YesNo) == DialogResult.Yes)
 			{
@@ -604,13 +604,13 @@ namespace RTC
 
 				RedrawActionUI();
 
-				RTC_Core.StartSound();
+				RTC_EmuCore.StartSound();
 			}
 		}
 
 		private void btnLoadStockpile_Click(object sender, MouseEventArgs e)
 		{
-			RTC_Core.CheckForProblematicProcesses();
+			RTC_EmuCore.CheckForProblematicProcesses();
 
 			Point locate = new Point(((Control)sender).Location.X + e.Location.X, ((Control)sender).Location.Y + e.Location.Y);
 
@@ -619,7 +619,7 @@ namespace RTC
 			{
 				try
 				{
-					RTC_Core.StopSound();
+					RTC_EmuCore.StopSound();
 
 					if (Stockpile.Load(dgvStockpile))
 					{
@@ -637,7 +637,7 @@ namespace RTC
 				}
 				finally
 				{
-					RTC_Core.StartSound();
+					RTC_EmuCore.StartSound();
 				}
 			}));
 
@@ -645,12 +645,12 @@ namespace RTC
 			{
 				try
 				{
-					RTC_Core.StopSound();
+					RTC_EmuCore.StopSound();
 					Stockpile.LoadBizhawkConfigFromStockpile();
 				}
 				finally
 				{
-					RTC_Core.StartSound();
+					RTC_EmuCore.StartSound();
 				}
 			}));
 
@@ -658,14 +658,14 @@ namespace RTC
 			{
 				try
 				{
-					RTC_Core.StopSound();
+					RTC_EmuCore.StopSound();
 					Stockpile.RestoreBizhawkConfig();
 				}
 				finally
 				{
-					RTC_Core.StartSound();
+					RTC_EmuCore.StartSound();
 				}
-			})).Enabled = (File.Exists(RTC_Core.bizhawkDir + "\\backup_config.ini"));
+			})).Enabled = (File.Exists(RTC_EmuCore.bizhawkDir + "\\backup_config.ini"));
 
 			loadMenuItems.Show(this, locate);
 		}
@@ -674,13 +674,13 @@ namespace RTC
 		{
 			if (dgvStockpile.Rows.Count == 0)
 			{
-				RTC_Core.StopSound();
+				RTC_EmuCore.StopSound();
 				MessageBox.Show("You cannot save the Stockpile because it is empty");
-				RTC_Core.StartSound();
+				RTC_EmuCore.StartSound();
 				return;
 			}
 
-			RTC_Core.StopSound();
+			RTC_EmuCore.StopSound();
 
 			Stockpile sks = new Stockpile(dgvStockpile);
 			if (Stockpile.Save(sks))
@@ -691,18 +691,18 @@ namespace RTC
 				S.GET<RTC_GlitchHarvester_Form>().btnSaveStockpile.ForeColor = Color.Black;
 			}
 
-			RTC_Core.StartSound();
+			RTC_EmuCore.StartSound();
 		}
 
 		private void btnSaveStockpile_Click(object sender, EventArgs e)
 		{
-			RTC_Core.StopSound();
+			RTC_EmuCore.StopSound();
 
 			Stockpile sks = new Stockpile(dgvStockpile);
 			if (Stockpile.Save(sks, true))
 				sendCurrentStockpileToSKS();
 
-			RTC_Core.StartSound();
+			RTC_EmuCore.StartSound();
 		}
 
 		public void btnBlastToggle_Click(object sender, EventArgs e)
@@ -733,9 +733,9 @@ namespace RTC
 
 		private void btnImportStockpile_Click(object sender, EventArgs e)
 		{
-			RTC_Core.StopSound();
+			RTC_EmuCore.StopSound();
 			Stockpile.Import();
-			RTC_Core.StartSound();
+			RTC_EmuCore.StartSound();
 		}
 
 		private void btnStashUP_Click(object sender, EventArgs e)
@@ -932,7 +932,7 @@ namespace RTC
 			}
 			else
 			{
-				RTC_Core.StartSound();
+				RTC_EmuCore.StartSound();
 				return;
 			}
 		}
@@ -942,7 +942,7 @@ namespace RTC
 			if (!btnRenameSelected.Visible)
 				return;
 
-			RTC_Core.StopSound();
+			RTC_EmuCore.StopSound();
 
 			if (dgvStockpile.SelectedRows.Count != 0)
 			{
@@ -956,7 +956,7 @@ namespace RTC
 
 			RTC_StockpileManager.unsavedEdits = true;
 
-			RTC_Core.StartSound();
+			RTC_EmuCore.StartSound();
 		}
 
 		private void cbAutoLoadState_CheckedChanged(object sender, EventArgs e)
@@ -1115,11 +1115,11 @@ namespace RTC
 
 					string statefilename = key.GameName + "." + key.ParentKey + ".timejump.State"; // get savestate name
 					
-					if (File.Exists(RTC_Core.workingDir + "\\" + key.StateLocation.ToString() + "\\" + statefilename))
-						File.Copy(RTC_Core.workingDir + "\\" + key.StateLocation.ToString() + "\\" +  statefilename, RTC_Core.workingDir + "\\TEMP\\" + statefilename); // copy savestates to temp folder
+					if (File.Exists(RTC_EmuCore.workingDir + "\\" + key.StateLocation.ToString() + "\\" + statefilename))
+						File.Copy(RTC_EmuCore.workingDir + "\\" + key.StateLocation.ToString() + "\\" +  statefilename, RTC_EmuCore.workingDir + "\\TEMP\\" + statefilename); // copy savestates to temp folder
 					else
 					{
-						MessageBox.Show("Couldn't find savestate " + RTC_Core.workingDir + "\\" +
+						MessageBox.Show("Couldn't find savestate " + RTC_EmuCore.workingDir + "\\" +
 						                key.StateLocation.ToString() + "\\" + statefilename +
 						                "!\n\n. This is savestate index " + i + 1 + ".\nAborting save");
 						Stockpile.EmptyFolder("\\WORKING\\TEMP");
@@ -1140,7 +1140,7 @@ namespace RTC
 
 				//creater stockpile.xml to temp folder from stockpile object
 
-				using (FileStream FS = File.Open(RTC_Core.workingDir + "\\TEMP\\keys.xml", FileMode.OpenOrCreate))
+				using (FileStream FS = File.Open(RTC_EmuCore.workingDir + "\\TEMP\\keys.xml", FileMode.OpenOrCreate))
 				{
 					XmlSerializer xs = new XmlSerializer(typeof(SaveStateKeys));
 
@@ -1154,7 +1154,7 @@ namespace RTC
 
 				string tempFilename = Filename + ".temp";
 
-				System.IO.Compression.ZipFile.CreateFromDirectory(RTC_Core.workingDir + "\\TEMP\\", tempFilename, System.IO.Compression.CompressionLevel.Fastest, false);
+				System.IO.Compression.ZipFile.CreateFromDirectory(RTC_EmuCore.workingDir + "\\TEMP\\", tempFilename, System.IO.Compression.CompressionLevel.Fastest, false);
 
 				if (File.Exists(Filename))
 					File.Delete(Filename);
@@ -1163,8 +1163,8 @@ namespace RTC
 
 				//Move all the files from temp into SSK
 				Stockpile.EmptyFolder("\\WORKING\\SSK");
-				foreach (string file in Directory.GetFiles(RTC_Core.workingDir + "\\TEMP"))
-					File.Move(file, RTC_Core.workingDir + "\\SSK\\" + (file.Substring(file.LastIndexOf("\\") + 1, file.Length - (file.LastIndexOf("\\") + 1))));
+				foreach (string file in Directory.GetFiles(RTC_EmuCore.workingDir + "\\TEMP"))
+					File.Move(file, RTC_EmuCore.workingDir + "\\SSK\\" + (file.Substring(file.LastIndexOf("\\") + 1, file.Length - (file.LastIndexOf("\\") + 1))));
 			}
 			catch(Exception ex)
 			{
@@ -1205,7 +1205,7 @@ namespace RTC
 				if (!Stockpile.Extract(filename, "\\WORKING\\SSK", "keys.xml"))
 					return;
 
-				using (FileStream fs = File.Open(RTC_Core.workingDir + "\\SSK\\keys.xml", FileMode.OpenOrCreate))
+				using (FileStream fs = File.Open(RTC_EmuCore.workingDir + "\\SSK\\keys.xml", FileMode.OpenOrCreate))
 				{
 					XmlSerializer xs = new XmlSerializer(typeof(SaveStateKeys));
 					ssk = (SaveStateKeys)xs.Deserialize(fs);
@@ -1227,7 +1227,7 @@ namespace RTC
 					continue;
 
 				string statefilename = key.GameName + "." + key.ParentKey + ".timejump.State"; // get savestate name
-				string newStatePath = RTC_Core.workingDir + "\\" + key.StateLocation + "\\" +  statefilename;
+				string newStatePath = RTC_EmuCore.workingDir + "\\" + key.StateLocation + "\\" +  statefilename;
 				string shortRomFilename = key.RomFilename.Substring(key.RomFilename.LastIndexOf("\\") + 1);
 
 				key.StateFilename = newStatePath;
@@ -1470,7 +1470,7 @@ namespace RTC
 
 		private void btnOpenRenderFolder_Click(object sender, EventArgs e)
 		{
-			Process.Start(RTC_Core.rtcDir + "\\RENDEROUTPUT\\");
+			Process.Start(RTC_EmuCore.rtcDir + "\\RENDEROUTPUT\\");
 		}
 
 		private void btnRender_Click(object sender, EventArgs e)

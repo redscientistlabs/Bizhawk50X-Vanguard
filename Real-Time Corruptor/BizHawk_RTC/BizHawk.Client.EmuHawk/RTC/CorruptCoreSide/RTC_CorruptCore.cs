@@ -16,24 +16,55 @@ namespace RTC
 		public static FullSpec spec;
 
 
-		public static CorruptionEngine SelectedEngine = CorruptionEngine.NIGHTMARE;
+		public static CorruptionEngine SelectedEngine
+		{
+			get { return (CorruptionEngine)spec["SelectedEngine"]; }
+			set { spec.Update(new PartialSpec("CorruptCore", "SelectedEngine", value)); }
+		}
 
-		private static int customPrecision = 1;
 		public static int CustomPrecision
 		{
-			get { return customPrecision; }
+			get { return (int)spec["CustomPrecision"]; }
 			set
 			{
-				customPrecision = value;
+				spec.Update(new PartialSpec("CorruptCore", "CustomPrecision", value));
 				CurrentPrecision = value;
 			}
 		}
-		public static int CurrentPrecision = 1;
-		public static int Intensity = 1;
-		public static int ErrorDelay = 1;
-		public static BlastRadius Radius = BlastRadius.SPREAD;
-		public static bool AutoCorrupt = false;
+		public static int CurrentPrecision
+		{
+			get { return (int)spec["CurrentPrecision"]; }
+			set { spec.Update(new PartialSpec("CorruptCore", "CurrentPrecision", value)); }
+		}
+		public static int Intensity
+		{
+			get { return (int)spec["Intensity"]; }
+			set { spec.Update(new PartialSpec("CorruptCore", "Intensity", value)); }
+		}
+		public static int ErrorDelay
+		{
+			get { return (int)spec["ErrorDelay"]; }
+			set { spec.Update(new PartialSpec("CorruptCore", "ErrorDelay", value)); }
+		}
 
+		public static BlastRadius Radius
+		{
+			get { return (BlastRadius)spec["Radius"]; }
+			set { spec.Update(new PartialSpec("CorruptCore", "Radius", value)); }
+		}
+
+		public static bool AutoCorrupt
+		{
+			get { return (bool)spec["AutoCorrupt"]; }
+			set { spec.Update(new PartialSpec("CorruptCore", "AutoCorrupt", value)); }
+		}
+
+
+		public static bool ClearStepActionsOnRewind
+		{
+			get { return (bool)spec["ClearStepActionsOnRewind"]; }
+			set { spec.Update(new PartialSpec("CorruptCore", "ClearStepActionsOnRewind", value)); }
+		}
 
 		public static void Start()
 		{
@@ -46,6 +77,7 @@ namespace RTC
 			partial["ErrorDelay"] = 1;
 			partial["Radius"] = BlastRadius.SPREAD;
 			partial["AutoCorrupt"] = false;
+			partial["ClearStepActionsOnRewind"] = false;
 
 			spec = new FullSpec(partial);
 			spec.SpecUpdated += (object o, SpecUpdateEventArgs e) =>

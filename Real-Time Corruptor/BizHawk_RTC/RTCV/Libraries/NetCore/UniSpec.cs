@@ -103,11 +103,15 @@ namespace RTCV.NetCore
             if (name != _partialSpec.name)
                 throw new Exception("Name mismatch between PartialSpec and FullSpec");
 
-            for (int i = 0; i < _partialSpec.keys.Count; i++)
-                base[_partialSpec.keys[i]] = _partialSpec.values[i];
+			foreach (var key in _partialSpec.specDico.Keys)
+				base[key] = _partialSpec[key];
+
+
+			//for (int i = 0; i < _partialSpec.specDico.Count; i++)
+            //    base[_partialSpec.specDico.Keys[i]] = _partialSpec.values[i];
 
             if (propagate)
-                OnSpecUpdated(new SpecUpdateEventArgs() { partialSpec = _partialSpec });
+                OnSpecUpdated(new SpecUpdateEventArgs(_partialSpec));
         }
 
     }
@@ -120,7 +124,12 @@ namespace RTCV.NetCore
         {
             name = _name;
         }
-    }
+		public PartialSpec(string _name, string _key, object _value)
+		{
+			name = _name;
+			this[_key] = _value;
+		}
+	}
 
     [Serializable]
     public abstract class BaseSpec : ISerializable
@@ -167,7 +176,7 @@ namespace RTCV.NetCore
         }
 
         [OnSerializing]
-        private void OnSerializing()
+        private void OnSerializing(StreamingContext context)
         {
             keys.Clear();
             keys.AddRange(specDico.Keys);
@@ -188,7 +197,7 @@ namespace RTCV.NetCore
         }
 
         [OnDeserialized]
-        private void OnDeserialized()
+        private void OnDeserialized(StreamingContext context)
         {
             for (int i = 0; i < keys.Count; i++)
                 specDico[keys[i]] = values[i];
@@ -199,6 +208,11 @@ namespace RTCV.NetCore
     public class SpecUpdateEventArgs : EventArgs
     {
         public PartialSpec partialSpec = null;
+
+		public SpecUpdateEventArgs(PartialSpec _spec)
+		{
+			partialSpec = _spec;
+		}
     }
 
 }

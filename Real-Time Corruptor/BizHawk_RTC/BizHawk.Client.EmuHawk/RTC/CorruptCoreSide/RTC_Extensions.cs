@@ -154,6 +154,16 @@ namespace RTC
 			value = comboBox.SelectedItem.ToString();
 			return dialogResult;
 		}
+		public static void DirectoryRequired(string path)
+		{
+			if (!Directory.Exists(path))
+				Directory.CreateDirectory(path);
+		}
+		public static void DirectoryRequired(string[] paths)
+		{
+			foreach (string path in paths)
+				DirectoryRequired(path);
+		}
 
 		#region ARRAY EXTENSIONS
 

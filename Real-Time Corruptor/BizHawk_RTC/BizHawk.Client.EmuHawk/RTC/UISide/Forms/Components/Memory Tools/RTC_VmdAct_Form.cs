@@ -88,7 +88,7 @@ namespace RTC
 
 		public void SaveActiveTable(bool IsQuickSave)
 		{
-			RTC_Core.StopSound();
+			RTC_EmuCore.StopSound();
 
 
 			if (!IsQuickSave)
@@ -106,7 +106,7 @@ namespace RTC
 				}
 				else
 				{
-					RTC_Core.StartSound();
+					RTC_EmuCore.StartSound();
 					return;
 				}
 			}
@@ -122,7 +122,7 @@ namespace RTC
 			}
 
 
-			RTC_Core.StartSound();
+			RTC_EmuCore.StartSound();
 		}
 
 		public void SetActiveTable(ActiveTableObject act)
@@ -135,7 +135,7 @@ namespace RTC
 
 		public byte[] GetDumpFromFile(string key)
 		{
-			return File.ReadAllBytes(RTC_Core.workingDir + "\\MEMORYDUMPS\\" + key + ".dmp");
+			return File.ReadAllBytes(RTC_EmuCore.workingDir + "\\MEMORYDUMPS\\" + key + ".dmp");
 		}
 
 		public long[] CapActiveTable(long[] tempActiveTable)
@@ -306,7 +306,7 @@ namespace RTC
 
 			ActiveTableDumps = new List<string>();
 
-			foreach (string file in Directory.GetFiles(RTC_Core.workingDir + "\\MEMORYDUMPS"))
+			foreach (string file in Directory.GetFiles(RTC_EmuCore.workingDir + "\\MEMORYDUMPS"))
 				File.Delete(file);
 
 			currentFilename = null;
@@ -314,7 +314,7 @@ namespace RTC
 
 		private void btnActiveTableLoad_Click(object sender, EventArgs e)
 		{
-			RTC_Core.StopSound();
+			RTC_EmuCore.StopSound();
 
 			try
 			{
@@ -329,7 +329,7 @@ namespace RTC
 				}
 				else
 				{
-					RTC_Core.StartSound();
+					RTC_EmuCore.StartSound();
 					return;
 				}
 
@@ -341,7 +341,7 @@ namespace RTC
 					SetActiveTable(act);
 					ActLoadedFromFile = true;
 				}
-				RTC_Core.StartSound();
+				RTC_EmuCore.StartSound();
 			}
 			catch
 			{
@@ -359,7 +359,7 @@ namespace RTC
 
 		private void btnActiveTableSubtractFile_Click(object sender, EventArgs e)
 		{
-			RTC_Core.StopSound();
+			RTC_EmuCore.StopSound();
 
 			string tempFilename;
 
@@ -393,14 +393,14 @@ namespace RTC
 			ActiveTableGenerated = newActiveTable.ToArray();
 			lbActiveTableSize.Text = "Active table size (0x" + ActiveTableGenerated.Length.ToString("X") + ")";
 
-			RTC_Core.StartSound();
+			RTC_EmuCore.StartSound();
 		}
 
 		private void btnActiveTableAddFile_Click(object sender, EventArgs e)
 		{
 			try
 			{
-				RTC_Core.StopSound();
+				RTC_EmuCore.StopSound();
 
 				string tempFilename;
 
@@ -437,7 +437,7 @@ namespace RTC
 				lbActiveTableSize.Text = "Active table size (0x" + ActiveTableGenerated.Length.ToString("X") + ")";
 
 
-				RTC_Core.StartSound();
+				RTC_EmuCore.StartSound();
 			}
 			catch
 			{

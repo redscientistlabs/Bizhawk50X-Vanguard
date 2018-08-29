@@ -33,11 +33,11 @@ namespace RTC
 
 			try
 			{
-				RTC_Core.StopSound();
+				RTC_EmuCore.StopSound();
 
-				if (RTC_Core.bizhawkDir.Contains("\\VERSIONS\\"))
+				if (RTC_EmuCore.bizhawkDir.Contains("\\VERSIONS\\"))
 				{
-					var bizhawkFolder = new DirectoryInfo(RTC_Core.bizhawkDir);
+					var bizhawkFolder = new DirectoryInfo(RTC_EmuCore.bizhawkDir);
 					var LauncherVersFolder = bizhawkFolder.Parent.Parent;
 
 					var versions = LauncherVersFolder.GetDirectories().Reverse().ToArray();
@@ -59,7 +59,7 @@ namespace RTC
 			}
 			finally
 			{
-				RTC_Core.StartSound();
+				RTC_EmuCore.StartSound();
 			}
 		}
 
@@ -90,7 +90,7 @@ namespace RTC
 			else
 				RTC_Params.RemoveParam("ALLOW_CROSS_CORE_CORRUPTION");
 
-			RTC_Core.AllowCrossCoreCorruption = cbAllowCrossCoreCorruption.Checked;
+			RTC_EmuCore.AllowCrossCoreCorruption = cbAllowCrossCoreCorruption.Checked;
 		}
 
 		private void cbDontCleanAtQuit_CheckedChanged(object sender, EventArgs e)

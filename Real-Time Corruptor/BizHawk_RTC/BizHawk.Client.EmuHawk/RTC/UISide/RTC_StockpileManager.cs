@@ -16,8 +16,6 @@ namespace RTC
 		public static StashKey backupedState = null;
 		public static Stack<StashKey> allBackupStates = new Stack<StashKey>();
 		public static BlastLayer lastBlastLayerBackup = null;
-		public static string currentGameSystem = "";
-		public static string currentGameName = "";
 
 		public static bool unsavedEdits = false;
 
@@ -103,9 +101,9 @@ namespace RTC
 
 			if (psk == null)
 			{
-				RTC_Core.StopSound();
+				RTC_EmuCore.StopSound();
 				MessageBox.Show("The Glitch Harvester could not perform the CORRUPT action\n\nEither no Savestate Box was selected in the Savestate Manager\nor the Savetate Box itself is empty.");
-				RTC_Core.StartSound();
+				RTC_EmuCore.StartSound();
 				RTC_NetCore.HugeOperationEnd(token);
 				return false;
 			}
@@ -168,13 +166,13 @@ namespace RTC
 
 			if (psk == null)
 			{
-				RTC_Core.StopSound();
+				RTC_EmuCore.StopSound();
 				MessageBox.Show("The Glitch Harvester could not perform the INJECT action\n\nEither no Savestate Box was selected in the Savestate Manager\nor the Savetate Box itself is empty.");
-				RTC_Core.StartSound();
+				RTC_EmuCore.StartSound();
 				return false;
 			}
 
-			if (psk.SystemCore != sk.SystemCore && !RTC_Core.AllowCrossCoreCorruption)
+			if (psk.SystemCore != sk.SystemCore && !RTC_EmuCore.AllowCrossCoreCorruption)
 			{
 				MessageBox.Show("Merge attempt failed: Core mismatch\n\n" + $"{psk.GameName} -> {psk.SystemName} -> {psk.SystemCore}\n{sk.GameName} -> {sk.SystemName} -> {sk.SystemCore}");
 				return isCorruptionApplied;
@@ -245,7 +243,7 @@ namespace RTC
 						break;
 					}
 
-				if (!allCoresIdentical && !RTC_Core.AllowCrossCoreCorruption)
+				if (!allCoresIdentical && !RTC_EmuCore.AllowCrossCoreCorruption)
 				{
 					MessageBox.Show("Merge attempt failed: Core mismatch\n\n" + string.Join("\n", sks.Select(it => $"{it.GameName} -> {it.SystemName} -> {it.SystemCore}")));
 					RTC_NetCore.HugeOperationEnd(token);
@@ -346,11 +344,11 @@ namespace RTC
 
 			string TheoricalSaveStateFilename;
 
-			RTC_Core.StopSound();
+			RTC_EmuCore.StopSound();
 
 			if (ReloadRom)
 			{
-				RTC_Core.LoadRom_NET(sk.RomFilename);
+				RTC_EmuCore.LoadRom_NET(sk.RomFilename);
 
 				var ssWatch = System.Diagnostics.Stopwatch.StartNew();
 				string ss = RTC_Hooks.BIZHAWK_GETSET_SYNCSETTINGS;
@@ -361,29 +359,29 @@ namespace RTC
 				if (sk.SyncSettings != ss && sk.SyncSettings != null)
 				{
 					RTC_Hooks.BIZHAWK_GETSET_SYNCSETTINGS = sk.SyncSettings;
-					RTC_Core.LoadRom_NET(sk.RomFilename);
+					RTC_EmuCore.LoadRom_NET(sk.RomFilename);
 				}
 			}
 
-			RTC_Core.StartSound();
+			RTC_EmuCore.StartSound();
 
-			TheoricalSaveStateFilename = RTC_Core.workingDir + "\\" + StateLocation.ToString() + "\\" + GameName + "." + Key + ".timejump.State";
+			TheoricalSaveStateFilename = RTC_EmuCore.workingDir + "\\" + StateLocation.ToString() + "\\" + GameName + "." + Key + ".timejump.State";
 
 			if (File.Exists(TheoricalSaveStateFilename))
 			{
-				if (!RTC_Core.LoadSavestate_NET(Key))
+				if (!RTC_EmuCore.LoadSavestate_NET(Key))
 				{
-					RTC_Core.StopSound();
+					RTC_EmuCore.StopSound();
 					MessageBox.Show($"Error loading savestate : An internal Bizhawk error has occurred.\n Are you sure your savestate matches the game, your syncsettings match, and the savestate is supported by this version of Bizhawk?");
-					RTC_Core.StartSound();
+					RTC_EmuCore.StartSound();
 					return false;
 				}
 			}
 			else
 			{
-				RTC_Core.StopSound();
+				RTC_EmuCore.StopSound();
 				MessageBox.Show($"Error loading savestate : (File {Key + ".timejump"} not found)");
-				RTC_Core.StartSound();
+				RTC_EmuCore.StartSound();
 				return false;
 			}
 
@@ -407,7 +405,7 @@ namespace RTC
 			if (_sk == null)
 			{
 				Key = RTC_CorruptCore.GetRandomKey();
-				statePath = RTC_Core.SaveSavestate_NET(Key, threadSave);
+				statePath = RTC_EmuCore.SaveSavestate_NET(Key, threadSave);
 				sk = new StashKey(Key, Key, null);
 			}
 			else
@@ -476,7 +474,7 @@ namespace RTC
 
 		public static StashKey getRawBlastlayer()
 		{
-			RTC_Core.StopSound();
+			RTC_EmuCore.StopSound();
 
 			StashKey sk = RTC_StockpileManager.SaveState_NET(false);
 
@@ -530,7 +528,7 @@ namespace RTC
 			}
 
 			sk.BlastLayer = bl;
-			RTC_Core.StartSound();
+			RTC_EmuCore.StartSound();
 
 			return sk;
 		}

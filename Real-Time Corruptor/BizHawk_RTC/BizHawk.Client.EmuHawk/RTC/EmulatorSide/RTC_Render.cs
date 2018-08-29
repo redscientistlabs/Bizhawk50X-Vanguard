@@ -26,12 +26,12 @@ namespace RTC
 			string Key = "RENDER_" + (RTC_CorruptCore.GetRandomKey());
 
 			if (lastType == RENDERTYPE.WAV)
-				RTC_Hooks.BIZHAWK_STARTRECORDAV("wave", RTC_Core.rtcDir + "\\RENDEROUTPUT\\" + Key + ".wav", true);
+				RTC_Hooks.BIZHAWK_STARTRECORDAV("wave", RTC_EmuCore.rtcDir + "\\RENDEROUTPUT\\" + Key + ".wav", true);
 			else if (lastType == RENDERTYPE.AVI)
 			{
 				try
 				{
-					RTC_Hooks.BIZHAWK_STARTRECORDAV("vfwavi", RTC_Core.rtcDir + "\\RENDEROUTPUT\\" + Key + ".avi", true);
+					RTC_Hooks.BIZHAWK_STARTRECORDAV("vfwavi", RTC_EmuCore.rtcDir + "\\RENDEROUTPUT\\" + Key + ".avi", true);
 				}
 				catch (Exception ex)
 				{
@@ -39,7 +39,7 @@ namespace RTC
 				}
 			}
 			else if (lastType == RENDERTYPE.MPEG)
-				RTC_Hooks.BIZHAWK_STARTRECORDAV("ffmpeg", RTC_Core.rtcDir + "\\RENDEROUTPUT\\" + Key + ".mpg", true);
+				RTC_Hooks.BIZHAWK_STARTRECORDAV("ffmpeg", RTC_EmuCore.rtcDir + "\\RENDEROUTPUT\\" + Key + ".mpg", true);
 
 			NetCoreImplementation.SendCommandToRTC(new RTC_Command(CommandType.REMOTE_RENDER_STARTED));
 		}
