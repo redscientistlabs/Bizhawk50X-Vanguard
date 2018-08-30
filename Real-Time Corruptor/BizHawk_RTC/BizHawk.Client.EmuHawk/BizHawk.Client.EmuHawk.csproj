@@ -923,7 +923,7 @@
     <Compile Include="RTC\Legacy\RTC_NetCoreSettings.cs" />
     <Compile Include="RTC\Legacy\RTC_NetCore_RTCExtensions.cs" />
     <Compile Include="RTC\CorruptCoreSide\RTC_Objects.cs" />
-    <Compile Include="RTC\Legacy\RTC_Params.cs" />
+    <Compile Include="RTC\CorruptCoreSide\RTC_Params.cs" />
     <Compile Include="RTC\EmulatorSide\RTC_Render.cs" />
     <Compile Include="RTC\CorruptCoreSide\Corruption Processing\RTC_StepActions.cs" />
     <Compile Include="RTC\UISide\RTC_StockpileManager.cs" />

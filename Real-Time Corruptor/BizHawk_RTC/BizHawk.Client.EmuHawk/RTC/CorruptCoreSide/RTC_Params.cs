@@ -10,65 +10,7 @@ namespace RTC
 	[Serializable]
 	public class RTC_Params
 	{
-		List<object> objectList = new List<object>();
-		List<Type> typeList = new List<Type>();
-
-		//This is an array of pointers for setting/getting variables upon parameter synchronization accross processes
-		//The index of refs must match between processes otherwise it will break
-		//(EmuHawk.exe and StandaloneRTC.exe must match versions)
-
-		Ref[] refs = {
-
-			new Ref(() => RTC_StepActions.MaxInfiniteBlastUnits, x => { RTC_StepActions.MaxInfiniteBlastUnits   = (int)x; }),
-			new Ref(() => RTC_StepActions.LockExecution, x => { RTC_StepActions.LockExecution = (bool)x; }),
-
-			new Ref(() => RTC_EmuCore.lastOpenRom, x => { RTC_EmuCore.lastOpenRom = (string)x; }),
-			new Ref(() => RTC_EmuCore.lastLoaderRom, x => { RTC_EmuCore.lastLoaderRom = (int)x; }),
-			new Ref(() => RTC_EmuCore.currentGameSystem, x => { RTC_EmuCore.currentGameSystem = (string)x; }),
-			new Ref(() => RTC_EmuCore.currentGameName, x => { RTC_EmuCore.currentGameName = (string)x; }),
-
-			new Ref(() => RTC_EmuCore.OsdDisabled, x => { RTC_EmuCore.OsdDisabled = (bool)x; }),
-			new Ref(() => RTC_Hooks.ShowConsole, x => { RTC_Hooks.ShowConsole = (bool)x; }),
-
-			
-
-			new Ref(() => RTC_Filtering.Hash2LimiterDico,   x => { RTC_Filtering.Hash2LimiterDico   = (SerializableDico<string, string[]>)x; }),
-			new Ref(() => RTC_Filtering.Hash2ValueDico,     x => { RTC_Filtering.Hash2ValueDico     = (SerializableDico<string, string[]>)x; }),
-
-			
-		};
-
-		public RTC_Params()
-		{
-			//Fills the Params object upon creation
-			GetSetLiveParams(true);
-		}
-
-		public void Deploy()
-		{
-			//Has to be manually deployed after received
-
-			GetSetLiveParams(false);
-
-			if (RTC_StockpileManager.backupedState != null)
-				RTC_StockpileManager.backupedState.Run();
-			else
-			{
-				RTC_CorruptCore.AutoCorrupt = false;
-			}
-		}
-
-		private void GetSetLiveParams(bool buildObject)
-		{
-			//Builds the params object or unwraps the params object from/back to all monitored variables
-
-			for (int i = 0; i < refs.Length; i++)
-				if (buildObject)
-					objectList.Add(refs[i].Value);
-				else
-					refs[i].Value = objectList[i];
-		}
-
+		
 		public static void LoadRTCColor()
 		{
 			if (NetCoreImplementation.isStandaloneUI || NetCoreImplementation.isAttached)
@@ -160,22 +102,4 @@ namespace RTC
 		}
 	}
 
-	[Serializable]
-	internal class Ref //Serializable pointer object
-	{
-		private Func<object> getter;
-		private Action<object> setter;
-
-		public Ref(Func<object> getter, Action<object> setter)
-		{
-			this.getter = getter;
-			this.setter = setter;
-		}
-
-		public object Value
-		{
-			get => getter();
-			set => setter(value);
-		}
-	}
 }

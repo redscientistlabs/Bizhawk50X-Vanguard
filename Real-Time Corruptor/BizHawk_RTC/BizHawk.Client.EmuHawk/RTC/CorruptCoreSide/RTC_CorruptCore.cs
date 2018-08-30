@@ -60,11 +60,6 @@ namespace RTC
 		}
 
 
-		public static bool ClearStepActionsOnRewind
-		{
-			get { return (bool)spec["ClearStepActionsOnRewind"]; }
-			set { spec.Update(new PartialSpec("CorruptCore", "ClearStepActionsOnRewind", value)); }
-		}
 
 		public static void Start()
 		{
@@ -76,7 +71,10 @@ namespace RTC
 			partial.Insert(RTC_FreezeEngine.getDefaultPartial());
 			partial.Insert(RTC_PipeEngine.getDefaultPartial());
 			partial.Insert(RTC_VectorEngine.getDefaultPartial());
+
 			partial.Insert(RTC_CustomEngine.getDefaultPartial());
+			partial.Insert(RTC_StepActions.getDefaultPartial());
+			partial.Insert(RTC_Filtering.getDefaultPartial());
 
 			spec = new FullSpec(partial);
 			spec.SpecUpdated += (object o, SpecUpdateEventArgs e) =>
@@ -100,7 +98,6 @@ namespace RTC
 			partial["ErrorDelay"] = 1;
 			partial["Radius"] = BlastRadius.SPREAD;
 			partial["AutoCorrupt"] = false;
-			partial["ClearStepActionsOnRewind"] = false;
 
 			return partial;
 		}

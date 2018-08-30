@@ -171,10 +171,6 @@ namespace RTC
 					S.GET<RTC_Multiplayer_Form>().StopGameOfSwap(true);
 					break;
 
-				case CommandType.REMOTE_PUSHPARAMS:
-					(cmd.objectValue as RTC_Params).Deploy();
-					break;
-
 				case CommandType.REMOTE_PUSHVMDS:
 					RTC_MemoryDomains.VmdPool.Clear();
 					foreach (var proto in (cmd.objectValue as VmdPrototype[]))
@@ -358,7 +354,7 @@ namespace RTC
 					break;
 				}
 
-				case CommandType.BIZHAWK_SET_OSDDISABLED_DELETEME:
+				case CommandType.BIZHAWK_SET_OSDDISABLED:
 					RTC_EmuCore.OsdDisabled = (bool)cmd.objectValue;
 					break;
 
@@ -384,162 +380,13 @@ namespace RTC
 					}
 
 
-				case CommandType.REMOTE_SET_NIGHTMARE_MINVALUE:
-				{
-					int precision = (int)(cmd.objectValue as object[])[0];
-					long value = (long)(cmd.objectValue as object[])[1];
-
-					switch (precision)
-					{
-						case 1:
-							RTC_NightmareEngine.MinValue8Bit = value;
-							break;
-						case 2:
-							RTC_NightmareEngine.MinValue16Bit = value;
-							break;
-						case 4:
-							RTC_NightmareEngine.MinValue32Bit = value;
-							break;
-					}
-					break;
-				}
-				case CommandType.REMOTE_SET_NIGHTMARE_MAXVALUE:
-				{
-					int precision = (int)(cmd.objectValue as object[])[0];
-					long value = (long)(cmd.objectValue as object[])[1];
-
-					switch (precision)
-					{
-						case 1:
-							RTC_NightmareEngine.MaxValue8Bit = value;
-							break;
-						case 2:
-							RTC_NightmareEngine.MaxValue16Bit = value;
-							break;
-						case 4:
-							RTC_NightmareEngine.MaxValue32Bit = value;
-							break;
-					}
-					break;
-				}
-
-				case CommandType.REMOTE_SET_HELLGENIE_MINVALUE:
-				{
-					int precision = (int)(cmd.objectValue as object[])[0];
-					long value = (long)(cmd.objectValue as object[])[1];
-
-					switch (precision)
-					{
-						case 1:
-							RTC_HellgenieEngine.MinValue8Bit = value;
-							break;
-						case 2:
-							RTC_HellgenieEngine.MinValue16Bit = value;
-							break;
-						case 4:
-							RTC_HellgenieEngine.MinValue32Bit = value;
-							break;
-					}
-					break;
-				}
-				case CommandType.REMOTE_SET_HELLGENIE_MAXVALUE:
-				{
-					int precision = (int)(cmd.objectValue as object[])[0];
-					long value = (long)(cmd.objectValue as object[])[1];
-
-					switch (precision)
-					{
-						case 1:
-							RTC_HellgenieEngine.MaxValue8Bit = value;
-							break;
-						case 2:
-							RTC_HellgenieEngine.MaxValue16Bit = value;
-							break;
-						case 4:
-							RTC_HellgenieEngine.MaxValue32Bit = value;
-							break;
-					}
-					break;
-				}
-
-				case CommandType.REMOTE_SET_STEPACTIONS_CLEARREWIND:
-					RTC_CorruptCore.ClearStepActionsOnRewind = (bool)cmd.objectValue;
-					break;
-
 				case CommandType.REMOTE_SET_STEPACTIONS_CLEARALLBLASTUNITS:
 					RTC_StepActions.ClearStepBlastUnits();
 					break;
 				case CommandType.REMOTE_SET_STEPACTIONS_REMOVEEXCESSINFINITEUNITS:
 					RTC_StepActions.RemoveExcessInfiniteStepUnits();
 					break;
-				case CommandType.REMOTE_SET_STEPACTIONS_MAXLIFETIMEUNITS:
-					RTC_StepActions.MaxInfiniteBlastUnits = (int)cmd.objectValue;
-					break;
-				case CommandType.REMOTE_SET_STEPACTIONS_LOCKEXECUTION:
-					RTC_StepActions.LockExecution = (bool)cmd.objectValue;
-					break;
-
-				case CommandType.REMOTE_SET_PIPE_LOCKPIPES:
-					RTC_StepActions.LockExecution = (bool)cmd.objectValue;
-					break;
-
-				case CommandType.REMOTE_SET_DISTORTION_DELAY:
-					RTC_DistortionEngine.Delay = (int)cmd.objectValue;
-					break;
-
-				case CommandType.REMOTE_SET_DISTORTION_RESYNC:
-					//TODO
-					break;
-
-				case CommandType.REMOTE_SET_VECTOR_LIMITER:
-					RTC_VectorEngine.LimiterListHash = (string)cmd.objectValue;
-					break;
-				case CommandType.REMOTE_SET_VECTOR_VALUES:
-					RTC_VectorEngine.ValueListHash = (string)cmd.objectValue;
-					break;
-
-				case CommandType.REMOTE_SET_CUSTOM_UNIT_SOURCE:
-					RTC_CustomEngine.Source = (BlastUnitSource)cmd.objectValue;
-					break;
-				case CommandType.REMOTE_SET_CUSTOM_VALUE_SOURCE:
-					RTC_CustomEngine.ValueSource = (CustomValueSource)cmd.objectValue;
-					break;
-				case CommandType.REMOTE_SET_CUSTOM_STORE_TIME:
-					RTC_CustomEngine.StoreTime = (ActionTime)cmd.objectValue;
-					break;
-				case CommandType.REMOTE_SET_CUSTOM_STORE_ADDRESS:
-					RTC_CustomEngine.StoreAddress = (CustomStoreAddress)cmd.objectValue;
-					break;
-				case CommandType.REMOTE_SET_CUSTOM_STORE_TYPE:
-					RTC_CustomEngine.StoreType = (StoreType)cmd.objectValue;
-					break;
-
-				case CommandType.REMOTE_SET_CUSTOM_LIFETIME:
-					RTC_CustomEngine.Lifetime = (int)cmd.objectValue;
-					break;
-
-				case CommandType.REMOTE_SET_CUSTOM_DELAY:
-					RTC_CustomEngine.Delay = (int)cmd.objectValue;
-					break;
 					
-				case CommandType.REMOTE_SET_CUSTOM_LOOP:
-					RTC_CustomEngine.Loop = (bool)cmd.objectValue;
-					break;
-
-				case CommandType.REMOTE_SET_CUSTOM_LIMITERLIST:
-					RTC_CustomEngine.LimiterListHash = (string)cmd.objectValue;
-					break;
-				case CommandType.REMOTE_SET_CUSTOM_LIMITERTIME:
-					RTC_CustomEngine.LimiterTime = (ActionTime)cmd.objectValue;
-					break;
-				case CommandType.REMOTE_SET_CUSTOM_VALUELIST:
-					RTC_CustomEngine.ValueListHash = (string)cmd.objectValue;
-					break;
-
-				case CommandType.REMOTE_SET_CUSTOM_LIMITERINVERTED:
-					RTC_CustomEngine.LimiterInverted = (bool)cmd.objectValue;
-					break;
-
 
 				case CommandType.REMOTE_UPDATE_FILTERING_DICTIONARIES:
 					{
@@ -547,27 +394,7 @@ namespace RTC
 						RTC_Filtering.Hash2ValueDico = (SerializableDico<string, String[]>)(cmd.objectValue as object[])[1];
 						break;
 					}
-				case CommandType.REMOTE_SET_CUSTOM_RANGE_MAXVALUE:
-					{
-						int precision = (int)(cmd.objectValue as object[])[0];
-						long value = (long)(cmd.objectValue as object[])[1];
-
-						switch (precision)
-						{
-							case 1:
-								RTC_CustomEngine.MaxValue8Bit = value;
-								break;
-							case 2:
-								RTC_CustomEngine.MaxValue16Bit = value;
-								break;
-							case 4:
-								RTC_CustomEngine.MaxValue32Bit = value;
-								break;
-						}
-						break;
-					}
-
-
+				
 
 				case CommandType.REMOTE_EVENT_LOADGAMEDONE_NEWGAME:
 
@@ -575,13 +402,11 @@ namespace RTC
 						RTC_GameProtection.Reset();
 
 					RTC_CorruptCore.AutoCorrupt = false;
-					//RTC_StockpileManager.isCorruptionApplied = false;
 					S.GET<RTC_MemoryDomains_Form>().RefreshDomains();
 					S.GET<RTC_MemoryDomains_Form>().SetMemoryDomainsAllButSelectedDomains(RTC_MemoryDomains.GetBlacklistedDomains());
 					S.GET<RTC_CorruptionEngine_Form>().UpdateDefaultPrecision();
 					break;
 				case CommandType.REMOTE_EVENT_LOADGAMEDONE_SAMEGAME:
-					//RTC_StockpileManager.isCorruptionApplied = false;
 					S.GET<RTC_MemoryDomains_Form>().RefreshDomainsAndKeepSelected();
 					S.GET<RTC_CorruptionEngine_Form>().UpdateDefaultPrecision();
 					break;
@@ -599,7 +424,6 @@ namespace RTC
 					if (RTC_StockpileManager.backupedState == null)
 						S.GET<RTC_Core_Form>().AutoCorrupt = false;
 
-					NetCoreImplementation.SendCommandToBizhawk(new RTC_Command(CommandType.REMOTE_PUSHPARAMS) { objectValue = new RTC_Params() }, true, true);
 
 					NetCoreImplementation.SendCommandToBizhawk(new RTC_Command(CommandType.REMOTE_PUSHVMDS) { objectValue = RTC_MemoryDomains.VmdPool.Values.Select(it => (it as VirtualMemoryDomain).Proto).ToArray() }, true, true);
 

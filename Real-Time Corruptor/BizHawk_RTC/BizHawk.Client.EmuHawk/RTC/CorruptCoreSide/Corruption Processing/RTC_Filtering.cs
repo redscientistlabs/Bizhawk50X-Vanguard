@@ -1,4 +1,5 @@
-﻿using System;
+﻿using RTCV.NetCore;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -8,10 +9,29 @@ namespace RTC
 	public static class RTC_Filtering
 	{
 
-		public static SerializableDico<string, String[]> Hash2LimiterDico = new SerializableDico<string, string[]>();
-		public static SerializableDico<string, String[]> Hash2ValueDico = new SerializableDico<string, string[]>();
+		public static SerializableDico<string, String[]> Hash2LimiterDico
+		{
+			get { return (SerializableDico<string, String[]>)RTC_CorruptCore.spec["Filtering_Hash2LimiterDico"]; }
+			set { RTC_CorruptCore.spec.Update(new PartialSpec("CorruptCore", "Filtering_Hash2LimiterDico", value)); }
+		}
+		public static SerializableDico<string, String[]> Hash2ValueDico
+		{
+			get { return (SerializableDico<string, String[]>)RTC_CorruptCore.spec["Filtering_Hash2ValueDico"]; }
+			set { RTC_CorruptCore.spec.Update(new PartialSpec("CorruptCore", "Filtering_Hash2ValueDico", value)); }
+		}
 
-		
+		public static PartialSpec getDefaultPartial()
+		{
+			var partial = new PartialSpec("CorruptCore");
+
+			partial["Filtering_Hash2LimiterDico"] = new SerializableDico<string, string[]>();
+			partial["Filtering_Hash2ValueDico"] = new SerializableDico<string, string[]>();
+
+			return partial;
+		}
+
+
+
 		public static List<string> LoadListsFromPaths(string[] paths)
 		{
 			List<string> md5s = new List<string>();
@@ -20,7 +40,12 @@ namespace RTC
 			{
 				md5s.Add(LoadListFromPath(path));
 			}
-			NetCoreImplementation.SendCommandToBizhawk(new RTC_Command(CommandType.REMOTE_SET_CUSTOM_RANGE_MINVALUE) { objectValue = new object[] { RTC_Filtering.Hash2LimiterDico, RTC_Filtering.Hash2ValueDico } });
+
+			var partial = new PartialSpec("CorruptCore");
+			partial["Hash2LimiterDico"] = Hash2LimiterDico;
+			partial["Hash2ValueDico"] = Hash2ValueDico;
+			RTC_CorruptCore.spec.Update(partial);
+
 			return md5s;
 		}
 

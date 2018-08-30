@@ -66,7 +66,6 @@ namespace RTC
 			else if (rbUnitSourceValue.Checked)
 				RTC_CustomEngine.Source = BlastUnitSource.VALUE;
 
-			NetCoreImplementation.SendCommandToBizhawk(new RTC_Command(CommandType.REMOTE_SET_CUSTOM_UNIT_SOURCE) { objectValue = RTC_CustomEngine.Source });
 		}
 
 		private void valueSource_CheckedChanged(object sender, EventArgs e)
@@ -80,7 +79,6 @@ namespace RTC
 			else if (rbRange.Checked)
 				RTC_CustomEngine.ValueSource = CustomValueSource.RANGE;
 
-			NetCoreImplementation.SendCommandToBizhawk(new RTC_Command(CommandType.REMOTE_SET_CUSTOM_VALUE_SOURCE) { objectValue = RTC_CustomEngine.ValueSource});
 		}
 
 
@@ -92,7 +90,6 @@ namespace RTC
 			else if (rbStoreFirstExecute.Checked)
 				RTC_CustomEngine.StoreTime = ActionTime.PREEXECUTE;
 
-			NetCoreImplementation.SendCommandToBizhawk(new RTC_Command(CommandType.REMOTE_SET_CUSTOM_STORE_TIME) { objectValue = RTC_CustomEngine.StoreTime });
 		}
 		
 		private void storeAddress_CheckedChanged(object sender, EventArgs e)
@@ -103,7 +100,6 @@ namespace RTC
 			else if (rbStoreSame.Checked)
 				RTC_CustomEngine.StoreAddress = CustomStoreAddress.SAME;
 
-			NetCoreImplementation.SendCommandToBizhawk(new RTC_Command(CommandType.REMOTE_SET_CUSTOM_STORE_ADDRESS) { objectValue = RTC_CustomEngine.StoreAddress });
 		}
 
 
@@ -115,7 +111,6 @@ namespace RTC
 			if (rbStoreStep.Checked)
 				RTC_CustomEngine.StoreType = StoreType.CONTINUOUS;
 
-			NetCoreImplementation.SendCommandToBizhawk(new RTC_Command(CommandType.REMOTE_SET_CUSTOM_STORE_TYPE) { objectValue = RTC_CustomEngine.StoreType });
 		}
 
 
@@ -139,8 +134,6 @@ namespace RTC
 					break;
 			}
 
-			//We send the value and the precision and it determines which to update using the precision on the other side.
-			NetCoreImplementation.SendCommandToBizhawk(new RTC_Command(CommandType.REMOTE_SET_CUSTOM_RANGE_MINVALUE) { objectValue = new object[] { RTC_CorruptCore.CurrentPrecision, value } });
 		}
 		private void nmMaxValue_ValueChanged(object sender, EventArgs e)
 		{
@@ -163,8 +156,6 @@ namespace RTC
 					break;
 			}
 
-			//We send the value and the precision and it determines which to update using the precision on the other side.
-			NetCoreImplementation.SendCommandToBizhawk(new RTC_Command(CommandType.REMOTE_SET_CUSTOM_RANGE_MAXVALUE) { objectValue = new object[] { RTC_CorruptCore.CurrentPrecision, value } });
 		}
 
 
@@ -177,24 +168,21 @@ namespace RTC
 		private void cbClearRewind_CheckedChanged(object sender, EventArgs e)
 		{
 			//Netcore redundant method
-			RTC_StepActions.ClearStepActionsOnRewind(cbClearRewind.Checked);
+			RTC_StepActions.ClearStepActionsOnRewind = cbClearRewind.Checked;
 		}
 
 		private void cbLoopUnit_CheckedChanged(object sender, EventArgs e)
 		{
 			RTC_CustomEngine.Loop = cbLoopUnit.Checked;
-			NetCoreImplementation.SendCommandToBizhawk(new RTC_Command(CommandType.REMOTE_SET_CUSTOM_LOOP) { objectValue = RTC_CustomEngine.Loop });
 		}
 
 		private void cbValueList_SelectedIndexChanged(object sender, EventArgs e)
 		{
 			RTC_CustomEngine.ValueListHash = (string)cbValueList.SelectedValue;
-			NetCoreImplementation.SendCommandToBizhawk(new RTC_Command(CommandType.REMOTE_SET_CUSTOM_VALUELIST) { objectValue = RTC_CustomEngine.ValueListHash });
 		}
 		private void cbLimiterList_SelectedIndexChanged(object sender, EventArgs e)
 		{
 			RTC_CustomEngine.LimiterListHash = (string)cbLimiterList.SelectedValue;
-			NetCoreImplementation.SendCommandToBizhawk(new RTC_Command(CommandType.REMOTE_SET_CUSTOM_LIMITERLIST) { objectValue = RTC_CustomEngine.LimiterListHash });
 		}
 		private void limiterTime_CheckedChanged(object sender, EventArgs e)
 		{
@@ -210,7 +198,6 @@ namespace RTC
 			else if (rbLimiterExecute.Checked)
 				RTC_CustomEngine.LimiterTime = ActionTime.EXECUTE;
 
-			NetCoreImplementation.SendCommandToBizhawk(new RTC_Command(CommandType.REMOTE_SET_CUSTOM_LIMITERTIME) { objectValue = RTC_CustomEngine.LimiterTime });
 		}
 		
 		private void btnClearActive_Click(object sender, EventArgs e)
@@ -222,19 +209,16 @@ namespace RTC
 		private void nmLifetime_ValueChanged(object sender, EventArgs e)
 		{
 			RTC_CustomEngine.Lifetime = Convert.ToInt32(nmLifetime.Value);
-			NetCoreImplementation.SendCommandToBizhawk(new RTC_Command(CommandType.REMOTE_SET_CUSTOM_LIFETIME) { objectValue = RTC_CustomEngine.Lifetime });
 		}
 
 		private void nmDelay_ValueChanged(object sender, EventArgs e)
 		{
 			RTC_CustomEngine.Delay = Convert.ToInt32(nmDelay.Value);
-			NetCoreImplementation.SendCommandToBizhawk(new RTC_Command(CommandType.REMOTE_SET_CUSTOM_DELAY) { objectValue = RTC_CustomEngine.Delay });
 		}
 
 		private void nmTilt_ValueChanged(object sender, EventArgs e)
 		{
 			RTC_CustomEngine.TiltValue = (BigInteger)nmTilt.Value;
-			NetCoreImplementation.SendCommandToBizhawk(new RTC_Command(CommandType.REMOTE_SET_CUSTOM_TILT) { objectValue = RTC_CustomEngine.TiltValue });
 		}
 
 		public void UpdateMinMaxBoxes(int precision)
@@ -272,8 +256,6 @@ namespace RTC
 		private void cbLimiterInverted_CheckedChanged(object sender, EventArgs e)
 		{
 			RTC_CustomEngine.LimiterInverted = cbLimiterInverted.Checked;
-			NetCoreImplementation.SendCommandToBizhawk(new RTC_Command(CommandType.REMOTE_SET_CUSTOM_LIMITERINVERTED) { objectValue = RTC_CustomEngine.LimiterInverted });
-
 		}
 	}
 }

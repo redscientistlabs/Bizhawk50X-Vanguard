@@ -148,6 +148,7 @@ namespace RTCV.NetCore
 			foreach (var key in partialSpec.specDico.Keys)
 				this[key] = partialSpec.specDico[key];
 		}
+
 	}
 
     [Serializable]
@@ -222,7 +223,12 @@ namespace RTCV.NetCore
                 specDico[keys[i]] = values[i];
         }
 
-    }
+		public bool ContainsKey(string v)
+		{
+			return specDico.ContainsKey(v);
+		}
+
+	}
 
     public class SpecUpdateEventArgs : EventArgs
     {

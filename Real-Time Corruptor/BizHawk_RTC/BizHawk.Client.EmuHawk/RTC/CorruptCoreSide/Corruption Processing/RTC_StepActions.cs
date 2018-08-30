@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using GongSolutions.Shell.Interop;
+using RTCV.NetCore;
 
 namespace RTC
 {
@@ -34,11 +35,37 @@ namespace RTC
 		/// <summary>
 		/// Don't set this manually
 		/// </summary>
-		public static int MaxInfiniteBlastUnits = 50;
+		public static int MaxInfiniteBlastUnits
+		{
+			get { return (int)RTC_CorruptCore.spec["StepActions_MaxInfiniteBlastUnits"]; }
+			set { RTC_CorruptCore.spec.Update(new PartialSpec("CorruptCore", "StepActions_MaxInfiniteBlastUnits", value)); }
+		}
 		/// <summary>
 		/// Don't set this manually
 		/// </summary>
-		public static bool LockExecution;
+		public static bool LockExecution
+		{
+			get { return (bool)RTC_CorruptCore.spec["StepActions_LockExecution"]; }
+			set { RTC_CorruptCore.spec.Update(new PartialSpec("CorruptCore", "StepActions_LockExecution", value)); }
+		}
+
+		public static bool ClearStepActionsOnRewind
+		{
+			get { return (bool)RTC_CorruptCore.spec["StepActions_ClearStepActionsOnRewind"]; }
+			set { RTC_CorruptCore.spec.Update(new PartialSpec("CorruptCore", "StepActions_ClearStepActionsOnRewind", value)); }
+		}
+
+		public static PartialSpec getDefaultPartial()
+		{
+			var partial = new PartialSpec("CorruptCore");
+
+			partial["StepActions_MaxInfiniteBlastUnits"] = 50;
+			partial["StepActions_LockExecution"] = false;
+			partial["StepActions_ClearStepActionsOnRewind"] = false;
+
+
+			return partial;
+		}
 
 		public static void ClearStepBlastUnits()
 		{
@@ -85,18 +112,12 @@ namespace RTC
 		public static void SetMaxLifetimeBlastUnits(int value)
 		{
 			RTC_StepActions.MaxInfiniteBlastUnits = value;
-			NetCoreImplementation.SendCommandToBizhawk(new RTC_Command(CommandType.REMOTE_SET_STEPACTIONS_MAXLIFETIMEUNITS) { objectValue = value });
 		}
 
-		public static void ClearStepActionsOnRewind(bool value)
-		{
-			RTC_CorruptCore.ClearStepActionsOnRewind = value;
-			NetCoreImplementation.SendCommandToBizhawk(new RTC_Command(CommandType.REMOTE_SET_STEPACTIONS_CLEARREWIND) { objectValue = value });
-		}
+
 		public static void SetLockExecution(bool value)
 		{
 			RTC_StepActions.LockExecution = value;
-			NetCoreImplementation.SendCommandToBizhawk(new RTC_Command(CommandType.REMOTE_SET_STEPACTIONS_LOCKEXECUTION) { objectValue = value });
 		}
 
 		public static BlastLayer GetRawBlastLayer()

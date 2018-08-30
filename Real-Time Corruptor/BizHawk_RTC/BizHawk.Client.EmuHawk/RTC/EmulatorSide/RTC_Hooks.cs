@@ -66,7 +66,7 @@ namespace RTC
 		{
 			if (disableRTC) return;
 
-			if (RTC_CorruptCore.ClearStepActionsOnRewind)
+			if (RTC_StepActions.ClearStepActionsOnRewind)
 				RTC_StepActions.ClearStepBlastUnits();
 		}
 
@@ -190,28 +190,19 @@ namespace RTC
 			Global.Config.PathEntries[Global.Game.System, "Base"];
 
 			PartialSpec partial = new PartialSpec("EmuCore");
-			partial["currentGameSystem"] = RTC_EmuCore.EmuFolderCheck(pathEntry.SystemDisplayName);
-			partial["currentGameName"] = PathManager.FilesystemSafeName(Global.Game);
-			partial["lastOpenRom"] = GlobalWin.MainForm.CurrentlyOpenRom;
-
 
 			//SEE IF WE CAN REMOVE THIS AT SOME POINT
 			//Sleep for 10ms in case Bizhawk hung for a moment after the game loaded
 			System.Threading.Thread.Sleep(10);
 			//prepare memory domains in advance on bizhawk side
 
+			partial["currentGameSystem"] = RTC_EmuCore.EmuFolderCheck(pathEntry.SystemDisplayName);
+			partial["currentGameName"] = PathManager.FilesystemSafeName(Global.Game);
+			partial["lastOpenRom"] = GlobalWin.MainForm.CurrentlyOpenRom;
+			partial["lastGameName"] = lastGameName;
 			partial["domains"] = QUERY_DOMAINS();
 
 			RTC_EmuCore.spec.Update(partial);
-
-			if (RTC_EmuCore.currentGameName != lastGameName)
-			{
-				NetCoreImplementation.SendCommandToRTC(new RTC_Command(CommandType.REMOTE_EVENT_LOADGAMEDONE_NEWGAME));
-			}
-			else
-			{
-				NetCoreImplementation.SendCommandToRTC(new RTC_Command(CommandType.REMOTE_EVENT_LOADGAMEDONE_SAMEGAME));
-			}
 
 			lastGameName = RTC_EmuCore.currentGameName;
 

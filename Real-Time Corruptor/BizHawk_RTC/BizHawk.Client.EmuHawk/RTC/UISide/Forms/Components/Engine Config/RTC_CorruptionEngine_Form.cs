@@ -77,13 +77,12 @@ namespace RTC
 			if (cbClearFreezesOnRewind.Checked != cbClearCheatsOnRewind.Checked)
 				cbClearFreezesOnRewind.Checked = cbClearCheatsOnRewind.Checked;
 
-			RTC_StepActions.ClearStepActionsOnRewind(true);
+			RTC_StepActions.ClearStepActionsOnRewind = true;
 		}
 
 		private void nmDistortionDelay_ValueChanged(object sender, EventArgs e)
 		{
 			RTC_DistortionEngine.Delay = Convert.ToInt32(nmDistortionDelay.Value);
-			NetCoreImplementation.SendCommandToBizhawk(new RTC_Command(CommandType.REMOTE_SET_DISTORTION_DELAY) { objectValue = RTC_DistortionEngine.Delay });
 		}
 
 		private void btnResyncDistortionEngine_Click(object sender, EventArgs e)
@@ -222,8 +221,7 @@ namespace RTC
 			if (cbClearFreezesOnRewind.Checked != cbClearCheatsOnRewind.Checked)
 				cbClearCheatsOnRewind.Checked = cbClearFreezesOnRewind.Checked;
 
-			RTC_CorruptCore.ClearStepActionsOnRewind = cbClearFreezesOnRewind.Checked;
-			NetCoreImplementation.SendCommandToBizhawk(new RTC_Command(CommandType.REMOTE_SET_STEPACTIONS_CLEARREWIND) { objectValue = RTC_CorruptCore.ClearStepActionsOnRewind });
+			RTC_StepActions.ClearStepActionsOnRewind = cbClearFreezesOnRewind.Checked;
 		}
 
 		private void nmMaxFreezes_ValueChanged(object sender, EventArgs e)
@@ -250,25 +248,22 @@ namespace RTC
 		private void cbLockPipes_CheckedChanged(object sender, EventArgs e)
 		{
 			RTC_StepActions.LockExecution = cbLockPipes.Checked;
-			NetCoreImplementation.SendCommandToBizhawk(new RTC_Command(CommandType.REMOTE_SET_PIPE_LOCKPIPES) { objectValue = RTC_StepActions.LockExecution });
 		}
 
 
 		private void cbClearPipesOnRewind_CheckedChanged(object sender, EventArgs e)
 		{
-			RTC_StepActions.ClearStepActionsOnRewind(cbClearPipesOnRewind.Checked);
+			RTC_StepActions.ClearStepActionsOnRewind = cbClearPipesOnRewind.Checked;
 		}
 
 		private void cbVectorLimiterList_SelectedIndexChanged(object sender, EventArgs e)
 		{
 			RTC_VectorEngine.LimiterListHash = (string)((ComboBox)sender).SelectedValue;
-			NetCoreImplementation.SendCommandToBizhawk(new RTC_Command(CommandType.REMOTE_SET_VECTOR_LIMITER) { objectValue = RTC_VectorEngine.LimiterListHash });
 		}
 
 		private void cbVectorValueList_SelectedIndexChanged(object sender, EventArgs e)
 		{
 			RTC_VectorEngine.ValueListHash = (string)((ComboBox)sender).SelectedValue;
-			NetCoreImplementation.SendCommandToBizhawk(new RTC_Command(CommandType.REMOTE_SET_VECTOR_VALUES) { objectValue = RTC_VectorEngine.ValueListHash });
 		}
 
 
@@ -404,7 +399,6 @@ namespace RTC
 					break;
 			}
 
-			NetCoreImplementation.SendCommandToBizhawk(new RTC_Command(CommandType.REMOTE_SET_NIGHTMARE_MINVALUE) { objectValue = new object[] { RTC_CorruptCore.CurrentPrecision, value } });
 		}
 
 		private void nmMaxValueNightmare_ValueChanged(object sender, EventArgs e)
@@ -428,7 +422,6 @@ namespace RTC
 					break;
 			}
 
-			NetCoreImplementation.SendCommandToBizhawk(new RTC_Command(CommandType.REMOTE_SET_NIGHTMARE_MAXVALUE) { objectValue = new object[] { RTC_CorruptCore.CurrentPrecision, value } });
 		}
 
 		private void nmMinValueHellgenie_ValueChanged(object sender, EventArgs e)
@@ -451,7 +444,6 @@ namespace RTC
 					break;
 			}
 
-			NetCoreImplementation.SendCommandToBizhawk(new RTC_Command(CommandType.REMOTE_SET_HELLGENIE_MINVALUE) { objectValue = new object[] { RTC_CorruptCore.CurrentPrecision, value } });
 		}
 
 		private void nmMaxValueHellgenie_ValueChanged(object sender, EventArgs e)
@@ -475,7 +467,6 @@ namespace RTC
 					break;
 			}
 
-			NetCoreImplementation.SendCommandToBizhawk(new RTC_Command(CommandType.REMOTE_SET_HELLGENIE_MAXVALUE) { objectValue = new object[] { RTC_CorruptCore.CurrentPrecision, value } });
 		}
 
 

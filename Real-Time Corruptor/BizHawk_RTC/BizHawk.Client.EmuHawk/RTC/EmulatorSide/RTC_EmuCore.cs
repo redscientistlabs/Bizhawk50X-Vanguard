@@ -146,9 +146,19 @@ namespace RTC
 				if (!NetCoreImplementation.isStandaloneUI && NetCoreImplementation.isStandaloneEmu)
 					NetCoreImplementation.SendCommandToRTC(new RTC_Command(CommandType.SPECUPDATE) { objectValue = e.partialSpec});
 
-				if(NetCoreImplementation.isStandaloneUI || NetCoreImplementation.isAttached)
+				if (e.partialSpec.ContainsKey("lastGameName"))
+					if (RTC_EmuCore.currentGameName != (string)e.partialSpec["lastGameName"])
+					{
+						NetCoreImplementation.SendCommandToRTC(new RTC_Command(CommandType.REMOTE_EVENT_LOADGAMEDONE_NEWGAME));
+					}
+					else
+					{
+						NetCoreImplementation.SendCommandToRTC(new RTC_Command(CommandType.REMOTE_EVENT_LOADGAMEDONE_SAMEGAME));
+					}
+				else
 				{
-					S.GET<RTC_MemoryDomains_Form>().RefreshDomains();
+					if (e.partialSpec.ContainsKey("domains"))
+						S.GET<RTC_MemoryDomains_Form>().RefreshDomains();
 				}
 
 			};
