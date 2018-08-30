@@ -91,7 +91,7 @@ namespace RTC
 		{
 			//Spawn a console for StandaloneRTC.
 			//If we're in attached mode, we can't do this as the emulator itself may have something overriding stdout (Bizhawk)
-			if (NetCoreImplementation.isStandaloneUI)
+			if (VanguardImplementation.isStandaloneUI)
 			{
 				LogConsole.CreateConsole();
 				if (!RTC_Hooks.ShowConsole)
@@ -106,8 +106,8 @@ namespace RTC
 				//RTC_RPC.SendToKillSwitch("CLOSE");
 				MessageBox.Show("This version has expired");
 				RTC_Hooks.BIZHAWK_MAINFORM_CLOSE();
-				S.GET<RTC_Core_Form>().Close();
-				S.GET<RTC_GlitchHarvester_Form>().Close();
+				//S.GET<RTC_Core_Form>().Close();
+				//S.GET<RTC_GlitchHarvester_Form>().Close();
 				Application.Exit();
 				return;
 			}
@@ -143,40 +143,26 @@ namespace RTC
 
 			spec.SpecUpdated += (object o, SpecUpdateEventArgs e) =>
 			{
-				if (!NetCoreImplementation.isStandaloneUI && NetCoreImplementation.isStandaloneEmu)
-					NetCoreImplementation.SendCommandToRTC(new RTC_Command(CommandType.SPECUPDATE) { objectValue = e.partialSpec});
+				if (!VanguardImplementation.isStandaloneUI && VanguardImplementation.isStandaloneEmu)
+					VanguardImplementation.SendCommandToRTC(new RTC_Command(CommandType.SPECUPDATE) { objectValue = e.partialSpec});
 
 				if (e.partialSpec.ContainsKey("lastGameName"))
 					if (RTC_EmuCore.currentGameName != (string)e.partialSpec["lastGameName"])
 					{
-						NetCoreImplementation.SendCommandToRTC(new RTC_Command(CommandType.REMOTE_EVENT_LOADGAMEDONE_NEWGAME));
+						VanguardImplementation.SendCommandToRTC(new RTC_Command(CommandType.REMOTE_EVENT_LOADGAMEDONE_NEWGAME));
 					}
 					else
 					{
-						NetCoreImplementation.SendCommandToRTC(new RTC_Command(CommandType.REMOTE_EVENT_LOADGAMEDONE_SAMEGAME));
+						VanguardImplementation.SendCommandToRTC(new RTC_Command(CommandType.REMOTE_EVENT_LOADGAMEDONE_SAMEGAME));
 					}
-				else
-				{
-					if (e.partialSpec.ContainsKey("domains"))
-						S.GET<RTC_MemoryDomains_Form>().RefreshDomains();
-				}
 
 			};
 				
 
-
-			//RTC_EmuCore.spec.Update(partial);
-
-
 			//Start other components here
 			RTC_CorruptCore.Start();
-			RTC_UICore.Start();
 
-			//Loading RTC Params
-			RTC_Params.LoadRTCColor();
-			S.GET<RTC_SettingsGeneral_Form>().cbDisableBizhawkOSD.Checked = !RTC_Params.IsParamSet("ENABLE_BIZHAWK_OSD");
-			S.GET<RTC_SettingsGeneral_Form>().cbAllowCrossCoreCorruption.Checked = RTC_Params.IsParamSet("ALLOW_CROSS_CORE_CORRUPTION");
-			S.GET<RTC_SettingsGeneral_Form>().cbDontCleanAtQuit.Checked = RTC_Params.IsParamSet("DONT_CLEAN_SAVESTATES_AT_QUIT");
+
 
 			//Load and initialize Hotkeys
 			//RTC_Hotkeys.InitializeHotkeySystem();
@@ -185,9 +171,9 @@ namespace RTC
 
 
 
-			NetCoreImplementation.Start();
+			VanguardImplementation.Start();
 
-			if (NetCoreImplementation.isStandaloneUI || NetCoreImplementation.isAttached)
+			if (VanguardImplementation.isStandaloneUI || VanguardImplementation.isAttached)
 				S.GET<RTC_Core_Form>().Show();
 
 			//Refocus on Bizhawk
@@ -198,8 +184,8 @@ namespace RTC
 				RTC_Hooks.BIZHAWK_SAVE_CONFIG();
 
 			//Fetch NetCore aggressiveness
-			if (NetCoreImplementation.isStandaloneEmu)
-				NetCoreImplementation.SendCommandToRTC(new RTC_Command(CommandType.GETAGGRESSIVENESS));
+			if (VanguardImplementation.isStandaloneEmu)
+				VanguardImplementation.SendCommandToRTC(new RTC_Command(CommandType.GETAGGRESSIVENESS));
 		}
 
 
@@ -454,4 +440,77 @@ namespace RTC
 		}
 
 	}
+
+
+	public static class TestClient
+	{
+		public static RTCV.Vanguard.VanguardConnector connector = null;
+
+		public static void StartClient()
+		{
+			Thread.Sleep(500); //When starting in Multiple Startup Project, the first try will be uncessful since
+							   //the server takes a bit more time to start then the client.
+
+			var spec = new Vanguard.TargetSpec();
+			spec.MessageReceived += OnMessageReceived;
+
+			var partial = new NetCore.PartialSpec("VanguardSpec");
+			partial["SOME_VARIABLE"] = 420;
+			partial["NOT_SATAN"] = 666;
+
+			spec.specDetails = new NetCore.FullSpec(partial);
+
+			connector = new Vanguard.VanguardConnector(spec);
+		}
+
+		public static void RestartClient()
+		{
+			connector.Kill();
+			connector = null;
+			StartClient();
+		}
+
+		private static void OnMessageReceived(object sender, NetCore.NetCoreEventArgs e)
+		{
+			// This is where you implement interaction.
+			// Warning: Any error thrown in here will be caught by NetCore and handled by being displayed in the console.
+
+			var message = e.message;
+			var simpleMessage = message as NetCore.NetCoreSimpleMessage;
+			var advancedMessage = message as NetCore.NetCoreAdvancedMessage;
+
+			switch (message.Type) //Handle received messages here
+			{
+
+				case "JUST A MESSAGE":
+					//do something
+					break;
+
+				case "ADVANCED MESSAGE THAT CONTAINS A VALUE":
+					object value = advancedMessage.objectValue; //This is how you get the value from a message
+					break;
+
+				case "#!RETURNTEST": //ADVANCED MESSAGE (SYNCED) WANTS A RETURN VALUE
+					e.setReturnValue(new Random(666));
+					break;
+
+				case "#!WAIT":
+					NetCore.ConsoleEx.WriteLine("Simulating 20 sec of workload");
+					Thread.Sleep(20000);
+					break;
+
+				case "#!HANG":
+					NetCore.ConsoleEx.WriteLine("Hanging forever");
+					Thread.Sleep(int.MaxValue);
+					break;
+
+				default:
+					NetCore.ConsoleEx.WriteLine($"Received unassigned {(message is NetCore.NetCoreAdvancedMessage ? "advanced " : "")}message \"{message.Type}\"");
+					break;
+			}
+
+		}
+
+	}
+
 }

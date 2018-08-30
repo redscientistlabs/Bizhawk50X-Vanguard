@@ -111,7 +111,7 @@ namespace RTC
 			RTC_EmuCore.args = args;
 
 			disableRTC = RTC_EmuCore.args.Contains("-DISABLERTC");
-			NetCoreImplementation.isStandaloneEmu = RTC_EmuCore.args.Contains("-REMOTERTC");
+			VanguardImplementation.isStandaloneEmu = RTC_EmuCore.args.Contains("-REMOTERTC");
 			ShowConsole = RTC_EmuCore.args.Contains("-CONSOLE");
 		}
 
@@ -159,7 +159,7 @@ namespace RTC
 		{
 			if (disableRTC) return;
 
-			NetCoreImplementation.SendCommandToBizhawk(new RTC_Command(CommandType.REMOTE_EVENT_SAVEBIZHAWKCONFIG));
+			VanguardImplementation.SendCommandToBizhawk(new RTC_Command(CommandType.REMOTE_EVENT_SAVEBIZHAWKCONFIG));
 		}
 
 		public static void LOAD_GAME_BEGIN()
@@ -299,68 +299,68 @@ namespace RTC
 					return false;
 
 				case "Manual Blast":
-					NetCoreImplementation.SendCommandToRTC(new RTC_Command(CommandType.REMOTE_HOTKEY_MANUALBLAST));
+					VanguardImplementation.SendCommandToRTC(new RTC_Command(CommandType.REMOTE_HOTKEY_MANUALBLAST));
 					break;
 
 				case "Auto-Corrupt":
-					NetCoreImplementation.SendCommandToRTC(new RTC_Command(CommandType.REMOTE_HOTKEY_AUTOCORRUPTTOGGLE));
+					VanguardImplementation.SendCommandToRTC(new RTC_Command(CommandType.REMOTE_HOTKEY_AUTOCORRUPTTOGGLE));
 					break;
 
 				case "Error Delay--":
-					NetCoreImplementation.SendCommandToRTC(new RTC_Command(CommandType.REMOTE_HOTKEY_ERRORDELAYDECREASE));
+					VanguardImplementation.SendCommandToRTC(new RTC_Command(CommandType.REMOTE_HOTKEY_ERRORDELAYDECREASE));
 					break;
 
 				case "Error Delay++":
-					NetCoreImplementation.SendCommandToRTC(new RTC_Command(CommandType.REMOTE_HOTKEY_ERRORDELAYINCREASE));
+					VanguardImplementation.SendCommandToRTC(new RTC_Command(CommandType.REMOTE_HOTKEY_ERRORDELAYINCREASE));
 					break;
 
 				case "Intensity--":
-					NetCoreImplementation.SendCommandToRTC(new RTC_Command(CommandType.REMOTE_HOTKEY_INTENSITYDECREASE));
+					VanguardImplementation.SendCommandToRTC(new RTC_Command(CommandType.REMOTE_HOTKEY_INTENSITYDECREASE));
 					break;
 
 				case "Intensity++":
-					NetCoreImplementation.SendCommandToRTC(new RTC_Command(CommandType.REMOTE_HOTKEY_INTENSITYINCREASE));
+					VanguardImplementation.SendCommandToRTC(new RTC_Command(CommandType.REMOTE_HOTKEY_INTENSITYINCREASE));
 					break;
 
 				case "GH Load and Corrupt":
 					watch = System.Diagnostics.Stopwatch.StartNew();
-					NetCoreImplementation.SendCommandToRTC(new RTC_Command(CommandType.REMOTE_HOTKEY_GHLOADCORRUPT));
+					VanguardImplementation.SendCommandToRTC(new RTC_Command(CommandType.REMOTE_HOTKEY_GHLOADCORRUPT));
 					break;
 
 				case "GH Just Corrupt":
 					watch = System.Diagnostics.Stopwatch.StartNew();
-					NetCoreImplementation.SendCommandToRTC(new RTC_Command(CommandType.REMOTE_HOTKEY_GHCORRUPT));
+					VanguardImplementation.SendCommandToRTC(new RTC_Command(CommandType.REMOTE_HOTKEY_GHCORRUPT));
 					break;
 
 				case "GH Load":
 					watch = System.Diagnostics.Stopwatch.StartNew();
-					NetCoreImplementation.SendCommandToRTC(new RTC_Command(CommandType.REMOTE_HOTKEY_GHLOAD));
+					VanguardImplementation.SendCommandToRTC(new RTC_Command(CommandType.REMOTE_HOTKEY_GHLOAD));
 					break;
 
 				case "GH Save":
 					watch = System.Diagnostics.Stopwatch.StartNew();
-					NetCoreImplementation.SendCommandToRTC(new RTC_Command(CommandType.REMOTE_HOTKEY_GHSAVE));
+					VanguardImplementation.SendCommandToRTC(new RTC_Command(CommandType.REMOTE_HOTKEY_GHSAVE));
 					break;
 
 				case "Stash->Stockpile":
-					NetCoreImplementation.SendCommandToRTC(new RTC_Command(CommandType.REMOTE_HOTKEY_GHSTASHTOSTOCKPILE));
+					VanguardImplementation.SendCommandToRTC(new RTC_Command(CommandType.REMOTE_HOTKEY_GHSTASHTOSTOCKPILE));
 					break;
 
 
 				case "Blast+RawStash":
-					NetCoreImplementation.SendCommandToRTC(new RTC_Command(CommandType.REMOTE_HOTKEY_BLASTRAWSTASH));
+					VanguardImplementation.SendCommandToRTC(new RTC_Command(CommandType.REMOTE_HOTKEY_BLASTRAWSTASH));
 					break;
 
 				case "Send Raw to Stash":
-					NetCoreImplementation.SendCommandToRTC(new RTC_Command(CommandType.REMOTE_HOTKEY_SENDRAWSTASH));
+					VanguardImplementation.SendCommandToRTC(new RTC_Command(CommandType.REMOTE_HOTKEY_SENDRAWSTASH));
 					break;
 
 				case "BlastLayer Toggle":
-					NetCoreImplementation.SendCommandToRTC(new RTC_Command(CommandType.REMOTE_HOTKEY_BLASTLAYERTOGGLE));
+					VanguardImplementation.SendCommandToRTC(new RTC_Command(CommandType.REMOTE_HOTKEY_BLASTLAYERTOGGLE));
 					break;
 
 				case "BlastLayer Re-Blast":
-					NetCoreImplementation.SendCommandToRTC(new RTC_Command(CommandType.REMOTE_HOTKEY_BLASTLAYERREBLAST));
+					VanguardImplementation.SendCommandToRTC(new RTC_Command(CommandType.REMOTE_HOTKEY_BLASTLAYERREBLAST));
 					break;
 			}
 			return true;

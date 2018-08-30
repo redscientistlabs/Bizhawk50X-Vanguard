@@ -43,6 +43,27 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Blast Generator Engines\RTC_BlastByteGenerator.cs" />
+    <Compile Include="Blast Generator Engines\RTC_BlastCheatGenerator.cs" />
+    <Compile Include="Blast Generator Engines\RTC_BlastPipeGenerator.cs" />
+    <Compile Include="Corruption Engines\RTC_BlastGeneratorEngine.cs" />
+    <Compile Include="Corruption Engines\RTC_CustomEngine.cs" />
+    <Compile Include="Corruption Engines\RTC_DistortionEngine.cs" />
+    <Compile Include="Corruption Engines\RTC_FreezeEngine.cs" />
+    <Compile Include="Corruption Engines\RTC_HellgenieEngine.cs" />
+    <Compile Include="Corruption Engines\RTC_NightmareEngine.cs" />
+    <Compile Include="Corruption Engines\RTC_PipeEngine.cs" />
+    <Compile Include="Corruption Engines\RTC_VectorEngine.cs" />
+    <Compile Include="Corruption Processing\RTC_Filtering.cs" />
+    <Compile Include="Corruption Processing\RTC_StepActions.cs" />
+    <Compile Include="RTC_BlastTools.cs" />
+    <Compile Include="RTC_CorruptCore.cs" />
+    <Compile Include="RTC_Diff.cs" />
+    <Compile Include="RTC_Enums.cs" />
+    <Compile Include="RTC_Extensions.cs" />
+    <Compile Include="RTC_MemoryDomains.cs" />
+    <Compile Include="RTC_Objects.cs" />
+    <Compile Include="RTC_Params.cs" />
     <Compile Include="Extensions.cs" />
     <Compile Include="Connector.cs" />
     <Compile Include="Objects.cs" />

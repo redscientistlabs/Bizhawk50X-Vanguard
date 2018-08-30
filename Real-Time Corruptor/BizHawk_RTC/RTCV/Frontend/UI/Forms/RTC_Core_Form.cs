@@ -50,6 +50,8 @@ namespace RTC
 		{
 			InitializeComponent();
 
+			RTC_UICore.Start();
+
 			if (NetCoreImplementation.isStandaloneUI)
 				pnAutoKillSwitch.Visible = true;
 		}

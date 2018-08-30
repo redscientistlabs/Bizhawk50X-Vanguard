@@ -8,7 +8,7 @@ namespace RTC
 
 		public static void ChangeNetCoreSettings(string setting)
 		{
-			if (NetCoreImplementation.isStandaloneUI && S.GET<RTC_SettingsNetCore_Form>().cbNetCoreCommandTimeout.SelectedItem.ToString() == setting)
+			if (VanguardImplementation.isStandaloneUI && S.GET<RTC_SettingsNetCore_Form>().cbNetCoreCommandTimeout.SelectedItem.ToString() == setting)
 				return;
 
 			switch (setting)
@@ -19,7 +19,7 @@ namespace RTC
 					RTC_NetCore.DefaultNetworkStreamTimeout = 3000;
 					RTC_NetCore.DefaultMaxRetries = 666;
 
-					if (NetCoreImplementation.isStandaloneUI)
+					if (VanguardImplementation.isStandaloneUI)
 						S.GET<RTC_Core_Form>().pbAutoKillSwitchTimeout.Maximum = 13;
 
 					break;
@@ -29,7 +29,7 @@ namespace RTC
 					RTC_NetCore.DefaultNetworkStreamTimeout = 6000;
 					RTC_NetCore.DefaultMaxRetries = 2000;
 
-					if (NetCoreImplementation.isStandaloneUI)
+					if (VanguardImplementation.isStandaloneUI)
 						S.GET<RTC_Core_Form>().pbAutoKillSwitchTimeout.Maximum = 20;
 
 					break;
@@ -41,7 +41,7 @@ namespace RTC
 					RTC_NetCore.DefaultNetworkStreamTimeout = int.MaxValue;
 					RTC_NetCore.DefaultMaxRetries = int.MaxValue;
 
-					if (NetCoreImplementation.isStandaloneUI)
+					if (VanguardImplementation.isStandaloneUI)
 						S.GET<RTC_Core_Form>().pbAutoKillSwitchTimeout.Maximum = int.MaxValue;
 
 					break;

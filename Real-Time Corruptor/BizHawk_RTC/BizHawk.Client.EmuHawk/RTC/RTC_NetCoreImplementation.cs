@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace RTC
 {
-	public static class NetCoreImplementation
+	public static class VanguardImplementation
 	{
 		//NetCores
 		public static RTC_NetCore Multiplayer = null;
@@ -156,7 +156,7 @@ namespace RTC
 			}
 			else
 			{
-				if ((!NetCoreImplementation.isStandaloneEmu && !NetCoreImplementation.isStandaloneUI) || RemoteRTC.side == NetworkSide.CLIENT)
+				if ((!VanguardImplementation.isStandaloneEmu && !VanguardImplementation.isStandaloneUI) || RemoteRTC.side == NetworkSide.CLIENT)
 				{
 					if (sync)
 						return RemoteRTC.SendSyncCommand(cmd, true, priority);
@@ -178,7 +178,7 @@ namespace RTC
 			//This is a NetCore wrapper that guarantees a NetCore command is sent to RTC no matter which mode.
 			//It CANNOT query a value
 
-			if (NetCoreImplementation.RemoteRTC == null)
+			if (VanguardImplementation.RemoteRTC == null)
 			{
 				RTC_NetCore tempNetCore = new RTC_NetCore();
 				LinkedList<RTC_Command> tempQueue = new LinkedList<RTC_Command>();

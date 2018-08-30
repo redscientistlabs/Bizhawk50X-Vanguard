@@ -14,7 +14,7 @@ namespace RTC
 				StopRender();
 
 			isRendering = true;
-			NetCoreImplementation.SendCommandToBizhawk(new RTC_Command(CommandType.REMOTE_RENDER_START), true);
+			VanguardImplementation.SendCommandToBizhawk(new RTC_Command(CommandType.REMOTE_RENDER_START), true);
 		}
 
 		public static void StartRender_NET()
@@ -41,7 +41,7 @@ namespace RTC
 			else if (lastType == RENDERTYPE.MPEG)
 				RTC_Hooks.BIZHAWK_STARTRECORDAV("ffmpeg", RTC_EmuCore.rtcDir + "\\RENDEROUTPUT\\" + Key + ".mpg", true);
 
-			NetCoreImplementation.SendCommandToRTC(new RTC_Command(CommandType.REMOTE_RENDER_STARTED));
+			VanguardImplementation.SendCommandToRTC(new RTC_Command(CommandType.REMOTE_RENDER_STARTED));
 		}
 
 		public static void setType(string _type)
@@ -55,13 +55,13 @@ namespace RTC
 			else if (_type == "MPEG")
 				lastType = RENDERTYPE.MPEG;
 
-			NetCoreImplementation.SendCommandToBizhawk(new RTC_Command(CommandType.REMOTE_RENDER_SETTYPE) { objectValue = lastType });
+			VanguardImplementation.SendCommandToBizhawk(new RTC_Command(CommandType.REMOTE_RENDER_SETTYPE) { objectValue = lastType });
 		}
 
 		public static void StopRender()
 		{
 			isRendering = false;
-			NetCoreImplementation.SendCommandToBizhawk(new RTC_Command(CommandType.REMOTE_RENDER_STOP));
+			VanguardImplementation.SendCommandToBizhawk(new RTC_Command(CommandType.REMOTE_RENDER_STOP));
 		}
 
 		public static void StopRender_NET()

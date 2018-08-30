@@ -7,6 +7,7 @@ using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using RTC;
 
 namespace RTC
 {
@@ -211,9 +212,14 @@ namespace RTC
 		public static void Start()
 		{
 			PartialSpec partial = new PartialSpec("UICore");
-
-
 			spec = new FullSpec(partial);
+
+
+			//Loading RTC Params
+			RTC_Params.LoadRTCColor();
+			S.GET<RTC_SettingsGeneral_Form>().cbDisableBizhawkOSD.Checked = !RTC_Params.IsParamSet("ENABLE_BIZHAWK_OSD");
+			S.GET<RTC_SettingsGeneral_Form>().cbAllowCrossCoreCorruption.Checked = RTC_Params.IsParamSet("ALLOW_CROSS_CORE_CORRUPTION");
+			S.GET<RTC_SettingsGeneral_Form>().cbDontCleanAtQuit.Checked = RTC_Params.IsParamSet("DONT_CLEAN_SAVESTATES_AT_QUIT");
 		}
 
 		public static void SetEngineByName(string name)

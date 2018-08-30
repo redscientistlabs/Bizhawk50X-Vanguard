@@ -210,7 +210,7 @@ namespace RTC
 						RTC_MemoryDomains.RefreshDomains(false);
 
 						if (runBlastLayer)
-							NetCoreImplementation.SendCommandToBizhawk(new RTC_Command(CommandType.BLAST) { blastlayer = sk.BlastLayer, isReplay = true });
+							VanguardImplementation.SendCommandToBizhawk(new RTC_Command(CommandType.BLAST) { blastlayer = sk.BlastLayer, isReplay = true });
 
 						cmdBack = new RTC_Command(CommandType.RETURNVALUE);
 						cmdBack.objectValue = returnValue;
@@ -398,7 +398,7 @@ namespace RTC
 
 				case CommandType.REMOTE_EVENT_LOADGAMEDONE_NEWGAME:
 
-					if (NetCoreImplementation.isStandaloneUI && RTC_GameProtection.isRunning)
+					if (VanguardImplementation.isStandaloneUI && RTC_GameProtection.isRunning)
 						RTC_GameProtection.Reset();
 
 					RTC_CorruptCore.AutoCorrupt = false;
@@ -425,7 +425,7 @@ namespace RTC
 						S.GET<RTC_Core_Form>().AutoCorrupt = false;
 
 
-					NetCoreImplementation.SendCommandToBizhawk(new RTC_Command(CommandType.REMOTE_PUSHVMDS) { objectValue = RTC_MemoryDomains.VmdPool.Values.Select(it => (it as VirtualMemoryDomain).Proto).ToArray() }, true, true);
+					VanguardImplementation.SendCommandToBizhawk(new RTC_Command(CommandType.REMOTE_PUSHVMDS) { objectValue = RTC_MemoryDomains.VmdPool.Values.Select(it => (it as VirtualMemoryDomain).Proto).ToArray() }, true, true);
 
 					Thread.Sleep(100);
 
@@ -507,7 +507,7 @@ namespace RTC
 					break;
 
 				case CommandType.REMOTE_HOTKEY_BLASTRAWSTASH:
-					NetCoreImplementation.SendCommandToBizhawk(new RTC_Command(CommandType.ASYNCBLAST));
+					VanguardImplementation.SendCommandToBizhawk(new RTC_Command(CommandType.ASYNCBLAST));
 					S.GET<RTC_GlitchHarvester_Form>().btnSendRaw_Click(null, null);
 					break;
 				case CommandType.REMOTE_HOTKEY_BLASTLAYERTOGGLE:
@@ -522,7 +522,7 @@ namespace RTC
 					}
 
 					S.GET<RTC_GlitchHarvester_Form>().IsCorruptionApplied = true;
-					NetCoreImplementation.SendCommandToRTC(new RTC_Command(CommandType.BLAST) { blastlayer = RTC_StockpileManager.currentStashkey.BlastLayer });
+					VanguardImplementation.SendCommandToRTC(new RTC_Command(CommandType.BLAST) { blastlayer = RTC_StockpileManager.currentStashkey.BlastLayer });
 					break;
 
 				case CommandType.REMOTE_RENDER_START:

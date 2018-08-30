@@ -107,7 +107,7 @@ namespace RTC
 		{
 
 			var token = Guid.NewGuid();
-			if (NetCoreImplementation.isStandaloneUI)
+			if (VanguardImplementation.isStandaloneUI)
 			{
 				guid2LastAggressivity.Add(token, S.GET<RTC_SettingsNetCore_Form>().cbNetCoreCommandTimeout.SelectedIndex);
 
@@ -122,7 +122,7 @@ namespace RTC
 		public static void HugeOperationEnd(Guid? operationGuid = null)
 		{
 
-			if (NetCoreImplementation.isStandaloneUI)
+			if (VanguardImplementation.isStandaloneUI)
 			{
 				if (operationGuid == null || !(guid2LastAggressivity.ContainsKey(operationGuid)))
 					return;
@@ -135,7 +135,7 @@ namespace RTC
 		public static void HugeOperationReset()
 		{
 
-			if (NetCoreImplementation.isStandaloneUI)
+			if (VanguardImplementation.isStandaloneUI)
 			{
 				S.GET<RTC_SettingsNetCore_Form>().cbNetCoreCommandTimeout.SelectedIndex = 0;
 				guid2LastAggressivity.Clear();
@@ -191,7 +191,7 @@ namespace RTC
 				if (networkStream == null && !dontCreateNetworkStream)
 				{
 					//We use loopback if in detached mode, otherwise use any
-					if(NetCoreImplementation.isStandaloneUI || NetCoreImplementation.isStandaloneEmu)
+					if(VanguardImplementation.isStandaloneUI || VanguardImplementation.isStandaloneEmu)
 						server = new TcpListener(IPAddress.Loopback, port);
 					else
 					{
@@ -440,7 +440,7 @@ namespace RTC
 				client = new TcpClient();
 
 				//Use loopback in detached
-				if (NetCoreImplementation.isStandaloneUI || NetCoreImplementation.isStandaloneEmu)
+				if (VanguardImplementation.isStandaloneUI || VanguardImplementation.isStandaloneEmu)
 					address = IPAddress.Loopback.ToString();
 
 				var result = client.BeginConnect(address, port, null, null);
@@ -702,7 +702,7 @@ namespace RTC
 
 					case CommandType.GETAGGRESSIVENESS:
 						string setting = S.GET<RTC_SettingsNetCore_Form>().cbNetCoreCommandTimeout.SelectedItem.ToString().ToUpper();
-						NetCoreImplementation.SendCommandToBizhawk(new RTC_Command(CommandType.AGGRESSIVENESS) { objectValue = setting });
+						VanguardImplementation.SendCommandToBizhawk(new RTC_Command(CommandType.AGGRESSIVENESS) { objectValue = setting });
 						break;
 
 					default:
@@ -749,7 +749,7 @@ namespace RTC
 				return null;
 			}
 
-			if (!NetCoreImplementation.isStandaloneUI && !NetCoreImplementation.isStandaloneEmu && cmd.Type == CommandType.RETURNVALUE)
+			if (!VanguardImplementation.isStandaloneUI && !VanguardImplementation.isStandaloneEmu && cmd.Type == CommandType.RETURNVALUE)
 			{
 				ReturnWatch.SyncReturns.Add((Guid)cmd.requestGuid, cmd.objectValue);
 				return null;
@@ -778,12 +778,12 @@ namespace RTC
 
 			cmd.requestGuid = Guid.NewGuid();
 
-			if (CommandQueueProcessorTimer == null || (!NetCoreImplementation.isStandaloneUI && !NetCoreImplementation.isStandaloneEmu) || NetCoreImplementation.isStandaloneEmu)
+			if (CommandQueueProcessorTimer == null || (!VanguardImplementation.isStandaloneUI && !VanguardImplementation.isStandaloneEmu) || VanguardImplementation.isStandaloneEmu)
 			{
 				if (!self)
 					return null;
 
-				if (!NetCoreImplementation.isStandaloneEmu)
+				if (!VanguardImplementation.isStandaloneEmu)
 				{
 					LinkedList<RTC_Command> tempQueue = new LinkedList<RTC_Command>(new[] { cmd });
 					Console.WriteLine($"{RTC.RTC_NetCore.timeElapsed.Elapsed.TotalSeconds}: {expectedSide.ToString()}:SendSyncCommand self:{self.ToString()} priority:{priority.ToString()} -> {cmd.Type.ToString()}");
@@ -836,7 +836,7 @@ namespace RTC
 
 				if (maxtries % 100 == 0)
 				{
-					NetCoreImplementation.SendCommandToBizhawk(new RTC_Command(CommandType.BOOP));
+					VanguardImplementation.SendCommandToBizhawk(new RTC_Command(CommandType.BOOP));
 					System.Windows.Forms.Application.DoEvents();
 				}
 
