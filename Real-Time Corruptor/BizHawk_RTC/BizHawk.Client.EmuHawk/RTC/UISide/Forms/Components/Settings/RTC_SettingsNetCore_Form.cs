@@ -73,7 +73,7 @@ namespace RTC
 
 		private void RTC_SettingsNetCore_Form_Load(object sender, EventArgs e)
 		{
-			if (NetCoreImplementation.isStandalone)
+			if (NetCoreImplementation.isStandaloneUI)
 			{
 				pnAttachedModeSettings.Controls.Clear();
 				lbAttachedModeSettings.ForeColor = Color.Gray;
@@ -88,7 +88,7 @@ namespace RTC
 		private void btnToggleConsole_Click(object sender, EventArgs e)
 		{
 			//We only have a console in standalone mode
-			if (NetCoreImplementation.isStandalone)
+			if (NetCoreImplementation.isStandaloneUI)
 				LogConsole.ToggleConsole();
 		}
 	}

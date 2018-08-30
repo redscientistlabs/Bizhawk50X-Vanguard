@@ -1,4 +1,5 @@
-﻿using System;
+﻿using RTCV.NetCore;
+using System;
 using System.Collections.Generic;
 using System.Windows.Forms;
 
@@ -6,6 +7,10 @@ namespace RTC
 {
 	public static class RTC_PipeEngine
 	{
+		public static PartialSpec getDefaultPartial()
+		{
+			return null;
+		}
 
 		public static BlastUnit GenerateUnit(string domain, long address, int precision)
 		{

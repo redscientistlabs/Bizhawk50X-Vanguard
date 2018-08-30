@@ -1,4 +1,5 @@
-﻿using System;
+﻿using RTCV.NetCore;
+using System;
 using System.Windows.Forms;
 
 namespace RTC
@@ -6,14 +7,54 @@ namespace RTC
 	public static class RTC_HellgenieEngine
 	{
 
-		public static long MinValue8Bit = 0;
-		public static long MaxValue8Bit = 0xFF;
+		public static long MinValue8Bit
+		{
+			get { return (long)RTC_CorruptCore.spec["HellgenieEngine_MinValue8Bit"]; }
+			set { RTC_CorruptCore.spec.Update(new PartialSpec("CorruptCore", "HellgenieEngine_MinValue8Bit", value)); }
+		}
+		public static long MaxValue8Bit
+		{
+			get { return (long)RTC_CorruptCore.spec["HellgenieEngine_MaxValue8Bit"]; }
+			set { RTC_CorruptCore.spec.Update(new PartialSpec("CorruptCore", "HellgenieEngine_MaxValue8Bit", value)); }
+		}
 
-		public static long MinValue16Bit = 0;
-		public static long MaxValue16Bit = 0xFFFF;
+		public static long MinValue16Bit
+		{
+			get { return (long)RTC_CorruptCore.spec["HellgenieEngine_MinValue16Bit"]; }
+			set { RTC_CorruptCore.spec.Update(new PartialSpec("CorruptCore", "HellgenieEngine_MinValue16Bit", value)); }
+		}
+		public static long MaxValue16Bit
+		{
+			get { return (long)RTC_CorruptCore.spec["HellgenieEngine_MaxValue16Bit"]; }
+			set { RTC_CorruptCore.spec.Update(new PartialSpec("CorruptCore", "HellgenieEngine_MaxValue16Bit", value)); }
+		}
 
-		public static long MinValue32Bit = 0;
-		public static long MaxValue32Bit = 0xFFFFFFFF;
+		public static long MinValue32Bit
+		{
+			get { return (long)RTC_CorruptCore.spec["HellgenieEngine_MinValue32Bit"]; }
+			set { RTC_CorruptCore.spec.Update(new PartialSpec("CorruptCore", "HellgenieEngine_MinValue32Bit", value)); }
+		}
+		public static long MaxValue32Bit
+		{
+			get { return (long)RTC_CorruptCore.spec["HellgenieEngine_MaxValue32Bit"]; }
+			set { RTC_CorruptCore.spec.Update(new PartialSpec("CorruptCore", "HellgenieEngine_MaxValue32Bit", value)); }
+		}
+
+		public static PartialSpec getDefaultPartial()
+		{
+			var partial = new PartialSpec("CorruptCore");
+
+			partial["HellgenieEngine_MinValue8Bit"] = 0L;
+			partial["HellgenieEngine_MaxValue8Bit"] = 0xFFL;
+
+			partial["HellgenieEngine_MinValue16Bit"] = 0L;
+			partial["HellgenieEngine_MaxValue16Bit"] = 0xFFFFL;
+
+			partial["HellgenieEngine_MinValue32Bit"] = 0L;
+			partial["HellgenieEngine_MaxValue32Bit"] = 0xFFFFFFFFL;
+
+			return partial;
+		}
 
 		public static BlastUnit GenerateUnit(string domain, long address, int precision)
 		{

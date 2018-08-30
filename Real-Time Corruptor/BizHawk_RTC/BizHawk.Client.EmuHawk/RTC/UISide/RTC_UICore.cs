@@ -1,4 +1,5 @@
-﻿using System;
+﻿using RTCV.NetCore;
+using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
@@ -11,6 +12,9 @@ namespace RTC
 {
 	public static class RTC_UICore
 	{
+
+		public static FullSpec spec;
+
 
 		//Note Box Settings
 		public static System.Drawing.Point NoteBoxPosition;
@@ -65,7 +69,7 @@ namespace RTC
 				S.GET<RTC_Standalone_Form>().Close();
 
 			//Clean out the working folders
-			if (!NetCoreImplementation.isRemoteRTC && !RTC_EmuCore.DontCleanSavestatesOnQuit)
+			if (!NetCoreImplementation.isStandaloneEmu && !RTC_EmuCore.DontCleanSavestatesOnQuit)
 			{
 				Stockpile.EmptyFolder("\\WORKING\\");
 			}
@@ -206,7 +210,10 @@ namespace RTC
 
 		public static void Start()
 		{
-			//throw new NotImplementedException();
+			PartialSpec partial = new PartialSpec("UICore");
+
+
+			spec = new FullSpec(partial);
 		}
 
 		public static void SetEngineByName(string name)

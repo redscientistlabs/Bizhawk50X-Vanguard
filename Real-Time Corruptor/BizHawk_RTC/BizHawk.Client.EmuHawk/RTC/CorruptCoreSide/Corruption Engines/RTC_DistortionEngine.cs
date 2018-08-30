@@ -1,4 +1,5 @@
-﻿using System;
+﻿using RTCV.NetCore;
+using System;
 using System.Collections.Generic;
 using System.Windows.Forms;
 
@@ -6,7 +7,22 @@ namespace RTC
 {
 	public static class RTC_DistortionEngine
 	{
-		public static int Delay = 50;
+		public static int Delay
+		{
+			get { return (int)RTC_CorruptCore.spec["DistortionEngine_Delay"]; }
+			set { RTC_CorruptCore.spec.Update(new PartialSpec("CorruptCore", "DistortionEngine_Delay", value)); }
+		}
+
+
+		public static PartialSpec getDefaultPartial()
+		{
+			var partial = new PartialSpec("CorruptCore");
+
+			partial["DistortionEngine_Delay"] = 50;
+
+			return partial;
+		}
+
 		public static BlastUnit GenerateUnit(string domain, long address, int precision)
 		{
 			// Randomly selects a memory operation according to the selected algorithm

@@ -425,7 +425,7 @@ namespace RTC
 			{
 				NetCoreImplementation.SendCommandToRTC(new RTC_Command(CommandType.REMOTE_KEY_PUSHSAVESTATEDICO) { objectValue = new object[] { sk, currentSavestateKey } });
 
-				if (NetCoreImplementation.isRemoteRTC)
+				if (NetCoreImplementation.isStandaloneEmu)
 					RTC_StockpileManager.SavestateStashkeyDico[currentSavestateKey] = sk;
 			}
 

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using RTCV.NetCore;
+using System;
 using System.Diagnostics;
 using System.Linq;
 using System.Numerics;
@@ -9,36 +10,153 @@ namespace RTC
 {
 	public static class RTC_CustomEngine
 	{
-		public static long MinValue8Bit = 0;
-		public static long MaxValue8Bit = 0xFF;
+		public static long MinValue8Bit
+		{
+			get { return (long)RTC_CorruptCore.spec["CustomEngine_MinValue8Bit"]; }
+			set { RTC_CorruptCore.spec.Update(new PartialSpec("CorruptCore", "CustomEngine_MinValue8Bit", value)); }
+		}
+		public static long MaxValue8Bit
+		{
+			get { return (long)RTC_CorruptCore.spec["CustomEngine_MaxValue8Bit"]; }
+			set { RTC_CorruptCore.spec.Update(new PartialSpec("CorruptCore", "CustomEngine_MaxValue8Bit", value)); }
+		}
 
-		public static long MinValue16Bit = 0;
-		public static long MaxValue16Bit = 0xFFFF;
+		public static long MinValue16Bit
+		{
+			get { return (long)RTC_CorruptCore.spec["CustomEngine_MinValue16Bit"]; }
+			set { RTC_CorruptCore.spec.Update(new PartialSpec("CorruptCore", "CustomEngine_MinValue16Bit", value)); }
+		}
+		public static long MaxValue16Bit
+		{
+			get { return (long)RTC_CorruptCore.spec["CustomEngine_MaxValue16Bit"]; }
+			set { RTC_CorruptCore.spec.Update(new PartialSpec("CorruptCore", "CustomEngine_MaxValue16Bit", value)); }
+		}
 
-		public static long MinValue32Bit = 0;
-		public static long MaxValue32Bit = 0xFFFFFFFF;
+		public static long MinValue32Bit
+		{
+			get { return (long)RTC_CorruptCore.spec["CustomEngine_MinValue32Bit"]; }
+			set { RTC_CorruptCore.spec.Update(new PartialSpec("CorruptCore", "CustomEngine_MinValue32Bit", value)); }
+		}
+		public static long MaxValue32Bit
+		{
+			get { return (long)RTC_CorruptCore.spec["CustomEngine_MaxValue32Bit"]; }
+			set { RTC_CorruptCore.spec.Update(new PartialSpec("CorruptCore", "CustomEngine_MaxValue32Bit", value)); }
+		}
 
-		public static BlastUnitSource Source = BlastUnitSource.VALUE;
+		public static BlastUnitSource Source
+		{
+			get { return (BlastUnitSource)RTC_CorruptCore.spec["CustomEngine_Source"]; }
+			set { RTC_CorruptCore.spec.Update(new PartialSpec("CorruptCore", "CustomEngine_Source", value)); }
+		}
 
-		public static StoreType StoreType = StoreType.ONCE;
-		public static ActionTime StoreTime = ActionTime.IMMEDIATE;
-		public static CustomStoreAddress StoreAddress = CustomStoreAddress.RANDOM;
+		public static StoreType StoreType
+		{
+			get { return (StoreType)RTC_CorruptCore.spec["CustomEngine_StoreType"]; }
+			set { RTC_CorruptCore.spec.Update(new PartialSpec("CorruptCore", "CustomEngine_StoreType", value)); }
+		}
+		public static ActionTime StoreTime
+		{
+			get { return (ActionTime)RTC_CorruptCore.spec["CustomEngine_StoreTime"]; }
+			set { RTC_CorruptCore.spec.Update(new PartialSpec("CorruptCore", "CustomEngine_StoreTime", value)); }
+		}
+		public static CustomStoreAddress StoreAddress
+		{
+			get { return (CustomStoreAddress)RTC_CorruptCore.spec["CustomEngine_StoreAddress"]; }
+			set { RTC_CorruptCore.spec.Update(new PartialSpec("CorruptCore", "CustomEngine_StoreAddress", value)); }
+		}
 
-		public static int Delay = 0;
-		public static int Lifetime = 1;
+		public static int Delay
+		{
+			get { return (int)RTC_CorruptCore.spec["CustomEngine_Delay"]; }
+			set { RTC_CorruptCore.spec.Update(new PartialSpec("CorruptCore", "CustomEngine_Delay", value)); }
+		}
+		public static int Lifetime
+		{
+			get { return (int)RTC_CorruptCore.spec["CustomEngine_Lifetime"]; }
+			set { RTC_CorruptCore.spec.Update(new PartialSpec("CorruptCore", "CustomEngine_Lifetime", value)); }
+		}
 
-		public static BigInteger TiltValue = 1;
+		public static BigInteger TiltValue
+		{
+			get { return (BigInteger)RTC_CorruptCore.spec["CustomEngine_TiltValue"]; }
+			set { RTC_CorruptCore.spec.Update(new PartialSpec("CorruptCore", "TCustomEngine_iltValue", value)); }
+		}
 
-		public static ActionTime LimiterTime = ActionTime.NONE;
-		public static bool LimiterInverted = false;
+		public static ActionTime LimiterTime
+		{
+			get { return (ActionTime)RTC_CorruptCore.spec["CustomEngine_LimiterTime"]; }
+			set { RTC_CorruptCore.spec.Update(new PartialSpec("CorruptCore", "CustomEngine_LimiterTime", value)); }
+		}
+		public static bool LimiterInverted
+		{
+			get { return (bool)RTC_CorruptCore.spec["CustomEngine_LimiterInverted"]; }
+			set { RTC_CorruptCore.spec.Update(new PartialSpec("CorruptCore", "CustomEngine_LimiterInverted", value)); }
+		}
 
 
-		public static bool Loop = false;
-		
-		public static CustomValueSource ValueSource = CustomValueSource.RANDOM;
-		
-		public static string LimiterListHash = null;
-		public static string ValueListHash = null;
+		public static bool Loop
+		{
+			get { return (bool)RTC_CorruptCore.spec["CustomEngine_Loop"]; }
+			set { RTC_CorruptCore.spec.Update(new PartialSpec("CorruptCore", "CustomEngine_Loop", value)); }
+		}
+
+		public static CustomValueSource ValueSource
+		{
+			get { return (CustomValueSource)RTC_CorruptCore.spec["CustomEngine_ValueSource"]; }
+			set { RTC_CorruptCore.spec.Update(new PartialSpec("CorruptCore", "CustomEngine_ValueSource", value)); }
+		}
+
+		public static string LimiterListHash
+		{
+			get { return (string)RTC_CorruptCore.spec["CustomEngine_LimiterListHash"]; }
+			set { RTC_CorruptCore.spec.Update(new PartialSpec("CorruptCore", "CustomEngine_LimiterListHash", value)); }
+		}
+
+		public static string ValueListHash
+		{
+			get { return (string)RTC_CorruptCore.spec["CustomEngine_ValueListHash"]; }
+			set { RTC_CorruptCore.spec.Update(new PartialSpec("CorruptCore", "CustomEngine_ValueListHash", value)); }
+		}
+
+
+		public static PartialSpec getDefaultPartial()
+		{
+			var partial = new PartialSpec("CorruptCore");
+
+			partial["CustomEngine_MinValue8Bit"] = 0L;
+			partial["CustomEngine_MaxValue8Bit"] = 0xFFL;
+					 
+			partial["CustomEngine_MinValue16Bit"] = 0;
+			partial["CustomEngine_MaxValue16Bit"] = 0xFFFFL;
+					 
+			partial["CustomEngine_MinValue32Bit"] = 0L;
+			partial["CustomEngine_MaxValue32Bit"] = 0xFFFFFFFFL;
+					 
+			partial["CustomEngine_Source"] = BlastUnitSource.VALUE;
+					 
+			partial["CustomEngine_StoreType"] = StoreType.ONCE;
+			partial["CustomEngine_StoreTime"] = ActionTime.IMMEDIATE;
+			partial["CustomEngine_StoreAddress"] = CustomStoreAddress.RANDOM;
+					 
+			partial["CustomEngine_Delay"] = 0;
+			partial["CustomEngine_Lifetime"] = 1;
+					 
+			partial["CustomEngine_TiltValue"] = 1;
+					 
+			partial["CustomEngine_LimiterTime"] = ActionTime.NONE;
+			partial["CustomEngine_LimiterInverted"] = false;
+					 
+					 
+			partial["CustomEngine_Loop"] = false;
+					 
+			partial["CustomEngine_ValueSource"] = CustomValueSource.RANDOM;
+					 
+			partial["CustomEngine_LimiterListHash"] = null;
+			partial["CustomEngine_ValueListHash"] = null;
+
+			return partial;
+		}
+
 
 		public static BlastUnit GenerateUnit(string domain, long address, int precision)
 		{

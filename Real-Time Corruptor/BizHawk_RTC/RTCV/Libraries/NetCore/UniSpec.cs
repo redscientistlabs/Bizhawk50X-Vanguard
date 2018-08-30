@@ -72,6 +72,16 @@ namespace RTCV.NetCore
             Update(template);
         }
 
+		public PartialSpec ToPartial()
+		{
+			var partial = new PartialSpec(name);
+
+			foreach (var key in specDico.Keys)
+				partial[key] = specDico[key];
+
+			return partial;
+		}
+
         public void RegisterUpdateAction(Action<object, SpecUpdateEventArgs> registrant)
         {
             UnregisterUpdateAction();
@@ -128,6 +138,15 @@ namespace RTCV.NetCore
 		{
 			name = _name;
 			this[_key] = _value;
+		}
+
+		public void Insert(PartialSpec partialSpec)
+		{
+			if (partialSpec == null)
+				return;
+
+			foreach (var key in partialSpec.specDico.Keys)
+				this[key] = partialSpec.specDico[key];
 		}
 	}
 

@@ -15,7 +15,7 @@ namespace RTC
 {
 	public static class RTC_Hooks
 	{
-		
+
 
 		//Instead of writing code inside bizhawk, hooks are placed inside of it so will be easier
 		//to upgrade BizHawk when they'll release a new version.
@@ -111,7 +111,7 @@ namespace RTC
 			RTC_EmuCore.args = args;
 
 			disableRTC = RTC_EmuCore.args.Contains("-DISABLERTC");
-			NetCoreImplementation.isRemoteRTC = RTC_EmuCore.args.Contains("-REMOTERTC");
+			NetCoreImplementation.isStandaloneEmu = RTC_EmuCore.args.Contains("-REMOTERTC");
 			ShowConsole = RTC_EmuCore.args.Contains("-CONSOLE");
 		}
 
@@ -189,13 +189,13 @@ namespace RTC
 			PathEntry pathEntry = Global.Config.PathEntries[Global.Game.System, "Savestates"] ??
 			Global.Config.PathEntries[Global.Game.System, "Base"];
 
-			PartialSpec partial = new PartialSpec("EmuSpec");
+			PartialSpec partial = new PartialSpec("EmuCore");
 			partial["currentGameSystem"] = RTC_EmuCore.EmuFolderCheck(pathEntry.SystemDisplayName);
 			partial["currentGameName"] = PathManager.FilesystemSafeName(Global.Game);
 			partial["lastOpenRom"] = GlobalWin.MainForm.CurrentlyOpenRom;
-			
 
 
+			//SEE IF WE CAN REMOVE THIS AT SOME POINT
 			//Sleep for 10ms in case Bizhawk hung for a moment after the game loaded
 			System.Threading.Thread.Sleep(10);
 			//prepare memory domains in advance on bizhawk side
@@ -245,13 +245,16 @@ namespace RTC
 
 			RTC_StepActions.ClearStepBlastUnits();
 
-			PartialSpec partial = new PartialSpec("EmuSpec");
-			partial["currentGameSystem"] = null;
-			partial["currentGameName"] = null;
-			partial["lastOpenRom"] = null;
-			partial["domains"] = new MemoryDomainProto[0];
-			RTC_EmuCore.spec.Update(partial);
 
+			if (RTC_EmuCore.spec != null)
+			{
+				PartialSpec partial = new PartialSpec("EmuCore");
+				partial["currentGameSystem"] = null;
+				partial["currentGameName"] = null;
+				partial["lastOpenRom"] = null;
+				partial["domains"] = new MemoryDomainProto[0];
+				RTC_EmuCore.spec.Update(partial);
+			}
 
 			if (loadDefault)
 				RTC_EmuCore.LoadDefaultRom();

@@ -70,6 +70,29 @@ namespace RTC
 		{
 			var partial = new PartialSpec("CorruptCore");
 
+			partial.Insert(RTC_CorruptCore.getDefaultPartial());
+			partial.Insert(RTC_NightmareEngine.getDefaultPartial());
+			partial.Insert(RTC_HellgenieEngine.getDefaultPartial());
+			partial.Insert(RTC_FreezeEngine.getDefaultPartial());
+			partial.Insert(RTC_PipeEngine.getDefaultPartial());
+			partial.Insert(RTC_VectorEngine.getDefaultPartial());
+			partial.Insert(RTC_CustomEngine.getDefaultPartial());
+
+			spec = new FullSpec(partial);
+			spec.SpecUpdated += (object o, SpecUpdateEventArgs e) =>
+			{
+				//Propagate partial to netcore if UI
+				if(NetCoreImplementation.isStandaloneUI)
+					NetCoreImplementation.SendCommandToBizhawk(new RTC_Command(CommandType.SPECUPDATE) { objectValue = e.partialSpec }, true);
+				
+			};
+			
+		}
+
+		public static PartialSpec getDefaultPartial()
+		{
+			var partial = new PartialSpec("CorruptCore");
+
 			partial["SelectedEngine"] = CorruptionEngine.NIGHTMARE;
 			partial["CustomPrecision"] = 1;
 			partial["CurrentPrecision"] = 1;
@@ -79,15 +102,7 @@ namespace RTC
 			partial["AutoCorrupt"] = false;
 			partial["ClearStepActionsOnRewind"] = false;
 
-			spec = new FullSpec(partial);
-			spec.SpecUpdated += (object o, SpecUpdateEventArgs e) =>
-			{
-				//Propagate partial to netcore if UI
-				if(NetCoreImplementation.isStandalone)
-					NetCoreImplementation.SendCommandToBizhawk(new RTC_Command(CommandType.SPECUPDATE) { objectValue = e.partialSpec }, true);
-				
-			};
-			
+			return partial;
 		}
 
 		public static BlastUnit getBlastUnit(string _domain, long _address, int precision)

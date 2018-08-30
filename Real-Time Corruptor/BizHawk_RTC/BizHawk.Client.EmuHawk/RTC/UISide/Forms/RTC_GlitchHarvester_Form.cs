@@ -241,14 +241,12 @@ namespace RTC
 					}
 				}
 
-				NetCoreImplementation.SendCommandToBizhawk(new RTC_Command(CommandType.REMOTE_SET_SAVESTATEBOX) { objectValue = RTC_StockpileManager.currentSavestateKey });
 
 				if (cbSavestateLoadOnClick.Checked)
 				{
 					btnSaveLoad.Text = "LOAD";
 					btnSaveLoad_Click(null, null);
 				}
-				//RTC_StockpileManager.LoadState(RTC_StockpileManager.getCurrentSavestateStashkey());
 			}
 			finally
 			{
@@ -726,7 +724,9 @@ namespace RTC
 			{
 				IsCorruptionApplied = false;
 
-				NetCoreImplementation.SendCommandToRTC(new RTC_Command(CommandType.REMOTE_SET_RESTOREBLASTLAYERBACKUP) { });
+				if (RTC_StockpileManager.lastBlastLayerBackup != null)
+					RTC_StockpileManager.lastBlastLayerBackup.Apply(true);
+
 				RTC_StepActions.ClearStepBlastUnits();
 			}
 		}
@@ -1033,7 +1033,7 @@ namespace RTC
 				}))).Enabled = (dgvStockpile.SelectedRows.Count > 1);
 
 				columnsMenu.Items.Add(new ToolStripSeparator());
-				if (!NetCoreImplementation.isStandalone)
+				if (!NetCoreImplementation.isStandaloneUI)
 				{
 					((ToolStripMenuItem)columnsMenu.Items.Add("[Multiplayer] Send Selected Item as a Blast", null, new EventHandler((ob, ev) => { NetCoreImplementation.Multiplayer?.SendBlastlayer(); }))).Enabled = NetCoreImplementation.Multiplayer != null && NetCoreImplementation.Multiplayer.side != NetworkSide.DISCONNECTED;
 					((ToolStripMenuItem)columnsMenu.Items.Add("[Multiplayer] Send Selected Item as a Game State", null, new EventHandler((ob, ev) => { NetCoreImplementation.Multiplayer?.SendStashkey(); }))).Enabled = NetCoreImplementation.Multiplayer != null && NetCoreImplementation.Multiplayer.side != NetworkSide.DISCONNECTED;
@@ -1322,7 +1322,7 @@ namespace RTC
 					RefreshStashHistory();
 				}))).Enabled = (lbStashHistory.SelectedIndex != -1 && lbStashHistory.SelectedItems.Count > 1);
 
-				if (!NetCoreImplementation.isStandalone)
+				if (!NetCoreImplementation.isStandaloneUI)
 				{
 					columnsMenu.Items.Add(new ToolStripSeparator());
 					((ToolStripMenuItem)columnsMenu.Items.Add("[Multiplayer] Pull State from peer", null, new EventHandler((ob, ev) =>

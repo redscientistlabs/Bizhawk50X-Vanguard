@@ -42,7 +42,7 @@ namespace RTC
 
 		public static void ClearStepBlastUnits()
 		{
-			if (NetCoreImplementation.isStandalone)
+			if (NetCoreImplementation.isStandaloneUI)
 			{
 				RTC_Command cmd = new RTC_Command(CommandType.REMOTE_SET_STEPACTIONS_CLEARALLBLASTUNITS);
 				NetCoreImplementation.SendCommandToBizhawk(cmd);

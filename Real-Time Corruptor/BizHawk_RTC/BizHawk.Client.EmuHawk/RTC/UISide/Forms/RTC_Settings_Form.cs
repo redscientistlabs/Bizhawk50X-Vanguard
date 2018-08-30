@@ -31,7 +31,7 @@ namespace RTC
 
 		private void btnRtcFactoryClean_Click(object sender, EventArgs e)
 		{
-			Process.Start($"FactoryClean{(NetCoreImplementation.isStandalone ? "DETACHED" : "ATTACHED")}.bat");
+			Process.Start($"FactoryClean{(NetCoreImplementation.isAttached ? "ATTACHED" : "DETACHED")}.bat");
 		}
 
 		private void RTC_Settings_Form_Load(object sender, EventArgs e)

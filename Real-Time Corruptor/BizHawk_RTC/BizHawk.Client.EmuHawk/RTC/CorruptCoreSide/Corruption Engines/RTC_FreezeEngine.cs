@@ -1,10 +1,16 @@
-﻿using System;
+﻿using RTCV.NetCore;
+using System;
 using System.Windows.Forms;
 
 namespace RTC
 {
 	public static class RTC_FreezeEngine
 	{
+		public static PartialSpec getDefaultPartial()
+		{
+			return null;
+		}
+
 		public static BlastUnit GenerateUnit(string domain, long address, int precision)
 		{
 			try

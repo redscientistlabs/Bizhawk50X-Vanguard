@@ -339,10 +339,6 @@ namespace RTC
 					cmdBack.objectValue = RTC_Hooks.BIZHAWK_GETSET_SYNCSETTINGS;
 					break;
 
-				case CommandType.REMOTE_KEY_PUTSYNCSETTINGS:
-					cmdBack = new RTC_Command(CommandType.RETURNVALUE);
-					break;
-
 				case CommandType.REMOTE_KEY_GETOPENROMFILENAME:
 					cmdBack = new RTC_Command(CommandType.RETURNVALUE);
 					cmdBack.objectValue = RTC_Hooks.BIZHAWK_GET_CURRENTLYOPENEDROM();
@@ -362,8 +358,8 @@ namespace RTC
 					break;
 				}
 
-				case CommandType.BIZHAWK_SET_OSDDISABLED:
-					RTC_EmuCore.BizhawkOsdDisabled = (bool)cmd.objectValue;
+				case CommandType.BIZHAWK_SET_OSDDISABLED_DELETEME:
+					RTC_EmuCore.OsdDisabled = (bool)cmd.objectValue;
 					break;
 
 				case CommandType.BIZHAWK_SET_DONT_CLEAN_SAVESTATES_AT_QUIT:
@@ -387,36 +383,6 @@ namespace RTC
 						break;
 					}
 
-				case CommandType.REMOTE_SET_SAVESTATEBOX:
-					RTC_StockpileManager.currentSavestateKey = (string)cmd.objectValue;
-					break;
-
-				case CommandType.REMOTE_SET_AUTOCORRUPT:
-					RTC_CorruptCore.AutoCorrupt = (bool)cmd.objectValue;
-					break;
-
-				case CommandType.REMOTE_SET_CUSTOMPRECISION:
-					RTC_CorruptCore.CustomPrecision = (int)cmd.objectValue;
-					break;
-
-				case CommandType.REMOTE_SET_INTENSITY:
-					RTC_CorruptCore.Intensity = (int)cmd.objectValue;
-					break;
-				case CommandType.REMOTE_SET_ERRORDELAY:
-					RTC_CorruptCore.ErrorDelay = (int)cmd.objectValue;
-					break;
-				case CommandType.REMOTE_SET_BLASTRADIUS:
-					RTC_CorruptCore.Radius = (BlastRadius)cmd.objectValue;
-					break;
-
-				case CommandType.REMOTE_SET_RESTOREBLASTLAYERBACKUP:
-					if (RTC_StockpileManager.lastBlastLayerBackup != null)
-						RTC_StockpileManager.lastBlastLayerBackup.Apply(true);
-					break;
-
-				case CommandType.REMOTE_SET_NIGHTMARE_TYPE:
-					RTC_NightmareEngine.Algo = (NightmareAlgo)cmd.objectValue;
-					break;
 
 				case CommandType.REMOTE_SET_NIGHTMARE_MINVALUE:
 				{
@@ -517,10 +483,6 @@ namespace RTC
 					RTC_StepActions.LockExecution = (bool)cmd.objectValue;
 					break;
 
-				case CommandType.REMOTE_SET_ENGINE:
-					RTC_CorruptCore.SelectedEngine = (CorruptionEngine)cmd.objectValue;
-					break;
-
 				case CommandType.REMOTE_SET_DISTORTION_DELAY:
 					RTC_DistortionEngine.Delay = (int)cmd.objectValue;
 					break;
@@ -609,7 +571,7 @@ namespace RTC
 
 				case CommandType.REMOTE_EVENT_LOADGAMEDONE_NEWGAME:
 
-					if (NetCoreImplementation.isStandalone && RTC_GameProtection.isRunning)
+					if (NetCoreImplementation.isStandaloneUI && RTC_GameProtection.isRunning)
 						RTC_GameProtection.Reset();
 
 					RTC_CorruptCore.AutoCorrupt = false;
@@ -762,7 +724,21 @@ namespace RTC
 
 				case CommandType.SPECUPDATE:
 					//change to a static FullSpec dictionary managment
-					RTC_CorruptCore.spec.Update((PartialSpec)cmd.objectValue,false);
+					var partial = (PartialSpec)cmd.objectValue;
+					switch (partial.name)
+					{
+						case "EmuCore":
+							RTC_EmuCore.spec.Update(partial, false);
+							break;
+						case "CorruptCore":
+							RTC_CorruptCore.spec.Update(partial, false);
+							break;
+						case "UICore":
+							RTC_UICore.spec.Update(partial, false);
+							break;
+					}
+
+
 					break;
 			}
 

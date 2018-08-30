@@ -1,4 +1,5 @@
-﻿using System;
+﻿using RTCV.NetCore;
+using System;
 using System.Linq;
 using System.Security.Cryptography;
 using System.Windows.Forms;
@@ -7,8 +8,26 @@ namespace RTC
 {
 	public static class RTC_VectorEngine
 	{
-		public static string LimiterListHash = null;
-		public static string ValueListHash = null;
+		public static string LimiterListHash
+		{
+			get { return (string)RTC_CorruptCore.spec["VectorEngine_LimiterListHash"]; }
+			set { RTC_CorruptCore.spec.Update(new PartialSpec("CorruptCore", "VectorEngine_LimiterListHash", value)); }
+		}
+		public static string ValueListHash
+		{
+			get { return (string)RTC_CorruptCore.spec["VectorEngine_ValueListHash"]; }
+			set { RTC_CorruptCore.spec.Update(new PartialSpec("CorruptCore", "VectorEngine_ValueListHash", value)); }
+		}
+
+		public static PartialSpec getDefaultPartial()
+		{
+			var partial = new PartialSpec("CorruptCore");
+
+			partial["VectorEngine_LimiterListHash"] = null;
+			partial["VectorEngine_ValueListHash"] = null;
+
+			return partial;
+		}
 
 		public static BlastUnit GenerateUnit(string domain, long address)
 		{

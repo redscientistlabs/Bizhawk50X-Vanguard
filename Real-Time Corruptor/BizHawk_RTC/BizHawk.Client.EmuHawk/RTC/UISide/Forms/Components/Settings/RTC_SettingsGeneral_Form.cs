@@ -25,7 +25,7 @@ namespace RTC
 
 		private void btnImportKeyBindings_Click(object sender, EventArgs e)
 		{
-			if (NetCoreImplementation.isRemoteRTC && (NetCoreImplementation.RemoteRTC != null ? NetCoreImplementation.RemoteRTC.expectedSide != NetworkSide.SERVER : false))
+			if (NetCoreImplementation.isStandaloneEmu && (NetCoreImplementation.RemoteRTC != null ? NetCoreImplementation.RemoteRTC.expectedSide != NetworkSide.SERVER : false))
 			{
 				MessageBox.Show("Can't import keybindings when not connected to Bizhawk!");
 				return;
@@ -80,7 +80,7 @@ namespace RTC
 			else
 				RTC_Params.SetParam("ENABLE_BIZHAWK_OSD");
 
-			NetCoreImplementation.SendCommandToBizhawk(new RTC_Command(CommandType.BIZHAWK_SET_OSDDISABLED) { objectValue = cbDisableBizhawkOSD.Checked });
+			NetCoreImplementation.SendCommandToBizhawk(new RTC_Command(CommandType.BIZHAWK_SET_OSDDISABLED_DELETEME) { objectValue = cbDisableBizhawkOSD.Checked });
 		}
 
 		private void cbAllowCrossCoreCorruption_CheckedChanged(object sender, EventArgs e)

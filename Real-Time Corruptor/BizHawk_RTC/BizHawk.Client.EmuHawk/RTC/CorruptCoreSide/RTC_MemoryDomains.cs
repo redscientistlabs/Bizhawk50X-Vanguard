@@ -43,7 +43,7 @@ namespace RTC
 			SelectedDomains = _domains;
 			lastSelectedDomains = _domains;
 
-			if (NetCoreImplementation.isStandalone)
+			if (NetCoreImplementation.isStandaloneUI)
 				NetCoreImplementation.SendCommandToBizhawk(new RTC_Command(CommandType.REMOTE_DOMAIN_SETSELECTEDDOMAINS) { objectValue = SelectedDomains }, sync);
 
 			Console.WriteLine($"{NetCoreImplementation.RemoteRTC?.expectedSide} -> Selected {_domains.Count().ToString()} domains \n{string.Join(" | ", _domains)}");
@@ -55,7 +55,7 @@ namespace RTC
 
 			SelectedDomains = new string[] { };
 
-			if (NetCoreImplementation.isStandalone)
+			if (NetCoreImplementation.isStandaloneUI)
 				NetCoreImplementation.SendCommandToBizhawk(new RTC_Command(CommandType.REMOTE_DOMAIN_SETSELECTEDDOMAINS) { objectValue = SelectedDomains });
 
 			Console.WriteLine($"{NetCoreImplementation.RemoteRTC?.expectedSide} -> Cleared selected domains");
@@ -69,7 +69,7 @@ namespace RTC
 
 			string systemName;
 
-			if (NetCoreImplementation.isStandalone)
+			if (NetCoreImplementation.isStandaloneUI)
 				systemName = (string)NetCoreImplementation.SendCommandToBizhawk(new RTC_Command(CommandType.REMOTE_DOMAIN_SYSTEM), true);
 			else
 				systemName = Global.Game.System.ToString().ToUpper();
@@ -340,7 +340,7 @@ namespace RTC
 
 
 			Guid token = RTC_NetCore.HugeOperationStart();
-			if (!NetCoreImplementation.isStandalone)
+			if (!NetCoreImplementation.isStandaloneUI)
 				returns = (object[])GetInterfaces();
 			else
 				returns = (object[])NetCoreImplementation.SendCommandToBizhawk(new RTC_Command(CommandType.REMOTE_DOMAIN_GETDOMAINS), true);
@@ -356,7 +356,7 @@ namespace RTC
 			if (clearSelected)
 				ClearSelectedDomains();
 
-			if (NetCoreImplementation.isStandalone)
+			if (NetCoreImplementation.isStandaloneUI)
 			{
 				MemoryInterfaces.Clear();
 
@@ -380,8 +380,11 @@ namespace RTC
 			foreach (MemoryDomainProto proto in (MemoryDomainProto[])RTC_EmuCore.spec["domains"])
 			{
 				var mdp = new MemoryDomainProxy(proto);
+				mdp.Name = proto.Name;
+				mdp.WordSize = proto.WordSize;
+				mdp.BigEndian = proto.BigEndian;
 
-				if(proto.Main)
+				if (proto.Main)
 				{
 					MainDomain = proto.Name;
 					WordSize = proto.WordSize;
@@ -486,7 +489,7 @@ namespace RTC
 		{
 			RTC_MemoryDomains.VmdPool[VMD.ToString()] = VMD;
 
-			if (NetCoreImplementation.isStandalone)
+			if (NetCoreImplementation.isStandaloneUI)
 			{
 				var token = RTC_NetCore.HugeOperationStart();
 
@@ -495,7 +498,7 @@ namespace RTC
 				RTC_NetCore.HugeOperationEnd(token);
 			}
 
-			if (!NetCoreImplementation.isRemoteRTC)
+			if (!NetCoreImplementation.isStandaloneEmu)
 				S.GET<RTC_MemoryDomains_Form>().RefreshDomainsAndKeepSelected();
 		}
 
@@ -509,7 +512,7 @@ namespace RTC
 				NetCoreImplementation.SendCommandToBizhawk(new RTC_Command(CommandType.REMOTE_DOMAIN_VMD_REMOVE) { objectValue = vmdName }, true);
 			}
 
-			if (!NetCoreImplementation.isRemoteRTC)
+			if (!NetCoreImplementation.isStandaloneEmu)
 				S.GET<RTC_MemoryDomains_Form>().RefreshDomainsAndKeepSelected();
 		}
 
@@ -950,10 +953,10 @@ namespace RTC
 		{
 			//change this to a local router call
 
-			if (proto == null)
+			if (NetCoreImplementation.isStandaloneUI)
 				return (byte)NetCoreImplementation.SendCommandToBizhawk(new RTC_Command(CommandType.REMOTE_DOMAIN_PEEKBYTE) { objectValue = new object[] { Name, address } }, true);
 			else
-				return proto.PeekByte(address);
+				return BizhawkDomainsInterface.IT.MemoryDomains[Name].PeekByte(address);
 		}
 
 		public override void PokeByte(long address, byte value)
@@ -963,7 +966,7 @@ namespace RTC
 			if (proto == null)
 				NetCoreImplementation.SendCommandToBizhawk(new RTC_Command(CommandType.REMOTE_DOMAIN_POKEBYTE) { objectValue = new object[] { Name, address, value } });
 			else
-				proto.PokeByte(address, value);
+				BizhawkDomainsInterface.IT.MemoryDomains[Name].PokeByte(address, value);
 		}
 	}
 

@@ -107,7 +107,7 @@ namespace RTC
 		{
 
 			var token = Guid.NewGuid();
-			if (NetCoreImplementation.isStandalone)
+			if (NetCoreImplementation.isStandaloneUI)
 			{
 				guid2LastAggressivity.Add(token, S.GET<RTC_SettingsNetCore_Form>().cbNetCoreCommandTimeout.SelectedIndex);
 
@@ -122,7 +122,7 @@ namespace RTC
 		public static void HugeOperationEnd(Guid? operationGuid = null)
 		{
 
-			if (NetCoreImplementation.isStandalone)
+			if (NetCoreImplementation.isStandaloneUI)
 			{
 				if (operationGuid == null || !(guid2LastAggressivity.ContainsKey(operationGuid)))
 					return;
@@ -135,7 +135,7 @@ namespace RTC
 		public static void HugeOperationReset()
 		{
 
-			if (NetCoreImplementation.isStandalone)
+			if (NetCoreImplementation.isStandaloneUI)
 			{
 				S.GET<RTC_SettingsNetCore_Form>().cbNetCoreCommandTimeout.SelectedIndex = 0;
 				guid2LastAggressivity.Clear();
@@ -191,7 +191,7 @@ namespace RTC
 				if (networkStream == null && !dontCreateNetworkStream)
 				{
 					//We use loopback if in detached mode, otherwise use any
-					if(NetCoreImplementation.isStandalone || NetCoreImplementation.isRemoteRTC)
+					if(NetCoreImplementation.isStandaloneUI || NetCoreImplementation.isStandaloneEmu)
 						server = new TcpListener(IPAddress.Loopback, port);
 					else
 					{
@@ -440,7 +440,7 @@ namespace RTC
 				client = new TcpClient();
 
 				//Use loopback in detached
-				if (NetCoreImplementation.isStandalone || NetCoreImplementation.isRemoteRTC)
+				if (NetCoreImplementation.isStandaloneUI || NetCoreImplementation.isStandaloneEmu)
 					address = IPAddress.Loopback.ToString();
 
 				var result = client.BeginConnect(address, port, null, null);
@@ -749,7 +749,7 @@ namespace RTC
 				return null;
 			}
 
-			if (!NetCoreImplementation.isStandalone && !NetCoreImplementation.isRemoteRTC && cmd.Type == CommandType.RETURNVALUE)
+			if (!NetCoreImplementation.isStandaloneUI && !NetCoreImplementation.isStandaloneEmu && cmd.Type == CommandType.RETURNVALUE)
 			{
 				ReturnWatch.SyncReturns.Add((Guid)cmd.requestGuid, cmd.objectValue);
 				return null;
@@ -778,12 +778,12 @@ namespace RTC
 
 			cmd.requestGuid = Guid.NewGuid();
 
-			if (CommandQueueProcessorTimer == null || (!NetCoreImplementation.isStandalone && !NetCoreImplementation.isRemoteRTC) || NetCoreImplementation.isRemoteRTC)
+			if (CommandQueueProcessorTimer == null || (!NetCoreImplementation.isStandaloneUI && !NetCoreImplementation.isStandaloneEmu) || NetCoreImplementation.isStandaloneEmu)
 			{
 				if (!self)
 					return null;
 
-				if (!NetCoreImplementation.isRemoteRTC)
+				if (!NetCoreImplementation.isStandaloneEmu)
 				{
 					LinkedList<RTC_Command> tempQueue = new LinkedList<RTC_Command>(new[] { cmd });
 					Console.WriteLine($"{RTC.RTC_NetCore.timeElapsed.Elapsed.TotalSeconds}: {expectedSide.ToString()}:SendSyncCommand self:{self.ToString()} priority:{priority.ToString()} -> {cmd.Type.ToString()}");
@@ -909,7 +909,6 @@ namespace RTC
 		REMOTE_KEY_GETSYSTEMCORE,
 		REMOTE_KEY_GETGAMENAME,
 		REMOTE_KEY_GETSYNCSETTINGS,
-		REMOTE_KEY_PUTSYNCSETTINGS,
 		REMOTE_KEY_GETOPENROMFILENAME,
 		REMOTE_KEY_GETRAWBLASTLAYER,
 		REMOTE_KEY_GETBLASTBYTESETFROMLAYER,
@@ -954,26 +953,15 @@ namespace RTC
 		GAMEOFSWAPSTOP,
 
 		//Bizhawk Overrides
-		BIZHAWK_SET_OSDDISABLED,
+		BIZHAWK_SET_OSDDISABLED_DELETEME,
 		BIZHAWK_SET_DONT_CLEAN_SAVESTATES_AT_QUIT,
 		ENABLE_CONSOLE,
 
 		//Bizhawk Shortcuts
 		BIZHAWK_OPEN_HEXEDITOR_ADDRESS,
 
-		//General Corruption settings
-		REMOTE_SET_SAVESTATEBOX,
-
-		REMOTE_SET_AUTOCORRUPT,
-		REMOTE_SET_CUSTOMPRECISION,
-		REMOTE_SET_INTENSITY,
-		REMOTE_SET_ERRORDELAY,
-		REMOTE_SET_ENGINE,
-		REMOTE_SET_BLASTRADIUS,
-		REMOTE_SET_RESTOREBLASTLAYERBACKUP,
 
 		// Corruption Core settings and commands
-		REMOTE_SET_NIGHTMARE_TYPE,
 		REMOTE_SET_NIGHTMARE_MINVALUE,
 		REMOTE_SET_NIGHTMARE_MAXVALUE,
 

@@ -382,7 +382,7 @@ namespace RTC
 
 			NetCoreImplementation.SendCommandToBizhawk(new RTC_Command(CommandType.REMOTE_IMPORTKEYBINDS), true);
 
-			Process.Start(RTC_EmuCore.bizhawkDir + $"\\StockpileConfig{(NetCoreImplementation.isStandalone ? "DETACHED" : "ATTACHED")}.bat");
+			Process.Start(RTC_EmuCore.bizhawkDir + $"\\StockpileConfig{(NetCoreImplementation.isStandaloneUI ? "DETACHED" : "ATTACHED")}.bat");
 		}
 
 		public static void LoadBizhawkConfigFromStockpile(string Filename = null)
@@ -423,7 +423,7 @@ namespace RTC
 
 			NetCoreImplementation.SendCommandToBizhawk(new RTC_Command(CommandType.REMOTE_MERGECONFIG), true);
 
-			Process.Start(RTC_EmuCore.bizhawkDir + $"\\StockpileConfig{(NetCoreImplementation.isStandalone ? "DETACHED" : "ATTACHED")}.bat");
+			Process.Start(RTC_EmuCore.bizhawkDir + $"\\StockpileConfig{(NetCoreImplementation.isStandaloneUI ? "DETACHED" : "ATTACHED")}.bat");
 		}
 
 		public static void MergeBizhawkConfig_NET()
@@ -442,7 +442,7 @@ namespace RTC
 
 		public static void RestoreBizhawkConfig()
 		{
-			Process.Start(RTC_EmuCore.bizhawkDir + $"\\RestoreConfig{(NetCoreImplementation.isStandalone ? "DETACHED" : "ATTACHED")}.bat");
+			Process.Start(RTC_EmuCore.bizhawkDir + $"\\RestoreConfig{(NetCoreImplementation.isStandaloneUI ? "DETACHED" : "ATTACHED")}.bat");
 		}
 
 		public static void Import()
@@ -711,7 +711,7 @@ namespace RTC
 
 		public void Apply(bool ignoreMaximums = false)
 		{
-			if (NetCoreImplementation.isStandalone)
+			if (NetCoreImplementation.isStandaloneUI)
 			{
 				NetCoreImplementation.SendCommandToBizhawk(new RTC.RTC_Command(CommandType.BLAST) { blastlayer = this });
 				return;

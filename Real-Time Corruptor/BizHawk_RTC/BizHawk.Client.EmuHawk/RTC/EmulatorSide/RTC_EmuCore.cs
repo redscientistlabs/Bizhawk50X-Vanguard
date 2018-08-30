@@ -49,13 +49,41 @@ namespace RTC
 
 
 		//RTC Settings
-		public static bool BizhawkOsdDisabled = true;
-		public static bool AllowCrossCoreCorruption = false;
-		public static bool DontCleanSavestatesOnQuit = false;
-		public static string currentGameSystem = "";
-		public static string currentGameName = "";
-		public static string lastOpenRom = null;
-		public static int lastLoaderRom = 0;
+		public static bool OsdDisabled
+		{
+			get { return (bool)spec["OsdDisabled"]; }
+			set { spec.Update(new PartialSpec("EmuCore", "OsdDisabled", value)); }
+		}
+		public static bool AllowCrossCoreCorruption
+		{
+			get { return (bool)spec["AllowCrossCoreCorruption"]; }
+			set { spec.Update(new PartialSpec("EmuCore", "AllowCrossCoreCorruption", value)); }
+		}
+		public static bool DontCleanSavestatesOnQuit
+		{
+			get { return (bool)spec["DontCleanSavestatesOnQuit"]; }
+			set { spec.Update(new PartialSpec("EmuCore", "DontCleanSavestatesOnQuit", value)); }
+		}
+		public static string currentGameSystem
+		{
+			get { return (string)spec["currentGameSystem"]; }
+			set { spec.Update(new PartialSpec("EmuCore", "currentGameSystem", value)); }
+		}
+		public static string currentGameName
+		{
+			get { return (string)spec["currentGameName"]; }
+			set { spec.Update(new PartialSpec("EmuCore", "currentGameName", value)); }
+		}
+		public static string lastOpenRom
+		{
+			get { return (string)spec["lastOpenRom"]; }
+			set { spec.Update(new PartialSpec("EmuCore", "lastOpenRom", value)); }
+		}
+		public static int lastLoaderRom
+		{
+			get { return (int)spec["lastLoaderRom"]; }
+			set { spec.Update(new PartialSpec("EmuCore", "lastLoaderRom", value)); }
+		}
 
 
 		//This is the entry point of RTC. Without this method, nothing will load.
@@ -63,7 +91,7 @@ namespace RTC
 		{
 			//Spawn a console for StandaloneRTC.
 			//If we're in attached mode, we can't do this as the emulator itself may have something overriding stdout (Bizhawk)
-			if (NetCoreImplementation.isStandalone)
+			if (NetCoreImplementation.isStandaloneUI)
 			{
 				LogConsole.CreateConsole();
 				if (!RTC_Hooks.ShowConsole)
@@ -99,6 +127,35 @@ namespace RTC
 					rtcDir + "\\LISTS\\",
 					});
 
+			//Set initial spec for EmuCore
+			PartialSpec partial = new PartialSpec("EmuCore");
+
+			partial["OsdDisabled"] = true;
+			partial["AllowCrossCoreCorruption"] = false;
+			partial["DontCleanSavestatesOnQuit"] = false;
+			partial["currentGameSystem"] = null;
+			partial["currentGameName"] = null;
+			partial["lastOpenRom"] = null;
+			partial["lastLoaderRom"] = 0;
+			partial["domains"] = new MemoryDomainProto[0];
+			RTC_EmuCore.spec = new FullSpec(partial);
+
+
+			spec.SpecUpdated += (object o, SpecUpdateEventArgs e) =>
+			{
+				if (!NetCoreImplementation.isStandaloneUI && NetCoreImplementation.isStandaloneEmu)
+					NetCoreImplementation.SendCommandToRTC(new RTC_Command(CommandType.SPECUPDATE) { objectValue = e.partialSpec});
+
+				if(NetCoreImplementation.isStandaloneUI || NetCoreImplementation.isAttached)
+				{
+					S.GET<RTC_MemoryDomains_Form>().RefreshDomains();
+				}
+
+			};
+				
+
+
+			//RTC_EmuCore.spec.Update(partial);
 
 
 			//Start other components here
@@ -116,9 +173,11 @@ namespace RTC
 			//RTC_Params.LoadHotkeys();
 			//	RTC_Hotkeys.Test("None", "D", "REMOTE_HOTKEY_MANUALBLAST");
 
+
+
 			NetCoreImplementation.Start();
 
-			if (NetCoreImplementation.isRemoteRTC && !NetCoreImplementation.isStandalone)
+			if (NetCoreImplementation.isStandaloneUI || NetCoreImplementation.isAttached)
 				S.GET<RTC_Core_Form>().Show();
 
 			//Refocus on Bizhawk
@@ -129,7 +188,7 @@ namespace RTC
 				RTC_Hooks.BIZHAWK_SAVE_CONFIG();
 
 			//Fetch NetCore aggressiveness
-			if (NetCoreImplementation.isRemoteRTC)
+			if (NetCoreImplementation.isStandaloneEmu)
 				NetCoreImplementation.SendCommandToRTC(new RTC_Command(CommandType.GETAGGRESSIVENESS));
 		}
 

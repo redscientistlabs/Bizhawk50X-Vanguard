@@ -1,4 +1,5 @@
-﻿using System;
+﻿using RTCV.NetCore;
+using System;
 using System.Windows.Forms;
 
 namespace RTC
@@ -6,17 +7,69 @@ namespace RTC
 	public static class RTC_NightmareEngine
 	{
 
-		public static NightmareAlgo Algo = NightmareAlgo.RANDOM;
-		public static long MinValue8Bit = 0;
-		public static long MaxValue8Bit = 0xFF;
+		public static NightmareAlgo Algo
+		{
+			get { return (NightmareAlgo)RTC_CorruptCore.spec["NightmareEngine_Algo"]; }
+			set { RTC_CorruptCore.spec.Update(new PartialSpec("CorruptCore", "NightmareEngine_Algo", value)); }
+		}
+		public static long MinValue8Bit
+		{
+			get { return (long)RTC_CorruptCore.spec["NightmareEngine_MinValue8Bit"]; }
+			set { RTC_CorruptCore.spec.Update(new PartialSpec("CorruptCore", "NightmareEngine_MinValue8Bit", value)); }
+		}
+		public static long MaxValue8Bit
+		{
+			get { return (long)RTC_CorruptCore.spec["NightmareEngine_MaxValue8Bit"]; }
+			set { RTC_CorruptCore.spec.Update(new PartialSpec("CorruptCore", "NightmareEngine_MaxValue8Bit", value)); }
+		}
 
-		public static long MinValue16Bit = 0;
-		public static long MaxValue16Bit = 0xFFFF;
+		public static long MinValue16Bit
+		{
+			get { return (long)RTC_CorruptCore.spec["NightmareEngine_MinValue16Bit"]; }
+			set { RTC_CorruptCore.spec.Update(new PartialSpec("CorruptCore", "NightmareEngine_MinValue16Bit", value)); }
+		}
+		public static long MaxValue16Bit
+		{
+			get { return (long)RTC_CorruptCore.spec["NightmareEngine_MaxValue16Bit"]; }
+			set { RTC_CorruptCore.spec.Update(new PartialSpec("CorruptCore", "NightmareEngine_MaxValue16Bit", value)); }
+		}
 
-		public static long MinValue32Bit = 0;
-		public static long MaxValue32Bit = 0xFFFFFFFF;
+		public static long MinValue32Bit
+		{
+			get { return (long)RTC_CorruptCore.spec["NightmareEngine_MinValue32Bit"]; }
+			set { RTC_CorruptCore.spec.Update(new PartialSpec("CorruptCore", "NightmareEngine_MinValue32Bit", value)); }
+		}
+		public static long MaxValue32Bit
+		{
+			get { return (long)RTC_CorruptCore.spec["NightmareEngine_MaxValue32Bit"]; }
+			set { RTC_CorruptCore.spec.Update(new PartialSpec("CorruptCore", "NightmareEngine_MaxValue32Bit", value)); }
+		}
 
-		private static NightmareType type = NightmareType.SET;
+		private static NightmareType Type
+		{
+			get { return (NightmareType)RTC_CorruptCore.spec["NightmareEngine_Type"]; }
+			set { RTC_CorruptCore.spec.Update(new PartialSpec("CorruptCore", "NightmareEngine_Type", value)); }
+		}
+
+		public static PartialSpec getDefaultPartial()
+		{
+			var partial = new PartialSpec("CorruptCore");
+
+			partial["NightmareEngine_Algo"] = NightmareAlgo.RANDOM;
+
+			partial["NightmareEngine_MinValue8Bit"] = 0L;
+			partial["NightmareEngine_MaxValue8Bit"] = 0xFFL;
+	
+			partial["NightmareEngine_MinValue16Bit"] = 0L;
+			partial["NightmareEngine_MaxValue16Bit"] = 0xFFFFL;
+
+			partial["NightmareEngine_MinValue32Bit"] = 0L;
+			partial["NightmareEngine_MaxValue32Bit"] = 0xFFFFFFFFL;
+
+			partial["NightmareEngine_Type"] = NightmareType.SET;
+
+			return partial;
+		}
 
 		public static BlastUnit GenerateUnit(string domain, long address, int precision)
 		{
@@ -27,7 +80,7 @@ namespace RTC
 				switch (Algo)
 				{
 					case NightmareAlgo.RANDOM: //RANDOM always sets a random value
-						type = NightmareType.SET;
+						Type = NightmareType.SET;
 						break;
 
 					case NightmareAlgo.RANDOMTILT: //RANDOMTILT may add 1,substract 1 or set a random value
@@ -35,13 +88,13 @@ namespace RTC
 						switch (result)
 						{
 							case 1:
-								type = NightmareType.ADD;
+								Type = NightmareType.ADD;
 								break;
 							case 2:
-								type = NightmareType.SUBTRACT;
+								Type = NightmareType.SUBTRACT;
 								break;
 							case 3:
-								type = NightmareType.SET;
+								Type = NightmareType.SET;
 								break;
 							default:
 								MessageBox.Show("Random returned an unexpected value (RTC_NightmareEngine switch(Algo) RANDOMTILT)");
@@ -55,11 +108,11 @@ namespace RTC
 						switch (result)
 						{
 							case 1:
-								type = NightmareType.ADD;
+								Type = NightmareType.ADD;
 								break;
 
 							case 2:
-								type = NightmareType.SUBTRACT;
+								Type = NightmareType.SUBTRACT;
 								break;
 
 							default:
@@ -78,7 +131,7 @@ namespace RTC
 
 				long safeAddress = address - (address % precision);
 
-				if (type == NightmareType.SET)
+				if (Type == NightmareType.SET)
 				{
 					long randomValue = -1;
 					switch (precision)
@@ -112,7 +165,7 @@ namespace RTC
 				else
 				{
 					BlastUnit bu = new BlastUnit(StoreType.ONCE, ActionTime.GENERATE, domain, safeAddress, domain, safeAddress, precision, mi.BigEndian);
-					if (type == NightmareType.ADD)
+					if (Type == NightmareType.ADD)
 						bu.TiltValue = 1;
 					else
 						bu.TiltValue = 0;

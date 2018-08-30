@@ -19,7 +19,7 @@ namespace RTC
 		{
 			get
 			{
-				if (NetCoreImplementation.isStandalone)
+				if (NetCoreImplementation.isStandaloneUI)
 					return base.CreateParams;
 
 				CreateParams myCp = base.CreateParams;
@@ -43,10 +43,6 @@ namespace RTC
 
 				RTC_CorruptCore.AutoCorrupt = value;
 
-				NetCoreImplementation.SendCommandToBizhawk(new RTC_Command(CommandType.REMOTE_SET_AUTOCORRUPT)
-				{
-					objectValue = value
-				});
 			}
 		}
 
@@ -54,7 +50,7 @@ namespace RTC
 		{
 			InitializeComponent();
 
-			if (NetCoreImplementation.isStandalone)
+			if (NetCoreImplementation.isStandaloneUI)
 				pnAutoKillSwitch.Visible = true;
 		}
 
@@ -84,7 +80,7 @@ namespace RTC
 			RTC_EmuCore.DownloadProblematicProcesses();
 			RTC_EmuCore.CheckForProblematicProcesses();
 
-			if (NetCoreImplementation.isStandalone)
+			if (NetCoreImplementation.isStandaloneUI)
 			{
 				GhostBoxInvisible(btnEasyMode);
 				GhostBoxInvisible(btnEngineConfig);
@@ -113,13 +109,13 @@ namespace RTC
 
 		private void RTC_Form_FormClosing(object sender, FormClosingEventArgs e)
 		{
-			if (!NetCoreImplementation.isStandalone && e.CloseReason != CloseReason.FormOwnerClosing)
+			if (!NetCoreImplementation.isStandaloneUI && e.CloseReason != CloseReason.FormOwnerClosing)
 			{
 				e.Cancel = true;
 				this.Hide();
 				return;
 			}
-			else if (NetCoreImplementation.isStandalone)
+			else if (NetCoreImplementation.isStandaloneUI)
 			{
 				if (RTC_StockpileManager.unsavedEdits && !RTC_UICore.isClosing && MessageBox.Show("You have unsaved edits in the Glitch Harvester Stockpile. \n\n Are you sure you want to close RTC without saving?", "Unsaved edits in Stockpile", MessageBoxButtons.YesNo) == DialogResult.No)
 				{
@@ -149,7 +145,7 @@ namespace RTC
 
 		public void StartEasyMode(bool useTemplate)
 		{
-			if (NetCoreImplementation.isStandalone && !S.GET<RTC_Core_Form>().cbUseGameProtection.Checked)
+			if (NetCoreImplementation.isStandaloneUI && !S.GET<RTC_Core_Form>().cbUseGameProtection.Checked)
 				S.GET<RTC_Core_Form>().cbUseGameProtection.Checked = true;
 
 
@@ -238,7 +234,7 @@ namespace RTC
 
 		private void btnLogo_MouseClick(object sender, MouseEventArgs e)
 		{
-			if (NetCoreImplementation.isStandalone)
+			if (NetCoreImplementation.isStandaloneUI)
 				ShowPanelForm(S.GET<RTC_ConnectionStatus_Form>(), false);
 		}
 
@@ -351,7 +347,7 @@ namespace RTC
 
 		private void btnRTCMultiplayer_Click(object sender, EventArgs e)
 		{
-			if (NetCoreImplementation.isStandalone)
+			if (NetCoreImplementation.isStandaloneUI)
 				MessageBox.Show("Multiplayer unsupported in Detached mode");
 			else
 				ShowPanelForm(S.GET<RTC_Multiplayer_Form>());

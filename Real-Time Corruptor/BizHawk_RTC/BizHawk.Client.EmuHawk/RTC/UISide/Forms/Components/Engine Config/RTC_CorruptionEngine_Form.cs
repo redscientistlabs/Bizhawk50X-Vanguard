@@ -184,8 +184,6 @@ namespace RTC
 
 			}
 
-			NetCoreImplementation.SendCommandToBizhawk(new RTC_Command(CommandType.REMOTE_SET_ENGINE) { objectValue = RTC_CorruptCore.SelectedEngine });
-
 			if (cbSelectedEngine.SelectedItem.ToString() == "Blast Generator")
 			{
 				S.GET<RTC_GeneralParameters_Form>().labelBlastRadius.Visible = false;
@@ -290,7 +288,6 @@ namespace RTC
 			{
 				cbCustomPrecision.SelectedIndex = -1;
 				RTC_CorruptCore.CustomPrecision = -1;
-				NetCoreImplementation.SendCommandToBizhawk(new RTC_Command(CommandType.REMOTE_SET_CUSTOMPRECISION) { objectValue = RTC_CorruptCore.CustomPrecision }, true);
 			}
 		}
 
@@ -368,7 +365,6 @@ namespace RTC
 
 						break;
 				}
-				NetCoreImplementation.SendCommandToBizhawk(new RTC_Command(CommandType.REMOTE_SET_CUSTOMPRECISION) { objectValue = RTC_CorruptCore.CustomPrecision }, true);
 
 				updateMinMaxBoxes(RTC_CorruptCore.CustomPrecision);
 				S.GET<RTC_CustomEngineConfig_Form>().UpdateMinMaxBoxes(RTC_CorruptCore.CustomPrecision);
@@ -506,7 +502,6 @@ namespace RTC
 					nmMaxValueNightmare.Enabled = false;
 					break;
 			}
-			NetCoreImplementation.SendCommandToBizhawk(new RTC_Command(CommandType.REMOTE_SET_NIGHTMARE_TYPE) { objectValue = RTC_NightmareEngine.Algo });
 
 		}
 

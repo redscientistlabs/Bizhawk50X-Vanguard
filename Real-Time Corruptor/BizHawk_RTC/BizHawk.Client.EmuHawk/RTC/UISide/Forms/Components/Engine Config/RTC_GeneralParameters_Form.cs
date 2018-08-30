@@ -28,7 +28,6 @@ namespace RTC
 					return;
 
 				RTC_CorruptCore.Intensity = value;
-				NetCoreImplementation.SendCommandToBizhawk(new RTC_Command(CommandType.REMOTE_SET_INTENSITY) { objectValue = RTC_CorruptCore.Intensity });
 
 				DontUpdateIntensity = true;
 
@@ -63,7 +62,6 @@ namespace RTC
 					return;
 
 				RTC_CorruptCore.ErrorDelay = Convert.ToInt32(value);
-				NetCoreImplementation.SendCommandToBizhawk(new RTC_Command(CommandType.REMOTE_SET_ERRORDELAY) { objectValue = RTC_CorruptCore.ErrorDelay });
 
 				DontUpdateErrorDelay = true;
 
@@ -153,7 +151,6 @@ namespace RTC
 					break;
 			}
 
-			NetCoreImplementation.SendCommandToBizhawk(new RTC_Command(CommandType.REMOTE_SET_BLASTRADIUS) { objectValue = RTC_CorruptCore.Radius });
 		}
 
 

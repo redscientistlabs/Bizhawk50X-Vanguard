@@ -18,15 +18,7 @@ namespace RTC
 		//(EmuHawk.exe and StandaloneRTC.exe must match versions)
 
 		Ref[] refs = {
-			new Ref(() => RTC_CorruptCore.SelectedEngine, x => { RTC_CorruptCore.SelectedEngine = (CorruptionEngine)x; }),
-			new Ref(() => RTC_CorruptCore.CustomPrecision, x => { RTC_CorruptCore.CustomPrecision = (int)x; }),
-			new Ref(() => RTC_CorruptCore.Intensity, x => { RTC_CorruptCore.Intensity = (int)x; }),
-			new Ref(() => RTC_CorruptCore.ErrorDelay, x => { RTC_CorruptCore.ErrorDelay = (int)x; }),
-			new Ref(() => RTC_CorruptCore.Radius, x => { RTC_CorruptCore.Radius = (BlastRadius)x; }),
 
-			new Ref(() => RTC_CorruptCore.AutoCorrupt, x => { RTC_CorruptCore.AutoCorrupt = (bool)x; }),
-
-			new Ref(() => RTC_CorruptCore.ClearStepActionsOnRewind, x => { RTC_CorruptCore.ClearStepActionsOnRewind = (bool)x; }),
 			new Ref(() => RTC_StepActions.MaxInfiniteBlastUnits, x => { RTC_StepActions.MaxInfiniteBlastUnits   = (int)x; }),
 			new Ref(() => RTC_StepActions.LockExecution, x => { RTC_StepActions.LockExecution = (bool)x; }),
 
@@ -35,62 +27,15 @@ namespace RTC
 			new Ref(() => RTC_EmuCore.currentGameSystem, x => { RTC_EmuCore.currentGameSystem = (string)x; }),
 			new Ref(() => RTC_EmuCore.currentGameName, x => { RTC_EmuCore.currentGameName = (string)x; }),
 
-			new Ref(() => RTC_EmuCore.BizhawkOsdDisabled, x => { RTC_EmuCore.BizhawkOsdDisabled = (bool)x; }),
+			new Ref(() => RTC_EmuCore.OsdDisabled, x => { RTC_EmuCore.OsdDisabled = (bool)x; }),
 			new Ref(() => RTC_Hooks.ShowConsole, x => { RTC_Hooks.ShowConsole = (bool)x; }),
-			new Ref(() => RTC_EmuCore.DontCleanSavestatesOnQuit, x => { RTC_EmuCore.DontCleanSavestatesOnQuit = (bool)x; }),
 
-
-			new Ref(() => RTC_NightmareEngine.MinValue8Bit, x => { RTC_NightmareEngine.MinValue8Bit = (long)x; }),
-			new Ref(() => RTC_NightmareEngine.MaxValue8Bit, x => { RTC_NightmareEngine.MaxValue8Bit = (long)x; }),
-			new Ref(() => RTC_HellgenieEngine.MinValue8Bit, x => { RTC_HellgenieEngine.MinValue8Bit = (long)x; }),
-			new Ref(() => RTC_HellgenieEngine.MaxValue8Bit, x => { RTC_HellgenieEngine.MaxValue8Bit = (long)x; }),
-			new Ref(() => RTC_NightmareEngine.MinValue8Bit, x => { RTC_NightmareEngine.MinValue8Bit = (long)x; }),
-
-			new Ref(() => RTC_NightmareEngine.MaxValue16Bit, x => { RTC_NightmareEngine.MaxValue16Bit = (long)x; }),
-			new Ref(() => RTC_HellgenieEngine.MinValue16Bit, x => { RTC_HellgenieEngine.MinValue16Bit = (long)x; }),
-			new Ref(() => RTC_HellgenieEngine.MaxValue16Bit, x => { RTC_HellgenieEngine.MaxValue16Bit = (long)x; }),
-			new Ref(() => RTC_NightmareEngine.MinValue16Bit, x => { RTC_NightmareEngine.MinValue16Bit = (long)x; }),
-
-			new Ref(() => RTC_NightmareEngine.MaxValue32Bit, x => { RTC_NightmareEngine.MaxValue32Bit = (long)x; }),
-			new Ref(() => RTC_HellgenieEngine.MinValue32Bit, x => { RTC_HellgenieEngine.MinValue32Bit = (long)x; }),
-			new Ref(() => RTC_HellgenieEngine.MaxValue32Bit, x => { RTC_HellgenieEngine.MaxValue32Bit = (long)x; }),
-			new Ref(() => RTC_NightmareEngine.MinValue32Bit, x => { RTC_NightmareEngine.MinValue32Bit = (long)x; }),
-
-
-			new Ref(() => RTC_CustomEngine.Delay,           x => { RTC_CustomEngine.Delay           = (int)x; }),
-			new Ref(() => RTC_CustomEngine.Lifetime,        x => { RTC_CustomEngine.Lifetime        = (int)x; }),
-			new Ref(() => RTC_CustomEngine.LimiterListHash,     x => { RTC_CustomEngine.LimiterListHash     = (string)x; }),
-			new Ref(() => RTC_CustomEngine.LimiterTime,     x => { RTC_CustomEngine.LimiterTime		= (ActionTime)x; }),
-			new Ref(() => RTC_CustomEngine.LimiterInverted,     x => { RTC_CustomEngine.LimiterInverted    = (bool)x; }),
-			new Ref(() => RTC_CustomEngine.Loop,			x => { RTC_CustomEngine.Loop			= (bool)x; }),
-			new Ref(() => RTC_CustomEngine.MinValue8Bit,    x => { RTC_CustomEngine.MinValue8Bit    = (long)x; }),
-			new Ref(() => RTC_CustomEngine.MinValue16Bit,   x => { RTC_CustomEngine.MinValue16Bit   = (long)x; }),
-			new Ref(() => RTC_CustomEngine.MinValue32Bit,   x => { RTC_CustomEngine.MinValue32Bit   = (long)x; }),
-			new Ref(() => RTC_CustomEngine.MaxValue8Bit,    x => { RTC_CustomEngine.MaxValue8Bit    = (long)x; }),
-			new Ref(() => RTC_CustomEngine.MaxValue16Bit,   x => { RTC_CustomEngine.MaxValue16Bit   = (long)x; }),
-			new Ref(() => RTC_CustomEngine.MaxValue32Bit,   x => { RTC_CustomEngine.MaxValue32Bit   = (long)x; }),
-			new Ref(() => RTC_CustomEngine.Source,			x => { RTC_CustomEngine.Source			= (BlastUnitSource)x; }),
-			new Ref(() => RTC_CustomEngine.StoreAddress,    x => { RTC_CustomEngine.StoreAddress    = (CustomStoreAddress)x; }),
-			new Ref(() => RTC_CustomEngine.StoreTime,		x => { RTC_CustomEngine.StoreTime		= (ActionTime)x; }),
-			new Ref(() => RTC_CustomEngine.StoreType,		x => { RTC_CustomEngine.StoreType		= (StoreType)x; }),
-			new Ref(() => RTC_CustomEngine.TiltValue,		x => { RTC_CustomEngine.TiltValue		= (BigInteger)x; }),
-			new Ref(() => RTC_CustomEngine.ValueListHash,       x => { RTC_CustomEngine.ValueListHash       = (string)x; }),
-			new Ref(() => RTC_CustomEngine.ValueSource,     x => { RTC_CustomEngine.ValueSource     = (CustomValueSource)x; }),
 			
 
 			new Ref(() => RTC_Filtering.Hash2LimiterDico,   x => { RTC_Filtering.Hash2LimiterDico   = (SerializableDico<string, string[]>)x; }),
 			new Ref(() => RTC_Filtering.Hash2ValueDico,     x => { RTC_Filtering.Hash2ValueDico     = (SerializableDico<string, string[]>)x; }),
 
-
-
-			new Ref(() => RTC_VectorEngine.LimiterListHash, x => { RTC_VectorEngine.LimiterListHash = (string)x; }),
-			new Ref(() => RTC_VectorEngine.ValueListHash, x => { RTC_VectorEngine.ValueListHash = (string)x; }),
-
-			new Ref(() => RTC_StockpileManager.currentSavestateKey, x => { RTC_StockpileManager.currentSavestateKey = (string)x; }),
-			new Ref(() => RTC_StockpileManager.backupedState, x => { RTC_StockpileManager.backupedState = (StashKey)x; }),
-
-			new Ref(() => RTC_MemoryDomains.SelectedDomains, x => { RTC_MemoryDomains.SelectedDomains = (string[])x; }),
-			new Ref(() => RTC_MemoryDomains.lastSelectedDomains, x => { RTC_MemoryDomains.lastSelectedDomains = (string[])x; }),
+			
 		};
 
 		public RTC_Params()
@@ -126,7 +71,7 @@ namespace RTC
 
 		public static void LoadRTCColor()
 		{
-			if (NetCoreImplementation.isStandalone || !NetCoreImplementation.isRemoteRTC)
+			if (NetCoreImplementation.isStandaloneUI || NetCoreImplementation.isAttached)
 			{
 				if (IsParamSet("COLOR"))
 				{

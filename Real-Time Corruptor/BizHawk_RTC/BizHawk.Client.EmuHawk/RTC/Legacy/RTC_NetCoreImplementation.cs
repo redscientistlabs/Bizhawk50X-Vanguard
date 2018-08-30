@@ -12,8 +12,9 @@ namespace RTC
 		public static RTC_NetCore Multiplayer = null;
 		public static RTC_NetCore RemoteRTC = null;
 
-		public static bool isStandalone = false;
-		public static bool isRemoteRTC = false;
+		public static bool isStandaloneUI = false;
+		public static bool isStandaloneEmu = false;
+		public static bool isAttached { get { return (!isStandaloneUI && !isStandaloneEmu); } }
 		public static bool RemoteRTC_SupposedToBeConnected = false;
 		public static bool FirstConnection = true;
 
@@ -21,7 +22,7 @@ namespace RTC
 		{
 
 			//Initiation of loopback TCP, only in DETACHED MODE
-			if (isRemoteRTC || isStandalone)
+			if (isStandaloneEmu || isStandaloneUI)
 			{
 				RemoteRTC = new RTC_NetCore();
 				RemoteRTC.port = 42042;
@@ -29,7 +30,7 @@ namespace RTC
 			}
 
 			//Initialize RemoteRTC server
-			if (isRemoteRTC && !isStandalone) 
+			if (isStandaloneEmu && !isStandaloneUI) 
 			{
 				//Bizhawk has started in REMOTERTC mode, no RTC form will be loaded
 				RemoteRTC.StartNetworking(NetworkSide.CLIENT, true);
@@ -38,7 +39,7 @@ namespace RTC
 			else
 			{
 				//Setup of Detached-exclusive features
-				if (isStandalone)
+				if (isStandaloneUI)
 				{
 					S.GET<RTC_Core_Form>().Text = "RTC : Detached Mode";
 
@@ -128,7 +129,7 @@ namespace RTC
 
 					RemoteRTC.StartNetworking(NetworkSide.SERVER, false, false);
 				}
-				else if (isRemoteRTC)
+				else if (isStandaloneEmu)
 				{ //WILL THIS EVER HAPPEN? TO BE REMOVED IF NOT
 					RemoteRTC.StartNetworking(NetworkSide.SERVER, false, true);
 				}
@@ -155,7 +156,7 @@ namespace RTC
 			}
 			else
 			{
-				if ((!NetCoreImplementation.isRemoteRTC && !NetCoreImplementation.isStandalone) || RemoteRTC.side == NetworkSide.CLIENT)
+				if ((!NetCoreImplementation.isStandaloneEmu && !NetCoreImplementation.isStandaloneUI) || RemoteRTC.side == NetworkSide.CLIENT)
 				{
 					if (sync)
 						return RemoteRTC.SendSyncCommand(cmd, true, priority);
