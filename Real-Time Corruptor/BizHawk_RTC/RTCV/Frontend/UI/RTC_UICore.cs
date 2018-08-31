@@ -8,6 +8,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using RTC;
+using RTCV.CorruptCore;
 
 namespace RTC
 {
@@ -54,11 +55,7 @@ namespace RTC
 
 			isClosing = true;
 
-			if (NetCoreImplementation.Multiplayer != null && NetCoreImplementation.Multiplayer.streamReadingThread != null)
-				NetCoreImplementation.Multiplayer.streamReadingThread.Abort();
-
-			if (NetCoreImplementation.RemoteRTC != null && NetCoreImplementation.RemoteRTC.streamReadingThread != null)
-				NetCoreImplementation.RemoteRTC.streamReadingThread.Abort();
+			// TODO: Send alert signal and shutdown netcore/vanguard
 
 			foreach (Form frm in allRtcForms)
 			{

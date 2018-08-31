@@ -17,7 +17,7 @@ namespace StandaloneRTC
 		{
 			InitializeComponent();
 
-			RTC.VanguardImplementation.isStandaloneUI = true;
+			RTC.NetCoreImplementation.isStandaloneUI = true;
 
 			RTC.LogConsole.CreateConsole();
 

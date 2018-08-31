@@ -13,6 +13,7 @@ using BizHawk.Client.Common;
 using BizHawk.Emulation.Common;
 using BizHawk.Emulation.Cores.Nintendo.N64;
 using Newtonsoft.Json;
+using RTCV.CorruptCore;
 using RTCV.NetCore;
 
 /*
@@ -25,7 +26,6 @@ namespace RTC
 	public static class RTC_EmuCore
 	{ 
 		//General RTC Values
-		public static string RtcVersion = "3.30";
 		public static string[] args;
 
 		public static FullSpec spec = null;
@@ -91,7 +91,7 @@ namespace RTC
 		{
 			//Spawn a console for StandaloneRTC.
 			//If we're in attached mode, we can't do this as the emulator itself may have something overriding stdout (Bizhawk)
-			if (VanguardImplementation.isStandaloneUI)
+			if (NetCoreImplementation.isStandaloneUI)
 			{
 				LogConsole.CreateConsole();
 				if (!RTC_Hooks.ShowConsole)
@@ -143,17 +143,17 @@ namespace RTC
 
 			spec.SpecUpdated += (object o, SpecUpdateEventArgs e) =>
 			{
-				if (!VanguardImplementation.isStandaloneUI && VanguardImplementation.isStandaloneEmu)
-					VanguardImplementation.SendCommandToRTC(new RTC_Command(CommandType.SPECUPDATE) { objectValue = e.partialSpec});
+				if (!NetCoreImplementation.isStandaloneUI && NetCoreImplementation.isStandaloneEmu)
+					NetCoreImplementation.SendCommandToRTC(new RTC_Command(CommandType.SPECUPDATE) { objectValue = e.partialSpec});
 
 				if (e.partialSpec.ContainsKey("lastGameName"))
 					if (RTC_EmuCore.currentGameName != (string)e.partialSpec["lastGameName"])
 					{
-						VanguardImplementation.SendCommandToRTC(new RTC_Command(CommandType.REMOTE_EVENT_LOADGAMEDONE_NEWGAME));
+						NetCoreImplementation.SendCommandToRTC(new RTC_Command(CommandType.REMOTE_EVENT_LOADGAMEDONE_NEWGAME));
 					}
 					else
 					{
-						VanguardImplementation.SendCommandToRTC(new RTC_Command(CommandType.REMOTE_EVENT_LOADGAMEDONE_SAMEGAME));
+						NetCoreImplementation.SendCommandToRTC(new RTC_Command(CommandType.REMOTE_EVENT_LOADGAMEDONE_SAMEGAME));
 					}
 
 			};
@@ -171,9 +171,9 @@ namespace RTC
 
 
 
-			VanguardImplementation.Start();
+			NetCoreImplementation.Start();
 
-			if (VanguardImplementation.isStandaloneUI || VanguardImplementation.isAttached)
+			if (NetCoreImplementation.isStandaloneUI || NetCoreImplementation.isAttached)
 				S.GET<RTC_Core_Form>().Show();
 
 			//Refocus on Bizhawk
@@ -184,8 +184,8 @@ namespace RTC
 				RTC_Hooks.BIZHAWK_SAVE_CONFIG();
 
 			//Fetch NetCore aggressiveness
-			if (VanguardImplementation.isStandaloneEmu)
-				VanguardImplementation.SendCommandToRTC(new RTC_Command(CommandType.GETAGGRESSIVENESS));
+			if (NetCoreImplementation.isStandaloneEmu)
+				NetCoreImplementation.SendCommandToRTC(new RTC_Command(CommandType.GETAGGRESSIVENESS));
 		}
 
 
@@ -317,7 +317,7 @@ namespace RTC
 			// -> EmuHawk Process only
 			//Loads a rom inside Bizhawk from a Filename.
 
-			RTC_EmuCore.StopSound();
+			StopSound();
 
 			var args = new BizHawk.Client.EmuHawk.MainForm.LoadRomArgs();
 
@@ -329,7 +329,7 @@ namespace RTC
 			RTC_Hooks.BIZHAWK_LOADROM(RomFile);
 			RTC_Hooks.AllowCaptureRewindState = true;
 
-			RTC_EmuCore.StartSound();
+			StartSound();
 			loadRomWatch.Stop();
 			Console.WriteLine($"Time taken for LoadRom_NET: {0}ms", loadRomWatch.ElapsedMilliseconds);
 		}
@@ -347,7 +347,7 @@ namespace RTC
 			string prefix = RTC_Hooks.BIZHAWK_GET_SAVESTATEPREFIX();
 			prefix = prefix.Substring(prefix.LastIndexOf('\\') + 1);
 
-			var path = RTC_EmuCore.workingDir + "\\SESSION\\" + prefix + "." + quickSlotName + ".State";
+			var path = workingDir + "\\SESSION\\" + prefix + "." + quickSlotName + ".State";
 
 			var file = new FileInfo(path);
 			if (file.Directory != null && file.Directory.Exists == false)
@@ -390,7 +390,7 @@ namespace RTC
 				string prefix = RTC_Hooks.BIZHAWK_GET_SAVESTATEPREFIX();
 				prefix = prefix.Substring(prefix.LastIndexOf('\\') + 1);
 
-				var path = RTC_EmuCore.workingDir + "\\SESSION\\" + prefix + "." + quickSlotName + ".State";
+				var path = workingDir + "\\SESSION\\" + prefix + "." + quickSlotName + ".State";
 
 
 				if (File.Exists(path) == false)
@@ -444,72 +444,7 @@ namespace RTC
 
 	public static class TestClient
 	{
-		public static RTCV.Vanguard.VanguardConnector connector = null;
-
-		public static void StartClient()
-		{
-			Thread.Sleep(500); //When starting in Multiple Startup Project, the first try will be uncessful since
-							   //the server takes a bit more time to start then the client.
-
-			var spec = new Vanguard.TargetSpec();
-			spec.MessageReceived += OnMessageReceived;
-
-			var partial = new NetCore.PartialSpec("VanguardSpec");
-			partial["SOME_VARIABLE"] = 420;
-			partial["NOT_SATAN"] = 666;
-
-			spec.specDetails = new NetCore.FullSpec(partial);
-
-			connector = new Vanguard.VanguardConnector(spec);
-		}
-
-		public static void RestartClient()
-		{
-			connector.Kill();
-			connector = null;
-			StartClient();
-		}
-
-		private static void OnMessageReceived(object sender, NetCore.NetCoreEventArgs e)
-		{
-			// This is where you implement interaction.
-			// Warning: Any error thrown in here will be caught by NetCore and handled by being displayed in the console.
-
-			var message = e.message;
-			var simpleMessage = message as NetCore.NetCoreSimpleMessage;
-			var advancedMessage = message as NetCore.NetCoreAdvancedMessage;
-
-			switch (message.Type) //Handle received messages here
-			{
-
-				case "JUST A MESSAGE":
-					//do something
-					break;
-
-				case "ADVANCED MESSAGE THAT CONTAINS A VALUE":
-					object value = advancedMessage.objectValue; //This is how you get the value from a message
-					break;
-
-				case "#!RETURNTEST": //ADVANCED MESSAGE (SYNCED) WANTS A RETURN VALUE
-					e.setReturnValue(new Random(666));
-					break;
-
-				case "#!WAIT":
-					NetCore.ConsoleEx.WriteLine("Simulating 20 sec of workload");
-					Thread.Sleep(20000);
-					break;
-
-				case "#!HANG":
-					NetCore.ConsoleEx.WriteLine("Hanging forever");
-					Thread.Sleep(int.MaxValue);
-					break;
-
-				default:
-					NetCore.ConsoleEx.WriteLine($"Received unassigned {(message is NetCore.NetCoreAdvancedMessage ? "advanced " : "")}message \"{message.Type}\"");
-					break;
-			}
-
-		}
+		
 
 	}
 

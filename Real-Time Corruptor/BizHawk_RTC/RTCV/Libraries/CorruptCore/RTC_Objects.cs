@@ -9,6 +9,8 @@ using System.Windows.Forms;
 using System.Numerics;
 using System.Security.Cryptography;
 using System.Xml.Serialization;
+using RTCV.CorruptCore;
+using RTCV.NetCore;
 
 namespace RTC
 {
@@ -81,7 +83,7 @@ namespace RTC
 			NetCoreImplementation.SendCommandToBizhawk(new RTC_Command(CommandType.REMOTE_EVENT_SAVEBIZHAWKCONFIG), true);
 
 			//Watermarking RTC Version
-			sks.RtcVersion = RTC_EmuCore.RtcVersion;
+			sks.RtcVersion = RTC_CorruptCore.RtcVersion;
 
 			List<string> allRoms = new List<string>();
 
@@ -277,12 +279,12 @@ namespace RTC
 		{
 			List<string> errorMessages = new List<string>();
 
-			if (sks.RtcVersion != RTC_EmuCore.RtcVersion)
+			if (sks.RtcVersion != RTC_CorruptCore.RtcVersion)
 			{
 				if (sks.RtcVersion == null)
 					errorMessages.Add("You have loaded a broken stockpile that didn't contain an RTC Version number\n. There is no reason to believe that these items will work.");
 				else
-					errorMessages.Add("You have loaded a stockpile created with RTC " + sks.RtcVersion + " using RTC " + RTC_EmuCore.RtcVersion + "\n" + "Items might not appear identical to how they when they were created or it is possible that they don't work if BizHawk was upgraded.");
+					errorMessages.Add("You have loaded a stockpile created with RTC " + sks.RtcVersion + " using RTC " + RTC_CorruptCore.RtcVersion + "\n" + "Items might not appear identical to how they when they were created or it is possible that they don't work if BizHawk was upgraded.");
 			}
 
 			if (errorMessages.Count == 0)
@@ -422,6 +424,7 @@ namespace RTC
 			File.Copy((RTC_EmuCore.workingDir + "\\SKS\\config.ini"), (RTC_EmuCore.bizhawkDir + "\\stockpile_config.ini"));
 
 			NetCoreImplementation.SendCommandToBizhawk(new RTC_Command(CommandType.REMOTE_MERGECONFIG), true);
+			LocalNetCoreRouter.Route("VANGUARD", "REMOTE_MERGECONFIG");
 
 			Process.Start(RTC_EmuCore.bizhawkDir + $"\\StockpileConfig{(NetCoreImplementation.isStandaloneUI ? "DETACHED" : "ATTACHED")}.bat");
 		}

@@ -728,7 +728,8 @@
     <Compile Include="RomStatusPicker.Designer.cs">
       <DependentUpon>RomStatusPicker.cs</DependentUpon>
     </Compile>
-    <Compile Include="RTC\RTC_NetCoreImplementation.cs" />
+    <Compile Include="RTC\RTC_VanguardImplementation.cs" />
+    <Compile Include="RTC\Legacy\RTC_NetCoreImplementation.cs" />
     <Compile Include="RTC\RTC_EmuCore.cs" />
     <Compile Include="RTC\RTC_Hooks.cs" />
     <Compile Include="RTC\Legacy\RTC_NetCore.cs" />

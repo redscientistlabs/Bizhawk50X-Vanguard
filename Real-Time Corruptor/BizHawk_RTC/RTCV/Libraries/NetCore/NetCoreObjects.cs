@@ -25,7 +25,13 @@ namespace RTCV.NetCore
         LISTENING
     }
 
-    [Serializable()]
+	public class NetCoreReceiver
+	{
+		public event EventHandler<NetCoreEventArgs> MessageReceived;
+		public virtual void OnMessageReceived(NetCoreEventArgs e) => MessageReceived?.Invoke(this, e);
+	}
+
+	[Serializable()]
     public abstract class NetCoreMessage
     {
         public string Type;

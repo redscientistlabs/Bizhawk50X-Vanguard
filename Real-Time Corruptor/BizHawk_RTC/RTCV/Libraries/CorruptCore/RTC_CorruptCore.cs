@@ -10,6 +10,8 @@ namespace RTC
 {
 	public static class RTC_CorruptCore
 	{
+		public static string RtcVersion = "3.50";
+
 		public static Random RND = new Random();
 
 		public static FullSpec spec;

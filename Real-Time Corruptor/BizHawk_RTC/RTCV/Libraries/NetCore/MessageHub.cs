@@ -128,7 +128,12 @@ namespace RTCV.NetCore
             message = new NetCoreSimpleMessage(type);
         }
 
-        public NetCoreMessage message { get; set; } = null;
+		public NetCoreEventArgs(string type, object objectValue)
+		{
+			message = new NetCoreAdvancedMessage(type, objectValue);
+		}
+
+		public NetCoreMessage message { get; set; } = null;
         public NetCoreMessage returnMessage {get { return _returnMessage; }}
         internal NetCoreMessage _returnMessage = null;
 

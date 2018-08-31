@@ -3,10 +3,11 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using RTCV.CorruptCore;
 
 namespace RTC
 {
-	public static class VanguardImplementation
+	public static class NetCoreImplementation
 	{
 		//NetCores
 		public static RTC_NetCore Multiplayer = null;
@@ -156,7 +157,7 @@ namespace RTC
 			}
 			else
 			{
-				if ((!VanguardImplementation.isStandaloneEmu && !VanguardImplementation.isStandaloneUI) || RemoteRTC.side == NetworkSide.CLIENT)
+				if ((!NetCoreImplementation.isStandaloneEmu && !NetCoreImplementation.isStandaloneUI) || RemoteRTC.side == NetworkSide.CLIENT)
 				{
 					if (sync)
 						return RemoteRTC.SendSyncCommand(cmd, true, priority);
@@ -178,7 +179,7 @@ namespace RTC
 			//This is a NetCore wrapper that guarantees a NetCore command is sent to RTC no matter which mode.
 			//It CANNOT query a value
 
-			if (VanguardImplementation.RemoteRTC == null)
+			if (NetCoreImplementation.RemoteRTC == null)
 			{
 				RTC_NetCore tempNetCore = new RTC_NetCore();
 				LinkedList<RTC_Command> tempQueue = new LinkedList<RTC_Command>();

@@ -1,9 +1,11 @@
-﻿using RTCV.NetCore;
+﻿using RTCV.CorruptCore;
+using RTCV.NetCore;
 using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Security.Cryptography;
+
 namespace RTC
 {
 	public static class RTC_Filtering

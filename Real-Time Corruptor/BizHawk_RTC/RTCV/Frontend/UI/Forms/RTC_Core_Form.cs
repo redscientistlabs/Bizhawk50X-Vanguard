@@ -1,4 +1,5 @@
-﻿using System;
+﻿using RTCV.CorruptCore;
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Drawing;
@@ -71,11 +72,11 @@ namespace RTC
 
 		private void RTC_Form_Load(object sender, EventArgs e)
 		{
-			btnLogo.Text = "   Version " + RTC_EmuCore.RtcVersion;
+			btnLogo.Text = "   Version " + RTC_CorruptCore.RtcVersion;
 
 			if (!RTC_Params.IsParamSet("DISCLAIMER_READ"))
 			{
-				MessageBox.Show(File.ReadAllText(RTC_EmuCore.rtcDir + "\\LICENSES\\DISCLAIMER.TXT").Replace("[ver]", RTC_EmuCore.RtcVersion), "RTC", MessageBoxButtons.OK, MessageBoxIcon.Information);
+				MessageBox.Show(File.ReadAllText(RTC_EmuCore.rtcDir + "\\LICENSES\\DISCLAIMER.TXT").Replace("[ver]", RTC_CorruptCore.RtcVersion), "RTC", MessageBoxButtons.OK, MessageBoxIcon.Information);
 				RTC_Params.SetParam("DISCLAIMER_READ");
 			}
 
@@ -431,7 +432,7 @@ namespace RTC
 
 			ShowPanelForm(S.GET<RTC_ConnectionStatus_Form>());
 
-			RTC.S.GET<RTC_Core_Form>().pbAutoKillSwitchTimeout.Value = RTC.S.GET<RTC_Core_Form>().pbAutoKillSwitchTimeout.Maximum;
+			S.GET<RTC_Core_Form>().pbAutoKillSwitchTimeout.Value = S.GET<RTC_Core_Form>().pbAutoKillSwitchTimeout.Maximum;
 
 			RTC_NetCoreSettings.PlayCrashSound(true);
 

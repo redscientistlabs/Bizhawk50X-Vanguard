@@ -18,7 +18,7 @@ using System.Text;
 using System.Windows.Forms;
 using System.Xml.Serialization;
 
-namespace RTC
+namespace RTCV.CorruptCore
 {
 	public static class RTC_Extensions
 	{

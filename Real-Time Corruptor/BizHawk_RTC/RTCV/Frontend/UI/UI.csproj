@@ -47,6 +47,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Connector.cs" />
     <Compile Include="Forms\Components\Containers\RTC_ListBox_Form.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -178,12 +179,6 @@
     </Compile>
     <Compile Include="Forms\RTC_MultiPeerPopout_Form.designer.cs">
       <DependentUpon>RTC_MultiPeerPopout_Form.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Forms\RTC_Multiplayer_Form.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Forms\RTC_Multiplayer_Form.designer.cs">
-      <DependentUpon>RTC_Multiplayer_Form.cs</DependentUpon>
     </Compile>
     <Compile Include="Forms\RTC_NoteEditor_Form.cs">
       <SubType>Form</SubType>
@@ -318,9 +313,6 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\RTC_MultiPeerPopout_Form.resx">
       <DependentUpon>RTC_MultiPeerPopout_Form.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Forms\RTC_Multiplayer_Form.resx">
-      <DependentUpon>RTC_Multiplayer_Form.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\RTC_NoteEditor_Form.resx">
       <DependentUpon>RTC_NoteEditor_Form.cs</DependentUpon>
