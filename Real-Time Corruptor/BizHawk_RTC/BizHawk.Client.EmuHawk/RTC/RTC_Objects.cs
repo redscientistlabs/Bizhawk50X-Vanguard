@@ -1439,12 +1439,11 @@ namespace RTC
 			}
 			catch (Exception ex)
 			{
+				RTC_PipeEngine.ClearPipes();
 				throw new Exception("The BlastPipe apply() function threw up. Clearing the execution pool to prevent further issues. \n" +
 					"This is an RTC error, so you should probably send this to the RTC devs.\n" +
 					"If you know the steps to reproduce this error it would be greatly appreciated.\n\n" +
 				ex.ToString());
-
-				RTC_PipeEngine.ClearPipes();
 			}
 		}
 

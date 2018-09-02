@@ -19,8 +19,15 @@ namespace RTC
 
 		public static void ExecutePipes()
 		{
-			foreach (BlastPipe pipe in AllBlastPipes)
-				pipe.Execute();
+			try
+			{
+				foreach (BlastPipe pipe in AllBlastPipes)
+					pipe.Execute();
+			}
+			catch (Exception ex)
+			{
+				MessageBox.Show("Something went wrong when executing the pipes. Are you sure you don't have an invalid unit?\n\n" + ex);
+			}
 		}
 
 		public static void ClearPipes(bool sync = false)
