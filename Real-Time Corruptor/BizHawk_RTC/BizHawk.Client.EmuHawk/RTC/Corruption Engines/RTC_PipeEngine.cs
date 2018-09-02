@@ -66,9 +66,9 @@ namespace RTC
 			{
 				if (_domain == null)
 					return null;
-				MemoryDomainProxy mdp = RTC_MemoryDomains.GetProxy(_domain, _address);
+				MemoryInterface mi = RTC_MemoryDomains.GetInterface(_domain);
 
-				int pipeSize = RTC_Core.CustomPrecision == -1 ? mdp.WordSize : RTC_Core.CustomPrecision;
+				int pipeSize = RTC_Core.CustomPrecision == -1 ? mi.WordSize : RTC_Core.CustomPrecision;
 
 				long safeAddress = _address - (_address % pipeSize);
 
@@ -82,7 +82,7 @@ namespace RTC
 					}
 					else
 					{
-						BlastPipe bp = new BlastPipe(_domain, safeAddress, LastDomain, LastAddress, TiltValue, pipeSize, mdp.BigEndian, true);
+						BlastPipe bp = new BlastPipe(_domain, safeAddress, LastDomain, LastAddress, TiltValue, pipeSize, mi.BigEndian, true);
 						LastDomain = _domain;
 						LastAddress = safeAddress;
 						return bp;
@@ -93,7 +93,7 @@ namespace RTC
 					BlastTarget pipeEnd = RTC_Core.GetBlastTarget();
 					long safepipeEndAddress = pipeEnd.address - (pipeEnd.address % pipeSize);
 
-					BlastPipe bp = new BlastPipe(_domain, safeAddress, pipeEnd.domain, safepipeEndAddress, TiltValue, pipeSize, mdp.BigEndian, true);
+					BlastPipe bp = new BlastPipe(_domain, safeAddress, pipeEnd.domain, safepipeEndAddress, TiltValue, pipeSize, mi.BigEndian, true);
 					LastDomain = _domain;
 					LastAddress = safeAddress;
 					return bp;

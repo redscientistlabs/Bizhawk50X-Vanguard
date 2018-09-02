@@ -23,7 +23,7 @@ namespace RTC
 			{
 				if (domain == null)
 					return null;
-				MemoryDomainProxy mdp = RTC_MemoryDomains.GetProxy(domain, address);
+				MemoryInterface mi = RTC_MemoryDomains.GetInterface(domain);
 				BlastByteType type = BlastByteType.NONE;
 
 				switch (Algo)
@@ -71,7 +71,7 @@ namespace RTC
 						break;
 				}
 
-				byte[] value = RTC_Core.CustomPrecision == -1 ? new byte[mdp.WordSize] : new byte[RTC_Core.CustomPrecision];
+				byte[] value = RTC_Core.CustomPrecision == -1 ? new byte[mi.WordSize] : new byte[RTC_Core.CustomPrecision];
 
 				long safeAddress = address - (address % value.Length);
 
@@ -100,7 +100,7 @@ namespace RTC
 					value[value.Length - 1] = 1;
 				}
 
-				return new BlastByte(domain, safeAddress, type, value, mdp.BigEndian, true);
+				return new BlastByte(domain, safeAddress, type, value, mi.BigEndian, true);
 			}
 			catch (Exception ex)
 			{

@@ -28,17 +28,17 @@ namespace RTC
 			{
 				if (domain == null)
 					return null;
-				MemoryDomainProxy mdp = RTC_MemoryDomains.GetProxy(domain, address);
+				MemoryInterface mi = RTC_MemoryDomains.GetInterface(domain);
 				BlastByteType Type = BlastByteType.SET;
 
-				byte[] value = RTC_Core.CustomPrecision == -1 ? new byte[mdp.WordSize] : new byte[RTC_Core.CustomPrecision];
+				byte[] value = RTC_Core.CustomPrecision == -1 ? new byte[mi.WordSize] : new byte[RTC_Core.CustomPrecision];
 
 				for (int i = 0; i < value.Length; i++)
 					value[i] = 1;
 
 				long safeAddress = address - (address % value.Length);
 
-				BlastByte bb = new BlastByte(domain, safeAddress, Type, value, mdp.BigEndian, true);
+				BlastByte bb = new BlastByte(domain, safeAddress, Type, value, mi.BigEndian, true);
 				return bb.GetBackup();
 			}
 			catch (Exception ex)

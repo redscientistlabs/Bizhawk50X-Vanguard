@@ -241,22 +241,21 @@ namespace RTC
 			//long safeAddress = _address - (_address % 8); //64-bit trunk
 
 			long safeAddress = address - (address % 4); //32-bit trunk
-			MemoryDomainProxy mdp = RTC_MemoryDomains.GetProxy(domain, safeAddress);
-			if (mdp == null)
+			MemoryInterface mi = RTC_MemoryDomains.GetInterface(domain);
+			if (mi == null)
 				return null;
 
 			try
 			{
 				BlastByte bu = null;
 
-
 				for(int i = 0; i < 4; i++)
-					LastValues[i] = mdp.PeekByte(safeAddress + i);
+					LastValues[i] = mi.PeekByte(safeAddress + i);
 				LastDomain = domain;
 
 				//Enforce the safeaddress at generation
-				if (IsConstant(LastValues, LimiterList, mdp.BigEndian))
-					bu = new BlastByte(domain, safeAddress, BlastByteType.VECTOR, GetRandomConstant(ValueList), mdp.BigEndian, true);
+				if (IsConstant(LastValues, LimiterList, mi.BigEndian))
+					bu = new BlastByte(domain, safeAddress, BlastByteType.VECTOR, GetRandomConstant(ValueList), mi.BigEndian, true);
 
 				return bu;
 			}

@@ -22,10 +22,10 @@ namespace RTC
 			{
 				if (domain == null)
 					return null;
-				MemoryDomainProxy mdp = RTC_MemoryDomains.GetProxy(domain, address);
+				MemoryInterface mi = RTC_MemoryDomains.GetInterface(domain);
 				BizHawk.Client.Common.DisplayType displaytype = BizHawk.Client.Common.DisplayType.Unsigned;
 
-				byte[] value = RTC_Core.CustomPrecision == -1 ? new byte[mdp.WordSize] : new byte[RTC_Core.CustomPrecision];
+				byte[] value = RTC_Core.CustomPrecision == -1 ? new byte[mi.WordSize] : new byte[RTC_Core.CustomPrecision];
 
 				long safeAddress = address - (address % value.Length);
 
@@ -44,7 +44,7 @@ namespace RTC
 				}
 				value = RTC_Extensions.GetByteArrayValue(value.Length, randomValue, true);
 
-				return new BlastCheat(domain, safeAddress, displaytype, mdp.BigEndian, value, true, false);
+				return new BlastCheat(domain, safeAddress, displaytype, mi.BigEndian, value, true, false);
 			}
 			catch (Exception ex)
 			{
