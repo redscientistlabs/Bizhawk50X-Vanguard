@@ -1422,7 +1422,7 @@ namespace RTC
 
 				for (int i = 0; i < PipeSize; i++)
 				{
-					int currentValue = (int)mi.PeekByte(Address);
+					int currentValue = (int)mi.PeekByte(Address + i);
 
 					int newValue = currentValue + TiltValue;
 
