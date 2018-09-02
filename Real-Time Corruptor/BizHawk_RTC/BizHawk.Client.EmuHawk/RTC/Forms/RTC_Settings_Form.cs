@@ -58,7 +58,7 @@ namespace RTC
 		{
 			string setting = cbNetCoreCommandTimeout.SelectedItem.ToString().ToUpper();
 			RTC_NetCoreSettings.ChangeNetCoreSettings(setting);
-			RTC_Core.SendCommandToBizhawk(new RTC_Command(CommandType.AGGRESSIVENESS) { objectValue = setting });
+			RTC_Core.SendCommandToBizhawk(new RTC_Command(CommandType.AGGRESSIVENESS) { objectValue = setting }, true);
 		}
 
 		private void btnOpenOnlineWiki_Click(object sender, EventArgs e)
