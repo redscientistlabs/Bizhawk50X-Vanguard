@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
 using System.Drawing;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Windows.Forms;
@@ -30,6 +31,13 @@ namespace StandaloneRTC
 			{
 				RTC.LogConsole.HideConsole();
 			}
+			/*
+			FileStream filestream = new FileStream("standalonertc.txt", FileMode.Create);
+			var streamwriter = new StreamWriter(filestream);
+			streamwriter.AutoFlush = true;
+			Console.SetOut(streamwriter);
+			Console.SetError(streamwriter);
+			*/
 
 			RTC.RTC_Core.Start(this);
 			this.Hide();

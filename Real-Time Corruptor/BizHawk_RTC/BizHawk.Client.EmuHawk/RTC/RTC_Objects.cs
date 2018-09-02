@@ -987,6 +987,8 @@ namespace RTC
 
 		public void Apply(bool ignoreMaximums = false)
 		{
+
+			Console.WriteLine("Entering Blastlayer Apply");
 			if (RTC_Core.isStandalone)
 			{
 				RTC_Core.SendCommandToBizhawk(new RTC.RTC_Command(CommandType.BLAST) { blastlayer = this });
@@ -1036,6 +1038,7 @@ namespace RTC
 					RTC_HellgenieEngine.RemoveExcessCheats();
 					RTC_PipeEngine.RemoveExcessPipes();
 				}
+				Console.WriteLine("Exiting Blastlayer Apply");
 			}
 		}
 

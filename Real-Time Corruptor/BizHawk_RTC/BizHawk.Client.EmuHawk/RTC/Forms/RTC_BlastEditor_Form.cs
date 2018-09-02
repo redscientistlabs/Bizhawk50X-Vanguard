@@ -475,7 +475,7 @@ namespace RTC
 				{
 					int pos = row.Index;
 
-					BlastUnit bu = sk.BlastLayer.Layer[pos];
+					BlastUnit bu = (BlastUnit)row.Cells["dgvBlastUnitReference"].Value;
 					BlastUnit bu2 = ObjectCopier.Clone(bu);
 					sk.BlastLayer.Layer.Insert(pos + 1, bu2);
 					InsertBlastUnitToDgv(pos + 1, bu2);
@@ -496,6 +496,7 @@ namespace RTC
 
 		private void sidebarEnabled(bool enabled)
 		{
+			Console.WriteLine("Sidebar enabled: " + enabled.ToString());
 			panelSidebar.Enabled = enabled;
 		}
 

@@ -293,6 +293,7 @@ namespace RTC
 					LogConsole.HideConsole();
 			}*/
 
+			/*
 			if (RTC_Hooks.isRemoteRTC)
 			{
 				FileStream filestream = new FileStream("emuhawk.txt", FileMode.Create);
@@ -300,7 +301,7 @@ namespace RTC
 				streamwriter.AutoFlush = true;
 				Console.SetOut(streamwriter);
 				Console.SetError(streamwriter);
-			}
+			}*/
 
 			//Timed releases. Only for exceptionnal cases.
 			bool Expires = false;

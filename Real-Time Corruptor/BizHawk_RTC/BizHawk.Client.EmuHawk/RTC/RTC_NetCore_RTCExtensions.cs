@@ -30,7 +30,8 @@ namespace RTC
 
 				case CommandType.BLAST:
 				{
-					BlastLayer bl = null;
+					Console.WriteLine("Entering CommandType.BLAST");
+						BlastLayer bl = null;
 					string[] _domains = (string[])cmd.objectValue;
 
 					if (_domains == null)

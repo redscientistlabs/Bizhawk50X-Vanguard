@@ -218,25 +218,30 @@ namespace RTC
 					{
 						RTC_Command cmd = null;
 
+						//Console.WriteLine("Data Available!");
 						try
 						{
 							using (MemoryStream ms = new MemoryStream())
 							{
 								//Read the size
+
 								int lengthToReceive = 0;
 								//Nothing is longer than 4 bytes 
 								byte[] _lengthToReceive = new byte[4];
+								//Console.WriteLine("Reading how much data we're going to get");
 								networkStream.Read(_lengthToReceive, 0, _lengthToReceive.Length);
+								//Console.WriteLine("Finished reading how much data we're going to get");
 								lengthToReceive = BitConverter.ToInt32(_lengthToReceive, 0);
 
-								//Console.WriteLine("I want this many bytes: " + lengthToReceive);
+								Console.WriteLine("I want this many bytes: " + lengthToReceive);
 								//Now read until we have that many bytes
 								long bytesRead = RTC_Extensions.CopyBytes(lengthToReceive, networkStream, ms);
-								//Console.WriteLine("I got this many bytes: " + bytesRead);
+								Console.WriteLine("I got this many bytes: " + bytesRead);
 
 								//Deserialize it
 								ms.Position = 0;
 								cmd = (RTC_Command)binaryFormatter.Deserialize(ms);
+								//Console.WriteLine("cmd deserialized!" + cmd.Type.ToString());
 
 								//sw.Stop();
 								//Console.WriteLine("It took " + sw.ElapsedMilliseconds + " ms to deserialize cmd " + cmd.Type + " of " + ms.ToArray().Length + " bytes");
@@ -244,6 +249,8 @@ namespace RTC
 						}
 						catch (Exception ex)
 						{
+							Console.WriteLine(ex.ToString());
+							Console.WriteLine(ex.StackTrace);
 							throw ex;
 						}
 
