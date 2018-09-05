@@ -233,10 +233,10 @@ namespace RTC
 								//Console.WriteLine("Finished reading how much data we're going to get");
 								lengthToReceive = BitConverter.ToInt32(_lengthToReceive, 0);
 
-								Console.WriteLine("I want this many bytes: " + lengthToReceive);
+								//Console.WriteLine("I want this many bytes: " + lengthToReceive);
 								//Now read until we have that many bytes
 								long bytesRead = RTC_Extensions.CopyBytes(lengthToReceive, networkStream, ms);
-								Console.WriteLine("I got this many bytes: " + bytesRead);
+								//Console.WriteLine("I got this many bytes: " + bytesRead);
 
 								//Deserialize it
 								ms.Position = 0;
@@ -285,7 +285,7 @@ namespace RTC
 								//Write the length of the incoming object to the NetworkStream
 								//Nothing is longer than 4 bytes 
 								byte[] length = RTC_Extensions.GetByteArrayValue(4, ms.Length);
-								Console.WriteLine("I am giving you this many bytes " + BitConverter.ToInt32(length, 0));
+								//Console.WriteLine("I am giving you this many bytes " + BitConverter.ToInt32(length, 0));
 								networkStream.Write(length, 0, length.Length);
 								
 								//Write the data itself
@@ -293,7 +293,7 @@ namespace RTC
 								ms.CopyTo(networkStream);
 								//byte[] buf = ms.ToArray();
 								//networkStream.Write(buf, 0, buf.Length);
-								Console.WriteLine("I gave you this many bytes " + BitConverter.ToInt32(length, 0));
+								//Console.WriteLine("I gave you this many bytes " + BitConverter.ToInt32(length, 0));
 								//Console.WriteLine("It took " + sw.ElapsedMilliseconds + " ms to serialize backCmd " + backCmd.Type + " of " + ms.ToArray().Length + "	bytes");
 							}
 

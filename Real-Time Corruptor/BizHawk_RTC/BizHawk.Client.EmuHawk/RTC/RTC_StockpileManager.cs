@@ -58,7 +58,7 @@ namespace RTC
 
 		private static void PostApplyStashkey()
 		{
-			Console.WriteLine("Entering PostApplyStashKey");
+			//Console.WriteLine("Entering PostApplyStashKey");
 			if (renderAtLoad)
 			{
 				RTC_Render.StartRender();
@@ -75,7 +75,7 @@ namespace RTC
 
 		public static bool ApplyStashkey(StashKey sk, bool _loadBeforeOperation = true)
 		{
-			Console.WriteLine("Entering ApplyStashKey");
+			//Console.WriteLine("Entering ApplyStashKey");
 			PreApplyStashkey();
 
 			var token = RTC_NetCore.HugeOperationStart("LAZY");
@@ -330,7 +330,7 @@ namespace RTC
 
 		public static bool LoadStateAndBlastLayer(StashKey sk, bool ReloadRom = true)
 		{
-			Console.WriteLine("Entering LoadStateAndBlastLayer");
+			//Console.WriteLine("Entering LoadStateAndBlastLayer");
 			object returnValue = RTC_Core.SendCommandToBizhawk(new RTC_Command(CommandType.REMOTE_LOADSTATE)
 			{
 				objectValue = new object[] { sk, ReloadRom, (sk.BlastLayer != null && sk.BlastLayer.Layer.Count > 0) }
@@ -342,7 +342,7 @@ namespace RTC
 
 		public static bool LoadState_NET(StashKey sk, bool ReloadRom = true)
 		{
-			Console.WriteLine("Entering LoadState_NET");
+			//Console.WriteLine("Entering LoadState_NET");
 			var loadStateWatch = System.Diagnostics.Stopwatch.StartNew();
 			if (sk == null)
 				return false;

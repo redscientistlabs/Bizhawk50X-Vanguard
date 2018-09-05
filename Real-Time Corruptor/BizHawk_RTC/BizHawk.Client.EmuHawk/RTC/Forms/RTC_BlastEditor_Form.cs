@@ -271,9 +271,8 @@ namespace RTC
 			try
 			{
 				sidebarEnabled(false);
-				for (int i = 0; i < sk.BlastLayer.Layer.Count(); i++)
+				foreach(BlastUnit bu in sk.BlastLayer.Layer)
 				{
-					BlastUnit bu = sk.BlastLayer.Layer[i];
 					if (!(bool)bu2RowDico[bu].Cells["dgvBlastUnitLocked"].Value)
 						bu2RowDico[bu].Cells["dgvBlastEnabled"].Value = !((bool)bu2RowDico[bu].Cells["dgvBlastEnabled"].Value);
 				}
@@ -496,7 +495,7 @@ namespace RTC
 
 		private void sidebarEnabled(bool enabled)
 		{
-			Console.WriteLine("Sidebar enabled: " + enabled.ToString());
+			//Console.WriteLine("Sidebar enabled: " + enabled.ToString());
 			panelSidebar.Enabled = enabled;
 		}
 
