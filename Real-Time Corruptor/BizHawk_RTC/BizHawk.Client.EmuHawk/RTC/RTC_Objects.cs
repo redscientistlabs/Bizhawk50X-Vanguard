@@ -1020,7 +1020,7 @@ namespace RTC
 					if (!success)
 						throw new Exception(
 						"One of the BlastUnits in the BlastLayer failed to Apply().\n\n" +
-						"The operation was cancelled");
+						"The operation was cancelled\n\n" + bb.ToString());
 				}
 			}
 			catch (Exception ex)

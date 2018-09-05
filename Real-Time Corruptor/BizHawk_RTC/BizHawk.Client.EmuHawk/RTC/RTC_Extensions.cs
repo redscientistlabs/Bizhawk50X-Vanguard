@@ -2819,9 +2819,6 @@ namespace RTC
 			// converted to client coordinates.
 			Point clientPoint = this.PointToClient(new Point(e.X, e.Y));
 
-
-
-
 			// If the drag operation was a move then remove and insert the row.
 			if (e.Effect == DragDropEffects.Move)
 			{
@@ -2846,7 +2843,6 @@ namespace RTC
 					if (rowIndexOfItemUnderMouseToDrop == -1)
 					{
 						//Do a global hittest to figure out if we're on the header since you get -1 on both the header and the area below
-
 						if (clientPoint.Y <= this.ColumnHeadersHeight)
 							rowIndexOfItemUnderMouseToDrop = 0;
 						else
@@ -2865,6 +2861,12 @@ namespace RTC
 					//We InsertRange rather than inserting in the iterator so we don't have to deal with the edge case of moving two items up by one position goofing the indexes
 					this.Rows.InsertRange(rowIndexOfItemUnderMouseToDrop, _rows);
 
+					//Re-select the new rows
+					this.ClearSelection();
+					for(int i = rowIndexOfItemUnderMouseToDrop; i < (rowIndexOfItemUnderMouseToDrop + _rows.Length); i++)
+					{
+						this.Rows[i].Selected = true;
+					}
 				}
 
 			}

@@ -160,6 +160,7 @@ namespace RTC
 
 			RefreshStashHistory();
 			RefreshSavestateTextboxes();
+			dgvStockpile.DragDrop += dgvStockpile_DragDrop;
 		}
 
 		public void RefreshStashHistory(bool scrolldown = false)
@@ -1541,6 +1542,12 @@ namespace RTC
 			RTC_NetCore.HugeOperationEnd(intensitySliderToken);
 
 			track_Intensity_Scroll(sender, e);
+		}
+
+		private void dgvStockpile_DragDrop(object sender, DragEventArgs e)
+		{
+			//Bring the UI back to normal after a drag+drop to prevent weird merge stuff 
+			RedrawActionUI();
 		}
 	}
 }
