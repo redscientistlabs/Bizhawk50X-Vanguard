@@ -249,8 +249,7 @@ namespace RTC
 			{
 				BlastByte bu = null;
 
-				for(int i = 0; i < 4; i++)
-					LastValues[i] = mi.PeekByte(safeAddress + i);
+				LastValues = mi.PeekBytes(safeAddress, safeAddress + 4);
 				LastDomain = domain;
 
 				//Enforce the safeaddress at generation
