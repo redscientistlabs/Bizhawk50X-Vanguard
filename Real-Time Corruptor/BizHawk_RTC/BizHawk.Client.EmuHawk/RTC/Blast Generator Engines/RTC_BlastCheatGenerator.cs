@@ -40,8 +40,8 @@ namespace RTC
 				bool freeze = false;
 				DisplayType _displaytype = DisplayType.Unsigned;
 
-				long safeTargetAddress = address - address % _value.Length;
-				long safeAddress = targetAddress - targetAddress % _value.Length;
+				long safeAddress = address - address % _value.Length;
+				long safeTargetAddress = targetAddress - targetAddress % _value.Length;
 
 				//Use >= as Size is 1 indexed whereas address is 0 indexed
 				if (safeTargetAddress + _value.Length > mdp.Size)
