@@ -199,12 +199,12 @@ namespace RTC
 				List<BlastUnit> buList = queued.First();
 
 				bool dontApply = false;
-				//This is our EnteringExecution
+				//This is our EnteringExecution step. It needs to be called on all units
 				foreach (BlastUnit bu in buList)
 				{
 					//If it returns false, that means the layer shouldn't apply
 					//This is primarily for if a limiter returns false 
-					//If this happens, we need to remove it from the pool and then return out
+					//If this happens, we need to remove it from the pool and then return out for a new iteration
 					if (!bu.EnteringExecution())
 					{
 						queued.RemoveFirst();
@@ -229,9 +229,10 @@ namespace RTC
 					}
 				}
 
-				//Check if the queue is empty
+				//Check if the queue is empty. If it is, we return out of the method
 				if (queued.Count == 0)
 					return;
+
 				//It's not empty so set the next frame
 				nextFrame = (queued.First())[0].Working.ExecuteFrameQueued;
 			}
@@ -243,7 +244,8 @@ namespace RTC
 
 			//Queue everything up
 			CheckApply();
-
+			
+			//Get any backups required for STORE 
 			GetStoreBackups();
 
 			//Execute all infinite lifetime units
@@ -268,30 +270,22 @@ namespace RTC
 				//Remove it
 				appliedLifetime.Remove(buList);
 
-				//Since we already have it filtered as a list, there's no reason to build a new list
-				//We just update the ExecuteFrameQueued and LastFrame, then just add it back to buListCollection
+				//Clean out the store pool and null out the working data
+				foreach (BlastUnit bu in buList)
+				{
+					bu.Working = null;
+					//Remove it from the store pool
+					if (bu.Source == BlastUnitSource.STORE)
+						StoreDataPool.Remove(bu);
+				}
+
+				//Queue things back up if we're looping. Just rebuild to keep the code more clean
 				if (buList[0].Loop)
 				{
-					//Clean out the working data for all units
+					//Reset the units
 					foreach (BlastUnit bu in buList)
-						bu.Working = new BlastUnitWorkingData();
-
-					//We have to add 1 since currentFrame hasn't been incremented yet
-					buList[0].Working.ExecuteFrameQueued = buList[0].ExecuteFrame + currentFrame + 1;
-					buList[0].Working.LastFrame = buList[0].Working.ExecuteFrameQueued + buList[0].Lifetime + 1;
-					buListCollection.Add(buList);
+						bu.Apply();
 					needsRefilter = true;
-				}
-				//If we're not looping, set the working data to null instead of instantiating a new one
-				else
-				{
-					foreach (BlastUnit bu in buList)
-					{
-						bu.Working = null;
-						//Remove it from the store pool
-						if (bu.Source == BlastUnitSource.STORE)
-							StoreDataPool.Remove(bu);
-					}
 				}
 			}
 			//We only call this if there's a loop layer for optimization purposes.

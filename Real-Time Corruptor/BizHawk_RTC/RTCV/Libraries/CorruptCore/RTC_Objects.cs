@@ -970,15 +970,7 @@ namespace RTC
 
 			//We need to grab the value to freeze
 			if (Source == BlastUnitSource.STORE && StoreTime == ActionTime.IMMEDIATE)
-			{
-				//If it's one time, store the backup. Otherwise add it to the pool 
-				if(StoreType == StoreType.ONCE)
-					StoreBackup();
-				else
-				{
-					RTC_StepActions.StoreDataPool.Add(this);
-				}
-			}
+				DoStore();
 
 			RTC_StepActions.AddBlastUnit(this);
 
@@ -997,36 +989,11 @@ namespace RTC
 
 				if (mi == null)
 					return;
-
 				
 				//Limiter handling
 				if (LimiterTime == ActionTime.EXECUTE)
-				{
-					if (InvertLimiter)
-					{
-						//If it's store, we need to use the sourceaddress and sourcedomain
-						if (Source == BlastUnitSource.STORE && RTC_Filtering.LimiterPeekBytes(SourceAddress,
-							    SourceAddress + Precision, SourceDomain, LimiterListHash, mi))
-							return;
-						//If it's VALUE, we need to use the address and domain
-						else if (Source == BlastUnitSource.VALUE && RTC_Filtering.LimiterPeekBytes(Address,
-							         Address + Precision, Domain, LimiterListHash, mi))
-							return;
-					}
-					else
-					{
-						//If it's store, we need to use the sourceaddress and sourcedomain
-						if (Source == BlastUnitSource.STORE && !RTC_Filtering.LimiterPeekBytes(SourceAddress,
-							    SourceAddress + Precision, SourceDomain, LimiterListHash, mi))
-							return;
-						//If it's VALUE, we need to use the address and domain
-						else if (Source == BlastUnitSource.VALUE && !RTC_Filtering.LimiterPeekBytes(Address,
-							         Address + Precision, Domain, LimiterListHash, mi))
-							return;
-					}
-				}
-
-
+					DoLimiter(mi);
+				
 				switch (Source)
 				{
 					case (BlastUnitSource.STORE):
@@ -1075,6 +1042,43 @@ namespace RTC
 			return;
 		}
 
+		public void DoStore()
+		{
+			//If it's one time, store the backup. Otherwise add it to the pool 
+			if (StoreType == StoreType.ONCE)
+				StoreBackup();
+			else
+			{
+				RTC_StepActions.StoreDataPool.Add(this);
+			}
+		}
+
+		public void DoLimiter(MemoryInterface mi)
+		{
+			if (InvertLimiter)
+			{
+				//If it's store, we need to use the sourceaddress and sourcedomain
+				if (Source == BlastUnitSource.STORE && RTC_Filtering.LimiterPeekBytes(SourceAddress,
+						SourceAddress + Precision, SourceDomain, LimiterListHash, mi))
+					return;
+				//If it's VALUE, we need to use the address and domain
+				else if (Source == BlastUnitSource.VALUE && RTC_Filtering.LimiterPeekBytes(Address,
+							 Address + Precision, Domain, LimiterListHash, mi))
+					return;
+			}
+			else
+			{
+				//If it's store, we need to use the sourceaddress and sourcedomain
+				if (Source == BlastUnitSource.STORE && !RTC_Filtering.LimiterPeekBytes(SourceAddress,
+						SourceAddress + Precision, SourceDomain, LimiterListHash, mi))
+					return;
+				//If it's VALUE, we need to use the address and domain
+				else if (Source == BlastUnitSource.VALUE && !RTC_Filtering.LimiterPeekBytes(Address,
+							 Address + Precision, Domain, LimiterListHash, mi))
+					return;
+			}
+
+		}
 		public void StoreBackup()
 		{
 			MemoryInterface mi = RTC_MemoryDomains.GetInterface(SourceDomain);
@@ -1182,39 +1186,11 @@ namespace RTC
 				return false;
 
 			if (Source == BlastUnitSource.STORE && StoreTime == ActionTime.PREEXECUTE)
-			{
-				if (StoreType == StoreType.ONCE)
-					StoreBackup();
-				else
-					RTC_StepActions.StoreDataPool.Add(this);
-			
-			}
+				DoStore();
+
 			//Limiter handling. Normal operation is to not do anything if it doesn't match the limiter. Inverted is to only continue if it doesn't match
 			if (LimiterTime == ActionTime.PREEXECUTE)
-			{
-				if (InvertLimiter)
-				{
-					//If it's store, we need to use the sourceaddress and sourcedomain
-					if (Source == BlastUnitSource.STORE && RTC_Filtering.LimiterPeekBytes(SourceAddress,
-						    SourceAddress + Precision, SourceDomain, LimiterListHash, mi))
-						return false;
-					//If it's VALUE, we need to use the address and domain
-					else if (Source == BlastUnitSource.VALUE && RTC_Filtering.LimiterPeekBytes(Address,
-						         Address + Precision, Domain, LimiterListHash, mi))
-						return false;
-				}
-				else
-				{
-					//If it's store, we need to use the sourceaddress and sourcedomain
-					if (Source == BlastUnitSource.STORE && !RTC_Filtering.LimiterPeekBytes(SourceAddress,
-						    SourceAddress + Precision, SourceDomain, LimiterListHash, mi))
-						return false;
-					//If it's VALUE, we need to use the address and domain
-					else if (Source == BlastUnitSource.VALUE && !RTC_Filtering.LimiterPeekBytes(Address,
-						         Address + Precision, Domain, LimiterListHash, mi))
-						return false;
-				}
-			}
+				DoLimiter(mi);
 
 			return true;
 		}
