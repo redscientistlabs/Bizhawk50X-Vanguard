@@ -1338,19 +1338,18 @@ namespace RTC
 
 		private void OpenBlastEditor(StashKey sk)
 		{
-			S.GET<RTC_BlastEditor_Form>().Close();
-			S.SET(new RTC_BlastEditor_Form());
+			S.GET<RTC_NewBlastEditor_Form>().Close();
+			S.SET(new RTC_NewBlastEditor_Form());
 
 			var token = RTC_NetCore.HugeOperationStart("DISABLED");
 			//If the blastlayer is big, prompt them before opening it. Let's go with 5k for now.
 
 			//TODO
-			/*
 			if (sk.BlastLayer.Layer.Count > 5000 && (DialogResult.Yes == MessageBox.Show($"You're trying to open a blastlayer of size " + sk.BlastLayer.Layer.Count + ". This could take a while. Are you sure you want to continue?", "Opening a large BlastLayer", MessageBoxButtons.YesNo)))
-				S.GET<RTC_BlastEditor_Form>().LoadStashkey(sk);
+				S.GET<RTC_NewBlastEditor_Form>().LoadStashkey(sk);
 			else if (sk.BlastLayer.Layer.Count <= 5000)
-				S.GET<RTC_BlastEditor_Form>().LoadStashkey(sk);
-			*/
+				S.GET<RTC_NewBlastEditor_Form>().LoadStashkey(sk);
+			
 			RTC_NetCore.HugeOperationEnd(token);
 		}
 

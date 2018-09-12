@@ -9,6 +9,7 @@ using System.Windows.Forms;
 using System.Numerics;
 using System.Security.Cryptography;
 using System.Xml.Serialization;
+using System.ComponentModel;
 
 namespace RTC
 {
@@ -824,35 +825,131 @@ namespace RTC
 	[Serializable]
 	public class BlastUnit
 	{
-
+		[
+			Category("Settings"),
+			Description("Whether or not the BlastUnit will apply if the stashkey is run"),
+			DisplayName("Enabled")
+		]
 		public bool IsEnabled { get; set; } = true;
+
+		[
+			Category("Settings"),
+			Description("Whether or not this unit will be affected by batch operations (disable 50, invert, etc)"),
+			DisplayName("Locked")
+		]
 		public bool IsLocked { get; set; } = false;
+
+		[
+			Category("Data"),
+			Description("Whether or not the unit's values need to be flipped due to endianess"),
+			DisplayName("Big Endian")
+		]
 		public bool BigEndian { get; set; }
-			   
+
+		[
+			Category("Data"),
+			Description("The domain this unit will target"),
+			DisplayName("Domain")
+		]
 		public string Domain { get; set; }
+
+		[
+			Category("Data"),
+			Description("The address this unit will target"),
+			DisplayName("Address")
+		]
 		public long Address { get; set; }
+
+		[
+			Category("Data"),
+			Description("The precision of this unit"),
+			DisplayName("Precision")
+		]
 		public int Precision { get; set; }
 
+
+		[
+			Category("Source"),
+			Description("The source for the value for this unit for STORE mode"),
+			DisplayName("Source")
+		]
 		public BlastUnitSource Source { get; set; }
+
+		[
+			Category("Store"),
+			Description("The time when the store will take place"),
+			DisplayName("Store Time")
+		]
 		public ActionTime StoreTime { get; set; }
+		[
+			Category("Store"),
+			Description("The type of store that when the store will take place"),
+			DisplayName("Store Type")
+		]
 		public StoreType StoreType { get; set; }
 
+
+		[
+			Category("Value"),
+			Description("The value used for the BlastUnit in VALUE mode"),
+			DisplayName("Value")
+		]
 		public byte[] Value { get; set; }
 
+
+		[
+			Category("Store"),
+			Description("The domain used for the STORE operation"),
+			DisplayName("Source Domain")
+		]
 		public string SourceDomain { get; set; }
+
+		[
+			Category("Store"),
+			Description("The address used for the STORE operation"),
+			DisplayName("Source Address")
+		]
 		public long SourceAddress { get; set; }
 
+
+		[
+			Category("Modifiers"),
+			Description("How much to tilt the value before poking memory"),
+			DisplayName("Tilt Value")
+		]
 		public BigInteger TiltValue { get; set; }
 
-		public string Note { get; set; }
 
 		public int ExecuteFrame { get; set; }
 		public int Lifetime { get; set; }
 		public bool Loop { get; set; } = false;
 
+
+		[
+			Category("Limiter"),
+			Description("When to apply the limiter list"),
+			DisplayName("Limiter List")
+		]
 		public ActionTime LimiterTime { get; set; }
+		[
+			Category("Limiter"),
+			Description("The hash of the Limiter List in use"),
+			DisplayName("Limiter List Hash")
+		]
 		public string LimiterListHash { get; set; }
+		[
+			Category("Limiter"),
+			Description("Invert the limiter so the unit only applies if the value doesn't match the limiter"),
+			DisplayName("Invert Limiter")
+		]
 		public bool InvertLimiter { get; set; }
+
+		[
+			Category("Misc"),
+			Description("Note associated with this unit"),
+			DisplayName("Note")
+		]
+		public string Note { get; set; }
 
 		//Don't serialize this
 		//Use both attributes because XMLSerializer wants XmlIgnore and BinarySerializer wants NonSerialized

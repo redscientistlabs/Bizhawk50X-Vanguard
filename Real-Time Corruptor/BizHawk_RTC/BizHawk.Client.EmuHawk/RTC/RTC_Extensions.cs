@@ -1285,6 +1285,41 @@ namespace RTC
 		}
 	}
 
+	public class DataGridViewByteArrayColumn : DataGridViewColumn
+	{
+
+		/// <summary>
+		/// Constructor for the DataGridViewNumericUpDownColumn class.
+		/// </summary>
+		public DataGridViewByteArrayColumn() : base()
+		{
+		}
+
+		/// <summary>
+		/// Represents the implicit cell that gets cloned when adding rows to the grid.
+		/// </summary>
+		[
+			Browsable(false),
+			DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)
+		]
+		public override DataGridViewCell CellTemplate
+		{
+			get
+			{
+				return base.CellTemplate;
+			}
+			set
+			{
+				DataGridViewByteArrayCell dataGridViewByteArrayCell = value as DataGridViewByteArrayCell;
+				if (value != null && dataGridViewByteArrayCell == null)
+				{
+					throw new InvalidCastException("Value provided for CellTemplate must be of type DataGridViewCell or derive from it.");
+				}
+				base.CellTemplate = value;
+			}
+		}
+	}
+
 	/// <summary>
 	/// Reference Article https://msdn.microsoft.com/en-us/library/aa730881(v=vs.80).aspx
 	/// Defines a NumericUpDown cell type for the System.Windows.Forms.DataGridView control
