@@ -1285,6 +1285,7 @@ namespace RTC
 		}
 	}
 
+	/*
 	public class DataGridViewByteArrayColumn : DataGridViewColumn
 	{
 
@@ -1319,7 +1320,7 @@ namespace RTC
 			}
 		}
 	}
-
+	*/
 	/// <summary>
 	/// Reference Article https://msdn.microsoft.com/en-us/library/aa730881(v=vs.80).aspx
 	/// Defines a NumericUpDown cell type for the System.Windows.Forms.DataGridView control

@@ -2,7 +2,6 @@
 {
 	partial class RTC_BlastEditor_Form
 	{
-		/*
 		/// <summary>
 		/// Required designer variable.
 		/// </summary>
@@ -126,7 +125,7 @@
             this.btnCorrupt.Tag = "color:darker";
             this.btnCorrupt.Text = "Apply Corruption";
             this.btnCorrupt.UseVisualStyleBackColor = false;
-            this.btnCorrupt.Click += new System.EventHandler(this.btnCorrupt_Click);
+           // this.btnCorrupt.Click += new System.EventHandler(this.btnCorrupt_Click);
             // 
             // btnLoadCorrupt
             // 
@@ -144,7 +143,7 @@
             this.btnLoadCorrupt.Tag = "color:darker";
             this.btnLoadCorrupt.Text = "Load + Corrupt";
             this.btnLoadCorrupt.UseVisualStyleBackColor = false;
-            this.btnLoadCorrupt.Click += new System.EventHandler(this.btnLoadCorrupt_Click);
+     //       this.btnLoadCorrupt.Click += new System.EventHandler(this.btnLoadCorrupt_Click);
             // 
             // btnSendToStash
             // 
@@ -162,7 +161,7 @@
             this.btnSendToStash.Tag = "color:darker";
             this.btnSendToStash.Text = "Send To Stash";
             this.btnSendToStash.UseVisualStyleBackColor = false;
-            this.btnSendToStash.Click += new System.EventHandler(this.btnSendToStash_Click);
+       //    this.btnSendToStash.Click += new System.EventHandler(this.btnSendToStash_Click);
             // 
             // btnDisable50
             // 
@@ -180,7 +179,7 @@
             this.btnDisable50.Tag = "color:light";
             this.btnDisable50.Text = "Random Disable 50%";
             this.btnDisable50.UseVisualStyleBackColor = false;
-            this.btnDisable50.Click += new System.EventHandler(this.btnDisable50_Click);
+           // this.btnDisable50.Click += new System.EventHandler(this.btnDisable50_Click);
             // 
             // btnRemoveDisabled
             // 
@@ -198,7 +197,7 @@
             this.btnRemoveDisabled.Tag = "color:light";
             this.btnRemoveDisabled.Text = "Remove Disabled";
             this.btnRemoveDisabled.UseVisualStyleBackColor = false;
-            this.btnRemoveDisabled.Click += new System.EventHandler(this.btnRemoveDisabled_Click);
+            //this.btnRemoveDisabled.Click += new System.EventHandler(this.btnRemoveDisabled_Click);
             // 
             // btnInvertDisabled
             // 
@@ -216,7 +215,7 @@
             this.btnInvertDisabled.Tag = "color:light";
             this.btnInvertDisabled.Text = "Invert Disabled";
             this.btnInvertDisabled.UseVisualStyleBackColor = false;
-            this.btnInvertDisabled.Click += new System.EventHandler(this.btnInvertDisabled_Click);
+        //    this.btnInvertDisabled.Click += new System.EventHandler(this.btnInvertDisabled_Click);
             // 
             // btnDisableEverything
             // 
@@ -234,7 +233,7 @@
             this.btnDisableEverything.Tag = "color:light";
             this.btnDisableEverything.Text = "Disable Everything";
             this.btnDisableEverything.UseVisualStyleBackColor = false;
-            this.btnDisableEverything.Click += new System.EventHandler(this.btnDisableEverything_Click);
+            //this.btnDisableEverything.Click += new System.EventHandler(this.btnDisableEverything_Click);
             // 
             // btnEnableEverything
             // 
@@ -252,7 +251,7 @@
             this.btnEnableEverything.Tag = "color:light";
             this.btnEnableEverything.Text = "Enable Everything";
             this.btnEnableEverything.UseVisualStyleBackColor = false;
-            this.btnEnableEverything.Click += new System.EventHandler(this.btnEnableEverything_Click);
+            //this.btnEnableEverything.Click += new System.EventHandler(this.btnEnableEverything_Click);
             // 
             // btnDuplicateSelected
             // 
@@ -270,7 +269,7 @@
             this.btnDuplicateSelected.Tag = "color:light";
             this.btnDuplicateSelected.Text = "Duplicate Selected Rows";
             this.btnDuplicateSelected.UseVisualStyleBackColor = false;
-            this.btnDuplicateSelected.Click += new System.EventHandler(this.btnDuplicateSelected_Click);
+           // this.btnDuplicateSelected.Click += new System.EventHandler(this.btnDuplicateSelected_Click);
             // 
             // lbBlastLayerSize
             // 
@@ -418,7 +417,7 @@
             this.btnShiftBlastLayerDown.Tag = "color:light";
             this.btnShiftBlastLayerDown.Text = "◀";
             this.btnShiftBlastLayerDown.UseVisualStyleBackColor = false;
-            this.btnShiftBlastLayerDown.Click += new System.EventHandler(this.btnShiftBlastLayerDown_Click);
+        //    this.btnShiftBlastLayerDown.Click += new System.EventHandler(this.btnShiftBlastLayerDown_Click);
             // 
             // btnShiftBlastLayerUp
             // 
@@ -436,7 +435,7 @@
             this.btnShiftBlastLayerUp.Tag = "color:light";
             this.btnShiftBlastLayerUp.Text = "▶";
             this.btnShiftBlastLayerUp.UseVisualStyleBackColor = false;
-            this.btnShiftBlastLayerUp.Click += new System.EventHandler(this.btnShiftBlastLayerUp_Click);
+       //     this.btnShiftBlastLayerUp.Click += new System.EventHandler(this.btnShiftBlastLayerUp_Click);
             // 
             // updownShiftBlastLayerAmount
             // 
@@ -524,7 +523,7 @@
             this.btnRemoveSelected.Tag = "color:light";
             this.btnRemoveSelected.Text = "Remove Selected Rows";
             this.btnRemoveSelected.UseVisualStyleBackColor = false;
-            this.btnRemoveSelected.Click += new System.EventHandler(this.btnRemoveSelected_Click);
+          //  this.btnRemoveSelected.Click += new System.EventHandler(this.btnRemoveSelected_Click);
             // 
             // btnSearchRow
             // 
@@ -542,7 +541,7 @@
             this.btnSearchRow.Tag = "color:light";
             this.btnSearchRow.Text = "Search For Row";
             this.btnSearchRow.UseVisualStyleBackColor = false;
-            this.btnSearchRow.Click += new System.EventHandler(this.btnSearchRow_Click);
+         //   this.btnSearchRow.Click += new System.EventHandler(this.btnSearchRow_Click);
             // 
             // panelSidebar
             // 
@@ -584,7 +583,7 @@
             this.btnHelp.TabStop = false;
             this.btnHelp.Tag = "color:dark";
             this.btnHelp.UseVisualStyleBackColor = false;
-            this.btnHelp.Click += new System.EventHandler(this.btnHelp_Click);
+         //   this.btnHelp.Click += new System.EventHandler(this.btnHelp_Click);
             // 
             // btnSearchAgain
             // 
@@ -602,7 +601,7 @@
             this.btnSearchAgain.Tag = "color:light";
             this.btnSearchAgain.Text = "▶";
             this.btnSearchAgain.UseVisualStyleBackColor = false;
-            this.btnSearchAgain.Click += new System.EventHandler(this.btnSearchAgain_Click);
+          //  this.btnSearchAgain.Click += new System.EventHandler(this.btnSearchAgain_Click);
             // 
             // menuStripEx1
             // 
@@ -640,35 +639,35 @@
             this.loadFromFileblToolStripMenuItem.Name = "loadFromFileblToolStripMenuItem";
             this.loadFromFileblToolStripMenuItem.Size = new System.Drawing.Size(187, 22);
             this.loadFromFileblToolStripMenuItem.Text = "&Load From File (.bl)";
-            this.loadFromFileblToolStripMenuItem.Click += new System.EventHandler(this.loadFromFileblToolStripMenuItem_Click);
+        //    this.loadFromFileblToolStripMenuItem.Click += new System.EventHandler(this.loadFromFileblToolStripMenuItem_Click);
             // 
             // saveToFileblToolStripMenuItem
             // 
             this.saveToFileblToolStripMenuItem.Name = "saveToFileblToolStripMenuItem";
             this.saveToFileblToolStripMenuItem.Size = new System.Drawing.Size(187, 22);
             this.saveToFileblToolStripMenuItem.Text = "&Save to File (.bl)";
-            this.saveToFileblToolStripMenuItem.Click += new System.EventHandler(this.saveToFileblToolStripMenuItem_Click);
+        //    this.saveToFileblToolStripMenuItem.Click += new System.EventHandler(this.saveToFileblToolStripMenuItem_Click);
             // 
             // saveAsToFileblToolStripMenuItem
             // 
             this.saveAsToFileblToolStripMenuItem.Name = "saveAsToFileblToolStripMenuItem";
             this.saveAsToFileblToolStripMenuItem.Size = new System.Drawing.Size(187, 22);
             this.saveAsToFileblToolStripMenuItem.Text = "&Save As to File (.bl)";
-            this.saveAsToFileblToolStripMenuItem.Click += new System.EventHandler(this.saveAsToFileblToolStripMenuItem_Click);
+       //     this.saveAsToFileblToolStripMenuItem.Click += new System.EventHandler(this.saveAsToFileblToolStripMenuItem_Click);
             // 
             // importBlastlayerblToolStripMenuItem
             // 
             this.importBlastlayerblToolStripMenuItem.Name = "importBlastlayerblToolStripMenuItem";
             this.importBlastlayerblToolStripMenuItem.Size = new System.Drawing.Size(187, 22);
             this.importBlastlayerblToolStripMenuItem.Text = "&Import Blastlayer (.bl)";
-            this.importBlastlayerblToolStripMenuItem.Click += new System.EventHandler(this.importBlastlayerblToolStripMenuItem_Click);
+      //      this.importBlastlayerblToolStripMenuItem.Click += new System.EventHandler(this.importBlastlayerblToolStripMenuItem_Click);
             // 
             // exportToCSVToolStripMenuItem
             // 
             this.exportToCSVToolStripMenuItem.Name = "exportToCSVToolStripMenuItem";
             this.exportToCSVToolStripMenuItem.Size = new System.Drawing.Size(187, 22);
             this.exportToCSVToolStripMenuItem.Text = "&Export to CSV";
-            this.exportToCSVToolStripMenuItem.Click += new System.EventHandler(this.exportToCSVToolStripMenuItem_Click);
+        //    this.exportToCSVToolStripMenuItem.Click += new System.EventHandler(this.exportToCSVToolStripMenuItem_Click);
             // 
             // saveStateToolStripMenuItem
             // 
@@ -687,28 +686,28 @@
             this.runOriginalSavestateToolStripMenuItem.Name = "runOriginalSavestateToolStripMenuItem";
             this.runOriginalSavestateToolStripMenuItem.Size = new System.Drawing.Size(217, 22);
             this.runOriginalSavestateToolStripMenuItem.Text = "Run Original Savestate";
-            this.runOriginalSavestateToolStripMenuItem.Click += new System.EventHandler(this.runOriginalSavestateToolStripMenuItem_Click);
+         //   this.runOriginalSavestateToolStripMenuItem.Click += new System.EventHandler(this.runOriginalSavestateToolStripMenuItem_Click);
             // 
             // replaceSavestateFromGHToolStripMenuItem
             // 
             this.replaceSavestateFromGHToolStripMenuItem.Name = "replaceSavestateFromGHToolStripMenuItem";
             this.replaceSavestateFromGHToolStripMenuItem.Size = new System.Drawing.Size(217, 22);
             this.replaceSavestateFromGHToolStripMenuItem.Text = "Replace Savestate from GH";
-            this.replaceSavestateFromGHToolStripMenuItem.Click += new System.EventHandler(this.replaceSavestateFromGHToolStripMenuItem_Click);
+      //      this.replaceSavestateFromGHToolStripMenuItem.Click += new System.EventHandler(this.replaceSavestateFromGHToolStripMenuItem_Click);
             // 
             // replaceSavestateFromFileToolStripMenuItem
             // 
             this.replaceSavestateFromFileToolStripMenuItem.Name = "replaceSavestateFromFileToolStripMenuItem";
             this.replaceSavestateFromFileToolStripMenuItem.Size = new System.Drawing.Size(217, 22);
             this.replaceSavestateFromFileToolStripMenuItem.Text = "Replace Savestate from File";
-            this.replaceSavestateFromFileToolStripMenuItem.Click += new System.EventHandler(this.replaceSavestateFromFileToolStripMenuItem_Click);
+       //     this.replaceSavestateFromFileToolStripMenuItem.Click += new System.EventHandler(this.replaceSavestateFromFileToolStripMenuItem_Click);
             // 
             // saveSavestateToToolStripMenuItem
             // 
             this.saveSavestateToToolStripMenuItem.Name = "saveSavestateToToolStripMenuItem";
             this.saveSavestateToToolStripMenuItem.Size = new System.Drawing.Size(217, 22);
             this.saveSavestateToToolStripMenuItem.Text = "Save Savestate to";
-            this.saveSavestateToToolStripMenuItem.Click += new System.EventHandler(this.saveSavestateToToolStripMenuItem_Click);
+       //     this.saveSavestateToToolStripMenuItem.Click += new System.EventHandler(this.saveSavestateToToolStripMenuItem_Click);
             // 
             // rOMToolStripMenuItem
             // 
@@ -727,28 +726,28 @@
             this.runRomWithoutBlastlayerToolStripMenuItem.Name = "runRomWithoutBlastlayerToolStripMenuItem";
             this.runRomWithoutBlastlayerToolStripMenuItem.Size = new System.Drawing.Size(222, 22);
             this.runRomWithoutBlastlayerToolStripMenuItem.Text = "Run Rom Without Blastlayer";
-            this.runRomWithoutBlastlayerToolStripMenuItem.Click += new System.EventHandler(this.runRomWithoutBlastlayerToolStripMenuItem_Click);
+         //   this.runRomWithoutBlastlayerToolStripMenuItem.Click += new System.EventHandler(this.runRomWithoutBlastlayerToolStripMenuItem_Click);
             // 
             // replaceRomFromGHToolStripMenuItem
             // 
             this.replaceRomFromGHToolStripMenuItem.Name = "replaceRomFromGHToolStripMenuItem";
             this.replaceRomFromGHToolStripMenuItem.Size = new System.Drawing.Size(222, 22);
             this.replaceRomFromGHToolStripMenuItem.Text = "Replace Rom from GH";
-            this.replaceRomFromGHToolStripMenuItem.Click += new System.EventHandler(this.replaceRomFromGHToolStripMenuItem_Click);
+          //  this.replaceRomFromGHToolStripMenuItem.Click += new System.EventHandler(this.replaceRomFromGHToolStripMenuItem_Click);
             // 
             // replaceRomFromFileToolStripMenuItem
             // 
             this.replaceRomFromFileToolStripMenuItem.Name = "replaceRomFromFileToolStripMenuItem";
             this.replaceRomFromFileToolStripMenuItem.Size = new System.Drawing.Size(222, 22);
             this.replaceRomFromFileToolStripMenuItem.Text = "Replace Rom from File";
-            this.replaceRomFromFileToolStripMenuItem.Click += new System.EventHandler(this.replaceRomFromFileToolStripMenuItem_Click);
+           // this.replaceRomFromFileToolStripMenuItem.Click += new System.EventHandler(this.replaceRomFromFileToolStripMenuItem_Click);
             // 
             // bakeROMBlastunitsToFileToolStripMenuItem
             // 
             this.bakeROMBlastunitsToFileToolStripMenuItem.Name = "bakeROMBlastunitsToFileToolStripMenuItem";
             this.bakeROMBlastunitsToFileToolStripMenuItem.Size = new System.Drawing.Size(222, 22);
             this.bakeROMBlastunitsToFileToolStripMenuItem.Text = "Bake ROM BlastBytes to File";
-            this.bakeROMBlastunitsToFileToolStripMenuItem.Click += new System.EventHandler(this.bakeROMBlastunitsToFileToolStripMenuItem_Click);
+          //  this.bakeROMBlastunitsToFileToolStripMenuItem.Click += new System.EventHandler(this.bakeROMBlastunitsToFileToolStripMenuItem_Click);
             // 
             // toolsToolStripMenuItem
             // 
@@ -766,28 +765,28 @@
             this.sanitizeDuplicatesToolStripMenuItem.Name = "sanitizeDuplicatesToolStripMenuItem";
             this.sanitizeDuplicatesToolStripMenuItem.Size = new System.Drawing.Size(285, 22);
             this.sanitizeDuplicatesToolStripMenuItem.Text = "Sanitize Duplicates";
-            this.sanitizeDuplicatesToolStripMenuItem.Click += new System.EventHandler(this.sanitizeDuplicatesToolStripMenuItem_Click);
+          //  this.sanitizeDuplicatesToolStripMenuItem.Click += new System.EventHandler(this.sanitizeDuplicatesToolStripMenuItem_Click);
             // 
             // rasterizeVMDsToolStripMenuItem
             // 
             this.rasterizeVMDsToolStripMenuItem.Name = "rasterizeVMDsToolStripMenuItem";
             this.rasterizeVMDsToolStripMenuItem.Size = new System.Drawing.Size(285, 22);
             this.rasterizeVMDsToolStripMenuItem.Text = "Rasterize VMDs";
-            this.rasterizeVMDsToolStripMenuItem.Click += new System.EventHandler(this.rasterizeVMDsToolStripMenuItem_Click);
+          //  this.rasterizeVMDsToolStripMenuItem.Click += new System.EventHandler(this.rasterizeVMDsToolStripMenuItem_Click);
             // 
             // bakeBlastByteToolStripMenuItem
             // 
             this.bakeBlastByteToolStripMenuItem.Name = "bakeBlastByteToolStripMenuItem";
             this.bakeBlastByteToolStripMenuItem.Size = new System.Drawing.Size(285, 22);
             this.bakeBlastByteToolStripMenuItem.Text = "Bake Selected BlastUnits to BlastByte Set";
-            this.bakeBlastByteToolStripMenuItem.Click += new System.EventHandler(this.bakeBlastByteToolStripMenuItem_Click);
+            //this.bakeBlastByteToolStripMenuItem.Click += new System.EventHandler(this.bakeBlastByteToolStripMenuItem_Click);
             // 
             // openBlastLayerGeneratorToolStripMenuItem
             // 
             this.openBlastLayerGeneratorToolStripMenuItem.Name = "openBlastLayerGeneratorToolStripMenuItem";
             this.openBlastLayerGeneratorToolStripMenuItem.Size = new System.Drawing.Size(159, 20);
             this.openBlastLayerGeneratorToolStripMenuItem.Text = "Open BlastLayer Generator";
-            this.openBlastLayerGeneratorToolStripMenuItem.Click += new System.EventHandler(this.openBlastLayerGeneratorToolStripMenuItem_Click_1);
+           // this.openBlastLayerGeneratorToolStripMenuItem.Click += new System.EventHandler(this.openBlastLayerGeneratorToolStripMenuItem_Click_1);
             // 
             // btnHideSidebar
             // 
@@ -799,7 +798,7 @@
             this.btnHideSidebar.TabIndex = 144;
             this.btnHideSidebar.Text = "▶";
             this.btnHideSidebar.UseVisualStyleBackColor = true;
-            this.btnHideSidebar.Click += new System.EventHandler(this.btnHideSidebar_Click);
+      //      this.btnHideSidebar.Click += new System.EventHandler(this.btnHideSidebar_Click);
             // 
             // dgvBlastUnitReference
             // 
@@ -916,7 +915,7 @@
             this.Name = "RTC_BlastEditor_Form";
             this.Tag = "color:dark";
             this.Text = "Blast Editor";
-            this.Load += new System.EventHandler(this.RTC_BlastEditorForm_Load);
+        //    this.Load += new System.EventHandler(this.RTC_BlastEditorForm_Load);
             ((System.ComponentModel.ISupportInitialize)(this.dgvBlastLayer)).EndInit();
             this.pnMemoryTargetting.ResumeLayout(false);
             this.pnMemoryTargetting.PerformLayout();
@@ -997,6 +996,6 @@
 		private System.Windows.Forms.DataGridViewTextBoxColumn dgvParamDomain;
 		private DataGridViewNumericUpDownColumn dgvParam;
 		private System.Windows.Forms.DataGridViewButtonColumn dgvNoteButton;
-		*/
+		
 	}
 }

@@ -949,7 +949,7 @@ namespace RTC
 			Description("Note associated with this unit"),
 			DisplayName("Note")
 		]
-		public string Note { get; set; }
+		public string Note { get; set; } = String.Empty;
 
 		//Don't serialize this
 		//Use both attributes because XMLSerializer wants XmlIgnore and BinarySerializer wants NonSerialized
