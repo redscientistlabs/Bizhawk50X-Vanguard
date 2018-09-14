@@ -8,6 +8,38 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
+/*
+Applies in all cases & should be editable
+ * bool IsEnabled 
+ * bool IsLocked
+ * 
+ * string Domain 
+ * long Address 
+ * int Precision 
+ * BlastUnitSource Source 
+
+ * BigInteger TiltValue 
+ * 
+ * int ExecuteFrame 
+ * int Lifetime 
+ * bool Loop 
+ * 
+ * ActionTime LimiterTime 
+ * string LimiterListHash 
+ * bool InvertLimiter 
+ *
+ * string Note 
+
+
+Applies for Store & should be editable
+ * ActionTime StoreTime 
+ * StoreType StoreType 
+ * string SourceDomain 
+ * long SourceAddress 
+
+
+Applies for Value & should be editable
+ * byte[] Value */
 
 namespace RTC
 {
@@ -34,6 +66,8 @@ namespace RTC
 
 		private void InitializeDGV()
 		{
+			var actionTime = Enum.GetValues(typeof(ActionTime));
+
 			dgvBlastEditor.Columns.Add(CreateColumn("isEnabled", "Enabled", new DataGridViewCheckBoxColumn()));
 			dgvBlastEditor.Columns.Add(CreateColumn("isLocked", "Locked", new DataGridViewCheckBoxColumn()));
 
@@ -45,6 +79,8 @@ namespace RTC
 			dgvBlastEditor.Columns.Add(CreateColumn("Address", "Address", new DataGridViewNumericUpDownColumn()));
 			dgvBlastEditor.Columns.Add(CreateColumn("Precision", "Precision", new DataGridViewNumericUpDownColumn()));
 
+			dgvBlastEditor.Columns.Add(CreateColumn("ValueString", "Value", new DataGridViewTextBoxColumn()));
+
 
 			dgvBlastEditor.Columns.Add(CreateColumn("ExecuteFrame", "Execute Frame", new DataGridViewNumericUpDownColumn()));
 			dgvBlastEditor.Columns.Add(CreateColumn("Lifetime", "Lifetime", new DataGridViewNumericUpDownColumn()));
@@ -52,12 +88,8 @@ namespace RTC
 
 
 			DataGridViewComboBoxColumn limiterTime = CreateColumn("LimiterTime", "Limiter Time", new DataGridViewComboBoxColumn()) as DataGridViewComboBoxColumn;
-			//Rather than using a bindingsource we can just add these since they don't change at runtime
-			var actionTime = Enum.GetValues(typeof(ActionTime));
-			foreach(var item in actionTime)
-			{
+			foreach (var item in actionTime)
 				limiterTime.Items.Add(item);
-			}
 			dgvBlastEditor.Columns.Add(limiterTime);
 
 			DataGridViewComboBoxColumn limiterHash = CreateColumn("LimiterHash", "Limiter List", new DataGridViewComboBoxColumn()) as DataGridViewComboBoxColumn;
@@ -69,42 +101,62 @@ namespace RTC
 			dgvBlastEditor.Columns.Add(CreateColumn("InvertLimiter", "Invert Limiter", new DataGridViewCheckBoxColumn()));
 
 
+			DataGridViewComboBoxColumn storeTime = CreateColumn("StoreTime", "Store Time", new DataGridViewComboBoxColumn()) as DataGridViewComboBoxColumn;
+			foreach (var item in actionTime)
+				storeTime.Items.Add(item);
+			dgvBlastEditor.Columns.Add(storeTime);
+
 			//Do this one separately as we need to populate the Combobox
 			DataGridViewComboBoxColumn storeType = CreateColumn("StoreType", "Store Type", new DataGridViewComboBoxColumn()) as DataGridViewComboBoxColumn;
 			storeType.DataSource = Enum.GetValues(typeof(StoreType));
 			dgvBlastEditor.Columns.Add(storeType);
+
+			//Do this one separately as we need to populate the Combobox
+			DataGridViewComboBoxColumn sourceDomain = CreateColumn("SourceDomain", "SourceDomain", new DataGridViewComboBoxColumn()) as DataGridViewComboBoxColumn;
+			sourceDomain.DataSource = domains;
+			dgvBlastEditor.Columns.Add(sourceDomain);
+
+			dgvBlastEditor.Columns.Add(CreateColumn("SourceAddress", "Source Address", new DataGridViewNumericUpDownColumn()));
+
 
 			dgvBlastEditor.Columns.Add(CreateColumn("Note", "Note", new DataGridViewButtonColumn()));
 
 		}
 
 
-		private DataGridViewColumn CreateColumn(string dataPropertyName, string displayName, DataGridViewColumn column)
+		private DataGridViewColumn CreateColumn(string dataPropertyName, string displayName, DataGridViewColumn column, int fillWeight = -1)
 		{
 
-			int buttonFillWeight = 15;
-			int checkBoxFillWeight = 20;
-			int comboBoxFillWeight = 45;
-			int textBoxFillWeight = 50;
-			int numericUpDownFillWeight = 65;
-
-			switch (column)
+			if(fillWeight == -1)
 			{
-				case DataGridViewButtonColumn s:
-					s.FillWeight = buttonFillWeight;
-					break;
-				case DataGridViewCheckBoxColumn s:
-					s.FillWeight = checkBoxFillWeight;
-					break;
-				case DataGridViewComboBoxColumn s:
-					s.FillWeight = comboBoxFillWeight;
-					break;
-				case DataGridViewTextBoxColumn s:
-					s.FillWeight = textBoxFillWeight;
-					break;
-				case DataGridViewNumericUpDownColumn s:
-					s.FillWeight = numericUpDownFillWeight;
-					break;
+				int buttonFillWeight = 20;
+				int checkBoxFillWeight = 25;
+				int comboBoxFillWeight = 40;
+				int textBoxFillWeight = 30;
+				int numericUpDownFillWeight = 35;
+
+				switch (column)
+				{
+					case DataGridViewButtonColumn s:
+						s.FillWeight = buttonFillWeight;
+						break;
+					case DataGridViewCheckBoxColumn s:
+						s.FillWeight = checkBoxFillWeight;
+						break;
+					case DataGridViewComboBoxColumn s:
+						s.FillWeight = comboBoxFillWeight;
+						break;
+					case DataGridViewTextBoxColumn s:
+						s.FillWeight = textBoxFillWeight;
+						break;
+					case DataGridViewNumericUpDownColumn s:
+						s.FillWeight = numericUpDownFillWeight;
+						break;
+				}
+			}
+			else
+			{
+				column.FillWeight = fillWeight;
 			}
 
 

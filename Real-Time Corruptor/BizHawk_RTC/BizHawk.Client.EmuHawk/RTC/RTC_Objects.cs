@@ -898,6 +898,24 @@ namespace RTC
 
 
 		[
+			Category("Value"),
+			Description("Gets and sets Value[] through a string. Used for Textboxes"),
+			DisplayName("ValueString")
+		]
+
+		public string ValueString
+		{
+			get
+			{
+				return BitConverter.ToString(this.Value);
+			}
+			set
+			{
+				this.Value = value.GetBytesPadded(this.Precision);
+			}
+		}
+
+		[
 			Category("Store"),
 			Description("The domain used for the STORE operation"),
 			DisplayName("Source Domain")

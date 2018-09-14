@@ -209,6 +209,20 @@ namespace RTC
 			System.Buffer.BlockCopy(str.ToCharArray(), 0, bytes, 0, bytes.Length);
 			return bytes;
 		}
+		/// <summary>
+		/// Gets you a byte array from a string 0 padded on the left to a specific length
+		/// </summary>
+		/// <param name="str"></param>
+		/// <returns></returns>
+		public static byte[] GetBytesPadded(this string str, int precision)
+		{
+			byte[] bytes = new byte[precision];
+
+			int padding = precision - (str.Length * sizeof(char));
+
+			System.Buffer.BlockCopy(str.ToCharArray(), 0, bytes, padding, bytes.Length - padding);
+			return bytes;
+		}
 
 		#endregion STRING EXTENSIONS
 
