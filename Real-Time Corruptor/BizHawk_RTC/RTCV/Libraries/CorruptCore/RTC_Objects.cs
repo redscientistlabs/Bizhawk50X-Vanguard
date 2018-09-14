@@ -227,8 +227,6 @@ namespace RTC
 				return false;
 			}
 
-			Guid token = RTC_NetCore.HugeOperationStart();
-
 			Extract(Filename, "\\WORKING\\SKS", "stockpile.xml");
 
 			Stockpile sks;
@@ -245,7 +243,6 @@ namespace RTC
 			catch
 			{
 				MessageBox.Show("The Stockpile file could not be loaded");
-				RTC_NetCore.HugeOperationEnd(token);
 				return false;
 			}
 
@@ -269,8 +266,6 @@ namespace RTC
 			sks.Filename = Filename;
 
 			CheckCompatibility(sks);
-
-			RTC_NetCore.HugeOperationEnd(token);
 
 			return true;
 		}

@@ -74,8 +74,6 @@ namespace RTC
 				return null;
 			}
 
-			var token = RTC_NetCore.HugeOperationStart();
-
 			XmlSerializer xs = new XmlSerializer(typeof(BlastLayer));
 
 			try
@@ -89,7 +87,6 @@ namespace RTC
 			catch
 			{
 				MessageBox.Show("The BlastLayer file could not be loaded");
-				RTC_NetCore.HugeOperationEnd(token);
 				return null;
 			}
 		}
@@ -206,14 +203,11 @@ namespace RTC
 			try
 			{
 				//Bake them
-				var token = RTC_NetCore.HugeOperationStart();
 				BlastLayer newLayer = (BlastLayer)NetCoreImplementation.SendCommandToBizhawk(new RTC_Command(CommandType.REMOTE_KEY_GETBLASTBYTESETFROMLAYER)
 				{
 					blastlayer =  inputLayer,
 					stashkey = sk
 				}, true);
-				RTC_NetCore.HugeOperationEnd(token);
-
 				return newLayer;
 			}
 			catch (Exception ex)

@@ -428,7 +428,6 @@ namespace RTC
 
 		private void btnAutoKillSwitchExecute_Click(object sender, EventArgs e)
 		{
-			RTC_NetCore.HugeOperationReset();
 
 			ShowPanelForm(S.GET<RTC_ConnectionStatus_Form>());
 

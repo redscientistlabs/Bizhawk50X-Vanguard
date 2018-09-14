@@ -1,4 +1,5 @@
-﻿using System;
+﻿using RTCV.CorruptCore;
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Drawing;
@@ -303,11 +304,9 @@ namespace RTC
 								return;
 						}
 
-					var token = RTC_NetCore.HugeOperationStart("LAZY");
 
 					RTC_StockpileManager.LoadState(psk);
 
-					RTC_NetCore.HugeOperationEnd(token);
 				}
 				else
 					MessageBox.Show("Savestate box is empty");
@@ -354,8 +353,6 @@ namespace RTC
 					return;
 				}
 
-				var token = RTC_NetCore.HugeOperationStart("LAZY");
-
 				if (rbCorrupt.Checked)
 				{
 					string romFilename = (string)NetCoreImplementation.SendCommandToBizhawk(new RTC_Command(CommandType.REMOTE_KEY_GETOPENROMFILENAME), true);
@@ -373,8 +370,6 @@ namespace RTC
 					RTC_StockpileManager.InjectFromStashkey(RTC_StockpileManager.currentStashkey, loadBeforeOperation);
 				else if (rbOriginal.Checked)
 					RTC_StockpileManager.OriginalFromStashkey(RTC_StockpileManager.currentStashkey);
-
-				RTC_NetCore.HugeOperationEnd(token);
 
 				RefreshStashHistory();
 			}
@@ -447,7 +442,6 @@ namespace RTC
 
 		private void OneTimeExecute()
 		{
-			var token = RTC_NetCore.HugeOperationStart("LAZY");
 
 			if (rbCorrupt.Checked)
 				RTC_StockpileManager.ApplyStashkey(RTC_StockpileManager.currentStashkey, loadBeforeOperation);
@@ -456,7 +450,6 @@ namespace RTC
 			else if (rbOriginal.Checked)
 				RTC_StockpileManager.OriginalFromStashkey(RTC_StockpileManager.currentStashkey);
 
-			RTC_NetCore.HugeOperationEnd(token);
 		}
 
 		private void rbInject_CheckedChanged(object sender, EventArgs e)
@@ -903,14 +896,10 @@ namespace RTC
 			{
 				btnSendRaw.Visible = false;
 
-				var token = RTC_NetCore.HugeOperationStart("LAZY");
-
 				StashKey sk = (StashKey)NetCoreImplementation.SendCommandToBizhawk(new RTC_Command(CommandType.REMOTE_KEY_GETRAWBLASTLAYER), true);
 
 				RTC_StockpileManager.currentStashkey = sk;
 				RTC_StockpileManager.StashHistory.Add(RTC_StockpileManager.currentStashkey);
-
-				RTC_NetCore.HugeOperationEnd(token);
 
 				RefreshStashHistory();
 
@@ -1197,8 +1186,6 @@ namespace RTC
 
 			SaveStateKeys ssk;
 
-			var token = RTC_NetCore.HugeOperationStart();
-
 			try
 			{
 				Stockpile.EmptyFolder("\\WORKING\\TEMP");
@@ -1258,7 +1245,6 @@ namespace RTC
 
 			RefreshSavestateTextboxes();
 
-			RTC_NetCore.HugeOperationEnd(token);
 		}
 
 
@@ -1302,11 +1288,9 @@ namespace RTC
 				((ToolStripMenuItem)columnsMenu.Items.Add("Generate VMD from Selected Item", null, new EventHandler((ob, ev) =>
 					{
 
-						var token = RTC_NetCore.HugeOperationStart("LAZY");
 						StashKey sk = RTC_StockpileManager.StashHistory[lbStashHistory.SelectedIndex];
 						sk.BlastLayer.RasterizeVMDs();
 						RTC_MemoryDomains.GenerateVmdFromStashkey(sk);
-						RTC_NetCore.HugeOperationEnd(token);
 					}))).Enabled = lbStashHistory.SelectedIndex != -1;
 
 				columnsMenu.Items.Add(new ToolStripSeparator());
@@ -1341,7 +1325,6 @@ namespace RTC
 			S.GET<RTC_BlastEditor_Form>().Close();
 			S.SET(new RTC_BlastEditor_Form());
 
-			var token = RTC_NetCore.HugeOperationStart("DISABLED");
 			//If the blastlayer is big, prompt them before opening it. Let's go with 5k for now.
 
 			//TODO
@@ -1351,7 +1334,6 @@ namespace RTC
 			else if (sk.BlastLayer.Layer.Count <= 5000)
 				S.GET<RTC_BlastEditor_Form>().LoadStashkey(sk);
 			*/
-			RTC_NetCore.HugeOperationEnd(token);
 		}
 
 		private void sendCurrentStockpileToSKS()
@@ -1553,17 +1535,12 @@ namespace RTC
 			}
 		}
 
-		Guid? intensitySliderToken = null;
-
 		private void track_Intensity_MouseDown(object sender, MouseEventArgs e)
 		{
-			intensitySliderToken = RTC_NetCore.HugeOperationStart("LAZY");
 		}
 
 		private void track_Intensity_MouseUp(object sender, MouseEventArgs e)
 		{
-			RTC_NetCore.HugeOperationEnd(intensitySliderToken);
-
 			track_Intensity_Scroll(sender, e);
 		}
 	}

@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using GongSolutions.Shell.Interop;
+//using GongSolutions.Shell.Interop;
 using RTCV.NetCore;
 
 namespace RTC

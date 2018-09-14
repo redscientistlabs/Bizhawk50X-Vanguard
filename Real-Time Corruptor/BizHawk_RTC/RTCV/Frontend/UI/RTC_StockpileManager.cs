@@ -1,4 +1,5 @@
-﻿using System;
+﻿using RTCV.CorruptCore;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -70,20 +71,15 @@ namespace RTC
 		{
 			PreApplyStashkey();
 
-			var token = RTC_NetCore.HugeOperationStart("LAZY");
-
 			if (_loadBeforeOperation)
 			{
 				if (!LoadStateAndBlastLayer(sk))
 				{
-					RTC_NetCore.HugeOperationEnd(token);
 					return isCorruptionApplied;
 				}
 			}
 			else
 				NetCoreImplementation.SendCommandToBizhawk(new RTC_Command(CommandType.BLAST) { blastlayer = sk.BlastLayer, isReplay = true });
-
-			RTC_NetCore.HugeOperationEnd(token);
 
 			isCorruptionApplied = (sk.BlastLayer != null && sk.BlastLayer.Layer.Count > 0);
 
@@ -95,8 +91,6 @@ namespace RTC
 		{
 			PreApplyStashkey();
 
-			var token = RTC_NetCore.HugeOperationStart("LAZY");
-
 			StashKey psk = RTC_StockpileManager.getCurrentSavestateStashkey();
 
 			if (psk == null)
@@ -104,7 +98,6 @@ namespace RTC
 				RTC_EmuCore.StopSound();
 				MessageBox.Show("The Glitch Harvester could not perform the CORRUPT action\n\nEither no Savestate Box was selected in the Savestate Manager\nor the Savetate Box itself is empty.");
 				RTC_EmuCore.StartSound();
-				RTC_NetCore.HugeOperationEnd(token);
 				return false;
 			}
 
@@ -131,7 +124,6 @@ namespace RTC
 			{
 				if (!LoadStateAndBlastLayer(currentStashkey))
 				{
-					RTC_NetCore.HugeOperationEnd(token);
 					return isCorruptionApplied;
 				}
 			}
@@ -151,8 +143,6 @@ namespace RTC
 				S.GET<RTC_GlitchHarvester_Form>().DontLoadSelectedStash = true;
 				S.GET<RTC_GlitchHarvester_Form>().lbStashHistory.SelectedIndex = S.GET<RTC_GlitchHarvester_Form>().lbStashHistory.Items.Count - 1;
 			}
-
-			RTC_NetCore.HugeOperationEnd(token);
 
 			PostApplyStashkey();
 			return isCorruptionApplied;
@@ -229,8 +219,6 @@ namespace RTC
 
 			if (sks != null && sks.Count > 1)
 			{
-				var token = RTC_NetCore.HugeOperationStart();
-
 				StashKey master = sks[0];
 
 				string masterSystemCore = master.SystemCore;
@@ -246,7 +234,6 @@ namespace RTC
 				if (!allCoresIdentical && !RTC_EmuCore.AllowCrossCoreCorruption)
 				{
 					MessageBox.Show("Merge attempt failed: Core mismatch\n\n" + string.Join("\n", sks.Select(it => $"{it.GameName} -> {it.SystemName} -> {it.SystemCore}")));
-					RTC_NetCore.HugeOperationEnd(token);
 
 					return false;
 				}
@@ -255,7 +242,6 @@ namespace RTC
 					if (item.GameName != master.GameName)
 					{
 						MessageBox.Show("Merge attempt failed: game mismatch\n\n" + string.Join("\n", sks.Select(it => $"{it.GameName} -> {it.SystemName} -> {it.SystemCore}")));
-						RTC_NetCore.HugeOperationEnd(token);
 
 						return false;
 					}
@@ -276,14 +262,10 @@ namespace RTC
 				currentStashkey.GameName = master.GameName;
 				currentStashkey.SyncSettings = master.SyncSettings;
 
-				//RTC_NetCore.HugeOperationEnd(token);
-				//  token = RTC_NetCore.HugeOperationStart("LAZY");
-
 				if (_loadBeforeOperation)
 				{
 					if (!LoadStateAndBlastLayer(currentStashkey))
 					{
-						RTC_NetCore.HugeOperationEnd(token);
 						return isCorruptionApplied;
 					}
 				}
@@ -297,8 +279,6 @@ namespace RTC
 					StashHistory.Add(currentStashkey);
 					S.GET<RTC_GlitchHarvester_Form>().RefreshStashHistory();
 				}
-
-				RTC_NetCore.HugeOperationEnd(token);
 
 				PostApplyStashkey();
 				return true;

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using RTCV.CorruptCore;
+using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Linq;
@@ -344,7 +345,6 @@ namespace RTC
 
 		public BlastLayer GenerateBlastLayers(bool useStashkey = false)
 		{
-			var token = RTC_NetCore.HugeOperationStart("DISABLED");
 			try
 			{
 				BlastLayer bl = new BlastLayer();
@@ -418,7 +418,6 @@ namespace RTC
 			}
 			finally
 			{
-				RTC_NetCore.HugeOperationEnd(token);
 			}
 		}
 

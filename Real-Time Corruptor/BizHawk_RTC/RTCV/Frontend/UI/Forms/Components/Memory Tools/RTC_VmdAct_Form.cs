@@ -7,6 +7,7 @@ using System.Linq;
 using System.Windows.Forms;
 using System.Xml.Serialization;
 using System.Runtime.InteropServices;
+using RTCV.CorruptCore;
 
 namespace RTC
 {
@@ -447,7 +448,6 @@ namespace RTC
 
 		private bool generateActiveTable()
 		{
-			var token = RTC_NetCore.HugeOperationStart("DISABLED");
 			try
 			{
 				if (!ComputeActiveTableActivity())
@@ -485,7 +485,7 @@ namespace RTC
 			}
 			finally
 			{
-				RTC_NetCore.HugeOperationEnd(token);
+
 			}
 		}
 
@@ -494,7 +494,6 @@ namespace RTC
             if (ActiveTableGenerated == null || ActiveTableGenerated.Length == 0)
                 return;
 
-			var token = RTC_NetCore.HugeOperationStart("DISABLED");
 			try
 			{
 				MemoryInterface mi = RTC_MemoryDomains.MemoryInterfaces[cbSelectedMemoryDomain.SelectedItem.ToString()];
@@ -536,7 +535,6 @@ namespace RTC
 				if (VMD.PointerAddresses.Count == 0)
 				{
 					MessageBox.Show("The resulting VMD had no pointers so the operation got cancelled.");
-					RTC_NetCore.HugeOperationEnd(token);
 					return;
 				}
 
@@ -555,7 +553,6 @@ namespace RTC
 			}
 			finally
 			{
-				RTC_NetCore.HugeOperationEnd(token);
 			}
 		}
 

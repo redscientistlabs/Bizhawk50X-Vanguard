@@ -1,6 +1,9 @@
-﻿namespace RTC
+﻿using RTCV.CorruptCore;
+using System.Windows.Forms;
+
+namespace RTC
 {
-    partial class RTC_SelectBox_Form
+    partial class RTC_SelectBox_Form : ComponentForm
 	{
         /// <summary>
         /// Required designer variable.

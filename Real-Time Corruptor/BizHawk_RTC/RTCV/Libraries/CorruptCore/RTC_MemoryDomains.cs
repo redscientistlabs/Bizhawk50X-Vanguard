@@ -1,5 +1,4 @@
-﻿using BizHawk.Client.Common;
-using BizHawk.Emulation.Common;
+﻿using RTCV.CorruptCore;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -22,6 +21,7 @@ namespace RTC
 		public static bool BigEndian { get; set; }
 		public static int WordSize { get; set; }
 
+		/*
 		public static WatchSize WatchSize
 		{
 			get
@@ -29,6 +29,7 @@ namespace RTC
 				return (WatchSize)WordSize;
 			}
 		}
+		*/
 
 		public static string[] SelectedDomains = new string[] { };
 		public static string[] lastSelectedDomains = new string[] { };
@@ -339,13 +340,11 @@ namespace RTC
 			object[] returns;
 
 
-			Guid token = RTC_NetCore.HugeOperationStart();
 			if (!NetCoreImplementation.isStandaloneUI)
 				returns = (object[])GetInterfaces();
 			else
 				returns = (object[])NetCoreImplementation.SendCommandToBizhawk(new RTC_Command(CommandType.REMOTE_DOMAIN_GETDOMAINS), true);
 
-			RTC_NetCore.HugeOperationEnd(token);
 
 			if (returns == null)
 			{
@@ -441,15 +440,6 @@ namespace RTC
 			return null;
 		}
 
-		public static void UnFreezeAddress(long address)
-		{
-			if (address >= 0)
-			{
-				// TODO: can't unfreeze address 0??
-				Global.CheatList.RemoveRange(
-					Global.CheatList.Where(x => x.Contains(address)).ToList());
-			}
-		}
 
 		public static long GetRealAddress(string domain, long address)
 		{
@@ -491,11 +481,9 @@ namespace RTC
 
 			if (NetCoreImplementation.isStandaloneUI)
 			{
-				var token = RTC_NetCore.HugeOperationStart();
 
 				NetCoreImplementation.SendCommandToBizhawk(new RTC_Command(CommandType.REMOTE_DOMAIN_VMD_ADD) { objectValue = VMD.Proto }, true);
 
-				RTC_NetCore.HugeOperationEnd(token);
 			}
 
 			if (!NetCoreImplementation.isStandaloneEmu)
@@ -550,13 +538,11 @@ namespace RTC
 
 		public static void generateActiveTableDump(string domain, string key)
 		{
-			var token = RTC_NetCore.HugeOperationStart("LAZY");
 			MemoryInterface mi = MemoryInterfaces[domain];
 
 			byte[] dump = mi.GetDump();
 
 			File.WriteAllBytes(RTC_EmuCore.rtcDir + "\\MEMORYDUMPS\\" + key + ".dmp", dump.ToArray());
-			RTC_NetCore.HugeOperationEnd(token);
 		}
 
 		public static byte[] GetDomainData(string domain)

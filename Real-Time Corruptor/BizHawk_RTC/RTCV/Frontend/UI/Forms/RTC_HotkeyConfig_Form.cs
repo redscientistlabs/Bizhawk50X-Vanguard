@@ -1,4 +1,5 @@
-﻿using System.Windows.Forms;
+﻿using RTCV.CorruptCore;
+using System.Windows.Forms;
 
 //using RTC.Shortcuts;
 

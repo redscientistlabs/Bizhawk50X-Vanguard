@@ -3,6 +3,7 @@ using BizHawk.Client.EmuHawk;
 using BizHawk.Emulation.Common;
 using BizHawk.Emulation.Cores.Nintendo.N64;
 using Newtonsoft.Json;
+using RTCV.CorruptCore;
 using RTCV.NetCore;
 using System;
 using System.Collections.Generic;
@@ -168,8 +169,6 @@ namespace RTC
 
 			isNormalAdvance = false;
 
-			loadGameToken = RTC_NetCore.HugeOperationStart();
-
 			RTC_StepActions.ClearStepBlastUnits();
 		}
 
@@ -207,15 +206,11 @@ namespace RTC
 			lastGameName = RTC_EmuCore.currentGameName;
 
 			//RTC_Restore.SaveRestore();
-
-			RTC_NetCore.HugeOperationEnd(loadGameToken);
 		}
 
 		public static void LOAD_GAME_FAILED()
 		{
 			if (disableRTC) return;
-
-			RTC_NetCore.HugeOperationEnd(loadGameToken);
 		}
 
 		static bool CLOSE_GAME_loop_flag = false;
@@ -261,15 +256,11 @@ namespace RTC
 		public static void LOAD_SAVESTATE_BEGIN()
 		{
 			if (disableRTC) return;
-
-			loadSavestateToken = RTC_NetCore.HugeOperationStart();
 		}
 
 		public static void LOAD_SAVESTATE_END()
 		{
 			if (disableRTC) return;
-
-			RTC_NetCore.HugeOperationEnd(loadSavestateToken);
 		}
 
 		public static void EMU_CRASH(string msg)

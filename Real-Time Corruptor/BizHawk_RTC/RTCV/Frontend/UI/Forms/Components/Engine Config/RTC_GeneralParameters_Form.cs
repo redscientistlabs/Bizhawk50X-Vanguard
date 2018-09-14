@@ -1,4 +1,5 @@
-﻿using System;
+﻿using RTCV.CorruptCore;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -159,24 +160,22 @@ namespace RTC
 
 		private void track_ErrorDelay_MouseDown(object sender, MouseEventArgs e)
 		{
-			errorDelayToken = RTC_NetCore.HugeOperationStart("LAZY");
+
 		}
 
 		private void track_ErrorDelay_MouseUp(object sender, MouseEventArgs e)
 		{
-			RTC_NetCore.HugeOperationEnd(errorDelayToken);
 
 			track_ErrorDelay_Scroll(sender, e);
 		}
 
 		private void track_Intensity_MouseDown(object sender, MouseEventArgs e)
 		{
-			intensityToken = RTC_NetCore.HugeOperationStart("LAZY");
+
 		}
 
 		private void track_Intensity_MouseUp(object sender, MouseEventArgs e)
 		{
-			RTC_NetCore.HugeOperationEnd(intensityToken);
 
 			track_Intensity_Scroll(sender, e);
 		}
