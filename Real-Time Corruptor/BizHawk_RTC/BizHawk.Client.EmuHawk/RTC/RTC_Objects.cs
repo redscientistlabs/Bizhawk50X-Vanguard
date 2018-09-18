@@ -825,6 +825,12 @@ namespace RTC
 	[Serializable]
 	public class BlastUnit
 	{
+
+		public object Clone()
+		{
+			return ObjectCopier.Clone(this);
+		}
+
 		[
 			Category("Settings"),
 			Description("Whether or not the BlastUnit will apply if the stashkey is run"),
@@ -911,7 +917,7 @@ namespace RTC
 			}
 			set
 			{
-				this.Value = value.GetBytesPadded(this.Precision);
+				this.Value = value.GetByteArrayFromContentsPadLeft(this.Precision);
 			}
 		}
 

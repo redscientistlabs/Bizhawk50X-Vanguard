@@ -202,7 +202,12 @@ namespace RTC
 			var data = Convert.FromBase64String(base64);
 			return Encoding.UTF8.GetString(data);
 		}
-
+		/// <summary>
+		/// Gets you a byte array representing the characters in a string.
+		/// THIS DOES NOT CONVERT A STRING TO A BYTE ARRAY CONTAINING THE SAME CHARACTERS
+		/// </summary>
+		/// <param name="str"></param>
+		/// <returns></returns>
 		public static byte[] GetBytes(this string str)
 		{
 			byte[] bytes = new byte[str.Length * sizeof(char)];
@@ -210,17 +215,19 @@ namespace RTC
 			return bytes;
 		}
 		/// <summary>
-		/// Gets you a byte array from a string 0 padded on the left to a specific length
+		/// Gets you a byte array from the CONTENTS of a string 0 padded on the left to a specific length
 		/// </summary>
 		/// <param name="str"></param>
 		/// <returns></returns>
-		public static byte[] GetBytesPadded(this string str, int precision)
+		public static byte[] GetByteArrayFromContentsPadLeft(this string str, int precision)
 		{
-			byte[] bytes = new byte[precision];
-
-			int padding = precision - (str.Length * sizeof(char));
-
-			System.Buffer.BlockCopy(str.ToCharArray(), 0, bytes, padding, bytes.Length - padding);
+			var bytes = new byte[precision];
+			string temp = str.PadLeft(precision*2,'0'); //*2 since a byte is two characters
+			
+			for (var i = 0; i < precision*2; i+=2)
+			{
+				bytes[i] = (byte)Convert.ToUInt32(temp.Substring(i, 2), 16);
+			}
 			return bytes;
 		}
 
@@ -644,6 +651,65 @@ namespace RTC
 				readSoFar += readNow;
 			} while (readSoFar < bytesRequired);
 			return readSoFar;
+		}
+		#endregion
+
+		#region LIST EXTENSIONS
+		//https://stackoverflow.com/a/29119974
+		public static System.Data.DataTable ToDataTable<T>(this List<T> items)
+		{
+			var tb = new System.Data.DataTable(typeof(T).Name);
+
+			PropertyInfo[] props = typeof(T).GetProperties(BindingFlags.Public | BindingFlags.Instance);
+
+			foreach (var prop in props)
+			{
+				if (prop.PropertyType.IsEnum)
+				{
+					tb.Columns.Add(prop.Name, typeof(string));
+				}
+				else if (prop.PropertyType.IsGenericType && prop.PropertyType.GetGenericTypeDefinition() == typeof(Nullable<>))
+				{
+					tb.Columns.Add(prop.Name, prop.PropertyType.GetGenericArguments()[0]);
+				}
+				else
+					tb.Columns.Add(prop.Name, prop.PropertyType);
+			}
+
+			foreach (var item in items)
+			{
+				var values = new object[props.Length];
+				for (var i = 0; i < props.Length; i++)
+				{
+					if (props[i].PropertyType.IsEnum)
+					{
+						object val = props[i].GetValue(item, null);
+						values[i] = Enum.GetName(props[i].PropertyType, val);
+					}
+					else
+					{
+						values[i] = props[i].GetValue(item, null);
+					}
+				}
+
+				tb.Rows.Add(values);
+			}
+
+			return tb;
+		}
+		#endregion
+		#region BINDINGLIST EXTENSIONS
+
+		public static BindingList<T> AddRange<T>(this BindingList<T> input, IEnumerable<T> collection)
+		{
+			foreach (T item in collection)
+				input.Add(item);
+			return input;
+		}
+
+		public static BindingList<T> ToBindingList<T>(this IEnumerable<T> collection)
+		{
+			return new BindingList<T>(collection.ToList());
 		}
 		#endregion
 

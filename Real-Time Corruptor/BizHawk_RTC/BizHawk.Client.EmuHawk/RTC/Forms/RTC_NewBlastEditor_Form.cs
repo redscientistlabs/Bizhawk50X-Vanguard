@@ -49,23 +49,36 @@ namespace RTC
 		private static Dictionary<string, MemoryInterface> domainToMiDico = new Dictionary<string, MemoryInterface>();
 		private string[] domains = RTC_MemoryDomains.MemoryInterfaces?.Keys?.Concat(RTC_MemoryDomains.VmdPool.Values.Select(it => it.ToString())).ToArray();
 		private string mainDomain = RTC_MemoryDomains.MDRI?.MemoryDomains?.MainMemory?.ToString();
+		private string searchValue, searchColumn;
+		private int searchOffset = 0;
+		private IEnumerable<BlastUnit> searchEnumerable;
+
+
 
 		//We gotta cache this stuff outside of the scope of InitializeDGV
-	//	private object actionTimeValues = 
+		//	private object actionTimeValues = 
 
 
 		public RTC_NewBlastEditor_Form()
 		{
 			InitializeComponent();
-			dgvBlastEditor.AutoGenerateColumns = false;
-
 			dgvBlastEditor.DataError += dgvBlastLayer_DataError;
-
+			dgvBlastEditor.AutoGenerateColumns = false;
+			tbFilter.TextChanged += tbFilter_TextChanged;
 		}
 
+		private void tbFilter_TextChanged(object sender, EventArgs e)
+		{
+			string value = (cbFilterColumn.SelectedItem as dynamic).Value;
+			dgvBlastEditor.DataSource = currentSK.BlastLayer.Layer.Where(x => (x.GetType().GetProperty(value).GetValue(x).ToString() == tbFilter.Text)).ToList();
+
+			if (tbFilter.TextLength == 0)
+				dgvBlastEditor.DataSource = currentSK.BlastLayer.Layer;
+		}
 
 		private void InitializeDGV()
 		{
+
 			var actionTime = Enum.GetValues(typeof(ActionTime));
 
 			dgvBlastEditor.Columns.Add(CreateColumn("isEnabled", "Enabled", new DataGridViewCheckBoxColumn()));
@@ -120,6 +133,16 @@ namespace RTC
 
 
 			dgvBlastEditor.Columns.Add(CreateColumn("Note", "Note", new DataGridViewButtonColumn()));
+
+			//Populate the filter ComboBox
+			cbFilterColumn.DisplayMember = "Text";
+			cbFilterColumn.ValueMember = "Value";
+			foreach (DataGridViewColumn item in dgvBlastEditor.Columns)
+			{
+				//Exclude button and checkbox
+				if (!(item is DataGridViewCheckBoxColumn || item is DataGridViewButtonColumn))
+					cbFilterColumn.Items.Add(new { Text = item.HeaderText, Value = item.Name });
+			}
 
 		}
 
@@ -177,8 +200,8 @@ namespace RTC
 			currentSK = sk.Clone() as StashKey;
 			RefreshDomains();
 
-			bs = new BindingSource();
-			bs.DataSource = sk.BlastLayer.Layer;
+			bs = new BindingSource(currentSK.BlastLayer.Layer, "");
+		
 			dgvBlastEditor.DataSource = bs;
 			InitializeDGV();
 
@@ -213,5 +236,214 @@ namespace RTC
 		{
 			MessageBox.Show(e.Exception.ToString() + "\nRow:" + e.RowIndex + "\nColumn" + e.ColumnIndex + "\n" + e.Context + "\n" + dgvBlastEditor[e.ColumnIndex, e.RowIndex].Value?.ToString());
 		}
+
+		private void btnDisable50_Click(object sender, EventArgs e)
+		{
+			foreach (BlastUnit bu in currentSK.BlastLayer.Layer.
+				Where(x => x.IsLocked == false))
+			{
+				bu.IsEnabled = true;
+			}
+
+			foreach (BlastUnit bu in currentSK.BlastLayer.Layer
+				.Where(x => x.IsLocked == false)
+				.OrderBy(x => RTC_Core.RND.Next())
+				.Take(currentSK.BlastLayer.Layer.Count / 2))
+			{
+				bu.IsEnabled = false;
+			}
+		}
+
+		private void btnInvertDisabled_Click(object sender, EventArgs e)
+		{
+			foreach (BlastUnit bu in currentSK.BlastLayer.Layer.
+				Where(x => x.IsLocked == false))
+			{
+				bu.IsEnabled = !bu.IsEnabled;
+			}
+		}
+
+		private void btnRemoveDisabled_Click(object sender, EventArgs e)
+		{
+
+			foreach (BlastUnit bu in currentSK.BlastLayer.Layer.
+				Where(x => 
+				x.IsLocked == false &&
+				x.IsEnabled == false))
+			{
+				currentSK.BlastLayer.Layer.Remove(bu);
+			}
+		}
+
+		private void btnDisableEverything_Click(object sender, EventArgs e)
+		{
+			foreach (BlastUnit bu in currentSK.BlastLayer.Layer.
+				Where(x =>
+				x.IsLocked == false))
+			{
+				bu.IsEnabled = false;
+			}
+		}
+
+		private void btnEnableEverything_Click(object sender, EventArgs e)
+		{
+			foreach (BlastUnit bu in currentSK.BlastLayer.Layer.
+				Where(x =>
+				x.IsLocked == false))
+			{
+				bu.IsEnabled = true;
+			}
+		}
+
+		private void btnRemoveSelected_Click(object sender, EventArgs e)
+		{
+			foreach(DataGridViewRow row in dgvBlastEditor.SelectedRows)
+			{
+				if ((row.DataBoundItem as BlastUnit).IsLocked == false)
+					currentSK.BlastLayer.Layer.Remove(row.DataBoundItem as BlastUnit);
+			}
+		}
+
+		private void btnDuplicateSelected_Click(object sender, EventArgs e)
+		{
+			foreach (DataGridViewRow row in dgvBlastEditor.SelectedRows)
+			{
+				if ((row.DataBoundItem as BlastUnit).IsLocked == false)
+				{
+					BlastUnit bu = ((row.DataBoundItem as BlastUnit).Clone() as BlastUnit);
+					currentSK.BlastLayer.Layer.Add(bu);
+				}
+			}
+		}
+
+		public DialogResult GetSearchBox(string title, string promptText, bool filterColumn = false)
+		{
+			Form form = new Form();
+			Label label = new Label();
+			TextBox input = new TextBox();
+
+			Button buttonOk = new Button();
+			Button buttonCancel = new Button();
+			ComboBox column = new ComboBox();
+			//Only draw the column combobox if the user wants the column
+			column.Hide();
+
+			if (filterColumn)
+			{
+				column.DisplayMember = "Text";
+				column.ValueMember = "Value";
+				foreach(DataGridViewColumn item in dgvBlastEditor.Columns)
+				{
+					//Exclude button and checkbox
+					if (!(item is DataGridViewCheckBoxColumn || item is DataGridViewButtonColumn))
+						column.Items.Add(new { Text = item.HeaderText, Value = item.Name });					
+				}
+				column.SelectedIndex = 0;
+				column.SetBounds(72, 64, 164, 20);
+				column.Show();
+			}
+
+			form.Text = title;
+			label.Text = promptText;
+			//input.Text = value;
+
+			buttonOk.Text = "OK";
+			buttonCancel.Text = "Cancel";
+			buttonOk.DialogResult = DialogResult.OK;
+			buttonCancel.DialogResult = DialogResult.Cancel;
+
+			label.SetBounds(64, 15, 164, 16);
+			input.SetBounds(48, 36, 164, 20);
+			buttonOk.SetBounds(96, 98, 75, 23);
+			buttonCancel.SetBounds(172, 98, 75, 23);
+
+			label.TextAlign = ContentAlignment.MiddleCenter;
+			label.AutoSize = true;
+			label.Anchor =  AnchorStyles.Bottom | AnchorStyles.Left;
+			input.Anchor = input.Anchor | AnchorStyles.Left;
+			buttonOk.Anchor = AnchorStyles.Bottom | AnchorStyles.Left;
+			buttonCancel.Anchor = AnchorStyles.Bottom | AnchorStyles.Left;
+
+			form.ClientSize = new Size(256, 128);
+			form.Controls.AddRange(new Control[] { label, input, column, buttonOk, buttonCancel });
+			form.ClientSize = new Size(Math.Max(300, label.Right + 10), form.ClientSize.Height);
+			form.FormBorderStyle = FormBorderStyle.FixedDialog;
+			form.StartPosition = FormStartPosition.CenterScreen;
+			form.MinimizeBox = false;
+			form.MaximizeBox = false;
+			form.AcceptButton = buttonOk;
+			form.CancelButton = buttonCancel;
+
+			DialogResult dialogResult = form.ShowDialog();
+
+			searchValue = input.Text.ToUpper();
+			if (filterColumn)
+				searchColumn = (column.SelectedItem as dynamic).Value;
+			else
+				searchColumn = string.Empty;
+			return dialogResult;
+		}
+
+		//Provides a dialog box that searches for a row in the DGV
+		private void btnSearchRow_Click(object sender, EventArgs e)
+		{
+			if (GetSearchBox("Search for a value", "Choose a column and enter a value", true) == DialogResult.OK)
+			{
+				if(searchColumn != null)
+				{
+					searchOffset = 0;
+					searchEnumerable = currentSK.BlastLayer.Layer.Where(x => (x.GetType().GetProperty(searchColumn).GetValue(x).ToString()) == searchValue);
+					
+					if (searchEnumerable.Count() != 0)
+						bs.Position = bs.IndexOf(searchEnumerable.ElementAt(searchOffset));
+					else
+						MessageBox.Show("Reached end of list without finding anything.");
+					searchOffset++;					
+					
+				}
+				else
+				{
+					List<string> metaList = (List<string>)bs.DataSource;
+					metaList.FindIndex(s => string.Equals(s, searchValue, StringComparison.CurrentCultureIgnoreCase));
+				}
+			}
+		}
+
+		private void btnSendToStash_Click(object sender, EventArgs e)
+		{
+			if (currentSK.ParentKey == null)
+			{
+				MessageBox.Show("There's no savestate associated with this Stashkey!\nAssociate one in the menu to send this to the stash.");
+				return;
+			}
+			StashKey newSk = (StashKey)currentSK.Clone();
+			//newSk.Key = RTC_Core.GetRandomKey();
+			//newSk.Alias = null;
+
+			RTC_StockpileManager.StashHistory.Add(newSk);
+
+			S.GET<RTC_GlitchHarvester_Form>().RefreshStashHistory();
+			S.GET<RTC_GlitchHarvester_Form>().dgvStockpile.ClearSelection();
+			S.GET<RTC_GlitchHarvester_Form>().lbStashHistory.ClearSelected();
+
+			S.GET<RTC_GlitchHarvester_Form>().DontLoadSelectedStash = true;
+			S.GET<RTC_GlitchHarvester_Form>().lbStashHistory.SelectedIndex = S.GET<RTC_GlitchHarvester_Form>().lbStashHistory.Items.Count - 1;
+			RTC_StockpileManager.currentStashkey = RTC_StockpileManager.StashHistory[S.GET<RTC_GlitchHarvester_Form>().lbStashHistory.SelectedIndex];
+
+		}
+
+		private void btnSearchAgain_Click(object sender, EventArgs e)
+		{
+			if (searchEnumerable.Count() != 0 && searchOffset < searchEnumerable.Count())
+				bs.Position = bs.IndexOf(searchEnumerable.ElementAt(searchOffset));
+			else
+			{ 
+				MessageBox.Show("Reached end of list without finding anything.");
+			}
+			searchOffset++;
+		}
+
+
+
 	}
 }
