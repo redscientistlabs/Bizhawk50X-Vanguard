@@ -35,6 +35,7 @@
             this.cbShiftBlastlayer = new System.Windows.Forms.ComboBox();
             this.btnShiftBlastLayerDown = new System.Windows.Forms.Button();
             this.btnShiftBlastLayerUp = new System.Windows.Forms.Button();
+            this.updownShiftBlastLayerAmount = new RTC.NumericUpDownHexFix();
             this.pnMemoryTargetting = new System.Windows.Forms.Panel();
             this.lbBlastLayerSize = new System.Windows.Forms.Label();
             this.btnHelp = new System.Windows.Forms.Button();
@@ -64,21 +65,26 @@
             this.label18 = new System.Windows.Forms.Label();
             this.cbLimiterList = new System.Windows.Forms.ComboBox();
             this.label19 = new System.Windows.Forms.Label();
+            this.tbTiltValue = new BizHawk.Client.EmuHawk.NumericTextBox();
             this.label15 = new System.Windows.Forms.Label();
             this.label11 = new System.Windows.Forms.Label();
             this.cbSource = new System.Windows.Forms.ComboBox();
             this.panel6 = new System.Windows.Forms.Panel();
             this.label12 = new System.Windows.Forms.Label();
+            this.tbValue = new BizHawk.Client.EmuHawk.HexTextBox();
             this.panel7 = new System.Windows.Forms.Panel();
+            this.cbSourceDomain = new System.Windows.Forms.ComboBox();
+            this.upDownSourceAddress = new RTC.NumericUpDownHexFix();
             this.label13 = new System.Windows.Forms.Label();
             this.label14 = new System.Windows.Forms.Label();
-            this.cbSourceDomain = new System.Windows.Forms.ComboBox();
             this.cbStoreTime = new System.Windows.Forms.ComboBox();
             this.label6 = new System.Windows.Forms.Label();
             this.cbStoreType = new System.Windows.Forms.ComboBox();
             this.label7 = new System.Windows.Forms.Label();
             this.label10 = new System.Windows.Forms.Label();
+            this.upDownPrecision = new RTC.NumericUpDownHexFix();
             this.label9 = new System.Windows.Forms.Label();
+            this.upDownAddress = new RTC.NumericUpDownHexFix();
             this.label8 = new System.Windows.Forms.Label();
             this.cbDomain = new System.Windows.Forms.ComboBox();
             this.label2 = new System.Windows.Forms.Label();
@@ -86,12 +92,6 @@
             this.cbBigEndian = new System.Windows.Forms.CheckBox();
             this.cbLocked = new System.Windows.Forms.CheckBox();
             this.cbEnabled = new System.Windows.Forms.CheckBox();
-            this.tbTiltValue = new BizHawk.Client.EmuHawk.NumericTextBox();
-            this.hexTextBox1 = new BizHawk.Client.EmuHawk.HexTextBox();
-            this.cbSourceAddress = new RTC.NumericUpDownHexFix();
-            this.upDownPrecision = new RTC.NumericUpDownHexFix();
-            this.upDownAddress = new RTC.NumericUpDownHexFix();
-            this.updownShiftBlastLayerAmount = new RTC.NumericUpDownHexFix();
             this.menuStripEx1 = new MenuStripEx();
             this.blastLayerToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.loadFromFileblToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -116,9 +116,17 @@
             this.openBlastLayerGeneratorToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.optionsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.usePaginationToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.panel9 = new System.Windows.Forms.Panel();
+            this.cbLoop = new System.Windows.Forms.CheckBox();
+            this.upDownExecuteFrame = new RTC.NumericUpDownHexFix();
+            this.label1 = new System.Windows.Forms.Label();
+            this.label16 = new System.Windows.Forms.Label();
+            this.upDownLifetime = new RTC.NumericUpDownHexFix();
+            this.btnNote = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.dgvBlastEditor)).BeginInit();
             this.panelSidebar.SuspendLayout();
             this.panel1.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.updownShiftBlastLayerAmount)).BeginInit();
             this.pnMemoryTargetting.SuspendLayout();
             this.panel2.SuspendLayout();
             this.panel3.SuspendLayout();
@@ -126,12 +134,14 @@
             this.panel8.SuspendLayout();
             this.panel6.SuspendLayout();
             this.panel7.SuspendLayout();
-            this.panel4.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.cbSourceAddress)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.upDownSourceAddress)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.upDownPrecision)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.upDownAddress)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.updownShiftBlastLayerAmount)).BeginInit();
+            this.panel4.SuspendLayout();
             this.menuStripEx1.SuspendLayout();
+            this.panel9.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.upDownExecuteFrame)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.upDownLifetime)).BeginInit();
             this.SuspendLayout();
             // 
             // dgvBlastEditor
@@ -246,6 +256,18 @@
             this.btnShiftBlastLayerUp.Tag = "color:light";
             this.btnShiftBlastLayerUp.Text = "▶";
             this.btnShiftBlastLayerUp.UseVisualStyleBackColor = false;
+            // 
+            // updownShiftBlastLayerAmount
+            // 
+            this.updownShiftBlastLayerAmount.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
+            this.updownShiftBlastLayerAmount.Font = new System.Drawing.Font("Consolas", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel);
+            this.updownShiftBlastLayerAmount.ForeColor = System.Drawing.Color.White;
+            this.updownShiftBlastLayerAmount.Hexadecimal = true;
+            this.updownShiftBlastLayerAmount.Location = new System.Drawing.Point(38, 33);
+            this.updownShiftBlastLayerAmount.Name = "updownShiftBlastLayerAmount";
+            this.updownShiftBlastLayerAmount.Size = new System.Drawing.Size(59, 22);
+            this.updownShiftBlastLayerAmount.TabIndex = 145;
+            this.updownShiftBlastLayerAmount.Tag = "color:dark";
             // 
             // pnMemoryTargetting
             // 
@@ -540,6 +562,7 @@
             // panel3
             // 
             this.panel3.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
+            this.panel3.Controls.Add(this.panel9);
             this.panel3.Controls.Add(this.label5);
             this.panel3.Controls.Add(this.panel5);
             this.panel3.Controls.Add(this.label2);
@@ -563,6 +586,7 @@
             // panel5
             // 
             this.panel5.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.panel5.Controls.Add(this.btnNote);
             this.panel5.Controls.Add(this.panel8);
             this.panel5.Controls.Add(this.tbTiltValue);
             this.panel5.Controls.Add(this.label15);
@@ -578,7 +602,7 @@
             this.panel5.Controls.Add(this.cbDomain);
             this.panel5.Location = new System.Drawing.Point(148, 24);
             this.panel5.Name = "panel5";
-            this.panel5.Size = new System.Drawing.Size(477, 180);
+            this.panel5.Size = new System.Drawing.Size(484, 180);
             this.panel5.TabIndex = 2;
             // 
             // panel8
@@ -638,6 +662,16 @@
             this.label19.TabIndex = 7;
             this.label19.Text = "Limiter List";
             // 
+            // tbTiltValue
+            // 
+            this.tbTiltValue.AllowDecimal = false;
+            this.tbTiltValue.AllowNegative = false;
+            this.tbTiltValue.AllowSpace = false;
+            this.tbTiltValue.Location = new System.Drawing.Point(4, 144);
+            this.tbTiltValue.Name = "tbTiltValue";
+            this.tbTiltValue.Size = new System.Drawing.Size(108, 22);
+            this.tbTiltValue.TabIndex = 24;
+            // 
             // label15
             // 
             this.label15.AutoSize = true;
@@ -668,7 +702,7 @@
             // 
             this.panel6.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.panel6.Controls.Add(this.label12);
-            this.panel6.Controls.Add(this.hexTextBox1);
+            this.panel6.Controls.Add(this.tbValue);
             this.panel6.Location = new System.Drawing.Point(128, 43);
             this.panel6.Name = "panel6";
             this.panel6.Size = new System.Drawing.Size(109, 49);
@@ -683,11 +717,22 @@
             this.label12.TabIndex = 13;
             this.label12.Text = "Value";
             // 
+            // tbValue
+            // 
+            this.tbValue.CharacterCasing = System.Windows.Forms.CharacterCasing.Upper;
+            this.tbValue.Font = new System.Drawing.Font("Consolas", 11F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel);
+            this.tbValue.Location = new System.Drawing.Point(3, 17);
+            this.tbValue.Name = "tbValue";
+            this.tbValue.Nullable = true;
+            this.tbValue.Size = new System.Drawing.Size(100, 20);
+            this.tbValue.TabIndex = 0;
+            this.tbValue.Text = "FFFFFFFF";
+            // 
             // panel7
             // 
             this.panel7.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.panel7.Controls.Add(this.cbSourceDomain);
-            this.panel7.Controls.Add(this.cbSourceAddress);
+            this.panel7.Controls.Add(this.upDownSourceAddress);
             this.panel7.Controls.Add(this.label13);
             this.panel7.Controls.Add(this.label14);
             this.panel7.Controls.Add(this.cbStoreTime);
@@ -699,10 +744,25 @@
             this.panel7.Size = new System.Drawing.Size(216, 88);
             this.panel7.TabIndex = 13;
             // 
+            // cbSourceDomain
+            // 
+            this.cbSourceDomain.FormattingEnabled = true;
+            this.cbSourceDomain.Location = new System.Drawing.Point(95, 14);
+            this.cbSourceDomain.Name = "cbSourceDomain";
+            this.cbSourceDomain.Size = new System.Drawing.Size(109, 21);
+            this.cbSourceDomain.TabIndex = 11;
+            // 
+            // upDownSourceAddress
+            // 
+            this.upDownSourceAddress.Location = new System.Drawing.Point(95, 54);
+            this.upDownSourceAddress.Name = "upDownSourceAddress";
+            this.upDownSourceAddress.Size = new System.Drawing.Size(109, 22);
+            this.upDownSourceAddress.TabIndex = 13;
+            // 
             // label13
             // 
             this.label13.AutoSize = true;
-            this.label13.Location = new System.Drawing.Point(87, 41);
+            this.label13.Location = new System.Drawing.Point(92, 41);
             this.label13.Name = "label13";
             this.label13.Size = new System.Drawing.Size(88, 15);
             this.label13.TabIndex = 14;
@@ -711,26 +771,18 @@
             // label14
             // 
             this.label14.AutoSize = true;
-            this.label14.Location = new System.Drawing.Point(87, 1);
+            this.label14.Location = new System.Drawing.Point(92, 1);
             this.label14.Name = "label14";
             this.label14.Size = new System.Drawing.Size(88, 15);
             this.label14.TabIndex = 12;
             this.label14.Text = "Source Domain";
-            // 
-            // cbSourceDomain
-            // 
-            this.cbSourceDomain.FormattingEnabled = true;
-            this.cbSourceDomain.Location = new System.Drawing.Point(90, 14);
-            this.cbSourceDomain.Name = "cbSourceDomain";
-            this.cbSourceDomain.Size = new System.Drawing.Size(109, 21);
-            this.cbSourceDomain.TabIndex = 11;
             // 
             // cbStoreTime
             // 
             this.cbStoreTime.FormattingEnabled = true;
             this.cbStoreTime.Location = new System.Drawing.Point(3, 55);
             this.cbStoreTime.Name = "cbStoreTime";
-            this.cbStoreTime.Size = new System.Drawing.Size(76, 21);
+            this.cbStoreTime.Size = new System.Drawing.Size(83, 21);
             this.cbStoreTime.TabIndex = 10;
             // 
             // label6
@@ -747,7 +799,7 @@
             this.cbStoreType.FormattingEnabled = true;
             this.cbStoreType.Location = new System.Drawing.Point(3, 14);
             this.cbStoreType.Name = "cbStoreType";
-            this.cbStoreType.Size = new System.Drawing.Size(76, 21);
+            this.cbStoreType.Size = new System.Drawing.Size(83, 21);
             this.cbStoreType.TabIndex = 8;
             // 
             // label7
@@ -768,6 +820,13 @@
             this.label10.TabIndex = 12;
             this.label10.Text = "Precision";
             // 
+            // upDownPrecision
+            // 
+            this.upDownPrecision.Location = new System.Drawing.Point(3, 100);
+            this.upDownPrecision.Name = "upDownPrecision";
+            this.upDownPrecision.Size = new System.Drawing.Size(109, 22);
+            this.upDownPrecision.TabIndex = 11;
+            // 
             // label9
             // 
             this.label9.AutoSize = true;
@@ -776,6 +835,15 @@
             this.label9.Size = new System.Drawing.Size(49, 15);
             this.label9.TabIndex = 10;
             this.label9.Text = "Address";
+            // 
+            // upDownAddress
+            // 
+            this.upDownAddress.Font = new System.Drawing.Font("Consolas", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel);
+            this.upDownAddress.Hexadecimal = true;
+            this.upDownAddress.Location = new System.Drawing.Point(4, 57);
+            this.upDownAddress.Name = "upDownAddress";
+            this.upDownAddress.Size = new System.Drawing.Size(109, 22);
+            this.upDownAddress.TabIndex = 9;
             // 
             // label8
             // 
@@ -843,62 +911,6 @@
             this.cbEnabled.TabIndex = 0;
             this.cbEnabled.Text = "Enabled";
             this.cbEnabled.UseVisualStyleBackColor = true;
-            // 
-            // tbTiltValue
-            // 
-            this.tbTiltValue.AllowDecimal = false;
-            this.tbTiltValue.AllowNegative = false;
-            this.tbTiltValue.AllowSpace = false;
-            this.tbTiltValue.Location = new System.Drawing.Point(4, 144);
-            this.tbTiltValue.Name = "tbTiltValue";
-            this.tbTiltValue.Size = new System.Drawing.Size(108, 22);
-            this.tbTiltValue.TabIndex = 24;
-            // 
-            // hexTextBox1
-            // 
-            this.hexTextBox1.CharacterCasing = System.Windows.Forms.CharacterCasing.Upper;
-            this.hexTextBox1.Font = new System.Drawing.Font("Consolas", 11F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel);
-            this.hexTextBox1.Location = new System.Drawing.Point(3, 17);
-            this.hexTextBox1.Name = "hexTextBox1";
-            this.hexTextBox1.Nullable = true;
-            this.hexTextBox1.Size = new System.Drawing.Size(100, 20);
-            this.hexTextBox1.TabIndex = 0;
-            this.hexTextBox1.Text = "FFFFFFFF";
-            // 
-            // cbSourceAddress
-            // 
-            this.cbSourceAddress.Location = new System.Drawing.Point(90, 54);
-            this.cbSourceAddress.Name = "cbSourceAddress";
-            this.cbSourceAddress.Size = new System.Drawing.Size(109, 22);
-            this.cbSourceAddress.TabIndex = 13;
-            // 
-            // updownPrecision
-            // 
-            this.upDownPrecision.Location = new System.Drawing.Point(3, 100);
-            this.upDownPrecision.Name = "updownPrecision";
-            this.upDownPrecision.Size = new System.Drawing.Size(109, 22);
-            this.upDownPrecision.TabIndex = 11;
-            // 
-            // upDownAddress
-            // 
-            this.upDownAddress.Font = new System.Drawing.Font("Consolas", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel);
-            this.upDownAddress.Hexadecimal = true;
-            this.upDownAddress.Location = new System.Drawing.Point(4, 57);
-            this.upDownAddress.Name = "upDownAddress";
-            this.upDownAddress.Size = new System.Drawing.Size(109, 22);
-            this.upDownAddress.TabIndex = 9;
-            // 
-            // updownShiftBlastLayerAmount
-            // 
-            this.updownShiftBlastLayerAmount.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
-            this.updownShiftBlastLayerAmount.Font = new System.Drawing.Font("Consolas", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel);
-            this.updownShiftBlastLayerAmount.ForeColor = System.Drawing.Color.White;
-            this.updownShiftBlastLayerAmount.Hexadecimal = true;
-            this.updownShiftBlastLayerAmount.Location = new System.Drawing.Point(38, 33);
-            this.updownShiftBlastLayerAmount.Name = "updownShiftBlastLayerAmount";
-            this.updownShiftBlastLayerAmount.Size = new System.Drawing.Size(59, 22);
-            this.updownShiftBlastLayerAmount.TabIndex = 145;
-            this.updownShiftBlastLayerAmount.Tag = "color:dark";
             // 
             // menuStripEx1
             // 
@@ -1083,6 +1095,77 @@
             this.usePaginationToolStripMenuItem.Size = new System.Drawing.Size(182, 26);
             this.usePaginationToolStripMenuItem.Text = "Use Pagination";
             // 
+            // panel9
+            // 
+            this.panel9.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.panel9.Controls.Add(this.label16);
+            this.panel9.Controls.Add(this.upDownLifetime);
+            this.panel9.Controls.Add(this.label1);
+            this.panel9.Controls.Add(this.upDownExecuteFrame);
+            this.panel9.Controls.Add(this.cbLoop);
+            this.panel9.Location = new System.Drawing.Point(20, 96);
+            this.panel9.Name = "panel9";
+            this.panel9.Size = new System.Drawing.Size(118, 108);
+            this.panel9.TabIndex = 4;
+            // 
+            // cbLoop
+            // 
+            this.cbLoop.AutoSize = true;
+            this.cbLoop.Location = new System.Drawing.Point(6, 87);
+            this.cbLoop.Name = "cbLoop";
+            this.cbLoop.Size = new System.Drawing.Size(56, 19);
+            this.cbLoop.TabIndex = 0;
+            this.cbLoop.Text = "Loop";
+            this.cbLoop.UseVisualStyleBackColor = true;
+            // 
+            // upDownExecuteFrame
+            // 
+            this.upDownExecuteFrame.Location = new System.Drawing.Point(3, 20);
+            this.upDownExecuteFrame.Name = "upDownExecuteFrame";
+            this.upDownExecuteFrame.Size = new System.Drawing.Size(109, 22);
+            this.upDownExecuteFrame.TabIndex = 12;
+            // 
+            // label1
+            // 
+            this.label1.AutoSize = true;
+            this.label1.Location = new System.Drawing.Point(1, 2);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(83, 15);
+            this.label1.TabIndex = 24;
+            this.label1.Text = "Execute Frame";
+            // 
+            // label16
+            // 
+            this.label16.AutoSize = true;
+            this.label16.Location = new System.Drawing.Point(-1, 44);
+            this.label16.Name = "label16";
+            this.label16.Size = new System.Drawing.Size(50, 15);
+            this.label16.TabIndex = 26;
+            this.label16.Text = "Lifetime";
+            // 
+            // upDownLifetime
+            // 
+            this.upDownLifetime.Location = new System.Drawing.Point(3, 61);
+            this.upDownLifetime.Name = "upDownLifetime";
+            this.upDownLifetime.Size = new System.Drawing.Size(109, 22);
+            this.upDownLifetime.TabIndex = 25;
+            // 
+            // btnNote
+            // 
+            this.btnNote.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(224)))), ((int)(((byte)(224)))), ((int)(((byte)(224)))));
+            this.btnNote.FlatAppearance.BorderSize = 0;
+            this.btnNote.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnNote.Font = new System.Drawing.Font("Segoe UI Symbol", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel);
+            this.btnNote.ForeColor = System.Drawing.Color.Black;
+            this.btnNote.Location = new System.Drawing.Point(353, 104);
+            this.btnNote.Name = "btnNote";
+            this.btnNote.Size = new System.Drawing.Size(109, 70);
+            this.btnNote.TabIndex = 142;
+            this.btnNote.TabStop = false;
+            this.btnNote.Tag = "color:light";
+            this.btnNote.Text = "Open Note Editor";
+            this.btnNote.UseVisualStyleBackColor = false;
+            // 
             // RTC_NewBlastEditor_Form
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -1102,6 +1185,7 @@
             this.panelSidebar.ResumeLayout(false);
             this.panelSidebar.PerformLayout();
             this.panel1.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.updownShiftBlastLayerAmount)).EndInit();
             this.pnMemoryTargetting.ResumeLayout(false);
             this.pnMemoryTargetting.PerformLayout();
             this.panel2.ResumeLayout(false);
@@ -1116,14 +1200,17 @@
             this.panel6.PerformLayout();
             this.panel7.ResumeLayout(false);
             this.panel7.PerformLayout();
-            this.panel4.ResumeLayout(false);
-            this.panel4.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.cbSourceAddress)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.upDownSourceAddress)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.upDownPrecision)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.upDownAddress)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.updownShiftBlastLayerAmount)).EndInit();
+            this.panel4.ResumeLayout(false);
+            this.panel4.PerformLayout();
             this.menuStripEx1.ResumeLayout(false);
             this.menuStripEx1.PerformLayout();
+            this.panel9.ResumeLayout(false);
+            this.panel9.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.upDownExecuteFrame)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.upDownLifetime)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -1194,7 +1281,7 @@
 		private NumericUpDownHexFix upDownAddress;
 		private System.Windows.Forms.Panel panel6;
 		private System.Windows.Forms.Label label12;
-		private BizHawk.Client.EmuHawk.HexTextBox hexTextBox1;
+		private BizHawk.Client.EmuHawk.HexTextBox tbValue;
 		private System.Windows.Forms.Panel panel7;
 		private System.Windows.Forms.Label label7;
 		private System.Windows.Forms.ComboBox cbStoreType;
@@ -1207,7 +1294,7 @@
 		private System.Windows.Forms.Label label13;
 		private System.Windows.Forms.Label label14;
 		private System.Windows.Forms.ComboBox cbSourceDomain;
-		private NumericUpDownHexFix cbSourceAddress;
+		private NumericUpDownHexFix upDownSourceAddress;
 		private System.Windows.Forms.Panel panel8;
 		private System.Windows.Forms.CheckBox cbInvertLimiter;
 		private System.Windows.Forms.ComboBox cbLimiterTime;
@@ -1219,5 +1306,12 @@
 		private System.Windows.Forms.Label label5;
 		private System.Windows.Forms.ComboBox cbFilterColumn;
 		private System.Windows.Forms.TextBox tbFilter;
+		private System.Windows.Forms.Panel panel9;
+		private System.Windows.Forms.Label label16;
+		private NumericUpDownHexFix upDownLifetime;
+		private System.Windows.Forms.Label label1;
+		private NumericUpDownHexFix upDownExecuteFrame;
+		private System.Windows.Forms.CheckBox cbLoop;
+		private System.Windows.Forms.Button btnNote;
 	}
 }
