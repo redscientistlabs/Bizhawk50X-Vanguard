@@ -4,6 +4,7 @@ using System.ComponentModel;
 using System.Data;
 using System.Drawing;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
@@ -50,8 +51,13 @@ namespace RTC
 		private string[] domains = RTC_MemoryDomains.MemoryInterfaces?.Keys?.Concat(RTC_MemoryDomains.VmdPool.Values.Select(it => it.ToString())).ToArray();
 		private string mainDomain = RTC_MemoryDomains.MDRI?.MemoryDomains?.MainMemory?.ToString();
 		private string searchValue, searchColumn;
+		public List<String> VisibleColumns;
+
 		private int searchOffset = 0;
 		private IEnumerable<BlastUnit> searchEnumerable;
+		BindingList<BlastUnit> selectedBUs = new BindingList<BlastUnit>();
+		ContextMenuStrip headerStrip;
+		
 
 
 
@@ -61,10 +67,80 @@ namespace RTC
 
 		public RTC_NewBlastEditor_Form()
 		{
-			InitializeComponent();
-			dgvBlastEditor.DataError += dgvBlastLayer_DataError;
-			dgvBlastEditor.AutoGenerateColumns = false;
-			tbFilter.TextChanged += tbFilter_TextChanged;
+			try
+			{
+
+				InitializeComponent();
+				dgvBlastEditor.DataError += dgvBlastLayer_DataError;
+				dgvBlastEditor.AutoGenerateColumns = false;
+				dgvBlastEditor.SelectionChanged += dgvBlastEditor_SelectionChanged;
+				dgvBlastEditor.ColumnHeaderMouseClick += dgvBlastEditor_ColumnHeaderMouseClick; ;
+				tbFilter.TextChanged += tbFilter_TextChanged;
+				upDownAddress.Validated += OnValidated;
+			}
+			catch(Exception ex)
+			{
+				MessageBox.Show(ex.ToString());
+			}
+		}
+
+		private void dgvBlastEditor_ColumnHeaderMouseClick(object sender, DataGridViewCellMouseEventArgs e)
+		{
+			if(e.Button == MouseButtons.Right)
+			{
+				headerStrip = new ContextMenuStrip();
+				headerStrip.Items.Add("Select columns to show", null, new EventHandler((ob, ev) =>
+				{
+					ColumnSelector cs = new ColumnSelector();
+					cs.LoadColumnSelector(dgvBlastEditor.Columns);
+				}));
+
+				headerStrip.Show(MousePosition);
+			}
+		}
+
+		private void OnValidated(object sender, EventArgs e)
+		{
+			dynamic bad = (sender as dynamic);
+			if((bad?.DataBindings?.Count ?? 0) > 0)
+			{
+				PropertyInfo property = bad.DataBindings[0].DataSource.GetType().GetProperty(bad.DataBindings[0].BindingMemberInfo.BindingField);
+				dynamic value = property.GetValue(bad.DataBindings[0].DataSource);
+
+				foreach (BlastUnit bu in selectedBUs)
+				{
+					property.SetValue(bu, value);
+				}
+			}
+			dgvBlastEditor.Refresh();
+		}
+
+		private void dgvBlastEditor_SelectionChanged(object sender, EventArgs e)
+		{
+			selectedBUs = new BindingList<BlastUnit>();
+
+			foreach (DataGridViewRow row in dgvBlastEditor.SelectedRows)
+				selectedBUs.Add(row.DataBoundItem as BlastUnit);
+
+			upDownAddress.DataBindings.Clear();
+			upDownPrecision.DataBindings.Clear();
+			if (selectedBUs.Count > 0) {
+				upDownAddress.DataBindings.Add("Text", selectedBUs[selectedBUs.Count - 1], "Address", true, DataSourceUpdateMode.OnValidation);
+				upDownPrecision.DataBindings.Add("Value", selectedBUs[selectedBUs.Count - 1], "Precision", true, DataSourceUpdateMode.OnValidation);
+			}
+		}
+
+		private void selectedBUs_ListChanged(object sender, ListChangedEventArgs e)
+		{
+			if(e.ListChangedType == ListChangedType.ItemChanged)
+			{
+				PropertyDescriptor property = e.PropertyDescriptor;
+				BlastUnit changed = selectedBUs[e.NewIndex];
+				//Get the value of the changed property
+				object value = property.GetValue(changed);
+				foreach (BlastUnit bu in selectedBUs)
+					property.SetValue(bu, value);
+			}
 		}
 
 		private void tbFilter_TextChanged(object sender, EventArgs e)
@@ -79,10 +155,14 @@ namespace RTC
 		private void InitializeDGV()
 		{
 
+			VisibleColumns = new List<string>();
 			var actionTime = Enum.GetValues(typeof(ActionTime));
 
 			dgvBlastEditor.Columns.Add(CreateColumn("isEnabled", "Enabled", new DataGridViewCheckBoxColumn()));
+			
+
 			dgvBlastEditor.Columns.Add(CreateColumn("isLocked", "Locked", new DataGridViewCheckBoxColumn()));
+			
 
 			//Do this one separately as we need to populate the Combobox
 			DataGridViewComboBoxColumn domain = CreateColumn("Domain", "Domain", new DataGridViewComboBoxColumn()) as DataGridViewComboBoxColumn;
@@ -90,6 +170,7 @@ namespace RTC
 			dgvBlastEditor.Columns.Add(domain);
 
 			dgvBlastEditor.Columns.Add(CreateColumn("Address", "Address", new DataGridViewNumericUpDownColumn()));
+			
 			dgvBlastEditor.Columns.Add(CreateColumn("Precision", "Precision", new DataGridViewNumericUpDownColumn()));
 
 			dgvBlastEditor.Columns.Add(CreateColumn("ValueString", "Value", new DataGridViewTextBoxColumn()));
@@ -125,7 +206,7 @@ namespace RTC
 			dgvBlastEditor.Columns.Add(storeType);
 
 			//Do this one separately as we need to populate the Combobox
-			DataGridViewComboBoxColumn sourceDomain = CreateColumn("SourceDomain", "SourceDomain", new DataGridViewComboBoxColumn()) as DataGridViewComboBoxColumn;
+			DataGridViewComboBoxColumn sourceDomain = CreateColumn("SourceDomain", "Source Domain", new DataGridViewComboBoxColumn()) as DataGridViewComboBoxColumn;
 			sourceDomain.DataSource = domains;
 			dgvBlastEditor.Columns.Add(sourceDomain);
 
@@ -134,18 +215,41 @@ namespace RTC
 
 			dgvBlastEditor.Columns.Add(CreateColumn("Note", "Note", new DataGridViewButtonColumn()));
 
+
+			VisibleColumns.Add("isEnabled");
+			VisibleColumns.Add("isLocked");
+			VisibleColumns.Add("Domain");
+			VisibleColumns.Add("Address");
+			VisibleColumns.Add("Precision");
+			VisibleColumns.Add("ValueString");
+			VisibleColumns.Add("Note");
+
+			RefreshVisibleColumns();
+
+
 			//Populate the filter ComboBox
 			cbFilterColumn.DisplayMember = "Text";
 			cbFilterColumn.ValueMember = "Value";
-			foreach (DataGridViewColumn item in dgvBlastEditor.Columns)
+			foreach (DataGridViewColumn column in dgvBlastEditor.Columns)
 			{
 				//Exclude button and checkbox
-				if (!(item is DataGridViewCheckBoxColumn || item is DataGridViewButtonColumn))
-					cbFilterColumn.Items.Add(new { Text = item.HeaderText, Value = item.Name });
+				if (!(column is DataGridViewCheckBoxColumn || column is DataGridViewButtonColumn) && column.Visible)
+					cbFilterColumn.Items.Add(new { Text = column.HeaderText, Value = column.Name });
 			}
 
 		}
 
+		public void RefreshVisibleColumns()
+		{	
+			foreach (DataGridViewColumn column in dgvBlastEditor.Columns)
+			{
+				if (VisibleColumns.Contains(column.Name))
+					column.Visible = true;
+				else
+					column.Visible = false;
+			}
+			dgvBlastEditor.Refresh();
+		}
 
 		private DataGridViewColumn CreateColumn(string dataPropertyName, string displayName, DataGridViewColumn column, int fillWeight = -1)
 		{
@@ -252,6 +356,7 @@ namespace RTC
 			{
 				bu.IsEnabled = false;
 			}
+			dgvBlastEditor.Refresh();
 		}
 
 		private void btnInvertDisabled_Click(object sender, EventArgs e)

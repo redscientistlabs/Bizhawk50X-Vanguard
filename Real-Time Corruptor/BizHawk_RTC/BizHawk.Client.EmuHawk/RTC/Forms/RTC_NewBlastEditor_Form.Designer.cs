@@ -53,48 +53,44 @@
             this.btnEnableEverything = new System.Windows.Forms.Button();
             this.btnDuplicateSelected = new System.Windows.Forms.Button();
             this.panel2 = new System.Windows.Forms.Panel();
-            this.textBox1 = new System.Windows.Forms.TextBox();
-            this.label1 = new System.Windows.Forms.Label();
-            this.button4 = new System.Windows.Forms.Button();
-            this.button3 = new System.Windows.Forms.Button();
-            this.button1 = new System.Windows.Forms.Button();
-            this.button2 = new System.Windows.Forms.Button();
+            this.cbFilterColumn = new System.Windows.Forms.ComboBox();
+            this.tbFilter = new System.Windows.Forms.TextBox();
             this.panel3 = new System.Windows.Forms.Panel();
             this.label5 = new System.Windows.Forms.Label();
             this.panel5 = new System.Windows.Forms.Panel();
             this.panel8 = new System.Windows.Forms.Panel();
-            this.checkBox4 = new System.Windows.Forms.CheckBox();
-            this.comboBox7 = new System.Windows.Forms.ComboBox();
+            this.cbInvertLimiter = new System.Windows.Forms.CheckBox();
+            this.cbLimiterTime = new System.Windows.Forms.ComboBox();
             this.label18 = new System.Windows.Forms.Label();
-            this.comboBox8 = new System.Windows.Forms.ComboBox();
+            this.cbLimiterList = new System.Windows.Forms.ComboBox();
             this.label19 = new System.Windows.Forms.Label();
             this.label15 = new System.Windows.Forms.Label();
             this.label11 = new System.Windows.Forms.Label();
-            this.comboBox2 = new System.Windows.Forms.ComboBox();
+            this.cbSource = new System.Windows.Forms.ComboBox();
             this.panel6 = new System.Windows.Forms.Panel();
             this.label12 = new System.Windows.Forms.Label();
             this.panel7 = new System.Windows.Forms.Panel();
             this.label13 = new System.Windows.Forms.Label();
             this.label14 = new System.Windows.Forms.Label();
-            this.comboBox5 = new System.Windows.Forms.ComboBox();
-            this.comboBox4 = new System.Windows.Forms.ComboBox();
+            this.cbSourceDomain = new System.Windows.Forms.ComboBox();
+            this.cbStoreTime = new System.Windows.Forms.ComboBox();
             this.label6 = new System.Windows.Forms.Label();
-            this.comboBox3 = new System.Windows.Forms.ComboBox();
+            this.cbStoreType = new System.Windows.Forms.ComboBox();
             this.label7 = new System.Windows.Forms.Label();
             this.label10 = new System.Windows.Forms.Label();
             this.label9 = new System.Windows.Forms.Label();
             this.label8 = new System.Windows.Forms.Label();
-            this.comboBox1 = new System.Windows.Forms.ComboBox();
+            this.cbDomain = new System.Windows.Forms.ComboBox();
             this.label2 = new System.Windows.Forms.Label();
             this.panel4 = new System.Windows.Forms.Panel();
-            this.checkBox3 = new System.Windows.Forms.CheckBox();
-            this.checkBox2 = new System.Windows.Forms.CheckBox();
-            this.checkBox1 = new System.Windows.Forms.CheckBox();
-            this.numericTextBox1 = new BizHawk.Client.EmuHawk.NumericTextBox();
+            this.cbBigEndian = new System.Windows.Forms.CheckBox();
+            this.cbLocked = new System.Windows.Forms.CheckBox();
+            this.cbEnabled = new System.Windows.Forms.CheckBox();
+            this.tbTiltValue = new BizHawk.Client.EmuHawk.NumericTextBox();
             this.hexTextBox1 = new BizHawk.Client.EmuHawk.HexTextBox();
-            this.numericUpDownHexFix3 = new RTC.NumericUpDownHexFix();
-            this.numericUpDownHexFix2 = new RTC.NumericUpDownHexFix();
-            this.numericUpDownHexFix1 = new RTC.NumericUpDownHexFix();
+            this.cbSourceAddress = new RTC.NumericUpDownHexFix();
+            this.upDownPrecision = new RTC.NumericUpDownHexFix();
+            this.upDownAddress = new RTC.NumericUpDownHexFix();
             this.updownShiftBlastLayerAmount = new RTC.NumericUpDownHexFix();
             this.menuStripEx1 = new MenuStripEx();
             this.blastLayerToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -120,8 +116,6 @@
             this.openBlastLayerGeneratorToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.optionsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.usePaginationToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.tbFilter = new System.Windows.Forms.TextBox();
-            this.cbFilterColumn = new System.Windows.Forms.ComboBox();
             ((System.ComponentModel.ISupportInitialize)(this.dgvBlastEditor)).BeginInit();
             this.panelSidebar.SuspendLayout();
             this.panel1.SuspendLayout();
@@ -133,9 +127,9 @@
             this.panel6.SuspendLayout();
             this.panel7.SuspendLayout();
             this.panel4.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.numericUpDownHexFix3)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.numericUpDownHexFix2)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.numericUpDownHexFix1)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.cbSourceAddress)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.upDownPrecision)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.upDownAddress)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.updownShiftBlastLayerAmount)).BeginInit();
             this.menuStripEx1.SuspendLayout();
             this.SuspendLayout();
@@ -149,14 +143,14 @@
             this.dgvBlastEditor.ClipboardCopyMode = System.Windows.Forms.DataGridViewClipboardCopyMode.Disable;
             this.dgvBlastEditor.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.dgvBlastEditor.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.dgvBlastEditor.Location = new System.Drawing.Point(0, 24);
+            this.dgvBlastEditor.Location = new System.Drawing.Point(0, 28);
             this.dgvBlastEditor.Margin = new System.Windows.Forms.Padding(2);
             this.dgvBlastEditor.Name = "dgvBlastEditor";
             this.dgvBlastEditor.RowHeadersVisible = false;
             this.dgvBlastEditor.RowHeadersWidthSizeMode = System.Windows.Forms.DataGridViewRowHeadersWidthSizeMode.AutoSizeToDisplayedHeaders;
             this.dgvBlastEditor.RowTemplate.Height = 24;
             this.dgvBlastEditor.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.dgvBlastEditor.Size = new System.Drawing.Size(662, 447);
+            this.dgvBlastEditor.Size = new System.Drawing.Size(662, 443);
             this.dgvBlastEditor.TabIndex = 0;
             // 
             // btnHideSidebar
@@ -191,9 +185,9 @@
             this.panelSidebar.Controls.Add(this.btnEnableEverything);
             this.panelSidebar.Controls.Add(this.btnDuplicateSelected);
             this.panelSidebar.Dock = System.Windows.Forms.DockStyle.Right;
-            this.panelSidebar.Location = new System.Drawing.Point(662, 24);
+            this.panelSidebar.Location = new System.Drawing.Point(662, 28);
             this.panelSidebar.Name = "panelSidebar";
-            this.panelSidebar.Size = new System.Drawing.Size(159, 447);
+            this.panelSidebar.Size = new System.Drawing.Size(159, 443);
             this.panelSidebar.TabIndex = 146;
             // 
             // panel1
@@ -270,7 +264,7 @@
             this.lbBlastLayerSize.ForeColor = System.Drawing.Color.White;
             this.lbBlastLayerSize.Location = new System.Drawing.Point(5, 5);
             this.lbBlastLayerSize.Name = "lbBlastLayerSize";
-            this.lbBlastLayerSize.Size = new System.Drawing.Size(58, 13);
+            this.lbBlastLayerSize.Size = new System.Drawing.Size(60, 15);
             this.lbBlastLayerSize.TabIndex = 132;
             this.lbBlastLayerSize.Text = "Layer size:";
             // 
@@ -315,7 +309,7 @@
             this.label3.ForeColor = System.Drawing.Color.White;
             this.label3.Location = new System.Drawing.Point(11, 4);
             this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(82, 13);
+            this.label3.Size = new System.Drawing.Size(84, 15);
             this.label3.TabIndex = 135;
             this.label3.Text = "BlastLayer Info";
             // 
@@ -426,7 +420,7 @@
             this.label4.ForeColor = System.Drawing.Color.White;
             this.label4.Location = new System.Drawing.Point(11, 49);
             this.label4.Name = "label4";
-            this.label4.Size = new System.Drawing.Size(108, 13);
+            this.label4.Size = new System.Drawing.Size(109, 15);
             this.label4.TabIndex = 136;
             this.label4.Text = "Shift Selected Rows";
             // 
@@ -443,7 +437,7 @@
             this.btnDisable50.TabIndex = 114;
             this.btnDisable50.TabStop = false;
             this.btnDisable50.Tag = "color:light";
-            this.btnDisable50.Text = "Random Disable 50%";
+            this.btnDisable50.Text = "Disable 50%";
             this.btnDisable50.UseVisualStyleBackColor = false;
             this.btnDisable50.Click += new System.EventHandler(this.btnDisable50_Click);
             // 
@@ -520,77 +514,28 @@
             this.panel2.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.panel2.Controls.Add(this.cbFilterColumn);
             this.panel2.Controls.Add(this.tbFilter);
-            this.panel2.Controls.Add(this.textBox1);
-            this.panel2.Controls.Add(this.label1);
-            this.panel2.Controls.Add(this.button4);
-            this.panel2.Controls.Add(this.button3);
-            this.panel2.Controls.Add(this.button1);
-            this.panel2.Controls.Add(this.button2);
             this.panel2.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.panel2.Location = new System.Drawing.Point(0, 237);
+            this.panel2.Location = new System.Drawing.Point(0, 238);
             this.panel2.Name = "panel2";
-            this.panel2.Size = new System.Drawing.Size(662, 24);
+            this.panel2.Size = new System.Drawing.Size(662, 23);
             this.panel2.TabIndex = 148;
             // 
-            // textBox1
+            // cbFilterColumn
             // 
-            this.textBox1.Font = new System.Drawing.Font("Segoe UI Symbol", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel);
-            this.textBox1.Location = new System.Drawing.Point(69, 1);
-            this.textBox1.Name = "textBox1";
-            this.textBox1.Size = new System.Drawing.Size(44, 21);
-            this.textBox1.TabIndex = 6;
-            this.textBox1.Text = "0";
+            this.cbFilterColumn.BackColor = System.Drawing.Color.White;
+            this.cbFilterColumn.ForeColor = System.Drawing.Color.Black;
+            this.cbFilterColumn.FormattingEnabled = true;
+            this.cbFilterColumn.Location = new System.Drawing.Point(445, 0);
+            this.cbFilterColumn.Name = "cbFilterColumn";
+            this.cbFilterColumn.Size = new System.Drawing.Size(114, 21);
+            this.cbFilterColumn.TabIndex = 149;
             // 
-            // label1
+            // tbFilter
             // 
-            this.label1.AutoSize = true;
-            this.label1.Font = new System.Drawing.Font("Segoe UI Symbol", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel);
-            this.label1.Location = new System.Drawing.Point(115, 5);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(22, 12);
-            this.label1.TabIndex = 5;
-            this.label1.Text = "of 0";
-            this.label1.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            // 
-            // button4
-            // 
-            this.button4.Font = new System.Drawing.Font("Segoe UI Symbol", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel);
-            this.button4.Location = new System.Drawing.Point(19, -1);
-            this.button4.Name = "button4";
-            this.button4.Size = new System.Drawing.Size(24, 24);
-            this.button4.TabIndex = 4;
-            this.button4.Text = "|◀";
-            this.button4.UseVisualStyleBackColor = true;
-            // 
-            // button3
-            // 
-            this.button3.Font = new System.Drawing.Font("Segoe UI Symbol", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel);
-            this.button3.Location = new System.Drawing.Point(43, -1);
-            this.button3.Name = "button3";
-            this.button3.Size = new System.Drawing.Size(24, 24);
-            this.button3.TabIndex = 3;
-            this.button3.Text = "◀";
-            this.button3.UseVisualStyleBackColor = true;
-            // 
-            // button1
-            // 
-            this.button1.Font = new System.Drawing.Font("Segoe UI Symbol", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel);
-            this.button1.Location = new System.Drawing.Point(147, -1);
-            this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(24, 24);
-            this.button1.TabIndex = 2;
-            this.button1.Text = "▶";
-            this.button1.UseVisualStyleBackColor = true;
-            // 
-            // button2
-            // 
-            this.button2.Font = new System.Drawing.Font("Segoe UI Symbol", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel);
-            this.button2.Location = new System.Drawing.Point(172, -1);
-            this.button2.Name = "button2";
-            this.button2.Size = new System.Drawing.Size(24, 24);
-            this.button2.TabIndex = 1;
-            this.button2.Text = "▶|";
-            this.button2.UseVisualStyleBackColor = true;
+            this.tbFilter.Location = new System.Drawing.Point(560, -1);
+            this.tbFilter.Name = "tbFilter";
+            this.tbFilter.Size = new System.Drawing.Size(100, 22);
+            this.tbFilter.TabIndex = 7;
             // 
             // panel3
             // 
@@ -611,7 +556,7 @@
             this.label5.AutoSize = true;
             this.label5.Location = new System.Drawing.Point(145, 8);
             this.label5.Name = "label5";
-            this.label5.Size = new System.Drawing.Size(31, 13);
+            this.label5.Size = new System.Drawing.Size(31, 15);
             this.label5.TabIndex = 3;
             this.label5.Text = "Data";
             // 
@@ -619,18 +564,18 @@
             // 
             this.panel5.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.panel5.Controls.Add(this.panel8);
-            this.panel5.Controls.Add(this.numericTextBox1);
+            this.panel5.Controls.Add(this.tbTiltValue);
             this.panel5.Controls.Add(this.label15);
             this.panel5.Controls.Add(this.label11);
-            this.panel5.Controls.Add(this.comboBox2);
+            this.panel5.Controls.Add(this.cbSource);
             this.panel5.Controls.Add(this.panel6);
             this.panel5.Controls.Add(this.panel7);
             this.panel5.Controls.Add(this.label10);
-            this.panel5.Controls.Add(this.numericUpDownHexFix2);
+            this.panel5.Controls.Add(this.upDownPrecision);
             this.panel5.Controls.Add(this.label9);
-            this.panel5.Controls.Add(this.numericUpDownHexFix1);
+            this.panel5.Controls.Add(this.upDownAddress);
             this.panel5.Controls.Add(this.label8);
-            this.panel5.Controls.Add(this.comboBox1);
+            this.panel5.Controls.Add(this.cbDomain);
             this.panel5.Location = new System.Drawing.Point(148, 24);
             this.panel5.Name = "panel5";
             this.panel5.Size = new System.Drawing.Size(477, 180);
@@ -639,57 +584,57 @@
             // panel8
             // 
             this.panel8.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.panel8.Controls.Add(this.checkBox4);
-            this.panel8.Controls.Add(this.comboBox7);
+            this.panel8.Controls.Add(this.cbInvertLimiter);
+            this.panel8.Controls.Add(this.cbLimiterTime);
             this.panel8.Controls.Add(this.label18);
-            this.panel8.Controls.Add(this.comboBox8);
+            this.panel8.Controls.Add(this.cbLimiterList);
             this.panel8.Controls.Add(this.label19);
-            this.panel8.Location = new System.Drawing.Point(128, 108);
+            this.panel8.Location = new System.Drawing.Point(128, 104);
             this.panel8.Name = "panel8";
-            this.panel8.Size = new System.Drawing.Size(213, 70);
+            this.panel8.Size = new System.Drawing.Size(210, 70);
             this.panel8.TabIndex = 25;
             // 
-            // checkBox4
+            // cbInvertLimiter
             // 
-            this.checkBox4.AutoSize = true;
-            this.checkBox4.Location = new System.Drawing.Point(3, 48);
-            this.checkBox4.Name = "checkBox4";
-            this.checkBox4.Size = new System.Drawing.Size(92, 17);
-            this.checkBox4.TabIndex = 11;
-            this.checkBox4.Text = "Invert Limiter";
-            this.checkBox4.UseVisualStyleBackColor = true;
+            this.cbInvertLimiter.AutoSize = true;
+            this.cbInvertLimiter.Location = new System.Drawing.Point(3, 48);
+            this.cbInvertLimiter.Name = "cbInvertLimiter";
+            this.cbInvertLimiter.Size = new System.Drawing.Size(99, 19);
+            this.cbInvertLimiter.TabIndex = 11;
+            this.cbInvertLimiter.Text = "Invert Limiter";
+            this.cbInvertLimiter.UseVisualStyleBackColor = true;
             // 
-            // comboBox7
+            // cbLimiterTime
             // 
-            this.comboBox7.FormattingEnabled = true;
-            this.comboBox7.Location = new System.Drawing.Point(110, 18);
-            this.comboBox7.Name = "comboBox7";
-            this.comboBox7.Size = new System.Drawing.Size(92, 21);
-            this.comboBox7.TabIndex = 10;
+            this.cbLimiterTime.FormattingEnabled = true;
+            this.cbLimiterTime.Location = new System.Drawing.Point(110, 19);
+            this.cbLimiterTime.Name = "cbLimiterTime";
+            this.cbLimiterTime.Size = new System.Drawing.Size(92, 21);
+            this.cbLimiterTime.TabIndex = 10;
             // 
             // label18
             // 
             this.label18.AutoSize = true;
-            this.label18.Location = new System.Drawing.Point(110, 4);
+            this.label18.Location = new System.Drawing.Point(107, 4);
             this.label18.Name = "label18";
-            this.label18.Size = new System.Drawing.Size(67, 13);
+            this.label18.Size = new System.Drawing.Size(74, 15);
             this.label18.TabIndex = 9;
             this.label18.Text = "Limiter Time";
             // 
-            // comboBox8
+            // cbLimiterList
             // 
-            this.comboBox8.FormattingEnabled = true;
-            this.comboBox8.Location = new System.Drawing.Point(3, 18);
-            this.comboBox8.Name = "comboBox8";
-            this.comboBox8.Size = new System.Drawing.Size(92, 21);
-            this.comboBox8.TabIndex = 8;
+            this.cbLimiterList.FormattingEnabled = true;
+            this.cbLimiterList.Location = new System.Drawing.Point(3, 19);
+            this.cbLimiterList.Name = "cbLimiterList";
+            this.cbLimiterList.Size = new System.Drawing.Size(92, 21);
+            this.cbLimiterList.TabIndex = 8;
             // 
             // label19
             // 
             this.label19.AutoSize = true;
-            this.label19.Location = new System.Drawing.Point(3, 4);
+            this.label19.Location = new System.Drawing.Point(0, 4);
             this.label19.Name = "label19";
-            this.label19.Size = new System.Drawing.Size(61, 13);
+            this.label19.Size = new System.Drawing.Size(65, 15);
             this.label19.TabIndex = 7;
             this.label19.Text = "Limiter List";
             // 
@@ -698,7 +643,7 @@
             this.label15.AutoSize = true;
             this.label15.Location = new System.Drawing.Point(1, 128);
             this.label15.Name = "label15";
-            this.label15.Size = new System.Drawing.Size(54, 13);
+            this.label15.Size = new System.Drawing.Size(56, 15);
             this.label15.TabIndex = 23;
             this.label15.Text = "Tilt Value";
             // 
@@ -707,17 +652,17 @@
             this.label11.AutoSize = true;
             this.label11.Location = new System.Drawing.Point(125, 4);
             this.label11.Name = "label11";
-            this.label11.Size = new System.Drawing.Size(42, 13);
+            this.label11.Size = new System.Drawing.Size(43, 15);
             this.label11.TabIndex = 16;
             this.label11.Text = "Source";
             // 
-            // comboBox2
+            // cbSource
             // 
-            this.comboBox2.FormattingEnabled = true;
-            this.comboBox2.Location = new System.Drawing.Point(128, 19);
-            this.comboBox2.Name = "comboBox2";
-            this.comboBox2.Size = new System.Drawing.Size(109, 21);
-            this.comboBox2.TabIndex = 15;
+            this.cbSource.FormattingEnabled = true;
+            this.cbSource.Location = new System.Drawing.Point(128, 19);
+            this.cbSource.Name = "cbSource";
+            this.cbSource.Size = new System.Drawing.Size(109, 21);
+            this.cbSource.TabIndex = 15;
             // 
             // panel6
             // 
@@ -734,24 +679,24 @@
             this.label12.AutoSize = true;
             this.label12.Location = new System.Drawing.Point(3, 2);
             this.label12.Name = "label12";
-            this.label12.Size = new System.Drawing.Size(36, 13);
+            this.label12.Size = new System.Drawing.Size(36, 15);
             this.label12.TabIndex = 13;
             this.label12.Text = "Value";
             // 
             // panel7
             // 
             this.panel7.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.panel7.Controls.Add(this.cbSourceDomain);
+            this.panel7.Controls.Add(this.cbSourceAddress);
             this.panel7.Controls.Add(this.label13);
-            this.panel7.Controls.Add(this.numericUpDownHexFix3);
             this.panel7.Controls.Add(this.label14);
-            this.panel7.Controls.Add(this.comboBox5);
-            this.panel7.Controls.Add(this.comboBox4);
+            this.panel7.Controls.Add(this.cbStoreTime);
             this.panel7.Controls.Add(this.label6);
-            this.panel7.Controls.Add(this.comboBox3);
+            this.panel7.Controls.Add(this.cbStoreType);
             this.panel7.Controls.Add(this.label7);
-            this.panel7.Location = new System.Drawing.Point(252, 7);
+            this.panel7.Location = new System.Drawing.Point(257, 4);
             this.panel7.Name = "panel7";
-            this.panel7.Size = new System.Drawing.Size(216, 85);
+            this.panel7.Size = new System.Drawing.Size(216, 88);
             this.panel7.TabIndex = 13;
             // 
             // label13
@@ -759,7 +704,7 @@
             this.label13.AutoSize = true;
             this.label13.Location = new System.Drawing.Point(87, 41);
             this.label13.Name = "label13";
-            this.label13.Size = new System.Drawing.Size(86, 13);
+            this.label13.Size = new System.Drawing.Size(88, 15);
             this.label13.TabIndex = 14;
             this.label13.Text = "Source Address";
             // 
@@ -768,49 +713,49 @@
             this.label14.AutoSize = true;
             this.label14.Location = new System.Drawing.Point(87, 1);
             this.label14.Name = "label14";
-            this.label14.Size = new System.Drawing.Size(85, 13);
+            this.label14.Size = new System.Drawing.Size(88, 15);
             this.label14.TabIndex = 12;
             this.label14.Text = "Source Domain";
             // 
-            // comboBox5
+            // cbSourceDomain
             // 
-            this.comboBox5.FormattingEnabled = true;
-            this.comboBox5.Location = new System.Drawing.Point(90, 14);
-            this.comboBox5.Name = "comboBox5";
-            this.comboBox5.Size = new System.Drawing.Size(109, 21);
-            this.comboBox5.TabIndex = 11;
+            this.cbSourceDomain.FormattingEnabled = true;
+            this.cbSourceDomain.Location = new System.Drawing.Point(90, 14);
+            this.cbSourceDomain.Name = "cbSourceDomain";
+            this.cbSourceDomain.Size = new System.Drawing.Size(109, 21);
+            this.cbSourceDomain.TabIndex = 11;
             // 
-            // comboBox4
+            // cbStoreTime
             // 
-            this.comboBox4.FormattingEnabled = true;
-            this.comboBox4.Location = new System.Drawing.Point(3, 55);
-            this.comboBox4.Name = "comboBox4";
-            this.comboBox4.Size = new System.Drawing.Size(76, 21);
-            this.comboBox4.TabIndex = 10;
+            this.cbStoreTime.FormattingEnabled = true;
+            this.cbStoreTime.Location = new System.Drawing.Point(3, 55);
+            this.cbStoreTime.Name = "cbStoreTime";
+            this.cbStoreTime.Size = new System.Drawing.Size(76, 21);
+            this.cbStoreTime.TabIndex = 10;
             // 
             // label6
             // 
             this.label6.AutoSize = true;
             this.label6.Location = new System.Drawing.Point(3, 41);
             this.label6.Name = "label6";
-            this.label6.Size = new System.Drawing.Size(60, 13);
+            this.label6.Size = new System.Drawing.Size(64, 15);
             this.label6.TabIndex = 9;
             this.label6.Text = "Store Time";
             // 
-            // comboBox3
+            // cbStoreType
             // 
-            this.comboBox3.FormattingEnabled = true;
-            this.comboBox3.Location = new System.Drawing.Point(3, 14);
-            this.comboBox3.Name = "comboBox3";
-            this.comboBox3.Size = new System.Drawing.Size(76, 21);
-            this.comboBox3.TabIndex = 8;
+            this.cbStoreType.FormattingEnabled = true;
+            this.cbStoreType.Location = new System.Drawing.Point(3, 14);
+            this.cbStoreType.Name = "cbStoreType";
+            this.cbStoreType.Size = new System.Drawing.Size(76, 21);
+            this.cbStoreType.TabIndex = 8;
             // 
             // label7
             // 
             this.label7.AutoSize = true;
             this.label7.Location = new System.Drawing.Point(3, 0);
             this.label7.Name = "label7";
-            this.label7.Size = new System.Drawing.Size(60, 13);
+            this.label7.Size = new System.Drawing.Size(63, 15);
             this.label7.TabIndex = 7;
             this.label7.Text = "Store Type";
             // 
@@ -819,7 +764,7 @@
             this.label10.AutoSize = true;
             this.label10.Location = new System.Drawing.Point(0, 85);
             this.label10.Name = "label10";
-            this.label10.Size = new System.Drawing.Size(53, 13);
+            this.label10.Size = new System.Drawing.Size(55, 15);
             this.label10.TabIndex = 12;
             this.label10.Text = "Precision";
             // 
@@ -828,7 +773,7 @@
             this.label9.AutoSize = true;
             this.label9.Location = new System.Drawing.Point(1, 42);
             this.label9.Name = "label9";
-            this.label9.Size = new System.Drawing.Size(48, 13);
+            this.label9.Size = new System.Drawing.Size(49, 15);
             this.label9.TabIndex = 10;
             this.label9.Text = "Address";
             // 
@@ -837,77 +782,77 @@
             this.label8.AutoSize = true;
             this.label8.Location = new System.Drawing.Point(1, 3);
             this.label8.Name = "label8";
-            this.label8.Size = new System.Drawing.Size(47, 13);
+            this.label8.Size = new System.Drawing.Size(49, 15);
             this.label8.TabIndex = 8;
             this.label8.Text = "Domain";
             // 
-            // comboBox1
+            // cbDomain
             // 
-            this.comboBox1.FormattingEnabled = true;
-            this.comboBox1.Location = new System.Drawing.Point(4, 18);
-            this.comboBox1.Name = "comboBox1";
-            this.comboBox1.Size = new System.Drawing.Size(109, 21);
-            this.comboBox1.TabIndex = 0;
+            this.cbDomain.FormattingEnabled = true;
+            this.cbDomain.Location = new System.Drawing.Point(4, 18);
+            this.cbDomain.Name = "cbDomain";
+            this.cbDomain.Size = new System.Drawing.Size(109, 21);
+            this.cbDomain.TabIndex = 0;
             // 
             // label2
             // 
             this.label2.AutoSize = true;
             this.label2.Location = new System.Drawing.Point(17, 8);
             this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(49, 13);
+            this.label2.Size = new System.Drawing.Size(49, 15);
             this.label2.TabIndex = 1;
             this.label2.Text = "Settings";
             // 
             // panel4
             // 
             this.panel4.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.panel4.Controls.Add(this.checkBox3);
-            this.panel4.Controls.Add(this.checkBox2);
-            this.panel4.Controls.Add(this.checkBox1);
+            this.panel4.Controls.Add(this.cbBigEndian);
+            this.panel4.Controls.Add(this.cbLocked);
+            this.panel4.Controls.Add(this.cbEnabled);
             this.panel4.Location = new System.Drawing.Point(20, 24);
             this.panel4.Name = "panel4";
             this.panel4.Size = new System.Drawing.Size(118, 63);
             this.panel4.TabIndex = 0;
             // 
-            // checkBox3
+            // cbBigEndian
             // 
-            this.checkBox3.AutoSize = true;
-            this.checkBox3.Location = new System.Drawing.Point(3, 40);
-            this.checkBox3.Name = "checkBox3";
-            this.checkBox3.Size = new System.Drawing.Size(82, 17);
-            this.checkBox3.TabIndex = 2;
-            this.checkBox3.Text = "Big Endian";
-            this.checkBox3.UseVisualStyleBackColor = true;
+            this.cbBigEndian.AutoSize = true;
+            this.cbBigEndian.Location = new System.Drawing.Point(3, 41);
+            this.cbBigEndian.Name = "cbBigEndian";
+            this.cbBigEndian.Size = new System.Drawing.Size(85, 19);
+            this.cbBigEndian.TabIndex = 2;
+            this.cbBigEndian.Text = "Big Endian";
+            this.cbBigEndian.UseVisualStyleBackColor = true;
             // 
-            // checkBox2
+            // cbLocked
             // 
-            this.checkBox2.AutoSize = true;
-            this.checkBox2.Location = new System.Drawing.Point(3, 22);
-            this.checkBox2.Name = "checkBox2";
-            this.checkBox2.Size = new System.Drawing.Size(62, 17);
-            this.checkBox2.TabIndex = 1;
-            this.checkBox2.Text = "Locked";
-            this.checkBox2.UseVisualStyleBackColor = true;
+            this.cbLocked.AutoSize = true;
+            this.cbLocked.Location = new System.Drawing.Point(3, 22);
+            this.cbLocked.Name = "cbLocked";
+            this.cbLocked.Size = new System.Drawing.Size(67, 19);
+            this.cbLocked.TabIndex = 1;
+            this.cbLocked.Text = "Locked";
+            this.cbLocked.UseVisualStyleBackColor = true;
             // 
-            // checkBox1
+            // cbEnabled
             // 
-            this.checkBox1.AutoSize = true;
-            this.checkBox1.Location = new System.Drawing.Point(3, 3);
-            this.checkBox1.Name = "checkBox1";
-            this.checkBox1.Size = new System.Drawing.Size(68, 17);
-            this.checkBox1.TabIndex = 0;
-            this.checkBox1.Text = "Enabled";
-            this.checkBox1.UseVisualStyleBackColor = true;
+            this.cbEnabled.AutoSize = true;
+            this.cbEnabled.Location = new System.Drawing.Point(3, 3);
+            this.cbEnabled.Name = "cbEnabled";
+            this.cbEnabled.Size = new System.Drawing.Size(71, 19);
+            this.cbEnabled.TabIndex = 0;
+            this.cbEnabled.Text = "Enabled";
+            this.cbEnabled.UseVisualStyleBackColor = true;
             // 
-            // numericTextBox1
+            // tbTiltValue
             // 
-            this.numericTextBox1.AllowDecimal = false;
-            this.numericTextBox1.AllowNegative = false;
-            this.numericTextBox1.AllowSpace = false;
-            this.numericTextBox1.Location = new System.Drawing.Point(4, 144);
-            this.numericTextBox1.Name = "numericTextBox1";
-            this.numericTextBox1.Size = new System.Drawing.Size(108, 22);
-            this.numericTextBox1.TabIndex = 24;
+            this.tbTiltValue.AllowDecimal = false;
+            this.tbTiltValue.AllowNegative = false;
+            this.tbTiltValue.AllowSpace = false;
+            this.tbTiltValue.Location = new System.Drawing.Point(4, 144);
+            this.tbTiltValue.Name = "tbTiltValue";
+            this.tbTiltValue.Size = new System.Drawing.Size(108, 22);
+            this.tbTiltValue.TabIndex = 24;
             // 
             // hexTextBox1
             // 
@@ -920,28 +865,28 @@
             this.hexTextBox1.TabIndex = 0;
             this.hexTextBox1.Text = "FFFFFFFF";
             // 
-            // numericUpDownHexFix3
+            // cbSourceAddress
             // 
-            this.numericUpDownHexFix3.Location = new System.Drawing.Point(90, 54);
-            this.numericUpDownHexFix3.Name = "numericUpDownHexFix3";
-            this.numericUpDownHexFix3.Size = new System.Drawing.Size(109, 22);
-            this.numericUpDownHexFix3.TabIndex = 13;
+            this.cbSourceAddress.Location = new System.Drawing.Point(90, 54);
+            this.cbSourceAddress.Name = "cbSourceAddress";
+            this.cbSourceAddress.Size = new System.Drawing.Size(109, 22);
+            this.cbSourceAddress.TabIndex = 13;
             // 
-            // numericUpDownHexFix2
+            // updownPrecision
             // 
-            this.numericUpDownHexFix2.Location = new System.Drawing.Point(3, 100);
-            this.numericUpDownHexFix2.Name = "numericUpDownHexFix2";
-            this.numericUpDownHexFix2.Size = new System.Drawing.Size(109, 22);
-            this.numericUpDownHexFix2.TabIndex = 11;
+            this.upDownPrecision.Location = new System.Drawing.Point(3, 100);
+            this.upDownPrecision.Name = "updownPrecision";
+            this.upDownPrecision.Size = new System.Drawing.Size(109, 22);
+            this.upDownPrecision.TabIndex = 11;
             // 
-            // numericUpDownHexFix1
+            // upDownAddress
             // 
-            this.numericUpDownHexFix1.Font = new System.Drawing.Font("Consolas", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel);
-            this.numericUpDownHexFix1.Hexadecimal = true;
-            this.numericUpDownHexFix1.Location = new System.Drawing.Point(4, 57);
-            this.numericUpDownHexFix1.Name = "numericUpDownHexFix1";
-            this.numericUpDownHexFix1.Size = new System.Drawing.Size(109, 22);
-            this.numericUpDownHexFix1.TabIndex = 9;
+            this.upDownAddress.Font = new System.Drawing.Font("Consolas", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel);
+            this.upDownAddress.Hexadecimal = true;
+            this.upDownAddress.Location = new System.Drawing.Point(4, 57);
+            this.upDownAddress.Name = "upDownAddress";
+            this.upDownAddress.Size = new System.Drawing.Size(109, 22);
+            this.upDownAddress.TabIndex = 9;
             // 
             // updownShiftBlastLayerAmount
             // 
@@ -969,7 +914,7 @@
             this.menuStripEx1.Location = new System.Drawing.Point(0, 0);
             this.menuStripEx1.Name = "menuStripEx1";
             this.menuStripEx1.RenderMode = System.Windows.Forms.ToolStripRenderMode.Professional;
-            this.menuStripEx1.Size = new System.Drawing.Size(821, 24);
+            this.menuStripEx1.Size = new System.Drawing.Size(821, 28);
             this.menuStripEx1.TabIndex = 145;
             this.menuStripEx1.Tag = "";
             this.menuStripEx1.Text = "menuStripEx1";
@@ -983,38 +928,38 @@
             this.importBlastlayerblToolStripMenuItem,
             this.exportToCSVToolStripMenuItem});
             this.blastLayerToolStripMenuItem.Name = "blastLayerToolStripMenuItem";
-            this.blastLayerToolStripMenuItem.Size = new System.Drawing.Size(72, 20);
+            this.blastLayerToolStripMenuItem.Size = new System.Drawing.Size(88, 24);
             this.blastLayerToolStripMenuItem.Tag = "";
             this.blastLayerToolStripMenuItem.Text = "BlastLayer";
             // 
             // loadFromFileblToolStripMenuItem
             // 
             this.loadFromFileblToolStripMenuItem.Name = "loadFromFileblToolStripMenuItem";
-            this.loadFromFileblToolStripMenuItem.Size = new System.Drawing.Size(187, 22);
+            this.loadFromFileblToolStripMenuItem.Size = new System.Drawing.Size(227, 26);
             this.loadFromFileblToolStripMenuItem.Text = "&Load From File (.bl)";
             // 
             // saveToFileblToolStripMenuItem
             // 
             this.saveToFileblToolStripMenuItem.Name = "saveToFileblToolStripMenuItem";
-            this.saveToFileblToolStripMenuItem.Size = new System.Drawing.Size(187, 22);
+            this.saveToFileblToolStripMenuItem.Size = new System.Drawing.Size(227, 26);
             this.saveToFileblToolStripMenuItem.Text = "&Save to File (.bl)";
             // 
             // saveAsToFileblToolStripMenuItem
             // 
             this.saveAsToFileblToolStripMenuItem.Name = "saveAsToFileblToolStripMenuItem";
-            this.saveAsToFileblToolStripMenuItem.Size = new System.Drawing.Size(187, 22);
+            this.saveAsToFileblToolStripMenuItem.Size = new System.Drawing.Size(227, 26);
             this.saveAsToFileblToolStripMenuItem.Text = "&Save As to File (.bl)";
             // 
             // importBlastlayerblToolStripMenuItem
             // 
             this.importBlastlayerblToolStripMenuItem.Name = "importBlastlayerblToolStripMenuItem";
-            this.importBlastlayerblToolStripMenuItem.Size = new System.Drawing.Size(187, 22);
+            this.importBlastlayerblToolStripMenuItem.Size = new System.Drawing.Size(227, 26);
             this.importBlastlayerblToolStripMenuItem.Text = "&Import Blastlayer (.bl)";
             // 
             // exportToCSVToolStripMenuItem
             // 
             this.exportToCSVToolStripMenuItem.Name = "exportToCSVToolStripMenuItem";
-            this.exportToCSVToolStripMenuItem.Size = new System.Drawing.Size(187, 22);
+            this.exportToCSVToolStripMenuItem.Size = new System.Drawing.Size(227, 26);
             this.exportToCSVToolStripMenuItem.Text = "&Export to CSV";
             // 
             // saveStateToolStripMenuItem
@@ -1025,32 +970,32 @@
             this.replaceSavestateFromFileToolStripMenuItem,
             this.saveSavestateToToolStripMenuItem});
             this.saveStateToolStripMenuItem.Name = "saveStateToolStripMenuItem";
-            this.saveStateToolStripMenuItem.Size = new System.Drawing.Size(69, 20);
+            this.saveStateToolStripMenuItem.Size = new System.Drawing.Size(86, 24);
             this.saveStateToolStripMenuItem.Tag = "";
             this.saveStateToolStripMenuItem.Text = "SaveState";
             // 
             // runOriginalSavestateToolStripMenuItem
             // 
             this.runOriginalSavestateToolStripMenuItem.Name = "runOriginalSavestateToolStripMenuItem";
-            this.runOriginalSavestateToolStripMenuItem.Size = new System.Drawing.Size(217, 22);
+            this.runOriginalSavestateToolStripMenuItem.Size = new System.Drawing.Size(267, 26);
             this.runOriginalSavestateToolStripMenuItem.Text = "Run Original Savestate";
             // 
             // replaceSavestateFromGHToolStripMenuItem
             // 
             this.replaceSavestateFromGHToolStripMenuItem.Name = "replaceSavestateFromGHToolStripMenuItem";
-            this.replaceSavestateFromGHToolStripMenuItem.Size = new System.Drawing.Size(217, 22);
+            this.replaceSavestateFromGHToolStripMenuItem.Size = new System.Drawing.Size(267, 26);
             this.replaceSavestateFromGHToolStripMenuItem.Text = "Replace Savestate from GH";
             // 
             // replaceSavestateFromFileToolStripMenuItem
             // 
             this.replaceSavestateFromFileToolStripMenuItem.Name = "replaceSavestateFromFileToolStripMenuItem";
-            this.replaceSavestateFromFileToolStripMenuItem.Size = new System.Drawing.Size(217, 22);
+            this.replaceSavestateFromFileToolStripMenuItem.Size = new System.Drawing.Size(267, 26);
             this.replaceSavestateFromFileToolStripMenuItem.Text = "Replace Savestate from File";
             // 
             // saveSavestateToToolStripMenuItem
             // 
             this.saveSavestateToToolStripMenuItem.Name = "saveSavestateToToolStripMenuItem";
-            this.saveSavestateToToolStripMenuItem.Size = new System.Drawing.Size(217, 22);
+            this.saveSavestateToToolStripMenuItem.Size = new System.Drawing.Size(267, 26);
             this.saveSavestateToToolStripMenuItem.Text = "Save Savestate to";
             // 
             // rOMToolStripMenuItem
@@ -1061,32 +1006,32 @@
             this.replaceRomFromFileToolStripMenuItem,
             this.bakeROMBlastunitsToFileToolStripMenuItem});
             this.rOMToolStripMenuItem.Name = "rOMToolStripMenuItem";
-            this.rOMToolStripMenuItem.Size = new System.Drawing.Size(46, 20);
+            this.rOMToolStripMenuItem.Size = new System.Drawing.Size(54, 24);
             this.rOMToolStripMenuItem.Tag = "";
             this.rOMToolStripMenuItem.Text = "ROM";
             // 
             // runRomWithoutBlastlayerToolStripMenuItem
             // 
             this.runRomWithoutBlastlayerToolStripMenuItem.Name = "runRomWithoutBlastlayerToolStripMenuItem";
-            this.runRomWithoutBlastlayerToolStripMenuItem.Size = new System.Drawing.Size(222, 22);
+            this.runRomWithoutBlastlayerToolStripMenuItem.Size = new System.Drawing.Size(269, 26);
             this.runRomWithoutBlastlayerToolStripMenuItem.Text = "Run Rom Without Blastlayer";
             // 
             // replaceRomFromGHToolStripMenuItem
             // 
             this.replaceRomFromGHToolStripMenuItem.Name = "replaceRomFromGHToolStripMenuItem";
-            this.replaceRomFromGHToolStripMenuItem.Size = new System.Drawing.Size(222, 22);
+            this.replaceRomFromGHToolStripMenuItem.Size = new System.Drawing.Size(269, 26);
             this.replaceRomFromGHToolStripMenuItem.Text = "Replace Rom from GH";
             // 
             // replaceRomFromFileToolStripMenuItem
             // 
             this.replaceRomFromFileToolStripMenuItem.Name = "replaceRomFromFileToolStripMenuItem";
-            this.replaceRomFromFileToolStripMenuItem.Size = new System.Drawing.Size(222, 22);
+            this.replaceRomFromFileToolStripMenuItem.Size = new System.Drawing.Size(269, 26);
             this.replaceRomFromFileToolStripMenuItem.Text = "Replace Rom from File";
             // 
             // bakeROMBlastunitsToFileToolStripMenuItem
             // 
             this.bakeROMBlastunitsToFileToolStripMenuItem.Name = "bakeROMBlastunitsToFileToolStripMenuItem";
-            this.bakeROMBlastunitsToFileToolStripMenuItem.Size = new System.Drawing.Size(222, 22);
+            this.bakeROMBlastunitsToFileToolStripMenuItem.Size = new System.Drawing.Size(269, 26);
             this.bakeROMBlastunitsToFileToolStripMenuItem.Text = "Bake ROM BlastBytes to File";
             // 
             // toolsToolStripMenuItem
@@ -1096,32 +1041,32 @@
             this.rasterizeVMDsToolStripMenuItem,
             this.bakeBlastByteToolStripMenuItem});
             this.toolsToolStripMenuItem.Name = "toolsToolStripMenuItem";
-            this.toolsToolStripMenuItem.Size = new System.Drawing.Size(47, 20);
+            this.toolsToolStripMenuItem.Size = new System.Drawing.Size(56, 24);
             this.toolsToolStripMenuItem.Tag = "";
             this.toolsToolStripMenuItem.Text = "Tools";
             // 
             // sanitizeDuplicatesToolStripMenuItem
             // 
             this.sanitizeDuplicatesToolStripMenuItem.Name = "sanitizeDuplicatesToolStripMenuItem";
-            this.sanitizeDuplicatesToolStripMenuItem.Size = new System.Drawing.Size(285, 22);
+            this.sanitizeDuplicatesToolStripMenuItem.Size = new System.Drawing.Size(354, 26);
             this.sanitizeDuplicatesToolStripMenuItem.Text = "Sanitize Duplicates";
             // 
             // rasterizeVMDsToolStripMenuItem
             // 
             this.rasterizeVMDsToolStripMenuItem.Name = "rasterizeVMDsToolStripMenuItem";
-            this.rasterizeVMDsToolStripMenuItem.Size = new System.Drawing.Size(285, 22);
+            this.rasterizeVMDsToolStripMenuItem.Size = new System.Drawing.Size(354, 26);
             this.rasterizeVMDsToolStripMenuItem.Text = "Rasterize VMDs";
             // 
             // bakeBlastByteToolStripMenuItem
             // 
             this.bakeBlastByteToolStripMenuItem.Name = "bakeBlastByteToolStripMenuItem";
-            this.bakeBlastByteToolStripMenuItem.Size = new System.Drawing.Size(285, 22);
+            this.bakeBlastByteToolStripMenuItem.Size = new System.Drawing.Size(354, 26);
             this.bakeBlastByteToolStripMenuItem.Text = "Bake Selected BlastUnits to BlastByte Set";
             // 
             // openBlastLayerGeneratorToolStripMenuItem
             // 
             this.openBlastLayerGeneratorToolStripMenuItem.Name = "openBlastLayerGeneratorToolStripMenuItem";
-            this.openBlastLayerGeneratorToolStripMenuItem.Size = new System.Drawing.Size(159, 20);
+            this.openBlastLayerGeneratorToolStripMenuItem.Size = new System.Drawing.Size(198, 24);
             this.openBlastLayerGeneratorToolStripMenuItem.Text = "Open BlastLayer Generator";
             // 
             // optionsToolStripMenuItem
@@ -1129,31 +1074,14 @@
             this.optionsToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.usePaginationToolStripMenuItem});
             this.optionsToolStripMenuItem.Name = "optionsToolStripMenuItem";
-            this.optionsToolStripMenuItem.Size = new System.Drawing.Size(61, 20);
+            this.optionsToolStripMenuItem.Size = new System.Drawing.Size(73, 24);
             this.optionsToolStripMenuItem.Text = "Options";
             // 
             // usePaginationToolStripMenuItem
             // 
             this.usePaginationToolStripMenuItem.Name = "usePaginationToolStripMenuItem";
-            this.usePaginationToolStripMenuItem.Size = new System.Drawing.Size(153, 22);
+            this.usePaginationToolStripMenuItem.Size = new System.Drawing.Size(182, 26);
             this.usePaginationToolStripMenuItem.Text = "Use Pagination";
-            // 
-            // tbFilter
-            // 
-            this.tbFilter.Location = new System.Drawing.Point(559, 0);
-            this.tbFilter.Name = "tbFilter";
-            this.tbFilter.Size = new System.Drawing.Size(100, 22);
-            this.tbFilter.TabIndex = 7;
-            // 
-            // cbFilterColumn
-            // 
-            this.cbFilterColumn.BackColor = System.Drawing.Color.White;
-            this.cbFilterColumn.ForeColor = System.Drawing.Color.Black;
-            this.cbFilterColumn.FormattingEnabled = true;
-            this.cbFilterColumn.Location = new System.Drawing.Point(441, 1);
-            this.cbFilterColumn.Name = "cbFilterColumn";
-            this.cbFilterColumn.Size = new System.Drawing.Size(114, 21);
-            this.cbFilterColumn.TabIndex = 149;
             // 
             // RTC_NewBlastEditor_Form
             // 
@@ -1190,9 +1118,9 @@
             this.panel7.PerformLayout();
             this.panel4.ResumeLayout(false);
             this.panel4.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.numericUpDownHexFix3)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.numericUpDownHexFix2)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.numericUpDownHexFix1)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.cbSourceAddress)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.upDownPrecision)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.upDownAddress)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.updownShiftBlastLayerAmount)).EndInit();
             this.menuStripEx1.ResumeLayout(false);
             this.menuStripEx1.PerformLayout();
@@ -1253,46 +1181,40 @@
 		private System.Windows.Forms.ToolStripMenuItem openBlastLayerGeneratorToolStripMenuItem;
 		private System.Windows.Forms.ToolStripMenuItem optionsToolStripMenuItem;
 		private System.Windows.Forms.ToolStripMenuItem usePaginationToolStripMenuItem;
-		private System.Windows.Forms.TextBox textBox1;
-		private System.Windows.Forms.Label label1;
-		private System.Windows.Forms.Button button4;
-		private System.Windows.Forms.Button button3;
-		private System.Windows.Forms.Button button1;
-		private System.Windows.Forms.Button button2;
 		private System.Windows.Forms.Panel panel3;
 		private System.Windows.Forms.Panel panel5;
 		private System.Windows.Forms.Label label2;
 		private System.Windows.Forms.Panel panel4;
-		private System.Windows.Forms.CheckBox checkBox2;
-		private System.Windows.Forms.CheckBox checkBox1;
+		private System.Windows.Forms.CheckBox cbLocked;
+		private System.Windows.Forms.CheckBox cbEnabled;
 		private System.Windows.Forms.Label label8;
-		private System.Windows.Forms.ComboBox comboBox1;
-		private System.Windows.Forms.CheckBox checkBox3;
+		private System.Windows.Forms.ComboBox cbDomain;
+		private System.Windows.Forms.CheckBox cbBigEndian;
 		private System.Windows.Forms.Label label9;
-		private NumericUpDownHexFix numericUpDownHexFix1;
+		private NumericUpDownHexFix upDownAddress;
 		private System.Windows.Forms.Panel panel6;
 		private System.Windows.Forms.Label label12;
 		private BizHawk.Client.EmuHawk.HexTextBox hexTextBox1;
 		private System.Windows.Forms.Panel panel7;
 		private System.Windows.Forms.Label label7;
-		private System.Windows.Forms.ComboBox comboBox3;
-		private System.Windows.Forms.ComboBox comboBox4;
+		private System.Windows.Forms.ComboBox cbStoreType;
+		private System.Windows.Forms.ComboBox cbStoreTime;
 		private System.Windows.Forms.Label label6;
 		private System.Windows.Forms.Label label11;
-		private System.Windows.Forms.ComboBox comboBox2;
+		private System.Windows.Forms.ComboBox cbSource;
 		private System.Windows.Forms.Label label10;
-		private NumericUpDownHexFix numericUpDownHexFix2;
+		private NumericUpDownHexFix upDownPrecision;
 		private System.Windows.Forms.Label label13;
 		private System.Windows.Forms.Label label14;
-		private System.Windows.Forms.ComboBox comboBox5;
-		private NumericUpDownHexFix numericUpDownHexFix3;
+		private System.Windows.Forms.ComboBox cbSourceDomain;
+		private NumericUpDownHexFix cbSourceAddress;
 		private System.Windows.Forms.Panel panel8;
-		private System.Windows.Forms.CheckBox checkBox4;
-		private System.Windows.Forms.ComboBox comboBox7;
+		private System.Windows.Forms.CheckBox cbInvertLimiter;
+		private System.Windows.Forms.ComboBox cbLimiterTime;
 		private System.Windows.Forms.Label label18;
-		private System.Windows.Forms.ComboBox comboBox8;
+		private System.Windows.Forms.ComboBox cbLimiterList;
 		private System.Windows.Forms.Label label19;
-		private BizHawk.Client.EmuHawk.NumericTextBox numericTextBox1;
+		private BizHawk.Client.EmuHawk.NumericTextBox tbTiltValue;
 		private System.Windows.Forms.Label label15;
 		private System.Windows.Forms.Label label5;
 		private System.Windows.Forms.ComboBox cbFilterColumn;
