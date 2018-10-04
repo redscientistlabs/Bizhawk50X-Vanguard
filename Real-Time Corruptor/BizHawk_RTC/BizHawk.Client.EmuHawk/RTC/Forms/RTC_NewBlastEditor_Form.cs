@@ -9,6 +9,13 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
+/**
+ * The DataGridView is bound to the blastlayer
+ * All validation is done within the dgv
+ * The boxes at the bottom are unbound and manipulate the selected rows in the dgv, and thus, the validation is handled by the dgv
+ * No maxmimum is set in the numericupdowns at the bottom as the dgv validates
+ **/
+
 /*
 Applies in all cases & should be editable
  * bool IsEnabled 
@@ -68,6 +75,7 @@ namespace RTC
 			Address,
 			Precision,
 			ValueString,
+			Source,
 			ExecuteFrame,
 			Lifetime,
 			Loop,
@@ -92,7 +100,9 @@ namespace RTC
 				dgvBlastEditor.DataError += dgvBlastLayer_DataError;
 				dgvBlastEditor.AutoGenerateColumns = false;
 				dgvBlastEditor.SelectionChanged += dgvBlastEditor_SelectionChanged;
-				dgvBlastEditor.ColumnHeaderMouseClick += dgvBlastEditor_ColumnHeaderMouseClick; ;
+				dgvBlastEditor.ColumnHeaderMouseClick += dgvBlastEditor_ColumnHeaderMouseClick;
+				dgvBlastEditor.CellValueChanged += dgvBlastEditor_CellValueChanged;
+				
 				tbFilter.TextChanged += tbFilter_TextChanged;
 
 				cbEnabled.Validated += cbEnabled_Validated;
@@ -122,90 +132,139 @@ namespace RTC
 			}
 		}
 
+		private void dgvBlastEditor_CellValueChanged(object sender, DataGridViewCellEventArgs e)
+		{
+			DataGridViewColumn changedColumn = dgvBlastEditor.Columns[e.ColumnIndex];
+
+			//If the Domain or SourceDomain changed update the Maximum Value
+			if (changedColumn.Name == buProperty.Domain.ToString())
+			{
+				updateMaximum(dgvBlastEditor.Rows[e.RowIndex].Cells[buProperty.Address.ToString()] as DataGridViewNumericUpDownCell, dgvBlastEditor.Rows[e.RowIndex].Cells[buProperty.Domain.ToString()].Value.ToString());
+			}
+			else if (changedColumn.Name == buProperty.SourceDomain.ToString())
+			{
+				updateMaximum(dgvBlastEditor.Rows[e.RowIndex].Cells[buProperty.SourceAddress.ToString()] as DataGridViewNumericUpDownCell, dgvBlastEditor.Rows[e.RowIndex].Cells[buProperty.SourceDomain.ToString()].Value.ToString());
+			}
+		}
+
 		private void CbSourceDomain_Validated(object sender, EventArgs e)
 		{
-			throw new NotImplementedException();
+			foreach (DataGridViewRow row in dgvBlastEditor.SelectedRows)
+				row.Cells[buProperty.SourceDomain.ToString()].Value = cbSourceDomain.SelectedItem;
+			UpdateBottom();
 		}
 
 		private void CbStoreType_Validated(object sender, EventArgs e)
 		{
-			throw new NotImplementedException();
+			foreach (DataGridViewRow row in dgvBlastEditor.SelectedRows)
+				row.Cells[buProperty.StoreType.ToString()].Value = cbStoreType.SelectedItem;UpdateBottom();
+			UpdateBottom();
 		}
 
 		private void CbStoreTime_Validated(object sender, EventArgs e)
 		{
-			throw new NotImplementedException();
+			foreach (DataGridViewRow row in dgvBlastEditor.SelectedRows)
+				row.Cells[buProperty.StoreTime.ToString()].Value = cbStoreTime.SelectedItem;
+			UpdateBottom();
 		}
 
 		private void CbLimiterList_Validated(object sender, EventArgs e)
 		{
-			throw new NotImplementedException();
+			foreach (DataGridViewRow row in dgvBlastEditor.SelectedRows)
+				row.Cells[buProperty.LimiterHash.ToString()].Value = cbLimiterList.SelectedItem;
+			UpdateBottom();
 		}
 
 		private void CbBigEndian_Validated(object sender, EventArgs e)
 		{
-			throw new NotImplementedException();
+			//Big Endian isn't available in the DGV so we operate on the actual BU then refresh
+			foreach (DataGridViewRow row in dgvBlastEditor.SelectedRows)
+			{
+				(row.DataBoundItem as BlastUnit).BigEndian = cbBigEndian.Checked;
+			}
+			dgvBlastEditor.Refresh();
+			UpdateBottom();
 		}
 
 		private void TbValue_Validated(object sender, EventArgs e)
 		{
-			throw new NotImplementedException();
+			foreach (DataGridViewRow row in dgvBlastEditor.SelectedRows)
+				row.Cells[buProperty.ValueString.ToString()].Value = tbValue.Text;
+			UpdateBottom();
 		}
 
 		private void CbSource_Validated(object sender, EventArgs e)
 		{
-			throw new NotImplementedException();
+			foreach (DataGridViewRow row in dgvBlastEditor.SelectedRows)
+				row.Cells[buProperty.Source.ToString()].Value = cbSource.SelectedItem;
+			UpdateBottom();
 		}
 
 		private void TbTiltValue_Validated(object sender, EventArgs e)
 		{
-			throw new NotImplementedException();
+			//Tilt isn't stored within the DGV so operate on the BUs. No validation neccesary as it's a bigint
+			foreach (DataGridViewRow row in dgvBlastEditor.SelectedRows)
+			{
+				(row.DataBoundItem as BlastUnit).TiltValue = System.Numerics.BigInteger.Parse(tbTiltValue.Text);
+			}
+			UpdateBottom();
 		}
 
 		private void UpDownPrecision_Validated(object sender, EventArgs e)
 		{
-			throw new NotImplementedException();
+			foreach (DataGridViewRow row in dgvBlastEditor.SelectedRows)
+				row.Cells[buProperty.Precision.ToString()].Value = upDownPrecision.Value;
+
+			UpdateBottom();
+			dgvBlastEditor.Refresh();
 		}
 
 		private void UpDownAddress_Validated(object sender, EventArgs e)
 		{
 			foreach (DataGridViewRow row in dgvBlastEditor.SelectedRows)
 				row.Cells[buProperty.Address.ToString()].Value = upDownAddress.Value;
+			UpdateBottom();
 		}
 
 		private void UpDownSourceAddress_Validated(object sender, EventArgs e)
 		{
 			foreach (DataGridViewRow row in dgvBlastEditor.SelectedRows)
 				row.Cells[buProperty.SourceAddress.ToString()].Value = upDownSourceAddress.Value;
+			UpdateBottom();
 		}
 
 		private void CbLocked_Validated(object sender, EventArgs e)
 		{
 			foreach (DataGridViewRow row in dgvBlastEditor.SelectedRows)
 				row.Cells[buProperty.isLocked.ToString()].Value = cbInvertLimiter.Checked;
+			UpdateBottom();
 		}
 
 		private void CbLimiterTime_Validated(object sender, EventArgs e)
 		{
 			foreach (DataGridViewRow row in dgvBlastEditor.SelectedRows)
 				row.Cells[buProperty.LimiterTime.ToString()].Value = cbLimiterTime.SelectedItem;
+			UpdateBottom();
 		}
 
 		private void CbInvertLimiter_Validated(object sender, EventArgs e)
 		{
 			foreach (DataGridViewRow row in dgvBlastEditor.SelectedRows)
 				row.Cells[buProperty.InvertLimiter.ToString()].Value = cbInvertLimiter.Checked;
+			UpdateBottom();
 		}
 		private void cbEnabled_Validated(object sender, EventArgs e)
 		{
 			foreach (DataGridViewRow row in dgvBlastEditor.SelectedRows)
 				row.Cells[buProperty.isEnabled.ToString()].Value = cbEnabled.Checked;
+			UpdateBottom();
 		}
 
 		private void cbDomain_Validated(object sender, EventArgs e)
 		{
 			foreach (DataGridViewRow row in dgvBlastEditor.SelectedRows)
 				row.Cells[buProperty.Domain.ToString()].Value = cbDomain.SelectedItem;
+			UpdateBottom();
 		}
 
 		private void dgvBlastEditor_ColumnHeaderMouseClick(object sender, DataGridViewCellMouseEventArgs e)
@@ -223,56 +282,60 @@ namespace RTC
 			}
 		}
 
-		/*
-		private void OnValidated(object sender, EventArgs e)
-		{
-			dynamic bad = (sender as dynamic);
-			if((bad?.DataBindings?.Count ?? 0) > 0)
-			{
-				PropertyInfo property = bad.DataBindings[0].DataSource.GetType().GetProperty(bad.DataBindings[0].BindingMemberInfo.BindingField);
-				dynamic value = property.GetValue(bad.DataBindings[0].DataSource);
 
-				foreach (BlastUnit bu in selectedBUs)
-				{
-					property.SetValue(bu, value);
-				}
+		private void updateMaximum(DataGridViewSelectedRowCollection rows)
+		{
+			foreach (DataGridViewRow row in rows)
+			{
+				BlastUnit bu = row.DataBoundItem as BlastUnit;
+				string domain = bu.Domain;
+				string sourceDomain = bu.SourceDomain;
+
+				if(domain != null)
+					(row.Cells[buProperty.Address.ToString()] as DataGridViewNumericUpDownCell).Maximum = domainToMiDico[domain].Size;
+				if(sourceDomain != null)
+					(row.Cells[buProperty.SourceAddress.ToString()] as DataGridViewNumericUpDownCell).Maximum = domainToMiDico[sourceDomain].Size;
 			}
-			dgvBlastEditor.Refresh();
-		}*/
+		}
+
+		private void updateMaximum(DataGridViewNumericUpDownCell cell, String domain)
+		{
+				cell.Maximum = domainToMiDico[domain].Size;
+		}
+		
+		private void UpdateBottom()
+		{
+			if (dgvBlastEditor.SelectedRows.Count > 0)
+			{
+				var lastRow = dgvBlastEditor.SelectedRows[dgvBlastEditor.SelectedRows.Count - 1];
+				cbDomain.SelectedItem = (String)(lastRow.Cells[buProperty.Domain.ToString()].Value);
+				cbEnabled.Checked = (bool)(lastRow.Cells[buProperty.isEnabled.ToString()].Value);
+				cbLocked.Checked = (bool)(lastRow.Cells[buProperty.isLocked.ToString()].Value);
+				upDownAddress.Value = (long)(lastRow.Cells[buProperty.Address.ToString()].Value);
+				upDownPrecision.Value = (int)(lastRow.Cells[buProperty.Precision.ToString()].Value);
+				tbValue.Text = (String)(lastRow.Cells[buProperty.ValueString.ToString()].Value);
+				upDownExecuteFrame.Value = (int)(lastRow.Cells[buProperty.ExecuteFrame.ToString()].Value);
+				upDownLifetime.Value = (int)(lastRow.Cells[buProperty.Lifetime.ToString()].Value);
+				cbLoop.Checked = (bool)(lastRow.Cells[buProperty.Loop.ToString()].Value);
+				cbLimiterTime.SelectedItem = (ActionTime)(lastRow.Cells[buProperty.LimiterTime.ToString()].Value);
+				cbLimiterList.SelectedItem = (String)(lastRow.Cells[buProperty.LimiterHash.ToString()].Value);
+				cbInvertLimiter.Checked = (bool)(lastRow.Cells[buProperty.InvertLimiter.ToString()].Value);
+				cbStoreTime.SelectedItem = (ActionTime)(lastRow.Cells[buProperty.StoreTime.ToString()].Value);
+				cbStoreType.SelectedItem = (StoreType)(lastRow.Cells[buProperty.StoreType.ToString()].Value);
+				cbSourceDomain.SelectedItem = (String)(lastRow.Cells[buProperty.SourceDomain.ToString()].Value);
+				cbSource.SelectedItem = (BlastUnitSource)(lastRow.Cells[buProperty.Source.ToString()].Value);
+				upDownSourceAddress.Value = (long)(lastRow.Cells[buProperty.SourceAddress.ToString()].Value);
+
+				tbTiltValue.Text = (lastRow.DataBoundItem as BlastUnit).TiltValue.ToString();
+
+			}
+		}
 
 		private void dgvBlastEditor_SelectionChanged(object sender, EventArgs e)
 		{
-			if(dgvBlastEditor.SelectedRows.Count > 0)
-			{
-				upDownAddress.Value = (long)(dgvBlastEditor.SelectedRows[0].Cells["Address"].Value);
-			}
-
-			/*
-			selectedBUs = new BindingList<BlastUnit>();
-
-			foreach (DataGridViewRow row in dgvBlastEditor.SelectedRows)
-				selectedBUs.Add(row.DataBoundItem as BlastUnit);
-
-			upDownAddress.DataBindings.Clear();
-			upDownPrecision.DataBindings.Clear();
-			if (selectedBUs.Count > 0) {
-				upDownAddress.DataBindings.Add("Text", selectedBUs[selectedBUs.Count - 1], "Address", true, DataSourceUpdateMode.OnValidation);
-				upDownPrecision.DataBindings.Add("Value", selectedBUs[selectedBUs.Count - 1], "Precision", true, DataSourceUpdateMode.OnValidation);
-			}
-			*/
-		}
-
-		private void selectedBUs_ListChanged(object sender, ListChangedEventArgs e)
-		{
-			if(e.ListChangedType == ListChangedType.ItemChanged)
-			{
-				PropertyDescriptor property = e.PropertyDescriptor;
-				BlastUnit changed = selectedBUs[e.NewIndex];
-				//Get the value of the changed property
-				object value = property.GetValue(changed);
-				foreach (BlastUnit bu in selectedBUs)
-					property.SetValue(bu, value);
-			}
+			UpdateBottom();
+			//Rather than setting all these values at load, we set it on the fly
+			updateMaximum(dgvBlastEditor.SelectedRows);
 		}
 
 		private void tbFilter_TextChanged(object sender, EventArgs e)
@@ -289,8 +352,11 @@ namespace RTC
 	
 		private void InitializeBottom()
 		{
+			property2ControlDico = new Dictionary<string, Control>();
+
 			var actionTime = Enum.GetValues(typeof(ActionTime));
 			var storeType = Enum.GetValues(typeof(StoreType));
+			var blastUnitSource = Enum.GetValues(typeof(BlastUnitSource));
 
 			cbDomain.DataSource = domains;
 			cbSourceDomain.DataSource = domains;
@@ -299,6 +365,10 @@ namespace RTC
 			{
 				cbLimiterTime.Items.Add(item);
 				cbStoreTime.Items.Add(item);
+			}
+			foreach (var item in blastUnitSource)
+			{
+				cbSource.Items.Add(item);
 			}
 
 			cbLimiterList.DataSource = RTC_Core.LimiterListBindingSource;
@@ -309,6 +379,7 @@ namespace RTC
 
 			property2ControlDico.Add(buProperty.Address.ToString(), upDownAddress);
 			property2ControlDico.Add(buProperty.Domain.ToString(), cbDomain);
+			property2ControlDico.Add(buProperty.Source.ToString(), cbSource);
 			property2ControlDico.Add(buProperty.ExecuteFrame.ToString(), upDownExecuteFrame);
 			property2ControlDico.Add(buProperty.InvertLimiter.ToString(), cbInvertLimiter);
 			property2ControlDico.Add(buProperty.isEnabled.ToString(), cbEnabled);
@@ -324,7 +395,6 @@ namespace RTC
 			property2ControlDico.Add(buProperty.StoreTime.ToString(), cbStoreTime);
 			property2ControlDico.Add(buProperty.StoreType.ToString(), cbStoreType);
 			property2ControlDico.Add(buProperty.ValueString.ToString(), tbValue);
-
 		}
 
 
@@ -334,21 +404,29 @@ namespace RTC
 
 			VisibleColumns = new List<string>();
 			var actionTime = Enum.GetValues(typeof(ActionTime));
+			var blastUnitSource = Enum.GetValues(typeof(BlastUnitSource));
 
-			
 
 			dgvBlastEditor.Columns.Add(CreateColumn(buProperty.isEnabled.ToString(), "Enabled", new DataGridViewCheckBoxColumn()));
 			
 
 			dgvBlastEditor.Columns.Add(CreateColumn(buProperty.isLocked.ToString(), "Locked", new DataGridViewCheckBoxColumn()));
-			
+
+			//Do this one separately as we need to populate the Combobox
+			DataGridViewComboBoxColumn source = CreateColumn(buProperty.Source.ToString(), "Source", new DataGridViewComboBoxColumn()) as DataGridViewComboBoxColumn;
+			foreach (var item in blastUnitSource)
+				source.Items.Add(item);
+			dgvBlastEditor.Columns.Add(source);
 
 			//Do this one separately as we need to populate the Combobox
 			DataGridViewComboBoxColumn domain = CreateColumn(buProperty.Domain.ToString(), "Domain", new DataGridViewComboBoxColumn()) as DataGridViewComboBoxColumn;
 			domain.DataSource = domains;
 			dgvBlastEditor.Columns.Add(domain);
 
-			dgvBlastEditor.Columns.Add(CreateColumn(buProperty.Address.ToString(), "Address", new DataGridViewNumericUpDownColumn()));
+			DataGridViewNumericUpDownColumn address = (DataGridViewNumericUpDownColumn)CreateColumn(buProperty.Address.ToString(), "Address", new DataGridViewNumericUpDownColumn());
+			address.Hexadecimal = true;
+			dgvBlastEditor.Columns.Add(address);
+			
 			
 			dgvBlastEditor.Columns.Add(CreateColumn(buProperty.Precision.ToString(), "Precision", new DataGridViewNumericUpDownColumn()));
 
@@ -389,7 +467,9 @@ namespace RTC
 			sourceDomain.DataSource = domains;
 			dgvBlastEditor.Columns.Add(sourceDomain);
 
-			dgvBlastEditor.Columns.Add(CreateColumn(buProperty.SourceAddress.ToString(), "Source Address", new DataGridViewNumericUpDownColumn()));
+			DataGridViewNumericUpDownColumn sourceAddress = (DataGridViewNumericUpDownColumn)CreateColumn(buProperty.SourceAddress.ToString(), "Source Address", new DataGridViewNumericUpDownColumn());
+			sourceAddress.Hexadecimal = true;
+			dgvBlastEditor.Columns.Add(sourceAddress);
 
 
 			dgvBlastEditor.Columns.Add(CreateColumn(buProperty.Note.ToString(), "Note", new DataGridViewButtonColumn()));
@@ -397,6 +477,7 @@ namespace RTC
 
 			VisibleColumns.Add(buProperty.isEnabled.ToString());
 			VisibleColumns.Add(buProperty.isLocked.ToString());
+			VisibleColumns.Add(buProperty.Source.ToString());
 			VisibleColumns.Add(buProperty.Domain.ToString());
 			VisibleColumns.Add(buProperty.Address.ToString());
 			VisibleColumns.Add(buProperty.Precision.ToString());
@@ -727,8 +808,5 @@ namespace RTC
 			}
 			searchOffset++;
 		}
-
-
-
 	}
 }

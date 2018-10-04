@@ -866,13 +866,55 @@ namespace RTC
 		]
 		public long Address { get; set; }
 
+
+		private int precision;
+
 		[
 			Category("Data"),
 			Description("The precision of this unit"),
 			DisplayName("Precision")
 		]
-		public int Precision { get; set; }
+		public int Precision
+		{
+			get
+			{
+				return precision;
+			}
+			set
+			{
+				int oldPrecision = precision;
+				precision = value;
+				//If the user is changing the precision and already has a Value set, we need to update that array
+				if(Value != null && oldPrecision != precision)
+				{
+					if (precision < 1)
+						Value = new byte[1];
+					else
+					{
+						if (oldPrecision == 0)
+							oldPrecision = 1;
 
+						Byte[] temp = new Byte[precision];
+						//If the new unit is larger, copy it over left padded
+						if (precision > oldPrecision)
+						{
+							Value.CopyTo(temp, precision - oldPrecision);
+						}
+						//If the new unit is smaller, truncate it (first X bytes cut off)
+						else
+						{
+							int j = 0;
+							for (int i = oldPrecision-precision; i < oldPrecision; i++)
+							{
+								temp[j] = Value[i];
+								j++;
+							}
+						}
+						Value = temp;
+					}
+				}
+			}
+		}
 
 		[
 			Category("Source"),
@@ -913,7 +955,7 @@ namespace RTC
 		{
 			get
 			{
-				return BitConverter.ToString(this.Value);
+				return BitConverter.ToString(this.Value).Replace("-", string.Empty);
 			}
 			set
 			{

@@ -57,8 +57,15 @@
             this.cbFilterColumn = new System.Windows.Forms.ComboBox();
             this.tbFilter = new System.Windows.Forms.TextBox();
             this.panel3 = new System.Windows.Forms.Panel();
+            this.panel9 = new System.Windows.Forms.Panel();
+            this.label16 = new System.Windows.Forms.Label();
+            this.upDownLifetime = new RTC.NumericUpDownHexFix();
+            this.label1 = new System.Windows.Forms.Label();
+            this.upDownExecuteFrame = new RTC.NumericUpDownHexFix();
+            this.cbLoop = new System.Windows.Forms.CheckBox();
             this.label5 = new System.Windows.Forms.Label();
             this.panel5 = new System.Windows.Forms.Panel();
+            this.btnNote = new System.Windows.Forms.Button();
             this.panel8 = new System.Windows.Forms.Panel();
             this.cbInvertLimiter = new System.Windows.Forms.CheckBox();
             this.cbLimiterTime = new System.Windows.Forms.ComboBox();
@@ -116,13 +123,6 @@
             this.openBlastLayerGeneratorToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.optionsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.usePaginationToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.panel9 = new System.Windows.Forms.Panel();
-            this.cbLoop = new System.Windows.Forms.CheckBox();
-            this.upDownExecuteFrame = new RTC.NumericUpDownHexFix();
-            this.label1 = new System.Windows.Forms.Label();
-            this.label16 = new System.Windows.Forms.Label();
-            this.upDownLifetime = new RTC.NumericUpDownHexFix();
-            this.btnNote = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.dgvBlastEditor)).BeginInit();
             this.panelSidebar.SuspendLayout();
             this.panel1.SuspendLayout();
@@ -130,6 +130,9 @@
             this.pnMemoryTargetting.SuspendLayout();
             this.panel2.SuspendLayout();
             this.panel3.SuspendLayout();
+            this.panel9.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.upDownLifetime)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.upDownExecuteFrame)).BeginInit();
             this.panel5.SuspendLayout();
             this.panel8.SuspendLayout();
             this.panel6.SuspendLayout();
@@ -139,9 +142,6 @@
             ((System.ComponentModel.ISupportInitialize)(this.upDownAddress)).BeginInit();
             this.panel4.SuspendLayout();
             this.menuStripEx1.SuspendLayout();
-            this.panel9.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.upDownExecuteFrame)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.upDownLifetime)).BeginInit();
             this.SuspendLayout();
             // 
             // dgvBlastEditor
@@ -574,6 +574,61 @@
             this.panel3.Size = new System.Drawing.Size(662, 210);
             this.panel3.TabIndex = 149;
             // 
+            // panel9
+            // 
+            this.panel9.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.panel9.Controls.Add(this.label16);
+            this.panel9.Controls.Add(this.upDownLifetime);
+            this.panel9.Controls.Add(this.label1);
+            this.panel9.Controls.Add(this.upDownExecuteFrame);
+            this.panel9.Controls.Add(this.cbLoop);
+            this.panel9.Location = new System.Drawing.Point(20, 96);
+            this.panel9.Name = "panel9";
+            this.panel9.Size = new System.Drawing.Size(118, 108);
+            this.panel9.TabIndex = 4;
+            // 
+            // label16
+            // 
+            this.label16.AutoSize = true;
+            this.label16.Location = new System.Drawing.Point(-1, 44);
+            this.label16.Name = "label16";
+            this.label16.Size = new System.Drawing.Size(50, 15);
+            this.label16.TabIndex = 26;
+            this.label16.Text = "Lifetime";
+            // 
+            // upDownLifetime
+            // 
+            this.upDownLifetime.Location = new System.Drawing.Point(3, 61);
+            this.upDownLifetime.Name = "upDownLifetime";
+            this.upDownLifetime.Size = new System.Drawing.Size(109, 22);
+            this.upDownLifetime.TabIndex = 25;
+            // 
+            // label1
+            // 
+            this.label1.AutoSize = true;
+            this.label1.Location = new System.Drawing.Point(1, 2);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(83, 15);
+            this.label1.TabIndex = 24;
+            this.label1.Text = "Execute Frame";
+            // 
+            // upDownExecuteFrame
+            // 
+            this.upDownExecuteFrame.Location = new System.Drawing.Point(3, 20);
+            this.upDownExecuteFrame.Name = "upDownExecuteFrame";
+            this.upDownExecuteFrame.Size = new System.Drawing.Size(109, 22);
+            this.upDownExecuteFrame.TabIndex = 12;
+            // 
+            // cbLoop
+            // 
+            this.cbLoop.AutoSize = true;
+            this.cbLoop.Location = new System.Drawing.Point(6, 87);
+            this.cbLoop.Name = "cbLoop";
+            this.cbLoop.Size = new System.Drawing.Size(56, 19);
+            this.cbLoop.TabIndex = 0;
+            this.cbLoop.Text = "Loop";
+            this.cbLoop.UseVisualStyleBackColor = true;
+            // 
             // label5
             // 
             this.label5.AutoSize = true;
@@ -604,6 +659,22 @@
             this.panel5.Name = "panel5";
             this.panel5.Size = new System.Drawing.Size(484, 180);
             this.panel5.TabIndex = 2;
+            // 
+            // btnNote
+            // 
+            this.btnNote.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(224)))), ((int)(((byte)(224)))), ((int)(((byte)(224)))));
+            this.btnNote.FlatAppearance.BorderSize = 0;
+            this.btnNote.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnNote.Font = new System.Drawing.Font("Segoe UI Symbol", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel);
+            this.btnNote.ForeColor = System.Drawing.Color.Black;
+            this.btnNote.Location = new System.Drawing.Point(353, 104);
+            this.btnNote.Name = "btnNote";
+            this.btnNote.Size = new System.Drawing.Size(109, 70);
+            this.btnNote.TabIndex = 142;
+            this.btnNote.TabStop = false;
+            this.btnNote.Tag = "color:light";
+            this.btnNote.Text = "Open Note Editor";
+            this.btnNote.UseVisualStyleBackColor = false;
             // 
             // panel8
             // 
@@ -823,9 +894,19 @@
             // upDownPrecision
             // 
             this.upDownPrecision.Location = new System.Drawing.Point(3, 100);
+            this.upDownPrecision.Minimum = new decimal(new int[] {
+            1,
+            0,
+            0,
+            0});
             this.upDownPrecision.Name = "upDownPrecision";
             this.upDownPrecision.Size = new System.Drawing.Size(109, 22);
             this.upDownPrecision.TabIndex = 11;
+            this.upDownPrecision.Value = new decimal(new int[] {
+            1,
+            0,
+            0,
+            0});
             // 
             // label9
             // 
@@ -1095,77 +1176,6 @@
             this.usePaginationToolStripMenuItem.Size = new System.Drawing.Size(182, 26);
             this.usePaginationToolStripMenuItem.Text = "Use Pagination";
             // 
-            // panel9
-            // 
-            this.panel9.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.panel9.Controls.Add(this.label16);
-            this.panel9.Controls.Add(this.upDownLifetime);
-            this.panel9.Controls.Add(this.label1);
-            this.panel9.Controls.Add(this.upDownExecuteFrame);
-            this.panel9.Controls.Add(this.cbLoop);
-            this.panel9.Location = new System.Drawing.Point(20, 96);
-            this.panel9.Name = "panel9";
-            this.panel9.Size = new System.Drawing.Size(118, 108);
-            this.panel9.TabIndex = 4;
-            // 
-            // cbLoop
-            // 
-            this.cbLoop.AutoSize = true;
-            this.cbLoop.Location = new System.Drawing.Point(6, 87);
-            this.cbLoop.Name = "cbLoop";
-            this.cbLoop.Size = new System.Drawing.Size(56, 19);
-            this.cbLoop.TabIndex = 0;
-            this.cbLoop.Text = "Loop";
-            this.cbLoop.UseVisualStyleBackColor = true;
-            // 
-            // upDownExecuteFrame
-            // 
-            this.upDownExecuteFrame.Location = new System.Drawing.Point(3, 20);
-            this.upDownExecuteFrame.Name = "upDownExecuteFrame";
-            this.upDownExecuteFrame.Size = new System.Drawing.Size(109, 22);
-            this.upDownExecuteFrame.TabIndex = 12;
-            // 
-            // label1
-            // 
-            this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(1, 2);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(83, 15);
-            this.label1.TabIndex = 24;
-            this.label1.Text = "Execute Frame";
-            // 
-            // label16
-            // 
-            this.label16.AutoSize = true;
-            this.label16.Location = new System.Drawing.Point(-1, 44);
-            this.label16.Name = "label16";
-            this.label16.Size = new System.Drawing.Size(50, 15);
-            this.label16.TabIndex = 26;
-            this.label16.Text = "Lifetime";
-            // 
-            // upDownLifetime
-            // 
-            this.upDownLifetime.Location = new System.Drawing.Point(3, 61);
-            this.upDownLifetime.Name = "upDownLifetime";
-            this.upDownLifetime.Size = new System.Drawing.Size(109, 22);
-            this.upDownLifetime.TabIndex = 25;
-            // 
-            // btnNote
-            // 
-            this.btnNote.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(224)))), ((int)(((byte)(224)))), ((int)(((byte)(224)))));
-            this.btnNote.FlatAppearance.BorderSize = 0;
-            this.btnNote.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btnNote.Font = new System.Drawing.Font("Segoe UI Symbol", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel);
-            this.btnNote.ForeColor = System.Drawing.Color.Black;
-            this.btnNote.Location = new System.Drawing.Point(353, 104);
-            this.btnNote.Name = "btnNote";
-            this.btnNote.Size = new System.Drawing.Size(109, 70);
-            this.btnNote.TabIndex = 142;
-            this.btnNote.TabStop = false;
-            this.btnNote.Tag = "color:light";
-            this.btnNote.Text = "Open Note Editor";
-            this.btnNote.UseVisualStyleBackColor = false;
-            // 
             // RTC_NewBlastEditor_Form
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -1192,6 +1202,10 @@
             this.panel2.PerformLayout();
             this.panel3.ResumeLayout(false);
             this.panel3.PerformLayout();
+            this.panel9.ResumeLayout(false);
+            this.panel9.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.upDownLifetime)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.upDownExecuteFrame)).EndInit();
             this.panel5.ResumeLayout(false);
             this.panel5.PerformLayout();
             this.panel8.ResumeLayout(false);
@@ -1207,10 +1221,6 @@
             this.panel4.PerformLayout();
             this.menuStripEx1.ResumeLayout(false);
             this.menuStripEx1.PerformLayout();
-            this.panel9.ResumeLayout(false);
-            this.panel9.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.upDownExecuteFrame)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.upDownLifetime)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 

@@ -223,10 +223,12 @@ namespace RTC
 		{
 			var bytes = new byte[precision];
 			string temp = str.PadLeft(precision*2,'0'); //*2 since a byte is two characters
-			
+
+			int j = 0;
 			for (var i = 0; i < precision*2; i+=2)
 			{
-				bytes[i] = (byte)Convert.ToUInt32(temp.Substring(i, 2), 16);
+				bytes[j] = (byte)Convert.ToUInt32(temp.Substring(i, 2), 16);
+				j++;
 			}
 			return bytes;
 		}
