@@ -37,12 +37,16 @@
             this.label2 = new System.Windows.Forms.Label();
             this.btnBlastToggle = new System.Windows.Forms.Button();
             this.dgvStockpile = new System.Windows.Forms.DataGridView();
+            this.tbNoteBox = new System.Windows.Forms.RichTextBox();
+            this.dataGridViewTextBoxColumn1 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.dataGridViewTextBoxColumn2 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.dataGridViewTextBoxColumn3 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.dataGridViewTextBoxColumn4 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.Item = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.GameName = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.SystemName = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.SystemCore = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.Note = new System.Windows.Forms.DataGridViewButtonColumn();
-            this.tbNoteBox = new System.Windows.Forms.RichTextBox();
             ((System.ComponentModel.ISupportInitialize)(this.dgvStockpile)).BeginInit();
             this.SuspendLayout();
             // 
@@ -168,6 +172,51 @@
             this.dgvStockpile.CellClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dgvStockpile_CellClick);
             this.dgvStockpile.MouseDown += new System.Windows.Forms.MouseEventHandler(this.dgvStockpile_MouseDown);
             // 
+            // tbNoteBox
+            // 
+            this.tbNoteBox.BackColor = System.Drawing.Color.Gray;
+            this.tbNoteBox.BorderStyle = System.Windows.Forms.BorderStyle.None;
+            this.tbNoteBox.Font = new System.Drawing.Font("Segoe UI Symbol", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.tbNoteBox.ForeColor = System.Drawing.Color.White;
+            this.tbNoteBox.Location = new System.Drawing.Point(12, 389);
+            this.tbNoteBox.Name = "tbNoteBox";
+            this.tbNoteBox.ReadOnly = true;
+            this.tbNoteBox.ScrollBars = System.Windows.Forms.RichTextBoxScrollBars.Vertical;
+            this.tbNoteBox.Size = new System.Drawing.Size(628, 74);
+            this.tbNoteBox.TabIndex = 143;
+            this.tbNoteBox.Tag = "color:normal";
+            this.tbNoteBox.Text = "Notes will appear here...";
+            // 
+            // dataGridViewTextBoxColumn1
+            // 
+            this.dataGridViewTextBoxColumn1.HeaderText = "Item Name";
+            this.dataGridViewTextBoxColumn1.Name = "dataGridViewTextBoxColumn1";
+            this.dataGridViewTextBoxColumn1.ReadOnly = true;
+            this.dataGridViewTextBoxColumn1.Width = 256;
+            // 
+            // dataGridViewTextBoxColumn2
+            // 
+            this.dataGridViewTextBoxColumn2.FillWeight = 45F;
+            this.dataGridViewTextBoxColumn2.HeaderText = "Game";
+            this.dataGridViewTextBoxColumn2.Name = "dataGridViewTextBoxColumn2";
+            this.dataGridViewTextBoxColumn2.ReadOnly = true;
+            this.dataGridViewTextBoxColumn2.Width = 114;
+            // 
+            // dataGridViewTextBoxColumn3
+            // 
+            this.dataGridViewTextBoxColumn3.FillWeight = 45F;
+            this.dataGridViewTextBoxColumn3.HeaderText = "System";
+            this.dataGridViewTextBoxColumn3.Name = "dataGridViewTextBoxColumn3";
+            this.dataGridViewTextBoxColumn3.ReadOnly = true;
+            this.dataGridViewTextBoxColumn3.Width = 115;
+            // 
+            // dataGridViewTextBoxColumn4
+            // 
+            this.dataGridViewTextBoxColumn4.FillWeight = 40F;
+            this.dataGridViewTextBoxColumn4.HeaderText = "Core";
+            this.dataGridViewTextBoxColumn4.Name = "dataGridViewTextBoxColumn4";
+            this.dataGridViewTextBoxColumn4.Width = 103;
+            // 
             // Item
             // 
             this.Item.HeaderText = "Item Name";
@@ -197,7 +246,7 @@
             // Note
             // 
             dataGridViewCellStyle1.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
-            dataGridViewCellStyle1.Font = new System.Drawing.Font("Segoe UI", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            dataGridViewCellStyle1.Font = new System.Drawing.Font("Segoe UI Symbol", 10F);
             dataGridViewCellStyle1.ForeColor = System.Drawing.Color.Black;
             this.Note.DefaultCellStyle = dataGridViewCellStyle1;
             this.Note.FillWeight = 15F;
@@ -206,21 +255,6 @@
             this.Note.Name = "Note";
             this.Note.Resizable = System.Windows.Forms.DataGridViewTriState.True;
             this.Note.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.Automatic;
-            // 
-            // tbNoteBox
-            // 
-            this.tbNoteBox.BackColor = System.Drawing.Color.Gray;
-            this.tbNoteBox.BorderStyle = System.Windows.Forms.BorderStyle.None;
-            this.tbNoteBox.Font = new System.Drawing.Font("Segoe UI Symbol", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.tbNoteBox.ForeColor = System.Drawing.Color.White;
-            this.tbNoteBox.Location = new System.Drawing.Point(12, 389);
-            this.tbNoteBox.Name = "tbNoteBox";
-            this.tbNoteBox.ReadOnly = true;
-            this.tbNoteBox.ScrollBars = System.Windows.Forms.RichTextBoxScrollBars.Vertical;
-            this.tbNoteBox.Size = new System.Drawing.Size(628, 74);
-            this.tbNoteBox.TabIndex = 143;
-            this.tbNoteBox.Tag = "color:normal";
-            this.tbNoteBox.Text = "Notes will appear here...";
             // 
             // RTC_StockpilePlayer_Form
             // 
@@ -237,6 +271,7 @@
             this.Controls.Add(this.label2);
             this.Controls.Add(this.btnLoadStockpile);
             this.DoubleBuffered = true;
+            this.Font = new System.Drawing.Font("Segoe UI Symbol", 8.25F);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.MinimumSize = new System.Drawing.Size(655, 515);
@@ -264,5 +299,9 @@
 		private System.Windows.Forms.DataGridViewTextBoxColumn SystemName;
 		private System.Windows.Forms.DataGridViewTextBoxColumn SystemCore;
 		private System.Windows.Forms.DataGridViewButtonColumn Note;
+		private System.Windows.Forms.DataGridViewTextBoxColumn dataGridViewTextBoxColumn1;
+		private System.Windows.Forms.DataGridViewTextBoxColumn dataGridViewTextBoxColumn2;
+		private System.Windows.Forms.DataGridViewTextBoxColumn dataGridViewTextBoxColumn3;
+		private System.Windows.Forms.DataGridViewTextBoxColumn dataGridViewTextBoxColumn4;
 	}
 }
