@@ -67,6 +67,13 @@ namespace RTC
 
 		Dictionary<String, Control> property2ControlDico;
 
+
+		int buttonFillWeight = 20;
+		int checkBoxFillWeight = 25;
+		int comboBoxFillWeight = 40;
+		int textBoxFillWeight = 30;
+		int numericUpDownFillWeight = 35;
+
 		private enum buProperty
 		{
 			isEnabled,
@@ -102,6 +109,7 @@ namespace RTC
 				dgvBlastEditor.SelectionChanged += dgvBlastEditor_SelectionChanged;
 				dgvBlastEditor.ColumnHeaderMouseClick += dgvBlastEditor_ColumnHeaderMouseClick;
 				dgvBlastEditor.CellValueChanged += dgvBlastEditor_CellValueChanged;
+				dgvBlastEditor.CellClick += dgvBlastEditor_CellClick;
 				
 				tbFilter.TextChanged += tbFilter_TextChanged;
 
@@ -129,6 +137,20 @@ namespace RTC
 			catch(Exception ex)
 			{
 				MessageBox.Show(ex.ToString());
+			}
+		}
+
+		private void dgvBlastEditor_CellClick(object sender, DataGridViewCellEventArgs e)
+		{
+			// Note handling
+			if (e != null)
+			{
+				if (e.ColumnIndex == dgvBlastEditor.Columns[buProperty.Note.ToString()]?.Index )
+				{
+					BlastUnit bu = dgvBlastEditor.Rows[e.RowIndex].DataBoundItem as BlastUnit;
+					if (bu != null)
+						 new RTC_NoteEditor_Form(bu, dgvBlastEditor[e.ColumnIndex, e.RowIndex]);
+				}
 			}
 		}
 
@@ -407,72 +429,72 @@ namespace RTC
 			var blastUnitSource = Enum.GetValues(typeof(BlastUnitSource));
 
 
-			dgvBlastEditor.Columns.Add(CreateColumn(buProperty.isEnabled.ToString(), "Enabled", new DataGridViewCheckBoxColumn()));
+			dgvBlastEditor.Columns.Add(CreateColumn(buProperty.isEnabled.ToString(), buProperty.isEnabled.ToString(), "Enabled", new DataGridViewCheckBoxColumn()));
 			
 
-			dgvBlastEditor.Columns.Add(CreateColumn(buProperty.isLocked.ToString(), "Locked", new DataGridViewCheckBoxColumn()));
+			dgvBlastEditor.Columns.Add(CreateColumn(buProperty.isLocked.ToString(), buProperty.isLocked.ToString(), "Locked", new DataGridViewCheckBoxColumn()));
 
 			//Do this one separately as we need to populate the Combobox
-			DataGridViewComboBoxColumn source = CreateColumn(buProperty.Source.ToString(), "Source", new DataGridViewComboBoxColumn()) as DataGridViewComboBoxColumn;
+			DataGridViewComboBoxColumn source = CreateColumn(buProperty.Source.ToString(), buProperty.Source.ToString(), "Source", new DataGridViewComboBoxColumn()) as DataGridViewComboBoxColumn;
 			foreach (var item in blastUnitSource)
 				source.Items.Add(item);
 			dgvBlastEditor.Columns.Add(source);
 
 			//Do this one separately as we need to populate the Combobox
-			DataGridViewComboBoxColumn domain = CreateColumn(buProperty.Domain.ToString(), "Domain", new DataGridViewComboBoxColumn()) as DataGridViewComboBoxColumn;
+			DataGridViewComboBoxColumn domain = CreateColumn(buProperty.Domain.ToString(), buProperty.Domain.ToString(), "Domain", new DataGridViewComboBoxColumn()) as DataGridViewComboBoxColumn;
 			domain.DataSource = domains;
 			dgvBlastEditor.Columns.Add(domain);
 
-			DataGridViewNumericUpDownColumn address = (DataGridViewNumericUpDownColumn)CreateColumn(buProperty.Address.ToString(), "Address", new DataGridViewNumericUpDownColumn());
+			DataGridViewNumericUpDownColumn address = (DataGridViewNumericUpDownColumn)CreateColumn(buProperty.Address.ToString(), buProperty.Address.ToString(), "Address", new DataGridViewNumericUpDownColumn());
 			address.Hexadecimal = true;
 			dgvBlastEditor.Columns.Add(address);
 			
 			
-			dgvBlastEditor.Columns.Add(CreateColumn(buProperty.Precision.ToString(), "Precision", new DataGridViewNumericUpDownColumn()));
+			dgvBlastEditor.Columns.Add(CreateColumn(buProperty.Precision.ToString(), buProperty.Precision.ToString(), "Precision", new DataGridViewNumericUpDownColumn()));
 
-			dgvBlastEditor.Columns.Add(CreateColumn(buProperty.ValueString.ToString(), "Value", new DataGridViewTextBoxColumn()));
-
-
-			dgvBlastEditor.Columns.Add(CreateColumn(buProperty.ExecuteFrame.ToString(), "Execute Frame", new DataGridViewNumericUpDownColumn()));
-			dgvBlastEditor.Columns.Add(CreateColumn(buProperty.Lifetime.ToString(), "Lifetime", new DataGridViewNumericUpDownColumn()));
-			dgvBlastEditor.Columns.Add(CreateColumn(buProperty.Loop.ToString(), "Loop", new DataGridViewCheckBoxColumn()));
+			dgvBlastEditor.Columns.Add(CreateColumn(buProperty.ValueString.ToString(), buProperty.ValueString.ToString(), "Value", new DataGridViewTextBoxColumn()));
 
 
-			DataGridViewComboBoxColumn limiterTime = CreateColumn(buProperty.LimiterTime.ToString(), "Limiter Time", new DataGridViewComboBoxColumn()) as DataGridViewComboBoxColumn;
+			dgvBlastEditor.Columns.Add(CreateColumn(buProperty.ExecuteFrame.ToString(), buProperty.ExecuteFrame.ToString(), "Execute Frame", new DataGridViewNumericUpDownColumn()));
+			dgvBlastEditor.Columns.Add(CreateColumn(buProperty.Lifetime.ToString(), buProperty.Lifetime.ToString(), "Lifetime", new DataGridViewNumericUpDownColumn()));
+			dgvBlastEditor.Columns.Add(CreateColumn(buProperty.Loop.ToString(), buProperty.Loop.ToString(), "Loop", new DataGridViewCheckBoxColumn()));
+
+
+			DataGridViewComboBoxColumn limiterTime = CreateColumn(buProperty.LimiterTime.ToString(), buProperty.LimiterTime.ToString(), "Limiter Time", new DataGridViewComboBoxColumn()) as DataGridViewComboBoxColumn;
 			foreach (var item in actionTime)
 				limiterTime.Items.Add(item);
 			dgvBlastEditor.Columns.Add(limiterTime);
 
-			DataGridViewComboBoxColumn limiterHash = CreateColumn(buProperty.LimiterHash.ToString(), "Limiter List", new DataGridViewComboBoxColumn()) as DataGridViewComboBoxColumn;
+			DataGridViewComboBoxColumn limiterHash = CreateColumn(buProperty.LimiterHash.ToString(), buProperty.LimiterHash.ToString(), "Limiter List", new DataGridViewComboBoxColumn()) as DataGridViewComboBoxColumn;
 			limiterHash.DataSource = RTC_Core.LimiterListBindingSource;
 			limiterHash.DisplayMember = "Text";
 			limiterHash.ValueMember = "Value";
 			dgvBlastEditor.Columns.Add(limiterHash);
 
-			dgvBlastEditor.Columns.Add(CreateColumn(buProperty.InvertLimiter.ToString(), "Invert Limiter", new DataGridViewCheckBoxColumn()));
+			dgvBlastEditor.Columns.Add(CreateColumn(buProperty.InvertLimiter.ToString(), buProperty.InvertLimiter.ToString(), "Invert Limiter", new DataGridViewCheckBoxColumn()));
 
 
-			DataGridViewComboBoxColumn storeTime = CreateColumn(buProperty.StoreTime.ToString(), "Store Time", new DataGridViewComboBoxColumn()) as DataGridViewComboBoxColumn;
+			DataGridViewComboBoxColumn storeTime = CreateColumn(buProperty.StoreTime.ToString(), buProperty.StoreTime.ToString(), "Store Time", new DataGridViewComboBoxColumn()) as DataGridViewComboBoxColumn;
 			foreach (var item in actionTime)
 				storeTime.Items.Add(item);
 			dgvBlastEditor.Columns.Add(storeTime);
 
 			//Do this one separately as we need to populate the Combobox
-			DataGridViewComboBoxColumn storeType = CreateColumn(buProperty.StoreType.ToString(), "Store Type", new DataGridViewComboBoxColumn()) as DataGridViewComboBoxColumn;
+			DataGridViewComboBoxColumn storeType = CreateColumn(buProperty.StoreType.ToString(), buProperty.StoreType.ToString(), "Store Type", new DataGridViewComboBoxColumn()) as DataGridViewComboBoxColumn;
 			storeType.DataSource = Enum.GetValues(typeof(StoreType));
 			dgvBlastEditor.Columns.Add(storeType);
 
 			//Do this one separately as we need to populate the Combobox
-			DataGridViewComboBoxColumn sourceDomain = CreateColumn(buProperty.SourceDomain.ToString(), "Source Domain", new DataGridViewComboBoxColumn()) as DataGridViewComboBoxColumn;
+			DataGridViewComboBoxColumn sourceDomain = CreateColumn(buProperty.SourceDomain.ToString(), buProperty.SourceDomain.ToString(), "Source Domain", new DataGridViewComboBoxColumn()) as DataGridViewComboBoxColumn;
 			sourceDomain.DataSource = domains;
 			dgvBlastEditor.Columns.Add(sourceDomain);
 
-			DataGridViewNumericUpDownColumn sourceAddress = (DataGridViewNumericUpDownColumn)CreateColumn(buProperty.SourceAddress.ToString(), "Source Address", new DataGridViewNumericUpDownColumn());
+			DataGridViewNumericUpDownColumn sourceAddress = (DataGridViewNumericUpDownColumn)CreateColumn(buProperty.SourceAddress.ToString(), buProperty.SourceAddress.ToString(), "Source Address", new DataGridViewNumericUpDownColumn());
 			sourceAddress.Hexadecimal = true;
 			dgvBlastEditor.Columns.Add(sourceAddress);
 
 
-			dgvBlastEditor.Columns.Add(CreateColumn(buProperty.Note.ToString(), "Note", new DataGridViewButtonColumn()));
+			dgvBlastEditor.Columns.Add(CreateColumn("", buProperty.Note.ToString(), "Note", new DataGridViewButtonColumn()));
 
 
 			VisibleColumns.Add(buProperty.isEnabled.ToString());
@@ -511,16 +533,14 @@ namespace RTC
 			dgvBlastEditor.Refresh();
 		}
 
-		private DataGridViewColumn CreateColumn(string dataPropertyName, string displayName, DataGridViewColumn column, int fillWeight = -1)
+
+
+		private DataGridViewColumn CreateColumn(string dataPropertyName, string columnName, string displayName,
+			DataGridViewColumn column, int fillWeight = -1)
 		{
 
 			if(fillWeight == -1)
 			{
-				int buttonFillWeight = 20;
-				int checkBoxFillWeight = 25;
-				int comboBoxFillWeight = 40;
-				int textBoxFillWeight = 30;
-				int numericUpDownFillWeight = 35;
 
 				switch (column)
 				{
@@ -548,13 +568,19 @@ namespace RTC
 
 
 			column.DataPropertyName = dataPropertyName;
-			column.Name = dataPropertyName;
+			column.Name = columnName;
 
 			column.HeaderText = displayName;
 
 			return column;
 		}
 
+
+		private DataGridViewColumn CreateColumnUnbound(string columnName, string displayName,
+			DataGridViewColumn column, int fillWeight = -1)
+		{
+			return CreateColumn(String.Empty, columnName, displayName, column, fillWeight);
+		}
 
 		StashKey currentSK = null;
 		BindingSource bs = null;
@@ -569,6 +595,7 @@ namespace RTC
 			dgvBlastEditor.DataSource = bs;
 			InitializeDGV();
 			InitializeBottom();
+			RefreshAllNoteIcons();
 
 			this.Show();
 		}
@@ -807,6 +834,34 @@ namespace RTC
 				MessageBox.Show("Reached end of list without finding anything.");
 			}
 			searchOffset++;
+		}
+
+		private void btnNote_Click(object sender, EventArgs e)
+		{
+			if (dgvBlastEditor.SelectedRows.Count > 0)
+			{
+				BlastLayer temp = new BlastLayer();
+				List<DataGridViewCell> cellList = new List<DataGridViewCell>();
+				foreach (DataGridViewRow row in dgvBlastEditor.SelectedRows)
+				{
+					if (row.DataBoundItem is BlastUnit bu)
+					{
+						temp.Layer.Add(bu);
+						cellList.Add(row.Cells[buProperty.Note.ToString()]);
+					}					
+				}
+				new RTC_NoteEditor_Form(temp, cellList);
+			}
+		}
+
+		public void RefreshAllNoteIcons()
+		{
+			foreach (DataGridViewRow row in dgvBlastEditor.Rows)
+			{
+				DataGridViewCell buttonCell = row.Cells[buProperty.Note.ToString()];
+				buttonCell.Value = string.IsNullOrWhiteSpace((row.DataBoundItem as BlastUnit)?.Note) ? string.Empty : "📝";
+
+			}
 		}
 	}
 }

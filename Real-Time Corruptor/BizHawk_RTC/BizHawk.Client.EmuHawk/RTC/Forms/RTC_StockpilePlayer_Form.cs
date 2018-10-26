@@ -209,17 +209,7 @@ namespace RTC
 					if (senderGrid.Columns[e.ColumnIndex] is DataGridViewButtonColumn &&
 						e.RowIndex >= 0)
 					{
-						if (RTC_NoteEditor_Form.CurrentlyOpenNoteForm == null)
-						{
-							RTC_NoteEditor_Form.CurrentlyOpenNoteForm = new RTC_NoteEditor_Form(sk.Note, "StockpilePlayer", sk);
-						}
-						else
-						{
-							if (RTC_NoteEditor_Form.CurrentlyOpenNoteForm.Visible)
-								RTC_NoteEditor_Form.CurrentlyOpenNoteForm.Close();
-
-							RTC_NoteEditor_Form.CurrentlyOpenNoteForm = new RTC_NoteEditor_Form(sk.Note, "StockpilePlayer", sk);
-						}
+						 new RTC_NoteEditor_Form(sk, senderGrid.Rows[e.RowIndex].Cells["Note"]);
 
 						return;
 					}

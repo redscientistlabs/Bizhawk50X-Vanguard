@@ -553,7 +553,7 @@ namespace RTC
 	}
 
 	[Serializable]
-	public class StashKey : ICloneable
+	public class StashKey : ICloneable , INote
 	{
 		public string RomFilename;
 		public string RomShortFilename;
@@ -569,8 +569,9 @@ namespace RTC
 		public string SystemCore;
 		public List<string> SelectedDomains = new List<string>();
 		public string GameName;
-		public string Note = null;
 		public string SyncSettings = null;
+		public string Note { get; set; }
+
 
 		public string Key;
 		public string ParentKey = null;
@@ -691,7 +692,7 @@ namespace RTC
 
 	[XmlInclude(typeof(BlastUnit))]
 	[Serializable]
-	public class BlastLayer : ICloneable
+	public class BlastLayer : ICloneable, INote
 	{
 		public List<BlastUnit> Layer;
 
@@ -798,6 +799,35 @@ namespace RTC
 			foreach (BlastUnit bu in Layer)
 				bu.RasterizeSourceAddress();
 		}
+
+		private string shared = "[DIFFERENT]";
+
+		public string Note
+		{
+			get
+			{
+				if (Layer.All(x => x.Note == Layer.First().Note))
+				{
+					return Layer.First().Note;
+				}
+				else
+				{
+					return shared;
+				}
+			}
+			set
+			{
+				if (value == shared)
+				{
+					return;
+				}
+				else
+				{
+					foreach (BlastUnit bu in Layer)
+						bu.Note = value;
+				}
+			}
+		}
 	}
 
 	/// <summary>
@@ -823,7 +853,7 @@ namespace RTC
 	}
 
 	[Serializable]
-	public class BlastUnit
+	public class BlastUnit : INote
 	{
 
 		public object Clone()
@@ -1012,10 +1042,11 @@ namespace RTC
 
 		[
 			Category("Misc"),
-			Description("Note associated with this unit"),
-			DisplayName("Note")
+			Description("Note associated with this unit")
 		]
-		public string Note { get; set; } = String.Empty;
+		public string Note { get; set; }
+
+
 
 		//Don't serialize this
 		//Use both attributes because XMLSerializer wants XmlIgnore and BinarySerializer wants NonSerialized
@@ -1402,7 +1433,7 @@ namespace RTC
 	}
 
 	[Serializable]
-	public class BlastGeneratorProto
+	public class BlastGeneratorProto : INote
 	{
 		public string BlastType;
 		public string Domain;
@@ -1413,8 +1444,9 @@ namespace RTC
 		public long Param1;
 		public long Param2;
 		public string Mode;
-		public string Note;
 		public BlastLayer bl;
+
+		public string Note { get; set; }
 
 		public BlastGeneratorProto()
 		{
@@ -1463,5 +1495,10 @@ namespace RTC
 	{
 		public string Name;
 		public string Message;
+	}
+
+	public interface INote
+	{
+		 string Note { get; set; }
 	}
 }

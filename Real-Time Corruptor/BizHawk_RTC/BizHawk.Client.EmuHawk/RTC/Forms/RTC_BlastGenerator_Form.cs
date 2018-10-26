@@ -740,6 +740,7 @@ namespace RTC
 					DataGridViewCell cell = dgvBlastGenerator.Rows[e.RowIndex].Cells["dgvNoteText"];
 					string note = cell.Value == null ? "" : cell.Value.ToString();
 
+					/*
 					if (RTC_NoteEditor_Form.CurrentlyOpenNoteForm == null)
 					{
 						RTC_NoteEditor_Form.CurrentlyOpenNoteForm = new RTC_NoteEditor_Form(note, "BlastGenerator", cell);
@@ -751,7 +752,7 @@ namespace RTC
 
 						RTC_NoteEditor_Form.CurrentlyOpenNoteForm = new RTC_NoteEditor_Form(note, "BlastGenerator", cell);
 					}
-
+					*/
 					return;
 				}
 			}

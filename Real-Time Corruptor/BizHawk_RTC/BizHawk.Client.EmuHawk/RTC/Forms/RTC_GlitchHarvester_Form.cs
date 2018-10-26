@@ -1378,17 +1378,7 @@ namespace RTC
 						e.RowIndex >= 0)
 					{
 						StashKey sk = (StashKey)senderGrid.Rows[e.RowIndex].Cells["Item"].Value;
-						if (RTC_NoteEditor_Form.CurrentlyOpenNoteForm == null)
-						{
-							RTC_NoteEditor_Form.CurrentlyOpenNoteForm = new RTC_NoteEditor_Form(sk.Note, "GlitchHarvester", sk);
-						}
-						else
-						{
-							if (RTC_NoteEditor_Form.CurrentlyOpenNoteForm.Visible)
-								RTC_NoteEditor_Form.CurrentlyOpenNoteForm.Close();
-
-							RTC_NoteEditor_Form.CurrentlyOpenNoteForm = new RTC_NoteEditor_Form(sk.Note, "GlitchHarvester", sk);
-						}
+						new RTC_NoteEditor_Form(sk, senderGrid.Rows[e.RowIndex].Cells["Note"]);
 
 						return;
 					}
