@@ -4,17 +4,17 @@ using System.Windows.Forms;
 
 namespace RTC
 {
-	public class RTC_BlastByteGenerator
+	public static class RTC_BlastByteGenerator
 	{
-		public BlastLayer GenerateLayer(string note, string domain, long stepSize, long startAddress, long endAddress,
-			long param1, long param2, int precision, BGBlastByteModes mode)
+		public static BlastLayer GenerateLayer(string note, string domain, long stepSize, long startAddress, long endAddress,
+			long param1, long param2, int precision, int seed, BGBlastByteModes mode)
 		{
 			BlastLayer bl = new BlastLayer();
 
 			//We subtract 1 at the end as precision is 1,2,4, and we need to go 0,1,3
 			for (long address = startAddress; address < endAddress; address = address + stepSize + precision - 1)
 			{
-				BlastUnit bu = GenerateUnit(domain, address, param1, param2, precision, mode, note);
+				BlastUnit bu = GenerateUnit(domain, address, param1, param2, precision, mode, note, new Random(seed));
 				if (bu != null)
 					bl.Layer.Add(bu);
 			}
@@ -27,7 +27,7 @@ namespace RTC
 		//If it's something such as SET or Replace X with Y, we always flip as we need to go to big endian
 		//If it's something like a bitwise operation, we read the values from left to right when pulling them from memory. As such, we also always convert to big endian
 		private static BlastUnit GenerateUnit(string domain, long address, long param1, long param2, int precision,
-			BGBlastByteModes mode, string note)
+			BGBlastByteModes mode, string note, Random rand)
 		{
 			try
 			{
@@ -55,10 +55,10 @@ namespace RTC
 						break;
 					case BGBlastByteModes.RANDOM:
 						for (int i = 0; i < value.Length; i++)
-							value[i] = (byte) RTC_Core.RND.Next(0, 255);
+							value[i] = (byte) rand.Next(0, 255);
 						break;
 					case BGBlastByteModes.RANDOM_RANGE:
-						long temp = RTC_Core.RND.RandomLong(param1, param2);
+						long temp = rand.RandomLong(param1, param2);
 						value = RTC_Extensions.GetByteArrayValue(precision, temp, true);
 						break;
 					case BGBlastByteModes.REPLACE_X_WITH_Y:

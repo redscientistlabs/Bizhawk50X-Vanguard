@@ -301,10 +301,11 @@ namespace RTC
 				return bl;
 		}
 
-		public static List<BlastGeneratorProto> GenerateBlastLayersFromBlastGeneratorProtos(List<BlastGeneratorProto> blastLayers, StashKey sk)
+		public static List<BlastGeneratorProto> GenerateBlastLayersFromBlastGeneratorProtos(List<BlastGeneratorProto> blastLayers, StashKey sk, bool loadBeforeCorrupt)
 		{
 			//Load the game first for stuff like REPLACE_X_WITH_Y
-			sk?.RunOriginal();
+			if(loadBeforeCorrupt)
+				sk?.RunOriginal();
 			foreach (BlastGeneratorProto bgp in blastLayers)
 			{
 				//Only generate if there's no BlastLayer.

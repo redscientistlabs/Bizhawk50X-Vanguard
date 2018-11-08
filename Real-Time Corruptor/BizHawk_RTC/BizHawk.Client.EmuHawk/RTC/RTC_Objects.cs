@@ -1742,26 +1742,28 @@ namespace RTC
 		}
 	}
 
+
 	[Serializable]
 	public class BlastGeneratorProto
 	{
-		public string BlastType;
-		public string Domain;
-		public int Precision;
-		public long StepSize;
-		public long StartAddress;
-		public long EndAddress;
-		public long Param1;
-		public long Param2;
-		public string Mode;
-		public string Note;
+		public string BlastType { get; }
+		public string Domain { get; }
+		public int Precision { get; }
+		public long StepSize { get; }
+		public long StartAddress { get; }
+		public long EndAddress { get; }
+		public long Param1 { get; }
+		public long Param2 { get; }
+		public string Mode { get; }
+		public string Note { get; set; }
+		public int Seed { get; }
 		public BlastLayer bl;
 
 		public BlastGeneratorProto()
 		{
 		}
 
-		public BlastGeneratorProto(string _note, string _blastType, string _domain, string _mode, int _precision, long _stepSize, long _startAddress, long _endAddress, long _param1, long _param2)
+		public BlastGeneratorProto(string _note, string _blastType, string _domain, string _mode, int _precision, long _stepSize, long _startAddress, long _endAddress, long _param1, long _param2, int _seed)
 		{
 			Note = _note;
 			BlastType = _blastType;
@@ -1773,6 +1775,7 @@ namespace RTC
 			Param2 = _param2;
 			Mode = _mode;
 			StepSize = _stepSize;
+			Seed = _seed;
 		}
 
 		public BlastLayer GenerateBlastLayer()
@@ -1780,16 +1783,13 @@ namespace RTC
 			switch (BlastType)
 			{
 				case "BlastByte":
-					RTC_BlastByteGenerator bbGenerator = new RTC_BlastByteGenerator();
-					bl = bbGenerator.GenerateLayer(Note, Domain, StepSize, StartAddress, EndAddress, Param1, Param2, Precision, (BGBlastByteModes)Enum.Parse(typeof(BGBlastByteModes), Mode, true));
+					bl = RTC_BlastByteGenerator.GenerateLayer(Note, Domain, StepSize, StartAddress, EndAddress, Param1, Param2, Precision, Seed, (BGBlastByteModes)Enum.Parse(typeof(BGBlastByteModes), Mode, true));
 					break;
 				case "BlastCheat":
-					RTC_BlastCheatGenerator bcGenerator = new RTC_BlastCheatGenerator();
-					bl = bcGenerator.GenerateLayer(Note, Domain, StepSize, StartAddress, EndAddress, Param1, Param2, Precision, (BGBlastCheatModes)Enum.Parse(typeof(BGBlastCheatModes), Mode, true));
+					bl = RTC_BlastCheatGenerator.GenerateLayer(Note, Domain, StepSize, StartAddress, EndAddress, Param1, Param2, Precision, Seed, (BGBlastCheatModes)Enum.Parse(typeof(BGBlastCheatModes), Mode, true));
 					break;
 				case "BlastPipe":
-					RTC_BlastPipeGenerator bpGenerator = new RTC_BlastPipeGenerator();
-					bl = bpGenerator.GenerateLayer(Note, Domain, StepSize, StartAddress, EndAddress, Param1, Param2, Precision, (BGBlastPipeModes)Enum.Parse(typeof(BGBlastPipeModes), Mode, true));
+					bl = RTC_BlastPipeGenerator.GenerateLayer(Note, Domain, StepSize, StartAddress, EndAddress, Param1, Param2, Precision, Seed, (BGBlastPipeModes)Enum.Parse(typeof(BGBlastPipeModes), Mode, true));
 					break;
 				default:
 					return null;

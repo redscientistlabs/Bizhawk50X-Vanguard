@@ -28,7 +28,7 @@ namespace RTC
 		public static List<ProblematicProcess> ProblematicProcesses;
 
 		//General RTC Values
-		public static string RtcVersion = "3.27b";
+		public static string RtcVersion = "3.27c";
 
 		//Directories
 		public static string bizhawkDir = Directory.GetCurrentDirectory();

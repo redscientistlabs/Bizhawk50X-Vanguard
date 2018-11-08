@@ -630,6 +630,7 @@ namespace RTC
 			return readSoFar;
 		}
 		#endregion
+
 	}
 
 	// Used code from this https://github.com/wasabii/Cogito/blob/master/Cogito.Core/RandomExtensions.cs
@@ -684,6 +685,13 @@ namespace RTC
 			long temp = min;
 			min = max;
 			max = temp;
+		}
+
+		public static string RandomString(this Random rnd, int length)
+		{
+			const string chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+			return new string(Enumerable.Repeat(chars, length)
+				.Select(s => s[rnd.Next(s.Length)]).ToArray());
 		}
 	}
 

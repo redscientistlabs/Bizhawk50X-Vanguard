@@ -187,10 +187,11 @@ namespace RTC
 					List<BlastGeneratorProto> returnList;
 
 					List<BlastGeneratorProto> blastGeneratorProtos =
-						(List<BlastGeneratorProto>)(cmd.objectValue as object);
+						(List<BlastGeneratorProto>)(cmd.objectValue as object[])[0];
 					StashKey _sk = (StashKey)(cmd.stashkey as object);
+					bool loadBeforeCorrupt = (bool)(cmd.objectValue as object[])[1];
 
-					returnList = RTC_BlastTools.GenerateBlastLayersFromBlastGeneratorProtos(blastGeneratorProtos, _sk);
+					returnList = RTC_BlastTools.GenerateBlastLayersFromBlastGeneratorProtos(blastGeneratorProtos, _sk, loadBeforeCorrupt);
 
 					if (cmd.requestGuid != null)
 					{
