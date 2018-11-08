@@ -7,8 +7,8 @@ namespace RTC
 {
 	public class RTC_BlastCheatGenerator
 	{
-		public BlastLayer GenerateLayer(string note, string domain, long stepSize, long startAddress, long endAddress,
-			long param1, long param2, int precision, BGBlastCheatModes mode)
+		public static BlastLayer GenerateLayer(string note, string domain, long stepSize, long startAddress, long endAddress,
+			long param1, long param2, int precision, int seed, BGBlastCheatModes mode)
 		{
 			BlastLayer bl = new BlastLayer();
 
@@ -16,7 +16,7 @@ namespace RTC
 			//We subtract 1 at the end as precision is 1,2,4, and we need to go 0,1,3
 			for (long address = startAddress; address < endAddress; address = address + stepSize + precision - 1)
 			{
-				BlastUnit bu = GenerateUnit(domain, address, param1, param2, precision, mode, note);
+				BlastUnit bu = GenerateUnit(domain, address, param1, param2, precision, mode, note, new Random(seed));
 				if (bu != null)
 					bl.Layer.Add(bu);
 			}
@@ -24,12 +24,11 @@ namespace RTC
 			return bl;
 		}
 
-		private BlastUnit GenerateUnit(string domain, long address, long param1, long param2, int precision,
-			BGBlastCheatModes mode, string note)
+		private static BlastUnit GenerateUnit(string domain, long address, long param1, long param2, int precision,
+			BGBlastCheatModes mode, string note, Random rand)
 		{
 			try
 			{
-
 				string targetDomain = RTC_MemoryDomains.GetRealDomain(domain, address);
 				long targetAddress = RTC_MemoryDomains.GetRealAddress(domain, address);
 				//We use an mdp rather than an mi because of the potential of non-contiguous vmds causing problem with BlastCheat
@@ -59,10 +58,10 @@ namespace RTC
 						break;
 					case BGBlastCheatModes.RANDOM:
 						for (int i = 0; i < _value.Length; i++)
-							_value[i] = (byte) RTC_Core.RND.Next(0, 255);
+							_value[i] = (byte) rand.Next(0, 255);
 						break;
 					case BGBlastCheatModes.RANDOM_RANGE:
-						long temp = RTC_Core.RND.RandomLong(param1, param2);
+						long temp = rand.RandomLong(param1, param2);
 						_value = RTC_Extensions.GetByteArrayValue(precision, temp, true);
 						break;
 					case BGBlastCheatModes.REPLACE_X_WITH_Y:

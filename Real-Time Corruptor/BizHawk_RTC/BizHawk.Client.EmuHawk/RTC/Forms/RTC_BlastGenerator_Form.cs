@@ -19,7 +19,8 @@ namespace RTC
 	// 10 dgvEndAddress
 	// 11 dgvParam1
 	// 12 dgvParam2
-	// 13 dgvNoteButton
+	// 13 dgvSeed
+	// 14 dgvNoteButton
 
 	//TYPE = BLASTUNITTYPE
 	//MODE = GENERATIONMODE
@@ -41,6 +42,7 @@ namespace RTC
 			DgvEndAddress,
 			DgvParam1,
 			DgvParam2,
+			DgvSeed,
 			DgvNoteButton
 		}
 
@@ -116,6 +118,7 @@ namespace RTC
 				dgvBlastGenerator.Rows[lastrow].Cells["dgvEndAddress"].ValueType = typeof(System.Decimal);
 				dgvBlastGenerator.Rows[lastrow].Cells["dgvParam1"].ValueType = typeof(System.Decimal);
 				dgvBlastGenerator.Rows[lastrow].Cells["dgvParam2"].ValueType = typeof(System.Decimal);
+				dgvBlastGenerator.Rows[lastrow].Cells["dgvSeed"].ValueType = typeof(System.Decimal);
 
 
 				//These can't be null or else things go bad when trying to save and load them from a file. Include an M as they NEED to be decimal.
@@ -123,6 +126,11 @@ namespace RTC
 				((DataGridViewNumericUpDownCell)dgvBlastGenerator.Rows[lastrow].Cells["dgvEndAddress"]).Value = 1M;
 				((DataGridViewNumericUpDownCell)dgvBlastGenerator.Rows[lastrow].Cells["dgvParam1"]).Value = 0M;
 				((DataGridViewNumericUpDownCell)dgvBlastGenerator.Rows[lastrow].Cells["dgvParam2"]).Value = 0M;
+
+
+				//Generate a random seed
+				((DataGridViewTextBoxCell) dgvBlastGenerator.Rows[lastrow].Cells["dgvSeed"]).Value = RTC_Core.RND.Next();
+
 
 				PopulateDomainCombobox(dgvBlastGenerator.Rows[lastrow]);
 				PopulateModeCombobox(dgvBlastGenerator.Rows[lastrow]);
@@ -341,14 +349,15 @@ namespace RTC
 			}
 		}
 
-		public BlastLayer GenerateBlastLayers(bool useStashkey = false)
+		public BlastLayer GenerateBlastLayers(bool loadBeforeCorrupt = false)
 		{
+			StashKey tempSk = null;
 			var token = RTC_NetCore.HugeOperationStart("DISABLED");
 			try
 			{
 				BlastLayer bl = new BlastLayer();
 
-				if (useStashkey)
+				if (loadBeforeCorrupt)
 				{
 					//If opened from engine config, use the GH state
 					if (!openedFromBlastEditor)
@@ -362,9 +371,9 @@ namespace RTC
 							RTC_Core.StartSound();
 							return null;
 						}
-
-						sk = (StashKey)psk.Clone();
 					}
+					else
+						tempSk = (StashKey)sk.Clone();
 				}
 
 				List<BlastGeneratorProto> protoList = new List<BlastGeneratorProto>();
@@ -375,7 +384,8 @@ namespace RTC
 					if ((bool)row.Cells["dgvRowDirty"].Value == true)
 					{
 						proto = CreateProtoFromRow(row);
-						row.Cells["dgvBlastProtoReference"].Value = proto;
+						if(proto != null)
+							row.Cells["dgvBlastProtoReference"].Value = proto;
 					}
 					else
 					{
@@ -391,8 +401,9 @@ namespace RTC
 				returnList = (List<BlastGeneratorProto>)RTC_Core.SendCommandToBizhawk(
 					new RTC_Command(CommandType.BLASTGENERATOR_BLAST)
 					{
-						objectValue = protoList,
-						stashkey = sk,
+						stashkey = tempSk,
+						objectValue = new object[] {protoList, loadBeforeCorrupt}
+						
 					}, true);
 
 				if (returnList == null) return null;
@@ -400,10 +411,13 @@ namespace RTC
 				//The return list is in the same order as the original list so we can go by index here
 				for (int i = 0; i < dgvBlastGenerator.RowCount; i++)
 				{
-					dgvBlastGenerator.Rows[i].Cells["dgvBlastProtoReference"].Value = returnList[i];
-					dgvBlastGenerator.Rows[i].Cells["dgvRowDirty"].Value = false;
+					if ((bool)dgvBlastGenerator.Rows[i].Cells["dgvEnabled"].Value == true)
+					{
+						dgvBlastGenerator.Rows[i].Cells["dgvBlastProtoReference"].Value = returnList[i];
+						dgvBlastGenerator.Rows[i].Cells["dgvRowDirty"].Value = false;
 
-					bl.Layer.AddRange(returnList[i].bl.Layer);
+						bl.Layer.AddRange(returnList[i].bl.Layer);
+					}
 				}
 
 				return bl;
@@ -452,8 +466,9 @@ namespace RTC
 				long endAddress = Convert.ToInt64(row.Cells["dgvEndAddress"].Value);
 				long param1 = Convert.ToInt64(row.Cells["dgvParam1"].Value);
 				long param2 = Convert.ToInt64(row.Cells["dgvParam2"].Value);
+				int seed = Convert.ToInt32(row.Cells["dgvSeed"].Value);
 
-				return new BlastGeneratorProto(note, type, domain, mode, precision, stepSize, startAddress, endAddress, param1, param2);
+				return new BlastGeneratorProto(note, type, domain, mode, precision, stepSize, startAddress, endAddress, param1, param2, seed);
 			}catch(Exception ex)
 			{
 				throw;

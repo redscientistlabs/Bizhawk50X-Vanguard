@@ -5,15 +5,15 @@ namespace RTC
 {
 	public class RTC_BlastPipeGenerator
 	{
-		public BlastLayer GenerateLayer(string note, string domain, long stepSize, long startAddress, long endAddress,
-			long param1, long param2, int precision, BGBlastPipeModes mode)
+		public static BlastLayer GenerateLayer(string note, string domain, long stepSize, long startAddress, long endAddress,
+			long param1, long param2, int precision, int seed, BGBlastPipeModes mode)
 		{
 			BlastLayer bl = new BlastLayer();
 
 			//We subtract 1 at the end as precision is 1,2,4, and we need to go 0,1,3
 			for (long address = startAddress; address < endAddress; address = address + stepSize + precision - 1)
 			{
-				BlastUnit bu = GenerateUnit(domain, address, param1, param2, stepSize, precision, mode, note);
+				BlastUnit bu = GenerateUnit(domain, address, param1, param2, stepSize, precision, mode, note, new Random(seed));
 				if (bu != null)
 					bl.Layer.Add(bu);
 			}
@@ -21,8 +21,8 @@ namespace RTC
 			return bl;
 		}
 
-		private BlastUnit GenerateUnit(string domain, long address, long param1, long param2, long stepSize,
-			int precision, BGBlastPipeModes mode, string note)
+		private static BlastUnit GenerateUnit(string domain, long address, long param1, long param2, long stepSize,
+			int precision, BGBlastPipeModes mode, string note, Random rand)
 		{
 			try
 			{
@@ -48,14 +48,14 @@ namespace RTC
 						break;
 					case BGBlastPipeModes.SOURCE_RANDOM:
 						destAddress = safeAddress;
-						safeAddress = RTC_Core.RND.Next(0, Convert.ToInt32(mi.Size - 1));
+						safeAddress = rand.Next(0, Convert.ToInt32(mi.Size - 1));
 						break;
 					case BGBlastPipeModes.SOURCE_SET:
 						destAddress = safeAddress;
 						safeAddress = param1;
 						break;
 					case BGBlastPipeModes.DEST_RANDOM:
-						destAddress = RTC_Core.RND.Next(0, Convert.ToInt32(mi.Size - 1));
+						destAddress = rand.Next(0, Convert.ToInt32(mi.Size - 1));
 						break;
 					default:
 						throw new ArgumentOutOfRangeException(nameof(mode), mode, null);
