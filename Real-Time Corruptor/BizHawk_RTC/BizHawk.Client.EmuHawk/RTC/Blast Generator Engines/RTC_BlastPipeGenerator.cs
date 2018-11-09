@@ -10,10 +10,11 @@ namespace RTC
 		{
 			BlastLayer bl = new BlastLayer();
 
+			Random rand = new Random(seed);
 			//We subtract 1 at the end as precision is 1,2,4, and we need to go 0,1,3
 			for (long address = startAddress; address < endAddress; address = address + stepSize + precision - 1)
 			{
-				BlastUnit bu = GenerateUnit(domain, address, param1, param2, stepSize, precision, mode, note, new Random(seed));
+				BlastUnit bu = GenerateUnit(domain, address, param1, param2, stepSize, precision, mode, note, rand);
 				if (bu != null)
 					bl.Layer.Add(bu);
 			}

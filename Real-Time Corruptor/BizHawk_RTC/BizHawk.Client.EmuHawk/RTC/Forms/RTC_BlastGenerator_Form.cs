@@ -108,6 +108,10 @@ namespace RTC
 				int lastrow = dgvBlastGenerator.RowCount - 1;
 				//Set up the DGV based on the current state of Bizhawk
 				(dgvBlastGenerator.Rows[lastrow].Cells["dgvRowDirty"]).Value = true;
+				(dgvBlastGenerator.Rows[lastrow].Cells["dgvEnabled"]).ValueType = typeof(bool);
+				((DataGridViewCheckBoxCell)(dgvBlastGenerator.Rows[lastrow].Cells["dgvEnabled"])).TrueValue = true;
+				((DataGridViewCheckBoxCell)(dgvBlastGenerator.Rows[lastrow].Cells["dgvEnabled"])).FalseValue = false;
+
 				(dgvBlastGenerator.Rows[lastrow].Cells["dgvEnabled"]).Value = true;
 				((DataGridViewComboBoxCell)dgvBlastGenerator.Rows[lastrow].Cells["dgvPrecision"]).Value = ((DataGridViewComboBoxCell)dgvBlastGenerator.Rows[0].Cells["dgvPrecision"]).Items[0];
 				((DataGridViewComboBoxCell)dgvBlastGenerator.Rows[lastrow].Cells["dgvType"]).Value = ((DataGridViewComboBoxCell)dgvBlastGenerator.Rows[0].Cells["dgvType"]).Items[0];
@@ -145,7 +149,7 @@ namespace RTC
 				MessageBox.Show(
 					"An error occurred in RTC while adding a new row.\n\n" +
 					"Your session is probably broken\n\n\n" +
-					ex.ToString());
+					ex.ToString() +	ex.StackTrace);
 			}
 		}
 
@@ -251,6 +255,7 @@ namespace RTC
 
 		private void btnLoadCorrupt_Click(object sender, EventArgs e)
 		{
+			StashKey newSk = null;
 			if (sk == null)
 			{
 				StashKey psk = RTC_StockpileManager.getCurrentSavestateStashkey();
@@ -261,10 +266,15 @@ namespace RTC
 					RTC_Core.StartSound();
 					return;
 				}
-				sk = (StashKey)psk.Clone();
+				newSk = new StashKey(RTC_Core.GetRandomKey(), psk.ParentKey, null);
+				newSk.RomFilename = psk.RomFilename;
+				newSk.SystemName = psk.SystemName;
+				newSk.SystemCore = psk.SystemCore;
+				newSk.GameName = psk.GameName;
+				newSk.SyncSettings = psk.SyncSettings;
 			}
-
-			StashKey newSk = (StashKey)sk.Clone();
+			else
+				newSk = (StashKey)sk.Clone();
 
 			BlastLayer bl = GenerateBlastLayers(true);
 			if (bl == null)
@@ -276,6 +286,7 @@ namespace RTC
 
 		private void btnSendTo_Click(object sender, EventArgs e)
 		{
+			StashKey newSk = null;
 			if (sk == null)
 			{
 				StashKey psk = RTC_StockpileManager.getCurrentSavestateStashkey();
@@ -286,10 +297,18 @@ namespace RTC
 					RTC_Core.StartSound();
 					return;
 				}
-				sk = (StashKey)psk.Clone();
+				newSk = new StashKey(RTC_Core.GetRandomKey(), psk.ParentKey, null);
+				newSk.RomFilename = psk.RomFilename;
+				newSk.SystemName = psk.SystemName;
+				newSk.SystemCore = psk.SystemCore;
+				newSk.GameName = psk.GameName;
+				newSk.SyncSettings = psk.SyncSettings;
+			}
+			else
+			{
+				newSk = (StashKey)sk.Clone();
 			}
 
-			StashKey newSk = (StashKey)sk.Clone();
 			BlastLayer bl = GenerateBlastLayers(true);
 			if (bl == null)
 				return;
@@ -351,7 +370,7 @@ namespace RTC
 
 		public BlastLayer GenerateBlastLayers(bool loadBeforeCorrupt = false)
 		{
-			StashKey tempSk = null;
+			StashKey newSk = null;
 			var token = RTC_NetCore.HugeOperationStart("DISABLED");
 			try
 			{
@@ -371,9 +390,15 @@ namespace RTC
 							RTC_Core.StartSound();
 							return null;
 						}
+						newSk = new StashKey(RTC_Core.GetRandomKey(), psk.ParentKey, bl);
+						newSk.RomFilename = psk.RomFilename;
+						newSk.SystemName = psk.SystemName;
+						newSk.SystemCore = psk.SystemCore;
+						newSk.GameName = psk.GameName;
+						newSk.SyncSettings = psk.SyncSettings;
 					}
 					else
-						tempSk = (StashKey)sk.Clone();
+						newSk = (StashKey)sk.Clone();
 				}
 
 				List<BlastGeneratorProto> protoList = new List<BlastGeneratorProto>();
@@ -401,16 +426,18 @@ namespace RTC
 				returnList = (List<BlastGeneratorProto>)RTC_Core.SendCommandToBizhawk(
 					new RTC_Command(CommandType.BLASTGENERATOR_BLAST)
 					{
-						stashkey = tempSk,
+						stashkey = newSk,
 						objectValue = new object[] {protoList, loadBeforeCorrupt}
 						
 					}, true);
 
-				if (returnList == null) return null;
+				if (returnList.Count != protoList.Count)
+					throw(new Exception("Got less blastlayers back compared to protos sent. Aborting!"));
 
 				//The return list is in the same order as the original list so we can go by index here
 				for (int i = 0; i < dgvBlastGenerator.RowCount; i++)
 				{
+					//Why the hell can't you get the checked state from a dgvCheckbox
 					if ((bool)dgvBlastGenerator.Rows[i].Cells["dgvEnabled"].Value == true)
 					{
 						dgvBlastGenerator.Rows[i].Cells["dgvBlastProtoReference"].Value = returnList[i];
@@ -426,7 +453,8 @@ namespace RTC
 			{
 				MessageBox.Show("Something went wrong when generating the blastlayers. \n" +
 				                "Are you sure your input is correct and you have the correct core loaded?\n\n" +
-				                ex.ToString());
+								ex.ToString() +
+				                ex.StackTrace);
 				return null;
 			}
 			finally
@@ -616,8 +644,7 @@ namespace RTC
 							"An error occurred in RTC while refreshing the domains\n" +
 							"Are you sure you don't have an invalid domain selected?\n" +
 							"Make sure any VMDs are loaded and you have the correct core loaded in Bizhawk\n" +
-							ex.ToString()
-							);
+							ex.ToString() +	ex.StackTrace);
 			}
 		}
 
@@ -713,7 +740,7 @@ namespace RTC
 				}
 				catch (Exception ex)
 				{
-					MessageBox.Show(ex.ToString());
+					MessageBox.Show(ex.ToString() + ex.StackTrace);
 					return false;
 				}
 			}
