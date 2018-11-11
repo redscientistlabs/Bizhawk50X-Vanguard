@@ -108,14 +108,36 @@ namespace RTC
 							string[] cueLines = File.ReadAllLines(key.RomFilename);
 							List<string> binFiles = new List<string>();
 
-							foreach (string line in cueLines)
-								if (line.Contains("FILE") && line.Contains("BINARY"))
-								{
-									int startFilename = line.IndexOf('"') + 1;
-									int endFilename = line.LastIndexOf('"');
+							string[] fixedCue = new string[cueLines.Length];
 
-									binFiles.Add(line.Substring(startFilename, endFilename - startFilename));
+							for(int i = 0; i < cueLines.Length; i++)
+							{
+								if (cueLines[i].Contains("FILE") && cueLines[i].Contains("BINARY"))
+								{
+									int startFilename;
+									int endFilename = cueLines[i].LastIndexOf('"');
+
+									//If it's an absolute path, convert it to a relative path then fix the cue as well
+									if (cueLines[i].Contains(':'))
+									{
+										startFilename = cueLines[i].LastIndexOfAny(new char[] { '\\', '/' }) + 1;
+										fixedCue[i] = "FILE \"" + cueLines[i].Substring(startFilename, endFilename - startFilename) + "\" BINARY";
+									}
+									else
+									{
+										startFilename = cueLines[i].IndexOf('"') + 1;
+										fixedCue[i] = cueLines[i];
+									}
+
+									binFiles.Add(cueLines[i].Substring(startFilename, endFilename - startFilename));
 								}
+								else
+									fixedCue[i] = cueLines[i];
+
+							}
+								
+							
+							File.WriteAllLines(key.RomFilename, fixedCue);
 
 							allRoms.AddRange(binFiles.Select(it => cueFolder + it));
 						}
@@ -237,7 +259,7 @@ namespace RTC
 			}
 			catch (Exception ex)
 			{
-				MessageBox.Show("Something went wrong while saving your stockpile!\n");
+				MessageBox.Show("Something went wrong while saving your stockpile!\n" + ex.ToString());
 
 				if (File.Exists(tempFilename) && File.Exists((sks.Filename)))
 				{
