@@ -59,6 +59,9 @@ namespace RTC
 		public RTC_BlastGenerator_Form()
 		{
 			InitializeComponent();
+
+			//For some godforsaken reason, xmlSerializer deserialization wont fill this in as a bool so just use a string god help us all 
+			(dgvBlastGenerator.Columns["dgvEnabled"]).ValueType = typeof(string);
 		}
 
 		private void RTC_BlastGeneratorForm_Load(object sender, EventArgs e)
@@ -108,11 +111,14 @@ namespace RTC
 				int lastrow = dgvBlastGenerator.RowCount - 1;
 				//Set up the DGV based on the current state of Bizhawk
 				(dgvBlastGenerator.Rows[lastrow].Cells["dgvRowDirty"]).Value = true;
-				(dgvBlastGenerator.Rows[lastrow].Cells["dgvEnabled"]).ValueType = typeof(bool);
-				((DataGridViewCheckBoxCell)(dgvBlastGenerator.Rows[lastrow].Cells["dgvEnabled"])).TrueValue = true;
-				((DataGridViewCheckBoxCell)(dgvBlastGenerator.Rows[lastrow].Cells["dgvEnabled"])).FalseValue = false;
 
-				(dgvBlastGenerator.Rows[lastrow].Cells["dgvEnabled"]).Value = true;
+
+				//For some godforsaken reason, xmlSerializer deserialization wont fill this in as a bool so just use a string god help us all 
+				(dgvBlastGenerator.Rows[lastrow].Cells["dgvEnabled"]).ValueType = typeof(string);
+				((DataGridViewCheckBoxCell)(dgvBlastGenerator.Rows[lastrow].Cells["dgvEnabled"])).TrueValue = "true";
+				((DataGridViewCheckBoxCell)(dgvBlastGenerator.Rows[lastrow].Cells["dgvEnabled"])).FalseValue = "false";
+				(dgvBlastGenerator.Rows[lastrow].Cells["dgvEnabled"]).Value = "true";
+
 				((DataGridViewComboBoxCell)dgvBlastGenerator.Rows[lastrow].Cells["dgvPrecision"]).Value = ((DataGridViewComboBoxCell)dgvBlastGenerator.Rows[0].Cells["dgvPrecision"]).Items[0];
 				((DataGridViewComboBoxCell)dgvBlastGenerator.Rows[lastrow].Cells["dgvType"]).Value = ((DataGridViewComboBoxCell)dgvBlastGenerator.Rows[0].Cells["dgvType"]).Items[0];
 
@@ -206,7 +212,7 @@ namespace RTC
 			}
 			catch (Exception ex)
 			{
-				throw;
+				throw new Exception("Unable to find domain! Are you sure you have the right core loaded?\n\n" + ex.ToString());
 			}
 		}
 
@@ -437,8 +443,8 @@ namespace RTC
 				//The return list is in the same order as the original list so we can go by index here
 				for (int i = 0; i < dgvBlastGenerator.RowCount; i++)
 				{
-					//Why the hell can't you get the checked state from a dgvCheckbox
-					if ((bool)dgvBlastGenerator.Rows[i].Cells["dgvEnabled"].Value == true)
+					//Why the hell can't you get the checked state from a dgvCheckbox why do I need to make this a string aaaaaaaaaaa
+					if (dgvBlastGenerator.Rows[i].Cells["dgvEnabled"].Value.ToString() == "true" || dgvBlastGenerator.Rows[i].Cells["dgvEnabled"].Value.ToString() == "True")
 					{
 						dgvBlastGenerator.Rows[i].Cells["dgvBlastProtoReference"].Value = returnList[i];
 						dgvBlastGenerator.Rows[i].Cells["dgvRowDirty"].Value = false;
