@@ -121,7 +121,7 @@ namespace RTC
 			}
 			else if (RTC_Core.isStandalone)
 			{
-				if (RTC_StockpileManager.unsavedEdits && !RTC_Core.isClosing && MessageBox.Show("You have unsaved edits in the Glitch Harvester Stockpile. \n\n Are you sure you want to close RTC without saving?", "Unsaved edits in Stockpile", MessageBoxButtons.YesNo) == DialogResult.No)
+				if (RTC_StockpileManager.unsavedEdits && !RTC_Core.isClosing && MessageBox.Show("You have unsaved edits in the Glitch Harvester Stockpile. \n\n Are you sure you want to close RTC without saving?", "Unsaved edits in Stockpile", MessageBoxButtons.YesNoCancel) != DialogResult.Yes)
 				{
 					e.Cancel = true;
 					return;
