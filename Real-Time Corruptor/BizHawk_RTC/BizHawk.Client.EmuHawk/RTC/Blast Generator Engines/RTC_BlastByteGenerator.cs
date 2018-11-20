@@ -6,12 +6,19 @@ namespace RTC
 {
 	public static class RTC_BlastByteGenerator
 	{
+		private static byte[] param1Bytes;
+		private static byte[] param2Bytes;
+
 		public static BlastLayer GenerateLayer(string note, string domain, long stepSize, long startAddress, long endAddress,
 			long param1, long param2, int precision, int seed, BGBlastByteModes mode)
 		{
 			BlastLayer bl = new BlastLayer();
 
 			Random rand = new Random(seed);
+
+			param1Bytes = null;
+			param2Bytes = null;
+
 			//We subtract 1 at the end as precision is 1,2,4, and we need to go 0,1,3
 			for (long address = startAddress; address < endAddress; address = address + stepSize + precision - 1)
 			{
@@ -38,6 +45,11 @@ namespace RTC
 				byte[] value = new byte[precision];
 				byte[] _temp = new byte[precision];
 
+				if (param1Bytes == null)
+					param1Bytes = RTC_Extensions.GetByteArrayValue(precision, param1, true);
+				if (param2Bytes == null)
+					param2Bytes = RTC_Extensions.GetByteArrayValue(precision, param2, true);
+
 				long safeAddress = address - address % value.Length;
 
 				//Use >= as Size is 1 indexed whereas address is 0 indexed
@@ -48,11 +60,11 @@ namespace RTC
 				{
 					case BGBlastByteModes.ADD:
 						type = BlastByteType.ADD;
-						value = RTC_Extensions.GetByteArrayValue(precision, param1, true);
+						value = param1Bytes;
 						break;
 					case BGBlastByteModes.SUBTRACT:
 						type = BlastByteType.SUBSTRACT;
-						value = RTC_Extensions.GetByteArrayValue(precision, param1, true);
+						value = param1Bytes;
 						break;
 					case BGBlastByteModes.RANDOM:
 						for (int i = 0; i < value.Length; i++)
@@ -64,8 +76,8 @@ namespace RTC
 						break;
 					case BGBlastByteModes.REPLACE_X_WITH_Y:
 						if (mi.PeekBytes(safeAddress, safeAddress + precision)
-							.SequenceEqual(RTC_Extensions.GetByteArrayValue(precision, param1, true)))
-							value = RTC_Extensions.GetByteArrayValue(precision, param2, true);
+							.SequenceEqual(param1Bytes))
+							value = param2Bytes;
 						else
 							return null;
 						break;
@@ -88,25 +100,25 @@ namespace RTC
 
 					//Bitwise operations
 					case BGBlastByteModes.BITWISE_AND:
-						_temp = RTC_Extensions.GetByteArrayValue(precision, param1, true);
+						_temp = param1Bytes;
 						value = mi.PeekBytes(safeAddress, safeAddress + precision);
 						for (int i = 0; i < value.Length; i++)
 							value[i] = (byte) (value[i] & _temp[i]);
 						break;
 					case BGBlastByteModes.BITWISE_COMPLEMENT:
-						_temp = RTC_Extensions.GetByteArrayValue(precision, param1, true);
+						_temp = param1Bytes;
 						value = mi.PeekBytes(safeAddress, safeAddress + precision);
 						for (int i = 0; i < value.Length; i++)
 							value[i] = (byte) (value[i] & _temp[i]);
 						break;
 					case BGBlastByteModes.BITWISE_OR:
-						_temp = RTC_Extensions.GetByteArrayValue(precision, param1, true);
+						_temp = param1Bytes;
 						value = mi.PeekBytes(safeAddress, safeAddress + precision);
 						for (int i = 0; i < value.Length; i++)
 							value[i] = (byte) (value[i] | _temp[i]);
 						break;
 					case BGBlastByteModes.BITWISE_XOR:
-						_temp = RTC_Extensions.GetByteArrayValue(precision, param1, true);
+						_temp = param1Bytes;
 						value = mi.PeekBytes(safeAddress, safeAddress + precision);
 						for (int i = 0; i < value.Length; i++)
 							value[i] = (byte) (value[i] ^ _temp[i]);

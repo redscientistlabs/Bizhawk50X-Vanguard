@@ -7,13 +7,18 @@ namespace RTC
 {
 	public class RTC_BlastCheatGenerator
 	{
+
+		private static byte[] param1Bytes;
+		private static byte[] param2Bytes;
+
 		public static BlastLayer GenerateLayer(string note, string domain, long stepSize, long startAddress, long endAddress,
 			long param1, long param2, int precision, int seed, BGBlastCheatModes mode)
 		{
 			BlastLayer bl = new BlastLayer();
-
-
 			Random rand = new Random(seed);
+			param1Bytes = null;
+			param2Bytes = null;
+
 			//We subtract 1 at the end as precision is 1,2,4, and we need to go 0,1,3
 			for (long address = startAddress; address < endAddress; address = address + stepSize + precision - 1)
 			{
@@ -37,6 +42,12 @@ namespace RTC
 
 				byte[] _value = new byte[precision];
 				byte[] _temp = new byte[precision];
+
+				if (param1Bytes == null)
+					param1Bytes = RTC_Extensions.GetByteArrayValue(precision, param1, true);
+				if (param2Bytes == null)
+					param2Bytes = RTC_Extensions.GetByteArrayValue(precision, param2, true);
+
 				bool freeze = false;
 				DisplayType _displaytype = DisplayType.Unsigned;
 
@@ -46,6 +57,7 @@ namespace RTC
 				//Use >= as Size is 1 indexed whereas address is 0 indexed
 				if (safeTargetAddress + _value.Length > mdp.Size)
 					return null;
+
 
 				switch (mode)
 				{
@@ -67,13 +79,13 @@ namespace RTC
 						break;
 					case BGBlastCheatModes.REPLACE_X_WITH_Y:
 						if (mdp.PeekBytes(safeTargetAddress, safeTargetAddress + precision)
-							.SequenceEqual(RTC_Extensions.GetByteArrayValue(precision, param1, true)))
-							_value = RTC_Extensions.GetByteArrayValue(precision, param2, true);
+							.SequenceEqual(param1Bytes))
+							_value = param2Bytes;
 						else
 							return null;
 						break;
 					case BGBlastCheatModes.SET:
-						_value = RTC_Extensions.GetByteArrayValue(precision, param1, true);
+						_value = param1Bytes;
 						break;
 					case BGBlastCheatModes.SHIFT_RIGHT:
 						_value = mdp.PeekBytes(safeTargetAddress, safeTargetAddress + precision);
@@ -90,25 +102,25 @@ namespace RTC
 
 					//Bitwise operations
 					case BGBlastCheatModes.BITWISE_AND:
-						_temp = RTC_Extensions.GetByteArrayValue(precision, param1, true);
+						_temp = param1Bytes;
 						_value = mdp.PeekBytes(safeTargetAddress, safeTargetAddress + precision);
 						for (int i = 0; i < _value.Length; i++)
 							_value[i] = (byte) (_value[i] & _temp[i]);
 						break;
 					case BGBlastCheatModes.BITWISE_COMPLEMENT:
-						_temp = RTC_Extensions.GetByteArrayValue(precision, param1, true);
+						_temp = param1Bytes;
 						_value = mdp.PeekBytes(safeTargetAddress, safeTargetAddress + precision);
 						for (int i = 0; i < _value.Length; i++)
 							_value[i] = (byte) (_value[i] & _temp[i]);
 						break;
 					case BGBlastCheatModes.BITWISE_OR:
-						_temp = RTC_Extensions.GetByteArrayValue(precision, param1, true);
+						_temp = param1Bytes;
 						_value = mdp.PeekBytes(safeTargetAddress, safeTargetAddress + precision);
 						for (int i = 0; i < _value.Length; i++)
 							_value[i] = (byte) (_value[i] | _temp[i]);
 						break;
 					case BGBlastCheatModes.BITWISE_XOR:
-						_temp = RTC_Extensions.GetByteArrayValue(precision, param1, true);
+						_temp = param1Bytes;
 						_value = mdp.PeekBytes(safeTargetAddress, safeTargetAddress + precision);
 						for (int i = 0; i < _value.Length; i++)
 							_value[i] = (byte) (_value[i] ^ _temp[i]);

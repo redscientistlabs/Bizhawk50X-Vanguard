@@ -411,18 +411,22 @@ namespace RTC
 
 				foreach (DataGridViewRow row in dgvBlastGenerator.Rows)
 				{
-					BlastGeneratorProto proto;
-					if ((bool)row.Cells["dgvRowDirty"].Value == true)
+					BlastGeneratorProto proto = null;
+					//Why the hell can't you get the checked state from a dgvCheckbox why do I need to make this a string aaaaaaaaaaa
+					if (row.Cells["dgvEnabled"].Value.ToString() == "true" ||
+					    row.Cells["dgvEnabled"].Value.ToString() == "True")
 					{
-						proto = CreateProtoFromRow(row);
-						if(proto != null)
-							row.Cells["dgvBlastProtoReference"].Value = proto;
+						if ((bool) row.Cells["dgvRowDirty"].Value == true)
+						{
+							proto = CreateProtoFromRow(row);
+							if (proto != null)
+								row.Cells["dgvBlastProtoReference"].Value = proto;
+						}
+						else
+						{
+							proto = (BlastGeneratorProto) row.Cells["dgvBlastProtoReference"].Value;
+						}
 					}
-					else
-					{
-						proto = (BlastGeneratorProto)row.Cells["dgvBlastProtoReference"].Value;
-					}
-
 					protoList.Add(proto);
 				}
 
@@ -452,7 +456,6 @@ namespace RTC
 						bl.Layer.AddRange(returnList[i].bl.Layer);
 					}
 				}
-
 				return bl;
 			}
 			catch (Exception ex)
