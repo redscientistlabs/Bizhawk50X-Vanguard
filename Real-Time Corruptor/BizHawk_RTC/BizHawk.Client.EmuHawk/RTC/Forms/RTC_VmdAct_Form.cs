@@ -552,7 +552,7 @@ namespace RTC
 			}
 			finally
 			{
-				RTC_Core.StartSound();();
+				RTC_Core.StartSound();
 				RTC_NetCore.HugeOperationEnd(token);
 			}
 		}
