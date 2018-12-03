@@ -563,9 +563,9 @@ namespace RTC
 					ConfigService.Serializer.Serialize(w, sc);
 				}
 			}
-			catch
+			catch (Exception e)
 			{
-				/* Eat it */
+				MessageBox.Show("Something went wrong when importing the config\n" + e.ToString());
 			}
 		}
 
@@ -608,9 +608,9 @@ namespace RTC
 					ConfigService.Serializer.Serialize(w, sc);
 				}
 			}
-			catch
+			catch(Exception e)
 			{
-				/* Eat it */
+				MessageBox.Show("Something went wrong when importing the keybinds\n" + e.ToString());
 			}
 		}
 

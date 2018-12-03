@@ -319,6 +319,7 @@ namespace RTC
 		{
 			try
 			{
+				RTC_Core.StopSound();
 				sidebarEnabled(false);
 				if (sk.ParentKey == null)
 				{
@@ -348,6 +349,7 @@ namespace RTC
 			finally
 			{
 				sidebarEnabled(true);
+				RTC_Core.StartSound();
 			}
 		}
 
@@ -355,6 +357,7 @@ namespace RTC
 		{
 			try
 			{
+				RTC_Core.StopSound();
 				sidebarEnabled(false);
 				BlastLayer bl = new BlastLayer();
 
@@ -373,6 +376,7 @@ namespace RTC
 			}
 			finally
 			{
+				RTC_Core.StartSound();
 				sidebarEnabled(true);
 			}
 		}
@@ -381,6 +385,7 @@ namespace RTC
 		{
 			try
 			{
+				RTC_Core.StopSound();
 				sidebarEnabled(false);
 				if (sk.ParentKey == null)
 				{
@@ -411,6 +416,7 @@ namespace RTC
 			}
 			finally
 			{
+				RTC_Core.StartSound();
 				sidebarEnabled(true);
 			}
 

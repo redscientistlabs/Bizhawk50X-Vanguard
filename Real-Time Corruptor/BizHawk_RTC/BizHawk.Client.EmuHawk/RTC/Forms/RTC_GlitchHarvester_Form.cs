@@ -711,25 +711,28 @@ namespace RTC
 			//if (Global.Emulator is NullEmulator)
 			//   return;
 
-			if ( RTC_StockpileManager.currentStashkey?.BlastLayer?.Layer?.Count == 0)
+			if (RTC_StockpileManager.currentStashkey?.BlastLayer?.Layer?.Count != 0)
 			{
-				IsCorruptionApplied = false;
-				return;
-			}
+				if (!IsCorruptionApplied)
+				{
+					IsCorruptionApplied = true;
+					RTC_Core.SendCommandToRTC(new RTC_Command(CommandType.BLAST)
+						{blastlayer = RTC_StockpileManager.currentStashkey?.BlastLayer});
+					//RTC_StockpileManager.currentStashkey.blastlayer.Apply();
+				}
+				else
+				{
+					IsCorruptionApplied = false;
 
-			if (!IsCorruptionApplied)
-			{
-				IsCorruptionApplied = true;
-				RTC_Core.SendCommandToRTC(new RTC_Command(CommandType.BLAST) { blastlayer = RTC_StockpileManager.currentStashkey.BlastLayer });
-				//RTC_StockpileManager.currentStashkey.blastlayer.Apply();
+					RTC_Core.SendCommandToRTC(new RTC_Command(CommandType.REMOTE_SET_RESTOREBLASTLAYERBACKUP) { });
+					RTC_HellgenieEngine.ClearCheats();
+					RTC_PipeEngine.ClearPipes();
+				}
 			}
 			else
 			{
 				IsCorruptionApplied = false;
-
-				RTC_Core.SendCommandToRTC(new RTC_Command(CommandType.REMOTE_SET_RESTOREBLASTLAYERBACKUP) { });
-				RTC_HellgenieEngine.ClearCheats();
-				RTC_PipeEngine.ClearPipes();
+				return;
 			}
 		}
 

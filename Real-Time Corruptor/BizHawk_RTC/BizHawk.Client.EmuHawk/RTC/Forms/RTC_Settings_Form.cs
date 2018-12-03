@@ -148,16 +148,20 @@ namespace RTC
 					var LauncherVersFolder = bizhawkFolder.Parent.Parent;
 
 					var versions = LauncherVersFolder.GetDirectories().Reverse().ToArray();
+					if (versions.Length < 0)
+					{
+						var prevVersion = versions[1].Name;
 
-					var prevVersion = versions[1].Name;
+						var dr = MessageBox.Show(
+							"RTC Launcher detected,\n" +
+							$"Do you want to import Controller/Hotkey bindings from version {prevVersion}"
+							, $"Import config from previous version ?", MessageBoxButtons.YesNo, MessageBoxIcon.Information);
 
-					var dr = MessageBox.Show(
-						"RTC Launcher detected,\n" +
-						$"Do you want to import Controller/Hotkey bindings from version {prevVersion}"
-						, $"Import config from previous version ?", MessageBoxButtons.YesNo, MessageBoxIcon.Information);
-
-					if (dr == DialogResult.Yes)
-						Stockpile.LoadBizhawkKeyBindsFromIni(versions[1].FullName + "\\BizHawk\\config.ini");
+						if (dr == DialogResult.Yes)
+							Stockpile.LoadBizhawkKeyBindsFromIni(versions[1].FullName + "\\BizHawk\\config.ini");
+						else
+							Stockpile.LoadBizhawkKeyBindsFromIni();
+					}
 					else
 						Stockpile.LoadBizhawkKeyBindsFromIni();
 				}
