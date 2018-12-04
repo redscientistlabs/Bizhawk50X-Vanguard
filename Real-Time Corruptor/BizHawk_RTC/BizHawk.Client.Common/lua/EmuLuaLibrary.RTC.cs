@@ -39,16 +39,20 @@ namespace BizHawk.Client.EmuHawk
 			}
 		}
 
+
+		private uint RDRAMBase = 0x80000000;
+		private uint RDRAMSize = 0x800000;
+		private uint RDRAMEnd = 0x80800000;
+
 		[LuaMethodExample("getTexturePointers(\"TextureTable\");")]
 		[LuaMethod("getTexturePointers", "Does your stuff in c#")]
 		public void getTexturePointers(LuaTable textureTable, LuaTable rangeTable)
 		{
-			ulong RDRAMBase = 0x80000000;
-			uint RDRAMSize = 0x800000;
-
-			foreach (int addr in rangeTable.Keys)
+			foreach (var count in rangeTable.Keys)
 			{
-				for (int address = addr; address < (int)rangeTable[addr] - 4; address += 4)
+				var start = Convert.ToInt32((double)((LuaTable)rangeTable[count])[1]);
+				var end =  Convert.ToInt32((double)((LuaTable) rangeTable[count])[2] - 4);
+				for (int address = start; address < end; address += 4)
 				{
 					uint? value = dereferencePointer(address);
 					if (value != null)
@@ -65,17 +69,14 @@ namespace BizHawk.Client.EmuHawk
 
 		bool isRDRAM(uint value)
 		{
-			uint RDRAMSize = 0x800000;
 			return (value < RDRAMSize);
 		}
 		uint? dereferencePointer(int address)
 		{
-			uint RDRAMBase = 0x80000000;
-			uint RDRAMSize = 0x800000;
 			if (address < (RDRAMSize - 4))
 			{
 				uint value = ReadUnsignedBig(address, 4);
-				if(value >= RDRAMBase && value < 0x80800000)
+				if(value >= RDRAMBase && value < RDRAMEnd)
 					return value - RDRAMBase;
 			}
 			return null;
