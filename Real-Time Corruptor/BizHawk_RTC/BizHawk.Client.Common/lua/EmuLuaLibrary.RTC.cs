@@ -41,21 +41,23 @@ namespace BizHawk.Client.EmuHawk
 
 		[LuaMethodExample("getTexturePointers(\"TextureTable\");")]
 		[LuaMethod("getTexturePointers", "Does your stuff in c#")]
-		public void getTexturePointers(LuaTable textureTable)
+		public void getTexturePointers(LuaTable textureTable, LuaTable rangeTable)
 		{
 			ulong RDRAMBase = 0x80000000;
 			uint RDRAMSize = 0x800000;
 
-
-			for (int address = 0x200000; address < 0x600000 - 4; address += 4)
+			foreach (int addr in rangeTable.Keys)
 			{
-				uint? value = dereferencePointer(address);
-				if (value != null)
+				for (int address = addr; address < (int)rangeTable[addr] - 4; address += 4)
 				{
-					if (textureTable[value] != null)
+					uint? value = dereferencePointer(address);
+					if (value != null)
 					{
-						((LuaTable)(textureTable[value]))["references"] = Convert.ToInt32(((LuaTable)(textureTable[value]))["references"]) + 1;
-						((LuaTable)(((LuaTable)(textureTable[value]))["referenceAddresses"]))[address] = address;
+						if (textureTable[value] != null)
+						{
+							((LuaTable)(textureTable[value]))["references"] = Convert.ToInt32(((LuaTable)(textureTable[value]))["references"]) + 1;
+							((LuaTable)(((LuaTable)(textureTable[value]))["referenceAddresses"]))[address] = address;
+						}
 					}
 				}
 			}
