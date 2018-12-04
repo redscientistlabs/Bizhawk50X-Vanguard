@@ -156,6 +156,7 @@ namespace RTC
 				p.StartInfo.FileName = RTC_Core.bizhawkDir + "\\StateClean.bat";
 				p.StartInfo.WindowStyle = ProcessWindowStyle.Hidden;
 				p.StartInfo.CreateNoWindow = true;
+				p.StartInfo.WorkingDirectory = RTC_Core.bizhawkDir;
 				p.Start();
 			}
 
