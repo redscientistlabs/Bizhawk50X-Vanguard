@@ -82,7 +82,7 @@ namespace RTC
 			p.StartInfo.FileName = $"FactoryClean{(RTC_Core.isStandalone ? "DETACHED" : "ATTACHED")}.bat";
 			p.StartInfo.WindowStyle = ProcessWindowStyle.Hidden;
 			p.StartInfo.CreateNoWindow = true;
-			p.StartInfo.WorkingDirectory = RTC_Core.rtcDir;
+			p.StartInfo.WorkingDirectory = RTC_Core.bizhawkDir;
 			p.Start();
 		}
 

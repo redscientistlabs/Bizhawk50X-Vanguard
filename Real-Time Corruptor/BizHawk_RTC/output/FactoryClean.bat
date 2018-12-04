@@ -39,7 +39,6 @@ del RTC/PARAMS/*.* /F /Q
 	
 del WGH/PARAMS/*.* /F /Q
 
-start RTC/StateClean.bat
 
 rem IF YOU UPDATE THIS UPDATE StateClean
 
@@ -65,6 +64,7 @@ del "SNES\SaveRAM*.*" /F /Q
 del "VB\SaveRAM*.*" /F /Q
 del "WonderSwan\SaveRAM*.*" /F /Q
 
+StateClean.bat
 
 echo.
 echo.
