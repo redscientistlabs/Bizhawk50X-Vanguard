@@ -78,7 +78,12 @@ namespace RTC
 
 		private void btnRtcFactoryClean_Click(object sender, EventArgs e)
 		{
-			Process.Start($"FactoryClean{(RTC_Core.isStandalone ? "DETACHED" : "ATTACHED")}.bat");
+			Process p = new Process();
+			p.StartInfo.FileName = $"FactoryClean{(RTC_Core.isStandalone ? "DETACHED" : "ATTACHED")}.bat";
+			p.StartInfo.WindowStyle = ProcessWindowStyle.Hidden;
+			p.StartInfo.CreateNoWindow = true;
+			p.StartInfo.WorkingDirectory = RTC_Core.bizhawkDir;
+			p.Start();
 		}
 
 		private void RTC_Settings_Form_Load(object sender, EventArgs e)
@@ -148,16 +153,20 @@ namespace RTC
 					var LauncherVersFolder = bizhawkFolder.Parent.Parent;
 
 					var versions = LauncherVersFolder.GetDirectories().Reverse().ToArray();
+					if (versions.Length < 0)
+					{
+						var prevVersion = versions[1].Name;
 
-					var prevVersion = versions[1].Name;
+						var dr = MessageBox.Show(
+							"RTC Launcher detected,\n" +
+							$"Do you want to import Controller/Hotkey bindings from version {prevVersion}"
+							, $"Import config from previous version ?", MessageBoxButtons.YesNo, MessageBoxIcon.Information);
 
-					var dr = MessageBox.Show(
-						"RTC Launcher detected,\n" +
-						$"Do you want to import Controller/Hotkey bindings from version {prevVersion}"
-						, $"Import config from previous version ?", MessageBoxButtons.YesNo, MessageBoxIcon.Information);
-
-					if (dr == DialogResult.Yes)
-						Stockpile.LoadBizhawkKeyBindsFromIni(versions[1].FullName + "\\BizHawk\\config.ini");
+						if (dr == DialogResult.Yes)
+							Stockpile.LoadBizhawkKeyBindsFromIni(versions[1].FullName + "\\BizHawk\\config.ini");
+						else
+							Stockpile.LoadBizhawkKeyBindsFromIni();
+					}
 					else
 						Stockpile.LoadBizhawkKeyBindsFromIni();
 				}

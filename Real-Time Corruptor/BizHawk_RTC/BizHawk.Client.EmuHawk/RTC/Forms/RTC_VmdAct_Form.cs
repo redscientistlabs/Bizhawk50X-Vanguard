@@ -493,6 +493,7 @@ namespace RTC
 			var token = RTC_NetCore.HugeOperationStart("DISABLED");
 			try
 			{
+				RTC_Core.StopSound();
 				MemoryInterface mi = RTC_MemoryDomains.MemoryInterfaces[cbSelectedMemoryDomain.SelectedItem.ToString()];
 				VirtualMemoryDomain VMD = new VirtualMemoryDomain();
 				VmdPrototype proto = new VmdPrototype();
@@ -551,6 +552,7 @@ namespace RTC
 			}
 			finally
 			{
+				RTC_Core.StartSound();
 				RTC_NetCore.HugeOperationEnd(token);
 			}
 		}
