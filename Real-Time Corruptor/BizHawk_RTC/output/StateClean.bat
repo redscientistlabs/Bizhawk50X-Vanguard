@@ -1,174 +1,21 @@
-@echo off
-
-cd "Apple II"
-
-	cd State
-	del *.* /F /Q
-	cd..
-
-cd..
-
-cd "Atari 2600"
-
-	cd State
-	del *.* /F /Q
-	cd..
-	
-	
-cd..
-
-cd "Atari 7800"
-
-	cd State
-	del *.* /F /Q
-	cd..
-	
-cd..
-
-
-cd "Coleco"
-
-	cd State
-	del *.* /F /Q
-	cd..
-	
-cd..
-
-cd "Game Gear"
-
-	cd State
-	del *.* /F /Q
-	cd..
-
-cd..
-
-cd "Gameboy"
-
-	cd State
-	del *.* /F /Q
-	cd..
-	
-cd..
-
-cd "GBA"
-
-	cd State
-	del *.* /F /Q
-	cd..
-	
-cd..
-
-cd "Genesis"
-
-	cd State
-	del *.* /F /Q
-	cd..
-	
-cd..
-
-
-cd "Intellivision"
-
-	cd State
-	del *.* /F /Q
-	cd..
-	
-cd..
-
-
-cd "Libretro"
-
-	cd State
-	del *.* /F /Q
-	cd..
-	
-cd..
-
-cd "Lynx"
-
-	cd State
-	del *.* /F /Q
-	cd..
-	
-cd..
-
-cd "N64"
-
-	cd State
-	del *.* /F /Q
-	cd..
-	
-cd..
-
-cd "NES"
-
-	cd State
-	del *.* /F /Q
-	cd..
-	
-cd..
-
-cd "PC Engine"
-
-	cd State
-	del *.* /F /Q
-	cd..
-	
-cd..
-
-cd "PSX"
-
-	cd State
-	del *.* /F /Q
-	cd..
-
-cd..
-
-cd "Saturn"
-
-	cd State
-	del *.* /F /Q
-	cd..
-	
-cd..
-
-cd "SG-1000"
-
-	cd State
-	del *.* /F /Q
-	cd..
-
-cd..
-
-cd "SMS"
-
-	cd State
-	del *.* /F /Q
-	cd..
-
-cd..
-
-cd "SNES"
-
-	cd State
-	del *.* /F /Q
-	cd..
-	
-cd..
-
-cd "VB"
-
-	cd State
-	del *.* /F /Q
-	cd..
-	
-	
-cd..
-
-cd "WonderSwan"
-
-	cd State
-	del *.* /F /Q
-	cd..
-	
-cd..
+del "Apple II\State*.*" /F /Q
+del "Atari 2600\State*.*" /F /Q
+del "Atari 7800\State*.*" /F /Q
+del "Coleco\State*.*" /F /Q
+del "Game Gear\State*.*" /F /Q
+del "Gameboy\State*.*" /F /Q
+del "GBA\State*.*" /F /Q
+del "Genesis\State*.*" /F /Q
+del "Intellivision\State*.*" /F /Q
+del "Libretro\State*.*" /F /Q
+del "Lynx\State*.*" /F /Q
+del "N64\State*.*" /F /Q
+del "NES\State*.*" /F /Q
+del "PC Engine\State*.*" /F /Q
+del "PSX\State*.*" /F /Q
+del "Saturn\State*.*" /F /Q
+del "SG-1000\State*.*" /F /Q
+del "SMS\State*.*" /F /Q
+del "SNES\State*.*" /F /Q
+del "VB\State*.*" /F /Q
+del "WonderSwan\State*.*" /F /Q
