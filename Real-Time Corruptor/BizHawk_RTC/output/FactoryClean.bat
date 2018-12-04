@@ -29,292 +29,42 @@ del stockpile_config.ini /F
 del CorruptedROM.rom /F
 del VinesauceROMCorruptor.txt /F
 
-cd RTC
-
-	cd MEMORYDUMPS
-	del *.* /F /Q
-	cd..
+del RTC/MEMORYDUMPS/*.* /F /Q
+del RTC/RENDEROUTPUT/*.* /F /Q
+del RTC/TEMP/*.* /F /Q
+del RTC/TEMP2/*.* /F /Q
+del RTC/TEMP3/*.* /F /Q
+del RTC/TEMP4/*.* /F /Q
+del RTC/PARAMS/*.* /F /Q
 	
-	cd RENDEROUTPUT
-	del *.* /F /Q
-	cd..
-	
-	cd TEMP
-	del *.* /F /Q
-	cd..
-	
-	cd TEMP2
-	del *.* /F /Q
-	cd..
-	
-	cd TEMP3
-	del *.* /F /Q
-	cd..
-		
-	cd TEMP4
-	del *.* /F /Q
-	cd..
-	
-	cd PARAMS
-	del *.* /F /Q
-	cd..
+del WGH/PARAMS/*.* /F /Q
 
-cd..
+start RTC/StateClean.bat
 
-cd WGH
+rem IF YOU UPDATE THIS UPDATE StateClean
 
-	cd PARAMS
-	del *.* /F /Q
-	cd..
+del "Apple II\SaveRAM*.*" /F /Q
+del "Atari 2600\SaveRAM*.*" /F /Q
+del "Atari 7800\SaveRAM*.*" /F /Q
+del "Coleco\SaveRAM*.*" /F /Q
+del "Game Gear\SaveRAM*.*" /F /Q
+del "Gameboy\SaveRAM*.*" /F /Q
+del "GBA\SaveRAM*.*" /F /Q
+del "Genesis\SaveRAM*.*" /F /Q
+del "Intellivision\SaveRAM*.*" /F /Q
+del "Libretro\SaveRAM*.*" /F /Q
+del "Lynx\SaveRAM*.*" /F /Q
+del "N64\SaveRAM*.*" /F /Q
+del "NES\SaveRAM*.*" /F /Q
+del "PC Engine\SaveRAM*.*" /F /Q
+del "PSX\SaveRAM*.*" /F /Q
+del "Saturn\SaveRAM*.*" /F /Q
+del "SG-1000\SaveRAM*.*" /F /Q
+del "SMS\SaveRAM*.*" /F /Q
+del "SNES\SaveRAM*.*" /F /Q
+del "VB\SaveRAM*.*" /F /Q
+del "WonderSwan\SaveRAM*.*" /F /Q
 
-cd..
-
-cd "Apple II"
-
-	cd State
-	del *.* /F /Q
-	cd..
-
-cd..
-
-cd "Atari 2600"
-
-	cd State
-	del *.* /F /Q
-	cd..
-	
-	cd SaveRAM
-	del *.* /F /Q
-	cd..
-	
-cd..
-
-cd "Atari 7800"
-
-	cd State
-	del *.* /F /Q
-	cd..
-	
-	cd SaveRAM
-	del *.* /F /Q
-	cd..
-	
-cd..
-
-
-cd "Coleco"
-
-	cd State
-	del *.* /F /Q
-	cd..
-	
-	cd SaveRAM
-	del *.* /F /Q
-	cd..
-	
-cd..
-
-cd "Game Gear"
-
-	cd State
-	del *.* /F /Q
-	cd..
-
-cd..
-
-cd "Gameboy"
-
-	cd State
-	del *.* /F /Q
-	cd..
-	
-	cd SaveRAM
-	del *.* /F /Q
-	cd..
-	
-cd..
-
-cd "GBA"
-
-	cd State
-	del *.* /F /Q
-	cd..
-	
-	cd SaveRAM
-	del *.* /F /Q
-	cd..
-	
-cd..
-
-cd "Genesis"
-
-	cd State
-	del *.* /F /Q
-	cd..
-	
-	cd SaveRAM
-	del *.* /F /Q
-	cd..
-	
-cd..
-
-
-cd "Intellivision"
-
-	cd State
-	del *.* /F /Q
-	cd..
-	
-	cd SaveRAM
-	del *.* /F /Q
-	cd..
-	
-cd..
-
-
-cd "Libretro"
-
-	cd State
-	del *.* /F /Q
-	cd..
-	
-	cd SaveRAM
-	del *.* /F /Q
-	cd..
-	
-cd..
-
-cd "Lynx"
-
-	cd State
-	del *.* /F /Q
-	cd..
-	
-	cd SaveRAM
-	del *.* /F /Q
-	cd..
-	
-cd..
-
-cd "N64"
-
-	cd State
-	del *.* /F /Q
-	cd..
-	
-	cd SaveRAM
-	del *.* /F /Q
-	cd..
-	
-	cd Cheats
-	del *.* /F /Q
-	cd..
-	
-cd..
-
-cd "NES"
-
-	cd State
-	del *.* /F /Q
-	cd..
-	
-	cd SaveRAM
-	del *.* /F /Q
-	cd..
-	
-	cd Screenshots
-	del *.* /F /Q
-	cd..
-	
-	cd Cheats
-	del *.* /F /Q
-	cd..
-	
-cd..
-
-cd "PC Engine"
-
-	cd State
-	del *.* /F /Q
-	cd..
-	
-cd..
-
-cd "PSX"
-
-	cd State
-	del *.* /F /Q
-	cd..
-
-cd..
-
-cd "Saturn"
-
-	cd State
-	del *.* /F /Q
-	cd..
-	
-	cd SaveRAM
-	del *.* /F /Q
-	cd..
-	
-cd..
-
-cd "SG-1000"
-
-	cd State
-	del *.* /F /Q
-	cd..
-
-cd..
-
-cd "SMS"
-
-	cd State
-	del *.* /F /Q
-	cd..
-
-cd..
-
-cd "SNES"
-
-	cd State
-	del *.* /F /Q
-	cd..
-	
-	cd SaveRAM
-	del *.* /F /Q
-	cd..
-	
-	cd Cheats
-	del *.* /F /Q
-	cd..
-	
-cd..
-
-cd "VB"
-
-	cd State
-	del *.* /F /Q
-	cd..
-	
-	cd SaveRAM
-	del *.* /F /Q
-	cd..
-	
-cd..
-
-cd "WonderSwan"
-
-	cd State
-	del *.* /F /Q
-	cd..
-	
-	cd SaveRAM
-	del *.* /F /Q
-	cd..
-	
-cd..
 
 echo.
 echo.

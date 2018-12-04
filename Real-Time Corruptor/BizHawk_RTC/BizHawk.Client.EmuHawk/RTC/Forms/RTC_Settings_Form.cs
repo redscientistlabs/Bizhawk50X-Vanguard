@@ -31,7 +31,12 @@ namespace RTC
 
 		private void btnRtcFactoryClean_Click(object sender, EventArgs e)
 		{
-			Process.Start($"FactoryClean{(RTC_Core.isStandalone ? "DETACHED" : "ATTACHED")}.bat");
+			Process p = new Process();
+			p.StartInfo.FileName = $"FactoryClean{(RTC_Core.isStandalone ? "DETACHED" : "ATTACHED")}.bat";
+			p.StartInfo.WindowStyle = ProcessWindowStyle.Hidden;
+			p.StartInfo.CreateNoWindow = true;
+			p.StartInfo.WorkingDirectory = RTC_Core.rtcDir;
+			p.Start();
 		}
 
 		private void RTC_Settings_Form_Load(object sender, EventArgs e)
