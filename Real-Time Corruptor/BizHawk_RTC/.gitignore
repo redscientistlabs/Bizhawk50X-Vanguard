@@ -19,6 +19,7 @@ svnrev.cs
 
 !/output/*.bat
 !/output/AutoKillSwitch.exe
+!/output/defctrl.json
 
 **/Release/**
 **/Debug/**
