@@ -61,6 +61,7 @@ namespace RTC
 		public void btnManualBlast_Click(object sender, EventArgs e)
 		{
 			RTC_Core.SendCommandToBizhawk(new RTC_Command(CommandType.ASYNCBLAST));
+			RTC_StepActions.SetRunBefore(true);
 		}
 
 		public void btnAutoCorrupt_Click(object sender, EventArgs e)
@@ -69,6 +70,7 @@ namespace RTC
 				return;
 
 			this.AutoCorrupt = !this.AutoCorrupt;
+			RTC_StepActions.SetRunBefore(true);
 		}
 
 		private void RTC_Form_Load(object sender, EventArgs e)

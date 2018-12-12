@@ -9,9 +9,11 @@ namespace RTC
 {
 	public static class RTC_BlastTools
 	{
-		public static bool SaveBlastLayerToFile(BlastLayer bl, bool isQuickSave = false)
+		public static string LastBlastLayerSavePath { get; set; }
+
+		public static bool SaveBlastLayerToFile(BlastLayer bl, string path = null)
 		{
-			string filename = "";
+			string filename = path;
 
 			if (bl.Layer.Count == 0)
 			{
@@ -19,7 +21,7 @@ namespace RTC
 				return false;
 			}
 
-			if (!isQuickSave)
+			if (filename == null)
 			{
 				SaveFileDialog saveFileDialog1 = new SaveFileDialog();
 				saveFileDialog1.DefaultExt = "bl";
@@ -30,15 +32,10 @@ namespace RTC
 				if (saveFileDialog1.ShowDialog() == DialogResult.OK)
 				{
 					filename = saveFileDialog1.FileName;
-					//TODO
-					//	S.GET<RTC_BlastEditor_Form>().CurrentBlastLayerFile = saveFileDialog1.FileName;
 				}
 				else
 					return false;
 			}
-			//TODO
-			//else
-			//	filename = S.GET<RTC_BlastEditor_Form>().CurrentBlastLayerFile;
 
 			XmlSerializer xs = new XmlSerializer(typeof(BlastLayer));
 
@@ -46,6 +43,8 @@ namespace RTC
 			{
 				xs.Serialize(fs, bl);
 			}
+
+			LastBlastLayerSavePath = filename;
 			return true;
 		}
 
@@ -194,10 +193,7 @@ namespace RTC
 			sk.RunOriginal();
 			sk.BlastLayer.Apply();
 
-			foreach (BlastUnit bu in bl.Layer)
-			{
-				newBlastLayer.Layer.Add(bu.GetBackup());
-			}
+			newBlastLayer = bl.GetBackup();
 			return newBlastLayer;
 		}
 
@@ -207,7 +203,7 @@ namespace RTC
 			{
 				//Bake them
 				var token = RTC_NetCore.HugeOperationStart();
-				BlastLayer newLayer = (BlastLayer)RTC_Core.SendCommandToBizhawk(new RTC_Command(CommandType.REMOTE_KEY_GETBLASTBYTESETFROMLAYER)
+				BlastLayer newLayer = (BlastLayer)RTC_Core.SendCommandToBizhawk(new RTC_Command(CommandType.REMOTE_KEY_GETBAKEDLAYER)
 				{
 					blastlayer =  inputLayer,
 					stashkey = sk

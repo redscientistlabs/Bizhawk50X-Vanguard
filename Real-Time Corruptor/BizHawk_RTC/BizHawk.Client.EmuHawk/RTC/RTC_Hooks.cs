@@ -37,7 +37,7 @@ namespace RTC
 				return;
 
 			//Return out if it's being called from before the step and we're not on frame 0. If we're on frame 0, then we go as normal
-			if (isBeforeStep && CPU_STEP_Count != 0)
+			if (isBeforeStep && CPU_STEP_Count != 0 && RTC_StepActions.RunBefore == false)
 				return;
 
 			isNormalAdvance = !(isRewinding || isFastForwarding);
@@ -297,10 +297,12 @@ namespace RTC
 					return false;
 
 				case "Manual Blast":
+					RTC_StepActions.SetRunBefore(true);
 					RTC_Core.SendCommandToRTC(new RTC_Command(CommandType.REMOTE_HOTKEY_MANUALBLAST));
 					break;
 
 				case "Auto-Corrupt":
+					RTC_StepActions.SetRunBefore(true);
 					RTC_Core.SendCommandToRTC(new RTC_Command(CommandType.REMOTE_HOTKEY_AUTOCORRUPTTOGGLE));
 					break;
 
@@ -327,6 +329,7 @@ namespace RTC
 
 				case "GH Just Corrupt":
 					watch = System.Diagnostics.Stopwatch.StartNew();
+					RTC_StepActions.SetRunBefore(true);
 					RTC_Core.SendCommandToRTC(new RTC_Command(CommandType.REMOTE_HOTKEY_GHCORRUPT));
 					break;
 
@@ -349,6 +352,7 @@ namespace RTC
 					break;
 
 				case "Blast+RawStash":
+					RTC_StepActions.SetRunBefore(true);
 					RTC_Core.SendCommandToRTC(new RTC_Command(CommandType.REMOTE_HOTKEY_BLASTRAWSTASH));
 					break;
 

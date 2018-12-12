@@ -34,11 +34,15 @@ namespace RTC
 		/// <summary>
 		/// Don't set this manually
 		/// </summary>
-		public static int MaxInfiniteBlastUnits = 50;
+		public static int MaxInfiniteBlastUnits { get; set; } = 50;
 		/// <summary>
 		/// Don't set this manually
 		/// </summary>
-		public static bool LockExecution;
+		public static bool LockExecution { get; set; }
+		/// <summary>
+		/// Don't set this manually
+		/// </summary>
+		public static bool RunBefore { get; set; }
 
 		public static void ClearStepBlastUnits()
 		{
@@ -97,6 +101,11 @@ namespace RTC
 		{
 			RTC_StepActions.LockExecution = value;
 			RTC_Core.SendCommandToBizhawk(new RTC_Command(CommandType.REMOTE_SET_STEPACTIONS_LOCKEXECUTION) { objectValue = value });
+		}
+		public static void SetRunBefore(bool value)
+		{
+			RTC_StepActions.RunBefore = value;
+			RTC_Core.SendCommandToBizhawk(new RTC_Command(CommandType.REMOTE_SET_STEPACTIONS_RUNBEFORE) { objectValue = value });
 		}
 
 		public static BlastLayer GetRawBlastLayer()

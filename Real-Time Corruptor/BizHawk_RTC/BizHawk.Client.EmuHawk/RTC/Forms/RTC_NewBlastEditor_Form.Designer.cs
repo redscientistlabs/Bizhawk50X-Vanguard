@@ -120,10 +120,7 @@
             this.toolsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.sanitizeDuplicatesToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.rasterizeVMDsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.bakeBlastByteToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.openBlastLayerGeneratorToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.optionsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.usePaginationToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.bakeBlastunitsToVALUEToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             ((System.ComponentModel.ISupportInitialize)(this.dgvBlastEditor)).BeginInit();
             this.panelSidebar.SuspendLayout();
             this.panel1.SuspendLayout();
@@ -159,13 +156,14 @@
             this.dgvBlastEditor.Name = "dgvBlastEditor";
             this.dgvBlastEditor.RowHeadersVisible = false;
             this.dgvBlastEditor.RowHeadersWidthSizeMode = System.Windows.Forms.DataGridViewRowHeadersWidthSizeMode.AutoSizeToDisplayedHeaders;
-            this.dgvBlastEditor.RowTemplate.Height = 24;
             this.dgvBlastEditor.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
             this.dgvBlastEditor.Size = new System.Drawing.Size(662, 447);
             this.dgvBlastEditor.TabIndex = 0;
             // 
             // btnHideSidebar
             // 
+            this.btnHideSidebar.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.btnHideSidebar.AutoSize = true;
             this.btnHideSidebar.FlatStyle = System.Windows.Forms.FlatStyle.System;
             this.btnHideSidebar.Location = new System.Drawing.Point(790, -1);
@@ -533,6 +531,8 @@
             // 
             // cbFilterColumn
             // 
+            this.cbFilterColumn.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.cbFilterColumn.BackColor = System.Drawing.Color.White;
             this.cbFilterColumn.ForeColor = System.Drawing.Color.Black;
             this.cbFilterColumn.FormattingEnabled = true;
@@ -543,6 +543,8 @@
             // 
             // tbFilter
             // 
+            this.tbFilter.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.tbFilter.Location = new System.Drawing.Point(561, -1);
             this.tbFilter.Name = "tbFilter";
             this.tbFilter.Size = new System.Drawing.Size(100, 22);
@@ -1004,9 +1006,7 @@
             this.blastLayerToolStripMenuItem,
             this.saveStateToolStripMenuItem,
             this.rOMToolStripMenuItem,
-            this.toolsToolStripMenuItem,
-            this.openBlastLayerGeneratorToolStripMenuItem,
-            this.optionsToolStripMenuItem});
+            this.toolsToolStripMenuItem});
             this.menuStripEx1.Location = new System.Drawing.Point(0, 0);
             this.menuStripEx1.Name = "menuStripEx1";
             this.menuStripEx1.RenderMode = System.Windows.Forms.ToolStripRenderMode.Professional;
@@ -1033,30 +1033,35 @@
             this.loadFromFileblToolStripMenuItem.Name = "loadFromFileblToolStripMenuItem";
             this.loadFromFileblToolStripMenuItem.Size = new System.Drawing.Size(187, 22);
             this.loadFromFileblToolStripMenuItem.Text = "&Load From File (.bl)";
+            this.loadFromFileblToolStripMenuItem.Click += new System.EventHandler(this.loadFromFileblToolStripMenuItem_Click);
             // 
             // saveToFileblToolStripMenuItem
             // 
             this.saveToFileblToolStripMenuItem.Name = "saveToFileblToolStripMenuItem";
             this.saveToFileblToolStripMenuItem.Size = new System.Drawing.Size(187, 22);
             this.saveToFileblToolStripMenuItem.Text = "&Save to File (.bl)";
+            this.saveToFileblToolStripMenuItem.Click += new System.EventHandler(this.saveToFileblToolStripMenuItem_Click);
             // 
             // saveAsToFileblToolStripMenuItem
             // 
             this.saveAsToFileblToolStripMenuItem.Name = "saveAsToFileblToolStripMenuItem";
             this.saveAsToFileblToolStripMenuItem.Size = new System.Drawing.Size(187, 22);
             this.saveAsToFileblToolStripMenuItem.Text = "&Save As to File (.bl)";
+            this.saveAsToFileblToolStripMenuItem.Click += new System.EventHandler(this.saveAsToFileblToolStripMenuItem_Click);
             // 
             // importBlastlayerblToolStripMenuItem
             // 
             this.importBlastlayerblToolStripMenuItem.Name = "importBlastlayerblToolStripMenuItem";
             this.importBlastlayerblToolStripMenuItem.Size = new System.Drawing.Size(187, 22);
             this.importBlastlayerblToolStripMenuItem.Text = "&Import Blastlayer (.bl)";
+            this.importBlastlayerblToolStripMenuItem.Click += new System.EventHandler(this.importBlastlayerblToolStripMenuItem_Click);
             // 
             // exportToCSVToolStripMenuItem
             // 
             this.exportToCSVToolStripMenuItem.Name = "exportToCSVToolStripMenuItem";
             this.exportToCSVToolStripMenuItem.Size = new System.Drawing.Size(187, 22);
             this.exportToCSVToolStripMenuItem.Text = "&Export to CSV";
+            this.exportToCSVToolStripMenuItem.Click += new System.EventHandler(this.exportToCSVToolStripMenuItem_Click);
             // 
             // saveStateToolStripMenuItem
             // 
@@ -1075,24 +1080,28 @@
             this.runOriginalSavestateToolStripMenuItem.Name = "runOriginalSavestateToolStripMenuItem";
             this.runOriginalSavestateToolStripMenuItem.Size = new System.Drawing.Size(217, 22);
             this.runOriginalSavestateToolStripMenuItem.Text = "Run Original Savestate";
+            this.runOriginalSavestateToolStripMenuItem.Click += new System.EventHandler(this.runOriginalSavestateToolStripMenuItem_Click);
             // 
             // replaceSavestateFromGHToolStripMenuItem
             // 
             this.replaceSavestateFromGHToolStripMenuItem.Name = "replaceSavestateFromGHToolStripMenuItem";
             this.replaceSavestateFromGHToolStripMenuItem.Size = new System.Drawing.Size(217, 22);
             this.replaceSavestateFromGHToolStripMenuItem.Text = "Replace Savestate from GH";
+            this.replaceSavestateFromGHToolStripMenuItem.Click += new System.EventHandler(this.replaceSavestateFromGHToolStripMenuItem_Click);
             // 
             // replaceSavestateFromFileToolStripMenuItem
             // 
             this.replaceSavestateFromFileToolStripMenuItem.Name = "replaceSavestateFromFileToolStripMenuItem";
             this.replaceSavestateFromFileToolStripMenuItem.Size = new System.Drawing.Size(217, 22);
             this.replaceSavestateFromFileToolStripMenuItem.Text = "Replace Savestate from File";
+            this.replaceSavestateFromFileToolStripMenuItem.Click += new System.EventHandler(this.replaceSavestateFromFileToolStripMenuItem_Click);
             // 
             // saveSavestateToToolStripMenuItem
             // 
             this.saveSavestateToToolStripMenuItem.Name = "saveSavestateToToolStripMenuItem";
             this.saveSavestateToToolStripMenuItem.Size = new System.Drawing.Size(217, 22);
             this.saveSavestateToToolStripMenuItem.Text = "Save Savestate to";
+            this.saveSavestateToToolStripMenuItem.Click += new System.EventHandler(this.saveSavestateToToolStripMenuItem_Click);
             // 
             // rOMToolStripMenuItem
             // 
@@ -1111,31 +1120,35 @@
             this.runRomWithoutBlastlayerToolStripMenuItem.Name = "runRomWithoutBlastlayerToolStripMenuItem";
             this.runRomWithoutBlastlayerToolStripMenuItem.Size = new System.Drawing.Size(222, 22);
             this.runRomWithoutBlastlayerToolStripMenuItem.Text = "Run Rom Without Blastlayer";
+            this.runRomWithoutBlastlayerToolStripMenuItem.Click += new System.EventHandler(this.runRomWithoutBlastlayerToolStripMenuItem_Click);
             // 
             // replaceRomFromGHToolStripMenuItem
             // 
             this.replaceRomFromGHToolStripMenuItem.Name = "replaceRomFromGHToolStripMenuItem";
             this.replaceRomFromGHToolStripMenuItem.Size = new System.Drawing.Size(222, 22);
             this.replaceRomFromGHToolStripMenuItem.Text = "Replace Rom from GH";
+            this.replaceRomFromGHToolStripMenuItem.Click += new System.EventHandler(this.replaceRomFromGHToolStripMenuItem_Click);
             // 
             // replaceRomFromFileToolStripMenuItem
             // 
             this.replaceRomFromFileToolStripMenuItem.Name = "replaceRomFromFileToolStripMenuItem";
             this.replaceRomFromFileToolStripMenuItem.Size = new System.Drawing.Size(222, 22);
             this.replaceRomFromFileToolStripMenuItem.Text = "Replace Rom from File";
+            this.replaceRomFromFileToolStripMenuItem.Click += new System.EventHandler(this.replaceRomFromFileToolStripMenuItem_Click);
             // 
             // bakeROMBlastunitsToFileToolStripMenuItem
             // 
             this.bakeROMBlastunitsToFileToolStripMenuItem.Name = "bakeROMBlastunitsToFileToolStripMenuItem";
             this.bakeROMBlastunitsToFileToolStripMenuItem.Size = new System.Drawing.Size(222, 22);
             this.bakeROMBlastunitsToFileToolStripMenuItem.Text = "Bake ROM BlastBytes to File";
+            this.bakeROMBlastunitsToFileToolStripMenuItem.Click += new System.EventHandler(this.bakeROMBlastunitsToFileToolStripMenuItem_Click);
             // 
             // toolsToolStripMenuItem
             // 
             this.toolsToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.sanitizeDuplicatesToolStripMenuItem,
             this.rasterizeVMDsToolStripMenuItem,
-            this.bakeBlastByteToolStripMenuItem});
+            this.bakeBlastunitsToVALUEToolStripMenuItem});
             this.toolsToolStripMenuItem.Name = "toolsToolStripMenuItem";
             this.toolsToolStripMenuItem.Size = new System.Drawing.Size(48, 20);
             this.toolsToolStripMenuItem.Tag = "";
@@ -1144,40 +1157,23 @@
             // sanitizeDuplicatesToolStripMenuItem
             // 
             this.sanitizeDuplicatesToolStripMenuItem.Name = "sanitizeDuplicatesToolStripMenuItem";
-            this.sanitizeDuplicatesToolStripMenuItem.Size = new System.Drawing.Size(285, 22);
+            this.sanitizeDuplicatesToolStripMenuItem.Size = new System.Drawing.Size(252, 22);
             this.sanitizeDuplicatesToolStripMenuItem.Text = "Sanitize Duplicates";
+            this.sanitizeDuplicatesToolStripMenuItem.Click += new System.EventHandler(this.sanitizeDuplicatesToolStripMenuItem_Click);
             // 
             // rasterizeVMDsToolStripMenuItem
             // 
             this.rasterizeVMDsToolStripMenuItem.Name = "rasterizeVMDsToolStripMenuItem";
-            this.rasterizeVMDsToolStripMenuItem.Size = new System.Drawing.Size(285, 22);
+            this.rasterizeVMDsToolStripMenuItem.Size = new System.Drawing.Size(252, 22);
             this.rasterizeVMDsToolStripMenuItem.Text = "Rasterize VMDs";
+            this.rasterizeVMDsToolStripMenuItem.Click += new System.EventHandler(this.rasterizeVMDsToolStripMenuItem_Click);
             // 
-            // bakeBlastByteToolStripMenuItem
+            // bakeBlastunitsToVALUEToolStripMenuItem
             // 
-            this.bakeBlastByteToolStripMenuItem.Name = "bakeBlastByteToolStripMenuItem";
-            this.bakeBlastByteToolStripMenuItem.Size = new System.Drawing.Size(285, 22);
-            this.bakeBlastByteToolStripMenuItem.Text = "Bake Selected BlastUnits to BlastByte Set";
-            // 
-            // openBlastLayerGeneratorToolStripMenuItem
-            // 
-            this.openBlastLayerGeneratorToolStripMenuItem.Name = "openBlastLayerGeneratorToolStripMenuItem";
-            this.openBlastLayerGeneratorToolStripMenuItem.Size = new System.Drawing.Size(159, 20);
-            this.openBlastLayerGeneratorToolStripMenuItem.Text = "Open BlastLayer Generator";
-            // 
-            // optionsToolStripMenuItem
-            // 
-            this.optionsToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.usePaginationToolStripMenuItem});
-            this.optionsToolStripMenuItem.Name = "optionsToolStripMenuItem";
-            this.optionsToolStripMenuItem.Size = new System.Drawing.Size(61, 20);
-            this.optionsToolStripMenuItem.Text = "Options";
-            // 
-            // usePaginationToolStripMenuItem
-            // 
-            this.usePaginationToolStripMenuItem.Name = "usePaginationToolStripMenuItem";
-            this.usePaginationToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
-            this.usePaginationToolStripMenuItem.Text = "Use Pagination";
+            this.bakeBlastunitsToVALUEToolStripMenuItem.Name = "bakeBlastunitsToVALUEToolStripMenuItem";
+            this.bakeBlastunitsToVALUEToolStripMenuItem.Size = new System.Drawing.Size(252, 22);
+            this.bakeBlastunitsToVALUEToolStripMenuItem.Text = "Bake Selected Blastunits to VALUE";
+            this.bakeBlastunitsToVALUEToolStripMenuItem.Click += new System.EventHandler(this.bakeBlastunitsToVALUEToolStripMenuItem_Click);
             // 
             // RTC_NewBlastEditor_Form
             // 
@@ -1278,9 +1274,6 @@
 		private System.Windows.Forms.ToolStripMenuItem toolsToolStripMenuItem;
 		private System.Windows.Forms.ToolStripMenuItem sanitizeDuplicatesToolStripMenuItem;
 		private System.Windows.Forms.ToolStripMenuItem rasterizeVMDsToolStripMenuItem;
-		private System.Windows.Forms.ToolStripMenuItem bakeBlastByteToolStripMenuItem;
-		private System.Windows.Forms.ToolStripMenuItem openBlastLayerGeneratorToolStripMenuItem;
-		private System.Windows.Forms.ToolStripMenuItem optionsToolStripMenuItem;
 		private System.Windows.Forms.Panel panel3;
 		private System.Windows.Forms.Panel panel5;
 		private System.Windows.Forms.Label label2;
@@ -1326,6 +1319,6 @@
 		private NumericUpDownHexFix upDownExecuteFrame;
 		private System.Windows.Forms.CheckBox cbLoop;
 		private System.Windows.Forms.Button btnNote;
-		private System.Windows.Forms.ToolStripMenuItem usePaginationToolStripMenuItem;
+		private System.Windows.Forms.ToolStripMenuItem bakeBlastunitsToVALUEToolStripMenuItem;
 	}
 }

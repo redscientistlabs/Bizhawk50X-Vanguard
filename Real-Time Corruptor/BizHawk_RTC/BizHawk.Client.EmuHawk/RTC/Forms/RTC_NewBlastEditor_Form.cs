@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
 using System.Drawing;
+using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Text;
@@ -59,6 +60,7 @@ namespace RTC
 		private string mainDomain = RTC_MemoryDomains.MDRI?.MemoryDomains?.MainMemory?.ToString();
 		private string searchValue, searchColumn;
 		public List<String> VisibleColumns;
+		private string CurrentBlastLayerFile = "";
 
 		private int searchOffset = 0;
 		private IEnumerable<BlastUnit> searchEnumerable;
@@ -582,11 +584,13 @@ namespace RTC
 			return CreateColumn(String.Empty, columnName, displayName, column, fillWeight);
 		}
 
+		StashKey originalSK = null;
 		StashKey currentSK = null;
 		BindingSource bs = null;
 
 		public void LoadStashkey(StashKey sk)
 		{
+			originalSK = sk.Clone() as StashKey;
 			currentSK = sk.Clone() as StashKey;
 			RefreshDomains();
 
@@ -851,6 +855,318 @@ namespace RTC
 					}					
 				}
 				new RTC_NoteEditor_Form(temp, cellList);
+			}
+		}
+
+		private void sanitizeDuplicatesToolStripMenuItem_Click(object sender, EventArgs e)
+		{
+			List<BlastUnit> bul = new List<BlastUnit>(currentSK.BlastLayer.Layer.ToArray().Reverse());
+			List<long> usedAddresses = new List<long>();
+
+			foreach (BlastUnit bu in bul)
+			{
+				if (!usedAddresses.Contains(bu.Address) && !bu.IsLocked)
+					usedAddresses.Add(bu.Address);
+				else
+				{
+					currentSK.BlastLayer.Layer.Remove(bu);
+				}
+			}
+		}
+
+		private void rasterizeVMDsToolStripMenuItem_Click(object sender, EventArgs e)
+		{
+			foreach (BlastUnit bu in currentSK.BlastLayer.Layer)
+			{
+				bu.RasterizeVMDs();
+			}
+		}
+
+		private void runRomWithoutBlastlayerToolStripMenuItem_Click(object sender, EventArgs e)
+		{
+			currentSK.RunOriginal();
+		}
+
+		private void replaceRomFromGHToolStripMenuItem_Click(object sender, EventArgs e)
+		{
+
+			StashKey temp = RTC_StockpileManager.getCurrentSavestateStashkey();
+
+			if (temp == null)
+			{
+				MessageBox.Show("There is no savestate selected in the Glitch Harvester, or the current selected box is empty");
+				return;
+			}
+			currentSK.ParentKey = null;
+			currentSK.RomFilename = temp.RomFilename;
+			currentSK.RomData = temp.RomData;
+			currentSK.GameName = temp.GameName;
+			currentSK.SystemName = temp.SystemName;
+			currentSK.SystemDeepName = temp.SystemDeepName;
+			currentSK.SystemCore = temp.SystemCore;
+			currentSK.SyncSettings = temp.SyncSettings;
+		}
+
+		private void replaceRomFromFileToolStripMenuItem_Click(object sender, EventArgs e)
+		{
+
+			DialogResult dialogResult = MessageBox.Show("Loading this rom will invalidate the associated savestate. You'll need to set a new savestate for the Blastlayer. Continue?", "Invalidate State?", MessageBoxButtons.YesNo);
+			if (dialogResult == DialogResult.Yes)
+			{
+				string filename;
+				OpenFileDialog ofd = new OpenFileDialog
+				{
+					Title = "Open ROM File",
+					Filter = "any file|*.*",
+					RestoreDirectory = true
+				};
+				if (ofd.ShowDialog() == DialogResult.OK)
+				{
+					filename = ofd.FileName.ToString();
+				}
+				else
+					return;
+				RTC_Core.LoadRom(filename, true);
+
+				StashKey temp = new StashKey(RTC_Core.GetRandomKey(), currentSK.ParentKey, currentSK.BlastLayer);
+
+				// We have to null this as to properly create a stashkey, we need to use it in the constructor,
+				// but then the user needs to provide a savestate
+				currentSK.ParentKey = null;
+				
+				currentSK.RomFilename = temp.RomFilename;
+				currentSK.GameName = temp.GameName;
+				currentSK.SystemName = temp.SystemName;
+				currentSK.SystemDeepName = temp.SystemDeepName;
+				currentSK.SystemCore = temp.SystemCore;
+				currentSK.SyncSettings = temp.SyncSettings;
+			}
+		}
+
+		private void bakeROMBlastunitsToFileToolStripMenuItem_Click(object sender, EventArgs e)
+		{
+			//todo
+			throw new NotImplementedException();
+		}
+
+		private void runOriginalSavestateToolStripMenuItem_Click(object sender, EventArgs e)
+		{
+			originalSK.RunOriginal();
+		}
+
+		private void replaceSavestateFromGHToolStripMenuItem_Click(object sender, EventArgs e)
+		{
+
+			StashKey temp = RTC_StockpileManager.getCurrentSavestateStashkey();
+			if (temp == null)
+			{
+				MessageBox.Show("There is no savestate selected in the glitch harvester, or the current selected box is empty");
+				return;
+			}
+
+			//If the core doesn't match, abort
+			if (currentSK.SystemCore != temp.SystemCore)
+			{
+				MessageBox.Show("The core associated with the current ROM and the core associated with the selected savestate don't match. Aborting!");
+				return;
+			}
+
+			//If the game name differs, make sure they know what they're doing
+			//There are times it'd be fine with a differing name yet savestates would still work (romhacks)
+			if (currentSK.GameName != temp.GameName)
+			{
+				DialogResult dialogResult = MessageBox.Show(
+					"You're attempting to replace a savestate associated with " +
+					currentSK.GameName +
+					" with a savestate associated with " +
+					temp.GameName + ".\n" +
+					"This probably won't work unless you also update the ROM.\n" +
+					"Updating the ROM will invalidate the savestate, so if you're changing both ROM and state, do that first.\n\n" +
+					"Are you sure you want to continue?", "Game mismatch", MessageBoxButtons.YesNo);
+				if (dialogResult == DialogResult.No)
+				{
+					return;
+				}
+			}
+
+			//We only need the ParentKey and the SyncSettings here as everything else will match
+			currentSK.ParentKey = temp.ParentKey;
+			currentSK.SyncSettings = temp.SyncSettings;
+		}
+
+		private void replaceSavestateFromFileToolStripMenuItem_Click(object sender, EventArgs e)
+		{
+
+			string filename;
+
+			OpenFileDialog ofd = new OpenFileDialog
+			{
+				DefaultExt = "state",
+				Title = "Open Savestate File",
+				Filter = "state files|*.state",
+				RestoreDirectory = true
+			};
+			if (ofd.ShowDialog() == DialogResult.OK)
+			{
+				filename = ofd.FileName.ToString();
+			}
+			else
+				return;
+
+			string oldKey = currentSK.ParentKey;
+			string oldSS = currentSK.SyncSettings;
+
+			//Get a new key
+			currentSK.ParentKey = RTC_Core.GetRandomKey();
+			//Null the syncsettings out
+			currentSK.SyncSettings = null;
+
+			//Let's hope the game name is correct!
+			File.Copy(filename, currentSK.GetSavestateFullPath(), true);
+
+			//Attempt to load and if it fails, don't let them update it.
+			if (!RTC_StockpileManager.LoadState(currentSK))
+			{
+				currentSK.ParentKey = oldKey;
+				currentSK.SyncSettings = oldSS;
+				return;
+			}
+
+			//Grab the syncsettings
+			StashKey temp = new StashKey(RTC_Core.GetRandomKey(), currentSK.ParentKey, currentSK.BlastLayer);
+			currentSK.SyncSettings = temp.SyncSettings;
+		}
+
+		private void saveSavestateToToolStripMenuItem_Click(object sender, EventArgs e)
+		{
+
+			string filename;
+			SaveFileDialog ofd = new SaveFileDialog
+			{
+				DefaultExt = "state",
+				Title = "Save Savestate File",
+				Filter = "state files|*.state",
+				RestoreDirectory = true
+			};
+			if (ofd.ShowDialog() == DialogResult.OK)
+			{
+				filename = ofd.FileName.ToString();
+			}
+			else
+				return;
+
+			File.Copy(currentSK.GetSavestateFullPath(), filename, true);
+		}
+
+		private void loadFromFileblToolStripMenuItem_Click(object sender, EventArgs e)
+		{
+
+			BlastLayer temp = RTC_BlastTools.LoadBlastLayerFromFile();
+			if (temp != null)
+			{
+				currentSK.BlastLayer = temp;
+			}
+		}
+
+		private void saveToFileblToolStripMenuItem_Click(object sender, EventArgs e)
+		{
+			//If there's no blastlayer file already set, don't quicksave
+			if (CurrentBlastLayerFile == "")
+				RTC_BlastTools.SaveBlastLayerToFile(currentSK.BlastLayer);
+			else
+				RTC_BlastTools.SaveBlastLayerToFile(currentSK.BlastLayer, CurrentBlastLayerFile);
+
+			CurrentBlastLayerFile = RTC_BlastTools.LastBlastLayerSavePath;
+		}
+
+		private void saveAsToFileblToolStripMenuItem_Click(object sender, EventArgs e)
+		{
+			RTC_BlastTools.SaveBlastLayerToFile(currentSK.BlastLayer);
+			CurrentBlastLayerFile = RTC_BlastTools.LastBlastLayerSavePath;
+		}
+
+		private void importBlastlayerblToolStripMenuItem_Click(object sender, EventArgs e)
+		{
+			BlastLayer temp = RTC_BlastTools.LoadBlastLayerFromFile();
+			ImportBlastLayer(temp);
+		}
+
+		public void ImportBlastLayer(BlastLayer bl)
+		{
+			if (bl != null)
+			{
+				foreach (BlastUnit bu in bl.Layer)
+					currentSK.BlastLayer.Layer.Add(bu);
+			}
+		}
+
+		private void exportToCSVToolStripMenuItem_Click(object sender, EventArgs e)
+		{
+
+			string filename;
+
+			if (currentSK.BlastLayer.Layer.Count == 0)
+			{
+				MessageBox.Show("Can't save because the provided blastlayer is empty.");
+				return;
+			}
+
+			SaveFileDialog saveFileDialog1 = new SaveFileDialog();
+			saveFileDialog1.DefaultExt = "csv";
+			saveFileDialog1.Title = "Export to csv";
+			saveFileDialog1.Filter = "csv files|*.csv";
+			saveFileDialog1.RestoreDirectory = true;
+
+			if (saveFileDialog1.ShowDialog() == DialogResult.OK)
+			{
+				filename = saveFileDialog1.FileName;
+			}
+			else
+				return;
+			CSVGenerator csv = new CSVGenerator();
+			File.WriteAllText(filename, csv.GenerateFromDGV(dgvBlastEditor), Encoding.UTF8);
+		}
+
+		private void bakeBlastunitsToVALUEToolStripMenuItem_Click(object sender, EventArgs e)
+		{
+			var token = RTC_NetCore.HugeOperationStart("DISABLED");
+			try
+			{
+				//Generate a blastlayer from the current selected rows
+				BlastLayer bl = new BlastLayer();
+				foreach (DataGridViewRow selected in dgvBlastEditor.SelectedRows.Cast<DataGridViewRow>()
+					.Where((item => ((BlastUnit)item.DataBoundItem).IsLocked == false)))
+				{
+					BlastUnit bu = (BlastUnit)selected.DataBoundItem;
+					
+					//They have to be enabled to get a backup
+					bu.IsEnabled = true;
+					bl.Layer.Add(bu);
+				}
+
+				//Bake them
+				BlastLayer newBlastLayer = RTC_BlastTools.BakeBlastUnitsToSet(currentSK, bl);
+
+				int i = 0;
+				//Insert the new one where the old row was, then remove the old row.
+				foreach (DataGridViewRow selected in dgvBlastEditor.SelectedRows.Cast<DataGridViewRow>().Where(item =>
+					((bool)item.Cells["dgvBlastUnitLocked"].Value != true)))
+				{
+					currentSK.BlastLayer.Layer.Insert(selected.Index, newBlastLayer.Layer[i]);
+					i++;
+					currentSK.BlastLayer.Layer.Remove((BlastUnit)selected.DataBoundItem);
+				}
+			}
+			catch (Exception ex)
+			{
+				throw new System.Exception("Something went wrong in when baking to SET.\n" +
+				                           "Your blast editor session may be broke depending on when it failed.\n" +
+				                           "You should probably send a copy of this error and what you did to cause it to the RTC devs.\n\n" +
+				                           ex.ToString());
+			}
+			finally
+			{
+				RTC_NetCore.HugeOperationEnd(token);
 			}
 		}
 

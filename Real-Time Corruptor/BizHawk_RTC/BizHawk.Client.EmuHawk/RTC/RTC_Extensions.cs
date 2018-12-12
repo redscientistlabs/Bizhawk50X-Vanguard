@@ -227,7 +227,15 @@ namespace RTC
 			int j = 0;
 			for (var i = 0; i < precision*2; i+=2)
 			{
-				bytes[j] = (byte)Convert.ToUInt32(temp.Substring(i, 2), 16);
+				try
+				{
+					bytes[j] = (byte) Convert.ToUInt32(temp.Substring(i, 2), 16);
+				}
+				catch (FormatException e)
+				{
+					return null;
+				}
+				
 				j++;
 			}
 			return bytes;

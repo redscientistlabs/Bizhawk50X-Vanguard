@@ -351,7 +351,7 @@ namespace RTC
 					cmdBack = new RTC_Command(CommandType.RETURNVALUE);
 					cmdBack.objectValue = RTC_StockpileManager.getRawBlastlayer();
 					break;
-				case CommandType.REMOTE_KEY_GETBLASTBYTESETFROMLAYER:
+				case CommandType.REMOTE_KEY_GETBAKEDLAYER:
 				{
 					//We need a stashkey to load the game 
 					BlastLayer _bl = cmd.blastlayer;
@@ -510,6 +510,9 @@ namespace RTC
 					break;
 				case CommandType.REMOTE_SET_STEPACTIONS_LOCKEXECUTION:
 					RTC_StepActions.LockExecution = (bool)cmd.objectValue;
+					break;
+				case CommandType.REMOTE_SET_STEPACTIONS_RUNBEFORE:
+					RTC_StepActions.RunBefore = (bool)cmd.objectValue;
 					break;
 
 				case CommandType.REMOTE_SET_PIPE_LOCKPIPES:

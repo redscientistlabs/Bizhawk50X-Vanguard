@@ -989,7 +989,9 @@ namespace RTC
 			}
 			set
 			{
-				this.Value = value.GetByteArrayFromContentsPadLeft(this.Precision);
+				var temp = value.GetByteArrayFromContentsPadLeft(this.Precision);
+				if (temp != null)
+					this.Value = temp;
 			}
 		}
 
@@ -1184,9 +1186,9 @@ namespace RTC
 
 			try
 			{
-				MemoryDomainProxy mdp = RTC_MemoryDomains.GetProxy(Domain, Address);
+				MemoryInterface mi = RTC_MemoryDomains.GetInterface(Domain);
 
-				if (mdp == null)
+				if (mi == null)
 					return;
 
 				
@@ -1197,22 +1199,22 @@ namespace RTC
 					{
 						//If it's store, we need to use the sourceaddress and sourcedomain
 						if (Source == BlastUnitSource.STORE && RTC_Filtering.LimiterPeekBytes(SourceAddress,
-							    SourceAddress + Precision, SourceDomain, LimiterListHash, mdp))
+							    SourceAddress + Precision, SourceDomain, LimiterListHash, mi))
 							return;
 						//If it's VALUE, we need to use the address and domain
 						else if (Source == BlastUnitSource.VALUE && RTC_Filtering.LimiterPeekBytes(Address,
-							         Address + Precision, Domain, LimiterListHash, mdp))
+							         Address + Precision, Domain, LimiterListHash, mi))
 							return;
 					}
 					else
 					{
 						//If it's store, we need to use the sourceaddress and sourcedomain
 						if (Source == BlastUnitSource.STORE && !RTC_Filtering.LimiterPeekBytes(SourceAddress,
-							    SourceAddress + Precision, SourceDomain, LimiterListHash, mdp))
+							    SourceAddress + Precision, SourceDomain, LimiterListHash, mi))
 							return;
 						//If it's VALUE, we need to use the address and domain
 						else if (Source == BlastUnitSource.VALUE && !RTC_Filtering.LimiterPeekBytes(Address,
-							         Address + Precision, Domain, LimiterListHash, mdp))
+							         Address + Precision, Domain, LimiterListHash, mi))
 							return;
 					}
 				}
@@ -1231,7 +1233,7 @@ namespace RTC
 						//All the data is already handled by GetStoreBackup. We just take the first in the linkedlist and then remove it so the garbage collector can clean it up to prevent a memory leak
 						for (int i = 0; i < Precision; i++)
 						{
-							mdp.PokeByte(Address + i, Working.ApplyValue[i]);
+							mi.PokeByte(Address + i, Working.ApplyValue[i]);
 						}
 					}
 					break;
@@ -1240,15 +1242,15 @@ namespace RTC
 						//We only calculate it once for Backup and Value and then store it in ApplyValue
 						if (Working.ApplyValue == null)
 						{
-							Working.ApplyValue = RTC_Extensions.AddValueToByteArray(Value, TiltValue, mdp.BigEndian);
+							Working.ApplyValue = RTC_Extensions.AddValueToByteArray(Value, TiltValue, mi.BigEndian);
 
 							//Flip it back
-							if (mdp.BigEndian)
+							if (mi.BigEndian)
 								Working.ApplyValue.FlipBytes();
 						}
 						for (int i = 0; i < Precision; i++)
 						{
-							mdp.PokeByte(Address + i, Working.ApplyValue[i]);
+							mi.PokeByte(Address + i, Working.ApplyValue[i]);
 						}
 
 						break;
@@ -1268,29 +1270,20 @@ namespace RTC
 
 		public void StoreBackup()
 		{
-			MemoryDomainProxy mdp = RTC_MemoryDomains.GetProxy(SourceDomain, SourceAddress);
-			MemoryDomainProxy mdp2 = RTC_MemoryDomains.GetProxy(SourceDomain, SourceAddress);
+			MemoryDomainProxy mi = RTC_MemoryDomains.GetProxy(SourceDomain, SourceAddress);
 
-			if (mdp == null || mdp2 == null)
+			if (mi == null)
 				throw new Exception(
-					$"Memory Domain error, MD1 -> {mdp.ToString()}, md2 -> {mdp2.ToString()}");
+					$"Memory Domain error. Mi was null. If you know how to reproduce this, let the devs know");
 
 			Byte[] value = new byte[Precision];
 
 			for (int i = 0; i < Precision; i++)
 			{
-				long realSourceAddress = RTC_MemoryDomains.GetRealAddress(SourceDomain, SourceAddress) + i;
-				//Console.WriteLine("Storing realSourceAddress " + realSourceAddress + " from SourceAddress " + SourceAddress + " + " + i);
-				value[i] = mdp.PeekByte(realSourceAddress);
+				value[i] = mi.PeekByte(SourceAddress + i);
 			}
 
-			//if (mdp.BigEndian)
-			//	value.FlipBytes();
-
-			RTC_Extensions.AddValueToByteArray(value, TiltValue, mdp.BigEndian);
-
-			//if (mdp.BigEndian)
-			//	value.FlipBytes();
+			RTC_Extensions.AddValueToByteArray(value, TiltValue, mi.BigEndian);
 
 			Working.StoreData.Enqueue(value);
 		}
@@ -1302,21 +1295,20 @@ namespace RTC
 
 			try
 			{
-				MemoryDomainProxy mdp = RTC_MemoryDomains.GetProxy(Domain, Address);
-				long targetAddress = RTC_MemoryDomains.GetRealAddress(Domain, Address);
+				MemoryInterface mi = RTC_MemoryDomains.GetInterface(Domain);
 				
-				if (mdp == null)
+				
+				if (mi == null)
 					return null;
 
 				byte[] _value = new byte[Precision];
 
 				for (int i = 0; i < Precision; i++)
 				{
-					long _targetAddress = RTC_MemoryDomains.GetRealAddress(Domain, Address);
-					_value[i] = mdp.PeekByte(_targetAddress + i);
+					_value[i] = mi.PeekByte(Address + i);
 				}
 
-				return new BlastUnit(_value, Domain, targetAddress, Precision, BigEndian, 0, 1, Note, IsEnabled, IsLocked);
+				return new BlastUnit(_value, Domain, Address, Precision, BigEndian, 0, 1, Note, IsEnabled, IsLocked);
 
 			}
 			catch (Exception ex)
@@ -1332,6 +1324,7 @@ namespace RTC
 		public BlastUnit GetBackup()
 		{
 			//TODO
+			//There's a todo here but I didn't leave a note please help someone tell me why there's a todo here oh god I'm the only one working on this code 
 			return GetBakedUnit();
 		}
 
@@ -1374,8 +1367,8 @@ namespace RTC
 
 		public bool EnteringExecution()
 		{
-			MemoryDomainProxy mdp = RTC_MemoryDomains.GetProxy(Domain, Address);
-			if (mdp == null)
+			MemoryInterface mi = RTC_MemoryDomains.GetInterface(Domain);
+			if (mi == null)
 				return false;
 
 			if (Source == BlastUnitSource.STORE && StoreTime == ActionTime.PREEXECUTE)
@@ -1393,22 +1386,22 @@ namespace RTC
 				{
 					//If it's store, we need to use the sourceaddress and sourcedomain
 					if (Source == BlastUnitSource.STORE && RTC_Filtering.LimiterPeekBytes(SourceAddress,
-						    SourceAddress + Precision, SourceDomain, LimiterListHash, mdp))
+						    SourceAddress + Precision, SourceDomain, LimiterListHash, mi))
 						return false;
 					//If it's VALUE, we need to use the address and domain
 					else if (Source == BlastUnitSource.VALUE && RTC_Filtering.LimiterPeekBytes(Address,
-						         Address + Precision, Domain, LimiterListHash, mdp))
+						         Address + Precision, Domain, LimiterListHash, mi))
 						return false;
 				}
 				else
 				{
 					//If it's store, we need to use the sourceaddress and sourcedomain
 					if (Source == BlastUnitSource.STORE && !RTC_Filtering.LimiterPeekBytes(SourceAddress,
-						    SourceAddress + Precision, SourceDomain, LimiterListHash, mdp))
+						    SourceAddress + Precision, SourceDomain, LimiterListHash, mi))
 						return false;
 					//If it's VALUE, we need to use the address and domain
 					else if (Source == BlastUnitSource.VALUE && !RTC_Filtering.LimiterPeekBytes(Address,
-						         Address + Precision, Domain, LimiterListHash, mdp))
+						         Address + Precision, Domain, LimiterListHash, mi))
 						return false;
 				}
 			}
