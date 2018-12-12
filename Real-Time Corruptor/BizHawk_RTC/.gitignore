@@ -22,6 +22,7 @@ svnrev.cs
 /output/RTC/TEMP4/*
 !/output/*.bat
 !/output/AutoKillSwitch.exe
+!/output/defctrl.json
 
 **/Release/**
 **/Debug/**
