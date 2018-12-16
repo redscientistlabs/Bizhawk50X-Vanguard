@@ -39,6 +39,7 @@
             this.gbValueList = new System.Windows.Forms.GroupBox();
             this.cbValueList = new System.Windows.Forms.ComboBox();
             this.gbValueSource = new System.Windows.Forms.GroupBox();
+            this.bookmarksBranchesBox1 = new BizHawk.Client.EmuHawk.BookmarksBranchesBox();
             this.rbRange = new System.Windows.Forms.RadioButton();
             this.rbValueList = new System.Windows.Forms.RadioButton();
             this.rbRandom = new System.Windows.Forms.RadioButton();
@@ -48,6 +49,7 @@
             this.nmMaxValue = new RTC.NumericUpDownHexFix();
             this.nmMinValue = new RTC.NumericUpDownHexFix();
             this.gbLimiterList = new System.Windows.Forms.GroupBox();
+            this.cbLimiterInverted = new System.Windows.Forms.CheckBox();
             this.rbLimiterNone = new System.Windows.Forms.RadioButton();
             this.rbLimiterExecute = new System.Windows.Forms.RadioButton();
             this.label7 = new System.Windows.Forms.Label();
@@ -73,8 +75,6 @@
             this.rbStoreStep = new System.Windows.Forms.RadioButton();
             this.rbStoreOnce = new System.Windows.Forms.RadioButton();
             this.gbBackupSource = new System.Windows.Forms.GroupBox();
-            this.bookmarksBranchesBox1 = new BizHawk.Client.EmuHawk.BookmarksBranchesBox();
-            this.cbLimiterInverted = new System.Windows.Forms.CheckBox();
             ((System.ComponentModel.ISupportInitialize)(this.nmMaxInfinite)).BeginInit();
             this.gbUnitSource.SuspendLayout();
             this.gbValueList.SuspendLayout();
@@ -250,6 +250,18 @@
             this.gbValueSource.TabStop = false;
             this.gbValueSource.Text = "Value Source";
             // 
+            // bookmarksBranchesBox1
+            // 
+            this.bookmarksBranchesBox1.HoverInterval = 750;
+            this.bookmarksBranchesBox1.LoadedCallback = null;
+            this.bookmarksBranchesBox1.Location = new System.Drawing.Point(407, 18);
+            this.bookmarksBranchesBox1.Name = "bookmarksBranchesBox1";
+            this.bookmarksBranchesBox1.RemovedCallback = null;
+            this.bookmarksBranchesBox1.SavedCallback = null;
+            this.bookmarksBranchesBox1.Size = new System.Drawing.Size(204, 281);
+            this.bookmarksBranchesBox1.TabIndex = 181;
+            this.bookmarksBranchesBox1.Tastudio = null;
+            // 
             // rbRange
             // 
             this.rbRange.AutoSize = true;
@@ -376,6 +388,19 @@
             this.gbLimiterList.TabIndex = 181;
             this.gbLimiterList.TabStop = false;
             this.gbLimiterList.Text = "Limiter List";
+            // 
+            // cbLimiterInverted
+            // 
+            this.cbLimiterInverted.AutoSize = true;
+            this.cbLimiterInverted.Font = new System.Drawing.Font("Segoe UI", 8F);
+            this.cbLimiterInverted.ForeColor = System.Drawing.Color.White;
+            this.cbLimiterInverted.Location = new System.Drawing.Point(9, 42);
+            this.cbLimiterInverted.Name = "cbLimiterInverted";
+            this.cbLimiterInverted.Size = new System.Drawing.Size(68, 17);
+            this.cbLimiterInverted.TabIndex = 183;
+            this.cbLimiterInverted.Text = "Inverted";
+            this.cbLimiterInverted.UseVisualStyleBackColor = true;
+            this.cbLimiterInverted.CheckedChanged += new System.EventHandler(this.cbLimiterInverted_CheckedChanged);
             // 
             // rbLimiterNone
             // 
@@ -737,31 +762,6 @@
             this.gbBackupSource.TabIndex = 180;
             this.gbBackupSource.TabStop = false;
             this.gbBackupSource.Text = "Store Source";
-            // 
-            // bookmarksBranchesBox1
-            // 
-            this.bookmarksBranchesBox1.HoverInterval = 750;
-            this.bookmarksBranchesBox1.LoadedCallback = null;
-            this.bookmarksBranchesBox1.Location = new System.Drawing.Point(407, 18);
-            this.bookmarksBranchesBox1.Name = "bookmarksBranchesBox1";
-            this.bookmarksBranchesBox1.RemovedCallback = null;
-            this.bookmarksBranchesBox1.SavedCallback = null;
-            this.bookmarksBranchesBox1.Size = new System.Drawing.Size(204, 281);
-            this.bookmarksBranchesBox1.TabIndex = 181;
-            this.bookmarksBranchesBox1.Tastudio = null;
-            // 
-            // cbLimiterInverted
-            // 
-            this.cbLimiterInverted.AutoSize = true;
-            this.cbLimiterInverted.Font = new System.Drawing.Font("Segoe UI", 8F);
-            this.cbLimiterInverted.ForeColor = System.Drawing.Color.White;
-            this.cbLimiterInverted.Location = new System.Drawing.Point(9, 42);
-            this.cbLimiterInverted.Name = "cbLimiterInverted";
-            this.cbLimiterInverted.Size = new System.Drawing.Size(68, 17);
-            this.cbLimiterInverted.TabIndex = 183;
-            this.cbLimiterInverted.Text = "Inverted";
-            this.cbLimiterInverted.UseVisualStyleBackColor = true;
-            this.cbLimiterInverted.CheckedChanged += new System.EventHandler(this.cbLimiterInverted_CheckedChanged);
             // 
             // RTC_CustomEngineConfig_Form
             // 
