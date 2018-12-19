@@ -145,7 +145,7 @@ namespace RTC
 		private void dgvBlastEditor_CellClick(object sender, DataGridViewCellEventArgs e)
 		{
 			// Note handling
-			if (e != null)
+			if (e != null && e.RowIndex != -1)
 			{
 				if (e.ColumnIndex == dgvBlastEditor.Columns[buProperty.Note.ToString()]?.Index )
 				{
@@ -451,7 +451,9 @@ namespace RTC
 			dgvBlastEditor.Columns.Add(address);
 			
 			
-			dgvBlastEditor.Columns.Add(CreateColumn(buProperty.Precision.ToString(), buProperty.Precision.ToString(), "Precision", new DataGridViewNumericUpDownColumn()));
+			DataGridViewNumericUpDownColumn precision = (DataGridViewNumericUpDownColumn)CreateColumn(buProperty.Precision.ToString(), buProperty.Precision.ToString(), "Precision", new DataGridViewNumericUpDownColumn());
+			precision.Maximum = Int32.MaxValue;
+			dgvBlastEditor.Columns.Add(precision);
 
 			dgvBlastEditor.Columns.Add(CreateColumn(buProperty.ValueString.ToString(), buProperty.ValueString.ToString(), "Value", new DataGridViewTextBoxColumn()));
 
@@ -593,7 +595,7 @@ namespace RTC
 			currentSK = sk.Clone() as StashKey;
 			RefreshDomains();
 
-			bs = new BindingSource(currentSK.BlastLayer.Layer, "");
+			bs = new BindingSource {DataSource = currentSK.BlastLayer.Layer};
 		
 			dgvBlastEditor.DataSource = bs;
 			InitializeDGV();
@@ -657,17 +659,24 @@ namespace RTC
 			{
 				bu.IsEnabled = !bu.IsEnabled;
 			}
+			dgvBlastEditor.Refresh();
 		}
 
 		private void btnRemoveDisabled_Click(object sender, EventArgs e)
 		{
+			List<BlastUnit> buToRemove = new List<BlastUnit>();
 
 			foreach (BlastUnit bu in currentSK.BlastLayer.Layer.
 				Where(x => 
 				x.IsLocked == false &&
 				x.IsEnabled == false))
 			{
-				currentSK.BlastLayer.Layer.Remove(bu);
+				buToRemove.Add(bu);
+			}
+
+			foreach (BlastUnit bu in buToRemove)
+			{
+				bs.Remove(bu);
 			}
 		}
 
@@ -679,6 +688,7 @@ namespace RTC
 			{
 				bu.IsEnabled = false;
 			}
+			dgvBlastEditor.Refresh();
 		}
 
 		private void btnEnableEverything_Click(object sender, EventArgs e)
@@ -689,6 +699,7 @@ namespace RTC
 			{
 				bu.IsEnabled = true;
 			}
+			dgvBlastEditor.Refresh();
 		}
 
 		private void btnRemoveSelected_Click(object sender, EventArgs e)
@@ -696,7 +707,7 @@ namespace RTC
 			foreach(DataGridViewRow row in dgvBlastEditor.SelectedRows)
 			{
 				if ((row.DataBoundItem as BlastUnit).IsLocked == false)
-					currentSK.BlastLayer.Layer.Remove(row.DataBoundItem as BlastUnit);
+					bs.Remove(row.DataBoundItem as BlastUnit);
 			}
 		}
 
@@ -707,7 +718,7 @@ namespace RTC
 				if ((row.DataBoundItem as BlastUnit).IsLocked == false)
 				{
 					BlastUnit bu = ((row.DataBoundItem as BlastUnit).Clone() as BlastUnit);
-					currentSK.BlastLayer.Layer.Add(bu);
+					bs.Add(bu);
 				}
 			}
 		}

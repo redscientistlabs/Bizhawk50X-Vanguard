@@ -45,8 +45,6 @@
             this.gbValueRange = new System.Windows.Forms.GroupBox();
             this.label26 = new System.Windows.Forms.Label();
             this.label27 = new System.Windows.Forms.Label();
-            this.nmMaxValue = new RTC.NumericUpDownHexFix();
-            this.nmMinValue = new RTC.NumericUpDownHexFix();
             this.gbLimiterList = new System.Windows.Forms.GroupBox();
             this.cbLimiterInverted = new System.Windows.Forms.CheckBox();
             this.rbLimiterNone = new System.Windows.Forms.RadioButton();
@@ -74,13 +72,13 @@
             this.rbStoreStep = new System.Windows.Forms.RadioButton();
             this.rbStoreOnce = new System.Windows.Forms.RadioButton();
             this.gbBackupSource = new System.Windows.Forms.GroupBox();
+            this.nmMaxValue = new RTC.NumericUpDownHexFix();
+            this.nmMinValue = new RTC.NumericUpDownHexFix();
             ((System.ComponentModel.ISupportInitialize)(this.nmMaxInfinite)).BeginInit();
             this.gbUnitSource.SuspendLayout();
             this.gbValueList.SuspendLayout();
             this.gbValueSource.SuspendLayout();
             this.gbValueRange.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.nmMaxValue)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.nmMinValue)).BeginInit();
             this.gbLimiterList.SuspendLayout();
             this.gbStepSettings.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.nmTilt)).BeginInit();
@@ -90,6 +88,8 @@
             this.gbStoreTime.SuspendLayout();
             this.gbStoreType.SuspendLayout();
             this.gbBackupSource.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.nmMaxValue)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.nmMinValue)).BeginInit();
             this.SuspendLayout();
             // 
             // cbLockUnits
@@ -112,7 +112,7 @@
             this.btnClearActive.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnClearActive.Font = new System.Drawing.Font("Segoe UI", 8F);
             this.btnClearActive.ForeColor = System.Drawing.Color.Black;
-            this.btnClearActive.Location = new System.Drawing.Point(12, 303);
+            this.btnClearActive.Location = new System.Drawing.Point(12, 301);
             this.btnClearActive.Name = "btnClearActive";
             this.btnClearActive.Size = new System.Drawing.Size(123, 24);
             this.btnClearActive.TabIndex = 150;
@@ -323,37 +323,6 @@
             this.label27.TabIndex = 166;
             this.label27.Text = "Min Value";
             // 
-            // nmMaxValue
-            // 
-            this.nmMaxValue.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
-            this.nmMaxValue.Font = new System.Drawing.Font("Consolas", 8F);
-            this.nmMaxValue.ForeColor = System.Drawing.Color.White;
-            this.nmMaxValue.Hexadecimal = true;
-            this.nmMaxValue.Location = new System.Drawing.Point(67, 38);
-            this.nmMaxValue.Name = "nmMaxValue";
-            this.nmMaxValue.Size = new System.Drawing.Size(70, 20);
-            this.nmMaxValue.TabIndex = 168;
-            this.nmMaxValue.Tag = "color:dark";
-            this.nmMaxValue.Value = new decimal(new int[] {
-            255,
-            0,
-            0,
-            0});
-            this.nmMaxValue.ValueChanged += new System.EventHandler(this.nmMaxValue_ValueChanged);
-            // 
-            // nmMinValue
-            // 
-            this.nmMinValue.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
-            this.nmMinValue.Font = new System.Drawing.Font("Consolas", 8F);
-            this.nmMinValue.ForeColor = System.Drawing.Color.White;
-            this.nmMinValue.Hexadecimal = true;
-            this.nmMinValue.Location = new System.Drawing.Point(67, 13);
-            this.nmMinValue.Name = "nmMinValue";
-            this.nmMinValue.Size = new System.Drawing.Size(70, 20);
-            this.nmMinValue.TabIndex = 167;
-            this.nmMinValue.Tag = "color:dark";
-            this.nmMinValue.ValueChanged += new System.EventHandler(this.nmMinValue_ValueChanged);
-            // 
             // gbLimiterList
             // 
             this.gbLimiterList.Controls.Add(this.cbLimiterInverted);
@@ -367,7 +336,7 @@
             this.gbLimiterList.ForeColor = System.Drawing.Color.White;
             this.gbLimiterList.Location = new System.Drawing.Point(297, 182);
             this.gbLimiterList.Name = "gbLimiterList";
-            this.gbLimiterList.Size = new System.Drawing.Size(134, 145);
+            this.gbLimiterList.Size = new System.Drawing.Size(134, 143);
             this.gbLimiterList.TabIndex = 181;
             this.gbLimiterList.TabStop = false;
             this.gbLimiterList.Text = "Limiter List";
@@ -377,7 +346,7 @@
             this.cbLimiterInverted.AutoSize = true;
             this.cbLimiterInverted.Font = new System.Drawing.Font("Segoe UI", 8F);
             this.cbLimiterInverted.ForeColor = System.Drawing.Color.White;
-            this.cbLimiterInverted.Location = new System.Drawing.Point(9, 42);
+            this.cbLimiterInverted.Location = new System.Drawing.Point(9, 43);
             this.cbLimiterInverted.Name = "cbLimiterInverted";
             this.cbLimiterInverted.Size = new System.Drawing.Size(68, 17);
             this.cbLimiterInverted.TabIndex = 183;
@@ -391,7 +360,7 @@
             this.rbLimiterNone.Checked = true;
             this.rbLimiterNone.Font = new System.Drawing.Font("Segoe UI", 8F);
             this.rbLimiterNone.ForeColor = System.Drawing.Color.White;
-            this.rbLimiterNone.Location = new System.Drawing.Point(9, 78);
+            this.rbLimiterNone.Location = new System.Drawing.Point(9, 76);
             this.rbLimiterNone.Name = "rbLimiterNone";
             this.rbLimiterNone.Size = new System.Drawing.Size(53, 17);
             this.rbLimiterNone.TabIndex = 187;
@@ -405,7 +374,7 @@
             this.rbLimiterExecute.AutoSize = true;
             this.rbLimiterExecute.Font = new System.Drawing.Font("Segoe UI", 8F);
             this.rbLimiterExecute.ForeColor = System.Drawing.Color.White;
-            this.rbLimiterExecute.Location = new System.Drawing.Point(9, 125);
+            this.rbLimiterExecute.Location = new System.Drawing.Point(9, 123);
             this.rbLimiterExecute.Name = "rbLimiterExecute";
             this.rbLimiterExecute.Size = new System.Drawing.Size(64, 17);
             this.rbLimiterExecute.TabIndex = 186;
@@ -418,7 +387,7 @@
             this.label7.AutoSize = true;
             this.label7.Font = new System.Drawing.Font("Segoe UI", 8F);
             this.label7.ForeColor = System.Drawing.Color.White;
-            this.label7.Location = new System.Drawing.Point(6, 64);
+            this.label7.Location = new System.Drawing.Point(6, 62);
             this.label7.Name = "label7";
             this.label7.Size = new System.Drawing.Size(67, 13);
             this.label7.TabIndex = 185;
@@ -429,7 +398,7 @@
             this.rbLimiterFirstExecute.AutoSize = true;
             this.rbLimiterFirstExecute.Font = new System.Drawing.Font("Segoe UI", 8F);
             this.rbLimiterFirstExecute.ForeColor = System.Drawing.Color.White;
-            this.rbLimiterFirstExecute.Location = new System.Drawing.Point(9, 110);
+            this.rbLimiterFirstExecute.Location = new System.Drawing.Point(9, 108);
             this.rbLimiterFirstExecute.Name = "rbLimiterFirstExecute";
             this.rbLimiterFirstExecute.Size = new System.Drawing.Size(89, 17);
             this.rbLimiterFirstExecute.TabIndex = 184;
@@ -442,7 +411,7 @@
             this.rbLimiterGenerate.AutoSize = true;
             this.rbLimiterGenerate.Font = new System.Drawing.Font("Segoe UI", 8F);
             this.rbLimiterGenerate.ForeColor = System.Drawing.Color.White;
-            this.rbLimiterGenerate.Location = new System.Drawing.Point(9, 94);
+            this.rbLimiterGenerate.Location = new System.Drawing.Point(9, 92);
             this.rbLimiterGenerate.Name = "rbLimiterGenerate";
             this.rbLimiterGenerate.Size = new System.Drawing.Size(72, 17);
             this.rbLimiterGenerate.TabIndex = 183;
@@ -743,6 +712,37 @@
             this.gbBackupSource.TabStop = false;
             this.gbBackupSource.Text = "Store Source";
             // 
+            // nmMaxValue
+            // 
+            this.nmMaxValue.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
+            this.nmMaxValue.Font = new System.Drawing.Font("Consolas", 8F);
+            this.nmMaxValue.ForeColor = System.Drawing.Color.White;
+            this.nmMaxValue.Hexadecimal = true;
+            this.nmMaxValue.Location = new System.Drawing.Point(67, 38);
+            this.nmMaxValue.Name = "nmMaxValue";
+            this.nmMaxValue.Size = new System.Drawing.Size(70, 20);
+            this.nmMaxValue.TabIndex = 168;
+            this.nmMaxValue.Tag = "color:dark";
+            this.nmMaxValue.Value = new decimal(new int[] {
+            255,
+            0,
+            0,
+            0});
+            this.nmMaxValue.ValueChanged += new System.EventHandler(this.nmMaxValue_ValueChanged);
+            // 
+            // nmMinValue
+            // 
+            this.nmMinValue.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
+            this.nmMinValue.Font = new System.Drawing.Font("Consolas", 8F);
+            this.nmMinValue.ForeColor = System.Drawing.Color.White;
+            this.nmMinValue.Hexadecimal = true;
+            this.nmMinValue.Location = new System.Drawing.Point(67, 13);
+            this.nmMinValue.Name = "nmMinValue";
+            this.nmMinValue.Size = new System.Drawing.Size(70, 20);
+            this.nmMinValue.TabIndex = 167;
+            this.nmMinValue.Tag = "color:dark";
+            this.nmMinValue.ValueChanged += new System.EventHandler(this.nmMinValue_ValueChanged);
+            // 
             // RTC_CustomEngineConfig_Form
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -772,8 +772,6 @@
             this.gbValueSource.PerformLayout();
             this.gbValueRange.ResumeLayout(false);
             this.gbValueRange.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.nmMaxValue)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.nmMinValue)).EndInit();
             this.gbLimiterList.ResumeLayout(false);
             this.gbLimiterList.PerformLayout();
             this.gbStepSettings.ResumeLayout(false);
@@ -789,6 +787,8 @@
             this.gbStoreType.PerformLayout();
             this.gbBackupSource.ResumeLayout(false);
             this.gbBackupSource.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.nmMaxValue)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.nmMinValue)).EndInit();
             this.ResumeLayout(false);
 
 		}
