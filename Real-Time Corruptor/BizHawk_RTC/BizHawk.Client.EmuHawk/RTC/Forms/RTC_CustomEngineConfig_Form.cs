@@ -20,16 +20,23 @@ namespace RTC
 		public RTC_CustomEngineConfig_Form()
 		{
 			InitializeComponent();
-
-			//Do this here as if it's stuck into the designer, it keeps defaulting out
-			cbValueList.DataSource = RTC_Core.ValueListBindingSource;
-			cbLimiterList.DataSource = RTC_Core.LimiterListBindingSource;
-
 		}
 
 
 		private void RTC_CustomEngineConfig_Form_Load(object sender, EventArgs e)
 		{
+
+
+			cbValueList.DisplayMember = "Text";
+			cbLimiterList.DisplayMember = "Text";
+
+			cbValueList.ValueMember = "Value";
+			cbLimiterList.ValueMember = "Value";
+
+			//Do this here as if it's stuck into the designer, it keeps defaulting out
+			cbValueList.DataSource = RTC_Core.ValueListBindingSource;
+			cbLimiterList.DataSource = RTC_Core.LimiterListBindingSource;
+	
 			if (RTC_Core.ValueListBindingSource.Count > 0)
 			{
 				cbValueList_SelectedIndexChanged(cbValueList, null);

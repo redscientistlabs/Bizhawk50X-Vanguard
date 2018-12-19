@@ -64,7 +64,7 @@ namespace RTC
 						{
 							case CustomValueSource.VALUELIST:
 							{
-								value = RTC_Filtering.GetRandomConstant(ValueListHash);
+								value = RTC_Filtering.GetRandomConstant(ValueListHash, precision);
 							}
 							break;
 
@@ -128,13 +128,14 @@ namespace RTC
 					}
 					break;
 				}
+				//Precision has to be before Value
+				bu.Precision = precision;
 				bu.Value = value;
 				bu.Address = safeAddress;
 				bu.Domain = domain;
 				bu.Source = Source;
 				bu.ExecuteFrame = Delay;
 				bu.Lifetime = Lifetime;
-				bu.Precision = precision;
 				bu.LimiterTime = LimiterTime;
 				bu.Loop = Loop;
 				bu.InvertLimiter = LimiterInverted;

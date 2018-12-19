@@ -218,8 +218,6 @@
             // cbValueList
             // 
             this.cbValueList.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
-            this.cbValueList.DataSource = ((object)(resources.GetObject("cbValueList.DataSource")));
-            this.cbValueList.DisplayMember = "Text";
             this.cbValueList.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.cbValueList.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.cbValueList.Font = new System.Drawing.Font("Segoe UI", 8F);
@@ -230,7 +228,6 @@
             this.cbValueList.Size = new System.Drawing.Size(115, 21);
             this.cbValueList.TabIndex = 87;
             this.cbValueList.Tag = "color:dark";
-            this.cbValueList.ValueMember = "Value";
             this.cbValueList.SelectedIndexChanged += new System.EventHandler(this.cbValueList_SelectedIndexChanged);
             // 
             // gbValueSource
@@ -470,9 +467,7 @@
             // cbLimiterList
             // 
             this.cbLimiterList.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
-            this.cbLimiterList.DataSource = ((object)(resources.GetObject("cbLimiterList.DataSource")));
-            this.cbLimiterList.DisplayMember = "Text";
-            this.cbLimiterList.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+			this.cbLimiterList.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.cbLimiterList.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.cbLimiterList.Font = new System.Drawing.Font("Segoe UI", 8F);
             this.cbLimiterList.ForeColor = System.Drawing.Color.White;
@@ -482,7 +477,6 @@
             this.cbLimiterList.Size = new System.Drawing.Size(115, 21);
             this.cbLimiterList.TabIndex = 87;
             this.cbLimiterList.Tag = "color:dark";
-            this.cbLimiterList.ValueMember = "Value";
             this.cbLimiterList.SelectedIndexChanged += new System.EventHandler(this.cbLimiterList_SelectedIndexChanged);
             // 
             // cbClearRewind

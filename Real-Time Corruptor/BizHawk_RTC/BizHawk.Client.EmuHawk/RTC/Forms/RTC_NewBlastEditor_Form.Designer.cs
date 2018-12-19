@@ -162,8 +162,7 @@
             // 
             // btnHideSidebar
             // 
-            this.btnHideSidebar.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
+            this.btnHideSidebar.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.btnHideSidebar.AutoSize = true;
             this.btnHideSidebar.FlatStyle = System.Windows.Forms.FlatStyle.System;
             this.btnHideSidebar.Location = new System.Drawing.Point(790, -1);
@@ -543,12 +542,11 @@
             // 
             // cbFilterColumn
             // 
-            this.cbFilterColumn.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
+            this.cbFilterColumn.Anchor = System.Windows.Forms.AnchorStyles.Right;
             this.cbFilterColumn.BackColor = System.Drawing.Color.White;
             this.cbFilterColumn.ForeColor = System.Drawing.Color.Black;
             this.cbFilterColumn.FormattingEnabled = true;
-            this.cbFilterColumn.Location = new System.Drawing.Point(460, -1);
+            this.cbFilterColumn.Location = new System.Drawing.Point(461, -1);
             this.cbFilterColumn.Name = "cbFilterColumn";
             this.cbFilterColumn.Size = new System.Drawing.Size(100, 21);
             this.cbFilterColumn.TabIndex = 149;
@@ -557,7 +555,7 @@
             // 
             this.tbFilter.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.tbFilter.Location = new System.Drawing.Point(561, -1);
+            this.tbFilter.Location = new System.Drawing.Point(562, -1);
             this.tbFilter.Name = "tbFilter";
             this.tbFilter.Size = new System.Drawing.Size(100, 22);
             this.tbFilter.TabIndex = 7;

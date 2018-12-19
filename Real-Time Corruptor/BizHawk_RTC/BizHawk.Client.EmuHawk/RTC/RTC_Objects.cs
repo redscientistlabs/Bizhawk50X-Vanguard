@@ -25,6 +25,7 @@ namespace RTC
 		public string Filename = null;
 		public string ShortFilename;
 		public string RtcVersion;
+		public bool MissingLimiter;
 
 		public Stockpile(DataGridView dgvStockpile)
 		{
@@ -164,6 +165,15 @@ namespace RTC
 				sk.StateLocation = StashKeySavestateLocation.SKS;
 			}
 
+			//Get all the limiter lists
+			List<string[]> limiterLists = RTC_Filtering.GetAllLimiterListsFromStockpile(sks);
+
+			//Write them to a file
+			for (int i = 0; i < limiterLists.Count; i++)
+			{
+				File.WriteAllLines(RTC_Core.workingDir + "\\TEMP\\" + i + ".limiter", limiterLists[i]);
+			}
+
 			//creater stockpile.xml to temp folder from stockpile object
 			using (FileStream fs = File.Open(RTC_Core.workingDir + "\\TEMP\\stockpile.xml", FileMode.OpenOrCreate))
 			{
@@ -240,13 +250,18 @@ namespace RTC
 					sks = (Stockpile)xs.Deserialize(fs);
 					fs.Close();
 				}
+
 			}
-			catch
+			catch(Exception e)
 			{
-				MessageBox.Show("The Stockpile file could not be loaded");
+				MessageBox.Show("The Stockpile file could not be loaded" + e);
 				RTC_NetCore.HugeOperationEnd(token);
 				return false;
 			}
+			
+			//Load the limiter lists into the dictionary
+			RTC_Filtering.LoadListsFromPaths(Directory.GetFiles(RTC_Core.workingDir + "\\SKS\\", "*.limiter"));
+
 
 			RTC_StockpileManager.currentStockpile = sks;
 
@@ -268,6 +283,10 @@ namespace RTC
 			sks.Filename = Filename;
 
 			CheckCompatibility(sks);
+
+			if (sks.MissingLimiter)
+				MessageBox.Show(
+					"This stockpile is missing a limiter list used by some blastunits. Some corruptions probably won't work properly.\nIf the limiter list is found next time you save, it'll automatically be packed in.");
 
 			RTC_NetCore.HugeOperationEnd(token);
 
@@ -1108,11 +1127,12 @@ namespace RTC
 			string note = null, bool isEnabled = true, bool isLocked = false)
 		{
 			Source = BlastUnitSource.VALUE;
+			//Precision has to be set before value
+			Precision = precision;
 			Value = value;
 
 			Domain = domain;
 			Address = address;
-			Precision = precision;
 			ExecuteFrame = executeFrame;
 			Lifetime = lifetime;
 			Note = note;

@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Security.Cryptography;
+using System.Windows.Forms;
+
 namespace RTC
 {
 	public static class RTC_Filtering
@@ -11,21 +13,20 @@ namespace RTC
 		public static SerializableDico<string, String[]> Hash2LimiterDico = new SerializableDico<string, string[]>();
 		public static SerializableDico<string, String[]> Hash2ValueDico = new SerializableDico<string, string[]>();
 
-		
 		public static List<string> LoadListsFromPaths(string[] paths)
 		{
 			List<string> md5s = new List<string>();
 
-			foreach(string path in paths)
+			foreach (string path in paths)
 			{
-				md5s.Add(LoadListFromPath(path));
+				md5s.Add(loadListFromPath(path));
 			}
-			RTC_Core.SendCommandToBizhawk(new RTC_Command(CommandType.REMOTE_SET_CUSTOM_RANGE_MINVALUE) { objectValue = new object[] { RTC_Filtering.Hash2LimiterDico, RTC_Filtering.Hash2ValueDico } });
+			RTC_Core.SendCommandToBizhawk(new RTC_Command(CommandType.REMOTE_UPDATE_FILTERING_DICTIONARIES) { objectValue = new object[] { RTC_Filtering.Hash2LimiterDico, RTC_Filtering.Hash2ValueDico } });
 			return md5s;
 		}
 
 		//This is private as it won't update the netcore. The netcore call is in LoadListsFromPaths. Use that
-		private static string LoadListFromPath(string path)
+		private static string loadListFromPath(string path)
 		{
 			string[] temp = File.ReadAllLines(path);
 			bool flipBytes = path.StartsWith("_");
@@ -46,6 +47,15 @@ namespace RTC
 			return RegisterList(temp);
 		}
 
+
+
+		private static byte[] StringToByteArray(string hex)
+		{
+			return Enumerable.Range(0, hex.Length)
+				.Where(x => x % 2 == 0)
+				.Select(x => Convert.ToByte(hex.Substring(x, 2), 16))
+				.ToArray();
+		}
 		private static string RegisterList(String[] list)
 		{
 			//Make one giant string to hash
@@ -97,22 +107,48 @@ namespace RTC
 		}
 
 
-		public static byte[] GetRandomConstant(string hash)
+		public static byte[] GetRandomConstant(string hash, int precision)
 		{
 			if (!Hash2ValueDico.ContainsKey(hash))
 			{
 				return null;
 			}
-
-			return StringToByteArray(Hash2ValueDico[hash][RTC_Core.RND.Next(Hash2ValueDico[hash].Length)]);
+			return RTC_Extensions.GetByteArrayFromContentsPadLeft(Hash2ValueDico[hash][RTC_Core.RND.Next(Hash2ValueDico[hash].Length)], precision);
 		}
 
-		private static byte[] StringToByteArray(string hex)
+		public static List<String[]> GetAllLimiterListsFromStockpile(Stockpile sks)
 		{
-			return Enumerable.Range(0, hex.Length)
-							 .Where(x => x % 2 == 0)
-							 .Select(x => Convert.ToByte(hex.Substring(x, 2), 16))
-							 .ToArray();
+			sks.MissingLimiter = false;
+			List<String> hashList = new List<string>();
+			List<String[]> returnList = new List<String[]>();
+
+			foreach (StashKey sk in sks.StashKeys)
+			{
+				foreach (BlastUnit bu in sk.BlastLayer.Layer)
+				{
+					if (!hashList.Contains(bu.LimiterListHash))
+						hashList.Add(bu.LimiterListHash);
+				}
+			}
+
+			foreach (var s in hashList)
+			{
+				if(Hash2LimiterDico.ContainsKey(s))
+					returnList.Add(Hash2LimiterDico[s]);
+				else
+				{
+					DialogResult dr = MessageBox.Show("Couldn't find Limiter List " + s +
+						" If you continue saving, any blastunit using this list will ignore the limiter on playback if the list still cannot be found.\nDo you want to continue?", "Couldn't Find Limiter List",
+						MessageBoxButtons.YesNo);
+
+					if (dr == DialogResult.No)
+						return null;
+
+					sks.MissingLimiter = true;
+				}
+			}
+
+			return returnList;
 		}
 	}
 }

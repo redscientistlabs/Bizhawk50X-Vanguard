@@ -49,6 +49,13 @@ namespace RTC
 			cbVectorValueList.DataSource = RTC_Core.ValueListBindingSource;
 			cbVectorLimiterList.DataSource = RTC_Core.LimiterListBindingSource;
 
+
+			cbVectorValueList.DisplayMember = "Text";
+			cbVectorLimiterList.DisplayMember = "Text";
+
+			cbVectorValueList.ValueMember = "Value";
+			cbVectorLimiterList.ValueMember = "Value";
+
 			if (RTC_Core.LimiterListBindingSource.Count > 0)
 			{
 				cbVectorLimiterList_SelectedIndexChanged(cbVectorLimiterList, null);

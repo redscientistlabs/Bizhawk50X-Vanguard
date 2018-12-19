@@ -351,7 +351,6 @@ namespace RTC
 				upDownSourceAddress.Value = (long)(lastRow.Cells[buProperty.SourceAddress.ToString()].Value);
 
 				tbTiltValue.Text = (lastRow.DataBoundItem as BlastUnit).TiltValue.ToString();
-
 			}
 		}
 

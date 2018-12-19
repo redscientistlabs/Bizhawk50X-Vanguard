@@ -27,7 +27,7 @@ namespace RTC
 			{
 				//Enforce the safeaddress at generation
 				if (RTC_Filtering.LimiterPeekBytes(safeAddress, safeAddress + 4, domain, LimiterListHash, mdp))
-					return new BlastUnit(RTC_Filtering.GetRandomConstant(ValueListHash), domain, safeAddress, 4, mdp.BigEndian);
+					return new BlastUnit(RTC_Filtering.GetRandomConstant(ValueListHash, 4), domain, safeAddress, 4, mdp.BigEndian);
 				return null;
 			}
 			catch (Exception ex)
