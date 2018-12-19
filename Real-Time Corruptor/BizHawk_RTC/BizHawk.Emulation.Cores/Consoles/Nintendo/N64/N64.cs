@@ -252,10 +252,7 @@ namespace BizHawk.Emulation.Cores.Nintendo.N64
 
 			}
 
-			//RTC_HIJACK. If it's crashed, don't try and advance any more. 
-			if (!crashed && !api.frame_advance())
-				crashed = true;
-
+			api.frame_advance();
 
 			if (IsLagFrame)
 			{

@@ -746,9 +746,11 @@ namespace BizHawk.Emulation.Cores.Nintendo.N64.NativeApi
 
 		private BreakParams _breakparams;
 
-		//RTC_HIJACK - Make this a bool so we can return false if it's crashed
-		public bool frame_advance()
+		public void frame_advance()
 		{
+			if (!emulator_running)
+				return;
+
 			event_frameend = false;
 			m64pCoreDoCommandPtr(m64p_command.M64CMD_ADVANCE_FRAME, 0, IntPtr.Zero);
 
@@ -767,11 +769,7 @@ namespace BizHawk.Emulation.Cores.Nintendo.N64.NativeApi
 
 			for(;;)
 			{
-				//RTC_Hijack. Return false if it's crashed
-				if (!BizHawk.Common.Win32ThreadHacks.HackyPinvokeWaitOne(m64pEvent))
-				{
-					return false;
-				}
+				BizHawk.Common.Win32ThreadHacks.HackyPinvokeWaitOne(m64pEvent, 200);
 				if (event_frameend)
 					break;
 				if (event_breakpoint)
@@ -791,11 +789,15 @@ namespace BizHawk.Emulation.Cores.Nintendo.N64.NativeApi
 
 					event_breakpoint = false;
 					Resume();
+					continue;
 				}
+				//no event.. must be a timeout
+				//check if the core crashed and bail if it did
+				//otherwise wait longer (could be inside slow emulation or lua logic)
+				if (!emulator_running)
+					break;
 			}
-			//RTC_HIJACK Always return something
-			return true;
-		}//Hijack_End
+		}
 
 		public void OnBreakpoint(BreakParams breakparams)
 		{
@@ -1016,6 +1018,8 @@ namespace BizHawk.Emulation.Cores.Nintendo.N64.NativeApi
 			return plugin.dllHandle;
 		}
 
+		//RTC_Hijack - Add this attribute
+		[System.Runtime.ExceptionServices.HandleProcessCorruptedStateExceptionsAttribute()]
 		public void DetachPlugin(m64p_plugin_type type)
 		{
 			AttachedPlugin plugin;
@@ -1024,7 +1028,21 @@ namespace BizHawk.Emulation.Cores.Nintendo.N64.NativeApi
 				plugins.Remove(type);
 				m64pCoreDetachPlugin(type);
 				plugin.dllShutdown();
-				FreeLibrary(plugin.dllHandle);
+				//RTC_Hijack try-catch to see if we can escape
+				try
+				{
+					FreeLibrary(plugin.dllHandle);
+				}
+				catch (Exception ex)
+				{
+					Console.WriteLine("RTC Hijack: Mupen sad during FreeLibrary(plugin.dllHandle)  :(" + ex.ToString());
+					if (AttachedCore != null)
+					{
+						AttachedCore.Dispose();
+						AttachedCore = null;
+					}
+				}//Hijack_End
+
 			}
 		}
 

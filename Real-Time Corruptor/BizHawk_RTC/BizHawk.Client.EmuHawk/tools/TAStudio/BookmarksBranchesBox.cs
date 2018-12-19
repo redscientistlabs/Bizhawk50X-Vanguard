@@ -17,8 +17,7 @@ namespace BizHawk.Client.EmuHawk
 		private const string UserTextColumnName = "TextColumn";
 
 		private readonly ScreenshotForm Screenshot = new ScreenshotForm();
-		//RTC_Hijack make this nullable so it shuts up from throwing random exceptions
-		private TasMovie Movie => Tastudio?.CurrentTasMovie;
+		private TasMovie Movie => Tastudio.CurrentTasMovie;
 		private TasBranch _backupBranch;
 		private BranchUndo _branchUndo = BranchUndo.None;
 		private int LongestBranchText = 0;

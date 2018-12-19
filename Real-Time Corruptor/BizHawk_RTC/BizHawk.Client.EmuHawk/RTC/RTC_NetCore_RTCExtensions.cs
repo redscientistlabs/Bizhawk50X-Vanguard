@@ -583,8 +583,8 @@ namespace RTC
 
 				case CommandType.REMOTE_UPDATE_FILTERING_DICTIONARIES:
 					{
-						RTC_Filtering.Hash2LimiterDico = (SerializableDico<string, String[]>)(cmd.objectValue as object[])[0];
-						RTC_Filtering.Hash2ValueDico = (SerializableDico<string, String[]>)(cmd.objectValue as object[])[1];
+						RTC_Filtering.Hash2LimiterDico = (Dictionary<string, String[]>)(cmd.objectValue as object[])[0];
+						RTC_Filtering.Hash2ValueDico = (Dictionary<string, String[]>)(cmd.objectValue as object[])[1];
 						break;
 					}
 				case CommandType.REMOTE_SET_CUSTOM_RANGE_MAXVALUE:

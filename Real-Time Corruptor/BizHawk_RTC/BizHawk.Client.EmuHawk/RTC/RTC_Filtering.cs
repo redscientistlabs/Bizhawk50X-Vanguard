@@ -10,8 +10,8 @@ namespace RTC
 	public static class RTC_Filtering
 	{
 
-		public static SerializableDico<string, String[]> Hash2LimiterDico = new SerializableDico<string, string[]>();
-		public static SerializableDico<string, String[]> Hash2ValueDico = new SerializableDico<string, string[]>();
+		public static Dictionary<string, String[]> Hash2LimiterDico = new Dictionary<string, string[]>();
+		public static Dictionary<string, String[]> Hash2ValueDico = new Dictionary<string, string[]>();
 
 		public static List<string> LoadListsFromPaths(string[] paths)
 		{

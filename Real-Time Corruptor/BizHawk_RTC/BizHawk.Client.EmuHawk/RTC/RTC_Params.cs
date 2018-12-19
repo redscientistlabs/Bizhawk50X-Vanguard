@@ -76,8 +76,8 @@ namespace RTC
 			new Ref(() => RTC_CustomEngine.ValueSource,     x => { RTC_CustomEngine.ValueSource     = (CustomValueSource)x; }),
 			
 
-			new Ref(() => RTC_Filtering.Hash2LimiterDico,   x => { RTC_Filtering.Hash2LimiterDico   = (SerializableDico<string, string[]>)x; }),
-			new Ref(() => RTC_Filtering.Hash2ValueDico,     x => { RTC_Filtering.Hash2ValueDico     = (SerializableDico<string, string[]>)x; }),
+			new Ref(() => RTC_Filtering.Hash2LimiterDico,   x => { RTC_Filtering.Hash2LimiterDico   = (Dictionary<string, string[]>)x; }),
+			new Ref(() => RTC_Filtering.Hash2ValueDico,     x => { RTC_Filtering.Hash2ValueDico     = (Dictionary<string, string[]>)x; }),
 
 
 
