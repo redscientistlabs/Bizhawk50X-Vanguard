@@ -39,7 +39,6 @@
             this.gbValueList = new System.Windows.Forms.GroupBox();
             this.cbValueList = new System.Windows.Forms.ComboBox();
             this.gbValueSource = new System.Windows.Forms.GroupBox();
-            this.bookmarksBranchesBox1 = new BizHawk.Client.EmuHawk.BookmarksBranchesBox();
             this.rbRange = new System.Windows.Forms.RadioButton();
             this.rbValueList = new System.Windows.Forms.RadioButton();
             this.rbRandom = new System.Windows.Forms.RadioButton();
@@ -232,7 +231,6 @@
             // 
             // gbValueSource
             // 
-            this.gbValueSource.Controls.Add(this.bookmarksBranchesBox1);
             this.gbValueSource.Controls.Add(this.rbRange);
             this.gbValueSource.Controls.Add(this.rbValueList);
             this.gbValueSource.Controls.Add(this.rbRandom);
@@ -246,18 +244,6 @@
             this.gbValueSource.TabIndex = 169;
             this.gbValueSource.TabStop = false;
             this.gbValueSource.Text = "Value Source";
-            // 
-            // bookmarksBranchesBox1
-            // 
-            this.bookmarksBranchesBox1.HoverInterval = 750;
-            this.bookmarksBranchesBox1.LoadedCallback = null;
-            this.bookmarksBranchesBox1.Location = new System.Drawing.Point(407, 18);
-            this.bookmarksBranchesBox1.Name = "bookmarksBranchesBox1";
-            this.bookmarksBranchesBox1.RemovedCallback = null;
-            this.bookmarksBranchesBox1.SavedCallback = null;
-            this.bookmarksBranchesBox1.Size = new System.Drawing.Size(204, 281);
-            this.bookmarksBranchesBox1.TabIndex = 181;
-            this.bookmarksBranchesBox1.Tastudio = null;
             // 
             // rbRange
             // 
@@ -467,7 +453,7 @@
             // cbLimiterList
             // 
             this.cbLimiterList.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
-			this.cbLimiterList.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.cbLimiterList.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.cbLimiterList.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.cbLimiterList.Font = new System.Drawing.Font("Segoe UI", 8F);
             this.cbLimiterList.ForeColor = System.Drawing.Color.White;
@@ -852,7 +838,6 @@
 		private System.Windows.Forms.Label label27;
 		public NumericUpDownHexFix nmMaxValue;
 		public NumericUpDownHexFix nmMinValue;
-		private BizHawk.Client.EmuHawk.BookmarksBranchesBox bookmarksBranchesBox1;
 		public System.Windows.Forms.CheckBox cbLimiterInverted;
 	}
 }
