@@ -49,13 +49,13 @@ namespace RTC
 		private static string RegisterList(String[] list)
 		{
 			//Make one giant string to hash
-			string _list = String.Empty;
+			string concat = String.Empty;
 			foreach (String str in list)
-				String.Concat(_list, str);
+				concat = String.Concat(concat, str);
 
 			//Hash it
 			MD5 hash = MD5.Create();
-			hash.ComputeHash(_list.GetBytes());
+			hash.ComputeHash(concat.GetBytes());
 			string hashStr = Convert.ToBase64String(hash.Hash);
 
 			if (!Hash2ValueDico.ContainsKey(hashStr))
