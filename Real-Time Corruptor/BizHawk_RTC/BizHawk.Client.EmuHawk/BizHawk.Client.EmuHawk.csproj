@@ -66,28 +66,6 @@
     <!--<CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>-->
     <CodeAnalysisRuleSet Condition=" '$(OS)' == 'Windows_NT' ">AllRules.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'DebugDetached|AnyCPU'">
-    <DebugSymbols>true</DebugSymbols>
-    <OutputPath>..\output\</OutputPath>
-    <DefineConstants>WINDOWS;DEBUG</DefineConstants>
-    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
-    <DebugType>full</DebugType>
-    <PlatformTarget>AnyCPU</PlatformTarget>
-    <UseVSHostingProcess>false</UseVSHostingProcess>
-    <ErrorReport>prompt</ErrorReport>
-    <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
-  </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'ReleaseDetached|AnyCPU'">
-    <OutputPath>..\output\</OutputPath>
-    <DefineConstants>WINDOWS</DefineConstants>
-    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
-    <Optimize>true</Optimize>
-    <DebugType>pdbonly</DebugType>
-    <PlatformTarget>AnyCPU</PlatformTarget>
-    <UseVSHostingProcess>false</UseVSHostingProcess>
-    <ErrorReport>prompt</ErrorReport>
-    <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
-  </PropertyGroup>
   <ItemGroup>
     <Reference Include="GongShell">
       <HintPath>..\References\GongShell.dll</HintPath>
@@ -767,6 +745,12 @@
     </Compile>
     <Compile Include="RTC\Forms\Components\Engine Config\RTC_MemoryDomains_Form.Designer.cs">
       <DependentUpon>RTC_MemoryDomains_Form.cs</DependentUpon>
+    </Compile>
+    <Compile Include="RTC\Forms\Components\Memory Tools\RTC_ListGen_Form.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="RTC\Forms\Components\Memory Tools\RTC_ListGen_Form.designer.cs">
+      <DependentUpon>RTC_ListGen_Form.cs</DependentUpon>
     </Compile>
     <Compile Include="RTC\Forms\Components\Memory Tools\RTC_VmdNoTool_Form.cs">
       <SubType>Form</SubType>
@@ -1704,6 +1688,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="RTC\Forms\Components\Engine Config\RTC_MemoryDomains_Form.resx">
       <DependentUpon>RTC_MemoryDomains_Form.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="RTC\Forms\Components\Memory Tools\RTC_ListGen_Form.resx">
+      <DependentUpon>RTC_ListGen_Form.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="RTC\Forms\Components\Memory Tools\RTC_VmdNoTool_Form.resx">
       <DependentUpon>RTC_VmdNoTool_Form.cs</DependentUpon>
