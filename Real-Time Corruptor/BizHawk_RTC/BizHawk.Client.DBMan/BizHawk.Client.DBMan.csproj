@@ -14,6 +14,8 @@
     <ErrorReport>prompt</ErrorReport>
     <!--<CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>-->
     <CodeAnalysisRuleSet Condition=" '$(OS)' == 'Windows_NT' ">MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+    <DocumentationFile>
+    </DocumentationFile>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|AnyCPU'">
     <OutputPath>..\output\</OutputPath>
@@ -43,6 +45,7 @@
   <ItemGroup>
     <Reference Include="CSharp-SQLite">
       <HintPath>.\CSharp-SQLite.dll</HintPath>
+      <Private>False</Private>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
@@ -107,18 +110,22 @@
     <ProjectReference Include="..\BizHawk.Client.Common\BizHawk.Client.Common.csproj">
       <Project>{24a0aa3c-b25f-4197-b23d-476d6462dba0}</Project>
       <Name>BizHawk.Client.Common</Name>
+      <Private>False</Private>
     </ProjectReference>
     <ProjectReference Include="..\BizHawk.Common\BizHawk.Common.csproj">
       <Project>{866f8d13-0678-4ff9-80a4-a3993fd4d8a3}</Project>
       <Name>BizHawk.Common</Name>
+      <Private>False</Private>
     </ProjectReference>
     <ProjectReference Include="..\BizHawk.Emulation.Common\BizHawk.Emulation.Common.csproj">
       <Project>{e1a23168-b571-411c-b360-2229e7225e0e}</Project>
       <Name>BizHawk.Emulation.Common</Name>
+      <Private>False</Private>
     </ProjectReference>
     <ProjectReference Include="..\BizHawk.Emulation.DiscSystem\BizHawk.Emulation.DiscSystem.csproj">
       <Project>{f51946ea-827f-4d82-b841-1f2f6d060312}</Project>
       <Name>BizHawk.Emulation.DiscSystem</Name>
+      <Private>False</Private>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

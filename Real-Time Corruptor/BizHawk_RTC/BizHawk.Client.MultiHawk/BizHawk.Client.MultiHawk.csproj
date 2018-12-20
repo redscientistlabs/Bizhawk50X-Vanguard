@@ -42,13 +42,16 @@
     <Reference Include="Newtonsoft.Json, Version=4.5.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\References\Newtonsoft.Json.dll</HintPath>
+      <Private>False</Private>
     </Reference>
     <Reference Include="OpenTK">
       <HintPath>..\References\OpenTK.dll</HintPath>
+      <Private>False</Private>
     </Reference>
     <Reference Include="SlimDX, Version=4.0.13.43, Culture=neutral, PublicKeyToken=b1b0c32fd1ffe4f9, processorArchitecture=AMD64">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\References\x64\SlimDX.dll</HintPath>
+      <Private>False</Private>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
@@ -138,42 +141,52 @@
     <ProjectReference Include="..\BizHawk.Client.Common\BizHawk.Client.Common.csproj">
       <Project>{24a0aa3c-b25f-4197-b23d-476d6462dba0}</Project>
       <Name>BizHawk.Client.Common</Name>
+      <Private>False</Private>
     </ProjectReference>
     <ProjectReference Include="..\BizHawk.Client.EmuHawk\BizHawk.Client.EmuHawk.csproj">
       <Project>{dd448b37-ba3f-4544-9754-5406e8094723}</Project>
       <Name>BizHawk.Client.EmuHawk</Name>
+      <Private>False</Private>
     </ProjectReference>
     <ProjectReference Include="..\BizHawk.Common\BizHawk.Common.csproj">
       <Project>{866f8d13-0678-4ff9-80a4-a3993fd4d8a3}</Project>
       <Name>BizHawk.Common</Name>
+      <Private>False</Private>
     </ProjectReference>
     <ProjectReference Include="..\BizHawk.Emulation.Common\BizHawk.Emulation.Common.csproj">
       <Project>{e1a23168-b571-411c-b360-2229e7225e0e}</Project>
       <Name>BizHawk.Emulation.Common</Name>
+      <Private>False</Private>
     </ProjectReference>
     <ProjectReference Include="..\BizHawk.Emulation.Cores\BizHawk.Emulation.Cores.csproj">
       <Project>{197d4314-8a9f-49ba-977d-54acefaeb6ba}</Project>
       <Name>BizHawk.Emulation.Cores</Name>
+      <Private>False</Private>
     </ProjectReference>
     <ProjectReference Include="..\BizHawk.Emulation.DiscSystem\BizHawk.Emulation.DiscSystem.csproj">
       <Project>{f51946ea-827f-4d82-b841-1f2f6d060312}</Project>
       <Name>BizHawk.Emulation.DiscSystem</Name>
+      <Private>False</Private>
     </ProjectReference>
     <ProjectReference Include="..\Bizware\BizHawk.Bizware.BizwareGL.GdiPlus\BizHawk.Bizware.BizwareGL.GdiPlus.csproj">
       <Project>{337ca23e-65e7-44e1-9411-97ee08bb8116}</Project>
       <Name>BizHawk.Bizware.BizwareGL.GdiPlus</Name>
+      <Private>False</Private>
     </ProjectReference>
     <ProjectReference Include="..\Bizware\BizHawk.Bizware.BizwareGL.OpenTK\BizHawk.Bizware.BizwareGL.OpenTK.csproj">
       <Project>{5160cfb1-5389-47c1-b7f6-8a0dc97641ee}</Project>
       <Name>BizHawk.Bizware.BizwareGL.OpenTK</Name>
+      <Private>False</Private>
     </ProjectReference>
     <ProjectReference Include="..\Bizware\BizHawk.Bizware.BizwareGL.SlimDX\BizHawk.Bizware.BizwareGL.SlimDX.csproj">
       <Project>{e6b436b1-a3cd-4c9a-8f76-5d7154726884}</Project>
       <Name>BizHawk.Bizware.BizwareGL.SlimDX</Name>
+      <Private>False</Private>
     </ProjectReference>
     <ProjectReference Include="..\Bizware\BizHawk.Bizware.BizwareGL\BizHawk.Bizware.BizwareGL.csproj">
       <Project>{9f84a0b2-861e-4ef4-b89b-5e2a3f38a465}</Project>
       <Name>BizHawk.Bizware.BizwareGL</Name>
+      <Private>False</Private>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
