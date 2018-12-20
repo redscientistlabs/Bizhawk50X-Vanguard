@@ -139,8 +139,6 @@ namespace RTC
 			}
 			else
 			{
-				if (collection.Contains(bu))
-					return;
 				collection.Add(bu);
 			}
 		}

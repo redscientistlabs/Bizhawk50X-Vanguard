@@ -222,6 +222,9 @@ namespace RTC
 						{
 							using (MemoryStream ms = new MemoryStream())
 							{
+								Stopwatch sw = new Stopwatch();
+								sw.Start();
+
 								//Read the size
 								int lengthToReceive = 0;
 								byte[] _lengthToReceive = new byte[4];
@@ -237,8 +240,9 @@ namespace RTC
 								ms.Position = 0;
 								cmd = (RTC_Command)binaryFormatter.Deserialize(ms);
 
-								//sw.Stop();
-								//Console.WriteLine("It took " + sw.ElapsedMilliseconds + " ms to deserialize cmd " + cmd.Type + " of " + ms.ToArray().Length + " bytes");
+								sw.Stop();
+								if(cmd.Type != CommandType.BOOP)
+									Console.WriteLine("It took " + sw.ElapsedMilliseconds + " ms to deserialize cmd " + cmd.Type + " of " + ms.ToArray().Length + " bytes");
 							}
 						}
 						catch (Exception ex)
@@ -273,17 +277,19 @@ namespace RTC
 								sw.Start();
 								//Write the length of the command to the first four bytes
 								binaryFormatter.Serialize(ms, backCmd);
-								
+
+								byte[] buf = ms.ToArray();
 								//Write the length of the incoming object to the NetworkStream
-								byte[] length = BitConverter.GetBytes(ms.ToArray().Length);
+								byte[] length = BitConverter.GetBytes(buf.Length);
 								networkStream.Write(length, 0, length.Length);
 								//Console.WriteLine("I am giving you this many bytes " + BitConverter.ToInt32(length, 0));
 								//Write the data itself
 								//ms.Position = 0;
 								//ms.CopyTo(networkStream);
-								byte[] buf = ms.ToArray();
 								networkStream.Write(buf, 0, buf.Length);
-								//Console.WriteLine("It took " + sw.ElapsedMilliseconds + " ms to serialize backCmd " + backCmd.Type + " of " + ms.ToArray().Length + "	bytes");
+								sw.Stop();
+								if (backCmd.Type != CommandType.BOOP)
+									Console.WriteLine("It took " + sw.ElapsedMilliseconds + " ms to serialize backCmd " + backCmd.Type + " of " + ms.ToArray().Length + "	bytes");
 							}
 
 							//binaryFormatter.Serialize(networkStream, backCmd);

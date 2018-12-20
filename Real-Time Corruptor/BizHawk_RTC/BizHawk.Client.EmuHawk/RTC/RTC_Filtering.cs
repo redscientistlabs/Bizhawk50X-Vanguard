@@ -10,7 +10,7 @@ namespace RTC
 	public static class RTC_Filtering
 	{
 
-		public static Dictionary<string, String[]> Hash2LimiterDico = new Dictionary<string, string[]>();
+		public static Dictionary<string, HashSet<String>> Hash2LimiterDico = new Dictionary<string, HashSet<String>>();
 		public static Dictionary<string, String[]> Hash2ValueDico = new Dictionary<string, string[]>();
 
 
@@ -72,7 +72,7 @@ namespace RTC
 			if (!Hash2ValueDico.ContainsKey(hashStr))
 				Hash2ValueDico[hashStr] = list;
 			if (!Hash2LimiterDico.ContainsKey(hashStr))
-				Hash2LimiterDico[hashStr] = list;
+				Hash2LimiterDico[hashStr] = new HashSet<string>(list);
 
 			if(syncListsViaNetcore)
 				RTC_Core.SendCommandToBizhawk(new RTC_Command(CommandType.REMOTE_UPDATE_FILTERING_DICTIONARIES) { objectValue = new object[] { RTC_Filtering.Hash2LimiterDico, RTC_Filtering.Hash2ValueDico } });
@@ -137,8 +137,17 @@ namespace RTC
 
 			foreach (var s in hashList)
 			{
-				if(Hash2LimiterDico.ContainsKey(s))
-					returnList.Add(Hash2LimiterDico[s]);
+				if (Hash2LimiterDico.ContainsKey(s))
+				{
+					List<String> strList = new List<string>();
+					foreach (string str in Hash2LimiterDico[s])
+					{
+						strList.Add(str);
+						
+					}
+					returnList.Add(strList.ToArray());
+				}
+
 				else
 				{
 					DialogResult dr = MessageBox.Show("Couldn't find Limiter List " + s +
