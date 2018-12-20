@@ -9,6 +9,7 @@ using System.Runtime.Serialization.Formatters.Binary;
 using System.Threading;
 using System.Windows.Forms;
 using System.Diagnostics;
+using System.IO.Compression;
 
 namespace RTC
 {
@@ -238,7 +239,11 @@ namespace RTC
 
 								//Deserialize it
 								ms.Position = 0;
-								cmd = (RTC_Command)binaryFormatter.Deserialize(ms);
+
+								using (DeflateStream compressionStream = new DeflateStream(ms, CompressionMode.Decompress))
+								{
+									cmd = (RTC_Command)binaryFormatter.Deserialize(compressionStream);
+								}
 
 								sw.Stop();
 								if(cmd.Type != CommandType.BOOP)
@@ -276,7 +281,11 @@ namespace RTC
 								Stopwatch sw = new Stopwatch();
 								sw.Start();
 								//Write the length of the command to the first four bytes
-								binaryFormatter.Serialize(ms, backCmd);
+
+								using (DeflateStream compressionStream = new DeflateStream(ms, CompressionLevel.Optimal, true))
+								{
+									binaryFormatter.Serialize(compressionStream, backCmd);
+								}
 
 								byte[] buf = ms.ToArray();
 								//Write the length of the incoming object to the NetworkStream
