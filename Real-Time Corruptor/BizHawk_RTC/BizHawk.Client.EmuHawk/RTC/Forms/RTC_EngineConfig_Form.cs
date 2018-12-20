@@ -24,6 +24,7 @@ namespace RTC
 				S.GET<RTC_VmdPool_Form>(),
 				S.GET<RTC_VmdGen_Form>(),
 				S.GET<RTC_VmdAct_Form>(),
+				S.GET<RTC_ListGen_Form>(),
 			});
 			mtForm.popoutAllowed = false;
 
@@ -34,7 +35,7 @@ namespace RTC
 		}
 
 
-		private void LoadLists()
+		public void LoadLists()
 		{
 			RTC_Core.LimiterListBindingSource.Clear();
 			RTC_Core.ValueListBindingSource.Clear();
@@ -47,14 +48,14 @@ namespace RTC
 			for (int i = 0; i < hashes.Count; i++)
 			{
 				string[] _paths = paths[i].Split('\\' , '.');
-				RTC_Core.LimiterListBindingSource.Add(new { Text = _paths[_paths.Length - 2], Value = hashes[i] });
-				RTC_Core.ValueListBindingSource.Add(new { Text = _paths[_paths.Length - 2], Value = hashes[i] });
+				RegisterList(_paths[_paths.Length - 2], hashes[i]);
 			}
 		}
 
-		private void cbMemoryDomainTool_SelectedIndexChanged(object sender, EventArgs e)
+		public void RegisterList(string name, string hash)
 		{
-
+			RTC_Core.LimiterListBindingSource.Add(new { Text = name, Value = hash });
+			RTC_Core.ValueListBindingSource.Add(new { Text = name, Value = hash });
 		}
 	}
 }

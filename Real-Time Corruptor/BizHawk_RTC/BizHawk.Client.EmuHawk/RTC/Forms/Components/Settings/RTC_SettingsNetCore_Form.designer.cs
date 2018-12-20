@@ -54,7 +54,7 @@
             // 
             this.pnAttachedModeSettings.BackColor = System.Drawing.Color.Gray;
             this.pnAttachedModeSettings.Controls.Add(this.btnStartAutoKillSwitch);
-            this.pnAttachedModeSettings.Location = new System.Drawing.Point(8, 265);
+            this.pnAttachedModeSettings.Location = new System.Drawing.Point(33, 279);
             this.pnAttachedModeSettings.Name = "pnAttachedModeSettings";
             this.pnAttachedModeSettings.Size = new System.Drawing.Size(232, 60);
             this.pnAttachedModeSettings.TabIndex = 134;
@@ -81,7 +81,7 @@
             this.lbAttachedModeSettings.AutoSize = true;
             this.lbAttachedModeSettings.Font = new System.Drawing.Font("Segoe UI Semibold", 9F);
             this.lbAttachedModeSettings.ForeColor = System.Drawing.Color.White;
-            this.lbAttachedModeSettings.Location = new System.Drawing.Point(12, 247);
+            this.lbAttachedModeSettings.Location = new System.Drawing.Point(37, 261);
             this.lbAttachedModeSettings.Name = "lbAttachedModeSettings";
             this.lbAttachedModeSettings.Size = new System.Drawing.Size(135, 15);
             this.lbAttachedModeSettings.TabIndex = 135;
@@ -92,7 +92,7 @@
             this.pnDetachedModeSettings.BackColor = System.Drawing.Color.Gray;
             this.pnDetachedModeSettings.Controls.Add(this.groupBox2);
             this.pnDetachedModeSettings.Controls.Add(this.groupBox1);
-            this.pnDetachedModeSettings.Location = new System.Drawing.Point(8, 25);
+            this.pnDetachedModeSettings.Location = new System.Drawing.Point(33, 39);
             this.pnDetachedModeSettings.Name = "pnDetachedModeSettings";
             this.pnDetachedModeSettings.Size = new System.Drawing.Size(232, 219);
             this.pnDetachedModeSettings.TabIndex = 132;
@@ -254,7 +254,7 @@
             this.lbDetachedModeSettings.AutoSize = true;
             this.lbDetachedModeSettings.Font = new System.Drawing.Font("Segoe UI Semibold", 9F);
             this.lbDetachedModeSettings.ForeColor = System.Drawing.Color.White;
-            this.lbDetachedModeSettings.Location = new System.Drawing.Point(12, 9);
+            this.lbDetachedModeSettings.Location = new System.Drawing.Point(37, 23);
             this.lbDetachedModeSettings.Name = "lbDetachedModeSettings";
             this.lbDetachedModeSettings.Size = new System.Drawing.Size(138, 15);
             this.lbDetachedModeSettings.TabIndex = 133;
@@ -265,7 +265,7 @@
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
-            this.ClientSize = new System.Drawing.Size(251, 341);
+            this.ClientSize = new System.Drawing.Size(296, 366);
             this.Controls.Add(this.pnAttachedModeSettings);
             this.Controls.Add(this.lbAttachedModeSettings);
             this.Controls.Add(this.pnDetachedModeSettings);

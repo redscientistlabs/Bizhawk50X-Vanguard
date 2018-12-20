@@ -48,7 +48,7 @@
             this.btnImportKeyBindings.ForeColor = System.Drawing.Color.Black;
             this.btnImportKeyBindings.Image = global::BizHawk.Client.EmuHawk.Properties.Resources.inifile_icon;
             this.btnImportKeyBindings.ImageAlign = System.Drawing.ContentAlignment.MiddleRight;
-            this.btnImportKeyBindings.Location = new System.Drawing.Point(12, 12);
+            this.btnImportKeyBindings.Location = new System.Drawing.Point(29, 31);
             this.btnImportKeyBindings.Name = "btnImportKeyBindings";
             this.btnImportKeyBindings.Size = new System.Drawing.Size(238, 45);
             this.btnImportKeyBindings.TabIndex = 137;
@@ -67,7 +67,7 @@
             this.btnChangeRTCColor.ForeColor = System.Drawing.Color.Black;
             this.btnChangeRTCColor.Image = global::BizHawk.Client.EmuHawk.Properties.Resources.paintbrush_icon;
             this.btnChangeRTCColor.ImageAlign = System.Drawing.ContentAlignment.MiddleRight;
-            this.btnChangeRTCColor.Location = new System.Drawing.Point(12, 114);
+            this.btnChangeRTCColor.Location = new System.Drawing.Point(29, 133);
             this.btnChangeRTCColor.Name = "btnChangeRTCColor";
             this.btnChangeRTCColor.Size = new System.Drawing.Size(238, 45);
             this.btnChangeRTCColor.TabIndex = 136;
@@ -86,7 +86,7 @@
             this.btnOpenOnlineWiki.ForeColor = System.Drawing.Color.Black;
             this.btnOpenOnlineWiki.Image = global::BizHawk.Client.EmuHawk.Properties.Resources.notepad_icon;
             this.btnOpenOnlineWiki.ImageAlign = System.Drawing.ContentAlignment.MiddleRight;
-            this.btnOpenOnlineWiki.Location = new System.Drawing.Point(12, 63);
+            this.btnOpenOnlineWiki.Location = new System.Drawing.Point(29, 82);
             this.btnOpenOnlineWiki.Name = "btnOpenOnlineWiki";
             this.btnOpenOnlineWiki.Size = new System.Drawing.Size(238, 45);
             this.btnOpenOnlineWiki.TabIndex = 135;
@@ -102,7 +102,7 @@
             this.panel1.Controls.Add(this.cbDontCleanAtQuit);
             this.panel1.Controls.Add(this.cbAllowCrossCoreCorruption);
             this.panel1.Controls.Add(this.cbDisableBizhawkOSD);
-            this.panel1.Location = new System.Drawing.Point(11, 191);
+            this.panel1.Location = new System.Drawing.Point(28, 210);
             this.panel1.Name = "panel1";
             this.panel1.Size = new System.Drawing.Size(239, 129);
             this.panel1.TabIndex = 138;
@@ -154,7 +154,7 @@
             this.label4.AutoSize = true;
             this.label4.Font = new System.Drawing.Font("Segoe UI Semibold", 9F);
             this.label4.ForeColor = System.Drawing.Color.White;
-            this.label4.Location = new System.Drawing.Point(12, 173);
+            this.label4.Location = new System.Drawing.Point(29, 192);
             this.label4.Name = "label4";
             this.label4.Size = new System.Drawing.Size(117, 15);
             this.label4.TabIndex = 139;

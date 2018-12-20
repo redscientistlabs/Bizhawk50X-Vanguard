@@ -13,20 +13,21 @@ namespace RTC
 		public static Dictionary<string, String[]> Hash2LimiterDico = new Dictionary<string, string[]>();
 		public static Dictionary<string, String[]> Hash2ValueDico = new Dictionary<string, string[]>();
 
+
+
 		public static List<string> LoadListsFromPaths(string[] paths)
 		{
 			List<string> md5s = new List<string>();
 
 			foreach (string path in paths)
 			{
-				md5s.Add(loadListFromPath(path));
+				md5s.Add(loadListFromPath(path, false));
 			}
 			RTC_Core.SendCommandToBizhawk(new RTC_Command(CommandType.REMOTE_UPDATE_FILTERING_DICTIONARIES) { objectValue = new object[] { RTC_Filtering.Hash2LimiterDico, RTC_Filtering.Hash2ValueDico } });
 			return md5s;
 		}
 
-		//This is private as it won't update the netcore. The netcore call is in LoadListsFromPaths. Use that
-		private static string loadListFromPath(string path)
+		private static string loadListFromPath(string path, bool syncListViaNetcore)
 		{
 			string[] temp = File.ReadAllLines(path);
 			bool flipBytes = path.StartsWith("_");
@@ -44,7 +45,7 @@ namespace RTC
 				}
 			}
 
-			return RegisterList(temp);
+			return RegisterList(temp, syncListViaNetcore);
 		}
 
 
@@ -56,7 +57,7 @@ namespace RTC
 				.Select(x => Convert.ToByte(hex.Substring(x, 2), 16))
 				.ToArray();
 		}
-		private static string RegisterList(String[] list)
+		public static string RegisterList(String[] list, bool syncListsViaNetcore)
 		{
 			//Make one giant string to hash
 			string concat = String.Empty;
@@ -72,6 +73,9 @@ namespace RTC
 				Hash2ValueDico[hashStr] = list;
 			if (!Hash2LimiterDico.ContainsKey(hashStr))
 				Hash2LimiterDico[hashStr] = list;
+
+			if(syncListsViaNetcore)
+				RTC_Core.SendCommandToBizhawk(new RTC_Command(CommandType.REMOTE_UPDATE_FILTERING_DICTIONARIES) { objectValue = new object[] { RTC_Filtering.Hash2LimiterDico, RTC_Filtering.Hash2ValueDico } });
 
 			return hashStr;
 		}

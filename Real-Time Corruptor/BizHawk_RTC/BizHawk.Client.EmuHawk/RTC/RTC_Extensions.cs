@@ -241,6 +241,15 @@ namespace RTC
 			return bytes;
 		}
 
+		public static string MakeSafeFilename(this string filename, char replaceChar)
+		{
+			foreach (char c in System.IO.Path.GetInvalidFileNameChars())
+			{
+				filename = filename.Replace(c, replaceChar);
+			}
+			return filename;
+		}
+
 		#endregion STRING EXTENSIONS
 
 		#region BYTE ARRAY EXTENSIONS
