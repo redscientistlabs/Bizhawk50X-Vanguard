@@ -3584,7 +3584,10 @@ namespace BizHawk.Client.EmuHawk
 			if (args.OpenAdvanced is OpenAdvanced_OpenRom)
 			{
 				var leftpart = path.Split('|')[0];
-				Global.Config.LastRomPath = Path.GetFullPath(Path.GetDirectoryName(leftpart));
+				//RTC_Hijack - Don't set this if it's an RTC dir
+				string fullPath = Path.GetFullPath(Path.GetDirectoryName(leftpart));
+				if (!fullPath.Contains("\\WORKING\\")  || !fullPath.Contains("\\ASSETS\\"))
+					Global.Config.LastRomPath = Path.GetFullPath(Path.GetDirectoryName(leftpart));
 			}
 
 			return true;
