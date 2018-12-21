@@ -16,6 +16,7 @@ using System.Security.Permissions;
 using System.Text;
 using System.Windows.Forms;
 using System.Xml.Serialization;
+using Newtonsoft.Json;
 
 namespace RTC
 {
@@ -2901,6 +2902,31 @@ namespace RTC
 			WebRequest wr = base.GetWebRequest(address);
 			wr.Timeout = Timeout;
 			return wr;
+		}
+	}
+
+	public class JsonHelper
+	{
+		public static void Serialize(object value, Stream s, Formatting f = Formatting.None)
+		{
+			using (StreamWriter writer = new StreamWriter(s))
+			using (JsonTextWriter jsonWriter = new JsonTextWriter(writer))
+			{
+				JsonSerializer ser = new JsonSerializer();
+				ser.Formatting = f;
+				ser.Serialize(jsonWriter, value);
+				jsonWriter.Flush();
+			}
+		}
+
+		public static T Deserialize<T>(Stream s)
+		{
+			using (StreamReader reader = new StreamReader(s))
+			using (JsonTextReader jsonReader = new JsonTextReader(reader))
+			{
+				JsonSerializer ser = new JsonSerializer();
+				return ser.Deserialize<T>(jsonReader);
+			}
 		}
 	}
 }

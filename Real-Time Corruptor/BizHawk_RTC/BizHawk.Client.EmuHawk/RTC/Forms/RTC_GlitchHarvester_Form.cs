@@ -5,6 +5,7 @@ using System.Drawing;
 using System.IO;
 using System.Windows.Forms;
 using System.Xml.Serialization;
+using Newtonsoft.Json;
 
 namespace RTC
 {
@@ -1138,14 +1139,11 @@ namespace RTC
 					key.StateLocation = StashKeySavestateLocation.SSK;
 				}
 
-				//creater stockpile.xml to temp folder from stockpile object
-
-				using (FileStream FS = File.Open(RTC_Core.workingDir + "\\TEMP\\keys.xml", FileMode.OpenOrCreate))
+				//Create keys.json
+				using (FileStream fs = File.Open(RTC_Core.workingDir + "\\TEMP\\keys.json", FileMode.OpenOrCreate))
 				{
-					XmlSerializer xs = new XmlSerializer(typeof(SaveStateKeys));
-
-					xs.Serialize(FS, ssk);
-					FS.Close();
+					JsonHelper.Serialize(ssk, fs, Formatting.Indented);
+					fs.Close();
 				}
 
 				//7z the temp folder to destination filename
@@ -1202,13 +1200,13 @@ namespace RTC
 			try
 			{
 				Stockpile.EmptyFolder("\\WORKING\\TEMP");
-				if (!Stockpile.Extract(filename, "\\WORKING\\SSK", "keys.xml"))
+				if (!Stockpile.Extract(filename, "\\WORKING\\SSK", "keys.json"))
 					return;
 
-				using (FileStream fs = File.Open(RTC_Core.workingDir + "\\SSK\\keys.xml", FileMode.OpenOrCreate))
+				using (FileStream fs = File.Open(RTC_Core.workingDir + "\\SSK\\keys.json", FileMode.OpenOrCreate))
 				{
-					XmlSerializer xs = new XmlSerializer(typeof(SaveStateKeys));
-					ssk = (SaveStateKeys)xs.Deserialize(fs);
+
+					ssk = JsonHelper.Deserialize<SaveStateKeys>(fs);
 					fs.Close();
 				}
 			}

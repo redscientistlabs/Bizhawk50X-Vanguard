@@ -10,6 +10,7 @@ using System.Numerics;
 using System.Security.Cryptography;
 using System.Xml.Serialization;
 using System.ComponentModel;
+using Exception = System.Exception;
 
 namespace RTC
 {
@@ -151,7 +152,7 @@ namespace RTC
 			{
 				string statefilename = key.GameName + "." + key.ParentKey + ".timejump.State"; // get savestate name
 
-				File.Copy(RTC_Core.workingDir + "\\" + key.StateLocation + "\\" + statefilename, RTC_Core.workingDir + "\\TEMP\\" + statefilename); // copy savestates to temp folder
+				File.Copy(RTC_Core.workingDir + "\\" + key.StateLocation + "\\" + statefilename, RTC_Core.workingDir + "\\TEMP\\" + statefilename, true); // copy savestates to temp folder
 			}
 
 			if (File.Exists(RTC_Core.bizhawkDir + "\\config.ini"))
@@ -169,16 +170,15 @@ namespace RTC
 			List<string[]> limiterLists = RTC_Filtering.GetAllLimiterListsFromStockpile(sks);
 
 			//Write them to a file
-			for (int i = 0; i < limiterLists.Count; i++)
+			for (int i = 0; i < limiterLists?.Count; i++)
 			{
 				File.WriteAllLines(RTC_Core.workingDir + "\\TEMP\\" + i + ".limiter", limiterLists[i]);
 			}
 
 			//creater stockpile.xml to temp folder from stockpile object
-			using (FileStream fs = File.Open(RTC_Core.workingDir + "\\TEMP\\stockpile.xml", FileMode.OpenOrCreate))
+			using (FileStream fs = File.Open(RTC_Core.workingDir + "\\TEMP\\stockpile.json", FileMode.OpenOrCreate))
 			{
-				XmlSerializer xs = new XmlSerializer(typeof(Stockpile));
-				xs.Serialize(fs, sks);
+				JsonHelper.Serialize(sks, fs, Formatting.Indented);
 				fs.Close();
 			}
 			//7z the temp folder to destination filename
@@ -187,6 +187,18 @@ namespace RTC
 
 			string tempFilename = sks.Filename + ".temp";
 
+
+			try
+			{
+				if (File.Exists(tempFilename))
+					File.Delete(tempFilename);
+			}
+			catch (Exception ex)
+			{
+				MessageBox.Show(ex.Message);
+				return false;
+			}
+
 			CompressionLevel comp = System.IO.Compression.CompressionLevel.Fastest;
 
 			if (!S.GET<RTC_GlitchHarvester_Form>().cbCompressStockpiles.Checked)
@@ -194,8 +206,16 @@ namespace RTC
 
 			System.IO.Compression.ZipFile.CreateFromDirectory(RTC_Core.workingDir + "\\TEMP\\", tempFilename, comp, false);
 
-			if (File.Exists(sks.Filename))
-				File.Delete(sks.Filename);
+			try
+			{
+				if (File.Exists(sks.Filename))
+					File.Delete(sks.Filename);
+			}
+			catch(Exception ex)
+			{
+				MessageBox.Show(ex.Message);
+				return false;
+			}
 
 			File.Move(tempFilename, sks.Filename);
 
@@ -238,16 +258,15 @@ namespace RTC
 
 			Guid token = RTC_NetCore.HugeOperationStart();
 
-			Extract(Filename, "\\WORKING\\SKS", "stockpile.xml");
+			Extract(Filename, "\\WORKING\\SKS", "stockpile.json");
 
 			Stockpile sks;
 
 			try
 			{
-				using (FileStream fs = File.Open(RTC_Core.workingDir + "\\SKS\\stockpile.xml", FileMode.OpenOrCreate))
+				using (FileStream fs = File.Open(RTC_Core.workingDir + "\\SKS\\stockpile.json", FileMode.OpenOrCreate))
 				{
-					XmlSerializer xs = new XmlSerializer(typeof(Stockpile));
-					sks = (Stockpile)xs.Deserialize(fs);
+					sks = JsonHelper.Deserialize<Stockpile>(fs);
 					fs.Close();
 				}
 
@@ -364,10 +383,10 @@ namespace RTC
 
 				return true;
 			}
-			catch
+			catch(Exception e)
 			{
 				//If it errors out, empty the folder
-				MessageBox.Show("The file could not be read properly");
+				MessageBox.Show("The file could not be read properly" + e);
 				EmptyFolder(folder);
 				return false;
 			}
@@ -435,7 +454,7 @@ namespace RTC
 			else
 				File.Copy((RTC_Core.bizhawkDir + "\\config.ini"), (RTC_Core.bizhawkDir + "\\backup_config.ini"));
 
-			Extract(Filename, "\\WORKING\\TEMP", "stockpile.xml");
+			Extract(Filename, "\\WORKING\\TEMP", "stockpile.json");
 
 			if (File.Exists(RTC_Core.bizhawkDir + "\\stockpile_config.ini"))
 				File.Delete(RTC_Core.bizhawkDir + "\\stockpile_config.ini");
@@ -821,13 +840,14 @@ namespace RTC
 
 		private string shared = "[DIFFERENT]";
 
+		[JsonIgnore]
 		public string Note
 		{
 			get
 			{
 				if (Layer.All(x => x.Note == Layer.First().Note))
 				{
-					return Layer.First().Note;
+					return Layer.FirstOrDefault()?.Note;
 				}
 				else
 				{
@@ -986,6 +1006,7 @@ namespace RTC
 		public StoreType StoreType { get; set; }
 
 
+		[JsonIgnore]
 		[
 			Category("Value"),
 			Description("The value used for the BlastUnit in VALUE mode"),
@@ -999,7 +1020,6 @@ namespace RTC
 			Description("Gets and sets Value[] through a string. Used for Textboxes"),
 			DisplayName("ValueString")
 		]
-
 		public string ValueString
 		{
 			get

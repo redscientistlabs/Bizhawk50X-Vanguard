@@ -141,7 +141,7 @@ namespace RTC
 
 			foreach (var s in hashList)
 			{
-				if (Hash2LimiterDico.ContainsKey(s))
+				if (s != null && Hash2LimiterDico.ContainsKey(s))
 				{
 					List<String> strList = new List<string>();
 					foreach (var line in Hash2LimiterDico[s])
@@ -154,7 +154,7 @@ namespace RTC
 					returnList.Add(strList.ToArray());
 				}
 
-				else
+				else if(s != null)
 				{
 					DialogResult dr = MessageBox.Show("Couldn't find Limiter List " + s +
 						" If you continue saving, any blastunit using this list will ignore the limiter on playback if the list still cannot be found.\nDo you want to continue?", "Couldn't Find Limiter List",
