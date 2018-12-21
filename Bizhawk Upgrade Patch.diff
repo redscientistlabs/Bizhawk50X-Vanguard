@@ -1,0 +1,2497 @@
+From 14ee2716d95f2d6778c0fc5fdbcae58f0d8fc7e4 Mon Sep 17 00:00:00 2001
+From: Dan B <me@narry.land>
+Date: Fri, 21 Dec 2018 13:47:31 -0500
+Subject: [PATCH] RTC Patch
+
+---
+ .gitignore                                    |  14 +
+ Assets/defctrl.json                           | 140 ++++----
+ .../BizHawk.Client.ApiHawk.csproj             |   4 +
+ .../BizHawk.Client.Common.csproj              |  12 +
+ BizHawk.Client.Common/PathManager.cs          |   3 +
+ BizHawk.Client.Common/RomGame.cs              |   6 +-
+ BizHawk.Client.Common/config/Binding.cs       |  22 +-
+ BizHawk.Client.Common/config/Config.cs        |  40 ++-
+ BizHawk.Client.Common/rewind/Rewinder.cs      |  14 +-
+ .../BizHawk.Client.DBMan.csproj               |  19 +-
+ .../BizHawk.Client.DiscoHawk.csproj           |   2 +
+ .../BizHawk.Client.EmuHawk.csproj             | 330 +++++++++++++++++-
+ .../DisplayManager/OSDManager.cs              |   6 +
+ BizHawk.Client.EmuHawk/LogConsole.cs          |   3 +-
+ BizHawk.Client.EmuHawk/MainForm.Designer.cs   |  23 +-
+ BizHawk.Client.EmuHawk/MainForm.Events.cs     |   4 +-
+ BizHawk.Client.EmuHawk/MainForm.Hotkey.cs     |  11 +-
+ BizHawk.Client.EmuHawk/MainForm.cs            | 136 ++++++--
+ BizHawk.Client.EmuHawk/PresentationPanel.cs   |   8 +
+ BizHawk.Client.EmuHawk/Program.cs             |   8 +-
+ .../Properties/Resources.Designer.cs          |  32 +-
+ .../Properties/Resources.resx                 |   9 +
+ .../Resources/inifile_icon.png                | Bin 0 -> 3100 bytes
+ .../Resources/notepad_icon.png                | Bin 0 -> 3108 bytes
+ .../Resources/paintbrush_icon.png             | Bin 0 -> 4895 bytes
+ .../config/ControllerConfig.cs                |   4 +
+ BizHawk.Client.EmuHawk/config/HotkeyConfig.cs |   5 +
+ .../config/N64/N64VideoPluginconfig.cs        |   4 +
+ .../tools/HexEditor/HexEditor.cs              |   6 +-
+ BizHawk.Client.EmuHawk/tools/ToolBox.cs       |   7 +
+ .../BizHawk.Client.MultiHawk.csproj           |  25 +-
+ BizHawk.Client.MultiHawk/EmulatorWindow.cs    |   3 +-
+ .../Base Implementations/MemoryDomain.cs      |   3 +-
+ .../BizHawk.Emulation.Cores.csproj            |   2 +-
+ .../Consoles/Nintendo/GBA/MGBAHawk.cs         |   4 +-
+ .../Consoles/Nintendo/N64/N64.IStatable.cs    |   6 +
+ .../Consoles/Nintendo/N64/N64.cs              |   3 +
+ .../N64/NativeApi/mupen64plusCoreApi.cs       |  84 ++++-
+ BizHawk.Emulation.Cores/Waterbox/Heap.cs      |  12 +-
+ .../Waterbox/LibWaterboxCore.cs               |   8 +-
+ BizHawk.Emulation.Cores/Waterbox/PeWrapper.cs |   6 +-
+ BizHawk.sln                                   |  21 +-
+ 42 files changed, 903 insertions(+), 146 deletions(-)
+ create mode 100644 BizHawk.Client.EmuHawk/Resources/inifile_icon.png
+ create mode 100644 BizHawk.Client.EmuHawk/Resources/notepad_icon.png
+ create mode 100644 BizHawk.Client.EmuHawk/Resources/paintbrush_icon.png
+
+diff --git a/.gitignore b/.gitignore
+index 2b540361b..8ef30e20f 100644
+--- a/.gitignore
++++ b/.gitignore
+@@ -7,6 +7,20 @@ svnrev.cs
+ **/obj/**
+ /output/**
+ /output64/**
++
++
++!/output/dll/**
++!/output/dll/
++/output/dll/Bizhawk*
++!/output/RTC/**
++!/output/RTC/
++/output/RTC/PARAMS/*
++/output/RTC/WORKING/*
++
++!/output/*.bat
++!/output/AutoKillSwitch.exe
++!/output/defctrl.json
++
+ **/Release/**
+ **/Debug/**
+ **/ipch/**
+diff --git a/Assets/defctrl.json b/Assets/defctrl.json
+index 64ab6bdc4..bba443d32 100644
+--- a/Assets/defctrl.json
++++ b/Assets/defctrl.json
+@@ -169,8 +169,8 @@
+       "P1 Right": "RightArrow, J1 POV1R, X1 DpadRight, X1 LStickRight",
+       "P1 Start": "Return, J1 B10, X1 Start",
+       "P1 Select": "Space, J1 B9, X1 Back",
+-      "P1 B": "Z, J1 B1, X1 X",
+-      "P1 A": "X, J1 B2, X1 A",
++      "P1 B": "Z, J1 B1, X1 A,X1 Y",
++      "P1 A": "X, J1 B2, X1 B,X1 X",
+       "P2 Up": "",
+       "P2 Down": "",
+       "P2 Left": "",
+@@ -208,24 +208,24 @@
+       "P2 Pause": "S, J1 B4 X1 B"
+     },
+     "Nintento 64 Controller": {
+-      "P1 A Up": "UpArrow, J1 POV1U",
+-      "P1 A Down": "DownArrow, J1 POV1D",
+-      "P1 A Left": "LeftArrow, J1 POV1L",
+-      "P1 A Right": "RightArrow, J1 POV1R",
+-      "P1 DPad U": "X1 DpadUp",
+-      "P1 DPad D": "X1 DpadDown",
+-      "P1 DPad L": "X1 DpadLeft",
+-      "P1 DPad R": "X1 DpadRight",
+-      "P1 Start": "Return, J1 B10, X1 Start",
+-      "P1 Z": "D, J1 B3, X1 B",
+-      "P1 B": "S, J1 B1, X1 X",
+-      "P1 A": "A, J1 B2, X1 A",
+-      "P1 C Up": "NumberPad8, J1 RotationZ-, X1 RStickUp",
+-      "P1 C Down": "NumberPad2, J1 RotationZ+, X1 RStickDown",
+-      "P1 C Left": "NumberPad4, J1 Z-, X1 RStickLeft",
+-      "P1 C Right": "NumberPad6, J1 Z+, X1 RStickRight",
+-      "P1 L": "Q, J1 B5, X1 LeftShoulder",
+-      "P1 R": "W, J1 B6, X1 RightShoulder",
++      "P1 A Up": "UpArrow",
++      "P1 A Down": "DownArrow",
++      "P1 A Left": "LeftArrow",
++      "P1 A Right": "RightArrow",
++      "P1 DPad U": "X1 DpadUp,I",
++      "P1 DPad D": "X1 DpadDown,K",
++      "P1 DPad L": "X1 DpadLeft,J",
++      "P1 DPad R": "X1 DpadRight,L",
++      "P1 Start": "Return, X1 Start",
++      "P1 Z": "D,X1 RightTrigger",
++      "P1 B": "S,X1 A",
++      "P1 A": "A,X1 B",
++      "P1 C Up": "X1 RStickUp,NumberPad8",
++      "P1 C Down": "X1 RStickDown,NumberPad2",
++      "P1 C Left": "X1 RStickLeft,NumberPad4",
++      "P1 C Right": "X1 RStickRight,NumberPad6",
++      "P1 L": "Q, X1 LeftShoulder",
++      "P1 R": "W, X1 RightShoulder",
+       "P2 X Axis": "",
+       "P2 Y Axis": "",
+       "P2 A Up": "",
+@@ -296,8 +296,8 @@
+       "Right": "RightArrow, J1 POV1R, X1 DpadRight, X1 LStickRight",
+       "Start": "Return, J1 B10, X1 Start",
+       "Select": "Space, J1 B9, X1 Back",
+-      "B": "Z, J1 B1, X1 X",
+-      "A": "X, J1 B2, X1 A",
++      "B": "Z, J1 B1, X1 A,X1 Y",
++      "A": "X, J1 B2, X1 B,X1 X",
+       "Power": "",
+       "P1 Up": "UpArrow, J1 POV1U, X1 DpadUp, X1 LStickUp",
+       "P1 Down": "DownArrow, J1 POV1D, X1 DpadDown, X1 LStickDown",
+@@ -305,8 +305,27 @@
+       "P1 Right": "RightArrow, J1 POV1R, X1 DpadRight, X1 LStickRight",
+       "P1 Start": "Return, J1 B10, X1 Start",
+       "P1 Select": "Space, J1 B9, X1 Back",
+-      "P1 B": "Z, J1 B1, X1 X",
+-      "P1 A": "X, J1 B2, X1 A"
++      "P1 B": "Z, J1 B1, X1 A,X1 Y",
++      "P1 A": "X, J1 B2, X1 B,X1 X",
++    },
++    "Gameboy Controller H": {
++      "Up": "UpArrow, J1 POV1U, X1 DpadUp, X1 LStickUp",
++      "Down": "DownArrow, J1 POV1D, X1 DpadDown, X1 LStickDown",
++      "Left": "LeftArrow, J1 POV1L, X1 DpadLeft, X1 LStickLeft",
++      "Right": "RightArrow, J1 POV1R, X1 DpadRight, X1 LStickRight",
++      "Start": "Return, J1 B10, X1 Start",
++      "Select": "Space, J1 B9, X1 Back",
++      "B": "Z, J1 B1, X1 A,X1 Y",
++      "A": "X, J1 B2, X1 B,X1 X",
++      "Power": "",
++      "P1 Up": "UpArrow, J1 POV1U, X1 DpadUp, X1 LStickUp",
++      "P1 Down": "DownArrow, J1 POV1D, X1 DpadDown, X1 LStickDown",
++      "P1 Left": "LeftArrow, J1 POV1L, X1 DpadLeft, X1 LStickLeft",
++      "P1 Right": "RightArrow, J1 POV1R, X1 DpadRight, X1 LStickRight",
++      "P1 Start": "Return, J1 B10, X1 Start",
++      "P1 Select": "Space, J1 B9, X1 Back",
++      "P1 B": "Z, J1 B1, X1 A,X1 Y",
++      "P1 A": "X, J1 B2, X1 B,X1 X",
+     },
+     "GBA Controller": {
+       "Up": "UpArrow, J1 POV1U, X1 DpadUp, X1 LStickUp",
+@@ -315,8 +334,8 @@
+       "Right": "RightArrow, J1 POV1R, X1 DpadRight, X1 LStickRight",
+       "Start": "Return, J1 B10, X1 Start",
+       "Select": "Space, J1 B9, X1 Back",
+-      "B": "Z, J1 B1, X1 X",
+-      "A": "X, J1 B2, X1 A",
++      "B": "Z, J1 B1, X1 A,X1 Y",
++      "A": "X, J1 B2, X1 B,X1 X",
+       "L": "W, J1 B5, X1 LeftShoulder",
+       "R": "E, J1 B6, X1 RightShoulder",
+       "Power": ""
+@@ -328,12 +347,13 @@
+       "P1 Down": "DownArrow, J1 POV1D, X1 DpadDown, X1 LStickDown",
+       "P1 Left": "LeftArrow,J1 POV1L, X1 DpadLeft, X1 LStickLeft",
+       "P1 Right": "RightArrow,J1 POV1R, X1 DpadRight, X1 LStickRight",
+-      "P1 Button": "Z, J1 B1, X1 X",
++      "P1 Button": "Z, J1 B1, X1 X,X1 B,X1 A,X1 Y",
+       "P2 Up": "NumberPad8, J1 RotationZ-, X1 RStickUp",
+       "P2 Down": "NumberPad2, J1 RotationZ+, X1 RStickDown",
+       "P2 Left": "NumberPad4, J1 Z-, X1 RStickLeft",
+       "P2 Right": "NumberPad6, J1 Z+, X1 RStickRight",
+-      "P2 Button": "NumberPad1, J1 B2, X1 A"
++      "P2 Button": "NumberPad1, J1 B2, X1 A",
++      "P1 Trigger": "X1 B,X1 Y,X1 X,X1 A"
+     },
+     "Atari 7800 ProLine Joystick Controller": {
+       "Power": "",
+@@ -603,14 +623,14 @@
+     "Saturn Controller": {
+       "Power": "",
+       "Reset": "",
+-      "P1 Up": "UpArrow, J1 POV1U, X1 DpadUp, X1 LStickUp",
+-      "P1 Down": "DownArrow, J1 POV1D, X1 DpadDown, X1 LStickDown",
+-      "P1 Left": "LeftArrow, J1 POV1L, X1 DpadLeft, X1 LStickLeft",
+-      "P1 Right": "RightArrow, J1 POV1R, X1 DpadRight, X1 LStickRight",
++      "P1 Up": "UpArrow,X1 DpadUp,X1 LStickUp",
++      "P1 Down": "DownArrow,X1 DpadDown,X1 LStickDown",
++      "P1 Left": "LeftArrow, J1 POV1L, X1 DpadLeft, X1 LStickLeft,X1 LStickLeft",
++      "P1 Right": "RightArrow,X1 DpadRight,X1 LStickRight",
+       "P1 Start": "Return, J1 B10, X1 Start",
+       "P1 X": "D, J1 B3, X1 B",
+-      "P1 Y": "S, J1 B11, X1 X",
+-      "P1 Z": "A, J1 B12, X1 X",
++      "P1 Y": "S, J1 B11",
++      "P1 Z": "A, J1 B12",
+       "P1 A": "C, J1 B1, X1 X",
+       "P1 B": "X, J1 B2, X1 A",
+       "P1 C": "Z, J1 B4, X1 Y",
+@@ -728,8 +748,8 @@
+       "P1 Down": "DownArrow, J1 POV1D, X1 DpadDown, X1 LStickDown",
+       "P1 Left": "LeftArrow, J1 POV1L, X1 DpadLeft, X1 LStickLeft",
+       "P1 Right": "RightArrow, J1 POV1R, X1 DpadRight, X1 LStickRight",
+-      "P1 B2": "Z, J1 B1, X1 X",
+-      "P1 B1": "X, J1 B2, X1 A",
++      "P1 B2": "Z, J1 B1, X1 A,X1 Y",
++      "P1 B1": "X, J1 B2, X1 B,X1 X",
+       "P1 Select": "V, J1 B9, X1 Back",
+       "P1 Run": "Return, J1 B10, X1 Start",
+       "P2 Up": "",
+@@ -808,8 +828,8 @@
+       "P1 Down": "DownArrow, J1 POV1D, X1 DpadDown, X1 LStickDown",
+       "P1 Left": "LeftArrow, J1 POV1L, X1 DpadLeft, X1 LStickLeft",
+       "P1 Right": "RightArrow, J1 POV1R, X1 DpadRight, X1 LStickRight",
+-      "P1 B1": "Z, J1 B1, X1 X",
+-      "P1 B2": "X, J1 B2, X1 A",
++      "P1 B1": "Z, J1 B1, X1 A,X1 Y",
++      "P1 B2": "X, J1 B2, X1 B, X1 X",
+       "Reset": "J1 B9, X1 Back",
+       "Pause": "J1 B10, X1 Start",
+       "P2 Up": "",
+@@ -1017,11 +1037,11 @@
+       "P1 Down": "DownArrow, J1 POV1D, X1 DpadDown, X1 LStickDown",
+       "P1 Left": "LeftArrow, J1 POV1L, X1 DpadLeft, X1 LStickLeft",
+       "P1 Right": "RightArrow, J1 POV1R, X1 DpadRight, X1 LStickRight",
+-      "P1 A": "Z, J1 B1, X1 X",
++      "P1 A": "Z, J1 B1, X1 B",
+       "P1 B": "X, J1 B2, X1 A",
+       "P1 C": "C, J1 B4, X1 Y",
+       "P1 Start": "Return, J1 B10, X1 Start",
+-      "P1 X": "A, J1 B3, X1 B",
++      "P1 X": "A, J1 B3, X1 X",
+       "P1 Y": "S, J1 B5, X1 LeftShoulder",
+       "P1 Z": "D, J1 B6, X1 RightShoulder",
+       "P1 Mode": "E, J1 B9, X1 Back",
+@@ -1051,11 +1071,11 @@
+       "P1 Down": "DownArrow, J1 POV1D, X1 DpadDown, X1 LStickDown",
+       "P1 Left": "LeftArrow, J1 POV1L, X1 DpadLeft, X1 LStickLeft",
+       "P1 Right": "RightArrow, J1 POV1R, X1 DpadRight, X1 LStickRight",
+-      "P1 A": "Z, J1 B1, X1 X",
++      "P1 A": "Z, J1 B1, X1 B",
+       "P1 B": "X, J1 B2, X1 A",
+       "P1 C": "C, J1 B4, X1 Y",
+       "P1 Start": "Return, J1 B10, X1 Start",
+-      "P1 X": "A, J1 B3, X1 B",
++      "P1 X": "A, J1 B3, X1 X",
+       "P1 Y": "S, J1 B5, X1 LeftShoulder",
+       "P1 Z": "D, J1 B6, X1 RightShoulder",
+       "P1 Mode": "E, J1 B9, X1 Back",
+@@ -1084,11 +1104,11 @@
+       "P1 Y4": "NumberPad4, J1 Z-, X1 RStickLeft",
+       "P1 Y2": "NumberPad6, J1 Z+, X1 RStickRight",
+       "P1 Start": "Return, J1 B10, X1 Start",
+-      "P1 B": "Z, J1 B1, X1 X",
+-      "P1 A": "X, J1 B2, X1 A",
++      "P1 B": "Z, J1 B1, X1 A, X1 Y",
++      "P1 A": "X, J1 B2, X1 B, X1 X",
+       "P2 X1": "",
+-      "P2 X3": "X, J1 B2, X1 A",
+-      "P2 X4": "Z, J1 B1, X1 X",
++      "P2 X3": "",
++      "P2 X4": "",
+       "P2 X2": "",
+       "P2 Y1": "LeftArrow, J1 POV1L, X1 DpadLeft, X1 LStickLeft",
+       "P2 Y3": "RightArrow, J1 POV1R, X1 DpadRight, X1 LStickRight",
+@@ -1119,15 +1139,15 @@
+       "P1 MODE": "D"
+     },
+     "Lynx Controller": {
+-      "Up": "UpArrow",
+-      "Down": "DownArrow",
+-      "Left": "LeftArrow",
+-      "Right": "RightArrow",
+-      "A": "X",
+-      "B": "Z",
+-      "Option 1": "A",
+-      "Option 2": "S",
+-      "Pause": "Return",
++      "Up": "UpArrow,X1 DpadUp,X1 LStickUp",
++      "Down": "DownArrow,X1 DpadDown,X1 LStickDown",
++      "Left": "LeftArrow,X1 DpadLeft,X1 LStickLeft",
++      "Right": "RightArrow,X1 DpadRight,X1 LStickRight",
++      "A": "X,X1 B",
++      "B": "Z,X1 A",
++      "Option 1": "A,X1 X",
++      "Option 2": "S,X1 Y",
++      "Pause": "Return,X1 Start",
+       "Power": ""
+     },
+     "Apple IIe Keyboard": {
+@@ -1202,8 +1222,8 @@
+       "R_Down": "NumberPad2, X1 RStickDown",
+       "R_Left": "NumberPad4, X1 RStickLeft",
+       "R_Right": "NumberPad6, X1 RStickRight",
+-      "B": "Z, X1 X",
+-      "A": "X, X1 A",
++      "B": "Z, X1 A,X1 Y",
++      "A": "X, X1 B,X1 X",
+       "R": "W, X1 LeftShoulder",
+       "L": "E, X1 RightShoulder",
+       "Select": "Space, X1 Back",
+@@ -1554,7 +1574,7 @@
+       },
+       "P1 Y Axis": {
+         "Value": "X1 LeftThumbY",
+-        "Mult": 1.0,
++        "Mult": -1.0,
+         "Deadzone": 0.1
+       },
+       "P2 X Axis": {
+@@ -1701,7 +1721,7 @@
+       },
+       "P1 Right Stick Vertical": {
+         "Value": "",
+-        "Mult": 1.0,
++        "Mult": -1.0,
+         "Deadzone": 0.1
+       },
+       "P1 Right Throttle": {
+@@ -1716,7 +1736,7 @@
+       },
+       "P1 Left Stick Vertical": {
+         "Value": "X1 LeftThumbY",
+-        "Mult": 1.0,
++        "Mult": -1.0,
+         "Deadzone": 0.1
+       },
+       "P1 Left Throttle": {
+diff --git a/BizHawk.Client.ApiHawk/BizHawk.Client.ApiHawk.csproj b/BizHawk.Client.ApiHawk/BizHawk.Client.ApiHawk.csproj
+index 9205707a7..8153fa251 100644
+--- a/BizHawk.Client.ApiHawk/BizHawk.Client.ApiHawk.csproj
++++ b/BizHawk.Client.ApiHawk/BizHawk.Client.ApiHawk.csproj
+@@ -69,18 +69,22 @@
+     <ProjectReference Include="..\BizHawk.Client.Common\BizHawk.Client.Common.csproj">
+       <Project>{24a0aa3c-b25f-4197-b23d-476d6462dba0}</Project>
+       <Name>BizHawk.Client.Common</Name>
++      <Private>False</Private>
+     </ProjectReference>
+     <ProjectReference Include="..\BizHawk.Common\BizHawk.Common.csproj">
+       <Project>{866f8d13-0678-4ff9-80a4-a3993fd4d8a3}</Project>
+       <Name>BizHawk.Common</Name>
++      <Private>False</Private>
+     </ProjectReference>
+     <ProjectReference Include="..\BizHawk.Emulation.Common\BizHawk.Emulation.Common.csproj">
+       <Project>{e1a23168-b571-411c-b360-2229e7225e0e}</Project>
+       <Name>BizHawk.Emulation.Common</Name>
++      <Private>False</Private>
+     </ProjectReference>
+     <ProjectReference Include="..\BizHawk.Emulation.Cores\BizHawk.Emulation.Cores.csproj">
+       <Project>{197d4314-8a9f-49ba-977d-54acefaeb6ba}</Project>
+       <Name>BizHawk.Emulation.Cores</Name>
++      <Private>False</Private>
+     </ProjectReference>
+   </ItemGroup>
+   <ItemGroup />
+diff --git a/BizHawk.Client.Common/BizHawk.Client.Common.csproj b/BizHawk.Client.Common/BizHawk.Client.Common.csproj
+index 9816bf2bf..51aca6c95 100644
+--- a/BizHawk.Client.Common/BizHawk.Client.Common.csproj
++++ b/BizHawk.Client.Common/BizHawk.Client.Common.csproj
+@@ -44,13 +44,16 @@
+   <ItemGroup>
+     <Reference Include="ICSharpCode.SharpZipLib">
+       <HintPath>..\References\ICSharpCode.SharpZipLib.dll</HintPath>
++      <Private>False</Private>
+     </Reference>
+     <Reference Include="Ionic.Zip">
+       <HintPath>..\References\Ionic.Zip.dll</HintPath>
++      <Private>False</Private>
+     </Reference>
+     <Reference Include="Newtonsoft.Json, Version=4.5.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+       <SpecificVersion>False</SpecificVersion>
+       <HintPath>..\References\Newtonsoft.Json.dll</HintPath>
++      <Private>False</Private>
+     </Reference>
+     <Reference Include="NLua">
+       <HintPath>..\output\dll\nlua\NLua.dll</HintPath>
+@@ -61,6 +64,7 @@
+     <Reference Include="System.Data.SQLite, Version=1.0.105.2, Culture=neutral, PublicKeyToken=db937bc2d44ff139, processorArchitecture=AMD64">
+       <SpecificVersion>False</SpecificVersion>
+       <HintPath>..\References\x64\SQLite\System.Data.SQLite.dll</HintPath>
++      <Private>False</Private>
+     </Reference>
+     <Reference Include="System.Drawing" />
+     <Reference Include="System.IO.Compression" />
+@@ -288,34 +292,42 @@
+     <ProjectReference Include="..\BizHawk.Common\BizHawk.Common.csproj">
+       <Project>{866F8D13-0678-4FF9-80A4-A3993FD4D8A3}</Project>
+       <Name>BizHawk.Common</Name>
++      <Private>False</Private>
+     </ProjectReference>
+     <ProjectReference Include="..\BizHawk.Emulation.Common\BizHawk.Emulation.Common.csproj">
+       <Project>{e1a23168-b571-411c-b360-2229e7225e0e}</Project>
+       <Name>BizHawk.Emulation.Common</Name>
++      <Private>False</Private>
+     </ProjectReference>
+     <ProjectReference Include="..\BizHawk.Emulation.Cores\BizHawk.Emulation.Cores.csproj">
+       <Project>{197D4314-8A9F-49BA-977D-54ACEFAEB6BA}</Project>
+       <Name>BizHawk.Emulation.Cores</Name>
++      <Private>False</Private>
+     </ProjectReference>
+     <ProjectReference Include="..\BizHawk.Emulation.DiscSystem\BizHawk.Emulation.DiscSystem.csproj">
+       <Project>{f51946ea-827f-4d82-b841-1f2f6d060312}</Project>
+       <Name>BizHawk.Emulation.DiscSystem</Name>
++      <Private>False</Private>
+     </ProjectReference>
+     <ProjectReference Include="..\Bizware\BizHawk.Bizware.BizwareGL.GdiPlus\BizHawk.Bizware.BizwareGL.GdiPlus.csproj">
+       <Project>{337ca23e-65e7-44e1-9411-97ee08bb8116}</Project>
+       <Name>BizHawk.Bizware.BizwareGL.GdiPlus</Name>
++      <Private>False</Private>
+     </ProjectReference>
+     <ProjectReference Include="..\Bizware\BizHawk.Bizware.BizwareGL.OpenTK\BizHawk.Bizware.BizwareGL.OpenTK.csproj">
+       <Project>{5160CFB1-5389-47C1-B7F6-8A0DC97641EE}</Project>
+       <Name>BizHawk.Bizware.BizwareGL.OpenTK</Name>
++      <Private>False</Private>
+     </ProjectReference>
+     <ProjectReference Include="..\Bizware\BizHawk.Bizware.BizwareGL.SlimDX\BizHawk.Bizware.BizwareGL.SlimDX.csproj">
+       <Project>{E6B436B1-A3CD-4C9A-8F76-5D7154726884}</Project>
+       <Name>BizHawk.Bizware.BizwareGL.SlimDX</Name>
++      <Private>False</Private>
+     </ProjectReference>
+     <ProjectReference Include="..\Bizware\BizHawk.Bizware.BizwareGL\BizHawk.Bizware.BizwareGL.csproj">
+       <Project>{9F84A0B2-861E-4EF4-B89B-5E2A3F38A465}</Project>
+       <Name>BizHawk.Bizware.BizwareGL</Name>
++      <Private>False</Private>
+     </ProjectReference>
+   </ItemGroup>
+   <ItemGroup />
+diff --git a/BizHawk.Client.Common/PathManager.cs b/BizHawk.Client.Common/PathManager.cs
+index c90815795..ea61f0501 100644
+--- a/BizHawk.Client.Common/PathManager.cs
++++ b/BizHawk.Client.Common/PathManager.cs
+@@ -352,10 +352,13 @@ namespace BizHawk.Client.Common
+ 				name += "." + Global.Emulator.Attributes().CoreName;
+ 			}
+ 
++			//RTC_Hijack : Don't use moviesession prefix
++			/*
+ 			if (Global.MovieSession.Movie.IsActive)
+ 			{
+ 				name += "." + Path.GetFileNameWithoutExtension(Global.MovieSession.Movie.Filename);
+ 			}
++            */
+ 
+ 			var pathEntry = Global.Config.PathEntries[game.System, "Savestates"] ??
+ 							Global.Config.PathEntries[game.System, "Base"];
+diff --git a/BizHawk.Client.Common/RomGame.cs b/BizHawk.Client.Common/RomGame.cs
+index 0a6996479..26096a911 100644
+--- a/BizHawk.Client.Common/RomGame.cs
++++ b/BizHawk.Client.Common/RomGame.cs
+@@ -117,7 +117,8 @@ namespace BizHawk.Client.Common
+ 			}
+ 		}
+ 
+-		private static byte[] DeInterleaveSMD(byte[] source)
++		//RTC_Hijack : Make this method public
++		public static byte[] DeInterleaveSMD(byte[] source)
+ 		{
+ 			// SMD files are interleaved in pages of 16k, with the first 8k containing all 
+ 			// odd bytes and the second 8k containing all even bytes.
+@@ -142,7 +143,8 @@ namespace BizHawk.Client.Common
+ 			return output;
+ 		}
+ 
+-		private static unsafe byte[] MutateSwapN64(byte[] source)
++		//RTC_Hijack : Make Public
++		public static unsafe byte[] MutateSwapN64(byte[] source)
+ 		{
+ 			// N64 roms are in one of the following formats:
+ 			//  .Z64 = No swapping
+diff --git a/BizHawk.Client.Common/config/Binding.cs b/BizHawk.Client.Common/config/Binding.cs
+index c2ec1c173..49d44ae60 100644
+--- a/BizHawk.Client.Common/config/Binding.cs
++++ b/BizHawk.Client.Common/config/Binding.cs
+@@ -259,7 +259,27 @@ namespace BizHawk.Client.Common
+ 						Bind("Analog", "X Up Large", toolTip: "For Virtual Pad"),
+ 						Bind("Analog", "X Down Small", toolTip: "For Virtual Pad"),
+ 						Bind("Analog", "X Down Large", toolTip: "For Virtual Pad"),
+-
++						
++						//RTC_HIJACK : Hotkey binding menu hijack
++                        // Unfortunately this has to be inserted directly in the project because hooking it into RTC
++                        // would create a circular dependency in BizHawk
++                        Bind("RTC","Manual Blast", toolTip: "For RTC" ),
++						Bind("RTC","Auto-Corrupt", toolTip: "For RTC" ),
++						Bind("RTC","Error Delay--", toolTip: "For RTC" ),
++						Bind("RTC","Error Delay++", toolTip: "For RTC" ),
++						Bind("RTC","Intensity--", toolTip: "For RTC" ),
++						Bind("RTC","Intensity++", toolTip: "For RTC" ),
++						Bind("RTC","GH Load and Corrupt", toolTip: "For RTC" ),
++						Bind("RTC","GH Just Corrupt", toolTip: "For RTC" ),
++						Bind("RTC","GH Load", toolTip: "For RTC" ),
++						Bind("RTC","GH Save", toolTip: "For RTC" ),
++						Bind("RTC","Stash->Stockpile", toolTip: "For RTC" ),
++						Bind("RTC","Induce KS Crash", toolTip: "For RTC" ),
++						Bind("RTC","Blast+RawStash", toolTip: "For RTC" ),
++						Bind("RTC","Send Raw to Stash", toolTip: "For RTC" ),
++						Bind("RTC","BlastLayer Toggle", toolTip: "For RTC" ),
++						Bind("RTC","BlastLayer Re-Blast", toolTip: "For RTC" ),
++                        //------------------
+ 						Bind("Tools", "Toggle All Cheats"),
+ 					};
+ 
+diff --git a/BizHawk.Client.Common/config/Config.cs b/BizHawk.Client.Common/config/Config.cs
+index b7f72ab63..683ce7804 100644
+--- a/BizHawk.Client.Common/config/Config.cs
++++ b/BizHawk.Client.Common/config/Config.cs
+@@ -113,8 +113,13 @@ namespace BizHawk.Client.Common
+ 		public bool HotkeyConfigAutoTab = true;
+ 		public bool InputConfigAutoTab = true;
+ 		public bool ShowLogWindow = false;
+-		public bool BackupSavestates = true;
+-		public bool SaveScreenshotWithStates = true;
++		
++		//RTC_HIJACK : Put BackupSavestates to False
++		public bool BackupSavestates = false;
++
++		//RTC_HIJACK : Put SaveScreenshotWithStates to False
++		public bool SaveScreenshotWithStates = false;
++		
+ 		public int BigScreenshotSize = 128 * 1024;
+ 		public bool NoLowResLargeScreenshotWithStates = false;
+ 		public int AutofireOn = 1;
+@@ -221,18 +226,33 @@ namespace BizHawk.Client.Common
+ 
+ 		// Rewind settings
+ 		public bool Rewind_UseDelta = true;
++
++		//RTC_HIJACK : Put RewindEnabledSmall to true
+ 		public bool RewindEnabledSmall = true;
+-		public bool RewindEnabledMedium = false;
+-		public bool RewindEnabledLarge = false;
++
++		//RTC_HIJACK : Put RewindEnabledMedium to true
++		public bool RewindEnabledMedium = true;
++
++		//RTC_HIJACK : Put RewindEnabledLarge to true
++		public bool RewindEnabledLarge = true;
++
++		//RTC_HIJACK : Put RewindFrequencySmall to 1
+ 		public int RewindFrequencySmall = 1;
+-		public int RewindFrequencyMedium = 4;
+-		public int RewindFrequencyLarge = 60;
++
++		//RTC_HIJACK : Put RewindFrequencyMedium to 3
++		public int RewindFrequencyMedium = 3;
++
++		//RTC_HIJACK : Put RewindFrequencyMedium to 9
++		public int RewindFrequencyLarge = 9;
++		
+ 		public int Rewind_MediumStateSize = 262144; // 256kb
+ 		public int Rewind_LargeStateSize = 1048576; // 1mb
+ 		public int Rewind_BufferSize = 128; // in mb
+ 		public bool Rewind_OnDisk = false;
+ 		public bool Rewind_IsThreaded = Environment.ProcessorCount > 1;
+-		public int RewindSpeedMultiplier = 1;
++		
++		//RTC_HIJACK : Put RewindSpeedMultiplier to 3
++		public int RewindSpeedMultiplier = 3;
+ 
+ 		// Savestate settings
+ 		public SaveStateTypeE SaveStateType = SaveStateTypeE.Default;
+@@ -555,9 +575,11 @@ namespace BizHawk.Client.Common
+ 		// it hasn't been absorbed into the new system
+ 		public bool GB_AsSGB = false;
+ 		public bool NES_InQuickNES = true;
+-		public bool SNES_InSnes9x = true;
++		//RTC_Hijack - Change BSNES to default as it exposes more domains
++		public bool SNES_InSnes9x = false;
+ 		public bool GBA_UsemGBA = true;
+-		public bool SGB_UseBsnes = false;
++		//RTC_Hijack - Change BSNES to default as it exposes more domains
++		public bool SGB_UseBsnes = true;
+ 		public bool GB_UseGBHawk = false;
+ 		public bool CoreForcingViaGameDB = true;
+ 		public string LibretroCore;
+diff --git a/BizHawk.Client.Common/rewind/Rewinder.cs b/BizHawk.Client.Common/rewind/Rewinder.cs
+index 69d3e8a2a..e2f595965 100644
+--- a/BizHawk.Client.Common/rewind/Rewinder.cs
++++ b/BizHawk.Client.Common/rewind/Rewinder.cs
+@@ -189,7 +189,8 @@ namespace BizHawk.Client.Common
+ 
+ 		private void UpdateLastState(byte[] state, int index, int length)
+ 		{
+-			if (_lastState.Length != length)
++			//RTC_Hijack : BIZHAWK_FIX add checkup for _lastState == null
++			if (_lastState == null || _lastState.Length != length)
+ 			{
+ 				_lastState = new byte[length];
+ 			}
+@@ -203,7 +204,11 @@ namespace BizHawk.Client.Common
+ 		}
+ 
+ 		private unsafe void CaptureStateDelta(byte[] currentState)
+-		{
++		{			
++			//RTC_HIJACK : handle null _lastState
++			if (_lastState == null)
++				return;
++			
+ 			// Keep in mind that everything captured here is intended to be played back in
+ 			// reverse. The goal is, given the current state, how to get back to the previous
+ 			// state. That's why the data portion of the delta comes from the previous state,
+@@ -268,6 +273,11 @@ namespace BizHawk.Client.Common
+ 					// Length
+ 					VLInteger.WriteUnsigned((uint)length, _deltaBuffer, ref index);
+ 
++
++					//RTC_HIJACK : prevent null _lastState
++					if (_lastState == null)
++						return;
++
+ 					// Data
+ 					Buffer.BlockCopy(_lastState, changeSequenceStartOffset, _deltaBuffer, index, length);
+ 					index += length;
+diff --git a/BizHawk.Client.DBMan/BizHawk.Client.DBMan.csproj b/BizHawk.Client.DBMan/BizHawk.Client.DBMan.csproj
+index e65442660..ea820b35b 100644
+--- a/BizHawk.Client.DBMan/BizHawk.Client.DBMan.csproj
++++ b/BizHawk.Client.DBMan/BizHawk.Client.DBMan.csproj
+@@ -14,6 +14,8 @@
+     <ErrorReport>prompt</ErrorReport>
+     <!--<CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>-->
+     <CodeAnalysisRuleSet Condition=" '$(OS)' == 'Windows_NT' ">MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
++    <DocumentationFile>
++    </DocumentationFile>
+   </PropertyGroup>
+   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|AnyCPU'">
+     <OutputPath>..\output\</OutputPath>
+@@ -43,6 +45,7 @@
+   <ItemGroup>
+     <Reference Include="CSharp-SQLite">
+       <HintPath>.\CSharp-SQLite.dll</HintPath>
++      <Private>False</Private>
+     </Reference>
+     <Reference Include="System" />
+     <Reference Include="System.Core" />
+@@ -107,26 +110,30 @@
+     <ProjectReference Include="..\BizHawk.Client.Common\BizHawk.Client.Common.csproj">
+       <Project>{24a0aa3c-b25f-4197-b23d-476d6462dba0}</Project>
+       <Name>BizHawk.Client.Common</Name>
++      <Private>False</Private>
+     </ProjectReference>
+     <ProjectReference Include="..\BizHawk.Common\BizHawk.Common.csproj">
+       <Project>{866f8d13-0678-4ff9-80a4-a3993fd4d8a3}</Project>
+       <Name>BizHawk.Common</Name>
++      <Private>False</Private>
+     </ProjectReference>
+     <ProjectReference Include="..\BizHawk.Emulation.Common\BizHawk.Emulation.Common.csproj">
+       <Project>{e1a23168-b571-411c-b360-2229e7225e0e}</Project>
+       <Name>BizHawk.Emulation.Common</Name>
++      <Private>False</Private>
+     </ProjectReference>
+     <ProjectReference Include="..\BizHawk.Emulation.DiscSystem\BizHawk.Emulation.DiscSystem.csproj">
+       <Project>{f51946ea-827f-4d82-b841-1f2f6d060312}</Project>
+       <Name>BizHawk.Emulation.DiscSystem</Name>
++      <Private>False</Private>
+     </ProjectReference>
+   </ItemGroup>
+   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+-  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+-       Other similar extension points exist, see Microsoft.Common.targets.
+-  <Target Name="BeforeBuild">
+-  </Target>
+-  <Target Name="AfterBuild">
+-  </Target>
++  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
++       Other similar extension points exist, see Microsoft.Common.targets.
++  <Target Name="BeforeBuild">
++  </Target>
++  <Target Name="AfterBuild">
++  </Target>
+   -->
+ </Project>
+\ No newline at end of file
+diff --git a/BizHawk.Client.DiscoHawk/BizHawk.Client.DiscoHawk.csproj b/BizHawk.Client.DiscoHawk/BizHawk.Client.DiscoHawk.csproj
+index 19809199c..665cbdbe0 100644
+--- a/BizHawk.Client.DiscoHawk/BizHawk.Client.DiscoHawk.csproj
++++ b/BizHawk.Client.DiscoHawk/BizHawk.Client.DiscoHawk.csproj
+@@ -151,10 +151,12 @@
+     <ProjectReference Include="..\BizHawk.Common\BizHawk.Common.csproj">
+       <Project>{866F8D13-0678-4FF9-80A4-A3993FD4D8A3}</Project>
+       <Name>BizHawk.Common</Name>
++      <Private>False</Private>
+     </ProjectReference>
+     <ProjectReference Include="..\BizHawk.Emulation.DiscSystem\BizHawk.Emulation.DiscSystem.csproj">
+       <Project>{f51946ea-827f-4d82-b841-1f2f6d060312}</Project>
+       <Name>BizHawk.Emulation.DiscSystem</Name>
++      <Private>False</Private>
+     </ProjectReference>
+   </ItemGroup>
+   <ItemGroup>
+diff --git a/BizHawk.Client.EmuHawk/BizHawk.Client.EmuHawk.csproj b/BizHawk.Client.EmuHawk/BizHawk.Client.EmuHawk.csproj
+index 646beb4e1..fc6204ea4 100644
+--- a/BizHawk.Client.EmuHawk/BizHawk.Client.EmuHawk.csproj
++++ b/BizHawk.Client.EmuHawk/BizHawk.Client.EmuHawk.csproj
+@@ -69,33 +69,39 @@
+   <ItemGroup>
+     <Reference Include="GongShell">
+       <HintPath>..\References\GongShell.dll</HintPath>
++      <Private>False</Private>
+     </Reference>
+     <Reference Include="ICSharpCode.SharpZipLib">
+       <HintPath>..\References\ICSharpCode.SharpZipLib.dll</HintPath>
++      <Private>False</Private>
+     </Reference>
+     <Reference Include="Microsoft.CSharp" />
+     <!--<Reference Include="Microsoft.VisualBasic" Condition=" '$(OS)' == 'Windows_NT' " />-->
+     <Reference Include="Microsoft.VisualBasic" />
+     <Reference Include="Newtonsoft.Json">
+       <HintPath>..\References\Newtonsoft.Json.dll</HintPath>
++      <Private>False</Private>
+     </Reference>
+     <Reference Include="NLua, Version=1.3.2.0, Culture=neutral, processorArchitecture=MSIL">
+       <SpecificVersion>False</SpecificVersion>
+       <HintPath>..\output\dll\nlua\NLua.dll</HintPath>
+       <Private>False</Private>
+     </Reference>
+-    <Reference Include="OpenTK, Version=1.1.0.0, Culture=neutral, PublicKeyToken=bad199fe84eb3df4, processorArchitecture=MSIL">
++    <Reference Include="OpenTK, Version=3.0.1.0, Culture=neutral, PublicKeyToken=bad199fe84eb3df4, processorArchitecture=MSIL">
+       <SpecificVersion>False</SpecificVersion>
+       <HintPath>..\References\OpenTK.dll</HintPath>
++      <Private>False</Private>
+     </Reference>
+     <Reference Include="SlimDX">
+       <HintPath>..\References\x64\SlimDX.dll</HintPath>
++      <Private>False</Private>
+     </Reference>
+     <Reference Include="System" />
+     <Reference Include="System.Core">
+       <RequiredTargetFramework>3.5</RequiredTargetFramework>
+     </Reference>
+     <Reference Include="System.DirectoryServices" />
++    <Reference Include="System.IO.Compression.FileSystem" />
+     <Reference Include="System.Net.Http" />
+     <Reference Include="System.Numerics" />
+     <Reference Include="System.Xaml" />
+@@ -758,6 +764,222 @@
+     <Compile Include="RomStatusPicker.Designer.cs">
+       <DependentUpon>RomStatusPicker.cs</DependentUpon>
+     </Compile>
++    <Compile Include="RTC\Blast Generator Engines\RTC_BlastByteGenerator.cs" />
++    <Compile Include="RTC\Blast Generator Engines\RTC_BlastCheatGenerator.cs" />
++    <Compile Include="RTC\Blast Generator Engines\RTC_BlastPipeGenerator.cs" />
++    <Compile Include="RTC\Corruption Engines\RTC_BlastGeneratorEngine.cs" />
++    <Compile Include="RTC\Corruption Engines\RTC_CustomEngine.cs" />
++    <Compile Include="RTC\Corruption Engines\RTC_DistortionEngine.cs" />
++    <Compile Include="RTC\Corruption Engines\RTC_FreezeEngine.cs" />
++    <Compile Include="RTC\Corruption Engines\RTC_HellgenieEngine.cs" />
++    <Compile Include="RTC\Corruption Engines\RTC_NightmareEngine.cs" />
++    <Compile Include="RTC\Corruption Engines\RTC_PipeEngine.cs" />
++    <Compile Include="RTC\Corruption Engines\RTC_VectorEngine.cs" />
++    <Compile Include="RTC\Forms\Components\Blast Editor\ColumnSelector.cs">
++      <SubType>Form</SubType>
++    </Compile>
++    <Compile Include="RTC\Forms\Components\Blast Editor\ColumnSelector.Designer.cs">
++      <DependentUpon>ColumnSelector.cs</DependentUpon>
++    </Compile>
++    <Compile Include="RTC\Forms\Components\Containers\RTC_ListBox_Form.cs">
++      <SubType>Form</SubType>
++    </Compile>
++    <Compile Include="RTC\Forms\Components\Containers\RTC_ListBox_Form.designer.cs">
++      <DependentUpon>RTC_ListBox_Form.cs</DependentUpon>
++    </Compile>
++    <Compile Include="RTC\Forms\Components\Containers\RTC_SelectBox_Form.cs">
++      <SubType>Form</SubType>
++    </Compile>
++    <Compile Include="RTC\Forms\Components\Containers\RTC_SelectBox_Form.designer.cs">
++      <DependentUpon>RTC_SelectBox_Form.cs</DependentUpon>
++    </Compile>
++    <Compile Include="RTC\Forms\Components\Engine Config\RTC_CorruptionEngine_Form.cs">
++      <SubType>Form</SubType>
++    </Compile>
++    <Compile Include="RTC\Forms\Components\Engine Config\RTC_CorruptionEngine_Form.Designer.cs">
++      <DependentUpon>RTC_CorruptionEngine_Form.cs</DependentUpon>
++    </Compile>
++    <Compile Include="RTC\Forms\Components\Engine Config\RTC_GeneralParameters_Form.cs">
++      <SubType>Form</SubType>
++    </Compile>
++    <Compile Include="RTC\Forms\Components\Engine Config\RTC_GeneralParameters_Form.Designer.cs">
++      <DependentUpon>RTC_GeneralParameters_Form.cs</DependentUpon>
++    </Compile>
++    <Compile Include="RTC\Forms\Components\Engine Config\RTC_MemoryDomains_Form.cs">
++      <SubType>Form</SubType>
++    </Compile>
++    <Compile Include="RTC\Forms\Components\Engine Config\RTC_MemoryDomains_Form.Designer.cs">
++      <DependentUpon>RTC_MemoryDomains_Form.cs</DependentUpon>
++    </Compile>
++    <Compile Include="RTC\Forms\Components\Memory Tools\RTC_ListGen_Form.cs">
++      <SubType>Form</SubType>
++    </Compile>
++    <Compile Include="RTC\Forms\Components\Memory Tools\RTC_ListGen_Form.designer.cs">
++      <DependentUpon>RTC_ListGen_Form.cs</DependentUpon>
++    </Compile>
++    <Compile Include="RTC\Forms\Components\Memory Tools\RTC_VmdAct_Form.cs">
++      <SubType>Form</SubType>
++    </Compile>
++    <Compile Include="RTC\Forms\Components\Memory Tools\RTC_VmdAct_Form.designer.cs">
++      <DependentUpon>RTC_VmdAct_Form.cs</DependentUpon>
++    </Compile>
++    <Compile Include="RTC\Forms\Components\Memory Tools\RTC_VmdGen_Form.cs">
++      <SubType>Form</SubType>
++    </Compile>
++    <Compile Include="RTC\Forms\Components\Memory Tools\RTC_VmdGen_Form.designer.cs">
++      <DependentUpon>RTC_VmdGen_Form.cs</DependentUpon>
++    </Compile>
++    <Compile Include="RTC\Forms\Components\Memory Tools\RTC_VmdNoTool_Form.cs">
++      <SubType>Form</SubType>
++    </Compile>
++    <Compile Include="RTC\Forms\Components\Memory Tools\RTC_VmdNoTool_Form.designer.cs">
++      <DependentUpon>RTC_VmdNoTool_Form.cs</DependentUpon>
++    </Compile>
++    <Compile Include="RTC\Forms\Components\Memory Tools\RTC_VmdPool_Form.cs">
++      <SubType>Form</SubType>
++    </Compile>
++    <Compile Include="RTC\Forms\Components\Memory Tools\RTC_VmdPool_Form.designer.cs">
++      <DependentUpon>RTC_VmdPool_Form.cs</DependentUpon>
++    </Compile>
++    <Compile Include="RTC\Forms\Components\RTC_Template_Form.cs">
++      <SubType>Form</SubType>
++    </Compile>
++    <Compile Include="RTC\Forms\Components\RTC_Template_Form.designer.cs">
++      <DependentUpon>RTC_Template_Form.cs</DependentUpon>
++    </Compile>
++    <Compile Include="RTC\Forms\Components\Settings\RTC_SettingsAestethics_Form.cs">
++      <SubType>Form</SubType>
++    </Compile>
++    <Compile Include="RTC\Forms\Components\Settings\RTC_SettingsAestethics_Form.designer.cs">
++      <DependentUpon>RTC_SettingsAestethics_Form.cs</DependentUpon>
++    </Compile>
++    <Compile Include="RTC\Forms\Components\Settings\RTC_SettingsGeneral_Form.cs">
++      <SubType>Form</SubType>
++    </Compile>
++    <Compile Include="RTC\Forms\Components\Settings\RTC_SettingsGeneral_Form.designer.cs">
++      <DependentUpon>RTC_SettingsGeneral_Form.cs</DependentUpon>
++    </Compile>
++    <Compile Include="RTC\Forms\Components\Settings\RTC_SettingsNetCore_Form.cs">
++      <SubType>Form</SubType>
++    </Compile>
++    <Compile Include="RTC\Forms\Components\Settings\RTC_SettingsNetCore_Form.designer.cs">
++      <DependentUpon>RTC_SettingsNetCore_Form.cs</DependentUpon>
++    </Compile>
++    <Compile Include="RTC\Forms\RTC_BlastEditor_Form.cs">
++      <SubType>Form</SubType>
++    </Compile>
++    <Compile Include="RTC\Forms\RTC_BlastEditor_Form.designer.cs">
++      <DependentUpon>RTC_BlastEditor_Form.cs</DependentUpon>
++    </Compile>
++    <Compile Include="RTC\Forms\RTC_BlastGenerator_Form.cs">
++      <SubType>Form</SubType>
++    </Compile>
++    <Compile Include="RTC\Forms\RTC_BlastGenerator_Form.designer.cs">
++      <DependentUpon>RTC_BlastGenerator_Form.cs</DependentUpon>
++    </Compile>
++    <Compile Include="RTC\Forms\RTC_ConnectionStatus_Form.cs">
++      <SubType>Form</SubType>
++    </Compile>
++    <Compile Include="RTC\Forms\RTC_ConnectionStatus_Form.designer.cs">
++      <DependentUpon>RTC_ConnectionStatus_Form.cs</DependentUpon>
++    </Compile>
++    <Compile Include="RTC\Forms\RTC_Core_Form.cs">
++      <SubType>Form</SubType>
++    </Compile>
++    <Compile Include="RTC\Forms\RTC_Core_Form.designer.cs">
++      <DependentUpon>RTC_Core_Form.cs</DependentUpon>
++    </Compile>
++    <Compile Include="RTC\Forms\RTC_CustomEngineConfig_Form.cs">
++      <SubType>Form</SubType>
++    </Compile>
++    <Compile Include="RTC\Forms\RTC_CustomEngineConfig_Form.designer.cs">
++      <DependentUpon>RTC_CustomEngineConfig_Form.cs</DependentUpon>
++    </Compile>
++    <Compile Include="RTC\Forms\RTC_EngineConfig_Form.cs">
++      <SubType>Form</SubType>
++    </Compile>
++    <Compile Include="RTC\Forms\RTC_EngineConfig_Form.designer.cs">
++      <DependentUpon>RTC_EngineConfig_Form.cs</DependentUpon>
++    </Compile>
++    <Compile Include="RTC\Forms\RTC_GlitchHarvester_Form.cs">
++      <SubType>Form</SubType>
++    </Compile>
++    <Compile Include="RTC\Forms\RTC_GlitchHarvester_Form.designer.cs">
++      <DependentUpon>RTC_GlitchHarvester_Form.cs</DependentUpon>
++    </Compile>
++    <Compile Include="RTC\Forms\RTC_HotkeyConfig_Form.cs">
++      <SubType>Form</SubType>
++    </Compile>
++    <Compile Include="RTC\Forms\RTC_HotkeyConfig_Form.designer.cs">
++      <DependentUpon>RTC_HotkeyConfig_Form.cs</DependentUpon>
++    </Compile>
++    <Compile Include="RTC\Forms\RTC_MultiPeerPopout_Form.cs">
++      <SubType>Form</SubType>
++    </Compile>
++    <Compile Include="RTC\Forms\RTC_MultiPeerPopout_Form.designer.cs">
++      <DependentUpon>RTC_MultiPeerPopout_Form.cs</DependentUpon>
++    </Compile>
++    <Compile Include="RTC\Forms\RTC_Multiplayer_Form.cs">
++      <SubType>Form</SubType>
++    </Compile>
++    <Compile Include="RTC\Forms\RTC_Multiplayer_Form.designer.cs">
++      <DependentUpon>RTC_Multiplayer_Form.cs</DependentUpon>
++    </Compile>
++    <Compile Include="RTC\Forms\RTC_NewBlastEditor_Form.cs">
++      <SubType>Form</SubType>
++    </Compile>
++    <Compile Include="RTC\Forms\RTC_NewBlastEditor_Form.designer.cs">
++      <DependentUpon>RTC_NewBlastEditor_Form.cs</DependentUpon>
++    </Compile>
++    <Compile Include="RTC\Forms\RTC_NoteEditor_Form.cs">
++      <SubType>Form</SubType>
++    </Compile>
++    <Compile Include="RTC\Forms\RTC_NoteEditor_Form.designer.cs">
++      <DependentUpon>RTC_NoteEditor_Form.cs</DependentUpon>
++    </Compile>
++    <Compile Include="RTC\Forms\RTC_Settings_Form.cs">
++      <SubType>Form</SubType>
++    </Compile>
++    <Compile Include="RTC\Forms\RTC_Settings_Form.designer.cs">
++      <DependentUpon>RTC_Settings_Form.cs</DependentUpon>
++    </Compile>
++    <Compile Include="RTC\Forms\RTC_StockpileBlastBoard_Form.cs">
++      <SubType>Form</SubType>
++    </Compile>
++    <Compile Include="RTC\Forms\RTC_StockpileBlastBoard_Form.designer.cs">
++      <DependentUpon>RTC_StockpileBlastBoard_Form.cs</DependentUpon>
++    </Compile>
++    <Compile Include="RTC\Forms\RTC_StockpilePlayer_Form.cs">
++      <SubType>Form</SubType>
++    </Compile>
++    <Compile Include="RTC\Forms\RTC_StockpilePlayer_Form.designer.cs">
++      <DependentUpon>RTC_StockpilePlayer_Form.cs</DependentUpon>
++    </Compile>
++    <Compile Include="RTC\Forms\RTC_Test_Form.cs">
++      <SubType>Form</SubType>
++    </Compile>
++    <Compile Include="RTC\Forms\RTC_Test_Form.designer.cs">
++      <DependentUpon>RTC_Test_Form.cs</DependentUpon>
++    </Compile>
++    <Compile Include="RTC\RTC_BlastTools.cs" />
++    <Compile Include="RTC\RTC_Core.cs" />
++    <Compile Include="RTC\RTC_Diff.cs" />
++    <Compile Include="RTC\RTC_Enums.cs" />
++    <Compile Include="RTC\RTC_Extensions.cs" />
++    <Compile Include="RTC\RTC_Filtering.cs" />
++    <Compile Include="RTC\RTC_GameProtection.cs" />
++    <Compile Include="RTC\RTC_Hooks.cs" />
++    <Compile Include="RTC\RTC_Hotkeys.cs" />
++    <Compile Include="RTC\RTC_MemoryDomains.cs" />
++    <Compile Include="RTC\RTC_NetCore.cs" />
++    <Compile Include="RTC\RTC_NetCoreSettings.cs" />
++    <Compile Include="RTC\RTC_NetCore_RTCExtensions.cs" />
++    <Compile Include="RTC\RTC_Objects.cs" />
++    <Compile Include="RTC\RTC_Params.cs" />
++    <Compile Include="RTC\RTC_Render.cs" />
++    <Compile Include="RTC\RTC_RPC.cs" />
++    <Compile Include="RTC\RTC_StepActions.cs" />
++    <Compile Include="RTC\RTC_StockpileManager.cs" />
+     <Compile Include="Sound\Interfaces\IBufferedSoundProvider.cs" />
+     <Compile Include="Sound\Interfaces\ISoundOutput.cs" />
+     <Compile Include="Sound\Output\DirectSoundSoundOutput.cs" />
+@@ -1536,6 +1758,99 @@
+     <EmbeddedResource Include="RomStatusPicker.resx">
+       <DependentUpon>RomStatusPicker.cs</DependentUpon>
+     </EmbeddedResource>
++    <EmbeddedResource Include="RTC\Forms\Components\Blast Editor\ColumnSelector.resx">
++      <DependentUpon>ColumnSelector.cs</DependentUpon>
++    </EmbeddedResource>
++    <EmbeddedResource Include="RTC\Forms\Components\Containers\RTC_ListBox_Form.resx">
++      <DependentUpon>RTC_ListBox_Form.cs</DependentUpon>
++    </EmbeddedResource>
++    <EmbeddedResource Include="RTC\Forms\Components\Containers\RTC_SelectBox_Form.resx">
++      <DependentUpon>RTC_SelectBox_Form.cs</DependentUpon>
++    </EmbeddedResource>
++    <EmbeddedResource Include="RTC\Forms\Components\Engine Config\RTC_CorruptionEngine_Form.resx">
++      <DependentUpon>RTC_CorruptionEngine_Form.cs</DependentUpon>
++    </EmbeddedResource>
++    <EmbeddedResource Include="RTC\Forms\Components\Engine Config\RTC_GeneralParameters_Form.resx">
++      <DependentUpon>RTC_GeneralParameters_Form.cs</DependentUpon>
++    </EmbeddedResource>
++    <EmbeddedResource Include="RTC\Forms\Components\Engine Config\RTC_MemoryDomains_Form.resx">
++      <DependentUpon>RTC_MemoryDomains_Form.cs</DependentUpon>
++    </EmbeddedResource>
++    <EmbeddedResource Include="RTC\Forms\Components\Memory Tools\RTC_ListGen_Form.resx">
++      <DependentUpon>RTC_ListGen_Form.cs</DependentUpon>
++    </EmbeddedResource>
++    <EmbeddedResource Include="RTC\Forms\Components\Memory Tools\RTC_VmdAct_Form.resx">
++      <DependentUpon>RTC_VmdAct_Form.cs</DependentUpon>
++    </EmbeddedResource>
++    <EmbeddedResource Include="RTC\Forms\Components\Memory Tools\RTC_VmdGen_Form.resx">
++      <DependentUpon>RTC_VmdGen_Form.cs</DependentUpon>
++    </EmbeddedResource>
++    <EmbeddedResource Include="RTC\Forms\Components\Memory Tools\RTC_VmdNoTool_Form.resx">
++      <DependentUpon>RTC_VmdNoTool_Form.cs</DependentUpon>
++    </EmbeddedResource>
++    <EmbeddedResource Include="RTC\Forms\Components\Memory Tools\RTC_VmdPool_Form.resx">
++      <DependentUpon>RTC_VmdPool_Form.cs</DependentUpon>
++    </EmbeddedResource>
++    <EmbeddedResource Include="RTC\Forms\Components\RTC_Template_Form.resx">
++      <DependentUpon>RTC_Template_Form.cs</DependentUpon>
++    </EmbeddedResource>
++    <EmbeddedResource Include="RTC\Forms\Components\Settings\RTC_SettingsAestethics_Form.resx">
++      <DependentUpon>RTC_SettingsAestethics_Form.cs</DependentUpon>
++    </EmbeddedResource>
++    <EmbeddedResource Include="RTC\Forms\Components\Settings\RTC_SettingsGeneral_Form.resx">
++      <DependentUpon>RTC_SettingsGeneral_Form.cs</DependentUpon>
++    </EmbeddedResource>
++    <EmbeddedResource Include="RTC\Forms\Components\Settings\RTC_SettingsNetCore_Form.resx">
++      <DependentUpon>RTC_SettingsNetCore_Form.cs</DependentUpon>
++    </EmbeddedResource>
++    <EmbeddedResource Include="RTC\Forms\RTC_BlastEditor_Form.resx">
++      <DependentUpon>RTC_BlastEditor_Form.cs</DependentUpon>
++    </EmbeddedResource>
++    <EmbeddedResource Include="RTC\Forms\RTC_BlastGenerator_Form.resx">
++      <DependentUpon>RTC_BlastGenerator_Form.cs</DependentUpon>
++    </EmbeddedResource>
++    <EmbeddedResource Include="RTC\Forms\RTC_ConnectionStatus_Form.resx">
++      <DependentUpon>RTC_ConnectionStatus_Form.cs</DependentUpon>
++    </EmbeddedResource>
++    <EmbeddedResource Include="RTC\Forms\RTC_Core_Form.resx">
++      <DependentUpon>RTC_Core_Form.cs</DependentUpon>
++    </EmbeddedResource>
++    <EmbeddedResource Include="RTC\Forms\RTC_CustomEngineConfig_Form.resx">
++      <DependentUpon>RTC_CustomEngineConfig_Form.cs</DependentUpon>
++    </EmbeddedResource>
++    <EmbeddedResource Include="RTC\Forms\RTC_EngineConfig_Form.resx">
++      <DependentUpon>RTC_EngineConfig_Form.cs</DependentUpon>
++    </EmbeddedResource>
++    <EmbeddedResource Include="RTC\Forms\RTC_GlitchHarvester_Form.resx">
++      <DependentUpon>RTC_GlitchHarvester_Form.cs</DependentUpon>
++    </EmbeddedResource>
++    <EmbeddedResource Include="RTC\Forms\RTC_HotkeyConfig_Form.resx">
++      <DependentUpon>RTC_HotkeyConfig_Form.cs</DependentUpon>
++    </EmbeddedResource>
++    <EmbeddedResource Include="RTC\Forms\RTC_MultiPeerPopout_Form.resx">
++      <DependentUpon>RTC_MultiPeerPopout_Form.cs</DependentUpon>
++    </EmbeddedResource>
++    <EmbeddedResource Include="RTC\Forms\RTC_Multiplayer_Form.resx">
++      <DependentUpon>RTC_Multiplayer_Form.cs</DependentUpon>
++    </EmbeddedResource>
++    <EmbeddedResource Include="RTC\Forms\RTC_NewBlastEditor_Form.resx">
++      <DependentUpon>RTC_NewBlastEditor_Form.cs</DependentUpon>
++    </EmbeddedResource>
++    <EmbeddedResource Include="RTC\Forms\RTC_NoteEditor_Form.resx">
++      <DependentUpon>RTC_NoteEditor_Form.cs</DependentUpon>
++    </EmbeddedResource>
++    <EmbeddedResource Include="RTC\Forms\RTC_Settings_Form.resx">
++      <DependentUpon>RTC_Settings_Form.cs</DependentUpon>
++    </EmbeddedResource>
++    <EmbeddedResource Include="RTC\Forms\RTC_StockpileBlastBoard_Form.resx">
++      <DependentUpon>RTC_StockpileBlastBoard_Form.cs</DependentUpon>
++    </EmbeddedResource>
++    <EmbeddedResource Include="RTC\Forms\RTC_StockpilePlayer_Form.resx">
++      <DependentUpon>RTC_StockpilePlayer_Form.cs</DependentUpon>
++    </EmbeddedResource>
++    <EmbeddedResource Include="RTC\Forms\RTC_Test_Form.resx">
++      <DependentUpon>RTC_Test_Form.cs</DependentUpon>
++    </EmbeddedResource>
+     <EmbeddedResource Include="tools\AutoHawk.resx">
+       <DependentUpon>AutoHawk.cs</DependentUpon>
+     </EmbeddedResource>
+@@ -1759,42 +2074,52 @@
+     <ProjectReference Include="..\BizHawk.Client.ApiHawk\BizHawk.Client.ApiHawk.csproj">
+       <Project>{8e2f11f2-3955-4382-8c3a-ceba1276caea}</Project>
+       <Name>BizHawk.Client.ApiHawk</Name>
++      <Private>False</Private>
+     </ProjectReference>
+     <ProjectReference Include="..\BizHawk.Client.Common\BizHawk.Client.Common.csproj">
+       <Project>{24A0AA3C-B25F-4197-B23D-476D6462DBA0}</Project>
+       <Name>BizHawk.Client.Common</Name>
++      <Private>False</Private>
+     </ProjectReference>
+     <ProjectReference Include="..\BizHawk.Common\BizHawk.Common.csproj">
+       <Project>{866F8D13-0678-4FF9-80A4-A3993FD4D8A3}</Project>
+       <Name>BizHawk.Common</Name>
++      <Private>False</Private>
+     </ProjectReference>
+     <ProjectReference Include="..\BizHawk.Emulation.Common\BizHawk.Emulation.Common.csproj">
+       <Project>{e1a23168-b571-411c-b360-2229e7225e0e}</Project>
+       <Name>BizHawk.Emulation.Common</Name>
++      <Private>False</Private>
+     </ProjectReference>
+     <ProjectReference Include="..\BizHawk.Emulation.Cores\BizHawk.Emulation.Cores.csproj">
+       <Project>{197D4314-8A9F-49BA-977D-54ACEFAEB6BA}</Project>
+       <Name>BizHawk.Emulation.Cores</Name>
++      <Private>False</Private>
+     </ProjectReference>
+     <ProjectReference Include="..\BizHawk.Emulation.DiscSystem\BizHawk.Emulation.DiscSystem.csproj">
+       <Project>{f51946ea-827f-4d82-b841-1f2f6d060312}</Project>
+       <Name>BizHawk.Emulation.DiscSystem</Name>
++      <Private>False</Private>
+     </ProjectReference>
+     <ProjectReference Include="..\Bizware\BizHawk.Bizware.BizwareGL.GdiPlus\BizHawk.Bizware.BizwareGL.GdiPlus.csproj">
+       <Project>{337CA23E-65E7-44E1-9411-97EE08BB8116}</Project>
+       <Name>BizHawk.Bizware.BizwareGL.GdiPlus</Name>
++      <Private>False</Private>
+     </ProjectReference>
+     <ProjectReference Include="..\Bizware\BizHawk.Bizware.BizwareGL.OpenTK\BizHawk.Bizware.BizwareGL.OpenTK.csproj">
+       <Project>{5160CFB1-5389-47C1-B7F6-8A0DC97641EE}</Project>
+       <Name>BizHawk.Bizware.BizwareGL.OpenTK</Name>
++      <Private>False</Private>
+     </ProjectReference>
+     <ProjectReference Include="..\Bizware\BizHawk.Bizware.BizwareGL.SlimDX\BizHawk.Bizware.BizwareGL.SlimDX.csproj">
+       <Project>{E6B436B1-A3CD-4C9A-8F76-5D7154726884}</Project>
+       <Name>BizHawk.Bizware.BizwareGL.SlimDX</Name>
++      <Private>False</Private>
+     </ProjectReference>
+     <ProjectReference Include="..\Bizware\BizHawk.Bizware.BizwareGL\BizHawk.Bizware.BizwareGL.csproj">
+       <Project>{9F84A0B2-861E-4EF4-B89B-5E2A3F38A465}</Project>
+       <Name>BizHawk.Bizware.BizwareGL</Name>
++      <Private>False</Private>
+     </ProjectReference>
+   </ItemGroup>
+   <ItemGroup>
+@@ -1878,6 +2203,9 @@
+     <None Include="config\ControllerImages\GENController.png" />
+   </ItemGroup>
+   <ItemGroup>
++    <Content Include="Resources\inifile_icon.png" />
++    <Content Include="Resources\notepad_icon.png" />
++    <Content Include="Resources\paintbrush_icon.png" />
+     <None Include="Resources\MoveTop.png" />
+     <None Include="Resources\MoveBottom.png" />
+     <None Include="Resources\MoveTop.bmp" />
+diff --git a/BizHawk.Client.EmuHawk/DisplayManager/OSDManager.cs b/BizHawk.Client.EmuHawk/DisplayManager/OSDManager.cs
+index d0befae66..76cef86fa 100644
+--- a/BizHawk.Client.EmuHawk/DisplayManager/OSDManager.cs
++++ b/BizHawk.Client.EmuHawk/DisplayManager/OSDManager.cs
+@@ -132,6 +132,12 @@ namespace BizHawk.Client.EmuHawk
+ 
+ 		public void AddMessage(string message)
+ 		{
++				
++			//RTC_HIJACK : Disable OSD Messages (Add this block)
++			if (RTC.RTC_Core.BizhawkOsdDisabled)
++				return;
++			//--------------------------------
++			
+ 			messages.Add(new UIMessage { Message = message, ExpireAt = DateTime.Now + TimeSpan.FromSeconds(2) });
+ 		}
+ 
+diff --git a/BizHawk.Client.EmuHawk/LogConsole.cs b/BizHawk.Client.EmuHawk/LogConsole.cs
+index eb50cf1d1..3d87ec419 100644
+--- a/BizHawk.Client.EmuHawk/LogConsole.cs
++++ b/BizHawk.Client.EmuHawk/LogConsole.cs
+@@ -17,7 +17,8 @@ using BizHawk.Client.Common;
+ 
+ namespace BizHawk.Client.EmuHawk
+ {
+-	static class LogConsole
++	//RTC_HIJACK - Make public
++	public static class LogConsole
+ 	{
+ 		public static bool ConsoleVisible
+ 		{
+diff --git a/BizHawk.Client.EmuHawk/MainForm.Designer.cs b/BizHawk.Client.EmuHawk/MainForm.Designer.cs
+index 746d1ebd3..4295a66f7 100644
+--- a/BizHawk.Client.EmuHawk/MainForm.Designer.cs
++++ b/BizHawk.Client.EmuHawk/MainForm.Designer.cs
+@@ -1470,7 +1470,10 @@
+             this.HotkeysMenuItem,
+             this.DisplayConfigMenuItem,
+             this.SoundMenuItem,
+-            this.PathsMenuItem,
++			
++            //RTC_HIJACK : Hide Paths Menu Item
++            //this.PathsMenuItem,
++			
+             this.FirmwaresMenuItem,
+             this.MessagesMenuItem,
+             this.AutofireMenuItem,
+@@ -4231,6 +4234,13 @@
+             this.Load += new System.EventHandler(this.MainForm_Load);
+             this.Shown += new System.EventHandler(this.MainForm_Shown);
+             this.Enter += new System.EventHandler(this.MainForm_Enter);
++			
++			
++			//RTC_HIJACK : Add ResizeEnd and FormClosing Handlers to MainForm.Designer.cs
++			this.ResizeEnd += new System.EventHandler(this.MainForm_ResizeEnd);
++			this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.MainForm_FormClosing);
++
++			
+             this.MouseClick += new System.Windows.Forms.MouseEventHandler(this.MainForm_MouseClick);
+             this.MouseMove += new System.Windows.Forms.MouseEventHandler(this.MainForm_MouseMove);
+             this.Resize += new System.EventHandler(this.MainForm_Resize);
+@@ -4358,7 +4368,10 @@
+ 		private System.Windows.Forms.ToolStripMenuItem ToolBoxMenuItem;
+ 		private System.Windows.Forms.ToolStripSeparator toolStripSeparator12;
+ 		private System.Windows.Forms.ToolStripMenuItem SwitchToFullscreenMenuItem;
+-		private StatusStripEx MainStatusBar;
++		
++		//RTC_HIJACK : Put MainStatusBar public
++		public StatusStripEx MainStatusBar;
++		
+ 		private System.Windows.Forms.ToolStripStatusLabel EmuStatus;
+ 		private System.Windows.Forms.ToolStripMenuItem MessagesMenuItem;
+ 		private System.Windows.Forms.ToolStripMenuItem TI83SubMenu;
+@@ -4398,7 +4411,11 @@
+ 		private System.Windows.Forms.ToolStripDropDownButton PlayRecordStatusButton;
+ 		private System.Windows.Forms.ToolStripDropDownButton DumpStatusButton;
+ 		private System.Windows.Forms.ToolStripMenuItem ViewSubtitlesContextMenuItem;
+-		private MenuStripEx MainformMenu;
++		
++		
++		//RTC_HIJACK : put MainformMenu public
++		public MenuStripEx MainformMenu;
++		
+ 		private System.Windows.Forms.ToolStripMenuItem GBSubMenu;
+ 		private System.Windows.Forms.ToolStripStatusLabel SaveSlotsStatusLabel;
+ 		private System.Windows.Forms.ToolStripStatusLabel Slot1StatusButton;
+diff --git a/BizHawk.Client.EmuHawk/MainForm.Events.cs b/BizHawk.Client.EmuHawk/MainForm.Events.cs
+index 314c2adaa..d4723c5ef 100644
+--- a/BizHawk.Client.EmuHawk/MainForm.Events.cs
++++ b/BizHawk.Client.EmuHawk/MainForm.Events.cs
+@@ -373,7 +373,9 @@ namespace BizHawk.Client.EmuHawk
+ 
+ 		private void CloseRomMenuItem_Click(object sender, EventArgs e)
+ 		{
+-			CloseRom();
++			//RTC_HIJACK : Disable normal CloseRom and replace with RTC CloseRom
++			//CloseRom();
++			RTC.RTC_Hooks.CLOSE_GAME(true);
+ 		}
+ 
+ 		private void Savestate1MenuItem_Click(object sender, EventArgs e) { SaveQuickSave("QuickSave1"); }
+diff --git a/BizHawk.Client.EmuHawk/MainForm.Hotkey.cs b/BizHawk.Client.EmuHawk/MainForm.Hotkey.cs
+index bc3bb7630..62bbdcbdd 100644
+--- a/BizHawk.Client.EmuHawk/MainForm.Hotkey.cs
++++ b/BizHawk.Client.EmuHawk/MainForm.Hotkey.cs
+@@ -12,8 +12,13 @@ namespace BizHawk.Client.EmuHawk
+ 		{
+ 			switch (trigger)
+ 			{
++				//RTC_HIJACK : Hook for HOTKEY_CHECK
+ 				default:
+-					return false;
++					if (!RTC.RTC_Hooks.HOTKEY_CHECK(trigger))
++						return false;
++					else
++						break;
++				//---------------------
+ 
+ 				// General
+ 				case "Pause":
+@@ -61,7 +66,9 @@ namespace BizHawk.Client.EmuHawk
+ 					OpenRom();
+ 					break;
+ 				case "Close ROM":
+-					CloseRom();
++					//RTC_HIJACK : Disable normal CloseRom and replace with RTC CloseRom
++					//CloseRom();
++					RTC.RTC_Hooks.CLOSE_GAME(true);
+ 					break;
+ 				case "Load Last ROM":
+ 					LoadRomFromRecent(Global.Config.RecentRoms.MostRecent);
+diff --git a/BizHawk.Client.EmuHawk/MainForm.cs b/BizHawk.Client.EmuHawk/MainForm.cs
+index 6f5348da7..6d32f1d59 100644
+--- a/BizHawk.Client.EmuHawk/MainForm.cs
++++ b/BizHawk.Client.EmuHawk/MainForm.cs
+@@ -66,17 +66,21 @@ namespace BizHawk.Client.EmuHawk
+ 			HandleToggleLightAndLink();
+ 			SetStatusBar();
+ 
+-			// New version notification
+-			UpdateChecker.CheckComplete += (s2, e2) =>
+-			{
+-				if (IsDisposed)
+-				{
+-					return;
+-				}
++			//RTC_HIJACK : Hook at Mainform MainForm_load() and disable version check
++			RTC.RTC_Hooks.MAINFORM_FORM_LOAD_END();
++			/*
++						// New version notification
++						UpdateChecker.CheckComplete += (s2, e2) =>
++						{
++							if (IsDisposed)
++							{
++								return;
++							}
+ 
+-				this.BeginInvoke(() => { UpdateNotification.Visible = UpdateChecker.IsNewVersionAvailable; });
+-			};
+-			UpdateChecker.BeginCheck(); // Won't actually check unless enabled by user
++							this.BeginInvoke(() => { UpdateNotification.Visible = UpdateChecker.IsNewVersionAvailable; });
++						};
++						UpdateChecker.BeginCheck(); // Won't actually check unless enabled by user
++						*/
+ 		}
+ 
+ 		static MainForm()
+@@ -120,7 +124,9 @@ namespace BizHawk.Client.EmuHawk
+ 			Icon = Properties.Resources.logo;
+ 			InitializeComponent();
+ 			Global.Game = GameInfo.NullInstance;
+-			if (Global.Config.ShowLogWindow)
++			
++			//RTC_Hijack - Check for manually triggered console
++			if (Global.Config.ShowLogWindow || RTC.RTC_Hooks.ShowConsole)
+ 			{
+ 				LogConsole.ShowConsole();
+ 				DisplayLogWindowMenuItem.Checked = true;
+@@ -662,7 +668,11 @@ namespace BizHawk.Client.EmuHawk
+ 			if (ActiveForm is HotkeyConfig
+ 				|| ActiveForm is ControllerConfig
+ 				|| ActiveForm is TAStudio
+-				|| ActiveForm is VirtualpadTool)
++				|| ActiveForm is VirtualpadTool
++				
++					//RTC_Hijack : Adding RTC Windows for Background input
++					|| RTC.RTC_Hooks.IsAllowedBackgroundInputForm(ActiveForm)
++					)//--------------------------------------
+ 			{
+ 				return true;
+ 			}
+@@ -995,9 +1005,11 @@ namespace BizHawk.Client.EmuHawk
+ 				}
+ 
+ 				Console.WriteLine("Selecting display size " + lastComputedSize);
+-
++				
+ 				// Change size
+-				Size = new Size(lastComputedSize.Width + borderWidth, lastComputedSize.Height + borderHeight);
++				//RTC_HIJACK : Don't change the MainForm Size
++				//Size = new Size(lastComputedSize.Width + borderWidth, lastComputedSize.Height + borderHeight);
++
+ 				PerformLayout();
+ 				PresentationPanel.Resized = true;
+ 
+@@ -1433,6 +1445,11 @@ namespace BizHawk.Client.EmuHawk
+ 
+ 		private void SetWindowText()
+ 		{
++			//RTC_HIJACK : Don't change the MainForm Title
++			if (Convert.ToBoolean(1)) // weird hack to make the precompiler shut the fuck up about unreachable code
++				return; //Don't change MainForm Title
++						//----------------------------
++						
+ 			string str = "";
+ 
+ 			if (_inResizeLoop)
+@@ -2007,7 +2024,8 @@ namespace BizHawk.Client.EmuHawk
+ 			}
+ 		}
+ 
+-		private BitmapBuffer MakeScreenshotImage()
++		//RTC_HIJACK : make MakeScreenshotImage() method public
++		public BitmapBuffer MakeScreenshotImage()
+ 		{
+ 			return GlobalWin.DisplayManager.RenderVideoProvider(_currentVideoProvider);
+ 		}
+@@ -2175,6 +2193,10 @@ namespace BizHawk.Client.EmuHawk
+ 				FilterIndex = _lastOpenRomFilter
+ 			};
+ 
++			//RTC_HIJACK : Fixing Bizhawk's LastRomPath
++			ofd.InitialDirectory = Global.Config.LastRomPath;
++			//-----------------------
++			
+ 			var result = ofd.ShowHawkDialog();
+ 			if (result != DialogResult.OK)
+ 			{
+@@ -2250,7 +2272,8 @@ namespace BizHawk.Client.EmuHawk
+ 			}
+ 		}
+ 
+-		private void SaveConfig(string path = "")
++		//RTC_HIJACK : Make SaveConfig public
++		public void SaveConfig(string path = "")
+ 		{
+ 			if (Global.Config.SaveWindowPosition)
+ 			{
+@@ -3021,6 +3044,11 @@ namespace BizHawk.Client.EmuHawk
+ 				{
+ 					GlobalWin.Tools.LuaConsole.LuaImp.CallFrameAfterEvent();
+ 				}
++				
++				//RTC_HIJACK : Hooking the step here as it's just before the tools update
++				RTC.RTC_Hooks.CPU_STEP(isRewinding, isFastForwarding);
++				//---------------------------------------
++
+ 
+ 				if (IsTurboing)
+ 				{
+@@ -3147,7 +3175,8 @@ namespace BizHawk.Client.EmuHawk
+ 		/// <summary>
+ 		/// start AV recording
+ 		/// </summary>
+-		private void RecordAvBase(string videowritername, string filename, bool unattended)
++		//RTC_HIJACK : make RecordAvBase() method public
++		public void RecordAvBase(string videowritername, string filename, bool unattended)
+ 		{
+ 			if (_currAviWriter != null)
+ 			{
+@@ -3339,7 +3368,8 @@ namespace BizHawk.Client.EmuHawk
+ 			RewireSound();
+ 		}
+ 
+-		private void StopAv()
++		//RTC_HIJACK : make StopAv() method public
++		public void StopAv()
+ 		{
+ 			if (_currAviWriter == null)
+ 			{
+@@ -3554,7 +3584,13 @@ namespace BizHawk.Client.EmuHawk
+ 			if (args.OpenAdvanced is OpenAdvanced_OpenRom)
+ 			{
+ 				var leftpart = path.Split('|')[0];
+-				Global.Config.LastRomPath = Path.GetFullPath(Path.GetDirectoryName(leftpart));
++				//RTC_Hijack - Don't set this if it's an RTC dir
++				string fullPath = Path.GetFullPath(Path.GetDirectoryName(leftpart));
++				if (!fullPath.Contains("\\WORKING") && !fullPath.Contains("\\ASSETS"))
++				{
++					Global.Config.LastRomPath = Path.GetFullPath(Path.GetDirectoryName(leftpart));
++				}//---Hijack_End
++					
+ 			}
+ 
+ 			return true;
+@@ -3562,7 +3598,11 @@ namespace BizHawk.Client.EmuHawk
+ 
+ 		// Still needs a good bit of refactoring
+ 		public bool _LoadRom(string path, LoadRomArgs args)
+-		{
++		{			
++			//RTC_HIJACK : Hook at beginning of LoadRom
++			RTC.RTC_Hooks.LOAD_GAME_BEGIN();
++			//----------
++			
+ 			path = HawkFile.Util_ResolveLink(path);
+ 
+ 			// default args
+@@ -3777,8 +3817,13 @@ namespace BizHawk.Client.EmuHawk
+ 						GlobalWin.Tools.Restart<LuaConsole>();
+ 					}
+ 
+-					Global.Config.RecentRoms.Add(loaderName);
+-					JumpLists.AddRecentItem(loaderName, ioa.DisplayName);
++					//RTC_Hijack ignoring default.nes for Recent Menu
++					if (!(loader.CanonicalFullPath.Contains("\\ASSETS\\") || loader.CanonicalFullPath.Contains("\\TEMP\\") ||
++					      loader.CanonicalFullPath.Contains("\\SKS\\") || loader.CanonicalFullPath.Contains("\\SSK\\" ) || loader.CanonicalFullPath.Contains("\\MP\\")))
++					{
++						Global.Config.RecentRoms.Add(loaderName);
++						JumpLists.AddRecentItem(loaderName, ioa.DisplayName);
++					}//----------------------
+ 
+ 					// Don't load Save Ram if a movie is being loaded
+ 					if (!Global.MovieSession.MovieIsQueued)
+@@ -3842,6 +3887,11 @@ namespace BizHawk.Client.EmuHawk
+ 					}
+ 
+ 					ClientApi.OnRomLoaded();
++					
++					//RTC_HIJACK : Hook at the end of LoadRom
++					RTC.RTC_Hooks.LOAD_GAME_DONE();
++					//----------
++					
+ 					return true;
+ 				}
+ 				else
+@@ -3851,7 +3901,10 @@ namespace BizHawk.Client.EmuHawk
+ 
+ 					// The ROM has been loaded by a recursive invocation of the LoadROM method.
+ 					if (!(Emulator is NullEmulator))
+-					{
++						{
++						//RTC_HIJACK : Hook in case this happens
++						RTC.RTC_Hooks.LOAD_GAME_DONE();
++						//----------
+ 						ClientApi.OnRomLoaded();
+ 						return true;
+ 					}
+@@ -3863,6 +3916,10 @@ namespace BizHawk.Client.EmuHawk
+ 					UpdateDumpIcon();
+ 					SetMainformMovieInfo();
+ 					SetWindowText();
++					
++					//RTC_HIJACK : Hook at LoadRom failure
++					RTC.RTC_Hooks.LOAD_GAME_FAILED();
++					//----------
+ 					return false;
+ 				}
+ 			}
+@@ -3950,6 +4007,9 @@ namespace BizHawk.Client.EmuHawk
+ 			RewireSound();
+ 			RebootStatusBarIcon.Visible = false;
+ 			GameIsClosing = false;
++			
++			// RTC_HIJACK : Hook after CloseGame
++			RTC.RTC_Hooks.CLOSE_GAME();
+ 		}
+ 
+ 		public bool GameIsClosing { get; private set; } // Lets tools make better decisions when being called by CloseGame
+@@ -3968,7 +4028,9 @@ namespace BizHawk.Client.EmuHawk
+ 
+ 				GlobalWin.Tools.Restart();
+ 				RewireSound();
+-				Text = "BizHawk" + (VersionInfo.DeveloperBuild ? " (interim) " : "");
++				//RTC_HIJACK : Don't change the Title
++				//Text = "BizHawk" + (VersionInfo.DeveloperBuild ? " (interim) " : string.Empty);
++				//-------------------------
+ 				HandlePlatformMenus();
+ 				_stateSlots.Clear();
+ 				UpdateDumpIcon();
+@@ -4045,6 +4107,9 @@ namespace BizHawk.Client.EmuHawk
+ 				return;
+ 			}
+ 
++			//RTC_HIJACK Hook at beginning of Load Savestate
++			RTC.RTC_Hooks.LOAD_SAVESTATE_BEGIN();
++			//-----------
+ 			// If from lua, disable counting rerecords
+ 			bool wasCountingRerecords = Global.MovieSession.Movie.IsCountingRerecords;
+ 
+@@ -4085,6 +4150,10 @@ namespace BizHawk.Client.EmuHawk
+ 			}
+ 
+ 			Global.MovieSession.Movie.IsCountingRerecords = wasCountingRerecords;
++			
++			//RTC_HIJACK : Hook at the end of Load SaveState
++			RTC.RTC_Hooks.LOAD_SAVESTATE_END();
++			//-----------
+ 		}
+ 
+ 		public void LoadQuickSave(string quickSlotName, bool fromLua = false, bool supressOSD = false)
+@@ -4515,5 +4584,24 @@ namespace BizHawk.Client.EmuHawk
+ 		}
+ 
+ 		#endregion
++		
++		
++		private void MainForm_ResizeEnd(object sender, EventArgs e)
++		{
++			//RTC_HIJACK : MainForm_ResizeEnd
++
++			//This event function might not exist if the bizhawk gets updated.
++			//Just do recreate the ResizeEnd Event and bind the hook to it.
++			RTC.RTC_Hooks.MAINFORM_RESIZEEND();
++			//------------
++		}
++
++		private void MainForm_FormClosing(object sender, FormClosingEventArgs e)
++		{
++			//RTC_HIJACK : MainForm_FormClosing
++			//You might have to recreate
++			RTC.RTC_Hooks.MAINFORM_CLOSING();
++			//---------------------
++		}
+ 	}
+ }
+diff --git a/BizHawk.Client.EmuHawk/PresentationPanel.cs b/BizHawk.Client.EmuHawk/PresentationPanel.cs
+index a20b656ac..735eb0a25 100644
+--- a/BizHawk.Client.EmuHawk/PresentationPanel.cs
++++ b/BizHawk.Client.EmuHawk/PresentationPanel.cs
+@@ -55,6 +55,14 @@ namespace BizHawk.Client.EmuHawk
+ 
+ 		private void HandleFullscreenToggle(object sender, MouseEventArgs e)
+ 		{
++			
++			//RTC_Hijack : Return if hook is true
++			if (!RTC.RTC_Hooks.BIZHAWK_ALLOWED_DOUBLECLICK_FULLSCREEN)
++			{
++				RTC.S.GET<RTC.RTC_MultiPeerPopout_Form>().pbPeerScreen_DoubleClick(null, null);
++				return;
++			}
++			
+ 			if (e.Button == MouseButtons.Left)
+ 			{
+ 				//allow suppression of the toggle.. but if shift is pressed, always do the toggle
+diff --git a/BizHawk.Client.EmuHawk/Program.cs b/BizHawk.Client.EmuHawk/Program.cs
+index 051f48fae..47f206403 100644
+--- a/BizHawk.Client.EmuHawk/Program.cs
++++ b/BizHawk.Client.EmuHawk/Program.cs
+@@ -15,7 +15,8 @@ using BizHawk.Client.Common;
+ 
+ namespace BizHawk.Client.EmuHawk
+ {
+-	static class Program
++	//RTC_Hijack : make Program class public
++	public static class Program
+ 	{
+ 		static bool RunningOnUnix = Environment.OSVersion.Platform == PlatformID.Unix || Environment.OSVersion.Platform == PlatformID.MacOSX;
+ 
+@@ -84,9 +85,12 @@ namespace BizHawk.Client.EmuHawk
+ 			}
+ 		}
+ 
++		//RTC_Hijack put main public
+ 		[STAThread]
+-		static int Main(string[] args)
++		public static int Main(string[] args)
+ 		{
++			//RTC_Hijack : Hook before form is created
++			RTC.RTC_Hooks.MAIN_BIZHAWK(args);
+ 			return SubMain(args);
+ 		}
+ 
+diff --git a/BizHawk.Client.EmuHawk/Properties/Resources.Designer.cs b/BizHawk.Client.EmuHawk/Properties/Resources.Designer.cs
+index 8cb04e3e1..d466cc208 100644
+--- a/BizHawk.Client.EmuHawk/Properties/Resources.Designer.cs
++++ b/BizHawk.Client.EmuHawk/Properties/Resources.Designer.cs
+@@ -19,7 +19,7 @@ namespace BizHawk.Client.EmuHawk.Properties {
+     // class via a tool like ResGen or Visual Studio.
+     // To add or remove a member, edit your .ResX file then rerun ResGen
+     // with the /str option, or rebuild your VS project.
+-    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "4.0.0.0")]
++    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "15.0.0.0")]
+     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
+     internal class Resources {
+@@ -770,6 +770,16 @@ namespace BizHawk.Client.EmuHawk.Properties {
+             }
+         }
+         
++        /// <summary>
++        ///   Looks up a localized resource of type System.Drawing.Bitmap.
++        /// </summary>
++        internal static System.Drawing.Bitmap inifile_icon {
++            get {
++                object obj = ResourceManager.GetObject("inifile_icon", resourceCulture);
++                return ((System.Drawing.Bitmap)(obj));
++            }
++        }
++        
+         /// <summary>
+         ///   Looks up a localized resource of type System.Drawing.Bitmap.
+         /// </summary>
+@@ -1050,6 +1060,16 @@ namespace BizHawk.Client.EmuHawk.Properties {
+             }
+         }
+         
++        /// <summary>
++        ///   Looks up a localized resource of type System.Drawing.Bitmap.
++        /// </summary>
++        internal static System.Drawing.Bitmap notepad_icon {
++            get {
++                object obj = ResourceManager.GetObject("notepad_icon", resourceCulture);
++                return ((System.Drawing.Bitmap)(obj));
++            }
++        }
++        
+         /// <summary>
+         ///   Looks up a localized resource of type System.IO.UnmanagedMemoryStream similar to System.IO.MemoryStream.
+         /// </summary>
+@@ -1079,6 +1099,16 @@ namespace BizHawk.Client.EmuHawk.Properties {
+             }
+         }
+         
++        /// <summary>
++        ///   Looks up a localized resource of type System.Drawing.Bitmap.
++        /// </summary>
++        internal static System.Drawing.Bitmap paintbrush_icon {
++            get {
++                object obj = ResourceManager.GetObject("paintbrush_icon", resourceCulture);
++                return ((System.Drawing.Bitmap)(obj));
++            }
++        }
++        
+         /// <summary>
+         ///   Looks up a localized resource of type System.Drawing.Bitmap.
+         /// </summary>
+diff --git a/BizHawk.Client.EmuHawk/Properties/Resources.resx b/BizHawk.Client.EmuHawk/Properties/Resources.resx
+index 301536707..0f472cda1 100644
+--- a/BizHawk.Client.EmuHawk/Properties/Resources.resx
++++ b/BizHawk.Client.EmuHawk/Properties/Resources.resx
+@@ -1566,4 +1566,13 @@
+   <data name="MoveTop" type="System.Resources.ResXFileRef, System.Windows.Forms">
+     <value>..\Resources\MoveTop.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+   </data>
++  <data name="inifile_icon" type="System.Resources.ResXFileRef, System.Windows.Forms">
++    <value>..\Resources\inifile_icon.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
++  </data>
++  <data name="notepad_icon" type="System.Resources.ResXFileRef, System.Windows.Forms">
++    <value>..\Resources\notepad_icon.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
++  </data>
++  <data name="paintbrush_icon" type="System.Resources.ResXFileRef, System.Windows.Forms">
++    <value>..\Resources\paintbrush_icon.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
++  </data>
+ </root>
+\ No newline at end of file
+diff --git a/BizHawk.Client.EmuHawk/Resources/inifile_icon.png b/BizHawk.Client.EmuHawk/Resources/inifile_icon.png
+new file mode 100644
+index 0000000000000000000000000000000000000000..480144f122e56272e5b56871b4a730a27ca285fc
+GIT binary patch
+literal 3100
+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
+
+literal 0
+HcmV?d00001
+
+diff --git a/BizHawk.Client.EmuHawk/Resources/notepad_icon.png b/BizHawk.Client.EmuHawk/Resources/notepad_icon.png
+new file mode 100644
+index 0000000000000000000000000000000000000000..b0d954d94efa727ad3a77c6027b7f16c5460cb01
+GIT binary patch
+literal 3108
+zcmV+<4BPXGP)<h;3K|Lk000e1NJLTq0018V0018d1^@s6AFdWT00009a7bBm000XU
+z000XU0RWnu7ytkYPiaF#P*7-ZbZ>KLZ*U+<Lqi~Na&Km7Y-Iodc-oy)XH-+^7Crag
+z^g>IBfRsybQWXdwQbLP>6p<z>Aqfylh#{fb6;Z(vMMVS~$e@S=j*ftg6;Uh<iVD~V
+z<RPMtgQJLw%KPDaqifc@_vX$1wbwr9tn;0-&j-K=43<bUQ8j=JsX`tR;Dg7+#^K~H
+zK!FM*Z~zbpvt%K2{UZSY_<lS*D<Z%Lz5oGu(+dayz)hRLFdT>f59&ghTmgWD0l;*T
+zI7<kC6aYYajzXpYKt=(8otP$50H6c_V9R4-;{Z@C0AMG7=F<Rxo%or10RUT+Ar%3j
+zkpLhQWr#!oXgdI`&sK^>09Y^p6lP1rIRMx#05C~cW=H_Aw*bJ-5DT&Z2n+x)QHX^p
+z00esgV8|mQcmRZ%02D^@S3L16t`O%c004NIvOKvYIYoh62rY33S640`D9%Y2D-<?i
+z0%4j!F2Z@488U%158(66005wo6%pWr^Zj_v4zAA5HjcIqUoGmt2LB>rV&neh&#Q1i
+z007~1e$oCcFS8neI|hJl{-P!B1ZZ9hpmq0)X0i`JwE&>$+E?>%_<lS*MWK+n+1cgf
+z<k(8YLR(?VSAG6x!e78w{cQPuJpA|d;J)G{fihizM+Erb!p!tcr5w+a34~(Y=8s4G
+zw+sLL9n&JjNn*KJDiq^U5^;`1nvC-@r6P$!k}1U{(*I=Q-z@tBKHoI}uxdU5dyy@u
+zU1J0GOD7Ombim^G008p4Z^6_k2m^p<gW=D2|L;HjN1!DDfM!XOaR2~bL?kX$%CkSm
+z2mk;?pn)o|K^yeJ7%adB9Ki+L!3+FgHiSYX#KJ-lLJDMn9CBbOtb#%)hRv`YDqt_v
+zKpix|QD}yfa1JiQRk#j4a1Z)n2%f<xynzV>LC6RbVIkUx0b+_+BaR3cnT7Zv!AJxW
+zizFb)h!jyGOOZ85F;a?DAXP{m@;!0_Ifq<Ex{*7`05XF7hP+2Hl!3BQJ=6@fL%FCo
+z8iYoo3(#bAF`ADSpqtQgv>H8(HlgRxt7s3}k3K`kFu>>-2Q$QMFfPW!La{h336o>X
+zu_CMttHv6zR;&ZNiS=X8v3CR#fknUxHUxJ<AYmRsNLWl*PS{AOARHt#5!wki2?K;t
+z!Y3k=s7tgax)J%r7-BLphge7~Bi0g+6E6^Zh(p9TBoc{3GAFr^0!gu?RMHaCM$&Fl
+zBk3%un>0uoBa_M6WNWeqIg~6QE69c9o#eyhGvpiOA@W-aonk<7r1(?fC{oI5N*U!4
+z<uv66WtcKSRim0x-Ke2d5jBrmLam{;Qm;{ms1r1GnmNsb7D-E`t)i9F8fX`2_i3-_
+zbh;7Ul^#x)&{xvS=|||7=mYe33=M`AgU5(xC>fg=2N-7=cNnjjOr{yriy6mMFgG#l
+znCF=fnQv8CDz++o6_Lscl}eQ+l^ZHARH>?_s@|##Rr6KLRFA1%Q+=*RRWnoLsR`7U
+zt5vF<Q0r40Q)j6=sE4X&sBct1q<&fbi3VB2Ov6t@q*0);U*o*SAPZv|vv@2aYYnT0
+zb%8a+Cb7-ge0D0knEf5Qi#@8Tp*ce{N;6lpQuCB%KL_KOarm5cP6_8Ir<e17iry6O
+zDdH&`rZh~sF=bq9s+O0QSgS~@QL9Jmy*94xr=6y~MY~!1fet~(N+(<=M`w@D1)b+p
+z*;C!83a1uLJv#NSE~;y#8=<>IcfW3@?wFpwUVxrVZ>QdQz32KIeJ}k~{cZZE^+ya?
+z2D1z#2HOnI7(B%_ac?{wFUQ;QQA1tBKtrWrm0_3Rgps+?Jfqb{jYbcQX~taRB;#$y
+zZN{S}1|}gUOHJxc?wV3fxuz+mJ4`!F$IZ;mqRrNsHJd##*D~ju=bP7?-?v~|cv>vB
+zsJ6IeNwVZxrdjT`yl#bBIa#GxRa#xMMy;K#CDyyGyQdMSxlWT#tDe?p!?5wT$+oGt
+z8L;Kp2HUQ-ZMJ=3XJQv;x5ci*?vuTfeY$;({XGW_huIFR9a<fJbF^|4I#xQ~n$Dc=
+zKYhjYmgz5NSkDm8*fZm{6U!;YX`NG>(?@3)XSs8O^N5RyOM=TTmp(3=8^+zpz2r)C
+z^>JO{deZfso3oq3?Wo(Y?l$ge?uXo;%ru`Vo>?<<(8I_>;8Eq#KMS9gFl*neeosSB
+zfoHYnBQIkwkyowPu(zdms`p{<7e4kra-ZWq<2*OsGTvEV%s0Td$hXT+!*8Bnh2KMe
+zBmZRodjHV?r+_5^X9J0WL4jKW`}lf%A-|44I@@LTvf1rHjG(ze6+w@Jt%Bvjts!X0
+z?2xS?_ve_-k<Mujg;0Lz*3buG=3$G&ehepthlN*$KaOySSQ^nWmo<0M+(UEUMEXRQ
+zMBbZcF;6+KElM>iKB_KiJlZ$9G`c^=E@oNG)mWWaNo-3TIW8)$Hg0Ub-~8?KhvJ>$
+z3*&nim@mj(aCxE5!t{lw7O5^0EIO7zOo&c6l<+|iDySBWCGrz@C5{St!X3hAA}`T4
+z(TLbXTq+(;@<=L8dXnssyft|w#WSTW<++3>sgS%(4NTpeI-VAqb|7ssJvzNHgOZVu
+zaYCvgO_R1~>SyL=cFU|~g|hy|Zi}}s9+d~lYqOB71z9Z$wnC=pR9Yz4DhIM>Wmjgu
+z&56o6maCpC&F##y%G;1PobR9i?GnNg;gYtchD%p19a!eQtZF&3JaKv33gZ<8D~47E
+ztUS1iwkmDaPpj=$m#%)jCVEY4fnLGNg2A-`YwHVD3gv};>)hAvT~AmqS>Lr``i7kw
+zJ{5_It`yrBmlc25DBO7E8;5VoznR>Ww5hAaxn$2~(q`%A-YuS64wkBy=9dm`4cXeX
+z4c}I@?e+FW+b@^RDBHV(wnMq2zdX3SWv9u`%{xC-q*U}&`cyXV(%rRT*Z6MH?i+i&
+z_B8C(+grT%{XWUQ+f@NoP1R=AW&26{v-dx)iK^-Nmiuj8txj!m?Z*Ss1N{dh4z}01
+z)YTo*JycSU)+_5r4#yw9{+;i4Ee$peRgIj+;v;ZGdF1K$3E%e~4LaI(jC-u%2h$&R
+z9cLXcYC@Xwnns&bn)_Q~Te?roKGD|d-g^8;+aC{{G(1^(O7m37Y1-+6)01cN&y1aw
+zoqc{T`P^XJqPBbIW6s}d4{z_f5Om?vMgNQEJG?v2T=KYd^0M3I6IZxbny)%vZR&LD
+zJpPl@Psh8QyPB@KTx+@RdcC!KX7}kEo;S|j^u2lU7XQ}Oo;f|;z4Ll+_r>@1-xl3|
+zawq-H%e&ckC+@AhPrP6BK<z=<L*0kfKU@CX*zeqbYQT4(^U>T#_XdT7&;F71j}Joy
+zkC~6lh7E@6o;W@^IpRNZ{ptLtL(gQ-CY~4mqW;US7Zxvm_|@yz&e53Bp_lTPlfP|z
+zrTyx_>lv@x#=^!PzR7qqF<$gm`|ZJZ+;<)Cqu&ot<a{81DF0~rvGr5Xr~8u`lav1h
+z1DNytV>2z=0000WV@Og>004R=004l4008;_004mL004C`008P>0026e000+nl3&F}
+z0003`Nkl<Zc-q95Q4)h73`94M_kyG4Xz^s*55*z{!2)e&7*Hfn77|fNqQyjn06<cD
+z+83WKa1kL%i0or~+VM*)EnqW)h``K%;E2T2`%t~82$IDDfM!OJ-8EDh{OQrI!bgD3
+z>=}F(xEcN-9ne(nB(K6}t#t}tOS{}V2ivxH?frf~^p|S#I_@TtmTWRf9XNM}O|_24
+znE|SMU(S9ZxvHL}xaPChnn!;TJ}bO#;WNOo+_$p-Lh|g)XM;=dwHVjm)`!0|yux+J
+z7iYB1++^{r)0r;-#>}{sNbb%G02n^<U3U1;iZAay%nYiEH9lkYvGrp;0l+zTx!$(z
+zY_GY4UFj$_+Sb+wzlEpcVs)C~IZ11lN}kHT;Ey&{_S~51vghP3?)F}Xtrmlu;UO1{
+y2)EdWwEifDc-H~hP*wK{J%L~TvpOs!wbuab7aqUS=dS<&0000<MNUMnLSTYhD$~^f
+
+literal 0
+HcmV?d00001
+
+diff --git a/BizHawk.Client.EmuHawk/Resources/paintbrush_icon.png b/BizHawk.Client.EmuHawk/Resources/paintbrush_icon.png
+new file mode 100644
+index 0000000000000000000000000000000000000000..555c3331b81821a7567f0298ece36c6072043ff8
+GIT binary patch
+literal 4895
+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
+R!$SZ7002ovPDHLkV1kqYM4kWu
+
+literal 0
+HcmV?d00001
+
+diff --git a/BizHawk.Client.EmuHawk/config/ControllerConfig.cs b/BizHawk.Client.EmuHawk/config/ControllerConfig.cs
+index 4b54d570b..76c89a9ca 100644
+--- a/BizHawk.Client.EmuHawk/config/ControllerConfig.cs
++++ b/BizHawk.Client.EmuHawk/config/ControllerConfig.cs
+@@ -346,6 +346,10 @@ namespace BizHawk.Client.EmuHawk
+ 			Global.Config.InputConfigAutoTab = checkBoxAutoTab.Checked;
+ 
+ 			Save();
++			
++			
++			//RTC_Hijack : Force save Controller config
++			RTC.RTC_Hooks.BIZHAWK_SAVE_CONFIG();
+ 
+ 			GlobalWin.OSD.AddMessage("Controller settings saved");
+ 			DialogResult = DialogResult.OK;
+diff --git a/BizHawk.Client.EmuHawk/config/HotkeyConfig.cs b/BizHawk.Client.EmuHawk/config/HotkeyConfig.cs
+index 24adc44d2..6bd4f1fd7 100644
+--- a/BizHawk.Client.EmuHawk/config/HotkeyConfig.cs
++++ b/BizHawk.Client.EmuHawk/config/HotkeyConfig.cs
+@@ -56,6 +56,11 @@ namespace BizHawk.Client.EmuHawk
+ 		private void IDB_SAVE_Click(object sender, EventArgs e)
+ 		{
+ 			Save();
++			
++			
++			//RTC_Hijack : Force save Hotkey config
++			RTC.RTC_Hooks.BIZHAWK_SAVE_CONFIG();
++			
+ 			GlobalWin.OSD.AddMessage("Hotkey settings saved");
+ 			DialogResult = DialogResult.OK;
+ 			Close();
+diff --git a/BizHawk.Client.EmuHawk/config/N64/N64VideoPluginconfig.cs b/BizHawk.Client.EmuHawk/config/N64/N64VideoPluginconfig.cs
+index 0bcbccdbf..b95f05961 100644
+--- a/BizHawk.Client.EmuHawk/config/N64/N64VideoPluginconfig.cs
++++ b/BizHawk.Client.EmuHawk/config/N64/N64VideoPluginconfig.cs
+@@ -98,6 +98,10 @@ namespace BizHawk.Client.EmuHawk
+ 		private void Button1_Click(object sender, EventArgs e)
+ 		{
+ 			SaveSettings();
++			
++			//RTC_HIJACK - save config after saving plugin settings
++			RTC.RTC_Hooks.BIZHAWK_SAVE_CONFIG();
++			
+ 			DialogResult = DialogResult.OK;
+ 			Close();
+ 		}
+diff --git a/BizHawk.Client.EmuHawk/tools/HexEditor/HexEditor.cs b/BizHawk.Client.EmuHawk/tools/HexEditor/HexEditor.cs
+index 577fc1bee..d7d1dfa7f 100644
+--- a/BizHawk.Client.EmuHawk/tools/HexEditor/HexEditor.cs
++++ b/BizHawk.Client.EmuHawk/tools/HexEditor/HexEditor.cs
+@@ -693,7 +693,8 @@ namespace BizHawk.Client.EmuHawk
+ 			LastDomain = _domain.Name;
+ 		}
+ 
+-		private void SetDomain(MemoryDomain domain)
++		//RTC_HIJACK Make public
++		public void SetDomain(MemoryDomain domain)
+ 		{
+ 			SetMemoryDomain(domain.Name);
+ 		}
+@@ -713,7 +714,8 @@ namespace BizHawk.Client.EmuHawk
+ 			}
+ 		}
+ 
+-		private void GoToAddress(long address)
++		//RTC_HIJACK Make public
++		public void GoToAddress(long address)
+ 		{
+ 			if (address < 0)
+ 			{
+diff --git a/BizHawk.Client.EmuHawk/tools/ToolBox.cs b/BizHawk.Client.EmuHawk/tools/ToolBox.cs
+index 503714c6b..84afa124c 100644
+--- a/BizHawk.Client.EmuHawk/tools/ToolBox.cs
++++ b/BizHawk.Client.EmuHawk/tools/ToolBox.cs
+@@ -41,6 +41,9 @@ namespace BizHawk.Client.EmuHawk
+ 
+ 		public void Restart()
+ 		{
++			//RTC_HIJACK : Kill toolbox
++			return;
++			
+ 			SetTools();
+ 			SetSize();
+ 
+@@ -50,6 +53,10 @@ namespace BizHawk.Client.EmuHawk
+ 
+ 		private void SetTools()
+ 		{
++			
++			//RTC_HIJACK : Kill toolbox
++			return;
++			
+ 			ToolBoxStrip.Items.Clear();
+ 
+ 			foreach (var t in Assembly.GetAssembly(GetType()).GetTypes())
+diff --git a/BizHawk.Client.MultiHawk/BizHawk.Client.MultiHawk.csproj b/BizHawk.Client.MultiHawk/BizHawk.Client.MultiHawk.csproj
+index daf4e4ecc..91d3aad3b 100644
+--- a/BizHawk.Client.MultiHawk/BizHawk.Client.MultiHawk.csproj
++++ b/BizHawk.Client.MultiHawk/BizHawk.Client.MultiHawk.csproj
+@@ -42,13 +42,16 @@
+     <Reference Include="Newtonsoft.Json, Version=4.5.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+       <SpecificVersion>False</SpecificVersion>
+       <HintPath>..\References\Newtonsoft.Json.dll</HintPath>
++      <Private>False</Private>
+     </Reference>
+     <Reference Include="OpenTK">
+       <HintPath>..\References\OpenTK.dll</HintPath>
++      <Private>False</Private>
+     </Reference>
+     <Reference Include="SlimDX, Version=4.0.13.43, Culture=neutral, PublicKeyToken=b1b0c32fd1ffe4f9, processorArchitecture=AMD64">
+       <SpecificVersion>False</SpecificVersion>
+       <HintPath>..\References\x64\SlimDX.dll</HintPath>
++      <Private>False</Private>
+     </Reference>
+     <Reference Include="System" />
+     <Reference Include="System.Core" />
+@@ -138,42 +141,52 @@
+     <ProjectReference Include="..\BizHawk.Client.Common\BizHawk.Client.Common.csproj">
+       <Project>{24a0aa3c-b25f-4197-b23d-476d6462dba0}</Project>
+       <Name>BizHawk.Client.Common</Name>
++      <Private>False</Private>
+     </ProjectReference>
+     <ProjectReference Include="..\BizHawk.Client.EmuHawk\BizHawk.Client.EmuHawk.csproj">
+       <Project>{dd448b37-ba3f-4544-9754-5406e8094723}</Project>
+       <Name>BizHawk.Client.EmuHawk</Name>
++      <Private>False</Private>
+     </ProjectReference>
+     <ProjectReference Include="..\BizHawk.Common\BizHawk.Common.csproj">
+       <Project>{866f8d13-0678-4ff9-80a4-a3993fd4d8a3}</Project>
+       <Name>BizHawk.Common</Name>
++      <Private>False</Private>
+     </ProjectReference>
+     <ProjectReference Include="..\BizHawk.Emulation.Common\BizHawk.Emulation.Common.csproj">
+       <Project>{e1a23168-b571-411c-b360-2229e7225e0e}</Project>
+       <Name>BizHawk.Emulation.Common</Name>
++      <Private>False</Private>
+     </ProjectReference>
+     <ProjectReference Include="..\BizHawk.Emulation.Cores\BizHawk.Emulation.Cores.csproj">
+       <Project>{197d4314-8a9f-49ba-977d-54acefaeb6ba}</Project>
+       <Name>BizHawk.Emulation.Cores</Name>
++      <Private>False</Private>
+     </ProjectReference>
+     <ProjectReference Include="..\BizHawk.Emulation.DiscSystem\BizHawk.Emulation.DiscSystem.csproj">
+       <Project>{f51946ea-827f-4d82-b841-1f2f6d060312}</Project>
+       <Name>BizHawk.Emulation.DiscSystem</Name>
++      <Private>False</Private>
+     </ProjectReference>
+     <ProjectReference Include="..\Bizware\BizHawk.Bizware.BizwareGL.GdiPlus\BizHawk.Bizware.BizwareGL.GdiPlus.csproj">
+       <Project>{337ca23e-65e7-44e1-9411-97ee08bb8116}</Project>
+       <Name>BizHawk.Bizware.BizwareGL.GdiPlus</Name>
++      <Private>False</Private>
+     </ProjectReference>
+     <ProjectReference Include="..\Bizware\BizHawk.Bizware.BizwareGL.OpenTK\BizHawk.Bizware.BizwareGL.OpenTK.csproj">
+       <Project>{5160cfb1-5389-47c1-b7f6-8a0dc97641ee}</Project>
+       <Name>BizHawk.Bizware.BizwareGL.OpenTK</Name>
++      <Private>False</Private>
+     </ProjectReference>
+     <ProjectReference Include="..\Bizware\BizHawk.Bizware.BizwareGL.SlimDX\BizHawk.Bizware.BizwareGL.SlimDX.csproj">
+       <Project>{e6b436b1-a3cd-4c9a-8f76-5d7154726884}</Project>
+       <Name>BizHawk.Bizware.BizwareGL.SlimDX</Name>
++      <Private>False</Private>
+     </ProjectReference>
+     <ProjectReference Include="..\Bizware\BizHawk.Bizware.BizwareGL\BizHawk.Bizware.BizwareGL.csproj">
+       <Project>{9f84a0b2-861e-4ef4-b89b-5e2a3f38a465}</Project>
+       <Name>BizHawk.Bizware.BizwareGL</Name>
++      <Private>False</Private>
+     </ProjectReference>
+   </ItemGroup>
+   <ItemGroup>
+@@ -240,11 +253,11 @@
+     <None Include="images\restart.png" />
+   </ItemGroup>
+   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+-  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+-       Other similar extension points exist, see Microsoft.Common.targets.
+-  <Target Name="BeforeBuild">
+-  </Target>
+-  <Target Name="AfterBuild">
+-  </Target>
++  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
++       Other similar extension points exist, see Microsoft.Common.targets.
++  <Target Name="BeforeBuild">
++  </Target>
++  <Target Name="AfterBuild">
++  </Target>
+   -->
+ </Project>
+diff --git a/BizHawk.Client.MultiHawk/EmulatorWindow.cs b/BizHawk.Client.MultiHawk/EmulatorWindow.cs
+index 0ea193c46..a7d87cc43 100644
+--- a/BizHawk.Client.MultiHawk/EmulatorWindow.cs
++++ b/BizHawk.Client.MultiHawk/EmulatorWindow.cs
+@@ -334,7 +334,8 @@ namespace BizHawk.Client.MultiHawk
+ 				Console.WriteLine("Selecting display size " + lastComputedSize.ToString());
+ 
+ 				// Change size
+-				Size = new Size((lastComputedSize.Width) + borderWidth, ((lastComputedSize.Height) + borderHeight));
++				//RTC_HIJACK : Don't change the MainForm Size
++				//Size = new Size((lastComputedSize.Width) + borderWidth, ((lastComputedSize.Height) + borderHeight));
+ 				PerformLayout();
+ 				PresentationPanel.Resized = true;
+ 
+diff --git a/BizHawk.Emulation.Common/Base Implementations/MemoryDomain.cs b/BizHawk.Emulation.Common/Base Implementations/MemoryDomain.cs
+index cb449a921..60d927e6f 100644
+--- a/BizHawk.Emulation.Common/Base Implementations/MemoryDomain.cs	
++++ b/BizHawk.Emulation.Common/Base Implementations/MemoryDomain.cs	
+@@ -20,7 +20,8 @@
+ 
+ 		public Endian EndianType { get; protected set; }
+ 
+-		public bool Writable { get; protected set; }
++		//RTC_hijack : Make Writable always return true
++		public bool Writable { get { return true; } set { } }
+ 
+ 		public abstract byte PeekByte(long addr);
+ 
+diff --git a/BizHawk.Emulation.Cores/BizHawk.Emulation.Cores.csproj b/BizHawk.Emulation.Cores/BizHawk.Emulation.Cores.csproj
+index c4d870521..618d6143d 100644
+--- a/BizHawk.Emulation.Cores/BizHawk.Emulation.Cores.csproj
++++ b/BizHawk.Emulation.Cores/BizHawk.Emulation.Cores.csproj
+@@ -68,7 +68,7 @@
+     <Reference Include="Newtonsoft.Json">
+       <HintPath>..\References\Newtonsoft.Json.dll</HintPath>
+     </Reference>
+-    <Reference Include="OpenTK, Version=1.1.0.0, Culture=neutral, PublicKeyToken=bad199fe84eb3df4, processorArchitecture=MSIL">
++    <Reference Include="OpenTK, Version=3.0.1.0, Culture=neutral, PublicKeyToken=bad199fe84eb3df4, processorArchitecture=MSIL">
+       <SpecificVersion>False</SpecificVersion>
+       <HintPath>..\References\OpenTK.dll</HintPath>
+     </Reference>
+diff --git a/BizHawk.Emulation.Cores/Consoles/Nintendo/GBA/MGBAHawk.cs b/BizHawk.Emulation.Cores/Consoles/Nintendo/GBA/MGBAHawk.cs
+index 0028c7b4e..ab60697a7 100644
+--- a/BizHawk.Emulation.Cores/Consoles/Nintendo/GBA/MGBAHawk.cs
++++ b/BizHawk.Emulation.Cores/Consoles/Nintendo/GBA/MGBAHawk.cs
+@@ -16,7 +16,9 @@ namespace BizHawk.Emulation.Cores.Nintendo.GBA
+ 			_settings = settings ?? new Settings();
+ 			DeterministicEmulation = deterministic;
+ 
+-			byte[] bios = comm.CoreFileProvider.GetFirmware("GBA", "Bios", false);
++			//RTC_Hijack : Make GBA bios mandatory
++			byte[] bios = comm.CoreFileProvider.GetFirmware("GBA", "Bios", true, "GBA bios file is mandatory.");
++			
+ 			DeterministicEmulation &= bios != null;
+ 
+ 			if (DeterministicEmulation != deterministic)
+diff --git a/BizHawk.Emulation.Cores/Consoles/Nintendo/N64/N64.IStatable.cs b/BizHawk.Emulation.Cores/Consoles/Nintendo/N64/N64.IStatable.cs
+index 31434f2b0..017541d5b 100644
+--- a/BizHawk.Emulation.Cores/Consoles/Nintendo/N64/N64.IStatable.cs
++++ b/BizHawk.Emulation.Cores/Consoles/Nintendo/N64/N64.IStatable.cs
+@@ -32,6 +32,10 @@ namespace BizHawk.Emulation.Cores.Nintendo.N64
+ 			byte[] data = SaveStatePrivateBuff;
+ 			int bytes_used = api.SaveState(data);
+ 
++			//RTC_Hijack return out if there's no data here as we changed api.SaveState to return -1 if it failed
++			if (bytes_used == -1)
++				return;
++
+ 			writer.Write(bytes_used);
+ 			writer.Write(data, 0, bytes_used);
+ 
+@@ -53,6 +57,8 @@ namespace BizHawk.Emulation.Cores.Nintendo.N64
+ 			int length = reader.ReadInt32();
+ 			if ((_disableExpansionSlot && length >= 16788288) || (!_disableExpansionSlot && length < 16788288))
+ 			{
++                //RTC_HIJACK: Add message (RTC: Try toggling the expansion pack setting)
++                System.Windows.Forms.MessageBox.Show("Wrong N64 savestate size (RTC: Try toggling the expansion pack setting)");
+ 				throw new SavestateSizeMismatchException("Wrong N64 savestate size");
+ 			}
+ 
+diff --git a/BizHawk.Emulation.Cores/Consoles/Nintendo/N64/N64.cs b/BizHawk.Emulation.Cores/Consoles/Nintendo/N64/N64.cs
+index b4c68bf03..fc81edadc 100644
+--- a/BizHawk.Emulation.Cores/Consoles/Nintendo/N64/N64.cs
++++ b/BizHawk.Emulation.Cores/Consoles/Nintendo/N64/N64.cs
+@@ -220,6 +220,9 @@ namespace BizHawk.Emulation.Cores.Nintendo.N64
+ 		{
+ 			RunThreadAction(() => { _pendingThreadTerminate = true; });
+ 		}
++		
++		///RTC_HIJACK
++		private bool crashed = false;
+ 
+ 		public void FrameAdvance(IController controller, bool render, bool rendersound)
+ 		{
+diff --git a/BizHawk.Emulation.Cores/Consoles/Nintendo/N64/NativeApi/mupen64plusCoreApi.cs b/BizHawk.Emulation.Cores/Consoles/Nintendo/N64/NativeApi/mupen64plusCoreApi.cs
+index c1fdd04a4..8038df57c 100644
+--- a/BizHawk.Emulation.Cores/Consoles/Nintendo/N64/NativeApi/mupen64plusCoreApi.cs
++++ b/BizHawk.Emulation.Cores/Consoles/Nintendo/N64/NativeApi/mupen64plusCoreApi.cs
+@@ -565,7 +565,7 @@ namespace BizHawk.Emulation.Cores.Nintendo.N64.NativeApi
+ 			result = m64pDebugSetCallbacks(m64pDebugInitCallback, m64pDebugUpdateCallback, null);
+ 
+ 			// Prepare to start the emulator in a different thread
+-			m64pEmulator = new Thread(ExecuteEmulatorThread);
++			m64pEmulator = new Thread(ExecuteEmulator);
+ 
+ 			AttachedCore = this;
+ 		}
+@@ -590,14 +590,29 @@ namespace BizHawk.Emulation.Cores.Nintendo.N64.NativeApi
+ 		/// Starts execution of mupen64plus
+ 		/// Does not return until the emulator stops
+ 		/// </summary>
+-		private void ExecuteEmulatorThread()
++		
++		//RTC_Hijack - Add this property so the try-catch works
++		[System.Runtime.ExceptionServices.HandleProcessCorruptedStateExceptionsAttribute()]
++		private void ExecuteEmulator()
+ 		{
+ 			emulator_running = true;
+ 			var cb = new StartupCallback(() => m64pStartupComplete.Set());
+-			m64pCoreDoCommandPtr(m64p_command.M64CMD_EXECUTE, 0,
+-				Marshal.GetFunctionPointerForDelegate(cb));
+-			emulator_running = false;
+-			cb.GetType();
++
++			//RTC_Hijack - Catch mupen crashing
++			try
++			{
++				m64pCoreDoCommandPtr(m64p_command.M64CMD_EXECUTE, 0,
++					Marshal.GetFunctionPointerForDelegate(cb));
++			}
++			catch (Exception ex)
++			{
++				Console.WriteLine("RTC HIjack: Mupen sad during ExecuteEmulator :( " + ex.ToString());
++			}
++			finally
++			{
++				emulator_running = false;
++				cb.GetType();
++			} //Hijack_End
+ 		}
+ 
+ 		/// <summary>
+@@ -792,10 +807,27 @@ namespace BizHawk.Emulation.Cores.Nintendo.N64.NativeApi
+ 			event_breakpoint = true; //order important
+ 			m64pEvent.Set(); //order important
+ 		}
+-
++		//RTC_Hijack - Add this attribute
++		[System.Runtime.ExceptionServices.HandleProcessCorruptedStateExceptionsAttribute()]
+ 		public int SaveState(byte[] buffer)
+ 		{
+-			return m64pCoreSaveState(buffer);
++			//RTC_Hijack - Catch exceptions here and return -1
++			try
++			{
++				int state = m64pCoreSaveState(buffer);
++				return state;
++			}
++			catch (Exception ex)
++			{
++				Console.WriteLine("RTC Hijack: Mupen sad during Savestate  :(" + ex.ToString());
++				if (AttachedCore != null)
++				{
++					AttachedCore.Dispose();
++					AttachedCore = null;
++				}
++				return -1;
++			}
++			//Hijack_End
+ 		}
+ 
+ 		public void LoadState(byte[] buffer)
+@@ -891,9 +923,25 @@ namespace BizHawk.Emulation.Cores.Nintendo.N64.NativeApi
+ 			m64pDebugBreakpointCommand(m64p_dbg_bkp_command.M64P_BKP_CMD_REMOVE_IDX, (uint)index, ref unused);
+ 		}
+ 
++		//RTC_Hijack - Add this attribute
++		[System.Runtime.ExceptionServices.HandleProcessCorruptedStateExceptionsAttribute()]
+ 		public void setTraceCallback(TraceCallback callback)
+ 		{
+-			m64pSetTraceCallback(callback);
++			//RTC_Hijack try-catch this
++			try
++			{
++				m64pSetTraceCallback(callback);
++			}
++			catch (Exception ex)
++			{
++				Console.WriteLine("RTC Hijack: Mupen sad during setTraceCallback  :(" + ex.ToString());
++				if (AttachedCore != null)
++				{
++					AttachedCore.Dispose();
++					AttachedCore = null;
++				}
++			}//Hijack_End
++			
+ 		}
+ 
+ 		public void getRegisters(byte[] dest)
+@@ -972,6 +1020,8 @@ namespace BizHawk.Emulation.Cores.Nintendo.N64.NativeApi
+ 			return plugin.dllHandle;
+ 		}
+ 
++		//RTC_Hijack - Add this attribute
++		[System.Runtime.ExceptionServices.HandleProcessCorruptedStateExceptionsAttribute()]
+ 		public void DetachPlugin(m64p_plugin_type type)
+ 		{
+ 			AttachedPlugin plugin;
+@@ -980,7 +1030,21 @@ namespace BizHawk.Emulation.Cores.Nintendo.N64.NativeApi
+ 				plugins.Remove(type);
+ 				m64pCoreDetachPlugin(type);
+ 				plugin.dllShutdown();
+-				FreeLibrary(plugin.dllHandle);
++				//RTC_Hijack try-catch to see if we can escape
++				try
++				{
++					FreeLibrary(plugin.dllHandle);
++				}
++				catch (Exception ex)
++				{
++					Console.WriteLine("RTC Hijack: Mupen sad during FreeLibrary(plugin.dllHandle)  :(" + ex.ToString());
++					if (AttachedCore != null)
++					{
++						AttachedCore.Dispose();
++						AttachedCore = null;
++					}
++				}//Hijack_End
++
+ 			}
+ 		}
+ 
+diff --git a/BizHawk.Emulation.Cores/Waterbox/Heap.cs b/BizHawk.Emulation.Cores/Waterbox/Heap.cs
+index 26eb95297..cbeae471e 100644
+--- a/BizHawk.Emulation.Cores/Waterbox/Heap.cs
++++ b/BizHawk.Emulation.Cores/Waterbox/Heap.cs
+@@ -74,7 +74,9 @@ namespace BizHawk.Emulation.Cores.Waterbox
+ 		{
+ 			if (!Sealed)
+ 			{
+-				Memory.Protect(Memory.Start, Used, MemoryBlock.Protection.R);
++				//RTC_Hijack : Change the protect level to RW instead of R
++				Memory.Protect(Memory.Start, Used, MemoryBlock.Protection.RW);
++				
+ 				_hash = WaterboxUtils.Hash(Memory.GetStream(Memory.Start, Used, false));
+ 				Sealed = true;
+ 			}
+@@ -114,7 +116,9 @@ namespace BizHawk.Emulation.Cores.Waterbox
+ 				var hash = br.ReadBytes(Memory.XorHash.Length);
+ 				if (!hash.SequenceEqual(Memory.XorHash))
+ 				{
+-					throw new InvalidOperationException(string.Format("Hash did not match for heap {0}.  Is this the same rom with the same SyncSettings?", Name));
++					//RTC_HIJACK - Change this from being an exception to just a warning so if a user replaces the rom, it doesn't error out.
++					//This is dangerous in that it could allow for mismatched syncsettings, but the syncsettings checker should solve that
++					Console.WriteLine(string.Format("Hash did not match for heap {0}.  Is this the same rom with the same SyncSettings?", Name));
+ 				}
+ 				var usedAligned = WaterboxUtils.AlignUp(used);
+ 
+@@ -129,7 +133,9 @@ namespace BizHawk.Emulation.Cores.Waterbox
+ 				var hash = br.ReadBytes(_hash.Length);
+ 				if (!hash.SequenceEqual(_hash))
+ 				{
+-					throw new InvalidOperationException(string.Format("Hash did not match for heap {0}.  Is this the same rom with the same SyncSettings?", Name));
++					//RTC_HIJACK - Change this from being an exception to just a warning so if a user replaces the rom, it doesn't error out.
++					//This is dangerous in that it could allow for mismatched syncsettings, but the syncsettings checker should solve that
++					Console.WriteLine(string.Format("Hash did not match for heap {0}.  Is this the same rom with the same SyncSettings?", Name));
+ 				}
+ 			}
+ 		}
+diff --git a/BizHawk.Emulation.Cores/Waterbox/LibWaterboxCore.cs b/BizHawk.Emulation.Cores/Waterbox/LibWaterboxCore.cs
+index 0cacab7e6..9a180aeae 100644
+--- a/BizHawk.Emulation.Cores/Waterbox/LibWaterboxCore.cs
++++ b/BizHawk.Emulation.Cores/Waterbox/LibWaterboxCore.cs
+@@ -141,8 +141,10 @@ namespace BizHawk.Emulation.Cores.Waterbox
+ 
+ 			public override void PokeByte(long addr, byte val)
+ 			{
+-				if (Writable)
+-				{
++				//RTC_HIJACK
++				//Ignore the Writable flag 
++				//if (Writable)
++				//{
+ 					if ((ulong)addr < (ulong)Size)
+ 					{
+ 						using (_monitor.EnterExit())
+@@ -154,7 +156,7 @@ namespace BizHawk.Emulation.Cores.Waterbox
+ 					{
+ 						throw new ArgumentOutOfRangeException(nameof(addr));
+ 					}
+-				}
++				//}//HIJACK_END
+ 			}
+ 
+ 			public WaterboxMemoryDomain(MemoryArea m, IMonitor monitor)
+diff --git a/BizHawk.Emulation.Cores/Waterbox/PeWrapper.cs b/BizHawk.Emulation.Cores/Waterbox/PeWrapper.cs
+index 8f2e5d3d2..8c8b12191 100644
+--- a/BizHawk.Emulation.Cores/Waterbox/PeWrapper.cs
++++ b/BizHawk.Emulation.Cores/Waterbox/PeWrapper.cs
+@@ -421,7 +421,11 @@ namespace BizHawk.Emulation.Cores.Waterbox
+ 			if (!br.ReadBytes(Memory.XorHash.Length).SequenceEqual(Memory.XorHash))
+ 				// the post-Seal memory state is different. probable cause:  different rom or different version of rom,
+ 				// different syncsettings
+-				throw new InvalidOperationException("Memory consistency check failed.  Is this savestate from different SyncSettings?");
++
++				//RTC_HIJACK - Change this from being an exception to just a warning so if a user replaces the rom, it doesn't error out.
++				//This is dangerous in that it could allow for mismatched syncsettings, but the syncsettings checker should solve that
++				Console.WriteLine("Memory consistency check failed.  Is this savestate from different SyncSettings?");
++
+ 			if (br.ReadUInt64() != Start)
+ 				// dll loaded somewhere else.  probable cause: internal logic error.
+ 				// unlikely to get this far if the previous checks pssed
+diff --git a/BizHawk.sln b/BizHawk.sln
+index 7f33fcf4e..5fa1267e5 100644
+--- a/BizHawk.sln
++++ b/BizHawk.sln
+@@ -1,6 +1,6 @@
+ Microsoft Visual Studio Solution File, Format Version 12.00
+-# Visual Studio 14
+-VisualStudioVersion = 14.0.25420.1
++# Visual Studio 15
++VisualStudioVersion = 15.0.28307.168
+ MinimumVisualStudioVersion = 12.0.31101.0
+ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Version", "Version\Version.csproj", "{0CE8B337-08E3-4602-BF10-C4D4C75D2F13}"
+ EndProject
+@@ -59,6 +59,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BizHawk.Client.MultiHawk",
+ EndProject
+ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BizHawk.Client.ApiHawk", "BizHawk.Client.ApiHawk\BizHawk.Client.ApiHawk.csproj", "{8E2F11F2-3955-4382-8C3A-CEBA1276CAEA}"
+ EndProject
++Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "StandaloneRTC", "StandaloneRTC\StandaloneRTC.csproj", "{597D9202-F18D-4B51-BB89-D7E111BAF8B5}"
++EndProject
+ Global
+ 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+ 		Debug|Any CPU = Debug|Any CPU
+@@ -245,6 +247,18 @@ Global
+ 		{8E2F11F2-3955-4382-8C3A-CEBA1276CAEA}.Release|x64.Build.0 = Release|Any CPU
+ 		{8E2F11F2-3955-4382-8C3A-CEBA1276CAEA}.Release|x86.ActiveCfg = Release|Any CPU
+ 		{8E2F11F2-3955-4382-8C3A-CEBA1276CAEA}.Release|x86.Build.0 = Release|Any CPU
++		{597D9202-F18D-4B51-BB89-D7E111BAF8B5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
++		{597D9202-F18D-4B51-BB89-D7E111BAF8B5}.Debug|Any CPU.Build.0 = Debug|Any CPU
++		{597D9202-F18D-4B51-BB89-D7E111BAF8B5}.Debug|x64.ActiveCfg = Debug|Any CPU
++		{597D9202-F18D-4B51-BB89-D7E111BAF8B5}.Debug|x64.Build.0 = Debug|Any CPU
++		{597D9202-F18D-4B51-BB89-D7E111BAF8B5}.Debug|x86.ActiveCfg = Debug|x86
++		{597D9202-F18D-4B51-BB89-D7E111BAF8B5}.Debug|x86.Build.0 = Debug|x86
++		{597D9202-F18D-4B51-BB89-D7E111BAF8B5}.Release|Any CPU.ActiveCfg = Release|Any CPU
++		{597D9202-F18D-4B51-BB89-D7E111BAF8B5}.Release|Any CPU.Build.0 = Release|Any CPU
++		{597D9202-F18D-4B51-BB89-D7E111BAF8B5}.Release|x64.ActiveCfg = Release|Any CPU
++		{597D9202-F18D-4B51-BB89-D7E111BAF8B5}.Release|x64.Build.0 = Release|Any CPU
++		{597D9202-F18D-4B51-BB89-D7E111BAF8B5}.Release|x86.ActiveCfg = Release|x86
++		{597D9202-F18D-4B51-BB89-D7E111BAF8B5}.Release|x86.Build.0 = Release|x86
+ 	EndGlobalSection
+ 	GlobalSection(SolutionProperties) = preSolution
+ 		HideSolutionNode = FALSE
+@@ -264,6 +278,9 @@ Global
+ 		{B95649F5-A0AE-41EB-B62B-578A2AFF5E18} = {B51F1139-3D2C-41BE-A762-EF1F9B41EACA}
+ 		{8E2F11F2-3955-4382-8C3A-CEBA1276CAEA} = {B51F1139-3D2C-41BE-A762-EF1F9B41EACA}
+ 	EndGlobalSection
++	GlobalSection(ExtensibilityGlobals) = postSolution
++		SolutionGuid = {EFD75441-C3FA-4DDC-B001-A7EDDC11E8DE}
++	EndGlobalSection
+ 	GlobalSection(MonoDevelopProperties) = preSolution
+ 		StartupItem = BizHawk.Client.EmuHawk\BizHawk.Client.EmuHawk.csproj
+ 	EndGlobalSection
+-- 
+2.17.0.windows.1
+
