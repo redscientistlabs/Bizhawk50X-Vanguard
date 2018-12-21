@@ -52,6 +52,8 @@
             this.label6 = new System.Windows.Forms.Label();
             this.lbRTC = new System.Windows.Forms.Label();
             this.lbRTCver = new System.Windows.Forms.Label();
+            this.label1 = new System.Windows.Forms.Label();
+            this.label2 = new System.Windows.Forms.Label();
             this.pnCorruptionEngine.SuspendLayout();
             this.pnBizhawkAttached.SuspendLayout();
             this.pnWindowsGlitchHarvester.SuspendLayout();
@@ -79,9 +81,9 @@
             this.btnStartEmuhawkDetached.ForeColor = System.Drawing.Color.Black;
             this.btnStartEmuhawkDetached.Image = global::BizHawk.Client.EmuHawk.Properties.Resources.CorpHawkSmall;
             this.btnStartEmuhawkDetached.ImageAlign = System.Drawing.ContentAlignment.MiddleRight;
-            this.btnStartEmuhawkDetached.Location = new System.Drawing.Point(24, 32);
+            this.btnStartEmuhawkDetached.Location = new System.Drawing.Point(24, 18);
             this.btnStartEmuhawkDetached.Name = "btnStartEmuhawkDetached";
-            this.btnStartEmuhawkDetached.Size = new System.Drawing.Size(184, 29);
+            this.btnStartEmuhawkDetached.Size = new System.Drawing.Size(184, 49);
             this.btnStartEmuhawkDetached.TabIndex = 2;
             this.btnStartEmuhawkDetached.Text = "  Start BizHawk";
             this.btnStartEmuhawkDetached.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageBeforeText;
@@ -92,6 +94,7 @@
             // 
             this.pnCorruptionEngine.BackColor = System.Drawing.Color.Transparent;
             this.pnCorruptionEngine.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.pnCorruptionEngine.Controls.Add(this.label2);
             this.pnCorruptionEngine.Controls.Add(this.btnStartEmuhawkDetached);
             this.pnCorruptionEngine.Location = new System.Drawing.Point(22, 181);
             this.pnCorruptionEngine.Name = "pnCorruptionEngine";
@@ -124,6 +127,7 @@
             // 
             this.pnBizhawkAttached.BackColor = System.Drawing.Color.Transparent;
             this.pnBizhawkAttached.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.pnBizhawkAttached.Controls.Add(this.label1);
             this.pnBizhawkAttached.Controls.Add(this.label3);
             this.pnBizhawkAttached.Controls.Add(this.btnStartEmuhawkAttached);
             this.pnBizhawkAttached.Location = new System.Drawing.Point(22, 331);
@@ -138,7 +142,7 @@
             this.label3.BackColor = System.Drawing.Color.Transparent;
             this.label3.Font = new System.Drawing.Font("Segoe UI Semibold", 9F, System.Drawing.FontStyle.Bold);
             this.label3.ForeColor = System.Drawing.Color.Silver;
-            this.label3.Location = new System.Drawing.Point(10, 76);
+            this.label3.Location = new System.Drawing.Point(11, 127);
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(205, 15);
             this.label3.TabIndex = 129;
@@ -357,6 +361,32 @@
             this.lbRTCver.Size = new System.Drawing.Size(0, 37);
             this.lbRTCver.TabIndex = 131;
             // 
+            // label1
+            // 
+            this.label1.AutoSize = true;
+            this.label1.BackColor = System.Drawing.Color.Transparent;
+            this.label1.Font = new System.Drawing.Font("Segoe UI Semibold", 9F, System.Drawing.FontStyle.Bold);
+            this.label1.ForeColor = System.Drawing.Color.Silver;
+            this.label1.Location = new System.Drawing.Point(18, 68);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(197, 30);
+            this.label1.TabIndex = 130;
+            this.label1.Text = "Only use attached mode if you have\r\na good reason to not use detached.";
+            this.label1.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            // 
+            // label2
+            // 
+            this.label2.AutoSize = true;
+            this.label2.BackColor = System.Drawing.Color.Transparent;
+            this.label2.Font = new System.Drawing.Font("Segoe UI Semibold", 9F, System.Drawing.FontStyle.Bold);
+            this.label2.ForeColor = System.Drawing.Color.Silver;
+            this.label2.Location = new System.Drawing.Point(34, 73);
+            this.label2.Name = "label2";
+            this.label2.Size = new System.Drawing.Size(165, 30);
+            this.label2.TabIndex = 131;
+            this.label2.Text = "Detached Mode protects your\r\nsession if Bizhawk crashes.";
+            this.label2.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            // 
             // RTC_ConnectionStatus_Form
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -389,6 +419,7 @@
             this.Text = "RTC_ConnectionStatus_Form";
             this.Load += new System.EventHandler(this.RTC_ConnectionStatus_Form_Load);
             this.pnCorruptionEngine.ResumeLayout(false);
+            this.pnCorruptionEngine.PerformLayout();
             this.pnBizhawkAttached.ResumeLayout(false);
             this.pnBizhawkAttached.PerformLayout();
             this.pnWindowsGlitchHarvester.ResumeLayout(false);
@@ -424,5 +455,7 @@
         private System.Windows.Forms.Label label6;
         private System.Windows.Forms.Label lbRTC;
         private System.Windows.Forms.Label lbRTCver;
-    }
+		private System.Windows.Forms.Label label1;
+		private System.Windows.Forms.Label label2;
+	}
 }
