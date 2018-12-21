@@ -337,6 +337,9 @@ namespace RTC
 
 			try
 			{
+				//Shut off autocorrupt
+				S.GET<RTC_Core_Form>().AutoCorrupt = false;
+
 				btnCorrupt.Visible = false;
 
 				StashKey psk = RTC_StockpileManager.getCurrentSavestateStashkey();
@@ -451,6 +454,9 @@ namespace RTC
 		private void OneTimeExecute()
 		{
 			var token = RTC_NetCore.HugeOperationStart("LAZY");
+
+			//Disable autocorrupt
+			S.GET<RTC_Core_Form>().AutoCorrupt = false;
 
 			if (rbCorrupt.Checked)
 				RTC_StockpileManager.ApplyStashkey(RTC_StockpileManager.currentStashkey, loadBeforeOperation);
