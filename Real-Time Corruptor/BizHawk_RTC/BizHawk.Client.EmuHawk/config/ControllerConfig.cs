@@ -172,15 +172,24 @@ namespace BizHawk.Client.EmuHawk
 					string tabname = cat.Key;
 					tt.TabPages.Add(tabname);
 					tt.TabPages[pageidx].Controls.Add(createpanel(settings, cat.Value, tt.Size));
-				}
+
+                    // zxhawk hack - it uses multiple categoryLabels
+                    if (Global.Emulator.SystemId == "ZXSpectrum" || Global.Emulator.SystemId == "AmstradCPC")
+                        pageidx++;
+
+                }
 
 				if (buckets[0].Count > 0)
 				{
-					string tabname = Global.Emulator.SystemId == "C64" ? "Keyboard" : "Console"; // hack
-					tt.TabPages.Add(tabname);
-					tt.TabPages[pageidx].Controls.Add(createpanel(settings, buckets[0], tt.Size));
-				}
-			}
+                    // ZXHawk needs to skip this bit
+                    if (Global.Emulator.SystemId == "ZXSpectrum" || Global.Emulator.SystemId == "AmstradCPC")
+                        return;
+
+                    string tabname = (Global.Emulator.SystemId == "C64") ? "Keyboard" : "Console"; // hack
+                    tt.TabPages.Add(tabname);
+                    tt.TabPages[pageidx].Controls.Add(createpanel(settings, buckets[0], tt.Size));
+                }
+            }
 		}
 
 		public ControllerConfig(ControllerDefinition def)
@@ -256,7 +265,23 @@ namespace BizHawk.Client.EmuHawk
 
 				pictureBox2.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right | AnchorStyles.Bottom;
 			}
-		}
+
+            if (controlName == "ZXSpectrum Controller")
+            {
+                pictureBox1.Image = Properties.Resources.ZXSpectrumKeyboards;
+                pictureBox1.Size = Properties.Resources.ZXSpectrumKeyboards.Size;
+                tableLayoutPanel1.ColumnStyles[1].Width = Properties.Resources.ZXSpectrumKeyboards.Width;
+            }
+
+            if (controlName == "AmstradCPC Controller")
+            {
+                /*
+                pictureBox1.Image = Properties.Resources.ZXSpectrumKeyboards;
+                pictureBox1.Size = Properties.Resources.ZXSpectrumKeyboards.Size;
+                tableLayoutPanel1.ColumnStyles[1].Width = Properties.Resources.ZXSpectrumKeyboards.Width;
+                */
+            }
+        }
 
 		// lazy methods, but they're not called often and actually
 		// tracking all of the ControllerConfigPanels wouldn't be simpler
@@ -321,11 +346,13 @@ namespace BizHawk.Client.EmuHawk
 			Global.Config.InputConfigAutoTab = checkBoxAutoTab.Checked;
 
 			Save();
+			
+			
+			//RTC_Hijack : Force save Controller config
+			RTC.RTC_Hooks.BIZHAWK_SAVE_CONFIG();
 
 			GlobalWin.OSD.AddMessage("Controller settings saved");
 			DialogResult = DialogResult.OK;
-			//RTC_Hijack : Force save Controller config
-			RTC.RTC_Hooks.BIZHAWK_SAVE_CONFIG();
 			Close();
 		}
 

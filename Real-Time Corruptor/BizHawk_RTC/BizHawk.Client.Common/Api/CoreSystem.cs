@@ -29,6 +29,8 @@
 		WonderSwan,
 		Libretro,
 		VirtualBoy,
-		NeoGeoPocket
+		NeoGeoPocket,
+        ZXSpectrum,
+        AmstradCPC
 	}
 }

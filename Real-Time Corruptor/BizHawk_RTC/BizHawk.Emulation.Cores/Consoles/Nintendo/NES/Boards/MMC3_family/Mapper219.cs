@@ -18,7 +18,7 @@ namespace BizHawk.Emulation.Cores.Nintendo.NES
 				case "MAPPER219":
 					break;
 				default:
-					return false;
+					return false;			
 			}
 
 			BaseSetup();
@@ -57,7 +57,7 @@ namespace BizHawk.Emulation.Cores.Nintendo.NES
 
 		public override void WritePRG(int addr, byte value)
 		{
-			if (addr < 0x2000)
+			if (addr<0x2000)
 			{
 				switch ((addr + 0x8000) & 0xE003)
 				{
@@ -104,8 +104,8 @@ namespace BizHawk.Emulation.Cores.Nintendo.NES
 						}
 						break;
 				}
-			}
-			else
+			}		
+			else 
 				base.WritePRG(addr, value);
 		}
 
@@ -119,7 +119,7 @@ namespace BizHawk.Emulation.Cores.Nintendo.NES
 		public override byte ReadPPU(int addr)
 		{
 
-			if (addr < 0x2000)
+			if (addr<0x2000)
 			{
 				int bank_chr = addr >> 10;
 				bank_chr = chrregs[bank_chr] & chr_mask;
@@ -139,7 +139,7 @@ namespace BizHawk.Emulation.Cores.Nintendo.NES
 			{
 				int bank_chr = addr >> 10;
 				bank_chr = chrregs[bank_chr];
-				VRAM[((bank_chr << 10) + (addr & 0x3FF))] = value;
+				VRAM[((bank_chr << 10) + (addr & 0x3FF))]=value;
 			}
 			else
 				base.WritePPU(addr, value);

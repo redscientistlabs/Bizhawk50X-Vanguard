@@ -18,7 +18,7 @@ namespace BizHawk.Emulation.Cores.Nintendo.GBA
 
 			//RTC_Hijack : Make GBA bios mandatory
 			byte[] bios = comm.CoreFileProvider.GetFirmware("GBA", "Bios", true, "GBA bios file is mandatory.");
-
+			
 			DeterministicEmulation &= bios != null;
 
 			if (DeterministicEmulation != deterministic)

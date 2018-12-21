@@ -461,7 +461,7 @@ namespace BizHawk.Common
 
 		[DllImport("kernel32.dll")]
 		static extern bool IsDebuggerPresent();
-
+		
 		public static bool IsDebuggerReallyPresent()
 		{
 			return IsDebuggerPresent();

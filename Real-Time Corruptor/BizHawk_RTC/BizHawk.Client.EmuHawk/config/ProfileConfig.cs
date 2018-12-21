@@ -337,8 +337,7 @@ namespace BizHawk.Client.EmuHawk
 			ProfileDialogHelpTexBox.Text = "All Up+Down or Left+Right: \r\n * Useful for TASing \r\n * Unchecked for Casual Gaming \r\n * Unknown for longplays";
 		}
 
-		//RTC_HIJACK : Make GetSyncSettings() method public
-		public static TSetting GetSyncSettings<TEmulator, TSetting>()
+		private static TSetting GetSyncSettings<TEmulator, TSetting>()
 			where TSetting : class, new()
 			where TEmulator : IEmulator
 		{

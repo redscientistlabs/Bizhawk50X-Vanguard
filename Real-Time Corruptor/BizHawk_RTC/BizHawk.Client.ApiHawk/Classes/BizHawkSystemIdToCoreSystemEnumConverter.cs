@@ -96,6 +96,12 @@ namespace BizHawk.Client.ApiHawk
 				case "WSWAN":
 					return CoreSystem.WonderSwan;
 
+                case "ZXSpectrum":
+                    return CoreSystem.ZXSpectrum;
+
+                case "AmstradCPC":
+                    return CoreSystem.AmstradCPC;
+
 				case "VB":
 				case "NGP":
 				case "DNGP":
@@ -204,6 +210,12 @@ namespace BizHawk.Client.ApiHawk
 
 				case CoreSystem.WonderSwan:
 					return "WSWAN";
+
+                case CoreSystem.ZXSpectrum:
+                    return "ZXSpectrum";
+
+                case CoreSystem.AmstradCPC:
+                    return "AmstradCPC";
 
 				default:
 					throw new IndexOutOfRangeException(string.Format("{0} is missing in convert list", value.ToString()));

@@ -42,12 +42,15 @@ class Memory {
 	bool cgbSwitching;
 	bool agbMode;
 	bool gbIsCgb_;
+	bool stopped;
 	unsigned short &SP;
 	unsigned short &PC;
+	unsigned long basetime;
+	unsigned long halttime;
 
-	void (*readCallback)(unsigned);
-	void (*writeCallback)(unsigned);
-	void (*execCallback)(unsigned);
+	MemoryCallback readCallback;
+	MemoryCallback writeCallback;
+	MemoryCallback execCallback;
 	CDCallback cdCallback;
 	void(*linkCallback)();
 
@@ -128,12 +131,14 @@ public:
 		return cc < intreq.eventTime(BLIT) ? -1 : static_cast<long>((cc - intreq.eventTime(BLIT)) >> isDoubleSpeed());
 	}
 
-	void halt() { intreq.halt(); }
+	void halt(unsigned long cycleCounter) { halttime = cycleCounter; intreq.halt(); }
 	void ei(unsigned long cycleCounter) { if (!ime()) { intreq.ei(cycleCounter); } }
 
 	void di() { intreq.di(); }
 
 	unsigned ff_read(const unsigned P, const unsigned long cycleCounter) {
+		if (readCallback)
+			readCallback(P, (cycleCounter - basetime) >> 1);
 		return P < 0xFF80 ? nontrivial_ff_read(P, cycleCounter) : ioamhram[P - 0xFE00];
 	}
 
@@ -206,30 +211,40 @@ public:
 
 	unsigned read(const unsigned P, const unsigned long cycleCounter) {
 		if (readCallback)
-			readCallback(P);
-		if(cdCallback)
-		{
-			CDMapResult map = CDMap(P);
-			if(map.type != eCDLog_AddrType_None)
-				cdCallback(map.addr,map.type,eCDLog_Flags_Data);
+			readCallback(P, (cycleCounter - basetime) >> 1);
+		bool biosRange = ((!gbIsCgb_ && P < 0x100) || (gbIsCgb_ && P < 0x900 && (P < 0x100 || P >= 0x200)));
+		if(biosMode) {
+			if (biosRange)
+				return readBios(P);
 		}
-		if (biosMode && ((!gbIsCgb_ && P < 0x100) || (gbIsCgb_ && P < 0x900 && (P < 0x100 || P >= 0x200)))) {
-			return readBios(P);
+		else
+		{
+			if(cdCallback)
+			{
+				CDMapResult map = CDMap(P);
+				if(map.type != eCDLog_AddrType_None)
+					cdCallback(map.addr,map.type,eCDLog_Flags_Data);
+			}
 		}
 		return cart.rmem(P >> 12) ? cart.rmem(P >> 12)[P] : nontrivial_read(P, cycleCounter);
 	}
 
 	unsigned read_excb(const unsigned P, const unsigned long cycleCounter, bool first) {
 		if (execCallback)
-			execCallback(P);
-		if(cdCallback)
-		{
-			CDMapResult map = CDMap(P);
-			if(map.type != eCDLog_AddrType_None)
-				cdCallback(map.addr,map.type,first?eCDLog_Flags_ExecFirst : eCDLog_Flags_ExecOperand);
+			execCallback(P, (cycleCounter - basetime) >> 1);
+		bool biosRange = ((!gbIsCgb_ && P < 0x100) || (gbIsCgb_ && P < 0x900 && (P < 0x100 || P >= 0x200)));
+		if (biosMode) {
+			if(biosRange)
+				return readBios(P);
 		}
-		if (biosMode && ((!gbIsCgb_ && P < 0x100) || (gbIsCgb_ && P < 0x900 && (P < 0x100 || P >= 0x200)))) {
-			return readBios(P);
+		else
+		{
+			if(cdCallback)
+			{
+				CDMapResult map = CDMap(P);
+				if(map.type != eCDLog_AddrType_None)
+					cdCallback(map.addr,map.type,first?eCDLog_Flags_ExecFirst : eCDLog_Flags_ExecOperand);
+			}
 		}
 		return cart.rmem(P >> 12) ? cart.rmem(P >> 12)[P] : nontrivial_read(P, cycleCounter);
 	}
@@ -254,8 +269,8 @@ public:
 		} else
 			nontrivial_write(P, data, cycleCounter);
 		if (writeCallback)
-			writeCallback(P);
-		if(cdCallback)
+			writeCallback(P, (cycleCounter - basetime) >> 1);
+		if(cdCallback && !biosMode)
 		{
 			CDMapResult map = CDMap(P);
 			if(map.type != eCDLog_AddrType_None)
@@ -268,7 +283,9 @@ public:
 			ioamhram[P - 0xFE00] = data;
 		} else
 			nontrivial_ff_write(P, data, cycleCounter);
-		if(cdCallback)
+		if (writeCallback)
+			writeCallback(P, (cycleCounter - basetime) >> 1);
+		if(cdCallback && !biosMode)
 		{
 			CDMapResult map = CDMap(P);
 			if(map.type != eCDLog_AddrType_None)
@@ -285,13 +302,13 @@ public:
 		this->getInput = getInput;
 	}
 
-	void setReadCallback(void (*callback)(unsigned)) {
+	void setReadCallback(MemoryCallback callback) {
 		this->readCallback = callback;
 	}
-	void setWriteCallback(void (*callback)(unsigned)) {
+	void setWriteCallback(MemoryCallback callback) {
 		this->writeCallback = callback;
 	}
-	void setExecCallback(void (*callback)(unsigned)) {
+	void setExecCallback(MemoryCallback callback) {
 		this->execCallback = callback;
 	}
 	void setCDCallback(CDCallback cdc) {
@@ -310,6 +327,7 @@ public:
 		this->linkCallback = callback;
 	}
 
+	void setBasetime(unsigned long cc) { basetime = cc; }
 	void setEndtime(unsigned long cc, unsigned long inc);
 	
 	void setSoundBuffer(uint_least32_t *const buf) { sound.setBuffer(buf); }

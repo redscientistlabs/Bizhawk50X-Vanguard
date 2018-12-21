@@ -143,7 +143,9 @@
             "GB",
             "PCFX",
             "PSX",
-            "SAT"});
+            "SAT",
+            "ZXSpectrum",
+            "AmstradCPC"});
             this.SystemDropDown.Location = new System.Drawing.Point(425, 75);
             this.SystemDropDown.Name = "SystemDropDown";
             this.SystemDropDown.Size = new System.Drawing.Size(69, 21);

@@ -334,10 +334,8 @@ namespace BizHawk.Client.MultiHawk
 				Console.WriteLine("Selecting display size " + lastComputedSize.ToString());
 
 				// Change size
-
 				//RTC_HIJACK : Don't change the MainForm Size
 				//Size = new Size((lastComputedSize.Width) + borderWidth, ((lastComputedSize.Height) + borderHeight));
-
 				PerformLayout();
 				PresentationPanel.Resized = true;
 

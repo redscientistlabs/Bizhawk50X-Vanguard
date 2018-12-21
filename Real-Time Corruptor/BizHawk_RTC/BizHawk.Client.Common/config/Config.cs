@@ -37,6 +37,7 @@ namespace BizHawk.Client.Common
 		{
 			PathEntries.ResolveWithDefaults();
 			HotkeyBindings.ResolveWithDefaults();
+			PathManager.RefreshTempPath();
 		}
 
 		// Core preference for generic file extension, key: file extension, value: a systemID or empty if no preference
@@ -112,13 +113,13 @@ namespace BizHawk.Client.Common
 		public bool HotkeyConfigAutoTab = true;
 		public bool InputConfigAutoTab = true;
 		public bool ShowLogWindow = false;
-
+		
 		//RTC_HIJACK : Put BackupSavestates to False
 		public bool BackupSavestates = false;
 
 		//RTC_HIJACK : Put SaveScreenshotWithStates to False
 		public bool SaveScreenshotWithStates = false;
-
+		
 		public int BigScreenshotSize = 128 * 1024;
 		public bool NoLowResLargeScreenshotWithStates = false;
 		public int AutofireOn = 1;
@@ -136,7 +137,7 @@ namespace BizHawk.Client.Common
 		public DateTime? Update_LastCheckTimeUTC = null;
 		public string Update_LatestVersion = "";
 		public string Update_IgnoreVersion = "";
-		public bool CDLAutoSave = true, CDLAutoStart = true;
+		public bool CDLAutoSave = true, CDLAutoStart = true, CDLAutoResume = true;
 
 		/// <summary>
 		/// Makes a .bak file before any saveram-writing operation (could be extended to make timestamped backups)
@@ -243,17 +244,13 @@ namespace BizHawk.Client.Common
 
 		//RTC_HIJACK : Put RewindFrequencyMedium to 9
 		public int RewindFrequencyLarge = 9;
-
+		
 		public int Rewind_MediumStateSize = 262144; // 256kb
 		public int Rewind_LargeStateSize = 1048576; // 1mb
 		public int Rewind_BufferSize = 128; // in mb
-
-
-		//RTC_HIJACK : But rewind back on disk true because of Garbage Collector hitching
-		public bool Rewind_OnDisk = true;
-
+		public bool Rewind_OnDisk = false;
 		public bool Rewind_IsThreaded = Environment.ProcessorCount > 1;
-
+		
 		//RTC_HIJACK : Put RewindSpeedMultiplier to 3
 		public int RewindSpeedMultiplier = 3;
 

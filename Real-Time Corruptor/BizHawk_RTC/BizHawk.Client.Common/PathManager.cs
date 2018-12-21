@@ -100,17 +100,10 @@ namespace BizHawk.Client.Common
 				return Environment.SpecialFolder.Recent.ToString();
 			}
 
-			if (path.Length >= 5 && path.Substring(0, 5) == "%exe%")
-			{
-				if (path.Length == 5)
-				{
-					return GetExeDirectoryAbsolute();
-				}
-
-				var tmp = path.Remove(0, 5);
-				tmp = tmp.Insert(0, GetExeDirectoryAbsolute());
-				return tmp;
-			}
+			if (path.StartsWith("%exe%"))
+				return GetExeDirectoryAbsolute() + path.Substring(5);
+			if (path.StartsWith("%rom%"))
+				return Global.Config.LastRomPath + path.Substring(5);
 
 			if (path[0] == '.')
 			{
@@ -140,7 +133,7 @@ namespace BizHawk.Client.Common
 			//handling of initial .. was removed (Path.GetFullPath can handle it)
 			//handling of file:// or file:\\ was removed  (can Path.GetFullPath handle it? not sure)
 
-			// all pad paths default to EXE
+			// all bad paths default to EXE
 			return GetExeDirectoryAbsolute();
 		}
 
@@ -231,8 +224,8 @@ namespace BizHawk.Client.Common
 			var filesystemSafeName = game.Name
 				.Replace("|", "+")
 				.Replace(":", " -") // adelikat - Path.GetFileName scraps everything to the left of a colon unfortunately, so we need this hack here
-	            .Replace("\"", "")  // adelikat - Ivan Ironman Stewart's Super Off-Road has quotes in game name
-	            .Replace("/", "+"); // Narry - Mario Bros / Duck hunt has a slash in the name which GetDirectoryName and GetFileName treat as if it were a folder
+				.Replace("\"", "")  // adelikat - Ivan Ironman Stewart's Super Off-Road has quotes in game name
+				.Replace("/", "+"); // Narry - Mario Bros / Duck hunt has a slash in the name which GetDirectoryName and GetFileName treat as if it were a folder
 
 			// zero 06-nov-2015 - regarding the below, i changed my mind. for libretro i want subdirectories here.
 			var filesystemDir = Path.GetDirectoryName(filesystemSafeName);
@@ -359,7 +352,6 @@ namespace BizHawk.Client.Common
 				name += "." + Global.Emulator.Attributes().CoreName;
 			}
 
-
 			//RTC_Hijack : Don't use moviesession prefix
 			/*
 			if (Global.MovieSession.Movie.IsActive)
@@ -465,5 +457,19 @@ namespace BizHawk.Client.Common
 
 			return entry;
 		}
+
+		/// <summary>
+		/// Puts the currently configured temp path into the environment for use as actual temp directory
+		/// </summary>
+		public static void RefreshTempPath()
+		{
+			if (Global.Config.PathEntries.TempFilesFragment != "")
+			{
+				//TODO - BUG - needs to route through PathManager.MakeAbsolutePath or something similar, but how?
+				string target = Global.Config.PathEntries.TempFilesFragment;
+				BizHawk.Common.TempFileManager.HelperSetTempPath(target);
+			}
+		}
 	}
+
 }

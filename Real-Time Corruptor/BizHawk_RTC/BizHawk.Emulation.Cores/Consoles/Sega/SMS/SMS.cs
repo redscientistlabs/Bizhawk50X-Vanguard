@@ -5,6 +5,7 @@ using BizHawk.Emulation.Common;
 using BizHawk.Emulation.Common.Components;
 using BizHawk.Emulation.Cores.Components;
 using BizHawk.Emulation.Cores.Components.Z80A;
+using BizHawk.Common.BufferExtensions;
 
 /*****************************************************
   TODO: 
@@ -35,6 +36,7 @@ namespace BizHawk.Emulation.Cores.Sega.MasterSystem
 			MemoryCallbacks = new MemoryCallbackSystem(new[] { "System Bus" });
 
 			IsGameGear = game.System == "GG";
+			IsGameGear_C = game.System == "GG";
 			IsSG1000 = game.System == "SG";
 			RomData = rom;
 
@@ -90,6 +92,17 @@ namespace BizHawk.Emulation.Cores.Sega.MasterSystem
 				MemoryCallbacks = MemoryCallbacks,
 				OnExecFetch = OnExecMemory
 			};
+
+
+			if (game["GG_in_SMS"])
+			{
+				// skip setting the BIOS because this is a game gear game that puts the system
+				// in SMS compatibility mode (it will fail the check sum if played on an actual SMS though.)
+				IsGameGear = false;
+				IsGameGear_C = true;
+				game.System = "GG";
+				Console.WriteLine("Using SMS Compatibility mode for Game Gear System");
+			}
 
 			Vdp = new VDP(this, Cpu, IsGameGear ? VdpMode.GameGear : VdpMode.SMS, Region);
 			(ServiceProvider as BasicServiceProvider).Register<IVideoProvider>(Vdp);
@@ -150,7 +163,7 @@ namespace BizHawk.Emulation.Cores.Sega.MasterSystem
 				Port3E = 0xF7; // Disable cartridge, enable BIOS rom
 				InitBiosMapper();
 			}
-			else if (game.System == "SMS")
+			else if ((game.System == "SMS") && !game["GG_in_SMS"])
 			{
 				BiosRom = comm.CoreFileProvider.GetFirmware("SMS", RegionStr, false);
 
@@ -193,6 +206,11 @@ namespace BizHawk.Emulation.Cores.Sega.MasterSystem
 
 			Cpu.ReadMemory = ReadMemory;
 			Cpu.WriteMemory = WriteMemory;
+
+			// Z80 SP initialization
+			// stops a few SMS and GG games from crashing
+			Cpu.Regs[Cpu.SPl] = 0xF0;
+			Cpu.Regs[Cpu.SPh] = 0xDF;
 		}
 
 		// Constants
@@ -212,6 +230,7 @@ namespace BizHawk.Emulation.Cores.Sega.MasterSystem
 		private SN76489 PSG;
 		private YM2413 YM2413;
 		public bool IsGameGear { get; set; }
+		public bool IsGameGear_C { get; set; }
 		public bool IsSG1000 { get; set; }
 
 		private bool HasYM2413 = false;
@@ -222,6 +241,7 @@ namespace BizHawk.Emulation.Cores.Sega.MasterSystem
 
 		private byte Port01 = 0xFF;
 		private byte Port02 = 0xFF;
+		private byte Port05 = 0x00;
 		private byte Port3E = 0xAF;
 		private byte Port3F = 0xFF;
 		private byte PortDE = 0x00;
@@ -308,6 +328,7 @@ namespace BizHawk.Emulation.Cores.Sega.MasterSystem
 			port &= 0xFF;
 			if (port < 0x40) // General IO ports
 			{
+				
 				switch (port)
 				{
 					case 0x00: return ReadPort0();
@@ -315,7 +336,7 @@ namespace BizHawk.Emulation.Cores.Sega.MasterSystem
 					case 0x02: return Port02;
 					case 0x03: return 0x00;
 					case 0x04: return 0xFF;
-					case 0x05: return 0x00;
+					case 0x05: return Port05;
 					case 0x06: return 0xFF;
 					case 0x3E: return Port3E;
 					default: return 0xFF;
@@ -356,6 +377,7 @@ namespace BizHawk.Emulation.Cores.Sega.MasterSystem
 				{
 					case 0x01: Port01 = value; break;
 					case 0x02: Port02 = value; break;
+					case 0x05: Port05 = value; break;
 					case 0x06: PSG.StereoPanning = value; break;
 					case 0x3E: Port3E = value; break;
 					case 0x3F: Port3F = value; break;

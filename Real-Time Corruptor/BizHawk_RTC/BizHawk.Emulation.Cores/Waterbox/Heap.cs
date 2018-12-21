@@ -76,7 +76,7 @@ namespace BizHawk.Emulation.Cores.Waterbox
 			{
 				//RTC_Hijack : Change the protect level to RW instead of R
 				Memory.Protect(Memory.Start, Used, MemoryBlock.Protection.RW);
-
+				
 				_hash = WaterboxUtils.Hash(Memory.GetStream(Memory.Start, Used, false));
 				Sealed = true;
 			}
@@ -133,7 +133,6 @@ namespace BizHawk.Emulation.Cores.Waterbox
 				var hash = br.ReadBytes(_hash.Length);
 				if (!hash.SequenceEqual(_hash))
 				{
-
 					//RTC_HIJACK - Change this from being an exception to just a warning so if a user replaces the rom, it doesn't error out.
 					//This is dangerous in that it could allow for mismatched syncsettings, but the syncsettings checker should solve that
 					Console.WriteLine(string.Format("Hash did not match for heap {0}.  Is this the same rom with the same SyncSettings?", Name));

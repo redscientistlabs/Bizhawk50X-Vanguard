@@ -235,6 +235,7 @@ namespace BizHawk.Emulation.Cores.Consoles.Sega.gpgx
 				return !DeepEquality.DeepEquals(x, y);
 			}
 
+			
 		}
 
 		public class GPGXSyncSettings
@@ -293,7 +294,6 @@ namespace BizHawk.Emulation.Cores.Consoles.Sega.gpgx
 			[TypeConverter(typeof(UintToHexConverter))]
 			[DefaultValue((uint)0xffff00ff)]
 			public uint BackdropColor { get; set; }
-
 
 			public LibGPGX.InitSettings GetNativeSettings()
 			{

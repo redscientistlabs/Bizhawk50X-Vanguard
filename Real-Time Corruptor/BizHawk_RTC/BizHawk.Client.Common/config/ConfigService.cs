@@ -10,8 +10,7 @@ namespace BizHawk.Client.Common
 {
 	public static class ConfigService
 	{
-		//RTC_HIJACK : Make this public
-		public static JsonSerializer Serializer;
+		private static readonly JsonSerializer Serializer;
 
 		static ConfigService()
 		{

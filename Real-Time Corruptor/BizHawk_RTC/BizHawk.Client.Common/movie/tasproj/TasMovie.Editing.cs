@@ -101,7 +101,7 @@ namespace BizHawk.Client.Common
 				{
 					for (int i = firstIndex; i < Markers.Count; i++)
 					{
-						TasMovieMarker m = Markers.ElementAt(i);
+						TasMovieMarker m = Markers[i];
 						if (m.Frame == frame)
 						{
 							Markers.Remove(m);
@@ -152,7 +152,7 @@ namespace BizHawk.Client.Common
 						{
 							for (int i = firstIndex; i < Markers.Count; i++)
 							{
-								TasMovieMarker m = Markers.ElementAt(i);
+								TasMovieMarker m = Markers[i];
 								if (m.Frame == frame)
 								{
 									Markers.Remove(m);
@@ -198,7 +198,7 @@ namespace BizHawk.Client.Common
 				{
 					for (int i = firstIndex; i < Markers.Count; i++)
 					{
-						TasMovieMarker m = Markers.ElementAt(i);
+						TasMovieMarker m = Markers[i];
 						if (m.Frame < removeUpTo)
 						{
 							Markers.Remove(m);
@@ -241,7 +241,7 @@ namespace BizHawk.Client.Common
 				{
 					for (int i = firstIndex; i < Markers.Count; i++)
 					{
-						TasMovieMarker m = Markers.ElementAt(i);
+						TasMovieMarker m = Markers[i];
 						Markers.Move(m.Frame, m.Frame + 1);
 					}
 				}
@@ -274,7 +274,7 @@ namespace BizHawk.Client.Common
 				{
 					for (int i = firstIndex; i < Markers.Count; i++)
 					{
-						TasMovieMarker m = Markers.ElementAt(i);
+						TasMovieMarker m = Markers[i];
 						Markers.Move(m.Frame, m.Frame + inputLog.Count());
 					}
 				}
@@ -363,7 +363,7 @@ namespace BizHawk.Client.Common
 				{
 					for (int i = firstIndex; i < Markers.Count; i++)
 					{
-						TasMovieMarker m = Markers.ElementAt(i);
+						TasMovieMarker m = Markers[i];
 						Markers.Move(m.Frame, m.Frame + count, fromHistory);
 					}
 				}
@@ -378,11 +378,6 @@ namespace BizHawk.Client.Common
 			if (endBatch)
 			{
 				ChangeLog.EndBatch();
-			}
-
-			if (Global.Emulator.Frame < Log.Count) // Don't stay in recording mode? Fixes TAStudio recording after paint inserting.
-			{
-				SwitchToPlay();
 			}
 		}
 
@@ -408,11 +403,6 @@ namespace BizHawk.Client.Common
 			if (endBatch)
 			{
 				ChangeLog.EndBatch();
-			}
-
-			if (Global.Emulator.Frame < Log.Count) // Don't stay in recording mode? Fixes TAStudio recording after paint inserting.
-			{
-				SwitchToPlay();
 			}
 		}
 

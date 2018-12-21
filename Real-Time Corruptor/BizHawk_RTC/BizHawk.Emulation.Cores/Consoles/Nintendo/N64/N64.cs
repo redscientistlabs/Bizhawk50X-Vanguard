@@ -220,7 +220,7 @@ namespace BizHawk.Emulation.Cores.Nintendo.N64
 		{
 			RunThreadAction(() => { _pendingThreadTerminate = true; });
 		}
-
+		
 		///RTC_HIJACK
 		private bool crashed = false;
 
@@ -249,17 +249,18 @@ namespace BizHawk.Emulation.Cores.Nintendo.N64
 			if (controller.IsPressed("Power"))
 			{
 				api.hard_reset();
-
 			}
 
 			api.frame_advance();
+
 
 			if (IsLagFrame)
 			{
 				LagCount++;
 			}
 
-			Frame++;
+			if(!api.IsCrashed)
+				Frame++;
 		}
 
 		public string SystemId { get { return "N64"; } }

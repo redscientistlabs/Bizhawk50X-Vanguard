@@ -132,11 +132,12 @@ namespace BizHawk.Client.EmuHawk
 
 		public void AddMessage(string message)
 		{
+				
 			//RTC_HIJACK : Disable OSD Messages (Add this block)
 			if (RTC.RTC_Core.BizhawkOsdDisabled)
 				return;
 			//--------------------------------
-
+			
 			messages.Add(new UIMessage { Message = message, ExpireAt = DateTime.Now + TimeSpan.FromSeconds(2) });
 		}
 
@@ -342,7 +343,8 @@ namespace BizHawk.Client.EmuHawk
 
 			if (Global.Config.DisplayInput && !Global.Game.IsNullInstance)
 			{
-				if (Global.MovieSession.Movie.IsPlaying && !Global.MovieSession.Movie.IsFinished)
+				if ((Global.MovieSession.Movie.IsPlaying && !Global.MovieSession.Movie.IsFinished)
+					|| (Global.MovieSession.Movie.IsFinished && Global.Emulator.Frame == Global.MovieSession.Movie.InputLogLength)) // Account for the last frame of the movie, the movie state is immediately "Finished" here but we still want to show the input
 				{
 					var input = InputStrMovie();
 					var x = GetX(g, Global.Config.DispInpx, Global.Config.DispInpanchor, input);

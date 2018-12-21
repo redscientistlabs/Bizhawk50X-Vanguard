@@ -194,6 +194,7 @@ namespace BizHawk.Client.Common
 			{
 				_lastState = new byte[length];
 			}
+
 			Buffer.BlockCopy(state, index, _lastState, 0, length);
 		}
 
@@ -203,11 +204,11 @@ namespace BizHawk.Client.Common
 		}
 
 		private unsafe void CaptureStateDelta(byte[] currentState)
-		{
+		{			
 			//RTC_HIJACK : handle null _lastState
 			if (_lastState == null)
 				return;
-
+			
 			// Keep in mind that everything captured here is intended to be played back in
 			// reverse. The goal is, given the current state, how to get back to the previous
 			// state. That's why the data portion of the delta comes from the previous state,
@@ -271,11 +272,12 @@ namespace BizHawk.Client.Common
 
 					// Length
 					VLInteger.WriteUnsigned((uint)length, _deltaBuffer, ref index);
-						
+
+
 					//RTC_HIJACK : prevent null _lastState
 					if (_lastState == null)
 						return;
-				
+
 					// Data
 					Buffer.BlockCopy(_lastState, changeSequenceStartOffset, _deltaBuffer, index, length);
 					index += length;

@@ -43,7 +43,7 @@ namespace BizHawk.Client.EmuHawk
 		{
 			//RTC_HIJACK : Kill toolbox
 			return;
-
+			
 			SetTools();
 			SetSize();
 
@@ -53,8 +53,10 @@ namespace BizHawk.Client.EmuHawk
 
 		private void SetTools()
 		{
+			
 			//RTC_HIJACK : Kill toolbox
 			return;
+			
 			ToolBoxStrip.Items.Clear();
 
 			foreach (var t in Assembly.GetAssembly(GetType()).GetTypes())
