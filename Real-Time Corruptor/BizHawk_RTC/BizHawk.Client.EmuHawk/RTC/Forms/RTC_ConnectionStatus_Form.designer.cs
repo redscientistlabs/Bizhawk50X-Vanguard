@@ -50,14 +50,15 @@
             this.label9 = new System.Windows.Forms.Label();
             this.lbVrunAddress = new System.Windows.Forms.Label();
             this.label6 = new System.Windows.Forms.Label();
-            this.lbRTC = new System.Windows.Forms.Label();
             this.lbRTCver = new System.Windows.Forms.Label();
             this.label1 = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
+            this.pictureBox1 = new System.Windows.Forms.PictureBox();
             this.pnCorruptionEngine.SuspendLayout();
             this.pnBizhawkAttached.SuspendLayout();
             this.pnWindowsGlitchHarvester.SuspendLayout();
             this.pnVrun.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             this.SuspendLayout();
             // 
             // lbConnectionStatus
@@ -338,18 +339,6 @@
             this.label6.TabIndex = 129;
             this.label6.Text = "(Alpha)";
             // 
-            // lbRTC
-            // 
-            this.lbRTC.AutoSize = true;
-            this.lbRTC.BackColor = System.Drawing.Color.Transparent;
-            this.lbRTC.Font = new System.Drawing.Font("Segoe UI Semibold", 32F, System.Drawing.FontStyle.Bold);
-            this.lbRTC.ForeColor = System.Drawing.Color.White;
-            this.lbRTC.Location = new System.Drawing.Point(11, 9);
-            this.lbRTC.Name = "lbRTC";
-            this.lbRTC.Size = new System.Drawing.Size(438, 59);
-            this.lbRTC.TabIndex = 130;
-            this.lbRTC.Text = "Real-Time Corruptor ";
-            // 
             // lbRTCver
             // 
             this.lbRTCver.AutoSize = true;
@@ -387,6 +376,16 @@
             this.label2.Text = "Detached Mode protects your\r\nsession if Bizhawk crashes.";
             this.label2.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
+            // pictureBox1
+            // 
+            this.pictureBox1.BackColor = System.Drawing.Color.Transparent;
+            this.pictureBox1.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("pictureBox1.BackgroundImage")));
+            this.pictureBox1.Location = new System.Drawing.Point(19, 16);
+            this.pictureBox1.Name = "pictureBox1";
+            this.pictureBox1.Size = new System.Drawing.Size(421, 50);
+            this.pictureBox1.TabIndex = 132;
+            this.pictureBox1.TabStop = false;
+            // 
             // RTC_ConnectionStatus_Form
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -395,8 +394,8 @@
             this.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("$this.BackgroundImage")));
             this.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
             this.ClientSize = new System.Drawing.Size(655, 515);
+            this.Controls.Add(this.pictureBox1);
             this.Controls.Add(this.lbRTCver);
-            this.Controls.Add(this.lbRTC);
             this.Controls.Add(this.label6);
             this.Controls.Add(this.lbVrunAddress);
             this.Controls.Add(this.lbVrun);
@@ -426,6 +425,7 @@
             this.pnWindowsGlitchHarvester.PerformLayout();
             this.pnVrun.ResumeLayout(false);
             this.pnVrun.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -453,9 +453,9 @@
 		private System.Windows.Forms.Label lbVrunAddress;
 		private System.Windows.Forms.Label label3;
         private System.Windows.Forms.Label label6;
-        private System.Windows.Forms.Label lbRTC;
         private System.Windows.Forms.Label lbRTCver;
 		private System.Windows.Forms.Label label1;
 		private System.Windows.Forms.Label label2;
+		private System.Windows.Forms.PictureBox pictureBox1;
 	}
 }
