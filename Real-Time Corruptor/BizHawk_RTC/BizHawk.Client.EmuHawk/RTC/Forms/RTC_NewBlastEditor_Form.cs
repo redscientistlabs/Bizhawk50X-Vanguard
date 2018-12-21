@@ -124,6 +124,10 @@ namespace RTC
 				upDownPrecision.Validated += UpDownPrecision_Validated;
 				tbTiltValue.Validated += TbTiltValue_Validated;
 
+
+				upDownExecuteFrame.Validated += UpDownExecuteFrame_Validated;
+				upDownLifetime.Validated += UpDownLifetime_Validated;
+
 				cbSource.Validated += CbSource_Validated;
 				tbValue.Validated += TbValue_Validated;
 
@@ -232,6 +236,22 @@ namespace RTC
 				(row.DataBoundItem as BlastUnit).TiltValue = System.Numerics.BigInteger.Parse(tbTiltValue.Text);
 			}
 			UpdateBottom();
+		}
+		private void UpDownLifetime_Validated(object sender, EventArgs e)
+		{
+			foreach (DataGridViewRow row in dgvBlastEditor.SelectedRows)
+				row.Cells[buProperty.Lifetime.ToString()].Value = upDownLifetime.Value;
+
+			UpdateBottom();
+			dgvBlastEditor.Refresh();
+		}
+		private void UpDownExecuteFrame_Validated(object sender, EventArgs e)
+		{
+			foreach (DataGridViewRow row in dgvBlastEditor.SelectedRows)
+				row.Cells[buProperty.ExecuteFrame.ToString()].Value = upDownExecuteFrame.Value;
+
+			UpdateBottom();
+			dgvBlastEditor.Refresh();
 		}
 
 		private void UpDownPrecision_Validated(object sender, EventArgs e)
