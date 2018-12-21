@@ -1246,8 +1246,8 @@ namespace RTC
 					{
 						Working.ApplyValue = Working.StoreData.First();
 
-						//Remove it if it's some form of continuous backup
-						if(StoreTime != ActionTime.PREEXECUTE)
+						//Remove it if it's a continuous backup
+						if(StoreTime == ActionTime.EXECUTE)
 							Working.StoreData.Dequeue();
 
 						//All the data is already handled by GetStoreBackup. We just take the first in the linkedlist and then remove it so the garbage collector can clean it up to prevent a memory leak

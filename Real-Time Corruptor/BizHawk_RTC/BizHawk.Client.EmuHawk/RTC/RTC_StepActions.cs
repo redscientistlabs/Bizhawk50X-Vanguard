@@ -256,11 +256,21 @@ namespace RTC
 
 				//Since we already have it filtered as a list, there's no reason to build a new list
 				//We just update the ExecuteFrameQueued and LastFrame, then just add it back to buListCollection
+				//The storeDataPool still has the units so we don't need to touch that
 				if (buList[0].Loop)
 				{
-					//Clean out the working data for all units
+					//Clean out the working data for all units and if needed, do an Apply() action
 					foreach (BlastUnit bu in buList)
+					{
 						bu.Working = new BlastUnitWorkingData();
+
+						//If the store time is immediate, we store on the frame the unit is created.
+						//In the case of a looping unit, that'd be right now
+						if (bu.Source == BlastUnitSource.STORE && bu.StoreTime == ActionTime.IMMEDIATE)
+							bu.StoreBackup();
+					}
+
+
 
 					//We have to add 1 since currentFrame hasn't been incremented yet
 					buList[0].Working.ExecuteFrameQueued = buList[0].ExecuteFrame + currentFrame + 1;
