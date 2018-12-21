@@ -73,9 +73,9 @@
             this.btnEasyMode.ForeColor = System.Drawing.Color.Black;
             this.btnEasyMode.Image = ((System.Drawing.Image)(resources.GetObject("btnEasyMode.Image")));
             this.btnEasyMode.ImageAlign = System.Drawing.ContentAlignment.MiddleRight;
-            this.btnEasyMode.Location = new System.Drawing.Point(5, 36);
+            this.btnEasyMode.Location = new System.Drawing.Point(4, 52);
             this.btnEasyMode.Name = "btnEasyMode";
-            this.btnEasyMode.Size = new System.Drawing.Size(140, 60);
+            this.btnEasyMode.Size = new System.Drawing.Size(140, 44);
             this.btnEasyMode.TabIndex = 85;
             this.btnEasyMode.TabStop = false;
             this.btnEasyMode.Tag = "color:light";
@@ -106,7 +106,7 @@
             this.btnAutoCorrupt.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnAutoCorrupt.Font = new System.Drawing.Font("Segoe UI Semibold", 10F, System.Drawing.FontStyle.Bold);
             this.btnAutoCorrupt.ForeColor = System.Drawing.Color.OrangeRed;
-            this.btnAutoCorrupt.Location = new System.Drawing.Point(5, 259);
+            this.btnAutoCorrupt.Location = new System.Drawing.Point(4, 259);
             this.btnAutoCorrupt.Name = "btnAutoCorrupt";
             this.btnAutoCorrupt.Size = new System.Drawing.Size(140, 29);
             this.btnAutoCorrupt.TabIndex = 8;
@@ -125,7 +125,7 @@
             this.btnManualBlast.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnManualBlast.Font = new System.Drawing.Font("Segoe UI Semibold", 10F, System.Drawing.FontStyle.Bold);
             this.btnManualBlast.ForeColor = System.Drawing.Color.OrangeRed;
-            this.btnManualBlast.Location = new System.Drawing.Point(5, 227);
+            this.btnManualBlast.Location = new System.Drawing.Point(4, 227);
             this.btnManualBlast.Name = "btnManualBlast";
             this.btnManualBlast.Size = new System.Drawing.Size(140, 29);
             this.btnManualBlast.TabIndex = 7;
@@ -167,7 +167,7 @@
             this.pnAutoKillSwitch.Controls.Add(this.cbUseAutoKillSwitch);
             this.pnAutoKillSwitch.Controls.Add(this.pbAutoKillSwitchTimeout);
             this.pnAutoKillSwitch.Controls.Add(this.label4);
-            this.pnAutoKillSwitch.Location = new System.Drawing.Point(5, 378);
+            this.pnAutoKillSwitch.Location = new System.Drawing.Point(4, 378);
             this.pnAutoKillSwitch.Name = "pnAutoKillSwitch";
             this.pnAutoKillSwitch.Size = new System.Drawing.Size(140, 101);
             this.pnAutoKillSwitch.TabIndex = 118;
@@ -251,7 +251,7 @@
             this.pnCrashProtection.Controls.Add(this.btnGpJumpBack);
             this.pnCrashProtection.Controls.Add(this.label2);
             this.pnCrashProtection.Controls.Add(this.cbUseGameProtection);
-            this.pnCrashProtection.Location = new System.Drawing.Point(5, 291);
+            this.pnCrashProtection.Location = new System.Drawing.Point(4, 291);
             this.pnCrashProtection.Name = "pnCrashProtection";
             this.pnCrashProtection.Size = new System.Drawing.Size(140, 84);
             this.pnCrashProtection.TabIndex = 116;
@@ -312,7 +312,7 @@
             this.btnEngineConfig.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnEngineConfig.Font = new System.Drawing.Font("Segoe UI Semibold", 10F, System.Drawing.FontStyle.Bold);
             this.btnEngineConfig.ForeColor = System.Drawing.Color.Black;
-            this.btnEngineConfig.Location = new System.Drawing.Point(5, 99);
+            this.btnEngineConfig.Location = new System.Drawing.Point(4, 99);
             this.btnEngineConfig.Name = "btnEngineConfig";
             this.btnEngineConfig.Size = new System.Drawing.Size(140, 29);
             this.btnEngineConfig.TabIndex = 118;
@@ -334,7 +334,7 @@
             this.btnLogo.ImageAlign = System.Drawing.ContentAlignment.MiddleRight;
             this.btnLogo.Location = new System.Drawing.Point(0, 0);
             this.btnLogo.Name = "btnLogo";
-            this.btnLogo.Size = new System.Drawing.Size(150, 33);
+            this.btnLogo.Size = new System.Drawing.Size(150, 49);
             this.btnLogo.TabIndex = 117;
             this.btnLogo.TabStop = false;
             this.btnLogo.Tag = "color:darker";
@@ -371,7 +371,7 @@
             this.btnStockpilePlayer.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnStockpilePlayer.Font = new System.Drawing.Font("Segoe UI Semibold", 10F, System.Drawing.FontStyle.Bold);
             this.btnStockpilePlayer.ForeColor = System.Drawing.Color.Black;
-            this.btnStockpilePlayer.Location = new System.Drawing.Point(5, 163);
+            this.btnStockpilePlayer.Location = new System.Drawing.Point(4, 163);
             this.btnStockpilePlayer.Name = "btnStockpilePlayer";
             this.btnStockpilePlayer.Size = new System.Drawing.Size(140, 29);
             this.btnStockpilePlayer.TabIndex = 109;
@@ -389,7 +389,7 @@
             this.btnRTCMultiplayer.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnRTCMultiplayer.Font = new System.Drawing.Font("Segoe UI Semibold", 10F, System.Drawing.FontStyle.Bold);
             this.btnRTCMultiplayer.ForeColor = System.Drawing.Color.Black;
-            this.btnRTCMultiplayer.Location = new System.Drawing.Point(5, 195);
+            this.btnRTCMultiplayer.Location = new System.Drawing.Point(4, 195);
             this.btnRTCMultiplayer.Name = "btnRTCMultiplayer";
             this.btnRTCMultiplayer.Size = new System.Drawing.Size(140, 29);
             this.btnRTCMultiplayer.TabIndex = 108;
@@ -407,7 +407,7 @@
             this.btnGlitchHarvester.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnGlitchHarvester.Font = new System.Drawing.Font("Segoe UI Semibold", 10F, System.Drawing.FontStyle.Bold);
             this.btnGlitchHarvester.ForeColor = System.Drawing.Color.Black;
-            this.btnGlitchHarvester.Location = new System.Drawing.Point(5, 131);
+            this.btnGlitchHarvester.Location = new System.Drawing.Point(4, 131);
             this.btnGlitchHarvester.Name = "btnGlitchHarvester";
             this.btnGlitchHarvester.Size = new System.Drawing.Size(140, 29);
             this.btnGlitchHarvester.TabIndex = 107;

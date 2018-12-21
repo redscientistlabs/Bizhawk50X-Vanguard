@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Security.Cryptography;
+using System.Text;
 using System.Windows.Forms;
 
 namespace RTC
@@ -10,8 +11,8 @@ namespace RTC
 	public static class RTC_Filtering
 	{
 
-		public static Dictionary<string, HashSet<String>> Hash2LimiterDico = new Dictionary<string, HashSet<String>>();
-		public static Dictionary<string, String[]> Hash2ValueDico = new Dictionary<string, string[]>();
+		public static Dictionary<string, HashSet<Byte[]>> Hash2LimiterDico = new Dictionary<string, HashSet<Byte[]>> ();
+		public static Dictionary<string, List<Byte[]>> Hash2ValueDico = new Dictionary<string, List<Byte[]>>();
 
 
 
@@ -32,39 +33,35 @@ namespace RTC
 			string[] temp = File.ReadAllLines(path);
 			bool flipBytes = path.StartsWith("_");
 
-			for (int i = 0; i < temp.Length; i++)
+			List<Byte[]> byteList = new List<byte[]>();
+			foreach (string t in temp)
 			{
-				temp[i] = temp[i].Trim();
-				temp[i] = temp[i].ToUpper();
-				//If it's big endian, flip it. this is ugly and slow but it works
+				byte[] bytes = RTC_Extensions.StringToByteArray(t);
+				//If it's big endian, flip it
 				if (flipBytes)
 				{
-					byte[] bytes = StringToByteArray(temp[i]);
-					bytes = bytes.FlipBytes();
-					temp[i] = bytes.ToString();
+					bytes.FlipBytes();
 				}
+				byteList.Add(bytes);
 			}
 
-			return RegisterList(temp, syncListViaNetcore);
+			return RegisterList(byteList.Distinct().ToList(), syncListViaNetcore);
 		}
 
-
-
-		private static byte[] StringToByteArray(string hex)
-		{
-			return Enumerable.Range(0, hex.Length)
-				.Where(x => x % 2 == 0)
-				.Select(x => Convert.ToByte(hex.Substring(x, 2), 16))
-				.ToArray();
-		}
-		public static string RegisterList(String[] list, bool syncListsViaNetcore)
+		public static string RegisterList(List<Byte[]> list, bool syncListsViaNetcore)
 		{
 			//Make one giant string to hash
 			string concat = String.Empty;
-			foreach (String str in list)
-				concat = String.Concat(concat, str);
+			foreach (byte[] line in list)
+			{
+				StringBuilder sb = new StringBuilder();
+				foreach (var b in line)
+					sb.Append(b.ToString());
 
-			//Hash it
+				concat = String.Concat(concat, sb.ToString());
+			}
+
+			//Hash it. We don't use GetHashCode because we want something consistent
 			MD5 hash = MD5.Create();
 			hash.ComputeHash(concat.GetBytes());
 			string hashStr = Convert.ToBase64String(hash.Hash);
@@ -72,9 +69,9 @@ namespace RTC
 			if (!Hash2ValueDico.ContainsKey(hashStr))
 				Hash2ValueDico[hashStr] = list;
 			if (!Hash2LimiterDico.ContainsKey(hashStr))
-				Hash2LimiterDico[hashStr] = new HashSet<string>(list);
+				Hash2LimiterDico[hashStr] = new HashSet<byte[]>(list, new ByteArrayComparer());
 
-			if(syncListsViaNetcore)
+			if (syncListsViaNetcore)
 				RTC_Core.SendCommandToBizhawk(new RTC_Command(CommandType.REMOTE_UPDATE_FILTERING_DICTIONARIES) { objectValue = new object[] { RTC_Filtering.Hash2LimiterDico, RTC_Filtering.Hash2ValueDico } });
 
 			return hashStr;
@@ -102,12 +99,14 @@ namespace RTC
 
 		public static bool LimiterContainsValue(byte[] bytes, string hash)
 		{
-			if (!Hash2LimiterDico.ContainsKey(hash))
-				return false;
+			HashSet<Byte[]> hs = null;
+			if (Hash2LimiterDico.TryGetValue(hash, out hs))
+			{
+				return hs.Contains(bytes);
+			}
 
-			string str = BitConverter.ToString(bytes).Replace("-", "").ToUpper();
+			return false;
 
-			return Hash2LimiterDico[hash].Contains(str);
 		}
 
 
@@ -117,7 +116,12 @@ namespace RTC
 			{
 				return null;
 			}
-			return RTC_Extensions.GetByteArrayFromContentsPadLeft(Hash2ValueDico[hash][RTC_Core.RND.Next(Hash2ValueDico[hash].Length)], precision);
+
+			int line = RTC_Core.RND.Next(Hash2ValueDico[hash].Count);
+			Byte[] t = Hash2ValueDico[hash][line];
+			if(t.Length < precision)
+				t.PadLeft(precision);
+			return t;
 		}
 
 		public static List<String[]> GetAllLimiterListsFromStockpile(Stockpile sks)
@@ -140,10 +144,12 @@ namespace RTC
 				if (Hash2LimiterDico.ContainsKey(s))
 				{
 					List<String> strList = new List<string>();
-					foreach (string str in Hash2LimiterDico[s])
+					foreach (var line in Hash2LimiterDico[s])
 					{
-						strList.Add(str);
-						
+						StringBuilder sb = new StringBuilder();
+						foreach (var b in line)
+							sb.Append(b.ToString());
+						strList.Add(sb.ToString());
 					}
 					returnList.Add(strList.ToArray());
 				}
@@ -162,6 +168,25 @@ namespace RTC
 			}
 
 			return returnList;
+		}
+
+	}
+	[Serializable]
+	public class ByteArrayComparer : IEqualityComparer<byte[]>
+	{
+		public bool Equals(byte[] a, byte[] b)
+		{
+			if (a.Length != b.Length) return false;
+			for (int i = 0; i < a.Length; i++)
+				if (a[i] != b[i]) return false;
+			return true;
+		}
+		public int GetHashCode(byte[] a)
+		{
+			uint b = 0;
+			for (int i = 0; i < a.Length; i++)
+				b = ((b << 23) | (b >> 9)) ^ a[i];
+			return unchecked((int)b);
 		}
 	}
 }

@@ -214,15 +214,29 @@ namespace RTC
 			System.Buffer.BlockCopy(str.ToCharArray(), 0, bytes, 0, bytes.Length);
 			return bytes;
 		}
+
+		/// <summary>
+		/// Gets you a byte array from the CONTENTS of a string
+		/// </summary>
+		/// <param name="hex"></param>
+		/// <returns></returns>
+		public static byte[] StringToByteArray(string hex)
+		{
+			return Enumerable.Range(0, hex.Length)
+				.Where(x => x % 2 == 0)
+				.Select(x => Convert.ToByte(hex.Substring(x, 2), 16))
+				.ToArray();
+		}
+
 		/// <summary>
 		/// Gets you a byte array from the CONTENTS of a string 0 padded on the left to a specific length
 		/// </summary>
-		/// <param name="str"></param>
+		/// <param name="hex"></param>
 		/// <returns></returns>
-		public static byte[] GetByteArrayFromContentsPadLeft(this string str, int precision)
+		public static byte[] StringToByteArrayPadLeft(string hex, int precision)
 		{
 			var bytes = new byte[precision];
-			string temp = str.PadLeft(precision*2,'0'); //*2 since a byte is two characters
+			string temp = hex.PadLeft(precision*2,'0'); //*2 since a byte is two characters
 
 			int j = 0;
 			for (var i = 0; i < precision*2; i+=2)
@@ -529,6 +543,15 @@ namespace RTC
 			for (int i = 0; i < arrayClone.Length; i++)
 				array[i] = arrayClone[(arrayClone.Length - 1) - i];
 			return array;
+		}
+
+		public static byte[] PadLeft(this byte[] input, int length)
+		{
+			var newArray = new byte[length];
+
+			var startAt = newArray.Length - input.Length;
+			Buffer.BlockCopy(input, 0, newArray, startAt, input.Length);
+			return newArray;
 		}
 
 		#endregion BYTE ARRAY EXTENSIONS

@@ -1008,7 +1008,7 @@ namespace RTC
 			}
 			set
 			{
-				var temp = value.GetByteArrayFromContentsPadLeft(this.Precision);
+				var temp = RTC_Extensions.StringToByteArrayPadLeft(value, this.Precision);
 				if (temp != null)
 					this.Value = temp;
 			}

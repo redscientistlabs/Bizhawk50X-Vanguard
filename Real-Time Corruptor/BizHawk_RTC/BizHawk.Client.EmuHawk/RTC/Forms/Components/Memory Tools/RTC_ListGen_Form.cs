@@ -34,7 +34,6 @@ namespace RTC
 
 		private bool GenerateList()
 		{
-
 			List<String> newList = new List<string>();
 			foreach (string line in tbListValues.Lines)
 			{
@@ -80,7 +79,15 @@ namespace RTC
 				filename = RTC_Core.GetRandomKey();
 
 			//Register the list and update netcore
-			string hash = RTC_Filtering.RegisterList(newList.ToArray(), true);
+
+
+			List<Byte[]> byteList = new List<byte[]>();
+			foreach (string t in newList)
+			{
+				byte[] bytes = RTC_Extensions.StringToByteArray(t);
+				byteList.Add(bytes);
+			}
+			string hash = RTC_Filtering.RegisterList(byteList, true);
 
 			//Register the list in the ui
 			S.GET<RTC_EngineConfig_Form>().RegisterList(filename, hash);
