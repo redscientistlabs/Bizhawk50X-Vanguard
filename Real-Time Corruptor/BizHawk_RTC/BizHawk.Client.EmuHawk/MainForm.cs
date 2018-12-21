@@ -3586,8 +3586,11 @@ namespace BizHawk.Client.EmuHawk
 				var leftpart = path.Split('|')[0];
 				//RTC_Hijack - Don't set this if it's an RTC dir
 				string fullPath = Path.GetFullPath(Path.GetDirectoryName(leftpart));
-				if (!fullPath.Contains("\\WORKING\\")  || !fullPath.Contains("\\ASSETS\\"))
+				if (!fullPath.Contains("\\WORKING") && !fullPath.Contains("\\ASSETS"))
+				{
 					Global.Config.LastRomPath = Path.GetFullPath(Path.GetDirectoryName(leftpart));
+				}//---Hijack_End
+					
 			}
 
 			return true;
