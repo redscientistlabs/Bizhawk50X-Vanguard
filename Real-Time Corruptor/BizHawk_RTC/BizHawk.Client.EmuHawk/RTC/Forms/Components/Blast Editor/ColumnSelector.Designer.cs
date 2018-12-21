@@ -37,7 +37,7 @@
             this.tablePanel.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
             this.tablePanel.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
             this.tablePanel.Location = new System.Drawing.Point(9, 10);
-            this.tablePanel.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.tablePanel.Margin = new System.Windows.Forms.Padding(2);
             this.tablePanel.Name = "tablePanel";
             this.tablePanel.RowCount = 12;
             this.tablePanel.RowStyles.Add(new System.Windows.Forms.RowStyle());
@@ -59,9 +59,10 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.BackColor = System.Drawing.Color.Gray;
             this.ClientSize = new System.Drawing.Size(260, 269);
             this.Controls.Add(this.tablePanel);
-            this.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.Margin = new System.Windows.Forms.Padding(2);
             this.Name = "ColumnSelector";
             this.Text = "ColumnSelector";
             this.ResumeLayout(false);

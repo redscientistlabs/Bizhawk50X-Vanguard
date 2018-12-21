@@ -10,12 +10,12 @@ using System.Windows.Forms;
 
 namespace RTC
 {
-	public partial class ColumnSelector : Form
+	public partial class ColumnSelector : Form, IAutoColorize
 	{
 		public ColumnSelector()
 		{
 			InitializeComponent();
-			this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.ColumnSelector_Closing);
+			this.FormClosing += this.ColumnSelector_Closing;
 		}
 
 		public void LoadColumnSelector(DataGridViewColumnCollection columns)
@@ -35,7 +35,7 @@ namespace RTC
 			if (S.GET<RTC_NewBlastEditor_Form>() != null)
 			{
 				List<String> temp = new List<String>();
-				foreach (CheckBox cb in tablePanel.Controls.Cast<CheckBox>().Where(item => (bool)item.Checked == true))
+				foreach (CheckBox cb in tablePanel.Controls.Cast<CheckBox>().Where(item => item.Checked))
 				{
 					temp.Add(cb.Name);
 				}

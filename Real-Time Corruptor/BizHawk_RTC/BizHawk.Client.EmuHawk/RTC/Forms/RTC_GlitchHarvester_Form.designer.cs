@@ -1793,7 +1793,7 @@
             this.btnStashDOWN.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(224)))), ((int)(((byte)(224)))), ((int)(((byte)(224)))));
             this.btnStashDOWN.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
             this.btnStashDOWN.FlatAppearance.BorderSize = 0;
-            this.btnStashDOWN.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
+            this.btnStashDOWN.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnStashDOWN.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F);
             this.btnStashDOWN.ForeColor = System.Drawing.Color.Black;
             this.btnStashDOWN.Location = new System.Drawing.Point(336, 182);
@@ -1811,7 +1811,7 @@
             this.btnStashUP.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(224)))), ((int)(((byte)(224)))), ((int)(((byte)(224)))));
             this.btnStashUP.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
             this.btnStashUP.FlatAppearance.BorderSize = 0;
-            this.btnStashUP.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
+            this.btnStashUP.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnStashUP.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F);
             this.btnStashUP.ForeColor = System.Drawing.Color.Black;
             this.btnStashUP.Location = new System.Drawing.Point(310, 182);
@@ -1967,7 +1967,7 @@
             this.btnStockpileDOWN.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.btnStockpileDOWN.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(224)))), ((int)(((byte)(224)))), ((int)(((byte)(224)))));
             this.btnStockpileDOWN.FlatAppearance.BorderSize = 0;
-            this.btnStockpileDOWN.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
+            this.btnStockpileDOWN.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnStockpileDOWN.Font = new System.Drawing.Font("Segoe UI Symbol", 8F);
             this.btnStockpileDOWN.ForeColor = System.Drawing.Color.Black;
             this.btnStockpileDOWN.Location = new System.Drawing.Point(824, 4);
@@ -1985,7 +1985,7 @@
             this.btnStockpileUP.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.btnStockpileUP.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(224)))), ((int)(((byte)(224)))), ((int)(((byte)(224)))));
             this.btnStockpileUP.FlatAppearance.BorderSize = 0;
-            this.btnStockpileUP.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
+            this.btnStockpileUP.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnStockpileUP.Font = new System.Drawing.Font("Segoe UI Symbol", 8F);
             this.btnStockpileUP.ForeColor = System.Drawing.Color.Black;
             this.btnStockpileUP.Location = new System.Drawing.Point(798, 4);

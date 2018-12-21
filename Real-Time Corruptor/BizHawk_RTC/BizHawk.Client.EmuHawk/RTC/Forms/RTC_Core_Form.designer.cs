@@ -194,6 +194,7 @@
             // cbAutoKillSwitchExecuteAction
             // 
             this.cbAutoKillSwitchExecuteAction.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.cbAutoKillSwitchExecuteAction.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.cbAutoKillSwitchExecuteAction.Font = new System.Drawing.Font("Segoe UI", 10F);
             this.cbAutoKillSwitchExecuteAction.FormattingEnabled = true;
             this.cbAutoKillSwitchExecuteAction.Items.AddRange(new object[] {
