@@ -74,7 +74,7 @@ namespace RTC
 		public static System.Drawing.Size NoteBoxSize;
 
 		//RTC Main Forms
-		public static Color generalColor = Color.LightSteelBlue;
+		public static Color generalColor = Color.FromArgb(60, 45, 70);
 
 
 		//All RTC forms

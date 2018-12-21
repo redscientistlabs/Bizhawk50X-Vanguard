@@ -61,6 +61,7 @@
             // lbConnectionStatus
             // 
             this.lbConnectionStatus.AutoSize = true;
+            this.lbConnectionStatus.BackColor = System.Drawing.Color.Transparent;
             this.lbConnectionStatus.Font = new System.Drawing.Font("Segoe UI", 10F);
             this.lbConnectionStatus.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(192)))), ((int)(((byte)(128)))));
             this.lbConnectionStatus.Location = new System.Drawing.Point(65, 74);
@@ -101,6 +102,7 @@
             // label11
             // 
             this.label11.AutoSize = true;
+            this.label11.BackColor = System.Drawing.Color.Transparent;
             this.label11.Font = new System.Drawing.Font("Segoe UI Semibold", 12F, System.Drawing.FontStyle.Bold);
             this.label11.ForeColor = System.Drawing.Color.White;
             this.label11.Location = new System.Drawing.Point(15, 158);
@@ -111,6 +113,7 @@
             // 
             // panel1
             // 
+            this.panel1.BackColor = System.Drawing.Color.Transparent;
             this.panel1.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("panel1.BackgroundImage")));
             this.panel1.Location = new System.Drawing.Point(31, 69);
             this.panel1.Name = "panel1";
@@ -132,6 +135,7 @@
             // label3
             // 
             this.label3.AutoSize = true;
+            this.label3.BackColor = System.Drawing.Color.Transparent;
             this.label3.Font = new System.Drawing.Font("Segoe UI Semibold", 9F, System.Drawing.FontStyle.Bold);
             this.label3.ForeColor = System.Drawing.Color.Silver;
             this.label3.Location = new System.Drawing.Point(10, 76);
@@ -161,6 +165,7 @@
             // lbBizhawkEmulatorAttached
             // 
             this.lbBizhawkEmulatorAttached.AutoSize = true;
+            this.lbBizhawkEmulatorAttached.BackColor = System.Drawing.Color.Transparent;
             this.lbBizhawkEmulatorAttached.Font = new System.Drawing.Font("Segoe UI Semibold", 12F, System.Drawing.FontStyle.Bold);
             this.lbBizhawkEmulatorAttached.ForeColor = System.Drawing.Color.White;
             this.lbBizhawkEmulatorAttached.Location = new System.Drawing.Point(18, 309);
@@ -172,6 +177,7 @@
             // label4
             // 
             this.label4.AutoSize = true;
+            this.label4.BackColor = System.Drawing.Color.Transparent;
             this.label4.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold);
             this.label4.ForeColor = System.Drawing.Color.White;
             this.label4.Location = new System.Drawing.Point(161, 164);
@@ -183,6 +189,7 @@
             // lbBizhawkAttached
             // 
             this.lbBizhawkAttached.AutoSize = true;
+            this.lbBizhawkAttached.BackColor = System.Drawing.Color.Transparent;
             this.lbBizhawkAttached.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold);
             this.lbBizhawkAttached.ForeColor = System.Drawing.Color.White;
             this.lbBizhawkAttached.Location = new System.Drawing.Point(167, 314);
@@ -194,6 +201,7 @@
             // lbWindowsGlitchHarvester
             // 
             this.lbWindowsGlitchHarvester.AutoSize = true;
+            this.lbWindowsGlitchHarvester.BackColor = System.Drawing.Color.Transparent;
             this.lbWindowsGlitchHarvester.Font = new System.Drawing.Font("Segoe UI Semibold", 12F, System.Drawing.FontStyle.Bold);
             this.lbWindowsGlitchHarvester.ForeColor = System.Drawing.Color.White;
             this.lbWindowsGlitchHarvester.Location = new System.Drawing.Point(398, 158);
@@ -219,6 +227,7 @@
             // label8
             // 
             this.label8.AutoSize = true;
+            this.label8.BackColor = System.Drawing.Color.Transparent;
             this.label8.Font = new System.Drawing.Font("Segoe UI Semibold", 8F, System.Drawing.FontStyle.Bold);
             this.label8.ForeColor = System.Drawing.Color.White;
             this.label8.Location = new System.Drawing.Point(18, 12);
@@ -249,6 +258,7 @@
             // lbVrun
             // 
             this.lbVrun.AutoSize = true;
+            this.lbVrun.BackColor = System.Drawing.Color.Transparent;
             this.lbVrun.Font = new System.Drawing.Font("Segoe UI Semibold", 12F, System.Drawing.FontStyle.Bold);
             this.lbVrun.ForeColor = System.Drawing.Color.White;
             this.lbVrun.Location = new System.Drawing.Point(398, 309);
@@ -290,6 +300,7 @@
             // label9
             // 
             this.label9.AutoSize = true;
+            this.label9.BackColor = System.Drawing.Color.Transparent;
             this.label9.Font = new System.Drawing.Font("Segoe UI Semibold", 8F, System.Drawing.FontStyle.Bold);
             this.label9.ForeColor = System.Drawing.Color.White;
             this.label9.Location = new System.Drawing.Point(19, 11);
@@ -302,6 +313,7 @@
             // lbVrunAddress
             // 
             this.lbVrunAddress.AutoSize = true;
+            this.lbVrunAddress.BackColor = System.Drawing.Color.Transparent;
             this.lbVrunAddress.Font = new System.Drawing.Font("Segoe UI Semibold", 9F, System.Drawing.FontStyle.Bold);
             this.lbVrunAddress.ForeColor = System.Drawing.Color.White;
             this.lbVrunAddress.Location = new System.Drawing.Point(546, 313);
@@ -313,6 +325,7 @@
             // label6
             // 
             this.label6.AutoSize = true;
+            this.label6.BackColor = System.Drawing.Color.Transparent;
             this.label6.Font = new System.Drawing.Font("Segoe UI Semibold", 8F, System.Drawing.FontStyle.Bold);
             this.label6.ForeColor = System.Drawing.Color.White;
             this.label6.Location = new System.Drawing.Point(596, 163);
@@ -324,6 +337,7 @@
             // lbRTC
             // 
             this.lbRTC.AutoSize = true;
+            this.lbRTC.BackColor = System.Drawing.Color.Transparent;
             this.lbRTC.Font = new System.Drawing.Font("Segoe UI Semibold", 32F, System.Drawing.FontStyle.Bold);
             this.lbRTC.ForeColor = System.Drawing.Color.White;
             this.lbRTC.Location = new System.Drawing.Point(11, 9);
@@ -335,6 +349,7 @@
             // lbRTCver
             // 
             this.lbRTCver.AutoSize = true;
+            this.lbRTCver.BackColor = System.Drawing.Color.Transparent;
             this.lbRTCver.Font = new System.Drawing.Font("Segoe UI", 20F, System.Drawing.FontStyle.Bold);
             this.lbRTCver.ForeColor = System.Drawing.Color.White;
             this.lbRTCver.Location = new System.Drawing.Point(491, 32);
@@ -367,6 +382,7 @@
             this.Controls.Add(this.pnCorruptionEngine);
             this.Controls.Add(this.lbConnectionStatus);
             this.DoubleBuffered = true;
+            this.Font = new System.Drawing.Font("Segoe UI Symbol", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.ForeColor = System.Drawing.Color.White;
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
             this.Name = "RTC_ConnectionStatus_Form";
