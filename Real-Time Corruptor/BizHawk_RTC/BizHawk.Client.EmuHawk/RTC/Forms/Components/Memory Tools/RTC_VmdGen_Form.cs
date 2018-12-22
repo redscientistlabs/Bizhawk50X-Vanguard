@@ -134,9 +134,9 @@ namespace RTC
 						end = Convert.ToInt64(currentDomainSize - 1);
 
 					if (remove)
-						proto.removeRanges.Add(new long[] {start, end});
+						proto.RemoveRanges.Add(new long[] {start, end});
 					else
-						proto.addRanges.Add(new long[] { start, end });
+						proto.AddRanges.Add(new long[] { start, end });
 				}
 				else
 				{
@@ -145,18 +145,18 @@ namespace RTC
 					if (address < currentDomainSize)
 					{
 						if (remove)
-							proto.removeSingles.Add(address);
+							proto.RemoveSingles.Add(address);
 						else
-							proto.addSingles.Add(address);
+							proto.AddSingles.Add(address);
 					}
 
 				}
 			}
 
-			if (proto.addRanges.Count == 0 && proto.addSingles.Count == 0)
+			if (proto.AddRanges.Count == 0 && proto.AddSingles.Count == 0)
 			{
 				//No add range was specified, use entire domain
-				proto.addRanges.Add(new long[] { 0, (currentDomainSize > long.MaxValue ? long.MaxValue : Convert.ToInt64(currentDomainSize)) });
+				proto.AddRanges.Add(new long[] { 0, (currentDomainSize > long.MaxValue ? long.MaxValue : Convert.ToInt64(currentDomainSize)) });
 			}
 
 			VMD = proto.Generate();

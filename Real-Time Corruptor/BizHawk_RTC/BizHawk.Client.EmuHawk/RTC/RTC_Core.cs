@@ -74,11 +74,12 @@ namespace RTC
 		public static System.Drawing.Size NoteBoxSize;
 
 		//RTC Main Forms
-		public static Color generalColor = Color.FromArgb(60, 45, 70);
+		//public static Color generalColor = Color.FromArgb(60, 45, 70);
+		public static Color GeneralColor = Color.LightSteelBlue;
 
 
 		//All RTC forms
-		public static Form[] allRtcForms
+		public static Form[] AllRtcForms
 		{
 			get
 			{
@@ -120,7 +121,7 @@ namespace RTC
 			if (RTC_Core.RemoteRTC != null && RTC_Core.RemoteRTC.streamReadingThread != null)
 				RTC_Core.RemoteRTC.streamReadingThread.Abort();
 
-			foreach (Form frm in allRtcForms)
+			foreach (Form frm in AllRtcForms)
 			{
 				if (frm != null)
 					frm.Close();
@@ -970,7 +971,7 @@ namespace RTC
 
 			if (form == null)
 			{
-				foreach (Form targetForm in allRtcForms)
+				foreach (Form targetForm in AllRtcForms)
 				{
 					if (targetForm != null)
 					{
@@ -1010,7 +1011,7 @@ namespace RTC
 
 			if (form == null)
 			{
-				foreach (Form targetForm in allRtcForms)
+				foreach (Form targetForm in AllRtcForms)
 				{
 					if (targetForm != null)
 					{

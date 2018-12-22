@@ -29,7 +29,7 @@ namespace RTC
 		{
 			get
 			{
-				return RTC_StockpileManager.isCorruptionApplied;
+				return RTC_StockpileManager.IsCorruptionApplied;
 			}
 			set
 			{
@@ -54,8 +54,8 @@ namespace RTC
 					S.GET<RTC_StockpilePlayer_Form>().btnBlastToggle.Text = "BlastLayer : OFF    (Attempts to uncorrupt/recorrupt in real-time)";
 				}
 
-				if (RTC_StockpileManager.isCorruptionApplied != value)
-					RTC_StockpileManager.isCorruptionApplied = value;
+				if (RTC_StockpileManager.IsCorruptionApplied != value)
+					RTC_StockpileManager.IsCorruptionApplied = value;
 			}
 		}
 
@@ -557,7 +557,7 @@ namespace RTC
 
 			RTC_StockpileManager.StockpileChanged();
 
-			RTC_StockpileManager.unsavedEdits = true;
+			RTC_StockpileManager.UnsavedEdits = true;
 		}
 
 		private void btnClearStashHistory_Click(object sender, EventArgs e)
@@ -578,7 +578,7 @@ namespace RTC
 
 			RTC_StockpileManager.StockpileChanged();
 
-			RTC_StockpileManager.unsavedEdits = true;
+			RTC_StockpileManager.UnsavedEdits = true;
 
 			RedrawActionUI();
 
@@ -607,7 +607,7 @@ namespace RTC
 
 				RTC_StockpileManager.StockpileChanged();
 
-				RTC_StockpileManager.unsavedEdits = false;
+				RTC_StockpileManager.UnsavedEdits = false;
 
 				RedrawActionUI();
 
@@ -640,7 +640,7 @@ namespace RTC
 					dgvStockpile.ClearSelection();
 					RTC_StockpileManager.StockpileChanged();
 
-					RTC_StockpileManager.unsavedEdits = false;
+					RTC_StockpileManager.UnsavedEdits = false;
 				}
 				finally
 				{
@@ -841,7 +841,7 @@ namespace RTC
 				dgvStockpile.Rows[newpos].Selected = true;
 			}
 
-			RTC_StockpileManager.unsavedEdits = true;
+			RTC_StockpileManager.UnsavedEdits = true;
 
 			RTC_StockpileManager.StockpileChanged();
 		}
@@ -876,7 +876,7 @@ namespace RTC
 				dgvStockpile.Rows[newpos].Selected = true;
 			}
 
-			RTC_StockpileManager.unsavedEdits = true;
+			RTC_StockpileManager.UnsavedEdits = true;
 
 			RTC_StockpileManager.StockpileChanged();
 		}
@@ -961,7 +961,7 @@ namespace RTC
 
 			RTC_StockpileManager.StockpileChanged();
 
-			RTC_StockpileManager.unsavedEdits = true;
+			RTC_StockpileManager.UnsavedEdits = true;
 
 			RTC_Core.StartSound();
 		}
@@ -973,7 +973,7 @@ namespace RTC
 
 		private void cbStashCorrupted_CheckedChanged(object sender, EventArgs e)
 		{
-			RTC_StockpileManager.stashAfterOperation = cbStashCorrupted.Checked;
+			RTC_StockpileManager.StashAfterOperation = cbStashCorrupted.Checked;
 		}
 
 		private void btnBackPanelPage_Click(object sender, EventArgs e)

@@ -123,7 +123,7 @@ namespace RTC
 			}
 			else if (RTC_Core.isStandalone)
 			{
-				if (RTC_StockpileManager.unsavedEdits && !RTC_Core.isClosing && MessageBox.Show("You have unsaved edits in the Glitch Harvester Stockpile. \n\n Are you sure you want to close RTC without saving?", "Unsaved edits in Stockpile", MessageBoxButtons.YesNo) == DialogResult.No)
+				if (RTC_StockpileManager.UnsavedEdits && !RTC_Core.isClosing && MessageBox.Show("You have unsaved edits in the Glitch Harvester Stockpile. \n\n Are you sure you want to close RTC without saving?", "Unsaved edits in Stockpile", MessageBoxButtons.YesNo) == DialogResult.No)
 				{
 					e.Cancel = true;
 					return;
@@ -232,7 +232,7 @@ namespace RTC
 			{
 				RTC_GameProtection.Stop();
 				RTC_StockpileManager.BackupedState = null;
-				RTC_StockpileManager.allBackupStates.Clear();
+				RTC_StockpileManager.AllBackupStates.Clear();
 				btnGpJumpBack.Visible = false;
 				btnGpJumpNow.Visible = false;
 			}
@@ -365,10 +365,10 @@ namespace RTC
 			{
 				btnGpJumpBack.Visible = false;
 
-				if (RTC_StockpileManager.allBackupStates.Count == 0)
+				if (RTC_StockpileManager.AllBackupStates.Count == 0)
 					return;
 
-				StashKey sk = RTC_StockpileManager.allBackupStates.Pop();
+				StashKey sk = RTC_StockpileManager.AllBackupStates.Pop();
 
 				sk?.Run();
 
@@ -376,7 +376,7 @@ namespace RTC
 			}
 			finally
 			{
-				if (RTC_StockpileManager.allBackupStates.Count != 0)
+				if (RTC_StockpileManager.AllBackupStates.Count != 0)
 					btnGpJumpBack.Visible = true;
 			}
 		}

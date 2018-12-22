@@ -90,7 +90,7 @@ namespace RTC
 			new Ref(() => RTC_StockpileManager.BackupedState, x => { RTC_StockpileManager.BackupedState = (StashKey)x; }),
 
 			new Ref(() => RTC_MemoryDomains.SelectedDomains, x => { RTC_MemoryDomains.SelectedDomains = (string[])x; }),
-			new Ref(() => RTC_MemoryDomains.lastSelectedDomains, x => { RTC_MemoryDomains.lastSelectedDomains = (string[])x; }),
+			new Ref(() => RTC_MemoryDomains.LastSelectedDomains, x => { RTC_MemoryDomains.LastSelectedDomains = (string[])x; }),
 		};
 
 		public RTC_Params()
@@ -131,12 +131,12 @@ namespace RTC
 				if (IsParamSet("COLOR"))
 				{
 					string[] bytes = ReadParam("COLOR").Split(',');
-					RTC_Core.generalColor = Color.FromArgb(Convert.ToByte(bytes[0]), Convert.ToByte(bytes[1]), Convert.ToByte(bytes[2]));
+					RTC_Core.GeneralColor = Color.FromArgb(Convert.ToByte(bytes[0]), Convert.ToByte(bytes[1]), Convert.ToByte(bytes[2]));
 				}
 				else
-					RTC_Core.generalColor = Color.FromArgb(110, 150, 193);
+					RTC_Core.GeneralColor = Color.FromArgb(110, 150, 193);
 
-				RTC_Core.SetRTCColor(RTC_Core.generalColor);
+				RTC_Core.SetRTCColor(RTC_Core.GeneralColor);
 			}
 		}
 

@@ -189,8 +189,8 @@ namespace RTC
 			PathEntry pathEntry = Global.Config.PathEntries[Global.Game.System, "Savestates"] ??
 			Global.Config.PathEntries[Global.Game.System, "Base"];
 
-			RTC_StockpileManager.currentGameSystem = RTC_Core.EmuFolderCheck(pathEntry.SystemDisplayName);
-			RTC_StockpileManager.currentGameName = PathManager.FilesystemSafeName(Global.Game);
+			RTC_StockpileManager.CurrentGameSystem = RTC_Core.EmuFolderCheck(pathEntry.SystemDisplayName);
+			RTC_StockpileManager.CurrentGameName = PathManager.FilesystemSafeName(Global.Game);
 			RTC_Core.lastOpenRom = GlobalWin.MainForm.CurrentlyOpenRom;
 			
 			//Sleep for 10ms in case Bizhawk hung for a moment after the game loaded
@@ -198,7 +198,7 @@ namespace RTC
 			//prepare memory domains in advance on bizhawk side
 			RTC_MemoryDomains.RefreshDomains(false);
 
-			if (RTC_StockpileManager.currentGameName != lastGameName)
+			if (RTC_StockpileManager.CurrentGameName != lastGameName)
 			{
 				RTC_Core.SendCommandToRTC(new RTC_Command(CommandType.REMOTE_EVENT_LOADGAMEDONE_NEWGAME));
 			}
@@ -207,7 +207,7 @@ namespace RTC
 				RTC_Core.SendCommandToRTC(new RTC_Command(CommandType.REMOTE_EVENT_LOADGAMEDONE_SAMEGAME));
 			}
 
-			lastGameName = RTC_StockpileManager.currentGameName;
+			lastGameName = RTC_StockpileManager.CurrentGameName;
 
 			//RTC_Restore.SaveRestore();
 
@@ -451,7 +451,7 @@ namespace RTC
 		public static void BIZHAWK_OPEN_HEXEDITOR_ADDRESS(MemoryDomainProxy mdp, long address)
 		{
 			GlobalWin.Tools.Load<HexEditor>();
-			GlobalWin.Tools.HexEditor.SetDomain(mdp.md);
+			GlobalWin.Tools.HexEditor.SetDomain(mdp.MD);
 			GlobalWin.Tools.HexEditor.GoToAddress(address);
 		}
 

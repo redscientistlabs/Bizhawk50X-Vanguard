@@ -64,7 +64,7 @@ namespace RTC
 			dgvBlastGenerator.MouseClick += dgvBlastGenerator_MouseClick;
 			dgvBlastGenerator.CellValueChanged += dgvBlastGenerator_CellValueChanged;
 			dgvBlastGenerator.CellClick += dgvBlastGenerator_CellClick;
-			RTC_Core.SetRTCColor(RTC_Core.generalColor, this);
+			RTC_Core.SetRTCColor(RTC_Core.GeneralColor, this);
 		}
 
 		public void LoadNoStashKey()
@@ -404,7 +404,7 @@ namespace RTC
 					dgvBlastGenerator.Rows[i].Cells["dgvBlastProtoReference"].Value = returnList[i];
 					dgvBlastGenerator.Rows[i].Cells["dgvRowDirty"].Value = false;
 
-					bl.Layer.AddRange(returnList[i].bl.Layer);
+					bl.Layer.AddRange(returnList[i].Bl.Layer);
 				}
 
 				return bl;

@@ -45,6 +45,8 @@
             this.gbValueRange = new System.Windows.Forms.GroupBox();
             this.label26 = new System.Windows.Forms.Label();
             this.label27 = new System.Windows.Forms.Label();
+            this.nmMaxValue = new RTC.NumericUpDownHexFix();
+            this.nmMinValue = new RTC.NumericUpDownHexFix();
             this.gbLimiterList = new System.Windows.Forms.GroupBox();
             this.cbLimiterInverted = new System.Windows.Forms.CheckBox();
             this.rbLimiterNone = new System.Windows.Forms.RadioButton();
@@ -72,13 +74,13 @@
             this.rbStoreStep = new System.Windows.Forms.RadioButton();
             this.rbStoreOnce = new System.Windows.Forms.RadioButton();
             this.gbBackupSource = new System.Windows.Forms.GroupBox();
-            this.nmMaxValue = new RTC.NumericUpDownHexFix();
-            this.nmMinValue = new RTC.NumericUpDownHexFix();
             ((System.ComponentModel.ISupportInitialize)(this.nmMaxInfinite)).BeginInit();
             this.gbUnitSource.SuspendLayout();
             this.gbValueList.SuspendLayout();
             this.gbValueSource.SuspendLayout();
             this.gbValueRange.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.nmMaxValue)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.nmMinValue)).BeginInit();
             this.gbLimiterList.SuspendLayout();
             this.gbStepSettings.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.nmTilt)).BeginInit();
@@ -88,8 +90,6 @@
             this.gbStoreTime.SuspendLayout();
             this.gbStoreType.SuspendLayout();
             this.gbBackupSource.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.nmMaxValue)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.nmMinValue)).BeginInit();
             this.SuspendLayout();
             // 
             // cbLockUnits
@@ -322,6 +322,37 @@
             this.label27.Size = new System.Drawing.Size(58, 13);
             this.label27.TabIndex = 166;
             this.label27.Text = "Min Value";
+            // 
+            // nmMaxValue
+            // 
+            this.nmMaxValue.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
+            this.nmMaxValue.Font = new System.Drawing.Font("Consolas", 8F);
+            this.nmMaxValue.ForeColor = System.Drawing.Color.White;
+            this.nmMaxValue.Hexadecimal = true;
+            this.nmMaxValue.Location = new System.Drawing.Point(67, 38);
+            this.nmMaxValue.Name = "nmMaxValue";
+            this.nmMaxValue.Size = new System.Drawing.Size(70, 20);
+            this.nmMaxValue.TabIndex = 168;
+            this.nmMaxValue.Tag = "color:dark";
+            this.nmMaxValue.Value = new decimal(new int[] {
+            255,
+            0,
+            0,
+            0});
+            this.nmMaxValue.ValueChanged += new System.EventHandler(this.nmMaxValue_ValueChanged);
+            // 
+            // nmMinValue
+            // 
+            this.nmMinValue.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
+            this.nmMinValue.Font = new System.Drawing.Font("Consolas", 8F);
+            this.nmMinValue.ForeColor = System.Drawing.Color.White;
+            this.nmMinValue.Hexadecimal = true;
+            this.nmMinValue.Location = new System.Drawing.Point(67, 13);
+            this.nmMinValue.Name = "nmMinValue";
+            this.nmMinValue.Size = new System.Drawing.Size(70, 20);
+            this.nmMinValue.TabIndex = 167;
+            this.nmMinValue.Tag = "color:dark";
+            this.nmMinValue.ValueChanged += new System.EventHandler(this.nmMinValue_ValueChanged);
             // 
             // gbLimiterList
             // 
@@ -712,37 +743,6 @@
             this.gbBackupSource.TabStop = false;
             this.gbBackupSource.Text = "Store Source";
             // 
-            // nmMaxValue
-            // 
-            this.nmMaxValue.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
-            this.nmMaxValue.Font = new System.Drawing.Font("Consolas", 8F);
-            this.nmMaxValue.ForeColor = System.Drawing.Color.White;
-            this.nmMaxValue.Hexadecimal = true;
-            this.nmMaxValue.Location = new System.Drawing.Point(67, 38);
-            this.nmMaxValue.Name = "nmMaxValue";
-            this.nmMaxValue.Size = new System.Drawing.Size(70, 20);
-            this.nmMaxValue.TabIndex = 168;
-            this.nmMaxValue.Tag = "color:dark";
-            this.nmMaxValue.Value = new decimal(new int[] {
-            255,
-            0,
-            0,
-            0});
-            this.nmMaxValue.ValueChanged += new System.EventHandler(this.nmMaxValue_ValueChanged);
-            // 
-            // nmMinValue
-            // 
-            this.nmMinValue.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
-            this.nmMinValue.Font = new System.Drawing.Font("Consolas", 8F);
-            this.nmMinValue.ForeColor = System.Drawing.Color.White;
-            this.nmMinValue.Hexadecimal = true;
-            this.nmMinValue.Location = new System.Drawing.Point(67, 13);
-            this.nmMinValue.Name = "nmMinValue";
-            this.nmMinValue.Size = new System.Drawing.Size(70, 20);
-            this.nmMinValue.TabIndex = 167;
-            this.nmMinValue.Tag = "color:dark";
-            this.nmMinValue.ValueChanged += new System.EventHandler(this.nmMinValue_ValueChanged);
-            // 
             // RTC_CustomEngineConfig_Form
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -772,6 +772,8 @@
             this.gbValueSource.PerformLayout();
             this.gbValueRange.ResumeLayout(false);
             this.gbValueRange.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.nmMaxValue)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.nmMinValue)).EndInit();
             this.gbLimiterList.ResumeLayout(false);
             this.gbLimiterList.PerformLayout();
             this.gbStepSettings.ResumeLayout(false);
@@ -787,8 +789,6 @@
             this.gbStoreType.PerformLayout();
             this.gbBackupSource.ResumeLayout(false);
             this.gbBackupSource.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.nmMaxValue)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.nmMinValue)).EndInit();
             this.ResumeLayout(false);
 
 		}

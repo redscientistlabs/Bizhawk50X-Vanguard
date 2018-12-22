@@ -32,9 +32,11 @@
             this.lbConnectionStatus = new System.Windows.Forms.Label();
             this.btnStartEmuhawkDetached = new System.Windows.Forms.Button();
             this.pnCorruptionEngine = new System.Windows.Forms.Panel();
+            this.label2 = new System.Windows.Forms.Label();
             this.label11 = new System.Windows.Forms.Label();
             this.panel1 = new System.Windows.Forms.Panel();
             this.pnBizhawkAttached = new System.Windows.Forms.Panel();
+            this.label1 = new System.Windows.Forms.Label();
             this.label3 = new System.Windows.Forms.Label();
             this.btnStartEmuhawkAttached = new System.Windows.Forms.Button();
             this.lbBizhawkEmulatorAttached = new System.Windows.Forms.Label();
@@ -51,8 +53,6 @@
             this.lbVrunAddress = new System.Windows.Forms.Label();
             this.label6 = new System.Windows.Forms.Label();
             this.lbRTCver = new System.Windows.Forms.Label();
-            this.label1 = new System.Windows.Forms.Label();
-            this.label2 = new System.Windows.Forms.Label();
             this.pictureBox1 = new System.Windows.Forms.PictureBox();
             this.pnCorruptionEngine.SuspendLayout();
             this.pnBizhawkAttached.SuspendLayout();
@@ -103,6 +103,19 @@
             this.pnCorruptionEngine.TabIndex = 114;
             this.pnCorruptionEngine.Tag = "";
             // 
+            // label2
+            // 
+            this.label2.AutoSize = true;
+            this.label2.BackColor = System.Drawing.Color.Transparent;
+            this.label2.Font = new System.Drawing.Font("Segoe UI Semibold", 9F, System.Drawing.FontStyle.Bold);
+            this.label2.ForeColor = System.Drawing.Color.Silver;
+            this.label2.Location = new System.Drawing.Point(34, 73);
+            this.label2.Name = "label2";
+            this.label2.Size = new System.Drawing.Size(165, 30);
+            this.label2.TabIndex = 131;
+            this.label2.Text = "Detached Mode protects your\r\nsession if Bizhawk crashes.";
+            this.label2.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            // 
             // label11
             // 
             this.label11.AutoSize = true;
@@ -136,6 +149,19 @@
             this.pnBizhawkAttached.Size = new System.Drawing.Size(232, 159);
             this.pnBizhawkAttached.TabIndex = 120;
             this.pnBizhawkAttached.Tag = "";
+            // 
+            // label1
+            // 
+            this.label1.AutoSize = true;
+            this.label1.BackColor = System.Drawing.Color.Transparent;
+            this.label1.Font = new System.Drawing.Font("Segoe UI Semibold", 9F, System.Drawing.FontStyle.Bold);
+            this.label1.ForeColor = System.Drawing.Color.Silver;
+            this.label1.Location = new System.Drawing.Point(18, 68);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(197, 30);
+            this.label1.TabIndex = 130;
+            this.label1.Text = "Only use attached mode if you have\r\na good reason to not use detached.";
+            this.label1.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
             // label3
             // 
@@ -349,32 +375,6 @@
             this.lbRTCver.Name = "lbRTCver";
             this.lbRTCver.Size = new System.Drawing.Size(0, 37);
             this.lbRTCver.TabIndex = 131;
-            // 
-            // label1
-            // 
-            this.label1.AutoSize = true;
-            this.label1.BackColor = System.Drawing.Color.Transparent;
-            this.label1.Font = new System.Drawing.Font("Segoe UI Semibold", 9F, System.Drawing.FontStyle.Bold);
-            this.label1.ForeColor = System.Drawing.Color.Silver;
-            this.label1.Location = new System.Drawing.Point(18, 68);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(197, 30);
-            this.label1.TabIndex = 130;
-            this.label1.Text = "Only use attached mode if you have\r\na good reason to not use detached.";
-            this.label1.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            // 
-            // label2
-            // 
-            this.label2.AutoSize = true;
-            this.label2.BackColor = System.Drawing.Color.Transparent;
-            this.label2.Font = new System.Drawing.Font("Segoe UI Semibold", 9F, System.Drawing.FontStyle.Bold);
-            this.label2.ForeColor = System.Drawing.Color.Silver;
-            this.label2.Location = new System.Drawing.Point(34, 73);
-            this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(165, 30);
-            this.label2.TabIndex = 131;
-            this.label2.Text = "Detached Mode protects your\r\nsession if Bizhawk crashes.";
-            this.label2.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
             // pictureBox1
             // 

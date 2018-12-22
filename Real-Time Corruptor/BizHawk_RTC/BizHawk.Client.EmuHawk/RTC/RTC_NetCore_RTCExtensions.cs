@@ -263,7 +263,7 @@ namespace RTC
 
 				case CommandType.REMOTE_BACKUPKEY_STASH:
 					RTC_StockpileManager.BackupedState = (StashKey)cmd.objectValue;
-					RTC_StockpileManager.allBackupStates.Push((StashKey)cmd.objectValue);
+					RTC_StockpileManager.AllBackupStates.Push((StashKey)cmd.objectValue);
 					S.GET<RTC_Core_Form>().btnGpJumpBack.Visible = true;
 					S.GET<RTC_Core_Form>().btnGpJumpNow.Visible = true;
 					break;
@@ -292,7 +292,7 @@ namespace RTC
 					break;
 
 				case CommandType.REMOTE_DOMAIN_ACTIVETABLE_MAKEDUMP:
-					RTC_MemoryDomains.generateActiveTableDump((string)(cmd.objectValue as object[])[0], (string)(cmd.objectValue as object[])[1]);
+					RTC_MemoryDomains.GenerateActiveTableDump((string)(cmd.objectValue as object[])[0], (string)(cmd.objectValue as object[])[1]);
 					break;
 
 				case CommandType.REMOTE_DOMAIN_SETSELECTEDDOMAINS:
@@ -349,7 +349,7 @@ namespace RTC
 
 				case CommandType.REMOTE_KEY_GETRAWBLASTLAYER:
 					cmdBack = new RTC_Command(CommandType.RETURNVALUE);
-					cmdBack.objectValue = RTC_StockpileManager.getRawBlastlayer();
+					cmdBack.objectValue = RTC_StockpileManager.GetRawBlastlayer();
 					break;
 				case CommandType.REMOTE_KEY_GETBAKEDLAYER:
 				{
@@ -409,8 +409,8 @@ namespace RTC
 					break;
 
 				case CommandType.REMOTE_SET_RESTOREBLASTLAYERBACKUP:
-					if (RTC_StockpileManager.lastBlastLayerBackup != null)
-						RTC_StockpileManager.lastBlastLayerBackup.Apply(true);
+					if (RTC_StockpileManager.LastBlastLayerBackup != null)
+						RTC_StockpileManager.LastBlastLayerBackup.Apply(true);
 					break;
 
 				case CommandType.REMOTE_SET_NIGHTMARE_TYPE:
