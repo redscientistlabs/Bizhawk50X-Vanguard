@@ -23,7 +23,7 @@ namespace RTC
 		public List<StashKey> StashKeys = new List<StashKey>();
 
 		public string Name;
-		public string Filename = null;
+		public string Filename;
 		public string ShortFilename;
 		public string RtcVersion;
 		public bool MissingLimiter;
@@ -40,7 +40,7 @@ namespace RTC
 
 		public override string ToString()
 		{
-			return Name ?? String.Empty;
+			return Name ?? string.Empty;
 		}
 
 		public void Save(bool isQuickSave = false)
@@ -76,11 +76,11 @@ namespace RTC
 			}
 			else
 			{
-				sks.Filename = RTC_StockpileManager.currentStockpile.Filename;
-				sks.ShortFilename = RTC_StockpileManager.currentStockpile.ShortFilename;
+				sks.Filename = RTC_StockpileManager.CurrentStockpile.Filename;
+				sks.ShortFilename = RTC_StockpileManager.CurrentStockpile.ShortFilename;
 			}
 
-			//Backuping bizhawk settings
+			//Backup bizhawk settings
 			RTC_Core.SendCommandToBizhawk(new RTC_Command(CommandType.REMOTE_EVENT_SAVEBIZHAWKCONFIG), true);
 
 			//Watermarking RTC Version
@@ -130,9 +130,9 @@ namespace RTC
 			EmptyFolder("\\WORKING\\TEMP");
 
 			//populating temp folder with roms
-			for (int i = 0; i < allRoms.Count; i++)
+			foreach (string str in allRoms)
 			{
-				string rom = allRoms[i];
+				string rom = str;
 				string romTempfilename = RTC_Core.workingDir + "\\TEMP\\" + (rom.Substring(rom.LastIndexOf("\\") + 1, rom.Length - (rom.LastIndexOf("\\") + 1)));
 
 				if (!rom.Contains("\\"))
@@ -150,9 +150,9 @@ namespace RTC
 			
 			foreach (StashKey key in sks.StashKeys)
 			{
-				string statefilename = key.GameName + "." + key.ParentKey + ".timejump.State"; // get savestate name
+				string stateFilename = key.GameName + "." + key.ParentKey + ".timejump.State"; // get savestate name
 
-				File.Copy(RTC_Core.workingDir + "\\" + key.StateLocation + "\\" + statefilename, RTC_Core.workingDir + "\\TEMP\\" + statefilename, true); // copy savestates to temp folder
+				File.Copy(RTC_Core.workingDir + "\\" + key.StateLocation + "\\" + stateFilename, RTC_Core.workingDir + "\\TEMP\\" + stateFilename, true); // copy savestates to temp folder
 			}
 
 			if (File.Exists(RTC_Core.bizhawkDir + "\\config.ini"))
@@ -175,18 +175,14 @@ namespace RTC
 				File.WriteAllLines(RTC_Core.workingDir + "\\TEMP\\" + i + ".limiter", limiterLists[i]);
 			}
 
-			//creater stockpile.xml to temp folder from stockpile object
+			//Create stockpile.xml to temp folder from stockpile object
 			using (FileStream fs = File.Open(RTC_Core.workingDir + "\\TEMP\\stockpile.json", FileMode.OpenOrCreate))
 			{
 				JsonHelper.Serialize(sks, fs, Formatting.Indented);
 				fs.Close();
 			}
-			//7z the temp folder to destination filename
-			//string[] stringargs = { "-c", sks.Filename, RTC_Core.rtcDir + "\\SKS\\" };
-			//FastZipProgram.Exec(stringargs);
 
 			string tempFilename = sks.Filename + ".temp";
-
 
 			try
 			{
@@ -199,12 +195,12 @@ namespace RTC
 				return false;
 			}
 
-			CompressionLevel comp = System.IO.Compression.CompressionLevel.Fastest;
+			CompressionLevel comp = CompressionLevel.Fastest;
 
 			if (!S.GET<RTC_GlitchHarvester_Form>().cbCompressStockpiles.Checked)
-				comp = System.IO.Compression.CompressionLevel.NoCompression;
+				comp = CompressionLevel.NoCompression;
 
-			System.IO.Compression.ZipFile.CreateFromDirectory(RTC_Core.workingDir + "\\TEMP\\", tempFilename, comp, false);
+			ZipFile.CreateFromDirectory(RTC_Core.workingDir + "\\TEMP\\", tempFilename, comp, false);
 
 			try
 			{
@@ -224,9 +220,9 @@ namespace RTC
 			foreach (string file in Directory.GetFiles(RTC_Core.workingDir + "\\TEMP"))
 				File.Move(file, RTC_Core.workingDir + "\\SKS\\" + (file.Substring(file.LastIndexOf("\\") + 1, file.Length - (file.LastIndexOf("\\") + 1))));
 
-			RTC_StockpileManager.currentStockpile = sks;
+			RTC_StockpileManager.CurrentStockpile = sks;
 
-			RTC_StockpileManager.unsavedEdits = false;
+			RTC_StockpileManager.UnsavedEdits = false;
 
 			return true;
 		}
@@ -282,7 +278,7 @@ namespace RTC
 			RTC_Filtering.LoadListsFromPaths(Directory.GetFiles(RTC_Core.workingDir + "\\SKS\\", "*.limiter"));
 
 
-			RTC_StockpileManager.currentStockpile = sks;
+			RTC_StockpileManager.CurrentStockpile = sks;
 
 			//Set up the correct 
 			foreach (StashKey t in sks.StashKeys)
@@ -519,7 +515,7 @@ namespace RTC
 
 			ZipFile.ExtractToDirectory(filename, RTC_Core.workingDir + $"\\TEMP\\");
 
-			if (!File.Exists(RTC_Core.workingDir + "\\TEMP\\stockpile.xml"))
+			if (!File.Exists(RTC_Core.workingDir + "\\TEMP\\stockpile.json"))
 			{
 				MessageBox.Show("The file could not be read properly");
 
@@ -533,11 +529,11 @@ namespace RTC
 
 			try
 			{
-				using (FileStream FS = File.Open(RTC_Core.workingDir + "\\TEMP\\stockpile.xml", FileMode.OpenOrCreate))
+				using (FileStream fs = File.Open(RTC_Core.workingDir + "\\TEMP\\stockpile.json", FileMode.OpenOrCreate))
 				{
-					XmlSerializer xs = new XmlSerializer(typeof(Stockpile));
-					sks = (Stockpile)xs.Deserialize(FS);
-					FS.Close();
+					JsonSerializer js = new JsonSerializer();
+					sks = JsonHelper.Deserialize<Stockpile>(fs);
+					fs.Close();
 				}
 			}
 			catch
@@ -593,41 +589,41 @@ namespace RTC
 	[Serializable]
 	public class StashKey : ICloneable , INote
 	{
-		public string RomFilename;
-		public string RomShortFilename;
-		public byte[] RomData = null;
+		public string RomFilename { get; set; }
+		public string RomShortFilename { get; set; }
+		public byte[] RomData { get; set; }
 
-		public string StateShortFilename = null;
-		public string StateFilename = null;
-		public byte[] StateData = null;
-		public StashKeySavestateLocation StateLocation = StashKeySavestateLocation.SESSION;
+		public string StateShortFilename { get; set; }
+		public string StateFilename { get; set; }
+		public byte[] StateData { get; set; }
+		public StashKeySavestateLocation StateLocation { get; set; } = StashKeySavestateLocation.SESSION;
 
-		public string SystemName;
-		public string SystemDeepName;
-		public string SystemCore;
-		public List<string> SelectedDomains = new List<string>();
-		public string GameName;
-		public string SyncSettings = null;
+		public string SystemName { get; set; }
+		public string SystemDeepName { get; set; }
+		public string SystemCore { get; set; }
+		public List<string> SelectedDomains { get; set; } = new List<string>();
+		public string GameName { get; set; }
+		public string SyncSettings { get; set; }
 		public string Note { get; set; }
 
 
-		public string Key;
-		public string ParentKey = null;
-		public BlastLayer BlastLayer = null;
+		public string Key { get; set; }
+		public string ParentKey { get; set; }
+		public BlastLayer Layer { get; set; }
 
+		private string alias;
 		public string Alias
 		{
 			get => alias ?? Key;
 			set => alias = value;
 		}
 
-		private string alias;
 
 		public StashKey(string key, string parentkey, BlastLayer blastlayer)
 		{
 			Key = key;
 			ParentKey = parentkey;
-			BlastLayer = blastlayer;
+			Layer = blastlayer;
 
 			RomFilename = (string)RTC_Core.SendCommandToBizhawk(new RTC_Command(CommandType.REMOTE_KEY_GETOPENROMFILENAME), true);
 			SystemName = RTC_Core.EmuFolderCheck((string)RTC_Core.SendCommandToBizhawk(new RTC_Command(CommandType.REMOTE_KEY_GETSYSTEMNAME), true));
@@ -663,13 +659,13 @@ namespace RTC
 
 		public bool Run()
 		{
-			RTC_StockpileManager.currentStashkey = this;
+			RTC_StockpileManager.CurrentStashkey = this;
 			return RTC_StockpileManager.ApplyStashkey(this);
 		}
 
 		public void RunOriginal()
 		{
-			RTC_StockpileManager.currentStashkey = this;
+			RTC_StockpileManager.CurrentStashkey = this;
 			RTC_StockpileManager.OriginalFromStashkey(this);
 		}
 
@@ -765,8 +761,8 @@ namespace RTC
 				RTC_StockpileManager.lastBlastLayerBackup = GetBackup();
             */
 
-			if (this != RTC_StockpileManager.lastBlastLayerBackup)
-				RTC_StockpileManager.lastBlastLayerBackup = GetBackup();
+			if (this != RTC_StockpileManager.LastBlastLayerBackup)
+				RTC_StockpileManager.LastBlastLayerBackup = GetBackup();
 
 			bool success;
 
@@ -900,49 +896,37 @@ namespace RTC
 			return ObjectCopier.Clone(this);
 		}
 
-		[
-			Category("Settings"),
-			Description("Whether or not the BlastUnit will apply if the stashkey is run"),
-			DisplayName("Enabled")
-		]
+		[Category("Settings")]
+		[Description("Whether or not the BlastUnit will apply if the stashkey is run")]
+		[DisplayName("Enabled")]
 		public bool IsEnabled { get; set; } = true;
 
-		[
-			Category("Settings"),
-			Description("Whether or not this unit will be affected by batch operations (disable 50, invert, etc)"),
-			DisplayName("Locked")
-		]
+		[Category("Settings")]
+		[Description("Whether or not this unit will be affected by batch operations (disable 50, invert, etc)")]
+		[DisplayName("Locked")]
 		public bool IsLocked { get; set; } = false;
 
-		[
-			Category("Data"),
-			Description("Whether or not the unit's values need to be flipped due to endianess"),
-			DisplayName("Big Endian")
-		]
+		[Category("Data")]
+		[Description("Whether or not the unit's values need to be flipped due to endianess")]
+		[DisplayName("Big Endian")]
 		public bool BigEndian { get; set; }
 
-		[
-			Category("Data"),
-			Description("The domain this unit will target"),
-			DisplayName("Domain")
-		]
+		[Category("Data")]
+		[Description("The domain this unit will target")]
+		[DisplayName("Domain")]
 		public string Domain { get; set; }
 
-		[
-			Category("Data"),
-			Description("The address this unit will target"),
-			DisplayName("Address")
-		]
+		[Category("Data")]
+		[Description("The address this unit will target")]
+		[DisplayName("Address")]
 		public long Address { get; set; }
 
 
 		private int precision;
 
-		[
-			Category("Data"),
-			Description("The precision of this unit"),
-			DisplayName("Precision")
-		]
+		[Category("Data")]
+		[Description("The precision of this unit")]
+		[DisplayName("Precision")]
 		public int Precision
 		{
 			get
@@ -985,41 +969,32 @@ namespace RTC
 			}
 		}
 
-		[
-			Category("Source"),
-			Description("The source for the value for this unit for STORE mode"),
-			DisplayName("Source")
-		]
+		[Category("Source")]
+		[Description("The source for the value for this unit for STORE mode")]
+		[DisplayName("Source")]
 		public BlastUnitSource Source { get; set; }
 
-		[
-			Category("Store"),
-			Description("The time when the store will take place"),
-			DisplayName("Store Time")
-		]
+		[Category("Store")]
+		[Description("The time when the store will take place")]
+		[DisplayName("Store Time")]
 		public ActionTime StoreTime { get; set; }
-		[
-			Category("Store"),
-			Description("The type of store that when the store will take place"),
-			DisplayName("Store Type")
-		]
+
+		[Category("Store")]
+		[Description("The type of store that when the store will take place")]
+		[DisplayName("Store Type")]
 		public StoreType StoreType { get; set; }
 
 
 		[JsonIgnore]
-		[
-			Category("Value"),
-			Description("The value used for the BlastUnit in VALUE mode"),
-			DisplayName("Value")
-		]
+		[Category("Value")]
+		[Description("The value used for the BlastUnit in VALUE mode")]
+		[DisplayName("Value")]
 		public byte[] Value { get; set; }
 
 
-		[
-			Category("Value"),
-			Description("Gets and sets Value[] through a string. Used for Textboxes"),
-			DisplayName("ValueString")
-		]
+		[Category("Value")]
+		[Description("Gets and sets Value[] through a string. Used for Textboxes")]
+		[DisplayName("ValueString")]
 		public string ValueString
 		{
 			get
@@ -1034,26 +1009,20 @@ namespace RTC
 			}
 		}
 
-		[
-			Category("Store"),
-			Description("The domain used for the STORE operation"),
-			DisplayName("Source Domain")
-		]
+		[Category("Store")]
+		[Description("The domain used for the STORE operation")]
+		[DisplayName("Source Domain")]
 		public string SourceDomain { get; set; }
 
-		[
-			Category("Store"),
-			Description("The address used for the STORE operation"),
-			DisplayName("Source Address")
-		]
+		[Category("Store")]
+		[Description("The address used for the STORE operation")]
+		[DisplayName("Source Address")]
 		public long SourceAddress { get; set; }
 
 
-		[
-			Category("Modifiers"),
-			Description("How much to tilt the value before poking memory"),
-			DisplayName("Tilt Value")
-		]
+		[Category("Modifiers")]
+		[Description("How much to tilt the value before poking memory")]
+		[DisplayName("Tilt Value")]
 		public BigInteger TiltValue { get; set; }
 
 
@@ -1062,36 +1031,29 @@ namespace RTC
 		public bool Loop { get; set; } = false;
 
 
-		[
-			Category("Limiter"),
-			Description("When to apply the limiter list"),
-			DisplayName("Limiter List")
-		]
+		[Category("Limiter")]
+		[Description("When to apply the limiter list")]
+		[DisplayName("Limiter List")]
 		public ActionTime LimiterTime { get; set; }
-		[
-			Category("Limiter"),
-			Description("The hash of the Limiter List in use"),
-			DisplayName("Limiter List Hash")
-		]
+
+		[Category("Limiter")]
+		[Description("The hash of the Limiter List in use")]
+		[DisplayName("Limiter List Hash")]
 		public string LimiterListHash { get; set; }
-		[
-			Category("Limiter"),
-			Description("Invert the limiter so the unit only applies if the value doesn't match the limiter"),
-			DisplayName("Invert Limiter")
-		]
+
+		[Category("Limiter")]
+		[Description("Invert the limiter so the unit only applies if the value doesn't match the limiter")]
+		[DisplayName("Invert Limiter")]
 		public bool InvertLimiter { get; set; }
 
-		[
-			Category("Misc"),
-			Description("Note associated with this unit")
-		]
+		[Category("Misc")]
+		[Description("Note associated with this unit")]
 		public string Note { get; set; }
 
 
 
 		//Don't serialize this
-		//Use both attributes because XMLSerializer wants XmlIgnore and BinarySerializer wants NonSerialized
-		[XmlIgnore, NonSerialized]
+		[XmlIgnore, NonSerialized, JsonIgnore]
 		public BlastUnitWorkingData Working;
 
 
@@ -1242,8 +1204,8 @@ namespace RTC
 							    SourceAddress + Precision, SourceDomain, LimiterListHash, mi))
 							return;
 						//If it's VALUE, we need to use the address and domain
-						else if (Source == BlastUnitSource.VALUE && RTC_Filtering.LimiterPeekBytes(Address,
-							         Address + Precision, Domain, LimiterListHash, mi))
+						if (Source == BlastUnitSource.VALUE && RTC_Filtering.LimiterPeekBytes(Address,
+							Address + Precision, Domain, LimiterListHash, mi))
 							return;
 					}
 					else
@@ -1253,8 +1215,8 @@ namespace RTC
 							    SourceAddress + Precision, SourceDomain, LimiterListHash, mi))
 							return;
 						//If it's VALUE, we need to use the address and domain
-						else if (Source == BlastUnitSource.VALUE && !RTC_Filtering.LimiterPeekBytes(Address,
-							         Address + Precision, Domain, LimiterListHash, mi))
+						if (Source == BlastUnitSource.VALUE && !RTC_Filtering.LimiterPeekBytes(Address,
+							Address + Precision, Domain, LimiterListHash, mi))
 							return;
 					}
 				}
@@ -1270,7 +1232,7 @@ namespace RTC
 						if(StoreTime == ActionTime.EXECUTE)
 							Working.StoreData.Dequeue();
 
-						//All the data is already handled by GetStoreBackup. We just take the first in the linkedlist and then remove it so the garbage collector can clean it up to prevent a memory leak
+						//All the data is already handled by GetStoreBackup. We just take the first in the linked list and then remove it so the garbage collector can clean it up to prevent a memory leak
 						for (int i = 0; i < Precision; i++)
 						{
 							mi.PokeByte(Address + i, Working.ApplyValue[i]);
@@ -1302,7 +1264,7 @@ namespace RTC
 				throw new Exception("The BlastUnit apply() function threw up. \n" +
 					"This is an RTC error, so you should probably send this to the RTC devs.\n" +
 					"If you know the steps to reproduce this error it would be greatly appreciated.\n\n" +
-				ex.ToString());
+				ex);
 			}
 
 			return;
@@ -1336,8 +1298,7 @@ namespace RTC
 			try
 			{
 				MemoryInterface mi = RTC_MemoryDomains.GetInterface(Domain);
-				
-				
+
 				if (mi == null)
 					return null;
 
@@ -1356,7 +1317,7 @@ namespace RTC
 				throw new Exception("The BlastUnit GetBakedUnit() function threw up. \n" +
 					"This is an RTC error, so you should probably send this to the RTC devs.\n" +
 					"If you know the steps to reproduce this error it would be greatly appreciated.\n\n" +
-				ex.ToString());
+				ex);
 			}
 		}
 
@@ -1429,8 +1390,8 @@ namespace RTC
 						    SourceAddress + Precision, SourceDomain, LimiterListHash, mi))
 						return false;
 					//If it's VALUE, we need to use the address and domain
-					else if (Source == BlastUnitSource.VALUE && RTC_Filtering.LimiterPeekBytes(Address,
-						         Address + Precision, Domain, LimiterListHash, mi))
+					if (Source == BlastUnitSource.VALUE && RTC_Filtering.LimiterPeekBytes(Address,
+						Address + Precision, Domain, LimiterListHash, mi))
 						return false;
 				}
 				else
@@ -1440,8 +1401,8 @@ namespace RTC
 						    SourceAddress + Precision, SourceDomain, LimiterListHash, mi))
 						return false;
 					//If it's VALUE, we need to use the address and domain
-					else if (Source == BlastUnitSource.VALUE && !RTC_Filtering.LimiterPeekBytes(Address,
-						         Address + Precision, Domain, LimiterListHash, mi))
+					if (Source == BlastUnitSource.VALUE && !RTC_Filtering.LimiterPeekBytes(Address,
+						Address + Precision, Domain, LimiterListHash, mi))
 						return false;
 				}
 			}
@@ -1453,15 +1414,15 @@ namespace RTC
 	[Serializable]
 	public class ActiveTableObject
 	{
-		public long[] data;
+		public long[] Data { get; set; }
 
 		public ActiveTableObject()
 		{
 		}
 
-		public ActiveTableObject(long[] _data)
+		public ActiveTableObject(long[] data)
 		{
-			data = _data;
+			Data = data;
 		}
 	}
 
@@ -1526,8 +1487,8 @@ namespace RTC
 
 	public class ProblematicProcess
 	{
-		public string Name;
-		public string Message;
+		public string Name { get; set; }
+		public string Message { get; set; }
 	}
 
 	public interface INote

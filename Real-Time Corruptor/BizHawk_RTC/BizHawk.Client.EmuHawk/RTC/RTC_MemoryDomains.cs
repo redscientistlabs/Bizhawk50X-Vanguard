@@ -19,7 +19,7 @@ namespace RTC
 		public static volatile Dictionary<string, MemoryInterface> MemoryInterfaces = new Dictionary<string, MemoryInterface>();
 		public static volatile Dictionary<string, MemoryInterface> VmdPool = new Dictionary<string, MemoryInterface>();
 
-		public static string MainDomain = null;
+		public static string MainDomain { get; set; }
 		public static bool BigEndian { get; set; }
 		public static int DataSize { get; set; }
 
@@ -32,17 +32,13 @@ namespace RTC
 		}
 
 		public static string[] SelectedDomains = new string[] { };
-		public static string[] lastSelectedDomains = new string[] { };
+		public static string[] LastSelectedDomains = new string[] { };
 
-		public static string[] getSelectedDomains()
-		{
-			return SelectedDomains;
-		}
 
 		public static void UpdateSelectedDomains(string[] _domains, bool sync = false)
 		{
 			SelectedDomains = _domains;
-			lastSelectedDomains = _domains;
+			LastSelectedDomains = _domains;
 
 			if (RTC_Core.isStandalone)
 				RTC_Core.SendCommandToBizhawk(new RTC_Command(CommandType.REMOTE_DOMAIN_SETSELECTEDDOMAINS) { objectValue = SelectedDomains }, sync);
@@ -52,7 +48,7 @@ namespace RTC
 
 		public static void ClearSelectedDomains()
 		{
-			lastSelectedDomains = SelectedDomains;
+			LastSelectedDomains = SelectedDomains;
 
 			SelectedDomains = new string[] { };
 
@@ -384,8 +380,8 @@ namespace RTC
 					MemoryInterfaces.Add(_domain.ToString(), new MemoryDomainProxy(_domain));
 
 			MainDomain = MDRI.MemoryDomains.MainMemory.ToString();
-			DataSize = ((MemoryDomainProxy)MemoryInterfaces[MainDomain]).md.WordSize;
-			BigEndian = ((MemoryDomainProxy)MemoryInterfaces[MainDomain]).md.EndianType == MemoryDomain.Endian.Big;
+			DataSize = ((MemoryDomainProxy)MemoryInterfaces[MainDomain]).MD.WordSize;
+			BigEndian = ((MemoryDomainProxy)MemoryInterfaces[MainDomain]).MD.EndianType == MemoryDomain.Endian.Big;
 
 			//RefreshDomains();
 
@@ -402,7 +398,7 @@ namespace RTC
 		{
 			MemoryInterfaces.Clear();
 
-			lastSelectedDomains = SelectedDomains;
+			LastSelectedDomains = SelectedDomains;
 			SelectedDomains = new string[] { };
 
 			if (!S.ISNULL<RTC_EngineConfig_Form>())
@@ -457,7 +453,7 @@ namespace RTC
 			if (address >= 0)
 			{
 				var watch = Watch.GenerateWatch(
-					GetProxy(MainDomain, address).md,
+					GetProxy(MainDomain, address).MD,
 					address,
 					WatchSize,
 					BizHawk.Client.Common.DisplayType.Hex,
@@ -497,7 +493,7 @@ namespace RTC
 
 		public static void GenerateVmdFromStashkey(StashKey sk)
 		{
-			VmdPrototype proto = new VmdPrototype(sk.BlastLayer);
+			VmdPrototype proto = new VmdPrototype(sk.Layer);
 			AddVMD(proto);
 
 			S.GET<RTC_VmdPool_Form>().RefreshVMDs();
@@ -568,7 +564,7 @@ namespace RTC
 			AddVMD(VMD);
 		}
 
-		public static void generateActiveTableDump(string domain, string key)
+		public static void GenerateActiveTableDump(string domain, string key)
 		{
 			var token = RTC_NetCore.HugeOperationStart("LAZY");
 			MemoryInterface mi = MemoryInterfaces[domain];
@@ -581,20 +577,17 @@ namespace RTC
 
 		public static byte[] GetDomainData(string domain)
 		{
-			MemoryInterface mi;
-
-			mi = domain.Contains("[V]") ? VmdPool[domain] : MemoryInterfaces[domain];
-
+			MemoryInterface mi = domain.Contains("[V]") ? VmdPool[domain] : MemoryInterfaces[domain];
 			return mi.GetDump();
 		}
 	}
 
 	public class RomParts
 	{
-		public string Error = null;
-		public string PrimaryDomain = null;
-		public string SecondDomain = null;
-		public int SkipBytes = 0;
+		public string Error { get; set; }
+		public string PrimaryDomain { get; set; }
+		public string SecondDomain { get; set; }
+		public int SkipBytes { get; set; }
 	}
 
 	[Serializable]
@@ -627,11 +620,11 @@ namespace RTC
 
 		public long Padding { get; set; }
 
-		public List<long> addSingles = new List<long>();
-		public List<long> removeSingles = new List<long>();
+		public List<long> AddSingles { get; } = new List<long>();
+		public List<long> RemoveSingles { get; } = new List<long>();
 
-		public List<long[]> addRanges = new List<long[]>();
-		public List<long[]> removeRanges = new List<long[]>();
+		public List<long[]> AddRanges { get; } = new List<long[]>();
+		public List<long[]> RemoveRanges { get; } = new List<long[]>();
 
 		public BlastLayer SuppliedBlastLayer = null;
 
@@ -675,14 +668,14 @@ namespace RTC
 				VMD.PointerAddresses.Add(i);
 			}
 
-			foreach (long[] range in addRanges)
+			foreach (long[] range in AddRanges)
 			{
 				long start = range[0];
 				long end = range[1];
 
 				for (long i = start; i < end; i++)
 				{
-					if (!IsAddressInRanges(i, removeSingles, removeRanges))
+					if (!IsAddressInRanges(i, RemoveSingles, RemoveRanges))
 						if (PointerSpacer == 1 || addressCount % PointerSpacer == 0)
 						{
 							//VMD.MemoryPointers.Add(new Tuple<string, long>(Domain, i));
@@ -693,7 +686,7 @@ namespace RTC
 				}
 			}
 
-			foreach (long single in addSingles)
+			foreach (long single in AddSingles)
 			{
 				//VMD.MemoryPointers.Add(new Tuple<string, long>(Domain, single));
 				VMD.PointerDomains.Add(GenDomain);
@@ -725,8 +718,6 @@ namespace RTC
 	[Serializable]
 	public class VirtualMemoryDomain : MemoryInterface
 	{
-		//public List<MemoryPointer> MemoryPointers = new List<MemoryPointer>();
-		//public List<Tuple<string, long>> MemoryPointers = new List<Tuple<string, long>>();
 		public List<string> PointerDomains = new List<string>();
 
 		public List<long> PointerAddresses = new List<long>();
@@ -742,8 +733,6 @@ namespace RTC
 
 			foreach (BlastUnit bu in bl.Layer)
 			{
-				//MemoryPointers.Add(new MemoryPointer(bu.Domain, bu.Address));
-				//MemoryPointers.Add(new Tuple<string, long>(bu.Domain, bu.Address));
 				PointerDomains.Add(bu.Domain);
 				PointerAddresses.Add(bu.Address);
 			}
@@ -808,8 +797,8 @@ namespace RTC
 
 		public override string ToString()
 		{
-			return "[V]" + Name;
 			//Virtual Memory Domains always start with [V]
+			return "[V]" + Name;
 		}
 
 		public override byte[] GetDump()
@@ -817,11 +806,11 @@ namespace RTC
 			return PeekBytes(0, Size);
 		}
 
-		public override byte[] PeekBytes(long startAdress, long endAddress, bool raw = true)
+		public override byte[] PeekBytes(long startAddress, long endAddress, bool raw = true)
 		{
 			//endAddress is exclusive
 			List<byte> data = new List<byte>();
-			for (long i = startAdress; i < endAddress; i++)
+			for (long i = startAddress; i < endAddress; i++)
 				data.Add(PeekByte(i));
 
 			if (raw || BigEndian)
@@ -856,47 +845,12 @@ namespace RTC
 		}
 	}
 
-	/*
-    [Serializable]
-    [XmlType("MP")]
-    public class MemoryPointer
-    {
-        [XmlElement("D")]
-        public string DomainData { get; set; }
-        [XmlIgnore]
-        public string Domain { get { return (IsEnabled ? DomainData : ""); }}
-        [XmlElement("A")]
-        public long AddressData { get; set; }
-        [XmlIgnore]
-        public long Address { get { return (IsEnabled ? AddressData : 0); } }
-        [XmlElement("E")]
-        public bool IsEnabled { get; set; }
-
-        public MemoryPointer(string _domain, long _address)
-        {
-            DomainData = _domain;
-            AddressData = _address;
-            IsEnabled = true;
-        }
-
-        public MemoryPointer()
-        {
-        }
-
-        public override string ToString()
-        {
-            return $"[{(IsEnabled ? "x" : " ")}] {DomainData}({AddressData})";
-
-            //Gives: [x] ROM(123)
-        }
-    }
-    */
 
 	[Serializable]
-	public class MemoryDomainProxy : MemoryInterface
+	public sealed class MemoryDomainProxy : MemoryInterface
 	{
 		[NonSerialized]
-		public MemoryDomain md = null;
+		public MemoryDomain MD = null;
 
 		//public long Size;
 		//public int WordSize;
@@ -907,17 +861,17 @@ namespace RTC
 
 		public MemoryDomainProxy(MemoryDomain _md)
 		{
-			md = _md;
-			Size = md.Size;
+			MD = _md;
+			Size = MD.Size;
 
-			Name = md.ToString();
+			Name = MD.ToString();
 
 			//Bizhawk always displays 8MB of ram even if only 4 are in use.
 			if (Global.Emulator is N64 && !(Global.Emulator as N64).UsingExpansionSlot && Name == "RDRAM")
 				Size = Size / 2;
 
-			WordSize = md.WordSize;
-			Name = md.ToString();
+			WordSize = MD.WordSize;
+			Name = MD.ToString();
 			BigEndian = _md.EndianType == MemoryDomain.Endian.Big;
 		}
 
@@ -928,16 +882,19 @@ namespace RTC
 
 		public void Detach()
 		{
-			md = null;
+			MD = null;
 		}
 
 		public void Reattach()
 		{
-			md = RTC_MemoryDomains.MDRI.MemoryDomains.FirstOrDefault(it => it.ToString() == Name);
-			Size = md.Size;
-			WordSize = md.WordSize;
-			Name = md.ToString();
-			BigEndian = md.EndianType == MemoryDomain.Endian.Big;
+			MD = RTC_MemoryDomains.MDRI.MemoryDomains.FirstOrDefault(it => it.ToString() == Name);
+			if (MD != null)
+			{
+				Size = MD.Size;
+				WordSize = MD.WordSize;
+				Name = MD.ToString();
+				BigEndian = MD.EndianType == MemoryDomain.Endian.Big;
+			}
 		}
 
 		public override byte[] GetDump()
@@ -961,18 +918,18 @@ namespace RTC
 
 		public override byte PeekByte(long address)
 		{
-			if (md == null)
+			if (MD == null)
 				return (byte)RTC_Core.SendCommandToBizhawk(new RTC_Command(CommandType.REMOTE_DOMAIN_PEEKBYTE) { objectValue = new object[] { Name, address } }, true);
 			else
-				return md.PeekByte(address);
+				return MD.PeekByte(address);
 		}
 
 		public override void PokeByte(long address, byte value)
 		{
-			if (md == null)
+			if (MD == null)
 				RTC_Core.SendCommandToBizhawk(new RTC_Command(CommandType.REMOTE_DOMAIN_POKEBYTE) { objectValue = new object[] { Name, address, value } });
 			else
-				md.PokeByte(address, value);
+				MD.PokeByte(address, value);
 		}
 	}
 

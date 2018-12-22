@@ -75,7 +75,7 @@ namespace RTC
 			Button btn = (Button)sender;
 			StashKey sk = (StashKey)btn.Tag;
 			RTC_Command cmd = new RTC_Command(CommandType.BLAST);
-			cmd.blastlayer = sk.BlastLayer;
+			cmd.blastlayer = sk.Layer;
 			RTC_Core.Multiplayer.SendCommand(cmd, false, true);
 		}
 

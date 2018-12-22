@@ -84,10 +84,10 @@ namespace RTC
 			new Ref(() => RTC_VectorEngine.LimiterListHash, x => { RTC_VectorEngine.LimiterListHash = (string)x; }),
 			new Ref(() => RTC_VectorEngine.ValueListHash, x => { RTC_VectorEngine.ValueListHash = (string)x; }),
 
-			new Ref(() => RTC_StockpileManager.currentSavestateKey, x => { RTC_StockpileManager.currentSavestateKey = (string)x; }),
-			new Ref(() => RTC_StockpileManager.currentGameSystem, x => { RTC_StockpileManager.currentGameSystem = (string)x; }),
-			new Ref(() => RTC_StockpileManager.currentGameName, x => { RTC_StockpileManager.currentGameName = (string)x; }),
-			new Ref(() => RTC_StockpileManager.backupedState, x => { RTC_StockpileManager.backupedState = (StashKey)x; }),
+			new Ref(() => RTC_StockpileManager.CurrentSavestateKey, x => { RTC_StockpileManager.CurrentSavestateKey = (string)x; }),
+			new Ref(() => RTC_StockpileManager.CurrentGameSystem, x => { RTC_StockpileManager.CurrentGameSystem = (string)x; }),
+			new Ref(() => RTC_StockpileManager.CurrentGameName, x => { RTC_StockpileManager.CurrentGameName = (string)x; }),
+			new Ref(() => RTC_StockpileManager.BackupedState, x => { RTC_StockpileManager.BackupedState = (StashKey)x; }),
 
 			new Ref(() => RTC_MemoryDomains.SelectedDomains, x => { RTC_MemoryDomains.SelectedDomains = (string[])x; }),
 			new Ref(() => RTC_MemoryDomains.lastSelectedDomains, x => { RTC_MemoryDomains.lastSelectedDomains = (string[])x; }),
@@ -105,8 +105,8 @@ namespace RTC
 
 			GetSetLiveParams(false);
 
-			if (RTC_StockpileManager.backupedState != null)
-				RTC_StockpileManager.backupedState.Run();
+			if (RTC_StockpileManager.BackupedState != null)
+				RTC_StockpileManager.BackupedState.Run();
 			else
 			{
 				RTC_Core.AutoCorrupt = false;

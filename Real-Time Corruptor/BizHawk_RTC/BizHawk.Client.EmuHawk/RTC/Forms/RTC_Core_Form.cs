@@ -231,7 +231,7 @@ namespace RTC
 			else
 			{
 				RTC_GameProtection.Stop();
-				RTC_StockpileManager.backupedState = null;
+				RTC_StockpileManager.BackupedState = null;
 				RTC_StockpileManager.allBackupStates.Clear();
 				btnGpJumpBack.Visible = false;
 				btnGpJumpNow.Visible = false;
@@ -387,8 +387,8 @@ namespace RTC
 			{
 				btnGpJumpNow.Visible = false;
 
-				if (RTC_StockpileManager.backupedState != null)
-					RTC_StockpileManager.backupedState.Run();
+				if (RTC_StockpileManager.BackupedState != null)
+					RTC_StockpileManager.BackupedState.Run();
 
 				RTC_GameProtection.Reset();
 			}

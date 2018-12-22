@@ -133,8 +133,7 @@ namespace RTC
 			
 			if (collection == null)
 			{
-				collection = new List<BlastUnit>();
-				collection.Add(bu);
+				collection = new List<BlastUnit> {bu};
 				buListCollection.Add(collection);
 			}
 			else

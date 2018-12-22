@@ -384,13 +384,13 @@ namespace RTC
 		private void tbFilter_TextChanged(object sender, EventArgs e)
 		{
 			string value = (cbFilterColumn.SelectedItem as dynamic).Value;
-			dgvBlastEditor.DataSource = currentSK.BlastLayer.Layer.Where(x => (x.GetType()
+			dgvBlastEditor.DataSource = currentSK.Layer.Layer.Where(x => (x.GetType()
 			.GetProperty(value)
 			.GetValue(x)
 			.ToString() == tbFilter.Text)).ToList();
 
 			if (tbFilter.TextLength == 0)
-				dgvBlastEditor.DataSource = currentSK.BlastLayer.Layer;
+				dgvBlastEditor.DataSource = currentSK.Layer.Layer;
 		}
 	
 		private void InitializeBottom()
@@ -615,7 +615,7 @@ namespace RTC
 			currentSK = sk.Clone() as StashKey;
 			RefreshDomains();
 
-			bs = new BindingSource {DataSource = currentSK.BlastLayer.Layer};
+			bs = new BindingSource {DataSource = currentSK.Layer.Layer};
 		
 			dgvBlastEditor.DataSource = bs;
 			InitializeDGV();
@@ -656,16 +656,16 @@ namespace RTC
 
 		private void btnDisable50_Click(object sender, EventArgs e)
 		{
-			foreach (BlastUnit bu in currentSK.BlastLayer.Layer.
+			foreach (BlastUnit bu in currentSK.Layer.Layer.
 				Where(x => x.IsLocked == false))
 			{
 				bu.IsEnabled = true;
 			}
 
-			foreach (BlastUnit bu in currentSK.BlastLayer.Layer
+			foreach (BlastUnit bu in currentSK.Layer.Layer
 				.Where(x => x.IsLocked == false)
 				.OrderBy(x => RTC_Core.RND.Next())
-				.Take(currentSK.BlastLayer.Layer.Count / 2))
+				.Take(currentSK.Layer.Layer.Count / 2))
 			{
 				bu.IsEnabled = false;
 			}
@@ -674,7 +674,7 @@ namespace RTC
 
 		private void btnInvertDisabled_Click(object sender, EventArgs e)
 		{
-			foreach (BlastUnit bu in currentSK.BlastLayer.Layer.
+			foreach (BlastUnit bu in currentSK.Layer.Layer.
 				Where(x => x.IsLocked == false))
 			{
 				bu.IsEnabled = !bu.IsEnabled;
@@ -686,7 +686,7 @@ namespace RTC
 		{
 			List<BlastUnit> buToRemove = new List<BlastUnit>();
 
-			foreach (BlastUnit bu in currentSK.BlastLayer.Layer.
+			foreach (BlastUnit bu in currentSK.Layer.Layer.
 				Where(x => 
 				x.IsLocked == false &&
 				x.IsEnabled == false))
@@ -702,7 +702,7 @@ namespace RTC
 
 		private void btnDisableEverything_Click(object sender, EventArgs e)
 		{
-			foreach (BlastUnit bu in currentSK.BlastLayer.Layer.
+			foreach (BlastUnit bu in currentSK.Layer.Layer.
 				Where(x =>
 				x.IsLocked == false))
 			{
@@ -713,7 +713,7 @@ namespace RTC
 
 		private void btnEnableEverything_Click(object sender, EventArgs e)
 		{
-			foreach (BlastUnit bu in currentSK.BlastLayer.Layer.
+			foreach (BlastUnit bu in currentSK.Layer.Layer.
 				Where(x =>
 				x.IsLocked == false))
 			{
@@ -819,7 +819,7 @@ namespace RTC
 				if(searchColumn != null)
 				{
 					searchOffset = 0;
-					searchEnumerable = currentSK.BlastLayer.Layer.Where(x => (x.GetType().GetProperty(searchColumn).GetValue(x).ToString()) == searchValue);
+					searchEnumerable = currentSK.Layer.Layer.Where(x => (x.GetType().GetProperty(searchColumn).GetValue(x).ToString()) == searchValue);
 					
 					if (searchEnumerable.Count() != 0)
 						bs.Position = bs.IndexOf(searchEnumerable.ElementAt(searchOffset));
@@ -855,7 +855,7 @@ namespace RTC
 
 			S.GET<RTC_GlitchHarvester_Form>().DontLoadSelectedStash = true;
 			S.GET<RTC_GlitchHarvester_Form>().lbStashHistory.SelectedIndex = S.GET<RTC_GlitchHarvester_Form>().lbStashHistory.Items.Count - 1;
-			RTC_StockpileManager.currentStashkey = RTC_StockpileManager.StashHistory[S.GET<RTC_GlitchHarvester_Form>().lbStashHistory.SelectedIndex];
+			RTC_StockpileManager.CurrentStashkey = RTC_StockpileManager.StashHistory[S.GET<RTC_GlitchHarvester_Form>().lbStashHistory.SelectedIndex];
 
 		}
 
@@ -890,7 +890,7 @@ namespace RTC
 
 		private void sanitizeDuplicatesToolStripMenuItem_Click(object sender, EventArgs e)
 		{
-			List<BlastUnit> bul = new List<BlastUnit>(currentSK.BlastLayer.Layer.ToArray().Reverse());
+			List<BlastUnit> bul = new List<BlastUnit>(currentSK.Layer.Layer.ToArray().Reverse());
 			List<long> usedAddresses = new List<long>();
 
 			foreach (BlastUnit bu in bul)
@@ -899,14 +899,14 @@ namespace RTC
 					usedAddresses.Add(bu.Address);
 				else
 				{
-					currentSK.BlastLayer.Layer.Remove(bu);
+					currentSK.Layer.Layer.Remove(bu);
 				}
 			}
 		}
 
 		private void rasterizeVMDsToolStripMenuItem_Click(object sender, EventArgs e)
 		{
-			foreach (BlastUnit bu in currentSK.BlastLayer.Layer)
+			foreach (BlastUnit bu in currentSK.Layer.Layer)
 			{
 				bu.RasterizeVMDs();
 			}
@@ -920,7 +920,7 @@ namespace RTC
 		private void replaceRomFromGHToolStripMenuItem_Click(object sender, EventArgs e)
 		{
 
-			StashKey temp = RTC_StockpileManager.getCurrentSavestateStashkey();
+			StashKey temp = RTC_StockpileManager.GetCurrentSavestateStashkey();
 
 			if (temp == null)
 			{
@@ -958,7 +958,7 @@ namespace RTC
 					return;
 				RTC_Core.LoadRom(filename, true);
 
-				StashKey temp = new StashKey(RTC_Core.GetRandomKey(), currentSK.ParentKey, currentSK.BlastLayer);
+				StashKey temp = new StashKey(RTC_Core.GetRandomKey(), currentSK.ParentKey, currentSK.Layer);
 
 				// We have to null this as to properly create a stashkey, we need to use it in the constructor,
 				// but then the user needs to provide a savestate
@@ -987,7 +987,7 @@ namespace RTC
 		private void replaceSavestateFromGHToolStripMenuItem_Click(object sender, EventArgs e)
 		{
 
-			StashKey temp = RTC_StockpileManager.getCurrentSavestateStashkey();
+			StashKey temp = RTC_StockpileManager.GetCurrentSavestateStashkey();
 			if (temp == null)
 			{
 				MessageBox.Show("There is no savestate selected in the glitch harvester, or the current selected box is empty");
@@ -1063,7 +1063,7 @@ namespace RTC
 			}
 
 			//Grab the syncsettings
-			StashKey temp = new StashKey(RTC_Core.GetRandomKey(), currentSK.ParentKey, currentSK.BlastLayer);
+			StashKey temp = new StashKey(RTC_Core.GetRandomKey(), currentSK.ParentKey, currentSK.Layer);
 			currentSK.SyncSettings = temp.SyncSettings;
 		}
 
@@ -1094,7 +1094,7 @@ namespace RTC
 			BlastLayer temp = RTC_BlastTools.LoadBlastLayerFromFile();
 			if (temp != null)
 			{
-				currentSK.BlastLayer = temp;
+				currentSK.Layer = temp;
 			}
 		}
 
@@ -1102,16 +1102,16 @@ namespace RTC
 		{
 			//If there's no blastlayer file already set, don't quicksave
 			if (CurrentBlastLayerFile == "")
-				RTC_BlastTools.SaveBlastLayerToFile(currentSK.BlastLayer);
+				RTC_BlastTools.SaveBlastLayerToFile(currentSK.Layer);
 			else
-				RTC_BlastTools.SaveBlastLayerToFile(currentSK.BlastLayer, CurrentBlastLayerFile);
+				RTC_BlastTools.SaveBlastLayerToFile(currentSK.Layer, CurrentBlastLayerFile);
 
 			CurrentBlastLayerFile = RTC_BlastTools.LastBlastLayerSavePath;
 		}
 
 		private void saveAsToFileblToolStripMenuItem_Click(object sender, EventArgs e)
 		{
-			RTC_BlastTools.SaveBlastLayerToFile(currentSK.BlastLayer);
+			RTC_BlastTools.SaveBlastLayerToFile(currentSK.Layer);
 			CurrentBlastLayerFile = RTC_BlastTools.LastBlastLayerSavePath;
 		}
 
@@ -1126,7 +1126,7 @@ namespace RTC
 			if (bl != null)
 			{
 				foreach (BlastUnit bu in bl.Layer)
-					currentSK.BlastLayer.Layer.Add(bu);
+					currentSK.Layer.Layer.Add(bu);
 			}
 		}
 
@@ -1135,7 +1135,7 @@ namespace RTC
 
 			string filename;
 
-			if (currentSK.BlastLayer.Layer.Count == 0)
+			if (currentSK.Layer.Layer.Count == 0)
 			{
 				MessageBox.Show("Can't save because the provided blastlayer is empty.");
 				return;
@@ -1182,9 +1182,9 @@ namespace RTC
 				foreach (DataGridViewRow selected in dgvBlastEditor.SelectedRows.Cast<DataGridViewRow>().Where(item =>
 					((bool)item.Cells["dgvBlastUnitLocked"].Value != true)))
 				{
-					currentSK.BlastLayer.Layer.Insert(selected.Index, newBlastLayer.Layer[i]);
+					currentSK.Layer.Layer.Insert(selected.Index, newBlastLayer.Layer[i]);
 					i++;
-					currentSK.BlastLayer.Layer.Remove((BlastUnit)selected.DataBoundItem);
+					currentSK.Layer.Layer.Remove((BlastUnit)selected.DataBoundItem);
 				}
 			}
 			catch (Exception ex)

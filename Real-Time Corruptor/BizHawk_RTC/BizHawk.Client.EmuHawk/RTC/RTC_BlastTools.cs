@@ -191,7 +191,7 @@ namespace RTC
 			//from within emuhawk or else it'll apply the blastlayer AFTER this code completes
 			//So we manually apply the blastlayer
 			sk.RunOriginal();
-			sk.BlastLayer.Apply();
+			sk.Layer.Apply();
 
 			newBlastLayer = bl.GetBackup();
 			return newBlastLayer;

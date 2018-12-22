@@ -85,7 +85,7 @@ namespace RTC
 				return;
 
 			sk = (StashKey)_sk.Clone();
-			sk.BlastLayer = new BlastLayer();
+			sk.Layer = new BlastLayer();
 
 			RefreshDomains();
 			AddDefaultRow();
@@ -245,7 +245,7 @@ namespace RTC
 		{
 			if (sk == null)
 			{
-				StashKey psk = RTC_StockpileManager.getCurrentSavestateStashkey();
+				StashKey psk = RTC_StockpileManager.GetCurrentSavestateStashkey();
 				if (psk == null)
 				{
 					RTC_Core.StartSound();
@@ -261,7 +261,7 @@ namespace RTC
 			BlastLayer bl = GenerateBlastLayers(true);
 			if (bl == null)
 				return;
-			newSk.BlastLayer = bl;
+			newSk.Layer = bl;
 
 			newSk.Run();
 		}
@@ -270,7 +270,7 @@ namespace RTC
 		{
 			if (sk == null)
 			{
-				StashKey psk = RTC_StockpileManager.getCurrentSavestateStashkey();
+				StashKey psk = RTC_StockpileManager.GetCurrentSavestateStashkey();
 				if (psk == null)
 				{
 					RTC_Core.StopSound();
@@ -285,7 +285,7 @@ namespace RTC
 			BlastLayer bl = GenerateBlastLayers(true);
 			if (bl == null)
 				return;
-			newSk.BlastLayer = bl;
+			newSk.Layer = bl;
 
 			if (openedFromBlastEditor)
 			{
@@ -304,7 +304,7 @@ namespace RTC
 
 				S.GET<RTC_GlitchHarvester_Form>().DontLoadSelectedStash = true;
 				S.GET<RTC_GlitchHarvester_Form>().lbStashHistory.SelectedIndex = S.GET<RTC_GlitchHarvester_Form>().lbStashHistory.Items.Count - 1;
-				RTC_StockpileManager.currentStashkey = RTC_StockpileManager.StashHistory[S.GET<RTC_GlitchHarvester_Form>().lbStashHistory.SelectedIndex];
+				RTC_StockpileManager.CurrentStashkey = RTC_StockpileManager.StashHistory[S.GET<RTC_GlitchHarvester_Form>().lbStashHistory.SelectedIndex];
 			}
 		}
 
@@ -354,7 +354,7 @@ namespace RTC
 					//If opened from engine config, use the GH state
 					if (!openedFromBlastEditor)
 					{
-						StashKey psk = RTC_StockpileManager.getCurrentSavestateStashkey();
+						StashKey psk = RTC_StockpileManager.GetCurrentSavestateStashkey();
 						if (psk == null)
 						{
 							RTC_Core.StopSound();

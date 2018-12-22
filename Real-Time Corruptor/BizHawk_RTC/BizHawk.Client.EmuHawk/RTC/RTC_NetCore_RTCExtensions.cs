@@ -213,7 +213,7 @@ namespace RTC
 						RTC_MemoryDomains.RefreshDomains(false);
 
 						if (runBlastLayer)
-							RTC_Core.SendCommandToBizhawk(new RTC_Command(CommandType.BLAST) { blastlayer = sk.BlastLayer, isReplay = true });
+							RTC_Core.SendCommandToBizhawk(new RTC_Command(CommandType.BLAST) { blastlayer = sk.Layer, isReplay = true });
 
 						cmdBack = new RTC_Command(CommandType.RETURNVALUE);
 						cmdBack.objectValue = returnValue;
@@ -262,7 +262,7 @@ namespace RTC
 					}
 
 				case CommandType.REMOTE_BACKUPKEY_STASH:
-					RTC_StockpileManager.backupedState = (StashKey)cmd.objectValue;
+					RTC_StockpileManager.BackupedState = (StashKey)cmd.objectValue;
 					RTC_StockpileManager.allBackupStates.Push((StashKey)cmd.objectValue);
 					S.GET<RTC_Core_Form>().btnGpJumpBack.Visible = true;
 					S.GET<RTC_Core_Form>().btnGpJumpNow.Visible = true;
@@ -387,7 +387,7 @@ namespace RTC
 					}
 
 				case CommandType.REMOTE_SET_SAVESTATEBOX:
-					RTC_StockpileManager.currentSavestateKey = (string)cmd.objectValue;
+					RTC_StockpileManager.CurrentSavestateKey = (string)cmd.objectValue;
 					break;
 
 				case CommandType.REMOTE_SET_AUTOCORRUPT:
@@ -636,7 +636,7 @@ namespace RTC
 
 				case CommandType.REMOTE_EVENT_BIZHAWKSTARTED:
 
-					if (RTC_StockpileManager.backupedState == null)
+					if (RTC_StockpileManager.BackupedState == null)
 						S.GET<RTC_Core_Form>().AutoCorrupt = false;
 
 					RTC_Core.SendCommandToBizhawk(new RTC_Command(CommandType.REMOTE_PUSHPARAMS) { objectValue = new RTC_Params() }, true, true);
@@ -645,8 +645,8 @@ namespace RTC
 
 					Thread.Sleep(100);
 
-					if (RTC_StockpileManager.backupedState != null)
-						S.GET<RTC_MemoryDomains_Form>().RefreshDomainsAndKeepSelected(RTC_StockpileManager.backupedState.SelectedDomains.ToArray());
+					if (RTC_StockpileManager.BackupedState != null)
+						S.GET<RTC_MemoryDomains_Form>().RefreshDomainsAndKeepSelected(RTC_StockpileManager.BackupedState.SelectedDomains.ToArray());
 
 					if (S.GET<RTC_Core_Form>().cbUseGameProtection.Checked)
 						RTC_GameProtection.Start();
@@ -731,14 +731,14 @@ namespace RTC
 					break;
 				case CommandType.REMOTE_HOTKEY_BLASTLAYERREBLAST:
 
-					if (RTC_StockpileManager.currentStashkey == null || RTC_StockpileManager.currentStashkey.BlastLayer.Layer.Count == 0)
+					if (RTC_StockpileManager.CurrentStashkey == null || RTC_StockpileManager.CurrentStashkey.Layer.Layer.Count == 0)
 					{
 						S.GET<RTC_GlitchHarvester_Form>().IsCorruptionApplied = false;
 						break;
 					}
 
 					S.GET<RTC_GlitchHarvester_Form>().IsCorruptionApplied = true;
-					RTC_Core.SendCommandToRTC(new RTC_Command(CommandType.BLAST) { blastlayer = RTC_StockpileManager.currentStashkey.BlastLayer });
+					RTC_Core.SendCommandToRTC(new RTC_Command(CommandType.BLAST) { blastlayer = RTC_StockpileManager.CurrentStashkey.Layer });
 					break;
 
 				case CommandType.REMOTE_RENDER_START:
@@ -759,7 +759,7 @@ namespace RTC
 					break;
 
 				case CommandType.REMOTE_RENDER_RENDERATLOAD:
-					RTC_StockpileManager.renderAtLoad = (bool)cmd.objectValue;
+					RTC_StockpileManager.RenderAtLoad = (bool)cmd.objectValue;
 					break;
 			}
 
@@ -801,7 +801,7 @@ namespace RTC
 			if (side == NetworkSide.DISCONNECTED)
 				return;
 
-			if (RTC_StockpileManager.currentStashkey == null)
+			if (RTC_StockpileManager.CurrentStashkey == null)
 			{
 				MessageBox.Show("Couldn't fetch Stashkey from RTC_StockpileManager.currentStashkey");
 				return;
@@ -814,7 +814,7 @@ namespace RTC
 			if (!PeerHasRom(cmd.romFilename))
 				cmd.romData = File.ReadAllBytes(cmd.romFilename);
 
-			cmd.stashkey = RTC_StockpileManager.currentStashkey;
+			cmd.stashkey = RTC_StockpileManager.CurrentStashkey;
 			cmd.stashkey.EmbedState();
 
 			cmd.Priority = true;
@@ -860,14 +860,14 @@ namespace RTC
 			if (side == NetworkSide.DISCONNECTED)
 				return;
 
-			if (RTC_StockpileManager.currentStashkey == null || RTC_StockpileManager.currentStashkey.BlastLayer == null)
+			if (RTC_StockpileManager.CurrentStashkey == null || RTC_StockpileManager.CurrentStashkey.Layer == null)
 			{
 				MessageBox.Show("Couldn't fetch BlastLayer from RTC_StockpileManager.currentStashkey");
 				return;
 			}
 
 			RTC_Command cmd = new RTC_Command(CommandType.BLAST);
-			cmd.blastlayer = RTC_StockpileManager.currentStashkey.BlastLayer;
+			cmd.blastlayer = RTC_StockpileManager.CurrentStashkey.Layer;
 
 			SendCommand(cmd, false);
 		}

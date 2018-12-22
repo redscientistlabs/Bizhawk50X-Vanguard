@@ -538,7 +538,7 @@ namespace RTC
 			}
 		}
 
-		public static BlastUnit getBlastUnit(string _domain, long _address, int precision)
+		public static BlastUnit GetBlastUnit(string _domain, long _address, int precision)
 		{
 			//Will generate a blast unit depending on which Corruption Engine is currently set.
 			//Some engines like Distortion may not return an Unit depending on the current state on things.
@@ -627,7 +627,7 @@ namespace RTC
 								MaxAddress = RTC_MemoryDomains.GetInterface(Domain).Size;
 								RandomAddress = RTC_Core.RND.RandomLong(MaxAddress - 1);
 
-								bu = getBlastUnit(Domain, RandomAddress, RTC_Core.CurrentPrecision);
+								bu = GetBlastUnit(Domain, RandomAddress, RTC_Core.CurrentPrecision);
 								if (bu != null)
 									bl.Layer.Add(bu);
 							}
@@ -644,7 +644,7 @@ namespace RTC
 							{
 								RandomAddress = RTC_Core.RND.RandomLong(MaxAddress - 1);
 
-								bu = getBlastUnit(Domain, RandomAddress, RTC_Core.CurrentPrecision);
+								bu = GetBlastUnit(Domain, RandomAddress, RTC_Core.CurrentPrecision);
 								if (bu != null)
 									bl.Layer.Add(bu);
 							}
@@ -663,7 +663,7 @@ namespace RTC
 								{
 									RandomAddress = RTC_Core.RND.RandomLong(MaxAddress - 1);
 
-									bu = getBlastUnit(Domain, RandomAddress, RTC_Core.CurrentPrecision);
+									bu = GetBlastUnit(Domain, RandomAddress, RTC_Core.CurrentPrecision);
 									if (bu != null)
 										bl.Layer.Add(bu);
 								}
@@ -697,7 +697,7 @@ namespace RTC
 									MaxAddress = RTC_MemoryDomains.GetInterface(Domain).Size;
 									RandomAddress = RTC_Core.RND.RandomLong(MaxAddress - 1);
 
-									bu = getBlastUnit(Domain, RandomAddress, RTC_Core.CurrentPrecision);
+									bu = GetBlastUnit(Domain, RandomAddress, RTC_Core.CurrentPrecision);
 									if (bu != null)
 										bl.Layer.Add(bu);
 								}
@@ -725,7 +725,7 @@ namespace RTC
 									MaxAddress = RTC_MemoryDomains.GetInterface(Domain).Size;
 									RandomAddress = RTC_Core.RND.RandomLong(MaxAddress - 1);
 
-									bu = getBlastUnit(Domain, RandomAddress, RTC_Core.CurrentPrecision);
+									bu = GetBlastUnit(Domain, RandomAddress, RTC_Core.CurrentPrecision);
 									if (bu != null)
 										bl.Layer.Add(bu);
 								}
@@ -744,7 +744,7 @@ namespace RTC
 									MaxAddress = RTC_MemoryDomains.GetInterface(Domain).Size;
 									RandomAddress = RTC_Core.RND.RandomLong(MaxAddress - 1);
 
-									bu = getBlastUnit(Domain, RandomAddress, RTC_Core.CurrentPrecision);
+									bu = GetBlastUnit(Domain, RandomAddress, RTC_Core.CurrentPrecision);
 									if (bu != null)
 										bl.Layer.Add(bu);
 								}

@@ -132,7 +132,7 @@ namespace RTC
 
 			foreach (StashKey sk in sks.StashKeys)
 			{
-				foreach (BlastUnit bu in sk.BlastLayer.Layer)
+				foreach (BlastUnit bu in sk.Layer.Layer)
 				{
 					if (!hashList.Contains(bu.LimiterListHash))
 						hashList.Add(bu.LimiterListHash);

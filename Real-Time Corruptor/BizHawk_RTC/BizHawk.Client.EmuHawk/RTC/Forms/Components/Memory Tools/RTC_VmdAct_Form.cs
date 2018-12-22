@@ -128,7 +128,7 @@ namespace RTC
 		public void SetActiveTable(ActiveTableObject act)
 		{
 			FirstInit = true;
-			ActiveTableGenerated = act.data;
+			ActiveTableGenerated = act.Data;
 			ActiveTableReady = true;
 			lbActiveTableSize.Text = "Active table size (0x" + ActiveTableGenerated.Length.ToString("X") + ")";
 		}
@@ -381,7 +381,7 @@ namespace RTC
 				act = (ActiveTableObject)xs.Deserialize(FS);
 				FS.Close();
 			}
-			long[] subtractiveActiveTable = act.data;
+			long[] subtractiveActiveTable = act.Data;
 
 			List<long> newActiveTable = new List<long>();
 
@@ -424,7 +424,7 @@ namespace RTC
 					act = (ActiveTableObject)xs.Deserialize(FS);
 					FS.Close();
 				}
-				long[] additiveActiveTable = act.data;
+				long[] additiveActiveTable = act.Data;
 
 				List<long> newActiveTable = new List<long>();
 
