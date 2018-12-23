@@ -227,7 +227,7 @@ namespace RTC
 					S.GET<RTC_GlitchHarvester_Form>().lbStashHistory.ClearSelected();
 					S.GET<RTC_GlitchHarvester_Form>().dgvStockpile.ClearSelection();
 
-					S.GET<RTC_GlitchHarvester_Form>().IsCorruptionApplied = !(RTC_StockpileManager.CurrentStashkey.Layer == null || RTC_StockpileManager.CurrentStashkey.Layer.Layer.Count == 0);
+					S.GET<RTC_GlitchHarvester_Form>().IsCorruptionApplied = !(RTC_StockpileManager.CurrentStashkey.BlastLayer == null || RTC_StockpileManager.CurrentStashkey.BlastLayer.Layer.Count == 0);
 				}
 			}
 			finally

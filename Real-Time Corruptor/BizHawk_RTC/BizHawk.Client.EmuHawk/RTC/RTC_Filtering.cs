@@ -119,8 +119,21 @@ namespace RTC
 
 			int line = RTC_Core.RND.Next(Hash2ValueDico[hash].Count);
 			Byte[] t = Hash2ValueDico[hash][line];
-			if(t.Length < precision)
+
+			//If the list is shorter than the current precision, left pad it
+			if (t.Length < precision)
 				t.PadLeft(precision);
+			//If the list is longer than the current precision, truncate it. Lists are stored little endian so truncate from the right
+			else if (t.Length > precision)
+			{
+				//It'd probably be faster to do this via bitshifting but it's 4am and I want to be able to read this code in the future so...
+				
+				//Flip the bytes (stored as little endian), truncate, then flip them back
+				t = t.FlipBytes();
+				Array.Resize(ref t, precision);
+				t = t.FlipBytes();
+			}
+
 			return t;
 		}
 
@@ -132,7 +145,7 @@ namespace RTC
 
 			foreach (StashKey sk in sks.StashKeys)
 			{
-				foreach (BlastUnit bu in sk.Layer.Layer)
+				foreach (BlastUnit bu in sk.BlastLayer.Layer)
 				{
 					if (!hashList.Contains(bu.LimiterListHash))
 						hashList.Add(bu.LimiterListHash);

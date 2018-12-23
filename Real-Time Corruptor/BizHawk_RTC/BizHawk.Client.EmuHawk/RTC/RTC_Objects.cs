@@ -609,7 +609,7 @@ namespace RTC
 
 		public string Key { get; set; }
 		public string ParentKey { get; set; }
-		public BlastLayer Layer { get; set; }
+		public BlastLayer BlastLayer { get; set; }
 
 		private string alias;
 		public string Alias
@@ -623,7 +623,7 @@ namespace RTC
 		{
 			Key = key;
 			ParentKey = parentkey;
-			Layer = blastlayer;
+			BlastLayer = blastlayer;
 
 			RomFilename = (string)RTC_Core.SendCommandToBizhawk(new RTC_Command(CommandType.REMOTE_KEY_GETOPENROMFILENAME), true);
 			SystemName = RTC_Core.EmuFolderCheck((string)RTC_Core.SendCommandToBizhawk(new RTC_Command(CommandType.REMOTE_KEY_GETSYSTEMNAME), true));

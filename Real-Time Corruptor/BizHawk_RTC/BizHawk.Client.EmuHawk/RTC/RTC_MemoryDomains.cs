@@ -493,7 +493,7 @@ namespace RTC
 
 		public static void GenerateVmdFromStashkey(StashKey sk)
 		{
-			VmdPrototype proto = new VmdPrototype(sk.Layer);
+			VmdPrototype proto = new VmdPrototype(sk.BlastLayer);
 			AddVMD(proto);
 
 			S.GET<RTC_VmdPool_Form>().RefreshVMDs();

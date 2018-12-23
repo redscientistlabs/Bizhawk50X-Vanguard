@@ -213,7 +213,7 @@ namespace RTC
 						RTC_MemoryDomains.RefreshDomains(false);
 
 						if (runBlastLayer)
-							RTC_Core.SendCommandToBizhawk(new RTC_Command(CommandType.BLAST) { blastlayer = sk.Layer, isReplay = true });
+							RTC_Core.SendCommandToBizhawk(new RTC_Command(CommandType.BLAST) { blastlayer = sk.BlastLayer, isReplay = true });
 
 						cmdBack = new RTC_Command(CommandType.RETURNVALUE);
 						cmdBack.objectValue = returnValue;
@@ -731,14 +731,14 @@ namespace RTC
 					break;
 				case CommandType.REMOTE_HOTKEY_BLASTLAYERREBLAST:
 
-					if (RTC_StockpileManager.CurrentStashkey == null || RTC_StockpileManager.CurrentStashkey.Layer.Layer.Count == 0)
+					if (RTC_StockpileManager.CurrentStashkey == null || RTC_StockpileManager.CurrentStashkey.BlastLayer.Layer.Count == 0)
 					{
 						S.GET<RTC_GlitchHarvester_Form>().IsCorruptionApplied = false;
 						break;
 					}
 
 					S.GET<RTC_GlitchHarvester_Form>().IsCorruptionApplied = true;
-					RTC_Core.SendCommandToRTC(new RTC_Command(CommandType.BLAST) { blastlayer = RTC_StockpileManager.CurrentStashkey.Layer });
+					RTC_Core.SendCommandToRTC(new RTC_Command(CommandType.BLAST) { blastlayer = RTC_StockpileManager.CurrentStashkey.BlastLayer });
 					break;
 
 				case CommandType.REMOTE_RENDER_START:
@@ -860,14 +860,14 @@ namespace RTC
 			if (side == NetworkSide.DISCONNECTED)
 				return;
 
-			if (RTC_StockpileManager.CurrentStashkey == null || RTC_StockpileManager.CurrentStashkey.Layer == null)
+			if (RTC_StockpileManager.CurrentStashkey == null || RTC_StockpileManager.CurrentStashkey.BlastLayer == null)
 			{
 				MessageBox.Show("Couldn't fetch BlastLayer from RTC_StockpileManager.currentStashkey");
 				return;
 			}
 
 			RTC_Command cmd = new RTC_Command(CommandType.BLAST);
-			cmd.blastlayer = RTC_StockpileManager.CurrentStashkey.Layer;
+			cmd.blastlayer = RTC_StockpileManager.CurrentStashkey.BlastLayer;
 
 			SendCommand(cmd, false);
 		}

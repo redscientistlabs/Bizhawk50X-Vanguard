@@ -532,7 +532,7 @@ namespace RTC
 
 			StashKey sk = RTC_StockpileManager.CurrentStashkey;
 
-			sk.Layer.RasterizeVMDs();
+			sk.BlastLayer.RasterizeVMDs();
 
 			DataGridViewRow dataRow = dgvStockpile.Rows[dgvStockpile.Rows.Add()];
 			dataRow.Cells["Item"].Value = sk;
@@ -717,7 +717,7 @@ namespace RTC
 			//if (Global.Emulator is NullEmulator)
 			//   return;
 
-			if ( RTC_StockpileManager.CurrentStashkey.Layer?.Layer?.Count == 0)
+			if ( RTC_StockpileManager.CurrentStashkey.BlastLayer?.Layer?.Count == 0)
 			{
 				IsCorruptionApplied = false;
 				return;
@@ -726,7 +726,7 @@ namespace RTC
 			if (!IsCorruptionApplied)
 			{
 				IsCorruptionApplied = true;
-				RTC_Core.SendCommandToRTC(new RTC_Command(CommandType.BLAST) { blastlayer = RTC_StockpileManager.CurrentStashkey.Layer });
+				RTC_Core.SendCommandToRTC(new RTC_Command(CommandType.BLAST) { blastlayer = RTC_StockpileManager.CurrentStashkey.BlastLayer });
 				//RTC_StockpileManager.currentStashkey.blastlayer.Apply();
 			}
 			else
@@ -1064,7 +1064,7 @@ namespace RTC
 			else
 				return;
 
-			RTC_StockpileManager.CurrentStashkey.Layer.Reroll();
+			RTC_StockpileManager.CurrentStashkey.BlastLayer.Reroll();
 
 			RTC_StockpileManager.AddCurrentStashkeyToStash();
 
@@ -1308,7 +1308,7 @@ namespace RTC
 
 						var token = RTC_NetCore.HugeOperationStart("LAZY");
 						StashKey sk = RTC_StockpileManager.StashHistory[lbStashHistory.SelectedIndex];
-						sk.Layer.RasterizeVMDs();
+						sk.BlastLayer.RasterizeVMDs();
 						RTC_MemoryDomains.GenerateVmdFromStashkey(sk);
 						RTC_NetCore.HugeOperationEnd(token);
 					}))).Enabled = lbStashHistory.SelectedIndex != -1;
@@ -1349,9 +1349,9 @@ namespace RTC
 			//If the blastlayer is big, prompt them before opening it. Let's go with 5k for now.
 
 			//TODO
-			if (sk.Layer.Layer.Count > 5000 && (DialogResult.Yes == MessageBox.Show($"You're trying to open a blastlayer of size " + sk.Layer.Layer.Count + ". This could take a while. Are you sure you want to continue?", "Opening a large BlastLayer", MessageBoxButtons.YesNo)))
+			if (sk.BlastLayer.Layer.Count > 5000 && (DialogResult.Yes == MessageBox.Show($"You're trying to open a blastlayer of size " + sk.BlastLayer.Layer.Count + ". This could take a while. Are you sure you want to continue?", "Opening a large BlastLayer", MessageBoxButtons.YesNo)))
 				S.GET<RTC_NewBlastEditor_Form>().LoadStashkey(sk);
-			else if (sk.Layer.Layer.Count <= 5000)
+			else if (sk.BlastLayer.Layer.Count <= 5000)
 				S.GET<RTC_NewBlastEditor_Form>().LoadStashkey(sk);
 			
 			RTC_NetCore.HugeOperationEnd(token);

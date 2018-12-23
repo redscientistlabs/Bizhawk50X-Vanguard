@@ -85,7 +85,7 @@ namespace RTC
 				return;
 
 			sk = (StashKey)_sk.Clone();
-			sk.Layer = new BlastLayer();
+			sk.BlastLayer = new BlastLayer();
 
 			RefreshDomains();
 			AddDefaultRow();
@@ -261,7 +261,7 @@ namespace RTC
 			BlastLayer bl = GenerateBlastLayers(true);
 			if (bl == null)
 				return;
-			newSk.Layer = bl;
+			newSk.BlastLayer = bl;
 
 			newSk.Run();
 		}
@@ -285,7 +285,7 @@ namespace RTC
 			BlastLayer bl = GenerateBlastLayers(true);
 			if (bl == null)
 				return;
-			newSk.Layer = bl;
+			newSk.BlastLayer = bl;
 
 			if (openedFromBlastEditor)
 			{

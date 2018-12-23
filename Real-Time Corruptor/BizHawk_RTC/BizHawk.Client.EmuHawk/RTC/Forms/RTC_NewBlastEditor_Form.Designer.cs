@@ -365,6 +365,7 @@
             this.btnLoadCorrupt.Tag = "color:darker";
             this.btnLoadCorrupt.Text = "Load + Corrupt";
             this.btnLoadCorrupt.UseVisualStyleBackColor = false;
+            this.btnLoadCorrupt.Click += new System.EventHandler(this.btnLoadCorrupt_Click);
             // 
             // btnRemoveSelected
             // 
@@ -398,6 +399,7 @@
             this.btnCorrupt.Tag = "color:darker";
             this.btnCorrupt.Text = "Apply Corruption";
             this.btnCorrupt.UseVisualStyleBackColor = false;
+            this.btnCorrupt.Click += new System.EventHandler(this.btnCorrupt_Click);
             // 
             // btnSendToStash
             // 

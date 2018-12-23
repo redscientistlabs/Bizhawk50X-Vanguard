@@ -83,11 +83,11 @@ namespace RTC
 				}
 			}
 			else
-				RTC_Core.SendCommandToBizhawk(new RTC_Command(CommandType.BLAST) { blastlayer = sk.Layer, isReplay = true });
+				RTC_Core.SendCommandToBizhawk(new RTC_Command(CommandType.BLAST) { blastlayer = sk.BlastLayer, isReplay = true });
 
 			RTC_NetCore.HugeOperationEnd(token);
 
-			IsCorruptionApplied = (sk.Layer != null && sk.Layer.Layer.Count > 0);
+			IsCorruptionApplied = (sk.BlastLayer != null && sk.BlastLayer.Layer.Count > 0);
 
 			PostApplyStashkey();
 			return IsCorruptionApplied;
@@ -180,7 +180,7 @@ namespace RTC
 				return IsCorruptionApplied;
 			}
 
-			CurrentStashkey = new StashKey(RTC_Core.GetRandomKey(), psk.ParentKey, sk.Layer);
+			CurrentStashkey = new StashKey(RTC_Core.GetRandomKey(), psk.ParentKey, sk.BlastLayer);
 			CurrentStashkey.RomFilename = psk.RomFilename;
 			CurrentStashkey.SystemName = psk.SystemName;
 			CurrentStashkey.SystemCore = psk.SystemCore;
@@ -192,9 +192,9 @@ namespace RTC
 					return false;
 			}
 			else
-				RTC_Core.SendCommandToBizhawk(new RTC_Command(CommandType.BLAST) { blastlayer = sk.Layer }, true);
+				RTC_Core.SendCommandToBizhawk(new RTC_Command(CommandType.BLAST) { blastlayer = sk.BlastLayer }, true);
 
-			IsCorruptionApplied = (sk.Layer != null);
+			IsCorruptionApplied = (sk.BlastLayer != null);
 
 			if (StashAfterOperation)
 			{
@@ -267,7 +267,7 @@ namespace RTC
 				BlastLayer bl = new BlastLayer();
 
 				foreach (StashKey item in sks)
-					bl.Layer.AddRange(item.Layer.Layer);
+					bl.Layer.AddRange(item.BlastLayer.Layer);
 
 				bl.Layer = bl.Layer.Distinct().ToList();
 
@@ -293,10 +293,10 @@ namespace RTC
 				}
 				else
 				{
-					RTC_Core.SendCommandToBizhawk(new RTC_Command(CommandType.BLAST) { blastlayer = CurrentStashkey.Layer });
+					RTC_Core.SendCommandToBizhawk(new RTC_Command(CommandType.BLAST) { blastlayer = CurrentStashkey.BlastLayer });
 				}
 
-				IsCorruptionApplied = (CurrentStashkey.Layer != null && CurrentStashkey.Layer.Layer.Count > 0);
+				IsCorruptionApplied = (CurrentStashkey.BlastLayer != null && CurrentStashkey.BlastLayer.Layer.Count > 0);
 
 				if (StashAfterOperation)
 				{
@@ -330,7 +330,7 @@ namespace RTC
 		{
 			object returnValue = RTC_Core.SendCommandToBizhawk(new RTC_Command(CommandType.REMOTE_LOADSTATE)
 			{
-				objectValue = new object[] { sk, reloadRom, (sk.Layer != null && sk.Layer.Layer.Count > 0) }
+				objectValue = new object[] { sk, reloadRom, (sk.BlastLayer != null && sk.BlastLayer.Layer.Count > 0) }
 			}, true);
 
 			return (returnValue != null && (bool)returnValue);
@@ -531,7 +531,7 @@ namespace RTC
 				}
 			}
 
-			sk.Layer = bl;
+			sk.BlastLayer = bl;
 			RTC_Core.StartSound();
 
 			return sk;
@@ -539,7 +539,7 @@ namespace RTC
 
 		public static void AddCurrentStashkeyToStash(bool _stashAfterOperation = true)
 		{
-			IsCorruptionApplied = (CurrentStashkey.Layer != null && CurrentStashkey.Layer.Layer.Count > 0);
+			IsCorruptionApplied = (CurrentStashkey.BlastLayer != null && CurrentStashkey.BlastLayer.Layer.Count > 0);
 
 			if (StashAfterOperation && _stashAfterOperation)
 			{
