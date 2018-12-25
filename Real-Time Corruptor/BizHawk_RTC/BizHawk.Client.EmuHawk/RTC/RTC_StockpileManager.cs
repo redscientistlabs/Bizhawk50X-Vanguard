@@ -128,6 +128,7 @@ namespace RTC
 			CurrentStashkey.SystemName = psk.SystemName;
 			CurrentStashkey.SystemCore = psk.SystemCore;
 			CurrentStashkey.GameName = psk.GameName;
+			CurrentStashkey.SyncSettings = psk.SyncSettings;
 
 			if (_loadBeforeOperation)
 			{

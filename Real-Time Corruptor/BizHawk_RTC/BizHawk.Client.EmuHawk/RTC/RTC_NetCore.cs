@@ -246,7 +246,7 @@ namespace RTC
 								}
 
 								sw.Stop();
-								if(cmd.Type != CommandType.BOOP)
+								if(cmd.Type != CommandType.BOOP && sw.ElapsedMilliseconds > 50)
 									Console.WriteLine("It took " + sw.ElapsedMilliseconds + " ms to deserialize cmd " + cmd.Type + " of " + ms.ToArray().Length + " bytes");
 							}
 						}
@@ -297,7 +297,7 @@ namespace RTC
 								//ms.CopyTo(networkStream);
 								networkStream.Write(buf, 0, buf.Length);
 								sw.Stop();
-								if (backCmd.Type != CommandType.BOOP)
+								if (backCmd.Type != CommandType.BOOP && sw.ElapsedMilliseconds > 50)
 									Console.WriteLine("It took " + sw.ElapsedMilliseconds + " ms to serialize backCmd " + backCmd.Type + " of " + ms.ToArray().Length + "	bytes");
 							}
 
