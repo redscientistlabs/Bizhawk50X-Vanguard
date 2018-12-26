@@ -227,12 +227,10 @@ namespace RTC
 								sw.Start();
 
 								//Read the size
-								long lengthToReceive = 0;
-								byte[] _lengthToReceive = new byte[8];
+								int lengthToReceive = 0;
+								byte[] _lengthToReceive = new byte[4];
 								networkStream.Read(_lengthToReceive, 0, _lengthToReceive.Length);
-								lengthToReceive = BitConverter.ToInt64(_lengthToReceive, 0);
-								if (lengthToReceive == 0)
-									continue;
+								lengthToReceive = BitConverter.ToInt32(_lengthToReceive, 0);
 
 								//Console.WriteLine("I want this many bytes: " + lengthToReceive);
 								//Now read until we have that many bytes
@@ -242,18 +240,14 @@ namespace RTC
 								//Deserialize it
 								ms.Position = 0;
 
-								using (DeflateStream zipStream = new DeflateStream(ms, CompressionMode.Decompress, false))
+								using (DeflateStream compressionStream = new DeflateStream(ms, CompressionMode.Decompress))
 								{
-									ms.Position = 0;
-									//zipStream.CopyTo(outStream);
-									cmd = (RTC_Command)binaryFormatter.Deserialize(zipStream);
+									cmd = (RTC_Command)binaryFormatter.Deserialize(compressionStream);
 								}
 
-								//outStream.Position = 0;
 								sw.Stop();
-								if (cmd.Type != CommandType.BOOP && sw.ElapsedMilliseconds > 50)
-									Console.WriteLine("It took " + sw.ElapsedMilliseconds + " ms to deserialize cmd " + cmd.Type + " of " + lengthToReceive + " bytes");
-
+								if(cmd.Type != CommandType.BOOP && sw.ElapsedMilliseconds > 50)
+									Console.WriteLine("It took " + sw.ElapsedMilliseconds + " ms to deserialize cmd " + cmd.Type + " of " + ms.ToArray().Length + " bytes");
 							}
 						}
 						catch (Exception ex)
@@ -284,53 +278,34 @@ namespace RTC
 						{
 							using (MemoryStream ms = new MemoryStream())
 							{
-
-								CompressionLevel lv = CompressionLevel.NoCompression;
-								if (ms.Length > 500000)
-									lv = CompressionLevel.Fastest;
-
 								Stopwatch sw = new Stopwatch();
 								sw.Start();
+								//Write the length of the command to the first four bytes
 
-								binaryFormatter.Serialize(ms, backCmd);
-								if (backCmd.Type != CommandType.BOOP && sw.ElapsedMilliseconds > 50)
-									Console.WriteLine("It took " + sw.ElapsedMilliseconds + " ms to serialize backCmd " + backCmd.Type + " of " + ms.Length + " bytes");
-
-								
-								using (MemoryStream outStream = new MemoryStream())
+								using (DeflateStream compressionStream = new DeflateStream(ms, CompressionLevel.Optimal, true))
 								{
-									using (DeflateStream zipStream = new DeflateStream(outStream, lv, true))
-									{
-										ms.Position = 0;
-										ms.CopyTo(zipStream);
-										//zipStream.Write(buf, 0, buf.Length);
-									}
-
-									sw = new Stopwatch();
-									sw.Start();
-
-
-									//Write the length of the incoming object to the NetworkStream
-									byte[] length = BitConverter.GetBytes(outStream.Length);
-									networkStream.Write(length, 0, length.Length);
-									
-									//Write the data itself
-									outStream.Position = 0;
-									outStream.CopyTo(networkStream);
-
-									if (backCmd.Type != CommandType.BOOP && sw.ElapsedMilliseconds > 50)
-										Console.WriteLine("It took " + sw.ElapsedMilliseconds + " ms to write backCmd " + backCmd.Type + " of " + outStream.Length + " bytes");
-
-									//networkStream.Write(buf, 0, buf.Length);
-									sw.Stop();
+									binaryFormatter.Serialize(compressionStream, backCmd);
 								}
+
+								byte[] buf = ms.ToArray();
+								//Write the length of the incoming object to the NetworkStream
+								byte[] length = BitConverter.GetBytes(buf.Length);
+								networkStream.Write(length, 0, length.Length);
+								//Console.WriteLine("I am giving you this many bytes " + BitConverter.ToInt32(length, 0));
+								//Write the data itself
+								//ms.Position = 0;
+								//ms.CopyTo(networkStream);
+								networkStream.Write(buf, 0, buf.Length);
+								sw.Stop();
+								if (backCmd.Type != CommandType.BOOP && sw.ElapsedMilliseconds > 50)
+									Console.WriteLine("It took " + sw.ElapsedMilliseconds + " ms to serialize backCmd " + backCmd.Type + " of " + ms.ToArray().Length + "	bytes");
 							}
 
 							//binaryFormatter.Serialize(networkStream, backCmd);
 						}
 						catch (Exception ex)
 						{
-							throw;
+							throw ex;
 						}
 
 						if (backCmd.Type == CommandType.BYE)
@@ -397,7 +372,6 @@ namespace RTC
 				isStreamReadingThreadAlive = false;
 			}
 		}
-
 
 		public void OutputException(Exception ex)
 		{
