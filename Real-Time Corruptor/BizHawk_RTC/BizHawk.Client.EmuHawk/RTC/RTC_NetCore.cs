@@ -240,10 +240,7 @@ namespace RTC
 								//Deserialize it
 								ms.Position = 0;
 
-								using (DeflateStream compressionStream = new DeflateStream(ms, CompressionMode.Decompress))
-								{
-									cmd = (RTC_Command)binaryFormatter.Deserialize(compressionStream);
-								}
+								cmd = (RTC_Command)binaryFormatter.Deserialize(ms);
 
 								sw.Stop();
 								if(cmd.Type != CommandType.BOOP && sw.ElapsedMilliseconds > 50)
@@ -282,10 +279,7 @@ namespace RTC
 								sw.Start();
 								//Write the length of the command to the first four bytes
 
-								using (DeflateStream compressionStream = new DeflateStream(ms, CompressionLevel.Optimal, true))
-								{
-									binaryFormatter.Serialize(compressionStream, backCmd);
-								}
+								binaryFormatter.Serialize(ms, backCmd);
 
 								byte[] buf = ms.ToArray();
 								//Write the length of the incoming object to the NetworkStream
@@ -298,7 +292,7 @@ namespace RTC
 								networkStream.Write(buf, 0, buf.Length);
 								sw.Stop();
 								if (backCmd.Type != CommandType.BOOP && sw.ElapsedMilliseconds > 50)
-									Console.WriteLine("It took " + sw.ElapsedMilliseconds + " ms to serialize backCmd " + backCmd.Type + " of " + ms.ToArray().Length + "	bytes");
+									Console.WriteLine("It took " + sw.ElapsedMilliseconds + " ms to serialize backCmd " + backCmd.Type + " of " + buf.Length + " bytes");
 							}
 
 							//binaryFormatter.Serialize(networkStream, backCmd);
