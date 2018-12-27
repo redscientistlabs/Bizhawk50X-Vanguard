@@ -1,10 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
 using System.Linq;
-using System.Text;
 using System.Windows.Forms;
 
 namespace StandaloneRTC
@@ -31,15 +26,17 @@ namespace StandaloneRTC
 			}
 
 			RTC.RTC_Core.Start(this);
-			this.Hide();
+			Hide();
 
 		}
 
 		private void Form1_Load(object sender, EventArgs e)
 		{
-			t = new Timer();
-			t.Interval = 400;
-			t.Tick += new EventHandler(CheckHeartbeat);
+			t = new Timer
+			{
+				Interval = 400
+			};
+			t.Tick += CheckHeartbeat;
 			t.Start();
 
 			RTC.RTC_RPC.StartKillswitch();
@@ -57,7 +54,7 @@ namespace StandaloneRTC
 				if (RTC.S.GET<RTC.RTC_Core_Form>().pbAutoKillSwitchTimeout.Value == RTC.S.GET<RTC.RTC_Core_Form>().pbAutoKillSwitchTimeout.Maximum)
 				{
 					//this.Focused = false;
-					RTC.S.GET<RTC.RTC_ConnectionStatus_Form>().btnStartEmuhawkDetached_Click(null, null);
+					RTC.S.GET<RTC.RTC_ConnectionStatus_Form>().BtnStartEmuhawkDetached_Click(null, null);
 					//this.Focused = false;
 				}
 
@@ -74,7 +71,7 @@ namespace StandaloneRTC
 		protected override void OnVisibleChanged(EventArgs e)
 		{
 			base.OnVisibleChanged(e);
-			this.Visible = false;
+			Visible = false;
 		}
 	}
 }

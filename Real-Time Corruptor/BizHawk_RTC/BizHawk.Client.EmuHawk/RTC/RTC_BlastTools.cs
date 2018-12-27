@@ -23,11 +23,13 @@ namespace RTC
 
 			if (filename == null)
 			{
-				SaveFileDialog saveFileDialog1 = new SaveFileDialog();
-				saveFileDialog1.DefaultExt = "bl";
-				saveFileDialog1.Title = "Save BlastLayer File";
-				saveFileDialog1.Filter = "bl files|*.bl";
-				saveFileDialog1.RestoreDirectory = true;
+				SaveFileDialog saveFileDialog1 = new SaveFileDialog
+				{
+					DefaultExt = "bl",
+					Title = "Save BlastLayer File",
+					Filter = "bl files|*.bl",
+					RestoreDirectory = true
+				};
 
 				if (saveFileDialog1.ShowDialog() == DialogResult.OK)
 				{
@@ -54,11 +56,13 @@ namespace RTC
 
 			if (filename == null)
 			{
-				OpenFileDialog ofd = new OpenFileDialog();
-				ofd.DefaultExt = "bl";
-				ofd.Title = "Open BlastLayer File";
-				ofd.Filter = "bl files|*.bl";
-				ofd.RestoreDirectory = true;
+				OpenFileDialog ofd = new OpenFileDialog
+				{
+					DefaultExt = "bl",
+					Title = "Open BlastLayer File",
+					Filter = "bl files|*.bl",
+					RestoreDirectory = true
+				};
 				if (ofd.ShowDialog() == DialogResult.OK)
 				{
 					filename = ofd.FileName.ToString();
@@ -212,11 +216,10 @@ namespace RTC
 
 				return newLayer;
 			}
-			catch (Exception ex)
+			catch (Exception)
 			{
 				throw;
 			}
-			return null;
 		}
 
 
@@ -257,8 +260,7 @@ namespace RTC
 
 			if (bl.Layer.Count == 0)
 				return null;
-			else
-				return bl;
+			return bl;
 		}
 
 		public static List<BlastGeneratorProto> GenerateBlastLayersFromBlastGeneratorProtos(List<BlastGeneratorProto> blastLayers, StashKey sk)

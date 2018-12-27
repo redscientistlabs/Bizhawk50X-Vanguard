@@ -139,10 +139,7 @@ namespace RTC
 			btnEmergencySaveStockpile.Location = new Point(32, 64);
 			btnEmergencySaveStockpile.Size = new Size(200, 32);
 			btnEmergencySaveStockpile.BackColor = Color.OrangeRed;
-			btnEmergencySaveStockpile.Click += (s, e) =>
-			{
-				btnSaveStockpileAs_Click(s, e);
-			};
+			btnEmergencySaveStockpile.Click += btnSaveStockpileAs_Click;
 			pnHideGlitchHarvester.Controls.Add(btnEmergencySaveStockpile);
 
 			Controls.Add(pnHideGlitchHarvester);
@@ -281,11 +278,13 @@ namespace RTC
 					if (!File.Exists(psk.RomFilename))
 						if (DialogResult.Yes == MessageBox.Show($"Can't find file {psk.RomFilename}\nGame name: {psk.GameName}\nSystem name: {psk.SystemName}\n\n Would you like to provide a new file for replacement?", "Error: File not found", MessageBoxButtons.YesNo))
 						{
-							OpenFileDialog ofd = new OpenFileDialog();
-							ofd.DefaultExt = "*";
-							ofd.Title = "Select Replacement File";
-							ofd.Filter = "Any file|*.*";
-							ofd.RestoreDirectory = true;
+							OpenFileDialog ofd = new OpenFileDialog
+							{
+								DefaultExt = "*",
+								Title = "Select Replacement File",
+								Filter = "Any file|*.*",
+								RestoreDirectory = true
+							};
 							if (ofd.ShowDialog() == DialogResult.OK)
 							{
 								string filename = ofd.FileName.ToString();
@@ -1096,16 +1095,19 @@ namespace RTC
 				string Filename;
 				string ShortFilename;
 
-				SaveFileDialog saveFileDialog1 = new SaveFileDialog();
-				saveFileDialog1.DefaultExt = "ssk";
-				saveFileDialog1.Title = "Savestate Keys File";
-				saveFileDialog1.Filter = "SSK files|*.ssk";
-				saveFileDialog1.RestoreDirectory = true;
+				SaveFileDialog saveFileDialog1 = new SaveFileDialog
+				{
+					DefaultExt = "ssk",
+					Title = "Savestate Keys File",
+					Filter = "SSK files|*.ssk",
+					RestoreDirectory = true
+				};
 
 				if (saveFileDialog1.ShowDialog() == DialogResult.OK)
 				{
 					Filename = saveFileDialog1.FileName;
-					ShortFilename = Filename.Substring(Filename.LastIndexOf("\\") + 1, Filename.Length - (Filename.LastIndexOf("\\") + 1));
+					//ShortFilename = Filename.Substring(Filename.LastIndexOf("\\") + 1, Filename.Length - (Filename.LastIndexOf("\\") + 1));
+					ShortFilename = Path.GetFileName(Filename);
 				}
 				else
 					return;
@@ -1168,7 +1170,8 @@ namespace RTC
 				//Move all the files from temp into SSK
 				Stockpile.EmptyFolder("\\WORKING\\SSK");
 				foreach (string file in Directory.GetFiles(RTC_Core.workingDir + "\\TEMP"))
-					File.Move(file, RTC_Core.workingDir + "\\SSK\\" + (file.Substring(file.LastIndexOf("\\") + 1, file.Length - (file.LastIndexOf("\\") + 1))));
+					//File.Move(file, RTC_Core.workingDir + "\\SSK\\" + (file.Substring(file.LastIndexOf("\\") + 1, file.Length - (file.LastIndexOf("\\") + 1))));
+					File.Move(file, RTC_Core.workingDir + "\\SSK\\" + Path.GetFileName(file));
 			}
 			catch(Exception ex)
 			{
@@ -1181,14 +1184,16 @@ namespace RTC
 		{
 			string filename;
 
-			OpenFileDialog ofd = new OpenFileDialog();
-			ofd.DefaultExt = "ssk";
-			ofd.Title = "Open Savestate Keys File";
-			ofd.Filter = "SSK files|*.ssk";
-			ofd.RestoreDirectory = true;
+			OpenFileDialog ofd = new OpenFileDialog
+			{
+				DefaultExt = "ssk",
+				Title = "Open Savestate Keys File",
+				Filter = "SSK files|*.ssk",
+				RestoreDirectory = true
+			};
 			if (ofd.ShowDialog() == DialogResult.OK)
 			{
-				filename = ofd.FileName.ToString();
+				filename = ofd.FileName;
 			}
 			else
 				return;
@@ -1232,7 +1237,8 @@ namespace RTC
 
 				string statefilename = key.GameName + "." + key.ParentKey + ".timejump.State"; // get savestate name
 				string newStatePath = RTC_Core.workingDir + "\\" + key.StateLocation + "\\" +  statefilename;
-				string shortRomFilename = key.RomFilename.Substring(key.RomFilename.LastIndexOf("\\") + 1);
+				//string shortRomFilename = key.RomFilename.Substring(key.RomFilename.LastIndexOf("\\") + 1);
+				string shortRomFilename = Path.GetFileName(key.RomFilename);
 
 				key.StateFilename = newStatePath;
 			}

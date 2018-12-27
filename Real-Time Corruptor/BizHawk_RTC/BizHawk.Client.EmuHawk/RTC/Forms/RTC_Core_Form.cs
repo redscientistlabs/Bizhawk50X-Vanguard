@@ -54,8 +54,7 @@ namespace RTC
 		{
 			InitializeComponent();
 
-			if (RTC_Core.isStandalone)
-				pnAutoKillSwitch.Visible = true;
+			pnAutoKillSwitch.Visible |= RTC_Core.isStandalone;
 		}
 
 		public void btnManualBlast_Click(object sender, EventArgs e)
@@ -121,7 +120,7 @@ namespace RTC
 				this.Hide();
 				return;
 			}
-			else if (RTC_Core.isStandalone)
+			if (RTC_Core.isStandalone)
 			{
 				if (RTC_StockpileManager.UnsavedEdits && !RTC_Core.isClosing && MessageBox.Show("You have unsaved edits in the Glitch Harvester Stockpile. \n\n Are you sure you want to close RTC without saving?", "Unsaved edits in Stockpile", MessageBoxButtons.YesNo) == DialogResult.No)
 				{
@@ -339,8 +338,7 @@ namespace RTC
 
 					RemoveGhostBoxes();
 
-					if (!RTC_Core.FirstConnection)
-						pnCrashProtection.Visible = true;
+					pnCrashProtection.Visible |= !RTC_Core.FirstConnection;
 				}
 			}
 		}
@@ -376,8 +374,7 @@ namespace RTC
 			}
 			finally
 			{
-				if (RTC_StockpileManager.AllBackupStates.Count != 0)
-					btnGpJumpBack.Visible = true;
+				btnGpJumpBack.Visible |= RTC_StockpileManager.AllBackupStates.Count != 0;
 			}
 		}
 

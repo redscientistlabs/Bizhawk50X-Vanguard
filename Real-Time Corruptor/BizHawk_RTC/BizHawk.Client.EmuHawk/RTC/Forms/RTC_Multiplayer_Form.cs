@@ -10,7 +10,7 @@ namespace RTC
 {
 	public partial class RTC_Multiplayer_Form : Form, IAutoColorize
 	{
-		System.Windows.Forms.Timer streamTimer = null;
+		Timer streamTimer = null;
 
 		public int GameOfSwapCounter
 		{
@@ -31,7 +31,7 @@ namespace RTC
 
 		int _GameOfSwapCounter = 0;
 		bool GameOfSwapHost = false;
-		public System.Windows.Forms.Timer GameOfSwapTimer = null;
+		public Timer GameOfSwapTimer = null;
 
 		int fps = 30;
 
@@ -236,8 +236,10 @@ namespace RTC
 		{
 			if (cbStreamScreenToPeer.Checked)
 			{
-				streamTimer = new System.Windows.Forms.Timer();
-				streamTimer.Interval = (1000 / fps);
+				streamTimer = new Timer
+				{
+					Interval = (1000 / fps)
+				};
 				streamTimer.Tick += StreamTimer_Tick;
 				streamTimer.Start();
 			}
@@ -267,7 +269,7 @@ namespace RTC
 		public static void SaveJPG100(Bitmap bmp, Stream stream)
 		{
 			EncoderParameters encoderParameters = new EncoderParameters(1);
-			encoderParameters.Param[0] = new EncoderParameter(System.Drawing.Imaging.Encoder.Quality, 100L);
+			encoderParameters.Param[0] = new EncoderParameter(Encoder.Quality, 100L);
 			bmp.Save(stream, GetEncoder(ImageFormat.Jpeg), encoderParameters);
 		}
 
@@ -275,7 +277,7 @@ namespace RTC
 		{
 			MemoryStream stream = new MemoryStream();
 			EncoderParameters encoderParameters = new EncoderParameters(1);
-			encoderParameters.Param[0] = new EncoderParameter(System.Drawing.Imaging.Encoder.Quality, quality);
+			encoderParameters.Param[0] = new EncoderParameter(Encoder.Quality, quality);
 			bmp.Save(stream, GetEncoder(ImageFormat.Jpeg), encoderParameters);
 
 			return Image.FromStream(stream);
@@ -358,8 +360,10 @@ namespace RTC
 		public void StartGameOfSwap(bool isGameHost)
 		{
 			GameOfSwapHost = isGameHost;
-			GameOfSwapTimer = new System.Windows.Forms.Timer();
-			GameOfSwapTimer.Interval = 200;
+			GameOfSwapTimer = new Timer
+			{
+				Interval = 200
+			};
 			GameOfSwapTimer.Tick += GameOfSwapTimer_Tick;
 			GameOfSwapTimer.Start();
 

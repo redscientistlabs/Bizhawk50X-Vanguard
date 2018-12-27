@@ -99,8 +99,7 @@ namespace RTC
 
 		public static bool LimiterContainsValue(byte[] bytes, string hash)
 		{
-			HashSet<Byte[]> hs = null;
-			if (Hash2LimiterDico.TryGetValue(hash, out hs))
+			if (Hash2LimiterDico.TryGetValue(hash, out HashSet<byte[]> hs))
 			{
 				return hs.Contains(bytes);
 			}

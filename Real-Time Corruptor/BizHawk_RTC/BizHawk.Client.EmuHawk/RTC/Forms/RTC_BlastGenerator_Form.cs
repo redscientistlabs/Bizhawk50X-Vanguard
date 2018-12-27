@@ -200,9 +200,8 @@ namespace RTC
 
 		private static void PopulateModeCombobox(DataGridViewRow row)
 		{
-			DataGridViewComboBoxCell cell = row.Cells["dgvMode"] as DataGridViewComboBoxCell;
 
-			if (cell != null)
+			if (row.Cells["dgvMode"] is DataGridViewComboBoxCell cell)
 			{
 				cell.Value = null;
 				cell.Items.Clear();
@@ -227,8 +226,6 @@ namespace RTC
 						{
 							cell.Items.Add(type.ToString());
 						}
-						break;
-					default:
 						break;
 				}
 				cell.Value = cell.Items[0];
@@ -632,8 +629,10 @@ namespace RTC
 
 			DataSet ds = new DataSet();
 			ds.Tables.Add(dt);
-			SaveFileDialog sfd = new SaveFileDialog();
-			sfd.Filter = "bg|*.bg";
+			SaveFileDialog sfd = new SaveFileDialog
+			{
+				Filter = "bg|*.bg"
+			};
 			if (sfd.ShowDialog() == DialogResult.OK)
 			{
 				try

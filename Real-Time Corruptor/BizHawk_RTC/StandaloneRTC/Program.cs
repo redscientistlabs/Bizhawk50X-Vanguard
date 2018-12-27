@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
@@ -18,12 +17,14 @@ namespace StandaloneRTC
 		{
 
 			//in case assembly resolution fails, such as if we moved them into the dll subdiretory, this event handler can reroute to them
-			AppDomain.CurrentDomain.AssemblyResolve += new ResolveEventHandler(CurrentDomain_AssemblyResolve);
+			AppDomain.CurrentDomain.AssemblyResolve += CurrentDomain_AssemblyResolve;
 
 			var processes = Process.GetProcesses().Select(it => $"{it.ProcessName.ToUpper()}").OrderBy(x => x).ToArray();
 
             int nbInstances = 0;
-            foreach (var prc in processes)
+			//this could be replaced with linq expression
+			//I replaced this with explicit type because it should always be a string
+            foreach (string prc in processes)
                 if (prc == "STANDALONERTC")
                     nbInstances++;
 

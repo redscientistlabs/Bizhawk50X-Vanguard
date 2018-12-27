@@ -574,11 +574,13 @@ namespace RTC
 					if ((StartA < LineA) || (StartB < LineB))
 					{
 						// store a new difference-item
-						aItem = new Item();
-						aItem.StartA = StartA;
-						aItem.StartB = StartB;
-						aItem.deletedA = LineA - StartA;
-						aItem.insertedB = LineB - StartB;
+						aItem = new Item
+						{
+							StartA = StartA,
+							StartB = StartB,
+							deletedA = LineA - StartA,
+							insertedB = LineB - StartB
+						};
 						a.Add(aItem);
 					} // if
 				} // if

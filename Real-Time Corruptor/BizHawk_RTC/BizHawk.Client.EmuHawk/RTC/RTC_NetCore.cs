@@ -386,8 +386,7 @@ namespace RTC
 				return;
 			}
 
-			if (!stayConnected)
-				expectingSomeone = false;
+			expectingSomeone &= stayConnected;
 
 			if (expectedSide == NetworkSide.CLIENT)
 				if (stayConnected)
@@ -441,8 +440,7 @@ namespace RTC
 				}
 			}
 
-			if (!stayConnected)
-				supposedToBeConnected = false;
+			supposedToBeConnected &= stayConnected;
 		}
 
 		private bool StartClient(bool clientDefaultReconnect = false)
@@ -465,8 +463,10 @@ namespace RTC
 				client.EndConnect(result);
 				clientStream = client.GetStream();
 
-				streamReadingThread = new Thread(() => StoreCommands(clientStream));
-				streamReadingThread.Name = "CLIENT";
+				streamReadingThread = new Thread(() => StoreCommands(clientStream))
+				{
+					Name = "CLIENT"
+				};
 				streamReadingThread.Start();
 				isStreamReadingThreadAlive = true;
 			}
@@ -486,8 +486,7 @@ namespace RTC
 					client = null;
 				}
 
-				if (clientDefaultReconnect)
-					supposedToBeConnected = true;
+				supposedToBeConnected |= clientDefaultReconnect;
 
 				if (!supposedToBeConnected)
 					MessageBox.Show("Could not connect to Server (Server did not respond in time)\n\n" + ex.ToString());
@@ -505,8 +504,10 @@ namespace RTC
 		{
 			try
 			{
-				streamReadingThread = new Thread(() => StoreCommands(null, dontUseNetworkStream));
-				streamReadingThread.Name = "SERVER";
+				streamReadingThread = new Thread(() => StoreCommands(null, dontUseNetworkStream))
+				{
+					Name = "SERVER"
+				};
 				streamReadingThread.Start();
 				isStreamReadingThreadAlive = true;
 			}
@@ -543,8 +544,10 @@ namespace RTC
 
 			if (CommandQueueProcessorTimer == null)
 			{
-				CommandQueueProcessorTimer = new System.Windows.Forms.Timer();
-				CommandQueueProcessorTimer.Interval = 5;
+				CommandQueueProcessorTimer = new System.Windows.Forms.Timer
+				{
+					Interval = 5
+				};
 				CommandQueueProcessorTimer.Tick += CommandQueueProcessorTimer_Tick;
 				CommandQueueProcessorTimer.Start();
 			}
@@ -576,14 +579,15 @@ namespace RTC
 
 			if (KeepAliveTimer == null)
 			{
-				KeepAliveTimer = new System.Windows.Forms.Timer();
-				KeepAliveTimer.Interval = 666;
+				KeepAliveTimer = new System.Windows.Forms.Timer
+				{
+					Interval = 666
+				};
 				KeepAliveTimer.Tick += KeepAliveTimer_Tick;
 				KeepAliveTimer.Start();
 			}
 
-			if (_side == NetworkSide.SERVER)
-				expectingSomeone = false;
+			expectingSomeone &= _side != NetworkSide.SERVER;
 
 			supposedToBeConnected = true;
 
@@ -849,7 +853,7 @@ namespace RTC
 				if (maxtries % 100 == 0)
 				{
 					RTC_Core.SendCommandToBizhawk(new RTC_Command(CommandType.BOOP));
-					System.Windows.Forms.Application.DoEvents();
+					Application.DoEvents();
 				}
 
 				Thread.Sleep(2);
