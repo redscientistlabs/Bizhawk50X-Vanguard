@@ -8,6 +8,7 @@ using System.Drawing;
 using System.IO;
 using System.Linq;
 using System.Windows.Forms;
+using static RTC.RTC_Unispec;
 
 namespace RTC
 {
@@ -36,8 +37,10 @@ namespace RTC
 			if (disableRTC || Global.Emulator is NullEmulator)
 				return;
 
+
+			
 			//Return out if it's being called from before the step and we're not on frame 0. If we're on frame 0, then we go as normal
-			if (isBeforeStep && CPU_STEP_Count != 0 && RTC_StepActions.RunBefore == false)
+			if (isBeforeStep && CPU_STEP_Count != 0 && (bool)RTC_Unispec.RTCSpec[Spec.STEP_RUNBEFORE.ToString()] == false)
 				return;
 
 			isNormalAdvance = !(isRewinding || isFastForwarding);
@@ -63,7 +66,7 @@ namespace RTC
 		{
 			if (disableRTC) return;
 
-			if (RTC_Core.ClearStepActionsOnRewind)
+			if ((bool)RTCSpec[Spec.CORE_CLEARSTEPACTIONSONREWIND.ToString()])
 				RTC_StepActions.ClearStepBlastUnits();
 		}
 
@@ -86,10 +89,10 @@ namespace RTC
 
 			CPU_STEP_Count++;
 
-			if (RTC_Core.AutoCorrupt && CPU_STEP_Count >= RTC_Core.ErrorDelay)
+			if ((bool)RTCSpec[Spec.CORE_AUTOCORRUPT.ToString()] && CPU_STEP_Count >= (int)RTCSpec[Spec.CORE_ERRORDELAY.ToString()])
 			{
 				CPU_STEP_Count = 0;
-				BlastLayer bl = RTC_Core.Blast(null, RTC_MemoryDomains.SelectedDomains);
+				BlastLayer bl = RTC_Core.Blast(null, (string[])RTC_Unispec.RTCSpec[Spec.MEMORYDOMAINS_SELECTEDDOMAINS.ToString()]);
 				if (bl != null)
 					bl.Apply();
 			}
@@ -104,12 +107,13 @@ namespace RTC
 				MessageBox.Show("32-bit operating system detected. Bizhawk requires 64-bit to run. Program will shut down");
 				Application.Exit();
 			}
-
+			RTC_Unispec.RegisterSpec();
 			RTC_Core.args = args;
 
 			disableRTC = RTC_Core.args.Contains("-DISABLERTC");
 			isRemoteRTC = RTC_Core.args.Contains("-REMOTERTC");
-			ShowConsole = RTC_Core.args.Contains("-CONSOLE");
+
+			RTC_Unispec.RTCSpec.Update(Spec.HOOKS_SHOWCONSOLE.ToString(), RTC_Core.args.Contains("-CONSOLE"));
 		}
 
 		public static void MAINFORM_FORM_LOAD_END()
@@ -189,16 +193,20 @@ namespace RTC
 			PathEntry pathEntry = Global.Config.PathEntries[Global.Game.System, "Savestates"] ??
 			Global.Config.PathEntries[Global.Game.System, "Base"];
 
-			RTC_StockpileManager.CurrentGameSystem = RTC_Core.EmuFolderCheck(pathEntry.SystemDisplayName);
-			RTC_StockpileManager.CurrentGameName = PathManager.FilesystemSafeName(Global.Game);
-			RTC_Core.lastOpenRom = GlobalWin.MainForm.CurrentlyOpenRom;
+
+
+			PartialSpec gameDone = new PartialSpec("RTCSpec");
+			gameDone[Spec.STOCKPILE_CURRENTGAMESYSTEM.ToString()] = RTC_Core.EmuFolderCheck(pathEntry.SystemDisplayName);
+			gameDone[Spec.STOCKPILE_CURRENTGAMENAME.ToString()] = PathManager.FilesystemSafeName(Global.Game);
+			gameDone[Spec.CORE_LASTOPENROM.ToString()] = GlobalWin.MainForm.CurrentlyOpenRom;
+			RTCSpec.Update(gameDone);
 			
 			//Sleep for 10ms in case Bizhawk hung for a moment after the game loaded
 			System.Threading.Thread.Sleep(10);
 			//prepare memory domains in advance on bizhawk side
 			RTC_MemoryDomains.RefreshDomains(false);
 
-			if (RTC_StockpileManager.CurrentGameName != lastGameName)
+			if (RTC_Unispec.RTCSpec[Spec.STOCKPILE_CURRENTGAMENAME.ToString()] != lastGameName)
 			{
 				RTC_Core.SendCommandToRTC(new RTC_Command(CommandType.REMOTE_EVENT_LOADGAMEDONE_NEWGAME));
 			}
@@ -207,7 +215,7 @@ namespace RTC
 				RTC_Core.SendCommandToRTC(new RTC_Command(CommandType.REMOTE_EVENT_LOADGAMEDONE_SAMEGAME));
 			}
 
-			lastGameName = RTC_StockpileManager.CurrentGameName;
+			lastGameName = (string)RTC_Unispec.RTCSpec[Spec.STOCKPILE_CURRENTGAMENAME.ToString()];
 
 			//RTC_Restore.SaveRestore();
 
@@ -240,7 +248,7 @@ namespace RTC
 
 			RTC_MemoryDomains.Clear();
 
-			RTC_Core.lastOpenRom = null;
+			RTC_Unispec.RTCSpec.Update(Spec.CORE_LASTOPENROM.ToString(), null);
 
 			if (loadDefault)
 				RTC_Core.LoadDefaultRom();
@@ -297,12 +305,10 @@ namespace RTC
 					return false;
 
 				case "Manual Blast":
-					RTC_StepActions.SetRunBefore(true);
 					RTC_Core.SendCommandToRTC(new RTC_Command(CommandType.REMOTE_HOTKEY_MANUALBLAST));
 					break;
 
 				case "Auto-Corrupt":
-					RTC_StepActions.SetRunBefore(true);
 					RTC_Core.SendCommandToRTC(new RTC_Command(CommandType.REMOTE_HOTKEY_AUTOCORRUPTTOGGLE));
 					break;
 
@@ -329,7 +335,7 @@ namespace RTC
 
 				case "GH Just Corrupt":
 					watch = System.Diagnostics.Stopwatch.StartNew();
-					RTC_StepActions.SetRunBefore(true);
+					RTC_Unispec.RTCSpec.Update(Spec.STEP_RUNBEFORE.ToString(), true);
 					RTC_Core.SendCommandToRTC(new RTC_Command(CommandType.REMOTE_HOTKEY_GHCORRUPT));
 					break;
 
@@ -352,7 +358,7 @@ namespace RTC
 					break;
 
 				case "Blast+RawStash":
-					RTC_StepActions.SetRunBefore(true);
+					RTC_Unispec.RTCSpec.Update(Spec.STEP_RUNBEFORE.ToString(), true);
 					RTC_Core.SendCommandToRTC(new RTC_Command(CommandType.REMOTE_HOTKEY_BLASTRAWSTASH));
 					break;
 

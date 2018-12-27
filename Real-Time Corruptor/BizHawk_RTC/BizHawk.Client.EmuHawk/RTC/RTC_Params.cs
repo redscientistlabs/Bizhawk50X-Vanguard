@@ -101,22 +101,4 @@ namespace RTC
 		}
 	}
 
-	[Serializable]
-	internal class Ref //Serializable pointer object
-	{
-		private Func<object> getter;
-		private Action<object> setter;
-
-		public Ref(Func<object> getter, Action<object> setter)
-		{
-			this.getter = getter;
-			this.setter = setter;
-		}
-
-		public object Value
-		{
-			get => getter();
-			set => setter(value);
-		}
-	}
 }

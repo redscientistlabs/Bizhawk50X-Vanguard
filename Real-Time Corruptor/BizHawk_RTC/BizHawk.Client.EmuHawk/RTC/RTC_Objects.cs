@@ -631,7 +631,7 @@ namespace RTC
 			GameName = (string)RTC_Core.SendCommandToBizhawk(new RTC_Command(CommandType.REMOTE_KEY_GETGAMENAME), true);
 			SyncSettings = (string)RTC_Core.SendCommandToBizhawk(new RTC_Command(CommandType.REMOTE_KEY_GETSYNCSETTINGS), true);
 
-			this.SelectedDomains.AddRange(RTC_MemoryDomains.SelectedDomains);
+			this.SelectedDomains.AddRange((string[])RTC_Unispec.RTCSpec[Spec.MEMORYDOMAINS_SELECTEDDOMAINS.ToString()]);
 		}
 
 		public StashKey()
@@ -755,9 +755,9 @@ namespace RTC
 
 			/*
 			if (this != RTC_StockpileManager.lastBlastLayerBackup &&
-				RTC_Core.SelectedEngine != CorruptionEngine.HELLGENIE &&
-				RTC_Core.SelectedEngine != CorruptionEngine.FREEZE &&
-				RTC_Core.SelectedEngine != CorruptionEngine.PIPE)
+				RTC_Unispec.RTCSpec[Spec.CORE_SELECTEDENGINE.ToString()] != CorruptionEngine.HELLGENIE &&
+				RTC_Unispec.RTCSpec[Spec.CORE_SELECTEDENGINE.ToString()] != CorruptionEngine.FREEZE &&
+				RTC_Unispec.RTCSpec[Spec.CORE_SELECTEDENGINE.ToString()] != CorruptionEngine.PIPE)
 				RTC_StockpileManager.lastBlastLayerBackup = GetBackup();
             */
 
@@ -1337,13 +1337,13 @@ namespace RTC
 				switch (Precision)
 				{
 					case (1):
-						randomValue = RTC_Core.RND.RandomLong(RTC_NightmareEngine.MinValue8Bit, RTC_NightmareEngine.MaxValue8Bit);
+						randomValue = RTC_Core.RND.RandomLong((long)RTC_Unispec.RTCSpec[Spec.NIGHTMARE_MINVALUE8BIT.ToString()], (long)RTC_Unispec.RTCSpec[Spec.NIGHTMARE_MAXVALUE8BIT.ToString()]);
 						break;
 					case (2):
-						randomValue = RTC_Core.RND.RandomLong(RTC_NightmareEngine.MinValue16Bit, RTC_NightmareEngine.MaxValue16Bit);
+						randomValue = RTC_Core.RND.RandomLong((long)RTC_Unispec.RTCSpec[Spec.NIGHTMARE_MINVALUE16BIT.ToString()], (long)RTC_Unispec.RTCSpec[Spec.NIGHTMARE_MAXVALUE16BIT.ToString()]);
 						break;
 					case (4):
-						randomValue = RTC_Core.RND.RandomLong(RTC_NightmareEngine.MinValue32Bit, RTC_NightmareEngine.MaxValue32Bit);
+						randomValue = RTC_Core.RND.RandomLong((long)RTC_Unispec.RTCSpec[Spec.NIGHTMARE_MINVALUE32BIT.ToString()], (long)RTC_Unispec.RTCSpec[Spec.NIGHTMARE_MAXVALUE32BIT.ToString()]);
 						break;
 					//No limits if out of normal range
 					default:

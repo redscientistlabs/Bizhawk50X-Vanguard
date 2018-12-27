@@ -19,16 +19,7 @@ namespace StandaloneRTC
 
 			RTC.RTC_Core.isStandalone = true;
 			RTC.LogConsole.CreateConsole();
-
-			if (args.Contains("-CONSOLE"))
-			{
-				RTC.RTC_Hooks.ShowConsole = true;
-				RTC.LogConsole.ShowConsole();
-			}
-			else
-			{
-				RTC.LogConsole.HideConsole();
-			}
+			RTC.LogConsole.HideConsole();
 
 			RTC.RTC_Core.Start(this);
 			this.Hide();

@@ -35,24 +35,22 @@ namespace RTC
 
 		public static void UpdateSelectedDomains(string[] _domains, bool sync = false)
 		{
-			SelectedDomains = _domains;
-			LastSelectedDomains = _domains;
 
-			if (RTC_Core.isStandalone)
-				RTC_Core.SendCommandToBizhawk(new RTC_Command(CommandType.REMOTE_DOMAIN_SETSELECTEDDOMAINS) { objectValue = SelectedDomains }, sync);
+			PartialSpec update = new PartialSpec("RTCSpec");
+			update[Spec.MEMORYDOMAINS_SELECTEDDOMAINS.ToString()] = _domains;
+			update[Spec.MEMORYDOMAINS_LASTSELECTEDDOMAINS.ToString()] = _domains;
+			RTC_Unispec.RTCSpec.Update(update);
 
 			Console.WriteLine($"{RTC_Core.RemoteRTC?.expectedSide} -> Selected {_domains.Count().ToString()} domains \n{string.Join(" | ", _domains)}");
 		}
 
 		public static void ClearSelectedDomains()
 		{
-			LastSelectedDomains = SelectedDomains;
-
-			SelectedDomains = new string[] { };
-
-			if (RTC_Core.isStandalone)
-				RTC_Core.SendCommandToBizhawk(new RTC_Command(CommandType.REMOTE_DOMAIN_SETSELECTEDDOMAINS) { objectValue = SelectedDomains });
-
+			PartialSpec update = new PartialSpec("RTCSpec");
+			update[Spec.MEMORYDOMAINS_LASTSELECTEDDOMAINS.ToString()] = RTC_Unispec.RTCSpec[Spec.MEMORYDOMAINS_SELECTEDDOMAINS.ToString()];
+			update[Spec.MEMORYDOMAINS_SELECTEDDOMAINS.ToString()] = new string[] { };
+			RTC_Unispec.RTCSpec.Update(update);
+			
 			Console.WriteLine($"{RTC_Core.RemoteRTC?.expectedSide} -> Cleared selected domains");
 		}
 
@@ -396,8 +394,11 @@ namespace RTC
 		{
 			MemoryInterfaces.Clear();
 
-			LastSelectedDomains = SelectedDomains;
-			SelectedDomains = new string[] { };
+
+			PartialSpec update = new PartialSpec("RTCSpec");
+			update[Spec.MEMORYDOMAINS_LASTSELECTEDDOMAINS.ToString()] = RTC_Unispec.RTCSpec[Spec.MEMORYDOMAINS_SELECTEDDOMAINS.ToString()];
+			update[Spec.MEMORYDOMAINS_SELECTEDDOMAINS.ToString()] = new string[] { };
+			RTC_Unispec.RTCSpec.Update(update);
 
 			if (!S.ISNULL<RTC_EngineConfig_Form>())
 				S.GET<RTC_MemoryDomains_Form>().lbMemoryDomains.Items.Clear();

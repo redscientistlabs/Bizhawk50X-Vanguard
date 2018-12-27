@@ -9,6 +9,7 @@ using System.Security.Cryptography;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using static RTC.RTC_Unispec;
 
 namespace RTC
 {
@@ -59,70 +60,62 @@ namespace RTC
 
 		private void nmMaxInfinite_ValueChanged(object sender, EventArgs e)
 		{
-			//This is a netcore redundant method
-			RTC_StepActions.SetMaxLifetimeBlastUnits(Convert.ToInt32(nmMaxInfinite.Value));
+			RTC_Unispec.RTCSpec.Update(Spec.STEP_MAXINFINITEBLASTUNITS.ToString(), Convert.ToInt32(nmMaxInfinite.Value));
 		}
 
 		//I'm using if-else's rather than switch statements on purpose.
 		//The switch statements required more lines and were harder to read.
 		private void unitSource_CheckedChanged(object sender, EventArgs e)
 		{
+
 			if (rbUnitSourceStore.Checked)
-				RTC_CustomEngine.Source = BlastUnitSource.STORE;
+				RTCSpec.Update(Spec.CUSTOM_SOURCE.ToString(), BlastUnitSource.STORE);
 
 			else if (rbUnitSourceValue.Checked)
-				RTC_CustomEngine.Source = BlastUnitSource.VALUE;
-
-			RTC_Core.SendCommandToBizhawk(new RTC_Command(CommandType.REMOTE_SET_CUSTOM_UNIT_SOURCE) { objectValue = RTC_CustomEngine.Source });
+				RTCSpec.Update(Spec.CUSTOM_SOURCE.ToString(), BlastUnitSource.VALUE);
 		}
 
 		private void valueSource_CheckedChanged(object sender, EventArgs e)
 		{
+			RTCSpec.Update(Spec.CUSTOM_VALUESOURCE.ToString(), CustomValueSource.RANDOM);
 			if (rbRandom.Checked)
-				RTC_CustomEngine.ValueSource = CustomValueSource.RANDOM;
+				RTCSpec.Update(Spec.CUSTOM_VALUESOURCE.ToString(), CustomValueSource.RANDOM);
 
 			else if (rbValueList.Checked)
-				RTC_CustomEngine.ValueSource = CustomValueSource.VALUELIST;
+				RTCSpec.Update(Spec.CUSTOM_VALUESOURCE.ToString(), CustomValueSource.VALUELIST);
 
 			else if (rbRange.Checked)
-				RTC_CustomEngine.ValueSource = CustomValueSource.RANGE;
-
-			RTC_Core.SendCommandToBizhawk(new RTC_Command(CommandType.REMOTE_SET_CUSTOM_VALUE_SOURCE) { objectValue = RTC_CustomEngine.ValueSource});
+				RTCSpec.Update(Spec.CUSTOM_VALUESOURCE.ToString(), CustomValueSource.RANGE);
 		}
 
 
 		private void storeTime_CheckedChanged(object sender, EventArgs e)
 		{
 			if (rbStoreImmediate.Checked)
-				RTC_CustomEngine.StoreTime = ActionTime.IMMEDIATE;
+				RTCSpec.Update(Spec.CUSTOM_STORETIME.ToString(), ActionTime.IMMEDIATE);
 
 			else if (rbStoreFirstExecute.Checked)
-				RTC_CustomEngine.StoreTime = ActionTime.PREEXECUTE;
-
-			RTC_Core.SendCommandToBizhawk(new RTC_Command(CommandType.REMOTE_SET_CUSTOM_STORE_TIME) { objectValue = RTC_CustomEngine.StoreTime });
+				RTCSpec.Update(Spec.CUSTOM_STORETIME.ToString(), ActionTime.PREEXECUTE);
 		}
 		
 		private void storeAddress_CheckedChanged(object sender, EventArgs e)
 		{
 			if (rbStoreRandom.Checked)
-				RTC_CustomEngine.StoreAddress = CustomStoreAddress.RANDOM;
+				RTCSpec.Update(Spec.CUSTOM_STORETIME.ToString(), CustomStoreAddress.RANDOM);
 
 			else if (rbStoreSame.Checked)
-				RTC_CustomEngine.StoreAddress = CustomStoreAddress.SAME;
-
-			RTC_Core.SendCommandToBizhawk(new RTC_Command(CommandType.REMOTE_SET_CUSTOM_STORE_ADDRESS) { objectValue = RTC_CustomEngine.StoreAddress });
+				RTCSpec.Update(Spec.CUSTOM_STORETIME.ToString(), CustomStoreAddress.SAME);
 		}
 
 
 		private void storeType_CheckedChanged(object sender, EventArgs e)
 		{
 			if (rbStoreOnce.Checked)
-				RTC_CustomEngine.StoreType = StoreType.ONCE;
+				RTCSpec.Update(Spec.CUSTOM_STORETYPE.ToString(), StoreType.ONCE);
 
 			if (rbStoreStep.Checked)
-				RTC_CustomEngine.StoreType = StoreType.CONTINUOUS;
+				RTCSpec.Update(Spec.CUSTOM_STORETYPE.ToString(), StoreType.CONTINUOUS);
 
-			RTC_Core.SendCommandToBizhawk(new RTC_Command(CommandType.REMOTE_SET_CUSTOM_STORE_TYPE) { objectValue = RTC_CustomEngine.StoreType });
 		}
 
 
@@ -133,22 +126,20 @@ namespace RTC
 				return;
 			long value = Convert.ToInt64(nmMinValue.Value);
 
-			switch (RTC_Core.CurrentPrecision)
+			switch (RTCSpec[Spec.CORE_CURRENTPRECISION.ToString()])
 			{
 				case 1:
-					RTC_CustomEngine.MinValue8Bit = value;
+					RTCSpec.Update(Spec.CUSTOM_MINVALUE8BIT.ToString(), value);
 					break;
 				case 2:
-					RTC_CustomEngine.MinValue16Bit = value;
+					RTCSpec.Update(Spec.CUSTOM_MINVALUE16BIT.ToString(), value);
 					break;
 				case 4:
-					RTC_CustomEngine.MinValue32Bit = value;
+					RTCSpec.Update(Spec.CUSTOM_MINVALUE32BIT.ToString(), value);
 					break;
 			}
-
-			//We send the value and the precision and it determines which to update using the precision on the other side.
-			RTC_Core.SendCommandToBizhawk(new RTC_Command(CommandType.REMOTE_SET_CUSTOM_RANGE_MINVALUE) { objectValue = new object[] { RTC_Core.CurrentPrecision, value } });
 		}
+
 		private void nmMaxValue_ValueChanged(object sender, EventArgs e)
 		{
 			//We don't want to trigger this if it caps when stepping downwards
@@ -157,67 +148,57 @@ namespace RTC
 			long value = Convert.ToInt64(nmMaxValue.Value);
 
 
-			switch (RTC_Core.CurrentPrecision)
+			switch (RTCSpec[Spec.CORE_CURRENTPRECISION.ToString()])
 			{
 				case 1:
-					RTC_CustomEngine.MaxValue8Bit = value;
+					RTCSpec.Update(Spec.CUSTOM_MAXVALUE8BIT.ToString(), value);
 					break;
 				case 2:
-					RTC_CustomEngine.MaxValue16Bit = value;
+					RTCSpec.Update(Spec.CUSTOM_MAXVALUE16BIT.ToString(), value);
 					break;
 				case 4:
-					RTC_CustomEngine.MaxValue32Bit = value;
+					RTCSpec.Update(Spec.CUSTOM_MAXVALUE32BIT.ToString(), value);
 					break;
 			}
-
-			//We send the value and the precision and it determines which to update using the precision on the other side.
-			RTC_Core.SendCommandToBizhawk(new RTC_Command(CommandType.REMOTE_SET_CUSTOM_RANGE_MAXVALUE) { objectValue = new object[] { RTC_Core.CurrentPrecision, value } });
 		}
 
 
 		private void cbLockUnits_CheckedChanged(object sender, EventArgs e)
 		{
-			//Netcore redundant method
-			RTC_StepActions.SetLockExecution(cbLockUnits.Checked);
+			RTC_Unispec.RTCSpec.Update(Spec.STEP_LOCKEXECUTION.ToString(), cbLockUnits.Checked);
 		}
 
 		private void cbClearRewind_CheckedChanged(object sender, EventArgs e)
 		{
-			//Netcore redundant method
-			RTC_StepActions.ClearStepActionsOnRewind(cbClearRewind.Checked);
+			RTCSpec.Update(Spec.CORE_CLEARSTEPACTIONSONREWIND.ToString(), cbClearRewind.Checked);
 		}
 
 		private void cbLoopUnit_CheckedChanged(object sender, EventArgs e)
 		{
-			RTC_CustomEngine.Loop = cbLoopUnit.Checked;
-			RTC_Core.SendCommandToBizhawk(new RTC_Command(CommandType.REMOTE_SET_CUSTOM_LOOP) { objectValue = RTC_CustomEngine.Loop });
+			RTCSpec.Update(Spec.CUSTOM_LOOP.ToString(), cbLoopUnit.Checked);
 		}
 
 		private void cbValueList_SelectedIndexChanged(object sender, EventArgs e)
 		{
-			RTC_CustomEngine.ValueListHash = (string)cbValueList.SelectedValue;
-			RTC_Core.SendCommandToBizhawk(new RTC_Command(CommandType.REMOTE_SET_CUSTOM_VALUELIST) { objectValue = RTC_CustomEngine.ValueListHash });
+			RTCSpec.Update(Spec.CUSTOM_LOOP.ToString(), (string)cbValueList.SelectedValue);
 		}
 		private void cbLimiterList_SelectedIndexChanged(object sender, EventArgs e)
 		{
-			RTC_CustomEngine.LimiterListHash = (string)cbLimiterList.SelectedValue;
-			RTC_Core.SendCommandToBizhawk(new RTC_Command(CommandType.REMOTE_SET_CUSTOM_LIMITERLIST) { objectValue = RTC_CustomEngine.LimiterListHash });
+			RTCSpec.Update(Spec.CUSTOM_LOOP.ToString(), (string)cbLimiterList.SelectedValue);
 		}
 		private void limiterTime_CheckedChanged(object sender, EventArgs e)
 		{
 			if (rbLimiterNone.Checked)
-				RTC_CustomEngine.LimiterTime = ActionTime.NONE;
+				RTCSpec.Update(Spec.CUSTOM_LIMITERTIME.ToString(), ActionTime.NONE);
 
 			else if (rbLimiterGenerate.Checked)
-				RTC_CustomEngine.LimiterTime = ActionTime.GENERATE;
+				RTCSpec.Update(Spec.CUSTOM_LIMITERTIME.ToString(), ActionTime.GENERATE);
 
 			else if (rbLimiterFirstExecute.Checked)
-				RTC_CustomEngine.LimiterTime = ActionTime.PREEXECUTE;
+				RTCSpec.Update(Spec.CUSTOM_LIMITERTIME.ToString(), ActionTime.PREEXECUTE);
 
 			else if (rbLimiterExecute.Checked)
-				RTC_CustomEngine.LimiterTime = ActionTime.EXECUTE;
-
-			RTC_Core.SendCommandToBizhawk(new RTC_Command(CommandType.REMOTE_SET_CUSTOM_LIMITERTIME) { objectValue = RTC_CustomEngine.LimiterTime });
+				RTCSpec.Update(Spec.CUSTOM_LIMITERTIME.ToString(), ActionTime.EXECUTE);
 		}
 		
 		private void btnClearActive_Click(object sender, EventArgs e)
@@ -228,20 +209,17 @@ namespace RTC
 
 		private void nmLifetime_ValueChanged(object sender, EventArgs e)
 		{
-			RTC_CustomEngine.Lifetime = Convert.ToInt32(nmLifetime.Value);
-			RTC_Core.SendCommandToBizhawk(new RTC_Command(CommandType.REMOTE_SET_CUSTOM_LIFETIME) { objectValue = RTC_CustomEngine.Lifetime });
+			RTC_Unispec.RTCSpec.Update(Spec.CUSTOM_LIFETIME.ToString(), Convert.ToInt32(nmLifetime.Value));
 		}
 
 		private void nmDelay_ValueChanged(object sender, EventArgs e)
 		{
-			RTC_CustomEngine.Delay = Convert.ToInt32(nmDelay.Value);
-			RTC_Core.SendCommandToBizhawk(new RTC_Command(CommandType.REMOTE_SET_CUSTOM_DELAY) { objectValue = RTC_CustomEngine.Delay });
+			RTC_Unispec.RTCSpec.Update(Spec.CUSTOM_DELAY.ToString(), Convert.ToInt32(nmDelay.Value));
 		}
 
 		private void nmTilt_ValueChanged(object sender, EventArgs e)
 		{
-			RTC_CustomEngine.TiltValue = (BigInteger)nmTilt.Value;
-			RTC_Core.SendCommandToBizhawk(new RTC_Command(CommandType.REMOTE_SET_CUSTOM_TILT) { objectValue = RTC_CustomEngine.TiltValue });
+			RTC_Unispec.RTCSpec.Update(Spec.CUSTOM_LIFETIME.ToString(), (BigInteger)nmTilt.Value);
 		}
 
 		public void UpdateMinMaxBoxes(int precision)
@@ -253,23 +231,23 @@ namespace RTC
 					nmMinValue.Maximum = byte.MaxValue;
 					nmMaxValue.Maximum = byte.MaxValue;
 
-					nmMinValue.Value = RTC_CustomEngine.MinValue8Bit;
-					nmMaxValue.Value = RTC_CustomEngine.MaxValue8Bit;
+					nmMinValue.Value = (decimal)RTC_Unispec.RTCSpec[Spec.CUSTOM_MINVALUE8BIT.ToString()];
+					nmMaxValue.Value = (decimal)RTC_Unispec.RTCSpec[Spec.CUSTOM_MAXVALUE8BIT.ToString()];
 					break;
 
 				case 2:
 					nmMinValue.Maximum = UInt16.MaxValue;
 					nmMaxValue.Maximum = UInt16.MaxValue;
 									   
-					nmMinValue.Value = RTC_CustomEngine.MinValue16Bit;
-					nmMaxValue.Value = RTC_CustomEngine.MaxValue16Bit;
+					nmMinValue.Value = (decimal)RTC_Unispec.RTCSpec[Spec.CUSTOM_MINVALUE16BIT.ToString()];
+					nmMaxValue.Value = (decimal)RTC_Unispec.RTCSpec[Spec.CUSTOM_MAXVALUE16BIT.ToString()];
 					break;
 				case 4:
 					nmMinValue.Maximum = UInt32.MaxValue;
 					nmMaxValue.Maximum = UInt32.MaxValue;
 
-					nmMinValue.Value = RTC_CustomEngine.MinValue32Bit;
-					nmMaxValue.Value = RTC_CustomEngine.MaxValue32Bit;
+					nmMinValue.Value = (decimal)RTC_Unispec.RTCSpec[Spec.CUSTOM_MINVALUE32BIT.ToString()];
+					nmMaxValue.Value = (decimal)RTC_Unispec.RTCSpec[Spec.CUSTOM_MAXVALUE32BIT.ToString()];
 
 					break;
 			}
@@ -278,9 +256,7 @@ namespace RTC
 
 		private void cbLimiterInverted_CheckedChanged(object sender, EventArgs e)
 		{
-			RTC_CustomEngine.LimiterInverted = cbLimiterInverted.Checked;
-			RTC_Core.SendCommandToBizhawk(new RTC_Command(CommandType.REMOTE_SET_CUSTOM_LIMITERINVERTED) { objectValue = RTC_CustomEngine.LimiterInverted });
-
+			RTC_Unispec.RTCSpec.Update(Spec.CUSTOM_LIMITERINVERTED.ToString(), cbLimiterInverted.Checked);
 		}
 	}
 }

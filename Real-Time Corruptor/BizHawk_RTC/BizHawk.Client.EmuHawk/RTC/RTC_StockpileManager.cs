@@ -58,10 +58,10 @@ namespace RTC
 
 		public static StashKey GetCurrentSavestateStashkey()
 		{
-			if (CurrentSavestateKey == null || !SavestateStashkeyDico.ContainsKey(CurrentSavestateKey))
+			if (RTC_Unispec.RTCSpec[Spec.STOCKPILE_CURRENTSAVESTATEKEY.ToString()] == null || !SavestateStashkeyDico.ContainsKey(RTC_Unispec.RTCSpec[Spec.STOCKPILE_CURRENTSAVESTATEKEY.ToString()]?.ToString()))
 				return null;
 
-			return SavestateStashkeyDico[CurrentSavestateKey];
+			return SavestateStashkeyDico[RTC_Unispec.RTCSpec[Spec.STOCKPILE_CURRENTSAVESTATEKEY.ToString()].ToString()];
 		}
 
 		public static bool ApplyStashkey(StashKey sk, bool _loadBeforeOperation = true)
@@ -115,7 +115,7 @@ namespace RTC
 			}
 
 			var watch = System.Diagnostics.Stopwatch.StartNew();
-			BlastLayer bl = (BlastLayer)RTC_Core.SendCommandToBizhawk(new RTC_Command(CommandType.BLAST) { objectValue = RTC_MemoryDomains.SelectedDomains }, true);
+			BlastLayer bl = (BlastLayer)RTC_Core.SendCommandToBizhawk(new RTC_Command(CommandType.BLAST) { objectValue = RTC_Unispec.RTCSpec[Spec.MEMORYDOMAINS_SELECTEDDOMAINS.ToString()] }, true);
 			watch.Stop();
 			Console.WriteLine($"It took " + watch.ElapsedMilliseconds + " ms to blastlayer");
 
@@ -424,10 +424,10 @@ namespace RTC
 
 			if (sendToStashDico)
 			{
-				RTC_Core.SendCommandToRTC(new RTC_Command(CommandType.REMOTE_KEY_PUSHSAVESTATEDICO) { objectValue = new object[] { sk, CurrentSavestateKey } });
+				RTC_Core.SendCommandToRTC(new RTC_Command(CommandType.REMOTE_KEY_PUSHSAVESTATEDICO) { objectValue = new object[] { sk, RTC_Unispec.RTCSpec[Spec.STOCKPILE_CURRENTSAVESTATEKEY.ToString()] } });
 
 				if (RTC_Hooks.isRemoteRTC)
-					RTC_StockpileManager.SavestateStashkeyDico[CurrentSavestateKey] = sk;
+					RTC_StockpileManager.SavestateStashkeyDico[RTC_Unispec.RTCSpec[Spec.STOCKPILE_CURRENTSAVESTATEKEY.ToString()]?.ToString()] = sk;
 			}
 
 			return sk;

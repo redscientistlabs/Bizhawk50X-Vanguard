@@ -19,7 +19,13 @@ namespace RTC
 			{
 				md5s.Add(loadListFromPath(path, false));
 			}
-			RTC_Core.SendCommandToBizhawk(new RTC_Command(CommandType.REMOTE_UPDATE_FILTERING_DICTIONARIES) { objectValue = new object[] { RTC_Filtering.Hash2LimiterDico, RTC_Filtering.Hash2ValueDico } });
+
+			//We do this because we're adding to the lists not replacing them. It's a bit odd but it's needed
+			PartialSpec update = new PartialSpec("RTCSpec");
+			update[Spec.FILTERING_HASH2LIMITERDICO.ToString()] = RTC_Unispec.RTCSpec[Spec.FILTERING_HASH2LIMITERDICO.ToString()]; 
+			update[Spec.FILTERING_HASH2VALUEDICO.ToString()] = RTC_Unispec.RTCSpec[Spec.FILTERING_HASH2VALUEDICO.ToString()]; 
+			RTC_Unispec.RTCSpec.Update(update);
+
 			return md5s;
 		}
 
@@ -45,6 +51,10 @@ namespace RTC
 
 		public static string RegisterList(List<Byte[]> list, bool syncListsViaNetcore)
 		{
+
+			var limiterDico = (Dictionary<string, HashSet<Byte[]>>)RTC_Unispec.RTCSpec[Spec.FILTERING_HASH2LIMITERDICO.ToString()];
+			var valueDico = (Dictionary<string, List<Byte[]>>)RTC_Unispec.RTCSpec[Spec.FILTERING_HASH2VALUEDICO.ToString()];
+
 			//Make one giant string to hash
 			string concat = String.Empty;
 			foreach (byte[] line in list)
@@ -61,13 +71,19 @@ namespace RTC
 			hash.ComputeHash(concat.GetBytes());
 			string hashStr = Convert.ToBase64String(hash.Hash);
 
-			if (!Hash2ValueDico.ContainsKey(hashStr))
-				Hash2ValueDico[hashStr] = list;
-			if (!Hash2LimiterDico.ContainsKey(hashStr))
-				Hash2LimiterDico[hashStr] = new HashSet<byte[]>(list, new ByteArrayComparer());
+			if (!valueDico?.ContainsKey(hashStr) ?? false)
+				valueDico[hashStr] = list;
+			if (!limiterDico?.ContainsKey(hashStr) ?? false)
+				limiterDico[hashStr] = new HashSet<byte[]>(list, new ByteArrayComparer());
 
 			if (syncListsViaNetcore)
-				RTC_Core.SendCommandToBizhawk(new RTC_Command(CommandType.REMOTE_UPDATE_FILTERING_DICTIONARIES) { objectValue = new object[] { RTC_Filtering.Hash2LimiterDico, RTC_Filtering.Hash2ValueDico } });
+			{
+				PartialSpec update = new PartialSpec("RTCSpec");
+				update[Spec.FILTERING_HASH2LIMITERDICO.ToString()] = limiterDico;
+				update[Spec.FILTERING_HASH2VALUEDICO.ToString()] = valueDico;
+				RTC_Unispec.RTCSpec.Update(update);
+			}
+				RTC_Core.SendCommandToBizhawk(new RTC_Command(CommandType.REMOTE_UPDATE_FILTERING_DICTIONARIES) { objectValue = new object[] { RTC_Unispec.RTCSpec[Spec.FILTERING_HASH2LIMITERDICO.ToString()], RTC_Unispec.RTCSpec[Spec.FILTERING_HASH2VALUEDICO.ToString()] } });
 
 			return hashStr;
 		}
@@ -95,25 +111,32 @@ namespace RTC
 		public static bool LimiterContainsValue(byte[] bytes, string hash)
 		{
 			HashSet<Byte[]> hs = null;
-			if (Hash2LimiterDico.TryGetValue(hash, out hs))
+			var limiterDico = (Dictionary<string, HashSet<Byte[]>>)RTC_Unispec.RTCSpec[Spec.FILTERING_HASH2LIMITERDICO.ToString()];
+			if (limiterDico == null)
+				return false;
+
+			if (limiterDico.TryGetValue(hash, out hs))
 			{
 				return hs.Contains(bytes);
 			}
 
 			return false;
-
 		}
 
 
 		public static byte[] GetRandomConstant(string hash, int precision)
 		{
-			if (!Hash2ValueDico.ContainsKey(hash))
+			var valueDico = (Dictionary<string, List<Byte[]>>)RTC_Unispec.RTCSpec[Spec.FILTERING_HASH2VALUEDICO.ToString()];
+			if (valueDico == null)
+				return null;
+
+			if (!valueDico.ContainsKey(hash))
 			{
 				return null;
 			}
 
-			int line = RTC_Core.RND.Next(Hash2ValueDico[hash].Count);
-			Byte[] t = Hash2ValueDico[hash][line];
+			int line = RTC_Core.RND.Next(valueDico[hash].Count);
+			Byte[] t = valueDico[hash][line];
 
 			//If the list is shorter than the current precision, left pad it
 			if (t.Length < precision)
@@ -147,12 +170,15 @@ namespace RTC
 				}
 			}
 
+			var limiterDico = (Dictionary<string, HashSet<Byte[]>>)RTC_Unispec.RTCSpec[Spec.FILTERING_HASH2LIMITERDICO.ToString()];
+			var valueDico = (Dictionary<string, List<Byte[]>>)RTC_Unispec.RTCSpec[Spec.FILTERING_HASH2VALUEDICO.ToString()];
+
 			foreach (var s in hashList)
 			{
-				if (s != null && Hash2LimiterDico.ContainsKey(s))
+				if (s != null && valueDico.ContainsKey(s))
 				{
 					List<String> strList = new List<string>();
-					foreach (var line in Hash2LimiterDico[s])
+					foreach (var line in limiterDico[s])
 					{
 						StringBuilder sb = new StringBuilder();
 						foreach (var b in line)
