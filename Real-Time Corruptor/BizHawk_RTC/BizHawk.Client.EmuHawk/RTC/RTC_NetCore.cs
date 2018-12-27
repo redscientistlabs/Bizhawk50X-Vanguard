@@ -249,7 +249,7 @@ namespace RTC
 						}
 						catch (Exception ex)
 						{
-							throw ex;
+							throw;
 						}
 
 						if (cmd != null)
@@ -299,7 +299,7 @@ namespace RTC
 						}
 						catch (Exception ex)
 						{
-							throw ex;
+							throw;
 						}
 
 						if (backCmd.Type == CommandType.BYE)
