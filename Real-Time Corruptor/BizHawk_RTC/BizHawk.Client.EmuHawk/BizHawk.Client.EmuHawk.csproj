@@ -104,7 +104,6 @@
     <Reference Include="System.IO.Compression.FileSystem" />
     <Reference Include="System.Net.Http" />
     <Reference Include="System.Numerics" />
-    <Reference Include="System.Runtime.Serialization" />
     <Reference Include="System.Xaml" />
     <Reference Include="System.Xml.Linq">
       <RequiredTargetFramework>3.5</RequiredTargetFramework>
@@ -981,7 +980,6 @@
     <Compile Include="RTC\RTC_RPC.cs" />
     <Compile Include="RTC\RTC_StepActions.cs" />
     <Compile Include="RTC\RTC_StockpileManager.cs" />
-    <Compile Include="RTC\RTC_Unispec.cs" />
     <Compile Include="Sound\Interfaces\IBufferedSoundProvider.cs" />
     <Compile Include="Sound\Interfaces\ISoundOutput.cs" />
     <Compile Include="Sound\Output\DirectSoundSoundOutput.cs" />

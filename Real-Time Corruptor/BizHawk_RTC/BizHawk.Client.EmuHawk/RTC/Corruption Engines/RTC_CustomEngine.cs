@@ -9,6 +9,36 @@ namespace RTC
 {
 	public static class RTC_CustomEngine
 	{
+		public static long MinValue8Bit = 0;
+		public static long MaxValue8Bit = 0xFF;
+
+		public static long MinValue16Bit = 0;
+		public static long MaxValue16Bit = 0xFFFF;
+
+		public static long MinValue32Bit = 0;
+		public static long MaxValue32Bit = 0xFFFFFFFF;
+
+		public static BlastUnitSource Source = BlastUnitSource.VALUE;
+
+		public static StoreType StoreType = StoreType.ONCE;
+		public static ActionTime StoreTime = ActionTime.IMMEDIATE;
+		public static CustomStoreAddress StoreAddress = CustomStoreAddress.RANDOM;
+
+		public static int Delay = 0;
+		public static int Lifetime = 1;
+
+		public static BigInteger TiltValue = 1;
+
+		public static ActionTime LimiterTime = ActionTime.NONE;
+		public static bool LimiterInverted = false;
+
+
+		public static bool Loop = false;
+		
+		public static CustomValueSource ValueSource = CustomValueSource.RANDOM;
+		
+		public static string LimiterListHash = null;
+		public static string ValueListHash = null;
 
 		public static BlastUnit GenerateUnit(string domain, long address, int precision)
 		{

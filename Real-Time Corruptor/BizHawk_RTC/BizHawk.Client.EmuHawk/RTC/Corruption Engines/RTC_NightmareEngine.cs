@@ -7,6 +7,15 @@ namespace RTC
 	{
 
 		public static NightmareAlgo Algo = NightmareAlgo.RANDOM;
+		public static long MinValue8Bit = 0;
+		public static long MaxValue8Bit = 0xFF;
+
+		public static long MinValue16Bit = 0;
+		public static long MaxValue16Bit = 0xFFFF;
+
+		public static long MinValue32Bit = 0;
+		public static long MaxValue32Bit = 0xFFFFFFFF;
+
 		private static NightmareType type = NightmareType.SET;
 
 		public static BlastUnit GenerateUnit(string domain, long address, int precision)

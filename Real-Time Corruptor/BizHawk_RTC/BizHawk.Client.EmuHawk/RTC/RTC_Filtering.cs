@@ -11,6 +11,11 @@ namespace RTC
 	public static class RTC_Filtering
 	{
 
+		public static Dictionary<string, HashSet<Byte[]>> Hash2LimiterDico = new Dictionary<string, HashSet<Byte[]>> ();
+		public static Dictionary<string, List<Byte[]>> Hash2ValueDico = new Dictionary<string, List<Byte[]>>();
+
+
+
 		public static List<string> LoadListsFromPaths(string[] paths)
 		{
 			List<string> md5s = new List<string>();

@@ -21,7 +21,7 @@ namespace RTC
 		static bool disableRTC;
 		public static bool isRemoteRTC = false;
 		public static bool isNormalAdvance = false;
-
+		public static bool ShowConsole = false;
 		private static Guid? loadGameToken = null;
 		private static Guid? loadSavestateToken = null;
 
