@@ -631,7 +631,7 @@ namespace RTC
 			GameName = (string)RTC_Core.SendCommandToBizhawk(new RTC_Command(CommandType.REMOTE_KEY_GETGAMENAME), true);
 			SyncSettings = (string)RTC_Core.SendCommandToBizhawk(new RTC_Command(CommandType.REMOTE_KEY_GETSYNCSETTINGS), true);
 
-			this.SelectedDomains.AddRange((string[])RTC_Unispec.RTCSpec[Spec.MEMORYDOMAINS_SELECTEDDOMAINS.ToString()]);
+			this.SelectedDomains.AddRange((string[])RTC_Unispec.RTCSpec[RTCSPEC.MEMORYDOMAINS_SELECTEDDOMAINS.ToString()]);
 		}
 
 		public StashKey()
@@ -1337,13 +1337,13 @@ namespace RTC
 				switch (Precision)
 				{
 					case (1):
-						randomValue = RTC_Core.RND.RandomLong((long)RTC_Unispec.RTCSpec[Spec.NIGHTMARE_MINVALUE8BIT.ToString()], (long)RTC_Unispec.RTCSpec[Spec.NIGHTMARE_MAXVALUE8BIT.ToString()]);
+						randomValue = RTC_Core.RND.RandomLong((long)RTC_Unispec.RTCSpec[RTCSPEC.NIGHTMARE_MINVALUE8BIT.ToString()], (long)RTC_Unispec.RTCSpec[RTCSPEC.NIGHTMARE_MAXVALUE8BIT.ToString()]);
 						break;
 					case (2):
-						randomValue = RTC_Core.RND.RandomLong((long)RTC_Unispec.RTCSpec[Spec.NIGHTMARE_MINVALUE16BIT.ToString()], (long)RTC_Unispec.RTCSpec[Spec.NIGHTMARE_MAXVALUE16BIT.ToString()]);
+						randomValue = RTC_Core.RND.RandomLong((long)RTC_Unispec.RTCSpec[RTCSPEC.NIGHTMARE_MINVALUE16BIT.ToString()], (long)RTC_Unispec.RTCSpec[RTCSPEC.NIGHTMARE_MAXVALUE16BIT.ToString()]);
 						break;
 					case (4):
-						randomValue = RTC_Core.RND.RandomLong((long)RTC_Unispec.RTCSpec[Spec.NIGHTMARE_MINVALUE32BIT.ToString()], (long)RTC_Unispec.RTCSpec[Spec.NIGHTMARE_MAXVALUE32BIT.ToString()]);
+						randomValue = RTC_Core.RND.RandomLong((long)RTC_Unispec.RTCSpec[RTCSPEC.NIGHTMARE_MINVALUE32BIT.ToString()], (long)RTC_Unispec.RTCSpec[RTCSPEC.NIGHTMARE_MAXVALUE32BIT.ToString()]);
 						break;
 					//No limits if out of normal range
 					default:

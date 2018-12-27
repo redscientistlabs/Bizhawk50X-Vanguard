@@ -243,7 +243,7 @@ namespace RTC
 								cmd = (RTC_Command)binaryFormatter.Deserialize(ms);
 
 								sw.Stop();
-								if(cmd.Type != CommandType.BOOP && sw.ElapsedMilliseconds > 50)
+								if(cmd.Type != CommandType.BOOP && sw.ElapsedMilliseconds > 10)
 									Console.WriteLine("It took " + sw.ElapsedMilliseconds + " ms to deserialize cmd " + cmd.Type + " of " + ms.ToArray().Length + " bytes");
 							}
 						}
@@ -291,7 +291,7 @@ namespace RTC
 								//ms.CopyTo(networkStream);
 								networkStream.Write(buf, 0, buf.Length);
 								sw.Stop();
-								if (backCmd.Type != CommandType.BOOP && sw.ElapsedMilliseconds > 50)
+								if (backCmd.Type != CommandType.BOOP && sw.ElapsedMilliseconds > 10)
 									Console.WriteLine("It took " + sw.ElapsedMilliseconds + " ms to serialize backCmd " + backCmd.Type + " of " + buf.Length + " bytes");
 							}
 
@@ -916,7 +916,11 @@ namespace RTC
 		STASHKEY,
 		BLASTGENERATOR_BLAST,
 
-		REMOTE_PUSHSPEC,
+		REMOTE_PUSHRTCSPEC,
+		REMOTE_PUSHEMUSPEC,
+
+		REMOTE_PUSHRTCSPECUPDATE,
+		REMOTE_PUSHEMUSPECUPDATE,
 
 		REMOTE_KEY_PUSHSAVESTATEDICO,
 		REMOTE_KEY_GETSYSTEMNAME,

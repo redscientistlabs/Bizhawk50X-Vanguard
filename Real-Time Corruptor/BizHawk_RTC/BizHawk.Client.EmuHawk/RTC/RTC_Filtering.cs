@@ -22,8 +22,8 @@ namespace RTC
 
 			//We do this because we're adding to the lists not replacing them. It's a bit odd but it's needed
 			PartialSpec update = new PartialSpec("RTCSpec");
-			update[Spec.FILTERING_HASH2LIMITERDICO.ToString()] = RTC_Unispec.RTCSpec[Spec.FILTERING_HASH2LIMITERDICO.ToString()]; 
-			update[Spec.FILTERING_HASH2VALUEDICO.ToString()] = RTC_Unispec.RTCSpec[Spec.FILTERING_HASH2VALUEDICO.ToString()]; 
+			update[RTCSPEC.FILTERING_HASH2LIMITERDICO.ToString()] = RTC_Unispec.RTCSpec[RTCSPEC.FILTERING_HASH2LIMITERDICO.ToString()]; 
+			update[RTCSPEC.FILTERING_HASH2VALUEDICO.ToString()] = RTC_Unispec.RTCSpec[RTCSPEC.FILTERING_HASH2VALUEDICO.ToString()]; 
 			RTC_Unispec.RTCSpec.Update(update);
 
 			return md5s;
@@ -52,8 +52,8 @@ namespace RTC
 		public static string RegisterList(List<Byte[]> list, bool syncListsViaNetcore)
 		{
 
-			var limiterDico = (Dictionary<string, HashSet<Byte[]>>)RTC_Unispec.RTCSpec[Spec.FILTERING_HASH2LIMITERDICO.ToString()];
-			var valueDico = (Dictionary<string, List<Byte[]>>)RTC_Unispec.RTCSpec[Spec.FILTERING_HASH2VALUEDICO.ToString()];
+			var limiterDico = (Dictionary<string, HashSet<Byte[]>>)RTC_Unispec.RTCSpec[RTCSPEC.FILTERING_HASH2LIMITERDICO.ToString()];
+			var valueDico = (Dictionary<string, List<Byte[]>>)RTC_Unispec.RTCSpec[RTCSPEC.FILTERING_HASH2VALUEDICO.ToString()];
 
 			//Make one giant string to hash
 			string concat = String.Empty;
@@ -79,11 +79,11 @@ namespace RTC
 			if (syncListsViaNetcore)
 			{
 				PartialSpec update = new PartialSpec("RTCSpec");
-				update[Spec.FILTERING_HASH2LIMITERDICO.ToString()] = limiterDico;
-				update[Spec.FILTERING_HASH2VALUEDICO.ToString()] = valueDico;
+				update[RTCSPEC.FILTERING_HASH2LIMITERDICO.ToString()] = limiterDico;
+				update[RTCSPEC.FILTERING_HASH2VALUEDICO.ToString()] = valueDico;
 				RTC_Unispec.RTCSpec.Update(update);
 			}
-				RTC_Core.SendCommandToBizhawk(new RTC_Command(CommandType.REMOTE_UPDATE_FILTERING_DICTIONARIES) { objectValue = new object[] { RTC_Unispec.RTCSpec[Spec.FILTERING_HASH2LIMITERDICO.ToString()], RTC_Unispec.RTCSpec[Spec.FILTERING_HASH2VALUEDICO.ToString()] } });
+				RTC_Core.SendCommandToBizhawk(new RTC_Command(CommandType.REMOTE_UPDATE_FILTERING_DICTIONARIES) { objectValue = new object[] { RTC_Unispec.RTCSpec[RTCSPEC.FILTERING_HASH2LIMITERDICO.ToString()], RTC_Unispec.RTCSpec[RTCSPEC.FILTERING_HASH2VALUEDICO.ToString()] } });
 
 			return hashStr;
 		}
@@ -111,7 +111,7 @@ namespace RTC
 		public static bool LimiterContainsValue(byte[] bytes, string hash)
 		{
 			HashSet<Byte[]> hs = null;
-			var limiterDico = (Dictionary<string, HashSet<Byte[]>>)RTC_Unispec.RTCSpec[Spec.FILTERING_HASH2LIMITERDICO.ToString()];
+			var limiterDico = (Dictionary<string, HashSet<Byte[]>>)RTC_Unispec.RTCSpec[RTCSPEC.FILTERING_HASH2LIMITERDICO.ToString()];
 			if (limiterDico == null)
 				return false;
 
@@ -126,7 +126,7 @@ namespace RTC
 
 		public static byte[] GetRandomConstant(string hash, int precision)
 		{
-			var valueDico = (Dictionary<string, List<Byte[]>>)RTC_Unispec.RTCSpec[Spec.FILTERING_HASH2VALUEDICO.ToString()];
+			var valueDico = (Dictionary<string, List<Byte[]>>)RTC_Unispec.RTCSpec[RTCSPEC.FILTERING_HASH2VALUEDICO.ToString()];
 			if (valueDico == null)
 				return null;
 
@@ -170,8 +170,8 @@ namespace RTC
 				}
 			}
 
-			var limiterDico = (Dictionary<string, HashSet<Byte[]>>)RTC_Unispec.RTCSpec[Spec.FILTERING_HASH2LIMITERDICO.ToString()];
-			var valueDico = (Dictionary<string, List<Byte[]>>)RTC_Unispec.RTCSpec[Spec.FILTERING_HASH2VALUEDICO.ToString()];
+			var limiterDico = (Dictionary<string, HashSet<Byte[]>>)RTC_Unispec.RTCSpec[RTCSPEC.FILTERING_HASH2LIMITERDICO.ToString()];
+			var valueDico = (Dictionary<string, List<Byte[]>>)RTC_Unispec.RTCSpec[RTCSPEC.FILTERING_HASH2VALUEDICO.ToString()];
 
 			foreach (var s in hashList)
 			{

@@ -58,10 +58,10 @@ namespace RTC
 
 		public static StashKey GetCurrentSavestateStashkey()
 		{
-			if (RTC_Unispec.RTCSpec[Spec.STOCKPILE_CURRENTSAVESTATEKEY.ToString()] == null || !SavestateStashkeyDico.ContainsKey(RTC_Unispec.RTCSpec[Spec.STOCKPILE_CURRENTSAVESTATEKEY.ToString()]?.ToString()))
+			if (RTC_Unispec.RTCSpec[RTCSPEC.STOCKPILE_CURRENTSAVESTATEKEY.ToString()] == null || !SavestateStashkeyDico.ContainsKey(RTC_Unispec.RTCSpec[RTCSPEC.STOCKPILE_CURRENTSAVESTATEKEY.ToString()]?.ToString()))
 				return null;
 
-			return SavestateStashkeyDico[RTC_Unispec.RTCSpec[Spec.STOCKPILE_CURRENTSAVESTATEKEY.ToString()].ToString()];
+			return SavestateStashkeyDico[RTC_Unispec.RTCSpec[RTCSPEC.STOCKPILE_CURRENTSAVESTATEKEY.ToString()].ToString()];
 		}
 
 		public static bool ApplyStashkey(StashKey sk, bool _loadBeforeOperation = true)
@@ -115,7 +115,7 @@ namespace RTC
 			}
 
 			var watch = System.Diagnostics.Stopwatch.StartNew();
-			BlastLayer bl = (BlastLayer)RTC_Core.SendCommandToBizhawk(new RTC_Command(CommandType.BLAST) { objectValue = RTC_Unispec.RTCSpec[Spec.MEMORYDOMAINS_SELECTEDDOMAINS.ToString()] }, true);
+			BlastLayer bl = (BlastLayer)RTC_Core.SendCommandToBizhawk(new RTC_Command(CommandType.BLAST) { objectValue = RTC_Unispec.RTCSpec[RTCSPEC.MEMORYDOMAINS_SELECTEDDOMAINS.ToString()] }, true);
 			watch.Stop();
 			Console.WriteLine($"It took " + watch.ElapsedMilliseconds + " ms to blastlayer");
 
@@ -424,11 +424,11 @@ namespace RTC
 
 			if (sendToStashDico)
 			{
-				RTC_Core.SendCommandToRTC(new RTC_Command(CommandType.REMOTE_KEY_PUSHSAVESTATEDICO) { objectValue = new object[] { sk, RTC_Unispec.RTCSpec[Spec.STOCKPILE_CURRENTSAVESTATEKEY.ToString()] } });
+				RTC_Core.SendCommandToRTC(new RTC_Command(CommandType.REMOTE_KEY_PUSHSAVESTATEDICO) { objectValue = new object[] { sk, RTC_Unispec.RTCSpec[RTCSPEC.STOCKPILE_CURRENTSAVESTATEKEY.ToString()] } });
 
 				if (RTC_Hooks.isRemoteRTC)
 				{
-					var currentkey = RTC_Unispec.RTCSpec[Spec.STOCKPILE_CURRENTSAVESTATEKEY.ToString()]?.ToString();
+					var currentkey = RTC_Unispec.RTCSpec[RTCSPEC.STOCKPILE_CURRENTSAVESTATEKEY.ToString()]?.ToString();
 					if(currentkey != null)
 						RTC_StockpileManager.SavestateStashkeyDico[currentkey] = sk;
 				}

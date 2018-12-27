@@ -37,8 +37,8 @@ namespace RTC
 		{
 
 			PartialSpec update = new PartialSpec("RTCSpec");
-			update[Spec.MEMORYDOMAINS_SELECTEDDOMAINS.ToString()] = _domains;
-			update[Spec.MEMORYDOMAINS_LASTSELECTEDDOMAINS.ToString()] = _domains;
+			update[RTCSPEC.MEMORYDOMAINS_SELECTEDDOMAINS.ToString()] = _domains;
+			update[RTCSPEC.MEMORYDOMAINS_LASTSELECTEDDOMAINS.ToString()] = _domains;
 			RTC_Unispec.RTCSpec.Update(update);
 
 			Console.WriteLine($"{RTC_Core.RemoteRTC?.expectedSide} -> Selected {_domains.Count().ToString()} domains \n{string.Join(" | ", _domains)}");
@@ -47,8 +47,8 @@ namespace RTC
 		public static void ClearSelectedDomains()
 		{
 			PartialSpec update = new PartialSpec("RTCSpec");
-			update[Spec.MEMORYDOMAINS_LASTSELECTEDDOMAINS.ToString()] = RTC_Unispec.RTCSpec[Spec.MEMORYDOMAINS_SELECTEDDOMAINS.ToString()];
-			update[Spec.MEMORYDOMAINS_SELECTEDDOMAINS.ToString()] = new string[] { };
+			update[RTCSPEC.MEMORYDOMAINS_LASTSELECTEDDOMAINS.ToString()] = RTC_Unispec.RTCSpec[RTCSPEC.MEMORYDOMAINS_SELECTEDDOMAINS.ToString()];
+			update[RTCSPEC.MEMORYDOMAINS_SELECTEDDOMAINS.ToString()] = new string[] { };
 			RTC_Unispec.RTCSpec.Update(update);
 			
 			Console.WriteLine($"{RTC_Core.RemoteRTC?.expectedSide} -> Cleared selected domains");
@@ -396,8 +396,8 @@ namespace RTC
 
 
 			PartialSpec update = new PartialSpec("RTCSpec");
-			update[Spec.MEMORYDOMAINS_LASTSELECTEDDOMAINS.ToString()] = RTC_Unispec.RTCSpec[Spec.MEMORYDOMAINS_SELECTEDDOMAINS.ToString()];
-			update[Spec.MEMORYDOMAINS_SELECTEDDOMAINS.ToString()] = new string[] { };
+			update[RTCSPEC.MEMORYDOMAINS_LASTSELECTEDDOMAINS.ToString()] = RTC_Unispec.RTCSpec[RTCSPEC.MEMORYDOMAINS_SELECTEDDOMAINS.ToString()];
+			update[RTCSPEC.MEMORYDOMAINS_SELECTEDDOMAINS.ToString()] = new string[] { };
 			RTC_Unispec.RTCSpec.Update(update);
 
 			if (!S.ISNULL<RTC_EngineConfig_Form>())

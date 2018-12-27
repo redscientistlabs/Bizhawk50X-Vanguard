@@ -197,7 +197,7 @@ namespace RTC
 				clickedButton.ForeColor = Color.OrangeRed;
 				clickedButton.BringToFront();
 
-				RTC_Unispec.RTCSpec.Update(Spec.STOCKPILE_CURRENTSAVESTATEKEY.ToString(), clickedButton.Text);
+				RTC_Unispec.RTCSpec.Update(RTCSPEC.STOCKPILE_CURRENTSAVESTATEKEY.ToString(), clickedButton.Text);
 				StashKey psk = RTC_StockpileManager.GetCurrentSavestateStashkey();
 
 				if (psk != null && !File.Exists(psk.RomFilename))
@@ -230,20 +230,20 @@ namespace RTC
 						else
 						{
 							clickedButton.ForeColor = Color.FromArgb(192, 255, 192);
-							RTC_Unispec.RTCSpec.Update(Spec.STOCKPILE_CURRENTSAVESTATEKEY.ToString(), null);
+							RTC_Unispec.RTCSpec.Update(RTCSPEC.STOCKPILE_CURRENTSAVESTATEKEY.ToString(), null);
 							return;
 						}
 					}
 					else
 					{
 						clickedButton.ForeColor = Color.FromArgb(192, 255, 192);
-						RTC_Unispec.RTCSpec.Update(Spec.STOCKPILE_CURRENTSAVESTATEKEY.ToString(), null);
+						RTC_Unispec.RTCSpec.Update(RTCSPEC.STOCKPILE_CURRENTSAVESTATEKEY.ToString(), null);
 						return;
 					}
 				}
 
 
-				RTC_Unispec.RTCSpec.Update(Spec.STOCKPILE_CURRENTSAVESTATEKEY.ToString(), RTC_Unispec.RTCSpec[Spec.STOCKPILE_CURRENTSAVESTATEKEY.ToString()]);
+				RTC_Unispec.RTCSpec.Update(RTCSPEC.STOCKPILE_CURRENTSAVESTATEKEY.ToString(), RTC_Unispec.RTCSpec[RTCSPEC.STOCKPILE_CURRENTSAVESTATEKEY.ToString()]);
 
 				if (cbSavestateLoadOnClick.Checked)
 				{
@@ -318,7 +318,7 @@ namespace RTC
 			}
 			else
 			{
-				if (RTC_Unispec.RTCSpec[Spec.STOCKPILE_CURRENTSAVESTATEKEY.ToString()] == null)
+				if (RTC_Unispec.RTCSpec[RTCSPEC.STOCKPILE_CURRENTSAVESTATEKEY.ToString()] == null)
 				{
 					MessageBox.Show("No Savestate Box is currently selected in the Glitch Harvester's Savestate Manager");
 					return;
@@ -1517,7 +1517,7 @@ namespace RTC
 
 					}
 
-					RTC_Unispec.RTCSpec.Update(Spec.STOCKPILE_CURRENTSAVESTATEKEY.ToString(), null);
+					RTC_Unispec.RTCSpec.Update(RTCSPEC.STOCKPILE_CURRENTSAVESTATEKEY.ToString(), null);
 
 					RefreshSavestateTextboxes();
 				}));

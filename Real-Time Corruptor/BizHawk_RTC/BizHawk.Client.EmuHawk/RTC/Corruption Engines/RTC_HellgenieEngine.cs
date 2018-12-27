@@ -22,13 +22,13 @@ namespace RTC
 				switch (precision)
 				{
 					case (1):
-						randomValue = RTC_Core.RND.RandomLong((long)RTC_Unispec.RTCSpec[Spec.HELLGENIE_MINVALUE8BIT.ToString()], (long)RTC_Unispec.RTCSpec[Spec.HELLGENIE_MAXVALUE8BIT.ToString()]);
+						randomValue = RTC_Core.RND.RandomLong((long)RTC_Unispec.RTCSpec[RTCSPEC.HELLGENIE_MINVALUE8BIT.ToString()], (long)RTC_Unispec.RTCSpec[RTCSPEC.HELLGENIE_MAXVALUE8BIT.ToString()]);
 						break;
 					case (2):
-						randomValue = RTC_Core.RND.RandomLong((long)RTC_Unispec.RTCSpec[Spec.HELLGENIE_MINVALUE16BIT.ToString()], (long)RTC_Unispec.RTCSpec[Spec.HELLGENIE_MAXVALUE16BIT.ToString()]);
+						randomValue = RTC_Core.RND.RandomLong((long)RTC_Unispec.RTCSpec[RTCSPEC.HELLGENIE_MINVALUE16BIT.ToString()], (long)RTC_Unispec.RTCSpec[RTCSPEC.HELLGENIE_MAXVALUE16BIT.ToString()]);
 						break;
 					case (4):
-						randomValue = RTC_Core.RND.RandomLong((long)RTC_Unispec.RTCSpec[Spec.HELLGENIE_MINVALUE32BIT.ToString()], (long)RTC_Unispec.RTCSpec[Spec.HELLGENIE_MAXVALUE32BIT.ToString()]);
+						randomValue = RTC_Core.RND.RandomLong((long)RTC_Unispec.RTCSpec[RTCSPEC.HELLGENIE_MINVALUE32BIT.ToString()], (long)RTC_Unispec.RTCSpec[RTCSPEC.HELLGENIE_MAXVALUE32BIT.ToString()]);
 						break;
 				}
 

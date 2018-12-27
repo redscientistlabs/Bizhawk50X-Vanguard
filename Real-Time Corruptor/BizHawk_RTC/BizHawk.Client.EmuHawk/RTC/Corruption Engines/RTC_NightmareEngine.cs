@@ -14,7 +14,7 @@ namespace RTC
 
 			try
 			{
-				switch ((NightmareAlgo)RTC_Unispec.RTCSpec[Spec.NIGHTMARE_TYPE.ToString()])
+				switch ((NightmareAlgo)RTC_Unispec.RTCSpec[RTCSPEC.NIGHTMARE_TYPE.ToString()])
 				{
 					case NightmareAlgo.RANDOM: //RANDOM always sets a random value
 						type = NightmareType.SET;
@@ -74,13 +74,13 @@ namespace RTC
 					switch (precision)
 					{
 						case (1):
-							randomValue = RTC_Core.RND.RandomLong((long)RTC_Unispec.RTCSpec[Spec.NIGHTMARE_MINVALUE8BIT.ToString()], (long)RTC_Unispec.RTCSpec[Spec.NIGHTMARE_MAXVALUE8BIT.ToString()]);
+							randomValue = RTC_Core.RND.RandomLong((long)RTC_Unispec.RTCSpec[RTCSPEC.NIGHTMARE_MINVALUE8BIT.ToString()], (long)RTC_Unispec.RTCSpec[RTCSPEC.NIGHTMARE_MAXVALUE8BIT.ToString()]);
 							break;
 						case (2):
-							randomValue = RTC_Core.RND.RandomLong((long)RTC_Unispec.RTCSpec[Spec.NIGHTMARE_MINVALUE16BIT.ToString()], (long)RTC_Unispec.RTCSpec[Spec.NIGHTMARE_MAXVALUE16BIT.ToString()]);
+							randomValue = RTC_Core.RND.RandomLong((long)RTC_Unispec.RTCSpec[RTCSPEC.NIGHTMARE_MINVALUE16BIT.ToString()], (long)RTC_Unispec.RTCSpec[RTCSPEC.NIGHTMARE_MAXVALUE16BIT.ToString()]);
 							break;
 						case (4):
-							randomValue = RTC_Core.RND.RandomLong((long)RTC_Unispec.RTCSpec[Spec.NIGHTMARE_MINVALUE32BIT.ToString()], (long)RTC_Unispec.RTCSpec[Spec.NIGHTMARE_MAXVALUE32BIT.ToString()]);
+							randomValue = RTC_Core.RND.RandomLong((long)RTC_Unispec.RTCSpec[RTCSPEC.NIGHTMARE_MINVALUE32BIT.ToString()], (long)RTC_Unispec.RTCSpec[RTCSPEC.NIGHTMARE_MAXVALUE32BIT.ToString()]);
 							break;
 					}
 

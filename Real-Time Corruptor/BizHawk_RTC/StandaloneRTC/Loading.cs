@@ -18,8 +18,8 @@ namespace StandaloneRTC
 			InitializeComponent();
 
 			RTC.RTC_Core.isStandalone = true;
-			RTC.LogConsole.CreateConsole();
-			RTC.LogConsole.HideConsole();
+			//RTC.LogConsole.CreateConsole();
+			//RTC.LogConsole.HideConsole();
 
 			RTC.RTC_Core.Start(this);
 			this.Hide();

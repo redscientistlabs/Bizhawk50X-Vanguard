@@ -33,7 +33,7 @@ namespace RTC
 		{
 			get
 			{
-				return (bool)RTCSpec[Spec.CORE_AUTOCORRUPT.ToString()];
+				return (bool)RTCSpec[RTCSPEC.CORE_AUTOCORRUPT.ToString()];
 			}
 			set
 			{
@@ -42,7 +42,7 @@ namespace RTC
 				else
 					btnAutoCorrupt.Text = "Start Auto-Corrupt";
 
-				RTCSpec.Update(Spec.CORE_AUTOCORRUPT.ToString(), value);
+				RTCSpec.Update(RTCSPEC.CORE_AUTOCORRUPT.ToString(), value);
 			}
 		}
 
@@ -65,7 +65,7 @@ namespace RTC
 				return;
 
 			this.AutoCorrupt = !this.AutoCorrupt;
-			RTC_Unispec.RTCSpec.Update(Spec.STEP_RUNBEFORE.ToString(), true);
+			RTC_Unispec.RTCSpec.Update(RTCSPEC.STEP_RUNBEFORE.ToString(), true);
 		}
 
 		private void RTC_Form_Load(object sender, EventArgs e)
@@ -227,7 +227,7 @@ namespace RTC
 			{
 				RTC_GameProtection.Stop();
 
-				RTCSpec.Update(Spec.STOCKPILE_BACKUPEDSTATE.ToString(), null);
+				RTCSpec.Update(RTCSPEC.STOCKPILE_BACKUPEDSTATE.ToString(), null);
 				RTC_StockpileManager.AllBackupStates.Clear();
 				btnGpJumpBack.Visible = false;
 				btnGpJumpNow.Visible = false;
@@ -316,7 +316,8 @@ namespace RTC
 				frm.Dock = DockStyle.Left;
 				frm.SendToBack();
 				frm.BringToFront();
-				previousForm = activeForm;
+				if(activeForm?.GetType() != typeof(RTC_ConnectionStatus_Form))
+					previousForm = activeForm;
 				activeForm = frm;
 				frm.Show();
 			}
@@ -383,8 +384,8 @@ namespace RTC
 			{
 				btnGpJumpNow.Visible = false;
 
-				if (RTC_Unispec.RTCSpec[Spec.STOCKPILE_BACKUPEDSTATE.ToString()] != null)
-					((StashKey)RTC_Unispec.RTCSpec[Spec.STOCKPILE_BACKUPEDSTATE.ToString()]).Run();
+				if (RTC_Unispec.RTCSpec[RTCSPEC.STOCKPILE_BACKUPEDSTATE.ToString()] != null)
+					((StashKey)RTC_Unispec.RTCSpec[RTCSPEC.STOCKPILE_BACKUPEDSTATE.ToString()]).Run();
 
 				RTC_GameProtection.Reset();
 			}
