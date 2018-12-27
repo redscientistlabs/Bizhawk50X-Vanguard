@@ -37,37 +37,11 @@ namespace RTC
 		public static string listsDir = rtcDir + "\\LISTS\\";
 
 		//Engine Values
-		public static CorruptionEngine SelectedEngine = CorruptionEngine.NIGHTMARE;
-
 		public static BindingList<Object> LimiterListBindingSource = new BindingList<Object>();
 		public static BindingList<Object> ValueListBindingSource = new BindingList<Object>();
 
-		private static int customPrecision;
-		public static int CustomPrecision
-		{
-			get { return customPrecision; }
-			set
-			{
-				customPrecision = value;
-				CurrentPrecision = value;
-			}
-	}
-		public static int CurrentPrecision = 1;
-		public static int Intensity = 1;
-		public static int ErrorDelay = 1;
-		public static BlastRadius Radius = BlastRadius.SPREAD;
-		public static bool AutoCorrupt = false;
 
-		public static bool ClearStepActionsOnRewind = false;
-		public static bool ExtractBlastLayer = false;
-		public static string lastOpenRom = null;
-		public static int lastLoaderRom = 0;
 
-		//RTC Settings
-		public static bool BizhawkOsdDisabled = true;
-		public static bool UseHexadecimal = true;
-		public static bool AllowCrossCoreCorruption = false;
-		public static bool DontCleanSavestatesOnQuit = false;
 
 		//Note Box Settings
 		public static System.Drawing.Point NoteBoxPosition;

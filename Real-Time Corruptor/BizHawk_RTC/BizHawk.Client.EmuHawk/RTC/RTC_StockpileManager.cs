@@ -13,11 +13,8 @@ namespace RTC
 
 		public static StashKey CurrentStashkey { get; set; }
 
-		public static StashKey BackupedState { get; set; }
 		public static Stack<StashKey> AllBackupStates { get; set; } = new Stack<StashKey>();
 		public static BlastLayer LastBlastLayerBackup { get; set; } = null;
-		public static string CurrentGameSystem { get; set; } = "";
-		public static string CurrentGameName { get; set; } = "";
 
 		public static bool UnsavedEdits = false;
 
@@ -44,7 +41,6 @@ namespace RTC
 		// key: some key or guid, value: [0] savestate key [1] rom file
 		public static volatile Dictionary<string, StashKey> SavestateStashkeyDico = new Dictionary<string, StashKey>();
 
-		public static volatile string CurrentSavestateKey = null;
 		public static bool RenderAtLoad = false;
 
 		private static void PreApplyStashkey()

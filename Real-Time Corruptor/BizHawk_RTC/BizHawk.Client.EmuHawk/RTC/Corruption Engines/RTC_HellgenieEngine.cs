@@ -6,15 +6,6 @@ namespace RTC
 	public static class RTC_HellgenieEngine
 	{
 
-		public static long MinValue8Bit = 0;
-		public static long MaxValue8Bit = 0xFF;
-
-		public static long MinValue16Bit = 0;
-		public static long MaxValue16Bit = 0xFFFF;
-
-		public static long MinValue32Bit = 0;
-		public static long MaxValue32Bit = 0xFFFFFFFF;
-
 		public static BlastUnit GenerateUnit(string domain, long address, int precision)
 		{
 			try

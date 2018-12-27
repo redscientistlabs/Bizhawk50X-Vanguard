@@ -31,8 +31,6 @@ namespace RTC
 			}
 		}
 
-		public static string[] SelectedDomains = new string[] { };
-		public static string[] LastSelectedDomains = new string[] { };
 
 
 		public static void UpdateSelectedDomains(string[] _domains, bool sync = false)

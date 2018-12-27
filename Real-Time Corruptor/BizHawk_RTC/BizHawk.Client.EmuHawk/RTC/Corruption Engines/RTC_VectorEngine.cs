@@ -7,8 +7,6 @@ namespace RTC
 {
 	public static class RTC_VectorEngine
 	{
-		public static string LimiterListHash = null;
-		public static string ValueListHash = null;
 
 		public static BlastUnit GenerateUnit(string domain, long address)
 		{

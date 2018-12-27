@@ -31,14 +31,7 @@ namespace RTC
 
 		private static bool isRunning = false;
 
-		/// <summary>
-		/// Don't set this manually
-		/// </summary>
-		public static int MaxInfiniteBlastUnits { get; set; } = 50;
-		/// <summary>
-		/// Don't set this manually
-		/// </summary>
-		public static bool LockExecution { get; set; }
+
 		/// <summary>
 		/// Don't set this manually
 		/// </summary>
