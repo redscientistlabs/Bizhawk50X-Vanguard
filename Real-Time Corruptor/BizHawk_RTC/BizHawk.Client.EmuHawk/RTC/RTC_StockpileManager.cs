@@ -427,7 +427,11 @@ namespace RTC
 				RTC_Core.SendCommandToRTC(new RTC_Command(CommandType.REMOTE_KEY_PUSHSAVESTATEDICO) { objectValue = new object[] { sk, RTC_Unispec.RTCSpec[Spec.STOCKPILE_CURRENTSAVESTATEKEY.ToString()] } });
 
 				if (RTC_Hooks.isRemoteRTC)
-					RTC_StockpileManager.SavestateStashkeyDico[RTC_Unispec.RTCSpec[Spec.STOCKPILE_CURRENTSAVESTATEKEY.ToString()]?.ToString()] = sk;
+				{
+					var currentkey = RTC_Unispec.RTCSpec[Spec.STOCKPILE_CURRENTSAVESTATEKEY.ToString()]?.ToString();
+					if(currentkey != null)
+						RTC_StockpileManager.SavestateStashkeyDico[currentkey] = sk;
+				}
 			}
 
 			return sk;

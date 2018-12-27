@@ -308,11 +308,11 @@ namespace RTC
 					nmMaxValueHellgenie.Maximum = byte.MaxValue;
 
 
-					nmMinValueNightmare.Value = (decimal)RTC_Unispec.RTCSpec[Spec.NIGHTMARE_MINVALUE8BIT.ToString()];
-					nmMaxValueNightmare.Value = (decimal)RTC_Unispec.RTCSpec[Spec.NIGHTMARE_MAXVALUE8BIT.ToString()];
+					nmMinValueNightmare.Value = (int)RTC_Unispec.RTCSpec[Spec.NIGHTMARE_MINVALUE8BIT.ToString()];
+					nmMaxValueNightmare.Value = (int)RTC_Unispec.RTCSpec[Spec.NIGHTMARE_MAXVALUE8BIT.ToString()];
 
-					nmMinValueHellgenie.Value = (decimal)RTC_Unispec.RTCSpec[Spec.HELLGENIE_MINVALUE8BIT.ToString()];
-					nmMaxValueHellgenie.Value = (decimal)RTC_Unispec.RTCSpec[Spec.HELLGENIE_MAXVALUE8BIT.ToString()];
+					nmMinValueHellgenie.Value = (int)RTC_Unispec.RTCSpec[Spec.HELLGENIE_MINVALUE8BIT.ToString()];
+					nmMaxValueHellgenie.Value = (int)RTC_Unispec.RTCSpec[Spec.HELLGENIE_MAXVALUE8BIT.ToString()];
 					break;
 
 				case 2:
@@ -322,11 +322,11 @@ namespace RTC
 					nmMinValueHellgenie.Maximum = UInt16.MaxValue;
 					nmMaxValueHellgenie.Maximum = UInt16.MaxValue;
 
-					nmMinValueNightmare.Value = (decimal)RTC_Unispec.RTCSpec[Spec.NIGHTMARE_MINVALUE16BIT.ToString()];
-					nmMaxValueNightmare.Value = (decimal)RTC_Unispec.RTCSpec[Spec.NIGHTMARE_MAXVALUE16BIT.ToString()];
+					nmMinValueNightmare.Value = (int)RTC_Unispec.RTCSpec[Spec.NIGHTMARE_MINVALUE16BIT.ToString()];
+					nmMaxValueNightmare.Value = (int)RTC_Unispec.RTCSpec[Spec.NIGHTMARE_MAXVALUE16BIT.ToString()];
 
-					nmMinValueHellgenie.Value = (decimal)RTC_Unispec.RTCSpec[Spec.HELLGENIE_MINVALUE16BIT.ToString()];
-					nmMaxValueHellgenie.Value = (decimal)RTC_Unispec.RTCSpec[Spec.HELLGENIE_MAXVALUE16BIT.ToString()];
+					nmMinValueHellgenie.Value = (int)RTC_Unispec.RTCSpec[Spec.HELLGENIE_MINVALUE16BIT.ToString()];
+					nmMaxValueHellgenie.Value = (int)RTC_Unispec.RTCSpec[Spec.HELLGENIE_MAXVALUE16BIT.ToString()];
 					break;
 				case 4:
 					nmMinValueNightmare.Maximum = UInt32.MaxValue;
@@ -335,11 +335,11 @@ namespace RTC
 					nmMinValueHellgenie.Maximum = UInt32.MaxValue;
 					nmMaxValueHellgenie.Maximum = UInt32.MaxValue;
 
-					nmMinValueNightmare.Value = (decimal)RTC_Unispec.RTCSpec[Spec.NIGHTMARE_MINVALUE32BIT.ToString()];
-					nmMaxValueNightmare.Value = (decimal)RTC_Unispec.RTCSpec[Spec.NIGHTMARE_MAXVALUE32BIT.ToString()];
+					nmMinValueNightmare.Value = (int)RTC_Unispec.RTCSpec[Spec.NIGHTMARE_MINVALUE32BIT.ToString()];
+					nmMaxValueNightmare.Value = (int)RTC_Unispec.RTCSpec[Spec.NIGHTMARE_MAXVALUE32BIT.ToString()];
 												 
-					nmMinValueHellgenie.Value = (decimal)RTC_Unispec.RTCSpec[Spec.HELLGENIE_MINVALUE32BIT.ToString()];
-					nmMaxValueHellgenie.Value = (decimal)RTC_Unispec.RTCSpec[Spec.HELLGENIE_MAXVALUE32BIT.ToString()];
+					nmMinValueHellgenie.Value = (int)RTC_Unispec.RTCSpec[Spec.HELLGENIE_MINVALUE32BIT.ToString()];
+					nmMaxValueHellgenie.Value = (int)RTC_Unispec.RTCSpec[Spec.HELLGENIE_MAXVALUE32BIT.ToString()];
 
 					break;
 			}
