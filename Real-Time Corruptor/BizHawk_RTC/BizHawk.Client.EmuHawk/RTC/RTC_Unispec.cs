@@ -162,7 +162,7 @@ namespace RTC
 		{
 			//Creating a FullSpec requires a template
 			template = partialSpec;
-			name = partialSpec.Name;
+			name = partialSpec.name;
 			Update(template);
 		}
 
@@ -194,7 +194,7 @@ namespace RTC
 
 		public void Update(PartialSpec _partialSpec, bool propagate = true)
 		{
-			if (name != _partialSpec.Name)
+			if (name != _partialSpec.name)
 				throw new Exception("Name mismatch between PartialSpec and FullSpec");
 
 			/*
@@ -224,15 +224,12 @@ namespace RTC
 	[Serializable]
 	public class PartialSpec : BaseSpec
 	{
-		public string Name;
+		public string name;
 		public PartialSpec(string _name)
 		{
-			Name = _name;
+			name = _name;
 		}
 
-		public PartialSpec()
-		{
-		}
 		protected PartialSpec(SerializationInfo info, StreamingContext context)
 		{
 			name = info.GetString("Name");
