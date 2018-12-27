@@ -231,23 +231,23 @@ namespace RTC
 					nmMinValue.Maximum = byte.MaxValue;
 					nmMaxValue.Maximum = byte.MaxValue;
 
-					nmMinValue.Value = (int)RTC_Unispec.RTCSpec[Spec.CUSTOM_MINVALUE8BIT.ToString()];
-					nmMaxValue.Value = (int)RTC_Unispec.RTCSpec[Spec.CUSTOM_MAXVALUE8BIT.ToString()];
+					nmMinValue.Value = (decimal)RTC_Unispec.RTCSpec[Spec.CUSTOM_MINVALUE8BIT.ToString()];
+					nmMaxValue.Value = (decimal)RTC_Unispec.RTCSpec[Spec.CUSTOM_MAXVALUE8BIT.ToString()];
 					break;
 
 				case 2:
 					nmMinValue.Maximum = UInt16.MaxValue;
 					nmMaxValue.Maximum = UInt16.MaxValue;
 									   
-					nmMinValue.Value = (int)RTC_Unispec.RTCSpec[Spec.CUSTOM_MINVALUE16BIT.ToString()];
-					nmMaxValue.Value = (int)RTC_Unispec.RTCSpec[Spec.CUSTOM_MAXVALUE16BIT.ToString()];
+					nmMinValue.Value = (decimal)RTC_Unispec.RTCSpec[Spec.CUSTOM_MINVALUE16BIT.ToString()];
+					nmMaxValue.Value = (decimal)RTC_Unispec.RTCSpec[Spec.CUSTOM_MAXVALUE16BIT.ToString()];
 					break;
 				case 4:
 					nmMinValue.Maximum = UInt32.MaxValue;
 					nmMaxValue.Maximum = UInt32.MaxValue;
 
-					nmMinValue.Value = (int)RTC_Unispec.RTCSpec[Spec.CUSTOM_MINVALUE32BIT.ToString()];
-					nmMaxValue.Value = (int)RTC_Unispec.RTCSpec[Spec.CUSTOM_MAXVALUE32BIT.ToString()];
+					nmMinValue.Value = (decimal)RTC_Unispec.RTCSpec[Spec.CUSTOM_MINVALUE32BIT.ToString()];
+					nmMaxValue.Value = (decimal)RTC_Unispec.RTCSpec[Spec.CUSTOM_MAXVALUE32BIT.ToString()];
 
 					break;
 			}

@@ -85,10 +85,10 @@ namespace RTC
 			specTemplate[Spec.CUSTOM_VALUELISTHASH.ToString()] = null;
 
 			specTemplate[Spec.CUSTOM_MINVALUE8BIT.ToString()] = 0;
-			specTemplate[Spec.CUSTOM_MINVALUE16BIT.ToString()]= 0;
+			specTemplate[Spec.CUSTOM_MINVALUE16BIT.ToString()]= 0xFF;
 			specTemplate[Spec.CUSTOM_MINVALUE32BIT.ToString()] = 0;
-			specTemplate[Spec.CUSTOM_MAXVALUE8BIT.ToString()] = 0xFF;
-			specTemplate[Spec.CUSTOM_MAXVALUE16BIT.ToString()] = 0xFFFF;
+			specTemplate[Spec.CUSTOM_MAXVALUE8BIT.ToString()] = 0xFFFF;
+			specTemplate[Spec.CUSTOM_MAXVALUE16BIT.ToString()] = 0;
 			specTemplate[Spec.CUSTOM_MAXVALUE32BIT.ToString()] = 0xFFFFFFFF;
 
 			specTemplate[Spec.CUSTOM_VALUESOURCE.ToString()] = CustomValueSource.RANDOM;
@@ -197,13 +197,9 @@ namespace RTC
 			if (name != _partialSpec.name)
 				throw new Exception("Name mismatch between PartialSpec and FullSpec");
 
-			/*
-			//For serialization
-			for (int i = 0; i < _partialSpec.keys.Count; i++)
-				base[_partialSpec.keys[i]] = _partialSpec.values[i];
-				*/
+			//for (int i = 0; i < _partialSpec.keys.Count; i++)
+				//base[_partialSpec.keys[i]] = _partialSpec.values[i];
 
-			//For initial
 			foreach (var key in _partialSpec.specDico.Keys)
 				base[key] = _partialSpec.specDico[key];
 
@@ -229,32 +225,18 @@ namespace RTC
 		{
 			name = _name;
 		}
-
-		protected PartialSpec(SerializationInfo info, StreamingContext context)
-		{
-			name = info.GetString("Name");
-		}
-
-		/*
-		[SecurityPermission(SecurityAction.Demand, SerializationFormatter = true)]
-		public override void GetObjectData(SerializationInfo info, StreamingContext context)
-		{
-			info.AddValue("Name", name);
-			base.GetObjectData(info, context);
-		}*/
 	}
 
 	[Serializable]
-	public abstract class BaseSpec
+	public abstract class BaseSpec : ISerializable
 	{
 
-		//[IgnoreDataMember]
+		[IgnoreDataMember]
 		internal Dictionary<string, object> specDico { get; set; } = new Dictionary<string, object>();
 
-		/*
 		public List<string> keys = new List<string>();
 		public List<object> values = new List<object>();
-		*/
+
         public object this[string key]
         {
             get
@@ -279,19 +261,8 @@ namespace RTC
 
 		public void Reset() => specDico.Clear();
 
-		/*
-
-		protected BaseSpec()
-		{
-
-		}
-
-		protected BaseSpec(SerializationInfo info, StreamingContext context)
-		{
-
-		}
 		[SecurityPermission(SecurityAction.Demand, SerializationFormatter = true)]
-		public virtual void GetObjectData(SerializationInfo info, StreamingContext context)
+		public void GetObjectData(SerializationInfo info, StreamingContext context)
 		{
 			info.AddValue("Keys", keys);
 			info.AddValue("Values", values);
@@ -316,16 +287,15 @@ namespace RTC
                 values.Add(specDico[key]);
             }
             */
-		/*
 		}
-	
+
 		[OnDeserialized]
 		private void OnDeserialized(StreamingContext context)
 		{
 			for (int i = 0; i < keys.Count; i++)
 				specDico[keys[i]] = values[i];
 		}
-		*/
+
 	}
 
 	public class SpecUpdateEventArgs : EventArgs
