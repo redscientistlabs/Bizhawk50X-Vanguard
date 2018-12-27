@@ -11,11 +11,11 @@ namespace RTC
 {
 	internal class RTC_Unispec
 	{
-		
 		public static FullSpec RTCSpec;
 
-		public static void RegisterSpec()
+		private void RegisterSpec()
 		{
+
 			PartialSpec specTemplate = new PartialSpec("RTCSpec");
 
 
@@ -24,7 +24,6 @@ namespace RTC
 			specTemplate[Spec.CORE_CLEARSTEPACTIONSONREWIND.ToString()] = false;
 
 			specTemplate[Spec.CORE_CUSTOMPRECISION.ToString()] = 0;
-			specTemplate[Spec.CORE_CURRENTPRECISION.ToString()] = 0;
 			specTemplate[Spec.CORE_INTENSITY.ToString()] = 1;
 			specTemplate[Spec.CORE_ERRORDELAY.ToString()] = 1;
 			specTemplate[Spec.CORE_RADIUS.ToString()] = BlastRadius.SPREAD;
@@ -48,8 +47,6 @@ namespace RTC
 
 
 			//Nightmare Config
-			specTemplate[Spec.NIGHTMARE_TYPE.ToString()] = NightmareAlgo.RANDOM;
-
 			specTemplate[Spec.NIGHTMARE_MINVALUE8BIT.ToString()]  = 0;
 			specTemplate[Spec.NIGHTMARE_MAXVALUE16BIT.ToString()] = 0;
 			specTemplate[Spec.NIGHTMARE_MAXVALUE32BIT.ToString()] = 0;
@@ -57,9 +54,6 @@ namespace RTC
 			specTemplate[Spec.NIGHTMARE_MAXVALUE8BIT.ToString()]  = 0xFF;
 			specTemplate[Spec.NIGHTMARE_MINVALUE16BIT.ToString()] = 0xFFFF;
 			specTemplate[Spec.NIGHTMARE_MINVALUE32BIT.ToString()] = 0xFFFFFFFF;
-
-
-			specTemplate[Spec.DISTORTION_DELAY.ToString()] = 50;
 
 			//Hellgenie Config
 			specTemplate[Spec.HELLGENIE_MINVALUE8BIT.ToString()]  =	0;
@@ -124,17 +118,15 @@ namespace RTC
 
 				PartialSpec partial = ea.partialSpec;
 				//send partial update via netcore or whatever
-				RTC_Core.SendCommandToBizhawk(new RTC_Command(CommandType.REMOTE_PUSHSPEC) { objectValue = partial }, true);
 
 			});
 
 
-
-			if (RTC_Unispec.RTCSpec[Spec.STOCKPILE_BACKUPEDSTATE.ToString()] != null)
-				((StashKey)RTC_Unispec.RTCSpec[Spec.STOCKPILE_BACKUPEDSTATE.ToString()]).Run();
+			if (RTC_StockpileManager.BackupedState != null)
+				RTC_StockpileManager.BackupedState.Run();
 			else
 			{
-				RTCSpec.Update(Spec.CORE_AUTOCORRUPT.ToString(), false);
+				RTC_Core.AutoCorrupt = false;
 			}
 		}
 	}
@@ -197,11 +189,8 @@ namespace RTC
 			if (name != _partialSpec.name)
 				throw new Exception("Name mismatch between PartialSpec and FullSpec");
 
-			//for (int i = 0; i < _partialSpec.keys.Count; i++)
-				//base[_partialSpec.keys[i]] = _partialSpec.values[i];
-
-			foreach (var key in _partialSpec.specDico.Keys)
-				base[key] = _partialSpec.specDico[key];
+			for (int i = 0; i < _partialSpec.keys.Count; i++)
+				base[_partialSpec.keys[i]] = _partialSpec.values[i];
 
 			if (propagate)
 				OnSpecUpdated(new SpecUpdateEventArgs() { partialSpec = _partialSpec });
@@ -237,27 +226,25 @@ namespace RTC
 		public List<string> keys = new List<string>();
 		public List<object> values = new List<object>();
 
-        public object this[string key]
-        {
-            get
-            {
-                if (specDico.ContainsKey(key))
-                    return specDico[key];
-                else
-                    return null;
-            }
-            set
-            {
-                if (value == null && !(this is PartialSpec))    // Partials can have null values
-                {                                               // A null value means a key removal in the Full Spec
-                    if (specDico.ContainsKey(key))
-                        specDico.Remove(key);
-                }
-                else
-                    specDico[key] = value;
-            }
-        }
+		public object this[string key]
+		{
+			get
+			{
 
+				if (specDico.ContainsKey(key))
+					return specDico[key];
+				else
+					return null;
+			}
+
+			set => specDico[key] = value;
+		}
+
+		public void Remove(string key)
+		{
+			if (specDico.ContainsKey(key))
+				specDico.Remove(key);
+		}
 
 		public void Reset() => specDico.Clear();
 

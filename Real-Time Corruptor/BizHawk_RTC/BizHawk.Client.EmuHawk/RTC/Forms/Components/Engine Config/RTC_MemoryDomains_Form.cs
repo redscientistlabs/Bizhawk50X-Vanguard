@@ -84,7 +84,7 @@ namespace RTC
 
 		public void RefreshDomainsAndKeepSelected(string[] overrideDomains = null)
 		{
-			string[] copy = (string[])RTC_Unispec.RTCSpec[Spec.MEMORYDOMAINS_LASTSELECTEDDOMAINS.ToString()];
+			string[] copy = RTC_MemoryDomains.LastSelectedDomains;
 
 			if (overrideDomains != null)
 				copy = overrideDomains;

@@ -6,6 +6,7 @@ namespace RTC
 	public static class RTC_NightmareEngine
 	{
 
+		public static NightmareAlgo Algo = NightmareAlgo.RANDOM;
 		private static NightmareType type = NightmareType.SET;
 
 		public static BlastUnit GenerateUnit(string domain, long address, int precision)
@@ -14,7 +15,7 @@ namespace RTC
 
 			try
 			{
-				switch ((NightmareAlgo)RTC_Unispec.RTCSpec[Spec.NIGHTMARE_TYPE.ToString()])
+				switch (Algo)
 				{
 					case NightmareAlgo.RANDOM: //RANDOM always sets a random value
 						type = NightmareType.SET;
@@ -74,13 +75,13 @@ namespace RTC
 					switch (precision)
 					{
 						case (1):
-							randomValue = RTC_Core.RND.RandomLong((long)RTC_Unispec.RTCSpec[Spec.NIGHTMARE_MINVALUE8BIT.ToString()], (long)RTC_Unispec.RTCSpec[Spec.NIGHTMARE_MAXVALUE8BIT.ToString()]);
+							randomValue = RTC_Core.RND.RandomLong(MinValue8Bit, MaxValue8Bit);
 							break;
 						case (2):
-							randomValue = RTC_Core.RND.RandomLong((long)RTC_Unispec.RTCSpec[Spec.NIGHTMARE_MINVALUE16BIT.ToString()], (long)RTC_Unispec.RTCSpec[Spec.NIGHTMARE_MAXVALUE16BIT.ToString()]);
+							randomValue = RTC_Core.RND.RandomLong(MinValue16Bit, MaxValue16Bit);
 							break;
 						case (4):
-							randomValue = RTC_Core.RND.RandomLong((long)RTC_Unispec.RTCSpec[Spec.NIGHTMARE_MINVALUE32BIT.ToString()], (long)RTC_Unispec.RTCSpec[Spec.NIGHTMARE_MAXVALUE32BIT.ToString()]);
+							randomValue = RTC_Core.RND.RandomLong(MinValue32Bit, MaxValue32Bit);
 							break;
 					}
 

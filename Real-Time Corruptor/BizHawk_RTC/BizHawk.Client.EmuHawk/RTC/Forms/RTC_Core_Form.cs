@@ -5,7 +5,6 @@ using System.Drawing;
 using System.IO;
 using System.Threading;
 using System.Windows.Forms;
-using static RTC.RTC_Unispec;
 
 namespace RTC
 {
@@ -33,7 +32,7 @@ namespace RTC
 		{
 			get
 			{
-				return (bool)RTCSpec[Spec.CORE_AUTOCORRUPT.ToString()];
+				return RTC_Core.AutoCorrupt;
 			}
 			set
 			{
@@ -42,7 +41,12 @@ namespace RTC
 				else
 					btnAutoCorrupt.Text = "Start Auto-Corrupt";
 
-				RTCSpec.Update(Spec.CORE_AUTOCORRUPT.ToString(), value);
+				RTC_Core.AutoCorrupt = value;
+
+				RTC_Core.SendCommandToBizhawk(new RTC_Command(CommandType.REMOTE_SET_AUTOCORRUPT)
+				{
+					objectValue = value
+				});
 			}
 		}
 
@@ -57,6 +61,7 @@ namespace RTC
 		public void btnManualBlast_Click(object sender, EventArgs e)
 		{
 			RTC_Core.SendCommandToBizhawk(new RTC_Command(CommandType.ASYNCBLAST));
+			RTC_StepActions.SetRunBefore(true);
 		}
 
 		public void btnAutoCorrupt_Click(object sender, EventArgs e)
@@ -65,7 +70,7 @@ namespace RTC
 				return;
 
 			this.AutoCorrupt = !this.AutoCorrupt;
-			RTC_Unispec.RTCSpec.Update(Spec.STEP_RUNBEFORE.ToString(), true);
+			RTC_StepActions.SetRunBefore(true);
 		}
 
 		private void RTC_Form_Load(object sender, EventArgs e)
@@ -226,8 +231,7 @@ namespace RTC
 			else
 			{
 				RTC_GameProtection.Stop();
-
-				RTCSpec.Update(Spec.STOCKPILE_BACKUPEDSTATE.ToString(), null);
+				RTC_StockpileManager.BackupedState = null;
 				RTC_StockpileManager.AllBackupStates.Clear();
 				btnGpJumpBack.Visible = false;
 				btnGpJumpNow.Visible = false;
@@ -383,8 +387,8 @@ namespace RTC
 			{
 				btnGpJumpNow.Visible = false;
 
-				if (RTC_Unispec.RTCSpec[Spec.STOCKPILE_BACKUPEDSTATE.ToString()] != null)
-					((StashKey)RTC_Unispec.RTCSpec[Spec.STOCKPILE_BACKUPEDSTATE.ToString()]).Run();
+				if (RTC_StockpileManager.BackupedState != null)
+					RTC_StockpileManager.BackupedState.Run();
 
 				RTC_GameProtection.Reset();
 			}

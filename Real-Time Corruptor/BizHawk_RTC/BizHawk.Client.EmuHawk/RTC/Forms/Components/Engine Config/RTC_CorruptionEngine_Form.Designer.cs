@@ -1075,7 +1075,7 @@
             0,
             0,
             0});
-            this.nmMaxValueNightmare.ValueChanged += new System.EventHandler(this.nmMaxValueNightmare_ValueChanged);
+            this.nmMaxValueNightmare.ValueChanged += new System.EventHandler(this.nmMinValueNightmare_ValueChanged);
             this.nmMaxValueNightmare.MouseDown += new System.Windows.Forms.MouseEventHandler(this.HandleMouseDown);
             // 
             // nmMinValueNightmare

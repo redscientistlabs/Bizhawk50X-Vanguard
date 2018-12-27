@@ -7,7 +7,6 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-using static RTC.RTC_Unispec;
 
 namespace RTC
 {
@@ -21,23 +20,23 @@ namespace RTC
 		{
 			get
 			{
-				return (int)RTCSpec[Spec.CORE_INTENSITY.ToString()];
+				return RTC_Core.Intensity;
 			}
 			set
 			{
 				if (DontUpdateIntensity)
 					return;
 
-
-				RTCSpec.Update(Spec.CORE_INTENSITY.ToString(), value);
+				RTC_Core.Intensity = value;
+				RTC_Core.SendCommandToBizhawk(new RTC_Command(CommandType.REMOTE_SET_INTENSITY) { objectValue = RTC_Core.Intensity });
 
 				DontUpdateIntensity = true;
 
-				if (nmIntensity.Value != value)
-					nmIntensity.Value = value;
+				if (nmIntensity.Value != RTC_Core.Intensity)
+					nmIntensity.Value = RTC_Core.Intensity;
 
-				if (S.GET<RTC_GlitchHarvester_Form>().nmIntensity.Value != value)
-					S.GET<RTC_GlitchHarvester_Form>().nmIntensity.Value = value;
+				if (S.GET<RTC_GlitchHarvester_Form>().nmIntensity.Value != RTC_Core.Intensity)
+					S.GET<RTC_GlitchHarvester_Form>().nmIntensity.Value = RTC_Core.Intensity;
 
 				int fx = Convert.ToInt32(Math.Sqrt(value) * 2000d);
 
@@ -56,19 +55,20 @@ namespace RTC
 		{
 			get
 			{
-				return (int)RTCSpec[Spec.CORE_ERRORDELAY.ToString()];
+				return RTC_Core.ErrorDelay;
 			}
 			set
 			{
 				if (DontUpdateErrorDelay)
 					return;
 
-				RTCSpec.Update(Spec.CORE_ERRORDELAY.ToString(), Convert.ToInt32(value));
+				RTC_Core.ErrorDelay = Convert.ToInt32(value);
+				RTC_Core.SendCommandToBizhawk(new RTC_Command(CommandType.REMOTE_SET_ERRORDELAY) { objectValue = RTC_Core.ErrorDelay });
 
 				DontUpdateErrorDelay = true;
 
-				if (nmErrorDelay.Value != value)
-					nmErrorDelay.Value = value;
+				if (nmErrorDelay.Value != RTC_Core.ErrorDelay)
+					nmErrorDelay.Value = RTC_Core.ErrorDelay;
 
 				int _fx = Convert.ToInt32(Math.Sqrt(value) * 2000d);
 
@@ -129,29 +129,31 @@ namespace RTC
 			switch (cbBlastRadius.SelectedItem.ToString())
 			{
 				case "SPREAD":
-					RTCSpec.Update(Spec.CORE_RADIUS.ToString(), BlastRadius.SPREAD);
+					RTC_Core.Radius = BlastRadius.SPREAD;
 					break;
 
 				case "CHUNK":
-					RTCSpec.Update(Spec.CORE_RADIUS.ToString(), BlastRadius.CHUNK);
+					RTC_Core.Radius = BlastRadius.CHUNK;
 					break;
 
 				case "BURST":
-					RTCSpec.Update(Spec.CORE_RADIUS.ToString(), BlastRadius.BURST);
+					RTC_Core.Radius = BlastRadius.BURST;
 					break;
 
 				case "NORMALIZED":
-					RTCSpec.Update(Spec.CORE_RADIUS.ToString(), BlastRadius.NORMALIZED);
+					RTC_Core.Radius = BlastRadius.NORMALIZED;
 					break;
 
 				case "PROPORTIONAL":
-					RTCSpec.Update(Spec.CORE_RADIUS.ToString(), BlastRadius.PROPORTIONAL);
+					RTC_Core.Radius = BlastRadius.PROPORTIONAL;
 					break;
 
 				case "EVEN":
-					RTCSpec.Update(Spec.CORE_RADIUS.ToString(), BlastRadius.EVEN);
+					RTC_Core.Radius = BlastRadius.EVEN;
 					break;
 			}
+
+			RTC_Core.SendCommandToBizhawk(new RTC_Command(CommandType.REMOTE_SET_BLASTRADIUS) { objectValue = RTC_Core.Radius });
 		}
 
 

@@ -4,7 +4,6 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using GongSolutions.Shell.Interop;
-using static RTC.RTC_Unispec;
 
 namespace RTC
 {
@@ -33,6 +32,10 @@ namespace RTC
 		private static bool isRunning = false;
 
 
+		/// <summary>
+		/// Don't set this manually
+		/// </summary>
+		public static bool RunBefore { get; set; }
 
 		public static void ClearStepBlastUnits()
 		{
@@ -69,13 +72,34 @@ namespace RTC
 
 		public static void RemoveExcessInfiniteStepUnits()
 		{
-			if ((bool)RTC_Unispec.RTCSpec[Spec.STEP_LOCKEXECUTION.ToString()] == true)
+			if (LockExecution == true)
 				return;
 
-			while (appliedInfinite.Count > (int)RTC_Unispec.RTCSpec[Spec.STEP_MAXINFINITEBLASTUNITS.ToString()])
+			while (appliedInfinite.Count > RTC_StepActions.MaxInfiniteBlastUnits)
 				appliedInfinite.Remove(appliedInfinite[0]);
 		}
 
+		public static void SetMaxLifetimeBlastUnits(int value)
+		{
+			RTC_StepActions.MaxInfiniteBlastUnits = value;
+			RTC_Core.SendCommandToBizhawk(new RTC_Command(CommandType.REMOTE_SET_STEPACTIONS_MAXLIFETIMEUNITS) { objectValue = value });
+		}
+
+		public static void ClearStepActionsOnRewind(bool value)
+		{
+			RTC_Core.ClearStepActionsOnRewind = value;
+			RTC_Core.SendCommandToBizhawk(new RTC_Command(CommandType.REMOTE_SET_STEPACTIONS_CLEARREWIND) { objectValue = value });
+		}
+		public static void SetLockExecution(bool value)
+		{
+			RTC_StepActions.LockExecution = value;
+			RTC_Core.SendCommandToBizhawk(new RTC_Command(CommandType.REMOTE_SET_STEPACTIONS_LOCKEXECUTION) { objectValue = value });
+		}
+		public static void SetRunBefore(bool value)
+		{
+			RTC_StepActions.RunBefore = value;
+			RTC_Core.SendCommandToBizhawk(new RTC_Command(CommandType.REMOTE_SET_STEPACTIONS_RUNBEFORE) { objectValue = value });
+		}
 
 		public static BlastLayer GetRawBlastLayer()
 		{

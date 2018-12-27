@@ -14,27 +14,6 @@ namespace RTC
 		{
 			try
 			{
-
-				BlastUnitSource Source = (BlastUnitSource)RTC_Unispec.RTCSpec[Spec.CUSTOM_SOURCE.ToString()];
-				CustomValueSource ValueSource = (CustomValueSource)RTC_Unispec.RTCSpec[Spec.CUSTOM_SOURCE.ToString()];
-				string ValueListHash = (string)RTC_Unispec.RTCSpec[Spec.CUSTOM_VALUELISTHASH.ToString()];
-				string LimiterListHash = (string)RTC_Unispec.RTCSpec[Spec.CUSTOM_LIMITERLISTHASH.ToString()];
-				int MinValue8Bit =  (int)RTC_Unispec.RTCSpec[Spec.CUSTOM_MINVALUE8BIT.ToString()];
-				int MaxValue8Bit =  (int)RTC_Unispec.RTCSpec[Spec.CUSTOM_MAXVALUE8BIT.ToString()];
-				int MinValue16Bit = (int)RTC_Unispec.RTCSpec[Spec.CUSTOM_MINVALUE16BIT.ToString()];
-				int MaxValue16Bit = (int)RTC_Unispec.RTCSpec[Spec.CUSTOM_MAXVALUE16BIT.ToString()];
-				int MinValue32Bit = (int)RTC_Unispec.RTCSpec[Spec.CUSTOM_MINVALUE32BIT.ToString()];
-				int MaxValue32Bit = (int)RTC_Unispec.RTCSpec[Spec.CUSTOM_MAXVALUE32BIT.ToString()];
-
-				ActionTime StoreTime = (ActionTime)RTC_Unispec.RTCSpec[Spec.CUSTOM_STORETIME.ToString()];
-				CustomStoreAddress StoreAddress = (CustomStoreAddress)RTC_Unispec.RTCSpec[Spec.CUSTOM_STOREADDRESS.ToString()];
-				StoreType StoreType = (StoreType)RTC_Unispec.RTCSpec[Spec.CUSTOM_STORETYPE.ToString()];
-				int Delay = (int)RTC_Unispec.RTCSpec[Spec.CUSTOM_DELAY.ToString()];
-				int Lifetime = (int)RTC_Unispec.RTCSpec[Spec.CUSTOM_LIFETIME.ToString()];
-				ActionTime LimiterTime = (ActionTime)RTC_Unispec.RTCSpec[Spec.CUSTOM_LIMITERTIME.ToString()];
-				bool Loop = (bool)RTC_Unispec.RTCSpec[Spec.CUSTOM_LOOP.ToString()];
-				bool LimiterInverted = (bool)RTC_Unispec.RTCSpec[Spec.CUSTOM_LIMITERINVERTED.ToString()];
-
 				if (domain == null)
 					return null;
 
