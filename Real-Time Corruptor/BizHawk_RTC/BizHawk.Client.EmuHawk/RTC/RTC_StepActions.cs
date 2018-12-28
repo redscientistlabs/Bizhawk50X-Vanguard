@@ -150,13 +150,13 @@ namespace RTC
 
 			queued = new LinkedList<List<BlastUnit>>();
 
-			buListCollection = buListCollection.OrderBy(it => it[0].Working.ExecuteFrameQueued).ToList();
-
-
-			foreach(List<BlastUnit> buList in buListCollection)
+			//buListCollection = buListCollection.OrderBy(it => it[0].Working.ExecuteFrameQueued).ToList();
+			//this didnt need to be stored since it is only being used in this one loop
+			foreach(List<BlastUnit> buList in buListCollection.OrderBy(it => it[0].Working.ExecuteFrameQueued).ToList())
 			{
 				queued.AddLast(buList);
 			}
+
 			//Nuke the list 
 			buListCollection = new List<List<BlastUnit>>();
 

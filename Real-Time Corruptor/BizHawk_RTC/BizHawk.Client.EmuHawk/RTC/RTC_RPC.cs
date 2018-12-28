@@ -13,7 +13,7 @@ namespace RTC
 		private static string ip = "127.0.0.1";
 		private static int killswitchPort = 56667;
 		private static System.Windows.Forms.Timer time;
-		private static volatile Queue<String> messages = new Queue<string>();
+		private static volatile Queue<string> messages = new Queue<string>();
 		private static UdpClient killswitchSender = new UdpClient(ip, killswitchPort);
 		private static volatile bool Running = false;
 		private static Thread t;
@@ -24,9 +24,11 @@ namespace RTC
 		{
 			Running = true;
 
-			time = new System.Windows.Forms.Timer();
-			time.Interval = 200;
-			time.Tick += new EventHandler(CheckMessages);
+			time = new System.Windows.Forms.Timer
+			{
+				Interval = 200
+			};
+			time.Tick += CheckMessages;
 			time.Start();
 
 			if (RTC_Hooks.isRemoteRTC)
@@ -37,8 +39,10 @@ namespace RTC
 
 		public static void StartKillswitch()
 		{
-			t = new Thread(new ThreadStart(ListenToKillSwitch));
-			t.IsBackground = true;
+			t = new Thread(new ThreadStart(ListenToKillSwitch))
+			{
+				IsBackground = true
+			};
 			t.Start();
 		}
 
@@ -64,16 +68,10 @@ namespace RTC
 
 					switch (splits[0])
 					{
-						default:
-							break;
-
 						case "RTC_Heartbeat":
 
 							switch (splits[1])
 							{
-								default:
-									break;
-
 								case "TICK":
 									Heartbeat = true;
 									break;
@@ -96,7 +94,7 @@ namespace RTC
 			}
 			catch (Exception e)
 			{
-				Console.WriteLine(e.ToString());
+				Console.WriteLine(e);
 			}
 			finally
 			{
@@ -130,7 +128,7 @@ namespace RTC
 			if (extra != null)
 				message += "|" + extra;
 
-			Byte[] sdata = Encoding.ASCII.GetBytes(message);
+			byte[] sdata = Encoding.ASCII.GetBytes(message);
 			killswitchSender.Send(sdata, sdata.Length);
 		}
 	}

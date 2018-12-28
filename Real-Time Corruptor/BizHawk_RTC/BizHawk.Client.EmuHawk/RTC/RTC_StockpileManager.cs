@@ -123,12 +123,14 @@ namespace RTC
 			watch.Stop();
 			Console.WriteLine($"It took " + watch.ElapsedMilliseconds + " ms to blastlayer");
 
-			CurrentStashkey = new StashKey(RTC_Core.GetRandomKey(), psk.ParentKey, bl);
-			CurrentStashkey.RomFilename = psk.RomFilename;
-			CurrentStashkey.SystemName = psk.SystemName;
-			CurrentStashkey.SystemCore = psk.SystemCore;
-			CurrentStashkey.GameName = psk.GameName;
-			CurrentStashkey.SyncSettings = psk.SyncSettings;
+			CurrentStashkey = new StashKey(RTC_Core.GetRandomKey(), psk.ParentKey, bl)
+			{
+				RomFilename = psk.RomFilename,
+				SystemName = psk.SystemName,
+				SystemCore = psk.SystemCore,
+				GameName = psk.GameName,
+				SyncSettings = psk.SyncSettings
+			};
 
 			if (_loadBeforeOperation)
 			{
@@ -181,11 +183,13 @@ namespace RTC
 				return IsCorruptionApplied;
 			}
 
-			CurrentStashkey = new StashKey(RTC_Core.GetRandomKey(), psk.ParentKey, sk.BlastLayer);
-			CurrentStashkey.RomFilename = psk.RomFilename;
-			CurrentStashkey.SystemName = psk.SystemName;
-			CurrentStashkey.SystemCore = psk.SystemCore;
-			CurrentStashkey.GameName = psk.GameName;
+			CurrentStashkey = new StashKey(RTC_Core.GetRandomKey(), psk.ParentKey, sk.BlastLayer)
+			{
+				RomFilename = psk.RomFilename,
+				SystemName = psk.SystemName,
+				SystemCore = psk.SystemCore,
+				GameName = psk.GameName
+			};
 
 			if (_loadBeforeOperation)
 			{
@@ -310,11 +314,8 @@ namespace RTC
 				PostApplyStashkey();
 				return true;
 			}
-			else
-			{
-				MessageBox.Show("You need 2 or more items for Merging");
-				return false;
-			}
+			MessageBox.Show("You need 2 or more items for Merging");
+			return false;
 		}
 
 		public static bool LoadState(StashKey sk, bool reloadRom = true, bool applyBlastLayer = true)
@@ -423,7 +424,8 @@ namespace RTC
 			if (statePath == null)
 				return null;
 
-			sk.StateShortFilename = statePath.Substring(statePath.LastIndexOf("\\") + 1, statePath.Length - (statePath.LastIndexOf("\\") + 1));
+			//sk.StateShortFilename = statePath.Substring(statePath.LastIndexOf("\\") + 1, statePath.Length - (statePath.LastIndexOf("\\") + 1));
+			sk.StateShortFilename = Path.GetFileName(statePath);
 			sk.StateFilename = statePath;
 
 			if (sendToStashDico)
@@ -446,14 +448,10 @@ namespace RTC
 				return false;
 
 			string currentFilename = RTC_Hooks.BIZHAWK_GET_CURRENTLYOPENEDROM();
-
-			if (currentFilename.IndexOf("\\") != -1)
-				currentFilename = currentFilename.Substring(currentFilename.LastIndexOf("\\") + 1);
+			currentFilename = Path.GetFileName(currentFilename);
 
 			string btnFilename = rom;
-
-			if (btnFilename.IndexOf("\\") != -1)
-				btnFilename = btnFilename.Substring(btnFilename.LastIndexOf("\\") + 1);
+			btnFilename = Path.GetFileName(btnFilename);
 
 			if (btnFilename != currentFilename)
 			{
