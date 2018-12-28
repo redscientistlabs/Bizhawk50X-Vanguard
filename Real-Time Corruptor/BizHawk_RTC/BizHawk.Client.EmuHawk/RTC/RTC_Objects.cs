@@ -545,7 +545,10 @@ namespace RTC
 
 			foreach (StashKey sk in sks.StashKeys)
 			{
-				sk.RomFilename = RTC_Core.workingDir + "\\SKS\\" + sk.RomFilename;
+
+				sk.RomShortFilename = RTC_Extensions.getShortFilenameFromPath(sk.RomFilename);
+				sk.RomFilename = RTC_Core.workingDir + "\\SKS\\" + sk.RomShortFilename;
+
 				sk.StateLocation = StashKeySavestateLocation.SKS;
 			}
 
@@ -555,9 +558,14 @@ namespace RTC
 				{
 					try
 					{
-						File.Copy(file,
-							RTC_Core.workingDir + "\\SKS\\" + file.Substring(file.LastIndexOf('\\'),
-								file.Length - file.LastIndexOf('\\'))); // copy roms to sks folder
+						string dest = RTC_Core.workingDir + "\\SKS\\" + file.Substring(file.LastIndexOf('\\')
+							, file.Length - file.LastIndexOf('\\'));
+
+						if (!File.Exists(dest))
+						{
+							File.Copy(file, dest); // copy roms/stockpile/whatever to sks folder
+						}
+						
 					}
 					catch (Exception ex)
 					{
