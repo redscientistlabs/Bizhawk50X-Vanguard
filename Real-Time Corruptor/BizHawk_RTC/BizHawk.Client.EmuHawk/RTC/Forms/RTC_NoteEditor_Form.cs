@@ -20,8 +20,10 @@ namespace RTC
 			KeyDown += RTC_NE_Form_KeyDown;
 
 			note = noteObject;
-			cells = new List<DataGridViewCell>();
-			cells.Add(_cell);
+			cells = new List<DataGridViewCell>
+			{
+				_cell
+			};
 			InitializeComponent();
 			this.Show();
 		}

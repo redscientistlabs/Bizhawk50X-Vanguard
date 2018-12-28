@@ -5,9 +5,7 @@ using System.Data;
 using System.Drawing;
 using System.IO;
 using System.Linq;
-using System.Reflection;
 using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 
 /**
@@ -821,7 +819,7 @@ namespace RTC
 					searchOffset = 0;
 					searchEnumerable = currentSK.BlastLayer.Layer.Where(x => (x.GetType().GetProperty(searchColumn).GetValue(x).ToString()) == searchValue);
 					
-					if (searchEnumerable.Count() != 0)
+					if (searchEnumerable.Any())
 						bs.Position = bs.IndexOf(searchEnumerable.ElementAt(searchOffset));
 					else
 						MessageBox.Show("Reached end of list without finding anything.");
@@ -1080,7 +1078,7 @@ namespace RTC
 			};
 			if (ofd.ShowDialog() == DialogResult.OK)
 			{
-				filename = ofd.FileName.ToString();
+				filename = ofd.FileName;
 			}
 			else
 				return;
@@ -1141,11 +1139,13 @@ namespace RTC
 				return;
 			}
 
-			SaveFileDialog saveFileDialog1 = new SaveFileDialog();
-			saveFileDialog1.DefaultExt = "csv";
-			saveFileDialog1.Title = "Export to csv";
-			saveFileDialog1.Filter = "csv files|*.csv";
-			saveFileDialog1.RestoreDirectory = true;
+			SaveFileDialog saveFileDialog1 = new SaveFileDialog
+			{
+				DefaultExt = "csv",
+				Title = "Export to csv",
+				Filter = "csv files|*.csv",
+				RestoreDirectory = true
+			};
 
 			if (saveFileDialog1.ShowDialog() == DialogResult.OK)
 			{

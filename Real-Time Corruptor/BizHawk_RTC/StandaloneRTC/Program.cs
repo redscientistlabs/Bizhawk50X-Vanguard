@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
@@ -18,23 +17,17 @@ namespace StandaloneRTC
 		{
 
 			//in case assembly resolution fails, such as if we moved them into the dll subdiretory, this event handler can reroute to them
-			AppDomain.CurrentDomain.AssemblyResolve += new ResolveEventHandler(CurrentDomain_AssemblyResolve);
+			AppDomain.CurrentDomain.AssemblyResolve += CurrentDomain_AssemblyResolve;
 
 			var processes = Process.GetProcesses().Select(it => $"{it.ProcessName.ToUpper()}").OrderBy(x => x).ToArray();
 
-            int nbInstances = 0;
-            foreach (var prc in processes)
-                if (prc == "STANDALONERTC")
-                    nbInstances++;
+			int nbInstances = processes.Count(prc => prc == "STANDALONERTC");
 
-           
-            if (nbInstances > 1)
-            {
-                MessageBox.Show("RTC cannot run more than once at the time in Detached mode.\nLoading aborted","StandaloneRTC.exe", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                return;
-            }
-
-
+			if (nbInstances > 1)
+			{
+				MessageBox.Show("RTC cannot run more than once at the time in Detached mode.\nLoading aborted", "StandaloneRTC.exe", MessageBoxButtons.OK, MessageBoxIcon.Error);
+				return;
+			}
 
 			Application.EnableVisualStyles();
 			Application.SetCompatibleTextRenderingDefault(false);

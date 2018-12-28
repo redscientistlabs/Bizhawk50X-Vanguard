@@ -415,7 +415,7 @@ namespace RTC
 				MemoryInterface mi = MemoryInterfaces[domain];
 				return (MemoryDomainProxy)mi;
 			}
-			else if (VmdPool.ContainsKey(domain))
+			if (VmdPool.ContainsKey(domain))
 			{
 				MemoryInterface mi = VmdPool[domain];
 				if (mi is VirtualMemoryDomain vmd)
@@ -475,8 +475,7 @@ namespace RTC
 				VirtualMemoryDomain vmd = ((VirtualMemoryDomain)mi);
 				return vmd.GetRealAddress(address);
 			}
-			else
-				return address;
+			return address;
 		}
 
 		public static string GetRealDomain(string domain, long address)
@@ -487,8 +486,7 @@ namespace RTC
 				VirtualMemoryDomain vmd = ((VirtualMemoryDomain)mi);
 				return vmd.GetRealDomain(address);
 			}
-			else
-				return domain;
+			return domain;
 		}
 
 		public static void GenerateVmdFromStashkey(StashKey sk)
@@ -909,10 +907,9 @@ namespace RTC
 			for (long i = startAddress; i < endAddress; i++)
 				data.Add(PeekByte(i));
 
-			if(raw || BigEndian)
+			if (raw || BigEndian)
 				return data.ToArray();
-			else
-				return data.ToArray().FlipBytes();
+			return data.ToArray().FlipBytes();
 		}
 
 
@@ -920,8 +917,7 @@ namespace RTC
 		{
 			if (MD == null)
 				return (byte)RTC_Core.SendCommandToBizhawk(new RTC_Command(CommandType.REMOTE_DOMAIN_PEEKBYTE) { objectValue = new object[] { Name, address } }, true);
-			else
-				return MD.PeekByte(address);
+			return MD.PeekByte(address);
 		}
 
 		public override void PokeByte(long address, byte value)

@@ -46,10 +46,12 @@ namespace RTC
 
 					if (cmd.requestGuid != null)
 					{
-						cmdBack = new RTC_Command(CommandType.RETURNVALUE);
-						cmdBack.objectValue = bl;
+							cmdBack = new RTC_Command(CommandType.RETURNVALUE)
+							{
+								objectValue = bl
+							};
+						}
 					}
-				}
 
 				break;
 
@@ -67,8 +69,10 @@ namespace RTC
 					break;
 
 				case CommandType.PULLROM:
-					cmdBack = new RTC_Command(CommandType.PUSHROM);
-					cmdBack.romFilename = RTC_Extensions.getShortFilenameFromPath(RTC_Hooks.BIZHAWK_GET_CURRENTLYOPENEDROM());
+					cmdBack = new RTC_Command(CommandType.PUSHROM)
+					{
+						romFilename = RTC_Extensions.getShortFilenameFromPath(RTC_Hooks.BIZHAWK_GET_CURRENTLYOPENEDROM())
+					};
 
 					if (!PeerHasRom(cmdBack.romFilename))
 						cmdBack.romData = File.ReadAllBytes(RTC_Hooks.BIZHAWK_GET_CURRENTLYOPENEDROM());
@@ -108,8 +112,10 @@ namespace RTC
 
 				case CommandType.PULLSWAPSTATE:
 
-					cmdBack = new RTC_Command(CommandType.PUSHSWAPSTATE);
-					cmdBack.romFilename = RTC_Extensions.getShortFilenameFromPath(RTC_Hooks.BIZHAWK_GET_CURRENTLYOPENEDROM());
+					cmdBack = new RTC_Command(CommandType.PUSHSWAPSTATE)
+					{
+						romFilename = RTC_Extensions.getShortFilenameFromPath(RTC_Hooks.BIZHAWK_GET_CURRENTLYOPENEDROM())
+					};
 
 					if (!PeerHasRom(cmdBack.romFilename))
 						cmdBack.romData = File.ReadAllBytes(RTC_Hooks.BIZHAWK_GET_CURRENTLYOPENEDROM());
@@ -150,8 +156,10 @@ namespace RTC
 
 					break;
 				case CommandType.PULLSCREEN:
-					cmdBack = new RTC_Command(CommandType.PUSHSCREEN);
-					cmdBack.screen = RTC_Hooks.BIZHAWK_GET_SCREENSHOT();
+					cmdBack = new RTC_Command(CommandType.PUSHSCREEN)
+					{
+						screen = RTC_Hooks.BIZHAWK_GET_SCREENSHOT()
+					};
 					break;
 
 				case CommandType.REQUESTSTREAM:
@@ -192,11 +200,13 @@ namespace RTC
 
 					if (cmd.requestGuid != null)
 					{
-						cmdBack = new RTC_Command(CommandType.RETURNVALUE);
-						cmdBack.objectValue = returnList;
-					}
+							cmdBack = new RTC_Command(CommandType.RETURNVALUE)
+							{
+								objectValue = returnList
+							};
+						}
 
-					break;
+						break;
 				}
 
 				case CommandType.REMOTE_LOADROM:
@@ -215,8 +225,10 @@ namespace RTC
 						if (runBlastLayer)
 							RTC_Core.SendCommandToBizhawk(new RTC_Command(CommandType.BLAST) { blastlayer = sk.BlastLayer, isReplay = true });
 
-						cmdBack = new RTC_Command(CommandType.RETURNVALUE);
-						cmdBack.objectValue = returnValue;
+						cmdBack = new RTC_Command(CommandType.RETURNVALUE)
+						{
+							objectValue = returnValue
+						};
 					}
 					break;
 
@@ -233,8 +245,10 @@ namespace RTC
 						StashKey sk = RTC_StockpileManager.SaveState_NET((bool)(cmd.objectValue as object[])[0], (StashKey)(cmd.objectValue as object[])[1]);
 						if (cmd.requestGuid != null)
 						{
-							cmdBack = new RTC_Command(CommandType.RETURNVALUE);
-							cmdBack.objectValue = sk;
+							cmdBack = new RTC_Command(CommandType.RETURNVALUE)
+							{
+								objectValue = sk
+							};
 						}
 					}
 					break;
@@ -269,8 +283,10 @@ namespace RTC
 					break;
 
 				case CommandType.REMOTE_DOMAIN_PEEKBYTE:
-					cmdBack = new RTC_Command(CommandType.RETURNVALUE);
-					cmdBack.objectValue = RTC_MemoryDomains.GetInterface((string)(cmd.objectValue as object[])[0]).PeekByte((long)(cmd.objectValue as object[])[1]);
+					cmdBack = new RTC_Command(CommandType.RETURNVALUE)
+					{
+						objectValue = RTC_MemoryDomains.GetInterface((string)(cmd.objectValue as object[])[0]).PeekByte((long)(cmd.objectValue as object[])[1])
+					};
 					break;
 
 				case CommandType.REMOTE_DOMAIN_POKEBYTE:
@@ -278,8 +294,10 @@ namespace RTC
 					break;
 
 				case CommandType.REMOTE_DOMAIN_GETDOMAINS:
-					cmdBack = new RTC_Command(CommandType.RETURNVALUE);
-					cmdBack.objectValue = RTC_MemoryDomains.GetInterfaces();
+					cmdBack = new RTC_Command(CommandType.RETURNVALUE)
+					{
+						objectValue = RTC_MemoryDomains.GetInterfaces()
+					};
 
 					break;
 
@@ -300,13 +318,17 @@ namespace RTC
 					break;
 
 				case CommandType.REMOTE_DOMAIN_SYSTEM:
-					cmdBack = new RTC_Command(CommandType.RETURNVALUE);
-					cmdBack.objectValue = RTC_Hooks.BIZHAWK_GET_CURRENTLYLOADEDSYSTEMNAME().ToUpper();
+					cmdBack = new RTC_Command(CommandType.RETURNVALUE)
+					{
+						objectValue = RTC_Hooks.BIZHAWK_GET_CURRENTLYLOADEDSYSTEMNAME().ToUpper()
+					};
 					break;
 
 				case CommandType.REMOTE_DOMAIN_SYSTEMPREFIX:
-					cmdBack = new RTC_Command(CommandType.RETURNVALUE);
-					cmdBack.objectValue = RTC_Hooks.BIZHAWK_GET_SAVESTATEPREFIX();
+					cmdBack = new RTC_Command(CommandType.RETURNVALUE)
+					{
+						objectValue = RTC_Hooks.BIZHAWK_GET_SAVESTATEPREFIX()
+					};
 					break;
 
 				case CommandType.REMOTE_KEY_PUSHSAVESTATEDICO:
@@ -319,23 +341,31 @@ namespace RTC
 					break;
 
 				case CommandType.REMOTE_KEY_GETSYSTEMNAME:
-					cmdBack = new RTC_Command(CommandType.RETURNVALUE);
-					cmdBack.objectValue = RTC_Hooks.BIZHAWK_GET_FILESYSTEMCORENAME();
+					cmdBack = new RTC_Command(CommandType.RETURNVALUE)
+					{
+						objectValue = RTC_Hooks.BIZHAWK_GET_FILESYSTEMCORENAME()
+					};
 					break;
 
 				case CommandType.REMOTE_KEY_GETSYSTEMCORE:
-					cmdBack = new RTC_Command(CommandType.RETURNVALUE);
-					cmdBack.objectValue = RTC_Hooks.BIZHAWK_GET_SYSTEMCORENAME((string)cmd.objectValue);
+					cmdBack = new RTC_Command(CommandType.RETURNVALUE)
+					{
+						objectValue = RTC_Hooks.BIZHAWK_GET_SYSTEMCORENAME((string)cmd.objectValue)
+					};
 					break;
 
 				case CommandType.REMOTE_KEY_GETGAMENAME:
-					cmdBack = new RTC_Command(CommandType.RETURNVALUE);
-					cmdBack.objectValue = RTC_Hooks.BIZHAWK_GET_FILESYSTEMGAMENAME();
+					cmdBack = new RTC_Command(CommandType.RETURNVALUE)
+					{
+						objectValue = RTC_Hooks.BIZHAWK_GET_FILESYSTEMGAMENAME()
+					};
 					break;
 
 				case CommandType.REMOTE_KEY_GETSYNCSETTINGS:
-					cmdBack = new RTC_Command(CommandType.RETURNVALUE);
-					cmdBack.objectValue = RTC_Hooks.BIZHAWK_GETSET_SYNCSETTINGS;
+					cmdBack = new RTC_Command(CommandType.RETURNVALUE)
+					{
+						objectValue = RTC_Hooks.BIZHAWK_GETSET_SYNCSETTINGS
+					};
 					break;
 
 				case CommandType.REMOTE_KEY_PUTSYNCSETTINGS:
@@ -343,22 +373,28 @@ namespace RTC
 					break;
 
 				case CommandType.REMOTE_KEY_GETOPENROMFILENAME:
-					cmdBack = new RTC_Command(CommandType.RETURNVALUE);
-					cmdBack.objectValue = RTC_Hooks.BIZHAWK_GET_CURRENTLYOPENEDROM();
+					cmdBack = new RTC_Command(CommandType.RETURNVALUE)
+					{
+						objectValue = RTC_Hooks.BIZHAWK_GET_CURRENTLYOPENEDROM()
+					};
 					break;
 
 				case CommandType.REMOTE_KEY_GETRAWBLASTLAYER:
-					cmdBack = new RTC_Command(CommandType.RETURNVALUE);
-					cmdBack.objectValue = RTC_StockpileManager.GetRawBlastlayer();
+					cmdBack = new RTC_Command(CommandType.RETURNVALUE)
+					{
+						objectValue = RTC_StockpileManager.GetRawBlastlayer()
+					};
 					break;
 				case CommandType.REMOTE_KEY_GETBAKEDLAYER:
 				{
 					//We need a stashkey to load the game 
 					BlastLayer _bl = cmd.blastlayer;
 					var sk = cmd.stashkey;
-					cmdBack = new RTC_Command(CommandType.RETURNVALUE);
-					cmdBack.objectValue = RTC_BlastTools.GetAppliedBackupLayer(_bl, sk);
-					break;
+						cmdBack = new RTC_Command(CommandType.RETURNVALUE)
+						{
+							objectValue = RTC_BlastTools.GetAppliedBackupLayer(_bl, sk)
+						};
+						break;
 				}
 
 				case CommandType.BIZHAWK_SET_OSDDISABLED:
@@ -636,8 +672,7 @@ namespace RTC
 
 				case CommandType.REMOTE_EVENT_BIZHAWKSTARTED:
 
-					if (RTC_StockpileManager.BackupedState == null)
-						S.GET<RTC_Core_Form>().AutoCorrupt = false;
+					S.GET<RTC_Core_Form>().AutoCorrupt &= RTC_StockpileManager.BackupedState != null;
 
 					RTC_Core.SendCommandToBizhawk(new RTC_Command(CommandType.REMOTE_PUSHPARAMS) { objectValue = new RTC_Params() }, true, true);
 
@@ -783,7 +818,8 @@ namespace RTC
 			RTC_Command cmd = new RTC_Command(CommandType.PULLSWAPSTATE);
 
 			string romFullFilename = RTC_Hooks.BIZHAWK_GET_CURRENTLYOPENEDROM();
-			cmd.romFilename = romFullFilename.Substring(romFullFilename.LastIndexOf("\\") + 1, romFullFilename.Length - (romFullFilename.LastIndexOf("\\") + 1));
+			//cmd.romFilename = romFullFilename.Substring(romFullFilename.LastIndexOf("\\") + 1, romFullFilename.Length - (romFullFilename.LastIndexOf("\\") + 1));
+			cmd.romFilename = Path.GetFileName(romFullFilename);
 
 			if (!PeerHasRom(cmd.romFilename))
 				cmd.romData = File.ReadAllBytes(romFullFilename);
@@ -807,9 +843,10 @@ namespace RTC
 				return;
 			}
 
-			RTC_Command cmd = new RTC_Command(CommandType.STASHKEY);
-
-			cmd.romFilename = RTC_Extensions.getShortFilenameFromPath(RTC_Hooks.BIZHAWK_GET_CURRENTLYOPENEDROM());
+			RTC_Command cmd = new RTC_Command(CommandType.STASHKEY)
+			{
+				romFilename = RTC_Extensions.getShortFilenameFromPath(RTC_Hooks.BIZHAWK_GET_CURRENTLYOPENEDROM())
+			};
 
 			if (!PeerHasRom(cmd.romFilename))
 				cmd.romData = File.ReadAllBytes(cmd.romFilename);
@@ -866,8 +903,10 @@ namespace RTC
 				return;
 			}
 
-			RTC_Command cmd = new RTC_Command(CommandType.BLAST);
-			cmd.blastlayer = RTC_StockpileManager.CurrentStashkey.BlastLayer;
+			RTC_Command cmd = new RTC_Command(CommandType.BLAST)
+			{
+				blastlayer = RTC_StockpileManager.CurrentStashkey.BlastLayer
+			};
 
 			SendCommand(cmd, false);
 		}

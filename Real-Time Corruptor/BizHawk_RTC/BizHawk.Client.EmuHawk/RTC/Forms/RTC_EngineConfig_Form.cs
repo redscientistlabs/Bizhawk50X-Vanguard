@@ -25,8 +25,10 @@ namespace RTC
 				S.GET<RTC_VmdGen_Form>(),
 				S.GET<RTC_VmdAct_Form>(),
 				S.GET<RTC_ListGen_Form>(),
-			});
-			mtForm.popoutAllowed = false;
+			})
+			{
+				popoutAllowed = false
+			};
 
 			S.GET<RTC_GeneralParameters_Form>().AnchorToPanel(pnGeneralParameters);
 			S.GET<RTC_MemoryDomains_Form>().AnchorToPanel(pnMemoryDomains);

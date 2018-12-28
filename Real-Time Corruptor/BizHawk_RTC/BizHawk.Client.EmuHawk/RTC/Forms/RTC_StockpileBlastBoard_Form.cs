@@ -50,9 +50,11 @@ namespace RTC
 				int row = Convert.ToInt32(Math.Floor(i / maxColumns));
 				int column = Convert.ToInt32(i % maxColumns);
 
-				Button btn = new Button();
-				btn.Text = sk.ToString();
-				btn.Tag = sk;
+				Button btn = new Button
+				{
+					Text = sk.ToString(),
+					Tag = sk
+				};
 				btn.Click += new EventHandler(ButtonClicked);
 				btn.Size = new Size(btnWidth, btnHeight);
 				btn.Location = new Point((horizontalMargin + (column * (btn.Size.Width + horizontalMargin))), (verticalMargin + (row * (btn.Size.Height + verticalMargin))));
@@ -74,8 +76,10 @@ namespace RTC
 		{
 			Button btn = (Button)sender;
 			StashKey sk = (StashKey)btn.Tag;
-			RTC_Command cmd = new RTC_Command(CommandType.BLAST);
-			cmd.blastlayer = sk.BlastLayer;
+			RTC_Command cmd = new RTC_Command(CommandType.BLAST)
+			{
+				blastlayer = sk.BlastLayer
+			};
 			RTC_Core.Multiplayer.SendCommand(cmd, false, true);
 		}
 

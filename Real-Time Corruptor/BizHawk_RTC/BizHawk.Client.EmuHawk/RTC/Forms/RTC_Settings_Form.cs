@@ -22,8 +22,10 @@ namespace RTC
 				S.GET<RTC_SettingsGeneral_Form>(),
 				S.GET<RTC_SettingsNetCore_Form>(),
 			//	S.GET<RTC_SettingsAestethics_Form>(),
-			});
-			lbForm.popoutAllowed = false;
+			})
+			{
+				popoutAllowed = false
+			};
 
 			lbForm.AnchorToPanel(pnListBoxForm);
 		}

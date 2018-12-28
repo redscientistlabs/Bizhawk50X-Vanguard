@@ -465,8 +465,10 @@ namespace RTC
 				client.EndConnect(result);
 				clientStream = client.GetStream();
 
-				streamReadingThread = new Thread(() => StoreCommands(clientStream));
-				streamReadingThread.Name = "CLIENT";
+				streamReadingThread = new Thread(() => StoreCommands(clientStream))
+				{
+					Name = "CLIENT"
+				};
 				streamReadingThread.Start();
 				isStreamReadingThreadAlive = true;
 			}
@@ -505,8 +507,10 @@ namespace RTC
 		{
 			try
 			{
-				streamReadingThread = new Thread(() => StoreCommands(null, dontUseNetworkStream));
-				streamReadingThread.Name = "SERVER";
+				streamReadingThread = new Thread(() => StoreCommands(null, dontUseNetworkStream))
+				{
+					Name = "SERVER"
+				};
 				streamReadingThread.Start();
 				isStreamReadingThreadAlive = true;
 			}
@@ -543,8 +547,10 @@ namespace RTC
 
 			if (CommandQueueProcessorTimer == null)
 			{
-				CommandQueueProcessorTimer = new System.Windows.Forms.Timer();
-				CommandQueueProcessorTimer.Interval = 5;
+				CommandQueueProcessorTimer = new System.Windows.Forms.Timer
+				{
+					Interval = 5
+				};
 				CommandQueueProcessorTimer.Tick += CommandQueueProcessorTimer_Tick;
 				CommandQueueProcessorTimer.Start();
 			}
@@ -576,8 +582,10 @@ namespace RTC
 
 			if (KeepAliveTimer == null)
 			{
-				KeepAliveTimer = new System.Windows.Forms.Timer();
-				KeepAliveTimer.Interval = 666;
+				KeepAliveTimer = new System.Windows.Forms.Timer
+				{
+					Interval = 666
+				};
 				KeepAliveTimer.Tick += KeepAliveTimer_Tick;
 				KeepAliveTimer.Start();
 			}
@@ -849,7 +857,7 @@ namespace RTC
 				if (maxtries % 100 == 0)
 				{
 					RTC_Core.SendCommandToBizhawk(new RTC_Command(CommandType.BOOP));
-					System.Windows.Forms.Application.DoEvents();
+					Application.DoEvents();
 				}
 
 				Thread.Sleep(2);

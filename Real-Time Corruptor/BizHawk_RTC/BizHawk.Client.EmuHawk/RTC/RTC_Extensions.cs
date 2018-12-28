@@ -259,7 +259,7 @@ namespace RTC
 
 		public static string MakeSafeFilename(this string filename, char replaceChar)
 		{
-			foreach (char c in System.IO.Path.GetInvalidFileNameChars())
+			foreach (char c in Path.GetInvalidFileNameChars())
 			{
 				filename = filename.Replace(c, replaceChar);
 			}
@@ -644,7 +644,10 @@ namespace RTC
 		#endregion CONTROL EXTENSIONS
 
 		#region PATH EXTENSIONS
-
+		//why not just use 
+		//System.IO.Path.GetFilename(String)
+		//System.IO.Path.GetFileNameWithoutExtension(String)
+		//System.IO.Path.GetDirectoryName(String) + "\"
 		public static string getShortFilenameFromPath(string longFilenamePath)
 		{
 			// >>> Will contain the character \ at the end
@@ -652,8 +655,7 @@ namespace RTC
 			//returns the filename from the full path
 			if (longFilenamePath.Contains("\\"))
 				return longFilenamePath.Substring(longFilenamePath.LastIndexOf("\\") + 1);
-			else
-				return longFilenamePath;
+			return longFilenamePath;
 		}
 
 		public static string removeFileExtension(string filename)
@@ -662,8 +664,7 @@ namespace RTC
 
 			if (filename.Contains("."))
 				return filename.Substring(0, filename.LastIndexOf("."));
-			else
-				return filename;
+			return filename;
 		}
 
 		public static string getLongDirectoryFromPath(string longFilenamePath)
@@ -673,8 +674,7 @@ namespace RTC
 			//returns the filename from the full path
 			if (longFilenamePath.Contains("\\"))
 				return longFilenamePath.Substring(0, longFilenamePath.LastIndexOf("\\") + 1);
-			else
-				return longFilenamePath;
+			return longFilenamePath;
 		}
 
 		#endregion PATH EXTENSIONS
@@ -974,8 +974,7 @@ namespace RTC
 			long randomOffset = RandomLong(rnd);
 			if (IsModuloBiased(randomOffset, numbersInRange))
 				return RandomLong(rnd, min, max); // Try again
-			else
-				return min + PositiveModuloOrZero(randomOffset, numbersInRange);
+			return min + PositiveModuloOrZero(randomOffset, numbersInRange);
 		}
 
 		public static long RandomLong(this Random rnd, long max)
@@ -991,8 +990,7 @@ namespace RTC
 
 		private static long PositiveModuloOrZero(long dividend, long divisor)
 		{
-			long mod;
-			Math.DivRem(dividend, divisor, out mod);
+			Math.DivRem(dividend, divisor, out long mod);
 			if (mod < 0)
 				mod += divisor;
 			return mod;
@@ -1118,8 +1116,7 @@ namespace RTC
 						// Be careful not to unshare rows unnecessarily.
 						// This could have severe performance repercussions.
 						DataGridViewRow dataGridViewRow = dataGridViewRows.SharedRow(rowIndex);
-						DataGridViewNumericUpDownCell dataGridViewCell = dataGridViewRow.Cells[this.Index] as DataGridViewNumericUpDownCell;
-						if (dataGridViewCell != null)
+						if (dataGridViewRow.Cells[this.Index] is DataGridViewNumericUpDownCell dataGridViewCell)
 						{
 							// Call the internal SetDecimalPlaces method instead of the property to avoid invalidation
 							// of each cell. The whole column is invalidated later in a single operation for better performance.
@@ -1163,8 +1160,7 @@ namespace RTC
 					for (int rowIndex = 0; rowIndex < rowCount; rowIndex++)
 					{
 						DataGridViewRow dataGridViewRow = dataGridViewRows.SharedRow(rowIndex);
-						DataGridViewNumericUpDownCell dataGridViewCell = dataGridViewRow.Cells[this.Index] as DataGridViewNumericUpDownCell;
-						if (dataGridViewCell != null)
+						if (dataGridViewRow.Cells[this.Index] is DataGridViewNumericUpDownCell dataGridViewCell)
 						{
 							dataGridViewCell.SetIncrement(rowIndex, value);
 						}
@@ -1211,8 +1207,7 @@ namespace RTC
 					for (int rowIndex = 0; rowIndex < rowCount; rowIndex++)
 					{
 						DataGridViewRow dataGridViewRow = dataGridViewRows.SharedRow(rowIndex);
-						DataGridViewNumericUpDownCell dataGridViewCell = dataGridViewRow.Cells[this.Index] as DataGridViewNumericUpDownCell;
-						if (dataGridViewCell != null)
+						if (dataGridViewRow.Cells[this.Index] is DataGridViewNumericUpDownCell dataGridViewCell)
 						{
 							dataGridViewCell.SetMaximum(rowIndex, value);
 						}
@@ -1263,8 +1258,7 @@ namespace RTC
 					for (int rowIndex = 0; rowIndex < rowCount; rowIndex++)
 					{
 						DataGridViewRow dataGridViewRow = dataGridViewRows.SharedRow(rowIndex);
-						DataGridViewNumericUpDownCell dataGridViewCell = dataGridViewRow.Cells[this.Index] as DataGridViewNumericUpDownCell;
-						if (dataGridViewCell != null)
+						if (dataGridViewRow.Cells[this.Index] is DataGridViewNumericUpDownCell dataGridViewCell)
 						{
 							dataGridViewCell.SetMinimum(rowIndex, value);
 						}
@@ -1315,8 +1309,7 @@ namespace RTC
 					for (int rowIndex = 0; rowIndex < rowCount; rowIndex++)
 					{
 						DataGridViewRow dataGridViewRow = dataGridViewRows.SharedRow(rowIndex);
-						DataGridViewNumericUpDownCell dataGridViewCell = dataGridViewRow.Cells[this.Index] as DataGridViewNumericUpDownCell;
-						if (dataGridViewCell != null)
+						if (dataGridViewRow.Cells[this.Index] is DataGridViewNumericUpDownCell dataGridViewCell)
 						{
 							dataGridViewCell.SetThousandsSeparator(rowIndex, value);
 						}
@@ -1362,8 +1355,7 @@ namespace RTC
 					for (int rowIndex = 0; rowIndex < rowCount; rowIndex++)
 					{
 						DataGridViewRow dataGridViewRow = dataGridViewRows.SharedRow(rowIndex);
-						DataGridViewNumericUpDownCell dataGridViewCell = dataGridViewRow.Cells[this.Index] as DataGridViewNumericUpDownCell;
-						if (dataGridViewCell != null)
+						if (dataGridViewRow.Cells[this.Index] is DataGridViewNumericUpDownCell dataGridViewCell)
 						{
 							dataGridViewCell.SetHexadecimal(rowIndex, value);
 						}
@@ -1485,12 +1477,14 @@ namespace RTC
 			// Create a thread specific NumericUpDown control used for the painting of the non-edited cells
 			if (paintingNumericUpDown == null)
 			{
-				paintingNumericUpDown = new NumericUpDownHexFix();
-				// Some properties only need to be set once for the lifetime of the control:
-				paintingNumericUpDown.BorderStyle = BorderStyle.None;
-				paintingNumericUpDown.Maximum = Decimal.MaxValue / 10;
-				paintingNumericUpDown.Minimum = Decimal.MinValue / 10;
-				paintingNumericUpDown.Hexadecimal = DATAGRIDVIEWNUMERICUPDOWNCELL_defaultHexadecimal;
+				paintingNumericUpDown = new NumericUpDownHexFix
+				{
+					// Some properties only need to be set once for the lifetime of the control:
+					BorderStyle = BorderStyle.None,
+					Maximum = Decimal.MaxValue / 10,
+					Minimum = Decimal.MinValue / 10,
+					Hexadecimal = DATAGRIDVIEWNUMERICUPDOWNCELL_defaultHexadecimal
+				};
 				//paintingNumericUpDown.DoubleBuffered(true);
 			}
 
@@ -1721,16 +1715,14 @@ namespace RTC
 				throw new InvalidOperationException("Cell is detached or its grid has no editing control.");
 			}
 
-			NumericUpDownHexFix numericUpDown = dataGridView.EditingControl as NumericUpDownHexFix;
-			if (numericUpDown != null)
+			if (dataGridView.EditingControl is NumericUpDownHexFix numericUpDown)
 			{
 				// Editing controls get recycled. Indeed, when a DataGridViewNumericUpDownCell cell gets edited
 				// after another DataGridViewNumericUpDownCell cell, the same editing control gets reused for
 				// performance reasons (to avoid an unnecessary control destruction and creation).
 				// Here the undo buffer of the TextBox inside the NumericUpDown control gets cleared to avoid
 				// interferences between the editing sessions.
-				TextBox textBox = numericUpDown.Controls[1] as TextBox;
-				if (textBox != null)
+				if (numericUpDown.Controls[1] is TextBox textBox)
 				{
 					textBox.ClearUndo();
 				}
@@ -1856,8 +1848,7 @@ namespace RTC
 		public override void InitializeEditingControl(int rowIndex, object initialFormattedValue, DataGridViewCellStyle dataGridViewCellStyle)
 		{
 			base.InitializeEditingControl(rowIndex, initialFormattedValue, dataGridViewCellStyle);
-			NumericUpDownHexFix numericUpDown = this.DataGridView.EditingControl as NumericUpDownHexFix;
-			if (numericUpDown != null)
+			if (this.DataGridView.EditingControl is NumericUpDownHexFix numericUpDown)
 			{
 				numericUpDown.BorderStyle = BorderStyle.None;
 				numericUpDown.DecimalPlaces = this.DecimalPlaces;
@@ -1866,8 +1857,7 @@ namespace RTC
 				numericUpDown.Minimum = this.Minimum;
 				numericUpDown.ThousandsSeparator = this.ThousandsSeparator;
 				numericUpDown.Hexadecimal = this.Hexadecimal;
-				string initialFormattedValueStr = initialFormattedValue as string;
-				if (initialFormattedValueStr == null)
+				if (!(initialFormattedValue is string initialFormattedValueStr))
 				{
 					numericUpDown.Text = string.Empty;
 				}
@@ -1946,8 +1936,7 @@ namespace RTC
 			{
 				return false;
 			}
-			DataGridViewNumericUpDownEditingControl numericUpDownEditingControl = this.DataGridView.EditingControl as DataGridViewNumericUpDownEditingControl;
-			return numericUpDownEditingControl != null && rowIndex == ((IDataGridViewEditingControl)numericUpDownEditingControl).EditingControlRowIndex;
+			return this.DataGridView.EditingControl is DataGridViewNumericUpDownEditingControl numericUpDownEditingControl && rowIndex == ((IDataGridViewEditingControl)numericUpDownEditingControl).EditingControlRowIndex;
 		}
 
 		/// <summary>
@@ -2289,7 +2278,7 @@ namespace RTC
 	internal class DataGridViewNumericUpDownEditingControl : NumericUpDownHexFix, IDataGridViewEditingControl
 	{
 		// Needed to forward keyboard messages to the child TextBox control.
-		[System.Runtime.InteropServices.DllImport("USER32.DLL", CharSet = System.Runtime.InteropServices.CharSet.Auto)]
+		[DllImport("USER32.DLL", CharSet = System.Runtime.InteropServices.CharSet.Auto)]
 		private static extern IntPtr SendMessage(IntPtr hWnd, int msg, IntPtr wParam, IntPtr lParam);
 		
 		// The grid that owns this editing control
@@ -2428,8 +2417,7 @@ namespace RTC
 			{
 				case Keys.Right:
 					{
-						TextBox textBox = this.Controls[1] as TextBox;
-						if (textBox != null)
+						if (this.Controls[1] is TextBox textBox)
 						{
 							// If the end of the selection is at the end of the string,
 							// let the DataGridView treat the key message
@@ -2444,8 +2432,7 @@ namespace RTC
 
 				case Keys.Left:
 					{
-						TextBox textBox = this.Controls[1] as TextBox;
-						if (textBox != null)
+						if (this.Controls[1] is TextBox textBox)
 						{
 							// If the end of the selection is at the begining of the string
 							// or if the entire text is selected and we did not start editing,
@@ -2481,8 +2468,7 @@ namespace RTC
 				case Keys.End:
 					{
 						// Let the grid handle the key if the entire text is selected.
-						TextBox textBox = this.Controls[1] as TextBox;
-						if (textBox != null)
+						if (this.Controls[1] is TextBox textBox)
 						{
 							if (textBox.SelectionLength != textBox.Text.Length)
 							{
@@ -2495,8 +2481,7 @@ namespace RTC
 				case Keys.Delete:
 					{
 						// Let the grid handle the key if the carret is at the end of the text.
-						TextBox textBox = this.Controls[1] as TextBox;
-						if (textBox != null)
+						if (this.Controls[1] is TextBox textBox)
 						{
 							if (textBox.SelectionLength > 0 ||
 								textBox.SelectionStart < textBox.Text.Length)
@@ -2534,8 +2519,7 @@ namespace RTC
 		/// </summary>
 		public virtual void PrepareEditingControlForEdit(bool selectAll)
 		{
-			TextBox textBox = this.Controls[1] as TextBox;
-			if (textBox != null)
+			if (this.Controls[1] is TextBox textBox)
 			{
 				if (selectAll)
 				{
@@ -2644,8 +2628,7 @@ namespace RTC
 		/// </summary>
 		protected override bool ProcessKeyEventArgs(ref Message m)
 		{
-			TextBox textBox = this.Controls[1] as TextBox;
-			if (textBox != null)
+			if (this.Controls[1] is TextBox textBox)
 			{
 				SendMessage(textBox.Handle, m.Msg, m.WParam, m.LParam);
 				return true;
@@ -2685,7 +2668,7 @@ namespace RTC
 		{
 			base.Minimum = 0;
 			base.Maximum = UInt64.MaxValue;
-			this.ValueChanged += new EventHandler(OnValueChanged);
+			this.ValueChanged += OnValueChanged;
 		}
 
 		[DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
@@ -2780,11 +2763,11 @@ namespace RTC
 			var sb = new StringBuilder();
 			var headers = dgv.Columns.Cast<DataGridViewColumn>();
 
-			sb.AppendLine(string.Join(System.Globalization.CultureInfo.CurrentCulture.TextInfo.ListSeparator, headers.Select(column => "\"" + column.HeaderText + "\"").ToArray()));
+			sb.AppendLine(string.Join(CultureInfo.CurrentCulture.TextInfo.ListSeparator, headers.Select(column => "\"" + column.HeaderText + "\"").ToArray()));
 			foreach (DataGridViewRow row in dgv.Rows)
 			{
 				var cells = row.Cells.Cast<DataGridViewCell>();
-				sb.AppendLine(string.Join(System.Globalization.CultureInfo.CurrentCulture.TextInfo.ListSeparator, cells.Select(cell => "\"" + cell.Value + "\"").ToArray()));
+				sb.AppendLine(string.Join(CultureInfo.CurrentCulture.TextInfo.ListSeparator, cells.Select(cell => "\"" + cell.Value + "\"").ToArray()));
 			}
 			return sb.ToString();
 		}
@@ -2819,8 +2802,7 @@ namespace RTC
 
 				if (innerDico.ContainsKey(key))
 					return innerDico[key];
-				else
-					return default(T2);
+				return default(T2);
 			}
 
 			set
@@ -2870,15 +2852,17 @@ namespace RTC
 		}
 	}
 
-	public class JsonHelper
+	public static class JsonHelper
 	{
 		public static void Serialize(object value, Stream s, Formatting f = Formatting.None)
 		{
 			using (StreamWriter writer = new StreamWriter(s))
 			using (JsonTextWriter jsonWriter = new JsonTextWriter(writer))
 			{
-				JsonSerializer ser = new JsonSerializer();
-				ser.Formatting = f;
+				JsonSerializer ser = new JsonSerializer
+				{
+					Formatting = f
+				};
 				ser.Serialize(jsonWriter, value);
 				jsonWriter.Flush();
 			}
