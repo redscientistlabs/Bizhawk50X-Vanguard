@@ -17,11 +17,9 @@ namespace RTC
 
 			long safeAddress = address - (address % 4); //32-bit trunk
 
-
 			MemoryDomainProxy mdp = RTC_MemoryDomains.GetProxy(domain, safeAddress);
 			if (mdp == null)
 				return null;
-
 
 			try
 			{

@@ -83,13 +83,13 @@ namespace RTC
 					long randomValue = -1;
 					switch (precision)
 					{
-						case (1):
+						case 1:
 							randomValue = RTC_Core.RND.RandomLong(MinValue8Bit, MaxValue8Bit);
 							break;
-						case (2):
+						case 2:
 							randomValue = RTC_Core.RND.RandomLong(MinValue16Bit, MaxValue16Bit);
 							break;
-						case (4):
+						case 4:
 							randomValue = RTC_Core.RND.RandomLong(MinValue32Bit, MaxValue32Bit);
 							break;
 					}
@@ -109,15 +109,12 @@ namespace RTC
 					return new BlastUnit(value, domain, safeAddress, precision, mdp.BigEndian, 0, 1);
 				}
 				//Tilt. Backup with a + or -
-				else
+				BlastUnit bu = new BlastUnit(StoreType.ONCE, ActionTime.GENERATE, domain, safeAddress, domain, safeAddress, precision, mdp.BigEndian)
 				{
-					BlastUnit bu = new BlastUnit(StoreType.ONCE, ActionTime.GENERATE, domain, safeAddress, domain, safeAddress, precision, mdp.BigEndian);
-					if (type == NightmareType.ADD)
-						bu.TiltValue = 1;
-					else
-						bu.TiltValue = 0;
-					return bu;
-				}
+					TiltValue = type == NightmareType.ADD ? 1 : (System.Numerics.BigInteger)0
+				};
+
+				return bu;
 			}
 			catch (Exception ex)
 			{
