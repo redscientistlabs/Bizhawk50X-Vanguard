@@ -54,7 +54,7 @@ namespace StandaloneRTC
 				if (RTC.S.GET<RTC.RTC_Core_Form>().pbAutoKillSwitchTimeout.Value == RTC.S.GET<RTC.RTC_Core_Form>().pbAutoKillSwitchTimeout.Maximum)
 				{
 					//this.Focused = false;
-					RTC.S.GET<RTC.RTC_ConnectionStatus_Form>().BtnStartEmuhawkDetached_Click(null, null);
+					RTC.S.GET<RTC.RTC_ConnectionStatus_Form>().btnStartEmuhawkDetached_Click(null, null);
 					//this.Focused = false;
 				}
 
