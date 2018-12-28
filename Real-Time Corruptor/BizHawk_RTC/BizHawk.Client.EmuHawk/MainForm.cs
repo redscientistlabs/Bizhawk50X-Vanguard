@@ -3033,6 +3033,10 @@ namespace BizHawk.Client.EmuHawk
 
 				Global.CheatList.Pulse();
 
+				//Step for frame 0. Note the true on the end. We handle doing nothing for any step after the first one in the method itself
+				RTC.RTC_Hooks.CPU_STEP(isRewinding, isFastForwarding, true);
+
+
 				if (IsLagFrame && Global.Config.AutofireLagFrames)
 				{
 					Global.AutoFireController.IncrementStarts();

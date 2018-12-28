@@ -176,6 +176,7 @@ namespace RTC
 			loadGameToken = RTC_NetCore.HugeOperationStart();
 
 			RTC_StepActions.ClearStepBlastUnits();
+			CPU_STEP_Count = 0;
 		}
 
 		static string lastGameName = "";
