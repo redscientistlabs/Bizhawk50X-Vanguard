@@ -180,11 +180,11 @@ namespace RTC
 
 		private void cbValueList_SelectedIndexChanged(object sender, EventArgs e)
 		{
-			RTCSpec.Update(RTCSPEC.CUSTOM_LOOP.ToString(), (string)cbValueList.SelectedValue);
+			RTCSpec.Update(RTCSPEC.CUSTOM_VALUELISTHASH.ToString(), (string)cbValueList.SelectedValue);
 		}
 		private void cbLimiterList_SelectedIndexChanged(object sender, EventArgs e)
 		{
-			RTCSpec.Update(RTCSPEC.CUSTOM_LOOP.ToString(), (string)cbLimiterList.SelectedValue);
+			RTCSpec.Update(RTCSPEC.CUSTOM_LIMITERLISTHASH.ToString(), (string)cbLimiterList.SelectedValue);
 		}
 		private void limiterTime_CheckedChanged(object sender, EventArgs e)
 		{
@@ -219,7 +219,7 @@ namespace RTC
 
 		private void nmTilt_ValueChanged(object sender, EventArgs e)
 		{
-			RTC_Unispec.RTCSpec.Update(RTCSPEC.CUSTOM_LIFETIME.ToString(), (BigInteger)nmTilt.Value);
+			RTC_Unispec.RTCSpec.Update(RTCSPEC.CUSTOM_TILTVALUE.ToString(), (BigInteger)nmTilt.Value);
 		}
 
 		public void UpdateMinMaxBoxes(int precision)

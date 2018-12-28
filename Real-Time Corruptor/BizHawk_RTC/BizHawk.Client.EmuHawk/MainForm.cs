@@ -126,7 +126,8 @@ namespace BizHawk.Client.EmuHawk
 			Global.Game = GameInfo.NullInstance;
 			
 			//RTC_Hijack - Check for manually triggered console
-			if (Global.Config.ShowLogWindow || (bool)RTC.RTC_Unispec.RTCSpec[RTC.RTCSPEC.HOOKS_SHOWCONSOLE.ToString()])
+			bool showConsole = (bool)(RTC.RTC_Unispec.RTCSpec?[RTC.RTCSPEC.HOOKS_SHOWCONSOLE.ToString()] ?? false);
+			if (Global.Config.ShowLogWindow || showConsole)
 			{
 				LogConsole.ShowConsole();
 				DisplayLogWindowMenuItem.Checked = true;

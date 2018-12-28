@@ -50,12 +50,12 @@ namespace RTC
 			rtcSpecTemplate[RTCSPEC.NIGHTMARE_TYPE.ToString()] = NightmareAlgo.RANDOM;
 
 			rtcSpecTemplate[RTCSPEC.NIGHTMARE_MINVALUE8BIT.ToString()]  = 0L;
-			rtcSpecTemplate[RTCSPEC.NIGHTMARE_MAXVALUE16BIT.ToString()] = 0L;
-			rtcSpecTemplate[RTCSPEC.NIGHTMARE_MAXVALUE32BIT.ToString()] = 0L;
+			rtcSpecTemplate[RTCSPEC.NIGHTMARE_MINVALUE16BIT.ToString()] = 0L;
+			rtcSpecTemplate[RTCSPEC.NIGHTMARE_MINVALUE32BIT.ToString()] = 0L;
 
 			rtcSpecTemplate[RTCSPEC.NIGHTMARE_MAXVALUE8BIT.ToString()]  = 0xFFL;
-			rtcSpecTemplate[RTCSPEC.NIGHTMARE_MINVALUE16BIT.ToString()] = 0xFFFFL;
-			rtcSpecTemplate[RTCSPEC.NIGHTMARE_MINVALUE32BIT.ToString()] = 0xFFFFFFFFL;
+			rtcSpecTemplate[RTCSPEC.NIGHTMARE_MAXVALUE16BIT.ToString()] = 0xFFFFL;
+			rtcSpecTemplate[RTCSPEC.NIGHTMARE_MAXVALUE32BIT.ToString()] = 0xFFFFFFFFL;
 
 
 			rtcSpecTemplate[RTCSPEC.DISTORTION_DELAY.ToString()] = 50;

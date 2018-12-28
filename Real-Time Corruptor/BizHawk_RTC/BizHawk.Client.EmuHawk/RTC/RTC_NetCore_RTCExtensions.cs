@@ -79,11 +79,13 @@ namespace RTC
 
 
 				case CommandType.REMOTE_PUSHRTCSPECUPDATE:
-					RTC_Unispec.RTCSpec.Update((PartialSpec)cmd.objectValue, false);
+					Console.WriteLine("RTCSpec was null when update pushed!");
+					RTC_Unispec.RTCSpec?.Update((PartialSpec)cmd.objectValue, false);
 					break;
 
 				case CommandType.REMOTE_PUSHEMUSPECUPDATE:
-					RTC_Unispec.EmuSpec.Update((PartialSpec)cmd.objectValue, false);
+					Console.WriteLine("Emuspec was null when update pushed!");
+					RTC_Unispec.EmuSpec?.Update((PartialSpec)cmd.objectValue, false);
 					break;
 
 
@@ -497,6 +499,8 @@ namespace RTC
 					if (!RTC_NetCore.NetCoreCommandSynclock)
 					{
 						RTC_NetCore.NetCoreCommandSynclock = true;
+						RTC_Unispec.RTCSpec.Update(RTCSPEC.STEP_RUNBEFORE.ToString(), true);
+
 
 						bool isload = S.GET<RTC_GlitchHarvester_Form>().cbAutoLoadState.Checked;
 						S.GET<RTC_GlitchHarvester_Form>().cbAutoLoadState.Checked = false;
@@ -524,6 +528,7 @@ namespace RTC
 					break;
 
 				case CommandType.REMOTE_HOTKEY_BLASTRAWSTASH:
+					RTC_Unispec.RTCSpec.Update(RTCSPEC.STEP_RUNBEFORE.ToString(), true);
 					RTC_Core.SendCommandToBizhawk(new RTC_Command(CommandType.ASYNCBLAST));
 					S.GET<RTC_GlitchHarvester_Form>().btnSendRaw_Click(null, null);
 					break;

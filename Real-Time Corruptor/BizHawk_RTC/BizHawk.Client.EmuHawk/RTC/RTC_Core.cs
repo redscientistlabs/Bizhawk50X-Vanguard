@@ -220,9 +220,15 @@ namespace RTC
 			{
 				RTC_Unispec.RegisterRTCSpec();
 
-			//	LogConsole.CreateConsole();
-			//	if (!(bool)RTCSpec[Spec.HOOKS_SHOWCONSOLE.ToString()])
-			//		LogConsole.HideConsole();
+				LogConsole.CreateConsole();
+				if (!(bool)RTCSpec[RTCSPEC.HOOKS_SHOWCONSOLE.ToString()])
+					LogConsole.HideConsole();
+			}
+
+			//Register the RTC spec in attached mode
+			if (!RTC_Core.isStandalone && !RTC_Hooks.isRemoteRTC)
+			{
+				RTC_Unispec.RegisterRTCSpec();
 			}
 
 			//Timed releases. Only for exceptionnal cases.
@@ -308,6 +314,7 @@ namespace RTC
 				S.GET<RTC_SettingsGeneral_Form>().cbAllowCrossCoreCorruption.Checked = RTC_Params.IsParamSet("ALLOW_CROSS_CORE_CORRUPTION");
 				S.GET<RTC_SettingsGeneral_Form>().cbDontCleanAtQuit.Checked = RTC_Params.IsParamSet("DONT_CLEAN_SAVESTATES_AT_QUIT");
 			}
+
 
 			//Load and initialize Hotkeys
 			//RTC_Hotkeys.InitializeHotkeySystem();

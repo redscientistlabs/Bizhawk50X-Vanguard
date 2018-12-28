@@ -999,6 +999,8 @@ namespace RTC
 		{
 			get
 			{
+				if (Value == null)
+					return String.Empty;
 				return BitConverter.ToString(this.Value).Replace("-", string.Empty);
 			}
 			set
@@ -1263,8 +1265,7 @@ namespace RTC
 			{
 				throw new Exception("The BlastUnit apply() function threw up. \n" +
 					"This is an RTC error, so you should probably send this to the RTC devs.\n" +
-					"If you know the steps to reproduce this error it would be greatly appreciated.\n\n" +
-				ex);
+					"If you know the steps to reproduce this error it would be greatly appreciated.\n\n", ex);
 			}
 
 			return;
@@ -1285,7 +1286,7 @@ namespace RTC
 				value[i] = mi.PeekByte(SourceAddress + i);
 			}
 
-			RTC_Extensions.AddValueToByteArray(value, TiltValue, mi.BigEndian);
+			value = RTC_Extensions.AddValueToByteArray(value, TiltValue, mi.BigEndian);
 
 			Working.StoreData.Enqueue(value);
 		}

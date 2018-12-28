@@ -482,7 +482,6 @@ namespace RTC
 			switch (cbBlastType.SelectedItem.ToString())
 			{
 				case "RANDOM":
-
 					RTCSpec.Update(RTCSPEC.NIGHTMARE_TYPE.ToString(), NightmareAlgo.RANDOM);
 					nmMinValueNightmare.Enabled = true;
 					nmMaxValueNightmare.Enabled = true;

@@ -101,9 +101,11 @@ namespace RTC
 				//Tilt. Backup with a + or -
 				else
 				{
-					BlastUnit bu = new BlastUnit(StoreType.ONCE, ActionTime.GENERATE, domain, safeAddress, domain, safeAddress, precision, mdp.BigEndian);
+					BlastUnit bu = new BlastUnit(StoreType.ONCE, ActionTime.PREEXECUTE, domain, safeAddress, domain, safeAddress, precision, mdp.BigEndian);
 					if (type == NightmareType.ADD)
 						bu.TiltValue = 1;
+					else if (type == NightmareType.SUBTRACT)
+						bu.TiltValue = -1;
 					else
 						bu.TiltValue = 0;
 					return bu;
@@ -111,7 +113,7 @@ namespace RTC
 			}
 			catch (Exception ex)
 			{
-				throw new Exception("Nightmare Engine GenerateUnit Threw Up" + ex);
+				throw new Exception("Nightmare Engine GenerateUnit Threw Up", ex);
 			}
 		}
 	}

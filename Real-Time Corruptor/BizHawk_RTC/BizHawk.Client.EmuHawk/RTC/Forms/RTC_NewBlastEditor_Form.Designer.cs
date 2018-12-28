@@ -828,6 +828,8 @@
             // 
             // upDownSourceAddress
             // 
+            this.upDownSourceAddress.Font = new System.Drawing.Font("Consolas", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel);
+            this.upDownSourceAddress.Hexadecimal = true;
             this.upDownSourceAddress.Location = new System.Drawing.Point(95, 54);
             this.upDownSourceAddress.Name = "upDownSourceAddress";
             this.upDownSourceAddress.Size = new System.Drawing.Size(109, 22);

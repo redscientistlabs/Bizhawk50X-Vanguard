@@ -210,7 +210,7 @@ namespace RTC
 			//prepare memory domains in advance on bizhawk side
 			RTC_MemoryDomains.RefreshDomains(false);
 
-			if (RTC_Unispec.EmuSpec[EMUSPEC.STOCKPILE_CURRENTGAMENAME.ToString()] != lastGameName)
+			if (RTC_Unispec.EmuSpec[EMUSPEC.STOCKPILE_CURRENTGAMENAME.ToString()].ToString() != lastGameName)
 			{
 				RTC_Core.SendCommandToRTC(new RTC_Command(CommandType.REMOTE_EVENT_LOADGAMEDONE_NEWGAME));
 			}
@@ -340,7 +340,6 @@ namespace RTC
 
 				case "GH Just Corrupt":
 					watch = System.Diagnostics.Stopwatch.StartNew();
-					RTC_Unispec.RTCSpec.Update(RTCSPEC.STEP_RUNBEFORE.ToString(), true);
 					RTC_Core.SendCommandToRTC(new RTC_Command(CommandType.REMOTE_HOTKEY_GHCORRUPT));
 					break;
 
@@ -363,7 +362,6 @@ namespace RTC
 					break;
 
 				case "Blast+RawStash":
-					RTC_Unispec.RTCSpec.Update(RTCSPEC.STEP_RUNBEFORE.ToString(), true);
 					RTC_Core.SendCommandToRTC(new RTC_Command(CommandType.REMOTE_HOTKEY_BLASTRAWSTASH));
 					break;
 
