@@ -36,11 +36,10 @@ namespace RTC
 		{
 			if (disableRTC || Global.Emulator is NullEmulator)
 				return;
-
-
 			
 			//Return out if it's being called from before the step and we're not on frame 0. If we're on frame 0, then we go as normal
-			if (isBeforeStep && CPU_STEP_Count != 0 && (bool)RTC_Unispec.RTCSpec[RTCSPEC.STEP_RUNBEFORE.ToString()] == false)
+			//If we can't get runbefore, just assume we don't want to run before
+			if (isBeforeStep && CPU_STEP_Count != 0 && ((bool)(RTC_Unispec.RTCSpec?[RTCSPEC.STEP_RUNBEFORE.ToString()] ?? false)) == false)
 				return;
 
 			isNormalAdvance = !(isRewinding || isFastForwarding);
@@ -279,6 +278,7 @@ namespace RTC
 		public static void LOAD_SAVESTATE_END()
 		{
 			if (disableRTC) return;
+			
 
 			RTC_NetCore.HugeOperationEnd(loadSavestateToken);
 		}

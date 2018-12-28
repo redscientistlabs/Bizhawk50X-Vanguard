@@ -232,7 +232,11 @@ namespace RTC
 						RTC_MemoryDomains.RefreshDomains(false);
 
 						if (runBlastLayer)
+						{
 							RTC_Core.SendCommandToBizhawk(new RTC_Command(CommandType.BLAST) { blastlayer = sk.BlastLayer, isReplay = true });
+							RTC_Hooks.CPU_STEP(false, false, true);
+						}
+							
 
 						cmdBack = new RTC_Command(CommandType.RETURNVALUE);
 						cmdBack.objectValue = returnValue;

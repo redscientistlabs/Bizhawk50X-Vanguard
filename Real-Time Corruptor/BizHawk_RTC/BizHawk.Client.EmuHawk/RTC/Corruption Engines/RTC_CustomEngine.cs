@@ -136,7 +136,7 @@ namespace RTC
 					bu.LimiterListHash = LimiterListHash;
 
 				//Limiter handling
-				if (LimiterTime == ActionTime.GENERATE)
+				if (LimiterTime == ActionTime.IMMEDIATE)
 				{
 					if (LimiterInverted)
 					{

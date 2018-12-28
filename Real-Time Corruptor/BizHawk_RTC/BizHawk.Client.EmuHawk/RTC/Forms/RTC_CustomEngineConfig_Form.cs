@@ -192,7 +192,7 @@ namespace RTC
 				RTCSpec.Update(RTCSPEC.CUSTOM_LIMITERTIME.ToString(), ActionTime.NONE);
 
 			else if (rbLimiterGenerate.Checked)
-				RTCSpec.Update(RTCSPEC.CUSTOM_LIMITERTIME.ToString(), ActionTime.GENERATE);
+				RTCSpec.Update(RTCSPEC.CUSTOM_LIMITERTIME.ToString(), ActionTime.IMMEDIATE);
 
 			else if (rbLimiterFirstExecute.Checked)
 				RTCSpec.Update(RTCSPEC.CUSTOM_LIMITERTIME.ToString(), ActionTime.PREEXECUTE);

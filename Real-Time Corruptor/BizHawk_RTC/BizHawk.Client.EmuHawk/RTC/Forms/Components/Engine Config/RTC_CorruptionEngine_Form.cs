@@ -504,6 +504,7 @@ namespace RTC
 		private void btnOpenCustomEngine_Click(object sender, EventArgs e)
 		{
 			S.GET<RTC_CustomEngineConfig_Form>().Show();
+			S.GET<RTC_CustomEngineConfig_Form>().Focus();
 		}
 	}
 }

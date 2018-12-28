@@ -228,6 +228,7 @@ namespace RTC
 			//Register the RTC spec in attached mode
 			if (!RTC_Core.isStandalone && !RTC_Hooks.isRemoteRTC)
 			{
+
 				RTC_Unispec.RegisterRTCSpec();
 			}
 
