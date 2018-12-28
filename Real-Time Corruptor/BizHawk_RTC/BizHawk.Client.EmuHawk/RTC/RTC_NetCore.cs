@@ -386,7 +386,8 @@ namespace RTC
 				return;
 			}
 
-			expectingSomeone &= stayConnected;
+			if (!stayConnected)
+				expectingSomeone = false;
 
 			if (expectedSide == NetworkSide.CLIENT)
 				if (stayConnected)
@@ -440,7 +441,8 @@ namespace RTC
 				}
 			}
 
-			supposedToBeConnected &= stayConnected;
+			if (!stayConnected)
+				supposedToBeConnected = false;
 		}
 
 		private bool StartClient(bool clientDefaultReconnect = false)
@@ -486,7 +488,8 @@ namespace RTC
 					client = null;
 				}
 
-				supposedToBeConnected |= clientDefaultReconnect;
+				if (clientDefaultReconnect)
+					supposedToBeConnected = true;
 
 				if (!supposedToBeConnected)
 					MessageBox.Show("Could not connect to Server (Server did not respond in time)\n\n" + ex.ToString());
@@ -587,7 +590,8 @@ namespace RTC
 				KeepAliveTimer.Start();
 			}
 
-			expectingSomeone &= _side != NetworkSide.SERVER;
+			if (_side == NetworkSide.SERVER)
+				expectingSomeone = false;
 
 			supposedToBeConnected = true;
 

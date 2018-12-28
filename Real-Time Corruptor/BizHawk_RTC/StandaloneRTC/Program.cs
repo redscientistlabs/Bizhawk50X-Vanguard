@@ -21,21 +21,13 @@ namespace StandaloneRTC
 
 			var processes = Process.GetProcesses().Select(it => $"{it.ProcessName.ToUpper()}").OrderBy(x => x).ToArray();
 
-            int nbInstances = 0;
-			//this could be replaced with linq expression
-			//I replaced this with explicit type because it should always be a string
-            foreach (string prc in processes)
-                if (prc == "STANDALONERTC")
-                    nbInstances++;
+			int nbInstances = processes.Count(prc => prc == "STANDALONERTC");
 
-           
-            if (nbInstances > 1)
-            {
-                MessageBox.Show("RTC cannot run more than once at the time in Detached mode.\nLoading aborted","StandaloneRTC.exe", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                return;
-            }
-
-
+			if (nbInstances > 1)
+			{
+				MessageBox.Show("RTC cannot run more than once at the time in Detached mode.\nLoading aborted", "StandaloneRTC.exe", MessageBoxButtons.OK, MessageBoxIcon.Error);
+				return;
+			}
 
 			Application.EnableVisualStyles();
 			Application.SetCompatibleTextRenderingDefault(false);
