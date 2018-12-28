@@ -54,7 +54,8 @@ namespace RTC
 		{
 			InitializeComponent();
 
-			pnAutoKillSwitch.Visible |= RTC_Core.isStandalone;
+			if (RTC_Core.isStandalone)
+				pnAutoKillSwitch.Visible = true;
 		}
 
 		public void btnManualBlast_Click(object sender, EventArgs e)
@@ -338,7 +339,8 @@ namespace RTC
 
 					RemoveGhostBoxes();
 
-					pnCrashProtection.Visible |= !RTC_Core.FirstConnection;
+					if (!RTC_Core.FirstConnection)
+						pnCrashProtection.Visible = true;
 				}
 			}
 		}
@@ -374,7 +376,8 @@ namespace RTC
 			}
 			finally
 			{
-				btnGpJumpBack.Visible |= RTC_StockpileManager.AllBackupStates.Count != 0;
+				if (RTC_StockpileManager.AllBackupStates.Count != 0)
+					btnGpJumpBack.Visible = true;
 			}
 		}
 
