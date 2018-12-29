@@ -101,10 +101,10 @@ namespace RTC
 		private void storeAddress_CheckedChanged(object sender, EventArgs e)
 		{
 			if (rbStoreRandom.Checked)
-				RTCSpec.Update(RTCSPEC.CUSTOM_STORETIME.ToString(), CustomStoreAddress.RANDOM);
+				RTCSpec.Update(RTCSPEC.CUSTOM_STOREADDRESS.ToString(), CustomStoreAddress.RANDOM);
 
 			else if (rbStoreSame.Checked)
-				RTCSpec.Update(RTCSPEC.CUSTOM_STORETIME.ToString(), CustomStoreAddress.SAME);
+				RTCSpec.Update(RTCSPEC.CUSTOM_STOREADDRESS.ToString(), CustomStoreAddress.SAME);
 		}
 
 
