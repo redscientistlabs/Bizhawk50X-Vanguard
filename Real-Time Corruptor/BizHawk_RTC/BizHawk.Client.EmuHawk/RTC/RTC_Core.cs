@@ -38,8 +38,8 @@ namespace RTC
 		public static string listsDir = rtcDir + "\\LISTS\\";
 
 		//Engine Values
-		public static BindingList<Object> LimiterListBindingSource = new BindingList<Object>();
-		public static BindingList<Object> ValueListBindingSource = new BindingList<Object>();
+		public static BindingList<ComboBoxItem<String>> LimiterListBindingSource = new BindingList<ComboBoxItem<String>>();
+		public static BindingList<ComboBoxItem<String>> ValueListBindingSource = new BindingList<ComboBoxItem<String>>();
 
 		public static bool AllowCrossCoreCorruption = false;
 
@@ -1022,8 +1022,6 @@ namespace RTC
 
 		public static void SetRTCColor(Color color, Form form = null)
 		{
-			//Recolors all the RTC Forms using the general skin color
-
 			List<Control> allControls = new List<Control>();
 
 			if (form == null)
@@ -1065,9 +1063,8 @@ namespace RTC
 			S.GET<RTC_GlitchHarvester_Form>().dgvStockpile.BackgroundColor = color;
 			
 
-			//TODO
-			//beForm.dgvBlastLayer.BackgroundColor = color;
-
+			
+			S.GET<RTC_NewBlastEditor_Form>().dgvBlastEditor.BackgroundColor = color;
 			S.GET<RTC_BlastGenerator_Form>().dgvBlastGenerator.BackgroundColor = color;
 
 			foreach (Control c in darkColorControls)

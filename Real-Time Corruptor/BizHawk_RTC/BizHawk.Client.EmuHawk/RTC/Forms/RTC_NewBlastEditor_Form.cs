@@ -89,7 +89,7 @@ namespace RTC
 			Lifetime,
 			Loop,
 			LimiterTime,
-			LimiterHash,
+			LimiterListHash,
 			InvertLimiter,
 			StoreTime,
 			StoreType,
@@ -106,6 +106,7 @@ namespace RTC
 			try
 			{
 				InitializeComponent();
+
 				dgvBlastEditor.DataError += dgvBlastLayer_DataError;
 				dgvBlastEditor.AutoGenerateColumns = false;
 				dgvBlastEditor.SelectionChanged += dgvBlastEditor_SelectionChanged;
@@ -144,6 +145,11 @@ namespace RTC
 			{
 				MessageBox.Show(ex.ToString());
 			}
+		}
+
+		private void RTC_NewBlastEditorForm_Load(object sender, EventArgs e)
+		{
+			RTC_Core.SetRTCColor(RTC_Core.GeneralColor, this);
 		}
 
 		private void dgvBlastEditor_CellClick(object sender, DataGridViewCellEventArgs e)
@@ -199,13 +205,14 @@ namespace RTC
 		private void CbLimiterList_Validated(object sender, EventArgs e)
 		{
 			foreach (DataGridViewRow row in dgvBlastEditor.SelectedRows)
-				row.Cells[buProperty.LimiterHash.ToString()].Value = cbLimiterList.SelectedItem;
+				row.Cells[buProperty.LimiterListHash.ToString()].Value = ((ComboBoxItem<String>)(cbLimiterList.SelectedItem)).Value; // We gotta use the value
 			UpdateBottom();
 		}
 
 		private void CbBigEndian_Validated(object sender, EventArgs e)
 		{
 			//Big Endian isn't available in the DGV so we operate on the actual BU then refresh
+			//Todo - change this?
 			foreach (DataGridViewRow row in dgvBlastEditor.SelectedRows)
 			{
 				(row.DataBoundItem as BlastUnit).BigEndian = cbBigEndian.Checked;
@@ -352,6 +359,8 @@ namespace RTC
 			if (dgvBlastEditor.SelectedRows.Count > 0)
 			{
 				var lastRow = dgvBlastEditor.SelectedRows[dgvBlastEditor.SelectedRows.Count - 1];
+
+				/*
 				cbDomain.SelectedItem = (String)(lastRow.Cells[buProperty.Domain.ToString()].Value);
 				cbEnabled.Checked = (bool)(lastRow.Cells[buProperty.isEnabled.ToString()].Value);
 				cbLocked.Checked = (bool)(lastRow.Cells[buProperty.isLocked.ToString()].Value);
@@ -370,7 +379,30 @@ namespace RTC
 				cbSource.SelectedItem = (BlastUnitSource)(lastRow.Cells[buProperty.Source.ToString()].Value);
 				upDownSourceAddress.Value = (long)(lastRow.Cells[buProperty.SourceAddress.ToString()].Value);
 
-				tbTiltValue.Text = (lastRow.DataBoundItem as BlastUnit).TiltValue.ToString();
+				tbTiltValue.Text = (lastRow.DataBoundItem as BlastUnit).TiltValue.ToString();*/
+				BlastUnit bu = (BlastUnit)lastRow.DataBoundItem;
+
+				cbDomain.SelectedItem = bu.Domain;
+				cbEnabled.Checked = bu.IsEnabled;
+				cbLocked.Checked = bu.IsLocked;
+				upDownAddress.Value = bu.Address;
+				upDownPrecision.Value = bu.Precision;
+				tbValue.Text = bu.ValueString;
+				upDownExecuteFrame.Value = bu.ExecuteFrame;
+				upDownLifetime.Value = bu.Lifetime;
+				cbLoop.Checked = bu.Loop;
+				cbLimiterTime.SelectedItem = bu.LimiterTime;
+
+				cbLimiterList.SelectedItem = RTC_Core.LimiterListBindingSource.FirstOrDefault(x => x.Value == bu.LimiterListHash);
+
+				cbInvertLimiter.Checked = bu.InvertLimiter;
+				cbStoreTime.SelectedItem = bu.StoreTime;
+				cbStoreType.SelectedItem = bu.StoreType;
+				cbSourceDomain.SelectedItem = bu.SourceDomain;
+				cbSource.SelectedItem = bu.Source;
+				upDownSourceAddress.Value = bu.SourceAddress;
+
+				tbTiltValue.Text = bu.TiltValue.ToString();
 			}
 		}
 
@@ -401,7 +433,10 @@ namespace RTC
 			var storeType = Enum.GetValues(typeof(StoreType));
 			var blastUnitSource = Enum.GetValues(typeof(BlastUnitSource));
 
+			cbDomain.BindingContext = new BindingContext();
 			cbDomain.DataSource = domains;
+
+			cbSourceDomain.BindingContext = new BindingContext();
 			cbSourceDomain.DataSource = domains;
 
 			foreach (var item in actionTime)
@@ -415,7 +450,7 @@ namespace RTC
 			}
 
 			cbLimiterList.DataSource = RTC_Core.LimiterListBindingSource;
-			cbLimiterList.DisplayMember = "Text";
+			cbLimiterList.DisplayMember = "Name";
 			cbLimiterList.ValueMember = "Value";
 
 			cbStoreType.DataSource = storeType;
@@ -428,7 +463,7 @@ namespace RTC
 			property2ControlDico.Add(buProperty.isEnabled.ToString(), cbEnabled);
 			property2ControlDico.Add(buProperty.isLocked.ToString(), cbLocked);
 			property2ControlDico.Add(buProperty.Lifetime.ToString(), upDownLifetime);
-			property2ControlDico.Add(buProperty.LimiterHash.ToString(), cbLimiterList);
+			property2ControlDico.Add(buProperty.LimiterListHash.ToString(), cbLimiterList);
 			property2ControlDico.Add(buProperty.LimiterTime.ToString(), cbLimiterTime);
 			property2ControlDico.Add(buProperty.Loop.ToString(), cbLoop);
 			property2ControlDico.Add(buProperty.Note.ToString(), btnNote);
@@ -488,9 +523,9 @@ namespace RTC
 				limiterTime.Items.Add(item);
 			dgvBlastEditor.Columns.Add(limiterTime);
 
-			DataGridViewComboBoxColumn limiterHash = CreateColumn(buProperty.LimiterHash.ToString(), buProperty.LimiterHash.ToString(), "Limiter List", new DataGridViewComboBoxColumn()) as DataGridViewComboBoxColumn;
+			DataGridViewComboBoxColumn limiterHash = CreateColumn(buProperty.LimiterListHash.ToString(), buProperty.LimiterListHash.ToString(), "Limiter List", new DataGridViewComboBoxColumn()) as DataGridViewComboBoxColumn;
 			limiterHash.DataSource = RTC_Core.LimiterListBindingSource;
-			limiterHash.DisplayMember = "Text";
+			limiterHash.DisplayMember = "Name";
 			limiterHash.ValueMember = "Value";
 			dgvBlastEditor.Columns.Add(limiterHash);
 
@@ -533,13 +568,13 @@ namespace RTC
 
 
 			//Populate the filter ComboBox
-			cbFilterColumn.DisplayMember = "Text";
+			cbFilterColumn.DisplayMember = "Name";
 			cbFilterColumn.ValueMember = "Value";
 			foreach (DataGridViewColumn column in dgvBlastEditor.Columns)
 			{
 				//Exclude button and checkbox
 				if (!(column is DataGridViewCheckBoxColumn || column is DataGridViewButtonColumn) && column.Visible)
-					cbFilterColumn.Items.Add(new { Text = column.HeaderText, Value = column.Name });
+					cbFilterColumn.Items.Add(new ComboBoxItem<String>(column.HeaderText, column.Name));
 			}
 
 		}
@@ -613,6 +648,7 @@ namespace RTC
 		{
 			originalSK = sk.Clone() as StashKey;
 			currentSK = sk.Clone() as StashKey;
+			lbBlastLayerSize.Text = "Size: " + currentSK.BlastLayer.Layer.Count;
 			RefreshDomains();
 
 			bs = new BindingSource {DataSource = currentSK.BlastLayer.Layer};
@@ -729,6 +765,7 @@ namespace RTC
 				if ((row.DataBoundItem as BlastUnit).IsLocked == false)
 					bs.Remove(row.DataBoundItem as BlastUnit);
 			}
+			lbBlastLayerSize.Text = "Size: " + currentSK.BlastLayer.Layer.Count;
 		}
 
 		private void btnDuplicateSelected_Click(object sender, EventArgs e)
@@ -741,6 +778,7 @@ namespace RTC
 					bs.Add(bu);
 				}
 			}
+			lbBlastLayerSize.Text = "Size: " + currentSK.BlastLayer.Layer.Count;
 		}
 
 		public DialogResult GetSearchBox(string title, string promptText, bool filterColumn = false)
@@ -757,13 +795,13 @@ namespace RTC
 
 			if (filterColumn)
 			{
-				column.DisplayMember = "Text";
+				column.DisplayMember = "Name";
 				column.ValueMember = "Value";
 				foreach(DataGridViewColumn item in dgvBlastEditor.Columns)
 				{
 					//Exclude button and checkbox
 					if (!(item is DataGridViewCheckBoxColumn || item is DataGridViewButtonColumn))
-						column.Items.Add(new { Text = item.HeaderText, Value = item.Name });					
+						column.Items.Add(new ComboBoxItem<String>(item.HeaderText, item.Name));
 				}
 				column.SelectedIndex = 0;
 				column.SetBounds(72, 64, 164, 20);
@@ -902,6 +940,7 @@ namespace RTC
 					currentSK.BlastLayer.Layer.Remove(bu);
 				}
 			}
+			lbBlastLayerSize.Text = "Size: " + currentSK.BlastLayer.Layer.Count;
 		}
 
 		private void rasterizeVMDsToolStripMenuItem_Click(object sender, EventArgs e)
@@ -1095,6 +1134,7 @@ namespace RTC
 			if (temp != null)
 			{
 				currentSK.BlastLayer = temp;
+				lbBlastLayerSize.Text = "Size: " + currentSK.BlastLayer.Layer.Count;
 			}
 		}
 

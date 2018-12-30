@@ -51,8 +51,8 @@ namespace RTC
 			cbVectorLimiterList.DataSource = RTC_Core.LimiterListBindingSource;
 
 
-			cbVectorValueList.DisplayMember = "Text";
-			cbVectorLimiterList.DisplayMember = "Text";
+			cbVectorValueList.DisplayMember = "Name";
+			cbVectorLimiterList.DisplayMember = "Name";
 
 			cbVectorValueList.ValueMember = "Value";
 			cbVectorLimiterList.ValueMember = "Value";
@@ -67,7 +67,6 @@ namespace RTC
 			}
 
 		}
-
 
 
 		private void nmMaxCheats_ValueChanged(object sender, EventArgs e)
@@ -267,14 +266,15 @@ namespace RTC
 
 		private void cbVectorLimiterList_SelectedIndexChanged(object sender, EventArgs e)
 		{
-			RTCSpec.Update(RTCSPEC.VECTOR_LIMITERLISTHASH.ToString(), (string)((ComboBox)sender).SelectedValue);
+			ComboBoxItem<string> item = (ComboBoxItem<string>)((ComboBox)sender).SelectedItem;
+			RTCSpec.Update(RTCSPEC.VECTOR_LIMITERLISTHASH.ToString(), item.Value);
 		}
 
 		private void cbVectorValueList_SelectedIndexChanged(object sender, EventArgs e)
 		{
-			RTCSpec.Update(RTCSPEC.VECTOR_VALUELISTHASH.ToString(), (string)((ComboBox)sender).SelectedValue);
+			ComboBoxItem<string> item = (ComboBoxItem<string>)((ComboBox)sender).SelectedItem;
+			RTCSpec.Update(RTCSPEC.VECTOR_VALUELISTHASH.ToString(), item);
 		}
-
 
 		private void btnClearCheats_Click(object sender, EventArgs e)
 		{

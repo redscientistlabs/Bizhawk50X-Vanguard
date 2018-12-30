@@ -1504,4 +1504,16 @@ namespace RTC
 	{
 		 string Note { get; set; }
 	}
+
+	public class ComboBoxItem<T>
+	{
+		public string Name { get; set; }
+		public T Value { get; set; }
+
+		public ComboBoxItem(String name, T value)
+		{
+			Name = name;
+			Value = value;
+		}
+	}
 }

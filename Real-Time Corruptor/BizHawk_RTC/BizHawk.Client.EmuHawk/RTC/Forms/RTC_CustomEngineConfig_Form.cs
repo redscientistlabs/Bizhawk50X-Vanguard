@@ -26,10 +26,8 @@ namespace RTC
 
 		private void RTC_CustomEngineConfig_Form_Load(object sender, EventArgs e)
 		{
-
-
-			cbValueList.DisplayMember = "Text";
-			cbLimiterList.DisplayMember = "Text";
+			cbValueList.DisplayMember = "Name";
+			cbLimiterList.DisplayMember = "Name";
 
 			cbValueList.ValueMember = "Value";
 			cbLimiterList.ValueMember = "Value";
