@@ -337,20 +337,20 @@ namespace RTC
 				RemoteRTC.StartNetworking(NetworkSide.CLIENT, true);
 				RemoteRTC.SendCommand(new RTC_Command(CommandType.REMOTE_EVENT_BIZHAWKSTARTED), false, true);
 
-				RemoteRTC.ClientDisconnected += new EventHandler((ob, ev) =>
+				RemoteRTC.ClientDisconnected += (ob, ev) =>
 				{
 					RemoteRTC_SupposedToBeConnected = false;
-				});
-				RemoteRTC.ClientConnectionLost += new EventHandler((ob, ev) =>
+				};
+				RemoteRTC.ClientConnectionLost += (ob, ev) =>
 				{
 					RemoteRTC_SupposedToBeConnected = false;
-				});
-				RemoteRTC.ClientConnected += new EventHandler((ob, ev) =>
+				};
+				RemoteRTC.ClientConnected += (ob, ev) =>
 				{
 					RemoteRTC_SupposedToBeConnected = true;
 					//Push the spec to StandaloneRTC
 					RTC_Unispec.PushEmuSpec();
-				});
+				};
 			}
 			else
 			{
@@ -364,7 +364,7 @@ namespace RTC
 
 					S.GET<RTC_Core_Form>().ShowPanelForm(S.GET<RTC_ConnectionStatus_Form>());
 
-					RemoteRTC.ServerStarted += new EventHandler((ob, ev) =>
+					RemoteRTC.ServerStarted += (ob, ev) =>
 					{
 						RemoteRTC_SupposedToBeConnected = false;
 						Console.WriteLine("RemoteRTC.ServerStarted");
@@ -382,9 +382,9 @@ namespace RTC
 							S.GET<RTC_GlitchHarvester_Form>().pnHideGlitchHarvester.BringToFront();
 							S.GET<RTC_GlitchHarvester_Form>().pnHideGlitchHarvester.Show();
 						}
-					});
+					};
 
-					RemoteRTC.ServerConnected += new EventHandler((ob, ev) =>
+					RemoteRTC.ServerConnected += (ob, ev) =>
 					{
 						RemoteRTC_SupposedToBeConnected = true;
 						Console.WriteLine("RemoteRTC.ServerConnected");
@@ -407,10 +407,9 @@ namespace RTC
 
 						RTC_RPC.Heartbeat = true;
 						RTC_RPC.Freeze = false;
+					};
 
-					});
-
-					RemoteRTC.ServerConnectionLost += new EventHandler((ob, ev) =>
+					RemoteRTC.ServerConnectionLost += (ob, ev) =>
 					{
 						RemoteRTC_SupposedToBeConnected = false;
 						Console.WriteLine("RemoteRTC.ServerConnectionLost");
@@ -431,9 +430,9 @@ namespace RTC
 						RTC_GameProtection.Stop();
 						//Kill the active table autodumps
 						S.GET<RTC_VmdAct_Form>().cbAutoAddDump.Checked = false;
-					});
+					};
 
-					RemoteRTC.ServerDisconnected += new EventHandler((ob, ev) =>
+					RemoteRTC.ServerDisconnected += (ob, ev) =>
 					{
 						RemoteRTC_SupposedToBeConnected = false;
 						Console.WriteLine("RemoteRTC.ServerDisconnected");
@@ -447,7 +446,7 @@ namespace RTC
 						RTC_GameProtection.Stop();
 						//Kill the active table autodumps
 						S.GET<RTC_VmdAct_Form>().cbAutoAddDump.Checked = false;
-					});
+					};
 
 					RemoteRTC.StartNetworking(NetworkSide.SERVER, false, false);
 				}

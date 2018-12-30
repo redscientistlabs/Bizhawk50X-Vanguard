@@ -126,14 +126,10 @@ namespace RTC
 					RTC_Core.SendCommandToBizhawk(new RTC_Command(CommandType.REMOTE_PUSHRTCSPECUPDATE) { objectValue = partial }, true);
 			});
 
-
-
 			if (RTC_Unispec.RTCSpec[RTCSPEC.STOCKPILE_BACKUPEDSTATE.ToString()] != null)
 				((StashKey)RTC_Unispec.RTCSpec[RTCSPEC.STOCKPILE_BACKUPEDSTATE.ToString()]).Run();
 			else
-			{
 				RTCSpec.Update(RTCSPEC.CORE_AUTOCORRUPT.ToString(), false);
-			}
 		}
 
 		public static void RegisterEmuhawkSpec()
@@ -155,8 +151,6 @@ namespace RTC
 				if (RTC_Core.RemoteRTC_SupposedToBeConnected)
 					RTC_Core.SendCommandToBizhawk(new RTC_Command(CommandType.REMOTE_PUSHEMUSPECUPDATE) { objectValue = partial }, true);
 			});
-
-
 		}
 
 		public static void PushRTCSpec()
@@ -183,8 +177,7 @@ namespace RTC
 			{
 				if (specDico.ContainsKey(key))
 					return specDico[key];
-				else
-					return null;
+				return null;
 			}
 		}
 
@@ -226,12 +219,6 @@ namespace RTC
 		{
 			if (name != _partialSpec.Name)
 				throw new Exception("Name mismatch between PartialSpec and FullSpec");
-
-			/*
-			//For serialization
-			for (int i = 0; i < _partialSpec.keys.Count; i++)
-				base[_partialSpec.keys[i]] = _partialSpec.values[i];
-				*/
 
 			//For initial
 			foreach (var key in _partialSpec.specDico.Keys)
@@ -288,35 +275,20 @@ namespace RTC
 		{
 			Name = info.GetString("Name");
 		}
-
-		/*
-		[SecurityPermission(SecurityAction.Demand, SerializationFormatter = true)]
-		public override void GetObjectData(SerializationInfo info, StreamingContext context)
-		{
-			info.AddValue("Name", name);
-			base.GetObjectData(info, context);
-		}*/
 	}
 
 	[Serializable]
 	public abstract class BaseSpec
 	{
-
-		//[IgnoreDataMember]
 		internal Dictionary<string, object> specDico { get; set; } = new Dictionary<string, object>();
 
-		/*
-		public List<string> keys = new List<string>();
-		public List<object> values = new List<object>();
-		*/
         public object this[string key]
         {
             get
             {
                 if (specDico.ContainsKey(key))
                     return specDico[key];
-                else
-                    return null;
+                return null;
             }
             set
             {
@@ -333,53 +305,6 @@ namespace RTC
 
 		public void Reset() => specDico.Clear();
 
-		/*
-
-		protected BaseSpec()
-		{
-
-		}
-
-		protected BaseSpec(SerializationInfo info, StreamingContext context)
-		{
-
-		}
-		[SecurityPermission(SecurityAction.Demand, SerializationFormatter = true)]
-		public virtual void GetObjectData(SerializationInfo info, StreamingContext context)
-		{
-			info.AddValue("Keys", keys);
-			info.AddValue("Values", values);
-		}
-
-		[OnSerializing]
-		private void OnSerializing(StreamingContext context)
-		{
-			keys.Clear();
-			keys.AddRange(specDico.Keys);
-
-			values.Clear();
-			values.AddRange(specDico.Values);
-
-			//If for some ungodly reason the indexes were not to match, this slower code below should fix that.
-			/*
-            keys.Clear();
-            values.Clear();
-            foreach (var key in specDico.Keys)
-            {
-                keys.Add(key);
-                values.Add(specDico[key]);
-            }
-            */
-		/*
-		}
-	
-		[OnDeserialized]
-		private void OnDeserialized(StreamingContext context)
-		{
-			for (int i = 0; i < keys.Count; i++)
-				specDico[keys[i]] = values[i];
-		}
-		*/
 	}
 
 	public class SpecUpdateEventArgs : EventArgs
