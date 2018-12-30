@@ -126,7 +126,8 @@ namespace BizHawk.Client.EmuHawk
 			Global.Game = GameInfo.NullInstance;
 			
 			//RTC_Hijack - Check for manually triggered console
-			if (Global.Config.ShowLogWindow || RTC.RTC_Hooks.ShowConsole)
+			bool showConsole = (bool)(RTC.RTC_Unispec.RTCSpec?[RTC.RTCSPEC.HOOKS_SHOWCONSOLE.ToString()] ?? false);
+			if (Global.Config.ShowLogWindow || showConsole)
 			{
 				LogConsole.ShowConsole();
 				DisplayLogWindowMenuItem.Checked = true;
@@ -275,7 +276,8 @@ namespace BizHawk.Client.EmuHawk
 			{
 				Location = new Point(Global.Config.MainWndx, Global.Config.MainWndy);
 			}
-
+			//RTC_Hijack - Don't load anything automatically
+			/*
 			if (argParse.cmdRom != null)
 			{
 				// Commandline should always override auto-load
@@ -289,7 +291,7 @@ namespace BizHawk.Client.EmuHawk
 			else if (Global.Config.RecentRoms.AutoLoad && !Global.Config.RecentRoms.Empty)
 			{
 				LoadRomFromRecent(Global.Config.RecentRoms.MostRecent);
-			}
+			}*/
 
 			if (argParse.cmdMovie != null)
 			{
@@ -3030,6 +3032,10 @@ namespace BizHawk.Client.EmuHawk
 				}
 
 				Global.CheatList.Pulse();
+
+				//Step for frame 0. Note the true on the end. We handle doing nothing for any step after the first one in the method itself
+				RTC.RTC_Hooks.CPU_STEP(isRewinding, isFastForwarding, true);
+
 
 				if (IsLagFrame && Global.Config.AutofireLagFrames)
 				{

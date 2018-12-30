@@ -80,7 +80,7 @@ namespace RTC
 			else
 				RTC_Params.SetParam("ENABLE_BIZHAWK_OSD");
 
-			RTC_Core.SendCommandToBizhawk(new RTC_Command(CommandType.BIZHAWK_SET_OSDDISABLED) { objectValue = cbDisableBizhawkOSD.Checked });
+			RTC_Unispec.RTCSpec.Update(RTCSPEC.CORE_BIZHAWKOSDDISABLED.ToString(), cbDisableBizhawkOSD.Checked);
 		}
 
 		private void cbAllowCrossCoreCorruption_CheckedChanged(object sender, EventArgs e)
@@ -100,9 +100,7 @@ namespace RTC
 			else
 				RTC_Params.RemoveParam("DONT_CLEAN_SAVESTATES_AT_QUIT");
 
-			RTC_Core.SendCommandToBizhawk(new RTC_Command(CommandType.BIZHAWK_SET_DONT_CLEAN_SAVESTATES_AT_QUIT) { objectValue = cbDontCleanAtQuit.Checked });
+			RTC_Unispec.RTCSpec.Update(RTCSPEC.CORE_DONTCLEANSAVESTATESONQUIT.ToString(), cbDontCleanAtQuit.Checked);
 		}
-
-
 	}
 }

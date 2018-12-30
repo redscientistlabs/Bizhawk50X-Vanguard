@@ -9,41 +9,32 @@ namespace RTC
 {
 	public static class RTC_CustomEngine
 	{
-		public static long MinValue8Bit = 0;
-		public static long MaxValue8Bit = 0xFF;
-
-		public static long MinValue16Bit = 0;
-		public static long MaxValue16Bit = 0xFFFF;
-
-		public static long MinValue32Bit = 0;
-		public static long MaxValue32Bit = 0xFFFFFFFF;
-
-		public static BlastUnitSource Source = BlastUnitSource.VALUE;
-
-		public static StoreType StoreType = StoreType.ONCE;
-		public static ActionTime StoreTime = ActionTime.IMMEDIATE;
-		public static CustomStoreAddress StoreAddress = CustomStoreAddress.RANDOM;
-
-		public static int Delay = 0;
-		public static int Lifetime = 1;
-
-		public static BigInteger TiltValue = 1;
-
-		public static ActionTime LimiterTime = ActionTime.NONE;
-		public static bool LimiterInverted = false;
-
-
-		public static bool Loop = false;
-		
-		public static CustomValueSource ValueSource = CustomValueSource.RANDOM;
-		
-		public static string LimiterListHash = null;
-		public static string ValueListHash = null;
 
 		public static BlastUnit GenerateUnit(string domain, long address, int precision)
 		{
 			try
 			{
+
+				BlastUnitSource Source = (BlastUnitSource)RTC_Unispec.RTCSpec[RTCSPEC.CUSTOM_SOURCE.ToString()];
+				CustomValueSource ValueSource = (CustomValueSource)RTC_Unispec.RTCSpec[RTCSPEC.CUSTOM_SOURCE.ToString()];
+				string ValueListHash = (string)RTC_Unispec.RTCSpec[RTCSPEC.CUSTOM_VALUELISTHASH.ToString()];
+				string LimiterListHash = (string)RTC_Unispec.RTCSpec[RTCSPEC.CUSTOM_LIMITERLISTHASH.ToString()];
+				long MinValue8Bit =  (long)RTC_Unispec.RTCSpec[RTCSPEC.CUSTOM_MINVALUE8BIT.ToString()];
+				long MaxValue8Bit =  (long)RTC_Unispec.RTCSpec[RTCSPEC.CUSTOM_MAXVALUE8BIT.ToString()];
+				long MinValue16Bit = (long)RTC_Unispec.RTCSpec[RTCSPEC.CUSTOM_MINVALUE16BIT.ToString()];
+				long MaxValue16Bit = (long)RTC_Unispec.RTCSpec[RTCSPEC.CUSTOM_MAXVALUE16BIT.ToString()];
+				long MinValue32Bit = (long)RTC_Unispec.RTCSpec[RTCSPEC.CUSTOM_MINVALUE32BIT.ToString()];
+				long MaxValue32Bit = (long)RTC_Unispec.RTCSpec[RTCSPEC.CUSTOM_MAXVALUE32BIT.ToString()];
+
+				ActionTime StoreTime = (ActionTime)RTC_Unispec.RTCSpec[RTCSPEC.CUSTOM_STORETIME.ToString()];
+				CustomStoreAddress StoreAddress = (CustomStoreAddress)RTC_Unispec.RTCSpec[RTCSPEC.CUSTOM_STOREADDRESS.ToString()];
+				StoreType StoreType = (StoreType)RTC_Unispec.RTCSpec[RTCSPEC.CUSTOM_STORETYPE.ToString()];
+				int Delay = (int)RTC_Unispec.RTCSpec[RTCSPEC.CUSTOM_DELAY.ToString()];
+				int Lifetime = (int)RTC_Unispec.RTCSpec[RTCSPEC.CUSTOM_LIFETIME.ToString()];
+				ActionTime LimiterTime = (ActionTime)RTC_Unispec.RTCSpec[RTCSPEC.CUSTOM_LIMITERTIME.ToString()];
+				bool Loop = (bool)RTC_Unispec.RTCSpec[RTCSPEC.CUSTOM_LOOP.ToString()];
+				bool LimiterInverted = (bool)RTC_Unispec.RTCSpec[RTCSPEC.CUSTOM_LIMITERINVERTED.ToString()];
+
 				if (domain == null)
 					return null;
 
@@ -145,7 +136,7 @@ namespace RTC
 					bu.LimiterListHash = LimiterListHash;
 
 				//Limiter handling
-				if (LimiterTime == ActionTime.GENERATE)
+				if (LimiterTime == ActionTime.IMMEDIATE)
 				{
 					if (LimiterInverted)
 					{

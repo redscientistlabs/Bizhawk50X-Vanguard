@@ -28,6 +28,7 @@
 		/// </summary>
 		private void InitializeComponent()
 		{
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(ColumnSelector));
             this.tablePanel = new System.Windows.Forms.TableLayoutPanel();
             this.SuspendLayout();
             // 
@@ -36,8 +37,9 @@
             this.tablePanel.ColumnCount = 2;
             this.tablePanel.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
             this.tablePanel.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
-            this.tablePanel.Location = new System.Drawing.Point(9, 10);
-            this.tablePanel.Margin = new System.Windows.Forms.Padding(2);
+            this.tablePanel.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.tablePanel.Location = new System.Drawing.Point(0, 0);
+            this.tablePanel.Margin = new System.Windows.Forms.Padding(8, 9, 8, 9);
             this.tablePanel.Name = "tablePanel";
             this.tablePanel.RowCount = 12;
             this.tablePanel.RowStyles.Add(new System.Windows.Forms.RowStyle());
@@ -52,19 +54,23 @@
             this.tablePanel.RowStyles.Add(new System.Windows.Forms.RowStyle());
             this.tablePanel.RowStyles.Add(new System.Windows.Forms.RowStyle());
             this.tablePanel.RowStyles.Add(new System.Windows.Forms.RowStyle());
-            this.tablePanel.Size = new System.Drawing.Size(240, 248);
+            this.tablePanel.Size = new System.Drawing.Size(237, 273);
             this.tablePanel.TabIndex = 0;
+            this.tablePanel.Tag = "color:normal";
             // 
             // ColumnSelector
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.Gray;
-            this.ClientSize = new System.Drawing.Size(260, 269);
+            this.ClientSize = new System.Drawing.Size(237, 273);
             this.Controls.Add(this.tablePanel);
+            this.Font = new System.Drawing.Font("Segoe UI Emoji", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.ForeColor = System.Drawing.Color.White;
+            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Margin = new System.Windows.Forms.Padding(2);
             this.Name = "ColumnSelector";
-            this.Text = "ColumnSelector";
+            this.Text = "Select Columns";
             this.ResumeLayout(false);
 
 		}

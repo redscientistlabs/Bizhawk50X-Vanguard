@@ -47,6 +47,16 @@
             this.btnDuplicateSelected = new System.Windows.Forms.Button();
             this.lbBlastLayerSize = new System.Windows.Forms.Label();
             this.dgvBlastLayer = new System.Windows.Forms.DataGridView();
+            this.dgvBlastUnitReference = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.dgvBlastUnitLocked = new System.Windows.Forms.DataGridViewCheckBoxColumn();
+            this.dgvBlastEnabled = new System.Windows.Forms.DataGridViewCheckBoxColumn();
+            this.dgvPrecision = new System.Windows.Forms.DataGridViewComboBoxColumn();
+            this.dgvBlastUnitSource = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.dgvSourceAddressDomain = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.dgvSourceAddress = new RTC.DataGridViewNumericUpDownColumn();
+            this.dgvParamDomain = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.dgvParam = new RTC.DataGridViewNumericUpDownColumn();
+            this.dgvNoteButton = new System.Windows.Forms.DataGridViewButtonColumn();
             this.pnMemoryTargetting = new System.Windows.Forms.Panel();
             this.label3 = new System.Windows.Forms.Label();
             this.label4 = new System.Windows.Forms.Label();
@@ -91,16 +101,6 @@
             this.bakeBlastByteToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.openBlastLayerGeneratorToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.btnHideSidebar = new System.Windows.Forms.Button();
-            this.dgvBlastUnitReference = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.dgvBlastUnitLocked = new System.Windows.Forms.DataGridViewCheckBoxColumn();
-            this.dgvBlastEnabled = new System.Windows.Forms.DataGridViewCheckBoxColumn();
-            this.dgvPrecision = new System.Windows.Forms.DataGridViewComboBoxColumn();
-            this.dgvBlastUnitSource = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.dgvSourceAddressDomain = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.dgvSourceAddress = new RTC.DataGridViewNumericUpDownColumn();
-            this.dgvParamDomain = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.dgvParam = new RTC.DataGridViewNumericUpDownColumn();
-            this.dgvNoteButton = new System.Windows.Forms.DataGridViewButtonColumn();
             ((System.ComponentModel.ISupportInitialize)(this.dgvBlastLayer)).BeginInit();
             this.pnMemoryTargetting.SuspendLayout();
             this.panel1.SuspendLayout();
@@ -125,7 +125,6 @@
             this.btnCorrupt.Tag = "color:darker";
             this.btnCorrupt.Text = "Apply Corruption";
             this.btnCorrupt.UseVisualStyleBackColor = false;
-           // this.btnCorrupt.Click += new System.EventHandler(this.btnCorrupt_Click);
             // 
             // btnLoadCorrupt
             // 
@@ -143,7 +142,6 @@
             this.btnLoadCorrupt.Tag = "color:darker";
             this.btnLoadCorrupt.Text = "Load + Corrupt";
             this.btnLoadCorrupt.UseVisualStyleBackColor = false;
-     //       this.btnLoadCorrupt.Click += new System.EventHandler(this.btnLoadCorrupt_Click);
             // 
             // btnSendToStash
             // 
@@ -161,7 +159,6 @@
             this.btnSendToStash.Tag = "color:darker";
             this.btnSendToStash.Text = "Send To Stash";
             this.btnSendToStash.UseVisualStyleBackColor = false;
-       //    this.btnSendToStash.Click += new System.EventHandler(this.btnSendToStash_Click);
             // 
             // btnDisable50
             // 
@@ -179,7 +176,6 @@
             this.btnDisable50.Tag = "color:light";
             this.btnDisable50.Text = "Random Disable 50%";
             this.btnDisable50.UseVisualStyleBackColor = false;
-           // this.btnDisable50.Click += new System.EventHandler(this.btnDisable50_Click);
             // 
             // btnRemoveDisabled
             // 
@@ -197,7 +193,6 @@
             this.btnRemoveDisabled.Tag = "color:light";
             this.btnRemoveDisabled.Text = "Remove Disabled";
             this.btnRemoveDisabled.UseVisualStyleBackColor = false;
-            //this.btnRemoveDisabled.Click += new System.EventHandler(this.btnRemoveDisabled_Click);
             // 
             // btnInvertDisabled
             // 
@@ -215,7 +210,6 @@
             this.btnInvertDisabled.Tag = "color:light";
             this.btnInvertDisabled.Text = "Invert Disabled";
             this.btnInvertDisabled.UseVisualStyleBackColor = false;
-        //    this.btnInvertDisabled.Click += new System.EventHandler(this.btnInvertDisabled_Click);
             // 
             // btnDisableEverything
             // 
@@ -233,7 +227,6 @@
             this.btnDisableEverything.Tag = "color:light";
             this.btnDisableEverything.Text = "Disable Everything";
             this.btnDisableEverything.UseVisualStyleBackColor = false;
-            //this.btnDisableEverything.Click += new System.EventHandler(this.btnDisableEverything_Click);
             // 
             // btnEnableEverything
             // 
@@ -251,7 +244,6 @@
             this.btnEnableEverything.Tag = "color:light";
             this.btnEnableEverything.Text = "Enable Everything";
             this.btnEnableEverything.UseVisualStyleBackColor = false;
-            //this.btnEnableEverything.Click += new System.EventHandler(this.btnEnableEverything_Click);
             // 
             // btnDuplicateSelected
             // 
@@ -269,7 +261,6 @@
             this.btnDuplicateSelected.Tag = "color:light";
             this.btnDuplicateSelected.Text = "Duplicate Selected Rows";
             this.btnDuplicateSelected.UseVisualStyleBackColor = false;
-           // this.btnDuplicateSelected.Click += new System.EventHandler(this.btnDuplicateSelected_Click);
             // 
             // lbBlastLayerSize
             // 
@@ -340,465 +331,6 @@
             this.dgvBlastLayer.Size = new System.Drawing.Size(733, 447);
             this.dgvBlastLayer.TabIndex = 133;
             this.dgvBlastLayer.Tag = "color:normal";
-            // 
-            // pnMemoryTargetting
-            // 
-            this.pnMemoryTargetting.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.pnMemoryTargetting.BackColor = System.Drawing.Color.Gray;
-            this.pnMemoryTargetting.Controls.Add(this.lbBlastLayerSize);
-            this.pnMemoryTargetting.Location = new System.Drawing.Point(9, 20);
-            this.pnMemoryTargetting.Name = "pnMemoryTargetting";
-            this.pnMemoryTargetting.Size = new System.Drawing.Size(157, 24);
-            this.pnMemoryTargetting.TabIndex = 134;
-            this.pnMemoryTargetting.Tag = "color:normal";
-            // 
-            // label3
-            // 
-            this.label3.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.label3.AutoSize = true;
-            this.label3.Font = new System.Drawing.Font("Segoe UI", 8F);
-            this.label3.ForeColor = System.Drawing.Color.White;
-            this.label3.Location = new System.Drawing.Point(9, 4);
-            this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(82, 13);
-            this.label3.TabIndex = 135;
-            this.label3.Text = "BlastLayer Info";
-            // 
-            // label4
-            // 
-            this.label4.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.label4.AutoSize = true;
-            this.label4.Font = new System.Drawing.Font("Segoe UI", 8F);
-            this.label4.ForeColor = System.Drawing.Color.White;
-            this.label4.Location = new System.Drawing.Point(9, 48);
-            this.label4.Name = "label4";
-            this.label4.Size = new System.Drawing.Size(108, 13);
-            this.label4.TabIndex = 136;
-            this.label4.Text = "Shift Selected Rows";
-            // 
-            // panel1
-            // 
-            this.panel1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.panel1.BackColor = System.Drawing.Color.Gray;
-            this.panel1.Controls.Add(this.cbShiftBlastlayer);
-            this.panel1.Controls.Add(this.btnShiftBlastLayerDown);
-            this.panel1.Controls.Add(this.btnShiftBlastLayerUp);
-            this.panel1.Controls.Add(this.updownShiftBlastLayerAmount);
-            this.panel1.Location = new System.Drawing.Point(9, 63);
-            this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(158, 60);
-            this.panel1.TabIndex = 137;
-            this.panel1.Tag = "color:normal";
-            // 
-            // cbShiftBlastlayer
-            // 
-            this.cbShiftBlastlayer.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
-            this.cbShiftBlastlayer.ForeColor = System.Drawing.Color.White;
-            this.cbShiftBlastlayer.FormattingEnabled = true;
-            this.cbShiftBlastlayer.Location = new System.Drawing.Point(22, 6);
-            this.cbShiftBlastlayer.Name = "cbShiftBlastlayer";
-            this.cbShiftBlastlayer.Size = new System.Drawing.Size(114, 21);
-            this.cbShiftBlastlayer.TabIndex = 148;
-            this.cbShiftBlastlayer.Tag = "color:dark";
-            // 
-            // btnShiftBlastLayerDown
-            // 
-            this.btnShiftBlastLayerDown.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.btnShiftBlastLayerDown.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(224)))), ((int)(((byte)(224)))), ((int)(((byte)(224)))));
-            this.btnShiftBlastLayerDown.FlatAppearance.BorderSize = 0;
-            this.btnShiftBlastLayerDown.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btnShiftBlastLayerDown.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F);
-            this.btnShiftBlastLayerDown.ForeColor = System.Drawing.Color.Black;
-            this.btnShiftBlastLayerDown.Location = new System.Drawing.Point(22, 33);
-            this.btnShiftBlastLayerDown.Name = "btnShiftBlastLayerDown";
-            this.btnShiftBlastLayerDown.Size = new System.Drawing.Size(21, 21);
-            this.btnShiftBlastLayerDown.TabIndex = 147;
-            this.btnShiftBlastLayerDown.TabStop = false;
-            this.btnShiftBlastLayerDown.Tag = "color:light";
-            this.btnShiftBlastLayerDown.Text = "◀";
-            this.btnShiftBlastLayerDown.UseVisualStyleBackColor = false;
-        //    this.btnShiftBlastLayerDown.Click += new System.EventHandler(this.btnShiftBlastLayerDown_Click);
-            // 
-            // btnShiftBlastLayerUp
-            // 
-            this.btnShiftBlastLayerUp.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.btnShiftBlastLayerUp.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(224)))), ((int)(((byte)(224)))), ((int)(((byte)(224)))));
-            this.btnShiftBlastLayerUp.FlatAppearance.BorderSize = 0;
-            this.btnShiftBlastLayerUp.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btnShiftBlastLayerUp.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F);
-            this.btnShiftBlastLayerUp.ForeColor = System.Drawing.Color.Black;
-            this.btnShiftBlastLayerUp.Location = new System.Drawing.Point(115, 32);
-            this.btnShiftBlastLayerUp.Name = "btnShiftBlastLayerUp";
-            this.btnShiftBlastLayerUp.Size = new System.Drawing.Size(21, 22);
-            this.btnShiftBlastLayerUp.TabIndex = 146;
-            this.btnShiftBlastLayerUp.TabStop = false;
-            this.btnShiftBlastLayerUp.Tag = "color:light";
-            this.btnShiftBlastLayerUp.Text = "▶";
-            this.btnShiftBlastLayerUp.UseVisualStyleBackColor = false;
-       //     this.btnShiftBlastLayerUp.Click += new System.EventHandler(this.btnShiftBlastLayerUp_Click);
-            // 
-            // updownShiftBlastLayerAmount
-            // 
-            this.updownShiftBlastLayerAmount.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
-            this.updownShiftBlastLayerAmount.Font = new System.Drawing.Font("Consolas", 9F);
-            this.updownShiftBlastLayerAmount.ForeColor = System.Drawing.Color.White;
-            this.updownShiftBlastLayerAmount.Hexadecimal = true;
-            this.updownShiftBlastLayerAmount.Location = new System.Drawing.Point(50, 32);
-            this.updownShiftBlastLayerAmount.Name = "updownShiftBlastLayerAmount";
-            this.updownShiftBlastLayerAmount.Size = new System.Drawing.Size(59, 22);
-            this.updownShiftBlastLayerAmount.TabIndex = 145;
-            this.updownShiftBlastLayerAmount.Tag = "color:dark";
-            // 
-            // dataGridViewTextBoxColumn1
-            // 
-            this.dataGridViewTextBoxColumn1.HeaderText = "dgvBlastUnitReference";
-            this.dataGridViewTextBoxColumn1.Name = "dataGridViewTextBoxColumn1";
-            this.dataGridViewTextBoxColumn1.Visible = false;
-            // 
-            // dataGridViewTextBoxColumn2
-            // 
-            this.dataGridViewTextBoxColumn2.HeaderText = "BlastUnit Type";
-            this.dataGridViewTextBoxColumn2.Name = "dataGridViewTextBoxColumn2";
-            // 
-            // dataGridViewTextBoxColumn3
-            // 
-            this.dataGridViewTextBoxColumn3.FillWeight = 90F;
-            this.dataGridViewTextBoxColumn3.HeaderText = "BlastUnit Mode";
-            this.dataGridViewTextBoxColumn3.Name = "dataGridViewTextBoxColumn3";
-            this.dataGridViewTextBoxColumn3.Width = 90;
-            // 
-            // dataGridViewTextBoxColumn4
-            // 
-            this.dataGridViewTextBoxColumn4.FillWeight = 90F;
-            this.dataGridViewTextBoxColumn4.HeaderText = "Param 1 Domain";
-            this.dataGridViewTextBoxColumn4.Name = "dataGridViewTextBoxColumn4";
-            this.dataGridViewTextBoxColumn4.Width = 90;
-            // 
-            // dataGridViewNumericUpDownColumn1
-            // 
-            this.dataGridViewNumericUpDownColumn1.FillWeight = 90F;
-            this.dataGridViewNumericUpDownColumn1.HeaderText = "Param 1 Value";
-            this.dataGridViewNumericUpDownColumn1.Maximum = new decimal(new int[] {
-            2147483647,
-            0,
-            0,
-            0});
-            this.dataGridViewNumericUpDownColumn1.Name = "dataGridViewNumericUpDownColumn1";
-            this.dataGridViewNumericUpDownColumn1.Width = 90;
-            // 
-            // dataGridViewTextBoxColumn5
-            // 
-            this.dataGridViewTextBoxColumn5.FillWeight = 90F;
-            this.dataGridViewTextBoxColumn5.HeaderText = "Param 1 Value";
-            this.dataGridViewTextBoxColumn5.Name = "dataGridViewTextBoxColumn5";
-            this.dataGridViewTextBoxColumn5.Width = 90;
-            // 
-            // dataGridViewNumericUpDownColumn2
-            // 
-            this.dataGridViewNumericUpDownColumn2.FillWeight = 90F;
-            this.dataGridViewNumericUpDownColumn2.HeaderText = "Param 2 Value";
-            this.dataGridViewNumericUpDownColumn2.Name = "dataGridViewNumericUpDownColumn2";
-            this.dataGridViewNumericUpDownColumn2.Width = 90;
-            // 
-            // dataGridViewTextBoxColumn6
-            // 
-            this.dataGridViewTextBoxColumn6.FillWeight = 90F;
-            this.dataGridViewTextBoxColumn6.HeaderText = "Param 2 Domain";
-            this.dataGridViewTextBoxColumn6.Name = "dataGridViewTextBoxColumn6";
-            this.dataGridViewTextBoxColumn6.Width = 90;
-            // 
-            // btnRemoveSelected
-            // 
-            this.btnRemoveSelected.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.btnRemoveSelected.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(224)))), ((int)(((byte)(224)))), ((int)(((byte)(224)))));
-            this.btnRemoveSelected.FlatAppearance.BorderSize = 0;
-            this.btnRemoveSelected.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btnRemoveSelected.Font = new System.Drawing.Font("Segoe UI Semibold", 9F, System.Drawing.FontStyle.Bold);
-            this.btnRemoveSelected.ForeColor = System.Drawing.Color.Black;
-            this.btnRemoveSelected.Location = new System.Drawing.Point(9, 273);
-            this.btnRemoveSelected.Name = "btnRemoveSelected";
-            this.btnRemoveSelected.Size = new System.Drawing.Size(157, 23);
-            this.btnRemoveSelected.TabIndex = 139;
-            this.btnRemoveSelected.TabStop = false;
-            this.btnRemoveSelected.Tag = "color:light";
-            this.btnRemoveSelected.Text = "Remove Selected Rows";
-            this.btnRemoveSelected.UseVisualStyleBackColor = false;
-          //  this.btnRemoveSelected.Click += new System.EventHandler(this.btnRemoveSelected_Click);
-            // 
-            // btnSearchRow
-            // 
-            this.btnSearchRow.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.btnSearchRow.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(224)))), ((int)(((byte)(224)))), ((int)(((byte)(224)))));
-            this.btnSearchRow.FlatAppearance.BorderSize = 0;
-            this.btnSearchRow.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btnSearchRow.Font = new System.Drawing.Font("Segoe UI Semibold", 9F, System.Drawing.FontStyle.Bold);
-            this.btnSearchRow.ForeColor = System.Drawing.Color.Black;
-            this.btnSearchRow.Location = new System.Drawing.Point(9, 329);
-            this.btnSearchRow.Name = "btnSearchRow";
-            this.btnSearchRow.Size = new System.Drawing.Size(130, 23);
-            this.btnSearchRow.TabIndex = 140;
-            this.btnSearchRow.TabStop = false;
-            this.btnSearchRow.Tag = "color:light";
-            this.btnSearchRow.Text = "Search For Row";
-            this.btnSearchRow.UseVisualStyleBackColor = false;
-         //   this.btnSearchRow.Click += new System.EventHandler(this.btnSearchRow_Click);
-            // 
-            // panelSidebar
-            // 
-            this.panelSidebar.Controls.Add(this.btnHelp);
-            this.panelSidebar.Controls.Add(this.btnSearchAgain);
-            this.panelSidebar.Controls.Add(this.label3);
-            this.panelSidebar.Controls.Add(this.btnSearchRow);
-            this.panelSidebar.Controls.Add(this.btnLoadCorrupt);
-            this.panelSidebar.Controls.Add(this.btnRemoveSelected);
-            this.panelSidebar.Controls.Add(this.btnCorrupt);
-            this.panelSidebar.Controls.Add(this.btnSendToStash);
-            this.panelSidebar.Controls.Add(this.panel1);
-            this.panelSidebar.Controls.Add(this.btnRemoveDisabled);
-            this.panelSidebar.Controls.Add(this.label4);
-            this.panelSidebar.Controls.Add(this.btnDisable50);
-            this.panelSidebar.Controls.Add(this.btnInvertDisabled);
-            this.panelSidebar.Controls.Add(this.pnMemoryTargetting);
-            this.panelSidebar.Controls.Add(this.btnDisableEverything);
-            this.panelSidebar.Controls.Add(this.btnEnableEverything);
-            this.panelSidebar.Controls.Add(this.btnDuplicateSelected);
-            this.panelSidebar.Dock = System.Windows.Forms.DockStyle.Right;
-            this.panelSidebar.Location = new System.Drawing.Point(733, 24);
-            this.panelSidebar.Name = "panelSidebar";
-            this.panelSidebar.Size = new System.Drawing.Size(176, 447);
-            this.panelSidebar.TabIndex = 142;
-            // 
-            // btnHelp
-            // 
-            this.btnHelp.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
-            this.btnHelp.FlatAppearance.BorderSize = 0;
-            this.btnHelp.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btnHelp.Font = new System.Drawing.Font("Segoe UI Semibold", 9.75F, System.Drawing.FontStyle.Bold);
-            this.btnHelp.ForeColor = System.Drawing.Color.Black;
-            this.btnHelp.Image = global::BizHawk.Client.EmuHawk.Properties.Resources.Help;
-            this.btnHelp.Location = new System.Drawing.Point(150, 0);
-            this.btnHelp.Name = "btnHelp";
-            this.btnHelp.Size = new System.Drawing.Size(27, 17);
-            this.btnHelp.TabIndex = 176;
-            this.btnHelp.TabStop = false;
-            this.btnHelp.Tag = "color:dark";
-            this.btnHelp.UseVisualStyleBackColor = false;
-         //   this.btnHelp.Click += new System.EventHandler(this.btnHelp_Click);
-            // 
-            // btnSearchAgain
-            // 
-            this.btnSearchAgain.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.btnSearchAgain.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(224)))), ((int)(((byte)(224)))), ((int)(((byte)(224)))));
-            this.btnSearchAgain.FlatAppearance.BorderSize = 0;
-            this.btnSearchAgain.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btnSearchAgain.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F);
-            this.btnSearchAgain.ForeColor = System.Drawing.Color.Black;
-            this.btnSearchAgain.Location = new System.Drawing.Point(145, 329);
-            this.btnSearchAgain.Name = "btnSearchAgain";
-            this.btnSearchAgain.Size = new System.Drawing.Size(21, 23);
-            this.btnSearchAgain.TabIndex = 141;
-            this.btnSearchAgain.TabStop = false;
-            this.btnSearchAgain.Tag = "color:light";
-            this.btnSearchAgain.Text = "▶";
-            this.btnSearchAgain.UseVisualStyleBackColor = false;
-          //  this.btnSearchAgain.Click += new System.EventHandler(this.btnSearchAgain_Click);
-            // 
-            // menuStripEx1
-            // 
-            this.menuStripEx1.ClickThrough = true;
-            this.menuStripEx1.ImageScalingSize = new System.Drawing.Size(20, 20);
-            this.menuStripEx1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.blastLayerToolStripMenuItem,
-            this.saveStateToolStripMenuItem,
-            this.rOMToolStripMenuItem,
-            this.toolsToolStripMenuItem,
-            this.openBlastLayerGeneratorToolStripMenuItem});
-            this.menuStripEx1.Location = new System.Drawing.Point(0, 0);
-            this.menuStripEx1.Name = "menuStripEx1";
-            this.menuStripEx1.RenderMode = System.Windows.Forms.ToolStripRenderMode.Professional;
-            this.menuStripEx1.Size = new System.Drawing.Size(909, 24);
-            this.menuStripEx1.TabIndex = 141;
-            this.menuStripEx1.Tag = "";
-            this.menuStripEx1.Text = "menuStripEx1";
-            // 
-            // blastLayerToolStripMenuItem
-            // 
-            this.blastLayerToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.loadFromFileblToolStripMenuItem,
-            this.saveToFileblToolStripMenuItem,
-            this.saveAsToFileblToolStripMenuItem,
-            this.importBlastlayerblToolStripMenuItem,
-            this.exportToCSVToolStripMenuItem});
-            this.blastLayerToolStripMenuItem.Name = "blastLayerToolStripMenuItem";
-            this.blastLayerToolStripMenuItem.Size = new System.Drawing.Size(72, 20);
-            this.blastLayerToolStripMenuItem.Tag = "";
-            this.blastLayerToolStripMenuItem.Text = "BlastLayer";
-            // 
-            // loadFromFileblToolStripMenuItem
-            // 
-            this.loadFromFileblToolStripMenuItem.Name = "loadFromFileblToolStripMenuItem";
-            this.loadFromFileblToolStripMenuItem.Size = new System.Drawing.Size(187, 22);
-            this.loadFromFileblToolStripMenuItem.Text = "&Load From File (.bl)";
-        //    this.loadFromFileblToolStripMenuItem.Click += new System.EventHandler(this.loadFromFileblToolStripMenuItem_Click);
-            // 
-            // saveToFileblToolStripMenuItem
-            // 
-            this.saveToFileblToolStripMenuItem.Name = "saveToFileblToolStripMenuItem";
-            this.saveToFileblToolStripMenuItem.Size = new System.Drawing.Size(187, 22);
-            this.saveToFileblToolStripMenuItem.Text = "&Save to File (.bl)";
-        //    this.saveToFileblToolStripMenuItem.Click += new System.EventHandler(this.saveToFileblToolStripMenuItem_Click);
-            // 
-            // saveAsToFileblToolStripMenuItem
-            // 
-            this.saveAsToFileblToolStripMenuItem.Name = "saveAsToFileblToolStripMenuItem";
-            this.saveAsToFileblToolStripMenuItem.Size = new System.Drawing.Size(187, 22);
-            this.saveAsToFileblToolStripMenuItem.Text = "&Save As to File (.bl)";
-       //     this.saveAsToFileblToolStripMenuItem.Click += new System.EventHandler(this.saveAsToFileblToolStripMenuItem_Click);
-            // 
-            // importBlastlayerblToolStripMenuItem
-            // 
-            this.importBlastlayerblToolStripMenuItem.Name = "importBlastlayerblToolStripMenuItem";
-            this.importBlastlayerblToolStripMenuItem.Size = new System.Drawing.Size(187, 22);
-            this.importBlastlayerblToolStripMenuItem.Text = "&Import Blastlayer (.bl)";
-      //      this.importBlastlayerblToolStripMenuItem.Click += new System.EventHandler(this.importBlastlayerblToolStripMenuItem_Click);
-            // 
-            // exportToCSVToolStripMenuItem
-            // 
-            this.exportToCSVToolStripMenuItem.Name = "exportToCSVToolStripMenuItem";
-            this.exportToCSVToolStripMenuItem.Size = new System.Drawing.Size(187, 22);
-            this.exportToCSVToolStripMenuItem.Text = "&Export to CSV";
-        //    this.exportToCSVToolStripMenuItem.Click += new System.EventHandler(this.exportToCSVToolStripMenuItem_Click);
-            // 
-            // saveStateToolStripMenuItem
-            // 
-            this.saveStateToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.runOriginalSavestateToolStripMenuItem,
-            this.replaceSavestateFromGHToolStripMenuItem,
-            this.replaceSavestateFromFileToolStripMenuItem,
-            this.saveSavestateToToolStripMenuItem});
-            this.saveStateToolStripMenuItem.Name = "saveStateToolStripMenuItem";
-            this.saveStateToolStripMenuItem.Size = new System.Drawing.Size(69, 20);
-            this.saveStateToolStripMenuItem.Tag = "";
-            this.saveStateToolStripMenuItem.Text = "SaveState";
-            // 
-            // runOriginalSavestateToolStripMenuItem
-            // 
-            this.runOriginalSavestateToolStripMenuItem.Name = "runOriginalSavestateToolStripMenuItem";
-            this.runOriginalSavestateToolStripMenuItem.Size = new System.Drawing.Size(217, 22);
-            this.runOriginalSavestateToolStripMenuItem.Text = "Run Original Savestate";
-         //   this.runOriginalSavestateToolStripMenuItem.Click += new System.EventHandler(this.runOriginalSavestateToolStripMenuItem_Click);
-            // 
-            // replaceSavestateFromGHToolStripMenuItem
-            // 
-            this.replaceSavestateFromGHToolStripMenuItem.Name = "replaceSavestateFromGHToolStripMenuItem";
-            this.replaceSavestateFromGHToolStripMenuItem.Size = new System.Drawing.Size(217, 22);
-            this.replaceSavestateFromGHToolStripMenuItem.Text = "Replace Savestate from GH";
-      //      this.replaceSavestateFromGHToolStripMenuItem.Click += new System.EventHandler(this.replaceSavestateFromGHToolStripMenuItem_Click);
-            // 
-            // replaceSavestateFromFileToolStripMenuItem
-            // 
-            this.replaceSavestateFromFileToolStripMenuItem.Name = "replaceSavestateFromFileToolStripMenuItem";
-            this.replaceSavestateFromFileToolStripMenuItem.Size = new System.Drawing.Size(217, 22);
-            this.replaceSavestateFromFileToolStripMenuItem.Text = "Replace Savestate from File";
-       //     this.replaceSavestateFromFileToolStripMenuItem.Click += new System.EventHandler(this.replaceSavestateFromFileToolStripMenuItem_Click);
-            // 
-            // saveSavestateToToolStripMenuItem
-            // 
-            this.saveSavestateToToolStripMenuItem.Name = "saveSavestateToToolStripMenuItem";
-            this.saveSavestateToToolStripMenuItem.Size = new System.Drawing.Size(217, 22);
-            this.saveSavestateToToolStripMenuItem.Text = "Save Savestate to";
-       //     this.saveSavestateToToolStripMenuItem.Click += new System.EventHandler(this.saveSavestateToToolStripMenuItem_Click);
-            // 
-            // rOMToolStripMenuItem
-            // 
-            this.rOMToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.runRomWithoutBlastlayerToolStripMenuItem,
-            this.replaceRomFromGHToolStripMenuItem,
-            this.replaceRomFromFileToolStripMenuItem,
-            this.bakeROMBlastunitsToFileToolStripMenuItem});
-            this.rOMToolStripMenuItem.Name = "rOMToolStripMenuItem";
-            this.rOMToolStripMenuItem.Size = new System.Drawing.Size(46, 20);
-            this.rOMToolStripMenuItem.Tag = "";
-            this.rOMToolStripMenuItem.Text = "ROM";
-            // 
-            // runRomWithoutBlastlayerToolStripMenuItem
-            // 
-            this.runRomWithoutBlastlayerToolStripMenuItem.Name = "runRomWithoutBlastlayerToolStripMenuItem";
-            this.runRomWithoutBlastlayerToolStripMenuItem.Size = new System.Drawing.Size(222, 22);
-            this.runRomWithoutBlastlayerToolStripMenuItem.Text = "Run Rom Without Blastlayer";
-         //   this.runRomWithoutBlastlayerToolStripMenuItem.Click += new System.EventHandler(this.runRomWithoutBlastlayerToolStripMenuItem_Click);
-            // 
-            // replaceRomFromGHToolStripMenuItem
-            // 
-            this.replaceRomFromGHToolStripMenuItem.Name = "replaceRomFromGHToolStripMenuItem";
-            this.replaceRomFromGHToolStripMenuItem.Size = new System.Drawing.Size(222, 22);
-            this.replaceRomFromGHToolStripMenuItem.Text = "Replace Rom from GH";
-          //  this.replaceRomFromGHToolStripMenuItem.Click += new System.EventHandler(this.replaceRomFromGHToolStripMenuItem_Click);
-            // 
-            // replaceRomFromFileToolStripMenuItem
-            // 
-            this.replaceRomFromFileToolStripMenuItem.Name = "replaceRomFromFileToolStripMenuItem";
-            this.replaceRomFromFileToolStripMenuItem.Size = new System.Drawing.Size(222, 22);
-            this.replaceRomFromFileToolStripMenuItem.Text = "Replace Rom from File";
-           // this.replaceRomFromFileToolStripMenuItem.Click += new System.EventHandler(this.replaceRomFromFileToolStripMenuItem_Click);
-            // 
-            // bakeROMBlastunitsToFileToolStripMenuItem
-            // 
-            this.bakeROMBlastunitsToFileToolStripMenuItem.Name = "bakeROMBlastunitsToFileToolStripMenuItem";
-            this.bakeROMBlastunitsToFileToolStripMenuItem.Size = new System.Drawing.Size(222, 22);
-            this.bakeROMBlastunitsToFileToolStripMenuItem.Text = "Bake ROM BlastBytes to File";
-          //  this.bakeROMBlastunitsToFileToolStripMenuItem.Click += new System.EventHandler(this.bakeROMBlastunitsToFileToolStripMenuItem_Click);
-            // 
-            // toolsToolStripMenuItem
-            // 
-            this.toolsToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.sanitizeDuplicatesToolStripMenuItem,
-            this.rasterizeVMDsToolStripMenuItem,
-            this.bakeBlastByteToolStripMenuItem});
-            this.toolsToolStripMenuItem.Name = "toolsToolStripMenuItem";
-            this.toolsToolStripMenuItem.Size = new System.Drawing.Size(47, 20);
-            this.toolsToolStripMenuItem.Tag = "";
-            this.toolsToolStripMenuItem.Text = "Tools";
-            // 
-            // sanitizeDuplicatesToolStripMenuItem
-            // 
-            this.sanitizeDuplicatesToolStripMenuItem.Name = "sanitizeDuplicatesToolStripMenuItem";
-            this.sanitizeDuplicatesToolStripMenuItem.Size = new System.Drawing.Size(285, 22);
-            this.sanitizeDuplicatesToolStripMenuItem.Text = "Sanitize Duplicates";
-          //  this.sanitizeDuplicatesToolStripMenuItem.Click += new System.EventHandler(this.sanitizeDuplicatesToolStripMenuItem_Click);
-            // 
-            // rasterizeVMDsToolStripMenuItem
-            // 
-            this.rasterizeVMDsToolStripMenuItem.Name = "rasterizeVMDsToolStripMenuItem";
-            this.rasterizeVMDsToolStripMenuItem.Size = new System.Drawing.Size(285, 22);
-            this.rasterizeVMDsToolStripMenuItem.Text = "Rasterize VMDs";
-          //  this.rasterizeVMDsToolStripMenuItem.Click += new System.EventHandler(this.rasterizeVMDsToolStripMenuItem_Click);
-            // 
-            // bakeBlastByteToolStripMenuItem
-            // 
-            this.bakeBlastByteToolStripMenuItem.Name = "bakeBlastByteToolStripMenuItem";
-            this.bakeBlastByteToolStripMenuItem.Size = new System.Drawing.Size(285, 22);
-            this.bakeBlastByteToolStripMenuItem.Text = "Bake Selected BlastUnits to BlastByte Set";
-            //this.bakeBlastByteToolStripMenuItem.Click += new System.EventHandler(this.bakeBlastByteToolStripMenuItem_Click);
-            // 
-            // openBlastLayerGeneratorToolStripMenuItem
-            // 
-            this.openBlastLayerGeneratorToolStripMenuItem.Name = "openBlastLayerGeneratorToolStripMenuItem";
-            this.openBlastLayerGeneratorToolStripMenuItem.Size = new System.Drawing.Size(159, 20);
-            this.openBlastLayerGeneratorToolStripMenuItem.Text = "Open BlastLayer Generator";
-           // this.openBlastLayerGeneratorToolStripMenuItem.Click += new System.EventHandler(this.openBlastLayerGeneratorToolStripMenuItem_Click_1);
-            // 
-            // btnHideSidebar
-            // 
-            this.btnHideSidebar.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.btnHideSidebar.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F);
-            this.btnHideSidebar.Location = new System.Drawing.Point(881, 0);
-            this.btnHideSidebar.Name = "btnHideSidebar";
-            this.btnHideSidebar.Size = new System.Drawing.Size(28, 24);
-            this.btnHideSidebar.TabIndex = 144;
-            this.btnHideSidebar.Text = "▶";
-            this.btnHideSidebar.UseVisualStyleBackColor = true;
-      //      this.btnHideSidebar.Click += new System.EventHandler(this.btnHideSidebar_Click);
             // 
             // dgvBlastUnitReference
             // 
@@ -898,6 +430,442 @@
             this.dgvNoteButton.Name = "dgvNoteButton";
             this.dgvNoteButton.ToolTipText = "Notes";
             // 
+            // pnMemoryTargetting
+            // 
+            this.pnMemoryTargetting.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.pnMemoryTargetting.BackColor = System.Drawing.Color.Gray;
+            this.pnMemoryTargetting.Controls.Add(this.lbBlastLayerSize);
+            this.pnMemoryTargetting.Location = new System.Drawing.Point(9, 20);
+            this.pnMemoryTargetting.Name = "pnMemoryTargetting";
+            this.pnMemoryTargetting.Size = new System.Drawing.Size(157, 24);
+            this.pnMemoryTargetting.TabIndex = 134;
+            this.pnMemoryTargetting.Tag = "color:normal";
+            // 
+            // label3
+            // 
+            this.label3.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.label3.AutoSize = true;
+            this.label3.Font = new System.Drawing.Font("Segoe UI", 8F);
+            this.label3.ForeColor = System.Drawing.Color.White;
+            this.label3.Location = new System.Drawing.Point(9, 4);
+            this.label3.Name = "label3";
+            this.label3.Size = new System.Drawing.Size(82, 13);
+            this.label3.TabIndex = 135;
+            this.label3.Text = "BlastLayer Info";
+            // 
+            // label4
+            // 
+            this.label4.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.label4.AutoSize = true;
+            this.label4.Font = new System.Drawing.Font("Segoe UI", 8F);
+            this.label4.ForeColor = System.Drawing.Color.White;
+            this.label4.Location = new System.Drawing.Point(9, 48);
+            this.label4.Name = "label4";
+            this.label4.Size = new System.Drawing.Size(108, 13);
+            this.label4.TabIndex = 136;
+            this.label4.Text = "Shift Selected Rows";
+            // 
+            // panel1
+            // 
+            this.panel1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.panel1.BackColor = System.Drawing.Color.Gray;
+            this.panel1.Controls.Add(this.cbShiftBlastlayer);
+            this.panel1.Controls.Add(this.btnShiftBlastLayerDown);
+            this.panel1.Controls.Add(this.btnShiftBlastLayerUp);
+            this.panel1.Controls.Add(this.updownShiftBlastLayerAmount);
+            this.panel1.Location = new System.Drawing.Point(9, 63);
+            this.panel1.Name = "panel1";
+            this.panel1.Size = new System.Drawing.Size(158, 60);
+            this.panel1.TabIndex = 137;
+            this.panel1.Tag = "color:normal";
+            // 
+            // cbShiftBlastlayer
+            // 
+            this.cbShiftBlastlayer.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
+            this.cbShiftBlastlayer.ForeColor = System.Drawing.Color.White;
+            this.cbShiftBlastlayer.FormattingEnabled = true;
+            this.cbShiftBlastlayer.Location = new System.Drawing.Point(22, 6);
+            this.cbShiftBlastlayer.Name = "cbShiftBlastlayer";
+            this.cbShiftBlastlayer.Size = new System.Drawing.Size(114, 21);
+            this.cbShiftBlastlayer.TabIndex = 148;
+            this.cbShiftBlastlayer.Tag = "color:dark";
+            // 
+            // btnShiftBlastLayerDown
+            // 
+            this.btnShiftBlastLayerDown.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.btnShiftBlastLayerDown.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(224)))), ((int)(((byte)(224)))), ((int)(((byte)(224)))));
+            this.btnShiftBlastLayerDown.FlatAppearance.BorderSize = 0;
+            this.btnShiftBlastLayerDown.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnShiftBlastLayerDown.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F);
+            this.btnShiftBlastLayerDown.ForeColor = System.Drawing.Color.Black;
+            this.btnShiftBlastLayerDown.Location = new System.Drawing.Point(22, 33);
+            this.btnShiftBlastLayerDown.Name = "btnShiftBlastLayerDown";
+            this.btnShiftBlastLayerDown.Size = new System.Drawing.Size(21, 21);
+            this.btnShiftBlastLayerDown.TabIndex = 147;
+            this.btnShiftBlastLayerDown.TabStop = false;
+            this.btnShiftBlastLayerDown.Tag = "color:light";
+            this.btnShiftBlastLayerDown.Text = "◀";
+            this.btnShiftBlastLayerDown.UseVisualStyleBackColor = false;
+            // 
+            // btnShiftBlastLayerUp
+            // 
+            this.btnShiftBlastLayerUp.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.btnShiftBlastLayerUp.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(224)))), ((int)(((byte)(224)))), ((int)(((byte)(224)))));
+            this.btnShiftBlastLayerUp.FlatAppearance.BorderSize = 0;
+            this.btnShiftBlastLayerUp.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnShiftBlastLayerUp.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F);
+            this.btnShiftBlastLayerUp.ForeColor = System.Drawing.Color.Black;
+            this.btnShiftBlastLayerUp.Location = new System.Drawing.Point(115, 32);
+            this.btnShiftBlastLayerUp.Name = "btnShiftBlastLayerUp";
+            this.btnShiftBlastLayerUp.Size = new System.Drawing.Size(21, 22);
+            this.btnShiftBlastLayerUp.TabIndex = 146;
+            this.btnShiftBlastLayerUp.TabStop = false;
+            this.btnShiftBlastLayerUp.Tag = "color:light";
+            this.btnShiftBlastLayerUp.Text = "▶";
+            this.btnShiftBlastLayerUp.UseVisualStyleBackColor = false;
+            // 
+            // updownShiftBlastLayerAmount
+            // 
+            this.updownShiftBlastLayerAmount.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
+            this.updownShiftBlastLayerAmount.Font = new System.Drawing.Font("Consolas", 9F);
+            this.updownShiftBlastLayerAmount.ForeColor = System.Drawing.Color.White;
+            this.updownShiftBlastLayerAmount.Hexadecimal = true;
+            this.updownShiftBlastLayerAmount.Location = new System.Drawing.Point(50, 32);
+            this.updownShiftBlastLayerAmount.Name = "updownShiftBlastLayerAmount";
+            this.updownShiftBlastLayerAmount.Size = new System.Drawing.Size(59, 22);
+            this.updownShiftBlastLayerAmount.TabIndex = 145;
+            this.updownShiftBlastLayerAmount.Tag = "color:dark";
+            // 
+            // dataGridViewTextBoxColumn1
+            // 
+            this.dataGridViewTextBoxColumn1.HeaderText = "dgvBlastUnitReference";
+            this.dataGridViewTextBoxColumn1.Name = "dataGridViewTextBoxColumn1";
+            this.dataGridViewTextBoxColumn1.Visible = false;
+            // 
+            // dataGridViewTextBoxColumn2
+            // 
+            this.dataGridViewTextBoxColumn2.HeaderText = "BlastUnit Type";
+            this.dataGridViewTextBoxColumn2.Name = "dataGridViewTextBoxColumn2";
+            // 
+            // dataGridViewTextBoxColumn3
+            // 
+            this.dataGridViewTextBoxColumn3.FillWeight = 90F;
+            this.dataGridViewTextBoxColumn3.HeaderText = "BlastUnit Mode";
+            this.dataGridViewTextBoxColumn3.Name = "dataGridViewTextBoxColumn3";
+            this.dataGridViewTextBoxColumn3.Width = 90;
+            // 
+            // dataGridViewTextBoxColumn4
+            // 
+            this.dataGridViewTextBoxColumn4.FillWeight = 90F;
+            this.dataGridViewTextBoxColumn4.HeaderText = "Param 1 Domain";
+            this.dataGridViewTextBoxColumn4.Name = "dataGridViewTextBoxColumn4";
+            this.dataGridViewTextBoxColumn4.Width = 90;
+            // 
+            // dataGridViewNumericUpDownColumn1
+            // 
+            this.dataGridViewNumericUpDownColumn1.FillWeight = 90F;
+            this.dataGridViewNumericUpDownColumn1.HeaderText = "Param 1 Value";
+            this.dataGridViewNumericUpDownColumn1.Maximum = new decimal(new int[] {
+            2147483647,
+            0,
+            0,
+            0});
+            this.dataGridViewNumericUpDownColumn1.Name = "dataGridViewNumericUpDownColumn1";
+            this.dataGridViewNumericUpDownColumn1.Width = 90;
+            // 
+            // dataGridViewTextBoxColumn5
+            // 
+            this.dataGridViewTextBoxColumn5.FillWeight = 90F;
+            this.dataGridViewTextBoxColumn5.HeaderText = "Param 1 Value";
+            this.dataGridViewTextBoxColumn5.Name = "dataGridViewTextBoxColumn5";
+            this.dataGridViewTextBoxColumn5.Width = 90;
+            // 
+            // dataGridViewNumericUpDownColumn2
+            // 
+            this.dataGridViewNumericUpDownColumn2.FillWeight = 90F;
+            this.dataGridViewNumericUpDownColumn2.HeaderText = "Param 2 Value";
+            this.dataGridViewNumericUpDownColumn2.Name = "dataGridViewNumericUpDownColumn2";
+            this.dataGridViewNumericUpDownColumn2.Width = 90;
+            // 
+            // dataGridViewTextBoxColumn6
+            // 
+            this.dataGridViewTextBoxColumn6.FillWeight = 90F;
+            this.dataGridViewTextBoxColumn6.HeaderText = "Param 2 Domain";
+            this.dataGridViewTextBoxColumn6.Name = "dataGridViewTextBoxColumn6";
+            this.dataGridViewTextBoxColumn6.Width = 90;
+            // 
+            // btnRemoveSelected
+            // 
+            this.btnRemoveSelected.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.btnRemoveSelected.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(224)))), ((int)(((byte)(224)))), ((int)(((byte)(224)))));
+            this.btnRemoveSelected.FlatAppearance.BorderSize = 0;
+            this.btnRemoveSelected.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnRemoveSelected.Font = new System.Drawing.Font("Segoe UI Semibold", 9F, System.Drawing.FontStyle.Bold);
+            this.btnRemoveSelected.ForeColor = System.Drawing.Color.Black;
+            this.btnRemoveSelected.Location = new System.Drawing.Point(9, 273);
+            this.btnRemoveSelected.Name = "btnRemoveSelected";
+            this.btnRemoveSelected.Size = new System.Drawing.Size(157, 23);
+            this.btnRemoveSelected.TabIndex = 139;
+            this.btnRemoveSelected.TabStop = false;
+            this.btnRemoveSelected.Tag = "color:light";
+            this.btnRemoveSelected.Text = "Remove Selected Rows";
+            this.btnRemoveSelected.UseVisualStyleBackColor = false;
+            // 
+            // btnSearchRow
+            // 
+            this.btnSearchRow.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.btnSearchRow.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(224)))), ((int)(((byte)(224)))), ((int)(((byte)(224)))));
+            this.btnSearchRow.FlatAppearance.BorderSize = 0;
+            this.btnSearchRow.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnSearchRow.Font = new System.Drawing.Font("Segoe UI Semibold", 9F, System.Drawing.FontStyle.Bold);
+            this.btnSearchRow.ForeColor = System.Drawing.Color.Black;
+            this.btnSearchRow.Location = new System.Drawing.Point(9, 329);
+            this.btnSearchRow.Name = "btnSearchRow";
+            this.btnSearchRow.Size = new System.Drawing.Size(130, 23);
+            this.btnSearchRow.TabIndex = 140;
+            this.btnSearchRow.TabStop = false;
+            this.btnSearchRow.Tag = "color:light";
+            this.btnSearchRow.Text = "Search For Row";
+            this.btnSearchRow.UseVisualStyleBackColor = false;
+            // 
+            // panelSidebar
+            // 
+            this.panelSidebar.Controls.Add(this.btnHelp);
+            this.panelSidebar.Controls.Add(this.btnSearchAgain);
+            this.panelSidebar.Controls.Add(this.label3);
+            this.panelSidebar.Controls.Add(this.btnSearchRow);
+            this.panelSidebar.Controls.Add(this.btnLoadCorrupt);
+            this.panelSidebar.Controls.Add(this.btnRemoveSelected);
+            this.panelSidebar.Controls.Add(this.btnCorrupt);
+            this.panelSidebar.Controls.Add(this.btnSendToStash);
+            this.panelSidebar.Controls.Add(this.panel1);
+            this.panelSidebar.Controls.Add(this.btnRemoveDisabled);
+            this.panelSidebar.Controls.Add(this.label4);
+            this.panelSidebar.Controls.Add(this.btnDisable50);
+            this.panelSidebar.Controls.Add(this.btnInvertDisabled);
+            this.panelSidebar.Controls.Add(this.pnMemoryTargetting);
+            this.panelSidebar.Controls.Add(this.btnDisableEverything);
+            this.panelSidebar.Controls.Add(this.btnEnableEverything);
+            this.panelSidebar.Controls.Add(this.btnDuplicateSelected);
+            this.panelSidebar.Dock = System.Windows.Forms.DockStyle.Right;
+            this.panelSidebar.Location = new System.Drawing.Point(733, 24);
+            this.panelSidebar.Name = "panelSidebar";
+            this.panelSidebar.Size = new System.Drawing.Size(176, 447);
+            this.panelSidebar.TabIndex = 142;
+            this.panelSidebar.Tag = "color:normal";
+            // 
+            // btnHelp
+            // 
+            this.btnHelp.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
+            this.btnHelp.FlatAppearance.BorderSize = 0;
+            this.btnHelp.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnHelp.Font = new System.Drawing.Font("Segoe UI Semibold", 9.75F, System.Drawing.FontStyle.Bold);
+            this.btnHelp.ForeColor = System.Drawing.Color.Black;
+            this.btnHelp.Image = global::BizHawk.Client.EmuHawk.Properties.Resources.Help;
+            this.btnHelp.Location = new System.Drawing.Point(150, 0);
+            this.btnHelp.Name = "btnHelp";
+            this.btnHelp.Size = new System.Drawing.Size(27, 17);
+            this.btnHelp.TabIndex = 176;
+            this.btnHelp.TabStop = false;
+            this.btnHelp.Tag = "color:dark";
+            this.btnHelp.UseVisualStyleBackColor = false;
+            // 
+            // btnSearchAgain
+            // 
+            this.btnSearchAgain.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.btnSearchAgain.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(224)))), ((int)(((byte)(224)))), ((int)(((byte)(224)))));
+            this.btnSearchAgain.FlatAppearance.BorderSize = 0;
+            this.btnSearchAgain.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnSearchAgain.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F);
+            this.btnSearchAgain.ForeColor = System.Drawing.Color.Black;
+            this.btnSearchAgain.Location = new System.Drawing.Point(145, 329);
+            this.btnSearchAgain.Name = "btnSearchAgain";
+            this.btnSearchAgain.Size = new System.Drawing.Size(21, 23);
+            this.btnSearchAgain.TabIndex = 141;
+            this.btnSearchAgain.TabStop = false;
+            this.btnSearchAgain.Tag = "color:light";
+            this.btnSearchAgain.Text = "▶";
+            this.btnSearchAgain.UseVisualStyleBackColor = false;
+            // 
+            // menuStripEx1
+            // 
+            this.menuStripEx1.ClickThrough = true;
+            this.menuStripEx1.ImageScalingSize = new System.Drawing.Size(20, 20);
+            this.menuStripEx1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.blastLayerToolStripMenuItem,
+            this.saveStateToolStripMenuItem,
+            this.rOMToolStripMenuItem,
+            this.toolsToolStripMenuItem,
+            this.openBlastLayerGeneratorToolStripMenuItem});
+            this.menuStripEx1.Location = new System.Drawing.Point(0, 0);
+            this.menuStripEx1.Name = "menuStripEx1";
+            this.menuStripEx1.RenderMode = System.Windows.Forms.ToolStripRenderMode.Professional;
+            this.menuStripEx1.Size = new System.Drawing.Size(909, 24);
+            this.menuStripEx1.TabIndex = 141;
+            this.menuStripEx1.Tag = "";
+            this.menuStripEx1.Text = "menuStripEx1";
+            // 
+            // blastLayerToolStripMenuItem
+            // 
+            this.blastLayerToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.loadFromFileblToolStripMenuItem,
+            this.saveToFileblToolStripMenuItem,
+            this.saveAsToFileblToolStripMenuItem,
+            this.importBlastlayerblToolStripMenuItem,
+            this.exportToCSVToolStripMenuItem});
+            this.blastLayerToolStripMenuItem.Name = "blastLayerToolStripMenuItem";
+            this.blastLayerToolStripMenuItem.Size = new System.Drawing.Size(72, 20);
+            this.blastLayerToolStripMenuItem.Tag = "";
+            this.blastLayerToolStripMenuItem.Text = "BlastLayer";
+            // 
+            // loadFromFileblToolStripMenuItem
+            // 
+            this.loadFromFileblToolStripMenuItem.Name = "loadFromFileblToolStripMenuItem";
+            this.loadFromFileblToolStripMenuItem.Size = new System.Drawing.Size(187, 22);
+            this.loadFromFileblToolStripMenuItem.Text = "&Load From File (.bl)";
+            // 
+            // saveToFileblToolStripMenuItem
+            // 
+            this.saveToFileblToolStripMenuItem.Name = "saveToFileblToolStripMenuItem";
+            this.saveToFileblToolStripMenuItem.Size = new System.Drawing.Size(187, 22);
+            this.saveToFileblToolStripMenuItem.Text = "&Save to File (.bl)";
+            // 
+            // saveAsToFileblToolStripMenuItem
+            // 
+            this.saveAsToFileblToolStripMenuItem.Name = "saveAsToFileblToolStripMenuItem";
+            this.saveAsToFileblToolStripMenuItem.Size = new System.Drawing.Size(187, 22);
+            this.saveAsToFileblToolStripMenuItem.Text = "&Save As to File (.bl)";
+            // 
+            // importBlastlayerblToolStripMenuItem
+            // 
+            this.importBlastlayerblToolStripMenuItem.Name = "importBlastlayerblToolStripMenuItem";
+            this.importBlastlayerblToolStripMenuItem.Size = new System.Drawing.Size(187, 22);
+            this.importBlastlayerblToolStripMenuItem.Text = "&Import Blastlayer (.bl)";
+            // 
+            // exportToCSVToolStripMenuItem
+            // 
+            this.exportToCSVToolStripMenuItem.Name = "exportToCSVToolStripMenuItem";
+            this.exportToCSVToolStripMenuItem.Size = new System.Drawing.Size(187, 22);
+            this.exportToCSVToolStripMenuItem.Text = "&Export to CSV";
+            // 
+            // saveStateToolStripMenuItem
+            // 
+            this.saveStateToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.runOriginalSavestateToolStripMenuItem,
+            this.replaceSavestateFromGHToolStripMenuItem,
+            this.replaceSavestateFromFileToolStripMenuItem,
+            this.saveSavestateToToolStripMenuItem});
+            this.saveStateToolStripMenuItem.Name = "saveStateToolStripMenuItem";
+            this.saveStateToolStripMenuItem.Size = new System.Drawing.Size(69, 20);
+            this.saveStateToolStripMenuItem.Tag = "";
+            this.saveStateToolStripMenuItem.Text = "SaveState";
+            // 
+            // runOriginalSavestateToolStripMenuItem
+            // 
+            this.runOriginalSavestateToolStripMenuItem.Name = "runOriginalSavestateToolStripMenuItem";
+            this.runOriginalSavestateToolStripMenuItem.Size = new System.Drawing.Size(217, 22);
+            this.runOriginalSavestateToolStripMenuItem.Text = "Run Original Savestate";
+            // 
+            // replaceSavestateFromGHToolStripMenuItem
+            // 
+            this.replaceSavestateFromGHToolStripMenuItem.Name = "replaceSavestateFromGHToolStripMenuItem";
+            this.replaceSavestateFromGHToolStripMenuItem.Size = new System.Drawing.Size(217, 22);
+            this.replaceSavestateFromGHToolStripMenuItem.Text = "Replace Savestate from GH";
+            // 
+            // replaceSavestateFromFileToolStripMenuItem
+            // 
+            this.replaceSavestateFromFileToolStripMenuItem.Name = "replaceSavestateFromFileToolStripMenuItem";
+            this.replaceSavestateFromFileToolStripMenuItem.Size = new System.Drawing.Size(217, 22);
+            this.replaceSavestateFromFileToolStripMenuItem.Text = "Replace Savestate from File";
+            // 
+            // saveSavestateToToolStripMenuItem
+            // 
+            this.saveSavestateToToolStripMenuItem.Name = "saveSavestateToToolStripMenuItem";
+            this.saveSavestateToToolStripMenuItem.Size = new System.Drawing.Size(217, 22);
+            this.saveSavestateToToolStripMenuItem.Text = "Save Savestate to";
+            // 
+            // rOMToolStripMenuItem
+            // 
+            this.rOMToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.runRomWithoutBlastlayerToolStripMenuItem,
+            this.replaceRomFromGHToolStripMenuItem,
+            this.replaceRomFromFileToolStripMenuItem,
+            this.bakeROMBlastunitsToFileToolStripMenuItem});
+            this.rOMToolStripMenuItem.Name = "rOMToolStripMenuItem";
+            this.rOMToolStripMenuItem.Size = new System.Drawing.Size(46, 20);
+            this.rOMToolStripMenuItem.Tag = "";
+            this.rOMToolStripMenuItem.Text = "ROM";
+            // 
+            // runRomWithoutBlastlayerToolStripMenuItem
+            // 
+            this.runRomWithoutBlastlayerToolStripMenuItem.Name = "runRomWithoutBlastlayerToolStripMenuItem";
+            this.runRomWithoutBlastlayerToolStripMenuItem.Size = new System.Drawing.Size(222, 22);
+            this.runRomWithoutBlastlayerToolStripMenuItem.Text = "Run Rom Without Blastlayer";
+            // 
+            // replaceRomFromGHToolStripMenuItem
+            // 
+            this.replaceRomFromGHToolStripMenuItem.Name = "replaceRomFromGHToolStripMenuItem";
+            this.replaceRomFromGHToolStripMenuItem.Size = new System.Drawing.Size(222, 22);
+            this.replaceRomFromGHToolStripMenuItem.Text = "Replace Rom from GH";
+            // 
+            // replaceRomFromFileToolStripMenuItem
+            // 
+            this.replaceRomFromFileToolStripMenuItem.Name = "replaceRomFromFileToolStripMenuItem";
+            this.replaceRomFromFileToolStripMenuItem.Size = new System.Drawing.Size(222, 22);
+            this.replaceRomFromFileToolStripMenuItem.Text = "Replace Rom from File";
+            // 
+            // bakeROMBlastunitsToFileToolStripMenuItem
+            // 
+            this.bakeROMBlastunitsToFileToolStripMenuItem.Name = "bakeROMBlastunitsToFileToolStripMenuItem";
+            this.bakeROMBlastunitsToFileToolStripMenuItem.Size = new System.Drawing.Size(222, 22);
+            this.bakeROMBlastunitsToFileToolStripMenuItem.Text = "Bake ROM BlastBytes to File";
+            // 
+            // toolsToolStripMenuItem
+            // 
+            this.toolsToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.sanitizeDuplicatesToolStripMenuItem,
+            this.rasterizeVMDsToolStripMenuItem,
+            this.bakeBlastByteToolStripMenuItem});
+            this.toolsToolStripMenuItem.Name = "toolsToolStripMenuItem";
+            this.toolsToolStripMenuItem.Size = new System.Drawing.Size(47, 20);
+            this.toolsToolStripMenuItem.Tag = "";
+            this.toolsToolStripMenuItem.Text = "Tools";
+            // 
+            // sanitizeDuplicatesToolStripMenuItem
+            // 
+            this.sanitizeDuplicatesToolStripMenuItem.Name = "sanitizeDuplicatesToolStripMenuItem";
+            this.sanitizeDuplicatesToolStripMenuItem.Size = new System.Drawing.Size(285, 22);
+            this.sanitizeDuplicatesToolStripMenuItem.Text = "Sanitize Duplicates";
+            // 
+            // rasterizeVMDsToolStripMenuItem
+            // 
+            this.rasterizeVMDsToolStripMenuItem.Name = "rasterizeVMDsToolStripMenuItem";
+            this.rasterizeVMDsToolStripMenuItem.Size = new System.Drawing.Size(285, 22);
+            this.rasterizeVMDsToolStripMenuItem.Text = "Rasterize VMDs";
+            // 
+            // bakeBlastByteToolStripMenuItem
+            // 
+            this.bakeBlastByteToolStripMenuItem.Name = "bakeBlastByteToolStripMenuItem";
+            this.bakeBlastByteToolStripMenuItem.Size = new System.Drawing.Size(285, 22);
+            this.bakeBlastByteToolStripMenuItem.Text = "Bake Selected BlastUnits to BlastByte Set";
+            // 
+            // openBlastLayerGeneratorToolStripMenuItem
+            // 
+            this.openBlastLayerGeneratorToolStripMenuItem.Name = "openBlastLayerGeneratorToolStripMenuItem";
+            this.openBlastLayerGeneratorToolStripMenuItem.Size = new System.Drawing.Size(159, 20);
+            this.openBlastLayerGeneratorToolStripMenuItem.Text = "Open BlastLayer Generator";
+            // 
+            // btnHideSidebar
+            // 
+            this.btnHideSidebar.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.btnHideSidebar.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F);
+            this.btnHideSidebar.Location = new System.Drawing.Point(881, 0);
+            this.btnHideSidebar.Name = "btnHideSidebar";
+            this.btnHideSidebar.Size = new System.Drawing.Size(28, 24);
+            this.btnHideSidebar.TabIndex = 144;
+            this.btnHideSidebar.Text = "▶";
+            this.btnHideSidebar.UseVisualStyleBackColor = true;
+            // 
             // RTC_BlastEditor_Form
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -915,7 +883,6 @@
             this.Name = "RTC_BlastEditor_Form";
             this.Tag = "color:dark";
             this.Text = "Blast Editor";
-        //    this.Load += new System.EventHandler(this.RTC_BlastEditorForm_Load);
             ((System.ComponentModel.ISupportInitialize)(this.dgvBlastLayer)).EndInit();
             this.pnMemoryTargetting.ResumeLayout(false);
             this.pnMemoryTargetting.PerformLayout();

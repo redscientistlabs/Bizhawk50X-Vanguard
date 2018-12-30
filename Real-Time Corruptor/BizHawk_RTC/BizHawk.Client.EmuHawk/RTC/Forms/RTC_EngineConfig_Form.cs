@@ -56,8 +56,8 @@ namespace RTC
 
 		public void RegisterList(string name, string hash)
 		{
-			RTC_Core.LimiterListBindingSource.Add(new { Text = name, Value = hash });
-			RTC_Core.ValueListBindingSource.Add(new { Text = name, Value = hash });
+			RTC_Core.LimiterListBindingSource.Add(new ComboBoxItem<String>(name, hash));
+			RTC_Core.ValueListBindingSource.Add((new ComboBoxItem<String>(name, hash)));
 		}
 	}
 }

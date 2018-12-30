@@ -5,6 +5,7 @@ using System.Drawing;
 using System.IO;
 using System.Threading;
 using System.Windows.Forms;
+using static RTC.RTC_Unispec;
 
 namespace RTC
 {
@@ -32,7 +33,7 @@ namespace RTC
 		{
 			get
 			{
-				return RTC_Core.AutoCorrupt;
+				return (bool)RTCSpec[RTCSPEC.CORE_AUTOCORRUPT.ToString()];
 			}
 			set
 			{
@@ -41,12 +42,7 @@ namespace RTC
 				else
 					btnAutoCorrupt.Text = "Start Auto-Corrupt";
 
-				RTC_Core.AutoCorrupt = value;
-
-				RTC_Core.SendCommandToBizhawk(new RTC_Command(CommandType.REMOTE_SET_AUTOCORRUPT)
-				{
-					objectValue = value
-				});
+				RTCSpec.Update(RTCSPEC.CORE_AUTOCORRUPT.ToString(), value);
 			}
 		}
 
@@ -61,7 +57,6 @@ namespace RTC
 		public void btnManualBlast_Click(object sender, EventArgs e)
 		{
 			RTC_Core.SendCommandToBizhawk(new RTC_Command(CommandType.ASYNCBLAST));
-			RTC_StepActions.SetRunBefore(true);
 		}
 
 		public void btnAutoCorrupt_Click(object sender, EventArgs e)
@@ -70,7 +65,7 @@ namespace RTC
 				return;
 
 			this.AutoCorrupt = !this.AutoCorrupt;
-			RTC_StepActions.SetRunBefore(true);
+			RTC_Unispec.RTCSpec.Update(RTCSPEC.STEP_RUNBEFORE.ToString(), true);
 		}
 
 		private void RTC_Form_Load(object sender, EventArgs e)
@@ -121,7 +116,7 @@ namespace RTC
 				this.Hide();
 				return;
 			}
-			if (RTC_Core.isStandalone)
+			else if (RTC_Core.isStandalone)
 			{
 				if (RTC_StockpileManager.UnsavedEdits && !RTC_Core.isClosing && MessageBox.Show("You have unsaved edits in the Glitch Harvester Stockpile. \n\n Are you sure you want to close RTC without saving?", "Unsaved edits in Stockpile", MessageBoxButtons.YesNo) == DialogResult.No)
 				{
@@ -231,7 +226,8 @@ namespace RTC
 			else
 			{
 				RTC_GameProtection.Stop();
-				RTC_StockpileManager.BackupedState = null;
+
+				RTCSpec.Update(RTCSPEC.STOCKPILE_BACKUPEDSTATE.ToString(), null);
 				RTC_StockpileManager.AllBackupStates.Clear();
 				btnGpJumpBack.Visible = false;
 				btnGpJumpNow.Visible = false;
@@ -320,7 +316,8 @@ namespace RTC
 				frm.Dock = DockStyle.Left;
 				frm.SendToBack();
 				frm.BringToFront();
-				previousForm = activeForm;
+				if(activeForm?.GetType() != typeof(RTC_ConnectionStatus_Form))
+					previousForm = activeForm;
 				activeForm = frm;
 				frm.Show();
 			}
@@ -387,8 +384,8 @@ namespace RTC
 			{
 				btnGpJumpNow.Visible = false;
 
-				if (RTC_StockpileManager.BackupedState != null)
-					RTC_StockpileManager.BackupedState.Run();
+				if (RTC_Unispec.RTCSpec[RTCSPEC.STOCKPILE_BACKUPEDSTATE.ToString()] != null)
+					((StashKey)RTC_Unispec.RTCSpec[RTCSPEC.STOCKPILE_BACKUPEDSTATE.ToString()]).Run();
 
 				RTC_GameProtection.Reset();
 			}

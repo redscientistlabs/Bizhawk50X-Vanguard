@@ -31,30 +31,26 @@ namespace RTC
 			}
 		}
 
-		public static string[] SelectedDomains = new string[] { };
-		public static string[] LastSelectedDomains = new string[] { };
 
 
 		public static void UpdateSelectedDomains(string[] _domains, bool sync = false)
 		{
-			SelectedDomains = _domains;
-			LastSelectedDomains = _domains;
 
-			if (RTC_Core.isStandalone)
-				RTC_Core.SendCommandToBizhawk(new RTC_Command(CommandType.REMOTE_DOMAIN_SETSELECTEDDOMAINS) { objectValue = SelectedDomains }, sync);
+			PartialSpec update = new PartialSpec("RTCSpec");
+			update[RTCSPEC.MEMORYDOMAINS_SELECTEDDOMAINS.ToString()] = _domains;
+			update[RTCSPEC.MEMORYDOMAINS_LASTSELECTEDDOMAINS.ToString()] = _domains;
+			RTC_Unispec.RTCSpec.Update(update);
 
 			Console.WriteLine($"{RTC_Core.RemoteRTC?.expectedSide} -> Selected {_domains.Count().ToString()} domains \n{string.Join(" | ", _domains)}");
 		}
 
 		public static void ClearSelectedDomains()
 		{
-			LastSelectedDomains = SelectedDomains;
-
-			SelectedDomains = new string[] { };
-
-			if (RTC_Core.isStandalone)
-				RTC_Core.SendCommandToBizhawk(new RTC_Command(CommandType.REMOTE_DOMAIN_SETSELECTEDDOMAINS) { objectValue = SelectedDomains });
-
+			PartialSpec update = new PartialSpec("RTCSpec");
+			update[RTCSPEC.MEMORYDOMAINS_LASTSELECTEDDOMAINS.ToString()] = RTC_Unispec.RTCSpec[RTCSPEC.MEMORYDOMAINS_SELECTEDDOMAINS.ToString()];
+			update[RTCSPEC.MEMORYDOMAINS_SELECTEDDOMAINS.ToString()] = new string[] { };
+			RTC_Unispec.RTCSpec.Update(update);
+			
 			Console.WriteLine($"{RTC_Core.RemoteRTC?.expectedSide} -> Cleared selected domains");
 		}
 
@@ -398,8 +394,11 @@ namespace RTC
 		{
 			MemoryInterfaces.Clear();
 
-			LastSelectedDomains = SelectedDomains;
-			SelectedDomains = new string[] { };
+
+			PartialSpec update = new PartialSpec("RTCSpec");
+			update[RTCSPEC.MEMORYDOMAINS_LASTSELECTEDDOMAINS.ToString()] = RTC_Unispec.RTCSpec[RTCSPEC.MEMORYDOMAINS_SELECTEDDOMAINS.ToString()];
+			update[RTCSPEC.MEMORYDOMAINS_SELECTEDDOMAINS.ToString()] = new string[] { };
+			RTC_Unispec.RTCSpec.Update(update);
 
 			if (!S.ISNULL<RTC_EngineConfig_Form>())
 				S.GET<RTC_MemoryDomains_Form>().lbMemoryDomains.Items.Clear();
@@ -415,7 +414,7 @@ namespace RTC
 				MemoryInterface mi = MemoryInterfaces[domain];
 				return (MemoryDomainProxy)mi;
 			}
-			if (VmdPool.ContainsKey(domain))
+			else if (VmdPool.ContainsKey(domain))
 			{
 				MemoryInterface mi = VmdPool[domain];
 				if (mi is VirtualMemoryDomain vmd)
@@ -475,7 +474,8 @@ namespace RTC
 				VirtualMemoryDomain vmd = ((VirtualMemoryDomain)mi);
 				return vmd.GetRealAddress(address);
 			}
-			return address;
+			else
+				return address;
 		}
 
 		public static string GetRealDomain(string domain, long address)
@@ -486,7 +486,8 @@ namespace RTC
 				VirtualMemoryDomain vmd = ((VirtualMemoryDomain)mi);
 				return vmd.GetRealDomain(address);
 			}
-			return domain;
+			else
+				return domain;
 		}
 
 		public static void GenerateVmdFromStashkey(StashKey sk)
@@ -907,9 +908,10 @@ namespace RTC
 			for (long i = startAddress; i < endAddress; i++)
 				data.Add(PeekByte(i));
 
-			if (raw || BigEndian)
+			if(raw || BigEndian)
 				return data.ToArray();
-			return data.ToArray().FlipBytes();
+			else
+				return data.ToArray().FlipBytes();
 		}
 
 
@@ -917,7 +919,8 @@ namespace RTC
 		{
 			if (MD == null)
 				return (byte)RTC_Core.SendCommandToBizhawk(new RTC_Command(CommandType.REMOTE_DOMAIN_PEEKBYTE) { objectValue = new object[] { Name, address } }, true);
-			return MD.PeekByte(address);
+			else
+				return MD.PeekByte(address);
 		}
 
 		public override void PokeByte(long address, byte value)

@@ -10,6 +10,7 @@ using System.Reflection;
 using System.Threading;
 using System.Windows.Forms;
 using Newtonsoft.Json;
+using static RTC.RTC_Unispec;
 
 /*
 isRemoteRTC = Bool stating that the process is emuhawk.exe in detached
@@ -25,7 +26,7 @@ namespace RTC
 		public static List<ProblematicProcess> ProblematicProcesses;
 
 		//General RTC Values
-		public static string RtcVersion = "3.30";
+		public static string RtcVersion = "3.31";
 
 		//Directories
 		public static string bizhawkDir = Directory.GetCurrentDirectory();
@@ -37,37 +38,12 @@ namespace RTC
 		public static string listsDir = rtcDir + "\\LISTS\\";
 
 		//Engine Values
-		public static CorruptionEngine SelectedEngine = CorruptionEngine.NIGHTMARE;
+		public static BindingList<ComboBoxItem<String>> LimiterListBindingSource = new BindingList<ComboBoxItem<String>>();
+		public static BindingList<ComboBoxItem<String>> ValueListBindingSource = new BindingList<ComboBoxItem<String>>();
 
-		public static BindingList<Object> LimiterListBindingSource = new BindingList<Object>();
-		public static BindingList<Object> ValueListBindingSource = new BindingList<Object>();
-
-		private static int customPrecision;
-		public static int CustomPrecision
-		{
-			get { return customPrecision; }
-			set
-			{
-				customPrecision = value;
-				CurrentPrecision = value;
-			}
-	}
-		public static int CurrentPrecision = 1;
-		public static int Intensity = 1;
-		public static int ErrorDelay = 1;
-		public static BlastRadius Radius = BlastRadius.SPREAD;
-		public static bool AutoCorrupt = false;
-
-		public static bool ClearStepActionsOnRewind = false;
-		public static bool ExtractBlastLayer = false;
-		public static string lastOpenRom = null;
-		public static int lastLoaderRom = 0;
-
-		//RTC Settings
-		public static bool BizhawkOsdDisabled = true;
-		public static bool UseHexadecimal = true;
 		public static bool AllowCrossCoreCorruption = false;
-		public static bool DontCleanSavestatesOnQuit = false;
+
+
 
 		//Note Box Settings
 		public static System.Drawing.Point NoteBoxPosition;
@@ -131,7 +107,7 @@ namespace RTC
 				S.GET<RTC_Standalone_Form>().Close();
 
 			//Clean out the working folders
-			if (!RTC_Hooks.isRemoteRTC && !RTC_Core.DontCleanSavestatesOnQuit)
+			if (!RTC_Hooks.isRemoteRTC && !(bool)RTCSpec[RTCSPEC.CORE_DONTCLEANSAVESTATESONQUIT.ToString()])
 			{
 				Stockpile.EmptyFolder("\\WORKING\\");
 			}
@@ -191,7 +167,7 @@ namespace RTC
 			}
 			catch (Exception ex)
 			{
-				Console.WriteLine(ex);
+				Console.WriteLine(ex.ToString());
 				if (File.Exists(LocalPath))
 					File.Delete(LocalPath);
 				return;
@@ -239,14 +215,21 @@ namespace RTC
 		//This is the entry point of RTC. Without this method, nothing will load.
 		public static void Start(RTC_Standalone_Form _standaloneForm = null)
 		{
-
-			//Spawn a console for StandaloneRTC.
-			//If we're in attached mode, we can't do this as the emulator itself may have something overriding stdout (Bizhawk)
+			//Spawn a console for StandaloneRTC && initialize spec
 			if (RTC_Core.isStandalone)
 			{
+				RTC_Unispec.RegisterRTCSpec();
+
 				LogConsole.CreateConsole();
-				if (!RTC_Hooks.ShowConsole)
+				if (!(bool)RTCSpec[RTCSPEC.HOOKS_SHOWCONSOLE.ToString()])
 					LogConsole.HideConsole();
+			}
+
+			//Register the RTC spec in attached mode
+			if (!RTC_Core.isStandalone && !RTC_Hooks.isRemoteRTC)
+			{
+
+				RTC_Unispec.RegisterRTCSpec();
 			}
 
 			//Timed releases. Only for exceptionnal cases.
@@ -324,11 +307,15 @@ namespace RTC
 				Directory.CreateDirectory(RTC_Core.rtcDir + "\\LISTS\\");
 
 
-			//Loading RTC Params
-			RTC_Params.LoadRTCColor();
-			S.GET<RTC_SettingsGeneral_Form>().cbDisableBizhawkOSD.Checked = !RTC_Params.IsParamSet("ENABLE_BIZHAWK_OSD");
-			S.GET<RTC_SettingsGeneral_Form>().cbAllowCrossCoreCorruption.Checked = RTC_Params.IsParamSet("ALLOW_CROSS_CORE_CORRUPTION");
-			S.GET<RTC_SettingsGeneral_Form>().cbDontCleanAtQuit.Checked = RTC_Params.IsParamSet("DONT_CLEAN_SAVESTATES_AT_QUIT");
+			//Loading RTC Params. Load them in standalone or attached
+			if (RTC_Core.isStandalone || !RTC_Hooks.isRemoteRTC)
+			{
+				RTC_Params.LoadRTCColor();
+				S.GET<RTC_SettingsGeneral_Form>().cbDisableBizhawkOSD.Checked = !RTC_Params.IsParamSet("ENABLE_BIZHAWK_OSD");
+				S.GET<RTC_SettingsGeneral_Form>().cbAllowCrossCoreCorruption.Checked = RTC_Params.IsParamSet("ALLOW_CROSS_CORE_CORRUPTION");
+				S.GET<RTC_SettingsGeneral_Form>().cbDontCleanAtQuit.Checked = RTC_Params.IsParamSet("DONT_CLEAN_SAVESTATES_AT_QUIT");
+			}
+
 
 			//Load and initialize Hotkeys
 			//RTC_Hotkeys.InitializeHotkeySystem();
@@ -338,11 +325,9 @@ namespace RTC
 			//Initiation of loopback TCP, only in DETACHED MODE
 			if (RTC_Hooks.isRemoteRTC || RTC_Core.isStandalone)
 			{
-				RemoteRTC = new RTC_NetCore
-				{
-					port = 42042,
-					address = ""
-				};
+				RemoteRTC = new RTC_NetCore();
+				RemoteRTC.port = 42042;
+				RemoteRTC.address = "";
 			}
 
 			//Initialize RemoteRTC server
@@ -351,6 +336,21 @@ namespace RTC
 				//Bizhawk has started in REMOTERTC mode, no RTC form will be loaded
 				RemoteRTC.StartNetworking(NetworkSide.CLIENT, true);
 				RemoteRTC.SendCommand(new RTC_Command(CommandType.REMOTE_EVENT_BIZHAWKSTARTED), false, true);
+
+				RemoteRTC.ClientDisconnected += new EventHandler((ob, ev) =>
+				{
+					RemoteRTC_SupposedToBeConnected = false;
+				});
+				RemoteRTC.ClientConnectionLost += new EventHandler((ob, ev) =>
+				{
+					RemoteRTC_SupposedToBeConnected = false;
+				});
+				RemoteRTC.ClientConnected += new EventHandler((ob, ev) =>
+				{
+					RemoteRTC_SupposedToBeConnected = true;
+					//Push the spec to StandaloneRTC
+					RTC_Unispec.PushEmuSpec();
+				});
 			}
 			else
 			{
@@ -364,7 +364,7 @@ namespace RTC
 
 					S.GET<RTC_Core_Form>().ShowPanelForm(S.GET<RTC_ConnectionStatus_Form>());
 
-					RemoteRTC.ServerStarted += (ob, ev) =>
+					RemoteRTC.ServerStarted += new EventHandler((ob, ev) =>
 					{
 						RemoteRTC_SupposedToBeConnected = false;
 						Console.WriteLine("RemoteRTC.ServerStarted");
@@ -382,13 +382,16 @@ namespace RTC
 							S.GET<RTC_GlitchHarvester_Form>().pnHideGlitchHarvester.BringToFront();
 							S.GET<RTC_GlitchHarvester_Form>().pnHideGlitchHarvester.Show();
 						}
-					};
+					});
 
-					RemoteRTC.ServerConnected += (ob, ev) =>
+					RemoteRTC.ServerConnected += new EventHandler((ob, ev) =>
 					{
 						RemoteRTC_SupposedToBeConnected = true;
 						Console.WriteLine("RemoteRTC.ServerConnected");
 						S.GET<RTC_ConnectionStatus_Form>().lbConnectionStatus.Text = "Connection status: Connected";
+
+						//Push the spec to Bizhawk
+						RTC_Unispec.PushRTCSpec();
 
 						if (FirstConnection)
 						{
@@ -404,9 +407,10 @@ namespace RTC
 
 						RTC_RPC.Heartbeat = true;
 						RTC_RPC.Freeze = false;
-					};
 
-					RemoteRTC.ServerConnectionLost += (ob, ev) =>
+					});
+
+					RemoteRTC.ServerConnectionLost += new EventHandler((ob, ev) =>
 					{
 						RemoteRTC_SupposedToBeConnected = false;
 						Console.WriteLine("RemoteRTC.ServerConnectionLost");
@@ -427,9 +431,9 @@ namespace RTC
 						RTC_GameProtection.Stop();
 						//Kill the active table autodumps
 						S.GET<RTC_VmdAct_Form>().cbAutoAddDump.Checked = false;
-					};
+					});
 
-					RemoteRTC.ServerDisconnected += (ob, ev) =>
+					RemoteRTC.ServerDisconnected += new EventHandler((ob, ev) =>
 					{
 						RemoteRTC_SupposedToBeConnected = false;
 						Console.WriteLine("RemoteRTC.ServerDisconnected");
@@ -443,7 +447,7 @@ namespace RTC
 						RTC_GameProtection.Stop();
 						//Kill the active table autodumps
 						S.GET<RTC_VmdAct_Form>().cbAutoAddDump.Checked = false;
-					};
+					});
 
 					RemoteRTC.StartNetworking(NetworkSide.SERVER, false, false);
 				}
@@ -558,7 +562,7 @@ namespace RTC
 
 			BlastUnit bu = null;
 
-			switch (SelectedEngine)
+			switch ((CorruptionEngine)(RTC_Unispec.RTCSpec[RTCSPEC.CORE_SELECTEDENGINE.ToString()]))
 			{
 				case CorruptionEngine.NIGHTMARE:
 					bu = RTC_NightmareEngine.GenerateUnit(_domain, _address, precision);
@@ -605,170 +609,175 @@ namespace RTC
 
 					return _layer;
 				}
-				if (RTC_Core.SelectedEngine == CorruptionEngine.BLASTGENERATORENGINE)
+				else if ((CorruptionEngine)RTCSpec[RTCSPEC.CORE_SELECTEDENGINE.ToString()] == CorruptionEngine.BLASTGENERATORENGINE)
 				{
 					//It will query a BlastLayer generated by the Blast Generator
 					bl = RTC_BlastGeneratorEngine.GetBlastLayer();
 					if (bl == null)
 						//We return an empty blastlayer so when it goes to apply it, it doesn't find a null blastlayer and try and apply to the domains which aren't enabled resulting in an exception
 						return new BlastLayer();
-					return bl;
+					else
+						return bl;
 				}
-				bl = new BlastLayer();
-
-				if (_selectedDomains == null || _selectedDomains.Count() == 0)
-					return null;
-
-				// Capping intensity at engine-specific maximums
-
-				int _Intensity = Intensity; //general RTC intensity
-
-				if ((RTC_Core.SelectedEngine == CorruptionEngine.HELLGENIE || RTC_Core.SelectedEngine == CorruptionEngine.FREEZE || RTC_Core.SelectedEngine == CorruptionEngine.PIPE) && _Intensity > RTC_StepActions.MaxInfiniteBlastUnits)
-					_Intensity = RTC_StepActions.MaxInfiniteBlastUnits; //Capping for cheat max
-
-				switch (Radius) //Algorithm branching
+				else
 				{
-					case BlastRadius.SPREAD: //Randomly spreads all corruption bytes to all selected domains
+					bl = new BlastLayer();
 
-						for (int i = 0; i < _Intensity; i++)
-						{
-							Domain = _selectedDomains[RND.Next(_selectedDomains.Length)];
-
-							MaxAddress = RTC_MemoryDomains.GetInterface(Domain).Size;
-							RandomAddress = RTC_Core.RND.RandomLong(MaxAddress - 1);
-
-							bu = GetBlastUnit(Domain, RandomAddress, RTC_Core.CurrentPrecision);
-							if (bu != null)
-								bl.Layer.Add(bu);
-						}
-
-						break;
-
-					case BlastRadius.CHUNK: //Randomly spreads the corruption bytes in one randomly selected domain
-
-						Domain = _selectedDomains[RND.Next(_selectedDomains.Length)];
-
-						MaxAddress = RTC_MemoryDomains.GetInterface(Domain).Size;
-
-						for (int i = 0; i < _Intensity; i++)
-						{
-							RandomAddress = RTC_Core.RND.RandomLong(MaxAddress - 1);
-
-							bu = GetBlastUnit(Domain, RandomAddress, RTC_Core.CurrentPrecision);
-							if (bu != null)
-								bl.Layer.Add(bu);
-						}
-
-						break;
-
-					case BlastRadius.BURST: // 10 shots of 10% chunk
-
-						for (int j = 0; j < 10; j++)
-						{
-							Domain = _selectedDomains[RND.Next(_selectedDomains.Length)];
-
-							MaxAddress = RTC_MemoryDomains.GetInterface(Domain).Size;
-
-							for (int i = 0; i < (int)((double)_Intensity / 10); i++)
-							{
-								RandomAddress = RTC_Core.RND.RandomLong(MaxAddress - 1);
-
-								bu = GetBlastUnit(Domain, RandomAddress, RTC_Core.CurrentPrecision);
-								if (bu != null)
-									bl.Layer.Add(bu);
-							}
-						}
-
-						break;
-
-					case BlastRadius.NORMALIZED: // Blasts based on the size of the largest selected domain. Intensity =  Intensity / (domainSize[largestdomain]/domainSize[currentdomain])
-
-						//Find the smallest domain and base our normalization around it
-						//Domains aren't IComparable so I used keys
-
-						long[] domainSize = new long[_selectedDomains.Length];
-						for (int i = 0; i < _selectedDomains.Length; i++)
-						{
-							Domain = _selectedDomains[i];
-							domainSize[i] = RTC_MemoryDomains.GetInterface(Domain).Size;
-						}
-						//Sort the arrays
-						Array.Sort(domainSize, _selectedDomains);
-
-						for (int i = 0; i < _selectedDomains.Length; i++)
-						{
-							Domain = _selectedDomains[i];
-
-							//Get the intensity divider. The size of the largest domain divided by the size of the current domain
-							long normalized = ((domainSize[_selectedDomains.Length - 1] / (domainSize[i])));
-
-							for (int j = 0; j < (_Intensity / normalized); j++)
-							{
-								MaxAddress = RTC_MemoryDomains.GetInterface(Domain).Size;
-								RandomAddress = RTC_Core.RND.RandomLong(MaxAddress - 1);
-
-								bu = GetBlastUnit(Domain, RandomAddress, RTC_Core.CurrentPrecision);
-								if (bu != null)
-									bl.Layer.Add(bu);
-							}
-						}
-
-						break;
-
-					case BlastRadius.PROPORTIONAL: //Blasts proportionally based on the total size of all selected domains
-
-						long totalSize = _selectedDomains.Select(it => RTC_MemoryDomains.GetInterface(it).Size).Sum(); //Gets the total size of all selected domains
-
-						long[] normalizedIntensity = new long[_selectedDomains.Length]; //matches the index of selectedDomains
-						for (int i = 0; i < _selectedDomains.Length; i++)
-						{   //calculates the proportionnal normalized Intensity based on total selected domains size
-							double proportion = (double)RTC_MemoryDomains.GetInterface(_selectedDomains[i]).Size / (double)totalSize;
-							normalizedIntensity[i] = Convert.ToInt64((double)_Intensity * proportion);
-						}
-
-						for (int i = 0; i < _selectedDomains.Length; i++)
-						{
-							Domain = _selectedDomains[i];
-
-							for (int j = 0; j < normalizedIntensity[i]; j++)
-							{
-								MaxAddress = RTC_MemoryDomains.GetInterface(Domain).Size;
-								RandomAddress = RTC_Core.RND.RandomLong(MaxAddress - 1);
-
-								bu = GetBlastUnit(Domain, RandomAddress, RTC_Core.CurrentPrecision);
-								if (bu != null)
-									bl.Layer.Add(bu);
-							}
-						}
-
-						break;
-
-					case BlastRadius.EVEN: //Evenly distributes the blasts through all selected domains
-
-						for (int i = 0; i < _selectedDomains.Length; i++)
-						{
-							Domain = _selectedDomains[i];
-
-							for (int j = 0; j < (_Intensity / _selectedDomains.Length); j++)
-							{
-								MaxAddress = RTC_MemoryDomains.GetInterface(Domain).Size;
-								RandomAddress = RTC_Core.RND.RandomLong(MaxAddress - 1);
-
-								bu = GetBlastUnit(Domain, RandomAddress, RTC_Core.CurrentPrecision);
-								if (bu != null)
-									bl.Layer.Add(bu);
-							}
-						}
-
-						break;
-
-					case BlastRadius.NONE: //Shouldn't ever happen but handled anyway
+					if (_selectedDomains == null || _selectedDomains.Count() == 0)
 						return null;
-				}
+					
+					// Capping intensity at engine-specific maximums
 
-				if (bl.Layer.Count == 0)
-					return null;
-				return bl;
+					int _Intensity = (int)(RTCSpec[RTCSPEC.CORE_INTENSITY.ToString()] ?? -1); //general RTC intensity
+
+					if (((CorruptionEngine)RTCSpec[RTCSPEC.CORE_SELECTEDENGINE.ToString()] == CorruptionEngine.HELLGENIE || (CorruptionEngine)RTCSpec[RTCSPEC.CORE_SELECTEDENGINE.ToString()] == CorruptionEngine.FREEZE || (CorruptionEngine)RTCSpec[RTCSPEC.CORE_SELECTEDENGINE.ToString()] == CorruptionEngine.PIPE) && _Intensity > (int)RTCSpec[RTCSPEC.STEP_MAXINFINITEBLASTUNITS.ToString()])
+						_Intensity = (int)RTCSpec[RTCSPEC.STEP_MAXINFINITEBLASTUNITS.ToString()]; //Capping for cheat max
+
+					switch ((BlastRadius)RTC_Unispec.RTCSpec[RTCSPEC.CORE_RADIUS.ToString()]) //Algorithm branching
+					{
+						case BlastRadius.SPREAD: //Randomly spreads all corruption bytes to all selected domains
+
+							for (int i = 0; i < _Intensity; i++)
+							{
+								Domain = _selectedDomains[RND.Next(_selectedDomains.Length)];
+
+								MaxAddress = RTC_MemoryDomains.GetInterface(Domain).Size;
+								RandomAddress = RTC_Core.RND.RandomLong(MaxAddress - 1);
+
+								bu = GetBlastUnit(Domain, RandomAddress, (int)RTCSpec[RTCSPEC.CORE_CURRENTPRECISION.ToString()]);
+								if (bu != null)
+									bl.Layer.Add(bu);
+							}
+
+							break;
+
+						case BlastRadius.CHUNK: //Randomly spreads the corruption bytes in one randomly selected domain
+
+							Domain = _selectedDomains[RND.Next(_selectedDomains.Length)];
+
+							MaxAddress = RTC_MemoryDomains.GetInterface(Domain).Size;
+
+							for (int i = 0; i < _Intensity; i++)
+							{
+								RandomAddress = RTC_Core.RND.RandomLong(MaxAddress - 1);
+
+								bu = GetBlastUnit(Domain, RandomAddress, (int)RTCSpec[RTCSPEC.CORE_CURRENTPRECISION.ToString()]);
+								if (bu != null)
+									bl.Layer.Add(bu);
+							}
+
+							break;
+
+						case BlastRadius.BURST: // 10 shots of 10% chunk
+
+							for (int j = 0; j < 10; j++)
+							{
+								Domain = _selectedDomains[RND.Next(_selectedDomains.Length)];
+
+								MaxAddress = RTC_MemoryDomains.GetInterface(Domain).Size;
+
+								for (int i = 0; i < (int)((double)_Intensity / 10); i++)
+								{
+									RandomAddress = RTC_Core.RND.RandomLong(MaxAddress - 1);
+
+									bu = GetBlastUnit(Domain, RandomAddress, (int)RTCSpec[RTCSPEC.CORE_CURRENTPRECISION.ToString()]);
+									if (bu != null)
+										bl.Layer.Add(bu);
+								}
+							}
+
+							break;
+
+						case BlastRadius.NORMALIZED: // Blasts based on the size of the largest selected domain. Intensity =  Intensity / (domainSize[largestdomain]/domainSize[currentdomain])
+
+							//Find the smallest domain and base our normalization around it
+							//Domains aren't IComparable so I used keys
+
+							long[] domainSize = new long[_selectedDomains.Length];
+							for (int i = 0; i < _selectedDomains.Length; i++)
+							{
+								Domain = _selectedDomains[i];
+								domainSize[i] = RTC_MemoryDomains.GetInterface(Domain).Size;
+							}
+							//Sort the arrays
+							Array.Sort(domainSize, _selectedDomains);
+
+							for (int i = 0; i < _selectedDomains.Length; i++)
+							{
+								Domain = _selectedDomains[i];
+
+								//Get the intensity divider. The size of the largest domain divided by the size of the current domain
+								long normalized = ((domainSize[_selectedDomains.Length - 1] / (domainSize[i])));
+
+								for (int j = 0; j < (_Intensity / normalized); j++)
+								{
+									MaxAddress = RTC_MemoryDomains.GetInterface(Domain).Size;
+									RandomAddress = RTC_Core.RND.RandomLong(MaxAddress - 1);
+
+									bu = GetBlastUnit(Domain, RandomAddress, (int)RTCSpec[RTCSPEC.CORE_CURRENTPRECISION.ToString()]);
+									if (bu != null)
+										bl.Layer.Add(bu);
+								}
+							}
+
+							break;
+
+						case BlastRadius.PROPORTIONAL: //Blasts proportionally based on the total size of all selected domains
+
+							long totalSize = _selectedDomains.Select(it => RTC_MemoryDomains.GetInterface(it).Size).Sum(); //Gets the total size of all selected domains
+
+							long[] normalizedIntensity = new long[_selectedDomains.Length]; //matches the index of selectedDomains
+							for (int i = 0; i < _selectedDomains.Length; i++)
+							{   //calculates the proportionnal normalized Intensity based on total selected domains size
+								double proportion = (double)RTC_MemoryDomains.GetInterface(_selectedDomains[i]).Size / (double)totalSize;
+								normalizedIntensity[i] = Convert.ToInt64((double)_Intensity * proportion);
+							}
+
+							for (int i = 0; i < _selectedDomains.Length; i++)
+							{
+								Domain = _selectedDomains[i];
+
+								for (int j = 0; j < normalizedIntensity[i]; j++)
+								{
+									MaxAddress = RTC_MemoryDomains.GetInterface(Domain).Size;
+									RandomAddress = RTC_Core.RND.RandomLong(MaxAddress - 1);
+
+									bu = GetBlastUnit(Domain, RandomAddress, (int)RTCSpec[RTCSPEC.CORE_CURRENTPRECISION.ToString()]);
+									if (bu != null)
+										bl.Layer.Add(bu);
+								}
+							}
+
+							break;
+
+						case BlastRadius.EVEN: //Evenly distributes the blasts through all selected domains
+
+							for (int i = 0; i < _selectedDomains.Length; i++)
+							{
+								Domain = _selectedDomains[i];
+
+								for (int j = 0; j < (_Intensity / _selectedDomains.Length); j++)
+								{
+									MaxAddress = RTC_MemoryDomains.GetInterface(Domain).Size;
+									RandomAddress = RTC_Core.RND.RandomLong(MaxAddress - 1);
+
+									bu = GetBlastUnit(Domain, RandomAddress, (int)RTCSpec[RTCSPEC.CORE_CURRENTPRECISION.ToString()]);
+									if (bu != null)
+										bl.Layer.Add(bu);
+								}
+							}
+
+							break;
+
+						case BlastRadius.NONE: //Shouldn't ever happen but handled anyway
+							return null;
+					}
+
+					if (bl.Layer.Count == 0)
+						return null;
+					else
+						return bl;
+				}
 			}
 			catch (Exception ex)
 			{
@@ -802,7 +811,7 @@ namespace RTC
 			long MaxAddress = -1;
 			long RandomAddress = -1;
 
-			string[] _selectedDomains = RTC_MemoryDomains.SelectedDomains;
+			string[] _selectedDomains = (string[])RTCSpec[RTCSPEC.MEMORYDOMAINS_SELECTEDDOMAINS.ToString()];
 
 			Domain = _selectedDomains[RND.Next(_selectedDomains.Length)];
 
@@ -824,7 +833,8 @@ namespace RTC
 			//Loads a NES-based title screen.
 			//Can be overriden by putting a file named "overridedefault.nes" in the ASSETS folder
 
-			int newNumber = lastLoaderRom;
+			int lastLoaderRom = (int)(EmuSpec[EMUSPEC.CORE_LASTLOADERROM.ToString()] ?? -1);
+			int newNumber = (int)(EmuSpec[EMUSPEC.CORE_LASTLOADERROM.ToString()] ?? -1);
 
 			while (newNumber == lastLoaderRom)
 			{
@@ -1012,8 +1022,6 @@ namespace RTC
 
 		public static void SetRTCColor(Color color, Form form = null)
 		{
-			//Recolors all the RTC Forms using the general skin color
-
 			List<Control> allControls = new List<Control>();
 
 			if (form == null)
@@ -1055,9 +1063,8 @@ namespace RTC
 			S.GET<RTC_GlitchHarvester_Form>().dgvStockpile.BackgroundColor = color;
 			
 
-			//TODO
-			//beForm.dgvBlastLayer.BackgroundColor = color;
-
+			
+			S.GET<RTC_NewBlastEditor_Form>().dgvBlastEditor.BackgroundColor = color;
 			S.GET<RTC_BlastGenerator_Form>().dgvBlastGenerator.BackgroundColor = color;
 
 			foreach (Control c in darkColorControls)

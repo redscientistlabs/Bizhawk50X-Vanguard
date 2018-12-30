@@ -6,15 +6,6 @@ namespace RTC
 	public static class RTC_HellgenieEngine
 	{
 
-		public static long MinValue8Bit = 0;
-		public static long MaxValue8Bit = 0xFF;
-
-		public static long MinValue16Bit = 0;
-		public static long MaxValue16Bit = 0xFFFF;
-
-		public static long MinValue32Bit = 0;
-		public static long MaxValue32Bit = 0xFFFFFFFF;
-
 		public static BlastUnit GenerateUnit(string domain, long address, int precision)
 		{
 			try
@@ -31,13 +22,13 @@ namespace RTC
 				switch (precision)
 				{
 					case (1):
-						randomValue = RTC_Core.RND.RandomLong(MinValue8Bit, MaxValue8Bit);
+						randomValue = RTC_Core.RND.RandomLong((long)RTC_Unispec.RTCSpec[RTCSPEC.HELLGENIE_MINVALUE8BIT.ToString()], (long)RTC_Unispec.RTCSpec[RTCSPEC.HELLGENIE_MAXVALUE8BIT.ToString()]);
 						break;
 					case (2):
-						randomValue = RTC_Core.RND.RandomLong(MinValue16Bit, MaxValue16Bit);
+						randomValue = RTC_Core.RND.RandomLong((long)RTC_Unispec.RTCSpec[RTCSPEC.HELLGENIE_MINVALUE16BIT.ToString()], (long)RTC_Unispec.RTCSpec[RTCSPEC.HELLGENIE_MAXVALUE16BIT.ToString()]);
 						break;
 					case (4):
-						randomValue = RTC_Core.RND.RandomLong(MinValue32Bit, MaxValue32Bit);
+						randomValue = RTC_Core.RND.RandomLong((long)RTC_Unispec.RTCSpec[RTCSPEC.HELLGENIE_MINVALUE32BIT.ToString()], (long)RTC_Unispec.RTCSpec[RTCSPEC.HELLGENIE_MAXVALUE32BIT.ToString()]);
 						break;
 				}
 

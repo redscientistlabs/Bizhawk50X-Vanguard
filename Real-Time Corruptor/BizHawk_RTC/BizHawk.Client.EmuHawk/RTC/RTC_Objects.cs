@@ -545,7 +545,10 @@ namespace RTC
 
 			foreach (StashKey sk in sks.StashKeys)
 			{
-				sk.RomFilename = RTC_Core.workingDir + "\\SKS\\" + sk.RomFilename;
+
+				sk.RomShortFilename = RTC_Extensions.getShortFilenameFromPath(sk.RomFilename);
+				sk.RomFilename = RTC_Core.workingDir + "\\SKS\\" + sk.RomShortFilename;
+
 				sk.StateLocation = StashKeySavestateLocation.SKS;
 			}
 
@@ -555,9 +558,14 @@ namespace RTC
 				{
 					try
 					{
-						File.Copy(file,
-							RTC_Core.workingDir + "\\SKS\\" + file.Substring(file.LastIndexOf('\\'),
-								file.Length - file.LastIndexOf('\\'))); // copy roms to sks folder
+						string dest = RTC_Core.workingDir + "\\SKS\\" + file.Substring(file.LastIndexOf('\\')
+							, file.Length - file.LastIndexOf('\\'));
+
+						if (!File.Exists(dest))
+						{
+							File.Copy(file, dest); // copy roms/stockpile/whatever to sks folder
+						}
+						
 					}
 					catch (Exception ex)
 					{
@@ -631,7 +639,7 @@ namespace RTC
 			GameName = (string)RTC_Core.SendCommandToBizhawk(new RTC_Command(CommandType.REMOTE_KEY_GETGAMENAME), true);
 			SyncSettings = (string)RTC_Core.SendCommandToBizhawk(new RTC_Command(CommandType.REMOTE_KEY_GETSYNCSETTINGS), true);
 
-			this.SelectedDomains.AddRange(RTC_MemoryDomains.SelectedDomains);
+			this.SelectedDomains.AddRange((string[])RTC_Unispec.RTCSpec[RTCSPEC.MEMORYDOMAINS_SELECTEDDOMAINS.ToString()]);
 		}
 
 		public StashKey()
@@ -755,9 +763,9 @@ namespace RTC
 
 			/*
 			if (this != RTC_StockpileManager.lastBlastLayerBackup &&
-				RTC_Core.SelectedEngine != CorruptionEngine.HELLGENIE &&
-				RTC_Core.SelectedEngine != CorruptionEngine.FREEZE &&
-				RTC_Core.SelectedEngine != CorruptionEngine.PIPE)
+				RTC_Unispec.RTCSpec[Spec.CORE_SELECTEDENGINE.ToString()] != CorruptionEngine.HELLGENIE &&
+				RTC_Unispec.RTCSpec[Spec.CORE_SELECTEDENGINE.ToString()] != CorruptionEngine.FREEZE &&
+				RTC_Unispec.RTCSpec[Spec.CORE_SELECTEDENGINE.ToString()] != CorruptionEngine.PIPE)
 				RTC_StockpileManager.lastBlastLayerBackup = GetBackup();
             */
 
@@ -999,6 +1007,8 @@ namespace RTC
 		{
 			get
 			{
+				if (Value == null)
+					return String.Empty;
 				return BitConverter.ToString(this.Value).Replace("-", string.Empty);
 			}
 			set
@@ -1263,8 +1273,7 @@ namespace RTC
 			{
 				throw new Exception("The BlastUnit apply() function threw up. \n" +
 					"This is an RTC error, so you should probably send this to the RTC devs.\n" +
-					"If you know the steps to reproduce this error it would be greatly appreciated.\n\n" +
-				ex);
+					"If you know the steps to reproduce this error it would be greatly appreciated.\n\n", ex);
 			}
 
 			return;
@@ -1285,7 +1294,7 @@ namespace RTC
 				value[i] = mi.PeekByte(SourceAddress + i);
 			}
 
-			RTC_Extensions.AddValueToByteArray(value, TiltValue, mi.BigEndian);
+			value = RTC_Extensions.AddValueToByteArray(value, TiltValue, mi.BigEndian);
 
 			Working.StoreData.Enqueue(value);
 		}
@@ -1337,13 +1346,13 @@ namespace RTC
 				switch (Precision)
 				{
 					case (1):
-						randomValue = RTC_Core.RND.RandomLong(RTC_NightmareEngine.MinValue8Bit, RTC_NightmareEngine.MaxValue8Bit);
+						randomValue = RTC_Core.RND.RandomLong((long)RTC_Unispec.RTCSpec[RTCSPEC.NIGHTMARE_MINVALUE8BIT.ToString()], (long)RTC_Unispec.RTCSpec[RTCSPEC.NIGHTMARE_MAXVALUE8BIT.ToString()]);
 						break;
 					case (2):
-						randomValue = RTC_Core.RND.RandomLong(RTC_NightmareEngine.MinValue16Bit, RTC_NightmareEngine.MaxValue16Bit);
+						randomValue = RTC_Core.RND.RandomLong((long)RTC_Unispec.RTCSpec[RTCSPEC.NIGHTMARE_MINVALUE16BIT.ToString()], (long)RTC_Unispec.RTCSpec[RTCSPEC.NIGHTMARE_MAXVALUE16BIT.ToString()]);
 						break;
 					case (4):
-						randomValue = RTC_Core.RND.RandomLong(RTC_NightmareEngine.MinValue32Bit, RTC_NightmareEngine.MaxValue32Bit);
+						randomValue = RTC_Core.RND.RandomLong((long)RTC_Unispec.RTCSpec[RTCSPEC.NIGHTMARE_MINVALUE32BIT.ToString()], (long)RTC_Unispec.RTCSpec[RTCSPEC.NIGHTMARE_MAXVALUE32BIT.ToString()]);
 						break;
 					//No limits if out of normal range
 					default:
@@ -1494,5 +1503,17 @@ namespace RTC
 	public interface INote
 	{
 		 string Note { get; set; }
+	}
+
+	public class ComboBoxItem<T>
+	{
+		public string Name { get; set; }
+		public T Value { get; set; }
+
+		public ComboBoxItem(String name, T value)
+		{
+			Name = name;
+			Value = value;
+		}
 	}
 }

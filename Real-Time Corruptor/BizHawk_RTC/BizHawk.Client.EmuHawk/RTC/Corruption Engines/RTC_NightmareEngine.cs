@@ -6,16 +6,6 @@ namespace RTC
 	public static class RTC_NightmareEngine
 	{
 
-		public static NightmareAlgo Algo = NightmareAlgo.RANDOM;
-		public static long MinValue8Bit = 0;
-		public static long MaxValue8Bit = 0xFF;
-
-		public static long MinValue16Bit = 0;
-		public static long MaxValue16Bit = 0xFFFF;
-
-		public static long MinValue32Bit = 0;
-		public static long MaxValue32Bit = 0xFFFFFFFF;
-
 		private static NightmareType type = NightmareType.SET;
 
 		public static BlastUnit GenerateUnit(string domain, long address, int precision)
@@ -24,7 +14,7 @@ namespace RTC
 
 			try
 			{
-				switch (Algo)
+				switch ((NightmareAlgo)RTC_Unispec.RTCSpec[RTCSPEC.NIGHTMARE_TYPE.ToString()])
 				{
 					case NightmareAlgo.RANDOM: //RANDOM always sets a random value
 						type = NightmareType.SET;
@@ -84,13 +74,13 @@ namespace RTC
 					switch (precision)
 					{
 						case (1):
-							randomValue = RTC_Core.RND.RandomLong(MinValue8Bit, MaxValue8Bit);
+							randomValue = RTC_Core.RND.RandomLong((long)RTC_Unispec.RTCSpec[RTCSPEC.NIGHTMARE_MINVALUE8BIT.ToString()], (long)RTC_Unispec.RTCSpec[RTCSPEC.NIGHTMARE_MAXVALUE8BIT.ToString()]);
 							break;
 						case (2):
-							randomValue = RTC_Core.RND.RandomLong(MinValue16Bit, MaxValue16Bit);
+							randomValue = RTC_Core.RND.RandomLong((long)RTC_Unispec.RTCSpec[RTCSPEC.NIGHTMARE_MINVALUE16BIT.ToString()], (long)RTC_Unispec.RTCSpec[RTCSPEC.NIGHTMARE_MAXVALUE16BIT.ToString()]);
 							break;
 						case (4):
-							randomValue = RTC_Core.RND.RandomLong(MinValue32Bit, MaxValue32Bit);
+							randomValue = RTC_Core.RND.RandomLong((long)RTC_Unispec.RTCSpec[RTCSPEC.NIGHTMARE_MINVALUE32BIT.ToString()], (long)RTC_Unispec.RTCSpec[RTCSPEC.NIGHTMARE_MAXVALUE32BIT.ToString()]);
 							break;
 					}
 
@@ -111,9 +101,11 @@ namespace RTC
 				//Tilt. Backup with a + or -
 				else
 				{
-					BlastUnit bu = new BlastUnit(StoreType.ONCE, ActionTime.GENERATE, domain, safeAddress, domain, safeAddress, precision, mdp.BigEndian);
+					BlastUnit bu = new BlastUnit(StoreType.ONCE, ActionTime.PREEXECUTE, domain, safeAddress, domain, safeAddress, precision, mdp.BigEndian);
 					if (type == NightmareType.ADD)
 						bu.TiltValue = 1;
+					else if (type == NightmareType.SUBTRACT)
+						bu.TiltValue = -1;
 					else
 						bu.TiltValue = 0;
 					return bu;
@@ -121,7 +113,7 @@ namespace RTC
 			}
 			catch (Exception ex)
 			{
-				throw new Exception("Nightmare Engine GenerateUnit Threw Up" + ex);
+				throw new Exception("Nightmare Engine GenerateUnit Threw Up", ex);
 			}
 		}
 	}
