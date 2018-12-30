@@ -710,6 +710,7 @@ namespace RTC
 		{
 			return RTC_Core.workingDir + "\\" + this.StateLocation.ToString() + "\\" + this.GameName + "." + this.ParentKey + ".timejump.State"; // get savestate name
 		}
+
 	}
 
 	[Serializable]
@@ -888,7 +889,7 @@ namespace RTC
 
 		//We use ApplyValue so we don't need to keep re-calculating the tiled value every execute if we don't have to.
 		[XmlIgnore, NonSerialized]
-		public byte[] ApplyValue;
+		public byte[] ApplyValue = null;
 
 		//The data that has been backed up. This is a list of bytes so if they start backing up at IMMEDIATE, they can have historical backups
 		[XmlIgnore, NonSerialized]
@@ -1251,7 +1252,8 @@ namespace RTC
 					break;
 					case (BlastUnitSource.VALUE):
 					{
-						//We only calculate it once for Backup and Value and then store it in ApplyValue
+						//We only calculate it once for Value and then store it in ApplyValue.
+						//If the length has changed (blast editor) we gotta recalc it
 						if (Working.ApplyValue == null)
 						{
 							Working.ApplyValue = RTC_Extensions.AddValueToByteArray(Value, TiltValue, mi.BigEndian);
@@ -1505,6 +1507,7 @@ namespace RTC
 		 string Note { get; set; }
 	}
 
+	[Serializable]
 	public class ComboBoxItem<T>
 	{
 		public string Name { get; set; }

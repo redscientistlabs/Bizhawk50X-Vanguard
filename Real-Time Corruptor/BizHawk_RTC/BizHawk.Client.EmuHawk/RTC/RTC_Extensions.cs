@@ -238,6 +238,8 @@ namespace RTC
 		public static byte[] StringToByteArrayPadLeft(string hex, int precision)
 		{
 			var bytes = new byte[precision];
+			if (hex == null)
+				return null;
 			string temp = hex.PadLeft(precision*2,'0'); //*2 since a byte is two characters
 
 			int j = 0;
@@ -479,11 +481,46 @@ namespace RTC
 
 						return newInt64Array;
 					}
+				default:
+				{
+					//Gets us a positive value
+					byte[] temp = new byte[value.Length + 1];
+					value.CopyTo(temp, 0);
+					BigInteger bigIntValue = new BigInteger(temp);
+
+					if (isAdd)
+						bigIntValue += addValue; 
+					else
+						bigIntValue -= addValue;
+
+					//Calculate the max value you can store in this many bits 
+					BigInteger maxValue = BigInteger.Pow(2, value.Length) - 1;
+
+					if (bigIntValue > maxValue)
+						bigIntValue = bigIntValue % maxValue - 1; //Works fine for positive
+					else if (bigIntValue < 0)
+						bigIntValue = Mod(maxValue, bigIntValue); //% means remainder in c#
+
+					byte[] added = bigIntValue.ToByteArray();
+					byte[] outArray = new byte[value.Length];
+					added.CopyTo(outArray, outArray.Length - added.Length);
+
+
+					if (isInputBigEndian)
+						Array.Reverse(outArray);
+
+					return outArray;
+				}
 			}
 			return null;
 		}
 
 		private static decimal Mod(decimal x, long m)
+		{
+			return (x % m + m) % m;
+		}
+
+		private static BigInteger Mod(BigInteger x, BigInteger m)
 		{
 			return (x % m + m) % m;
 		}

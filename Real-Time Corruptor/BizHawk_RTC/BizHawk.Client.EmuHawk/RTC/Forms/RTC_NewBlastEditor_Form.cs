@@ -5,8 +5,10 @@ using System.Data;
 using System.Drawing;
 using System.IO;
 using System.Linq;
+using System.Numerics;
 using System.Text;
 using System.Windows.Forms;
+using BizHawk.Common.NumberExtensions;
 
 /**
  * The DataGridView is bound to the blastlayer
@@ -64,6 +66,7 @@ namespace RTC
 		private IEnumerable<BlastUnit> searchEnumerable;
 		BindingList<BlastUnit> selectedBUs = new BindingList<BlastUnit>();
 		ContextMenuStrip headerStrip;
+		ContextMenuStrip cms;
 
 		Dictionary<String, Control> property2ControlDico;
 
@@ -110,8 +113,8 @@ namespace RTC
 				dgvBlastEditor.SelectionChanged += dgvBlastEditor_SelectionChanged;
 				dgvBlastEditor.ColumnHeaderMouseClick += dgvBlastEditor_ColumnHeaderMouseClick;
 				dgvBlastEditor.CellValueChanged += dgvBlastEditor_CellValueChanged;
-				dgvBlastEditor.CellClick += dgvBlastEditor_CellClick;
-				
+				dgvBlastEditor.CellMouseClick += dgvBlastEditor_CellMouseClick;
+
 				tbFilter.TextChanged += tbFilter_TextChanged;
 
 				cbEnabled.Validated += cbEnabled_Validated;
@@ -150,18 +153,60 @@ namespace RTC
 			RTC_Core.SetRTCColor(RTC_Core.GeneralColor, this);
 		}
 
-		private void dgvBlastEditor_CellClick(object sender, DataGridViewCellEventArgs e)
+		private void dgvBlastEditor_CellMouseClick(object sender, DataGridViewCellMouseEventArgs e)
 		{
 			// Note handling
 			if (e != null && e.RowIndex != -1)
 			{
-				if (e.ColumnIndex == dgvBlastEditor.Columns[buProperty.Note.ToString()]?.Index )
+				if (e.ColumnIndex == dgvBlastEditor.Columns[buProperty.Note.ToString()]?.Index)
 				{
 					BlastUnit bu = dgvBlastEditor.Rows[e.RowIndex].DataBoundItem as BlastUnit;
 					if (bu != null)
-						 new RTC_NoteEditor_Form(bu, dgvBlastEditor[e.ColumnIndex, e.RowIndex]);
+						new RTC_NoteEditor_Form(bu, dgvBlastEditor[e.ColumnIndex, e.RowIndex]);
 				}
 			}
+
+			if (e.Button == MouseButtons.Left)
+			{
+				if (e.RowIndex == -1)
+				{
+					dgvBlastEditor.EndEdit();
+					dgvBlastEditor.ClearSelection();
+				}
+			}
+			else if (e.Button == MouseButtons.Right)
+			{
+				//End the edit if they're right clicking somewhere else
+				if (dgvBlastEditor.CurrentCell.ColumnIndex != e.ColumnIndex)
+				{
+					dgvBlastEditor.EndEdit();
+				}
+
+				cms = new ContextMenuStrip();
+
+				//Can't use a switch statement because dynamic
+				if (dgvBlastEditor.Columns[e.ColumnIndex] == dgvBlastEditor.Columns[buProperty.Address.ToString()] ||
+					dgvBlastEditor.Columns[e.ColumnIndex] == dgvBlastEditor.Columns[buProperty.SourceAddress.ToString()])
+				{
+					cms.Items.Add(new ToolStripSeparator());
+					PopulateAddressContextMenu(dgvBlastEditor[e.ColumnIndex, e.RowIndex]);
+				}
+				cms.Show(dgvBlastEditor, dgvBlastEditor.PointToClient(Cursor.Position));
+			}
+		}
+		
+		private void PopulateAddressContextMenu(DataGridViewCell cell)
+		{
+			BlastUnit bu = (BlastUnit)dgvBlastEditor.Rows[cell.RowIndex].DataBoundItem;
+
+			((ToolStripMenuItem)cms.Items.Add("Open Selected Address in Hex Editor", null, new EventHandler((ob, ev) =>
+			{
+				if (cell.OwningColumn == dgvBlastEditor.Columns[buProperty.Address.ToString()])
+					RTC_Core.SendCommandToRTC(new RTC_Command(CommandType.BIZHAWK_OPEN_HEXEDITOR_ADDRESS) { objectValue = new object[] { bu.Domain, bu.Address } });
+
+				if (cell.OwningColumn == dgvBlastEditor.Columns[buProperty.SourceAddress.ToString()])
+					RTC_Core.SendCommandToRTC(new RTC_Command(CommandType.BIZHAWK_OPEN_HEXEDITOR_ADDRESS) { objectValue = new object[] { bu.SourceDomain, bu.SourceAddress } });
+			}))).Enabled = true;
 		}
 
 		private void dgvBlastEditor_CellValueChanged(object sender, DataGridViewCellEventArgs e)
@@ -177,6 +222,7 @@ namespace RTC
 			{
 				updateMaximum(dgvBlastEditor.Rows[e.RowIndex].Cells[buProperty.SourceAddress.ToString()] as DataGridViewNumericUpDownCell, dgvBlastEditor.Rows[e.RowIndex].Cells[buProperty.SourceDomain.ToString()].Value.ToString());
 			}
+			UpdateBottom();
 		}
 
 		private void CbSourceDomain_Validated(object sender, EventArgs e)
@@ -413,14 +459,31 @@ namespace RTC
 
 		private void tbFilter_TextChanged(object sender, EventArgs e)
 		{
-			string value = (cbFilterColumn.SelectedItem as dynamic).Value;
-			dgvBlastEditor.DataSource = currentSK.BlastLayer.Layer.Where(x => (x.GetType()
-			.GetProperty(value)
-			.GetValue(x)
-			.ToString() == tbFilter.Text)).ToList();
 
-			if (tbFilter.TextLength == 0)
+			if (tbFilter.Text.Length == 0)
+			{
 				dgvBlastEditor.DataSource = currentSK.BlastLayer.Layer;
+				return;;
+			}
+				
+
+			string value = ((ComboBoxItem<String>)cbFilterColumn?.SelectedItem)?.Value;
+			if (value == null)
+				return;
+
+			switch (((ComboBoxItem<String>)cbFilterColumn.SelectedItem).Name)
+			{
+				//If it's an address or a source address we want decimal
+				case "Address":
+					dgvBlastEditor.DataSource = currentSK.BlastLayer.Layer.Where(x => x.Address.ToString("X").ToUpper().Substring(0, tbFilter.Text.Length.Clamp(0, x.SourceAddress.ToString("X").Length)) == tbFilter.Text.ToUpper()).ToList();
+					break;
+				case "SourceAddress":
+					dgvBlastEditor.DataSource = currentSK.BlastLayer.Layer.Where(x => x.SourceAddress.ToString("X").ToUpper().Substring(0, tbFilter.Text.Length.Clamp(0, x.SourceAddress.ToString("X").Length)) == tbFilter.Text.ToUpper()).ToList();
+					break;
+				default: //Otherwise just use reflection and dig it out
+					dgvBlastEditor.DataSource = currentSK.BlastLayer.Layer.Where(x => x?.GetType()?.GetProperty(value) != null && (x.GetType()?.GetProperty(value)?.GetValue(x).ToString().ToUpper().Substring(0, tbFilter.Text.Length) == tbFilter.Text.ToUpper())).ToList();
+					break;
+			}
 		}
 	
 		private void InitializeBottom()
@@ -502,6 +565,9 @@ namespace RTC
 			DataGridViewNumericUpDownColumn address = (DataGridViewNumericUpDownColumn)CreateColumn(buProperty.Address.ToString(), buProperty.Address.ToString(), "Address", new DataGridViewNumericUpDownColumn());
 			address.Hexadecimal = true;
 			dgvBlastEditor.Columns.Add(address);
+
+
+
 			
 			
 			DataGridViewNumericUpDownColumn precision = (DataGridViewNumericUpDownColumn)CreateColumn(buProperty.Precision.ToString(), buProperty.Precision.ToString(), "Precision", new DataGridViewNumericUpDownColumn());
@@ -564,6 +630,14 @@ namespace RTC
 
 			RefreshVisibleColumns();
 
+			PopulateFilterCombobox();
+		}
+
+
+		private void PopulateFilterCombobox()
+		{
+			cbFilterColumn.SelectedItem = null;
+			cbFilterColumn.Items.Clear();
 
 			//Populate the filter ComboBox
 			cbFilterColumn.DisplayMember = "Name";
@@ -574,8 +648,8 @@ namespace RTC
 				if (!(column is DataGridViewCheckBoxColumn || column is DataGridViewButtonColumn) && column.Visible)
 					cbFilterColumn.Items.Add(new ComboBoxItem<String>(column.HeaderText, column.Name));
 			}
-
 		}
+
 
 		public void RefreshVisibleColumns()
 		{	

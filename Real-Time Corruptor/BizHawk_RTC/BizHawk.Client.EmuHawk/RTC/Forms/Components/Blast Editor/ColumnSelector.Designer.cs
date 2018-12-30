@@ -54,7 +54,7 @@
             this.tablePanel.RowStyles.Add(new System.Windows.Forms.RowStyle());
             this.tablePanel.RowStyles.Add(new System.Windows.Forms.RowStyle());
             this.tablePanel.RowStyles.Add(new System.Windows.Forms.RowStyle());
-            this.tablePanel.Size = new System.Drawing.Size(237, 273);
+            this.tablePanel.Size = new System.Drawing.Size(270, 276);
             this.tablePanel.TabIndex = 0;
             this.tablePanel.Tag = "color:normal";
             // 
@@ -63,7 +63,7 @@
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.Gray;
-            this.ClientSize = new System.Drawing.Size(237, 273);
+            this.ClientSize = new System.Drawing.Size(270, 276);
             this.Controls.Add(this.tablePanel);
             this.Font = new System.Drawing.Font("Segoe UI Emoji", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.ForeColor = System.Drawing.Color.White;
