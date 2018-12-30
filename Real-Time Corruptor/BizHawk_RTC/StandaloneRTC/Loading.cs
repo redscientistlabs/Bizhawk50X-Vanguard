@@ -17,7 +17,6 @@ namespace StandaloneRTC
 
 			if (args.Contains("-CONSOLE"))
 			{
-				RTC.RTC_Hooks.ShowConsole = true;
 				RTC.LogConsole.ShowConsole();
 			}
 			else
