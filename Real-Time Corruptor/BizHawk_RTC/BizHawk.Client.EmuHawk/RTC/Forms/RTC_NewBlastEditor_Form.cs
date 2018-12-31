@@ -114,12 +114,15 @@ namespace RTC
 				dgvBlastEditor.ColumnHeaderMouseClick += dgvBlastEditor_ColumnHeaderMouseClick;
 				dgvBlastEditor.CellValueChanged += dgvBlastEditor_CellValueChanged;
 				dgvBlastEditor.CellMouseClick += dgvBlastEditor_CellMouseClick;
+				dgvBlastEditor.RowsAdded += DgvBlastEditor_RowsAdded;
+				dgvBlastEditor.RowsRemoved += DgvBlastEditor_RowsRemoved;
 
 				tbFilter.TextChanged += tbFilter_TextChanged;
 
 				cbEnabled.Validated += cbEnabled_Validated;
 				cbLocked.Validated += CbLocked_Validated;
 				cbBigEndian.Validated += CbBigEndian_Validated;
+				cbLoop.Validated += CbLoop_Validated;
 
 				cbDomain.Validated += cbDomain_Validated;
 				upDownAddress.Validated += UpDownAddress_Validated;
@@ -147,7 +150,6 @@ namespace RTC
 				MessageBox.Show(ex.ToString());
 			}
 		}
-
 		private void RTC_NewBlastEditorForm_Load(object sender, EventArgs e)
 		{
 			RTC_Core.SetRTCColor(RTC_Core.GeneralColor, this);
@@ -334,7 +336,7 @@ namespace RTC
 		private void CbLocked_Validated(object sender, EventArgs e)
 		{
 			foreach (DataGridViewRow row in dgvBlastEditor.SelectedRows)
-				row.Cells[buProperty.isLocked.ToString()].Value = cbInvertLimiter.Checked;
+				row.Cells[buProperty.isLocked.ToString()].Value = cbLocked.Checked;
 			UpdateBottom();
 		}
 
@@ -364,6 +366,15 @@ namespace RTC
 				row.Cells[buProperty.Domain.ToString()].Value = cbDomain.SelectedItem;
 			UpdateBottom();
 		}
+
+
+		private void CbLoop_Validated(object sender, EventArgs e)
+		{
+			foreach (DataGridViewRow row in dgvBlastEditor.SelectedRows)
+				row.Cells[buProperty.Loop.ToString()].Value = cbLoop.Checked;
+			UpdateBottom();
+		}
+
 
 		private void dgvBlastEditor_ColumnHeaderMouseClick(object sender, DataGridViewCellMouseEventArgs e)
 		{
@@ -744,9 +755,8 @@ namespace RTC
 
 		public void LoadStashkey(StashKey sk)
 		{
-			originalSK = sk.Clone() as StashKey;
+			originalSK = sk;
 			currentSK = sk.Clone() as StashKey;
-			lbBlastLayerSize.Text = "Size: " + currentSK.BlastLayer.Layer.Count;
 
 			if (!RefreshDomains())
 			{
@@ -873,7 +883,6 @@ namespace RTC
 				if ((row.DataBoundItem as BlastUnit).IsLocked == false)
 					bs.Remove(row.DataBoundItem as BlastUnit);
 			}
-			lbBlastLayerSize.Text = "Size: " + currentSK.BlastLayer.Layer.Count;
 		}
 
 		private void btnDuplicateSelected_Click(object sender, EventArgs e)
@@ -884,100 +893,6 @@ namespace RTC
 				{
 					BlastUnit bu = ((row.DataBoundItem as BlastUnit).Clone() as BlastUnit);
 					bs.Add(bu);
-				}
-			}
-			lbBlastLayerSize.Text = "Size: " + currentSK.BlastLayer.Layer.Count;
-		}
-
-		public DialogResult GetSearchBox(string title, string promptText, bool filterColumn = false)
-		{
-			Form form = new Form();
-			Label label = new Label();
-			TextBox input = new TextBox();
-
-			Button buttonOk = new Button();
-			Button buttonCancel = new Button();
-			ComboBox column = new ComboBox();
-			//Only draw the column combobox if the user wants the column
-			column.Hide();
-
-			if (filterColumn)
-			{
-				column.DisplayMember = "Name";
-				column.ValueMember = "Value";
-				foreach(DataGridViewColumn item in dgvBlastEditor.Columns)
-				{
-					//Exclude button and checkbox
-					if (!(item is DataGridViewCheckBoxColumn || item is DataGridViewButtonColumn))
-						column.Items.Add(new ComboBoxItem<String>(item.HeaderText, item.Name));
-				}
-				column.SelectedIndex = 0;
-				column.SetBounds(72, 64, 164, 20);
-				column.Show();
-			}
-
-			form.Text = title;
-			label.Text = promptText;
-			//input.Text = value;
-
-			buttonOk.Text = "OK";
-			buttonCancel.Text = "Cancel";
-			buttonOk.DialogResult = DialogResult.OK;
-			buttonCancel.DialogResult = DialogResult.Cancel;
-
-			label.SetBounds(64, 15, 164, 16);
-			input.SetBounds(48, 36, 164, 20);
-			buttonOk.SetBounds(96, 98, 75, 23);
-			buttonCancel.SetBounds(172, 98, 75, 23);
-
-			label.TextAlign = ContentAlignment.MiddleCenter;
-			label.AutoSize = true;
-			label.Anchor =  AnchorStyles.Bottom | AnchorStyles.Left;
-			input.Anchor = input.Anchor | AnchorStyles.Left;
-			buttonOk.Anchor = AnchorStyles.Bottom | AnchorStyles.Left;
-			buttonCancel.Anchor = AnchorStyles.Bottom | AnchorStyles.Left;
-
-			form.ClientSize = new Size(256, 128);
-			form.Controls.AddRange(new Control[] { label, input, column, buttonOk, buttonCancel });
-			form.ClientSize = new Size(Math.Max(300, label.Right + 10), form.ClientSize.Height);
-			form.FormBorderStyle = FormBorderStyle.FixedDialog;
-			form.StartPosition = FormStartPosition.CenterScreen;
-			form.MinimizeBox = false;
-			form.MaximizeBox = false;
-			form.AcceptButton = buttonOk;
-			form.CancelButton = buttonCancel;
-
-			DialogResult dialogResult = form.ShowDialog();
-
-			searchValue = input.Text.ToUpper();
-			if (filterColumn)
-				searchColumn = (column.SelectedItem as dynamic).Value;
-			else
-				searchColumn = string.Empty;
-			return dialogResult;
-		}
-
-		//Provides a dialog box that searches for a row in the DGV
-		private void btnSearchRow_Click(object sender, EventArgs e)
-		{
-			if (GetSearchBox("Search for a value", "Choose a column and enter a value", true) == DialogResult.OK)
-			{
-				if(searchColumn != null)
-				{
-					searchOffset = 0;
-					searchEnumerable = currentSK.BlastLayer.Layer.Where(x => (x.GetType().GetProperty(searchColumn).GetValue(x).ToString()) == searchValue);
-					
-					if (searchEnumerable.Any())
-						bs.Position = bs.IndexOf(searchEnumerable.ElementAt(searchOffset));
-					else
-						MessageBox.Show("Reached end of list without finding anything.");
-					searchOffset++;					
-					
-				}
-				else
-				{
-					List<string> metaList = (List<string>)bs.DataSource;
-					metaList.FindIndex(s => string.Equals(s, searchValue, StringComparison.CurrentCultureIgnoreCase));
 				}
 			}
 		}
@@ -1048,7 +963,6 @@ namespace RTC
 					currentSK.BlastLayer.Layer.Remove(bu);
 				}
 			}
-			lbBlastLayerSize.Text = "Size: " + currentSK.BlastLayer.Layer.Count;
 		}
 
 		private void rasterizeVMDsToolStripMenuItem_Click(object sender, EventArgs e)
@@ -1242,7 +1156,6 @@ namespace RTC
 			if (temp != null)
 			{
 				currentSK.BlastLayer = temp;
-				lbBlastLayerSize.Text = "Size: " + currentSK.BlastLayer.Layer.Count;
 			}
 		}
 
@@ -1375,8 +1288,23 @@ namespace RTC
 			{
 				DataGridViewCell buttonCell = row.Cells[buProperty.Note.ToString()];
 				buttonCell.Value = string.IsNullOrWhiteSpace((row.DataBoundItem as BlastUnit)?.Note) ? string.Empty : "📝";
-
 			}
+		}
+
+
+		private void DgvBlastEditor_RowsRemoved(object sender, DataGridViewRowsRemovedEventArgs e)
+		{
+			updateLayerSize();
+		}
+
+		private void DgvBlastEditor_RowsAdded(object sender, DataGridViewRowsAddedEventArgs e)
+		{
+			updateLayerSize();
+		}
+
+		private void updateLayerSize()
+		{
+			lbBlastLayerSize.Text = "Size: " + currentSK.BlastLayer.Layer.Count;
 		}
 	}
 }

@@ -958,7 +958,7 @@ namespace RTC
 			return path;
 		}
 
-		public static bool LoadSavestate_NET(string Key)
+		public static bool LoadSavestate_NET(string Key, StashKeySavestateLocation stateLocation)
 		{
 			try
 			{
@@ -974,7 +974,7 @@ namespace RTC
 				string prefix = RTC_Hooks.BIZHAWK_GET_SAVESTATEPREFIX();
 				prefix = prefix.Substring(prefix.LastIndexOf('\\') + 1);
 
-				var path = RTC_Core.workingDir + "\\SESSION\\" + prefix + "." + quickSlotName + ".State";
+				var path = RTC_Core.workingDir + stateLocation + Path.DirectorySeparatorChar + prefix + "." + quickSlotName + ".State";
 
 
 				if (File.Exists(path) == false)

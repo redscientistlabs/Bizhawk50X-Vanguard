@@ -370,7 +370,7 @@ namespace RTC
 
 			if (File.Exists(theoreticalSaveStateFilename))
 			{
-				if (!RTC_Core.LoadSavestate_NET(key))
+				if (!RTC_Core.LoadSavestate_NET(key, stateLocation))
 				{
 					RTC_Core.StopSound();
 					MessageBox.Show($"Error loading savestate : An internal Bizhawk error has occurred.\n Are you sure your savestate matches the game, your syncsettings match, and the savestate is supported by this version of Bizhawk?");

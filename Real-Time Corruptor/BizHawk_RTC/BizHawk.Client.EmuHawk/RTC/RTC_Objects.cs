@@ -164,7 +164,6 @@ namespace RTC
 			{
 				sk.RomShortFilename = RTC_Extensions.getShortFilenameFromPath(sk.RomFilename);
 				sk.RomFilename = RTC_Core.workingDir + "\\SKS\\" + sk.RomShortFilename;
-
 				sk.StateLocation = StashKeySavestateLocation.SKS;
 			}
 
@@ -286,6 +285,7 @@ namespace RTC
 			foreach (StashKey t in sks.StashKeys)
 			{
 				t.RomFilename = RTC_Core.workingDir + "\\SKS\\" + t.RomShortFilename;
+				t.StateLocation = StashKeySavestateLocation.SKS;
 			}
 
 			//fill list controls
