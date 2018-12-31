@@ -6,7 +6,7 @@ namespace RTC
 {
 	public static class RTC_DistortionEngine
 	{
-		public static int Delay = 50;
+		public static int Delay = (int)RTC_Unispec.RTCSpec[RTCSPEC.DISTORTION_DELAY.ToString()];
 		public static BlastUnit GenerateUnit(string domain, long address, int precision)
 		{
 			// Randomly selects a memory operation according to the selected algorithm
@@ -16,7 +16,7 @@ namespace RTC
 					return null;
 				MemoryDomainProxy mdp = RTC_MemoryDomains.GetProxy(domain, address);
 				long safeAddress = address - (address % precision);
-				return new BlastUnit(StoreType.ONCE, ActionTime.IMMEDIATE, domain, safeAddress, domain, safeAddress, precision, mdp.BigEndian, Delay, 1);
+				return new BlastUnit(StoreType.ONCE, StoreTime.IMMEDIATE, domain, safeAddress, domain, safeAddress, precision, mdp.BigEndian, Delay, 1);
 			}
 			catch (Exception ex)
 			{

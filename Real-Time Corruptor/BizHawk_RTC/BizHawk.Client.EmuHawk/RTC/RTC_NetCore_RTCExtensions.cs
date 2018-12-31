@@ -6,6 +6,7 @@ using System.Linq;
 using System.Security.Cryptography;
 using System.Threading;
 using System.Windows.Forms;
+using static RTC.RTC_Unispec;
 
 namespace RTC
 {
@@ -21,7 +22,7 @@ namespace RTC
 			{
 				case CommandType.ASYNCBLAST:
 					{
-						BlastLayer bl = RTC_Core.Blast(null, RTC_MemoryDomains.SelectedDomains);
+						BlastLayer bl = RTC_Core.Blast(null, (string[])RTC_Unispec.RTCSpec[RTCSPEC.MEMORYDOMAINS_SELECTEDDOMAINS.ToString()]);
 						if (bl != null)
 							bl.Apply();
 					}
@@ -33,7 +34,7 @@ namespace RTC
 					string[] _domains = (string[])cmd.objectValue;
 
 					if (_domains == null)
-						_domains = RTC_MemoryDomains.SelectedDomains;
+						_domains = (string[])RTC_Unispec.RTCSpec[RTCSPEC.MEMORYDOMAINS_SELECTEDDOMAINS.ToString()];
 
 					if (cmd.blastlayer != null)
 					{
@@ -46,13 +47,12 @@ namespace RTC
 
 					if (cmd.requestGuid != null)
 					{
-							cmdBack = new RTC_Command(CommandType.RETURNVALUE)
-							{
-								objectValue = bl
-							};
-						}
+						cmdBack = new RTC_Command(CommandType.RETURNVALUE)
+						{
+							objectValue = bl
+						};
 					}
-
+				}
 				break;
 
 				case CommandType.STASHKEY:
@@ -68,11 +68,33 @@ namespace RTC
 
 					break;
 
+
+				case CommandType.REMOTE_PUSHRTCSPEC:
+					cmdBack = new RTC_Command(CommandType.RETURNVALUE);
+					RTC_Unispec.RTCSpec = new FullSpec((PartialSpec)cmd.objectValue);
+					cmdBack.objectValue = true;
+					break;
+
+
+				case CommandType.REMOTE_PUSHEMUSPEC:
+					cmdBack = new RTC_Command(CommandType.RETURNVALUE);
+					RTC_Unispec.EmuSpec = new FullSpec((PartialSpec)cmd.objectValue);
+					cmdBack.objectValue = true;
+					break;
+
+
+				case CommandType.REMOTE_PUSHRTCSPECUPDATE:
+					RTC_Unispec.RTCSpec?.Update((PartialSpec)cmd.objectValue, false);
+					break;
+
+				case CommandType.REMOTE_PUSHEMUSPECUPDATE:
+					RTC_Unispec.EmuSpec?.Update((PartialSpec)cmd.objectValue, false);
+					break;
+
+
 				case CommandType.PULLROM:
-					cmdBack = new RTC_Command(CommandType.PUSHROM)
-					{
-						romFilename = RTC_Extensions.getShortFilenameFromPath(RTC_Hooks.BIZHAWK_GET_CURRENTLYOPENEDROM())
-					};
+					cmdBack = new RTC_Command(CommandType.PUSHROM);
+					cmdBack.romFilename = RTC_Extensions.getShortFilenameFromPath(RTC_Hooks.BIZHAWK_GET_CURRENTLYOPENEDROM());
 
 					if (!PeerHasRom(cmdBack.romFilename))
 						cmdBack.romData = File.ReadAllBytes(RTC_Hooks.BIZHAWK_GET_CURRENTLYOPENEDROM());
@@ -155,6 +177,7 @@ namespace RTC
 						S.GET<RTC_Multiplayer_Form>().GameOfSwapCounter = 64;
 
 					break;
+
 				case CommandType.PULLSCREEN:
 					cmdBack = new RTC_Command(CommandType.PUSHSCREEN)
 					{
@@ -178,10 +201,6 @@ namespace RTC
 					S.GET<RTC_Multiplayer_Form>().StopGameOfSwap(true);
 					break;
 
-				case CommandType.REMOTE_PUSHPARAMS:
-					(cmd.objectValue as RTC_Params).Deploy();
-					break;
-
 				case CommandType.REMOTE_PUSHVMDS:
 					RTC_MemoryDomains.VmdPool.Clear();
 					foreach (var proto in (cmd.objectValue as VmdPrototype[]))
@@ -200,18 +219,18 @@ namespace RTC
 
 					if (cmd.requestGuid != null)
 					{
-							cmdBack = new RTC_Command(CommandType.RETURNVALUE)
-							{
-								objectValue = returnList
-							};
-						}
-
-						break;
+						cmdBack = new RTC_Command(CommandType.RETURNVALUE)
+						{
+							objectValue = returnList
+						};
+					}
+					break;
 				}
 
 				case CommandType.REMOTE_LOADROM:
 					RTC_Core.LoadRom_NET(cmd.romFilename);
 					break;
+
 				case CommandType.REMOTE_LOADSTATE:
 					{
 						StashKey sk = (StashKey)(cmd.objectValue as object[])[0];
@@ -223,7 +242,10 @@ namespace RTC
 						RTC_MemoryDomains.RefreshDomains(false);
 
 						if (runBlastLayer)
+						{
 							RTC_Core.SendCommandToBizhawk(new RTC_Command(CommandType.BLAST) { blastlayer = sk.BlastLayer, isReplay = true });
+							RTC_Hooks.CPU_STEP(false, false, true);
+						}
 
 						cmdBack = new RTC_Command(CommandType.RETURNVALUE)
 						{
@@ -257,26 +279,13 @@ namespace RTC
 					{
 						if (!RTC_Hooks.isNormalAdvance)
 							break;
-
 						cmdBack = new RTC_Command(CommandType.REMOTE_BACKUPKEY_STASH);
-
-						bool multiThread = false;
-
-						// apparently multithread savestates doesn't work well right now.
-						// We can try again in a future version of bizhawk
-						/*
-                        if (new string[] {
-                             "SNES", "GB", "GBC", "GBA",
-                        }.Contains(Global.Game.System.ToString().ToUpper()))
-                            multiThread = false;
-                        */
-
-						cmdBack.objectValue = RTC_StockpileManager.SaveState_NET(false, null, multiThread);
+						cmdBack.objectValue = RTC_StockpileManager.SaveState_NET(false, null, false);
 						break;
 					}
 
 				case CommandType.REMOTE_BACKUPKEY_STASH:
-					RTC_StockpileManager.BackupedState = (StashKey)cmd.objectValue;
+					RTC_Unispec.RTCSpec.Update(RTCSPEC.STOCKPILE_BACKUPEDSTATE.ToString(), (StashKey)cmd.objectValue);
 					RTC_StockpileManager.AllBackupStates.Push((StashKey)cmd.objectValue);
 					S.GET<RTC_Core_Form>().btnGpJumpBack.Visible = true;
 					S.GET<RTC_Core_Form>().btnGpJumpNow.Visible = true;
@@ -294,10 +303,8 @@ namespace RTC
 					break;
 
 				case CommandType.REMOTE_DOMAIN_GETDOMAINS:
-					cmdBack = new RTC_Command(CommandType.RETURNVALUE)
-					{
-						objectValue = RTC_MemoryDomains.GetInterfaces()
-					};
+					cmdBack = new RTC_Command(CommandType.RETURNVALUE);
+					cmdBack.objectValue = RTC_MemoryDomains.GetInterfaces();
 
 					break;
 
@@ -390,149 +397,29 @@ namespace RTC
 					//We need a stashkey to load the game 
 					BlastLayer _bl = cmd.blastlayer;
 					var sk = cmd.stashkey;
-						cmdBack = new RTC_Command(CommandType.RETURNVALUE)
-						{
-							objectValue = RTC_BlastTools.GetAppliedBackupLayer(_bl, sk)
-						};
-						break;
+					cmdBack = new RTC_Command(CommandType.RETURNVALUE);
+					cmdBack.objectValue = RTC_BlastTools.GetAppliedBackupLayer(_bl, sk);
+					break;
 				}
 
-				case CommandType.BIZHAWK_SET_OSDDISABLED:
-					RTC_Core.BizhawkOsdDisabled = (bool)cmd.objectValue;
-					break;
-
-				case CommandType.BIZHAWK_SET_DONT_CLEAN_SAVESTATES_AT_QUIT:
-					RTC_Core.DontCleanSavestatesOnQuit = (bool)cmd.objectValue;
-					break;
-
-				case CommandType.ENABLE_CONSOLE:
-					RTC_Hooks.ShowConsole = (bool)cmd.objectValue;
-					break;
 
 				case CommandType.BIZHAWK_OPEN_HEXEDITOR_ADDRESS:
-					{
-						string domain = (string)(cmd.objectValue as object[])[0];
-						long address = (long)(cmd.objectValue as object[])[1];
-						
-						MemoryDomainProxy mdp = RTC_MemoryDomains.GetProxy(domain, address);
-						long realAddress = RTC_MemoryDomains.GetRealAddress(domain, address);
-
-						RTC_Hooks.BIZHAWK_OPEN_HEXEDITOR_ADDRESS(mdp, realAddress);
-
-						break;
-					}
-
-				case CommandType.REMOTE_SET_SAVESTATEBOX:
-					RTC_StockpileManager.CurrentSavestateKey = (string)cmd.objectValue;
+				{
+					string domain = (string)(cmd.objectValue as object[])[0];
+					long address = (long)(cmd.objectValue as object[])[1];
+					
+					MemoryDomainProxy mdp = RTC_MemoryDomains.GetProxy(domain, address);
+					long realAddress = RTC_MemoryDomains.GetRealAddress(domain, address);
+					
+					RTC_Hooks.BIZHAWK_OPEN_HEXEDITOR_ADDRESS(mdp, realAddress);
+					
 					break;
-
-				case CommandType.REMOTE_SET_AUTOCORRUPT:
-					RTC_Core.AutoCorrupt = (bool)cmd.objectValue;
-					break;
-
-				case CommandType.REMOTE_SET_CUSTOMPRECISION:
-					RTC_Core.CustomPrecision = (int)cmd.objectValue;
-					break;
-
-				case CommandType.REMOTE_SET_INTENSITY:
-					RTC_Core.Intensity = (int)cmd.objectValue;
-					break;
-				case CommandType.REMOTE_SET_ERRORDELAY:
-					RTC_Core.ErrorDelay = (int)cmd.objectValue;
-					break;
-				case CommandType.REMOTE_SET_BLASTRADIUS:
-					RTC_Core.Radius = (BlastRadius)cmd.objectValue;
-					break;
+				}
+				
 
 				case CommandType.REMOTE_SET_RESTOREBLASTLAYERBACKUP:
 					if (RTC_StockpileManager.LastBlastLayerBackup != null)
 						RTC_StockpileManager.LastBlastLayerBackup.Apply(true);
-					break;
-
-				case CommandType.REMOTE_SET_NIGHTMARE_TYPE:
-					RTC_NightmareEngine.Algo = (NightmareAlgo)cmd.objectValue;
-					break;
-
-				case CommandType.REMOTE_SET_NIGHTMARE_MINVALUE:
-				{
-					int precision = (int)(cmd.objectValue as object[])[0];
-					long value = (long)(cmd.objectValue as object[])[1];
-
-					switch (precision)
-					{
-						case 1:
-							RTC_NightmareEngine.MinValue8Bit = value;
-							break;
-						case 2:
-							RTC_NightmareEngine.MinValue16Bit = value;
-							break;
-						case 4:
-							RTC_NightmareEngine.MinValue32Bit = value;
-							break;
-					}
-					break;
-				}
-				case CommandType.REMOTE_SET_NIGHTMARE_MAXVALUE:
-				{
-					int precision = (int)(cmd.objectValue as object[])[0];
-					long value = (long)(cmd.objectValue as object[])[1];
-
-					switch (precision)
-					{
-						case 1:
-							RTC_NightmareEngine.MaxValue8Bit = value;
-							break;
-						case 2:
-							RTC_NightmareEngine.MaxValue16Bit = value;
-							break;
-						case 4:
-							RTC_NightmareEngine.MaxValue32Bit = value;
-							break;
-					}
-					break;
-				}
-
-				case CommandType.REMOTE_SET_HELLGENIE_MINVALUE:
-				{
-					int precision = (int)(cmd.objectValue as object[])[0];
-					long value = (long)(cmd.objectValue as object[])[1];
-
-					switch (precision)
-					{
-						case 1:
-							RTC_HellgenieEngine.MinValue8Bit = value;
-							break;
-						case 2:
-							RTC_HellgenieEngine.MinValue16Bit = value;
-							break;
-						case 4:
-							RTC_HellgenieEngine.MinValue32Bit = value;
-							break;
-					}
-					break;
-				}
-				case CommandType.REMOTE_SET_HELLGENIE_MAXVALUE:
-				{
-					int precision = (int)(cmd.objectValue as object[])[0];
-					long value = (long)(cmd.objectValue as object[])[1];
-
-					switch (precision)
-					{
-						case 1:
-							RTC_HellgenieEngine.MaxValue8Bit = value;
-							break;
-						case 2:
-							RTC_HellgenieEngine.MaxValue16Bit = value;
-							break;
-						case 4:
-							RTC_HellgenieEngine.MaxValue32Bit = value;
-							break;
-					}
-					break;
-				}
-
-				case CommandType.REMOTE_SET_STEPACTIONS_CLEARREWIND:
-					RTC_Core.ClearStepActionsOnRewind = (bool)cmd.objectValue;
 					break;
 
 				case CommandType.REMOTE_SET_STEPACTIONS_CLEARALLBLASTUNITS:
@@ -541,116 +428,18 @@ namespace RTC
 				case CommandType.REMOTE_SET_STEPACTIONS_REMOVEEXCESSINFINITEUNITS:
 					RTC_StepActions.RemoveExcessInfiniteStepUnits();
 					break;
-				case CommandType.REMOTE_SET_STEPACTIONS_MAXLIFETIMEUNITS:
-					RTC_StepActions.MaxInfiniteBlastUnits = (int)cmd.objectValue;
-					break;
-				case CommandType.REMOTE_SET_STEPACTIONS_LOCKEXECUTION:
-					RTC_StepActions.LockExecution = (bool)cmd.objectValue;
-					break;
-				case CommandType.REMOTE_SET_STEPACTIONS_RUNBEFORE:
-					RTC_StepActions.RunBefore = (bool)cmd.objectValue;
-					break;
 
-				case CommandType.REMOTE_SET_PIPE_LOCKPIPES:
-					RTC_StepActions.LockExecution = (bool)cmd.objectValue;
-					break;
-
-				case CommandType.REMOTE_SET_ENGINE:
-					RTC_Core.SelectedEngine = (CorruptionEngine)cmd.objectValue;
-					break;
-
-				case CommandType.REMOTE_SET_DISTORTION_DELAY:
-					RTC_DistortionEngine.Delay = (int)cmd.objectValue;
-					break;
 
 				case CommandType.REMOTE_SET_DISTORTION_RESYNC:
 					//TODO
 					break;
-
-				case CommandType.REMOTE_SET_VECTOR_LIMITER:
-					RTC_VectorEngine.LimiterListHash = (string)cmd.objectValue;
-					break;
-				case CommandType.REMOTE_SET_VECTOR_VALUES:
-					RTC_VectorEngine.ValueListHash = (string)cmd.objectValue;
-					break;
-
-				case CommandType.REMOTE_SET_CUSTOM_UNIT_SOURCE:
-					RTC_CustomEngine.Source = (BlastUnitSource)cmd.objectValue;
-					break;
-				case CommandType.REMOTE_SET_CUSTOM_VALUE_SOURCE:
-					RTC_CustomEngine.ValueSource = (CustomValueSource)cmd.objectValue;
-					break;
-				case CommandType.REMOTE_SET_CUSTOM_STORE_TIME:
-					RTC_CustomEngine.StoreTime = (ActionTime)cmd.objectValue;
-					break;
-				case CommandType.REMOTE_SET_CUSTOM_STORE_ADDRESS:
-					RTC_CustomEngine.StoreAddress = (CustomStoreAddress)cmd.objectValue;
-					break;
-				case CommandType.REMOTE_SET_CUSTOM_STORE_TYPE:
-					RTC_CustomEngine.StoreType = (StoreType)cmd.objectValue;
-					break;
-
-				case CommandType.REMOTE_SET_CUSTOM_LIFETIME:
-					RTC_CustomEngine.Lifetime = (int)cmd.objectValue;
-					break;
-
-				case CommandType.REMOTE_SET_CUSTOM_DELAY:
-					RTC_CustomEngine.Delay = (int)cmd.objectValue;
-					break;
-					
-				case CommandType.REMOTE_SET_CUSTOM_LOOP:
-					RTC_CustomEngine.Loop = (bool)cmd.objectValue;
-					break;
-
-				case CommandType.REMOTE_SET_CUSTOM_LIMITERLIST:
-					RTC_CustomEngine.LimiterListHash = (string)cmd.objectValue;
-					break;
-				case CommandType.REMOTE_SET_CUSTOM_LIMITERTIME:
-					RTC_CustomEngine.LimiterTime = (ActionTime)cmd.objectValue;
-					break;
-				case CommandType.REMOTE_SET_CUSTOM_VALUELIST:
-					RTC_CustomEngine.ValueListHash = (string)cmd.objectValue;
-					break;
-
-				case CommandType.REMOTE_SET_CUSTOM_LIMITERINVERTED:
-					RTC_CustomEngine.LimiterInverted = (bool)cmd.objectValue;
-					break;
-
-
-				case CommandType.REMOTE_UPDATE_FILTERING_DICTIONARIES:
-					{
-						RTC_Filtering.Hash2LimiterDico = (Dictionary<string, HashSet<Byte[]>>)(cmd.objectValue as object[])[0];
-						RTC_Filtering.Hash2ValueDico = (Dictionary<string, List<Byte[]>>)(cmd.objectValue as object[])[1];
-						break;
-					}
-				case CommandType.REMOTE_SET_CUSTOM_RANGE_MAXVALUE:
-					{
-						int precision = (int)(cmd.objectValue as object[])[0];
-						long value = (long)(cmd.objectValue as object[])[1];
-
-						switch (precision)
-						{
-							case 1:
-								RTC_CustomEngine.MaxValue8Bit = value;
-								break;
-							case 2:
-								RTC_CustomEngine.MaxValue16Bit = value;
-								break;
-							case 4:
-								RTC_CustomEngine.MaxValue32Bit = value;
-								break;
-						}
-						break;
-					}
-
-
 
 				case CommandType.REMOTE_EVENT_LOADGAMEDONE_NEWGAME:
 
 					if (RTC_Core.isStandalone && RTC_GameProtection.isRunning)
 						RTC_GameProtection.Reset();
 
-					RTC_Core.AutoCorrupt = false;
+					RTCSpec.Update(RTCSPEC.CORE_AUTOCORRUPT.ToString(), false);
 					//RTC_StockpileManager.isCorruptionApplied = false;
 					S.GET<RTC_MemoryDomains_Form>().RefreshDomains();
 					S.GET<RTC_MemoryDomains_Form>().SetMemoryDomainsAllButSelectedDomains(RTC_MemoryDomains.GetBlacklistedDomains());
@@ -672,7 +461,8 @@ namespace RTC
 
 				case CommandType.REMOTE_EVENT_BIZHAWKSTARTED:
 
-					S.GET<RTC_Core_Form>().AutoCorrupt &= RTC_StockpileManager.BackupedState != null;
+					if (RTC_Unispec.RTCSpec[RTCSPEC.STOCKPILE_BACKUPEDSTATE.ToString()] == null)
+						S.GET<RTC_Core_Form>().AutoCorrupt = false;
 
 					RTC_Core.SendCommandToBizhawk(new RTC_Command(CommandType.REMOTE_PUSHPARAMS) { objectValue = new RTC_Params() }, true, true);
 
@@ -680,8 +470,8 @@ namespace RTC
 
 					Thread.Sleep(100);
 
-					if (RTC_StockpileManager.BackupedState != null)
-						S.GET<RTC_MemoryDomains_Form>().RefreshDomainsAndKeepSelected(RTC_StockpileManager.BackupedState.SelectedDomains.ToArray());
+					if (RTC_Unispec.RTCSpec[RTCSPEC.STOCKPILE_BACKUPEDSTATE.ToString()] != null)
+						S.GET<RTC_MemoryDomains_Form>().RefreshDomainsAndKeepSelected(((StashKey)RTC_Unispec.RTCSpec[RTCSPEC.STOCKPILE_BACKUPEDSTATE.ToString()]).SelectedDomains.ToArray());
 
 					if (S.GET<RTC_Core_Form>().cbUseGameProtection.Checked)
 						RTC_GameProtection.Start();
@@ -731,6 +521,8 @@ namespace RTC
 					if (!RTC_NetCore.NetCoreCommandSynclock)
 					{
 						RTC_NetCore.NetCoreCommandSynclock = true;
+						RTC_Unispec.RTCSpec.Update(RTCSPEC.STEP_RUNBEFORE.ToString(), true);
+
 
 						bool isload = S.GET<RTC_GlitchHarvester_Form>().cbAutoLoadState.Checked;
 						S.GET<RTC_GlitchHarvester_Form>().cbAutoLoadState.Checked = false;
@@ -758,6 +550,7 @@ namespace RTC
 					break;
 
 				case CommandType.REMOTE_HOTKEY_BLASTRAWSTASH:
+					RTC_Unispec.RTCSpec.Update(RTCSPEC.STEP_RUNBEFORE.ToString(), true);
 					RTC_Core.SendCommandToBizhawk(new RTC_Command(CommandType.ASYNCBLAST));
 					S.GET<RTC_GlitchHarvester_Form>().btnSendRaw_Click(null, null);
 					break;
@@ -818,8 +611,7 @@ namespace RTC
 			RTC_Command cmd = new RTC_Command(CommandType.PULLSWAPSTATE);
 
 			string romFullFilename = RTC_Hooks.BIZHAWK_GET_CURRENTLYOPENEDROM();
-			//cmd.romFilename = romFullFilename.Substring(romFullFilename.LastIndexOf("\\") + 1, romFullFilename.Length - (romFullFilename.LastIndexOf("\\") + 1));
-			cmd.romFilename = Path.GetFileName(romFullFilename);
+			cmd.romFilename = romFullFilename.Substring(romFullFilename.LastIndexOf("\\") + 1, romFullFilename.Length - (romFullFilename.LastIndexOf("\\") + 1));
 
 			if (!PeerHasRom(cmd.romFilename))
 				cmd.romData = File.ReadAllBytes(romFullFilename);
@@ -843,10 +635,9 @@ namespace RTC
 				return;
 			}
 
-			RTC_Command cmd = new RTC_Command(CommandType.STASHKEY)
-			{
-				romFilename = RTC_Extensions.getShortFilenameFromPath(RTC_Hooks.BIZHAWK_GET_CURRENTLYOPENEDROM())
-			};
+			RTC_Command cmd = new RTC_Command(CommandType.STASHKEY);
+
+			cmd.romFilename = RTC_Extensions.getShortFilenameFromPath(RTC_Hooks.BIZHAWK_GET_CURRENTLYOPENEDROM());
 
 			if (!PeerHasRom(cmd.romFilename))
 				cmd.romData = File.ReadAllBytes(cmd.romFilename);
@@ -903,10 +694,8 @@ namespace RTC
 				return;
 			}
 
-			RTC_Command cmd = new RTC_Command(CommandType.BLAST)
-			{
-				blastlayer = RTC_StockpileManager.CurrentStashkey.BlastLayer
-			};
+			RTC_Command cmd = new RTC_Command(CommandType.BLAST);
+			cmd.blastlayer = RTC_StockpileManager.CurrentStashkey.BlastLayer;
 
 			SendCommand(cmd, false);
 		}

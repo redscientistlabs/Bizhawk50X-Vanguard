@@ -10,6 +10,7 @@ using System.Numerics;
 using System.Security.Cryptography;
 using System.Xml.Serialization;
 using System.ComponentModel;
+using Ceras;
 using Exception = System.Exception;
 
 namespace RTC
@@ -18,6 +19,7 @@ namespace RTC
 	[XmlInclude(typeof(BlastLayer))]
 	[XmlInclude(typeof(BlastUnit))]
 	[Serializable]
+	[Ceras.MemberConfig(TargetMember.All)]
 	public class Stockpile
 	{
 		public List<StashKey> StashKeys = new List<StashKey>();
@@ -163,7 +165,6 @@ namespace RTC
 			{
 				sk.RomShortFilename = RTC_Extensions.getShortFilenameFromPath(sk.RomFilename);
 				sk.RomFilename = RTC_Core.workingDir + "\\SKS\\" + sk.RomShortFilename;
-
 				sk.StateLocation = StashKeySavestateLocation.SKS;
 			}
 
@@ -286,6 +287,7 @@ namespace RTC
 			foreach (StashKey t in sks.StashKeys)
 			{
 				t.RomFilename = RTC_Core.workingDir + "\\SKS\\" + t.RomShortFilename;
+				t.StateLocation = StashKeySavestateLocation.SKS;
 			}
 
 			//fill list controls
@@ -547,7 +549,10 @@ namespace RTC
 
 			foreach (StashKey sk in sks.StashKeys)
 			{
-				sk.RomFilename = RTC_Core.workingDir + "\\SKS\\" + sk.RomFilename;
+
+				sk.RomShortFilename = RTC_Extensions.getShortFilenameFromPath(sk.RomFilename);
+				sk.RomFilename = RTC_Core.workingDir + "\\SKS\\" + sk.RomShortFilename;
+
 				sk.StateLocation = StashKeySavestateLocation.SKS;
 			}
 
@@ -557,9 +562,13 @@ namespace RTC
 				{
 					try
 					{
-						File.Copy(file,
-							//RTC_Core.workingDir + "\\SKS\\" + file.Substring(file.LastIndexOf('\\'), file.Length - file.LastIndexOf('\\'))); // copy roms to sks folder
-							RTC_Core.workingDir + "\\SKS\\" + Path.GetFileName(file));
+						string dest = RTC_Core.workingDir + "\\SKS\\" + Path.GetFileName(file);
+
+						if (!File.Exists(dest))
+						{
+							File.Copy(file, dest); // copy roms/stockpile/whatever to sks folder
+						}
+
 					}
 					catch (Exception ex)
 					{
@@ -589,6 +598,7 @@ namespace RTC
 	}
 
 	[Serializable]
+	[Ceras.MemberConfig(TargetMember.All)]
 	public class StashKey : ICloneable , INote
 	{
 		public string RomFilename { get; set; }
@@ -633,7 +643,7 @@ namespace RTC
 			GameName = (string)RTC_Core.SendCommandToBizhawk(new RTC_Command(CommandType.REMOTE_KEY_GETGAMENAME), true);
 			SyncSettings = (string)RTC_Core.SendCommandToBizhawk(new RTC_Command(CommandType.REMOTE_KEY_GETSYNCSETTINGS), true);
 
-			this.SelectedDomains.AddRange(RTC_MemoryDomains.SelectedDomains);
+			this.SelectedDomains.AddRange((string[])RTC_Unispec.RTCSpec[RTCSPEC.MEMORYDOMAINS_SELECTEDDOMAINS.ToString()]);
 		}
 
 		public StashKey()
@@ -704,9 +714,11 @@ namespace RTC
 		{
 			return RTC_Core.workingDir + "\\" + this.StateLocation.ToString() + "\\" + this.GameName + "." + this.ParentKey + ".timejump.State"; // get savestate name
 		}
+
 	}
 
 	[Serializable]
+	[Ceras.MemberConfig(TargetMember.All)]
 	public class SaveStateKeys
 	{
 		public StashKey[] StashKeys = new StashKey[41];
@@ -714,6 +726,7 @@ namespace RTC
 	}
 
 	[Serializable]
+	[Ceras.MemberConfig(TargetMember.All)]
 	public class BlastTarget
 	{
 		public string Domain = null;
@@ -727,6 +740,7 @@ namespace RTC
 	}
 
 	[XmlInclude(typeof(BlastUnit))]
+	[Ceras.MemberConfig(TargetMember.All)]
 	[Serializable]
 	public class BlastLayer : ICloneable, INote
 	{
@@ -757,9 +771,9 @@ namespace RTC
 
 			/*
 			if (this != RTC_StockpileManager.lastBlastLayerBackup &&
-				RTC_Core.SelectedEngine != CorruptionEngine.HELLGENIE &&
-				RTC_Core.SelectedEngine != CorruptionEngine.FREEZE &&
-				RTC_Core.SelectedEngine != CorruptionEngine.PIPE)
+				RTC_Unispec.RTCSpec[Spec.CORE_SELECTEDENGINE.ToString()] != CorruptionEngine.HELLGENIE &&
+				RTC_Unispec.RTCSpec[Spec.CORE_SELECTEDENGINE.ToString()] != CorruptionEngine.FREEZE &&
+				RTC_Unispec.RTCSpec[Spec.CORE_SELECTEDENGINE.ToString()] != CorruptionEngine.PIPE)
 				RTC_StockpileManager.lastBlastLayerBackup = GetBackup();
             */
 
@@ -876,7 +890,7 @@ namespace RTC
 
 		//We use ApplyValue so we don't need to keep re-calculating the tiled value every execute if we don't have to.
 		[XmlIgnore, NonSerialized]
-		public byte[] ApplyValue;
+		public byte[] ApplyValue = null;
 
 		//The data that has been backed up. This is a list of bytes so if they start backing up at IMMEDIATE, they can have historical backups
 		[XmlIgnore, NonSerialized]
@@ -884,6 +898,7 @@ namespace RTC
 	}
 
 	[Serializable]
+	[Ceras.MemberConfig(TargetMember.All)]
 	public class BlastUnit : INote
 	{
 
@@ -973,7 +988,7 @@ namespace RTC
 		[Category("Store")]
 		[Description("The time when the store will take place")]
 		[DisplayName("Store Time")]
-		public ActionTime StoreTime { get; set; }
+		public StoreTime StoreTime { get; set; }
 
 		[Category("Store")]
 		[Description("The type of store that when the store will take place")]
@@ -995,6 +1010,8 @@ namespace RTC
 		{
 			get
 			{
+				if (Value == null)
+					return String.Empty;
 				return BitConverter.ToString(this.Value).Replace("-", string.Empty);
 			}
 			set
@@ -1030,7 +1047,7 @@ namespace RTC
 		[Category("Limiter")]
 		[Description("When to apply the limiter list")]
 		[DisplayName("Limiter List")]
-		public ActionTime LimiterTime { get; set; }
+		public LimiterTime LimiterTime { get; set; }
 
 		[Category("Limiter")]
 		[Description("The hash of the Limiter List in use")]
@@ -1049,7 +1066,7 @@ namespace RTC
 
 
 		//Don't serialize this
-		[XmlIgnore, NonSerialized, JsonIgnore]
+		[XmlIgnore, NonSerialized, JsonIgnore, Ceras.Ignore]
 		public BlastUnitWorkingData Working;
 
 
@@ -1067,7 +1084,7 @@ namespace RTC
 		/// <param name="note"></param>
 		/// <param name="isEnabled"></param>
 		/// <param name="isLocked"></param>
-		public BlastUnit(StoreType storeType, ActionTime storeTime,
+		public BlastUnit(StoreType storeType, StoreTime storeTime,
 			string domain, long address, string sourceDomain, long sourceAddress,  int precision, bool bigEndian, int executeFrame = 0, int lifetime = 1,
 			string note = null, bool isEnabled = true, bool isLocked = false)
 		{
@@ -1160,7 +1177,7 @@ namespace RTC
 			this.Working = new BlastUnitWorkingData();
 
 			//We need to grab the value to freeze
-			if (Source == BlastUnitSource.STORE && StoreTime == ActionTime.IMMEDIATE)
+			if (Source == BlastUnitSource.STORE && StoreTime == StoreTime.IMMEDIATE)
 			{
 				//If it's one time, store the backup. Otherwise add it to the pool 
 				if(StoreType == StoreType.ONCE)
@@ -1191,7 +1208,7 @@ namespace RTC
 
 				
 				//Limiter handling
-				if (LimiterTime == ActionTime.EXECUTE)
+				if (LimiterTime == LimiterTime.EXECUTE)
 				{
 					if (InvertLimiter)
 					{
@@ -1225,7 +1242,7 @@ namespace RTC
 						Working.ApplyValue = Working.StoreData.First();
 
 						//Remove it if it's a continuous backup
-						if(StoreTime == ActionTime.EXECUTE)
+						if(StoreType == StoreType.CONTINUOUS)
 							Working.StoreData.Dequeue();
 
 						//All the data is already handled by GetStoreBackup. We just take the first in the linked list and then remove it so the garbage collector can clean it up to prevent a memory leak
@@ -1237,7 +1254,8 @@ namespace RTC
 					break;
 					case (BlastUnitSource.VALUE):
 					{
-						//We only calculate it once for Backup and Value and then store it in ApplyValue
+						//We only calculate it once for Value and then store it in ApplyValue.
+						//If the length has changed (blast editor) we gotta recalc it
 						if (Working.ApplyValue == null)
 						{
 							Working.ApplyValue = RTC_Extensions.AddValueToByteArray(Value, TiltValue, mi.BigEndian);
@@ -1259,8 +1277,7 @@ namespace RTC
 			{
 				throw new Exception("The BlastUnit apply() function threw up. \n" +
 					"This is an RTC error, so you should probably send this to the RTC devs.\n" +
-					"If you know the steps to reproduce this error it would be greatly appreciated.\n\n" +
-				ex);
+					"If you know the steps to reproduce this error it would be greatly appreciated.\n\n", ex);
 			}
 
 			return;
@@ -1281,7 +1298,7 @@ namespace RTC
 				value[i] = mi.PeekByte(SourceAddress + i);
 			}
 
-			RTC_Extensions.AddValueToByteArray(value, TiltValue, mi.BigEndian);
+			value = RTC_Extensions.AddValueToByteArray(value, TiltValue, mi.BigEndian);
 
 			Working.StoreData.Enqueue(value);
 		}
@@ -1333,13 +1350,13 @@ namespace RTC
 				switch (Precision)
 				{
 					case (1):
-						randomValue = RTC_Core.RND.RandomLong(RTC_NightmareEngine.MinValue8Bit, RTC_NightmareEngine.MaxValue8Bit);
+						randomValue = RTC_Core.RND.RandomLong((long)RTC_Unispec.RTCSpec[RTCSPEC.NIGHTMARE_MINVALUE8BIT.ToString()], (long)RTC_Unispec.RTCSpec[RTCSPEC.NIGHTMARE_MAXVALUE8BIT.ToString()]);
 						break;
 					case (2):
-						randomValue = RTC_Core.RND.RandomLong(RTC_NightmareEngine.MinValue16Bit, RTC_NightmareEngine.MaxValue16Bit);
+						randomValue = RTC_Core.RND.RandomLong((long)RTC_Unispec.RTCSpec[RTCSPEC.NIGHTMARE_MINVALUE16BIT.ToString()], (long)RTC_Unispec.RTCSpec[RTCSPEC.NIGHTMARE_MAXVALUE16BIT.ToString()]);
 						break;
 					case (4):
-						randomValue = RTC_Core.RND.RandomLong(RTC_NightmareEngine.MinValue32Bit, RTC_NightmareEngine.MaxValue32Bit);
+						randomValue = RTC_Core.RND.RandomLong((long)RTC_Unispec.RTCSpec[RTCSPEC.NIGHTMARE_MINVALUE32BIT.ToString()], (long)RTC_Unispec.RTCSpec[RTCSPEC.NIGHTMARE_MAXVALUE32BIT.ToString()]);
 						break;
 					//No limits if out of normal range
 					default:
@@ -1348,7 +1365,11 @@ namespace RTC
 						randomValue = new BigInteger(_randomValue);
 						break;
 				}
-				Value = randomValue.ToByteArray();
+
+				byte[] temp = new byte[Precision];
+				byte[] outArr = RTC_Extensions.AddValueToByteArray(temp, randomValue, false); //We use this as it properly handles the length for us
+				Array.Reverse(outArr);
+				Value = outArr;
 			}
 		}
 
@@ -1368,7 +1389,7 @@ namespace RTC
 			if (mi == null)
 				return false;
 
-			if (Source == BlastUnitSource.STORE && StoreTime == ActionTime.PREEXECUTE)
+			if (Source == BlastUnitSource.STORE && StoreTime == StoreTime.PREEXECUTE)
 			{
 				if (StoreType == StoreType.ONCE)
 					StoreBackup();
@@ -1377,7 +1398,7 @@ namespace RTC
 			
 			}
 			//Limiter handling. Normal operation is to not do anything if it doesn't match the limiter. Inverted is to only continue if it doesn't match
-			if (LimiterTime == ActionTime.PREEXECUTE)
+			if (LimiterTime == LimiterTime.PREEXECUTE)
 			{
 				if (InvertLimiter)
 				{
@@ -1490,5 +1511,21 @@ namespace RTC
 	public interface INote
 	{
 		 string Note { get; set; }
+	}
+
+	[Serializable]
+	public class ComboBoxItem<T>
+	{
+		public string Name { get; set; }
+		public T Value { get; set; }
+
+		public ComboBoxItem(String name, T value)
+		{
+			Name = name;
+			Value = value;
+		}
+		public ComboBoxItem()
+		{
+		}
 	}
 }

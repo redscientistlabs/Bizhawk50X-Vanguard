@@ -74,6 +74,7 @@
             this.rbStoreStep = new System.Windows.Forms.RadioButton();
             this.rbStoreOnce = new System.Windows.Forms.RadioButton();
             this.gbBackupSource = new System.Windows.Forms.GroupBox();
+            this.btnResetConfig = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.nmMaxInfinite)).BeginInit();
             this.gbUnitSource.SuspendLayout();
             this.gbValueList.SuspendLayout();
@@ -743,12 +744,30 @@
             this.gbBackupSource.TabStop = false;
             this.gbBackupSource.Text = "Store Source";
             // 
+            // btnResetConfig
+            // 
+            this.btnResetConfig.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(224)))), ((int)(((byte)(224)))), ((int)(((byte)(224)))));
+            this.btnResetConfig.FlatAppearance.BorderSize = 0;
+            this.btnResetConfig.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnResetConfig.Font = new System.Drawing.Font("Segoe UI", 8F);
+            this.btnResetConfig.ForeColor = System.Drawing.Color.Black;
+            this.btnResetConfig.Location = new System.Drawing.Point(149, 301);
+            this.btnResetConfig.Name = "btnResetConfig";
+            this.btnResetConfig.Size = new System.Drawing.Size(123, 24);
+            this.btnResetConfig.TabIndex = 190;
+            this.btnResetConfig.TabStop = false;
+            this.btnResetConfig.Tag = "color:light";
+            this.btnResetConfig.Text = "Reset Config";
+            this.btnResetConfig.UseVisualStyleBackColor = false;
+            this.btnResetConfig.Click += new System.EventHandler(this.btnResetConfig_Click);
+            // 
             // RTC_CustomEngineConfig_Form
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
             this.ClientSize = new System.Drawing.Size(442, 333);
+            this.Controls.Add(this.btnResetConfig);
             this.Controls.Add(this.gbCheckBoxes);
             this.Controls.Add(this.gbStepSettings);
             this.Controls.Add(this.gbLimiterList);
@@ -839,5 +858,6 @@
 		public NumericUpDownHexFix nmMaxValue;
 		public NumericUpDownHexFix nmMinValue;
 		public System.Windows.Forms.CheckBox cbLimiterInverted;
+		private System.Windows.Forms.Button btnResetConfig;
 	}
 }

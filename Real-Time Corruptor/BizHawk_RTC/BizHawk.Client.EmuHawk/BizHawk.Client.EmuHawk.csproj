@@ -67,6 +67,9 @@
     <CodeAnalysisRuleSet Condition=" '$(OS)' == 'Windows_NT' ">AllRules.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Ceras, Version=1.2.23.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Ceras.1.2.23\lib\net45\Ceras.dll</HintPath>
+    </Reference>
     <Reference Include="GongShell">
       <HintPath>..\References\GongShell.dll</HintPath>
       <Private>False</Private>
@@ -980,6 +983,7 @@
     <Compile Include="RTC\RTC_RPC.cs" />
     <Compile Include="RTC\RTC_StepActions.cs" />
     <Compile Include="RTC\RTC_StockpileManager.cs" />
+    <Compile Include="RTC\RTC_Unispec.cs" />
     <Compile Include="Sound\Interfaces\IBufferedSoundProvider.cs" />
     <Compile Include="Sound\Interfaces\ISoundOutput.cs" />
     <Compile Include="Sound\Output\DirectSoundSoundOutput.cs" />
@@ -2206,6 +2210,7 @@
     <Content Include="Resources\inifile_icon.png" />
     <Content Include="Resources\notepad_icon.png" />
     <Content Include="Resources\paintbrush_icon.png" />
+    <None Include="packages.config" />
     <None Include="Resources\MoveTop.png" />
     <None Include="Resources\MoveBottom.png" />
     <None Include="Resources\MoveTop.bmp" />

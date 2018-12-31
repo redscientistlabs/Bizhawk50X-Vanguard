@@ -488,5 +488,8 @@ namespace RTC
 		{
 			Type = _Type;
 		}
+		public RTC_Command()
+		{
+		}
 	}
 }

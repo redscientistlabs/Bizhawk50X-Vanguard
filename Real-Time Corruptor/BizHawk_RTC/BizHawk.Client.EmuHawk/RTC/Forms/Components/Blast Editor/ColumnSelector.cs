@@ -15,6 +15,7 @@ namespace RTC
 		public ColumnSelector()
 		{
 			InitializeComponent();
+			RTC_Core.SetRTCColor(RTC_Core.GeneralColor, this);
 			this.FormClosing += this.ColumnSelector_Closing;
 		}
 
@@ -22,10 +23,13 @@ namespace RTC
 		{
 			foreach(DataGridViewColumn column in columns)
 			{
-				CheckBox cb = new CheckBox();
-				cb.Text = column.HeaderText;
-				cb.Name = column.Name;
-				cb.Checked = column.Visible;
+				CheckBox cb = new CheckBox
+				{
+					AutoSize = true,
+					Text = column.HeaderText,
+					Name = column.Name,
+					Checked = column.Visible
+				};
 				tablePanel.Controls.Add(cb);
 			}
 			this.Show();

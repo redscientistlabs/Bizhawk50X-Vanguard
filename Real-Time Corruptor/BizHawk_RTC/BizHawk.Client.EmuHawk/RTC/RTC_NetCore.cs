@@ -10,6 +10,7 @@ using System.Threading;
 using System.Windows.Forms;
 using System.Diagnostics;
 using System.IO.Compression;
+using Ceras;
 
 namespace RTC
 {
@@ -181,7 +182,7 @@ namespace RTC
 
 		public void StoreCommands(NetworkStream providedStream, bool dontCreateNetworkStream = false)
 		{
-			var binaryFormatter = new BinaryFormatter();
+			var s = new CerasSerializer();
 
 			TcpListener server = null;
 			Socket socket = null;
@@ -240,10 +241,11 @@ namespace RTC
 								//Deserialize it
 								ms.Position = 0;
 
-								cmd = (RTC_Command)binaryFormatter.Deserialize(ms);
+								//cmd = (RTC_Command)binaryFormatter.Deserialize(ms);
+								cmd = s.Deserialize<RTC_Command>(ms.ToArray());
 
 								sw.Stop();
-								if(cmd.Type != CommandType.BOOP && sw.ElapsedMilliseconds > 50)
+								if(cmd.Type != CommandType.BOOP && sw.ElapsedMilliseconds > 10)
 									Console.WriteLine("It took " + sw.ElapsedMilliseconds + " ms to deserialize cmd " + cmd.Type + " of " + ms.ToArray().Length + " bytes");
 							}
 						}
@@ -279,9 +281,8 @@ namespace RTC
 								sw.Start();
 								//Write the length of the command to the first four bytes
 
-								binaryFormatter.Serialize(ms, backCmd);
-
-								byte[] buf = ms.ToArray();
+								byte[] buf = s.Serialize(backCmd);
+								
 								//Write the length of the incoming object to the NetworkStream
 								byte[] length = BitConverter.GetBytes(buf.Length);
 								networkStream.Write(length, 0, length.Length);
@@ -291,7 +292,7 @@ namespace RTC
 								//ms.CopyTo(networkStream);
 								networkStream.Write(buf, 0, buf.Length);
 								sw.Stop();
-								if (backCmd.Type != CommandType.BOOP && sw.ElapsedMilliseconds > 50)
+								if (backCmd.Type != CommandType.BOOP && sw.ElapsedMilliseconds > 10)
 									Console.WriteLine("It took " + sw.ElapsedMilliseconds + " ms to serialize backCmd " + backCmd.Type + " of " + buf.Length + " bytes");
 							}
 
@@ -924,6 +925,12 @@ namespace RTC
 		STASHKEY,
 		BLASTGENERATOR_BLAST,
 
+		REMOTE_PUSHRTCSPEC,
+		REMOTE_PUSHEMUSPEC,
+
+		REMOTE_PUSHRTCSPECUPDATE,
+		REMOTE_PUSHEMUSPECUPDATE,
+
 		REMOTE_KEY_PUSHSAVESTATEDICO,
 		REMOTE_KEY_GETSYSTEMNAME,
 		REMOTE_KEY_GETSYSTEMCORE,
@@ -973,68 +980,18 @@ namespace RTC
 		GAMEOFSWAPSTART,
 		GAMEOFSWAPSTOP,
 
-		//Bizhawk Overrides
-		BIZHAWK_SET_OSDDISABLED,
-		BIZHAWK_SET_DONT_CLEAN_SAVESTATES_AT_QUIT,
-		ENABLE_CONSOLE,
 
 		//Bizhawk Shortcuts
 		BIZHAWK_OPEN_HEXEDITOR_ADDRESS,
 
 		//General Corruption settings
-		REMOTE_SET_SAVESTATEBOX,
-
-		REMOTE_SET_AUTOCORRUPT,
-		REMOTE_SET_CUSTOMPRECISION,
-		REMOTE_SET_INTENSITY,
-		REMOTE_SET_ERRORDELAY,
-		REMOTE_SET_ENGINE,
-		REMOTE_SET_BLASTRADIUS,
 		REMOTE_SET_RESTOREBLASTLAYERBACKUP,
 
-		// Corruption Core settings and commands
-		REMOTE_SET_NIGHTMARE_TYPE,
-		REMOTE_SET_NIGHTMARE_MINVALUE,
-		REMOTE_SET_NIGHTMARE_MAXVALUE,
-
-		REMOTE_SET_STEPACTIONS_CLEARREWIND,
 		REMOTE_SET_STEPACTIONS_CLEARALLBLASTUNITS,
 		REMOTE_SET_STEPACTIONS_REMOVEEXCESSINFINITEUNITS,
-		REMOTE_SET_STEPACTIONS_MAXLIFETIMEUNITS,
-		REMOTE_SET_STEPACTIONS_LOCKEXECUTION,
-		REMOTE_SET_STEPACTIONS_RUNBEFORE,
 
 		REMOTE_UPDATE_FILTERING_DICTIONARIES,
-
-		REMOTE_SET_HELLGENIE_MINVALUE,
-		REMOTE_SET_HELLGENIE_MAXVALUE,
-
-		REMOTE_SET_DISTORTION_DELAY,
 		REMOTE_SET_DISTORTION_RESYNC,
-
-		REMOTE_SET_PIPE_TILTVALUE,
-		REMOTE_SET_PIPE_LOCKPIPES,
-		REMOTE_SET_PIPE_CHAINEDPIPES,
-
-		REMOTE_SET_VECTOR_LIMITER,
-		REMOTE_SET_VECTOR_VALUES,
-
-
-		REMOTE_SET_CUSTOM_UNIT_SOURCE,
-		REMOTE_SET_CUSTOM_VALUE_SOURCE,
-		REMOTE_SET_CUSTOM_STORE_TIME,
-		REMOTE_SET_CUSTOM_STORE_ADDRESS,
-		REMOTE_SET_CUSTOM_STORE_TYPE,
-		REMOTE_SET_CUSTOM_RANGE_MINVALUE,
-		REMOTE_SET_CUSTOM_RANGE_MAXVALUE,
-		REMOTE_SET_CUSTOM_LIFETIME,
-		REMOTE_SET_CUSTOM_DELAY,
-		REMOTE_SET_CUSTOM_TILT,
-		REMOTE_SET_CUSTOM_LOOP,
-		REMOTE_SET_CUSTOM_VALUELIST,
-		REMOTE_SET_CUSTOM_LIMITERLIST,
-		REMOTE_SET_CUSTOM_LIMITERTIME,
-		REMOTE_SET_CUSTOM_LIMITERINVERTED,
 
 
 
