@@ -158,7 +158,7 @@
             this.dgvBlastEditor.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
             this.dgvBlastEditor.Size = new System.Drawing.Size(662, 216);
             this.dgvBlastEditor.TabIndex = 0;
-            this.dgvBlastEditor.Tag = "color:normal";
+            this.dgvBlastEditor.Tag = "color:dark";
             // 
             // panelSidebar
             // 

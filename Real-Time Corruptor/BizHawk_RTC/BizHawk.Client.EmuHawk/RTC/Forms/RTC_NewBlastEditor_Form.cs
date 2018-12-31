@@ -184,7 +184,7 @@ namespace RTC
 
 				cms = new ContextMenuStrip();
 
-				if (e.RowIndex != -1 || e.ColumnIndex != -1)
+				if (e.RowIndex != -1 && e.ColumnIndex != -1)
 				{
 					//Can't use a switch statement because dynamic
 					if (dgvBlastEditor.Columns[e.ColumnIndex] == dgvBlastEditor.Columns[buProperty.Address.ToString()] ||
@@ -252,7 +252,7 @@ namespace RTC
 		private void CbLimiterList_Validated(object sender, EventArgs e)
 		{
 			foreach (DataGridViewRow row in dgvBlastEditor.SelectedRows)
-				row.Cells[buProperty.LimiterListHash.ToString()].Value = ((ComboBoxItem<String>)(cbLimiterList.SelectedItem)).Value; // We gotta use the value
+				row.Cells[buProperty.LimiterListHash.ToString()].Value = ((ComboBoxItem<String>)(cbLimiterList?.SelectedItem))?.Value ?? null; // We gotta use the value
 			UpdateBottom();
 		}
 
@@ -434,9 +434,23 @@ namespace RTC
 				tbTiltValue.Text = (lastRow.DataBoundItem as BlastUnit).TiltValue.ToString();*/
 				BlastUnit bu = (BlastUnit)lastRow.DataBoundItem;
 
+
+
+				if (domainToMiDico.ContainsKey(bu.Domain ?? String.Empty))
+					upDownAddress.Maximum = domainToMiDico[bu.Domain].Size;
+				else
+					upDownAddress.Maximum = Int32.MaxValue;
+
+				if (domainToMiDico.ContainsKey(bu.SourceDomain ?? String.Empty))
+					upDownSourceAddress.Maximum = domainToMiDico[bu.SourceDomain].Size;
+				else
+					upDownSourceAddress.Maximum = Int32.MaxValue;
+
+
 				cbDomain.SelectedItem = bu.Domain;
 				cbEnabled.Checked = bu.IsEnabled;
 				cbLocked.Checked = bu.IsLocked;
+
 				upDownAddress.Value = bu.Address;
 				upDownPrecision.Value = bu.Precision;
 				tbValue.Text = bu.ValueString;
@@ -454,7 +468,9 @@ namespace RTC
 				cbSource.SelectedItem = bu.Source;
 				upDownSourceAddress.Value = bu.SourceAddress;
 
+
 				tbTiltValue.Text = bu.TiltValue.ToString();
+
 			}
 		}
 
@@ -483,7 +499,7 @@ namespace RTC
 			{
 				//If it's an address or a source address we want decimal
 				case "Address":
-					dgvBlastEditor.DataSource = currentSK.BlastLayer.Layer.Where(x => x.Address.ToString("X").ToUpper().Substring(0, tbFilter.Text.Length.Clamp(0, x.SourceAddress.ToString("X").Length)) == tbFilter.Text.ToUpper()).ToList();
+					dgvBlastEditor.DataSource = currentSK.BlastLayer.Layer.Where(x => x.Address.ToString("X").ToUpper().Substring(0, tbFilter.Text.Length.Clamp(0, x.Address.ToString("X").Length)) == tbFilter.Text.ToUpper()).ToList();
 					break;
 				case "SourceAddress":
 					dgvBlastEditor.DataSource = currentSK.BlastLayer.Layer.Where(x => x.SourceAddress.ToString("X").ToUpper().Substring(0, tbFilter.Text.Length.Clamp(0, x.SourceAddress.ToString("X").Length)) == tbFilter.Text.ToUpper()).ToList();

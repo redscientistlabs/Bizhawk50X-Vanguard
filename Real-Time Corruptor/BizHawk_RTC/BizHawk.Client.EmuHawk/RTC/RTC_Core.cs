@@ -412,7 +412,7 @@ namespace RTC
 						{
 							if (failedCount++ > maxFailed)
 							{
-								MessageBox.Show("Failed to push the RTCspec! You should probably save your stockpile as errors may occur.\n If you're seeing this message, let the devs know.");
+								MessageBox.Show("Failed to push the RTCspec! You should probably save your stockpile as errors may occur.\n If you're seeing this message, let the devs know and bring a copy of the console output with you.");
 
 							}
 							
@@ -1091,7 +1091,7 @@ namespace RTC
 			
 
 			
-			S.GET<RTC_NewBlastEditor_Form>().dgvBlastEditor.BackgroundColor = color;
+			S.GET<RTC_NewBlastEditor_Form>().dgvBlastEditor.BackgroundColor = color.ChangeColorBrightness(-0.30f);
 			S.GET<RTC_BlastGenerator_Form>().dgvBlastGenerator.BackgroundColor = color;
 
 			foreach (Control c in darkColorControls)
