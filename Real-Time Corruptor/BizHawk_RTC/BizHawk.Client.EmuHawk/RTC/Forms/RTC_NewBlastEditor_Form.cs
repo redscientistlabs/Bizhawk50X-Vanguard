@@ -1329,8 +1329,8 @@ namespace RTC
 
 				int i = 0;
 				//Insert the new one where the old row was, then remove the old row.
-				foreach (DataGridViewRow selected in dgvBlastEditor.SelectedRows.Cast<DataGridViewRow>().Where(item =>
-					((bool)item.Cells["dgvBlastUnitLocked"].Value != true)))
+				foreach (DataGridViewRow selected in dgvBlastEditor.SelectedRows.Cast<DataGridViewRow>()
+					.Where((item => ((BlastUnit)item.DataBoundItem).IsLocked == false)))
 				{
 					currentSK.BlastLayer.Layer.Insert(selected.Index, newBlastLayer.Layer[i]);
 					i++;
@@ -1339,7 +1339,7 @@ namespace RTC
 			}
 			catch (Exception ex)
 			{
-				throw new System.Exception("Something went wrong in when baking to SET.\n" +
+				throw new System.Exception("Something went wrong in when baking to VALUE.\n" +
 				                           "Your blast editor session may be broke depending on when it failed.\n" +
 				                           "You should probably send a copy of this error and what you did to cause it to the RTC devs.\n\n" +
 				                           ex.ToString());

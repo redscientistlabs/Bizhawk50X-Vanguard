@@ -1363,7 +1363,11 @@ namespace RTC
 						randomValue = new BigInteger(_randomValue);
 						break;
 				}
-				Value = randomValue.ToByteArray();
+
+				byte[] temp = new byte[Precision];
+				byte[] outArr = RTC_Extensions.AddValueToByteArray(temp, randomValue, false); //We use this as it properly handles the length for us
+				Array.Reverse(outArr);
+				Value = outArr;
 			}
 		}
 
