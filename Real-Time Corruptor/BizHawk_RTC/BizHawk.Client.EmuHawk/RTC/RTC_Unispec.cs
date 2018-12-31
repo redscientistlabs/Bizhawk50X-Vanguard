@@ -6,6 +6,7 @@ using System.Runtime.Serialization;
 using System.Security.Permissions;
 using System.Text;
 using System.Threading.Tasks;
+using Ceras;
 
 namespace RTC
 {
@@ -235,6 +236,7 @@ namespace RTC
 	}
 
 	[Serializable]
+	[Ceras.MemberConfig(TargetMember.All)]
 	public class PartialSpec : BaseSpec
 	{
 		public string Name;
@@ -253,6 +255,7 @@ namespace RTC
 	}
 
 	[Serializable]
+	[Ceras.MemberConfig(TargetMember.All)]
 	public abstract class BaseSpec
 	{
 		internal Dictionary<string, object> specDico { get; set; } = new Dictionary<string, object>();

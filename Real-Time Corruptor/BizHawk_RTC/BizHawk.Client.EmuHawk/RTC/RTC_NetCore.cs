@@ -10,6 +10,7 @@ using System.Threading;
 using System.Windows.Forms;
 using System.Diagnostics;
 using System.IO.Compression;
+using Ceras;
 
 namespace RTC
 {
@@ -181,7 +182,7 @@ namespace RTC
 
 		public void StoreCommands(NetworkStream providedStream, bool dontCreateNetworkStream = false)
 		{
-			var binaryFormatter = new BinaryFormatter();
+			var s = new CerasSerializer();
 
 			TcpListener server = null;
 			Socket socket = null;
@@ -240,7 +241,8 @@ namespace RTC
 								//Deserialize it
 								ms.Position = 0;
 
-								cmd = (RTC_Command)binaryFormatter.Deserialize(ms);
+								//cmd = (RTC_Command)binaryFormatter.Deserialize(ms);
+								cmd = s.Deserialize<RTC_Command>(ms.ToArray());
 
 								sw.Stop();
 								if(cmd.Type != CommandType.BOOP && sw.ElapsedMilliseconds > 10)
@@ -279,9 +281,8 @@ namespace RTC
 								sw.Start();
 								//Write the length of the command to the first four bytes
 
-								binaryFormatter.Serialize(ms, backCmd);
-
-								byte[] buf = ms.ToArray();
+								byte[] buf = s.Serialize(backCmd);
+								
 								//Write the length of the incoming object to the NetworkStream
 								byte[] length = BitConverter.GetBytes(buf.Length);
 								networkStream.Write(length, 0, length.Length);

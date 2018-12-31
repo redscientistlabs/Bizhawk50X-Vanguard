@@ -10,6 +10,7 @@ using System.Runtime.Serialization.Formatters.Binary;
 using System.Text;
 using System.Windows.Forms;
 using System.Xml.Serialization;
+using Ceras;
 
 namespace RTC
 {
@@ -590,6 +591,7 @@ namespace RTC
 	}
 
 	[Serializable]
+	[Ceras.MemberConfig(TargetMember.All)]
 	public abstract class MemoryInterface
 	{
 		public abstract long Size { get; set; }
@@ -849,6 +851,7 @@ namespace RTC
 	public sealed class MemoryDomainProxy : MemoryInterface
 	{
 		[NonSerialized]
+		[Ceras.Ignore]
 		public MemoryDomain MD = null;
 
 		//public long Size;
@@ -873,7 +876,9 @@ namespace RTC
 			Name = MD.ToString();
 			BigEndian = _md.EndianType == MemoryDomain.Endian.Big;
 		}
-
+		public MemoryDomainProxy()
+		{
+		}
 		public override string ToString()
 		{
 			return Name;

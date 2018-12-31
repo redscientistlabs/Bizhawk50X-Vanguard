@@ -10,6 +10,7 @@ using System.Numerics;
 using System.Security.Cryptography;
 using System.Xml.Serialization;
 using System.ComponentModel;
+using Ceras;
 using Exception = System.Exception;
 
 namespace RTC
@@ -18,6 +19,7 @@ namespace RTC
 	[XmlInclude(typeof(BlastLayer))]
 	[XmlInclude(typeof(BlastUnit))]
 	[Serializable]
+	[Ceras.MemberConfig(TargetMember.All)]
 	public class Stockpile
 	{
 		public List<StashKey> StashKeys = new List<StashKey>();
@@ -595,6 +597,7 @@ namespace RTC
 	}
 
 	[Serializable]
+	[Ceras.MemberConfig(TargetMember.All)]
 	public class StashKey : ICloneable , INote
 	{
 		public string RomFilename { get; set; }
@@ -714,6 +717,7 @@ namespace RTC
 	}
 
 	[Serializable]
+	[Ceras.MemberConfig(TargetMember.All)]
 	public class SaveStateKeys
 	{
 		public StashKey[] StashKeys = new StashKey[41];
@@ -721,6 +725,7 @@ namespace RTC
 	}
 
 	[Serializable]
+	[Ceras.MemberConfig(TargetMember.All)]
 	public class BlastTarget
 	{
 		public string Domain = null;
@@ -734,6 +739,7 @@ namespace RTC
 	}
 
 	[XmlInclude(typeof(BlastUnit))]
+	[Ceras.MemberConfig(TargetMember.All)]
 	[Serializable]
 	public class BlastLayer : ICloneable, INote
 	{
@@ -897,6 +903,7 @@ namespace RTC
 	}
 
 	[Serializable]
+	[Ceras.MemberConfig(TargetMember.All)]
 	public class BlastUnit : INote
 	{
 
@@ -1064,7 +1071,7 @@ namespace RTC
 
 
 		//Don't serialize this
-		[XmlIgnore, NonSerialized, JsonIgnore]
+		[XmlIgnore, NonSerialized, JsonIgnore, Ceras.Ignore]
 		public BlastUnitWorkingData Working;
 
 
@@ -1521,6 +1528,9 @@ namespace RTC
 		{
 			Name = name;
 			Value = value;
+		}
+		public ComboBoxItem()
+		{
 		}
 	}
 }

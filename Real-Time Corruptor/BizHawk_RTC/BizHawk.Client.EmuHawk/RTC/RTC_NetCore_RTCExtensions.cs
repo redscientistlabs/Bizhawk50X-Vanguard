@@ -84,12 +84,10 @@ namespace RTC
 
 
 				case CommandType.REMOTE_PUSHRTCSPECUPDATE:
-					Console.WriteLine("RTCSpec was null when update pushed!");
 					RTC_Unispec.RTCSpec?.Update((PartialSpec)cmd.objectValue, false);
 					break;
 
 				case CommandType.REMOTE_PUSHEMUSPECUPDATE:
-					Console.WriteLine("Emuspec was null when update pushed!");
 					RTC_Unispec.EmuSpec?.Update((PartialSpec)cmd.objectValue, false);
 					break;
 
