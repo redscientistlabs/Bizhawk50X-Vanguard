@@ -26,12 +26,12 @@ namespace RTC
 				long MinValue32Bit = (long)RTC_Unispec.RTCSpec[RTCSPEC.CUSTOM_MINVALUE32BIT.ToString()];
 				long MaxValue32Bit = (long)RTC_Unispec.RTCSpec[RTCSPEC.CUSTOM_MAXVALUE32BIT.ToString()];
 
-				ActionTime StoreTime = (ActionTime)RTC_Unispec.RTCSpec[RTCSPEC.CUSTOM_STORETIME.ToString()];
+				StoreTime StoreTime = (StoreTime)RTC_Unispec.RTCSpec[RTCSPEC.CUSTOM_STORETIME.ToString()];
 				CustomStoreAddress StoreAddress = (CustomStoreAddress)RTC_Unispec.RTCSpec[RTCSPEC.CUSTOM_STOREADDRESS.ToString()];
 				StoreType StoreType = (StoreType)RTC_Unispec.RTCSpec[RTCSPEC.CUSTOM_STORETYPE.ToString()];
 				int Delay = (int)RTC_Unispec.RTCSpec[RTCSPEC.CUSTOM_DELAY.ToString()];
 				int Lifetime = (int)RTC_Unispec.RTCSpec[RTCSPEC.CUSTOM_LIFETIME.ToString()];
-				ActionTime LimiterTime = (ActionTime)RTC_Unispec.RTCSpec[RTCSPEC.CUSTOM_LIMITERTIME.ToString()];
+				LimiterTime LimiterTime = (LimiterTime)RTC_Unispec.RTCSpec[RTCSPEC.CUSTOM_LIMITERTIME.ToString()];
 				bool Loop = (bool)RTC_Unispec.RTCSpec[RTCSPEC.CUSTOM_LOOP.ToString()];
 				bool LimiterInverted = (bool)RTC_Unispec.RTCSpec[RTCSPEC.CUSTOM_LIMITERINVERTED.ToString()];
 
@@ -132,11 +132,11 @@ namespace RTC
 				bu.InvertLimiter = LimiterInverted;
 
 				//Only set a list if it's used to save on memory
-				if (LimiterTime != ActionTime.NONE)
+				if (LimiterTime != LimiterTime.NONE)
 					bu.LimiterListHash = LimiterListHash;
 
 				//Limiter handling
-				if (LimiterTime == ActionTime.IMMEDIATE)
+				if (LimiterTime == LimiterTime.IMMEDIATE)
 				{
 					if (LimiterInverted)
 					{
@@ -207,6 +207,36 @@ namespace RTC
 				.Where(x => x % 2 == 0)
 				.Select(x => Convert.ToByte(hex.Substring(x, 2), 16))
 				.ToArray();
+		}
+
+		public static void Initialize(PartialSpec pSpec)
+		{
+			pSpec[RTCSPEC.CUSTOM_DELAY.ToString()] = 0;
+			pSpec[RTCSPEC.CUSTOM_LIFETIME.ToString()] = 1;
+			pSpec[RTCSPEC.CUSTOM_LOOP.ToString()] = false;
+
+			pSpec[RTCSPEC.CUSTOM_TILTVALUE.ToString()] = 1;
+
+			pSpec[RTCSPEC.CUSTOM_LIMITERLISTHASH.ToString()] = null;
+			pSpec[RTCSPEC.CUSTOM_LIMITERTIME.ToString()] = LimiterTime.NONE;
+			pSpec[RTCSPEC.CUSTOM_LIMITERINVERTED.ToString()] = false;
+
+			pSpec[RTCSPEC.CUSTOM_VALUELISTHASH.ToString()] = null;
+
+			pSpec[RTCSPEC.CUSTOM_MINVALUE8BIT.ToString()] = 0L;
+			pSpec[RTCSPEC.CUSTOM_MINVALUE16BIT.ToString()] = 0L;
+			pSpec[RTCSPEC.CUSTOM_MINVALUE32BIT.ToString()] = 0L;
+			pSpec[RTCSPEC.CUSTOM_MAXVALUE8BIT.ToString()] = 0xFFL;
+			pSpec[RTCSPEC.CUSTOM_MAXVALUE16BIT.ToString()] = 0xFFFFL;
+			pSpec[RTCSPEC.CUSTOM_MAXVALUE32BIT.ToString()] = 0xFFFFFFFFL;
+
+			pSpec[RTCSPEC.CUSTOM_VALUESOURCE.ToString()] = CustomValueSource.RANDOM;
+
+			pSpec[RTCSPEC.CUSTOM_SOURCE.ToString()] = BlastUnitSource.VALUE;
+
+			pSpec[RTCSPEC.CUSTOM_STOREADDRESS.ToString()] = CustomStoreAddress.RANDOM;
+			pSpec[RTCSPEC.CUSTOM_STORETIME.ToString()] = StoreTime.IMMEDIATE;
+			pSpec[RTCSPEC.CUSTOM_STORETYPE.ToString()] = StoreType.ONCE;
 		}
 	}
 }

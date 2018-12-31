@@ -70,12 +70,16 @@ namespace RTC
 
 
 				case CommandType.REMOTE_PUSHRTCSPEC:
+					cmdBack = new RTC_Command(CommandType.RETURNVALUE);
 					RTC_Unispec.RTCSpec = new FullSpec((PartialSpec)cmd.objectValue);
+					cmdBack.objectValue = true;
 					break;
 
 
 				case CommandType.REMOTE_PUSHEMUSPEC:
+					cmdBack = new RTC_Command(CommandType.RETURNVALUE);
 					RTC_Unispec.EmuSpec = new FullSpec((PartialSpec)cmd.objectValue);
+					cmdBack.objectValue = true;
 					break;
 
 

@@ -986,7 +986,7 @@ namespace RTC
 		[Category("Store")]
 		[Description("The time when the store will take place")]
 		[DisplayName("Store Time")]
-		public ActionTime StoreTime { get; set; }
+		public StoreTime StoreTime { get; set; }
 
 		[Category("Store")]
 		[Description("The type of store that when the store will take place")]
@@ -1045,7 +1045,7 @@ namespace RTC
 		[Category("Limiter")]
 		[Description("When to apply the limiter list")]
 		[DisplayName("Limiter List")]
-		public ActionTime LimiterTime { get; set; }
+		public LimiterTime LimiterTime { get; set; }
 
 		[Category("Limiter")]
 		[Description("The hash of the Limiter List in use")]
@@ -1082,7 +1082,7 @@ namespace RTC
 		/// <param name="note"></param>
 		/// <param name="isEnabled"></param>
 		/// <param name="isLocked"></param>
-		public BlastUnit(StoreType storeType, ActionTime storeTime,
+		public BlastUnit(StoreType storeType, StoreTime storeTime,
 			string domain, long address, string sourceDomain, long sourceAddress,  int precision, bool bigEndian, int executeFrame = 0, int lifetime = 1,
 			string note = null, bool isEnabled = true, bool isLocked = false)
 		{
@@ -1175,7 +1175,7 @@ namespace RTC
 			this.Working = new BlastUnitWorkingData();
 
 			//We need to grab the value to freeze
-			if (Source == BlastUnitSource.STORE && StoreTime == ActionTime.IMMEDIATE)
+			if (Source == BlastUnitSource.STORE && StoreTime == StoreTime.IMMEDIATE)
 			{
 				//If it's one time, store the backup. Otherwise add it to the pool 
 				if(StoreType == StoreType.ONCE)
@@ -1206,7 +1206,7 @@ namespace RTC
 
 				
 				//Limiter handling
-				if (LimiterTime == ActionTime.EXECUTE)
+				if (LimiterTime == LimiterTime.EXECUTE)
 				{
 					if (InvertLimiter)
 					{
@@ -1240,7 +1240,7 @@ namespace RTC
 						Working.ApplyValue = Working.StoreData.First();
 
 						//Remove it if it's a continuous backup
-						if(StoreTime == ActionTime.EXECUTE)
+						if(StoreType == StoreType.CONTINUOUS)
 							Working.StoreData.Dequeue();
 
 						//All the data is already handled by GetStoreBackup. We just take the first in the linked list and then remove it so the garbage collector can clean it up to prevent a memory leak
@@ -1383,7 +1383,7 @@ namespace RTC
 			if (mi == null)
 				return false;
 
-			if (Source == BlastUnitSource.STORE && StoreTime == ActionTime.PREEXECUTE)
+			if (Source == BlastUnitSource.STORE && StoreTime == StoreTime.PREEXECUTE)
 			{
 				if (StoreType == StoreType.ONCE)
 					StoreBackup();
@@ -1392,7 +1392,7 @@ namespace RTC
 			
 			}
 			//Limiter handling. Normal operation is to not do anything if it doesn't match the limiter. Inverted is to only continue if it doesn't match
-			if (LimiterTime == ActionTime.PREEXECUTE)
+			if (LimiterTime == LimiterTime.PREEXECUTE)
 			{
 				if (InvertLimiter)
 				{

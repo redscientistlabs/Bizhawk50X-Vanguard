@@ -184,14 +184,17 @@ namespace RTC
 
 				cms = new ContextMenuStrip();
 
-				//Can't use a switch statement because dynamic
-				if (dgvBlastEditor.Columns[e.ColumnIndex] == dgvBlastEditor.Columns[buProperty.Address.ToString()] ||
-					dgvBlastEditor.Columns[e.ColumnIndex] == dgvBlastEditor.Columns[buProperty.SourceAddress.ToString()])
+				if (e.RowIndex != -1 || e.ColumnIndex != -1)
 				{
-					cms.Items.Add(new ToolStripSeparator());
-					PopulateAddressContextMenu(dgvBlastEditor[e.ColumnIndex, e.RowIndex]);
+					//Can't use a switch statement because dynamic
+					if (dgvBlastEditor.Columns[e.ColumnIndex] == dgvBlastEditor.Columns[buProperty.Address.ToString()] ||
+						dgvBlastEditor.Columns[e.ColumnIndex] == dgvBlastEditor.Columns[buProperty.SourceAddress.ToString()])
+					{
+						cms.Items.Add(new ToolStripSeparator());
+						PopulateAddressContextMenu(dgvBlastEditor[e.ColumnIndex, e.RowIndex]);
+					}
+					cms.Show(dgvBlastEditor, dgvBlastEditor.PointToClient(Cursor.Position));
 				}
-				cms.Show(dgvBlastEditor, dgvBlastEditor.PointToClient(Cursor.Position));
 			}
 		}
 		
@@ -395,7 +398,12 @@ namespace RTC
 
 		private void updateMaximum(DataGridViewNumericUpDownCell cell, String domain)
 		{
-				cell.Maximum = domainToMiDico[domain].Size;
+			if (domainToMiDico.ContainsKey(domain))
+				cell.Maximum = domainToMiDico[domain]
+					.Size;
+			else
+				cell.Maximum = Int32.MaxValue;
+
 		}
 		
 		private void UpdateBottom()
@@ -490,7 +498,6 @@ namespace RTC
 		{
 			property2ControlDico = new Dictionary<string, Control>();
 
-			var actionTime = Enum.GetValues(typeof(ActionTime));
 			var storeType = Enum.GetValues(typeof(StoreType));
 			var blastUnitSource = Enum.GetValues(typeof(BlastUnitSource));
 
@@ -500,9 +507,12 @@ namespace RTC
 			cbSourceDomain.BindingContext = new BindingContext();
 			cbSourceDomain.DataSource = domains;
 
-			foreach (var item in actionTime)
+			foreach (var item in Enum.GetValues(typeof(LimiterTime)))
 			{
 				cbLimiterTime.Items.Add(item);
+			}
+			foreach (var item in Enum.GetValues(typeof(StoreTime)))
+			{
 				cbStoreTime.Items.Add(item);
 			}
 			foreach (var item in blastUnitSource)
@@ -542,7 +552,6 @@ namespace RTC
 		{
 
 			VisibleColumns = new List<string>();
-			var actionTime = Enum.GetValues(typeof(ActionTime));
 			var blastUnitSource = Enum.GetValues(typeof(BlastUnitSource));
 
 
@@ -571,6 +580,7 @@ namespace RTC
 			
 			
 			DataGridViewNumericUpDownColumn precision = (DataGridViewNumericUpDownColumn)CreateColumn(buProperty.Precision.ToString(), buProperty.Precision.ToString(), "Precision", new DataGridViewNumericUpDownColumn());
+			precision.Minimum = 1;
 			precision.Maximum = Int32.MaxValue;
 			dgvBlastEditor.Columns.Add(precision);
 
@@ -583,7 +593,7 @@ namespace RTC
 
 
 			DataGridViewComboBoxColumn limiterTime = CreateColumn(buProperty.LimiterTime.ToString(), buProperty.LimiterTime.ToString(), "Limiter Time", new DataGridViewComboBoxColumn()) as DataGridViewComboBoxColumn;
-			foreach (var item in actionTime)
+			foreach (var item in Enum.GetValues(typeof(LimiterTime)))
 				limiterTime.Items.Add(item);
 			dgvBlastEditor.Columns.Add(limiterTime);
 
@@ -597,7 +607,7 @@ namespace RTC
 
 
 			DataGridViewComboBoxColumn storeTime = CreateColumn(buProperty.StoreTime.ToString(), buProperty.StoreTime.ToString(), "Store Time", new DataGridViewComboBoxColumn()) as DataGridViewComboBoxColumn;
-			foreach (var item in actionTime)
+			foreach (var item in Enum.GetValues(typeof(StoreTime)))
 				storeTime.Items.Add(item);
 			dgvBlastEditor.Columns.Add(storeTime);
 
@@ -721,7 +731,14 @@ namespace RTC
 			originalSK = sk.Clone() as StashKey;
 			currentSK = sk.Clone() as StashKey;
 			lbBlastLayerSize.Text = "Size: " + currentSK.BlastLayer.Layer.Count;
-			RefreshDomains();
+
+			if (!RefreshDomains())
+			{
+				MessageBox.Show("Loading domains failed! Aborting load. Check to make sure the RTC and Bizhawk are connected.");
+				this.Close();
+				return;
+			}
+
 
 			bs = new BindingSource {DataSource = currentSK.BlastLayer.Layer};
 		
@@ -734,7 +751,7 @@ namespace RTC
 		}
 
 
-		private void RefreshDomains()
+		private bool RefreshDomains()
 		{
 			try
 			{
@@ -745,6 +762,9 @@ namespace RTC
 				{
 					domainToMiDico.Add(domain, RTC_MemoryDomains.GetInterface(domain));
 				}
+				if(domainToMiDico.Keys.Count > 0)
+					return true;
+				return false;
 			}
 			catch (Exception ex)
 			{

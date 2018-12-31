@@ -234,7 +234,7 @@ namespace RTC
 
 						//If the store time is immediate, we store on the frame the unit is created.
 						//In the case of a looping unit, that'd be right now
-						if (bu.Source == BlastUnitSource.STORE && bu.StoreTime == ActionTime.IMMEDIATE)
+						if (bu.Source == BlastUnitSource.STORE && bu.StoreTime == StoreTime.IMMEDIATE)
 							bu.StoreBackup();
 					}
 

@@ -101,7 +101,7 @@ namespace RTC
 				//Tilt. Backup with a + or -
 				else
 				{
-					BlastUnit bu = new BlastUnit(StoreType.ONCE, ActionTime.PREEXECUTE, domain, safeAddress, domain, safeAddress, precision, mdp.BigEndian);
+					BlastUnit bu = new BlastUnit(StoreType.ONCE, StoreTime.PREEXECUTE, domain, safeAddress, domain, safeAddress, precision, mdp.BigEndian);
 					if (type == NightmareType.ADD)
 						bu.TiltValue = 1;
 					else if (type == NightmareType.SUBTRACT)

@@ -26,7 +26,7 @@ namespace RTC
 		public static List<ProblematicProcess> ProblematicProcesses;
 
 		//General RTC Values
-		public static string RtcVersion = "3.31";
+		public static string RtcVersion = "3.32";
 
 		//Directories
 		public static string bizhawkDir = Directory.GetCurrentDirectory();
@@ -348,8 +348,22 @@ namespace RTC
 				RemoteRTC.ClientConnected += (ob, ev) =>
 				{
 					RemoteRTC_SupposedToBeConnected = true;
+
+
+					int maxFailed = 5;
+					int failedCount = 0;
 					//Push the spec to StandaloneRTC
-					RTC_Unispec.PushEmuSpec();
+					while (RTC_Unispec.PushEmuSpec() == false)
+					{
+						if (failedCount++ > maxFailed)
+						{
+							MessageBox.Show("Failed to push the EMUspec! You should probably save your stockpile as errors may occur.\n If you're seeing this message, let the devs know.");
+
+						}
+
+						//Let the main thread sleep so netcore can unjam if it's jammed
+						Thread.Sleep(200);
+					}
 				};
 			}
 			else
@@ -390,8 +404,22 @@ namespace RTC
 						Console.WriteLine("RemoteRTC.ServerConnected");
 						S.GET<RTC_ConnectionStatus_Form>().lbConnectionStatus.Text = "Connection status: Connected";
 
+						int maxFailed = 5;
+						int failedCount = 0;
+						//It's absolutely vital that the spec goes through so we make sure it didn't time out
 						//Push the spec to Bizhawk
-						RTC_Unispec.PushRTCSpec();
+						while (RTC_Unispec.PushRTCSpec() == false)
+						{
+							if (failedCount++ > maxFailed)
+							{
+								MessageBox.Show("Failed to push the RTCspec! You should probably save your stockpile as errors may occur.\n If you're seeing this message, let the devs know.");
+
+							}
+							
+							//Let the main thread sleep so netcore can unjam if it's jammed
+							Thread.Sleep(200);
+						}
+						
 
 						if (FirstConnection)
 						{

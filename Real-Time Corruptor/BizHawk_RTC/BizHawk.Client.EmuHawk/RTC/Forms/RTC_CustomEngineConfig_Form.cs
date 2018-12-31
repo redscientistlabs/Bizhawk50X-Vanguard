@@ -90,10 +90,10 @@ namespace RTC
 		private void storeTime_CheckedChanged(object sender, EventArgs e)
 		{
 			if (rbStoreImmediate.Checked)
-				RTCSpec.Update(RTCSPEC.CUSTOM_STORETIME.ToString(), ActionTime.IMMEDIATE);
+				RTCSpec.Update(RTCSPEC.CUSTOM_STORETIME.ToString(), StoreTime.IMMEDIATE);
 
 			else if (rbStoreFirstExecute.Checked)
-				RTCSpec.Update(RTCSPEC.CUSTOM_STORETIME.ToString(), ActionTime.PREEXECUTE);
+				RTCSpec.Update(RTCSPEC.CUSTOM_STORETIME.ToString(), StoreTime.PREEXECUTE);
 		}
 		
 		private void storeAddress_CheckedChanged(object sender, EventArgs e)
@@ -187,16 +187,16 @@ namespace RTC
 		private void limiterTime_CheckedChanged(object sender, EventArgs e)
 		{
 			if (rbLimiterNone.Checked)
-				RTCSpec.Update(RTCSPEC.CUSTOM_LIMITERTIME.ToString(), ActionTime.NONE);
+				RTCSpec.Update(RTCSPEC.CUSTOM_LIMITERTIME.ToString(), LimiterTime.NONE);
 
 			else if (rbLimiterGenerate.Checked)
-				RTCSpec.Update(RTCSPEC.CUSTOM_LIMITERTIME.ToString(), ActionTime.IMMEDIATE);
+				RTCSpec.Update(RTCSPEC.CUSTOM_LIMITERTIME.ToString(), LimiterTime.IMMEDIATE);
 
 			else if (rbLimiterFirstExecute.Checked)
-				RTCSpec.Update(RTCSPEC.CUSTOM_LIMITERTIME.ToString(), ActionTime.PREEXECUTE);
+				RTCSpec.Update(RTCSPEC.CUSTOM_LIMITERTIME.ToString(), LimiterTime.PREEXECUTE);
 
 			else if (rbLimiterExecute.Checked)
-				RTCSpec.Update(RTCSPEC.CUSTOM_LIMITERTIME.ToString(), ActionTime.EXECUTE);
+				RTCSpec.Update(RTCSPEC.CUSTOM_LIMITERTIME.ToString(), LimiterTime.EXECUTE);
 		}
 		
 		private void btnClearActive_Click(object sender, EventArgs e)
@@ -255,6 +255,14 @@ namespace RTC
 		private void cbLimiterInverted_CheckedChanged(object sender, EventArgs e)
 		{
 			RTC_Unispec.RTCSpec.Update(RTCSPEC.CUSTOM_LIMITERINVERTED.ToString(), cbLimiterInverted.Checked);
+		}
+
+		private void btnResetConfig_Click(object sender, EventArgs e)
+		{
+			PartialSpec spec = new PartialSpec("RTCSpec");
+			RTC_CustomEngine.Initialize(spec);
+			RTC_Unispec.RTCSpec.Update(spec);
+			Refresh();
 		}
 	}
 }

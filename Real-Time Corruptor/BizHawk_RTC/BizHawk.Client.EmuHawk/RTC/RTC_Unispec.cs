@@ -71,32 +71,7 @@ namespace RTC
 
 
 			//Custom Engine Config
-			rtcSpecTemplate[RTCSPEC.CUSTOM_DELAY.ToString()] = 0;
-			rtcSpecTemplate[RTCSPEC.CUSTOM_LIFETIME.ToString()] = 1;
-			rtcSpecTemplate[RTCSPEC.CUSTOM_LOOP.ToString()] = false;
-
-			rtcSpecTemplate[RTCSPEC.CUSTOM_TILTVALUE.ToString()] = 1;
-
-			rtcSpecTemplate[RTCSPEC.CUSTOM_LIMITERLISTHASH.ToString()] = null;
-			rtcSpecTemplate[RTCSPEC.CUSTOM_LIMITERTIME.ToString()] = ActionTime.NONE;
-			rtcSpecTemplate[RTCSPEC.CUSTOM_LIMITERINVERTED.ToString()] = false;
-
-			rtcSpecTemplate[RTCSPEC.CUSTOM_VALUELISTHASH.ToString()] = null;
-
-			rtcSpecTemplate[RTCSPEC.CUSTOM_MINVALUE8BIT.ToString()] = 0L;
-			rtcSpecTemplate[RTCSPEC.CUSTOM_MINVALUE16BIT.ToString()]= 0L;
-			rtcSpecTemplate[RTCSPEC.CUSTOM_MINVALUE32BIT.ToString()] = 0L;
-			rtcSpecTemplate[RTCSPEC.CUSTOM_MAXVALUE8BIT.ToString()] = 0xFFL;
-			rtcSpecTemplate[RTCSPEC.CUSTOM_MAXVALUE16BIT.ToString()] = 0xFFFFL;
-			rtcSpecTemplate[RTCSPEC.CUSTOM_MAXVALUE32BIT.ToString()] = 0xFFFFFFFFL;
-
-			rtcSpecTemplate[RTCSPEC.CUSTOM_VALUESOURCE.ToString()] = CustomValueSource.RANDOM;
-
-			rtcSpecTemplate[RTCSPEC.CUSTOM_SOURCE.ToString()] = BlastUnitSource.VALUE;
-
-			rtcSpecTemplate[RTCSPEC.CUSTOM_STOREADDRESS.ToString()] = CustomStoreAddress.RANDOM;
-			rtcSpecTemplate[RTCSPEC.CUSTOM_STORETIME.ToString()] = ActionTime.IMMEDIATE;
-			rtcSpecTemplate[RTCSPEC.CUSTOM_STORETYPE.ToString()] = StoreType.ONCE;
+			RTC_CustomEngine.Initialize(rtcSpecTemplate);
 
 
 			rtcSpecTemplate[RTCSPEC.FILTERING_HASH2LIMITERDICO.ToString()] = new Dictionary<string, HashSet<Byte[]>>();
@@ -153,13 +128,13 @@ namespace RTC
 			});
 		}
 
-		public static void PushRTCSpec()
+		public static bool PushRTCSpec()
 		{
-			RTC_Core.SendCommandToBizhawk(new RTC_Command(CommandType.REMOTE_PUSHRTCSPEC) { objectValue = RTCSpec.GetPartialSpec() }, true);
+			return (bool)(RTC_Core.SendCommandToBizhawk(new RTC_Command(CommandType.REMOTE_PUSHRTCSPEC) { objectValue = RTCSpec.GetPartialSpec() }, true) ?? false);;
 		}
-		public static void PushEmuSpec()
+		public static bool PushEmuSpec()
 		{
-			RTC_Core.SendCommandToBizhawk(new RTC_Command(CommandType.REMOTE_PUSHEMUSPEC) { objectValue = EmuSpec.GetPartialSpec() }, true);
+			return (bool)(RTC_Core.SendCommandToBizhawk(new RTC_Command(CommandType.REMOTE_PUSHEMUSPEC) { objectValue = EmuSpec.GetPartialSpec() }, true) ?? false);
 		}
 	}
 
