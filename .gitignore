@@ -1,5 +1,6 @@
 *.suo
 *.user
+*.vs
 _ReSharper.*
 bin
 obj
@@ -16,3 +17,5 @@ Real-Time Corruptor/output/dll/BizHawk.Emulation.Common.dll
 Real-Time Corruptor/output/dll/Newtonsoft.Json.dll
 Real-Time Corruptor/output/dll/BizHawk.Common.pdb
 Real-Time Corruptor/output/dll/BizHawk.Emulation.Common.pdb
+RTC3 Launcher/.vs
+Real-Time Corruptor/BizHawk_RTC/.vs
