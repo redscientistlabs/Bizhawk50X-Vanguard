@@ -71,7 +71,8 @@ namespace RTC
 				if (saveFileDialog1.ShowDialog() == DialogResult.OK)
 				{
 					sks.Filename = saveFileDialog1.FileName;
-					sks.ShortFilename = sks.Filename.Substring(sks.Filename.LastIndexOf("\\") + 1, sks.Filename.Length - (sks.Filename.LastIndexOf("\\") + 1));
+					//sks.ShortFilename = sks.Filename.Substring(sks.Filename.LastIndexOf("\\") + 1, sks.Filename.Length - (sks.Filename.LastIndexOf("\\") + 1));
+					sks.ShortFilename = Path.GetFileName(sks.Filename);
 				}
 				else
 					return false;
@@ -135,8 +136,8 @@ namespace RTC
 			foreach (string str in allRoms)
 			{
 				string rom = str;
-				string romTempfilename = RTC_Core.workingDir + "\\TEMP\\" + (rom.Substring(rom.LastIndexOf("\\") + 1, rom.Length - (rom.LastIndexOf("\\") + 1)));
-
+				//string romTempfilename = RTC_Core.workingDir + "\\TEMP\\" + (rom.Substring(rom.LastIndexOf("\\") + 1, rom.Length - (rom.LastIndexOf("\\") + 1)));
+				string romTempfilename = RTC_Core.workingDir + "\\TEMP\\" + Path.GetFileName(rom);
 				if (!rom.Contains("\\"))
 					rom = RTC_Core.workingDir + "\\SKS\\" + rom;
 
@@ -219,7 +220,8 @@ namespace RTC
 			//Move all the files from temp into SKS
 			EmptyFolder("\\WORKING\\SKS");
 			foreach (string file in Directory.GetFiles(RTC_Core.workingDir + "\\TEMP"))
-				File.Move(file, RTC_Core.workingDir + "\\SKS\\" + (file.Substring(file.LastIndexOf("\\") + 1, file.Length - (file.LastIndexOf("\\") + 1))));
+				File.Move(file, RTC_Core.workingDir + "\\SKS\\" + Path.GetFileName(file));
+			//File.Move(file, RTC_Core.workingDir + "\\SKS\\" + (file.Substring(file.LastIndexOf("\\") + 1, file.Length - (file.LastIndexOf("\\") + 1))));
 
 			RTC_StockpileManager.CurrentStockpile = sks;
 
@@ -241,7 +243,7 @@ namespace RTC
 				};
 				if (ofd.ShowDialog() == DialogResult.OK)
 				{
-					Filename = ofd.FileName.ToString();
+					Filename = ofd.FileName;
 				}
 				else
 					return false;
@@ -560,14 +562,13 @@ namespace RTC
 				{
 					try
 					{
-						string dest = RTC_Core.workingDir + "\\SKS\\" + file.Substring(file.LastIndexOf('\\')
-							, file.Length - file.LastIndexOf('\\'));
+						string dest = RTC_Core.workingDir + "\\SKS\\" + Path.GetFileName(file);
 
 						if (!File.Exists(dest))
 						{
 							File.Copy(file, dest); // copy roms/stockpile/whatever to sks folder
 						}
-						
+
 					}
 					catch (Exception ex)
 					{
@@ -802,7 +803,7 @@ namespace RTC
 				throw new Exception(
 							"An error occurred in RTC while applying a BlastLayer to the game.\n\n" +
 							"The operation was cancelled\n\n" +
-							ex.ToString()
+							ex
 							);
 			}
 			finally
@@ -816,7 +817,7 @@ namespace RTC
 
 		public BlastLayer GetBakedLayer()
 		{
-			List<BlastUnit> BackupLayer = new List<BlastUnit>(); ;
+			List<BlastUnit> BackupLayer = new List<BlastUnit>();
 
 			BackupLayer.AddRange(Layer.Select(it => it.GetBakedUnit()));
 
@@ -825,7 +826,7 @@ namespace RTC
 
 		public BlastLayer GetBackup()
 		{
-			List<BlastUnit> BackupLayer = new List<BlastUnit>(); ;
+			List<BlastUnit> BackupLayer = new List<BlastUnit>();
 
 			BackupLayer.AddRange(Layer.Select(it => it.GetBackup()));
 
@@ -860,10 +861,7 @@ namespace RTC
 				{
 					return Layer.FirstOrDefault()?.Note;
 				}
-				else
-				{
-					return shared;
-				}
+				return shared;
 			}
 			set
 			{
@@ -871,11 +869,8 @@ namespace RTC
 				{
 					return;
 				}
-				else
-				{
-					foreach (BlastUnit bu in Layer)
-						bu.Note = value;
-				}
+				foreach (BlastUnit bu in Layer)
+					bu.Note = value;
 			}
 		}
 	}

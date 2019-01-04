@@ -73,13 +73,13 @@ namespace RTC
 					long randomValue = -1;
 					switch (precision)
 					{
-						case (1):
+						case 1:
 							randomValue = RTC_Core.RND.RandomLong((long)RTC_Unispec.RTCSpec[RTCSPEC.NIGHTMARE_MINVALUE8BIT.ToString()], (long)RTC_Unispec.RTCSpec[RTCSPEC.NIGHTMARE_MAXVALUE8BIT.ToString()]);
 							break;
-						case (2):
+						case 2:
 							randomValue = RTC_Core.RND.RandomLong((long)RTC_Unispec.RTCSpec[RTCSPEC.NIGHTMARE_MINVALUE16BIT.ToString()], (long)RTC_Unispec.RTCSpec[RTCSPEC.NIGHTMARE_MAXVALUE16BIT.ToString()]);
 							break;
-						case (4):
+						case 4:
 							randomValue = RTC_Core.RND.RandomLong((long)RTC_Unispec.RTCSpec[RTCSPEC.NIGHTMARE_MINVALUE32BIT.ToString()], (long)RTC_Unispec.RTCSpec[RTCSPEC.NIGHTMARE_MAXVALUE32BIT.ToString()]);
 							break;
 					}
@@ -98,18 +98,20 @@ namespace RTC
 
 					return new BlastUnit(value, domain, safeAddress, precision, mdp.BigEndian, 0, 1);
 				}
-				//Tilt. Backup with a + or -
-				else
+				BlastUnit bu = new BlastUnit(StoreType.ONCE, StoreTime.PREEXECUTE, domain, safeAddress, domain, safeAddress, precision, mdp.BigEndian);
+				switch (type)
 				{
-					BlastUnit bu = new BlastUnit(StoreType.ONCE, StoreTime.PREEXECUTE, domain, safeAddress, domain, safeAddress, precision, mdp.BigEndian);
-					if (type == NightmareType.ADD)
+					case NightmareType.ADD:
 						bu.TiltValue = 1;
-					else if (type == NightmareType.SUBTRACT)
+						break;
+					case NightmareType.SUBTRACT:
 						bu.TiltValue = -1;
-					else
+						break;
+					default:
 						bu.TiltValue = 0;
-					return bu;
+						break;
 				}
+				return bu;
 			}
 			catch (Exception ex)
 			{

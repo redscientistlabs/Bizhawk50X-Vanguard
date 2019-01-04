@@ -25,35 +25,47 @@ namespace RTC
 
 			string Key = "RENDER_" + (RTC_Core.GetRandomKey());
 
-			if (lastType == RENDERTYPE.WAV)
-				RTC_Hooks.BIZHAWK_STARTRECORDAV("wave", RTC_Core.rtcDir + "\\RENDEROUTPUT\\" + Key + ".wav", true);
-			else if (lastType == RENDERTYPE.AVI)
+			switch (lastType)
 			{
-				try
-				{
-					RTC_Hooks.BIZHAWK_STARTRECORDAV("vfwavi", RTC_Core.rtcDir + "\\RENDEROUTPUT\\" + Key + ".avi", true);
-				}
-				catch (Exception ex)
-				{
-					throw new Exception("Rendering AVI Failed. \nIf you haven't already, you need to set a codec in bizhawk before starting an AVI Render. \nThe menu for config is at: File -> AVI/WAV -> Config.\n\n" + ex.ToString());
-				}
+				case RENDERTYPE.WAV:
+					RTC_Hooks.BIZHAWK_STARTRECORDAV("wave", RTC_Core.rtcDir + "\\RENDEROUTPUT\\" + Key + ".wav", true);
+					break;
+				case RENDERTYPE.AVI:
+					try
+					{
+						RTC_Hooks.BIZHAWK_STARTRECORDAV("vfwavi", RTC_Core.rtcDir + "\\RENDEROUTPUT\\" + Key + ".avi", true);
+					}
+					catch (Exception ex)
+					{
+						throw new Exception("Rendering AVI Failed. \nIf you haven't already, you need to set a codec in bizhawk before starting an AVI Render. \nThe menu for config is at: File -> AVI/WAV -> Config.\n\n" + ex.ToString());
+					}
+
+					break;
+				case RENDERTYPE.MPEG:
+					RTC_Hooks.BIZHAWK_STARTRECORDAV("ffmpeg", RTC_Core.rtcDir + "\\RENDEROUTPUT\\" + Key + ".mpg", true);
+					break;
 			}
-			else if (lastType == RENDERTYPE.MPEG)
-				RTC_Hooks.BIZHAWK_STARTRECORDAV("ffmpeg", RTC_Core.rtcDir + "\\RENDEROUTPUT\\" + Key + ".mpg", true);
 
 			RTC_Core.SendCommandToRTC(new RTC_Command(CommandType.REMOTE_RENDER_STARTED));
 		}
 
 		public static void setType(string _type)
 		{
-			if (_type == "NONE")
-				lastType = RENDERTYPE.NONE;
-			else if (_type == "WAV")
-				lastType = RENDERTYPE.WAV;
-			else if (_type == "AVI")
-				lastType = RENDERTYPE.AVI;
-			else if (_type == "MPEG")
-				lastType = RENDERTYPE.MPEG;
+			switch (_type)
+			{
+				case "NONE":
+					lastType = RENDERTYPE.NONE;
+					break;
+				case "WAV":
+					lastType = RENDERTYPE.WAV;
+					break;
+				case "AVI":
+					lastType = RENDERTYPE.AVI;
+					break;
+				case "MPEG":
+					lastType = RENDERTYPE.MPEG;
+					break;
+			}
 
 			RTC_Core.SendCommandToBizhawk(new RTC_Command(CommandType.REMOTE_RENDER_SETTYPE) { objectValue = lastType });
 		}

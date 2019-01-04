@@ -8,7 +8,7 @@ using System.Security.Cryptography;
 namespace RTC
 {
 	[Serializable]
-	public class RTC_Params
+	public static class RTC_Params
 	{
 		public static void LoadRTCColor()
 		{
@@ -67,7 +67,7 @@ namespace RTC
 		public static void AutoLoadVMDs()
 		{
 			string currentGame = (string)RTC_Core.SendCommandToBizhawk(new RTC_Command(CommandType.REMOTE_KEY_GETGAMENAME), true);
-			SetParam((currentGame.GetHashCode().ToString()));
+			SetParam(currentGame.GetHashCode().ToString());
 		}
 
 		public static void SetParam(string paramName, string data = null)

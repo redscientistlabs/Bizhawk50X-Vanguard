@@ -64,13 +64,13 @@ namespace RTC
 								long randomValue = -1;
 								switch (precision)
 								{
-									case (1):
+									case 1:
 										randomValue = RTC_Core.RND.RandomLong(MinValue8Bit, MaxValue8Bit);
 										break;
-									case (2):
+									case 2:
 										randomValue = RTC_Core.RND.RandomLong(MinValue16Bit, MaxValue16Bit);
 										break;
-									case (4):
+									case 4:
 										randomValue = RTC_Core.RND.RandomLong(MinValue32Bit, MaxValue32Bit);
 										break;
 								}
@@ -142,22 +142,20 @@ namespace RTC
 					{
 						//If it's store, we need to use the sourceaddress and sourcedomain
 						if (Source == BlastUnitSource.STORE && RTC_Filtering.LimiterPeekBytes(bu.SourceAddress,
-							    bu.SourceAddress + bu.Precision, bu.SourceDomain, LimiterListHash, mdp))
+								bu.SourceAddress + bu.Precision, bu.SourceDomain, LimiterListHash, mdp))
 							return null;
-						//If it's VALUE, we need to use the address and domain
-						else if (Source == BlastUnitSource.VALUE && RTC_Filtering.LimiterPeekBytes(bu.Address,
-							         bu.Address + bu.Precision, bu.Domain, LimiterListHash, mdp))
+						if (Source == BlastUnitSource.VALUE && RTC_Filtering.LimiterPeekBytes(bu.Address,
+															 bu.Address + bu.Precision, bu.Domain, LimiterListHash, mdp))
 							return null;
 					}
 					else
 					{
 						//If it's store, we need to use the sourceaddress and sourcedomain
 						if (Source == BlastUnitSource.STORE && !RTC_Filtering.LimiterPeekBytes(bu.SourceAddress,
-							    bu.SourceAddress + bu.Precision, bu.SourceDomain, LimiterListHash, mdp))
+								bu.SourceAddress + bu.Precision, bu.SourceDomain, LimiterListHash, mdp))
 							return null;
-						//If it's VALUE, we need to use the address and domain
-						else if (Source == BlastUnitSource.VALUE && !RTC_Filtering.LimiterPeekBytes(bu.Address,
-							         bu.Address + bu.Precision, bu.Domain, LimiterListHash, mdp))
+						if (Source == BlastUnitSource.VALUE && !RTC_Filtering.LimiterPeekBytes(bu.Address,
+															 bu.Address + bu.Precision, bu.Domain, LimiterListHash, mdp))
 							return null;
 					}
 				}
@@ -177,11 +175,8 @@ namespace RTC
 				return true;
 			if (!bigEndian)
 				return list.Contains(ByteArrayToString(bytes));
-			else
-			{
-				Array.Reverse(bytes);
-				return list.Contains(ByteArrayToString(bytes));
-			}
+			Array.Reverse(bytes);
+			return list.Contains(ByteArrayToString(bytes));
 		}
 
 		public static string ByteArrayToString(byte[] bytes)
