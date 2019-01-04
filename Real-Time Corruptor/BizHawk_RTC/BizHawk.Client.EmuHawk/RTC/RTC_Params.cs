@@ -7,7 +7,6 @@ using System.Security.Cryptography;
 
 namespace RTC
 {
-	[Serializable]
 	public static class RTC_Params
 	{
 		public static void LoadRTCColor()
