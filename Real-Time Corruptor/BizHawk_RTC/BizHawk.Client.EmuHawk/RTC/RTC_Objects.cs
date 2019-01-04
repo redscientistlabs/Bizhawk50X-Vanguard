@@ -1258,7 +1258,7 @@ namespace RTC
 						//If the length has changed (blast editor) we gotta recalc it
 						if (Working.ApplyValue == null)
 						{
-							Working.ApplyValue = RTC_Extensions.AddValueToByteArray(Value, TiltValue, mi.BigEndian);
+							Working.ApplyValue = RTC_Extensions.AddValueToByteArrayUnchecked(Value, TiltValue, mi.BigEndian);
 
 							//Flip it back
 							if (mi.BigEndian)
@@ -1298,7 +1298,7 @@ namespace RTC
 				value[i] = mi.PeekByte(SourceAddress + i);
 			}
 
-			value = RTC_Extensions.AddValueToByteArray(value, TiltValue, mi.BigEndian);
+			value = RTC_Extensions.AddValueToByteArrayUnchecked(value, TiltValue, mi.BigEndian);
 
 			Working.StoreData.Enqueue(value);
 		}
@@ -1367,7 +1367,7 @@ namespace RTC
 				}
 
 				byte[] temp = new byte[Precision];
-				byte[] outArr = RTC_Extensions.AddValueToByteArray(temp, randomValue, false); //We use this as it properly handles the length for us
+				byte[] outArr = RTC_Extensions.AddValueToByteArrayUnchecked(temp, randomValue, false); //We use this as it properly handles the length for us
 				Array.Reverse(outArr);
 				Value = outArr;
 			}

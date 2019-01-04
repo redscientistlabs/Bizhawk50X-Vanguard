@@ -9,6 +9,7 @@ using System.Numerics;
 using System.Text;
 using System.Windows.Forms;
 using BizHawk.Common.NumberExtensions;
+using Newtonsoft.Json.Serialization;
 
 /**
  * The DataGridView is bound to the blastlayer
@@ -516,7 +517,7 @@ namespace RTC
 					dgvBlastEditor.DataSource = currentSK.BlastLayer.Layer.Where(x => x.SourceAddress.ToString("X").ToUpper().Substring(0, tbFilter.Text.Length.Clamp(0, x.SourceAddress.ToString("X").Length)) == tbFilter.Text.ToUpper()).ToList();
 					break;
 				default: //Otherwise just use reflection and dig it out
-					dgvBlastEditor.DataSource = currentSK.BlastLayer.Layer.Where(x => x?.GetType()?.GetProperty(value) != null && (x.GetType()?.GetProperty(value)?.GetValue(x).ToString().ToUpper().Substring(0, tbFilter.Text.Length) == tbFilter.Text.ToUpper())).ToList();
+					dgvBlastEditor.DataSource = currentSK.BlastLayer.Layer.Where(x => x?.GetType()?.GetProperty(value)?.GetValue(x) != null && (x.GetType()?.GetProperty(value)?.GetValue(x).ToString().ToUpper().Substring(0, tbFilter.Text.Length) == tbFilter.Text.ToUpper())).ToList();
 					break;
 			}
 		}
@@ -668,6 +669,7 @@ namespace RTC
 			RefreshVisibleColumns();
 
 			PopulateFilterCombobox();
+			PopulateShiftCombobox();
 		}
 
 
@@ -682,9 +684,26 @@ namespace RTC
 			foreach (DataGridViewColumn column in dgvBlastEditor.Columns)
 			{
 				//Exclude button and checkbox
-				if (!(column is DataGridViewCheckBoxColumn || column is DataGridViewButtonColumn) && column.Visible)
+				if (!(column is DataGridViewCheckBoxColumn || column is DataGridViewButtonColumn))// && column.Visible)
 					cbFilterColumn.Items.Add(new ComboBoxItem<String>(column.HeaderText, column.Name));
 			}
+		}
+
+		private void PopulateShiftCombobox()
+		{
+			cbShiftBlastlayer.SelectedItem = null;
+			cbShiftBlastlayer.Items.Clear();
+
+			//Populate the filter ComboBox
+			cbShiftBlastlayer.DisplayMember = "Name";
+			cbShiftBlastlayer.ValueMember = "Value";
+
+			cbShiftBlastlayer.Items.Add(new ComboBoxItem<String>(buProperty.Address.ToString(), buProperty.Address.ToString()));
+			cbShiftBlastlayer.Items.Add(new ComboBoxItem<String>("Source Address", buProperty.SourceAddress.ToString()));
+			cbShiftBlastlayer.Items.Add(new ComboBoxItem<String>("Value", buProperty.ValueString.ToString()));
+			cbShiftBlastlayer.Items.Add(new ComboBoxItem<String>(buProperty.Lifetime.ToString(), buProperty.Lifetime.ToString()));
+			cbShiftBlastlayer.Items.Add(new ComboBoxItem<String>("Execute Frame", buProperty.ExecuteFrame.ToString()));
+			cbShiftBlastlayer.SelectedIndex = 0;
 		}
 
 
@@ -1294,15 +1313,78 @@ namespace RTC
 
 		private void DgvBlastEditor_RowsRemoved(object sender, DataGridViewRowsRemovedEventArgs e)
 		{
-			updateLayerSize();
+			UpdateLayerSize();
 		}
 
 		private void DgvBlastEditor_RowsAdded(object sender, DataGridViewRowsAddedEventArgs e)
 		{
-			updateLayerSize();
+			UpdateLayerSize();
 		}
 
-		private void updateLayerSize()
+
+		private void btnShiftBlastLayerDown_Click(object sender, EventArgs e)
+		{
+			ShiftBlastLayer(true);
+		}
+
+		private void btnShiftBlastLayerUp_Click(object sender, EventArgs e)
+		{
+			ShiftBlastLayer(false);
+		}
+
+
+		private void ShiftBlastLayer(bool shiftDown = false)
+		{
+				foreach (DataGridViewRow selected in dgvBlastEditor.SelectedRows.Cast<DataGridViewRow>()
+					.Where((item => ((BlastUnit)item.DataBoundItem).IsLocked == false)))
+				{
+					var cell = selected.Cells[((ComboBoxItem<String>)cbShiftBlastlayer.SelectedItem).Value];
+
+					//Can't use a switch statement because tostring is evaluated at runtime
+					if (cell.OwningColumn.Name == buProperty.SourceAddress.ToString() ||
+						cell.OwningColumn.Name == buProperty.Address.ToString() ||
+						cell.OwningColumn.Name == buProperty.Lifetime.ToString() ||
+						cell.OwningColumn.Name == buProperty.ExecuteFrame.ToString())
+					{
+						var u = (DataGridViewNumericUpDownCell)cell;
+						if (shiftDown)
+							{
+								if (((long)u.Value - updownShiftBlastLayerAmount.Value) >= 0)
+									u.Value = (long)u.Value - updownShiftBlastLayerAmount.Value;
+								else
+									u.Value = 0;
+
+						}
+						else
+						{
+							if (((long)u.Value + updownShiftBlastLayerAmount.Value) <= u.Maximum)
+								u.Value = (long)u.Value + updownShiftBlastLayerAmount.Value;
+							else
+								u.Value = u.Maximum;
+						}
+					}
+					else if (cell.OwningColumn.Name == buProperty.ValueString.ToString())
+					{
+						//Unlike addresses, we want values to roll over so we work on the underlying value and use existing code 
+						BlastUnit bu = (BlastUnit)cell.OwningRow.DataBoundItem;
+
+						if (shiftDown)
+							bu.Value = RTC_Extensions.AddValueToByteArrayUnchecked(bu.Value, new BigInteger(0 - updownShiftBlastLayerAmount.Value), bu.BigEndian);
+						else
+							bu.Value = RTC_Extensions.AddValueToByteArrayUnchecked(bu.Value, new BigInteger(updownShiftBlastLayerAmount.Value), bu.BigEndian);
+
+					}
+					else
+					{
+						throw new NotImplementedException("Invalid column type.");
+					}
+
+				}
+			dgvBlastEditor.Refresh();
+			UpdateBottom();
+		}
+
+		private void UpdateLayerSize()
 		{
 			lbBlastLayerSize.Text = "Size: " + currentSK.BlastLayer.Layer.Count;
 		}

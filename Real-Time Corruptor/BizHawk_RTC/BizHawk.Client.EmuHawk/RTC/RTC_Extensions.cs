@@ -407,7 +407,7 @@ namespace RTC
 			return 0;
 		}
 
-		public static byte[] AddValueToByteArray(byte[] originalValue, BigInteger addValue, bool isInputBigEndian)
+		public static byte[] AddValueToByteArrayUnchecked(byte[] originalValue, BigInteger addValue, bool isInputBigEndian)
 		{
 			byte[] value = (byte[])originalValue.Clone();
 
