@@ -181,7 +181,7 @@ namespace RTC
 				{
 					RTC_Core.StartSound();
 				}
-			})).Enabled = (File.Exists(RTC_Core.bizhawkDir + "\\backup_config.ini"));
+			})).Enabled = (File.Exists(RTC_Core.bizhawkDir + Path.DirectorySeparatorChar + "backup_config.ini"));
 
 			LoadMenuItems.Show(this, locate);
 		}

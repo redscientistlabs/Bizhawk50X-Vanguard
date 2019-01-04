@@ -71,7 +71,7 @@ namespace RTC
 				if (saveFileDialog1.ShowDialog() == DialogResult.OK)
 				{
 					sks.Filename = saveFileDialog1.FileName;
-					//sks.ShortFilename = sks.Filename.Substring(sks.Filename.LastIndexOf("\\") + 1, sks.Filename.Length - (sks.Filename.LastIndexOf("\\") + 1));
+					//sks.ShortFilename = sks.Filename.Substring(sks.Filename.LastIndexOf(Path.DirectorySeparatorChar) + 1, sks.Filename.Length - (sks.Filename.LastIndexOf(Path.DirectorySeparatorChar) + 1));
 					sks.ShortFilename = Path.GetFileName(sks.Filename);
 				}
 				else
@@ -130,16 +130,16 @@ namespace RTC
 				}
 
 			//clean temp folder
-			EmptyFolder("\\WORKING\\TEMP");
+			EmptyFolder(Path.DirectorySeparatorChar + "WORKING\\TEMP");
 
 			//populating temp folder with roms
 			foreach (string str in allRoms)
 			{
 				string rom = str;
-				//string romTempfilename = RTC_Core.workingDir + "\\TEMP\\" + (rom.Substring(rom.LastIndexOf("\\") + 1, rom.Length - (rom.LastIndexOf("\\") + 1)));
-				string romTempfilename = RTC_Core.workingDir + "\\TEMP\\" + Path.GetFileName(rom);
-				if (!rom.Contains("\\"))
-					rom = RTC_Core.workingDir + "\\SKS\\" + rom;
+				//string romTempfilename = RTC_Core.workingDir + Path.DirectorySeparatorChar + "TEMP" + Path.DirectorySeparatorChar + (rom.Substring(rom.LastIndexOf(Path.DirectorySeparatorChar) + 1, rom.Length - (rom.LastIndexOf(Path.DirectorySeparatorChar) + 1)));
+				string romTempfilename = RTC_Core.workingDir + Path.DirectorySeparatorChar + "TEMP" + Path.DirectorySeparatorChar + Path.GetFileName(rom);
+				if (!rom.Contains(Path.DirectorySeparatorChar))
+					rom = RTC_Core.workingDir + Path.DirectorySeparatorChar + "SKS" + Path.DirectorySeparatorChar + rom;
 
 				if (File.Exists(romTempfilename))
 				{
@@ -155,16 +155,16 @@ namespace RTC
 			{
 				string stateFilename = key.GameName + "." + key.ParentKey + ".timejump.State"; // get savestate name
 
-				File.Copy(RTC_Core.workingDir + "\\" + key.StateLocation + "\\" + stateFilename, RTC_Core.workingDir + "\\TEMP\\" + stateFilename, true); // copy savestates to temp folder
+				File.Copy(RTC_Core.workingDir + Path.DirectorySeparatorChar + key.StateLocation + Path.DirectorySeparatorChar + stateFilename, RTC_Core.workingDir + Path.DirectorySeparatorChar + "TEMP" + Path.DirectorySeparatorChar + stateFilename, true); // copy savestates to temp folder
 			}
 
-			if (File.Exists(RTC_Core.bizhawkDir + "\\config.ini"))
-				File.Copy(RTC_Core.bizhawkDir + "\\config.ini", RTC_Core.workingDir + "\\TEMP\\config.ini");
+			if (File.Exists(RTC_Core.bizhawkDir + Path.DirectorySeparatorChar + "config.ini"))
+				File.Copy(RTC_Core.bizhawkDir + Path.DirectorySeparatorChar + "config.ini", RTC_Core.workingDir + Path.DirectorySeparatorChar + "TEMP\\config.ini");
 
 			foreach (StashKey sk in sks.StashKeys)
 			{
 				sk.RomShortFilename = RTC_Extensions.getShortFilenameFromPath(sk.RomFilename);
-				sk.RomFilename = RTC_Core.workingDir + "\\SKS\\" + sk.RomShortFilename;
+				sk.RomFilename = RTC_Core.workingDir + Path.DirectorySeparatorChar + "SKS" + Path.DirectorySeparatorChar + sk.RomShortFilename;
 				sk.StateLocation = StashKeySavestateLocation.SKS;
 			}
 
@@ -174,11 +174,11 @@ namespace RTC
 			//Write them to a file
 			for (int i = 0; i < limiterLists?.Count; i++)
 			{
-				File.WriteAllLines(RTC_Core.workingDir + "\\TEMP\\" + i + ".limiter", limiterLists[i]);
+				File.WriteAllLines(RTC_Core.workingDir + Path.DirectorySeparatorChar + "TEMP" + Path.DirectorySeparatorChar + i + ".limiter", limiterLists[i]);
 			}
 
 			//Create stockpile.xml to temp folder from stockpile object
-			using (FileStream fs = File.Open(RTC_Core.workingDir + "\\TEMP\\stockpile.json", FileMode.OpenOrCreate))
+			using (FileStream fs = File.Open(RTC_Core.workingDir + Path.DirectorySeparatorChar + "TEMP\\stockpile.json", FileMode.OpenOrCreate))
 			{
 				JsonHelper.Serialize(sks, fs, Formatting.Indented);
 				fs.Close();
@@ -202,7 +202,7 @@ namespace RTC
 			if (!S.GET<RTC_GlitchHarvester_Form>().cbCompressStockpiles.Checked)
 				comp = CompressionLevel.NoCompression;
 
-			ZipFile.CreateFromDirectory(RTC_Core.workingDir + "\\TEMP\\", tempFilename, comp, false);
+			ZipFile.CreateFromDirectory(RTC_Core.workingDir + Path.DirectorySeparatorChar + "TEMP" + Path.DirectorySeparatorChar, tempFilename, comp, false);
 
 			try
 			{
@@ -218,10 +218,10 @@ namespace RTC
 			File.Move(tempFilename, sks.Filename);
 
 			//Move all the files from temp into SKS
-			EmptyFolder("\\WORKING\\SKS");
-			foreach (string file in Directory.GetFiles(RTC_Core.workingDir + "\\TEMP"))
-				File.Move(file, RTC_Core.workingDir + "\\SKS\\" + Path.GetFileName(file));
-			//File.Move(file, RTC_Core.workingDir + "\\SKS\\" + (file.Substring(file.LastIndexOf("\\") + 1, file.Length - (file.LastIndexOf("\\") + 1))));
+			EmptyFolder(Path.DirectorySeparatorChar + "WORKING\\SKS");
+			foreach (string file in Directory.GetFiles(RTC_Core.workingDir + Path.DirectorySeparatorChar + "TEMP"))
+				File.Move(file, RTC_Core.workingDir + Path.DirectorySeparatorChar + "SKS" + Path.DirectorySeparatorChar + Path.GetFileName(file));
+			//File.Move(file, RTC_Core.workingDir + Path.DirectorySeparatorChar + "SKS" + Path.DirectorySeparatorChar + (file.Substring(file.LastIndexOf(Path.DirectorySeparatorChar) + 1, file.Length - (file.LastIndexOf(Path.DirectorySeparatorChar) + 1))));
 
 			RTC_StockpileManager.CurrentStockpile = sks;
 
@@ -257,13 +257,13 @@ namespace RTC
 
 			Guid token = RTC_NetCore.HugeOperationStart();
 
-			Extract(Filename, "\\WORKING\\SKS", "stockpile.json");
+			Extract(Filename, Path.DirectorySeparatorChar + "WORKING\\SKS", "stockpile.json");
 
 			Stockpile sks;
 
 			try
 			{
-				using (FileStream fs = File.Open(RTC_Core.workingDir + "\\SKS\\stockpile.json", FileMode.OpenOrCreate))
+				using (FileStream fs = File.Open(RTC_Core.workingDir + Path.DirectorySeparatorChar + "SKS\\stockpile.json", FileMode.OpenOrCreate))
 				{
 					sks = JsonHelper.Deserialize<Stockpile>(fs);
 					fs.Close();
@@ -278,7 +278,7 @@ namespace RTC
 			}
 			
 			//Load the limiter lists into the dictionary
-			RTC_Filtering.LoadListsFromPaths(Directory.GetFiles(RTC_Core.workingDir + "\\SKS\\", "*.limiter"));
+			RTC_Filtering.LoadListsFromPaths(Directory.GetFiles(RTC_Core.workingDir + Path.DirectorySeparatorChar + "SKS" + Path.DirectorySeparatorChar, "*.limiter"));
 
 
 			RTC_StockpileManager.CurrentStockpile = sks;
@@ -286,7 +286,7 @@ namespace RTC
 			//Set up the correct 
 			foreach (StashKey t in sks.StashKeys)
 			{
-				t.RomFilename = RTC_Core.workingDir + "\\SKS\\" + t.RomShortFilename;
+				t.RomFilename = RTC_Core.workingDir + Path.DirectorySeparatorChar + "SKS" + Path.DirectorySeparatorChar + t.RomShortFilename;
 				t.StateLocation = StashKeySavestateLocation.SKS;
 			}
 
@@ -351,13 +351,13 @@ namespace RTC
 		{
 			try
 			{
-				foreach (string file in Directory.GetFiles(RTC_Core.rtcDir + $"\\{folder}"))
+				foreach (string file in Directory.GetFiles(RTC_Core.rtcDir + Path.DirectorySeparatorChar + $"{folder}"))
 				{
 					File.SetAttributes(file, FileAttributes.Normal);
 					File.Delete(file);
 				}
 
-				foreach (string dir in Directory.GetDirectories(RTC_Core.rtcDir + $"\\{folder}"))
+				foreach (string dir in Directory.GetDirectories(RTC_Core.rtcDir + Path.DirectorySeparatorChar + $"{folder}"))
 					RecursiveDelete(new DirectoryInfo(dir));
 			}
 			catch (Exception ex)
@@ -372,9 +372,9 @@ namespace RTC
 			try
 			{
 				EmptyFolder(folder);
-				ZipFile.ExtractToDirectory(filename, RTC_Core.rtcDir + $"\\{folder}\\");
+				ZipFile.ExtractToDirectory(filename, RTC_Core.rtcDir + Path.DirectorySeparatorChar + $"{folder}" + Path.DirectorySeparatorChar);
 
-				if (!File.Exists(RTC_Core.rtcDir + $"\\{folder}\\{masterFile}"))
+				if (!File.Exists(RTC_Core.rtcDir + Path.DirectorySeparatorChar + $"{folder}\\{masterFile}"))
 				{
 					MessageBox.Show("The file could not be read properly");
 
@@ -411,17 +411,17 @@ namespace RTC
 					return;
 			}
 
-			if (File.Exists(RTC_Core.bizhawkDir + "\\import_config.ini"))
-				File.Delete(RTC_Core.bizhawkDir + "\\import_config.ini");
-			File.Copy(Filename, RTC_Core.bizhawkDir + "\\import_config.ini");
+			if (File.Exists(RTC_Core.bizhawkDir + Path.DirectorySeparatorChar + "import_config.ini"))
+				File.Delete(RTC_Core.bizhawkDir + Path.DirectorySeparatorChar + "import_config.ini");
+			File.Copy(Filename, RTC_Core.bizhawkDir + Path.DirectorySeparatorChar + "import_config.ini");
 
-			if (File.Exists(RTC_Core.bizhawkDir + "\\stockpile_config.ini"))
-				File.Delete(RTC_Core.bizhawkDir + "\\stockpile_config.ini");
-			File.Copy(RTC_Core.bizhawkDir + "\\config.ini", RTC_Core.bizhawkDir + "\\stockpile_config.ini");
+			if (File.Exists(RTC_Core.bizhawkDir + Path.DirectorySeparatorChar + "stockpile_config.ini"))
+				File.Delete(RTC_Core.bizhawkDir + Path.DirectorySeparatorChar + "stockpile_config.ini");
+			File.Copy(RTC_Core.bizhawkDir + Path.DirectorySeparatorChar + "config.ini", RTC_Core.bizhawkDir + Path.DirectorySeparatorChar + "stockpile_config.ini");
 
 			RTC_Core.SendCommandToBizhawk(new RTC_Command(CommandType.REMOTE_IMPORTKEYBINDS), true);
 
-			Process.Start(RTC_Core.bizhawkDir + $"\\StockpileConfig{(RTC_Core.isStandalone ? "DETACHED" : "ATTACHED")}.bat");
+			Process.Start(RTC_Core.bizhawkDir + Path.DirectorySeparatorChar + $"StockpileConfig{(RTC_Core.isStandalone ? "DETACHED" : "ATTACHED")}.bat");
 		}
 
 		public static void LoadBizhawkConfigFromStockpile(string Filename = null)
@@ -443,45 +443,45 @@ namespace RTC
 					return;
 			}
 
-			if (File.Exists(RTC_Core.bizhawkDir + "\\backup_config.ini"))
+			if (File.Exists(RTC_Core.bizhawkDir + Path.DirectorySeparatorChar + "backup_config.ini"))
 			{
 				if (MessageBox.Show("Do you want to overwrite the previous Config Backup with the current Bizhawk Config?", "WARNING", MessageBoxButtons.YesNo) == DialogResult.Yes)
 				{
-					File.Delete(RTC_Core.bizhawkDir + "\\backup_config.ini");
-					File.Copy((RTC_Core.bizhawkDir + "\\config.ini"), (RTC_Core.bizhawkDir + "\\backup_config.ini"));
+					File.Delete(RTC_Core.bizhawkDir + Path.DirectorySeparatorChar + "backup_config.ini");
+					File.Copy((RTC_Core.bizhawkDir + Path.DirectorySeparatorChar + "config.ini"), (RTC_Core.bizhawkDir + Path.DirectorySeparatorChar + "backup_config.ini"));
 				}
 			}
 			else
-				File.Copy((RTC_Core.bizhawkDir + "\\config.ini"), (RTC_Core.bizhawkDir + "\\backup_config.ini"));
+				File.Copy((RTC_Core.bizhawkDir + Path.DirectorySeparatorChar + "config.ini"), (RTC_Core.bizhawkDir + Path.DirectorySeparatorChar + "backup_config.ini"));
 
-			Extract(Filename, "\\WORKING\\TEMP", "stockpile.json");
+			Extract(Filename, Path.DirectorySeparatorChar + "WORKING\\TEMP", "stockpile.json");
 
-			if (File.Exists(RTC_Core.bizhawkDir + "\\stockpile_config.ini"))
-				File.Delete(RTC_Core.bizhawkDir + "\\stockpile_config.ini");
-			File.Copy((RTC_Core.workingDir + "\\SKS\\config.ini"), (RTC_Core.bizhawkDir + "\\stockpile_config.ini"));
+			if (File.Exists(RTC_Core.bizhawkDir + Path.DirectorySeparatorChar + "stockpile_config.ini"))
+				File.Delete(RTC_Core.bizhawkDir + Path.DirectorySeparatorChar + "stockpile_config.ini");
+			File.Copy((RTC_Core.workingDir + Path.DirectorySeparatorChar + "SKS\\config.ini"), (RTC_Core.bizhawkDir + Path.DirectorySeparatorChar + "stockpile_config.ini"));
 
 			RTC_Core.SendCommandToBizhawk(new RTC_Command(CommandType.REMOTE_MERGECONFIG), true);
 
-			Process.Start(RTC_Core.bizhawkDir + $"\\StockpileConfig{(RTC_Core.isStandalone ? "DETACHED" : "ATTACHED")}.bat");
+			Process.Start(RTC_Core.bizhawkDir + Path.DirectorySeparatorChar + $"StockpileConfig{(RTC_Core.isStandalone ? "DETACHED" : "ATTACHED")}.bat");
 		}
 
 		public static void MergeBizhawkConfig_NET()
 		{
 
-			RTC_Hooks.BIZHAWK_MERGECONFIGINI(RTC_Core.bizhawkDir + "\\backup_config.ini", RTC_Core.bizhawkDir + "\\stockpile_config.ini");
+			RTC_Hooks.BIZHAWK_MERGECONFIGINI(RTC_Core.bizhawkDir + Path.DirectorySeparatorChar + "backup_config.ini", RTC_Core.bizhawkDir + Path.DirectorySeparatorChar + "stockpile_config.ini");
 
 		}
 
 		public static void ImportBizhawkKeybinds_NET()
 		{
 
-			RTC_Hooks.BIZHAWK_IMPORTCONFIGINI(RTC_Core.bizhawkDir + "\\import_config.ini", RTC_Core.bizhawkDir + "\\stockpile_config.ini");
+			RTC_Hooks.BIZHAWK_IMPORTCONFIGINI(RTC_Core.bizhawkDir + Path.DirectorySeparatorChar + "import_config.ini", RTC_Core.bizhawkDir + Path.DirectorySeparatorChar + "stockpile_config.ini");
 			
 		}
 
 		public static void RestoreBizhawkConfig()
 		{
-			Process.Start(RTC_Core.bizhawkDir + $"\\RestoreConfig{(RTC_Core.isStandalone ? "DETACHED" : "ATTACHED")}.bat");
+			Process.Start(RTC_Core.bizhawkDir + Path.DirectorySeparatorChar + $"RestoreConfig{(RTC_Core.isStandalone ? "DETACHED" : "ATTACHED")}.bat");
 		}
 
 		public static void Import()
@@ -492,7 +492,7 @@ namespace RTC
 		public static void Import(string filename, bool corruptCloud)
 		{
 			//clean temp folder
-			EmptyFolder("\\WORKING\\TEMP");
+			EmptyFolder(Path.DirectorySeparatorChar + "WORKING\\TEMP");
 
 			if (filename == null)
 			{
@@ -517,13 +517,13 @@ namespace RTC
 				return;
 			}
 
-			ZipFile.ExtractToDirectory(filename, RTC_Core.workingDir + $"\\TEMP\\");
+			ZipFile.ExtractToDirectory(filename, RTC_Core.workingDir + Path.DirectorySeparatorChar + $"TEMP" + Path.DirectorySeparatorChar);
 
-			if (!File.Exists(RTC_Core.workingDir + "\\TEMP\\stockpile.json"))
+			if (!File.Exists(RTC_Core.workingDir + Path.DirectorySeparatorChar + "TEMP\\stockpile.json"))
 			{
 				MessageBox.Show("The file could not be read properly");
 
-				EmptyFolder("\\WORKING\\TEMP");
+				EmptyFolder(Path.DirectorySeparatorChar + "WORKING\\TEMP");
 
 				return;
 			}
@@ -533,7 +533,7 @@ namespace RTC
 
 			try
 			{
-				using (FileStream fs = File.Open(RTC_Core.workingDir + "\\TEMP\\stockpile.json", FileMode.OpenOrCreate))
+				using (FileStream fs = File.Open(RTC_Core.workingDir + Path.DirectorySeparatorChar + "TEMP\\stockpile.json", FileMode.OpenOrCreate))
 				{
 					JsonSerializer js = new JsonSerializer();
 					sks = JsonHelper.Deserialize<Stockpile>(fs);
@@ -551,18 +551,18 @@ namespace RTC
 			{
 
 				sk.RomShortFilename = RTC_Extensions.getShortFilenameFromPath(sk.RomFilename);
-				sk.RomFilename = RTC_Core.workingDir + "\\SKS\\" + sk.RomShortFilename;
+				sk.RomFilename = RTC_Core.workingDir + Path.DirectorySeparatorChar + "SKS" + Path.DirectorySeparatorChar + sk.RomShortFilename;
 
 				sk.StateLocation = StashKeySavestateLocation.SKS;
 			}
 
-			foreach (string file in Directory.GetFiles(RTC_Core.workingDir + "\\TEMP\\"))
+			foreach (string file in Directory.GetFiles(RTC_Core.workingDir + Path.DirectorySeparatorChar + "TEMP" + Path.DirectorySeparatorChar))
 			{
 				if (!file.Contains(".sk"))
 				{
 					try
 					{
-						string dest = RTC_Core.workingDir + "\\SKS\\" + Path.GetFileName(file);
+						string dest = RTC_Core.workingDir + Path.DirectorySeparatorChar + "SKS" + Path.DirectorySeparatorChar + Path.GetFileName(file);
 
 						if (!File.Exists(dest))
 						{
@@ -577,7 +577,7 @@ namespace RTC
 				}
 
 			}
-			EmptyFolder("\\WORKING\\TEMP");
+			EmptyFolder(Path.DirectorySeparatorChar + "WORKING\\TEMP");
 
 			//fill list controls
 
@@ -712,7 +712,7 @@ namespace RTC
 
 		public string GetSavestateFullPath()
 		{
-			return RTC_Core.workingDir + "\\" + this.StateLocation.ToString() + "\\" + this.GameName + "." + this.ParentKey + ".timejump.State"; // get savestate name
+			return RTC_Core.workingDir + Path.DirectorySeparatorChar + this.StateLocation.ToString() + Path.DirectorySeparatorChar + this.GameName + "." + this.ParentKey + ".timejump.State"; // get savestate name
 		}
 
 	}

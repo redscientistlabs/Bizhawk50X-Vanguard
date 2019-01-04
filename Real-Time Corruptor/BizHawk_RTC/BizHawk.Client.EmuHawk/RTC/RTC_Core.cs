@@ -31,11 +31,11 @@ namespace RTC
 		//Directories
 		public static string bizhawkDir = Directory.GetCurrentDirectory();
 
-		public static string rtcDir = bizhawkDir + "\\RTC\\";
-		public static string workingDir = rtcDir + "\\WORKING\\";
-		public static string assetsDir = rtcDir + "\\ASSETS\\";
-		public static string paramsDir = rtcDir + "\\PARAMS\\";
-		public static string listsDir = rtcDir + "\\LISTS\\";
+		public static string rtcDir = bizhawkDir + Path.DirectorySeparatorChar + "RTC" + Path.DirectorySeparatorChar;
+		public static string workingDir = rtcDir + Path.DirectorySeparatorChar + "WORKING" + Path.DirectorySeparatorChar;
+		public static string assetsDir = rtcDir + Path.DirectorySeparatorChar + "ASSETS" + Path.DirectorySeparatorChar;
+		public static string paramsDir = rtcDir + Path.DirectorySeparatorChar + "PARAMS" + Path.DirectorySeparatorChar;
+		public static string listsDir = rtcDir + Path.DirectorySeparatorChar + "LISTS" + Path.DirectorySeparatorChar;
 
 		//Engine Values
 		public static BindingList<ComboBoxItem<String>> LimiterListBindingSource = new BindingList<ComboBoxItem<String>>();
@@ -109,7 +109,7 @@ namespace RTC
 			//Clean out the working folders
 			if (!RTC_Hooks.isRemoteRTC && !(bool)RTCSpec[RTCSPEC.CORE_DONTCLEANSAVESTATESONQUIT.ToString()])
 			{
-				Stockpile.EmptyFolder("\\WORKING\\");
+				Stockpile.EmptyFolder(Path.DirectorySeparatorChar + "WORKING" + Path.DirectorySeparatorChar);
 			}
 
 			Application.Exit();
@@ -118,7 +118,7 @@ namespace RTC
 
 		public static void DownloadProblematicProcesses()
 		{
-			string LocalPath = RTC_Core.paramsDir + "\\BADPROCESSES";
+			string LocalPath = RTC_Core.paramsDir + Path.DirectorySeparatorChar + "BADPROCESSES";
 			string json = "";
 			try
 			{
@@ -282,29 +282,29 @@ namespace RTC
 			if (!Directory.Exists(RTC_Core.workingDir))
 				Directory.CreateDirectory(RTC_Core.workingDir);
 
-			if (!Directory.Exists(RTC_Core.workingDir + "\\TEMP\\"))
-				Directory.CreateDirectory(RTC_Core.workingDir + "\\TEMP\\");
+			if (!Directory.Exists(RTC_Core.workingDir + Path.DirectorySeparatorChar + "TEMP" + Path.DirectorySeparatorChar))
+				Directory.CreateDirectory(RTC_Core.workingDir + Path.DirectorySeparatorChar + "TEMP" + Path.DirectorySeparatorChar);
 
-			if (!Directory.Exists(RTC_Core.workingDir + "\\SKS\\"))
-				Directory.CreateDirectory(RTC_Core.workingDir + "\\SKS\\");
+			if (!Directory.Exists(RTC_Core.workingDir + Path.DirectorySeparatorChar + "SKS" + Path.DirectorySeparatorChar))
+				Directory.CreateDirectory(RTC_Core.workingDir + Path.DirectorySeparatorChar + "SKS" + Path.DirectorySeparatorChar);
 
-			if (!Directory.Exists(RTC_Core.workingDir + "\\SSK\\"))
-				Directory.CreateDirectory(RTC_Core.workingDir + "\\SSK\\");
+			if (!Directory.Exists(RTC_Core.workingDir + Path.DirectorySeparatorChar + "SSK" + Path.DirectorySeparatorChar))
+				Directory.CreateDirectory(RTC_Core.workingDir + Path.DirectorySeparatorChar + "SSK" + Path.DirectorySeparatorChar);
 
-			if (!Directory.Exists(RTC_Core.workingDir + "\\SESSION\\"))
-				Directory.CreateDirectory(RTC_Core.workingDir + "\\SESSION\\");
+			if (!Directory.Exists(RTC_Core.workingDir + Path.DirectorySeparatorChar + "SESSION" + Path.DirectorySeparatorChar))
+				Directory.CreateDirectory(RTC_Core.workingDir + Path.DirectorySeparatorChar + "SESSION" + Path.DirectorySeparatorChar);
 
-			if (!Directory.Exists(RTC_Core.workingDir + "\\MEMORYDUMPS\\"))
-				Directory.CreateDirectory(RTC_Core.workingDir + "\\MEMORYDUMPS\\");
+			if (!Directory.Exists(RTC_Core.workingDir + Path.DirectorySeparatorChar + "MEMORYDUMPS" + Path.DirectorySeparatorChar))
+				Directory.CreateDirectory(RTC_Core.workingDir + Path.DirectorySeparatorChar + "MEMORYDUMPS" + Path.DirectorySeparatorChar);
 
-			if (!Directory.Exists(RTC_Core.assetsDir + "\\CRASHSOUNDS\\"))
-				Directory.CreateDirectory(RTC_Core.assetsDir + "\\CRASHSOUNDS\\");
+			if (!Directory.Exists(RTC_Core.assetsDir + Path.DirectorySeparatorChar + "CRASHSOUNDS" + Path.DirectorySeparatorChar))
+				Directory.CreateDirectory(RTC_Core.assetsDir + Path.DirectorySeparatorChar + "CRASHSOUNDS" + Path.DirectorySeparatorChar);
 
-			if (!Directory.Exists(RTC_Core.rtcDir + "\\PARAMS\\"))
-				Directory.CreateDirectory(RTC_Core.rtcDir + "\\PARAMS\\");
+			if (!Directory.Exists(RTC_Core.rtcDir + Path.DirectorySeparatorChar + "PARAMS" + Path.DirectorySeparatorChar))
+				Directory.CreateDirectory(RTC_Core.rtcDir + Path.DirectorySeparatorChar + "PARAMS" + Path.DirectorySeparatorChar);
 
-			if (!Directory.Exists(RTC_Core.rtcDir + "\\LISTS\\"))
-				Directory.CreateDirectory(RTC_Core.rtcDir + "\\LISTS\\");
+			if (!Directory.Exists(RTC_Core.rtcDir + Path.DirectorySeparatorChar + "LISTS" + Path.DirectorySeparatorChar))
+				Directory.CreateDirectory(RTC_Core.rtcDir + Path.DirectorySeparatorChar + "LISTS" + Path.DirectorySeparatorChar);
 
 
 			//Loading RTC Params. Load them in standalone or attached
@@ -494,7 +494,7 @@ namespace RTC
 			RTC_Hooks.BIZHAWK_MAINFORM_FOCUS();
 
 			//Force create bizhawk config file if it doesn't exist
-			if (!File.Exists(RTC_Core.bizhawkDir + "\\config.ini"))
+			if (!File.Exists(RTC_Core.bizhawkDir + Path.DirectorySeparatorChar + "config.ini"))
 				RTC_Hooks.BIZHAWK_SAVE_CONFIG();
 
 			//Fetch NetCore aggressiveness
@@ -931,7 +931,7 @@ namespace RTC
 			string prefix = RTC_Hooks.BIZHAWK_GET_SAVESTATEPREFIX();
 			prefix = prefix.Substring(prefix.LastIndexOf('\\') + 1);
 
-			var path = RTC_Core.workingDir + "\\SESSION\\" + prefix + "." + quickSlotName + ".State";
+			var path = RTC_Core.workingDir + Path.DirectorySeparatorChar + "SESSION" + Path.DirectorySeparatorChar + prefix + "." + quickSlotName + ".State";
 
 			var file = new FileInfo(path);
 			if (file.Directory != null && file.Directory.Exists == false)

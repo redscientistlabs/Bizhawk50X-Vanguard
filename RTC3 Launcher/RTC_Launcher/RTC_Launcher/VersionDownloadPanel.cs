@@ -17,7 +17,7 @@ namespace RTC_Launcher
         public VersionDownloadPanel()
         {
             InitializeComponent();
-            cbDevBuids.Checked = File.Exists(MainForm.launcherDir + "\\PACKAGES\\dev.txt");
+            cbDevBuids.Checked = File.Exists(MainForm.launcherDir + Path.DirectorySeparatorChar + "PACKAGES\\dev.txt");
 
             if (cbDevBuids.Checked)
                 lbOnlineVersions.BackColor = Color.FromArgb(32, 16, 16);
@@ -73,11 +73,11 @@ namespace RTC_Launcher
 
             string version = lbOnlineVersions.SelectedItem.ToString();
 
-            if (Directory.Exists((MainForm.launcherDir + "\\VERSIONS\\" + version)))
+            if (Directory.Exists((MainForm.launcherDir + Path.DirectorySeparatorChar + "VERSIONS" + Path.DirectorySeparatorChar + version)))
             {
                 if (MessageBox.Show($"The version {version} is already installed.\nThis will DELETE version {version} and redownload it.\n\nWould you like to continue?", "WARNING", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
                 {
-                    Directory.Delete(MainForm.launcherDir + "\\VERSIONS\\" + version, true);
+                    Directory.Delete(MainForm.launcherDir + Path.DirectorySeparatorChar + "VERSIONS" + Path.DirectorySeparatorChar + version, true);
                 }
                 else
                 {
@@ -86,8 +86,8 @@ namespace RTC_Launcher
             }
 
             string downloadUrl = $"{MainForm.webRessourceDomain}/rtc/releases/" + version + ".zip";
-            string downloadedFile = MainForm.launcherDir + "\\PACKAGES\\" + version + ".zip";
-            string extractDirectory = MainForm.launcherDir + "\\VERSIONS\\" + version;
+            string downloadedFile = MainForm.launcherDir + Path.DirectorySeparatorChar + "PACKAGES" + Path.DirectorySeparatorChar + version + ".zip";
+            string extractDirectory = MainForm.launcherDir + Path.DirectorySeparatorChar + "VERSIONS" + Path.DirectorySeparatorChar + version;
 
             MainForm.mf.DownloadFile(downloadUrl, downloadedFile, extractDirectory);
 
@@ -103,21 +103,21 @@ namespace RTC_Launcher
 
 
             devCounter++;
-            bool devOn = File.Exists(MainForm.launcherDir + "\\PACKAGES\\dev.txt");
+            bool devOn = File.Exists(MainForm.launcherDir + Path.DirectorySeparatorChar + "PACKAGES\\dev.txt");
 
             if (devCounter >= 20 || devOn)
             {
-                if (!devOn && MessageBox.Show((File.Exists(MainForm.launcherDir + "\\PACKAGES\\dev.txt") ? "Do you want to stay connected to the Dev Server?" : "Do you want to connect to the Dev Server?"), "Dev mode activation", MessageBoxButtons.YesNo, MessageBoxIcon.Asterisk) == DialogResult.Yes)
+                if (!devOn && MessageBox.Show((File.Exists(MainForm.launcherDir + Path.DirectorySeparatorChar + "PACKAGES\\dev.txt") ? "Do you want to stay connected to the Dev Server?" : "Do you want to connect to the Dev Server?"), "Dev mode activation", MessageBoxButtons.YesNo, MessageBoxIcon.Asterisk) == DialogResult.Yes)
                 {
-                    File.WriteAllText(MainForm.launcherDir + "\\PACKAGES\\dev.txt", "DEV MODE ACTIVATED");
+                    File.WriteAllText(MainForm.launcherDir + Path.DirectorySeparatorChar + "PACKAGES\\dev.txt", "DEV MODE ACTIVATED");
                     Application.Restart();
                 }
                 else
                 {
                     if (devOn)
                     {
-                        if (File.Exists(MainForm.launcherDir + "\\PACKAGES\\dev.txt"))
-                            File.Delete(MainForm.launcherDir + "\\PACKAGES\\dev.txt");
+                        if (File.Exists(MainForm.launcherDir + Path.DirectorySeparatorChar + "PACKAGES\\dev.txt"))
+                            File.Delete(MainForm.launcherDir + Path.DirectorySeparatorChar + "PACKAGES\\dev.txt");
 
                         Application.Restart();
                     }

@@ -23,7 +23,7 @@ namespace RTC
 
 			S.GET<RTC_SettingsNetCore_Form>().cbNetCoreCommandTimeout.SelectedIndex = 0;
 
-			if (File.Exists(RTC_Core.bizhawkDir + "\\WGH\\WindowsGlitchHarvester.exe"))
+			if (File.Exists(RTC_Core.bizhawkDir + Path.DirectorySeparatorChar + "WGH\\WindowsGlitchHarvester.exe"))
 			{
 				lbWindowsGlitchHarvester.Visible = true;
 				pnWindowsGlitchHarvester.Visible = true;
@@ -57,15 +57,15 @@ namespace RTC
 
 		private void btnStartEmuhawkAttached_Click(object sender, EventArgs e)
 		{
-			Process.Start(RTC_Core.bizhawkDir + "\\RESTARTATTACHEDRTC.bat");
+			Process.Start(RTC_Core.bizhawkDir + Path.DirectorySeparatorChar + "RESTARTATTACHEDRTC.bat");
 		}
 
 		private void btnStartWGH_Click(object sender, EventArgs e)
 		{
 			ProcessStartInfo psi =
-				new ProcessStartInfo(RTC_Core.bizhawkDir + "\\WGH\\WindowsGlitchHarvester.exe")
+				new ProcessStartInfo(RTC_Core.bizhawkDir + Path.DirectorySeparatorChar + "WGH\\WindowsGlitchHarvester.exe")
 				{
-					WorkingDirectory = RTC_Core.bizhawkDir + "\\WGH"
+					WorkingDirectory = RTC_Core.bizhawkDir + Path.DirectorySeparatorChar + "WGH"
 				};
 			Process.Start(psi);
 		}

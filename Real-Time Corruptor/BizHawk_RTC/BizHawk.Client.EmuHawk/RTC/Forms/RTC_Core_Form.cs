@@ -74,7 +74,7 @@ namespace RTC
 
 			if (!RTC_Params.IsParamSet("DISCLAIMER_READ"))
 			{
-				MessageBox.Show(File.ReadAllText(RTC_Core.rtcDir + "\\LICENSES\\DISCLAIMER.TXT").Replace("[ver]", RTC_Core.RtcVersion), "RTC", MessageBoxButtons.OK, MessageBoxIcon.Information);
+				MessageBox.Show(File.ReadAllText(RTC_Core.rtcDir + Path.DirectorySeparatorChar + "LICENSES\\DISCLAIMER.TXT").Replace("[ver]", RTC_Core.RtcVersion), "RTC", MessageBoxButtons.OK, MessageBoxIcon.Information);
 				RTC_Params.SetParam("DISCLAIMER_READ");
 			}
 

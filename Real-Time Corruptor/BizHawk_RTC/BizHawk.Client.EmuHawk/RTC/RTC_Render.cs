@@ -1,4 +1,5 @@
 ﻿using System;
+using System.IO;
 
 namespace RTC
 {
@@ -28,12 +29,12 @@ namespace RTC
 			switch (lastType)
 			{
 				case RENDERTYPE.WAV:
-					RTC_Hooks.BIZHAWK_STARTRECORDAV("wave", RTC_Core.rtcDir + "\\RENDEROUTPUT\\" + Key + ".wav", true);
+					RTC_Hooks.BIZHAWK_STARTRECORDAV("wave", RTC_Core.rtcDir + Path.DirectorySeparatorChar + "RENDEROUTPUT" + Path.DirectorySeparatorChar + Key + ".wav", true);
 					break;
 				case RENDERTYPE.AVI:
 					try
 					{
-						RTC_Hooks.BIZHAWK_STARTRECORDAV("vfwavi", RTC_Core.rtcDir + "\\RENDEROUTPUT\\" + Key + ".avi", true);
+						RTC_Hooks.BIZHAWK_STARTRECORDAV("vfwavi", RTC_Core.rtcDir + Path.DirectorySeparatorChar + "RENDEROUTPUT" + Path.DirectorySeparatorChar + Key + ".avi", true);
 					}
 					catch (Exception ex)
 					{
@@ -42,7 +43,7 @@ namespace RTC
 
 					break;
 				case RENDERTYPE.MPEG:
-					RTC_Hooks.BIZHAWK_STARTRECORDAV("ffmpeg", RTC_Core.rtcDir + "\\RENDEROUTPUT\\" + Key + ".mpg", true);
+					RTC_Hooks.BIZHAWK_STARTRECORDAV("ffmpeg", RTC_Core.rtcDir + Path.DirectorySeparatorChar + "RENDEROUTPUT" + Path.DirectorySeparatorChar + Key + ".mpg", true);
 					break;
 			}
 

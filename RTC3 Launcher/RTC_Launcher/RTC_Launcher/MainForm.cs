@@ -46,23 +46,23 @@ namespace RTC_Launcher
             mf = this;
 
             //creating default folders
-            if (!Directory.Exists(launcherDir + "\\VERSIONS\\"))
-                Directory.CreateDirectory(launcherDir + "\\VERSIONS\\");
+            if (!Directory.Exists(launcherDir + Path.DirectorySeparatorChar + "VERSIONS" + Path.DirectorySeparatorChar))
+                Directory.CreateDirectory(launcherDir + Path.DirectorySeparatorChar + "VERSIONS" + Path.DirectorySeparatorChar);
 
-            if (!Directory.Exists(launcherDir + "\\PACKAGES\\"))
-                Directory.CreateDirectory(launcherDir + "\\PACKAGES\\");
+            if (!Directory.Exists(launcherDir + Path.DirectorySeparatorChar + "PACKAGES" + Path.DirectorySeparatorChar))
+                Directory.CreateDirectory(launcherDir + Path.DirectorySeparatorChar + "PACKAGES" + Path.DirectorySeparatorChar);
 
-            if (File.Exists(launcherDir + "\\PACKAGES\\dev.txt"))
+            if (File.Exists(launcherDir + Path.DirectorySeparatorChar + "PACKAGES\\dev.txt"))
                 webRessourceDomain = "http://cc.r5x.cc";
 
 
 
             //Will trigger after an update from the original launcher
-            if (Directory.Exists(launcherDir + "\\VERSIONS\\" + "Update_Launcher"))
+            if (Directory.Exists(launcherDir + Path.DirectorySeparatorChar + "VERSIONS" + Path.DirectorySeparatorChar + "Update_Launcher"))
             {
-                Directory.Delete(launcherDir + "\\VERSIONS\\" + "Update_Launcher", true);
-                if (File.Exists(launcherDir + "\\PACKAGES\\" + "Update_Launcher.zip"))
-                    File.Delete(launcherDir + "\\PACKAGES\\" + "Update_Launcher.zip");
+                Directory.Delete(launcherDir + Path.DirectorySeparatorChar + "VERSIONS" + Path.DirectorySeparatorChar + "Update_Launcher", true);
+                if (File.Exists(launcherDir + Path.DirectorySeparatorChar + "PACKAGES" + Path.DirectorySeparatorChar + "Update_Launcher.zip"))
+                    File.Delete(launcherDir + Path.DirectorySeparatorChar + "PACKAGES" + Path.DirectorySeparatorChar + "Update_Launcher.zip");
             }
 
         }
@@ -154,7 +154,7 @@ namespace RTC_Launcher
         public void RefreshInstalledVersions()
         {
             lbVersions.Items.Clear();
-            List<string> versions = new List<string>(Directory.GetDirectories(launcherDir + "\\VERSIONS\\"));
+            List<string> versions = new List<string>(Directory.GetDirectories(launcherDir + Path.DirectorySeparatorChar + "VERSIONS" + Path.DirectorySeparatorChar));
             lbVersions.Items.AddRange(versions.OrderByDescending(x => x).Select(it => getFilenameFromFullFilename(it)).ToArray<object>());
             SelectedVersion = null;
 
@@ -198,7 +198,7 @@ namespace RTC_Launcher
                 SelectedVersion = lbVersions.SelectedItem.ToString();
             }
 
-            if (Directory.Exists(MainForm.launcherDir + "\\VERSIONS\\" + SelectedVersion + "\\Launcher"))
+            if (Directory.Exists(MainForm.launcherDir + Path.DirectorySeparatorChar + "VERSIONS" + Path.DirectorySeparatorChar + SelectedVersion + Path.DirectorySeparatorChar + "Launcher"))
                 MainForm.lpForm = new NewLaunchPanel();
             else
                 MainForm.lpForm = new OldLaunchPanel();
@@ -241,15 +241,15 @@ namespace RTC_Launcher
                 File.Delete(downloadedFile);
 
 
-            if(File.Exists(extractDirectory + "\\Launcher\\ver.ini"))
+            if(File.Exists(extractDirectory + Path.DirectorySeparatorChar + "Launcher\\ver.ini"))
             {
-                int newVer = Convert.ToInt32(File.ReadAllText(extractDirectory + "\\Launcher\\ver.ini"));
+                int newVer = Convert.ToInt32(File.ReadAllText(extractDirectory + Path.DirectorySeparatorChar + "Launcher\\ver.ini"));
                 if(newVer > launcherVer)
                 {
                     var result = MessageBox.Show("The downloaded package contains a new launcher update.\n\nDo you want to update the Launcher?", "Launcher update", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
                     if(result == DialogResult.Yes)
                     {
-                        string batchLocation = extractDirectory + "\\Launcher\\update.bat";
+                        string batchLocation = extractDirectory + Path.DirectorySeparatorChar + "Launcher\\update.bat";
                         ProcessStartInfo psi = new ProcessStartInfo();
                         psi.FileName = Path.GetFileName(batchLocation);
                         psi.WorkingDirectory = Path.GetDirectoryName(batchLocation);
@@ -287,11 +287,11 @@ namespace RTC_Launcher
 
             string version = lbVersions.SelectedItem.ToString();
 
-            if (File.Exists(launcherDir + "\\PACKAGES\\" + version + ".zip"))
-                File.Delete(launcherDir + "\\PACKAGES\\" + version + ".zip");
+            if (File.Exists(launcherDir + Path.DirectorySeparatorChar + "PACKAGES" + Path.DirectorySeparatorChar + version + ".zip"))
+                File.Delete(launcherDir + Path.DirectorySeparatorChar + "PACKAGES" + Path.DirectorySeparatorChar + version + ".zip");
 
-            if (Directory.Exists((launcherDir + "\\VERSIONS\\" + version)))
-                Directory.Delete(launcherDir + "\\VERSIONS\\" + version, true);
+            if (Directory.Exists((launcherDir + Path.DirectorySeparatorChar + "VERSIONS" + Path.DirectorySeparatorChar + version)))
+                Directory.Delete(launcherDir + Path.DirectorySeparatorChar + "VERSIONS" + Path.DirectorySeparatorChar + version, true);
 
             RefreshInterface();
 
@@ -310,8 +310,8 @@ namespace RTC_Launcher
 
             string version = lbVersions.SelectedItem.ToString();
 
-            if (Directory.Exists((launcherDir + "\\VERSIONS\\" + version)))
-                Process.Start(launcherDir + "\\VERSIONS\\" + version);
+            if (Directory.Exists((launcherDir + Path.DirectorySeparatorChar + "VERSIONS" + Path.DirectorySeparatorChar + version)))
+                Process.Start(launcherDir + Path.DirectorySeparatorChar + "VERSIONS" + Path.DirectorySeparatorChar + version);
 
 
         }

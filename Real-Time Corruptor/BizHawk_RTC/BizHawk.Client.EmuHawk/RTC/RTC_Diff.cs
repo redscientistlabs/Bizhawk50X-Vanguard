@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections;
+using System.IO;
 using System.Text.RegularExpressions;
 
 namespace RTC
@@ -336,7 +337,7 @@ namespace RTC
 
 				if (ignoreSpace)
 				{
-					s = Regex.Replace(s, "\\s+", " ");            // TODO: optimization: faster blank removal.
+					s = Regex.Replace(s, Path.DirectorySeparatorChar + "s+", " ");            // TODO: optimization: faster blank removal.
 				}
 
 				if (ignoreCase)

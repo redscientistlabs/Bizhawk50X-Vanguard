@@ -672,7 +672,7 @@ namespace RTC
 				{
 					RTC_Core.StartSound();
 				}
-			})).Enabled = (File.Exists(RTC_Core.bizhawkDir + "\\backup_config.ini"));
+			})).Enabled = (File.Exists(RTC_Core.bizhawkDir + Path.DirectorySeparatorChar + "backup_config.ini"));
 
 			loadMenuItems.Show(this, locate);
 		}
@@ -1107,14 +1107,14 @@ namespace RTC
 				if (saveFileDialog1.ShowDialog() == DialogResult.OK)
 				{
 					Filename = saveFileDialog1.FileName;
-					//ShortFilename = Filename.Substring(Filename.LastIndexOf("\\") + 1, Filename.Length - (Filename.LastIndexOf("\\") + 1));
+					//ShortFilename = Filename.Substring(Filename.LastIndexOf(Path.DirectorySeparatorChar) + 1, Filename.Length - (Filename.LastIndexOf(Path.DirectorySeparatorChar) + 1));
 					ShortFilename = Path.GetFileName(Filename);
 				}
 				else
 					return;
 
 				//clean temp folder
-				Stockpile.EmptyFolder("\\WORKING\\TEMP");
+				Stockpile.EmptyFolder(Path.DirectorySeparatorChar + "WORKING\\TEMP");
 
 				for (int i = 1; i < 41; i++)
 				{
@@ -1125,14 +1125,14 @@ namespace RTC
 
 					string statefilename = key.GameName + "." + key.ParentKey + ".timejump.State"; // get savestate name
 					
-					if (File.Exists(RTC_Core.workingDir + "\\" + key.StateLocation.ToString() + "\\" + statefilename))
-						File.Copy(RTC_Core.workingDir + "\\" + key.StateLocation.ToString() + "\\" +  statefilename, RTC_Core.workingDir + "\\TEMP\\" + statefilename); // copy savestates to temp folder
+					if (File.Exists(RTC_Core.workingDir + Path.DirectorySeparatorChar + key.StateLocation.ToString() + Path.DirectorySeparatorChar + statefilename))
+						File.Copy(RTC_Core.workingDir + Path.DirectorySeparatorChar + key.StateLocation.ToString() + Path.DirectorySeparatorChar +  statefilename, RTC_Core.workingDir + Path.DirectorySeparatorChar + "TEMP" + Path.DirectorySeparatorChar + statefilename); // copy savestates to temp folder
 					else
 					{
-						MessageBox.Show("Couldn't find savestate " + RTC_Core.workingDir + "\\" +
-						                key.StateLocation.ToString() + "\\" + statefilename +
+						MessageBox.Show("Couldn't find savestate " + RTC_Core.workingDir + Path.DirectorySeparatorChar +
+						                key.StateLocation.ToString() + Path.DirectorySeparatorChar + statefilename +
 						                "!\n\n. This is savestate index " + i + 1 + ".\nAborting save");
-						Stockpile.EmptyFolder("\\WORKING\\TEMP");
+						Stockpile.EmptyFolder(Path.DirectorySeparatorChar + "WORKING\\TEMP");
 						return;
 					}
 
@@ -1149,19 +1149,19 @@ namespace RTC
 				}
 
 				//Create keys.json
-				using (FileStream fs = File.Open(RTC_Core.workingDir + "\\TEMP\\keys.json", FileMode.OpenOrCreate))
+				using (FileStream fs = File.Open(RTC_Core.workingDir + Path.DirectorySeparatorChar + "TEMP\\keys.json", FileMode.OpenOrCreate))
 				{
 					JsonHelper.Serialize(ssk, fs, Formatting.Indented);
 					fs.Close();
 				}
 
 				//7z the temp folder to destination filename
-				//string[] stringargs = { "-c", Filename, RTC_Core.rtcDir + "\\TEMP4\\" };
+				//string[] stringargs = { "-c", Filename, RTC_Core.rtcDir + Path.DirectorySeparatorChar + "TEMP4" + Path.DirectorySeparatorChar };
 				//FastZipProgram.Exec(stringargs);
 
 				string tempFilename = Filename + ".temp";
 
-				System.IO.Compression.ZipFile.CreateFromDirectory(RTC_Core.workingDir + "\\TEMP\\", tempFilename, System.IO.Compression.CompressionLevel.Fastest, false);
+				System.IO.Compression.ZipFile.CreateFromDirectory(RTC_Core.workingDir + Path.DirectorySeparatorChar + "TEMP" + Path.DirectorySeparatorChar, tempFilename, System.IO.Compression.CompressionLevel.Fastest, false);
 
 				if (File.Exists(Filename))
 					File.Delete(Filename);
@@ -1169,10 +1169,10 @@ namespace RTC
 				File.Move(tempFilename, Filename);
 
 				//Move all the files from temp into SSK
-				Stockpile.EmptyFolder("\\WORKING\\SSK");
-				foreach (string file in Directory.GetFiles(RTC_Core.workingDir + "\\TEMP"))
-					//File.Move(file, RTC_Core.workingDir + "\\SSK\\" + (file.Substring(file.LastIndexOf("\\") + 1, file.Length - (file.LastIndexOf("\\") + 1))));
-					File.Move(file, RTC_Core.workingDir + "\\SSK\\" + Path.GetFileName(file));
+				Stockpile.EmptyFolder(Path.DirectorySeparatorChar + "WORKING\\SSK");
+				foreach (string file in Directory.GetFiles(RTC_Core.workingDir + Path.DirectorySeparatorChar + "TEMP"))
+					//File.Move(file, RTC_Core.workingDir + Path.DirectorySeparatorChar + "SSK" + Path.DirectorySeparatorChar + (file.Substring(file.LastIndexOf(Path.DirectorySeparatorChar) + 1, file.Length - (file.LastIndexOf(Path.DirectorySeparatorChar) + 1))));
+					File.Move(file, RTC_Core.workingDir + Path.DirectorySeparatorChar + "SSK" + Path.DirectorySeparatorChar + Path.GetFileName(file));
 			}
 			catch(Exception ex)
 			{
@@ -1211,11 +1211,11 @@ namespace RTC
 
 			try
 			{
-				Stockpile.EmptyFolder("\\WORKING\\TEMP");
-				if (!Stockpile.Extract(filename, "\\WORKING\\SSK", "keys.json"))
+				Stockpile.EmptyFolder(Path.DirectorySeparatorChar + "WORKING\\TEMP");
+				if (!Stockpile.Extract(filename, Path.DirectorySeparatorChar + "WORKING\\SSK", "keys.json"))
 					return;
 
-				using (FileStream fs = File.Open(RTC_Core.workingDir + "\\SSK\\keys.json", FileMode.OpenOrCreate))
+				using (FileStream fs = File.Open(RTC_Core.workingDir + Path.DirectorySeparatorChar + "SSK\\keys.json", FileMode.OpenOrCreate))
 				{
 
 					ssk = JsonHelper.Deserialize<SaveStateKeys>(fs);
@@ -1237,8 +1237,8 @@ namespace RTC
 					continue;
 
 				string statefilename = key.GameName + "." + key.ParentKey + ".timejump.State"; // get savestate name
-				string newStatePath = RTC_Core.workingDir + "\\" + key.StateLocation + "\\" +  statefilename;
-				//string shortRomFilename = key.RomFilename.Substring(key.RomFilename.LastIndexOf("\\") + 1);
+				string newStatePath = RTC_Core.workingDir + Path.DirectorySeparatorChar + key.StateLocation + Path.DirectorySeparatorChar +  statefilename;
+				//string shortRomFilename = key.RomFilename.Substring(key.RomFilename.LastIndexOf(Path.DirectorySeparatorChar) + 1);
 				string shortRomFilename = Path.GetFileName(key.RomFilename);
 
 				key.StateFilename = newStatePath;
@@ -1470,7 +1470,7 @@ namespace RTC
 
 		private void btnOpenRenderFolder_Click(object sender, EventArgs e)
 		{
-			Process.Start(RTC_Core.rtcDir + "\\RENDEROUTPUT\\");
+			Process.Start(RTC_Core.rtcDir + Path.DirectorySeparatorChar + "RENDEROUTPUT" + Path.DirectorySeparatorChar);
 		}
 
 		private void btnRender_Click(object sender, EventArgs e)

@@ -25,9 +25,9 @@ namespace RTC_Launcher
             lbSelectedVersion.Visible = false;
 
             version = MainForm.SelectedVersion;
-            launcherAssetLocation = MainForm.launcherDir + "\\VERSIONS\\" + version + "\\Launcher";
-            launcherConfLocation = launcherAssetLocation + "\\launcher.ini";
-            batchFilesLocation = MainForm.launcherDir + "\\VERSIONS\\" + version;
+            launcherAssetLocation = MainForm.launcherDir + Path.DirectorySeparatorChar + "VERSIONS" + Path.DirectorySeparatorChar + version + Path.DirectorySeparatorChar + "Launcher";
+            launcherConfLocation = launcherAssetLocation + Path.DirectorySeparatorChar + "launcher.ini";
+            batchFilesLocation = MainForm.launcherDir + Path.DirectorySeparatorChar + "VERSIONS" + Path.DirectorySeparatorChar + version;
         }
 
         public void DisplayVersion()
@@ -55,10 +55,10 @@ namespace RTC_Launcher
             foreach (string line in launcherConf)
             {
                 string[] lineItems = line.Split('|');
-                string imageLocation = launcherAssetLocation + "\\" + lineItems[0];
-                string batchLocation = batchFilesLocation + "\\" + lineItems[1];
+                string imageLocation = launcherAssetLocation + Path.DirectorySeparatorChar + "" + lineItems[0];
+                string batchLocation = batchFilesLocation + Path.DirectorySeparatorChar + "" + lineItems[1];
                 string folderName = lineItems[2];
-                string folderCheck = batchFilesLocation + "\\" + folderName;
+                string folderCheck = batchFilesLocation + Path.DirectorySeparatorChar + "" + folderName;
                 string downloadLocation = lineItems[3];
 
                 Button newButton = new Button();
@@ -170,7 +170,7 @@ namespace RTC_Launcher
         {
             try
             {
-                string targetFolder = MainForm.launcherDir + "\\VERSIONS\\" + version + "\\" + AddonFolderName;
+                string targetFolder = MainForm.launcherDir + Path.DirectorySeparatorChar + "VERSIONS" + Path.DirectorySeparatorChar + version + Path.DirectorySeparatorChar + "" + AddonFolderName;
 
                 if (Directory.Exists(targetFolder))
                     Directory.Delete(targetFolder, true);
@@ -200,11 +200,11 @@ namespace RTC_Launcher
             string line = (string)currentButton.Tag;
             string[] lineItems = line.Split('|');
 
-            string imageLocation = launcherAssetLocation + "\\" + lineItems[0];
+            string imageLocation = launcherAssetLocation + Path.DirectorySeparatorChar + "" + lineItems[0];
             string batchName = lineItems[1];
-            string batchLocation = batchFilesLocation + "\\" + batchName;
+            string batchLocation = batchFilesLocation + Path.DirectorySeparatorChar + "" + batchName;
             string folderName = lineItems[2];
-            string folderLocation = batchFilesLocation + "\\" + folderName;
+            string folderLocation = batchFilesLocation + Path.DirectorySeparatorChar + "" + folderName;
             string downloadVersion = lineItems[3];
 
             if(!Directory.Exists(folderLocation))
@@ -221,7 +221,7 @@ namespace RTC_Launcher
                 {
 
                     string downloadUrl = $"{MainForm.webRessourceDomain}/rtc/addons/" + downloadVersion + ".zip";
-                    string downloadedFile = MainForm.launcherDir + "\\PACKAGES\\" + downloadVersion + ".zip";
+                    string downloadedFile = MainForm.launcherDir + Path.DirectorySeparatorChar + "PACKAGES" + Path.DirectorySeparatorChar + downloadVersion + ".zip";
                     string extractDirectory = folderLocation;
 
                     MainForm.mf.DownloadFile(downloadUrl, downloadedFile, extractDirectory);

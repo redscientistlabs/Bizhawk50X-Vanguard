@@ -571,7 +571,7 @@ namespace RTC
 
 			byte[] dump = mi.GetDump();
 
-			File.WriteAllBytes(RTC_Core.rtcDir + "\\MEMORYDUMPS\\" + key + ".dmp", dump.ToArray());
+			File.WriteAllBytes(RTC_Core.rtcDir + Path.DirectorySeparatorChar + "MEMORYDUMPS" + Path.DirectorySeparatorChar + key + ".dmp", dump.ToArray());
 			RTC_NetCore.HugeOperationEnd(token);
 		}
 

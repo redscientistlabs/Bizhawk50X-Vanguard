@@ -77,26 +77,26 @@ namespace RTC
 					SetParam(paramName, "");
 			}
 			else
-				File.WriteAllText(RTC_Core.paramsDir + "\\" + paramName, data);
+				File.WriteAllText(RTC_Core.paramsDir + Path.DirectorySeparatorChar + paramName, data);
 		}
 
 		public static void RemoveParam(string paramName)
 		{
 			if (IsParamSet(paramName))
-				File.Delete(RTC_Core.paramsDir + "\\" + paramName);
+				File.Delete(RTC_Core.paramsDir + Path.DirectorySeparatorChar + paramName);
 		}
 
 		public static string ReadParam(string paramName)
 		{
 			if (IsParamSet(paramName))
-				return File.ReadAllText(RTC_Core.paramsDir + "\\" + paramName);
+				return File.ReadAllText(RTC_Core.paramsDir + Path.DirectorySeparatorChar + paramName);
 
 			return null;
 		}
 
 		public static bool IsParamSet(string paramName)
 		{
-			return File.Exists(RTC_Core.paramsDir + "\\" + paramName);
+			return File.Exists(RTC_Core.paramsDir + Path.DirectorySeparatorChar + paramName);
 		}
 	}
 

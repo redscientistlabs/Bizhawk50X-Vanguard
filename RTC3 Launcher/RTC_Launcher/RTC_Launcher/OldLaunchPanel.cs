@@ -45,7 +45,7 @@ namespace RTC_Launcher
         {
             string version = MainForm.SelectedVersion;
 
-            List<string> batchFiles = new List<string>(Directory.GetFiles(MainForm.launcherDir + "\\VERSIONS\\" + version));
+            List<string> batchFiles = new List<string>(Directory.GetFiles(MainForm.launcherDir + Path.DirectorySeparatorChar + "VERSIONS" + Path.DirectorySeparatorChar + version));
             List<string> batchFileNames = new List<string>(batchFiles.Select(it => MainForm.mf.removeExtension(MainForm.mf.getFilenameFromFullFilename(it))));
 
             bool isDefaultStartPresent = false;
@@ -59,7 +59,7 @@ namespace RTC_Launcher
             string startfilename = null;
 
             foreach (string file in batchFiles)
-                if (file.ToUpper().Contains("\\START.BAT"))
+                if (file.ToUpper().Contains(Path.DirectorySeparatorChar + "START.BAT"))
                 {
                     startfilename = file;
                     break;
@@ -102,7 +102,7 @@ namespace RTC_Launcher
             string fullPath;
 
             if (currentButton.Text == "START")
-                fullPath = MainForm.launcherDir + "\\VERSIONS\\" + version + "\\START.bat";
+                fullPath = MainForm.launcherDir + Path.DirectorySeparatorChar + "VERSIONS" + Path.DirectorySeparatorChar + version + Path.DirectorySeparatorChar + "START.bat";
             else
                 fullPath = (currentButton.Tag as string).Split(';')[1];
 

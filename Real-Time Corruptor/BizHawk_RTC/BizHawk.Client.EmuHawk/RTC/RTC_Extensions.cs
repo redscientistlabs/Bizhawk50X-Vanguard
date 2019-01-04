@@ -690,8 +690,8 @@ namespace RTC
 			// >>> Will contain the character \ at the end
 
 			//returns the filename from the full path
-			if (longFilenamePath.Contains("\\"))
-				return longFilenamePath.Substring(longFilenamePath.LastIndexOf("\\") + 1);
+			if (longFilenamePath.Contains(Path.DirectorySeparatorChar))
+				return longFilenamePath.Substring(longFilenamePath.LastIndexOf(Path.DirectorySeparatorChar) + 1);
 			return longFilenamePath;
 		}
 
@@ -709,8 +709,8 @@ namespace RTC
 			// >>> Will contain the character \ at the end
 
 			//returns the filename from the full path
-			if (longFilenamePath.Contains("\\"))
-				return longFilenamePath.Substring(0, longFilenamePath.LastIndexOf("\\") + 1);
+			if (longFilenamePath.Contains(Path.DirectorySeparatorChar))
+				return longFilenamePath.Substring(0, longFilenamePath.LastIndexOf(Path.DirectorySeparatorChar) + 1);
 			return longFilenamePath;
 		}
 

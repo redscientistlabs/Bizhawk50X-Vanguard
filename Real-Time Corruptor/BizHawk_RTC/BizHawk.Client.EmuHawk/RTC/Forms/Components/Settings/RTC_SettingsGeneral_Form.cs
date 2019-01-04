@@ -35,7 +35,7 @@ namespace RTC
 			{
 				RTC_Core.StopSound();
 
-				if (RTC_Core.bizhawkDir.Contains("\\VERSIONS\\"))
+				if (RTC_Core.bizhawkDir.Contains(Path.DirectorySeparatorChar + "VERSIONS" + Path.DirectorySeparatorChar))
 				{
 					var bizhawkFolder = new DirectoryInfo(RTC_Core.bizhawkDir);
 					var LauncherVersFolder = bizhawkFolder.Parent.Parent;
@@ -50,7 +50,7 @@ namespace RTC
 						, $"Import config from previous version ?", MessageBoxButtons.YesNo, MessageBoxIcon.Information);
 
 					if (dr == DialogResult.Yes)
-						Stockpile.LoadBizhawkKeyBindsFromIni(versions[1].FullName + "\\BizHawk\\config.ini");
+						Stockpile.LoadBizhawkKeyBindsFromIni(versions[1].FullName + Path.DirectorySeparatorChar + "BizHawk\\config.ini");
 					else
 						Stockpile.LoadBizhawkKeyBindsFromIni();
 				}

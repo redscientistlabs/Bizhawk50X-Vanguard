@@ -367,7 +367,7 @@ namespace RTC
 
 			RTC_Core.StartSound();
 
-			string theoreticalSaveStateFilename = RTC_Core.workingDir + "\\" + stateLocation.ToString() + "\\" + gameName + "." + key + ".timejump.State";
+			string theoreticalSaveStateFilename = RTC_Core.workingDir + Path.DirectorySeparatorChar + stateLocation.ToString() + Path.DirectorySeparatorChar + gameName + "." + key + ".timejump.State";
 
 			if (File.Exists(theoreticalSaveStateFilename))
 			{
@@ -420,7 +420,7 @@ namespace RTC
 			if (statePath == null)
 				return null;
 
-			//sk.StateShortFilename = statePath.Substring(statePath.LastIndexOf("\\") + 1, statePath.Length - (statePath.LastIndexOf("\\") + 1));
+			//sk.StateShortFilename = statePath.Substring(statePath.LastIndexOf(Path.DirectorySeparatorChar) + 1, statePath.Length - (statePath.LastIndexOf(Path.DirectorySeparatorChar) + 1));
 			sk.StateShortFilename = Path.GetFileName(statePath);
 			sk.StateFilename = statePath;
 

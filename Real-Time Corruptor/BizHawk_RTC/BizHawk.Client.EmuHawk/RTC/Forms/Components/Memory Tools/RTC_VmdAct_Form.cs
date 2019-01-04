@@ -102,7 +102,7 @@ namespace RTC
 				if (saveFileDialog1.ShowDialog() == DialogResult.OK)
 				{
 					currentFilename = saveFileDialog1.FileName;
-					//sks.ShortFilename = sks.Filename.Substring(sks.Filename.LastIndexOf("\\") + 1, sks.Filename.Length - (sks.Filename.LastIndexOf("\\") + 1));
+					//sks.ShortFilename = sks.Filename.Substring(sks.Filename.LastIndexOf(Path.DirectorySeparatorChar) + 1, sks.Filename.Length - (sks.Filename.LastIndexOf(Path.DirectorySeparatorChar) + 1));
 				}
 				else
 				{
@@ -135,7 +135,7 @@ namespace RTC
 
 		public byte[] GetDumpFromFile(string key)
 		{
-			return File.ReadAllBytes(RTC_Core.workingDir + "\\MEMORYDUMPS\\" + key + ".dmp");
+			return File.ReadAllBytes(RTC_Core.workingDir + Path.DirectorySeparatorChar + "MEMORYDUMPS" + Path.DirectorySeparatorChar + key + ".dmp");
 		}
 
 		public long[] CapActiveTable(long[] tempActiveTable)
@@ -306,7 +306,7 @@ namespace RTC
 
 			ActiveTableDumps = new List<string>();
 
-			foreach (string file in Directory.GetFiles(RTC_Core.workingDir + "\\MEMORYDUMPS"))
+			foreach (string file in Directory.GetFiles(RTC_Core.workingDir + Path.DirectorySeparatorChar + "MEMORYDUMPS"))
 				File.Delete(file);
 
 			currentFilename = null;
