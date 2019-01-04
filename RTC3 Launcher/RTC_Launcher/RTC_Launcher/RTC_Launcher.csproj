@@ -84,25 +84,62 @@
     <Compile Include="MainForm.Designer.cs">
       <DependentUpon>MainForm.cs</DependentUpon>
     </Compile>
+    <Compile Include="NewLaunchPanel.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="NewLaunchPanel.Designer.cs">
+      <DependentUpon>NewLaunchPanel.cs</DependentUpon>
+    </Compile>
+    <Compile Include="OldLaunchPanel.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="OldLaunchPanel.Designer.cs">
+      <DependentUpon>OldLaunchPanel.cs</DependentUpon>
+    </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Properties\Resources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
     <Compile Include="RTC_Extensions.cs" />
+    <Compile Include="VersionDownloadPanel.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="VersionDownloadPanel.Designer.cs">
+      <DependentUpon>VersionDownloadPanel.cs</DependentUpon>
+    </Compile>
+    <Compile Include="VesionSelectPanel.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="VesionSelectPanel.Designer.cs">
+      <DependentUpon>VesionSelectPanel.cs</DependentUpon>
+    </Compile>
     <EmbeddedResource Include="DownloadForm.resx">
       <DependentUpon>DownloadForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="MainForm.resx">
       <DependentUpon>MainForm.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="NewLaunchPanel.resx">
+      <DependentUpon>NewLaunchPanel.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="OldLaunchPanel.resx">
+      <DependentUpon>OldLaunchPanel.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
-      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
       <SubType>Designer</SubType>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
-    <Compile Include="Properties\Resources.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DependentUpon>Resources.resx</DependentUpon>
-      <DesignTime>True</DesignTime>
-    </Compile>
+    <EmbeddedResource Include="VersionDownloadPanel.resx">
+      <DependentUpon>VersionDownloadPanel.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="VesionSelectPanel.resx">
+      <DependentUpon>VesionSelectPanel.cs</DependentUpon>
+    </EmbeddedResource>
     <None Include="app.config" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
@@ -115,11 +152,12 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <None Include="Resources\LauncherSkull.png" />
-  </ItemGroup>
-  <ItemGroup>
     <Content Include="gem2.ico" />
     <Content Include="LauncherIcon.ico" />
+    <None Include="Resources\corruptwiki.png" />
+    <None Include="Resources\discord.png" />
+    <None Include="Resources\LauncherBack.png" />
+    <None Include="Resources\notificationBadge.png" />
     <Content Include="RTC_Launcher_Icon.ico" />
   </ItemGroup>
   <ItemGroup>

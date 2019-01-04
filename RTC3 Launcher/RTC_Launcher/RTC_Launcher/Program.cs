@@ -5,7 +5,7 @@ using System.Windows.Forms;
 
 namespace RTC_Launcher
 {
-    static class Program
+    static class Programd
     {
         /// <summary>
         /// The main entry point for the application.

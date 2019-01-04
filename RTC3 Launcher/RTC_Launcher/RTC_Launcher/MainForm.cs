@@ -9,62 +9,92 @@ using System.Linq;
 using System.Net;
 using System.Text;
 using System.Windows.Forms;
+using System.Runtime.InteropServices;
 
 namespace RTC_Launcher
 {
     public partial class MainForm : Form
     {
+        public const int WM_NCLBUTTONDOWN = 0xA1;
+        public const int HT_CAPTION = 0x2;
+
+        [DllImportAttribute("user32.dll")]
+        public static extern int SendMessage(IntPtr hWnd, int Msg, int wParam, int lParam);
+        [DllImportAttribute("user32.dll")]
+        public static extern bool ReleaseCapture();
+
+
+
         public static string launcherDir = Directory.GetCurrentDirectory();
         public static string webRessourceDomain = "http://redscientist.com/software";
+
+        public static MainForm mf = null;
+        public static VersionDownloadPanel vdppForm = null;
         public static DownloadForm dForm = null;
+        public static Form lpForm = null;
+
+        public static int launcherVer = 4;
+
 
         public static int devCounter = 0;
-
-        public Button[] buttons;
+        internal static string SelectedVersion = null;
 
         public MainForm()
         {
             InitializeComponent();
 
-            buttons = new Button[]
-            {
-            btnBatchfile01,
-            btnBatchfile02,
-            btnBatchfile03,
-            btnBatchfile04,
-            btnBatchfile05,
-            btnBatchfile06,
-            btnBatchfile07,
-            btnBatchfile08,
-            btnBatchfile09,
-            btnBatchfile10,
-            };
+            mf = this;
 
+            //creating default folders
             if (!Directory.Exists(launcherDir + "\\VERSIONS\\"))
                 Directory.CreateDirectory(launcherDir + "\\VERSIONS\\");
 
             if (!Directory.Exists(launcherDir + "\\PACKAGES\\"))
                 Directory.CreateDirectory(launcherDir + "\\PACKAGES\\");
 
-            if(File.Exists(launcherDir + "\\PACKAGES\\dev.txt"))
+            if (File.Exists(launcherDir + "\\PACKAGES\\dev.txt"))
                 webRessourceDomain = "http://cc.r5x.cc";
 
+
+
+            //Will trigger after an update from the original launcher
+            if (Directory.Exists(launcherDir + "\\VERSIONS\\" + "Update_Launcher"))
+            {
+                Directory.Delete(launcherDir + "\\VERSIONS\\" + "Update_Launcher", true);
+                if (File.Exists(launcherDir + "\\PACKAGES\\" + "Update_Launcher.zip"))
+                    File.Delete(launcherDir + "\\PACKAGES\\" + "Update_Launcher.zip");
+            }
+
+        }
+
+        public void DownloadFile(string downloadURL, string downloadedFile, string extractDirectory)
+        {
+            MainForm.mf.clearAnchorRight();
+
+            MainForm.dForm = new DownloadForm(downloadURL, downloadedFile, extractDirectory);
+
+            MainForm.mf.pnLeftSide.Visible = false;
+
+
+            MainForm.dForm.TopLevel = false;
+            MainForm.dForm.Location = new Point(0, 0);
+            MainForm.dForm.Dock = DockStyle.Fill;
+            MainForm.mf.Controls.Add(MainForm.dForm);
+            MainForm.dForm.Show();
+            MainForm.dForm.Focus();
+            MainForm.dForm.BringToFront();
         }
 
         private void MainForm_Load(object sender, EventArgs e)
         {
+
             RefreshInstalledVersions();
+
 
             try
             {
-                var versionFile = GetFileViaHttp($"{webRessourceDomain}/rtc/releases/version.php");
-                string str = Encoding.UTF8.GetString(versionFile);
-                List<string> onlineVersions = new List<string>(str.Split('|'));
 
-                lbOnlineVersions.Items.Clear();
-                lbOnlineVersions.Items.AddRange(onlineVersions.OrderByDescending(x => x).Select(it => it.Replace(".zip","")).ToArray());
-
-                var motdFile = GetFileViaHttp($"{webRessourceDomain}/rtc/releases/MOTD.txt");
+                var motdFile = GetFileViaHttp($"{MainForm.webRessourceDomain}/rtc/releases/MOTD.txt");
                 string motd = Encoding.UTF8.GetString(motdFile);
 
                 lbMOTD.Text = motd;
@@ -77,7 +107,7 @@ namespace RTC_Launcher
 
             lbMOTD.Visible = true;
 
-            SetRTCColor(Color.FromArgb(120,180,155));
+            SetRTCColor(Color.FromArgb(120, 180, 155));
 
         }
 
@@ -126,9 +156,15 @@ namespace RTC_Launcher
             lbVersions.Items.Clear();
             List<string> versions = new List<string>(Directory.GetDirectories(launcherDir + "\\VERSIONS\\"));
             lbVersions.Items.AddRange(versions.OrderByDescending(x => x).Select(it => getFilenameFromFullFilename(it)).ToArray<object>());
+            SelectedVersion = null;
+
+            string latestVersion = VersionDownloadPanel.getLatestVersion();
+            pbNewVersionNotification.Visible = !versions.Select(it => it.Substring(it.LastIndexOf('\\') + 1)).Contains(latestVersion);
+
+
         }
 
-        public byte[] GetFileViaHttp(string url)
+        public static byte[] GetFileViaHttp(string url)
         {
             using (WebClient client = new WebClient())
             {
@@ -146,163 +182,101 @@ namespace RTC_Launcher
             return filename.Substring(0, filename.LastIndexOf('.'));
         }
 
-        public void DisplayVersion(string version)
-        {
-            List<string> batchFiles = new List<string>(Directory.GetFiles(launcherDir + "\\VERSIONS\\" + version));
-            List<string> batchFileNames = new List<string>(batchFiles.Select(it => removeExtension(getFilenameFromFullFilename(it))));
-
-            bool isDefaultStartPresent = false;
-
-            if(batchFileNames.Contains("START"))
-            {
-                batchFileNames.Remove("START");
-                isDefaultStartPresent = true;
-            }
-
-            string startfilename = null;
-
-            foreach(string file in batchFiles)
-                if(file.ToUpper().Contains("\\START.BAT"))
-                {
-                    startfilename = file;
-                    break;
-                }
-
-            if(startfilename != null)
-                batchFiles.Remove(startfilename);
-
-            btnStart.Visible = isDefaultStartPresent;
-
-            foreach (Button btn in buttons)
-                btn.Visible = false;
-
-            for(int i = 0; i < batchFileNames.Count; i++)
-            {
-                buttons[i].Visible = true;
-                buttons[i].Text = batchFileNames[i];
-                buttons[i].Tag = (buttons[i].Tag as string) + ";" + batchFiles[i];
-            }
-
-            lbSelectedVersion.Text = version;
-            lbSelectedVersion.Visible = true;
-            pnVersionBatchFiles.Visible = true;
-
-            new object();
-        }
 
         private void lbVersions_SelectedIndexChanged(object sender, EventArgs e)
         {
-            lbSelectedVersion.Visible = false;
-            pnVersionBatchFiles.Visible = false;
+            clearAnchorRight();
+
 
             if (lbVersions.SelectedIndex == -1)
-                return;
-
-            DisplayVersion(lbVersions.SelectedItem.ToString());
-        }
-
-        private void btnBatchfile_Click(object sender, EventArgs e)
-        {
-            Button currentButton = (Button)sender;
-
-            string version = lbVersions.SelectedItem.ToString();
-            string fullPath;
-
-            if (currentButton.Text == "START")
-                fullPath = launcherDir + "\\VERSIONS\\" + version + "\\START.bat";
-            else
-                fullPath = (currentButton.Tag as string).Split(';')[1];
-
-            ProcessStartInfo psi = new ProcessStartInfo();
-            psi.FileName = Path.GetFileName(fullPath);
-            psi.WorkingDirectory = Path.GetDirectoryName(fullPath);
-            Process.Start(psi);
-        }
-
-        private void lbOnlineVersions_SelectedIndexChanged(object sender, EventArgs e)
-        {
-            if (lbOnlineVersions.SelectedIndex == -1)
-                return;
-
-            btnDownloadVersion.Visible = true;
-
-        }
-
-        private void btnDownloadVersion_Click(object sender, EventArgs e)
-        {
-            if (lbOnlineVersions.SelectedIndex == -1)
-                return;
-
-            string version = lbOnlineVersions.SelectedItem.ToString();
-
-            if (Directory.Exists((launcherDir + "\\VERSIONS\\" + version)))
             {
-                if(MessageBox.Show($"The version {version} is already installed.\nThis will DELETE version {version} and redownload it.\n\nWould you like to continue?","WARNING",MessageBoxButtons.YesNo,MessageBoxIcon.Question) == DialogResult.Yes)
-                {
-                    Directory.Delete(launcherDir + "\\VERSIONS\\" + version, true);
-                }
-                else
-                {
-                    return;
-                }
+                SelectedVersion = null;
+                return;
+            }
+            else
+            {
+                SelectedVersion = lbVersions.SelectedItem.ToString();
             }
 
-            if (File.Exists(launcherDir + "\\PACKAGES\\" + version + ".zip"))
-                File.Delete(launcherDir + "\\PACKAGES\\" + version + ".zip");
-
-            dForm = new DownloadForm();
-           
-            dForm.TopLevel = false;
-            dForm.Location = new Point(0, 0);
-            Controls.Add(dForm);
-
-            dForm.Show();
-            dForm.Focus();
-            dForm.BringToFront();
-
-            WebClient webClient = new WebClient();
-
-            webClient.DownloadProgressChanged += (ov, ev) =>
-            {
-                dForm.progressBar.Value = ev.ProgressPercentage;
-            };
-
-            webClient.DownloadFileCompleted += (ov, ev) =>
-            {
-
-                InvokeUI(() => { DownloadComplete(); });
-            };
+            if (Directory.Exists(MainForm.launcherDir + "\\VERSIONS\\" + SelectedVersion + "\\Launcher"))
+                MainForm.lpForm = new NewLaunchPanel();
+            else
+                MainForm.lpForm = new OldLaunchPanel();
 
 
-            webClient.DownloadFileAsync(new Uri($"{webRessourceDomain}/rtc/releases/" + version + ".zip"), launcherDir + "\\PACKAGES\\" + version + ".zip");
+            MainForm.lpForm.Size = pnAnchorRight.Size;
+            MainForm.lpForm.TopLevel = false;
+            pnAnchorRight.Controls.Add(MainForm.lpForm);
 
+            MainForm.lpForm.Dock = DockStyle.Fill;
+            MainForm.lpForm.Show();
         }
 
-        private void InvokeUI(Action a)
+
+
+        public void InvokeUI(Action a)
         {
             this.BeginInvoke(new MethodInvoker(a));
         }
 
-        public void DownloadComplete()
+        public void DownloadComplete(string downloadedFile, string extractDirectory)
         {
 
+            if (!Directory.Exists(extractDirectory))
+                Directory.CreateDirectory(extractDirectory);
 
-            string version = lbOnlineVersions.SelectedItem.ToString();
+            try { 
+            System.IO.Compression.ZipFile.ExtractToDirectory(downloadedFile, extractDirectory);
+            }
+            catch(Exception ex)
+            {
+                MessageBox.Show($"An error occurred during extraction, rolling back changes.\n\n{ex}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
 
-            Directory.CreateDirectory(launcherDir + "\\VERSIONS\\" + version);
-            System.IO.Compression.ZipFile.ExtractToDirectory(launcherDir + "\\PACKAGES\\" + version + ".zip", launcherDir + "\\VERSIONS\\" + version);
+                if (Directory.Exists(extractDirectory))
+                    Directory.Delete(extractDirectory, true);
+
+            }
+
+            if (File.Exists(downloadedFile))
+                File.Delete(downloadedFile);
+
+
+            if(File.Exists(extractDirectory + "\\Launcher\\ver.ini"))
+            {
+                int newVer = Convert.ToInt32(File.ReadAllText(extractDirectory + "\\Launcher\\ver.ini"));
+                if(newVer > launcherVer)
+                {
+                    var result = MessageBox.Show("The downloaded package contains a new launcher update.\n\nDo you want to update the Launcher?", "Launcher update", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+                    if(result == DialogResult.Yes)
+                    {
+                        string batchLocation = extractDirectory + "\\Launcher\\update.bat";
+                        ProcessStartInfo psi = new ProcessStartInfo();
+                        psi.FileName = Path.GetFileName(batchLocation);
+                        psi.WorkingDirectory = Path.GetDirectoryName(batchLocation);
+                        Process.Start(psi);
+                        Application.Exit();
+                    }
+                }
+            }
+
 
             lbVersions.SelectedIndex = -1;
 
             RefreshInstalledVersions();
 
-            lbOnlineVersions.SelectedIndex = -1;
-            btnDownloadVersion.Visible = false;
+            MainForm.mf.pnLeftSide.Visible = true;
+
+            if(MainForm.vdppForm != null)
+            {
+                MainForm.vdppForm.lbOnlineVersions.SelectedIndex = -1;
+                MainForm.vdppForm.btnDownloadVersion.Visible = false;
+            }
+            
 
             dForm.Close();
             dForm = null;
 
-            
+
 
         }
 
@@ -317,11 +291,29 @@ namespace RTC_Launcher
                 File.Delete(launcherDir + "\\PACKAGES\\" + version + ".zip");
 
             if (Directory.Exists((launcherDir + "\\VERSIONS\\" + version)))
-                    Directory.Delete(launcherDir + "\\VERSIONS\\" + version, true);
+                Directory.Delete(launcherDir + "\\VERSIONS\\" + version, true);
 
+            RefreshInterface();
+
+        }
+
+        public void RefreshInterface()
+        {
             lbVersions.SelectedIndex = -1;
             RefreshInstalledVersions();
-    
+        }
+
+        public void OpenFolder()
+        {
+            if (lbVersions.SelectedIndex == -1)
+                return;
+
+            string version = lbVersions.SelectedItem.ToString();
+
+            if (Directory.Exists((launcherDir + "\\VERSIONS\\" + version)))
+                Process.Start(launcherDir + "\\VERSIONS\\" + version);
+
+
         }
 
         private void lbVersions_MouseDown(object sender, MouseEventArgs e)
@@ -331,38 +323,99 @@ namespace RTC_Launcher
 
             if (e.Button == MouseButtons.Right)
             {
-                Point locate = new Point((sender as Control).Location.X + e.Location.X, (sender as Control).Location.Y + e.Location.Y);
+                Point locate = new Point((sender as Control).Location.X + e.Location.X, (sender as Control).Location.Y + e.Location.Y + pnTopPanel.Height);
 
                 ContextMenuStrip columnsMenu = new ContextMenuStrip();
+                columnsMenu.Items.Add("Open Folder", null, new EventHandler((ob, ev) => { OpenFolder(); }));
+                columnsMenu.Items.Add(new ToolStripSeparator());
                 columnsMenu.Items.Add("Delete", null, new EventHandler((ob, ev) => { DeleteSelected(); }));
                 columnsMenu.Show(this, locate);
             }
         }
 
-        private void pictureBox1_MouseDown(object sender, MouseEventArgs e)
-        {
-            devCounter++;
 
-            if (devCounter >= 10)
-            {
-                if (MessageBox.Show((File.Exists(launcherDir + "\\PACKAGES\\dev.txt") ? "Do you want to stay connected to the Dev Server?" : "Do you want to connect to the Dev Server?"), "Dev mode activation", MessageBoxButtons.YesNo, MessageBoxIcon.Asterisk) == DialogResult.Yes)
-                {
-                    File.WriteAllText(launcherDir + "\\PACKAGES\\dev.txt", "DEV MODE ACTIVATED");
-                    Application.Restart();
-                }
-                else
-                {
-                    if (File.Exists(launcherDir + "\\PACKAGES\\dev.txt"))
-                        File.Delete(launcherDir + "\\PACKAGES\\dev.txt");
-
-                    Application.Restart();
-                }
-            }
-        }
 
         private void btnOnlineGuide_Click(object sender, EventArgs e)
         {
             Process.Start("https://corrupt.wiki/");
         }
+
+        public void clearAnchorRight()
+        {
+            foreach (Control c in pnAnchorRight.Controls)
+                if (c is Form)
+                {
+                    pnAnchorRight.Controls.Remove(c);
+                    (c as Form).Close();
+                }
+        }
+
+
+        private void btnVersionDownloader_Click(object sender, EventArgs e)
+        {
+            lbVersions.SelectedIndex = -1;
+
+            clearAnchorRight();
+
+            MainForm.vdppForm = new VersionDownloadPanel();
+            MainForm.vdppForm.TopLevel = false;
+            pnAnchorRight.Controls.Add(MainForm.vdppForm);
+            MainForm.vdppForm.Dock = DockStyle.Fill;
+            MainForm.vdppForm.Show();
+        }
+
+        private void label2_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void pnAnchorRight_Paint(object sender, PaintEventArgs e)
+        {
+
+        }
+
+        private void panel2_MouseMove(object sender, MouseEventArgs e)
+        {
+            if (e.Button == MouseButtons.Left)
+            {
+                ReleaseCapture();
+                SendMessage(Handle, WM_NCLBUTTONDOWN, HT_CAPTION, 0);
+            }
+        }
+
+        private void btnQuit_Click(object sender, EventArgs e)
+        {
+            Application.Exit();
+        }
+
+        private void lbRtcLauncher_MouseMove(object sender, MouseEventArgs e)
+        {
+            if (e.Button == MouseButtons.Left)
+            {
+                ReleaseCapture();
+                SendMessage(Handle, WM_NCLBUTTONDOWN, HT_CAPTION, 0);
+            }
+        }
+
+        private void btnMinimize_Click(object sender, EventArgs e)
+        {
+            this.WindowState = FormWindowState.Minimized;
+        }
+
+        private void btnQuit_MouseEnter(object sender, EventArgs e)
+        {
+            btnQuit.BackColor = Color.FromArgb(230, 46, 76);
+        }
+
+        private void btnQuit_MouseLeave(object sender, EventArgs e)
+        {
+            btnQuit.BackColor = Color.FromArgb(64, 64, 64);
+        }
+
+        private void btnDiscord_Click(object sender, EventArgs e)
+        {
+            Process.Start("https://discord.corrupt.wiki/");
+        }
+
     }
 }
