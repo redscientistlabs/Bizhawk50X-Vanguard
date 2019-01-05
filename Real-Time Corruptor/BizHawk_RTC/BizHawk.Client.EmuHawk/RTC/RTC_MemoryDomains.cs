@@ -611,6 +611,7 @@ namespace RTC
 	[XmlInclude(typeof(BlastLayer))]
 	[XmlInclude(typeof(BlastUnit))]
 	[Serializable]
+	[Ceras.MemberConfig(TargetMember.All)]
 	public class VmdPrototype
 	{
 		public string VmdName { get; set; }
@@ -621,16 +622,17 @@ namespace RTC
 
 		public long Padding { get; set; }
 
-		public List<long> AddSingles { get; } = new List<long>();
-		public List<long> RemoveSingles { get; } = new List<long>();
+		public List<long> AddSingles { get; set; } = new List<long>();
+		public List<long> RemoveSingles { get; set; } = new List<long>();
 
-		public List<long[]> AddRanges { get; } = new List<long[]>();
-		public List<long[]> RemoveRanges { get; } = new List<long[]>();
+		public List<long[]> AddRanges { get; set; } = new List<long[]>();
+		public List<long[]> RemoveRanges { get; set; } = new List<long[]>();
 
 		public BlastLayer SuppliedBlastLayer = null;
 
 		public VmdPrototype()
 		{
+
 		}
 
 		public VmdPrototype(BlastLayer bl)
@@ -717,12 +719,18 @@ namespace RTC
 	}
 
 	[Serializable]
+	[Ceras.MemberConfig(TargetMember.All)]
 	public class VirtualMemoryDomain : MemoryInterface
 	{
-		public List<string> PointerDomains = new List<string>();
+		public List<string> PointerDomains { get; set; }  =  new List<string>();
+		public List<long> PointerAddresses { get; set; } = new List<long>();
+		public VmdPrototype Proto { get; set; }
 
-		public List<long> PointerAddresses = new List<long>();
-		public VmdPrototype Proto;
+
+		public VirtualMemoryDomain()
+		{
+
+		}
 
 		public override long Size { get => PointerDomains.Count;
 			set { } }
@@ -848,6 +856,7 @@ namespace RTC
 
 
 	[Serializable]
+	[Ceras.MemberConfig(TargetMember.All)]
 	public sealed class MemoryDomainProxy : MemoryInterface
 	{
 		[NonSerialized]

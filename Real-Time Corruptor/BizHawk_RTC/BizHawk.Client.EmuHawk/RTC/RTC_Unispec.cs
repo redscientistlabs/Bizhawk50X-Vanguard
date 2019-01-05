@@ -207,7 +207,7 @@ namespace RTC
 		public void Update(String key, Object value, bool propagate = true)
 		{
 			//Make a partial spec and pass it into Update(PartialSpec)
-			if(RTC_Hooks.isRemoteRTC && name == "RTCSpec")
+			if(RTC_Hooks.isRemoteRTC && name == "RTCSpec" && key != RTCSPEC.CORE_AUTOCORRUPT.ToString())
 				throw new Exception("Tried updating the RTCSpec from Emuhawk");
 
 			if (RTC_Core.isStandalone && name == "EmuSpec")
