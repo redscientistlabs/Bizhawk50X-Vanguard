@@ -50,11 +50,11 @@ namespace RTC
 			for (int i = 0; i < hashes.Count; i++)
 			{
 				string[] _paths = paths[i].Split('\\' , '.');
-				RegisterList(_paths[_paths.Length - 2], hashes[i]);
+				RegisterListInUI(_paths[_paths.Length - 2], hashes[i]);
 			}
 		}
 
-		public void RegisterList(string name, string hash)
+		public void RegisterListInUI(string name, string hash)
 		{
 			RTC_Core.LimiterListBindingSource.Add(new ComboBoxItem<String>(name, hash));
 			RTC_Core.ValueListBindingSource.Add((new ComboBoxItem<String>(name, hash)));

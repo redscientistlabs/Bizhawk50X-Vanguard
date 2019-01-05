@@ -6,6 +6,7 @@ using System.Drawing;
 using System.Globalization;
 using System.IO;
 using System.Linq;
+using System.Text.RegularExpressions;
 using System.Windows.Forms;
 
 namespace RTC
@@ -22,12 +23,40 @@ namespace RTC
 			InitializeComponent();
 		}
 
-		public long SafeStringToLong(string input)
+		private ulong safeStringToULongHex(string input)
 		{
 			if (input.ToUpper().Contains("0X"))
-				return long.Parse(input.Substring(2), NumberStyles.HexNumber);
+				return ulong.Parse(input.Substring(2), NumberStyles.HexNumber);
 			else
-				return long.Parse(input, NumberStyles.HexNumber);
+				return ulong.Parse(input, NumberStyles.HexNumber);
+		}
+
+		private bool isHex(string str)
+		{
+			//Hex characters 
+			//Trim the 0x off
+			string regex = "^[0(x|X)]+[0-9A-Fa-f]+$";
+			return Regex.IsMatch(str, regex);
+		}
+		private bool isWholeNumber(string str)
+		{
+			string regex = "^[0-9]+$";
+			return Regex.IsMatch(str, regex);
+		}
+		private bool isDecimalNumber(string str)
+		{
+			string regex = "^(\\d*\\.){1}\\d+$";
+			return Regex.IsMatch(str, regex);
+		}
+		public static T Convert<T>(string input)
+		{
+			var converter = TypeDescriptor.GetConverter(typeof(T));
+			if (converter != null)
+			{
+				//Cast ConvertFromString(string text) : object to (T)
+				return (T)converter.ConvertFromString(input);
+			}
+			return default(T);
 		}
 
 		private void btnGenerateList_Click(object sender, EventArgs e) => GenerateList();
@@ -44,19 +73,61 @@ namespace RTC
 
 				string[] lineParts = trimmedLine.Split('-');
 
+				//We can't do a range on anything besides plain old numbers 
 				if (lineParts.Length > 1)
 				{
-					long start = SafeStringToLong(lineParts[0]);
-					long end = SafeStringToLong(lineParts[1]);
-
-					for (long i = start; i < end; i++)
+					//Hex
+					if (isHex(lineParts[0]) && isHex(lineParts[1]))
 					{
-						newList.Add(i.ToString("X"));
+						ulong start = safeStringToULongHex(lineParts[0]);
+						ulong end = safeStringToULongHex(lineParts[1]);
+
+						for (ulong i = start; i < end; i++)
+						{
+							newList.Add(i.ToString("X"));
+						}
+					}
+					//Decimal
+					else if (isWholeNumber(lineParts[0]) && isWholeNumber(lineParts[1]))
+					{
+						ulong start = ulong.Parse(lineParts[0]);
+						ulong end = ulong.Parse(lineParts[1]);
+
+						for (ulong i = start; i < end; i++)
+						{
+							newList.Add(i.ToString("X"));
+						}
 					}
 				}
 				else
 				{
-					newList.Add(lineParts[0]);
+					//If it's not a range we parse for both prefixes and suffixes then see the type
+					if (isHex(trimmedLine)) //Hex with 0x prefix
+					{
+						newList.Add(lineParts[0].Substring(2));
+					}
+					else if (Regex.IsMatch(trimmedLine, "^[0-9]+[fF]$")) //123f float
+					{
+						float f = Convert<float>(trimmedLine.Substring(0, trimmedLine.Length-1));
+						byte[] t = BitConverter.GetBytes(f);
+						newList.Add(RTC_Extensions.BytesToHexString(t));
+					}
+					else if (Regex.IsMatch(trimmedLine, "^[0-9]+[dD]$")) //123d double
+					{
+						double d = Convert<double>(trimmedLine.Substring(0, trimmedLine.Length - 1));
+						byte[] t = BitConverter.GetBytes(d);
+						newList.Add(RTC_Extensions.BytesToHexString(t));
+					}
+					else if (isDecimalNumber(trimmedLine)) //double no suffix
+					{
+						double d = Convert<double>(trimmedLine);
+						byte[] t = BitConverter.GetBytes(d);
+						newList.Add(RTC_Extensions.BytesToHexString(t));
+					}
+					else if (isWholeNumber(trimmedLine)) //plain old number
+					{
+						newList.Add(ulong.Parse(trimmedLine).ToString("X"));
+					}
 				}
 			}
 
@@ -90,7 +161,7 @@ namespace RTC
 			string hash = RTC_Filtering.RegisterList(byteList, true);
 
 			//Register the list in the ui
-			S.GET<RTC_EngineConfig_Form>().RegisterList(filename, hash);
+			S.GET<RTC_EngineConfig_Form>().RegisterListInUI(filename, hash);
 
 
 			return true;
@@ -123,6 +194,33 @@ namespace RTC
 		private void btnRefreshListsFromFile_Click(object sender, EventArgs e)
 		{
 			S.GET<RTC_EngineConfig_Form>().LoadLists();
+		}
+
+		private void btnHelp_Click(object sender, EventArgs e)
+		{
+			MessageBox.Show(
+@"List Generator instructions help and examples
+-----------------------------------------------
+A whole number will be treated as decimal.
+A number prefixed with '0x' will be treated as hex.
+You can use a range of these two types.
+
+	A number with a decimal point will be treated as a double.
+A number with the suffix 'd' will be treated as a double.
+A number with the suffix 'f' will be treated as a float.
+
+
+Examples:
+8-11 -----> 8,9,A
+0x8-0x11 -> 8,9,A,B,C,D,E,F,10
+10 -------> A
+0x10 -----> 10
+1.0	------> 000000000000F03F
+1d -------> 000000000000F03F
+1f -------> 0000803F
+
+> Ranges are exclusive, meaning that the last
+	address is excluded from the range.");
 		}
 	}
 }

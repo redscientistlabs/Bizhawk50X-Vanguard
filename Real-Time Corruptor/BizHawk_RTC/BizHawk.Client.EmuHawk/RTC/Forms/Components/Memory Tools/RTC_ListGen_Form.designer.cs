@@ -35,6 +35,7 @@
             this.cbSaveFile = new System.Windows.Forms.CheckBox();
             this.btnRefreshListsFromFile = new System.Windows.Forms.Button();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.btnHelp = new System.Windows.Forms.Button();
             this.groupBox1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -62,13 +63,12 @@
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.tbListValues.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
-            this.tbListValues.Font = new System.Drawing.Font("Consolas", 8F);
             this.tbListValues.ForeColor = System.Drawing.Color.White;
-            this.tbListValues.Location = new System.Drawing.Point(225, 14);
+            this.tbListValues.Location = new System.Drawing.Point(225, 12);
             this.tbListValues.Multiline = true;
             this.tbListValues.Name = "tbListValues";
             this.tbListValues.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
-            this.tbListValues.Size = new System.Drawing.Size(161, 224);
+            this.tbListValues.Size = new System.Drawing.Size(161, 226);
             this.tbListValues.TabIndex = 128;
             this.tbListValues.Tag = "color:dark";
             this.tbListValues.MouseDown += new System.Windows.Forms.MouseEventHandler(this.HandleMouseDown);
@@ -85,7 +85,7 @@
             this.label2.Text = "List Name:";
             this.label2.MouseDown += new System.Windows.Forms.MouseEventHandler(this.HandleMouseDown);
             // 
-            // tbVmdName
+            // tbListName
             // 
             this.tbListName.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
             this.tbListName.Font = new System.Drawing.Font("Segoe UI", 8F);
@@ -124,6 +124,7 @@
             // 
             // groupBox1
             // 
+            this.groupBox1.Controls.Add(this.btnHelp);
             this.groupBox1.Controls.Add(this.cbSaveFile);
             this.groupBox1.Controls.Add(this.btnGenerateList);
             this.groupBox1.Controls.Add(this.label2);
@@ -135,6 +136,23 @@
             this.groupBox1.TabIndex = 137;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "List Generator";
+            // 
+            // btnHelp
+            // 
+            this.btnHelp.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(224)))), ((int)(((byte)(224)))), ((int)(((byte)(224)))));
+            this.btnHelp.FlatAppearance.BorderSize = 0;
+            this.btnHelp.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnHelp.Font = new System.Drawing.Font("Segoe UI Semibold", 9.75F, System.Drawing.FontStyle.Bold);
+            this.btnHelp.ForeColor = System.Drawing.Color.Black;
+            this.btnHelp.Image = global::BizHawk.Client.EmuHawk.Properties.Resources.Help;
+            this.btnHelp.Location = new System.Drawing.Point(188, 13);
+            this.btnHelp.Name = "btnHelp";
+            this.btnHelp.Size = new System.Drawing.Size(19, 18);
+            this.btnHelp.TabIndex = 138;
+            this.btnHelp.TabStop = false;
+            this.btnHelp.Tag = "color:light";
+            this.btnHelp.UseVisualStyleBackColor = false;
+            this.btnHelp.Click += new System.EventHandler(this.btnHelp_Click);
             // 
             // RTC_ListGen_Form
             // 
@@ -169,5 +187,6 @@
 		public System.Windows.Forms.CheckBox cbSaveFile;
 		private System.Windows.Forms.Button btnRefreshListsFromFile;
 		private System.Windows.Forms.GroupBox groupBox1;
+		private System.Windows.Forms.Button btnHelp;
 	}
 }

@@ -35,14 +35,26 @@ namespace RTC
 			bool flipBytes = path.StartsWith("_");
 
 			List<Byte[]> byteList = new List<byte[]>();
-			foreach (string t in temp)
+			for (int i = 0; i < temp.Length; i++)
 			{
-				byte[] bytes = RTC_Extensions.StringToByteArray(t);
+				string t = temp[i];
+				byte[] bytes = null;
+				try
+				{
+					bytes = RTC_Extensions.StringToByteArray(t);
+				}
+				catch (Exception e)
+				{
+					MessageBox.Show("Error reading list " + Path.GetFileName(path) + ". Error at line " + (i+1) + ".\nValue: " + t + "\n. Valid format is a list of raw byte values.");
+					break;
+				}
+
 				//If it's big endian, flip it
 				if (flipBytes)
 				{
 					bytes.FlipBytes();
 				}
+
 				byteList.Add(bytes);
 			}
 

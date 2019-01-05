@@ -224,6 +224,16 @@ namespace RTC
 		/// <returns></returns>
 		public static byte[] StringToByteArray(string hex)
 		{
+			//If it's odd, prepend a 0
+			if (hex.Length % 2 == 1)
+			{
+				string temp = "0" + hex;
+				return Enumerable.Range(0, temp.Length)
+				.Where(x => x % 2 == 0)
+				.Select(x => Convert.ToByte(temp.Substring(x, 2), 16))
+				.ToArray();
+			}
+
 			return Enumerable.Range(0, hex.Length)
 				.Where(x => x % 2 == 0)
 				.Select(x => Convert.ToByte(hex.Substring(x, 2), 16))
@@ -591,6 +601,21 @@ namespace RTC
 			var startAt = newArray.Length - input.Length;
 			Buffer.BlockCopy(input, 0, newArray, startAt, input.Length);
 			return newArray;
+		}
+
+
+		/// <summary>
+		/// Converts bytes to an uppercase string of hex numbers in upper case without any spacing or anything
+		/// </summary>
+		public static string BytesToHexString(byte[] bytes)
+		{
+			var sb = new StringBuilder();
+			foreach (var b in bytes)
+			{
+				sb.AppendFormat("{0:X2}", b);
+			}
+
+			return sb.ToString();
 		}
 
 		#endregion BYTE ARRAY EXTENSIONS
