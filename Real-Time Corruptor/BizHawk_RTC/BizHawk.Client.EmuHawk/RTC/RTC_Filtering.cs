@@ -5,6 +5,7 @@ using System.Linq;
 using System.Security.Cryptography;
 using System.Text;
 using System.Windows.Forms;
+using Ceras;
 
 namespace RTC
 {
@@ -64,7 +65,7 @@ namespace RTC
 		public static string RegisterList(List<Byte[]> list, bool syncListsViaNetcore)
 		{
 
-			var limiterDico = (Dictionary<string, HashSet<Byte[]>>)RTC_Unispec.RTCSpec[RTCSPEC.FILTERING_HASH2LIMITERDICO.ToString()];
+			var limiterDico = (Dictionary<string, RTC_Extensions.HashSetByteArrayComparator>)RTC_Unispec.RTCSpec[RTCSPEC.FILTERING_HASH2LIMITERDICO.ToString()];
 			var valueDico = (Dictionary<string, List<Byte[]>>)RTC_Unispec.RTCSpec[RTCSPEC.FILTERING_HASH2VALUEDICO.ToString()];
 
 			//Make one giant string to hash
@@ -86,7 +87,7 @@ namespace RTC
 			if (!valueDico?.ContainsKey(hashStr) ?? false)
 				valueDico[hashStr] = list;
 			if (!limiterDico?.ContainsKey(hashStr) ?? false)
-				limiterDico[hashStr] = new HashSet<byte[]>(list, new ByteArrayComparer());
+				limiterDico[hashStr] = new RTC_Extensions.HashSetByteArrayComparator(list);
 
 			if (syncListsViaNetcore)
 			{
@@ -122,8 +123,8 @@ namespace RTC
 
 		public static bool LimiterContainsValue(byte[] bytes, string hash)
 		{
-			HashSet<Byte[]> hs = null;
-			var limiterDico = (Dictionary<string, HashSet<Byte[]>>)RTC_Unispec.RTCSpec[RTCSPEC.FILTERING_HASH2LIMITERDICO.ToString()];
+			RTC_Extensions.HashSetByteArrayComparator hs = null;
+			var limiterDico = (Dictionary<string, RTC_Extensions.HashSetByteArrayComparator>)RTC_Unispec.RTCSpec[RTCSPEC.FILTERING_HASH2LIMITERDICO.ToString()];
 			if (limiterDico == null)
 				return false;
 
@@ -217,22 +218,5 @@ namespace RTC
 		}
 
 	}
-	[Serializable]
-	public class ByteArrayComparer : IEqualityComparer<byte[]>
-	{
-		public bool Equals(byte[] a, byte[] b)
-		{
-			if (a.Length != b.Length) return false;
-			for (int i = 0; i < a.Length; i++)
-				if (a[i] != b[i]) return false;
-			return true;
-		}
-		public int GetHashCode(byte[] a)
-		{
-			uint b = 0;
-			for (int i = 0; i < a.Length; i++)
-				b = ((b << 23) | (b >> 9)) ^ a[i];
-			return unchecked((int)b);
-		}
-	}
+
 }

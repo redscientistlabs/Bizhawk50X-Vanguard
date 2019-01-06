@@ -820,6 +820,48 @@ namespace RTC
 		}
 		#endregion
 
+		/**
+		 * A HashSet byte which uses a custom comparator for byte array value comparison
+		 * This exists because Ceras can't handle read-only properties.
+		 */
+		public class HashSetByteArrayComparator : HashSet<byte[]>
+		{
+			public HashSetByteArrayComparator(IEnumerable<byte[]> collection) : base(collection, new ByteArrayComparer())
+			{
+
+			}
+
+			public HashSetByteArrayComparator() : base(new ByteArrayComparer())
+			{
+
+			}
+		}
+
+
+		[Serializable]
+		[Ceras.MemberConfig(TargetMember.All)]
+		public class ByteArrayComparer : IEqualityComparer<byte[]>
+		{
+			public bool Equals(byte[] a, byte[] b)
+			{
+				if (a.Length != b.Length) return false;
+				for (int i = 0; i < a.Length; i++)
+					if (a[i] != b[i]) return false;
+				return true;
+			}
+			public int GetHashCode(byte[] a)
+			{
+				uint b = 0;
+				for (int i = 0; i < a.Length; i++)
+					b = ((b << 23) | (b >> 9)) ^ a[i];
+				return unchecked((int)b);
+			}
+
+			public ByteArrayComparer()
+			{
+
+			}
+		}
 	}
 
 	public interface ISF<T>
@@ -3211,4 +3253,6 @@ namespace RTC
 		[DllImport("kernel32.dll", ExactSpelling = true, SetLastError = true)]
 		public static extern bool CloseHandle(IntPtr handle);
 	}
+
+	
 }

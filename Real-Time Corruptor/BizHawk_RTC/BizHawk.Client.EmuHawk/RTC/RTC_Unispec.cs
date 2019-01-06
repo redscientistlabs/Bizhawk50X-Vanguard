@@ -87,7 +87,7 @@ namespace RTC
 			RTC_CustomEngine.Initialize(rtcSpecTemplate);
 
 
-			rtcSpecTemplate[RTCSPEC.FILTERING_HASH2LIMITERDICO.ToString()] = new Dictionary<string, HashSet<Byte[]>>();
+			rtcSpecTemplate[RTCSPEC.FILTERING_HASH2LIMITERDICO.ToString()] = new Dictionary<string, RTC_Extensions.HashSetByteArrayComparator>();
 			rtcSpecTemplate[RTCSPEC.FILTERING_HASH2VALUEDICO.ToString()] = new Dictionary<string, List<Byte[]>>();
 
 			rtcSpecTemplate[RTCSPEC.VECTOR_LIMITERLISTHASH.ToString()] = null;
