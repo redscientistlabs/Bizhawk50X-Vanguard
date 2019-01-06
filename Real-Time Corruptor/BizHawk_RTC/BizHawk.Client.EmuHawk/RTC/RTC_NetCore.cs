@@ -185,6 +185,21 @@ namespace RTC
 			var config = new SerializerConfig();
 			//config.DefaultTargets = TargetMember.All;
 			//config.ShouldSerializeMember = m => SerializationOverride.ForceInclude;
+			config.KnownTypes.Add(typeof(BlastLayer));
+			config.KnownTypes.Add(typeof(StashKey));
+			config.KnownTypes.Add(typeof(BlastUnit));
+			config.KnownTypes.Add(typeof(RTC_Command));
+			config.KnownTypes.Add(typeof(PartialSpec));
+			config.KnownTypes.Add(typeof(byte[]));
+			config.KnownTypes.Add(typeof(int));
+			config.KnownTypes.Add(typeof(long));
+			config.KnownTypes.Add(typeof(List<>));
+			config.KnownTypes.Add(typeof(List<BlastUnit>));
+
+
+			config.PersistTypeCache = true;
+			config.GenerateChecksum = true;
+
 			var s = new CerasSerializer(config);
 			
 

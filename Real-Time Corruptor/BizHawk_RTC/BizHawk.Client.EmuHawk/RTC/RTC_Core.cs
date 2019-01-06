@@ -296,6 +296,9 @@ namespace RTC
 			if (!Directory.Exists(RTC_Core.workingDir + Path.DirectorySeparatorChar + "MEMORYDUMPS" + Path.DirectorySeparatorChar))
 				Directory.CreateDirectory(RTC_Core.workingDir + Path.DirectorySeparatorChar + "MEMORYDUMPS" + Path.DirectorySeparatorChar);
 
+			if (!Directory.Exists(RTC_Core.workingDir + Path.DirectorySeparatorChar + "MP" + Path.DirectorySeparatorChar))
+				Directory.CreateDirectory(RTC_Core.workingDir + Path.DirectorySeparatorChar + "MP" + Path.DirectorySeparatorChar);
+
 			if (!Directory.Exists(RTC_Core.assetsDir + Path.DirectorySeparatorChar + "CRASHSOUNDS" + Path.DirectorySeparatorChar))
 				Directory.CreateDirectory(RTC_Core.assetsDir + Path.DirectorySeparatorChar + "CRASHSOUNDS" + Path.DirectorySeparatorChar);
 

@@ -820,6 +820,23 @@ namespace RTC
 		}
 		#endregion
 
+		#region Image Extensions
+
+		public static byte[] ImageToByteArray(System.Drawing.Image imageIn, System.Drawing.Imaging.ImageFormat imageFormat)
+		{
+			MemoryStream ms = new MemoryStream();
+			imageIn.Save(ms, imageFormat);
+			return ms.ToArray();
+		}
+
+		public static Image ByteArrayToImage(byte[] byteArrayIn)
+		{
+			MemoryStream ms = new MemoryStream(byteArrayIn);
+			Image returnImage = Image.FromStream(ms);
+			return returnImage;
+		}
+
+		#endregion
 		/**
 		 * A HashSet byte which uses a custom comparator for byte array value comparison
 		 * This exists because Ceras can't handle read-only properties.

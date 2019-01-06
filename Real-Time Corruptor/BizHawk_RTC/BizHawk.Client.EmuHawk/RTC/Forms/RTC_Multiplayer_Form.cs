@@ -260,9 +260,9 @@ namespace RTC
 				Bitmap bmp = RTC_Hooks.BIZHAWK_GET_SCREENSHOT();
 
 				if (cbCompressStream.Checked)
-					cmdBack.screen = SaveJPG100(bmp, 60);
+					cmdBack.ScreenArr = RTC_Extensions.ImageToByteArray(SaveJPG100(bmp, 60), ImageFormat.Jpeg);
 				else
-					cmdBack.screen = bmp;
+					cmdBack.ScreenArr = RTC_Extensions.ImageToByteArray(SaveJPG100(bmp, 60), ImageFormat.Bmp);
 				RTC_Core.Multiplayer.PeerCommandQueue.AddLast(cmdBack);
 			}
 		}
@@ -484,7 +484,7 @@ namespace RTC
 		public string romFilename = null;
 		public StashKey stashkey = null;
 
-		public Image screen = null;
+		public byte[] ScreenArr = null;
 
 		public RTC_Command(CommandType _Type)
 		{
