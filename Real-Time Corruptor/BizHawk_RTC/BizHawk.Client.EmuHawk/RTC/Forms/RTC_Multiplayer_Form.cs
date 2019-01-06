@@ -5,6 +5,7 @@ using System.Drawing.Imaging;
 using System.IO;
 using System.Net;
 using System.Windows.Forms;
+using Ceras;
 
 namespace RTC
 {
@@ -468,6 +469,7 @@ namespace RTC
 	}
 
 	[Serializable]
+	[Ceras.MemberConfig(TargetMember.All)]
 	public class RTC_Command
 	{
 		public CommandType Type;
