@@ -37,6 +37,7 @@
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
             this.ClientSize = new System.Drawing.Size(390, 250);
             this.DoubleBuffered = true;
+            this.Font = new System.Drawing.Font("Segoe UI Symbol", 8.25F);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
             this.Name = "RTC_Template_Form";
             this.Tag = "color:darker";

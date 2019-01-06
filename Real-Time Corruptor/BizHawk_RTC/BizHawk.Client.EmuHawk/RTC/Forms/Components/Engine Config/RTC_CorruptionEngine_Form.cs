@@ -275,7 +275,7 @@ namespace RTC
 		{
 			ComboBoxItem<string> item = (ComboBoxItem<string>)((ComboBox)sender).SelectedItem;
 			if (item != null)
-				RTCSpec.Update(RTCSPEC.VECTOR_VALUELISTHASH.ToString(), item);
+				RTCSpec.Update(RTCSPEC.VECTOR_VALUELISTHASH.ToString(), item.Value);
 		}
 
 		private void btnClearCheats_Click(object sender, EventArgs e)

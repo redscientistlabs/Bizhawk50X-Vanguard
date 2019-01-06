@@ -1050,25 +1050,43 @@ namespace RTC
 			}
 		}
 
-		private void btnRerollSelected_Click(object sender, EventArgs e)
+		private void btnRerollSelected_MouseDown(object sender, MouseEventArgs e)
 		{
-			if (lbStashHistory.SelectedIndex != -1)
+			if (e.Button == MouseButtons.Right)
 			{
-				RTC_StockpileManager.CurrentStashkey = (StashKey)RTC_StockpileManager.StashHistory[lbStashHistory.SelectedIndex].Clone();
+				Point locate = this.PointToClient(Cursor.Position);
+				ContextMenuStrip rerollMenu = new ContextMenuStrip();
+				rerollMenu.Items.Add("Configure Reroll", null, new EventHandler((ob, ev) =>
+					{
+						new RTC_SettingsReroll_Form().Show();
+					}));
+
+				rerollMenu.Show(this, locate);
 			}
-			else if (dgvStockpile.SelectedRows.Count != 0 && dgvStockpile.SelectedRows[0].Cells[0].Value != null)
-			{
-				RTC_StockpileManager.CurrentStashkey = (StashKey)(dgvStockpile.SelectedRows[0].Cells[0].Value as StashKey)?.Clone();
-				//RTC_StockpileManager.unsavedEdits = true;
-			}
+
 			else
-				return;
+			{
+				if (lbStashHistory.SelectedIndex != -1)
+				{
+					RTC_StockpileManager.CurrentStashkey = (StashKey)RTC_StockpileManager.StashHistory[lbStashHistory.SelectedIndex].Clone();
+				}
+				else if (dgvStockpile.SelectedRows.Count != 0 && dgvStockpile.SelectedRows[0].Cells[0].Value != null)
+				{
+					RTC_StockpileManager.CurrentStashkey = (StashKey)(dgvStockpile.SelectedRows[0].Cells[0].Value as StashKey)?.Clone();
+					//RTC_StockpileManager.unsavedEdits = true;
+				}
+				else
+					return;
 
-			RTC_StockpileManager.CurrentStashkey.BlastLayer.Reroll();
+				if (RTC_StockpileManager.CurrentStashkey != null)
+				{
+					RTC_StockpileManager.CurrentStashkey.BlastLayer.Reroll();
 
-			RTC_StockpileManager.AddCurrentStashkeyToStash();
+					RTC_StockpileManager.AddCurrentStashkeyToStash();
 
-			RTC_StockpileManager.ApplyStashkey(RTC_StockpileManager.CurrentStashkey);
+					RTC_StockpileManager.ApplyStashkey(RTC_StockpileManager.CurrentStashkey);
+				}
+			}
 		}
 
 		private void btnSaveSavestateList_Click(object sender, EventArgs e)

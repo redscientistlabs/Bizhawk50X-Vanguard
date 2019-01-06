@@ -46,6 +46,18 @@ namespace RTC
 			rtcSpecTemplate[RTCSPEC.HOOKS_SHOWCONSOLE.ToString()] = false;
 			rtcSpecTemplate[RTCSPEC.CORE_DONTCLEANSAVESTATESONQUIT.ToString()] = false;
 
+			//Reroll Settings
+			if (RTC_Params.IsParamSet("REROLL_ADDRESS"))
+				rtcSpecTemplate[RTCSPEC.REROLL_SOURCEADDRESS.ToString()] = (RTC_Params.ReadParam("REROLL_ADDRESS") == "true");
+			else
+				rtcSpecTemplate[RTCSPEC.REROLL_ADDRESS.ToString()] = false;
+
+			if (RTC_Params.IsParamSet("REROLL_SOURCEADDRESS"))
+				rtcSpecTemplate[RTCSPEC.REROLL_SOURCEADDRESS.ToString()] = (RTC_Params.ReadParam("REROLL_SOURCEADDRESS") == "true");
+			else
+				rtcSpecTemplate[RTCSPEC.REROLL_SOURCEADDRESS.ToString()] = false;
+
+
 
 			//Nightmare Config
 			rtcSpecTemplate[RTCSPEC.NIGHTMARE_TYPE.ToString()] = NightmareAlgo.RANDOM;
