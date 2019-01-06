@@ -652,7 +652,7 @@ namespace RTC
 
 		public object Clone()
 		{
-			object sk = ObjectCopier.Clone(this);
+			object sk = ObjectCopierCeras.Clone(this);
 			((StashKey)sk).Key = RTC_Core.GetRandomKey();
 			((StashKey)sk).Alias = null;
 			return sk;
@@ -758,7 +758,7 @@ namespace RTC
 
 		public object Clone()
 		{
-			return ObjectCopier.Clone(this);
+			return ObjectCopierCeras.Clone(this);
 		}
 
 		public void Apply(bool ignoreMaximums = false)
@@ -904,7 +904,7 @@ namespace RTC
 
 		public object Clone()
 		{
-			return ObjectCopier.Clone(this);
+			return ObjectCopierCeras.Clone(this);
 		}
 
 		[Category("Settings")]

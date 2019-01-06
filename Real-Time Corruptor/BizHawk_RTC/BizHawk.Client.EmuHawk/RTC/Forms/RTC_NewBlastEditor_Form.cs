@@ -496,6 +496,7 @@ namespace RTC
 		private void tbFilter_TextChanged(object sender, EventArgs e)
 		{
 
+			var token = RTC_NetCore.HugeOperationStart("DISABLED");
 			if (tbFilter.Text.Length == 0)
 			{
 				dgvBlastEditor.DataSource = currentSK.BlastLayer.Layer;
@@ -520,6 +521,8 @@ namespace RTC
 					dgvBlastEditor.DataSource = currentSK.BlastLayer.Layer.Where(x => x?.GetType()?.GetProperty(value)?.GetValue(x) != null && (x.GetType()?.GetProperty(value)?.GetValue(x).ToString().ToUpper().Substring(0, tbFilter.Text.Length) == tbFilter.Text.ToUpper())).ToList();
 					break;
 			}
+
+			RTC_NetCore.HugeOperationEnd(token);
 		}
 	
 		private void InitializeBottom()
@@ -673,6 +676,7 @@ namespace RTC
 				VisibleColumns.Add(buProperty.isLocked.ToString());
 				VisibleColumns.Add(buProperty.Source.ToString());
 				VisibleColumns.Add(buProperty.Domain.ToString());
+				VisibleColumns.Add(buProperty.Address.ToString());
 				VisibleColumns.Add(buProperty.Address.ToString());
 				VisibleColumns.Add(buProperty.Precision.ToString());
 				VisibleColumns.Add(buProperty.ValueString.ToString());

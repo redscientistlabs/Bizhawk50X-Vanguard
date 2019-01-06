@@ -184,7 +184,7 @@ namespace RTC
 		{
 			var config = new SerializerConfig();
 			config.DefaultTargets = TargetMember.All;
-			config.ShouldSerializeMember = m => SerializationOverride.ForceInclude;
+			//config.ShouldSerializeMember = m => SerializationOverride.ForceInclude;
 			var s = new CerasSerializer(config);
 			
 
