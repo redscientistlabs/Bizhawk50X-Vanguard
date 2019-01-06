@@ -1239,6 +1239,8 @@ namespace RTC
 				{
 					case (BlastUnitSource.STORE):
 					{
+						if (Working.StoreData.Count == 0)
+							return;
 						Working.ApplyValue = Working.StoreData.First();
 
 						//Remove it if it's a continuous backup

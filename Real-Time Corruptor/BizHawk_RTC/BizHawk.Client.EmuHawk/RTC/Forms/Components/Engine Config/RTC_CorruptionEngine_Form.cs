@@ -294,6 +294,7 @@ namespace RTC
 			{
 				cbCustomPrecision.SelectedIndex = -1;
 				RTCSpec.Update(RTCSPEC.CORE_CUSTOMPRECISION.ToString(), -1);
+				UpdateDefaultPrecision();
 			}
 		}
 
@@ -358,18 +359,24 @@ namespace RTC
 			{
 				cbUseCustomPrecision.Checked = true;
 
+				PartialSpec spec = new PartialSpec("RTCSpec");
 				switch (cbCustomPrecision.SelectedIndex)
 				{
 					case 0:
-						RTCSpec.Update(RTCSPEC.CORE_CUSTOMPRECISION.ToString(), 1);
+						spec[RTCSPEC.CORE_CUSTOMPRECISION.ToString()] = 1;
 						break;
 					case 1:
-						RTCSpec.Update(RTCSPEC.CORE_CUSTOMPRECISION.ToString(), 2);
+						spec[RTCSPEC.CORE_CUSTOMPRECISION.ToString()] = 2;
 						break;
 					case 2:
-						RTCSpec.Update(RTCSPEC.CORE_CUSTOMPRECISION.ToString(), 4);
+						spec[RTCSPEC.CORE_CUSTOMPRECISION.ToString()] = 4;
 						break;
 				}
+				if(cbUseCustomPrecision.Checked)
+					spec[RTCSPEC.CORE_CURRENTPRECISION.ToString()] = spec[RTCSPEC.CORE_CUSTOMPRECISION.ToString()];
+
+				RTCSpec.Update(spec);
+
 				updateMinMaxBoxes((int)RTCSpec[RTCSPEC.CORE_CUSTOMPRECISION.ToString()]);
 				S.GET<RTC_CustomEngineConfig_Form>().UpdateMinMaxBoxes((int)RTCSpec[RTCSPEC.CORE_CUSTOMPRECISION.ToString()]);
 			}

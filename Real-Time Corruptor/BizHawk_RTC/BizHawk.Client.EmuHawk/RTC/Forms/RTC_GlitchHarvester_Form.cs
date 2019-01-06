@@ -751,9 +751,17 @@ namespace RTC
 				return;
 
 			if (lbStashHistory.SelectedIndex == 0)
+			{
+				lbStashHistory.ClearSelected();
 				lbStashHistory.SelectedIndex = lbStashHistory.Items.Count - 1;
+			}
 			else
-				lbStashHistory.SelectedIndex--;
+			{
+				int newPos = lbStashHistory.SelectedIndex--;
+				lbStashHistory.ClearSelected();
+				lbStashHistory.SelectedIndex = newPos;
+
+			}
 		}
 
 		private void btnStashDOWN_Click(object sender, EventArgs e)
@@ -763,9 +771,17 @@ namespace RTC
 				return;
 
 			if (lbStashHistory.SelectedIndex == lbStashHistory.Items.Count - 1)
+			{
+				lbStashHistory.ClearSelected();
 				lbStashHistory.SelectedIndex = 0;
+			}
 			else
-				lbStashHistory.SelectedIndex++;
+			{
+				int newPos = lbStashHistory.SelectedIndex++;
+				lbStashHistory.ClearSelected();
+				lbStashHistory.SelectedIndex = newPos;
+
+			}
 		}
 
 		private void btnStockpileUP_Click(object sender, EventArgs e)

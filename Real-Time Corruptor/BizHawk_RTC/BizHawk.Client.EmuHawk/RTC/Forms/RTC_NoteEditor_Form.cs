@@ -75,6 +75,9 @@ namespace RTC
 
 			string cleanText = string.Join("\n", tbNote.Lines.Select(it => it.Trim()));
 
+			if(cleanText == "[DIFFERENT]")
+				return;
+
 			if (String.IsNullOrEmpty(cleanText))
 			{
 				note.Note = String.Empty;
