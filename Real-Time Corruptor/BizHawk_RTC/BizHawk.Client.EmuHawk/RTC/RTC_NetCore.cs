@@ -182,7 +182,11 @@ namespace RTC
 
 		public void StoreCommands(NetworkStream providedStream, bool dontCreateNetworkStream = false)
 		{
-			var s = new CerasSerializer();
+			var config = new SerializerConfig();
+			config.DefaultTargets = TargetMember.All;
+			config.ShouldSerializeMember = m => SerializationOverride.ForceInclude;
+			var s = new CerasSerializer(config);
+			
 
 			TcpListener server = null;
 			Socket socket = null;
@@ -280,7 +284,6 @@ namespace RTC
 								Stopwatch sw = new Stopwatch();
 								sw.Start();
 								//Write the length of the command to the first four bytes
-
 								byte[] buf = s.Serialize(backCmd);
 								
 								//Write the length of the incoming object to the NetworkStream
