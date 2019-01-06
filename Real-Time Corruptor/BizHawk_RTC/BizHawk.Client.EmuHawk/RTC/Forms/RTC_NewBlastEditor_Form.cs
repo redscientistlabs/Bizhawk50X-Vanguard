@@ -657,14 +657,27 @@ namespace RTC
 			dgvBlastEditor.Columns.Add(CreateColumn("", buProperty.Note.ToString(), "Note", new DataGridViewButtonColumn()));
 
 
-			VisibleColumns.Add(buProperty.isEnabled.ToString());
-			VisibleColumns.Add(buProperty.isLocked.ToString());
-			VisibleColumns.Add(buProperty.Source.ToString());
-			VisibleColumns.Add(buProperty.Domain.ToString());
-			VisibleColumns.Add(buProperty.Address.ToString());
-			VisibleColumns.Add(buProperty.Precision.ToString());
-			VisibleColumns.Add(buProperty.ValueString.ToString());
-			VisibleColumns.Add(buProperty.Note.ToString());
+
+			if (RTC_Params.IsParamSet("BLASTEDITOR_VISIBLECOLUMNS"))
+			{
+				string str = RTC_Params.ReadParam("BLASTEDITOR_VISIBLECOLUMNS");
+				string[] columns = str.Split(',');
+				foreach (string column in columns)
+				{
+					VisibleColumns.Add(column);
+				}
+			}
+			else
+			{
+				VisibleColumns.Add(buProperty.isEnabled.ToString());
+				VisibleColumns.Add(buProperty.isLocked.ToString());
+				VisibleColumns.Add(buProperty.Source.ToString());
+				VisibleColumns.Add(buProperty.Domain.ToString());
+				VisibleColumns.Add(buProperty.Address.ToString());
+				VisibleColumns.Add(buProperty.Precision.ToString());
+				VisibleColumns.Add(buProperty.ValueString.ToString());
+				VisibleColumns.Add(buProperty.Note.ToString());
+			}
 
 			RefreshVisibleColumns();
 

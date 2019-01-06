@@ -36,16 +36,22 @@ namespace RTC
 		}
 		private void ColumnSelector_Closing(object sender, FormClosingEventArgs e)
 		{
-			if (S.GET<RTC_NewBlastEditor_Form>() != null)
-			{
 				List<String> temp = new List<String>();
+				StringBuilder sb = new StringBuilder();
 				foreach (CheckBox cb in tablePanel.Controls.Cast<CheckBox>().Where(item => item.Checked))
 				{
 					temp.Add(cb.Name);
+
+					sb.Append(cb.Name);
+					sb.Append(",");
 				}
+			if (S.GET<RTC_NewBlastEditor_Form>() != null)
+			{
 				S.GET<RTC_NewBlastEditor_Form>().VisibleColumns = temp;
 				S.GET<RTC_NewBlastEditor_Form>().RefreshVisibleColumns();
 			}
+			RTC_Params.SetParam("BLASTEDITOR_VISIBLECOLUMNS", sb.ToString());
+
 		}
 	}
 }
