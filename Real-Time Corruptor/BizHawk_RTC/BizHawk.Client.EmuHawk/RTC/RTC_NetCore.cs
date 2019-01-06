@@ -183,7 +183,7 @@ namespace RTC
 		public void StoreCommands(NetworkStream providedStream, bool dontCreateNetworkStream = false)
 		{
 			var config = new SerializerConfig();
-			config.DefaultTargets = TargetMember.All;
+			//config.DefaultTargets = TargetMember.All;
 			//config.ShouldSerializeMember = m => SerializationOverride.ForceInclude;
 			var s = new CerasSerializer(config);
 			
