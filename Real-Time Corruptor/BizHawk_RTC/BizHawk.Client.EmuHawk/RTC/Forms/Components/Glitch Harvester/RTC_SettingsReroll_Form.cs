@@ -17,13 +17,18 @@ namespace RTC
 		public RTC_SettingsReroll_Form()
 		{
 			InitializeComponent();
-			cbRerollAddress.Checked = (bool)RTC_Unispec.RTCSpec[RTCSPEC.REROLL_ADDRESS.ToString()];
-			cbRerollSourceAddress.Checked = (bool)RTC_Unispec.RTCSpec[RTCSPEC.REROLL_SOURCEADDRESS.ToString()];
 
 			cbRerollAddress.CheckedChanged += cbRerollAddress_CheckedChanged;
 			cbRerollSourceAddress.CheckedChanged += cbRerollSourceAddress_CheckedChanged;
 
 			RTC_Core.SetRTCColor(RTC_Core.GeneralColor, this);
+			Load += RTC_SettingRerollForm_Load;
+		}
+
+		private void RTC_SettingRerollForm_Load(object sender, EventArgs e)
+		{
+			cbRerollAddress.Checked = (bool)RTC_Unispec.RTCSpec[RTCSPEC.REROLL_ADDRESS.ToString()];
+			cbRerollSourceAddress.Checked = (bool)RTC_Unispec.RTCSpec[RTCSPEC.REROLL_SOURCEADDRESS.ToString()];
 		}
 
 		private void cbRerollSourceAddress_CheckedChanged(object sender, EventArgs e)

@@ -1344,6 +1344,7 @@ namespace RTC
 
 		public void Reroll()
 		{
+			//Todo - Value List reroll
 			if (Source == BlastUnitSource.VALUE)
 			{
 				BigInteger randomValue;
@@ -1370,6 +1371,24 @@ namespace RTC
 				byte[] outArr = RTC_Extensions.AddValueToByteArrayUnchecked(temp, randomValue, false); //We use this as it properly handles the length for us
 				Array.Reverse(outArr);
 				Value = outArr;
+			}
+			else if (Source == BlastUnitSource.STORE)
+			{
+				//Todo - Allow rerolling address and domain separately
+				if ((bool)RTC_Unispec.RTCSpec[RTCSPEC.REROLL_SOURCEADDRESS.ToString()])
+				{
+					var newSource = RTC_Core.GetBlastTarget();
+
+					SourceAddress = newSource.Address;
+					SourceDomain = newSource.Domain;
+				}
+				if ((bool)RTC_Unispec.RTCSpec[RTCSPEC.REROLL_ADDRESS.ToString()])
+				{
+					var newSource = RTC_Core.GetBlastTarget();
+
+					Address = newSource.Address;
+					Domain = newSource.Domain;
+				}
 			}
 		}
 
