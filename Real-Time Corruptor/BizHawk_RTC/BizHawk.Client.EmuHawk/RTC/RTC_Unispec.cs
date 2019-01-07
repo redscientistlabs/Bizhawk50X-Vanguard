@@ -7,6 +7,7 @@ using System.Security.Permissions;
 using System.Text;
 using System.Threading.Tasks;
 using Ceras;
+using Newtonsoft.Json;
 
 namespace RTC
 {
@@ -83,8 +84,8 @@ namespace RTC
 			rtcSpecTemplate[RTCSPEC.HELLGENIE_MAXVALUE32BIT.ToString()] = 0xFFFFFFFFL;
 
 
-			//Custom Engine Config
-			RTC_CustomEngine.Initialize(rtcSpecTemplate);
+			//Custom Engine Config with Nightmare Engine
+			RTC_CustomEngine.InitTemplate_NightmareEngine(rtcSpecTemplate);
 
 
 			rtcSpecTemplate[RTCSPEC.FILTERING_HASH2LIMITERDICO.ToString()] = new Dictionary<string, RTC_Extensions.HashSetByteArrayComparator>();
@@ -270,6 +271,7 @@ namespace RTC
 	[Ceras.MemberConfig(TargetMember.All)]
 	public abstract class BaseSpec
 	{
+		[JsonProperty()]
 		internal Dictionary<string, object> specDico { get; set; } = new Dictionary<string, object>();
 
         public object this[string key]
@@ -294,6 +296,7 @@ namespace RTC
 
 
 		public void Reset() => specDico.Clear();
+		public object Clone() => ObjectCopierCeras.Clone(this);
 
 	}
 

@@ -259,10 +259,96 @@ namespace RTC
 
 		private void btnResetConfig_Click(object sender, EventArgs e)
 		{
-			PartialSpec spec = new PartialSpec("RTCSpec");
-			RTC_CustomEngine.Initialize(spec);
+			PartialSpec spec = (PartialSpec)RTC_CustomEngine.lastLoadedTemplate.Clone();
 			RTC_Unispec.RTCSpec.Update(spec);
 			Refresh();
+		}
+
+		private void cbSelectedTemplate_SelectedIndexChanged(object sender, EventArgs e)
+		{
+			PartialSpec spec = new PartialSpec("RTCSpec");
+
+			bool readOnlyTemplate = true;
+
+			switch (cbSelectedTemplate.SelectedItem.ToString())
+			{
+				case "Nightmare Engine":
+					RTC_CustomEngine.InitTemplate_NightmareEngine(spec);
+					break;
+				case "Hellgenie Engine":
+					RTC_CustomEngine.InitTemplate_HellgenieEngine(spec);
+					break;
+				case "Distortion Engine":
+					RTC_CustomEngine.InitTemplate_DistortionEngine(spec);
+					break;
+				case "Freeze Engine":
+					RTC_CustomEngine.InitTemplate_FreezeEngine(spec);
+					break;
+				case "Pipe Engine":
+					RTC_CustomEngine.InitTemplate_PipeEngine(spec);
+					break;
+				case "Vector Engine":
+					RTC_CustomEngine.InitTemplate_VectorEngine(spec);
+					break;
+				default:
+					readOnlyTemplate = false;
+					break;
+			}
+
+			if(readOnlyTemplate)
+			{
+				btnCustomTemplateSave.Enabled = false;
+				btnCustomTemplateSave.BackColor = Color.LightGray;
+				btnCustomTemplateSave.ForeColor = Color.DimGray;
+			}
+
+			RTC_Unispec.RTCSpec.Update(spec);
+			Refresh();
+
+		}
+
+		private void btnCustomTemplateLoad_Click(object sender, EventArgs e)
+		{
+			RTC_Core.StopSound();
+			PartialSpec spec = RTC_CustomEngine.LoadTemplateFile();
+			RTC_Core.StartSound();
+
+			if (spec == null)
+				return;
+
+			RTC_Unispec.RTCSpec.Update(spec);
+			Refresh();
+
+			cbSelectedTemplate.Text = spec.Name;
+		}
+
+		private void btnCustomTemplateSaveAs_Click(object sender, EventArgs e)
+		{
+
+			RTC_Core.StopSound();
+			string TemplateName = RTC_CustomEngine.SaveTemplateFile(true);
+			RTC_Core.StartSound();
+
+			if (string.IsNullOrWhiteSpace(TemplateName))
+				return;
+
+			cbSelectedTemplate.Text = TemplateName;
+
+			btnCustomTemplateSaveAs.Enabled = true;
+			btnCustomTemplateSaveAs.BackColor = Color.Tomato;
+			btnCustomTemplateSaveAs.ForeColor = Color.Black;
+		}
+
+		private void btnCustomTemplateSave_Click(object sender, EventArgs e)
+		{
+			RTC_Core.StopSound();
+			string TemplateName = RTC_CustomEngine.SaveTemplateFile(false);
+			RTC_Core.StartSound();
+
+			if (string.IsNullOrWhiteSpace(TemplateName))
+				return;
+
+			cbSelectedTemplate.Text = TemplateName;
 		}
 	}
 }

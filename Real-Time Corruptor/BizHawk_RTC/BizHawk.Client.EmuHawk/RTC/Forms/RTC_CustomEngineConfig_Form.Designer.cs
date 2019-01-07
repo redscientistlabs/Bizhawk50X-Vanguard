@@ -75,6 +75,13 @@
             this.rbStoreOnce = new System.Windows.Forms.RadioButton();
             this.gbBackupSource = new System.Windows.Forms.GroupBox();
             this.btnResetConfig = new System.Windows.Forms.Button();
+            this.pnTopBar = new System.Windows.Forms.Panel();
+            this.btnCustomTemplateSaveAs = new System.Windows.Forms.Button();
+            this.btnCustomTemplateLoad = new System.Windows.Forms.Button();
+            this.btnCustomTemplateSave = new System.Windows.Forms.Button();
+            this.cbSelectedTemplate = new System.Windows.Forms.ComboBox();
+            this.label2 = new System.Windows.Forms.Label();
+            this.panel1 = new System.Windows.Forms.Panel();
             ((System.ComponentModel.ISupportInitialize)(this.nmMaxInfinite)).BeginInit();
             this.gbUnitSource.SuspendLayout();
             this.gbValueList.SuspendLayout();
@@ -91,6 +98,8 @@
             this.gbStoreTime.SuspendLayout();
             this.gbStoreType.SuspendLayout();
             this.gbBackupSource.SuspendLayout();
+            this.pnTopBar.SuspendLayout();
+            this.panel1.SuspendLayout();
             this.SuspendLayout();
             // 
             // cbLockUnits
@@ -113,9 +122,9 @@
             this.btnClearActive.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnClearActive.Font = new System.Drawing.Font("Segoe UI", 8F);
             this.btnClearActive.ForeColor = System.Drawing.Color.Black;
-            this.btnClearActive.Location = new System.Drawing.Point(12, 301);
+            this.btnClearActive.Location = new System.Drawing.Point(15, 305);
             this.btnClearActive.Name = "btnClearActive";
-            this.btnClearActive.Size = new System.Drawing.Size(123, 24);
+            this.btnClearActive.Size = new System.Drawing.Size(154, 24);
             this.btnClearActive.TabIndex = 150;
             this.btnClearActive.TabStop = false;
             this.btnClearActive.Tag = "color:light";
@@ -128,7 +137,7 @@
             this.nmMaxInfinite.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
             this.nmMaxInfinite.Font = new System.Drawing.Font("Segoe UI", 8F);
             this.nmMaxInfinite.ForeColor = System.Drawing.Color.White;
-            this.nmMaxInfinite.Location = new System.Drawing.Point(44, 79);
+            this.nmMaxInfinite.Location = new System.Drawing.Point(6, 80);
             this.nmMaxInfinite.Maximum = new decimal(new int[] {
             65536,
             0,
@@ -140,7 +149,7 @@
             0,
             0});
             this.nmMaxInfinite.Name = "nmMaxInfinite";
-            this.nmMaxInfinite.Size = new System.Drawing.Size(70, 22);
+            this.nmMaxInfinite.Size = new System.Drawing.Size(106, 22);
             this.nmMaxInfinite.TabIndex = 149;
             this.nmMaxInfinite.Tag = "color:dark";
             this.nmMaxInfinite.Value = new decimal(new int[] {
@@ -155,11 +164,11 @@
             this.label1.AutoSize = true;
             this.label1.Font = new System.Drawing.Font("Segoe UI", 8F);
             this.label1.ForeColor = System.Drawing.Color.White;
-            this.label1.Location = new System.Drawing.Point(2, 61);
+            this.label1.Location = new System.Drawing.Point(6, 63);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(98, 13);
+            this.label1.Size = new System.Drawing.Size(101, 13);
             this.label1.TabIndex = 148;
-            this.label1.Text = "Max Infinite Units";
+            this.label1.Text = "Max Infinite Units:";
             this.label1.TextAlign = System.Drawing.ContentAlignment.TopCenter;
             // 
             // gbUnitSource
@@ -168,7 +177,7 @@
             this.gbUnitSource.Controls.Add(this.rbUnitSourceValue);
             this.gbUnitSource.Font = new System.Drawing.Font("Segoe UI", 8F);
             this.gbUnitSource.ForeColor = System.Drawing.Color.White;
-            this.gbUnitSource.Location = new System.Drawing.Point(12, 8);
+            this.gbUnitSource.Location = new System.Drawing.Point(15, 12);
             this.gbUnitSource.Name = "gbUnitSource";
             this.gbUnitSource.Size = new System.Drawing.Size(98, 54);
             this.gbUnitSource.TabIndex = 161;
@@ -239,7 +248,7 @@
             this.gbValueSource.Controls.Add(this.gbValueList);
             this.gbValueSource.Font = new System.Drawing.Font("Segoe UI", 8F);
             this.gbValueSource.ForeColor = System.Drawing.Color.White;
-            this.gbValueSource.Location = new System.Drawing.Point(12, 87);
+            this.gbValueSource.Location = new System.Drawing.Point(15, 91);
             this.gbValueSource.Name = "gbValueSource";
             this.gbValueSource.Size = new System.Drawing.Size(419, 85);
             this.gbValueSource.TabIndex = 169;
@@ -366,7 +375,7 @@
             this.gbLimiterList.Controls.Add(this.cbLimiterList);
             this.gbLimiterList.Font = new System.Drawing.Font("Segoe UI", 8F);
             this.gbLimiterList.ForeColor = System.Drawing.Color.White;
-            this.gbLimiterList.Location = new System.Drawing.Point(297, 182);
+            this.gbLimiterList.Location = new System.Drawing.Point(300, 186);
             this.gbLimiterList.Name = "gbLimiterList";
             this.gbLimiterList.Size = new System.Drawing.Size(134, 143);
             this.gbLimiterList.TabIndex = 181;
@@ -503,7 +512,7 @@
             this.gbStepSettings.Controls.Add(this.nmLifetime);
             this.gbStepSettings.Font = new System.Drawing.Font("Segoe UI", 8F);
             this.gbStepSettings.ForeColor = System.Drawing.Color.White;
-            this.gbStepSettings.Location = new System.Drawing.Point(12, 182);
+            this.gbStepSettings.Location = new System.Drawing.Point(15, 186);
             this.gbStepSettings.Name = "gbStepSettings";
             this.gbStepSettings.Size = new System.Drawing.Size(154, 113);
             this.gbStepSettings.TabIndex = 188;
@@ -612,7 +621,7 @@
             this.gbCheckBoxes.Controls.Add(this.label1);
             this.gbCheckBoxes.Font = new System.Drawing.Font("Segoe UI", 8F);
             this.gbCheckBoxes.ForeColor = System.Drawing.Color.White;
-            this.gbCheckBoxes.Location = new System.Drawing.Point(172, 182);
+            this.gbCheckBoxes.Location = new System.Drawing.Point(175, 186);
             this.gbCheckBoxes.Name = "gbCheckBoxes";
             this.gbCheckBoxes.Size = new System.Drawing.Size(118, 113);
             this.gbCheckBoxes.TabIndex = 189;
@@ -737,7 +746,7 @@
             this.gbBackupSource.Controls.Add(this.gbStoreTime);
             this.gbBackupSource.Font = new System.Drawing.Font("Segoe UI", 8F);
             this.gbBackupSource.ForeColor = System.Drawing.Color.White;
-            this.gbBackupSource.Location = new System.Drawing.Point(119, 8);
+            this.gbBackupSource.Location = new System.Drawing.Point(122, 12);
             this.gbBackupSource.Name = "gbBackupSource";
             this.gbBackupSource.Size = new System.Drawing.Size(312, 73);
             this.gbBackupSource.TabIndex = 180;
@@ -751,9 +760,9 @@
             this.btnResetConfig.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnResetConfig.Font = new System.Drawing.Font("Segoe UI", 8F);
             this.btnResetConfig.ForeColor = System.Drawing.Color.Black;
-            this.btnResetConfig.Location = new System.Drawing.Point(149, 301);
+            this.btnResetConfig.Location = new System.Drawing.Point(175, 305);
             this.btnResetConfig.Name = "btnResetConfig";
-            this.btnResetConfig.Size = new System.Drawing.Size(123, 24);
+            this.btnResetConfig.Size = new System.Drawing.Size(118, 24);
             this.btnResetConfig.TabIndex = 190;
             this.btnResetConfig.TabStop = false;
             this.btnResetConfig.Tag = "color:light";
@@ -761,22 +770,134 @@
             this.btnResetConfig.UseVisualStyleBackColor = false;
             this.btnResetConfig.Click += new System.EventHandler(this.btnResetConfig_Click);
             // 
+            // pnTopBar
+            // 
+            this.pnTopBar.BackColor = System.Drawing.Color.Gray;
+            this.pnTopBar.Controls.Add(this.btnCustomTemplateSaveAs);
+            this.pnTopBar.Controls.Add(this.btnCustomTemplateLoad);
+            this.pnTopBar.Controls.Add(this.btnCustomTemplateSave);
+            this.pnTopBar.Controls.Add(this.cbSelectedTemplate);
+            this.pnTopBar.Controls.Add(this.label2);
+            this.pnTopBar.Dock = System.Windows.Forms.DockStyle.Top;
+            this.pnTopBar.Location = new System.Drawing.Point(0, 0);
+            this.pnTopBar.Name = "pnTopBar";
+            this.pnTopBar.Size = new System.Drawing.Size(471, 51);
+            this.pnTopBar.TabIndex = 191;
+            this.pnTopBar.Tag = "color:normal";
+            // 
+            // btnCustomTemplateSaveAs
+            // 
+            this.btnCustomTemplateSaveAs.BackColor = System.Drawing.Color.Firebrick;
+            this.btnCustomTemplateSaveAs.FlatAppearance.BorderSize = 0;
+            this.btnCustomTemplateSaveAs.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnCustomTemplateSaveAs.Font = new System.Drawing.Font("Segoe UI", 8F);
+            this.btnCustomTemplateSaveAs.ForeColor = System.Drawing.Color.Black;
+            this.btnCustomTemplateSaveAs.Location = new System.Drawing.Point(339, 11);
+            this.btnCustomTemplateSaveAs.Name = "btnCustomTemplateSaveAs";
+            this.btnCustomTemplateSaveAs.Size = new System.Drawing.Size(64, 30);
+            this.btnCustomTemplateSaveAs.TabIndex = 193;
+            this.btnCustomTemplateSaveAs.TabStop = false;
+            this.btnCustomTemplateSaveAs.Tag = "";
+            this.btnCustomTemplateSaveAs.Text = "Save as";
+            this.btnCustomTemplateSaveAs.UseVisualStyleBackColor = false;
+            this.btnCustomTemplateSaveAs.Click += new System.EventHandler(this.btnCustomTemplateSaveAs_Click);
+            // 
+            // btnCustomTemplateLoad
+            // 
+            this.btnCustomTemplateLoad.BackColor = System.Drawing.Color.Orange;
+            this.btnCustomTemplateLoad.FlatAppearance.BorderSize = 0;
+            this.btnCustomTemplateLoad.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnCustomTemplateLoad.Font = new System.Drawing.Font("Segoe UI", 8F);
+            this.btnCustomTemplateLoad.ForeColor = System.Drawing.Color.Black;
+            this.btnCustomTemplateLoad.Location = new System.Drawing.Point(278, 11);
+            this.btnCustomTemplateLoad.Name = "btnCustomTemplateLoad";
+            this.btnCustomTemplateLoad.Size = new System.Drawing.Size(55, 30);
+            this.btnCustomTemplateLoad.TabIndex = 192;
+            this.btnCustomTemplateLoad.TabStop = false;
+            this.btnCustomTemplateLoad.Tag = "";
+            this.btnCustomTemplateLoad.Text = "Load";
+            this.btnCustomTemplateLoad.UseVisualStyleBackColor = false;
+            this.btnCustomTemplateLoad.Click += new System.EventHandler(this.btnCustomTemplateLoad_Click);
+            // 
+            // btnCustomTemplateSave
+            // 
+            this.btnCustomTemplateSave.BackColor = System.Drawing.Color.LightGray;
+            this.btnCustomTemplateSave.Enabled = false;
+            this.btnCustomTemplateSave.FlatAppearance.BorderSize = 0;
+            this.btnCustomTemplateSave.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnCustomTemplateSave.Font = new System.Drawing.Font("Segoe UI", 8F);
+            this.btnCustomTemplateSave.ForeColor = System.Drawing.Color.DimGray;
+            this.btnCustomTemplateSave.Location = new System.Drawing.Point(409, 11);
+            this.btnCustomTemplateSave.Name = "btnCustomTemplateSave";
+            this.btnCustomTemplateSave.Size = new System.Drawing.Size(50, 30);
+            this.btnCustomTemplateSave.TabIndex = 191;
+            this.btnCustomTemplateSave.TabStop = false;
+            this.btnCustomTemplateSave.Tag = "";
+            this.btnCustomTemplateSave.Text = "Save";
+            this.btnCustomTemplateSave.UseVisualStyleBackColor = false;
+            this.btnCustomTemplateSave.Click += new System.EventHandler(this.btnCustomTemplateSave_Click);
+            // 
+            // cbSelectedTemplate
+            // 
+            this.cbSelectedTemplate.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
+            this.cbSelectedTemplate.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.cbSelectedTemplate.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.cbSelectedTemplate.Font = new System.Drawing.Font("Segoe UI", 8F);
+            this.cbSelectedTemplate.ForeColor = System.Drawing.Color.White;
+            this.cbSelectedTemplate.FormattingEnabled = true;
+            this.cbSelectedTemplate.Items.AddRange(new object[] {
+            "Nightmare Engine",
+            "Hellgenie Engine",
+            "Distortion Engine",
+            "Freeze Engine",
+            "Pipe Engine",
+            "Vector Engine"});
+            this.cbSelectedTemplate.Location = new System.Drawing.Point(12, 20);
+            this.cbSelectedTemplate.Name = "cbSelectedTemplate";
+            this.cbSelectedTemplate.Size = new System.Drawing.Size(211, 21);
+            this.cbSelectedTemplate.TabIndex = 168;
+            this.cbSelectedTemplate.Tag = "color:dark";
+            this.cbSelectedTemplate.SelectedIndexChanged += new System.EventHandler(this.cbSelectedTemplate_SelectedIndexChanged);
+            // 
+            // label2
+            // 
+            this.label2.AutoSize = true;
+            this.label2.Font = new System.Drawing.Font("Segoe UI", 8F);
+            this.label2.ForeColor = System.Drawing.Color.White;
+            this.label2.Location = new System.Drawing.Point(9, 5);
+            this.label2.Name = "label2";
+            this.label2.Size = new System.Drawing.Size(101, 13);
+            this.label2.TabIndex = 167;
+            this.label2.Text = "Selected Template:";
+            // 
+            // panel1
+            // 
+            this.panel1.BackColor = System.Drawing.Color.Gray;
+            this.panel1.Controls.Add(this.gbUnitSource);
+            this.panel1.Controls.Add(this.btnClearActive);
+            this.panel1.Controls.Add(this.btnResetConfig);
+            this.panel1.Controls.Add(this.gbValueSource);
+            this.panel1.Controls.Add(this.gbCheckBoxes);
+            this.panel1.Controls.Add(this.gbBackupSource);
+            this.panel1.Controls.Add(this.gbStepSettings);
+            this.panel1.Controls.Add(this.gbLimiterList);
+            this.panel1.Location = new System.Drawing.Point(12, 61);
+            this.panel1.Name = "panel1";
+            this.panel1.Size = new System.Drawing.Size(447, 340);
+            this.panel1.TabIndex = 192;
+            this.panel1.Tag = "color:normal";
+            // 
             // RTC_CustomEngineConfig_Form
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
-            this.ClientSize = new System.Drawing.Size(442, 333);
-            this.Controls.Add(this.btnResetConfig);
-            this.Controls.Add(this.gbCheckBoxes);
-            this.Controls.Add(this.gbStepSettings);
-            this.Controls.Add(this.gbLimiterList);
-            this.Controls.Add(this.gbBackupSource);
-            this.Controls.Add(this.gbValueSource);
-            this.Controls.Add(this.gbUnitSource);
-            this.Controls.Add(this.btnClearActive);
+            this.ClientSize = new System.Drawing.Size(471, 413);
+            this.Controls.Add(this.panel1);
+            this.Controls.Add(this.pnTopBar);
             this.Font = new System.Drawing.Font("Segoe UI Symbol", 8.25F);
             this.ForeColor = System.Drawing.Color.White;
+            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Name = "RTC_CustomEngineConfig_Form";
             this.Tag = "color:dark";
@@ -808,6 +929,9 @@
             this.gbStoreType.PerformLayout();
             this.gbBackupSource.ResumeLayout(false);
             this.gbBackupSource.PerformLayout();
+            this.pnTopBar.ResumeLayout(false);
+            this.pnTopBar.PerformLayout();
+            this.panel1.ResumeLayout(false);
             this.ResumeLayout(false);
 
 		}
@@ -859,5 +983,12 @@
 		public NumericUpDownHexFix nmMinValue;
 		public System.Windows.Forms.CheckBox cbLimiterInverted;
 		private System.Windows.Forms.Button btnResetConfig;
+		private System.Windows.Forms.Panel pnTopBar;
+		private System.Windows.Forms.Panel panel1;
+		private System.Windows.Forms.Button btnCustomTemplateSaveAs;
+		private System.Windows.Forms.Button btnCustomTemplateLoad;
+		private System.Windows.Forms.Button btnCustomTemplateSave;
+		public System.Windows.Forms.ComboBox cbSelectedTemplate;
+		private System.Windows.Forms.Label label2;
 	}
 }

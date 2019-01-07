@@ -1,5 +1,7 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
 using System.Diagnostics;
+using System.IO;
 using System.Linq;
 using System.Numerics;
 using System.Security.Cryptography;
@@ -9,6 +11,8 @@ namespace RTC
 {
 	public static class RTC_CustomEngine
 	{
+
+		public static PartialSpec lastLoadedTemplate = null;
 
 		public static BlastUnit GenerateUnit(string domain, long address, int precision)
 		{
@@ -204,8 +208,10 @@ namespace RTC
 				.ToArray();
 		}
 
-		public static void Initialize(PartialSpec pSpec)
+		public static void InitTemplate_NightmareEngine(PartialSpec pSpec)
 		{
+			pSpec[RTCSPEC.CUSTOM_NAME.ToString()] = "Nightmare Engine";
+
 			pSpec[RTCSPEC.CUSTOM_DELAY.ToString()] = 0;
 			pSpec[RTCSPEC.CUSTOM_LIFETIME.ToString()] = 1;
 			pSpec[RTCSPEC.CUSTOM_LOOP.ToString()] = false;
@@ -232,6 +238,307 @@ namespace RTC
 			pSpec[RTCSPEC.CUSTOM_STOREADDRESS.ToString()] = CustomStoreAddress.RANDOM;
 			pSpec[RTCSPEC.CUSTOM_STORETIME.ToString()] = StoreTime.IMMEDIATE;
 			pSpec[RTCSPEC.CUSTOM_STORETYPE.ToString()] = StoreType.ONCE;
+
+			lastLoadedTemplate = (PartialSpec)pSpec.Clone();
+		}
+		public static void InitTemplate_HellgenieEngine(PartialSpec pSpec)
+		{
+			pSpec[RTCSPEC.CUSTOM_NAME.ToString()] = "Hellgenie Engine";
+
+			pSpec[RTCSPEC.CUSTOM_DELAY.ToString()] = 0;
+			pSpec[RTCSPEC.CUSTOM_LIFETIME.ToString()] = 1;
+			pSpec[RTCSPEC.CUSTOM_LOOP.ToString()] = false;
+
+			pSpec[RTCSPEC.CUSTOM_TILTVALUE.ToString()] = 1;
+
+			pSpec[RTCSPEC.CUSTOM_LIMITERLISTHASH.ToString()] = null;
+			pSpec[RTCSPEC.CUSTOM_LIMITERTIME.ToString()] = LimiterTime.NONE;
+			pSpec[RTCSPEC.CUSTOM_LIMITERINVERTED.ToString()] = false;
+
+			pSpec[RTCSPEC.CUSTOM_VALUELISTHASH.ToString()] = null;
+
+			pSpec[RTCSPEC.CUSTOM_MINVALUE8BIT.ToString()] = 0L;
+			pSpec[RTCSPEC.CUSTOM_MINVALUE16BIT.ToString()] = 0L;
+			pSpec[RTCSPEC.CUSTOM_MINVALUE32BIT.ToString()] = 0L;
+			pSpec[RTCSPEC.CUSTOM_MAXVALUE8BIT.ToString()] = 0xFFL;
+			pSpec[RTCSPEC.CUSTOM_MAXVALUE16BIT.ToString()] = 0xFFFFL;
+			pSpec[RTCSPEC.CUSTOM_MAXVALUE32BIT.ToString()] = 0xFFFFFFFFL;
+
+			pSpec[RTCSPEC.CUSTOM_VALUESOURCE.ToString()] = CustomValueSource.RANDOM;
+
+			pSpec[RTCSPEC.CUSTOM_SOURCE.ToString()] = BlastUnitSource.VALUE;
+
+			pSpec[RTCSPEC.CUSTOM_STOREADDRESS.ToString()] = CustomStoreAddress.RANDOM;
+			pSpec[RTCSPEC.CUSTOM_STORETIME.ToString()] = StoreTime.IMMEDIATE;
+			pSpec[RTCSPEC.CUSTOM_STORETYPE.ToString()] = StoreType.ONCE;
+
+			lastLoadedTemplate = (PartialSpec)pSpec.Clone();
+		}
+		public static void InitTemplate_DistortionEngine(PartialSpec pSpec)
+		{
+			pSpec[RTCSPEC.CUSTOM_NAME.ToString()] = "Distortion Engine";
+
+			pSpec[RTCSPEC.CUSTOM_DELAY.ToString()] = 0;
+			pSpec[RTCSPEC.CUSTOM_LIFETIME.ToString()] = 1;
+			pSpec[RTCSPEC.CUSTOM_LOOP.ToString()] = false;
+
+			pSpec[RTCSPEC.CUSTOM_TILTVALUE.ToString()] = 1;
+
+			pSpec[RTCSPEC.CUSTOM_LIMITERLISTHASH.ToString()] = null;
+			pSpec[RTCSPEC.CUSTOM_LIMITERTIME.ToString()] = LimiterTime.NONE;
+			pSpec[RTCSPEC.CUSTOM_LIMITERINVERTED.ToString()] = false;
+
+			pSpec[RTCSPEC.CUSTOM_VALUELISTHASH.ToString()] = null;
+
+			pSpec[RTCSPEC.CUSTOM_MINVALUE8BIT.ToString()] = 0L;
+			pSpec[RTCSPEC.CUSTOM_MINVALUE16BIT.ToString()] = 0L;
+			pSpec[RTCSPEC.CUSTOM_MINVALUE32BIT.ToString()] = 0L;
+			pSpec[RTCSPEC.CUSTOM_MAXVALUE8BIT.ToString()] = 0xFFL;
+			pSpec[RTCSPEC.CUSTOM_MAXVALUE16BIT.ToString()] = 0xFFFFL;
+			pSpec[RTCSPEC.CUSTOM_MAXVALUE32BIT.ToString()] = 0xFFFFFFFFL;
+
+			pSpec[RTCSPEC.CUSTOM_VALUESOURCE.ToString()] = CustomValueSource.RANDOM;
+
+			pSpec[RTCSPEC.CUSTOM_SOURCE.ToString()] = BlastUnitSource.VALUE;
+
+			pSpec[RTCSPEC.CUSTOM_STOREADDRESS.ToString()] = CustomStoreAddress.RANDOM;
+			pSpec[RTCSPEC.CUSTOM_STORETIME.ToString()] = StoreTime.IMMEDIATE;
+			pSpec[RTCSPEC.CUSTOM_STORETYPE.ToString()] = StoreType.ONCE;
+
+			lastLoadedTemplate = (PartialSpec)pSpec.Clone();
+		}
+		public static void InitTemplate_FreezeEngine(PartialSpec pSpec)
+		{
+			pSpec[RTCSPEC.CUSTOM_NAME.ToString()] = "Freeze Engine";
+
+			pSpec[RTCSPEC.CUSTOM_DELAY.ToString()] = 0;
+			pSpec[RTCSPEC.CUSTOM_LIFETIME.ToString()] = 1;
+			pSpec[RTCSPEC.CUSTOM_LOOP.ToString()] = false;
+
+			pSpec[RTCSPEC.CUSTOM_TILTVALUE.ToString()] = 1;
+
+			pSpec[RTCSPEC.CUSTOM_LIMITERLISTHASH.ToString()] = null;
+			pSpec[RTCSPEC.CUSTOM_LIMITERTIME.ToString()] = LimiterTime.NONE;
+			pSpec[RTCSPEC.CUSTOM_LIMITERINVERTED.ToString()] = false;
+
+			pSpec[RTCSPEC.CUSTOM_VALUELISTHASH.ToString()] = null;
+
+			pSpec[RTCSPEC.CUSTOM_MINVALUE8BIT.ToString()] = 0L;
+			pSpec[RTCSPEC.CUSTOM_MINVALUE16BIT.ToString()] = 0L;
+			pSpec[RTCSPEC.CUSTOM_MINVALUE32BIT.ToString()] = 0L;
+			pSpec[RTCSPEC.CUSTOM_MAXVALUE8BIT.ToString()] = 0xFFL;
+			pSpec[RTCSPEC.CUSTOM_MAXVALUE16BIT.ToString()] = 0xFFFFL;
+			pSpec[RTCSPEC.CUSTOM_MAXVALUE32BIT.ToString()] = 0xFFFFFFFFL;
+
+			pSpec[RTCSPEC.CUSTOM_VALUESOURCE.ToString()] = CustomValueSource.RANDOM;
+
+			pSpec[RTCSPEC.CUSTOM_SOURCE.ToString()] = BlastUnitSource.VALUE;
+
+			pSpec[RTCSPEC.CUSTOM_STOREADDRESS.ToString()] = CustomStoreAddress.RANDOM;
+			pSpec[RTCSPEC.CUSTOM_STORETIME.ToString()] = StoreTime.IMMEDIATE;
+			pSpec[RTCSPEC.CUSTOM_STORETYPE.ToString()] = StoreType.ONCE;
+
+			lastLoadedTemplate = (PartialSpec)pSpec.Clone();
+		}
+		public static void InitTemplate_PipeEngine(PartialSpec pSpec)
+		{
+			pSpec[RTCSPEC.CUSTOM_NAME.ToString()] = "Pipe Engine";
+
+			pSpec[RTCSPEC.CUSTOM_DELAY.ToString()] = 0;
+			pSpec[RTCSPEC.CUSTOM_LIFETIME.ToString()] = 1;
+			pSpec[RTCSPEC.CUSTOM_LOOP.ToString()] = false;
+
+			pSpec[RTCSPEC.CUSTOM_TILTVALUE.ToString()] = 1;
+
+			pSpec[RTCSPEC.CUSTOM_LIMITERLISTHASH.ToString()] = null;
+			pSpec[RTCSPEC.CUSTOM_LIMITERTIME.ToString()] = LimiterTime.NONE;
+			pSpec[RTCSPEC.CUSTOM_LIMITERINVERTED.ToString()] = false;
+
+			pSpec[RTCSPEC.CUSTOM_VALUELISTHASH.ToString()] = null;
+
+			pSpec[RTCSPEC.CUSTOM_MINVALUE8BIT.ToString()] = 0L;
+			pSpec[RTCSPEC.CUSTOM_MINVALUE16BIT.ToString()] = 0L;
+			pSpec[RTCSPEC.CUSTOM_MINVALUE32BIT.ToString()] = 0L;
+			pSpec[RTCSPEC.CUSTOM_MAXVALUE8BIT.ToString()] = 0xFFL;
+			pSpec[RTCSPEC.CUSTOM_MAXVALUE16BIT.ToString()] = 0xFFFFL;
+			pSpec[RTCSPEC.CUSTOM_MAXVALUE32BIT.ToString()] = 0xFFFFFFFFL;
+
+			pSpec[RTCSPEC.CUSTOM_VALUESOURCE.ToString()] = CustomValueSource.RANDOM;
+
+			pSpec[RTCSPEC.CUSTOM_SOURCE.ToString()] = BlastUnitSource.VALUE;
+
+			pSpec[RTCSPEC.CUSTOM_STOREADDRESS.ToString()] = CustomStoreAddress.RANDOM;
+			pSpec[RTCSPEC.CUSTOM_STORETIME.ToString()] = StoreTime.IMMEDIATE;
+			pSpec[RTCSPEC.CUSTOM_STORETYPE.ToString()] = StoreType.ONCE;
+
+			lastLoadedTemplate = (PartialSpec)pSpec.Clone();
+		}
+		public static void InitTemplate_VectorEngine(PartialSpec pSpec)
+		{
+			pSpec[RTCSPEC.CUSTOM_NAME.ToString()] = "Vector Engine";
+
+			pSpec[RTCSPEC.CUSTOM_DELAY.ToString()] = 0;
+			pSpec[RTCSPEC.CUSTOM_LIFETIME.ToString()] = 1;
+			pSpec[RTCSPEC.CUSTOM_LOOP.ToString()] = false;
+
+			pSpec[RTCSPEC.CUSTOM_TILTVALUE.ToString()] = 1;
+
+			pSpec[RTCSPEC.CUSTOM_LIMITERLISTHASH.ToString()] = null;
+			pSpec[RTCSPEC.CUSTOM_LIMITERTIME.ToString()] = LimiterTime.NONE;
+			pSpec[RTCSPEC.CUSTOM_LIMITERINVERTED.ToString()] = false;
+
+			pSpec[RTCSPEC.CUSTOM_VALUELISTHASH.ToString()] = null;
+
+			pSpec[RTCSPEC.CUSTOM_MINVALUE8BIT.ToString()] = 0L;
+			pSpec[RTCSPEC.CUSTOM_MINVALUE16BIT.ToString()] = 0L;
+			pSpec[RTCSPEC.CUSTOM_MINVALUE32BIT.ToString()] = 0L;
+			pSpec[RTCSPEC.CUSTOM_MAXVALUE8BIT.ToString()] = 0xFFL;
+			pSpec[RTCSPEC.CUSTOM_MAXVALUE16BIT.ToString()] = 0xFFFFL;
+			pSpec[RTCSPEC.CUSTOM_MAXVALUE32BIT.ToString()] = 0xFFFFFFFFL;
+
+			pSpec[RTCSPEC.CUSTOM_VALUESOURCE.ToString()] = CustomValueSource.RANDOM;
+
+			pSpec[RTCSPEC.CUSTOM_SOURCE.ToString()] = BlastUnitSource.VALUE;
+
+			pSpec[RTCSPEC.CUSTOM_STOREADDRESS.ToString()] = CustomStoreAddress.RANDOM;
+			pSpec[RTCSPEC.CUSTOM_STORETIME.ToString()] = StoreTime.IMMEDIATE;
+			pSpec[RTCSPEC.CUSTOM_STORETYPE.ToString()] = StoreType.ONCE;
+
+			lastLoadedTemplate = (PartialSpec)pSpec.Clone();
+		}
+
+		public static PartialSpec getCurrentConfigSpec()
+		{
+			PartialSpec pSpec = new PartialSpec(RTC_Unispec.RTCSpec.name);
+
+			pSpec[RTCSPEC.CUSTOM_NAME.ToString()] = pSpec[RTCSPEC.CUSTOM_NAME.ToString()];
+
+			pSpec[RTCSPEC.CUSTOM_DELAY.ToString()] = RTC_Unispec.RTCSpec[RTCSPEC.CUSTOM_DELAY.ToString()];
+			pSpec[RTCSPEC.CUSTOM_LIFETIME.ToString()] = RTC_Unispec.RTCSpec[RTCSPEC.CUSTOM_LIFETIME.ToString()];
+			pSpec[RTCSPEC.CUSTOM_LOOP.ToString()] = RTC_Unispec.RTCSpec[RTCSPEC.CUSTOM_LOOP.ToString()];
+
+			pSpec[RTCSPEC.CUSTOM_TILTVALUE.ToString()] = RTC_Unispec.RTCSpec[RTCSPEC.CUSTOM_TILTVALUE.ToString()];
+
+			pSpec[RTCSPEC.CUSTOM_LIMITERLISTHASH.ToString()] = RTC_Unispec.RTCSpec[RTCSPEC.CUSTOM_LIMITERLISTHASH.ToString()];
+			pSpec[RTCSPEC.CUSTOM_LIMITERTIME.ToString()] = RTC_Unispec.RTCSpec[RTCSPEC.CUSTOM_LIMITERTIME.ToString()];
+			pSpec[RTCSPEC.CUSTOM_LIMITERINVERTED.ToString()] = RTC_Unispec.RTCSpec[RTCSPEC.CUSTOM_LIMITERINVERTED.ToString()];
+
+			pSpec[RTCSPEC.CUSTOM_VALUELISTHASH.ToString()] = RTC_Unispec.RTCSpec[RTCSPEC.CUSTOM_VALUELISTHASH.ToString()];
+
+			pSpec[RTCSPEC.CUSTOM_MINVALUE8BIT.ToString()] = RTC_Unispec.RTCSpec[RTCSPEC.CUSTOM_MINVALUE8BIT.ToString()];
+			pSpec[RTCSPEC.CUSTOM_MINVALUE16BIT.ToString()] = RTC_Unispec.RTCSpec[RTCSPEC.CUSTOM_MINVALUE16BIT.ToString()];
+			pSpec[RTCSPEC.CUSTOM_MINVALUE32BIT.ToString()] = RTC_Unispec.RTCSpec[RTCSPEC.CUSTOM_MINVALUE32BIT.ToString()];
+			pSpec[RTCSPEC.CUSTOM_MAXVALUE8BIT.ToString()] = RTC_Unispec.RTCSpec[RTCSPEC.CUSTOM_MAXVALUE8BIT.ToString()];
+			pSpec[RTCSPEC.CUSTOM_MAXVALUE16BIT.ToString()] = RTC_Unispec.RTCSpec[RTCSPEC.CUSTOM_MAXVALUE16BIT.ToString()];
+			pSpec[RTCSPEC.CUSTOM_MAXVALUE32BIT.ToString()] = RTC_Unispec.RTCSpec[RTCSPEC.CUSTOM_MAXVALUE32BIT.ToString()];
+
+			pSpec[RTCSPEC.CUSTOM_VALUESOURCE.ToString()] = RTC_Unispec.RTCSpec[RTCSPEC.CUSTOM_VALUESOURCE.ToString()];
+
+			pSpec[RTCSPEC.CUSTOM_SOURCE.ToString()] = RTC_Unispec.RTCSpec[RTCSPEC.CUSTOM_SOURCE.ToString()];
+
+			pSpec[RTCSPEC.CUSTOM_STOREADDRESS.ToString()] = RTC_Unispec.RTCSpec[RTCSPEC.CUSTOM_STOREADDRESS.ToString()];
+			pSpec[RTCSPEC.CUSTOM_STORETIME.ToString()] = RTC_Unispec.RTCSpec[RTCSPEC.CUSTOM_STORETIME.ToString()];
+			pSpec[RTCSPEC.CUSTOM_STORETYPE.ToString()] = RTC_Unispec.RTCSpec[RTCSPEC.CUSTOM_STORETYPE.ToString()];
+
+			return pSpec;
+		}
+
+		public static PartialSpec LoadTemplateFile()
+		{
+			string Filename;
+
+			OpenFileDialog ofd = new OpenFileDialog
+			{
+				DefaultExt = "json",
+				Title = "Open Engine Template File",
+				Filter = "JSON files|*.json",
+				RestoreDirectory = true
+			};
+
+			if (ofd.ShowDialog() == DialogResult.OK)
+			{
+				Filename = ofd.FileName;
+			}
+			else
+				return null;
+
+			PartialSpec pSpec;
+
+			try
+			{
+				using (FileStream fs = File.Open(Filename, FileMode.OpenOrCreate))
+				{
+					pSpec = JsonHelper.Deserialize<PartialSpec>(fs);
+					fs.Close();
+				}
+
+			}
+			catch (Exception e)
+			{
+				MessageBox.Show("The Template file could not be loaded" + e);
+				return null;
+			}
+
+			//Overwrites spec path with loaded path
+			pSpec[RTCSPEC.CUSTOM_PATH.ToString()] = Filename;
+
+			//Keeps a backup for Reset Config
+			lastLoadedTemplate = (PartialSpec)pSpec.Clone();
+
+			return pSpec;
+		}
+
+		public static string SaveTemplateFile(bool SaveAs = false)
+		{
+			PartialSpec pSpec = getCurrentConfigSpec();
+
+			string path;
+			string templateName;
+
+			if (SaveAs || RTC_Unispec.RTCSpec[RTCSPEC.CUSTOM_PATH.ToString()] == null)
+			{
+				SaveFileDialog saveFileDialog1 = new SaveFileDialog
+				{
+					DefaultExt = "json",
+					Title = "Save Engine Template File",
+					Filter = "JSON files|*.json",
+					RestoreDirectory = true,
+				};
+
+				if (saveFileDialog1.ShowDialog() == DialogResult.OK)
+				{
+					path = saveFileDialog1.FileName;
+					templateName = Path.GetFileNameWithoutExtension(path);
+				}
+				else
+					return null;
+			}
+			else
+			{
+				path = (string)RTC_Unispec.RTCSpec[RTCSPEC.CUSTOM_PATH.ToString()];
+				templateName = (string)RTC_Unispec.RTCSpec[RTCSPEC.CUSTOM_PATH.ToString()];
+			}
+
+			pSpec[RTCSPEC.CUSTOM_NAME.ToString()] = templateName;
+			pSpec[RTCSPEC.CUSTOM_PATH.ToString()] = path;
+
+			//Create stockpile.xml to temp folder from stockpile object
+			using (FileStream fs = File.Open(path, FileMode.OpenOrCreate))
+			{
+				var jsonSerializerSettings = new JsonSerializerSettings()
+				{
+					TypeNameHandling = TypeNameHandling.All,
+					Formatting = Formatting.Indented
+				};
+
+				var jsonString = JsonConvert.SerializeObject(pSpec, jsonSerializerSettings);
+				var byteArray = jsonString.GetBytes();
+				fs.Write(byteArray, 0, byteArray.Length);
+				//JsonHelper.Serialize(pSpec, fs, Formatting.Indented);
+				fs.Close();
+			}
+
+			return templateName;
 		}
 	}
 }
