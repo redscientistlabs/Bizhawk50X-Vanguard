@@ -928,6 +928,15 @@ namespace RTC
 
 				var token = RTC_NetCore.HugeOperationStart("LAZY");
 
+				string romFilename = (string)RTC_Core.SendCommandToBizhawk(new RTC_Command(CommandType.REMOTE_KEY_GETOPENROMFILENAME), true);
+				if (romFilename == null)
+					return;
+				if (romFilename.Contains("|"))
+				{
+					MessageBox.Show($"The Glitch Harvester attempted to corrupt a game bound to the following file:\n{romFilename}\n\nIt cannot be processed because the rom seems to be inside a Zip Archive\n(Bizhawk returned a filename with the chracter | in it)");
+					return;
+				}
+
 				StashKey sk = (StashKey)RTC_Core.SendCommandToBizhawk(new RTC_Command(CommandType.REMOTE_KEY_GETRAWBLASTLAYER), true);
 
 				RTC_StockpileManager.CurrentStashkey = sk;
