@@ -5,6 +5,63 @@ namespace RTC
 {
 	public static class RTC_NightmareEngine
 	{
+		public static NightmareAlgo Algo
+		{
+			get => (NightmareAlgo)RTC_Unispec.RTCSpec[RTCSPEC.NIGHTMARE_ALGO.ToString()];
+			set => RTC_Unispec.RTCSpec.Update(RTCSPEC.NIGHTMARE_ALGO.ToString(), value);
+		}
+		public static long MinValue8Bit
+		{
+			get => (long)RTC_Unispec.RTCSpec[RTCSPEC.NIGHTMARE_MINVALUE8BIT.ToString()];
+			set => RTC_Unispec.RTCSpec.Update(RTCSPEC.NIGHTMARE_MINVALUE8BIT.ToString(), value);
+		}
+		public static long MaxValue8Bit
+		{
+			get => (long)RTC_Unispec.RTCSpec[RTCSPEC.NIGHTMARE_MAXVALUE8BIT.ToString()];
+			set => RTC_Unispec.RTCSpec.Update(RTCSPEC.NIGHTMARE_MAXVALUE8BIT.ToString(), value);
+		}
+
+		public static long MinValue16Bit
+		{
+			get => (long)RTC_Unispec.RTCSpec[RTCSPEC.NIGHTMARE_MINVALUE16BIT.ToString()];
+			set => RTC_Unispec.RTCSpec.Update(RTCSPEC.NIGHTMARE_MINVALUE16BIT.ToString(), value);
+		}
+		public static long MaxValue16Bit
+		{
+			get => (long)RTC_Unispec.RTCSpec[RTCSPEC.NIGHTMARE_MAXVALUE16BIT.ToString()];
+			set => RTC_Unispec.RTCSpec.Update(RTCSPEC.NIGHTMARE_MAXVALUE16BIT.ToString(), value);
+		}
+
+		public static long MinValue32Bit
+		{
+			get => (long)RTC_Unispec.RTCSpec[RTCSPEC.NIGHTMARE_MINVALUE32BIT.ToString()];
+			set => RTC_Unispec.RTCSpec.Update(RTCSPEC.NIGHTMARE_MINVALUE32BIT.ToString(), value);
+		}
+		public static long MaxValue32Bit
+		{
+			get => (long)RTC_Unispec.RTCSpec[RTCSPEC.NIGHTMARE_MAXVALUE32BIT.ToString()];
+			set => RTC_Unispec.RTCSpec.Update(RTCSPEC.NIGHTMARE_MAXVALUE32BIT.ToString(), value);
+		}
+
+
+		public static PartialSpec getDefaultPartial()
+		{
+			var partial = new PartialSpec("RTCSpec");
+
+
+			partial[RTCSPEC.NIGHTMARE_MINVALUE8BIT.ToString()] = 0L;
+			partial[RTCSPEC.NIGHTMARE_MAXVALUE8BIT.ToString()] = 0xFFL;
+
+			partial[RTCSPEC.NIGHTMARE_MINVALUE16BIT.ToString()] = 0L;
+			partial[RTCSPEC.NIGHTMARE_MAXVALUE16BIT.ToString()] = 0xFFFFL;
+
+			partial[RTCSPEC.NIGHTMARE_MINVALUE32BIT.ToString()] = 0L;
+			partial[RTCSPEC.NIGHTMARE_MAXVALUE32BIT.ToString()] = 0xFFFFFFFFL;
+
+			partial[RTCSPEC.NIGHTMARE_ALGO.ToString()] = RTC.NightmareAlgo.RANDOM;
+
+			return partial;
+		}
 
 		private static NightmareType type = NightmareType.SET;
 
@@ -14,7 +71,7 @@ namespace RTC
 
 			try
 			{
-				switch ((NightmareAlgo)RTC_Unispec.RTCSpec[RTCSPEC.NIGHTMARE_TYPE.ToString()])
+				switch (Algo)
 				{
 					case NightmareAlgo.RANDOM: //RANDOM always sets a random value
 						type = NightmareType.SET;
@@ -74,13 +131,13 @@ namespace RTC
 					switch (precision)
 					{
 						case 1:
-							randomValue = RTC_Core.RND.RandomLong((long)RTC_Unispec.RTCSpec[RTCSPEC.NIGHTMARE_MINVALUE8BIT.ToString()], (long)RTC_Unispec.RTCSpec[RTCSPEC.NIGHTMARE_MAXVALUE8BIT.ToString()]);
+							randomValue = RTC_Core.RND.RandomLong(MinValue8Bit, MaxValue8Bit);
 							break;
 						case 2:
-							randomValue = RTC_Core.RND.RandomLong((long)RTC_Unispec.RTCSpec[RTCSPEC.NIGHTMARE_MINVALUE16BIT.ToString()], (long)RTC_Unispec.RTCSpec[RTCSPEC.NIGHTMARE_MAXVALUE16BIT.ToString()]);
+							randomValue = RTC_Core.RND.RandomLong(MinValue16Bit, MaxValue16Bit);
 							break;
 						case 4:
-							randomValue = RTC_Core.RND.RandomLong((long)RTC_Unispec.RTCSpec[RTCSPEC.NIGHTMARE_MINVALUE32BIT.ToString()], (long)RTC_Unispec.RTCSpec[RTCSPEC.NIGHTMARE_MAXVALUE32BIT.ToString()]);
+							randomValue = RTC_Core.RND.RandomLong(MinValue32Bit, MaxValue32Bit);
 							break;
 					}
 

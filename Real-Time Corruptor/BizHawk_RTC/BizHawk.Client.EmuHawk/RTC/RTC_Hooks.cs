@@ -65,7 +65,7 @@ namespace RTC
 		{
 			if (disableRTC) return;
 
-			if ((bool)RTCSpec[RTCSPEC.CORE_CLEARSTEPACTIONSONREWIND.ToString()])
+			if ((bool)RTCSpec[RTCSPEC.STEP_CLEARSTEPACTIONSONREWIND.ToString()])
 				RTC_StepActions.ClearStepBlastUnits();
 		}
 

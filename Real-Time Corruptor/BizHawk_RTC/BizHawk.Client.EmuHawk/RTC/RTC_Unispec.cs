@@ -23,18 +23,9 @@ namespace RTC
 		{
 			PartialSpec rtcSpecTemplate = new PartialSpec("RTCSpec");
 			//Engine Settings
-			rtcSpecTemplate[RTCSPEC.CORE_SELECTEDENGINE.ToString()] = CorruptionEngine.NIGHTMARE;
-			rtcSpecTemplate[RTCSPEC.CORE_CLEARSTEPACTIONSONREWIND.ToString()] = false;
-
-			rtcSpecTemplate[RTCSPEC.CORE_CUSTOMPRECISION.ToString()] = 0;
-			rtcSpecTemplate[RTCSPEC.CORE_CURRENTPRECISION.ToString()] = 1;
-			rtcSpecTemplate[RTCSPEC.CORE_INTENSITY.ToString()] = 1;
-			rtcSpecTemplate[RTCSPEC.CORE_ERRORDELAY.ToString()] = 1;
-			rtcSpecTemplate[RTCSPEC.CORE_RADIUS.ToString()] = BlastRadius.SPREAD;
+			rtcSpecTemplate.Insert(RTC_Core.getDefaultPartial());
 
 
-			rtcSpecTemplate[RTCSPEC.STEP_MAXINFINITEBLASTUNITS.ToString()] = 50;
-			rtcSpecTemplate[RTCSPEC.STEP_LOCKEXECUTION.ToString()] = false;
 
 
 			//RTC Status
@@ -60,39 +51,20 @@ namespace RTC
 
 
 
-			//Nightmare Config
-			rtcSpecTemplate[RTCSPEC.NIGHTMARE_TYPE.ToString()] = NightmareAlgo.RANDOM;
 
-			rtcSpecTemplate[RTCSPEC.NIGHTMARE_MINVALUE8BIT.ToString()]  = 0L;
-			rtcSpecTemplate[RTCSPEC.NIGHTMARE_MINVALUE16BIT.ToString()] = 0L;
-			rtcSpecTemplate[RTCSPEC.NIGHTMARE_MINVALUE32BIT.ToString()] = 0L;
-
-			rtcSpecTemplate[RTCSPEC.NIGHTMARE_MAXVALUE8BIT.ToString()]  = 0xFFL;
-			rtcSpecTemplate[RTCSPEC.NIGHTMARE_MAXVALUE16BIT.ToString()] = 0xFFFFL;
-			rtcSpecTemplate[RTCSPEC.NIGHTMARE_MAXVALUE32BIT.ToString()] = 0xFFFFFFFFL;
-
-
-			rtcSpecTemplate[RTCSPEC.DISTORTION_DELAY.ToString()] = 50;
-
-			//Hellgenie Config
-			rtcSpecTemplate[RTCSPEC.HELLGENIE_MINVALUE8BIT.ToString()]  = 0L;
-			rtcSpecTemplate[RTCSPEC.HELLGENIE_MINVALUE16BIT.ToString()] = 0L;
-			rtcSpecTemplate[RTCSPEC.HELLGENIE_MINVALUE32BIT.ToString()] = 0L;
-
-			rtcSpecTemplate[RTCSPEC.HELLGENIE_MAXVALUE8BIT.ToString()]  = 0xFFL;
-			rtcSpecTemplate[RTCSPEC.HELLGENIE_MAXVALUE16BIT.ToString()] = 0xFFFFL;
-			rtcSpecTemplate[RTCSPEC.HELLGENIE_MAXVALUE32BIT.ToString()] = 0xFFFFFFFFL;
-
+			rtcSpecTemplate.Insert(RTC_NightmareEngine.getDefaultPartial());
+			rtcSpecTemplate.Insert(RTC_HellgenieEngine.getDefaultPartial());
+			rtcSpecTemplate.Insert(RTC_DistortionEngine.getDefaultPartial());
 
 			//Custom Engine Config with Nightmare Engine
 			RTC_CustomEngine.InitTemplate_NightmareEngine(rtcSpecTemplate);
 
 
-			rtcSpecTemplate[RTCSPEC.FILTERING_HASH2LIMITERDICO.ToString()] = new Dictionary<string, RTC_Extensions.HashSetByteArrayComparator>();
-			rtcSpecTemplate[RTCSPEC.FILTERING_HASH2VALUEDICO.ToString()] = new Dictionary<string, List<Byte[]>>();
+			rtcSpecTemplate.Insert(RTC_Filtering.getDefaultPartial());
 
-			rtcSpecTemplate[RTCSPEC.VECTOR_LIMITERLISTHASH.ToString()] = null;
-			rtcSpecTemplate[RTCSPEC.VECTOR_VALUELISTHASH.ToString()] = null;
+
+			rtcSpecTemplate.Insert(RTC_VectorEngine.getDefaultPartial());
+
 
 			//Was volatile keep an eye on
 			rtcSpecTemplate[RTCSPEC.STOCKPILE_CURRENTSAVESTATEKEY.ToString()] = null;
@@ -261,6 +233,16 @@ namespace RTC
 		public PartialSpec()
 		{
 		}
+
+		public void Insert(PartialSpec partialSpec)
+		{
+			if (partialSpec == null)
+				return;
+
+			foreach (var key in partialSpec.specDico.Keys)
+				this[key] = partialSpec.specDico[key];
+		}
+
 		protected PartialSpec(SerializationInfo info, StreamingContext context)
 		{
 			Name = info.GetString("Name");

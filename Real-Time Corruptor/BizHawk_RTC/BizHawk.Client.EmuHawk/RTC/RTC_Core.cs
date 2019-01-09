@@ -43,6 +43,62 @@ namespace RTC
 
 		public static bool AllowCrossCoreCorruption = false;
 
+		public static CorruptionEngine SelectedEngine
+		{
+			get => (CorruptionEngine)RTC_Unispec.RTCSpec[RTCSPEC.CORE_SELECTEDENGINE.ToString()];
+			set => RTC_Unispec.RTCSpec.Update(RTCSPEC.CORE_SELECTEDENGINE.ToString(), value);
+		}
+
+		public static int CustomPrecision
+		{
+			get => (int)RTC_Unispec.RTCSpec[RTCSPEC.CORE_CUSTOMPRECISION.ToString()];
+			set
+			{
+				RTC_Unispec.RTCSpec.Update(RTCSPEC.CORE_CUSTOMPRECISION.ToString(), value);
+				CurrentPrecision = value;
+			}
+		}
+		public static int CurrentPrecision
+		{
+			get => (int)RTC_Unispec.RTCSpec[RTCSPEC.CORE_CURRENTPRECISION.ToString()];
+			set => RTC_Unispec.RTCSpec.Update(RTCSPEC.CORE_CURRENTPRECISION.ToString(), value);
+		}
+		public static int Intensity
+		{
+			get => (int)RTC_Unispec.RTCSpec[RTCSPEC.CORE_INTENSITY.ToString()];
+			set => RTC_Unispec.RTCSpec.Update(RTCSPEC.CORE_INTENSITY.ToString(), value);
+		}
+		public static int ErrorDelay
+		{
+			get => (int)RTC_Unispec.RTCSpec[RTCSPEC.CORE_ERRORDELAY.ToString()];
+			set => RTC_Unispec.RTCSpec.Update(RTCSPEC.CORE_ERRORDELAY.ToString(), value);
+		}
+
+		public static BlastRadius Radius
+		{
+			get => (BlastRadius)RTC_Unispec.RTCSpec[RTCSPEC.CORE_RADIUS.ToString()];
+			set => RTC_Unispec.RTCSpec.Update(RTCSPEC.CORE_RADIUS.ToString(), value);
+		}
+
+		public static bool AutoCorrupt
+		{
+			get => (bool)RTC_Unispec.RTCSpec[RTCSPEC.CORE_AUTOCORRUPT.ToString()];
+			set => RTC_Unispec.RTCSpec.Update(RTCSPEC.CORE_AUTOCORRUPT.ToString(), value);
+		}
+		public static PartialSpec getDefaultPartial()
+		{
+			var partial = new PartialSpec("RTCSpec");
+
+			partial[RTCSPEC.CORE_SELECTEDENGINE.ToString()] = CorruptionEngine.NIGHTMARE;
+
+			partial[RTCSPEC.CORE_CUSTOMPRECISION.ToString()] = 0;
+			partial[RTCSPEC.CORE_CURRENTPRECISION.ToString()] = 1;
+			partial[RTCSPEC.CORE_INTENSITY.ToString()] = 1;
+			partial[RTCSPEC.CORE_ERRORDELAY.ToString()] = 1;
+			partial[RTCSPEC.CORE_RADIUS.ToString()] = BlastRadius.SPREAD;
+
+			return partial;
+		}
 
 
 		//Note Box Settings

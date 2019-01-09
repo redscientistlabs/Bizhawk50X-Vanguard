@@ -168,7 +168,7 @@ namespace RTC
 
 		private void cbClearRewind_CheckedChanged(object sender, EventArgs e)
 		{
-			RTCSpec.Update(RTCSPEC.CORE_CLEARSTEPACTIONSONREWIND.ToString(), cbClearRewind.Checked);
+			RTC_StepActions.ClearStepActionsOnRewind = cbClearRewind.Checked;
 		}
 
 		private void cbLoopUnit_CheckedChanged(object sender, EventArgs e)

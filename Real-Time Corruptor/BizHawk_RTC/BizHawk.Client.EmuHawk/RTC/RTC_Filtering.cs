@@ -11,6 +11,27 @@ namespace RTC
 {
 	public static class RTC_Filtering
 	{
+		public static Dictionary<string, RTC_Extensions.HashSetByteArrayComparator> Hash2LimiterDico
+		{
+			get => (Dictionary<string, RTC_Extensions.HashSetByteArrayComparator>)RTC_Unispec.RTCSpec[RTCSPEC.FILTERING_HASH2LIMITERDICO.ToString()];
+			set => RTC_Unispec.RTCSpec.Update(RTCSPEC.FILTERING_HASH2VALUEDICO.ToString(), value);
+		}
+		public static Dictionary<string, List<Byte[]>> Hash2ValueDico
+		{
+			get => (Dictionary<string, List<Byte[]>>) RTC_Unispec.RTCSpec[RTCSPEC.FILTERING_HASH2VALUEDICO.ToString()];
+			set => RTC_Unispec.RTCSpec.Update(RTCSPEC.FILTERING_HASH2VALUEDICO.ToString(), value);
+		}
+
+		public static PartialSpec getDefaultPartial()
+		{
+			var partial = new PartialSpec("RTCSpec");
+
+			partial[RTCSPEC.FILTERING_HASH2LIMITERDICO.ToString()] = new Dictionary<string, RTC_Extensions.HashSetByteArrayComparator>();
+			partial[RTCSPEC.FILTERING_HASH2VALUEDICO.ToString()] = new Dictionary<string, List<Byte[]>>();
+
+			return partial;
+		}
+
 
 		public static List<string> LoadListsFromPaths(string[] paths)
 		{
@@ -96,7 +117,7 @@ namespace RTC
 				update[RTCSPEC.FILTERING_HASH2VALUEDICO.ToString()] = valueDico;
 				RTC_Unispec.RTCSpec.Update(update);
 			}
-				RTC_Core.SendCommandToBizhawk(new RTC_Command(CommandType.REMOTE_UPDATE_FILTERING_DICTIONARIES) { objectValue = new object[] { RTC_Unispec.RTCSpec[RTCSPEC.FILTERING_HASH2LIMITERDICO.ToString()], RTC_Unispec.RTCSpec[RTCSPEC.FILTERING_HASH2VALUEDICO.ToString()] } });
+			RTC_Core.SendCommandToBizhawk(new RTC_Command(CommandType.REMOTE_UPDATE_FILTERING_DICTIONARIES) { objectValue = new object[] { Hash2LimiterDico, Hash2ValueDico } });
 
 			return hashStr;
 		}
@@ -124,11 +145,10 @@ namespace RTC
 		public static bool LimiterContainsValue(byte[] bytes, string hash)
 		{
 			RTC_Extensions.HashSetByteArrayComparator hs = null;
-			var limiterDico = (Dictionary<string, RTC_Extensions.HashSetByteArrayComparator>)RTC_Unispec.RTCSpec[RTCSPEC.FILTERING_HASH2LIMITERDICO.ToString()];
-			if (limiterDico == null)
+			if (Hash2LimiterDico == null)
 				return false;
 
-			if (limiterDico.TryGetValue(hash, out hs))
+			if (Hash2LimiterDico.TryGetValue(hash, out hs))
 			{
 				return hs.Contains(bytes);
 			}
@@ -138,18 +158,17 @@ namespace RTC
 
 
 		public static byte[] GetRandomConstant(string hash, int precision)
-		{
-			var valueDico = (Dictionary<string, List<Byte[]>>)RTC_Unispec.RTCSpec[RTCSPEC.FILTERING_HASH2VALUEDICO.ToString()];
-			if (valueDico == null)
+		{			
+			if (Hash2ValueDico == null)
 				return null;
 
-			if (!valueDico.ContainsKey(hash))
+			if (!Hash2ValueDico.ContainsKey(hash))
 			{
 				return null;
 			}
 
-			int line = RTC_Core.RND.Next(valueDico[hash].Count);
-			Byte[] t = valueDico[hash][line];
+			int line = RTC_Core.RND.Next(Hash2ValueDico[hash].Count);
+			Byte[] t = Hash2ValueDico[hash][line];
 
 			//If the list is shorter than the current precision, left pad it
 			if (t.Length < precision)

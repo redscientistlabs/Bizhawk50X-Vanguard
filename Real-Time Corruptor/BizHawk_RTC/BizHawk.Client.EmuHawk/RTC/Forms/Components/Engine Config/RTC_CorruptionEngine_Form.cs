@@ -88,8 +88,8 @@ namespace RTC
 		}
 
 		private void nmDistortionDelay_ValueChanged(object sender, EventArgs e)
-		{;
-			RTCSpec.Update(RTCSPEC.DISTORTION_DELAY.ToString(), Convert.ToInt32(nmDistortionDelay.Value));
+		{
+			RTC_DistortionEngine.Delay = Convert.ToInt32(nmDistortionDelay.Value);
 		}
 
 		private void btnResyncDistortionEngine_Click(object sender, EventArgs e)
@@ -491,19 +491,19 @@ namespace RTC
 			switch (cbBlastType.SelectedItem.ToString())
 			{
 				case "RANDOM":
-					RTCSpec.Update(RTCSPEC.NIGHTMARE_TYPE.ToString(), NightmareAlgo.RANDOM);
+					RTCSpec.Update(RTCSPEC.NIGHTMARE_ALGO.ToString(), NightmareAlgo.RANDOM);
 					nmMinValueNightmare.Enabled = true;
 					nmMaxValueNightmare.Enabled = true;
 					break;
 
 				case "RANDOMTILT":
-					RTCSpec.Update(RTCSPEC.NIGHTMARE_TYPE.ToString(), NightmareAlgo.RANDOMTILT);
+					RTCSpec.Update(RTCSPEC.NIGHTMARE_ALGO.ToString(), NightmareAlgo.RANDOMTILT);
 					nmMinValueNightmare.Enabled = true;
 					nmMaxValueNightmare.Enabled = true;
 					break;
 
 				case "TILT":
-					RTCSpec.Update(RTCSPEC.NIGHTMARE_TYPE.ToString(), NightmareAlgo.TILT);
+					RTCSpec.Update(RTCSPEC.NIGHTMARE_ALGO.ToString(), NightmareAlgo.TILT);
 					nmMinValueNightmare.Enabled = false;
 					nmMaxValueNightmare.Enabled = false;
 					break;

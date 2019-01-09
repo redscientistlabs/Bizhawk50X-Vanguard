@@ -8,7 +8,6 @@ using System.Linq;
 using System.Numerics;
 using System.Text;
 using System.Windows.Forms;
-using BizHawk.Common.NumberExtensions;
 using Newtonsoft.Json.Serialization;
 
 /**

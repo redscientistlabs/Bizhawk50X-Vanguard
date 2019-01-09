@@ -7,7 +7,6 @@ using System.IO.Compression;
 using System.Linq;
 using System.Windows.Forms;
 using System.Numerics;
-using System.Security.Cryptography;
 using System.Xml.Serialization;
 using System.ComponentModel;
 using Ceras;

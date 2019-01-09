@@ -6,7 +6,19 @@ namespace RTC
 {
 	public static class RTC_DistortionEngine
 	{
-		public static int Delay = (int)RTC_Unispec.RTCSpec[RTCSPEC.DISTORTION_DELAY.ToString()];
+		public static int Delay
+		{
+			get => (int)RTC_Unispec.RTCSpec[RTCSPEC.DISTORTION_DELAY.ToString()];
+			set => RTC_Unispec.RTCSpec.Update(RTCSPEC.DISTORTION_DELAY.ToString(), value);
+		}
+		public static PartialSpec getDefaultPartial()
+		{
+			var partial = new PartialSpec("RTCSpec");
+			partial[RTCSPEC.DISTORTION_DELAY.ToString()] = 50;
+
+			return partial;
+		}
+
 		public static BlastUnit GenerateUnit(string domain, long address, int precision)
 		{
 			// Randomly selects a memory operation according to the selected algorithm

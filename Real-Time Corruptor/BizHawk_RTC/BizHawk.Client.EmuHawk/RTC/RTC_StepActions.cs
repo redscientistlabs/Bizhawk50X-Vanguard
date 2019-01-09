@@ -34,6 +34,37 @@ namespace RTC
 
 
 
+		public static int MaxInfiniteBlastUnits
+		{
+			get { return (int)RTC_Unispec.RTCSpec[RTCSPEC.STEP_MAXINFINITEBLASTUNITS.ToString()]; }
+			set { RTC_Unispec.RTCSpec.Update(RTCSPEC.STEP_MAXINFINITEBLASTUNITS.ToString(), value); }
+		}
+
+		public static bool LockExecution
+		{
+			get { return (bool)RTC_Unispec.RTCSpec[RTCSPEC.STEP_LOCKEXECUTION.ToString()]; }
+			set { RTC_Unispec.RTCSpec.Update(RTCSPEC.STEP_LOCKEXECUTION.ToString(), value); }
+		}
+
+		public static bool ClearStepActionsOnRewind
+		{
+			get { return (bool)RTC_Unispec.RTCSpec[RTCSPEC.STEP_CLEARSTEPACTIONSONREWIND.ToString()]; }
+			set { RTC_Unispec.RTCSpec.Update(RTCSPEC.STEP_CLEARSTEPACTIONSONREWIND.ToString(), value); }
+		}
+
+		public static PartialSpec getDefaultPartial()
+		{
+			var partial = new PartialSpec("CorruptCore");
+
+			partial[RTCSPEC.STEP_MAXINFINITEBLASTUNITS.ToString()] = 50;
+			partial[RTCSPEC.STEP_LOCKEXECUTION.ToString()] = false;
+			partial[RTCSPEC.STEP_CLEARSTEPACTIONSONREWIND.ToString()] = false;
+
+
+			return partial;
+		}
+
+
 		public static void ClearStepBlastUnits()
 		{
 			if (RTC_Core.isStandalone)
