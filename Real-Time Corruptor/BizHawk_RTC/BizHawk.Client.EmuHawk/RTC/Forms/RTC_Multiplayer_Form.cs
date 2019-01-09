@@ -6,6 +6,7 @@ using System.IO;
 using System.Net;
 using System.Windows.Forms;
 using Ceras;
+using RTC.Legacy;
 
 namespace RTC
 {
@@ -45,18 +46,18 @@ namespace RTC
 		{
 			//assing event handlers here
 
-			RTC_Core.Multiplayer = new RTC_NetCore();
+			RTC_NetcoreImplementation.Multiplayer = new RTC_NetCore();
 
-			RTC_Core.Multiplayer.ClientConnecting += Multiplayer_ClientConnecting;
-			RTC_Core.Multiplayer.ClientConnected += Multiplayer_ClientConnected;
-			RTC_Core.Multiplayer.ClientDisconnected += Multiplayer_ClientDisconnected;
-			RTC_Core.Multiplayer.ClientConnectionLost += Multiplayer_ClientConnectionLost;
-			RTC_Core.Multiplayer.ClientReconnecting += Multiplayer_ClientReconnecting;
+			RTC_NetcoreImplementation.Multiplayer.ClientConnecting += Multiplayer_ClientConnecting;
+			RTC_NetcoreImplementation.Multiplayer.ClientConnected += Multiplayer_ClientConnected;
+			RTC_NetcoreImplementation.Multiplayer.ClientDisconnected += Multiplayer_ClientDisconnected;
+			RTC_NetcoreImplementation.Multiplayer.ClientConnectionLost += Multiplayer_ClientConnectionLost;
+			RTC_NetcoreImplementation.Multiplayer.ClientReconnecting += Multiplayer_ClientReconnecting;
 
-			RTC_Core.Multiplayer.ServerStarted += Multiplayer_ServerStarted;
-			RTC_Core.Multiplayer.ServerConnected += Multiplayer_ServerConnected;
-			RTC_Core.Multiplayer.ServerDisconnected += Multiplayer_ServerDisconnected;
-			RTC_Core.Multiplayer.ServerConnectionLost += Multiplayer_ServerConnectionLost;
+			RTC_NetcoreImplementation.Multiplayer.ServerStarted += Multiplayer_ServerStarted;
+			RTC_NetcoreImplementation.Multiplayer.ServerConnected += Multiplayer_ServerConnected;
+			RTC_NetcoreImplementation.Multiplayer.ServerDisconnected += Multiplayer_ServerDisconnected;
+			RTC_NetcoreImplementation.Multiplayer.ServerConnectionLost += Multiplayer_ServerConnectionLost;
 
 			cbStreamFps.SelectedIndex = 2;
 
@@ -81,7 +82,7 @@ namespace RTC
 				"Some sort of netplay",
 			};
 
-			lbCheekyHeadline.Text = cheekyHeadlines[RTC_Core.RND.Next(cheekyHeadlines.Length)];
+			lbCheekyHeadline.Text = cheekyHeadlines[RTC_Corruptcore.RND.Next(cheekyHeadlines.Length)];
 		}
 
 		private void Multiplayer_ServerConnectionLost(object sender, EventArgs e)
@@ -162,27 +163,27 @@ namespace RTC
 		{
 			if (btnStartClient.Text == "Disconnect" || btnStartClient.Text == "Reconnecting" || btnStartClient.Text == "Connecting")
 			{
-				RTC_Core.Multiplayer.StopNetworking();
+				RTC_NetcoreImplementation.Multiplayer.StopNetworking();
 				return;
 			}
 
-			RTC_Core.Multiplayer.StartNetworking(NetworkSide.CLIENT);
+			RTC_NetcoreImplementation.Multiplayer.StartNetworking(NetworkSide.CLIENT);
 		}
 
 		private void btnStartServer_Click(object sender, EventArgs e)
 		{
 			if (btnStartServer.Text == "Stop Server")
 			{
-				RTC_Core.Multiplayer.StopNetworking();
+				RTC_NetcoreImplementation.Multiplayer.StopNetworking();
 				return;
 			}
 
-			RTC_Core.Multiplayer.StartNetworking(NetworkSide.SERVER);
+			RTC_NetcoreImplementation.Multiplayer.StartNetworking(NetworkSide.SERVER);
 		}
 
 		private void btnPushBlastToServer_Click(object sender, EventArgs e)
 		{
-			RTC_Core.Multiplayer.SendBlastlayer();
+			RTC_NetcoreImplementation.Multiplayer.SendBlastlayer();
 		}
 
 		private void tbShowIp_TextChanged(object sender, EventArgs e)
@@ -192,45 +193,45 @@ namespace RTC
 
 		private void btnPullGameFromServer_Click(object sender, EventArgs e)
 		{
-			RTC_Core.Multiplayer.SendCommand(new RTC_Command(CommandType.PULLROM), false);
+			RTC_NetcoreImplementation.Multiplayer.SendCommand(new RTC_Command(CommandType.PULLROM), false);
 		}
 
 		private void btnPushGameToServer_Click(object sender, EventArgs e)
 		{
-			RTC_Core.Multiplayer.SendCommand(new RTC_Command(CommandType.PULLROM), true);
+			RTC_NetcoreImplementation.Multiplayer.SendCommand(new RTC_Command(CommandType.PULLROM), true);
 		}
 
 		private void btnPullStateFromServer_Click(object sender, EventArgs e)
 		{
-			RTC_Core.Multiplayer.SendCommand(new RTC_Command(CommandType.PULLSTATE), false);
+			RTC_NetcoreImplementation.Multiplayer.SendCommand(new RTC_Command(CommandType.PULLSTATE), false);
 		}
 
 		private void btnPushStateToServer_Click(object sender, EventArgs e)
 		{
-			RTC_Core.Multiplayer.SendCommand(new RTC_Command(CommandType.PULLSTATE), true);
+			RTC_NetcoreImplementation.Multiplayer.SendCommand(new RTC_Command(CommandType.PULLSTATE), true);
 		}
 
 		private void tbServerPort_TextChanged(object sender, EventArgs e)
 		{
-			if (RTC_Core.Multiplayer.side == NetworkSide.DISCONNECTED)
-				RTC_Core.Multiplayer.port = Convert.ToInt32(tbServerPort.Text);
+			if (RTC_NetcoreImplementation.Multiplayer.side == NetworkSide.DISCONNECTED)
+				RTC_NetcoreImplementation.Multiplayer.port = Convert.ToInt32(tbServerPort.Text);
 			else
-				tbServerPort.Text = RTC_Core.Multiplayer.port.ToString();
+				tbServerPort.Text = RTC_NetcoreImplementation.Multiplayer.port.ToString();
 		}
 
 		private void btnSwapGameState_Click(object sender, EventArgs e)
 		{
-			RTC_Core.Multiplayer.SwapGameState();
+			RTC_NetcoreImplementation.Multiplayer.SwapGameState();
 		}
 
 		private void btnPushScreenToPear_Click(object sender, EventArgs e)
 		{
-			RTC_Core.Multiplayer.SendCommand(new RTC_Command(CommandType.PULLSCREEN), true);
+			RTC_NetcoreImplementation.Multiplayer.SendCommand(new RTC_Command(CommandType.PULLSCREEN), true);
 		}
 
 		private void btnPullScreenToPear_Click(object sender, EventArgs e)
 		{
-			RTC_Core.Multiplayer.SendCommand(new RTC_Command(CommandType.PULLSCREEN), false);
+			RTC_NetcoreImplementation.Multiplayer.SendCommand(new RTC_Command(CommandType.PULLSCREEN), false);
 		}
 
 		public void cbStreamScreenToPeer_CheckedChanged(object sender, EventArgs e)
@@ -263,7 +264,7 @@ namespace RTC
 					cmdBack.ScreenArr = RTC_Extensions.ImageToByteArray(SaveJPG100(bmp, 60), ImageFormat.Jpeg);
 				else
 					cmdBack.ScreenArr = RTC_Extensions.ImageToByteArray(SaveJPG100(bmp, 60), ImageFormat.Bmp);
-				RTC_Core.Multiplayer.PeerCommandQueue.AddLast(cmdBack);
+				RTC_NetcoreImplementation.Multiplayer.PeerCommandQueue.AddLast(cmdBack);
 			}
 		}
 
@@ -326,7 +327,7 @@ namespace RTC
 
 		private void btnClearNetworkCache_Click(object sender, EventArgs e)
 		{
-			RTC_Core.Multiplayer.ClearNetowrkCache();
+			RTC_NetcoreImplementation.Multiplayer.ClearNetowrkCache();
 		}
 
 		private void btnGameOfSwap_Click(object sender, EventArgs e)
@@ -337,7 +338,7 @@ namespace RTC
 				return;
 			}
 
-			if (RTC_Core.Multiplayer.side == NetworkSide.DISCONNECTED)
+			if (RTC_NetcoreImplementation.Multiplayer.side == NetworkSide.DISCONNECTED)
 				return;
 
 			StartGameOfSwap(true);
@@ -355,7 +356,7 @@ namespace RTC
 			GameOfSwapCounter = -1;
 
 			if (!fromStopCommand)
-				RTC_Core.Multiplayer.SendCommand(new RTC_Command(CommandType.GAMEOFSWAPSTOP), false);
+				RTC_NetcoreImplementation.Multiplayer.SendCommand(new RTC_Command(CommandType.GAMEOFSWAPSTOP), false);
 		}
 
 		public void StartGameOfSwap(bool isGameHost)
@@ -369,7 +370,7 @@ namespace RTC
 			GameOfSwapTimer.Start();
 
 			if (isGameHost)
-				RTC_Core.Multiplayer.SendCommand(new RTC_Command(CommandType.GAMEOFSWAPSTART), false);
+				RTC_NetcoreImplementation.Multiplayer.SendCommand(new RTC_Command(CommandType.GAMEOFSWAPSTART), false);
 
 			GameOfSwapCounter = 64;
 
@@ -384,7 +385,7 @@ namespace RTC
 			GameOfSwapCounter--;
 
 			if (GameOfSwapCounter == 0 && GameOfSwapHost)
-				RTC_Core.Multiplayer.SwapGameState();
+				RTC_NetcoreImplementation.Multiplayer.SwapGameState();
 		}
 
 		private void btnPopoutPeerGameScreen_Click(object sender, EventArgs e)
@@ -413,12 +414,12 @@ namespace RTC
 
 		private void btnPushStashkeyToServer_Click(object sender, EventArgs e)
 		{
-			RTC_Core.Multiplayer.SendStashkey();
+			RTC_NetcoreImplementation.Multiplayer.SendStashkey();
 		}
 
 		private void btnRequestStream_Click(object sender, EventArgs e)
 		{
-			RTC_Core.Multiplayer.SendCommand(new RTC_Command(CommandType.REQUESTSTREAM), false);
+			RTC_NetcoreImplementation.Multiplayer.SendCommand(new RTC_Command(CommandType.REQUESTSTREAM), false);
 		}
 
 		private void btnStartServer_MouseDown(object sender, MouseEventArgs e)
@@ -428,7 +429,7 @@ namespace RTC
 				Point locate = new Point((sender as Control).Location.X + (sender as Control).Parent.Location.X + e.Location.X, (sender as Control).Location.Y + (sender as Control).Parent.Location.Y + e.Location.Y);
 
 				ContextMenuStrip columnsMenu = new ContextMenuStrip();
-				(columnsMenu.Items.Add("BRUTAL DISCONNECT", null, new EventHandler((ob, ev) => { RTC_Core.Multiplayer.StopNetworking(true, false); })) as ToolStripMenuItem).Enabled = RTC_Core.Multiplayer.side != NetworkSide.DISCONNECTED;
+				(columnsMenu.Items.Add("BRUTAL DISCONNECT", null, new EventHandler((ob, ev) => { RTC_NetcoreImplementation.Multiplayer.StopNetworking(true, false); })) as ToolStripMenuItem).Enabled = RTC_NetcoreImplementation.Multiplayer.side != NetworkSide.DISCONNECTED;
 				columnsMenu.Show(this, locate);
 			}
 		}
@@ -447,7 +448,7 @@ namespace RTC
 			if (btnPopoutPeerGameScreen.Visible)
 				btnPopoutPeerGameScreen_Click(null, null);
 
-			RTC_Core.Multiplayer.SendCommand(new RTC_Command(CommandType.REQUESTSTREAM), false);
+			RTC_NetcoreImplementation.Multiplayer.SendCommand(new RTC_Command(CommandType.REQUESTSTREAM), false);
 			cbStreamScreenToPeer.Checked = true;
 			btnSplitscreen.ForeColor = Color.Red;
 		}
@@ -459,7 +460,7 @@ namespace RTC
 
 		private void tbClientAdress_TextChanged(object sender, EventArgs e)
 		{
-			RTC_Core.Multiplayer.address = tbClientAdress.Text;
+			RTC_NetcoreImplementation.Multiplayer.address = tbClientAdress.Text;
 		}
 
 		private void cbStreamFps_SelectedIndexChanged(object sender, EventArgs e)

@@ -137,7 +137,7 @@ namespace RTC
 			{
 				if (!String.IsNullOrWhiteSpace(filename))
 				{
-					File.WriteAllLines(RTC_Core.rtcDir + "//LISTS//" + filename + ".txt", newList);
+					File.WriteAllLines(RTC_EmuCore.rtcDir + "//LISTS//" + filename + ".txt", newList);
 				}
 				else
 				{
@@ -147,7 +147,7 @@ namespace RTC
 
 			//If there's no name just generate one
 			if (String.IsNullOrWhiteSpace(filename))
-				filename = RTC_Core.GetRandomKey();
+				filename = RTC_Corruptcore.GetRandomKey();
 
 			//Register the list and update netcore
 

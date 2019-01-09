@@ -10,6 +10,7 @@ using System.Numerics;
 using System.Xml.Serialization;
 using System.ComponentModel;
 using Ceras;
+using RTC.Legacy;
 using Exception = System.Exception;
 
 namespace RTC
@@ -83,10 +84,10 @@ namespace RTC
 			}
 
 			//Backup bizhawk settings
-			RTC_Core.SendCommandToBizhawk(new RTC_Command(CommandType.REMOTE_EVENT_SAVEBIZHAWKCONFIG), true);
+			RTC_NetcoreImplementation.SendCommandToBizhawk(new RTC_Command(CommandType.REMOTE_EVENT_SAVEBIZHAWKCONFIG), true);
 
 			//Watermarking RTC Version
-			sks.RtcVersion = RTC_Core.RtcVersion;
+			sks.RtcVersion = RTC_Corruptcore.RtcVersion;
 
 			List<string> allRoms = new List<string>();
 
@@ -136,9 +137,9 @@ namespace RTC
 			{
 				string rom = str;
 				//string romTempfilename = RTC_Core.workingDir + Path.DirectorySeparatorChar + "TEMP" + Path.DirectorySeparatorChar + (rom.Substring(rom.LastIndexOf(Path.DirectorySeparatorChar) + 1, rom.Length - (rom.LastIndexOf(Path.DirectorySeparatorChar) + 1)));
-				string romTempfilename = RTC_Core.workingDir + Path.DirectorySeparatorChar + "TEMP" + Path.DirectorySeparatorChar + Path.GetFileName(rom);
+				string romTempfilename = RTC_EmuCore.workingDir + Path.DirectorySeparatorChar + "TEMP" + Path.DirectorySeparatorChar + Path.GetFileName(rom);
 				if (!rom.Contains(Path.DirectorySeparatorChar))
-					rom = RTC_Core.workingDir + Path.DirectorySeparatorChar + "SKS" + Path.DirectorySeparatorChar + rom;
+					rom = RTC_EmuCore.workingDir + Path.DirectorySeparatorChar + "SKS" + Path.DirectorySeparatorChar + rom;
 
 				if (File.Exists(romTempfilename))
 				{
@@ -154,16 +155,16 @@ namespace RTC
 			{
 				string stateFilename = key.GameName + "." + key.ParentKey + ".timejump.State"; // get savestate name
 
-				File.Copy(RTC_Core.workingDir + Path.DirectorySeparatorChar + key.StateLocation + Path.DirectorySeparatorChar + stateFilename, RTC_Core.workingDir + Path.DirectorySeparatorChar + "TEMP" + Path.DirectorySeparatorChar + stateFilename, true); // copy savestates to temp folder
+				File.Copy(RTC_EmuCore.workingDir + Path.DirectorySeparatorChar + key.StateLocation + Path.DirectorySeparatorChar + stateFilename, RTC_EmuCore.workingDir + Path.DirectorySeparatorChar + "TEMP" + Path.DirectorySeparatorChar + stateFilename, true); // copy savestates to temp folder
 			}
 
-			if (File.Exists(RTC_Core.bizhawkDir + Path.DirectorySeparatorChar + "config.ini"))
-				File.Copy(RTC_Core.bizhawkDir + Path.DirectorySeparatorChar + "config.ini", RTC_Core.workingDir + Path.DirectorySeparatorChar + "TEMP\\config.ini");
+			if (File.Exists(RTC_EmuCore.bizhawkDir + Path.DirectorySeparatorChar + "config.ini"))
+				File.Copy(RTC_EmuCore.bizhawkDir + Path.DirectorySeparatorChar + "config.ini", RTC_EmuCore.workingDir + Path.DirectorySeparatorChar + "TEMP\\config.ini");
 
 			foreach (StashKey sk in sks.StashKeys)
 			{
 				sk.RomShortFilename = RTC_Extensions.getShortFilenameFromPath(sk.RomFilename);
-				sk.RomFilename = RTC_Core.workingDir + Path.DirectorySeparatorChar + "SKS" + Path.DirectorySeparatorChar + sk.RomShortFilename;
+				sk.RomFilename = RTC_EmuCore.workingDir + Path.DirectorySeparatorChar + "SKS" + Path.DirectorySeparatorChar + sk.RomShortFilename;
 				sk.StateLocation = StashKeySavestateLocation.SKS;
 			}
 
@@ -173,11 +174,11 @@ namespace RTC
 			//Write them to a file
 			for (int i = 0; i < limiterLists?.Count; i++)
 			{
-				File.WriteAllLines(RTC_Core.workingDir + Path.DirectorySeparatorChar + "TEMP" + Path.DirectorySeparatorChar + i + ".limiter", limiterLists[i]);
+				File.WriteAllLines(RTC_EmuCore.workingDir + Path.DirectorySeparatorChar + "TEMP" + Path.DirectorySeparatorChar + i + ".limiter", limiterLists[i]);
 			}
 
 			//Create stockpile.xml to temp folder from stockpile object
-			using (FileStream fs = File.Open(RTC_Core.workingDir + Path.DirectorySeparatorChar + "TEMP\\stockpile.json", FileMode.OpenOrCreate))
+			using (FileStream fs = File.Open(RTC_EmuCore.workingDir + Path.DirectorySeparatorChar + "TEMP\\stockpile.json", FileMode.OpenOrCreate))
 			{
 				JsonHelper.Serialize(sks, fs, Formatting.Indented);
 				fs.Close();
@@ -201,7 +202,7 @@ namespace RTC
 			if (!S.GET<RTC_GlitchHarvester_Form>().cbCompressStockpiles.Checked)
 				comp = CompressionLevel.NoCompression;
 
-			ZipFile.CreateFromDirectory(RTC_Core.workingDir + Path.DirectorySeparatorChar + "TEMP" + Path.DirectorySeparatorChar, tempFilename, comp, false);
+			ZipFile.CreateFromDirectory(RTC_EmuCore.workingDir + Path.DirectorySeparatorChar + "TEMP" + Path.DirectorySeparatorChar, tempFilename, comp, false);
 
 			try
 			{
@@ -218,8 +219,8 @@ namespace RTC
 
 			//Move all the files from temp into SKS
 			EmptyFolder(Path.DirectorySeparatorChar + "WORKING\\SKS");
-			foreach (string file in Directory.GetFiles(RTC_Core.workingDir + Path.DirectorySeparatorChar + "TEMP"))
-				File.Move(file, RTC_Core.workingDir + Path.DirectorySeparatorChar + "SKS" + Path.DirectorySeparatorChar + Path.GetFileName(file));
+			foreach (string file in Directory.GetFiles(RTC_EmuCore.workingDir + Path.DirectorySeparatorChar + "TEMP"))
+				File.Move(file, RTC_EmuCore.workingDir + Path.DirectorySeparatorChar + "SKS" + Path.DirectorySeparatorChar + Path.GetFileName(file));
 			//File.Move(file, RTC_Core.workingDir + Path.DirectorySeparatorChar + "SKS" + Path.DirectorySeparatorChar + (file.Substring(file.LastIndexOf(Path.DirectorySeparatorChar) + 1, file.Length - (file.LastIndexOf(Path.DirectorySeparatorChar) + 1))));
 
 			RTC_StockpileManager.CurrentStockpile = sks;
@@ -262,7 +263,7 @@ namespace RTC
 
 			try
 			{
-				using (FileStream fs = File.Open(RTC_Core.workingDir + Path.DirectorySeparatorChar + "SKS\\stockpile.json", FileMode.OpenOrCreate))
+				using (FileStream fs = File.Open(RTC_EmuCore.workingDir + Path.DirectorySeparatorChar + "SKS\\stockpile.json", FileMode.OpenOrCreate))
 				{
 					sks = JsonHelper.Deserialize<Stockpile>(fs);
 					fs.Close();
@@ -277,7 +278,7 @@ namespace RTC
 			}
 			
 			//Load the limiter lists into the dictionary
-			RTC_Filtering.LoadListsFromPaths(Directory.GetFiles(RTC_Core.workingDir + Path.DirectorySeparatorChar + "SKS" + Path.DirectorySeparatorChar, "*.limiter"));
+			RTC_Filtering.LoadListsFromPaths(Directory.GetFiles(RTC_EmuCore.workingDir + Path.DirectorySeparatorChar + "SKS" + Path.DirectorySeparatorChar, "*.limiter"));
 
 
 			RTC_StockpileManager.CurrentStockpile = sks;
@@ -285,7 +286,7 @@ namespace RTC
 			//Set up the correct 
 			foreach (StashKey t in sks.StashKeys)
 			{
-				t.RomFilename = RTC_Core.workingDir + Path.DirectorySeparatorChar + "SKS" + Path.DirectorySeparatorChar + t.RomShortFilename;
+				t.RomFilename = RTC_EmuCore.workingDir + Path.DirectorySeparatorChar + "SKS" + Path.DirectorySeparatorChar + t.RomShortFilename;
 				t.StateLocation = StashKeySavestateLocation.SKS;
 			}
 
@@ -315,12 +316,12 @@ namespace RTC
 		{
 			List<string> errorMessages = new List<string>();
 
-			if (sks.RtcVersion != RTC_Core.RtcVersion)
+			if (sks.RtcVersion != RTC_Corruptcore.RtcVersion)
 			{
 				if (sks.RtcVersion == null)
 					errorMessages.Add("You have loaded a broken stockpile that didn't contain an RTC Version number\n. There is no reason to believe that these items will work.");
 				else
-					errorMessages.Add("You have loaded a stockpile created with RTC " + sks.RtcVersion + " using RTC " + RTC_Core.RtcVersion + "\n" + "Items might not appear identical to how they when they were created or it is possible that they don't work if BizHawk was upgraded.");
+					errorMessages.Add("You have loaded a stockpile created with RTC " + sks.RtcVersion + " using RTC " + RTC_Corruptcore.RtcVersion + "\n" + "Items might not appear identical to how they when they were created or it is possible that they don't work if BizHawk was upgraded.");
 			}
 
 			if (errorMessages.Count == 0)
@@ -350,13 +351,13 @@ namespace RTC
 		{
 			try
 			{
-				foreach (string file in Directory.GetFiles(RTC_Core.rtcDir + Path.DirectorySeparatorChar + $"{folder}"))
+				foreach (string file in Directory.GetFiles(RTC_EmuCore.rtcDir + Path.DirectorySeparatorChar + $"{folder}"))
 				{
 					File.SetAttributes(file, FileAttributes.Normal);
 					File.Delete(file);
 				}
 
-				foreach (string dir in Directory.GetDirectories(RTC_Core.rtcDir + Path.DirectorySeparatorChar + $"{folder}"))
+				foreach (string dir in Directory.GetDirectories(RTC_EmuCore.rtcDir + Path.DirectorySeparatorChar + $"{folder}"))
 					RecursiveDelete(new DirectoryInfo(dir));
 			}
 			catch (Exception ex)
@@ -371,9 +372,9 @@ namespace RTC
 			try
 			{
 				EmptyFolder(folder);
-				ZipFile.ExtractToDirectory(filename, RTC_Core.rtcDir + Path.DirectorySeparatorChar + $"{folder}" + Path.DirectorySeparatorChar);
+				ZipFile.ExtractToDirectory(filename, RTC_EmuCore.rtcDir + Path.DirectorySeparatorChar + $"{folder}" + Path.DirectorySeparatorChar);
 
-				if (!File.Exists(RTC_Core.rtcDir + Path.DirectorySeparatorChar + $"{folder}\\{masterFile}"))
+				if (!File.Exists(RTC_EmuCore.rtcDir + Path.DirectorySeparatorChar + $"{folder}\\{masterFile}"))
 				{
 					MessageBox.Show("The file could not be read properly");
 
@@ -410,17 +411,17 @@ namespace RTC
 					return;
 			}
 
-			if (File.Exists(RTC_Core.bizhawkDir + Path.DirectorySeparatorChar + "import_config.ini"))
-				File.Delete(RTC_Core.bizhawkDir + Path.DirectorySeparatorChar + "import_config.ini");
-			File.Copy(Filename, RTC_Core.bizhawkDir + Path.DirectorySeparatorChar + "import_config.ini");
+			if (File.Exists(RTC_EmuCore.bizhawkDir + Path.DirectorySeparatorChar + "import_config.ini"))
+				File.Delete(RTC_EmuCore.bizhawkDir + Path.DirectorySeparatorChar + "import_config.ini");
+			File.Copy(Filename, RTC_EmuCore.bizhawkDir + Path.DirectorySeparatorChar + "import_config.ini");
 
-			if (File.Exists(RTC_Core.bizhawkDir + Path.DirectorySeparatorChar + "stockpile_config.ini"))
-				File.Delete(RTC_Core.bizhawkDir + Path.DirectorySeparatorChar + "stockpile_config.ini");
-			File.Copy(RTC_Core.bizhawkDir + Path.DirectorySeparatorChar + "config.ini", RTC_Core.bizhawkDir + Path.DirectorySeparatorChar + "stockpile_config.ini");
+			if (File.Exists(RTC_EmuCore.bizhawkDir + Path.DirectorySeparatorChar + "stockpile_config.ini"))
+				File.Delete(RTC_EmuCore.bizhawkDir + Path.DirectorySeparatorChar + "stockpile_config.ini");
+			File.Copy(RTC_EmuCore.bizhawkDir + Path.DirectorySeparatorChar + "config.ini", RTC_EmuCore.bizhawkDir + Path.DirectorySeparatorChar + "stockpile_config.ini");
 
-			RTC_Core.SendCommandToBizhawk(new RTC_Command(CommandType.REMOTE_IMPORTKEYBINDS), true);
+			RTC_NetcoreImplementation.SendCommandToBizhawk(new RTC_Command(CommandType.REMOTE_IMPORTKEYBINDS), true);
 
-			Process.Start(RTC_Core.bizhawkDir + Path.DirectorySeparatorChar + $"StockpileConfig{(RTC_Core.isStandalone ? "DETACHED" : "ATTACHED")}.bat");
+			Process.Start(RTC_EmuCore.bizhawkDir + Path.DirectorySeparatorChar + $"StockpileConfig{(RTC_NetcoreImplementation.isStandaloneUI ? "DETACHED" : "ATTACHED")}.bat");
 		}
 
 		public static void LoadBizhawkConfigFromStockpile(string Filename = null)
@@ -442,45 +443,45 @@ namespace RTC
 					return;
 			}
 
-			if (File.Exists(RTC_Core.bizhawkDir + Path.DirectorySeparatorChar + "backup_config.ini"))
+			if (File.Exists(RTC_EmuCore.bizhawkDir + Path.DirectorySeparatorChar + "backup_config.ini"))
 			{
 				if (MessageBox.Show("Do you want to overwrite the previous Config Backup with the current Bizhawk Config?", "WARNING", MessageBoxButtons.YesNo) == DialogResult.Yes)
 				{
-					File.Delete(RTC_Core.bizhawkDir + Path.DirectorySeparatorChar + "backup_config.ini");
-					File.Copy((RTC_Core.bizhawkDir + Path.DirectorySeparatorChar + "config.ini"), (RTC_Core.bizhawkDir + Path.DirectorySeparatorChar + "backup_config.ini"));
+					File.Delete(RTC_EmuCore.bizhawkDir + Path.DirectorySeparatorChar + "backup_config.ini");
+					File.Copy((RTC_EmuCore.bizhawkDir + Path.DirectorySeparatorChar + "config.ini"), (RTC_EmuCore.bizhawkDir + Path.DirectorySeparatorChar + "backup_config.ini"));
 				}
 			}
 			else
-				File.Copy((RTC_Core.bizhawkDir + Path.DirectorySeparatorChar + "config.ini"), (RTC_Core.bizhawkDir + Path.DirectorySeparatorChar + "backup_config.ini"));
+				File.Copy((RTC_EmuCore.bizhawkDir + Path.DirectorySeparatorChar + "config.ini"), (RTC_EmuCore.bizhawkDir + Path.DirectorySeparatorChar + "backup_config.ini"));
 
 			Extract(Filename, Path.DirectorySeparatorChar + "WORKING\\TEMP", "stockpile.json");
 
-			if (File.Exists(RTC_Core.bizhawkDir + Path.DirectorySeparatorChar + "stockpile_config.ini"))
-				File.Delete(RTC_Core.bizhawkDir + Path.DirectorySeparatorChar + "stockpile_config.ini");
-			File.Copy((RTC_Core.workingDir + Path.DirectorySeparatorChar + "SKS\\config.ini"), (RTC_Core.bizhawkDir + Path.DirectorySeparatorChar + "stockpile_config.ini"));
+			if (File.Exists(RTC_EmuCore.bizhawkDir + Path.DirectorySeparatorChar + "stockpile_config.ini"))
+				File.Delete(RTC_EmuCore.bizhawkDir + Path.DirectorySeparatorChar + "stockpile_config.ini");
+			File.Copy((RTC_EmuCore.workingDir + Path.DirectorySeparatorChar + "SKS\\config.ini"), (RTC_EmuCore.bizhawkDir + Path.DirectorySeparatorChar + "stockpile_config.ini"));
 
-			RTC_Core.SendCommandToBizhawk(new RTC_Command(CommandType.REMOTE_MERGECONFIG), true);
+			RTC_NetcoreImplementation.SendCommandToBizhawk(new RTC_Command(CommandType.REMOTE_MERGECONFIG), true);
 
-			Process.Start(RTC_Core.bizhawkDir + Path.DirectorySeparatorChar + $"StockpileConfig{(RTC_Core.isStandalone ? "DETACHED" : "ATTACHED")}.bat");
+			Process.Start(RTC_EmuCore.bizhawkDir + Path.DirectorySeparatorChar + $"StockpileConfig{(RTC_NetcoreImplementation.isStandaloneUI ? "DETACHED" : "ATTACHED")}.bat");
 		}
 
 		public static void MergeBizhawkConfig_NET()
 		{
 
-			RTC_Hooks.BIZHAWK_MERGECONFIGINI(RTC_Core.bizhawkDir + Path.DirectorySeparatorChar + "backup_config.ini", RTC_Core.bizhawkDir + Path.DirectorySeparatorChar + "stockpile_config.ini");
+			RTC_Hooks.BIZHAWK_MERGECONFIGINI(RTC_EmuCore.bizhawkDir + Path.DirectorySeparatorChar + "backup_config.ini", RTC_EmuCore.bizhawkDir + Path.DirectorySeparatorChar + "stockpile_config.ini");
 
 		}
 
 		public static void ImportBizhawkKeybinds_NET()
 		{
 
-			RTC_Hooks.BIZHAWK_IMPORTCONFIGINI(RTC_Core.bizhawkDir + Path.DirectorySeparatorChar + "import_config.ini", RTC_Core.bizhawkDir + Path.DirectorySeparatorChar + "stockpile_config.ini");
+			RTC_Hooks.BIZHAWK_IMPORTCONFIGINI(RTC_EmuCore.bizhawkDir + Path.DirectorySeparatorChar + "import_config.ini", RTC_EmuCore.bizhawkDir + Path.DirectorySeparatorChar + "stockpile_config.ini");
 			
 		}
 
 		public static void RestoreBizhawkConfig()
 		{
-			Process.Start(RTC_Core.bizhawkDir + Path.DirectorySeparatorChar + $"RestoreConfig{(RTC_Core.isStandalone ? "DETACHED" : "ATTACHED")}.bat");
+			Process.Start(RTC_EmuCore.bizhawkDir + Path.DirectorySeparatorChar + $"RestoreConfig{(RTC_NetcoreImplementation.isStandaloneUI ? "DETACHED" : "ATTACHED")}.bat");
 		}
 
 		public static void Import()
@@ -516,9 +517,9 @@ namespace RTC
 				return;
 			}
 
-			ZipFile.ExtractToDirectory(filename, RTC_Core.workingDir + Path.DirectorySeparatorChar + $"TEMP" + Path.DirectorySeparatorChar);
+			ZipFile.ExtractToDirectory(filename, RTC_EmuCore.workingDir + Path.DirectorySeparatorChar + $"TEMP" + Path.DirectorySeparatorChar);
 
-			if (!File.Exists(RTC_Core.workingDir + Path.DirectorySeparatorChar + "TEMP\\stockpile.json"))
+			if (!File.Exists(RTC_EmuCore.workingDir + Path.DirectorySeparatorChar + "TEMP\\stockpile.json"))
 			{
 				MessageBox.Show("The file could not be read properly");
 
@@ -532,7 +533,7 @@ namespace RTC
 
 			try
 			{
-				using (FileStream fs = File.Open(RTC_Core.workingDir + Path.DirectorySeparatorChar + "TEMP\\stockpile.json", FileMode.OpenOrCreate))
+				using (FileStream fs = File.Open(RTC_EmuCore.workingDir + Path.DirectorySeparatorChar + "TEMP\\stockpile.json", FileMode.OpenOrCreate))
 				{
 					JsonSerializer js = new JsonSerializer();
 					sks = JsonHelper.Deserialize<Stockpile>(fs);
@@ -550,18 +551,18 @@ namespace RTC
 			{
 
 				sk.RomShortFilename = RTC_Extensions.getShortFilenameFromPath(sk.RomFilename);
-				sk.RomFilename = RTC_Core.workingDir + Path.DirectorySeparatorChar + "SKS" + Path.DirectorySeparatorChar + sk.RomShortFilename;
+				sk.RomFilename = RTC_EmuCore.workingDir + Path.DirectorySeparatorChar + "SKS" + Path.DirectorySeparatorChar + sk.RomShortFilename;
 
 				sk.StateLocation = StashKeySavestateLocation.SKS;
 			}
 
-			foreach (string file in Directory.GetFiles(RTC_Core.workingDir + Path.DirectorySeparatorChar + "TEMP" + Path.DirectorySeparatorChar))
+			foreach (string file in Directory.GetFiles(RTC_EmuCore.workingDir + Path.DirectorySeparatorChar + "TEMP" + Path.DirectorySeparatorChar))
 			{
 				if (!file.Contains(".sk"))
 				{
 					try
 					{
-						string dest = RTC_Core.workingDir + Path.DirectorySeparatorChar + "SKS" + Path.DirectorySeparatorChar + Path.GetFileName(file);
+						string dest = RTC_EmuCore.workingDir + Path.DirectorySeparatorChar + "SKS" + Path.DirectorySeparatorChar + Path.GetFileName(file);
 
 						if (!File.Exists(dest))
 						{
@@ -636,11 +637,11 @@ namespace RTC
 			ParentKey = parentkey;
 			BlastLayer = blastlayer;
 
-			RomFilename = (string)RTC_Core.SendCommandToBizhawk(new RTC_Command(CommandType.REMOTE_KEY_GETOPENROMFILENAME), true);
-			SystemName = RTC_Core.EmuFolderCheck((string)RTC_Core.SendCommandToBizhawk(new RTC_Command(CommandType.REMOTE_KEY_GETSYSTEMNAME), true));
-			SystemCore = (string)RTC_Core.SendCommandToBizhawk(new RTC_Command(CommandType.REMOTE_KEY_GETSYSTEMCORE) { objectValue = SystemName }, true);
-			GameName = (string)RTC_Core.SendCommandToBizhawk(new RTC_Command(CommandType.REMOTE_KEY_GETGAMENAME), true);
-			SyncSettings = (string)RTC_Core.SendCommandToBizhawk(new RTC_Command(CommandType.REMOTE_KEY_GETSYNCSETTINGS), true);
+			RomFilename = (string)RTC_NetcoreImplementation.SendCommandToBizhawk(new RTC_Command(CommandType.REMOTE_KEY_GETOPENROMFILENAME), true);
+			SystemName = RTC_EmuCore.EmuFolderCheck((string)RTC_NetcoreImplementation.SendCommandToBizhawk(new RTC_Command(CommandType.REMOTE_KEY_GETSYSTEMNAME), true));
+			SystemCore = (string)RTC_NetcoreImplementation.SendCommandToBizhawk(new RTC_Command(CommandType.REMOTE_KEY_GETSYSTEMCORE) { objectValue = SystemName }, true);
+			GameName = (string)RTC_NetcoreImplementation.SendCommandToBizhawk(new RTC_Command(CommandType.REMOTE_KEY_GETGAMENAME), true);
+			SyncSettings = (string)RTC_NetcoreImplementation.SendCommandToBizhawk(new RTC_Command(CommandType.REMOTE_KEY_GETSYNCSETTINGS), true);
 
 			this.SelectedDomains.AddRange(RTC_MemoryDomains.SelectedDomains);
 		}
@@ -652,7 +653,7 @@ namespace RTC
 		public object Clone()
 		{
 			object sk = ObjectCopierCeras.Clone(this);
-			((StashKey)sk).Key = RTC_Core.GetRandomKey();
+			((StashKey)sk).Key = RTC_Corruptcore.GetRandomKey();
 			((StashKey)sk).Alias = null;
 			return sk;
 		}
@@ -711,7 +712,7 @@ namespace RTC
 
 		public string GetSavestateFullPath()
 		{
-			return RTC_Core.workingDir + Path.DirectorySeparatorChar + this.StateLocation.ToString() + Path.DirectorySeparatorChar + this.GameName + "." + this.ParentKey + ".timejump.State"; // get savestate name
+			return RTC_EmuCore.workingDir + Path.DirectorySeparatorChar + this.StateLocation.ToString() + Path.DirectorySeparatorChar + this.GameName + "." + this.ParentKey + ".timejump.State"; // get savestate name
 		}
 
 	}
@@ -762,9 +763,9 @@ namespace RTC
 
 		public void Apply(bool ignoreMaximums = false)
 		{
-			if (RTC_Core.isStandalone)
+			if (RTC_NetcoreImplementation.isStandaloneUI)
 			{
-				RTC_Core.SendCommandToBizhawk(new RTC.RTC_Command(CommandType.BLAST) { blastlayer = this });
+				RTC_NetcoreImplementation.SendCommandToBizhawk(new RTC.RTC_Command(CommandType.BLAST) { blastlayer = this });
 				return;
 			}
 
@@ -1352,18 +1353,18 @@ namespace RTC
 				switch (Precision)
 				{
 					case (1):
-						randomValue = RTC_Core.RND.RandomLong(RTC_NightmareEngine.MinValue8Bit, RTC_NightmareEngine.MaxValue8Bit);
+						randomValue = RTC_Corruptcore.RND.RandomLong(RTC_NightmareEngine.MinValue8Bit, RTC_NightmareEngine.MaxValue8Bit);
 						break;
 					case (2):
-						randomValue = RTC_Core.RND.RandomLong(RTC_NightmareEngine.MinValue16Bit, RTC_NightmareEngine.MaxValue16Bit);
+						randomValue = RTC_Corruptcore.RND.RandomLong(RTC_NightmareEngine.MinValue16Bit, RTC_NightmareEngine.MaxValue16Bit);
 						break;
 					case (4):
-						randomValue = RTC_Core.RND.RandomLong(RTC_NightmareEngine.MinValue32Bit, RTC_NightmareEngine.MaxValue32Bit);
+						randomValue = RTC_Corruptcore.RND.RandomLong(RTC_NightmareEngine.MinValue32Bit, RTC_NightmareEngine.MaxValue32Bit);
 						break;
 					//No limits if out of normal range
 					default:
 						byte[] _randomValue = new byte[Precision];
-						RTC_Core.RND.NextBytes(_randomValue);
+						RTC_Corruptcore.RND.NextBytes(_randomValue);
 						randomValue = new BigInteger(_randomValue);
 						break;
 				}
@@ -1376,16 +1377,16 @@ namespace RTC
 			else if (Source == BlastUnitSource.STORE)
 			{
 				//Todo - Allow rerolling address and domain separately
-				if (RTC_Core.RerollSourceAddress)
+				if (RTC_Corruptcore.RerollSourceAddress)
 				{
-					var newSource = RTC_Core.GetBlastTarget();
+					var newSource = RTC_Corruptcore.GetBlastTarget();
 
 					SourceAddress = newSource.Address;
 					SourceDomain = newSource.Domain;
 				}
-				if (RTC_Core.RerollAddress)
+				if (RTC_Corruptcore.RerollAddress)
 				{
-					var newSource = RTC_Core.GetBlastTarget();
+					var newSource = RTC_Corruptcore.GetBlastTarget();
 
 					Address = newSource.Address;
 					Domain = newSource.Domain;

@@ -19,7 +19,7 @@ namespace RTC
 				
 				long safeAddress = address - (address % precision);
 
-				BlastTarget pipeStart = RTC_Core.GetBlastTarget();
+				BlastTarget pipeStart = RTC_Corruptcore.GetBlastTarget();
 				long safePipeStartAddress = pipeStart.Address - (pipeStart.Address % precision);
 
 				return new BlastUnit(StoreType.CONTINUOUS, StoreTime.PREEXECUTE, domain, safeAddress, pipeStart.Domain, safePipeStartAddress, precision, mdp.BigEndian, 0, 0);

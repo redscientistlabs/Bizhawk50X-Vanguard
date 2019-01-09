@@ -1,5 +1,6 @@
 ﻿using System;
 using System.IO;
+using RTC.Legacy;
 
 namespace RTC
 {
@@ -15,7 +16,7 @@ namespace RTC
 				StopRender();
 
 			isRendering = true;
-			RTC_Core.SendCommandToBizhawk(new RTC_Command(CommandType.REMOTE_RENDER_START), true);
+			RTC_NetcoreImplementation.SendCommandToBizhawk(new RTC_Command(CommandType.REMOTE_RENDER_START), true);
 		}
 
 		public static void StartRender_NET()
@@ -24,17 +25,17 @@ namespace RTC
 			if (lastType == RENDERTYPE.NONE)
 				return;
 
-			string Key = "RENDER_" + (RTC_Core.GetRandomKey());
+			string Key = "RENDER_" + (RTC_Corruptcore.GetRandomKey());
 
 			switch (lastType)
 			{
 				case RENDERTYPE.WAV:
-					RTC_Hooks.BIZHAWK_STARTRECORDAV("wave", RTC_Core.rtcDir + Path.DirectorySeparatorChar + "RENDEROUTPUT" + Path.DirectorySeparatorChar + Key + ".wav", true);
+					RTC_Hooks.BIZHAWK_STARTRECORDAV("wave", RTC_EmuCore.rtcDir + Path.DirectorySeparatorChar + "RENDEROUTPUT" + Path.DirectorySeparatorChar + Key + ".wav", true);
 					break;
 				case RENDERTYPE.AVI:
 					try
 					{
-						RTC_Hooks.BIZHAWK_STARTRECORDAV("vfwavi", RTC_Core.rtcDir + Path.DirectorySeparatorChar + "RENDEROUTPUT" + Path.DirectorySeparatorChar + Key + ".avi", true);
+						RTC_Hooks.BIZHAWK_STARTRECORDAV("vfwavi", RTC_EmuCore.rtcDir + Path.DirectorySeparatorChar + "RENDEROUTPUT" + Path.DirectorySeparatorChar + Key + ".avi", true);
 					}
 					catch (Exception ex)
 					{
@@ -43,11 +44,11 @@ namespace RTC
 
 					break;
 				case RENDERTYPE.MPEG:
-					RTC_Hooks.BIZHAWK_STARTRECORDAV("ffmpeg", RTC_Core.rtcDir + Path.DirectorySeparatorChar + "RENDEROUTPUT" + Path.DirectorySeparatorChar + Key + ".mpg", true);
+					RTC_Hooks.BIZHAWK_STARTRECORDAV("ffmpeg", RTC_EmuCore.rtcDir + Path.DirectorySeparatorChar + "RENDEROUTPUT" + Path.DirectorySeparatorChar + Key + ".mpg", true);
 					break;
 			}
 
-			RTC_Core.SendCommandToRTC(new RTC_Command(CommandType.REMOTE_RENDER_STARTED));
+			RTC_NetcoreImplementation.SendCommandToRTC(new RTC_Command(CommandType.REMOTE_RENDER_STARTED));
 		}
 
 		public static void setType(string _type)
@@ -68,13 +69,13 @@ namespace RTC
 					break;
 			}
 
-			RTC_Core.SendCommandToBizhawk(new RTC_Command(CommandType.REMOTE_RENDER_SETTYPE) { objectValue = lastType });
+			RTC_NetcoreImplementation.SendCommandToBizhawk(new RTC_Command(CommandType.REMOTE_RENDER_SETTYPE) { objectValue = lastType });
 		}
 
 		public static void StopRender()
 		{
 			isRendering = false;
-			RTC_Core.SendCommandToBizhawk(new RTC_Command(CommandType.REMOTE_RENDER_STOP));
+			RTC_NetcoreImplementation.SendCommandToBizhawk(new RTC_Command(CommandType.REMOTE_RENDER_STOP));
 		}
 
 		public static void StopRender_NET()

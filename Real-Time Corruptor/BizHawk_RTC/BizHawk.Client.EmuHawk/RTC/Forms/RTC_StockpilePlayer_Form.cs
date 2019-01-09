@@ -174,14 +174,14 @@ namespace RTC
 			{
 				try
 				{
-					RTC_Core.StopSound();
+					RTC_EmuCore.StopSound();
 					Stockpile.RestoreBizhawkConfig();
 				}
 				finally
 				{
-					RTC_Core.StartSound();
+					RTC_EmuCore.StartSound();
 				}
-			})).Enabled = (File.Exists(RTC_Core.bizhawkDir + Path.DirectorySeparatorChar + "backup_config.ini"));
+			})).Enabled = (File.Exists(RTC_EmuCore.bizhawkDir + Path.DirectorySeparatorChar + "backup_config.ini"));
 
 			LoadMenuItems.Show(this, locate);
 		}

@@ -7,6 +7,7 @@ using System.Linq;
 using System.Security.Cryptography;
 using System.Threading;
 using System.Windows.Forms;
+using RTC.Legacy;
 using static RTC.RTC_Unispec;
 
 namespace RTC
@@ -23,7 +24,7 @@ namespace RTC
 			{
 				case CommandType.ASYNCBLAST:
 				{
-					BlastLayer bl = RTC_Core.Blast(null, RTC_MemoryDomains.SelectedDomains);
+					BlastLayer bl = RTC_Corruptcore.Blast(null, RTC_MemoryDomains.SelectedDomains);
 					if (bl != null)
 						bl.Apply();
 				}
@@ -43,7 +44,7 @@ namespace RTC
 					}
 					else
 					{
-						bl = RTC_Core.Blast(null, _domains);
+						bl = RTC_Corruptcore.Blast(null, _domains);
 					}
 
 					if (cmd.requestGuid != null)
@@ -58,10 +59,10 @@ namespace RTC
 
 				case CommandType.STASHKEY:
 
-					if (!File.Exists(RTC_Core.rtcDir + Path.DirectorySeparatorChar + "WORKING" + Path.DirectorySeparatorChar + "SKS" + Path.DirectorySeparatorChar + cmd.romFilename))
-						File.WriteAllBytes(RTC_Core.rtcDir + Path.DirectorySeparatorChar + "WORKING" + Path.DirectorySeparatorChar + "SKS" + Path.DirectorySeparatorChar + cmd.romFilename, cmd.romData);
+					if (!File.Exists(RTC_EmuCore.rtcDir + Path.DirectorySeparatorChar + "WORKING" + Path.DirectorySeparatorChar + "SKS" + Path.DirectorySeparatorChar + cmd.romFilename))
+						File.WriteAllBytes(RTC_EmuCore.rtcDir + Path.DirectorySeparatorChar + "WORKING" + Path.DirectorySeparatorChar + "SKS" + Path.DirectorySeparatorChar + cmd.romFilename, cmd.romData);
 
-					cmd.stashkey.RomFilename = RTC_Core.rtcDir + Path.DirectorySeparatorChar + "WORKING" + Path.DirectorySeparatorChar + "SKS" + Path.DirectorySeparatorChar + RTC_Extensions.getShortFilenameFromPath(cmd.romFilename);
+					cmd.stashkey.RomFilename = RTC_EmuCore.rtcDir + Path.DirectorySeparatorChar + "WORKING" + Path.DirectorySeparatorChar + "SKS" + Path.DirectorySeparatorChar + RTC_Extensions.getShortFilenameFromPath(cmd.romFilename);
 
 					cmd.stashkey.DeployState();
 
@@ -72,24 +73,24 @@ namespace RTC
 
 				case CommandType.REMOTE_PUSHRTCSPEC:
 					cmdBack = new RTC_Command(CommandType.RETURNVALUE);
-					RTC_Unispec.RTCSpec = new FullSpec((PartialSpec)cmd.objectValue);
+					RTC_Corruptcore.RTCSpec = new FullSpec((PartialSpec)cmd.objectValue);
 					cmdBack.objectValue = true;
 					break;
 
 
 				case CommandType.REMOTE_PUSHEMUSPEC:
 					cmdBack = new RTC_Command(CommandType.RETURNVALUE);
-					RTC_Unispec.EmuSpec = new FullSpec((PartialSpec)cmd.objectValue);
+					RTC_EmuCore.EmuSpec = new FullSpec((PartialSpec)cmd.objectValue);
 					cmdBack.objectValue = true;
 					break;
 
 
 				case CommandType.REMOTE_PUSHRTCSPECUPDATE:
-					RTC_Unispec.RTCSpec?.Update((PartialSpec)cmd.objectValue, false);
+					RTC_Corruptcore.RTCSpec?.Update((PartialSpec)cmd.objectValue, false);
 					break;
 
 				case CommandType.REMOTE_PUSHEMUSPECUPDATE:
-					RTC_Unispec.EmuSpec?.Update((PartialSpec)cmd.objectValue, false);
+					RTC_EmuCore.EmuSpec?.Update((PartialSpec)cmd.objectValue, false);
 					break;
 
 
@@ -106,11 +107,11 @@ namespace RTC
 					if (cmd.romData != null)
 					{
 						cmd.romFilename = RTC_Extensions.getShortFilenameFromPath(cmd.romFilename);
-						if (!File.Exists(RTC_Core.rtcDir + Path.DirectorySeparatorChar + "WORKING" + Path.DirectorySeparatorChar + "MP" + Path.DirectorySeparatorChar + cmd.romFilename))
-							File.WriteAllBytes(RTC_Core.rtcDir + Path.DirectorySeparatorChar + "WORKING" + Path.DirectorySeparatorChar + "MP" + Path.DirectorySeparatorChar + cmd.romFilename, cmd.romData);
+						if (!File.Exists(RTC_EmuCore.rtcDir + Path.DirectorySeparatorChar + "WORKING" + Path.DirectorySeparatorChar + "MP" + Path.DirectorySeparatorChar + cmd.romFilename))
+							File.WriteAllBytes(RTC_EmuCore.rtcDir + Path.DirectorySeparatorChar + "WORKING" + Path.DirectorySeparatorChar + "MP" + Path.DirectorySeparatorChar + cmd.romFilename, cmd.romData);
 					}
 
-					RTC_Core.LoadRom(RTC_Core.rtcDir + Path.DirectorySeparatorChar + "WORKING" + Path.DirectorySeparatorChar + "MP" + Path.DirectorySeparatorChar + cmd.romFilename);
+					RTC_EmuCore.LoadRom(RTC_EmuCore.rtcDir + Path.DirectorySeparatorChar + "WORKING" + Path.DirectorySeparatorChar + "MP" + Path.DirectorySeparatorChar + cmd.romFilename);
 					break;
 
 				case CommandType.PULLSTATE:
@@ -149,9 +150,9 @@ namespace RTC
 
 					cmd.romFilename = RTC_Extensions.getShortFilenameFromPath(cmd.romFilename);
 
-					if (!File.Exists(RTC_Core.rtcDir + Path.DirectorySeparatorChar + "WORKING" + Path.DirectorySeparatorChar + "MP" + Path.DirectorySeparatorChar + cmd.romFilename))
-						File.WriteAllBytes(RTC_Core.rtcDir + Path.DirectorySeparatorChar + "WORKING" + Path.DirectorySeparatorChar + "MP" + Path.DirectorySeparatorChar + cmd.romFilename, cmd.romData);
-					RTC_Core.LoadRom(RTC_Core.rtcDir + Path.DirectorySeparatorChar + "WORKING" + Path.DirectorySeparatorChar + "MP" + Path.DirectorySeparatorChar + cmd.romFilename);
+					if (!File.Exists(RTC_EmuCore.rtcDir + Path.DirectorySeparatorChar + "WORKING" + Path.DirectorySeparatorChar + "MP" + Path.DirectorySeparatorChar + cmd.romFilename))
+						File.WriteAllBytes(RTC_EmuCore.rtcDir + Path.DirectorySeparatorChar + "WORKING" + Path.DirectorySeparatorChar + "MP" + Path.DirectorySeparatorChar + cmd.romFilename, cmd.romData);
+					RTC_EmuCore.LoadRom(RTC_EmuCore.rtcDir + Path.DirectorySeparatorChar + "WORKING" + Path.DirectorySeparatorChar + "MP" + Path.DirectorySeparatorChar + cmd.romFilename);
 
 					cmd.stashkey.DeployState();
 					RTC_StockpileManager.LoadState(cmd.stashkey, false);
@@ -166,10 +167,10 @@ namespace RTC
 					cmd.romFilename = RTC_Extensions.getShortFilenameFromPath(cmd.romFilename);
 
 					if (cmd.romData != null)
-						if (!File.Exists(RTC_Core.rtcDir + Path.DirectorySeparatorChar + "WORKING" + Path.DirectorySeparatorChar + "MP" + Path.DirectorySeparatorChar + cmd.romFilename))
-							File.WriteAllBytes(RTC_Core.rtcDir + Path.DirectorySeparatorChar + "WORKING" + Path.DirectorySeparatorChar + "MP" + Path.DirectorySeparatorChar + cmd.romFilename, cmd.romData);
+						if (!File.Exists(RTC_EmuCore.rtcDir + Path.DirectorySeparatorChar + "WORKING" + Path.DirectorySeparatorChar + "MP" + Path.DirectorySeparatorChar + cmd.romFilename))
+							File.WriteAllBytes(RTC_EmuCore.rtcDir + Path.DirectorySeparatorChar + "WORKING" + Path.DirectorySeparatorChar + "MP" + Path.DirectorySeparatorChar + cmd.romFilename, cmd.romData);
 
-					RTC_Core.LoadRom(RTC_Core.rtcDir + Path.DirectorySeparatorChar + "WORKING" + Path.DirectorySeparatorChar + "MP" + Path.DirectorySeparatorChar + cmd.romFilename);
+					RTC_EmuCore.LoadRom(RTC_EmuCore.rtcDir + Path.DirectorySeparatorChar + "WORKING" + Path.DirectorySeparatorChar + "MP" + Path.DirectorySeparatorChar + cmd.romFilename);
 
 					cmd.stashkey.DeployState();
 					RTC_StockpileManager.LoadState(cmd.stashkey, false);
@@ -229,7 +230,7 @@ namespace RTC
 				}
 
 				case CommandType.REMOTE_LOADROM:
-					RTC_Core.LoadRom_NET(cmd.romFilename);
+					RTC_EmuCore.LoadRom_NET(cmd.romFilename);
 					break;
 
 				case CommandType.REMOTE_LOADSTATE:
@@ -244,7 +245,7 @@ namespace RTC
 
 						if (runBlastLayer)
 						{
-							RTC_Core.SendCommandToBizhawk(new RTC_Command(CommandType.BLAST) { blastlayer = sk.BlastLayer, isReplay = true });
+							RTC_NetcoreImplementation.SendCommandToBizhawk(new RTC_Command(CommandType.BLAST) { blastlayer = sk.BlastLayer, isReplay = true });
 							RTC_Hooks.CPU_STEP(false, false, true);
 						}
 
@@ -431,10 +432,10 @@ namespace RTC
 
 				case CommandType.REMOTE_EVENT_LOADGAMEDONE_NEWGAME:
 
-					if (RTC_Core.isStandalone && RTC_GameProtection.isRunning)
+					if (RTC_NetcoreImplementation.isStandaloneUI && RTC_GameProtection.isRunning)
 						RTC_GameProtection.Reset();
 
-					RTC_Core.AutoCorrupt = false;
+					RTC_Corruptcore.AutoCorrupt = false;
 					//RTC_StockpileManager.isCorruptionApplied = false;
 					S.GET<RTC_MemoryDomains_Form>().RefreshDomains();
 					S.GET<RTC_MemoryDomains_Form>().SetMemoryDomainsAllButSelectedDomains(RTC_MemoryDomains.GetBlacklistedDomains());
@@ -459,7 +460,7 @@ namespace RTC
 						S.GET<RTC_Core_Form>().AutoCorrupt = false;
 
 
-					RTC_Core.SendCommandToBizhawk(new RTC_Command(CommandType.REMOTE_PUSHVMDS) { objectValue = RTC_MemoryDomains.VmdPool.Values.Select(it => (it as VirtualMemoryDomain).Proto).ToArray() }, true, true);
+					RTC_NetcoreImplementation.SendCommandToBizhawk(new RTC_Command(CommandType.REMOTE_PUSHVMDS) { objectValue = RTC_MemoryDomains.VmdPool.Values.Select(it => (it as VirtualMemoryDomain).Proto).ToArray() }, true, true);
 
 					Thread.Sleep(100);
 
@@ -514,7 +515,7 @@ namespace RTC
 					if (!RTC_NetCore.NetCoreCommandSynclock)
 					{
 						RTC_NetCore.NetCoreCommandSynclock = true;
-						RTC_Unispec.RTCSpec.Update(RTCSPEC.STEP_RUNBEFORE.ToString(), true);
+						RTC_Corruptcore.RTCSpec.Update(RTCSPEC.STEP_RUNBEFORE.ToString(), true);
 
 
 						bool isload = S.GET<RTC_GlitchHarvester_Form>().cbAutoLoadState.Checked;
@@ -543,8 +544,8 @@ namespace RTC
 					break;
 
 				case CommandType.REMOTE_HOTKEY_BLASTRAWSTASH:
-					RTC_Unispec.RTCSpec.Update(RTCSPEC.STEP_RUNBEFORE.ToString(), true);
-					RTC_Core.SendCommandToBizhawk(new RTC_Command(CommandType.ASYNCBLAST));
+					RTC_Corruptcore.RTCSpec.Update(RTCSPEC.STEP_RUNBEFORE.ToString(), true);
+					RTC_NetcoreImplementation.SendCommandToBizhawk(new RTC_Command(CommandType.ASYNCBLAST));
 					S.GET<RTC_GlitchHarvester_Form>().btnSendRaw_Click(null, null);
 					break;
 				case CommandType.REMOTE_HOTKEY_BLASTLAYERTOGGLE:
@@ -559,7 +560,7 @@ namespace RTC
 					}
 
 					S.GET<RTC_GlitchHarvester_Form>().IsCorruptionApplied = true;
-					RTC_Core.SendCommandToRTC(new RTC_Command(CommandType.BLAST) { blastlayer = RTC_StockpileManager.CurrentStashkey.BlastLayer });
+					RTC_NetcoreImplementation.SendCommandToRTC(new RTC_Command(CommandType.BLAST) { blastlayer = RTC_StockpileManager.CurrentStashkey.BlastLayer });
 					break;
 
 				case CommandType.REMOTE_RENDER_START:

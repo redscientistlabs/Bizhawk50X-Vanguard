@@ -7,35 +7,35 @@ namespace RTC
 	{
 		public static long MinValue8Bit
 		{
-			get => (long)RTC_Unispec.RTCSpec[RTCSPEC.HELLGENIE_MINVALUE8BIT.ToString()];
-			set => RTC_Unispec.RTCSpec.Update(RTCSPEC.HELLGENIE_MINVALUE8BIT.ToString(), value);
+			get => (long)RTC_Corruptcore.RTCSpec[RTCSPEC.HELLGENIE_MINVALUE8BIT.ToString()];
+			set => RTC_Corruptcore.RTCSpec.Update(RTCSPEC.HELLGENIE_MINVALUE8BIT.ToString(), value);
 		}
 		public static long MaxValue8Bit
 		{
-			get => (long)RTC_Unispec.RTCSpec[RTCSPEC.HELLGENIE_MAXVALUE8BIT.ToString()];
-			set => RTC_Unispec.RTCSpec.Update(RTCSPEC.HELLGENIE_MAXVALUE8BIT.ToString(), value);
+			get => (long)RTC_Corruptcore.RTCSpec[RTCSPEC.HELLGENIE_MAXVALUE8BIT.ToString()];
+			set => RTC_Corruptcore.RTCSpec.Update(RTCSPEC.HELLGENIE_MAXVALUE8BIT.ToString(), value);
 		}
 
 		public static long MinValue16Bit
 		{
-			get => (long)RTC_Unispec.RTCSpec[RTCSPEC.HELLGENIE_MINVALUE16BIT.ToString()];
-			set => RTC_Unispec.RTCSpec.Update(RTCSPEC.HELLGENIE_MINVALUE16BIT.ToString(), value);
+			get => (long)RTC_Corruptcore.RTCSpec[RTCSPEC.HELLGENIE_MINVALUE16BIT.ToString()];
+			set => RTC_Corruptcore.RTCSpec.Update(RTCSPEC.HELLGENIE_MINVALUE16BIT.ToString(), value);
 		}
 		public static long MaxValue16Bit
 		{
-			get => (long)RTC_Unispec.RTCSpec[RTCSPEC.HELLGENIE_MAXVALUE16BIT.ToString()];
-			set => RTC_Unispec.RTCSpec.Update(RTCSPEC.HELLGENIE_MAXVALUE16BIT.ToString(), value);
+			get => (long)RTC_Corruptcore.RTCSpec[RTCSPEC.HELLGENIE_MAXVALUE16BIT.ToString()];
+			set => RTC_Corruptcore.RTCSpec.Update(RTCSPEC.HELLGENIE_MAXVALUE16BIT.ToString(), value);
 		}
 
 		public static long MinValue32Bit
 		{
-			get => (long)RTC_Unispec.RTCSpec[RTCSPEC.HELLGENIE_MINVALUE32BIT.ToString()];
-			set => RTC_Unispec.RTCSpec.Update(RTCSPEC.HELLGENIE_MINVALUE32BIT.ToString(), value);
+			get => (long)RTC_Corruptcore.RTCSpec[RTCSPEC.HELLGENIE_MINVALUE32BIT.ToString()];
+			set => RTC_Corruptcore.RTCSpec.Update(RTCSPEC.HELLGENIE_MINVALUE32BIT.ToString(), value);
 		}
 		public static long MaxValue32Bit
 		{
-			get => (long)RTC_Unispec.RTCSpec[RTCSPEC.HELLGENIE_MAXVALUE32BIT.ToString()];
-			set => RTC_Unispec.RTCSpec.Update(RTCSPEC.HELLGENIE_MAXVALUE32BIT.ToString(), value);
+			get => (long)RTC_Corruptcore.RTCSpec[RTCSPEC.HELLGENIE_MAXVALUE32BIT.ToString()];
+			set => RTC_Corruptcore.RTCSpec.Update(RTCSPEC.HELLGENIE_MAXVALUE32BIT.ToString(), value);
 		}
 
 		public static PartialSpec getDefaultPartial()
@@ -72,13 +72,13 @@ namespace RTC
 				switch (precision)
 				{
 					case 1:
-						randomValue = RTC_Core.RND.RandomLong(MinValue8Bit, MaxValue8Bit);
+						randomValue = RTC_Corruptcore.RND.RandomLong(MinValue8Bit, MaxValue8Bit);
 						break;
 					case 2:
-						randomValue = RTC_Core.RND.RandomLong(MinValue16Bit, MaxValue16Bit);
+						randomValue = RTC_Corruptcore.RND.RandomLong(MinValue16Bit, MaxValue16Bit);
 						break;
 					case 4:
-						randomValue = RTC_Core.RND.RandomLong(MinValue32Bit, MaxValue32Bit);
+						randomValue = RTC_Corruptcore.RND.RandomLong(MinValue32Bit, MaxValue32Bit);
 						break;
 				}
 
@@ -90,7 +90,7 @@ namespace RTC
 				{
 					for (int i = 0; i < precision; i++)
 					{
-						value[i] = (byte)RTC_Core.RND.Next();
+						value[i] = (byte)RTC_Corruptcore.RND.Next();
 					}
 				}
 

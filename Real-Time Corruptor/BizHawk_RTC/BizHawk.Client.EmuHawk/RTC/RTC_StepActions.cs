@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using GongSolutions.Shell.Interop;
+using RTC.Legacy;
 using static RTC.RTC_Unispec;
 
 namespace RTC
@@ -36,20 +37,20 @@ namespace RTC
 
 		public static int MaxInfiniteBlastUnits
 		{
-			get { return (int)RTC_Unispec.RTCSpec[RTCSPEC.STEP_MAXINFINITEBLASTUNITS.ToString()]; }
-			set { RTC_Unispec.RTCSpec.Update(RTCSPEC.STEP_MAXINFINITEBLASTUNITS.ToString(), value); }
+			get { return (int)RTC_Corruptcore.RTCSpec[RTCSPEC.STEP_MAXINFINITEBLASTUNITS.ToString()]; }
+			set { RTC_Corruptcore.RTCSpec.Update(RTCSPEC.STEP_MAXINFINITEBLASTUNITS.ToString(), value); }
 		}
 
 		public static bool LockExecution
 		{
-			get { return (bool)RTC_Unispec.RTCSpec[RTCSPEC.STEP_LOCKEXECUTION.ToString()]; }
-			set { RTC_Unispec.RTCSpec.Update(RTCSPEC.STEP_LOCKEXECUTION.ToString(), value); }
+			get { return (bool)RTC_Corruptcore.RTCSpec[RTCSPEC.STEP_LOCKEXECUTION.ToString()]; }
+			set { RTC_Corruptcore.RTCSpec.Update(RTCSPEC.STEP_LOCKEXECUTION.ToString(), value); }
 		}
 
 		public static bool ClearStepActionsOnRewind
 		{
-			get { return (bool)RTC_Unispec.RTCSpec[RTCSPEC.STEP_CLEARSTEPACTIONSONREWIND.ToString()]; }
-			set { RTC_Unispec.RTCSpec.Update(RTCSPEC.STEP_CLEARSTEPACTIONSONREWIND.ToString(), value); }
+			get { return (bool)RTC_Corruptcore.RTCSpec[RTCSPEC.STEP_CLEARSTEPACTIONSONREWIND.ToString()]; }
+			set { RTC_Corruptcore.RTCSpec.Update(RTCSPEC.STEP_CLEARSTEPACTIONSONREWIND.ToString(), value); }
 		}
 
 		public static PartialSpec getDefaultPartial()
@@ -66,10 +67,10 @@ namespace RTC
 
 		public static void ClearStepBlastUnits()
 		{
-			if (RTC_Core.isStandalone)
+			if (RTC_NetcoreImplementation.isStandaloneUI)
 			{
 				RTC_Command cmd = new RTC_Command(CommandType.REMOTE_SET_STEPACTIONS_CLEARALLBLASTUNITS);
-				RTC_Core.SendCommandToBizhawk(cmd);
+				RTC_NetcoreImplementation.SendCommandToBizhawk(cmd);
 			}
 			else
 			{

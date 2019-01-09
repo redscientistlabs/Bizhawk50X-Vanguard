@@ -10,14 +10,14 @@ namespace RTC
 
 		public static string LimiterListHash
 		{
-			get => (string)RTC_Unispec.RTCSpec[RTCSPEC.VECTOR_LIMITERLISTHASH.ToString()];
-			set => RTC_Unispec.RTCSpec.Update(RTCSPEC.VECTOR_LIMITERLISTHASH.ToString(), value);
+			get => (string)RTC_Corruptcore.RTCSpec[RTCSPEC.VECTOR_LIMITERLISTHASH.ToString()];
+			set => RTC_Corruptcore.RTCSpec.Update(RTCSPEC.VECTOR_LIMITERLISTHASH.ToString(), value);
 		}
 
 		public static string ValueListHash
 		{
-			get => (string)RTC_Unispec.RTCSpec[RTCSPEC.VECTOR_VALUELISTHASH.ToString()];
-			set => RTC_Unispec.RTCSpec.Update(RTCSPEC.VECTOR_VALUELISTHASH.ToString(), value);
+			get => (string)RTC_Corruptcore.RTCSpec[RTCSPEC.VECTOR_VALUELISTHASH.ToString()];
+			set => RTC_Corruptcore.RTCSpec.Update(RTCSPEC.VECTOR_VALUELISTHASH.ToString(), value);
 		}
 
 		public static PartialSpec getDefaultPartial()

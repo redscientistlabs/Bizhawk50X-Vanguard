@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Windows.Forms;
+using RTC.Legacy;
 
 namespace RTC
 {
@@ -36,14 +37,14 @@ namespace RTC
 
 		public static string CurrentSavestateKey
 		{
-			get => (string)RTC_Unispec.RTCSpec[RTCSPEC.CORE_EXTRACTBLASTLAYER.ToString()];
-			set => RTC_Unispec.RTCSpec.Update(RTCSPEC.CORE_EXTRACTBLASTLAYER.ToString(), value);
+			get => (string)RTC_Corruptcore.RTCSpec[RTCSPEC.CORE_EXTRACTBLASTLAYER.ToString()];
+			set => RTC_Corruptcore.RTCSpec.Update(RTCSPEC.CORE_EXTRACTBLASTLAYER.ToString(), value);
 		}
 
 		public static StashKey BackupedState
 		{
-			get => (StashKey)RTC_Unispec.RTCSpec[RTCSPEC.STOCKPILE_BACKUPEDSTATE.ToString()];
-			set => RTC_Unispec.RTCSpec.Update(RTCSPEC.STOCKPILE_BACKUPEDSTATE.ToString(), value);
+			get => (StashKey)RTC_Corruptcore.RTCSpec[RTCSPEC.STOCKPILE_BACKUPEDSTATE.ToString()];
+			set => RTC_Corruptcore.RTCSpec.Update(RTCSPEC.STOCKPILE_BACKUPEDSTATE.ToString(), value);
 		}
 
 		public static PartialSpec getDefaultPartial()
@@ -101,7 +102,7 @@ namespace RTC
 				}
 			}
 			else
-				RTC_Core.SendCommandToBizhawk(new RTC_Command(CommandType.BLAST) { blastlayer = sk.BlastLayer, isReplay = true });
+				RTC_NetcoreImplementation.SendCommandToBizhawk(new RTC_Command(CommandType.BLAST) { blastlayer = sk.BlastLayer, isReplay = true });
 
 			RTC_NetCore.HugeOperationEnd(token);
 
@@ -121,27 +122,27 @@ namespace RTC
 
 			if (psk == null)
 			{
-				RTC_Core.StopSound();
+				RTC_EmuCore.StopSound();
 				MessageBox.Show("The Glitch Harvester could not perform the CORRUPT action\n\nEither no Savestate Box was selected in the Savestate Manager\nor the Savetate Box itself is empty.");
-				RTC_Core.StartSound();
+				RTC_EmuCore.StartSound();
 				RTC_NetCore.HugeOperationEnd(token);
 				return false;
 			}
 
-			string currentGame = (string)RTC_Core.SendCommandToBizhawk(new RTC_Command(CommandType.REMOTE_KEY_GETGAMENAME), true);
+			string currentGame = (string)RTC_NetcoreImplementation.SendCommandToBizhawk(new RTC_Command(CommandType.REMOTE_KEY_GETGAMENAME), true);
 			if (currentGame == null || psk.GameName != currentGame) 
 			{
-				RTC_Core.LoadRom(psk.RomFilename, true);
+				RTC_EmuCore.LoadRom(psk.RomFilename, true);
 				S.GET<RTC_MemoryDomains_Form>().RefreshDomains();
 				S.GET<RTC_MemoryDomains_Form>().SetMemoryDomainsAllButSelectedDomains(RTC_MemoryDomains.GetBlacklistedDomains());
 			}
 
 			var watch = System.Diagnostics.Stopwatch.StartNew();
-			BlastLayer bl = (BlastLayer)RTC_Core.SendCommandToBizhawk(new RTC_Command(CommandType.BLAST) { objectValue = RTC_MemoryDomains.SelectedDomains }, true);
+			BlastLayer bl = (BlastLayer)RTC_NetcoreImplementation.SendCommandToBizhawk(new RTC_Command(CommandType.BLAST) { objectValue = RTC_MemoryDomains.SelectedDomains }, true);
 			watch.Stop();
 			Console.WriteLine($"It took " + watch.ElapsedMilliseconds + " ms to blastlayer");
 
-			CurrentStashkey = new StashKey(RTC_Core.GetRandomKey(), psk.ParentKey, bl)
+			CurrentStashkey = new StashKey(RTC_Corruptcore.GetRandomKey(), psk.ParentKey, bl)
 			{
 				RomFilename = psk.RomFilename,
 				SystemName = psk.SystemName,
@@ -159,7 +160,7 @@ namespace RTC
 				}
 			}
 			else
-				RTC_Core.SendCommandToBizhawk(new RTC_Command(CommandType.BLAST) { blastlayer = bl });
+				RTC_NetcoreImplementation.SendCommandToBizhawk(new RTC_Command(CommandType.BLAST) { blastlayer = bl });
 
 			IsCorruptionApplied = (bl != null);
 
@@ -189,19 +190,19 @@ namespace RTC
 
 			if (psk == null)
 			{
-				RTC_Core.StopSound();
+				RTC_EmuCore.StopSound();
 				MessageBox.Show("The Glitch Harvester could not perform the INJECT action\n\nEither no Savestate Box was selected in the Savestate Manager\nor the Savetate Box itself is empty.");
-				RTC_Core.StartSound();
+				RTC_EmuCore.StartSound();
 				return false;
 			}
 
-			if (psk.SystemCore != sk.SystemCore && !RTC_Core.AllowCrossCoreCorruption)
+			if (psk.SystemCore != sk.SystemCore && !RTC_Corruptcore.AllowCrossCoreCorruption)
 			{
 				MessageBox.Show("Merge attempt failed: Core mismatch\n\n" + $"{psk.GameName} -> {psk.SystemName} -> {psk.SystemCore}\n{sk.GameName} -> {sk.SystemName} -> {sk.SystemCore}");
 				return IsCorruptionApplied;
 			}
 
-			CurrentStashkey = new StashKey(RTC_Core.GetRandomKey(), psk.ParentKey, sk.BlastLayer)
+			CurrentStashkey = new StashKey(RTC_Corruptcore.GetRandomKey(), psk.ParentKey, sk.BlastLayer)
 			{
 				RomFilename = psk.RomFilename,
 				SystemName = psk.SystemName,
@@ -215,7 +216,7 @@ namespace RTC
 					return false;
 			}
 			else
-				RTC_Core.SendCommandToBizhawk(new RTC_Command(CommandType.BLAST) { blastlayer = sk.BlastLayer }, true);
+				RTC_NetcoreImplementation.SendCommandToBizhawk(new RTC_Command(CommandType.BLAST) { blastlayer = sk.BlastLayer }, true);
 
 			IsCorruptionApplied = (sk.BlastLayer != null);
 
@@ -268,7 +269,7 @@ namespace RTC
 						break;
 					}
 
-				if (!allCoresIdentical && !RTC_Core.AllowCrossCoreCorruption)
+				if (!allCoresIdentical && !RTC_Corruptcore.AllowCrossCoreCorruption)
 				{
 					MessageBox.Show("Merge attempt failed: Core mismatch\n\n" + string.Join("\n", sks.Select(it => $"{it.GameName} -> {it.SystemName} -> {it.SystemCore}")));
 					RTC_NetCore.HugeOperationEnd(token);
@@ -294,7 +295,7 @@ namespace RTC
 
 				bl.Layer = bl.Layer.Distinct().ToList();
 
-				CurrentStashkey = new StashKey(RTC_Core.GetRandomKey(), master.ParentKey, bl)
+				CurrentStashkey = new StashKey(RTC_Corruptcore.GetRandomKey(), master.ParentKey, bl)
 				{
 					RomFilename = master.RomFilename,
 					SystemName = master.SystemName,
@@ -316,7 +317,7 @@ namespace RTC
 				}
 				else
 				{
-					RTC_Core.SendCommandToBizhawk(new RTC_Command(CommandType.BLAST) { blastlayer = CurrentStashkey.BlastLayer });
+					RTC_NetcoreImplementation.SendCommandToBizhawk(new RTC_Command(CommandType.BLAST) { blastlayer = CurrentStashkey.BlastLayer });
 				}
 
 				IsCorruptionApplied = (CurrentStashkey.BlastLayer != null && CurrentStashkey.BlastLayer.Layer.Count > 0);
@@ -338,7 +339,7 @@ namespace RTC
 
 		public static bool LoadState(StashKey sk, bool reloadRom = true, bool applyBlastLayer = true)
 		{
-			object returnValue = RTC_Core.SendCommandToBizhawk(new RTC_Command(CommandType.REMOTE_LOADSTATE)
+			object returnValue = RTC_NetcoreImplementation.SendCommandToBizhawk(new RTC_Command(CommandType.REMOTE_LOADSTATE)
 			{
 				objectValue = new object[] { sk, reloadRom, false, applyBlastLayer }
 			}, true);
@@ -348,7 +349,7 @@ namespace RTC
 
 		public static bool LoadStateAndBlastLayer(StashKey sk, bool reloadRom = true)
 		{
-			object returnValue = RTC_Core.SendCommandToBizhawk(new RTC_Command(CommandType.REMOTE_LOADSTATE)
+			object returnValue = RTC_NetcoreImplementation.SendCommandToBizhawk(new RTC_Command(CommandType.REMOTE_LOADSTATE)
 			{
 				objectValue = new object[] { sk, reloadRom, (sk.BlastLayer != null && sk.BlastLayer.Layer.Count > 0) }
 			}, true);
@@ -368,11 +369,11 @@ namespace RTC
 			string key = sk.ParentKey;
 			StashKeySavestateLocation stateLocation = sk.StateLocation;
 
-			RTC_Core.StopSound();
+			RTC_EmuCore.StopSound();
 
 			if (reloadRom)
 			{
-				RTC_Core.LoadRom_NET(sk.RomFilename);
+				RTC_EmuCore.LoadRom_NET(sk.RomFilename);
 
 				var ssWatch = System.Diagnostics.Stopwatch.StartNew();
 				string ss = RTC_Hooks.BIZHAWK_GETSET_SYNCSETTINGS;
@@ -383,29 +384,29 @@ namespace RTC
 				if (sk.SyncSettings != ss && sk.SyncSettings != null)
 				{
 					RTC_Hooks.BIZHAWK_GETSET_SYNCSETTINGS = sk.SyncSettings;
-					RTC_Core.LoadRom_NET(sk.RomFilename);
+					RTC_EmuCore.LoadRom_NET(sk.RomFilename);
 				}
 			}
 
-			RTC_Core.StartSound();
+			RTC_EmuCore.StartSound();
 
-			string theoreticalSaveStateFilename = RTC_Core.workingDir + Path.DirectorySeparatorChar + stateLocation.ToString() + Path.DirectorySeparatorChar + gameName + "." + key + ".timejump.State";
+			string theoreticalSaveStateFilename = RTC_EmuCore.workingDir + Path.DirectorySeparatorChar + stateLocation.ToString() + Path.DirectorySeparatorChar + gameName + "." + key + ".timejump.State";
 
 			if (File.Exists(theoreticalSaveStateFilename))
 			{
-				if (!RTC_Core.LoadSavestate_NET(key, stateLocation))
+				if (!RTC_EmuCore.LoadSavestate_NET(key, stateLocation))
 				{
-					RTC_Core.StopSound();
+					RTC_EmuCore.StopSound();
 					MessageBox.Show($"Error loading savestate : An internal Bizhawk error has occurred.\n Are you sure your savestate matches the game, your syncsettings match, and the savestate is supported by this version of Bizhawk?");
-					RTC_Core.StartSound();
+					RTC_EmuCore.StartSound();
 					return false;
 				}
 			}
 			else
 			{
-				RTC_Core.StopSound();
+				RTC_EmuCore.StopSound();
 				MessageBox.Show($"Error loading savestate : (File {key + ".timejump"} not found)");
-				RTC_Core.StartSound();
+				RTC_EmuCore.StartSound();
 				return false;
 			}
 
@@ -416,20 +417,20 @@ namespace RTC
 
 		public static StashKey SaveState(bool sendToStashDico, StashKey _sk = null, bool sync = true)
 		{
-			return (StashKey)RTC_Core.SendCommandToBizhawk(new RTC_Command(CommandType.REMOTE_SAVESTATE) { objectValue = new object[] { sendToStashDico, _sk } }, sync);
+			return (StashKey)RTC_NetcoreImplementation.SendCommandToBizhawk(new RTC_Command(CommandType.REMOTE_SAVESTATE) { objectValue = new object[] { sendToStashDico, _sk } }, sync);
 		}
 
 		public static StashKey SaveState_NET(bool sendToStashDico, StashKey _sk = null, bool threadSave = false)
 		{
-			string Key = RTC_Core.GetRandomKey();
+			string Key = RTC_Corruptcore.GetRandomKey();
 			string statePath;
 
 			StashKey sk;
 
 			if (_sk == null)
 			{
-				Key = RTC_Core.GetRandomKey();
-				statePath = RTC_Core.SaveSavestate_NET(Key, threadSave);
+				Key = RTC_Corruptcore.GetRandomKey();
+				statePath = RTC_EmuCore.SaveSavestate_NET(Key, threadSave);
 				sk = new StashKey(Key, Key, null);
 			}
 			else
@@ -448,9 +449,9 @@ namespace RTC
 
 			if (sendToStashDico)
 			{
-				RTC_Core.SendCommandToRTC(new RTC_Command(CommandType.REMOTE_KEY_PUSHSAVESTATEDICO) { objectValue = new object[] { sk, RTC_StockpileManager.CurrentSavestateKey } });
+				RTC_NetcoreImplementation.SendCommandToRTC(new RTC_Command(CommandType.REMOTE_KEY_PUSHSAVESTATEDICO) { objectValue = new object[] { sk, RTC_StockpileManager.CurrentSavestateKey } });
 
-				if (RTC_Hooks.isRemoteRTC)
+				if (RTC_NetcoreImplementation.isStandaloneEmu)
 				{
 					var currentkey = RTC_StockpileManager.CurrentSavestateKey;
 					if(currentkey != null)
@@ -499,7 +500,7 @@ namespace RTC
 
 		public static StashKey GetRawBlastlayer()
 		{
-			RTC_Core.StopSound();
+			RTC_EmuCore.StopSound();
 
 			StashKey sk = RTC_StockpileManager.SaveState_NET(false);
 
@@ -553,7 +554,7 @@ namespace RTC
 			}
 
 			sk.BlastLayer = bl;
-			RTC_Core.StartSound();
+			RTC_EmuCore.StartSound();
 
 			return sk;
 		}

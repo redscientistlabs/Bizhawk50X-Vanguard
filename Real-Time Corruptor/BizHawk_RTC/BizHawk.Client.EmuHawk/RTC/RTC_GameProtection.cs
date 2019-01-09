@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Windows.Forms;
+using RTC.Legacy;
 
 namespace RTC
 {
@@ -22,10 +23,10 @@ namespace RTC
 
 			isRunning = true;
 
-			if (RTC_Core.RemoteRTC.PeerCommandQueue.Count > 0)
-				foreach (var item in RTC_Core.RemoteRTC.PeerCommandQueue)
+			if (RTC_NetcoreImplementation.RemoteRTC.PeerCommandQueue.Count > 0)
+				foreach (var item in RTC_NetcoreImplementation.RemoteRTC.PeerCommandQueue)
 					if (item.Type == CommandType.REMOTE_BACKUPKEY_REQUEST)
-						RTC_Core.RemoteRTC.PeerCommandQueue.Remove(item);
+						RTC_NetcoreImplementation.RemoteRTC.PeerCommandQueue.Remove(item);
 
 		}
 
@@ -44,7 +45,7 @@ namespace RTC
 
 		private static void Tick(object sender, EventArgs e)
 		{
-			RTC_Core.SendCommandToBizhawk(new RTC_Command(CommandType.REMOTE_BACKUPKEY_REQUEST));
+			RTC_NetcoreImplementation.SendCommandToBizhawk(new RTC_Command(CommandType.REMOTE_BACKUPKEY_REQUEST));
 		}
 	}
 }

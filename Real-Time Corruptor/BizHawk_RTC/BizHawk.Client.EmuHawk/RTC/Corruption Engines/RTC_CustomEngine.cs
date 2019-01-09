@@ -14,109 +14,109 @@ namespace RTC
 
 		public static long MinValue8Bit
 		{
-			get => (long)RTC_Unispec.RTCSpec[RTCSPEC.CUSTOM_MINVALUE8BIT.ToString()];
-			set => RTC_Unispec.RTCSpec.Update(RTCSPEC.CUSTOM_MINVALUE8BIT.ToString(), value);
+			get => (long)RTC_Corruptcore.RTCSpec[RTCSPEC.CUSTOM_MINVALUE8BIT.ToString()];
+			set => RTC_Corruptcore.RTCSpec.Update(RTCSPEC.CUSTOM_MINVALUE8BIT.ToString(), value);
 		}
 		public static long MaxValue8Bit
 		{
-			get => (long)RTC_Unispec.RTCSpec[RTCSPEC.CUSTOM_MAXVALUE8BIT.ToString()];
-			set => RTC_Unispec.RTCSpec.Update(RTCSPEC.CUSTOM_MAXVALUE8BIT.ToString(), value);
+			get => (long)RTC_Corruptcore.RTCSpec[RTCSPEC.CUSTOM_MAXVALUE8BIT.ToString()];
+			set => RTC_Corruptcore.RTCSpec.Update(RTCSPEC.CUSTOM_MAXVALUE8BIT.ToString(), value);
 		}
 
 		public static long MinValue16Bit
 		{
-			get => (long)RTC_Unispec.RTCSpec[RTCSPEC.CUSTOM_MINVALUE16BIT.ToString()];
-			set => RTC_Unispec.RTCSpec.Update(RTCSPEC.CUSTOM_MINVALUE16BIT.ToString(), value);
+			get => (long)RTC_Corruptcore.RTCSpec[RTCSPEC.CUSTOM_MINVALUE16BIT.ToString()];
+			set => RTC_Corruptcore.RTCSpec.Update(RTCSPEC.CUSTOM_MINVALUE16BIT.ToString(), value);
 		}
 		public static long MaxValue16Bit
 		{
-			get => (long)RTC_Unispec.RTCSpec[RTCSPEC.CUSTOM_MAXVALUE16BIT.ToString()];
-			set => RTC_Unispec.RTCSpec.Update(RTCSPEC.CUSTOM_MAXVALUE16BIT.ToString(), value);
+			get => (long)RTC_Corruptcore.RTCSpec[RTCSPEC.CUSTOM_MAXVALUE16BIT.ToString()];
+			set => RTC_Corruptcore.RTCSpec.Update(RTCSPEC.CUSTOM_MAXVALUE16BIT.ToString(), value);
 		}
 
 		public static long MinValue32Bit
 		{
-			get => (long)RTC_Unispec.RTCSpec[RTCSPEC.CUSTOM_MINVALUE32BIT.ToString()];
-			set => RTC_Unispec.RTCSpec.Update(RTCSPEC.CUSTOM_MINVALUE32BIT.ToString(), value);
+			get => (long)RTC_Corruptcore.RTCSpec[RTCSPEC.CUSTOM_MINVALUE32BIT.ToString()];
+			set => RTC_Corruptcore.RTCSpec.Update(RTCSPEC.CUSTOM_MINVALUE32BIT.ToString(), value);
 		}
 		public static long MaxValue32Bit
 		{
-			get => (long)RTC_Unispec.RTCSpec[RTCSPEC.CUSTOM_MAXVALUE32BIT.ToString()];
-			set => RTC_Unispec.RTCSpec.Update(RTCSPEC.CUSTOM_MAXVALUE32BIT.ToString(), value);
+			get => (long)RTC_Corruptcore.RTCSpec[RTCSPEC.CUSTOM_MAXVALUE32BIT.ToString()];
+			set => RTC_Corruptcore.RTCSpec.Update(RTCSPEC.CUSTOM_MAXVALUE32BIT.ToString(), value);
 		}
 
 		public static BlastUnitSource Source
 		{
-			get => (BlastUnitSource)RTC_Unispec.RTCSpec[RTCSPEC.CUSTOM_SOURCE.ToString()];
-			set => RTC_Unispec.RTCSpec.Update(RTCSPEC.CUSTOM_SOURCE.ToString(), value);
+			get => (BlastUnitSource)RTC_Corruptcore.RTCSpec[RTCSPEC.CUSTOM_SOURCE.ToString()];
+			set => RTC_Corruptcore.RTCSpec.Update(RTCSPEC.CUSTOM_SOURCE.ToString(), value);
 		}
 
 		public static StoreType StoreType
 		{
-			get => (StoreType)RTC_Unispec.RTCSpec[RTCSPEC.CUSTOM_STORETYPE.ToString()];
-			set => RTC_Unispec.RTCSpec.Update(RTCSPEC.CUSTOM_STORETYPE.ToString(), value);
+			get => (StoreType)RTC_Corruptcore.RTCSpec[RTCSPEC.CUSTOM_STORETYPE.ToString()];
+			set => RTC_Corruptcore.RTCSpec.Update(RTCSPEC.CUSTOM_STORETYPE.ToString(), value);
 		}
 		public static StoreTime StoreTime
 		{
-			get => (StoreTime)RTC_Unispec.RTCSpec[RTCSPEC.CUSTOM_STORETIME.ToString()];
-			set => RTC_Unispec.RTCSpec.Update(RTCSPEC.CUSTOM_STORETIME.ToString(), value);
+			get => (StoreTime)RTC_Corruptcore.RTCSpec[RTCSPEC.CUSTOM_STORETIME.ToString()];
+			set => RTC_Corruptcore.RTCSpec.Update(RTCSPEC.CUSTOM_STORETIME.ToString(), value);
 		}
 		public static CustomStoreAddress StoreAddress
 		{
-			get => (CustomStoreAddress)RTC_Unispec.RTCSpec[RTCSPEC.CUSTOM_STOREADDRESS.ToString()];
-			set => RTC_Unispec.RTCSpec.Update(RTCSPEC.CUSTOM_STOREADDRESS.ToString(), value);
+			get => (CustomStoreAddress)RTC_Corruptcore.RTCSpec[RTCSPEC.CUSTOM_STOREADDRESS.ToString()];
+			set => RTC_Corruptcore.RTCSpec.Update(RTCSPEC.CUSTOM_STOREADDRESS.ToString(), value);
 		}
 
 		public static int Delay
 		{
-			get => (int)RTC_Unispec.RTCSpec[RTCSPEC.CUSTOM_DELAY.ToString()];
-			set => RTC_Unispec.RTCSpec.Update(RTCSPEC.CUSTOM_DELAY.ToString(), value);
+			get => (int)RTC_Corruptcore.RTCSpec[RTCSPEC.CUSTOM_DELAY.ToString()];
+			set => RTC_Corruptcore.RTCSpec.Update(RTCSPEC.CUSTOM_DELAY.ToString(), value);
 		}
 		public static int Lifetime
 		{
-			get => (int)RTC_Unispec.RTCSpec[RTCSPEC.CUSTOM_LIFETIME.ToString()];
-			set => RTC_Unispec.RTCSpec.Update(RTCSPEC.CUSTOM_LIFETIME.ToString(), value);
+			get => (int)RTC_Corruptcore.RTCSpec[RTCSPEC.CUSTOM_LIFETIME.ToString()];
+			set => RTC_Corruptcore.RTCSpec.Update(RTCSPEC.CUSTOM_LIFETIME.ToString(), value);
 		}
 
 		public static BigInteger TiltValue
 		{
-			get => (BigInteger)RTC_Unispec.RTCSpec[RTCSPEC.CUSTOM_TILTVALUE.ToString()];
-			set => RTC_Unispec.RTCSpec.Update(RTCSPEC.CUSTOM_TILTVALUE.ToString(), value);
+			get => (BigInteger)RTC_Corruptcore.RTCSpec[RTCSPEC.CUSTOM_TILTVALUE.ToString()];
+			set => RTC_Corruptcore.RTCSpec.Update(RTCSPEC.CUSTOM_TILTVALUE.ToString(), value);
 		}
 
 		public static LimiterTime LimiterTime
 		{
-			get => (LimiterTime)RTC_Unispec.RTCSpec[RTCSPEC.CUSTOM_LIMITERTIME.ToString()];
-			set => RTC_Unispec.RTCSpec.Update(RTCSPEC.CUSTOM_LIMITERTIME.ToString(), value);
+			get => (LimiterTime)RTC_Corruptcore.RTCSpec[RTCSPEC.CUSTOM_LIMITERTIME.ToString()];
+			set => RTC_Corruptcore.RTCSpec.Update(RTCSPEC.CUSTOM_LIMITERTIME.ToString(), value);
 		}
 		public static bool LimiterInverted
 		{
-			get => (bool)RTC_Unispec.RTCSpec[RTCSPEC.CUSTOM_LIMITERINVERTED.ToString()];
-			set => RTC_Unispec.RTCSpec.Update(RTCSPEC.CUSTOM_LIMITERINVERTED.ToString(), value);
+			get => (bool)RTC_Corruptcore.RTCSpec[RTCSPEC.CUSTOM_LIMITERINVERTED.ToString()];
+			set => RTC_Corruptcore.RTCSpec.Update(RTCSPEC.CUSTOM_LIMITERINVERTED.ToString(), value);
 		}
 
 		public static bool Loop
 		{
-			get => (bool)RTC_Unispec.RTCSpec[RTCSPEC.CUSTOM_LOOP.ToString()];
-			set => RTC_Unispec.RTCSpec.Update(RTCSPEC.CUSTOM_LOOP.ToString(), value);
+			get => (bool)RTC_Corruptcore.RTCSpec[RTCSPEC.CUSTOM_LOOP.ToString()];
+			set => RTC_Corruptcore.RTCSpec.Update(RTCSPEC.CUSTOM_LOOP.ToString(), value);
 		}
 
 		public static CustomValueSource ValueSource
 		{
-			get => (CustomValueSource)RTC_Unispec.RTCSpec[RTCSPEC.CUSTOM_VALUESOURCE.ToString()];
-			set => RTC_Unispec.RTCSpec.Update(RTCSPEC.CUSTOM_VALUESOURCE.ToString(), value);
+			get => (CustomValueSource)RTC_Corruptcore.RTCSpec[RTCSPEC.CUSTOM_VALUESOURCE.ToString()];
+			set => RTC_Corruptcore.RTCSpec.Update(RTCSPEC.CUSTOM_VALUESOURCE.ToString(), value);
 		}
 
 		public static string LimiterListHash
 		{
-			get => (string)RTC_Unispec.RTCSpec[RTCSPEC.CUSTOM_LIMITERLISTHASH.ToString()];
-			set => RTC_Unispec.RTCSpec.Update(RTCSPEC.CUSTOM_LIMITERLISTHASH.ToString(), value);
+			get => (string)RTC_Corruptcore.RTCSpec[RTCSPEC.CUSTOM_LIMITERLISTHASH.ToString()];
+			set => RTC_Corruptcore.RTCSpec.Update(RTCSPEC.CUSTOM_LIMITERLISTHASH.ToString(), value);
 		}
 
 		public static string ValueListHash
 		{
-			get => (string)RTC_Unispec.RTCSpec[RTCSPEC.CUSTOM_VALUELISTHASH.ToString()];
-			set => RTC_Unispec.RTCSpec.Update(RTCSPEC.CUSTOM_VALUELISTHASH.ToString(), value);
+			get => (string)RTC_Corruptcore.RTCSpec[RTCSPEC.CUSTOM_VALUELISTHASH.ToString()];
+			set => RTC_Corruptcore.RTCSpec.Update(RTCSPEC.CUSTOM_VALUELISTHASH.ToString(), value);
 		}
 
 		public static PartialSpec lastLoadedTemplate = null;
@@ -156,13 +156,13 @@ namespace RTC
 								switch (precision)
 								{
 									case 1:
-										randomValue = RTC_Core.RND.RandomLong(MinValue8Bit, MaxValue8Bit);
+										randomValue = RTC_Corruptcore.RND.RandomLong(MinValue8Bit, MaxValue8Bit);
 										break;
 									case 2:
-										randomValue = RTC_Core.RND.RandomLong(MinValue16Bit, MaxValue16Bit);
+										randomValue = RTC_Corruptcore.RND.RandomLong(MinValue16Bit, MaxValue16Bit);
 										break;
 									case 4:
-										randomValue = RTC_Core.RND.RandomLong(MinValue32Bit, MaxValue32Bit);
+										randomValue = RTC_Corruptcore.RND.RandomLong(MinValue32Bit, MaxValue32Bit);
 										break;
 								}
 
@@ -170,14 +170,14 @@ namespace RTC
 									value = RTC_Extensions.GetByteArrayValue(precision, randomValue, true);
 								else
 									for (int i = 0; i < precision; i++)
-										value[i] = (byte)RTC_Core.RND.Next();
+										value[i] = (byte)RTC_Corruptcore.RND.Next();
 							}
 							break;
 
 							case CustomValueSource.RANDOM:
 							{
 								for (int i = 0; i < precision; i++)
-									value[i] = (byte)RTC_Core.RND.Next();
+									value[i] = (byte)RTC_Corruptcore.RND.Next();
 							}
 							break;
 								
@@ -194,7 +194,7 @@ namespace RTC
 						{
 							case CustomStoreAddress.RANDOM:
 							{
-								BlastTarget bt = RTC_Core.GetBlastTarget();
+								BlastTarget bt = RTC_Corruptcore.GetBlastTarget();
 								long safeStartAddress = bt.Address - (bt.Address % precision);
 								bu.SourceDomain = bt.Domain;
 								bu.SourceAddress = safeStartAddress;
@@ -280,11 +280,11 @@ namespace RTC
 			if (list == null)
 			{
 				byte[] buffer = new byte[4];
-				RTC_Core.RND.NextBytes(buffer);
+				RTC_Corruptcore.RND.NextBytes(buffer);
 				return buffer;
 			}
 
-			return StringToByteArray(list[RTC_Core.RND.Next(list.Length)]);
+			return StringToByteArray(list[RTC_Corruptcore.RND.Next(list.Length)]);
 		}
 
 		public static byte[] StringToByteArray(string hex)
@@ -497,36 +497,36 @@ namespace RTC
 
 		public static PartialSpec getCurrentConfigSpec()
 		{
-			PartialSpec pSpec = new PartialSpec(RTC_Unispec.RTCSpec.name);
+			PartialSpec pSpec = new PartialSpec(RTC_Corruptcore.RTCSpec.name);
 
 			pSpec[RTCSPEC.CUSTOM_NAME.ToString()] = pSpec[RTCSPEC.CUSTOM_NAME.ToString()];
 
-			pSpec[RTCSPEC.CUSTOM_DELAY.ToString()] = RTC_Unispec.RTCSpec[RTCSPEC.CUSTOM_DELAY.ToString()];
-			pSpec[RTCSPEC.CUSTOM_LIFETIME.ToString()] = RTC_Unispec.RTCSpec[RTCSPEC.CUSTOM_LIFETIME.ToString()];
-			pSpec[RTCSPEC.CUSTOM_LOOP.ToString()] = RTC_Unispec.RTCSpec[RTCSPEC.CUSTOM_LOOP.ToString()];
+			pSpec[RTCSPEC.CUSTOM_DELAY.ToString()] = RTC_Corruptcore.RTCSpec[RTCSPEC.CUSTOM_DELAY.ToString()];
+			pSpec[RTCSPEC.CUSTOM_LIFETIME.ToString()] = RTC_Corruptcore.RTCSpec[RTCSPEC.CUSTOM_LIFETIME.ToString()];
+			pSpec[RTCSPEC.CUSTOM_LOOP.ToString()] = RTC_Corruptcore.RTCSpec[RTCSPEC.CUSTOM_LOOP.ToString()];
 
-			pSpec[RTCSPEC.CUSTOM_TILTVALUE.ToString()] = RTC_Unispec.RTCSpec[RTCSPEC.CUSTOM_TILTVALUE.ToString()];
+			pSpec[RTCSPEC.CUSTOM_TILTVALUE.ToString()] = RTC_Corruptcore.RTCSpec[RTCSPEC.CUSTOM_TILTVALUE.ToString()];
 
-			pSpec[RTCSPEC.CUSTOM_LIMITERLISTHASH.ToString()] = RTC_Unispec.RTCSpec[RTCSPEC.CUSTOM_LIMITERLISTHASH.ToString()];
-			pSpec[RTCSPEC.CUSTOM_LIMITERTIME.ToString()] = RTC_Unispec.RTCSpec[RTCSPEC.CUSTOM_LIMITERTIME.ToString()];
-			pSpec[RTCSPEC.CUSTOM_LIMITERINVERTED.ToString()] = RTC_Unispec.RTCSpec[RTCSPEC.CUSTOM_LIMITERINVERTED.ToString()];
+			pSpec[RTCSPEC.CUSTOM_LIMITERLISTHASH.ToString()] = RTC_Corruptcore.RTCSpec[RTCSPEC.CUSTOM_LIMITERLISTHASH.ToString()];
+			pSpec[RTCSPEC.CUSTOM_LIMITERTIME.ToString()] = RTC_Corruptcore.RTCSpec[RTCSPEC.CUSTOM_LIMITERTIME.ToString()];
+			pSpec[RTCSPEC.CUSTOM_LIMITERINVERTED.ToString()] = RTC_Corruptcore.RTCSpec[RTCSPEC.CUSTOM_LIMITERINVERTED.ToString()];
 
-			pSpec[RTCSPEC.CUSTOM_VALUELISTHASH.ToString()] = RTC_Unispec.RTCSpec[RTCSPEC.CUSTOM_VALUELISTHASH.ToString()];
+			pSpec[RTCSPEC.CUSTOM_VALUELISTHASH.ToString()] = RTC_Corruptcore.RTCSpec[RTCSPEC.CUSTOM_VALUELISTHASH.ToString()];
 
-			pSpec[RTCSPEC.CUSTOM_MINVALUE8BIT.ToString()] = RTC_Unispec.RTCSpec[RTCSPEC.CUSTOM_MINVALUE8BIT.ToString()];
-			pSpec[RTCSPEC.CUSTOM_MINVALUE16BIT.ToString()] = RTC_Unispec.RTCSpec[RTCSPEC.CUSTOM_MINVALUE16BIT.ToString()];
-			pSpec[RTCSPEC.CUSTOM_MINVALUE32BIT.ToString()] = RTC_Unispec.RTCSpec[RTCSPEC.CUSTOM_MINVALUE32BIT.ToString()];
-			pSpec[RTCSPEC.CUSTOM_MAXVALUE8BIT.ToString()] = RTC_Unispec.RTCSpec[RTCSPEC.CUSTOM_MAXVALUE8BIT.ToString()];
-			pSpec[RTCSPEC.CUSTOM_MAXVALUE16BIT.ToString()] = RTC_Unispec.RTCSpec[RTCSPEC.CUSTOM_MAXVALUE16BIT.ToString()];
-			pSpec[RTCSPEC.CUSTOM_MAXVALUE32BIT.ToString()] = RTC_Unispec.RTCSpec[RTCSPEC.CUSTOM_MAXVALUE32BIT.ToString()];
+			pSpec[RTCSPEC.CUSTOM_MINVALUE8BIT.ToString()] = RTC_Corruptcore.RTCSpec[RTCSPEC.CUSTOM_MINVALUE8BIT.ToString()];
+			pSpec[RTCSPEC.CUSTOM_MINVALUE16BIT.ToString()] = RTC_Corruptcore.RTCSpec[RTCSPEC.CUSTOM_MINVALUE16BIT.ToString()];
+			pSpec[RTCSPEC.CUSTOM_MINVALUE32BIT.ToString()] = RTC_Corruptcore.RTCSpec[RTCSPEC.CUSTOM_MINVALUE32BIT.ToString()];
+			pSpec[RTCSPEC.CUSTOM_MAXVALUE8BIT.ToString()] = RTC_Corruptcore.RTCSpec[RTCSPEC.CUSTOM_MAXVALUE8BIT.ToString()];
+			pSpec[RTCSPEC.CUSTOM_MAXVALUE16BIT.ToString()] = RTC_Corruptcore.RTCSpec[RTCSPEC.CUSTOM_MAXVALUE16BIT.ToString()];
+			pSpec[RTCSPEC.CUSTOM_MAXVALUE32BIT.ToString()] = RTC_Corruptcore.RTCSpec[RTCSPEC.CUSTOM_MAXVALUE32BIT.ToString()];
 
-			pSpec[RTCSPEC.CUSTOM_VALUESOURCE.ToString()] = RTC_Unispec.RTCSpec[RTCSPEC.CUSTOM_VALUESOURCE.ToString()];
+			pSpec[RTCSPEC.CUSTOM_VALUESOURCE.ToString()] = RTC_Corruptcore.RTCSpec[RTCSPEC.CUSTOM_VALUESOURCE.ToString()];
 
-			pSpec[RTCSPEC.CUSTOM_SOURCE.ToString()] = RTC_Unispec.RTCSpec[RTCSPEC.CUSTOM_SOURCE.ToString()];
+			pSpec[RTCSPEC.CUSTOM_SOURCE.ToString()] = RTC_Corruptcore.RTCSpec[RTCSPEC.CUSTOM_SOURCE.ToString()];
 
-			pSpec[RTCSPEC.CUSTOM_STOREADDRESS.ToString()] = RTC_Unispec.RTCSpec[RTCSPEC.CUSTOM_STOREADDRESS.ToString()];
-			pSpec[RTCSPEC.CUSTOM_STORETIME.ToString()] = RTC_Unispec.RTCSpec[RTCSPEC.CUSTOM_STORETIME.ToString()];
-			pSpec[RTCSPEC.CUSTOM_STORETYPE.ToString()] = RTC_Unispec.RTCSpec[RTCSPEC.CUSTOM_STORETYPE.ToString()];
+			pSpec[RTCSPEC.CUSTOM_STOREADDRESS.ToString()] = RTC_Corruptcore.RTCSpec[RTCSPEC.CUSTOM_STOREADDRESS.ToString()];
+			pSpec[RTCSPEC.CUSTOM_STORETIME.ToString()] = RTC_Corruptcore.RTCSpec[RTCSPEC.CUSTOM_STORETIME.ToString()];
+			pSpec[RTCSPEC.CUSTOM_STORETYPE.ToString()] = RTC_Corruptcore.RTCSpec[RTCSPEC.CUSTOM_STORETYPE.ToString()];
 
 			return pSpec;
 		}
@@ -534,8 +534,8 @@ namespace RTC
 
 		public static string CustomPath
 		{
-			get => RTC_Unispec.RTCSpec[RTCSPEC.CUSTOM_PATH.ToString()].ToString();
-			set => RTC_Unispec.RTCSpec.Update(RTCSPEC.CUSTOM_PATH.ToString(), value);
+			get => RTC_Corruptcore.RTCSpec[RTCSPEC.CUSTOM_PATH.ToString()].ToString();
+			set => RTC_Corruptcore.RTCSpec.Update(RTCSPEC.CUSTOM_PATH.ToString(), value);
 		}
 
 		public static PartialSpec LoadTemplateFile()

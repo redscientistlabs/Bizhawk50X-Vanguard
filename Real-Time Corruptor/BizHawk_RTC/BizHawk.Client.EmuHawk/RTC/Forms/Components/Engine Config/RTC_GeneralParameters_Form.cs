@@ -19,14 +19,14 @@ namespace RTC
 		public bool DontUpdateIntensity = false;
 		public int Intensity
 		{
-			get => RTC_Core.Intensity;
+			get => RTC_Corruptcore.Intensity;
 			set
 			{
 				if (DontUpdateIntensity)
 					return;
 
 
-				RTC_Core.Intensity = value;
+				RTC_Corruptcore.Intensity = value;
 
 				DontUpdateIntensity = true;
 
@@ -51,13 +51,13 @@ namespace RTC
 		public bool DontUpdateErrorDelay = false;
 		public int ErrorDelay
 		{
-			get => RTC_Core.ErrorDelay;
+			get => RTC_Corruptcore.ErrorDelay;
 			set
 			{
 				if (DontUpdateErrorDelay)
 					return;
 
-				RTC_Core.ErrorDelay = Convert.ToInt32(value);
+				RTC_Corruptcore.ErrorDelay = Convert.ToInt32(value);
 
 				DontUpdateErrorDelay = true;
 
@@ -123,27 +123,27 @@ namespace RTC
 			switch (cbBlastRadius.SelectedItem.ToString())
 			{
 				case "SPREAD":
-					RTC_Core.Radius = BlastRadius.SPREAD;
+					RTC_Corruptcore.Radius = BlastRadius.SPREAD;
 					break;
 
 				case "CHUNK":
-					RTC_Core.Radius = BlastRadius.CHUNK;
+					RTC_Corruptcore.Radius = BlastRadius.CHUNK;
 					break;
 
 				case "BURST":
-					RTC_Core.Radius = BlastRadius.BURST;
+					RTC_Corruptcore.Radius = BlastRadius.BURST;
 					break;
 
 				case "NORMALIZED":
-					RTC_Core.Radius = BlastRadius.NORMALIZED;
+					RTC_Corruptcore.Radius = BlastRadius.NORMALIZED;
 					break;
 
 				case "PROPORTIONAL":
-					RTC_Core.Radius = BlastRadius.PROPORTIONAL;
+					RTC_Corruptcore.Radius = BlastRadius.PROPORTIONAL;
 					break;
 
 				case "EVEN":
-					RTC_Core.Radius = BlastRadius.EVEN;
+					RTC_Corruptcore.Radius = BlastRadius.EVEN;
 					break;
 			}
 		}

@@ -1,4 +1,5 @@
 ﻿using System.Media;
+using RTC.Legacy;
 
 namespace RTC
 {
@@ -8,7 +9,7 @@ namespace RTC
 
 		public static void ChangeNetCoreSettings(string setting)
 		{
-			if (RTC_Core.isStandalone && S.GET<RTC_SettingsNetCore_Form>().cbNetCoreCommandTimeout.SelectedItem.ToString() == setting)
+			if (RTC_NetcoreImplementation.isStandaloneUI && S.GET<RTC_SettingsNetCore_Form>().cbNetCoreCommandTimeout.SelectedItem.ToString() == setting)
 				return;
 
 			switch (setting)
@@ -19,7 +20,7 @@ namespace RTC
 					RTC_NetCore.DefaultNetworkStreamTimeout = 3000;
 					RTC_NetCore.DefaultMaxRetries = 666;
 
-					if (RTC_Core.isStandalone)
+					if (RTC_NetcoreImplementation.isStandaloneUI)
 						S.GET<RTC_Core_Form>().pbAutoKillSwitchTimeout.Maximum = 13;
 
 					break;
@@ -29,7 +30,7 @@ namespace RTC
 					RTC_NetCore.DefaultNetworkStreamTimeout = 6000;
 					RTC_NetCore.DefaultMaxRetries = 2000;
 
-					if (RTC_Core.isStandalone)
+					if (RTC_NetcoreImplementation.isStandaloneUI)
 						S.GET<RTC_Core_Form>().pbAutoKillSwitchTimeout.Maximum = 20;
 
 					break;
@@ -41,7 +42,7 @@ namespace RTC
 					RTC_NetCore.DefaultNetworkStreamTimeout = int.MaxValue;
 					RTC_NetCore.DefaultMaxRetries = int.MaxValue;
 
-					if (RTC_Core.isStandalone)
+					if (RTC_NetcoreImplementation.isStandaloneUI)
 						S.GET<RTC_Core_Form>().pbAutoKillSwitchTimeout.Maximum = int.MaxValue;
 
 					break;
@@ -55,7 +56,7 @@ namespace RTC
 		public static void PlayCrashSound(bool forcePlay = false)
 		{
 			if (LoadedSounds != null && (forcePlay || S.GET<RTC_ConnectionStatus_Form>().btnStartEmuhawkDetached.Text == "Restart BizHawk"))
-				LoadedSounds[RTC_Core.RND.Next(LoadedSounds.Length)].Play();
+				LoadedSounds[RTC_Corruptcore.RND.Next(LoadedSounds.Length)].Play();
 		}
 	}
 }

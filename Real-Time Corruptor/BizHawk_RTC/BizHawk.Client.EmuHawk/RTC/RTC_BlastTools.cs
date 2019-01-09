@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Windows.Forms;
 using System.Xml.Serialization;
+using RTC.Legacy;
 
 
 namespace RTC
@@ -207,7 +208,7 @@ namespace RTC
 			{
 				//Bake them
 				var token = RTC_NetCore.HugeOperationStart();
-				BlastLayer newLayer = (BlastLayer)RTC_Core.SendCommandToBizhawk(new RTC_Command(CommandType.REMOTE_KEY_GETBAKEDLAYER)
+				BlastLayer newLayer = (BlastLayer)RTC_NetcoreImplementation.SendCommandToBizhawk(new RTC_Command(CommandType.REMOTE_KEY_GETBAKEDLAYER)
 				{
 					blastlayer =  inputLayer,
 					stashkey = sk

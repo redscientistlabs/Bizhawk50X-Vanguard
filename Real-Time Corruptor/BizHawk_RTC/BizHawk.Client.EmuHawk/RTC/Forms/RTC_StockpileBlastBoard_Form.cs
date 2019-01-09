@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Drawing;
 using System.Windows.Forms;
+using RTC.Legacy;
 
 namespace RTC
 {
@@ -80,7 +81,7 @@ namespace RTC
 			{
 				blastlayer = sk.BlastLayer
 			};
-			RTC_Core.Multiplayer.SendCommand(cmd, false, true);
+			RTC_NetcoreImplementation.Multiplayer.SendCommand(cmd, false, true);
 		}
 
 		private void RTC_StockpileBoard_FormClosing(object sender, FormClosingEventArgs e)

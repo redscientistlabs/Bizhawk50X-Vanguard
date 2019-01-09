@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Data;
 using System.Linq;
 using System.Windows.Forms;
+using RTC.Legacy;
 
 namespace RTC
 {
@@ -64,7 +65,7 @@ namespace RTC
 			dgvBlastGenerator.MouseClick += dgvBlastGenerator_MouseClick;
 			dgvBlastGenerator.CellValueChanged += dgvBlastGenerator_CellValueChanged;
 			dgvBlastGenerator.CellClick += dgvBlastGenerator_CellClick;
-			RTC_Core.SetRTCColor(RTC_Core.GeneralColor, this);
+			RTC_UICore.SetRTCColor(RTC_UICore.GeneralColor, this);
 		}
 
 		public void LoadNoStashKey()
@@ -245,9 +246,9 @@ namespace RTC
 				StashKey psk = RTC_StockpileManager.GetCurrentSavestateStashkey();
 				if (psk == null)
 				{
-					RTC_Core.StartSound();
+					RTC_EmuCore.StartSound();
 					MessageBox.Show("Could not perform the CORRUPT action\n\nEither no Savestate Box was selected in the Savestate Manager\nor the Savetate Box itself is empty.");
-					RTC_Core.StopSound();
+					RTC_EmuCore.StopSound();
 					return;
 				}
 				sk = (StashKey)psk.Clone();
@@ -270,9 +271,9 @@ namespace RTC
 				StashKey psk = RTC_StockpileManager.GetCurrentSavestateStashkey();
 				if (psk == null)
 				{
-					RTC_Core.StopSound();
+					RTC_EmuCore.StopSound();
 					MessageBox.Show("Could not perform the CORRUPT action\n\nEither no Savestate Box was selected in the Savestate Manager\nor the Savetate Box itself is empty.");
-					RTC_Core.StartSound();
+					RTC_EmuCore.StartSound();
 					return;
 				}
 				sk = (StashKey)psk.Clone();
@@ -354,10 +355,10 @@ namespace RTC
 						StashKey psk = RTC_StockpileManager.GetCurrentSavestateStashkey();
 						if (psk == null)
 						{
-							RTC_Core.StopSound();
+							RTC_EmuCore.StopSound();
 							MessageBox.Show(
 								"The Blast Generator could not perform the CORRUPT action\n\nEither no Savestate Box was selected in the Savestate Manager\nor the Savetate Box itself is empty.");
-							RTC_Core.StartSound();
+							RTC_EmuCore.StartSound();
 							return null;
 						}
 
@@ -386,7 +387,7 @@ namespace RTC
 
 				List<BlastGeneratorProto> returnList = new List<BlastGeneratorProto>();
 
-				returnList = (List<BlastGeneratorProto>)RTC_Core.SendCommandToBizhawk(
+				returnList = (List<BlastGeneratorProto>)RTC_NetcoreImplementation.SendCommandToBizhawk(
 					new RTC_Command(CommandType.BLASTGENERATOR_BLAST)
 					{
 						objectValue = protoList,

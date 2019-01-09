@@ -6,6 +6,7 @@ using System.Security.Cryptography;
 using System.Text;
 using System.Windows.Forms;
 using Ceras;
+using RTC.Legacy;
 
 namespace RTC
 {
@@ -13,13 +14,13 @@ namespace RTC
 	{
 		public static Dictionary<string, RTC_Extensions.HashSetByteArrayComparator> Hash2LimiterDico
 		{
-			get => (Dictionary<string, RTC_Extensions.HashSetByteArrayComparator>)RTC_Unispec.RTCSpec[RTCSPEC.FILTERING_HASH2LIMITERDICO.ToString()];
-			set => RTC_Unispec.RTCSpec.Update(RTCSPEC.FILTERING_HASH2VALUEDICO.ToString(), value);
+			get => (Dictionary<string, RTC_Extensions.HashSetByteArrayComparator>)RTC_Corruptcore.RTCSpec[RTCSPEC.FILTERING_HASH2LIMITERDICO.ToString()];
+			set => RTC_Corruptcore.RTCSpec.Update(RTCSPEC.FILTERING_HASH2VALUEDICO.ToString(), value);
 		}
 		public static Dictionary<string, List<Byte[]>> Hash2ValueDico
 		{
-			get => (Dictionary<string, List<Byte[]>>) RTC_Unispec.RTCSpec[RTCSPEC.FILTERING_HASH2VALUEDICO.ToString()];
-			set => RTC_Unispec.RTCSpec.Update(RTCSPEC.FILTERING_HASH2VALUEDICO.ToString(), value);
+			get => (Dictionary<string, List<Byte[]>>) RTC_Corruptcore.RTCSpec[RTCSPEC.FILTERING_HASH2VALUEDICO.ToString()];
+			set => RTC_Corruptcore.RTCSpec.Update(RTCSPEC.FILTERING_HASH2VALUEDICO.ToString(), value);
 		}
 
 		public static PartialSpec getDefaultPartial()
@@ -46,7 +47,7 @@ namespace RTC
 			PartialSpec update = new PartialSpec("RTCSpec");
 			update[RTCSPEC.FILTERING_HASH2LIMITERDICO.ToString()] = Hash2LimiterDico;
 			update[RTCSPEC.FILTERING_HASH2VALUEDICO.ToString()] = Hash2ValueDico;
-			RTC_Unispec.RTCSpec.Update(update);
+			RTC_Corruptcore.RTCSpec.Update(update);
 
 			return md5s;
 		}
@@ -113,9 +114,9 @@ namespace RTC
 				PartialSpec update = new PartialSpec("RTCSpec");
 				update[RTCSPEC.FILTERING_HASH2LIMITERDICO.ToString()] = Hash2LimiterDico;
 				update[RTCSPEC.FILTERING_HASH2VALUEDICO.ToString()] = Hash2ValueDico;
-				RTC_Unispec.RTCSpec.Update(update);
+				RTC_Corruptcore.RTCSpec.Update(update);
 			}
-			RTC_Core.SendCommandToBizhawk(new RTC_Command(CommandType.REMOTE_UPDATE_FILTERING_DICTIONARIES) { objectValue = new object[] { Hash2LimiterDico, Hash2ValueDico } });
+			RTC_NetcoreImplementation.SendCommandToBizhawk(new RTC_Command(CommandType.REMOTE_UPDATE_FILTERING_DICTIONARIES) { objectValue = new object[] { Hash2LimiterDico, Hash2ValueDico } });
 
 			return hashStr;
 		}
@@ -165,7 +166,7 @@ namespace RTC
 				return null;
 			}
 
-			int line = RTC_Core.RND.Next(Hash2ValueDico[hash].Count);
+			int line = RTC_Corruptcore.RND.Next(Hash2ValueDico[hash].Count);
 			Byte[] t = Hash2ValueDico[hash][line];
 
 			//If the list is shorter than the current precision, left pad it

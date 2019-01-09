@@ -8,6 +8,7 @@ using System.Windows.Forms;
 using System.Xml.Serialization;
 using System.Runtime.InteropServices;
 using System.Diagnostics;
+using RTC.Legacy;
 
 namespace RTC
 {
@@ -25,7 +26,7 @@ namespace RTC
 
 		private void btnImportKeyBindings_Click(object sender, EventArgs e)
 		{
-			if (RTC_Hooks.isRemoteRTC && (RTC_Core.RemoteRTC != null ? RTC_Core.RemoteRTC.expectedSide != NetworkSide.SERVER : false))
+			if (RTC_NetcoreImplementation.isStandaloneEmu && (RTC_NetcoreImplementation.RemoteRTC != null ? RTC_NetcoreImplementation.RemoteRTC.expectedSide != NetworkSide.SERVER : false))
 			{
 				MessageBox.Show("Can't import keybindings when not connected to Bizhawk!");
 				return;
@@ -33,11 +34,11 @@ namespace RTC
 
 			try
 			{
-				RTC_Core.StopSound();
+				RTC_EmuCore.StopSound();
 
-				if (RTC_Core.bizhawkDir.Contains(Path.DirectorySeparatorChar + "VERSIONS" + Path.DirectorySeparatorChar))
+				if (RTC_EmuCore.bizhawkDir.Contains(Path.DirectorySeparatorChar + "VERSIONS" + Path.DirectorySeparatorChar))
 				{
-					var bizhawkFolder = new DirectoryInfo(RTC_Core.bizhawkDir);
+					var bizhawkFolder = new DirectoryInfo(RTC_EmuCore.bizhawkDir);
 					var LauncherVersFolder = bizhawkFolder.Parent.Parent;
 
 					var versions = LauncherVersFolder.GetDirectories().Reverse().ToArray();
@@ -59,7 +60,7 @@ namespace RTC
 			}
 			finally
 			{
-				RTC_Core.StartSound();
+				RTC_EmuCore.StartSound();
 			}
 		}
 
@@ -70,7 +71,7 @@ namespace RTC
 
 		private void btnChangeRTCColor_Click(object sender, EventArgs e)
 		{
-			RTC_Core.SelectRTCColor();
+			RTC_UICore.SelectRTCColor();
 		}
 
 		private void cbDisableBizhawkOSD_CheckedChanged(object sender, EventArgs e)
@@ -80,7 +81,7 @@ namespace RTC
 			else
 				RTC_Params.SetParam("ENABLE_BIZHAWK_OSD");
 
-			RTC_Core.BizhawkOsdDisabled = cbDisableBizhawkOSD.Checked;
+			RTC_Corruptcore.BizhawkOsdDisabled = cbDisableBizhawkOSD.Checked;
 		}
 
 		private void cbAllowCrossCoreCorruption_CheckedChanged(object sender, EventArgs e)
@@ -90,7 +91,7 @@ namespace RTC
 			else
 				RTC_Params.RemoveParam("ALLOW_CROSS_CORE_CORRUPTION");
 
-			RTC_Core.AllowCrossCoreCorruption = cbAllowCrossCoreCorruption.Checked;
+			RTC_Corruptcore.AllowCrossCoreCorruption = cbAllowCrossCoreCorruption.Checked;
 		}
 
 		private void cbDontCleanAtQuit_CheckedChanged(object sender, EventArgs e)
@@ -100,7 +101,7 @@ namespace RTC
 			else
 				RTC_Params.RemoveParam("DONT_CLEAN_SAVESTATES_AT_QUIT");
 
-			RTC_Core.DontCleanSavestatesOnQuit = cbDontCleanAtQuit.Checked;
+			RTC_Corruptcore.DontCleanSavestatesOnQuit = cbDontCleanAtQuit.Checked;
 		}
 	}
 }

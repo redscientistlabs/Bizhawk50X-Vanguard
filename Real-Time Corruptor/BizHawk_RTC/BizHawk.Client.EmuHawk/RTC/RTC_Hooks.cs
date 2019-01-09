@@ -8,6 +8,7 @@ using System.Drawing;
 using System.IO;
 using System.Linq;
 using System.Windows.Forms;
+using RTC.Legacy;
 using static RTC.RTC_Unispec;
 
 namespace RTC
@@ -20,7 +21,6 @@ namespace RTC
 		// Here are the keywords for searching hooks and fixes: //RTC_HIJACK
 
 		static bool disableRTC;
-		public static bool isRemoteRTC = false;
 		public static bool isNormalAdvance = false;
 
 		private static Guid? loadGameToken = null;
@@ -39,7 +39,7 @@ namespace RTC
 			
 			//Return out if it's being called from before the step and we're not on frame 0. If we're on frame 0, then we go as normal
 			//If we can't get runbefore, just assume we don't want to run before
-			if (isBeforeStep && CPU_STEP_Count != 0 && ((bool)(RTC_Unispec.RTCSpec?[RTCSPEC.STEP_RUNBEFORE.ToString()] ?? false)) == false)
+			if (isBeforeStep && CPU_STEP_Count != 0 && ((bool)(RTC_Corruptcore.RTCSpec?[RTCSPEC.STEP_RUNBEFORE.ToString()] ?? false)) == false)
 				return;
 
 			isNormalAdvance = !(isRewinding || isFastForwarding);
@@ -88,12 +88,12 @@ namespace RTC
 
 			CPU_STEP_Count++;
 
-			bool autoCorrupt = RTC_Core.AutoCorrupt;
-			int intensity = RTC_Core.Intensity;
+			bool autoCorrupt = RTC_Corruptcore.AutoCorrupt;
+			int intensity = RTC_Corruptcore.Intensity;
 			if (autoCorrupt && CPU_STEP_Count >= intensity)
 			{
 				CPU_STEP_Count = 0;
-				BlastLayer bl = RTC_Core.Blast(null, RTC_MemoryDomains.SelectedDomains);
+				BlastLayer bl = RTC_Corruptcore.Blast(null, RTC_MemoryDomains.SelectedDomains);
 				if (bl != null)
 					bl.Apply();
 			}
@@ -108,13 +108,13 @@ namespace RTC
 				MessageBox.Show("32-bit operating system detected. Bizhawk requires 64-bit to run. Program will shut down");
 				Application.Exit();
 			}
-			RTC_Unispec.RegisterEmuhawkSpec();
+			RTC_EmuCore.RegisterEmuhawkSpec();
 			
 			
-			RTC_Core.args = args;
+			RTC_EmuCore.args = args;
 
-			disableRTC = RTC_Core.args.Contains("-DISABLERTC");
-			isRemoteRTC = RTC_Core.args.Contains("-REMOTERTC");
+			disableRTC = RTC_EmuCore.args.Contains("-DISABLERTC");
+			RTC_NetcoreImplementation.isStandaloneEmu = RTC_EmuCore.args.Contains("-REMOTERTC");
 
 			//RTC_Unispec.RTCSpec.Update(Spec.HOOKS_SHOWCONSOLE.ToString(), RTC_Core.args.Contains("-CONSOLE"));
 		}
@@ -125,9 +125,9 @@ namespace RTC
 
 			//RTC_Hooks.LOAD_GAME_DONE();
 
-			RTC_Core.Start();
+			RTC_EmuCore.Start();
 
-			RTC_Core.LoadDefaultRom();
+			RTC_EmuCore.LoadDefaultRom();
 
 			RTC_Params.LoadBizhawkWindowState();
 
@@ -156,14 +156,14 @@ namespace RTC
 		{
 			if (disableRTC) return;
 
-			RTC_Core.CloseAllRtcForms();
+			RTC_UICore.CloseAllRtcForms();
 		}
 
 		public static void BIZHAWK_SAVE_CONFIG()
 		{
 			if (disableRTC) return;
 
-			RTC_Core.SendCommandToBizhawk(new RTC_Command(CommandType.REMOTE_EVENT_SAVEBIZHAWKCONFIG));
+			RTC_NetcoreImplementation.SendCommandToBizhawk(new RTC_Command(CommandType.REMOTE_EVENT_SAVEBIZHAWKCONFIG));
 		}
 
 		public static void LOAD_GAME_BEGIN()
@@ -200,26 +200,26 @@ namespace RTC
 
 
 			PartialSpec gameDone = new PartialSpec("EmuSpec");
-			gameDone[EMUSPEC.STOCKPILE_CURRENTGAMESYSTEM.ToString()] = RTC_Core.EmuFolderCheck(pathEntry.SystemDisplayName);
+			gameDone[EMUSPEC.STOCKPILE_CURRENTGAMESYSTEM.ToString()] = RTC_EmuCore.EmuFolderCheck(pathEntry.SystemDisplayName);
 			gameDone[EMUSPEC.STOCKPILE_CURRENTGAMENAME.ToString()] = PathManager.FilesystemSafeName(Global.Game);
 			gameDone[EMUSPEC.CORE_LASTOPENROM.ToString()] = GlobalWin.MainForm.CurrentlyOpenRom;
-			EmuSpec.Update(gameDone);
+			RTC_EmuCore.EmuSpec.Update(gameDone);
 			
 			//Sleep for 10ms in case Bizhawk hung for a moment after the game loaded
 			System.Threading.Thread.Sleep(10);
 			//prepare memory domains in advance on bizhawk side
 			RTC_MemoryDomains.RefreshDomains(false);
 
-			if (RTC_Unispec.EmuSpec[EMUSPEC.STOCKPILE_CURRENTGAMENAME.ToString()].ToString() != lastGameName)
+			if (RTC_EmuCore.CurrentGameName != lastGameName)
 			{
-				RTC_Core.SendCommandToRTC(new RTC_Command(CommandType.REMOTE_EVENT_LOADGAMEDONE_NEWGAME));
+				RTC_NetcoreImplementation.SendCommandToRTC(new RTC_Command(CommandType.REMOTE_EVENT_LOADGAMEDONE_NEWGAME));
 			}
 			else
 			{
-				RTC_Core.SendCommandToRTC(new RTC_Command(CommandType.REMOTE_EVENT_LOADGAMEDONE_SAMEGAME));
+				RTC_NetcoreImplementation.SendCommandToRTC(new RTC_Command(CommandType.REMOTE_EVENT_LOADGAMEDONE_SAMEGAME));
 			}
 
-			lastGameName = (string)RTC_Unispec.EmuSpec[EMUSPEC.STOCKPILE_CURRENTGAMENAME.ToString()];
+			lastGameName = RTC_EmuCore.CurrentGameName;
 
 			//RTC_Restore.SaveRestore();
 
@@ -250,13 +250,13 @@ namespace RTC
 
 			RTC_StepActions.ClearStepBlastUnits();
 
-			if(!RTC_Hooks.isRemoteRTC)
+			if(!RTC_NetcoreImplementation.isStandaloneEmu)
 				RTC_MemoryDomains.Clear();
 
-			RTC_Unispec.EmuSpec.Update(EMUSPEC.CORE_LASTOPENROM.ToString(), null);
+			RTC_EmuCore.LastOpenRom = null;
 
 			if (loadDefault)
-				RTC_Core.LoadDefaultRom();
+				RTC_EmuCore.LoadDefaultRom();
 
 			//RTC_RPC.SendToKillSwitch("UNFREEZE");
 
@@ -311,51 +311,51 @@ namespace RTC
 					return false;
 
 				case "Manual Blast":
-					RTC_Core.SendCommandToRTC(new RTC_Command(CommandType.REMOTE_HOTKEY_MANUALBLAST));
+					RTC_NetcoreImplementation.SendCommandToRTC(new RTC_Command(CommandType.REMOTE_HOTKEY_MANUALBLAST));
 					break;
 
 				case "Auto-Corrupt":
-					RTC_Core.SendCommandToRTC(new RTC_Command(CommandType.REMOTE_HOTKEY_AUTOCORRUPTTOGGLE));
+					RTC_NetcoreImplementation.SendCommandToRTC(new RTC_Command(CommandType.REMOTE_HOTKEY_AUTOCORRUPTTOGGLE));
 					break;
 
 				case "Error Delay--":
-					RTC_Core.SendCommandToRTC(new RTC_Command(CommandType.REMOTE_HOTKEY_ERRORDELAYDECREASE));
+					RTC_NetcoreImplementation.SendCommandToRTC(new RTC_Command(CommandType.REMOTE_HOTKEY_ERRORDELAYDECREASE));
 					break;
 
 				case "Error Delay++":
-					RTC_Core.SendCommandToRTC(new RTC_Command(CommandType.REMOTE_HOTKEY_ERRORDELAYINCREASE));
+					RTC_NetcoreImplementation.SendCommandToRTC(new RTC_Command(CommandType.REMOTE_HOTKEY_ERRORDELAYINCREASE));
 					break;
 
 				case "Intensity--":
-					RTC_Core.SendCommandToRTC(new RTC_Command(CommandType.REMOTE_HOTKEY_INTENSITYDECREASE));
+					RTC_NetcoreImplementation.SendCommandToRTC(new RTC_Command(CommandType.REMOTE_HOTKEY_INTENSITYDECREASE));
 					break;
 
 				case "Intensity++":
-					RTC_Core.SendCommandToRTC(new RTC_Command(CommandType.REMOTE_HOTKEY_INTENSITYINCREASE));
+					RTC_NetcoreImplementation.SendCommandToRTC(new RTC_Command(CommandType.REMOTE_HOTKEY_INTENSITYINCREASE));
 					break;
 
 				case "GH Load and Corrupt":
 					watch = System.Diagnostics.Stopwatch.StartNew();
-					RTC_Core.SendCommandToRTC(new RTC_Command(CommandType.REMOTE_HOTKEY_GHLOADCORRUPT));
+					RTC_NetcoreImplementation.SendCommandToRTC(new RTC_Command(CommandType.REMOTE_HOTKEY_GHLOADCORRUPT));
 					break;
 
 				case "GH Just Corrupt":
 					watch = System.Diagnostics.Stopwatch.StartNew();
-					RTC_Core.SendCommandToRTC(new RTC_Command(CommandType.REMOTE_HOTKEY_GHCORRUPT));
+					RTC_NetcoreImplementation.SendCommandToRTC(new RTC_Command(CommandType.REMOTE_HOTKEY_GHCORRUPT));
 					break;
 
 				case "GH Load":
 					watch = System.Diagnostics.Stopwatch.StartNew();
-					RTC_Core.SendCommandToRTC(new RTC_Command(CommandType.REMOTE_HOTKEY_GHLOAD));
+					RTC_NetcoreImplementation.SendCommandToRTC(new RTC_Command(CommandType.REMOTE_HOTKEY_GHLOAD));
 					break;
 
 				case "GH Save":
 					watch = System.Diagnostics.Stopwatch.StartNew();
-					RTC_Core.SendCommandToRTC(new RTC_Command(CommandType.REMOTE_HOTKEY_GHSAVE));
+					RTC_NetcoreImplementation.SendCommandToRTC(new RTC_Command(CommandType.REMOTE_HOTKEY_GHSAVE));
 					break;
 
 				case "Stash->Stockpile":
-					RTC_Core.SendCommandToRTC(new RTC_Command(CommandType.REMOTE_HOTKEY_GHSTASHTOSTOCKPILE));
+					RTC_NetcoreImplementation.SendCommandToRTC(new RTC_Command(CommandType.REMOTE_HOTKEY_GHSTASHTOSTOCKPILE));
 					break;
 
 				case "Induce KS Crash":
@@ -363,19 +363,19 @@ namespace RTC
 					break;
 
 				case "Blast+RawStash":
-					RTC_Core.SendCommandToRTC(new RTC_Command(CommandType.REMOTE_HOTKEY_BLASTRAWSTASH));
+					RTC_NetcoreImplementation.SendCommandToRTC(new RTC_Command(CommandType.REMOTE_HOTKEY_BLASTRAWSTASH));
 					break;
 
 				case "Send Raw to Stash":
-					RTC_Core.SendCommandToRTC(new RTC_Command(CommandType.REMOTE_HOTKEY_SENDRAWSTASH));
+					RTC_NetcoreImplementation.SendCommandToRTC(new RTC_Command(CommandType.REMOTE_HOTKEY_SENDRAWSTASH));
 					break;
 
 				case "BlastLayer Toggle":
-					RTC_Core.SendCommandToRTC(new RTC_Command(CommandType.REMOTE_HOTKEY_BLASTLAYERTOGGLE));
+					RTC_NetcoreImplementation.SendCommandToRTC(new RTC_Command(CommandType.REMOTE_HOTKEY_BLASTLAYERTOGGLE));
 					break;
 
 				case "BlastLayer Re-Blast":
-					RTC_Core.SendCommandToRTC(new RTC_Command(CommandType.REMOTE_HOTKEY_BLASTLAYERREBLAST));
+					RTC_NetcoreImplementation.SendCommandToRTC(new RTC_Command(CommandType.REMOTE_HOTKEY_BLASTLAYERREBLAST));
 					break;
 			}
 			return true;

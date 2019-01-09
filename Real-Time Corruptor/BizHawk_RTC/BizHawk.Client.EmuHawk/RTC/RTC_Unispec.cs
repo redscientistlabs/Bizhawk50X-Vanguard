@@ -8,82 +8,19 @@ using System.Text;
 using System.Threading.Tasks;
 using Ceras;
 using Newtonsoft.Json;
+using RTC.Legacy;
 
 namespace RTC
 {
 	internal class RTC_Unispec
 	{
-		public volatile static FullSpec RTCSpec;
-		public volatile static FullSpec EmuSpec;
-
-		/**
-		 * Register the spec on the rtc side
-		 */
-		public static void RegisterRTCSpec()
-		{
-			PartialSpec rtcSpecTemplate = new PartialSpec("RTCSpec");
-
-			//Engine Settings
-			rtcSpecTemplate.Insert(RTC_Core.getDefaultPartial());
-			rtcSpecTemplate.Insert(RTC_NightmareEngine.getDefaultPartial());
-			rtcSpecTemplate.Insert(RTC_HellgenieEngine.getDefaultPartial());
-			rtcSpecTemplate.Insert(RTC_DistortionEngine.getDefaultPartial());
-
-			//Custom Engine Config with Nightmare Engine
-			RTC_CustomEngine.InitTemplate_NightmareEngine(rtcSpecTemplate);
-
-			rtcSpecTemplate.Insert(RTC_Filtering.getDefaultPartial());
-			rtcSpecTemplate.Insert(RTC_VectorEngine.getDefaultPartial());
-			rtcSpecTemplate.Insert(RTC_StockpileManager.getDefaultPartial());
-			rtcSpecTemplate.Insert(RTC_MemoryDomains.getDefaultPartial());
-
-
-			RTCSpec = new FullSpec(rtcSpecTemplate); //You have to feed a partial spec as a template
-
-			
-			RTCSpec.RegisterUpdateAction((ob, ea) => {
-
-				PartialSpec partial = ea.partialSpec;
-
-				//Only send the update if we're connected
-				if(RTC_Core.RemoteRTC_SupposedToBeConnected)
-					RTC_Core.SendCommandToBizhawk(new RTC_Command(CommandType.REMOTE_PUSHRTCSPECUPDATE) { objectValue = partial }, true);
-			});
-
-			if (RTC_StockpileManager.BackupedState != null)
-				RTC_StockpileManager.BackupedState.Run();
-			else
-				RTCSpec.Update(RTCSPEC.CORE_AUTOCORRUPT.ToString(), false);
-		}
-
-		public static void RegisterEmuhawkSpec()
-		{
-			PartialSpec emuSpecTemplate = new PartialSpec("EmuSpec");
-			emuSpecTemplate[EMUSPEC.CORE_LASTOPENROM.ToString()] = null;
-			emuSpecTemplate[EMUSPEC.CORE_LASTLOADERROM.ToString()] = 0;
-
-			//Was previously volatile?
-			emuSpecTemplate[EMUSPEC.STOCKPILE_CURRENTGAMESYSTEM.ToString()] = String.Empty;
-			emuSpecTemplate[EMUSPEC.STOCKPILE_CURRENTGAMENAME.ToString()] = String.Empty;
-
-			EmuSpec = new FullSpec(emuSpecTemplate); //You have to feed a partial spec as a template
-
-			EmuSpec.RegisterUpdateAction((ob, ea) => {
-				PartialSpec partial = ea.partialSpec;
-
-				//Only send the update if we're connected
-				if (RTC_Core.RemoteRTC_SupposedToBeConnected)
-					RTC_Core.SendCommandToBizhawk(new RTC_Command(CommandType.REMOTE_PUSHEMUSPECUPDATE) { objectValue = partial }, true);
-			});
-		}
-
 		public static bool PushRTCSpec()
 		{
-			return (bool)(RTC_Core.SendCommandToBizhawk(new RTC_Command(CommandType.REMOTE_PUSHRTCSPEC) { objectValue = RTCSpec.GetPartialSpec() }, true) ?? false);;
+			return (bool)(RTC_NetcoreImplementation.SendCommandToBizhawk(new RTC_Command(CommandType.REMOTE_PUSHRTCSPEC) { objectValue = RTC_Corruptcore.RTCSpec.GetPartialSpec() }, true) ?? false);;
 		}
 		public static bool PushEmuSpec()
 		{
-			return (bool)(RTC_Core.SendCommandToBizhawk(new RTC_Command(CommandType.REMOTE_PUSHEMUSPEC) { objectValue = EmuSpec.GetPartialSpec() }, true) ?? false);
+			return (bool)(RTC_NetcoreImplementation.SendCommandToBizhawk(new RTC_Command(CommandType.REMOTE_PUSHEMUSPEC) { objectValue = RTC_EmuCore.EmuSpec.GetPartialSpec() }, true) ?? false);
 		}
 	}
 
@@ -155,10 +92,10 @@ namespace RTC
 		public void Update(String key, Object value, bool propagate = true)
 		{
 			//Make a partial spec and pass it into Update(PartialSpec)
-			if(RTC_Hooks.isRemoteRTC && name == "RTCSpec" && key != RTCSPEC.CORE_AUTOCORRUPT.ToString())
+			if(RTC_NetcoreImplementation.isStandaloneEmu && name == "RTCSpec" && key != RTCSPEC.CORE_AUTOCORRUPT.ToString())
 				throw new Exception("Tried updating the RTCSpec from Emuhawk");
 
-			if (RTC_Core.isStandalone && name == "EmuSpec")
+			if (RTC_NetcoreImplementation.isStandaloneUI && name == "EmuSpec")
 				throw new Exception("Tried updating the EmuSpec from StandaloneRTC");
 
 			PartialSpec spec = new PartialSpec(name);

@@ -4,6 +4,7 @@ using System.Drawing;
 using System.IO;
 using System.Numerics;
 using System.Security.Cryptography;
+using RTC.Legacy;
 
 namespace RTC
 {
@@ -11,17 +12,17 @@ namespace RTC
 	{
 		public static void LoadRTCColor()
 		{
-			if (RTC_Core.isStandalone || !RTC_Hooks.isRemoteRTC)
+			if (RTC_NetcoreImplementation.isStandaloneUI || !RTC_NetcoreImplementation.isStandaloneEmu)
 			{
 				if (IsParamSet("COLOR"))
 				{
 					string[] bytes = ReadParam("COLOR").Split(',');
-					RTC_Core.GeneralColor = Color.FromArgb(Convert.ToByte(bytes[0]), Convert.ToByte(bytes[1]), Convert.ToByte(bytes[2]));
+					RTC_UICore.GeneralColor = Color.FromArgb(Convert.ToByte(bytes[0]), Convert.ToByte(bytes[1]), Convert.ToByte(bytes[2]));
 				}
 				else
-					RTC_Core.GeneralColor = Color.FromArgb(110, 150, 193);
+					RTC_UICore.GeneralColor = Color.FromArgb(110, 150, 193);
 
-				RTC_Core.SetRTCColor(RTC_Core.GeneralColor);
+				RTC_UICore.SetRTCColor(RTC_UICore.GeneralColor);
 			}
 		}
 
@@ -65,7 +66,7 @@ namespace RTC
 
 		public static void AutoLoadVMDs()
 		{
-			string currentGame = (string)RTC_Core.SendCommandToBizhawk(new RTC_Command(CommandType.REMOTE_KEY_GETGAMENAME), true);
+			string currentGame = (string)RTC_NetcoreImplementation.SendCommandToBizhawk(new RTC_Command(CommandType.REMOTE_KEY_GETGAMENAME), true);
 			SetParam(currentGame.GetHashCode().ToString());
 		}
 
@@ -77,26 +78,26 @@ namespace RTC
 					SetParam(paramName, "");
 			}
 			else
-				File.WriteAllText(RTC_Core.paramsDir + Path.DirectorySeparatorChar + paramName, data);
+				File.WriteAllText(RTC_EmuCore.paramsDir + Path.DirectorySeparatorChar + paramName, data);
 		}
 
 		public static void RemoveParam(string paramName)
 		{
 			if (IsParamSet(paramName))
-				File.Delete(RTC_Core.paramsDir + Path.DirectorySeparatorChar + paramName);
+				File.Delete(RTC_EmuCore.paramsDir + Path.DirectorySeparatorChar + paramName);
 		}
 
 		public static string ReadParam(string paramName)
 		{
 			if (IsParamSet(paramName))
-				return File.ReadAllText(RTC_Core.paramsDir + Path.DirectorySeparatorChar + paramName);
+				return File.ReadAllText(RTC_EmuCore.paramsDir + Path.DirectorySeparatorChar + paramName);
 
 			return null;
 		}
 
 		public static bool IsParamSet(string paramName)
 		{
-			return File.Exists(RTC_Core.paramsDir + Path.DirectorySeparatorChar + paramName);
+			return File.Exists(RTC_EmuCore.paramsDir + Path.DirectorySeparatorChar + paramName);
 		}
 	}
 

@@ -9,6 +9,7 @@ using System.Numerics;
 using System.Text;
 using System.Windows.Forms;
 using Newtonsoft.Json.Serialization;
+using RTC.Legacy;
 
 /**
  * The DataGridView is bound to the blastlayer
@@ -152,7 +153,7 @@ namespace RTC
 		}
 		private void RTC_NewBlastEditorForm_Load(object sender, EventArgs e)
 		{
-			RTC_Core.SetRTCColor(RTC_Core.GeneralColor, this);
+			RTC_UICore.SetRTCColor(RTC_UICore.GeneralColor, this);
 		}
 
 		private void dgvBlastEditor_CellMouseClick(object sender, DataGridViewCellMouseEventArgs e)
@@ -207,10 +208,10 @@ namespace RTC
 			((ToolStripMenuItem)cms.Items.Add("Open Selected Address in Hex Editor", null, new EventHandler((ob, ev) =>
 			{
 				if (cell.OwningColumn == dgvBlastEditor.Columns[buProperty.Address.ToString()])
-					RTC_Core.SendCommandToRTC(new RTC_Command(CommandType.BIZHAWK_OPEN_HEXEDITOR_ADDRESS) { objectValue = new object[] { bu.Domain, bu.Address } });
+					RTC_NetcoreImplementation.SendCommandToRTC(new RTC_Command(CommandType.BIZHAWK_OPEN_HEXEDITOR_ADDRESS) { objectValue = new object[] { bu.Domain, bu.Address } });
 
 				if (cell.OwningColumn == dgvBlastEditor.Columns[buProperty.SourceAddress.ToString()])
-					RTC_Core.SendCommandToRTC(new RTC_Command(CommandType.BIZHAWK_OPEN_HEXEDITOR_ADDRESS) { objectValue = new object[] { bu.SourceDomain, bu.SourceAddress } });
+					RTC_NetcoreImplementation.SendCommandToRTC(new RTC_Command(CommandType.BIZHAWK_OPEN_HEXEDITOR_ADDRESS) { objectValue = new object[] { bu.SourceDomain, bu.SourceAddress } });
 			}))).Enabled = true;
 		}
 
@@ -489,7 +490,7 @@ namespace RTC
 				cbLoop.Checked = bu.Loop;
 				cbLimiterTime.SelectedItem = bu.LimiterTime;
 
-				cbLimiterList.SelectedItem = RTC_Core.LimiterListBindingSource.FirstOrDefault(x => x.Value == bu.LimiterListHash);
+				cbLimiterList.SelectedItem = RTC_UICore.LimiterListBindingSource.FirstOrDefault(x => x.Value == bu.LimiterListHash);
 
 				cbInvertLimiter.Checked = bu.InvertLimiter;
 				cbStoreTime.SelectedItem = bu.StoreTime;
@@ -569,7 +570,7 @@ namespace RTC
 				cbSource.Items.Add(item);
 			}
 
-			cbLimiterList.DataSource = RTC_Core.LimiterListBindingSource;
+			cbLimiterList.DataSource = RTC_UICore.LimiterListBindingSource;
 			cbLimiterList.DisplayMember = "Name";
 			cbLimiterList.ValueMember = "Value";
 
@@ -647,7 +648,7 @@ namespace RTC
 			dgvBlastEditor.Columns.Add(limiterTime);
 
 			DataGridViewComboBoxColumn limiterHash = CreateColumn(buProperty.LimiterListHash.ToString(), buProperty.LimiterListHash.ToString(), "Limiter List", new DataGridViewComboBoxColumn()) as DataGridViewComboBoxColumn;
-			limiterHash.DataSource = RTC_Core.LimiterListBindingSource;
+			limiterHash.DataSource = RTC_UICore.LimiterListBindingSource;
 			limiterHash.DisplayMember = "Name";
 			limiterHash.ValueMember = "Value";
 			dgvBlastEditor.Columns.Add(limiterHash);
@@ -872,7 +873,7 @@ namespace RTC
 
 			foreach (BlastUnit bu in currentSK.BlastLayer.Layer
 				.Where(x => x.IsLocked == false)
-				.OrderBy(x => RTC_Core.RND.Next())
+				.OrderBy(x => RTC_Corruptcore.RND.Next())
 				.Take(currentSK.BlastLayer.Layer.Count / 2))
 			{
 				bu.IsEnabled = false;
@@ -1071,9 +1072,9 @@ namespace RTC
 				}
 				else
 					return;
-				RTC_Core.LoadRom(filename, true);
+				RTC_EmuCore.LoadRom(filename, true);
 
-				StashKey temp = new StashKey(RTC_Core.GetRandomKey(), currentSK.ParentKey, currentSK.BlastLayer);
+				StashKey temp = new StashKey(RTC_Corruptcore.GetRandomKey(), currentSK.ParentKey, currentSK.BlastLayer);
 
 				// We have to null this as to properly create a stashkey, we need to use it in the constructor,
 				// but then the user needs to provide a savestate
@@ -1162,7 +1163,7 @@ namespace RTC
 			string oldSS = currentSK.SyncSettings;
 
 			//Get a new key
-			currentSK.ParentKey = RTC_Core.GetRandomKey();
+			currentSK.ParentKey = RTC_Corruptcore.GetRandomKey();
 			//Null the syncsettings out
 			currentSK.SyncSettings = null;
 
@@ -1178,7 +1179,7 @@ namespace RTC
 			}
 
 			//Grab the syncsettings
-			StashKey temp = new StashKey(RTC_Core.GetRandomKey(), currentSK.ParentKey, currentSK.BlastLayer);
+			StashKey temp = new StashKey(RTC_Corruptcore.GetRandomKey(), currentSK.ParentKey, currentSK.BlastLayer);
 			currentSK.SyncSettings = temp.SyncSettings;
 		}
 

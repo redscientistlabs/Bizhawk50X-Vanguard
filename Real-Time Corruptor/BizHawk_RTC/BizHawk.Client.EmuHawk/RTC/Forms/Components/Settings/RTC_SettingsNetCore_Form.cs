@@ -9,6 +9,7 @@ using System.Xml.Serialization;
 using System.Runtime.InteropServices;
 using System.Media;
 using System.Diagnostics;
+using RTC.Legacy;
 
 namespace RTC
 {
@@ -27,18 +28,18 @@ namespace RTC
 			switch (cbCrashSoundEffect.SelectedIndex)
 			{
 				case 0:
-					var PlatesHdFiles = Directory.GetFiles(RTC_Core.assetsDir + Path.DirectorySeparatorChar + "PLATESHD" + Path.DirectorySeparatorChar);
+					var PlatesHdFiles = Directory.GetFiles(RTC_EmuCore.assetsDir + Path.DirectorySeparatorChar + "PLATESHD" + Path.DirectorySeparatorChar);
 					RTC_NetCoreSettings.LoadedSounds = PlatesHdFiles.Select(it => new SoundPlayer(it)).ToArray();
 					break;
 				case 1:
-					RTC_NetCoreSettings.LoadedSounds = new SoundPlayer[] { new SoundPlayer(RTC_Core.assetsDir + Path.DirectorySeparatorChar + "crash.wav") };
+					RTC_NetCoreSettings.LoadedSounds = new SoundPlayer[] { new SoundPlayer(RTC_EmuCore.assetsDir + Path.DirectorySeparatorChar + "crash.wav") };
 					break;
 
 				case 2:
 					RTC_NetCoreSettings.LoadedSounds = null;
 					break;
 				case 3:
-					var CrashSoundsFiles = Directory.GetFiles(RTC_Core.assetsDir + Path.DirectorySeparatorChar + "CRASHSOUNDS");
+					var CrashSoundsFiles = Directory.GetFiles(RTC_EmuCore.assetsDir + Path.DirectorySeparatorChar + "CRASHSOUNDS");
 					RTC_NetCoreSettings.LoadedSounds = CrashSoundsFiles.Select(it => new SoundPlayer(it)).ToArray();
 					break;
 			}
@@ -50,7 +51,7 @@ namespace RTC
 		{
 			string setting = cbNetCoreCommandTimeout.SelectedItem.ToString().ToUpper();
 			RTC_NetCoreSettings.ChangeNetCoreSettings(setting);
-			RTC_Core.SendCommandToBizhawk(new RTC_Command(CommandType.AGGRESSIVENESS) { objectValue = setting }, true);
+			RTC_NetcoreImplementation.SendCommandToBizhawk(new RTC_Command(CommandType.AGGRESSIVENESS) { objectValue = setting }, true);
 		}
 
 		private void btnStartAutoKillSwitch_Click(object sender, EventArgs e)
@@ -73,7 +74,7 @@ namespace RTC
 
 		private void RTC_SettingsNetCore_Form_Load(object sender, EventArgs e)
 		{
-			if (RTC_Core.isStandalone)
+			if (RTC_NetcoreImplementation.isStandaloneUI)
 			{
 				pnAttachedModeSettings.Controls.Clear();
 				lbAttachedModeSettings.ForeColor = Color.Gray;

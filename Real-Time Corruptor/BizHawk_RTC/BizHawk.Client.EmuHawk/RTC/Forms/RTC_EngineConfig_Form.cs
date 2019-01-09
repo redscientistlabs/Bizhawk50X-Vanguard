@@ -39,10 +39,10 @@ namespace RTC
 
 		public void LoadLists()
 		{
-			RTC_Core.LimiterListBindingSource.Clear();
-			RTC_Core.ValueListBindingSource.Clear();
+			RTC_UICore.LimiterListBindingSource.Clear();
+			RTC_UICore.ValueListBindingSource.Clear();
 
-			string[] paths = System.IO.Directory.GetFiles(RTC_Core.listsDir);
+			string[] paths = System.IO.Directory.GetFiles(RTC_EmuCore.listsDir);
 
 			paths = paths.OrderBy(x => x).ToArray();
 
@@ -56,8 +56,8 @@ namespace RTC
 
 		public void RegisterListInUI(string name, string hash)
 		{
-			RTC_Core.LimiterListBindingSource.Add(new ComboBoxItem<String>(name, hash));
-			RTC_Core.ValueListBindingSource.Add((new ComboBoxItem<String>(name, hash)));
+			RTC_UICore.LimiterListBindingSource.Add(new ComboBoxItem<String>(name, hash));
+			RTC_UICore.ValueListBindingSource.Add((new ComboBoxItem<String>(name, hash)));
 		}
 	}
 }

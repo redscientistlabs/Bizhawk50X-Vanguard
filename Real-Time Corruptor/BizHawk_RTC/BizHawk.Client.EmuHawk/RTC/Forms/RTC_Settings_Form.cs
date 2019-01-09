@@ -6,6 +6,7 @@ using System.IO;
 using System.Linq;
 using System.Media;
 using System.Windows.Forms;
+using RTC.Legacy;
 
 namespace RTC
 {
@@ -34,10 +35,10 @@ namespace RTC
 		private void btnRtcFactoryClean_Click(object sender, EventArgs e)
 		{
 			Process p = new Process();
-			p.StartInfo.FileName = $"FactoryClean{(RTC_Core.isStandalone ? "DETACHED" : "ATTACHED")}.bat";
+			p.StartInfo.FileName = $"FactoryClean{(RTC_NetcoreImplementation.isStandaloneUI ? "DETACHED" : "ATTACHED")}.bat";
 			p.StartInfo.WindowStyle = ProcessWindowStyle.Hidden;
 			p.StartInfo.CreateNoWindow = true;
-			p.StartInfo.WorkingDirectory = RTC_Core.rtcDir;
+			p.StartInfo.WorkingDirectory = RTC_EmuCore.rtcDir;
 			p.Start();
 		}
 
@@ -64,7 +65,7 @@ namespace RTC
 		private void btnToggleConsole_Click(object sender, EventArgs e)
 		{
 			//We only have a console in standalone mode
-			if (RTC_Core.isStandalone)
+			if (RTC_NetcoreImplementation.isStandaloneUI)
 				LogConsole.ToggleConsole();
 		}
 	}

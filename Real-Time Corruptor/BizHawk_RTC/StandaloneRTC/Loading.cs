@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Linq;
 using System.Windows.Forms;
+using RTC.Legacy;
 
 namespace StandaloneRTC
 {
@@ -12,7 +13,7 @@ namespace StandaloneRTC
 		{
 			InitializeComponent();
 
-			RTC.RTC_Core.isStandalone = true;
+			RTC_NetcoreImplementation.isStandaloneUI = true;
 			RTC.LogConsole.CreateConsole();
 
 			if (args.Contains("-CONSOLE"))
@@ -24,7 +25,7 @@ namespace StandaloneRTC
 				RTC.LogConsole.HideConsole();
 			}
 
-			RTC.RTC_Core.Start(this);
+			RTC.RTC_EmuCore.Start(this);
 			Hide();
 
 		}

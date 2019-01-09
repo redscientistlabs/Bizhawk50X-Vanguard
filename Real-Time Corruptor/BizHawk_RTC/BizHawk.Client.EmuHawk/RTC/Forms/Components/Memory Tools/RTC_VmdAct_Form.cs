@@ -7,6 +7,7 @@ using System.Linq;
 using System.Windows.Forms;
 using System.Xml.Serialization;
 using System.Runtime.InteropServices;
+using RTC.Legacy;
 
 namespace RTC
 {
@@ -88,7 +89,7 @@ namespace RTC
 
 		public void SaveActiveTable(bool IsQuickSave)
 		{
-			RTC_Core.StopSound();
+			RTC_EmuCore.StopSound();
 
 
 			if (!IsQuickSave)
@@ -106,7 +107,7 @@ namespace RTC
 				}
 				else
 				{
-					RTC_Core.StartSound();
+					RTC_EmuCore.StartSound();
 					return;
 				}
 			}
@@ -122,7 +123,7 @@ namespace RTC
 			}
 
 
-			RTC_Core.StartSound();
+			RTC_EmuCore.StartSound();
 		}
 
 		public void SetActiveTable(ActiveTableObject act)
@@ -135,7 +136,7 @@ namespace RTC
 
 		public byte[] GetDumpFromFile(string key)
 		{
-			return File.ReadAllBytes(RTC_Core.workingDir + Path.DirectorySeparatorChar + "MEMORYDUMPS" + Path.DirectorySeparatorChar + key + ".dmp");
+			return File.ReadAllBytes(RTC_EmuCore.workingDir + Path.DirectorySeparatorChar + "MEMORYDUMPS" + Path.DirectorySeparatorChar + key + ".dmp");
 		}
 
 		public long[] CapActiveTable(long[] tempActiveTable)
@@ -154,7 +155,7 @@ namespace RTC
 
 					while (DuplicateFound)
 					{
-						long queryAdress = tempActiveTable[RTC_Core.RND.RandomLong(tempActiveTable.Length - 1)];
+						long queryAdress = tempActiveTable[RTC_Corruptcore.RND.RandomLong(tempActiveTable.Length - 1)];
 
 						if (!cappedActiveTable.Contains(queryAdress))
 						{
@@ -237,7 +238,7 @@ namespace RTC
 		{
 			if (_activeTableReady)
 			{
-				return ActiveTableGenerated[RTC_Core.RND.Next(ActiveTableGenerated.Length - 1)];
+				return ActiveTableGenerated[RTC_Corruptcore.RND.Next(ActiveTableGenerated.Length - 1)];
 			}
 			else
 				return 0;
@@ -253,8 +254,8 @@ namespace RTC
 			if (ActiveTableDumps == null)
 				return;
 
-			string key = RTC_Core.GetRandomKey();
-			RTC_Core.SendCommandToBizhawk(new RTC_Command(CommandType.REMOTE_DOMAIN_ACTIVETABLE_MAKEDUMP)
+			string key = RTC_Corruptcore.GetRandomKey();
+			RTC_NetcoreImplementation.SendCommandToBizhawk(new RTC_Command(CommandType.REMOTE_DOMAIN_ACTIVETABLE_MAKEDUMP)
 			{
 				objectValue = new object[] { cbSelectedMemoryDomain.SelectedItem.ToString(), key }
 			}, true);
@@ -306,7 +307,7 @@ namespace RTC
 
 			ActiveTableDumps = new List<string>();
 
-			foreach (string file in Directory.GetFiles(RTC_Core.workingDir + Path.DirectorySeparatorChar + "MEMORYDUMPS"))
+			foreach (string file in Directory.GetFiles(RTC_EmuCore.workingDir + Path.DirectorySeparatorChar + "MEMORYDUMPS"))
 				File.Delete(file);
 
 			currentFilename = null;
@@ -314,7 +315,7 @@ namespace RTC
 
 		private void btnActiveTableLoad_Click(object sender, EventArgs e)
 		{
-			RTC_Core.StopSound();
+			RTC_EmuCore.StopSound();
 
 			try
 			{
@@ -329,7 +330,7 @@ namespace RTC
 				}
 				else
 				{
-					RTC_Core.StartSound();
+					RTC_EmuCore.StartSound();
 					return;
 				}
 
@@ -341,7 +342,7 @@ namespace RTC
 					SetActiveTable(act);
 					ActLoadedFromFile = true;
 				}
-				RTC_Core.StartSound();
+				RTC_EmuCore.StartSound();
 			}
 			catch
 			{
@@ -359,7 +360,7 @@ namespace RTC
 
 		private void btnActiveTableSubtractFile_Click(object sender, EventArgs e)
 		{
-			RTC_Core.StopSound();
+			RTC_EmuCore.StopSound();
 
 			string tempFilename;
 
@@ -393,14 +394,14 @@ namespace RTC
 			ActiveTableGenerated = newActiveTable.ToArray();
 			lbActiveTableSize.Text = "Active table size (0x" + ActiveTableGenerated.Length.ToString("X") + ")";
 
-			RTC_Core.StartSound();
+			RTC_EmuCore.StartSound();
 		}
 
 		private void btnActiveTableAddFile_Click(object sender, EventArgs e)
 		{
 			try
 			{
-				RTC_Core.StopSound();
+				RTC_EmuCore.StopSound();
 
 				string tempFilename;
 
@@ -437,7 +438,7 @@ namespace RTC
 				lbActiveTableSize.Text = "Active table size (0x" + ActiveTableGenerated.Length.ToString("X") + ")";
 
 
-				RTC_Core.StartSound();
+				RTC_EmuCore.StartSound();
 			}
 			catch
 			{
@@ -504,7 +505,7 @@ namespace RTC
 				int lastaddress = -1;
 
 				proto.GenDomain = cbSelectedMemoryDomain.SelectedItem.ToString();
-				proto.VmdName = mi.Name + " " + RTC_Core.GetRandomKey();
+				proto.VmdName = mi.Name + " " + RTC_Corruptcore.GetRandomKey();
 				proto.BigEndian = mi.BigEndian;
 				proto.WordSize = mi.WordSize;
 				proto.PointerSpacer = 1;

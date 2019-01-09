@@ -5,6 +5,7 @@ using System.Net.Sockets;
 using System.Text;
 using System.Threading;
 using System.Windows.Forms;
+using RTC.Legacy;
 
 namespace RTC
 {
@@ -31,7 +32,7 @@ namespace RTC
 			time.Tick += CheckMessages;
 			time.Start();
 
-			if (RTC_Hooks.isRemoteRTC)
+			if (RTC_NetcoreImplementation.isStandaloneEmu)
 			{
 				RTC_RPC.SendToKillSwitch("UNFREEZE");
 			}
@@ -105,10 +106,10 @@ namespace RTC
 		public static void CheckMessages(object sender, EventArgs e)
 		{
 			//Send the heartbeat unless it's the StandaloneRTC process
-			if (RTC_Hooks.isRemoteRTC)
+			if (RTC_NetcoreImplementation.isStandaloneEmu)
 				SendHeartbeat();
 
-			if (!RTC_Core.isStandalone && !RTC_Hooks.isRemoteRTC)
+			if (!RTC_NetcoreImplementation.isStandaloneUI && !RTC_NetcoreImplementation.isStandaloneEmu)
 				SendHeartbeat();
 		}
 

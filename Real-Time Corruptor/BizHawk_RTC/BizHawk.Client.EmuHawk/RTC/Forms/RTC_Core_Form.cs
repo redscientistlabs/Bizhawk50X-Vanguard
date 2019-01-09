@@ -5,6 +5,7 @@ using System.Drawing;
 using System.IO;
 using System.Threading;
 using System.Windows.Forms;
+using RTC.Legacy;
 using static RTC.RTC_Unispec;
 
 namespace RTC
@@ -20,7 +21,7 @@ namespace RTC
 		{
 			get
 			{
-				if (RTC_Core.isStandalone)
+				if (RTC_NetcoreImplementation.isStandaloneUI)
 					return base.CreateParams;
 
 				CreateParams myCp = base.CreateParams;
@@ -33,7 +34,7 @@ namespace RTC
 		{
 			get
 			{
-				return RTC_Core.AutoCorrupt;
+				return RTC_Corruptcore.AutoCorrupt;
 			}
 			set
 			{
@@ -42,7 +43,7 @@ namespace RTC
 				else
 					btnAutoCorrupt.Text = "Start Auto-Corrupt";
 
-				RTC_Core.AutoCorrupt = value;
+				RTC_Corruptcore.AutoCorrupt = value;
 			}
 		}
 
@@ -50,13 +51,13 @@ namespace RTC
 		{
 			InitializeComponent();
 
-			if (RTC_Core.isStandalone)
+			if (RTC_NetcoreImplementation.isStandaloneUI)
 				pnAutoKillSwitch.Visible = true;
 		}
 
 		public void btnManualBlast_Click(object sender, EventArgs e)
 		{
-			RTC_Core.SendCommandToBizhawk(new RTC_Command(CommandType.ASYNCBLAST));
+			RTC_NetcoreImplementation.SendCommandToBizhawk(new RTC_Command(CommandType.ASYNCBLAST));
 		}
 
 		public void btnAutoCorrupt_Click(object sender, EventArgs e)
@@ -65,23 +66,26 @@ namespace RTC
 				return;
 
 			this.AutoCorrupt = !this.AutoCorrupt;
-			RTC_Unispec.RTCSpec.Update(RTCSPEC.STEP_RUNBEFORE.ToString(), true);
+			RTC_Corruptcore.RTCSpec.Update(RTCSPEC.STEP_RUNBEFORE.ToString(), true);
 		}
 
 		private void RTC_Form_Load(object sender, EventArgs e)
 		{
-			btnLogo.Text = "   Version " + RTC_Core.RtcVersion;
+
+			RTC_UICore.Start();
+
+			btnLogo.Text = "   Version " + RTC_Corruptcore.RtcVersion;
 
 			if (!RTC_Params.IsParamSet("DISCLAIMER_READ"))
 			{
-				MessageBox.Show(File.ReadAllText(RTC_Core.rtcDir + Path.DirectorySeparatorChar + "LICENSES\\DISCLAIMER.TXT").Replace("[ver]", RTC_Core.RtcVersion), "RTC", MessageBoxButtons.OK, MessageBoxIcon.Information);
+				MessageBox.Show(File.ReadAllText(RTC_EmuCore.rtcDir + Path.DirectorySeparatorChar + "LICENSES\\DISCLAIMER.TXT").Replace("[ver]", RTC_Corruptcore.RtcVersion), "RTC", MessageBoxButtons.OK, MessageBoxIcon.Information);
 				RTC_Params.SetParam("DISCLAIMER_READ");
 			}
 
-			RTC_Core.DownloadProblematicProcesses();
-			RTC_Core.CheckForProblematicProcesses();
+			RTC_EmuCore.DownloadProblematicProcesses();
+			RTC_EmuCore.CheckForProblematicProcesses();
 
-			if (RTC_Core.isStandalone)
+			if (RTC_NetcoreImplementation.isStandaloneUI)
 			{
 				GhostBoxInvisible(btnEasyMode);
 				GhostBoxInvisible(btnEngineConfig);
@@ -110,27 +114,27 @@ namespace RTC
 
 		private void RTC_Form_FormClosing(object sender, FormClosingEventArgs e)
 		{
-			if (!RTC_Core.isStandalone && e.CloseReason != CloseReason.FormOwnerClosing)
+			if (!RTC_NetcoreImplementation.isStandaloneUI && e.CloseReason != CloseReason.FormOwnerClosing)
 			{
 				e.Cancel = true;
 				this.Hide();
 				return;
 			}
-			else if (RTC_Core.isStandalone)
+			else if (RTC_NetcoreImplementation.isStandaloneUI)
 			{
-				if (RTC_StockpileManager.UnsavedEdits && !RTC_Core.isClosing && MessageBox.Show("You have unsaved edits in the Glitch Harvester Stockpile. \n\n Are you sure you want to close RTC without saving?", "Unsaved edits in Stockpile", MessageBoxButtons.YesNo) == DialogResult.No)
+				if (RTC_StockpileManager.UnsavedEdits && !RTC_UICore.isClosing && MessageBox.Show("You have unsaved edits in the Glitch Harvester Stockpile. \n\n Are you sure you want to close RTC without saving?", "Unsaved edits in Stockpile", MessageBoxButtons.YesNo) == DialogResult.No)
 				{
 					e.Cancel = true;
 					return;
 				}
 
-				if (RTC_Core.RemoteRTC_SupposedToBeConnected)
+				if (RTC_NetcoreImplementation.RemoteRTC_SupposedToBeConnected)
 				{
-					RTC_Core.SendCommandToBizhawk(new RTC_Command(CommandType.REMOTE_EVENT_CLOSEBIZHAWK));
+					RTC_NetcoreImplementation.SendCommandToBizhawk(new RTC_Command(CommandType.REMOTE_EVENT_CLOSEBIZHAWK));
 					Thread.Sleep(1000);
 				}
 
-				RTC_Core.CloseAllRtcForms();
+				RTC_UICore.CloseAllRtcForms();
 			}
 		}
 
@@ -146,44 +150,44 @@ namespace RTC
 
 		public void StartEasyMode(bool useTemplate)
 		{
-			if (RTC_Core.isStandalone && !S.GET<RTC_Core_Form>().cbUseGameProtection.Checked)
+			if (RTC_NetcoreImplementation.isStandaloneUI && !S.GET<RTC_Core_Form>().cbUseGameProtection.Checked)
 				S.GET<RTC_Core_Form>().cbUseGameProtection.Checked = true;
 
 
 			if (useTemplate)
 			{
 				//Put Console templates HERE
-				string thisSystem = (string)RTC_Core.SendCommandToBizhawk(new RTC_Command(CommandType.REMOTE_DOMAIN_SYSTEM), true);
+				string thisSystem = (string)RTC_NetcoreImplementation.SendCommandToBizhawk(new RTC_Command(CommandType.REMOTE_DOMAIN_SYSTEM), true);
 
 				switch (thisSystem)
 				{
 					case "NES":     //Nintendo Entertainment system
-						RTC_Core.SetEngineByName("Nightmare Engine");
+						RTC_Corruptcore.SetEngineByName("Nightmare Engine");
 						S.GET<RTC_GeneralParameters_Form>().Intensity = 2;
 						S.GET<RTC_GeneralParameters_Form>().ErrorDelay = 1;
 						break;
 
 					case "GB":      //Gameboy
 					case "GBC":     //Gameboy Color
-						RTC_Core.SetEngineByName("Nightmare Engine");
+						RTC_Corruptcore.SetEngineByName("Nightmare Engine");
 						S.GET<RTC_GeneralParameters_Form>().Intensity = 1;
 						S.GET<RTC_GeneralParameters_Form>().ErrorDelay = 4;
 						break;
 
 					case "SNES":    //Super Nintendo
-						RTC_Core.SetEngineByName("Nightmare Engine");
+						RTC_Corruptcore.SetEngineByName("Nightmare Engine");
 						S.GET<RTC_GeneralParameters_Form>().Intensity = 1;
 						S.GET<RTC_GeneralParameters_Form>().ErrorDelay = 2;
 						break;
 
 					case "GBA":     //Gameboy Advance
-						RTC_Core.SetEngineByName("Nightmare Engine");
+						RTC_Corruptcore.SetEngineByName("Nightmare Engine");
 						S.GET<RTC_GeneralParameters_Form>().Intensity = 1;
 						S.GET<RTC_GeneralParameters_Form>().ErrorDelay = 1;
 						break;
 
 					case "N64":     //Nintendo 64
-						RTC_Core.SetEngineByName("Vector Engine");
+						RTC_Corruptcore.SetEngineByName("Vector Engine");
 						S.GET<RTC_GeneralParameters_Form>().Intensity = 75;
 						S.GET<RTC_GeneralParameters_Form>().ErrorDelay = 1;
 						break;
@@ -235,7 +239,7 @@ namespace RTC
 
 		private void btnLogo_MouseClick(object sender, MouseEventArgs e)
 		{
-			if (RTC_Core.isStandalone)
+			if (RTC_NetcoreImplementation.isStandaloneUI)
 				ShowPanelForm(S.GET<RTC_ConnectionStatus_Form>(), false);
 		}
 
@@ -335,7 +339,7 @@ namespace RTC
 
 					RemoveGhostBoxes();
 
-					if (!RTC_Core.FirstConnection)
+					if (!RTC_NetcoreImplementation.FirstConnection)
 						pnCrashProtection.Visible = true;
 				}
 			}
@@ -349,7 +353,7 @@ namespace RTC
 
 		private void btnRTCMultiplayer_Click(object sender, EventArgs e)
 		{
-			if (RTC_Core.isStandalone)
+			if (RTC_NetcoreImplementation.isStandaloneUI)
 				MessageBox.Show("Multiplayer unsupported in Detached mode");
 			else
 				ShowPanelForm(S.GET<RTC_Multiplayer_Form>());
@@ -396,7 +400,7 @@ namespace RTC
 
 		private void BlastRawStash()
 		{
-			RTC_Core.SendCommandToBizhawk(new RTC_Command(CommandType.ASYNCBLAST));
+			RTC_NetcoreImplementation.SendCommandToBizhawk(new RTC_Command(CommandType.ASYNCBLAST));
 			S.GET<RTC_GlitchHarvester_Form>().btnSendRaw_Click(null, null);
 		}
 

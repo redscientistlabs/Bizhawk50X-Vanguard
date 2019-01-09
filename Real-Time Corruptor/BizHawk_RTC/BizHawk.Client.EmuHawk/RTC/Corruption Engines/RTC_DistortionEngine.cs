@@ -8,8 +8,8 @@ namespace RTC
 	{
 		public static int Delay
 		{
-			get => (int)RTC_Unispec.RTCSpec[RTCSPEC.DISTORTION_DELAY.ToString()];
-			set => RTC_Unispec.RTCSpec.Update(RTCSPEC.DISTORTION_DELAY.ToString(), value);
+			get => (int)RTC_Corruptcore.RTCSpec[RTCSPEC.DISTORTION_DELAY.ToString()];
+			set => RTC_Corruptcore.RTCSpec.Update(RTCSPEC.DISTORTION_DELAY.ToString(), value);
 		}
 		public static PartialSpec getDefaultPartial()
 		{

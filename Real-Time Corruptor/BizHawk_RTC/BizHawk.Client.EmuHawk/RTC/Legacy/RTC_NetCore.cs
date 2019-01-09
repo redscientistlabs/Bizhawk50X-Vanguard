@@ -11,6 +11,7 @@ using System.Windows.Forms;
 using System.Diagnostics;
 using System.IO.Compression;
 using Ceras;
+using RTC.Legacy;
 
 namespace RTC
 {
@@ -110,7 +111,7 @@ namespace RTC
 			RTC_RPC.SendToKillSwitch("FREEZE");
 
 			var token = Guid.NewGuid();
-			if (RTC_Core.isStandalone)
+			if (RTC_NetcoreImplementation.isStandaloneUI)
 			{
 				guid2LastAggressivity.Add(token, S.GET<RTC_SettingsNetCore_Form>().cbNetCoreCommandTimeout.SelectedIndex);
 
@@ -126,7 +127,7 @@ namespace RTC
 		{
 			RTC_RPC.SendToKillSwitch("UNFREEZE");
 
-			if (RTC_Core.isStandalone)
+			if (RTC_NetcoreImplementation.isStandaloneUI)
 			{
 				if (operationGuid == null || !(guid2LastAggressivity.ContainsKey(operationGuid)))
 					return;
@@ -140,7 +141,7 @@ namespace RTC
 		{
 			RTC_RPC.SendToKillSwitch("UNFREEZE");
 
-			if (RTC_Core.isStandalone)
+			if (RTC_NetcoreImplementation.isStandaloneUI)
 			{
 				S.GET<RTC_SettingsNetCore_Form>().cbNetCoreCommandTimeout.SelectedIndex = 0;
 				guid2LastAggressivity.Clear();
@@ -215,7 +216,7 @@ namespace RTC
 				if (networkStream == null && !dontCreateNetworkStream)
 				{
 					//We use loopback if in detached mode, otherwise use any
-					if(RTC_Core.isStandalone || RTC_Hooks.isRemoteRTC)
+					if(RTC_NetcoreImplementation.isStandaloneUI || RTC_NetcoreImplementation.isStandaloneEmu)
 						server = new TcpListener(IPAddress.Loopback, port);
 					else
 					{
@@ -471,7 +472,7 @@ namespace RTC
 				client = new TcpClient();
 
 				//Use loopback in detached
-				if (RTC_Core.isStandalone || RTC_Hooks.isRemoteRTC)
+				if (RTC_NetcoreImplementation.isStandaloneUI || RTC_NetcoreImplementation.isStandaloneEmu)
 					address = IPAddress.Loopback.ToString();
 
 				var result = client.BeginConnect(address, port, null, null);
@@ -741,7 +742,7 @@ namespace RTC
 
 					case CommandType.GETAGGRESSIVENESS:
 						string setting = S.GET<RTC_SettingsNetCore_Form>().cbNetCoreCommandTimeout.SelectedItem.ToString().ToUpper();
-						RTC_Core.SendCommandToBizhawk(new RTC_Command(CommandType.AGGRESSIVENESS) { objectValue = setting });
+						RTC_NetcoreImplementation.SendCommandToBizhawk(new RTC_Command(CommandType.AGGRESSIVENESS) { objectValue = setting });
 						break;
 
 					default:
@@ -788,7 +789,7 @@ namespace RTC
 				return null;
 			}
 
-			if (!RTC_Core.isStandalone && !RTC_Hooks.isRemoteRTC && cmd.Type == CommandType.RETURNVALUE)
+			if (!RTC_NetcoreImplementation.isStandaloneUI && !RTC_NetcoreImplementation.isStandaloneEmu && cmd.Type == CommandType.RETURNVALUE)
 			{
 				ReturnWatch.SyncReturns.Add((Guid)cmd.requestGuid, cmd.objectValue);
 				return null;
@@ -817,12 +818,12 @@ namespace RTC
 
 			cmd.requestGuid = Guid.NewGuid();
 
-			if (CommandQueueProcessorTimer == null || (!RTC_Core.isStandalone && !RTC_Hooks.isRemoteRTC) || RTC_Hooks.isRemoteRTC)
+			if (CommandQueueProcessorTimer == null || (!RTC_NetcoreImplementation.isStandaloneUI && !RTC_NetcoreImplementation.isStandaloneEmu) || RTC_NetcoreImplementation.isStandaloneEmu)
 			{
 				if (!self)
 					return null;
 
-				if (!RTC_Hooks.isRemoteRTC)
+				if (!RTC_NetcoreImplementation.isStandaloneEmu)
 				{
 					LinkedList<RTC_Command> tempQueue = new LinkedList<RTC_Command>(new[] { cmd });
 					Console.WriteLine($"{RTC.RTC_NetCore.timeElapsed.Elapsed.TotalSeconds}: {expectedSide.ToString()}:SendSyncCommand self:{self.ToString()} priority:{priority.ToString()} -> {cmd.Type.ToString()}");
@@ -875,7 +876,7 @@ namespace RTC
 
 				if (maxtries % 100 == 0)
 				{
-					RTC_Core.SendCommandToBizhawk(new RTC_Command(CommandType.BOOP));
+					RTC_NetcoreImplementation.SendCommandToBizhawk(new RTC_Command(CommandType.BOOP));
 					Application.DoEvents();
 				}
 

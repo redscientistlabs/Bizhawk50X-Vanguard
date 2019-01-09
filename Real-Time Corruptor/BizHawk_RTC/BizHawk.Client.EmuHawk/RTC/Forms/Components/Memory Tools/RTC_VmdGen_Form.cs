@@ -90,7 +90,7 @@ namespace RTC
 			proto.GenDomain = cbSelectedMemoryDomain.SelectedItem.ToString();
 
 			if (string.IsNullOrWhiteSpace(tbVmdName.Text))
-				proto.VmdName = RTC_Core.GetRandomKey();
+				proto.VmdName = RTC_Corruptcore.GetRandomKey();
 			else
 				proto.VmdName = tbVmdName.Text;
 

@@ -33,14 +33,14 @@ namespace RTC
 			cbLimiterList.ValueMember = "Value";
 
 			//Do this here as if it's stuck into the designer, it keeps defaulting out
-			cbValueList.DataSource = RTC_Core.ValueListBindingSource;
-			cbLimiterList.DataSource = RTC_Core.LimiterListBindingSource;
+			cbValueList.DataSource = RTC_UICore.ValueListBindingSource;
+			cbLimiterList.DataSource = RTC_UICore.LimiterListBindingSource;
 	
-			if (RTC_Core.ValueListBindingSource.Count > 0)
+			if (RTC_UICore.ValueListBindingSource.Count > 0)
 			{
 				cbValueList_SelectedIndexChanged(cbValueList, null);
 			}
-			if (RTC_Core.LimiterListBindingSource.Count > 0)
+			if (RTC_UICore.LimiterListBindingSource.Count > 0)
 			{
 				cbLimiterList_SelectedIndexChanged(cbLimiterList, null);
 			}
@@ -124,7 +124,7 @@ namespace RTC
 				return;
 			long value = Convert.ToInt64(nmMinValue.Value);
 
-			switch (RTC_Core.CurrentPrecision)
+			switch (RTC_Corruptcore.CurrentPrecision)
 			{
 				case 1:
 					RTC_CustomEngine.MinValue8Bit = value;
@@ -146,7 +146,7 @@ namespace RTC
 			long value = Convert.ToInt64(nmMaxValue.Value);
 
 
-			switch (RTC_Core.CurrentPrecision)
+			switch (RTC_Corruptcore.CurrentPrecision)
 			{
 				case 1:
 					RTC_CustomEngine.MaxValue8Bit = value;
@@ -260,7 +260,7 @@ namespace RTC
 		private void btnResetConfig_Click(object sender, EventArgs e)
 		{
 			PartialSpec spec = (PartialSpec)RTC_CustomEngine.lastLoadedTemplate.Clone();
-			RTC_Unispec.RTCSpec.Update(spec);
+			RTC_Corruptcore.RTCSpec.Update(spec);
 			Refresh();
 		}
 
@@ -302,21 +302,21 @@ namespace RTC
 				btnCustomTemplateSave.ForeColor = Color.DimGray;
 			}
 
-			RTC_Unispec.RTCSpec.Update(spec);
+			RTC_Corruptcore.RTCSpec.Update(spec);
 			Refresh();
 
 		}
 
 		private void btnCustomTemplateLoad_Click(object sender, EventArgs e)
 		{
-			RTC_Core.StopSound();
+			RTC_EmuCore.StopSound();
 			PartialSpec spec = RTC_CustomEngine.LoadTemplateFile();
-			RTC_Core.StartSound();
+			RTC_EmuCore.StartSound();
 
 			if (spec == null)
 				return;
 
-			RTC_Unispec.RTCSpec.Update(spec);
+			RTC_Corruptcore.RTCSpec.Update(spec);
 			Refresh();
 
 			cbSelectedTemplate.Text = spec.Name;
@@ -325,9 +325,9 @@ namespace RTC
 		private void btnCustomTemplateSaveAs_Click(object sender, EventArgs e)
 		{
 
-			RTC_Core.StopSound();
+			RTC_EmuCore.StopSound();
 			string TemplateName = RTC_CustomEngine.SaveTemplateFile(true);
-			RTC_Core.StartSound();
+			RTC_EmuCore.StartSound();
 
 			if (string.IsNullOrWhiteSpace(TemplateName))
 				return;
@@ -341,9 +341,9 @@ namespace RTC
 
 		private void btnCustomTemplateSave_Click(object sender, EventArgs e)
 		{
-			RTC_Core.StopSound();
+			RTC_EmuCore.StopSound();
 			string TemplateName = RTC_CustomEngine.SaveTemplateFile(false);
-			RTC_Core.StartSound();
+			RTC_EmuCore.StartSound();
 
 			if (string.IsNullOrWhiteSpace(TemplateName))
 				return;
