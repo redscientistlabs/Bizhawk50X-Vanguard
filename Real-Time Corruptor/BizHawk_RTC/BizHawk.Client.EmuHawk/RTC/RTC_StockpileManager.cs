@@ -34,6 +34,28 @@ namespace RTC
 			}
 		}
 
+		public static string CurrentSavestateKey
+		{
+			get => (string)RTC_Unispec.RTCSpec[RTCSPEC.CORE_EXTRACTBLASTLAYER.ToString()];
+			set => RTC_Unispec.RTCSpec.Update(RTCSPEC.CORE_EXTRACTBLASTLAYER.ToString(), value);
+		}
+
+		public static StashKey BackupedState
+		{
+			get => (StashKey)RTC_Unispec.RTCSpec[RTCSPEC.STOCKPILE_BACKUPEDSTATE.ToString()];
+			set => RTC_Unispec.RTCSpec.Update(RTCSPEC.STOCKPILE_BACKUPEDSTATE.ToString(), value);
+		}
+
+		public static PartialSpec getDefaultPartial()
+		{
+			var partial = new PartialSpec("RTCSpec");
+
+			partial[RTCSPEC.STOCKPILE_CURRENTSAVESTATEKEY.ToString()] = null;
+			partial[RTCSPEC.STOCKPILE_BACKUPEDSTATE.ToString()] = null;
+
+			return partial;
+		}
+
 		public static bool StashAfterOperation = true;
 
 		public static volatile List<StashKey> StashHistory = new List<StashKey>();

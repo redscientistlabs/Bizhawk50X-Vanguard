@@ -22,36 +22,9 @@ namespace RTC
 		public static void RegisterRTCSpec()
 		{
 			PartialSpec rtcSpecTemplate = new PartialSpec("RTCSpec");
+
 			//Engine Settings
 			rtcSpecTemplate.Insert(RTC_Core.getDefaultPartial());
-
-
-
-
-			//RTC Status
-			rtcSpecTemplate[RTCSPEC.CORE_EXTRACTBLASTLAYER.ToString()] = false;
-			rtcSpecTemplate[RTCSPEC.CORE_AUTOCORRUPT.ToString()] = false;
-
-
-			//RTC Settings
-			rtcSpecTemplate[RTCSPEC.CORE_BIZHAWKOSDDISABLED.ToString()] = true;
-			rtcSpecTemplate[RTCSPEC.HOOKS_SHOWCONSOLE.ToString()] = false;
-			rtcSpecTemplate[RTCSPEC.CORE_DONTCLEANSAVESTATESONQUIT.ToString()] = false;
-
-			//Reroll Settings
-			if (RTC_Params.IsParamSet("REROLL_ADDRESS"))
-				rtcSpecTemplate[RTCSPEC.REROLL_SOURCEADDRESS.ToString()] = (RTC_Params.ReadParam("REROLL_ADDRESS") == "true");
-			else
-				rtcSpecTemplate[RTCSPEC.REROLL_ADDRESS.ToString()] = false;
-
-			if (RTC_Params.IsParamSet("REROLL_SOURCEADDRESS"))
-				rtcSpecTemplate[RTCSPEC.REROLL_SOURCEADDRESS.ToString()] = (RTC_Params.ReadParam("REROLL_SOURCEADDRESS") == "true");
-			else
-				rtcSpecTemplate[RTCSPEC.REROLL_SOURCEADDRESS.ToString()] = false;
-
-
-
-
 			rtcSpecTemplate.Insert(RTC_NightmareEngine.getDefaultPartial());
 			rtcSpecTemplate.Insert(RTC_HellgenieEngine.getDefaultPartial());
 			rtcSpecTemplate.Insert(RTC_DistortionEngine.getDefaultPartial());
@@ -59,20 +32,10 @@ namespace RTC
 			//Custom Engine Config with Nightmare Engine
 			RTC_CustomEngine.InitTemplate_NightmareEngine(rtcSpecTemplate);
 
-
 			rtcSpecTemplate.Insert(RTC_Filtering.getDefaultPartial());
-
-
 			rtcSpecTemplate.Insert(RTC_VectorEngine.getDefaultPartial());
-
-
-			//Was volatile keep an eye on
-			rtcSpecTemplate[RTCSPEC.STOCKPILE_CURRENTSAVESTATEKEY.ToString()] = null;
-			rtcSpecTemplate[RTCSPEC.STOCKPILE_BACKUPEDSTATE.ToString()] = null;
-
-			rtcSpecTemplate[RTCSPEC.MEMORYDOMAINS_SELECTEDDOMAINS.ToString()] = new string[] { };
-			rtcSpecTemplate[RTCSPEC.MEMORYDOMAINS_LASTSELECTEDDOMAINS.ToString()] = new string[] { };
-
+			rtcSpecTemplate.Insert(RTC_StockpileManager.getDefaultPartial());
+			rtcSpecTemplate.Insert(RTC_MemoryDomains.getDefaultPartial());
 
 
 			RTCSpec = new FullSpec(rtcSpecTemplate); //You have to feed a partial spec as a template
@@ -87,8 +50,8 @@ namespace RTC
 					RTC_Core.SendCommandToBizhawk(new RTC_Command(CommandType.REMOTE_PUSHRTCSPECUPDATE) { objectValue = partial }, true);
 			});
 
-			if (RTC_Unispec.RTCSpec[RTCSPEC.STOCKPILE_BACKUPEDSTATE.ToString()] != null)
-				((StashKey)RTC_Unispec.RTCSpec[RTCSPEC.STOCKPILE_BACKUPEDSTATE.ToString()]).Run();
+			if (RTC_StockpileManager.BackupedState != null)
+				RTC_StockpileManager.BackupedState.Run();
 			else
 				RTCSpec.Update(RTCSPEC.CORE_AUTOCORRUPT.ToString(), false);
 		}

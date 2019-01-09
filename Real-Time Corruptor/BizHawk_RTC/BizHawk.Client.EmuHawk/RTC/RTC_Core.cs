@@ -85,6 +85,28 @@ namespace RTC
 			get => (bool)RTC_Unispec.RTCSpec[RTCSPEC.CORE_AUTOCORRUPT.ToString()];
 			set => RTC_Unispec.RTCSpec.Update(RTCSPEC.CORE_AUTOCORRUPT.ToString(), value);
 		}
+
+		public static bool ExtractBlastlayer
+		{
+			get => (bool)RTC_Unispec.RTCSpec[RTCSPEC.CORE_EXTRACTBLASTLAYER.ToString()];
+			set => RTC_Unispec.RTCSpec.Update(RTCSPEC.CORE_EXTRACTBLASTLAYER.ToString(), value);
+		}
+		public static bool BizhawkOsdDisabled
+		{
+			get => (bool)RTC_Unispec.RTCSpec[RTCSPEC.CORE_BIZHAWKOSDDISABLED.ToString()];
+			set => RTC_Unispec.RTCSpec.Update(RTCSPEC.CORE_BIZHAWKOSDDISABLED.ToString(), value);
+		}
+		public static bool DontCleanSavestatesOnQuit
+		{
+			get => (bool)RTC_Unispec.RTCSpec[RTCSPEC.CORE_DONTCLEANSAVESTATESONQUIT.ToString()];
+			set => RTC_Unispec.RTCSpec.Update(RTCSPEC.CORE_DONTCLEANSAVESTATESONQUIT.ToString(), value);
+		}
+		public static bool ShowConsole
+		{
+			get => (bool)RTC_Unispec.RTCSpec[RTCSPEC.CORE_SHOWCONSOLE.ToString()];
+			set => RTC_Unispec.RTCSpec.Update(RTCSPEC.CORE_SHOWCONSOLE.ToString(), value);
+		}
+
 		public static PartialSpec getDefaultPartial()
 		{
 			var partial = new PartialSpec("RTCSpec");
@@ -96,6 +118,13 @@ namespace RTC
 			partial[RTCSPEC.CORE_INTENSITY.ToString()] = 1;
 			partial[RTCSPEC.CORE_ERRORDELAY.ToString()] = 1;
 			partial[RTCSPEC.CORE_RADIUS.ToString()] = BlastRadius.SPREAD;
+
+			partial[RTCSPEC.CORE_EXTRACTBLASTLAYER.ToString()] = false;
+			partial[RTCSPEC.CORE_AUTOCORRUPT.ToString()] = false;
+
+			partial[RTCSPEC.CORE_BIZHAWKOSDDISABLED.ToString()] = true;
+			partial[RTCSPEC.CORE_DONTCLEANSAVESTATESONQUIT.ToString()] = false;
+			partial[RTCSPEC.CORE_SHOWCONSOLE.ToString()] = false;
 
 			return partial;
 		}
@@ -277,7 +306,7 @@ namespace RTC
 				RTC_Unispec.RegisterRTCSpec();
 
 				LogConsole.CreateConsole();
-				if (!(bool)RTCSpec[RTCSPEC.HOOKS_SHOWCONSOLE.ToString()])
+				if (!(bool)RTCSpec[RTCSPEC.CORE_SHOWCONSOLE.ToString()])
 					LogConsole.HideConsole();
 			}
 

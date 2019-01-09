@@ -84,7 +84,7 @@ namespace RTC
 			if (cbClearFreezesOnRewind.Checked != cbClearCheatsOnRewind.Checked)
 				cbClearFreezesOnRewind.Checked = cbClearCheatsOnRewind.Checked;
 
-			RTCSpec.Update(RTCSPEC.CORE_CLEARSTEPACTIONSONREWIND.ToString(), true);
+			RTCSpec.Update(RTCSPEC.STEP_CLEARSTEPACTIONSONREWIND.ToString(), true);
 		}
 
 		private void nmDistortionDelay_ValueChanged(object sender, EventArgs e)
@@ -229,7 +229,7 @@ namespace RTC
 			if (cbClearFreezesOnRewind.Checked != cbClearCheatsOnRewind.Checked)
 				cbClearCheatsOnRewind.Checked = cbClearFreezesOnRewind.Checked;
 
-			RTCSpec.Update(RTCSPEC.CORE_CLEARSTEPACTIONSONREWIND.ToString(), cbClearFreezesOnRewind.Checked);
+			RTCSpec.Update(RTCSPEC.STEP_CLEARSTEPACTIONSONREWIND.ToString(), cbClearFreezesOnRewind.Checked);
 		}
 
 		private void nmMaxFreezes_ValueChanged(object sender, EventArgs e)
@@ -261,7 +261,7 @@ namespace RTC
 
 		private void cbClearPipesOnRewind_CheckedChanged(object sender, EventArgs e)
 		{
-			RTCSpec.Update(RTCSPEC.CORE_CLEARSTEPACTIONSONREWIND.ToString(), cbClearPipesOnRewind.Checked);
+			RTCSpec.Update(RTCSPEC.STEP_CLEARSTEPACTIONSONREWIND.ToString(), cbClearPipesOnRewind.Checked);
 		}
 
 		private void cbVectorLimiterList_SelectedIndexChanged(object sender, EventArgs e)

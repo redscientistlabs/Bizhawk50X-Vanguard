@@ -1376,14 +1376,14 @@ namespace RTC
 			else if (Source == BlastUnitSource.STORE)
 			{
 				//Todo - Allow rerolling address and domain separately
-				if ((bool)RTC_Unispec.RTCSpec[RTCSPEC.REROLL_SOURCEADDRESS.ToString()])
+				if ((bool)RTC_Unispec.RTCSpec[RTCSPEC.CORE_REROLLSOURCEADDRESS.ToString()])
 				{
 					var newSource = RTC_Core.GetBlastTarget();
 
 					SourceAddress = newSource.Address;
 					SourceDomain = newSource.Domain;
 				}
-				if ((bool)RTC_Unispec.RTCSpec[RTCSPEC.REROLL_ADDRESS.ToString()])
+				if ((bool)RTC_Unispec.RTCSpec[RTCSPEC.CORE_REROLLADDRESS.ToString()])
 				{
 					var newSource = RTC_Core.GetBlastTarget();
 

@@ -20,6 +20,28 @@ namespace RTC
 		public static volatile Dictionary<string, MemoryInterface> MemoryInterfaces = new Dictionary<string, MemoryInterface>();
 		public static volatile Dictionary<string, MemoryInterface> VmdPool = new Dictionary<string, MemoryInterface>();
 
+
+		public static string SelectedDomains
+		{
+			get => (string)RTC_Unispec.RTCSpec[RTCSPEC.MEMORYDOMAINS_SELECTEDDOMAINS.ToString()];
+			set => RTC_Unispec.RTCSpec.Update(RTCSPEC.MEMORYDOMAINS_SELECTEDDOMAINS.ToString(), value);
+		}
+		public static string LastSelectedDomains
+		{
+			get => (string)RTC_Unispec.RTCSpec[RTCSPEC.MEMORYDOMAINS_LASTSELECTEDDOMAINS.ToString()];
+			set => RTC_Unispec.RTCSpec.Update(RTCSPEC.MEMORYDOMAINS_LASTSELECTEDDOMAINS.ToString(), value);
+		}
+
+		public static PartialSpec getDefaultPartial()
+		{
+			var partial = new PartialSpec("RTCSpec");
+
+			partial[RTCSPEC.MEMORYDOMAINS_SELECTEDDOMAINS.ToString()] = new string[] { };
+			partial[RTCSPEC.MEMORYDOMAINS_LASTSELECTEDDOMAINS.ToString()] = new string[] { };
+
+			return partial;
+		}
+
 		public static string MainDomain { get; set; }
 		public static bool BigEndian { get; set; }
 		public static int DataSize { get; set; }

@@ -60,7 +60,6 @@ namespace RTC
 			partial[RTCSPEC.STEP_LOCKEXECUTION.ToString()] = false;
 			partial[RTCSPEC.STEP_CLEARSTEPACTIONSONREWIND.ToString()] = false;
 
-
 			return partial;
 		}
 

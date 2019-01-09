@@ -58,7 +58,7 @@ namespace RTC
 
 		private void nmMaxInfinite_ValueChanged(object sender, EventArgs e)
 		{
-			RTC_Unispec.RTCSpec.Update(RTCSPEC.STEP_MAXINFINITEBLASTUNITS.ToString(), Convert.ToInt32(nmMaxInfinite.Value));
+			RTC_StepActions.MaxInfiniteBlastUnits = Convert.ToInt32(nmMaxInfinite.Value);
 		}
 
 		//I'm using if-else's rather than switch statements on purpose.
@@ -67,52 +67,52 @@ namespace RTC
 		{
 
 			if (rbUnitSourceStore.Checked)
-				RTCSpec.Update(RTCSPEC.CUSTOM_SOURCE.ToString(), BlastUnitSource.STORE);
+				RTC_CustomEngine.Source = BlastUnitSource.STORE;
 
 			else if (rbUnitSourceValue.Checked)
-				RTCSpec.Update(RTCSPEC.CUSTOM_SOURCE.ToString(), BlastUnitSource.VALUE);
+				RTC_CustomEngine.Source = BlastUnitSource.VALUE;
 		}
 
 		private void valueSource_CheckedChanged(object sender, EventArgs e)
 		{
-			RTCSpec.Update(RTCSPEC.CUSTOM_VALUESOURCE.ToString(), CustomValueSource.RANDOM);
+
 			if (rbRandom.Checked)
-				RTCSpec.Update(RTCSPEC.CUSTOM_VALUESOURCE.ToString(), CustomValueSource.RANDOM);
+				RTC_CustomEngine.ValueSource = CustomValueSource.RANDOM;
 
 			else if (rbValueList.Checked)
-				RTCSpec.Update(RTCSPEC.CUSTOM_VALUESOURCE.ToString(), CustomValueSource.VALUELIST);
+				RTC_CustomEngine.ValueSource = CustomValueSource.VALUELIST;
 
 			else if (rbRange.Checked)
-				RTCSpec.Update(RTCSPEC.CUSTOM_VALUESOURCE.ToString(), CustomValueSource.RANGE);
+				RTC_CustomEngine.ValueSource = CustomValueSource.RANGE;
 		}
 
 
 		private void storeTime_CheckedChanged(object sender, EventArgs e)
 		{
 			if (rbStoreImmediate.Checked)
-				RTCSpec.Update(RTCSPEC.CUSTOM_STORETIME.ToString(), StoreTime.IMMEDIATE);
+				RTC_CustomEngine.StoreTime = StoreTime.IMMEDIATE;
 
 			else if (rbStoreFirstExecute.Checked)
-				RTCSpec.Update(RTCSPEC.CUSTOM_STORETIME.ToString(), StoreTime.PREEXECUTE);
+				RTC_CustomEngine.StoreTime = StoreTime.PREEXECUTE;
 		}
 		
 		private void storeAddress_CheckedChanged(object sender, EventArgs e)
 		{
 			if (rbStoreRandom.Checked)
-				RTCSpec.Update(RTCSPEC.CUSTOM_STOREADDRESS.ToString(), CustomStoreAddress.RANDOM);
+				RTC_CustomEngine.StoreAddress = CustomStoreAddress.RANDOM;
 
 			else if (rbStoreSame.Checked)
-				RTCSpec.Update(RTCSPEC.CUSTOM_STOREADDRESS.ToString(), CustomStoreAddress.SAME);
+				RTC_CustomEngine.StoreAddress = CustomStoreAddress.SAME;
 		}
 
 
 		private void storeType_CheckedChanged(object sender, EventArgs e)
 		{
 			if (rbStoreOnce.Checked)
-				RTCSpec.Update(RTCSPEC.CUSTOM_STORETYPE.ToString(), StoreType.ONCE);
+				RTC_CustomEngine.StoreType = StoreType.ONCE;
 
 			if (rbStoreStep.Checked)
-				RTCSpec.Update(RTCSPEC.CUSTOM_STORETYPE.ToString(), StoreType.CONTINUOUS);
+				RTC_CustomEngine.StoreType = StoreType.CONTINUOUS;
 
 		}
 
@@ -124,16 +124,16 @@ namespace RTC
 				return;
 			long value = Convert.ToInt64(nmMinValue.Value);
 
-			switch (RTCSpec[RTCSPEC.CORE_CURRENTPRECISION.ToString()])
+			switch (RTC_Core.CurrentPrecision)
 			{
 				case 1:
-					RTCSpec.Update(RTCSPEC.CUSTOM_MINVALUE8BIT.ToString(), value);
+					RTC_CustomEngine.MinValue8Bit = value;
 					break;
 				case 2:
-					RTCSpec.Update(RTCSPEC.CUSTOM_MINVALUE16BIT.ToString(), value);
+					RTC_CustomEngine.MinValue16Bit = value;
 					break;
 				case 4:
-					RTCSpec.Update(RTCSPEC.CUSTOM_MINVALUE32BIT.ToString(), value);
+					RTC_CustomEngine.MinValue32Bit = value;
 					break;
 			}
 		}
@@ -146,16 +146,16 @@ namespace RTC
 			long value = Convert.ToInt64(nmMaxValue.Value);
 
 
-			switch (RTCSpec[RTCSPEC.CORE_CURRENTPRECISION.ToString()])
+			switch (RTC_Core.CurrentPrecision)
 			{
 				case 1:
-					RTCSpec.Update(RTCSPEC.CUSTOM_MAXVALUE8BIT.ToString(), value);
+					RTC_CustomEngine.MaxValue8Bit = value;
 					break;
 				case 2:
-					RTCSpec.Update(RTCSPEC.CUSTOM_MAXVALUE16BIT.ToString(), value);
+					RTC_CustomEngine.MaxValue16Bit = value;
 					break;
 				case 4:
-					RTCSpec.Update(RTCSPEC.CUSTOM_MAXVALUE32BIT.ToString(), value);
+					RTC_CustomEngine.MaxValue32Bit = value;
 					break;
 			}
 		}
@@ -163,7 +163,7 @@ namespace RTC
 
 		private void cbLockUnits_CheckedChanged(object sender, EventArgs e)
 		{
-			RTC_Unispec.RTCSpec.Update(RTCSPEC.STEP_LOCKEXECUTION.ToString(), cbLockUnits.Checked);
+			RTC_StepActions.LockExecution = cbLockUnits.Checked;
 		}
 
 		private void cbClearRewind_CheckedChanged(object sender, EventArgs e)
@@ -173,30 +173,30 @@ namespace RTC
 
 		private void cbLoopUnit_CheckedChanged(object sender, EventArgs e)
 		{
-			RTCSpec.Update(RTCSPEC.CUSTOM_LOOP.ToString(), cbLoopUnit.Checked);
+			RTC_CustomEngine.Loop = cbLoopUnit.Checked;
 		}
 
 		private void cbValueList_SelectedIndexChanged(object sender, EventArgs e)
 		{
-			RTCSpec.Update(RTCSPEC.CUSTOM_VALUELISTHASH.ToString(), (string)cbValueList.SelectedValue);
+			RTC_CustomEngine.ValueListHash = (string)cbValueList.SelectedValue;
 		}
 		private void cbLimiterList_SelectedIndexChanged(object sender, EventArgs e)
 		{
-			RTCSpec.Update(RTCSPEC.CUSTOM_LIMITERLISTHASH.ToString(), (string)cbLimiterList.SelectedValue);
+			RTC_CustomEngine.LimiterListHash = (string)cbLimiterList.SelectedValue;
 		}
 		private void limiterTime_CheckedChanged(object sender, EventArgs e)
 		{
 			if (rbLimiterNone.Checked)
-				RTCSpec.Update(RTCSPEC.CUSTOM_LIMITERTIME.ToString(), LimiterTime.NONE);
+				RTC_CustomEngine.LimiterTime = LimiterTime.NONE;
 
 			else if (rbLimiterGenerate.Checked)
-				RTCSpec.Update(RTCSPEC.CUSTOM_LIMITERTIME.ToString(), LimiterTime.IMMEDIATE);
+				RTC_CustomEngine.LimiterTime = LimiterTime.IMMEDIATE;
 
 			else if (rbLimiterFirstExecute.Checked)
-				RTCSpec.Update(RTCSPEC.CUSTOM_LIMITERTIME.ToString(), LimiterTime.PREEXECUTE);
+				RTC_CustomEngine.LimiterTime = LimiterTime.PREEXECUTE;
 
 			else if (rbLimiterExecute.Checked)
-				RTCSpec.Update(RTCSPEC.CUSTOM_LIMITERTIME.ToString(), LimiterTime.EXECUTE);
+				RTC_CustomEngine.LimiterTime = LimiterTime.EXECUTE;
 		}
 		
 		private void btnClearActive_Click(object sender, EventArgs e)
@@ -207,17 +207,17 @@ namespace RTC
 
 		private void nmLifetime_ValueChanged(object sender, EventArgs e)
 		{
-			RTC_Unispec.RTCSpec.Update(RTCSPEC.CUSTOM_LIFETIME.ToString(), Convert.ToInt32(nmLifetime.Value));
+			RTC_CustomEngine.Lifetime = Convert.ToInt32(nmLifetime.Value);
 		}
 
 		private void nmDelay_ValueChanged(object sender, EventArgs e)
 		{
-			RTC_Unispec.RTCSpec.Update(RTCSPEC.CUSTOM_DELAY.ToString(), Convert.ToInt32(nmDelay.Value));
+			RTC_CustomEngine.Delay = Convert.ToInt32(nmDelay.Value);
 		}
 
 		private void nmTilt_ValueChanged(object sender, EventArgs e)
 		{
-			RTC_Unispec.RTCSpec.Update(RTCSPEC.CUSTOM_TILTVALUE.ToString(), (BigInteger)nmTilt.Value);
+			RTC_CustomEngine.TiltValue = (BigInteger)nmTilt.Value;
 		}
 
 		public void UpdateMinMaxBoxes(int precision)
@@ -229,23 +229,23 @@ namespace RTC
 					nmMinValue.Maximum = byte.MaxValue;
 					nmMaxValue.Maximum = byte.MaxValue;
 
-					nmMinValue.Value = (long)RTC_Unispec.RTCSpec[RTCSPEC.CUSTOM_MINVALUE8BIT.ToString()];
-					nmMaxValue.Value = (long)RTC_Unispec.RTCSpec[RTCSPEC.CUSTOM_MAXVALUE8BIT.ToString()];
+					nmMinValue.Value = RTC_CustomEngine.MinValue8Bit;
+					nmMaxValue.Value = RTC_CustomEngine.MaxValue8Bit;
 					break;
 
 				case 2:
 					nmMinValue.Maximum = UInt16.MaxValue;
 					nmMaxValue.Maximum = UInt16.MaxValue;
-									   
-					nmMinValue.Value = (long)RTC_Unispec.RTCSpec[RTCSPEC.CUSTOM_MINVALUE16BIT.ToString()];
-					nmMaxValue.Value = (long)RTC_Unispec.RTCSpec[RTCSPEC.CUSTOM_MAXVALUE16BIT.ToString()];
+
+					nmMinValue.Value = RTC_CustomEngine.MinValue16Bit;
+					nmMaxValue.Value = RTC_CustomEngine.MaxValue16Bit;
 					break;
 				case 4:
 					nmMinValue.Maximum = UInt32.MaxValue;
 					nmMaxValue.Maximum = UInt32.MaxValue;
 
-					nmMinValue.Value = (long)RTC_Unispec.RTCSpec[RTCSPEC.CUSTOM_MINVALUE32BIT.ToString()];
-					nmMaxValue.Value = (long)RTC_Unispec.RTCSpec[RTCSPEC.CUSTOM_MAXVALUE32BIT.ToString()];
+					nmMinValue.Value = RTC_CustomEngine.MinValue32Bit;
+					nmMaxValue.Value = RTC_CustomEngine.MaxValue32Bit;
 
 					break;
 			}
@@ -254,7 +254,7 @@ namespace RTC
 
 		private void cbLimiterInverted_CheckedChanged(object sender, EventArgs e)
 		{
-			RTC_Unispec.RTCSpec.Update(RTCSPEC.CUSTOM_LIMITERINVERTED.ToString(), cbLimiterInverted.Checked);
+			RTC_CustomEngine.LimiterInverted = cbLimiterInverted.Checked;
 		}
 
 		private void btnResetConfig_Click(object sender, EventArgs e)
