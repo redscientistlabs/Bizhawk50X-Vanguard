@@ -65,7 +65,7 @@ namespace RTC
 		{
 			if (disableRTC) return;
 
-			if ((bool)RTCSpec[RTCSPEC.STEP_CLEARSTEPACTIONSONREWIND.ToString()])
+			if (RTC_StepActions.ClearStepActionsOnRewind)
 				RTC_StepActions.ClearStepBlastUnits();
 		}
 
@@ -88,12 +88,12 @@ namespace RTC
 
 			CPU_STEP_Count++;
 
-			bool autoCorrupt = (bool)(RTCSpec?[RTCSPEC.CORE_AUTOCORRUPT.ToString()] ?? false);
-			int intensity = (int)(RTCSpec?[RTCSPEC.CORE_ERRORDELAY.ToString()] ?? -1);
+			bool autoCorrupt = RTC_Core.AutoCorrupt;
+			int intensity = RTC_Core.Intensity;
 			if (autoCorrupt && CPU_STEP_Count >= intensity)
 			{
 				CPU_STEP_Count = 0;
-				BlastLayer bl = RTC_Core.Blast(null, (string[])RTC_Unispec.RTCSpec[RTCSPEC.MEMORYDOMAINS_SELECTEDDOMAINS.ToString()]);
+				BlastLayer bl = RTC_Core.Blast(null, RTC_MemoryDomains.SelectedDomains);
 				if (bl != null)
 					bl.Apply();
 			}

@@ -44,8 +44,8 @@ namespace RTC
 
 			//We do this because we're adding to the lists not replacing them. It's a bit odd but it's needed
 			PartialSpec update = new PartialSpec("RTCSpec");
-			update[RTCSPEC.FILTERING_HASH2LIMITERDICO.ToString()] = RTC_Unispec.RTCSpec[RTCSPEC.FILTERING_HASH2LIMITERDICO.ToString()]; 
-			update[RTCSPEC.FILTERING_HASH2VALUEDICO.ToString()] = RTC_Unispec.RTCSpec[RTCSPEC.FILTERING_HASH2VALUEDICO.ToString()]; 
+			update[RTCSPEC.FILTERING_HASH2LIMITERDICO.ToString()] = Hash2LimiterDico;
+			update[RTCSPEC.FILTERING_HASH2VALUEDICO.ToString()] = Hash2ValueDico;
 			RTC_Unispec.RTCSpec.Update(update);
 
 			return md5s;
@@ -86,8 +86,6 @@ namespace RTC
 		public static string RegisterList(List<Byte[]> list, bool syncListsViaNetcore)
 		{
 
-			var limiterDico = (Dictionary<string, RTC_Extensions.HashSetByteArrayComparator>)RTC_Unispec.RTCSpec[RTCSPEC.FILTERING_HASH2LIMITERDICO.ToString()];
-			var valueDico = (Dictionary<string, List<Byte[]>>)RTC_Unispec.RTCSpec[RTCSPEC.FILTERING_HASH2VALUEDICO.ToString()];
 
 			//Make one giant string to hash
 			string concat = String.Empty;
@@ -105,16 +103,16 @@ namespace RTC
 			hash.ComputeHash(concat.GetBytes());
 			string hashStr = Convert.ToBase64String(hash.Hash);
 
-			if (!valueDico?.ContainsKey(hashStr) ?? false)
-				valueDico[hashStr] = list;
-			if (!limiterDico?.ContainsKey(hashStr) ?? false)
-				limiterDico[hashStr] = new RTC_Extensions.HashSetByteArrayComparator(list);
+			if (!Hash2ValueDico?.ContainsKey(hashStr) ?? false)
+				Hash2ValueDico[hashStr] = list;
+			if (!Hash2LimiterDico?.ContainsKey(hashStr) ?? false)
+				Hash2LimiterDico[hashStr] = new RTC_Extensions.HashSetByteArrayComparator(list);
 
 			if (syncListsViaNetcore)
 			{
 				PartialSpec update = new PartialSpec("RTCSpec");
-				update[RTCSPEC.FILTERING_HASH2LIMITERDICO.ToString()] = limiterDico;
-				update[RTCSPEC.FILTERING_HASH2VALUEDICO.ToString()] = valueDico;
+				update[RTCSPEC.FILTERING_HASH2LIMITERDICO.ToString()] = Hash2LimiterDico;
+				update[RTCSPEC.FILTERING_HASH2VALUEDICO.ToString()] = Hash2ValueDico;
 				RTC_Unispec.RTCSpec.Update(update);
 			}
 			RTC_Core.SendCommandToBizhawk(new RTC_Command(CommandType.REMOTE_UPDATE_FILTERING_DICTIONARIES) { objectValue = new object[] { Hash2LimiterDico, Hash2ValueDico } });
@@ -202,15 +200,12 @@ namespace RTC
 				}
 			}
 
-			var limiterDico = (Dictionary<string, HashSet<Byte[]>>)RTC_Unispec.RTCSpec[RTCSPEC.FILTERING_HASH2LIMITERDICO.ToString()];
-			var valueDico = (Dictionary<string, List<Byte[]>>)RTC_Unispec.RTCSpec[RTCSPEC.FILTERING_HASH2VALUEDICO.ToString()];
-
 			foreach (var s in hashList)
 			{
-				if (s != null && valueDico.ContainsKey(s))
+				if (s != null && Hash2LimiterDico.ContainsKey(s))
 				{
 					List<String> strList = new List<string>();
-					foreach (var line in limiterDico[s])
+					foreach (var line in Hash2LimiterDico[s])
 					{
 						StringBuilder sb = new StringBuilder();
 						foreach (var b in line)

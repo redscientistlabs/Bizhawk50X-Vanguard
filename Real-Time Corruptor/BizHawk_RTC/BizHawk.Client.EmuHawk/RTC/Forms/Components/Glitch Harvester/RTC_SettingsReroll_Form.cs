@@ -27,19 +27,19 @@ namespace RTC
 
 		private void RTC_SettingRerollForm_Load(object sender, EventArgs e)
 		{
-			cbRerollAddress.Checked = (bool)RTC_Unispec.RTCSpec[RTCSPEC.CORE_REROLLADDRESS.ToString()];
-			cbRerollSourceAddress.Checked = (bool)RTC_Unispec.RTCSpec[RTCSPEC.CORE_REROLLSOURCEADDRESS.ToString()];
+			cbRerollAddress.Checked = RTC_Core.RerollAddress;
+			cbRerollSourceAddress.Checked = RTC_Core.RerollSourceAddress;
 		}
 
 		private void cbRerollSourceAddress_CheckedChanged(object sender, EventArgs e)
 		{
-			RTC_Unispec.RTCSpec.Update(RTCSPEC.CORE_REROLLSOURCEADDRESS.ToString(), cbRerollSourceAddress.Checked);
+			RTC_Core.RerollSourceAddress = cbRerollSourceAddress.Checked;
 			RTC_Params.SetParam("REROLL_SOURCEADDRESS", cbRerollSourceAddress.Checked.ToString());
 		}
 
 		private void cbRerollAddress_CheckedChanged(object sender, EventArgs e)
 		{
-			RTC_Unispec.RTCSpec.Update(RTCSPEC.CORE_REROLLADDRESS.ToString(), cbRerollAddress.Checked);
+			RTC_Core.RerollAddress = cbRerollAddress.Checked;
 			RTC_Params.SetParam("REROLL_ADDRESS", cbRerollAddress.Checked.ToString());
 		}
 	}

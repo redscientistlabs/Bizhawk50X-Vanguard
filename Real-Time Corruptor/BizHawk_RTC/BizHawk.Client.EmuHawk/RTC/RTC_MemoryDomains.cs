@@ -21,14 +21,14 @@ namespace RTC
 		public static volatile Dictionary<string, MemoryInterface> VmdPool = new Dictionary<string, MemoryInterface>();
 
 
-		public static string SelectedDomains
+		public static string[] SelectedDomains
 		{
-			get => (string)RTC_Unispec.RTCSpec[RTCSPEC.MEMORYDOMAINS_SELECTEDDOMAINS.ToString()];
+			get => (string[])RTC_Unispec.RTCSpec[RTCSPEC.MEMORYDOMAINS_SELECTEDDOMAINS.ToString()];
 			set => RTC_Unispec.RTCSpec.Update(RTCSPEC.MEMORYDOMAINS_SELECTEDDOMAINS.ToString(), value);
 		}
-		public static string LastSelectedDomains
+		public static string[] LastSelectedDomains
 		{
-			get => (string)RTC_Unispec.RTCSpec[RTCSPEC.MEMORYDOMAINS_LASTSELECTEDDOMAINS.ToString()];
+			get => (string[])RTC_Unispec.RTCSpec[RTCSPEC.MEMORYDOMAINS_LASTSELECTEDDOMAINS.ToString()];
 			set => RTC_Unispec.RTCSpec.Update(RTCSPEC.MEMORYDOMAINS_LASTSELECTEDDOMAINS.ToString(), value);
 		}
 
@@ -419,8 +419,8 @@ namespace RTC
 
 
 			PartialSpec update = new PartialSpec("RTCSpec");
-			update[RTCSPEC.MEMORYDOMAINS_LASTSELECTEDDOMAINS.ToString()] = RTC_Unispec.RTCSpec[RTCSPEC.MEMORYDOMAINS_SELECTEDDOMAINS.ToString()];
-			update[RTCSPEC.MEMORYDOMAINS_SELECTEDDOMAINS.ToString()] = new string[] { };
+			RTC_MemoryDomains.LastSelectedDomains = RTC_MemoryDomains.SelectedDomains;
+			RTC_MemoryDomains.SelectedDomains = new string[] { };
 			RTC_Unispec.RTCSpec.Update(update);
 
 			if (!S.ISNULL<RTC_EngineConfig_Form>())

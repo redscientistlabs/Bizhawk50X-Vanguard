@@ -33,7 +33,7 @@ namespace RTC
 		{
 			get
 			{
-				return (bool)RTCSpec[RTCSPEC.CORE_AUTOCORRUPT.ToString()];
+				return RTC_Core.AutoCorrupt;
 			}
 			set
 			{
@@ -42,7 +42,7 @@ namespace RTC
 				else
 					btnAutoCorrupt.Text = "Start Auto-Corrupt";
 
-				RTCSpec.Update(RTCSPEC.CORE_AUTOCORRUPT.ToString(), value);
+				RTC_Core.AutoCorrupt = value;
 			}
 		}
 
@@ -226,8 +226,7 @@ namespace RTC
 			else
 			{
 				RTC_GameProtection.Stop();
-
-				RTCSpec.Update(RTCSPEC.STOCKPILE_BACKUPEDSTATE.ToString(), null);
+				RTC_StockpileManager.BackupedState = null;
 				RTC_StockpileManager.AllBackupStates.Clear();
 				btnGpJumpBack.Visible = false;
 				btnGpJumpNow.Visible = false;
@@ -384,8 +383,8 @@ namespace RTC
 			{
 				btnGpJumpNow.Visible = false;
 
-				if (RTC_Unispec.RTCSpec[RTCSPEC.STOCKPILE_BACKUPEDSTATE.ToString()] != null)
-					((StashKey)RTC_Unispec.RTCSpec[RTCSPEC.STOCKPILE_BACKUPEDSTATE.ToString()]).Run();
+				if (RTC_StockpileManager.BackupedState != null)
+					RTC_StockpileManager.BackupedState.Run();
 
 				RTC_GameProtection.Reset();
 			}

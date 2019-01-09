@@ -642,7 +642,7 @@ namespace RTC
 			GameName = (string)RTC_Core.SendCommandToBizhawk(new RTC_Command(CommandType.REMOTE_KEY_GETGAMENAME), true);
 			SyncSettings = (string)RTC_Core.SendCommandToBizhawk(new RTC_Command(CommandType.REMOTE_KEY_GETSYNCSETTINGS), true);
 
-			this.SelectedDomains.AddRange((string[])RTC_Unispec.RTCSpec[RTCSPEC.MEMORYDOMAINS_SELECTEDDOMAINS.ToString()]);
+			this.SelectedDomains.AddRange(RTC_MemoryDomains.SelectedDomains);
 		}
 
 		public StashKey()
@@ -1352,13 +1352,13 @@ namespace RTC
 				switch (Precision)
 				{
 					case (1):
-						randomValue = RTC_Core.RND.RandomLong((long)RTC_Unispec.RTCSpec[RTCSPEC.NIGHTMARE_MINVALUE8BIT.ToString()], (long)RTC_Unispec.RTCSpec[RTCSPEC.NIGHTMARE_MAXVALUE8BIT.ToString()]);
+						randomValue = RTC_Core.RND.RandomLong(RTC_NightmareEngine.MinValue8Bit, RTC_NightmareEngine.MaxValue8Bit);
 						break;
 					case (2):
-						randomValue = RTC_Core.RND.RandomLong((long)RTC_Unispec.RTCSpec[RTCSPEC.NIGHTMARE_MINVALUE16BIT.ToString()], (long)RTC_Unispec.RTCSpec[RTCSPEC.NIGHTMARE_MAXVALUE16BIT.ToString()]);
+						randomValue = RTC_Core.RND.RandomLong(RTC_NightmareEngine.MinValue16Bit, RTC_NightmareEngine.MaxValue16Bit);
 						break;
 					case (4):
-						randomValue = RTC_Core.RND.RandomLong((long)RTC_Unispec.RTCSpec[RTCSPEC.NIGHTMARE_MINVALUE32BIT.ToString()], (long)RTC_Unispec.RTCSpec[RTCSPEC.NIGHTMARE_MAXVALUE32BIT.ToString()]);
+						randomValue = RTC_Core.RND.RandomLong(RTC_NightmareEngine.MinValue32Bit, RTC_NightmareEngine.MaxValue32Bit);
 						break;
 					//No limits if out of normal range
 					default:
@@ -1376,14 +1376,14 @@ namespace RTC
 			else if (Source == BlastUnitSource.STORE)
 			{
 				//Todo - Allow rerolling address and domain separately
-				if ((bool)RTC_Unispec.RTCSpec[RTCSPEC.CORE_REROLLSOURCEADDRESS.ToString()])
+				if (RTC_Core.RerollSourceAddress)
 				{
 					var newSource = RTC_Core.GetBlastTarget();
 
 					SourceAddress = newSource.Address;
 					SourceDomain = newSource.Domain;
 				}
-				if ((bool)RTC_Unispec.RTCSpec[RTCSPEC.CORE_REROLLADDRESS.ToString()])
+				if (RTC_Core.RerollAddress)
 				{
 					var newSource = RTC_Core.GetBlastTarget();
 

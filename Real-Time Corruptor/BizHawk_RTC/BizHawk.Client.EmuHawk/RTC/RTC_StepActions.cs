@@ -99,10 +99,10 @@ namespace RTC
 
 		public static void RemoveExcessInfiniteStepUnits()
 		{
-			if ((bool)RTC_Unispec.RTCSpec[RTCSPEC.STEP_LOCKEXECUTION.ToString()] == true)
+			if (LockExecution)
 				return;
 
-			while (appliedInfinite.Count > (int)RTC_Unispec.RTCSpec[RTCSPEC.STEP_MAXINFINITEBLASTUNITS.ToString()])
+			while (appliedInfinite.Count > MaxInfiniteBlastUnits)
 				appliedInfinite.Remove(appliedInfinite[0]);
 		}
 

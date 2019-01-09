@@ -22,12 +22,12 @@ namespace RTC
 			switch (cmd.Type)
 			{
 				case CommandType.ASYNCBLAST:
-					{
-						BlastLayer bl = RTC_Core.Blast(null, (string[])RTC_Unispec.RTCSpec[RTCSPEC.MEMORYDOMAINS_SELECTEDDOMAINS.ToString()]);
-						if (bl != null)
-							bl.Apply();
-					}
-					break;
+				{
+					BlastLayer bl = RTC_Core.Blast(null, RTC_MemoryDomains.SelectedDomains);
+					if (bl != null)
+						bl.Apply();
+				}
+				break;
 
 				case CommandType.BLAST:
 				{
@@ -35,7 +35,7 @@ namespace RTC
 					string[] _domains = (string[])cmd.objectValue;
 
 					if (_domains == null)
-						_domains = (string[])RTC_Unispec.RTCSpec[RTCSPEC.MEMORYDOMAINS_SELECTEDDOMAINS.ToString()];
+						_domains = RTC_MemoryDomains.SelectedDomains;
 
 					if (cmd.blastlayer != null)
 					{
@@ -286,7 +286,7 @@ namespace RTC
 					}
 
 				case CommandType.REMOTE_BACKUPKEY_STASH:
-					RTC_Unispec.RTCSpec.Update(RTCSPEC.STOCKPILE_BACKUPEDSTATE.ToString(), (StashKey)cmd.objectValue);
+					RTC_StockpileManager.BackupedState = (StashKey)cmd.objectValue;
 					RTC_StockpileManager.AllBackupStates.Push((StashKey)cmd.objectValue);
 					S.GET<RTC_Core_Form>().btnGpJumpBack.Visible = true;
 					S.GET<RTC_Core_Form>().btnGpJumpNow.Visible = true;
@@ -434,7 +434,7 @@ namespace RTC
 					if (RTC_Core.isStandalone && RTC_GameProtection.isRunning)
 						RTC_GameProtection.Reset();
 
-					RTCSpec.Update(RTCSPEC.CORE_AUTOCORRUPT.ToString(), false);
+					RTC_Core.AutoCorrupt = false;
 					//RTC_StockpileManager.isCorruptionApplied = false;
 					S.GET<RTC_MemoryDomains_Form>().RefreshDomains();
 					S.GET<RTC_MemoryDomains_Form>().SetMemoryDomainsAllButSelectedDomains(RTC_MemoryDomains.GetBlacklistedDomains());
@@ -455,8 +455,7 @@ namespace RTC
 					break;
 
 				case CommandType.REMOTE_EVENT_BIZHAWKSTARTED:
-
-					if (RTC_Unispec.RTCSpec[RTCSPEC.STOCKPILE_BACKUPEDSTATE.ToString()] == null)
+					if (RTC_StockpileManager.BackupedState == null)
 						S.GET<RTC_Core_Form>().AutoCorrupt = false;
 
 
@@ -464,8 +463,8 @@ namespace RTC
 
 					Thread.Sleep(100);
 
-					if (RTC_Unispec.RTCSpec[RTCSPEC.STOCKPILE_BACKUPEDSTATE.ToString()] != null)
-						S.GET<RTC_MemoryDomains_Form>().RefreshDomainsAndKeepSelected(((StashKey)RTC_Unispec.RTCSpec[RTCSPEC.STOCKPILE_BACKUPEDSTATE.ToString()]).SelectedDomains.ToArray());
+					if (RTC_StockpileManager.BackupedState != null)
+						S.GET<RTC_MemoryDomains_Form>().RefreshDomainsAndKeepSelected(RTC_StockpileManager.BackupedState.SelectedDomains.ToArray());
 
 					if (S.GET<RTC_Core_Form>().cbUseGameProtection.Checked)
 						RTC_GameProtection.Start();
