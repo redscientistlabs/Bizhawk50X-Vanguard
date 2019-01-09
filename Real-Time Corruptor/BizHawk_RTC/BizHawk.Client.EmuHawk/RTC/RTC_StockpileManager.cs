@@ -4,6 +4,7 @@ using System.IO;
 using System.Linq;
 using System.Windows.Forms;
 using RTC.Legacy;
+using RTCV.NetCore;
 
 namespace RTC
 {

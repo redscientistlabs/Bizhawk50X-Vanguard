@@ -12,6 +12,7 @@ using System.Windows.Forms;
 using System.Xml.Serialization;
 using Ceras;
 using RTC.Legacy;
+using RTCV.NetCore;
 
 namespace RTC
 {

@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using GongSolutions.Shell.Interop;
 using RTC.Legacy;
+using RTCV.NetCore;
 using static RTC.RTC_Unispec;
 
 namespace RTC

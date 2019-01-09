@@ -7,6 +7,7 @@ using System.Text;
 using System.Windows.Forms;
 using Ceras;
 using RTC.Legacy;
+using RTCV.NetCore;
 
 namespace RTC
 {

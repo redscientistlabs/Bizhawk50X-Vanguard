@@ -770,6 +770,7 @@
     <Compile Include="RTC\Blast Generator Engines\RTC_BlastByteGenerator.cs" />
     <Compile Include="RTC\Blast Generator Engines\RTC_BlastCheatGenerator.cs" />
     <Compile Include="RTC\Blast Generator Engines\RTC_BlastPipeGenerator.cs" />
+    <Compile Include="RTC\CorruptCoreConnector.cs" />
     <Compile Include="RTC\Corruption Engines\RTC_BlastGeneratorEngine.cs" />
     <Compile Include="RTC\Corruption Engines\RTC_CustomEngine.cs" />
     <Compile Include="RTC\Corruption Engines\RTC_DistortionEngine.cs" />
@@ -2137,6 +2138,11 @@
       <Project>{9F84A0B2-861E-4EF4-B89B-5E2A3F38A465}</Project>
       <Name>BizHawk.Bizware.BizwareGL</Name>
       <Private>False</Private>
+    </ProjectReference>
+    <ProjectReference Include="..\RTCV\Libraries\NetCore\NetCore.csproj">
+      <Project>{7e106aec-5614-4206-9e4d-25759c90e8ae}</Project>
+      <Name>NetCore</Name>
+      <EmbedInteropTypes>False</EmbedInteropTypes>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

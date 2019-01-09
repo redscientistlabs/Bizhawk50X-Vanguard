@@ -11,6 +11,7 @@ using System.Threading;
 using System.Windows.Forms;
 using Newtonsoft.Json;
 using RTC.Legacy;
+using RTCV.NetCore;
 using static RTC.RTC_Unispec;
 
 namespace RTC

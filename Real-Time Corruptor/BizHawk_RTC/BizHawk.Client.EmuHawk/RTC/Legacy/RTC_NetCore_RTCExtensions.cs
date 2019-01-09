@@ -8,6 +8,7 @@ using System.Security.Cryptography;
 using System.Threading;
 using System.Windows.Forms;
 using RTC.Legacy;
+using RTCV.NetCore;
 using static RTC.RTC_Unispec;
 
 namespace RTC

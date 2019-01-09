@@ -12,6 +12,7 @@ using System.Diagnostics;
 using System.IO.Compression;
 using Ceras;
 using RTC.Legacy;
+using RTCV.NetCore;
 
 namespace RTC
 {
