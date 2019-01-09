@@ -416,7 +416,6 @@ namespace RTC
 					
 					break;
 				}
-				
 
 				case CommandType.REMOTE_SET_RESTOREBLASTLAYERBACKUP:
 					if (RTC_StockpileManager.LastBlastLayerBackup != null)
@@ -428,11 +427,6 @@ namespace RTC
 					break;
 				case CommandType.REMOTE_SET_STEPACTIONS_REMOVEEXCESSINFINITEUNITS:
 					RTC_StepActions.RemoveExcessInfiniteStepUnits();
-					break;
-
-
-				case CommandType.REMOTE_SET_DISTORTION_RESYNC:
-					//TODO
 					break;
 
 				case CommandType.REMOTE_EVENT_LOADGAMEDONE_NEWGAME:

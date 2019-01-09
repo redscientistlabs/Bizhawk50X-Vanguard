@@ -461,7 +461,7 @@ namespace RTC
 		public static void BIZHAWK_OPEN_HEXEDITOR_ADDRESS(MemoryDomainProxy mdp, long address)
 		{
 			GlobalWin.Tools.Load<HexEditor>();
-			GlobalWin.Tools.HexEditor.SetDomain(mdp.MD);
+			GlobalWin.Tools.HexEditor.SetDomain(((BizhawkMemoryDomain)(mdp.MD)).MD);
 			GlobalWin.Tools.HexEditor.GoToAddress(address);
 		}
 

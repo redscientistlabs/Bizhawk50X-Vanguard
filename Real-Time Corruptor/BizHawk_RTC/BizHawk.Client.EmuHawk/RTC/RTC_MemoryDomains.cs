@@ -374,11 +374,11 @@ namespace RTC
 
 			foreach (MemoryDomain _domain in MDRI.MemoryDomains)
 				if (!MemoryInterfaces.ContainsKey(_domain.ToString()))
-					MemoryInterfaces.Add(_domain.ToString(), new MemoryDomainProxy(_domain));
+					MemoryInterfaces.Add(_domain.ToString(), new MemoryDomainProxy(new BizhawkMemoryDomain(_domain)));
 
 			MainDomain = MDRI.MemoryDomains.MainMemory.ToString();
 			DataSize = ((MemoryDomainProxy)MemoryInterfaces[MainDomain]).MD.WordSize;
-			BigEndian = ((MemoryDomainProxy)MemoryInterfaces[MainDomain]).MD.EndianType == MemoryDomain.Endian.Big;
+			BigEndian = ((MemoryDomainProxy)MemoryInterfaces[MainDomain]).MD.BigEndian;
 
 			//RefreshDomains();
 
@@ -438,34 +438,6 @@ namespace RTC
 			return null;
 		}
 
-		public static void UnFreezeAddress(long address)
-		{
-			if (address >= 0)
-			{
-				// TODO: can't unfreeze address 0??
-				Global.CheatList.RemoveRange(
-					Global.CheatList.Where(x => x.Contains(address)).ToList());
-			}
-		}
-
-		public static void FreezeAddress(long address, string freezename = "")
-		{
-			if (address >= 0)
-			{
-				var watch = Watch.GenerateWatch(
-					GetProxy(MainDomain, address).MD,
-					address,
-					WatchSize,
-					BizHawk.Client.Common.DisplayType.Hex,
-					BigEndian,
-					//RTC_HIJACK : change string.empty to freezename
-					freezename);
-
-				Global.CheatList.Add(new Cheat(
-					watch,
-					watch.Value));
-			}
-		}
 
 		public static long GetRealAddress(string domain, long address)
 		{
@@ -859,31 +831,20 @@ namespace RTC
 	[Ceras.MemberConfig(TargetMember.All)]
 	public sealed class MemoryDomainProxy : MemoryInterface
 	{
-		[NonSerialized]
-		[Ceras.Ignore]
-		public MemoryDomain MD = null;
-
-		//public long Size;
-		//public int WordSize;
-		//public string name;
-		//public bool BigEndian;
-
+		[NonSerialized , Ceras.Ignore]
+		public IMemoryDomain MD = null;
 		public override long Size { get; set; }
-
-		public MemoryDomainProxy(MemoryDomain _md)
+		public MemoryDomainProxy(IMemoryDomain _md)
 		{
 			MD = _md;
 			Size = MD.Size;
 
 			Name = MD.ToString();
 
-			//Bizhawk always displays 8MB of ram even if only 4 are in use.
-			if (Global.Emulator is N64 && !(Global.Emulator as N64).UsingExpansionSlot && Name == "RDRAM")
-				Size = Size / 2;
 
 			WordSize = MD.WordSize;
 			Name = MD.ToString();
-			BigEndian = _md.EndianType == MemoryDomain.Endian.Big;
+			BigEndian = MD.BigEndian;
 		}
 		public MemoryDomainProxy()
 		{
@@ -891,23 +852,6 @@ namespace RTC
 		public override string ToString()
 		{
 			return Name;
-		}
-
-		public void Detach()
-		{
-			MD = null;
-		}
-
-		public void Reattach()
-		{
-			MD = RTC_MemoryDomains.MDRI.MemoryDomains.FirstOrDefault(it => it.ToString() == Name);
-			if (MD != null)
-			{
-				Size = MD.Size;
-				WordSize = MD.WordSize;
-				Name = MD.ToString();
-				BigEndian = MD.EndianType == MemoryDomain.Endian.Big;
-			}
 		}
 
 		public override byte[] GetDump()
@@ -953,5 +897,48 @@ namespace RTC
 
 		[RequiredService]
 		private IEmulator Emulator { get; set; }
+	}
+
+
+	public interface IMemoryDomain
+	{
+		string Name { get; }
+		long Size { get; }
+		int WordSize { get; }
+		bool BigEndian { get; }
+
+		byte PeekByte(long addr);
+		void PokeByte(long addr, byte val);
+	}
+
+	public class BizhawkMemoryDomain : IMemoryDomain
+	{
+		public MemoryDomain MD;
+		public string Name => MD.Name;
+		private long size => MD.Size;
+		public long Size {
+			get
+			{
+				//Bizhawk always displays 8MB of ram even if only 4 are in use.
+				if (Global.Emulator is N64 && !(Global.Emulator as N64).UsingExpansionSlot && Name == "RDRAM")
+					return size / 2;
+				return size;
+			}
+		}
+		public int WordSize => MD.WordSize;
+		public bool BigEndian => MD.EndianType == MemoryDomain.Endian.Big;
+
+		public BizhawkMemoryDomain(MemoryDomain md)
+		{
+			MD = md;
+		}
+		public byte PeekByte(long addr)
+		{
+			return MD.PeekByte(addr);
+		}
+		public void PokeByte(long addr, byte val)
+		{
+			MD.PokeByte(addr, val);
+		}
 	}
 }
