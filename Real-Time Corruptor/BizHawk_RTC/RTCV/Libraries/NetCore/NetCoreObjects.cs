@@ -5,6 +5,7 @@ using System.Linq;
 using System.Reflection;
 using System.Text;
 using System.Windows.Forms;
+using Ceras;
 
 namespace RTCV.NetCore
 {
@@ -32,21 +33,27 @@ namespace RTCV.NetCore
 	}
 
 	[Serializable()]
-    public abstract class NetCoreMessage
+	[Ceras.MemberConfig(TargetMember.All)]
+	public abstract class NetCoreMessage
     {
         public string Type;
     }
 
     [Serializable()]
-    public class NetCoreSimpleMessage : NetCoreMessage
-    {
-        public NetCoreSimpleMessage(string _Type)
+	[Ceras.MemberConfig(TargetMember.All)]
+	public class NetCoreSimpleMessage : NetCoreMessage
+	{
+		public NetCoreSimpleMessage()
+		{
+		}
+		public NetCoreSimpleMessage(string _Type)
         {
             Type = _Type.Trim().ToUpper();
         }
     }
 
     [Serializable()]
+	[Ceras.MemberConfig(TargetMember.All)]
     public class NetCoreAdvancedMessage : NetCoreMessage
     {
         public string ReturnedFrom;
@@ -54,7 +61,11 @@ namespace RTCV.NetCore
         public Guid? requestGuid = null;
         public object objectValue = null;
 
-        public NetCoreAdvancedMessage(string _Type)
+		public NetCoreAdvancedMessage()
+		{
+
+		}
+		public NetCoreAdvancedMessage(string _Type)
         {
             Type = _Type.Trim().ToUpper();
         }

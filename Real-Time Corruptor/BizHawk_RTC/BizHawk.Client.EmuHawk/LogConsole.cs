@@ -231,6 +231,7 @@ namespace BizHawk.Client.EmuHawk
 			{
 				NeedToRelease = true;
 				CreateConsole();
+
 				//not sure whether we need to set a buffer size here
 				//var sout = new StreamWriter(Console.OpenStandardOutput(),Encoding.ASCII,1) { AutoFlush = true };
 				//var sout = new StreamWriter(Console.OpenStandardOutput()) { AutoFlush = true };

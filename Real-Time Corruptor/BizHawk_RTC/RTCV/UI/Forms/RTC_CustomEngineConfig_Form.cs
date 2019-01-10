@@ -10,7 +10,6 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using RTCV.NetCore;
-using static RTC.RTC_Unispec;
 
 namespace RTC
 {

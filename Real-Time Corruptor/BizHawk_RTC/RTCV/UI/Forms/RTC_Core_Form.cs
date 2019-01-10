@@ -7,7 +7,6 @@ using System.Threading;
 using System.Windows.Forms;
 using RTCV.NetCore;
 using RTCV.UI;
-using static RTC.RTC_Unispec;
 
 namespace RTC
 {

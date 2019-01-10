@@ -11,7 +11,6 @@ using System.Threading;
 using System.Windows.Forms;
 using Newtonsoft.Json;
 using RTCV.NetCore;
-using static RTC.RTC_Unispec;
 
 namespace RTC
 {
@@ -112,15 +111,15 @@ namespace RTC
 			get => (bool)CorruptCoreSpec[RTCSPEC.CORE_BIZHAWKOSDDISABLED.ToString()];
 			set => CorruptCoreSpec.Update(RTCSPEC.CORE_BIZHAWKOSDDISABLED.ToString(), value);
 		}
-			
+
 		public static volatile FullSpec CorruptCoreSpec;
+		public static volatile FullSpec VanguardSpec;
+		public static volatile FullSpec UISpec;
 
 		public static void Start()
 		{
 			RegisterCorruptcoreSpec();
 
-			//Starting UDP loopback for Killswitch 
-			//RTC_RPC.Start();
 		}
 		/**
 		 * Register the spec on the rtc side
@@ -147,16 +146,13 @@ namespace RTC
 			CorruptCoreSpec = new FullSpec(rtcSpecTemplate); //You have to feed a partial spec as a template
 
 
+			LocalNetCoreRouter.Route("UI", "REMOTE_PUSHCORRUPTCORESPEC", rtcSpecTemplate, true);
+
 			CorruptCoreSpec.SpecUpdated += (o, e) =>
 			{
 				PartialSpec partial = e.partialSpec;
 
-				/*
-				//Only send the update if we're connected
-				if (RTC_NetcoreImplementation.RemoteRTC_SupposedToBeConnected)
-					RTC_NetcoreImplementation.SendCommandToBizhawk(
-						new RTC_Command(CommandType.REMOTE_PUSHRTCSPECUPDATE) { objectValue = partial }, true);
-					*/
+				LocalNetCoreRouter.Route("UI", "REMOTE_PUSHCORRUPTCORESPECUPDATE", partial, true);
 			};
 
 			if (RTC_StockpileManager.BackupedState != null)

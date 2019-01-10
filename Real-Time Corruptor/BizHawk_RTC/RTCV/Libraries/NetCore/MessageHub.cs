@@ -120,8 +120,10 @@ namespace RTCV.NetCore
 
     public class NetCoreEventArgs : EventArgs
     {
-        public NetCoreEventArgs()
-        { }
+		public NetCoreEventArgs()
+		{
+
+		}
 
         public NetCoreEventArgs(string type)
         {

@@ -18,6 +18,7 @@ namespace RTC
 
 		public static void StartClient()
 		{
+			ConsoleEx.WriteLine("Starting Vanguard Client");
 			Thread.Sleep(500); //When starting in Multiple Startup Project, the first try will be uncessful since
 			//the server takes a bit more time to start then the client.
 

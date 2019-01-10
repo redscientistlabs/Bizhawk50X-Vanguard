@@ -27,16 +27,17 @@ namespace RTC
 
 			switch (e.message.Type)
 			{
-				//HANDLE MESSAGES HERE
-				case "ADVANCED MESSAGE THAT CONTAINS A VALUE":
-					{
-						object value = advancedMessage.objectValue; //This is how you get the value from a message
-						break;
-					}
 
-				case "#!RETURNTEST": //ADVANCED MESSAGE (SYNCED) WANTS A RETURN VALUE
-					e.setReturnValue(new Random(666));
+				case "REMOTE_PUSHUISPEC":
+					RTC_Corruptcore.UISpec = new FullSpec((PartialSpec)advancedMessage.objectValue);
+					e.setReturnValue(true);
 					break;
+
+				case "REMOTE_PUSHUISPECUPDATE":
+					RTC_Corruptcore.UISpec?.Update((PartialSpec)advancedMessage.objectValue);
+					e.setReturnValue(true);
+					break;
+
 
 				case "ASYNCBLAST":
 					{

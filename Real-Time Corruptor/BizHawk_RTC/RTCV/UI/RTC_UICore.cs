@@ -12,7 +12,6 @@ using System.Windows.Forms;
 using Newtonsoft.Json;
 using RTCV.NetCore;
 using RTCV.UI;
-using static RTC.RTC_Unispec;
 
 namespace RTC
 {
@@ -32,14 +31,20 @@ namespace RTC
 		public static Color GeneralColor = Color.LightSteelBlue;
 
 		public static FullSpec UISpec;
+		public static FullSpec VanguardSpec;
+		public static FullSpec CorruptCoreSpec;
+
 		public static UIConnector UIConn;
 		public static NetCoreReceiver Receiver;
+
+
 		public static void Start()
 		{
 			NetCoreServer.StartLoopback();
 
 			Receiver = new NetCoreReceiver();
 			UIConn = new UIConnector(Receiver);
+
 
 			PartialSpec partial = new PartialSpec("UISpec");
 			partial.Insert(RTC_StockpileManager.getDefaultPartial());

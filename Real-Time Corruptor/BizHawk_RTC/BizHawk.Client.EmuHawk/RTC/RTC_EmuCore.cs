@@ -11,7 +11,6 @@ using System.Threading;
 using System.Windows.Forms;
 using Newtonsoft.Json;
 using RTCV.NetCore;
-using static RTC.RTC_Unispec;
 
 namespace RTC
 {
@@ -66,26 +65,22 @@ namespace RTC
 			EmuSpec = new FullSpec(emuSpecTemplate); //You have to feed a partial spec as a template
 
 
+		//	LocalNetCoreRouter.Route("UI", "REMOTE_PUSHEMUSPEC", emuSpecTemplate, true);
 			EmuSpec.SpecUpdated += (o, e) =>
 			{
 				PartialSpec partial = e.partialSpec;
+				RTC_Corruptcore.VanguardSpec = EmuSpec;
+				LocalNetCoreRouter.Route("UI", "REMOTE_PUSHEMUSPECUPDATE", partial, true);
 
-				//Only send the update if we're connected
-		//		if (RTC_NetcoreImplementation.RemoteRTC_SupposedToBeConnected)
-		//			RTC_NetcoreImplementation.SendCommandToBizhawk(
-		//				new RTC_Command(CommandType.REMOTE_PUSHEMUSPECUPDATE) { objectValue = partial }, true);
 			};
 		}
 
 		//This is the entry point of RTC. Without this method, nothing will load.
 		public static void Start(RTC_Standalone_Form _standaloneForm = null)
 		{
-				RTC_Corruptcore.Start();
-
-				LogConsole.CreateConsole();
-				if (!RTC_Corruptcore.ShowConsole)
-					LogConsole.HideConsole();
-
+			VanguardImplementation.StartClient();
+			RTC_Corruptcore.Start();
+			RTC_EmuCore.RegisterEmuhawkSpec();
 
 			S.SET(_standaloneForm);
 
@@ -94,16 +89,14 @@ namespace RTC
 			});
 
 
-			RTC_EmuCore.RegisterEmuhawkSpec();
-			//RTC_NetcoreImplementation.Start();
-			VanguardImplementation.StartClient();
+
 
 			// Show the main RTC Form
 
 
 			//Todo
 			//if (RTC_NetcoreImplementation.isStandaloneUI || RTC_NetcoreImplementation.isAttached)
-				//S.GET<RTC_Core_Form>().Show();
+			//S.GET<RTC_Core_Form>().Show();
 
 			//Refocus on Bizhawk
 			RTC_Hooks.BIZHAWK_MAINFORM_FOCUS();

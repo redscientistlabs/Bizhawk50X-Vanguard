@@ -16,11 +16,12 @@ namespace RTCV.UI
 			receiver = _receiver;
 
 			LocalNetCoreRouter.registerEndpoint(this, "UI");
+
 			var netCoreSpec = new NetCoreSpec();
 			netCoreSpec.Side = NetworkSide.SERVER;
 			netCoreSpec.MessageReceived += OnMessageReceivedProxy;
 
-			netConn = LocalNetCoreRouter.registerEndpoint(new NetCoreConnector(netCoreSpec), "VANGUARD");
+			netConn = LocalNetCoreRouter.registerEndpoint(NetCoreServer.loopbackConnector, "VANGUARD");
 			LocalNetCoreRouter.registerEndpoint(netConn, "CORRUPTCORE");
 		}
 

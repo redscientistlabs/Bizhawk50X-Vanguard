@@ -3,13 +3,14 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading;
+using RTC;
 using RTCV.NetCore;
 
 namespace RTCV.UI
 {
     public static class NetCoreServer
     {
-        static NetCore.NetCoreConnector loopbackConnector = null;
+        public static NetCore.NetCoreConnector loopbackConnector = null;
         static NetCore.NetCoreConnector multiplayerConnector = null;
         
         public static void StartLoopback()
@@ -57,28 +58,26 @@ namespace RTCV.UI
 
 			switch (message.Type) //Handle received messages here
 			{
-
-				case "JUST A MESSAGE":
-					//do something
+				case "REMOTE_PUSHEMUSPEC":
+					RTC_UICore.VanguardSpec = new FullSpec((PartialSpec)advancedMessage.objectValue);
+					e.setReturnValue(true);
 					break;
 
-				case "ADVANCED MESSAGE THAT CONTAINS A VALUE":
-					object value = advancedMessage.objectValue; //This is how you get the value from a message
+				case "REMOTE_PUSHEMUSPECUPDATE":
+					RTC_UICore.VanguardSpec?.Update((PartialSpec)advancedMessage.objectValue);
+					e.setReturnValue(true);
 					break;
 
-				case "#!RETURNTEST": //ADVANCED MESSAGE (SYNCED) WANTS A RETURN VALUE
-					e.setReturnValue(new Random(666));
+				case "REMOTE_PUSHCORRUPTCORESPEC":
+					RTC_UICore.CorruptCoreSpec = new FullSpec((PartialSpec)advancedMessage.objectValue);
+					e.setReturnValue(true);
 					break;
 
-				case "#!WAIT":
-					ConsoleEx.WriteLine("Simulating 20 sec of workload");
-					Thread.Sleep(20000);
+				case "REMOTE_PUSHCORRUPTCORECUPDATE":
+					RTC_UICore.CorruptCoreSpec?.Update((PartialSpec)advancedMessage.objectValue);
+					e.setReturnValue(true);
 					break;
 
-				case "#!HANG":
-					ConsoleEx.WriteLine("Hanging forever");
-					Thread.Sleep(int.MaxValue);
-					break;
 
 				default:
 					ConsoleEx.WriteLine($"Received unassigned {(message is NetCoreAdvancedMessage ? "advanced " : "")}message \"{message.Type}\"");
