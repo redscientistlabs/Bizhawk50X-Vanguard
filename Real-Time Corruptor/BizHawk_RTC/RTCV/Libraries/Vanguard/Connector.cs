@@ -21,6 +21,7 @@ namespace RTCV.Vanguard
 
             LocalNetCoreRouter.registerEndpoint(this, "VANGUARD");
             corruptConn = LocalNetCoreRouter.registerEndpoint(new CorruptCoreConnector(spec.specDetails), "CORRUPTCORE");
+
         //    dolphinConn = LocalNetCoreRouter.registerEndpoint(new DolphinCorruptConnector(), "DOLPHIN");
 
 

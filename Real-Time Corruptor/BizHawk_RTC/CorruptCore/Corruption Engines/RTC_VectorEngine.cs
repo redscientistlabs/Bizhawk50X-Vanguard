@@ -11,22 +11,22 @@ namespace RTC
 
 		public static string LimiterListHash
 		{
-			get => (string)RTC_Corruptcore.RTCSpec[RTCSPEC.VECTOR_LIMITERLISTHASH.ToString()];
-			set => RTC_Corruptcore.RTCSpec.Update(RTCSPEC.VECTOR_LIMITERLISTHASH.ToString(), value);
+			get => (string)RTC_Corruptcore.CorruptCoreSpec[CCSPEC.VECTOR_LIMITERLISTHASH.ToString()];
+			set => RTC_Corruptcore.CorruptCoreSpec.Update(CCSPEC.VECTOR_LIMITERLISTHASH.ToString(), value);
 		}
 
 		public static string ValueListHash
 		{
-			get => (string)RTC_Corruptcore.RTCSpec[RTCSPEC.VECTOR_VALUELISTHASH.ToString()];
-			set => RTC_Corruptcore.RTCSpec.Update(RTCSPEC.VECTOR_VALUELISTHASH.ToString(), value);
+			get => (string)RTC_Corruptcore.CorruptCoreSpec[CCSPEC.VECTOR_VALUELISTHASH.ToString()];
+			set => RTC_Corruptcore.CorruptCoreSpec.Update(CCSPEC.VECTOR_VALUELISTHASH.ToString(), value);
 		}
 
 		public static PartialSpec getDefaultPartial()
 		{
 			var partial = new PartialSpec("RTCSpec");
 
-			partial[RTCSPEC.VECTOR_LIMITERLISTHASH.ToString()] = String.Empty;
-			partial[RTCSPEC.VECTOR_VALUELISTHASH.ToString()] = String.Empty;
+			partial[CCSPEC.VECTOR_LIMITERLISTHASH.ToString()] = String.Empty;
+			partial[CCSPEC.VECTOR_VALUELISTHASH.ToString()] = String.Empty;
 
 			return partial;
 		}

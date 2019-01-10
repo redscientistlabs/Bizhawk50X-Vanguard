@@ -1,7 +1,4 @@
-﻿using BizHawk.Client.Common;
-using BizHawk.Emulation.Common;
-using BizHawk.Emulation.Cores.Nintendo.N64;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.IO;
 using System.IO.Compression;
@@ -11,7 +8,6 @@ using System.Text;
 using System.Windows.Forms;
 using System.Xml.Serialization;
 using Ceras;
-using RTC.Legacy;
 using RTCV.NetCore;
 
 namespace RTC
@@ -25,21 +21,21 @@ namespace RTC
 
 		public static string[] SelectedDomains
 		{
-			get => (string[])RTC_Corruptcore.RTCSpec[RTCSPEC.MEMORYDOMAINS_SELECTEDDOMAINS.ToString()];
-			set => RTC_Corruptcore.RTCSpec.Update(RTCSPEC.MEMORYDOMAINS_SELECTEDDOMAINS.ToString(), value);
+			get => (string[])RTC_Corruptcore.CorruptCoreSpec[CCSPEC.MEMORYDOMAINS_SELECTEDDOMAINS.ToString()];
+			set => RTC_Corruptcore.CorruptCoreSpec.Update(CCSPEC.MEMORYDOMAINS_SELECTEDDOMAINS.ToString(), value);
 		}
 		public static string[] LastSelectedDomains
 		{
-			get => (string[])RTC_Corruptcore.RTCSpec[RTCSPEC.MEMORYDOMAINS_LASTSELECTEDDOMAINS.ToString()];
-			set => RTC_Corruptcore.RTCSpec.Update(RTCSPEC.MEMORYDOMAINS_LASTSELECTEDDOMAINS.ToString(), value);
+			get => (string[])RTC_Corruptcore.CorruptCoreSpec[CCSPEC.MEMORYDOMAINS_LASTSELECTEDDOMAINS.ToString()];
+			set => RTC_Corruptcore.CorruptCoreSpec.Update(CCSPEC.MEMORYDOMAINS_LASTSELECTEDDOMAINS.ToString(), value);
 		}
 
 		public static PartialSpec getDefaultPartial()
 		{
 			var partial = new PartialSpec("RTCSpec");
 
-			partial[RTCSPEC.MEMORYDOMAINS_SELECTEDDOMAINS.ToString()] = new string[] { };
-			partial[RTCSPEC.MEMORYDOMAINS_LASTSELECTEDDOMAINS.ToString()] = new string[] { };
+			partial[CCSPEC.MEMORYDOMAINS_SELECTEDDOMAINS.ToString()] = new string[] { };
+			partial[CCSPEC.MEMORYDOMAINS_LASTSELECTEDDOMAINS.ToString()] = new string[] { };
 
 			return partial;
 		}
@@ -62,9 +58,9 @@ namespace RTC
 		{
 
 			PartialSpec update = new PartialSpec("RTCSpec");
-			update[RTCSPEC.MEMORYDOMAINS_SELECTEDDOMAINS.ToString()] = _domains;
-			update[RTCSPEC.MEMORYDOMAINS_LASTSELECTEDDOMAINS.ToString()] = _domains;
-			RTC_Corruptcore.RTCSpec.Update(update);
+			update[CCSPEC.MEMORYDOMAINS_SELECTEDDOMAINS.ToString()] = _domains;
+			update[CCSPEC.MEMORYDOMAINS_LASTSELECTEDDOMAINS.ToString()] = _domains;
+			RTC_Corruptcore.CorruptCoreSpec.Update(update);
 
 			Console.WriteLine($"{RTC_NetcoreImplementation.RemoteRTC?.expectedSide} -> Selected {_domains.Count().ToString()} domains \n{string.Join(" | ", _domains)}");
 		}
@@ -72,9 +68,9 @@ namespace RTC
 		public static void ClearSelectedDomains()
 		{
 			PartialSpec update = new PartialSpec("RTCSpec");
-			update[RTCSPEC.MEMORYDOMAINS_LASTSELECTEDDOMAINS.ToString()] = RTC_Corruptcore.RTCSpec[RTCSPEC.MEMORYDOMAINS_SELECTEDDOMAINS.ToString()];
-			update[RTCSPEC.MEMORYDOMAINS_SELECTEDDOMAINS.ToString()] = new string[] { };
-			RTC_Corruptcore.RTCSpec.Update(update);
+			update[CCSPEC.MEMORYDOMAINS_LASTSELECTEDDOMAINS.ToString()] = RTC_Corruptcore.CorruptCoreSpec[CCSPEC.MEMORYDOMAINS_SELECTEDDOMAINS.ToString()];
+			update[CCSPEC.MEMORYDOMAINS_SELECTEDDOMAINS.ToString()] = new string[] { };
+			RTC_Corruptcore.CorruptCoreSpec.Update(update);
 			
 			Console.WriteLine($"{RTC_NetcoreImplementation.RemoteRTC?.expectedSide} -> Cleared selected domains");
 		}
@@ -423,7 +419,7 @@ namespace RTC
 			PartialSpec update = new PartialSpec("RTCSpec");
 			RTC_MemoryDomains.LastSelectedDomains = RTC_MemoryDomains.SelectedDomains;
 			RTC_MemoryDomains.SelectedDomains = new string[] { };
-			RTC_Corruptcore.RTCSpec.Update(update);
+			RTC_Corruptcore.CorruptCoreSpec.Update(update);
 
 			if (!S.ISNULL<RTC_EngineConfig_Form>())
 				S.GET<RTC_MemoryDomains_Form>().lbMemoryDomains.Items.Clear();
@@ -914,15 +910,6 @@ namespace RTC
 		}
 	}
 
-	public class MemoryDomainRTCInterface
-	{
-		[RequiredService]
-		public IMemoryDomains MemoryDomains { get; set; }
-
-		[RequiredService]
-		private IEmulator Emulator { get; set; }
-	}
-
 
 	public interface IMemoryDomain
 	{
@@ -935,39 +922,4 @@ namespace RTC
 		void PokeByte(long addr, byte val);
 	}
 
-	public class BizhawkMemoryDomain : IMemoryDomain
-	{
-		public MemoryDomain MD;
-		public string Name => MD.Name;
-		private long size => MD.Size;
-		public long Size {
-			get
-			{
-				//Bizhawk always displays 8MB of ram even if only 4 are in use.
-				if (Global.Emulator is N64 && !(Global.Emulator as N64).UsingExpansionSlot && Name == "RDRAM")
-					return size / 2;
-				return size;
-			}
-		}
-		public int WordSize => MD.WordSize;
-		public bool BigEndian => MD.EndianType == MemoryDomain.Endian.Big;
-
-		public BizhawkMemoryDomain(MemoryDomain md)
-		{
-			MD = md;
-		}
-		public byte PeekByte(long addr)
-		{
-			return MD.PeekByte(addr);
-		}
-		public void PokeByte(long addr, byte val)
-		{
-			MD.PokeByte(addr, val);
-		}
-
-		public override string ToString()
-		{
-			return MD.Name;
-		}
-	}
 }

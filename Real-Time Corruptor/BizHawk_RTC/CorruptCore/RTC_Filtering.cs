@@ -15,21 +15,21 @@ namespace RTC
 	{
 		public static Dictionary<string, RTC_Extensions.HashSetByteArrayComparator> Hash2LimiterDico
 		{
-			get => (Dictionary<string, RTC_Extensions.HashSetByteArrayComparator>)RTC_Corruptcore.RTCSpec[RTCSPEC.FILTERING_HASH2LIMITERDICO.ToString()];
-			set => RTC_Corruptcore.RTCSpec.Update(RTCSPEC.FILTERING_HASH2VALUEDICO.ToString(), value);
+			get => (Dictionary<string, RTC_Extensions.HashSetByteArrayComparator>)RTC_Corruptcore.CorruptCoreSpec[CCSPEC.FILTERING_HASH2LIMITERDICO.ToString()];
+			set => RTC_Corruptcore.CorruptCoreSpec.Update(CCSPEC.FILTERING_HASH2VALUEDICO.ToString(), value);
 		}
 		public static Dictionary<string, List<Byte[]>> Hash2ValueDico
 		{
-			get => (Dictionary<string, List<Byte[]>>) RTC_Corruptcore.RTCSpec[RTCSPEC.FILTERING_HASH2VALUEDICO.ToString()];
-			set => RTC_Corruptcore.RTCSpec.Update(RTCSPEC.FILTERING_HASH2VALUEDICO.ToString(), value);
+			get => (Dictionary<string, List<Byte[]>>) RTC_Corruptcore.CorruptCoreSpec[CCSPEC.FILTERING_HASH2VALUEDICO.ToString()];
+			set => RTC_Corruptcore.CorruptCoreSpec.Update(CCSPEC.FILTERING_HASH2VALUEDICO.ToString(), value);
 		}
 
 		public static PartialSpec getDefaultPartial()
 		{
 			var partial = new PartialSpec("RTCSpec");
 
-			partial[RTCSPEC.FILTERING_HASH2LIMITERDICO.ToString()] = new Dictionary<string, RTC_Extensions.HashSetByteArrayComparator>();
-			partial[RTCSPEC.FILTERING_HASH2VALUEDICO.ToString()] = new Dictionary<string, List<Byte[]>>();
+			partial[CCSPEC.FILTERING_HASH2LIMITERDICO.ToString()] = new Dictionary<string, RTC_Extensions.HashSetByteArrayComparator>();
+			partial[CCSPEC.FILTERING_HASH2VALUEDICO.ToString()] = new Dictionary<string, List<Byte[]>>();
 
 			return partial;
 		}
@@ -46,9 +46,9 @@ namespace RTC
 
 			//We do this because we're adding to the lists not replacing them. It's a bit odd but it's needed
 			PartialSpec update = new PartialSpec("RTCSpec");
-			update[RTCSPEC.FILTERING_HASH2LIMITERDICO.ToString()] = Hash2LimiterDico;
-			update[RTCSPEC.FILTERING_HASH2VALUEDICO.ToString()] = Hash2ValueDico;
-			RTC_Corruptcore.RTCSpec.Update(update);
+			update[CCSPEC.FILTERING_HASH2LIMITERDICO.ToString()] = Hash2LimiterDico;
+			update[CCSPEC.FILTERING_HASH2VALUEDICO.ToString()] = Hash2ValueDico;
+			RTC_Corruptcore.CorruptCoreSpec.Update(update);
 
 			return md5s;
 		}
@@ -113,9 +113,9 @@ namespace RTC
 			if (syncListsViaNetcore)
 			{
 				PartialSpec update = new PartialSpec("RTCSpec");
-				update[RTCSPEC.FILTERING_HASH2LIMITERDICO.ToString()] = Hash2LimiterDico;
-				update[RTCSPEC.FILTERING_HASH2VALUEDICO.ToString()] = Hash2ValueDico;
-				RTC_Corruptcore.RTCSpec.Update(update);
+				update[CCSPEC.FILTERING_HASH2LIMITERDICO.ToString()] = Hash2LimiterDico;
+				update[CCSPEC.FILTERING_HASH2VALUEDICO.ToString()] = Hash2ValueDico;
+				RTC_Corruptcore.CorruptCoreSpec.Update(update);
 			}
 			RTC_NetcoreImplementation.SendCommandToBizhawk(new RTC_Command(CommandType.REMOTE_UPDATE_FILTERING_DICTIONARIES) { objectValue = new object[] { Hash2LimiterDico, Hash2ValueDico } });
 
