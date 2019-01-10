@@ -306,11 +306,7 @@ namespace RTC
 								return;
 						}
 
-					var token = RTC_NetCore.HugeOperationStart("LAZY");
-
 					RTC_StockpileManager.LoadState(psk);
-
-					RTC_NetCore.HugeOperationEnd(token);
 				}
 				else
 					MessageBox.Show("Savestate box is empty");
@@ -360,11 +356,10 @@ namespace RTC
 					return;
 				}
 
-				var token = RTC_NetCore.HugeOperationStart("LAZY");
 
 				if (rbCorrupt.Checked)
 				{
-					string romFilename = (string)RTC_NetcoreImplementation.SendCommandToBizhawk(new RTC_Command(CommandType.REMOTE_KEY_GETOPENROMFILENAME), true);
+					string romFilename = (string)LocalNetCoreRouter.Route("VANGURD", "REMOTE_KEY_GETOPENROMFILENAME", true);
 					if (romFilename == null)
 						return;
 					if (romFilename.Contains("|"))
@@ -379,8 +374,6 @@ namespace RTC
 					RTC_StockpileManager.InjectFromStashkey(RTC_StockpileManager.CurrentStashkey, loadBeforeOperation);
 				else if (rbOriginal.Checked)
 					RTC_StockpileManager.OriginalFromStashkey(RTC_StockpileManager.CurrentStashkey);
-
-				RTC_NetCore.HugeOperationEnd(token);
 
 				RefreshStashHistory();
 			}
@@ -453,7 +446,6 @@ namespace RTC
 
 		private void OneTimeExecute()
 		{
-			var token = RTC_NetCore.HugeOperationStart("LAZY");
 
 			//Disable autocorrupt
 			S.GET<RTC_Core_Form>().AutoCorrupt = false;
@@ -465,7 +457,6 @@ namespace RTC
 			else if (rbOriginal.Checked)
 				RTC_StockpileManager.OriginalFromStashkey(RTC_StockpileManager.CurrentStashkey);
 
-			RTC_NetCore.HugeOperationEnd(token);
 		}
 
 		private void rbInject_CheckedChanged(object sender, EventArgs e)
@@ -502,7 +493,6 @@ namespace RTC
 				return;
 			}
 
-			RTC_EmuCore.StopSound();
 			string Name = "";
 			string value = "";
 
@@ -511,11 +501,9 @@ namespace RTC
 				if (RTC_Extensions.GetInputBox("Glitch Harvester", "Enter the new Stash name:", ref value) == DialogResult.OK)
 				{
 					Name = value.Trim();
-					RTC_EmuCore.StartSound();
 				}
 				else
 				{
-					RTC_EmuCore.StartSound();
 					return;
 				}
 			}
@@ -570,7 +558,6 @@ namespace RTC
 
 		public void RemoveSelected(bool force = false)
 		{
-			RTC_EmuCore.StopSound();
 
 			if (Control.ModifierKeys == Keys.Control || (dgvStockpile.SelectedRows.Count != 0 && (MessageBox.Show("Are you sure you want to remove the selected stockpile entries?", "Delete Stockpile Entry?", MessageBoxButtons.YesNo) == DialogResult.Yes)))
 				foreach (DataGridViewRow row in dgvStockpile.SelectedRows)
@@ -582,14 +569,12 @@ namespace RTC
 
 			RedrawActionUI();
 
-			RTC_EmuCore.StartSound();
 		}
 
 		private void btnClearStockpile_Click(object sender, EventArgs e) => ClearStockpile();
 
 		public void ClearStockpile(bool force = false)
 		{
-			RTC_EmuCore.StopSound();
 
 			if (force || MessageBox.Show("Are you sure you want to clear the stockpile?", "Clearing stockpile", MessageBoxButtons.YesNo) == DialogResult.Yes)
 			{
@@ -611,13 +596,12 @@ namespace RTC
 
 				RedrawActionUI();
 
-				RTC_EmuCore.StartSound();
 			}
 		}
 
 		private void btnLoadStockpile_Click(object sender, MouseEventArgs e)
 		{
-			RTC_EmuCore.CheckForProblematicProcesses();
+			RTC_Corruptcore.CheckForProblematicProcesses();
 
 			Point locate = new Point(((Control)sender).Location.X + e.Location.X, ((Control)sender).Location.Y + e.Location.Y);
 
@@ -626,7 +610,6 @@ namespace RTC
 			{
 				try
 				{
-					RTC_EmuCore.StopSound();
 
 					if (Stockpile.Load(dgvStockpile))
 					{
@@ -644,7 +627,6 @@ namespace RTC
 				}
 				finally
 				{
-					RTC_EmuCore.StartSound();
 				}
 			}));
 
@@ -652,12 +634,10 @@ namespace RTC
 			{
 				try
 				{
-					RTC_EmuCore.StopSound();
 					Stockpile.LoadBizhawkConfigFromStockpile();
 				}
 				finally
 				{
-					RTC_EmuCore.StartSound();
 				}
 			}));
 
@@ -665,14 +645,12 @@ namespace RTC
 			{
 				try
 				{
-					RTC_EmuCore.StopSound();
 					Stockpile.RestoreBizhawkConfig();
 				}
 				finally
 				{
-					RTC_EmuCore.StartSound();
 				}
-			})).Enabled = (File.Exists(RTC_EmuCore.bizhawkDir + Path.DirectorySeparatorChar + "backup_config.ini"));
+			})).Enabled = (File.Exists(RTC_Corruptcore.bizhawkDir + Path.DirectorySeparatorChar + "backup_config.ini"));
 
 			loadMenuItems.Show(this, locate);
 		}
@@ -681,13 +659,10 @@ namespace RTC
 		{
 			if (dgvStockpile.Rows.Count == 0)
 			{
-				RTC_EmuCore.StopSound();
 				MessageBox.Show("You cannot save the Stockpile because it is empty");
-				RTC_EmuCore.StartSound();
 				return;
 			}
 
-			RTC_EmuCore.StopSound();
 
 			Stockpile sks = new Stockpile(dgvStockpile);
 			if (Stockpile.Save(sks))
@@ -698,18 +673,15 @@ namespace RTC
 				S.GET<RTC_GlitchHarvester_Form>().btnSaveStockpile.ForeColor = Color.Black;
 			}
 
-			RTC_EmuCore.StartSound();
 		}
 
 		private void btnSaveStockpile_Click(object sender, EventArgs e)
 		{
-			RTC_EmuCore.StopSound();
 
 			Stockpile sks = new Stockpile(dgvStockpile);
 			if (Stockpile.Save(sks, true))
 				sendCurrentStockpileToSKS();
 
-			RTC_EmuCore.StartSound();
 		}
 
 		public void btnBlastToggle_Click(object sender, EventArgs e)
@@ -726,23 +698,22 @@ namespace RTC
 			if (!IsCorruptionApplied)
 			{
 				IsCorruptionApplied = true;
-				RTC_NetcoreImplementation.SendCommandToRTC(new RTC_Command(CommandType.BLAST) { blastlayer = RTC_StockpileManager.CurrentStashkey.BlastLayer });
+
+				LocalNetCoreRouter.Route("CORRUPTCORE", "BLAST", RTC_StockpileManager.CurrentStashkey.BlastLayer, true);
 				//RTC_StockpileManager.currentStashkey.blastlayer.Apply();
 			}
 			else
 			{
 				IsCorruptionApplied = false;
 
-				RTC_NetcoreImplementation.SendCommandToRTC(new RTC_Command(CommandType.REMOTE_SET_RESTOREBLASTLAYERBACKUP) { });
+				LocalNetCoreRouter.Route("CORRUPTCORE", "REMOTE_SET_RESTOREBLASTLAYERBACKUP", true);
 				RTC_StepActions.ClearStepBlastUnits();
 			}
 		}
 
 		private void btnImportStockpile_Click(object sender, EventArgs e)
 		{
-			RTC_EmuCore.StopSound();
 			Stockpile.Import();
-			RTC_EmuCore.StartSound();
 		}
 
 		private void btnStashUP_Click(object sender, EventArgs e)
@@ -899,7 +870,8 @@ namespace RTC
 
 		private void btnStopRender_Click(object sender, EventArgs e)
 		{
-			RTC_Render.StopRender();
+			throw new NotImplementedException();
+			//RTC_Render.StopRender();
 		}
 
 		private void nmIntensity_ValueChanged(object sender, EventArgs e)
@@ -926,9 +898,8 @@ namespace RTC
 			{
 				btnSendRaw.Visible = false;
 
-				var token = RTC_NetCore.HugeOperationStart("LAZY");
-
-				string romFilename = (string)RTC_NetcoreImplementation.SendCommandToBizhawk(new RTC_Command(CommandType.REMOTE_KEY_GETOPENROMFILENAME), true);
+				
+				string romFilename = (string)LocalNetCoreRouter.Route("VANGUARD", "REMOTE_KEY_GETOPENROMFILENAME", true);
 				if (romFilename == null)
 					return;
 				if (romFilename.Contains("|"))
@@ -937,12 +908,11 @@ namespace RTC
 					return;
 				}
 
-				StashKey sk = (StashKey)RTC_NetcoreImplementation.SendCommandToBizhawk(new RTC_Command(CommandType.REMOTE_KEY_GETRAWBLASTLAYER), true);
+				StashKey sk = (StashKey)LocalNetCoreRouter.Route("CORRUPTCORE", "REMOTE_KEY_GETRAWBLASTLAYER", true);
 
 				RTC_StockpileManager.CurrentStashkey = sk;
 				RTC_StockpileManager.StashHistory.Add(RTC_StockpileManager.CurrentStashkey);
 
-				RTC_NetCore.HugeOperationEnd(token);
 
 				RefreshStashHistory();
 
@@ -964,7 +934,6 @@ namespace RTC
 			}
 			else
 			{
-				RTC_EmuCore.StartSound();
 				return;
 			}
 		}
@@ -974,7 +943,6 @@ namespace RTC
 			if (!btnRenameSelected.Visible)
 				return;
 
-			RTC_EmuCore.StopSound();
 
 			if (dgvStockpile.SelectedRows.Count != 0)
 			{
@@ -988,7 +956,6 @@ namespace RTC
 
 			RTC_StockpileManager.UnsavedEdits = true;
 
-			RTC_EmuCore.StartSound();
 		}
 
 		private void cbAutoLoadState_CheckedChanged(object sender, EventArgs e)
@@ -1065,11 +1032,12 @@ namespace RTC
 				}))).Enabled = (dgvStockpile.SelectedRows.Count > 1);
 
 				columnsMenu.Items.Add(new ToolStripSeparator());
+				/*
 				if (!RTC_NetcoreImplementation.isStandaloneUI)
 				{
 					((ToolStripMenuItem)columnsMenu.Items.Add("[Multiplayer] Send Selected Item as a Blast", null, new EventHandler((ob, ev) => { RTC_NetcoreImplementation.Multiplayer?.SendBlastlayer(); }))).Enabled = RTC_NetcoreImplementation.Multiplayer != null && RTC_NetcoreImplementation.Multiplayer.side != NetworkSide.DISCONNECTED;
 					((ToolStripMenuItem)columnsMenu.Items.Add("[Multiplayer] Send Selected Item as a Game State", null, new EventHandler((ob, ev) => { RTC_NetcoreImplementation.Multiplayer?.SendStashkey(); }))).Enabled = RTC_NetcoreImplementation.Multiplayer != null && RTC_NetcoreImplementation.Multiplayer.side != NetworkSide.DISCONNECTED;
-				}
+				}*/
 
 				columnsMenu.Show(this, locate);
 			}
@@ -1169,7 +1137,7 @@ namespace RTC
 					string statefilename = key.GameName + "." + key.ParentKey + ".timejump.State"; // get savestate name
 					
 					if (File.Exists(RTC_Corruptcore.workingDir + Path.DirectorySeparatorChar + key.StateLocation.ToString() + Path.DirectorySeparatorChar + statefilename))
-						File.Copy(RTC_Corruptcore.workingDir + Path.DirectorySeparatorChar + key.StateLocation.ToString() + Path.DirectorySeparatorChar +  statefilename, RTC_EmuCore.workingDir + Path.DirectorySeparatorChar + "TEMP" + Path.DirectorySeparatorChar + statefilename); // copy savestates to temp folder
+						File.Copy(RTC_Corruptcore.workingDir + Path.DirectorySeparatorChar + key.StateLocation.ToString() + Path.DirectorySeparatorChar +  statefilename, RTC_Corruptcore.workingDir + Path.DirectorySeparatorChar + "TEMP" + Path.DirectorySeparatorChar + statefilename); // copy savestates to temp folder
 					else
 					{
 						MessageBox.Show("Couldn't find savestate " + RTC_Corruptcore.workingDir + Path.DirectorySeparatorChar +
@@ -1249,16 +1217,14 @@ namespace RTC
 			}
 
 			SaveStateKeys ssk;
-
-			var token = RTC_NetCore.HugeOperationStart();
-
+			
 			try
 			{
 				Stockpile.EmptyFolder(Path.DirectorySeparatorChar + "WORKING\\TEMP");
 				if (!Stockpile.Extract(filename, Path.DirectorySeparatorChar + "WORKING\\SSK", "keys.json"))
 					return;
 
-				using (FileStream fs = File.Open(RTC_EmuCore.workingDir + Path.DirectorySeparatorChar + "SSK\\keys.json", FileMode.OpenOrCreate))
+				using (FileStream fs = File.Open(RTC_Corruptcore.workingDir + Path.DirectorySeparatorChar + "SSK\\keys.json", FileMode.OpenOrCreate))
 				{
 
 					ssk = JsonHelper.Deserialize<SaveStateKeys>(fs);
@@ -1280,7 +1246,7 @@ namespace RTC
 					continue;
 
 				string statefilename = key.GameName + "." + key.ParentKey + ".timejump.State"; // get savestate name
-				string newStatePath = RTC_EmuCore.workingDir + Path.DirectorySeparatorChar + key.StateLocation + Path.DirectorySeparatorChar +  statefilename;
+				string newStatePath = RTC_Corruptcore.workingDir + Path.DirectorySeparatorChar + key.StateLocation + Path.DirectorySeparatorChar +  statefilename;
 				//string shortRomFilename = key.RomFilename.Substring(key.RomFilename.LastIndexOf(Path.DirectorySeparatorChar) + 1);
 				string shortRomFilename = Path.GetFileName(key.RomFilename);
 
@@ -1311,8 +1277,6 @@ namespace RTC
 
 
 			RefreshSavestateTextboxes();
-
-			RTC_NetCore.HugeOperationEnd(token);
 		}
 
 
@@ -1355,12 +1319,9 @@ namespace RTC
 
 				((ToolStripMenuItem)columnsMenu.Items.Add("Generate VMD from Selected Item", null, new EventHandler((ob, ev) =>
 					{
-
-						var token = RTC_NetCore.HugeOperationStart("LAZY");
 						StashKey sk = RTC_StockpileManager.StashHistory[lbStashHistory.SelectedIndex];
 						sk.BlastLayer.RasterizeVMDs();
 						RTC_MemoryDomains.GenerateVmdFromStashkey(sk);
-						RTC_NetCore.HugeOperationEnd(token);
 					}))).Enabled = lbStashHistory.SelectedIndex != -1;
 
 				columnsMenu.Items.Add(new ToolStripSeparator());
@@ -1396,7 +1357,6 @@ namespace RTC
 			S.GET<RTC_NewBlastEditor_Form>().Close();
 			S.SET(new RTC_NewBlastEditor_Form());
 
-			var token = RTC_NetCore.HugeOperationStart("DISABLED");
 			//If the blastlayer is big, prompt them before opening it. Let's go with 5k for now.
 
 			//TODO
@@ -1404,8 +1364,6 @@ namespace RTC
 				S.GET<RTC_NewBlastEditor_Form>().LoadStashkey(sk);
 			else if (sk.BlastLayer.Layer.Count <= 5000)
 				S.GET<RTC_NewBlastEditor_Form>().LoadStashkey(sk);
-			
-			RTC_NetCore.HugeOperationEnd(token);
 		}
 
 		private void sendCurrentStockpileToSKS()
@@ -1509,16 +1467,18 @@ namespace RTC
 
 		private void cbRenderType_SelectedIndexChanged(object sender, EventArgs e)
 		{
-			RTC_Render.setType(cbRenderType.SelectedItem.ToString());
+		//	RTC_Render.setType(cbRenderType.SelectedItem.ToString());
 		}
 
 		private void btnOpenRenderFolder_Click(object sender, EventArgs e)
 		{
-			Process.Start(RTC_EmuCore.rtcDir + Path.DirectorySeparatorChar + "RENDEROUTPUT" + Path.DirectorySeparatorChar);
+		//	Process.Start(RTC_EmuCore.rtcDir + Path.DirectorySeparatorChar + "RENDEROUTPUT" + Path.DirectorySeparatorChar);
 		}
 
 		private void btnRender_Click(object sender, EventArgs e)
 		{
+			throw new NotImplementedException();
+			/*
 			if (btnRender.Text == "Start Render")
 			{
 				RTC_Render.StartRender();
@@ -1528,13 +1488,14 @@ namespace RTC
 				btnRender.Text = "Start Render";
 				btnRender.ForeColor = Color.White;
 				RTC_Render.StopRender();
-			}
+			}*/
 		}
 
 		private void cbRenderAtLoad_CheckedChanged(object sender, EventArgs e)
 		{
+			throw new NotImplementedException();
 			RTC_StockpileManager.RenderAtLoad = cbRenderAtLoad.Checked;
-			RTC_NetcoreImplementation.SendCommandToBizhawk(new RTC_Command(CommandType.REMOTE_RENDER_RENDERATLOAD) { objectValue = RTC_StockpileManager.RenderAtLoad });
+			//RTC_NetcoreImplementation.SendCommandToBizhawk(new RTC_Command(CommandType.REMOTE_RENDER_RENDERATLOAD) { objectValue = RTC_StockpileManager.RenderAtLoad });
 		}
 
 		private void btnLoadSavestateList_MouseDown(object sender, MouseEventArgs e)

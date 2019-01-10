@@ -69,9 +69,6 @@ namespace RTC
 
 		private void RTC_Form_Load(object sender, EventArgs e)
 		{
-
-			RTC_UICore.Start();
-
 			btnLogo.Text = "   Version " + RTC_Corruptcore.RtcVersion;
 
 			if (!RTC_Params.IsParamSet("DISCLAIMER_READ"))
@@ -104,30 +101,18 @@ namespace RTC
 
 		private void RTC_Form_FormClosing(object sender, FormClosingEventArgs e)
 		{
-			if (!RTC_NetcoreImplementation.isStandaloneUI && e.CloseReason != CloseReason.FormOwnerClosing)
+			if (RTC_StockpileManager.UnsavedEdits && !RTC_UICore.isClosing && MessageBox.Show("You have unsaved edits in the Glitch Harvester Stockpile. \n\n Are you sure you want to close RTC without saving?", "Unsaved edits in Stockpile", MessageBoxButtons.YesNo) == DialogResult.No)
 			{
 				e.Cancel = true;
-				this.Hide();
 				return;
 			}
-			else if (RTC_NetcoreImplementation.isStandaloneUI)
-			{
-				if (RTC_StockpileManager.UnsavedEdits && !RTC_UICore.isClosing && MessageBox.Show("You have unsaved edits in the Glitch Harvester Stockpile. \n\n Are you sure you want to close RTC without saving?", "Unsaved edits in Stockpile", MessageBoxButtons.YesNo) == DialogResult.No)
-				{
-					e.Cancel = true;
-					return;
-				}
 
-				if (RTC_NetcoreImplementation.RemoteRTC_SupposedToBeConnected)
-				{
-					RTC_NetcoreImplementation.SendCommandToBizhawk(new RTC_Command(CommandType.REMOTE_EVENT_CLOSEBIZHAWK));
-					Thread.Sleep(1000);
-				}
+			LocalNetCoreRouter.Route("VANGUARD", "REMOTE_EVENT_CLOSEBIZHAWK");
+			Thread.Sleep(1000);
 
-				RTC_UICore.CloseAllRtcForms();
-			}
+			RTC_UICore.CloseAllRtcForms();
 		}
-
+		
 		public void btnEasyModeCurrent_Click(object sender, EventArgs e)
 		{
 			StartEasyMode(false);
@@ -151,14 +136,15 @@ namespace RTC
 		}
 		public void StartEasyMode(bool useTemplate)
 		{
-			if (RTC_NetcoreImplementation.isStandaloneUI && !S.GET<RTC_Core_Form>().cbUseGameProtection.Checked)
+		//	if (RTC_NetcoreImplementation.isStandaloneUI && !S.GET<RTC_Core_Form>().cbUseGameProtection.Checked)
 				S.GET<RTC_Core_Form>().cbUseGameProtection.Checked = true;
 
 
 			if (useTemplate)
 			{
 				//Put Console templates HERE
-				string thisSystem = (string)RTC_NetcoreImplementation.SendCommandToBizhawk(new RTC_Command(CommandType.REMOTE_DOMAIN_SYSTEM), true);
+				string thisSystem = (string)
+					(string)LocalNetCoreRouter.Route("VANGUARD", "REMOTE_DOMAIN_SYSTEM", true);
 
 				switch (thisSystem)
 				{
@@ -240,8 +226,8 @@ namespace RTC
 
 		private void btnLogo_MouseClick(object sender, MouseEventArgs e)
 		{
-			if (RTC_NetcoreImplementation.isStandaloneUI)
-				ShowPanelForm(S.GET<RTC_ConnectionStatus_Form>(), false);
+			//if (RTC_NetcoreImplementation.isStandaloneUI)
+			ShowPanelForm(S.GET<RTC_ConnectionStatus_Form>(), false);
 		}
 
 		private void btnEasyMode_MouseDown(object sender, MouseEventArgs e)
@@ -338,7 +324,7 @@ namespace RTC
 
 					RemoveGhostBoxes();
 
-					if (!RTC_NetcoreImplementation.FirstConnection)
+				//	if (!RTC_NetcoreImplementation.FirstConnection)
 						pnCrashProtection.Visible = true;
 				}
 			}
@@ -396,7 +382,8 @@ namespace RTC
 
 		private void BlastRawStash()
 		{
-			RTC_NetcoreImplementation.SendCommandToBizhawk(new RTC_Command(CommandType.ASYNCBLAST));
+
+			LocalNetCoreRouter.Route("CORRUPTCORE", "ASYNCBLAST", true);
 			S.GET<RTC_GlitchHarvester_Form>().btnSendRaw_Click(null, null);
 		}
 

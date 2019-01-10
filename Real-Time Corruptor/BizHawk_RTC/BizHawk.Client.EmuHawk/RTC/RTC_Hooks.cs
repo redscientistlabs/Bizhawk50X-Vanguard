@@ -92,7 +92,7 @@ namespace RTC
 			if (autoCorrupt && CPU_STEP_Count >= intensity)
 			{
 				CPU_STEP_Count = 0;
-				BlastLayer bl = RTC_Corruptcore.GenerateBlastLayer(null, RTC_MemoryDomains.SelectedDomains);
+				BlastLayer bl = RTC_Corruptcore.GenerateBlastLayer(RTC_MemoryDomains.SelectedDomains);
 				if (bl != null)
 					bl.Apply();
 			}
@@ -113,7 +113,7 @@ namespace RTC
 			RTC_EmuCore.args = args;
 
 			disableRTC = RTC_EmuCore.args.Contains("-DISABLERTC");
-			RTC_NetcoreImplementation.isStandaloneEmu = RTC_EmuCore.args.Contains("-REMOTERTC");
+			//RTC_E.isStandaloneEmu = RTC_EmuCore.args.Contains("-REMOTERTC");
 
 			//RTC_Unispec.RTCSpec.Update(Spec.HOOKS_SHOWCONSOLE.ToString(), RTC_Core.args.Contains("-CONSOLE"));
 		}
@@ -128,7 +128,7 @@ namespace RTC
 
 			RTC_EmuCore.LoadDefaultRom();
 
-			RTC_Params.LoadBizhawkWindowState();
+			RTC_EmuCore.LoadBizhawkWindowState();
 
 			GlobalWin.MainForm.Focus();
 
@@ -139,7 +139,7 @@ namespace RTC
 				MessageBox.Show("Sound throttle is buggy and can result in crashes.\nSwapping to clock throttle.");
 				Global.Config.SoundThrottle = false;
 				Global.Config.ClockThrottle = true;
-				RTC_Hooks.BIZHAWK_SAVE_CONFIG();
+				RTC_Hooks.BIZHAWK_MAINFORM_SAVECONFIG();
 			}
 
 		}
@@ -148,7 +148,7 @@ namespace RTC
 		{
 			if (disableRTC) return;
 
-			RTC_Params.SaveBizhawkWindowState();
+			RTC_EmuCore.SaveBizhawkWindowState();
 		}
 
 		public static void MAINFORM_CLOSING()
@@ -159,21 +159,13 @@ namespace RTC
 			//RTC_UICore.CloseAllRtcForms();
 		}
 
-		public static void BIZHAWK_SAVE_CONFIG()
-		{
-			if (disableRTC) return;
-
-			RTC_NetcoreImplementation.SendCommandToBizhawk(new RTC_Command(CommandType.REMOTE_EVENT_SAVEBIZHAWKCONFIG));
-		}
 
 		public static void LOAD_GAME_BEGIN()
 		{
 			if (disableRTC) return;
 
 			isNormalAdvance = false;
-
-			loadGameToken = RTC_NetCore.HugeOperationStart();
-
+			
 			RTC_StepActions.ClearStepBlastUnits();
 			CPU_STEP_Count = 0;
 		}
@@ -211,24 +203,23 @@ namespace RTC
 
 			if (RTC_EmuCore.CurrentGameName != lastGameName)
 			{
-				RTC_NetcoreImplementation.SendCommandToRTC(new RTC_Command(CommandType.REMOTE_EVENT_LOADGAMEDONE_NEWGAME));
+
+				LocalNetCoreRouter.Route("CORRUPTCORE", "REMOTE_EVENT_LOADGAMEDONE_NEWGAME", true);
 			}
 			else
 			{
-				RTC_NetcoreImplementation.SendCommandToRTC(new RTC_Command(CommandType.REMOTE_EVENT_LOADGAMEDONE_SAMEGAME));
+				LocalNetCoreRouter.Route("CORRUPTCORE", "REMOTE_EVENT_LOADGAMEDONE_SAMEGAME", true);
 			}
 
 			lastGameName = RTC_EmuCore.CurrentGameName;
 
 
-			RTC_NetCore.HugeOperationEnd(loadGameToken);
 		}
 
 		public static void LOAD_GAME_FAILED()
 		{
 			if (disableRTC) return;
 
-			RTC_NetCore.HugeOperationEnd(loadGameToken);
 		}
 
 		static bool CLOSE_GAME_loop_flag = false;
@@ -248,8 +239,7 @@ namespace RTC
 
 			RTC_StepActions.ClearStepBlastUnits();
 
-			if(!RTC_NetcoreImplementation.isStandaloneEmu)
-				RTC_MemoryDomains.Clear();
+			RTC_MemoryDomains.Clear();
 
 			RTC_EmuCore.LastOpenRom = null;
 
@@ -270,7 +260,6 @@ namespace RTC
 		{
 			if (disableRTC) return;
 
-			loadSavestateToken = RTC_NetCore.HugeOperationStart();
 		}
 
 		public static void LOAD_SAVESTATE_END()
@@ -278,14 +267,12 @@ namespace RTC
 			if (disableRTC) return;
 			
 
-			RTC_NetCore.HugeOperationEnd(loadSavestateToken);
 		}
 
 		public static void EMU_CRASH(string msg)
 		{
 			if (disableRTC) return;
 
-			RTC_RPC.Stop();
 			MessageBox.Show("SORRY EMULATOR CRASHED\n\n" + msg);
 		}
 
@@ -464,7 +451,7 @@ namespace RTC
 		public static void BIZHAWK_OPEN_HEXEDITOR_ADDRESS(MemoryDomainProxy mdp, long address)
 		{
 			GlobalWin.Tools.Load<HexEditor>();
-			GlobalWin.Tools.HexEditor.SetDomain(((BizhawkMemoryDomain)(mdp.MD)).MD);
+			GlobalWin.Tools.HexEditor.SetDomain(((VanguardImplementation.BizhawkMemoryDomain)(mdp.MD)).MD);
 			GlobalWin.Tools.HexEditor.GoToAddress(address);
 		}
 

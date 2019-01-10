@@ -3,6 +3,7 @@ using System.Windows.Forms;
 
 namespace RTC
 {
+	//Todo, rebuild this
 	public static class RTC_GameProtection
 	{
 		static Timer t;
@@ -22,10 +23,12 @@ namespace RTC
 
 			isRunning = true;
 
+			/*
 			if (RTC_NetcoreImplementation.RemoteRTC.PeerCommandQueue.Count > 0)
 				foreach (var item in RTC_NetcoreImplementation.RemoteRTC.PeerCommandQueue)
 					if (item.Type == CommandType.REMOTE_BACKUPKEY_REQUEST)
 						RTC_NetcoreImplementation.RemoteRTC.PeerCommandQueue.Remove(item);
+						*/
 
 		}
 
@@ -44,7 +47,7 @@ namespace RTC
 
 		private static void Tick(object sender, EventArgs e)
 		{
-			RTC_NetcoreImplementation.SendCommandToBizhawk(new RTC_Command(CommandType.REMOTE_BACKUPKEY_REQUEST));
+			//RTC_NetcoreImplementation.SendCommandToBizhawk(new RTC_Command(CommandType.REMOTE_BACKUPKEY_REQUEST));
 		}
 	}
 }

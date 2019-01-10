@@ -152,7 +152,7 @@ namespace RTC
 					//				S.GET<RTC_MemoryDomains_Form>().RefreshDomainsAndKeepSelected();
 					break;
 
-				case "REMOTE_EVENT_CLOSEBIZHAWK":
+				case "REMOTE_EVENT_BIZHAWK_MAINFORM_CLOSE":
 					RTC_Hooks.BIZHAWK_MAINFORM_CLOSE();
 					break;
 

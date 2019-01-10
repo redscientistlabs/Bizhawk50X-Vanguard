@@ -23,7 +23,7 @@ namespace RTC
 
 			S.GET<RTC_SettingsNetCore_Form>().cbNetCoreCommandTimeout.SelectedIndex = 0;
 
-			if (File.Exists(RTC_EmuCore.bizhawkDir + Path.DirectorySeparatorChar + "WGH\\WindowsGlitchHarvester.exe"))
+			if (File.Exists(RTC_Corruptcore.bizhawkDir + Path.DirectorySeparatorChar + "WGH\\WindowsGlitchHarvester.exe"))
 			{
 				lbWindowsGlitchHarvester.Visible = true;
 				pnWindowsGlitchHarvester.Visible = true;
@@ -36,11 +36,11 @@ namespace RTC
 			lbBizhawkEmulatorAttached.Visible = false;
 			pnBizhawkAttached.Visible = false;
 
-			RTC.RTC_RPC.Heartbeat = false;
+		//	RTC.RTC_RPC.Heartbeat = false;
 			RTC.S.GET<RTC_Core_Form>().pbAutoKillSwitchTimeout.Value = RTC.S.GET<RTC_Core_Form>().pbAutoKillSwitchTimeout.Maximum;
-			RTC.RTC_RPC.Freeze = true;
+		//	RTC.RTC_RPC.Freeze = true;
 
-			RTC_NetCoreSettings.PlayCrashSound();
+			//RTC_NetCoreSettings.PlayCrashSound();
 
 			Process.Start("RESTARTDETACHEDRTC.bat");
 		}
@@ -57,15 +57,15 @@ namespace RTC
 
 		private void btnStartEmuhawkAttached_Click(object sender, EventArgs e)
 		{
-			Process.Start(RTC_EmuCore.bizhawkDir + Path.DirectorySeparatorChar + "RESTARTATTACHEDRTC.bat");
+			Process.Start(RTC_Corruptcore.bizhawkDir + Path.DirectorySeparatorChar + "RESTARTATTACHEDRTC.bat");
 		}
 
 		private void btnStartWGH_Click(object sender, EventArgs e)
 		{
 			ProcessStartInfo psi =
-				new ProcessStartInfo(RTC_EmuCore.bizhawkDir + Path.DirectorySeparatorChar + "WGH\\WindowsGlitchHarvester.exe")
+				new ProcessStartInfo(RTC_Corruptcore.bizhawkDir + Path.DirectorySeparatorChar + "WGH\\WindowsGlitchHarvester.exe")
 				{
-					WorkingDirectory = RTC_EmuCore.bizhawkDir + Path.DirectorySeparatorChar + "WGH"
+					WorkingDirectory = RTC_Corruptcore.bizhawkDir + Path.DirectorySeparatorChar + "WGH"
 				};
 			Process.Start(psi);
 		}

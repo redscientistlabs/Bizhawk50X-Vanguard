@@ -100,7 +100,7 @@ namespace BizHawk.Client.EmuHawk
 			SaveSettings();
 			
 			//RTC_HIJACK - save config after saving plugin settings
-			RTC.RTC_Hooks.BIZHAWK_SAVE_CONFIG();
+			RTC.RTC_Hooks.BIZHAWK_MAINFORM_SAVECONFIG();
 			
 			DialogResult = DialogResult.OK;
 			Close();

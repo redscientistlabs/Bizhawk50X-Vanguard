@@ -957,7 +957,6 @@ namespace RTC
             // 
             // menuStripEx1
             // 
-            this.menuStripEx1.ClickThrough = true;
             this.menuStripEx1.Font = new System.Drawing.Font("Segoe UI Symbol", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel);
             this.menuStripEx1.ImageScalingSize = new System.Drawing.Size(20, 20);
             this.menuStripEx1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {

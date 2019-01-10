@@ -2,7 +2,6 @@
 using System.Linq;
 using System.Windows.Forms;
 using RTC;
-using RTC.Legacy;
 
 namespace StandaloneRTC
 {
@@ -14,7 +13,7 @@ namespace StandaloneRTC
 		{
 			InitializeComponent();
 
-			RTC_NetcoreImplementation.isStandaloneUI = true;
+		//	RTC_NetcoreImplementation.isStandaloneUI = true;
 			RTC.LogConsole.CreateConsole();
 
 			if (args.Contains("-CONSOLE"))
@@ -41,7 +40,7 @@ namespace StandaloneRTC
 			t.Tick += CheckHeartbeat;
 			t.Start();
 
-			RTC.RTC_RPC.StartKillswitch();
+			//RTC.RTC_RPC.StartKillswitch();
 		}
 
 		private void CheckHeartbeat(object sender, EventArgs e)

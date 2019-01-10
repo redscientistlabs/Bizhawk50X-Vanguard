@@ -110,7 +110,7 @@ namespace RTC
 
 			//Force create bizhawk config file if it doesn't exist
 			if (!File.Exists(RTC_Corruptcore.bizhawkDir + Path.DirectorySeparatorChar + "config.ini"))
-				RTC_Hooks.BIZHAWK_SAVE_CONFIG();
+				RTC_Hooks.BIZHAWK_MAINFORM_SAVECONFIG();
 
 			//Fetch NetCore aggressiveness
 		//	if (RTC_NetcoreImplementation.isStandaloneEmu)

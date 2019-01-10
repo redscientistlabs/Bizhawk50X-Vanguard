@@ -23,14 +23,20 @@ namespace RTCV.UI
             loopbackConnector = new NetCore.NetCoreConnector(spec);
         }
 
-        public static void RestartLoopback()
-        {
-            loopbackConnector.Kill();
-            loopbackConnector = null;
-            StartLoopback();
-        }
+		public static void RestartLoopback()
+		{
+			loopbackConnector.Kill();
+			loopbackConnector = null;
+			StartLoopback();
+		}
 
-        public static void StartMultiplayer(int _Port)
+		public static void StopLoopback()
+		{
+			loopbackConnector.Stop(true);
+			loopbackConnector = null;
+		}
+
+		public static void StartMultiplayer(int _Port)
         {
             var spec = new NetCore.NetCoreSpec();
             //spec.Side = NetCore.NetworkSide.SERVER;

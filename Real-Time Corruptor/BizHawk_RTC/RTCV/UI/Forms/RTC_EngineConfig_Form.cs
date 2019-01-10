@@ -42,7 +42,7 @@ namespace RTC
 			RTC_UICore.LimiterListBindingSource.Clear();
 			RTC_UICore.ValueListBindingSource.Clear();
 
-			string[] paths = System.IO.Directory.GetFiles(RTC_EmuCore.listsDir);
+			string[] paths = System.IO.Directory.GetFiles(RTC_Corruptcore.listsDir);
 
 			paths = paths.OrderBy(x => x).ToArray();
 

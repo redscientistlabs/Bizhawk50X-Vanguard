@@ -514,7 +514,6 @@ namespace RTC
 		private void tbFilter_TextChanged(object sender, EventArgs e)
 		{
 
-			var token = RTC_NetCore.HugeOperationStart("DISABLED");
 			if (tbFilter.Text.Length == 0)
 			{
 				dgvBlastEditor.DataSource = currentSK.BlastLayer.Layer;
@@ -540,7 +539,6 @@ namespace RTC
 					break;
 			}
 
-			RTC_NetCore.HugeOperationEnd(token);
 		}
 	
 		private void InitializeBottom()
@@ -1071,7 +1069,8 @@ namespace RTC
 				}
 				else
 					return;
-				RTC_EmuCore.LoadRom(filename, true);
+
+				LocalNetCoreRouter.Route("VANGURD", "REMOTE_LOADROM", filename, true);
 
 				StashKey temp = new StashKey(RTC_Corruptcore.GetRandomKey(), currentSK.ParentKey, currentSK.BlastLayer);
 
@@ -1276,7 +1275,6 @@ namespace RTC
 
 		private void bakeBlastunitsToVALUEToolStripMenuItem_Click(object sender, EventArgs e)
 		{
-			var token = RTC_NetCore.HugeOperationStart("DISABLED");
 			try
 			{
 				//Generate a blastlayer from the current selected rows
@@ -1313,7 +1311,6 @@ namespace RTC
 			}
 			finally
 			{
-				RTC_NetCore.HugeOperationEnd(token);
 			}
 		}
 

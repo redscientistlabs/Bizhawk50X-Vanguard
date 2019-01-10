@@ -80,12 +80,8 @@ namespace RTC
 				return;
 
 			isClosing = true;
+			NetCoreServer.StopLoopback();
 
-			if (RTC_NetcoreImplementation.Multiplayer != null && RTC_NetcoreImplementation.Multiplayer.streamReadingThread != null)
-				RTC_NetcoreImplementation.Multiplayer.streamReadingThread.Abort();
-
-			if (RTC_NetcoreImplementation.RemoteRTC != null && RTC_NetcoreImplementation.RemoteRTC.streamReadingThread != null)
-				RTC_NetcoreImplementation.RemoteRTC.streamReadingThread.Abort();
 
 			foreach (Form frm in RTC_UICore.AllRtcForms)
 			{
@@ -97,7 +93,7 @@ namespace RTC
 				S.GET<RTC_Standalone_Form>().Close();
 
 			//Clean out the working folders
-			if (!RTC_NetcoreImplementation.isStandaloneEmu && !RTC_Corruptcore.DontCleanSavestatesOnQuit)
+			if (!RTC_Corruptcore.DontCleanSavestatesOnQuit)
 			{
 				Stockpile.EmptyFolder(Path.DirectorySeparatorChar + "WORKING" + Path.DirectorySeparatorChar);
 			}
@@ -233,8 +229,6 @@ namespace RTC
 
 		public static void LoadRTCColor()
 		{
-			if (RTC_NetcoreImplementation.isStandaloneUI || !RTC_NetcoreImplementation.isStandaloneEmu)
-			{
 				if (RTC_Params.IsParamSet("COLOR"))
 				{
 					string[] bytes = RTC_Params.ReadParam("COLOR").Split(',');
@@ -244,7 +238,6 @@ namespace RTC
 					RTC_UICore.GeneralColor = Color.FromArgb(110, 150, 193);
 
 				RTC_UICore.SetRTCColor(RTC_UICore.GeneralColor);
-			}
 		}
 
 		public static void SaveRTCColor(Color color)

@@ -5,6 +5,7 @@ using System.Windows.Forms;
 
 namespace RTC
 {
+	/*
 	public partial class RTC_StockpileBlastBoard_Form : Form, IAutoColorize
 	{
 		List<Button> allButtons = new List<Button>();
@@ -98,4 +99,5 @@ namespace RTC
 				RefreshButtons();
 		}
 	}
+	*/
 }

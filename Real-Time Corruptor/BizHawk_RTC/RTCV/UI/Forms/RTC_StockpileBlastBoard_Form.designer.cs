@@ -2,6 +2,7 @@
 {
 	partial class RTC_StockpileBlastBoard_Form
 	{
+		/*
 		/// <summary>
 		/// Required designer variable.
 		/// </summary>
@@ -65,5 +66,6 @@
 		#endregion
 
 		private System.Windows.Forms.Label lbEmptyStockpile;
+		*/
 	}
 }

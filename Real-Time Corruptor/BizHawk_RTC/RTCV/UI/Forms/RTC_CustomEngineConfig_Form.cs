@@ -310,9 +310,7 @@ namespace RTC
 
 		private void btnCustomTemplateLoad_Click(object sender, EventArgs e)
 		{
-			RTC_EmuCore.StopSound();
 			PartialSpec spec = RTC_CustomEngine.LoadTemplateFile();
-			RTC_EmuCore.StartSound();
 
 			if (spec == null)
 				return;
@@ -325,10 +323,7 @@ namespace RTC
 
 		private void btnCustomTemplateSaveAs_Click(object sender, EventArgs e)
 		{
-
-			RTC_EmuCore.StopSound();
 			string TemplateName = RTC_CustomEngine.SaveTemplateFile(true);
-			RTC_EmuCore.StartSound();
 
 			if (string.IsNullOrWhiteSpace(TemplateName))
 				return;
@@ -342,9 +337,7 @@ namespace RTC
 
 		private void btnCustomTemplateSave_Click(object sender, EventArgs e)
 		{
-			RTC_EmuCore.StopSound();
 			string TemplateName = RTC_CustomEngine.SaveTemplateFile(false);
-			RTC_EmuCore.StartSound();
 
 			if (string.IsNullOrWhiteSpace(TemplateName))
 				return;

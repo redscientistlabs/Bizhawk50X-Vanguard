@@ -699,21 +699,6 @@ namespace RTC
 
 		#region CONTROL EXTENSIONS
 
-		public static List<Control> getControlsWithTag(this Control.ControlCollection controls)
-		{
-			List<Control> allControls = new List<Control>();
-
-			foreach (Control c in controls)
-			{
-				if (c.Tag != null)
-					allControls.Add(c);
-
-				if (c.HasChildren)
-					allControls.AddRange(c.Controls.getControlsWithTag()); //Recursively check all children controls as well; ie groupboxes or tabpages
-			}
-
-			return allControls;
-		}
 
 
 		#endregion CONTROL EXTENSIONS

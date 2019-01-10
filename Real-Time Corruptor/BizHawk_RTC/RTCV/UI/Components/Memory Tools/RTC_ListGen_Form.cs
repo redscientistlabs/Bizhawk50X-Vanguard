@@ -137,7 +137,7 @@ namespace RTC
 			{
 				if (!String.IsNullOrWhiteSpace(filename))
 				{
-					File.WriteAllLines(RTC_EmuCore.rtcDir + "//LISTS//" + filename + ".txt", newList);
+					File.WriteAllLines(RTC_Corruptcore.rtcDir + "//LISTS//" + filename + ".txt", newList);
 				}
 				else
 				{

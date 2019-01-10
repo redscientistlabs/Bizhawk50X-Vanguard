@@ -1,5 +1,7 @@
 ﻿using System;
+using System.Data;
 using System.IO;
+using RTCV.NetCore;
 
 namespace RTC
 {
@@ -15,7 +17,7 @@ namespace RTC
 				StopRender();
 
 			isRendering = true;
-			RTC_NetcoreImplementation.SendCommandToBizhawk(new RTC_Command(CommandType.REMOTE_RENDER_START), true);
+			StartRender_NET();
 		}
 
 		public static void StartRender_NET()
@@ -47,7 +49,7 @@ namespace RTC
 					break;
 			}
 
-			RTC_NetcoreImplementation.SendCommandToRTC(new RTC_Command(CommandType.REMOTE_RENDER_STARTED));
+			LocalNetCoreRouter.Route("CORRUPTCORE", "REMOTE_RENDER_STARTED", true);
 		}
 
 		public static void setType(string _type)
@@ -68,13 +70,13 @@ namespace RTC
 					break;
 			}
 
-			RTC_NetcoreImplementation.SendCommandToBizhawk(new RTC_Command(CommandType.REMOTE_RENDER_SETTYPE) { objectValue = lastType });
+			LocalNetCoreRouter.Route("CORRUPTCORE", "REMOTE_RENDER_SETTYPE", lastType, true);
 		}
 
 		public static void StopRender()
 		{
 			isRendering = false;
-			RTC_NetcoreImplementation.SendCommandToBizhawk(new RTC_Command(CommandType.REMOTE_RENDER_STOP));
+			LocalNetCoreRouter.Route("CORRUPTCORE", "REMOTE_RENDER_STOP", true);
 		}
 
 		public static void StopRender_NET()

@@ -243,9 +243,7 @@ namespace RTC
 				StashKey psk = RTC_StockpileManager.GetCurrentSavestateStashkey();
 				if (psk == null)
 				{
-					RTC_EmuCore.StartSound();
 					MessageBox.Show("Could not perform the CORRUPT action\n\nEither no Savestate Box was selected in the Savestate Manager\nor the Savetate Box itself is empty.");
-					RTC_EmuCore.StopSound();
 					return;
 				}
 				sk = (StashKey)psk.Clone();
@@ -268,9 +266,7 @@ namespace RTC
 				StashKey psk = RTC_StockpileManager.GetCurrentSavestateStashkey();
 				if (psk == null)
 				{
-					RTC_EmuCore.StopSound();
 					MessageBox.Show("Could not perform the CORRUPT action\n\nEither no Savestate Box was selected in the Savestate Manager\nor the Savetate Box itself is empty.");
-					RTC_EmuCore.StartSound();
 					return;
 				}
 				sk = (StashKey)psk.Clone();
