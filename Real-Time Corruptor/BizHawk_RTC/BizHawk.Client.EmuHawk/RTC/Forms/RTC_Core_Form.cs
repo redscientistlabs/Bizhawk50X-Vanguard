@@ -66,7 +66,7 @@ namespace RTC
 				return;
 
 			this.AutoCorrupt = !this.AutoCorrupt;
-			RTC_Corruptcore.CorruptCoreSpec.Update(CCSPEC.STEP_RUNBEFORE.ToString(), true);
+			RTC_Corruptcore.RTCSpec.Update(RTCSPEC.STEP_RUNBEFORE.ToString(), true);
 		}
 
 		private void RTC_Form_Load(object sender, EventArgs e)

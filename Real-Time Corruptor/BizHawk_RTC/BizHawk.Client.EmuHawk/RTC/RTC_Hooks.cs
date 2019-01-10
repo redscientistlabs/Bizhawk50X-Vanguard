@@ -40,7 +40,7 @@ namespace RTC
 			
 			//Return out if it's being called from before the step and we're not on frame 0. If we're on frame 0, then we go as normal
 			//If we can't get runbefore, just assume we don't want to run before
-			if (isBeforeStep && CPU_STEP_Count != 0 && ((bool)(RTC_Corruptcore.CorruptCoreSpec?[CCSPEC.STEP_RUNBEFORE.ToString()] ?? false)) == false)
+			if (isBeforeStep && CPU_STEP_Count != 0 && ((bool)(RTC_Corruptcore.RTCSpec?[RTCSPEC.STEP_RUNBEFORE.ToString()] ?? false)) == false)
 				return;
 
 			isNormalAdvance = !(isRewinding || isFastForwarding);
@@ -310,7 +310,7 @@ namespace RTC
 			{
 				default:
 					return false;
-					/*
+
 				case "Manual Blast":
 					RTC_NetcoreImplementation.SendCommandToRTC(new RTC_Command(CommandType.REMOTE_HOTKEY_MANUALBLAST));
 					break;
@@ -378,7 +378,6 @@ namespace RTC
 				case "BlastLayer Re-Blast":
 					RTC_NetcoreImplementation.SendCommandToRTC(new RTC_Command(CommandType.REMOTE_HOTKEY_BLASTLAYERREBLAST));
 					break;
-					*/
 			}
 			return true;
 		}

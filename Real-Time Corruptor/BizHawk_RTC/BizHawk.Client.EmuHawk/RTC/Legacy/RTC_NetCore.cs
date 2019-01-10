@@ -1,5 +1,4 @@
-﻿
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.IO;
@@ -940,7 +939,6 @@ namespace RTC
 		//===============================================
 
 		//General RTC commands
-		
 		BLAST,
 
 		ASYNCBLAST,
@@ -957,7 +955,8 @@ namespace RTC
 		REMOTE_KEY_GETSYSTEMNAME,
 		REMOTE_KEY_GETSYSTEMCORE,
 		REMOTE_KEY_GETGAMENAME,
-		REMOTE_KEY_GETSETSYNCSETTINGS,
+		REMOTE_KEY_GETSYNCSETTINGS,
+		REMOTE_KEY_PUTSYNCSETTINGS,
 		REMOTE_KEY_GETOPENROMFILENAME,
 		REMOTE_KEY_GETRAWBLASTLAYER,
 		REMOTE_KEY_GETBAKEDLAYER,

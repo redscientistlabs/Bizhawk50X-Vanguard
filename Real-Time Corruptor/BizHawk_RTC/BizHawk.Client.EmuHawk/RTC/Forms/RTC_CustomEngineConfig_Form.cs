@@ -261,7 +261,7 @@ namespace RTC
 		private void btnResetConfig_Click(object sender, EventArgs e)
 		{
 			PartialSpec spec = (PartialSpec)RTC_CustomEngine.lastLoadedTemplate.Clone();
-			RTC_Corruptcore.CorruptCoreSpec.Update(spec);
+			RTC_Corruptcore.RTCSpec.Update(spec);
 			Refresh();
 		}
 
@@ -303,7 +303,7 @@ namespace RTC
 				btnCustomTemplateSave.ForeColor = Color.DimGray;
 			}
 
-			RTC_Corruptcore.CorruptCoreSpec.Update(spec);
+			RTC_Corruptcore.RTCSpec.Update(spec);
 			Refresh();
 
 		}
@@ -317,7 +317,7 @@ namespace RTC
 			if (spec == null)
 				return;
 
-			RTC_Corruptcore.CorruptCoreSpec.Update(spec);
+			RTC_Corruptcore.RTCSpec.Update(spec);
 			Refresh();
 
 			cbSelectedTemplate.Text = spec.Name;

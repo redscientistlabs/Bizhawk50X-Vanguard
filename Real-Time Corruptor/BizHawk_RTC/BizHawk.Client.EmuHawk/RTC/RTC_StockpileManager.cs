@@ -38,22 +38,22 @@ namespace RTC
 
 		public static string CurrentSavestateKey
 		{
-			get => (string)RTC_Corruptcore.CorruptCoreSpec[CCSPEC.CORE_EXTRACTBLASTLAYER.ToString()];
-			set => RTC_Corruptcore.CorruptCoreSpec.Update(CCSPEC.CORE_EXTRACTBLASTLAYER.ToString(), value);
+			get => (string)RTC_Corruptcore.RTCSpec[RTCSPEC.CORE_EXTRACTBLASTLAYER.ToString()];
+			set => RTC_Corruptcore.RTCSpec.Update(RTCSPEC.CORE_EXTRACTBLASTLAYER.ToString(), value);
 		}
 
 		public static StashKey BackupedState
 		{
-			get => (StashKey)RTC_Corruptcore.CorruptCoreSpec[CCSPEC.STOCKPILE_BACKUPEDSTATE.ToString()];
-			set => RTC_Corruptcore.CorruptCoreSpec.Update(CCSPEC.STOCKPILE_BACKUPEDSTATE.ToString(), value);
+			get => (StashKey)RTC_Corruptcore.RTCSpec[RTCSPEC.STOCKPILE_BACKUPEDSTATE.ToString()];
+			set => RTC_Corruptcore.RTCSpec.Update(RTCSPEC.STOCKPILE_BACKUPEDSTATE.ToString(), value);
 		}
 
 		public static PartialSpec getDefaultPartial()
 		{
 			var partial = new PartialSpec("RTCSpec");
 
-			partial[CCSPEC.STOCKPILE_CURRENTSAVESTATEKEY.ToString()] = null;
-			partial[CCSPEC.STOCKPILE_BACKUPEDSTATE.ToString()] = null;
+			partial[RTCSPEC.STOCKPILE_CURRENTSAVESTATEKEY.ToString()] = null;
+			partial[RTCSPEC.STOCKPILE_BACKUPEDSTATE.ToString()] = null;
 
 			return partial;
 		}

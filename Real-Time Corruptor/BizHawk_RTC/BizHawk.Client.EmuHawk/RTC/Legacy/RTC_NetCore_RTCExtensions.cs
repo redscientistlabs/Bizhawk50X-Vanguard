@@ -74,7 +74,7 @@ namespace RTC
 
 				case CommandType.REMOTE_PUSHRTCSPEC:
 					cmdBack = new RTC_Command(CommandType.RETURNVALUE);
-					RTC_Corruptcore.CorruptCoreSpec = new FullSpec((PartialSpec)cmd.objectValue);
+					RTC_Corruptcore.RTCSpec = new FullSpec((PartialSpec)cmd.objectValue);
 					cmdBack.objectValue = true;
 					break;
 
@@ -87,7 +87,7 @@ namespace RTC
 
 
 				case CommandType.REMOTE_PUSHRTCSPECUPDATE:
-					RTC_Corruptcore.CorruptCoreSpec?.Update((PartialSpec)cmd.objectValue, false);
+					RTC_Corruptcore.RTCSpec?.Update((PartialSpec)cmd.objectValue, false);
 					break;
 
 				case CommandType.REMOTE_PUSHEMUSPECUPDATE:
@@ -371,11 +371,15 @@ namespace RTC
 					};
 					break;
 
-				case CommandType.REMOTE_KEY_GETSETSYNCSETTINGS:
+				case CommandType.REMOTE_KEY_GETSYNCSETTINGS:
 					cmdBack = new RTC_Command(CommandType.RETURNVALUE)
 					{
 						objectValue = RTC_Hooks.BIZHAWK_GETSET_SYNCSETTINGS
 					};
+					break;
+
+				case CommandType.REMOTE_KEY_PUTSYNCSETTINGS:
+					cmdBack = new RTC_Command(CommandType.RETURNVALUE);
 					break;
 
 				case CommandType.REMOTE_KEY_GETOPENROMFILENAME:
@@ -512,7 +516,7 @@ namespace RTC
 					if (!RTC_NetCore.NetCoreCommandSynclock)
 					{
 						RTC_NetCore.NetCoreCommandSynclock = true;
-						RTC_Corruptcore.CorruptCoreSpec.Update(CCSPEC.STEP_RUNBEFORE.ToString(), true);
+						RTC_Corruptcore.RTCSpec.Update(RTCSPEC.STEP_RUNBEFORE.ToString(), true);
 
 
 						bool isload = S.GET<RTC_GlitchHarvester_Form>().cbAutoLoadState.Checked;
@@ -541,7 +545,7 @@ namespace RTC
 					break;
 
 				case CommandType.REMOTE_HOTKEY_BLASTRAWSTASH:
-					RTC_Corruptcore.CorruptCoreSpec.Update(CCSPEC.STEP_RUNBEFORE.ToString(), true);
+					RTC_Corruptcore.RTCSpec.Update(RTCSPEC.STEP_RUNBEFORE.ToString(), true);
 					RTC_NetcoreImplementation.SendCommandToBizhawk(new RTC_Command(CommandType.ASYNCBLAST));
 					S.GET<RTC_GlitchHarvester_Form>().btnSendRaw_Click(null, null);
 					break;

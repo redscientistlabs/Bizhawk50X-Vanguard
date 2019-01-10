@@ -38,29 +38,29 @@ namespace RTC
 
 		public static int MaxInfiniteBlastUnits
 		{
-			get { return (int)RTC_Corruptcore.CorruptCoreSpec[CCSPEC.STEP_MAXINFINITEBLASTUNITS.ToString()]; }
-			set { RTC_Corruptcore.CorruptCoreSpec.Update(CCSPEC.STEP_MAXINFINITEBLASTUNITS.ToString(), value); }
+			get { return (int)RTC_Corruptcore.RTCSpec[RTCSPEC.STEP_MAXINFINITEBLASTUNITS.ToString()]; }
+			set { RTC_Corruptcore.RTCSpec.Update(RTCSPEC.STEP_MAXINFINITEBLASTUNITS.ToString(), value); }
 		}
 
 		public static bool LockExecution
 		{
-			get { return (bool)RTC_Corruptcore.CorruptCoreSpec[CCSPEC.STEP_LOCKEXECUTION.ToString()]; }
-			set { RTC_Corruptcore.CorruptCoreSpec.Update(CCSPEC.STEP_LOCKEXECUTION.ToString(), value); }
+			get { return (bool)RTC_Corruptcore.RTCSpec[RTCSPEC.STEP_LOCKEXECUTION.ToString()]; }
+			set { RTC_Corruptcore.RTCSpec.Update(RTCSPEC.STEP_LOCKEXECUTION.ToString(), value); }
 		}
 
 		public static bool ClearStepActionsOnRewind
 		{
-			get { return (bool)RTC_Corruptcore.CorruptCoreSpec[CCSPEC.STEP_CLEARSTEPACTIONSONREWIND.ToString()]; }
-			set { RTC_Corruptcore.CorruptCoreSpec.Update(CCSPEC.STEP_CLEARSTEPACTIONSONREWIND.ToString(), value); }
+			get { return (bool)RTC_Corruptcore.RTCSpec[RTCSPEC.STEP_CLEARSTEPACTIONSONREWIND.ToString()]; }
+			set { RTC_Corruptcore.RTCSpec.Update(RTCSPEC.STEP_CLEARSTEPACTIONSONREWIND.ToString(), value); }
 		}
 
 		public static PartialSpec getDefaultPartial()
 		{
 			var partial = new PartialSpec("CorruptCore");
 
-			partial[CCSPEC.STEP_MAXINFINITEBLASTUNITS.ToString()] = 50;
-			partial[CCSPEC.STEP_LOCKEXECUTION.ToString()] = false;
-			partial[CCSPEC.STEP_CLEARSTEPACTIONSONREWIND.ToString()] = false;
+			partial[RTCSPEC.STEP_MAXINFINITEBLASTUNITS.ToString()] = 50;
+			partial[RTCSPEC.STEP_LOCKEXECUTION.ToString()] = false;
+			partial[RTCSPEC.STEP_CLEARSTEPACTIONSONREWIND.ToString()] = false;
 
 			return partial;
 		}
