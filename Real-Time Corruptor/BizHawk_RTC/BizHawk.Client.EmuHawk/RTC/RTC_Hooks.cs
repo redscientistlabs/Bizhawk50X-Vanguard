@@ -8,9 +8,7 @@ using System.Drawing;
 using System.IO;
 using System.Linq;
 using System.Windows.Forms;
-using RTC.Legacy;
 using RTCV.NetCore;
-using static RTC.RTC_Unispec;
 
 namespace RTC
 {
@@ -94,7 +92,7 @@ namespace RTC
 			if (autoCorrupt && CPU_STEP_Count >= intensity)
 			{
 				CPU_STEP_Count = 0;
-				BlastLayer bl = RTC_Corruptcore.Blast(null, RTC_MemoryDomains.SelectedDomains);
+				BlastLayer bl = RTC_Corruptcore.GenerateBlastLayer(null, RTC_MemoryDomains.SelectedDomains);
 				if (bl != null)
 					bl.Apply();
 			}
@@ -157,7 +155,8 @@ namespace RTC
 		{
 			if (disableRTC) return;
 
-			RTC_UICore.CloseAllRtcForms();
+			//Todo
+			//RTC_UICore.CloseAllRtcForms();
 		}
 
 		public static void BIZHAWK_SAVE_CONFIG()
@@ -189,7 +188,7 @@ namespace RTC
 			//Glitch Harvester warning for archives
 
 			string uppercaseFilename = GlobalWin.MainForm.CurrentlyOpenRom.ToUpper();
-			if (S.GET<RTC_GlitchHarvester_Form>().Visible && (uppercaseFilename.Contains(".ZIP") || uppercaseFilename.Contains(".7Z")))
+			if (uppercaseFilename.Contains(".ZIP") || uppercaseFilename.Contains(".7Z"))
 				MessageBox.Show($"The rom {RTC_Extensions.getShortFilenameFromPath(uppercaseFilename)} is in an archive and can't be added to a Stockpile");
 
 			//Load Game vars into RTC_Core
@@ -309,6 +308,7 @@ namespace RTC
 				default:
 					return false;
 
+				/*
 				case "Manual Blast":
 					RTC_NetcoreImplementation.SendCommandToRTC(new RTC_Command(CommandType.REMOTE_HOTKEY_MANUALBLAST));
 					break;
@@ -376,6 +376,7 @@ namespace RTC
 				case "BlastLayer Re-Blast":
 					RTC_NetcoreImplementation.SendCommandToRTC(new RTC_Command(CommandType.REMOTE_HOTKEY_BLASTLAYERREBLAST));
 					break;
+					*/
 			}
 			return true;
 		}
@@ -383,7 +384,9 @@ namespace RTC
 		public static bool IsAllowedBackgroundInputForm(Form activeForm)
 		{
 			if (disableRTC) return false;
-
+			return true;
+			//todo
+			/*
 			return (activeForm is RTC.RTC_Core_Form ||
 					activeForm is RTC.RTC_Settings_Form ||
 					activeForm is RTC.RTC_GlitchHarvester_Form ||
@@ -397,6 +400,7 @@ namespace RTC
 					activeForm is RTC.RTC_VmdGen_Form ||
 					activeForm is RTC.RTC_VmdAct_Form
 					);
+					*/
 		}
 
 		public static Bitmap BIZHAWK_GET_SCREENSHOT()

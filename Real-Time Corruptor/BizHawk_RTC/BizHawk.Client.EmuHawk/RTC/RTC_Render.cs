@@ -1,6 +1,5 @@
 ﻿using System;
 using System.IO;
-using RTC.Legacy;
 
 namespace RTC
 {
@@ -30,12 +29,12 @@ namespace RTC
 			switch (lastType)
 			{
 				case RENDERTYPE.WAV:
-					RTC_Hooks.BIZHAWK_STARTRECORDAV("wave", RTC_EmuCore.rtcDir + Path.DirectorySeparatorChar + "RENDEROUTPUT" + Path.DirectorySeparatorChar + Key + ".wav", true);
+					RTC_Hooks.BIZHAWK_STARTRECORDAV("wave", RTC_Corruptcore.rtcDir + Path.DirectorySeparatorChar + "RENDEROUTPUT" + Path.DirectorySeparatorChar + Key + ".wav", true);
 					break;
 				case RENDERTYPE.AVI:
 					try
 					{
-						RTC_Hooks.BIZHAWK_STARTRECORDAV("vfwavi", RTC_EmuCore.rtcDir + Path.DirectorySeparatorChar + "RENDEROUTPUT" + Path.DirectorySeparatorChar + Key + ".avi", true);
+						RTC_Hooks.BIZHAWK_STARTRECORDAV("vfwavi", RTC_Corruptcore.rtcDir + Path.DirectorySeparatorChar + "RENDEROUTPUT" + Path.DirectorySeparatorChar + Key + ".avi", true);
 					}
 					catch (Exception ex)
 					{
@@ -44,7 +43,7 @@ namespace RTC
 
 					break;
 				case RENDERTYPE.MPEG:
-					RTC_Hooks.BIZHAWK_STARTRECORDAV("ffmpeg", RTC_EmuCore.rtcDir + Path.DirectorySeparatorChar + "RENDEROUTPUT" + Path.DirectorySeparatorChar + Key + ".mpg", true);
+					RTC_Hooks.BIZHAWK_STARTRECORDAV("ffmpeg", RTC_Corruptcore.rtcDir + Path.DirectorySeparatorChar + "RENDEROUTPUT" + Path.DirectorySeparatorChar + Key + ".mpg", true);
 					break;
 			}
 

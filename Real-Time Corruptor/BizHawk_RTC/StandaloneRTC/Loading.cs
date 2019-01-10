@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Linq;
 using System.Windows.Forms;
+using RTC;
 using RTC.Legacy;
 
 namespace StandaloneRTC
@@ -25,8 +26,9 @@ namespace StandaloneRTC
 				RTC.LogConsole.HideConsole();
 			}
 
-			RTC.RTC_EmuCore.Start(this);
-			Hide();
+			RTC_UICore.Start();
+//			RTC.RTC_EmuCore.Start(this);
+			//Hide();
 
 		}
 
@@ -44,6 +46,7 @@ namespace StandaloneRTC
 
 		private void CheckHeartbeat(object sender, EventArgs e)
 		{
+			/*
 			if ((RTC.S.GET<RTC.RTC_Core_Form>().pbAutoKillSwitchTimeout.Value == RTC.S.GET<RTC.RTC_Core_Form>().pbAutoKillSwitchTimeout.Maximum && !RTC.RTC_RPC.Heartbeat) || RTC.RTC_RPC.Freeze || !RTC.S.GET<RTC.RTC_Core_Form>().cbUseAutoKillSwitch.Checked)
 				return;
 
@@ -65,6 +68,7 @@ namespace StandaloneRTC
 				RTC.S.GET<RTC.RTC_Core_Form>().pbAutoKillSwitchTimeout.Value = 0;
 				RTC.RTC_RPC.Heartbeat = false;
 			}
+			*/
 		}
 
 

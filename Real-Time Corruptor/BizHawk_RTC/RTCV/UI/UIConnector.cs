@@ -44,7 +44,6 @@ namespace RTCV.UI
 				return e.returnMessage;
 			}
 
-
 		}
 
 		//Ship everything to netcore, any needed routing will be handled in there

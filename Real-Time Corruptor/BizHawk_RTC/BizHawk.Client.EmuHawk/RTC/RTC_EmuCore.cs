@@ -10,7 +10,6 @@ using System.Reflection;
 using System.Threading;
 using System.Windows.Forms;
 using Newtonsoft.Json;
-using RTC.Legacy;
 using RTCV.NetCore;
 using static RTC.RTC_Unispec;
 
@@ -19,18 +18,6 @@ namespace RTC
 	public static class RTC_EmuCore
 	{
 		public static string[] args;
-
-		public static List<ProblematicProcess> ProblematicProcesses;
-
-		//Directories
-		public static string bizhawkDir = Directory.GetCurrentDirectory();
-
-		public static string rtcDir = bizhawkDir + Path.DirectorySeparatorChar + "RTC" + Path.DirectorySeparatorChar;
-		public static string workingDir = rtcDir + Path.DirectorySeparatorChar + "WORKING" + Path.DirectorySeparatorChar;
-		public static string assetsDir = rtcDir + Path.DirectorySeparatorChar + "ASSETS" + Path.DirectorySeparatorChar;
-		public static string paramsDir = rtcDir + Path.DirectorySeparatorChar + "PARAMS" + Path.DirectorySeparatorChar;
-		public static string listsDir = rtcDir + Path.DirectorySeparatorChar + "LISTS" + Path.DirectorySeparatorChar;
-
 
 		public static string CurrentGameSystem
 		{
@@ -84,154 +71,53 @@ namespace RTC
 				PartialSpec partial = e.partialSpec;
 
 				//Only send the update if we're connected
-				if (RTC_NetcoreImplementation.RemoteRTC_SupposedToBeConnected)
-					RTC_NetcoreImplementation.SendCommandToBizhawk(
-						new RTC_Command(CommandType.REMOTE_PUSHEMUSPECUPDATE) { objectValue = partial }, true);
+		//		if (RTC_NetcoreImplementation.RemoteRTC_SupposedToBeConnected)
+		//			RTC_NetcoreImplementation.SendCommandToBizhawk(
+		//				new RTC_Command(CommandType.REMOTE_PUSHEMUSPECUPDATE) { objectValue = partial }, true);
 			};
 		}
 
 		//This is the entry point of RTC. Without this method, nothing will load.
 		public static void Start(RTC_Standalone_Form _standaloneForm = null)
 		{
-			//Spawn a console for StandaloneRTC && initialize spec
-			if (RTC_NetcoreImplementation.isStandaloneUI)
-			{
 				RTC_Corruptcore.Start();
 
 				LogConsole.CreateConsole();
 				if (!RTC_Corruptcore.ShowConsole)
 					LogConsole.HideConsole();
-			}
 
-			//Register the RTC spec in attached mode
-			if (!RTC_NetcoreImplementation.isStandaloneUI && !RTC_NetcoreImplementation.isStandaloneEmu)
-			{
-				RTC_Corruptcore.Start();
-			}
 
 			S.SET(_standaloneForm);
 
 			RTC_Extensions.DirectoryRequired(new string[] {
-				workingDir,
-				workingDir + "\\TEMP\\",
-				workingDir + "\\SKS\\",
-				workingDir + "\\SSK\\",
-				workingDir + "\\SESSION\\",
-				workingDir + "\\MEMORYDUMPS\\",
-				workingDir + "\\MP\\",
-				assetsDir + "\\CRASHSOUNDS\\",
-				rtcDir + "\\PARAMS\\",
-				rtcDir + "\\LISTS\\",
+				RTC_Corruptcore.workingDir, RTC_Corruptcore.workingDir + "\\TEMP\\", RTC_Corruptcore.workingDir + "\\SKS\\", RTC_Corruptcore.workingDir + "\\SSK\\", RTC_Corruptcore.workingDir + "\\SESSION\\", RTC_Corruptcore.workingDir + "\\MEMORYDUMPS\\", RTC_Corruptcore.workingDir + "\\MP\\", RTC_Corruptcore.assetsDir + "\\CRASHSOUNDS\\", RTC_Corruptcore.rtcDir + "\\PARAMS\\", RTC_Corruptcore.rtcDir + "\\LISTS\\",
 			});
 
 
 			RTC_EmuCore.RegisterEmuhawkSpec();
-			RTC_NetcoreImplementation.Start();
+			//RTC_NetcoreImplementation.Start();
+			VanguardImplementation.StartClient();
 
 			// Show the main RTC Form
 
-			if (RTC_NetcoreImplementation.isStandaloneUI || RTC_NetcoreImplementation.isAttached)
-				S.GET<RTC_Core_Form>().Show();
+
+			//Todo
+			//if (RTC_NetcoreImplementation.isStandaloneUI || RTC_NetcoreImplementation.isAttached)
+				//S.GET<RTC_Core_Form>().Show();
 
 			//Refocus on Bizhawk
 			RTC_Hooks.BIZHAWK_MAINFORM_FOCUS();
 
 			//Force create bizhawk config file if it doesn't exist
-			if (!File.Exists(RTC_EmuCore.bizhawkDir + Path.DirectorySeparatorChar + "config.ini"))
+			if (!File.Exists(RTC_Corruptcore.bizhawkDir + Path.DirectorySeparatorChar + "config.ini"))
 				RTC_Hooks.BIZHAWK_SAVE_CONFIG();
 
 			//Fetch NetCore aggressiveness
-			if (RTC_NetcoreImplementation.isStandaloneEmu)
-				RTC_NetcoreImplementation.SendCommandToRTC(new RTC_Command(CommandType.GETAGGRESSIVENESS));
+		//	if (RTC_NetcoreImplementation.isStandaloneEmu)
+		//		RTC_NetcoreImplementation.SendCommandToRTC(new RTC_Command(CommandType.GETAGGRESSIVENESS));
 
 		}
 
-		public static void DownloadProblematicProcesses()
-		{
-			string LocalPath = RTC_EmuCore.paramsDir + Path.DirectorySeparatorChar + "BADPROCESSES";
-			string json = "";
-			try
-			{
-				if (File.Exists(LocalPath))
-				{
-					DateTime lastModified = File.GetLastWriteTime(LocalPath);
-					if (lastModified.Date == DateTime.Today)
-						return;
-				}
-				WebClientTimeout client = new WebClientTimeout();
-				client.Headers[HttpRequestHeader.Accept] = "text/html, image/png, image/jpeg, image/gif, */*;q=0.1";
-				client.Headers[HttpRequestHeader.UserAgent] = "Mozilla/5.0 (Windows; U; Windows NT 6.1; de; rv:1.9.2.12) Gecko/20101026 Firefox/3.6.12";
-				json = client.DownloadString("https://raw.githubusercontent.com/ircluzar/RTC3/master/ProblematicProcesses.json");
-				File.WriteAllText(LocalPath, json);
-			}
-			catch (Exception ex)
-			{
-				if (ex is WebException)
-				{
-					//Couldn't download the new one so just fall back to the old one if it's there
-					Console.WriteLine(ex.ToString());
-					if (File.Exists(LocalPath))
-					{
-						try
-						{
-							json = File.ReadAllText(LocalPath);
-						}
-						catch (Exception _ex)
-						{
-							Console.WriteLine("Couldn't read BADPROCESSES\n\n" + _ex.ToString());
-							return;
-						}
-					}
-					else
-						return;
-				}
-				else
-				{
-					Console.WriteLine(ex.ToString());
-				}
-			}
-
-			try
-			{
-				RTC_EmuCore.ProblematicProcesses = JsonConvert.DeserializeObject<List<ProblematicProcess>>(json);
-			}
-			catch (Exception ex)
-			{
-				Console.WriteLine(ex.ToString());
-				if (File.Exists(LocalPath))
-					File.Delete(LocalPath);
-				return;
-			}
-		}
-
-		//Checks if any problematic processes are found
-		public static volatile bool Warned = false;
-
-		public static void CheckForProblematicProcesses()
-		{
-			if (Warned || RTC_EmuCore.ProblematicProcesses == null)
-				return;
-
-			try
-			{
-				var processes = Process.GetProcesses().Select(it => $"{it.ProcessName.ToUpper()}").OrderBy(x => x).ToArray();
-
-				//Warn based on loaded processes
-				foreach (var item in RTC_EmuCore.ProblematicProcesses)
-				{
-					if (processes.Contains(item.Name))
-					{
-						MessageBox.Show(item.Message, "Incompatible Program Detected!");
-						Warned = true;
-					}
-				}
-			}
-			catch (Exception ex)
-			{
-				MessageBox.Show(ex.ToString());
-				return;
-			}
-		}
 
 		public static void StartSound()
 		{
@@ -280,34 +166,24 @@ namespace RTC
 
 			while (newNumber == lastLoaderRom)
 			{
-				int nbNesFiles = Directory.GetFiles(RTC_EmuCore.assetsDir, "*.nes").Length;
+				int nbNesFiles = Directory.GetFiles(RTC_Corruptcore.assetsDir, "*.nes").Length;
 
 				newNumber = RTC_Corruptcore.RND.Next(1, nbNesFiles + 1);
 
 				if (newNumber != lastLoaderRom)
 				{
-					if (File.Exists(RTC_EmuCore.assetsDir + "overridedefault.nes"))
-						LoadRom(RTC_EmuCore.assetsDir + "overridedefault.nes");
+					if (File.Exists(RTC_Corruptcore.assetsDir + "overridedefault.nes"))
+						LoadRom_NET(RTC_Corruptcore.assetsDir + "overridedefault.nes");
 					//Please ignore
 					else if (RTC_Corruptcore.RND.Next(0, 420) == 7)
-						LoadRom(RTC_EmuCore.assetsDir + "gd.fds");
+						LoadRom_NET(RTC_Corruptcore.assetsDir + "gd.fds");
 					else
-						LoadRom(RTC_EmuCore.assetsDir + newNumber.ToString() + "default.nes");
+						LoadRom_NET(RTC_Corruptcore.assetsDir + newNumber.ToString() + "default.nes");
 
 					lastLoaderRom = newNumber;
 					break;
 				}
 			}
-		}
-
-		public static void LoadRom(string RomFile, bool sync = false)
-		{
-			// Safe method for loading a Rom file from any process
-
-			RTC_NetcoreImplementation.SendCommandToBizhawk(new RTC_Command(CommandType.REMOTE_LOADROM)
-			{
-				romFilename = RomFile
-			}, sync);
 		}
 
 		public static void LoadRom_NET(string RomFile)
@@ -347,7 +223,7 @@ namespace RTC
 			string prefix = RTC_Hooks.BIZHAWK_GET_SAVESTATEPREFIX();
 			prefix = prefix.Substring(prefix.LastIndexOf('\\') + 1);
 
-			var path = RTC_EmuCore.workingDir + Path.DirectorySeparatorChar + "SESSION" + Path.DirectorySeparatorChar + prefix + "." + quickSlotName + ".State";
+			var path = RTC_Corruptcore.workingDir + Path.DirectorySeparatorChar + "SESSION" + Path.DirectorySeparatorChar + prefix + "." + quickSlotName + ".State";
 
 			var file = new FileInfo(path);
 			if (file.Directory != null && file.Directory.Exists == false)
@@ -379,8 +255,6 @@ namespace RTC
 			try
 			{
 
-				// -> EmuHawk Process only
-				// Loads a Savestate from a key
 
 				if (RTC_Hooks.BIZHAWK_ISNULLEMULATORCORE())
 					return false;
@@ -390,7 +264,7 @@ namespace RTC
 				string prefix = RTC_Hooks.BIZHAWK_GET_SAVESTATEPREFIX();
 				prefix = prefix.Substring(prefix.LastIndexOf('\\') + 1);
 
-				var path = RTC_EmuCore.workingDir + stateLocation + Path.DirectorySeparatorChar + prefix + "." + quickSlotName + ".State";
+				var path = RTC_Corruptcore.workingDir + stateLocation + Path.DirectorySeparatorChar + prefix + "." + quickSlotName + ".State";
 
 
 				if (File.Exists(path) == false)
@@ -409,5 +283,28 @@ namespace RTC
 				return false;
 			}
 		}
+
+		public static void LoadBizhawkWindowState()
+		{
+			if (RTC_Params.IsParamSet("BIZHAWK_SIZE"))
+			{
+				string[] size = RTC_Params.ReadParam("BIZHAWK_SIZE").Split(',');
+				RTC_Hooks.BIZHAWK_GETSET_MAINFORMSIZE = new Size(Convert.ToInt32(size[0]), Convert.ToInt32(size[1]));
+				string[] location = RTC_Params.ReadParam("BIZHAWK_LOCATION").Split(',');
+				RTC_Hooks.BIZHAWK_GETSET_MAINFORMLOCATION = new Point(Convert.ToInt32(location[0]), Convert.ToInt32(location[1]));
+			}
+		}
+
+		public static void SaveBizhawkWindowState()
+		{
+			var size = RTC_Hooks.BIZHAWK_GETSET_MAINFORMSIZE;
+			var location = RTC_Hooks.BIZHAWK_GETSET_MAINFORMLOCATION;
+
+			RTC_Params.SetParam("BIZHAWK_SIZE", $"{size.Width},{size.Height}");
+			RTC_Params.SetParam("BIZHAWK_LOCATION", $"{location.X},{location.Y}");
+		}
+
+
+
 	}
 }

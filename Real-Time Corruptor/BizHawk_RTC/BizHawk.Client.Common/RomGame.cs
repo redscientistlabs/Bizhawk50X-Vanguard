@@ -117,7 +117,6 @@ namespace BizHawk.Client.Common
 			}
 		}
 
-		//RTC_Hijack : Make this method public
 		public static byte[] DeInterleaveSMD(byte[] source)
 		{
 			// SMD files are interleaved in pages of 16k, with the first 8k containing all 
@@ -143,7 +142,6 @@ namespace BizHawk.Client.Common
 			return output;
 		}
 
-		//RTC_Hijack : Make Public
 		public static unsafe byte[] MutateSwapN64(byte[] source)
 		{
 			// N64 roms are in one of the following formats:

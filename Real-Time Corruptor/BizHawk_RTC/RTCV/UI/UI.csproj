@@ -33,8 +33,15 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Newtonsoft.Json, Version=6.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\..\..\Desktop\RTC3-Netcore2-Refactor\RTC3-Netcore2-Refactor\Real-Time Corruptor\BizHawk_RTC\output\dll\Newtonsoft.Json.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
+    <Reference Include="System.IO.Compression" />
+    <Reference Include="System.IO.Compression.FileSystem" />
+    <Reference Include="System.Numerics" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -46,6 +53,188 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Components\Blast Editor\RTC_ColumnSelector_Form.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Components\Blast Editor\RTC_ColumnSelector_Form.Designer.cs">
+      <DependentUpon>RTC_ColumnSelector_Form.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Components\Containers\RTC_ListBox_Form.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Components\Containers\RTC_ListBox_Form.designer.cs">
+      <DependentUpon>RTC_ListBox_Form.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Components\Containers\RTC_SelectBox_Form.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Components\Containers\RTC_SelectBox_Form.designer.cs">
+      <DependentUpon>RTC_SelectBox_Form.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Components\Engine Config\RTC_CorruptionEngine_Form.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Components\Engine Config\RTC_CorruptionEngine_Form.Designer.cs">
+      <DependentUpon>RTC_CorruptionEngine_Form.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Components\Engine Config\RTC_GeneralParameters_Form.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Components\Engine Config\RTC_GeneralParameters_Form.Designer.cs">
+      <DependentUpon>RTC_GeneralParameters_Form.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Components\Engine Config\RTC_MemoryDomains_Form.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Components\Engine Config\RTC_MemoryDomains_Form.Designer.cs">
+      <DependentUpon>RTC_MemoryDomains_Form.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Components\Glitch Harvester\RTC_SettingsReroll_Form.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Components\Glitch Harvester\RTC_SettingsReroll_Form.designer.cs">
+      <DependentUpon>RTC_SettingsReroll_Form.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Components\Memory Tools\RTC_ListGen_Form.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Components\Memory Tools\RTC_ListGen_Form.designer.cs">
+      <DependentUpon>RTC_ListGen_Form.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Components\Memory Tools\RTC_VmdAct_Form.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Components\Memory Tools\RTC_VmdAct_Form.designer.cs">
+      <DependentUpon>RTC_VmdAct_Form.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Components\Memory Tools\RTC_VmdGen_Form.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Components\Memory Tools\RTC_VmdGen_Form.designer.cs">
+      <DependentUpon>RTC_VmdGen_Form.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Components\Memory Tools\RTC_VmdNoTool_Form.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Components\Memory Tools\RTC_VmdNoTool_Form.designer.cs">
+      <DependentUpon>RTC_VmdNoTool_Form.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Components\Memory Tools\RTC_VmdPool_Form.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Components\Memory Tools\RTC_VmdPool_Form.designer.cs">
+      <DependentUpon>RTC_VmdPool_Form.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Components\RTC_Template_Form.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Components\RTC_Template_Form.designer.cs">
+      <DependentUpon>RTC_Template_Form.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Components\Settings\RTC_SettingsAestethics_Form.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Components\Settings\RTC_SettingsAestethics_Form.designer.cs">
+      <DependentUpon>RTC_SettingsAestethics_Form.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Components\Settings\RTC_SettingsGeneral_Form.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Components\Settings\RTC_SettingsGeneral_Form.designer.cs">
+      <DependentUpon>RTC_SettingsGeneral_Form.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Components\Settings\RTC_SettingsNetCore_Form.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Components\Settings\RTC_SettingsNetCore_Form.designer.cs">
+      <DependentUpon>RTC_SettingsNetCore_Form.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\RTC_BlastEditor_Form.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\RTC_BlastEditor_Form.designer.cs">
+      <DependentUpon>RTC_BlastEditor_Form.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\RTC_BlastGenerator_Form.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\RTC_BlastGenerator_Form.Designer.cs">
+      <DependentUpon>RTC_BlastGenerator_Form.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\RTC_ConnectionStatus_Form.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\RTC_ConnectionStatus_Form.designer.cs">
+      <DependentUpon>RTC_ConnectionStatus_Form.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\RTC_Core_Form.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\RTC_Core_Form.designer.cs">
+      <DependentUpon>RTC_Core_Form.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\RTC_CustomEngineConfig_Form.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\RTC_CustomEngineConfig_Form.Designer.cs">
+      <DependentUpon>RTC_CustomEngineConfig_Form.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\RTC_EngineConfig_Form.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\RTC_EngineConfig_Form.Designer.cs">
+      <DependentUpon>RTC_EngineConfig_Form.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\RTC_GlitchHarvester_Form.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\RTC_GlitchHarvester_Form.designer.cs">
+      <DependentUpon>RTC_GlitchHarvester_Form.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\RTC_HotkeyConfig_Form.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\RTC_HotkeyConfig_Form.Designer.cs">
+      <DependentUpon>RTC_HotkeyConfig_Form.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\RTC_NewBlastEditor_Form.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\RTC_NewBlastEditor_Form.Designer.cs">
+      <DependentUpon>RTC_NewBlastEditor_Form.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\RTC_NoteEditor_Form.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\RTC_NoteEditor_Form.designer.cs">
+      <DependentUpon>RTC_NoteEditor_Form.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\RTC_Settings_Form.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\RTC_Settings_Form.Designer.cs">
+      <DependentUpon>RTC_Settings_Form.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\RTC_StockpileBlastBoard_Form.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\RTC_StockpileBlastBoard_Form.designer.cs">
+      <DependentUpon>RTC_StockpileBlastBoard_Form.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\RTC_StockpilePlayer_Form.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\RTC_StockpilePlayer_Form.designer.cs">
+      <DependentUpon>RTC_StockpilePlayer_Form.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\RTC_Test_Form.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\RTC_Test_Form.Designer.cs">
+      <DependentUpon>RTC_Test_Form.cs</DependentUpon>
+    </Compile>
+    <Compile Include="RTC_GameProtection.cs" />
+    <Compile Include="RTC_UICore.cs" />
     <Compile Include="UIConnector.cs" />
     <Compile Include="Form1.cs">
       <SubType>Form</SubType>
@@ -56,8 +245,99 @@
     <Compile Include="NetCoreServer.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="UI_Extensions.cs" />
     <EmbeddedResource Include="Form1.resx">
       <DependentUpon>Form1.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Components\Blast Editor\RTC_ColumnSelector_Form.resx">
+      <DependentUpon>RTC_ColumnSelector_Form.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Components\Containers\RTC_ListBox_Form.resx">
+      <DependentUpon>RTC_ListBox_Form.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Components\Containers\RTC_SelectBox_Form.resx">
+      <DependentUpon>RTC_SelectBox_Form.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Components\Engine Config\RTC_CorruptionEngine_Form.resx">
+      <DependentUpon>RTC_CorruptionEngine_Form.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Components\Engine Config\RTC_GeneralParameters_Form.resx">
+      <DependentUpon>RTC_GeneralParameters_Form.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Components\Engine Config\RTC_MemoryDomains_Form.resx">
+      <DependentUpon>RTC_MemoryDomains_Form.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Components\Glitch Harvester\RTC_SettingsReroll_Form.resx">
+      <DependentUpon>RTC_SettingsReroll_Form.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Components\Memory Tools\RTC_ListGen_Form.resx">
+      <DependentUpon>RTC_ListGen_Form.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Components\Memory Tools\RTC_VmdAct_Form.resx">
+      <DependentUpon>RTC_VmdAct_Form.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Components\Memory Tools\RTC_VmdGen_Form.resx">
+      <DependentUpon>RTC_VmdGen_Form.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Components\Memory Tools\RTC_VmdNoTool_Form.resx">
+      <DependentUpon>RTC_VmdNoTool_Form.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Components\Memory Tools\RTC_VmdPool_Form.resx">
+      <DependentUpon>RTC_VmdPool_Form.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Components\RTC_Template_Form.resx">
+      <DependentUpon>RTC_Template_Form.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Components\Settings\RTC_SettingsAestethics_Form.resx">
+      <DependentUpon>RTC_SettingsAestethics_Form.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Components\Settings\RTC_SettingsGeneral_Form.resx">
+      <DependentUpon>RTC_SettingsGeneral_Form.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Components\Settings\RTC_SettingsNetCore_Form.resx">
+      <DependentUpon>RTC_SettingsNetCore_Form.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\RTC_BlastEditor_Form.resx">
+      <DependentUpon>RTC_BlastEditor_Form.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\RTC_BlastGenerator_Form.resx">
+      <DependentUpon>RTC_BlastGenerator_Form.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\RTC_ConnectionStatus_Form.resx">
+      <DependentUpon>RTC_ConnectionStatus_Form.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\RTC_Core_Form.resx">
+      <DependentUpon>RTC_Core_Form.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\RTC_CustomEngineConfig_Form.resx">
+      <DependentUpon>RTC_CustomEngineConfig_Form.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\RTC_EngineConfig_Form.resx">
+      <DependentUpon>RTC_EngineConfig_Form.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\RTC_GlitchHarvester_Form.resx">
+      <DependentUpon>RTC_GlitchHarvester_Form.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\RTC_HotkeyConfig_Form.resx">
+      <DependentUpon>RTC_HotkeyConfig_Form.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\RTC_NewBlastEditor_Form.resx">
+      <DependentUpon>RTC_NewBlastEditor_Form.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\RTC_NoteEditor_Form.resx">
+      <DependentUpon>RTC_NoteEditor_Form.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\RTC_Settings_Form.resx">
+      <DependentUpon>RTC_Settings_Form.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\RTC_StockpileBlastBoard_Form.resx">
+      <DependentUpon>RTC_StockpileBlastBoard_Form.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\RTC_StockpilePlayer_Form.resx">
+      <DependentUpon>RTC_StockpilePlayer_Form.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\RTC_Test_Form.resx">
+      <DependentUpon>RTC_Test_Form.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
@@ -68,6 +348,7 @@
       <AutoGen>True</AutoGen>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
+    <None Include="packages.config" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
@@ -82,9 +363,9 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\BizHawk.Client.EmuHawk\BizHawk.Client.EmuHawk.csproj">
-      <Project>{dd448b37-ba3f-4544-9754-5406e8094723}</Project>
-      <Name>BizHawk.Client.EmuHawk</Name>
+    <ProjectReference Include="..\Libraries\CorruptCore\CorruptCore.csproj">
+      <Project>{b5633a86-dc66-4723-88eb-7dfc95458072}</Project>
+      <Name>CorruptCore</Name>
     </ProjectReference>
     <ProjectReference Include="..\Libraries\NetCore\NetCore.csproj">
       <Project>{7e106aec-5614-4206-9e4d-25759c90e8ae}</Project>
