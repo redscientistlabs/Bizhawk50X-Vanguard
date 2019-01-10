@@ -30,68 +30,68 @@ namespace RTC
 			{
 				//HANDLE MESSAGES HERE
 				case "ADVANCED MESSAGE THAT CONTAINS A VALUE":
-				{
-					object value = advancedMessage.objectValue; //This is how you get the value from a message
-					break;
-				}
+					{
+						object value = advancedMessage.objectValue; //This is how you get the value from a message
+						break;
+					}
 
 				case "#!RETURNTEST": //ADVANCED MESSAGE (SYNCED) WANTS A RETURN VALUE
 					e.setReturnValue(new Random(666));
 					break;
 
 				case "ASYNCBLAST":
-				{
-					BlastLayer bl = RTC_Corruptcore.Blast(null, RTC_MemoryDomains.SelectedDomains);
-					if (bl != null)
-						bl.Apply();
-				}
-				break;
+					{
+						BlastLayer bl = RTC_Corruptcore.Blast(null, RTC_MemoryDomains.SelectedDomains);
+						if (bl != null)
+							bl.Apply();
+					}
+					break;
 				case "BLAST":
-				{
-					object[] value = advancedMessage.objectValue as object[];
-					BlastLayer bl = (BlastLayer)value[0];
-					string[] _domains = (string[])value[1];
-					bool isReplay = (bool)value[2];
+					{
+						object[] value = advancedMessage.objectValue as object[];
+						BlastLayer bl = (BlastLayer)value[0];
+						string[] _domains = (string[])value[1];
+						bool isReplay = (bool)value[2];
 
 						if (_domains == null)
-						_domains = RTC_MemoryDomains.SelectedDomains;
+							_domains = RTC_MemoryDomains.SelectedDomains;
 
-					if (bl != null)
-					{
-						bl.Apply(isReplay);
-					}
-					else
-					{
-						bl = RTC_Corruptcore.Blast(null, _domains);
-					}
+						if (bl != null)
+						{
+							bl.Apply(isReplay);
+						}
+						else
+						{
+							bl = RTC_Corruptcore.Blast(null, _domains);
+						}
 
-					if (advancedMessage.requestGuid != null)
-					{
-						e.setReturnValue(bl);
+						if (advancedMessage.requestGuid != null)
+						{
+							e.setReturnValue(bl);
+						}
 					}
-				}
-				break;
+					break;
 
 				case "STASHKEY":
-				{
-					var temp = advancedMessage.objectValue as object[];
+					{
+						var temp = advancedMessage.objectValue as object[];
 
-					var sk = temp[0] as StashKey;
-					var romFilename = temp[1] as String;
-					var romData = temp[2] as Byte[];
+						var sk = temp[0] as StashKey;
+						var romFilename = temp[1] as String;
+						var romData = temp[2] as Byte[];
 
-					if (!File.Exists(RTC_EmuCore.rtcDir + Path.DirectorySeparatorChar + "WORKING" + Path.DirectorySeparatorChar + "SKS" + Path.DirectorySeparatorChar + romFilename))
-					File.WriteAllBytes(RTC_EmuCore.rtcDir + Path.DirectorySeparatorChar + "WORKING" + Path.DirectorySeparatorChar + "SKS" + Path.DirectorySeparatorChar + romFilename, romData);
+						if (!File.Exists(RTC_EmuCore.rtcDir + Path.DirectorySeparatorChar + "WORKING" + Path.DirectorySeparatorChar + "SKS" + Path.DirectorySeparatorChar + romFilename))
+							File.WriteAllBytes(RTC_EmuCore.rtcDir + Path.DirectorySeparatorChar + "WORKING" + Path.DirectorySeparatorChar + "SKS" + Path.DirectorySeparatorChar + romFilename, romData);
 
-					sk.RomFilename = RTC_EmuCore.rtcDir + Path.DirectorySeparatorChar + "WORKING" + Path.DirectorySeparatorChar + "SKS" + Path.DirectorySeparatorChar + RTC_Extensions.getShortFilenameFromPath(cmd.romFilename);
-					sk.DeployState();
-					sk.Run();
-				}
-				break;
+						sk.RomFilename = RTC_EmuCore.rtcDir + Path.DirectorySeparatorChar + "WORKING" + Path.DirectorySeparatorChar + "SKS" + Path.DirectorySeparatorChar + RTC_Extensions.getShortFilenameFromPath(romFilename);
+						sk.DeployState();
+						sk.Run();
+					}
+					break;
 
 
 				case "REMOTE_PUSHRTCSPEC":
-					RTC_Corruptcore.RTCSpec = new FullSpec((PartialSpec)advancedMessage.objectValue);
+					RTC_Corruptcore.CorruptCoreSpec = new FullSpec((PartialSpec)advancedMessage.objectValue);
 					e.setReturnValue(true);
 					break;
 
@@ -103,7 +103,7 @@ namespace RTC
 
 
 				case "REMOTE_PUSHRTCSPECUPDATE":
-					RTC_Corruptcore.RTCSpec?.Update((PartialSpec)advancedMessage.objectValue, false);
+					RTC_Corruptcore.CorruptCoreSpec?.Update((PartialSpec)advancedMessage.objectValue, false);
 					break;
 
 				case "REMOTE_PUSHEMUSPECUPDATE":
@@ -117,14 +117,14 @@ namespace RTC
 					break;
 
 				case "BLASTGENERATOR_BLAST":
-				{
-					var temp = advancedMessage.objectValue as object[];
-					var blastGeneratorProtos = (List<BlastGeneratorProto>)(temp[0]);
-					var sk = (StashKey)(temp[1]);
+					{
+						var temp = advancedMessage.objectValue as object[];
+						var blastGeneratorProtos = (List<BlastGeneratorProto>)(temp[0]);
+						var sk = (StashKey)(temp[1]);
 
-					List<BlastGeneratorProto> returnList = RTC_BlastTools.GenerateBlastLayersFromBlastGeneratorProtos(blastGeneratorProtos, sk);
+						List<BlastGeneratorProto> returnList = RTC_BlastTools.GenerateBlastLayersFromBlastGeneratorProtos(blastGeneratorProtos, sk);
 
-					if (advancedMessage.requestGuid != null)
+						if (advancedMessage.requestGuid != null)
 						{
 							e.setReturnValue(returnList);
 						}
@@ -132,11 +132,11 @@ namespace RTC
 					}
 
 				case "REMOTE_LOADROM":
-				{
-					var fileName = advancedMessage.objectValue as String;
-					RTC_EmuCore.LoadRom_NET(fileName);
-				}
-				break;
+					{
+						var fileName = advancedMessage.objectValue as String;
+						RTC_EmuCore.LoadRom_NET(fileName);
+					}
+					break;
 
 				case "REMOTE_LOADSTATE":
 					{
@@ -150,7 +150,8 @@ namespace RTC
 
 						if (runBlastLayer)
 						{
-							RTC_NetcoreImplementation.SendCommandToBizhawk(new RTC_Command(CommandType.BLAST, { blastlayer = sk.BlastLayer, isReplay = true });
+							//TODO
+							//RTC_NetcoreImplementation.SendCommandToBizhawk(new RTC_Command(CommandType.BLAST, { blastlayer = sk.BlastLayer, isReplay = true });
 							RTC_Hooks.CPU_STEP(false, false, true);
 						}
 
@@ -249,43 +250,33 @@ namespace RTC
 					e.setReturnValue(RTC_Hooks.BIZHAWK_GET_FILESYSTEMGAMENAME());
 					break;
 
-				case "REMOTE_KEY_GETSYNCSETTINGS":
+				case "REMOTE_KEY_GETSETSYNCSETTINGS":
 					e.setReturnValue(RTC_Hooks.BIZHAWK_GETSET_SYNCSETTINGS);
 					break;
 
-				case "REMOTE_KEY_PUTSYNCSETTINGS":
-					cmdBack = new RTC_Command("RETURNVALUE);
-					break;
-
 				case "REMOTE_KEY_GETOPENROMFILENAME":
-					cmdBack = new RTC_Command("RETURNVALUE)
-					{
-						objectValue = RTC_Hooks.BIZHAWK_GET_CURRENTLYOPENEDROM()
-					};
+					e.setReturnValue(RTC_Hooks.BIZHAWK_GET_CURRENTLYOPENEDROM());
 					break;
 
 				case "REMOTE_KEY_GETRAWBLASTLAYER":
-					cmdBack = new RTC_Command("RETURNVALUE)
-					{
-						objectValue = RTC_StockpileManager.GetRawBlastlayer()
-					};
+					e.setReturnValue(RTC_StockpileManager.GetRawBlastlayer());
 					break;
 				case "REMOTE_KEY_GETBAKEDLAYER":
 					{
 						//We need a stashkey to load the game 
-						BlastLayer _bl = cmd.blastlayer;
-						var sk = cmd.stashkey;
-						cmdBack = new RTC_Command("RETURNVALUE);
-	
-						cmdBack.objectValue = RTC_BlastTools.GetAppliedBackupLayer(_bl, sk);
+						var temp = advancedMessage.objectValue as object[];
+						var _bl = temp[0] as BlastLayer;
+						var sk = temp[1] as StashKey;
+						e.setReturnValue(RTC_BlastTools.GetAppliedBackupLayer(_bl, sk));
 						break;
 					}
 
 
 				case "BIZHAWK_OPEN_HEXEDITOR_ADDRESS":
 					{
-						string domain = (string)(cmd.objectValue as object[])[0];
-						long address = (long)(cmd.objectValue as object[])[1];
+						var temp = advancedMessage.objectValue as object[];
+						string domain = (string)temp[0];
+						long address = (long)temp[1];
 
 						MemoryDomainProxy mdp = RTC_MemoryDomains.GetProxy(domain, address);
 						long realAddress = RTC_MemoryDomains.GetRealAddress(domain, address);
@@ -337,7 +328,8 @@ namespace RTC
 						S.GET<RTC_Core_Form>().AutoCorrupt = false;
 
 
-					RTC_NetcoreImplementation.SendCommandToBizhawk(new RTC_Command("REMOTE_PUSHVMDS) { objectValue = RTC_MemoryDomains.VmdPool.Values.Select(it => (it as VirtualMemoryDomain).Proto).ToArray() }, true, true);
+					//Todo
+					//RTC_NetcoreImplementation.SendCommandToBizhawk(new RTC_Command("REMOTE_PUSHVMDS) { objectValue = RTC_MemoryDomains.VmdPool.Values.Select(it => (it as VirtualMemoryDomain).Proto).ToArray() }, true, true);
 
 					Thread.Sleep(100);
 
@@ -392,7 +384,7 @@ namespace RTC
 					if (!RTC_NetCore.NetCoreCommandSynclock)
 					{
 						RTC_NetCore.NetCoreCommandSynclock = true;
-						RTC_Corruptcore.RTCSpec.Update(RTCSPEC.STEP_RUNBEFORE.ToString(), true);
+						RTC_Corruptcore.CorruptCoreSpec.Update(CCSPEC.STEP_RUNBEFORE.ToString(), true);
 
 
 						bool isload = S.GET<RTC_GlitchHarvester_Form>().cbAutoLoadState.Checked;
@@ -421,8 +413,11 @@ namespace RTC
 					break;
 
 				case "REMOTE_HOTKEY_BLASTRAWSTASH":
-					RTC_Corruptcore.RTCSpec.Update(RTCSPEC.STEP_RUNBEFORE.ToString(), true);
-					RTC_NetcoreImplementation.SendCommandToBizhawk(new RTC_Command("ASYNCBLAST));
+					RTC_Corruptcore.CorruptCoreSpec.Update(CCSPEC.STEP_RUNBEFORE.ToString(), true);
+
+					//Todo
+					//RTC_NetcoreImplementation.SendCommandToBizhawk(new RTC_Command("ASYNCBLAST));
+
 					S.GET<RTC_GlitchHarvester_Form>().btnSendRaw_Click(null, null);
 					break;
 				case "REMOTE_HOTKEY_BLASTLAYERTOGGLE":
@@ -437,7 +432,8 @@ namespace RTC
 					}
 
 					S.GET<RTC_GlitchHarvester_Form>().IsCorruptionApplied = true;
-					RTC_NetcoreImplementation.SendCommandToRTC(new RTC_Command("BLAST) { blastlayer = RTC_StockpileManager.CurrentStashkey.BlastLayer });
+					//Todo
+					//RTC_NetcoreImplementation.SendCommandToRTC(new RTC_Command("BLAST) { blastlayer = RTC_StockpileManager.CurrentStashkey.BlastLayer });
 					break;
 
 				case "REMOTE_RENDER_START":
@@ -449,7 +445,7 @@ namespace RTC
 					break;
 
 				case "REMOTE_RENDER_SETTYPE":
-					RTC_Render.lastType = (RENDERTYPE)cmd.objectValue;
+					RTC_Render.lastType = (RENDERTYPE)advancedMessage.objectValue;
 					break;
 
 				case "REMOTE_RENDER_STARTED":
@@ -458,7 +454,7 @@ namespace RTC
 					break;
 
 				case "REMOTE_RENDER_RENDERATLOAD":
-					RTC_StockpileManager.RenderAtLoad = (bool)cmd.objectValue;
+					RTC_StockpileManager.RenderAtLoad = (bool)advancedMessage.objectValue;
 					break;
 
 				default:
