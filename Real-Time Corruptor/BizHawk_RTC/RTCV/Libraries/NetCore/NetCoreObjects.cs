@@ -25,7 +25,13 @@ namespace RTCV.NetCore
         LISTENING
     }
 
-    [Serializable()]
+	public class NetCoreReceiver
+	{
+		public event EventHandler<NetCoreEventArgs> MessageReceived;
+		public virtual void OnMessageReceived(NetCoreEventArgs e) => MessageReceived?.Invoke(this, e);
+	}
+
+	[Serializable()]
     public abstract class NetCoreMessage
     {
         public string Type;
@@ -58,11 +64,6 @@ namespace RTCV.NetCore
             Type = _Type.Trim().ToUpper();
             objectValue = _Obj;
         }
-
-        public NetCoreAdvancedMessage()
-        {
-        }
-
     }
 
     public class NetCoreSpec
@@ -136,7 +137,7 @@ namespace RTCV.NetCore
 
     public class ConsoleEx
     {
-        public static volatile bool ShowDebug = false; // for debugging purposes, put this to true in order to see BOOP and EVENT commands in the console
+        public static volatile bool ShowDebug = true; // for debugging purposes, put this to true in order to see BOOP and EVENT commands in the console
 
         public static ConsoleEx singularity
         {

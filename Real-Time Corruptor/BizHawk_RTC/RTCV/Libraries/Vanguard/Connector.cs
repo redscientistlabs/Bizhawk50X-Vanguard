@@ -3,41 +3,34 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using RTC;
-using NetworkSide = RTCV.NetCore.NetworkSide;
+using RTCV.UI;
 
 namespace RTCV.Vanguard
 {
     public class VanguardConnector : IRoutable
     {
-        TargetSpec spec;
+        NetCoreReceiver receiver;
 
-        CorruptCoreConnector corruptConn;
+        //CorruptCoreConnector corruptConn;
         NetCoreConnector netConn;
+		UIConnector uiConn;
 
-        public VanguardConnector(TargetSpec _spec)
+        public VanguardConnector(NetCoreReceiver _receiver)
         {
-            spec = _spec;
+            receiver = _receiver;
 
-            LocalNetCoreRouter.registerEndpoint(this, "VANGUARD");
-            corruptConn = LocalNetCoreRouter.registerEndpoint(new CorruptCoreConnector(spec.specDetails), "CORRUPTCORE");
-        //    dolphinConn = LocalNetCoreRouter.registerEndpoint(new DolphinCorruptConnector(), "DOLPHIN");
+			LocalNetCoreRouter.registerEndpoint(this, "VANGUARD");
+			//  corruptConn = LocalNetCoreRouter.registerEndpoint(new CorruptCoreConnector(), "CORRUPTCORE");
+			//uiConn = LocalNetCoreRouter.registerEndpoint(new UIConnector(), "CORRUPTCORE");
 
-
-            var netCoreSpec = new NetCoreSpec();
+			var netCoreSpec = new NetCoreSpec();
             netCoreSpec.Side = NetworkSide.CLIENT;
             netCoreSpec.MessageReceived += OnMessageReceivedProxy;
 
             netConn = LocalNetCoreRouter.registerEndpoint(new NetCoreConnector(netCoreSpec), "RTCV");
-            LocalNetCoreRouter.registerEndpoint(netConn, "WGH"); //We can make an alias for WGH
+			LocalNetCoreRouter.registerEndpoint(netConn, "DEFAULT"); //Will send mesages to netcore if can't find the destination
 
-
-            //Once everything is registered, we can trigger the first update
-            //The first update is most likely going to be just the template
-          //  spec.specDetails.OnSpecUpdated(null);
-
-
-        }
+		}
 
         public void OnMessageReceivedProxy(object sender, NetCoreEventArgs e) => OnMessageReceived(sender, e);
         public object OnMessageReceived(object sender, NetCoreEventArgs e)
@@ -51,11 +44,11 @@ namespace RTCV.Vanguard
                 string endpoint = msgParts[0];
                 e.message.Type = msgParts[1]; //remove endpoint from type
 
-                return NetCore.LocalNetCoreRouter.Route(endpoint, sender, e);
+                return NetCore.LocalNetCoreRouter.Route(endpoint, e);
             }
             else
             {   //This is for the Vanguard Implementation
-                spec.OnMessageReceived(e);
+                receiver.OnMessageReceived(e);
                 return e.returnMessage;
             }
 

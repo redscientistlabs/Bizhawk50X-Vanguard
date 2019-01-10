@@ -85,8 +85,11 @@ namespace RTCV.NetCore
                 string target = splitType[0];
                 _message.Type = splitType[1];
 
-                if (synced)
-                    (_message as NetCoreAdvancedMessage).requestGuid = Guid.NewGuid();
+				if (synced)
+				{
+					if(((NetCoreAdvancedMessage)_message).requestGuid == null)
+						((NetCoreAdvancedMessage)_message).requestGuid = Guid.NewGuid();
+				}
                     
                 return LocalNetCoreRouter.Route(target, null, new NetCoreEventArgs() { message = _message });
             }
