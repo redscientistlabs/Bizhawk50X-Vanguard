@@ -25,13 +25,13 @@ namespace RTC
 
 		public static string[] SelectedDomains
 		{
-			get => (string[])RTC_Corruptcore.RTCSpec[RTCSPEC.MEMORYDOMAINS_SELECTEDDOMAINS.ToString()];
-			set => RTC_Corruptcore.RTCSpec.Update(RTCSPEC.MEMORYDOMAINS_SELECTEDDOMAINS.ToString(), value);
+			get => (string[])RTC_Corruptcore.CorruptCoreSpec[RTCSPEC.MEMORYDOMAINS_SELECTEDDOMAINS.ToString()];
+			set => RTC_Corruptcore.CorruptCoreSpec.Update(RTCSPEC.MEMORYDOMAINS_SELECTEDDOMAINS.ToString(), value);
 		}
 		public static string[] LastSelectedDomains
 		{
-			get => (string[])RTC_Corruptcore.RTCSpec[RTCSPEC.MEMORYDOMAINS_LASTSELECTEDDOMAINS.ToString()];
-			set => RTC_Corruptcore.RTCSpec.Update(RTCSPEC.MEMORYDOMAINS_LASTSELECTEDDOMAINS.ToString(), value);
+			get => (string[])RTC_Corruptcore.CorruptCoreSpec[RTCSPEC.MEMORYDOMAINS_LASTSELECTEDDOMAINS.ToString()];
+			set => RTC_Corruptcore.CorruptCoreSpec.Update(RTCSPEC.MEMORYDOMAINS_LASTSELECTEDDOMAINS.ToString(), value);
 		}
 
 		public static PartialSpec getDefaultPartial()
@@ -44,27 +44,13 @@ namespace RTC
 			return partial;
 		}
 
-		public static string MainDomain { get; set; }
-		public static bool BigEndian { get; set; }
-		public static int DataSize { get; set; }
-
-		public static WatchSize WatchSize
-		{
-			get
-			{
-				return (WatchSize)DataSize;
-			}
-		}
-
-
-
 		public static void UpdateSelectedDomains(string[] _domains, bool sync = false)
 		{
 
 			PartialSpec update = new PartialSpec("RTCSpec");
 			update[RTCSPEC.MEMORYDOMAINS_SELECTEDDOMAINS.ToString()] = _domains;
 			update[RTCSPEC.MEMORYDOMAINS_LASTSELECTEDDOMAINS.ToString()] = _domains;
-			RTC_Corruptcore.RTCSpec.Update(update);
+			RTC_Corruptcore.CorruptCoreSpec.Update(update);
 
 			Console.WriteLine($"{RTC_NetcoreImplementation.RemoteRTC?.expectedSide} -> Selected {_domains.Count().ToString()} domains \n{string.Join(" | ", _domains)}");
 		}
@@ -72,9 +58,9 @@ namespace RTC
 		public static void ClearSelectedDomains()
 		{
 			PartialSpec update = new PartialSpec("RTCSpec");
-			update[RTCSPEC.MEMORYDOMAINS_LASTSELECTEDDOMAINS.ToString()] = RTC_Corruptcore.RTCSpec[RTCSPEC.MEMORYDOMAINS_SELECTEDDOMAINS.ToString()];
+			update[RTCSPEC.MEMORYDOMAINS_LASTSELECTEDDOMAINS.ToString()] = RTC_Corruptcore.CorruptCoreSpec[RTCSPEC.MEMORYDOMAINS_SELECTEDDOMAINS.ToString()];
 			update[RTCSPEC.MEMORYDOMAINS_SELECTEDDOMAINS.ToString()] = new string[] { };
-			RTC_Corruptcore.RTCSpec.Update(update);
+			RTC_Corruptcore.CorruptCoreSpec.Update(update);
 			
 			Console.WriteLine($"{RTC_NetcoreImplementation.RemoteRTC?.expectedSide} -> Cleared selected domains");
 		}
@@ -354,38 +340,15 @@ namespace RTC
 			if (Global.Emulator is NullEmulator)
 				return;
 
-			object[] returns;
-
-
 			Guid token = RTC_NetCore.HugeOperationStart();
-			if (!RTC_NetcoreImplementation.isStandaloneUI)
-				returns = (object[])GetInterfaces();
-			else
-				returns = (object[])RTC_NetcoreImplementation.SendCommandToBizhawk(new RTC_Command(CommandType.REMOTE_DOMAIN_GETDOMAINS), true);
+			RTC_EmuCore.EmuSpec.Update(VSPEC.MEMORYDOMAINS_INTERFACES.ToString(), (object[])GetInterfaces());
+			RTC_NetcoreImplementation.SendCommandToRTC(new RTC_Command(CommandType.REMOTE_EVENT_DOMAINSUPDATED));
 
 			RTC_NetCore.HugeOperationEnd(token);
-
-			if (returns == null)
-			{
-				Console.WriteLine($"{RTC_NetcoreImplementation.RemoteRTC.expectedSide} -> RefreshDomains() FAILED");
-				return;
-			}
 
 			if (clearSelected)
 				ClearSelectedDomains();
 
-			if (RTC_NetcoreImplementation.isStandaloneUI)
-			{
-				MemoryInterfaces.Clear();
-
-				foreach (MemoryInterface mi in (MemoryInterface[])returns[0])
-					if (!MemoryInterfaces.ContainsKey(mi.ToString()))
-						MemoryInterfaces.Add(mi.ToString(), mi);
-
-				MainDomain = (string)returns[1];
-				DataSize = MemoryInterfaces[MainDomain].WordSize;
-				BigEndian = MemoryInterfaces[MainDomain].BigEndian;
-			}
 		}
 
 		public static object GetInterfaces()
@@ -394,25 +357,17 @@ namespace RTC
 
 			MemoryInterfaces.Clear();
 
+			if (Global.Emulator?.ServiceProvider == null)
+				return null;;
+
 			ServiceInjector.UpdateServices(Global.Emulator.ServiceProvider, MDRI);
 
 			foreach (MemoryDomain _domain in MDRI.MemoryDomains)
 				if (!MemoryInterfaces.ContainsKey(_domain.ToString()))
 					MemoryInterfaces.Add(_domain.ToString(), new MemoryDomainProxy(new BizhawkMemoryDomain(_domain)));
 
-			MainDomain = MDRI.MemoryDomains.MainMemory.ToString();
-			DataSize = ((MemoryDomainProxy)MemoryInterfaces[MainDomain]).MD.WordSize;
-			BigEndian = ((MemoryDomainProxy)MemoryInterfaces[MainDomain]).MD.BigEndian;
 
-			//RefreshDomains();
-
-			/*
-            if(VmdPool.Count > 0)
-                foreach (string VmdKey in VmdPool.Keys)
-                    MemoryInterfaces.Add(VmdKey, VmdPool[VmdKey]);
-            */
-
-			return new object[] { MemoryInterfaces.Values.ToArray(), MainDomain };
+			return MemoryInterfaces.Values.ToArray();
 		}
 
 		public static void Clear()
@@ -423,7 +378,7 @@ namespace RTC
 			PartialSpec update = new PartialSpec("RTCSpec");
 			RTC_MemoryDomains.LastSelectedDomains = RTC_MemoryDomains.SelectedDomains;
 			RTC_MemoryDomains.SelectedDomains = new string[] { };
-			RTC_Corruptcore.RTCSpec.Update(update);
+			RTC_Corruptcore.CorruptCoreSpec.Update(update);
 
 			if (!S.ISNULL<RTC_EngineConfig_Form>())
 				S.GET<RTC_MemoryDomains_Form>().lbMemoryDomains.Items.Clear();
@@ -510,8 +465,7 @@ namespace RTC
 				RTC_NetCore.HugeOperationEnd(token);
 			}
 
-			if (!RTC_NetcoreImplementation.isStandaloneEmu)
-				S.GET<RTC_MemoryDomains_Form>().RefreshDomainsAndKeepSelected();
+			RTC_NetcoreImplementation.SendCommandToRTC(new RTC_Command(CommandType.REMOTE_EVENT_DOMAINSUPDATED));
 		}
 
 		public static void RemoveVMD(VirtualMemoryDomain VMD) => RemoveVMD(VMD.ToString());
@@ -524,8 +478,7 @@ namespace RTC
 				RTC_NetcoreImplementation.SendCommandToBizhawk(new RTC_Command(CommandType.REMOTE_DOMAIN_VMD_REMOVE) { objectValue = vmdName }, true);
 			}
 
-			if (!RTC_NetcoreImplementation.isStandaloneEmu)
-				S.GET<RTC_MemoryDomains_Form>().RefreshDomainsAndKeepSelected();
+			RTC_NetcoreImplementation.SendCommandToRTC(new RTC_Command(CommandType.REMOTE_EVENT_DOMAINSUPDATED));
 		}
 
 		public static void RenameVMD(VirtualMemoryDomain VMD) => RenameVMD(VMD.ToString());

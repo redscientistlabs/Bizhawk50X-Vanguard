@@ -40,7 +40,7 @@ namespace RTC
 			
 			//Return out if it's being called from before the step and we're not on frame 0. If we're on frame 0, then we go as normal
 			//If we can't get runbefore, just assume we don't want to run before
-			if (isBeforeStep && CPU_STEP_Count != 0 && ((bool)(RTC_Corruptcore.RTCSpec?[RTCSPEC.STEP_RUNBEFORE.ToString()] ?? false)) == false)
+			if (isBeforeStep && CPU_STEP_Count != 0 && ((bool)(RTC_Corruptcore.CorruptCoreSpec?[RTCSPEC.STEP_RUNBEFORE.ToString()] ?? false)) == false)
 				return;
 
 			isNormalAdvance = !(isRewinding || isFastForwarding);
@@ -185,8 +185,6 @@ namespace RTC
 		{
 			if (disableRTC) return;
 
-			//RTC_HellgenieEngine.ClearCheats();
-			//RTC_PipeEngine.ClearPipes();
 
 			//Glitch Harvester warning for archives
 
@@ -201,15 +199,16 @@ namespace RTC
 
 
 			PartialSpec gameDone = new PartialSpec("EmuSpec");
-			gameDone[EMUSPEC.STOCKPILE_CURRENTGAMESYSTEM.ToString()] = RTC_EmuCore.EmuFolderCheck(pathEntry.SystemDisplayName);
-			gameDone[EMUSPEC.STOCKPILE_CURRENTGAMENAME.ToString()] = PathManager.FilesystemSafeName(Global.Game);
-			gameDone[EMUSPEC.CORE_LASTOPENROM.ToString()] = GlobalWin.MainForm.CurrentlyOpenRom;
+			gameDone[VSPEC.STOCKPILE_CURRENTGAMESYSTEM.ToString()] = RTC_EmuCore.EmuFolderCheck(pathEntry.SystemDisplayName);
+			gameDone[VSPEC.STOCKPILE_CURRENTGAMENAME.ToString()] = PathManager.FilesystemSafeName(Global.Game);
+			gameDone[VSPEC.CORE_LASTOPENROM.ToString()] = GlobalWin.MainForm.CurrentlyOpenRom;
 			RTC_EmuCore.EmuSpec.Update(gameDone);
-			
+
+			RTC_MemoryDomains.RefreshDomains(false);
+
 			//Sleep for 10ms in case Bizhawk hung for a moment after the game loaded
 			System.Threading.Thread.Sleep(10);
 			//prepare memory domains in advance on bizhawk side
-			RTC_MemoryDomains.RefreshDomains(false);
 
 			if (RTC_EmuCore.CurrentGameName != lastGameName)
 			{
@@ -222,7 +221,6 @@ namespace RTC
 
 			lastGameName = RTC_EmuCore.CurrentGameName;
 
-			//RTC_Restore.SaveRestore();
 
 			RTC_NetCore.HugeOperationEnd(loadGameToken);
 		}

@@ -30,8 +30,6 @@
 		{
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(RTC_CorruptionEngine_Form));
             this.pnCustomPrecision = new System.Windows.Forms.Panel();
-            this.lbCoreDefault = new System.Windows.Forms.Label();
-            this.cbUseCustomPrecision = new System.Windows.Forms.CheckBox();
             this.cbCustomPrecision = new System.Windows.Forms.ComboBox();
             this.cbSelectedEngine = new System.Windows.Forms.ComboBox();
             this.gbSelectedEngine = new System.Windows.Forms.GroupBox();
@@ -98,11 +96,11 @@
             this.cbBlastType = new System.Windows.Forms.ComboBox();
             this.label9 = new System.Windows.Forms.Label();
             this.gbCustomEngine = new System.Windows.Forms.GroupBox();
+            this.panel1 = new System.Windows.Forms.Panel();
             this.label2 = new System.Windows.Forms.Label();
             this.comboBox7 = new System.Windows.Forms.ComboBox();
             this.label3 = new System.Windows.Forms.Label();
             this.btnOpenCustomEngine = new System.Windows.Forms.Button();
-            this.panel1 = new System.Windows.Forms.Panel();
             this.pnCustomPrecision.SuspendLayout();
             this.gbBlastGeneratorEngine.SuspendLayout();
             this.gbVectorEngine.SuspendLayout();
@@ -127,8 +125,6 @@
             // pnCustomPrecision
             // 
             this.pnCustomPrecision.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(32)))), ((int)(((byte)(32)))), ((int)(((byte)(32)))));
-            this.pnCustomPrecision.Controls.Add(this.lbCoreDefault);
-            this.pnCustomPrecision.Controls.Add(this.cbUseCustomPrecision);
             this.pnCustomPrecision.Controls.Add(this.cbCustomPrecision);
             this.pnCustomPrecision.Location = new System.Drawing.Point(181, 95);
             this.pnCustomPrecision.Name = "pnCustomPrecision";
@@ -136,34 +132,6 @@
             this.pnCustomPrecision.TabIndex = 139;
             this.pnCustomPrecision.Tag = "color:darker";
             this.pnCustomPrecision.MouseDown += new System.Windows.Forms.MouseEventHandler(this.HandleMouseDown);
-            // 
-            // lbCoreDefault
-            // 
-            this.lbCoreDefault.Font = new System.Drawing.Font("Segoe UI", 8F);
-            this.lbCoreDefault.ForeColor = System.Drawing.Color.White;
-            this.lbCoreDefault.Location = new System.Drawing.Point(105, 27);
-            this.lbCoreDefault.Name = "lbCoreDefault";
-            this.lbCoreDefault.Size = new System.Drawing.Size(116, 23);
-            this.lbCoreDefault.TabIndex = 83;
-            this.lbCoreDefault.Text = "Core default: 8-bit";
-            this.lbCoreDefault.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            this.lbCoreDefault.MouseDown += new System.Windows.Forms.MouseEventHandler(this.HandleMouseDown);
-            // 
-            // cbUseCustomPrecision
-            // 
-            this.cbUseCustomPrecision.AutoSize = true;
-            this.cbUseCustomPrecision.Checked = true;
-            this.cbUseCustomPrecision.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.cbUseCustomPrecision.Font = new System.Drawing.Font("Segoe UI", 8F);
-            this.cbUseCustomPrecision.ForeColor = System.Drawing.Color.White;
-            this.cbUseCustomPrecision.Location = new System.Drawing.Point(7, 7);
-            this.cbUseCustomPrecision.Name = "cbUseCustomPrecision";
-            this.cbUseCustomPrecision.Size = new System.Drawing.Size(211, 17);
-            this.cbUseCustomPrecision.TabIndex = 82;
-            this.cbUseCustomPrecision.Text = "Use custom precision for corruption";
-            this.cbUseCustomPrecision.UseVisualStyleBackColor = true;
-            this.cbUseCustomPrecision.CheckedChanged += new System.EventHandler(this.cbUseCustomPrecision_CheckedChanged);
-            this.cbUseCustomPrecision.MouseDown += new System.Windows.Forms.MouseEventHandler(this.HandleMouseDown);
             // 
             // cbCustomPrecision
             // 
@@ -177,9 +145,9 @@
             "8-bit",
             "16-bit",
             "32-bit"});
-            this.cbCustomPrecision.Location = new System.Drawing.Point(7, 29);
+            this.cbCustomPrecision.Location = new System.Drawing.Point(95, 29);
             this.cbCustomPrecision.Name = "cbCustomPrecision";
-            this.cbCustomPrecision.Size = new System.Drawing.Size(101, 21);
+            this.cbCustomPrecision.Size = new System.Drawing.Size(121, 21);
             this.cbCustomPrecision.TabIndex = 81;
             this.cbCustomPrecision.Tag = "color:dark";
             this.cbCustomPrecision.SelectedIndexChanged += new System.EventHandler(this.cbCustomPrecision_SelectedIndexChanged);
@@ -1177,6 +1145,16 @@
             this.gbCustomEngine.TabStop = false;
             this.gbCustomEngine.Visible = false;
             // 
+            // panel1
+            // 
+            this.panel1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(32)))), ((int)(((byte)(32)))), ((int)(((byte)(32)))));
+            this.panel1.Location = new System.Drawing.Point(169, 92);
+            this.panel1.Name = "panel1";
+            this.panel1.Size = new System.Drawing.Size(221, 57);
+            this.panel1.TabIndex = 140;
+            this.panel1.Tag = "color:darker";
+            this.panel1.Visible = false;
+            // 
             // label2
             // 
             this.label2.AutoSize = true;
@@ -1230,16 +1208,6 @@
             this.btnOpenCustomEngine.UseVisualStyleBackColor = false;
             this.btnOpenCustomEngine.Click += new System.EventHandler(this.btnOpenCustomEngine_Click);
             // 
-            // panel1
-            // 
-            this.panel1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(32)))), ((int)(((byte)(32)))), ((int)(((byte)(32)))));
-            this.panel1.Location = new System.Drawing.Point(169, 92);
-            this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(221, 57);
-            this.panel1.TabIndex = 140;
-            this.panel1.Tag = "color:darker";
-            this.panel1.Visible = false;
-            // 
             // RTC_CorruptionEngine_Form
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -1265,7 +1233,6 @@
             this.Load += new System.EventHandler(this.RTC_CorruptionEngine_Form_Load);
             this.MouseDown += new System.Windows.Forms.MouseEventHandler(this.HandleMouseDown);
             this.pnCustomPrecision.ResumeLayout(false);
-            this.pnCustomPrecision.PerformLayout();
             this.gbBlastGeneratorEngine.ResumeLayout(false);
             this.gbBlastGeneratorEngine.PerformLayout();
             this.gbVectorEngine.ResumeLayout(false);
@@ -1301,8 +1268,6 @@
 		#endregion
 
 		private System.Windows.Forms.Panel pnCustomPrecision;
-		public System.Windows.Forms.Label lbCoreDefault;
-		public System.Windows.Forms.CheckBox cbUseCustomPrecision;
 		public System.Windows.Forms.ComboBox cbCustomPrecision;
 		public System.Windows.Forms.ComboBox cbSelectedEngine;
 		private System.Windows.Forms.GroupBox gbSelectedEngine;

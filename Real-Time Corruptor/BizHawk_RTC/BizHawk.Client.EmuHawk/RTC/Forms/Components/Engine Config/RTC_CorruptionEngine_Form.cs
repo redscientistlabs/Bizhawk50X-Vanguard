@@ -21,7 +21,6 @@ namespace RTC
 		private bool updatingMinMax = false;
 
 
-
 		public RTC_CorruptionEngine_Form()
 		{
 			InitializeComponent();
@@ -93,21 +92,6 @@ namespace RTC
 		private void btnResyncDistortionEngine_Click(object sender, EventArgs e)
 		{
 			RTC_StepActions.ClearStepBlastUnits();
-		}
-
-		//Todo - refactor the hell out of this
-		public void UpdateDefaultPrecision()
-		{
-			defaultPrecision = RTC_MemoryDomains.MemoryInterfaces[RTC_MemoryDomains.MainDomain].WordSize;
-			lbCoreDefault.Text = $"Core default: { defaultPrecision * 8}-bit";
-
-			
-			if (RTC_Corruptcore.CustomPrecision == -1)
-			{
-				updateMinMaxBoxes(defaultPrecision);
-				RTC_Corruptcore.CurrentPrecision = defaultPrecision;
-			}
-
 		}
 
 
@@ -279,21 +263,6 @@ namespace RTC
 			RTC_StepActions.ClearStepBlastUnits();
 		}
 
-		private void cbUseCustomPrecision_CheckedChanged(object sender, EventArgs e)
-		{
-			if (cbUseCustomPrecision.Checked)
-			{
-				if (cbCustomPrecision.SelectedIndex == -1)
-					cbCustomPrecision.SelectedIndex = 0;
-			}
-			else
-			{
-				cbCustomPrecision.SelectedIndex = -1;
-				RTC_Corruptcore.CustomPrecision = -1;
-				UpdateDefaultPrecision();
-			}
-		}
-
 		private void updateMinMaxBoxes(int precision)
 		{
 			updatingMinMax = true;
@@ -355,25 +324,20 @@ namespace RTC
 
 			if (cbCustomPrecision.SelectedIndex != -1)
 			{
-				cbUseCustomPrecision.Checked = true;
 
 				switch (cbCustomPrecision.SelectedIndex)
 				{
 					case 0:
-						RTC_Corruptcore.CustomPrecision = 1;
+						RTC_Corruptcore.CurrentPrecision = 1;
 						break;
 					case 1:
-						RTC_Corruptcore.CustomPrecision = 2;
+						RTC_Corruptcore.CurrentPrecision = 2;
 						break;
 					case 2:
-						RTC_Corruptcore.CustomPrecision = 4;
+						RTC_Corruptcore.CurrentPrecision = 4;
 						break;
 				}
-
-				if (cbUseCustomPrecision.Checked)
-					RTC_Corruptcore.CurrentPrecision = RTC_Corruptcore.CustomPrecision;
-
-
+				
 				updateMinMaxBoxes(RTC_Corruptcore.CurrentPrecision);
 				S.GET<RTC_CustomEngineConfig_Form>().UpdateMinMaxBoxes(RTC_Corruptcore.CurrentPrecision);
 			}

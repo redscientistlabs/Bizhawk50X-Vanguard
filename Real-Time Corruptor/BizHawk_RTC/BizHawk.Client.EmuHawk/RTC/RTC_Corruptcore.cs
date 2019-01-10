@@ -26,94 +26,84 @@ namespace RTC
 
 		public static bool AllowCrossCoreCorruption
 		{
-			get => (bool)RTCSpec[RTCSPEC.CORE_ALLOWCROSSCORECORRUPTION.ToString()];
-			set => RTCSpec.Update(RTCSPEC.CORE_ALLOWCROSSCORECORRUPTION.ToString(), value);
+			get => (bool)CorruptCoreSpec[RTCSPEC.CORE_ALLOWCROSSCORECORRUPTION.ToString()];
+			set => CorruptCoreSpec.Update(RTCSPEC.CORE_ALLOWCROSSCORECORRUPTION.ToString(), value);
 		}
 
 		public static CorruptionEngine SelectedEngine
 		{
-			get => (CorruptionEngine)RTCSpec[RTCSPEC.CORE_SELECTEDENGINE.ToString()];
-			set => RTCSpec.Update(RTCSPEC.CORE_SELECTEDENGINE.ToString(), value);
-		}
-
-		public static int CustomPrecision
-		{
-			get => (int)RTCSpec[RTCSPEC.CORE_CUSTOMPRECISION.ToString()];
-			set
-			{
-				RTCSpec.Update(RTCSPEC.CORE_CUSTOMPRECISION.ToString(), value);
-				CurrentPrecision = value;
-			}
+			get => (CorruptionEngine)CorruptCoreSpec[RTCSPEC.CORE_SELECTEDENGINE.ToString()];
+			set => CorruptCoreSpec.Update(RTCSPEC.CORE_SELECTEDENGINE.ToString(), value);
 		}
 
 		public static int CurrentPrecision
 		{
-			get => (int)RTCSpec[RTCSPEC.CORE_CURRENTPRECISION.ToString()];
-			set => RTCSpec.Update(RTCSPEC.CORE_CURRENTPRECISION.ToString(), value);
+			get => (int)CorruptCoreSpec[RTCSPEC.CORE_CURRENTPRECISION.ToString()];
+			set => CorruptCoreSpec.Update(RTCSPEC.CORE_CURRENTPRECISION.ToString(), value);
 		}
 
 		public static int Intensity
 		{
-			get => (int)RTCSpec[RTCSPEC.CORE_INTENSITY.ToString()];
-			set => RTCSpec.Update(RTCSPEC.CORE_INTENSITY.ToString(), value);
+			get => (int)CorruptCoreSpec[RTCSPEC.CORE_INTENSITY.ToString()];
+			set => CorruptCoreSpec.Update(RTCSPEC.CORE_INTENSITY.ToString(), value);
 		}
 
 		public static int ErrorDelay
 		{
-			get => (int)RTCSpec[RTCSPEC.CORE_ERRORDELAY.ToString()];
-			set => RTCSpec.Update(RTCSPEC.CORE_ERRORDELAY.ToString(), value);
+			get => (int)CorruptCoreSpec[RTCSPEC.CORE_ERRORDELAY.ToString()];
+			set => CorruptCoreSpec.Update(RTCSPEC.CORE_ERRORDELAY.ToString(), value);
 		}
 
 		public static BlastRadius Radius
 		{
-			get => (BlastRadius)RTCSpec[RTCSPEC.CORE_RADIUS.ToString()];
-			set => RTCSpec.Update(RTCSPEC.CORE_RADIUS.ToString(), value);
+			get => (BlastRadius)CorruptCoreSpec[RTCSPEC.CORE_RADIUS.ToString()];
+			set => CorruptCoreSpec.Update(RTCSPEC.CORE_RADIUS.ToString(), value);
 		}
 
 		public static bool AutoCorrupt
 		{
-			get => (bool)RTCSpec[RTCSPEC.CORE_AUTOCORRUPT.ToString()];
-			set => RTCSpec.Update(RTCSPEC.CORE_AUTOCORRUPT.ToString(), value);
+			get => (bool)CorruptCoreSpec[RTCSPEC.CORE_AUTOCORRUPT.ToString()];
+			set => CorruptCoreSpec.Update(RTCSPEC.CORE_AUTOCORRUPT.ToString(), value);
 		}
 
 
 		public static bool DontCleanSavestatesOnQuit
 		{
-			get => (bool)RTCSpec[RTCSPEC.CORE_DONTCLEANSAVESTATESONQUIT.ToString()];
-			set => RTCSpec.Update(RTCSPEC.CORE_DONTCLEANSAVESTATESONQUIT.ToString(), value);
+			get => (bool)CorruptCoreSpec[RTCSPEC.CORE_DONTCLEANSAVESTATESONQUIT.ToString()];
+			set => CorruptCoreSpec.Update(RTCSPEC.CORE_DONTCLEANSAVESTATESONQUIT.ToString(), value);
 		}
 
 		public static bool ShowConsole
 		{
-			get => (bool)RTCSpec[RTCSPEC.CORE_SHOWCONSOLE.ToString()];
-			set => RTCSpec.Update(RTCSPEC.CORE_SHOWCONSOLE.ToString(), value);
+			get => (bool)CorruptCoreSpec[RTCSPEC.CORE_SHOWCONSOLE.ToString()];
+			set => CorruptCoreSpec.Update(RTCSPEC.CORE_SHOWCONSOLE.ToString(), value);
 		}
 
 		public static bool RerollAddress
 		{
-			get => (bool)RTCSpec[RTCSPEC.CORE_REROLLADDRESS.ToString()];
-			set => RTCSpec.Update(RTCSPEC.CORE_REROLLADDRESS.ToString(), value);
+			get => (bool)CorruptCoreSpec[RTCSPEC.CORE_REROLLADDRESS.ToString()];
+			set => CorruptCoreSpec.Update(RTCSPEC.CORE_REROLLADDRESS.ToString(), value);
 		}
 
 		public static bool RerollSourceAddress
 		{
-			get => (bool)RTCSpec[RTCSPEC.CORE_REROLLSOURCEADDRESS.ToString()];
-			set => RTCSpec.Update(RTCSPEC.CORE_REROLLSOURCEADDRESS.ToString(), value);
+			get => (bool)CorruptCoreSpec[RTCSPEC.CORE_REROLLSOURCEADDRESS.ToString()];
+			set => CorruptCoreSpec.Update(RTCSPEC.CORE_REROLLSOURCEADDRESS.ToString(), value);
 		}
 
 		public static bool ExtractBlastlayer
 		{
-			get => (bool)RTCSpec[RTCSPEC.CORE_EXTRACTBLASTLAYER.ToString()];
-			set => RTCSpec.Update(RTCSPEC.CORE_EXTRACTBLASTLAYER.ToString(), value);
+			get => (bool)CorruptCoreSpec[RTCSPEC.CORE_EXTRACTBLASTLAYER.ToString()];
+			set => CorruptCoreSpec.Update(RTCSPEC.CORE_EXTRACTBLASTLAYER.ToString(), value);
 		}
 
 		public static bool BizhawkOsdDisabled
 		{
-			get => (bool)RTCSpec[RTCSPEC.CORE_BIZHAWKOSDDISABLED.ToString()];
-			set => RTCSpec.Update(RTCSPEC.CORE_BIZHAWKOSDDISABLED.ToString(), value);
+			get => (bool)CorruptCoreSpec[RTCSPEC.CORE_BIZHAWKOSDDISABLED.ToString()];
+			set => CorruptCoreSpec.Update(RTCSPEC.CORE_BIZHAWKOSDDISABLED.ToString(), value);
 		}
 			
-		public static volatile FullSpec RTCSpec;
+		public static volatile FullSpec CorruptCoreSpec;
 
 		public static void Start()
 		{
@@ -145,10 +135,10 @@ namespace RTC
 			rtcSpecTemplate.Insert(RTC_MemoryDomains.getDefaultPartial());
 
 
-			RTCSpec = new FullSpec(rtcSpecTemplate); //You have to feed a partial spec as a template
+			CorruptCoreSpec = new FullSpec(rtcSpecTemplate); //You have to feed a partial spec as a template
 
 
-			RTCSpec.SpecUpdated += (o, e) =>
+			CorruptCoreSpec.SpecUpdated += (o, e) =>
 			{
 				PartialSpec partial = e.partialSpec;
 
@@ -161,7 +151,7 @@ namespace RTC
 			if (RTC_StockpileManager.BackupedState != null)
 				RTC_StockpileManager.BackupedState.Run();
 			else
-				RTCSpec.Update(RTCSPEC.CORE_AUTOCORRUPT.ToString(), false);
+				CorruptCoreSpec.Update(RTCSPEC.CORE_AUTOCORRUPT.ToString(), false);
 		}
 
 		public static PartialSpec getDefaultPartial()
@@ -172,7 +162,6 @@ namespace RTC
 			partial[RTCSPEC.CORE_ALLOWCROSSCORECORRUPTION.ToString()] = CorruptionEngine.NIGHTMARE;
 			partial[RTCSPEC.CORE_SELECTEDENGINE.ToString()] = CorruptionEngine.NIGHTMARE;
 
-			partial[RTCSPEC.CORE_CUSTOMPRECISION.ToString()] = 0;
 			partial[RTCSPEC.CORE_CURRENTPRECISION.ToString()] = 1;
 			partial[RTCSPEC.CORE_INTENSITY.ToString()] = 1;
 			partial[RTCSPEC.CORE_ERRORDELAY.ToString()] = 1;
@@ -436,6 +425,8 @@ namespace RTC
 					additionalInfo = "Unable to get an interface to the selected memory domain! Try clicking the Auto-Select Domains button to refresh the domains!\n\n";
 				}
 
+				//Todo figure out how to handle this 
+				/*
 				DialogResult dr = MessageBox.Show("Something went wrong in the RTC Core. \n" +
 					additionalInfo +
 					"This is an RTC error, so you should probably send this to the RTC devs.\n\n" +
@@ -445,7 +436,7 @@ namespace RTC
 					ex.ToString(), "Error", (S.GET<RTC_Core_Form>().AutoCorrupt ? MessageBoxButtons.YesNo : MessageBoxButtons.OK));
 
 				if (dr == DialogResult.Yes || dr == DialogResult.OK)
-					S.GET<RTC_Core_Form>().AutoCorrupt = false;
+					S.GET<RTC_Core_Form>().AutoCorrupt = false;*/
 
 				return null;
 			}
@@ -476,16 +467,5 @@ namespace RTC
 			return Key;
 		}
 
-		public static void SetEngineByName(string name)
-		{
-			//Selects an engine from a given string name
-
-			for (int i = 0; i < S.GET<RTC_CorruptionEngine_Form>().cbSelectedEngine.Items.Count; i++)
-				if (S.GET<RTC_CorruptionEngine_Form>().cbSelectedEngine.Items[i].ToString() == name)
-				{
-					S.GET<RTC_CorruptionEngine_Form>().cbSelectedEngine.SelectedIndex = i;
-					break;
-				}
-		}
 	}
 }

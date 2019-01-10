@@ -16,12 +16,16 @@ namespace RTC
 	{
 		public static bool PushRTCSpec()
 		{
-			return (bool)(RTC_NetcoreImplementation.SendCommandToBizhawk(new RTC_Command(CommandType.REMOTE_PUSHRTCSPEC) { objectValue = RTC_Corruptcore.RTCSpec.GetPartialSpec() }, true) ?? false);;
+			return (bool)(RTC_NetcoreImplementation.SendCommandToBizhawk(new RTC_Command(CommandType.REMOTE_PUSHRTCSPEC) { objectValue = RTC_Corruptcore.CorruptCoreSpec.GetPartialSpec() }, true) ?? false);;
 		}
 		public static bool PushEmuSpec()
 		{
 			return (bool)(RTC_NetcoreImplementation.SendCommandToBizhawk(new RTC_Command(CommandType.REMOTE_PUSHEMUSPEC) { objectValue = RTC_EmuCore.EmuSpec.GetPartialSpec() }, true) ?? false);
 		}
-	}
 
+		public static bool PushUISpec()
+		{
+			return (bool)(RTC_NetcoreImplementation.SendCommandToBizhawk(new RTC_Command(CommandType.REMOTE_PUSHUISPEC) { objectValue = RTC_UICore.UISpec.GetPartialSpec() }, true) ?? false);
+		}
+	}
 }

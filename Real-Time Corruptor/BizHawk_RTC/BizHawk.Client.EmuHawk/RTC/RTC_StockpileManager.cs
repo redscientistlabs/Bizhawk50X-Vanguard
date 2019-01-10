@@ -38,14 +38,14 @@ namespace RTC
 
 		public static string CurrentSavestateKey
 		{
-			get => (string)RTC_Corruptcore.RTCSpec[RTCSPEC.CORE_EXTRACTBLASTLAYER.ToString()];
-			set => RTC_Corruptcore.RTCSpec.Update(RTCSPEC.CORE_EXTRACTBLASTLAYER.ToString(), value);
+			get => (string)RTC_Corruptcore.CorruptCoreSpec[RTCSPEC.CORE_EXTRACTBLASTLAYER.ToString()];
+			set => RTC_Corruptcore.CorruptCoreSpec.Update(RTCSPEC.CORE_EXTRACTBLASTLAYER.ToString(), value);
 		}
 
 		public static StashKey BackupedState
 		{
-			get => (StashKey)RTC_Corruptcore.RTCSpec[RTCSPEC.STOCKPILE_BACKUPEDSTATE.ToString()];
-			set => RTC_Corruptcore.RTCSpec.Update(RTCSPEC.STOCKPILE_BACKUPEDSTATE.ToString(), value);
+			get => (StashKey)RTC_Corruptcore.CorruptCoreSpec[RTCSPEC.STOCKPILE_BACKUPEDSTATE.ToString()];
+			set => RTC_Corruptcore.CorruptCoreSpec.Update(RTCSPEC.STOCKPILE_BACKUPEDSTATE.ToString(), value);
 		}
 
 		public static PartialSpec getDefaultPartial()
@@ -134,8 +134,6 @@ namespace RTC
 			if (currentGame == null || psk.GameName != currentGame) 
 			{
 				RTC_EmuCore.LoadRom(psk.RomFilename, true);
-				S.GET<RTC_MemoryDomains_Form>().RefreshDomains();
-				S.GET<RTC_MemoryDomains_Form>().SetMemoryDomainsAllButSelectedDomains(RTC_MemoryDomains.GetBlacklistedDomains());
 			}
 
 			var watch = System.Diagnostics.Stopwatch.StartNew();

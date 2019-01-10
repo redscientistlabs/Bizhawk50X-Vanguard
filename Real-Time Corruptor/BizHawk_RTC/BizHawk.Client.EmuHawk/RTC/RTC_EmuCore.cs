@@ -34,23 +34,23 @@ namespace RTC
 
 		public static string CurrentGameSystem
 		{
-			get => (string)EmuSpec[EMUSPEC.STOCKPILE_CURRENTGAMESYSTEM.ToString()];
-			set => EmuSpec.Update(EMUSPEC.STOCKPILE_CURRENTGAMESYSTEM.ToString(), value);
+			get => (string)EmuSpec[VSPEC.STOCKPILE_CURRENTGAMESYSTEM.ToString()];
+			set => EmuSpec.Update(VSPEC.STOCKPILE_CURRENTGAMESYSTEM.ToString(), value);
 		}
 		public static string CurrentGameName
 		{
-			get => (string)EmuSpec[EMUSPEC.STOCKPILE_CURRENTGAMENAME.ToString()];
-			set => EmuSpec.Update(EMUSPEC.STOCKPILE_CURRENTGAMENAME.ToString(), value);
+			get => (string)EmuSpec[VSPEC.STOCKPILE_CURRENTGAMENAME.ToString()];
+			set => EmuSpec.Update(VSPEC.STOCKPILE_CURRENTGAMENAME.ToString(), value);
 		}
 		public static string LastOpenRom
 		{
-			get => (string)EmuSpec[EMUSPEC.CORE_LASTOPENROM.ToString()];
-			set => EmuSpec.Update(EMUSPEC.CORE_LASTOPENROM.ToString(), value);
+			get => (string)EmuSpec[VSPEC.CORE_LASTOPENROM.ToString()];
+			set => EmuSpec.Update(VSPEC.CORE_LASTOPENROM.ToString(), value);
 		}
 		public static int LastLoaderRom
 		{
-			get => (int)EmuSpec[EMUSPEC.CORE_LASTLOADERROM.ToString()];
-			set => EmuSpec.Update(EMUSPEC.CORE_LASTLOADERROM.ToString(), value);
+			get => (int)EmuSpec[VSPEC.CORE_LASTLOADERROM.ToString()];
+			set => EmuSpec.Update(VSPEC.CORE_LASTLOADERROM.ToString(), value);
 		}
 
 		public static PartialSpec getDefaultPartial()
@@ -58,10 +58,10 @@ namespace RTC
 			var partial = new PartialSpec("RTCSpec");
 
 
-			partial[EMUSPEC.STOCKPILE_CURRENTGAMESYSTEM.ToString()] = null;
-			partial[EMUSPEC.STOCKPILE_CURRENTGAMENAME.ToString()] = null;
-			partial[EMUSPEC.CORE_LASTOPENROM.ToString()] = null;
-			partial[EMUSPEC.CORE_LASTLOADERROM.ToString()] = -1;
+			partial[VSPEC.STOCKPILE_CURRENTGAMESYSTEM.ToString()] = null;
+			partial[VSPEC.STOCKPILE_CURRENTGAMENAME.ToString()] = null;
+			partial[VSPEC.CORE_LASTOPENROM.ToString()] = null;
+			partial[VSPEC.CORE_LASTLOADERROM.ToString()] = -1;
 
 
 			return partial;

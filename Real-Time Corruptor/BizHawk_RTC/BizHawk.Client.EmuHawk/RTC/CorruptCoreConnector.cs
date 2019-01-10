@@ -304,15 +304,12 @@ namespace RTC
 						RTC_GameProtection.Reset();
 
 					RTC_Corruptcore.AutoCorrupt = false;
-					//RTC_StockpileManager.isCorruptionApplied = false;
 					S.GET<RTC_MemoryDomains_Form>().RefreshDomains();
 					S.GET<RTC_MemoryDomains_Form>().SetMemoryDomainsAllButSelectedDomains(RTC_MemoryDomains.GetBlacklistedDomains());
-					S.GET<RTC_CorruptionEngine_Form>().UpdateDefaultPrecision();
 					break;
 				case "REMOTE_EVENT_LOADGAMEDONE_SAMEGAME":
 					//RTC_StockpileManager.isCorruptionApplied = false;
 					S.GET<RTC_MemoryDomains_Form>().RefreshDomainsAndKeepSelected();
-					S.GET<RTC_CorruptionEngine_Form>().UpdateDefaultPrecision();
 					break;
 
 				case "REMOTE_EVENT_CLOSEBIZHAWK":
@@ -384,7 +381,7 @@ namespace RTC
 					if (!RTC_NetCore.NetCoreCommandSynclock)
 					{
 						RTC_NetCore.NetCoreCommandSynclock = true;
-						RTC_Corruptcore.CorruptCoreSpec.Update(CCSPEC.STEP_RUNBEFORE.ToString(), true);
+						RTC_Corruptcore.CorruptCoreSpec.Update(VSPEC.STEP_RUNBEFORE.ToString(), true);
 
 
 						bool isload = S.GET<RTC_GlitchHarvester_Form>().cbAutoLoadState.Checked;
@@ -413,7 +410,7 @@ namespace RTC
 					break;
 
 				case "REMOTE_HOTKEY_BLASTRAWSTASH":
-					RTC_Corruptcore.CorruptCoreSpec.Update(CCSPEC.STEP_RUNBEFORE.ToString(), true);
+					RTC_Corruptcore.CorruptCoreSpec.Update(VSPEC.STEP_RUNBEFORE.ToString(), true);
 
 					//Todo
 					//RTC_NetcoreImplementation.SendCommandToBizhawk(new RTC_Command("ASYNCBLAST));

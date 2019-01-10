@@ -71,8 +71,6 @@ namespace RTC
 
 		public void RefreshDomains()
 		{
-			RTC_MemoryDomains.RefreshDomains();
-
 			lbMemoryDomains.Items.Clear();
 			if (RTC_MemoryDomains.MemoryInterfaces != null)
 				lbMemoryDomains.Items.AddRange(RTC_MemoryDomains.MemoryInterfaces.Keys.ToArray());

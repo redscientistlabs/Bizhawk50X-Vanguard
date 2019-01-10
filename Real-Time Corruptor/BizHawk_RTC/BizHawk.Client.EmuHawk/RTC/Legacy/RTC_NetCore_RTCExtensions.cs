@@ -74,7 +74,7 @@ namespace RTC
 
 				case CommandType.REMOTE_PUSHRTCSPEC:
 					cmdBack = new RTC_Command(CommandType.RETURNVALUE);
-					RTC_Corruptcore.RTCSpec = new FullSpec((PartialSpec)cmd.objectValue);
+					RTC_Corruptcore.CorruptCoreSpec = new FullSpec((PartialSpec)cmd.objectValue);
 					cmdBack.objectValue = true;
 					break;
 
@@ -86,12 +86,23 @@ namespace RTC
 					break;
 
 
+				case CommandType.REMOTE_PUSHUISPEC:
+					cmdBack = new RTC_Command(CommandType.RETURNVALUE);
+					RTC_UICore.UISpec = new FullSpec((PartialSpec)cmd.objectValue);
+					cmdBack.objectValue = true;
+					break;
+					
+
 				case CommandType.REMOTE_PUSHRTCSPECUPDATE:
-					RTC_Corruptcore.RTCSpec?.Update((PartialSpec)cmd.objectValue, false);
+					RTC_Corruptcore.CorruptCoreSpec?.Update((PartialSpec)cmd.objectValue, false);
 					break;
 
 				case CommandType.REMOTE_PUSHEMUSPECUPDATE:
 					RTC_EmuCore.EmuSpec?.Update((PartialSpec)cmd.objectValue, false);
+					break;
+
+				case CommandType.REMOTE_PUSHUISPECUPDATE:
+					RTC_UICore.UISpec?.Update((PartialSpec)cmd.objectValue, false);
 					break;
 
 
@@ -242,7 +253,7 @@ namespace RTC
 
 						bool returnValue = RTC_StockpileManager.LoadState_NET(sk, reloadRom);
 
-						RTC_MemoryDomains.RefreshDomains(false);
+						//RTC_MemoryDomains.RefreshDomains(false);
 
 						if (runBlastLayer)
 						{
@@ -308,7 +319,6 @@ namespace RTC
 				case CommandType.REMOTE_DOMAIN_GETDOMAINS:
 					cmdBack = new RTC_Command(CommandType.RETURNVALUE);
 					cmdBack.objectValue = RTC_MemoryDomains.GetInterfaces();
-
 					break;
 
 				case CommandType.REMOTE_DOMAIN_VMD_ADD:
@@ -339,6 +349,10 @@ namespace RTC
 					{
 						objectValue = RTC_Hooks.BIZHAWK_GET_SAVESTATEPREFIX()
 					};
+					break;
+
+				case CommandType.REMOTE_EVENT_DOMAINSUPDATED:
+					S.GET<RTC_MemoryDomains_Form>().RefreshDomainsAndKeepSelected();
 					break;
 
 				case CommandType.REMOTE_KEY_PUSHSAVESTATEDICO:
@@ -440,12 +454,10 @@ namespace RTC
 					//RTC_StockpileManager.isCorruptionApplied = false;
 					S.GET<RTC_MemoryDomains_Form>().RefreshDomains();
 					S.GET<RTC_MemoryDomains_Form>().SetMemoryDomainsAllButSelectedDomains(RTC_MemoryDomains.GetBlacklistedDomains());
-					S.GET<RTC_CorruptionEngine_Form>().UpdateDefaultPrecision();
 					break;
 				case CommandType.REMOTE_EVENT_LOADGAMEDONE_SAMEGAME:
 					//RTC_StockpileManager.isCorruptionApplied = false;
 					S.GET<RTC_MemoryDomains_Form>().RefreshDomainsAndKeepSelected();
-					S.GET<RTC_CorruptionEngine_Form>().UpdateDefaultPrecision();
 					break;
 
 				case CommandType.REMOTE_EVENT_CLOSEBIZHAWK:
@@ -516,7 +528,7 @@ namespace RTC
 					if (!RTC_NetCore.NetCoreCommandSynclock)
 					{
 						RTC_NetCore.NetCoreCommandSynclock = true;
-						RTC_Corruptcore.RTCSpec.Update(RTCSPEC.STEP_RUNBEFORE.ToString(), true);
+						RTC_Corruptcore.CorruptCoreSpec.Update(RTCSPEC.STEP_RUNBEFORE.ToString(), true);
 
 
 						bool isload = S.GET<RTC_GlitchHarvester_Form>().cbAutoLoadState.Checked;
@@ -545,7 +557,7 @@ namespace RTC
 					break;
 
 				case CommandType.REMOTE_HOTKEY_BLASTRAWSTASH:
-					RTC_Corruptcore.RTCSpec.Update(RTCSPEC.STEP_RUNBEFORE.ToString(), true);
+					RTC_Corruptcore.CorruptCoreSpec.Update(RTCSPEC.STEP_RUNBEFORE.ToString(), true);
 					RTC_NetcoreImplementation.SendCommandToBizhawk(new RTC_Command(CommandType.ASYNCBLAST));
 					S.GET<RTC_GlitchHarvester_Form>().btnSendRaw_Click(null, null);
 					break;

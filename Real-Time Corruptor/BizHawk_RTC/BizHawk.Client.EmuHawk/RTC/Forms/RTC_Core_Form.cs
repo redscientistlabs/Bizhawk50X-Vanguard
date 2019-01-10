@@ -66,7 +66,7 @@ namespace RTC
 				return;
 
 			this.AutoCorrupt = !this.AutoCorrupt;
-			RTC_Corruptcore.RTCSpec.Update(RTCSPEC.STEP_RUNBEFORE.ToString(), true);
+			RTC_Corruptcore.CorruptCoreSpec.Update(RTCSPEC.STEP_RUNBEFORE.ToString(), true);
 		}
 
 		private void RTC_Form_Load(object sender, EventArgs e)
@@ -148,6 +148,17 @@ namespace RTC
 			StartEasyMode(true);
 		}
 
+		public void SetEngineByName(string name)
+		{
+			//Selects an engine from a given string name
+
+			for (int i = 0; i < S.GET<RTC_CorruptionEngine_Form>().cbSelectedEngine.Items.Count; i++)
+				if (S.GET<RTC_CorruptionEngine_Form>().cbSelectedEngine.Items[i].ToString() == name)
+				{
+					S.GET<RTC_CorruptionEngine_Form>().cbSelectedEngine.SelectedIndex = i;
+					break;
+				}
+		}
 		public void StartEasyMode(bool useTemplate)
 		{
 			if (RTC_NetcoreImplementation.isStandaloneUI && !S.GET<RTC_Core_Form>().cbUseGameProtection.Checked)
@@ -162,32 +173,32 @@ namespace RTC
 				switch (thisSystem)
 				{
 					case "NES":     //Nintendo Entertainment system
-						RTC_Corruptcore.SetEngineByName("Nightmare Engine");
+						SetEngineByName("Nightmare Engine");
 						S.GET<RTC_GeneralParameters_Form>().Intensity = 2;
 						S.GET<RTC_GeneralParameters_Form>().ErrorDelay = 1;
 						break;
 
 					case "GB":      //Gameboy
 					case "GBC":     //Gameboy Color
-						RTC_Corruptcore.SetEngineByName("Nightmare Engine");
+						SetEngineByName("Nightmare Engine");
 						S.GET<RTC_GeneralParameters_Form>().Intensity = 1;
 						S.GET<RTC_GeneralParameters_Form>().ErrorDelay = 4;
 						break;
 
 					case "SNES":    //Super Nintendo
-						RTC_Corruptcore.SetEngineByName("Nightmare Engine");
+						SetEngineByName("Nightmare Engine");
 						S.GET<RTC_GeneralParameters_Form>().Intensity = 1;
 						S.GET<RTC_GeneralParameters_Form>().ErrorDelay = 2;
 						break;
 
 					case "GBA":     //Gameboy Advance
-						RTC_Corruptcore.SetEngineByName("Nightmare Engine");
+						SetEngineByName("Nightmare Engine");
 						S.GET<RTC_GeneralParameters_Form>().Intensity = 1;
 						S.GET<RTC_GeneralParameters_Form>().ErrorDelay = 1;
 						break;
 
 					case "N64":     //Nintendo 64
-						RTC_Corruptcore.SetEngineByName("Vector Engine");
+						SetEngineByName("Vector Engine");
 						S.GET<RTC_GeneralParameters_Form>().Intensity = 75;
 						S.GET<RTC_GeneralParameters_Form>().ErrorDelay = 1;
 						break;
