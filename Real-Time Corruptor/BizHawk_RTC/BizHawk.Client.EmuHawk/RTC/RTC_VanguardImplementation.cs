@@ -27,6 +27,7 @@ namespace RTC
 			spec.MessageReceived += OnMessageReceived;
 
 			connector = new RTCV.Vanguard.VanguardConnector(spec);
+
 		}
 
 		public static void RestartClient()

@@ -154,6 +154,7 @@ namespace RTCV.CorruptCore
 
 				LocalNetCoreRouter.Route("UI", "REMOTE_PUSHCORRUPTCORESPECUPDATE", partial, true);
 			};
+
 			/*
 			if (RTC_StockpileManager.BackupedState != null)
 				RTC_StockpileManager.BackupedState.Run();

@@ -21,8 +21,14 @@ namespace RTCV.UI
             //spec.IP = "127.0.0.1";
             //spec.Port = 42069;
             spec.MessageReceived += OnMessageReceived;
+			spec.ServerConnected += Spec_ServerConnected;
             loopbackConnector = new NetCore.NetCoreConnector(spec);
         }
+
+		private static void Spec_ServerConnected(object sender, EventArgs e)
+		{
+			LocalNetCoreRouter.Route("CORRUPTCORE", "REMOTE_PUSHUISPEC", RTC_Corruptcore.UISpec.GetPartialSpec(), true);
+		}
 
 		public static void RestartLoopback()
 		{

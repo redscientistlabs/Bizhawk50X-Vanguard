@@ -22,7 +22,7 @@ namespace RTCV.UI
 			netCoreSpec.MessageReceived += OnMessageReceivedProxy;
 
 			netConn = LocalNetCoreRouter.registerEndpoint(NetCoreServer.loopbackConnector, "CORRUPTCORE");
-			LocalNetCoreRouter.registerEndpoint(netConn, "CORRUPTCORE");
+			netConn = LocalNetCoreRouter.registerEndpoint(NetCoreServer.loopbackConnector, "VANGUARD");
 			LocalNetCoreRouter.registerEndpoint(netConn, "DEFAULT"); //Will send mesages to netcore if can't find the destination
 		}
 

@@ -25,11 +25,19 @@ namespace RTCV.Vanguard
 			var netCoreSpec = new NetCoreSpec();
             netCoreSpec.Side = NetworkSide.CLIENT;
             netCoreSpec.MessageReceived += OnMessageReceivedProxy;
+			netCoreSpec.ClientConnected += NetCoreSpec_ClientConnected;
 
-            netConn = LocalNetCoreRouter.registerEndpoint(new NetCoreConnector(netCoreSpec), "UI");
+			netConn = LocalNetCoreRouter.registerEndpoint(new NetCoreConnector(netCoreSpec), "UI");
 			LocalNetCoreRouter.registerEndpoint(netConn, "DEFAULT"); //Will send mesages to netcore if can't find the destination
 
-		} 
+		}
+
+
+		private void NetCoreSpec_ClientConnected(object sender, EventArgs e)
+		{
+			LocalNetCoreRouter.Route("UI", "REMOTE_PUSHCORRUPTCORESPEC", RTC_Corruptcore.CorruptCoreSpec.GetPartialSpec(), true);
+			//LocalNetCoreRouter.Route("UI", "REMOTE_PUSHVANGUARDSPEC", RTC_Corruptcore.CorruptCoreSpec.GetPartialSpec(), true);
+		}
 
 		public void OnMessageReceivedProxy(object sender, NetCoreEventArgs e) => OnMessageReceived(sender, e);
         public object OnMessageReceived(object sender, NetCoreEventArgs e)

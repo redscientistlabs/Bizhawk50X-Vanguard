@@ -173,7 +173,8 @@ namespace RTCV.NetCore
                                 message = serializer.Deserialize<NetCoreAdvancedMessage>(temp);
 
                                 sw.Stop();
-                                Console.WriteLine("It took " + sw.ElapsedMilliseconds + " ms to deserialize cmd " + message.Type + " of " + temp.Length + " bytes");
+								if(message.Type != "{BOOP}")
+									Console.WriteLine("It took " + sw.ElapsedMilliseconds + " ms to deserialize cmd " + message.Type + " of " + temp.Length + " bytes");
                             }
                         }
                         catch { throw; }
@@ -228,7 +229,8 @@ namespace RTCV.NetCore
                             //ms.CopyTo(networkStream);
                             networkStream.Write(buf, 0, buf.Length);
                             sw.Stop();
-                            Console.WriteLine("It took " + sw.ElapsedMilliseconds + " ms to serialize backCmd " + pendingMessage.Type + " of " + buf.Length + " bytes");
+							if (pendingMessage.Type != "{BOOP}")
+								Console.WriteLine("It took " + sw.ElapsedMilliseconds + " ms to serialize backCmd " + pendingMessage.Type + " of " + buf.Length + " bytes");
                         }
                         catch
                         {

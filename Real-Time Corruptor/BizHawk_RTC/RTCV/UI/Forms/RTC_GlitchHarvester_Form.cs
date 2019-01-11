@@ -360,7 +360,7 @@ namespace RTCV.UI
 
 				if (rbCorrupt.Checked)
 				{
-					string romFilename = (string)LocalNetCoreRouter.Route("VANGURD", "REMOTE_KEY_GETOPENROMFILENAME", true);
+					string romFilename = (string)LocalNetCoreRouter.Route("VANGUARD", "REMOTE_KEY_GETOPENROMFILENAME", true);
 					if (romFilename == null)
 						return;
 					if (romFilename.Contains("|"))

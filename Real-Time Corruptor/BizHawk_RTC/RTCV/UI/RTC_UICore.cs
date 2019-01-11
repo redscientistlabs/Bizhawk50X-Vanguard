@@ -45,10 +45,8 @@ namespace RTCV.UI
 
 
 			PartialSpec p = new PartialSpec("UISpec");
-			p.Insert(RTC_StockpileManager.getDefaultPartial());
 			RTC_Corruptcore.UISpec = new FullSpec(p);
 
-			LocalNetCoreRouter.Route("CORRUPTCORE", "REMOTE_PUSHUISPEC", p, true);
 
 			RTC_Corruptcore.UISpec.SpecUpdated += (o, e) =>
 			{
