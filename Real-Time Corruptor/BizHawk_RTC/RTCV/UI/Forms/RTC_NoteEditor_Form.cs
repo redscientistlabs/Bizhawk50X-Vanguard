@@ -5,8 +5,9 @@ using System.Linq;
 using System.Windows.Forms;
 using System.Collections.Generic;
 using System.Text;
+using RTCV.CorruptCore;
 
-namespace RTC
+namespace RTCV.UI
 {
 	public partial class RTC_NoteEditor_Form : Form
 	{

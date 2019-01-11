@@ -8,7 +8,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
-namespace RTC
+namespace RTCV.UI
 {
 	public partial class RTC_Test_Form : Form
 	{

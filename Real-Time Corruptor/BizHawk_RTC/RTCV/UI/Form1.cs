@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using RTCV.UI;
 
-namespace UI
+namespace RTCV.UI
 {
 	public partial class Form1 : Form
 	{

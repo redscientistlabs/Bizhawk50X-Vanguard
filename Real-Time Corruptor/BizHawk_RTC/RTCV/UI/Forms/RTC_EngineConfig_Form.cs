@@ -6,8 +6,9 @@ using System.IO;
 using System.Linq;
 using System.Security.Cryptography;
 using System.Windows.Forms;
+using RTCV.CorruptCore;
 
-namespace RTC
+namespace RTCV.UI
 {
 	public partial class RTC_EngineConfig_Form : Form, IAutoColorize
 	{

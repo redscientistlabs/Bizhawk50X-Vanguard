@@ -7,9 +7,10 @@ using System.IO;
 using System.Windows.Forms;
 using System.Xml.Serialization;
 using Newtonsoft.Json;
+using RTCV.CorruptCore;
 using RTCV.NetCore;
 
-namespace RTC
+namespace RTCV.UI
 {
 	public partial class RTC_GlitchHarvester_Form : Form, IAutoColorize
 	{
@@ -498,7 +499,7 @@ namespace RTC
 
 			if (askForName)
 			{
-				if (RTC_Extensions.GetInputBox("Glitch Harvester", "Enter the new Stash name:", ref value) == DialogResult.OK)
+				if (UI_Extensions.GetInputBox("Glitch Harvester", "Enter the new Stash name:", ref value) == DialogResult.OK)
 				{
 					Name = value.Trim();
 				}
@@ -928,7 +929,7 @@ namespace RTC
 		{
 			string value = "";
 
-			if (RTC_Extensions.GetInputBox("Glitch Harvester", "Enter the new Stash name:", ref value) == DialogResult.OK)
+			if (UI_Extensions.GetInputBox("Glitch Harvester", "Enter the new Stash name:", ref value) == DialogResult.OK)
 			{
 				sk.Alias = value.Trim();
 			}

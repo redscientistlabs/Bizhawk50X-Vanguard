@@ -10,10 +10,11 @@ using System.Reflection;
 using System.Threading;
 using System.Windows.Forms;
 using Newtonsoft.Json;
+using RTCV.CorruptCore;
 using RTCV.NetCore;
 using RTCV.UI;
 
-namespace RTC
+namespace RTCV.UI
 {
 	public static class RTC_UICore
 	{   
@@ -30,9 +31,6 @@ namespace RTC
 		//public static Color generalColor = Color.FromArgb(60, 45, 70);
 		public static Color GeneralColor = Color.LightSteelBlue;
 
-		public static FullSpec UISpec;
-		public static FullSpec VanguardSpec;
-		public static FullSpec CorruptCoreSpec;
 
 		public static UIConnector UIConn;
 		public static NetCoreReceiver Receiver;
@@ -46,10 +44,18 @@ namespace RTC
 			UIConn = new UIConnector(Receiver);
 
 
-			PartialSpec partial = new PartialSpec("UISpec");
-			partial.Insert(RTC_StockpileManager.getDefaultPartial());
-			UISpec = new FullSpec(partial);
+			PartialSpec p = new PartialSpec("UISpec");
+			p.Insert(RTC_StockpileManager.getDefaultPartial());
+			RTC_Corruptcore.UISpec = new FullSpec(p);
 
+			LocalNetCoreRouter.Route("CORRUPTCORE", "REMOTE_PUSHUISPEC", p, true);
+
+			RTC_Corruptcore.UISpec.SpecUpdated += (o, e) =>
+			{
+				PartialSpec partial = e.partialSpec;
+
+				LocalNetCoreRouter.Route("CORRUPTCORE", "REMOTE_PUSHUISPECUPDATE", partial, true);
+			};
 
 			//Loading RTC Params
 			LoadRTCColor();

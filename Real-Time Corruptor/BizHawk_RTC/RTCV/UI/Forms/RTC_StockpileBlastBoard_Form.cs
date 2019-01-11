@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Drawing;
 using System.Windows.Forms;
 
-namespace RTC
+namespace RTCV.UI
 {
 	/*
 	public partial class RTC_StockpileBlastBoard_Form : Form, IAutoColorize

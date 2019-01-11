@@ -5,10 +5,11 @@ using System.Drawing;
 using System.IO;
 using System.Threading;
 using System.Windows.Forms;
+using RTCV.CorruptCore;
 using RTCV.NetCore;
 using RTCV.UI;
 
-namespace RTC
+namespace RTCV.UI
 {
 	public partial class RTC_Core_Form : Form, IAutoColorize // replace by : UserControl for panel
 	{
@@ -415,7 +416,7 @@ namespace RTC
 		{
 			ShowPanelForm(S.GET<RTC_ConnectionStatus_Form>());
 
-			RTC.S.GET<RTC_Core_Form>().pbAutoKillSwitchTimeout.Value = RTC.S.GET<RTC_Core_Form>().pbAutoKillSwitchTimeout.Maximum;
+			S.GET<RTC_Core_Form>().pbAutoKillSwitchTimeout.Value = S.GET<RTC_Core_Form>().pbAutoKillSwitchTimeout.Maximum;
 
 
 			switch (btnAutoKillSwitchExecute.Text.ToUpper())

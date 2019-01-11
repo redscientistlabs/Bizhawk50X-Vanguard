@@ -1,4 +1,4 @@
-﻿namespace RTC
+﻿namespace RTCV.UI
 {
 	partial class ColumnSelector
 	{

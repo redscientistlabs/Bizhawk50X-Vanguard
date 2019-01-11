@@ -9,8 +9,9 @@ using System.Xml.Serialization;
 using System.Runtime.InteropServices;
 using System.Media;
 using System.Diagnostics;
+using RTCV.CorruptCore;
 
-namespace RTC
+namespace RTCV.UI
 {
 	public partial class RTC_SettingsNetCore_Form : ComponentForm, IAutoColorize
 	{

@@ -3,9 +3,10 @@ using System.Collections.Generic;
 using System.Data;
 using System.Linq;
 using System.Windows.Forms;
+using RTCV.CorruptCore;
 using RTCV.NetCore;
 
-namespace RTC
+namespace RTCV.UI
 {
 	// 0  dgvBlastProtoReference
 	// 1  dgvRowDirty

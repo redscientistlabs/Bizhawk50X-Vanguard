@@ -1,4 +1,4 @@
-﻿namespace RTC
+﻿namespace RTCV.UI
 {
 	partial class RTC_CustomEngineConfig_Form
 	{
@@ -45,8 +45,8 @@
             this.gbValueRange = new System.Windows.Forms.GroupBox();
             this.label26 = new System.Windows.Forms.Label();
             this.label27 = new System.Windows.Forms.Label();
-            this.nmMaxValue = new RTC.NumericUpDownHexFix();
-            this.nmMinValue = new RTC.NumericUpDownHexFix();
+            this.nmMaxValue = new NumericUpDownHexFix();
+            this.nmMinValue = new NumericUpDownHexFix();
             this.gbLimiterList = new System.Windows.Forms.GroupBox();
             this.cbLimiterInverted = new System.Windows.Forms.CheckBox();
             this.rbLimiterNone = new System.Windows.Forms.RadioButton();

@@ -2,8 +2,9 @@
 using System.Diagnostics;
 using System.IO;
 using System.Windows.Forms;
+using RTCV.CorruptCore;
 
-namespace RTC
+namespace RTCV.UI
 {
 	public partial class RTC_ConnectionStatus_Form : Form, IAutoColorize
 	{
@@ -37,7 +38,7 @@ namespace RTC
 			pnBizhawkAttached.Visible = false;
 
 		//	RTC.RTC_RPC.Heartbeat = false;
-			RTC.S.GET<RTC_Core_Form>().pbAutoKillSwitchTimeout.Value = RTC.S.GET<RTC_Core_Form>().pbAutoKillSwitchTimeout.Maximum;
+			S.GET<RTC_Core_Form>().pbAutoKillSwitchTimeout.Value = S.GET<RTC_Core_Form>().pbAutoKillSwitchTimeout.Maximum;
 		//	RTC.RTC_RPC.Freeze = true;
 
 			//RTC_NetCoreSettings.PlayCrashSound();

@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading;
-using RTC;
+using RTCV.CorruptCore;
 using RTCV.NetCore;
 
 namespace RTCV.UI
@@ -59,22 +59,22 @@ namespace RTCV.UI
 			switch (message.Type) //Handle received messages here
 			{
 				case "REMOTE_PUSHEMUSPEC":
-					RTC_UICore.VanguardSpec = new FullSpec((PartialSpec)advancedMessage.objectValue);
+					RTC_Corruptcore.VanguardSpec = new FullSpec((PartialSpec)advancedMessage.objectValue);
 					e.setReturnValue(true);
 					break;
 
 				case "REMOTE_PUSHEMUSPECUPDATE":
-					RTC_UICore.VanguardSpec?.Update((PartialSpec)advancedMessage.objectValue);
+					RTC_Corruptcore.VanguardSpec?.Update((PartialSpec)advancedMessage.objectValue);
 					e.setReturnValue(true);
 					break;
 
 				case "REMOTE_PUSHCORRUPTCORESPEC":
-					RTC_UICore.CorruptCoreSpec = new FullSpec((PartialSpec)advancedMessage.objectValue);
+					RTC_Corruptcore.CorruptCoreSpec = new FullSpec((PartialSpec)advancedMessage.objectValue);
 					e.setReturnValue(true);
 					break;
 
-				case "REMOTE_PUSHCORRUPTCORECUPDATE":
-					RTC_UICore.CorruptCoreSpec?.Update((PartialSpec)advancedMessage.objectValue);
+				case "REMOTE_PUSHCORRUPTCORESPECCUPDATE":
+					RTC_Corruptcore.CorruptCoreSpec?.Update((PartialSpec)advancedMessage.objectValue);
 					e.setReturnValue(true);
 					break;
 

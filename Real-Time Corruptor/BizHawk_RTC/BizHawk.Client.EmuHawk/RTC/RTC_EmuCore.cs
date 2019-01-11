@@ -10,6 +10,7 @@ using System.Reflection;
 using System.Threading;
 using System.Windows.Forms;
 using Newtonsoft.Json;
+using RTCV.CorruptCore;
 using RTCV.NetCore;
 
 namespace RTC
@@ -65,13 +66,12 @@ namespace RTC
 			EmuSpec = new FullSpec(emuSpecTemplate); //You have to feed a partial spec as a template
 
 
-		//	LocalNetCoreRouter.Route("UI", "REMOTE_PUSHEMUSPEC", emuSpecTemplate, true);
+//			LocalNetCoreRouter.Route("UI", "REMOTE_PUSHEMUSPEC", emuSpecTemplate, true);
 			EmuSpec.SpecUpdated += (o, e) =>
 			{
 				PartialSpec partial = e.partialSpec;
 				RTC_Corruptcore.VanguardSpec = EmuSpec;
 				LocalNetCoreRouter.Route("UI", "REMOTE_PUSHEMUSPECUPDATE", partial, true);
-
 			};
 		}
 
@@ -81,6 +81,8 @@ namespace RTC
 			VanguardImplementation.StartClient();
 			RTC_Corruptcore.Start();
 			RTC_EmuCore.RegisterEmuhawkSpec();
+
+
 
 			S.SET(_standaloneForm);
 

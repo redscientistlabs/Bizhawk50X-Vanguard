@@ -5,8 +5,9 @@ using System.Drawing;
 using System.Globalization;
 using System.Linq;
 using System.Windows.Forms;
+using RTCV.CorruptCore;
 
-namespace RTC
+namespace RTCV.UI
 {
 	public partial class RTC_VmdGen_Form : ComponentForm, IAutoColorize
 	{

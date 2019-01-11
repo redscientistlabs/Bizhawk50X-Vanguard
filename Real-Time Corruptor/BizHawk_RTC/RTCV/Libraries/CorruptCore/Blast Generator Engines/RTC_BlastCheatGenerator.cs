@@ -2,7 +2,7 @@
 using System.Linq;
 using System.Windows.Forms;
 
-namespace RTC
+namespace RTCV.CorruptCore
 {
 	public class RTC_BlastCheatGenerator
 	{

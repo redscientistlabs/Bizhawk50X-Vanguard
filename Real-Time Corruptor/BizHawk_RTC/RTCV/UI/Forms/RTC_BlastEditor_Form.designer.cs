@@ -1,6 +1,6 @@
 ﻿using System.Windows.Forms;
 
-namespace RTC
+namespace RTCV.UI
 {
 	partial class RTC_BlastEditor_Form
 	{
@@ -55,9 +55,9 @@ namespace RTC
             this.dgvPrecision = new System.Windows.Forms.DataGridViewComboBoxColumn();
             this.dgvBlastUnitSource = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.dgvSourceAddressDomain = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.dgvSourceAddress = new RTC.DataGridViewNumericUpDownColumn();
+            this.dgvSourceAddress = new DataGridViewNumericUpDownColumn();
             this.dgvParamDomain = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.dgvParam = new RTC.DataGridViewNumericUpDownColumn();
+            this.dgvParam = new DataGridViewNumericUpDownColumn();
             this.dgvNoteButton = new System.Windows.Forms.DataGridViewButtonColumn();
             this.pnMemoryTargetting = new System.Windows.Forms.Panel();
             this.label3 = new System.Windows.Forms.Label();
@@ -66,14 +66,14 @@ namespace RTC
             this.cbShiftBlastlayer = new System.Windows.Forms.ComboBox();
             this.btnShiftBlastLayerDown = new System.Windows.Forms.Button();
             this.btnShiftBlastLayerUp = new System.Windows.Forms.Button();
-            this.updownShiftBlastLayerAmount = new RTC.NumericUpDownHexFix();
+            this.updownShiftBlastLayerAmount = new NumericUpDownHexFix();
             this.dataGridViewTextBoxColumn1 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.dataGridViewTextBoxColumn2 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.dataGridViewTextBoxColumn3 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.dataGridViewTextBoxColumn4 = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.dataGridViewNumericUpDownColumn1 = new RTC.DataGridViewNumericUpDownColumn();
+            this.dataGridViewNumericUpDownColumn1 = new DataGridViewNumericUpDownColumn();
             this.dataGridViewTextBoxColumn5 = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.dataGridViewNumericUpDownColumn2 = new RTC.DataGridViewNumericUpDownColumn();
+            this.dataGridViewNumericUpDownColumn2 = new DataGridViewNumericUpDownColumn();
             this.dataGridViewTextBoxColumn6 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.btnRemoveSelected = new System.Windows.Forms.Button();
             this.btnSearchRow = new System.Windows.Forms.Button();

@@ -1,4 +1,4 @@
-﻿namespace UI
+﻿namespace RTCV.UI
 {
 	partial class Form1
 	{

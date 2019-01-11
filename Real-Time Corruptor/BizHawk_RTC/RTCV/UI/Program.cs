@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-using RTC;
 
-namespace UI
+
+namespace RTCV.UI
 {
 	static class Program
 	{

@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Windows.Forms;
 
-namespace RTC
+namespace RTCV.UI
 {
 	//Todo, rebuild this
 	public static class RTC_GameProtection

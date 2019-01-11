@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Windows.Forms;
 
-namespace RTC
+namespace RTCV.CorruptCore
 {
 	public static class RTC_FreezeEngine
 	{

@@ -1,4 +1,4 @@
-﻿namespace RTC
+﻿namespace RTCV.UI
 {
 	partial class RTC_Test_Form
 	{
@@ -28,15 +28,15 @@
 		/// </summary>
 		private void InitializeComponent()
 		{
-            this.numericUpDownHexFix1 = new RTC.NumericUpDownHexFix();
-            this.numericUpDownHexFix2 = new RTC.NumericUpDownHexFix();
-            this.numericUpDownHexFix3 = new RTC.NumericUpDownHexFix();
+            this.numericUpDownHexFix1 = new NumericUpDownHexFix();
+            this.numericUpDownHexFix2 = new NumericUpDownHexFix();
+            this.numericUpDownHexFix3 = new NumericUpDownHexFix();
             this.checkBox1 = new System.Windows.Forms.CheckBox();
             this.label1 = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
             this.label3 = new System.Windows.Forms.Label();
             this.dataGridView1 = new System.Windows.Forms.DataGridView();
-            this.Column1 = new RTC.DataGridViewNumericUpDownColumn();
+            this.Column1 = new DataGridViewNumericUpDownColumn();
             this.checkBox2 = new System.Windows.Forms.CheckBox();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDownHexFix1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDownHexFix2)).BeginInit();
@@ -167,15 +167,15 @@
 
 		#endregion
 
-		private RTC.NumericUpDownHexFix numericUpDownHexFix1;
-		private RTC.NumericUpDownHexFix numericUpDownHexFix2;
-		private RTC.NumericUpDownHexFix numericUpDownHexFix3;
+		private NumericUpDownHexFix numericUpDownHexFix1;
+		private NumericUpDownHexFix numericUpDownHexFix2;
+		private NumericUpDownHexFix numericUpDownHexFix3;
 		private System.Windows.Forms.CheckBox checkBox1;
 		private System.Windows.Forms.Label label1;
 		private System.Windows.Forms.Label label2;
 		private System.Windows.Forms.Label label3;
 		private System.Windows.Forms.DataGridView dataGridView1;
-		private RTC.DataGridViewNumericUpDownColumn Column1;
+		private DataGridViewNumericUpDownColumn Column1;
 		private System.Windows.Forms.CheckBox checkBox2;
 	}
 }

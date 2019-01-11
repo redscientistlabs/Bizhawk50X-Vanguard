@@ -9,6 +9,7 @@ using System.Numerics;
 using System.Text;
 using System.Windows.Forms;
 using Newtonsoft.Json.Serialization;
+using RTCV.CorruptCore;
 using RTCV.NetCore;
 
 /**
@@ -51,7 +52,7 @@ Applies for Store & should be editable
 Applies for Value & should be editable
  * byte[] Value */
 
-namespace RTC
+namespace RTCV.UI
 {
 	public partial class RTC_NewBlastEditor_Form : Form, IAutoColorize
 	{

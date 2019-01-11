@@ -11,7 +11,7 @@ using System.Runtime.InteropServices;
 using RTC;
 using RTC.Shortcuts;
 
-namespace RTC
+namespace RTCV.CorruptCore
 {
 	public static class RTC_Hotkeys
 	{

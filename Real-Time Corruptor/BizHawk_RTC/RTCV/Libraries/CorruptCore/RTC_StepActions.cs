@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using RTCV.NetCore;
 
-namespace RTC
+namespace RTCV.CorruptCore
 {
 	///Rather than handling everything individually, we have a system here that works on collections of Blastunits
 	///In most usage, you're probably only going to have a small number of different lifetime/start time mixtures

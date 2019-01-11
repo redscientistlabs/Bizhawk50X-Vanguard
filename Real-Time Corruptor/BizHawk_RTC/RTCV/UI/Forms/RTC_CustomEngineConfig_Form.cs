@@ -9,9 +9,10 @@ using System.Security.Cryptography;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using RTCV.CorruptCore;
 using RTCV.NetCore;
 
-namespace RTC
+namespace RTCV.UI
 {
 	public partial class RTC_CustomEngineConfig_Form : Form, IAutoColorize
 	{

@@ -12,7 +12,7 @@ using System.Windows.Forms;
 using Newtonsoft.Json;
 using RTCV.NetCore;
 
-namespace RTC
+namespace RTCV.CorruptCore
 {
 	public static class RTC_Corruptcore
 	{
@@ -146,7 +146,7 @@ namespace RTC
 			CorruptCoreSpec = new FullSpec(rtcSpecTemplate); //You have to feed a partial spec as a template
 
 
-			LocalNetCoreRouter.Route("UI", "REMOTE_PUSHCORRUPTCORESPEC", rtcSpecTemplate, true);
+			//LocalNetCoreRouter.Route("UI", "REMOTE_PUSHCORRUPTCORESPEC", rtcSpecTemplate, true);
 
 			CorruptCoreSpec.SpecUpdated += (o, e) =>
 			{
@@ -154,11 +154,12 @@ namespace RTC
 
 				LocalNetCoreRouter.Route("UI", "REMOTE_PUSHCORRUPTCORESPECUPDATE", partial, true);
 			};
-
+			/*
 			if (RTC_StockpileManager.BackupedState != null)
 				RTC_StockpileManager.BackupedState.Run();
 			else
 				CorruptCoreSpec.Update(RTCSPEC.CORE_AUTOCORRUPT.ToString(), false);
+				*/
 		}
 
 		public static PartialSpec getDefaultPartial()

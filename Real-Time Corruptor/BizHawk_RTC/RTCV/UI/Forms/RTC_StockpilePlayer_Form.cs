@@ -2,8 +2,9 @@
 using System.Drawing;
 using System.IO;
 using System.Windows.Forms;
+using RTCV.CorruptCore;
 
-namespace RTC
+namespace RTCV.UI
 {
 	public partial class RTC_StockpilePlayer_Form : Form, IAutoColorize
 	{

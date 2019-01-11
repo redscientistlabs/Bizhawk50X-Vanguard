@@ -8,7 +8,7 @@ using System.Windows.Forms;
 using Ceras;
 using RTCV.NetCore;
 
-namespace RTC
+namespace RTCV.CorruptCore
 {
 	public static class RTC_Filtering
 	{

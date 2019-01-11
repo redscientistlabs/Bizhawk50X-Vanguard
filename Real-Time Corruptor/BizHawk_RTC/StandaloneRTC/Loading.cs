@@ -2,6 +2,7 @@
 using System.Linq;
 using System.Windows.Forms;
 using RTC;
+using RTCV.UI;
 
 namespace StandaloneRTC
 {

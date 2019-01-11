@@ -1,4 +1,5 @@
 ﻿using System;
+using System.CodeDom;
 using System.Collections.Generic;
 using System.IO;
 using System.IO.Compression;
@@ -10,7 +11,7 @@ using System.Xml.Serialization;
 using Ceras;
 using RTCV.NetCore;
 
-namespace RTC
+namespace RTCV.CorruptCore
 {
 	public static class RTC_MemoryDomains
 	{
@@ -443,12 +444,14 @@ namespace RTC
 
 		public static void RenameVMD(string vmdName)
 		{
+			throw new NotImplementedException("Move input to UI");
+			/*
 			if (!RTC_MemoryDomains.VmdPool.ContainsKey(vmdName))
 				return;
 
 			string name = "";
 			string value = "";
-			if (RTC_Extensions.GetInputBox("BlastLayer to VMD", "Enter the new VMD name:", ref value) == DialogResult.OK)
+			if (UI_Extensions.GetInputBox("BlastLayer to VMD", "Enter the new VMD name:", ref value) == DialogResult.OK)
 			{
 				name = value.Trim();
 			}
@@ -465,7 +468,7 @@ namespace RTC
 			RemoveVMD(VMD);
 			VMD.Name = name;
 			VMD.Proto.VmdName = name;
-			AddVMD(VMD);
+			AddVMD(VMD);*/
 		}
 
 		public static void GenerateActiveTableDump(string domain, string key)

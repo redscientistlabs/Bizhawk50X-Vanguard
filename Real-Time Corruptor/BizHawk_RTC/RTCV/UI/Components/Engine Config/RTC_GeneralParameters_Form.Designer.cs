@@ -1,4 +1,4 @@
-﻿namespace RTC
+﻿namespace RTCV.UI
 {
 	partial class RTC_GeneralParameters_Form
 	{

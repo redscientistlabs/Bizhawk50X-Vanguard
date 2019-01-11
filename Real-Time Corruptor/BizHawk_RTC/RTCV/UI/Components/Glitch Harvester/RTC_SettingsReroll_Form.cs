@@ -8,8 +8,9 @@ using System.Windows.Forms;
 using System.Xml.Serialization;
 using System.Runtime.InteropServices;
 using System.Diagnostics;
+using RTCV.CorruptCore;
 
-namespace RTC
+namespace RTCV.UI
 {
 	public partial class RTC_SettingsReroll_Form : Form, IAutoColorize
 	{

@@ -6,9 +6,10 @@ using System.IO;
 using System.Linq;
 using System.Windows.Forms;
 using System.Xml.Serialization;
+using RTCV.CorruptCore;
 using UI;
 
-namespace RTC
+namespace RTCV.UI
 {
 	public partial class RTC_VmdAct_Form : ComponentForm, IAutoColorize
 	{

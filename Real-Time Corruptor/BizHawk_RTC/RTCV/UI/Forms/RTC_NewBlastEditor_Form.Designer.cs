@@ -1,7 +1,7 @@
 ﻿using System.Windows.Forms;
 using UI;
 
-namespace RTC
+namespace RTCV.UI
 {
 	partial class RTC_NewBlastEditor_Form
     {
@@ -38,7 +38,7 @@ namespace RTC
             this.cbShiftBlastlayer = new System.Windows.Forms.ComboBox();
             this.btnShiftBlastLayerDown = new System.Windows.Forms.Button();
             this.btnShiftBlastLayerUp = new System.Windows.Forms.Button();
-            this.updownShiftBlastLayerAmount = new RTC.NumericUpDownHexFix();
+            this.updownShiftBlastLayerAmount = new NumericUpDownHexFix();
             this.pnMemoryTargetting = new System.Windows.Forms.Panel();
             this.lbBlastLayerSize = new System.Windows.Forms.Label();
             this.btnHelp = new System.Windows.Forms.Button();
@@ -60,9 +60,9 @@ namespace RTC
             this.panel3 = new System.Windows.Forms.Panel();
             this.panel9 = new System.Windows.Forms.Panel();
             this.label16 = new System.Windows.Forms.Label();
-            this.upDownLifetime = new RTC.NumericUpDownHexFix();
+            this.upDownLifetime = new NumericUpDownHexFix();
             this.label1 = new System.Windows.Forms.Label();
-            this.upDownExecuteFrame = new RTC.NumericUpDownHexFix();
+            this.upDownExecuteFrame = new NumericUpDownHexFix();
             this.cbLoop = new System.Windows.Forms.CheckBox();
             this.label5 = new System.Windows.Forms.Label();
             this.panel5 = new System.Windows.Forms.Panel();
@@ -82,7 +82,7 @@ namespace RTC
             this.tbValue = new UI_Extensions.HexTextBox();
             this.panel7 = new System.Windows.Forms.Panel();
             this.cbSourceDomain = new System.Windows.Forms.ComboBox();
-            this.upDownSourceAddress = new RTC.NumericUpDownHexFix();
+            this.upDownSourceAddress = new NumericUpDownHexFix();
             this.label13 = new System.Windows.Forms.Label();
             this.label14 = new System.Windows.Forms.Label();
             this.cbStoreTime = new System.Windows.Forms.ComboBox();
@@ -90,9 +90,9 @@ namespace RTC
             this.cbStoreType = new System.Windows.Forms.ComboBox();
             this.label7 = new System.Windows.Forms.Label();
             this.label10 = new System.Windows.Forms.Label();
-            this.upDownPrecision = new RTC.NumericUpDownHexFix();
+            this.upDownPrecision = new NumericUpDownHexFix();
             this.label9 = new System.Windows.Forms.Label();
-            this.upDownAddress = new RTC.NumericUpDownHexFix();
+            this.upDownAddress = new NumericUpDownHexFix();
             this.label8 = new System.Windows.Forms.Label();
             this.cbDomain = new System.Windows.Forms.ComboBox();
             this.label2 = new System.Windows.Forms.Label();

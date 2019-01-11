@@ -2,7 +2,7 @@
 using System.Windows.Forms;
 using RTCV.NetCore;
 
-namespace RTC
+namespace RTCV.CorruptCore
 {
 	public static class RTC_HellgenieEngine
 	{

@@ -1,6 +1,6 @@
 ﻿using System.Windows.Forms;
 
-namespace RTC
+namespace RTCV.UI
 {
 	partial class RTC_BlastGenerator_Form
 	{
@@ -52,24 +52,24 @@ namespace RTC
             this.label1 = new System.Windows.Forms.Label();
             this.btnNudgeParam2Up = new System.Windows.Forms.Button();
             this.btnNudgeParam2Down = new System.Windows.Forms.Button();
-            this.updownNudgeParam2 = new RTC.NumericUpDownHexFix();
+            this.updownNudgeParam2 = new NumericUpDownHexFix();
             this.btnNudgeParam1Up = new System.Windows.Forms.Button();
             this.btnNudgeParam1Down = new System.Windows.Forms.Button();
-            this.updownNudgeParam1 = new RTC.NumericUpDownHexFix();
+            this.updownNudgeParam1 = new NumericUpDownHexFix();
             this.btnNudgeEndAddressUp = new System.Windows.Forms.Button();
             this.btnNudgeEndAddressDown = new System.Windows.Forms.Button();
-            this.updownNudgeEndAddress = new RTC.NumericUpDownHexFix();
+            this.updownNudgeEndAddress = new NumericUpDownHexFix();
             this.btnNudgeStartAddressUp = new System.Windows.Forms.Button();
             this.btnNudgeStartAddressDown = new System.Windows.Forms.Button();
-            this.updownNudgeStartAddress = new RTC.NumericUpDownHexFix();
+            this.updownNudgeStartAddress = new NumericUpDownHexFix();
             this.label4 = new System.Windows.Forms.Label();
             this.dgvBlastGenerator = new System.Windows.Forms.DataGridView();
             this.dataGridViewTextBoxColumn1 = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.dataGridViewNumericUpDownColumn1 = new RTC.DataGridViewNumericUpDownColumn();
-            this.dataGridViewNumericUpDownColumn2 = new RTC.DataGridViewNumericUpDownColumn();
-            this.dataGridViewNumericUpDownColumn3 = new RTC.DataGridViewNumericUpDownColumn();
-            this.dataGridViewNumericUpDownColumn4 = new RTC.DataGridViewNumericUpDownColumn();
-            this.dataGridViewNumericUpDownColumn5 = new RTC.DataGridViewNumericUpDownColumn();
+            this.dataGridViewNumericUpDownColumn1 = new DataGridViewNumericUpDownColumn();
+            this.dataGridViewNumericUpDownColumn2 = new DataGridViewNumericUpDownColumn();
+            this.dataGridViewNumericUpDownColumn3 = new DataGridViewNumericUpDownColumn();
+            this.dataGridViewNumericUpDownColumn4 = new DataGridViewNumericUpDownColumn();
+            this.dataGridViewNumericUpDownColumn5 = new DataGridViewNumericUpDownColumn();
             this.menuStripEx1 = new MenuStrip();
             this.blastLayerToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.saveAsToFileblToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -84,11 +84,11 @@ namespace RTC
             this.dgvPrecision = new System.Windows.Forms.DataGridViewComboBoxColumn();
             this.dgvType = new System.Windows.Forms.DataGridViewComboBoxColumn();
             this.dgvMode = new System.Windows.Forms.DataGridViewComboBoxColumn();
-            this.dgvStepSize = new RTC.DataGridViewNumericUpDownColumn();
-            this.dgvStartAddress = new RTC.DataGridViewNumericUpDownColumn();
-            this.dgvEndAddress = new RTC.DataGridViewNumericUpDownColumn();
-            this.dgvParam1 = new RTC.DataGridViewNumericUpDownColumn();
-            this.dgvParam2 = new RTC.DataGridViewNumericUpDownColumn();
+            this.dgvStepSize = new DataGridViewNumericUpDownColumn();
+            this.dgvStartAddress = new DataGridViewNumericUpDownColumn();
+            this.dgvEndAddress = new DataGridViewNumericUpDownColumn();
+            this.dgvParam1 = new DataGridViewNumericUpDownColumn();
+            this.dgvParam2 = new DataGridViewNumericUpDownColumn();
             this.dgvNoteButton = new System.Windows.Forms.DataGridViewButtonColumn();
             this.panelSidebar.SuspendLayout();
             this.panel2.SuspendLayout();
