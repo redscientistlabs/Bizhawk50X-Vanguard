@@ -21,8 +21,9 @@ namespace RTCV.UI
 			netCoreSpec.Side = NetworkSide.SERVER;
 			netCoreSpec.MessageReceived += OnMessageReceivedProxy;
 
-			netConn = LocalNetCoreRouter.registerEndpoint(NetCoreServer.loopbackConnector, "VANGUARD");
+			netConn = LocalNetCoreRouter.registerEndpoint(NetCoreServer.loopbackConnector, "CORRUPTCORE");
 			LocalNetCoreRouter.registerEndpoint(netConn, "CORRUPTCORE");
+			LocalNetCoreRouter.registerEndpoint(netConn, "DEFAULT"); //Will send mesages to netcore if can't find the destination
 		}
 
 		public void OnMessageReceivedProxy(object sender, NetCoreEventArgs e) => OnMessageReceived(sender, e);
