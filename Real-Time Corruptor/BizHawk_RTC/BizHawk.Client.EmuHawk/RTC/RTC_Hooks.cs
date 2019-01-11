@@ -4,6 +4,7 @@ using BizHawk.Emulation.Common;
 using BizHawk.Emulation.Cores.Nintendo.N64;
 using Newtonsoft.Json;
 using System;
+using System.Collections.Generic;
 using System.Drawing;
 using System.IO;
 using System.Linq;
@@ -93,7 +94,7 @@ namespace RTC
 			if (autoCorrupt && CPU_STEP_Count >= intensity)
 			{
 				CPU_STEP_Count = 0;
-				BlastLayer bl = RTC_Corruptcore.GenerateBlastLayer(RTC_MemoryDomains.SelectedDomains);
+				BlastLayer bl = RTC_Corruptcore.GenerateBlastLayer((string[])RTC_Corruptcore.UISpec["SELECTEDDOMAINS"]);
 				if (bl != null)
 					bl.Apply();
 			}
@@ -196,15 +197,16 @@ namespace RTC
 			gameDone[VSPEC.CORE_LASTOPENROM.ToString()] = GlobalWin.MainForm.CurrentlyOpenRom;
 			RTC_EmuCore.EmuSpec.Update(gameDone);
 
-			RTC_MemoryDomains.RefreshDomains(false);
+			//RTC_MemoryDomains.RefreshDomains(false);
 
 			//Sleep for 10ms in case Bizhawk hung for a moment after the game loaded
 			System.Threading.Thread.Sleep(10);
 			//prepare memory domains in advance on bizhawk side
 
+			RefreshDomains();
+
 			if (RTC_EmuCore.CurrentGameName != lastGameName)
 			{
-
 				LocalNetCoreRouter.Route("CORRUPTCORE", "REMOTE_EVENT_LOADGAMEDONE_NEWGAME", true);
 			}
 			else
@@ -736,5 +738,47 @@ namespace RTC
 		{
 			GlobalWin.MainForm.StopAv();
 		}
+
+		public class MemoryDomainRTCInterface
+		{
+			[RequiredService]
+			public IMemoryDomains MemoryDomains { get; set; }
+
+			[RequiredService]
+			private IEmulator Emulator { get; set; }
+		}
+
+		public static volatile MemoryDomainRTCInterface MDRI = new MemoryDomainRTCInterface();
+
+		public static void RefreshDomains(bool clearSelected = true)
+		{
+			if (Global.Emulator is NullEmulator)
+				return;
+
+			RTC_EmuCore.EmuSpec.Update(VSPEC.MEMORYDOMAINS_INTERFACES.ToString(), (object[])GetInterfaces());
+			LocalNetCoreRouter.Route("CORRUPTCORE", "REMOTE_EVENT_DOMAINSUPDATED");
+
+		}
+
+		public static object GetInterfaces()
+		{
+			Console.WriteLine($" getInterfaces()");
+
+			Dictionary<String, MemoryInterface> interfaces = new Dictionary<string, MemoryInterface>();
+
+			if (Global.Emulator?.ServiceProvider == null)
+				return null;
+
+			ServiceInjector.UpdateServices(Global.Emulator.ServiceProvider, MDRI);
+
+			foreach (MemoryDomain _domain in MDRI.MemoryDomains)
+				if (!interfaces.ContainsKey(_domain.ToString()))
+					interfaces.Add(_domain.ToString(), new MemoryDomainProxy(new VanguardImplementation.BizhawkMemoryDomain(_domain)));
+
+
+			return interfaces.Values.ToArray();
+		}
+
+
 	}
 }

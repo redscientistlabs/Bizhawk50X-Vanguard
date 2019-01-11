@@ -130,7 +130,7 @@ namespace RTCV.CorruptCore
 			}
 
 			var watch = System.Diagnostics.Stopwatch.StartNew();
-			BlastLayer bl = RTC_Corruptcore.GenerateBlastLayer(RTC_MemoryDomains.SelectedDomains);
+			BlastLayer bl = RTC_Corruptcore.GenerateBlastLayer((string[])RTC_Corruptcore.UISpec["SELECTEDDOMAINS"]);
 			watch.Stop();
 			Console.WriteLine($"It took " + watch.ElapsedMilliseconds + " ms to blastlayer");
 

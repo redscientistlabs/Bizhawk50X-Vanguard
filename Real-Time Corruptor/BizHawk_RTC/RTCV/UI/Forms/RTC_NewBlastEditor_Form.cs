@@ -58,7 +58,7 @@ namespace RTCV.UI
 	{
 
 		private static Dictionary<string, MemoryInterface> domainToMiDico = new Dictionary<string, MemoryInterface>();
-		private string[] domains = RTC_MemoryDomains.MemoryInterfaces?.Keys?.Concat(RTC_MemoryDomains.VmdPool.Values.Select(it => it.ToString())).ToArray();
+		private string[] domains = null;
 		private string searchValue, searchColumn;
 		public List<String> VisibleColumns;
 		private string CurrentBlastLayerFile = "";
@@ -154,6 +154,7 @@ namespace RTCV.UI
 		private void RTC_NewBlastEditorForm_Load(object sender, EventArgs e)
 		{
 			RTC_UICore.SetRTCColor(RTC_UICore.GeneralColor, this);
+			domains = RTC_MemoryDomains.MemoryInterfaces?.Keys?.Concat(RTC_MemoryDomains.VmdPool.Values.Select(it => it.ToString())).ToArray();;
 		}
 
 		private void dgvBlastEditor_CellMouseClick(object sender, DataGridViewCellMouseEventArgs e)

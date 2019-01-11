@@ -80,19 +80,17 @@ namespace RTCV.UI
 				lbMemoryDomains.Items.AddRange(RTC_MemoryDomains.VmdPool.Values.Select(it => it.ToString()).ToArray());
 		}
 
-
 		public void RefreshDomainsAndKeepSelected(string[] overrideDomains = null)
 		{
-			string[] copy = RTC_MemoryDomains.LastSelectedDomains;
+			var temp = (string[])RTC_Corruptcore.UISpec["SELECTEDDOMAINS"];
 
 			if (overrideDomains != null)
-				copy = overrideDomains;
+				temp = overrideDomains;
 
 			RefreshDomains(); //refresh and reload domains
 
-			RTC_MemoryDomains.UpdateSelectedDomains(copy);
-
-			SetMemoryDomainsSelectedDomains(copy);
+			RTC_Corruptcore.UISpec.Update("SELECTEDDOMAINS", temp);
+			SetMemoryDomainsSelectedDomains(temp);
 		}
 
 		public bool lbMemoryDomains_DontExecute_SelectedIndexChanged = false;
@@ -102,9 +100,8 @@ namespace RTCV.UI
 			if (lbMemoryDomains_DontExecute_SelectedIndexChanged)
 				return;
 
-			string[] selectedDomains = lbMemoryDomains.SelectedItems.Cast<string>().ToArray();
+			RTC_Corruptcore.UISpec.Update("SELECTEDDOMAINS", lbMemoryDomains.SelectedItems.Cast<string>().ToArray());
 
-			RTC_MemoryDomains.UpdateSelectedDomains(selectedDomains, true);
 
 			//RTC_Restore.SaveRestore();
 		}

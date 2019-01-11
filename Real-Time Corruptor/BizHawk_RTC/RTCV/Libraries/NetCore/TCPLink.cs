@@ -145,10 +145,8 @@ namespace RTCV.NetCore
                     {
                         NetCoreAdvancedMessage message = null;
 
-
                         try
                         {
-
                             using (MemoryStream ms = new MemoryStream())
                             {
                                 Stopwatch sw = new Stopwatch();
@@ -200,21 +198,6 @@ namespace RTCV.NetCore
 
                         try
                         {
-                            /*   using (MemoryStream ms = new MemoryStream())
-                               {
-                                   //Write the length of the command to the first four bytes
-                                   binaryFormatter.Serialize(ms, pendingMessage);
-
-                                   //Write the length of the incoming object to the NetworkStream
-                                   byte[] length = BitConverter.GetBytes(ms.ToArray().Length);
-                                   networkStream.Write(length, 0, length.Length);
-
-                                   //Write the data itself
-                                   byte[] buf = ms.ToArray();
-                                   networkStream.Write(buf, 0, buf.Length);
-                                   //Console.WriteLine("It took " + sw.ElapsedMilliseconds + " ms to serialize backCmd " + backCmd.Type + " of " + ms.ToArray().Length + "	bytes");
-                               }*/
-
                             Stopwatch sw = new Stopwatch();
                             sw.Start();
                             //Write the length of the command to the first four bytes
@@ -223,10 +206,7 @@ namespace RTCV.NetCore
                             //Write the length of the incoming object to the NetworkStream
                             byte[] length = BitConverter.GetBytes(buf.Length);
                             networkStream.Write(length, 0, length.Length);
-                            //Console.WriteLine("I am giving you this many bytes " + BitConverter.ToInt32(length, 0));
-                            //Write the data itself
-                            //ms.Position = 0;
-                            //ms.CopyTo(networkStream);
+
                             networkStream.Write(buf, 0, buf.Length);
                             sw.Stop();
 							if (pendingMessage.Type != "{BOOP}")

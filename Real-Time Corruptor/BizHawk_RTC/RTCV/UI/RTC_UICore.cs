@@ -13,6 +13,7 @@ using Newtonsoft.Json;
 using RTCV.CorruptCore;
 using RTCV.NetCore;
 using RTCV.UI;
+using UI;
 
 namespace RTCV.UI
 {
@@ -31,20 +32,17 @@ namespace RTCV.UI
 		//public static Color generalColor = Color.FromArgb(60, 45, 70);
 		public static Color GeneralColor = Color.LightSteelBlue;
 
-
-		public static UIConnector UIConn;
-		public static NetCoreReceiver Receiver;
-
-
 		public static void Start()
 		{
-			NetCoreServer.StartLoopback();
-
-			Receiver = new NetCoreReceiver();
-			UIConn = new UIConnector(Receiver);
+			//	NetCoreServer.StartLoopback();
+			
+			UI_VanguardImplementation.StartServer();
 
 
 			PartialSpec p = new PartialSpec("UISpec");
+
+			p["SELECTEDDOMAINS"] = new string[]{};
+
 			RTC_Corruptcore.UISpec = new FullSpec(p);
 
 
@@ -55,6 +53,11 @@ namespace RTCV.UI
 				LocalNetCoreRouter.Route("CORRUPTCORE", "REMOTE_PUSHUISPECUPDATE", partial, true);
 			};
 
+			//Don't continue until we're connected and we've gotten the spec
+			while (UI_VanguardImplementation.connector.netConn.status != NetworkStatus.CONNECTED && RTC_Corruptcore.CorruptCoreSpec == null)
+			{
+				Thread.Sleep(10);
+			}
 			//Loading RTC Params
 			LoadRTCColor();
 			S.GET<RTC_SettingsGeneral_Form>().cbDisableBizhawkOSD.Checked = !RTC_Params.IsParamSet("ENABLE_BIZHAWK_OSD");

@@ -53,7 +53,7 @@ namespace RTCV.UI
 		private bool initialized = false;
 
 		private static Dictionary<string, MemoryInterface> domainToMiDico = new Dictionary<string, MemoryInterface>();
-		private string[] domains = RTC_MemoryDomains.MemoryInterfaces?.Keys?.Concat(RTC_MemoryDomains.VmdPool.Values.Select(it => it.ToString())).ToArray();
+		private string[] domains;
 
 		public RTC_BlastGenerator_Form()
 		{
@@ -66,6 +66,7 @@ namespace RTCV.UI
 			dgvBlastGenerator.CellValueChanged += dgvBlastGenerator_CellValueChanged;
 			dgvBlastGenerator.CellClick += dgvBlastGenerator_CellClick;
 			RTC_UICore.SetRTCColor(RTC_UICore.GeneralColor, this);
+			domains = RTC_MemoryDomains.MemoryInterfaces?.Keys?.Concat(RTC_MemoryDomains.VmdPool.Values.Select(it => it.ToString())).ToArray();
 		}
 
 		public void LoadNoStashKey()

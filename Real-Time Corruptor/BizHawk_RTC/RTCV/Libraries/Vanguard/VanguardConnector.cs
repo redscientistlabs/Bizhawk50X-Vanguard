@@ -20,14 +20,15 @@ namespace RTCV.Vanguard
             receiver = _receiver;
 
 			LocalNetCoreRouter.registerEndpoint(this, "VANGUARD");
-			corruptConn = LocalNetCoreRouter.registerEndpoint(new CorruptCoreConnector(), "CORRUPTCORE");
+			corruptConn = new CorruptCoreConnector();
+			LocalNetCoreRouter.registerEndpoint(corruptConn, "CORRUPTCORE");
 
 			var netCoreSpec = new NetCoreSpec();
             netCoreSpec.Side = NetworkSide.CLIENT;
             netCoreSpec.MessageReceived += OnMessageReceivedProxy;
 			netCoreSpec.ClientConnected += NetCoreSpec_ClientConnected;
-
-			netConn = LocalNetCoreRouter.registerEndpoint(new NetCoreConnector(netCoreSpec), "UI");
+			netConn = new NetCoreConnector(netCoreSpec);
+			//netConn = LocalNetCoreRouter.registerEndpoint(new NetCoreConnector(netCoreSpec), "UI");
 			LocalNetCoreRouter.registerEndpoint(netConn, "DEFAULT"); //Will send mesages to netcore if can't find the destination
 
 		}

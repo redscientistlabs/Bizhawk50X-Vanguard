@@ -29,7 +29,7 @@ namespace RTCV.NetCore
 	public class NetCoreReceiver
 	{
 		public event EventHandler<NetCoreEventArgs> MessageReceived;
-		public virtual void OnMessageReceived(NetCoreEventArgs e) => MessageReceived?.Invoke(this, e);
+		public virtual void OnMessageReceived(NetCoreEventArgs e) => MessageReceived.Invoke(this, e);
 	}
 
 	[Serializable()]
@@ -86,7 +86,7 @@ namespace RTCV.NetCore
         public NetworkSide Side = NetworkSide.NONE;
         public bool AutoReconnect = true;
         public int ClientReconnectDelay = 600;
-        public int DefaultBoopMonitoringCounter = 15;
+        public int DefaultBoopMonitoringCounter = 1500;
 
         public bool Loopback = true;
         public string IP = "127.0.0.1";

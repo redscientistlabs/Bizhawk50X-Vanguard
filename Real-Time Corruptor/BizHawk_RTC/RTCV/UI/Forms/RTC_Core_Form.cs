@@ -55,7 +55,7 @@ namespace RTCV.UI
 
 		public void btnManualBlast_Click(object sender, EventArgs e)
 		{
-			LocalNetCoreRouter.Route("CORRUPTCORE", "ASYNCBLAST");
+			LocalNetCoreRouter.Route("CORRUPTCORE", "ASYNCBLAST", true );
 		}
 
 		public void btnAutoCorrupt_Click(object sender, EventArgs e)

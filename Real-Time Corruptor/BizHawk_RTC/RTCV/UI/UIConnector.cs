@@ -3,13 +3,14 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using RTCV.CorruptCore;
 
 namespace RTCV.UI
 {
 	public class UIConnector : IRoutable
 	{
 		NetCoreReceiver receiver;
-		NetCoreConnector netConn;
+		public NetCoreConnector netConn;
 
 		public UIConnector(NetCoreReceiver _receiver)
 		{
@@ -17,13 +18,21 @@ namespace RTCV.UI
 
 			LocalNetCoreRouter.registerEndpoint(this, "UI");
 
-			var netCoreSpec = new NetCoreSpec();
-			netCoreSpec.Side = NetworkSide.SERVER;
+			var netCoreSpec = new NetCore.NetCoreSpec();
+			netCoreSpec.Side = NetCore.NetworkSide.SERVER;
+			netCoreSpec.Loopback = true;
+			netCoreSpec.syncObject = S.GET<RTC_Core_Form>();
 			netCoreSpec.MessageReceived += OnMessageReceivedProxy;
+			netCoreSpec.ServerConnected += Spec_ServerConnected;
 
-			netConn = LocalNetCoreRouter.registerEndpoint(NetCoreServer.loopbackConnector, "CORRUPTCORE");
-			netConn = LocalNetCoreRouter.registerEndpoint(NetCoreServer.loopbackConnector, "VANGUARD");
+			netConn = new NetCoreConnector(netCoreSpec);
+			//netConn = LocalNetCoreRouter.registerEndpoint(NetCoreServer.loopbackConnector, "VANGUARD");
 			LocalNetCoreRouter.registerEndpoint(netConn, "DEFAULT"); //Will send mesages to netcore if can't find the destination
+		}
+
+		private static void Spec_ServerConnected(object sender, EventArgs e)
+		{
+			LocalNetCoreRouter.Route("CORRUPTCORE", "REMOTE_PUSHUISPEC", RTC_Corruptcore.UISpec.GetPartialSpec(), true);
 		}
 
 		public void OnMessageReceivedProxy(object sender, NetCoreEventArgs e) => OnMessageReceived(sender, e);

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading;
+using System.Windows.Forms;
 using RTCV.CorruptCore;
 using RTCV.NetCore;
 
@@ -18,17 +19,15 @@ namespace RTCV.UI
             var spec = new NetCore.NetCoreSpec();
             spec.Side = NetCore.NetworkSide.SERVER;
             spec.Loopback = true;
-            //spec.IP = "127.0.0.1";
-            //spec.Port = 42069;
-            spec.MessageReceived += OnMessageReceived;
-			spec.ServerConnected += Spec_ServerConnected;
+			spec.syncObject = S.GET<RTC_Core_Form>();
+			//spec.ServerConnected += Spec_ServerConnected;
+			//spec.IP = "127.0.0.1";
+			//spec.Port = 42069;
+			spec.MessageReceived += OnMessageReceived;
             loopbackConnector = new NetCore.NetCoreConnector(spec);
+
         }
 
-		private static void Spec_ServerConnected(object sender, EventArgs e)
-		{
-			LocalNetCoreRouter.Route("CORRUPTCORE", "REMOTE_PUSHUISPEC", RTC_Corruptcore.UISpec.GetPartialSpec(), true);
-		}
 
 		public static void RestartLoopback()
 		{
@@ -64,27 +63,6 @@ namespace RTCV.UI
 
 			switch (message.Type) //Handle received messages here
 			{
-				case "REMOTE_PUSHEMUSPEC":
-					RTC_Corruptcore.VanguardSpec = new FullSpec((PartialSpec)advancedMessage.objectValue);
-					e.setReturnValue(true);
-					break;
-
-				case "REMOTE_PUSHEMUSPECUPDATE":
-					RTC_Corruptcore.VanguardSpec?.Update((PartialSpec)advancedMessage.objectValue);
-					e.setReturnValue(true);
-					break;
-
-				case "REMOTE_PUSHCORRUPTCORESPEC":
-					RTC_Corruptcore.CorruptCoreSpec = new FullSpec((PartialSpec)advancedMessage.objectValue);
-					e.setReturnValue(true);
-					break;
-
-				case "REMOTE_PUSHCORRUPTCORESPECCUPDATE":
-					RTC_Corruptcore.CorruptCoreSpec?.Update((PartialSpec)advancedMessage.objectValue);
-					e.setReturnValue(true);
-					break;
-
-
 				default:
 					ConsoleEx.WriteLine($"Received unassigned {(message is NetCoreAdvancedMessage ? "advanced " : "")}message \"{message.Type}\"");
 					break;

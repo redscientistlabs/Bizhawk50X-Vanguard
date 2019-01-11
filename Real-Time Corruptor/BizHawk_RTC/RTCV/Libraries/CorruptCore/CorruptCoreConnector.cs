@@ -39,6 +39,11 @@ namespace RTCV.CorruptCore
 					break;
 
 
+				case "REMOTE_EVENT_DOMAINSUPDATED":
+					RTC_MemoryDomains.RefreshDomains();
+					LocalNetCoreRouter.Route("UI", "REMOTE_EVENT_DOMAINSUPDATED");
+					break;
+
 				case "ASYNCBLAST":
 					{
 						RTC_Corruptcore.ASyncGenerateAndBlast();
@@ -131,7 +136,7 @@ namespace RTCV.CorruptCore
 
 					bool returnValue = RTC_StockpileManager.LoadState(sk, reloadRom);
 
-					RTC_MemoryDomains.RefreshDomains(false);
+					//RTC_MemoryDomains.RefreshDomains(false);
 
 					if (runBlastLayer)
 					{
@@ -193,10 +198,11 @@ namespace RTCV.CorruptCore
 					RTC_MemoryDomains.GenerateActiveTableDump((string)(advancedMessage.objectValue as object[])[0], (string)(advancedMessage.objectValue as object[])[1]);
 					break;
 
+				/*
 				case "REMOTE_DOMAIN_SETSELECTEDDOMAINS":
 					RTC_MemoryDomains.UpdateSelectedDomains((string[])advancedMessage.objectValue);
 					break;
-
+					*/
 
 				case "REMOTE_KEY_PUSHSAVESTATEDICO":
 					{
@@ -223,6 +229,13 @@ namespace RTCV.CorruptCore
 				case "REMOTE_SET_STEPACTIONS_REMOVEEXCESSINFINITEUNITS":
 					RTC_StepActions.RemoveExcessInfiniteStepUnits();
 					break;
+
+
+				case "REMOTE_EVENT_LOADGAMEDONE_NEWGAME":
+				{
+
+					break;
+				}
 
 				/*
 				case "REMOTE_HOTKEY_MANUALBLAST":

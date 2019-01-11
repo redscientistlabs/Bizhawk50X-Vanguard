@@ -15,50 +15,178 @@ namespace RTCV.CorruptCore
 {
 	public static class RTC_MemoryDomains
 	{
-		public static volatile Dictionary<string, MemoryInterface> MemoryInterfaces = new Dictionary<string, MemoryInterface>();
-		public static volatile Dictionary<string, MemoryInterface> VmdPool = new Dictionary<string, MemoryInterface>();
 
-
-		public static string[] SelectedDomains
+		public static Dictionary<string, MemoryInterface> MemoryInterfaces
 		{
-			get => (string[])RTC_Corruptcore.CorruptCoreSpec[RTCSPEC.MEMORYDOMAINS_SELECTEDDOMAINS.ToString()];
-			set => RTC_Corruptcore.CorruptCoreSpec.Update(RTCSPEC.MEMORYDOMAINS_SELECTEDDOMAINS.ToString(), value);
+			get => (Dictionary<string, MemoryInterface>)RTC_Corruptcore.CorruptCoreSpec["MEMORYINTERFACES"];
+			set => RTC_Corruptcore.CorruptCoreSpec.Update("MEMORYINTERFACES", value);
 		}
-		public static string[] LastSelectedDomains
+		public static Dictionary<string, MemoryInterface> VmdPool
 		{
-			get => (string[])RTC_Corruptcore.CorruptCoreSpec[RTCSPEC.MEMORYDOMAINS_LASTSELECTEDDOMAINS.ToString()];
-			set => RTC_Corruptcore.CorruptCoreSpec.Update(RTCSPEC.MEMORYDOMAINS_LASTSELECTEDDOMAINS.ToString(), value);
+			get => (Dictionary<string, MemoryInterface>)RTC_Corruptcore.CorruptCoreSpec["VMDPOOL"];
+			set => RTC_Corruptcore.CorruptCoreSpec.Update("VMDPOOL", value);
 		}
 
 		public static PartialSpec getDefaultPartial()
 		{
 			var partial = new PartialSpec("RTCSpec");
 
-			partial[RTCSPEC.MEMORYDOMAINS_SELECTEDDOMAINS.ToString()] = new string[] { };
-			partial[RTCSPEC.MEMORYDOMAINS_LASTSELECTEDDOMAINS.ToString()] = new string[] { };
+			partial["MEMORYINTERFACES"] = new Dictionary<string, MemoryInterface>();
+			partial["VMDPOOL"] = new Dictionary<string, MemoryInterface>();
 
 			return partial;
 		}
 
-		public static void UpdateSelectedDomains(string[] _domains, bool sync = false)
+
+		public static void RefreshDomains()
 		{
+			//var returns = LocalNetCoreRouter.QueryRoute<MemoryInterface[]>("VANGUARD", "REMOTE_DOMAIN_GETDOMAINS");
 
-			PartialSpec update = new PartialSpec("RTCSpec");
-			update[RTCSPEC.MEMORYDOMAINS_SELECTEDDOMAINS.ToString()] = _domains;
-			update[RTCSPEC.MEMORYDOMAINS_LASTSELECTEDDOMAINS.ToString()] = _domains;
-			RTC_Corruptcore.CorruptCoreSpec.Update(update);
+			var temp = new Dictionary<string, MemoryInterface>();
+			foreach (MemoryInterface mi in (MemoryInterface[])RTC_Corruptcore.VanguardSpec[VSPEC.MEMORYDOMAINS_INTERFACES.ToString()])
+				temp.Add(mi.ToString(), mi);
+			MemoryInterfaces = temp;
+			LocalNetCoreRouter.Route("UI", "REMOTE_EVENT_DOMAINSUPDATED", true);
 
-			Console.WriteLine($"-> Selected {_domains.Count().ToString()} domains \n{string.Join(" | ", _domains)}");
 		}
 
-		public static void ClearSelectedDomains()
+
+		public static void Clear()
 		{
-			PartialSpec update = new PartialSpec("RTCSpec");
-			update[RTCSPEC.MEMORYDOMAINS_LASTSELECTEDDOMAINS.ToString()] = RTC_Corruptcore.CorruptCoreSpec[RTCSPEC.MEMORYDOMAINS_SELECTEDDOMAINS.ToString()];
-			update[RTCSPEC.MEMORYDOMAINS_SELECTEDDOMAINS.ToString()] = new string[] { };
-			RTC_Corruptcore.CorruptCoreSpec.Update(update);
-			
-			Console.WriteLine($" -> Cleared selected domains");
+			MemoryInterfaces.Clear();
+		}
+
+		public static MemoryDomainProxy GetProxy(string domain, long address)
+		{
+			if (MemoryInterfaces.Count == 0)
+				RefreshDomains();
+
+			if (MemoryInterfaces.ContainsKey(domain))
+			{
+				MemoryInterface mi = MemoryInterfaces[domain];
+				return (MemoryDomainProxy)mi;
+			}
+			else if (VmdPool.ContainsKey(domain))
+			{
+				MemoryInterface mi = VmdPool[domain];
+				if (mi is VirtualMemoryDomain vmd)
+					return GetProxy(vmd.GetRealDomain(address), vmd.GetRealAddress(address));
+			}
+			return null;
+		}
+
+		public static MemoryInterface GetInterface(string _domain)
+		{
+			if (MemoryInterfaces.Count == 0)
+				RefreshDomains();
+
+			if (MemoryInterfaces.ContainsKey(_domain))
+				return MemoryInterfaces[_domain];
+
+			if (VmdPool.ContainsKey(_domain))
+				return VmdPool[_domain];
+
+			return null;
+		}
+
+
+		public static long GetRealAddress(string domain, long address)
+		{
+			if (domain.Contains("[V]"))
+			{
+				MemoryInterface mi = VmdPool[domain];
+				VirtualMemoryDomain vmd = ((VirtualMemoryDomain)mi);
+				return vmd.GetRealAddress(address);
+			}
+			else
+				return address;
+		}
+
+		public static string GetRealDomain(string domain, long address)
+		{
+			if (domain.Contains("[V]"))
+			{
+				MemoryInterface mi = VmdPool[domain];
+				VirtualMemoryDomain vmd = ((VirtualMemoryDomain)mi);
+				return vmd.GetRealDomain(address);
+			}
+			else
+				return domain;
+		}
+
+		public static void GenerateVmdFromStashkey(StashKey sk)
+		{
+			VmdPrototype proto = new VmdPrototype(sk.BlastLayer);
+			AddVMD(proto);
+
+			//Todo
+			//S.GET<RTC_VmdPool_Form>().RefreshVMDs();
+		}
+
+		public static void AddVMD(VmdPrototype proto) => AddVMD(proto.Generate());
+
+		public static void AddVMD(VirtualMemoryDomain VMD)
+		{
+			RTC_MemoryDomains.VmdPool[VMD.ToString()] = VMD;
+
+
+			LocalNetCoreRouter.Route("UI", "REMOTE_EVENT_DOMAINSUPDATED", true);
+		}
+
+		public static void RemoveVMD(VirtualMemoryDomain VMD) => RemoveVMD(VMD.ToString());
+
+		public static void RemoveVMD(string vmdName)
+		{
+			if (RTC_MemoryDomains.VmdPool.ContainsKey(vmdName))
+				RTC_MemoryDomains.VmdPool.Remove(vmdName);
+
+			LocalNetCoreRouter.Route("UI", "REMOTE_EVENT_DOMAINSUPDATED", true);
+		}
+
+		public static void RenameVMD(VirtualMemoryDomain VMD) => RenameVMD(VMD.ToString());
+
+		public static void RenameVMD(string vmdName)
+		{
+			throw new NotImplementedException("Move input to UI");
+			/*
+			if (!RTC_MemoryDomains.VmdPool.ContainsKey(vmdName))
+				return;
+
+			string name = "";
+			string value = "";
+			if (UI_Extensions.GetInputBox("BlastLayer to VMD", "Enter the new VMD name:", ref value) == DialogResult.OK)
+			{
+				name = value.Trim();
+			}
+			else
+			{
+				return;
+			}
+
+			if (string.IsNullOrWhiteSpace(name))
+				name = RTC_Corruptcore.GetRandomKey();
+
+			VirtualMemoryDomain VMD = (VirtualMemoryDomain)RTC_MemoryDomains.VmdPool[vmdName];
+
+			RemoveVMD(VMD);
+			VMD.Name = name;
+			VMD.Proto.VmdName = name;
+			AddVMD(VMD);*/
+		}
+
+		public static void GenerateActiveTableDump(string domain, string key)
+		{
+			MemoryInterface mi = MemoryInterfaces[domain];
+
+			byte[] dump = mi.GetDump();
+
+			File.WriteAllBytes(RTC_Corruptcore.rtcDir + Path.DirectorySeparatorChar + "MEMORYDUMPS" + Path.DirectorySeparatorChar + key + ".dmp", dump.ToArray());
+		}
+
+		public static byte[] GetDomainData(string domain)
+		{
+			MemoryInterface mi = domain.Contains("[V]") ? VmdPool[domain] : MemoryInterfaces[domain];
+			return mi.GetDump();
 		}
 
 		public static string[] GetBlacklistedDomains()
@@ -327,164 +455,6 @@ namespace RTCV.CorruptCore
 		}
 
 
-		public static void RefreshDomains(bool clearSelected = true)
-		{
-
-			LocalNetCoreRouter.Route("VANGUARD", "RE");
-
-			if (clearSelected)
-				ClearSelectedDomains();
-
-		}
-
-
-		public static void Clear()
-		{
-			MemoryInterfaces.Clear();
-
-
-			PartialSpec update = new PartialSpec("RTCSpec");
-			RTC_MemoryDomains.LastSelectedDomains = RTC_MemoryDomains.SelectedDomains;
-			RTC_MemoryDomains.SelectedDomains = new string[] { };
-			RTC_Corruptcore.CorruptCoreSpec.Update(update);
-
-			//Todo
-			//if (!S.ISNULL<RTC_EngineConfig_Form>())
-			//	S.GET<RTC_MemoryDomains_Form>().lbMemoryDomains.Items.Clear();
-		}
-
-		public static MemoryDomainProxy GetProxy(string domain, long address)
-		{
-			if (MemoryInterfaces.Count == 0)
-				RefreshDomains();
-
-			if (MemoryInterfaces.ContainsKey(domain))
-			{
-				MemoryInterface mi = MemoryInterfaces[domain];
-				return (MemoryDomainProxy)mi;
-			}
-			else if (VmdPool.ContainsKey(domain))
-			{
-				MemoryInterface mi = VmdPool[domain];
-				if (mi is VirtualMemoryDomain vmd)
-					return GetProxy(vmd.GetRealDomain(address), vmd.GetRealAddress(address));
-			}
-			return null;
-		}
-
-		public static MemoryInterface GetInterface(string _domain)
-		{
-			if (MemoryInterfaces.Count == 0)
-				RefreshDomains();
-
-			if (MemoryInterfaces.ContainsKey(_domain))
-				return MemoryInterfaces[_domain];
-
-			if (VmdPool.ContainsKey(_domain))
-				return VmdPool[_domain];
-
-			return null;
-		}
-
-
-		public static long GetRealAddress(string domain, long address)
-		{
-			if (domain.Contains("[V]"))
-			{
-				MemoryInterface mi = VmdPool[domain];
-				VirtualMemoryDomain vmd = ((VirtualMemoryDomain)mi);
-				return vmd.GetRealAddress(address);
-			}
-			else
-				return address;
-		}
-
-		public static string GetRealDomain(string domain, long address)
-		{
-			if (domain.Contains("[V]"))
-			{
-				MemoryInterface mi = VmdPool[domain];
-				VirtualMemoryDomain vmd = ((VirtualMemoryDomain)mi);
-				return vmd.GetRealDomain(address);
-			}
-			else
-				return domain;
-		}
-
-		public static void GenerateVmdFromStashkey(StashKey sk)
-		{
-			VmdPrototype proto = new VmdPrototype(sk.BlastLayer);
-			AddVMD(proto);
-
-			//Todo
-			//S.GET<RTC_VmdPool_Form>().RefreshVMDs();
-		}
-
-		public static void AddVMD(VmdPrototype proto) => AddVMD(proto.Generate());
-
-		public static void AddVMD(VirtualMemoryDomain VMD)
-		{
-			RTC_MemoryDomains.VmdPool[VMD.ToString()] = VMD;
-
-
-			LocalNetCoreRouter.Route("UI", "REMOTE_EVENT_DOMAINSUPDATED", true);
-		}
-
-		public static void RemoveVMD(VirtualMemoryDomain VMD) => RemoveVMD(VMD.ToString());
-
-		public static void RemoveVMD(string vmdName)
-		{
-			if (RTC_MemoryDomains.VmdPool.ContainsKey(vmdName))
-				RTC_MemoryDomains.VmdPool.Remove(vmdName);
-
-			LocalNetCoreRouter.Route("UI", "REMOTE_EVENT_DOMAINSUPDATED", true);
-		}
-
-		public static void RenameVMD(VirtualMemoryDomain VMD) => RenameVMD(VMD.ToString());
-
-		public static void RenameVMD(string vmdName)
-		{
-			throw new NotImplementedException("Move input to UI");
-			/*
-			if (!RTC_MemoryDomains.VmdPool.ContainsKey(vmdName))
-				return;
-
-			string name = "";
-			string value = "";
-			if (UI_Extensions.GetInputBox("BlastLayer to VMD", "Enter the new VMD name:", ref value) == DialogResult.OK)
-			{
-				name = value.Trim();
-			}
-			else
-			{
-				return;
-			}
-
-			if (string.IsNullOrWhiteSpace(name))
-				name = RTC_Corruptcore.GetRandomKey();
-
-			VirtualMemoryDomain VMD = (VirtualMemoryDomain)RTC_MemoryDomains.VmdPool[vmdName];
-
-			RemoveVMD(VMD);
-			VMD.Name = name;
-			VMD.Proto.VmdName = name;
-			AddVMD(VMD);*/
-		}
-
-		public static void GenerateActiveTableDump(string domain, string key)
-		{
-			MemoryInterface mi = MemoryInterfaces[domain];
-
-			byte[] dump = mi.GetDump();
-
-			File.WriteAllBytes(RTC_Corruptcore.rtcDir + Path.DirectorySeparatorChar + "MEMORYDUMPS" + Path.DirectorySeparatorChar + key + ".dmp", dump.ToArray());
-		}
-
-		public static byte[] GetDomainData(string domain)
-		{
-			MemoryInterface mi = domain.Contains("[V]") ? VmdPool[domain] : MemoryInterfaces[domain];
-			return mi.GetDump();
-		}
 	}
 
 	public class RomParts
@@ -511,6 +481,11 @@ namespace RTCV.CorruptCore
 		public abstract byte PeekByte(long address);
 
 		public abstract void PokeByte(long address, byte value);
+
+		public MemoryInterface()
+		{
+
+		}
 	}
 
 	[XmlInclude(typeof(BlastLayer))]

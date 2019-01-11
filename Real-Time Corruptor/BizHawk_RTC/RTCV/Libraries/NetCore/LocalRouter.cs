@@ -28,6 +28,10 @@ namespace RTCV.NetCore
 			}
 			catch { return null; }
 		}
+		public static bool hasEndpoint(string name)
+		{
+			return endpoints.TryGetValue(name, out IRoutable chosen);
+		}
 
 		public static object Route(string endpointName, string messageType, object objectValue) => Route(endpointName, messageType, objectValue, false);
 		public static object Route(string endpointName, string messageType, object objectValue, bool synced)
@@ -38,9 +42,16 @@ namespace RTCV.NetCore
 		}
 
 		public static object Route(string endpointName, string messageType) => Route(endpointName, messageType, false);
-		public static object Route(string endpointName, string messageType, bool synced = false) {
+		public static object Route(string endpointName, string messageType, bool synced = false)
+		{
 			var ncea = (synced ? new NetCoreEventArgs() { message = new NetCoreAdvancedMessage(messageType) { requestGuid = Guid.NewGuid() } } : new NetCoreEventArgs(messageType));
 			return Route(endpointName, ncea);
+		}
+
+		public static T QueryRoute<T>(string endpointName, string messageType, bool synced = true)
+		{
+			var ncea = (synced ? new NetCoreEventArgs() { message = new NetCoreAdvancedMessage(messageType) { requestGuid = Guid.NewGuid() } } : new NetCoreEventArgs(messageType));
+			return (T)((NetCoreAdvancedMessage)Route(endpointName, ncea)).objectValue;
 		}
 
 		public static object Route(string endpointName, NetCoreEventArgs e)
@@ -55,7 +66,6 @@ namespace RTCV.NetCore
 					return defaultEndpoint.OnMessageReceived(null, e);
 				}
 			}
-
             return endpoint.OnMessageReceived(null, e);
         }
     }

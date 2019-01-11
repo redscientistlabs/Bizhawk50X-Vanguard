@@ -86,7 +86,7 @@ namespace RTC
 					break;
 
 				case "REMOTE_DOMAIN_GETDOMAINS":
-					e.setReturnValue(BizhawkMemoryDomain.GetInterfaces());
+					e.setReturnValue(RTC_Hooks.GetInterfaces());
 					break;
 
 				case "REMOTE_DOMAIN_SYSTEM":
@@ -142,19 +142,6 @@ namespace RTC
 
 					break;
 				}
-
-				case "REMOTE_EVENT_LOADGAMEDONE_NEWGAME":
-
-
-					RTC_Corruptcore.AutoCorrupt = false;
-					//					S.GET<RTC_MemoryDomains_Form>().RefreshDomains();
-					//				S.GET<RTC_MemoryDomains_Form>().SetMemoryDomainsAllButSelectedDomains(RTC_MemoryDomains.GetBlacklistedDomains());
-					break;
-				case "REMOTE_EVENT_LOADGAMEDONE_SAMEGAME":
-					//RTC_StockpileManager.isCorruptionApplied = false;
-					//				S.GET<RTC_MemoryDomains_Form>().RefreshDomainsAndKeepSelected();
-					break;
-
 				case "REMOTE_EVENT_BIZHAWK_MAINFORM_CLOSE":
 					RTC_Hooks.BIZHAWK_MAINFORM_CLOSE();
 					break;
@@ -185,22 +172,12 @@ namespace RTC
 		}
 
 
-
-		public class MemoryDomainRTCInterface
-		{
-			[RequiredService]
-			public IMemoryDomains MemoryDomains { get; set; }
-
-			[RequiredService]
-			private IEmulator Emulator { get; set; }
-		}
-
-
 		public class BizhawkMemoryDomain : IMemoryDomain
 		{
 			public MemoryDomain MD;
 			public string Name => MD.Name;
 			private long size => MD.Size;
+
 			public long Size
 			{
 				get
@@ -211,6 +188,7 @@ namespace RTC
 					return size;
 				}
 			}
+
 			public int WordSize => MD.WordSize;
 			public bool BigEndian => MD.EndianType == MemoryDomain.Endian.Big;
 
@@ -218,10 +196,12 @@ namespace RTC
 			{
 				MD = md;
 			}
+
 			public byte PeekByte(long addr)
 			{
 				return MD.PeekByte(addr);
 			}
+
 			public void PokeByte(long addr, byte val)
 			{
 				MD.PokeByte(addr, val);
@@ -232,37 +212,6 @@ namespace RTC
 				return MD.Name;
 			}
 
-
-			public static volatile MemoryDomainRTCInterface MDRI = new MemoryDomainRTCInterface();
-
-			public static void RefreshDomains(bool clearSelected = true)
-			{
-				if (Global.Emulator is NullEmulator)
-					return;
-
-				RTC_EmuCore.EmuSpec.Update(VSPEC.MEMORYDOMAINS_INTERFACES.ToString(), (object[])GetInterfaces());
-				LocalNetCoreRouter.Route("CORRUPTCORE", "REMOTE_EVENT_DOMAINSUPDATED");
-
-			}
-
-			public static object GetInterfaces()
-			{
-				Console.WriteLine($" getInterfaces()");
-
-				Dictionary<String, MemoryInterface> interfaces = new Dictionary<string, MemoryInterface>();
-
-				if (Global.Emulator?.ServiceProvider == null)
-					return null; ;
-
-				ServiceInjector.UpdateServices(Global.Emulator.ServiceProvider, MDRI);
-
-				foreach (MemoryDomain _domain in MDRI.MemoryDomains)
-					if (!interfaces.ContainsKey(_domain.ToString()))
-						interfaces.Add(_domain.ToString(), new MemoryDomainProxy(new BizhawkMemoryDomain(_domain)));
-
-
-				return interfaces.Values.ToArray();
-			}
 		}
 	}
 }

@@ -146,7 +146,7 @@ namespace RTCV.CorruptCore
 			CorruptCoreSpec = new FullSpec(rtcSpecTemplate); //You have to feed a partial spec as a template
 
 
-			//LocalNetCoreRouter.Route("UI", "REMOTE_PUSHCORRUPTCORESPEC", rtcSpecTemplate, true);
+			LocalNetCoreRouter.Route("UI", "REMOTE_PUSHCORRUPTCORESPEC", rtcSpecTemplate, true);
 
 			CorruptCoreSpec.SpecUpdated += (o, e) =>
 			{
@@ -541,7 +541,7 @@ namespace RTCV.CorruptCore
 			long MaxAddress = -1;
 			long RandomAddress = -1;
 
-			string[] _selectedDomains = RTC_MemoryDomains.SelectedDomains;
+			string[] _selectedDomains = (string[])RTC_Corruptcore.UISpec["SELECTEDDOMAINS"];
 
 			Domain = _selectedDomains[RTC_Corruptcore.RND.Next(_selectedDomains.Length)];
 
@@ -561,7 +561,7 @@ namespace RTCV.CorruptCore
 
 		public static void ASyncGenerateAndBlast()
 		{
-			BlastLayer bl = RTC_Corruptcore.GenerateBlastLayer( RTC_MemoryDomains.SelectedDomains);
+			BlastLayer bl = RTC_Corruptcore.GenerateBlastLayer((string[])RTC_Corruptcore.UISpec["SELECTEDDOMAINS"]);
 			if (bl != null)
 				bl.Apply();
 		}

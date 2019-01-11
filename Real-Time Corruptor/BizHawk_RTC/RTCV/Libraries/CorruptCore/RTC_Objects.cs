@@ -651,7 +651,7 @@ namespace RTCV.CorruptCore
 			GameName =    (string)LocalNetCoreRouter.Route("VANGUARD", "REMOTE_KEY_GETGAMENAME", true);
 			SyncSettings = (string)LocalNetCoreRouter.Route("VANGUARD", "REMOTE_KEY_GETSYNCSETTINGS", true);
 
-			this.SelectedDomains.AddRange(RTC_MemoryDomains.SelectedDomains);
+			this.SelectedDomains.AddRange((string[])RTC_Corruptcore.UISpec["SELECTEDDOMAINS"]);
 		}
 
 		public StashKey()
