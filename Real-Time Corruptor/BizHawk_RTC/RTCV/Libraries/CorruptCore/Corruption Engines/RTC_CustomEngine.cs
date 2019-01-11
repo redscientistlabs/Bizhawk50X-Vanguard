@@ -9,7 +9,7 @@ using System.Windows.Forms;
 using RTCV.NetCore;
 
 
-namespace RTC
+namespace CorruptCore
 {
 	public static class RTC_CustomEngine
 	{

@@ -2,10 +2,11 @@
 using System.Linq;
 using System.Windows.Forms;
 using RTC;
+using UI;
 
 namespace StandaloneRTC
 {
-	public partial class Loader : RTC.RTC_Standalone_Form
+	public partial class Loader : UI_Extensions.RTC_Standalone_Form
 	{ 
 		Timer t;
 

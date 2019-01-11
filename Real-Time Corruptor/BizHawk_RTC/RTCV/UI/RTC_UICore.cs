@@ -9,11 +9,14 @@ using System.Net;
 using System.Reflection;
 using System.Threading;
 using System.Windows.Forms;
+using CorruptCore;
 using Newtonsoft.Json;
 using RTCV.NetCore;
 using RTCV.UI;
+using UI;
+using static UI.UI_Extensions;
 
-namespace RTC
+namespace UI
 {
 	public static class RTC_UICore
 	{   
@@ -175,9 +178,9 @@ namespace RTC
 
 			foreach (Control c in lightColorControls)
 				if (c is Label)
-					c.ForeColor = color.ChangeColorBrightness(0.30f);
+					c.ForeColor = UI_Extensions.ChangeColorBrightness(color, 0.30f);
 				else
-					c.BackColor = color.ChangeColorBrightness(0.30f);
+					c.BackColor = UI_Extensions.ChangeColorBrightness(color, 0.30f);
 
 			foreach (Control c in normalColorControls)
 				if (c is Label)
@@ -190,26 +193,26 @@ namespace RTC
 
 
 
-			S.GET<RTC_NewBlastEditor_Form>().dgvBlastEditor.BackgroundColor = color.ChangeColorBrightness(-0.30f);
+			S.GET<RTC_NewBlastEditor_Form>().dgvBlastEditor.BackgroundColor = UI_Extensions.ChangeColorBrightness(color, -0.30f);
 			S.GET<RTC_BlastGenerator_Form>().dgvBlastGenerator.BackgroundColor = color;
 
 			foreach (Control c in darkColorControls)
 				if (c is Label)
-					c.ForeColor = color.ChangeColorBrightness(-0.30f);
+					c.ForeColor = UI_Extensions.ChangeColorBrightness(color, -0.30f);
 				else
-					c.BackColor = color.ChangeColorBrightness(-0.30f);
+					c.BackColor = UI_Extensions.ChangeColorBrightness(color, -0.30f);
 
 			foreach (Control c in darkerColorControls)
 				if (c is Label)
-					c.ForeColor = color.ChangeColorBrightness(-0.75f);
+					c.ForeColor = UI_Extensions.ChangeColorBrightness(color, -0.75f);
 				else
-					c.BackColor = color.ChangeColorBrightness(-0.75f);
+					c.BackColor = UI_Extensions.ChangeColorBrightness(color, -0.75f);
 
 			foreach (Control c in darkererColorControls)
 				if (c is Label)
-					c.ForeColor = color.ChangeColorBrightness(-0.825f);
+					c.ForeColor = UI_Extensions.ChangeColorBrightness(color, -0.825f);
 				else
-					c.BackColor = color.ChangeColorBrightness(-0.825f);
+					c.BackColor = UI_Extensions.ChangeColorBrightness(color, -0.825f);
 		}
 
 		public static void SelectRTCColor()

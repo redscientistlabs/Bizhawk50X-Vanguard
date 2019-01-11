@@ -8,8 +8,12 @@ using System.IO;
 using System.Linq;
 using System.Text.RegularExpressions;
 using System.Windows.Forms;
+using CorruptCore;
+using UI;
+using static UI.UI_Extensions;
 
-namespace RTC
+
+namespace UI
 {
 	public partial class RTC_ListGen_Form : ComponentForm, IAutoColorize
 	{
@@ -161,7 +165,7 @@ namespace RTC
 			string hash = RTC_Filtering.RegisterList(byteList, true);
 
 			//Register the list in the ui
-			S.GET<RTC_EngineConfig_Form>().RegisterListInUI(filename, hash);
+			UI_Extensions.S.GET<RTC_EngineConfig_Form>().RegisterListInUI(filename, hash);
 
 
 			return true;
@@ -179,13 +183,13 @@ namespace RTC
 
 		private void RTC_ListGen_Form_MouseDown(object sender, MouseEventArgs e)
 		{
-			if (e.Button == MouseButtons.Right && (sender as ComponentForm).FormBorderStyle == FormBorderStyle.None)
+			if (e.Button == MouseButtons.Right && (sender as UI_Extensions.ComponentForm).FormBorderStyle == FormBorderStyle.None)
 			{
 				Point locate = new Point(((Control)sender).Location.X + e.Location.X, ((Control)sender).Location.Y + e.Location.Y);
 				ContextMenuStrip columnsMenu = new ContextMenuStrip();
 				columnsMenu.Items.Add("Detach to window", null, new EventHandler((ob, ev) =>
 				{
-					(sender as ComponentForm).SwitchToWindow();
+					(sender as UI_Extensions.ComponentForm).SwitchToWindow();
 				}));
 				columnsMenu.Show(this, locate);
 			}
@@ -193,7 +197,7 @@ namespace RTC
 
 		private void btnRefreshListsFromFile_Click(object sender, EventArgs e)
 		{
-			S.GET<RTC_EngineConfig_Form>().LoadLists();
+			UI_Extensions.S.GET<RTC_EngineConfig_Form>().LoadLists();
 		}
 
 		private void btnHelp_Click(object sender, EventArgs e)

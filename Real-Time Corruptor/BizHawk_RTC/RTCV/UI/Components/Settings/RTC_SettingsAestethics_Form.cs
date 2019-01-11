@@ -7,8 +7,11 @@ using System.Linq;
 using System.Windows.Forms;
 using System.Xml.Serialization;
 using System.Runtime.InteropServices;
+using UI;
+using static UI.UI_Extensions;
 
-namespace RTC
+
+namespace UI
 {
 	public partial class RTC_SettingsAestethics_Form : ComponentForm, IAutoColorize
 	{

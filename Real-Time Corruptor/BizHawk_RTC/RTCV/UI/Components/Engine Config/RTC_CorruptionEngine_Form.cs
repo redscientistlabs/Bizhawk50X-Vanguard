@@ -8,10 +8,13 @@ using System.Security.Cryptography;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using CorruptCore;
+using UI;
+using static UI.UI_Extensions.S;
 
-namespace RTC
+namespace UI
 {
-	public partial class RTC_CorruptionEngine_Form : ComponentForm, IAutoColorize
+	public partial class RTC_CorruptionEngine_Form : UI_Extensions.ComponentForm, UI_Extensions.IAutoColorize
 	{
 		public new void HandleMouseDown(object s, MouseEventArgs e) => base.HandleMouseDown(s, e);
 		public new void HandleFormClosing(object s, FormClosingEventArgs e) => base.HandleFormClosing(s, e);
@@ -108,10 +111,10 @@ namespace RTC
 			pnCustomPrecision.Visible = false;
 			
 
-			S.GET<RTC_Core_Form>().btnAutoCorrupt.Visible = true;
-			S.GET<RTC_GlitchHarvester_Form>().pnIntensity.Visible = true;
-			S.GET<RTC_EngineConfig_Form>().pnGeneralParameters.Visible = true;
-			S.GET<RTC_EngineConfig_Form>().pnMemoryDomains.Visible = true;
+			GET<RTC_Core_Form>().btnAutoCorrupt.Visible = true;
+			GET<RTC_GlitchHarvester_Form>().pnIntensity.Visible = true;
+			GET<RTC_EngineConfig_Form>().pnGeneralParameters.Visible = true;
+			GET<RTC_EngineConfig_Form>().pnMemoryDomains.Visible = true;
 
 			switch (cbSelectedEngine.SelectedItem.ToString())
 			{
@@ -160,12 +163,12 @@ namespace RTC
 					RTC_Corruptcore.SelectedEngine = CorruptionEngine.BLASTGENERATORENGINE;
 					gbBlastGeneratorEngine.Visible = true;
 
-					S.GET<RTC_Core_Form>().AutoCorrupt = false;
-					S.GET<RTC_Core_Form>().btnAutoCorrupt.Visible = false;
-					S.GET<RTC_EngineConfig_Form>().pnGeneralParameters.Visible = false;
-					S.GET<RTC_EngineConfig_Form>().pnMemoryDomains.Visible = false;
+					GET<RTC_Core_Form>().AutoCorrupt = false;
+					GET<RTC_Core_Form>().btnAutoCorrupt.Visible = false;
+					GET<RTC_EngineConfig_Form>().pnGeneralParameters.Visible = false;
+					GET<RTC_EngineConfig_Form>().pnMemoryDomains.Visible = false;
 
-					S.GET<RTC_GlitchHarvester_Form>().pnIntensity.Visible = false;
+					GET<RTC_GlitchHarvester_Form>().pnIntensity.Visible = false;
 					break;
 
 				default:
@@ -174,29 +177,29 @@ namespace RTC
 
 			if (cbSelectedEngine.SelectedItem.ToString() == "Blast Generator")
 			{
-				S.GET<RTC_GeneralParameters_Form>().labelBlastRadius.Visible = false;
-				S.GET<RTC_GeneralParameters_Form>().labelIntensity.Visible = false;
-				S.GET<RTC_GeneralParameters_Form>().labelIntensityTimes.Visible = false;
-				S.GET<RTC_GeneralParameters_Form>().labelErrorDelay.Visible = false;
-				S.GET<RTC_GeneralParameters_Form>().labelErrorDelaySteps.Visible = false;
-				S.GET<RTC_GeneralParameters_Form>().nmErrorDelay.Visible = false;
-				S.GET<RTC_GeneralParameters_Form>().nmIntensity.Visible = false;
-				S.GET<RTC_GeneralParameters_Form>().track_ErrorDelay.Visible = false;
-				S.GET<RTC_GeneralParameters_Form>().track_Intensity.Visible = false;
-				S.GET<RTC_GeneralParameters_Form>().cbBlastRadius.Visible = false;
+				GET<RTC_GeneralParameters_Form>().labelBlastRadius.Visible = false;
+				GET<RTC_GeneralParameters_Form>().labelIntensity.Visible = false;
+				GET<RTC_GeneralParameters_Form>().labelIntensityTimes.Visible = false;
+				GET<RTC_GeneralParameters_Form>().labelErrorDelay.Visible = false;
+				GET<RTC_GeneralParameters_Form>().labelErrorDelaySteps.Visible = false;
+				GET<RTC_GeneralParameters_Form>().nmErrorDelay.Visible = false;
+				GET<RTC_GeneralParameters_Form>().nmIntensity.Visible = false;
+				GET<RTC_GeneralParameters_Form>().track_ErrorDelay.Visible = false;
+				GET<RTC_GeneralParameters_Form>().track_Intensity.Visible = false;
+				GET<RTC_GeneralParameters_Form>().cbBlastRadius.Visible = false;
 			}
 			else
 			{
-				S.GET<RTC_GeneralParameters_Form>().labelBlastRadius.Visible = true;
-				S.GET<RTC_GeneralParameters_Form>().labelIntensity.Visible = true;
-				S.GET<RTC_GeneralParameters_Form>().labelIntensityTimes.Visible = true;
-				S.GET<RTC_GeneralParameters_Form>().labelErrorDelay.Visible = true;
-				S.GET<RTC_GeneralParameters_Form>().labelErrorDelaySteps.Visible = true;
-				S.GET<RTC_GeneralParameters_Form>().nmErrorDelay.Visible = true;
-				S.GET<RTC_GeneralParameters_Form>().nmIntensity.Visible = true;
-				S.GET<RTC_GeneralParameters_Form>().track_ErrorDelay.Visible = true;
-				S.GET<RTC_GeneralParameters_Form>().track_Intensity.Visible = true;
-				S.GET<RTC_GeneralParameters_Form>().cbBlastRadius.Visible = true;
+				GET<RTC_GeneralParameters_Form>().labelBlastRadius.Visible = true;
+				GET<RTC_GeneralParameters_Form>().labelIntensity.Visible = true;
+				GET<RTC_GeneralParameters_Form>().labelIntensityTimes.Visible = true;
+				GET<RTC_GeneralParameters_Form>().labelErrorDelay.Visible = true;
+				GET<RTC_GeneralParameters_Form>().labelErrorDelaySteps.Visible = true;
+				GET<RTC_GeneralParameters_Form>().nmErrorDelay.Visible = true;
+				GET<RTC_GeneralParameters_Form>().nmIntensity.Visible = true;
+				GET<RTC_GeneralParameters_Form>().track_ErrorDelay.Visible = true;
+				GET<RTC_GeneralParameters_Form>().track_Intensity.Visible = true;
+				GET<RTC_GeneralParameters_Form>().cbBlastRadius.Visible = true;
 			}
 
 			cbSelectedEngine.BringToFront();
@@ -338,7 +341,7 @@ namespace RTC
 				}
 				
 				updateMinMaxBoxes(RTC_Corruptcore.CurrentPrecision);
-				S.GET<RTC_CustomEngineConfig_Form>().UpdateMinMaxBoxes(RTC_Corruptcore.CurrentPrecision);
+				GET<RTC_CustomEngineConfig_Form>().UpdateMinMaxBoxes(RTC_Corruptcore.CurrentPrecision);
 			}
 		}
 
@@ -470,8 +473,8 @@ namespace RTC
 
 		private void btnOpenCustomEngine_Click(object sender, EventArgs e)
 		{
-			S.GET<RTC_CustomEngineConfig_Form>().Show();
-			S.GET<RTC_CustomEngineConfig_Form>().Focus();
+			GET<RTC_CustomEngineConfig_Form>().Show();
+			GET<RTC_CustomEngineConfig_Form>().Focus();
 		}
 	}
 }

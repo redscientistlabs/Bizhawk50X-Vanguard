@@ -9,7 +9,7 @@ using System.Xml.Serialization;
 using System.Runtime.InteropServices;
 using System.Diagnostics;
 
-namespace RTC
+namespace UI
 {
 	public partial class RTC_SettingsReroll_Form : Form, IAutoColorize
 	{

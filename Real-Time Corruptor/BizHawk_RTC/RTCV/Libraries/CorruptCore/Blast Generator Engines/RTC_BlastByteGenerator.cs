@@ -2,7 +2,7 @@
 using System.Linq;
 using System.Windows.Forms;
 
-namespace RTC
+namespace CorruptCore
 {
 	public class RTC_BlastByteGenerator
 	{

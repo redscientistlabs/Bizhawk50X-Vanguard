@@ -8,9 +8,13 @@ using System.Windows.Forms;
 using System.Xml.Serialization;
 using System.Runtime.InteropServices;
 using System.Diagnostics;
+using CorruptCore;
 using RTCV.NetCore;
+using UI;
+using static UI.UI_Extensions;
 
-namespace RTC
+
+namespace UI
 {
 	public partial class RTC_SettingsGeneral_Form : ComponentForm, IAutoColorize
 	{

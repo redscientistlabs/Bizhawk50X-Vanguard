@@ -5,10 +5,12 @@ using System.IO;
 using System.Linq;
 using System.Windows.Forms;
 using System.Xml.Serialization;
+using CorruptCore;
+using UI;
 
-namespace RTC
+namespace UI
 {
-	public partial class RTC_VmdPool_Form : ComponentForm, IAutoColorize
+	public partial class RTC_VmdPool_Form : UI_Extensions.ComponentForm, UI_Extensions.IAutoColorize
 	{
 		public new void HandleMouseDown(object s, MouseEventArgs e) => base.HandleMouseDown(s, e);
 		public new void HandleFormClosing(object s, FormClosingEventArgs e) => base.HandleFormClosing(s, e);
@@ -27,7 +29,7 @@ namespace RTC
 			{
 				string VmdName = item.ToString();
 
-				foreach (BlastUnit bu in RTC_StepActions.GetRawBlastLayer().Layer)
+				foreach (CorruptCore.BlastUnit bu in RTC_StepActions.GetRawBlastLayer().Layer)
 				{
 					bu.RasterizeSourceAddress();
 				}
@@ -60,10 +62,10 @@ namespace RTC
 
 			lbVmdSizeValue.Text = mi.Size.ToString() + " (0x" + mi.Size.ToString("X") + ")";
 
-			if ((mi as VirtualMemoryDomain)?.PointerDomains.Distinct().Count() > 1)
+			if ((mi as CorruptCore.VirtualMemoryDomain)?.PointerDomains.Distinct().Count() > 1)
 				lbRealDomainValue.Text = "Hybrid";
 			else
-				lbRealDomainValue.Text = (mi as VirtualMemoryDomain)?.PointerDomains[0];
+				lbRealDomainValue.Text = (mi as CorruptCore.VirtualMemoryDomain)?.PointerDomains[0];
 		}
 
 		private void btnSaveVmd_Click(object sender, EventArgs e)
@@ -72,7 +74,7 @@ namespace RTC
 				return;
 
 			string vmdName = lbLoadedVmdList.SelectedItem.ToString();
-			VirtualMemoryDomain vmd = (VirtualMemoryDomain)RTC_MemoryDomains.VmdPool[vmdName];
+			CorruptCore.VirtualMemoryDomain vmd = (CorruptCore.VirtualMemoryDomain)RTC_MemoryDomains.VmdPool[vmdName];
 
 			SaveFileDialog saveFileDialog1 = new SaveFileDialog
 			{
@@ -89,7 +91,7 @@ namespace RTC
 				//creater stockpile.xml to temp folder from stockpile object
 				using (FileStream fs = File.Open(filename, FileMode.OpenOrCreate))
 				{
-					XmlSerializer xs = new XmlSerializer(typeof(VmdPrototype));
+					XmlSerializer xs = new XmlSerializer(typeof(CorruptCore.VmdPrototype));
 					xs.Serialize(fs, vmd.Proto);
 					fs.Close();
 				}
@@ -117,8 +119,8 @@ namespace RTC
 					{
 						using (FileStream fs = File.Open(filename, FileMode.OpenOrCreate))
 						{
-							XmlSerializer xs = new XmlSerializer(typeof(VmdPrototype));
-							VmdPrototype proto = (VmdPrototype)xs.Deserialize(fs);
+							XmlSerializer xs = new XmlSerializer(typeof(CorruptCore.VmdPrototype));
+							CorruptCore.VmdPrototype proto = (CorruptCore.VmdPrototype)xs.Deserialize(fs);
 							fs.Close();
 
 							RTC_MemoryDomains.AddVMD(proto);

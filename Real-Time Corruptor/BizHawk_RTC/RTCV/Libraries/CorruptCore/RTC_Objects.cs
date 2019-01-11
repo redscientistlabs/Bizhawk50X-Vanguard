@@ -14,7 +14,7 @@ using Ceras;
 using RTCV.NetCore;
 using Exception = System.Exception;
 
-namespace RTC
+namespace CorruptCore
 {
 	[XmlInclude(typeof(StashKey))]
 	[XmlInclude(typeof(BlastLayer))]

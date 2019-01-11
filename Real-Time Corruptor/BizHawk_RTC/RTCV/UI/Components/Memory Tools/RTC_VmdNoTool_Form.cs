@@ -7,10 +7,13 @@ using System.Linq;
 using System.Windows.Forms;
 using System.Xml.Serialization;
 using System.Runtime.InteropServices;
+using UI;
+using static UI.UI_Extensions;
 
-namespace RTC
+
+namespace UI
 {
-	public partial class RTC_VmdNoTool_Form : ComponentForm, IAutoColorize
+	public partial class RTC_VmdNoTool_Form : UI_Extensions.ComponentForm, UI_Extensions.IAutoColorize
 	{
 		public new void HandleMouseDown(object s, MouseEventArgs e) => base.HandleMouseDown(s, e);
 		public new void HandleFormClosing(object s, FormClosingEventArgs e) => base.HandleFormClosing(s, e);

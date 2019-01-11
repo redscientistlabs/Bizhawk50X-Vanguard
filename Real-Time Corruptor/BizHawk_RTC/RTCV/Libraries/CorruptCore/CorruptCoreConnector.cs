@@ -8,7 +8,7 @@ using System.Text;
 using System.Threading;
 using RTCV.NetCore;
 
-namespace RTC
+namespace CorruptCore
 {
 	public class CorruptCoreConnector : IRoutable
 	{

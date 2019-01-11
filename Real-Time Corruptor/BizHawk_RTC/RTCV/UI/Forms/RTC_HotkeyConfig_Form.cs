@@ -2,7 +2,7 @@
 
 //using RTC.Shortcuts;
 
-namespace RTC
+namespace UI
 {
 	public partial class RTC_HotkeyConfig_Form : Form, IAutoColorize
 	{

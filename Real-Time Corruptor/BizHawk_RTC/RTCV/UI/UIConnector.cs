@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace RTCV.UI
+namespace RTCV.NetCore
 {
 	public class UIConnector : IRoutable
 	{

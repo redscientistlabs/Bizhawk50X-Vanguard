@@ -6,8 +6,11 @@ using System.IO;
 using System.Linq;
 using System.Media;
 using System.Windows.Forms;
+using CorruptCore;
+using UI;
+using static UI.UI_Extensions;
 
-namespace RTC
+namespace UI
 {
 	public partial class RTC_Settings_Form : Form, IAutoColorize
 	{

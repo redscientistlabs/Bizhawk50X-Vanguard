@@ -7,10 +7,11 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using CorruptCore;
 
-namespace RTC
+namespace UI
 {
-	public partial class ColumnSelector : Form, IAutoColorize
+	public partial class ColumnSelector : Form, UI_Extensions.IAutoColorize
 	{
 		public ColumnSelector()
 		{
@@ -45,10 +46,10 @@ namespace RTC
 					sb.Append(cb.Name);
 					sb.Append(",");
 				}
-			if (S.GET<RTC_NewBlastEditor_Form>() != null)
+			if (UI_Extensions.S.GET<RTC_NewBlastEditor_Form>() != null)
 			{
-				S.GET<RTC_NewBlastEditor_Form>().VisibleColumns = temp;
-				S.GET<RTC_NewBlastEditor_Form>().RefreshVisibleColumns();
+				UI_Extensions.S.GET<RTC_NewBlastEditor_Form>().VisibleColumns = temp;
+				UI_Extensions.S.GET<RTC_NewBlastEditor_Form>().RefreshVisibleColumns();
 			}
 			RTC_Params.SetParam("BLASTEDITOR_VISIBLECOLUMNS", sb.ToString());
 

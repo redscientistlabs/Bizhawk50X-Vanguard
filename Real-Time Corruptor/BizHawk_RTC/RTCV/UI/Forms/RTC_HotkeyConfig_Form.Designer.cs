@@ -1,4 +1,4 @@
-﻿namespace RTC
+﻿namespace UI
 {
 	partial class RTC_HotkeyConfig_Form
 	{

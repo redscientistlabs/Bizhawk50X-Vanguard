@@ -1834,6 +1834,10 @@
       <Project>{364c705e-b7ab-4a94-a59b-88899ce65958}</Project>
       <Name>Vanguard</Name>
     </ProjectReference>
+    <ProjectReference Include="..\RTCV\UI\UI.csproj">
+      <Project>{BD376BB2-17EC-4FB0-A9FE-6B1BBF4AF3E3}</Project>
+      <Name>UI</Name>
+    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="AboutBox.resx">

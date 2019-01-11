@@ -9,8 +9,11 @@ using System.Xml.Serialization;
 using System.Runtime.InteropServices;
 using System.Media;
 using System.Diagnostics;
+using CorruptCore;
+using UI;
+using static UI.UI_Extensions;
 
-namespace RTC
+namespace UI
 {
 	public partial class RTC_SettingsNetCore_Form : ComponentForm, IAutoColorize
 	{
@@ -44,7 +47,7 @@ namespace RTC
 					break;*/
 			}
 
-			RTC_Params.SetParam("CRASHSOUND", cbCrashSoundEffect.SelectedIndex.ToString());
+			//RTC_Params.SetParam("CRASHSOUND", cbCrashSoundEffect.SelectedIndex.ToString());
 		}
 
 		public void cbNetCoreCommandTimeout_SelectedIndexChanged(object sender, EventArgs e)

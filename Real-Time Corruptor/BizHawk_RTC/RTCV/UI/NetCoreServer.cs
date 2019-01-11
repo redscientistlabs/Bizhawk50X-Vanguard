@@ -3,10 +3,10 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading;
-using RTC;
 using RTCV.NetCore;
+using UI;
 
-namespace RTCV.UI
+namespace RTCV.NetCore
 {
     public static class NetCoreServer
     {

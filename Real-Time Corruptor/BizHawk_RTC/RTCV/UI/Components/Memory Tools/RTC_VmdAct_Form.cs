@@ -6,9 +6,10 @@ using System.IO;
 using System.Linq;
 using System.Windows.Forms;
 using System.Xml.Serialization;
-using UI;
+using CorruptCore;
+using static UI.UI_Extensions;
 
-namespace RTC
+namespace UI
 {
 	public partial class RTC_VmdAct_Form : ComponentForm, IAutoColorize
 	{
@@ -484,8 +485,8 @@ namespace RTC
 			try
 			{
 				MemoryInterface mi = RTC_MemoryDomains.MemoryInterfaces[cbSelectedMemoryDomain.SelectedItem.ToString()];
-				VirtualMemoryDomain VMD = new VirtualMemoryDomain();
-				VmdPrototype proto = new VmdPrototype();
+				CorruptCore.VirtualMemoryDomain VMD = new CorruptCore.VirtualMemoryDomain();
+				CorruptCore.VmdPrototype proto = new CorruptCore.VmdPrototype();
 
 				int lastaddress = -1;
 

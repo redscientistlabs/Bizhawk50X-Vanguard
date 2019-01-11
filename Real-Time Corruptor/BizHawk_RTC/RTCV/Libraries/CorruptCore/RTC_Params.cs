@@ -6,7 +6,7 @@ using System.Numerics;
 using System.Security.Cryptography;
 using RTCV.NetCore;
 
-namespace RTC
+namespace CorruptCore
 {
 	public static class RTC_Params
 	{

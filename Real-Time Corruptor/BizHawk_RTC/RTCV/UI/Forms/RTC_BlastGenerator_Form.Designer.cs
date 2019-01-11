@@ -1,6 +1,6 @@
 ﻿using System.Windows.Forms;
 
-namespace RTC
+namespace UI
 {
 	partial class RTC_BlastGenerator_Form
 	{
@@ -52,29 +52,29 @@ namespace RTC
             this.label1 = new System.Windows.Forms.Label();
             this.btnNudgeParam2Up = new System.Windows.Forms.Button();
             this.btnNudgeParam2Down = new System.Windows.Forms.Button();
-            this.updownNudgeParam2 = new RTC.NumericUpDownHexFix();
+            this.updownNudgeParam2 = new NumericUpDownHexFix();
             this.btnNudgeParam1Up = new System.Windows.Forms.Button();
             this.btnNudgeParam1Down = new System.Windows.Forms.Button();
-            this.updownNudgeParam1 = new RTC.NumericUpDownHexFix();
+            this.updownNudgeParam1 = new NumericUpDownHexFix();
             this.btnNudgeEndAddressUp = new System.Windows.Forms.Button();
             this.btnNudgeEndAddressDown = new System.Windows.Forms.Button();
-            this.updownNudgeEndAddress = new RTC.NumericUpDownHexFix();
+            this.updownNudgeEndAddress = new NumericUpDownHexFix();
             this.btnNudgeStartAddressUp = new System.Windows.Forms.Button();
             this.btnNudgeStartAddressDown = new System.Windows.Forms.Button();
-            this.updownNudgeStartAddress = new RTC.NumericUpDownHexFix();
+            this.updownNudgeStartAddress = new NumericUpDownHexFix();
             this.label4 = new System.Windows.Forms.Label();
             this.dgvBlastGenerator = new System.Windows.Forms.DataGridView();
             this.dataGridViewTextBoxColumn1 = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.dataGridViewNumericUpDownColumn1 = new RTC.DataGridViewNumericUpDownColumn();
-            this.dataGridViewNumericUpDownColumn2 = new RTC.DataGridViewNumericUpDownColumn();
-            this.dataGridViewNumericUpDownColumn3 = new RTC.DataGridViewNumericUpDownColumn();
-            this.dataGridViewNumericUpDownColumn4 = new RTC.DataGridViewNumericUpDownColumn();
-            this.dataGridViewNumericUpDownColumn5 = new RTC.DataGridViewNumericUpDownColumn();
+            this.dataGridViewNumericUpDownColumn1 = new DataGridViewNumericUpDownColumn();
+            this.dataGridViewNumericUpDownColumn2 = new DataGridViewNumericUpDownColumn();
+            this.dataGridViewNumericUpDownColumn3 = new DataGridViewNumericUpDownColumn();
+            this.dataGridViewNumericUpDownColumn4 = new DataGridViewNumericUpDownColumn();
+            this.dataGridViewNumericUpDownColumn5 = new DataGridViewNumericUpDownColumn();
             this.menuStripEx1 = new MenuStrip();
-            this.blastLayerToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.BlastLayerToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.saveAsToFileblToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.loadFromFileblToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.importBlastlayerblToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.importBlastLayerblToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.btnHideSidebar = new System.Windows.Forms.Button();
             this.dgvBlastProtoReference = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.dgvRowDirty = new System.Windows.Forms.DataGridViewTextBoxColumn();
@@ -84,11 +84,11 @@ namespace RTC
             this.dgvPrecision = new System.Windows.Forms.DataGridViewComboBoxColumn();
             this.dgvType = new System.Windows.Forms.DataGridViewComboBoxColumn();
             this.dgvMode = new System.Windows.Forms.DataGridViewComboBoxColumn();
-            this.dgvStepSize = new RTC.DataGridViewNumericUpDownColumn();
-            this.dgvStartAddress = new RTC.DataGridViewNumericUpDownColumn();
-            this.dgvEndAddress = new RTC.DataGridViewNumericUpDownColumn();
-            this.dgvParam1 = new RTC.DataGridViewNumericUpDownColumn();
-            this.dgvParam2 = new RTC.DataGridViewNumericUpDownColumn();
+            this.dgvStepSize = new DataGridViewNumericUpDownColumn();
+            this.dgvStartAddress = new DataGridViewNumericUpDownColumn();
+            this.dgvEndAddress = new DataGridViewNumericUpDownColumn();
+            this.dgvParam1 = new DataGridViewNumericUpDownColumn();
+            this.dgvParam2 = new DataGridViewNumericUpDownColumn();
             this.dgvNoteButton = new System.Windows.Forms.DataGridViewButtonColumn();
             this.panelSidebar.SuspendLayout();
             this.panel2.SuspendLayout();
@@ -673,7 +673,7 @@ namespace RTC
             // 
             this.menuStripEx1.ImageScalingSize = new System.Drawing.Size(20, 20);
             this.menuStripEx1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.blastLayerToolStripMenuItem});
+            this.BlastLayerToolStripMenuItem});
             this.menuStripEx1.Location = new System.Drawing.Point(0, 0);
             this.menuStripEx1.Name = "menuStripEx1";
             this.menuStripEx1.Size = new System.Drawing.Size(924, 24);
@@ -681,16 +681,16 @@ namespace RTC
             this.menuStripEx1.Tag = "";
             this.menuStripEx1.Text = "menuStripEx1";
             // 
-            // blastLayerToolStripMenuItem
+            // CorruptCore.BlastLayerToolStripMenuItem
             // 
-            this.blastLayerToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.BlastLayerToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.saveAsToFileblToolStripMenuItem,
             this.loadFromFileblToolStripMenuItem,
-            this.importBlastlayerblToolStripMenuItem});
-            this.blastLayerToolStripMenuItem.Name = "blastLayerToolStripMenuItem";
-            this.blastLayerToolStripMenuItem.Size = new System.Drawing.Size(37, 20);
-            this.blastLayerToolStripMenuItem.Tag = "";
-            this.blastLayerToolStripMenuItem.Text = "File";
+            this.importBlastLayerblToolStripMenuItem});
+            this.BlastLayerToolStripMenuItem.Name = "CorruptCore.BlastLayerToolStripMenuItem";
+            this.BlastLayerToolStripMenuItem.Size = new System.Drawing.Size(37, 20);
+            this.BlastLayerToolStripMenuItem.Tag = "";
+            this.BlastLayerToolStripMenuItem.Text = "File";
             // 
             // saveAsToFileblToolStripMenuItem
             // 
@@ -706,12 +706,12 @@ namespace RTC
             this.loadFromFileblToolStripMenuItem.Text = "&Load From File (.bg)";
             this.loadFromFileblToolStripMenuItem.Click += new System.EventHandler(this.loadFromFileblToolStripMenuItem_Click);
             // 
-            // importBlastlayerblToolStripMenuItem
+            // importCorruptCore.BlastLayerblToolStripMenuItem
             // 
-            this.importBlastlayerblToolStripMenuItem.Name = "importBlastlayerblToolStripMenuItem";
-            this.importBlastlayerblToolStripMenuItem.Size = new System.Drawing.Size(241, 22);
-            this.importBlastlayerblToolStripMenuItem.Text = "&Import Generation Params (.bg)";
-            this.importBlastlayerblToolStripMenuItem.Click += new System.EventHandler(this.importBlastlayerblToolStripMenuItem_Click);
+            this.importBlastLayerblToolStripMenuItem.Name = "importCorruptCore.BlastLayerblToolStripMenuItem";
+            this.importBlastLayerblToolStripMenuItem.Size = new System.Drawing.Size(241, 22);
+            this.importBlastLayerblToolStripMenuItem.Text = "&Import Generation Params (.bg)";
+            this.importBlastLayerblToolStripMenuItem.Click += new System.EventHandler(this.importBlastlayerblToolStripMenuItem_Click);
             // 
             // btnHideSidebar
             // 
@@ -790,7 +790,7 @@ namespace RTC
             this.dgvType.Name = "dgvType";
             this.dgvType.Resizable = System.Windows.Forms.DataGridViewTriState.True;
             this.dgvType.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.Automatic;
-            this.dgvType.ToolTipText = "The BlastUnit type";
+            this.dgvType.ToolTipText = "The CorruptCore.BlastUnit type";
             // 
             // dgvMode
             // 
@@ -821,7 +821,7 @@ namespace RTC
             0});
             this.dgvStepSize.Name = "dgvStepSize";
             this.dgvStepSize.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.Automatic;
-            this.dgvStepSize.ToolTipText = "How many bytes to step in-between generated BlastUnits";
+            this.dgvStepSize.ToolTipText = "How many bytes to step in-between generated CorruptCore.BlastUnits";
             // 
             // dgvStartAddress
             // 
@@ -950,10 +950,10 @@ namespace RTC
 		private System.Windows.Forms.Label label3;
 		private System.Windows.Forms.Label label2;
 		private System.Windows.Forms.Label label1;
-		private System.Windows.Forms.ToolStripMenuItem blastLayerToolStripMenuItem;
+		private System.Windows.Forms.ToolStripMenuItem BlastLayerToolStripMenuItem;
 		private System.Windows.Forms.ToolStripMenuItem loadFromFileblToolStripMenuItem;
 		private System.Windows.Forms.ToolStripMenuItem saveAsToFileblToolStripMenuItem;
-		private System.Windows.Forms.ToolStripMenuItem importBlastlayerblToolStripMenuItem;
+		private System.Windows.Forms.ToolStripMenuItem importBlastLayerblToolStripMenuItem;
 		private System.Windows.Forms.DataGridViewTextBoxColumn dataGridViewTextBoxColumn1;
 		private DataGridViewNumericUpDownColumn dataGridViewNumericUpDownColumn1;
 		private DataGridViewNumericUpDownColumn dataGridViewNumericUpDownColumn2;

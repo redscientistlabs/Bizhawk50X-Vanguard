@@ -8,7 +8,7 @@ using System.Windows.Forms;
 using System.Xml.Serialization;
 using System.Runtime.InteropServices;
 
-namespace RTC
+namespace UI
 {
 	public partial class RTC_Template_Form : ComponentForm, IAutoColorize
 	{

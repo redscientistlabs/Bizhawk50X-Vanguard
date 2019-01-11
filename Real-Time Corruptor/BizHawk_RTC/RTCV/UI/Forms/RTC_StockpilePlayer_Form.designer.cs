@@ -1,4 +1,4 @@
-﻿namespace RTC
+﻿namespace UI
 {
     partial class RTC_StockpilePlayer_Form
     {
@@ -134,7 +134,7 @@
             this.btnBlastToggle.TabIndex = 131;
             this.btnBlastToggle.TabStop = false;
             this.btnBlastToggle.Tag = "color:darker";
-            this.btnBlastToggle.Text = "BlastLayer : OFF    (Attempts to uncorrupt/recorrupt in real-time)";
+            this.btnBlastToggle.Text = "CorruptCore.BlastLayer : OFF    (Attempts to uncorrupt/recorrupt in real-time)";
             this.btnBlastToggle.UseVisualStyleBackColor = false;
             this.btnBlastToggle.Click += new System.EventHandler(this.btnBlastToggle_Click);
             // 

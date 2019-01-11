@@ -2,8 +2,11 @@
 using System.Drawing;
 using System.IO;
 using System.Windows.Forms;
+using CorruptCore;
+using UI;
+using static UI.UI_Extensions;
 
-namespace RTC
+namespace UI
 {
 	public partial class RTC_StockpilePlayer_Form : Form, IAutoColorize
 	{

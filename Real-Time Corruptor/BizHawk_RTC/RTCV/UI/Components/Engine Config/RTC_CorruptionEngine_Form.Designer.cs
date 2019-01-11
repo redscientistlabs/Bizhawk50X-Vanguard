@@ -1,4 +1,4 @@
-﻿namespace RTC
+﻿namespace UI
 {
 	partial class RTC_CorruptionEngine_Form
 	{
@@ -77,9 +77,9 @@
             this.label26 = new System.Windows.Forms.Label();
             this.label27 = new System.Windows.Forms.Label();
             this.panel5 = new System.Windows.Forms.Panel();
-            this.nmMaxValueHellgenie = new RTC.NumericUpDownHexFix();
+            this.nmMaxValueHellgenie = new NumericUpDownHexFix();
             this.label16 = new System.Windows.Forms.Label();
-            this.nmMinValueHellgenie = new RTC.NumericUpDownHexFix();
+            this.nmMinValueHellgenie = new NumericUpDownHexFix();
             this.comboBox2 = new System.Windows.Forms.ComboBox();
             this.cbClearCheatsOnRewind = new System.Windows.Forms.CheckBox();
             this.btnClearCheats = new System.Windows.Forms.Button();
@@ -88,8 +88,8 @@
             this.gbNightmareEngine = new System.Windows.Forms.GroupBox();
             this.label24 = new System.Windows.Forms.Label();
             this.label23 = new System.Windows.Forms.Label();
-            this.nmMaxValueNightmare = new RTC.NumericUpDownHexFix();
-            this.nmMinValueNightmare = new RTC.NumericUpDownHexFix();
+            this.nmMaxValueNightmare = new NumericUpDownHexFix();
+            this.nmMinValueNightmare = new NumericUpDownHexFix();
             this.panel4 = new System.Windows.Forms.Panel();
             this.label15 = new System.Windows.Forms.Label();
             this.comboBox1 = new System.Windows.Forms.ComboBox();

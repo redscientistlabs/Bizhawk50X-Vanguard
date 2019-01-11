@@ -1,4 +1,4 @@
-﻿namespace RTC
+﻿namespace CorruptCore
 {
 	public enum BlastRadius
 	{
