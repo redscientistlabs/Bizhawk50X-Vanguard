@@ -23,15 +23,16 @@ namespace RTCV.NetCore
 		{
 			try
 			{
-				IRoutable chosen = endpoints[name];
+				endpoints.TryGetValue(name, out IRoutable chosen);
 				return chosen;
 			}
 			catch { return null; }
 		}
 
 		public static object Route(string endpointName, string messageType, object objectValue) => Route(endpointName, messageType, objectValue, false);
-		public static object Route(string endpointName, string messageType, object objectValue, bool synced) {
-			var ncea = new NetCoreEventArgs(messageType, objectValue);
+		public static object Route(string endpointName, string messageType, object objectValue, bool synced)
+		{
+			NetCoreEventArgs ncea = new NetCoreEventArgs(messageType, objectValue);
 			(ncea.message as NetCoreAdvancedMessage).requestGuid = (synced ? (Guid?)Guid.NewGuid() : null);
 			return Route(endpointName, ncea);
 		}
