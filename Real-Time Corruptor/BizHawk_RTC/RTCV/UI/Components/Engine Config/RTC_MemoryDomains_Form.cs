@@ -7,12 +7,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-using CorruptCore;
-using UI;
 
-namespace UI
+namespace RTC
 {
-	public partial class RTC_MemoryDomains_Form : UI_Extensions.ComponentForm, UI_Extensions.IAutoColorize
+	public partial class RTC_MemoryDomains_Form : ComponentForm, IAutoColorize
 	{
 		public new void HandleMouseDown(object s, MouseEventArgs e) => base.HandleMouseDown(s, e);
 		public new void HandleFormClosing(object s, FormClosingEventArgs e) => base.HandleFormClosing(s, e);

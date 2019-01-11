@@ -9,12 +9,11 @@ using System.Security.Cryptography;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-using CorruptCore;
 using RTCV.NetCore;
 
-namespace UI
+namespace RTC
 {
-	public partial class RTC_CustomEngineConfig_Form : Form, UI_Extensions.IAutoColorize
+	public partial class RTC_CustomEngineConfig_Form : Form, IAutoColorize
 	{
 
 		private bool updatingMinMax = false;
@@ -68,10 +67,10 @@ namespace UI
 		{
 
 			if (rbUnitSourceStore.Checked)
-				RTC_CustomEngine.Source = CorruptCore.BlastUnitSource.STORE;
+				RTC_CustomEngine.Source = BlastUnitSource.STORE;
 
 			else if (rbUnitSourceValue.Checked)
-				RTC_CustomEngine.Source = CorruptCore.BlastUnitSource.VALUE;
+				RTC_CustomEngine.Source = BlastUnitSource.VALUE;
 		}
 
 		private void valueSource_CheckedChanged(object sender, EventArgs e)

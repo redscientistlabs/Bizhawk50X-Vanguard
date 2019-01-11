@@ -3,7 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using CorruptCore;
+using RTC;
 using NetworkSide = RTCV.NetCore.NetworkSide;
 
 namespace RTCV.Vanguard
@@ -26,7 +26,7 @@ namespace RTCV.Vanguard
             netCoreSpec.Side = NetworkSide.CLIENT;
             netCoreSpec.MessageReceived += OnMessageReceivedProxy;
 
-            netConn = LocalNetCoreRouter.registerEndpoint(new NetCoreConnector(netCoreSpec), "UI");
+            netConn = LocalNetCoreRouter.registerEndpoint(new NetCoreConnector(netCoreSpec), "RTCV");
 			LocalNetCoreRouter.registerEndpoint(netConn, "DEFAULT"); //Will send mesages to netcore if can't find the destination
 
 		} 

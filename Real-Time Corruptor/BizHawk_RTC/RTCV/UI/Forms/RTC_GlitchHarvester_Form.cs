@@ -6,13 +6,10 @@ using System.Drawing;
 using System.IO;
 using System.Windows.Forms;
 using System.Xml.Serialization;
-using CorruptCore;
 using Newtonsoft.Json;
 using RTCV.NetCore;
-using UI;
-using static UI.UI_Extensions;
 
-namespace UI
+namespace RTC
 {
 	public partial class RTC_GlitchHarvester_Form : Form, IAutoColorize
 	{
@@ -42,21 +39,21 @@ namespace UI
 				{
 					btnBlastToggle.BackColor = Color.FromArgb(224, 128, 128);
 					btnBlastToggle.ForeColor = Color.Black;
-					btnBlastToggle.Text = "CorruptCore.BlastLayer : ON";
+					btnBlastToggle.Text = "BlastLayer : ON";
 
 					S.GET<RTC_StockpilePlayer_Form>().btnBlastToggle.BackColor = Color.FromArgb(224, 128, 128);
 					S.GET<RTC_StockpilePlayer_Form>().btnBlastToggle.ForeColor = Color.Black;
-					S.GET<RTC_StockpilePlayer_Form>().btnBlastToggle.Text = "CorruptCore.BlastLayer : ON     (Attempts to uncorrupt/recorrupt in real-time)";
+					S.GET<RTC_StockpilePlayer_Form>().btnBlastToggle.Text = "BlastLayer : ON     (Attempts to uncorrupt/recorrupt in real-time)";
 				}
 				else
 				{
 					btnBlastToggle.BackColor = S.GET<RTC_Core_Form>().btnLogo.BackColor;
 					btnBlastToggle.ForeColor = Color.White;
-					btnBlastToggle.Text = "CorruptCore.BlastLayer : OFF";
+					btnBlastToggle.Text = "BlastLayer : OFF";
 
 					S.GET<RTC_StockpilePlayer_Form>().btnBlastToggle.BackColor = S.GET<RTC_Core_Form>().btnLogo.BackColor;
 					S.GET<RTC_StockpilePlayer_Form>().btnBlastToggle.ForeColor = Color.White;
-					S.GET<RTC_StockpilePlayer_Form>().btnBlastToggle.Text = "CorruptCore.BlastLayer : OFF    (Attempts to uncorrupt/recorrupt in real-time)";
+					S.GET<RTC_StockpilePlayer_Form>().btnBlastToggle.Text = "BlastLayer : OFF    (Attempts to uncorrupt/recorrupt in real-time)";
 				}
 
 				if (RTC_StockpileManager.IsCorruptionApplied != value)
@@ -501,7 +498,7 @@ namespace UI
 
 			if (askForName)
 			{
-				if (GetInputBox("Glitch Harvester", "Enter the new Stash name:", ref value) == DialogResult.OK)
+				if (RTC_Extensions.GetInputBox("Glitch Harvester", "Enter the new Stash name:", ref value) == DialogResult.OK)
 				{
 					Name = value.Trim();
 				}
@@ -703,13 +700,13 @@ namespace UI
 				IsCorruptionApplied = true;
 
 				LocalNetCoreRouter.Route("CORRUPTCORE", "BLAST", RTC_StockpileManager.CurrentStashkey.BlastLayer, true);
-				//RTC_StockpileManager.currentStashkey.CorruptCore.BlastLayer.Apply();
+				//RTC_StockpileManager.currentStashkey.blastlayer.Apply();
 			}
 			else
 			{
 				IsCorruptionApplied = false;
 
-				LocalNetCoreRouter.Route("CORRUPTCORE", "REMOTE_SET_RESTORECorruptCore.BlastLayerBACKUP", true);
+				LocalNetCoreRouter.Route("CORRUPTCORE", "REMOTE_SET_RESTOREBLASTLAYERBACKUP", true);
 				RTC_StepActions.ClearStepBlastUnits();
 			}
 		}
@@ -911,7 +908,7 @@ namespace UI
 					return;
 				}
 
-				StashKey sk = (StashKey)LocalNetCoreRouter.Route("CORRUPTCORE", "REMOTE_KEY_GETRAWCorruptCore.BlastLayer", true);
+				StashKey sk = (StashKey)LocalNetCoreRouter.Route("CORRUPTCORE", "REMOTE_KEY_GETRAWBLASTLAYER", true);
 
 				RTC_StockpileManager.CurrentStashkey = sk;
 				RTC_StockpileManager.StashHistory.Add(RTC_StockpileManager.CurrentStashkey);
@@ -931,7 +928,7 @@ namespace UI
 		{
 			string value = "";
 
-			if (GetInputBox("Glitch Harvester", "Enter the new Stash name:", ref value) == DialogResult.OK)
+			if (RTC_Extensions.GetInputBox("Glitch Harvester", "Enter the new Stash name:", ref value) == DialogResult.OK)
 			{
 				sk.Alias = value.Trim();
 			}
@@ -1011,7 +1008,7 @@ namespace UI
 				columnsMenu.Items.Add(new ToolStripSeparator());
 				((ToolStripMenuItem)columnsMenu.Items.Add("Open Selected Item in Blast Editor", null, new EventHandler((ob, ev) =>
 				{
-					if (S.GET<RTC_NewBlastEditor_Form>() != null)
+					if (S.GET<RTC_BlastEditor_Form>() != null)
 					{
 						var sk = (dgvStockpile.SelectedRows[0].Cells[0].Value as StashKey);
 						OpenBlastEditor(sk);
@@ -1038,7 +1035,7 @@ namespace UI
 				/*
 				if (!RTC_NetcoreImplementation.isStandaloneUI)
 				{
-					((ToolStripMenuItem)columnsMenu.Items.Add("[Multiplayer] Send Selected Item as a Blast", null, new EventHandler((ob, ev) => { RTC_NetcoreImplementation.Multiplayer?.SendCorruptCore.BlastLayer(); }))).Enabled = RTC_NetcoreImplementation.Multiplayer != null && RTC_NetcoreImplementation.Multiplayer.side != NetworkSide.DISCONNECTED;
+					((ToolStripMenuItem)columnsMenu.Items.Add("[Multiplayer] Send Selected Item as a Blast", null, new EventHandler((ob, ev) => { RTC_NetcoreImplementation.Multiplayer?.SendBlastlayer(); }))).Enabled = RTC_NetcoreImplementation.Multiplayer != null && RTC_NetcoreImplementation.Multiplayer.side != NetworkSide.DISCONNECTED;
 					((ToolStripMenuItem)columnsMenu.Items.Add("[Multiplayer] Send Selected Item as a Game State", null, new EventHandler((ob, ev) => { RTC_NetcoreImplementation.Multiplayer?.SendStashkey(); }))).Enabled = RTC_NetcoreImplementation.Multiplayer != null && RTC_NetcoreImplementation.Multiplayer.side != NetworkSide.DISCONNECTED;
 				}*/
 
@@ -1304,7 +1301,7 @@ namespace UI
 
 				((ToolStripMenuItem)columnsMenu.Items.Add("Open Selected Item in Blast Editor", null, new EventHandler((ob, ev) =>
 					{
-						if (S.GET<RTC_NewBlastEditor_Form>() != null)
+						if (S.GET<RTC_BlastEditor_Form>() != null)
 						{
 							StashKey sk = RTC_StockpileManager.StashHistory[lbStashHistory.SelectedIndex];
 							OpenBlastEditor(sk);
@@ -1360,10 +1357,10 @@ namespace UI
 			S.GET<RTC_NewBlastEditor_Form>().Close();
 			S.SET(new RTC_NewBlastEditor_Form());
 
-			//If the CorruptCore.BlastLayer is big, prompt them before opening it. Let's go with 5k for now.
+			//If the blastlayer is big, prompt them before opening it. Let's go with 5k for now.
 
 			//TODO
-			if (sk.BlastLayer.Layer.Count > 5000 && (DialogResult.Yes == MessageBox.Show($"You're trying to open a CorruptCore.BlastLayer of size " + sk.BlastLayer.Layer.Count + ". This could take a while. Are you sure you want to continue?", "Opening a large CorruptCore.BlastLayer", MessageBoxButtons.YesNo)))
+			if (sk.BlastLayer.Layer.Count > 5000 && (DialogResult.Yes == MessageBox.Show($"You're trying to open a blastlayer of size " + sk.BlastLayer.Layer.Count + ". This could take a while. Are you sure you want to continue?", "Opening a large BlastLayer", MessageBoxButtons.YesNo)))
 				S.GET<RTC_NewBlastEditor_Form>().LoadStashkey(sk);
 			else if (sk.BlastLayer.Layer.Count <= 5000)
 				S.GET<RTC_NewBlastEditor_Form>().LoadStashkey(sk);

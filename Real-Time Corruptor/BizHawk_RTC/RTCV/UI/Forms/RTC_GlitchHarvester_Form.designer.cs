@@ -1,4 +1,4 @@
-﻿namespace UI
+﻿namespace RTC
 {
     partial class RTC_GlitchHarvester_Form
     {
@@ -2071,7 +2071,7 @@
             this.btnBlastToggle.TabIndex = 131;
             this.btnBlastToggle.TabStop = false;
             this.btnBlastToggle.Tag = "color:darker";
-            this.btnBlastToggle.Text = "CorruptCore.BlastLayer : OFF";
+            this.btnBlastToggle.Text = "BlastLayer : OFF";
             this.btnBlastToggle.UseVisualStyleBackColor = false;
             this.btnBlastToggle.Click += new System.EventHandler(this.btnBlastToggle_Click);
             // 

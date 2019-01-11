@@ -661,6 +661,47 @@ namespace RTC
 
 		#endregion BITARRAY EXTENSIONS
 
+		#region COLOR EXTENSIONS
+
+		/// <summary>
+		/// Creates color with corrected brightness.
+		/// </summary>
+		/// <param name="color">Color to correct.</param>
+		/// <param name="correctionFactor">The brightness correction factor. Must be between -1 and 1.
+		/// Negative values produce darker colors.</param>
+		/// <returns>
+		/// Corrected <see cref="Color"/> structure.
+		/// </returns>
+		public static Color ChangeColorBrightness(this Color color, float correctionFactor)
+		{
+			float red = (float)color.R;
+			float green = (float)color.G;
+			float blue = (float)color.B;
+
+			if (correctionFactor < 0)
+			{
+				correctionFactor = 1 + correctionFactor;
+				red *= correctionFactor;
+				green *= correctionFactor;
+				blue *= correctionFactor;
+			}
+			else
+			{
+				red = (255 - red) * correctionFactor + red;
+				green = (255 - green) * correctionFactor + green;
+				blue = (255 - blue) * correctionFactor + blue;
+			}
+
+			return Color.FromArgb(color.A, (int)red, (int)green, (int)blue);
+		}
+
+		#endregion COLOR EXTENSIONS
+
+		#region CONTROL EXTENSIONS
+
+
+
+		#endregion CONTROL EXTENSIONS
 
 		#region PATH EXTENSIONS
 		//why not just use 
@@ -856,6 +897,199 @@ namespace RTC
 			{
 
 			}
+		}
+	}
+
+	public interface ISF<T>
+	{
+		//Interface for Singleton Form
+		T Me();
+		T NewMe();
+	}
+
+	public interface IColorable
+	{
+
+	}
+
+	public class RTC_Standalone_Form : Form { }
+
+	// Implementing this interface causes auto-coloration.
+	public interface IAutoColorize { }
+
+	//Static singleton manager
+	//Call or create a singleton using class type
+	public static class S
+	{
+		static Dictionary<Type, object> instances = new Dictionary<Type, object>();
+
+		public static bool ISNULL<T>()
+		{
+			Type typ = typeof(T);
+			return instances.ContainsKey(typ);
+		}
+
+		public static T GET<T>()
+		{
+			Type typ = typeof(T);
+
+			if (!instances.ContainsKey(typ))
+				instances[typ] = Activator.CreateInstance(typ);
+
+			return (T)instances[typ];
+		}
+
+		public static object GET(Type typ)
+		{
+			//Type typ = typeof(T);
+
+			if (!instances.ContainsKey(typ))
+				instances[typ] = Activator.CreateInstance(typ);
+
+			return instances[typ];
+		}
+
+		public static void SET<T>(T newTyp)
+		{
+			Type typ = typeof(T);
+
+			if (newTyp is Nullable && newTyp == null)
+				instances.Remove(typ);
+			else
+				instances[typ] = newTyp;
+		}
+	}
+
+	public class ComponentForm : Form
+	{
+
+		Panel defaultPanel = null;
+		Panel previousPanel = null;
+
+		public bool undockedSizable = true;
+		public bool popoutAllowed = true;
+
+		public void AnchorToPanel(Panel pn)
+		{
+
+			if (defaultPanel == null)
+				defaultPanel = pn;
+
+			previousPanel = pn;
+
+			this.Hide();
+			this.Parent?.Controls.Remove(this);
+
+			this.FormBorderStyle = FormBorderStyle.None;
+
+			//Remove ComponentForm from target panel if required
+			ComponentForm componentFormInTargetPanel = (pn?.Controls.Cast<Control>().FirstOrDefault(it => it is ComponentForm) as ComponentForm);
+			if (componentFormInTargetPanel != null && componentFormInTargetPanel != this)
+				pn.Controls.Remove(componentFormInTargetPanel);
+
+			this.TopLevel = false;
+			this.TopMost = false;
+			pn.Controls.Add(this);
+
+			this.Size = this.Parent.Size;
+			this.Location = new Point(0, 0);
+
+			this.Show();
+			this.BringToFront();
+		}
+
+		public void SwitchToWindow()
+		{
+			this.Hide();
+			this.Parent?.Controls.Remove(this);
+
+			this.TopLevel = true;
+			this.TopMost = true;
+
+			if(undockedSizable)
+			{
+				this.FormBorderStyle = FormBorderStyle.Sizable;
+				this.MaximizeBox = true;
+			}
+			else
+			{
+				this.FormBorderStyle = FormBorderStyle.FixedSingle;
+				this.MaximizeBox = false;
+			}
+			
+
+			this.Show();
+		}
+
+		public void RestoreToPreviousPanel()
+		{
+			if (defaultPanel == null)
+				throw new Exception("Default panel unset");
+
+			Panel targetPanel;
+
+			//We select which panel we want to restore the ComponentForm to
+			if (previousPanel?.Parent?.Visible ?? false)
+				targetPanel = previousPanel;
+			else                            //If the ComponentForm was moved to another panel than the default one
+				targetPanel = defaultPanel; //and that panel was hidden, then we move it back to the original panel.
+
+			//This searches for a ComponentForm in the target Panel
+			ComponentForm componentFormInTargetPanel = (targetPanel?.Controls.Cast<Control>().FirstOrDefault(it => it is ComponentForm) as ComponentForm);
+			if (componentFormInTargetPanel != null && componentFormInTargetPanel != this)
+				this.Hide();				//If the target panel hosts another ComponentForm, we won't override it
+			else							//This is most likely going to happen if a VMD ComponentForm was changed to a window, 
+				AnchorToPanel(targetPanel); //then another VMD tool was selected and that window was closed
+		}
+
+
+		/* Note: Visual studio is so dumb, the designer won't allow to bind an event to a method in the base class
+		   Just paste the following code at the beginning of the ComponentForm class to fix this stupid shit
+
+		public new void HandleMouseDown(object s, MouseEventArgs e) => base.HandleMouseDown(s, e);
+		public new void HandleFormClosing(object s, FormClosingEventArgs e) => base.HandleFormClosing(s, e);
+		 
+		ALSO, GroupBox does have an event handler for MouseDown but michaelsoft are too high on crack to let
+		us bind something to it in the properties panel. Gotta add it manually in the designer.cs ffs.
+		*/
+
+		public void HandleMouseDown(object sender, MouseEventArgs e)
+		{
+			if (sender is NumericUpDown || sender is TextBox)
+				return;
+
+			while (!(sender is ComponentForm))
+			{
+				Control c = (Control)sender;
+				sender = c.Parent;
+				e = new MouseEventArgs(e.Button, e.Clicks, e.X + c.Location.X, e.Y + c.Location.Y, e.Delta);
+			}
+
+			if (popoutAllowed && e.Button == MouseButtons.Right && (sender as ComponentForm).FormBorderStyle == FormBorderStyle.None)
+			{
+				Point locate = new Point(((Control)sender).Location.X + e.Location.X, ((Control)sender).Location.Y + e.Location.Y);
+				ContextMenuStrip columnsMenu = new ContextMenuStrip();
+				columnsMenu.Items.Add("Detach to window", null, new EventHandler((ob, ev) =>
+				{
+					(sender as ComponentForm).SwitchToWindow();
+				}));
+				columnsMenu.Show(this, locate);
+			}
+		}
+
+		public void HandleFormClosing(object sender, FormClosingEventArgs e)
+		{
+			if (e.CloseReason != CloseReason.FormOwnerClosing)
+			{
+				e.Cancel = true;
+				this.RestoreToPreviousPanel();
+				return;
+			}
+		}
+
+		public sealed override string ToString()
+		{
+			return Text;
 		}
 	}
 

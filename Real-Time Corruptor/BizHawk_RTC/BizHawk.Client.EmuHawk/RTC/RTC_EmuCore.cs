@@ -9,10 +9,8 @@ using System.Net;
 using System.Reflection;
 using System.Threading;
 using System.Windows.Forms;
-using CorruptCore;
 using Newtonsoft.Json;
 using RTCV.NetCore;
-using UI;
 
 namespace RTC
 {
@@ -78,12 +76,13 @@ namespace RTC
 		}
 
 		//This is the entry point of RTC. Without this method, nothing will load.
-		public static void Start()
+		public static void Start(RTC_Standalone_Form _standaloneForm = null)
 		{
 			VanguardImplementation.StartClient();
 			RTC_Corruptcore.Start();
 			RTC_EmuCore.RegisterEmuhawkSpec();
 
+			S.SET(_standaloneForm);
 
 			RTC_Extensions.DirectoryRequired(new string[] {
 				RTC_Corruptcore.workingDir, RTC_Corruptcore.workingDir + "\\TEMP\\", RTC_Corruptcore.workingDir + "\\SKS\\", RTC_Corruptcore.workingDir + "\\SSK\\", RTC_Corruptcore.workingDir + "\\SESSION\\", RTC_Corruptcore.workingDir + "\\MEMORYDUMPS\\", RTC_Corruptcore.workingDir + "\\MP\\", RTC_Corruptcore.assetsDir + "\\CRASHSOUNDS\\", RTC_Corruptcore.rtcDir + "\\PARAMS\\", RTC_Corruptcore.rtcDir + "\\LISTS\\",

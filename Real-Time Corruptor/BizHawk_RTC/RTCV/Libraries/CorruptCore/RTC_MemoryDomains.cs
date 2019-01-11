@@ -10,7 +10,7 @@ using System.Xml.Serialization;
 using Ceras;
 using RTCV.NetCore;
 
-namespace CorruptCore
+namespace RTC
 {
 	public static class RTC_MemoryDomains
 	{
@@ -443,21 +443,19 @@ namespace CorruptCore
 
 		public static void RenameVMD(string vmdName)
 		{
-			throw new NotImplementedException("Move textbox to UI");
 			if (!RTC_MemoryDomains.VmdPool.ContainsKey(vmdName))
 				return;
 
 			string name = "";
 			string value = "";
-
-		//	if (RTC_Extensions.GetInputBox("BlastLayer to VMD", "Enter the new VMD name:", ref value) == DialogResult.OK)
-		//	{
-		//		name = value.Trim();
-		//	}
-		//	else
-		//	{
+			if (RTC_Extensions.GetInputBox("BlastLayer to VMD", "Enter the new VMD name:", ref value) == DialogResult.OK)
+			{
+				name = value.Trim();
+			}
+			else
+			{
 				return;
-		//	}
+			}
 
 			if (string.IsNullOrWhiteSpace(name))
 				name = RTC_Corruptcore.GetRandomKey();

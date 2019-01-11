@@ -7,18 +7,17 @@ using System.Linq;
 using System.Windows.Forms;
 using System.Xml.Serialization;
 using System.Runtime.InteropServices;
-using UI;
 
-namespace UI
+namespace RTC
 {
-	public partial class RTC_SelectBox_Form : UI_Extensions.ComponentForm
+	public partial class RTC_SelectBox_Form : ComponentForm
 	{
 		public new void HandleMouseDown(object s, MouseEventArgs e) => base.HandleMouseDown(s, e);
 		public new void HandleFormClosing(object s, FormClosingEventArgs e) => base.HandleFormClosing(s, e);
 
-		UI_Extensions.ComponentForm[] childForms;
+		ComponentForm[] childForms;
 
-		public RTC_SelectBox_Form(UI_Extensions.ComponentForm[] _childForms)
+		public RTC_SelectBox_Form(ComponentForm[] _childForms)
 		{
 			InitializeComponent();
 
@@ -34,7 +33,7 @@ namespace UI
 
 		private void cbSelectBox_SelectedIndexChanged(object sender, EventArgs e)
 		{
-			((cbSelectBox.SelectedItem as dynamic).value as UI_Extensions.ComponentForm)?.AnchorToPanel(pnComponentForm);
+			((cbSelectBox.SelectedItem as dynamic).value as ComponentForm)?.AnchorToPanel(pnComponentForm);
 		}
 
 		private void RTC_SelectBox_Form_Load(object sender, EventArgs e)

@@ -8,11 +8,8 @@ using System.Windows.Forms;
 using System.Xml.Serialization;
 using System.Runtime.InteropServices;
 using System.ComponentModel;
-using UI;
-using static UI.UI_Extensions;
 
-
-namespace UI
+namespace RTC
 {
 	public partial class RTC_ListBox_Form : ComponentForm
 	{

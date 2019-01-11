@@ -5,12 +5,10 @@ using System.Drawing;
 using System.Globalization;
 using System.Linq;
 using System.Windows.Forms;
-using CorruptCore;
-using UI;
 
-namespace UI
+namespace RTC
 {
-	public partial class RTC_VmdGen_Form : UI_Extensions.ComponentForm, UI_Extensions.IAutoColorize
+	public partial class RTC_VmdGen_Form : ComponentForm, IAutoColorize
 	{
 		public new void HandleMouseDown(object s, MouseEventArgs e) => base.HandleMouseDown(s, e);
 		public new void HandleFormClosing(object s, FormClosingEventArgs e) => base.HandleFormClosing(s, e);
@@ -28,7 +26,7 @@ namespace UI
 
 		private void btnSelectAll_Click(object sender, EventArgs e)
 		{
-			UI_Extensions.S.GET<RTC_MemoryDomains_Form>().RefreshDomainsAndKeepSelected();
+			S.GET<RTC_MemoryDomains_Form>().RefreshDomainsAndKeepSelected();
 
 			cbSelectedMemoryDomain.Items.Clear();
 			cbSelectedMemoryDomain.Items.AddRange(RTC_MemoryDomains.MemoryInterfaces.Keys.Where(it => !it.Contains("[V]")).ToArray());
@@ -86,8 +84,8 @@ namespace UI
 			}
 
 			MemoryInterface mi = RTC_MemoryDomains.MemoryInterfaces[cbSelectedMemoryDomain.SelectedItem.ToString()];
-			CorruptCore.VirtualMemoryDomain VMD = new CorruptCore.VirtualMemoryDomain();
-			CorruptCore.VmdPrototype proto = new CorruptCore.VmdPrototype();
+			VirtualMemoryDomain VMD = new VirtualMemoryDomain();
+			VmdPrototype proto = new VmdPrototype();
 
 			proto.GenDomain = cbSelectedMemoryDomain.SelectedItem.ToString();
 
@@ -187,13 +185,13 @@ namespace UI
 			lbWordSizeValue.Text = "######";
 
 			//send to vmd pool menu
-			UI_Extensions.S.GET<RTC_VmdPool_Form>().RefreshVMDs();
+			S.GET<RTC_VmdPool_Form>().RefreshVMDs();
 
 			//Selects back the VMD Pool menu
-			foreach(var item in UI_Extensions.S.GET<RTC_EngineConfig_Form>().mtForm.cbSelectBox.Items)
+			foreach(var item in S.GET<RTC_EngineConfig_Form>().mtForm.cbSelectBox.Items)
 				if(((dynamic)item).value is RTC_VmdPool_Form)
 				{
-					UI_Extensions.S.GET<RTC_EngineConfig_Form>().mtForm.cbSelectBox.SelectedItem = item;
+					S.GET<RTC_EngineConfig_Form>().mtForm.cbSelectBox.SelectedItem = item;
 					break;
 				}
 
@@ -240,13 +238,13 @@ pointer spacer parameter");
 
 		private void RTC_VmdGen_Form_MouseDown(object sender, MouseEventArgs e)
 		{
-			if (e.Button == MouseButtons.Right && (sender as UI_Extensions.ComponentForm).FormBorderStyle == FormBorderStyle.None)
+			if (e.Button == MouseButtons.Right && (sender as ComponentForm).FormBorderStyle == FormBorderStyle.None)
 			{
 				Point locate = new Point(((Control)sender).Location.X + e.Location.X, ((Control)sender).Location.Y + e.Location.Y);
 				ContextMenuStrip columnsMenu = new ContextMenuStrip();
 				columnsMenu.Items.Add("Detach to window", null, new EventHandler((ob, ev) =>
 				{
-					(sender as UI_Extensions.ComponentForm).SwitchToWindow();
+					(sender as ComponentForm).SwitchToWindow();
 				}));
 				columnsMenu.Show(this, locate);
 			}

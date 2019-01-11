@@ -8,11 +8,8 @@ using System.Linq;
 using System.Numerics;
 using System.Text;
 using System.Windows.Forms;
-using CorruptCore;
 using Newtonsoft.Json.Serialization;
 using RTCV.NetCore;
-using UI;
-using static UI.UI_Extensions;
 
 /**
  * The DataGridView is bound to the blastlayer
@@ -54,7 +51,7 @@ Applies for Store & should be editable
 Applies for Value & should be editable
  * byte[] Value */
 
-namespace UI
+namespace RTC
 {
 	public partial class RTC_NewBlastEditor_Form : Form, IAutoColorize
 	{
@@ -727,19 +724,19 @@ namespace UI
 
 		private void PopulateShiftCombobox()
 		{
-			cbShiftBlastLayer.SelectedItem = null;
-			cbShiftBlastLayer.Items.Clear();
+			cbShiftBlastlayer.SelectedItem = null;
+			cbShiftBlastlayer.Items.Clear();
 
 			//Populate the filter ComboBox
-			cbShiftBlastLayer.DisplayMember = "Name";
-			cbShiftBlastLayer.ValueMember = "Value";
+			cbShiftBlastlayer.DisplayMember = "Name";
+			cbShiftBlastlayer.ValueMember = "Value";
 
-			cbShiftBlastLayer.Items.Add(new ComboBoxItem<String>(buProperty.Address.ToString(), buProperty.Address.ToString()));
-			cbShiftBlastLayer.Items.Add(new ComboBoxItem<String>("Source Address", buProperty.SourceAddress.ToString()));
-			cbShiftBlastLayer.Items.Add(new ComboBoxItem<String>("Value", buProperty.ValueString.ToString()));
-			cbShiftBlastLayer.Items.Add(new ComboBoxItem<String>(buProperty.Lifetime.ToString(), buProperty.Lifetime.ToString()));
-			cbShiftBlastLayer.Items.Add(new ComboBoxItem<String>("Execute Frame", buProperty.ExecuteFrame.ToString()));
-			cbShiftBlastLayer.SelectedIndex = 0;
+			cbShiftBlastlayer.Items.Add(new ComboBoxItem<String>(buProperty.Address.ToString(), buProperty.Address.ToString()));
+			cbShiftBlastlayer.Items.Add(new ComboBoxItem<String>("Source Address", buProperty.SourceAddress.ToString()));
+			cbShiftBlastlayer.Items.Add(new ComboBoxItem<String>("Value", buProperty.ValueString.ToString()));
+			cbShiftBlastlayer.Items.Add(new ComboBoxItem<String>(buProperty.Lifetime.ToString(), buProperty.Lifetime.ToString()));
+			cbShiftBlastlayer.Items.Add(new ComboBoxItem<String>("Execute Frame", buProperty.ExecuteFrame.ToString()));
+			cbShiftBlastlayer.SelectedIndex = 0;
 		}
 
 
@@ -1373,7 +1370,7 @@ namespace UI
 				foreach (DataGridViewRow selected in dgvBlastEditor.SelectedRows.Cast<DataGridViewRow>()
 					.Where((item => ((BlastUnit)item.DataBoundItem).IsLocked == false)))
 				{
-					var cell = selected.Cells[((ComboBoxItem<String>)cbShiftBlastLayer.SelectedItem).Value];
+					var cell = selected.Cells[((ComboBoxItem<String>)cbShiftBlastlayer.SelectedItem).Value];
 
 					//Can't use a switch statement because tostring is evaluated at runtime
 					if (cell.OwningColumn.Name == buProperty.SourceAddress.ToString() ||

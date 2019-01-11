@@ -8,7 +8,6 @@ using System.Drawing;
 using System.IO;
 using System.Linq;
 using System.Windows.Forms;
-using CorruptCore;
 using RTCV.NetCore;
 
 namespace RTC

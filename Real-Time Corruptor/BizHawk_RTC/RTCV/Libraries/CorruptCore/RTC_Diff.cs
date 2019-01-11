@@ -3,7 +3,7 @@ using System.Collections;
 using System.IO;
 using System.Text.RegularExpressions;
 
-namespace CorruptCore
+namespace RTC
 {
 	//ALL OF THIS WAS OBTAINED HERE: http://www.mathertel.de/Diff/
 

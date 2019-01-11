@@ -1,4 +1,4 @@
-﻿namespace UI
+﻿namespace RTC
 {
     partial class RTC_EngineConfig_Form
     {

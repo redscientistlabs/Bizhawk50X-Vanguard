@@ -5,12 +5,10 @@ using System.Drawing;
 using System.IO;
 using System.Threading;
 using System.Windows.Forms;
-using CorruptCore;
 using RTCV.NetCore;
-using UI;
-using static UI.UI_Extensions;
+using RTCV.UI;
 
-namespace UI
+namespace RTC
 {
 	public partial class RTC_Core_Form : Form, IAutoColorize // replace by : UserControl for panel
 	{
@@ -65,7 +63,7 @@ namespace UI
 				return;
 
 			this.AutoCorrupt = !this.AutoCorrupt;
-			//RTC_Corruptcore.CorruptCoreSpec.Update(RTCSPEC.STEP_RUNBEFORE.ToString(), true);
+			RTC_Corruptcore.CorruptCoreSpec.Update(RTCSPEC.STEP_RUNBEFORE.ToString(), true);
 		}
 
 		private void RTC_Form_Load(object sender, EventArgs e)
@@ -248,7 +246,7 @@ namespace UI
 			Panel pn = new Panel();
 			Color col = ctrl.Parent.BackColor;
 			pn.BorderStyle = BorderStyle.None;
-			pn.BackColor = UI_Extensions.ChangeColorBrightness(col, -0.10f);
+			pn.BackColor = col.ChangeColorBrightness(-0.10f);
 			pn.Tag = "GHOST";
 			pn.Location = ctrl.Location;
 			pn.Size = ctrl.Size;
@@ -417,7 +415,7 @@ namespace UI
 		{
 			ShowPanelForm(S.GET<RTC_ConnectionStatus_Form>());
 
-			S.GET<RTC_Core_Form>().pbAutoKillSwitchTimeout.Value = S.GET<RTC_Core_Form>().pbAutoKillSwitchTimeout.Maximum;
+			RTC.S.GET<RTC_Core_Form>().pbAutoKillSwitchTimeout.Value = RTC.S.GET<RTC_Core_Form>().pbAutoKillSwitchTimeout.Maximum;
 
 
 			switch (btnAutoKillSwitchExecute.Text.ToUpper())

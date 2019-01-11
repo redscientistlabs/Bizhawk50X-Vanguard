@@ -3,12 +3,9 @@ using System.Collections.Generic;
 using System.Data;
 using System.Linq;
 using System.Windows.Forms;
-using CorruptCore;
 using RTCV.NetCore;
-using UI;
-using static UI.UI_Extensions;
 
-namespace UI
+namespace RTC
 {
 	// 0  dgvBlastProtoReference
 	// 1  dgvRowDirty
@@ -283,7 +280,7 @@ namespace UI
 
 			if (openedFromBlastEditor)
 			{
-				if (S.GET<RTC_NewBlastEditor_Form>() != null)
+				if (S.GET<RTC_BlastEditor_Form>() != null)
 				{
 					//TODO
 					//	S.GET<RTC_BlastEditor_Form>().ImportBlastLayer(newSk.BlastLayer);

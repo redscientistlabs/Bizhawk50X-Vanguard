@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Drawing;
 using System.Windows.Forms;
 
-namespace UI
+namespace RTC
 {
 	/*
 	public partial class RTC_StockpileBlastBoard_Form : Form, IAutoColorize
@@ -79,7 +79,7 @@ namespace UI
 			StashKey sk = (StashKey)btn.Tag;
 			RTC_Command cmd = new RTC_Command(CommandType.BLAST)
 			{
-				CorruptCore.BlastLayer = sk.CorruptCore.BlastLayer
+				blastlayer = sk.BlastLayer
 			};
 			RTC_NetcoreImplementation.Multiplayer.SendCommand(cmd, false, true);
 		}

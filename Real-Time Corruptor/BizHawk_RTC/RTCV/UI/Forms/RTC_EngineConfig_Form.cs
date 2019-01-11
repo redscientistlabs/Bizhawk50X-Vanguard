@@ -6,14 +6,12 @@ using System.IO;
 using System.Linq;
 using System.Security.Cryptography;
 using System.Windows.Forms;
-using CorruptCore;
-using UI;
-using static UI.UI_Extensions.S;
 
-namespace UI
+namespace RTC
 {
-	public partial class RTC_EngineConfig_Form : Form, UI_Extensions.IAutoColorize
+	public partial class RTC_EngineConfig_Form : Form, IAutoColorize
 	{
+
 		public RTC_SelectBox_Form mtForm;
 		
 		public RTC_EngineConfig_Form()
@@ -21,20 +19,20 @@ namespace UI
 			InitializeComponent();
 			LoadLists();
 
-			mtForm = new RTC_SelectBox_Form(new UI_Extensions.ComponentForm[] {
-				GET<RTC_VmdNoTool_Form>(),
-				GET<RTC_VmdPool_Form>(),
-				GET<RTC_VmdGen_Form>(),
-				GET<RTC_VmdAct_Form>(),
-				GET<RTC_ListGen_Form>(),
+			mtForm = new RTC_SelectBox_Form(new ComponentForm[] {
+				S.GET<RTC_VmdNoTool_Form>(),
+				S.GET<RTC_VmdPool_Form>(),
+				S.GET<RTC_VmdGen_Form>(),
+				S.GET<RTC_VmdAct_Form>(),
+				S.GET<RTC_ListGen_Form>(),
 			})
 			{
 				popoutAllowed = false
 			};
 
-			GET<RTC_GeneralParameters_Form>().AnchorToPanel(pnGeneralParameters);
-			GET<RTC_MemoryDomains_Form>().AnchorToPanel(pnMemoryDomains);
-			GET<RTC_CorruptionEngine_Form>().AnchorToPanel(pnCorruptionEngine);
+			S.GET<RTC_GeneralParameters_Form>().AnchorToPanel(pnGeneralParameters);
+			S.GET<RTC_MemoryDomains_Form>().AnchorToPanel(pnMemoryDomains);
+			S.GET<RTC_CorruptionEngine_Form>().AnchorToPanel(pnCorruptionEngine);
 			mtForm.AnchorToPanel(pnAdvancedMemoryTools);
 		}
 

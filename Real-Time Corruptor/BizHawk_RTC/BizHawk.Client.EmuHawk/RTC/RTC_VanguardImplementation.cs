@@ -8,7 +8,6 @@ using System.Threading.Tasks;
 using BizHawk.Client.Common;
 using BizHawk.Emulation.Common;
 using BizHawk.Emulation.Cores.Nintendo.N64;
-using CorruptCore;
 using RTCV;
 
 namespace RTC

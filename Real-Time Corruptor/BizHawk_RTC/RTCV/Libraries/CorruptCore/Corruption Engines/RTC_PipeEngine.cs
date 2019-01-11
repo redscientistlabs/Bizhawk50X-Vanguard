@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Windows.Forms;
 
-namespace CorruptCore
+namespace RTC
 {
 	public static class RTC_PipeEngine
 	{

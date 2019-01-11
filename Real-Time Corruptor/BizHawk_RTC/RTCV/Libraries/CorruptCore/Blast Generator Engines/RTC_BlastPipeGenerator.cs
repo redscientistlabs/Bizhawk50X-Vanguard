@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Windows.Forms;
 
-namespace CorruptCore
+namespace RTC
 {
 	public class RTC_BlastPipeGenerator
 	{

@@ -2,12 +2,10 @@
 using System.Diagnostics;
 using System.IO;
 using System.Windows.Forms;
-using CorruptCore;
-using static UI.UI_Extensions.S;
 
-namespace UI
+namespace RTC
 {
-	public partial class RTC_ConnectionStatus_Form : Form, UI_Extensions.IAutoColorize
+	public partial class RTC_ConnectionStatus_Form : Form, IAutoColorize
 	{
 		public RTC_ConnectionStatus_Form()
 		{
@@ -21,9 +19,9 @@ namespace UI
 			if (RTC_Params.IsParamSet("CRASHSOUND"))
 				crashSound = Convert.ToInt32(RTC_Params.ReadParam("CRASHSOUND"));
 
-			GET<RTC_SettingsNetCore_Form>().cbCrashSoundEffect.SelectedIndex = crashSound;
+			S.GET<RTC_SettingsNetCore_Form>().cbCrashSoundEffect.SelectedIndex = crashSound;
 
-			GET<RTC_SettingsNetCore_Form>().cbNetCoreCommandTimeout.SelectedIndex = 0;
+			S.GET<RTC_SettingsNetCore_Form>().cbNetCoreCommandTimeout.SelectedIndex = 0;
 
 			if (File.Exists(RTC_Corruptcore.bizhawkDir + Path.DirectorySeparatorChar + "WGH\\WindowsGlitchHarvester.exe"))
 			{
@@ -39,7 +37,7 @@ namespace UI
 			pnBizhawkAttached.Visible = false;
 
 		//	RTC.RTC_RPC.Heartbeat = false;
-			UI_Extensions.S.GET<RTC_Core_Form>().pbAutoKillSwitchTimeout.Value = UI_Extensions.S.GET<RTC_Core_Form>().pbAutoKillSwitchTimeout.Maximum;
+			RTC.S.GET<RTC_Core_Form>().pbAutoKillSwitchTimeout.Value = RTC.S.GET<RTC_Core_Form>().pbAutoKillSwitchTimeout.Maximum;
 		//	RTC.RTC_RPC.Freeze = true;
 
 			//RTC_NetCoreSettings.PlayCrashSound();
@@ -49,12 +47,12 @@ namespace UI
 
 		private void btnReturnToSession_Click(object sender, EventArgs e)
 		{
-			GET<RTC_Core_Form>().ShowPanelForm(GET<RTC_Core_Form>().previousForm);
+			S.GET<RTC_Core_Form>().ShowPanelForm(S.GET<RTC_Core_Form>().previousForm);
 		}
 
 		private void btnStopGameProtection_Click(object sender, EventArgs e)
 		{
-			GET<RTC_Core_Form>().cbUseGameProtection.Checked = false;
+			S.GET<RTC_Core_Form>().cbUseGameProtection.Checked = false;
 		}
 
 		private void btnStartEmuhawkAttached_Click(object sender, EventArgs e)

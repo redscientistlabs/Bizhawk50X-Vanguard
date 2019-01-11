@@ -2,7 +2,7 @@
 using System.Windows.Forms;
 using RTCV.NetCore;
 
-namespace CorruptCore
+namespace RTC
 {
 	public static class RTC_NightmareEngine
 	{
@@ -59,7 +59,7 @@ namespace CorruptCore
 			partial[RTCSPEC.NIGHTMARE_MINVALUE32BIT.ToString()] = 0L;
 			partial[RTCSPEC.NIGHTMARE_MAXVALUE32BIT.ToString()] = 0xFFFFFFFFL;
 
-			partial[RTCSPEC.NIGHTMARE_ALGO.ToString()] = NightmareAlgo.RANDOM;
+			partial[RTCSPEC.NIGHTMARE_ALGO.ToString()] = RTC.NightmareAlgo.RANDOM;
 
 			return partial;
 		}

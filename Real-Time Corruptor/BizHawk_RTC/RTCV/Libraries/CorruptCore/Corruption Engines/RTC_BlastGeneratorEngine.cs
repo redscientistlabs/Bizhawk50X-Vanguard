@@ -1,4 +1,4 @@
-﻿namespace CorruptCore
+﻿namespace RTC
 {
 	public static class RTC_BlastGeneratorEngine
 	{

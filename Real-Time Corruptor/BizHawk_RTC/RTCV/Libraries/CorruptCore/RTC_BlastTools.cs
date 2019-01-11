@@ -6,7 +6,7 @@ using System.Xml.Serialization;
 using RTCV.NetCore;
 
 
-namespace CorruptCore
+namespace RTC
 {
 	public static class RTC_BlastTools
 	{
@@ -228,7 +228,7 @@ namespace CorruptCore
 				return null;
 			}
 
-			MemoryInterface mi = RTC_MemoryDomains.GetInterface(rp.PrimaryDomain);
+			RTC.MemoryInterface mi = RTC_MemoryDomains.GetInterface(rp.PrimaryDomain);
 			long maxaddress = mi.Size;
 
 			for (int i = 0; i < Original.Length; i++)

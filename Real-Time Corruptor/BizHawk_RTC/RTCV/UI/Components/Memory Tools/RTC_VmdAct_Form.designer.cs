@@ -1,4 +1,4 @@
-﻿namespace UI
+﻿namespace RTC
 {
     partial class RTC_VmdAct_Form
     {
@@ -40,7 +40,7 @@
             this.label14 = new System.Windows.Forms.Label();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
             this.label12 = new System.Windows.Forms.Label();
-            this.nmActiveTableCapOffset = new NumericUpDownHexFix();
+            this.nmActiveTableCapOffset = new RTC.NumericUpDownHexFix();
             this.rbActiveTableCapBlockEnd = new System.Windows.Forms.RadioButton();
             this.rbActiveTableCapBlockStart = new System.Windows.Forms.RadioButton();
             this.rbActiveTableCapRandom = new System.Windows.Forms.RadioButton();
@@ -622,7 +622,7 @@
         private System.Windows.Forms.Label label14;
         private System.Windows.Forms.GroupBox groupBox1;
         private System.Windows.Forms.Label label12;
-        public NumericUpDownHexFix nmActiveTableCapOffset;
+        public RTC.NumericUpDownHexFix nmActiveTableCapOffset;
         public System.Windows.Forms.RadioButton rbActiveTableCapBlockEnd;
         public System.Windows.Forms.RadioButton rbActiveTableCapBlockStart;
         public System.Windows.Forms.RadioButton rbActiveTableCapRandom;

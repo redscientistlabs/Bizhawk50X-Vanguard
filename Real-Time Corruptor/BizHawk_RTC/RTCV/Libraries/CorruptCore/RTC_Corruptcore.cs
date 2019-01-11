@@ -12,7 +12,7 @@ using System.Windows.Forms;
 using Newtonsoft.Json;
 using RTCV.NetCore;
 
-namespace CorruptCore
+namespace RTC
 {
 	public static class RTC_Corruptcore
 	{
