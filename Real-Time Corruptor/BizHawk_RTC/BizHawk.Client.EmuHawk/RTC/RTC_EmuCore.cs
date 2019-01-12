@@ -9,9 +9,11 @@ using System.Net;
 using System.Reflection;
 using System.Threading;
 using System.Windows.Forms;
+using BizHawk.Client.Common;
+using BizHawk.Client.EmuHawk;
 using Newtonsoft.Json;
-using RTCV.CorruptCore;
 using RTCV.NetCore;
+using RTCV.Vanguard;
 
 namespace RTC
 {
@@ -44,12 +46,10 @@ namespace RTC
 		{
 			var partial = new PartialSpec("RTCSpec");
 
-
 			partial[VSPEC.STOCKPILE_CURRENTGAMESYSTEM.ToString()] = null;
 			partial[VSPEC.STOCKPILE_CURRENTGAMENAME.ToString()] = null;
 			partial[VSPEC.CORE_LASTOPENROM.ToString()] = null;
 			partial[VSPEC.CORE_LASTLOADERROM.ToString()] = -1;
-
 
 			return partial;
 		}
@@ -66,20 +66,19 @@ namespace RTC
 			EmuSpec = new FullSpec(emuSpecTemplate); //You have to feed a partial spec as a template
 
 
-//			LocalNetCoreRouter.Route("UI", "REMOTE_PUSHEMUSPEC", emuSpecTemplate, true);
+			LocalNetCoreRouter.Route("CORRUPTCORE", "REMOTE_PUSHEMUSPEC", emuSpecTemplate, true);
 			EmuSpec.SpecUpdated += (o, e) =>
 			{
 				PartialSpec partial = e.partialSpec;
 				RTC_Corruptcore.VanguardSpec = EmuSpec;
-				LocalNetCoreRouter.Route("UI", "REMOTE_PUSHEMUSPECUPDATE", partial, true);
+				LocalNetCoreRouter.Route("CORRUPTCORE", "REMOTE_PUSHEMUSPECUPDATE", partial, true);
 			};
 		}
 
 		//This is the entry point of RTC. Without this method, nothing will load.
 		public static void Start(RTC_Standalone_Form _standaloneForm = null)
 		{
-			VanguardImplementation.StartClient();
-			RTC_Corruptcore.Start();
+			VanguardImplementation.StartClient(GlobalWin.MainForm);
 			RTC_EmuCore.RegisterEmuhawkSpec();
 
 

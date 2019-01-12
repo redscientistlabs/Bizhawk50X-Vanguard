@@ -26,7 +26,7 @@ namespace RTCV.CorruptCore
 
 		public static void AutoLoadVMDs()
 		{
-			string currentGame = (string)LocalNetCoreRouter.Route("VANGURD", "REMOTE_KEY_GETGAMENAME", true);
+			string currentGame = (string)LocalNetCoreRouter.Route("VANGUARD", "REMOTE_KEY_GETGAMENAME", true);
 			SetParam(currentGame.GetHashCode().ToString());
 		}
 

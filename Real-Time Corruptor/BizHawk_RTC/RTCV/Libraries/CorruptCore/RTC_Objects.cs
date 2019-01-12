@@ -85,7 +85,7 @@ namespace RTCV.CorruptCore
 			}
 
 			//Backup bizhawk settings
-			LocalNetCoreRouter.Route("VANGURD", "REMOTE_EVENT_SAVEBIZHAWKCONFIG", true);
+			LocalNetCoreRouter.Route("VANGUARD", "REMOTE_EVENT_SAVEBIZHAWKCONFIG", true);
 
 			//Watermarking RTC Version
 			sks.RtcVersion = RTC_Corruptcore.RtcVersion;

@@ -50,12 +50,29 @@ namespace UI
 						break;
 
 					case "REMOTE_PUSHCORRUPTCORESPEC":
-						RTC_Corruptcore.CorruptCoreSpec = new FullSpec((PartialSpec)advancedMessage.objectValue);
+						if (RTC_Corruptcore.CorruptCoreSpec != null)
+						{
+							LocalNetCoreRouter.Route("CORRUPTCORE", "REMOTE_PUSHCORRUPTCORESPEC", RTC_Corruptcore.CorruptCoreSpec.GetPartialSpec(), true);
+						}
+						//If we have a copy of the corruptcore spec, send it over since it means there's an active session and we want to be the authority
+						else
+						{
+							RTC_Corruptcore.CorruptCoreSpec = new FullSpec((PartialSpec)advancedMessage.objectValue);
+
+							//Register the update action
+							RTC_Corruptcore.CorruptCoreSpec.SpecUpdated += (o, ea) =>
+							{
+								PartialSpec partial = ea.partialSpec;
+
+								LocalNetCoreRouter.Route("CORRUPTCORE", "REMOTE_PUSHCORRUPTCORESPECUPDATE", partial, true);
+							};
+						}
 						e.setReturnValue(true);
 						break;
 
+					//CorruptCore pushed its spec. Note the false on propogate (since we don't want a recursive loop)
 					case "REMOTE_PUSHCORRUPTCORESPECUPDATE":
-						RTC_Corruptcore.CorruptCoreSpec?.Update((PartialSpec)advancedMessage.objectValue);
+						RTC_Corruptcore.CorruptCoreSpec?.Update((PartialSpec)advancedMessage.objectValue, false);
 						e.setReturnValue(true);
 						break;
 

@@ -90,8 +90,8 @@ namespace RTC
 			CPU_STEP_Count++;
 
 			bool autoCorrupt = RTC_Corruptcore.AutoCorrupt;
-			int intensity = RTC_Corruptcore.Intensity;
-			if (autoCorrupt && CPU_STEP_Count >= intensity)
+			int errorDelay = RTC_Corruptcore.ErrorDelay;
+			if (autoCorrupt && CPU_STEP_Count >= errorDelay)
 			{
 				CPU_STEP_Count = 0;
 				BlastLayer bl = RTC_Corruptcore.GenerateBlastLayer((string[])RTC_Corruptcore.UISpec["SELECTEDDOMAINS"]);
@@ -109,7 +109,6 @@ namespace RTC
 				MessageBox.Show("32-bit operating system detected. Bizhawk requires 64-bit to run. Program will shut down");
 				Application.Exit();
 			}
-			RTC_EmuCore.RegisterEmuhawkSpec();
 			
 			
 			RTC_EmuCore.args = args;

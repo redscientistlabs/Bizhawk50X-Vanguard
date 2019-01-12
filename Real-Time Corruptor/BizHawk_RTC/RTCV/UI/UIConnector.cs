@@ -33,6 +33,11 @@ namespace RTCV.UI
 		private static void Spec_ServerConnected(object sender, EventArgs e)
 		{
 			LocalNetCoreRouter.Route("CORRUPTCORE", "REMOTE_PUSHUISPEC", RTC_Corruptcore.UISpec.GetPartialSpec(), true);
+			//If we have a copy of the corruptcore spec, send it over since it means there's an active session and we want to be the authority
+			if (RTC_Corruptcore.CorruptCoreSpec != null)
+			{
+				LocalNetCoreRouter.Route("CORRUPTCORE", "REMOTE_PUSHCORRUPTCORESPEC", RTC_Corruptcore.CorruptCoreSpec.GetPartialSpec(), true);
+			}
 		}
 
 		public void OnMessageReceivedProxy(object sender, NetCoreEventArgs e) => OnMessageReceived(sender, e);

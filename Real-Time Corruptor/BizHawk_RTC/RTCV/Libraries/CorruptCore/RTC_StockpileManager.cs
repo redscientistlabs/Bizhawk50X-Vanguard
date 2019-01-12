@@ -123,10 +123,10 @@ namespace RTCV.CorruptCore
 				return false;
 			}
 
-			string currentGame = (string)LocalNetCoreRouter.Route("VANGURD", "REMOTE_KEY_GETGAMENAME", true);
+			string currentGame = (string)LocalNetCoreRouter.Route("VANGUARD", "REMOTE_KEY_GETGAMENAME", true);
 			if (currentGame == null || psk.GameName != currentGame) 
 			{
-				LocalNetCoreRouter.Route("VANGURD", "REMOTE_LOADROM", psk.RomFilename, true);
+				LocalNetCoreRouter.Route("VANGUARD", "REMOTE_LOADROM", psk.RomFilename, true);
 			}
 
 			var watch = System.Diagnostics.Stopwatch.StartNew();
@@ -343,18 +343,18 @@ namespace RTCV.CorruptCore
 
 			if (reloadRom)
 			{
-				LocalNetCoreRouter.Route("VANGURD", "REMOTE_LOADROM", sk.RomFilename, true);
+				LocalNetCoreRouter.Route("VANGUARD", "REMOTE_LOADROM", sk.RomFilename, true);
 
 				var ssWatch = System.Diagnostics.Stopwatch.StartNew();
-				string ss = (string)LocalNetCoreRouter.Route("VANGURD", "REMOTE_KEY_GETSETSYNCSETTINGS", true);
+				string ss = (string)LocalNetCoreRouter.Route("VANGUARD", "REMOTE_KEY_GETSETSYNCSETTINGS", true);
 				ssWatch.Stop();
 				Console.WriteLine($"Time taken to get the SyncSettings: {0}ms", ssWatch.ElapsedMilliseconds);
 
 				//If the syncsettings are different, update them and load it again. Otheriwse, leave as is
 				if (sk.SyncSettings != ss && sk.SyncSettings != null)
 				{
-					LocalNetCoreRouter.Route("VANGURD", "REMOTE_KEY_GETSETSYNCSETTINGS", sk.SyncSettings, true);
-					LocalNetCoreRouter.Route("VANGURD", "REMOTE_LOADROM", sk.RomFilename, true);
+					LocalNetCoreRouter.Route("VANGUARD", "REMOTE_KEY_GETSETSYNCSETTINGS", sk.SyncSettings, true);
+					LocalNetCoreRouter.Route("VANGUARD", "REMOTE_LOADROM", sk.RomFilename, true);
 				}
 			}
 
@@ -363,7 +363,7 @@ namespace RTCV.CorruptCore
 
 			if (File.Exists(theoreticalSaveStateFilename))
 			{
-				if ((bool)LocalNetCoreRouter.Route("VANGURD", "LOADSAVESTATE", new object[] {key, stateLocation}, true))
+				if ((bool)LocalNetCoreRouter.Route("VANGUARD", "LOADSAVESTATE", new object[] {key, stateLocation}, true))
 				{
 					MessageBox.Show($"Error loading savestate : An internal Bizhawk error has occurred.\n Are you sure your savestate matches the game, your syncsettings match, and the savestate is supported by this version of Bizhawk?");
 					return false;

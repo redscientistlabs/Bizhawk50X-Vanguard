@@ -33,6 +33,7 @@ namespace RTCV.NetCore
 		{
 			//Creating a FullSpec requires a template
 			template = partialSpec;
+			base.version = 1;
 			name = partialSpec.Name;
 			Update(template);
 		}
@@ -71,6 +72,9 @@ namespace RTCV.NetCore
 			//For initial
 			foreach (var key in _partialSpec.specDico.Keys)
 				base[key] = _partialSpec.specDico[key];
+
+			//Increment the version
+			base.version++;
 
 			if (propagate)
 				OnSpecUpdated(new SpecUpdateEventArgs() { partialSpec = _partialSpec });
@@ -142,6 +146,11 @@ namespace RTCV.NetCore
 	[Ceras.MemberConfig(TargetMember.All)]
 	public abstract class BaseSpec
 	{
+		internal int version { get; set; }
+		public int Version
+		{
+			get => version;
+		}
 		internal Dictionary<string, object> specDico { get; set; } = new Dictionary<string, object>();
 
 		public object this[string key]
@@ -161,6 +170,7 @@ namespace RTCV.NetCore
 				}
 				else
 					specDico[key] = value;
+
 			}
 		}
 

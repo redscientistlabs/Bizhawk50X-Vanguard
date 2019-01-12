@@ -3,8 +3,10 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Windows.Forms;
 using RTCV.CorruptCore;
 using NetworkSide = RTCV.NetCore.NetworkSide;
+using static RTCV.CorruptCore.RTC_Corruptcore;
 
 namespace RTCV.Vanguard
 {
@@ -15,7 +17,7 @@ namespace RTCV.Vanguard
         CorruptCoreConnector corruptConn;
         NetCoreConnector netConn;
 
-        public VanguardConnector(NetCoreReceiver _receiver)
+        public VanguardConnector(NetCoreReceiver _receiver, Form syncObject)
         {
             receiver = _receiver;
 
@@ -27,16 +29,19 @@ namespace RTCV.Vanguard
             netCoreSpec.Side = NetworkSide.CLIENT;
             netCoreSpec.MessageReceived += OnMessageReceivedProxy;
 			netCoreSpec.ClientConnected += NetCoreSpec_ClientConnected;
+			netCoreSpec.syncObject = syncObject;
 			netConn = new NetCoreConnector(netCoreSpec);
 			//netConn = LocalNetCoreRouter.registerEndpoint(new NetCoreConnector(netCoreSpec), "UI");
 			LocalNetCoreRouter.registerEndpoint(netConn, "DEFAULT"); //Will send mesages to netcore if can't find the destination
 
+			RTC_Corruptcore.Start();
 		}
 
 
 		private void NetCoreSpec_ClientConnected(object sender, EventArgs e)
 		{
 			LocalNetCoreRouter.Route("UI", "REMOTE_PUSHCORRUPTCORESPEC", RTC_Corruptcore.CorruptCoreSpec.GetPartialSpec(), true);
+
 			//LocalNetCoreRouter.Route("UI", "REMOTE_PUSHVANGUARDSPEC", RTC_Corruptcore.CorruptCoreSpec.GetPartialSpec(), true);
 		}
 

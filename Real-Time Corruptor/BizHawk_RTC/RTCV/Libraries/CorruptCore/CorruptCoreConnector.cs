@@ -27,21 +27,51 @@ namespace RTCV.CorruptCore
 
 			switch (e.message.Type)
 			{
-
+				//UI sent its spec
 				case "REMOTE_PUSHUISPEC":
 					RTC_Corruptcore.UISpec = new FullSpec((PartialSpec)advancedMessage.objectValue);
 					e.setReturnValue(true);
 					break;
 
+				//UI sent a spec update
 				case "REMOTE_PUSHUISPECUPDATE":
 					RTC_Corruptcore.UISpec?.Update((PartialSpec)advancedMessage.objectValue);
 					e.setReturnValue(true);
 					break;
+					
+				//Vanguard sent a copy of its spec
+				case "REMOTE_PUSHEMUSPEC":
+					RTC_Corruptcore.VanguardSpec = new FullSpec((PartialSpec)advancedMessage.objectValue);
+					e.setReturnValue(true);
+					break;
 
+				//Vanguard sent a spec update
+				case "REMOTE_PUSHEMUSPECUPDATE":
+					RTC_Corruptcore.VanguardSpec?.Update((PartialSpec)advancedMessage.objectValue, false);
+					break;
+
+				//UI sent a copy of the CorruptCore spec
+				case "REMOTE_PUSHCORRUPTCORESPEC":
+					RTC_Corruptcore.CorruptCoreSpec = new FullSpec((PartialSpec)advancedMessage.objectValue);
+					RTC_Corruptcore.CorruptCoreSpec.SpecUpdated += (o, ea) =>
+					{
+						PartialSpec partial = ea.partialSpec;
+
+						LocalNetCoreRouter.Route("UI", "REMOTE_PUSHCORRUPTCORESPECUPDATE", partial, true);
+					};
+
+					e.setReturnValue(true);
+					break;
+
+				//UI sent an update of the CorruptCore spec
+				case "REMOTE_PUSHCORRUPTCORESPECUPDATE":
+					RTC_Corruptcore.CorruptCoreSpec?.Update((PartialSpec)advancedMessage.objectValue, false);
+					e.setReturnValue(true);
+					break;
 
 				case "REMOTE_EVENT_DOMAINSUPDATED":
 					RTC_MemoryDomains.RefreshDomains();
-					LocalNetCoreRouter.Route("UI", "REMOTE_EVENT_DOMAINSUPDATED");
+				//	LocalNetCoreRouter.Route("UI", "REMOTE_EVENT_DOMAINSUPDATED");
 					break;
 
 				case "ASYNCBLAST":

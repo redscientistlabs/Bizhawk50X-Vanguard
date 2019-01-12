@@ -5,6 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
+using System.Windows.Forms;
 using BizHawk.Client.Common;
 using BizHawk.Emulation.Common;
 using BizHawk.Emulation.Cores.Nintendo.N64;
@@ -17,16 +18,20 @@ namespace RTC
 	{
 		public static RTCV.Vanguard.VanguardConnector connector = null;
 
-		public static void StartClient()
+		private static Form cachedSyncObject = null;
+
+		public static void StartClient(Form syncObject)
 		{
+
 			ConsoleEx.WriteLine("Starting Vanguard Client");
 			Thread.Sleep(500); //When starting in Multiple Startup Project, the first try will be uncessful since
 			//the server takes a bit more time to start then the client.
 
 			var spec = new NetCoreReceiver();
 			spec.MessageReceived += OnMessageReceived;
+			cachedSyncObject = syncObject;
 
-			connector = new RTCV.Vanguard.VanguardConnector(spec);
+			connector = new RTCV.Vanguard.VanguardConnector(spec, syncObject);
 
 		}
 
@@ -34,7 +39,7 @@ namespace RTC
 		{
 			connector.Kill();
 			connector = null;
-			StartClient();
+			StartClient(cachedSyncObject);
 		}
 
 		private static void OnMessageReceived(object sender, NetCoreEventArgs e)
@@ -49,10 +54,15 @@ namespace RTC
 			ConsoleEx.WriteLine(message.Type);
 			switch (message.Type) //Handle received messages here
 			{
+				/*
 				case "POKEBYTE":
 				{
 					break;
 				}
+				case "PEEKBYTE":
+				{
+					RTC_Hooks.
+				}*/
 				case "SAVESAVESTATE":
 				{
 					e.setReturnValue(RTC_EmuCore.SaveSavestate_NET(advancedMessage.objectValue as string));
@@ -67,16 +77,6 @@ namespace RTC
 					e.setReturnValue(RTC_EmuCore.LoadSavestate_NET(path, location));
 					break;
 				}
-
-				case "REMOTE_PUSHEMUSPEC":
-					RTC_EmuCore.EmuSpec = new FullSpec((PartialSpec)advancedMessage.objectValue);
-					e.setReturnValue(true);
-					break;
-
-
-				case "REMOTE_PUSHEMUSPECUPDATE":
-					RTC_EmuCore.EmuSpec?.Update((PartialSpec)advancedMessage.objectValue, false);
-					break;
 
 				case "REMOTE_LOADROM":
 				{

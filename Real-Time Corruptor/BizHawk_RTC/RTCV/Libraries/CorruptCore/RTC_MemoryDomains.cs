@@ -782,17 +782,17 @@ namespace RTCV.CorruptCore
 
 		public override byte PeekByte(long address)
 		{
-			if (MD == null)
-				return (byte)LocalNetCoreRouter.Route("VANGUARD", "PEEKBYTE", new object[] { Name, address }, true);
-			else
+		//	if (MD == null)
+			//	return (byte)LocalNetCoreRouter.Route("VANGUARD", "PEEKBYTE", new object[] { Name, address }, true);
+		//	else
 				return MD.PeekByte(address);
 		}
 
 		public override void PokeByte(long address, byte value)
 		{
-			if (MD == null)
-				LocalNetCoreRouter.Route("VANGUARD", "POKEBYTE", new object[] { Name, address }, true);
-			else
+		//	if (MD == null)
+		//		LocalNetCoreRouter.Route("VANGUARD", "POKEBYTE", new object[] { Name, address }, true);
+		//	else
 				MD.PokeByte(address, value);
 		}
 	}
