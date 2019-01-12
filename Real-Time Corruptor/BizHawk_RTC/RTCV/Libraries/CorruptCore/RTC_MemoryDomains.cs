@@ -46,7 +46,7 @@ namespace RTCV.CorruptCore
 			foreach (MemoryInterface mi in (MemoryInterface[])RTC_Corruptcore.VanguardSpec[VSPEC.MEMORYDOMAINS_INTERFACES.ToString()])
 				temp.Add(mi.ToString(), mi);
 			MemoryInterfaces = temp;
-			LocalNetCoreRouter.Route("UI", "REMOTE_EVENT_DOMAINSUPDATED", true);
+			LocalNetCoreRouter.Route("UI", "REMOTE_EVENT_DOMAINSUPDATED");
 
 		}
 

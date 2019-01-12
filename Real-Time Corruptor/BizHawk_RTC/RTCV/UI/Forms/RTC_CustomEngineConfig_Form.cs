@@ -11,6 +11,7 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using RTCV.CorruptCore;
 using RTCV.NetCore;
+using static RTCV.UI.UI_Extensions;
 
 namespace RTCV.UI
 {

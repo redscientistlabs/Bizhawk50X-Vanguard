@@ -6,6 +6,7 @@ using System.Linq;
 using System.Windows.Forms;
 using System.Xml.Serialization;
 using RTCV.CorruptCore;
+using static RTCV.UI.UI_Extensions;
 
 namespace RTCV.UI
 {

@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Data;
 using System.IO;
+using RTCV.CorruptCore;
+using RTCV.NetCore;
 
 namespace RTC
 {

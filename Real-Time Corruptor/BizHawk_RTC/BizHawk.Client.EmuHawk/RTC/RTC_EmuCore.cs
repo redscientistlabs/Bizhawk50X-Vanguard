@@ -12,6 +12,7 @@ using System.Windows.Forms;
 using BizHawk.Client.Common;
 using BizHawk.Client.EmuHawk;
 using Newtonsoft.Json;
+using RTCV.CorruptCore;
 using RTCV.NetCore;
 using RTCV.Vanguard;
 
@@ -248,8 +249,6 @@ namespace RTC
 		{
 			try
 			{
-
-
 				if (RTC_Hooks.BIZHAWK_ISNULLEMULATORCORE())
 					return false;
 

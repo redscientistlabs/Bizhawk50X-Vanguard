@@ -10,6 +10,7 @@ using System.Runtime.InteropServices;
 using System.Diagnostics;
 using RTCV.CorruptCore;
 using RTCV.NetCore;
+using static RTCV.UI.UI_Extensions;
 
 namespace RTCV.UI
 {

@@ -14,6 +14,7 @@ using RTCV.CorruptCore;
 using RTCV.NetCore;
 using RTCV.UI;
 using UI;
+using static RTCV.UI.UI_Extensions;
 
 namespace RTCV.UI
 {

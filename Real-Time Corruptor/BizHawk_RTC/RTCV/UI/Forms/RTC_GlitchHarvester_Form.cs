@@ -9,6 +9,7 @@ using System.Xml.Serialization;
 using Newtonsoft.Json;
 using RTCV.CorruptCore;
 using RTCV.NetCore;
+using static RTCV.UI.UI_Extensions;
 
 namespace RTCV.UI
 {
@@ -25,6 +26,8 @@ namespace RTCV.UI
 		public Panel pnHideGlitchHarvester = new Panel();
 		public Label lbConnectionStatus = new Label();
 		public Button btnEmergencySaveStockpile = new Button();
+
+		public bool UnsavedEdits = false;
 
 		Dictionary<string, TextBox> StateBoxes = new Dictionary<string, TextBox>();
 
@@ -499,7 +502,7 @@ namespace RTCV.UI
 
 			if (askForName)
 			{
-				if (UI_Extensions.GetInputBox("Glitch Harvester", "Enter the new Stash name:", ref value) == DialogResult.OK)
+				if (GetInputBox("Glitch Harvester", "Enter the new Stash name:", ref value) == DialogResult.OK)
 				{
 					Name = value.Trim();
 				}
@@ -546,7 +549,7 @@ namespace RTCV.UI
 
 			RTC_StockpileManager.StockpileChanged();
 
-			RTC_StockpileManager.UnsavedEdits = true;
+			UnsavedEdits = true;
 		}
 
 		private void btnClearStashHistory_Click(object sender, EventArgs e)
@@ -566,7 +569,7 @@ namespace RTCV.UI
 
 			RTC_StockpileManager.StockpileChanged();
 
-			RTC_StockpileManager.UnsavedEdits = true;
+			UnsavedEdits = true;
 
 			RedrawActionUI();
 
@@ -593,7 +596,7 @@ namespace RTCV.UI
 
 				RTC_StockpileManager.StockpileChanged();
 
-				RTC_StockpileManager.UnsavedEdits = false;
+				UnsavedEdits = false;
 
 				RedrawActionUI();
 
@@ -624,7 +627,7 @@ namespace RTCV.UI
 					dgvStockpile.ClearSelection();
 					RTC_StockpileManager.StockpileChanged();
 
-					RTC_StockpileManager.UnsavedEdits = false;
+					UnsavedEdits = false;
 				}
 				finally
 				{
@@ -829,7 +832,7 @@ namespace RTCV.UI
 				dgvStockpile.Rows[newpos].Selected = true;
 			}
 
-			RTC_StockpileManager.UnsavedEdits = true;
+			UnsavedEdits = true;
 
 			RTC_StockpileManager.StockpileChanged();
 		}
@@ -864,7 +867,7 @@ namespace RTCV.UI
 				dgvStockpile.Rows[newpos].Selected = true;
 			}
 
-			RTC_StockpileManager.UnsavedEdits = true;
+			UnsavedEdits = true;
 
 			RTC_StockpileManager.StockpileChanged();
 		}
@@ -929,7 +932,7 @@ namespace RTCV.UI
 		{
 			string value = "";
 
-			if (UI_Extensions.GetInputBox("Glitch Harvester", "Enter the new Stash name:", ref value) == DialogResult.OK)
+			if (GetInputBox("Glitch Harvester", "Enter the new Stash name:", ref value) == DialogResult.OK)
 			{
 				sk.Alias = value.Trim();
 			}
@@ -955,7 +958,7 @@ namespace RTCV.UI
 
 			RTC_StockpileManager.StockpileChanged();
 
-			RTC_StockpileManager.UnsavedEdits = true;
+			UnsavedEdits = true;
 
 		}
 

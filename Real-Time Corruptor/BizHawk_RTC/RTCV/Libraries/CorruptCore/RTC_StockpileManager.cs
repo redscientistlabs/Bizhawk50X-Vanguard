@@ -17,7 +17,6 @@ namespace RTCV.CorruptCore
 		public static Stack<StashKey> AllBackupStates { get; set; } = new Stack<StashKey>();
 		public static BlastLayer LastBlastLayerBackup { get; set; } = null;
 
-		public static bool UnsavedEdits = false;
 
 		private static bool isCorruptionApplied = false;
 
@@ -100,8 +99,7 @@ namespace RTCV.CorruptCore
 					return IsCorruptionApplied;
 				}
 			}
-			else
-				RTC_Corruptcore.ApplyBlastLayer(sk.BlastLayer);
+			RTC_Corruptcore.ApplyBlastLayer(sk.BlastLayer);
 
 
 			IsCorruptionApplied = (sk.BlastLayer != null && sk.BlastLayer.Layer.Count > 0);
@@ -363,7 +361,7 @@ namespace RTCV.CorruptCore
 
 			if (File.Exists(theoreticalSaveStateFilename))
 			{
-				if ((bool)LocalNetCoreRouter.Route("VANGUARD", "LOADSAVESTATE", new object[] {key, stateLocation}, true))
+				if (!LocalNetCoreRouter.QueryRoute<bool>("VANGUARD", "LOADSAVESTATE", new object[] {key, stateLocation}, true))
 				{
 					MessageBox.Show($"Error loading savestate : An internal Bizhawk error has occurred.\n Are you sure your savestate matches the game, your syncsettings match, and the savestate is supported by this version of Bizhawk?");
 					return false;

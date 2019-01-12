@@ -8,6 +8,7 @@ using System.Windows.Forms;
 using RTCV.CorruptCore;
 using RTCV.NetCore;
 using RTCV.UI;
+using static RTCV.UI.UI_Extensions;
 
 namespace RTCV.UI
 {
@@ -101,7 +102,7 @@ namespace RTCV.UI
 
 		private void RTC_Form_FormClosing(object sender, FormClosingEventArgs e)
 		{
-			if (RTC_StockpileManager.UnsavedEdits && !RTC_UICore.isClosing && MessageBox.Show("You have unsaved edits in the Glitch Harvester Stockpile. \n\n Are you sure you want to close RTC without saving?", "Unsaved edits in Stockpile", MessageBoxButtons.YesNo) == DialogResult.No)
+			if (S.GET<RTC_GlitchHarvester_Form>().UnsavedEdits && !RTC_UICore.isClosing && MessageBox.Show("You have unsaved edits in the Glitch Harvester Stockpile. \n\n Are you sure you want to close RTC without saving?", "Unsaved edits in Stockpile", MessageBoxButtons.YesNo) == DialogResult.No)
 			{
 				e.Cancel = true;
 				return;

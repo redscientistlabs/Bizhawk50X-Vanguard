@@ -227,7 +227,7 @@ namespace RTCV.CorruptCore
 
 			RTC_StockpileManager.CurrentStockpile = sks;
 
-			RTC_StockpileManager.UnsavedEdits = false;
+
 
 			return true;
 		}

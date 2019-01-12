@@ -9,6 +9,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using RTCV.CorruptCore;
+using static RTCV.UI.UI_Extensions;
 
 namespace RTCV.UI
 {
