@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
+using CorruptCore;
 using RTCV.CorruptCore;
 using RTCV.NetCore;
 using RTCV.UI;
@@ -56,7 +57,7 @@ namespace UI
 				case REMOTE_PUSHCORRUPTCORESPEC:
 						if (RTC_Corruptcore.CorruptCoreSpec != null)
 						{
-							LocalNetCoreRouter.Route("CORRUPTCORE", REMOTE_PUSHCORRUPTCORESPEC, RTC_Corruptcore.CorruptCoreSpec.GetPartialSpec(), true);
+							LocalNetCoreRouter.Route(CORRUPTCORE, REMOTE_PUSHCORRUPTCORESPEC, RTC_Corruptcore.CorruptCoreSpec.GetPartialSpec(), true);
 						}
 						//If we have a copy of the corruptcore spec, send it over since it means there's an active session and we want to be the authority
 						else
@@ -68,7 +69,7 @@ namespace UI
 							{
 								PartialSpec partial = ea.partialSpec;
 
-								LocalNetCoreRouter.Route("CORRUPTCORE", REMOTE_PUSHCORRUPTCORESPECUPDATE, partial, true);
+								LocalNetCoreRouter.Route(CORRUPTCORE, REMOTE_PUSHCORRUPTCORESPECUPDATE, partial, true);
 							};
 						}
 						e.setReturnValue(true);

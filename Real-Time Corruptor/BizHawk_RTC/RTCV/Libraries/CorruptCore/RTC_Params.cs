@@ -4,6 +4,7 @@ using System.Drawing;
 using System.IO;
 using System.Numerics;
 using System.Security.Cryptography;
+using CorruptCore;
 using RTCV.NetCore;
 
 namespace RTCV.CorruptCore
@@ -26,7 +27,7 @@ namespace RTCV.CorruptCore
 
 		public static void AutoLoadVMDs()
 		{
-			string currentGame = (string)LocalNetCoreRouter.Route("VANGUARD", "REMOTE_KEY_GETGAMENAME", true);
+			string currentGame = (string)LocalNetCoreRouter.Route(NetcoreCommands.VANGUARD, NetcoreCommands.REMOTE_KEY_GETGAMENAME, true);
 			SetParam(currentGame.GetHashCode().ToString());
 		}
 

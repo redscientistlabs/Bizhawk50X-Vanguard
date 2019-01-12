@@ -6,6 +6,7 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading;
+using CorruptCore;
 using RTCV.NetCore;
 using static CorruptCore.NetcoreCommands;
 
@@ -58,7 +59,7 @@ namespace RTCV.CorruptCore
 					{
 						PartialSpec partial = ea.partialSpec;
 
-						LocalNetCoreRouter.Route("UI", "REMOTE_PUSHCORRUPTCORESPECUPDATE", partial, true);
+						LocalNetCoreRouter.Route(NetcoreCommands.UI, NetcoreCommands.REMOTE_PUSHCORRUPTCORESPECUPDATE, partial, true);
 					};
 
 					e.setReturnValue(true);
@@ -72,7 +73,7 @@ namespace RTCV.CorruptCore
 
 				case REMOTE_EVENT_DOMAINSUPDATED:
 					RTC_MemoryDomains.RefreshDomains();
-				//	LocalNetCoreRouter.Route("UI", "REMOTE_EVENT_DOMAINSUPDATED");
+				//	LocalNetCoreRouter.Route(NetcoreCommands.UI, NetcoreCommands.REMOTE_EVENT_DOMAINSUPDATED);
 					break;
 
 				case ASYNCBLAST:
@@ -214,7 +215,7 @@ namespace RTCV.CorruptCore
 					break;
 
 				case REMOTE_DOMAIN_GETDOMAINS:
-					e.setReturnValue(LocalNetCoreRouter.Route("VANGUARD", "REMOTE_DOMAIN_GETDOMAINS", true));
+					e.setReturnValue(LocalNetCoreRouter.Route(NetcoreCommands.VANGUARD, NetcoreCommands.REMOTE_DOMAIN_GETDOMAINS, true));
 					break;
 
 				case REMOTE_DOMAIN_VMD_ADD:

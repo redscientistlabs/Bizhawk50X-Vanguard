@@ -6,6 +6,7 @@ using System.Drawing;
 using System.IO;
 using System.Windows.Forms;
 using System.Xml.Serialization;
+using CorruptCore;
 using Newtonsoft.Json;
 using RTCV.CorruptCore;
 using RTCV.NetCore;
@@ -363,7 +364,7 @@ namespace RTCV.UI
 
 				if (rbCorrupt.Checked)
 				{
-					string romFilename = (string)LocalNetCoreRouter.Route("VANGUARD", "REMOTE_KEY_GETOPENROMFILENAME", true);
+					string romFilename = (string)LocalNetCoreRouter.Route(NetcoreCommands.VANGUARD, "REMOTE_KEY_GETOPENROMFILENAME", true);
 					if (romFilename == null)
 						return;
 					if (romFilename.Contains("|"))
@@ -703,14 +704,14 @@ namespace RTCV.UI
 			{
 				IsCorruptionApplied = true;
 
-				LocalNetCoreRouter.Route("CORRUPTCORE", "BLAST", RTC_StockpileManager.CurrentStashkey.BlastLayer, true);
+				LocalNetCoreRouter.Route(NetcoreCommands.CORRUPTCORE, NetcoreCommands.BLAST, RTC_StockpileManager.CurrentStashkey.BlastLayer, true);
 				//RTC_StockpileManager.currentStashkey.blastlayer.Apply();
 			}
 			else
 			{
 				IsCorruptionApplied = false;
 
-				LocalNetCoreRouter.Route("CORRUPTCORE", "REMOTE_SET_RESTOREBLASTLAYERBACKUP", true);
+				LocalNetCoreRouter.Route(NetcoreCommands.CORRUPTCORE, NetcoreCommands.REMOTE_SET_RESTOREBLASTLAYERBACKUP, true);
 				RTC_StepActions.ClearStepBlastUnits();
 			}
 		}
@@ -903,7 +904,7 @@ namespace RTCV.UI
 				btnSendRaw.Visible = false;
 
 				
-				string romFilename = (string)LocalNetCoreRouter.Route("VANGUARD", "REMOTE_KEY_GETOPENROMFILENAME", true);
+				string romFilename = (string)LocalNetCoreRouter.Route(NetcoreCommands.VANGUARD, NetcoreCommands.REMOTE_KEY_GETOPENROMFILENAME, true);
 				if (romFilename == null)
 					return;
 				if (romFilename.Contains("|"))
@@ -912,7 +913,7 @@ namespace RTCV.UI
 					return;
 				}
 
-				StashKey sk = (StashKey)LocalNetCoreRouter.Route("CORRUPTCORE", "REMOTE_KEY_GETRAWBLASTLAYER", true);
+				StashKey sk = (StashKey)LocalNetCoreRouter.Route(NetcoreCommands.CORRUPTCORE, NetcoreCommands.REMOTE_KEY_GETRAWBLASTLAYER, true);
 
 				RTC_StockpileManager.CurrentStashkey = sk;
 				RTC_StockpileManager.StashHistory.Add(RTC_StockpileManager.CurrentStashkey);
@@ -1543,7 +1544,7 @@ namespace RTCV.UI
 
 		private void BlastRawStash()
 		{
-			LocalNetCoreRouter.Route("CORRUPTCORE", "ASYNCBLAST", true);
+			LocalNetCoreRouter.Route(NetcoreCommands.CORRUPTCORE, NetcoreCommands.ASYNCBLAST, true);
 			S.GET<RTC_GlitchHarvester_Form>().btnSendRaw_Click(null, null);
 		}
 

@@ -9,6 +9,7 @@ using System.Net;
 using System.Reflection;
 using System.Threading;
 using System.Windows.Forms;
+using CorruptCore;
 using Newtonsoft.Json;
 using RTCV.NetCore;
 
@@ -152,13 +153,13 @@ namespace RTCV.CorruptCore
 			CorruptCoreSpec = new FullSpec(rtcSpecTemplate); //You have to feed a partial spec as a template
 
 
-			LocalNetCoreRouter.Route("UI", "REMOTE_PUSHCORRUPTCORESPEC", rtcSpecTemplate, true);
+			LocalNetCoreRouter.Route(NetcoreCommands.UI, NetcoreCommands.REMOTE_PUSHCORRUPTCORESPEC, rtcSpecTemplate, true);
 
 			CorruptCoreSpec.SpecUpdated += (o, e) =>
 			{
 				PartialSpec partial = e.partialSpec;
 
-				LocalNetCoreRouter.Route("UI", "REMOTE_PUSHCORRUPTCORESPECUPDATE", partial, true);
+				LocalNetCoreRouter.Route(NetcoreCommands.UI, NetcoreCommands.REMOTE_PUSHCORRUPTCORESPECUPDATE, partial, true);
 			};
 
 			/*

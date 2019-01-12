@@ -5,6 +5,7 @@ using System.Drawing;
 using System.IO;
 using System.Threading;
 using System.Windows.Forms;
+using CorruptCore;
 using RTCV.CorruptCore;
 using RTCV.NetCore;
 using RTCV.UI;
@@ -56,7 +57,7 @@ namespace RTCV.UI
 
 		public void btnManualBlast_Click(object sender, EventArgs e)
 		{
-			LocalNetCoreRouter.Route("CORRUPTCORE", "ASYNCBLAST", true );
+			LocalNetCoreRouter.Route(NetcoreCommands.CORRUPTCORE, NetcoreCommands.ASYNCBLAST, true );
 		}
 
 		public void btnAutoCorrupt_Click(object sender, EventArgs e)
@@ -108,7 +109,7 @@ namespace RTCV.UI
 				return;
 			}
 
-			LocalNetCoreRouter.Route("VANGUARD", "REMOTE_EVENT_CLOSEBIZHAWK");
+			LocalNetCoreRouter.Route(NetcoreCommands.VANGUARD, NetcoreCommands.REMOTE_EVENT_CLOSEBIZHAWK);
 			Thread.Sleep(1000);
 
 			RTC_UICore.CloseAllRtcForms();
@@ -145,7 +146,7 @@ namespace RTCV.UI
 			{
 				//Put Console templates HERE
 				string thisSystem = (string)
-					(string)LocalNetCoreRouter.Route("VANGUARD", "REMOTE_DOMAIN_SYSTEM", true);
+					(string)LocalNetCoreRouter.Route(NetcoreCommands.VANGUARD, NetcoreCommands.REMOTE_DOMAIN_SYSTEM, true);
 
 				switch (thisSystem)
 				{
@@ -383,8 +384,7 @@ namespace RTCV.UI
 
 		private void BlastRawStash()
 		{
-
-			LocalNetCoreRouter.Route("CORRUPTCORE", "ASYNCBLAST", true);
+			LocalNetCoreRouter.Route(NetcoreCommands.CORRUPTCORE, NetcoreCommands.ASYNCBLAST, true);
 			S.GET<RTC_GlitchHarvester_Form>().btnSendRaw_Click(null, null);
 		}
 

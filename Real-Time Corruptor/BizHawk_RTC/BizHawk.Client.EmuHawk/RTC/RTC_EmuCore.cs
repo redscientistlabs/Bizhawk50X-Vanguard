@@ -11,6 +11,7 @@ using System.Threading;
 using System.Windows.Forms;
 using BizHawk.Client.Common;
 using BizHawk.Client.EmuHawk;
+using CorruptCore;
 using Newtonsoft.Json;
 using RTCV.CorruptCore;
 using RTCV.NetCore;
@@ -67,12 +68,12 @@ namespace RTC
 			EmuSpec = new FullSpec(emuSpecTemplate); //You have to feed a partial spec as a template
 
 
-			LocalNetCoreRouter.Route("CORRUPTCORE", "REMOTE_PUSHEMUSPEC", emuSpecTemplate, true);
+			LocalNetCoreRouter.Route(NetcoreCommands.CORRUPTCORE, NetcoreCommands.REMOTE_PUSHEMUSPEC, emuSpecTemplate, true);
 			EmuSpec.SpecUpdated += (o, e) =>
 			{
 				PartialSpec partial = e.partialSpec;
 				RTC_Corruptcore.VanguardSpec = EmuSpec;
-				LocalNetCoreRouter.Route("CORRUPTCORE", "REMOTE_PUSHEMUSPECUPDATE", partial, true);
+				LocalNetCoreRouter.Route(NetcoreCommands.CORRUPTCORE, NetcoreCommands.REMOTE_PUSHEMUSPECUPDATE, partial, true);
 			};
 		}
 

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Windows.Forms;
 using System.Xml.Serialization;
+using CorruptCore;
 using RTCV.NetCore;
 
 
@@ -211,8 +212,8 @@ namespace RTCV.CorruptCore
 		{
 			BlastLayer bl = new BlastLayer();
 
-			string thisSystem =	 (string)LocalNetCoreRouter.Route("VANGUARD", "REMOTE_DOMAIN_SYSTEM", true);
-			string romFilename = (string)LocalNetCoreRouter.Route("VANGUARD", "REMOTE_KEY_GETOPENROMFILENAME", true);
+			string thisSystem =	 (string)LocalNetCoreRouter.Route(NetcoreCommands.VANGUARD, NetcoreCommands.REMOTE_DOMAIN_SYSTEM, true);
+			string romFilename = (string)LocalNetCoreRouter.Route(NetcoreCommands.VANGUARD, NetcoreCommands.REMOTE_KEY_GETOPENROMFILENAME, true);
 
 			var rp = RTC_MemoryDomains.GetRomParts(thisSystem, romFilename);
 

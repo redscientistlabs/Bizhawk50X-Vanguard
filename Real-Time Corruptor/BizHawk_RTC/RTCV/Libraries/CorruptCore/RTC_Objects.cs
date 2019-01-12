@@ -11,6 +11,7 @@ using System.Xml.Serialization;
 using System.ComponentModel;
 using System.Data;
 using Ceras;
+using CorruptCore;
 using RTCV.NetCore;
 using Exception = System.Exception;
 
@@ -85,7 +86,7 @@ namespace RTCV.CorruptCore
 			}
 
 			//Backup bizhawk settings
-			LocalNetCoreRouter.Route("VANGUARD", "REMOTE_EVENT_SAVEBIZHAWKCONFIG", true);
+			LocalNetCoreRouter.Route(NetcoreCommands.VANGUARD, NetcoreCommands.REMOTE_EVENT_SAVEBIZHAWKCONFIG, true);
 
 			//Watermarking RTC Version
 			sks.RtcVersion = RTC_Corruptcore.RtcVersion;
@@ -645,11 +646,11 @@ namespace RTCV.CorruptCore
 			ParentKey = parentkey;
 			BlastLayer = blastlayer;
 			
-			RomFilename = (string)LocalNetCoreRouter.Route("VANGUARD", "REMOTE_KEY_GETOPENROMFILENAME", true);
-			SystemName =  (string)LocalNetCoreRouter.Route("VANGUARD", "REMOTE_KEY_GETSYSTEMNAME", true);
-			SystemCore =  (string)LocalNetCoreRouter.Route("VANGUARD", "REMOTE_KEY_GETSYSTEMNAME",  SystemName, true); ;
-			GameName =    (string)LocalNetCoreRouter.Route("VANGUARD", "REMOTE_KEY_GETGAMENAME", true);
-			SyncSettings = (string)LocalNetCoreRouter.Route("VANGUARD", "REMOTE_KEY_GETSYNCSETTINGS", true);
+			RomFilename = (string)LocalNetCoreRouter.Route(NetcoreCommands.VANGUARD,  NetcoreCommands.REMOTE_KEY_GETOPENROMFILENAME, true);
+			SystemName =  (string)LocalNetCoreRouter.Route(NetcoreCommands.VANGUARD,  NetcoreCommands.REMOTE_KEY_GETSYSTEMNAME, true);
+			SystemCore =  (string)LocalNetCoreRouter.Route(NetcoreCommands.VANGUARD,  NetcoreCommands.REMOTE_KEY_GETSYSTEMNAME,  SystemName, true); ;
+			GameName =    (string)LocalNetCoreRouter.Route(NetcoreCommands.VANGUARD,  NetcoreCommands.REMOTE_KEY_GETGAMENAME, true);
+			SyncSettings = (string)LocalNetCoreRouter.Route(NetcoreCommands.VANGUARD, NetcoreCommands.REMOTE_KEY_GETSETSYNCSETTINGS, true);
 
 			this.SelectedDomains.AddRange((string[])RTC_Corruptcore.UISpec["SELECTEDDOMAINS"]);
 		}
@@ -669,7 +670,7 @@ namespace RTCV.CorruptCore
 		public static void SetCore(StashKey sk) => SetCore(sk.SystemName, sk.SystemCore);
 		public static void SetCore(string systemName, string systemCore)
 		{
-			LocalNetCoreRouter.Route("VANGUARD", "REMOTE_KEY_SETSYSTEMCORE", new object[] {systemName, systemCore}, true);
+			LocalNetCoreRouter.Route(NetcoreCommands.VANGUARD, NetcoreCommands.REMOTE_KEY_SETSYSTEMCORE, new object[] {systemName, systemCore}, true);
 		}
 
 		public override string ToString()

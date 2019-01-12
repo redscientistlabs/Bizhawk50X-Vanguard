@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Windows.Forms;
+using CorruptCore;
 using RTCV.NetCore;
 
 namespace RTCV.CorruptCore
@@ -121,10 +122,10 @@ namespace RTCV.CorruptCore
 				return false;
 			}
 
-			string currentGame = (string)LocalNetCoreRouter.Route("VANGUARD", "REMOTE_KEY_GETGAMENAME", true);
+			string currentGame = (string)LocalNetCoreRouter.Route(NetcoreCommands.VANGUARD, NetcoreCommands.REMOTE_KEY_GETGAMENAME, true);
 			if (currentGame == null || psk.GameName != currentGame) 
 			{
-				LocalNetCoreRouter.Route("VANGUARD", "REMOTE_LOADROM", psk.RomFilename, true);
+				LocalNetCoreRouter.Route(NetcoreCommands.VANGUARD, NetcoreCommands.REMOTE_LOADROM, psk.RomFilename, true);
 			}
 
 			var watch = System.Diagnostics.Stopwatch.StartNew();
@@ -341,18 +342,18 @@ namespace RTCV.CorruptCore
 
 			if (reloadRom)
 			{
-				LocalNetCoreRouter.Route("VANGUARD", "REMOTE_LOADROM", sk.RomFilename, true);
+				LocalNetCoreRouter.Route(NetcoreCommands.VANGUARD, NetcoreCommands.REMOTE_LOADROM, sk.RomFilename, true);
 
 				var ssWatch = System.Diagnostics.Stopwatch.StartNew();
-				string ss = (string)LocalNetCoreRouter.Route("VANGUARD", "REMOTE_KEY_GETSETSYNCSETTINGS", true);
+				string ss = (string)LocalNetCoreRouter.Route(NetcoreCommands.VANGUARD, NetcoreCommands.REMOTE_KEY_GETSETSYNCSETTINGS, true);
 				ssWatch.Stop();
 				Console.WriteLine($"Time taken to get the SyncSettings: {0}ms", ssWatch.ElapsedMilliseconds);
 
 				//If the syncsettings are different, update them and load it again. Otheriwse, leave as is
 				if (sk.SyncSettings != ss && sk.SyncSettings != null)
 				{
-					LocalNetCoreRouter.Route("VANGUARD", "REMOTE_KEY_GETSETSYNCSETTINGS", sk.SyncSettings, true);
-					LocalNetCoreRouter.Route("VANGUARD", "REMOTE_LOADROM", sk.RomFilename, true);
+					LocalNetCoreRouter.Route(NetcoreCommands.VANGUARD, NetcoreCommands.REMOTE_KEY_GETSETSYNCSETTINGS, sk.SyncSettings, true);
+					LocalNetCoreRouter.Route(NetcoreCommands.VANGUARD, NetcoreCommands.REMOTE_LOADROM, sk.RomFilename, true);
 				}
 			}
 
@@ -361,7 +362,7 @@ namespace RTCV.CorruptCore
 
 			if (File.Exists(theoreticalSaveStateFilename))
 			{
-				if (!LocalNetCoreRouter.QueryRoute<bool>("VANGUARD", "LOADSAVESTATE", new object[] {key, stateLocation}, true))
+				if (!LocalNetCoreRouter.QueryRoute<bool>(NetcoreCommands.VANGUARD, NetcoreCommands.LOADSAVESTATE, new object[] {key, stateLocation}, true))
 				{
 					MessageBox.Show($"Error loading savestate : An internal Bizhawk error has occurred.\n Are you sure your savestate matches the game, your syncsettings match, and the savestate is supported by this version of Bizhawk?");
 					return false;
@@ -380,7 +381,7 @@ namespace RTCV.CorruptCore
 
 		public static StashKey SaveState(bool sendToStashDico, StashKey _sk = null, bool sync = true)
 		{
-			return (StashKey)LocalNetCoreRouter.Route("VANGUARD", "SAVESTATE", new object[] { sendToStashDico, _sk }, sync);
+			return (StashKey)LocalNetCoreRouter.Route(NetcoreCommands.VANGUARD, NetcoreCommands.SAVESAVESTATE, new object[] { sendToStashDico, _sk }, sync);
 		}
 
 		public static StashKey SaveState_NET(bool sendToStashDico, StashKey _sk = null, bool threadSave = false)
@@ -393,7 +394,7 @@ namespace RTCV.CorruptCore
 			if (_sk == null)
 			{
 				Key = RTC_Corruptcore.GetRandomKey();
-				statePath = (string)LocalNetCoreRouter.Route("VANGUARD", "SAVESAVESTATE", Key);
+				statePath = (string)LocalNetCoreRouter.Route(NetcoreCommands.VANGUARD, NetcoreCommands.SAVESAVESTATE, Key);
 				sk = new StashKey(Key, Key, null);
 			}
 			else
@@ -469,8 +470,8 @@ namespace RTCV.CorruptCore
 
 			bl.Layer.AddRange(RTC_StepActions.GetRawBlastLayer().Layer);
 
-			string thisSystem = (string)LocalNetCoreRouter.Route("VANGUARD", "REMOTE_DOMAIN_SYSTEM", true);
-			string romFilename =(string)LocalNetCoreRouter.Route("VANGUARD", "REMOTE_KEY_GETOPENROMFILENAME", true);
+			string thisSystem = (string)LocalNetCoreRouter.Route(NetcoreCommands.VANGUARD, NetcoreCommands.REMOTE_DOMAIN_SYSTEM, true);
+			string romFilename =(string)LocalNetCoreRouter.Route(NetcoreCommands.VANGUARD, NetcoreCommands.REMOTE_KEY_GETOPENROMFILENAME, true);
 
 			var rp = RTC_MemoryDomains.GetRomParts(thisSystem, romFilename);
 

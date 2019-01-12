@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using CorruptCore;
 using RTCV.CorruptCore;
 using static RTCV.UI.UI_Extensions;
 
@@ -17,7 +18,7 @@ namespace RTCV.UI
 		{
 			receiver = _receiver;
 
-			LocalNetCoreRouter.registerEndpoint(this, "UI");
+			LocalNetCoreRouter.registerEndpoint(this, NetcoreCommands.UI);
 
 			var netCoreSpec = new NetCore.NetCoreSpec();
 			netCoreSpec.Side = NetCore.NetworkSide.SERVER;
@@ -33,11 +34,11 @@ namespace RTCV.UI
 
 		private static void Spec_ServerConnected(object sender, EventArgs e)
 		{
-			LocalNetCoreRouter.Route("CORRUPTCORE", "REMOTE_PUSHUISPEC", RTC_Corruptcore.UISpec.GetPartialSpec(), true);
+			LocalNetCoreRouter.Route(NetcoreCommands.CORRUPTCORE, NetcoreCommands.REMOTE_PUSHUISPEC, RTC_Corruptcore.UISpec.GetPartialSpec(), true);
 			//If we have a copy of the corruptcore spec, send it over since it means there's an active session and we want to be the authority
 			if (RTC_Corruptcore.CorruptCoreSpec != null)
 			{
-				LocalNetCoreRouter.Route("CORRUPTCORE", "REMOTE_PUSHCORRUPTCORESPEC", RTC_Corruptcore.CorruptCoreSpec.GetPartialSpec(), true);
+				LocalNetCoreRouter.Route(NetcoreCommands.CORRUPTCORE, NetcoreCommands.REMOTE_PUSHCORRUPTCORESPEC, RTC_Corruptcore.CorruptCoreSpec.GetPartialSpec(), true);
 			}
 		}
 

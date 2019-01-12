@@ -9,6 +9,7 @@ using System.Text;
 using System.Windows.Forms;
 using System.Xml.Serialization;
 using Ceras;
+using CorruptCore;
 using RTCV.NetCore;
 
 namespace RTCV.CorruptCore
@@ -46,7 +47,7 @@ namespace RTCV.CorruptCore
 			foreach (MemoryInterface mi in (MemoryInterface[])RTC_Corruptcore.VanguardSpec[VSPEC.MEMORYDOMAINS_INTERFACES.ToString()])
 				temp.Add(mi.ToString(), mi);
 			MemoryInterfaces = temp;
-			LocalNetCoreRouter.Route("UI", "REMOTE_EVENT_DOMAINSUPDATED");
+			LocalNetCoreRouter.Route(NetcoreCommands.UI, NetcoreCommands.REMOTE_EVENT_DOMAINSUPDATED);
 
 		}
 
@@ -130,7 +131,7 @@ namespace RTCV.CorruptCore
 			RTC_MemoryDomains.VmdPool[VMD.ToString()] = VMD;
 
 
-			LocalNetCoreRouter.Route("UI", "REMOTE_EVENT_DOMAINSUPDATED", true);
+			LocalNetCoreRouter.Route(NetcoreCommands.UI, NetcoreCommands.REMOTE_EVENT_DOMAINSUPDATED, true);
 		}
 
 		public static void RemoveVMD(VirtualMemoryDomain VMD) => RemoveVMD(VMD.ToString());
@@ -140,7 +141,7 @@ namespace RTCV.CorruptCore
 			if (RTC_MemoryDomains.VmdPool.ContainsKey(vmdName))
 				RTC_MemoryDomains.VmdPool.Remove(vmdName);
 
-			LocalNetCoreRouter.Route("UI", "REMOTE_EVENT_DOMAINSUPDATED", true);
+			LocalNetCoreRouter.Route(NetcoreCommands.UI, NetcoreCommands.REMOTE_EVENT_DOMAINSUPDATED, true);
 		}
 
 		public static void RenameVMD(VirtualMemoryDomain VMD) => RenameVMD(VMD.ToString());
@@ -195,7 +196,7 @@ namespace RTCV.CorruptCore
 
 			List<string> domainBlacklist = new List<string>();
 
-			string systemName = (string)LocalNetCoreRouter.Route("VANGUARD", "REMOTE_DOMAIN_SYSTEM", true);
+			string systemName = (string)LocalNetCoreRouter.Route(NetcoreCommands.VANGUARD, NetcoreCommands.REMOTE_DOMAIN_SYSTEM, true);
 
 			switch (systemName)
 			{
@@ -783,7 +784,7 @@ namespace RTCV.CorruptCore
 		public override byte PeekByte(long address)
 		{
 		//	if (MD == null)
-			//	return (byte)LocalNetCoreRouter.Route("VANGUARD", "PEEKBYTE", new object[] { Name, address }, true);
+			//	return (byte)LocalNetCoreRouter.Route(NetcoreCommands.VANGUARD, NetcoreCommands.PEEKBYTE, new object[] { Name, address }, true);
 		//	else
 				return MD.PeekByte(address);
 		}
@@ -791,7 +792,7 @@ namespace RTCV.CorruptCore
 		public override void PokeByte(long address, byte value)
 		{
 		//	if (MD == null)
-		//		LocalNetCoreRouter.Route("VANGUARD", "POKEBYTE", new object[] { Name, address }, true);
+		//		LocalNetCoreRouter.Route(NetcoreCommands.VANGUARD, NetcoreCommands.POKEBYTE, new object[] { Name, address }, true);
 		//	else
 				MD.PokeByte(address, value);
 		}

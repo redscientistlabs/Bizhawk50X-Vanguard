@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Data;
 using System.Linq;
 using System.Windows.Forms;
+using CorruptCore;
 using RTCV.CorruptCore;
 using RTCV.NetCore;
 using static RTCV.UI.UI_Extensions;
@@ -382,7 +383,7 @@ namespace RTCV.UI
 
 
 
-				returnList = (List<BlastGeneratorProto>)LocalNetCoreRouter.Route("CORRUPTCORE", "BLASTGENERATOR_BLAST", new object[] {protoList, sk}, true);
+				returnList = (List<BlastGeneratorProto>)LocalNetCoreRouter.Route(NetcoreCommands.CORRUPTCORE, NetcoreCommands.BLASTGENERATOR_BLAST, new object[] {protoList, sk}, true);
 
 				if (returnList == null) return null;
 

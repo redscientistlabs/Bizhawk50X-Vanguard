@@ -9,6 +9,7 @@ using System.Net;
 using System.Reflection;
 using System.Threading;
 using System.Windows.Forms;
+using CorruptCore;
 using Newtonsoft.Json;
 using RTCV.CorruptCore;
 using RTCV.NetCore;
@@ -51,7 +52,7 @@ namespace RTCV.UI
 			{
 				PartialSpec partial = e.partialSpec;
 
-				LocalNetCoreRouter.Route("CORRUPTCORE", "REMOTE_PUSHUISPECUPDATE", partial, true);
+				LocalNetCoreRouter.Route(NetcoreCommands.CORRUPTCORE, NetcoreCommands.REMOTE_PUSHUISPECUPDATE, partial, true);
 			};
 
 			//Don't continue until we're connected and we've gotten the spec

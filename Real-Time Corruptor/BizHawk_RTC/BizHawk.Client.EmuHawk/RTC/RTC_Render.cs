@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Data;
 using System.IO;
+using CorruptCore;
 using RTCV.CorruptCore;
 using RTCV.NetCore;
 
@@ -50,7 +51,7 @@ namespace RTC
 					break;
 			}
 
-			LocalNetCoreRouter.Route("CORRUPTCORE", "REMOTE_RENDER_STARTED", true);
+			LocalNetCoreRouter.Route(NetcoreCommands.CORRUPTCORE, "REMOTE_RENDER_STARTED", true);
 		}
 
 		public static void setType(string _type)
@@ -71,13 +72,13 @@ namespace RTC
 					break;
 			}
 
-			LocalNetCoreRouter.Route("CORRUPTCORE", "REMOTE_RENDER_SETTYPE", lastType, true);
+			LocalNetCoreRouter.Route(NetcoreCommands.CORRUPTCORE, NetcoreCommands.REMOTE_RENDER_SETTYPE, lastType, true);
 		}
 
 		public static void StopRender()
 		{
 			isRendering = false;
-			LocalNetCoreRouter.Route("CORRUPTCORE", "REMOTE_RENDER_STOP", true);
+			LocalNetCoreRouter.Route(NetcoreCommands.CORRUPTCORE, NetcoreCommands.REMOTE_RENDER_STOP, true);
 		}
 
 		public static void StopRender_NET()

@@ -9,6 +9,7 @@ using System.Drawing;
 using System.IO;
 using System.Linq;
 using System.Windows.Forms;
+using CorruptCore;
 using RTCV.CorruptCore;
 using RTCV.NetCore;
 
@@ -206,11 +207,11 @@ namespace RTC
 
 			if (RTC_EmuCore.CurrentGameName != lastGameName)
 			{
-				LocalNetCoreRouter.Route("CORRUPTCORE", "REMOTE_EVENT_LOADGAMEDONE_NEWGAME", true);
+				LocalNetCoreRouter.Route(NetcoreCommands.CORRUPTCORE, NetcoreCommands.REMOTE_EVENT_LOADGAMEDONE_NEWGAME, true);
 			}
 			else
 			{
-				LocalNetCoreRouter.Route("CORRUPTCORE", "REMOTE_EVENT_LOADGAMEDONE_SAMEGAME", true);
+				LocalNetCoreRouter.Route(NetcoreCommands.CORRUPTCORE, NetcoreCommands.REMOTE_EVENT_LOADGAMEDONE_SAMEGAME, true);
 			}
 
 			lastGameName = RTC_EmuCore.CurrentGameName;
@@ -755,7 +756,7 @@ namespace RTC
 				return;
 
 			RTC_EmuCore.EmuSpec.Update(VSPEC.MEMORYDOMAINS_INTERFACES.ToString(), (object[])GetInterfaces());
-			LocalNetCoreRouter.Route("CORRUPTCORE", "REMOTE_EVENT_DOMAINSUPDATED");
+			LocalNetCoreRouter.Route(NetcoreCommands.CORRUPTCORE, NetcoreCommands.REMOTE_EVENT_DOMAINSUPDATED);
 
 		}
 

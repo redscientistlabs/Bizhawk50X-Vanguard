@@ -8,6 +8,7 @@ using System.Linq;
 using System.Numerics;
 using System.Text;
 using System.Windows.Forms;
+using CorruptCore;
 using Newtonsoft.Json.Serialization;
 using RTCV.CorruptCore;
 using RTCV.NetCore;
@@ -210,10 +211,10 @@ namespace RTCV.UI
 			((ToolStripMenuItem)cms.Items.Add("Open Selected Address in Hex Editor", null, new EventHandler((ob, ev) =>
 			{
 				if (cell.OwningColumn == dgvBlastEditor.Columns[buProperty.Address.ToString()])
-					LocalNetCoreRouter.Route("CORRUPTCORE", "BIZHAWK_OPEN_HEXEDITOR_ADDRESS", new object[] { bu.Domain, bu.Address });
+					LocalNetCoreRouter.Route(NetcoreCommands.CORRUPTCORE, NetcoreCommands.BIZHAWK_OPEN_HEXEDITOR_ADDRESS, new object[] { bu.Domain, bu.Address });
 
 				if (cell.OwningColumn == dgvBlastEditor.Columns[buProperty.SourceAddress.ToString()])
-					LocalNetCoreRouter.Route("CORRUPTCORE", "BIZHAWK_OPEN_HEXEDITOR_ADDRESS", new object[] { bu.SourceDomain, bu.SourceAddress });
+					LocalNetCoreRouter.Route(NetcoreCommands.CORRUPTCORE, NetcoreCommands.BIZHAWK_OPEN_HEXEDITOR_ADDRESS, new object[] { bu.SourceDomain, bu.SourceAddress });
 			}))).Enabled = true;
 		}
 
@@ -1073,7 +1074,7 @@ namespace RTCV.UI
 				else
 					return;
 
-				LocalNetCoreRouter.Route("VANGURD", "REMOTE_LOADROM", filename, true);
+				LocalNetCoreRouter.Route(NetcoreCommands.VANGUARD, NetcoreCommands.REMOTE_LOADROM, filename, true);
 
 				StashKey temp = new StashKey(RTC_Corruptcore.GetRandomKey(), currentSK.ParentKey, currentSK.BlastLayer);
 
