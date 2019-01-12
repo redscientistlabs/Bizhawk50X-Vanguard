@@ -11,6 +11,7 @@ using BizHawk.Emulation.Common;
 using BizHawk.Emulation.Cores.Nintendo.N64;
 using RTCV;
 using RTCV.CorruptCore;
+using static CorruptCore.NetcoreCommands;
 
 namespace RTC
 {
@@ -63,13 +64,13 @@ namespace RTC
 				{
 					RTC_Hooks.
 				}*/
-				case "SAVESAVESTATE":
+				case SAVESAVESTATE:
 				{
 					e.setReturnValue(RTC_EmuCore.SaveSavestate_NET(advancedMessage.objectValue as string));
 					break;
 				}
 
-				case "LOADSAVESTATE":
+				case LOADSAVESTATE:
 				{
 					var cmd = advancedMessage.objectValue as object[];
 					var path = cmd[0] as string;
@@ -78,49 +79,49 @@ namespace RTC
 					break;
 				}
 
-				case "REMOTE_LOADROM":
+				case REMOTE_LOADROM:
 				{
 					var fileName = advancedMessage.objectValue as String;
 					RTC_EmuCore.LoadRom_NET(fileName);
 				}
 					break;
 
-				case "REMOTE_DOMAIN_GETDOMAINS":
+				case REMOTE_DOMAIN_GETDOMAINS:
 					e.setReturnValue(RTC_Hooks.GetInterfaces());
 					break;
 
-				case "REMOTE_DOMAIN_SYSTEM":
+				case REMOTE_DOMAIN_SYSTEM:
 					e.setReturnValue(RTC_Hooks.BIZHAWK_GET_CURRENTLYLOADEDSYSTEMNAME().ToUpper());
 					break;
 
-				case "REMOTE_DOMAIN_SYSTEMPREFIX":
+				case REMOTE_DOMAIN_SYSTEMPREFIX:
 					e.setReturnValue(RTC_Hooks.BIZHAWK_GET_SAVESTATEPREFIX());
 					break;
 
-				case "REMOTE_KEY_GETSYSTEMNAME":
+				case REMOTE_KEY_GETSYSTEMNAME:
 					e.setReturnValue(RTC_Hooks.BIZHAWK_GET_FILESYSTEMCORENAME());
 					break;
 
-				case "REMOTE_KEY_GETSYSTEMCORE":
+				case REMOTE_KEY_GETSYSTEMCORE:
 					e.setReturnValue(RTC_Hooks.BIZHAWK_GET_SYSTEMCORENAME((string)advancedMessage.objectValue));
 					break;
 
-				case "REMOTE_KEY_GETGAMENAME":
+				case REMOTE_KEY_GETGAMENAME:
 					e.setReturnValue(RTC_Hooks.BIZHAWK_GET_FILESYSTEMGAMENAME());
 					break;
 
-				case "REMOTE_KEY_GETSETSYNCSETTINGS":
+				case REMOTE_KEY_GETSETSYNCSETTINGS:
 					if (advancedMessage.objectValue != null)
 						RTC_Hooks.BIZHAWK_GETSET_SYNCSETTINGS = (string)advancedMessage.objectValue;
 					else
 						e.setReturnValue(RTC_Hooks.BIZHAWK_GETSET_SYNCSETTINGS);
 					break;
 
-				case "REMOTE_KEY_GETOPENROMFILENAME":
+				case REMOTE_KEY_GETOPENROMFILENAME:
 					e.setReturnValue(RTC_Hooks.BIZHAWK_GET_CURRENTLYOPENEDROM());
 					break;
 
-				case "REMOTE_KEY_SETSYSTEMCORE":
+				case REMOTE_KEY_SETSYSTEMCORE:
 				{
 					var cmd = advancedMessage.objectValue as object[];
 					var systemName = (string)cmd[0];
@@ -129,7 +130,7 @@ namespace RTC
 				}
 					break;
 
-				case "BIZHAWK_OPEN_HEXEDITOR_ADDRESS":
+				case BIZHAWK_OPEN_HEXEDITOR_ADDRESS:
 				{
 					var temp = advancedMessage.objectValue as object[];
 					string domain = (string)temp[0];
@@ -142,15 +143,15 @@ namespace RTC
 
 					break;
 				}
-				case "REMOTE_EVENT_BIZHAWK_MAINFORM_CLOSE":
+				case REMOTE_EVENT_BIZHAWK_MAINFORM_CLOSE:
 					RTC_Hooks.BIZHAWK_MAINFORM_CLOSE();
 					break;
 
-				case "REMOTE_EVENT_SAVEBIZHAWKCONFIG":
+				case REMOTE_EVENT_SAVEBIZHAWKCONFIG:
 					RTC_Hooks.BIZHAWK_MAINFORM_SAVECONFIG();
 					break;
 
-				case "REMOTE_EVENT_BIZHAWKSTARTED":
+				case REMOTE_EVENT_BIZHAWKSTARTED:
 					//				if (RTC_StockpileManager.BackupedState == null)
 					//					S.GET<RTC_Core_Form>().AutoCorrupt = false;
 
