@@ -183,7 +183,7 @@ namespace RTCV.CorruptCore
 					break;
 				case REMOTE_SAVESTATE:
 					{
-						StashKey sk = RTC_StockpileManager.SaveState_NET((bool)(advancedMessage.objectValue as object[])[0], (StashKey)(advancedMessage.objectValue as object[])[1]);
+						StashKey sk = RTC_StockpileManager.SaveState((bool)(advancedMessage.objectValue as object[])[0], (StashKey)(advancedMessage.objectValue as object[])[1]);
 						if (advancedMessage.requestGuid != null)
 						{
 							e.setReturnValue(sk);
@@ -195,7 +195,7 @@ namespace RTCV.CorruptCore
 					{
 					//	if (!RTC_Hooks.isNormalAdvance)
 					//		break;
-						e.setReturnValue(new NetCoreAdvancedMessage("REMOTE_BACKUPKEY_STASH", RTC_StockpileManager.SaveState_NET(false, null, false)));
+						e.setReturnValue(new NetCoreAdvancedMessage("REMOTE_BACKUPKEY_STASH", RTC_StockpileManager.SaveState(false, null, false)));
 						break;
 					}
 

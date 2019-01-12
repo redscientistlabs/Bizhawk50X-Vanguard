@@ -57,7 +57,12 @@ namespace RTCV.NetCore
 		public static T QueryRoute<T>(string endpointName, string messageType, bool synced = true)
 		{
 			var ncea = (synced ? new NetCoreEventArgs() { message = new NetCoreAdvancedMessage(messageType) { requestGuid = Guid.NewGuid() } } : new NetCoreEventArgs(messageType));
-			return (T)((NetCoreAdvancedMessage)Route(endpointName, ncea)).objectValue;
+			var returnValue = Route(endpointName, ncea);
+			if (returnValue is NetCoreAdvancedMessage ncam)
+			{
+				return (T)ncam.objectValue;
+			}
+			return (T)returnValue;
 		}
 
 		public static object Route(string endpointName, NetCoreEventArgs e)

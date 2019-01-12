@@ -28,7 +28,7 @@ namespace RTCV.UI
 			netCoreSpec.ServerConnected += Spec_ServerConnected;
 
 			netConn = new NetCoreConnector(netCoreSpec);
-			//netConn = LocalNetCoreRouter.registerEndpoint(NetCoreServer.loopbackConnector, "VANGUARD");
+			LocalNetCoreRouter.registerEndpoint(netConn, "VANGUARD");
 			LocalNetCoreRouter.registerEndpoint(netConn, "DEFAULT"); //Will send mesages to netcore if can't find the destination
 		}
 
