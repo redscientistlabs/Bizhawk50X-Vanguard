@@ -383,7 +383,7 @@ namespace RTCV.UI
 
 
 
-				returnList = (List<BlastGeneratorProto>)LocalNetCoreRouter.Route(NetcoreCommands.CORRUPTCORE, NetcoreCommands.BLASTGENERATOR_BLAST, new object[] {protoList, sk}, true);
+				returnList = LocalNetCoreRouter.QueryRoute<List<BlastGeneratorProto>>(NetcoreCommands.CORRUPTCORE, NetcoreCommands.BLASTGENERATOR_BLAST, new object[] {protoList, sk}, true);
 
 				if (returnList == null) return null;
 

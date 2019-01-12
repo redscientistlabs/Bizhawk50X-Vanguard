@@ -196,7 +196,7 @@ namespace RTCV.CorruptCore
 
 			List<string> domainBlacklist = new List<string>();
 
-			string systemName = (string)LocalNetCoreRouter.Route(NetcoreCommands.VANGUARD, NetcoreCommands.REMOTE_DOMAIN_SYSTEM, true);
+			string systemName = LocalNetCoreRouter.QueryRoute<string>(NetcoreCommands.VANGUARD, NetcoreCommands.REMOTE_DOMAIN_SYSTEM, true);
 
 			switch (systemName)
 			{

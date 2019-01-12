@@ -646,11 +646,11 @@ namespace RTCV.CorruptCore
 			ParentKey = parentkey;
 			BlastLayer = blastlayer;
 			
-			RomFilename = (string)LocalNetCoreRouter.Route(NetcoreCommands.VANGUARD,  NetcoreCommands.REMOTE_KEY_GETOPENROMFILENAME, true);
-			SystemName =  (string)LocalNetCoreRouter.Route(NetcoreCommands.VANGUARD,  NetcoreCommands.REMOTE_KEY_GETSYSTEMNAME, true);
-			SystemCore =  (string)LocalNetCoreRouter.Route(NetcoreCommands.VANGUARD,  NetcoreCommands.REMOTE_KEY_GETSYSTEMNAME,  SystemName, true); ;
-			GameName =    (string)LocalNetCoreRouter.Route(NetcoreCommands.VANGUARD,  NetcoreCommands.REMOTE_KEY_GETGAMENAME, true);
-			SyncSettings = (string)LocalNetCoreRouter.Route(NetcoreCommands.VANGUARD, NetcoreCommands.REMOTE_KEY_GETSETSYNCSETTINGS, true);
+			RomFilename =  LocalNetCoreRouter.QueryRoute<string>(NetcoreCommands.VANGUARD,  NetcoreCommands.REMOTE_KEY_GETOPENROMFILENAME, true);
+			SystemName =   LocalNetCoreRouter.QueryRoute<string>(NetcoreCommands.VANGUARD,  NetcoreCommands.REMOTE_KEY_GETSYSTEMNAME, true);
+			SystemCore =   LocalNetCoreRouter.QueryRoute<string>(NetcoreCommands.VANGUARD,  NetcoreCommands.REMOTE_KEY_GETSYSTEMNAME,  SystemName, true); ;
+			GameName =     LocalNetCoreRouter.QueryRoute<string>(NetcoreCommands.VANGUARD,  NetcoreCommands.REMOTE_KEY_GETGAMENAME, true);
+			SyncSettings = LocalNetCoreRouter.QueryRoute<string>(NetcoreCommands.VANGUARD, NetcoreCommands.REMOTE_KEY_GETSETSYNCSETTINGS, true);
 
 			this.SelectedDomains.AddRange((string[])RTC_Corruptcore.UISpec["SELECTEDDOMAINS"]);
 		}

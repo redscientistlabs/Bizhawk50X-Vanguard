@@ -122,7 +122,7 @@ namespace RTCV.CorruptCore
 				return false;
 			}
 
-			string currentGame = (string)LocalNetCoreRouter.Route(NetcoreCommands.VANGUARD, NetcoreCommands.REMOTE_KEY_GETGAMENAME, true);
+			string currentGame = LocalNetCoreRouter.QueryRoute<string>(NetcoreCommands.VANGUARD, NetcoreCommands.REMOTE_KEY_GETGAMENAME, true);
 			if (currentGame == null || psk.GameName != currentGame) 
 			{
 				LocalNetCoreRouter.Route(NetcoreCommands.VANGUARD, NetcoreCommands.REMOTE_LOADROM, psk.RomFilename, true);
@@ -345,7 +345,7 @@ namespace RTCV.CorruptCore
 				LocalNetCoreRouter.Route(NetcoreCommands.VANGUARD, NetcoreCommands.REMOTE_LOADROM, sk.RomFilename, true);
 
 				var ssWatch = System.Diagnostics.Stopwatch.StartNew();
-				string ss = (string)LocalNetCoreRouter.Route(NetcoreCommands.VANGUARD, NetcoreCommands.REMOTE_KEY_GETSETSYNCSETTINGS, true);
+				string ss = LocalNetCoreRouter.QueryRoute<string>(NetcoreCommands.VANGUARD, NetcoreCommands.REMOTE_KEY_GETSETSYNCSETTINGS, true);
 				ssWatch.Stop();
 				Console.WriteLine($"Time taken to get the SyncSettings: {0}ms", ssWatch.ElapsedMilliseconds);
 
@@ -381,7 +381,7 @@ namespace RTCV.CorruptCore
 
 		public static StashKey SaveState(bool sendToStashDico, StashKey _sk = null, bool sync = true)
 		{
-			return (StashKey)LocalNetCoreRouter.Route(NetcoreCommands.VANGUARD, NetcoreCommands.SAVESAVESTATE, new object[] { sendToStashDico, _sk }, sync);
+			return LocalNetCoreRouter.QueryRoute<StashKey>(NetcoreCommands.VANGUARD, NetcoreCommands.SAVESAVESTATE, new object[] { sendToStashDico, _sk }, sync);
 		}
 
 		public static StashKey SaveState_NET(bool sendToStashDico, StashKey _sk = null, bool threadSave = false)
@@ -394,7 +394,7 @@ namespace RTCV.CorruptCore
 			if (_sk == null)
 			{
 				Key = RTC_Corruptcore.GetRandomKey();
-				statePath = (string)LocalNetCoreRouter.Route(NetcoreCommands.VANGUARD, NetcoreCommands.SAVESAVESTATE, Key);
+				statePath = LocalNetCoreRouter.QueryRoute<String>(NetcoreCommands.VANGUARD, NetcoreCommands.SAVESAVESTATE, Key);
 				sk = new StashKey(Key, Key, null);
 			}
 			else
@@ -470,8 +470,8 @@ namespace RTCV.CorruptCore
 
 			bl.Layer.AddRange(RTC_StepActions.GetRawBlastLayer().Layer);
 
-			string thisSystem = (string)LocalNetCoreRouter.Route(NetcoreCommands.VANGUARD, NetcoreCommands.REMOTE_DOMAIN_SYSTEM, true);
-			string romFilename =(string)LocalNetCoreRouter.Route(NetcoreCommands.VANGUARD, NetcoreCommands.REMOTE_KEY_GETOPENROMFILENAME, true);
+			string thisSystem =  LocalNetCoreRouter.QueryRoute<string>(NetcoreCommands.VANGUARD, NetcoreCommands.REMOTE_DOMAIN_SYSTEM, true);
+			string romFilename = LocalNetCoreRouter.QueryRoute<string>(NetcoreCommands.VANGUARD, NetcoreCommands.REMOTE_KEY_GETOPENROMFILENAME, true);
 
 			var rp = RTC_MemoryDomains.GetRomParts(thisSystem, romFilename);
 

@@ -145,8 +145,7 @@ namespace RTCV.UI
 			if (useTemplate)
 			{
 				//Put Console templates HERE
-				string thisSystem = (string)
-					(string)LocalNetCoreRouter.Route(NetcoreCommands.VANGUARD, NetcoreCommands.REMOTE_DOMAIN_SYSTEM, true);
+				string thisSystem = LocalNetCoreRouter.QueryRoute<string>(NetcoreCommands.VANGUARD, NetcoreCommands.REMOTE_DOMAIN_SYSTEM, true);
 
 				switch (thisSystem)
 				{

@@ -27,7 +27,7 @@ namespace RTCV.CorruptCore
 
 		public static void AutoLoadVMDs()
 		{
-			string currentGame = (string)LocalNetCoreRouter.Route(NetcoreCommands.VANGUARD, NetcoreCommands.REMOTE_KEY_GETGAMENAME, true);
+			string currentGame = LocalNetCoreRouter.QueryRoute<String>(NetcoreCommands.VANGUARD, NetcoreCommands.REMOTE_KEY_GETGAMENAME, true);
 			SetParam(currentGame.GetHashCode().ToString());
 		}
 

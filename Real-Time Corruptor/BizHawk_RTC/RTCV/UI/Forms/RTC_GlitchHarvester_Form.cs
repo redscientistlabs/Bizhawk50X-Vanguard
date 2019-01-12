@@ -364,7 +364,7 @@ namespace RTCV.UI
 
 				if (rbCorrupt.Checked)
 				{
-					string romFilename = (string)LocalNetCoreRouter.Route(NetcoreCommands.VANGUARD, "REMOTE_KEY_GETOPENROMFILENAME", true);
+					string romFilename = LocalNetCoreRouter.QueryRoute<string>(NetcoreCommands.VANGUARD, "REMOTE_KEY_GETOPENROMFILENAME", true);
 					if (romFilename == null)
 						return;
 					if (romFilename.Contains("|"))
@@ -904,7 +904,7 @@ namespace RTCV.UI
 				btnSendRaw.Visible = false;
 
 				
-				string romFilename = (string)LocalNetCoreRouter.Route(NetcoreCommands.VANGUARD, NetcoreCommands.REMOTE_KEY_GETOPENROMFILENAME, true);
+				string romFilename = LocalNetCoreRouter.QueryRoute<string>(NetcoreCommands.VANGUARD, NetcoreCommands.REMOTE_KEY_GETOPENROMFILENAME, true);
 				if (romFilename == null)
 					return;
 				if (romFilename.Contains("|"))
@@ -913,7 +913,7 @@ namespace RTCV.UI
 					return;
 				}
 
-				StashKey sk = (StashKey)LocalNetCoreRouter.Route(NetcoreCommands.CORRUPTCORE, NetcoreCommands.REMOTE_KEY_GETRAWBLASTLAYER, true);
+				StashKey sk = LocalNetCoreRouter.QueryRoute<StashKey>(NetcoreCommands.CORRUPTCORE, NetcoreCommands.REMOTE_KEY_GETRAWBLASTLAYER, true);
 
 				RTC_StockpileManager.CurrentStashkey = sk;
 				RTC_StockpileManager.StashHistory.Add(RTC_StockpileManager.CurrentStashkey);
