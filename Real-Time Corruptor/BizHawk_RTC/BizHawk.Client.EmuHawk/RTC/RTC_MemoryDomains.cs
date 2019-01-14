@@ -949,6 +949,7 @@ namespace RTC
 		}
 		public int WordSize => MD.WordSize;
 		public bool BigEndian => MD.EndianType == MemoryDomain.Endian.Big;
+		public override string ToString() => Name;
 
 		public BizhawkMemoryDomain(MemoryDomain md)
 		{

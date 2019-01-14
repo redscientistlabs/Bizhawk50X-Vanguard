@@ -36,8 +36,8 @@ namespace RTC
 
 		public static string CurrentSavestateKey
 		{
-			get => (string)RTC_Unispec.RTCSpec[RTCSPEC.CORE_EXTRACTBLASTLAYER.ToString()];
-			set => RTC_Unispec.RTCSpec.Update(RTCSPEC.CORE_EXTRACTBLASTLAYER.ToString(), value);
+			get => (string)RTC_Unispec.RTCSpec[RTCSPEC.STOCKPILE_CURRENTSAVESTATEKEY.ToString()];
+			set => RTC_Unispec.RTCSpec.Update(RTCSPEC.STOCKPILE_CURRENTSAVESTATEKEY.ToString(), value);
 		}
 
 		public static StashKey BackupedState
@@ -147,7 +147,8 @@ namespace RTC
 				SystemName = psk.SystemName,
 				SystemCore = psk.SystemCore,
 				GameName = psk.GameName,
-				SyncSettings = psk.SyncSettings
+				SyncSettings = psk.SyncSettings,
+				StateLocation = psk.StateLocation
 			};
 
 			if (_loadBeforeOperation)
@@ -300,7 +301,8 @@ namespace RTC
 					SystemName = master.SystemName,
 					SystemCore = master.SystemCore,
 					GameName = master.GameName,
-					SyncSettings = master.SyncSettings
+					SyncSettings = master.SyncSettings,
+					StateLocation = master.StateLocation
 				};
 
 				//RTC_NetCore.HugeOperationEnd(token);
@@ -393,7 +395,7 @@ namespace RTC
 
 			if (File.Exists(theoreticalSaveStateFilename))
 			{
-				if (!RTC_Core.LoadSavestate_NET(key, stateLocation))
+				if (!RTC_Core.LoadSavestate_NET(theoreticalSaveStateFilename, stateLocation))
 				{
 					RTC_Core.StopSound();
 					MessageBox.Show($"Error loading savestate : An internal Bizhawk error has occurred.\n Are you sure your savestate matches the game, your syncsettings match, and the savestate is supported by this version of Bizhawk?");
@@ -404,7 +406,7 @@ namespace RTC
 			else
 			{
 				RTC_Core.StopSound();
-				MessageBox.Show($"Error loading savestate : (File {key + ".timejump"} not found)");
+				MessageBox.Show($"Error loading savestate : (File {theoreticalSaveStateFilename} not found)");
 				RTC_Core.StartSound();
 				return false;
 			}

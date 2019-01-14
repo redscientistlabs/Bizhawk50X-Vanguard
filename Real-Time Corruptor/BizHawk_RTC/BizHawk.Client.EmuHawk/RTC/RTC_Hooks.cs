@@ -520,9 +520,9 @@ namespace RTC
 			return PathManager.FilesystemSafeName(Global.Game);
 		}
 
-		public static void BIZHAWK_LOADSTATE(string path, string quickSlotName)
+		public static void BIZHAWK_LOADSTATE(string path)
 		{
-			GlobalWin.MainForm.LoadState(path, quickSlotName, false);
+			GlobalWin.MainForm.LoadState(path, Path.GetFileName(path), false);
 		}
 
 		public static void BIZHAWK_SAVESTATE(string path, string quickSlotName)

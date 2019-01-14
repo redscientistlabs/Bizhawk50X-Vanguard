@@ -26,7 +26,7 @@ namespace RTC
 		public static List<ProblematicProcess> ProblematicProcesses;
 
 		//General RTC Values
-		public static string RtcVersion = "3.33b";
+		public static string RtcVersion = "3.34";
 
 		//Directories
 		public static string bizhawkDir = Directory.GetCurrentDirectory();
@@ -1069,7 +1069,7 @@ namespace RTC
 			return path;
 		}
 
-		public static bool LoadSavestate_NET(string Key, StashKeySavestateLocation stateLocation)
+		public static bool LoadSavestate_NET(string path, StashKeySavestateLocation stateLocation)
 		{
 			try
 			{
@@ -1080,21 +1080,13 @@ namespace RTC
 				if (RTC_Hooks.BIZHAWK_ISNULLEMULATORCORE())
 					return false;
 
-				string quickSlotName = Key + ".timejump";
-
-				string prefix = RTC_Hooks.BIZHAWK_GET_SAVESTATEPREFIX();
-				prefix = prefix.Substring(prefix.LastIndexOf('\\') + 1);
-
-				var path = RTC_Core.workingDir + stateLocation + Path.DirectorySeparatorChar + prefix + "." + quickSlotName + ".State";
-
-
 				if (File.Exists(path) == false)
 				{
-					RTC_Hooks.BIZHAWK_OSDMESSAGE("Unable to load " + quickSlotName + ".State");
+					RTC_Hooks.BIZHAWK_OSDMESSAGE("Unable to load " + Path.GetFileName(path) + " from " + stateLocation);
 					return false;
 				}
 
-				RTC_Hooks.BIZHAWK_LOADSTATE(path, quickSlotName);
+				RTC_Hooks.BIZHAWK_LOADSTATE(path);
 
 				return true;
 			}
