@@ -180,7 +180,7 @@ namespace RTC
 			gameDone[VSPEC.SYSTEM.ToString()] =		  BIZHAWK_GET_CURRENTLYLOADEDSYSTEMNAME().ToUpper();
 			gameDone[VSPEC.GAMENAME.ToString()] =	  BIZHAWK_GET_FILESYSTEMGAMENAME();
 			gameDone[VSPEC.SYSTEMPREFIX.ToString()] = BIZHAWK_GET_SAVESTATEPREFIX();
-			gameDone[VSPEC.SYSTEMCORE.ToString()] =	  BIZHAWK_GET_SYSTEMCORENAME(Global.SystemInfo.System.ToString());
+			gameDone[VSPEC.SYSTEMCORE.ToString()] =	  BIZHAWK_GET_SYSTEMCORENAME(Global.Game.System);
 			gameDone[VSPEC.SYNCSETTINGS.ToString()] = BIZHAWK_GETSET_SYNCSETTINGS;
 			gameDone[VSPEC.OPENROMFILENAME.ToString()] = GlobalWin.MainForm.CurrentlyOpenRom;
 			RTC_EmuCore.EmuSpec.Update(gameDone);
