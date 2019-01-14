@@ -163,12 +163,6 @@ namespace RTCV.CorruptCore
 			if (File.Exists(RTC_Corruptcore.bizhawkDir + Path.DirectorySeparatorChar + "config.ini"))
 				File.Copy(RTC_Corruptcore.bizhawkDir + Path.DirectorySeparatorChar + "config.ini", RTC_Corruptcore.workingDir + Path.DirectorySeparatorChar + "TEMP\\config.ini");
 
-			foreach (StashKey sk in sks.StashKeys)
-			{
-				sk.RomShortFilename = RTC_Extensions.getShortFilenameFromPath(sk.RomFilename);
-				sk.RomFilename = RTC_Corruptcore.workingDir + Path.DirectorySeparatorChar + "SKS" + Path.DirectorySeparatorChar + sk.RomShortFilename;
-				sk.StateLocation = StashKeySavestateLocation.SKS;
-			}
 
 			//Get all the limiter lists
 			List<string[]> limiterLists = RTC_Filtering.GetAllLimiterListsFromStockpile(sks);
@@ -179,6 +173,12 @@ namespace RTCV.CorruptCore
 				File.WriteAllLines(RTC_Corruptcore.workingDir + Path.DirectorySeparatorChar + "TEMP" + Path.DirectorySeparatorChar + i + ".limiter", limiterLists[i]);
 			}
 
+			foreach (StashKey sk in sks.StashKeys)
+			{
+				sk.RomShortFilename = RTC_Extensions.getShortFilenameFromPath(sk.RomFilename);
+				sk.RomFilename = RTC_Corruptcore.workingDir + Path.DirectorySeparatorChar + "SKS" + Path.DirectorySeparatorChar + sk.RomShortFilename;
+				sk.StateLocation = StashKeySavestateLocation.SKS;
+			}
 			//Create stockpile.xml to temp folder from stockpile object
 			using (FileStream fs = File.Open(RTC_Corruptcore.workingDir + Path.DirectorySeparatorChar + "TEMP\\stockpile.json", FileMode.OpenOrCreate))
 			{
@@ -223,7 +223,18 @@ namespace RTCV.CorruptCore
 			//Move all the files from temp into SKS
 			EmptyFolder(Path.DirectorySeparatorChar + "WORKING\\SKS");
 			foreach (string file in Directory.GetFiles(RTC_Corruptcore.workingDir + Path.DirectorySeparatorChar + "TEMP"))
-				File.Move(file, RTC_Corruptcore.workingDir + Path.DirectorySeparatorChar + "SKS" + Path.DirectorySeparatorChar + Path.GetFileName(file));
+				try
+				{
+					File.Move(file, RTC_Corruptcore.workingDir + Path.DirectorySeparatorChar + "SKS" + Path.DirectorySeparatorChar +
+						Path.GetFileName(file));
+				}
+				catch (Exception e)
+				{
+					MessageBox.Show("Unable to move " + Path.GetFileName(file) +
+						"to SKS. Your stockpile should be saved.\n" +
+						"If you're seeing this error, that means the file is probably in use. If it is, everything should technically be fine assuming it's the same file.\n" +
+						"If the file you're seeing here has changed since the stockpile was last saved (rom edited manually), you should probably reload your stockpile from the file.");
+				}
 			//File.Move(file, RTC_Core.workingDir + Path.DirectorySeparatorChar + "SKS" + Path.DirectorySeparatorChar + (file.Substring(file.LastIndexOf(Path.DirectorySeparatorChar) + 1, file.Length - (file.LastIndexOf(Path.DirectorySeparatorChar) + 1))));
 
 			RTC_StockpileManager.CurrentStockpile = sks;
@@ -554,13 +565,10 @@ namespace RTCV.CorruptCore
 				return;
 			}
 
-
 			foreach (StashKey sk in sks.StashKeys)
 			{
-
 				sk.RomShortFilename = RTC_Extensions.getShortFilenameFromPath(sk.RomFilename);
 				sk.RomFilename = RTC_Corruptcore.workingDir + Path.DirectorySeparatorChar + "SKS" + Path.DirectorySeparatorChar + sk.RomShortFilename;
-
 				sk.StateLocation = StashKeySavestateLocation.SKS;
 			}
 

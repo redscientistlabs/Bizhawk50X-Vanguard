@@ -37,8 +37,8 @@ namespace RTCV.CorruptCore
 
 		public static string CurrentSavestateKey
 		{
-			get => (string)RTC_Corruptcore.CorruptCoreSpec[RTCSPEC.CORE_EXTRACTBLASTLAYER.ToString()];
-			set => RTC_Corruptcore.CorruptCoreSpec.Update(RTCSPEC.CORE_EXTRACTBLASTLAYER.ToString(), value);
+			get => (string)RTC_Corruptcore.CorruptCoreSpec[RTCSPEC.STOCKPILE_CURRENTSAVESTATEKEY.ToString()];
+			set => RTC_Corruptcore.CorruptCoreSpec.Update(RTCSPEC.STOCKPILE_CURRENTSAVESTATEKEY.ToString(), value);
 		}
 
 		public static StashKey BackupedState
@@ -139,7 +139,8 @@ namespace RTCV.CorruptCore
 				SystemName = psk.SystemName,
 				SystemCore = psk.SystemCore,
 				GameName = psk.GameName,
-				SyncSettings = psk.SyncSettings
+				SyncSettings = psk.SyncSettings,
+				StateLocation = psk.StateLocation
 			};
 
 			if (_loadBeforeOperation)
@@ -291,7 +292,8 @@ namespace RTCV.CorruptCore
 					SystemName = master.SystemName,
 					SystemCore = master.SystemCore,
 					GameName = master.GameName,
-					SyncSettings = master.SyncSettings
+					SyncSettings = master.SyncSettings,
+					StateLocation = master.StateLocation
 				};
 
 				//RTC_NetCore.HugeOperationEnd(token);
@@ -362,7 +364,7 @@ namespace RTCV.CorruptCore
 
 			if (File.Exists(theoreticalSaveStateFilename))
 			{
-				if (!LocalNetCoreRouter.QueryRoute<bool>(NetcoreCommands.VANGUARD, NetcoreCommands.LOADSAVESTATE, new object[] {key, stateLocation}, true))
+				if (!LocalNetCoreRouter.QueryRoute<bool>(NetcoreCommands.VANGUARD, NetcoreCommands.LOADSAVESTATE, new object[] {theoreticalSaveStateFilename, stateLocation}, true))
 				{
 					MessageBox.Show($"Error loading savestate : An internal Bizhawk error has occurred.\n Are you sure your savestate matches the game, your syncsettings match, and the savestate is supported by this version of Bizhawk?");
 					return false;
@@ -370,7 +372,7 @@ namespace RTCV.CorruptCore
 			}
 			else
 			{
-				MessageBox.Show($"Error loading savestate : (File {key + ".timejump"} not found)");
+				MessageBox.Show($"Error loading savestate : (File {theoreticalSaveStateFilename} not found)");
 				return false;
 			}
 

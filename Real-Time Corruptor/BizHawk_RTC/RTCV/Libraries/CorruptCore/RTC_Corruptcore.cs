@@ -35,11 +35,6 @@ namespace RTCV.CorruptCore
 		public static string listsDir = rtcDir + Path.DirectorySeparatorChar + "LISTS" + Path.DirectorySeparatorChar;
 
 
-
-		
-
-
-
 		public static bool AllowCrossCoreCorruption
 		{
 			get => (bool)CorruptCoreSpec[RTCSPEC.CORE_ALLOWCROSSCORECORRUPTION.ToString()];

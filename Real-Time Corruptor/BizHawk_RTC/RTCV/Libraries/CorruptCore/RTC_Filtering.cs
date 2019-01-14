@@ -158,7 +158,7 @@ namespace RTCV.CorruptCore
 
 
 		public static byte[] GetRandomConstant(string hash, int precision)
-		{			
+		{
 			if (Hash2ValueDico == null)
 				return null;
 
@@ -168,23 +168,25 @@ namespace RTCV.CorruptCore
 			}
 
 			int line = RTC_Corruptcore.RND.Next(Hash2ValueDico[hash].Count);
-			Byte[] t = Hash2ValueDico[hash][line];
+			Byte[] value = Hash2ValueDico[hash][line];
+			Byte[] outValue = new byte[value.Length];
+			Array.Copy(value, outValue, value.Length);
 
 			//If the list is shorter than the current precision, left pad it
-			if (t.Length < precision)
-				t.PadLeft(precision);
+			if (outValue.Length < precision)
+				outValue.PadLeft(precision);
 			//If the list is longer than the current precision, truncate it. Lists are stored little endian so truncate from the right
-			else if (t.Length > precision)
+			else if (outValue.Length > precision)
 			{
 				//It'd probably be faster to do this via bitshifting but it's 4am and I want to be able to read this code in the future so...
-				
-				//Flip the bytes (stored as little endian), truncate, then flip them back
-				t = t.FlipBytes();
-				Array.Resize(ref t, precision);
-				t = t.FlipBytes();
-			}
 
-			return t;
+				//Flip the bytes (stored as little endian), truncate, then flip them back
+				outValue = value.FlipBytes();
+				Array.Resize(ref outValue, precision);
+				outValue = outValue.FlipBytes();
+				return outValue;
+			}
+			return outValue;
 		}
 
 		public static List<String[]> GetAllLimiterListsFromStockpile(Stockpile sks)

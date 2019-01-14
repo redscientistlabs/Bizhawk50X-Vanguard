@@ -1231,9 +1231,7 @@ namespace RTCV.UI
 
 				using (FileStream fs = File.Open(RTC_Corruptcore.workingDir + Path.DirectorySeparatorChar + "SSK\\keys.json", FileMode.OpenOrCreate))
 				{
-
 					ssk = JsonHelper.Deserialize<SaveStateKeys>(fs);
-					fs.Close();
 				}
 			}
 			catch(Exception ex)
@@ -1242,7 +1240,12 @@ namespace RTCV.UI
 				return;
 			}
 
-			
+			if (ssk == null)
+			{
+				MessageBox.Show("The Savestate Keys file was empty (null).\n");
+				return;
+			}
+
 			for (int i = 1; i < 41; i++)
 			{
 				StashKey key = ssk.StashKeys[i];
@@ -1252,10 +1255,9 @@ namespace RTCV.UI
 
 				string statefilename = key.GameName + "." + key.ParentKey + ".timejump.State"; // get savestate name
 				string newStatePath = RTC_Corruptcore.workingDir + Path.DirectorySeparatorChar + key.StateLocation + Path.DirectorySeparatorChar +  statefilename;
-				//string shortRomFilename = key.RomFilename.Substring(key.RomFilename.LastIndexOf(Path.DirectorySeparatorChar) + 1);
-				string shortRomFilename = Path.GetFileName(key.RomFilename);
 
 				key.StateFilename = newStatePath;
+				key.StateLocation = StashKeySavestateLocation.SSK;
 			}
 
 			//clear the stockpile dico
