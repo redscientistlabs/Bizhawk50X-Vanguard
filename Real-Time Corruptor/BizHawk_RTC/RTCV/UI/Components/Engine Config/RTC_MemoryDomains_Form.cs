@@ -33,7 +33,7 @@ namespace RTCV.UI
 					lbMemoryDomains.SetSelected(i, false);
 
 			lbMemoryDomains_DontExecute_SelectedIndexChanged = false;
-			lbMemoryDomains_SelectedIndexChanged(null, null);
+		//	lbMemoryDomains_SelectedIndexChanged(null, null);
 		}
 
 		public void SetMemoryDomainsAllButSelectedDomains(string[] _blacklistedDomains)
@@ -48,7 +48,7 @@ namespace RTCV.UI
 					lbMemoryDomains.SetSelected(i, true);
 
 			lbMemoryDomains_DontExecute_SelectedIndexChanged = false;
-			lbMemoryDomains_SelectedIndexChanged(null, null);
+		//	lbMemoryDomains_SelectedIndexChanged(null, null);
 		}
 
 		private void btnSelectAll_Click(object sender, EventArgs e)

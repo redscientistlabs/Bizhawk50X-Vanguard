@@ -61,7 +61,6 @@ namespace RTCV.CorruptCore
 
 						LocalNetCoreRouter.Route(NetcoreCommands.UI, NetcoreCommands.REMOTE_PUSHCORRUPTCORESPECUPDATE, partial, true);
 					};
-
 					e.setReturnValue(true);
 					break;
 
@@ -166,28 +165,15 @@ namespace RTCV.CorruptCore
 					bool reloadRom = (bool)(advancedMessage.objectValue as object[])[1];
 					bool runBlastLayer = (bool)(advancedMessage.objectValue as object[])[2];
 
-					bool returnValue = RTC_StockpileManager.LoadState(sk, reloadRom);
-
-					//RTC_MemoryDomains.RefreshDomains(false);
-
-					if (runBlastLayer)
-					{
-						//TODO
-						//RTC_NetcoreImplementation.SendCommandToBizhawk(new RTC_Command(CommandType.BLAST, { blastlayer = sk.BlastLayer, isReplay = true });
-					//	RTC_Hooks.CPU_STEP(false, false, true);
-					}
-
+					bool returnValue = RTC_StockpileManager.LoadState_NET(sk, reloadRom, runBlastLayer);
 
 					e.setReturnValue(returnValue);
 				}
 					break;
 				case REMOTE_SAVESTATE:
 					{
-						StashKey sk = RTC_StockpileManager.SaveState((bool)(advancedMessage.objectValue as object[])[0], (StashKey)(advancedMessage.objectValue as object[])[1]);
-						if (advancedMessage.requestGuid != null)
-						{
-							e.setReturnValue(sk);
-						}
+						StashKey sk = RTC_StockpileManager.SaveState_NET(advancedMessage.objectValue as StashKey); //Has to be nullable cast
+						e.setReturnValue(sk);
 					}
 					break;
 
@@ -195,7 +181,7 @@ namespace RTCV.CorruptCore
 					{
 					//	if (!RTC_Hooks.isNormalAdvance)
 					//		break;
-						e.setReturnValue(new NetCoreAdvancedMessage("REMOTE_BACKUPKEY_STASH", RTC_StockpileManager.SaveState(false, null, false)));
+						e.setReturnValue(new NetCoreAdvancedMessage("REMOTE_BACKUPKEY_STASH", RTC_StockpileManager.SaveState_NET()));
 						break;
 					}
 

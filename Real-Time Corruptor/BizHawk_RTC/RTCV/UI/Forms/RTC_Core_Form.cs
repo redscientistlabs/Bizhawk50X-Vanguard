@@ -17,7 +17,6 @@ namespace RTCV.UI
 	{
 		public Form previousForm = null;
 		public Form activeForm = null;
-
 		private const int CP_NOCLOSE_BUTTON = 0x200;
 
 		protected override CreateParams CreateParams
@@ -145,7 +144,7 @@ namespace RTCV.UI
 			if (useTemplate)
 			{
 				//Put Console templates HERE
-				string thisSystem = LocalNetCoreRouter.QueryRoute<string>(NetcoreCommands.VANGUARD, NetcoreCommands.REMOTE_DOMAIN_SYSTEM, true);
+				string thisSystem = (string)RTC_Corruptcore.VanguardSpec[VSPEC.SYSTEM.ToString()];
 
 				switch (thisSystem)
 				{

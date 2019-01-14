@@ -37,8 +37,11 @@ namespace RTCV.UI
 		public static void Start()
 		{
 			//	NetCoreServer.StartLoopback();
-			
-			UI_VanguardImplementation.StartServer();
+
+			Control dummy = new Control();
+			IntPtr Handle = dummy.Handle;
+
+			UI_VanguardImplementation.StartServer(dummy);
 
 
 			PartialSpec p = new PartialSpec("UISpec");
@@ -46,8 +49,6 @@ namespace RTCV.UI
 			p["SELECTEDDOMAINS"] = new string[]{};
 
 			RTC_Corruptcore.UISpec = new FullSpec(p);
-
-
 			RTC_Corruptcore.UISpec.SpecUpdated += (o, e) =>
 			{
 				PartialSpec partial = e.partialSpec;
@@ -55,18 +56,14 @@ namespace RTCV.UI
 				LocalNetCoreRouter.Route(NetcoreCommands.CORRUPTCORE, NetcoreCommands.REMOTE_PUSHUISPECUPDATE, partial, true);
 			};
 
-			//Don't continue until we're connected and we've gotten the spec
-			while (UI_VanguardImplementation.connector.netConn.status != NetworkStatus.CONNECTED && RTC_Corruptcore.CorruptCoreSpec == null)
-			{
-				Thread.Sleep(10);
-			}
+			RTC_Corruptcore.Start();
+
 			//Loading RTC Params
 			LoadRTCColor();
 			S.GET<RTC_SettingsGeneral_Form>().cbDisableBizhawkOSD.Checked = !RTC_Params.IsParamSet("ENABLE_BIZHAWK_OSD");
 			S.GET<RTC_SettingsGeneral_Form>().cbAllowCrossCoreCorruption.Checked = RTC_Params.IsParamSet("ALLOW_CROSS_CORE_CORRUPTION");
 			S.GET<RTC_SettingsGeneral_Form>().cbDontCleanAtQuit.Checked = RTC_Params.IsParamSet("DONT_CLEAN_SAVESTATES_AT_QUIT");
 
-			S.GET<RTC_Core_Form>().Show();
 		}
 
 		//All RTC forms

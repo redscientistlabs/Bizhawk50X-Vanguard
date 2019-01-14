@@ -26,6 +26,7 @@ namespace StandaloneRTC
 				RTC.LogConsole.HideConsole();
 			}
 
+			RTC.LogConsole.ShowConsole();
 			RTC_UICore.Start();
 //			RTC.RTC_EmuCore.Start(this);
 			//Hide();

@@ -35,27 +35,8 @@ namespace RTCV.CorruptCore
 			}
 		}
 
-		public static string CurrentSavestateKey
-		{
-			get => (string)RTC_Corruptcore.CorruptCoreSpec[RTCSPEC.STOCKPILE_CURRENTSAVESTATEKEY.ToString()];
-			set => RTC_Corruptcore.CorruptCoreSpec.Update(RTCSPEC.STOCKPILE_CURRENTSAVESTATEKEY.ToString(), value);
-		}
-
-		public static StashKey BackupedState
-		{
-			get => (StashKey)RTC_Corruptcore.CorruptCoreSpec[RTCSPEC.STOCKPILE_BACKUPEDSTATE.ToString()];
-			set => RTC_Corruptcore.CorruptCoreSpec.Update(RTCSPEC.STOCKPILE_BACKUPEDSTATE.ToString(), value);
-		}
-
-		public static PartialSpec getDefaultPartial()
-		{
-			var partial = new PartialSpec("RTCSpec");
-
-			partial[RTCSPEC.STOCKPILE_CURRENTSAVESTATEKEY.ToString()] = null;
-			partial[RTCSPEC.STOCKPILE_BACKUPEDSTATE.ToString()] = null;
-
-			return partial;
-		}
+		public static string CurrentSavestateKey;
+		public static StashKey BackupedState;
 
 		public static bool StashAfterOperation = true;
 
@@ -65,6 +46,15 @@ namespace RTCV.CorruptCore
 		public static volatile Dictionary<string, StashKey> SavestateStashkeyDico = new Dictionary<string, StashKey>();
 
 		public static bool RenderAtLoad = false;
+
+		public static PartialSpec getDefaultPartial()
+		{
+			var partial = new PartialSpec("RTCSpec");
+
+
+			return partial;
+		}
+
 
 		private static void PreApplyStashkey()
 		{
@@ -100,7 +90,10 @@ namespace RTCV.CorruptCore
 					return IsCorruptionApplied;
 				}
 			}
-			RTC_Corruptcore.ApplyBlastLayer(sk.BlastLayer);
+			else
+			{
+				LocalNetCoreRouter.Route(NetcoreCommands.CORRUPTCORE, NetcoreCommands.APPLYBLASTLAYER, CurrentStashkey, true);
+			}
 
 
 			IsCorruptionApplied = (sk.BlastLayer != null && sk.BlastLayer.Layer.Count > 0);
@@ -122,14 +115,14 @@ namespace RTCV.CorruptCore
 				return false;
 			}
 
-			string currentGame = (string)LocalNetCoreRouter.Route(NetcoreCommands.VANGUARD, NetcoreCommands.REMOTE_KEY_GETGAMENAME, true);
+			string currentGame = (string)RTC_Corruptcore.VanguardSpec[VSPEC.GAMENAME.ToString()];
 			if (currentGame == null || psk.GameName != currentGame) 
 			{
 				LocalNetCoreRouter.Route(NetcoreCommands.VANGUARD, NetcoreCommands.REMOTE_LOADROM, psk.RomFilename, true);
 			}
 
 			var watch = System.Diagnostics.Stopwatch.StartNew();
-			BlastLayer bl = RTC_Corruptcore.GenerateBlastLayer((string[])RTC_Corruptcore.UISpec["SELECTEDDOMAINS"]);
+			BlastLayer bl = LocalNetCoreRouter.QueryRoute<BlastLayer>(NetcoreCommands.CORRUPTCORE, NetcoreCommands.GENERATEBLASTLAYER, (string[])RTC_Corruptcore.UISpec["SELECTEDDOMAINS"], true);
 			watch.Stop();
 			Console.WriteLine($"It took " + watch.ElapsedMilliseconds + " ms to blastlayer");
 
@@ -151,7 +144,7 @@ namespace RTCV.CorruptCore
 				}
 			}
 			else
-				RTC_Corruptcore.ApplyBlastLayer(bl);
+				LocalNetCoreRouter.Route(NetcoreCommands.CORRUPTCORE, NetcoreCommands.APPLYBLASTLAYER, CurrentStashkey, true);
 
 			IsCorruptionApplied = (bl != null);
 
@@ -208,7 +201,7 @@ namespace RTCV.CorruptCore
 					return false;
 			}
 			else
-				RTC_Corruptcore.ApplyBlastLayer(sk.BlastLayer);
+				LocalNetCoreRouter.Route(NetcoreCommands.CORRUPTCORE, NetcoreCommands.APPLYBLASTLAYER, CurrentStashkey, true);
 
 			IsCorruptionApplied = (sk.BlastLayer != null);
 
@@ -308,7 +301,7 @@ namespace RTCV.CorruptCore
 				}
 				else
 				{
-					RTC_Corruptcore.ApplyBlastLayer(CurrentStashkey.BlastLayer);
+					LocalNetCoreRouter.Route(NetcoreCommands.CORRUPTCORE, NetcoreCommands.APPLYBLASTLAYER, CurrentStashkey, true);
 				}
 
 				IsCorruptionApplied = (CurrentStashkey.BlastLayer != null && CurrentStashkey.BlastLayer.Layer.Count > 0);
@@ -330,8 +323,12 @@ namespace RTCV.CorruptCore
 
 		public static bool LoadState(StashKey sk, bool reloadRom = true, bool applyBlastLayer = true)
 		{
+			LocalNetCoreRouter.QueryRoute<bool>(NetcoreCommands.CORRUPTCORE, NetcoreCommands.REMOTE_LOADSTATE, new object[] {sk, true, true}, true);
+			return true;
+		}
 
-			var loadStateWatch = System.Diagnostics.Stopwatch.StartNew();
+		public static bool LoadState_NET(StashKey sk, bool reloadRom = true, bool applyBlastLayer = true)
+		{
 			if (sk == null)
 				return false;
 
@@ -341,30 +338,24 @@ namespace RTCV.CorruptCore
 			string key = sk.ParentKey;
 			StashKeySavestateLocation stateLocation = sk.StateLocation;
 
-
 			if (reloadRom)
 			{
 				LocalNetCoreRouter.Route(NetcoreCommands.VANGUARD, NetcoreCommands.REMOTE_LOADROM, sk.RomFilename, true);
 
-				var ssWatch = System.Diagnostics.Stopwatch.StartNew();
-				string ss = (string)LocalNetCoreRouter.Route(NetcoreCommands.VANGUARD, NetcoreCommands.REMOTE_KEY_GETSETSYNCSETTINGS, true);
-				ssWatch.Stop();
-				Console.WriteLine($"Time taken to get the SyncSettings: {0}ms", ssWatch.ElapsedMilliseconds);
-
+				string ss = (string)RTC_Corruptcore.VanguardSpec[VSPEC.SYNCSETTINGS.ToString()];
 				//If the syncsettings are different, update them and load it again. Otheriwse, leave as is
 				if (sk.SyncSettings != ss && sk.SyncSettings != null)
 				{
-					LocalNetCoreRouter.Route(NetcoreCommands.VANGUARD, NetcoreCommands.REMOTE_KEY_GETSETSYNCSETTINGS, sk.SyncSettings, true);
+					LocalNetCoreRouter.Route(NetcoreCommands.VANGUARD, NetcoreCommands.REMOTE_KEY_SETSYNCSETTINGS, sk.SyncSettings, true);
 					LocalNetCoreRouter.Route(NetcoreCommands.VANGUARD, NetcoreCommands.REMOTE_LOADROM, sk.RomFilename, true);
 				}
 			}
-
 
 			string theoreticalSaveStateFilename = RTC_Corruptcore.workingDir + Path.DirectorySeparatorChar + stateLocation.ToString() + Path.DirectorySeparatorChar + gameName + "." + key + ".timejump.State";
 
 			if (File.Exists(theoreticalSaveStateFilename))
 			{
-				if (!LocalNetCoreRouter.QueryRoute<bool>(NetcoreCommands.VANGUARD, NetcoreCommands.LOADSAVESTATE, new object[] {theoreticalSaveStateFilename, stateLocation}, true))
+				if (!LocalNetCoreRouter.QueryRoute<bool>(NetcoreCommands.VANGUARD, NetcoreCommands.LOADSAVESTATE, new object[] { theoreticalSaveStateFilename, stateLocation }, true))
 				{
 					MessageBox.Show($"Error loading savestate : An internal Bizhawk error has occurred.\n Are you sure your savestate matches the game, your syncsettings match, and the savestate is supported by this version of Bizhawk?");
 					return false;
@@ -375,14 +366,27 @@ namespace RTCV.CorruptCore
 				MessageBox.Show($"Error loading savestate : (File {theoreticalSaveStateFilename} not found)");
 				return false;
 			}
+			if(applyBlastLayer && sk?.BlastLayer?.Layer?.Count > 0)
+				sk.BlastLayer.Apply();
 
-			loadStateWatch.Stop();
-			Console.WriteLine($"Time taken for LoadState_NET: {0}ms", loadStateWatch.ElapsedMilliseconds);
 			return true;
 		}
 
+		public static StashKey SaveState(bool sendToStashDico, StashKey sk = null, bool threadSave = false)
+		{
+			StashKey _sk = LocalNetCoreRouter.QueryRoute<StashKey>(NetcoreCommands.CORRUPTCORE, NetcoreCommands.REMOTE_SAVESTATE, sk, true);
+			if (sendToStashDico)
+			{
+				var currentkey = RTC_StockpileManager.CurrentSavestateKey;
+				if (currentkey != null)
+					RTC_StockpileManager.SavestateStashkeyDico[currentkey] = _sk;
+			}
 
-		public static StashKey SaveState(bool sendToStashDico, StashKey _sk = null, bool threadSave = false)
+			return _sk;
+
+		}
+
+		public static StashKey SaveState_NET(StashKey _sk = null, bool threadSave = false)
 		{
 			string Key = RTC_Corruptcore.GetRandomKey();
 			string statePath;
@@ -409,49 +413,8 @@ namespace RTCV.CorruptCore
 			sk.StateShortFilename = Path.GetFileName(statePath);
 			sk.StateFilename = statePath;
 
-			if (sendToStashDico)
-			{
-				//RTC_NetcoreImplementation.SendCommandToRTC(new RTC_Command(CommandType.REMOTE_KEY_PUSHSAVESTATEDICO) { objectValue = new object[] { sk, RTC_StockpileManager.CurrentSavestateKey } });
-
-				var currentkey = RTC_StockpileManager.CurrentSavestateKey;
-				if(currentkey != null)
-					RTC_StockpileManager.SavestateStashkeyDico[currentkey] = sk;
-			}
-
 			return sk;
 		}
-
-		/*
-		public static bool ChangeGameWarning(string rom, bool dontask = false)
-		{
-			if (RTC_Hooks.BIZHAWK_ISNULLEMULATORCORE() || RTC_Hooks.BIZHAWK_GET_CURRENTLYOPENEDROM().Contains("default.nes") || dontask)
-				return true;
-
-			if (rom == null)
-				return false;
-
-			string currentFilename = RTC_Hooks.BIZHAWK_GET_CURRENTLYOPENEDROM();
-			currentFilename = Path.GetFileName(currentFilename);
-
-			string btnFilename = rom;
-			btnFilename = Path.GetFileName(btnFilename);
-
-			if (btnFilename != currentFilename)
-			{
-				string cctext =
-					"Loading this savestate will change the game\n" +
-					"\n" +
-										"Current Rom: " + currentFilename + "\n" +
-					"Target Rom: " + rom + "\n" +
-					"\n" +
-					"Do you wish to continue ? (Yes/No)";
-
-				if (MessageBox.Show(cctext, "Switching to another game", MessageBoxButtons.YesNo, MessageBoxIcon.Warning) == DialogResult.No)
-					return false;
-			}
-
-			return true;
-		}*/
 
 		public static void StockpileChanged()
 		{
@@ -468,8 +431,8 @@ namespace RTCV.CorruptCore
 
 			bl.Layer.AddRange(RTC_StepActions.GetRawBlastLayer().Layer);
 
-			string thisSystem = (string)LocalNetCoreRouter.Route(NetcoreCommands.VANGUARD, NetcoreCommands.REMOTE_DOMAIN_SYSTEM, true);
-			string romFilename =(string)LocalNetCoreRouter.Route(NetcoreCommands.VANGUARD, NetcoreCommands.REMOTE_KEY_GETOPENROMFILENAME, true);
+			string thisSystem = (string)RTC_Corruptcore.VanguardSpec[VSPEC.SYSTEM.ToString()];
+			string romFilename = (string)RTC_Corruptcore.VanguardSpec[VSPEC.OPENROMFILENAME.ToString()];
 
 			var rp = RTC_MemoryDomains.GetRomParts(thisSystem, romFilename);
 
@@ -529,6 +492,7 @@ namespace RTCV.CorruptCore
 			}
 		}
 
+		//From Bizhawk
 		public static byte[] DeInterleaveSMD(byte[] source)
 		{
 			// SMD files are interleaved in pages of 16k, with the first 8k containing all 
@@ -553,7 +517,7 @@ namespace RTCV.CorruptCore
 
 			return output;
 		}
-
+		//From Bizhawk
 		public static unsafe byte[] MutateSwapN64(byte[] source)
 		{
 			// N64 roms are in one of the following formats:

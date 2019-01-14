@@ -9,6 +9,7 @@ using BizHawk.Emulation.Common.IEmulatorExtensions;
 using BizHawk.Client.Common;
 using BizHawk.Client.Common.InputAdapterExtensions;
 using BizHawk.Bizware.BizwareGL;
+using RTCV.CorruptCore;
 
 namespace BizHawk.Client.EmuHawk
 {
@@ -134,7 +135,7 @@ namespace BizHawk.Client.EmuHawk
 		{
 				
 			//RTC_HIJACK : Disable OSD Messages (Add this block)
-			if ((bool?)(RTCV.CorruptCore.RTC_Corruptcore.CorruptCoreSpec?[RTC.RTCSPEC.CORE_BIZHAWKOSDDISABLED.ToString()]) ?? false)
+			if ((bool?)(RTCV.CorruptCore.RTC_Corruptcore.CorruptCoreSpec?[RTCSPEC.CORE_BIZHAWKOSDDISABLED.ToString()]) ?? false)
 				return;
 			//--------------------------------
 			

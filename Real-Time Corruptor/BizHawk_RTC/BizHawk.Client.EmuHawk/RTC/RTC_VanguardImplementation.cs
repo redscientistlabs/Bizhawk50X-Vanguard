@@ -33,7 +33,6 @@ namespace RTC
 			cachedSyncObject = syncObject;
 
 			connector = new RTCV.Vanguard.VanguardConnector(spec, syncObject);
-
 		}
 
 		public static void RestartClient()
@@ -55,6 +54,9 @@ namespace RTC
 			ConsoleEx.WriteLine(message.Type);
 			switch (message.Type) //Handle received messages here
 			{
+				case REMOTE_ALLSPECSSENT:
+					RTC_EmuCore.LoadDefaultAndShowBizhawkForm();
+					break;
 				/*
 				case "POKEBYTE":
 				{
@@ -90,35 +92,8 @@ namespace RTC
 					e.setReturnValue(RTC_Hooks.GetInterfaces());
 					break;
 
-				case REMOTE_DOMAIN_SYSTEM:
-					e.setReturnValue(RTC_Hooks.BIZHAWK_GET_CURRENTLYLOADEDSYSTEMNAME().ToUpper());
-					break;
-
-				case REMOTE_DOMAIN_SYSTEMPREFIX:
-					e.setReturnValue(RTC_Hooks.BIZHAWK_GET_SAVESTATEPREFIX());
-					break;
-
-				case REMOTE_KEY_GETSYSTEMNAME:
-					e.setReturnValue(RTC_Hooks.BIZHAWK_GET_FILESYSTEMCORENAME());
-					break;
-
-				case REMOTE_KEY_GETSYSTEMCORE:
-					e.setReturnValue(RTC_Hooks.BIZHAWK_GET_SYSTEMCORENAME((string)advancedMessage.objectValue));
-					break;
-
-				case REMOTE_KEY_GETGAMENAME:
-					e.setReturnValue(RTC_Hooks.BIZHAWK_GET_FILESYSTEMGAMENAME());
-					break;
-
-				case REMOTE_KEY_GETSETSYNCSETTINGS:
-					if (advancedMessage.objectValue != null)
-						RTC_Hooks.BIZHAWK_GETSET_SYNCSETTINGS = (string)advancedMessage.objectValue;
-					else
-						e.setReturnValue(RTC_Hooks.BIZHAWK_GETSET_SYNCSETTINGS);
-					break;
-
-				case REMOTE_KEY_GETOPENROMFILENAME:
-					e.setReturnValue(RTC_Hooks.BIZHAWK_GET_CURRENTLYOPENEDROM());
+				case REMOTE_KEY_SETSYNCSETTINGS:
+					RTC_Hooks.BIZHAWK_GETSET_SYNCSETTINGS = (string)advancedMessage.objectValue;
 					break;
 
 				case REMOTE_KEY_SETSYSTEMCORE:

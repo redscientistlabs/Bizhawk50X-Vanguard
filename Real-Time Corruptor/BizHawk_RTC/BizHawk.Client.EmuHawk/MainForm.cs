@@ -34,6 +34,7 @@ using BizHawk.Emulation.Cores.Nintendo.SNES9X;
 using BizHawk.Emulation.Cores.Consoles.SNK;
 using BizHawk.Emulation.Cores.Consoles.Sega.PicoDrive;
 using BizHawk.Emulation.Cores.Consoles.Nintendo.Gameboy;
+using RTCV.CorruptCore;
 
 namespace BizHawk.Client.EmuHawk
 {
@@ -126,7 +127,7 @@ namespace BizHawk.Client.EmuHawk
 			Global.Game = GameInfo.NullInstance;
 			
 			//RTC_Hijack - Check for manually triggered console
-			bool showConsole = (bool)(RTCV.CorruptCore.RTC_Corruptcore.CorruptCoreSpec?[RTC.RTCSPEC.CORE_SHOWCONSOLE.ToString()] ?? false);
+			bool showConsole = (bool)(RTCV.CorruptCore.RTC_Corruptcore.CorruptCoreSpec?[RTCSPEC.CORE_SHOWCONSOLE.ToString()] ?? false);
 			if (Global.Config.ShowLogWindow || showConsole)
 			{
 				LogConsole.ShowConsole();

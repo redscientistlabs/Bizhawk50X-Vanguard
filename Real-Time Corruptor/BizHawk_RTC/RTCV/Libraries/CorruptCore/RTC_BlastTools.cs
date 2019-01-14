@@ -212,8 +212,8 @@ namespace RTCV.CorruptCore
 		{
 			BlastLayer bl = new BlastLayer();
 
-			string thisSystem =	 LocalNetCoreRouter.QueryRoute<string>(NetcoreCommands.VANGUARD, NetcoreCommands.REMOTE_DOMAIN_SYSTEM, true);
-			string romFilename = LocalNetCoreRouter.QueryRoute<string>(NetcoreCommands.VANGUARD, NetcoreCommands.REMOTE_KEY_GETOPENROMFILENAME, true);
+			string thisSystem = (string)RTC_Corruptcore.VanguardSpec[VSPEC.SYSTEM.ToString()];
+			string romFilename = (string)RTC_Corruptcore.VanguardSpec[VSPEC.OPENROMFILENAME.ToString()];
 
 			var rp = RTC_MemoryDomains.GetRomParts(thisSystem, romFilename);
 

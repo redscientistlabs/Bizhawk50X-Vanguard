@@ -23,20 +23,35 @@ namespace RTC
 	{
 		public static string[] args;
 
-		public static string CurrentGameSystem
+		public static string System
 		{
-			get => (string)EmuSpec[VSPEC.STOCKPILE_CURRENTGAMESYSTEM.ToString()];
-			set => EmuSpec.Update(VSPEC.STOCKPILE_CURRENTGAMESYSTEM.ToString(), value);
+			get => (string)EmuSpec[VSPEC.SYSTEM.ToString()];
+			set => EmuSpec.Update(VSPEC.SYSTEM.ToString(), value);
 		}
-		public static string CurrentGameName
+		public static string GameName
 		{
-			get => (string)EmuSpec[VSPEC.STOCKPILE_CURRENTGAMENAME.ToString()];
-			set => EmuSpec.Update(VSPEC.STOCKPILE_CURRENTGAMENAME.ToString(), value);
+			get => (string)EmuSpec[VSPEC.GAMENAME.ToString()];
+			set => EmuSpec.Update(VSPEC.GAMENAME.ToString(), value);
 		}
-		public static string LastOpenRom
+		public static string SystemPrefix
 		{
-			get => (string)EmuSpec[VSPEC.CORE_LASTOPENROM.ToString()];
-			set => EmuSpec.Update(VSPEC.CORE_LASTOPENROM.ToString(), value);
+			get => (string)EmuSpec[VSPEC.SYSTEMPREFIX.ToString()];
+			set => EmuSpec.Update(VSPEC.SYSTEMPREFIX.ToString(), value);
+		}
+		public static string SystemCore
+		{
+			get => (string)EmuSpec[VSPEC.SYSTEMCORE.ToString()];
+			set => EmuSpec.Update(VSPEC.SYSTEMCORE.ToString(), value);
+		}
+		public static string SyncSettings
+		{
+			get => (string)EmuSpec[VSPEC.SYNCSETTINGS.ToString()];
+			set => EmuSpec.Update(VSPEC.SYNCSETTINGS.ToString(), value);
+		}
+		public static string OpenRomFilename
+		{
+			get => (string)EmuSpec[VSPEC.OPENROMFILENAME.ToString()];
+			set => EmuSpec.Update(VSPEC.OPENROMFILENAME.ToString(), value);
 		}
 		public static int LastLoaderRom
 		{
@@ -48,9 +63,12 @@ namespace RTC
 		{
 			var partial = new PartialSpec("RTCSpec");
 
-			partial[VSPEC.STOCKPILE_CURRENTGAMESYSTEM.ToString()] = null;
-			partial[VSPEC.STOCKPILE_CURRENTGAMENAME.ToString()] = null;
-			partial[VSPEC.CORE_LASTOPENROM.ToString()] = null;
+			partial[VSPEC.SYSTEM.ToString()] = String.Empty;
+			partial[VSPEC.GAMENAME.ToString()] = String.Empty;
+			partial[VSPEC.SYSTEMPREFIX.ToString()] = String.Empty;
+			partial[VSPEC.OPENROMFILENAME.ToString()] = String.Empty;
+			partial[VSPEC.SYNCSETTINGS.ToString()] = String.Empty;
+			partial[VSPEC.OPENROMFILENAME.ToString()] = String.Empty;
 			partial[VSPEC.CORE_LASTLOADERROM.ToString()] = -1;
 
 			return partial;
@@ -69,6 +87,8 @@ namespace RTC
 
 
 			LocalNetCoreRouter.Route(NetcoreCommands.CORRUPTCORE, NetcoreCommands.REMOTE_PUSHEMUSPEC, emuSpecTemplate, true);
+
+
 			EmuSpec.SpecUpdated += (o, e) =>
 			{
 				PartialSpec partial = e.partialSpec;
@@ -84,14 +104,11 @@ namespace RTC
 			RTC_EmuCore.RegisterEmuhawkSpec();
 
 
-
-			S.SET(_standaloneForm);
+			//S.SET(_standaloneForm);
 
 			RTC_Extensions.DirectoryRequired(new string[] {
 				RTC_Corruptcore.workingDir, RTC_Corruptcore.workingDir + "\\TEMP\\", RTC_Corruptcore.workingDir + "\\SKS\\", RTC_Corruptcore.workingDir + "\\SSK\\", RTC_Corruptcore.workingDir + "\\SESSION\\", RTC_Corruptcore.workingDir + "\\MEMORYDUMPS\\", RTC_Corruptcore.workingDir + "\\MP\\", RTC_Corruptcore.assetsDir + "\\CRASHSOUNDS\\", RTC_Corruptcore.rtcDir + "\\PARAMS\\", RTC_Corruptcore.rtcDir + "\\LISTS\\",
 			});
-
-
 
 
 			// Show the main RTC Form
@@ -291,7 +308,25 @@ namespace RTC
 			RTC_Params.SetParam("BIZHAWK_LOCATION", $"{location.X},{location.Y}");
 		}
 
+		public static void LoadDefaultAndShowBizhawkForm()
+		{
 
+			RTC_EmuCore.LoadDefaultRom();
+
+			RTC_EmuCore.LoadBizhawkWindowState();
+
+			GlobalWin.MainForm.Focus();
+
+			//Yell at the user if they're using audio throttle as it's buggy
+			//We have to do this in the bizhawk process
+			if (Global.Config.SoundThrottle)
+			{
+				MessageBox.Show("Sound throttle is buggy and can result in crashes.\nSwapping to clock throttle.");
+				Global.Config.SoundThrottle = false;
+				Global.Config.ClockThrottle = true;
+				RTC_Hooks.BIZHAWK_MAINFORM_SAVECONFIG();
+			}
+		}
 
 	}
 }

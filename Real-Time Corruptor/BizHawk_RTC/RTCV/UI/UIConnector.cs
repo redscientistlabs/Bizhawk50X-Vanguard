@@ -1,8 +1,10 @@
 ﻿using RTCV.NetCore;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 using System.Text;
+using System.Windows.Forms;
 using CorruptCore;
 using RTCV.CorruptCore;
 using static RTCV.UI.UI_Extensions;
@@ -14,7 +16,7 @@ namespace RTCV.UI
 		NetCoreReceiver receiver;
 		public NetCoreConnector netConn;
 
-		public UIConnector(NetCoreReceiver _receiver)
+		public UIConnector(NetCoreReceiver _receiver, ISynchronizeInvoke syncObject)
 		{
 			receiver = _receiver;
 
@@ -23,7 +25,7 @@ namespace RTCV.UI
 			var netCoreSpec = new NetCore.NetCoreSpec();
 			netCoreSpec.Side = NetCore.NetworkSide.SERVER;
 			netCoreSpec.Loopback = true;
-			netCoreSpec.syncObject = S.GET<RTC_Core_Form>();
+			netCoreSpec.syncObject = syncObject;
 			netCoreSpec.MessageReceived += OnMessageReceivedProxy;
 			netCoreSpec.ServerConnected += Spec_ServerConnected;
 
@@ -34,12 +36,6 @@ namespace RTCV.UI
 
 		private static void Spec_ServerConnected(object sender, EventArgs e)
 		{
-			LocalNetCoreRouter.Route(NetcoreCommands.CORRUPTCORE, NetcoreCommands.REMOTE_PUSHUISPEC, RTC_Corruptcore.UISpec.GetPartialSpec(), true);
-			//If we have a copy of the corruptcore spec, send it over since it means there's an active session and we want to be the authority
-			if (RTC_Corruptcore.CorruptCoreSpec != null)
-			{
-				LocalNetCoreRouter.Route(NetcoreCommands.CORRUPTCORE, NetcoreCommands.REMOTE_PUSHCORRUPTCORESPEC, RTC_Corruptcore.CorruptCoreSpec.GetPartialSpec(), true);
-			}
 		}
 
 		public void OnMessageReceivedProxy(object sender, NetCoreEventArgs e) => OnMessageReceived(sender, e);

@@ -768,7 +768,6 @@
       <DependentUpon>RomStatusPicker.cs</DependentUpon>
     </Compile>
     <Compile Include="RTC\RTC_EmuCore.cs" />
-    <Compile Include="RTC\RTC_Enums.cs" />
     <Compile Include="RTC\RTC_Extensions.cs" />
     <Compile Include="RTC\RTC_Hooks.cs" />
     <Compile Include="RTC\RTC_Render.cs" />

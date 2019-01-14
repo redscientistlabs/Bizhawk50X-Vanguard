@@ -148,13 +148,12 @@ namespace RTCV.CorruptCore
 			CorruptCoreSpec = new FullSpec(rtcSpecTemplate); //You have to feed a partial spec as a template
 
 
-			LocalNetCoreRouter.Route(NetcoreCommands.UI, NetcoreCommands.REMOTE_PUSHCORRUPTCORESPEC, rtcSpecTemplate, true);
-
 			CorruptCoreSpec.SpecUpdated += (o, e) =>
 			{
 				PartialSpec partial = e.partialSpec;
 
 				LocalNetCoreRouter.Route(NetcoreCommands.UI, NetcoreCommands.REMOTE_PUSHCORRUPTCORESPECUPDATE, partial, true);
+				LocalNetCoreRouter.Route(NetcoreCommands.CORRUPTCORE, NetcoreCommands.REMOTE_PUSHCORRUPTCORESPECUPDATE, partial, true);
 			};
 
 			/*

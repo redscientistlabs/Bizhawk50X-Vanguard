@@ -127,24 +127,9 @@ namespace RTC
 			//RTC_Hooks.LOAD_GAME_DONE();
 
 			RTC_EmuCore.Start();
-
-			RTC_EmuCore.LoadDefaultRom();
-
-			RTC_EmuCore.LoadBizhawkWindowState();
-
-			GlobalWin.MainForm.Focus();
-
-			//Yell at the user if they're using audio throttle as it's buggy
-			//We have to do this in the bizhawk process
-			if (Global.Config.SoundThrottle)
-			{
-				MessageBox.Show("Sound throttle is buggy and can result in crashes.\nSwapping to clock throttle.");
-				Global.Config.SoundThrottle = false;
-				Global.Config.ClockThrottle = true;
-				RTC_Hooks.BIZHAWK_MAINFORM_SAVECONFIG();
-			}
-
 		}
+
+
 
 		public static void MAINFORM_RESIZEEND()
 		{
@@ -192,9 +177,12 @@ namespace RTC
 
 
 			PartialSpec gameDone = new PartialSpec("EmuSpec");
-			gameDone[VSPEC.STOCKPILE_CURRENTGAMESYSTEM.ToString()] = RTC_EmuCore.EmuFolderCheck(pathEntry.SystemDisplayName);
-			gameDone[VSPEC.STOCKPILE_CURRENTGAMENAME.ToString()] = PathManager.FilesystemSafeName(Global.Game);
-			gameDone[VSPEC.CORE_LASTOPENROM.ToString()] = GlobalWin.MainForm.CurrentlyOpenRom;
+			gameDone[VSPEC.SYSTEM.ToString()] =		  BIZHAWK_GET_CURRENTLYLOADEDSYSTEMNAME().ToUpper();
+			gameDone[VSPEC.GAMENAME.ToString()] =	  BIZHAWK_GET_FILESYSTEMGAMENAME();
+			gameDone[VSPEC.SYSTEMPREFIX.ToString()] = BIZHAWK_GET_SAVESTATEPREFIX();
+			gameDone[VSPEC.SYSTEMCORE.ToString()] =	  BIZHAWK_GET_SYSTEMCORENAME(Global.SystemInfo.System.ToString());
+			gameDone[VSPEC.SYNCSETTINGS.ToString()] = BIZHAWK_GETSET_SYNCSETTINGS;
+			gameDone[VSPEC.OPENROMFILENAME.ToString()] = GlobalWin.MainForm.CurrentlyOpenRom;
 			RTC_EmuCore.EmuSpec.Update(gameDone);
 
 			//RTC_MemoryDomains.RefreshDomains(false);
@@ -205,7 +193,7 @@ namespace RTC
 
 			RefreshDomains();
 
-			if (RTC_EmuCore.CurrentGameName != lastGameName)
+			if (RTC_EmuCore.GameName != lastGameName)
 			{
 				LocalNetCoreRouter.Route(NetcoreCommands.CORRUPTCORE, NetcoreCommands.REMOTE_EVENT_LOADGAMEDONE_NEWGAME, true);
 			}
@@ -214,7 +202,7 @@ namespace RTC
 				LocalNetCoreRouter.Route(NetcoreCommands.CORRUPTCORE, NetcoreCommands.REMOTE_EVENT_LOADGAMEDONE_SAMEGAME, true);
 			}
 
-			lastGameName = RTC_EmuCore.CurrentGameName;
+			lastGameName = RTC_EmuCore.GameName;
 
 
 		}
@@ -244,7 +232,7 @@ namespace RTC
 
 			RTC_MemoryDomains.Clear();
 
-			RTC_EmuCore.LastOpenRom = null;
+			RTC_EmuCore.OpenRomFilename = null;
 
 			if (loadDefault)
 				RTC_EmuCore.LoadDefaultRom();
@@ -662,7 +650,6 @@ namespace RTC
 		{
 			try
 			{
-
 				SettingsAdapter settable = new SettingsAdapter(Global.Emulator);
 
 				switch (systemName.ToUpper())

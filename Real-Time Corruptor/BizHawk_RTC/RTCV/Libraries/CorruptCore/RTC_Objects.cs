@@ -653,12 +653,12 @@ namespace RTCV.CorruptCore
 			Key = key;
 			ParentKey = parentkey;
 			BlastLayer = blastlayer;
-			
-			RomFilename =  LocalNetCoreRouter.QueryRoute<string>(NetcoreCommands.VANGUARD,  NetcoreCommands.REMOTE_KEY_GETOPENROMFILENAME, true);
-			SystemName =   LocalNetCoreRouter.QueryRoute<string>(NetcoreCommands.VANGUARD,  NetcoreCommands.REMOTE_KEY_GETSYSTEMNAME, true);
-			SystemCore =   LocalNetCoreRouter.QueryRoute<string>(NetcoreCommands.VANGUARD,  NetcoreCommands.REMOTE_KEY_GETSYSTEMNAME,  SystemName, true); ;
-			GameName =     LocalNetCoreRouter.QueryRoute<string>(NetcoreCommands.VANGUARD,  NetcoreCommands.REMOTE_KEY_GETGAMENAME, true);
-			SyncSettings = LocalNetCoreRouter.QueryRoute<string>(NetcoreCommands.VANGUARD, NetcoreCommands.REMOTE_KEY_GETSETSYNCSETTINGS, true);
+
+			RomFilename =  (string)RTC_Corruptcore.VanguardSpec[VSPEC.OPENROMFILENAME.ToString()];
+			SystemName =   (string)RTC_Corruptcore.VanguardSpec[VSPEC.SYSTEM.ToString()];
+			SystemCore =   (string)RTC_Corruptcore.VanguardSpec[VSPEC.SYSTEMCORE.ToString()];
+			GameName =     (string)RTC_Corruptcore.VanguardSpec[VSPEC.GAMENAME.ToString()];
+			SyncSettings = (string)RTC_Corruptcore.VanguardSpec[VSPEC.SYNCSETTINGS.ToString()];
 
 			this.SelectedDomains.AddRange((string[])RTC_Corruptcore.UISpec["SELECTEDDOMAINS"]);
 		}

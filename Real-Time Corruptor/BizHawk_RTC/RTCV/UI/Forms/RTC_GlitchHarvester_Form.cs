@@ -176,7 +176,6 @@ namespace RTCV.UI
 			lbStashHistory.DataSource = null;
 
 			DontLoadSelectedStash = true;
-			//lbStashHistory.BeginUpdate();
 			lbStashHistory.DataSource = RTC_StockpileManager.StashHistory;
 			//lbStashHistory.EndUpdate();
 
@@ -328,11 +327,14 @@ namespace RTCV.UI
 
 				btnSaveLoad.Text = "LOAD";
 				btnSaveLoad.ForeColor = Color.FromArgb(192, 255, 192);
+
+				RefreshSavestateTextboxes();
 			}
 		}
 
 		public void btnCorrupt_Click(object sender, EventArgs e)
 		{
+			Console.WriteLine("btnCorrupt Clicked");
 			if (!btnCorrupt.Visible)
 				return;
 
@@ -364,7 +366,7 @@ namespace RTCV.UI
 
 				if (rbCorrupt.Checked)
 				{
-					string romFilename = LocalNetCoreRouter.QueryRoute<string>(NetcoreCommands.VANGUARD, "REMOTE_KEY_GETOPENROMFILENAME", true);
+					string romFilename = (string)RTC_Corruptcore.VanguardSpec[VSPEC.OPENROMFILENAME.ToString()];
 					if (romFilename == null)
 						return;
 					if (romFilename.Contains("|"))
@@ -381,6 +383,7 @@ namespace RTCV.UI
 					RTC_StockpileManager.OriginalFromStashkey(RTC_StockpileManager.CurrentStashkey);
 
 				RefreshStashHistory();
+				Console.WriteLine("Blast done");
 			}
 			finally
 			{
@@ -904,7 +907,7 @@ namespace RTCV.UI
 				btnSendRaw.Visible = false;
 
 				
-				string romFilename = LocalNetCoreRouter.QueryRoute<string>(NetcoreCommands.VANGUARD, NetcoreCommands.REMOTE_KEY_GETOPENROMFILENAME, true);
+				string romFilename = (string)RTC_Corruptcore.VanguardSpec[VSPEC.OPENROMFILENAME.ToString()];
 				if (romFilename == null)
 					return;
 				if (romFilename.Contains("|"))

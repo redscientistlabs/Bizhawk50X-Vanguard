@@ -171,7 +171,7 @@ namespace RTCV.NetCore
                                 message = serializer.Deserialize<NetCoreAdvancedMessage>(temp);
 
                                 sw.Stop();
-								if(message.Type != "{BOOP}")
+								if(message.Type != "{BOOP}" && sw.ElapsedMilliseconds > 50)
 									Console.WriteLine("It took " + sw.ElapsedMilliseconds + " ms to deserialize cmd " + message.Type + " of " + temp.Length + " bytes");
                             }
                         }
@@ -209,7 +209,7 @@ namespace RTCV.NetCore
 
                             networkStream.Write(buf, 0, buf.Length);
                             sw.Stop();
-							if (pendingMessage.Type != "{BOOP}")
+							if (pendingMessage.Type != "{BOOP}" && sw.ElapsedMilliseconds > 50)
 								Console.WriteLine("It took " + sw.ElapsedMilliseconds + " ms to serialize backCmd " + pendingMessage.Type + " of " + buf.Length + " bytes");
                         }
                         catch

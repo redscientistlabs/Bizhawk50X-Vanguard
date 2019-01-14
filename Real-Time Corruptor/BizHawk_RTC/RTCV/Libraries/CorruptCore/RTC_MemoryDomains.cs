@@ -196,7 +196,7 @@ namespace RTCV.CorruptCore
 
 			List<string> domainBlacklist = new List<string>();
 
-			string systemName = LocalNetCoreRouter.QueryRoute<string>(NetcoreCommands.VANGUARD, NetcoreCommands.REMOTE_DOMAIN_SYSTEM, true);
+			string systemName = (string)RTC_Corruptcore.VanguardSpec[VSPEC.SYSTEM.ToString()];
 
 			switch (systemName)
 			{

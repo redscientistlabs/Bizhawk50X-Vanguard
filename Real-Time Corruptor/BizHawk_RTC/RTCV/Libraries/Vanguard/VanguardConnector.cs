@@ -15,8 +15,8 @@ namespace RTCV.Vanguard
     {
         NetCoreReceiver receiver;
 
-        CorruptCoreConnector corruptConn;
-        NetCoreConnector netConn;
+        public CorruptCoreConnector corruptConn;
+        public NetCoreConnector netConn;
 
         public VanguardConnector(NetCoreReceiver _receiver, Form syncObject)
         {
@@ -35,16 +35,15 @@ namespace RTCV.Vanguard
 			//netConn = LocalNetCoreRouter.registerEndpoint(new NetCoreConnector(netCoreSpec), "UI");
 			LocalNetCoreRouter.registerEndpoint(netConn, "DEFAULT"); //Will send mesages to netcore if can't find the destination
 
-			RTC_Corruptcore.Start();
 		}
 
 
 		private void NetCoreSpec_ClientConnected(object sender, EventArgs e)
 		{
-			LocalNetCoreRouter.Route(NetcoreCommands.UI, NetcoreCommands.REMOTE_PUSHCORRUPTCORESPEC, RTC_Corruptcore.CorruptCoreSpec.GetPartialSpec(), true);
-
-			//LocalNetCoreRouter.Route(NetcoreCommands.UI, NetcoreCommands.REMOTE_PUSHVANGUARDSPEC, RTC_Corruptcore.CorruptCoreSpec.GetPartialSpec(), true);
+			LocalNetCoreRouter.Route(NetcoreCommands.UI, NetcoreCommands.REMOTE_PUSHEMUSPEC, RTC_Corruptcore.VanguardSpec.GetPartialSpec(), true);
+			LocalNetCoreRouter.Route(NetcoreCommands.UI, NetcoreCommands.REMOTE_ALLSPECSSENT, true);
 		}
+		
 
 		public void OnMessageReceivedProxy(object sender, NetCoreEventArgs e) => OnMessageReceived(sender, e);
         public object OnMessageReceived(object sender, NetCoreEventArgs e)
