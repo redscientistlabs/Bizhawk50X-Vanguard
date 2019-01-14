@@ -107,7 +107,8 @@ namespace RTCV.NetCore
 
                     try
                     {
-                        bytes = Listener.Receive(ref groupEP);
+						if(Listener.Available > 0)
+							bytes = Listener.Receive(ref groupEP);
                     }
                     catch (SocketException ex)
                     {
@@ -121,8 +122,8 @@ namespace RTCV.NetCore
                         else
                             throw ex;
                     }
-
-                    spec.Connector.hub.QueueMessage(new NetCoreSimpleMessage(Encoding.ASCII.GetString(bytes, 0, bytes.Length)));
+					if(bytes != null)
+						spec.Connector.hub.QueueMessage(new NetCoreSimpleMessage(Encoding.ASCII.GetString(bytes, 0, bytes.Length)));
 
                 }
 

@@ -962,7 +962,7 @@ namespace RTCV.CorruptCore
 				int oldPrecision = precision;
 				precision = value;
 				//If the user is changing the precision and already has a Value set, we need to update that array
-				if(Value != null && oldPrecision != precision)
+				if(Value != null && oldPrecision != precision && Value.Length != precision)
 				{
 					if (precision < 1)
 						Value = new byte[1];
@@ -971,7 +971,7 @@ namespace RTCV.CorruptCore
 						if (oldPrecision == 0)
 							oldPrecision = 1;
 
-						Byte[] temp = new Byte[precision];
+						byte[] temp = new byte[precision];
 						//If the new unit is larger, copy it over left padded
 						if (precision > oldPrecision)
 						{

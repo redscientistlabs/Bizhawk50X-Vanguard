@@ -53,7 +53,7 @@ namespace RTCV.NetCore
             {
                 attemptsAtReading++;
 
-                if (attemptsAtReading % 100 == 0)
+                if (attemptsAtReading % 10 == 0)
                     System.Windows.Forms.Application.DoEvents(); //prevents the forms to freeze (not responding)
 
                 if (KillReturnWatch)

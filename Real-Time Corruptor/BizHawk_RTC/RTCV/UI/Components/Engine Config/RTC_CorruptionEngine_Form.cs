@@ -46,16 +46,18 @@ namespace RTCV.UI
 			cbBlastType.SelectedIndex = 0;
 			cbCustomPrecision.SelectedIndex = 0;
 
-			//Do this here as if it's stuck into the designer, it keeps defaulting out
-			cbVectorValueList.DataSource = RTC_UICore.ValueListBindingSource;
-			cbVectorLimiterList.DataSource = RTC_UICore.LimiterListBindingSource;
 
-
+			cbVectorValueList.DataSource = null;
+			cbVectorLimiterList.DataSource = null;
 			cbVectorValueList.DisplayMember = "Name";
 			cbVectorLimiterList.DisplayMember = "Name";
 
 			cbVectorValueList.ValueMember = "Value";
 			cbVectorLimiterList.ValueMember = "Value";
+
+			//Do this here as if it's stuck into the designer, it keeps defaulting out
+			cbVectorValueList.DataSource = RTC_UICore.ValueListBindingSource;
+			cbVectorLimiterList.DataSource = RTC_UICore.LimiterListBindingSource;
 
 			if (RTC_UICore.LimiterListBindingSource.Count > 0)
 			{

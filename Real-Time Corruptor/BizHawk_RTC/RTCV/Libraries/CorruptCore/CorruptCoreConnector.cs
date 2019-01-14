@@ -71,8 +71,9 @@ namespace RTCV.CorruptCore
 					break;
 
 				case REMOTE_EVENT_DOMAINSUPDATED:
+					var domainsChanged = (bool)advancedMessage.objectValue;
 					RTC_MemoryDomains.RefreshDomains();
-				//	LocalNetCoreRouter.Route(NetcoreCommands.UI, NetcoreCommands.REMOTE_EVENT_DOMAINSUPDATED);
+					LocalNetCoreRouter.Route(NetcoreCommands.UI, NetcoreCommands.REMOTE_EVENT_DOMAINSUPDATED, domainsChanged, true);
 					break;
 
 				case ASYNCBLAST:
@@ -248,12 +249,6 @@ namespace RTCV.CorruptCore
 					RTC_StepActions.RemoveExcessInfiniteStepUnits();
 					break;
 
-
-				case REMOTE_EVENT_LOADGAMEDONE_NEWGAME:
-				{
-
-					break;
-				}
 
 				/*
 				case "REMOTE_HOTKEY_MANUALBLAST":

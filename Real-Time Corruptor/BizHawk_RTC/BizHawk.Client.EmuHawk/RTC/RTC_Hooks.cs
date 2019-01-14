@@ -123,9 +123,7 @@ namespace RTC
 		public static void MAINFORM_FORM_LOAD_END()
 		{
 			if (disableRTC) return;
-
-			//RTC_Hooks.LOAD_GAME_DONE();
-
+			
 			RTC_EmuCore.Start();
 		}
 
@@ -183,6 +181,7 @@ namespace RTC
 			gameDone[VSPEC.SYSTEMCORE.ToString()] =	  BIZHAWK_GET_SYSTEMCORENAME(Global.Game.System);
 			gameDone[VSPEC.SYNCSETTINGS.ToString()] = BIZHAWK_GETSET_SYNCSETTINGS;
 			gameDone[VSPEC.OPENROMFILENAME.ToString()] = GlobalWin.MainForm.CurrentlyOpenRom;
+			gameDone[VSPEC.MEMORYDOMAINS_BLACKLISTEDDOMAINS.ToString()] = RTC_EmuCore.GetBlacklistedDomains(BIZHAWK_GET_CURRENTLYLOADEDSYSTEMNAME().ToUpper());
 			RTC_EmuCore.EmuSpec.Update(gameDone);
 
 			//RTC_MemoryDomains.RefreshDomains(false);
@@ -195,16 +194,12 @@ namespace RTC
 
 			if (RTC_EmuCore.GameName != lastGameName)
 			{
-				LocalNetCoreRouter.Route(NetcoreCommands.CORRUPTCORE, NetcoreCommands.REMOTE_EVENT_LOADGAMEDONE_NEWGAME, true);
 			}
 			else
 			{
-				LocalNetCoreRouter.Route(NetcoreCommands.CORRUPTCORE, NetcoreCommands.REMOTE_EVENT_LOADGAMEDONE_SAMEGAME, true);
 			}
 
 			lastGameName = RTC_EmuCore.GameName;
-
-
 		}
 
 		public static void LOAD_GAME_FAILED()
@@ -650,8 +645,6 @@ namespace RTC
 		{
 			try
 			{
-				SettingsAdapter settable = new SettingsAdapter(Global.Emulator);
-
 				switch (systemName.ToUpper())
 				{
 					case "GAMEBOY":
@@ -737,21 +730,42 @@ namespace RTC
 
 		public static volatile MemoryDomainRTCInterface MDRI = new MemoryDomainRTCInterface();
 
-		public static void RefreshDomains(bool clearSelected = true)
+		public static bool RefreshDomains()
 		{
 			if (Global.Emulator is NullEmulator)
-				return;
+				return false;
 
-			RTC_EmuCore.EmuSpec.Update(VSPEC.MEMORYDOMAINS_INTERFACES.ToString(), (object[])GetInterfaces());
-			LocalNetCoreRouter.Route(NetcoreCommands.CORRUPTCORE, NetcoreCommands.REMOTE_EVENT_DOMAINSUPDATED);
+			//Compare the old to the new. If the name and sizes are all the same, don't push that there were changes.
+			//We need to compare like this because the domains can change from syncsettings.
+			//We only check name and size as those are the only things that can change on the fly
+			var oldInterfaces = RTC_EmuCore.MemoryInterfacees;
+			var newInterfaces = GetInterfaces();
+			bool domainsChanged = false;
 
+			if (oldInterfaces.Length != newInterfaces.Length)
+				domainsChanged = true;
+
+			for (int i = 0; i < oldInterfaces.Length; i++)
+			{
+				if (domainsChanged)
+					break;
+				if (oldInterfaces[i].Name != newInterfaces[i].Name)
+					domainsChanged = true;
+				if (oldInterfaces[i].Size != newInterfaces[i].Size)
+					domainsChanged = true;
+			}
+
+			//We gotta push this no matter what since it's new underlying objects
+			RTC_EmuCore.EmuSpec.Update(VSPEC.MEMORYDOMAINS_INTERFACES.ToString(), GetInterfaces());
+			LocalNetCoreRouter.Route(NetcoreCommands.CORRUPTCORE, NetcoreCommands.REMOTE_EVENT_DOMAINSUPDATED, domainsChanged,false);
+			return true;
 		}
 
-		public static object GetInterfaces()
+		public static MemoryDomainProxy[] GetInterfaces()
 		{
 			Console.WriteLine($" getInterfaces()");
 
-			Dictionary<String, MemoryInterface> interfaces = new Dictionary<string, MemoryInterface>();
+			List<MemoryDomainProxy> interfaces = new List<MemoryDomainProxy>();
 
 			if (Global.Emulator?.ServiceProvider == null)
 				return null;
@@ -759,11 +773,10 @@ namespace RTC
 			ServiceInjector.UpdateServices(Global.Emulator.ServiceProvider, MDRI);
 
 			foreach (MemoryDomain _domain in MDRI.MemoryDomains)
-				if (!interfaces.ContainsKey(_domain.ToString()))
-					interfaces.Add(_domain.ToString(), new MemoryDomainProxy(new VanguardImplementation.BizhawkMemoryDomain(_domain)));
+					interfaces.Add(new MemoryDomainProxy(new VanguardImplementation.BizhawkMemoryDomain(_domain)));
 
 
-			return interfaces.Values.ToArray();
+			return interfaces.ToArray();
 		}
 
 

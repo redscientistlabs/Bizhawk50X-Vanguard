@@ -58,6 +58,16 @@ namespace RTC
 			get => (int)EmuSpec[VSPEC.CORE_LASTLOADERROM.ToString()];
 			set => EmuSpec.Update(VSPEC.CORE_LASTLOADERROM.ToString(), value);
 		}
+		public static string[] BlacklistedDomains
+		{
+			get => (string[])EmuSpec[VSPEC.MEMORYDOMAINS_BLACKLISTEDDOMAINS.ToString()];
+			set => EmuSpec.Update(VSPEC.MEMORYDOMAINS_BLACKLISTEDDOMAINS.ToString(), value);
+		}
+		public static MemoryDomainProxy[] MemoryInterfacees
+		{
+			get => (MemoryDomainProxy[])EmuSpec[VSPEC.MEMORYDOMAINS_INTERFACES.ToString()];
+			set => EmuSpec.Update(VSPEC.MEMORYDOMAINS_INTERFACES.ToString(), value);
+		}
 
 		public static PartialSpec getDefaultPartial()
 		{
@@ -69,6 +79,8 @@ namespace RTC
 			partial[VSPEC.OPENROMFILENAME.ToString()] = String.Empty;
 			partial[VSPEC.SYNCSETTINGS.ToString()] = String.Empty;
 			partial[VSPEC.OPENROMFILENAME.ToString()] = String.Empty;
+			partial[VSPEC.MEMORYDOMAINS_BLACKLISTEDDOMAINS.ToString()] = new string[] { };
+			partial[VSPEC.MEMORYDOMAINS_INTERFACES.ToString()] = new MemoryDomainProxy[] { };
 			partial[VSPEC.CORE_LASTLOADERROM.ToString()] = -1;
 
 			return partial;
@@ -87,6 +99,7 @@ namespace RTC
 
 
 			LocalNetCoreRouter.Route(NetcoreCommands.CORRUPTCORE, NetcoreCommands.REMOTE_PUSHEMUSPEC, emuSpecTemplate, true);
+			LocalNetCoreRouter.Route(NetcoreCommands.UI, NetcoreCommands.REMOTE_PUSHEMUSPEC, emuSpecTemplate, true);
 
 
 			EmuSpec.SpecUpdated += (o, e) =>
@@ -94,6 +107,7 @@ namespace RTC
 				PartialSpec partial = e.partialSpec;
 				RTC_Corruptcore.VanguardSpec = EmuSpec;
 				LocalNetCoreRouter.Route(NetcoreCommands.CORRUPTCORE, NetcoreCommands.REMOTE_PUSHEMUSPECUPDATE, partial, true);
+				LocalNetCoreRouter.Route(NetcoreCommands.UI, NetcoreCommands.REMOTE_PUSHEMUSPECUPDATE, partial, true);
 			};
 		}
 
@@ -111,23 +125,12 @@ namespace RTC
 			});
 
 
-			// Show the main RTC Form
-
-
-			//Todo
-			//if (RTC_NetcoreImplementation.isStandaloneUI || RTC_NetcoreImplementation.isAttached)
-			//S.GET<RTC_Core_Form>().Show();
-
 			//Refocus on Bizhawk
 			RTC_Hooks.BIZHAWK_MAINFORM_FOCUS();
 
 			//Force create bizhawk config file if it doesn't exist
 			if (!File.Exists(RTC_Corruptcore.bizhawkDir + Path.DirectorySeparatorChar + "config.ini"))
 				RTC_Hooks.BIZHAWK_MAINFORM_SAVECONFIG();
-
-			//Fetch NetCore aggressiveness
-		//	if (RTC_NetcoreImplementation.isStandaloneEmu)
-		//		RTC_NetcoreImplementation.SendCommandToRTC(new RTC_Command(CommandType.GETAGGRESSIVENESS));
 
 		}
 
@@ -326,6 +329,171 @@ namespace RTC
 				Global.Config.ClockThrottle = true;
 				RTC_Hooks.BIZHAWK_MAINFORM_SAVECONFIG();
 			}
+		}
+
+
+		public static string[] GetBlacklistedDomains(string systemName)
+		{
+			// Returns the list of Domains that can't be rewinded and/or are just not good to use
+
+			List<string> domainBlacklist = new List<string>();
+			switch (systemName)
+			{
+				case "NES":     //Nintendo Entertainment system
+
+					domainBlacklist.Add("System Bus");
+					domainBlacklist.Add("PRG ROM");
+					domainBlacklist.Add("PALRAM"); //Color Memory (Useless and disgusting)
+					domainBlacklist.Add("CHR VROM"); //Cartridge
+					domainBlacklist.Add("Battery RAM"); //Cartridge Save Data
+					domainBlacklist.Add("FDS Side"); //ROM data for the FDS. Sadly uncorruptable.
+					break;
+
+				case "GB":      //Gameboy
+				case "GBC":     //Gameboy Color
+					domainBlacklist.Add("ROM"); //Cartridge
+					domainBlacklist.Add("System Bus");
+					domainBlacklist.Add("OBP"); //SGB dummy domain doesn't do anything in sameboy
+					domainBlacklist.Add("BGP");  //SGB dummy domain doesn't do anything in sameboy
+					domainBlacklist.Add("BOOTROM"); //Sameboy SGB Bootrom
+					break;
+
+				case "SNES":    //Super Nintendo
+
+					domainBlacklist.Add("CARTROM"); //Cartridge
+					domainBlacklist.Add("APURAM"); //SPC700 memory
+					domainBlacklist.Add("CGRAM"); //Color Memory (Useless and disgusting)
+					domainBlacklist.Add("System Bus"); // maxvalue is not representative of chip (goes ridiculously high)
+					domainBlacklist.Add("SGB CARTROM"); // Supergameboy cartridge
+
+					if (RTC_MemoryDomains.MemoryInterfaces.ContainsKey("SGB CARTROM"))
+					{
+						domainBlacklist.Add("VRAM");
+						domainBlacklist.Add("WRAM");
+						domainBlacklist.Add("CARTROM");
+					}
+
+					break;
+
+				case "N64":     //Nintendo 64
+					domainBlacklist.Add("System Bus");
+					domainBlacklist.Add("PI Register");
+					domainBlacklist.Add("EEPROM");
+					domainBlacklist.Add("ROM");
+					domainBlacklist.Add("SI Register");
+					domainBlacklist.Add("VI Register");
+					domainBlacklist.Add("RI Register");
+					domainBlacklist.Add("AI Register");
+					break;
+
+				case "PCE":     //PC Engine / Turbo Grafx
+				case "SGX":     //Super Grafx
+					domainBlacklist.Add("ROM");
+					domainBlacklist.Add("System Bus"); //BAD THINGS HAPPEN WITH THIS DOMAIN
+					domainBlacklist.Add("System Bus (21 bit)");
+					break;
+
+				case "GBA":     //Gameboy Advance
+					domainBlacklist.Add("OAM");
+					domainBlacklist.Add("BIOS");
+					domainBlacklist.Add("PALRAM");
+					domainBlacklist.Add("ROM");
+					domainBlacklist.Add("System Bus");
+					break;
+
+				case "SMS":     //Sega Master System
+					domainBlacklist.Add("System Bus"); // the game cartridge appears to be on the system bus
+					domainBlacklist.Add("ROM");
+					break;
+
+				case "GG":      //Sega GameGear
+					domainBlacklist.Add("System Bus"); // the game cartridge appears to be on the system bus
+					domainBlacklist.Add("ROM");
+					break;
+
+				case "SG":      //Sega SG-1000
+					domainBlacklist.Add("System Bus");
+					domainBlacklist.Add("ROM");
+					break;
+
+				case "32X_INTERIM":
+				case "GEN":     //Sega Genesis and CD
+					domainBlacklist.Add("MD CART");
+					domainBlacklist.Add("CRAM"); //Color Ram
+					domainBlacklist.Add("VSRAM"); //Vertical scroll ram. Do you like glitched scrolling? Have a dedicated domain...
+					domainBlacklist.Add("SRAM"); //Save Ram
+					domainBlacklist.Add("BOOT ROM"); //Genesis Boot Rom
+					domainBlacklist.Add("32X FB"); //32X Sprinkles
+					domainBlacklist.Add("CD BOOT ROM"); //Sega CD boot rom
+					domainBlacklist.Add("S68K BUS");
+					domainBlacklist.Add("M68K BUS");
+					break;
+
+				case "PSX":     //Sony Playstation 1
+					domainBlacklist.Add("BiosROM");
+					domainBlacklist.Add("PIOMem");
+					break;
+
+				case "A26":     //Atari 2600
+					domainBlacklist.Add("System Bus");
+					break;
+
+				case "A78":     //Atari 7800
+					domainBlacklist.Add("System Bus");
+					break;
+
+				case "LYNX":    //Atari Lynx
+					domainBlacklist.Add("Save RAM");
+					domainBlacklist.Add("Cart B");
+					domainBlacklist.Add("Cart A");
+					break;
+
+				case "WSWAN":   //Wonderswan
+					domainBlacklist.Add("ROM");
+					break;
+
+				case "Coleco":  //Colecovision
+					domainBlacklist.Add("System Bus");
+					break;
+
+				case "VB":      //Virtualboy
+					domainBlacklist.Add("ROM");
+					break;
+
+				case "SAT":     //Sega Saturn
+					domainBlacklist.Add("Backup RAM");
+					domainBlacklist.Add("Boot Rom");
+					domainBlacklist.Add("Backup Cart");
+					domainBlacklist.Add("VDP1 Framebuffer"); //Sprinkles
+					domainBlacklist.Add("VDP2 CRam"); //VDP 2 color ram (pallettes)
+					domainBlacklist.Add("Sound Ram"); //90% chance of killing the audio
+					break;
+
+				case "INTV": //Intellivision
+					domainBlacklist.Add("Graphics ROM");
+					domainBlacklist.Add("System ROM");
+					domainBlacklist.Add("Executive Rom"); //??????
+					break;
+
+				case "APPLEII": //Apple II
+					domainBlacklist.Add("System Bus");
+					break;
+
+				case "C64":     //Commodore 64
+					domainBlacklist.Add("System Bus");
+					domainBlacklist.Add("1541 Bus");
+					break;
+
+				case "PCECD":   //PC-Engine CD / Turbo Grafx CD
+				case "TI83":    //Ti-83 Calculator
+				case "SGB":     //Super Gameboy
+				case "DGB":
+					break;
+
+					//TODO: Add more domains for cores like gamegear, atari, turbo graphx
+			}
+
+			return domainBlacklist.ToArray();;
 		}
 
 	}

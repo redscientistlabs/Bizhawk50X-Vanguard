@@ -33,7 +33,7 @@ namespace RTCV.UI
 					lbMemoryDomains.SetSelected(i, false);
 
 			lbMemoryDomains_DontExecute_SelectedIndexChanged = false;
-		//	lbMemoryDomains_SelectedIndexChanged(null, null);
+			lbMemoryDomains_SelectedIndexChanged(null, null);
 		}
 
 		public void SetMemoryDomainsAllButSelectedDomains(string[] _blacklistedDomains)
@@ -48,7 +48,7 @@ namespace RTCV.UI
 					lbMemoryDomains.SetSelected(i, true);
 
 			lbMemoryDomains_DontExecute_SelectedIndexChanged = false;
-		//	lbMemoryDomains_SelectedIndexChanged(null, null);
+			lbMemoryDomains_SelectedIndexChanged(null, null);
 		}
 
 		private void btnSelectAll_Click(object sender, EventArgs e)
@@ -68,7 +68,7 @@ namespace RTCV.UI
 		private void btnAutoSelectDomains_Click(object sender, EventArgs e)
 		{
 			RefreshDomains();
-			SetMemoryDomainsAllButSelectedDomains(RTC_MemoryDomains.GetBlacklistedDomains());
+			SetMemoryDomainsAllButSelectedDomains((string[])RTC_Corruptcore.VanguardSpec[VSPEC.MEMORYDOMAINS_BLACKLISTEDDOMAINS.ToString()]);
 		}
 
 		public void RefreshDomains()
@@ -84,14 +84,23 @@ namespace RTCV.UI
 		public void RefreshDomainsAndKeepSelected(string[] overrideDomains = null)
 		{
 			var temp = (string[])RTC_Corruptcore.UISpec["SELECTEDDOMAINS"];
+			var oldDomain = lbMemoryDomains.Items;
+
 
 			if (overrideDomains != null)
 				temp = overrideDomains;
 
 			RefreshDomains(); //refresh and reload domains
 
-			RTC_Corruptcore.UISpec.Update("SELECTEDDOMAINS", temp);
-			SetMemoryDomainsSelectedDomains(temp);
+			if (temp.Length != 0)
+			{
+				RTC_Corruptcore.UISpec.Update("SELECTEDDOMAINS", temp);
+				SetMemoryDomainsSelectedDomains(temp);
+			}
+			else
+			{
+				SetMemoryDomainsAllButSelectedDomains((string[])RTC_Corruptcore.VanguardSpec[VSPEC.MEMORYDOMAINS_BLACKLISTEDDOMAINS.ToString()]);
+			}
 		}
 
 		public bool lbMemoryDomains_DontExecute_SelectedIndexChanged = false;
@@ -110,6 +119,7 @@ namespace RTCV.UI
 		private void btnRefreshDomains_Click(object sender, EventArgs e)
 		{
 			RefreshDomains();
+			RTC_Corruptcore.UISpec.Update("SELECTEDDOMAINS", lbMemoryDomains.SelectedItems.Cast<string>().ToArray());
 		}
 
 	}
