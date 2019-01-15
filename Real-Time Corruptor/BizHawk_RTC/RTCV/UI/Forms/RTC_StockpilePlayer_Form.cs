@@ -221,13 +221,13 @@ namespace RTCV.UI
 					S.GET<RTC_Core_Form>().AutoCorrupt = false; 
 
 					S.GET<RTC_GlitchHarvester_Form>().rbCorrupt.Checked = true;
-					RTC_StockpileManager.CurrentStashkey = (dgvStockpile.SelectedRows[0].Cells[0].Value as StashKey);
-					RTC_StockpileManager.ApplyStashkey(RTC_StockpileManager.CurrentStashkey);
+					RTC_StockpileManager_UISide.CurrentStashkey = (dgvStockpile.SelectedRows[0].Cells[0].Value as StashKey);
+					RTC_StockpileManager_UISide.ApplyStashkey(RTC_StockpileManager_UISide.CurrentStashkey);
 
 					S.GET<RTC_GlitchHarvester_Form>().lbStashHistory.ClearSelected();
 					S.GET<RTC_GlitchHarvester_Form>().dgvStockpile.ClearSelection();
 
-					S.GET<RTC_GlitchHarvester_Form>().IsCorruptionApplied = !(RTC_StockpileManager.CurrentStashkey.BlastLayer == null || RTC_StockpileManager.CurrentStashkey.BlastLayer.Layer.Count == 0);
+					S.GET<RTC_GlitchHarvester_Form>().IsCorruptionApplied = !(RTC_StockpileManager_UISide.CurrentStashkey.BlastLayer == null || RTC_StockpileManager_UISide.CurrentStashkey.BlastLayer.Layer.Count == 0);
 				}
 			}
 			finally

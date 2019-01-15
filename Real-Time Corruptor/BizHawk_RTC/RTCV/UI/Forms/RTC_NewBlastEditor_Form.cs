@@ -964,7 +964,7 @@ namespace RTCV.UI
 			//newSk.Key = RTC_Core.GetRandomKey();
 			//newSk.Alias = null;
 
-			RTC_StockpileManager.StashHistory.Add(newSk);
+			RTC_StockpileManager_UISide.StashHistory.Add(newSk);
 
 			S.GET<RTC_GlitchHarvester_Form>().RefreshStashHistory();
 			S.GET<RTC_GlitchHarvester_Form>().dgvStockpile.ClearSelection();
@@ -972,7 +972,7 @@ namespace RTCV.UI
 
 			S.GET<RTC_GlitchHarvester_Form>().DontLoadSelectedStash = true;
 			S.GET<RTC_GlitchHarvester_Form>().lbStashHistory.SelectedIndex = S.GET<RTC_GlitchHarvester_Form>().lbStashHistory.Items.Count - 1;
-			RTC_StockpileManager.CurrentStashkey = RTC_StockpileManager.StashHistory[S.GET<RTC_GlitchHarvester_Form>().lbStashHistory.SelectedIndex];
+			RTC_StockpileManager_UISide.CurrentStashkey = RTC_StockpileManager_UISide.StashHistory[S.GET<RTC_GlitchHarvester_Form>().lbStashHistory.SelectedIndex];
 
 		}
 
@@ -1037,7 +1037,7 @@ namespace RTCV.UI
 		private void replaceRomFromGHToolStripMenuItem_Click(object sender, EventArgs e)
 		{
 
-			StashKey temp = RTC_StockpileManager.GetCurrentSavestateStashkey();
+			StashKey temp = RTC_StockpileManager_UISide.GetCurrentSavestateStashkey();
 
 			if (temp == null)
 			{
@@ -1105,7 +1105,7 @@ namespace RTCV.UI
 		private void replaceSavestateFromGHToolStripMenuItem_Click(object sender, EventArgs e)
 		{
 
-			StashKey temp = RTC_StockpileManager.GetCurrentSavestateStashkey();
+			StashKey temp = RTC_StockpileManager_UISide.GetCurrentSavestateStashkey();
 			if (temp == null)
 			{
 				MessageBox.Show("There is no savestate selected in the glitch harvester, or the current selected box is empty");
@@ -1173,7 +1173,7 @@ namespace RTCV.UI
 			File.Copy(filename, currentSK.GetSavestateFullPath(), true);
 
 			//Attempt to load and if it fails, don't let them update it.
-			if (!RTC_StockpileManager.LoadState(currentSK))
+			if (!RTC_StockpileManager_UISide.LoadState(currentSK))
 			{
 				currentSK.ParentKey = oldKey;
 				currentSK.SyncSettings = oldSS;
@@ -1334,7 +1334,7 @@ namespace RTCV.UI
 		private void btnCorrupt_Click(object sender, EventArgs e)
 		{
 			StashKey newSk = (StashKey)currentSK.Clone();
-			newSk.BlastLayer?.Apply();
+			newSk.BlastLayer?.Apply(true);
 		}
 
 		public void RefreshAllNoteIcons()

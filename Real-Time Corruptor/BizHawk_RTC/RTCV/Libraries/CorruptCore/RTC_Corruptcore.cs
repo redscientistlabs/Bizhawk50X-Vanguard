@@ -564,13 +564,14 @@ namespace RTCV.CorruptCore
 		{
 			BlastLayer bl = RTC_Corruptcore.GenerateBlastLayer((string[])RTC_Corruptcore.UISpec["SELECTEDDOMAINS"]);
 			if (bl != null)
-				bl.Apply();
+				bl.Apply(false);
 		}
 
+		/*
 		public static void ApplyBlastLayer(BlastLayer bl)
 		{
 			if(bl.Layer != null)
 				bl.Apply();
-		}
+		}*/
 	}
 }

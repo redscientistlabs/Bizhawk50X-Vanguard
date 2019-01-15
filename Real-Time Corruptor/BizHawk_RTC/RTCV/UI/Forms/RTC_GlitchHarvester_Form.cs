@@ -32,11 +32,12 @@ namespace RTCV.UI
 
 		Dictionary<string, TextBox> StateBoxes = new Dictionary<string, TextBox>();
 
+		private bool isCorruptionApplied;
 		public bool IsCorruptionApplied
 		{
 			get
 			{
-				return RTC_StockpileManager.IsCorruptionApplied;
+				return isCorruptionApplied;
 			}
 			set
 			{
@@ -61,8 +62,7 @@ namespace RTCV.UI
 					S.GET<RTC_StockpilePlayer_Form>().btnBlastToggle.Text = "BlastLayer : OFF    (Attempts to uncorrupt/recorrupt in real-time)";
 				}
 
-				if (RTC_StockpileManager.IsCorruptionApplied != value)
-					RTC_StockpileManager.IsCorruptionApplied = value;
+				isCorruptionApplied = value;
 			}
 		}
 
@@ -176,7 +176,7 @@ namespace RTCV.UI
 			lbStashHistory.DataSource = null;
 
 			DontLoadSelectedStash = true;
-			lbStashHistory.DataSource = RTC_StockpileManager.StashHistory;
+			lbStashHistory.DataSource = RTC_StockpileManager_UISide.StashHistory;
 			//lbStashHistory.EndUpdate();
 
 			DontLoadSelectedStash = true;
@@ -200,8 +200,8 @@ namespace RTCV.UI
 				clickedButton.ForeColor = Color.OrangeRed;
 				clickedButton.BringToFront();
 
-				RTC_StockpileManager.CurrentSavestateKey = clickedButton.Text;
-				StashKey psk = RTC_StockpileManager.GetCurrentSavestateStashkey();
+				RTC_StockpileManager_UISide.CurrentSavestateKey = clickedButton.Text;
+				StashKey psk = RTC_StockpileManager_UISide.GetCurrentSavestateStashkey();
 
 				if (psk != null && !File.Exists(psk.RomFilename))
 				{
@@ -222,9 +222,9 @@ namespace RTCV.UI
 							{
 								string key = i.ToString().PadLeft(2, '0');
 
-								if (RTC_StockpileManager.SavestateStashkeyDico.ContainsKey(key))
+								if (RTC_StockpileManager_UISide.SavestateStashkeyDico.ContainsKey(key))
 								{
-									StashKey sk = RTC_StockpileManager.SavestateStashkeyDico[key];
+									StashKey sk = RTC_StockpileManager_UISide.SavestateStashkeyDico[key];
 									if (sk.RomFilename == oldFilename)
 										sk.RomFilename = filename;
 								}
@@ -233,25 +233,25 @@ namespace RTCV.UI
 						else
 						{
 							clickedButton.ForeColor = Color.FromArgb(192, 255, 192);
-							RTC_StockpileManager.CurrentSavestateKey = null;
+							RTC_StockpileManager_UISide.CurrentSavestateKey = null;
 							return;
 						}
 					}
 					else
 					{
 						clickedButton.ForeColor = Color.FromArgb(192, 255, 192);
-						RTC_StockpileManager.CurrentSavestateKey = null;
+						RTC_StockpileManager_UISide.CurrentSavestateKey = null;
 						return;
 					}
 				}
 
-				
+
 				if (cbSavestateLoadOnClick.Checked)
 				{
 					btnSaveLoad.Text = "LOAD";
 					btnSaveLoad_Click(null, null);
 				}
-				//RTC_StockpileManager.LoadState(RTC_StockpileManager.getCurrentSavestateStashkey());
+				//RTC_StockpileManager_UISide.LoadState(RTC_StockpileManager_UISide.getCurrentSavestateStashkey());
 			}
 			finally
 			{
@@ -277,7 +277,7 @@ namespace RTCV.UI
 		{
 			if (btnSaveLoad.Text == "LOAD")
 			{
-				StashKey psk = RTC_StockpileManager.GetCurrentSavestateStashkey();
+				StashKey psk = RTC_StockpileManager_UISide.GetCurrentSavestateStashkey();
 				if (psk != null)
 				{
 					if (!File.Exists(psk.RomFilename))
@@ -298,9 +298,9 @@ namespace RTCV.UI
 								{
 									string key = i.ToString().PadLeft(2, '0');
 
-									if (RTC_StockpileManager.SavestateStashkeyDico.ContainsKey(key))
+									if (RTC_StockpileManager_UISide.SavestateStashkeyDico.ContainsKey(key))
 									{
-										StashKey sk = RTC_StockpileManager.SavestateStashkeyDico[key];
+										StashKey sk = RTC_StockpileManager_UISide.SavestateStashkeyDico[key];
 										if (sk.RomFilename == oldFilename)
 											sk.RomFilename = filename;
 									}
@@ -310,20 +310,20 @@ namespace RTCV.UI
 								return;
 						}
 
-					RTC_StockpileManager.LoadState(psk);
+					RTC_StockpileManager_UISide.LoadState(psk);
 				}
 				else
 					MessageBox.Show("Savestate box is empty");
 			}
 			else
 			{
-				if (RTC_StockpileManager.CurrentSavestateKey == null)
+				if (RTC_StockpileManager_UISide.CurrentSavestateKey == null)
 				{
 					MessageBox.Show("No Savestate Box is currently selected in the Glitch Harvester's Savestate Manager");
 					return;
 				}
 
-				StashKey sk = RTC_StockpileManager.SaveState(true);
+				StashKey sk = RTC_StockpileManager_UISide.SaveState(true);
 
 				btnSaveLoad.Text = "LOAD";
 				btnSaveLoad.ForeColor = Color.FromArgb(192, 255, 192);
@@ -345,7 +345,7 @@ namespace RTCV.UI
 
 				btnCorrupt.Visible = false;
 
-				StashKey psk = RTC_StockpileManager.GetCurrentSavestateStashkey();
+				StashKey psk = RTC_StockpileManager_UISide.GetCurrentSavestateStashkey();
 
 				if (btnCorrupt.Text.ToUpper() == "MERGE")
 				{
@@ -354,7 +354,7 @@ namespace RTCV.UI
 					foreach (DataGridViewRow row in dgvStockpile.SelectedRows)
 						sks.Add((StashKey)row.Cells[0].Value);
 
-					RTC_StockpileManager.MergeStashkeys(sks);
+					IsCorruptionApplied = RTC_StockpileManager_UISide.MergeStashkeys(sks);
 
 					RefreshStashHistory();
 
@@ -375,12 +375,12 @@ namespace RTCV.UI
 						return;
 					}
 
-					RTC_StockpileManager.Corrupt(loadBeforeOperation);
+					IsCorruptionApplied = RTC_StockpileManager_UISide.Corrupt(loadBeforeOperation);
 				}
 				else if (rbInject.Checked)
-					RTC_StockpileManager.InjectFromStashkey(RTC_StockpileManager.CurrentStashkey, loadBeforeOperation);
+					IsCorruptionApplied = RTC_StockpileManager_UISide.InjectFromStashkey(RTC_StockpileManager_UISide.CurrentStashkey, loadBeforeOperation);
 				else if (rbOriginal.Checked)
-					RTC_StockpileManager.OriginalFromStashkey(RTC_StockpileManager.CurrentStashkey);
+					IsCorruptionApplied = RTC_StockpileManager_UISide.OriginalFromStashkey(RTC_StockpileManager_UISide.CurrentStashkey);
 
 				RefreshStashHistory();
 				Console.WriteLine("Blast done");
@@ -438,7 +438,7 @@ namespace RTCV.UI
 						btnCorrupt.Text = "Original";
 				}
 
-				RTC_StockpileManager.CurrentStashkey = RTC_StockpileManager.StashHistory[lbStashHistory.SelectedIndex];
+				RTC_StockpileManager_UISide.CurrentStashkey = RTC_StockpileManager_UISide.StashHistory[lbStashHistory.SelectedIndex];
 
 				if (!cbLoadOnSelect.Checked)
 					return;
@@ -459,11 +459,11 @@ namespace RTCV.UI
 			S.GET<RTC_Core_Form>().AutoCorrupt = false;
 
 			if (rbCorrupt.Checked)
-				RTC_StockpileManager.ApplyStashkey(RTC_StockpileManager.CurrentStashkey, loadBeforeOperation);
+				IsCorruptionApplied = RTC_StockpileManager_UISide.ApplyStashkey(RTC_StockpileManager_UISide.CurrentStashkey, loadBeforeOperation);
 			else if (rbInject.Checked)
-				RTC_StockpileManager.InjectFromStashkey(RTC_StockpileManager.CurrentStashkey, loadBeforeOperation);
+				IsCorruptionApplied = RTC_StockpileManager_UISide.InjectFromStashkey(RTC_StockpileManager_UISide.CurrentStashkey, loadBeforeOperation);
 			else if (rbOriginal.Checked)
-				RTC_StockpileManager.OriginalFromStashkey(RTC_StockpileManager.CurrentStashkey);
+				IsCorruptionApplied = RTC_StockpileManager_UISide.OriginalFromStashkey(RTC_StockpileManager_UISide.CurrentStashkey);
 
 		}
 
@@ -487,7 +487,7 @@ namespace RTCV.UI
 
 		private void btnAddStashToStockpile_Click(object sender, EventArgs e)
 		{
-			if (RTC_StockpileManager.CurrentStashkey != null && RTC_StockpileManager.CurrentStashkey.Alias != RTC_StockpileManager.CurrentStashkey.Key)
+			if (RTC_StockpileManager_UISide.CurrentStashkey != null && RTC_StockpileManager_UISide.CurrentStashkey.Alias != RTC_StockpileManager_UISide.CurrentStashkey.Key)
 				AddStashToStockpile(false);
 			else
 				AddStashToStockpile(true);
@@ -516,17 +516,17 @@ namespace RTCV.UI
 				}
 			}
 			else
-				Name = RTC_StockpileManager.CurrentStashkey.Alias;
+				Name = RTC_StockpileManager_UISide.CurrentStashkey.Alias;
 
-			RTC_StockpileManager.CurrentStashkey = (StashKey)lbStashHistory.SelectedItem;
+			RTC_StockpileManager_UISide.CurrentStashkey = (StashKey)lbStashHistory.SelectedItem;
 
 			if (String.IsNullOrWhiteSpace(Name))
-				RTC_StockpileManager.CurrentStashkey.Alias = RTC_StockpileManager.CurrentStashkey.Key;
+				RTC_StockpileManager_UISide.CurrentStashkey.Alias = RTC_StockpileManager_UISide.CurrentStashkey.Key;
 			else
-				RTC_StockpileManager.CurrentStashkey.Alias = Name;
-				
+				RTC_StockpileManager_UISide.CurrentStashkey.Alias = Name;
 
-			StashKey sk = RTC_StockpileManager.CurrentStashkey;
+
+			StashKey sk = RTC_StockpileManager_UISide.CurrentStashkey;
 
 			sk.BlastLayer.RasterizeVMDs();
 
@@ -538,7 +538,7 @@ namespace RTCV.UI
 
 			RefreshNoteIcons();
 
-			RTC_StockpileManager.StashHistory.Remove(sk);
+			RTC_StockpileManager_UISide.StashHistory.Remove(sk);
 
 			RefreshStashHistory();
 
@@ -551,14 +551,14 @@ namespace RTCV.UI
 			dgvStockpile.ClearSelection();
 			dgvStockpile.Rows[nRowIndex].Selected = true;
 
-			RTC_StockpileManager.StockpileChanged();
+			RTC_StockpileManager_UISide.StockpileChanged();
 
 			UnsavedEdits = true;
 		}
 
 		private void btnClearStashHistory_Click(object sender, EventArgs e)
 		{
-			RTC_StockpileManager.StashHistory.Clear();
+			RTC_StockpileManager_UISide.StashHistory.Clear();
 			RefreshStashHistory();
 		}
 
@@ -571,7 +571,7 @@ namespace RTCV.UI
 				foreach (DataGridViewRow row in dgvStockpile.SelectedRows)
 					dgvStockpile.Rows.Remove(row);
 
-			RTC_StockpileManager.StockpileChanged();
+			RTC_StockpileManager_UISide.StockpileChanged();
 
 			UnsavedEdits = true;
 
@@ -588,17 +588,17 @@ namespace RTCV.UI
 			{
 				dgvStockpile.Rows.Clear();
 
-				if (RTC_StockpileManager.CurrentStockpile != null)
+				if (RTC_StockpileManager_UISide.CurrentStockpile != null)
 				{
-					RTC_StockpileManager.CurrentStockpile.Filename = null;
-					RTC_StockpileManager.CurrentStockpile.ShortFilename = null;
+					RTC_StockpileManager_UISide.CurrentStockpile.Filename = null;
+					RTC_StockpileManager_UISide.CurrentStockpile.ShortFilename = null;
 				}
 
 				S.GET<RTC_GlitchHarvester_Form>().btnSaveStockpile.Enabled = false;
 				S.GET<RTC_GlitchHarvester_Form>().btnSaveStockpile.BackColor = Color.Gray;
 				S.GET<RTC_GlitchHarvester_Form>().btnSaveStockpile.ForeColor = Color.DimGray;
 
-				RTC_StockpileManager.StockpileChanged();
+				RTC_StockpileManager_UISide.StockpileChanged();
 
 				UnsavedEdits = false;
 
@@ -629,7 +629,7 @@ namespace RTCV.UI
 					S.GET<RTC_StockpilePlayer_Form>().dgvStockpile.Rows.Clear();
 
 					dgvStockpile.ClearSelection();
-					RTC_StockpileManager.StockpileChanged();
+					RTC_StockpileManager_UISide.StockpileChanged();
 
 					UnsavedEdits = false;
 				}
@@ -697,7 +697,7 @@ namespace RTCV.UI
 			//if (Global.Emulator is NullEmulator)
 			//   return;
 
-			if ( RTC_StockpileManager.CurrentStashkey.BlastLayer?.Layer?.Count == 0)
+			if (RTC_StockpileManager_UISide.CurrentStashkey.BlastLayer?.Layer?.Count == 0)
 			{
 				IsCorruptionApplied = false;
 				return;
@@ -707,14 +707,13 @@ namespace RTCV.UI
 			{
 				IsCorruptionApplied = true;
 
-				LocalNetCoreRouter.Route(NetcoreCommands.CORRUPTCORE, NetcoreCommands.BLAST, RTC_StockpileManager.CurrentStashkey.BlastLayer, true);
-				//RTC_StockpileManager.currentStashkey.blastlayer.Apply();
+				LocalNetCoreRouter.Route(NetcoreCommands.CORRUPTCORE, NetcoreCommands.REMOTE_SET_APPLYCORRUPTBL, true);
 			}
 			else
 			{
 				IsCorruptionApplied = false;
 
-				LocalNetCoreRouter.Route(NetcoreCommands.CORRUPTCORE, NetcoreCommands.REMOTE_SET_RESTOREBLASTLAYERBACKUP, true);
+				LocalNetCoreRouter.Route(NetcoreCommands.CORRUPTCORE, NetcoreCommands.REMOTE_SET_APPLYUNCORRUPTBL, true);
 				RTC_StepActions.ClearStepBlastUnits();
 			}
 		}
@@ -838,7 +837,7 @@ namespace RTCV.UI
 
 			UnsavedEdits = true;
 
-			RTC_StockpileManager.StockpileChanged();
+			RTC_StockpileManager_UISide.StockpileChanged();
 		}
 
 		private void btnStockpileMoveSelectedDown_Click(object sender, EventArgs e)
@@ -873,7 +872,7 @@ namespace RTCV.UI
 
 			UnsavedEdits = true;
 
-			RTC_StockpileManager.StockpileChanged();
+			RTC_StockpileManager_UISide.StockpileChanged();
 		}
 
 		private void btnStopRender_Click(object sender, EventArgs e)
@@ -881,7 +880,7 @@ namespace RTCV.UI
 			throw new NotImplementedException();
 			//RTC_Render.StopRender();
 		}
-
+		
 		private void nmIntensity_ValueChanged(object sender, EventArgs e)
 		{
 			int _fx = Convert.ToInt32(nmIntensity.Value);
@@ -892,13 +891,33 @@ namespace RTCV.UI
 
 		private void track_Intensity_Scroll(object sender, EventArgs e)
 		{
+			S.GET<RTC_GeneralParameters_Form>().DontUpdateIntensity = true;
 			double fx = Math.Floor(Math.Pow((track_Intensity.Value * 0.0005d), 2));
 			int _fx = Convert.ToInt32(fx);
 
-			// This is NOT a redundent check. Setting intensity requires a netcore call so we don't want to do it if we don't have to
-			if (_fx != S.GET<RTC_GeneralParameters_Form>().Intensity)
+			if (S.GET<RTC_GeneralParameters_Form>().Intensity != _fx)
 				S.GET<RTC_GeneralParameters_Form>().Intensity = _fx;
 		}
+
+		Guid? intensitySliderToken = null;
+
+		private void track_Intensity_MouseDown(object sender, MouseEventArgs e)
+		{
+			S.GET<RTC_GeneralParameters_Form>().DontUpdateIntensity = true;
+		}
+
+		private void track_Intensity_MouseUp(object sender, EventArgs e)
+		{
+			double fx = Math.Floor(Math.Pow((track_Intensity.Value * 0.0005d), 2));
+			int _fx = Convert.ToInt32(fx);
+
+			S.GET<RTC_GeneralParameters_Form>().DontUpdateIntensity = false;
+			S.GET<RTC_GeneralParameters_Form>().DontUpdateUI = false;
+
+			if (S.GET<RTC_GeneralParameters_Form>().Intensity != _fx)
+				S.GET<RTC_GeneralParameters_Form>().Intensity = _fx;
+		}
+
 
 		public void btnSendRaw_Click(object sender, EventArgs e)
 		{
@@ -906,7 +925,7 @@ namespace RTCV.UI
 			{
 				btnSendRaw.Visible = false;
 
-				
+
 				string romFilename = (string)RTC_Corruptcore.VanguardSpec[VSPEC.OPENROMFILENAME.ToString()];
 				if (romFilename == null)
 					return;
@@ -918,8 +937,8 @@ namespace RTCV.UI
 
 				StashKey sk = LocalNetCoreRouter.QueryRoute<StashKey>(NetcoreCommands.CORRUPTCORE, NetcoreCommands.REMOTE_KEY_GETRAWBLASTLAYER, true);
 
-				RTC_StockpileManager.CurrentStashkey = sk;
-				RTC_StockpileManager.StashHistory.Add(RTC_StockpileManager.CurrentStashkey);
+				RTC_StockpileManager_UISide.CurrentStashkey = sk;
+				RTC_StockpileManager_UISide.StashHistory.Add(RTC_StockpileManager_UISide.CurrentStashkey);
 
 
 				RefreshStashHistory();
@@ -960,7 +979,7 @@ namespace RTCV.UI
 				//lbStockpile.RefreshItemsReal();
 			}
 
-			RTC_StockpileManager.StockpileChanged();
+			RTC_StockpileManager_UISide.StockpileChanged();
 
 			UnsavedEdits = true;
 
@@ -973,7 +992,7 @@ namespace RTCV.UI
 
 		private void cbStashCorrupted_CheckedChanged(object sender, EventArgs e)
 		{
-			RTC_StockpileManager.StashAfterOperation = cbStashCorrupted.Checked;
+			RTC_StockpileManager_UISide.StashAfterOperation = cbStashCorrupted.Checked;
 		}
 
 		private void btnBackPanelPage_Click(object sender, EventArgs e)
@@ -1035,7 +1054,7 @@ namespace RTCV.UI
 					List<StashKey> sks = new List<StashKey>();
 					foreach (DataGridViewRow row in dgvStockpile.SelectedRows)
 						sks.Add((StashKey)row.Cells[0].Value);
-					RTC_StockpileManager.MergeStashkeys(sks);
+					RTC_StockpileManager_UISide.MergeStashkeys(sks);
 					RefreshStashHistory();
 				}))).Enabled = (dgvStockpile.SelectedRows.Count > 1);
 
@@ -1058,9 +1077,9 @@ namespace RTCV.UI
 				Point locate = this.PointToClient(Cursor.Position);
 				ContextMenuStrip rerollMenu = new ContextMenuStrip();
 				rerollMenu.Items.Add("Configure Reroll", null, new EventHandler((ob, ev) =>
-					{
-						new RTC_SettingsReroll_Form().Show();
-					}));
+				{
+					new RTC_SettingsReroll_Form().Show();
+				}));
 
 				rerollMenu.Show(this, locate);
 			}
@@ -1069,23 +1088,23 @@ namespace RTCV.UI
 			{
 				if (lbStashHistory.SelectedIndex != -1)
 				{
-					RTC_StockpileManager.CurrentStashkey = (StashKey)RTC_StockpileManager.StashHistory[lbStashHistory.SelectedIndex].Clone();
+					RTC_StockpileManager_UISide.CurrentStashkey = (StashKey)RTC_StockpileManager_UISide.StashHistory[lbStashHistory.SelectedIndex].Clone();
 				}
 				else if (dgvStockpile.SelectedRows.Count != 0 && dgvStockpile.SelectedRows[0].Cells[0].Value != null)
 				{
-					RTC_StockpileManager.CurrentStashkey = (StashKey)(dgvStockpile.SelectedRows[0].Cells[0].Value as StashKey)?.Clone();
-					//RTC_StockpileManager.unsavedEdits = true;
+					RTC_StockpileManager_UISide.CurrentStashkey = (StashKey)(dgvStockpile.SelectedRows[0].Cells[0].Value as StashKey)?.Clone();
+					//RTC_StockpileManager_UISide.unsavedEdits = true;
 				}
 				else
 					return;
 
-				if (RTC_StockpileManager.CurrentStashkey != null)
+				if (RTC_StockpileManager_UISide.CurrentStashkey != null)
 				{
-					RTC_StockpileManager.CurrentStashkey.BlastLayer.Reroll();
+					RTC_StockpileManager_UISide.CurrentStashkey.BlastLayer.Reroll();
 
-					RTC_StockpileManager.AddCurrentStashkeyToStash();
+					RTC_StockpileManager_UISide.AddCurrentStashkeyToStash();
 
-					RTC_StockpileManager.ApplyStashkey(RTC_StockpileManager.CurrentStashkey);
+					RTC_StockpileManager_UISide.ApplyStashkey(RTC_StockpileManager_UISide.CurrentStashkey);
 				}
 			}
 		}
@@ -1100,9 +1119,9 @@ namespace RTCV.UI
 				{
 					string key = i.ToString().PadLeft(2, '0');
 
-					if (RTC_StockpileManager.SavestateStashkeyDico.ContainsKey(key))
+					if (RTC_StockpileManager_UISide.SavestateStashkeyDico.ContainsKey(key))
 					{
-						ssk.StashKeys[i] = RTC_StockpileManager.SavestateStashkeyDico[key];
+						ssk.StashKeys[i] = RTC_StockpileManager_UISide.SavestateStashkeyDico[key];
 						ssk.Text[i] = StateBoxes[key].Text;
 					}
 					else
@@ -1143,14 +1162,14 @@ namespace RTCV.UI
 						continue;
 
 					string statefilename = key.GameName + "." + key.ParentKey + ".timejump.State"; // get savestate name
-					
+
 					if (File.Exists(RTC_Corruptcore.workingDir + Path.DirectorySeparatorChar + key.StateLocation.ToString() + Path.DirectorySeparatorChar + statefilename))
-						File.Copy(RTC_Corruptcore.workingDir + Path.DirectorySeparatorChar + key.StateLocation.ToString() + Path.DirectorySeparatorChar +  statefilename, RTC_Corruptcore.workingDir + Path.DirectorySeparatorChar + "TEMP" + Path.DirectorySeparatorChar + statefilename); // copy savestates to temp folder
+						File.Copy(RTC_Corruptcore.workingDir + Path.DirectorySeparatorChar + key.StateLocation.ToString() + Path.DirectorySeparatorChar + statefilename, RTC_Corruptcore.workingDir + Path.DirectorySeparatorChar + "TEMP" + Path.DirectorySeparatorChar + statefilename); // copy savestates to temp folder
 					else
 					{
 						MessageBox.Show("Couldn't find savestate " + RTC_Corruptcore.workingDir + Path.DirectorySeparatorChar +
-						                key.StateLocation.ToString() + Path.DirectorySeparatorChar + statefilename +
-						                "!\n\n. This is savestate index " + i + 1 + ".\nAborting save");
+										key.StateLocation.ToString() + Path.DirectorySeparatorChar + statefilename +
+										"!\n\n. This is savestate index " + i + 1 + ".\nAborting save");
 						Stockpile.EmptyFolder(Path.DirectorySeparatorChar + "WORKING\\TEMP");
 						return;
 					}
@@ -1193,7 +1212,7 @@ namespace RTCV.UI
 					//File.Move(file, RTC_Core.workingDir + Path.DirectorySeparatorChar + "SSK" + Path.DirectorySeparatorChar + (file.Substring(file.LastIndexOf(Path.DirectorySeparatorChar) + 1, file.Length - (file.LastIndexOf(Path.DirectorySeparatorChar) + 1))));
 					File.Move(file, RTC_Corruptcore.workingDir + Path.DirectorySeparatorChar + "SSK" + Path.DirectorySeparatorChar + Path.GetFileName(file));
 			}
-			catch(Exception ex)
+			catch (Exception ex)
 			{
 				MessageBox.Show("The Savestate Keys file could not be saved\n\n" + ex);
 				return;
@@ -1225,7 +1244,7 @@ namespace RTCV.UI
 			}
 
 			SaveStateKeys ssk;
-			
+
 			try
 			{
 				Stockpile.EmptyFolder(Path.DirectorySeparatorChar + "WORKING\\TEMP");
@@ -1237,7 +1256,7 @@ namespace RTCV.UI
 					ssk = JsonHelper.Deserialize<SaveStateKeys>(fs);
 				}
 			}
-			catch(Exception ex)
+			catch (Exception ex)
 			{
 				MessageBox.Show("The Savestate Keys file could not be loaded\n\n" + ex);
 				return;
@@ -1257,14 +1276,14 @@ namespace RTCV.UI
 					continue;
 
 				string statefilename = key.GameName + "." + key.ParentKey + ".timejump.State"; // get savestate name
-				string newStatePath = RTC_Corruptcore.workingDir + Path.DirectorySeparatorChar + key.StateLocation + Path.DirectorySeparatorChar +  statefilename;
+				string newStatePath = RTC_Corruptcore.workingDir + Path.DirectorySeparatorChar + key.StateLocation + Path.DirectorySeparatorChar + statefilename;
 
 				key.StateFilename = newStatePath;
 				key.StateLocation = StashKeySavestateLocation.SSK;
 			}
 
 			//clear the stockpile dico
-			RTC_StockpileManager.SavestateStashkeyDico.Clear();
+			RTC_StockpileManager_UISide.SavestateStashkeyDico.Clear();
 
 			//fill text/state controls/dico
 			for (int i = 1; i < 41; i++)
@@ -1273,10 +1292,10 @@ namespace RTCV.UI
 
 				if (ssk.StashKeys[i] != null)
 				{
-					if (!RTC_StockpileManager.SavestateStashkeyDico.ContainsKey(key))
-						RTC_StockpileManager.SavestateStashkeyDico.Add(key, ssk.StashKeys[i]);
+					if (!RTC_StockpileManager_UISide.SavestateStashkeyDico.ContainsKey(key))
+						RTC_StockpileManager_UISide.SavestateStashkeyDico.Add(key, ssk.StashKeys[i]);
 					else
-						RTC_StockpileManager.SavestateStashkeyDico[key] = ssk.StashKeys[i];
+						RTC_StockpileManager_UISide.SavestateStashkeyDico[key] = ssk.StashKeys[i];
 				}
 
 				StateBoxes[key].Text = "";
@@ -1297,7 +1316,7 @@ namespace RTCV.UI
 			{
 				string key = i.ToString().PadLeft(2, '0');
 
-				StateBoxes[key].Visible = RTC_StockpileManager.SavestateStashkeyDico.ContainsKey(key);
+				StateBoxes[key].Visible = RTC_StockpileManager_UISide.SavestateStashkeyDico.ContainsKey(key);
 			}
 		}
 
@@ -1310,29 +1329,29 @@ namespace RTCV.UI
 				ContextMenuStrip columnsMenu = new ContextMenuStrip();
 
 				((ToolStripMenuItem)columnsMenu.Items.Add("Open Selected Item in Blast Editor", null, new EventHandler((ob, ev) =>
+				{
+					if (S.GET<RTC_BlastEditor_Form>() != null)
 					{
-						if (S.GET<RTC_BlastEditor_Form>() != null)
-						{
-							StashKey sk = RTC_StockpileManager.StashHistory[lbStashHistory.SelectedIndex];
-							OpenBlastEditor(sk);
-						}
-					}))).Enabled = lbStashHistory.SelectedIndex != -1;
+						StashKey sk = RTC_StockpileManager_UISide.StashHistory[lbStashHistory.SelectedIndex];
+						OpenBlastEditor(sk);
+					}
+				}))).Enabled = lbStashHistory.SelectedIndex != -1;
 
 				columnsMenu.Items.Add(new ToolStripSeparator());
 
 				((ToolStripMenuItem)columnsMenu.Items.Add("Rename selected item", null, new EventHandler((ob, ev) =>
-					{
-						StashKey sk = RTC_StockpileManager.StashHistory[lbStashHistory.SelectedIndex];
-						renameStashKey(sk);
-						RefreshStashHistory();
-					}))).Enabled = lbStashHistory.SelectedIndex != -1;
+				{
+					StashKey sk = RTC_StockpileManager_UISide.StashHistory[lbStashHistory.SelectedIndex];
+					renameStashKey(sk);
+					RefreshStashHistory();
+				}))).Enabled = lbStashHistory.SelectedIndex != -1;
 
 				((ToolStripMenuItem)columnsMenu.Items.Add("Generate VMD from Selected Item", null, new EventHandler((ob, ev) =>
-					{
-						StashKey sk = RTC_StockpileManager.StashHistory[lbStashHistory.SelectedIndex];
-						sk.BlastLayer.RasterizeVMDs();
-						RTC_MemoryDomains.GenerateVmdFromStashkey(sk);
-					}))).Enabled = lbStashHistory.SelectedIndex != -1;
+				{
+					StashKey sk = RTC_StockpileManager_UISide.StashHistory[lbStashHistory.SelectedIndex];
+					sk.BlastLayer.RasterizeVMDs();
+					RTC_MemoryDomains.GenerateVmdFromStashkey(sk);
+				}))).Enabled = lbStashHistory.SelectedIndex != -1;
 
 				columnsMenu.Items.Add(new ToolStripSeparator());
 
@@ -1342,7 +1361,7 @@ namespace RTCV.UI
 					foreach (StashKey sk in lbStashHistory.SelectedItems)
 						sks.Add((StashKey)sk);
 
-					RTC_StockpileManager.MergeStashkeys(sks);
+					RTC_StockpileManager_UISide.MergeStashkeys(sks);
 
 					RefreshStashHistory();
 				}))).Enabled = (lbStashHistory.SelectedIndex != -1 && lbStashHistory.SelectedItems.Count > 1);
@@ -1415,7 +1434,7 @@ namespace RTCV.UI
 				if (dgvStockpile.SelectedRows.Count == 0)
 					return;
 
-				RTC_StockpileManager.CurrentStashkey = (dgvStockpile.SelectedRows[0].Cells[0].Value as StashKey);
+				RTC_StockpileManager_UISide.CurrentStashkey = (dgvStockpile.SelectedRows[0].Cells[0].Value as StashKey);
 
 				if (!cbLoadOnSelect.Checked)
 					return;
@@ -1428,7 +1447,7 @@ namespace RTCV.UI
 					foreach (DataGridViewRow row in dgvStockpile.SelectedRows)
 						sks.Add((StashKey)row.Cells[0].Value);
 
-					RTC_StockpileManager.MergeStashkeys(sks);
+					RTC_StockpileManager_UISide.MergeStashkeys(sks);
 
 					return;
 				}
@@ -1477,12 +1496,12 @@ namespace RTCV.UI
 
 		private void cbRenderType_SelectedIndexChanged(object sender, EventArgs e)
 		{
-		//	RTC_Render.setType(cbRenderType.SelectedItem.ToString());
+			//	RTC_Render.setType(cbRenderType.SelectedItem.ToString());
 		}
 
 		private void btnOpenRenderFolder_Click(object sender, EventArgs e)
 		{
-		//	Process.Start(RTC_EmuCore.rtcDir + Path.DirectorySeparatorChar + "RENDEROUTPUT" + Path.DirectorySeparatorChar);
+			//	Process.Start(RTC_EmuCore.rtcDir + Path.DirectorySeparatorChar + "RENDEROUTPUT" + Path.DirectorySeparatorChar);
 		}
 
 		private void btnRender_Click(object sender, EventArgs e)
@@ -1504,8 +1523,8 @@ namespace RTCV.UI
 		private void cbRenderAtLoad_CheckedChanged(object sender, EventArgs e)
 		{
 			throw new NotImplementedException();
-			RTC_StockpileManager.RenderAtLoad = cbRenderAtLoad.Checked;
-			//RTC_NetcoreImplementation.SendCommandToBizhawk(new RTC_Command(CommandType.REMOTE_RENDER_RENDERATLOAD) { objectValue = RTC_StockpileManager.RenderAtLoad });
+			RTC_StockpileManager_UISide.RenderAtLoad = cbRenderAtLoad.Checked;
+			//RTC_NetcoreImplementation.SendCommandToBizhawk(new RTC_Command(CommandType.REMOTE_RENDER_RENDERATLOAD) { objectValue = RTC_StockpileManager_UISide.RenderAtLoad });
 		}
 
 		private void btnLoadSavestateList_MouseDown(object sender, MouseEventArgs e)
@@ -1533,12 +1552,12 @@ namespace RTCV.UI
 						if (key == null)
 							continue;
 
-						if (RTC_StockpileManager.SavestateStashkeyDico.ContainsKey(key))
-							RTC_StockpileManager.SavestateStashkeyDico.Remove(key);
+						if (RTC_StockpileManager_UISide.SavestateStashkeyDico.ContainsKey(key))
+							RTC_StockpileManager_UISide.SavestateStashkeyDico.Remove(key);
 
 					}
 
-					RTC_StockpileManager.CurrentSavestateKey = null;
+					RTC_StockpileManager_UISide.CurrentSavestateKey = null;
 
 					RefreshSavestateTextboxes();
 				}));
@@ -1568,16 +1587,5 @@ namespace RTCV.UI
 			}
 		}
 
-		Guid? intensitySliderToken = null;
-
-		private void track_Intensity_MouseDown(object sender, MouseEventArgs e)
-		{
-		}
-
-		private void track_Intensity_MouseUp(object sender, MouseEventArgs e)
-		{
-
-			track_Intensity_Scroll(sender, e);
-		}
 	}
 }

@@ -195,7 +195,7 @@ namespace RTCV.CorruptCore
 			//from within emuhawk or else it'll apply the blastlayer AFTER this code completes
 			//So we manually apply the blastlayer
 			sk.RunOriginal();
-			sk.BlastLayer.Apply();
+			sk.BlastLayer.Apply(false);
 
 			newBlastLayer = bl.GetBackup();
 			return newBlastLayer;

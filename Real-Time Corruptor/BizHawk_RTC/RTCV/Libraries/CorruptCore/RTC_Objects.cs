@@ -81,8 +81,8 @@ namespace RTCV.CorruptCore
 			}
 			else
 			{
-				sks.Filename = RTC_StockpileManager.CurrentStockpile.Filename;
-				sks.ShortFilename = RTC_StockpileManager.CurrentStockpile.ShortFilename;
+				sks.Filename = RTC_StockpileManager_UISide.CurrentStockpile.Filename;
+				sks.ShortFilename = RTC_StockpileManager_UISide.CurrentStockpile.ShortFilename;
 			}
 
 			//Backup bizhawk settings
@@ -237,7 +237,7 @@ namespace RTCV.CorruptCore
 				}
 			//File.Move(file, RTC_Core.workingDir + Path.DirectorySeparatorChar + "SKS" + Path.DirectorySeparatorChar + (file.Substring(file.LastIndexOf(Path.DirectorySeparatorChar) + 1, file.Length - (file.LastIndexOf(Path.DirectorySeparatorChar) + 1))));
 
-			RTC_StockpileManager.CurrentStockpile = sks;
+			RTC_StockpileManager_UISide.CurrentStockpile = sks;
 
 
 
@@ -293,7 +293,7 @@ namespace RTCV.CorruptCore
 			RTC_Filtering.LoadListsFromPaths(Directory.GetFiles(RTC_Corruptcore.workingDir + Path.DirectorySeparatorChar + "SKS" + Path.DirectorySeparatorChar, "*.limiter"));
 
 
-			RTC_StockpileManager.CurrentStockpile = sks;
+			RTC_StockpileManager_UISide.CurrentStockpile = sks;
 
 			//Set up the correct 
 			foreach (StashKey t in sks.StashKeys)
@@ -610,7 +610,7 @@ namespace RTCV.CorruptCore
 			//S.GET<RTC_GlitchHarvester_Form>().RefreshNoteIcons();
 			CheckCompatibility(sks);
 
-			RTC_StockpileManager.StockpileChanged();
+			RTC_StockpileManager_UISide.StockpileChanged();
 		}
 	}
 
@@ -688,14 +688,14 @@ namespace RTCV.CorruptCore
 
 		public bool Run()
 		{
-			RTC_StockpileManager.CurrentStashkey = this;
-			return RTC_StockpileManager.ApplyStashkey(this);
+			RTC_StockpileManager_UISide.CurrentStashkey = this;
+			return RTC_StockpileManager_UISide.ApplyStashkey(this);
 		}
 
 		public void RunOriginal()
 		{
-			RTC_StockpileManager.CurrentStashkey = this;
-			RTC_StockpileManager.OriginalFromStashkey(this);
+			RTC_StockpileManager_UISide.CurrentStashkey = this;
+			RTC_StockpileManager_UISide.OriginalFromStashkey(this);
 		}
 
 		public byte[] EmbedState()
@@ -778,20 +778,10 @@ namespace RTCV.CorruptCore
 			return ObjectCopierCeras.Clone(this);
 		}
 
-		public void Apply(bool ignoreMaximums = false)
+		public void Apply(bool storeUncorruptBackup, bool ignoreMaximums = false)
 		{
-
-
-			/*
-			if (this != RTC_StockpileManager.lastBlastLayerBackup &&
-				RTC_Unispec.RTCSpec[Spec.CORE_SELECTEDENGINE.ToString()] != CorruptionEngine.HELLGENIE &&
-				RTC_Unispec.RTCSpec[Spec.CORE_SELECTEDENGINE.ToString()] != CorruptionEngine.FREEZE &&
-				RTC_Unispec.RTCSpec[Spec.CORE_SELECTEDENGINE.ToString()] != CorruptionEngine.PIPE)
-				RTC_StockpileManager.lastBlastLayerBackup = GetBackup();
-            */
-
-			if (this != RTC_StockpileManager.LastBlastLayerBackup)
-				RTC_StockpileManager.LastBlastLayerBackup = GetBackup();
+			if (storeUncorruptBackup && this != RTC_StockpileManager_EmuSide.UnCorruptBL)
+				RTC_StockpileManager_EmuSide.UnCorruptBL = GetBackup();
 
 			bool success;
 

@@ -237,14 +237,14 @@ namespace RTCV.UI
 		private void btnJustCorrupt_Click(object sender, EventArgs e)
 		{
 			BlastLayer bl = GenerateBlastLayers();
-			(bl?.Clone() as BlastLayer)?.Apply();
+			(bl?.Clone() as BlastLayer)?.Apply(true);
 		}
 
 		private void btnLoadCorrupt_Click(object sender, EventArgs e)
 		{
 			if (sk == null)
 			{
-				StashKey psk = RTC_StockpileManager.GetCurrentSavestateStashkey();
+				StashKey psk = RTC_StockpileManager_UISide.GetCurrentSavestateStashkey();
 				if (psk == null)
 				{
 					MessageBox.Show("Could not perform the CORRUPT action\n\nEither no Savestate Box was selected in the Savestate Manager\nor the Savetate Box itself is empty.");
@@ -267,7 +267,7 @@ namespace RTCV.UI
 		{
 			if (sk == null)
 			{
-				StashKey psk = RTC_StockpileManager.GetCurrentSavestateStashkey();
+				StashKey psk = RTC_StockpileManager_UISide.GetCurrentSavestateStashkey();
 				if (psk == null)
 				{
 					MessageBox.Show("Could not perform the CORRUPT action\n\nEither no Savestate Box was selected in the Savestate Manager\nor the Savetate Box itself is empty.");
@@ -292,14 +292,14 @@ namespace RTCV.UI
 			}
 			else
 			{
-				RTC_StockpileManager.StashHistory.Add(newSk);
+				RTC_StockpileManager_UISide.StashHistory.Add(newSk);
 				S.GET<RTC_GlitchHarvester_Form>().RefreshStashHistory();
 				S.GET<RTC_GlitchHarvester_Form>().dgvStockpile.ClearSelection();
 				S.GET<RTC_GlitchHarvester_Form>().lbStashHistory.ClearSelected();
 
 				S.GET<RTC_GlitchHarvester_Form>().DontLoadSelectedStash = true;
 				S.GET<RTC_GlitchHarvester_Form>().lbStashHistory.SelectedIndex = S.GET<RTC_GlitchHarvester_Form>().lbStashHistory.Items.Count - 1;
-				RTC_StockpileManager.CurrentStashkey = RTC_StockpileManager.StashHistory[S.GET<RTC_GlitchHarvester_Form>().lbStashHistory.SelectedIndex];
+				RTC_StockpileManager_UISide.CurrentStashkey = RTC_StockpileManager_UISide.StashHistory[S.GET<RTC_GlitchHarvester_Form>().lbStashHistory.SelectedIndex];
 			}
 		}
 
@@ -348,7 +348,7 @@ namespace RTCV.UI
 					//If opened from engine config, use the GH state
 					if (!openedFromBlastEditor)
 					{
-						StashKey psk = RTC_StockpileManager.GetCurrentSavestateStashkey();
+						StashKey psk = RTC_StockpileManager_UISide.GetCurrentSavestateStashkey();
 						if (psk == null)
 						{
 							MessageBox.Show(

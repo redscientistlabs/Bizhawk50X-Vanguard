@@ -217,8 +217,8 @@ namespace RTCV.UI
 			else
 			{
 				RTC_GameProtection.Stop();
-				RTC_StockpileManager.BackupedState = null;
-				RTC_StockpileManager.AllBackupStates.Clear();
+				RTC_StockpileManager_UISide.BackupedState = null;
+				RTC_StockpileManager_UISide.AllBackupStates.Clear();
 				btnGpJumpBack.Visible = false;
 				btnGpJumpNow.Visible = false;
 			}
@@ -347,10 +347,10 @@ namespace RTCV.UI
 			{
 				btnGpJumpBack.Visible = false;
 
-				if (RTC_StockpileManager.AllBackupStates.Count == 0)
+				if (RTC_StockpileManager_UISide.AllBackupStates.Count == 0)
 					return;
 
-				StashKey sk = RTC_StockpileManager.AllBackupStates.Pop();
+				StashKey sk = RTC_StockpileManager_UISide.AllBackupStates.Pop();
 
 				sk?.Run();
 
@@ -358,7 +358,7 @@ namespace RTCV.UI
 			}
 			finally
 			{
-				if (RTC_StockpileManager.AllBackupStates.Count != 0)
+				if (RTC_StockpileManager_UISide.AllBackupStates.Count != 0)
 					btnGpJumpBack.Visible = true;
 			}
 		}
@@ -369,8 +369,8 @@ namespace RTCV.UI
 			{
 				btnGpJumpNow.Visible = false;
 
-				if (RTC_StockpileManager.BackupedState != null)
-					RTC_StockpileManager.BackupedState.Run();
+				if (RTC_StockpileManager_UISide.BackupedState != null)
+					RTC_StockpileManager_UISide.BackupedState.Run();
 
 				RTC_GameProtection.Reset();
 			}

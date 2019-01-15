@@ -94,12 +94,15 @@ namespace RTCV.CorruptCore
 					break;
 				}
 				case APPLYBLASTLAYER:
-					{
-						BlastLayer bl = advancedMessage.objectValue as BlastLayer;
-						bl.Apply();
+				{
+					var temp = advancedMessage.objectValue as object[];
+					BlastLayer bl = (BlastLayer)temp[0];
+					bool backup = (bool)temp[1];
+					bl.Apply(backup);
 					}
 					break;
 
+				/*
 				case STASHKEY:
 					{
 						var temp = advancedMessage.objectValue as object[];
@@ -116,6 +119,7 @@ namespace RTCV.CorruptCore
 						sk.Run();
 					}
 					break;
+					*/
 
 
 				case REMOTE_PUSHRTCSPEC:
@@ -166,14 +170,14 @@ namespace RTCV.CorruptCore
 					bool reloadRom = (bool)(advancedMessage.objectValue as object[])[1];
 					bool runBlastLayer = (bool)(advancedMessage.objectValue as object[])[2];
 
-					bool returnValue = RTC_StockpileManager.LoadState_NET(sk, reloadRom, runBlastLayer);
+					bool returnValue = RTC_StockpileManager_EmuSide.LoadState_NET(sk, reloadRom, runBlastLayer);
 
 					e.setReturnValue(returnValue);
 				}
 					break;
 				case REMOTE_SAVESTATE:
 					{
-						StashKey sk = RTC_StockpileManager.SaveState_NET(advancedMessage.objectValue as StashKey); //Has to be nullable cast
+						StashKey sk = RTC_StockpileManager_EmuSide.SaveState_NET(advancedMessage.objectValue as StashKey); //Has to be nullable cast
 						e.setReturnValue(sk);
 					}
 					break;
@@ -182,13 +186,13 @@ namespace RTCV.CorruptCore
 					{
 					//	if (!RTC_Hooks.isNormalAdvance)
 					//		break;
-						e.setReturnValue(new NetCoreAdvancedMessage("REMOTE_BACKUPKEY_STASH", RTC_StockpileManager.SaveState_NET()));
+						e.setReturnValue(new NetCoreAdvancedMessage("REMOTE_BACKUPKEY_STASH", RTC_StockpileManager_EmuSide.SaveState_NET()));
 						break;
 					}
 
 				case REMOTE_BACKUPKEY_STASH:
-					RTC_StockpileManager.BackupedState = (StashKey)advancedMessage.objectValue;
-					RTC_StockpileManager.AllBackupStates.Push((StashKey)advancedMessage.objectValue);
+					//RTC_StockpileManager.BackupedState = (StashKey)advancedMessage.objectValue;
+					//RTC_StockpileManager.AllBackupStates.Push((StashKey)advancedMessage.objectValue);
 				//	S.GET<RTC_Core_Form>().btnGpJumpBack.Visible = true;
 					//S.GET<RTC_Core_Form>().btnGpJumpNow.Visible = true;
 					break;
@@ -225,22 +229,28 @@ namespace RTCV.CorruptCore
 
 				case REMOTE_KEY_PUSHSAVESTATEDICO:
 					{
-						var key = (string)(advancedMessage.objectValue as object[])[1];
-						var sk = (StashKey)((advancedMessage.objectValue as object[])[0]);
-						RTC_StockpileManager.SavestateStashkeyDico[key] = sk;
+						//var key = (string)(advancedMessage.objectValue as object[])[1];
+						//var sk = (StashKey)((advancedMessage.objectValue as object[])[0]);
+						//RTC_StockpileManager.SavestateStashkeyDico[key] = sk;
 						//S.GET<RTC_GlitchHarvester_Form>().RefreshSavestateTextboxes();
 					}
 					break;
 
 				case REMOTE_KEY_GETRAWBLASTLAYER:
-					e.setReturnValue(RTC_StockpileManager.GetRawBlastlayer());
+					e.setReturnValue(RTC_StockpileManager_EmuSide.GetRawBlastlayer());
 					break;
 
 
-				case REMOTE_SET_RESTOREBLASTLAYERBACKUP:
-					if (RTC_StockpileManager.LastBlastLayerBackup != null)
-						RTC_StockpileManager.LastBlastLayerBackup.Apply(true);
+				case REMOTE_SET_APPLYUNCORRUPTBL:
+					if (RTC_StockpileManager_EmuSide.UnCorruptBL != null)
+						RTC_StockpileManager_EmuSide.UnCorruptBL.Apply(true);
 					break;
+
+				case REMOTE_SET_APPLYCORRUPTBL:
+					if (RTC_StockpileManager_EmuSide.CorruptBL != null)
+						RTC_StockpileManager_EmuSide.CorruptBL.Apply(false);
+					break;
+
 
 				case REMOTE_SET_STEPACTIONS_CLEARALLBLASTUNITS:
 					RTC_StepActions.ClearStepBlastUnits();

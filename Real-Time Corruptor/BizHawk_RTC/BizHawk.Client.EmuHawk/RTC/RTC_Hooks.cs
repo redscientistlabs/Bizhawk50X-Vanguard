@@ -97,7 +97,7 @@ namespace RTC
 				CPU_STEP_Count = 0;
 				BlastLayer bl = RTC_Corruptcore.GenerateBlastLayer((string[])RTC_Corruptcore.UISpec["SELECTEDDOMAINS"]);
 				if (bl != null)
-					bl.Apply();
+					bl.Apply(false);
 			}
 		}
 
