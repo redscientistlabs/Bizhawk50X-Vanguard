@@ -18,34 +18,40 @@ namespace RTCV.UI
 		public new void HandleFormClosing(object s, FormClosingEventArgs e) => base.HandleFormClosing(s, e);
 
 		public bool DontUpdateIntensity = false;
+		public bool DontUpdateUI = false;
 		public int Intensity
 		{
 			get => RTC_Corruptcore.Intensity;
 			set
 			{
-				if (DontUpdateIntensity)
-					return;
+				if (!DontUpdateIntensity)
+					RTC_Corruptcore.Intensity = value;
 
 
-				RTC_Corruptcore.Intensity = value;
+				if (!DontUpdateUI)
+				{
+					var old = DontUpdateIntensity;
+					var old2 = DontUpdateUI;
+					DontUpdateIntensity = true;
+					DontUpdateUI = true;
 
-				DontUpdateIntensity = true;
+					if (nmIntensity.Value != value)
+						nmIntensity.Value = value;
 
-				if (nmIntensity.Value != value)
-					nmIntensity.Value = value;
+					if (S.GET<RTC_GlitchHarvester_Form>().nmIntensity.Value != value)
+						S.GET<RTC_GlitchHarvester_Form>().nmIntensity.Value = value;
 
-				if (S.GET<RTC_GlitchHarvester_Form>().nmIntensity.Value != value)
-					S.GET<RTC_GlitchHarvester_Form>().nmIntensity.Value = value;
+					int fx = Convert.ToInt32(Math.Sqrt(value) * 2000d);
 
-				int fx = Convert.ToInt32(Math.Sqrt(value) * 2000d);
+					if (track_Intensity.Value != fx)
+						track_Intensity.Value = fx;
 
-				if (track_Intensity.Value != fx)
-					track_Intensity.Value = fx;
+					if (S.GET<RTC_GlitchHarvester_Form>().track_Intensity.Value != fx)
+						S.GET<RTC_GlitchHarvester_Form>().track_Intensity.Value = fx;
 
-				if (S.GET<RTC_GlitchHarvester_Form>().track_Intensity.Value != fx)
-					S.GET<RTC_GlitchHarvester_Form>().track_Intensity.Value = fx;
-
-				DontUpdateIntensity = false;
+					DontUpdateIntensity = old;
+					DontUpdateUI = old2;
+				}
 			}
 		}
 
@@ -101,15 +107,19 @@ namespace RTCV.UI
 			if (_fx != ErrorDelay)
 				ErrorDelay = _fx;
 		}
+		
+		Guid? errorDelayToken = null;
+		Guid? intensityToken = null;
 
-		public void track_Intensity_Scroll(object sender, EventArgs e)
+		private void track_ErrorDelay_MouseDown(object sender, MouseEventArgs e)
 		{
-			double fx = Math.Floor(Math.Pow((track_Intensity.Value * 0.0005d), 2));
-			int _fx = Convert.ToInt32(fx);
-
-			if (_fx != Intensity)
-				Intensity = _fx;
 		}
+
+		private void track_ErrorDelay_MouseUp(object sender, MouseEventArgs e)
+		{
+			track_ErrorDelay_Scroll(sender, e);
+		}
+
 
 		public void nmIntensity_ValueChanged(object sender, EventArgs e)
 		{
@@ -117,6 +127,33 @@ namespace RTCV.UI
 
 			if (Intensity != _fx)
 				Intensity = _fx;
+		}
+
+		public void track_Intensity_Scroll(object sender, EventArgs e)
+		{
+			DontUpdateIntensity = true;
+			double fx = Math.Floor(Math.Pow((track_Intensity.Value * 0.0005d), 2));
+			int _fx = Convert.ToInt32(fx);
+
+
+			if (Intensity != _fx)
+				Intensity = _fx;
+		}
+
+		private void track_Intensity_MouseDown(object sender, MouseEventArgs e)
+		{
+			DontUpdateIntensity = true;
+		}
+
+		private void track_Intensity_MouseUp(object sender, EventArgs e)
+		{
+			double fx = Math.Floor(Math.Pow((track_Intensity.Value * 0.0005d), 2));
+			int _fx = Convert.ToInt32(fx);
+
+			DontUpdateIntensity = false;
+			DontUpdateUI = false;
+
+			Intensity = _fx;
 		}
 
 		private void cbBlastRadius_SelectedIndexChanged(object sender, EventArgs e)
@@ -150,27 +187,6 @@ namespace RTCV.UI
 		}
 
 
-		Guid? errorDelayToken = null;
-		Guid? intensityToken = null;
-
-		private void track_ErrorDelay_MouseDown(object sender, MouseEventArgs e)
-		{
-		}
-
-		private void track_ErrorDelay_MouseUp(object sender, MouseEventArgs e)
-		{
-
-			track_ErrorDelay_Scroll(sender, e);
-		}
-
-		private void track_Intensity_MouseDown(object sender, MouseEventArgs e)
-		{
-		}
-
-		private void track_Intensity_MouseUp(object sender, MouseEventArgs e)
-		{
-			track_Intensity_Scroll(sender, e);
-		}
 
 		private void RTC_GeneralParameters_Form_FormClosing(object sender, FormClosingEventArgs e)
 		{

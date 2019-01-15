@@ -73,11 +73,10 @@
             this.nmIntensity.ValueChanged += new System.EventHandler(this.nmIntensity_ValueChanged);
             this.nmIntensity.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.nmIntensity_ValueChanged);
             this.nmIntensity.KeyUp += new System.Windows.Forms.KeyEventHandler(this.nmIntensity_ValueChanged);
-            this.nmIntensity.MouseDown += new System.Windows.Forms.MouseEventHandler(base.HandleMouseDown);
-            // 
-            // nmErrorDelay
-            // 
-            this.nmErrorDelay.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
+			// 
+			// nmErrorDelay
+			// 
+			this.nmErrorDelay.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
             this.nmErrorDelay.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.nmErrorDelay.Font = new System.Drawing.Font("Segoe UI", 8F);
             this.nmErrorDelay.ForeColor = System.Drawing.Color.White;
@@ -203,12 +202,13 @@
             this.track_Intensity.Value = 2000;
             this.track_Intensity.Scroll += new System.EventHandler(this.track_Intensity_Scroll);
             this.track_Intensity.ValueChanged += new System.EventHandler(this.track_Intensity_Scroll);
-            this.track_Intensity.MouseDown += new System.Windows.Forms.MouseEventHandler(base.HandleMouseDown);
-            this.track_Intensity.MouseUp += new System.Windows.Forms.MouseEventHandler(this.track_Intensity_MouseUp);
-            // 
-            // track_ErrorDelay
-            // 
-            this.track_ErrorDelay.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            this.track_Intensity.MouseDown += new System.Windows.Forms.MouseEventHandler(this.track_Intensity_MouseDown);
+			this.track_Intensity.MouseUp += new System.Windows.Forms.MouseEventHandler(this.track_Intensity_MouseUp);
+			this.track_Intensity.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.track_Intensity_MouseUp);
+			// 
+			// track_ErrorDelay
+			// 
+			this.track_ErrorDelay.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.track_ErrorDelay.Location = new System.Drawing.Point(3, 32);
             this.track_ErrorDelay.Maximum = 512000;

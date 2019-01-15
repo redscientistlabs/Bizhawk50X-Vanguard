@@ -2218,10 +2218,11 @@
             this.track_Intensity.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.track_Intensity_Scroll);
             this.track_Intensity.MouseDown += new System.Windows.Forms.MouseEventHandler(this.track_Intensity_MouseDown);
             this.track_Intensity.MouseUp += new System.Windows.Forms.MouseEventHandler(this.track_Intensity_MouseUp);
-            // 
-            // labelIntensityTimes
-            // 
-            this.labelIntensityTimes.AutoSize = true;
+			this.track_Intensity.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.track_Intensity_MouseUp);
+			// 
+			// labelIntensityTimes
+			// 
+			this.labelIntensityTimes.AutoSize = true;
             this.labelIntensityTimes.Font = new System.Drawing.Font("Segoe UI", 8F);
             this.labelIntensityTimes.ForeColor = System.Drawing.Color.White;
             this.labelIntensityTimes.Location = new System.Drawing.Point(164, 10);
