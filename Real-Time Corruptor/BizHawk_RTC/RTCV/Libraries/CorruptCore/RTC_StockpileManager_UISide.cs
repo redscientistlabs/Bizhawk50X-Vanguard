@@ -76,7 +76,7 @@ namespace RTCV.CorruptCore
 			}
 			else
 			{
-				LocalNetCoreRouter.Route(NetcoreCommands.CORRUPTCORE, NetcoreCommands.APPLYBLASTLAYER, new object[] {CurrentStashkey, true}, true);
+				LocalNetCoreRouter.Route(NetcoreCommands.CORRUPTCORE, NetcoreCommands.APPLYBLASTLAYER, new object[] {CurrentStashkey.BlastLayer, true}, true);
 			}
 
 			PostApplyStashkey();
@@ -127,7 +127,7 @@ namespace RTCV.CorruptCore
 				}
 			}
 			else
-				LocalNetCoreRouter.Route(NetcoreCommands.CORRUPTCORE, NetcoreCommands.APPLYBLASTLAYER, new object[] { CurrentStashkey, true }, true);
+				LocalNetCoreRouter.Route(NetcoreCommands.CORRUPTCORE, NetcoreCommands.APPLYBLASTLAYER, new object[] { CurrentStashkey.BlastLayer, true }, true);
 
 
 			if (StashAfterOperation && bl != null)
@@ -185,7 +185,7 @@ namespace RTCV.CorruptCore
 					return false;
 			}
 			else
-				LocalNetCoreRouter.Route(NetcoreCommands.CORRUPTCORE, NetcoreCommands.APPLYBLASTLAYER, new object[] { CurrentStashkey, true }, true);
+				LocalNetCoreRouter.Route(NetcoreCommands.CORRUPTCORE, NetcoreCommands.APPLYBLASTLAYER, new object[] { CurrentStashkey.BlastLayer, true }, true);
 
 			bool isCorruptionApplied = CurrentStashkey?.BlastLayer?.Layer?.Count > 0;
 
@@ -283,7 +283,7 @@ namespace RTCV.CorruptCore
 				}
 				else
 				{
-					LocalNetCoreRouter.Route(NetcoreCommands.CORRUPTCORE, NetcoreCommands.APPLYBLASTLAYER, new object[] { CurrentStashkey, true }, true);
+					LocalNetCoreRouter.Route(NetcoreCommands.CORRUPTCORE, NetcoreCommands.APPLYBLASTLAYER, new object[] { CurrentStashkey.BlastLayer, true }, true);
 				}
 
 
@@ -302,7 +302,7 @@ namespace RTCV.CorruptCore
 
 		public static bool LoadState(StashKey sk, bool reloadRom = true, bool applyBlastLayer = true)
 		{
-			LocalNetCoreRouter.QueryRoute<bool>(NetcoreCommands.CORRUPTCORE, NetcoreCommands.REMOTE_LOADSTATE, new object[] {sk, true, true}, true);
+			LocalNetCoreRouter.QueryRoute<bool>(NetcoreCommands.CORRUPTCORE, NetcoreCommands.REMOTE_LOADSTATE, new object[] {sk, true, applyBlastLayer }, true);
 			return true;
 		}
 
