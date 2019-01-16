@@ -133,12 +133,6 @@ namespace RTCV.CorruptCore
 					break;
 
 
-				case REMOTE_PUSHVMDS:
-					RTC_MemoryDomains.VmdPool.Clear();
-					foreach (var proto in (advancedMessage.objectValue as VmdPrototype[]))
-						RTC_MemoryDomains.AddVMD(proto);
-					break;
-
 				case BLASTGENERATOR_BLAST:
 					{
 						var temp = advancedMessage.objectValue as object[];
@@ -209,12 +203,19 @@ namespace RTCV.CorruptCore
 					e.setReturnValue(LocalNetCoreRouter.Route(NetcoreCommands.VANGUARD, NetcoreCommands.REMOTE_DOMAIN_GETDOMAINS, true));
 					break;
 
+
+				case REMOTE_PUSHVMDPROTOS:
+					RTC_MemoryDomains.VmdPool.Clear();
+					foreach (var proto in (advancedMessage.objectValue as VmdPrototype[]))
+						RTC_MemoryDomains.AddVMD(proto);
+					break;
+
 				case REMOTE_DOMAIN_VMD_ADD:
-					RTC_MemoryDomains.AddVMD((advancedMessage.objectValue as VmdPrototype));
+					RTC_MemoryDomains.AddVMD_NET((advancedMessage.objectValue as VmdPrototype));
 					break;
 
 				case REMOTE_DOMAIN_VMD_REMOVE:
-					RTC_MemoryDomains.RemoveVMD((advancedMessage.objectValue as string));
+					RTC_MemoryDomains.RemoveVMD_NET((advancedMessage.objectValue as string));
 					break;
 
 				case REMOTE_DOMAIN_ACTIVETABLE_MAKEDUMP:

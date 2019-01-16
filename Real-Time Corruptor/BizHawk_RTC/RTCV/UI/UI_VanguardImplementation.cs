@@ -59,6 +59,19 @@ namespace UI
 
 				case REMOTE_ALLSPECSSENT:
 					S.GET<RTC_Core_Form>().Show();
+					if (RTC_UICore.FirstConnect)
+					{
+						RTC_UICore.FirstConnect = false;
+						S.GET<RTC_Core_Form>().btnEngineConfig_Click(null, null);
+					}
+					else
+					{
+						//Push the VMDs since we store them out of spec
+						var vmdProtos = RTC_MemoryDomains.VmdPool.Values.Cast<VirtualMemoryDomain>().Select(x => x.Proto).ToArray();
+						LocalNetCoreRouter.Route(NetcoreCommands.CORRUPTCORE, NetcoreCommands.REMOTE_PUSHVMDPROTOS, vmdProtos, true);
+
+						S.GET<RTC_Core_Form>().ShowPanelForm(S.GET<RTC_Core_Form>().previousForm, false);
+					}
 					break;
 
 				case REMOTE_PUSHEMUSPECUPDATE:
@@ -81,6 +94,7 @@ namespace UI
 					}
 					else
 					{
+
 						S.GET<RTC_MemoryDomains_Form>().RefreshDomainsAndKeepSelected();
 					}
 						break;

@@ -120,11 +120,6 @@ namespace RTC
 
 			//S.SET(_standaloneForm);
 
-			RTC_Extensions.DirectoryRequired(new string[] {
-				RTC_Corruptcore.workingDir, RTC_Corruptcore.workingDir + "\\TEMP\\", RTC_Corruptcore.workingDir + "\\SKS\\", RTC_Corruptcore.workingDir + "\\SSK\\", RTC_Corruptcore.workingDir + "\\SESSION\\", RTC_Corruptcore.workingDir + "\\MEMORYDUMPS\\", RTC_Corruptcore.workingDir + "\\MP\\", RTC_Corruptcore.assetsDir + "\\CRASHSOUNDS\\", RTC_Corruptcore.rtcDir + "\\PARAMS\\", RTC_Corruptcore.rtcDir + "\\LISTS\\",
-			});
-
-
 			//Refocus on Bizhawk
 			RTC_Hooks.BIZHAWK_MAINFORM_FOCUS();
 

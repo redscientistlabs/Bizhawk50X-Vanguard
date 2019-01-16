@@ -22,18 +22,14 @@ namespace RTCV.CorruptCore
 			get => (Dictionary<string, MemoryInterface>)RTC_Corruptcore.CorruptCoreSpec["MEMORYINTERFACES"];
 			set => RTC_Corruptcore.CorruptCoreSpec.Update("MEMORYINTERFACES", value);
 		}
-		public static Dictionary<string, MemoryInterface> VmdPool
-		{
-			get => (Dictionary<string, MemoryInterface>)RTC_Corruptcore.CorruptCoreSpec["VMDPOOL"];
-			set => RTC_Corruptcore.CorruptCoreSpec.Update("VMDPOOL", value);
-		}
+
+		public static Dictionary<string, MemoryInterface> VmdPool = new Dictionary<string, MemoryInterface>();
 
 		public static PartialSpec getDefaultPartial()
 		{
 			var partial = new PartialSpec("RTCSpec");
 
 			partial["MEMORYINTERFACES"] = new Dictionary<string, MemoryInterface>();
-			partial["VMDPOOL"] = new Dictionary<string, MemoryInterface>();
 
 			return partial;
 		}
@@ -119,60 +115,60 @@ namespace RTCV.CorruptCore
 		{
 			VmdPrototype proto = new VmdPrototype(sk.BlastLayer);
 			AddVMD(proto);
-
-			//Todo
-			//S.GET<RTC_VmdPool_Form>().RefreshVMDs();
 		}
 
+		/// <summary>
+		/// This is one of the rare cases where a method is netcore redundant
+		/// We don't use a spec for this because VMDs can get huge, and as such, we keep the dictionary synced on both sides manually.
+		/// </summary>
+		/// <param name="proto"></param>
 		public static void AddVMD(VmdPrototype proto) => AddVMD(proto.Generate());
 
+		/// <summary>
+		/// This is one of the rare cases where a method is netcore redundant
+		/// We don't use a spec for this because VMDs can get huge, and as such, we keep the dictionary synced on both sides manually.
+		/// </summary>
+		/// <param name="VMD"></param>
 		public static void AddVMD(VirtualMemoryDomain VMD)
 		{
 			RTC_MemoryDomains.VmdPool[VMD.ToString()] = VMD;
 
-
-			LocalNetCoreRouter.Route(NetcoreCommands.UI, NetcoreCommands.REMOTE_EVENT_DOMAINSUPDATED, true);
+			LocalNetCoreRouter.Route(NetcoreCommands.CORRUPTCORE, NetcoreCommands.REMOTE_DOMAIN_VMD_ADD, VMD.Proto, true);
+			LocalNetCoreRouter.Route(NetcoreCommands.UI, NetcoreCommands.REMOTE_EVENT_DOMAINSUPDATED);
 		}
 
-		public static void RemoveVMD(VirtualMemoryDomain VMD) => RemoveVMD(VMD.ToString());
 
+		public static void AddVMD_NET(VmdPrototype proto) => AddVMD_NET(proto.Generate());
+		public static void AddVMD_NET(VirtualMemoryDomain VMD)
+		{
+			RTC_MemoryDomains.VmdPool[VMD.ToString()] = VMD;
+		}
+
+		/// <summary>
+		/// This is one of the rare cases where a method is netcore redundant
+		/// We don't use a spec for this because VMDs can get huge, and as such, we keep the dictionary synced on both sides manually.
+		/// </summary>
+		/// <param name="VMD"></param>
+		public static void RemoveVMD(VirtualMemoryDomain VMD) => RemoveVMD(VMD.ToString());
+		/// <summary>
+		/// This is one of the rare cases where a method is netcore redundant
+		/// We don't use a spec for this because VMDs can get huge, and as such, we keep the dictionary synced on both sides manually.
+		/// </summary>
+		/// <param name="vmdName"></param>
 		public static void RemoveVMD(string vmdName)
 		{
 			if (RTC_MemoryDomains.VmdPool.ContainsKey(vmdName))
 				RTC_MemoryDomains.VmdPool.Remove(vmdName);
 
-			LocalNetCoreRouter.Route(NetcoreCommands.UI, NetcoreCommands.REMOTE_EVENT_DOMAINSUPDATED, true);
+			LocalNetCoreRouter.Route(NetcoreCommands.CORRUPTCORE, NetcoreCommands.REMOTE_DOMAIN_VMD_REMOVE, vmdName, true);
+			LocalNetCoreRouter.Route(NetcoreCommands.UI, NetcoreCommands.REMOTE_EVENT_DOMAINSUPDATED);
 		}
 
-		public static void RenameVMD(VirtualMemoryDomain VMD) => RenameVMD(VMD.ToString());
-
-		public static void RenameVMD(string vmdName)
+		public static void RemoveVMD_NET(VirtualMemoryDomain VMD) => RemoveVMD_NET(VMD.ToString());
+		public static void RemoveVMD_NET(string vmdName)
 		{
-			throw new NotImplementedException("Move input to UI");
-			/*
-			if (!RTC_MemoryDomains.VmdPool.ContainsKey(vmdName))
-				return;
-
-			string name = "";
-			string value = "";
-			if (UI_Extensions.GetInputBox("BlastLayer to VMD", "Enter the new VMD name:", ref value) == DialogResult.OK)
-			{
-				name = value.Trim();
-			}
-			else
-			{
-				return;
-			}
-
-			if (string.IsNullOrWhiteSpace(name))
-				name = RTC_Corruptcore.GetRandomKey();
-
-			VirtualMemoryDomain VMD = (VirtualMemoryDomain)RTC_MemoryDomains.VmdPool[vmdName];
-
-			RemoveVMD(VMD);
-			VMD.Name = name;
-			VMD.Proto.VmdName = name;
-			AddVMD(VMD);*/
+			if (RTC_MemoryDomains.VmdPool.ContainsKey(vmdName))
+				RTC_MemoryDomains.VmdPool.Remove(vmdName);
 		}
 
 		public static void GenerateActiveTableDump(string domain, string key)

@@ -339,7 +339,7 @@
             this.btnLogo.TabIndex = 117;
             this.btnLogo.TabStop = false;
             this.btnLogo.Tag = "color:darker";
-            this.btnLogo.Text = "   Version 0.00";
+            this.btnLogo.Text = "   Vanguard 0.00";
             this.btnLogo.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageBeforeText;
             this.btnLogo.UseVisualStyleBackColor = false;
             this.btnLogo.MouseClick += new System.Windows.Forms.MouseEventHandler(this.btnLogo_MouseClick);

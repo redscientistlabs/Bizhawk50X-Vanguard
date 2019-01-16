@@ -48,6 +48,35 @@ namespace RTCV.UI
 			lbVmdSizeValue.Text = "#####";
 		}
 
+		private static void RenameVMD(VirtualMemoryDomain VMD) => RenameVMD(VMD.ToString());
+
+		private static void RenameVMD(string vmdName)
+		{
+			if (!RTC_MemoryDomains.VmdPool.ContainsKey(vmdName))
+				return;
+
+			string name = "";
+			string value = "";
+			if (UI_Extensions.GetInputBox("BlastLayer to VMD", "Enter the new VMD name:", ref value) == DialogResult.OK)
+			{
+				name = value.Trim();
+			}
+			else
+			{
+				return;
+			}
+
+			if (string.IsNullOrWhiteSpace(name))
+				name = RTC_Corruptcore.GetRandomKey();
+
+			VirtualMemoryDomain VMD = (VirtualMemoryDomain)RTC_MemoryDomains.VmdPool[vmdName];
+
+			RTC_MemoryDomains.RemoveVMD(VMD);
+			VMD.Name = name;
+			VMD.Proto.VmdName = name;
+			RTC_MemoryDomains.AddVMD(VMD);
+		}
+
 		private void RTC_VmdPool_Form_Load(object sender, EventArgs e)
 		{
 		}
@@ -65,7 +94,7 @@ namespace RTCV.UI
 			if ((mi as VirtualMemoryDomain)?.PointerDomains.Distinct().Count() > 1)
 				lbRealDomainValue.Text = "Hybrid";
 			else
-				lbRealDomainValue.Text = (mi as VirtualMemoryDomain)?.PointerDomains[0];
+				lbRealDomainValue.Text = (mi as VirtualMemoryDomain)?.PointerDomains.FirstOrDefault();
 		}
 
 		private void btnSaveVmd_Click(object sender, EventArgs e)
@@ -145,7 +174,7 @@ namespace RTCV.UI
 
 			string vmdName = lbLoadedVmdList.SelectedItem.ToString();
 
-			RTC_MemoryDomains.RenameVMD(vmdName);
+			RenameVMD(vmdName);
 
 			RefreshVMDs();
 		}

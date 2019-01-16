@@ -30,12 +30,25 @@ namespace RTCV.UI
 		public static Point NoteBoxPosition;
 		public static Size NoteBoxSize;
 
+		public static bool FirstConnect = true;
+
 		//RTC Main Forms
 		//public static Color generalColor = Color.FromArgb(60, 45, 70);
 		public static Color GeneralColor = Color.LightSteelBlue;
 
 		public static void Start()
 		{
+
+
+			RTC_Extensions.DirectoryRequired(paths: new string[] {
+				RTC_Corruptcore.workingDir, RTC_Corruptcore.workingDir + "\\TEMP\\"
+				, RTC_Corruptcore.workingDir + "\\SKS\\", RTC_Corruptcore.workingDir + "\\SSK\\"
+				, RTC_Corruptcore.workingDir + "\\SESSION\\", RTC_Corruptcore.workingDir + "\\MEMORYDUMPS\\"
+				, RTC_Corruptcore.workingDir + "\\MP\\", RTC_Corruptcore.assetsDir + "\\CRASHSOUNDS\\"
+				, RTC_Corruptcore.rtcDir + "\\PARAMS\\", RTC_Corruptcore.rtcDir + "\\LISTS\\"
+				, RTC_Corruptcore.rtcDir + "\\RENDEROUTPUT\\",
+			});
+
 			//	NetCoreServer.StartLoopback();
 
 			Control dummy = new Control();

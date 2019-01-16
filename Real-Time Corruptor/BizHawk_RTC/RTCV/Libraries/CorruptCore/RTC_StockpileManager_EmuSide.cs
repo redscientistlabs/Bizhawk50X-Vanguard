@@ -10,8 +10,25 @@ namespace RTCV.CorruptCore
 {
 	public static class RTC_StockpileManager_EmuSide
 	{
+
+
+		public static bool RenderAtLoad
+		{
+			get => (bool)RTC_Corruptcore.CorruptCoreSpec[RTCSPEC.RENDER_AT_LOAD.ToString()];
+			set => RTC_Corruptcore.CorruptCoreSpec.Update(RTCSPEC.RENDER_AT_LOAD.ToString(), value);
+		}
+
+
 		public static BlastLayer CorruptBL = null;
 		public static BlastLayer UnCorruptBL = null;
+
+
+		public static PartialSpec getDefaultPartial()
+		{
+			var partial = new PartialSpec("RTCSpec");
+			partial[RTCSPEC.RENDER_AT_LOAD.ToString()] = false;
+			return partial;
+		}
 
 		public static bool LoadState_NET(StashKey sk, bool reloadRom = true, bool applyBlastLayer = true)
 		{

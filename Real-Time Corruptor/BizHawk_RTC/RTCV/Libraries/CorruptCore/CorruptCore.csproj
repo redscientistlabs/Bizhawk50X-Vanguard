@@ -82,6 +82,7 @@
     <Compile Include="RTC_MemoryDomains.cs" />
     <Compile Include="RTC_Objects.cs" />
     <Compile Include="RTC_Params.cs" />
+    <Compile Include="RTC_Render_CorruptCore.cs" />
     <Compile Include="RTC_StepActions.cs" />
     <Compile Include="RTC_StockpileManager_UISide.cs" />
     <Compile Include="RTC_StockpileManager_EmuSide.cs" />

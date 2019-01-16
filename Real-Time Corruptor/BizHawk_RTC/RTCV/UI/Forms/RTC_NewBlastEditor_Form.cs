@@ -1334,7 +1334,7 @@ namespace RTCV.UI
 		private void btnCorrupt_Click(object sender, EventArgs e)
 		{
 			StashKey newSk = (StashKey)currentSK.Clone();
-			newSk.BlastLayer?.Apply(true);
+			RTC_StockpileManager_UISide.ApplyStashkey(newSk, false);
 		}
 
 		public void RefreshAllNoteIcons()

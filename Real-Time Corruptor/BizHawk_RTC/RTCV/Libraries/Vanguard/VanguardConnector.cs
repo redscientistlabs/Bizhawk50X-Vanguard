@@ -64,7 +64,6 @@ namespace RTCV.Vanguard
                 receiver.OnMessageReceived(e);
                 return e.returnMessage;
             }
-
             
         }
 

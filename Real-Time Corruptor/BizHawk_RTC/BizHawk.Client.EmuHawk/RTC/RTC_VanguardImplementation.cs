@@ -126,9 +126,18 @@ namespace RTC
 					RTC_Hooks.BIZHAWK_MAINFORM_SAVECONFIG();
 					break;
 
+
+				case REMOTE_RENDER_START:
+					RTC_Render.StartRender_NET();
+					break;
+
+				case REMOTE_RENDER_STOP:
+					RTC_Render.StopRender_NET();
+					break;
+
 				case REMOTE_EVENT_BIZHAWKSTARTED:
-					//				if (RTC_StockpileManager.BackupedState == null)
-					//					S.GET<RTC_Core_Form>().AutoCorrupt = false;
+					//if (RTC_StockpileManager.BackupedState == null)
+					//S.GET<RTC_Core_Form>().AutoCorrupt = false;
 
 
 					//Todo

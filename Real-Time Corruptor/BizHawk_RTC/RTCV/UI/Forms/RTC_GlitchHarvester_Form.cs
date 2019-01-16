@@ -1047,6 +1047,7 @@ namespace RTCV.UI
 				{
 					var sk = (dgvStockpile.SelectedRows[0].Cells[0].Value as StashKey);
 					RTC_MemoryDomains.GenerateVmdFromStashkey(sk);
+					S.GET<RTC_VmdPool_Form>().RefreshVMDs();
 				}))).Enabled = (dgvStockpile.SelectedRows.Count == 1);
 
 				((ToolStripMenuItem)columnsMenu.Items.Add("Merge Selected Stashkeys", null, new EventHandler((ob, ev) =>
@@ -1351,6 +1352,7 @@ namespace RTCV.UI
 					StashKey sk = RTC_StockpileManager_UISide.StashHistory[lbStashHistory.SelectedIndex];
 					sk.BlastLayer.RasterizeVMDs();
 					RTC_MemoryDomains.GenerateVmdFromStashkey(sk);
+					S.GET<RTC_VmdPool_Form>().RefreshVMDs();
 				}))).Enabled = lbStashHistory.SelectedIndex != -1;
 
 				columnsMenu.Items.Add(new ToolStripSeparator());
@@ -1496,35 +1498,33 @@ namespace RTCV.UI
 
 		private void cbRenderType_SelectedIndexChanged(object sender, EventArgs e)
 		{
-			//	RTC_Render.setType(cbRenderType.SelectedItem.ToString());
+				RTC_Render_CorruptCore.setType(cbRenderType.SelectedItem.ToString());
 		}
 
 		private void btnOpenRenderFolder_Click(object sender, EventArgs e)
 		{
-			//	Process.Start(RTC_EmuCore.rtcDir + Path.DirectorySeparatorChar + "RENDEROUTPUT" + Path.DirectorySeparatorChar);
+				Process.Start(RTC_Corruptcore.rtcDir + Path.DirectorySeparatorChar + "RENDEROUTPUT" + Path.DirectorySeparatorChar);
 		}
 
 		private void btnRender_Click(object sender, EventArgs e)
 		{
-			throw new NotImplementedException();
-			/*
 			if (btnRender.Text == "Start Render")
 			{
-				RTC_Render.StartRender();
+				btnRender.Text ="Stop Render";
+				btnRender.ForeColor = Color.OrangeRed;
+				RTC_Render_CorruptCore.StartRender();
 			}
 			else
 			{
 				btnRender.Text = "Start Render";
 				btnRender.ForeColor = Color.White;
-				RTC_Render.StopRender();
-			}*/
+				RTC_Render_CorruptCore.StopRender();
+			}
 		}
 
 		private void cbRenderAtLoad_CheckedChanged(object sender, EventArgs e)
 		{
-			throw new NotImplementedException();
-			RTC_StockpileManager_UISide.RenderAtLoad = cbRenderAtLoad.Checked;
-			//RTC_NetcoreImplementation.SendCommandToBizhawk(new RTC_Command(CommandType.REMOTE_RENDER_RENDERATLOAD) { objectValue = RTC_StockpileManager_UISide.RenderAtLoad });
+			RTC_StockpileManager_EmuSide.RenderAtLoad = cbRenderAtLoad.Checked;
 		}
 
 		private void btnLoadSavestateList_MouseDown(object sender, MouseEventArgs e)

@@ -28,15 +28,6 @@ namespace RTCV.CorruptCore
 		// key: some key or guid, value: [0] savestate key [1] rom file
 		public static volatile Dictionary<string, StashKey> SavestateStashkeyDico = new Dictionary<string, StashKey>();
 
-		public static bool RenderAtLoad = false;
-
-		public static PartialSpec getDefaultPartial()
-		{
-			var partial = new PartialSpec("RTCSpec");
-
-
-			return partial;
-		}
 
 
 		private static void PreApplyStashkey()
@@ -46,10 +37,9 @@ namespace RTCV.CorruptCore
 
 		private static void PostApplyStashkey()
 		{
-			if (RenderAtLoad)
+			if (RTC_StockpileManager_EmuSide.RenderAtLoad)
 			{
-			//	RTC_Render.StartRender();
-			//	RTC_Render.StartRender();
+				RTC_Render_CorruptCore.StartRender();
 			}
 		}
 

@@ -143,6 +143,8 @@ namespace RTCV.CorruptCore
 			rtcSpecTemplate.Insert(RTC_Filtering.getDefaultPartial());
 			rtcSpecTemplate.Insert(RTC_VectorEngine.getDefaultPartial());
 			rtcSpecTemplate.Insert(RTC_MemoryDomains.getDefaultPartial());
+			rtcSpecTemplate.Insert(RTC_StockpileManager_EmuSide.getDefaultPartial());
+			rtcSpecTemplate.Insert(RTC_Render_CorruptCore.getDefaultPartial());
 
 
 			CorruptCoreSpec = new FullSpec(rtcSpecTemplate); //You have to feed a partial spec as a template

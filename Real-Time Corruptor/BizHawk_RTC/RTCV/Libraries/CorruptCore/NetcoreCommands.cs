@@ -22,8 +22,8 @@ namespace CorruptCore
 
 
 
-		public const string REMOTE_RENDER_SETTYPE = "REMOTE_RENDER_SETTYPE";
 		public const string REMOTE_RENDER_STOP = "REMOTE_RENDER_STOP";
+		public const string REMOTE_RENDER_START = "REMOTE_RENDER_START";
 
 		public const string REMOTE_EVENT_DOMAINSUPDATED = "REMOTE_EVENT_DOMAINSUPDATED";
 		public const string ASYNCBLAST = "ASYNCBLAST";
@@ -32,7 +32,7 @@ namespace CorruptCore
 		public const string STASHKEY = "STASHKEY";
 		public const string REMOTE_PUSHRTCSPEC = "REMOTE_PUSHRTCSPEC";
 		public const string REMOTE_PUSHRTCSPECUPDATE = "REMOTE_PUSHRTCSPECUPDATE";
-		public const string REMOTE_PUSHVMDS = "REMOTE_PUSHVMDS";
+		public const string REMOTE_PUSHVMDPROTOS = "REMOTE_PUSHVMDS";
 		public const string BLASTGENERATOR_BLAST = "BLASTGENERATOR_BLAST";
 		public const string REMOTE_MERGECONFIG = "REMOTE_MERGECONFIG";
 		public const string REMOTE_IMPORTKEYBINDS = "REMOTE_IMPORTKEYBINDS";
