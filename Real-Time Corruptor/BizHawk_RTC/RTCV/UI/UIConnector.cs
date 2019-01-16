@@ -16,7 +16,7 @@ namespace RTCV.UI
 		NetCoreReceiver receiver;
 		public NetCoreConnector netConn;
 
-		public UIConnector(NetCoreReceiver _receiver, ISynchronizeInvoke syncObject)
+		public UIConnector(NetCoreReceiver _receiver)
 		{
 			receiver = _receiver;
 
@@ -25,17 +25,39 @@ namespace RTCV.UI
 			var netCoreSpec = new NetCore.NetCoreSpec();
 			netCoreSpec.Side = NetCore.NetworkSide.SERVER;
 			netCoreSpec.Loopback = true;
-			netCoreSpec.syncObject = syncObject;
 			netCoreSpec.MessageReceived += OnMessageReceivedProxy;
 			netCoreSpec.ServerConnected += Spec_ServerConnected;
+			netCoreSpec.ServerConnectionLost += NetCoreSpec_ServerConnectionLost;
 
 			netConn = new NetCoreConnector(netCoreSpec);
 			LocalNetCoreRouter.registerEndpoint(netConn, "VANGUARD");
 			LocalNetCoreRouter.registerEndpoint(netConn, "DEFAULT"); //Will send mesages to netcore if can't find the destination
 		}
 
+		private void NetCoreSpec_ServerConnectionLost(object sender, EventArgs e)
+		{
+
+			if (S.GET<RTC_ConnectionStatus_Form>() != null && !S.GET<RTC_ConnectionStatus_Form>().IsDisposed)
+			{
+				S.GET<RTC_ConnectionStatus_Form>().lbConnectionStatus.Text = "Connection status: Bizhawk timed out";
+				S.GET<RTC_Core_Form>().ShowPanelForm(S.GET<RTC_ConnectionStatus_Form>());
+			}
+
+			if (S.GET<RTC_GlitchHarvester_Form>() != null && !S.GET<RTC_GlitchHarvester_Form>().IsDisposed)
+			{
+				S.GET<RTC_GlitchHarvester_Form>().lbConnectionStatus.Text = "Connection status: Bizhawk timed out";
+				S.GET<RTC_GlitchHarvester_Form>().pnHideGlitchHarvester.BringToFront();
+				S.GET<RTC_GlitchHarvester_Form>().pnHideGlitchHarvester.Show();
+			}
+
+			RTC_GameProtection.Stop();
+			//Kill the active table autodumps
+			S.GET<RTC_VmdAct_Form>().cbAutoAddDump.Checked = false;
+		}
+
 		private static void Spec_ServerConnected(object sender, EventArgs e)
 		{
+
 		}
 
 		public void OnMessageReceivedProxy(object sender, NetCoreEventArgs e) => OnMessageReceived(sender, e);

@@ -28,16 +28,18 @@
 		/// </summary>
 		private void InitializeComponent()
 		{
-            this.numericUpDownHexFix1 = new NumericUpDownHexFix();
-            this.numericUpDownHexFix2 = new NumericUpDownHexFix();
-            this.numericUpDownHexFix3 = new NumericUpDownHexFix();
+            this.numericUpDownHexFix1 = new RTCV.UI.NumericUpDownHexFix();
+            this.numericUpDownHexFix2 = new RTCV.UI.NumericUpDownHexFix();
+            this.numericUpDownHexFix3 = new RTCV.UI.NumericUpDownHexFix();
             this.checkBox1 = new System.Windows.Forms.CheckBox();
             this.label1 = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
             this.label3 = new System.Windows.Forms.Label();
             this.dataGridView1 = new System.Windows.Forms.DataGridView();
-            this.Column1 = new DataGridViewNumericUpDownColumn();
+            this.Column1 = new RTCV.UI.DataGridViewNumericUpDownColumn();
             this.checkBox2 = new System.Windows.Forms.CheckBox();
+            this.button1 = new System.Windows.Forms.Button();
+            this.button2 = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDownHexFix1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDownHexFix2)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDownHexFix3)).BeginInit();
@@ -46,36 +48,32 @@
             // 
             // numericUpDownHexFix1
             // 
-            this.numericUpDownHexFix1.Location = new System.Drawing.Point(16, 39);
-            this.numericUpDownHexFix1.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.numericUpDownHexFix1.Location = new System.Drawing.Point(12, 32);
             this.numericUpDownHexFix1.Name = "numericUpDownHexFix1";
-            this.numericUpDownHexFix1.Size = new System.Drawing.Size(160, 22);
+            this.numericUpDownHexFix1.Size = new System.Drawing.Size(120, 20);
             this.numericUpDownHexFix1.TabIndex = 0;
             // 
             // numericUpDownHexFix2
             // 
             this.numericUpDownHexFix2.Hexadecimal = true;
-            this.numericUpDownHexFix2.Location = new System.Drawing.Point(16, 100);
-            this.numericUpDownHexFix2.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.numericUpDownHexFix2.Location = new System.Drawing.Point(12, 81);
             this.numericUpDownHexFix2.Name = "numericUpDownHexFix2";
-            this.numericUpDownHexFix2.Size = new System.Drawing.Size(160, 22);
+            this.numericUpDownHexFix2.Size = new System.Drawing.Size(120, 20);
             this.numericUpDownHexFix2.TabIndex = 1;
             // 
             // numericUpDownHexFix3
             // 
-            this.numericUpDownHexFix3.Location = new System.Drawing.Point(16, 171);
-            this.numericUpDownHexFix3.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.numericUpDownHexFix3.Location = new System.Drawing.Point(12, 139);
             this.numericUpDownHexFix3.Name = "numericUpDownHexFix3";
-            this.numericUpDownHexFix3.Size = new System.Drawing.Size(160, 22);
+            this.numericUpDownHexFix3.Size = new System.Drawing.Size(120, 20);
             this.numericUpDownHexFix3.TabIndex = 2;
             // 
             // checkBox1
             // 
             this.checkBox1.AutoSize = true;
-            this.checkBox1.Location = new System.Drawing.Point(184, 175);
-            this.checkBox1.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.checkBox1.Location = new System.Drawing.Point(138, 142);
             this.checkBox1.Name = "checkBox1";
-            this.checkBox1.Size = new System.Drawing.Size(102, 21);
+            this.checkBox1.Size = new System.Drawing.Size(81, 17);
             this.checkBox1.TabIndex = 3;
             this.checkBox1.Text = "Toggle Hex";
             this.checkBox1.UseVisualStyleBackColor = true;
@@ -84,30 +82,27 @@
             // label1
             // 
             this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(16, 16);
-            this.label1.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            this.label1.Location = new System.Drawing.Point(12, 13);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(208, 17);
+            this.label1.Size = new System.Drawing.Size(161, 13);
             this.label1.TabIndex = 4;
             this.label1.Text = "NumericUpDownHexFix Decimal";
             // 
             // label2
             // 
             this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(12, 80);
-            this.label2.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            this.label2.Location = new System.Drawing.Point(9, 65);
             this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(182, 17);
+            this.label2.Size = new System.Drawing.Size(142, 13);
             this.label2.TabIndex = 5;
             this.label2.Text = "NumericUpDownHexFix Hex";
             // 
             // label3
             // 
             this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(12, 151);
-            this.label3.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            this.label3.Location = new System.Drawing.Point(9, 123);
             this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(154, 17);
+            this.label3.Size = new System.Drawing.Size(120, 13);
             this.label3.TabIndex = 6;
             this.label3.Text = "NumericUpDownHexFix";
             // 
@@ -116,10 +111,9 @@
             this.dataGridView1.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.dataGridView1.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
             this.Column1});
-            this.dataGridView1.Location = new System.Drawing.Point(335, 11);
-            this.dataGridView1.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.dataGridView1.Location = new System.Drawing.Point(251, 9);
             this.dataGridView1.Name = "dataGridView1";
-            this.dataGridView1.Size = new System.Drawing.Size(193, 185);
+            this.dataGridView1.Size = new System.Drawing.Size(145, 150);
             this.dataGridView1.TabIndex = 7;
             // 
             // Column1
@@ -130,20 +124,41 @@
             // checkBox2
             // 
             this.checkBox2.AutoSize = true;
-            this.checkBox2.Location = new System.Drawing.Point(536, 11);
-            this.checkBox2.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.checkBox2.Location = new System.Drawing.Point(402, 9);
             this.checkBox2.Name = "checkBox2";
-            this.checkBox2.Size = new System.Drawing.Size(102, 21);
+            this.checkBox2.Size = new System.Drawing.Size(81, 17);
             this.checkBox2.TabIndex = 8;
             this.checkBox2.Text = "Toggle Hex";
             this.checkBox2.UseVisualStyleBackColor = true;
             this.checkBox2.CheckedChanged += new System.EventHandler(this.checkBox2_CheckedChanged);
             // 
+            // button1
+            // 
+            this.button1.Location = new System.Drawing.Point(92, 205);
+            this.button1.Name = "button1";
+            this.button1.Size = new System.Drawing.Size(263, 51);
+            this.button1.TabIndex = 9;
+            this.button1.Text = "button1";
+            this.button1.UseVisualStyleBackColor = true;
+            this.button1.Click += new System.EventHandler(this.button1_Click);
+            // 
+            // button2
+            // 
+            this.button2.Location = new System.Drawing.Point(92, 275);
+            this.button2.Name = "button2";
+            this.button2.Size = new System.Drawing.Size(263, 51);
+            this.button2.TabIndex = 10;
+            this.button2.Text = "button2";
+            this.button2.UseVisualStyleBackColor = true;
+            this.button2.Click += new System.EventHandler(this.button2_Click);
+            // 
             // RTC_Test_Form
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(684, 501);
+            this.ClientSize = new System.Drawing.Size(513, 407);
+            this.Controls.Add(this.button2);
+            this.Controls.Add(this.button1);
             this.Controls.Add(this.checkBox2);
             this.Controls.Add(this.dataGridView1);
             this.Controls.Add(this.label3);
@@ -153,7 +168,6 @@
             this.Controls.Add(this.numericUpDownHexFix3);
             this.Controls.Add(this.numericUpDownHexFix2);
             this.Controls.Add(this.numericUpDownHexFix1);
-            this.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.Name = "RTC_Test_Form";
             this.Text = "RTC_Test_Form";
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDownHexFix1)).EndInit();
@@ -177,5 +191,7 @@
 		private System.Windows.Forms.DataGridView dataGridView1;
 		private DataGridViewNumericUpDownColumn Column1;
 		private System.Windows.Forms.CheckBox checkBox2;
+		private System.Windows.Forms.Button button1;
+		private System.Windows.Forms.Button button2;
 	}
 }

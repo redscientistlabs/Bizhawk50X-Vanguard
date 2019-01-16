@@ -520,13 +520,14 @@
             this.ClientSize = new System.Drawing.Size(804, 515);
             this.Controls.Add(this.pnLeftPanel);
             this.DoubleBuffered = true;
+            this.Font = new System.Drawing.Font("Segoe UI Symbol", 8.25F);
             this.ForeColor = System.Drawing.SystemColors.ControlText;
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.MaximizeBox = false;
             this.Name = "RTC_Core_Form";
             this.Tag = "color:dark";
-            this.Text = "RTC : Attached Mode";
+            this.Text = "RTC Vanguard";
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.RTC_Form_FormClosing);
             this.Load += new System.EventHandler(this.RTC_Form_Load);
             this.pnLeftPanel.ResumeLayout(false);

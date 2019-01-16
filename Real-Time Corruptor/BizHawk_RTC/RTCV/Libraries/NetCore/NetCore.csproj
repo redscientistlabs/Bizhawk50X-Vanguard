@@ -54,6 +54,7 @@
     <Compile Include="MessageHub.cs" />
     <Compile Include="NetCoreObjects.cs" />
     <Compile Include="ReturnWatch.cs" />
+    <Compile Include="SyncObjectSingleton.cs" />
     <Compile Include="TCPLinkWatch.cs" />
     <Compile Include="UDPLink.cs" />
     <Compile Include="TCPLink.cs" />

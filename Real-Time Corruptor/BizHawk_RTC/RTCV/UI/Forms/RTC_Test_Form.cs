@@ -7,6 +7,8 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using CorruptCore;
+using RTCV.NetCore;
 using static RTCV.UI.UI_Extensions;
 
 namespace RTCV.UI
@@ -33,6 +35,16 @@ namespace RTCV.UI
 					_column.Hexadecimal = checkBox2.Checked;
 				}
 			}
+		}
+
+		private void button1_Click(object sender, EventArgs e)
+		{
+			LocalNetCoreRouter.Route(NetcoreCommands.VANGUARD, "INFINITELOOP");
+		}
+
+		private void button2_Click(object sender, EventArgs e)
+		{
+			LocalNetCoreRouter.Route(NetcoreCommands.VANGUARD, "INFINITELOOP", true);
 		}
 	}
 }

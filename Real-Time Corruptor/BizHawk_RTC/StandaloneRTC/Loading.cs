@@ -1,12 +1,11 @@
 ﻿using System;
 using System.Linq;
 using System.Windows.Forms;
-using RTC;
 using RTCV.UI;
 
 namespace StandaloneRTC
 {
-	public partial class Loader : RTC.RTC_Standalone_Form
+	public partial class Loader : UI_Extensions.RTC_Standalone_Form
 	{ 
 		Timer t;
 
@@ -27,10 +26,7 @@ namespace StandaloneRTC
 			}
 
 			RTC.LogConsole.ShowConsole();
-			RTC_UICore.Start();
-//			RTC.RTC_EmuCore.Start(this);
-			//Hide();
-
+			RTC_UICore.Start(this);
 		}
 
 		private void Form1_Load(object sender, EventArgs e)

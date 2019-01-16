@@ -86,7 +86,7 @@ namespace RTCV.NetCore
         public NetworkSide Side = NetworkSide.NONE;
         public bool AutoReconnect = true;
         public int ClientReconnectDelay = 600;
-        public int DefaultBoopMonitoringCounter = 1500;
+        public int DefaultBoopMonitoringCounter = 15;
 
         public bool Loopback = true;
         public string IP = "127.0.0.1";
@@ -148,7 +148,7 @@ namespace RTCV.NetCore
 
     public class ConsoleEx
     {
-        public static volatile bool ShowDebug = false; // for debugging purposes, put this to true in order to see BOOP and EVENT commands in the console
+        public static volatile bool ShowDebug = true; // for debugging purposes, put this to true in order to see BOOP and EVENT commands in the console
 
         public static ConsoleEx singularity
         {

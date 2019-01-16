@@ -10,6 +10,7 @@ using System.Reflection;
 using System.Threading;
 using System.Windows.Forms;
 using CorruptCore;
+using NetCore;
 using Newtonsoft.Json;
 using RTCV.CorruptCore;
 using RTCV.NetCore;
@@ -36,10 +37,8 @@ namespace RTCV.UI
 		//public static Color generalColor = Color.FromArgb(60, 45, 70);
 		public static Color GeneralColor = Color.LightSteelBlue;
 
-		public static void Start()
+		public static void Start(RTC_Standalone_Form standaloneForm = null)
 		{
-
-
 			RTC_Extensions.DirectoryRequired(paths: new string[] {
 				RTC_Corruptcore.workingDir, RTC_Corruptcore.workingDir + "\\TEMP\\"
 				, RTC_Corruptcore.workingDir + "\\SKS\\", RTC_Corruptcore.workingDir + "\\SSK\\"
@@ -49,12 +48,14 @@ namespace RTCV.UI
 				, RTC_Corruptcore.rtcDir + "\\RENDEROUTPUT\\",
 			});
 
-			//	NetCoreServer.StartLoopback();
+			S.SET<RTC_Standalone_Form>(standaloneForm);
 
-			Control dummy = new Control();
+			Form dummy = new Form();
 			IntPtr Handle = dummy.Handle;
 
-			UI_VanguardImplementation.StartServer(dummy);
+			SyncObjectSingleton.SyncObject = dummy;
+
+			UI_VanguardImplementation.StartServer();
 
 
 			PartialSpec p = new PartialSpec("UISpec");
@@ -77,6 +78,10 @@ namespace RTCV.UI
 			S.GET<RTC_SettingsGeneral_Form>().cbAllowCrossCoreCorruption.Checked = RTC_Params.IsParamSet("ALLOW_CROSS_CORE_CORRUPTION");
 			S.GET<RTC_SettingsGeneral_Form>().cbDontCleanAtQuit.Checked = RTC_Params.IsParamSet("DONT_CLEAN_SAVESTATES_AT_QUIT");
 
+
+			S.GET<RTC_Core_Form>().ShowPanelForm(S.GET<RTC_ConnectionStatus_Form>());
+			S.GET<RTC_Core_Form>().Show();
+
 		}
 
 		//All RTC forms
@@ -93,6 +98,7 @@ namespace RTCV.UI
 						all.Add((Form)S.GET(Type.GetType(t.ToString())));
 
 				return all.ToArray();
+				return all.ToArray();
 
 			}
 		}
@@ -104,7 +110,8 @@ namespace RTCV.UI
 				return;
 
 			isClosing = true;
-			NetCoreServer.StopLoopback();
+			if(NetCoreServer.loopbackConnector != null)
+				NetCoreServer.StopLoopback();
 
 
 			foreach (Form frm in RTC_UICore.AllRtcForms)

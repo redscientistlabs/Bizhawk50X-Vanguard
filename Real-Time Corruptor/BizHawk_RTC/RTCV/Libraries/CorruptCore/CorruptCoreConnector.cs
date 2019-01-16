@@ -6,7 +6,10 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading;
+using System.Windows.Forms;
 using CorruptCore;
+using NetCore;
+using RTCV.CorruptCore;
 using RTCV.NetCore;
 using static CorruptCore.NetcoreCommands;
 
@@ -20,6 +23,7 @@ namespace RTCV.CorruptCore
 			//spec.Side = RTCV.NetCore.NetworkSide.CLIENT;
 		}
 
+
 		public object OnMessageReceived(object sender, NetCoreEventArgs e)
 		{
 			//Use setReturnValue to handle returns
@@ -31,42 +35,60 @@ namespace RTCV.CorruptCore
 			{
 				//UI sent its spec
 				case REMOTE_PUSHUISPEC:
-					RTC_Corruptcore.UISpec = new FullSpec((PartialSpec)advancedMessage.objectValue);
+					SyncObjectSingleton.FormExecute((o, ea) =>
+					{
+						RTC_Corruptcore.UISpec = new FullSpec((PartialSpec)advancedMessage.objectValue);
+					}); 
 					e.setReturnValue(true);
 					break;
 
 				//UI sent a spec update
 				case REMOTE_PUSHUISPECUPDATE:
-					RTC_Corruptcore.UISpec?.Update((PartialSpec)advancedMessage.objectValue);
+					SyncObjectSingleton.FormExecute((o, ea) =>
+					{
+						RTC_Corruptcore.UISpec?.Update((PartialSpec)advancedMessage.objectValue);
+					});
 					e.setReturnValue(true);
 					break;
 
 				//Vanguard sent a copy of its spec
 				case REMOTE_PUSHEMUSPEC:
-					RTC_Corruptcore.VanguardSpec = new FullSpec((PartialSpec)advancedMessage.objectValue);
+					SyncObjectSingleton.FormExecute((o, ea) =>
+					{
+						RTC_Corruptcore.VanguardSpec = new FullSpec((PartialSpec)advancedMessage.objectValue);
+					});
 					e.setReturnValue(true);
 					break;
 
 				//Vanguard sent a spec update
 				case REMOTE_PUSHEMUSPECUPDATE:
-					RTC_Corruptcore.VanguardSpec?.Update((PartialSpec)advancedMessage.objectValue, false);
+					SyncObjectSingleton.FormExecute((o, ea) =>
+					{
+						RTC_Corruptcore.VanguardSpec?.Update((PartialSpec)advancedMessage.objectValue, false);
+					});
 					break;
 
 				//UI sent a copy of the CorruptCore spec
 				case REMOTE_PUSHCORRUPTCORESPEC:
-					RTC_Corruptcore.CorruptCoreSpec = new FullSpec((PartialSpec)advancedMessage.objectValue);
-					RTC_Corruptcore.CorruptCoreSpec.SpecUpdated += (o, ea) =>
+					SyncObjectSingleton.FormExecute((o, ea) =>
 					{
-						PartialSpec partial = ea.partialSpec;
+						RTC_Corruptcore.CorruptCoreSpec = new FullSpec((PartialSpec)advancedMessage.objectValue);
+						RTC_Corruptcore.CorruptCoreSpec.SpecUpdated += (ob, eas) =>
+						{
+							PartialSpec partial = eas.partialSpec;
 
-						LocalNetCoreRouter.Route(NetcoreCommands.UI, NetcoreCommands.REMOTE_PUSHCORRUPTCORESPECUPDATE, partial, true);
-					};
+							LocalNetCoreRouter.Route(NetcoreCommands.UI, NetcoreCommands.REMOTE_PUSHCORRUPTCORESPECUPDATE, partial, true);
+						};
+					});
 					e.setReturnValue(true);
 					break;
 
 				//UI sent an update of the CorruptCore spec
 				case REMOTE_PUSHCORRUPTCORESPECUPDATE:
-					RTC_Corruptcore.CorruptCoreSpec?.Update((PartialSpec)advancedMessage.objectValue, false);
+					SyncObjectSingleton.FormExecute((o, ea) =>
+					{
+						RTC_Corruptcore.CorruptCoreSpec?.Update((PartialSpec)advancedMessage.objectValue, false);
+					});
 					e.setReturnValue(true);
 					break;
 
@@ -78,19 +100,26 @@ namespace RTCV.CorruptCore
 
 				case ASYNCBLAST:
 					{
-						RTC_Corruptcore.ASyncGenerateAndBlast();
+						SyncObjectSingleton.FormExecute((o, ea) =>
+						{
+							RTC_Corruptcore.ASyncGenerateAndBlast();
+						});
 					}
 					break;
 
 				case GENERATEBLASTLAYER:
 				{
 					string[] domains = advancedMessage.objectValue as string[];
-					BlastLayer bl = RTC_Corruptcore.GenerateBlastLayer(domains);
+
+					BlastLayer bl = null;
+					SyncObjectSingleton.FormExecute((o, ea) =>
+					{
+						bl = RTC_Corruptcore.GenerateBlastLayer(domains);
+					});
 					if (advancedMessage.requestGuid != null)
 					{
 						e.setReturnValue(bl);
 					}
-
 					break;
 				}
 				case APPLYBLASTLAYER:
@@ -98,9 +127,12 @@ namespace RTCV.CorruptCore
 					var temp = advancedMessage.objectValue as object[];
 					BlastLayer bl = (BlastLayer)temp[0];
 					bool backup = (bool)temp[1];
-					bl.Apply(backup);
-					}
-					break;
+					SyncObjectSingleton.FormExecute((o, ea) =>
+					{
+						bl.Apply(backup);
+					});
+				}
+				break;
 
 				/*
 				case STASHKEY:
@@ -139,7 +171,11 @@ namespace RTCV.CorruptCore
 						var blastGeneratorProtos = (List<BlastGeneratorProto>)(temp[0]);
 						var sk = (StashKey)(temp[1]);
 
-						List<BlastGeneratorProto> returnList = RTC_BlastTools.GenerateBlastLayersFromBlastGeneratorProtos(blastGeneratorProtos, sk);
+						List<BlastGeneratorProto> returnList = null;
+						SyncObjectSingleton.FormExecute((o, ea) =>
+						{
+							returnList = RTC_BlastTools.GenerateBlastLayersFromBlastGeneratorProtos(blastGeneratorProtos, sk);
+						});
 
 						if (advancedMessage.requestGuid != null)
 						{
@@ -150,11 +186,17 @@ namespace RTCV.CorruptCore
 
 
 				case REMOTE_MERGECONFIG:
-					Stockpile.MergeBizhawkConfig_NET();
+					SyncObjectSingleton.FormExecute((o, ea) =>
+					{
+						Stockpile.MergeBizhawkConfig_NET();
+					});
 					break;
 
 				case REMOTE_IMPORTKEYBINDS:
-					Stockpile.ImportBizhawkKeybinds_NET();
+					SyncObjectSingleton.FormExecute((o, ea) =>
+					{
+						Stockpile.ImportBizhawkKeybinds_NET();
+					});
 					break;
 
 
@@ -163,17 +205,24 @@ namespace RTCV.CorruptCore
 					StashKey sk = (StashKey)(advancedMessage.objectValue as object[])[0];
 					bool reloadRom = (bool)(advancedMessage.objectValue as object[])[1];
 					bool runBlastLayer = (bool)(advancedMessage.objectValue as object[])[2];
-
-					bool returnValue = RTC_StockpileManager_EmuSide.LoadState_NET(sk, reloadRom, runBlastLayer);
+					bool returnValue = false;
+					SyncObjectSingleton.FormExecute((o, ea) =>
+					{
+						returnValue = RTC_StockpileManager_EmuSide.LoadState_NET(sk, reloadRom, runBlastLayer);
+					});
 
 					e.setReturnValue(returnValue);
 				}
-					break;
+				break;
 				case REMOTE_SAVESTATE:
+				{
+					StashKey sk = null;
+					SyncObjectSingleton.FormExecute((o, ea) =>
 					{
-						StashKey sk = RTC_StockpileManager_EmuSide.SaveState_NET(advancedMessage.objectValue as StashKey); //Has to be nullable cast
-						e.setReturnValue(sk);
-					}
+						sk = RTC_StockpileManager_EmuSide.SaveState_NET(advancedMessage.objectValue as StashKey); //Has to be nullable cast
+					});
+					e.setReturnValue(sk);
+				}
 					break;
 
 				case REMOTE_BACKUPKEY_REQUEST:
@@ -192,11 +241,17 @@ namespace RTCV.CorruptCore
 					break;
 
 				case REMOTE_DOMAIN_PEEKBYTE:
-					e.setReturnValue(RTC_MemoryDomains.GetInterface((string)(advancedMessage.objectValue as object[])[0]).PeekByte((long)(advancedMessage.objectValue as object[])[1]));
+					SyncObjectSingleton.FormExecute((o, ea) =>
+					{
+						e.setReturnValue(RTC_MemoryDomains.GetInterface((string)(advancedMessage.objectValue as object[])[0]).PeekByte((long)(advancedMessage.objectValue as object[])[1]));
+					});
 					break;
 
 				case REMOTE_DOMAIN_POKEBYTE:
-					RTC_MemoryDomains.GetInterface((string)(advancedMessage.objectValue as object[])[0]).PokeByte((long)(advancedMessage.objectValue as object[])[1], (byte)(advancedMessage.objectValue as object[])[2]);
+					SyncObjectSingleton.FormExecute((o, ea) =>
+					{
+						RTC_MemoryDomains.GetInterface((string)(advancedMessage.objectValue as object[])[0]).PokeByte((long)(advancedMessage.objectValue as object[])[1], (byte)(advancedMessage.objectValue as object[])[2]);
+					});
 					break;
 
 				case REMOTE_DOMAIN_GETDOMAINS:
@@ -219,7 +274,10 @@ namespace RTCV.CorruptCore
 					break;
 
 				case REMOTE_DOMAIN_ACTIVETABLE_MAKEDUMP:
-					RTC_MemoryDomains.GenerateActiveTableDump((string)(advancedMessage.objectValue as object[])[0], (string)(advancedMessage.objectValue as object[])[1]);
+					SyncObjectSingleton.FormExecute((o, ea) =>
+					{
+						RTC_MemoryDomains.GenerateActiveTableDump((string)(advancedMessage.objectValue as object[])[0], (string)(advancedMessage.objectValue as object[])[1]);
+					}); 
 					break;
 
 				/*
@@ -238,26 +296,50 @@ namespace RTCV.CorruptCore
 					break;
 
 				case REMOTE_KEY_GETRAWBLASTLAYER:
-					e.setReturnValue(RTC_StockpileManager_EmuSide.GetRawBlastlayer());
+					SyncObjectSingleton.FormExecute((o, ea) =>
+					{
+						e.setReturnValue(RTC_StockpileManager_EmuSide.GetRawBlastlayer());
+					});
 					break;
 
 
 				case REMOTE_SET_APPLYUNCORRUPTBL:
-					if (RTC_StockpileManager_EmuSide.UnCorruptBL != null)
-						RTC_StockpileManager_EmuSide.UnCorruptBL.Apply(true);
+					SyncObjectSingleton.FormExecute((o, ea) =>
+					{
+						if (RTC_StockpileManager_EmuSide.UnCorruptBL != null)
+							RTC_StockpileManager_EmuSide.UnCorruptBL.Apply(true);
+					});
 					break;
 
 				case REMOTE_SET_APPLYCORRUPTBL:
-					if (RTC_StockpileManager_EmuSide.CorruptBL != null)
-						RTC_StockpileManager_EmuSide.CorruptBL.Apply(false);
+					SyncObjectSingleton.FormExecute((o, ea) =>
+					{
+						if (RTC_StockpileManager_EmuSide.CorruptBL != null)
+							RTC_StockpileManager_EmuSide.CorruptBL.Apply(false);
+					});
 					break;
 
 
 				case REMOTE_SET_STEPACTIONS_CLEARALLBLASTUNITS:
-					RTC_StepActions.ClearStepBlastUnits();
+					SyncObjectSingleton.FormExecute((o, ea) =>
+					{
+						RTC_StepActions.ClearStepBlastUnits();
+					});
+
 					break;
 				case REMOTE_SET_STEPACTIONS_REMOVEEXCESSINFINITEUNITS:
-					RTC_StepActions.RemoveExcessInfiniteStepUnits();
+					SyncObjectSingleton.FormExecute((o, ea) =>
+					{
+						RTC_StepActions.RemoveExcessInfiniteStepUnits();
+					});
+					break;
+
+
+				case REMOTE_EVENT_CLOSEEMULATOR:
+					SyncObjectSingleton.FormExecute((o, ea) =>
+					{
+						Application.Exit();
+					});
 					break;
 
 
@@ -355,27 +437,6 @@ namespace RTCV.CorruptCore
 					S.GET<RTC_GlitchHarvester_Form>().IsCorruptionApplied = true;
 					//Todo
 					//RTC_NetcoreImplementation.SendCommandToRTC(new RTC_Command("BLAST) { blastlayer = RTC_StockpileManager.CurrentStashkey.BlastLayer });
-					break;
-
-				case "REMOTE_RENDER_START":
-					RTC_Render.StartRender_NET();
-					break;
-
-				case "REMOTE_RENDER_STOP":
-					RTC_Render.StopRender_NET();
-					break;
-
-				case "REMOTE_RENDER_SETTYPE":
-					RTC_Render.lastType = (RENDERTYPE)advancedMessage.objectValue;
-					break;
-
-				case "REMOTE_RENDER_STARTED":
-					S.GET<RTC_GlitchHarvester_Form>().btnRender.Text = "Stop Render";
-					S.GET<RTC_GlitchHarvester_Form>().btnRender.ForeColor = Color.GreenYellow;
-					break;
-
-				case "REMOTE_RENDER_RENDERATLOAD":
-					RTC_StockpileManager.RenderAtLoad = (bool)advancedMessage.objectValue;
 					break;
 					*/
 

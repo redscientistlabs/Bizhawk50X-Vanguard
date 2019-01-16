@@ -12,6 +12,7 @@ using System.Windows.Forms;
 using BizHawk.Client.Common;
 using BizHawk.Client.EmuHawk;
 using CorruptCore;
+using NetCore;
 using Newtonsoft.Json;
 using RTCV.CorruptCore;
 using RTCV.NetCore;
@@ -114,7 +115,8 @@ namespace RTC
 		//This is the entry point of RTC. Without this method, nothing will load.
 		public static void Start(RTC_Standalone_Form _standaloneForm = null)
 		{
-			VanguardImplementation.StartClient(GlobalWin.MainForm);
+			SyncObjectSingleton.SyncObject = GlobalWin.MainForm;
+			VanguardImplementation.StartClient();
 			RTC_EmuCore.RegisterEmuhawkSpec();
 
 

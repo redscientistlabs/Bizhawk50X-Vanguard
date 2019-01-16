@@ -1,6 +1,7 @@
 ﻿using RTCV.NetCore;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Threading;
@@ -9,6 +10,7 @@ using System.Windows.Forms;
 using BizHawk.Client.Common;
 using BizHawk.Emulation.Common;
 using BizHawk.Emulation.Cores.Nintendo.N64;
+using NetCore;
 using RTCV;
 using RTCV.CorruptCore;
 using static CorruptCore.NetcoreCommands;
@@ -19,27 +21,24 @@ namespace RTC
 	{
 		public static RTCV.Vanguard.VanguardConnector connector = null;
 
-		private static Form cachedSyncObject = null;
 
-		public static void StartClient(Form syncObject)
+		public static void StartClient()
 		{
-
 			ConsoleEx.WriteLine("Starting Vanguard Client");
 			Thread.Sleep(500); //When starting in Multiple Startup Project, the first try will be uncessful since
 			//the server takes a bit more time to start then the client.
 
 			var spec = new NetCoreReceiver();
 			spec.MessageReceived += OnMessageReceived;
-			cachedSyncObject = syncObject;
 
-			connector = new RTCV.Vanguard.VanguardConnector(spec, syncObject);
+			connector = new RTCV.Vanguard.VanguardConnector(spec);
 		}
 
 		public static void RestartClient()
 		{
 			connector.Kill();
 			connector = null;
-			StartClient(cachedSyncObject);
+			StartClient();
 		}
 
 		private static void OnMessageReceived(object sender, NetCoreEventArgs e)
@@ -54,8 +53,21 @@ namespace RTC
 			ConsoleEx.WriteLine(message.Type);
 			switch (message.Type) //Handle received messages here
 			{
+				case "INFINITELOOP":
+					SyncObjectSingleton.FormExecute((o, ea) =>
+					{
+						while (true)
+						{
+							Thread.Sleep(10);
+						}
+					});
+					break;
+
 				case REMOTE_ALLSPECSSENT:
-					RTC_EmuCore.LoadDefaultAndShowBizhawkForm();
+					SyncObjectSingleton.FormExecute((o, ea) =>
+					{
+						RTC_EmuCore.LoadDefaultAndShowBizhawkForm();
+					});
 					break;
 				/*
 				case "POKEBYTE":
@@ -67,33 +79,47 @@ namespace RTC
 					RTC_Hooks.
 				}*/
 				case SAVESAVESTATE:
-				{
-					e.setReturnValue(RTC_EmuCore.SaveSavestate_NET(advancedMessage.objectValue as string));
+					SyncObjectSingleton.FormExecute((o, ea) =>
+					{
+						e.setReturnValue(RTC_EmuCore.SaveSavestate_NET(advancedMessage.objectValue as string));
+					});
 					break;
-				}
 
 				case LOADSAVESTATE:
 				{
 					var cmd = advancedMessage.objectValue as object[];
 					var path = cmd[0] as string;
 					var location = (StashKeySavestateLocation)cmd[1];
-					e.setReturnValue(RTC_EmuCore.LoadSavestate_NET(path, location));
+					SyncObjectSingleton.FormExecute((o, ea) =>
+					{
+						e.setReturnValue(RTC_EmuCore.LoadSavestate_NET(path, location));
+					});
 					break;
 				}
 
 				case REMOTE_LOADROM:
 				{
 					var fileName = advancedMessage.objectValue as String;
-					RTC_EmuCore.LoadRom_NET(fileName);
+					SyncObjectSingleton.FormExecute((o, ea) =>
+					{
+						RTC_EmuCore.LoadRom_NET(fileName);
+					});
+
 				}
 					break;
 
 				case REMOTE_DOMAIN_GETDOMAINS:
-					e.setReturnValue(RTC_Hooks.GetInterfaces());
+					SyncObjectSingleton.FormExecute((o, ea) =>
+					{
+						e.setReturnValue(RTC_Hooks.GetInterfaces());
+					});
 					break;
 
 				case REMOTE_KEY_SETSYNCSETTINGS:
-					RTC_Hooks.BIZHAWK_GETSET_SYNCSETTINGS = (string)advancedMessage.objectValue;
+					SyncObjectSingleton.FormExecute((o, ea) =>
+					{
+						RTC_Hooks.BIZHAWK_GETSET_SYNCSETTINGS = (string)advancedMessage.objectValue;
+					});
 					break;
 
 				case REMOTE_KEY_SETSYSTEMCORE:
@@ -101,7 +127,10 @@ namespace RTC
 					var cmd = advancedMessage.objectValue as object[];
 					var systemName = (string)cmd[0];
 					var systemCore = (string)cmd[1];
-					RTC_Hooks.BIZHAWK_SET_SYSTEMCORE(systemName, systemCore);
+					SyncObjectSingleton.FormExecute((o, ea) =>
+					{
+						RTC_Hooks.BIZHAWK_SET_SYSTEMCORE(systemName, systemCore);
+					});
 				}
 					break;
 
@@ -114,25 +143,40 @@ namespace RTC
 					MemoryDomainProxy mdp = RTC_MemoryDomains.GetProxy(domain, address);
 					long realAddress = RTC_MemoryDomains.GetRealAddress(domain, address);
 
-					RTC_Hooks.BIZHAWK_OPEN_HEXEDITOR_ADDRESS(mdp, realAddress);
+					SyncObjectSingleton.FormExecute((o, ea) =>
+					{
+						RTC_Hooks.BIZHAWK_OPEN_HEXEDITOR_ADDRESS(mdp, realAddress);
+					});
 
 					break;
 				}
 				case REMOTE_EVENT_BIZHAWK_MAINFORM_CLOSE:
-					RTC_Hooks.BIZHAWK_MAINFORM_CLOSE();
+					SyncObjectSingleton.FormExecute((o, ea) =>
+					{
+						RTC_Hooks.BIZHAWK_MAINFORM_CLOSE();
+					});
 					break;
 
 				case REMOTE_EVENT_SAVEBIZHAWKCONFIG:
-					RTC_Hooks.BIZHAWK_MAINFORM_SAVECONFIG();
+					SyncObjectSingleton.FormExecute((o, ea) =>
+					{
+						RTC_Hooks.BIZHAWK_MAINFORM_SAVECONFIG();
+					});
 					break;
 
 
 				case REMOTE_RENDER_START:
-					RTC_Render.StartRender_NET();
+					SyncObjectSingleton.FormExecute((o, ea) =>
+					{
+						RTC_Render.StartRender_NET();
+					});
 					break;
 
 				case REMOTE_RENDER_STOP:
-					RTC_Render.StopRender_NET();
+					SyncObjectSingleton.FormExecute((o, ea) =>
+					{
+						RTC_Render.StopRender_NET();
+					});
 					break;
 
 				case REMOTE_EVENT_BIZHAWKSTARTED:
