@@ -64,6 +64,9 @@ namespace CorruptCore
 		public const string REMOTE_LOADROM = "REMOTE_LOADROM";
 
 
+		public const string ERROR_DISABLE_AUTOCORRUPT = "ERROR_DISABLE_AUTOCORRUPT";
+
+
 
 		public const string REMOTE_KEY_SETSYNCSETTINGS = "REMOTE_KEY_SETSYNCSETTINGS";
 		public const string REMOTE_KEY_SETSYSTEMCORE = "REMOTE_KEY_SETSYSTEMCORE";

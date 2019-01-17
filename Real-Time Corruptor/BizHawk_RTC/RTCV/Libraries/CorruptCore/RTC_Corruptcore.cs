@@ -77,7 +77,6 @@ namespace RTCV.CorruptCore
 			set => CorruptCoreSpec.Update(RTCSPEC.CORE_AUTOCORRUPT.ToString(), value);
 		}
 
-
 		public static bool DontCleanSavestatesOnQuit
 		{
 			get => (bool)CorruptCoreSpec[RTCSPEC.CORE_DONTCLEANSAVESTATESONQUIT.ToString()];
@@ -519,18 +518,19 @@ namespace RTCV.CorruptCore
 					additionalInfo = "Unable to get an interface to the selected memory domain! Try clicking the Auto-Select Domains button to refresh the domains!\n\n";
 				}
 
-				//Todo figure out how to handle this 
-				/*
 				DialogResult dr = MessageBox.Show("Something went wrong in the RTC Core. \n" +
 					additionalInfo +
 					"This is an RTC error, so you should probably send this to the RTC devs.\n\n" +
 					"If you know the steps to reproduce this error it would be greatly appreciated.\n\n" +
-					(S.GET<RTC_Core_Form>().AutoCorrupt ? ">> STOP AUTOCORRUPT ?.\n\n" : "") +
+					(RTC_Corruptcore.AutoCorrupt ? ">> STOP AUTOCORRUPT ?.\n\n" : "") +
 					$"domain:{Domain?.ToString()} maxaddress:{MaxAddress.ToString()} randomaddress:{RandomAddress.ToString()} \n\n" +
-					ex.ToString(), "Error", (S.GET<RTC_Core_Form>().AutoCorrupt ? MessageBoxButtons.YesNo : MessageBoxButtons.OK));
+					ex.ToString(), "Error", (RTC_Corruptcore.AutoCorrupt ? MessageBoxButtons.YesNo : MessageBoxButtons.OK));
 
 				if (dr == DialogResult.Yes || dr == DialogResult.OK)
-					S.GET<RTC_Core_Form>().AutoCorrupt = false;*/
+				{
+					RTC_Corruptcore.AutoCorrupt = false;
+					LocalNetCoreRouter.Route(NetcoreCommands.UI, NetcoreCommands.ERROR_DISABLE_AUTOCORRUPT);
+				}
 
 				return null;
 			}

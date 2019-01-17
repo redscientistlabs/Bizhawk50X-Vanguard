@@ -21,7 +21,7 @@ using static RTCV.UI.UI_Extensions;
 namespace RTCV.UI
 {
 	public static class RTC_UICore
-	{   
+	{
 		//Engine Values
 		public static BindingList<ComboBoxItem<string>> LimiterListBindingSource = new BindingList<ComboBoxItem<string>>();
 		public static BindingList<ComboBoxItem<string>> ValueListBindingSource = new BindingList<ComboBoxItem<string>>();

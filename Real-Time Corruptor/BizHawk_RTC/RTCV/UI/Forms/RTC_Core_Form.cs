@@ -64,8 +64,9 @@ namespace RTCV.UI
 			if (btnAutoCorrupt.ForeColor == Color.Silver)
 				return;
 
-			this.AutoCorrupt = !this.AutoCorrupt;
-			RTC_Corruptcore.CorruptCoreSpec.Update(RTCSPEC.STEP_RUNBEFORE.ToString(), true);
+			AutoCorrupt = !AutoCorrupt;
+			if(AutoCorrupt)
+				RTC_Corruptcore.CorruptCoreSpec.Update(RTCSPEC.STEP_RUNBEFORE.ToString(), true);
 		}
 
 		private void RTC_Form_Load(object sender, EventArgs e)

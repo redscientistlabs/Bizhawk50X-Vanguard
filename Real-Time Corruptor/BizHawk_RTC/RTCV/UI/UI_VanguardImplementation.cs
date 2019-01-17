@@ -123,6 +123,12 @@ namespace UI
 						}
 					});
 					break;
+				case ERROR_DISABLE_AUTOCORRUPT:
+					SyncObjectSingleton.FormExecute((o, ea) =>
+					{
+						S.GET<RTC_Core_Form>().AutoCorrupt = false;
+					});
+					break;
 
 			}
 		}

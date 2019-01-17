@@ -121,6 +121,5 @@ namespace RTCV.UI
 			RefreshDomains();
 			RTC_Corruptcore.UISpec.Update("SELECTEDDOMAINS", lbMemoryDomains.SelectedItems.Cast<string>().ToArray());
 		}
-
 	}
 }
