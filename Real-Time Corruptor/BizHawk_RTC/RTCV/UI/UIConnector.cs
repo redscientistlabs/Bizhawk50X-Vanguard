@@ -54,6 +54,7 @@ namespace RTCV.UI
 				}
 
 				S.GET<RTC_VmdAct_Form>().cbAutoAddDump.Checked = false;
+				S.GET<RTC_Core_Form>().AutoCorrupt = false;
 			});
 			RTC_GameProtection.Stop();
 
