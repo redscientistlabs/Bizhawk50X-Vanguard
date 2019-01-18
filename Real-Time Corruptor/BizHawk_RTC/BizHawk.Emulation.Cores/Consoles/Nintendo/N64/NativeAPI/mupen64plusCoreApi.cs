@@ -336,7 +336,7 @@ namespace BizHawk.Emulation.Cores.Nintendo.N64.NativeApi
 		//WARNING - RETURNS A STATIC BUFFER
 		[UnmanagedFunctionPointer(CallingConvention.Cdecl)]
 		public delegate IntPtr biz_r4300_decode_op(uint instr, uint counter);
-		public biz_r4300_decode_op m64p_decode_op; 
+		public biz_r4300_decode_op m64p_decode_op;
 
 		/// <summary>
 		/// Reads from the "system bus"
@@ -572,8 +572,6 @@ namespace BizHawk.Emulation.Cores.Nintendo.N64.NativeApi
 
 		volatile bool emulator_running = false;
 
-		public bool IsCrashed => !emulator_running;
-
 		/// <summary>
 		/// Starts executing the emulator asynchronously
 		/// Waits until the emulator booted up and than returns
@@ -590,29 +588,14 @@ namespace BizHawk.Emulation.Cores.Nintendo.N64.NativeApi
 		/// Starts execution of mupen64plus
 		/// Does not return until the emulator stops
 		/// </summary>
-		
-		//RTC_Hijack - Add this property so the try-catch works
-		[System.Runtime.ExceptionServices.HandleProcessCorruptedStateExceptionsAttribute()]
 		private void ExecuteEmulator()
 		{
 			emulator_running = true;
 			var cb = new StartupCallback(() => m64pStartupComplete.Set());
-
-			//RTC_Hijack - Catch mupen crashing
-			try
-			{
-				m64pCoreDoCommandPtr(m64p_command.M64CMD_EXECUTE, 0,
-					Marshal.GetFunctionPointerForDelegate(cb));
-			}
-			catch (Exception ex)
-			{
-				Console.WriteLine("RTC HIjack: Mupen sad during ExecuteEmulator :( " + ex.ToString());
-			}
-			finally
-			{
-				emulator_running = false;
-				cb.GetType();
-			} //Hijack_End
+			m64pCoreDoCommandPtr(m64p_command.M64CMD_EXECUTE, 0,
+				Marshal.GetFunctionPointerForDelegate(cb));
+			emulator_running = false;
+			cb.GetType();
 		}
 
 		/// <summary>
@@ -638,7 +621,7 @@ namespace BizHawk.Emulation.Cores.Nintendo.N64.NativeApi
 			m64pDebugMemGetPointer = (DebugMemGetPointer)Marshal.GetDelegateForFunctionPointer(GetProcAddress(CoreDll, "DebugMemGetPointer"), typeof(DebugMemGetPointer));
 			m64pDebugSetCallbacks = (DebugSetCallbacks)Marshal.GetDelegateForFunctionPointer(GetProcAddress(CoreDll, "DebugSetCallbacks"), typeof(DebugSetCallbacks));
 			m64pDebugBreakpointLookup = (DebugBreakpointLookup)Marshal.GetDelegateForFunctionPointer(GetProcAddress(CoreDll, "DebugBreakpointLookup"), typeof(DebugBreakpointLookup));
-			m64pDebugBreakpointCommand = ( DebugBreakpointCommand )Marshal.GetDelegateForFunctionPointer(GetProcAddress(CoreDll, "DebugBreakpointCommand"), typeof(DebugBreakpointCommand));
+			m64pDebugBreakpointCommand = (DebugBreakpointCommand)Marshal.GetDelegateForFunctionPointer(GetProcAddress(CoreDll, "DebugBreakpointCommand"), typeof(DebugBreakpointCommand));
 			m64pDebugGetState = (DebugGetState)Marshal.GetDelegateForFunctionPointer(GetProcAddress(CoreDll, "DebugGetState"), typeof(DebugGetState));
 			m64pDebugSetRunState = (DebugSetRunState)Marshal.GetDelegateForFunctionPointer(GetProcAddress(CoreDll, "DebugSetRunState"), typeof(DebugSetRunState));
 			m64pDebugStep = (DebugStep)Marshal.GetDelegateForFunctionPointer(GetProcAddress(CoreDll, "DebugStep"), typeof(DebugStep));
@@ -748,17 +731,15 @@ namespace BizHawk.Emulation.Cores.Nintendo.N64.NativeApi
 
 		private BreakParams _breakparams;
 
-		public void frame_advance()
+		//RTC_HIJACK - Make this a bool so we can return false if it's crashed
+		public bool frame_advance()
 		{
-			if (!emulator_running)
-				return;
-
 			event_frameend = false;
 			m64pCoreDoCommandPtr(m64p_command.M64CMD_ADVANCE_FRAME, 0, IntPtr.Zero);
 
 			//the way we should be able to do it:
 			//m64pFrameComplete.WaitOne();
-			
+
 			//however. since this is probably an STAThread, this call results in message pumps running.
 			//those message pumps are only supposed to respond to critical COM stuff, but in fact they interfere with other things.
 			//so here are two workaround methods.
@@ -769,9 +750,13 @@ namespace BizHawk.Emulation.Cores.Nintendo.N64.NativeApi
 			//method 2.
 			//BizHawk.Common.Win32ThreadHacks.HackyComWaitOne(m64pFrameComplete);
 
-			for(;;)
+			for (; ; )
 			{
-				BizHawk.Common.Win32ThreadHacks.HackyPinvokeWaitOne(m64pEvent, 200);
+				//RTC_Hijack. Return false if it's crashed
+				if (!BizHawk.Common.Win32ThreadHacks.HackyPinvokeWaitOne(m64pEvent))
+				{
+					return false;
+				}
 				if (event_frameend)
 					break;
 				if (event_breakpoint)
@@ -791,14 +776,10 @@ namespace BizHawk.Emulation.Cores.Nintendo.N64.NativeApi
 
 					event_breakpoint = false;
 					Resume();
-					continue;
 				}
-				//no event.. must be a timeout
-				//check if the core crashed and bail if it did
-				//otherwise wait longer (could be inside slow emulation or lua logic)
-				if (!emulator_running)
-					break;
 			}
+			//RTC_HIJACK Always return something
+			return true;
 		}
 
 		public void OnBreakpoint(BreakParams breakparams)
@@ -807,27 +788,10 @@ namespace BizHawk.Emulation.Cores.Nintendo.N64.NativeApi
 			event_breakpoint = true; //order important
 			m64pEvent.Set(); //order important
 		}
-		//RTC_Hijack - Add this attribute
-		[System.Runtime.ExceptionServices.HandleProcessCorruptedStateExceptionsAttribute()]
+
 		public int SaveState(byte[] buffer)
 		{
-			//RTC_Hijack - Catch exceptions here and return -1
-			try
-			{
-				int state = m64pCoreSaveState(buffer);
-				return state;
-			}
-			catch (Exception ex)
-			{
-				Console.WriteLine("RTC Hijack: Mupen sad during Savestate  :(" + ex.ToString());
-				if (AttachedCore != null)
-				{
-					AttachedCore.Dispose();
-					AttachedCore = null;
-				}
-				return -1;
-			}
-			//Hijack_End
+			return m64pCoreSaveState(buffer);
 		}
 
 		public void LoadState(byte[] buffer)
@@ -881,7 +845,7 @@ namespace BizHawk.Emulation.Cores.Nintendo.N64.NativeApi
 				flags = (uint)m64p_dbg_bkp_flags.M64P_BPT_FLAG_ENABLED
 			};
 
-			switch(type)
+			switch (type)
 			{
 				case BreakType.Read:
 					breakpoint.flags |= (uint)m64p_dbg_bkp_flags.M64P_BPT_FLAG_READ;
@@ -903,7 +867,7 @@ namespace BizHawk.Emulation.Cores.Nintendo.N64.NativeApi
 		{
 			int index = 0;
 
-			switch(type)
+			switch (type)
 			{
 				case BreakType.Read:
 					index = m64pDebugBreakpointLookup(address.Value, 4, (uint)m64p_dbg_bkp_flags.M64P_BPT_FLAG_READ);
@@ -923,25 +887,9 @@ namespace BizHawk.Emulation.Cores.Nintendo.N64.NativeApi
 			m64pDebugBreakpointCommand(m64p_dbg_bkp_command.M64P_BKP_CMD_REMOVE_IDX, (uint)index, ref unused);
 		}
 
-		//RTC_Hijack - Add this attribute
-		[System.Runtime.ExceptionServices.HandleProcessCorruptedStateExceptionsAttribute()]
 		public void setTraceCallback(TraceCallback callback)
 		{
-			//RTC_Hijack try-catch this
-			try
-			{
-				m64pSetTraceCallback(callback);
-			}
-			catch (Exception ex)
-			{
-				Console.WriteLine("RTC Hijack: Mupen sad during setTraceCallback  :(" + ex.ToString());
-				if (AttachedCore != null)
-				{
-					AttachedCore.Dispose();
-					AttachedCore = null;
-				}
-			}//Hijack_End
-			
+			m64pSetTraceCallback(callback);
 		}
 
 		public void getRegisters(byte[] dest)
@@ -1020,8 +968,6 @@ namespace BizHawk.Emulation.Cores.Nintendo.N64.NativeApi
 			return plugin.dllHandle;
 		}
 
-		//RTC_Hijack - Add this attribute
-		[System.Runtime.ExceptionServices.HandleProcessCorruptedStateExceptionsAttribute()]
 		public void DetachPlugin(m64p_plugin_type type)
 		{
 			AttachedPlugin plugin;
@@ -1030,21 +976,7 @@ namespace BizHawk.Emulation.Cores.Nintendo.N64.NativeApi
 				plugins.Remove(type);
 				m64pCoreDetachPlugin(type);
 				plugin.dllShutdown();
-				//RTC_Hijack try-catch to see if we can escape
-				try
-				{
-					FreeLibrary(plugin.dllHandle);
-				}
-				catch (Exception ex)
-				{
-					Console.WriteLine("RTC Hijack: Mupen sad during FreeLibrary(plugin.dllHandle)  :(" + ex.ToString());
-					if (AttachedCore != null)
-					{
-						AttachedCore.Dispose();
-						AttachedCore = null;
-					}
-				}//Hijack_End
-
+				FreeLibrary(plugin.dllHandle);
 			}
 		}
 
@@ -1085,7 +1017,7 @@ namespace BizHawk.Emulation.Cores.Nintendo.N64.NativeApi
 		private void FireBreakpointEvent(int bpt)
 		{
 			// bpt equal to -1 means we're stepping
-			if((bpt == -1) || (BreakpointHit == null))
+			if ((bpt == -1) || (BreakpointHit == null))
 				return;
 
 			m64p_breakpoint breakpoint = new m64p_breakpoint();
@@ -1094,11 +1026,11 @@ namespace BizHawk.Emulation.Cores.Nintendo.N64.NativeApi
 
 			BreakType type = BreakType.Execute;
 
-			if(CheckBreakpointFlag(ref breakpoint, m64p_dbg_bkp_flags.M64P_BPT_FLAG_READ))
+			if (CheckBreakpointFlag(ref breakpoint, m64p_dbg_bkp_flags.M64P_BPT_FLAG_READ))
 			{
 				type = BreakType.Read;
 			}
-			else if(CheckBreakpointFlag(ref breakpoint, m64p_dbg_bkp_flags.M64P_BPT_FLAG_WRITE))
+			else if (CheckBreakpointFlag(ref breakpoint, m64p_dbg_bkp_flags.M64P_BPT_FLAG_WRITE))
 			{
 				type = BreakType.Write;
 			}

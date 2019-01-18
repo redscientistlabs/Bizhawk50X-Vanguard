@@ -118,9 +118,9 @@ namespace BizHawk.Emulation.Cores.Nintendo.N64
 				case N64SyncSettings.RspType.Rsp_Hle:
 					rsp = "mupen64plus-rsp-hle.dll";
 					break;
-				//case N64SyncSettings.RspType.Rsp_cxd4:
-				//	rsp = "mupen64plus-rsp-cxd4.dll";
-				//	break;
+					//case N64SyncSettings.RspType.Rsp_cxd4:
+					//	rsp = "mupen64plus-rsp-cxd4.dll";
+					//	break;
 			}
 
 			api.AttachPlugin(mupen64plusApi.m64p_plugin_type.M64PLUGIN_RSP, rsp);
@@ -220,7 +220,7 @@ namespace BizHawk.Emulation.Cores.Nintendo.N64
 		{
 			RunThreadAction(() => { _pendingThreadTerminate = true; });
 		}
-		
+
 		///RTC_HIJACK
 		private bool crashed = false;
 
@@ -249,9 +249,12 @@ namespace BizHawk.Emulation.Cores.Nintendo.N64
 			if (controller.IsPressed("Power"))
 			{
 				api.hard_reset();
+
 			}
 
-			api.frame_advance();
+			//RTC_HIJACK. If it's crashed, don't try and advance any more. 
+			if (!crashed && !api.frame_advance())
+				crashed = true;
 
 
 			if (IsLagFrame)
@@ -259,8 +262,7 @@ namespace BizHawk.Emulation.Cores.Nintendo.N64
 				LagCount++;
 			}
 
-			if(!api.IsCrashed)
-				Frame++;
+			Frame++;
 		}
 
 		public string SystemId { get { return "N64"; } }
