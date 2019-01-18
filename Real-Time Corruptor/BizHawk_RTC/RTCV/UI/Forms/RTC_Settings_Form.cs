@@ -59,7 +59,7 @@ namespace RTCV.UI
 
 		private void button2_Click(object sender, EventArgs e)
 		{
-			Form form = new RTC_Test_Form();
+			Form form = new RTC_Debug_Form();
 			form.Show();
 		}
 

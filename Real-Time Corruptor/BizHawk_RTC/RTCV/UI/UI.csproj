@@ -224,11 +224,11 @@
     <Compile Include="Forms\RTC_StockpilePlayer_Form.designer.cs">
       <DependentUpon>RTC_StockpilePlayer_Form.cs</DependentUpon>
     </Compile>
-    <Compile Include="Forms\RTC_Test_Form.cs">
+    <Compile Include="Forms\RTC_Debug_Form.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Forms\RTC_Test_Form.Designer.cs">
-      <DependentUpon>RTC_Test_Form.cs</DependentUpon>
+    <Compile Include="Forms\RTC_Debug_Form.Designer.cs">
+      <DependentUpon>RTC_Debug_Form.cs</DependentUpon>
     </Compile>
     <Compile Include="RTC_AutoKillSwitch.cs" />
     <Compile Include="RTC_GameProtection.cs" />
@@ -323,8 +323,8 @@
     <EmbeddedResource Include="Forms\RTC_StockpilePlayer_Form.resx">
       <DependentUpon>RTC_StockpilePlayer_Form.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Forms\RTC_Test_Form.resx">
-      <DependentUpon>RTC_Test_Form.cs</DependentUpon>
+    <EmbeddedResource Include="Forms\RTC_Debug_Form.resx">
+      <DependentUpon>RTC_Debug_Form.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
@@ -360,8 +360,9 @@
       <Name>NetCore</Name>
     </ProjectReference>
   </ItemGroup>
+  <ItemGroup />
   <ItemGroup>
-    <Folder Include="Resources\" />
+    <None Include="Resources\refresh new.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

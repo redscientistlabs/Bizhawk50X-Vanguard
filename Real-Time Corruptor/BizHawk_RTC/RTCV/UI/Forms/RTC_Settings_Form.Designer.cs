@@ -55,6 +55,7 @@
             this.btnRtcFactoryClean.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnRtcFactoryClean.Font = new System.Drawing.Font("Segoe UI", 8F);
             this.btnRtcFactoryClean.ForeColor = System.Drawing.Color.Black;
+            this.btnRtcFactoryClean.Image = global::UI.Properties.Resources.refresh_new;
             this.btnRtcFactoryClean.ImageAlign = System.Drawing.ContentAlignment.MiddleRight;
             this.btnRtcFactoryClean.Location = new System.Drawing.Point(409, 465);
             this.btnRtcFactoryClean.Name = "btnRtcFactoryClean";
@@ -73,6 +74,7 @@
             this.button1.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.button1.Font = new System.Drawing.Font("Segoe UI", 8F);
             this.button1.ForeColor = System.Drawing.Color.Black;
+            this.button1.Image = ((System.Drawing.Image)(resources.GetObject("button1.Image")));
             this.button1.ImageAlign = System.Drawing.ContentAlignment.MiddleRight;
             this.button1.Location = new System.Drawing.Point(19, 465);
             this.button1.Name = "button1";

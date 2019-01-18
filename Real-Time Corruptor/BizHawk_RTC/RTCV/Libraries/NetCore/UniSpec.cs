@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
@@ -11,6 +12,7 @@ using NetCore;
 
 namespace RTCV.NetCore
 {
+
 	public class FullSpec : BaseSpec
 	{
 		public event EventHandler<SpecUpdateEventArgs> SpecUpdated;
@@ -111,6 +113,54 @@ namespace RTCV.NetCore
 			Update(GetPartialSpec());
 		}
 
+		public List<String> GetDump()
+		{
+			var dump = new List<String>();
+			dump.Add(this.name + " v" + version);
+			foreach (string key in base.specDico.Keys)
+			{
+				StringBuilder sb = new StringBuilder();
+				sb.Append(key + ": ");
+				if (base[key] is IEnumerable em && !(base[key] is string))
+					sb.AppendLine(RecursiveEnumerate(em));
+				else
+					sb.Append(base[key].ToString());
+				dump.Add(sb.ToString());
+			}
+			return dump;
+		}
+
+		private string RecursiveEnumerate(IEnumerable em, StringBuilder sb = null, int tab = 1)
+		{
+			if (sb == null)
+				sb = new StringBuilder();
+			StringBuilder tabBuilder = new StringBuilder();
+			for (int i = 0; i < tab; i++)
+				tabBuilder.Append("\t");
+			string t = tabBuilder.ToString();
+
+			sb.AppendLine(t + em.ToString());
+			foreach (var x in em)
+			{
+				if (x is IEnumerable _em && !(x is string))
+				{
+					sb.AppendLine(RecursiveEnumerate(_em, sb, tab + 1));
+				}
+				/*
+				if (x is KeyValuePair<string, List<Byte[]>> b)
+				{
+					b.Value.ForEach(y =>
+					{
+						foreach (var z in y)
+							sb.Append(z.ToString());
+						sb.Append("\n" + t + "\t");
+					});
+				}
+				*/
+				sb.AppendLine(t + x.ToString());
+			}
+			return sb.ToString();
+		}
 	}
 
 	[Serializable]

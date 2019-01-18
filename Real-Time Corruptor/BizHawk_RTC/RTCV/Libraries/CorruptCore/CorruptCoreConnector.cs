@@ -33,6 +33,17 @@ namespace RTCV.CorruptCore
 
 			switch (e.message.Type)
 			{
+
+				case "GETSPECDUMPS":
+					StringBuilder sb = new StringBuilder();
+					sb.AppendLine("Spec Dump from CorruptCore");
+					sb.AppendLine();
+					RTC_Corruptcore.UISpec?.GetDump().ForEach(x => sb.AppendLine(x));
+					RTC_Corruptcore.CorruptCoreSpec?.GetDump().ForEach(x => sb.AppendLine(x));
+					RTC_Corruptcore.VanguardSpec?.GetDump().ForEach(x => sb.AppendLine(x));
+
+					return sb.ToString();
+					break;
 				//UI sent its spec
 				case REMOTE_PUSHUISPEC:
 					SyncObjectSingleton.FormExecute((o, ea) =>

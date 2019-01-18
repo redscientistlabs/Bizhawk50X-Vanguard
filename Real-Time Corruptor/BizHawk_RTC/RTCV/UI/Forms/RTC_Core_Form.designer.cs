@@ -29,7 +29,6 @@
         private void InitializeComponent()
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(RTC_Core_Form));
-            this.btnEasyMode = new System.Windows.Forms.Button();
             this.cbUseGameProtection = new System.Windows.Forms.CheckBox();
             this.btnAutoCorrupt = new System.Windows.Forms.Button();
             this.btnManualBlast = new System.Windows.Forms.Button();
@@ -45,35 +44,15 @@
             this.btnGpJumpBack = new System.Windows.Forms.Button();
             this.label2 = new System.Windows.Forms.Label();
             this.btnEngineConfig = new System.Windows.Forms.Button();
-            this.btnLogo = new System.Windows.Forms.Button();
             this.btnSettings = new System.Windows.Forms.Button();
             this.btnStockpilePlayer = new System.Windows.Forms.Button();
             this.btnGlitchHarvester = new System.Windows.Forms.Button();
+            this.btnLogo = new System.Windows.Forms.Button();
+            this.btnEasyMode = new System.Windows.Forms.Button();
             this.pnLeftPanel.SuspendLayout();
             this.pnAutoKillSwitch.SuspendLayout();
             this.pnCrashProtection.SuspendLayout();
             this.SuspendLayout();
-            // 
-            // btnEasyMode
-            // 
-            this.btnEasyMode.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(224)))), ((int)(((byte)(224)))), ((int)(((byte)(224)))));
-            this.btnEasyMode.FlatAppearance.BorderSize = 0;
-            this.btnEasyMode.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btnEasyMode.Font = new System.Drawing.Font("Segoe UI Semibold", 13F, System.Drawing.FontStyle.Bold);
-            this.btnEasyMode.ForeColor = System.Drawing.Color.Black;
-            this.btnEasyMode.Image = ((System.Drawing.Image)(resources.GetObject("btnEasyMode.Image")));
-            this.btnEasyMode.ImageAlign = System.Drawing.ContentAlignment.MiddleRight;
-            this.btnEasyMode.Location = new System.Drawing.Point(4, 52);
-            this.btnEasyMode.Name = "btnEasyMode";
-            this.btnEasyMode.Size = new System.Drawing.Size(140, 47);
-            this.btnEasyMode.TabIndex = 85;
-            this.btnEasyMode.TabStop = false;
-            this.btnEasyMode.Tag = "color:light";
-            this.btnEasyMode.Text = " Easy Start";
-            this.btnEasyMode.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageBeforeText;
-            this.btnEasyMode.UseVisualStyleBackColor = false;
-            this.btnEasyMode.Visible = false;
-            this.btnEasyMode.MouseDown += new System.Windows.Forms.MouseEventHandler(this.btnEasyMode_MouseDown);
             // 
             // cbUseGameProtection
             // 
@@ -96,9 +75,9 @@
             this.btnAutoCorrupt.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnAutoCorrupt.Font = new System.Drawing.Font("Segoe UI Semibold", 10F, System.Drawing.FontStyle.Bold);
             this.btnAutoCorrupt.ForeColor = System.Drawing.Color.OrangeRed;
-            this.btnAutoCorrupt.Location = new System.Drawing.Point(4, 256);
+            this.btnAutoCorrupt.Location = new System.Drawing.Point(4, 257);
             this.btnAutoCorrupt.Name = "btnAutoCorrupt";
-            this.btnAutoCorrupt.Size = new System.Drawing.Size(140, 35);
+            this.btnAutoCorrupt.Size = new System.Drawing.Size(140, 34);
             this.btnAutoCorrupt.TabIndex = 8;
             this.btnAutoCorrupt.TabStop = false;
             this.btnAutoCorrupt.Tag = "color:darker";
@@ -115,9 +94,9 @@
             this.btnManualBlast.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnManualBlast.Font = new System.Drawing.Font("Segoe UI Semibold", 10F, System.Drawing.FontStyle.Bold);
             this.btnManualBlast.ForeColor = System.Drawing.Color.OrangeRed;
-            this.btnManualBlast.Location = new System.Drawing.Point(4, 218);
+            this.btnManualBlast.Location = new System.Drawing.Point(4, 220);
             this.btnManualBlast.Name = "btnManualBlast";
-            this.btnManualBlast.Size = new System.Drawing.Size(140, 35);
+            this.btnManualBlast.Size = new System.Drawing.Size(140, 34);
             this.btnManualBlast.TabIndex = 7;
             this.btnManualBlast.TabStop = false;
             this.btnManualBlast.Tag = "color:darker";
@@ -155,7 +134,7 @@
             this.pnAutoKillSwitch.Controls.Add(this.cbUseAutoKillSwitch);
             this.pnAutoKillSwitch.Controls.Add(this.pbAutoKillSwitchTimeout);
             this.pnAutoKillSwitch.Controls.Add(this.label4);
-            this.pnAutoKillSwitch.Location = new System.Drawing.Point(4, 374);
+            this.pnAutoKillSwitch.Location = new System.Drawing.Point(4, 379);
             this.pnAutoKillSwitch.Name = "pnAutoKillSwitch";
             this.pnAutoKillSwitch.Size = new System.Drawing.Size(140, 101);
             this.pnAutoKillSwitch.TabIndex = 118;
@@ -240,7 +219,7 @@
             this.pnCrashProtection.Controls.Add(this.btnGpJumpBack);
             this.pnCrashProtection.Controls.Add(this.label2);
             this.pnCrashProtection.Controls.Add(this.cbUseGameProtection);
-            this.pnCrashProtection.Location = new System.Drawing.Point(4, 291);
+            this.pnCrashProtection.Location = new System.Drawing.Point(4, 294);
             this.pnCrashProtection.Name = "pnCrashProtection";
             this.pnCrashProtection.Size = new System.Drawing.Size(140, 84);
             this.pnCrashProtection.TabIndex = 116;
@@ -301,9 +280,9 @@
             this.btnEngineConfig.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnEngineConfig.Font = new System.Drawing.Font("Segoe UI Semibold", 10F, System.Drawing.FontStyle.Bold);
             this.btnEngineConfig.ForeColor = System.Drawing.Color.Black;
-            this.btnEngineConfig.Location = new System.Drawing.Point(4, 102);
+            this.btnEngineConfig.Location = new System.Drawing.Point(4, 106);
             this.btnEngineConfig.Name = "btnEngineConfig";
-            this.btnEngineConfig.Size = new System.Drawing.Size(140, 35);
+            this.btnEngineConfig.Size = new System.Drawing.Size(140, 34);
             this.btnEngineConfig.TabIndex = 118;
             this.btnEngineConfig.TabStop = false;
             this.btnEngineConfig.Tag = "color:light";
@@ -311,26 +290,6 @@
             this.btnEngineConfig.UseVisualStyleBackColor = false;
             this.btnEngineConfig.Visible = false;
             this.btnEngineConfig.Click += new System.EventHandler(this.btnEngineConfig_Click);
-            // 
-            // btnLogo
-            // 
-            this.btnLogo.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(32)))), ((int)(((byte)(32)))), ((int)(((byte)(32)))));
-            this.btnLogo.FlatAppearance.BorderSize = 0;
-            this.btnLogo.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btnLogo.Font = new System.Drawing.Font("Segoe UI Semibold", 8.25F, ((System.Drawing.FontStyle)((System.Drawing.FontStyle.Bold | System.Drawing.FontStyle.Italic))), System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btnLogo.ForeColor = System.Drawing.Color.White;
-            this.btnLogo.Image = ((System.Drawing.Image)(resources.GetObject("btnLogo.Image")));
-            this.btnLogo.ImageAlign = System.Drawing.ContentAlignment.MiddleRight;
-            this.btnLogo.Location = new System.Drawing.Point(0, 0);
-            this.btnLogo.Name = "btnLogo";
-            this.btnLogo.Size = new System.Drawing.Size(150, 49);
-            this.btnLogo.TabIndex = 117;
-            this.btnLogo.TabStop = false;
-            this.btnLogo.Tag = "color:darker";
-            this.btnLogo.Text = "   Vanguard 0.00";
-            this.btnLogo.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageBeforeText;
-            this.btnLogo.UseVisualStyleBackColor = false;
-            this.btnLogo.MouseClick += new System.Windows.Forms.MouseEventHandler(this.btnLogo_MouseClick);
             // 
             // btnSettings
             // 
@@ -340,6 +299,7 @@
             this.btnSettings.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnSettings.Font = new System.Drawing.Font("Segoe UI Semibold", 9F, System.Drawing.FontStyle.Bold);
             this.btnSettings.ForeColor = System.Drawing.Color.White;
+            this.btnSettings.Image = ((System.Drawing.Image)(resources.GetObject("btnSettings.Image")));
             this.btnSettings.ImageAlign = System.Drawing.ContentAlignment.MiddleRight;
             this.btnSettings.Location = new System.Drawing.Point(0, 482);
             this.btnSettings.Name = "btnSettings";
@@ -359,9 +319,9 @@
             this.btnStockpilePlayer.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnStockpilePlayer.Font = new System.Drawing.Font("Segoe UI Semibold", 10F, System.Drawing.FontStyle.Bold);
             this.btnStockpilePlayer.ForeColor = System.Drawing.Color.Black;
-            this.btnStockpilePlayer.Location = new System.Drawing.Point(4, 178);
+            this.btnStockpilePlayer.Location = new System.Drawing.Point(4, 182);
             this.btnStockpilePlayer.Name = "btnStockpilePlayer";
-            this.btnStockpilePlayer.Size = new System.Drawing.Size(140, 35);
+            this.btnStockpilePlayer.Size = new System.Drawing.Size(140, 34);
             this.btnStockpilePlayer.TabIndex = 109;
             this.btnStockpilePlayer.TabStop = false;
             this.btnStockpilePlayer.Tag = "color:light";
@@ -377,9 +337,9 @@
             this.btnGlitchHarvester.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnGlitchHarvester.Font = new System.Drawing.Font("Segoe UI Semibold", 10F, System.Drawing.FontStyle.Bold);
             this.btnGlitchHarvester.ForeColor = System.Drawing.Color.Black;
-            this.btnGlitchHarvester.Location = new System.Drawing.Point(4, 140);
+            this.btnGlitchHarvester.Location = new System.Drawing.Point(4, 144);
             this.btnGlitchHarvester.Name = "btnGlitchHarvester";
-            this.btnGlitchHarvester.Size = new System.Drawing.Size(140, 35);
+            this.btnGlitchHarvester.Size = new System.Drawing.Size(140, 34);
             this.btnGlitchHarvester.TabIndex = 107;
             this.btnGlitchHarvester.TabStop = false;
             this.btnGlitchHarvester.Tag = "color:light";
@@ -387,6 +347,47 @@
             this.btnGlitchHarvester.UseVisualStyleBackColor = false;
             this.btnGlitchHarvester.Visible = false;
             this.btnGlitchHarvester.Click += new System.EventHandler(this.btnGlitchHarvester_Click);
+            // 
+            // btnLogo
+            // 
+            this.btnLogo.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(32)))), ((int)(((byte)(32)))), ((int)(((byte)(32)))));
+            this.btnLogo.FlatAppearance.BorderSize = 0;
+            this.btnLogo.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnLogo.Font = new System.Drawing.Font("Segoe UI Semibold", 8.25F, ((System.Drawing.FontStyle)((System.Drawing.FontStyle.Bold | System.Drawing.FontStyle.Italic))), System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btnLogo.ForeColor = System.Drawing.Color.White;
+            this.btnLogo.Image = ((System.Drawing.Image)(resources.GetObject("btnLogo.Image")));
+            this.btnLogo.ImageAlign = System.Drawing.ContentAlignment.MiddleRight;
+            this.btnLogo.Location = new System.Drawing.Point(0, 0);
+            this.btnLogo.Name = "btnLogo";
+            this.btnLogo.Size = new System.Drawing.Size(150, 52);
+            this.btnLogo.TabIndex = 117;
+            this.btnLogo.TabStop = false;
+            this.btnLogo.Tag = "color:darker";
+            this.btnLogo.Text = "   Version 0.00";
+            this.btnLogo.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageBeforeText;
+            this.btnLogo.UseVisualStyleBackColor = false;
+            this.btnLogo.MouseClick += new System.Windows.Forms.MouseEventHandler(this.btnLogo_MouseClick);
+            // 
+            // btnEasyMode
+            // 
+            this.btnEasyMode.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(224)))), ((int)(((byte)(224)))), ((int)(((byte)(224)))));
+            this.btnEasyMode.FlatAppearance.BorderSize = 0;
+            this.btnEasyMode.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnEasyMode.Font = new System.Drawing.Font("Segoe UI Semibold", 13F, System.Drawing.FontStyle.Bold);
+            this.btnEasyMode.ForeColor = System.Drawing.Color.Black;
+            this.btnEasyMode.Image = ((System.Drawing.Image)(resources.GetObject("btnEasyMode.Image")));
+            this.btnEasyMode.ImageAlign = System.Drawing.ContentAlignment.MiddleRight;
+            this.btnEasyMode.Location = new System.Drawing.Point(4, 55);
+            this.btnEasyMode.Name = "btnEasyMode";
+            this.btnEasyMode.Size = new System.Drawing.Size(140, 47);
+            this.btnEasyMode.TabIndex = 85;
+            this.btnEasyMode.TabStop = false;
+            this.btnEasyMode.Tag = "color:light";
+            this.btnEasyMode.Text = " Easy Start";
+            this.btnEasyMode.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageBeforeText;
+            this.btnEasyMode.UseVisualStyleBackColor = false;
+            this.btnEasyMode.Visible = false;
+            this.btnEasyMode.MouseDown += new System.Windows.Forms.MouseEventHandler(this.btnEasyMode_MouseDown);
             // 
             // RTC_Core_Form
             // 
