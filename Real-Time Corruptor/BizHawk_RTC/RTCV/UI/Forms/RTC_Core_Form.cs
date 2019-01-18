@@ -86,7 +86,6 @@ namespace RTCV.UI
 			GhostBoxInvisible(btnEngineConfig);
 			GhostBoxInvisible(btnGlitchHarvester);
 			GhostBoxInvisible(btnStockpilePlayer);
-			GhostBoxInvisible(btnRTCMultiplayer);
 			GhostBoxInvisible(btnManualBlast);
 			GhostBoxInvisible(btnAutoCorrupt);
 			GhostBoxInvisible(pnCrashProtection);
@@ -277,7 +276,6 @@ namespace RTCV.UI
 				GhostBoxInvisible(btnEasyMode);
 				GhostBoxInvisible(btnEngineConfig);
 				GhostBoxInvisible(btnGlitchHarvester);
-				GhostBoxInvisible(btnRTCMultiplayer);
 				GhostBoxInvisible(btnStockpilePlayer);
 				GhostBoxInvisible(btnAutoCorrupt);
 				GhostBoxInvisible(btnManualBlast);
@@ -285,7 +283,6 @@ namespace RTCV.UI
 
 			btnEngineConfig.Text = btnEngineConfig.Text.Replace("● ", "");
 			btnStockpilePlayer.Text = btnStockpilePlayer.Text.Replace("● ", "");
-			btnRTCMultiplayer.Text = btnRTCMultiplayer.Text.Replace("● ", "");
 
 			Button btn = null;
 
@@ -321,7 +318,6 @@ namespace RTCV.UI
 					btnEasyMode.Visible = true;
 					btnEngineConfig.Visible = true;
 					btnGlitchHarvester.Visible = true;
-					btnRTCMultiplayer.Visible = true;
 					btnStockpilePlayer.Visible = true;
 					btnAutoCorrupt.Visible = true;
 					btnManualBlast.Visible = true;

@@ -6,7 +6,9 @@ using System.IO;
 using System.Linq;
 using System.Windows.Forms;
 using System.Xml.Serialization;
+using CorruptCore;
 using RTCV.CorruptCore;
+using RTCV.NetCore;
 using UI;
 using static RTCV.UI.UI_Extensions;
 
@@ -240,7 +242,6 @@ namespace RTCV.UI
 
 		private void btnActiveTableAddDump_Click(object sender, EventArgs e)
 		{
-			throw new NotImplementedException();
 			if (cbSelectedMemoryDomain == null || RTC_MemoryDomains.GetInterface(cbSelectedMemoryDomain.SelectedItem.ToString()).Size.ToString() == null)
 			{
 				MessageBox.Show("Select a valid domain before continuing!");
@@ -250,12 +251,11 @@ namespace RTCV.UI
 				return;
 
 			string key = RTC_Corruptcore.GetRandomKey();
-			/*
-			RTC_NetcoreImplementation.SendCommandToBizhawk(new RTC_Command(CommandType.REMOTE_DOMAIN_ACTIVETABLE_MAKEDUMP)
-			{
-				objectValue = new object[] { cbSelectedMemoryDomain.SelectedItem.ToString(), key }
-			}, true);
-			*/
+
+
+
+			LocalNetCoreRouter.Route(NetcoreCommands.CORRUPTCORE, NetcoreCommands.REMOTE_DOMAIN_ACTIVETABLE_MAKEDUMP, new object[] { cbSelectedMemoryDomain.SelectedItem.ToString(), key }, true);
+
 			
 			ActiveTableDumps.Add(key);
 			lbFreezeEngineNbDumps.Text = "Memory dumps collected: " + ActiveTableDumps.Count.ToString();

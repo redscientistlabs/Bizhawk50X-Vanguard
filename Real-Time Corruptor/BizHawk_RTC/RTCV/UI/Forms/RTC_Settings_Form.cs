@@ -35,15 +35,12 @@ namespace RTCV.UI
 
 		private void btnRtcFactoryClean_Click(object sender, EventArgs e)
 		{
-			throw new NotImplementedException();
-			/*
 			Process p = new Process();
-			p.StartInfo.FileName = $"FactoryClean{(RTC_NetcoreImplementation.isStandaloneUI ? "DETACHED" : "ATTACHED")}.bat";
+			p.StartInfo.FileName = "FactoryCleanDETACHED.bat";
 			p.StartInfo.WindowStyle = ProcessWindowStyle.Hidden;
 			p.StartInfo.CreateNoWindow = true;
-			p.StartInfo.WorkingDirectory = RTC_EmuCore.rtcDir;
+			p.StartInfo.WorkingDirectory = RTC_Corruptcore.rtcDir;
 			p.Start();
-			*/
 		}
 
 		private void RTC_Settings_Form_Load(object sender, EventArgs e)

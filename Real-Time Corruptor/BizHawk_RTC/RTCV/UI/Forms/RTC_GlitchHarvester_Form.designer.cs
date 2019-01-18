@@ -28,11 +28,11 @@
         /// </summary>
         private void InitializeComponent()
         {
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(RTC_GlitchHarvester_Form));
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle3 = new System.Windows.Forms.DataGridViewCellStyle();
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle4 = new System.Windows.Forms.DataGridViewCellStyle();
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(RTC_GlitchHarvester_Form));
             this.pnSidebar = new System.Windows.Forms.Panel();
             this.panel4 = new System.Windows.Forms.Panel();
             this.label9 = new System.Windows.Forms.Label();
@@ -259,6 +259,7 @@
             this.btnOpenRenderFolder.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnOpenRenderFolder.Font = new System.Drawing.Font("Segoe UI", 8F);
             this.btnOpenRenderFolder.ForeColor = System.Drawing.Color.White;
+            this.btnOpenRenderFolder.Image = ((System.Drawing.Image)(resources.GetObject("btnOpenRenderFolder.Image")));
             this.btnOpenRenderFolder.Location = new System.Drawing.Point(103, 474);
             this.btnOpenRenderFolder.Name = "btnOpenRenderFolder";
             this.btnOpenRenderFolder.Size = new System.Drawing.Size(38, 24);
@@ -2215,14 +2216,13 @@
             this.track_Intensity.Value = 2000;
             this.track_Intensity.Scroll += new System.EventHandler(this.track_Intensity_Scroll);
             this.track_Intensity.ValueChanged += new System.EventHandler(this.track_Intensity_Scroll);
-            this.track_Intensity.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.track_Intensity_Scroll);
+            this.track_Intensity.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.track_Intensity_MouseUp);
             this.track_Intensity.MouseDown += new System.Windows.Forms.MouseEventHandler(this.track_Intensity_MouseDown);
             this.track_Intensity.MouseUp += new System.Windows.Forms.MouseEventHandler(this.track_Intensity_MouseUp);
-			this.track_Intensity.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.track_Intensity_MouseUp);
-			// 
-			// labelIntensityTimes
-			// 
-			this.labelIntensityTimes.AutoSize = true;
+            // 
+            // labelIntensityTimes
+            // 
+            this.labelIntensityTimes.AutoSize = true;
             this.labelIntensityTimes.Font = new System.Drawing.Font("Segoe UI", 8F);
             this.labelIntensityTimes.ForeColor = System.Drawing.Color.White;
             this.labelIntensityTimes.Location = new System.Drawing.Point(164, 10);
@@ -2290,7 +2290,7 @@
             this.btnRerollSelected.Tag = "color:darker";
             this.btnRerollSelected.Text = "Reroll Selected";
             this.btnRerollSelected.UseVisualStyleBackColor = false;
-			this.btnRerollSelected.MouseDown += new System.Windows.Forms.MouseEventHandler(this.btnRerollSelected_MouseDown);
+            this.btnRerollSelected.MouseDown += new System.Windows.Forms.MouseEventHandler(this.btnRerollSelected_MouseDown);
             // 
             // label8
             // 

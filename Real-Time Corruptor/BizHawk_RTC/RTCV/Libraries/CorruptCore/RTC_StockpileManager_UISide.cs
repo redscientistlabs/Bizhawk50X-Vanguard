@@ -123,17 +123,8 @@ namespace RTCV.CorruptCore
 			if (StashAfterOperation && bl != null)
 			{
 				StashHistory.Add(CurrentStashkey);
-
-				//todo
-				/*
-				S.GET<RTC_GlitchHarvester_Form>().RefreshStashHistory();
-				S.GET<RTC_GlitchHarvester_Form>().dgvStockpile.ClearSelection();
-
-				S.GET<RTC_GlitchHarvester_Form>().lbStashHistory.ClearSelected();
-
-				S.GET<RTC_GlitchHarvester_Form>().DontLoadSelectedStash = true;
-				S.GET<RTC_GlitchHarvester_Form>().lbStashHistory.SelectedIndex = S.GET<RTC_GlitchHarvester_Form>().lbStashHistory.Items.Count - 1;
-				*/
+				
+				
 			}
 
 
@@ -182,8 +173,6 @@ namespace RTCV.CorruptCore
 			if (StashAfterOperation)
 			{
 				StashHistory.Add(CurrentStashkey);
-				//todo
-				//S.GET<RTC_GlitchHarvester_Form>().RefreshStashHistory();
 			}
 
 			PostApplyStashkey();
@@ -323,8 +312,6 @@ namespace RTCV.CorruptCore
 			if (StashAfterOperation && _stashAfterOperation)
 			{
 				StashHistory.Add(CurrentStashkey);
-				//todo
-				//S.GET<RTC_GlitchHarvester_Form>().RefreshStashHistory();
 			}
 
 			return isCorruptionApplied;

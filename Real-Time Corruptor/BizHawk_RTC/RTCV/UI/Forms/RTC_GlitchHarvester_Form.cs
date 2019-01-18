@@ -167,6 +167,16 @@ namespace RTCV.UI
 			RefreshSavestateTextboxes();
 		}
 
+		public void RefreshStashHistoryAndSelectLast()
+		{
+			RefreshStashHistory();
+			dgvStockpile.ClearSelection();
+			lbStashHistory.ClearSelected();
+
+			DontLoadSelectedStash = true;
+			lbStashHistory.SelectedIndex = S.GET<RTC_GlitchHarvester_Form>().lbStashHistory.Items.Count - 1;
+
+		}
 		public void RefreshStashHistory(bool scrolldown = false)
 		{
 			DontLoadSelectedStash = true;
@@ -376,13 +386,16 @@ namespace RTCV.UI
 					}
 
 					IsCorruptionApplied = RTC_StockpileManager_UISide.Corrupt(loadBeforeOperation);
+					RefreshStashHistoryAndSelectLast();
 				}
 				else if (rbInject.Checked)
+				{
 					IsCorruptionApplied = RTC_StockpileManager_UISide.InjectFromStashkey(RTC_StockpileManager_UISide.CurrentStashkey, loadBeforeOperation);
+					RefreshStashHistoryAndSelectLast();
+				}
 				else if (rbOriginal.Checked)
 					IsCorruptionApplied = RTC_StockpileManager_UISide.OriginalFromStashkey(RTC_StockpileManager_UISide.CurrentStashkey);
 
-				RefreshStashHistory();
 				Console.WriteLine("Blast done");
 			}
 			finally
@@ -876,12 +889,7 @@ namespace RTCV.UI
 
 			RTC_StockpileManager_UISide.StockpileChanged();
 		}
-
-		private void btnStopRender_Click(object sender, EventArgs e)
-		{
-			throw new NotImplementedException();
-			//RTC_Render.StopRender();
-		}
+		
 		
 		private void nmIntensity_ValueChanged(object sender, EventArgs e)
 		{
@@ -1106,6 +1114,7 @@ namespace RTCV.UI
 					RTC_StockpileManager_UISide.CurrentStashkey.BlastLayer.Reroll();
 
 					RTC_StockpileManager_UISide.AddCurrentStashkeyToStash();
+					RefreshStashHistory();
 
 					RTC_StockpileManager_UISide.ApplyStashkey(RTC_StockpileManager_UISide.CurrentStashkey);
 				}

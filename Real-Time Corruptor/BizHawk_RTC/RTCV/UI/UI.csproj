@@ -218,12 +218,6 @@
     <Compile Include="Forms\RTC_Settings_Form.Designer.cs">
       <DependentUpon>RTC_Settings_Form.cs</DependentUpon>
     </Compile>
-    <Compile Include="Forms\RTC_StockpileBlastBoard_Form.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Forms\RTC_StockpileBlastBoard_Form.designer.cs">
-      <DependentUpon>RTC_StockpileBlastBoard_Form.cs</DependentUpon>
-    </Compile>
     <Compile Include="Forms\RTC_StockpilePlayer_Form.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -326,9 +320,6 @@
     <EmbeddedResource Include="Forms\RTC_Settings_Form.resx">
       <DependentUpon>RTC_Settings_Form.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Forms\RTC_StockpileBlastBoard_Form.resx">
-      <DependentUpon>RTC_StockpileBlastBoard_Form.cs</DependentUpon>
-    </EmbeddedResource>
     <EmbeddedResource Include="Forms\RTC_StockpilePlayer_Form.resx">
       <DependentUpon>RTC_StockpilePlayer_Form.cs</DependentUpon>
     </EmbeddedResource>
@@ -343,6 +334,7 @@
     <Compile Include="Properties\Resources.Designer.cs">
       <AutoGen>True</AutoGen>
       <DependentUpon>Resources.resx</DependentUpon>
+      <DesignTime>True</DesignTime>
     </Compile>
     <None Include="packages.config" />
     <None Include="Properties\Settings.settings">
@@ -367,6 +359,9 @@
       <Project>{7e106aec-5614-4206-9e4d-25759c90e8ae}</Project>
       <Name>NetCore</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Resources\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

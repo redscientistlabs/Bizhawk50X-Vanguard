@@ -18,7 +18,7 @@ namespace RTCV.CorruptCore
 	public static class RTC_Corruptcore
 	{
 		//General RTC Values
-		public static string RtcVersion = "Vanguard v.0.01";
+		public static string RtcVersion = "  v.3.35";
 
 		public static Random RND = new Random();
 
