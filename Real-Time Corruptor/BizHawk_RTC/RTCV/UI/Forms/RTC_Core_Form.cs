@@ -269,6 +269,9 @@ namespace RTCV.UI
 
 		public void ShowPanelForm(Form frm, bool hideButtons = true)
 		{
+			if (frm == null)
+				return;
+
 			if (hideButtons && frm is RTC_ConnectionStatus_Form)
 			{
 				GhostBoxInvisible(btnEasyMode);
@@ -325,8 +328,7 @@ namespace RTCV.UI
 
 					RemoveGhostBoxes();
 
-				//	if (!RTC_NetcoreImplementation.FirstConnection)
-						pnCrashProtection.Visible = true;
+					pnCrashProtection.Visible = true;
 				}
 			}
 		}
@@ -405,6 +407,7 @@ namespace RTCV.UI
 		private void cbUseAutoKillSwitch_CheckedChanged(object sender, EventArgs e)
 		{
 			pbAutoKillSwitchTimeout.Visible = cbUseAutoKillSwitch.Checked;
+			RTC_AutoKillSwitch.Enabled = cbUseAutoKillSwitch.Checked;
 		}
 
 		private void cbAutoKillSwitchExecuteAction_SelectedIndexChanged(object sender, EventArgs e)
@@ -418,20 +421,8 @@ namespace RTCV.UI
 
 			S.GET<RTC_Core_Form>().pbAutoKillSwitchTimeout.Value = S.GET<RTC_Core_Form>().pbAutoKillSwitchTimeout.Maximum;
 
+			RTC_AutoKillSwitch.KillEmulator(btnAutoKillSwitchExecute.Text.ToUpper());
 
-			RTC_UICore.PlayCrashSound(true);
-			switch (btnAutoKillSwitchExecute.Text.ToUpper())
-			{
-				case "KILL":
-					Process.Start("KILLDETACHEDRTC.bat");
-					break;
-				case "KILL + RESTART":
-					Process.Start("RESTARTDETACHEDRTC.bat");
-					break;
-				case "RESTART + RESET":
-					Process.Start("RESETDETACHEDRTC.bat");
-					break;
-			}
 		}
 	}
 }

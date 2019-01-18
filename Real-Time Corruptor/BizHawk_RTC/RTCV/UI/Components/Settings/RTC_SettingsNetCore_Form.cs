@@ -30,18 +30,18 @@ namespace RTCV.UI
 			{
 				case 0:
 					var PlatesHdFiles = Directory.GetFiles(RTC_Corruptcore.assetsDir + Path.DirectorySeparatorChar + "PLATESHD" + Path.DirectorySeparatorChar);
-					RTC_UICore.LoadedSounds = PlatesHdFiles.Select(it => new SoundPlayer(it)).ToArray();
+					RTC_AutoKillSwitch.LoadedSounds = PlatesHdFiles.Select(it => new SoundPlayer(it)).ToArray();
 					break;
 				case 1:
-					RTC_UICore.LoadedSounds = new SoundPlayer[] { new SoundPlayer(RTC_Corruptcore.assetsDir + Path.DirectorySeparatorChar + "crash.wav") };
+					RTC_AutoKillSwitch.LoadedSounds = new SoundPlayer[] { new SoundPlayer(RTC_Corruptcore.assetsDir + Path.DirectorySeparatorChar + "crash.wav") };
 					break;
 
 				case 2:
-					RTC_UICore.LoadedSounds = null;
+					RTC_AutoKillSwitch.LoadedSounds = null;
 					break;
 				case 3:
 					var CrashSoundsFiles = Directory.GetFiles(RTC_Corruptcore.assetsDir + Path.DirectorySeparatorChar + "CRASHSOUNDS");
-					RTC_UICore.LoadedSounds = CrashSoundsFiles.Select(it => new SoundPlayer(it)).ToArray();
+					RTC_AutoKillSwitch.LoadedSounds = CrashSoundsFiles.Select(it => new SoundPlayer(it)).ToArray();
 					break;
 			}
 

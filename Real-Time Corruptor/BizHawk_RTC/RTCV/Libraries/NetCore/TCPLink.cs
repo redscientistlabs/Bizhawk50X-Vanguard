@@ -373,7 +373,7 @@ namespace RTCV.NetCore
             if (!stayConnected)
                 expectingSomeone = false;
 
-            if (spec.Side == NetworkSide.CLIENT && (status == NetworkStatus.CONNECTED || status == NetworkStatus.CONNECTING))
+            if (spec.Side == NetworkSide.CLIENT )
             {
                 if (stayConnected)
                 {
@@ -388,7 +388,7 @@ namespace RTCV.NetCore
                     spec.Connector.hub.QueueMessage(new NetCoreAdvancedMessage("{EVENT_CLIENTDISCONNECTED}"));
                 }
             }
-            else if (spec.Side == NetworkSide.SERVER && (status == NetworkStatus.CONNECTED || status == NetworkStatus.LISTENING))
+            else if (spec.Side == NetworkSide.SERVER)
             {
                 if (stayConnected)
                 {

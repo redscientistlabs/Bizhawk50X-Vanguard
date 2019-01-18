@@ -118,9 +118,7 @@ namespace RTC
 			SyncObjectSingleton.SyncObject = GlobalWin.MainForm;
 			VanguardImplementation.StartClient();
 			RTC_EmuCore.RegisterEmuhawkSpec();
-
-
-			//S.SET(_standaloneForm);
+			RTC_Corruptcore.StartEmuSide();
 
 			//Refocus on Bizhawk
 			RTC_Hooks.BIZHAWK_MAINFORM_FOCUS();

@@ -50,7 +50,7 @@ namespace RTCV.CorruptCore
 
 		public static void Clear()
 		{
-			MemoryInterfaces.Clear();
+			MemoryInterfaces?.Clear();
 		}
 
 		public static MemoryDomainProxy GetProxy(string domain, long address)

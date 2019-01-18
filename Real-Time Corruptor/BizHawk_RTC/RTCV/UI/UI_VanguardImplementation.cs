@@ -86,6 +86,9 @@ namespace UI
 							S.GET<RTC_GlitchHarvester_Form>().pnHideGlitchHarvester.Size = S.GET<RTC_GlitchHarvester_Form>().Size;
 							S.GET<RTC_GlitchHarvester_Form>().pnHideGlitchHarvester.Hide();
 						}
+
+						S.GET<RTC_Core_Form>().pbAutoKillSwitchTimeout.Value = 0;
+						RTC_AutoKillSwitch.Enabled = true;
 					});
 					break;
 
@@ -256,6 +259,10 @@ namespace UI
 						UI_Extensions.S.GET<RTC_Core_Form>().btnGpJumpBack.Visible = true;
 						UI_Extensions.S.GET<RTC_Core_Form>().btnGpJumpNow.Visible = true;
 					});
+					break;
+
+				case KILLSWITCH_PULSE:
+					RTC_AutoKillSwitch.Pulse();
 					break;
 
 			}

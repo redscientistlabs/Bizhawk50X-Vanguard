@@ -6,6 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Windows.Forms;
 using CorruptCore;
+using NetCore;
 using RTCV.CorruptCore;
 using static RTCV.UI.UI_Extensions;
 
@@ -28,6 +29,7 @@ namespace RTCV.UI
 			netCoreSpec.MessageReceived += OnMessageReceivedProxy;
 			netCoreSpec.ServerConnected += Spec_ServerConnected;
 			netCoreSpec.ServerConnectionLost += NetCoreSpec_ServerConnectionLost;
+			netCoreSpec.ServerDisconnected += NetCoreSpec_ServerConnectionLost;
 
 			netConn = new NetCoreConnector(netCoreSpec);
 			LocalNetCoreRouter.registerEndpoint(netConn, "VANGUARD");
@@ -36,23 +38,26 @@ namespace RTCV.UI
 
 		private void NetCoreSpec_ServerConnectionLost(object sender, EventArgs e)
 		{
-
-			if (S.GET<RTC_ConnectionStatus_Form>() != null && !S.GET<RTC_ConnectionStatus_Form>().IsDisposed)
+			SyncObjectSingleton.FormExecute((o, ea) =>
 			{
-				S.GET<RTC_ConnectionStatus_Form>().lbConnectionStatus.Text = "Connection status: Bizhawk timed out";
-				S.GET<RTC_Core_Form>().ShowPanelForm(S.GET<RTC_ConnectionStatus_Form>());
-			}
+				if (S.GET<RTC_ConnectionStatus_Form>() != null && !S.GET<RTC_ConnectionStatus_Form>().IsDisposed)
+				{
+					S.GET<RTC_ConnectionStatus_Form>().lbConnectionStatus.Text = "Connection status: Bizhawk timed out";
+					S.GET<RTC_Core_Form>().ShowPanelForm(S.GET<RTC_ConnectionStatus_Form>());
+				}
 
-			if (S.GET<RTC_GlitchHarvester_Form>() != null && !S.GET<RTC_GlitchHarvester_Form>().IsDisposed)
-			{
-				S.GET<RTC_GlitchHarvester_Form>().lbConnectionStatus.Text = "Connection status: Bizhawk timed out";
-				S.GET<RTC_GlitchHarvester_Form>().pnHideGlitchHarvester.BringToFront();
-				S.GET<RTC_GlitchHarvester_Form>().pnHideGlitchHarvester.Show();
-			}
+				if (S.GET<RTC_GlitchHarvester_Form>() != null && !S.GET<RTC_GlitchHarvester_Form>().IsDisposed)
+				{
+					S.GET<RTC_GlitchHarvester_Form>().lbConnectionStatus.Text = "Connection status: Bizhawk timed out";
+					S.GET<RTC_GlitchHarvester_Form>().pnHideGlitchHarvester.BringToFront();
+					S.GET<RTC_GlitchHarvester_Form>().pnHideGlitchHarvester.Show();
+				}
 
+				S.GET<RTC_VmdAct_Form>().cbAutoAddDump.Checked = false;
+			});
 			RTC_GameProtection.Stop();
-			//Kill the active table autodumps
-			S.GET<RTC_VmdAct_Form>().cbAutoAddDump.Checked = false;
+
+			RTC_AutoKillSwitch.KillEmulator("KILL + RESTART");
 		}
 
 		private static void Spec_ServerConnected(object sender, EventArgs e)

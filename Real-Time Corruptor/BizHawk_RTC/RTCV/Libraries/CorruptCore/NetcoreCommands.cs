@@ -11,6 +11,8 @@ namespace CorruptCore
 		public const string CORRUPTCORE = "CORRUPTCORE";
 		public const string VANGUARD = "VANGUARD";
 		public const string UI = "UI";
+		public const string KILLSWITCH_PULSE = "KILLSWITCH_PULSE";
+
 
 		public const string REMOTE_PUSHEMUSPEC = "REMOTE_PUSHEMUSPEC";
 		public const string REMOTE_PUSHEMUSPECUPDATE = "REMOTE_PUSHEMUSPECUPDATE";
@@ -19,9 +21,7 @@ namespace CorruptCore
 		public const string REMOTE_PUSHUISPEC = "REMOTE_PUSHUISPEC";
 		public const string REMOTE_PUSHUISPECUPDATE = "REMOTE_PUSHUISPECUPDATE";
 		public const string REMOTE_ALLSPECSSENT = "REMOTE_ALLSPECSSENT";
-
-
-
+		
 		public const string REMOTE_RENDER_STOP = "REMOTE_RENDER_STOP";
 		public const string REMOTE_RENDER_START = "REMOTE_RENDER_START";
 

@@ -10,6 +10,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using BizHawk.Client.Common;
+using BizHawk.Client.EmuHawk;
 using BizHawk.Emulation.Common;
 using BizHawk.Emulation.Cores.Nintendo.N64;
 using NetCore;
@@ -63,6 +64,12 @@ namespace RTC
 							Thread.Sleep(10);
 						}
 					});
+					break;
+
+
+				case "KILLCORE":
+					//GlobalWin.MainForm.Bad();
+					GlobalWin.MainForm.CloseRom();
 					break;
 
 				case REMOTE_ALLSPECSSENT:

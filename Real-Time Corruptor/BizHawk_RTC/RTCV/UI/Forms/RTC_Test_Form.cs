@@ -44,7 +44,7 @@ namespace RTCV.UI
 
 		private void button2_Click(object sender, EventArgs e)
 		{
-			LocalNetCoreRouter.Route(NetcoreCommands.VANGUARD, "INFINITELOOP", true);
+			LocalNetCoreRouter.Route(NetcoreCommands.VANGUARD, "KILLCORE");
 		}
 	}
 }

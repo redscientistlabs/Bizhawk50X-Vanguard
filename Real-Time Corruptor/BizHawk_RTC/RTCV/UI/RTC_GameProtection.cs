@@ -6,7 +6,7 @@ using RTCV.NetCore;
 
 namespace RTCV.UI
 {
-	//Todo, rebuild this
+	//Todo, rebuild this?
 	public static class RTC_GameProtection
 	{
 		static Timer t;

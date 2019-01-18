@@ -33,7 +33,6 @@ namespace RTCV.UI
 		public static Size NoteBoxSize;
 
 		public static bool FirstConnect = true;
-		public static SoundPlayer[] LoadedSounds = null;
 
 		//RTC Main Forms
 		//public static Color generalColor = Color.FromArgb(60, 45, 70);
@@ -72,7 +71,7 @@ namespace RTCV.UI
 				LocalNetCoreRouter.Route(NetcoreCommands.CORRUPTCORE, NetcoreCommands.REMOTE_PUSHUISPECUPDATE, partial, true);
 			};
 
-			RTC_Corruptcore.Start();
+			RTC_Corruptcore.StartUISide();
 
 			//Loading RTC Params
 			LoadRTCColor();
@@ -83,6 +82,8 @@ namespace RTCV.UI
 
 			S.GET<RTC_Core_Form>().ShowPanelForm(S.GET<RTC_ConnectionStatus_Form>());
 			S.GET<RTC_Core_Form>().Show();
+
+			S.GET<RTC_Test_Form>().Show();
 
 		}
 
@@ -279,10 +280,5 @@ namespace RTCV.UI
 		}
 
 
-		public static void PlayCrashSound(bool forcePlay = false)
-		{
-			if (LoadedSounds != null && (forcePlay || S.GET<RTC_ConnectionStatus_Form>().btnStartEmuhawkDetached.Text == "Restart BizHawk"))
-				LoadedSounds[RTC_Corruptcore.RND.Next(LoadedSounds.Length)].Play();
-		}
 	}
 }

@@ -25,6 +25,8 @@ namespace RTCV.CorruptCore
 
 		public static List<ProblematicProcess> ProblematicProcesses;
 
+		public static System.Windows.Forms.Timer KillswitchTimer = new System.Windows.Forms.Timer();
+
 		//Directories
 		public static string bizhawkDir = Directory.GetCurrentDirectory();
 
@@ -117,14 +119,25 @@ namespace RTCV.CorruptCore
 		public static volatile FullSpec VanguardSpec;
 		public static volatile FullSpec UISpec;
 
-		public static void Start()
+		public static void StartUISide()
 		{
 			RegisterCorruptcoreSpec();
-
 		}
+		public static void StartEmuSide()
+		{
+			KillswitchTimer.Interval = 100;
+			KillswitchTimer.Tick += KillswitchTimer_Tick;
+			KillswitchTimer.Start();
+		}
+
+		private static void KillswitchTimer_Tick(object sender, EventArgs e)
+		{
+			LocalNetCoreRouter.Route(NetcoreCommands.UI, NetcoreCommands.KILLSWITCH_PULSE);
+		}
+
 		/**
-		 * Register the spec on the rtc side
-		 */
+		* Register the spec on the rtc side
+		*/
 		public static void RegisterCorruptcoreSpec()
 		{
 			PartialSpec rtcSpecTemplate = new PartialSpec("RTCSpec");

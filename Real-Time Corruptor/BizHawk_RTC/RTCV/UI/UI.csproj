@@ -236,6 +236,7 @@
     <Compile Include="Forms\RTC_Test_Form.Designer.cs">
       <DependentUpon>RTC_Test_Form.cs</DependentUpon>
     </Compile>
+    <Compile Include="RTC_AutoKillSwitch.cs" />
     <Compile Include="RTC_GameProtection.cs" />
     <Compile Include="RTC_UICore.cs" />
     <Compile Include="UIConnector.cs" />
