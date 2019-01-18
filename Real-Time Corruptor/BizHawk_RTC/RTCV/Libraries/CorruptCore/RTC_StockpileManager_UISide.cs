@@ -15,11 +15,11 @@ namespace RTCV.CorruptCore
 
 		public static StashKey CurrentStashkey { get; set; }
 
-		public static Stack<StashKey> AllBackupStates { get; set; } = new Stack<StashKey>();
+		public static volatile Stack<StashKey> AllBackupStates = new Stack<StashKey>();
+		public static volatile StashKey BackupedState;
 
 
 		public static string CurrentSavestateKey;
-		public static StashKey BackupedState;
 
 		public static bool StashAfterOperation = true;
 

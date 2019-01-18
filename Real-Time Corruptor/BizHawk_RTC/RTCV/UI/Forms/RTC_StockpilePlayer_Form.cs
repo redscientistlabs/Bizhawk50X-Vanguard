@@ -151,7 +151,10 @@ namespace RTCV.UI
 					DontLoadSelectedStockpile = true;
 
 					if (Stockpile.Load(dgvStockpile))
+					{
+						S.GET<RTC_StockpilePlayer_Form>().RefreshNoteIcons();
 						S.GET<RTC_GlitchHarvester_Form>().dgvStockpile.Rows.Clear();
+					}
 					dgvStockpile.ClearSelection();
 				}
 				catch (Exception ex)

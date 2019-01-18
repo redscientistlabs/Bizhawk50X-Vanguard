@@ -624,6 +624,7 @@ namespace RTCV.UI
 						S.GET<RTC_GlitchHarvester_Form>().btnSaveStockpile.Enabled = true;
 						S.GET<RTC_GlitchHarvester_Form>().btnSaveStockpile.BackColor = Color.Tomato;
 						S.GET<RTC_GlitchHarvester_Form>().btnSaveStockpile.ForeColor = Color.Black;
+						S.GET<RTC_GlitchHarvester_Form>().RefreshNoteIcons();
 					}
 
 					S.GET<RTC_StockpilePlayer_Form>().dgvStockpile.Rows.Clear();
@@ -720,7 +721,8 @@ namespace RTCV.UI
 
 		private void btnImportStockpile_Click(object sender, EventArgs e)
 		{
-			Stockpile.Import();
+			Stockpile.Import(null, dgvStockpile);
+			RefreshNoteIcons();
 		}
 
 		private void btnStashUP_Click(object sender, EventArgs e)

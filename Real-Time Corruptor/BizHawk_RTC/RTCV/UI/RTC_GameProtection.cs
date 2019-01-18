@@ -1,5 +1,8 @@
 ﻿using System;
 using System.Windows.Forms;
+using CorruptCore;
+using RTCV.CorruptCore;
+using RTCV.NetCore;
 
 namespace RTCV.UI
 {
@@ -23,13 +26,6 @@ namespace RTCV.UI
 
 			isRunning = true;
 
-			/*
-			if (RTC_NetcoreImplementation.RemoteRTC.PeerCommandQueue.Count > 0)
-				foreach (var item in RTC_NetcoreImplementation.RemoteRTC.PeerCommandQueue)
-					if (item.Type == CommandType.REMOTE_BACKUPKEY_REQUEST)
-						RTC_NetcoreImplementation.RemoteRTC.PeerCommandQueue.Remove(item);
-						*/
-
 		}
 
 		public static void Stop()
@@ -47,7 +43,7 @@ namespace RTCV.UI
 
 		private static void Tick(object sender, EventArgs e)
 		{
-			//RTC_NetcoreImplementation.SendCommandToBizhawk(new RTC_Command(CommandType.REMOTE_BACKUPKEY_REQUEST));
+			LocalNetCoreRouter.Route(NetcoreCommands.CORRUPTCORE, NetcoreCommands.REMOTE_BACKUPKEY_REQUEST);
 		}
 	}
 }

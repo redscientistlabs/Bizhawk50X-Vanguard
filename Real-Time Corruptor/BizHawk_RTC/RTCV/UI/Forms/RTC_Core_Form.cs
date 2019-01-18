@@ -419,6 +419,7 @@ namespace RTCV.UI
 			S.GET<RTC_Core_Form>().pbAutoKillSwitchTimeout.Value = S.GET<RTC_Core_Form>().pbAutoKillSwitchTimeout.Maximum;
 
 
+			RTC_UICore.PlayCrashSound(true);
 			switch (btnAutoKillSwitchExecute.Text.ToUpper())
 			{
 				case "KILL":

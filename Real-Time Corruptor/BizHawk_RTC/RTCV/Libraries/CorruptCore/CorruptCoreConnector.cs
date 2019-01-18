@@ -184,22 +184,6 @@ namespace RTCV.CorruptCore
 						break;
 					}
 
-
-				case REMOTE_MERGECONFIG:
-					SyncObjectSingleton.FormExecute((o, ea) =>
-					{
-						Stockpile.MergeBizhawkConfig_NET();
-					});
-					break;
-
-				case REMOTE_IMPORTKEYBINDS:
-					SyncObjectSingleton.FormExecute((o, ea) =>
-					{
-						Stockpile.ImportBizhawkKeybinds_NET();
-					});
-					break;
-
-
 				case REMOTE_LOADSTATE:
 				{
 					StashKey sk = (StashKey)(advancedMessage.objectValue as object[])[0];
@@ -227,18 +211,20 @@ namespace RTCV.CorruptCore
 
 				case REMOTE_BACKUPKEY_REQUEST:
 					{
-					//	if (!RTC_Hooks.isNormalAdvance)
-					//		break;
-						e.setReturnValue(new NetCoreAdvancedMessage("REMOTE_BACKUPKEY_STASH", RTC_StockpileManager_EmuSide.SaveState_NET()));
+						//We don't store this in the spec as it'd be horrible to push it to the UI and it doesn't care
+						if (!LocalNetCoreRouter.QueryRoute<bool>(NetcoreCommands.VANGUARD, NetcoreCommands.REMOTE_ISNORMALADVANCE))
+							break;
+						StashKey sk = null;
+						//We send an unsynced command back
+						SyncObjectSingleton.FormExecute((o, ea) =>
+							{
+								sk = RTC_StockpileManager_EmuSide.SaveState_NET();
+							});
+
+						LocalNetCoreRouter.Route(NetcoreCommands.UI, REMOTE_BACKUPKEY_STASH, sk, false);
 						break;
 					}
-
-				case REMOTE_BACKUPKEY_STASH:
-					//RTC_StockpileManager.BackupedState = (StashKey)advancedMessage.objectValue;
-					//RTC_StockpileManager.AllBackupStates.Push((StashKey)advancedMessage.objectValue);
-				//	S.GET<RTC_Core_Form>().btnGpJumpBack.Visible = true;
-					//S.GET<RTC_Core_Form>().btnGpJumpNow.Visible = true;
-					break;
+					
 
 				case REMOTE_DOMAIN_PEEKBYTE:
 					SyncObjectSingleton.FormExecute((o, ea) =>
@@ -342,103 +328,12 @@ namespace RTCV.CorruptCore
 					});
 					break;
 
-
-				/*
-				case "REMOTE_HOTKEY_MANUALBLAST":
-					S.GET<RTC_Core_Form>().btnManualBlast_Click(null, null);
+					
+				case REMOTE_HOTKEY_MANUALBLAST:
+					LocalNetCoreRouter.Route(NetcoreCommands.CORRUPTCORE, ASYNCBLAST);
 					break;
 
-				case "REMOTE_HOTKEY_AUTOCORRUPTTOGGLE":
-					S.GET<RTC_Core_Form>().btnAutoCorrupt_Click(null, null);
-					break;
-				case "REMOTE_HOTKEY_ERRORDELAYDECREASE":
-					if (S.GET<RTC_GeneralParameters_Form>().nmErrorDelay.Value > 1)
-						S.GET<RTC_GeneralParameters_Form>().nmErrorDelay.Value--;
-					break;
 
-				case "REMOTE_HOTKEY_ERRORDELAYINCREASE":
-					if (S.GET<RTC_GeneralParameters_Form>().nmErrorDelay.Value < S.GET<RTC_GeneralParameters_Form>().track_ErrorDelay.Maximum)
-						S.GET<RTC_GeneralParameters_Form>().nmErrorDelay.Value++;
-					break;
-
-				case "REMOTE_HOTKEY_INTENSITYDECREASE":
-					if (S.GET<RTC_GeneralParameters_Form>().nmIntensity.Value > 1)
-						S.GET<RTC_GeneralParameters_Form>().nmIntensity.Value--;
-					break;
-
-				case "REMOTE_HOTKEY_INTENSITYINCREASE":
-					if (S.GET<RTC_GeneralParameters_Form>().nmIntensity.Value < S.GET<RTC_GeneralParameters_Form>().track_Intensity.Maximum)
-						S.GET<RTC_GeneralParameters_Form>().nmIntensity.Value++;
-					break;
-
-				case "REMOTE_HOTKEY_GHLOADCORRUPT":
-					if (!RTC_NetCore.NetCoreCommandSynclock)
-					{
-						RTC_NetCore.NetCoreCommandSynclock = true;
-
-						S.GET<RTC_GlitchHarvester_Form>().cbAutoLoadState.Checked = true;
-						S.GET<RTC_GlitchHarvester_Form>().btnCorrupt_Click(null, null);
-
-						RTC_NetCore.NetCoreCommandSynclock = false;
-					}
-					break;
-
-				case "REMOTE_HOTKEY_GHCORRUPT":
-					if (!RTC_NetCore.NetCoreCommandSynclock)
-					{
-						RTC_NetCore.NetCoreCommandSynclock = true;
-						RTC_Corruptcore.CorruptCoreSpec.Update(VSPEC.STEP_RUNBEFORE.ToString(), true);
-
-
-						bool isload = S.GET<RTC_GlitchHarvester_Form>().cbAutoLoadState.Checked;
-						S.GET<RTC_GlitchHarvester_Form>().cbAutoLoadState.Checked = false;
-						S.GET<RTC_GlitchHarvester_Form>().btnCorrupt_Click(null, null);
-						S.GET<RTC_GlitchHarvester_Form>().cbAutoLoadState.Checked = isload;
-
-						RTC_NetCore.NetCoreCommandSynclock = false;
-					}
-					break;
-
-				case "REMOTE_HOTKEY_GHLOAD":
-					S.GET<RTC_GlitchHarvester_Form>().btnSaveLoad.Text = "LOAD";
-					S.GET<RTC_GlitchHarvester_Form>().btnSaveLoad_Click(null, null);
-					break;
-				case "REMOTE_HOTKEY_GHSAVE":
-					S.GET<RTC_GlitchHarvester_Form>().btnSaveLoad.Text = "SAVE";
-					S.GET<RTC_GlitchHarvester_Form>().btnSaveLoad_Click(null, null);
-					break;
-				case "REMOTE_HOTKEY_GHSTASHTOSTOCKPILE":
-					S.GET<RTC_GlitchHarvester_Form>().AddStashToStockpile(false);
-					break;
-
-				case "REMOTE_HOTKEY_SENDRAWSTASH":
-					S.GET<RTC_GlitchHarvester_Form>().btnSendRaw_Click(null, null);
-					break;
-
-				case "REMOTE_HOTKEY_BLASTRAWSTASH":
-					RTC_Corruptcore.CorruptCoreSpec.Update(VSPEC.STEP_RUNBEFORE.ToString(), true);
-
-					//Todo
-					//RTC_NetcoreImplementation.SendCommandToBizhawk(new RTC_Command("ASYNCBLAST));
-
-					S.GET<RTC_GlitchHarvester_Form>().btnSendRaw_Click(null, null);
-					break;
-				case "REMOTE_HOTKEY_BLASTLAYERTOGGLE":
-					S.GET<RTC_GlitchHarvester_Form>().btnBlastToggle_Click(null, null);
-					break;
-				case "REMOTE_HOTKEY_BLASTLAYERREBLAST":
-
-					if (RTC_StockpileManager.CurrentStashkey == null || RTC_StockpileManager.CurrentStashkey.BlastLayer.Layer.Count == 0)
-					{
-						S.GET<RTC_GlitchHarvester_Form>().IsCorruptionApplied = false;
-						break;
-					}
-
-					S.GET<RTC_GlitchHarvester_Form>().IsCorruptionApplied = true;
-					//Todo
-					//RTC_NetcoreImplementation.SendCommandToRTC(new RTC_Command("BLAST) { blastlayer = RTC_StockpileManager.CurrentStashkey.BlastLayer });
-					break;
-					*/
 
 				default:
 					new object();

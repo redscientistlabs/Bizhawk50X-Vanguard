@@ -10,6 +10,7 @@ using System.Runtime.InteropServices;
 using System.Diagnostics;
 using RTCV.CorruptCore;
 using RTCV.NetCore;
+using UI;
 using static RTCV.UI.UI_Extensions;
 
 namespace RTCV.UI
@@ -28,14 +29,12 @@ namespace RTCV.UI
 
 		private void btnImportKeyBindings_Click(object sender, EventArgs e)
 		{
-
-			//Todo
-			/*
-			if (RTC_NetcoreImplementation.isStandaloneEmu && (RTC_NetcoreImplementation.RemoteRTC != null ? RTC_NetcoreImplementation.RemoteRTC.expectedSide != NetworkSide.SERVER : false))
+			
+			if (UI_VanguardImplementation.connector.netConn.status != NetworkStatus.CONNECTED)
 			{
 				MessageBox.Show("Can't import keybindings when not connected to Bizhawk!");
 				return;
-			}*/
+			}
 
 			try
 			{
@@ -83,8 +82,7 @@ namespace RTCV.UI
 			else
 				RTC_Params.SetParam("ENABLE_BIZHAWK_OSD");
 
-			//todo
-			//RTC_Corruptcore.BizhawkOsdDisabled = cbDisableBizhawkOSD.Checked;
+			RTC_Corruptcore.BizhawkOsdDisabled = cbDisableBizhawkOSD.Checked;
 		}
 
 		private void cbAllowCrossCoreCorruption_CheckedChanged(object sender, EventArgs e)
@@ -94,8 +92,7 @@ namespace RTCV.UI
 			else
 				RTC_Params.RemoveParam("ALLOW_CROSS_CORE_CORRUPTION");
 
-			//todo
-			//RTC_Corruptcore.AllowCrossCoreCorruption = cbAllowCrossCoreCorruption.Checked;
+			RTC_Corruptcore.AllowCrossCoreCorruption = cbAllowCrossCoreCorruption.Checked;
 		}
 
 		private void cbDontCleanAtQuit_CheckedChanged(object sender, EventArgs e)
@@ -105,8 +102,7 @@ namespace RTCV.UI
 			else
 				RTC_Params.RemoveParam("DONT_CLEAN_SAVESTATES_AT_QUIT");
 
-			//todo
-			//RTC_Corruptcore.DontCleanSavestatesOnQuit = cbDontCleanAtQuit.Checked;
+			RTC_Corruptcore.DontCleanSavestatesOnQuit = cbDontCleanAtQuit.Checked;
 		}
 	}
 }

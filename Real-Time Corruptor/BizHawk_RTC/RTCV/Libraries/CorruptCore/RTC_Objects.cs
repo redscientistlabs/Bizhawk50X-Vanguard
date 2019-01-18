@@ -52,7 +52,7 @@ namespace RTCV.CorruptCore
 			Save(this, isQuickSave);
 		}
 
-		public static bool Save(Stockpile sks, bool isQuickSave = false)
+		public static bool Save(Stockpile sks, bool isQuickSave = false, bool compress = true)
 		{
 			if (sks.StashKeys.Count == 0)
 			{
@@ -200,10 +200,8 @@ namespace RTCV.CorruptCore
 			}
 
 			CompressionLevel comp = CompressionLevel.Fastest;
-
-			//Todo
-			//if (!S.GET<RTC_GlitchHarvester_Form>().cbCompressStockpiles.Checked)
-			//	comp = CompressionLevel.NoCompression;
+			if (!compress)
+				comp = CompressionLevel.NoCompression;
 
 			ZipFile.CreateFromDirectory(RTC_Corruptcore.workingDir + Path.DirectorySeparatorChar + "TEMP" + Path.DirectorySeparatorChar, tempFilename, comp, false);
 
@@ -307,10 +305,7 @@ namespace RTCV.CorruptCore
 
 			foreach (StashKey key in sks.StashKeys)
 				dgvStockpile.Rows.Add(key, key.GameName, key.SystemName, key.SystemCore, key.Note);
-
-			//Todo
-			//S.GET<RTC_GlitchHarvester_Form>().RefreshNoteIcons();
-			//S.GET<RTC_StockpilePlayer_Form>().RefreshNoteIcons();
+			
 
 			sks.Filename = Filename;
 
@@ -406,7 +401,6 @@ namespace RTCV.CorruptCore
 
 		public static void LoadBizhawkKeyBindsFromIni(string Filename = null)
 		{
-			/*
 			if (Filename == null)
 			{
 				OpenFileDialog ofd = new OpenFileDialog
@@ -432,17 +426,14 @@ namespace RTCV.CorruptCore
 				File.Delete(RTC_Corruptcore.bizhawkDir + Path.DirectorySeparatorChar + "stockpile_config.ini");
 			File.Copy(RTC_Corruptcore.bizhawkDir + Path.DirectorySeparatorChar + "config.ini", RTC_Corruptcore.bizhawkDir + Path.DirectorySeparatorChar + "stockpile_config.ini");
 
-			RTC_NetcoreImplementation.SendCommandToBizhawk(new RTC_Command(CommandType.REMOTE_IMPORTKEYBINDS), true);
 
-			Process.Start(RTC_Corruptcore.bizhawkDir + Path.DirectorySeparatorChar + $"StockpileConfig{(RTC_NetcoreImplementation.isStandaloneUI ? "DETACHED" : "ATTACHED")}.bat");
-			*/
-			throw new NotImplementedException();
+			LocalNetCoreRouter.Route(NetcoreCommands.VANGUARD, NetcoreCommands.REMOTE_IMPORTKEYBINDS);
+			Process.Start(RTC_Corruptcore.bizhawkDir + Path.DirectorySeparatorChar + $"StockpileConfigDETACHED.bat");
+			
 		}
 
 		public static void LoadBizhawkConfigFromStockpile(string Filename = null)
 		{
-			throw new NotImplementedException();
-			/*
 			if (Filename == null)
 			{
 				OpenFileDialog ofd = new OpenFileDialog
@@ -460,55 +451,38 @@ namespace RTCV.CorruptCore
 					return;
 			}
 
-			if (File.Exists(RTC_EmuCore.bizhawkDir + Path.DirectorySeparatorChar + "backup_config.ini"))
+			if (File.Exists(RTC_Corruptcore.bizhawkDir + Path.DirectorySeparatorChar + "backup_config.ini"))
 			{
 				if (MessageBox.Show("Do you want to overwrite the previous Config Backup with the current Bizhawk Config?", "WARNING", MessageBoxButtons.YesNo) == DialogResult.Yes)
 				{
-					File.Delete(RTC_EmuCore.bizhawkDir + Path.DirectorySeparatorChar + "backup_config.ini");
-					File.Copy((RTC_EmuCore.bizhawkDir + Path.DirectorySeparatorChar + "config.ini"), (RTC_EmuCore.bizhawkDir + Path.DirectorySeparatorChar + "backup_config.ini"));
+					File.Delete(RTC_Corruptcore.bizhawkDir + Path.DirectorySeparatorChar + "backup_config.ini");
+					File.Copy((RTC_Corruptcore.bizhawkDir + Path.DirectorySeparatorChar + "config.ini"), (RTC_Corruptcore.bizhawkDir + Path.DirectorySeparatorChar + "backup_config.ini"));
 				}
 			}
 			else
-				File.Copy((RTC_EmuCore.bizhawkDir + Path.DirectorySeparatorChar + "config.ini"), (RTC_EmuCore.bizhawkDir + Path.DirectorySeparatorChar + "backup_config.ini"));
+				File.Copy((RTC_Corruptcore.bizhawkDir + Path.DirectorySeparatorChar + "config.ini"), (RTC_Corruptcore.bizhawkDir + Path.DirectorySeparatorChar + "backup_config.ini"));
 
 			Extract(Filename, Path.DirectorySeparatorChar + "WORKING\\TEMP", "stockpile.json");
 
-			if (File.Exists(RTC_EmuCore.bizhawkDir + Path.DirectorySeparatorChar + "stockpile_config.ini"))
-				File.Delete(RTC_EmuCore.bizhawkDir + Path.DirectorySeparatorChar + "stockpile_config.ini");
-			File.Copy((RTC_EmuCore.workingDir + Path.DirectorySeparatorChar + "SKS\\config.ini"), (RTC_EmuCore.bizhawkDir + Path.DirectorySeparatorChar + "stockpile_config.ini"));
+			if (File.Exists(RTC_Corruptcore.bizhawkDir + Path.DirectorySeparatorChar + "stockpile_config.ini"))
+				File.Delete(RTC_Corruptcore.bizhawkDir + Path.DirectorySeparatorChar + "stockpile_config.ini");
+			File.Copy((RTC_Corruptcore.workingDir + Path.DirectorySeparatorChar + "SKS\\config.ini"), (RTC_Corruptcore.bizhawkDir + Path.DirectorySeparatorChar + "stockpile_config.ini"));
 
-			RTC_NetcoreImplementation.SendCommandToBizhawk(new RTC_Command(CommandType.REMOTE_MERGECONFIG), true);
+			LocalNetCoreRouter.Route(NetcoreCommands.VANGUARD, NetcoreCommands.REMOTE_MERGECONFIG);
+			
 
-			Process.Start(RTC_EmuCore.bizhawkDir + Path.DirectorySeparatorChar + $"StockpileConfig{(RTC_NetcoreImplementation.isStandaloneUI ? "DETACHED" : "ATTACHED")}.bat");
-			*/
-		}
-
-		public static void MergeBizhawkConfig_NET()
-		{
-			throw new NotImplementedException();
-			//RTC_Hooks.BIZHAWK_MERGECONFIGINI(RTC_EmuCore.bizhawkDir + Path.DirectorySeparatorChar + "backup_config.ini", RTC_EmuCore.bizhawkDir + Path.DirectorySeparatorChar + "stockpile_config.ini");
-		}
-
-		public static void ImportBizhawkKeybinds_NET()
-		{
-			throw new NotImplementedException();
-			//RTC_Hooks.BIZHAWK_IMPORTCONFIGINI(RTC_EmuCore.bizhawkDir + Path.DirectorySeparatorChar + "import_config.ini", RTC_EmuCore.bizhawkDir + Path.DirectorySeparatorChar + "stockpile_config.ini");
+			Process.Start(RTC_Corruptcore.bizhawkDir + Path.DirectorySeparatorChar + $"StockpileConfigDETACHED.bat");
 			
 		}
 
 		public static void RestoreBizhawkConfig()
 		{
-			throw new NotImplementedException();
-			//Process.Start(RTC_EmuCore.bizhawkDir + Path.DirectorySeparatorChar + $"RestoreConfig{(RTC_NetcoreImplementation.isStandaloneUI ? "DETACHED" : "ATTACHED")}.bat");
+			LocalNetCoreRouter.Route(NetcoreCommands.VANGUARD, NetcoreCommands.REMOTE_RESTOREBIZHAWKCONFIG);
 		}
 
-		public static void Import()
-		{
-			throw new NotImplementedException();
-			//	Import(null, false);
-		}
 
-		public static void Import(string filename, bool corruptCloud, DataGridView dgv)
+		
+		public static void Import(string filename, DataGridView dgvStockpile)
 		{
 			//clean temp folder
 			EmptyFolder(Path.DirectorySeparatorChar + "WORKING\\TEMP");
@@ -599,15 +573,13 @@ namespace RTCV.CorruptCore
 
 			foreach (StashKey sk in sks.StashKeys)
 			{
-				DataGridViewRow dgvRow = dgv.Rows[dgv.Rows.Add()];
+				DataGridViewRow dgvRow = dgvStockpile.Rows[dgvStockpile.Rows.Add()];
 				dgvRow.Cells["Item"].Value = sk;
 				dgvRow.Cells["GameName"].Value = sk.GameName;
 				dgvRow.Cells["SystemName"].Value = sk.SystemName;
 				dgvRow.Cells["SystemCore"].Value = sk.SystemCore;
 			}
-
-			//Todo
-			//S.GET<RTC_GlitchHarvester_Form>().RefreshNoteIcons();
+			
 			CheckCompatibility(sks);
 
 			RTC_StockpileManager_UISide.StockpileChanged();

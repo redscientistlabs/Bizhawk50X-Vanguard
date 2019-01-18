@@ -129,6 +129,134 @@ namespace UI
 						S.GET<RTC_Core_Form>().AutoCorrupt = false;
 					});
 					break;
+					
+
+				case REMOTE_HOTKEY_AUTOCORRUPTTOGGLE:
+					SyncObjectSingleton.FormExecute((o, ea) =>
+					{
+						S.GET<RTC_Core_Form>().btnAutoCorrupt_Click(null, null);
+					});
+					break;
+				case REMOTE_HOTKEY_ERRORDELAYDECREASE:
+					SyncObjectSingleton.FormExecute((o, ea) =>
+					{
+						if (S.GET<RTC_GeneralParameters_Form>().nmErrorDelay.Value > 1)
+							S.GET<RTC_GeneralParameters_Form>().nmErrorDelay.Value--;
+					});
+					break;
+
+				case REMOTE_HOTKEY_ERRORDELAYINCREASE:
+					SyncObjectSingleton.FormExecute((o, ea) =>
+					{
+						if (S.GET<RTC_GeneralParameters_Form>().nmErrorDelay.Value < S.GET<RTC_GeneralParameters_Form>().track_ErrorDelay.Maximum)
+							S.GET<RTC_GeneralParameters_Form>().nmErrorDelay.Value++;
+					});
+					break;
+
+				case REMOTE_HOTKEY_INTENSITYDECREASE:
+					SyncObjectSingleton.FormExecute((o, ea) =>
+					{
+						if (S.GET<RTC_GeneralParameters_Form>().nmIntensity.Value > 1)
+							S.GET<RTC_GeneralParameters_Form>().nmIntensity.Value--;
+					});
+					break;
+
+				case REMOTE_HOTKEY_INTENSITYINCREASE:
+					SyncObjectSingleton.FormExecute((o, ea) =>
+					{
+						if (S.GET<RTC_GeneralParameters_Form>().nmIntensity.Value < S.GET<RTC_GeneralParameters_Form>().track_Intensity.Maximum)
+							S.GET<RTC_GeneralParameters_Form>().nmIntensity.Value++;
+					});
+					break;
+
+				case REMOTE_HOTKEY_GHLOADCORRUPT:
+					{
+						SyncObjectSingleton.FormExecute((o, ea) =>
+						{
+							S.GET<RTC_GlitchHarvester_Form>().cbAutoLoadState.Checked = true;
+							S.GET<RTC_GlitchHarvester_Form>().btnCorrupt_Click(null, null);
+						});
+					}
+					break;
+
+				case REMOTE_HOTKEY_GHCORRUPT:
+					RTC_Corruptcore.CorruptCoreSpec.Update(VSPEC.STEP_RUNBEFORE.ToString(), true);
+
+					SyncObjectSingleton.FormExecute((o, ea) =>
+					{
+						bool isload = S.GET<RTC_GlitchHarvester_Form>().cbAutoLoadState.Checked;
+						S.GET<RTC_GlitchHarvester_Form>().cbAutoLoadState.Checked = false;
+						S.GET<RTC_GlitchHarvester_Form>().btnCorrupt_Click(null, null);
+						S.GET<RTC_GlitchHarvester_Form>().cbAutoLoadState.Checked = isload;
+					});
+
+					break;
+
+				case REMOTE_HOTKEY_GHLOAD:
+					SyncObjectSingleton.FormExecute((o, ea) =>
+					{
+						S.GET<RTC_GlitchHarvester_Form>().btnSaveLoad.Text = "LOAD";
+						S.GET<RTC_GlitchHarvester_Form>().btnSaveLoad_Click(null, null);
+					});
+					break;
+				case REMOTE_HOTKEY_GHSAVE:
+					SyncObjectSingleton.FormExecute((o, ea) =>
+					{
+						S.GET<RTC_GlitchHarvester_Form>().btnSaveLoad.Text = "SAVE";
+						S.GET<RTC_GlitchHarvester_Form>().btnSaveLoad_Click(null, null);
+					});
+					break;
+				case REMOTE_HOTKEY_GHSTASHTOSTOCKPILE:
+					SyncObjectSingleton.FormExecute((o, ea) =>
+					{
+						S.GET<RTC_GlitchHarvester_Form>().AddStashToStockpile(false);
+					});
+					break;
+
+				case REMOTE_HOTKEY_SENDRAWSTASH:
+					SyncObjectSingleton.FormExecute((o, ea) =>
+					{
+						S.GET<RTC_GlitchHarvester_Form>().btnSendRaw_Click(null, null);
+					});
+					break;
+
+				case REMOTE_HOTKEY_BLASTRAWSTASH:
+					SyncObjectSingleton.FormExecute((o, ea) =>
+					{
+						RTC_Corruptcore.CorruptCoreSpec.Update(VSPEC.STEP_RUNBEFORE.ToString(), true);
+						LocalNetCoreRouter.Route(CORRUPTCORE, ASYNCBLAST, null, true);
+
+						S.GET<RTC_GlitchHarvester_Form>().btnSendRaw_Click(null, null);
+					});
+					break;
+				case REMOTE_HOTKEY_BLASTLAYERTOGGLE:
+					SyncObjectSingleton.FormExecute((o, ea) =>
+					{
+						S.GET<RTC_GlitchHarvester_Form>().btnBlastToggle_Click(null, null);
+					});
+					break;
+				case REMOTE_HOTKEY_BLASTLAYERREBLAST:
+					SyncObjectSingleton.FormExecute((o, ea) =>
+					{
+						if (RTC_StockpileManager_UISide.CurrentStashkey == null || RTC_StockpileManager_UISide.CurrentStashkey.BlastLayer.Layer.Count == 0)
+						{
+							S.GET<RTC_GlitchHarvester_Form>().IsCorruptionApplied = false;
+							return;
+						}
+						S.GET<RTC_GlitchHarvester_Form>().IsCorruptionApplied = true;
+						RTC_StockpileManager_UISide.ApplyStashkey(RTC_StockpileManager_UISide.CurrentStashkey, false);
+					});
+					break;
+
+				case REMOTE_BACKUPKEY_STASH:
+					RTC_StockpileManager_UISide.BackupedState = (StashKey)advancedMessage.objectValue;
+					RTC_StockpileManager_UISide.AllBackupStates.Push((StashKey)advancedMessage.objectValue);
+					SyncObjectSingleton.FormExecute((o, ea) =>
+					{
+						UI_Extensions.S.GET<RTC_Core_Form>().btnGpJumpBack.Visible = true;
+						UI_Extensions.S.GET<RTC_Core_Form>().btnGpJumpNow.Visible = true;
+					});
+					break;
 
 			}
 		}

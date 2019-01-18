@@ -22,8 +22,6 @@ namespace RTCV.UI
 				crashSound = Convert.ToInt32(RTC_Params.ReadParam("CRASHSOUND"));
 
 			S.GET<RTC_SettingsNetCore_Form>().cbCrashSoundEffect.SelectedIndex = crashSound;
-
-			S.GET<RTC_SettingsNetCore_Form>().cbNetCoreCommandTimeout.SelectedIndex = 0;
 		}
 
 		public void btnStartEmuhawkDetached_Click(object sender, EventArgs e)

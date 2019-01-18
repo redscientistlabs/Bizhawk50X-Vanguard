@@ -9,9 +9,9 @@ using System.Drawing;
 using System.IO;
 using System.Linq;
 using System.Windows.Forms;
-using CorruptCore;
 using RTCV.CorruptCore;
 using RTCV.NetCore;
+using static CorruptCore.NetcoreCommands;
 
 namespace RTC
 {
@@ -280,76 +280,69 @@ namespace RTC
 			{
 				default:
 					return false;
-
-				/*
+					
 				case "Manual Blast":
-					RTC_NetcoreImplementation.SendCommandToRTC(new RTC_Command(CommandType.REMOTE_HOTKEY_MANUALBLAST));
+					LocalNetCoreRouter.Route(CORRUPTCORE, REMOTE_HOTKEY_MANUALBLAST);
 					break;
 
 				case "Auto-Corrupt":
-					RTC_NetcoreImplementation.SendCommandToRTC(new RTC_Command(CommandType.REMOTE_HOTKEY_AUTOCORRUPTTOGGLE));
+					LocalNetCoreRouter.Route(UI, REMOTE_HOTKEY_AUTOCORRUPTTOGGLE);
 					break;
 
 				case "Error Delay--":
-					RTC_NetcoreImplementation.SendCommandToRTC(new RTC_Command(CommandType.REMOTE_HOTKEY_ERRORDELAYDECREASE));
+					LocalNetCoreRouter.Route(UI, REMOTE_HOTKEY_ERRORDELAYDECREASE);
 					break;
 
 				case "Error Delay++":
-					RTC_NetcoreImplementation.SendCommandToRTC(new RTC_Command(CommandType.REMOTE_HOTKEY_ERRORDELAYINCREASE));
+					LocalNetCoreRouter.Route(UI, REMOTE_HOTKEY_ERRORDELAYINCREASE);
 					break;
 
 				case "Intensity--":
-					RTC_NetcoreImplementation.SendCommandToRTC(new RTC_Command(CommandType.REMOTE_HOTKEY_INTENSITYDECREASE));
+					LocalNetCoreRouter.Route(UI, REMOTE_HOTKEY_INTENSITYDECREASE);
 					break;
 
 				case "Intensity++":
-					RTC_NetcoreImplementation.SendCommandToRTC(new RTC_Command(CommandType.REMOTE_HOTKEY_INTENSITYINCREASE));
+					LocalNetCoreRouter.Route(UI, REMOTE_HOTKEY_INTENSITYINCREASE);
 					break;
 
 				case "GH Load and Corrupt":
-					watch = System.Diagnostics.Stopwatch.StartNew();
-					RTC_NetcoreImplementation.SendCommandToRTC(new RTC_Command(CommandType.REMOTE_HOTKEY_GHLOADCORRUPT));
+					LocalNetCoreRouter.Route(UI, REMOTE_HOTKEY_GHLOADCORRUPT);
 					break;
 
 				case "GH Just Corrupt":
-					watch = System.Diagnostics.Stopwatch.StartNew();
-					RTC_NetcoreImplementation.SendCommandToRTC(new RTC_Command(CommandType.REMOTE_HOTKEY_GHCORRUPT));
+					LocalNetCoreRouter.Route(UI, REMOTE_HOTKEY_GHCORRUPT);
 					break;
 
 				case "GH Load":
-					watch = System.Diagnostics.Stopwatch.StartNew();
-					RTC_NetcoreImplementation.SendCommandToRTC(new RTC_Command(CommandType.REMOTE_HOTKEY_GHLOAD));
+					LocalNetCoreRouter.Route(UI, REMOTE_HOTKEY_GHLOAD);
 					break;
 
 				case "GH Save":
-					watch = System.Diagnostics.Stopwatch.StartNew();
-					RTC_NetcoreImplementation.SendCommandToRTC(new RTC_Command(CommandType.REMOTE_HOTKEY_GHSAVE));
+					LocalNetCoreRouter.Route(UI, REMOTE_HOTKEY_GHSAVE);
 					break;
 
 				case "Stash->Stockpile":
-					RTC_NetcoreImplementation.SendCommandToRTC(new RTC_Command(CommandType.REMOTE_HOTKEY_GHSTASHTOSTOCKPILE));
+					LocalNetCoreRouter.Route(UI, REMOTE_HOTKEY_GHSTASHTOSTOCKPILE);
 					break;
 
 				case "Induce KS Crash":
-					RTC_RPC.Stop();
 					break;
 
 				case "Blast+RawStash":
-					RTC_NetcoreImplementation.SendCommandToRTC(new RTC_Command(CommandType.REMOTE_HOTKEY_BLASTRAWSTASH));
+					var x = LocalNetCoreRouter.Route(UI, REMOTE_HOTKEY_BLASTRAWSTASH);
 					break;
 
 				case "Send Raw to Stash":
-					RTC_NetcoreImplementation.SendCommandToRTC(new RTC_Command(CommandType.REMOTE_HOTKEY_SENDRAWSTASH));
+					LocalNetCoreRouter.Route(UI, REMOTE_HOTKEY_SENDRAWSTASH);
 					break;
 
 				case "BlastLayer Toggle":
-					RTC_NetcoreImplementation.SendCommandToRTC(new RTC_Command(CommandType.REMOTE_HOTKEY_BLASTLAYERTOGGLE));
+					LocalNetCoreRouter.Route(UI, REMOTE_HOTKEY_BLASTLAYERTOGGLE);
 					break;
 
 				case "BlastLayer Re-Blast":
-					RTC_NetcoreImplementation.SendCommandToRTC(new RTC_Command(CommandType.REMOTE_HOTKEY_BLASTLAYERREBLAST));
+					LocalNetCoreRouter.Route(UI, REMOTE_HOTKEY_BLASTLAYERREBLAST);
 					break;
-					*/
 			}
 			return true;
 		}
@@ -607,6 +600,7 @@ namespace RTC
 			}
 		}
 
+
 		public static void BIZHAWK_SET_SYSTEMCORE(string systemName, string systemCore)
 		{
 			switch (systemName.ToUpper())
@@ -757,7 +751,7 @@ namespace RTC
 
 			//We gotta push this no matter what since it's new underlying objects
 			RTC_EmuCore.EmuSpec.Update(VSPEC.MEMORYDOMAINS_INTERFACES.ToString(), GetInterfaces());
-			LocalNetCoreRouter.Route(NetcoreCommands.CORRUPTCORE, NetcoreCommands.REMOTE_EVENT_DOMAINSUPDATED, domainsChanged,false);
+			LocalNetCoreRouter.Route(CORRUPTCORE, REMOTE_EVENT_DOMAINSUPDATED, domainsChanged,false);
 			return true;
 		}
 

@@ -28,39 +28,26 @@ namespace RTCV.UI
 		{
 			switch (cbCrashSoundEffect.SelectedIndex)
 			{
-				/*
 				case 0:
-					var PlatesHdFiles = Directory.GetFiles(RTC_EmuCore.assetsDir + Path.DirectorySeparatorChar + "PLATESHD" + Path.DirectorySeparatorChar);
-					RTC_NetCoreSettings.LoadedSounds = PlatesHdFiles.Select(it => new SoundPlayer(it)).ToArray();
+					var PlatesHdFiles = Directory.GetFiles(RTC_Corruptcore.assetsDir + Path.DirectorySeparatorChar + "PLATESHD" + Path.DirectorySeparatorChar);
+					RTC_UICore.LoadedSounds = PlatesHdFiles.Select(it => new SoundPlayer(it)).ToArray();
 					break;
 				case 1:
-					RTC_NetCoreSettings.LoadedSounds = new SoundPlayer[] { new SoundPlayer(RTC_EmuCore.assetsDir + Path.DirectorySeparatorChar + "crash.wav") };
+					RTC_UICore.LoadedSounds = new SoundPlayer[] { new SoundPlayer(RTC_Corruptcore.assetsDir + Path.DirectorySeparatorChar + "crash.wav") };
 					break;
 
 				case 2:
-					RTC_NetCoreSettings.LoadedSounds = null;
+					RTC_UICore.LoadedSounds = null;
 					break;
 				case 3:
-					var CrashSoundsFiles = Directory.GetFiles(RTC_EmuCore.assetsDir + Path.DirectorySeparatorChar + "CRASHSOUNDS");
-					RTC_NetCoreSettings.LoadedSounds = CrashSoundsFiles.Select(it => new SoundPlayer(it)).ToArray();
-					break;*/
+					var CrashSoundsFiles = Directory.GetFiles(RTC_Corruptcore.assetsDir + Path.DirectorySeparatorChar + "CRASHSOUNDS");
+					RTC_UICore.LoadedSounds = CrashSoundsFiles.Select(it => new SoundPlayer(it)).ToArray();
+					break;
 			}
 
 			RTC_Params.SetParam("CRASHSOUND", cbCrashSoundEffect.SelectedIndex.ToString());
 		}
-
-		public void cbNetCoreCommandTimeout_SelectedIndexChanged(object sender, EventArgs e)
-		{
-			string setting = cbNetCoreCommandTimeout.SelectedItem.ToString().ToUpper();
-			//RTC_NetCoreSettings.ChangeNetCoreSettings(setting);
-			//RTC_NetcoreImplementation.SendCommandToBizhawk(new RTC_Command(CommandType.AGGRESSIVENESS) { objectValue = setting }, true);
-		}
-
-		private void btnStartAutoKillSwitch_Click(object sender, EventArgs e)
-		{
-			Process.Start("AutoKillSwitch.exe");
-		}
-
+		
 		private void nmGameProtectionDelay_ValueChanged(object sender, KeyPressEventArgs e) => UpdateGameProtectionDelay();
 
 		private void nmGameProtectionDelay_ValueChanged(object sender, KeyEventArgs e) => UpdateGameProtectionDelay();
@@ -76,8 +63,7 @@ namespace RTCV.UI
 
 		private void RTC_SettingsNetCore_Form_Load(object sender, EventArgs e)
 		{
-				pnDetachedModeSettings.Controls.Clear();
-				lbDetachedModeSettings.ForeColor = Color.Gray;
+
 		}
 	}
 }

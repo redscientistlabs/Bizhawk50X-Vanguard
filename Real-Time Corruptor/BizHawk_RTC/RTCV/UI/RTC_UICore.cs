@@ -5,6 +5,7 @@ using System.Diagnostics;
 using System.Drawing;
 using System.IO;
 using System.Linq;
+using System.Media;
 using System.Net;
 using System.Reflection;
 using System.Threading;
@@ -32,6 +33,7 @@ namespace RTCV.UI
 		public static Size NoteBoxSize;
 
 		public static bool FirstConnect = true;
+		public static SoundPlayer[] LoadedSounds = null;
 
 		//RTC Main Forms
 		//public static Color generalColor = Color.FromArgb(60, 45, 70);
@@ -274,6 +276,13 @@ namespace RTCV.UI
 		public static void SaveRTCColor(Color color)
 		{
 			RTC_Params.SetParam("COLOR", color.R.ToString() + "," + color.G.ToString() + "," + color.B.ToString());
+		}
+
+
+		public static void PlayCrashSound(bool forcePlay = false)
+		{
+			if (LoadedSounds != null && (forcePlay || S.GET<RTC_ConnectionStatus_Form>().btnStartEmuhawkDetached.Text == "Restart BizHawk"))
+				LoadedSounds[RTC_Corruptcore.RND.Next(LoadedSounds.Length)].Play();
 		}
 	}
 }

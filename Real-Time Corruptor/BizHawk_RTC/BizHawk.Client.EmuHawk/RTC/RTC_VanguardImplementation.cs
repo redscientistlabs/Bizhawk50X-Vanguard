@@ -2,6 +2,8 @@
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Diagnostics;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading;
@@ -179,6 +181,27 @@ namespace RTC
 					});
 					break;
 
+				case REMOTE_IMPORTKEYBINDS:
+					SyncObjectSingleton.FormExecute((o, ea) =>
+					{
+						RTC_Hooks.BIZHAWK_IMPORTCONFIGINI(RTC_Corruptcore.bizhawkDir + Path.DirectorySeparatorChar + "import_config.ini", RTC_Corruptcore.bizhawkDir + Path.DirectorySeparatorChar + "stockpile_config.ini");
+					});					
+					break;
+
+				case REMOTE_MERGECONFIG:
+					SyncObjectSingleton.FormExecute((o, ea) =>
+					{
+						RTC_Hooks.BIZHAWK_MERGECONFIGINI(RTC_Corruptcore.bizhawkDir + Path.DirectorySeparatorChar + "backup_config.ini", RTC_Corruptcore.bizhawkDir + Path.DirectorySeparatorChar + "stockpile_config.ini");
+					});
+					break;
+
+				case REMOTE_RESTOREBIZHAWKCONFIG:
+					SyncObjectSingleton.FormExecute((o, ea) =>
+					{
+						Process.Start(RTC_Corruptcore.bizhawkDir + Path.DirectorySeparatorChar + $"RestoreConfigDETACHED.bat");
+					});
+					break;
+
 				case REMOTE_EVENT_BIZHAWKSTARTED:
 					//if (RTC_StockpileManager.BackupedState == null)
 					//S.GET<RTC_Core_Form>().AutoCorrupt = false;
@@ -187,7 +210,7 @@ namespace RTC
 					//Todo
 					//RTC_NetcoreImplementation.SendCommandToBizhawk(new RTC_Command("REMOTE_PUSHVMDS) { objectValue = RTC_MemoryDomains.VmdPool.Values.Select(it => (it as VirtualMemoryDomain).Proto).ToArray() }, true, true);
 
-					Thread.Sleep(100);
+					//Thread.Sleep(100);
 
 					//		if (RTC_StockpileManager.BackupedState != null)
 					//			S.GET<RTC_MemoryDomains_Form>().RefreshDomainsAndKeepSelected(RTC_StockpileManager.BackupedState.SelectedDomains.ToArray());
@@ -196,6 +219,13 @@ namespace RTC
 					//			RTC_GameProtection.Start();
 
 					break;
+				case REMOTE_ISNORMALADVANCE:
+					e.setReturnValue(RTC_Hooks.isNormalAdvance);
+					break;
+
+
+
+
 
 			}
 		}
