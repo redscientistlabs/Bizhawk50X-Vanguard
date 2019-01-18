@@ -118,16 +118,21 @@ namespace RTCV.CorruptCore
 		public static volatile FullSpec CorruptCoreSpec;
 		public static volatile FullSpec VanguardSpec;
 		public static volatile FullSpec UISpec;
+		public static bool IsStandaloneUI;
+		public static bool IsEmulatorSide;
+
 
 		public static void StartUISide()
 		{
 			RegisterCorruptcoreSpec();
+			IsStandaloneUI = true;
 		}
 		public static void StartEmuSide()
 		{
 			KillswitchTimer.Interval = 100;
 			KillswitchTimer.Tick += KillswitchTimer_Tick;
 			KillswitchTimer.Start();
+			IsEmulatorSide = true;
 		}
 
 		private static void KillswitchTimer_Tick(object sender, EventArgs e)
@@ -165,9 +170,10 @@ namespace RTCV.CorruptCore
 			CorruptCoreSpec.SpecUpdated += (o, e) =>
 			{
 				PartialSpec partial = e.partialSpec;
-
-				LocalNetCoreRouter.Route(NetcoreCommands.UI, NetcoreCommands.REMOTE_PUSHCORRUPTCORESPECUPDATE, partial, true);
-				LocalNetCoreRouter.Route(NetcoreCommands.CORRUPTCORE, NetcoreCommands.REMOTE_PUSHCORRUPTCORESPECUPDATE, partial, true);
+				if(IsStandaloneUI)
+					LocalNetCoreRouter.Route(NetcoreCommands.CORRUPTCORE, NetcoreCommands.REMOTE_PUSHCORRUPTCORESPECUPDATE, partial, true);
+				else
+					LocalNetCoreRouter.Route(NetcoreCommands.UI, NetcoreCommands.REMOTE_PUSHCORRUPTCORESPECUPDATE, partial, true);
 			};
 
 			/*

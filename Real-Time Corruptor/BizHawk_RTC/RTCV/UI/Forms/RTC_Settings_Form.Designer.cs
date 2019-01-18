@@ -35,6 +35,7 @@
             this.button2 = new System.Windows.Forms.Button();
             this.pnListBoxForm = new System.Windows.Forms.Panel();
             this.btnOpenConsole = new System.Windows.Forms.Button();
+            this.button3 = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // label2
@@ -124,12 +125,31 @@
             this.btnOpenConsole.UseVisualStyleBackColor = false;
             this.btnOpenConsole.Click += new System.EventHandler(this.btnToggleConsole_Click);
             // 
+            // button3
+            // 
+            this.button3.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(224)))), ((int)(((byte)(224)))), ((int)(((byte)(224)))));
+            this.button3.FlatAppearance.BorderSize = 0;
+            this.button3.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.button3.Font = new System.Drawing.Font("Segoe UI", 8F);
+            this.button3.ForeColor = System.Drawing.Color.Black;
+            this.button3.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.button3.Location = new System.Drawing.Point(372, 27);
+            this.button3.Name = "button3";
+            this.button3.Size = new System.Drawing.Size(150, 29);
+            this.button3.TabIndex = 139;
+            this.button3.Tag = "color:light";
+            this.button3.Text = "🙃 Toggle Debug Window";
+            this.button3.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageBeforeText;
+            this.button3.UseVisualStyleBackColor = false;
+            this.button3.Click += new System.EventHandler(this.button3_Click);
+            // 
             // RTC_Settings_Form
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
             this.ClientSize = new System.Drawing.Size(655, 515);
+            this.Controls.Add(this.button3);
             this.Controls.Add(this.btnOpenConsole);
             this.Controls.Add(this.pnListBoxForm);
             this.Controls.Add(this.button2);
@@ -153,5 +173,6 @@
 		private System.Windows.Forms.Button button2;
 		private System.Windows.Forms.Panel pnListBoxForm;
 		public System.Windows.Forms.Button btnOpenConsole;
+		public System.Windows.Forms.Button button3;
 	}
 }

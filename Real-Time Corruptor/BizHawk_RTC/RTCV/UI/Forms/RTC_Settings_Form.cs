@@ -54,9 +54,6 @@ namespace RTCV.UI
 		}
 
 
-
-
-
 		private void button2_Click(object sender, EventArgs e)
 		{
 			Form form = new RTC_Debug_Form();
@@ -66,6 +63,11 @@ namespace RTCV.UI
 		private void btnToggleConsole_Click(object sender, EventArgs e)
 		{
 			LogConsole.ToggleConsole();
+		}
+
+		private void button3_Click(object sender, EventArgs e)
+		{
+			S.GET<RTC_Debug_Form>().Show();
 		}
 	}
 }

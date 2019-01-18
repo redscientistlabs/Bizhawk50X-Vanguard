@@ -38,6 +38,10 @@ namespace RTCV.NetCore
 			base.version = 1;
 			name = partialSpec.Name;
 			Update(template);
+
+			//Set the version after the update 
+			if (partialSpec.version != 1)
+				base.version = partialSpec.version;
 		}
 
 		public void RegisterUpdateAction(Action<object, SpecUpdateEventArgs> registrant)
@@ -79,7 +83,7 @@ namespace RTCV.NetCore
 			base.version++;
 
 			if (propagate)
-				OnSpecUpdated(new SpecUpdateEventArgs() { partialSpec = _partialSpec });
+				OnSpecUpdated(new SpecUpdateEventArgs() { partialSpec = _partialSpec});
 		}
 
 		public void Update(String key, Object value, bool propagate = true)
@@ -106,6 +110,7 @@ namespace RTCV.NetCore
 				p[key] = base[key];
 			}
 
+			p.version = base.version;
 			return p;
 		}
 		public void FullUpdate()

@@ -41,8 +41,7 @@ namespace RTCV.CorruptCore
 					RTC_Corruptcore.UISpec?.GetDump().ForEach(x => sb.AppendLine(x));
 					RTC_Corruptcore.CorruptCoreSpec?.GetDump().ForEach(x => sb.AppendLine(x));
 					RTC_Corruptcore.VanguardSpec?.GetDump().ForEach(x => sb.AppendLine(x));
-
-					return sb.ToString();
+					e.setReturnValue(sb.ToString());
 					break;
 				//UI sent its spec
 				case REMOTE_PUSHUISPEC:

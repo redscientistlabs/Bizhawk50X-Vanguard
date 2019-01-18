@@ -15,11 +15,21 @@ using static RTCV.UI.UI_Extensions;
 
 namespace RTCV.UI
 {
-	public partial class RTC_Debug_Form : Form
+	public partial class RTC_Debug_Form : Form, IAutoColorize
 	{
 		public RTC_Debug_Form()
 		{
 			InitializeComponent();
+			this.FormClosing += RTC_Debug_Form_FormClosing;
+		}
+
+		private void RTC_Debug_Form_FormClosing(object sender, FormClosingEventArgs e)
+		{
+			if (e.CloseReason != CloseReason.FormOwnerClosing)
+			{
+				e.Cancel = true;
+				this.Hide();
+			}
 		}
 
 		private void button1_Click_1(object sender, EventArgs e)
@@ -31,7 +41,7 @@ namespace RTCV.UI
 			CorruptCoreSpec?.GetDump().ForEach(x => sb.AppendLine(x));
 			VanguardSpec?.GetDump().ForEach(x => sb.AppendLine(x));
 
-			richTextBox1.Text = sb.ToString();
+			tbRTC.Text = sb.ToString();
 		}
 
 		private void button2_Click(object sender, EventArgs e)

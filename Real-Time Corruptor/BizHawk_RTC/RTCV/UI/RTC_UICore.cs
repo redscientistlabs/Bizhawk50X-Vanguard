@@ -83,7 +83,6 @@ namespace RTCV.UI
 			S.GET<RTC_Core_Form>().ShowPanelForm(S.GET<RTC_ConnectionStatus_Form>());
 			S.GET<RTC_Core_Form>().Show();
 
-			S.GET<RTC_Debug_Form>().Show();
 
 		}
 
