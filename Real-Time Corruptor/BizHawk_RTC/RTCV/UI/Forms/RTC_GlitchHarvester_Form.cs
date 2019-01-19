@@ -353,8 +353,10 @@ namespace RTCV.UI
 
 			try
 			{
-				//Shut off autocorrupt
-				S.GET<RTC_Core_Form>().AutoCorrupt = false;
+				//Shut off autocorrupt if it's on.
+				//Leave this check here so we don't wastefully update the spec
+				if(S.GET<RTC_Core_Form>().AutoCorrupt)
+					S.GET<RTC_Core_Form>().AutoCorrupt = false;
 
 				btnCorrupt.Visible = false;
 
@@ -408,7 +410,7 @@ namespace RTCV.UI
 			finally
 			{
 				btnCorrupt.Visible = true;
-			}
+			 }
 		}
 
 		private void RTC_GH_Form_FormClosing(object sender, FormClosingEventArgs e)

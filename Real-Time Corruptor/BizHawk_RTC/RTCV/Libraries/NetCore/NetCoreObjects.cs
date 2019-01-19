@@ -87,14 +87,14 @@ namespace RTCV.NetCore
         public NetworkSide Side = NetworkSide.NONE;
         public bool AutoReconnect = true;
         public int ClientReconnectDelay = 600;
-        public int DefaultBoopMonitoringCounter = 15;
+        public int DefaultBoopMonitoringCounter = 15000;
 
 		public bool Attached = true;
 		public bool Loopback = true;
         public string IP = "127.0.0.1";
         public int Port = 42069;
 
-        public int messageReadTimerDelay = 10; //represents how often the messages are read (ms) (15ms = ~66fps)
+        public int messageReadTimerDelay = 5; //represents how often the messages are read (ms) (15ms = ~66fps)
 
         public ISynchronizeInvoke syncObject
         {

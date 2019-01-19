@@ -12,6 +12,7 @@ using System.Windows.Forms;
 using System.Runtime.Serialization;
 using System.IO;
 using Ceras;
+using Ceras.Helpers;
 
 namespace RTCV.NetCore
 {
@@ -108,8 +109,10 @@ namespace RTCV.NetCore
         }
 
         private void StoreMessages(NetworkStream providedStream)
-        {
-            var serializer = new CerasSerializer();
+		{
+			var config = new SerializerConfig();
+			config.PersistTypeCache = true;
+			var serializer = new CerasSerializer(config);
 
             TcpListener server = null;
             Socket socket = null;

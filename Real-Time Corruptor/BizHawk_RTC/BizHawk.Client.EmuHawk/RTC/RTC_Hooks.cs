@@ -177,6 +177,9 @@ namespace RTC
 
 
 
+			//prepare memory domains in advance on bizhawk side
+			bool domainsChanged = RefreshDomains(false);
+
 			PartialSpec gameDone = new PartialSpec("EmuSpec");
 			gameDone[VSPEC.SYSTEM.ToString()] =		  BIZHAWK_GET_CURRENTLYLOADEDSYSTEMNAME().ToUpper();
 			gameDone[VSPEC.GAMENAME.ToString()] =	  BIZHAWK_GET_FILESYSTEMGAMENAME();
@@ -185,13 +188,12 @@ namespace RTC
 			gameDone[VSPEC.SYNCSETTINGS.ToString()] = BIZHAWK_GETSET_SYNCSETTINGS;
 			gameDone[VSPEC.OPENROMFILENAME.ToString()] = GlobalWin.MainForm.CurrentlyOpenRom;
 			gameDone[VSPEC.MEMORYDOMAINS_BLACKLISTEDDOMAINS.ToString()] = RTC_EmuCore.GetBlacklistedDomains(BIZHAWK_GET_CURRENTLYLOADEDSYSTEMNAME().ToUpper());
+			gameDone[VSPEC.MEMORYDOMAINS_INTERFACES.ToString()] = GetInterfaces();
 			RTC_EmuCore.EmuSpec.Update(gameDone);
 
-			//RTC_MemoryDomains.RefreshDomains(false);
-
-			//prepare memory domains in advance on bizhawk side
-
-			RefreshDomains();
+			//This is local. If the domains changed it propgates over netcore
+			LocalNetCoreRouter.Route(CORRUPTCORE, REMOTE_EVENT_DOMAINSUPDATED, domainsChanged, true);
+			
 
 			if (RTC_EmuCore.GameName != lastGameName)
 			{
@@ -727,7 +729,7 @@ namespace RTC
 
 		public static volatile MemoryDomainRTCInterface MDRI = new MemoryDomainRTCInterface();
 
-		public static bool RefreshDomains()
+		public static bool RefreshDomains(bool updateSpecs = true)
 		{
 			if (Global.Emulator is NullEmulator)
 				return false;
@@ -753,10 +755,14 @@ namespace RTC
 			}
 
 			//We gotta push this no matter what since it's new underlying objects
+			if (updateSpecs)
+			{
+				RTC_EmuCore.EmuSpec.Update(VSPEC.MEMORYDOMAINS_INTERFACES.ToString(), GetInterfaces());
+				LocalNetCoreRouter.Route(CORRUPTCORE, REMOTE_EVENT_DOMAINSUPDATED, domainsChanged, true);
+			}
 
-			RTC_EmuCore.EmuSpec.Update(VSPEC.MEMORYDOMAINS_INTERFACES.ToString(), GetInterfaces());
-			LocalNetCoreRouter.Route(CORRUPTCORE, REMOTE_EVENT_DOMAINSUPDATED, domainsChanged,true);
-			return true;
+
+			return domainsChanged;
 		}
 
 		public static MemoryDomainProxy[] GetInterfaces()

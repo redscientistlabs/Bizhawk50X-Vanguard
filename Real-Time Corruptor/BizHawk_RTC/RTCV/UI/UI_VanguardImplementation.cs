@@ -119,17 +119,8 @@ namespace UI
 
 					SyncObjectSingleton.FormExecute((o, ea) =>
 					{
-						var domainsChanged = advancedMessage?.objectValue as bool?; // We want to be able to send this unsynced so use a nullable cast
-						if (domainsChanged != null && domainsChanged == true)
-						{
-							S.GET<RTC_MemoryDomains_Form>().RefreshDomains();
-							S.GET<RTC_MemoryDomains_Form>().SetMemoryDomainsAllButSelectedDomains((string[])RTC_Corruptcore.VanguardSpec[VSPEC.MEMORYDOMAINS_BLACKLISTEDDOMAINS.ToString()]);
-						}
-						else
-						{
-
-							S.GET<RTC_MemoryDomains_Form>().RefreshDomainsAndKeepSelected();
-						}
+						S.GET<RTC_MemoryDomains_Form>().RefreshDomains();
+						S.GET<RTC_MemoryDomains_Form>().SetMemoryDomainsAllButSelectedDomains((string[])RTC_Corruptcore.VanguardSpec[VSPEC.MEMORYDOMAINS_BLACKLISTEDDOMAINS.ToString()]);
 					});
 					break;
 				case ERROR_DISABLE_AUTOCORRUPT:

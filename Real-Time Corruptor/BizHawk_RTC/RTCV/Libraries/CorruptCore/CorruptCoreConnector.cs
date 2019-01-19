@@ -126,6 +126,7 @@ namespace RTCV.CorruptCore
 					{
 						bl = RTC_Corruptcore.GenerateBlastLayer(domains);
 					});
+					RTC_StockpileManager_EmuSide.CachedBL = bl;
 					if (advancedMessage.requestGuid != null)
 					{
 						e.setReturnValue(bl);
@@ -141,8 +142,18 @@ namespace RTCV.CorruptCore
 					{
 						bl.Apply(backup);
 					});
+						break;
 				}
-				break;
+				case APPLYCACHEDBLASTLAYER:
+				{
+					var temp = advancedMessage.objectValue as object[];
+					bool backup = (bool)temp[0];
+					SyncObjectSingleton.FormExecute((o, ea) =>
+					{
+						RTC_StockpileManager_EmuSide.CachedBL.Apply(backup);
+					});
+				}
+					break;
 
 				/*
 				case STASHKEY:
@@ -199,10 +210,12 @@ namespace RTCV.CorruptCore
 					StashKey sk = (StashKey)(advancedMessage.objectValue as object[])[0];
 					bool reloadRom = (bool)(advancedMessage.objectValue as object[])[1];
 					bool runBlastLayer = (bool)(advancedMessage.objectValue as object[])[2];
+					bool useCachedBlastLayer = (bool)(advancedMessage.objectValue as object[])[3];
+
 					bool returnValue = false;
 					SyncObjectSingleton.FormExecute((o, ea) =>
 					{
-						returnValue = RTC_StockpileManager_EmuSide.LoadState_NET(sk, reloadRom, runBlastLayer);
+						returnValue = RTC_StockpileManager_EmuSide.LoadState_NET(sk, reloadRom, runBlastLayer, useCachedBlastLayer);
 					});
 
 					e.setReturnValue(returnValue);
@@ -326,14 +339,14 @@ namespace RTCV.CorruptCore
 					break;
 
 
-				case REMOTE_SET_STEPACTIONS_CLEARALLBLASTUNITS:
+				case REMOTE_CLEARSTEPBLASTUNITS:
 					SyncObjectSingleton.FormExecute((o, ea) =>
 					{
 						RTC_StepActions.ClearStepBlastUnits();
 					});
 
 					break;
-				case REMOTE_SET_STEPACTIONS_REMOVEEXCESSINFINITEUNITS:
+				case REMOTE_REMOVEEXCESSINFINITESTEPUNITS:
 					SyncObjectSingleton.FormExecute((o, ea) =>
 					{
 						RTC_StepActions.RemoveExcessInfiniteStepUnits();

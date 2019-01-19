@@ -87,12 +87,16 @@ namespace RTCV.UI
 			var oldDomain = lbMemoryDomains.Items;
 
 
-			if (overrideDomains != null)
-				temp = overrideDomains;
 
 			RefreshDomains(); //refresh and reload domains
 
-			if (temp.Length != 0)
+			if (overrideDomains != null)
+			{
+				RTC_Corruptcore.UISpec.Update("SELECTEDDOMAINS", overrideDomains);
+				SetMemoryDomainsSelectedDomains(temp);
+			}
+			//If we had old domains selected don't do anything
+			else if (temp.Length != 0)
 			{
 				RTC_Corruptcore.UISpec.Update("SELECTEDDOMAINS", temp);
 				SetMemoryDomainsSelectedDomains(temp);

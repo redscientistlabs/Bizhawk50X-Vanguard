@@ -65,7 +65,7 @@ namespace RTCV.NetCore
         private void ListenToReader()
         {
             int port = (spec.Side == NetworkSide.SERVER ? PortClient : PortServer);
-            int UdpReceiveTimeout = 1000;
+            int UdpReceiveTimeout = Int32.MaxValue;
 
             UdpClient Listener = null;
             IPEndPoint groupEP = new IPEndPoint((IP == "127.0.0.1" ? IPAddress.Loopback : IPAddress.Any), port);
@@ -109,8 +109,8 @@ namespace RTCV.NetCore
 
                     try
                     {
-						if(Listener.Available > 0)
-							bytes = Listener.Receive(ref groupEP);
+						//if(Listener.Available > 0)
+						bytes = Listener.Receive(ref groupEP);
                     }
                     catch (SocketException ex)
                     {

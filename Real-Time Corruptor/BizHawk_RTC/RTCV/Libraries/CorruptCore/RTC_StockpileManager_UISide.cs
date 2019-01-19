@@ -33,7 +33,7 @@ namespace RTCV.CorruptCore
 
 		private static void PreApplyStashkey()
 		{
-			RTC_StepActions.ClearStepBlastUnits();
+			LocalNetCoreRouter.Route(NetcoreCommands.CORRUPTCORE, NetcoreCommands.REMOTE_CLEARSTEPBLASTUNITS, null, true);
 		}
 
 		private static void PostApplyStashkey()
@@ -98,7 +98,9 @@ namespace RTCV.CorruptCore
 			watch.Stop();
 			Console.WriteLine($"It took " + watch.ElapsedMilliseconds + " ms to blastlayer");
 
-			CurrentStashkey = new StashKey(RTC_Corruptcore.GetRandomKey(), psk.ParentKey, bl)
+
+			//We make it without the blastlayer so we can send it across and use the cached version without needing a prototype
+			CurrentStashkey = new StashKey(RTC_Corruptcore.GetRandomKey(), psk.ParentKey, null)
 			{
 				RomFilename = psk.RomFilename,
 				SystemName = psk.SystemName,
@@ -108,18 +110,19 @@ namespace RTCV.CorruptCore
 				StateLocation = psk.StateLocation
 			};
 
-			bool isCorruptionApplied = CurrentStashkey?.BlastLayer?.Layer?.Count > 0;
+			bool isCorruptionApplied = bl?.Layer?.Count > 0;
 
 			if (_loadBeforeOperation)
 			{
-				if (!LoadState(CurrentStashkey, true, true))
+				if (!LoadState(CurrentStashkey, true, true, true))
 				{
+					CurrentStashkey.BlastLayer = bl;
 					return isCorruptionApplied;
 				}
 			}
 			else
-				LocalNetCoreRouter.Route(NetcoreCommands.CORRUPTCORE, NetcoreCommands.APPLYBLASTLAYER, new object[] { CurrentStashkey.BlastLayer, true }, true);
-
+				LocalNetCoreRouter.Route(NetcoreCommands.CORRUPTCORE, NetcoreCommands.APPLYCACHEDBLASTLAYER, new object[] { true }, true);
+			CurrentStashkey.BlastLayer = bl;
 
 			if (StashAfterOperation && bl != null)
 			{
@@ -278,9 +281,9 @@ namespace RTCV.CorruptCore
 			return false;
 		}
 
-		public static bool LoadState(StashKey sk, bool reloadRom = true, bool applyBlastLayer = true)
+		public static bool LoadState(StashKey sk, bool reloadRom = true, bool applyBlastLayer = true, bool useCachedBlastLayer = false)
 		{
-			LocalNetCoreRouter.QueryRoute<bool>(NetcoreCommands.CORRUPTCORE, NetcoreCommands.REMOTE_LOADSTATE, new object[] {sk, true, applyBlastLayer }, true);
+			LocalNetCoreRouter.QueryRoute<bool>(NetcoreCommands.CORRUPTCORE, NetcoreCommands.REMOTE_LOADSTATE, new object[] {sk, true, applyBlastLayer, useCachedBlastLayer }, true);
 			return true;
 		}
 

@@ -43,7 +43,8 @@ namespace RTCV.CorruptCore
 				temp.Add(mi.ToString(), mi);
 			MemoryInterfaces = temp;
 
-			LocalNetCoreRouter.Route(NetcoreCommands.UI, NetcoreCommands.REMOTE_EVENT_DOMAINSUPDATED, domainsChanged, false);
+			if(domainsChanged)
+				LocalNetCoreRouter.Route(NetcoreCommands.UI, NetcoreCommands.REMOTE_EVENT_DOMAINSUPDATED, true);
 		}
 
 
