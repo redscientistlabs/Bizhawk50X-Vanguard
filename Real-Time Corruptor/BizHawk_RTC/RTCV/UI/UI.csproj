@@ -360,7 +360,9 @@
       <Name>NetCore</Name>
     </ProjectReference>
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <None Include="Resources\Question Mark.png" />
+  </ItemGroup>
   <ItemGroup>
     <None Include="Resources\refresh new.png" />
   </ItemGroup>

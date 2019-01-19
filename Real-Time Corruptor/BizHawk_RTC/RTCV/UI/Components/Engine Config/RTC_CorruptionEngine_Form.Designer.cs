@@ -77,9 +77,9 @@
             this.label26 = new System.Windows.Forms.Label();
             this.label27 = new System.Windows.Forms.Label();
             this.panel5 = new System.Windows.Forms.Panel();
-            this.nmMaxValueHellgenie = new NumericUpDownHexFix();
+            this.nmMaxValueHellgenie = new RTCV.UI.NumericUpDownHexFix();
             this.label16 = new System.Windows.Forms.Label();
-            this.nmMinValueHellgenie = new NumericUpDownHexFix();
+            this.nmMinValueHellgenie = new RTCV.UI.NumericUpDownHexFix();
             this.comboBox2 = new System.Windows.Forms.ComboBox();
             this.cbClearCheatsOnRewind = new System.Windows.Forms.CheckBox();
             this.btnClearCheats = new System.Windows.Forms.Button();
@@ -88,8 +88,8 @@
             this.gbNightmareEngine = new System.Windows.Forms.GroupBox();
             this.label24 = new System.Windows.Forms.Label();
             this.label23 = new System.Windows.Forms.Label();
-            this.nmMaxValueNightmare = new NumericUpDownHexFix();
-            this.nmMinValueNightmare = new NumericUpDownHexFix();
+            this.nmMaxValueNightmare = new RTCV.UI.NumericUpDownHexFix();
+            this.nmMinValueNightmare = new RTCV.UI.NumericUpDownHexFix();
             this.panel4 = new System.Windows.Forms.Panel();
             this.label15 = new System.Windows.Forms.Label();
             this.comboBox1 = new System.Windows.Forms.ComboBox();
@@ -101,6 +101,7 @@
             this.comboBox7 = new System.Windows.Forms.ComboBox();
             this.label3 = new System.Windows.Forms.Label();
             this.btnOpenCustomEngine = new System.Windows.Forms.Button();
+            this.label5 = new System.Windows.Forms.Label();
             this.pnCustomPrecision.SuspendLayout();
             this.gbBlastGeneratorEngine.SuspendLayout();
             this.gbVectorEngine.SuspendLayout();
@@ -125,10 +126,11 @@
             // pnCustomPrecision
             // 
             this.pnCustomPrecision.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(32)))), ((int)(((byte)(32)))), ((int)(((byte)(32)))));
+            this.pnCustomPrecision.Controls.Add(this.label5);
             this.pnCustomPrecision.Controls.Add(this.cbCustomPrecision);
-            this.pnCustomPrecision.Location = new System.Drawing.Point(181, 95);
+            this.pnCustomPrecision.Location = new System.Drawing.Point(262, 105);
             this.pnCustomPrecision.Name = "pnCustomPrecision";
-            this.pnCustomPrecision.Size = new System.Drawing.Size(221, 57);
+            this.pnCustomPrecision.Size = new System.Drawing.Size(140, 47);
             this.pnCustomPrecision.TabIndex = 139;
             this.pnCustomPrecision.Tag = "color:darker";
             this.pnCustomPrecision.MouseDown += new System.Windows.Forms.MouseEventHandler(this.HandleMouseDown);
@@ -145,7 +147,7 @@
             "8-bit",
             "16-bit",
             "32-bit"});
-            this.cbCustomPrecision.Location = new System.Drawing.Point(95, 29);
+            this.cbCustomPrecision.Location = new System.Drawing.Point(15, 20);
             this.cbCustomPrecision.Name = "cbCustomPrecision";
             this.cbCustomPrecision.Size = new System.Drawing.Size(121, 21);
             this.cbCustomPrecision.TabIndex = 81;
@@ -437,9 +439,9 @@
             // panel8
             // 
             this.panel8.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(32)))), ((int)(((byte)(32)))), ((int)(((byte)(32)))));
-            this.panel8.Location = new System.Drawing.Point(169, 92);
+            this.panel8.Location = new System.Drawing.Point(250, 102);
             this.panel8.Name = "panel8";
-            this.panel8.Size = new System.Drawing.Size(221, 57);
+            this.panel8.Size = new System.Drawing.Size(140, 47);
             this.panel8.TabIndex = 140;
             this.panel8.Tag = "color:darker";
             this.panel8.Visible = false;
@@ -578,9 +580,9 @@
             // panel6
             // 
             this.panel6.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(32)))), ((int)(((byte)(32)))), ((int)(((byte)(32)))));
-            this.panel6.Location = new System.Drawing.Point(169, 92);
+            this.panel6.Location = new System.Drawing.Point(250, 102);
             this.panel6.Name = "panel6";
-            this.panel6.Size = new System.Drawing.Size(221, 57);
+            this.panel6.Size = new System.Drawing.Size(140, 47);
             this.panel6.TabIndex = 139;
             this.panel6.Tag = "color:darker";
             this.panel6.Visible = false;
@@ -692,9 +694,9 @@
             // panel7
             // 
             this.panel7.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(32)))), ((int)(((byte)(32)))), ((int)(((byte)(32)))));
-            this.panel7.Location = new System.Drawing.Point(169, 92);
+            this.panel7.Location = new System.Drawing.Point(250, 102);
             this.panel7.Name = "panel7";
-            this.panel7.Size = new System.Drawing.Size(221, 57);
+            this.panel7.Size = new System.Drawing.Size(140, 47);
             this.panel7.TabIndex = 139;
             this.panel7.Tag = "color:darker";
             this.panel7.Visible = false;
@@ -846,9 +848,9 @@
             // panel5
             // 
             this.panel5.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(32)))), ((int)(((byte)(32)))), ((int)(((byte)(32)))));
-            this.panel5.Location = new System.Drawing.Point(169, 92);
+            this.panel5.Location = new System.Drawing.Point(250, 102);
             this.panel5.Name = "panel5";
-            this.panel5.Size = new System.Drawing.Size(221, 57);
+            this.panel5.Size = new System.Drawing.Size(140, 47);
             this.panel5.TabIndex = 138;
             this.panel5.Tag = "color:darker";
             this.panel5.Visible = false;
@@ -1063,9 +1065,9 @@
             // panel4
             // 
             this.panel4.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(32)))), ((int)(((byte)(32)))), ((int)(((byte)(32)))));
-            this.panel4.Location = new System.Drawing.Point(169, 92);
+            this.panel4.Location = new System.Drawing.Point(250, 102);
             this.panel4.Name = "panel4";
-            this.panel4.Size = new System.Drawing.Size(221, 57);
+            this.panel4.Size = new System.Drawing.Size(140, 47);
             this.panel4.TabIndex = 137;
             this.panel4.Tag = "color:darker";
             this.panel4.Visible = false;
@@ -1148,9 +1150,9 @@
             // panel1
             // 
             this.panel1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(32)))), ((int)(((byte)(32)))), ((int)(((byte)(32)))));
-            this.panel1.Location = new System.Drawing.Point(169, 92);
+            this.panel1.Location = new System.Drawing.Point(250, 102);
             this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(221, 57);
+            this.panel1.Size = new System.Drawing.Size(140, 47);
             this.panel1.TabIndex = 140;
             this.panel1.Tag = "color:darker";
             this.panel1.Visible = false;
@@ -1208,6 +1210,17 @@
             this.btnOpenCustomEngine.UseVisualStyleBackColor = false;
             this.btnOpenCustomEngine.Click += new System.EventHandler(this.btnOpenCustomEngine_Click);
             // 
+            // label5
+            // 
+            this.label5.AutoSize = true;
+            this.label5.Font = new System.Drawing.Font("Segoe UI Symbol", 8.25F);
+            this.label5.ForeColor = System.Drawing.Color.White;
+            this.label5.Location = new System.Drawing.Point(4, 4);
+            this.label5.Name = "label5";
+            this.label5.Size = new System.Drawing.Size(95, 13);
+            this.label5.TabIndex = 82;
+            this.label5.Text = "Engine Precision:";
+            // 
             // RTC_CorruptionEngine_Form
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -1233,6 +1246,7 @@
             this.Load += new System.EventHandler(this.RTC_CorruptionEngine_Form_Load);
             this.MouseDown += new System.Windows.Forms.MouseEventHandler(this.HandleMouseDown);
             this.pnCustomPrecision.ResumeLayout(false);
+            this.pnCustomPrecision.PerformLayout();
             this.gbBlastGeneratorEngine.ResumeLayout(false);
             this.gbBlastGeneratorEngine.PerformLayout();
             this.gbVectorEngine.ResumeLayout(false);
@@ -1339,5 +1353,6 @@
 		private System.Windows.Forms.Label label3;
 		private System.Windows.Forms.Button btnOpenCustomEngine;
 		private System.Windows.Forms.Panel panel1;
+		private System.Windows.Forms.Label label5;
 	}
 }
