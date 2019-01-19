@@ -1214,6 +1214,7 @@ namespace RTCV.UI
 			if (temp != null)
 			{
 				currentSK.BlastLayer = temp;
+				bs = new BindingSource { DataSource = currentSK.BlastLayer.Layer };
 			}
 		}
 
@@ -1247,6 +1248,7 @@ namespace RTCV.UI
 				foreach (BlastUnit bu in bl.Layer)
 					currentSK.BlastLayer.Layer.Add(bu);
 			}
+			dgvBlastEditor.Refresh();
 		}
 
 		private void exportToCSVToolStripMenuItem_Click(object sender, EventArgs e)
