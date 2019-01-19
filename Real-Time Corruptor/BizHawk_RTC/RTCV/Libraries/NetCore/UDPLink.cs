@@ -56,7 +56,9 @@ namespace RTCV.NetCore
             {
                 Byte[] sdata = Encoding.ASCII.GetBytes(message.Type);
                 Sender.Send(sdata, sdata.Length);
-                ConsoleEx.WriteLine($"UDP : Sent simple message \"{message.Type}\"");
+				//Todo - Refactor this into a way to blacklist specific commands 
+				if(message.Type != "UI|KILLSWITCH_PULSE" || ConsoleEx.ShowDebug)
+					ConsoleEx.WriteLine($"UDP : Sent simple message \"{message.Type}\"");
             }
         }
 

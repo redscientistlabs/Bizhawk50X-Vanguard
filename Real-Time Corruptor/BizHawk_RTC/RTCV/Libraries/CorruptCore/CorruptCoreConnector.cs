@@ -104,8 +104,7 @@ namespace RTCV.CorruptCore
 
 				case REMOTE_EVENT_DOMAINSUPDATED:
 					var domainsChanged = (bool)advancedMessage.objectValue;
-					RTC_MemoryDomains.RefreshDomains();
-					LocalNetCoreRouter.Route(NetcoreCommands.UI, NetcoreCommands.REMOTE_EVENT_DOMAINSUPDATED, domainsChanged, true);
+					RTC_MemoryDomains.RefreshDomains(domainsChanged);
 					break;
 
 				case ASYNCBLAST:

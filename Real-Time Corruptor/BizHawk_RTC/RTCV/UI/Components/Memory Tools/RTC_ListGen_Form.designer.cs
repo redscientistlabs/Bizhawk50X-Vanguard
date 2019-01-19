@@ -144,9 +144,10 @@
             this.btnHelp.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnHelp.Font = new System.Drawing.Font("Segoe UI Semibold", 9.75F, System.Drawing.FontStyle.Bold);
             this.btnHelp.ForeColor = System.Drawing.Color.Black;
+            this.btnHelp.Image = global::UI.Properties.Resources.Question_Mark;
             this.btnHelp.Location = new System.Drawing.Point(188, 13);
             this.btnHelp.Name = "btnHelp";
-            this.btnHelp.Size = new System.Drawing.Size(19, 18);
+            this.btnHelp.Size = new System.Drawing.Size(19, 19);
             this.btnHelp.TabIndex = 138;
             this.btnHelp.TabStop = false;
             this.btnHelp.Tag = "color:light";

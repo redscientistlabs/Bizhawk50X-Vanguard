@@ -186,8 +186,6 @@ namespace RTC
 
 			//RTC_MemoryDomains.RefreshDomains(false);
 
-			//Sleep for 10ms in case Bizhawk hung for a moment after the game loaded
-			System.Threading.Thread.Sleep(10);
 			//prepare memory domains in advance on bizhawk side
 
 			RefreshDomains();
@@ -751,7 +749,7 @@ namespace RTC
 
 			//We gotta push this no matter what since it's new underlying objects
 			RTC_EmuCore.EmuSpec.Update(VSPEC.MEMORYDOMAINS_INTERFACES.ToString(), GetInterfaces());
-			LocalNetCoreRouter.Route(CORRUPTCORE, REMOTE_EVENT_DOMAINSUPDATED, domainsChanged,false);
+			LocalNetCoreRouter.Route(CORRUPTCORE, REMOTE_EVENT_DOMAINSUPDATED, domainsChanged,true);
 			return true;
 		}
 

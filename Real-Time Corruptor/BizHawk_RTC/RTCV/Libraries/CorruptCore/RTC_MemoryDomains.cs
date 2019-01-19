@@ -19,7 +19,7 @@ namespace RTCV.CorruptCore
 
 		public static Dictionary<string, MemoryInterface> MemoryInterfaces
 		{
-			get => (Dictionary<string, MemoryInterface>)RTC_Corruptcore.CorruptCoreSpec["MEMORYINTERFACES"];
+			get => RTC_Corruptcore.CorruptCoreSpec?["MEMORYINTERFACES"] as Dictionary<string, MemoryInterface>;
 			set => RTC_Corruptcore.CorruptCoreSpec.Update("MEMORYINTERFACES", value);
 		}
 
@@ -35,16 +35,14 @@ namespace RTCV.CorruptCore
 		}
 
 
-		public static void RefreshDomains()
+		public static void RefreshDomains(bool domainsChanged = false)
 		{
-			//var returns = LocalNetCoreRouter.QueryRoute<MemoryInterface[]>("VANGUARD", "REMOTE_DOMAIN_GETDOMAINS");
-
 			var temp = new Dictionary<string, MemoryInterface>();
 			foreach (MemoryInterface mi in (MemoryInterface[])RTC_Corruptcore.VanguardSpec[VSPEC.MEMORYDOMAINS_INTERFACES.ToString()])
 				temp.Add(mi.ToString(), mi);
 			MemoryInterfaces = temp;
 
-			LocalNetCoreRouter.Route(NetcoreCommands.UI, NetcoreCommands.REMOTE_EVENT_DOMAINSUPDATED);
+			LocalNetCoreRouter.Route(NetcoreCommands.UI, NetcoreCommands.REMOTE_EVENT_DOMAINSUPDATED, domainsChanged, false);
 		}
 
 
