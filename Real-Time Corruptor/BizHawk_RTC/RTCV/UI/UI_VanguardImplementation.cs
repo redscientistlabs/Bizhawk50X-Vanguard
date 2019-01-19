@@ -52,7 +52,9 @@ namespace UI
 				case REMOTE_PUSHEMUSPEC:
 					SyncObjectSingleton.FormExecute((o, ea) =>
 					{
-						RTC_Corruptcore.VanguardSpec = new FullSpec((PartialSpec)advancedMessage.objectValue, !RTC_Corruptcore.Attached);
+						if(!RTC_Corruptcore.Attached)
+							RTC_Corruptcore.VanguardSpec = new FullSpec((PartialSpec)advancedMessage.objectValue, !RTC_Corruptcore.Attached);
+
 						e.setReturnValue(true);
 
 						//Push the UI and CorruptCore spec (since we're master)

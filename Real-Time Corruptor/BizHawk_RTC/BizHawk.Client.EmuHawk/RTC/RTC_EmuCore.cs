@@ -99,6 +99,8 @@ namespace RTC
 
 			EmuSpec = new FullSpec(emuSpecTemplate, !RTC_Corruptcore.Attached); //You have to feed a partial spec as a template
 
+			if (RTC_EmuCore.attached)
+				RTCV.Vanguard.VanguardConnector.PushVanguardSpecRef(RTC_EmuCore.EmuSpec);
 
 			LocalNetCoreRouter.Route(NetcoreCommands.CORRUPTCORE, NetcoreCommands.REMOTE_PUSHEMUSPEC, emuSpecTemplate, true);
 			LocalNetCoreRouter.Route(NetcoreCommands.UI, NetcoreCommands.REMOTE_PUSHEMUSPEC, emuSpecTemplate, true);
@@ -107,7 +109,10 @@ namespace RTC
 			EmuSpec.SpecUpdated += (o, e) =>
 			{
 				PartialSpec partial = e.partialSpec;
-				RTC_Corruptcore.VanguardSpec = EmuSpec;
+
+				if(!RTC_EmuCore.attached)
+					RTC_Corruptcore.VanguardSpec = EmuSpec;
+
 				LocalNetCoreRouter.Route(NetcoreCommands.CORRUPTCORE, NetcoreCommands.REMOTE_PUSHEMUSPECUPDATE, partial, true);
 				LocalNetCoreRouter.Route(NetcoreCommands.UI, NetcoreCommands.REMOTE_PUSHEMUSPECUPDATE, partial, true);
 			};

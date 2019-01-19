@@ -85,5 +85,10 @@ namespace RTCV.Vanguard
         {
 
         }
-    }
+
+		public static void PushVanguardSpecRef(FullSpec spec)
+		{
+			RTC_Corruptcore.VanguardSpec = spec;
+		}
+	}
 }

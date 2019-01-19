@@ -753,6 +753,7 @@ namespace RTC
 			}
 
 			//We gotta push this no matter what since it's new underlying objects
+
 			RTC_EmuCore.EmuSpec.Update(VSPEC.MEMORYDOMAINS_INTERFACES.ToString(), GetInterfaces());
 			LocalNetCoreRouter.Route(CORRUPTCORE, REMOTE_EVENT_DOMAINSUPDATED, domainsChanged,true);
 			return true;

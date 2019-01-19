@@ -65,7 +65,8 @@ namespace RTCV.CorruptCore
 				case REMOTE_PUSHEMUSPEC:
 					SyncObjectSingleton.FormExecute((o, ea) =>
 					{
-						RTC_Corruptcore.VanguardSpec = new FullSpec((PartialSpec)advancedMessage.objectValue, !RTC_Corruptcore.Attached);
+						if(!RTC_Corruptcore.Attached)
+							RTC_Corruptcore.VanguardSpec = new FullSpec((PartialSpec)advancedMessage.objectValue, !RTC_Corruptcore.Attached);
 					});
 					e.setReturnValue(true);
 					break;
