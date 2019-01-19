@@ -26,6 +26,14 @@ namespace RTCV.Vanguard
 			corruptConn = new CorruptCoreConnector();
 			LocalNetCoreRouter.registerEndpoint(corruptConn, "CORRUPTCORE");
 
+			if (receiver.Attached)//attached mode
+			{
+				RTC_Corruptcore.Attached = true;
+				RTCV.UI.RTC_UICore.Start(null);
+				return;
+			}
+
+
 			var netCoreSpec = new NetCoreSpec();
             netCoreSpec.Side = NetworkSide.CLIENT;
             netCoreSpec.MessageReceived += OnMessageReceivedProxy;
@@ -36,8 +44,9 @@ namespace RTCV.Vanguard
 
 		}
 
+		public static void ImplyClientConnected() => NetCoreSpec_ClientConnected(null, null);
 
-		private void NetCoreSpec_ClientConnected(object sender, EventArgs e)
+		private static void NetCoreSpec_ClientConnected(object sender, EventArgs e)
 		{
 			LocalNetCoreRouter.Route(NetcoreCommands.UI, NetcoreCommands.REMOTE_PUSHEMUSPEC, RTC_Corruptcore.VanguardSpec.GetPartialSpec(), true);
 			LocalNetCoreRouter.Route(NetcoreCommands.UI, NetcoreCommands.REMOTE_ALLSPECSSENT, true);

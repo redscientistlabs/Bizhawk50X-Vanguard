@@ -115,6 +115,9 @@ namespace RTC
 			RTC_EmuCore.args = args;
 
 			disableRTC = RTC_EmuCore.args.Contains("-DISABLERTC");
+
+			//RTC_EmuCore.attached = true;
+			RTC_EmuCore.attached = RTC_EmuCore.args.Contains("-ATTACHED");
 			//RTC_E.isStandaloneEmu = RTC_EmuCore.args.Contains("-REMOTERTC");
 
 			//RTC_Unispec.RTCSpec.Update(Spec.HOOKS_SHOWCONSOLE.ToString(), RTC_Core.args.Contains("-CONSOLE"));

@@ -23,6 +23,7 @@ namespace RTC
 	public static class RTC_EmuCore
 	{
 		public static string[] args;
+		public static bool attached = false;
 
 		public static string System
 		{
@@ -96,7 +97,7 @@ namespace RTC
 
 			emuSpecTemplate.Insert(RTC_EmuCore.getDefaultPartial());
 
-			EmuSpec = new FullSpec(emuSpecTemplate); //You have to feed a partial spec as a template
+			EmuSpec = new FullSpec(emuSpecTemplate, !RTC_Corruptcore.Attached); //You have to feed a partial spec as a template
 
 
 			LocalNetCoreRouter.Route(NetcoreCommands.CORRUPTCORE, NetcoreCommands.REMOTE_PUSHEMUSPEC, emuSpecTemplate, true);
@@ -127,6 +128,8 @@ namespace RTC
 			if (!File.Exists(RTC_Corruptcore.bizhawkDir + Path.DirectorySeparatorChar + "config.ini"))
 				RTC_Hooks.BIZHAWK_MAINFORM_SAVECONFIG();
 
+			if (RTC_EmuCore.attached)
+				VanguardConnector.ImplyClientConnected();
 		}
 
 

@@ -38,7 +38,7 @@ namespace RTCV.UI
 		//public static Color generalColor = Color.FromArgb(60, 45, 70);
 		public static Color GeneralColor = Color.LightSteelBlue;
 
-		public static void Start(RTC_Standalone_Form standaloneForm = null)
+		public static void Start(Form standaloneForm = null)
 		{
 			RTC_Extensions.DirectoryRequired(paths: new string[] {
 				RTC_Corruptcore.workingDir, RTC_Corruptcore.workingDir + "\\TEMP\\"
@@ -49,7 +49,7 @@ namespace RTCV.UI
 				, RTC_Corruptcore.rtcDir + "\\RENDEROUTPUT\\",
 			});
 
-			S.SET<RTC_Standalone_Form>(standaloneForm);
+			S.SET<RTC_Standalone_Form>((RTC_Standalone_Form)standaloneForm);
 
 			Form dummy = new Form();
 			IntPtr Handle = dummy.Handle;
@@ -63,7 +63,7 @@ namespace RTCV.UI
 
 			p["SELECTEDDOMAINS"] = new string[]{};
 
-			RTC_Corruptcore.UISpec = new FullSpec(p);
+			RTC_Corruptcore.UISpec = new FullSpec(p, !RTC_Corruptcore.Attached);
 			RTC_Corruptcore.UISpec.SpecUpdated += (o, e) =>
 			{
 				PartialSpec partial = e.partialSpec;

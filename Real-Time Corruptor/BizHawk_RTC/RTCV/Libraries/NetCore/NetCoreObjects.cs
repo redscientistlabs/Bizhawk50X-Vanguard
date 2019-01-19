@@ -28,6 +28,7 @@ namespace RTCV.NetCore
 
 	public class NetCoreReceiver
 	{
+		public bool Attached = false;
 		public event EventHandler<NetCoreEventArgs> MessageReceived;
 		public virtual void OnMessageReceived(NetCoreEventArgs e) => MessageReceived.Invoke(this, e);
 	}
@@ -88,7 +89,8 @@ namespace RTCV.NetCore
         public int ClientReconnectDelay = 600;
         public int DefaultBoopMonitoringCounter = 15;
 
-        public bool Loopback = true;
+		public bool Attached = true;
+		public bool Loopback = true;
         public string IP = "127.0.0.1";
         public int Port = 42069;
 

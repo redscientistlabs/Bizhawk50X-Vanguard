@@ -22,7 +22,7 @@ namespace RTCV.CorruptCore
 		public static string RtcVersion = "3.35a";
 
 		public static Random RND = new Random();
-
+		public static bool Attached = false;
 
 		public static List<ProblematicProcess> ProblematicProcesses;
 
@@ -130,9 +130,12 @@ namespace RTCV.CorruptCore
 		}
 		public static void StartEmuSide()
 		{
-			KillswitchTimer.Interval = 250;
-			KillswitchTimer.Tick += KillswitchTimer_Tick;
-			KillswitchTimer.Start();
+			if (!Attached)
+			{
+				KillswitchTimer.Interval = 250;
+				KillswitchTimer.Tick += KillswitchTimer_Tick;
+				KillswitchTimer.Start();
+			}
 			IsEmulatorSide = true;
 		}
 
@@ -165,7 +168,7 @@ namespace RTCV.CorruptCore
 			rtcSpecTemplate.Insert(RTC_Render_CorruptCore.getDefaultPartial());
 
 
-			CorruptCoreSpec = new FullSpec(rtcSpecTemplate); //You have to feed a partial spec as a template
+			CorruptCoreSpec = new FullSpec(rtcSpecTemplate, !RTC_Corruptcore.Attached); //You have to feed a partial spec as a template
 
 
 			CorruptCoreSpec.SpecUpdated += (o, e) =>

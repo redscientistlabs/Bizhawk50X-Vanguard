@@ -23,8 +23,12 @@ namespace RTCV.UI
 
 			LocalNetCoreRouter.registerEndpoint(this, NetcoreCommands.UI);
 
+			if (receiver.Attached)
+				return;
+
 			var netCoreSpec = new NetCore.NetCoreSpec();
 			netCoreSpec.Side = NetCore.NetworkSide.SERVER;
+			netCoreSpec.Attached = receiver.Attached;
 			netCoreSpec.Loopback = true;
 			netCoreSpec.MessageReceived += OnMessageReceivedProxy;
 			netCoreSpec.ServerConnected += Spec_ServerConnected;

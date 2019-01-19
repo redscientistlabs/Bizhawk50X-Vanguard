@@ -20,6 +20,7 @@ namespace RTCV.NetCore
 
 		private PartialSpec template = null;
 		public string name = "UnnamedSpec";
+		public bool propagationIsEnabled;
 
 		public new object this[string key]  //FullSpec is readonly, must update with partials
 		{
@@ -31,8 +32,13 @@ namespace RTCV.NetCore
 			}
 		}
 
-		public FullSpec(PartialSpec partialSpec)
+		public FullSpec(PartialSpec partialSpec, bool _propagationEnabled)
 		{
+			propagationIsEnabled = _propagationEnabled;
+
+			if (propagationIsEnabled)
+				new object();
+
 			//Creating a FullSpec requires a template
 			template = partialSpec;
 			base.version = 1;
@@ -82,7 +88,7 @@ namespace RTCV.NetCore
 			//Increment the version
 			base.version++;
 
-			if (propagate)
+			if (propagationIsEnabled && propagate)
 				OnSpecUpdated(new SpecUpdateEventArgs() { partialSpec = _partialSpec});
 		}
 

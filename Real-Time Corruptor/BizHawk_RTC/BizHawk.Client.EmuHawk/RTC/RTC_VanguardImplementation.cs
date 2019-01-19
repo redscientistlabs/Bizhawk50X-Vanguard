@@ -32,9 +32,11 @@ namespace RTC
 			//the server takes a bit more time to start then the client.
 
 			var spec = new NetCoreReceiver();
+			spec.Attached = RTC_EmuCore.attached;
 			spec.MessageReceived += OnMessageReceived;
 
 			connector = new RTCV.Vanguard.VanguardConnector(spec);
+
 		}
 
 		public static void RestartClient()

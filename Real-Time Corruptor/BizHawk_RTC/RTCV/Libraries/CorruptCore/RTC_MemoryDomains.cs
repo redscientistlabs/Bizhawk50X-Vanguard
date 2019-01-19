@@ -38,7 +38,8 @@ namespace RTCV.CorruptCore
 		public static void RefreshDomains(bool domainsChanged = false)
 		{
 			var temp = new Dictionary<string, MemoryInterface>();
-			foreach (MemoryInterface mi in (MemoryInterface[])RTC_Corruptcore.VanguardSpec[VSPEC.MEMORYDOMAINS_INTERFACES.ToString()])
+			var mis = (MemoryInterface[])RTC_Corruptcore.VanguardSpec[VSPEC.MEMORYDOMAINS_INTERFACES.ToString()];
+			foreach (MemoryInterface mi in mis)
 				temp.Add(mi.ToString(), mi);
 			MemoryInterfaces = temp;
 

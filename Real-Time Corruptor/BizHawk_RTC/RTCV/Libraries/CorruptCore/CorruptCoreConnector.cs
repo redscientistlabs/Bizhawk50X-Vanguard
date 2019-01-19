@@ -47,7 +47,7 @@ namespace RTCV.CorruptCore
 				case REMOTE_PUSHUISPEC:
 					SyncObjectSingleton.FormExecute((o, ea) =>
 					{
-						RTC_Corruptcore.UISpec = new FullSpec((PartialSpec)advancedMessage.objectValue);
+						RTC_Corruptcore.UISpec = new FullSpec((PartialSpec)advancedMessage.objectValue, !RTC_Corruptcore.Attached);
 					}); 
 					e.setReturnValue(true);
 					break;
@@ -65,7 +65,7 @@ namespace RTCV.CorruptCore
 				case REMOTE_PUSHEMUSPEC:
 					SyncObjectSingleton.FormExecute((o, ea) =>
 					{
-						RTC_Corruptcore.VanguardSpec = new FullSpec((PartialSpec)advancedMessage.objectValue);
+						RTC_Corruptcore.VanguardSpec = new FullSpec((PartialSpec)advancedMessage.objectValue, !RTC_Corruptcore.Attached);
 					});
 					e.setReturnValue(true);
 					break;
@@ -82,7 +82,7 @@ namespace RTCV.CorruptCore
 				case REMOTE_PUSHCORRUPTCORESPEC:
 					SyncObjectSingleton.FormExecute((o, ea) =>
 					{
-						RTC_Corruptcore.CorruptCoreSpec = new FullSpec((PartialSpec)advancedMessage.objectValue);
+						RTC_Corruptcore.CorruptCoreSpec = new FullSpec((PartialSpec)advancedMessage.objectValue, !RTC_Corruptcore.Attached);
 						RTC_Corruptcore.CorruptCoreSpec.SpecUpdated += (ob, eas) =>
 						{
 							PartialSpec partial = eas.partialSpec;
@@ -164,7 +164,7 @@ namespace RTCV.CorruptCore
 
 
 				case REMOTE_PUSHRTCSPEC:
-					RTC_Corruptcore.CorruptCoreSpec = new FullSpec((PartialSpec)advancedMessage.objectValue);
+					RTC_Corruptcore.CorruptCoreSpec = new FullSpec((PartialSpec)advancedMessage.objectValue, !RTC_Corruptcore.Attached);
 					e.setReturnValue(true);
 					break;
 
