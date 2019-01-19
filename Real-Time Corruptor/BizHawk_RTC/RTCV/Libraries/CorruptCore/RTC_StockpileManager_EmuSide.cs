@@ -115,7 +115,6 @@ namespace RTCV.CorruptCore
 
 		public static StashKey GetRawBlastlayer()
 		{
-
 			StashKey sk = SaveState_NET();
 
 			BlastLayer bl = new BlastLayer();

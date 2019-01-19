@@ -239,7 +239,7 @@ namespace RTCV.CorruptCore
 					if (i - rp.SkipBytes >= maxaddress)
 						bl.Layer.Add(new BlastUnit(new byte[] { Corrupt[i] }, rp.SecondDomain, (i - rp.SkipBytes) - maxaddress, 1, mi.BigEndian));
 					else
-						bl.Layer.Add(new BlastUnit(new byte[] { Corrupt[i] }, rp.PrimaryDomain, (i - rp.SkipBytes) - maxaddress, 1, mi.BigEndian));
+						bl.Layer.Add(new BlastUnit(new byte[] { Corrupt[i] }, rp.PrimaryDomain, (i - rp.SkipBytes), 1, mi.BigEndian));
 				}
 			}
 

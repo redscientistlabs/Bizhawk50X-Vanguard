@@ -49,6 +49,8 @@ namespace RTCV.NetCore
 			{
 				return (T)ncam.objectValue;
 			}
+			if (returnValue == null)
+				return default(T);
 			return (T)returnValue;
 		}
 

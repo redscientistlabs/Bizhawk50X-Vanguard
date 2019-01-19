@@ -153,6 +153,8 @@ namespace RTCV.UI
 			pnHideGlitchHarvester.Hide();
 
 			cbRenderType.SelectedIndex = 0;
+			
+			lbStashHistory.DataSource = RTC_StockpileManager_UISide.StashHistory;
 		}
 
 		private void RTC_GH_Form_Load(object sender, EventArgs e)
@@ -167,16 +169,15 @@ namespace RTCV.UI
 			RefreshSavestateTextboxes();
 		}
 
-		public void RefreshStashHistoryAndSelectLast()
+		public void RefreshStashHistorySelectLast()
 		{
 			RefreshStashHistory();
-			dgvStockpile.ClearSelection();
-			lbStashHistory.ClearSelected();
-
 			DontLoadSelectedStash = true;
-			lbStashHistory.SelectedIndex = S.GET<RTC_GlitchHarvester_Form>().lbStashHistory.Items.Count - 1;
-
+			lbStashHistory.ClearSelected();
+			DontLoadSelectedStash = true;
+			lbStashHistory.SelectedIndex = lbStashHistory.Items.Count - 1;
 		}
+
 		public void RefreshStashHistory(bool scrolldown = false)
 		{
 			DontLoadSelectedStash = true;
@@ -186,6 +187,7 @@ namespace RTCV.UI
 			lbStashHistory.DataSource = null;
 
 			DontLoadSelectedStash = true;
+			//lbStashHistory.BeginUpdate();
 			lbStashHistory.DataSource = RTC_StockpileManager_UISide.StashHistory;
 			//lbStashHistory.EndUpdate();
 
@@ -366,8 +368,7 @@ namespace RTCV.UI
 
 					IsCorruptionApplied = RTC_StockpileManager_UISide.MergeStashkeys(sks);
 
-					RefreshStashHistory();
-
+					RefreshStashHistorySelectLast();
 					//lbStashHistory.TopIndex = lbStashHistory.Items.Count - 1;
 
 					return;
@@ -385,16 +386,21 @@ namespace RTCV.UI
 						return;
 					}
 
+					DontLoadSelectedStash = true;
 					IsCorruptionApplied = RTC_StockpileManager_UISide.Corrupt(loadBeforeOperation);
-					RefreshStashHistoryAndSelectLast();
+					RefreshStashHistorySelectLast();
 				}
 				else if (rbInject.Checked)
 				{
+					DontLoadSelectedStash = true;
 					IsCorruptionApplied = RTC_StockpileManager_UISide.InjectFromStashkey(RTC_StockpileManager_UISide.CurrentStashkey, loadBeforeOperation);
-					RefreshStashHistoryAndSelectLast();
+					RefreshStashHistorySelectLast();
 				}
 				else if (rbOriginal.Checked)
+				{
+					DontLoadSelectedStash = true;
 					IsCorruptionApplied = RTC_StockpileManager_UISide.OriginalFromStashkey(RTC_StockpileManager_UISide.CurrentStashkey);
+				}
 
 				Console.WriteLine("Blast done");
 			}
@@ -951,8 +957,9 @@ namespace RTCV.UI
 				RTC_StockpileManager_UISide.StashHistory.Add(RTC_StockpileManager_UISide.CurrentStashkey);
 
 
-				RefreshStashHistory();
-
+				DontLoadSelectedStash = true;
+				RefreshStashHistorySelectLast();
+				DontLoadSelectedStash = true;
 				dgvStockpile.ClearSelection();
 			}
 			finally

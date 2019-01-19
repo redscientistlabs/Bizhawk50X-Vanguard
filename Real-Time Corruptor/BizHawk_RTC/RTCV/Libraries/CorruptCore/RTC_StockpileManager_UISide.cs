@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.IO;
 using System.Linq;
 using System.Windows.Forms;
@@ -123,8 +124,6 @@ namespace RTCV.CorruptCore
 			if (StashAfterOperation && bl != null)
 			{
 				StashHistory.Add(CurrentStashkey);
-				
-				
 			}
 
 

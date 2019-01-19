@@ -1016,14 +1016,15 @@ namespace RTCV.UI
 					usedAddresses.Add(bu.Address);
 				else
 				{
-					currentSK.BlastLayer.Layer.Remove(bu);
+					bs.Remove(bu);
 				}
 			}
+
 		}
 
 		private void rasterizeVMDsToolStripMenuItem_Click(object sender, EventArgs e)
 		{
-			foreach (BlastUnit bu in currentSK.BlastLayer.Layer)
+			foreach (BlastUnit bu in bs)
 			{
 				bu.RasterizeVMDs();
 			}
@@ -1036,7 +1037,6 @@ namespace RTCV.UI
 
 		private void replaceRomFromGHToolStripMenuItem_Click(object sender, EventArgs e)
 		{
-
 			StashKey temp = RTC_StockpileManager_UISide.GetCurrentSavestateStashkey();
 
 			if (temp == null)
