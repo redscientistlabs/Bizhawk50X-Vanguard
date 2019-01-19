@@ -167,6 +167,7 @@ namespace RTCV.UI
 
 			RefreshStashHistory();
 			RefreshSavestateTextboxes();
+			dgvStockpile.DragDrop += dgvStockpile_DragDrop;
 		}
 
 		public void RefreshStashHistorySelectLast()
@@ -473,7 +474,6 @@ namespace RTCV.UI
 
 		private void OneTimeExecute()
 		{
-
 			//Disable autocorrupt
 			S.GET<RTC_Core_Form>().AutoCorrupt = false;
 
@@ -933,7 +933,11 @@ namespace RTCV.UI
 			if (S.GET<RTC_GeneralParameters_Form>().Intensity != _fx)
 				S.GET<RTC_GeneralParameters_Form>().Intensity = _fx;
 		}
-
+		private void dgvStockpile_DragDrop(object sender, DragEventArgs e)
+		{
+			//Bring the UI back to normal after a drag+drop to prevent weird merge stuff 
+			RedrawActionUI();
+		}
 
 		public void btnSendRaw_Click(object sender, EventArgs e)
 		{
@@ -1468,7 +1472,7 @@ namespace RTCV.UI
 						sks.Add((StashKey)row.Cells[0].Value);
 
 					RTC_StockpileManager_UISide.MergeStashkeys(sks);
-
+					RefreshStashHistory();
 					return;
 				}
 

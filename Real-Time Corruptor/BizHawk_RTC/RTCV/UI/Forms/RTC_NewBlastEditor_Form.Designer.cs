@@ -293,6 +293,7 @@ namespace RTCV.UI
             this.btnHelp.TabStop = false;
             this.btnHelp.Tag = "color:dark";
             this.btnHelp.UseVisualStyleBackColor = false;
+            this.btnHelp.Click += new System.EventHandler(this.btnHelp_Click);
             // 
             // label3
             // 

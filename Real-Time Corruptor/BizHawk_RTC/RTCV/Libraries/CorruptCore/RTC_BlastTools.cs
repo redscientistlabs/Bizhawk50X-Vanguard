@@ -201,13 +201,6 @@ namespace RTCV.CorruptCore
 			return newBlastLayer;
 		}
 
-		public static BlastLayer BakeBlastUnitsToSet(StashKey sk, BlastLayer inputLayer)
-		{
-			BlastLayer newLayer = RTC_BlastTools.GetAppliedBackupLayer(inputLayer, sk);
-			return newLayer;
-		}
-
-
 		public static BlastLayer GetBlastLayerFromDiff(byte[] Original, byte[] Corrupt)
 		{
 			BlastLayer bl = new BlastLayer();

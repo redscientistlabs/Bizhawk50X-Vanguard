@@ -211,10 +211,10 @@ namespace RTCV.UI
 			((ToolStripMenuItem)cms.Items.Add("Open Selected Address in Hex Editor", null, new EventHandler((ob, ev) =>
 			{
 				if (cell.OwningColumn == dgvBlastEditor.Columns[buProperty.Address.ToString()])
-					LocalNetCoreRouter.Route(NetcoreCommands.CORRUPTCORE, NetcoreCommands.BIZHAWK_OPEN_HEXEDITOR_ADDRESS, new object[] { bu.Domain, bu.Address });
+					LocalNetCoreRouter.Route(NetcoreCommands.VANGUARD, NetcoreCommands.BIZHAWK_OPEN_HEXEDITOR_ADDRESS, new object[] { bu.Domain, bu.Address });
 
 				if (cell.OwningColumn == dgvBlastEditor.Columns[buProperty.SourceAddress.ToString()])
-					LocalNetCoreRouter.Route(NetcoreCommands.CORRUPTCORE, NetcoreCommands.BIZHAWK_OPEN_HEXEDITOR_ADDRESS, new object[] { bu.SourceDomain, bu.SourceAddress });
+					LocalNetCoreRouter.Route(NetcoreCommands.VANGUARD, NetcoreCommands.BIZHAWK_OPEN_HEXEDITOR_ADDRESS, new object[] { bu.SourceDomain, bu.SourceAddress });
 			}))).Enabled = true;
 		}
 
@@ -529,7 +529,7 @@ namespace RTCV.UI
 			if (value == null)
 				return;
 
-			switch (((ComboBoxItem<String>)cbFilterColumn.SelectedItem).Name)
+			switch (((ComboBoxItem<String>)cbFilterColumn.SelectedItem).Value)
 			{
 				//If it's an address or a source address we want decimal
 				case "Address":
@@ -1028,6 +1028,7 @@ namespace RTCV.UI
 			{
 				bu.RasterizeVMDs();
 			}
+			dgvBlastEditor.Refresh();
 		}
 
 		private void runRomWithoutBlastlayerToolStripMenuItem_Click(object sender, EventArgs e)
@@ -1294,7 +1295,7 @@ namespace RTCV.UI
 				}
 
 				//Bake them
-				BlastLayer newBlastLayer = RTC_BlastTools.BakeBlastUnitsToSet(currentSK, bl);
+				BlastLayer newBlastLayer = LocalNetCoreRouter.QueryRoute<BlastLayer>(NetcoreCommands.CORRUPTCORE, NetcoreCommands.REMOTE_BLASTTOOLS_GETAPPLIEDBACKUPLAYER, new object[] {bl, currentSK}, true);
 
 				int i = 0;
 				//Insert the new one where the old row was, then remove the old row.
@@ -1385,16 +1386,16 @@ namespace RTCV.UI
 						var u = (DataGridViewNumericUpDownCell)cell;
 						if (shiftDown)
 							{
-								if (((long)u.Value - updownShiftBlastLayerAmount.Value) >= 0)
-									u.Value = (long)u.Value - updownShiftBlastLayerAmount.Value;
+								if ((Convert.ToInt64(u.Value) - updownShiftBlastLayerAmount.Value) >= 0)
+									u.Value = Convert.ToInt64(u.Value) - updownShiftBlastLayerAmount.Value;
 								else
 									u.Value = 0;
 
 						}
 						else
 						{
-							if (((long)u.Value + updownShiftBlastLayerAmount.Value) <= u.Maximum)
-								u.Value = (long)u.Value + updownShiftBlastLayerAmount.Value;
+							if ((Convert.ToInt64(u.Value) + updownShiftBlastLayerAmount.Value) <= u.Maximum)
+								u.Value = Convert.ToInt64(u.Value) + updownShiftBlastLayerAmount.Value;
 							else
 								u.Value = u.Maximum;
 						}
@@ -1418,6 +1419,12 @@ namespace RTCV.UI
 				}
 			dgvBlastEditor.Refresh();
 			UpdateBottom();
+		}
+
+		private void btnHelp_Click(object sender, EventArgs e)
+		{
+			System.Diagnostics.ProcessStartInfo sInfo = new System.Diagnostics.ProcessStartInfo("https://corrupt.wiki/corruptors/rtc-real-time-corruptor/blast-editor.html");
+			System.Diagnostics.Process.Start(sInfo);
 		}
 
 		private void UpdateLayerSize()

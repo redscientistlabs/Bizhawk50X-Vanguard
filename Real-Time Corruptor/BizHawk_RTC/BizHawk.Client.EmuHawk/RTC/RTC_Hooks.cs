@@ -348,7 +348,9 @@ namespace RTC
 		public static bool IsAllowedBackgroundInputForm(Form activeForm)
 		{
 			if (disableRTC) return false;
-			return true;
+
+			return false;
+
 			//todo
 			/*
 			return (activeForm is RTC.RTC_Core_Form ||

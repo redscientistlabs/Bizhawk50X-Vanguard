@@ -168,7 +168,7 @@
             this.panel2 = new System.Windows.Forms.Panel();
             this.btnRerollSelected = new System.Windows.Forms.Button();
             this.label8 = new System.Windows.Forms.Label();
-            this.dgvStockpile = new System.Windows.Forms.DataGridView();
+			this.dgvStockpile = new DataGridViewDraggable();
             this.Item = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.GameName = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.SystemName = new System.Windows.Forms.DataGridViewTextBoxColumn();
@@ -2653,7 +2653,7 @@
 		private System.Windows.Forms.Label label8;
 		private System.Windows.Forms.Panel panel3;
 		private System.Windows.Forms.Label label9;
-		public System.Windows.Forms.DataGridView dgvStockpile;
+		public DataGridViewDraggable dgvStockpile;
 		public System.Windows.Forms.Button btnRerollSelected;
 		public System.Windows.Forms.ComboBox cbRenderType;
 		private System.Windows.Forms.Label label4;

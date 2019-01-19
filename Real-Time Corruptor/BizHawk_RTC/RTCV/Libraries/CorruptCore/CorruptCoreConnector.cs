@@ -275,6 +275,16 @@ namespace RTCV.CorruptCore
 					}); 
 					break;
 
+				case REMOTE_BLASTTOOLS_GETAPPLIEDBACKUPLAYER:
+				{
+					var bl = (BlastLayer)(advancedMessage.objectValue as object[])[0];
+					var sk = (StashKey)(advancedMessage.objectValue as object[])[1];
+					SyncObjectSingleton.FormExecute((o, ea) =>
+					{
+						RTC_BlastTools.GetAppliedBackupLayer(bl, sk);
+					});
+					break;
+				}
 				/*
 				case "REMOTE_DOMAIN_SETSELECTEDDOMAINS":
 					RTC_MemoryDomains.UpdateSelectedDomains((string[])advancedMessage.objectValue);

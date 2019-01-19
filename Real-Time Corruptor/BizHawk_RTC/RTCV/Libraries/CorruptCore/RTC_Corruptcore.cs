@@ -6,6 +6,7 @@ using System.Drawing;
 using System.IO;
 using System.Linq;
 using System.Net;
+using System.Net.Http;
 using System.Reflection;
 using System.Threading;
 using System.Windows.Forms;
@@ -221,7 +222,10 @@ namespace RTCV.CorruptCore
 
 		public static void DownloadProblematicProcesses()
 		{
-			string LocalPath = RTC_Corruptcore.paramsDir + Path.DirectorySeparatorChar + "BADPROCESSES";
+			//Windows does the big dumb: part 11
+			WebRequest.DefaultWebProxy = null;
+
+			string LocalPath = RTC_Corruptcore.paramsDir + "\\BADPROCESSES";
 			string json = "";
 			try
 			{
@@ -231,10 +235,12 @@ namespace RTCV.CorruptCore
 					if (lastModified.Date == DateTime.Today)
 						return;
 				}
-				WebClientTimeout client = new WebClientTimeout();
-				client.Headers[HttpRequestHeader.Accept] = "text/html, image/png, image/jpeg, image/gif, */*;q=0.1";
-				client.Headers[HttpRequestHeader.UserAgent] = "Mozilla/5.0 (Windows; U; Windows NT 6.1; de; rv:1.9.2.12) Gecko/20101026 Firefox/3.6.12";
-				json = client.DownloadString("https://raw.githubusercontent.com/ircluzar/RTC3/master/ProblematicProcesses.json");
+				using (HttpClient client = new HttpClient())
+				{
+					client.Timeout = TimeSpan.FromMilliseconds(5000);
+					//Using .Result makes it synchronous
+					json = client.GetStringAsync("http://redscientist.com/software/rtc/ProblematicProcesses.json").Result;
+				}
 				File.WriteAllText(LocalPath, json);
 			}
 			catch (Exception ex)
@@ -266,31 +272,31 @@ namespace RTCV.CorruptCore
 
 			try
 			{
-				RTC_Corruptcore.ProblematicProcesses = JsonConvert.DeserializeObject<List<ProblematicProcess>>(json);
+				ProblematicProcesses = JsonConvert.DeserializeObject<List<ProblematicProcess>>(json);
 			}
 			catch (Exception ex)
 			{
 				Console.WriteLine(ex.ToString());
 				if (File.Exists(LocalPath))
 					File.Delete(LocalPath);
-				return;
 			}
 		}
 
 		//Checks if any problematic processes are found
-		public static volatile bool Warned = false;
-
+		public static bool Warned = false;
 		public static void CheckForProblematicProcesses()
 		{
-			if (Warned || RTC_Corruptcore.ProblematicProcesses == null)
+			Console.WriteLine(DateTime.Now + "Entering CheckForProblematicProcesses");
+			if (Warned || ProblematicProcesses == null)
 				return;
 
 			try
 			{
-				var processes = Process.GetProcesses().Select(it => $"{it.ProcessName.ToUpper()}").OrderBy(x => x).ToArray();
+				var processes = Process.GetProcesses().Select(it => $"{it.ProcessName.ToUpper()}").OrderBy(x => x)
+					.ToArray();
 
 				//Warn based on loaded processes
-				foreach (var item in RTC_Corruptcore.ProblematicProcesses)
+				foreach (var item in ProblematicProcesses)
 				{
 					if (processes.Contains(item.Name))
 					{
@@ -304,7 +310,12 @@ namespace RTCV.CorruptCore
 				MessageBox.Show(ex.ToString());
 				return;
 			}
+			finally
+			{
+				Console.WriteLine(DateTime.Now + "Exiting CheckForProblematicProcesses");
+			}
 		}
+
 
 		public static BlastUnit GetBlastUnit(string _domain, long _address, int precision)
 		{
