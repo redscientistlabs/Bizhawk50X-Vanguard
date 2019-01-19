@@ -698,7 +698,7 @@ namespace RTCV.UI
             // tbTiltValue
             // 
             this.tbTiltValue.AllowDecimal = false;
-            this.tbTiltValue.AllowNegative = false;
+            this.tbTiltValue.AllowNegative = true;
             this.tbTiltValue.AllowSpace = false;
             this.tbTiltValue.Location = new System.Drawing.Point(4, 144);
             this.tbTiltValue.Name = "tbTiltValue";

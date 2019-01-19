@@ -281,7 +281,7 @@ namespace RTCV.CorruptCore
 					var sk = (StashKey)(advancedMessage.objectValue as object[])[1];
 					SyncObjectSingleton.FormExecute((o, ea) =>
 					{
-						RTC_BlastTools.GetAppliedBackupLayer(bl, sk);
+						e.setReturnValue(RTC_BlastTools.GetAppliedBackupLayer(bl, sk));
 					});
 					break;
 				}
