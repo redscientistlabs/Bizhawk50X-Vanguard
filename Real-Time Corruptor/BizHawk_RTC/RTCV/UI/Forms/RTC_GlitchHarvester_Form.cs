@@ -1240,7 +1240,14 @@ namespace RTCV.UI
 			}
 			catch (Exception ex)
 			{
-				MessageBox.Show("The Savestate Keys file could not be saved\n\n" + ex);
+
+				string additionalInfo = "The Savestate Keys file could not be saved\n\n";
+
+				var ex2 = new CustomException(ex.Message, additionalInfo + ex.StackTrace);
+
+				if (CloudDebug.ShowErrorDialog(ex2, true) == DialogResult.Abort)
+					throw new RTCV.NetCore.AbortEverythingException();
+
 				return;
 			}
 		}
@@ -1284,7 +1291,13 @@ namespace RTCV.UI
 			}
 			catch (Exception ex)
 			{
-				MessageBox.Show("The Savestate Keys file could not be loaded\n\n" + ex);
+				string additionalInfo = "The Savestate Keys file could not be loaded\n\n";
+
+				var ex2 = new CustomException(ex.Message, additionalInfo + ex.StackTrace);
+
+				if (CloudDebug.ShowErrorDialog(ex2, true) == DialogResult.Abort)
+					throw new RTCV.NetCore.AbortEverythingException();
+
 				return;
 			}
 

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Windows.Forms;
 
 namespace RTCV.NetCore
 {
@@ -39,6 +40,7 @@ namespace RTCV.NetCore
 			NetCoreEventArgs ncea = new NetCoreEventArgs(messageType, objectValue);
 			(ncea.message as NetCoreAdvancedMessage).requestGuid = (synced ? (Guid?)Guid.NewGuid() : null);
 			return Route(endpointName, ncea);
+
 		}
 		public static T QueryRoute<T>(string endpointName, string messageType, object objectValue, bool synced)
 		{
@@ -73,20 +75,35 @@ namespace RTCV.NetCore
 		}
 
 		public static object Route(string endpointName, NetCoreEventArgs e)
-        {
-            var endpoint = getEndpoint(endpointName);
-            if (endpoint == null)
-            {
-				var defaultEndpoint = getEndpoint("DEFAULT");
-				if(defaultEndpoint != null)
+		{
+			try
+			{
+				var endpoint = getEndpoint(endpointName);
+				if (endpoint == null)
 				{
-					e.message.Type = endpointName + "|" + e.message.Type;
-					return defaultEndpoint.OnMessageReceived(null, e);
+					var defaultEndpoint = getEndpoint("DEFAULT");
+					if (defaultEndpoint != null)
+					{
+						e.message.Type = endpointName + "|" + e.message.Type;
+						return defaultEndpoint.OnMessageReceived(null, e);
+					}
 				}
+				return endpoint.OnMessageReceived(null, e);
 			}
-            return endpoint.OnMessageReceived(null, e);
-        }
-    }
+
+			catch (Exception ex)
+			{
+				string additionalInfo = "Error trapped from LocalRouter\n\n";
+
+				var ex2 = new CustomException(ex.Message, additionalInfo + ex.StackTrace);
+
+				if (CloudDebug.ShowErrorDialog(ex2) == DialogResult.Abort)
+					throw new RTCV.NetCore.AbortEverythingException();
+
+				return null;
+			}
+		}
+	}
 
     public interface IRoutable
     {

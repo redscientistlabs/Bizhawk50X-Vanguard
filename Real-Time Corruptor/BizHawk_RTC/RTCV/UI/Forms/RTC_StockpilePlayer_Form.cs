@@ -5,6 +5,7 @@ using System.Windows.Forms;
 using RTCV.CorruptCore;
 using static RTCV.UI.UI_Extensions;
 using RTCV.NetCore.StaticTools;
+using RTCV.NetCore;
 
 namespace RTCV.UI
 {
@@ -160,7 +161,13 @@ namespace RTCV.UI
 				}
 				catch (Exception ex)
 				{
-					MessageBox.Show("Loading Failure ->\n\n" + ex.ToString());
+					string additionalInfo = "Loading Failure ->\n\n";
+
+					var ex2 = new CustomException(ex.Message, additionalInfo + ex.StackTrace);
+
+					if (CloudDebug.ShowErrorDialog(ex2, true) == DialogResult.Abort)
+						throw new RTCV.NetCore.AbortEverythingException();
+
 				}
 			}));
 
@@ -172,7 +179,12 @@ namespace RTCV.UI
 				}
 				catch (Exception ex)
 				{
-					MessageBox.Show("Loading Settings Failure ->\n\n" + ex.ToString());
+					string additionalInfo = "Loading Settings Failure ->\n\n";
+
+					var ex2 = new CustomException(ex.Message, additionalInfo + ex.StackTrace);
+
+					if (CloudDebug.ShowErrorDialog(ex2, true) == DialogResult.Abort)
+						throw new RTCV.NetCore.AbortEverythingException();
 				}
 			}));
 

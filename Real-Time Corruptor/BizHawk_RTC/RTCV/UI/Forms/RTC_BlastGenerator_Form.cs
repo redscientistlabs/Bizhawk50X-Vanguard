@@ -139,10 +139,13 @@ namespace RTCV.UI
 			}
 			catch (Exception ex)
 			{
-				MessageBox.Show(
-					"An error occurred in RTC while adding a new row.\n\n" +
-					"Your session is probably broken\n\n\n" +
-					ex.ToString());
+				string additionalInfo = "An error occurred in RTC while adding a new row.\n\n" +
+					"Your session is probably broken\n\n";
+
+				var ex2 = new CustomException(ex.Message, additionalInfo + ex.StackTrace);
+
+				if (CloudDebug.ShowErrorDialog(ex2, true) == DialogResult.Abort)
+					throw new RTCV.NetCore.AbortEverythingException();
 			}
 		}
 
@@ -401,9 +404,14 @@ namespace RTCV.UI
 			}
 			catch (Exception ex)
 			{
-				MessageBox.Show("Something went wrong when generating the blastlayers. \n" +
-				                "Are you sure your input is correct and you have the correct core loaded?\n\n" +
-				                ex.ToString());
+				string additionalInfo = "Something went wrong when generating the blastlayers. \n" +
+								"Are you sure your input is correct and you have the correct core loaded?\n\n";
+
+				var ex2 = new CustomException(ex.Message, additionalInfo + ex.StackTrace);
+
+				if (CloudDebug.ShowErrorDialog(ex2, true) == DialogResult.Abort)
+					throw new RTCV.NetCore.AbortEverythingException();
+
 				return null;
 			}
 			finally
@@ -690,7 +698,13 @@ namespace RTCV.UI
 				}
 				catch (Exception ex)
 				{
-					MessageBox.Show(ex.ToString());
+					string additionalInfo = "Something went wrong while loading the DataGridview of the Blast Generator. \n\n";
+
+					var ex2 = new CustomException(ex.Message, additionalInfo + ex.StackTrace);
+
+					if (CloudDebug.ShowErrorDialog(ex2, true) == DialogResult.Abort)
+						throw new RTCV.NetCore.AbortEverythingException();
+
 					return false;
 				}
 			}

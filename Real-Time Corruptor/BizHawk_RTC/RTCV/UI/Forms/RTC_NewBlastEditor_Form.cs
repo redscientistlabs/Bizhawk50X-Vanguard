@@ -151,7 +151,13 @@ namespace RTCV.UI
 			}
 			catch(Exception ex)
 			{
-				MessageBox.Show(ex.ToString());
+				string additionalInfo = "An error occurred while opening the BlastEditor Form\n\n";
+
+				var ex2 = new CustomException(ex.Message, additionalInfo + ex.StackTrace);
+
+				if (CloudDebug.ShowErrorDialog(ex2, true) == DialogResult.Abort)
+					throw new RTCV.NetCore.AbortEverythingException();
+
 			}
 		}
 		private void RTC_NewBlastEditorForm_Load(object sender, EventArgs e)
@@ -862,6 +868,7 @@ namespace RTCV.UI
 
 		private void dgvBlastLayer_DataError(object sender, DataGridViewDataErrorEventArgs e)
 		{
+
 			MessageBox.Show(e.Exception.ToString() + "\nRow:" + e.RowIndex + "\nColumn" + e.ColumnIndex + "\n" + e.Context + "\n" + dgvBlastEditor[e.ColumnIndex, e.RowIndex].Value?.ToString());
 		}
 

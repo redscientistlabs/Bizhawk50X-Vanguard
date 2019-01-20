@@ -26,6 +26,7 @@ namespace RTCV.CorruptCore
 
 		public object OnMessageReceived(object sender, NetCoreEventArgs e)
 		{
+			try { 
 			//Use setReturnValue to handle returns
 
 			var message = e.message;
@@ -374,6 +375,15 @@ namespace RTCV.CorruptCore
 			}
 
 			return e.returnMessage;
+
+			}
+			catch (Exception ex)
+			{
+				if (CloudDebug.ShowErrorDialog(ex, true) == DialogResult.Abort)
+					throw new RTCV.NetCore.AbortEverythingException();
+
+				return e.returnMessage;
+			}
 		}
 
 
