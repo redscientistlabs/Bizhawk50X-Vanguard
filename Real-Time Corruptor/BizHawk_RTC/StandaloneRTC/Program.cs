@@ -3,12 +3,15 @@ using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Reflection;
+using System.Threading;
 using System.Windows.Forms;
 
 namespace StandaloneRTC
 {
 	static class Program
 	{
+		static Form loaderObject;
+
 		/// <summary>
 		/// The main entry point for the application.
 		/// </summary>
@@ -31,11 +34,50 @@ namespace StandaloneRTC
 
 			Application.EnableVisualStyles();
 			Application.SetCompatibleTextRenderingDefault(false);
-			Application.Run(new Loader(args));
+			Application.SetUnhandledExceptionMode(UnhandledExceptionMode.CatchException);
+			Application.ThreadException += ApplicationThreadException;
+			AppDomain.CurrentDomain.UnhandledException += CurrentDomainOnUnhandledException;
+
+			loaderObject = new Loader(args);
+			Application.Run(loaderObject);
+
+			
 			//RTC.S.GET<RTC.RTC_Core_Form>() = new RTC.RTC_Form();
 			//RTC.RTC_Core.isStandalone = true;
 			//RTC.RTC_Core.Start();
 			//Application.Run(RTC.S.GET<RTC.RTC_Core_Form>());
+		}
+
+		/// <summary>
+		/// Global exceptions in Non User Interfarce(other thread) antipicated error
+		/// </summary>
+		/// <param name="sender"></param>
+		/// <param name="e"></param>
+		private static void CurrentDomainOnUnhandledException(object sender, UnhandledExceptionEventArgs e)
+		{
+			Exception ex = (Exception)e.ExceptionObject;
+			Form error = new RTCV.NetCore.CloudDebug(ex);
+			var result = error.ShowDialog();
+
+		}
+
+		/// <summary>
+		/// Global exceptions in User Interfarce antipicated error
+		/// </summary>
+		/// <param name="sender"></param>
+		/// <param name="e"></param>
+		private static void ApplicationThreadException(object sender, ThreadExceptionEventArgs e)
+		{
+			Exception ex = e.Exception;
+			Form error = new RTCV.NetCore.CloudDebug(ex);
+			var result = error.ShowDialog();
+
+			if (result == DialogResult.Abort)
+			{
+				NetCore.SyncObjectSingleton.SyncObjectExecute(loaderObject, (o, ea) =>{
+					loaderObject.Close();
+				});
+			}
 		}
 
 		//Lifted from Bizhawk

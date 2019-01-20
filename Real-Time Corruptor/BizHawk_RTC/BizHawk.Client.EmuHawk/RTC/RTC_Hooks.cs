@@ -4,11 +4,15 @@ using BizHawk.Emulation.Common;
 using BizHawk.Emulation.Cores.Nintendo.N64;
 using Newtonsoft.Json;
 using System;
+using System.Collections.Generic;
 using System.Drawing;
 using System.IO;
 using System.Linq;
 using System.Windows.Forms;
-using static RTC.RTC_Unispec;
+using RTCV.CorruptCore;
+using RTCV.NetCore;
+using static RTCV.NetCore.NetcoreCommands;
+using System.Data;
 
 namespace RTC
 {
@@ -19,8 +23,7 @@ namespace RTC
 
 		// Here are the keywords for searching hooks and fixes: //RTC_HIJACK
 
-		static bool disableRTC;
-		public static bool isRemoteRTC = false;
+		public static bool disableRTC;
 		public static bool isNormalAdvance = false;
 
 		private static Guid? loadGameToken = null;
@@ -34,34 +37,42 @@ namespace RTC
 
 		public static void CPU_STEP(bool isRewinding, bool isFastForwarding, bool isBeforeStep = false)
 		{
-			if (disableRTC || Global.Emulator is NullEmulator)
-				return;
-			
-			//Return out if it's being called from before the step and we're not on frame 0. If we're on frame 0, then we go as normal
-			//If we can't get runbefore, just assume we don't want to run before
-			if (isBeforeStep && CPU_STEP_Count != 0 && ((bool)(RTC_Unispec.RTCSpec?[RTCSPEC.STEP_RUNBEFORE.ToString()] ?? false)) == false)
-				return;
+			try
+			{
+				if (disableRTC || Global.Emulator is NullEmulator)
+					return;
 
-			isNormalAdvance = !(isRewinding || isFastForwarding);
+				//Return out if it's being called from before the step and we're not on frame 0. If we're on frame 0, then we go as normal
+				//If we can't get runbefore, just assume we don't want to run before
+				if (isBeforeStep && CPU_STEP_Count != 0 && ((bool)(RTCV.NetCore.AllSpec.CorruptCoreSpec?[RTCSPEC.STEP_RUNBEFORE.ToString()] ?? false)) == false)
+					return;
 
-			// Unique step hooks
-			if (!isRewinding && !isFastForwarding)
-				STEP_FORWARD();
-			else if (isRewinding)
-				STEP_REWIND();
-			else if (isFastForwarding)
-				STEP_FASTFORWARD();
+				isNormalAdvance = !(isRewinding || isFastForwarding);
 
-			//Any step hook for corruption
-			STEP_CORRUPT(isRewinding, isFastForwarding);
+				// Unique step hooks
+				if (!isRewinding && !isFastForwarding)
+					STEP_FORWARD();
+				else if (isRewinding)
+					STEP_REWIND();
+				else if (isFastForwarding)
+					STEP_FASTFORWARD();
+
+				//Any step hook for corruption
+				STEP_CORRUPT(isRewinding, isFastForwarding);
+			}
+			catch(Exception ex)
+			{
+				if (RTC_EmuCore.ShowErrorDialog(ex, true) == DialogResult.Abort)
+					throw new RTCV.NetCore.AbortEverythingException();
+			}
 		}
 
-		private static void STEP_FORWARD()
+		private static void STEP_FORWARD() //errors trapped by CPU_STEP
 		{
 			if (disableRTC) return;
 		}
 
-		private static void STEP_REWIND()
+		private static void STEP_REWIND() //errors trapped by CPU_STEP
 		{
 			if (disableRTC) return;
 
@@ -69,12 +80,12 @@ namespace RTC
 				RTC_StepActions.ClearStepBlastUnits();
 		}
 
-		private static void STEP_FASTFORWARD()
+		private static void STEP_FASTFORWARD() //errors trapped by CPU_STEP
 		{
 			if (disableRTC) return;
 		}
 
-		private static void STEP_CORRUPT(bool _isRewinding, bool _isFastForwarding)
+		private static void STEP_CORRUPT(bool _isRewinding, bool _isFastForwarding) //errors trapped by CPU_STEP
 		{
 			if (disableRTC) return;
 
@@ -88,14 +99,14 @@ namespace RTC
 
 			CPU_STEP_Count++;
 
-			bool autoCorrupt = RTC_Core.AutoCorrupt;
-			int intensity = RTC_Core.Intensity;
-			if (autoCorrupt && CPU_STEP_Count >= intensity)
+			bool autoCorrupt = RTC_Corruptcore.AutoCorrupt;
+			int errorDelay = RTC_Corruptcore.ErrorDelay;
+			if (autoCorrupt && CPU_STEP_Count >= errorDelay)
 			{
 				CPU_STEP_Count = 0;
-				BlastLayer bl = RTC_Core.Blast(null, RTC_MemoryDomains.SelectedDomains);
+				BlastLayer bl = RTC_Corruptcore.GenerateBlastLayer((string[])RTCV.NetCore.AllSpec.UISpec["SELECTEDDOMAINS"]);
 				if (bl != null)
-					bl.Apply();
+					bl.Apply(false);
 			}
 		}
 
@@ -108,129 +119,145 @@ namespace RTC
 				MessageBox.Show("32-bit operating system detected. Bizhawk requires 64-bit to run. Program will shut down");
 				Application.Exit();
 			}
-			RTC_Unispec.RegisterEmuhawkSpec();
-			
-			
-			RTC_Core.args = args;
 
-			disableRTC = RTC_Core.args.Contains("-DISABLERTC");
-			isRemoteRTC = RTC_Core.args.Contains("-REMOTERTC");
+			try { 
+			RTC_EmuCore.args = args;
 
-			//RTC_Unispec.RTCSpec.Update(Spec.HOOKS_SHOWCONSOLE.ToString(), RTC_Core.args.Contains("-CONSOLE"));
+			disableRTC = RTC_EmuCore.args.Contains("-DISABLERTC");
+
+			//RTC_EmuCore.attached = true;
+			RTC_EmuCore.attached = RTC_EmuCore.args.Contains("-ATTACHED");
+				//RTC_E.isStandaloneEmu = RTC_EmuCore.args.Contains("-REMOTERTC");
+
+				//RTC_Unispec.RTCSpec.Update(Spec.HOOKS_SHOWCONSOLE.ToString(), RTC_Core.args.Contains("-CONSOLE"));
+			}
+			catch (Exception ex)
+			{
+				if (RTC_EmuCore.ShowErrorDialog(ex, true) == DialogResult.Abort)
+					throw new RTCV.NetCore.AbortEverythingException();
+			}
 		}
 
 		public static void MAINFORM_FORM_LOAD_END()
 		{
-			if (disableRTC) return;
-
-			//RTC_Hooks.LOAD_GAME_DONE();
-
-			RTC_Core.Start();
-
-			RTC_Core.LoadDefaultRom();
-
-			RTC_Params.LoadBizhawkWindowState();
-
-			GlobalWin.MainForm.Focus();
-
-			//Yell at the user if they're using audio throttle as it's buggy
-			//We have to do this in the bizhawk process
-			if (Global.Config.SoundThrottle)
+			try
 			{
-				MessageBox.Show("Sound throttle is buggy and can result in crashes.\nSwapping to clock throttle.");
-				Global.Config.SoundThrottle = false;
-				Global.Config.ClockThrottle = true;
-				RTC_Hooks.BIZHAWK_SAVE_CONFIG();
-			}
+				if (disableRTC) return;
 
+				RTC_EmuCore.Start();
+			}
+			catch (Exception ex)
+			{
+				if (RTC_EmuCore.ShowErrorDialog(ex, true) == DialogResult.Abort)
+					throw new RTCV.NetCore.AbortEverythingException();
+			}
 		}
+
+
 
 		public static void MAINFORM_RESIZEEND()
 		{
-			if (disableRTC) return;
+			try
+			{
+				if (disableRTC) return;
 
-			RTC_Params.SaveBizhawkWindowState();
+				RTC_EmuCore.SaveBizhawkWindowState();
+			}
+			catch (Exception ex)
+			{
+				if (RTC_EmuCore.ShowErrorDialog(ex, true) == DialogResult.Abort)
+					throw new RTCV.NetCore.AbortEverythingException();
+			}
 		}
 
 		public static void MAINFORM_CLOSING()
 		{
+
 			if (disableRTC) return;
 
-			RTC_Core.CloseAllRtcForms();
+			//Todo
+			//RTC_UICore.CloseAllRtcForms();
+
 		}
 
-		public static void BIZHAWK_SAVE_CONFIG()
-		{
-			if (disableRTC) return;
-
-			RTC_Core.SendCommandToBizhawk(new RTC_Command(CommandType.REMOTE_EVENT_SAVEBIZHAWKCONFIG));
-		}
 
 		public static void LOAD_GAME_BEGIN()
 		{
-			if (disableRTC) return;
+			try
+			{
+				if (disableRTC) return;
 
-			isNormalAdvance = false;
+				isNormalAdvance = false;
 
-			loadGameToken = RTC_NetCore.HugeOperationStart();
-
-			RTC_StepActions.ClearStepBlastUnits();
-			CPU_STEP_Count = 0;
+				RTC_StepActions.ClearStepBlastUnits();
+				CPU_STEP_Count = 0;
+			}
+			catch (Exception ex)
+			{
+				if (RTC_EmuCore.ShowErrorDialog(ex) == DialogResult.Abort)
+					throw new RTCV.NetCore.AbortEverythingException();
+			}
 		}
 
 		static string lastGameName = "";
 
 		public static void LOAD_GAME_DONE()
 		{
-			if (disableRTC) return;
-
-			//RTC_HellgenieEngine.ClearCheats();
-			//RTC_PipeEngine.ClearPipes();
-
-			//Glitch Harvester warning for archives
-
-			string uppercaseFilename = GlobalWin.MainForm.CurrentlyOpenRom.ToUpper();
-			if (S.GET<RTC_GlitchHarvester_Form>().Visible && (uppercaseFilename.Contains(".ZIP") || uppercaseFilename.Contains(".7Z")))
-				MessageBox.Show($"The rom {RTC_Extensions.getShortFilenameFromPath(uppercaseFilename)} is in an archive and can't be added to a Stockpile");
-
-			//Load Game vars into RTC_Core
-			PathEntry pathEntry = Global.Config.PathEntries[Global.Game.System, "Savestates"] ??
-			Global.Config.PathEntries[Global.Game.System, "Base"];
-
-
-
-			PartialSpec gameDone = new PartialSpec("EmuSpec");
-			gameDone[EMUSPEC.STOCKPILE_CURRENTGAMESYSTEM.ToString()] = RTC_Core.EmuFolderCheck(pathEntry.SystemDisplayName);
-			gameDone[EMUSPEC.STOCKPILE_CURRENTGAMENAME.ToString()] = PathManager.FilesystemSafeName(Global.Game);
-			gameDone[EMUSPEC.CORE_LASTOPENROM.ToString()] = GlobalWin.MainForm.CurrentlyOpenRom;
-			EmuSpec.Update(gameDone);
-			
-			//Sleep for 10ms in case Bizhawk hung for a moment after the game loaded
-			System.Threading.Thread.Sleep(10);
-			//prepare memory domains in advance on bizhawk side
-			RTC_MemoryDomains.RefreshDomains(false);
-
-			if (RTC_Unispec.EmuSpec[EMUSPEC.STOCKPILE_CURRENTGAMENAME.ToString()].ToString() != lastGameName)
+			try
 			{
-				RTC_Core.SendCommandToRTC(new RTC_Command(CommandType.REMOTE_EVENT_LOADGAMEDONE_NEWGAME));
+				if (disableRTC) return;
+
+
+				//Glitch Harvester warning for archives
+
+				string uppercaseFilename = GlobalWin.MainForm.CurrentlyOpenRom.ToUpper();
+				if (uppercaseFilename.Contains(".ZIP") || uppercaseFilename.Contains(".7Z"))
+					MessageBox.Show($"The rom {RTC_Extensions.getShortFilenameFromPath(uppercaseFilename)} is in an archive and can't be added to a Stockpile");
+
+				//Load Game vars into RTC_Core
+				PathEntry pathEntry = Global.Config.PathEntries[Global.Game.System, "Savestates"] ??
+				Global.Config.PathEntries[Global.Game.System, "Base"];
+
+
+
+				//prepare memory domains in advance on bizhawk side
+				bool domainsChanged = RefreshDomains(false);
+
+				PartialSpec gameDone = new PartialSpec("EmuSpec");
+				gameDone[VSPEC.SYSTEM.ToString()] = BIZHAWK_GET_CURRENTLYLOADEDSYSTEMNAME().ToUpper();
+				gameDone[VSPEC.GAMENAME.ToString()] = BIZHAWK_GET_FILESYSTEMGAMENAME();
+				gameDone[VSPEC.SYSTEMPREFIX.ToString()] = BIZHAWK_GET_SAVESTATEPREFIX();
+				gameDone[VSPEC.SYSTEMCORE.ToString()] = BIZHAWK_GET_SYSTEMCORENAME(Global.Game.System);
+				gameDone[VSPEC.SYNCSETTINGS.ToString()] = BIZHAWK_GETSET_SYNCSETTINGS;
+				gameDone[VSPEC.OPENROMFILENAME.ToString()] = GlobalWin.MainForm.CurrentlyOpenRom;
+				gameDone[VSPEC.MEMORYDOMAINS_BLACKLISTEDDOMAINS.ToString()] = RTC_EmuCore.GetBlacklistedDomains(BIZHAWK_GET_CURRENTLYLOADEDSYSTEMNAME().ToUpper());
+				gameDone[VSPEC.MEMORYDOMAINS_INTERFACES.ToString()] = GetInterfaces();
+				RTC_EmuCore.EmuSpec.Update(gameDone);
+
+				//This is local. If the domains changed it propgates over netcore
+				LocalNetCoreRouter.Route(CORRUPTCORE, REMOTE_EVENT_DOMAINSUPDATED, domainsChanged, true);
+
+
+				if (RTC_EmuCore.GameName != lastGameName)
+				{
+				}
+				else
+				{
+				}
+
+				lastGameName = RTC_EmuCore.GameName;
 			}
-			else
+			catch (Exception ex)
 			{
-				RTC_Core.SendCommandToRTC(new RTC_Command(CommandType.REMOTE_EVENT_LOADGAMEDONE_SAMEGAME));
+				if (RTC_EmuCore.ShowErrorDialog(ex) == DialogResult.Abort)
+					throw new RTCV.NetCore.AbortEverythingException();
 			}
-
-			lastGameName = (string)RTC_Unispec.EmuSpec[EMUSPEC.STOCKPILE_CURRENTGAMENAME.ToString()];
-
-			//RTC_Restore.SaveRestore();
-
-			RTC_NetCore.HugeOperationEnd(loadGameToken);
 		}
 
 		public static void LOAD_GAME_FAILED()
 		{
 			if (disableRTC) return;
 
-			RTC_NetCore.HugeOperationEnd(loadGameToken);
 		}
 
 		static bool CLOSE_GAME_loop_flag = false;
@@ -239,28 +266,35 @@ namespace RTC
 
 		public static void CLOSE_GAME(bool loadDefault = false)
 		{
-			if (disableRTC) return;
+			try
+			{
+				if (disableRTC) return;
 
-			if (CLOSE_GAME_loop_flag == true)
-				return;
+				if (CLOSE_GAME_loop_flag == true)
+					return;
 
-			CLOSE_GAME_loop_flag = true;
+				CLOSE_GAME_loop_flag = true;
 
-			//RTC_Core.AutoCorrupt = false;
+				//RTC_Core.AutoCorrupt = false;
 
-			RTC_StepActions.ClearStepBlastUnits();
+				RTC_StepActions.ClearStepBlastUnits();
 
-			if(!RTC_Hooks.isRemoteRTC)
 				RTC_MemoryDomains.Clear();
 
-			RTC_Unispec.EmuSpec.Update(EMUSPEC.CORE_LASTOPENROM.ToString(), null);
+				RTC_EmuCore.OpenRomFilename = null;
 
-			if (loadDefault)
-				RTC_Core.LoadDefaultRom();
+				if (loadDefault)
+					RTC_EmuCore.LoadDefaultRom();
 
-			//RTC_RPC.SendToKillSwitch("UNFREEZE");
+				//RTC_RPC.SendToKillSwitch("UNFREEZE");
 
-			CLOSE_GAME_loop_flag = false;
+				CLOSE_GAME_loop_flag = false;
+			}
+			catch (Exception ex)
+			{
+				if (RTC_EmuCore.ShowErrorDialog(ex) == DialogResult.Abort)
+					throw new RTCV.NetCore.AbortEverythingException();
+			}
 		}
 
 		public static void RESET()
@@ -272,7 +306,6 @@ namespace RTC
 		{
 			if (disableRTC) return;
 
-			loadSavestateToken = RTC_NetCore.HugeOperationStart();
 		}
 
 		public static void LOAD_SAVESTATE_END()
@@ -280,111 +313,123 @@ namespace RTC
 			if (disableRTC) return;
 			
 
-			RTC_NetCore.HugeOperationEnd(loadSavestateToken);
 		}
 
 		public static void EMU_CRASH(string msg)
 		{
 			if (disableRTC) return;
 
-			RTC_RPC.Stop();
-			MessageBox.Show("SORRY EMULATOR CRASHED\n\n" + msg);
+			//MessageBox.Show("SORRY EMULATOR CRASHED\n\n" + msg);
+
+			if (RTC_EmuCore.ShowErrorDialog(new CustomException("SORRY EMULATOR CRASHED",msg),true) == DialogResult.Abort)
+				throw new RTCV.NetCore.AbortEverythingException();
+
 		}
 
 		public static bool HOTKEY_CHECK(string trigger)
 		{// You can go to the injected Hotkey Hijack by searching #HotkeyHijack
-			if (disableRTC) return false;
-
-			if (watch != null)
+			try
 			{
-				long elapsedMs = watch.ElapsedMilliseconds;
-				if (elapsedMs > 3000)
+				if (disableRTC) return false;
+
+				if (watch != null)
 				{
-					watch.Stop();
-					watch = null;
+					long elapsedMs = watch.ElapsedMilliseconds;
+					if (elapsedMs > 3000)
+					{
+						watch.Stop();
+						watch = null;
+					}
 				}
-			}
 
-			switch (trigger)
+				switch (trigger)
+				{
+					default:
+						return false;
+
+					case "Manual Blast":
+						LocalNetCoreRouter.Route(CORRUPTCORE, REMOTE_HOTKEY_MANUALBLAST);
+						break;
+
+					case "Auto-Corrupt":
+						LocalNetCoreRouter.Route(UI, REMOTE_HOTKEY_AUTOCORRUPTTOGGLE);
+						break;
+
+					case "Error Delay--":
+						LocalNetCoreRouter.Route(UI, REMOTE_HOTKEY_ERRORDELAYDECREASE);
+						break;
+
+					case "Error Delay++":
+						LocalNetCoreRouter.Route(UI, REMOTE_HOTKEY_ERRORDELAYINCREASE);
+						break;
+
+					case "Intensity--":
+						LocalNetCoreRouter.Route(UI, REMOTE_HOTKEY_INTENSITYDECREASE);
+						break;
+
+					case "Intensity++":
+						LocalNetCoreRouter.Route(UI, REMOTE_HOTKEY_INTENSITYINCREASE);
+						break;
+
+					case "GH Load and Corrupt":
+						LocalNetCoreRouter.Route(UI, REMOTE_HOTKEY_GHLOADCORRUPT);
+						break;
+
+					case "GH Just Corrupt":
+						LocalNetCoreRouter.Route(UI, REMOTE_HOTKEY_GHCORRUPT);
+						break;
+
+					case "GH Load":
+						LocalNetCoreRouter.Route(UI, REMOTE_HOTKEY_GHLOAD);
+						break;
+
+					case "GH Save":
+						LocalNetCoreRouter.Route(UI, REMOTE_HOTKEY_GHSAVE);
+						break;
+
+					case "Stash->Stockpile":
+						LocalNetCoreRouter.Route(UI, REMOTE_HOTKEY_GHSTASHTOSTOCKPILE);
+						break;
+
+					case "Induce KS Crash":
+						break;
+
+					case "Blast+RawStash":
+						var x = LocalNetCoreRouter.Route(UI, REMOTE_HOTKEY_BLASTRAWSTASH);
+						break;
+
+					case "Send Raw to Stash":
+						LocalNetCoreRouter.Route(UI, REMOTE_HOTKEY_SENDRAWSTASH);
+						break;
+
+					case "BlastLayer Toggle":
+						LocalNetCoreRouter.Route(UI, REMOTE_HOTKEY_BLASTLAYERTOGGLE);
+						break;
+
+					case "BlastLayer Re-Blast":
+						LocalNetCoreRouter.Route(UI, REMOTE_HOTKEY_BLASTLAYERREBLAST);
+						break;
+				}
+				return true;
+
+			}
+			catch (Exception ex)
 			{
-				default:
-					return false;
+				if (RTC_EmuCore.ShowErrorDialog(ex, true) == DialogResult.Abort)
+					throw new RTCV.NetCore.AbortEverythingException();
 
-				case "Manual Blast":
-					RTC_Core.SendCommandToRTC(new RTC_Command(CommandType.REMOTE_HOTKEY_MANUALBLAST));
-					break;
-
-				case "Auto-Corrupt":
-					RTC_Core.SendCommandToRTC(new RTC_Command(CommandType.REMOTE_HOTKEY_AUTOCORRUPTTOGGLE));
-					break;
-
-				case "Error Delay--":
-					RTC_Core.SendCommandToRTC(new RTC_Command(CommandType.REMOTE_HOTKEY_ERRORDELAYDECREASE));
-					break;
-
-				case "Error Delay++":
-					RTC_Core.SendCommandToRTC(new RTC_Command(CommandType.REMOTE_HOTKEY_ERRORDELAYINCREASE));
-					break;
-
-				case "Intensity--":
-					RTC_Core.SendCommandToRTC(new RTC_Command(CommandType.REMOTE_HOTKEY_INTENSITYDECREASE));
-					break;
-
-				case "Intensity++":
-					RTC_Core.SendCommandToRTC(new RTC_Command(CommandType.REMOTE_HOTKEY_INTENSITYINCREASE));
-					break;
-
-				case "GH Load and Corrupt":
-					watch = System.Diagnostics.Stopwatch.StartNew();
-					RTC_Core.SendCommandToRTC(new RTC_Command(CommandType.REMOTE_HOTKEY_GHLOADCORRUPT));
-					break;
-
-				case "GH Just Corrupt":
-					watch = System.Diagnostics.Stopwatch.StartNew();
-					RTC_Core.SendCommandToRTC(new RTC_Command(CommandType.REMOTE_HOTKEY_GHCORRUPT));
-					break;
-
-				case "GH Load":
-					watch = System.Diagnostics.Stopwatch.StartNew();
-					RTC_Core.SendCommandToRTC(new RTC_Command(CommandType.REMOTE_HOTKEY_GHLOAD));
-					break;
-
-				case "GH Save":
-					watch = System.Diagnostics.Stopwatch.StartNew();
-					RTC_Core.SendCommandToRTC(new RTC_Command(CommandType.REMOTE_HOTKEY_GHSAVE));
-					break;
-
-				case "Stash->Stockpile":
-					RTC_Core.SendCommandToRTC(new RTC_Command(CommandType.REMOTE_HOTKEY_GHSTASHTOSTOCKPILE));
-					break;
-
-				case "Induce KS Crash":
-					RTC_RPC.Stop();
-					break;
-
-				case "Blast+RawStash":
-					RTC_Core.SendCommandToRTC(new RTC_Command(CommandType.REMOTE_HOTKEY_BLASTRAWSTASH));
-					break;
-
-				case "Send Raw to Stash":
-					RTC_Core.SendCommandToRTC(new RTC_Command(CommandType.REMOTE_HOTKEY_SENDRAWSTASH));
-					break;
-
-				case "BlastLayer Toggle":
-					RTC_Core.SendCommandToRTC(new RTC_Command(CommandType.REMOTE_HOTKEY_BLASTLAYERTOGGLE));
-					break;
-
-				case "BlastLayer Re-Blast":
-					RTC_Core.SendCommandToRTC(new RTC_Command(CommandType.REMOTE_HOTKEY_BLASTLAYERREBLAST));
-					break;
+				return false;
 			}
-			return true;
 		}
 
 		public static bool IsAllowedBackgroundInputForm(Form activeForm)
 		{
 			if (disableRTC) return false;
 
+			return false;
+
+			//todo
+			/*
 			return (activeForm is RTC.RTC_Core_Form ||
 					activeForm is RTC.RTC_Settings_Form ||
 					activeForm is RTC.RTC_GlitchHarvester_Form ||
@@ -398,71 +443,163 @@ namespace RTC
 					activeForm is RTC.RTC_VmdGen_Form ||
 					activeForm is RTC.RTC_VmdAct_Form
 					);
+					*/
 		}
 
 		public static Bitmap BIZHAWK_GET_SCREENSHOT()
 		{
-			return GlobalWin.MainForm.MakeScreenshotImage().ToSysdrawingBitmap();
+			try
+			{
+				return GlobalWin.MainForm.MakeScreenshotImage().ToSysdrawingBitmap();
+			}
+			catch (Exception ex)
+			{
+				if (RTC_EmuCore.ShowErrorDialog(ex, true) == DialogResult.Abort)
+					throw new RTCV.NetCore.AbortEverythingException();
+
+				return null;
+			}
 		}
 
 
 		public static string BIZHAWK_GET_FILESYSTEMCORENAME()
 		{
-			//This returns the folder name of the currently loaded system core
+			try
+			{
+				//This returns the folder name of the currently loaded system core
 
-			PathEntry pathEntry = Global.Config.PathEntries[Global.Game.System, "Savestates"] ??
-			Global.Config.PathEntries[Global.Game.System, "Base"];
 
-			return pathEntry.SystemDisplayName;
+				PathEntry pathEntry = Global.Config.PathEntries[Global.Game.System, "Savestates"] ??
+				Global.Config.PathEntries[Global.Game.System, "Base"];
+
+				return pathEntry.SystemDisplayName;
+			}
+			catch (Exception ex)
+			{
+				if (RTC_EmuCore.ShowErrorDialog(ex, true) == DialogResult.Abort)
+					throw new RTCV.NetCore.AbortEverythingException();
+
+				return null;
+			}
 		}
 
 		public static string BIZHAWK_GET_FILESYSTEMGAMENAME()
 		{
-			//This returns the filename of the currently loaded game before extension
+			try
+			{
+				//This returns the filename of the currently loaded game before extension
 
-			PathEntry pathEntry = Global.Config.PathEntries[Global.Game.System, "Savestates"] ??
-			Global.Config.PathEntries[Global.Game.System, "Base"];
+				PathEntry pathEntry = Global.Config.PathEntries[Global.Game.System, "Savestates"] ??
+				Global.Config.PathEntries[Global.Game.System, "Base"];
 
-			return PathManager.FilesystemSafeName(Global.Game);
+				return PathManager.FilesystemSafeName(Global.Game);
+			}
+			catch (Exception ex)
+			{
+				if (RTC_EmuCore.ShowErrorDialog(ex, true) == DialogResult.Abort)
+					throw new RTCV.NetCore.AbortEverythingException();
+
+				return null;
+			}
 		}
 
 		public static string BIZHAWK_GET_CURRENTLYLOADEDSYSTEMNAME()
 		{
-			//returns the currently loaded core's name
+			try
+			{
+				//returns the currently loaded core's name
 
-			return Global.Game.System;
+				return Global.Game.System;
+			}
+			catch (Exception ex)
+			{
+				if (RTC_EmuCore.ShowErrorDialog(ex, true) == DialogResult.Abort)
+					throw new RTCV.NetCore.AbortEverythingException();
+
+				return null;
+			}
 		}
 
 		public static string BIZHAWK_GET_CURRENTLYOPENEDROM()
 		{
-			//This returns the filename of the currently opened rom
+			try
+			{
+				//This returns the filename of the currently opened rom
 
-			return GlobalWin.MainForm.CurrentlyOpenRom;
+				return GlobalWin.MainForm.CurrentlyOpenRom;
+			}
+			catch (Exception ex)
+			{
+				if (RTC_EmuCore.ShowErrorDialog(ex, true) == DialogResult.Abort)
+					throw new RTCV.NetCore.AbortEverythingException();
+
+				return null;
+			}
 		}
 
 		public static bool BIZHAWK_ISNULLEMULATORCORE()
 		{
-			//This checks if the currently loaded emulator core is the Null emulator
+			try
+			{
+				//This checks if the currently loaded emulator core is the Null emulator
 
-			return Global.Emulator is NullEmulator;
+				return Global.Emulator is NullEmulator;
+			}
+			catch (Exception ex)
+			{
+				if (RTC_EmuCore.ShowErrorDialog(ex) == DialogResult.Abort)
+					throw new RTCV.NetCore.AbortEverythingException();
+
+				return false;
+			}
 		}
 
 		public static bool BIZHAWK_ISMAINFORMVISIBLE()
 		{
-			return GlobalWin.MainForm.Visible;
+			try
+			{
+				return GlobalWin.MainForm.Visible;
+			}
+			catch (Exception ex)
+			{
+				if (RTC_EmuCore.ShowErrorDialog(ex, true) == DialogResult.Abort)
+					throw new RTCV.NetCore.AbortEverythingException();
+
+				return false;
+			}
 		}
 
 		public static void BIZHAWK_LOADROM(string RomFile)
 		{
-			var lra = new BizHawk.Client.EmuHawk.MainForm.LoadRomArgs { OpenAdvanced = new OpenAdvanced_OpenRom { Path = RomFile } };
-			GlobalWin.MainForm.LoadRom(RomFile, lra);
+			try
+			{
+				var lra = new BizHawk.Client.EmuHawk.MainForm.LoadRomArgs { OpenAdvanced = new OpenAdvanced_OpenRom { Path = RomFile } };
+				GlobalWin.MainForm.LoadRom(RomFile, lra);
+			}
+			catch (Exception ex)
+			{
+				if (RTC_EmuCore.ShowErrorDialog(ex, true) == DialogResult.Abort)
+					throw new RTCV.NetCore.AbortEverythingException();
+
+				return;
+			}
 		}
 
 		public static void BIZHAWK_OPEN_HEXEDITOR_ADDRESS(MemoryDomainProxy mdp, long address)
 		{
-			GlobalWin.Tools.Load<HexEditor>();
-			GlobalWin.Tools.HexEditor.SetDomain(((BizhawkMemoryDomain)(mdp.MD)).MD);
-			GlobalWin.Tools.HexEditor.GoToAddress(address);
+			try
+			{
+				GlobalWin.Tools.Load<HexEditor>();
+				GlobalWin.Tools.HexEditor.SetDomain(((VanguardImplementation.BizhawkMemoryDomain)(mdp.MD)).MD);
+				GlobalWin.Tools.HexEditor.GoToAddress(address);
+			}
+			catch (Exception ex)
+			{
+				if (RTC_EmuCore.ShowErrorDialog(ex, true) == DialogResult.Abort)
+					throw new RTCV.NetCore.AbortEverythingException();
+
+				return;
+			}
 		}
 
 		public static Size BIZHAWK_GETSET_MAINFORMSIZE
@@ -537,102 +674,113 @@ namespace RTC
 
 		public static void BIZHAWK_MERGECONFIGINI(string backupConfigPath, string stockpileConfigPath)
 		{
-			Config bc;
-			Config sc;
-
-			FileInfo fileBc = new FileInfo(backupConfigPath);
-			FileInfo fileSc = new FileInfo(stockpileConfigPath);
-
-			using (StreamReader reader = fileBc.OpenText())
-			{
-				JsonSerializer serializer = new JsonSerializer();
-
-				JsonTextReader r = new JsonTextReader(reader);
-				bc = (Config)serializer.Deserialize(r, typeof(Config));
-			}
-
-			using (StreamReader reader = fileSc.OpenText())
-			{
-				JsonSerializer serializer = new JsonSerializer();
-				JsonTextReader r = new JsonTextReader(reader);
-				sc = (Config)serializer.Deserialize(r, typeof(Config));
-			}
-
-			//bc = (JObject)JsonConvert.DeserializeObject(backupConfig);
-			//sc = (JObject)JsonConvert.DeserializeObject(stockpileConfig);
-
-			sc.HotkeyBindings = bc.HotkeyBindings;
-			sc.AllTrollers = bc.AllTrollers;
-			sc.AllTrollersAutoFire = bc.AllTrollersAutoFire;
-			sc.AllTrollersAnalog = bc.AllTrollersAnalog;
-
-			if (File.Exists(stockpileConfigPath))
-				File.Delete(stockpileConfigPath);
-
 			try
 			{
+				Config bc;
+				Config sc;
+
+				FileInfo fileBc = new FileInfo(backupConfigPath);
+				FileInfo fileSc = new FileInfo(stockpileConfigPath);
+
+				using (StreamReader reader = fileBc.OpenText())
+				{
+					JsonSerializer serializer = new JsonSerializer();
+
+					JsonTextReader r = new JsonTextReader(reader);
+					bc = (Config)serializer.Deserialize(r, typeof(Config));
+				}
+
+				using (StreamReader reader = fileSc.OpenText())
+				{
+					JsonSerializer serializer = new JsonSerializer();
+					JsonTextReader r = new JsonTextReader(reader);
+					sc = (Config)serializer.Deserialize(r, typeof(Config));
+				}
+
+				//bc = (JObject)JsonConvert.DeserializeObject(backupConfig);
+				//sc = (JObject)JsonConvert.DeserializeObject(stockpileConfig);
+
+				sc.HotkeyBindings = bc.HotkeyBindings;
+				sc.AllTrollers = bc.AllTrollers;
+				sc.AllTrollersAutoFire = bc.AllTrollersAutoFire;
+				sc.AllTrollersAnalog = bc.AllTrollersAnalog;
+
+				if (File.Exists(stockpileConfigPath))
+					File.Delete(stockpileConfigPath);
+
 				using (StreamWriter writer = fileSc.CreateText())
 				{
 					JsonSerializer serializer = new JsonSerializer();
 					JsonTextWriter w = new JsonTextWriter(writer) { Formatting = Formatting.Indented };
 					serializer.Serialize(w, sc);
 				}
+
 			}
-			catch
+			catch (Exception ex)
 			{
-				/* Eat it */
+				if (RTC_EmuCore.ShowErrorDialog(ex, true) == DialogResult.Abort)
+					throw new RTCV.NetCore.AbortEverythingException();
+
+				return;
 			}
 		}
 
 		public static void BIZHAWK_IMPORTCONFIGINI(string importConfigPath, string stockpileConfigPath)
 		{
-			Config bc;
-			Config sc;
-
-			FileInfo fileBc = new FileInfo(importConfigPath);
-			FileInfo fileSc = new FileInfo(stockpileConfigPath);
-
-			JsonSerializer serializer = new JsonSerializer();
-
-			using (StreamReader reader = fileBc.OpenText())
-			{
-				JsonTextReader r = new JsonTextReader(reader);
-				bc = (Config)serializer.Deserialize(r, typeof(Config));
-			}
-
-			using (StreamReader reader = fileSc.OpenText())
-			{
-				JsonTextReader r = new JsonTextReader(reader);
-				sc = (Config)serializer.Deserialize(r, typeof(Config));
-			}
-
-			//bc = (JObject)JsonConvert.DeserializeObject(backupConfig);
-			//sc = (JObject)JsonConvert.DeserializeObject(stockpileConfig);
-
-			sc.HotkeyBindings = bc.HotkeyBindings;
-			sc.AllTrollers = bc.AllTrollers;
-			sc.AllTrollersAutoFire = bc.AllTrollersAutoFire;
-			sc.AllTrollersAnalog = bc.AllTrollersAnalog;
-
-			if (File.Exists(stockpileConfigPath))
-				File.Delete(stockpileConfigPath);
-
 			try
 			{
+				Config bc;
+				Config sc;
+
+				FileInfo fileBc = new FileInfo(importConfigPath);
+				FileInfo fileSc = new FileInfo(stockpileConfigPath);
+
+				JsonSerializer serializer = new JsonSerializer();
+
+				using (StreamReader reader = fileBc.OpenText())
+				{
+					JsonTextReader r = new JsonTextReader(reader);
+					bc = (Config)serializer.Deserialize(r, typeof(Config));
+				}
+
+				using (StreamReader reader = fileSc.OpenText())
+				{
+					JsonTextReader r = new JsonTextReader(reader);
+					sc = (Config)serializer.Deserialize(r, typeof(Config));
+				}
+
+				//bc = (JObject)JsonConvert.DeserializeObject(backupConfig);
+				//sc = (JObject)JsonConvert.DeserializeObject(stockpileConfig);
+
+				sc.HotkeyBindings = bc.HotkeyBindings;
+				sc.AllTrollers = bc.AllTrollers;
+				sc.AllTrollersAutoFire = bc.AllTrollersAutoFire;
+				sc.AllTrollersAnalog = bc.AllTrollersAnalog;
+
+				if (File.Exists(stockpileConfigPath))
+					File.Delete(stockpileConfigPath);
+
+
 				using (StreamWriter writer = fileSc.CreateText())
 				{
 					JsonTextWriter w = new JsonTextWriter(writer) { Formatting = Formatting.Indented };
 					serializer.Serialize(w, sc);
 				}
+
 			}
-			catch
+			catch (Exception ex)
 			{
-				/* Eat it */
+				if (RTC_EmuCore.ShowErrorDialog(ex, true) == DialogResult.Abort)
+					throw new RTCV.NetCore.AbortEverythingException();
+
+				return;
 			}
 		}
 
+
 		public static void BIZHAWK_SET_SYSTEMCORE(string systemName, string systemCore)
 		{
+			try { 
 			switch (systemName.ToUpper())
 			{
 				case "GAMEBOY":
@@ -663,15 +811,20 @@ namespace RTC
 					break;
 
 			}
+			}
+			catch (Exception ex)
+			{
+				if (RTC_EmuCore.ShowErrorDialog(ex, true) == DialogResult.Abort)
+					throw new RTCV.NetCore.AbortEverythingException();
+
+				return;
+			}
 		}
 
 		public static string BIZHAWK_GET_SYSTEMCORENAME(string systemName)
 		{
 			try
 			{
-
-				SettingsAdapter settable = new SettingsAdapter(Global.Emulator);
-
 				switch (systemName.ToUpper())
 				{
 					case "GAMEBOY":
@@ -710,7 +863,10 @@ namespace RTC
 			}
 			catch (Exception ex)
 			{
-				throw;
+				if (RTC_EmuCore.ShowErrorDialog(ex) == DialogResult.Abort)
+					throw new RTCV.NetCore.AbortEverythingException();
+
+				return null;
 			}
 		}
 
@@ -745,5 +901,93 @@ namespace RTC
 		{
 			GlobalWin.MainForm.StopAv();
 		}
+
+		public class MemoryDomainRTCInterface
+		{
+			[RequiredService]
+			public IMemoryDomains MemoryDomains { get; set; }
+
+			[RequiredService]
+			private IEmulator Emulator { get; set; }
+		}
+
+		public static volatile MemoryDomainRTCInterface MDRI = new MemoryDomainRTCInterface();
+
+		public static bool RefreshDomains(bool updateSpecs = true)
+		{
+			try { 
+			if (Global.Emulator is NullEmulator)
+				return false;
+
+			//Compare the old to the new. If the name and sizes are all the same, don't push that there were changes.
+			//We need to compare like this because the domains can change from syncsettings.
+			//We only check name and size as those are the only things that can change on the fly
+			var oldInterfaces = RTC_EmuCore.MemoryInterfacees;
+			var newInterfaces = GetInterfaces();
+			bool domainsChanged = false;
+
+			if (oldInterfaces.Length != newInterfaces.Length)
+				domainsChanged = true;
+
+			for (int i = 0; i < oldInterfaces.Length; i++)
+			{
+				if (domainsChanged)
+					break;
+				if (oldInterfaces[i].Name != newInterfaces[i].Name)
+					domainsChanged = true;
+				if (oldInterfaces[i].Size != newInterfaces[i].Size)
+					domainsChanged = true;
+			}
+
+			//We gotta push this no matter what since it's new underlying objects
+			if (updateSpecs)
+			{
+				RTC_EmuCore.EmuSpec.Update(VSPEC.MEMORYDOMAINS_INTERFACES.ToString(), GetInterfaces());
+				LocalNetCoreRouter.Route(CORRUPTCORE, REMOTE_EVENT_DOMAINSUPDATED, domainsChanged, true);
+			}
+
+
+			return domainsChanged;
+
+			}
+			catch (Exception ex)
+			{
+				if (RTC_EmuCore.ShowErrorDialog(ex) == DialogResult.Abort)
+					throw new RTCV.NetCore.AbortEverythingException();
+
+				return false;
+			}
+		}
+
+		public static MemoryDomainProxy[] GetInterfaces()
+		{
+			try
+			{
+				Console.WriteLine($" getInterfaces()");
+
+				List<MemoryDomainProxy> interfaces = new List<MemoryDomainProxy>();
+
+				if (Global.Emulator?.ServiceProvider == null)
+					return null;
+
+				ServiceInjector.UpdateServices(Global.Emulator.ServiceProvider, MDRI);
+
+				foreach (MemoryDomain _domain in MDRI.MemoryDomains)
+					interfaces.Add(new MemoryDomainProxy(new VanguardImplementation.BizhawkMemoryDomain(_domain)));
+
+
+				return interfaces.ToArray();
+			}
+			catch (Exception ex)
+			{
+				if (RTC_EmuCore.ShowErrorDialog(ex, true) == DialogResult.Abort)
+					throw new RTCV.NetCore.AbortEverythingException();
+
+				return new MemoryDomainProxy[] { };
+			}
+
+		}
+
+
 	}
 }

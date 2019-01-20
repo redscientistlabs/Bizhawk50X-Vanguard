@@ -59,7 +59,7 @@ namespace BizHawk.Client.EmuHawk
 			//RTC_Hijack : Return if hook is true
 			if (!RTC.RTC_Hooks.BIZHAWK_ALLOWED_DOUBLECLICK_FULLSCREEN)
 			{
-				RTC.S.GET<RTC.RTC_MultiPeerPopout_Form>().pbPeerScreen_DoubleClick(null, null);
+			//	RTC.S.GET<RTC.RTC_MultiPeerPopout_Form>().pbPeerScreen_DoubleClick(null, null);
 				return;
 			}
 			

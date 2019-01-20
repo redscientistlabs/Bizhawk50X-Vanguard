@@ -26,6 +26,12 @@ namespace BizHawk.Client.EmuHawk
 			Application.EnableVisualStyles();
 			Application.SetCompatibleTextRenderingDefault(false);
 
+			//RTC_Hijack : Hijack unhandled errors
+			Application.SetUnhandledExceptionMode(UnhandledExceptionMode.CatchException);
+			Application.ThreadException += (o,e) => RTC.RTC_EmuCore.ApplicationThreadException(GlobalWin.MainForm,e);
+			AppDomain.CurrentDomain.UnhandledException += (o,e) => RTC.RTC_EmuCore.CurrentDomainOnUnhandledException(GlobalWin.MainForm, e);
+			//-------------------------
+
 			PlatformSpecificLinkedLibs libLoader = RunningOnUnix ? (PlatformSpecificLinkedLibs) new UnixMono() : (PlatformSpecificLinkedLibs) new Win32();
 
 			//http://www.codeproject.com/Articles/310675/AppDomain-AssemblyResolve-Event-Tips

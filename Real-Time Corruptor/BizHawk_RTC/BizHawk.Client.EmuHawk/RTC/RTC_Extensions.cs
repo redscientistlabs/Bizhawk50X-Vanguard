@@ -157,6 +157,18 @@ namespace RTC
 			return dialogResult;
 		}
 
+
+		public static void DirectoryRequired(string path)
+		{
+			if (!Directory.Exists(path))
+				Directory.CreateDirectory(path);
+		}
+		public static void DirectoryRequired(string[] paths)
+		{
+			foreach (string path in paths)
+				DirectoryRequired(path);
+		}
+
 		#region ARRAY EXTENSIONS
 
 		public static T[] SubArray<T>(this T[] data, long index, long length)
@@ -687,21 +699,6 @@ namespace RTC
 
 		#region CONTROL EXTENSIONS
 
-		public static List<Control> getControlsWithTag(this Control.ControlCollection controls)
-		{
-			List<Control> allControls = new List<Control>();
-
-			foreach (Control c in controls)
-			{
-				if (c.Tag != null)
-					allControls.Add(c);
-
-				if (c.HasChildren)
-					allControls.AddRange(c.Controls.getControlsWithTag()); //Recursively check all children controls as well; ie groupboxes or tabpages
-			}
-
-			return allControls;
-		}
 
 
 		#endregion CONTROL EXTENSIONS

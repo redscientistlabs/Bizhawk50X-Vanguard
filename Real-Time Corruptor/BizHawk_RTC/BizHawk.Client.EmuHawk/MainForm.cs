@@ -34,6 +34,7 @@ using BizHawk.Emulation.Cores.Nintendo.SNES9X;
 using BizHawk.Emulation.Cores.Consoles.SNK;
 using BizHawk.Emulation.Cores.Consoles.Sega.PicoDrive;
 using BizHawk.Emulation.Cores.Consoles.Nintendo.Gameboy;
+using RTCV.CorruptCore;
 
 namespace BizHawk.Client.EmuHawk
 {
@@ -126,7 +127,7 @@ namespace BizHawk.Client.EmuHawk
 			Global.Game = GameInfo.NullInstance;
 			
 			//RTC_Hijack - Check for manually triggered console
-			bool showConsole = (bool)(RTC.RTC_Unispec.RTCSpec?[RTC.RTCSPEC.CORE_SHOWCONSOLE.ToString()] ?? false);
+			bool showConsole = (bool)(RTCV.NetCore.AllSpec.CorruptCoreSpec?[RTCSPEC.CORE_SHOWCONSOLE.ToString()] ?? false);
 			if (Global.Config.ShowLogWindow || showConsole)
 			{
 				LogConsole.ShowConsole();
@@ -3957,6 +3958,21 @@ namespace BizHawk.Client.EmuHawk
 				Global.Config.PutCoreSyncSettings(settable.GetSyncSettings(), t);
 			}
 		}
+		
+		//RTC_Hijack
+		public void Bad()
+		{
+			StopAv();
+			Global.Rewinder.Uninitialize();
+			Emulator.Dispose();
+			var coreComm = CreateCoreComm();
+			CoreFileProvider.SyncCoreCommInputSignals(coreComm);
+			Emulator = new NullEmulator(coreComm, Global.Config.GetCoreSettings<NullEmulator>());
+			Global.ActiveController = new Controller(NullController.Instance.Definition);
+			Global.AutoFireController = _autofireNullControls;
+			RewireSound();
+			RebootStatusBarIcon.Visible = false;
+		}
 
 		// whats the difference between these two methods??
 		// its very tricky. rename to be more clear or combine them.
@@ -4017,6 +4033,7 @@ namespace BizHawk.Client.EmuHawk
 			// RTC_HIJACK : Hook after CloseGame
 			RTC.RTC_Hooks.CLOSE_GAME();
 		}
+
 
 		public bool GameIsClosing { get; private set; } // Lets tools make better decisions when being called by CloseGame
 

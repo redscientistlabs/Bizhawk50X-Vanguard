@@ -113,6 +113,14 @@
       <Project>{dd448b37-ba3f-4544-9754-5406e8094723}</Project>
       <Name>BizHawk.Client.EmuHawk</Name>
     </ProjectReference>
+    <ProjectReference Include="..\RTCV\Libraries\NetCore\NetCore.csproj">
+      <Project>{7e106aec-5614-4206-9e4d-25759c90e8ae}</Project>
+      <Name>NetCore</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\RTCV\UI\UI.csproj">
+      <Project>{bd376bb2-17ec-4fb0-a9fe-6b1bbf4af3e3}</Project>
+      <Name>UI</Name>
+    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <Content Include="rtcicon.ico" />
