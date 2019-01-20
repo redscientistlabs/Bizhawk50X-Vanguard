@@ -36,7 +36,10 @@ namespace RTCV.NetCore
 
         public void AddReturn(NetCoreAdvancedMessage message)
         {
-            SyncReturns.Add((Guid)message.requestGuid, message.objectValue);
+			if (!message.requestGuid.HasValue)
+				return;
+
+			SyncReturns.Add(message.requestGuid.Value, message.objectValue);
         }
 
         internal object GetValue(Guid WatchedGuid, string type)
