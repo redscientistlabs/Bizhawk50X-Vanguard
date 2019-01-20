@@ -18,6 +18,7 @@ using RTCV.NetCore;
 using RTCV.UI;
 using UI;
 using static RTCV.UI.UI_Extensions;
+using RTCV.NetCore.StaticTools;
 
 namespace RTCV.UI
 {
@@ -95,11 +96,11 @@ namespace RTCV.UI
 
 				List<Form> all = new List<Form>();
 
-				foreach (Type t in Assembly.GetAssembly(typeof(S)).GetTypes())
+
+				foreach (Type t in Assembly.GetAssembly(typeof(RTCV.UI.RTC_Core_Form)).GetTypes())
 					if (typeof(IAutoColorize).IsAssignableFrom(t) && t != typeof(IAutoColorize))
 						all.Add((Form)S.GET(Type.GetType(t.ToString())));
 
-				return all.ToArray();
 				return all.ToArray();
 
 			}

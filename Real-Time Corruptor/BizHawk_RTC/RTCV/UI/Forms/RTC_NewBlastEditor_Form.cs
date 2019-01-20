@@ -13,6 +13,7 @@ using Newtonsoft.Json.Serialization;
 using RTCV.CorruptCore;
 using RTCV.NetCore;
 using static RTCV.UI.UI_Extensions;
+using RTCV.NetCore.StaticTools;
 
 /**
  * The DataGridView is bound to the blastlayer

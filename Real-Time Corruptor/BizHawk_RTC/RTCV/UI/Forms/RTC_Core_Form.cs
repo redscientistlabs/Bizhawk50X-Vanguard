@@ -8,6 +8,7 @@ using System.Windows.Forms;
 using CorruptCore;
 using RTCV.CorruptCore;
 using RTCV.NetCore;
+using RTCV.NetCore.StaticTools;
 using RTCV.UI;
 using static RTCV.UI.UI_Extensions;
 

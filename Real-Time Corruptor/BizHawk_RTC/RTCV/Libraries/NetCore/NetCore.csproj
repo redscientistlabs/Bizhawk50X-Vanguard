@@ -59,11 +59,11 @@
     <Compile Include="AllSpec.cs" />
     <Compile Include="Connector.cs" />
     <Compile Include="Extensions.cs" />
-    <Compile Include="CloudDebug.cs">
+    <Compile Include="Debug\CloudDebug_Form.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="CloudDebug.Designer.cs">
-      <DependentUpon>CloudDebug.cs</DependentUpon>
+    <Compile Include="Debug\CloudDebug_Form.Designer.cs">
+      <DependentUpon>CloudDebug_Form.cs</DependentUpon>
     </Compile>
     <Compile Include="LocalRouter.cs" />
     <Compile Include="MessageHub.cs" />
@@ -71,6 +71,13 @@
     <Compile Include="NetCoreObjects.cs" />
     <Compile Include="Params.cs" />
     <Compile Include="ReturnWatch.cs" />
+    <Compile Include="Debug\DebugInfo_Form.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Debug\DebugInfo_Form.Designer.cs">
+      <DependentUpon>DebugInfo_Form.cs</DependentUpon>
+    </Compile>
+    <Compile Include="StaticTools.cs" />
     <Compile Include="SyncObjectSingleton.cs" />
     <Compile Include="TCPLinkWatch.cs" />
     <Compile Include="UDPLink.cs" />
@@ -82,8 +89,11 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="CloudDebug.resx">
-      <DependentUpon>CloudDebug.cs</DependentUpon>
+    <EmbeddedResource Include="Debug\CloudDebug_Form.resx">
+      <DependentUpon>CloudDebug_Form.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Debug\DebugInfo_Form.resx">
+      <DependentUpon>DebugInfo_Form.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

@@ -13,6 +13,7 @@ using RTCV.NetCore;
 using RTCV.UI;
 using static RTCV.UI.UI_Extensions;
 using static RTCV.NetCore.NetcoreCommands;
+using RTCV.NetCore.StaticTools;
 
 namespace UI
 {
@@ -253,8 +254,8 @@ namespace UI
 					RTC_StockpileManager_UISide.AllBackupStates.Push((StashKey)advancedMessage.objectValue);
 					SyncObjectSingleton.FormExecute((o, ea) =>
 					{
-						UI_Extensions.S.GET<RTC_Core_Form>().btnGpJumpBack.Visible = true;
-						UI_Extensions.S.GET<RTC_Core_Form>().btnGpJumpNow.Visible = true;
+						S.GET<RTC_Core_Form>().btnGpJumpBack.Visible = true;
+						S.GET<RTC_Core_Form>().btnGpJumpNow.Visible = true;
 					});
 					break;
 

@@ -29,25 +29,24 @@
         private void InitializeComponent()
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(RTC_Settings_Form));
-            this.label2 = new System.Windows.Forms.Label();
+            this.lbSettingsAndTools = new System.Windows.Forms.Label();
             this.btnRtcFactoryClean = new System.Windows.Forms.Button();
-            this.button1 = new System.Windows.Forms.Button();
-            this.button2 = new System.Windows.Forms.Button();
+            this.btnCloseSettings = new System.Windows.Forms.Button();
             this.pnListBoxForm = new System.Windows.Forms.Panel();
             this.btnOpenConsole = new System.Windows.Forms.Button();
-            this.button3 = new System.Windows.Forms.Button();
+            this.btnDebugInfo = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // label2
             // 
-            this.label2.AutoSize = true;
-            this.label2.Font = new System.Drawing.Font("Segoe UI Semibold", 26.25F, System.Drawing.FontStyle.Bold);
-            this.label2.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(192)))), ((int)(((byte)(255)))), ((int)(((byte)(192)))));
-            this.label2.Location = new System.Drawing.Point(11, 9);
-            this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(307, 47);
-            this.label2.TabIndex = 118;
-            this.label2.Text = "Settings and tools";
+            this.lbSettingsAndTools.AutoSize = true;
+            this.lbSettingsAndTools.Font = new System.Drawing.Font("Segoe UI Semibold", 26.25F, System.Drawing.FontStyle.Bold);
+            this.lbSettingsAndTools.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(192)))), ((int)(((byte)(255)))), ((int)(((byte)(192)))));
+            this.lbSettingsAndTools.Location = new System.Drawing.Point(11, 9);
+            this.lbSettingsAndTools.Name = "label2";
+            this.lbSettingsAndTools.Size = new System.Drawing.Size(307, 47);
+            this.lbSettingsAndTools.TabIndex = 118;
+            this.lbSettingsAndTools.Text = "Settings and tools";
             // 
             // btnRtcFactoryClean
             // 
@@ -70,32 +69,22 @@
             // 
             // button1
             // 
-            this.button1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(224)))), ((int)(((byte)(224)))), ((int)(((byte)(224)))));
-            this.button1.FlatAppearance.BorderSize = 0;
-            this.button1.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.button1.Font = new System.Drawing.Font("Segoe UI", 8F);
-            this.button1.ForeColor = System.Drawing.Color.Black;
-            this.button1.Image = ((System.Drawing.Image)(resources.GetObject("button1.Image")));
-            this.button1.ImageAlign = System.Drawing.ContentAlignment.MiddleRight;
-            this.button1.Location = new System.Drawing.Point(19, 465);
-            this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(215, 29);
-            this.button1.TabIndex = 127;
-            this.button1.Tag = "color:light";
-            this.button1.Text = " Close Settings";
-            this.button1.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageBeforeText;
-            this.button1.UseVisualStyleBackColor = false;
-            this.button1.Click += new System.EventHandler(this.button1_Click);
-            // 
-            // button2
-            // 
-            this.button2.Location = new System.Drawing.Point(1971, 480);
-            this.button2.Name = "button2";
-            this.button2.Size = new System.Drawing.Size(98, 23);
-            this.button2.TabIndex = 136;
-            this.button2.Text = "Open Test Form";
-            this.button2.UseVisualStyleBackColor = true;
-            this.button2.Click += new System.EventHandler(this.button2_Click);
+            this.btnCloseSettings.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(224)))), ((int)(((byte)(224)))), ((int)(((byte)(224)))));
+            this.btnCloseSettings.FlatAppearance.BorderSize = 0;
+            this.btnCloseSettings.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnCloseSettings.Font = new System.Drawing.Font("Segoe UI", 8F);
+            this.btnCloseSettings.ForeColor = System.Drawing.Color.Black;
+            this.btnCloseSettings.Image = ((System.Drawing.Image)(resources.GetObject("button1.Image")));
+            this.btnCloseSettings.ImageAlign = System.Drawing.ContentAlignment.MiddleRight;
+            this.btnCloseSettings.Location = new System.Drawing.Point(19, 465);
+            this.btnCloseSettings.Name = "btnCloseSettings";
+            this.btnCloseSettings.Size = new System.Drawing.Size(215, 29);
+            this.btnCloseSettings.TabIndex = 127;
+            this.btnCloseSettings.Tag = "color:light";
+            this.btnCloseSettings.Text = " Close Settings";
+            this.btnCloseSettings.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageBeforeText;
+            this.btnCloseSettings.UseVisualStyleBackColor = false;
+            this.btnCloseSettings.Click += new System.EventHandler(this.btnCloseSettings_Click);
             // 
             // pnListBoxForm
             // 
@@ -125,23 +114,23 @@
             this.btnOpenConsole.UseVisualStyleBackColor = false;
             this.btnOpenConsole.Click += new System.EventHandler(this.btnToggleConsole_Click);
             // 
-            // button3
+            // btnDebugInfo
             // 
-            this.button3.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(224)))), ((int)(((byte)(224)))), ((int)(((byte)(224)))));
-            this.button3.FlatAppearance.BorderSize = 0;
-            this.button3.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.button3.Font = new System.Drawing.Font("Segoe UI", 8F);
-            this.button3.ForeColor = System.Drawing.Color.Black;
-            this.button3.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.button3.Location = new System.Drawing.Point(372, 27);
-            this.button3.Name = "button3";
-            this.button3.Size = new System.Drawing.Size(150, 29);
-            this.button3.TabIndex = 139;
-            this.button3.Tag = "color:light";
-            this.button3.Text = "🙃 Toggle Debug Window";
-            this.button3.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageBeforeText;
-            this.button3.UseVisualStyleBackColor = false;
-            this.button3.Click += new System.EventHandler(this.button3_Click);
+            this.btnDebugInfo.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(224)))), ((int)(((byte)(224)))), ((int)(((byte)(224)))));
+            this.btnDebugInfo.FlatAppearance.BorderSize = 0;
+            this.btnDebugInfo.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnDebugInfo.Font = new System.Drawing.Font("Segoe UI", 8F);
+            this.btnDebugInfo.ForeColor = System.Drawing.Color.Black;
+            this.btnDebugInfo.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.btnDebugInfo.Location = new System.Drawing.Point(396, 27);
+            this.btnDebugInfo.Name = "btnDebugInfo";
+            this.btnDebugInfo.Size = new System.Drawing.Size(126, 29);
+            this.btnDebugInfo.TabIndex = 139;
+            this.btnDebugInfo.Tag = "color:light";
+            this.btnDebugInfo.Text = "🙃 Show Debug Info";
+            this.btnDebugInfo.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageBeforeText;
+            this.btnDebugInfo.UseVisualStyleBackColor = false;
+            this.btnDebugInfo.Click += new System.EventHandler(this.btnDebugInfo_Click);
             // 
             // RTC_Settings_Form
             // 
@@ -149,13 +138,12 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
             this.ClientSize = new System.Drawing.Size(655, 515);
-            this.Controls.Add(this.button3);
+            this.Controls.Add(this.btnDebugInfo);
             this.Controls.Add(this.btnOpenConsole);
             this.Controls.Add(this.pnListBoxForm);
-            this.Controls.Add(this.button2);
-            this.Controls.Add(this.button1);
+            this.Controls.Add(this.btnCloseSettings);
             this.Controls.Add(this.btnRtcFactoryClean);
-            this.Controls.Add(this.label2);
+            this.Controls.Add(this.lbSettingsAndTools);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
             this.Name = "RTC_Settings_Form";
             this.Tag = "color:dark";
@@ -167,12 +155,11 @@
         }
 
         #endregion
-        private System.Windows.Forms.Label label2;
+        private System.Windows.Forms.Label lbSettingsAndTools;
         public System.Windows.Forms.Button btnRtcFactoryClean;
-        public System.Windows.Forms.Button button1;
-		private System.Windows.Forms.Button button2;
+        public System.Windows.Forms.Button btnCloseSettings;
 		private System.Windows.Forms.Panel pnListBoxForm;
 		public System.Windows.Forms.Button btnOpenConsole;
-		public System.Windows.Forms.Button button3;
+		public System.Windows.Forms.Button btnDebugInfo;
 	}
 }

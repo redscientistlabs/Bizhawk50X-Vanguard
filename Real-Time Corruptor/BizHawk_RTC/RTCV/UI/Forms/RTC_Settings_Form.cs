@@ -8,6 +8,7 @@ using System.Media;
 using System.Windows.Forms;
 using RTCV.CorruptCore;
 using static RTCV.UI.UI_Extensions;
+using RTCV.NetCore.StaticTools;
 
 namespace RTCV.UI
 {
@@ -48,16 +49,9 @@ namespace RTCV.UI
 
 		}
 
-		private void button1_Click(object sender, EventArgs e)
+		private void btnCloseSettings_Click(object sender, EventArgs e)
 		{
 			S.GET<RTC_Core_Form>().ShowPanelForm(S.GET<RTC_Core_Form>().previousForm, false);
-		}
-
-
-		private void button2_Click(object sender, EventArgs e)
-		{
-			Form form = new RTC_Debug_Form();
-			form.Show();
 		}
 
 		private void btnToggleConsole_Click(object sender, EventArgs e)
@@ -65,9 +59,9 @@ namespace RTCV.UI
 			LogConsole.ToggleConsole();
 		}
 
-		private void button3_Click(object sender, EventArgs e)
+		private void btnDebugInfo_Click(object sender, EventArgs e)
 		{
-			S.GET<RTC_Debug_Form>().Show();
+			S.GET<RTCV.NetCore.DebugInfo_Form>().ShowDialog();
 		}
 	}
 }
