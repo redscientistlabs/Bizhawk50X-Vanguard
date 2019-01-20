@@ -59,10 +59,10 @@
     <Compile Include="AllSpec.cs" />
     <Compile Include="Connector.cs" />
     <Compile Include="Extensions.cs" />
-    <Compile Include="Debug\CloudDebug_Form.cs">
+    <Compile Include="DebugInfo\CloudDebug_Form.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Debug\CloudDebug_Form.Designer.cs">
+    <Compile Include="DebugInfo\CloudDebug_Form.Designer.cs">
       <DependentUpon>CloudDebug_Form.cs</DependentUpon>
     </Compile>
     <Compile Include="LocalRouter.cs" />
@@ -71,10 +71,10 @@
     <Compile Include="NetCoreObjects.cs" />
     <Compile Include="Params.cs" />
     <Compile Include="ReturnWatch.cs" />
-    <Compile Include="Debug\DebugInfo_Form.cs">
+    <Compile Include="DebugInfo\DebugInfo_Form.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Debug\DebugInfo_Form.Designer.cs">
+    <Compile Include="DebugInfo\DebugInfo_Form.Designer.cs">
       <DependentUpon>DebugInfo_Form.cs</DependentUpon>
     </Compile>
     <Compile Include="StaticTools.cs" />
@@ -89,10 +89,10 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Debug\CloudDebug_Form.resx">
+    <EmbeddedResource Include="DebugInfo\CloudDebug_Form.resx">
       <DependentUpon>CloudDebug_Form.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Debug\DebugInfo_Form.resx">
+    <EmbeddedResource Include="DebugInfo\DebugInfo_Form.resx">
       <DependentUpon>DebugInfo_Form.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>

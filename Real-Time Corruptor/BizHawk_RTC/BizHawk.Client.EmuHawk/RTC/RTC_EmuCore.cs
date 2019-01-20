@@ -27,6 +27,45 @@ namespace RTC
 		internal static DialogResult ShowErrorDialog(Exception exception, bool canContinue = false)
 		{
 			return new RTCV.NetCore.CloudDebug(exception, canContinue).Start();
+
+
+		}
+
+
+		/// <summary>
+		/// Global exceptions in Non User Interfarce(other thread) antipicated error
+		/// </summary>
+		/// <param name="sender"></param>
+		/// <param name="e"></param>
+		internal static void CurrentDomainOnUnhandledException(object sender, UnhandledExceptionEventArgs e)
+		{
+			Exception ex = (Exception)e.ExceptionObject;
+			Form error = new RTCV.NetCore.CloudDebug(ex);
+			var result = error.ShowDialog();
+
+		}
+
+		/// <summary>
+		/// Global exceptions in User Interfarce antipicated error
+		/// </summary>
+		/// <param name="sender"></param>
+		/// <param name="e"></param>
+		internal static void ApplicationThreadException(object sender, ThreadExceptionEventArgs e)
+		{
+			Exception ex = e.Exception;
+			Form error = new RTCV.NetCore.CloudDebug(ex);
+			var result = error.ShowDialog();
+
+			Form loaderObject = (sender as Form);
+
+			if (result == DialogResult.Abort)
+			{
+				if (loaderObject != null)
+					NetCore.SyncObjectSingleton.SyncObjectExecute(loaderObject, (o, ea) =>
+					{
+						loaderObject.Close();
+					});
+			}
 		}
 
 		public static bool attached = false;
@@ -127,6 +166,9 @@ namespace RTC
 		//This is the entry point of RTC. Without this method, nothing will load.
 		public static void Start(RTC_Standalone_Form _standaloneForm = null)
 		{
+			string allo = null;
+			allo.ToString();
+
 			SyncObjectSingleton.SyncObject = GlobalWin.MainForm;
 			VanguardImplementation.StartClient();
 			RTC_EmuCore.RegisterEmuhawkSpec();
