@@ -72,7 +72,7 @@ namespace RTCV.UI
 			{
 				PartialSpec partial = e.partialSpec;
 
-				LocalNetCoreRouter.Route(NetcoreCommands.CORRUPTCORE, NetcoreCommands.REMOTE_PUSHUISPECUPDATE, partial, e.syncedUpdate);
+				  LocalNetCoreRouter.Route(NetcoreCommands.CORRUPTCORE, NetcoreCommands.REMOTE_PUSHUISPECUPDATE, partial, e.syncedUpdate);
 			};
 
 			RTC_Corruptcore.StartUISide();
@@ -101,6 +101,9 @@ namespace RTCV.UI
 
 		private static void registerFormEvents(Form f)
 		{
+			f.Deactivate -= NewForm_FocusChanged;
+			f.Deactivate += NewForm_FocusChanged;
+
 			f.Activated -= NewForm_FocusChanged;
 			f.Activated += NewForm_FocusChanged;
 
@@ -128,16 +131,20 @@ namespace RTCV.UI
 
 		private static bool isAnyRTCFormFocused()
 		{
-			string checkActiveForm = Form.ActiveForm?.GetType().ToString();
+			bool ExternalForm = Form.ActiveForm == null;
 
-			if (Form.ActiveForm == null)
+			if (ExternalForm)
 				return false;
 
+			var t = Form.ActiveForm.GetType();
 
-			return (Form.ActiveForm is IAutoColorize ||
-					Form.ActiveForm is RTCV.NetCore.CloudDebug ||
-					Form.ActiveForm is RTCV.NetCore.DebugInfo_Form
+			bool isAllowedForm = (
+				typeof(IAutoColorize).IsAssignableFrom(t) ||
+				typeof(CloudDebug).IsAssignableFrom(t) ||
+				typeof(DebugInfo_Form).IsAssignableFrom(t)
 				);
+
+			return isAllowedForm;
 		}
 
 		//All RTC forms

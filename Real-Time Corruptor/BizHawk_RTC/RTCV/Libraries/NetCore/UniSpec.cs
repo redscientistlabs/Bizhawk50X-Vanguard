@@ -77,6 +77,7 @@ namespace RTCV.NetCore
 		}
 
 		public void Update(PartialSpec _partialSpec, bool propagate = true, bool synced = true)
+
 		{
 			if (name != _partialSpec.Name)
 				throw new Exception("Name mismatch between PartialSpec and FullSpec");
