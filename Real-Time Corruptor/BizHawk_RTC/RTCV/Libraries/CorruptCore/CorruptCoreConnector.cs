@@ -50,7 +50,6 @@ namespace RTCV.CorruptCore
 					{
 						RTCV.NetCore.AllSpec.UISpec = new FullSpec((PartialSpec)advancedMessage.objectValue, !RTC_Corruptcore.Attached);
 					}); 
-					e.setReturnValue(true);
 					break;
 
 				//UI sent a spec update
@@ -59,7 +58,6 @@ namespace RTCV.CorruptCore
 					{
 						RTCV.NetCore.AllSpec.UISpec?.Update((PartialSpec)advancedMessage.objectValue);
 					});
-					e.setReturnValue(true);
 					break;
 
 				//Vanguard sent a copy of its spec
@@ -69,7 +67,6 @@ namespace RTCV.CorruptCore
 						if(!RTC_Corruptcore.Attached)
 							RTCV.NetCore.AllSpec.VanguardSpec = new FullSpec((PartialSpec)advancedMessage.objectValue, !RTC_Corruptcore.Attached);
 					});
-					e.setReturnValue(true);
 					break;
 
 				//Vanguard sent a spec update
@@ -101,7 +98,6 @@ namespace RTCV.CorruptCore
 					{
 						RTCV.NetCore.AllSpec.CorruptCoreSpec?.Update((PartialSpec)advancedMessage.objectValue, false);
 					});
-					e.setReturnValue(true);
 					break;
 
 				case REMOTE_EVENT_DOMAINSUPDATED:

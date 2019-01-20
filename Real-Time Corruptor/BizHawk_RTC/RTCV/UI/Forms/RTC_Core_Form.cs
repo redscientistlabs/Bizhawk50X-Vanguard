@@ -337,12 +337,7 @@ namespace RTCV.UI
 
 		private void btnStockPilePlayer_Click(object sender, EventArgs e) => ShowPanelForm(S.GET<RTC_StockpilePlayer_Form>());
 
-		private void btnRTCMultiplayer_Click(object sender, EventArgs e)
-		{
-			MessageBox.Show("Multiplayer unsupported for now");
-		}
-
-		private void btnGpJumpBack_Click(object sender, EventArgs e)
+		public void btnGpJumpBack_Click(object sender, EventArgs e)
 		{
 			try
 			{
@@ -364,7 +359,7 @@ namespace RTCV.UI
 			}
 		}
 
-		private void btnGpJumpNow_Click(object sender, EventArgs e)
+		public void btnGpJumpNow_Click(object sender, EventArgs e)
 		{
 			try
 			{

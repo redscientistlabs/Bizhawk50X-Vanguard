@@ -251,6 +251,26 @@ namespace UI
 						});
 						break;
 
+					case REMOTE_HOTKEY_GAMEPROTECTIONBACK:
+						SyncObjectSingleton.FormExecute((o, ea) =>
+						{
+							var f = S.GET<RTC_Core_Form>();
+							var b = f.btnGpJumpBack;
+							if (b.Visible && b.Enabled)
+								f.btnGpJumpBack_Click(null, null);
+						});
+						break;
+
+					case REMOTE_HOTKEY_GAMEPROTECTIONNOW:
+						SyncObjectSingleton.FormExecute((o, ea) =>
+						{
+							var f = S.GET<RTC_Core_Form>();
+							var b = f.btnGpJumpNow;
+							if (b.Visible && b.Enabled)
+								f.btnGpJumpNow_Click(null, null);
+						});
+						break;
+
 					case REMOTE_BACKUPKEY_STASH:
 						RTC_StockpileManager_UISide.BackupedState = (StashKey)advancedMessage.objectValue;
 						RTC_StockpileManager_UISide.AllBackupStates.Push((StashKey)advancedMessage.objectValue);

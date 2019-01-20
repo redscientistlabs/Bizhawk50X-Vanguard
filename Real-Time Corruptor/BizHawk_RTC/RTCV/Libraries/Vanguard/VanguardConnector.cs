@@ -95,5 +95,10 @@ namespace RTCV.Vanguard
 		{
 			return RTCV.NetCore.AllSpec.UISpec?[NetcoreCommands.RTC_INFOCUS] != null;
 		}
+
+		public void KillNetcore()
+		{
+			netConn.Kill();
+		}
 	}
 }

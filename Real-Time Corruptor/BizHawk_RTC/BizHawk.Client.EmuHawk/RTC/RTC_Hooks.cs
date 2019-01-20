@@ -392,6 +392,7 @@ namespace RTC
 						break;
 
 					case "Induce KS Crash":
+						VanguardImplementation.connector.Kill();
 						break;
 
 					case "Blast+RawStash":
@@ -408,6 +409,14 @@ namespace RTC
 
 					case "BlastLayer Re-Blast":
 						LocalNetCoreRouter.Route(UI, REMOTE_HOTKEY_BLASTLAYERREBLAST);
+						break;
+
+					case "Game Protec Back":
+						LocalNetCoreRouter.Route(UI, REMOTE_HOTKEY_GAMEPROTECTIONBACK);
+						break;
+
+					case "Game Protec Now":
+						LocalNetCoreRouter.Route(UI, REMOTE_HOTKEY_GAMEPROTECTIONNOW);
 						break;
 				}
 				return true;

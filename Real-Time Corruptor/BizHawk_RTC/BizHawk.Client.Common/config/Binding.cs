@@ -279,6 +279,8 @@ namespace BizHawk.Client.Common
 						Bind("RTC","Send Raw to Stash", toolTip: "For RTC" ),
 						Bind("RTC","BlastLayer Toggle", toolTip: "For RTC" ),
 						Bind("RTC","BlastLayer Re-Blast", toolTip: "For RTC" ),
+						Bind("RTC","Game Protec Back", toolTip: "For RTC" ),
+						Bind("RTC","Game Protec Now", toolTip: "For RTC" ),
                         //------------------
 						Bind("Tools", "Toggle All Cheats"),
 					};
