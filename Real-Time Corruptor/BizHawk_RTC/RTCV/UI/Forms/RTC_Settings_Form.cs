@@ -24,7 +24,7 @@ namespace RTCV.UI
 			lbForm = new RTC_ListBox_Form(new ComponentForm[]{
 				S.GET<RTC_SettingsGeneral_Form>(),
 				S.GET<RTC_SettingsNetCore_Form>(),
-			//	S.GET<RTC_SettingsAestethics_Form>(),
+			 	S.GET<RTC_SettingsAbout_Form>(),
 			})
 			{
 				popoutAllowed = false
