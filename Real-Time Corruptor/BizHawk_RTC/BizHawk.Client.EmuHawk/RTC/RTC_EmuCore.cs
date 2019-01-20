@@ -23,6 +23,12 @@ namespace RTC
 	public static class RTC_EmuCore
 	{
 		public static string[] args;
+
+		internal static DialogResult ShowErrorDialog(Exception exception, bool canContinue = false)
+		{
+			return new RTCV.NetCore.CloudDebug(exception, canContinue).Start();
+		}
+
 		public static bool attached = false;
 
 		public static string System
@@ -296,11 +302,11 @@ namespace RTC
 
 		public static void LoadBizhawkWindowState()
 		{
-			if (RTC_Params.IsParamSet("BIZHAWK_SIZE"))
+			if (RTCV.NetCore.Params.IsParamSet("BIZHAWK_SIZE"))
 			{
-				string[] size = RTC_Params.ReadParam("BIZHAWK_SIZE").Split(',');
+				string[] size = RTCV.NetCore.Params.ReadParam("BIZHAWK_SIZE").Split(',');
 				RTC_Hooks.BIZHAWK_GETSET_MAINFORMSIZE = new Size(Convert.ToInt32(size[0]), Convert.ToInt32(size[1]));
-				string[] location = RTC_Params.ReadParam("BIZHAWK_LOCATION").Split(',');
+				string[] location = RTCV.NetCore.Params.ReadParam("BIZHAWK_LOCATION").Split(',');
 				RTC_Hooks.BIZHAWK_GETSET_MAINFORMLOCATION = new Point(Convert.ToInt32(location[0]), Convert.ToInt32(location[1]));
 			}
 		}
@@ -310,8 +316,8 @@ namespace RTC
 			var size = RTC_Hooks.BIZHAWK_GETSET_MAINFORMSIZE;
 			var location = RTC_Hooks.BIZHAWK_GETSET_MAINFORMLOCATION;
 
-			RTC_Params.SetParam("BIZHAWK_SIZE", $"{size.Width},{size.Height}");
-			RTC_Params.SetParam("BIZHAWK_LOCATION", $"{location.X},{location.Y}");
+			RTCV.NetCore.Params.SetParam("BIZHAWK_SIZE", $"{size.Width},{size.Height}");
+			RTCV.NetCore.Params.SetParam("BIZHAWK_LOCATION", $"{location.X},{location.Y}");
 		}
 
 		public static void LoadDefaultAndShowBizhawkForm()

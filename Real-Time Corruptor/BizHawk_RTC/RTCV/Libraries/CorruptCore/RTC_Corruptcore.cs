@@ -34,7 +34,6 @@ namespace RTCV.CorruptCore
 		public static string rtcDir = bizhawkDir + Path.DirectorySeparatorChar + "RTC" + Path.DirectorySeparatorChar;
 		public static string workingDir = rtcDir + Path.DirectorySeparatorChar + "WORKING" + Path.DirectorySeparatorChar;
 		public static string assetsDir = rtcDir + Path.DirectorySeparatorChar + "ASSETS" + Path.DirectorySeparatorChar;
-		public static string paramsDir = rtcDir + Path.DirectorySeparatorChar + "PARAMS" + Path.DirectorySeparatorChar;
 		public static string listsDir = rtcDir + Path.DirectorySeparatorChar + "LISTS" + Path.DirectorySeparatorChar;
 
 
@@ -209,13 +208,13 @@ namespace RTCV.CorruptCore
 			partial[RTCSPEC.CORE_SHOWCONSOLE.ToString()] = false;
 
 
-			if (RTC_Params.IsParamSet("REROLL_ADDRESS"))
-				partial[RTCSPEC.CORE_REROLLADDRESS.ToString()] = (RTC_Params.ReadParam("REROLL_ADDRESS") == "true");
+			if (NetCore.Params.IsParamSet("REROLL_ADDRESS"))
+				partial[RTCSPEC.CORE_REROLLADDRESS.ToString()] = (NetCore.Params.ReadParam("REROLL_ADDRESS") == "true");
 			else
 				partial[RTCSPEC.CORE_REROLLADDRESS.ToString()] = false;
 
-			if (RTC_Params.IsParamSet("REROLL_SOURCEADDRESS"))
-				partial[RTCSPEC.CORE_REROLLSOURCEADDRESS.ToString()] = (RTC_Params.ReadParam("REROLL_SOURCEADDRESS") == "true");
+			if (NetCore.Params.IsParamSet("REROLL_SOURCEADDRESS"))
+				partial[RTCSPEC.CORE_REROLLSOURCEADDRESS.ToString()] = (NetCore.Params.ReadParam("REROLL_SOURCEADDRESS") == "true");
 			else
 				partial[RTCSPEC.CORE_REROLLSOURCEADDRESS.ToString()] = false;
 
@@ -228,7 +227,7 @@ namespace RTCV.CorruptCore
 			//Windows does the big dumb: part 11
 			WebRequest.DefaultWebProxy = null;
 
-			string LocalPath = RTC_Corruptcore.paramsDir + "\\BADPROCESSES";
+			string LocalPath = NetCore.Params.paramsDir + "\\BADPROCESSES";
 			string json = "";
 			try
 			{

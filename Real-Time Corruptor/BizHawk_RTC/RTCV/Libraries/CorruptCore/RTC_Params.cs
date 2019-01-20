@@ -11,10 +11,12 @@ namespace RTCV.CorruptCore
 {
 	public static class RTC_Params
 	{
+		//TODO remove this is not used
+
 
 		public static void LoadHotkeys()
 		{
-			if (IsParamSet("RTC_HOTKEYS"))
+			if (NetCore.Params.IsParamSet("RTC_HOTKEYS"))
 			{
 				//		RTC_Hotkeys.LoadHotkeys(ReadParam("RTC_HOTKEYS"));
 			}
@@ -28,38 +30,9 @@ namespace RTCV.CorruptCore
 		public static void AutoLoadVMDs()
 		{
 			string currentGame = (string)RTC_Corruptcore.VanguardSpec[VSPEC.GAMENAME.ToString()];
-			SetParam(currentGame.GetHashCode().ToString());
+			NetCore.Params.SetParam(currentGame.GetHashCode().ToString());
 		}
 
-		public static void SetParam(string paramName, string data = null)
-		{
-			if (data == null)
-			{
-				if (!IsParamSet(paramName))
-					SetParam(paramName, "");
-			}
-			else
-				File.WriteAllText(RTC_Corruptcore.paramsDir + Path.DirectorySeparatorChar + paramName, data);
-		}
-
-		public static void RemoveParam(string paramName)
-		{
-			if (IsParamSet(paramName))
-				File.Delete(RTC_Corruptcore.paramsDir + Path.DirectorySeparatorChar + paramName);
-		}
-
-		public static string ReadParam(string paramName)
-		{
-			if (IsParamSet(paramName))
-				return File.ReadAllText(RTC_Corruptcore.paramsDir + Path.DirectorySeparatorChar + paramName);
-
-			return null;
-		}
-
-		public static bool IsParamSet(string paramName)
-		{
-			return File.Exists(RTC_Corruptcore.paramsDir + Path.DirectorySeparatorChar + paramName);
-		}
 	}
 
 }

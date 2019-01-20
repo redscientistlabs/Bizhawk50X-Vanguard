@@ -19,5 +19,13 @@ namespace NetCore
 			else
 				a.Invoke(null, null);
 		}
+
+		public static void SyncObjectExecute(Form sync, Action<object, EventArgs> a, object[] args = null)
+		{
+			if (sync.InvokeRequired)
+				sync.Invoke(new MethodInvoker(() => { a.Invoke(null, null); }));
+			else
+				a.Invoke(null, null);
+		}
 	}
 }

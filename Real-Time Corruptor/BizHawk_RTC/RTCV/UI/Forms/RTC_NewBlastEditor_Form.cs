@@ -681,9 +681,9 @@ namespace RTCV.UI
 
 
 
-			if (RTC_Params.IsParamSet("BLASTEDITOR_VISIBLECOLUMNS"))
+			if (RTCV.NetCore.Params.IsParamSet("BLASTEDITOR_VISIBLECOLUMNS"))
 			{
-				string str = RTC_Params.ReadParam("BLASTEDITOR_VISIBLECOLUMNS");
+				string str = RTCV.NetCore.Params.ReadParam("BLASTEDITOR_VISIBLECOLUMNS");
 				string[] columns = str.Split(',');
 				foreach (string column in columns)
 				{

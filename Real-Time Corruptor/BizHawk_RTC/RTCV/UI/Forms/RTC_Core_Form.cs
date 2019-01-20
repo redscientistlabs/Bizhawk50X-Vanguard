@@ -56,7 +56,8 @@ namespace RTCV.UI
 
 		public void btnManualBlast_Click(object sender, EventArgs e)
 		{
-			LocalNetCoreRouter.Route(NetcoreCommands.CORRUPTCORE, NetcoreCommands.ASYNCBLAST, true );
+			LocalNetCoreRouter.Route(NetcoreCommands.CORRUPTCORE, NetcoreCommands.ASYNCBLAST, true);
+
 		}
 
 		public void btnAutoCorrupt_Click(object sender, EventArgs e)
@@ -73,10 +74,10 @@ namespace RTCV.UI
 		{
 			btnLogo.Text = "   Version " + RTC_Corruptcore.RtcVersion;
 
-			if (!RTC_Params.IsParamSet("DISCLAIMER_READ"))
+			if (!NetCore.Params.IsParamSet("DISCLAIMER_READ"))
 			{
 				MessageBox.Show(File.ReadAllText(RTC_Corruptcore.rtcDir + Path.DirectorySeparatorChar + "LICENSES\\DISCLAIMER.TXT").Replace("[ver]", RTC_Corruptcore.RtcVersion), "RTC", MessageBoxButtons.OK, MessageBoxIcon.Information);
-				RTC_Params.SetParam("DISCLAIMER_READ");
+				NetCore.Params.SetParam("DISCLAIMER_READ");
 			}
 
 			RTC_Corruptcore.DownloadProblematicProcesses();
@@ -385,6 +386,7 @@ namespace RTCV.UI
 			S.GET<RTC_GlitchHarvester_Form>().btnSendRaw_Click(null, null);
 		}
 
+		System.Windows.Forms.Timer testErrorTimer = null;
 		private void btnManualBlast_MouseDown(object sender, MouseEventArgs e)
 		{
 			if (e.Button == MouseButtons.Right)
@@ -396,8 +398,55 @@ namespace RTCV.UI
 				{
 					BlastRawStash();
 				}));
+
+				if (RTCV.NetCore.Params.IsParamSet("DEBUG_FETCHMODE"))
+				{
+					columnsMenu.Items.Add("Open Debug window", null, new EventHandler((ob, ev) =>
+					{
+						TestErrorTimer_Tick(null, null);
+					}));
+				}
+
 				columnsMenu.Show(this, locate);
 			}
+			else if(e.Button == MouseButtons.Left)
+			{
+				testErrorTimer?.Stop();
+				testErrorTimer = null;
+
+				testErrorTimer = new System.Windows.Forms.Timer();
+				testErrorTimer.Interval = 6666;
+				testErrorTimer.Tick += TestErrorTimer_Tick;
+				testErrorTimer.Start();
+			}
+
+		}
+
+		private void TestErrorTimer_Tick(object sender, EventArgs e)
+		{
+			testErrorTimer?.Stop();
+			testErrorTimer = null;
+			//SECRET CRASH DONT TELL ANYONE
+			//Trigger: Hold Manual Blast for 7 seconds
+			//Purpose: Testing debug window
+			var ex = new CustomException("SECRET CRASH DONT TELL ANYONE", 
+"───────▄▀▀▀▀▀▀▀▀▀▀▄▄"+ Environment.NewLine +"────▄▀▀─────────────▀▄"+Environment.NewLine+"──▄▀──────────────────▀▄"+Environment.NewLine+
+"──█─────────────────────▀▄"+Environment.NewLine+"─▐▌────────▄▄▄▄▄▄▄───────▐▌"+Environment.NewLine+"─█───────────▄▄▄▄──▀▀▀▀▀──█"+Environment.NewLine +
+"▐▌───────▀▀▀▀─────▀▀▀▀▀───▐▌"+Environment.NewLine+"█─────────▄▄▀▀▀▀▀────▀▀▀▀▄─█"+Environment.NewLine+"█────────────────▀───▐─────▐▌" +
+Environment.NewLine+"▐▌─────────▐▀▀██▄──────▄▄▄─▐▌"+Environment.NewLine+"─█───────────▀▀▀──────▀▀██──█"+Environment.NewLine+"─▐▌────▄─────────────▌──────█"+Environment.NewLine+"──▐▌──▐──────────────▀▄─────█" +
+Environment.NewLine+"───█───▌────────▐▀────▄▀───▐▌"+Environment.NewLine+"───▐▌──▀▄────────▀─▀─▀▀───▄▀"+Environment.NewLine+"───▐▌──▐▀▄────────────────█"+Environment.NewLine+"───▐▌───▌─▀▄────▀▀▀▀▀▀───█"+Environment.NewLine +
+"───█───▀────▀▄──────────▄▀"+Environment.NewLine+"──▐▌──────────▀▄──────▄▀"+Environment.NewLine +
+"─▄▀───▄▀────────▀▀▀▀█▀"+Environment.NewLine+"▀───▄▀──────────▀───▀▀▀▀▄▄▄▄▄"
+			);
+
+			Form error = new RTCV.NetCore.CloudDebug(ex,true);
+			var result = error.ShowDialog();
+		}
+
+		private void btnManualBlast_MouseUp(object sender, MouseEventArgs e)
+		{
+			testErrorTimer?.Stop();
+			testErrorTimer = null;
 		}
 
 		private void cbUseAutoKillSwitch_CheckedChanged(object sender, EventArgs e)
@@ -420,5 +469,6 @@ namespace RTCV.UI
 			RTC_AutoKillSwitch.KillEmulator(btnAutoKillSwitchExecute.Text.ToUpper());
 
 		}
+
 	}
 }

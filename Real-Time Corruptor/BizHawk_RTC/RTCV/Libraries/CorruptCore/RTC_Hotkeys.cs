@@ -72,7 +72,7 @@ public static void AssignStaticHotkeyBinding(Hotkey key, string command)
 	_hotkeyBinder.Bind(key).To(() => RTC_Core.SendCommandToRTC(new RTC_Command((CommandType)Enum.Parse(typeof(CommandType),command))));
 	name2HotkeyDico[command] = key;
 
-	RTC_Params.SaveHotkeys();
+	RTCV.NetCore.Params.SaveHotkeys();
 }
 
 public static string SaveHotkeys()

@@ -75,9 +75,9 @@ namespace RTCV.UI
 
 			//Loading RTC Params
 			LoadRTCColor();
-			S.GET<RTC_SettingsGeneral_Form>().cbDisableBizhawkOSD.Checked = !RTC_Params.IsParamSet("ENABLE_BIZHAWK_OSD");
-			S.GET<RTC_SettingsGeneral_Form>().cbAllowCrossCoreCorruption.Checked = RTC_Params.IsParamSet("ALLOW_CROSS_CORE_CORRUPTION");
-			S.GET<RTC_SettingsGeneral_Form>().cbDontCleanAtQuit.Checked = RTC_Params.IsParamSet("DONT_CLEAN_SAVESTATES_AT_QUIT");
+			S.GET<RTC_SettingsGeneral_Form>().cbDisableBizhawkOSD.Checked = !RTCV.NetCore.Params.IsParamSet("ENABLE_BIZHAWK_OSD");
+			S.GET<RTC_SettingsGeneral_Form>().cbAllowCrossCoreCorruption.Checked = RTCV.NetCore.Params.IsParamSet("ALLOW_CROSS_CORE_CORRUPTION");
+			S.GET<RTC_SettingsGeneral_Form>().cbDontCleanAtQuit.Checked = RTCV.NetCore.Params.IsParamSet("DONT_CLEAN_SAVESTATES_AT_QUIT");
 
 
 			S.GET<RTC_Core_Form>().ShowPanelForm(S.GET<RTC_ConnectionStatus_Form>());
@@ -262,9 +262,9 @@ namespace RTCV.UI
 
 		public static void LoadRTCColor()
 		{
-				if (RTC_Params.IsParamSet("COLOR"))
+				if (RTCV.NetCore.Params.IsParamSet("COLOR"))
 				{
-					string[] bytes = RTC_Params.ReadParam("COLOR").Split(',');
+					string[] bytes = RTCV.NetCore.Params.ReadParam("COLOR").Split(',');
 					RTC_UICore.GeneralColor = Color.FromArgb(Convert.ToByte(bytes[0]), Convert.ToByte(bytes[1]), Convert.ToByte(bytes[2]));
 				}
 				else
@@ -275,7 +275,7 @@ namespace RTCV.UI
 
 		public static void SaveRTCColor(Color color)
 		{
-			RTC_Params.SetParam("COLOR", color.R.ToString() + "," + color.G.ToString() + "," + color.B.ToString());
+			RTCV.NetCore.Params.SetParam("COLOR", color.R.ToString() + "," + color.G.ToString() + "," + color.B.ToString());
 		}
 
 

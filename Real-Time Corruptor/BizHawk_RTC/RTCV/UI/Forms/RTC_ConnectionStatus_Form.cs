@@ -18,8 +18,8 @@ namespace RTCV.UI
 		{
 			int crashSound = 0;
 
-			if (RTC_Params.IsParamSet("CRASHSOUND"))
-				crashSound = Convert.ToInt32(RTC_Params.ReadParam("CRASHSOUND"));
+			if (NetCore.Params.IsParamSet("CRASHSOUND"))
+				crashSound = Convert.ToInt32(NetCore.Params.ReadParam("CRASHSOUND"));
 
 			S.GET<RTC_SettingsNetCore_Form>().cbCrashSoundEffect.SelectedIndex = crashSound;
 		}

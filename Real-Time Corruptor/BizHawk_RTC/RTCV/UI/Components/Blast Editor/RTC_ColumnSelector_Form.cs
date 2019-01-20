@@ -52,7 +52,7 @@ namespace RTCV.UI
 				S.GET<RTC_NewBlastEditor_Form>().VisibleColumns = temp;
 				S.GET<RTC_NewBlastEditor_Form>().RefreshVisibleColumns();
 			}
-			RTC_Params.SetParam("BLASTEDITOR_VISIBLECOLUMNS", sb.ToString());
+			RTCV.NetCore.Params.SetParam("BLASTEDITOR_VISIBLECOLUMNS", sb.ToString());
 
 		}
 	}
