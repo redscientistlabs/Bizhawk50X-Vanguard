@@ -45,6 +45,27 @@ namespace RTCV.NetCore
 
 		}
 
+		public static string getRTCInfo()
+		{
+			StringBuilder sb = new StringBuilder();
+			sb.AppendLine("Spec Dump from UICore");
+			sb.AppendLine();
+			RTCV.NetCore.AllSpec.UISpec?.GetDump().ForEach(x => sb.AppendLine(x));
+			RTCV.NetCore.AllSpec.CorruptCoreSpec?.GetDump().ForEach(x => sb.AppendLine(x));
+			RTCV.NetCore.AllSpec.VanguardSpec?.GetDump().ForEach(x => sb.AppendLine(x));
+
+			return sb.ToString();
+		}
+
+		public static string getEmuInfo()
+		{
+			string str = LocalNetCoreRouter.QueryRoute<string>(NetcoreCommands.CORRUPTCORE, "GETSPECDUMPS");
+			if (str != null)
+				return str;
+			else
+				return "GETSPECDUMPS returned null!";
+		}
+
 
 		private void btnSendDebug_Click(object sender, EventArgs e)
 		{
@@ -66,6 +87,22 @@ namespace RTCV.NetCore
 				if (File.Exists(tempzipfile))
 					File.Delete(tempzipfile);
 
+
+				//Exporting Message
+				string messagefile = tempdebugdir + "\\MESSAGE.TXT";
+				File.WriteAllText(messagefile, ex.Message);
+
+				//Exporting Stacktrace
+				string stacktracefile = tempdebugdir + "\\STACKTRACE.TXT";
+				File.WriteAllText(stacktracefile, ex.StackTrace);
+
+				//Exporting Specs from RTC's perspective
+				string rtcfile = tempdebugdir + "\\RTC_PERSPECTIVE.TXT";
+				File.WriteAllText(rtcfile, getRTCInfo());
+
+				//Exporting Specs from the Emu's perspective
+				string emufile = tempdebugdir + "\\EMU_PERSPECTIVE.txt";
+				File.WriteAllText(emufile, getEmuInfo());
 
 
 				var path = Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), Environment.Is64BitProcess ? "x64" : "x86", "7z.dll");
@@ -143,23 +180,27 @@ namespace RTCV.NetCore
 				Point locate = new Point(c.Location.X + e.Location.X + c.Parent.Location.X, ((Control)sender).Location.Y + e.Location.Y + c.Parent.Location.Y);
 
 				ContextMenuStrip columnsMenu = new ContextMenuStrip();
-				if (btnSendDebug.Text == "Send debug info to devs")
+
+				if (lbException.Text.Contains("SECRET"))
 				{
-					columnsMenu.Items.Add("Switch to retreive mode", null, new EventHandler((ob, ev) =>
+					if (btnSendDebug.Text == "Send debug info to devs")
 					{
-						tbKey.ReadOnly = false;
-						btnSendDebug.Text = "Fetch data";
-						RTCV.NetCore.Params.SetParam("DEBUG_FETCHMODE");
-					}));
-				}
-				else
-				{
-					columnsMenu.Items.Add("Switch to send mode", null, new EventHandler((ob, ev) =>
+						columnsMenu.Items.Add("Switch to retreive mode", null, new EventHandler((ob, ev) =>
+						{
+							tbKey.ReadOnly = false;
+							btnSendDebug.Text = "Fetch data";
+							RTCV.NetCore.Params.SetParam("DEBUG_FETCHMODE");
+						}));
+					}
+					else
 					{
-						tbKey.ReadOnly = false;
-						btnSendDebug.Text = "Send debug info to devs";
-						RTCV.NetCore.Params.RemoveParam("DEBUG_FETCHMODE");
-					}));
+						columnsMenu.Items.Add("Switch to send mode", null, new EventHandler((ob, ev) =>
+						{
+							tbKey.ReadOnly = false;
+							btnSendDebug.Text = "Send debug info to devs";
+							RTCV.NetCore.Params.RemoveParam("DEBUG_FETCHMODE");
+						}));
+					}
 				}
 				columnsMenu.Show(this, locate);
 			}

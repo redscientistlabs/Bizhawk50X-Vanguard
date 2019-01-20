@@ -14,8 +14,8 @@ namespace RTCV.CorruptCore
 
 		public static bool RenderAtLoad
 		{
-			get => (bool)RTC_Corruptcore.CorruptCoreSpec[RTCSPEC.RENDER_AT_LOAD.ToString()];
-			set => RTC_Corruptcore.CorruptCoreSpec.Update(RTCSPEC.RENDER_AT_LOAD.ToString(), value);
+			get => (bool)RTCV.NetCore.AllSpec.CorruptCoreSpec[RTCSPEC.RENDER_AT_LOAD.ToString()];
+			set => RTCV.NetCore.AllSpec.CorruptCoreSpec.Update(RTCSPEC.RENDER_AT_LOAD.ToString(), value);
 		}
 
 
@@ -46,7 +46,7 @@ namespace RTCV.CorruptCore
 			{
 				LocalNetCoreRouter.Route(NetcoreCommands.VANGUARD, NetcoreCommands.REMOTE_LOADROM, sk.RomFilename, true);
 
-				string ss = (string)RTC_Corruptcore.VanguardSpec[VSPEC.SYNCSETTINGS.ToString()];
+				string ss = (string)RTCV.NetCore.AllSpec.VanguardSpec[VSPEC.SYNCSETTINGS.ToString()];
 				//If the syncsettings are different, update them and load it again. Otheriwse, leave as is
 				if (sk.SyncSettings != ss && sk.SyncSettings != null)
 				{
@@ -127,8 +127,8 @@ namespace RTCV.CorruptCore
 
 			bl.Layer.AddRange(RTC_StepActions.GetRawBlastLayer().Layer);
 
-			string thisSystem = (string)RTC_Corruptcore.VanguardSpec[VSPEC.SYSTEM.ToString()];
-			string romFilename = (string)RTC_Corruptcore.VanguardSpec[VSPEC.OPENROMFILENAME.ToString()];
+			string thisSystem = (string)RTCV.NetCore.AllSpec.VanguardSpec[VSPEC.SYSTEM.ToString()];
+			string romFilename = (string)RTCV.NetCore.AllSpec.VanguardSpec[VSPEC.OPENROMFILENAME.ToString()];
 
 			var rp = RTC_MemoryDomains.GetRomParts(thisSystem, romFilename);
 

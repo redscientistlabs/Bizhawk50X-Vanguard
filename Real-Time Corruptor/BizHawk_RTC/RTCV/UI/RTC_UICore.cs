@@ -63,8 +63,8 @@ namespace RTCV.UI
 
 			p["SELECTEDDOMAINS"] = new string[]{};
 
-			RTC_Corruptcore.UISpec = new FullSpec(p, !RTC_Corruptcore.Attached);
-			RTC_Corruptcore.UISpec.SpecUpdated += (o, e) =>
+			RTCV.NetCore.AllSpec.UISpec = new FullSpec(p, !RTC_Corruptcore.Attached);
+			RTCV.NetCore.AllSpec.UISpec.SpecUpdated += (o, e) =>
 			{
 				PartialSpec partial = e.partialSpec;
 

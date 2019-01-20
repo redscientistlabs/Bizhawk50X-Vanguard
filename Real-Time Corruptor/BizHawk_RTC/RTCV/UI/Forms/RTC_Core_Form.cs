@@ -67,7 +67,7 @@ namespace RTCV.UI
 
 			AutoCorrupt = !AutoCorrupt;
 			if(AutoCorrupt)
-				RTC_Corruptcore.CorruptCoreSpec.Update(RTCSPEC.STEP_RUNBEFORE.ToString(), true);
+				RTCV.NetCore.AllSpec.CorruptCoreSpec.Update(RTCSPEC.STEP_RUNBEFORE.ToString(), true);
 		}
 
 		private void RTC_Form_Load(object sender, EventArgs e)
@@ -145,7 +145,7 @@ namespace RTCV.UI
 			if (useTemplate)
 			{
 				//Put Console templates HERE
-				string thisSystem = (string)RTC_Corruptcore.VanguardSpec[VSPEC.SYSTEM.ToString()];
+				string thisSystem = (string)RTCV.NetCore.AllSpec.VanguardSpec[VSPEC.SYSTEM.ToString()];
 
 				switch (thisSystem)
 				{
@@ -386,11 +386,23 @@ namespace RTCV.UI
 			S.GET<RTC_GlitchHarvester_Form>().btnSendRaw_Click(null, null);
 		}
 
+		int manualBlastRightClickCount = 0;
 		System.Windows.Forms.Timer testErrorTimer = null;
 		private void btnManualBlast_MouseDown(object sender, MouseEventArgs e)
 		{
 			if (e.Button == MouseButtons.Right)
 			{
+				if (testErrorTimer == null && !RTCV.NetCore.Params.IsParamSet("DEBUG_FETCHMODE"))
+				{
+					testErrorTimer = new System.Windows.Forms.Timer();
+					testErrorTimer.Interval = 3000;
+					testErrorTimer.Tick += TestErrorTimer_Tick;
+					testErrorTimer.Start();
+				}
+
+				manualBlastRightClickCount++;
+
+
 				Point locate = new Point(((Control)sender).Location.X + e.Location.X, ((Control)sender).Location.Y + e.Location.Y);
 
 				ContextMenuStrip columnsMenu = new ContextMenuStrip();
@@ -399,54 +411,43 @@ namespace RTCV.UI
 					BlastRawStash();
 				}));
 
-				if (RTCV.NetCore.Params.IsParamSet("DEBUG_FETCHMODE"))
+				if (RTCV.NetCore.Params.IsParamSet("DEBUG_FETCHMODE") || manualBlastRightClickCount > 2)
 				{
 					columnsMenu.Items.Add("Open Debug window", null, new EventHandler((ob, ev) =>
 					{
-						TestErrorTimer_Tick(null, null);
+						error();
 					}));
 				}
 
 				columnsMenu.Show(this, locate);
 			}
-			else if(e.Button == MouseButtons.Left)
-			{
-				testErrorTimer?.Stop();
-				testErrorTimer = null;
 
-				testErrorTimer = new System.Windows.Forms.Timer();
-				testErrorTimer.Interval = 6666;
-				testErrorTimer.Tick += TestErrorTimer_Tick;
-				testErrorTimer.Start();
-			}
+		}
 
+		private void error()
+		{
+			//SECRET CRASH DONT TELL ANYONE
+			//Trigger: Hold Manual Blast for 7 seconds
+			//Purpose: Testing debug window
+			var ex = new CustomException("SECRET CRASH DONT TELL ANYONE",
+"───────▄▀▀▀▀▀▀▀▀▀▀▄▄" + Environment.NewLine + "────▄▀▀─────────────▀▄" + Environment.NewLine + "──▄▀──────────────────▀▄" + Environment.NewLine +
+"──█─────────────────────▀▄" + Environment.NewLine + "─▐▌────────▄▄▄▄▄▄▄───────▐▌" + Environment.NewLine + "─█───────────▄▄▄▄──▀▀▀▀▀──█" + Environment.NewLine +
+"▐▌───────▀▀▀▀─────▀▀▀▀▀───▐▌" + Environment.NewLine + "█─────────▄▄▀▀▀▀▀────▀▀▀▀▄─█" + Environment.NewLine + "█────────────────▀───▐─────▐▌" +
+Environment.NewLine + "▐▌─────────▐▀▀██▄──────▄▄▄─▐▌" + Environment.NewLine + "─█───────────▀▀▀──────▀▀██──█" + Environment.NewLine + "─▐▌────▄─────────────▌──────█" + Environment.NewLine + "──▐▌──▐──────────────▀▄─────█" +
+Environment.NewLine + "───█───▌────────▐▀────▄▀───▐▌" + Environment.NewLine + "───▐▌──▀▄────────▀─▀─▀▀───▄▀" + Environment.NewLine + "───▐▌──▐▀▄────────────────█" + Environment.NewLine + "───▐▌───▌─▀▄────▀▀▀▀▀▀───█" + Environment.NewLine +
+"───█───▀────▀▄──────────▄▀" + Environment.NewLine + "──▐▌──────────▀▄──────▄▀" + Environment.NewLine +
+"─▄▀───▄▀────────▀▀▀▀█▀" + Environment.NewLine + "▀───▄▀──────────▀───▀▀▀▀▄▄▄▄▄"
+			);
+
+			Form error = new RTCV.NetCore.CloudDebug(ex, true);
+			var result = error.ShowDialog();
 		}
 
 		private void TestErrorTimer_Tick(object sender, EventArgs e)
 		{
 			testErrorTimer?.Stop();
 			testErrorTimer = null;
-			//SECRET CRASH DONT TELL ANYONE
-			//Trigger: Hold Manual Blast for 7 seconds
-			//Purpose: Testing debug window
-			var ex = new CustomException("SECRET CRASH DONT TELL ANYONE", 
-"───────▄▀▀▀▀▀▀▀▀▀▀▄▄"+ Environment.NewLine +"────▄▀▀─────────────▀▄"+Environment.NewLine+"──▄▀──────────────────▀▄"+Environment.NewLine+
-"──█─────────────────────▀▄"+Environment.NewLine+"─▐▌────────▄▄▄▄▄▄▄───────▐▌"+Environment.NewLine+"─█───────────▄▄▄▄──▀▀▀▀▀──█"+Environment.NewLine +
-"▐▌───────▀▀▀▀─────▀▀▀▀▀───▐▌"+Environment.NewLine+"█─────────▄▄▀▀▀▀▀────▀▀▀▀▄─█"+Environment.NewLine+"█────────────────▀───▐─────▐▌" +
-Environment.NewLine+"▐▌─────────▐▀▀██▄──────▄▄▄─▐▌"+Environment.NewLine+"─█───────────▀▀▀──────▀▀██──█"+Environment.NewLine+"─▐▌────▄─────────────▌──────█"+Environment.NewLine+"──▐▌──▐──────────────▀▄─────█" +
-Environment.NewLine+"───█───▌────────▐▀────▄▀───▐▌"+Environment.NewLine+"───▐▌──▀▄────────▀─▀─▀▀───▄▀"+Environment.NewLine+"───▐▌──▐▀▄────────────────█"+Environment.NewLine+"───▐▌───▌─▀▄────▀▀▀▀▀▀───█"+Environment.NewLine +
-"───█───▀────▀▄──────────▄▀"+Environment.NewLine+"──▐▌──────────▀▄──────▄▀"+Environment.NewLine +
-"─▄▀───▄▀────────▀▀▀▀█▀"+Environment.NewLine+"▀───▄▀──────────▀───▀▀▀▀▄▄▄▄▄"
-			);
-
-			Form error = new RTCV.NetCore.CloudDebug(ex,true);
-			var result = error.ShowDialog();
-		}
-
-		private void btnManualBlast_MouseUp(object sender, MouseEventArgs e)
-		{
-			testErrorTimer?.Stop();
-			testErrorTimer = null;
+			manualBlastRightClickCount = 0;
 		}
 
 		private void cbUseAutoKillSwitch_CheckedChanged(object sender, EventArgs e)

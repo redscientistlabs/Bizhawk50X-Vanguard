@@ -626,13 +626,13 @@ namespace RTCV.CorruptCore
 			ParentKey = parentkey;
 			BlastLayer = blastlayer;
 
-			RomFilename =  (string)RTC_Corruptcore.VanguardSpec[VSPEC.OPENROMFILENAME.ToString()];
-			SystemName =   (string)RTC_Corruptcore.VanguardSpec[VSPEC.SYSTEM.ToString()];
-			SystemCore =   (string)RTC_Corruptcore.VanguardSpec[VSPEC.SYSTEMCORE.ToString()];
-			GameName =     (string)RTC_Corruptcore.VanguardSpec[VSPEC.GAMENAME.ToString()];
-			SyncSettings = (string)RTC_Corruptcore.VanguardSpec[VSPEC.SYNCSETTINGS.ToString()];
+			RomFilename =  (string)RTCV.NetCore.AllSpec.VanguardSpec[VSPEC.OPENROMFILENAME.ToString()];
+			SystemName =   (string)RTCV.NetCore.AllSpec.VanguardSpec[VSPEC.SYSTEM.ToString()];
+			SystemCore =   (string)RTCV.NetCore.AllSpec.VanguardSpec[VSPEC.SYSTEMCORE.ToString()];
+			GameName =     (string)RTCV.NetCore.AllSpec.VanguardSpec[VSPEC.GAMENAME.ToString()];
+			SyncSettings = (string)RTCV.NetCore.AllSpec.VanguardSpec[VSPEC.SYNCSETTINGS.ToString()];
 
-			this.SelectedDomains.AddRange((string[])RTC_Corruptcore.UISpec["SELECTEDDOMAINS"]);
+			this.SelectedDomains.AddRange((string[])RTCV.NetCore.AllSpec.UISpec["SELECTEDDOMAINS"]);
 		}
 
 		public StashKey()

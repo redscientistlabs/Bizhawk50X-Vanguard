@@ -29,7 +29,7 @@ namespace RTCV.CorruptCore
 
 		public static void AutoLoadVMDs()
 		{
-			string currentGame = (string)RTC_Corruptcore.VanguardSpec[VSPEC.GAMENAME.ToString()];
+			string currentGame = (string)RTCV.NetCore.AllSpec.VanguardSpec[VSPEC.GAMENAME.ToString()];
 			NetCore.Params.SetParam(currentGame.GetHashCode().ToString());
 		}
 

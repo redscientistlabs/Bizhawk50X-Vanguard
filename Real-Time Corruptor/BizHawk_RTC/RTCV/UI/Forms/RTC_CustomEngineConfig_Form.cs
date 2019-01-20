@@ -262,7 +262,7 @@ namespace RTCV.UI
 		private void btnResetConfig_Click(object sender, EventArgs e)
 		{
 			PartialSpec spec = (PartialSpec)RTC_CustomEngine.lastLoadedTemplate.Clone();
-			RTC_Corruptcore.CorruptCoreSpec.Update(spec);
+			RTCV.NetCore.AllSpec.CorruptCoreSpec.Update(spec);
 			Refresh();
 		}
 
@@ -304,7 +304,7 @@ namespace RTCV.UI
 				btnCustomTemplateSave.ForeColor = Color.DimGray;
 			}
 
-			RTC_Corruptcore.CorruptCoreSpec.Update(spec);
+			RTCV.NetCore.AllSpec.CorruptCoreSpec.Update(spec);
 			Refresh();
 
 		}
@@ -316,7 +316,7 @@ namespace RTCV.UI
 			if (spec == null)
 				return;
 
-			RTC_Corruptcore.CorruptCoreSpec.Update(spec);
+			RTCV.NetCore.AllSpec.CorruptCoreSpec.Update(spec);
 			Refresh();
 
 			cbSelectedTemplate.Text = spec.Name;

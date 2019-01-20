@@ -1489,7 +1489,7 @@ namespace RTCV.UI
 
 		private void bakeBlastByteToolStripMenuItem_Click(object sender, EventArgs e)
 		{
-			var token = RTC_NetCore.HugeOperationStart("DISABLED");
+			var token = RTCV.NetCore.HugeOperationStart("DISABLED");
 			try
 			{
 				//Generate a blastlayer from the current selected rows
@@ -1528,7 +1528,7 @@ namespace RTCV.UI
 			}
 			finally
 			{
-				RTC_NetCore.HugeOperationEnd(token);
+				RTCV.NetCore.HugeOperationEnd(token);
 			}
 		}
 

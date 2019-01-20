@@ -105,7 +105,6 @@
             this.btnManualBlast.Visible = false;
             this.btnManualBlast.Click += new System.EventHandler(this.btnManualBlast_Click);
             this.btnManualBlast.MouseDown += new System.Windows.Forms.MouseEventHandler(this.btnManualBlast_MouseDown);
-            this.btnManualBlast.MouseUp += new System.Windows.Forms.MouseEventHandler(this.btnManualBlast_MouseUp);
             // 
             // pnLeftPanel
             // 

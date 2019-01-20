@@ -48,7 +48,7 @@ namespace RTCV.Vanguard
 
 		private static void NetCoreSpec_ClientConnected(object sender, EventArgs e)
 		{
-			LocalNetCoreRouter.Route(NetcoreCommands.UI, NetcoreCommands.REMOTE_PUSHEMUSPEC, RTC_Corruptcore.VanguardSpec.GetPartialSpec(), true);
+			LocalNetCoreRouter.Route(NetcoreCommands.UI, NetcoreCommands.REMOTE_PUSHEMUSPEC, RTCV.NetCore.AllSpec.VanguardSpec.GetPartialSpec(), true);
 			LocalNetCoreRouter.Route(NetcoreCommands.UI, NetcoreCommands.REMOTE_ALLSPECSSENT, true);
 		}
 		
@@ -88,7 +88,7 @@ namespace RTCV.Vanguard
 
 		public static void PushVanguardSpecRef(FullSpec spec)
 		{
-			RTC_Corruptcore.VanguardSpec = spec;
+			RTCV.NetCore.AllSpec.VanguardSpec = spec;
 		}
 	}
 }

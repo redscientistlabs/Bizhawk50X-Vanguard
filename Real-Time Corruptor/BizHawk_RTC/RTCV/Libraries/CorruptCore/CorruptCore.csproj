@@ -71,7 +71,6 @@
     <Compile Include="Corruption Engines\RTC_PipeEngine.cs" />
     <Compile Include="Corruption Engines\RTC_VectorEngine.cs" />
     <Compile Include="GlobalSuppressions.cs" />
-    <Compile Include="NetcoreCommands.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="RTC_BlastTools.cs" />
     <Compile Include="RTC_Corruptcore.cs" />

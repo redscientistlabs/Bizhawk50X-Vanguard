@@ -56,6 +56,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AllSpec.cs" />
     <Compile Include="Connector.cs" />
     <Compile Include="Extensions.cs" />
     <Compile Include="CloudDebug.cs">
@@ -66,6 +67,7 @@
     </Compile>
     <Compile Include="LocalRouter.cs" />
     <Compile Include="MessageHub.cs" />
+    <Compile Include="NetcoreCommands.cs" />
     <Compile Include="NetCoreObjects.cs" />
     <Compile Include="Params.cs" />
     <Compile Include="ReturnWatch.cs" />

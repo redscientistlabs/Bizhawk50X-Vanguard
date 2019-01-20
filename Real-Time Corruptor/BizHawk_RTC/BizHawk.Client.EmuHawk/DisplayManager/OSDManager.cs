@@ -135,7 +135,7 @@ namespace BizHawk.Client.EmuHawk
 		{
 				
 			//RTC_HIJACK : Disable OSD Messages (Add this block)
-			if ((bool?)(RTCV.CorruptCore.RTC_Corruptcore.CorruptCoreSpec?[RTCSPEC.CORE_BIZHAWKOSDDISABLED.ToString()]) ?? false)
+			if ((bool?)(RTCV.NetCore.AllSpec.CorruptCoreSpec?[RTCSPEC.CORE_BIZHAWKOSDDISABLED.ToString()]) ?? false)
 				return;
 			//--------------------------------
 			

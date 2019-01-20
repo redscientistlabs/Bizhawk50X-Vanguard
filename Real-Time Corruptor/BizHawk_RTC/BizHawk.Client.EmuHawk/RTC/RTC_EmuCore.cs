@@ -117,7 +117,7 @@ namespace RTC
 				PartialSpec partial = e.partialSpec;
 
 				if(!RTC_EmuCore.attached)
-					RTC_Corruptcore.VanguardSpec = EmuSpec;
+					RTCV.NetCore.AllSpec.VanguardSpec = EmuSpec;
 
 				LocalNetCoreRouter.Route(NetcoreCommands.CORRUPTCORE, NetcoreCommands.REMOTE_PUSHEMUSPECUPDATE, partial, true);
 				LocalNetCoreRouter.Route(NetcoreCommands.UI, NetcoreCommands.REMOTE_PUSHEMUSPECUPDATE, partial, true);

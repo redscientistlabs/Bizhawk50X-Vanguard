@@ -16,7 +16,7 @@ using BizHawk.Emulation.Cores.Nintendo.N64;
 using NetCore;
 using RTCV;
 using RTCV.CorruptCore;
-using static CorruptCore.NetcoreCommands;
+using static RTCV.NetCore.NetcoreCommands;
 
 namespace RTC
 {

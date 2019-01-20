@@ -11,7 +11,7 @@ using System.Linq;
 using System.Windows.Forms;
 using RTCV.CorruptCore;
 using RTCV.NetCore;
-using static CorruptCore.NetcoreCommands;
+using static RTCV.NetCore.NetcoreCommands;
 using System.Data;
 
 namespace RTC
@@ -44,7 +44,7 @@ namespace RTC
 
 				//Return out if it's being called from before the step and we're not on frame 0. If we're on frame 0, then we go as normal
 				//If we can't get runbefore, just assume we don't want to run before
-				if (isBeforeStep && CPU_STEP_Count != 0 && ((bool)(RTC_Corruptcore.CorruptCoreSpec?[RTCSPEC.STEP_RUNBEFORE.ToString()] ?? false)) == false)
+				if (isBeforeStep && CPU_STEP_Count != 0 && ((bool)(RTCV.NetCore.AllSpec.CorruptCoreSpec?[RTCSPEC.STEP_RUNBEFORE.ToString()] ?? false)) == false)
 					return;
 
 				isNormalAdvance = !(isRewinding || isFastForwarding);
@@ -104,7 +104,7 @@ namespace RTC
 			if (autoCorrupt && CPU_STEP_Count >= errorDelay)
 			{
 				CPU_STEP_Count = 0;
-				BlastLayer bl = RTC_Corruptcore.GenerateBlastLayer((string[])RTC_Corruptcore.UISpec["SELECTEDDOMAINS"]);
+				BlastLayer bl = RTC_Corruptcore.GenerateBlastLayer((string[])RTCV.NetCore.AllSpec.UISpec["SELECTEDDOMAINS"]);
 				if (bl != null)
 					bl.Apply(false);
 			}

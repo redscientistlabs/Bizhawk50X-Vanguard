@@ -12,7 +12,7 @@ using RTCV.CorruptCore;
 using RTCV.NetCore;
 using RTCV.UI;
 using static RTCV.UI.UI_Extensions;
-using static CorruptCore.NetcoreCommands;
+using static RTCV.NetCore.NetcoreCommands;
 
 namespace UI
 {
@@ -53,13 +53,13 @@ namespace UI
 					SyncObjectSingleton.FormExecute((o, ea) =>
 					{
 						if(!RTC_Corruptcore.Attached)
-							RTC_Corruptcore.VanguardSpec = new FullSpec((PartialSpec)advancedMessage.objectValue, !RTC_Corruptcore.Attached);
+							RTCV.NetCore.AllSpec.VanguardSpec = new FullSpec((PartialSpec)advancedMessage.objectValue, !RTC_Corruptcore.Attached);
 
 						e.setReturnValue(true);
 
 						//Push the UI and CorruptCore spec (since we're master)
-						LocalNetCoreRouter.Route(NetcoreCommands.CORRUPTCORE, NetcoreCommands.REMOTE_PUSHUISPEC, RTC_Corruptcore.UISpec.GetPartialSpec(), true);
-						LocalNetCoreRouter.Route(NetcoreCommands.CORRUPTCORE, NetcoreCommands.REMOTE_PUSHCORRUPTCORESPEC, RTC_Corruptcore.CorruptCoreSpec.GetPartialSpec(), true);
+						LocalNetCoreRouter.Route(NetcoreCommands.CORRUPTCORE, NetcoreCommands.REMOTE_PUSHUISPEC, RTCV.NetCore.AllSpec.UISpec.GetPartialSpec(), true);
+						LocalNetCoreRouter.Route(NetcoreCommands.CORRUPTCORE, NetcoreCommands.REMOTE_PUSHCORRUPTCORESPEC, RTCV.NetCore.AllSpec.CorruptCoreSpec.GetPartialSpec(), true);
 
 						//Specs are all set up so UI is clear.
 						LocalNetCoreRouter.Route(NetcoreCommands.VANGUARD, NetcoreCommands.REMOTE_ALLSPECSSENT, true);
@@ -101,7 +101,7 @@ namespace UI
 				case REMOTE_PUSHEMUSPECUPDATE:
 					SyncObjectSingleton.FormExecute((o, ea) =>
 					{
-						RTC_Corruptcore.VanguardSpec?.Update((PartialSpec)advancedMessage.objectValue);
+						RTCV.NetCore.AllSpec.VanguardSpec?.Update((PartialSpec)advancedMessage.objectValue);
 					});
 					e.setReturnValue(true);
 					break;
@@ -110,7 +110,7 @@ namespace UI
 				case REMOTE_PUSHCORRUPTCORESPECUPDATE:
 					SyncObjectSingleton.FormExecute((o, ea) =>
 					{
-						RTC_Corruptcore.CorruptCoreSpec?.Update((PartialSpec)advancedMessage.objectValue, false);
+						RTCV.NetCore.AllSpec.CorruptCoreSpec?.Update((PartialSpec)advancedMessage.objectValue, false);
 					});
 					e.setReturnValue(true);
 					break;
@@ -120,7 +120,7 @@ namespace UI
 					SyncObjectSingleton.FormExecute((o, ea) =>
 					{
 						S.GET<RTC_MemoryDomains_Form>().RefreshDomains();
-						S.GET<RTC_MemoryDomains_Form>().SetMemoryDomainsAllButSelectedDomains((string[])RTC_Corruptcore.VanguardSpec[VSPEC.MEMORYDOMAINS_BLACKLISTEDDOMAINS.ToString()]);
+						S.GET<RTC_MemoryDomains_Form>().SetMemoryDomainsAllButSelectedDomains((string[])RTCV.NetCore.AllSpec.VanguardSpec[VSPEC.MEMORYDOMAINS_BLACKLISTEDDOMAINS.ToString()]);
 					});
 					break;
 				case ERROR_DISABLE_AUTOCORRUPT:
@@ -180,7 +180,7 @@ namespace UI
 					break;
 
 				case REMOTE_HOTKEY_GHCORRUPT:
-					RTC_Corruptcore.CorruptCoreSpec.Update(VSPEC.STEP_RUNBEFORE.ToString(), true);
+					RTCV.NetCore.AllSpec.CorruptCoreSpec.Update(VSPEC.STEP_RUNBEFORE.ToString(), true);
 
 					SyncObjectSingleton.FormExecute((o, ea) =>
 					{
@@ -223,7 +223,7 @@ namespace UI
 				case REMOTE_HOTKEY_BLASTRAWSTASH:
 					SyncObjectSingleton.FormExecute((o, ea) =>
 					{
-						RTC_Corruptcore.CorruptCoreSpec.Update(VSPEC.STEP_RUNBEFORE.ToString(), true);
+						RTCV.NetCore.AllSpec.CorruptCoreSpec.Update(VSPEC.STEP_RUNBEFORE.ToString(), true);
 						LocalNetCoreRouter.Route(CORRUPTCORE, ASYNCBLAST, null, true);
 
 						S.GET<RTC_GlitchHarvester_Form>().btnSendRaw_Click(null, null);

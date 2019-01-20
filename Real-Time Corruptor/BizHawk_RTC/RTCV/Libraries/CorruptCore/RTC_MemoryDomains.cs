@@ -19,8 +19,8 @@ namespace RTCV.CorruptCore
 
 		public static Dictionary<string, MemoryInterface> MemoryInterfaces
 		{
-			get => RTC_Corruptcore.CorruptCoreSpec?["MEMORYINTERFACES"] as Dictionary<string, MemoryInterface>;
-			set => RTC_Corruptcore.CorruptCoreSpec.Update("MEMORYINTERFACES", value);
+			get => RTCV.NetCore.AllSpec.CorruptCoreSpec?["MEMORYINTERFACES"] as Dictionary<string, MemoryInterface>;
+			set => RTCV.NetCore.AllSpec.CorruptCoreSpec.Update("MEMORYINTERFACES", value);
 		}
 
 		public static Dictionary<string, MemoryInterface> VmdPool = new Dictionary<string, MemoryInterface>();
@@ -38,7 +38,7 @@ namespace RTCV.CorruptCore
 		public static void RefreshDomains(bool domainsChanged = false)
 		{
 			var temp = new Dictionary<string, MemoryInterface>();
-			var mis = (MemoryInterface[])RTC_Corruptcore.VanguardSpec[VSPEC.MEMORYDOMAINS_INTERFACES.ToString()];
+			var mis = (MemoryInterface[])RTCV.NetCore.AllSpec.VanguardSpec[VSPEC.MEMORYDOMAINS_INTERFACES.ToString()];
 			foreach (MemoryInterface mi in mis)
 				temp.Add(mi.ToString(), mi);
 			MemoryInterfaces = temp;

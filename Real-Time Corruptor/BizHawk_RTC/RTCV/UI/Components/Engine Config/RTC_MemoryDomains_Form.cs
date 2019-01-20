@@ -68,7 +68,7 @@ namespace RTCV.UI
 		private void btnAutoSelectDomains_Click(object sender, EventArgs e)
 		{
 			RefreshDomains();
-			SetMemoryDomainsAllButSelectedDomains((string[])RTC_Corruptcore.VanguardSpec[VSPEC.MEMORYDOMAINS_BLACKLISTEDDOMAINS.ToString()]);
+			SetMemoryDomainsAllButSelectedDomains((string[])RTCV.NetCore.AllSpec.VanguardSpec[VSPEC.MEMORYDOMAINS_BLACKLISTEDDOMAINS.ToString()]);
 		}
 
 		public void RefreshDomains()
@@ -83,7 +83,7 @@ namespace RTCV.UI
 
 		public void RefreshDomainsAndKeepSelected(string[] overrideDomains = null)
 		{
-			var temp = (string[])RTC_Corruptcore.UISpec["SELECTEDDOMAINS"];
+			var temp = (string[])RTCV.NetCore.AllSpec.UISpec["SELECTEDDOMAINS"];
 			var oldDomain = lbMemoryDomains.Items;
 
 
@@ -92,18 +92,18 @@ namespace RTCV.UI
 
 			if (overrideDomains != null)
 			{
-				RTC_Corruptcore.UISpec.Update("SELECTEDDOMAINS", overrideDomains);
+				RTCV.NetCore.AllSpec.UISpec.Update("SELECTEDDOMAINS", overrideDomains);
 				SetMemoryDomainsSelectedDomains(temp);
 			}
 			//If we had old domains selected don't do anything
 			else if (temp.Length != 0)
 			{
-				RTC_Corruptcore.UISpec.Update("SELECTEDDOMAINS", temp);
+				RTCV.NetCore.AllSpec.UISpec.Update("SELECTEDDOMAINS", temp);
 				SetMemoryDomainsSelectedDomains(temp);
 			}
 			else
 			{
-				SetMemoryDomainsAllButSelectedDomains((string[])RTC_Corruptcore.VanguardSpec[VSPEC.MEMORYDOMAINS_BLACKLISTEDDOMAINS.ToString()]);
+				SetMemoryDomainsAllButSelectedDomains((string[])RTCV.NetCore.AllSpec.VanguardSpec[VSPEC.MEMORYDOMAINS_BLACKLISTEDDOMAINS.ToString()]);
 			}
 		}
 
@@ -114,7 +114,7 @@ namespace RTCV.UI
 			if (lbMemoryDomains_DontExecute_SelectedIndexChanged)
 				return;
 
-			RTC_Corruptcore.UISpec.Update("SELECTEDDOMAINS", lbMemoryDomains.SelectedItems.Cast<string>().ToArray());
+			RTCV.NetCore.AllSpec.UISpec.Update("SELECTEDDOMAINS", lbMemoryDomains.SelectedItems.Cast<string>().ToArray());
 
 
 			//RTC_Restore.SaveRestore();
@@ -123,7 +123,7 @@ namespace RTCV.UI
 		private void btnRefreshDomains_Click(object sender, EventArgs e)
 		{
 			RefreshDomains();
-			RTC_Corruptcore.UISpec.Update("SELECTEDDOMAINS", lbMemoryDomains.SelectedItems.Cast<string>().ToArray());
+			RTCV.NetCore.AllSpec.UISpec.Update("SELECTEDDOMAINS", lbMemoryDomains.SelectedItems.Cast<string>().ToArray());
 		}
 	}
 }

@@ -205,8 +205,8 @@ namespace RTCV.CorruptCore
 		{
 			BlastLayer bl = new BlastLayer();
 
-			string thisSystem = (string)RTC_Corruptcore.VanguardSpec[VSPEC.SYSTEM.ToString()];
-			string romFilename = (string)RTC_Corruptcore.VanguardSpec[VSPEC.OPENROMFILENAME.ToString()];
+			string thisSystem = (string)RTCV.NetCore.AllSpec.VanguardSpec[VSPEC.SYSTEM.ToString()];
+			string romFilename = (string)RTCV.NetCore.AllSpec.VanguardSpec[VSPEC.OPENROMFILENAME.ToString()];
 
 			var rp = RTC_MemoryDomains.GetRomParts(thisSystem, romFilename);
 

@@ -14,14 +14,14 @@ namespace CorruptCore
 
 		public static bool IsRendering
 		{
-			get => (bool)RTC_Corruptcore.CorruptCoreSpec[RTCSPEC.RENDER_ISRENDERING.ToString()];
-			set => RTC_Corruptcore.CorruptCoreSpec.Update(RTCSPEC.RENDER_ISRENDERING.ToString(), value);
+			get => (bool)RTCV.NetCore.AllSpec.CorruptCoreSpec[RTCSPEC.RENDER_ISRENDERING.ToString()];
+			set => RTCV.NetCore.AllSpec.CorruptCoreSpec.Update(RTCSPEC.RENDER_ISRENDERING.ToString(), value);
 		}
 
 		public static RENDERTYPE RenderType
 		{
-			get => (RENDERTYPE)RTC_Corruptcore.CorruptCoreSpec[RTCSPEC.RENDER_RENDERTYPE.ToString()];
-			set => RTC_Corruptcore.CorruptCoreSpec.Update(RTCSPEC.RENDER_RENDERTYPE.ToString(), value);
+			get => (RENDERTYPE)RTCV.NetCore.AllSpec.CorruptCoreSpec[RTCSPEC.RENDER_RENDERTYPE.ToString()];
+			set => RTCV.NetCore.AllSpec.CorruptCoreSpec.Update(RTCSPEC.RENDER_RENDERTYPE.ToString(), value);
 		}
 
 		public static PartialSpec getDefaultPartial()

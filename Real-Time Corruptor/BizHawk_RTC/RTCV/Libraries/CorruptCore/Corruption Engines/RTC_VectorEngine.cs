@@ -11,14 +11,14 @@ namespace RTCV.CorruptCore
 
 		public static string LimiterListHash
 		{
-			get => (string)RTC_Corruptcore.CorruptCoreSpec[RTCSPEC.VECTOR_LIMITERLISTHASH.ToString()];
-			set => RTC_Corruptcore.CorruptCoreSpec.Update(RTCSPEC.VECTOR_LIMITERLISTHASH.ToString(), value);
+			get => (string)RTCV.NetCore.AllSpec.CorruptCoreSpec[RTCSPEC.VECTOR_LIMITERLISTHASH.ToString()];
+			set => RTCV.NetCore.AllSpec.CorruptCoreSpec.Update(RTCSPEC.VECTOR_LIMITERLISTHASH.ToString(), value);
 		}
 
 		public static string ValueListHash
 		{
-			get => (string)RTC_Corruptcore.CorruptCoreSpec[RTCSPEC.VECTOR_VALUELISTHASH.ToString()];
-			set => RTC_Corruptcore.CorruptCoreSpec.Update(RTCSPEC.VECTOR_VALUELISTHASH.ToString(), value);
+			get => (string)RTCV.NetCore.AllSpec.CorruptCoreSpec[RTCSPEC.VECTOR_VALUELISTHASH.ToString()];
+			set => RTCV.NetCore.AllSpec.CorruptCoreSpec.Update(RTCSPEC.VECTOR_VALUELISTHASH.ToString(), value);
 		}
 
 		public static PartialSpec getDefaultPartial()
