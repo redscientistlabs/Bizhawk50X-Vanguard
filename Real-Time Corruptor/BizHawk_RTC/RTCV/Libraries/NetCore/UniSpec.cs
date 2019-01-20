@@ -76,7 +76,7 @@ namespace RTCV.NetCore
 				Update(template);
 		}
 
-		public void Update(PartialSpec _partialSpec, bool propagate = true)
+		public void Update(PartialSpec _partialSpec, bool propagate = true, bool synced = true)
 		{
 			if (name != _partialSpec.Name)
 				throw new Exception("Name mismatch between PartialSpec and FullSpec");
@@ -89,10 +89,13 @@ namespace RTCV.NetCore
 			base.version++;
 
 			if (propagationIsEnabled && propagate)
-				OnSpecUpdated(new SpecUpdateEventArgs() { partialSpec = _partialSpec});
+				OnSpecUpdated(new SpecUpdateEventArgs() {
+					partialSpec = _partialSpec,
+					syncedUpdate = synced
+				});
 		}
 
-		public void Update(String key, Object value, bool propagate = true)
+		public void Update(String key, Object value, bool propagate = true, bool synced = true)
 		{
 			/*
 			//Make a partial spec and pass it into Update(PartialSpec)
@@ -102,10 +105,17 @@ namespace RTCV.NetCore
 			if (RTC_NetcoreImplementation.isStandaloneUI && name == "EmuSpec")
 				throw new Exception("Tried updating the EmuSpec from StandaloneRTC");
 				*/
+			
+			if(value is bool)
+			{
+				bool boolValue = (bool)value;
+				if (boolValue == false)
+					value = null;
+			}
 
 			PartialSpec spec = new PartialSpec(name);
 			spec[key] = value;
-			Update(spec, propagate);
+			Update(spec, propagate, synced);
 		}
 
 		public PartialSpec GetPartialSpec()
@@ -244,5 +254,6 @@ namespace RTCV.NetCore
 	public class SpecUpdateEventArgs : EventArgs
 	{
 		public PartialSpec partialSpec = null;
+		public bool syncedUpdate = true;
 	}
 }

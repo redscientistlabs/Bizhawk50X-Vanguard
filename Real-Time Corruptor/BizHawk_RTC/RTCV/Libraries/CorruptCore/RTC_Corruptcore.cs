@@ -75,13 +75,13 @@ namespace RTCV.CorruptCore
 
 		public static bool AutoCorrupt
 		{
-			get => (bool)RTCV.NetCore.AllSpec.CorruptCoreSpec[RTCSPEC.CORE_AUTOCORRUPT.ToString()];
+			get => (bool)(RTCV.NetCore.AllSpec.CorruptCoreSpec[RTCSPEC.CORE_AUTOCORRUPT.ToString()] ?? false);
 			set => RTCV.NetCore.AllSpec.CorruptCoreSpec.Update(RTCSPEC.CORE_AUTOCORRUPT.ToString(), value);
 		}
 
 		public static bool DontCleanSavestatesOnQuit
 		{
-			get => (bool)RTCV.NetCore.AllSpec.CorruptCoreSpec[RTCSPEC.CORE_DONTCLEANSAVESTATESONQUIT.ToString()];
+			get => (bool)(RTCV.NetCore.AllSpec.CorruptCoreSpec[RTCSPEC.CORE_DONTCLEANSAVESTATESONQUIT.ToString()] ?? false);
 			set => RTCV.NetCore.AllSpec.CorruptCoreSpec.Update(RTCSPEC.CORE_DONTCLEANSAVESTATESONQUIT.ToString(), value);
 		}
 

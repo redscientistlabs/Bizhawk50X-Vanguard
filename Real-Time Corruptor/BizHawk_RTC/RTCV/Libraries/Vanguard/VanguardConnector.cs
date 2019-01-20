@@ -90,5 +90,10 @@ namespace RTCV.Vanguard
 		{
 			RTCV.NetCore.AllSpec.VanguardSpec = spec;
 		}
+
+		public static bool IsUIForm()
+		{
+			return RTCV.NetCore.AllSpec.UISpec?[NetcoreCommands.RTC_INFOCUS] != null;
+		}
 	}
 }

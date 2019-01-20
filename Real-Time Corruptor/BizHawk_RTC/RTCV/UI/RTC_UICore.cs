@@ -41,6 +41,9 @@ namespace RTCV.UI
 
 		public static void Start(Form standaloneForm = null)
 		{
+			S.formRegister.FormRegistered += FormRegister_FormRegistered;
+			registerFormEvents(S.GET<RTC_Core_Form>());
+
 			RTC_Extensions.DirectoryRequired(paths: new string[] {
 				RTC_Corruptcore.workingDir, RTC_Corruptcore.workingDir + "\\TEMP\\"
 				, RTC_Corruptcore.workingDir + "\\SKS\\", RTC_Corruptcore.workingDir + "\\SSK\\"
@@ -69,7 +72,7 @@ namespace RTCV.UI
 			{
 				PartialSpec partial = e.partialSpec;
 
-				LocalNetCoreRouter.Route(NetcoreCommands.CORRUPTCORE, NetcoreCommands.REMOTE_PUSHUISPECUPDATE, partial, true);
+				LocalNetCoreRouter.Route(NetcoreCommands.CORRUPTCORE, NetcoreCommands.REMOTE_PUSHUISPECUPDATE, partial, e.syncedUpdate);
 			};
 
 			RTC_Corruptcore.StartUISide();
@@ -85,6 +88,56 @@ namespace RTCV.UI
 			S.GET<RTC_Core_Form>().Show();
 
 
+		}
+
+		private static void FormRegister_FormRegistered(object sender, NetCoreEventArgs e)
+		{
+			Form newForm = ((e.message as NetCoreAdvancedMessage)?.objectValue as Form);
+
+			if(newForm != null)
+				registerFormEvents(newForm);
+			
+		}
+
+		private static void registerFormEvents(Form f)
+		{
+			f.Activated -= NewForm_FocusChanged;
+			f.Activated += NewForm_FocusChanged;
+
+			f.GotFocus -= NewForm_FocusChanged;
+			f.GotFocus += NewForm_FocusChanged;
+
+			f.LostFocus -= NewForm_FocusChanged;
+			f.LostFocus += NewForm_FocusChanged;
+		}
+
+		private static void NewForm_FocusChanged(object sender, EventArgs e) => UpdateFormFocusStatus();
+		public static void UpdateFormFocusStatus()
+		{
+			if (RTCV.NetCore.AllSpec.UISpec == null)
+				return;
+
+			bool previousState = RTCV.NetCore.AllSpec.UISpec[NetcoreCommands.RTC_INFOCUS] != null;
+			bool currentState = isAnyRTCFormFocused();
+			if(previousState != currentState)
+			{	//This is a non-synced spec update to prevent jittering. Shouldn't have any other noticeable impact
+				RTCV.NetCore.AllSpec.UISpec.Update(NetcoreCommands.RTC_INFOCUS, currentState,true,false);
+			}
+
+		}
+
+		private static bool isAnyRTCFormFocused()
+		{
+			string checkActiveForm = Form.ActiveForm?.GetType().ToString();
+
+			if (Form.ActiveForm == null)
+				return false;
+
+
+			return (Form.ActiveForm is IAutoColorize ||
+					Form.ActiveForm is RTCV.NetCore.CloudDebug ||
+					Form.ActiveForm is RTCV.NetCore.DebugInfo_Form
+				);
 		}
 
 		//All RTC forms

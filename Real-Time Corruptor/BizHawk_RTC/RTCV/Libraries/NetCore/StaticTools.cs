@@ -17,6 +17,8 @@ namespace RTCV.NetCore.StaticTools
 	{
 		static Dictionary<Type, object> instances = new Dictionary<Type, object>();
 
+		public static FormRegister formRegister = new FormRegister();
+
 		public static bool ISNULL<T>()
 		{
 			Type typ = typeof(T);
@@ -28,7 +30,12 @@ namespace RTCV.NetCore.StaticTools
 			Type typ = typeof(T);
 
 			if (!instances.ContainsKey(typ))
+			{
 				instances[typ] = Activator.CreateInstance(typ);
+
+				if (typ.IsSubclassOf(typeof(System.Windows.Forms.Form)))
+					formRegister.OnFormRegistered(new NetCoreEventArgs("FORMREGISTER", instances[typ]));
+			}
 
 			return (T)instances[typ];
 		}
@@ -51,7 +58,18 @@ namespace RTCV.NetCore.StaticTools
 				instances.Remove(typ);
 			else
 				instances[typ] = newTyp;
+
+			if (typ.IsSubclassOf(typeof(System.Windows.Forms.Form)))
+				formRegister.OnFormRegistered(new NetCoreEventArgs("FORMREGISTER", instances[typ]));
 		}
+
+
+	}
+
+	public class FormRegister
+	{
+		public event EventHandler<NetCoreEventArgs> FormRegistered;
+		public virtual void OnFormRegistered(NetCoreEventArgs e) => FormRegistered.Invoke(this, e);
 	}
 
 }

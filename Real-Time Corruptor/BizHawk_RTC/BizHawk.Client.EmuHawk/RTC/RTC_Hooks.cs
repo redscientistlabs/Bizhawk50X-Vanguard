@@ -422,28 +422,14 @@ namespace RTC
 			}
 		}
 
-		public static bool IsAllowedBackgroundInputForm(Form activeForm)
+		public static bool IsAllowedBackgroundInputForm()
 		{
 			if (disableRTC) return false;
 
-			return false;
+			return RTCV.Vanguard.VanguardConnector.IsUIForm();
 
-			//todo
-			/*
-			return (activeForm is RTC.RTC_Core_Form ||
-					activeForm is RTC.RTC_Settings_Form ||
-					activeForm is RTC.RTC_GlitchHarvester_Form ||
-					activeForm is RTC.RTC_StockpilePlayer_Form ||
-					activeForm is RTC.RTC_Multiplayer_Form ||
-					activeForm is RTC.RTC_MultiPeerPopout_Form ||
-					activeForm is RTC.RTC_StockpileBlastBoard_Form ||
-					activeForm is RTC.RTC_ConnectionStatus_Form ||
-					activeForm is RTC.RTC_BlastEditor_Form ||
-					activeForm is RTC.RTC_VmdPool_Form ||
-					activeForm is RTC.RTC_VmdGen_Form ||
-					activeForm is RTC.RTC_VmdAct_Form
-					);
-					*/
+			
+
 		}
 
 		public static Bitmap BIZHAWK_GET_SCREENSHOT()

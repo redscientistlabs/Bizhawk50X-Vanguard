@@ -673,8 +673,8 @@ namespace BizHawk.Client.EmuHawk
 				|| ActiveForm is TAStudio
 				|| ActiveForm is VirtualpadTool
 				
-					//RTC_Hijack : Adding RTC Windows for Background input
-					|| RTC.RTC_Hooks.IsAllowedBackgroundInputForm(ActiveForm)
+					//RTC_Hijack : Polling RTC focus for Background input
+					|| RTC.RTC_Hooks.IsAllowedBackgroundInputForm()
 					)//--------------------------------------
 			{
 				return true;
