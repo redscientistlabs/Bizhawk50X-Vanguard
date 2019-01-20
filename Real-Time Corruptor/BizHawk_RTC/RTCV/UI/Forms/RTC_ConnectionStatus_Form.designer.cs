@@ -64,7 +64,7 @@
             this.btnStartEmuhawkDetached.Name = "btnStartEmuhawkDetached";
             this.btnStartEmuhawkDetached.Size = new System.Drawing.Size(271, 49);
             this.btnStartEmuhawkDetached.TabIndex = 2;
-            this.btnStartEmuhawkDetached.Text = "  Start BizHawk Vanguard";
+            this.btnStartEmuhawkDetached.Text = "  Start BizHawk (Detached)";
             this.btnStartEmuhawkDetached.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageBeforeText;
             this.btnStartEmuhawkDetached.UseVisualStyleBackColor = false;
             this.btnStartEmuhawkDetached.Click += new System.EventHandler(this.btnStartEmuhawkDetached_Click);

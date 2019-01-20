@@ -404,7 +404,7 @@
             this.MaximizeBox = false;
             this.Name = "RTC_Core_Form";
             this.Tag = "color:dark";
-            this.Text = "RTC Vanguard";
+            this.Text = "RTC";
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.RTC_Form_FormClosing);
             this.Load += new System.EventHandler(this.RTC_Form_Load);
             this.pnLeftPanel.ResumeLayout(false);
