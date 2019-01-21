@@ -120,6 +120,7 @@ namespace RTCV.UI
 				dgvBlastEditor.CellMouseClick += dgvBlastEditor_CellMouseClick;
 				dgvBlastEditor.RowsAdded += DgvBlastEditor_RowsAdded;
 				dgvBlastEditor.RowsRemoved += DgvBlastEditor_RowsRemoved;
+				dgvBlastEditor.CellFormatting += DgvBlastEditor_CellFormatting;
 
 				tbFilter.TextChanged += tbFilter_TextChanged;
 
@@ -160,6 +161,7 @@ namespace RTCV.UI
 
 			}
 		}
+
 		private void RTC_NewBlastEditorForm_Load(object sender, EventArgs e)
 		{
 			RTC_UICore.SetRTCColor(RTC_UICore.GeneralColor, this);
@@ -281,7 +283,7 @@ namespace RTCV.UI
 			//Todo - change this?
 			foreach (DataGridViewRow row in dgvBlastEditor.SelectedRows)
 			{
-				(row.DataBoundItem as BlastUnit).BigEndian = value;
+				((BlastUnit)row.DataBoundItem).BigEndian = value;
 			}
 			dgvBlastEditor.Refresh();
 			UpdateBottom();
@@ -429,15 +431,11 @@ namespace RTCV.UI
 				BlastUnit bu = row.DataBoundItem as BlastUnit;
 				string domain = bu.Domain;
 				string sourceDomain = bu.SourceDomain;
+				
 
-				if (!domainToMiDico.ContainsKey(bu.Domain ?? "") || !domainToMiDico.ContainsKey(bu.SourceDomain ?? ""))
-				{
-					return;
-				}
-
-				if(domain != null)
+				if(domain != null && domainToMiDico.ContainsKey(bu.Domain ?? ""))
 					(row.Cells[buProperty.Address.ToString()] as DataGridViewNumericUpDownCell).Maximum = domainToMiDico[domain].Size - 1;
-				if(sourceDomain != null)
+				if(sourceDomain != null && domainToMiDico.ContainsKey(bu.SourceDomain ?? ""))
 					(row.Cells[buProperty.SourceAddress.ToString()] as DataGridViewNumericUpDownCell).Maximum = domainToMiDico[sourceDomain].Size - 1;
 			}
 		}
@@ -525,6 +523,12 @@ namespace RTCV.UI
 			UpdateBottom();
 			//Rather than setting all these values at load, we set it on the fly
 			updateMaximum(dgvBlastEditor.SelectedRows);
+		}
+
+		private void DgvBlastEditor_CellFormatting(object sender, DataGridViewCellFormattingEventArgs e)
+		{
+			//Bug in DGV. If you don't read the value back, it goes into edit mode on first click if you read the selectedrow within SelectionChanged. Why? No idea.
+			var dummy = dgvBlastEditor.Rows[e.RowIndex].Cells[0].Value;
 		}
 
 		private void tbFilter_TextChanged(object sender, EventArgs e)
@@ -975,7 +979,11 @@ namespace RTCV.UI
 
 		private void btnDuplicateSelected_Click(object sender, EventArgs e)
 		{
-			foreach (DataGridViewRow row in dgvBlastEditor.SelectedRows)
+			if (dgvBlastEditor.SelectedRows.Count == 0)
+				return;
+
+			var reversed = dgvBlastEditor.SelectedRows.Cast<DataGridViewRow>().Reverse()?.ToArray();
+			foreach (DataGridViewRow row in reversed)
 			{
 				if ((row.DataBoundItem as BlastUnit).IsLocked == false)
 				{

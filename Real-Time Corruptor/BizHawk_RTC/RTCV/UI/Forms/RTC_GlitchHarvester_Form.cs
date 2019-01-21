@@ -704,6 +704,8 @@ namespace RTCV.UI
 				S.GET<RTC_GlitchHarvester_Form>().btnSaveStockpile.ForeColor = Color.Black;
 			}
 
+			UnsavedEdits = false;
+
 		}
 
 		private void btnSaveStockpile_Click(object sender, EventArgs e)
