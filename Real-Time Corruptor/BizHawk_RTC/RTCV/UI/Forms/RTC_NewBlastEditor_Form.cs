@@ -430,6 +430,11 @@ namespace RTCV.UI
 				string domain = bu.Domain;
 				string sourceDomain = bu.SourceDomain;
 
+				if (!domainToMiDico.ContainsKey(bu.Domain ?? "") || !domainToMiDico.ContainsKey(bu.SourceDomain ?? ""))
+				{
+					return;
+				}
+
 				if(domain != null)
 					(row.Cells[buProperty.Address.ToString()] as DataGridViewNumericUpDownCell).Maximum = domainToMiDico[domain].Size - 1;
 				if(sourceDomain != null)
@@ -527,7 +532,7 @@ namespace RTCV.UI
 
 			if (tbFilter.Text.Length == 0)
 			{
-				dgvBlastEditor.DataSource = currentSK.BlastLayer.Layer;
+				dgvBlastEditor.DataSource = bs;
 				return;;
 			}
 				
@@ -536,19 +541,21 @@ namespace RTCV.UI
 			if (value == null)
 				return;
 
+			BindingSource _bs = new BindingSource();
 			switch (((ComboBoxItem<String>)cbFilterColumn.SelectedItem).Value)
 			{
 				//If it's an address or a source address we want decimal
 				case "Address":
-					dgvBlastEditor.DataSource = currentSK.BlastLayer.Layer.Where(x => x.Address.ToString("X").ToUpper().Substring(0, tbFilter.Text.Length.Clamp(0, x.Address.ToString("X").Length)) == tbFilter.Text.ToUpper()).ToList();
+					_bs.DataSource = currentSK.BlastLayer.Layer.Where(x => x.Address.ToString("X").ToUpper().Substring(0, tbFilter.Text.Length.Clamp(0, x.Address.ToString("X").Length)) == tbFilter.Text.ToUpper()).ToList();
 					break;
 				case "SourceAddress":
-					dgvBlastEditor.DataSource = currentSK.BlastLayer.Layer.Where(x => x.SourceAddress.ToString("X").ToUpper().Substring(0, tbFilter.Text.Length.Clamp(0, x.SourceAddress.ToString("X").Length)) == tbFilter.Text.ToUpper()).ToList();
+					_bs.DataSource = currentSK.BlastLayer.Layer.Where(x => x.SourceAddress.ToString("X").ToUpper().Substring(0, tbFilter.Text.Length.Clamp(0, x.SourceAddress.ToString("X").Length)) == tbFilter.Text.ToUpper()).ToList();
 					break;
 				default: //Otherwise just use reflection and dig it out
-					dgvBlastEditor.DataSource = currentSK.BlastLayer.Layer.Where(x => x?.GetType()?.GetProperty(value)?.GetValue(x) != null && (x.GetType()?.GetProperty(value)?.GetValue(x).ToString().ToUpper().Substring(0, tbFilter.Text.Length) == tbFilter.Text.ToUpper())).ToList();
+					_bs.DataSource = currentSK.BlastLayer.Layer.Where(x => x?.GetType()?.GetProperty(value)?.GetValue(x) != null && (x.GetType()?.GetProperty(value)?.GetValue(x).ToString().ToUpper().Substring(0, tbFilter.Text.Length) == tbFilter.Text.ToUpper())).ToList();
 					break;
 			}
+			dgvBlastEditor.DataSource = _bs;
 
 		}
 	
@@ -818,15 +825,32 @@ namespace RTCV.UI
 
 		public void LoadStashkey(StashKey sk)
 		{
-			originalSK = sk;
-			currentSK = sk.Clone() as StashKey;
-
 			if (!RefreshDomains())
 			{
 				MessageBox.Show("Loading domains failed! Aborting load. Check to make sure the RTC and Bizhawk are connected.");
 				this.Close();
 				return;
 			}
+			List<String> buDomains = new List<String>();
+			foreach (var bu in sk.BlastLayer.Layer)
+			{
+				if (!buDomains.Contains(bu.Domain))
+					buDomains.Add(bu.Domain);
+				if (bu.SourceDomain != null && !buDomains.Contains(bu.SourceDomain))
+					buDomains.Add(bu.SourceDomain);
+			}
+
+			foreach (string domain in buDomains)
+			{
+				if (domainToMiDico.ContainsKey(domain))
+					continue;
+
+				MessageBox.Show("This blastlayer references domain " + domain + " which couldn't be found!\nAre you sure you have the correct core loaded?");
+			}
+
+			originalSK = sk;
+			currentSK = sk.Clone() as StashKey;
+
 
 
 			bs = new BindingSource {DataSource = currentSK.BlastLayer.Layer};

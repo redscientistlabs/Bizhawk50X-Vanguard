@@ -79,7 +79,7 @@ namespace RTCV.CorruptCore
 			else if (applyBlastLayer && useCachedBlastLayer)
 			{
 				CorruptBL = CachedBL;
-				CachedBL.Apply(true);
+				CachedBL?.Apply(true);
 			}
 
 

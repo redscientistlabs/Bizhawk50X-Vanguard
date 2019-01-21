@@ -737,7 +737,7 @@ namespace RTCV.UI
 				IsCorruptionApplied = false;
 
 				LocalNetCoreRouter.Route(NetcoreCommands.CORRUPTCORE, NetcoreCommands.REMOTE_SET_APPLYUNCORRUPTBL, true);
-				RTC_StepActions.ClearStepBlastUnits();
+				LocalNetCoreRouter.Route(NetcoreCommands.CORRUPTCORE, NetcoreCommands.REMOTE_CLEARSTEPBLASTUNITS, null, true);
 			}
 		}
 
@@ -898,14 +898,22 @@ namespace RTCV.UI
 
 			RTC_StockpileManager_UISide.StockpileChanged();
 		}
-		
-		
+
+
 		private void nmIntensity_ValueChanged(object sender, EventArgs e)
 		{
 			int _fx = Convert.ToInt32(nmIntensity.Value);
 
 			if (S.GET<RTC_GeneralParameters_Form>().Intensity != _fx)
 				S.GET<RTC_GeneralParameters_Form>().Intensity = _fx;
+		}
+		private void nmIntensity_KeyDown(object sender, EventArgs e)
+		{
+			S.GET<RTC_GeneralParameters_Form>().DontUpdateIntensity = true;
+		}
+		private void nmIntensity_KeyUp(object sender, EventArgs e)
+		{
+			S.GET<RTC_GeneralParameters_Form>().DontUpdateIntensity = false;
 		}
 
 		private void track_Intensity_Scroll(object sender, EventArgs e)

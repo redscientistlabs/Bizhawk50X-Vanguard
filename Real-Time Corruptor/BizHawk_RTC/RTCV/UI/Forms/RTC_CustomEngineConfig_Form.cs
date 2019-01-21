@@ -204,8 +204,7 @@ namespace RTCV.UI
 		
 		private void btnClearActive_Click(object sender, EventArgs e)
 		{
-			//Netcore redundant method
-			RTC_StepActions.ClearStepBlastUnits();
+			LocalNetCoreRouter.Route(NetcoreCommands.CORRUPTCORE, NetcoreCommands.REMOTE_CLEARSTEPBLASTUNITS, null, true);
 		}
 
 		private void nmLifetime_ValueChanged(object sender, EventArgs e)

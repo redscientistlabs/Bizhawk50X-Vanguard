@@ -30,6 +30,7 @@
 		{
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(RTC_CorruptionEngine_Form));
             this.pnCustomPrecision = new System.Windows.Forms.Panel();
+            this.label5 = new System.Windows.Forms.Label();
             this.cbCustomPrecision = new System.Windows.Forms.ComboBox();
             this.cbSelectedEngine = new System.Windows.Forms.ComboBox();
             this.gbSelectedEngine = new System.Windows.Forms.GroupBox();
@@ -101,7 +102,6 @@
             this.comboBox7 = new System.Windows.Forms.ComboBox();
             this.label3 = new System.Windows.Forms.Label();
             this.btnOpenCustomEngine = new System.Windows.Forms.Button();
-            this.label5 = new System.Windows.Forms.Label();
             this.pnCustomPrecision.SuspendLayout();
             this.gbBlastGeneratorEngine.SuspendLayout();
             this.gbVectorEngine.SuspendLayout();
@@ -134,6 +134,17 @@
             this.pnCustomPrecision.TabIndex = 139;
             this.pnCustomPrecision.Tag = "color:darker";
             this.pnCustomPrecision.MouseDown += new System.Windows.Forms.MouseEventHandler(this.HandleMouseDown);
+            // 
+            // label5
+            // 
+            this.label5.AutoSize = true;
+            this.label5.Font = new System.Drawing.Font("Segoe UI Symbol", 8.25F);
+            this.label5.ForeColor = System.Drawing.Color.White;
+            this.label5.Location = new System.Drawing.Point(4, 4);
+            this.label5.Name = "label5";
+            this.label5.Size = new System.Drawing.Size(95, 13);
+            this.label5.TabIndex = 82;
+            this.label5.Text = "Engine Precision:";
             // 
             // cbCustomPrecision
             // 
@@ -309,7 +320,7 @@
             // 
             this.cbVectorValueList.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
             this.cbVectorValueList.DataSource = ((object)(resources.GetObject("cbVectorValueList.DataSource")));
-            this.cbVectorValueList.DisplayMember = "Text";
+            this.cbVectorValueList.DisplayMember = "Name";
             this.cbVectorValueList.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.cbVectorValueList.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.cbVectorValueList.Font = new System.Drawing.Font("Segoe UI", 8F);
@@ -363,7 +374,7 @@
             // 
             this.cbVectorLimiterList.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
             this.cbVectorLimiterList.DataSource = ((object)(resources.GetObject("cbVectorLimiterList.DataSource")));
-            this.cbVectorLimiterList.DisplayMember = "Text";
+            this.cbVectorLimiterList.DisplayMember = "Name";
             this.cbVectorLimiterList.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.cbVectorLimiterList.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.cbVectorLimiterList.Font = new System.Drawing.Font("Segoe UI", 8F);
@@ -485,7 +496,7 @@
             this.cbClearPipesOnRewind.TabIndex = 79;
             this.cbClearPipesOnRewind.Text = "Clear pipes on Rewind";
             this.cbClearPipesOnRewind.UseVisualStyleBackColor = true;
-            this.cbClearPipesOnRewind.CheckedChanged += new System.EventHandler(this.cbClearPipesOnRewind_CheckedChanged);
+            this.cbClearPipesOnRewind.CheckedChanged += new System.EventHandler(this.cbClearRewind_CheckedChanged);
             this.cbClearPipesOnRewind.MouseDown += new System.Windows.Forms.MouseEventHandler(this.HandleMouseDown);
             // 
             // cbLockPipes
@@ -541,7 +552,7 @@
             this.nmMaxPipes.TabIndex = 9;
             this.nmMaxPipes.Tag = "color:dark";
             this.nmMaxPipes.Value = new decimal(new int[] {
-            20,
+            50,
             0,
             0,
             0});
@@ -740,7 +751,7 @@
             this.cbClearFreezesOnRewind.TabIndex = 75;
             this.cbClearFreezesOnRewind.Text = "Clear freezes on Rewind";
             this.cbClearFreezesOnRewind.UseVisualStyleBackColor = true;
-            this.cbClearFreezesOnRewind.CheckedChanged += new System.EventHandler(this.cbClearFreezesOnRewind_CheckedChanged);
+            this.cbClearFreezesOnRewind.CheckedChanged += new System.EventHandler(this.cbClearRewind_CheckedChanged);
             this.cbClearFreezesOnRewind.MouseDown += new System.Windows.Forms.MouseEventHandler(this.HandleMouseDown);
             // 
             // btnClearAllFreezes
@@ -1210,17 +1221,6 @@
             this.btnOpenCustomEngine.UseVisualStyleBackColor = false;
             this.btnOpenCustomEngine.Click += new System.EventHandler(this.btnOpenCustomEngine_Click);
             // 
-            // label5
-            // 
-            this.label5.AutoSize = true;
-            this.label5.Font = new System.Drawing.Font("Segoe UI Symbol", 8.25F);
-            this.label5.ForeColor = System.Drawing.Color.White;
-            this.label5.Location = new System.Drawing.Point(4, 4);
-            this.label5.Name = "label5";
-            this.label5.Size = new System.Drawing.Size(95, 13);
-            this.label5.TabIndex = 82;
-            this.label5.Text = "Engine Precision:";
-            // 
             // RTC_CorruptionEngine_Form
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -1278,7 +1278,7 @@
             this.ResumeLayout(false);
 
 		}
-
+		
 		#endregion
 
 		private System.Windows.Forms.Panel pnCustomPrecision;

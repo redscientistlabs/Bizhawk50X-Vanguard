@@ -39,9 +39,42 @@ namespace RTCV.UI
 			mtForm.AnchorToPanel(pnAdvancedMemoryTools);
 		}
 
+		private void toggleLimiterBoxSource(bool setToBindingSource)
+		{
+			if (setToBindingSource)
+			{
+				S.GET<RTC_CustomEngineConfig_Form>().cbLimiterList.DisplayMember = "Name";
+				S.GET<RTC_CustomEngineConfig_Form>().cbLimiterList.ValueMember = "Value";
+				S.GET<RTC_CustomEngineConfig_Form>().cbLimiterList.DataSource = RTC_UICore.LimiterListBindingSource;
+
+
+				S.GET<RTC_CustomEngineConfig_Form>().cbValueList.DisplayMember = "Name";
+				S.GET<RTC_CustomEngineConfig_Form>().cbValueList.ValueMember = "Value";
+				S.GET<RTC_CustomEngineConfig_Form>().cbValueList.DataSource = RTC_UICore.ValueListBindingSource;
+
+
+
+				S.GET<RTC_CorruptionEngine_Form>().cbVectorLimiterList.DisplayMember = "Name";
+				S.GET<RTC_CorruptionEngine_Form>().cbVectorLimiterList.ValueMember = "Value";
+				S.GET<RTC_CorruptionEngine_Form>().cbVectorLimiterList.DataSource = RTC_UICore.LimiterListBindingSource;
+
+				S.GET<RTC_CorruptionEngine_Form>().cbVectorValueList.DisplayMember = "Name";
+				S.GET<RTC_CorruptionEngine_Form>().cbVectorValueList.ValueMember = "Value";
+				S.GET<RTC_CorruptionEngine_Form>().cbVectorValueList.DataSource = RTC_UICore.ValueListBindingSource;
+			}
+			else
+			{
+				S.GET<RTC_CustomEngineConfig_Form>().cbLimiterList.DataSource = null;
+				S.GET<RTC_CustomEngineConfig_Form>().cbValueList.DataSource = null;
+
+				S.GET<RTC_CorruptionEngine_Form>().cbVectorLimiterList.DataSource = null;
+				S.GET<RTC_CorruptionEngine_Form>().cbVectorValueList.DataSource = null;
+			}
+		}
 
 		public void LoadLists()
 		{
+			toggleLimiterBoxSource(false);
 			RTC_UICore.LimiterListBindingSource.Clear();
 			RTC_UICore.ValueListBindingSource.Clear();
 
@@ -55,6 +88,7 @@ namespace RTCV.UI
 				string[] _paths = paths[i].Split('\\' , '.');
 				RegisterListInUI(_paths[_paths.Length - 2], hashes[i]);
 			}
+			toggleLimiterBoxSource(true);
 		}
 
 		public void RegisterListInUI(string name, string hash)

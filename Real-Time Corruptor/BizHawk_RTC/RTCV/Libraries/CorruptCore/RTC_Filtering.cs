@@ -86,8 +86,6 @@ namespace RTCV.CorruptCore
 
 		public static string RegisterList(List<Byte[]> list, bool syncListsViaNetcore)
 		{
-
-
 			//Make one giant string to hash
 			string concat = String.Empty;
 			foreach (byte[] line in list)

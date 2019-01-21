@@ -9,6 +9,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using RTCV.CorruptCore;
+using RTCV.NetCore;
 using static RTCV.UI.UI_Extensions;
 using RTCV.NetCore.StaticTools;
 
@@ -80,13 +81,6 @@ namespace RTCV.UI
 				nmMaxFreezes.Value = nmMaxCheats.Value;
 		}
 
-		private void cbClearCheatsOnRewind_CheckedChanged(object sender, EventArgs e)
-		{
-			if (cbClearFreezesOnRewind.Checked != cbClearCheatsOnRewind.Checked)
-				cbClearFreezesOnRewind.Checked = cbClearCheatsOnRewind.Checked;
-
-			RTC_StepActions.ClearStepActionsOnRewind = true;
-		}
 
 		private void nmDistortionDelay_ValueChanged(object sender, EventArgs e)
 		{
@@ -95,7 +89,7 @@ namespace RTCV.UI
 
 		private void btnResyncDistortionEngine_Click(object sender, EventArgs e)
 		{
-			RTC_StepActions.ClearStepBlastUnits();
+			LocalNetCoreRouter.Route(NetcoreCommands.CORRUPTCORE, NetcoreCommands.REMOTE_CLEARSTEPBLASTUNITS, null, true);
 		}
 
 
@@ -207,16 +201,23 @@ namespace RTCV.UI
 			cbSelectedEngine.BringToFront();
 			pnCustomPrecision.BringToFront();
 
-			RTC_StepActions.ClearStepBlastUnits();
+			LocalNetCoreRouter.Route(NetcoreCommands.CORRUPTCORE, NetcoreCommands.REMOTE_CLEARSTEPBLASTUNITS, null, true);
 		}
 
-		private void cbClearFreezesOnRewind_CheckedChanged(object sender, EventArgs e)
+		bool dontUpdate = false;
+		private void cbClearRewind_CheckedChanged(object sender, EventArgs e)
 		{
-			cbClearCheatsOnRewind.Checked = cbClearFreezesOnRewind.Checked;
-			cbClearPipesOnRewind.Checked = cbClearFreezesOnRewind.Checked;
+			if (dontUpdate)
+				return;
+			dontUpdate = true;
+			cbClearFreezesOnRewind.Checked = ((CheckBox)sender).Checked;
+			cbClearCheatsOnRewind.Checked = ((CheckBox)sender).Checked;
+			cbClearPipesOnRewind.Checked = ((CheckBox)sender).Checked;
+			dontUpdate = false;
 
 			RTC_StepActions.ClearStepActionsOnRewind = cbClearFreezesOnRewind.Checked;
 		}
+
 
 		private void nmMaxFreezes_ValueChanged(object sender, EventArgs e)
 		{
@@ -233,7 +234,7 @@ namespace RTCV.UI
 
 		private void btnClearPipes_Click(object sender, EventArgs e)
 		{
-			RTC_StepActions.ClearStepBlastUnits();
+			LocalNetCoreRouter.Route(NetcoreCommands.CORRUPTCORE, NetcoreCommands.REMOTE_CLEARSTEPBLASTUNITS, null, true);
 		}
 
 		private void cbLockPipes_CheckedChanged(object sender, EventArgs e)
@@ -241,12 +242,6 @@ namespace RTCV.UI
 			RTC_StepActions.LockExecution = cbLockPipes.Checked;
 		}
 
-		private void cbClearPipesOnRewind_CheckedChanged(object sender, EventArgs e)
-		{
-			cbClearCheatsOnRewind.Checked = cbClearPipesOnRewind.Checked;
-			cbClearFreezesOnRewind.Checked = cbClearPipesOnRewind.Checked;
-			RTC_StepActions.ClearStepActionsOnRewind = cbClearPipesOnRewind.Checked;
-		}
 
 		private void cbVectorLimiterList_SelectedIndexChanged(object sender, EventArgs e)
 		{
@@ -264,7 +259,7 @@ namespace RTCV.UI
 
 		private void btnClearCheats_Click(object sender, EventArgs e)
 		{
-			RTC_StepActions.ClearStepBlastUnits();
+			LocalNetCoreRouter.Route(NetcoreCommands.CORRUPTCORE, NetcoreCommands.REMOTE_CLEARSTEPBLASTUNITS, null, true);
 		}
 
 		private void updateMinMaxBoxes(int precision)

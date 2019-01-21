@@ -71,8 +71,11 @@
             0,
             0});
             this.nmIntensity.ValueChanged += new System.EventHandler(this.nmIntensity_ValueChanged);
-            this.nmIntensity.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.nmIntensity_ValueChanged);
-            this.nmIntensity.KeyUp += new System.Windows.Forms.KeyEventHandler(this.nmIntensity_ValueChanged);
+			this.nmIntensity.KeyUp += new System.Windows.Forms.KeyEventHandler(this.nmIntensity_KeyUp);
+			this.nmIntensity.KeyDown  += new System.Windows.Forms.KeyEventHandler(this.nmIntensity_KeyDown);
+			this.nmIntensity.GotFocus += (this.nmIntensity_KeyDown);
+			this.nmIntensity.LostFocus += (this.nmIntensity_KeyUp);
+
 			// 
 			// nmErrorDelay
 			// 

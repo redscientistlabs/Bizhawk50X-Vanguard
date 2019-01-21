@@ -108,10 +108,8 @@ namespace RTCV.CorruptCore
 			if (hex.Length % 2 == 1)
 			{
 				string temp = "0" + hex;
-				return Enumerable.Range(0, temp.Length)
-				.Where(x => x % 2 == 0)
-				.Select(x => Convert.ToByte(temp.Substring(x, 2), 16))
-				.ToArray();
+				byte[] t = Enumerable.Range(0, temp.Length).Where(x => x % 2 == 0).Select(x => Convert.ToByte(temp.Substring(x, 2), 16)).ToArray();
+				return t;
 			}
 
 			return Enumerable.Range(0, hex.Length)

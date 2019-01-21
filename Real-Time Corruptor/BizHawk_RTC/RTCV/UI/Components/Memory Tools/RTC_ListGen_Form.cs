@@ -62,10 +62,18 @@ namespace RTCV.UI
 			return default(T);
 		}
 
-		private void btnGenerateList_Click(object sender, EventArgs e) => GenerateList();
+		private void btnGenerateList_Click(object sender, EventArgs e)
+		{
+			GenerateList();
+			tbListValues.Clear();
+		}
 
 		private bool GenerateList()
 		{
+			if (tbListValues.Lines.Length == 0)
+			{
+				return false;
+			}
 			List<String> newList = new List<string>();
 			foreach (string line in tbListValues.Lines)
 			{
@@ -153,8 +161,6 @@ namespace RTCV.UI
 				filename = RTC_Corruptcore.GetRandomKey();
 
 			//Register the list and update netcore
-
-
 			List<Byte[]> byteList = new List<byte[]>();
 			foreach (string t in newList)
 			{
@@ -165,7 +171,6 @@ namespace RTCV.UI
 
 			//Register the list in the ui
 			S.GET<RTC_EngineConfig_Form>().RegisterListInUI(filename, hash);
-
 
 			return true;
 		}

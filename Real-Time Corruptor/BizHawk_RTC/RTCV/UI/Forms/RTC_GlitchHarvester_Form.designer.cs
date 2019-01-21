@@ -2200,12 +2200,14 @@
             0,
             0});
             this.nmIntensity.ValueChanged += new System.EventHandler(this.nmIntensity_ValueChanged);
-            this.nmIntensity.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.nmIntensity_ValueChanged);
-            this.nmIntensity.KeyUp += new System.Windows.Forms.KeyEventHandler(this.nmIntensity_ValueChanged);
-            // 
-            // track_Intensity
-            // 
-            this.track_Intensity.Location = new System.Drawing.Point(-2, 30);
+            this.nmIntensity.KeyDown += new System.Windows.Forms.KeyEventHandler(this.nmIntensity_KeyDown);
+			this.nmIntensity.KeyDown += new System.Windows.Forms.KeyEventHandler(this.nmIntensity_KeyUp);
+			this.nmIntensity.GotFocus += (this.nmIntensity_KeyDown);
+			this.nmIntensity.LostFocus += (this.nmIntensity_KeyUp);
+			// 
+			// track_Intensity
+			// 
+			this.track_Intensity.Location = new System.Drawing.Point(-2, 30);
             this.track_Intensity.Maximum = 512000;
             this.track_Intensity.Minimum = 2000;
             this.track_Intensity.Name = "track_Intensity";

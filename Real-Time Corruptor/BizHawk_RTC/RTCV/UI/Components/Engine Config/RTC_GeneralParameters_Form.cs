@@ -130,12 +130,21 @@ namespace RTCV.UI
 				Intensity = _fx;
 		}
 
+		private void nmIntensity_KeyDown(object sender, EventArgs e)
+		{
+			DontUpdateIntensity = true;
+		}
+		private void nmIntensity_KeyUp(object sender, EventArgs e)
+		{
+			DontUpdateIntensity = false;
+		}
+
+
 		public void track_Intensity_Scroll(object sender, EventArgs e)
 		{
 			DontUpdateIntensity = true;
 			double fx = Math.Floor(Math.Pow((track_Intensity.Value * 0.0005d), 2));
 			int _fx = Convert.ToInt32(fx);
-
 
 			if (Intensity != _fx)
 				Intensity = _fx;
