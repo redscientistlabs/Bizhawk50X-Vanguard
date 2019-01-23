@@ -2530,6 +2530,34 @@ namespace RTCV.UI
 
 }
 
+public static class JsonHelper
+{
+	public static void Serialize(object value, Stream s, Formatting f = Formatting.None)
+	{
+		using (StreamWriter writer = new StreamWriter(s))
+		using (JsonTextWriter jsonWriter = new JsonTextWriter(writer))
+		{
+			JsonSerializer ser = new JsonSerializer
+			{
+				Formatting = f
+			};
+			ser.Serialize(jsonWriter, value);
+			jsonWriter.Flush();
+		}
+	}
+
+	public static T Deserialize<T>(Stream s)
+	{
+		using (StreamReader reader = new StreamReader(s))
+		using (JsonTextReader jsonReader = new JsonTextReader(reader))
+		{
+			JsonSerializer ser = new JsonSerializer();
+			return ser.Deserialize<T>(jsonReader);
+		}
+	}
+}
+
+
 //From Bizhawk
 public static class NumberExtensions
 {
