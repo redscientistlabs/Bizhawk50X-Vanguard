@@ -43,6 +43,9 @@ namespace RTCV.UI
 
 		private void NetCoreSpec_ServerConnectionLost(object sender, EventArgs e)
 		{
+			if(RTC_UICore.isClosing)
+				return;
+
 			SyncObjectSingleton.FormExecute((o, ea) =>
 			{
 				if (S.GET<RTC_ConnectionStatus_Form>() != null && !S.GET<RTC_ConnectionStatus_Form>().IsDisposed)

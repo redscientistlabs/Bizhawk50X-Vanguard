@@ -1156,15 +1156,20 @@ namespace RTCV.UI
 				{
 					if (bu.Source == BlastUnitSource.VALUE)
 					{
+						byte[] outvalue = RTC_Extensions.AddValueToByteArrayUnchecked(bu.Value, bu.TiltValue, bu.BigEndian);
+						//Flip it if it's big endian
+						if (bu.BigEndian)
+							outvalue.FlipBytes();
+
 						if (bu.Domain == rp.PrimaryDomain)
 						{
 							output.Position = bu.Address + rp.SkipBytes;
-							output.Write(bu.Value, 0, bu.Value.Length);
+							output.Write(outvalue, 0, outvalue.Length);
 						}
 						else if (bu.Domain == rp.SecondDomain)
 						{
 							output.Position = bu.Address + RTC_MemoryDomains.MemoryInterfaces[rp.SecondDomain].Size + rp.SkipBytes;
-							output.Write(bu.Value, 0, bu.Value.Length);
+							output.Write(outvalue, 0, outvalue.Length);
 						}
 					}
 				}

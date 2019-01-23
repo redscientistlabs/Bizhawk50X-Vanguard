@@ -1077,29 +1077,29 @@ namespace RTCV.UI
             // runRomWithoutBlastlayerToolStripMenuItem
             // 
             this.runRomWithoutBlastlayerToolStripMenuItem.Name = "runRomWithoutBlastlayerToolStripMenuItem";
-            this.runRomWithoutBlastlayerToolStripMenuItem.Size = new System.Drawing.Size(243, 26);
+            this.runRomWithoutBlastlayerToolStripMenuItem.Size = new System.Drawing.Size(284, 26);
             this.runRomWithoutBlastlayerToolStripMenuItem.Text = "Run Rom Without Blastlayer";
             this.runRomWithoutBlastlayerToolStripMenuItem.Click += new System.EventHandler(this.runRomWithoutBlastlayerToolStripMenuItem_Click);
             // 
             // replaceRomFromGHToolStripMenuItem
             // 
             this.replaceRomFromGHToolStripMenuItem.Name = "replaceRomFromGHToolStripMenuItem";
-            this.replaceRomFromGHToolStripMenuItem.Size = new System.Drawing.Size(243, 26);
+            this.replaceRomFromGHToolStripMenuItem.Size = new System.Drawing.Size(284, 26);
             this.replaceRomFromGHToolStripMenuItem.Text = "Replace Rom from GH";
             this.replaceRomFromGHToolStripMenuItem.Click += new System.EventHandler(this.replaceRomFromGHToolStripMenuItem_Click);
             // 
             // replaceRomFromFileToolStripMenuItem
             // 
             this.replaceRomFromFileToolStripMenuItem.Name = "replaceRomFromFileToolStripMenuItem";
-            this.replaceRomFromFileToolStripMenuItem.Size = new System.Drawing.Size(243, 26);
+            this.replaceRomFromFileToolStripMenuItem.Size = new System.Drawing.Size(284, 26);
             this.replaceRomFromFileToolStripMenuItem.Text = "Replace Rom from File";
             this.replaceRomFromFileToolStripMenuItem.Click += new System.EventHandler(this.replaceRomFromFileToolStripMenuItem_Click);
             // 
             // bakeROMBlastunitsToFileToolStripMenuItem
             // 
             this.bakeROMBlastunitsToFileToolStripMenuItem.Name = "bakeROMBlastunitsToFileToolStripMenuItem";
-            this.bakeROMBlastunitsToFileToolStripMenuItem.Size = new System.Drawing.Size(243, 26);
-            this.bakeROMBlastunitsToFileToolStripMenuItem.Text = "Bake ROM BlastBytes to File";
+            this.bakeROMBlastunitsToFileToolStripMenuItem.Size = new System.Drawing.Size(284, 26);
+            this.bakeROMBlastunitsToFileToolStripMenuItem.Text = "Bake ROM VALUE BlastUnits to File";
             this.bakeROMBlastunitsToFileToolStripMenuItem.Click += new System.EventHandler(this.bakeROMBlastunitsToFileToolStripMenuItem_Click);
             // 
             // toolsToolStripMenuItem
