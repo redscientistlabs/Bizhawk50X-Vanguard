@@ -9,19 +9,6 @@ svnrev.cs
 /output64/**
 
 
-!/output/dll/**
-!/output/dll/
-/output/dll/Bizhawk*
-!/output/RTC/**
-!/output/RTC/
-/output/RTC/PARAMS/*
-/output/RTC/WORKING/*
-/output/RTC/RENDEROUTPUT/*
-
-!/output/*.bat
-!/output/AutoKillSwitch.exe
-!/output/defctrl.json
-
 **/Release/**
 **/Debug/**
 **/ipch/**
