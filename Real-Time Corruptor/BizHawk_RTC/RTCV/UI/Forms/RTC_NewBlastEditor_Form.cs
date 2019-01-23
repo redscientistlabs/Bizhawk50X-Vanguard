@@ -1219,6 +1219,7 @@ namespace RTCV.UI
 			//We only need the ParentKey and the SyncSettings here as everything else will match
 			currentSK.ParentKey = temp.ParentKey;
 			currentSK.SyncSettings = temp.SyncSettings;
+			currentSK.StateLocation = temp.StateLocation;
 		}
 
 		private void replaceSavestateFromFileToolStripMenuItem_Click(object sender, EventArgs e)

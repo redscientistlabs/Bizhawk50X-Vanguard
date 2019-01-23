@@ -31,7 +31,7 @@ namespace RTCV.NetCore
 			if (!(ex is OperationAbortedException))
 			{
 				lbException.Text = ex.Message;
-				tbStackTrace.Text = ex.StackTrace;
+				tbStackTrace.Text = ex.Message + "\n" + ex.StackTrace;
 				btnContinue.Visible = canContinue;
 			}
 
