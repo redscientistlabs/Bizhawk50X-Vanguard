@@ -482,7 +482,18 @@ namespace BizHawk.Client.EmuHawk
 				string simpleName = new AssemblyName(requested).Name;
 				if (simpleName == "NLua" || simpleName == "KopiLua") directory = Path.Combine(directory, "nlua");
 				string fname = Path.Combine(directory, dllname);
-				if (!File.Exists(fname)) return null;
+
+				//RTC Hijack - Point to the RTC dll dir if it's not found in the bizhawk dll dir
+				if (!File.Exists(fname))
+				{
+					dllname = new AssemblyName(requested).Name + ".dll";
+					directory = Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), "RTC", "BIN");
+					simpleName = new AssemblyName(requested).Name;
+					if (simpleName == "NLua" || simpleName == "KopiLua") directory = Path.Combine(directory, "nlua");
+					fname = Path.Combine(directory, dllname);
+					if (!File.Exists(fname))
+						return null;
+				}//Hijack-End
 
 				//it is important that we use LoadFile here and not load from a byte array; otherwise mixed (managed/unamanged) assemblies can't load
 				return Assembly.LoadFile(fname);

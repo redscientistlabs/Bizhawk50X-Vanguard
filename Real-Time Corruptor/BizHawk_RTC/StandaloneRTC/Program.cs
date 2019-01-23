@@ -32,20 +32,22 @@ namespace StandaloneRTC
 				return;
 			}
 
+			StartLoader(args);
+		}
+
+		/// <summary>
+		/// Starts the loader. Separated from Main so the AssemblyResolve code can properly function.
+		/// </summary>
+		/// <param name="args"></param>
+		private static void StartLoader(string[] args)
+		{
 			Application.EnableVisualStyles();
 			Application.SetCompatibleTextRenderingDefault(false);
 			Application.SetUnhandledExceptionMode(UnhandledExceptionMode.CatchException);
 			Application.ThreadException += ApplicationThreadException;
 			AppDomain.CurrentDomain.UnhandledException += CurrentDomainOnUnhandledException;
-
 			loaderObject = new Loader(args);
 			Application.Run(loaderObject);
-
-			
-			//RTC.S.GET<RTC.RTC_Core_Form>() = new RTC.RTC_Form();
-			//RTC.RTC_Core.isStandalone = true;
-			//RTC.RTC_Core.Start();
-			//Application.Run(RTC.S.GET<RTC.RTC_Core_Form>());
 		}
 
 		/// <summary>
@@ -94,7 +96,7 @@ namespace StandaloneRTC
 
 				//load missing assemblies by trying to find them in the dll directory
 				string dllname = new AssemblyName(requested).Name + ".dll";
-				string directory = Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), "dll");
+				string directory = Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), "RTC", "BIN");
 				string simpleName = new AssemblyName(requested).Name;
 				string fname = Path.Combine(directory, dllname);
 				if (!File.Exists(fname)) return null;

@@ -69,6 +69,7 @@
   <ItemGroup>
     <Reference Include="Ceras, Version=2.1.6.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\Ceras.2.1.6\lib\net45\Ceras.dll</HintPath>
+      <Private>False</Private>
     </Reference>
     <Reference Include="GongShell">
       <HintPath>..\References\GongShell.dll</HintPath>
@@ -1823,14 +1824,17 @@
     <ProjectReference Include="..\RTCV\Libraries\CorruptCore\CorruptCore.csproj">
       <Project>{b5633a86-dc66-4723-88eb-7dfc95458072}</Project>
       <Name>CorruptCore</Name>
+      <Private>False</Private>
     </ProjectReference>
     <ProjectReference Include="..\RTCV\Libraries\NetCore\NetCore.csproj">
       <Project>{7e106aec-5614-4206-9e4d-25759c90e8ae}</Project>
       <Name>NetCore</Name>
+      <Private>False</Private>
     </ProjectReference>
     <ProjectReference Include="..\RTCV\Libraries\Vanguard\Vanguard.csproj">
       <Project>{364c705e-b7ab-4a94-a59b-88899ce65958}</Project>
       <Name>Vanguard</Name>
+      <Private>False</Private>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

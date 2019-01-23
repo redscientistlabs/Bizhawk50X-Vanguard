@@ -25,8 +25,9 @@ namespace RTCV.NetCore
 		public CloudDebug(Exception _ex, bool canContinue = false)
 		{
 			InitializeComponent();
-
-			ex = _ex;
+			var path = Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), Environment.Is64BitProcess ? "x64" : "x86", "7z.dll");
+			SevenZip.SevenZipBase.SetLibraryPath(path);
+            ex = _ex;
 			if (!(ex is OperationAbortedException))
 			{
 				lbException.Text = ex.Message;
