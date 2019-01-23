@@ -1,1 +1,7 @@
-Other projects that are developed by the RTC Dev team for the RTC project should be considered covered in the BizHawk+RTC License.txt file.
+This Git contains multiple source projects and binaries.
+
+Some of them aren't our property and reside in the Git only for convenience.
+
+For the licencing on the developed projects, see license files at the following path:
+
+Real-Time Corruptor\BizHawk_RTC\output\RTC\LICENSES
