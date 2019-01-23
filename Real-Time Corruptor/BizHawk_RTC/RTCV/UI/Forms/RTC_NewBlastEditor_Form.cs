@@ -991,6 +991,7 @@ namespace RTCV.UI
 					bs.Add(bu);
 				}
 			}
+			RefreshAllNoteIcons();
 		}
 
 		private void btnSendToStash_Click(object sender, EventArgs e)
@@ -1134,8 +1135,40 @@ namespace RTCV.UI
 
 		private void bakeROMBlastunitsToFileToolStripMenuItem_Click(object sender, EventArgs e)
 		{
-			//todo
-			throw new NotImplementedException();
+			string[] originalFilename = currentSK.RomFilename.Split('\\');
+			string filename;
+			SaveFileDialog sfd = new SaveFileDialog();
+			//sfd.DefaultExt = "rom";
+			sfd.FileName = originalFilename[originalFilename.Length - 1];
+			sfd.Title = "Save Rom File";
+			sfd.Filter = "rom files|*.*";
+			sfd.RestoreDirectory = true;
+			if (sfd.ShowDialog() == DialogResult.OK)
+				filename = sfd.FileName.ToString();
+			else
+				return;
+			RomParts rp = RTC_MemoryDomains.GetRomParts(currentSK.SystemName, currentSK.RomFilename);
+
+			File.Copy(currentSK.RomFilename, filename, true);
+			using (FileStream output = new FileStream(filename, FileMode.Open))
+			{
+				foreach (BlastUnit bu in currentSK.BlastLayer.Layer)
+				{
+					if (bu.Source == BlastUnitSource.VALUE)
+					{
+						if (bu.Domain == rp.PrimaryDomain)
+						{
+							output.Position = bu.Address + rp.SkipBytes;
+							output.Write(bu.Value, 0, bu.Value.Length);
+						}
+						else if (bu.Domain == rp.SecondDomain)
+						{
+							output.Position = bu.Address + RTC_MemoryDomains.MemoryInterfaces[rp.SecondDomain].Size + rp.SkipBytes;
+							output.Write(bu.Value, 0, bu.Value.Length);
+						}
+					}
+				}
+			}
 		}
 
 		private void runOriginalSavestateToolStripMenuItem_Click(object sender, EventArgs e)
@@ -1380,13 +1413,17 @@ namespace RTCV.UI
 			RTC_StockpileManager_UISide.ApplyStashkey(newSk, false);
 		}
 
-		public void RefreshAllNoteIcons()
+		public void RefreshNoteIcons(DataGridViewRowCollection rows)
 		{
-			foreach (DataGridViewRow row in dgvBlastEditor.Rows)
+			foreach(DataGridViewRow row in rows)
 			{
 				DataGridViewCell buttonCell = row.Cells[buProperty.Note.ToString()];
 				buttonCell.Value = string.IsNullOrWhiteSpace((row.DataBoundItem as BlastUnit)?.Note) ? string.Empty : "📝";
 			}
+		}
+		public void RefreshAllNoteIcons()
+		{
+			RefreshNoteIcons(dgvBlastEditor.Rows);
 		}
 
 

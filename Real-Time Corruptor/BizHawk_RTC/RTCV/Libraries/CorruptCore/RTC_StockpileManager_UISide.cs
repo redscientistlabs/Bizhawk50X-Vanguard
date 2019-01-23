@@ -67,7 +67,7 @@ namespace RTCV.CorruptCore
 			}
 			else
 			{
-				LocalNetCoreRouter.Route(NetcoreCommands.CORRUPTCORE, NetcoreCommands.APPLYBLASTLAYER, new object[] {CurrentStashkey.BlastLayer, true}, true);
+				LocalNetCoreRouter.Route(NetcoreCommands.CORRUPTCORE, NetcoreCommands.APPLYBLASTLAYER, new object[] {sk?.BlastLayer, true}, true);
 			}
 
 			PostApplyStashkey();

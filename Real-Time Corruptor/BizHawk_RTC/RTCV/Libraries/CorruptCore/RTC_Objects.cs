@@ -1237,7 +1237,7 @@ namespace RTCV.CorruptCore
 						{
 							Working.ApplyValue = RTC_Extensions.AddValueToByteArrayUnchecked(Value, TiltValue, mi.BigEndian);
 
-							//Flip it back
+							//Flip it if it's big endian
 							if (mi.BigEndian)
 								Working.ApplyValue.FlipBytes();
 						}

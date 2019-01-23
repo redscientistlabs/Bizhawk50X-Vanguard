@@ -311,6 +311,7 @@ namespace RTCV.UI
 
 		private void btnCustomTemplateLoad_Click(object sender, EventArgs e)
 		{
+			throw new NotImplementedException();
 			PartialSpec spec = RTC_CustomEngine.LoadTemplateFile();
 
 			if (spec == null)
@@ -324,6 +325,7 @@ namespace RTCV.UI
 
 		private void btnCustomTemplateSaveAs_Click(object sender, EventArgs e)
 		{
+			throw new NotImplementedException();
 			string TemplateName = RTC_CustomEngine.SaveTemplateFile(true);
 
 			if (string.IsNullOrWhiteSpace(TemplateName))
@@ -338,6 +340,7 @@ namespace RTCV.UI
 
 		private void btnCustomTemplateSave_Click(object sender, EventArgs e)
 		{
+			throw new NotImplementedException();
 			string TemplateName = RTC_CustomEngine.SaveTemplateFile(false);
 
 			if (string.IsNullOrWhiteSpace(TemplateName))

@@ -4,6 +4,7 @@ using System.IO;
 using System.Windows.Forms;
 using System.Xml.Serialization;
 using CorruptCore;
+using Newtonsoft.Json;
 using RTCV.NetCore;
 
 
@@ -40,12 +41,11 @@ namespace RTCV.CorruptCore
 				else
 					return false;
 			}
-
-			XmlSerializer xs = new XmlSerializer(typeof(BlastLayer));
+		
 
 			using (FileStream fs = new FileStream(filename, FileMode.Create))
 			{
-				xs.Serialize(fs, bl);
+				JsonHelper.Serialize(bl, fs, Formatting.Indented);
 			}
 
 			LastBlastLayerSavePath = filename;
@@ -80,13 +80,11 @@ namespace RTCV.CorruptCore
 			}
 
 
-			XmlSerializer xs = new XmlSerializer(typeof(BlastLayer));
-
 			try
 			{
 				using (FileStream fs = new FileStream(filename, FileMode.Open))
 				{
-					bl = (BlastLayer)xs.Deserialize(fs);
+					bl = JsonHelper.Deserialize<BlastLayer>(fs);
 					return bl;
 				}
 			}
