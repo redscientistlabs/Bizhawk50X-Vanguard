@@ -207,6 +207,10 @@ namespace BizHawk.Client.EmuHawk
 				}
 				catch (Exception e) when (!Debugger.IsAttached)
 				{
+					//RTC_Hijack - ignore AbortEverythingException
+					if (e is RTCV.NetCore.AbortEverythingException)
+						return;
+
 					new ExceptionBox(e).ShowDialog();
 				}
 				finally
@@ -476,19 +480,34 @@ namespace BizHawk.Client.EmuHawk
 					if (asm.FullName == requested)
 						return asm;
 
-				//load missing assemblies by trying to find them in the dll directory
-				string dllname = new AssemblyName(requested).Name + ".dll";
-				string directory = Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), "dll");
-				string simpleName = new AssemblyName(requested).Name;
-				if (simpleName == "NLua" || simpleName == "KopiLua") directory = Path.Combine(directory, "nlua");
-				string fname = Path.Combine(directory, dllname);
-
-				//RTC Hijack - Point to the RTC dll dir if it's not found in the bizhawk dll dir
-				if (!File.Exists(fname))
+				string fname = "";
+				string asmName = new AssemblyName(requested).Name;
+				string callerName = args?.RequestingAssembly?.GetName().Name;
+				if (asmName == "StandaloneRTC" ||
+					asmName == "CorruptCore" ||
+					asmName == "Vanguard" ||
+					asmName == "UI" ||
+					asmName == "NetCore"||
+					callerName == "StandaloneRTC" ||
+					callerName == "CorruptCore" ||
+					callerName == "Vanguard" ||
+					callerName == "UI" ||
+					callerName == "NetCore")
 				{
-					dllname = new AssemblyName(requested).Name + ".dll";
-					directory = Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), "RTC", "BIN");
-					simpleName = new AssemblyName(requested).Name;
+					string dllname = new AssemblyName(requested).Name + ".dll";
+					string directory = Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), "RTC", "BIN");
+					string simpleName = new AssemblyName(requested).Name;
+					if (simpleName == "NLua" || simpleName == "KopiLua") directory = Path.Combine(directory, "nlua");
+					fname = Path.Combine(directory, dllname);
+					if (!File.Exists(fname))
+						return null;
+				}
+				else
+				{
+					//load missing assemblies by trying to find them in the dll directory
+					string dllname = new AssemblyName(requested).Name + ".dll";
+					string directory = Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), "dll");
+					string simpleName = new AssemblyName(requested).Name;
 					if (simpleName == "NLua" || simpleName == "KopiLua") directory = Path.Combine(directory, "nlua");
 					fname = Path.Combine(directory, dllname);
 					if (!File.Exists(fname))

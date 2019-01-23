@@ -64,6 +64,8 @@ namespace RTC
 			{
 				if (RTC_EmuCore.ShowErrorDialog(ex, true) == DialogResult.Abort)
 					throw new RTCV.NetCore.AbortEverythingException();
+				MessageBox.Show("Clearing all step blastunits due to an exception within Core_Step().");
+				RTC_StepActions.ClearStepBlastUnits();
 			}
 		}
 
