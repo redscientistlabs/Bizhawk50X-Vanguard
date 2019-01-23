@@ -1235,10 +1235,10 @@ namespace RTCV.CorruptCore
 						//If the length has changed (blast editor) we gotta recalc it
 						if (Working.ApplyValue == null)
 						{
-							Working.ApplyValue = RTC_Extensions.AddValueToByteArrayUnchecked(Value, TiltValue, mi.BigEndian);
+							Working.ApplyValue = RTC_Extensions.AddValueToByteArrayUnchecked(Value, TiltValue, this.BigEndian);
 
 							//Flip it if it's big endian
-							if (mi.BigEndian)
+							if (this.BigEndian)
 								Working.ApplyValue.FlipBytes();
 						}
 						for (int i = 0; i < Precision; i++)
