@@ -631,7 +631,7 @@ namespace RTCV.UI
 
 		private void btnLoadStockpile_Click(object sender, MouseEventArgs e)
 		{
-			RTC_Corruptcore.CheckForProblematicProcesses();
+			RTC_CorruptCore.CheckForProblematicProcesses();
 
 			Point locate = new Point(((Control)sender).Location.X + e.Location.X, ((Control)sender).Location.Y + e.Location.Y);
 
@@ -681,7 +681,7 @@ namespace RTCV.UI
 				finally
 				{
 				}
-			})).Enabled = (File.Exists(RTC_Corruptcore.bizhawkDir + Path.DirectorySeparatorChar + "backup_config.ini"));
+			})).Enabled = (File.Exists(RTC_CorruptCore.bizhawkDir + Path.DirectorySeparatorChar + "backup_config.ini"));
 
 			loadMenuItems.Show(this, locate);
 		}
@@ -1199,11 +1199,11 @@ namespace RTCV.UI
 
 					string statefilename = key.GameName + "." + key.ParentKey + ".timejump.State"; // get savestate name
 
-					if (File.Exists(RTC_Corruptcore.workingDir + Path.DirectorySeparatorChar + key.StateLocation.ToString() + Path.DirectorySeparatorChar + statefilename))
-						File.Copy(RTC_Corruptcore.workingDir + Path.DirectorySeparatorChar + key.StateLocation.ToString() + Path.DirectorySeparatorChar + statefilename, RTC_Corruptcore.workingDir + Path.DirectorySeparatorChar + "TEMP" + Path.DirectorySeparatorChar + statefilename); // copy savestates to temp folder
+					if (File.Exists(RTC_CorruptCore.workingDir + Path.DirectorySeparatorChar + key.StateLocation.ToString() + Path.DirectorySeparatorChar + statefilename))
+						File.Copy(RTC_CorruptCore.workingDir + Path.DirectorySeparatorChar + key.StateLocation.ToString() + Path.DirectorySeparatorChar + statefilename, RTC_CorruptCore.workingDir + Path.DirectorySeparatorChar + "TEMP" + Path.DirectorySeparatorChar + statefilename); // copy savestates to temp folder
 					else
 					{
-						MessageBox.Show("Couldn't find savestate " + RTC_Corruptcore.workingDir + Path.DirectorySeparatorChar +
+						MessageBox.Show("Couldn't find savestate " + RTC_CorruptCore.workingDir + Path.DirectorySeparatorChar +
 										key.StateLocation.ToString() + Path.DirectorySeparatorChar + statefilename +
 										"!\n\n. This is savestate index " + i + 1 + ".\nAborting save");
 						Stockpile.EmptyFolder(Path.DirectorySeparatorChar + "WORKING\\TEMP");
@@ -1223,7 +1223,7 @@ namespace RTCV.UI
 				}
 
 				//Create keys.json
-				using (FileStream fs = File.Open(RTC_Corruptcore.workingDir + Path.DirectorySeparatorChar + "TEMP\\keys.json", FileMode.OpenOrCreate))
+				using (FileStream fs = File.Open(RTC_CorruptCore.workingDir + Path.DirectorySeparatorChar + "TEMP\\keys.json", FileMode.OpenOrCreate))
 				{
 					JsonHelper.Serialize(ssk, fs, Formatting.Indented);
 					fs.Close();
@@ -1235,7 +1235,7 @@ namespace RTCV.UI
 
 				string tempFilename = Filename + ".temp";
 
-				System.IO.Compression.ZipFile.CreateFromDirectory(RTC_Corruptcore.workingDir + Path.DirectorySeparatorChar + "TEMP" + Path.DirectorySeparatorChar, tempFilename, System.IO.Compression.CompressionLevel.Fastest, false);
+				System.IO.Compression.ZipFile.CreateFromDirectory(RTC_CorruptCore.workingDir + Path.DirectorySeparatorChar + "TEMP" + Path.DirectorySeparatorChar, tempFilename, System.IO.Compression.CompressionLevel.Fastest, false);
 
 				if (File.Exists(Filename))
 					File.Delete(Filename);
@@ -1244,9 +1244,9 @@ namespace RTCV.UI
 
 				//Move all the files from temp into SSK
 				Stockpile.EmptyFolder(Path.DirectorySeparatorChar + "WORKING\\SSK");
-				foreach (string file in Directory.GetFiles(RTC_Corruptcore.workingDir + Path.DirectorySeparatorChar + "TEMP"))
+				foreach (string file in Directory.GetFiles(RTC_CorruptCore.workingDir + Path.DirectorySeparatorChar + "TEMP"))
 					//File.Move(file, RTC_Core.workingDir + Path.DirectorySeparatorChar + "SSK" + Path.DirectorySeparatorChar + (file.Substring(file.LastIndexOf(Path.DirectorySeparatorChar) + 1, file.Length - (file.LastIndexOf(Path.DirectorySeparatorChar) + 1))));
-					File.Move(file, RTC_Corruptcore.workingDir + Path.DirectorySeparatorChar + "SSK" + Path.DirectorySeparatorChar + Path.GetFileName(file));
+					File.Move(file, RTC_CorruptCore.workingDir + Path.DirectorySeparatorChar + "SSK" + Path.DirectorySeparatorChar + Path.GetFileName(file));
 			}
 			catch (Exception ex)
 			{
@@ -1294,7 +1294,7 @@ namespace RTCV.UI
 				if (!Stockpile.Extract(filename, Path.DirectorySeparatorChar + "WORKING\\SSK", "keys.json"))
 					return;
 
-				using (FileStream fs = File.Open(RTC_Corruptcore.workingDir + Path.DirectorySeparatorChar + "SSK\\keys.json", FileMode.OpenOrCreate))
+				using (FileStream fs = File.Open(RTC_CorruptCore.workingDir + Path.DirectorySeparatorChar + "SSK\\keys.json", FileMode.OpenOrCreate))
 				{
 					ssk = JsonHelper.Deserialize<SaveStateKeys>(fs);
 				}
@@ -1325,7 +1325,7 @@ namespace RTCV.UI
 					continue;
 
 				string statefilename = key.GameName + "." + key.ParentKey + ".timejump.State"; // get savestate name
-				string newStatePath = RTC_Corruptcore.workingDir + Path.DirectorySeparatorChar + key.StateLocation + Path.DirectorySeparatorChar + statefilename;
+				string newStatePath = RTC_CorruptCore.workingDir + Path.DirectorySeparatorChar + key.StateLocation + Path.DirectorySeparatorChar + statefilename;
 
 				key.StateFilename = newStatePath;
 				key.StateLocation = StashKeySavestateLocation.SSK;
@@ -1551,7 +1551,7 @@ namespace RTCV.UI
 
 		private void btnOpenRenderFolder_Click(object sender, EventArgs e)
 		{
-				Process.Start(RTC_Corruptcore.rtcDir + Path.DirectorySeparatorChar + "RENDEROUTPUT" + Path.DirectorySeparatorChar);
+				Process.Start(RTC_CorruptCore.rtcDir + Path.DirectorySeparatorChar + "RENDEROUTPUT" + Path.DirectorySeparatorChar);
 		}
 
 		private void btnRender_Click(object sender, EventArgs e)

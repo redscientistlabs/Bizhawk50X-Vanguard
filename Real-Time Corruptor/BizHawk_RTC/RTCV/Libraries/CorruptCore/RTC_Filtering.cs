@@ -211,7 +211,7 @@ namespace RTCV.CorruptCore
 			}
 
 			//Get a random line in the list and grab the value
-			int line = RTC_Corruptcore.RND.Next(Hash2ValueDico[hash].Count);
+			int line = RTC_CorruptCore.RND.Next(Hash2ValueDico[hash].Count);
 			Byte[] value = Hash2ValueDico[hash][line];
 
 			//Copy the value to a working array

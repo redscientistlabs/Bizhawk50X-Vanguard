@@ -910,7 +910,7 @@ namespace RTCV.UI
 
 			foreach (BlastUnit bu in currentSK.BlastLayer.Layer
 				.Where(x => x.IsLocked == false)
-				.OrderBy(x => RTC_Corruptcore.RND.Next())
+				.OrderBy(x => RTC_CorruptCore.RND.Next())
 				.Take(currentSK.BlastLayer.Layer.Count / 2))
 			{
 				bu.IsEnabled = false;
@@ -1118,7 +1118,7 @@ namespace RTCV.UI
 
 				LocalNetCoreRouter.Route(NetcoreCommands.VANGUARD, NetcoreCommands.REMOTE_LOADROM, filename, true);
 
-				StashKey temp = new StashKey(RTC_Corruptcore.GetRandomKey(), currentSK.ParentKey, currentSK.BlastLayer);
+				StashKey temp = new StashKey(RTC_CorruptCore.GetRandomKey(), currentSK.ParentKey, currentSK.BlastLayer);
 
 				// We have to null this as to properly create a stashkey, we need to use it in the constructor,
 				// but then the user needs to provide a savestate
@@ -1245,7 +1245,7 @@ namespace RTCV.UI
 			string oldSS = currentSK.SyncSettings;
 
 			//Get a new key
-			currentSK.ParentKey = RTC_Corruptcore.GetRandomKey();
+			currentSK.ParentKey = RTC_CorruptCore.GetRandomKey();
 			//Null the syncsettings out
 			currentSK.SyncSettings = null;
 
@@ -1261,7 +1261,7 @@ namespace RTCV.UI
 			}
 
 			//Grab the syncsettings
-			StashKey temp = new StashKey(RTC_Corruptcore.GetRandomKey(), currentSK.ParentKey, currentSK.BlastLayer);
+			StashKey temp = new StashKey(RTC_CorruptCore.GetRandomKey(), currentSK.ParentKey, currentSK.BlastLayer);
 			currentSK.SyncSettings = temp.SyncSettings;
 		}
 

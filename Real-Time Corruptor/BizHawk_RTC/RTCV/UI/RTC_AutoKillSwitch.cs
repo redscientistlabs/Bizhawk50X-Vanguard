@@ -47,7 +47,7 @@ namespace RTCV.UI
 		{
 			if (LoadedSounds != null && (forcePlay || S.GET<RTC_ConnectionStatus_Form>()
 				.btnStartEmuhawkDetached.Text == "Restart BizHawk"))
-				LoadedSounds[RTC_Corruptcore.RND.Next(LoadedSounds.Length)]
+				LoadedSounds[RTC_CorruptCore.RND.Next(LoadedSounds.Length)]
 					.Play();
 		}
 

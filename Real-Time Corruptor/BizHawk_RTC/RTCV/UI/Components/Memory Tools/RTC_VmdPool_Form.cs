@@ -68,7 +68,7 @@ namespace RTCV.UI
 			}
 
 			if (string.IsNullOrWhiteSpace(name))
-				name = RTC_Corruptcore.GetRandomKey();
+				name = RTC_CorruptCore.GetRandomKey();
 
 			VirtualMemoryDomain VMD = (VirtualMemoryDomain)RTC_MemoryDomains.VmdPool[vmdName];
 

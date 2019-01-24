@@ -115,48 +115,48 @@ namespace RTCV.UI
 			switch (cbSelectedEngine.SelectedItem.ToString())
 			{
 				case "Nightmare Engine":
-					RTC_Corruptcore.SelectedEngine = CorruptionEngine.NIGHTMARE;
+					RTC_CorruptCore.SelectedEngine = CorruptionEngine.NIGHTMARE;
 					gbNightmareEngine.Visible = true;
 					pnCustomPrecision.Visible = true;
 					break;
 
 				case "Hellgenie Engine":
-					RTC_Corruptcore.SelectedEngine = CorruptionEngine.HELLGENIE;
+					RTC_CorruptCore.SelectedEngine = CorruptionEngine.HELLGENIE;
 					gbHellgenieEngine.Visible = true;
 					pnCustomPrecision.Visible = true;
 					break;
 
 				case "Distortion Engine":
-					RTC_Corruptcore.SelectedEngine = CorruptionEngine.DISTORTION;
+					RTC_CorruptCore.SelectedEngine = CorruptionEngine.DISTORTION;
 					gbDistortionEngine.Visible = true;
 					pnCustomPrecision.Visible = true;
 					break;
 
 				case "Freeze Engine":
-					RTC_Corruptcore.SelectedEngine = CorruptionEngine.FREEZE;
+					RTC_CorruptCore.SelectedEngine = CorruptionEngine.FREEZE;
 					gbFreezeEngine.Visible = true;
 					pnCustomPrecision.Visible = true;
 					break;
 
 				case "Pipe Engine":
-					RTC_Corruptcore.SelectedEngine = CorruptionEngine.PIPE;
+					RTC_CorruptCore.SelectedEngine = CorruptionEngine.PIPE;
 					gbPipeEngine.Visible = true;
 					pnCustomPrecision.Visible = true;
 					break;
 
 				case "Vector Engine":
-					RTC_Corruptcore.SelectedEngine = CorruptionEngine.VECTOR;
+					RTC_CorruptCore.SelectedEngine = CorruptionEngine.VECTOR;
 					gbVectorEngine.Visible = true;
 					break;
 
 				case "Custom Engine":
-					RTC_Corruptcore.SelectedEngine = CorruptionEngine.CUSTOM;
+					RTC_CorruptCore.SelectedEngine = CorruptionEngine.CUSTOM;
 					gbCustomEngine.Visible = true;
 					pnCustomPrecision.Visible = true;
 					break;
 
 				case "Blast Generator":
-					RTC_Corruptcore.SelectedEngine = CorruptionEngine.BLASTGENERATORENGINE;
+					RTC_CorruptCore.SelectedEngine = CorruptionEngine.BLASTGENERATORENGINE;
 					gbBlastGeneratorEngine.Visible = true;
 
 					S.GET<RTC_Core_Form>().AutoCorrupt = false;
@@ -327,18 +327,18 @@ namespace RTCV.UI
 				switch (cbCustomPrecision.SelectedIndex)
 				{
 					case 0:
-						RTC_Corruptcore.CurrentPrecision = 1;
+						RTC_CorruptCore.CurrentPrecision = 1;
 						break;
 					case 1:
-						RTC_Corruptcore.CurrentPrecision = 2;
+						RTC_CorruptCore.CurrentPrecision = 2;
 						break;
 					case 2:
-						RTC_Corruptcore.CurrentPrecision = 4;
+						RTC_CorruptCore.CurrentPrecision = 4;
 						break;
 				}
 				
-				updateMinMaxBoxes(RTC_Corruptcore.CurrentPrecision);
-				S.GET<RTC_CustomEngineConfig_Form>().UpdateMinMaxBoxes(RTC_Corruptcore.CurrentPrecision);
+				updateMinMaxBoxes(RTC_CorruptCore.CurrentPrecision);
+				S.GET<RTC_CustomEngineConfig_Form>().UpdateMinMaxBoxes(RTC_CorruptCore.CurrentPrecision);
 			}
 		}
 
@@ -363,7 +363,7 @@ namespace RTCV.UI
 			long value = Convert.ToInt64(nmMinValueNightmare.Value);
 
 
-			switch (RTC_Corruptcore.CurrentPrecision)
+			switch (RTC_CorruptCore.CurrentPrecision)
 			{
 				case 1:
 					RTC_NightmareEngine.MinValue8Bit = value;
@@ -386,7 +386,7 @@ namespace RTCV.UI
 			long value = Convert.ToInt64(nmMaxValueNightmare.Value);
 			
 
-			switch (RTC_Corruptcore.CurrentPrecision)
+			switch (RTC_CorruptCore.CurrentPrecision)
 			{
 				case 1:
 					RTC_NightmareEngine.MaxValue8Bit = value;
@@ -407,7 +407,7 @@ namespace RTCV.UI
 				return;
 			long value = Convert.ToInt64(nmMinValueHellgenie.Value);
 
-			switch (RTC_Corruptcore.CurrentPrecision)
+			switch (RTC_CorruptCore.CurrentPrecision)
 			{
 				case 1:
 					RTC_HellgenieEngine.MinValue8Bit = value;
@@ -429,7 +429,7 @@ namespace RTCV.UI
 
 			long value = Convert.ToInt64(nmMaxValueHellgenie.Value);
 
-			switch (RTC_Corruptcore.CurrentPrecision)
+			switch (RTC_CorruptCore.CurrentPrecision)
 			{
 				case 1:
 					RTC_HellgenieEngine.MaxValue8Bit = value;

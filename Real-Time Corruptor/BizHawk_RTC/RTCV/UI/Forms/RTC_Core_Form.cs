@@ -39,7 +39,7 @@ namespace RTCV.UI
 		{
 			get
 			{
-				return RTC_Corruptcore.AutoCorrupt;
+				return RTC_CorruptCore.AutoCorrupt;
 			}
 			set
 			{
@@ -48,7 +48,7 @@ namespace RTCV.UI
 				else
 					btnAutoCorrupt.Text = "Start Auto-Corrupt";
 
-				RTC_Corruptcore.AutoCorrupt = value;
+				RTC_CorruptCore.AutoCorrupt = value;
 			}
 		}
 
@@ -76,16 +76,16 @@ namespace RTCV.UI
 
 		private void RTC_Form_Load(object sender, EventArgs e)
 		{
-			btnLogo.Text = "   Version " + RTC_Corruptcore.RtcVersion;
+			btnLogo.Text = "   Version " + RTC_CorruptCore.RtcVersion;
 
 			if (!NetCore.Params.IsParamSet("DISCLAIMER_READ"))
 			{
-				MessageBox.Show(File.ReadAllText(RTC_Corruptcore.rtcDir + Path.DirectorySeparatorChar + "LICENSES\\DISCLAIMER.TXT").Replace("[ver]", RTC_Corruptcore.RtcVersion), "RTC", MessageBoxButtons.OK, MessageBoxIcon.Information);
+				MessageBox.Show(File.ReadAllText(RTC_CorruptCore.rtcDir + Path.DirectorySeparatorChar + "LICENSES\\DISCLAIMER.TXT").Replace("[ver]", RTC_CorruptCore.RtcVersion), "RTC", MessageBoxButtons.OK, MessageBoxIcon.Information);
 				NetCore.Params.SetParam("DISCLAIMER_READ");
 			}
 
-			RTC_Corruptcore.DownloadProblematicProcesses();
-			RTC_Corruptcore.CheckForProblematicProcesses();
+			RTC_CorruptCore.DownloadProblematicProcesses();
+			RTC_CorruptCore.CheckForProblematicProcesses();
 
 			GhostBoxInvisible(btnEasyMode);
 			GhostBoxInvisible(btnEngineConfig);

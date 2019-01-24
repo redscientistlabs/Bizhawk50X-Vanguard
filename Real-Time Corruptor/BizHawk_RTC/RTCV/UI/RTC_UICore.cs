@@ -45,12 +45,12 @@ namespace RTCV.UI
 			registerFormEvents(S.GET<RTC_Core_Form>());
 
 			RTC_Extensions.DirectoryRequired(paths: new string[] {
-				RTC_Corruptcore.workingDir, RTC_Corruptcore.workingDir + "\\TEMP\\"
-				, RTC_Corruptcore.workingDir + "\\SKS\\", RTC_Corruptcore.workingDir + "\\SSK\\"
-				, RTC_Corruptcore.workingDir + "\\SESSION\\", RTC_Corruptcore.workingDir + "\\MEMORYDUMPS\\"
-				, RTC_Corruptcore.workingDir + "\\MP\\", RTC_Corruptcore.assetsDir + "\\CRASHSOUNDS\\"
-				, RTC_Corruptcore.rtcDir + "\\PARAMS\\", RTC_Corruptcore.rtcDir + "\\LISTS\\"
-				, RTC_Corruptcore.rtcDir + "\\RENDEROUTPUT\\",
+				RTC_CorruptCore.workingDir, RTC_CorruptCore.workingDir + "\\TEMP\\"
+				, RTC_CorruptCore.workingDir + "\\SKS\\", RTC_CorruptCore.workingDir + "\\SSK\\"
+				, RTC_CorruptCore.workingDir + "\\SESSION\\", RTC_CorruptCore.workingDir + "\\MEMORYDUMPS\\"
+				, RTC_CorruptCore.workingDir + "\\MP\\", RTC_CorruptCore.assetsDir + "\\CRASHSOUNDS\\"
+				, RTC_CorruptCore.rtcDir + "\\PARAMS\\", RTC_CorruptCore.rtcDir + "\\LISTS\\"
+				, RTC_CorruptCore.rtcDir + "\\RENDEROUTPUT\\",
 			});
 
 			S.SET<RTC_Standalone_Form>((RTC_Standalone_Form)standaloneForm);
@@ -67,7 +67,7 @@ namespace RTCV.UI
 
 			p["SELECTEDDOMAINS"] = new string[]{};
 
-			RTCV.NetCore.AllSpec.UISpec = new FullSpec(p, !RTC_Corruptcore.Attached);
+			RTCV.NetCore.AllSpec.UISpec = new FullSpec(p, !RTC_CorruptCore.Attached);
 			RTCV.NetCore.AllSpec.UISpec.SpecUpdated += (o, e) =>
 			{
 				PartialSpec partial = e.partialSpec;
@@ -75,7 +75,7 @@ namespace RTCV.UI
 				  LocalNetCoreRouter.Route(NetcoreCommands.CORRUPTCORE, NetcoreCommands.REMOTE_PUSHUISPECUPDATE, partial, e.syncedUpdate);
 			};
 
-			RTC_Corruptcore.StartUISide();
+			RTC_CorruptCore.StartUISide();
 
 			//Loading RTC Params
 			LoadRTCColor();
@@ -187,7 +187,7 @@ namespace RTCV.UI
 				S.GET<RTC_Standalone_Form>().Close();
 
 			//Clean out the working folders
-			if (!RTC_Corruptcore.DontCleanSavestatesOnQuit)
+			if (!RTC_CorruptCore.DontCleanSavestatesOnQuit)
 			{
 				Stockpile.EmptyFolder(Path.DirectorySeparatorChar + "WORKING" + Path.DirectorySeparatorChar);
 			}

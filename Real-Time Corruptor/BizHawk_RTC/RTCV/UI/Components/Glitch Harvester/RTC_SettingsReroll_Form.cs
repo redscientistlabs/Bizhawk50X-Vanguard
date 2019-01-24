@@ -30,19 +30,19 @@ namespace RTCV.UI
 
 		private void RTC_SettingRerollForm_Load(object sender, EventArgs e)
 		{
-			cbRerollAddress.Checked = RTC_Corruptcore.RerollAddress;
-			cbRerollSourceAddress.Checked = RTC_Corruptcore.RerollSourceAddress;
+			cbRerollAddress.Checked = RTC_CorruptCore.RerollAddress;
+			cbRerollSourceAddress.Checked = RTC_CorruptCore.RerollSourceAddress;
 		}
 
 		private void cbRerollSourceAddress_CheckedChanged(object sender, EventArgs e)
 		{
-			RTC_Corruptcore.RerollSourceAddress = cbRerollSourceAddress.Checked;
+			RTC_CorruptCore.RerollSourceAddress = cbRerollSourceAddress.Checked;
 			RTCV.NetCore.Params.SetParam("REROLL_SOURCEADDRESS", cbRerollSourceAddress.Checked.ToString());
 		}
 
 		private void cbRerollAddress_CheckedChanged(object sender, EventArgs e)
 		{
-			RTC_Corruptcore.RerollAddress = cbRerollAddress.Checked;
+			RTC_CorruptCore.RerollAddress = cbRerollAddress.Checked;
 			RTCV.NetCore.Params.SetParam("REROLL_ADDRESS", cbRerollAddress.Checked.ToString());
 		}
 	}

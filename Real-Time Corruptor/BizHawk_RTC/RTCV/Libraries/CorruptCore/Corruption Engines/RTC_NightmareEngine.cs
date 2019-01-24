@@ -79,7 +79,7 @@ namespace RTCV.CorruptCore
 						break;
 
 					case NightmareAlgo.RANDOMTILT: //RANDOMTILT may add 1,substract 1 or set a random value
-						int result = RTC_Corruptcore.RND.Next(1, 4);
+						int result = RTC_CorruptCore.RND.Next(1, 4);
 						switch (result)
 						{
 							case 1:
@@ -99,7 +99,7 @@ namespace RTCV.CorruptCore
 						break;
 
 					case NightmareAlgo.TILT: //TILT can either add 1 or substract 1
-						result = RTC_Corruptcore.RND.Next(1, 3);
+						result = RTC_CorruptCore.RND.Next(1, 3);
 						switch (result)
 						{
 							case 1:
@@ -132,13 +132,13 @@ namespace RTCV.CorruptCore
 					switch (precision)
 					{
 						case 1:
-							randomValue = RTC_Corruptcore.RND.RandomLong(MinValue8Bit, MaxValue8Bit);
+							randomValue = RTC_CorruptCore.RND.RandomLong(MinValue8Bit, MaxValue8Bit);
 							break;
 						case 2:
-							randomValue = RTC_Corruptcore.RND.RandomLong(MinValue16Bit, MaxValue16Bit);
+							randomValue = RTC_CorruptCore.RND.RandomLong(MinValue16Bit, MaxValue16Bit);
 							break;
 						case 4:
-							randomValue = RTC_Corruptcore.RND.RandomLong(MinValue32Bit, MaxValue32Bit);
+							randomValue = RTC_CorruptCore.RND.RandomLong(MinValue32Bit, MaxValue32Bit);
 							break;
 					}
 
@@ -150,7 +150,7 @@ namespace RTCV.CorruptCore
 					{
 						for (int i = 0; i < precision; i++)
 						{
-							value[i] = (byte)RTC_Corruptcore.RND.Next();
+							value[i] = (byte)RTC_CorruptCore.RND.Next();
 						}
 					}
 

@@ -55,7 +55,7 @@ namespace RTCV.CorruptCore
 				}
 			}
 
-			string theoreticalSaveStateFilename = RTC_Corruptcore.workingDir + Path.DirectorySeparatorChar + stateLocation.ToString() + Path.DirectorySeparatorChar + gameName + "." + key + ".timejump.State";
+			string theoreticalSaveStateFilename = RTC_CorruptCore.workingDir + Path.DirectorySeparatorChar + stateLocation.ToString() + Path.DirectorySeparatorChar + gameName + "." + key + ".timejump.State";
 
 			if (File.Exists(theoreticalSaveStateFilename))
 			{
@@ -90,14 +90,14 @@ namespace RTCV.CorruptCore
 
 		public static StashKey SaveState_NET(StashKey _sk = null, bool threadSave = false)
 		{
-			string Key = RTC_Corruptcore.GetRandomKey();
+			string Key = RTC_CorruptCore.GetRandomKey();
 			string statePath;
 
 			StashKey sk;
 
 			if (_sk == null)
 			{
-				Key = RTC_Corruptcore.GetRandomKey();
+				Key = RTC_CorruptCore.GetRandomKey();
 				statePath = LocalNetCoreRouter.QueryRoute<String>(NetcoreCommands.VANGUARD, NetcoreCommands.SAVESAVESTATE, Key, true);
 				sk = new StashKey(Key, Key, null);
 			}

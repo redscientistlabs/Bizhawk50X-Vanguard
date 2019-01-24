@@ -73,13 +73,13 @@ namespace RTCV.CorruptCore
 				switch (precision)
 				{
 					case 1:
-						randomValue = RTC_Corruptcore.RND.RandomLong(MinValue8Bit, MaxValue8Bit);
+						randomValue = RTC_CorruptCore.RND.RandomLong(MinValue8Bit, MaxValue8Bit);
 						break;
 					case 2:
-						randomValue = RTC_Corruptcore.RND.RandomLong(MinValue16Bit, MaxValue16Bit);
+						randomValue = RTC_CorruptCore.RND.RandomLong(MinValue16Bit, MaxValue16Bit);
 						break;
 					case 4:
-						randomValue = RTC_Corruptcore.RND.RandomLong(MinValue32Bit, MaxValue32Bit);
+						randomValue = RTC_CorruptCore.RND.RandomLong(MinValue32Bit, MaxValue32Bit);
 						break;
 				}
 
@@ -91,7 +91,7 @@ namespace RTCV.CorruptCore
 				{
 					for (int i = 0; i < precision; i++)
 					{
-						value[i] = (byte)RTC_Corruptcore.RND.Next();
+						value[i] = (byte)RTC_CorruptCore.RND.Next();
 					}
 				}
 

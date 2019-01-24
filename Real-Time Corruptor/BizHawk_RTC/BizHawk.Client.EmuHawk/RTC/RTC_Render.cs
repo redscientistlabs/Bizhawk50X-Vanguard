@@ -15,17 +15,17 @@ namespace RTC
 			if (RTC_Render_CorruptCore.RenderType == RTC_Render_CorruptCore.RENDERTYPE.NONE)
 				return;
 
-			string Key = "RENDER_" + (RTC_Corruptcore.GetRandomKey());
+			string Key = "RENDER_" + (RTC_CorruptCore.GetRandomKey());
 
 			switch (RTC_Render_CorruptCore.RenderType)
 			{
 				case RTC_Render_CorruptCore.RENDERTYPE.WAV:
-					RTC_Hooks.BIZHAWK_STARTRECORDAV("wave", RTC_Corruptcore.rtcDir + Path.DirectorySeparatorChar + "RENDEROUTPUT" + Path.DirectorySeparatorChar + Key + ".wav", true);
+					RTC_Hooks.BIZHAWK_STARTRECORDAV("wave", RTC_CorruptCore.rtcDir + Path.DirectorySeparatorChar + "RENDEROUTPUT" + Path.DirectorySeparatorChar + Key + ".wav", true);
 					break;
 				case RTC_Render_CorruptCore.RENDERTYPE.AVI:
 					try
 					{
-						RTC_Hooks.BIZHAWK_STARTRECORDAV("vfwavi", RTC_Corruptcore.rtcDir + Path.DirectorySeparatorChar + "RENDEROUTPUT" + Path.DirectorySeparatorChar + Key + ".avi", true);
+						RTC_Hooks.BIZHAWK_STARTRECORDAV("vfwavi", RTC_CorruptCore.rtcDir + Path.DirectorySeparatorChar + "RENDEROUTPUT" + Path.DirectorySeparatorChar + Key + ".avi", true);
 					}
 					catch (Exception ex)
 					{
@@ -34,7 +34,7 @@ namespace RTC
 
 					break;
 				case RTC_Render_CorruptCore.RENDERTYPE.MPEG:
-					RTC_Hooks.BIZHAWK_STARTRECORDAV("ffmpeg", RTC_Corruptcore.rtcDir + Path.DirectorySeparatorChar + "RENDEROUTPUT" + Path.DirectorySeparatorChar + Key + ".mpg", true);
+					RTC_Hooks.BIZHAWK_STARTRECORDAV("ffmpeg", RTC_CorruptCore.rtcDir + Path.DirectorySeparatorChar + "RENDEROUTPUT" + Path.DirectorySeparatorChar + Key + ".mpg", true);
 					break;
 			}
 		}

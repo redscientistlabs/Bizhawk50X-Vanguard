@@ -27,8 +27,8 @@ namespace RTCV.UI
 
 		private void RTC_SettingsAbout_Form_Load(object sender, EventArgs e)
 		{
-			lbVersion.Text += RTC_Corruptcore.RtcVersion;
-			lbProcess.Text += (RTC_Corruptcore.Attached ? "Attached mode" : "Detached mode");
+			lbVersion.Text += RTC_CorruptCore.RtcVersion;
+			lbProcess.Text += (RTC_CorruptCore.Attached ? "Attached mode" : "Detached mode");
 			lbConnectedTo.Text += "BizHawk Emulator";
 		}
 	}

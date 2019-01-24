@@ -127,7 +127,7 @@ namespace RTCV.UI
 				return;
 			long value = Convert.ToInt64(nmMinValue.Value);
 
-			switch (RTC_Corruptcore.CurrentPrecision)
+			switch (RTC_CorruptCore.CurrentPrecision)
 			{
 				case 1:
 					RTC_CustomEngine.MinValue8Bit = value;
@@ -149,7 +149,7 @@ namespace RTCV.UI
 			long value = Convert.ToInt64(nmMaxValue.Value);
 
 
-			switch (RTC_Corruptcore.CurrentPrecision)
+			switch (RTC_CorruptCore.CurrentPrecision)
 			{
 				case 1:
 					RTC_CustomEngine.MaxValue8Bit = value;

@@ -101,12 +101,12 @@ namespace RTC
 
 			CPU_STEP_Count++;
 
-			bool autoCorrupt = RTC_Corruptcore.AutoCorrupt;
-			int errorDelay = RTC_Corruptcore.ErrorDelay;
+			bool autoCorrupt = RTC_CorruptCore.AutoCorrupt;
+			int errorDelay = RTC_CorruptCore.ErrorDelay;
 			if (autoCorrupt && CPU_STEP_Count >= errorDelay)
 			{
 				CPU_STEP_Count = 0;
-				BlastLayer bl = RTC_Corruptcore.GenerateBlastLayer((string[])RTCV.NetCore.AllSpec.UISpec["SELECTEDDOMAINS"]);
+				BlastLayer bl = RTC_CorruptCore.GenerateBlastLayer((string[])RTCV.NetCore.AllSpec.UISpec["SELECTEDDOMAINS"]);
 				if (bl != null)
 					bl.Apply(false);
 			}

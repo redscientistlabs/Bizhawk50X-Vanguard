@@ -133,7 +133,7 @@ namespace RTCV.UI
 
 		public byte[] GetDumpFromFile(string key)
 		{
-			return File.ReadAllBytes(RTC_Corruptcore.workingDir + Path.DirectorySeparatorChar + "MEMORYDUMPS" + Path.DirectorySeparatorChar + key + ".dmp");
+			return File.ReadAllBytes(RTC_CorruptCore.workingDir + Path.DirectorySeparatorChar + "MEMORYDUMPS" + Path.DirectorySeparatorChar + key + ".dmp");
 		}
 
 		public long[] CapActiveTable(long[] tempActiveTable)
@@ -152,7 +152,7 @@ namespace RTCV.UI
 
 					while (DuplicateFound)
 					{
-						long queryAdress = tempActiveTable[RTC_Corruptcore.RND.RandomLong(tempActiveTable.Length - 1)];
+						long queryAdress = tempActiveTable[RTC_CorruptCore.RND.RandomLong(tempActiveTable.Length - 1)];
 
 						if (!cappedActiveTable.Contains(queryAdress))
 						{
@@ -235,7 +235,7 @@ namespace RTCV.UI
 		{
 			if (_activeTableReady)
 			{
-				return ActiveTableGenerated[RTC_Corruptcore.RND.Next(ActiveTableGenerated.Length - 1)];
+				return ActiveTableGenerated[RTC_CorruptCore.RND.Next(ActiveTableGenerated.Length - 1)];
 			}
 			else
 				return 0;
@@ -251,7 +251,7 @@ namespace RTCV.UI
 			if (ActiveTableDumps == null)
 				return;
 
-			string key = RTC_Corruptcore.GetRandomKey();
+			string key = RTC_CorruptCore.GetRandomKey();
 
 
 
@@ -305,7 +305,7 @@ namespace RTCV.UI
 
 			ActiveTableDumps = new List<string>();
 
-			foreach (string file in Directory.GetFiles(RTC_Corruptcore.workingDir + Path.DirectorySeparatorChar + "MEMORYDUMPS"))
+			foreach (string file in Directory.GetFiles(RTC_CorruptCore.workingDir + Path.DirectorySeparatorChar + "MEMORYDUMPS"))
 				File.Delete(file);
 
 			currentFilename = null;
@@ -498,7 +498,7 @@ namespace RTCV.UI
 				int lastaddress = -1;
 
 				proto.GenDomain = cbSelectedMemoryDomain.SelectedItem.ToString();
-				proto.VmdName = mi.Name + " " + RTC_Corruptcore.GetRandomKey();
+				proto.VmdName = mi.Name + " " + RTC_CorruptCore.GetRandomKey();
 				proto.BigEndian = mi.BigEndian;
 				proto.WordSize = mi.WordSize;
 				proto.PointerSpacer = 1;

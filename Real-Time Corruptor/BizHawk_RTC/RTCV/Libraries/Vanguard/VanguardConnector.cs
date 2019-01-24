@@ -7,7 +7,7 @@ using System.Windows.Forms;
 using CorruptCore;
 using RTCV.CorruptCore;
 using NetworkSide = RTCV.NetCore.NetworkSide;
-using static RTCV.CorruptCore.RTC_Corruptcore;
+using static RTCV.CorruptCore.RTC_CorruptCore;
 
 namespace RTCV.Vanguard
 {
@@ -28,7 +28,7 @@ namespace RTCV.Vanguard
 
 			if (receiver.Attached)//attached mode
 			{
-				RTC_Corruptcore.Attached = true;
+				RTC_CorruptCore.Attached = true;
 				RTCV.UI.RTC_UICore.Start(null);
 				return;
 			}

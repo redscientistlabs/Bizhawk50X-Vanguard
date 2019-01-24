@@ -71,7 +71,7 @@
     <Compile Include="Corruption Engines\RTC_VectorEngine.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="RTC_BlastTools.cs" />
-    <Compile Include="RTC_Corruptcore.cs" />
+    <Compile Include="RTC_CorruptCore.cs" />
     <Compile Include="RTC_Diff.cs" />
     <Compile Include="RTC_Enums.cs" />
     <Compile Include="RTC_Extensions.cs" />

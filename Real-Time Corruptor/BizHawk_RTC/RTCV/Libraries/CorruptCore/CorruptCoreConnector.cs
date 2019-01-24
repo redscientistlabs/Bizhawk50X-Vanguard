@@ -48,7 +48,7 @@ namespace RTCV.CorruptCore
 				case REMOTE_PUSHUISPEC:
 					SyncObjectSingleton.FormExecute((o, ea) =>
 					{
-						RTCV.NetCore.AllSpec.UISpec = new FullSpec((PartialSpec)advancedMessage.objectValue, !RTC_Corruptcore.Attached);
+						RTCV.NetCore.AllSpec.UISpec = new FullSpec((PartialSpec)advancedMessage.objectValue, !RTC_CorruptCore.Attached);
 					}); 
 					break;
 
@@ -64,8 +64,8 @@ namespace RTCV.CorruptCore
 				case REMOTE_PUSHEMUSPEC:
 					SyncObjectSingleton.FormExecute((o, ea) =>
 					{
-						if(!RTC_Corruptcore.Attached)
-							RTCV.NetCore.AllSpec.VanguardSpec = new FullSpec((PartialSpec)advancedMessage.objectValue, !RTC_Corruptcore.Attached);
+						if(!RTC_CorruptCore.Attached)
+							RTCV.NetCore.AllSpec.VanguardSpec = new FullSpec((PartialSpec)advancedMessage.objectValue, !RTC_CorruptCore.Attached);
 					});
 					break;
 
@@ -81,7 +81,7 @@ namespace RTCV.CorruptCore
 				case REMOTE_PUSHCORRUPTCORESPEC:
 					SyncObjectSingleton.FormExecute((o, ea) =>
 					{
-						RTCV.NetCore.AllSpec.CorruptCoreSpec = new FullSpec((PartialSpec)advancedMessage.objectValue, !RTC_Corruptcore.Attached);
+						RTCV.NetCore.AllSpec.CorruptCoreSpec = new FullSpec((PartialSpec)advancedMessage.objectValue, !RTC_CorruptCore.Attached);
 						RTCV.NetCore.AllSpec.CorruptCoreSpec.SpecUpdated += (ob, eas) =>
 						{
 							PartialSpec partial = eas.partialSpec;
@@ -109,7 +109,7 @@ namespace RTCV.CorruptCore
 					{
 						SyncObjectSingleton.FormExecute((o, ea) =>
 						{
-							RTC_Corruptcore.ASyncGenerateAndBlast();
+							RTC_CorruptCore.ASyncGenerateAndBlast();
 						});
 					}
 					break;
@@ -121,7 +121,7 @@ namespace RTCV.CorruptCore
 					BlastLayer bl = null;
 					SyncObjectSingleton.FormExecute((o, ea) =>
 					{
-						bl = RTC_Corruptcore.GenerateBlastLayer(domains);
+						bl = RTC_CorruptCore.GenerateBlastLayer(domains);
 					});
 					RTC_StockpileManager_EmuSide.CachedBL = bl;
 					if (advancedMessage.requestGuid != null)
@@ -161,10 +161,10 @@ namespace RTCV.CorruptCore
 						var romFilename = temp[1] as String;
 						var romData = temp[2] as Byte[];
 
-						if (!File.Exists(RTC_Corruptcore.rtcDir + Path.DirectorySeparatorChar + "WORKING" + Path.DirectorySeparatorChar + "SKS" + Path.DirectorySeparatorChar + romFilename))
-							File.WriteAllBytes(RTC_Corruptcore.rtcDir + Path.DirectorySeparatorChar + "WORKING" + Path.DirectorySeparatorChar + "SKS" + Path.DirectorySeparatorChar + romFilename, romData);
+						if (!File.Exists(RTC_CorruptCore.rtcDir + Path.DirectorySeparatorChar + "WORKING" + Path.DirectorySeparatorChar + "SKS" + Path.DirectorySeparatorChar + romFilename))
+							File.WriteAllBytes(RTC_CorruptCore.rtcDir + Path.DirectorySeparatorChar + "WORKING" + Path.DirectorySeparatorChar + "SKS" + Path.DirectorySeparatorChar + romFilename, romData);
 
-						sk.RomFilename = RTC_Corruptcore.rtcDir + Path.DirectorySeparatorChar + "WORKING" + Path.DirectorySeparatorChar + "SKS" + Path.DirectorySeparatorChar + RTC_Extensions.getShortFilenameFromPath(romFilename);
+						sk.RomFilename = RTC_CorruptCore.rtcDir + Path.DirectorySeparatorChar + "WORKING" + Path.DirectorySeparatorChar + "SKS" + Path.DirectorySeparatorChar + RTC_Extensions.getShortFilenameFromPath(romFilename);
 						sk.DeployState();
 						sk.Run();
 					}
@@ -173,7 +173,7 @@ namespace RTCV.CorruptCore
 
 
 				case REMOTE_PUSHRTCSPEC:
-					RTCV.NetCore.AllSpec.CorruptCoreSpec = new FullSpec((PartialSpec)advancedMessage.objectValue, !RTC_Corruptcore.Attached);
+					RTCV.NetCore.AllSpec.CorruptCoreSpec = new FullSpec((PartialSpec)advancedMessage.objectValue, !RTC_CorruptCore.Attached);
 					e.setReturnValue(true);
 					break;
 

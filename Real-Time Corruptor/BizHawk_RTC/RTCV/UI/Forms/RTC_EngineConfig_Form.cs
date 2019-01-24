@@ -78,7 +78,7 @@ namespace RTCV.UI
 			RTC_UICore.LimiterListBindingSource.Clear();
 			RTC_UICore.ValueListBindingSource.Clear();
 
-			string[] paths = System.IO.Directory.GetFiles(RTC_Corruptcore.listsDir);
+			string[] paths = System.IO.Directory.GetFiles(RTC_CorruptCore.listsDir);
 
 			paths = paths.OrderBy(x => x).ToArray();
 

@@ -142,7 +142,7 @@ namespace RTC
 
 			emuSpecTemplate.Insert(RTC_EmuCore.getDefaultPartial());
 
-			EmuSpec = new FullSpec(emuSpecTemplate, !RTC_Corruptcore.Attached); //You have to feed a partial spec as a template
+			EmuSpec = new FullSpec(emuSpecTemplate, !RTC_CorruptCore.Attached); //You have to feed a partial spec as a template
 
 			if (RTC_EmuCore.attached)
 				RTCV.Vanguard.VanguardConnector.PushVanguardSpecRef(RTC_EmuCore.EmuSpec);
@@ -172,13 +172,13 @@ namespace RTC
 			//Start everything
 			VanguardImplementation.StartClient();
 			RTC_EmuCore.RegisterEmuhawkSpec();
-			RTC_Corruptcore.StartEmuSide();
+			RTC_CorruptCore.StartEmuSide();
 
 			//Refocus on Bizhawk
 			RTC_Hooks.BIZHAWK_MAINFORM_FOCUS();
 
 			//Force create bizhawk config file if it doesn't exist
-			if (!File.Exists(RTC_Corruptcore.bizhawkDir + Path.DirectorySeparatorChar + "config.ini"))
+			if (!File.Exists(RTC_CorruptCore.bizhawkDir + Path.DirectorySeparatorChar + "config.ini"))
 				RTC_Hooks.BIZHAWK_MAINFORM_SAVECONFIG();
 
 			//If it's attached, lie to vanguard
@@ -234,19 +234,19 @@ namespace RTC
 
 			while (newNumber == lastLoaderRom)
 			{
-				int nbNesFiles = Directory.GetFiles(RTC_Corruptcore.assetsDir, "*.nes").Length;
+				int nbNesFiles = Directory.GetFiles(RTC_CorruptCore.assetsDir, "*.nes").Length;
 
-				newNumber = RTC_Corruptcore.RND.Next(1, nbNesFiles + 1);
+				newNumber = RTC_CorruptCore.RND.Next(1, nbNesFiles + 1);
 
 				if (newNumber != lastLoaderRom)
 				{
-					if (File.Exists(RTC_Corruptcore.assetsDir + "overridedefault.nes"))
-						LoadRom_NET(RTC_Corruptcore.assetsDir + "overridedefault.nes");
+					if (File.Exists(RTC_CorruptCore.assetsDir + "overridedefault.nes"))
+						LoadRom_NET(RTC_CorruptCore.assetsDir + "overridedefault.nes");
 					//Please ignore
-					else if (RTC_Corruptcore.RND.Next(0, 420) == 7)
-						LoadRom_NET(RTC_Corruptcore.assetsDir + "gd.fds");
+					else if (RTC_CorruptCore.RND.Next(0, 420) == 7)
+						LoadRom_NET(RTC_CorruptCore.assetsDir + "gd.fds");
 					else
-						LoadRom_NET(RTC_Corruptcore.assetsDir + newNumber.ToString() + "default.nes");
+						LoadRom_NET(RTC_CorruptCore.assetsDir + newNumber.ToString() + "default.nes");
 
 					lastLoaderRom = newNumber;
 					break;
@@ -299,7 +299,7 @@ namespace RTC
 			prefix = prefix.Substring(prefix.LastIndexOf('\\') + 1);
 
 			//Build up our path
-			var path = RTC_Corruptcore.workingDir + Path.DirectorySeparatorChar + "SESSION" + Path.DirectorySeparatorChar + prefix + "." + quickSlotName + ".State";
+			var path = RTC_CorruptCore.workingDir + Path.DirectorySeparatorChar + "SESSION" + Path.DirectorySeparatorChar + prefix + "." + quickSlotName + ".State";
 
 			//If the path doesn't exist, make it
 			var file = new FileInfo(path);

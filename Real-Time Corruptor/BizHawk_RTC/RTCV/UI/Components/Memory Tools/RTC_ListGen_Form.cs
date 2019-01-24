@@ -148,7 +148,7 @@ namespace RTCV.UI
 			{
 				if (!String.IsNullOrWhiteSpace(filename))
 				{
-					File.WriteAllLines(RTC_Corruptcore.rtcDir + "//LISTS//" + filename + ".txt", newList);
+					File.WriteAllLines(RTC_CorruptCore.rtcDir + "//LISTS//" + filename + ".txt", newList);
 				}
 				else
 				{
@@ -158,7 +158,7 @@ namespace RTCV.UI
 
 			//If there's no name just generate one
 			if (String.IsNullOrWhiteSpace(filename))
-				filename = RTC_Corruptcore.GetRandomKey();
+				filename = RTC_CorruptCore.GetRandomKey();
 
 			//Register the list and update netcore
 			List<Byte[]> byteList = new List<byte[]>();

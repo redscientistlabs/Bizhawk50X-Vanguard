@@ -30,7 +30,7 @@ namespace UI
 			var spec = new NetCoreReceiver();
 			spec.MessageReceived += OnMessageReceived;
 
-			spec.Attached = RTC_Corruptcore.Attached;
+			spec.Attached = RTC_CorruptCore.Attached;
 
 			connector = new UIConnector(spec);
 		}
@@ -55,8 +55,8 @@ namespace UI
 					case REMOTE_PUSHEMUSPEC:
 						SyncObjectSingleton.FormExecute((o, ea) =>
 						{
-							if (!RTC_Corruptcore.Attached)
-								RTCV.NetCore.AllSpec.VanguardSpec = new FullSpec((PartialSpec)advancedMessage.objectValue, !RTC_Corruptcore.Attached);
+							if (!RTC_CorruptCore.Attached)
+								RTCV.NetCore.AllSpec.VanguardSpec = new FullSpec((PartialSpec)advancedMessage.objectValue, !RTC_CorruptCore.Attached);
 
 							e.setReturnValue(true);
 
@@ -96,7 +96,7 @@ namespace UI
 
 							S.GET<RTC_Core_Form>().pbAutoKillSwitchTimeout.Value = 0;
 
-							if (!RTC_Corruptcore.Attached)
+							if (!RTC_CorruptCore.Attached)
 								RTC_AutoKillSwitch.Enabled = true;
 						});
 						break;

@@ -202,21 +202,21 @@ namespace RTC
 					case REMOTE_IMPORTKEYBINDS:
 						SyncObjectSingleton.FormExecute((o, ea) =>
 						{
-							RTC_Hooks.BIZHAWK_IMPORTCONFIGINI(RTC_Corruptcore.bizhawkDir + Path.DirectorySeparatorChar + "import_config.ini", RTC_Corruptcore.bizhawkDir + Path.DirectorySeparatorChar + "stockpile_config.ini");
+							RTC_Hooks.BIZHAWK_IMPORTCONFIGINI(RTC_CorruptCore.bizhawkDir + Path.DirectorySeparatorChar + "import_config.ini", RTC_CorruptCore.bizhawkDir + Path.DirectorySeparatorChar + "stockpile_config.ini");
 						});
 						break;
 
 					case REMOTE_MERGECONFIG:
 						SyncObjectSingleton.FormExecute((o, ea) =>
 						{
-							RTC_Hooks.BIZHAWK_MERGECONFIGINI(RTC_Corruptcore.bizhawkDir + Path.DirectorySeparatorChar + "backup_config.ini", RTC_Corruptcore.bizhawkDir + Path.DirectorySeparatorChar + "stockpile_config.ini");
+							RTC_Hooks.BIZHAWK_MERGECONFIGINI(RTC_CorruptCore.bizhawkDir + Path.DirectorySeparatorChar + "backup_config.ini", RTC_CorruptCore.bizhawkDir + Path.DirectorySeparatorChar + "stockpile_config.ini");
 						});
 						break;
 
 					case REMOTE_RESTOREBIZHAWKCONFIG:
 						SyncObjectSingleton.FormExecute((o, ea) =>
 						{
-							Process.Start(RTC_Corruptcore.bizhawkDir + Path.DirectorySeparatorChar + $"RestoreConfigDETACHED.bat");
+							Process.Start(RTC_CorruptCore.bizhawkDir + Path.DirectorySeparatorChar + $"RestoreConfigDETACHED.bat");
 						});
 						break;
 

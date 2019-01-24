@@ -39,9 +39,9 @@ namespace RTCV.UI
 
 			try
 			{
-				if (RTC_Corruptcore.bizhawkDir.Contains(Path.DirectorySeparatorChar + "VERSIONS" + Path.DirectorySeparatorChar))
+				if (RTC_CorruptCore.bizhawkDir.Contains(Path.DirectorySeparatorChar + "VERSIONS" + Path.DirectorySeparatorChar))
 				{
-					var bizhawkFolder = new DirectoryInfo(RTC_Corruptcore.bizhawkDir);
+					var bizhawkFolder = new DirectoryInfo(RTC_CorruptCore.bizhawkDir);
 					var LauncherVersFolder = bizhawkFolder.Parent.Parent;
 
 					var versions = LauncherVersFolder.GetDirectories().Reverse().ToArray();
@@ -83,7 +83,7 @@ namespace RTCV.UI
 			else
 				RTCV.NetCore.Params.SetParam("ENABLE_BIZHAWK_OSD");
 
-			RTC_Corruptcore.BizhawkOsdDisabled = cbDisableBizhawkOSD.Checked;
+			RTC_CorruptCore.BizhawkOsdDisabled = cbDisableBizhawkOSD.Checked;
 		}
 
 		private void cbAllowCrossCoreCorruption_CheckedChanged(object sender, EventArgs e)
@@ -93,7 +93,7 @@ namespace RTCV.UI
 			else
 				RTCV.NetCore.Params.RemoveParam("ALLOW_CROSS_CORE_CORRUPTION");
 
-			RTC_Corruptcore.AllowCrossCoreCorruption = cbAllowCrossCoreCorruption.Checked;
+			RTC_CorruptCore.AllowCrossCoreCorruption = cbAllowCrossCoreCorruption.Checked;
 		}
 
 		private void cbDontCleanAtQuit_CheckedChanged(object sender, EventArgs e)
@@ -103,7 +103,7 @@ namespace RTCV.UI
 			else
 				RTCV.NetCore.Params.RemoveParam("DONT_CLEAN_SAVESTATES_AT_QUIT");
 
-			RTC_Corruptcore.DontCleanSavestatesOnQuit = cbDontCleanAtQuit.Checked;
+			RTC_CorruptCore.DontCleanSavestatesOnQuit = cbDontCleanAtQuit.Checked;
 		}
 	}
 }

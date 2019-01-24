@@ -158,13 +158,13 @@ namespace RTCV.CorruptCore
 								switch (precision)
 								{
 									case 1:
-										randomValue = RTC_Corruptcore.RND.RandomLong(MinValue8Bit, MaxValue8Bit);
+										randomValue = RTC_CorruptCore.RND.RandomLong(MinValue8Bit, MaxValue8Bit);
 										break;
 									case 2:
-										randomValue = RTC_Corruptcore.RND.RandomLong(MinValue16Bit, MaxValue16Bit);
+										randomValue = RTC_CorruptCore.RND.RandomLong(MinValue16Bit, MaxValue16Bit);
 										break;
 									case 4:
-										randomValue = RTC_Corruptcore.RND.RandomLong(MinValue32Bit, MaxValue32Bit);
+										randomValue = RTC_CorruptCore.RND.RandomLong(MinValue32Bit, MaxValue32Bit);
 										break;
 								}
 
@@ -172,14 +172,14 @@ namespace RTCV.CorruptCore
 									value = RTC_Extensions.GetByteArrayValue(precision, randomValue, true);
 								else
 									for (int i = 0; i < precision; i++)
-										value[i] = (byte)RTC_Corruptcore.RND.Next();
+										value[i] = (byte)RTC_CorruptCore.RND.Next();
 							}
 							break;
 
 							case CustomValueSource.RANDOM:
 							{
 								for (int i = 0; i < precision; i++)
-									value[i] = (byte)RTC_Corruptcore.RND.Next();
+									value[i] = (byte)RTC_CorruptCore.RND.Next();
 							}
 							break;
 								
@@ -196,7 +196,7 @@ namespace RTCV.CorruptCore
 						{
 							case CustomStoreAddress.RANDOM:
 							{
-								BlastTarget bt = RTC_Corruptcore.GetBlastTarget();
+								BlastTarget bt = RTC_CorruptCore.GetBlastTarget();
 								long safeStartAddress = bt.Address - (bt.Address % precision);
 								bu.SourceDomain = bt.Domain;
 								bu.SourceAddress = safeStartAddress;
@@ -282,11 +282,11 @@ namespace RTCV.CorruptCore
 			if (list == null)
 			{
 				byte[] buffer = new byte[4];
-				RTC_Corruptcore.RND.NextBytes(buffer);
+				RTC_CorruptCore.RND.NextBytes(buffer);
 				return buffer;
 			}
 
-			return StringToByteArray(list[RTC_Corruptcore.RND.Next(list.Length)]);
+			return StringToByteArray(list[RTC_CorruptCore.RND.Next(list.Length)]);
 		}
 
 		public static byte[] StringToByteArray(string hex)
