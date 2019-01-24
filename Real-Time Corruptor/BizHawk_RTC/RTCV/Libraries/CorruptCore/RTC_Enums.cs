@@ -131,7 +131,8 @@
 		SKS,
 		SSK,
 		MP,
-		SESSION
+		SESSION,
+		DEFAULTVALUE
 	}
 
 	public enum RTCSPEC

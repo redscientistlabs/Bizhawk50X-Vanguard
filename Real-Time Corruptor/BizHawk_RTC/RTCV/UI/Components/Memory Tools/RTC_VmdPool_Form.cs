@@ -32,7 +32,7 @@ namespace RTCV.UI
 
 				foreach (BlastUnit bu in RTC_StepActions.GetRawBlastLayer().Layer)
 				{
-					bu.RasterizeSourceAddress();
+					bu.RasterizeVMDs();
 				}
 
 				RTC_MemoryDomains.RemoveVMD(VmdName);

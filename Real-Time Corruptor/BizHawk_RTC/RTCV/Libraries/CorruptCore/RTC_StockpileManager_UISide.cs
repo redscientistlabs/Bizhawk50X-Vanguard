@@ -29,7 +29,7 @@ namespace RTCV.CorruptCore
 		// key: some key or guid, value: [0] savestate key [1] rom file
 		public static volatile Dictionary<string, StashKey> SavestateStashkeyDico = new Dictionary<string, StashKey>();
 
-
+    
 
 		private static void PreApplyStashkey()
 		{

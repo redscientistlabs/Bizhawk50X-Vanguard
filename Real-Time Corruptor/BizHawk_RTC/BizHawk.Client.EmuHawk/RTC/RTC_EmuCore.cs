@@ -166,7 +166,10 @@ namespace RTC
 		//This is the entry point of RTC. Without this method, nothing will load.
 		public static void Start(RTC_Standalone_Form _standaloneForm = null)
 		{
+			//Grab an object on the main thread to use for netcore invokes
 			SyncObjectSingleton.SyncObject = GlobalWin.MainForm;
+
+			//Start everything
 			VanguardImplementation.StartClient();
 			RTC_EmuCore.RegisterEmuhawkSpec();
 			RTC_Corruptcore.StartEmuSide();
@@ -178,6 +181,7 @@ namespace RTC
 			if (!File.Exists(RTC_Corruptcore.bizhawkDir + Path.DirectorySeparatorChar + "config.ini"))
 				RTC_Hooks.BIZHAWK_MAINFORM_SAVECONFIG();
 
+			//If it's attached, lie to vanguard
 			if (RTC_EmuCore.attached)
 				VanguardConnector.ImplyClientConnected();
 		}
@@ -219,12 +223,12 @@ namespace RTC
 					return SystemDisplayName;
 			}
 		}
-
+		/// <summary>
+		/// Loads a NES-based title screen.
+		/// Can be overriden by putting a file named "overridedefault.nes" in the ASSETS folder
+		/// </summary>
 		public static void LoadDefaultRom()
 		{
-			//Loads a NES-based title screen.
-			//Can be overriden by putting a file named "overridedefault.nes" in the ASSETS folder
-
 			int lastLoaderRom = RTC_EmuCore.LastLoaderRom;
 			int newNumber = RTC_EmuCore.LastLoaderRom;
 
@@ -250,20 +254,21 @@ namespace RTC
 			}
 		}
 
+		/// <summary>
+		/// Loads a rom within Bizhawk. To be called from within Bizhawk only
+		/// </summary>
+		/// <param name="RomFile"></param>
 		public static void LoadRom_NET(string RomFile)
 		{
 			var loadRomWatch = Stopwatch.StartNew();
-			// -> EmuHawk Process only
-			//Loads a rom inside Bizhawk from a Filename.
 
 			StopSound();
-
-			//var args = new MainForm.LoadRomArgs();
 
 			if (RomFile == null)
 				RomFile = RTC_Hooks.BIZHAWK_GET_CURRENTLYOPENEDROM(); ;
 
 
+			//Stop capturing rewind while we load
 			RTC_Hooks.AllowCaptureRewindState = false;
 			RTC_Hooks.BIZHAWK_LOADROM(RomFile);
 			RTC_Hooks.AllowCaptureRewindState = true;
@@ -273,27 +278,35 @@ namespace RTC
 			Console.WriteLine($"Time taken for LoadRom_NET: {0}ms", loadRomWatch.ElapsedMilliseconds);
 		}
 
-
+		/// <summary>
+		/// Creates a savestate using a key as the filename and returns the path.
+		/// Bizhawk process only.
+		/// </summary>
+		/// <param name="Key"></param>
+		/// <param name="threadSave"></param>
+		/// <returns></returns>
 		public static string SaveSavestate_NET(string Key, bool threadSave = false)
 		{
-			// -> EmuHawk Process only
-			//Creates a new savestate and returns the key to it.
-
+			//Don't state if we don't have a core
 			if (RTC_Hooks.BIZHAWK_ISNULLEMULATORCORE())
 				return null;
 
+			//Build the shortname
 			string quickSlotName = Key + ".timejump";
 
+			//Get the prefix for the state
 			string prefix = RTC_Hooks.BIZHAWK_GET_SAVESTATEPREFIX();
 			prefix = prefix.Substring(prefix.LastIndexOf('\\') + 1);
 
+			//Build up our path
 			var path = RTC_Corruptcore.workingDir + Path.DirectorySeparatorChar + "SESSION" + Path.DirectorySeparatorChar + prefix + "." + quickSlotName + ".State";
 
+			//If the path doesn't exist, make it
 			var file = new FileInfo(path);
 			if (file.Directory != null && file.Directory.Exists == false)
 				file.Directory.Create();
 
-
+			//Savestates on a new thread. Doesn't work properly as Bizhawk doesn't support threaded states
 			if (threadSave)
 			{
 				(new Thread(() =>
@@ -309,19 +322,26 @@ namespace RTC
 				})).Start();
 			}
 			else
-				RTC_Hooks.BIZHAWK_SAVESTATE(path, quickSlotName);
+				RTC_Hooks.BIZHAWK_SAVESTATE(path, quickSlotName); //savestate
 
 			return path;
 		}
 
-		public static bool LoadSavestate_NET(string path, StashKeySavestateLocation stateLocation)
+		/// <summary>
+		/// Loads a savestate from a path. 
+		/// </summary>
+		/// <param name="path">The path of the state</param>
+		/// <param name="stateLocation">Where the state is located in a stashkey (used for errors, not required)</param>
+		/// <returns></returns>
+		public static bool LoadSavestate_NET(string path, StashKeySavestateLocation stateLocation = StashKeySavestateLocation.DEFAULTVALUE)
 		{
 			try
 			{
+				//If we don't have a core just exit out
 				if (RTC_Hooks.BIZHAWK_ISNULLEMULATORCORE())
 					return false;
 
-
+				//If we can't find the file, throw a message
 				if (File.Exists(path) == false)
 				{
 					RTC_Hooks.BIZHAWK_OSDMESSAGE("Unable to load " + Path.GetFileName(path) + " from " + stateLocation);
@@ -339,6 +359,9 @@ namespace RTC
 			}
 		}
 
+		/// <summary>
+		/// Loads the window size/position from a param
+		/// </summary>
 		public static void LoadBizhawkWindowState()
 		{
 			if (RTCV.NetCore.Params.IsParamSet("BIZHAWK_SIZE"))
@@ -349,7 +372,9 @@ namespace RTC
 				RTC_Hooks.BIZHAWK_GETSET_MAINFORMLOCATION = new Point(Convert.ToInt32(location[0]), Convert.ToInt32(location[1]));
 			}
 		}
-
+		/// <summary>
+		/// Saves the window size/position to a param
+		/// </summary>
 		public static void SaveBizhawkWindowState()
 		{
 			var size = RTC_Hooks.BIZHAWK_GETSET_MAINFORMSIZE;
@@ -359,17 +384,17 @@ namespace RTC
 			RTCV.NetCore.Params.SetParam("BIZHAWK_LOCATION", $"{location.X},{location.Y}");
 		}
 
+		/// <summary>
+		/// Loads the default rom and shows bizhawk
+		/// </summary>
 		public static void LoadDefaultAndShowBizhawkForm()
 		{
 
 			RTC_EmuCore.LoadDefaultRom();
-
 			RTC_EmuCore.LoadBizhawkWindowState();
-
 			GlobalWin.MainForm.Focus();
 
 			//Yell at the user if they're using audio throttle as it's buggy
-			//We have to do this in the bizhawk process
 			if (Global.Config.SoundThrottle)
 			{
 				MessageBox.Show("Sound throttle is buggy and can result in crashes.\nSwapping to clock throttle.");
@@ -380,6 +405,11 @@ namespace RTC
 		}
 
 
+		/// <summary>
+		/// Returns the list of domains that are blacklisted from being auto-selected
+		/// </summary>
+		/// <param name="systemName"></param>
+		/// <returns></returns>
 		public static string[] GetBlacklistedDomains(string systemName)
 		{
 			// Returns the list of Domains that can't be rewinded and/or are just not good to use

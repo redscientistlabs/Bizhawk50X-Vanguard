@@ -99,20 +99,42 @@ namespace RTCV.CorruptCore
 				{
 					allRoms.Add(key.RomFilename);
 
+					//If it's a cue file, find the bins and fix the cue to be relative
 					if (key.RomFilename.ToUpper().Contains(".CUE"))
 					{
 						string cueFolder = RTC_Extensions.getLongDirectoryFromPath(key.RomFilename);
 						string[] cueLines = File.ReadAllLines(key.RomFilename);
 						List<string> binFiles = new List<string>();
 
-						foreach (string line in cueLines)
-							if (line.Contains("FILE") && line.Contains("BINARY"))
+						string[] fixedCue = new string[cueLines.Length];
+						for (int i = 0; i < cueLines.Length; i++)
+						{
+							if (cueLines[i].Contains("FILE") && cueLines[i].Contains("BINARY"))
 							{
-								int startFilename = line.IndexOf('"') + 1;
-								int endFilename = line.LastIndexOf('"');
+								int startFilename;
+								int endFilename = cueLines[i].LastIndexOf('"');
 
-								binFiles.Add(line.Substring(startFilename, endFilename - startFilename));
+								//If it's an absolute path, convert it to a relative path then fix the cue as well
+								if (cueLines[i].Contains(':'))
+								{
+									startFilename = cueLines[i].LastIndexOfAny(new char[] { '\\', '/' }) + 1;
+									fixedCue[i] = "FILE \"" + cueLines[i].Substring(startFilename, endFilename - startFilename) + "\" BINARY";
+								}
+								else
+								{
+									//Just copy the old cue into the new one
+									startFilename = cueLines[i].IndexOf('"') + 1;
+									fixedCue[i] = cueLines[i];
+								}
+
+								binFiles.Add(cueLines[i].Substring(startFilename, endFilename - startFilename));
 							}
+							else
+								fixedCue[i] = cueLines[i];
+
+						}
+						//Write our new cue
+						File.WriteAllLines(key.RomFilename, fixedCue);
 
 						allRoms.AddRange(binFiles.Select(it => cueFolder + it));
 					}
@@ -138,13 +160,14 @@ namespace RTCV.CorruptCore
 			foreach (string str in allRoms)
 			{
 				string rom = str;
-				//string romTempfilename = RTC_Core.workingDir + Path.DirectorySeparatorChar + "TEMP" + Path.DirectorySeparatorChar + (rom.Substring(rom.LastIndexOf(Path.DirectorySeparatorChar) + 1, rom.Length - (rom.LastIndexOf(Path.DirectorySeparatorChar) + 1)));
 				string romTempfilename = RTC_Corruptcore.workingDir + Path.DirectorySeparatorChar + "TEMP" + Path.DirectorySeparatorChar + Path.GetFileName(rom);
 				if (!rom.Contains(Path.DirectorySeparatorChar))
 					rom = RTC_Corruptcore.workingDir + Path.DirectorySeparatorChar + "SKS" + Path.DirectorySeparatorChar + rom;
 
+				//If the file already exists, overwrite it.
 				if (File.Exists(romTempfilename))
 				{
+					//Whack the attributes in case a rom is readonly 
 					File.SetAttributes(romTempfilename, FileAttributes.Normal);
 					File.Delete(romTempfilename);
 					File.Copy(rom, romTempfilename);
@@ -152,14 +175,16 @@ namespace RTCV.CorruptCore
 				else
 					File.Copy(rom, romTempfilename);
 			}
-			
+
+			//Copy all the savestates
 			foreach (StashKey key in sks.StashKeys)
 			{
-				string stateFilename = key.GameName + "." + key.ParentKey + ".timejump.State"; // get savestate name
-
+				// get savestate name
+				string stateFilename = key.GameName + "." + key.ParentKey + ".timejump.State";
 				File.Copy(RTC_Corruptcore.workingDir + Path.DirectorySeparatorChar + key.StateLocation + Path.DirectorySeparatorChar + stateFilename, RTC_Corruptcore.workingDir + Path.DirectorySeparatorChar + "TEMP" + Path.DirectorySeparatorChar + stateFilename, true); // copy savestates to temp folder
 			}
 
+			//If there's a config, snag it
 			if (File.Exists(RTC_Corruptcore.bizhawkDir + Path.DirectorySeparatorChar + "config.ini"))
 				File.Copy(RTC_Corruptcore.bizhawkDir + Path.DirectorySeparatorChar + "config.ini", RTC_Corruptcore.workingDir + Path.DirectorySeparatorChar + "TEMP\\config.ini");
 
@@ -173,6 +198,7 @@ namespace RTCV.CorruptCore
 				File.WriteAllLines(RTC_Corruptcore.workingDir + Path.DirectorySeparatorChar + "TEMP" + Path.DirectorySeparatorChar + i + ".limiter", limiterLists[i]);
 			}
 
+			//Update stashkey info 
 			foreach (StashKey sk in sks.StashKeys)
 			{
 				sk.RomShortFilename = RTC_Extensions.getShortFilenameFromPath(sk.RomFilename);
@@ -187,7 +213,7 @@ namespace RTCV.CorruptCore
 			}
 
 			string tempFilename = sks.Filename + ".temp";
-
+			//If there's already a temp file from a previous failed save, delete it
 			try
 			{
 				if (File.Exists(tempFilename))
@@ -202,20 +228,22 @@ namespace RTCV.CorruptCore
 			CompressionLevel comp = CompressionLevel.Fastest;
 			if (!compress)
 				comp = CompressionLevel.NoCompression;
-
+			//Create the file into temp
 			ZipFile.CreateFromDirectory(RTC_Corruptcore.workingDir + Path.DirectorySeparatorChar + "TEMP" + Path.DirectorySeparatorChar, tempFilename, comp, false);
 
+			//Remove the old stockpile
 			try
 			{
 				if (File.Exists(sks.Filename))
 					File.Delete(sks.Filename);
 			}
-			catch(Exception ex)
+			catch (Exception ex)
 			{
 				MessageBox.Show(ex.Message);
 				return false;
 			}
 
+			//Move us to the destination
 			File.Move(tempFilename, sks.Filename);
 
 			//Move all the files from temp into SKS
@@ -233,12 +261,8 @@ namespace RTCV.CorruptCore
 						"If you're seeing this error, that means the file is probably in use. If it is, everything should technically be fine assuming it's the same file.\n" +
 						"If the file you're seeing here has changed since the stockpile was last saved (rom edited manually), you should probably reload your stockpile from the file.");
 				}
-			//File.Move(file, RTC_Core.workingDir + Path.DirectorySeparatorChar + "SKS" + Path.DirectorySeparatorChar + (file.Substring(file.LastIndexOf(Path.DirectorySeparatorChar) + 1, file.Length - (file.LastIndexOf(Path.DirectorySeparatorChar) + 1))));
 
 			RTC_StockpileManager_UISide.CurrentStockpile = sks;
-
-
-
 			return true;
 		}
 
@@ -268,10 +292,11 @@ namespace RTCV.CorruptCore
 			}
 
 
+			//Extract the stockpile
 			Extract(Filename, Path.DirectorySeparatorChar + "WORKING\\SKS", "stockpile.json");
 
 			Stockpile sks;
-
+			//Read in the stockpile
 			try
 			{
 				using (FileStream fs = File.Open(RTC_Corruptcore.workingDir + Path.DirectorySeparatorChar + "SKS\\stockpile.json", FileMode.OpenOrCreate))
@@ -281,16 +306,16 @@ namespace RTCV.CorruptCore
 				}
 
 			}
-			catch(Exception e)
+			catch (Exception e)
 			{
 				MessageBox.Show("The Stockpile file could not be loaded" + e);
 				return false;
 			}
-			
+
 			//Load the limiter lists into the dictionary
 			RTC_Filtering.LoadListsFromPaths(Directory.GetFiles(RTC_Corruptcore.workingDir + Path.DirectorySeparatorChar + "SKS" + Path.DirectorySeparatorChar, "*.limiter"));
 
-
+			//Update the current stockpile to this one
 			RTC_StockpileManager_UISide.CurrentStockpile = sks;
 
 			//Set up the correct 
@@ -303,22 +328,30 @@ namespace RTCV.CorruptCore
 			//fill list controls
 			dgvStockpile.Rows.Clear();
 
+			//Todo - Refactor this to get it out of the object
+			//Populate the dgv
 			foreach (StashKey key in sks.StashKeys)
-				dgvStockpile.Rows.Add(key, key.GameName, key.SystemName, key.SystemCore, key.Note);
-			
+				dgvStockpile?.Rows.Add(key, key.GameName, key.SystemName, key.SystemCore, key.Note);
 
+			//Update the filename in case they renamed it
 			sks.Filename = Filename;
 
+			//Check version compatibility
 			CheckCompatibility(sks);
 
+			//If there's a limiter missing, pop a message
 			if (sks.MissingLimiter)
 				MessageBox.Show(
-					"This stockpile is missing a limiter list used by some blastunits. Some corruptions probably won't work properly.\nIf the limiter list is found next time you save, it'll automatically be packed in.");
-
-
+					"This stockpile is missing a limiter list used by some blastunits.\n" +
+					"Some corruptions probably won't work properly.\n" +
+					"If the limiter list is found next time you save, it'll automatically be packed in.");
 			return true;
 		}
 
+		/// <summary>
+		/// Checks a stockpile for compatibility with the current version of the RTC
+		/// </summary>
+		/// <param name="sks"></param>
 		public static void CheckCompatibility(Stockpile sks)
 		{
 			List<string> errorMessages = new List<string>();
@@ -342,6 +375,10 @@ namespace RTCV.CorruptCore
 			MessageBox.Show(message, "Compatibility Checker", MessageBoxButtons.OK, MessageBoxIcon.Warning);
 		}
 
+		/// <summary>
+		/// Recursively deletes all files and folders within a directory
+		/// </summary>
+		/// <param name="baseDir"></param>
 		public static void RecursiveDelete(DirectoryInfo baseDir)
 		{
 			if (!baseDir.Exists)
@@ -374,6 +411,13 @@ namespace RTCV.CorruptCore
 			}
 		}
 
+		/// <summary>
+		/// Extracts a stockpile into a folder and ensures a master file exists
+		/// </summary>
+		/// <param name="filename"></param>
+		/// <param name="folder"></param>
+		/// <param name="masterFile"></param>
+		/// <returns></returns>
 		public static bool Extract(string filename, string folder, string masterFile)
 		{
 			try
@@ -390,7 +434,7 @@ namespace RTCV.CorruptCore
 
 				return true;
 			}
-			catch(Exception e)
+			catch (Exception e)
 			{
 				//If it errors out, empty the folder
 				MessageBox.Show("The file could not be read properly" + e);
@@ -398,6 +442,7 @@ namespace RTCV.CorruptCore
 				return false;
 			}
 		}
+
 
 		public static void LoadBizhawkKeyBindsFromIni(string Filename = null)
 		{
@@ -429,7 +474,7 @@ namespace RTCV.CorruptCore
 
 			LocalNetCoreRouter.Route(NetcoreCommands.VANGUARD, NetcoreCommands.REMOTE_IMPORTKEYBINDS);
 			Process.Start(RTC_Corruptcore.bizhawkDir + Path.DirectorySeparatorChar + $"StockpileConfigDETACHED.bat");
-			
+
 		}
 
 		public static void LoadBizhawkConfigFromStockpile(string Filename = null)
@@ -469,10 +514,10 @@ namespace RTCV.CorruptCore
 			File.Copy((RTC_Corruptcore.workingDir + Path.DirectorySeparatorChar + "SKS\\config.ini"), (RTC_Corruptcore.bizhawkDir + Path.DirectorySeparatorChar + "stockpile_config.ini"));
 
 			LocalNetCoreRouter.Route(NetcoreCommands.VANGUARD, NetcoreCommands.REMOTE_MERGECONFIG);
-			
+
 
 			Process.Start(RTC_Corruptcore.bizhawkDir + Path.DirectorySeparatorChar + $"StockpileConfigDETACHED.bat");
-			
+
 		}
 
 		public static void RestoreBizhawkConfig()
@@ -481,7 +526,6 @@ namespace RTCV.CorruptCore
 		}
 
 
-		
 		public static void Import(string filename, DataGridView dgvStockpile)
 		{
 			//clean temp folder
@@ -570,7 +614,7 @@ namespace RTCV.CorruptCore
 			EmptyFolder(Path.DirectorySeparatorChar + "WORKING\\TEMP");
 
 			//fill list controls
-
+			//Todo - Get this out of the object
 			foreach (StashKey sk in sks.StashKeys)
 			{
 				DataGridViewRow dgvRow = dgvStockpile.Rows[dgvStockpile.Rows.Add()];
@@ -579,7 +623,7 @@ namespace RTCV.CorruptCore
 				dgvRow.Cells["SystemName"].Value = sk.SystemName;
 				dgvRow.Cells["SystemCore"].Value = sk.SystemCore;
 			}
-			
+
 			CheckCompatibility(sks);
 
 			RTC_StockpileManager_UISide.StockpileChanged();
@@ -588,7 +632,7 @@ namespace RTCV.CorruptCore
 
 	[Serializable]
 	[Ceras.MemberConfig(TargetMember.All)]
-	public class StashKey : ICloneable , INote
+	public class StashKey : ICloneable, INote
 	{
 		public string RomFilename { get; set; }
 		public string RomShortFilename { get; set; }
@@ -626,10 +670,10 @@ namespace RTCV.CorruptCore
 			ParentKey = parentkey;
 			BlastLayer = blastlayer;
 
-			RomFilename =  (string)RTCV.NetCore.AllSpec.VanguardSpec[VSPEC.OPENROMFILENAME.ToString()];
-			SystemName =   (string)RTCV.NetCore.AllSpec.VanguardSpec[VSPEC.SYSTEM.ToString()];
-			SystemCore =   (string)RTCV.NetCore.AllSpec.VanguardSpec[VSPEC.SYSTEMCORE.ToString()];
-			GameName =     (string)RTCV.NetCore.AllSpec.VanguardSpec[VSPEC.GAMENAME.ToString()];
+			RomFilename = (string)RTCV.NetCore.AllSpec.VanguardSpec[VSPEC.OPENROMFILENAME.ToString()];
+			SystemName = (string)RTCV.NetCore.AllSpec.VanguardSpec[VSPEC.SYSTEM.ToString()];
+			SystemCore = (string)RTCV.NetCore.AllSpec.VanguardSpec[VSPEC.SYSTEMCORE.ToString()];
+			GameName = (string)RTCV.NetCore.AllSpec.VanguardSpec[VSPEC.GAMENAME.ToString()];
 			SyncSettings = (string)RTCV.NetCore.AllSpec.VanguardSpec[VSPEC.SYNCSETTINGS.ToString()];
 
 			this.SelectedDomains.AddRange((string[])RTCV.NetCore.AllSpec.UISpec["SELECTEDDOMAINS"]);
@@ -650,7 +694,7 @@ namespace RTCV.CorruptCore
 		public static void SetCore(StashKey sk) => SetCore(sk.SystemName, sk.SystemCore);
 		public static void SetCore(string systemName, string systemCore)
 		{
-			LocalNetCoreRouter.Route(NetcoreCommands.VANGUARD, NetcoreCommands.REMOTE_KEY_SETSYSTEMCORE, new object[] {systemName, systemCore}, true);
+			LocalNetCoreRouter.Route(NetcoreCommands.VANGUARD, NetcoreCommands.REMOTE_KEY_SETSYSTEMCORE, new object[] { systemName, systemCore }, true);
 		}
 
 		public override string ToString()
@@ -819,11 +863,6 @@ namespace RTCV.CorruptCore
 			foreach (BlastUnit bu in Layer)
 				bu.RasterizeVMDs();
 		}
-		public void RasterizeAddress()
-		{
-			foreach (BlastUnit bu in Layer)
-				bu.RasterizeSourceAddress();
-		}
 
 		private string shared = "[DIFFERENT]";
 
@@ -921,15 +960,24 @@ namespace RTCV.CorruptCore
 			}
 			set
 			{
+				//Cache the old precision
 				int oldPrecision = precision;
+				//Update the precision
 				precision = value;
+
 				//If the user is changing the precision and already has a Value set, we need to update that array
-				if(Value != null && oldPrecision != precision && Value.Length != precision)
+				if (Value != null && oldPrecision != precision && Value.Length != precision)
 				{
+					//If the precision is being set to 0, force it back to 1 and fill in an empty value
 					if (precision < 1)
+					{
 						Value = new byte[1];
+						precision = 1;
+					}
+
 					else
 					{
+						//If there was no precision set, set it to 1
 						if (oldPrecision == 0)
 							oldPrecision = 1;
 
@@ -943,7 +991,7 @@ namespace RTCV.CorruptCore
 						else
 						{
 							int j = 0;
-							for (int i = oldPrecision-precision; i < oldPrecision; i++)
+							for (int i = oldPrecision - precision; i < oldPrecision; i++)
 							{
 								temp[j] = Value[i];
 								j++;
@@ -1060,7 +1108,7 @@ namespace RTCV.CorruptCore
 		/// <param name="isEnabled"></param>
 		/// <param name="isLocked"></param>
 		public BlastUnit(StoreType storeType, StoreTime storeTime,
-			string domain, long address, string sourceDomain, long sourceAddress,  int precision, bool bigEndian, int executeFrame = 0, int lifetime = 1,
+			string domain, long address, string sourceDomain, long sourceAddress, int precision, bool bigEndian, int executeFrame = 0, int lifetime = 1,
 			string note = null, bool isEnabled = true, bool isLocked = false)
 		{
 			Source = BlastUnitSource.STORE;
@@ -1114,8 +1162,12 @@ namespace RTCV.CorruptCore
 		{
 		}
 
+		/// <summary>
+		/// Rasterizes VMDs to their underlying domain
+		/// </summary>
 		public void RasterizeVMDs()
 		{
+			//Todo - Change this to a more unique marker than [V]?
 			if (Domain.Contains("[V]"))
 			{
 				string domain = (string)Domain.Clone();
@@ -1134,41 +1186,37 @@ namespace RTCV.CorruptCore
 			}
 
 		}
-
-		public void RasterizeSourceAddress()
-		{
-			if (Source == BlastUnitSource.STORE)
-			{
-				SourceDomain = RTC_MemoryDomains.GetRealDomain(SourceDomain, SourceAddress);
-				SourceAddress = RTC_MemoryDomains.GetRealAddress(SourceDomain, SourceAddress);
-			}
-		}
-
+		/// <summary>
+		/// Adds a blastunit to the execution pool
+		/// </summary>
+		/// <returns></returns>
 		public bool Apply()
 		{
 			if (!IsEnabled)
 				return true;
-
+			//Create our working data object
 			this.Working = new BlastUnitWorkingData();
 
 			//We need to grab the value to freeze
 			if (Source == BlastUnitSource.STORE && StoreTime == StoreTime.IMMEDIATE)
 			{
-				//If it's one time, store the backup. Otherwise add it to the pool 
-				if(StoreType == StoreType.ONCE)
+				//If it's one time, store the backup. Otherwise add it to the backup pool 
+				if (StoreType == StoreType.ONCE)
 					StoreBackup();
 				else
 				{
 					RTC_StepActions.StoreDataPool.Add(this);
 				}
 			}
-
+			//Add it to the execution pool
 			RTC_StepActions.AddBlastUnit(this);
-
 			return true;
 		}
 
-
+		/// <summary>
+		/// Executes (applies) a blastunit. This shouldn't be called manually.
+		/// If you want to execute a blastunit, add it to the execution pool using Apply()
+		/// </summary>
 		public void Execute()
 		{
 			if (!IsEnabled)
@@ -1176,20 +1224,19 @@ namespace RTCV.CorruptCore
 
 			try
 			{
+				//Get our memory interface
 				MemoryInterface mi = RTC_MemoryDomains.GetInterface(Domain);
-
 				if (mi == null)
 					return;
 
-				
 				//Limiter handling
-				if (LimiterTime == LimiterTime.EXECUTE)
+				if (LimiterListHash != null && LimiterTime == LimiterTime.EXECUTE)
 				{
 					if (InvertLimiter)
 					{
 						//If it's store, we need to use the sourceaddress and sourcedomain
 						if (Source == BlastUnitSource.STORE && RTC_Filtering.LimiterPeekBytes(SourceAddress,
-							    SourceAddress + Precision, SourceDomain, LimiterListHash, mi))
+								SourceAddress + Precision, SourceDomain, LimiterListHash, mi))
 							return;
 						//If it's VALUE, we need to use the address and domain
 						if (Source == BlastUnitSource.VALUE && RTC_Filtering.LimiterPeekBytes(Address,
@@ -1200,7 +1247,7 @@ namespace RTCV.CorruptCore
 					{
 						//If it's store, we need to use the sourceaddress and sourcedomain
 						if (Source == BlastUnitSource.STORE && !RTC_Filtering.LimiterPeekBytes(SourceAddress,
-							    SourceAddress + Precision, SourceDomain, LimiterListHash, mi))
+								SourceAddress + Precision, SourceDomain, LimiterListHash, mi))
 							return;
 						//If it's VALUE, we need to use the address and domain
 						if (Source == BlastUnitSource.VALUE && !RTC_Filtering.LimiterPeekBytes(Address,
@@ -1213,41 +1260,47 @@ namespace RTCV.CorruptCore
 				switch (Source)
 				{
 					case (BlastUnitSource.STORE):
-					{
-						if (Working.StoreData.Count == 0)
-							return;
-						Working.ApplyValue = Working.StoreData.First();
-
-						//Remove it if it's a continuous backup
-						if(StoreType == StoreType.CONTINUOUS)
-							Working.StoreData.Dequeue();
-
-						//All the data is already handled by GetStoreBackup. We just take the first in the linked list and then remove it so the garbage collector can clean it up to prevent a memory leak
-						for (int i = 0; i < Precision; i++)
 						{
-							mi.PokeByte(Address + i, Working.ApplyValue[i]);
-						}
-					}
-					break;
-					case (BlastUnitSource.VALUE):
-					{
-						//We only calculate it once for Value and then store it in ApplyValue.
-						//If the length has changed (blast editor) we gotta recalc it
-						if (Working.ApplyValue == null)
-						{
-							Working.ApplyValue = RTC_Extensions.AddValueToByteArrayUnchecked(Value, TiltValue, this.BigEndian);
+							//Todo - evaluate if this was masking bugs
+							//If there's no stored data, return out.
+							//if (Working.StoreData.Count == 0)
+							//	return;
 
-							//Flip it if it's big endian
-							if (this.BigEndian)
-								Working.ApplyValue.FlipBytes();
-						}
-						for (int i = 0; i < Precision; i++)
-						{
-							mi.PokeByte(Address + i, Working.ApplyValue[i]);
-						}
+							//Apply the value we have stored
+							Working.ApplyValue = Working.StoreData.First();
 
+							//Remove it from the store pool if it's a continuous backup
+							if (StoreType == StoreType.CONTINUOUS)
+								Working.StoreData.Dequeue();
+
+							//All the data is already handled by GetStoreBackup, so we can just poke
+							for (int i = 0; i < Precision; i++)
+							{
+								mi.PokeByte(Address + i, Working.ApplyValue[i]);
+							}
+						}
 						break;
-					}
+					case (BlastUnitSource.VALUE):
+						{
+							//We only calculate it once for Value and then store it in ApplyValue.
+							//If the length has changed (blast editor) we gotta recalc it
+							if (Working.ApplyValue == null)
+							{
+								//Calculate the actual value to apply
+								Working.ApplyValue = RTC_Extensions.AddValueToByteArrayUnchecked(Value, TiltValue, this.BigEndian);
+
+								//Flip it if it's big endian
+								if (this.BigEndian)
+									Working.ApplyValue.FlipBytes();
+							}
+							//Poke the memory
+							for (int i = 0; i < Precision; i++)
+							{
+								mi.PokeByte(Address + i, Working.ApplyValue[i]);
+							}
+
+							break;
+						}
 				}
 			}
 			catch (Exception ex)
@@ -1260,26 +1313,35 @@ namespace RTCV.CorruptCore
 			return;
 		}
 
+		/// <summary>
+		/// Adds a backup to the end of the StoreData queue
+		/// </summary>
 		public void StoreBackup()
 		{
+			//Snag our memory interface
 			MemoryDomainProxy mi = RTC_MemoryDomains.GetProxy(SourceDomain, SourceAddress);
 
 			if (mi == null)
 				throw new Exception(
 					$"Memory Domain error. Mi was null. If you know how to reproduce this, let the devs know");
 
+			//Get the value
 			Byte[] value = new byte[Precision];
-
 			for (int i = 0; i < Precision; i++)
 			{
 				value[i] = mi.PeekByte(SourceAddress + i);
 			}
-
+			//Calculate the final value after adding the tilt value
 			value = RTC_Extensions.AddValueToByteArrayUnchecked(value, TiltValue, mi.BigEndian);
 
+			//Enqueue it
 			Working.StoreData.Enqueue(value);
 		}
 
+		/// <summary>
+		/// Returns a unit baked to VALUE with a lifetime of 1
+		/// </summary>
+		/// <returns></returns>
 		public BlastUnit GetBakedUnit()
 		{
 			if (!IsEnabled)
@@ -1287,18 +1349,18 @@ namespace RTCV.CorruptCore
 
 			try
 			{
+				//Grab our mi
 				MemoryInterface mi = RTC_MemoryDomains.GetInterface(Domain);
-
 				if (mi == null)
 					return null;
 
+				//Grab the value
 				byte[] _value = new byte[Precision];
-
 				for (int i = 0; i < Precision; i++)
 				{
 					_value[i] = mi.PeekByte(Address + i);
 				}
-
+				//Return a new unit
 				return new BlastUnit(_value, Domain, Address, Precision, BigEndian, 0, 1, Note, IsEnabled, IsLocked);
 
 			}
@@ -1319,11 +1381,16 @@ namespace RTCV.CorruptCore
 			return GetBakedUnit();
 		}
 
+		/// <summary>
+		/// Rerolls a blastunit and generates new values based on various params 
+		/// </summary>
 		public void Reroll()
 		{
-			//Todo - Value List reroll
+			//Todo - Value List reroll. Currently always generates a random value
 			if (Source == BlastUnitSource.VALUE)
 			{
+				//Generate a random value based on our precision. 
+				//We use a BigInteger as we support arbitrary length, but we do use built in methods for 8,16,32 bit for performance reasons
 				BigInteger randomValue;
 				switch (Precision)
 				{
@@ -1345,7 +1412,11 @@ namespace RTCV.CorruptCore
 				}
 
 				byte[] temp = new byte[Precision];
-				byte[] outArr = RTC_Extensions.AddValueToByteArrayUnchecked(temp, randomValue, false); //We use this as it properly handles the length for us
+				//We use this as it properly handles the length for us
+				byte[] outArr = RTC_Extensions.AddValueToByteArrayUnchecked(temp, randomValue, false);
+
+				//Todo - Evaluate if this reverse is required
+				//Reverse the bytes to big endian
 				Array.Reverse(outArr);
 				Value = outArr;
 			}
@@ -1379,19 +1450,26 @@ namespace RTCV.CorruptCore
 			return (enabledString + cleanDomainName + "(" + Convert.ToInt32(Address).ToString() + ")." + Source.ToString() + "(" + RTC_Extensions.GetDecimalValue(Value, BigEndian).ToString() + ")");
 		}
 
+		/// <summary>
+		/// Called when a unit is moved from the queue into the execution pool
+		/// </summary>
+		/// <returns></returns>
 		public bool EnteringExecution()
 		{
+			//Snag our MI
 			MemoryInterface mi = RTC_MemoryDomains.GetInterface(Domain);
 			if (mi == null)
 				return false;
 
+			//If it's a store unit, store the backup
 			if (Source == BlastUnitSource.STORE && StoreTime == StoreTime.PREEXECUTE)
 			{
+				//One off store vs execution pool
 				if (StoreType == StoreType.ONCE)
 					StoreBackup();
 				else
 					RTC_StepActions.StoreDataPool.Add(this);
-			
+
 			}
 			//Limiter handling. Normal operation is to not do anything if it doesn't match the limiter. Inverted is to only continue if it doesn't match
 			if (LimiterTime == LimiterTime.PREEXECUTE)
@@ -1400,7 +1478,7 @@ namespace RTCV.CorruptCore
 				{
 					//If it's store, we need to use the sourceaddress and sourcedomain
 					if (Source == BlastUnitSource.STORE && RTC_Filtering.LimiterPeekBytes(SourceAddress,
-						    SourceAddress + Precision, SourceDomain, LimiterListHash, mi))
+							SourceAddress + Precision, SourceDomain, LimiterListHash, mi))
 						return false;
 					//If it's VALUE, we need to use the address and domain
 					if (Source == BlastUnitSource.VALUE && RTC_Filtering.LimiterPeekBytes(Address,
@@ -1411,7 +1489,7 @@ namespace RTCV.CorruptCore
 				{
 					//If it's store, we need to use the sourceaddress and sourcedomain
 					if (Source == BlastUnitSource.STORE && !RTC_Filtering.LimiterPeekBytes(SourceAddress,
-						    SourceAddress + Precision, SourceDomain, LimiterListHash, mi))
+							SourceAddress + Precision, SourceDomain, LimiterListHash, mi))
 						return false;
 					//If it's VALUE, we need to use the address and domain
 					if (Source == BlastUnitSource.VALUE && !RTC_Filtering.LimiterPeekBytes(Address,
@@ -1506,9 +1584,14 @@ namespace RTCV.CorruptCore
 
 	public interface INote
 	{
-		 string Note { get; set; }
+		string Note { get; set; }
 	}
 
+	/// <summary>
+	/// A generic object for combobox purposes.
+	/// Has a name and a value of type T for storing any object.
+	/// </summary>
+	/// <typeparam name="T">The type of object you want the comboxbox value to be</typeparam>
 	[Serializable]
 	public class ComboBoxItem<T>
 	{

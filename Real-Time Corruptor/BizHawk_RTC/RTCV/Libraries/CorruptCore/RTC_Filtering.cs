@@ -33,17 +33,22 @@ namespace RTCV.CorruptCore
 			return partial;
 		}
 
-
+		/// <summary>
+		/// Loads lists and registers them as both limiter and value lists, then returns the hashes
+		/// </summary>
+		/// <param name="paths"></param>
+		/// <returns>Hashes of the lists</returns>
 		public static List<string> LoadListsFromPaths(string[] paths)
 		{
 			List<string> md5s = new List<string>();
 
 			foreach (string path in paths)
 			{
+				//Load the lists and add their hashes to the returns
 				md5s.Add(loadListFromPath(path, false));
 			}
 
-			//We do this because we're adding to the lists not replacing them. It's a bit odd but it's needed
+			//We do this because we're adding to the lists not replacing them. It's a bit odd but it's needed for the spec system
 			PartialSpec update = new PartialSpec("RTCSpec");
 			update[RTCSPEC.FILTERING_HASH2LIMITERDICO.ToString()] = Hash2LimiterDico;
 			update[RTCSPEC.FILTERING_HASH2VALUEDICO.ToString()] = Hash2ValueDico;
@@ -52,18 +57,28 @@ namespace RTCV.CorruptCore
 			return md5s;
 		}
 
+		/// <summary>
+		/// Loads a list from a path and registers it as a value and limiter list
+		/// </summary>
+		/// <param name="path"></param>
+		/// <param name="syncListViaNetcore"></param>
+		/// <returns>The hash of the list</returns>
 		private static string loadListFromPath(string path, bool syncListViaNetcore)
 		{
+			//Load the list in
 			string[] temp = File.ReadAllLines(path);
-			bool flipBytes = path.StartsWith("_");
+			//If the file is prefixed with '_', we assume it's stored as big endian and flip the bytes
+			bool flipBytes = Path.GetFileName(path).StartsWith("_");
 
 			List<Byte[]> byteList = new List<byte[]>();
+			//For every line in the list, build up our list of bytes
 			for (int i = 0; i < temp.Length; i++)
 			{
 				string t = temp[i];
 				byte[] bytes = null;
 				try
 				{
+					//Get the string as a byte array
 					bytes = RTC_Extensions.StringToByteArray(t);
 				}
 				catch (Exception e)
@@ -84,6 +99,12 @@ namespace RTCV.CorruptCore
 			return RegisterList(byteList.Distinct().ToList(), syncListViaNetcore);
 		}
 
+		/// <summary>
+		/// Registers a list as a limiter and value list in the dictionaries
+		/// </summary>
+		/// <param name="list"></param>
+		/// <param name="syncListsViaNetcore"></param>
+		/// <returns>The hash of the list being registereds</returns>
 		public static string RegisterList(List<Byte[]> list, bool syncListsViaNetcore)
 		{
 			//Make one giant string to hash
@@ -97,16 +118,18 @@ namespace RTCV.CorruptCore
 				concat = String.Concat(concat, sb.ToString());
 			}
 
-			//Hash it. We don't use GetHashCode because we want something consistent
+			//Hash it. We don't use GetHashCode because we want something consistent to hash to use as a key
 			MD5 hash = MD5.Create();
 			hash.ComputeHash(concat.GetBytes());
 			string hashStr = Convert.ToBase64String(hash.Hash);
 
+			//Assuming the key doesn't already exist (we assume collions won't happen), add it.
 			if (!Hash2ValueDico?.ContainsKey(hashStr) ?? false)
 				Hash2ValueDico[hashStr] = list;
 			if (!Hash2LimiterDico?.ContainsKey(hashStr) ?? false)
 				Hash2LimiterDico[hashStr] = new RTC_Extensions.HashSetByteArrayComparator(list);
 
+			//Push it over netcore if we need to
 			if (syncListsViaNetcore)
 			{
 				PartialSpec update = new PartialSpec("RTCSpec");
@@ -115,16 +138,20 @@ namespace RTCV.CorruptCore
 				RTCV.NetCore.AllSpec.CorruptCoreSpec.Update(update);
 			}
 
-			//RTC_NetcoreImplementation.SendCommandToBizhawk(new RTC_Command(CommandType.REMOTE_UPDATE_FILTERING_DICTIONARIES) { objectValue = new object[] { Hash2LimiterDico, Hash2ValueDico } });
-
 			return hashStr;
 		}
 
 		public static bool LimiterPeekBytes(long startAddress, long endAddress, string domain, string hash, MemoryInterface mi)
 		{
+			//If we go outside of the domain, just return false
+			if (endAddress > mi.Size)
+				return false;
+
+			//Find the precision
 			long precision = endAddress - startAddress;
 			byte[] values = new byte[precision];
 
+			//Peek the memory
 			for (long i = 0; i < precision; i++)
 			{
 				values[i] = mi.PeekByte(startAddress + i);
@@ -134,18 +161,29 @@ namespace RTCV.CorruptCore
 			if (mi.BigEndian)
 				values = values.FlipBytes();
 
+			//If the limiter contains the value we peeked, return true
 			if (LimiterContainsValue(values, hash))
 				return true;
 
 			return false;
 		}
 
+		/// <summary>
+		/// Returns true if a limiter list contains the sequence of bytes
+		/// </summary>
+		/// <param name="bytes"></param>
+		/// <param name="hash"></param>
+		/// <returns></returns>
 		public static bool LimiterContainsValue(byte[] bytes, string hash)
 		{
-			RTC_Extensions.HashSetByteArrayComparator hs = null;
+			//If the limiter dico doesn't exist, return false
 			if (Hash2LimiterDico == null)
 				return false;
 
+			//We use this extension class due to Ceras being unable to serialize a hashset with a custom comparator
+			RTC_Extensions.HashSetByteArrayComparator hs = null;
+
+			//If the limiter dictionary contains the hash, check if the hashset contains the byte sequence
 			if (Hash2LimiterDico.TryGetValue(hash, out hs))
 			{
 				return hs.Contains(bytes);
@@ -154,19 +192,29 @@ namespace RTCV.CorruptCore
 			return false;
 		}
 
-
+		/// <summary>
+		/// Gets a random constant from a value list
+		/// </summary>
+		/// <param name="hash"></param>
+		/// <param name="precision"></param>
+		/// <returns></returns>
 		public static byte[] GetRandomConstant(string hash, int precision)
 		{
+			//If the value dico doesn't exist, return false
 			if (Hash2ValueDico == null)
 				return null;
 
+			//If the dico doesn't contain the list, return null
 			if (!Hash2ValueDico.ContainsKey(hash))
 			{
 				return null;
 			}
 
+			//Get a random line in the list and grab the value
 			int line = RTC_Corruptcore.RND.Next(Hash2ValueDico[hash].Count);
 			Byte[] value = Hash2ValueDico[hash][line];
+
+			//Copy the value to a working array
 			Byte[] outValue = new byte[value.Length];
 			Array.Copy(value, outValue, value.Length);
 
@@ -178,21 +226,26 @@ namespace RTCV.CorruptCore
 			{
 				//It'd probably be faster to do this via bitshifting but it's 4am and I want to be able to read this code in the future so...
 
-				//Flip the bytes (stored as little endian), truncate, then flip them back
-				outValue = value.FlipBytes();
-				Array.Resize(ref outValue, precision);
-				outValue = outValue.FlipBytes();
+				outValue = value.FlipBytes(); //Flip the bytes (stored as little endian)
+				Array.Resize(ref outValue, precision); //Truncate
+				outValue = outValue.FlipBytes(); //Flip them back
 				return outValue;
 			}
 			return outValue;
 		}
 
+		/// <summary>
+		/// Returns all the limiter lists from a stockpile as a list of string arrays (one value per line)
+		/// </summary>
+		/// <param name="sks"></param>
+		/// <returns></returns>
 		public static List<String[]> GetAllLimiterListsFromStockpile(Stockpile sks)
 		{
 			sks.MissingLimiter = false;
 			List<String> hashList = new List<string>();
 			List<String[]> returnList = new List<String[]>();
 
+			//Build up a list of all the lists used by every blastunit
 			foreach (StashKey sk in sks.StashKeys)
 			{
 				foreach (BlastUnit bu in sk.BlastLayer.Layer)
@@ -202,8 +255,10 @@ namespace RTCV.CorruptCore
 				}
 			}
 
+			//Iterate through our list of lists
 			foreach (var s in hashList)
 			{
+				//If we have a value and the dictionary contains it, build up a String[] containing the values
 				if (s != null && Hash2LimiterDico.ContainsKey(s))
 				{
 					List<String> strList = new List<string>();
@@ -216,7 +271,7 @@ namespace RTCV.CorruptCore
 					}
 					returnList.Add(strList.ToArray());
 				}
-
+				//If we have a value but the dictionary didn't have it, pop that we couldn't find the list
 				else if(s != null)
 				{
 					DialogResult dr = MessageBox.Show("Couldn't find Limiter List " + s +
@@ -234,5 +289,4 @@ namespace RTCV.CorruptCore
 		}
 
 	}
-
 }
