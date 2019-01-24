@@ -487,6 +487,7 @@ namespace RTCV.UI
 			else if (rbOriginal.Checked)
 				IsCorruptionApplied = RTC_StockpileManager_UISide.OriginalFromStashkey(RTC_StockpileManager_UISide.CurrentStashkey);
 
+			RefreshStashHistory();
 		}
 
 		private void rbInject_CheckedChanged(object sender, EventArgs e)

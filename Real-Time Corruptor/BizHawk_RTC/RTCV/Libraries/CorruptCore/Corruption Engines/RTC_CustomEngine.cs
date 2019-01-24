@@ -233,21 +233,13 @@ namespace RTCV.CorruptCore
 				{
 					if (LimiterInverted)
 					{
-						//If it's store, we need to use the sourceaddress and sourcedomain
-						if (Source == BlastUnitSource.STORE && RTC_Filtering.LimiterPeekBytes(bu.SourceAddress,
-								bu.SourceAddress + bu.Precision, bu.SourceDomain, LimiterListHash, mdp))
-							return null;
-						if (Source == BlastUnitSource.VALUE && RTC_Filtering.LimiterPeekBytes(bu.Address,
+						if (RTC_Filtering.LimiterPeekBytes(bu.Address,
 															 bu.Address + bu.Precision, bu.Domain, LimiterListHash, mdp))
 							return null;
 					}
 					else
 					{
-						//If it's store, we need to use the sourceaddress and sourcedomain
-						if (Source == BlastUnitSource.STORE && !RTC_Filtering.LimiterPeekBytes(bu.SourceAddress,
-								bu.SourceAddress + bu.Precision, bu.SourceDomain, LimiterListHash, mdp))
-							return null;
-						if (Source == BlastUnitSource.VALUE && !RTC_Filtering.LimiterPeekBytes(bu.Address,
+						if (RTC_Filtering.LimiterPeekBytes(bu.Address,
 															 bu.Address + bu.Precision, bu.Domain, LimiterListHash, mdp))
 							return null;
 					}
@@ -257,14 +249,14 @@ namespace RTCV.CorruptCore
 			}
 			catch (Exception ex)
 			{
-				throw new Exception("Custom Engine GenerateUnit Threw Up" + ex);
+				throw new Exception("Custom Engine GenerateUnit Threw Up\n" + ex);
 			}
 		}
 
 
 		public static bool IsConstant(byte[] bytes, string[] list, bool bigEndian)
 		{
-			if (list == null)
+			if (list == null || bytes == null)
 				return true;
 			if (!bigEndian)
 				return list.Contains(ByteArrayToString(bytes));

@@ -1234,23 +1234,27 @@ namespace RTCV.CorruptCore
 				{
 					if (InvertLimiter)
 					{
+						/*
 						//If it's store, we need to use the sourceaddress and sourcedomain
 						if (Source == BlastUnitSource.STORE && RTC_Filtering.LimiterPeekBytes(SourceAddress,
 								SourceAddress + Precision, SourceDomain, LimiterListHash, mi))
 							return;
 						//If it's VALUE, we need to use the address and domain
-						if (Source == BlastUnitSource.VALUE && RTC_Filtering.LimiterPeekBytes(Address,
+						*/
+						if (RTC_Filtering.LimiterPeekBytes(Address,
 							Address + Precision, Domain, LimiterListHash, mi))
 							return;
 					}
 					else
 					{
+						/*
 						//If it's store, we need to use the sourceaddress and sourcedomain
 						if (Source == BlastUnitSource.STORE && !RTC_Filtering.LimiterPeekBytes(SourceAddress,
 								SourceAddress + Precision, SourceDomain, LimiterListHash, mi))
 							return;
 						//If it's VALUE, we need to use the address and domain
-						if (Source == BlastUnitSource.VALUE && !RTC_Filtering.LimiterPeekBytes(Address,
+						*/
+						if (!RTC_Filtering.LimiterPeekBytes(Address,
 							Address + Precision, Domain, LimiterListHash, mi))
 							return;
 					}
@@ -1261,10 +1265,9 @@ namespace RTCV.CorruptCore
 				{
 					case (BlastUnitSource.STORE):
 						{
-							//Todo - evaluate if this was masking bugs
 							//If there's no stored data, return out.
-							//if (Working.StoreData.Count == 0)
-							//	return;
+							if (Working.StoreData.Count == 0)
+								return;
 
 							//Apply the value we have stored
 							Working.ApplyValue = Working.StoreData.First();
@@ -1476,23 +1479,13 @@ namespace RTCV.CorruptCore
 			{
 				if (InvertLimiter)
 				{
-					//If it's store, we need to use the sourceaddress and sourcedomain
-					if (Source == BlastUnitSource.STORE && RTC_Filtering.LimiterPeekBytes(SourceAddress,
-							SourceAddress + Precision, SourceDomain, LimiterListHash, mi))
-						return false;
-					//If it's VALUE, we need to use the address and domain
-					if (Source == BlastUnitSource.VALUE && RTC_Filtering.LimiterPeekBytes(Address,
+					if (RTC_Filtering.LimiterPeekBytes(Address,
 						Address + Precision, Domain, LimiterListHash, mi))
 						return false;
 				}
 				else
-				{
-					//If it's store, we need to use the sourceaddress and sourcedomain
-					if (Source == BlastUnitSource.STORE && !RTC_Filtering.LimiterPeekBytes(SourceAddress,
-							SourceAddress + Precision, SourceDomain, LimiterListHash, mi))
-						return false;
-					//If it's VALUE, we need to use the address and domain
-					if (Source == BlastUnitSource.VALUE && !RTC_Filtering.LimiterPeekBytes(Address,
+				{ 
+					if (!RTC_Filtering.LimiterPeekBytes(Address,
 						Address + Precision, Domain, LimiterListHash, mi))
 						return false;
 				}

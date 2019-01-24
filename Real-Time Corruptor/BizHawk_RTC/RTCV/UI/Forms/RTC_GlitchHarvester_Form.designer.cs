@@ -168,7 +168,7 @@
             this.panel2 = new System.Windows.Forms.Panel();
             this.btnRerollSelected = new System.Windows.Forms.Button();
             this.label8 = new System.Windows.Forms.Label();
-			this.dgvStockpile = new DataGridViewDraggable();
+            this.dgvStockpile = new RTCV.UI.DataGridViewDraggable();
             this.Item = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.GameName = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.SystemName = new System.Windows.Forms.DataGridViewTextBoxColumn();
@@ -2200,14 +2200,11 @@
             0,
             0});
             this.nmIntensity.ValueChanged += new System.EventHandler(this.nmIntensity_ValueChanged);
-            this.nmIntensity.KeyDown += new System.Windows.Forms.KeyEventHandler(this.nmIntensity_KeyDown);
-			this.nmIntensity.KeyDown += new System.Windows.Forms.KeyEventHandler(this.nmIntensity_KeyUp);
-			this.nmIntensity.GotFocus += (this.nmIntensity_KeyDown);
-			this.nmIntensity.LostFocus += (this.nmIntensity_KeyUp);
-			// 
-			// track_Intensity
-			// 
-			this.track_Intensity.Location = new System.Drawing.Point(-2, 30);
+            this.nmIntensity.KeyDown += new System.Windows.Forms.KeyEventHandler(this.nmIntensity_KeyUp);
+            // 
+            // track_Intensity
+            // 
+            this.track_Intensity.Location = new System.Drawing.Point(-2, 30);
             this.track_Intensity.Maximum = 512000;
             this.track_Intensity.Minimum = 2000;
             this.track_Intensity.Name = "track_Intensity";
@@ -2307,6 +2304,7 @@
             // 
             // dgvStockpile
             // 
+            this.dgvStockpile.AllowDrop = true;
             this.dgvStockpile.AllowUserToAddRows = false;
             this.dgvStockpile.AllowUserToDeleteRows = false;
             this.dgvStockpile.AllowUserToResizeRows = false;

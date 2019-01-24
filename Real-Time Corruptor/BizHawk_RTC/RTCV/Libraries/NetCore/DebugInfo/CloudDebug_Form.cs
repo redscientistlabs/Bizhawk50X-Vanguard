@@ -253,19 +253,25 @@ namespace RTCV.NetCore
 
 	}
 
+	class WebClientTimeout : WebClient
+	{
+		protected override WebRequest GetWebRequest(Uri uri)
+		{
+			WebRequest w = base.GetWebRequest(uri);
+			w.Timeout = 5000;
+			return w;
+		}
+	}
 	static class CloudTransfer
 	{
-
-
 		static string CorruptCloudServer = "http://cc.r5x.cc/rtc/debug";
-
 
 		public static string CloudLoad(string filename, string password)
 		{
 
 			string remoteUri = CorruptCloudServer + "/FILES/";
 
-			WebClient myWebClient = new WebClient();
+			WebClientTimeout myWebClient = new WebClientTimeout();
 
 			string downloadfilepath;
 
@@ -304,12 +310,13 @@ namespace RTCV.NetCore
 
 		public static string CloudSave(string filepath)
 		{
+			WebRequest.DefaultWebProxy = null;
 
 			string remoteUri = CorruptCloudServer + "/post.php?submit=true&action=upload";
 			byte[] responseBinary;
 			try
 			{
-				WebClient client = new WebClient();
+				WebClientTimeout client = new WebClientTimeout();
 				responseBinary = client.UploadFile(remoteUri, "POST", filepath);
 			}
 			catch (Exception ex)

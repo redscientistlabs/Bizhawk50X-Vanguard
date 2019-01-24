@@ -78,7 +78,6 @@ namespace RTCV.UI
 
 		private void valueSource_CheckedChanged(object sender, EventArgs e)
 		{
-
 			if (rbRandom.Checked)
 				RTC_CustomEngine.ValueSource = CustomValueSource.RANDOM;
 
