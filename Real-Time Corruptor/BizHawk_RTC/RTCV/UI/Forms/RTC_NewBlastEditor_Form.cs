@@ -424,7 +424,7 @@ namespace RTCV.UI
 		}
 
 
-		private void updateMaximum(DataGridViewSelectedRowCollection rows)
+		private void updateMaximum(List<DataGridViewRow> rows)
 		{
 			foreach (DataGridViewRow row in rows)
 			{
@@ -521,8 +521,14 @@ namespace RTCV.UI
 		private void dgvBlastEditor_SelectionChanged(object sender, EventArgs e)
 		{
 			UpdateBottom();
+
+			List<DataGridViewRow> col = new List<DataGridViewRow>();
+			//For some reason DataGridViewRowCollection and DataGridViewSelectedRowCollection aren't directly compatible???
+			foreach (DataGridViewRow row in dgvBlastEditor.SelectedRows)
+				col.Add(row);
+
 			//Rather than setting all these values at load, we set it on the fly
-			updateMaximum(dgvBlastEditor.SelectedRows);
+			updateMaximum(col);
 		}
 
 		private void DgvBlastEditor_CellFormatting(object sender, DataGridViewCellFormattingEventArgs e)
@@ -624,10 +630,15 @@ namespace RTCV.UI
 			var blastUnitSource = Enum.GetValues(typeof(BlastUnitSource));
 
 
-			dgvBlastEditor.Columns.Add(CreateColumn(buProperty.isEnabled.ToString(), buProperty.isEnabled.ToString(), "Enabled", new DataGridViewCheckBoxColumn()));
-			
+			var enabled = CreateColumn(buProperty.isEnabled.ToString(), buProperty.isEnabled.ToString(), "Enabled"
+				, new DataGridViewCheckBoxColumn());
+			enabled.SortMode = DataGridViewColumnSortMode.Automatic;
+			dgvBlastEditor.Columns.Add(enabled);
 
-			dgvBlastEditor.Columns.Add(CreateColumn(buProperty.isLocked.ToString(), buProperty.isLocked.ToString(), "Locked", new DataGridViewCheckBoxColumn()));
+			var locked = CreateColumn(buProperty.isLocked.ToString(), buProperty.isLocked.ToString(), "Locked"
+				, new DataGridViewCheckBoxColumn());
+			locked.SortMode = DataGridViewColumnSortMode.Automatic;
+			dgvBlastEditor.Columns.Add(locked);
 
 			//Do this one separately as we need to populate the Combobox
 			DataGridViewComboBoxColumn source = CreateColumn(buProperty.Source.ToString(), buProperty.Source.ToString(), "Source", new DataGridViewComboBoxColumn()) as DataGridViewComboBoxColumn;
@@ -638,10 +649,12 @@ namespace RTCV.UI
 			//Do this one separately as we need to populate the Combobox
 			DataGridViewComboBoxColumn domain = CreateColumn(buProperty.Domain.ToString(), buProperty.Domain.ToString(), "Domain", new DataGridViewComboBoxColumn()) as DataGridViewComboBoxColumn;
 			domain.DataSource = domains;
+			domain.SortMode = DataGridViewColumnSortMode.Automatic;
 			dgvBlastEditor.Columns.Add(domain);
 
 			DataGridViewNumericUpDownColumn address = (DataGridViewNumericUpDownColumn)CreateColumn(buProperty.Address.ToString(), buProperty.Address.ToString(), "Address", new DataGridViewNumericUpDownColumn());
 			address.Hexadecimal = true;
+			address.SortMode = DataGridViewColumnSortMode.Automatic;
 			dgvBlastEditor.Columns.Add(address);
 
 
@@ -651,14 +664,31 @@ namespace RTCV.UI
 			DataGridViewNumericUpDownColumn precision = (DataGridViewNumericUpDownColumn)CreateColumn(buProperty.Precision.ToString(), buProperty.Precision.ToString(), "Precision", new DataGridViewNumericUpDownColumn());
 			precision.Minimum = 1;
 			precision.Maximum = Int32.MaxValue;
+			precision.SortMode = DataGridViewColumnSortMode.Automatic;
 			dgvBlastEditor.Columns.Add(precision);
 
-			dgvBlastEditor.Columns.Add(CreateColumn(buProperty.ValueString.ToString(), buProperty.ValueString.ToString(), "Value", new DataGridViewTextBoxColumn()));
+
+			var valuestring = CreateColumn(buProperty.ValueString.ToString(), buProperty.ValueString.ToString(), "Value"
+				, new DataGridViewTextBoxColumn());
+
+			valuestring.SortMode = DataGridViewColumnSortMode.Automatic;
+			dgvBlastEditor.Columns.Add(valuestring);
 
 
-			dgvBlastEditor.Columns.Add(CreateColumn(buProperty.ExecuteFrame.ToString(), buProperty.ExecuteFrame.ToString(), "Execute Frame", new DataGridViewNumericUpDownColumn()));
-			dgvBlastEditor.Columns.Add(CreateColumn(buProperty.Lifetime.ToString(), buProperty.Lifetime.ToString(), "Lifetime", new DataGridViewNumericUpDownColumn()));
-			dgvBlastEditor.Columns.Add(CreateColumn(buProperty.Loop.ToString(), buProperty.Loop.ToString(), "Loop", new DataGridViewCheckBoxColumn()));
+			var executeFrame = CreateColumn(buProperty.ExecuteFrame.ToString(), buProperty.ExecuteFrame.ToString()
+				, "Execute Frame", new DataGridViewNumericUpDownColumn());
+			executeFrame.SortMode = DataGridViewColumnSortMode.Automatic;
+			dgvBlastEditor.Columns.Add(executeFrame);
+
+			var lifetime = CreateColumn(buProperty.Lifetime.ToString(), buProperty.Lifetime.ToString(), "Lifetime"
+				, new DataGridViewNumericUpDownColumn());
+			lifetime.SortMode = DataGridViewColumnSortMode.Automatic;
+			dgvBlastEditor.Columns.Add(lifetime);
+
+			var loop = CreateColumn(buProperty.Loop.ToString(), buProperty.Loop.ToString(), "Loop"
+				, new DataGridViewCheckBoxColumn());
+			loop.SortMode = DataGridViewColumnSortMode.Automatic;
+			dgvBlastEditor.Columns.Add(loop);
 
 
 			DataGridViewComboBoxColumn limiterTime = CreateColumn(buProperty.LimiterTime.ToString(), buProperty.LimiterTime.ToString(), "Limiter Time", new DataGridViewComboBoxColumn()) as DataGridViewComboBoxColumn;
@@ -678,20 +708,23 @@ namespace RTCV.UI
 			DataGridViewComboBoxColumn storeTime = CreateColumn(buProperty.StoreTime.ToString(), buProperty.StoreTime.ToString(), "Store Time", new DataGridViewComboBoxColumn()) as DataGridViewComboBoxColumn;
 			foreach (var item in Enum.GetValues(typeof(StoreTime)))
 				storeTime.Items.Add(item);
+			storeTime.SortMode = DataGridViewColumnSortMode.Automatic;
 			dgvBlastEditor.Columns.Add(storeTime);
-
-			//Do this one separately as we need to populate the Combobox
+			
 			DataGridViewComboBoxColumn storeType = CreateColumn(buProperty.StoreType.ToString(), buProperty.StoreType.ToString(), "Store Type", new DataGridViewComboBoxColumn()) as DataGridViewComboBoxColumn;
 			storeType.DataSource = Enum.GetValues(typeof(StoreType));
+			storeType.SortMode = DataGridViewColumnSortMode.Automatic;
 			dgvBlastEditor.Columns.Add(storeType);
 
 			//Do this one separately as we need to populate the Combobox
 			DataGridViewComboBoxColumn sourceDomain = CreateColumn(buProperty.SourceDomain.ToString(), buProperty.SourceDomain.ToString(), "Source Domain", new DataGridViewComboBoxColumn()) as DataGridViewComboBoxColumn;
 			sourceDomain.DataSource = domains;
+			sourceDomain.SortMode = DataGridViewColumnSortMode.Automatic;
 			dgvBlastEditor.Columns.Add(sourceDomain);
 
 			DataGridViewNumericUpDownColumn sourceAddress = (DataGridViewNumericUpDownColumn)CreateColumn(buProperty.SourceAddress.ToString(), buProperty.SourceAddress.ToString(), "Source Address", new DataGridViewNumericUpDownColumn());
 			sourceAddress.Hexadecimal = true;
+			sourceAddress.SortMode = DataGridViewColumnSortMode.Automatic;
 			dgvBlastEditor.Columns.Add(sourceAddress);
 
 
@@ -859,7 +892,7 @@ namespace RTCV.UI
 
 
 
-			bs = new BindingSource {DataSource = currentSK.BlastLayer.Layer};
+			bs = new BindingSource {DataSource = new SortableBindingList<BlastUnit>(currentSK.BlastLayer.Layer)};
 		
 			dgvBlastEditor.DataSource = bs;
 			InitializeDGV();
@@ -1071,7 +1104,10 @@ namespace RTCV.UI
 			{
 				bu.RasterizeVMDs();
 			}
+
+			updateMaximum(dgvBlastEditor.Rows.Cast<DataGridViewRow>().ToList());
 			dgvBlastEditor.Refresh();
+			UpdateBottom();
 		}
 
 		private void runRomWithoutBlastlayerToolStripMenuItem_Click(object sender, EventArgs e)
@@ -1295,7 +1331,7 @@ namespace RTCV.UI
 			if (temp != null)
 			{
 				currentSK.BlastLayer = temp;
-				bs = new BindingSource { DataSource = currentSK.BlastLayer.Layer };
+				bs = new BindingSource {DataSource = new SortableBindingList<BlastUnit>(currentSK.BlastLayer.Layer)};
 			}
 			dgvBlastEditor.DataSource = bs;
 			dgvBlastEditor.ResetBindings();
