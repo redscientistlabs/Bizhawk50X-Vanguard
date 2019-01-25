@@ -850,6 +850,8 @@ namespace RTCV.UI
 					continue;
 
 				MessageBox.Show("This blastlayer references domain " + domain + " which couldn't be found!\nAre you sure you have the correct core loaded?");
+				this.Hide();
+				return;
 			}
 
 			originalSK = sk;

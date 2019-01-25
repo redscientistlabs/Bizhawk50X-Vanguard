@@ -406,6 +406,17 @@ namespace RTCV.UI
 					IsCorruptionApplied = RTC_StockpileManager_UISide.OriginalFromStashkey(RTC_StockpileManager_UISide.CurrentStashkey);
 				}
 
+				if (RTC_StockpileManager_EmuSide.RenderAtLoad && loadBeforeOperation)
+				{
+					btnRender.Text = "Stop Render";
+					btnRender.ForeColor = Color.OrangeRed;
+				}
+				else
+				{
+					btnRender.Text = "Start Render";
+					btnRender.ForeColor = Color.White;
+				}
+
 				Console.WriteLine("Blast done");
 			}
 			finally
@@ -487,6 +498,16 @@ namespace RTCV.UI
 			else if (rbOriginal.Checked)
 				IsCorruptionApplied = RTC_StockpileManager_UISide.OriginalFromStashkey(RTC_StockpileManager_UISide.CurrentStashkey);
 
+			if (RTC_StockpileManager_EmuSide.RenderAtLoad && loadBeforeOperation)
+			{
+				btnRender.Text = "Stop Render";
+				btnRender.ForeColor = Color.OrangeRed;
+			}
+			else
+			{
+				btnRender.Text = "Start Render";
+				btnRender.ForeColor = Color.White;
+			}
 			RefreshStashHistory();
 		}
 
@@ -1499,6 +1520,17 @@ namespace RTCV.UI
 						sks.Add((StashKey)row.Cells[0].Value);
 
 					RTC_StockpileManager_UISide.MergeStashkeys(sks);
+
+					if (RTC_StockpileManager_EmuSide.RenderAtLoad && loadBeforeOperation)
+					{
+						btnRender.Text = "Stop Render";
+						btnRender.ForeColor = Color.OrangeRed;
+					}
+					else
+					{
+						btnRender.Text = "Start Render";
+						btnRender.ForeColor = Color.White;
+					}
 					RefreshStashHistory();
 					return;
 				}

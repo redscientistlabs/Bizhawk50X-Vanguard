@@ -10,8 +10,6 @@ namespace CorruptCore
 {
 	public static class RTC_Render_CorruptCore
 	{
-
-
 		public static bool IsRendering
 		{
 			get => (bool)RTCV.NetCore.AllSpec.CorruptCoreSpec[RTCSPEC.RENDER_ISRENDERING.ToString()];
