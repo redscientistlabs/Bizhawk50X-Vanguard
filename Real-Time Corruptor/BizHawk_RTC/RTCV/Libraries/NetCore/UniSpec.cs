@@ -106,13 +106,13 @@ namespace RTCV.NetCore
 			if (RTC_NetcoreImplementation.isStandaloneUI && name == "EmuSpec")
 				throw new Exception("Tried updating the EmuSpec from StandaloneRTC");
 				*/
-			
+			/*
 			if(value is bool)
 			{
 				bool boolValue = (bool)value;
 				if (boolValue == false)
 					value = null;
-			}
+			}*/
 
 			PartialSpec spec = new PartialSpec(name);
 			spec[key] = value;
