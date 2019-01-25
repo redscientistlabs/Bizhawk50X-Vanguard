@@ -74,7 +74,7 @@ namespace RTCV.UI
 
 		Dictionary<String, Control> property2ControlDico;
 
-
+		private string a = null;
 		int buttonFillWeight = 20;
 		int checkBoxFillWeight = 25;
 		int comboBoxFillWeight = 40;
@@ -537,7 +537,7 @@ namespace RTCV.UI
 			if (tbFilter.Text.Length == 0)
 			{
 				dgvBlastEditor.DataSource = bs;
-				return;;
+				return;
 			}
 				
 
@@ -1295,6 +1295,9 @@ namespace RTCV.UI
 				currentSK.BlastLayer = temp;
 				bs = new BindingSource { DataSource = currentSK.BlastLayer.Layer };
 			}
+			dgvBlastEditor.DataSource = bs;
+			dgvBlastEditor.ResetBindings();
+			dgvBlastEditor.Refresh();
 		}
 
 		private void saveToFileblToolStripMenuItem_Click(object sender, EventArgs e)
@@ -1318,6 +1321,7 @@ namespace RTCV.UI
 		{
 			BlastLayer temp = RTC_BlastTools.LoadBlastLayerFromFile();
 			ImportBlastLayer(temp);
+			dgvBlastEditor.Refresh();
 		}
 
 		public void ImportBlastLayer(BlastLayer bl)
@@ -1325,8 +1329,9 @@ namespace RTCV.UI
 			if (bl != null)
 			{
 				foreach (BlastUnit bu in bl.Layer)
-					currentSK.BlastLayer.Layer.Add(bu);
+					bs.Add(bu);
 			}
+			dgvBlastEditor.ResetBindings();
 			dgvBlastEditor.Refresh();
 		}
 
