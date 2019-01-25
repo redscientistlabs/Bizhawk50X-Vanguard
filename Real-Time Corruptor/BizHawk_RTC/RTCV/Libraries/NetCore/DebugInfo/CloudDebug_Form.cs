@@ -35,6 +35,9 @@ namespace RTCV.NetCore
 				btnContinue.Visible = canContinue;
 			}
 
+			this.Focus();
+			this.BringToFront();
+			this.TopMost = true;
 		}
 
 		public DialogResult Start()
@@ -43,8 +46,6 @@ namespace RTCV.NetCore
 				return DialogResult.Abort;
 			else
 				return this.ShowDialog();
-
-
 		}
 
 		public static string getRTCInfo()
