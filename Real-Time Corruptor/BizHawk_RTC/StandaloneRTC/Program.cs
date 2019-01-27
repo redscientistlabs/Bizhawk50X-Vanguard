@@ -96,7 +96,7 @@ namespace StandaloneRTC
 
 				//load missing assemblies by trying to find them in the dll directory
 				string dllname = new AssemblyName(requested).Name + ".dll";
-				string directory = Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), "RTC", "BIN");
+				string directory = Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), "RTC", "DLL");
 				string simpleName = new AssemblyName(requested).Name;
 				string fname = Path.Combine(directory, dllname);
 				if (!File.Exists(fname)) return null;

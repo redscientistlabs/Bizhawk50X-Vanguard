@@ -19,18 +19,3 @@ Real-Time Corruptor/output/dll/BizHawk.Common.pdb
 Real-Time Corruptor/output/dll/BizHawk.Emulation.Common.pdb
 RTC3 Launcher/.vs
 Real-Time Corruptor/BizHawk_RTC/.vs
-
-Real-Time Corruptor/output/RTC/BIN
-
-!Real-Time Corruptor//output/dll/**
-!Real-Time Corruptor//output/dll/
-/output/dll/Bizhawk*
-!Real-Time Corruptor//output/RTC/**
-!Real-Time Corruptor//output/RTC/
-Real-Time Corruptor//output/RTC/PARAMS/*
-Real-Time Corruptor//output/RTC/WORKING/*
-Real-Time Corruptor//output/RTC/RENDEROUTPUT/*
-
-!Real-Time Corruptor//output/*.bat
-!Real-Time Corruptor//output/AutoKillSwitch.exe
-!Real-Time Corruptor//output/defctrl.json

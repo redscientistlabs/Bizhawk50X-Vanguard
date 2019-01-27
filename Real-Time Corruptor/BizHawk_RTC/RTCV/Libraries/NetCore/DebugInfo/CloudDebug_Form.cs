@@ -150,7 +150,7 @@ namespace RTCV.NetCore
 				foreach (string file in debugFiles)
 					File.Delete(file);
 
-				var path = Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), Environment.Is64BitProcess ? "x64" : "x86", "7z.dll");
+				var path = Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), "7z.dll");
 				SevenZip.SevenZipCompressor.SetLibraryPath(path);
 				var decomp = new SevenZip.SevenZipExtractor(downloadfilepath,password, SevenZip.InArchiveFormat.SevenZip);
 				decomp.ExtractArchive(extractpath);

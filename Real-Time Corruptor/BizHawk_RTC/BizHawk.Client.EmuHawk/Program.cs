@@ -495,7 +495,7 @@ namespace BizHawk.Client.EmuHawk
 					callerName == "NetCore")
 				{
 					string dllname = new AssemblyName(requested).Name + ".dll";
-					string directory = Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), "RTC", "BIN");
+					string directory = Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), "RTC", "DLL");
 					string simpleName = new AssemblyName(requested).Name;
 					if (simpleName == "NLua" || simpleName == "KopiLua") directory = Path.Combine(directory, "nlua");
 					fname = Path.Combine(directory, dllname);
