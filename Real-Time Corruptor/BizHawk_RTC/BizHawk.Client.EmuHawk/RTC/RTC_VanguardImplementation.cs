@@ -13,7 +13,6 @@ using BizHawk.Client.Common;
 using BizHawk.Client.EmuHawk;
 using BizHawk.Emulation.Common;
 using BizHawk.Emulation.Cores.Nintendo.N64;
-using NetCore;
 using RTCV;
 using RTCV.CorruptCore;
 using static RTCV.NetCore.NetcoreCommands;

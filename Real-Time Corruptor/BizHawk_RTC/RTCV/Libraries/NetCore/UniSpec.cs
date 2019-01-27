@@ -8,7 +8,7 @@ using System.Security.Permissions;
 using System.Text;
 using System.Threading.Tasks;
 using Ceras;
-using NetCore;
+using RTCV.NetCore;
 
 namespace RTCV.NetCore
 {

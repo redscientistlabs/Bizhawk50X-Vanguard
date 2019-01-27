@@ -6,8 +6,6 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-using CorruptCore;
-using NetCore;
 using RTCV.CorruptCore;
 using RTCV.NetCore;
 using RTCV.UI;

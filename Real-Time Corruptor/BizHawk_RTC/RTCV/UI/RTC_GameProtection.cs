@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Windows.Forms;
-using CorruptCore;
 using RTCV.CorruptCore;
 using RTCV.NetCore;
 

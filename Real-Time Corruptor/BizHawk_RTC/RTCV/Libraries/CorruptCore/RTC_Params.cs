@@ -4,7 +4,7 @@ using System.Drawing;
 using System.IO;
 using System.Numerics;
 using System.Security.Cryptography;
-using CorruptCore;
+using RTCV.CorruptCore;
 using RTCV.NetCore;
 
 namespace RTCV.CorruptCore

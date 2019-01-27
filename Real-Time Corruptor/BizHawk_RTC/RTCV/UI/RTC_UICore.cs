@@ -10,8 +10,6 @@ using System.Net;
 using System.Reflection;
 using System.Threading;
 using System.Windows.Forms;
-using CorruptCore;
-using NetCore;
 using Newtonsoft.Json;
 using RTCV.CorruptCore;
 using RTCV.NetCore;

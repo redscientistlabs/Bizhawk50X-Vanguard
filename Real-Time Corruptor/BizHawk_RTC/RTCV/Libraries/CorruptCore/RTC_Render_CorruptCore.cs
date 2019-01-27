@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 using RTCV.CorruptCore;
 using RTCV.NetCore;
 
-namespace CorruptCore
+namespace RTCV.CorruptCore
 {
 	public static class RTC_Render_CorruptCore
 	{

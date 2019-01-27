@@ -11,7 +11,7 @@ using System.Xml.Serialization;
 using System.ComponentModel;
 using System.Data;
 using Ceras;
-using CorruptCore;
+using RTCV.CorruptCore;
 using RTCV.NetCore;
 using Exception = System.Exception;
 

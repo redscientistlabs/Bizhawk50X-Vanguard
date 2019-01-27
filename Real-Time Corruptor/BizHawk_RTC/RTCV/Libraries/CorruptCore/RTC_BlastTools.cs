@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Windows.Forms;
 using System.Xml.Serialization;
-using CorruptCore;
+using RTCV.CorruptCore;
 using Newtonsoft.Json;
 using RTCV.NetCore;
 

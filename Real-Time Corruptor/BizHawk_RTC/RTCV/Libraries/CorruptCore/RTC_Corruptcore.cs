@@ -10,7 +10,7 @@ using System.Net.Http;
 using System.Reflection;
 using System.Threading;
 using System.Windows.Forms;
-using CorruptCore;
+using RTCV.CorruptCore;
 using Newtonsoft.Json;
 using RTCV.NetCore;
 

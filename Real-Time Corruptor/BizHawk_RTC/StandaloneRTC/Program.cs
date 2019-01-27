@@ -76,7 +76,7 @@ namespace StandaloneRTC
 
 			if (result == DialogResult.Abort)
 			{
-				NetCore.SyncObjectSingleton.SyncObjectExecute(loaderObject, (o, ea) =>{
+				RTCV.NetCore.SyncObjectSingleton.SyncObjectExecute(loaderObject, (o, ea) =>{
 					loaderObject.Close();
 				});
 			}

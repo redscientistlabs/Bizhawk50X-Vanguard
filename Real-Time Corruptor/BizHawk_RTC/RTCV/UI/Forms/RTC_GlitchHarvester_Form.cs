@@ -6,7 +6,6 @@ using System.Drawing;
 using System.IO;
 using System.Windows.Forms;
 using System.Xml.Serialization;
-using CorruptCore;
 using Newtonsoft.Json;
 using RTCV.CorruptCore;
 using RTCV.NetCore;

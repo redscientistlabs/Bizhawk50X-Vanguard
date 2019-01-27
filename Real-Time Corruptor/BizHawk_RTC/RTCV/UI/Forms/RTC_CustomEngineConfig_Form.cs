@@ -347,5 +347,10 @@ namespace RTCV.UI
 
 			cbSelectedTemplate.Text = TemplateName;
 		}
+
+		private void RestoreUIStateFromSpec()
+		{
+
+		}
 	}
 }

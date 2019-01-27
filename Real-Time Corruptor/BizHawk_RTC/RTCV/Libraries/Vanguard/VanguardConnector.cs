@@ -4,7 +4,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Windows.Forms;
-using CorruptCore;
 using RTCV.CorruptCore;
 using NetworkSide = RTCV.NetCore.NetworkSide;
 using static RTCV.CorruptCore.RTC_CorruptCore;

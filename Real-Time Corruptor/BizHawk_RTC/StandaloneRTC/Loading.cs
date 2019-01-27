@@ -13,15 +13,15 @@ namespace StandaloneRTC
 		{
 			InitializeComponent();
 
-			RTC.LogConsole.CreateConsole();
+			LogConsole.CreateConsole();
 
 			if (args.Contains("-CONSOLE"))
 			{
-				RTC.LogConsole.ShowConsole();
+				LogConsole.ShowConsole();
 			}
 			else
 			{
-				RTC.LogConsole.HideConsole();
+				LogConsole.HideConsole();
 			}
 
 		//	RTC.LogConsole.ShowConsole();

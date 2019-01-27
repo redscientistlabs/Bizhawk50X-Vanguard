@@ -6,7 +6,7 @@ using System.Media;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
-using NetCore;
+using RTCV.NetCore;
 using RTCV.NetCore.StaticTools;
 using RTCV.CorruptCore;
 using RTCV.UI;

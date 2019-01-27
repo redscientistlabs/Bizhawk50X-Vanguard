@@ -11,8 +11,6 @@ using System.Threading;
 using System.Windows.Forms;
 using BizHawk.Client.Common;
 using BizHawk.Client.EmuHawk;
-using CorruptCore;
-using NetCore;
 using Newtonsoft.Json;
 using RTCV.CorruptCore;
 using RTCV.NetCore;
@@ -61,7 +59,7 @@ namespace RTC
 			if (result == DialogResult.Abort)
 			{
 				if (loaderObject != null)
-					NetCore.SyncObjectSingleton.SyncObjectExecute(loaderObject, (o, ea) =>
+					RTCV.NetCore.SyncObjectSingleton.SyncObjectExecute(loaderObject, (o, ea) =>
 					{
 						loaderObject.Close();
 					});

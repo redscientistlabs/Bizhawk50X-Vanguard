@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Windows.Forms;
-using CorruptCore;
+using RTCV.CorruptCore;
 using RTCV.NetCore;
 
 namespace RTCV.CorruptCore
