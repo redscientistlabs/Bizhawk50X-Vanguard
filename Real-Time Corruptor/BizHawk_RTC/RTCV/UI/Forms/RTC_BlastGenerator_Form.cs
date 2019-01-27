@@ -67,8 +67,8 @@ namespace RTCV.UI
 			dgvBlastGenerator.MouseClick += dgvBlastGenerator_MouseClick;
 			dgvBlastGenerator.CellValueChanged += dgvBlastGenerator_CellValueChanged;
 			dgvBlastGenerator.CellClick += dgvBlastGenerator_CellClick;
-			RTC_UICore.SetRTCColor(RTC_UICore.GeneralColor, this);
-			domains = RTC_MemoryDomains.MemoryInterfaces?.Keys?.Concat(RTC_MemoryDomains.VmdPool.Values.Select(it => it.ToString())).ToArray();
+			UICore.SetRTCColor(UICore.GeneralColor, this);
+			domains = MemoryDomains.MemoryInterfaces?.Keys?.Concat(MemoryDomains.VmdPool.Values.Select(it => it.ToString())).ToArray();
 		}
 
 		public void LoadNoStashKey()
@@ -247,7 +247,7 @@ namespace RTCV.UI
 		{
 			if (sk == null)
 			{
-				StashKey psk = RTC_StockpileManager_UISide.GetCurrentSavestateStashkey();
+				StashKey psk = StockpileManager_UISide.GetCurrentSavestateStashkey();
 				if (psk == null)
 				{
 					MessageBox.Show("Could not perform the CORRUPT action\n\nEither no Savestate Box was selected in the Savestate Manager\nor the Savetate Box itself is empty.");
@@ -270,7 +270,7 @@ namespace RTCV.UI
 		{
 			if (sk == null)
 			{
-				StashKey psk = RTC_StockpileManager_UISide.GetCurrentSavestateStashkey();
+				StashKey psk = StockpileManager_UISide.GetCurrentSavestateStashkey();
 				if (psk == null)
 				{
 					MessageBox.Show("Could not perform the CORRUPT action\n\nEither no Savestate Box was selected in the Savestate Manager\nor the Savetate Box itself is empty.");
@@ -287,7 +287,7 @@ namespace RTCV.UI
 
 			if (openedFromBlastEditor)
 			{
-				if (S.GET<RTC_BlastEditor_Form>() != null)
+				if (S.GET<RTC_NewBlastEditor_Form>() != null)
 				{
 					//TODO
 					//	S.GET<RTC_BlastEditor_Form>().ImportBlastLayer(newSk.BlastLayer);
@@ -295,14 +295,14 @@ namespace RTCV.UI
 			}
 			else
 			{
-				RTC_StockpileManager_UISide.StashHistory.Add(newSk);
+				StockpileManager_UISide.StashHistory.Add(newSk);
 				S.GET<RTC_GlitchHarvester_Form>().RefreshStashHistory();
 				S.GET<RTC_GlitchHarvester_Form>().dgvStockpile.ClearSelection();
 				S.GET<RTC_GlitchHarvester_Form>().lbStashHistory.ClearSelected();
 
 				S.GET<RTC_GlitchHarvester_Form>().DontLoadSelectedStash = true;
 				S.GET<RTC_GlitchHarvester_Form>().lbStashHistory.SelectedIndex = S.GET<RTC_GlitchHarvester_Form>().lbStashHistory.Items.Count - 1;
-				RTC_StockpileManager_UISide.CurrentStashkey = RTC_StockpileManager_UISide.StashHistory[S.GET<RTC_GlitchHarvester_Form>().lbStashHistory.SelectedIndex];
+				StockpileManager_UISide.CurrentStashkey = StockpileManager_UISide.StashHistory[S.GET<RTC_GlitchHarvester_Form>().lbStashHistory.SelectedIndex];
 			}
 		}
 
@@ -351,7 +351,7 @@ namespace RTCV.UI
 					//If opened from engine config, use the GH state
 					if (!openedFromBlastEditor)
 					{
-						StashKey psk = RTC_StockpileManager_UISide.GetCurrentSavestateStashkey();
+						StashKey psk = StockpileManager_UISide.GetCurrentSavestateStashkey();
 						if (psk == null)
 						{
 							MessageBox.Show(
@@ -583,10 +583,10 @@ namespace RTCV.UI
 			{
 				S.GET<RTC_MemoryDomains_Form>().RefreshDomainsAndKeepSelected();
 				domainToMiDico.Clear();
-				domains = RTC_MemoryDomains.MemoryInterfaces.Keys.Concat(RTC_MemoryDomains.VmdPool.Values.Select(it => it.ToString())).ToArray();
+				domains = MemoryDomains.MemoryInterfaces.Keys.Concat(MemoryDomains.VmdPool.Values.Select(it => it.ToString())).ToArray();
 				foreach (string domain in domains)
 				{
-					domainToMiDico.Add(domain, RTC_MemoryDomains.GetInterface(domain));
+					domainToMiDico.Add(domain, MemoryDomains.GetInterface(domain));
 				}
 
 				foreach (DataGridViewRow row in dgvBlastGenerator.Rows)

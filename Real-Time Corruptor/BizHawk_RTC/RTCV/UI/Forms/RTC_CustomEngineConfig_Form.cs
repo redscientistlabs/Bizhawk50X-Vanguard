@@ -36,14 +36,14 @@ namespace RTCV.UI
 			cbLimiterList.ValueMember = "Value";
 
 			//Do this here as if it's stuck into the designer, it keeps defaulting out
-			cbValueList.DataSource = RTC_UICore.ValueListBindingSource;
-			cbLimiterList.DataSource = RTC_UICore.LimiterListBindingSource;
+			cbValueList.DataSource = UICore.ValueListBindingSource;
+			cbLimiterList.DataSource = UICore.LimiterListBindingSource;
 	
-			if (RTC_UICore.ValueListBindingSource.Count > 0)
+			if (UICore.ValueListBindingSource.Count > 0)
 			{
 				cbValueList_SelectedIndexChanged(cbValueList, null);
 			}
-			if (RTC_UICore.LimiterListBindingSource.Count > 0)
+			if (UICore.LimiterListBindingSource.Count > 0)
 			{
 				cbLimiterList_SelectedIndexChanged(cbLimiterList, null);
 			}
@@ -61,7 +61,7 @@ namespace RTCV.UI
 
 		private void nmMaxInfinite_ValueChanged(object sender, EventArgs e)
 		{
-			RTC_StepActions.MaxInfiniteBlastUnits = Convert.ToInt32(nmMaxInfinite.Value);
+			StepActions.MaxInfiniteBlastUnits = Convert.ToInt32(nmMaxInfinite.Value);
 		}
 
 		//I'm using if-else's rather than switch statements on purpose.
@@ -126,7 +126,7 @@ namespace RTCV.UI
 				return;
 			long value = Convert.ToInt64(nmMinValue.Value);
 
-			switch (RTC_CorruptCore.CurrentPrecision)
+			switch (CorruptCore.CorruptCore.CurrentPrecision)
 			{
 				case 1:
 					RTC_CustomEngine.MinValue8Bit = value;
@@ -148,7 +148,7 @@ namespace RTCV.UI
 			long value = Convert.ToInt64(nmMaxValue.Value);
 
 
-			switch (RTC_CorruptCore.CurrentPrecision)
+			switch (CorruptCore.CorruptCore.CurrentPrecision)
 			{
 				case 1:
 					RTC_CustomEngine.MaxValue8Bit = value;
@@ -165,12 +165,12 @@ namespace RTCV.UI
 
 		private void cbLockUnits_CheckedChanged(object sender, EventArgs e)
 		{
-			RTC_StepActions.LockExecution = cbLockUnits.Checked;
+			StepActions.LockExecution = cbLockUnits.Checked;
 		}
 
 		private void cbClearRewind_CheckedChanged(object sender, EventArgs e)
 		{
-			RTC_StepActions.ClearStepActionsOnRewind = cbClearRewind.Checked;
+			StepActions.ClearStepActionsOnRewind = cbClearRewind.Checked;
 		}
 
 		private void cbLoopUnit_CheckedChanged(object sender, EventArgs e)

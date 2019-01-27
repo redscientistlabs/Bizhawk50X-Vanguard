@@ -32,20 +32,20 @@ namespace RTCV.UI
 			S.GET<RTC_MemoryDomains_Form>().RefreshDomainsAndKeepSelected();
 
 			cbSelectedMemoryDomain.Items.Clear();
-			cbSelectedMemoryDomain.Items.AddRange(RTC_MemoryDomains.MemoryInterfaces.Keys.Where(it => !it.Contains("[V]")).ToArray());
+			cbSelectedMemoryDomain.Items.AddRange(MemoryDomains.MemoryInterfaces.Keys.Where(it => !it.Contains("[V]")).ToArray());
 
 			cbSelectedMemoryDomain.SelectedIndex = 0;
 		}
 
 		private void cbSelectedMemoryDomain_SelectedIndexChanged(object sender, EventArgs e)
 		{
-			if (string.IsNullOrWhiteSpace(cbSelectedMemoryDomain.SelectedItem?.ToString()) || !RTC_MemoryDomains.MemoryInterfaces.ContainsKey(cbSelectedMemoryDomain.SelectedItem.ToString()))
+			if (string.IsNullOrWhiteSpace(cbSelectedMemoryDomain.SelectedItem?.ToString()) || !MemoryDomains.MemoryInterfaces.ContainsKey(cbSelectedMemoryDomain.SelectedItem.ToString()))
 			{
 				cbSelectedMemoryDomain.Items.Clear();
 				return;
 			}
 
-			MemoryInterface mi = RTC_MemoryDomains.MemoryInterfaces[cbSelectedMemoryDomain.SelectedItem.ToString()];
+			MemoryInterface mi = MemoryDomains.MemoryInterfaces[cbSelectedMemoryDomain.SelectedItem.ToString()];
 
 			lbDomainSizeValue.Text = "0x" + mi.Size.ToString("X");
 			lbWordSizeValue.Text = $"{mi.WordSize * 8} bits";
@@ -74,26 +74,26 @@ namespace RTCV.UI
 					return false;
 			}
 
-			if (string.IsNullOrWhiteSpace(cbSelectedMemoryDomain.SelectedItem?.ToString()) || !RTC_MemoryDomains.MemoryInterfaces.ContainsKey(cbSelectedMemoryDomain.SelectedItem.ToString()))
+			if (string.IsNullOrWhiteSpace(cbSelectedMemoryDomain.SelectedItem?.ToString()) || !MemoryDomains.MemoryInterfaces.ContainsKey(cbSelectedMemoryDomain.SelectedItem.ToString()))
 			{
 				cbSelectedMemoryDomain.Items.Clear();
 				return false;
 			}
 
-			if (!string.IsNullOrWhiteSpace(tbVmdName.Text) && RTC_MemoryDomains.VmdPool.ContainsKey($"[V]{tbVmdName.Text}"))
+			if (!string.IsNullOrWhiteSpace(tbVmdName.Text) && MemoryDomains.VmdPool.ContainsKey($"[V]{tbVmdName.Text}"))
 			{
 				MessageBox.Show("There is already a VMD with this name in the VMD Pool");
 				return false;
 			}
 
-			MemoryInterface mi = RTC_MemoryDomains.MemoryInterfaces[cbSelectedMemoryDomain.SelectedItem.ToString()];
+			MemoryInterface mi = MemoryDomains.MemoryInterfaces[cbSelectedMemoryDomain.SelectedItem.ToString()];
 			VirtualMemoryDomain VMD = new VirtualMemoryDomain();
 			VmdPrototype proto = new VmdPrototype();
 
 			proto.GenDomain = cbSelectedMemoryDomain.SelectedItem.ToString();
 
 			if (string.IsNullOrWhiteSpace(tbVmdName.Text))
-				proto.VmdName = RTC_CorruptCore.GetRandomKey();
+				proto.VmdName = CorruptCore.CorruptCore.GetRandomKey();
 			else
 				proto.VmdName = tbVmdName.Text;
 
@@ -170,7 +170,7 @@ namespace RTCV.UI
 				return false;
 			}
 
-			RTC_MemoryDomains.AddVMD(VMD);
+			MemoryDomains.AddVMD(VMD);
 
 			tbVmdName.Text = "";
 			cbSelectedMemoryDomain.SelectedIndex = -1;

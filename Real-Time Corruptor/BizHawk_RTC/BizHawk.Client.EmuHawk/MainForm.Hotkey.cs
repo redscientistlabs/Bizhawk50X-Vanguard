@@ -14,7 +14,7 @@ namespace BizHawk.Client.EmuHawk
 			{
 				//RTC_HIJACK : Hook for HOTKEY_CHECK
 				default:
-					if (!RTC.RTC_Hooks.HOTKEY_CHECK(trigger))
+					if (!Vanguard.Hooks.HOTKEY_CHECK(trigger))
 						return false;
 					else
 						break;
@@ -68,7 +68,7 @@ namespace BizHawk.Client.EmuHawk
 				case "Close ROM":
 					//RTC_HIJACK : Disable normal CloseRom and replace with RTC CloseRom
 					//CloseRom();
-					RTC.RTC_Hooks.CLOSE_GAME(true);
+					Vanguard.Hooks.CLOSE_GAME(true);
 					break;
 				case "Load Last ROM":
 					LoadRomFromRecent(Global.Config.RecentRoms.MostRecent);

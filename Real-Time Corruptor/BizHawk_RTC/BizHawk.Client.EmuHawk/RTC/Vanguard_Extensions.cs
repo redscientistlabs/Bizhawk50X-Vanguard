@@ -20,9 +20,9 @@ using System.Xml.Serialization;
 using Ceras;
 using Newtonsoft.Json;
 
-namespace RTC
+namespace Vanguard
 {
-	public static class RTC_Extensions
+	public static class Vanguard_Extensions
 	{
 	}
 

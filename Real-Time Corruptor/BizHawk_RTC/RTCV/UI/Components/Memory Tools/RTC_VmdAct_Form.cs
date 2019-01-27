@@ -8,7 +8,7 @@ using System.Windows.Forms;
 using System.Xml.Serialization;
 using RTCV.CorruptCore;
 using RTCV.NetCore;
-using UI;
+using RTCV.UI;
 using static RTCV.UI.UI_Extensions;
 using RTCV.NetCore.StaticTools;
 
@@ -132,7 +132,7 @@ namespace RTCV.UI
 
 		public byte[] GetDumpFromFile(string key)
 		{
-			return File.ReadAllBytes(RTC_CorruptCore.workingDir + Path.DirectorySeparatorChar + "MEMORYDUMPS" + Path.DirectorySeparatorChar + key + ".dmp");
+			return File.ReadAllBytes(CorruptCore.CorruptCore.workingDir + Path.DirectorySeparatorChar + "MEMORYDUMPS" + Path.DirectorySeparatorChar + key + ".dmp");
 		}
 
 		public long[] CapActiveTable(long[] tempActiveTable)
@@ -151,7 +151,7 @@ namespace RTCV.UI
 
 					while (DuplicateFound)
 					{
-						long queryAdress = tempActiveTable[RTC_CorruptCore.RND.RandomLong(tempActiveTable.Length - 1)];
+						long queryAdress = tempActiveTable[CorruptCore.CorruptCore.RND.RandomLong(tempActiveTable.Length - 1)];
 
 						if (!cappedActiveTable.Contains(queryAdress))
 						{
@@ -193,14 +193,14 @@ namespace RTCV.UI
 
 			//	long domainSize = (long)RTC_Core.SendCommandToBizhawk(new RTC_Command(CommandType.REMOTE_DOMAIN_GETSIZE) { objectValue = cbSelectedMemoryDomain.SelectedItem.ToString()}, true);
 
-			MemoryInterface mi = RTC_MemoryDomains.GetInterface(cbSelectedMemoryDomain.SelectedItem.ToString());
+			MemoryInterface mi = MemoryDomains.GetInterface(cbSelectedMemoryDomain.SelectedItem.ToString());
 			if(mi == null)
 			{
 				MessageBox.Show("The currently selected domain doesn't exist!\nMake sure you have the correct core loaded and you've refreshed the domains.");
 					return false;
 			}
 
-			long domainSize = RTC_MemoryDomains.GetInterface(cbSelectedMemoryDomain.SelectedItem.ToString()).Size;
+			long domainSize = MemoryDomains.GetInterface(cbSelectedMemoryDomain.SelectedItem.ToString()).Size;
 			for (long i = 0; i < domainSize; i++)
 			{
 				newActiveTableActivity.Add(0);
@@ -234,7 +234,7 @@ namespace RTCV.UI
 		{
 			if (_activeTableReady)
 			{
-				return ActiveTableGenerated[RTC_CorruptCore.RND.Next(ActiveTableGenerated.Length - 1)];
+				return ActiveTableGenerated[CorruptCore.CorruptCore.RND.Next(ActiveTableGenerated.Length - 1)];
 			}
 			else
 				return 0;
@@ -242,7 +242,7 @@ namespace RTCV.UI
 
 		private void btnActiveTableAddDump_Click(object sender, EventArgs e)
 		{
-			if (cbSelectedMemoryDomain == null || RTC_MemoryDomains.GetInterface(cbSelectedMemoryDomain.SelectedItem.ToString()).Size.ToString() == null)
+			if (cbSelectedMemoryDomain == null || MemoryDomains.GetInterface(cbSelectedMemoryDomain.SelectedItem.ToString()).Size.ToString() == null)
 			{
 				MessageBox.Show("Select a valid domain before continuing!");
 				return;
@@ -250,7 +250,7 @@ namespace RTCV.UI
 			if (ActiveTableDumps == null)
 				return;
 
-			string key = RTC_CorruptCore.GetRandomKey();
+			string key = CorruptCore.CorruptCore.GetRandomKey();
 
 
 
@@ -279,7 +279,7 @@ namespace RTCV.UI
 				btnActiveTableQuickSave.Enabled = true;
 				cbAutoAddDump.Enabled = true;
 			}
-			MemoryInterface mi = RTC_MemoryDomains.GetInterface(cbSelectedMemoryDomain.SelectedItem.ToString());
+			MemoryInterface mi = MemoryDomains.GetInterface(cbSelectedMemoryDomain.SelectedItem.ToString());
 			if (mi == null)
 			{
 				MessageBox.Show("The currently selected domain doesn't exist!\nMake sure you have the correct core loaded and have refreshed the domains.");
@@ -304,7 +304,7 @@ namespace RTCV.UI
 
 			ActiveTableDumps = new List<string>();
 
-			foreach (string file in Directory.GetFiles(RTC_CorruptCore.workingDir + Path.DirectorySeparatorChar + "MEMORYDUMPS"))
+			foreach (string file in Directory.GetFiles(CorruptCore.CorruptCore.workingDir + Path.DirectorySeparatorChar + "MEMORYDUMPS"))
 				File.Delete(file);
 
 			currentFilename = null;
@@ -490,14 +490,14 @@ namespace RTCV.UI
 
 			try
 			{
-				MemoryInterface mi = RTC_MemoryDomains.MemoryInterfaces[cbSelectedMemoryDomain.SelectedItem.ToString()];
+				MemoryInterface mi = MemoryDomains.MemoryInterfaces[cbSelectedMemoryDomain.SelectedItem.ToString()];
 				VirtualMemoryDomain VMD = new VirtualMemoryDomain();
 				VmdPrototype proto = new VmdPrototype();
 
 				int lastaddress = -1;
 
 				proto.GenDomain = cbSelectedMemoryDomain.SelectedItem.ToString();
-				proto.VmdName = mi.Name + " " + RTC_CorruptCore.GetRandomKey();
+				proto.VmdName = mi.Name + " " + CorruptCore.CorruptCore.GetRandomKey();
 				proto.BigEndian = mi.BigEndian;
 				proto.WordSize = mi.WordSize;
 				proto.PointerSpacer = 1;
@@ -532,7 +532,7 @@ namespace RTCV.UI
 					return;
 				}
 
-				RTC_MemoryDomains.AddVMD(VMD);
+				MemoryDomains.AddVMD(VMD);
 
 				S.GET<RTC_VmdPool_Form>().RefreshVMDs();
 
@@ -557,7 +557,7 @@ namespace RTCV.UI
 
 		private void btnActiveTableGenerate_Click(object sender, EventArgs e)
 		{
-			if (cbSelectedMemoryDomain == null || RTC_MemoryDomains.GetInterface(cbSelectedMemoryDomain.SelectedItem.ToString())?.Size.ToString() == null)
+			if (cbSelectedMemoryDomain == null || MemoryDomains.GetInterface(cbSelectedMemoryDomain.SelectedItem.ToString())?.Size.ToString() == null)
 			{
 				MessageBox.Show("Select a valid domain before continuing!");
 				return;
@@ -582,7 +582,7 @@ namespace RTCV.UI
 			var temp = cbSelectedMemoryDomain.SelectedItem;
 
 			cbSelectedMemoryDomain.Items.Clear();
-			cbSelectedMemoryDomain.Items.AddRange(RTC_MemoryDomains.MemoryInterfaces.Keys.Where(it => !it.Contains("[V]")).ToArray());
+			cbSelectedMemoryDomain.Items.AddRange(MemoryDomains.MemoryInterfaces.Keys.Where(it => !it.Contains("[V]")).ToArray());
 
 			if (temp != null && cbSelectedMemoryDomain.Items.Contains(temp))
 				cbSelectedMemoryDomain.SelectedItem = temp;

@@ -30,12 +30,12 @@ namespace RTCV.UI
 			{
 				string VmdName = item.ToString();
 
-				foreach (BlastUnit bu in RTC_StepActions.GetRawBlastLayer().Layer)
+				foreach (BlastUnit bu in StepActions.GetRawBlastLayer().Layer)
 				{
 					bu.RasterizeVMDs();
 				}
 
-				RTC_MemoryDomains.RemoveVMD(VmdName);
+				MemoryDomains.RemoveVMD(VmdName);
 			}
 			RefreshVMDs();
 		}
@@ -43,7 +43,7 @@ namespace RTCV.UI
 		public void RefreshVMDs()
 		{
 			lbLoadedVmdList.Items.Clear();
-			lbLoadedVmdList.Items.AddRange(RTC_MemoryDomains.VmdPool.Values.Select(it => it.ToString()).ToArray());
+			lbLoadedVmdList.Items.AddRange(MemoryDomains.VmdPool.Values.Select(it => it.ToString()).ToArray());
 
 			lbRealDomainValue.Text = "#####";
 			lbVmdSizeValue.Text = "#####";
@@ -53,7 +53,7 @@ namespace RTCV.UI
 
 		private static void RenameVMD(string vmdName)
 		{
-			if (!RTC_MemoryDomains.VmdPool.ContainsKey(vmdName))
+			if (!MemoryDomains.VmdPool.ContainsKey(vmdName))
 				return;
 
 			string name = "";
@@ -68,14 +68,14 @@ namespace RTCV.UI
 			}
 
 			if (string.IsNullOrWhiteSpace(name))
-				name = RTC_CorruptCore.GetRandomKey();
+				name = CorruptCore.CorruptCore.GetRandomKey();
 
-			VirtualMemoryDomain VMD = (VirtualMemoryDomain)RTC_MemoryDomains.VmdPool[vmdName];
+			VirtualMemoryDomain VMD = (VirtualMemoryDomain)MemoryDomains.VmdPool[vmdName];
 
-			RTC_MemoryDomains.RemoveVMD(VMD);
+			MemoryDomains.RemoveVMD(VMD);
 			VMD.Name = name;
 			VMD.Proto.VmdName = name;
-			RTC_MemoryDomains.AddVMD(VMD);
+			MemoryDomains.AddVMD(VMD);
 		}
 
 		private void RTC_VmdPool_Form_Load(object sender, EventArgs e)
@@ -88,7 +88,7 @@ namespace RTCV.UI
 				return;
 
 			string vmdName = lbLoadedVmdList.SelectedItem.ToString();
-			MemoryInterface mi = RTC_MemoryDomains.VmdPool[vmdName];
+			MemoryInterface mi = MemoryDomains.VmdPool[vmdName];
 
 			lbVmdSizeValue.Text = mi.Size.ToString() + " (0x" + mi.Size.ToString("X") + ")";
 
@@ -104,7 +104,7 @@ namespace RTCV.UI
 				return;
 
 			string vmdName = lbLoadedVmdList.SelectedItem.ToString();
-			VirtualMemoryDomain vmd = (VirtualMemoryDomain)RTC_MemoryDomains.VmdPool[vmdName];
+			VirtualMemoryDomain vmd = (VirtualMemoryDomain)MemoryDomains.VmdPool[vmdName];
 
 			SaveFileDialog saveFileDialog1 = new SaveFileDialog
 			{
@@ -153,7 +153,7 @@ namespace RTCV.UI
 							VmdPrototype proto = (VmdPrototype)xs.Deserialize(fs);
 							fs.Close();
 
-							RTC_MemoryDomains.AddVMD(proto);
+							MemoryDomains.AddVMD(proto);
 						}
 					}
 					catch

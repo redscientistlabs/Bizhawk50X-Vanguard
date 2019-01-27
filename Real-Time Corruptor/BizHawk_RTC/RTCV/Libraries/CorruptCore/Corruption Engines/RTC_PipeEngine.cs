@@ -15,11 +15,11 @@ namespace RTCV.CorruptCore
 			{
 				if (domain == null)
 					return null;
-				MemoryDomainProxy mdp = RTC_MemoryDomains.GetProxy(domain, address);
+				MemoryDomainProxy mdp = MemoryDomains.GetProxy(domain, address);
 				
 				long safeAddress = address - (address % precision);
 
-				BlastTarget pipeStart = RTC_CorruptCore.GetBlastTarget();
+				BlastTarget pipeStart = CorruptCore.GetBlastTarget();
 				long safePipeStartAddress = pipeStart.Address - (pipeStart.Address % precision);
 
 				return new BlastUnit(StoreType.CONTINUOUS, StoreTime.PREEXECUTE, domain, safeAddress, pipeStart.Domain, safePipeStartAddress, precision, mdp.BigEndian, 0, 0);

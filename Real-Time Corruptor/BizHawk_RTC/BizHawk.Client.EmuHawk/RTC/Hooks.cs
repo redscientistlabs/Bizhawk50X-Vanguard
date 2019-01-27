@@ -14,9 +14,9 @@ using RTCV.NetCore;
 using static RTCV.NetCore.NetcoreCommands;
 using System.Data;
 
-namespace RTC
+namespace Vanguard
 {
-	public static class RTC_Hooks
+	public static class Hooks
 	{
 		//Instead of writing code inside bizhawk, hooks are placed inside of it so will be easier
 		//to upgrade BizHawk when they'll release a new version.
@@ -62,10 +62,10 @@ namespace RTC
 			}
 			catch(Exception ex)
 			{
-				if (RTC_EmuCore.ShowErrorDialog(ex, true) == DialogResult.Abort)
+				if (VanguardCore.ShowErrorDialog(ex, true) == DialogResult.Abort)
 					throw new RTCV.NetCore.AbortEverythingException();
 				MessageBox.Show("Clearing all step blastunits due to an exception within Core_Step().");
-				RTC_StepActions.ClearStepBlastUnits();
+				StepActions.ClearStepBlastUnits();
 			}
 		}
 
@@ -78,8 +78,8 @@ namespace RTC
 		{
 			if (disableRTC) return;
 
-			if (RTC_StepActions.ClearStepActionsOnRewind)
-				RTC_StepActions.ClearStepBlastUnits();
+			if (StepActions.ClearStepActionsOnRewind)
+				StepActions.ClearStepBlastUnits();
 		}
 
 		private static void STEP_FASTFORWARD() //errors trapped by CPU_STEP
@@ -93,7 +93,7 @@ namespace RTC
 
 			if (!_isRewinding)
 			{
-				RTC_StepActions.Execute();
+				StepActions.Execute();
 			}
 
 			if (_isRewinding || _isFastForwarding)
@@ -101,12 +101,12 @@ namespace RTC
 
 			CPU_STEP_Count++;
 
-			bool autoCorrupt = RTC_CorruptCore.AutoCorrupt;
-			int errorDelay = RTC_CorruptCore.ErrorDelay;
+			bool autoCorrupt = CorruptCore.AutoCorrupt;
+			int errorDelay = CorruptCore.ErrorDelay;
 			if (autoCorrupt && CPU_STEP_Count >= errorDelay)
 			{
 				CPU_STEP_Count = 0;
-				BlastLayer bl = RTC_CorruptCore.GenerateBlastLayer((string[])RTCV.NetCore.AllSpec.UISpec["SELECTEDDOMAINS"]);
+				BlastLayer bl = CorruptCore.GenerateBlastLayer((string[])RTCV.NetCore.AllSpec.UISpec["SELECTEDDOMAINS"]);
 				if (bl != null)
 					bl.Apply(false);
 			}
@@ -123,19 +123,19 @@ namespace RTC
 			}
 
 			try { 
-			RTC_EmuCore.args = args;
+			VanguardCore.args = args;
 
-			disableRTC = RTC_EmuCore.args.Contains("-DISABLERTC");
+			disableRTC = VanguardCore.args.Contains("-DISABLERTC");
 
-			//RTC_EmuCore.attached = true;
-			RTC_EmuCore.attached = RTC_EmuCore.args.Contains("-ATTACHED");
-				//RTC_E.isStandaloneEmu = RTC_EmuCore.args.Contains("-REMOTERTC");
+			//VanguardCore.attached = true;
+			VanguardCore.attached = VanguardCore.args.Contains("-ATTACHED");
+				//RTC_E.isStandaloneEmu = VanguardCore.args.Contains("-REMOTERTC");
 
 				//RTC_Unispec.RTCSpec.Update(Spec.HOOKS_SHOWCONSOLE.ToString(), RTC_Core.args.Contains("-CONSOLE"));
 			}
 			catch (Exception ex)
 			{
-				if (RTC_EmuCore.ShowErrorDialog(ex, true) == DialogResult.Abort)
+				if (VanguardCore.ShowErrorDialog(ex, true) == DialogResult.Abort)
 					throw new RTCV.NetCore.AbortEverythingException();
 			}
 		}
@@ -146,11 +146,11 @@ namespace RTC
 			{
 				if (disableRTC) return;
 
-				RTC_EmuCore.Start();
+				VanguardCore.Start();
 			}
 			catch (Exception ex)
 			{
-				if (RTC_EmuCore.ShowErrorDialog(ex, true) == DialogResult.Abort)
+				if (VanguardCore.ShowErrorDialog(ex, true) == DialogResult.Abort)
 					throw new RTCV.NetCore.AbortEverythingException();
 			}
 		}
@@ -163,11 +163,11 @@ namespace RTC
 			{
 				if (disableRTC) return;
 
-				RTC_EmuCore.SaveBizhawkWindowState();
+				VanguardCore.SaveBizhawkWindowState();
 			}
 			catch (Exception ex)
 			{
-				if (RTC_EmuCore.ShowErrorDialog(ex, true) == DialogResult.Abort)
+				if (VanguardCore.ShowErrorDialog(ex, true) == DialogResult.Abort)
 					throw new RTCV.NetCore.AbortEverythingException();
 			}
 		}
@@ -191,12 +191,12 @@ namespace RTC
 
 				isNormalAdvance = false;
 
-				RTC_StepActions.ClearStepBlastUnits();
+				StepActions.ClearStepBlastUnits();
 				CPU_STEP_Count = 0;
 			}
 			catch (Exception ex)
 			{
-				if (RTC_EmuCore.ShowErrorDialog(ex) == DialogResult.Abort)
+				if (VanguardCore.ShowErrorDialog(ex) == DialogResult.Abort)
 					throw new RTCV.NetCore.AbortEverythingException();
 			}
 		}
@@ -225,33 +225,33 @@ namespace RTC
 				//prepare memory domains in advance on bizhawk side
 				bool domainsChanged = RefreshDomains(false);
 
-				PartialSpec gameDone = new PartialSpec("EmuSpec");
+				PartialSpec gameDone = new PartialSpec("VanguardSpec");
 				gameDone[VSPEC.SYSTEM.ToString()] = BIZHAWK_GET_CURRENTLYLOADEDSYSTEMNAME().ToUpper();
 				gameDone[VSPEC.GAMENAME.ToString()] = BIZHAWK_GET_FILESYSTEMGAMENAME();
 				gameDone[VSPEC.SYSTEMPREFIX.ToString()] = BIZHAWK_GET_SAVESTATEPREFIX();
 				gameDone[VSPEC.SYSTEMCORE.ToString()] = BIZHAWK_GET_SYSTEMCORENAME(Global.Game.System);
 				gameDone[VSPEC.SYNCSETTINGS.ToString()] = BIZHAWK_GETSET_SYNCSETTINGS;
 				gameDone[VSPEC.OPENROMFILENAME.ToString()] = GlobalWin.MainForm.CurrentlyOpenRom;
-				gameDone[VSPEC.MEMORYDOMAINS_BLACKLISTEDDOMAINS.ToString()] = RTC_EmuCore.GetBlacklistedDomains(BIZHAWK_GET_CURRENTLYLOADEDSYSTEMNAME().ToUpper());
+				gameDone[VSPEC.MEMORYDOMAINS_BLACKLISTEDDOMAINS.ToString()] = VanguardCore.GetBlacklistedDomains(BIZHAWK_GET_CURRENTLYLOADEDSYSTEMNAME().ToUpper());
 				gameDone[VSPEC.MEMORYDOMAINS_INTERFACES.ToString()] = GetInterfaces();
-				RTC_EmuCore.EmuSpec.Update(gameDone);
+				VanguardCore.VanguardSpec.Update(gameDone);
 
 				//This is local. If the domains changed it propgates over netcore
 				LocalNetCoreRouter.Route(CORRUPTCORE, REMOTE_EVENT_DOMAINSUPDATED, domainsChanged, true);
 
 
-				if (RTC_EmuCore.GameName != lastGameName)
+				if (VanguardCore.GameName != lastGameName)
 				{
 				}
 				else
 				{
 				}
 
-				lastGameName = RTC_EmuCore.GameName;
+				lastGameName = VanguardCore.GameName;
 			}
 			catch (Exception ex)
 			{
-				if (RTC_EmuCore.ShowErrorDialog(ex) == DialogResult.Abort)
+				if (VanguardCore.ShowErrorDialog(ex) == DialogResult.Abort)
 					throw new RTCV.NetCore.AbortEverythingException();
 			}
 		}
@@ -279,14 +279,14 @@ namespace RTC
 
 				//RTC_Core.AutoCorrupt = false;
 
-				RTC_StepActions.ClearStepBlastUnits();
+				StepActions.ClearStepBlastUnits();
 
-				RTC_MemoryDomains.Clear();
+				MemoryDomains.Clear();
 
-				RTC_EmuCore.OpenRomFilename = null;
+				VanguardCore.OpenRomFilename = null;
 
 				if (loadDefault)
-					RTC_EmuCore.LoadDefaultRom();
+					VanguardCore.LoadDefaultRom();
 
 				//RTC_RPC.SendToKillSwitch("UNFREEZE");
 
@@ -294,7 +294,7 @@ namespace RTC
 			}
 			catch (Exception ex)
 			{
-				if (RTC_EmuCore.ShowErrorDialog(ex) == DialogResult.Abort)
+				if (VanguardCore.ShowErrorDialog(ex) == DialogResult.Abort)
 					throw new RTCV.NetCore.AbortEverythingException();
 			}
 		}
@@ -323,7 +323,7 @@ namespace RTC
 
 			//MessageBox.Show("SORRY EMULATOR CRASHED\n\n" + msg);
 
-			if (RTC_EmuCore.ShowErrorDialog(new CustomException("SORRY EMULATOR CRASHED",msg),true) == DialogResult.Abort)
+			if (VanguardCore.ShowErrorDialog(new CustomException("SORRY EMULATOR CRASHED",msg),true) == DialogResult.Abort)
 				throw new RTCV.NetCore.AbortEverythingException();
 
 		}
@@ -426,7 +426,7 @@ namespace RTC
 			}
 			catch (Exception ex)
 			{
-				if (RTC_EmuCore.ShowErrorDialog(ex, true) == DialogResult.Abort)
+				if (VanguardCore.ShowErrorDialog(ex, true) == DialogResult.Abort)
 					throw new RTCV.NetCore.AbortEverythingException();
 
 				return false;
@@ -451,7 +451,7 @@ namespace RTC
 			}
 			catch (Exception ex)
 			{
-				if (RTC_EmuCore.ShowErrorDialog(ex, true) == DialogResult.Abort)
+				if (VanguardCore.ShowErrorDialog(ex, true) == DialogResult.Abort)
 					throw new RTCV.NetCore.AbortEverythingException();
 
 				return null;
@@ -473,7 +473,7 @@ namespace RTC
 			}
 			catch (Exception ex)
 			{
-				if (RTC_EmuCore.ShowErrorDialog(ex, true) == DialogResult.Abort)
+				if (VanguardCore.ShowErrorDialog(ex, true) == DialogResult.Abort)
 					throw new RTCV.NetCore.AbortEverythingException();
 
 				return null;
@@ -493,7 +493,7 @@ namespace RTC
 			}
 			catch (Exception ex)
 			{
-				if (RTC_EmuCore.ShowErrorDialog(ex, true) == DialogResult.Abort)
+				if (VanguardCore.ShowErrorDialog(ex, true) == DialogResult.Abort)
 					throw new RTCV.NetCore.AbortEverythingException();
 
 				return null;
@@ -510,7 +510,7 @@ namespace RTC
 			}
 			catch (Exception ex)
 			{
-				if (RTC_EmuCore.ShowErrorDialog(ex, true) == DialogResult.Abort)
+				if (VanguardCore.ShowErrorDialog(ex, true) == DialogResult.Abort)
 					throw new RTCV.NetCore.AbortEverythingException();
 
 				return null;
@@ -527,7 +527,7 @@ namespace RTC
 			}
 			catch (Exception ex)
 			{
-				if (RTC_EmuCore.ShowErrorDialog(ex, true) == DialogResult.Abort)
+				if (VanguardCore.ShowErrorDialog(ex, true) == DialogResult.Abort)
 					throw new RTCV.NetCore.AbortEverythingException();
 
 				return null;
@@ -544,7 +544,7 @@ namespace RTC
 			}
 			catch (Exception ex)
 			{
-				if (RTC_EmuCore.ShowErrorDialog(ex) == DialogResult.Abort)
+				if (VanguardCore.ShowErrorDialog(ex) == DialogResult.Abort)
 					throw new RTCV.NetCore.AbortEverythingException();
 
 				return false;
@@ -559,7 +559,7 @@ namespace RTC
 			}
 			catch (Exception ex)
 			{
-				if (RTC_EmuCore.ShowErrorDialog(ex, true) == DialogResult.Abort)
+				if (VanguardCore.ShowErrorDialog(ex, true) == DialogResult.Abort)
 					throw new RTCV.NetCore.AbortEverythingException();
 
 				return false;
@@ -575,7 +575,7 @@ namespace RTC
 			}
 			catch (Exception ex)
 			{
-				if (RTC_EmuCore.ShowErrorDialog(ex, true) == DialogResult.Abort)
+				if (VanguardCore.ShowErrorDialog(ex, true) == DialogResult.Abort)
 					throw new RTCV.NetCore.AbortEverythingException();
 
 				return;
@@ -592,7 +592,7 @@ namespace RTC
 			}
 			catch (Exception ex)
 			{
-				if (RTC_EmuCore.ShowErrorDialog(ex, true) == DialogResult.Abort)
+				if (VanguardCore.ShowErrorDialog(ex, true) == DialogResult.Abort)
 					throw new RTCV.NetCore.AbortEverythingException();
 
 				return;
@@ -715,7 +715,7 @@ namespace RTC
 			}
 			catch (Exception ex)
 			{
-				if (RTC_EmuCore.ShowErrorDialog(ex, true) == DialogResult.Abort)
+				if (VanguardCore.ShowErrorDialog(ex, true) == DialogResult.Abort)
 					throw new RTCV.NetCore.AbortEverythingException();
 
 				return;
@@ -767,7 +767,7 @@ namespace RTC
 			}
 			catch (Exception ex)
 			{
-				if (RTC_EmuCore.ShowErrorDialog(ex, true) == DialogResult.Abort)
+				if (VanguardCore.ShowErrorDialog(ex, true) == DialogResult.Abort)
 					throw new RTCV.NetCore.AbortEverythingException();
 
 				return;
@@ -811,7 +811,7 @@ namespace RTC
 			}
 			catch (Exception ex)
 			{
-				if (RTC_EmuCore.ShowErrorDialog(ex, true) == DialogResult.Abort)
+				if (VanguardCore.ShowErrorDialog(ex, true) == DialogResult.Abort)
 					throw new RTCV.NetCore.AbortEverythingException();
 
 				return;
@@ -838,7 +838,7 @@ namespace RTC
 
 					case "SNES":
 
-						if (RTC_MemoryDomains.MemoryInterfaces.ContainsKey("SGB WRAM"))
+						if (MemoryDomains.MemoryInterfaces.ContainsKey("SGB WRAM"))
 							return "bsnes_SGB";
 
 						return (Global.Config.SNES_InSnes9x ? "snes9x" : "bsnes");
@@ -860,7 +860,7 @@ namespace RTC
 			}
 			catch (Exception ex)
 			{
-				if (RTC_EmuCore.ShowErrorDialog(ex) == DialogResult.Abort)
+				if (VanguardCore.ShowErrorDialog(ex) == DialogResult.Abort)
 					throw new RTCV.NetCore.AbortEverythingException();
 
 				return null;
@@ -919,7 +919,7 @@ namespace RTC
 			//Compare the old to the new. If the name and sizes are all the same, don't push that there were changes.
 			//We need to compare like this because the domains can change from syncsettings.
 			//We only check name and size as those are the only things that can change on the fly
-			var oldInterfaces = RTC_EmuCore.MemoryInterfacees;
+			var oldInterfaces = VanguardCore.MemoryInterfacees;
 			var newInterfaces = GetInterfaces();
 			bool domainsChanged = false;
 
@@ -939,7 +939,7 @@ namespace RTC
 			//We gotta push this no matter what since it's new underlying objects
 			if (updateSpecs)
 			{
-				RTC_EmuCore.EmuSpec.Update(VSPEC.MEMORYDOMAINS_INTERFACES.ToString(), GetInterfaces());
+				VanguardCore.VanguardSpec.Update(VSPEC.MEMORYDOMAINS_INTERFACES.ToString(), GetInterfaces());
 				LocalNetCoreRouter.Route(CORRUPTCORE, REMOTE_EVENT_DOMAINSUPDATED, domainsChanged, true);
 			}
 
@@ -949,7 +949,7 @@ namespace RTC
 			}
 			catch (Exception ex)
 			{
-				if (RTC_EmuCore.ShowErrorDialog(ex) == DialogResult.Abort)
+				if (VanguardCore.ShowErrorDialog(ex) == DialogResult.Abort)
 					throw new RTCV.NetCore.AbortEverythingException();
 
 				return false;
@@ -977,7 +977,7 @@ namespace RTC
 			}
 			catch (Exception ex)
 			{
-				if (RTC_EmuCore.ShowErrorDialog(ex, true) == DialogResult.Abort)
+				if (VanguardCore.ShowErrorDialog(ex, true) == DialogResult.Abort)
 					throw new RTCV.NetCore.AbortEverythingException();
 
 				return new MemoryDomainProxy[] { };

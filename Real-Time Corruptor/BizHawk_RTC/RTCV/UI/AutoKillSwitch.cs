@@ -10,13 +10,12 @@ using RTCV.NetCore;
 using RTCV.NetCore.StaticTools;
 using RTCV.CorruptCore;
 using RTCV.UI;
-using UI;
 using static RTCV.UI.UI_Extensions;
 
 namespace RTCV.UI
 {
 
-	public static class RTC_AutoKillSwitch
+	public static class AutoKillSwitch
 	{
 		public static int MaxMissedPulses = 15;
 
@@ -47,7 +46,7 @@ namespace RTCV.UI
 		{
 			if (LoadedSounds != null && (forcePlay || S.GET<RTC_ConnectionStatus_Form>()
 				.btnStartEmuhawkDetached.Text == "Restart BizHawk"))
-				LoadedSounds[RTC_CorruptCore.RND.Next(LoadedSounds.Length)]
+				LoadedSounds[CorruptCore.CorruptCore.RND.Next(LoadedSounds.Length)]
 					.Play();
 		}
 

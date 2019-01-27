@@ -63,7 +63,7 @@ namespace RTCV.CorruptCore
 			{
 				if (domain == null)
 					return null;
-				MemoryDomainProxy mdp = RTC_MemoryDomains.GetProxy(domain, address);
+				MemoryDomainProxy mdp = MemoryDomains.GetProxy(domain, address);
 
 				Byte[] value = new Byte[precision];
 
@@ -73,25 +73,25 @@ namespace RTCV.CorruptCore
 				switch (precision)
 				{
 					case 1:
-						randomValue = RTC_CorruptCore.RND.RandomLong(MinValue8Bit, MaxValue8Bit);
+						randomValue = CorruptCore.RND.RandomLong(MinValue8Bit, MaxValue8Bit);
 						break;
 					case 2:
-						randomValue = RTC_CorruptCore.RND.RandomLong(MinValue16Bit, MaxValue16Bit);
+						randomValue = CorruptCore.RND.RandomLong(MinValue16Bit, MaxValue16Bit);
 						break;
 					case 4:
-						randomValue = RTC_CorruptCore.RND.RandomLong(MinValue32Bit, MaxValue32Bit);
+						randomValue = CorruptCore.RND.RandomLong(MinValue32Bit, MaxValue32Bit);
 						break;
 				}
 
 				if (randomValue != -1)
 				{
-					value = RTC_Extensions.GetByteArrayValue(precision, randomValue, true);
+					value = CorruptCore_Extensions.GetByteArrayValue(precision, randomValue, true);
 				}
 				else
 				{
 					for (int i = 0; i < precision; i++)
 					{
-						value[i] = (byte)RTC_CorruptCore.RND.Next();
+						value[i] = (byte)CorruptCore.RND.Next();
 					}
 				}
 

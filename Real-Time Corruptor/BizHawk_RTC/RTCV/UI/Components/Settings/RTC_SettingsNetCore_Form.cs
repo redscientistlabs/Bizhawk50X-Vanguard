@@ -30,19 +30,19 @@ namespace RTCV.UI
 			switch (cbCrashSoundEffect.SelectedIndex)
 			{
 				case 0:
-					var PlatesHdFiles = Directory.GetFiles(RTC_CorruptCore.assetsDir + Path.DirectorySeparatorChar + "PLATESHD" + Path.DirectorySeparatorChar);
-					RTC_AutoKillSwitch.LoadedSounds = PlatesHdFiles.Select(it => new SoundPlayer(it)).ToArray();
+					var PlatesHdFiles = Directory.GetFiles(CorruptCore.CorruptCore.assetsDir + Path.DirectorySeparatorChar + "PLATESHD" + Path.DirectorySeparatorChar);
+					AutoKillSwitch.LoadedSounds = PlatesHdFiles.Select(it => new SoundPlayer(it)).ToArray();
 					break;
 				case 1:
-					RTC_AutoKillSwitch.LoadedSounds = new SoundPlayer[] { new SoundPlayer(RTC_CorruptCore.assetsDir + Path.DirectorySeparatorChar + "crash.wav") };
+					AutoKillSwitch.LoadedSounds = new SoundPlayer[] { new SoundPlayer(CorruptCore.CorruptCore.assetsDir + Path.DirectorySeparatorChar + "crash.wav") };
 					break;
 
 				case 2:
-					RTC_AutoKillSwitch.LoadedSounds = null;
+					AutoKillSwitch.LoadedSounds = null;
 					break;
 				case 3:
-					var CrashSoundsFiles = Directory.GetFiles(RTC_CorruptCore.assetsDir + Path.DirectorySeparatorChar + "CRASHSOUNDS");
-					RTC_AutoKillSwitch.LoadedSounds = CrashSoundsFiles.Select(it => new SoundPlayer(it)).ToArray();
+					var CrashSoundsFiles = Directory.GetFiles(CorruptCore.CorruptCore.assetsDir + Path.DirectorySeparatorChar + "CRASHSOUNDS");
+					AutoKillSwitch.LoadedSounds = CrashSoundsFiles.Select(it => new SoundPlayer(it)).ToArray();
 					break;
 			}
 
@@ -57,9 +57,9 @@ namespace RTCV.UI
 
 		public void UpdateGameProtectionDelay()
 		{
-			RTC_GameProtection.BackupInterval = Convert.ToInt32(S.GET<RTC_SettingsNetCore_Form>().nmGameProtectionDelay.Value);
-			if (RTC_GameProtection.isRunning)
-				RTC_GameProtection.Reset();
+			GameProtection.BackupInterval = Convert.ToInt32(S.GET<RTC_SettingsNetCore_Form>().nmGameProtectionDelay.Value);
+			if (GameProtection.isRunning)
+				GameProtection.Reset();
 		}
 
 		private void RTC_SettingsNetCore_Form_Load(object sender, EventArgs e)

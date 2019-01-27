@@ -9,17 +9,14 @@ using System.Windows.Forms;
 using RTCV.CorruptCore;
 using RTCV.NetCore;
 using RTCV.UI;
-using static RTCV.UI.UI_Extensions;
 using static RTCV.NetCore.NetcoreCommands;
 using RTCV.NetCore.StaticTools;
 
-namespace UI
+namespace RTCV.UI
 {
 	public static class UI_VanguardImplementation
 	{
 		public static UIConnector connector = null;
-
-
 
 		public static void StartServer()
 		{
@@ -28,7 +25,7 @@ namespace UI
 			var spec = new NetCoreReceiver();
 			spec.MessageReceived += OnMessageReceived;
 
-			spec.Attached = RTC_CorruptCore.Attached;
+			spec.Attached = CorruptCore.CorruptCore.Attached;
 
 			connector = new UIConnector(spec);
 		}
@@ -50,11 +47,11 @@ namespace UI
 
 				switch (message.Type) //Handle received messages here
 				{
-					case REMOTE_PUSHEMUSPEC:
+					case REMOTE_PUSHVANGUARDSPEC:
 						SyncObjectSingleton.FormExecute((o, ea) =>
 						{
-							if (!RTC_CorruptCore.Attached)
-								RTCV.NetCore.AllSpec.VanguardSpec = new FullSpec((PartialSpec)advancedMessage.objectValue, !RTC_CorruptCore.Attached);
+							if (!CorruptCore.CorruptCore.Attached)
+								RTCV.NetCore.AllSpec.VanguardSpec = new FullSpec((PartialSpec)advancedMessage.objectValue, !CorruptCore.CorruptCore.Attached);
 
 							e.setReturnValue(true);
 
@@ -73,15 +70,15 @@ namespace UI
 						{
 							S.GET<RTC_Core_Form>().Show();
 						//S.GET<RTC_Test_Form>().Show();
-						if (RTC_UICore.FirstConnect)
+						if (UICore.FirstConnect)
 							{
-								RTC_UICore.FirstConnect = false;
+								UICore.FirstConnect = false;
 								S.GET<RTC_Core_Form>().btnEngineConfig_Click(null, null);
 							}
 							else
 							{
 							//Push the VMDs since we store them out of spec
-							var vmdProtos = RTC_MemoryDomains.VmdPool.Values.Cast<VirtualMemoryDomain>().Select(x => x.Proto).ToArray();
+							var vmdProtos = MemoryDomains.VmdPool.Values.Cast<VirtualMemoryDomain>().Select(x => x.Proto).ToArray();
 								LocalNetCoreRouter.Route(NetcoreCommands.CORRUPTCORE, NetcoreCommands.REMOTE_PUSHVMDPROTOS, vmdProtos, true);
 
 							//Return to the main form
@@ -94,12 +91,12 @@ namespace UI
 
 							S.GET<RTC_Core_Form>().pbAutoKillSwitchTimeout.Value = 0;
 
-							if (!RTC_CorruptCore.Attached)
-								RTC_AutoKillSwitch.Enabled = true;
+							if (!CorruptCore.CorruptCore.Attached)
+								AutoKillSwitch.Enabled = true;
 						});
 						break;
 
-					case REMOTE_PUSHEMUSPECUPDATE:
+					case REMOTE_PUSHVANGUARDSPECUPDATE:
 						SyncObjectSingleton.FormExecute((o, ea) =>
 						{
 							RTCV.NetCore.AllSpec.VanguardSpec?.Update((PartialSpec)advancedMessage.objectValue);
@@ -239,13 +236,13 @@ namespace UI
 					case REMOTE_HOTKEY_BLASTLAYERREBLAST:
 						SyncObjectSingleton.FormExecute((o, ea) =>
 						{
-							if (RTC_StockpileManager_UISide.CurrentStashkey == null || RTC_StockpileManager_UISide.CurrentStashkey.BlastLayer.Layer.Count == 0)
+							if (StockpileManager_UISide.CurrentStashkey == null || StockpileManager_UISide.CurrentStashkey.BlastLayer.Layer.Count == 0)
 							{
 								S.GET<RTC_GlitchHarvester_Form>().IsCorruptionApplied = false;
 								return;
 							}
 							S.GET<RTC_GlitchHarvester_Form>().IsCorruptionApplied = true;
-							RTC_StockpileManager_UISide.ApplyStashkey(RTC_StockpileManager_UISide.CurrentStashkey, false);
+							StockpileManager_UISide.ApplyStashkey(StockpileManager_UISide.CurrentStashkey, false);
 						});
 						break;
 
@@ -270,8 +267,8 @@ namespace UI
 						break;
 
 					case REMOTE_BACKUPKEY_STASH:
-						RTC_StockpileManager_UISide.BackupedState = (StashKey)advancedMessage.objectValue;
-						RTC_StockpileManager_UISide.AllBackupStates.Push((StashKey)advancedMessage.objectValue);
+						StockpileManager_UISide.BackupedState = (StashKey)advancedMessage.objectValue;
+						StockpileManager_UISide.AllBackupStates.Push((StashKey)advancedMessage.objectValue);
 						SyncObjectSingleton.FormExecute((o, ea) =>
 						{
 							S.GET<RTC_Core_Form>().btnGpJumpBack.Visible = true;
@@ -280,7 +277,7 @@ namespace UI
 						break;
 
 					case KILLSWITCH_PULSE:
-						RTC_AutoKillSwitch.Pulse();
+						AutoKillSwitch.Pulse();
 						break;
 
 				}

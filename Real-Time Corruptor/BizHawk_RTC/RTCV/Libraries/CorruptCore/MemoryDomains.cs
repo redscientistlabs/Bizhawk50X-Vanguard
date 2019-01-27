@@ -14,7 +14,7 @@ using RTCV.NetCore;
 
 namespace RTCV.CorruptCore
 {
-	public static class RTC_MemoryDomains
+	public static class MemoryDomains
 	{
 
 		public static Dictionary<string, MemoryInterface> MemoryInterfaces
@@ -131,7 +131,7 @@ namespace RTCV.CorruptCore
 		/// <param name="VMD"></param>
 		public static void AddVMD(VirtualMemoryDomain VMD)
 		{
-			RTC_MemoryDomains.VmdPool[VMD.ToString()] = VMD;
+			MemoryDomains.VmdPool[VMD.ToString()] = VMD;
 
 			LocalNetCoreRouter.Route(NetcoreCommands.CORRUPTCORE, NetcoreCommands.REMOTE_DOMAIN_VMD_ADD, VMD.Proto, true);
 			LocalNetCoreRouter.Route(NetcoreCommands.UI, NetcoreCommands.REMOTE_EVENT_DOMAINSUPDATED);
@@ -141,7 +141,7 @@ namespace RTCV.CorruptCore
 		public static void AddVMD_NET(VmdPrototype proto) => AddVMD_NET(proto.Generate());
 		public static void AddVMD_NET(VirtualMemoryDomain VMD)
 		{
-			RTC_MemoryDomains.VmdPool[VMD.ToString()] = VMD;
+			MemoryDomains.VmdPool[VMD.ToString()] = VMD;
 		}
 
 		/// <summary>
@@ -157,8 +157,8 @@ namespace RTCV.CorruptCore
 		/// <param name="vmdName"></param>
 		public static void RemoveVMD(string vmdName)
 		{
-			if (RTC_MemoryDomains.VmdPool.ContainsKey(vmdName))
-				RTC_MemoryDomains.VmdPool.Remove(vmdName);
+			if (MemoryDomains.VmdPool.ContainsKey(vmdName))
+				MemoryDomains.VmdPool.Remove(vmdName);
 
 			LocalNetCoreRouter.Route(NetcoreCommands.CORRUPTCORE, NetcoreCommands.REMOTE_DOMAIN_VMD_REMOVE, vmdName, true);
 			LocalNetCoreRouter.Route(NetcoreCommands.UI, NetcoreCommands.REMOTE_EVENT_DOMAINSUPDATED);
@@ -167,8 +167,8 @@ namespace RTCV.CorruptCore
 		public static void RemoveVMD_NET(VirtualMemoryDomain VMD) => RemoveVMD_NET(VMD.ToString());
 		public static void RemoveVMD_NET(string vmdName)
 		{
-			if (RTC_MemoryDomains.VmdPool.ContainsKey(vmdName))
-				RTC_MemoryDomains.VmdPool.Remove(vmdName);
+			if (MemoryDomains.VmdPool.ContainsKey(vmdName))
+				MemoryDomains.VmdPool.Remove(vmdName);
 		}
 
 		public static void GenerateActiveTableDump(string domain, string key)
@@ -177,7 +177,7 @@ namespace RTCV.CorruptCore
 
 			byte[] dump = mi.GetDump();
 
-			File.WriteAllBytes(RTC_CorruptCore.workingDir + Path.DirectorySeparatorChar + "MEMORYDUMPS" + Path.DirectorySeparatorChar + key + ".dmp", dump.ToArray());
+			File.WriteAllBytes(CorruptCore.workingDir + Path.DirectorySeparatorChar + "MEMORYDUMPS" + Path.DirectorySeparatorChar + key + ".dmp", dump.ToArray());
 		}
 
 		public static byte[] GetDomainData(string domain)
@@ -208,7 +208,7 @@ namespace RTCV.CorruptCore
 				case "NES":     //Nintendo Entertainment System
 
 					//There's no easy way to discern NES from FDS so just check for the domain name
-					if (RTC_MemoryDomains.MemoryInterfaces.ContainsKey("PRG ROM"))
+					if (MemoryDomains.MemoryInterfaces.ContainsKey("PRG ROM"))
 						rp.PrimaryDomain = "PRG ROM";
 					else
 					{
@@ -216,7 +216,7 @@ namespace RTCV.CorruptCore
 						break;
 					}
 
-					if (RTC_MemoryDomains.MemoryInterfaces.ContainsKey("CHR VROM"))
+					if (MemoryDomains.MemoryInterfaces.ContainsKey("CHR VROM"))
 						rp.SecondDomain = "CHR VROM";
 					//Skip the first 16 bytes if there's an iNES header
 					if (CheckNesHeader(romFilename))
@@ -224,7 +224,7 @@ namespace RTCV.CorruptCore
 					break;
 
 				case "SNES":    //Super Nintendo
-					if (RTC_MemoryDomains.MemoryInterfaces.ContainsKey("SGB CARTROM")) //BSNES SGB Mode
+					if (MemoryDomains.MemoryInterfaces.ContainsKey("SGB CARTROM")) //BSNES SGB Mode
 						rp.PrimaryDomain = "SGB CARTROM";
 					else
 					{
@@ -259,7 +259,7 @@ namespace RTCV.CorruptCore
 					break;
 
 				case "GEN":     // Sega Genesis
-					if (RTC_MemoryDomains.MemoryInterfaces.ContainsKey("MD CART"))  //If it's regular Genesis or 32X
+					if (MemoryDomains.MemoryInterfaces.ContainsKey("MD CART"))  //If it's regular Genesis or 32X
 					{
 						rp.PrimaryDomain = "MD CART";
 
@@ -349,11 +349,11 @@ namespace RTCV.CorruptCore
 
 		public VmdPrototype(BlastLayer bl)
 		{
-			VmdName = RTC_CorruptCore.GetRandomKey();
+			VmdName = CorruptCore.GetRandomKey();
 			GenDomain = "Hybrid";
 
 			BlastUnit bu = bl.Layer[0];
-			MemoryInterface mi = RTC_MemoryDomains.GetInterface(bu.Domain);
+			MemoryInterface mi = MemoryDomains.GetInterface(bu.Domain);
 			BigEndian = mi.BigEndian;
 			WordSize = mi.WordSize;
 			SuppliedBlastLayer = bl;
@@ -547,7 +547,7 @@ namespace RTCV.CorruptCore
 			string targetDomain = GetRealDomain(address);
 			long targetAddress = GetRealAddress(address);
 
-			MemoryDomainProxy mdp = RTC_MemoryDomains.GetProxy(targetDomain, targetAddress);
+			MemoryDomainProxy mdp = MemoryDomains.GetProxy(targetDomain, targetAddress);
 
 			return mdp?.PeekByte(targetAddress) ?? 0;
 		}
@@ -560,7 +560,7 @@ namespace RTCV.CorruptCore
 			string targetDomain = GetRealDomain(address);
 			long targetAddress = GetRealAddress(address);
 
-			MemoryDomainProxy mdp = RTC_MemoryDomains.GetProxy(targetDomain, targetAddress);
+			MemoryDomainProxy mdp = MemoryDomains.GetProxy(targetDomain, targetAddress);
 
 			mdp?.PokeByte(targetAddress, value);
 		}

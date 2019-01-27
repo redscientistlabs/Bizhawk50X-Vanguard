@@ -163,8 +163,8 @@ namespace RTCV.UI
 
 		private void RTC_NewBlastEditorForm_Load(object sender, EventArgs e)
 		{
-			RTC_UICore.SetRTCColor(RTC_UICore.GeneralColor, this);
-			domains = RTC_MemoryDomains.MemoryInterfaces?.Keys?.Concat(RTC_MemoryDomains.VmdPool.Values.Select(it => it.ToString())).ToArray();;
+			UICore.SetRTCColor(UICore.GeneralColor, this);
+			domains = MemoryDomains.MemoryInterfaces?.Keys?.Concat(MemoryDomains.VmdPool.Values.Select(it => it.ToString())).ToArray();;
 		}
 
 		private void dgvBlastEditor_CellMouseClick(object sender, DataGridViewCellMouseEventArgs e)
@@ -502,7 +502,7 @@ namespace RTCV.UI
 				cbLoop.Checked = bu.Loop;
 				cbLimiterTime.SelectedItem = bu.LimiterTime;
 
-				cbLimiterList.SelectedItem = RTC_UICore.LimiterListBindingSource.FirstOrDefault(x => x.Value == bu.LimiterListHash);
+				cbLimiterList.SelectedItem = UICore.LimiterListBindingSource.FirstOrDefault(x => x.Value == bu.LimiterListHash);
 
 				cbInvertLimiter.Checked = bu.InvertLimiter;
 				cbStoreTime.SelectedItem = bu.StoreTime;
@@ -594,7 +594,7 @@ namespace RTCV.UI
 				cbSource.Items.Add(item);
 			}
 
-			cbLimiterList.DataSource = RTC_UICore.LimiterListBindingSource;
+			cbLimiterList.DataSource = UICore.LimiterListBindingSource;
 			cbLimiterList.DisplayMember = "Name";
 			cbLimiterList.ValueMember = "Value";
 
@@ -696,7 +696,7 @@ namespace RTCV.UI
 			dgvBlastEditor.Columns.Add(limiterTime);
 
 			DataGridViewComboBoxColumn limiterHash = CreateColumn(buProperty.LimiterListHash.ToString(), buProperty.LimiterListHash.ToString(), "Limiter List", new DataGridViewComboBoxColumn()) as DataGridViewComboBoxColumn;
-			limiterHash.DataSource = RTC_UICore.LimiterListBindingSource;
+			limiterHash.DataSource = UICore.LimiterListBindingSource;
 			limiterHash.DisplayMember = "Name";
 			limiterHash.ValueMember = "Value";
 			dgvBlastEditor.Columns.Add(limiterHash);
@@ -908,10 +908,10 @@ namespace RTCV.UI
 			{
 				S.GET<RTC_MemoryDomains_Form>().RefreshDomainsAndKeepSelected();
 				domainToMiDico.Clear();
-				domains = RTC_MemoryDomains.MemoryInterfaces.Keys.Concat(RTC_MemoryDomains.VmdPool.Values.Select(it => it.ToString())).ToArray();
+				domains = MemoryDomains.MemoryInterfaces.Keys.Concat(MemoryDomains.VmdPool.Values.Select(it => it.ToString())).ToArray();
 				foreach (string domain in domains)
 				{
-					domainToMiDico.Add(domain, RTC_MemoryDomains.GetInterface(domain));
+					domainToMiDico.Add(domain, MemoryDomains.GetInterface(domain));
 				}
 				if(domainToMiDico.Keys.Count > 0)
 					return true;
@@ -944,7 +944,7 @@ namespace RTCV.UI
 
 			foreach (BlastUnit bu in currentSK.BlastLayer.Layer
 				.Where(x => x.IsLocked == false)
-				.OrderBy(x => RTC_CorruptCore.RND.Next())
+				.OrderBy(x => CorruptCore.CorruptCore.RND.Next())
 				.Take(currentSK.BlastLayer.Layer.Count / 2))
 			{
 				bu.IsEnabled = false;
@@ -1039,7 +1039,7 @@ namespace RTCV.UI
 			//newSk.Key = RTC_Core.GetRandomKey();
 			//newSk.Alias = null;
 
-			RTC_StockpileManager_UISide.StashHistory.Add(newSk);
+			StockpileManager_UISide.StashHistory.Add(newSk);
 
 			S.GET<RTC_GlitchHarvester_Form>().RefreshStashHistory();
 			S.GET<RTC_GlitchHarvester_Form>().dgvStockpile.ClearSelection();
@@ -1047,7 +1047,7 @@ namespace RTCV.UI
 
 			S.GET<RTC_GlitchHarvester_Form>().DontLoadSelectedStash = true;
 			S.GET<RTC_GlitchHarvester_Form>().lbStashHistory.SelectedIndex = S.GET<RTC_GlitchHarvester_Form>().lbStashHistory.Items.Count - 1;
-			RTC_StockpileManager_UISide.CurrentStashkey = RTC_StockpileManager_UISide.StashHistory[S.GET<RTC_GlitchHarvester_Form>().lbStashHistory.SelectedIndex];
+			StockpileManager_UISide.CurrentStashkey = StockpileManager_UISide.StashHistory[S.GET<RTC_GlitchHarvester_Form>().lbStashHistory.SelectedIndex];
 
 		}
 
@@ -1116,7 +1116,7 @@ namespace RTCV.UI
 
 		private void replaceRomFromGHToolStripMenuItem_Click(object sender, EventArgs e)
 		{
-			StashKey temp = RTC_StockpileManager_UISide.GetCurrentSavestateStashkey();
+			StashKey temp = StockpileManager_UISide.GetCurrentSavestateStashkey();
 
 			if (temp == null)
 			{
@@ -1155,7 +1155,7 @@ namespace RTCV.UI
 
 				LocalNetCoreRouter.Route(NetcoreCommands.VANGUARD, NetcoreCommands.REMOTE_LOADROM, filename, true);
 
-				StashKey temp = new StashKey(RTC_CorruptCore.GetRandomKey(), currentSK.ParentKey, currentSK.BlastLayer);
+				StashKey temp = new StashKey(CorruptCore.CorruptCore.GetRandomKey(), currentSK.ParentKey, currentSK.BlastLayer);
 
 				// We have to null this as to properly create a stashkey, we need to use it in the constructor,
 				// but then the user needs to provide a savestate
@@ -1184,7 +1184,7 @@ namespace RTCV.UI
 				filename = sfd.FileName.ToString();
 			else
 				return;
-			RomParts rp = RTC_MemoryDomains.GetRomParts(currentSK.SystemName, currentSK.RomFilename);
+			RomParts rp = MemoryDomains.GetRomParts(currentSK.SystemName, currentSK.RomFilename);
 
 			File.Copy(currentSK.RomFilename, filename, true);
 			using (FileStream output = new FileStream(filename, FileMode.Open))
@@ -1193,7 +1193,7 @@ namespace RTCV.UI
 				{
 					if (bu.Source == BlastUnitSource.VALUE)
 					{
-						byte[] outvalue = RTC_Extensions.AddValueToByteArrayUnchecked(bu.Value, bu.TiltValue, bu.BigEndian);
+						byte[] outvalue = CorruptCore_Extensions.AddValueToByteArrayUnchecked(bu.Value, bu.TiltValue, bu.BigEndian);
 						//Flip it if it's big endian
 						if (bu.BigEndian)
 							outvalue.FlipBytes();
@@ -1205,7 +1205,7 @@ namespace RTCV.UI
 						}
 						else if (bu.Domain == rp.SecondDomain)
 						{
-							output.Position = bu.Address + RTC_MemoryDomains.MemoryInterfaces[rp.SecondDomain].Size + rp.SkipBytes;
+							output.Position = bu.Address + MemoryDomains.MemoryInterfaces[rp.SecondDomain].Size + rp.SkipBytes;
 							output.Write(outvalue, 0, outvalue.Length);
 						}
 					}
@@ -1221,7 +1221,7 @@ namespace RTCV.UI
 		private void replaceSavestateFromGHToolStripMenuItem_Click(object sender, EventArgs e)
 		{
 
-			StashKey temp = RTC_StockpileManager_UISide.GetCurrentSavestateStashkey();
+			StashKey temp = StockpileManager_UISide.GetCurrentSavestateStashkey();
 			if (temp == null)
 			{
 				MessageBox.Show("There is no savestate selected in the glitch harvester, or the current selected box is empty");
@@ -1282,7 +1282,7 @@ namespace RTCV.UI
 			string oldSS = currentSK.SyncSettings;
 
 			//Get a new key
-			currentSK.ParentKey = RTC_CorruptCore.GetRandomKey();
+			currentSK.ParentKey = CorruptCore.CorruptCore.GetRandomKey();
 			//Null the syncsettings out
 			currentSK.SyncSettings = null;
 
@@ -1290,7 +1290,7 @@ namespace RTCV.UI
 			File.Copy(filename, currentSK.GetSavestateFullPath(), true);
 
 			//Attempt to load and if it fails, don't let them update it.
-			if (!RTC_StockpileManager_UISide.LoadState(currentSK))
+			if (!StockpileManager_UISide.LoadState(currentSK))
 			{
 				currentSK.ParentKey = oldKey;
 				currentSK.SyncSettings = oldSS;
@@ -1298,7 +1298,7 @@ namespace RTCV.UI
 			}
 
 			//Grab the syncsettings
-			StashKey temp = new StashKey(RTC_CorruptCore.GetRandomKey(), currentSK.ParentKey, currentSK.BlastLayer);
+			StashKey temp = new StashKey(CorruptCore.CorruptCore.GetRandomKey(), currentSK.ParentKey, currentSK.BlastLayer);
 			currentSK.SyncSettings = temp.SyncSettings;
 		}
 
@@ -1326,7 +1326,7 @@ namespace RTCV.UI
 		private void loadFromFileblToolStripMenuItem_Click(object sender, EventArgs e)
 		{
 
-			BlastLayer temp = RTC_BlastTools.LoadBlastLayerFromFile();
+			BlastLayer temp = BlastTools.LoadBlastLayerFromFile();
 			if (temp != null)
 			{
 				currentSK.BlastLayer = temp;
@@ -1341,22 +1341,22 @@ namespace RTCV.UI
 		{
 			//If there's no blastlayer file already set, don't quicksave
 			if (CurrentBlastLayerFile == "")
-				RTC_BlastTools.SaveBlastLayerToFile(currentSK.BlastLayer);
+				BlastTools.SaveBlastLayerToFile(currentSK.BlastLayer);
 			else
-				RTC_BlastTools.SaveBlastLayerToFile(currentSK.BlastLayer, CurrentBlastLayerFile);
+				BlastTools.SaveBlastLayerToFile(currentSK.BlastLayer, CurrentBlastLayerFile);
 
-			CurrentBlastLayerFile = RTC_BlastTools.LastBlastLayerSavePath;
+			CurrentBlastLayerFile = BlastTools.LastBlastLayerSavePath;
 		}
 
 		private void saveAsToFileblToolStripMenuItem_Click(object sender, EventArgs e)
 		{
-			RTC_BlastTools.SaveBlastLayerToFile(currentSK.BlastLayer);
-			CurrentBlastLayerFile = RTC_BlastTools.LastBlastLayerSavePath;
+			BlastTools.SaveBlastLayerToFile(currentSK.BlastLayer);
+			CurrentBlastLayerFile = BlastTools.LastBlastLayerSavePath;
 		}
 
 		private void importBlastlayerblToolStripMenuItem_Click(object sender, EventArgs e)
 		{
-			BlastLayer temp = RTC_BlastTools.LoadBlastLayerFromFile();
+			BlastLayer temp = BlastTools.LoadBlastLayerFromFile();
 			ImportBlastLayer(temp);
 			dgvBlastEditor.Refresh();
 		}
@@ -1458,7 +1458,7 @@ namespace RTCV.UI
 		private void btnCorrupt_Click(object sender, EventArgs e)
 		{
 			StashKey newSk = (StashKey)currentSK.Clone();
-			RTC_StockpileManager_UISide.ApplyStashkey(newSk, false);
+			StockpileManager_UISide.ApplyStashkey(newSk, false);
 		}
 
 		public void RefreshNoteIcons(DataGridViewRowCollection rows)
@@ -1533,9 +1533,9 @@ namespace RTCV.UI
 						BlastUnit bu = (BlastUnit)cell.OwningRow.DataBoundItem;
 
 						if (shiftDown)
-							bu.Value = RTC_Extensions.AddValueToByteArrayUnchecked(bu.Value, new BigInteger(0 - updownShiftBlastLayerAmount.Value), bu.BigEndian);
+							bu.Value = CorruptCore_Extensions.AddValueToByteArrayUnchecked(bu.Value, new BigInteger(0 - updownShiftBlastLayerAmount.Value), bu.BigEndian);
 						else
-							bu.Value = RTC_Extensions.AddValueToByteArrayUnchecked(bu.Value, new BigInteger(updownShiftBlastLayerAmount.Value), bu.BigEndian);
+							bu.Value = CorruptCore_Extensions.AddValueToByteArrayUnchecked(bu.Value, new BigInteger(updownShiftBlastLayerAmount.Value), bu.BigEndian);
 
 					}
 					else

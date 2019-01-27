@@ -197,7 +197,7 @@ namespace RTCV.UI
 				finally
 				{
 				}
-			})).Enabled = (File.Exists(RTC_CorruptCore.bizhawkDir + Path.DirectorySeparatorChar + "backup_config.ini"));
+			})).Enabled = (File.Exists(CorruptCore.CorruptCore.bizhawkDir + Path.DirectorySeparatorChar + "backup_config.ini"));
 
 			LoadMenuItems.Show(this, locate);
 		}
@@ -237,13 +237,13 @@ namespace RTCV.UI
 					S.GET<RTC_Core_Form>().AutoCorrupt = false; 
 
 					S.GET<RTC_GlitchHarvester_Form>().rbCorrupt.Checked = true;
-					RTC_StockpileManager_UISide.CurrentStashkey = (dgvStockpile.SelectedRows[0].Cells[0].Value as StashKey);
-					RTC_StockpileManager_UISide.ApplyStashkey(RTC_StockpileManager_UISide.CurrentStashkey);
+					StockpileManager_UISide.CurrentStashkey = (dgvStockpile.SelectedRows[0].Cells[0].Value as StashKey);
+					StockpileManager_UISide.ApplyStashkey(StockpileManager_UISide.CurrentStashkey);
 
 					S.GET<RTC_GlitchHarvester_Form>().lbStashHistory.ClearSelected();
 					S.GET<RTC_GlitchHarvester_Form>().dgvStockpile.ClearSelection();
 
-					S.GET<RTC_GlitchHarvester_Form>().IsCorruptionApplied = !(RTC_StockpileManager_UISide.CurrentStashkey.BlastLayer == null || RTC_StockpileManager_UISide.CurrentStashkey.BlastLayer.Layer.Count == 0);
+					S.GET<RTC_GlitchHarvester_Form>().IsCorruptionApplied = !(StockpileManager_UISide.CurrentStashkey.BlastLayer == null || StockpileManager_UISide.CurrentStashkey.BlastLayer.Layer.Count == 0);
 				}
 			}
 			finally

@@ -58,14 +58,14 @@ namespace RTCV.UI
 			cbVectorLimiterList.ValueMember = "Value";
 
 			//Do this here as if it's stuck into the designer, it keeps defaulting out
-			cbVectorValueList.DataSource = RTC_UICore.ValueListBindingSource;
-			cbVectorLimiterList.DataSource = RTC_UICore.LimiterListBindingSource;
+			cbVectorValueList.DataSource = UICore.ValueListBindingSource;
+			cbVectorLimiterList.DataSource = UICore.LimiterListBindingSource;
 
-			if (RTC_UICore.LimiterListBindingSource.Count > 0)
+			if (UICore.LimiterListBindingSource.Count > 0)
 			{
 				cbVectorLimiterList_SelectedIndexChanged(cbVectorLimiterList, null);
 			}
-			if (RTC_UICore.ValueListBindingSource.Count > 0)
+			if (UICore.ValueListBindingSource.Count > 0)
 			{
 				cbVectorValueList_SelectedIndexChanged(cbVectorValueList, null);
 			}
@@ -74,8 +74,8 @@ namespace RTCV.UI
 
 		private void nmMaxCheats_ValueChanged(object sender, EventArgs e)
 		{
-			if (Convert.ToInt32(nmMaxCheats.Value) != RTC_StepActions.MaxInfiniteBlastUnits)
-				RTC_StepActions.MaxInfiniteBlastUnits = Convert.ToInt32(nmMaxCheats.Value);
+			if (Convert.ToInt32(nmMaxCheats.Value) != StepActions.MaxInfiniteBlastUnits)
+				StepActions.MaxInfiniteBlastUnits = Convert.ToInt32(nmMaxCheats.Value);
 
 			if (nmMaxCheats.Value != nmMaxFreezes.Value)
 				nmMaxFreezes.Value = nmMaxCheats.Value;
@@ -115,48 +115,48 @@ namespace RTCV.UI
 			switch (cbSelectedEngine.SelectedItem.ToString())
 			{
 				case "Nightmare Engine":
-					RTC_CorruptCore.SelectedEngine = CorruptionEngine.NIGHTMARE;
+					CorruptCore.CorruptCore.SelectedEngine = CorruptionEngine.NIGHTMARE;
 					gbNightmareEngine.Visible = true;
 					pnCustomPrecision.Visible = true;
 					break;
 
 				case "Hellgenie Engine":
-					RTC_CorruptCore.SelectedEngine = CorruptionEngine.HELLGENIE;
+					CorruptCore.CorruptCore.SelectedEngine = CorruptionEngine.HELLGENIE;
 					gbHellgenieEngine.Visible = true;
 					pnCustomPrecision.Visible = true;
 					break;
 
 				case "Distortion Engine":
-					RTC_CorruptCore.SelectedEngine = CorruptionEngine.DISTORTION;
+					CorruptCore.CorruptCore.SelectedEngine = CorruptionEngine.DISTORTION;
 					gbDistortionEngine.Visible = true;
 					pnCustomPrecision.Visible = true;
 					break;
 
 				case "Freeze Engine":
-					RTC_CorruptCore.SelectedEngine = CorruptionEngine.FREEZE;
+					CorruptCore.CorruptCore.SelectedEngine = CorruptionEngine.FREEZE;
 					gbFreezeEngine.Visible = true;
 					pnCustomPrecision.Visible = true;
 					break;
 
 				case "Pipe Engine":
-					RTC_CorruptCore.SelectedEngine = CorruptionEngine.PIPE;
+					CorruptCore.CorruptCore.SelectedEngine = CorruptionEngine.PIPE;
 					gbPipeEngine.Visible = true;
 					pnCustomPrecision.Visible = true;
 					break;
 
 				case "Vector Engine":
-					RTC_CorruptCore.SelectedEngine = CorruptionEngine.VECTOR;
+					CorruptCore.CorruptCore.SelectedEngine = CorruptionEngine.VECTOR;
 					gbVectorEngine.Visible = true;
 					break;
 
 				case "Custom Engine":
-					RTC_CorruptCore.SelectedEngine = CorruptionEngine.CUSTOM;
+					CorruptCore.CorruptCore.SelectedEngine = CorruptionEngine.CUSTOM;
 					gbCustomEngine.Visible = true;
 					pnCustomPrecision.Visible = true;
 					break;
 
 				case "Blast Generator":
-					RTC_CorruptCore.SelectedEngine = CorruptionEngine.BLASTGENERATORENGINE;
+					CorruptCore.CorruptCore.SelectedEngine = CorruptionEngine.BLASTGENERATORENGINE;
 					gbBlastGeneratorEngine.Visible = true;
 
 					S.GET<RTC_Core_Form>().AutoCorrupt = false;
@@ -215,13 +215,13 @@ namespace RTCV.UI
 			cbClearPipesOnRewind.Checked = ((CheckBox)sender).Checked;
 			dontUpdate = false;
 
-			RTC_StepActions.ClearStepActionsOnRewind = cbClearFreezesOnRewind.Checked;
+			StepActions.ClearStepActionsOnRewind = cbClearFreezesOnRewind.Checked;
 		}
 
 
 		private void nmMaxFreezes_ValueChanged(object sender, EventArgs e)
 		{
-			RTC_StepActions.MaxInfiniteBlastUnits = Convert.ToInt32(nmMaxFreezes.Value);
+			StepActions.MaxInfiniteBlastUnits = Convert.ToInt32(nmMaxFreezes.Value);
 
 			if (nmMaxCheats.Value != nmMaxFreezes.Value)
 				nmMaxCheats.Value = nmMaxFreezes.Value;
@@ -229,7 +229,7 @@ namespace RTCV.UI
 
 		private void nmMaxPipes_ValueChanged(object sender, EventArgs e)
 		{
-			RTC_StepActions.MaxInfiniteBlastUnits = Convert.ToInt32(nmMaxPipes.Value);
+			StepActions.MaxInfiniteBlastUnits = Convert.ToInt32(nmMaxPipes.Value);
 		}
 
 		private void btnClearPipes_Click(object sender, EventArgs e)
@@ -239,7 +239,7 @@ namespace RTCV.UI
 
 		private void cbLockPipes_CheckedChanged(object sender, EventArgs e)
 		{
-			RTC_StepActions.LockExecution = cbLockPipes.Checked;
+			StepActions.LockExecution = cbLockPipes.Checked;
 		}
 
 
@@ -327,18 +327,18 @@ namespace RTCV.UI
 				switch (cbCustomPrecision.SelectedIndex)
 				{
 					case 0:
-						RTC_CorruptCore.CurrentPrecision = 1;
+						CorruptCore.CorruptCore.CurrentPrecision = 1;
 						break;
 					case 1:
-						RTC_CorruptCore.CurrentPrecision = 2;
+						CorruptCore.CorruptCore.CurrentPrecision = 2;
 						break;
 					case 2:
-						RTC_CorruptCore.CurrentPrecision = 4;
+						CorruptCore.CorruptCore.CurrentPrecision = 4;
 						break;
 				}
 				
-				updateMinMaxBoxes(RTC_CorruptCore.CurrentPrecision);
-				S.GET<RTC_CustomEngineConfig_Form>().UpdateMinMaxBoxes(RTC_CorruptCore.CurrentPrecision);
+				updateMinMaxBoxes(CorruptCore.CorruptCore.CurrentPrecision);
+				S.GET<RTC_CustomEngineConfig_Form>().UpdateMinMaxBoxes(CorruptCore.CorruptCore.CurrentPrecision);
 			}
 		}
 
@@ -363,7 +363,7 @@ namespace RTCV.UI
 			long value = Convert.ToInt64(nmMinValueNightmare.Value);
 
 
-			switch (RTC_CorruptCore.CurrentPrecision)
+			switch (CorruptCore.CorruptCore.CurrentPrecision)
 			{
 				case 1:
 					RTC_NightmareEngine.MinValue8Bit = value;
@@ -386,7 +386,7 @@ namespace RTCV.UI
 			long value = Convert.ToInt64(nmMaxValueNightmare.Value);
 			
 
-			switch (RTC_CorruptCore.CurrentPrecision)
+			switch (CorruptCore.CorruptCore.CurrentPrecision)
 			{
 				case 1:
 					RTC_NightmareEngine.MaxValue8Bit = value;
@@ -407,7 +407,7 @@ namespace RTCV.UI
 				return;
 			long value = Convert.ToInt64(nmMinValueHellgenie.Value);
 
-			switch (RTC_CorruptCore.CurrentPrecision)
+			switch (CorruptCore.CorruptCore.CurrentPrecision)
 			{
 				case 1:
 					RTC_HellgenieEngine.MinValue8Bit = value;
@@ -429,7 +429,7 @@ namespace RTCV.UI
 
 			long value = Convert.ToInt64(nmMaxValueHellgenie.Value);
 
-			switch (RTC_CorruptCore.CurrentPrecision)
+			switch (CorruptCore.CorruptCore.CurrentPrecision)
 			{
 				case 1:
 					RTC_HellgenieEngine.MaxValue8Bit = value;

@@ -25,7 +25,7 @@ namespace StandaloneRTC
 			}
 
 		//	RTC.LogConsole.ShowConsole();
-			RTC_UICore.Start(this);
+			UICore.Start(this);
 		}
 
 		private void Form1_Load(object sender, EventArgs e)

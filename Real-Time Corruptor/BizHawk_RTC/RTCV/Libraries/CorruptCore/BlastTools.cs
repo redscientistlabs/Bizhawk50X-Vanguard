@@ -10,7 +10,7 @@ using RTCV.NetCore;
 
 namespace RTCV.CorruptCore
 {
-	public static class RTC_BlastTools
+	public static class BlastTools
 	{
 		public static string LastBlastLayerSavePath { get; set; }
 
@@ -100,15 +100,15 @@ namespace RTCV.CorruptCore
 			switch (input.Length)
 			{
 				case 1:
-					if (RTC_Extensions.GetDecimalValue(input, false) > Byte.MaxValue)
+					if (CorruptCore_Extensions.GetDecimalValue(input, false) > Byte.MaxValue)
 						return getByteArray(1, 0xFF);
 					break;
 				case 2:
-					if (RTC_Extensions.GetDecimalValue(input, false) > UInt16.MaxValue)
+					if (CorruptCore_Extensions.GetDecimalValue(input, false) > UInt16.MaxValue)
 						return getByteArray(2, 0xFF);
 					break;
 				case 4:
-					if (RTC_Extensions.GetDecimalValue(input, false) > UInt32.MaxValue)
+					if (CorruptCore_Extensions.GetDecimalValue(input, false) > UInt32.MaxValue)
 						return getByteArray(2, 0xFF);
 					break;
 			}
@@ -206,7 +206,7 @@ namespace RTCV.CorruptCore
 			string thisSystem = (string)RTCV.NetCore.AllSpec.VanguardSpec[VSPEC.SYSTEM.ToString()];
 			string romFilename = (string)RTCV.NetCore.AllSpec.VanguardSpec[VSPEC.OPENROMFILENAME.ToString()];
 
-			var rp = RTC_MemoryDomains.GetRomParts(thisSystem, romFilename);
+			var rp = MemoryDomains.GetRomParts(thisSystem, romFilename);
 
 			if (rp.Error != null)
 			{
@@ -220,7 +220,7 @@ namespace RTCV.CorruptCore
 				return null;
 			}
 
-			MemoryInterface mi = RTC_MemoryDomains.GetInterface(rp.PrimaryDomain);
+			MemoryInterface mi = MemoryDomains.GetInterface(rp.PrimaryDomain);
 			long maxaddress = mi.Size;
 
 			for (int i = 0; i < Original.Length; i++)
@@ -263,13 +263,13 @@ namespace RTCV.CorruptCore
 	/*
 	private bool GenerateBlastLayer()
 	{
-		if (string.IsNullOrWhiteSpace(cbSelectedMemoryDomain.SelectedItem?.ToString()) || !RTC_MemoryDomains.MemoryInterfaces.ContainsKey(cbSelectedMemoryDomain.SelectedItem.ToString()))
+		if (string.IsNullOrWhiteSpace(cbSelectedMemoryDomain.SelectedItem?.ToString()) || !MemoryDomains.MemoryInterfaces.ContainsKey(cbSelectedMemoryDomain.SelectedItem.ToString()))
 		{
 			cbSelectedMemoryDomain.Items.Clear();
 			return false;
 		}
 
-		MemoryInterface mi = RTC_MemoryDomains.MemoryInterfaces[cbSelectedMemoryDomain.SelectedItem.ToString()];
+		MemoryInterface mi = MemoryDomains.MemoryInterfaces[cbSelectedMemoryDomain.SelectedItem.ToString()];
 		BlastLayer bl = new BlastLayer();
 
 		foreach (string line in tbCustomAddresses.Lines)

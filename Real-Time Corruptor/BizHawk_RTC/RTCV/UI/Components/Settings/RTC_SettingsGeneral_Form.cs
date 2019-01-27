@@ -10,7 +10,7 @@ using System.Runtime.InteropServices;
 using System.Diagnostics;
 using RTCV.CorruptCore;
 using RTCV.NetCore;
-using UI;
+using RTCV.UI;
 using static RTCV.UI.UI_Extensions;
 using RTCV.NetCore.StaticTools;
 
@@ -39,9 +39,9 @@ namespace RTCV.UI
 
 			try
 			{
-				if (RTC_CorruptCore.bizhawkDir.Contains(Path.DirectorySeparatorChar + "VERSIONS" + Path.DirectorySeparatorChar))
+				if (CorruptCore.CorruptCore.bizhawkDir.Contains(Path.DirectorySeparatorChar + "VERSIONS" + Path.DirectorySeparatorChar))
 				{
-					var bizhawkFolder = new DirectoryInfo(RTC_CorruptCore.bizhawkDir);
+					var bizhawkFolder = new DirectoryInfo(CorruptCore.CorruptCore.bizhawkDir);
 					var LauncherVersFolder = bizhawkFolder.Parent.Parent;
 
 					var versions = LauncherVersFolder.GetDirectories().Reverse().ToArray();
@@ -73,7 +73,7 @@ namespace RTCV.UI
 
 		private void btnChangeRTCColor_Click(object sender, EventArgs e)
 		{
-			RTC_UICore.SelectRTCColor();
+			UICore.SelectRTCColor();
 		}
 
 		private void cbDisableBizhawkOSD_CheckedChanged(object sender, EventArgs e)
@@ -83,7 +83,7 @@ namespace RTCV.UI
 			else
 				RTCV.NetCore.Params.SetParam("ENABLE_BIZHAWK_OSD");
 
-			RTC_CorruptCore.BizhawkOsdDisabled = cbDisableBizhawkOSD.Checked;
+			CorruptCore.CorruptCore.BizhawkOsdDisabled = cbDisableBizhawkOSD.Checked;
 		}
 
 		private void cbAllowCrossCoreCorruption_CheckedChanged(object sender, EventArgs e)
@@ -93,7 +93,7 @@ namespace RTCV.UI
 			else
 				RTCV.NetCore.Params.RemoveParam("ALLOW_CROSS_CORE_CORRUPTION");
 
-			RTC_CorruptCore.AllowCrossCoreCorruption = cbAllowCrossCoreCorruption.Checked;
+			CorruptCore.CorruptCore.AllowCrossCoreCorruption = cbAllowCrossCoreCorruption.Checked;
 		}
 
 		private void cbDontCleanAtQuit_CheckedChanged(object sender, EventArgs e)
@@ -103,7 +103,7 @@ namespace RTCV.UI
 			else
 				RTCV.NetCore.Params.RemoveParam("DONT_CLEAN_SAVESTATES_AT_QUIT");
 
-			RTC_CorruptCore.DontCleanSavestatesOnQuit = cbDontCleanAtQuit.Checked;
+			CorruptCore.CorruptCore.DontCleanSavestatesOnQuit = cbDontCleanAtQuit.Checked;
 		}
 	}
 }

@@ -46,7 +46,7 @@ namespace RTCV.CorruptCore
 				case REMOTE_PUSHUISPEC:
 					SyncObjectSingleton.FormExecute((o, ea) =>
 					{
-						RTCV.NetCore.AllSpec.UISpec = new FullSpec((PartialSpec)advancedMessage.objectValue, !RTC_CorruptCore.Attached);
+						RTCV.NetCore.AllSpec.UISpec = new FullSpec((PartialSpec)advancedMessage.objectValue, !CorruptCore.Attached);
 					}); 
 					break;
 
@@ -59,16 +59,16 @@ namespace RTCV.CorruptCore
 					break;
 
 				//Vanguard sent a copy of its spec
-				case REMOTE_PUSHEMUSPEC:
+				case REMOTE_PUSHVANGUARDSPEC:
 					SyncObjectSingleton.FormExecute((o, ea) =>
 					{
-						if(!RTC_CorruptCore.Attached)
-							RTCV.NetCore.AllSpec.VanguardSpec = new FullSpec((PartialSpec)advancedMessage.objectValue, !RTC_CorruptCore.Attached);
+						if(!CorruptCore.Attached)
+							RTCV.NetCore.AllSpec.VanguardSpec = new FullSpec((PartialSpec)advancedMessage.objectValue, !CorruptCore.Attached);
 					});
 					break;
 
 				//Vanguard sent a spec update
-				case REMOTE_PUSHEMUSPECUPDATE:
+				case REMOTE_PUSHVANGUARDSPECUPDATE:
 					SyncObjectSingleton.FormExecute((o, ea) =>
 					{
 						RTCV.NetCore.AllSpec.VanguardSpec?.Update((PartialSpec)advancedMessage.objectValue, false);
@@ -79,7 +79,7 @@ namespace RTCV.CorruptCore
 				case REMOTE_PUSHCORRUPTCORESPEC:
 					SyncObjectSingleton.FormExecute((o, ea) =>
 					{
-						RTCV.NetCore.AllSpec.CorruptCoreSpec = new FullSpec((PartialSpec)advancedMessage.objectValue, !RTC_CorruptCore.Attached);
+						RTCV.NetCore.AllSpec.CorruptCoreSpec = new FullSpec((PartialSpec)advancedMessage.objectValue, !CorruptCore.Attached);
 						RTCV.NetCore.AllSpec.CorruptCoreSpec.SpecUpdated += (ob, eas) =>
 						{
 							PartialSpec partial = eas.partialSpec;
@@ -100,14 +100,14 @@ namespace RTCV.CorruptCore
 
 				case REMOTE_EVENT_DOMAINSUPDATED:
 					var domainsChanged = (bool)advancedMessage.objectValue;
-					RTC_MemoryDomains.RefreshDomains(domainsChanged);
+					MemoryDomains.RefreshDomains(domainsChanged);
 					break;
 
 				case ASYNCBLAST:
 					{
 						SyncObjectSingleton.FormExecute((o, ea) =>
 						{
-							RTC_CorruptCore.ASyncGenerateAndBlast();
+							CorruptCore.ASyncGenerateAndBlast();
 						});
 					}
 					break;
@@ -119,9 +119,9 @@ namespace RTCV.CorruptCore
 					BlastLayer bl = null;
 					SyncObjectSingleton.FormExecute((o, ea) =>
 					{
-						bl = RTC_CorruptCore.GenerateBlastLayer(domains);
+						bl = CorruptCore.GenerateBlastLayer(domains);
 					});
-					RTC_StockpileManager_EmuSide.CachedBL = bl;
+					StockpileManager_EmuSide.CachedBL = bl;
 					if (advancedMessage.requestGuid != null)
 					{
 						e.setReturnValue(bl);
@@ -145,7 +145,7 @@ namespace RTCV.CorruptCore
 					bool backup = (bool)temp[0];
 					SyncObjectSingleton.FormExecute((o, ea) =>
 					{
-						RTC_StockpileManager_EmuSide.CachedBL.Apply(backup);
+						StockpileManager_EmuSide.CachedBL.Apply(backup);
 					});
 				}
 					break;
@@ -159,10 +159,10 @@ namespace RTCV.CorruptCore
 						var romFilename = temp[1] as String;
 						var romData = temp[2] as Byte[];
 
-						if (!File.Exists(RTC_CorruptCore.rtcDir + Path.DirectorySeparatorChar + "WORKING" + Path.DirectorySeparatorChar + "SKS" + Path.DirectorySeparatorChar + romFilename))
-							File.WriteAllBytes(RTC_CorruptCore.rtcDir + Path.DirectorySeparatorChar + "WORKING" + Path.DirectorySeparatorChar + "SKS" + Path.DirectorySeparatorChar + romFilename, romData);
+						if (!File.Exists(CorruptCore.rtcDir + Path.DirectorySeparatorChar + "WORKING" + Path.DirectorySeparatorChar + "SKS" + Path.DirectorySeparatorChar + romFilename))
+							File.WriteAllBytes(CorruptCore.rtcDir + Path.DirectorySeparatorChar + "WORKING" + Path.DirectorySeparatorChar + "SKS" + Path.DirectorySeparatorChar + romFilename, romData);
 
-						sk.RomFilename = RTC_CorruptCore.rtcDir + Path.DirectorySeparatorChar + "WORKING" + Path.DirectorySeparatorChar + "SKS" + Path.DirectorySeparatorChar + RTC_Extensions.getShortFilenameFromPath(romFilename);
+						sk.RomFilename = CorruptCore.rtcDir + Path.DirectorySeparatorChar + "WORKING" + Path.DirectorySeparatorChar + "SKS" + Path.DirectorySeparatorChar + CorruptCore_Extensions.getShortFilenameFromPath(romFilename);
 						sk.DeployState();
 						sk.Run();
 					}
@@ -171,7 +171,7 @@ namespace RTCV.CorruptCore
 
 
 				case REMOTE_PUSHRTCSPEC:
-					RTCV.NetCore.AllSpec.CorruptCoreSpec = new FullSpec((PartialSpec)advancedMessage.objectValue, !RTC_CorruptCore.Attached);
+					RTCV.NetCore.AllSpec.CorruptCoreSpec = new FullSpec((PartialSpec)advancedMessage.objectValue, !CorruptCore.Attached);
 					e.setReturnValue(true);
 					break;
 
@@ -190,7 +190,7 @@ namespace RTCV.CorruptCore
 						List<BlastGeneratorProto> returnList = null;
 						SyncObjectSingleton.FormExecute((o, ea) =>
 						{
-							returnList = RTC_BlastTools.GenerateBlastLayersFromBlastGeneratorProtos(blastGeneratorProtos, sk);
+							returnList = BlastTools.GenerateBlastLayersFromBlastGeneratorProtos(blastGeneratorProtos, sk);
 						});
 
 						if (advancedMessage.requestGuid != null)
@@ -210,7 +210,7 @@ namespace RTCV.CorruptCore
 					bool returnValue = false;
 					SyncObjectSingleton.FormExecute((o, ea) =>
 					{
-						returnValue = RTC_StockpileManager_EmuSide.LoadState_NET(sk, reloadRom, runBlastLayer, useCachedBlastLayer);
+						returnValue = StockpileManager_EmuSide.LoadState_NET(sk, reloadRom, runBlastLayer, useCachedBlastLayer);
 					});
 
 					e.setReturnValue(returnValue);
@@ -221,7 +221,7 @@ namespace RTCV.CorruptCore
 					StashKey sk = null;
 					SyncObjectSingleton.FormExecute((o, ea) =>
 					{
-						sk = RTC_StockpileManager_EmuSide.SaveState_NET(advancedMessage.objectValue as StashKey); //Has to be nullable cast
+						sk = StockpileManager_EmuSide.SaveState_NET(advancedMessage.objectValue as StashKey); //Has to be nullable cast
 					});
 					e.setReturnValue(sk);
 				}
@@ -236,7 +236,7 @@ namespace RTCV.CorruptCore
 						//We send an unsynced command back
 						SyncObjectSingleton.FormExecute((o, ea) =>
 							{
-								sk = RTC_StockpileManager_EmuSide.SaveState_NET();
+								sk = StockpileManager_EmuSide.SaveState_NET();
 							});
 
 						LocalNetCoreRouter.Route(NetcoreCommands.UI, REMOTE_BACKUPKEY_STASH, sk, false);
@@ -247,14 +247,14 @@ namespace RTCV.CorruptCore
 				case REMOTE_DOMAIN_PEEKBYTE:
 					SyncObjectSingleton.FormExecute((o, ea) =>
 					{
-						e.setReturnValue(RTC_MemoryDomains.GetInterface((string)(advancedMessage.objectValue as object[])[0]).PeekByte((long)(advancedMessage.objectValue as object[])[1]));
+						e.setReturnValue(MemoryDomains.GetInterface((string)(advancedMessage.objectValue as object[])[0]).PeekByte((long)(advancedMessage.objectValue as object[])[1]));
 					});
 					break;
 
 				case REMOTE_DOMAIN_POKEBYTE:
 					SyncObjectSingleton.FormExecute((o, ea) =>
 					{
-						RTC_MemoryDomains.GetInterface((string)(advancedMessage.objectValue as object[])[0]).PokeByte((long)(advancedMessage.objectValue as object[])[1], (byte)(advancedMessage.objectValue as object[])[2]);
+						MemoryDomains.GetInterface((string)(advancedMessage.objectValue as object[])[0]).PokeByte((long)(advancedMessage.objectValue as object[])[1], (byte)(advancedMessage.objectValue as object[])[2]);
 					});
 					break;
 
@@ -264,23 +264,23 @@ namespace RTCV.CorruptCore
 
 
 				case REMOTE_PUSHVMDPROTOS:
-					RTC_MemoryDomains.VmdPool.Clear();
+					MemoryDomains.VmdPool.Clear();
 					foreach (var proto in (advancedMessage.objectValue as VmdPrototype[]))
-						RTC_MemoryDomains.AddVMD(proto);
+						MemoryDomains.AddVMD(proto);
 					break;
 
 				case REMOTE_DOMAIN_VMD_ADD:
-					RTC_MemoryDomains.AddVMD_NET((advancedMessage.objectValue as VmdPrototype));
+					MemoryDomains.AddVMD_NET((advancedMessage.objectValue as VmdPrototype));
 					break;
 
 				case REMOTE_DOMAIN_VMD_REMOVE:
-					RTC_MemoryDomains.RemoveVMD_NET((advancedMessage.objectValue as string));
+					MemoryDomains.RemoveVMD_NET((advancedMessage.objectValue as string));
 					break;
 
 				case REMOTE_DOMAIN_ACTIVETABLE_MAKEDUMP:
 					SyncObjectSingleton.FormExecute((o, ea) =>
 					{
-						RTC_MemoryDomains.GenerateActiveTableDump((string)(advancedMessage.objectValue as object[])[0], (string)(advancedMessage.objectValue as object[])[1]);
+						MemoryDomains.GenerateActiveTableDump((string)(advancedMessage.objectValue as object[])[0], (string)(advancedMessage.objectValue as object[])[1]);
 					}); 
 					break;
 
@@ -290,13 +290,13 @@ namespace RTCV.CorruptCore
 					var sk = (StashKey)(advancedMessage.objectValue as object[])[1];
 					SyncObjectSingleton.FormExecute((o, ea) =>
 					{
-						e.setReturnValue(RTC_BlastTools.GetAppliedBackupLayer(bl, sk));
+						e.setReturnValue(BlastTools.GetAppliedBackupLayer(bl, sk));
 					});
 					break;
 				}
 				/*
 				case "REMOTE_DOMAIN_SETSELECTEDDOMAINS":
-					RTC_MemoryDomains.UpdateSelectedDomains((string[])advancedMessage.objectValue);
+					MemoryDomains.UpdateSelectedDomains((string[])advancedMessage.objectValue);
 					break;
 					*/
 
@@ -312,7 +312,7 @@ namespace RTCV.CorruptCore
 				case REMOTE_KEY_GETRAWBLASTLAYER:
 					SyncObjectSingleton.FormExecute((o, ea) =>
 					{
-						e.setReturnValue(RTC_StockpileManager_EmuSide.GetRawBlastlayer());
+						e.setReturnValue(StockpileManager_EmuSide.GetRawBlastlayer());
 					});
 					break;
 
@@ -320,16 +320,16 @@ namespace RTCV.CorruptCore
 				case REMOTE_SET_APPLYUNCORRUPTBL:
 					SyncObjectSingleton.FormExecute((o, ea) =>
 					{
-						if (RTC_StockpileManager_EmuSide.UnCorruptBL != null)
-							RTC_StockpileManager_EmuSide.UnCorruptBL.Apply(true);
+						if (StockpileManager_EmuSide.UnCorruptBL != null)
+							StockpileManager_EmuSide.UnCorruptBL.Apply(true);
 					});
 					break;
 
 				case REMOTE_SET_APPLYCORRUPTBL:
 					SyncObjectSingleton.FormExecute((o, ea) =>
 					{
-						if (RTC_StockpileManager_EmuSide.CorruptBL != null)
-							RTC_StockpileManager_EmuSide.CorruptBL.Apply(false);
+						if (StockpileManager_EmuSide.CorruptBL != null)
+							StockpileManager_EmuSide.CorruptBL.Apply(false);
 					});
 					break;
 
@@ -337,14 +337,14 @@ namespace RTCV.CorruptCore
 				case REMOTE_CLEARSTEPBLASTUNITS:
 					SyncObjectSingleton.FormExecute((o, ea) =>
 					{
-						RTC_StepActions.ClearStepBlastUnits();
+						StepActions.ClearStepBlastUnits();
 					});
 
 					break;
 				case REMOTE_REMOVEEXCESSINFINITESTEPUNITS:
 					SyncObjectSingleton.FormExecute((o, ea) =>
 					{
-						RTC_StepActions.RemoveExcessInfiniteStepUnits();
+						StepActions.RemoveExcessInfiniteStepUnits();
 					});
 					break;
 

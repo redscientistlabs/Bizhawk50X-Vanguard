@@ -16,17 +16,15 @@ using RTCV.CorruptCore;
 using RTCV.NetCore;
 using RTCV.Vanguard;
 
-namespace RTC
+namespace Vanguard
 {
-	public static class RTC_EmuCore
+	public static class VanguardCore
 	{
 		public static string[] args;
 
 		internal static DialogResult ShowErrorDialog(Exception exception, bool canContinue = false)
 		{
 			return new RTCV.NetCore.CloudDebug(exception, canContinue).Start();
-
-
 		}
 
 
@@ -70,48 +68,48 @@ namespace RTC
 
 		public static string System
 		{
-			get => (string)EmuSpec[VSPEC.SYSTEM.ToString()];
-			set => EmuSpec.Update(VSPEC.SYSTEM.ToString(), value);
+			get => (string)VanguardSpec[VSPEC.SYSTEM.ToString()];
+			set => VanguardSpec.Update(VSPEC.SYSTEM.ToString(), value);
 		}
 		public static string GameName
 		{
-			get => (string)EmuSpec[VSPEC.GAMENAME.ToString()];
-			set => EmuSpec.Update(VSPEC.GAMENAME.ToString(), value);
+			get => (string)VanguardSpec[VSPEC.GAMENAME.ToString()];
+			set => VanguardSpec.Update(VSPEC.GAMENAME.ToString(), value);
 		}
 		public static string SystemPrefix
 		{
-			get => (string)EmuSpec[VSPEC.SYSTEMPREFIX.ToString()];
-			set => EmuSpec.Update(VSPEC.SYSTEMPREFIX.ToString(), value);
+			get => (string)VanguardSpec[VSPEC.SYSTEMPREFIX.ToString()];
+			set => VanguardSpec.Update(VSPEC.SYSTEMPREFIX.ToString(), value);
 		}
 		public static string SystemCore
 		{
-			get => (string)EmuSpec[VSPEC.SYSTEMCORE.ToString()];
-			set => EmuSpec.Update(VSPEC.SYSTEMCORE.ToString(), value);
+			get => (string)VanguardSpec[VSPEC.SYSTEMCORE.ToString()];
+			set => VanguardSpec.Update(VSPEC.SYSTEMCORE.ToString(), value);
 		}
 		public static string SyncSettings
 		{
-			get => (string)EmuSpec[VSPEC.SYNCSETTINGS.ToString()];
-			set => EmuSpec.Update(VSPEC.SYNCSETTINGS.ToString(), value);
+			get => (string)VanguardSpec[VSPEC.SYNCSETTINGS.ToString()];
+			set => VanguardSpec.Update(VSPEC.SYNCSETTINGS.ToString(), value);
 		}
 		public static string OpenRomFilename
 		{
-			get => (string)EmuSpec[VSPEC.OPENROMFILENAME.ToString()];
-			set => EmuSpec.Update(VSPEC.OPENROMFILENAME.ToString(), value);
+			get => (string)VanguardSpec[VSPEC.OPENROMFILENAME.ToString()];
+			set => VanguardSpec.Update(VSPEC.OPENROMFILENAME.ToString(), value);
 		}
 		public static int LastLoaderRom
 		{
-			get => (int)EmuSpec[VSPEC.CORE_LASTLOADERROM.ToString()];
-			set => EmuSpec.Update(VSPEC.CORE_LASTLOADERROM.ToString(), value);
+			get => (int)VanguardSpec[VSPEC.CORE_LASTLOADERROM.ToString()];
+			set => VanguardSpec.Update(VSPEC.CORE_LASTLOADERROM.ToString(), value);
 		}
 		public static string[] BlacklistedDomains
 		{
-			get => (string[])EmuSpec[VSPEC.MEMORYDOMAINS_BLACKLISTEDDOMAINS.ToString()];
-			set => EmuSpec.Update(VSPEC.MEMORYDOMAINS_BLACKLISTEDDOMAINS.ToString(), value);
+			get => (string[])VanguardSpec[VSPEC.MEMORYDOMAINS_BLACKLISTEDDOMAINS.ToString()];
+			set => VanguardSpec.Update(VSPEC.MEMORYDOMAINS_BLACKLISTEDDOMAINS.ToString(), value);
 		}
 		public static MemoryDomainProxy[] MemoryInterfacees
 		{
-			get => (MemoryDomainProxy[])EmuSpec[VSPEC.MEMORYDOMAINS_INTERFACES.ToString()];
-			set => EmuSpec.Update(VSPEC.MEMORYDOMAINS_INTERFACES.ToString(), value);
+			get => (MemoryDomainProxy[])VanguardSpec[VSPEC.MEMORYDOMAINS_INTERFACES.ToString()];
+			set => VanguardSpec.Update(VSPEC.MEMORYDOMAINS_INTERFACES.ToString(), value);
 		}
 
 		public static PartialSpec getDefaultPartial()
@@ -131,33 +129,33 @@ namespace RTC
 			return partial;
 		}
 
-		public static volatile FullSpec EmuSpec;
+		public static volatile FullSpec VanguardSpec;
 
 
 		public static void RegisterEmuhawkSpec()
 		{
-			PartialSpec emuSpecTemplate = new PartialSpec("EmuSpec");
+			PartialSpec emuSpecTemplate = new PartialSpec("VanguardSpec");
 
-			emuSpecTemplate.Insert(RTC_EmuCore.getDefaultPartial());
+			emuSpecTemplate.Insert(VanguardCore.getDefaultPartial());
 
-			EmuSpec = new FullSpec(emuSpecTemplate, !RTC_CorruptCore.Attached); //You have to feed a partial spec as a template
+			VanguardSpec = new FullSpec(emuSpecTemplate, !CorruptCore.Attached); //You have to feed a partial spec as a template
 
-			if (RTC_EmuCore.attached)
-				RTCV.Vanguard.VanguardConnector.PushVanguardSpecRef(RTC_EmuCore.EmuSpec);
+			if (VanguardCore.attached)
+				RTCV.Vanguard.VanguardConnector.PushVanguardSpecRef(VanguardCore.VanguardSpec);
 
-			LocalNetCoreRouter.Route(NetcoreCommands.CORRUPTCORE, NetcoreCommands.REMOTE_PUSHEMUSPEC, emuSpecTemplate, true);
-			LocalNetCoreRouter.Route(NetcoreCommands.UI, NetcoreCommands.REMOTE_PUSHEMUSPEC, emuSpecTemplate, true);
+			LocalNetCoreRouter.Route(NetcoreCommands.CORRUPTCORE, NetcoreCommands.REMOTE_PUSHVANGUARDSPEC, emuSpecTemplate, true);
+			LocalNetCoreRouter.Route(NetcoreCommands.UI, NetcoreCommands.REMOTE_PUSHVANGUARDSPEC, emuSpecTemplate, true);
 
 
-			EmuSpec.SpecUpdated += (o, e) =>
+			VanguardSpec.SpecUpdated += (o, e) =>
 			{
 				PartialSpec partial = e.partialSpec;
 
-				if(!RTC_EmuCore.attached)
-					RTCV.NetCore.AllSpec.VanguardSpec = EmuSpec;
+				if(!VanguardCore.attached)
+					RTCV.NetCore.AllSpec.VanguardSpec = VanguardSpec;
 
-				LocalNetCoreRouter.Route(NetcoreCommands.CORRUPTCORE, NetcoreCommands.REMOTE_PUSHEMUSPECUPDATE, partial, true);
-				LocalNetCoreRouter.Route(NetcoreCommands.UI, NetcoreCommands.REMOTE_PUSHEMUSPECUPDATE, partial, true);
+				LocalNetCoreRouter.Route(NetcoreCommands.CORRUPTCORE, NetcoreCommands.REMOTE_PUSHVANGUARDSPECUPDATE, partial, true);
+				LocalNetCoreRouter.Route(NetcoreCommands.UI, NetcoreCommands.REMOTE_PUSHVANGUARDSPECUPDATE, partial, true);
 			};
 		}
 
@@ -169,30 +167,30 @@ namespace RTC
 
 			//Start everything
 			VanguardImplementation.StartClient();
-			RTC_EmuCore.RegisterEmuhawkSpec();
-			RTC_CorruptCore.StartEmuSide();
+			VanguardCore.RegisterEmuhawkSpec();
+			CorruptCore.StartEmuSide();
 
 			//Refocus on Bizhawk
-			RTC_Hooks.BIZHAWK_MAINFORM_FOCUS();
+			Hooks.BIZHAWK_MAINFORM_FOCUS();
 
 			//Force create bizhawk config file if it doesn't exist
-			if (!File.Exists(RTC_CorruptCore.bizhawkDir + Path.DirectorySeparatorChar + "config.ini"))
-				RTC_Hooks.BIZHAWK_MAINFORM_SAVECONFIG();
+			if (!File.Exists(CorruptCore.bizhawkDir + Path.DirectorySeparatorChar + "config.ini"))
+				Hooks.BIZHAWK_MAINFORM_SAVECONFIG();
 
 			//If it's attached, lie to vanguard
-			if (RTC_EmuCore.attached)
+			if (VanguardCore.attached)
 				VanguardConnector.ImplyClientConnected();
 		}
 
 
 		public static void StartSound()
 		{
-			RTC_Hooks.BIZHAWK_STARTSOUND();
+			Hooks.BIZHAWK_STARTSOUND();
 		}
 
 		public static void StopSound()
 		{
-			RTC_Hooks.BIZHAWK_STOPSOUND();
+			Hooks.BIZHAWK_STOPSOUND();
 		}
 
 
@@ -227,24 +225,24 @@ namespace RTC
 		/// </summary>
 		public static void LoadDefaultRom()
 		{
-			int lastLoaderRom = RTC_EmuCore.LastLoaderRom;
-			int newNumber = RTC_EmuCore.LastLoaderRom;
+			int lastLoaderRom = VanguardCore.LastLoaderRom;
+			int newNumber = VanguardCore.LastLoaderRom;
 
 			while (newNumber == lastLoaderRom)
 			{
-				int nbNesFiles = Directory.GetFiles(RTC_CorruptCore.assetsDir, "*.nes").Length;
+				int nbNesFiles = Directory.GetFiles(CorruptCore.assetsDir, "*.nes").Length;
 
-				newNumber = RTC_CorruptCore.RND.Next(1, nbNesFiles + 1);
+				newNumber = CorruptCore.RND.Next(1, nbNesFiles + 1);
 
 				if (newNumber != lastLoaderRom)
 				{
-					if (File.Exists(RTC_CorruptCore.assetsDir + "overridedefault.nes"))
-						LoadRom_NET(RTC_CorruptCore.assetsDir + "overridedefault.nes");
+					if (File.Exists(CorruptCore.assetsDir + "overridedefault.nes"))
+						LoadRom_NET(CorruptCore.assetsDir + "overridedefault.nes");
 					//Please ignore
-					else if (RTC_CorruptCore.RND.Next(0, 420) == 7)
-						LoadRom_NET(RTC_CorruptCore.assetsDir + "gd.fds");
+					else if (CorruptCore.RND.Next(0, 420) == 7)
+						LoadRom_NET(CorruptCore.assetsDir + "gd.fds");
 					else
-						LoadRom_NET(RTC_CorruptCore.assetsDir + newNumber.ToString() + "default.nes");
+						LoadRom_NET(CorruptCore.assetsDir + newNumber.ToString() + "default.nes");
 
 					lastLoaderRom = newNumber;
 					break;
@@ -263,13 +261,13 @@ namespace RTC
 			StopSound();
 
 			if (RomFile == null)
-				RomFile = RTC_Hooks.BIZHAWK_GET_CURRENTLYOPENEDROM(); ;
+				RomFile = Hooks.BIZHAWK_GET_CURRENTLYOPENEDROM(); ;
 
 
 			//Stop capturing rewind while we load
-			RTC_Hooks.AllowCaptureRewindState = false;
-			RTC_Hooks.BIZHAWK_LOADROM(RomFile);
-			RTC_Hooks.AllowCaptureRewindState = true;
+			Hooks.AllowCaptureRewindState = false;
+			Hooks.BIZHAWK_LOADROM(RomFile);
+			Hooks.AllowCaptureRewindState = true;
 
 			StartSound();
 			loadRomWatch.Stop();
@@ -286,18 +284,18 @@ namespace RTC
 		public static string SaveSavestate_NET(string Key, bool threadSave = false)
 		{
 			//Don't state if we don't have a core
-			if (RTC_Hooks.BIZHAWK_ISNULLEMULATORCORE())
+			if (Hooks.BIZHAWK_ISNULLEMULATORCORE())
 				return null;
 
 			//Build the shortname
 			string quickSlotName = Key + ".timejump";
 
 			//Get the prefix for the state
-			string prefix = RTC_Hooks.BIZHAWK_GET_SAVESTATEPREFIX();
+			string prefix = Hooks.BIZHAWK_GET_SAVESTATEPREFIX();
 			prefix = prefix.Substring(prefix.LastIndexOf('\\') + 1);
 
 			//Build up our path
-			var path = RTC_CorruptCore.workingDir + Path.DirectorySeparatorChar + "SESSION" + Path.DirectorySeparatorChar + prefix + "." + quickSlotName + ".State";
+			var path = CorruptCore.workingDir + Path.DirectorySeparatorChar + "SESSION" + Path.DirectorySeparatorChar + prefix + "." + quickSlotName + ".State";
 
 			//If the path doesn't exist, make it
 			var file = new FileInfo(path);
@@ -311,7 +309,7 @@ namespace RTC
 				{
 					try
 					{
-						RTC_Hooks.BIZHAWK_SAVESTATE(path, quickSlotName);
+						Hooks.BIZHAWK_SAVESTATE(path, quickSlotName);
 					}
 					catch (Exception ex)
 					{
@@ -320,7 +318,7 @@ namespace RTC
 				})).Start();
 			}
 			else
-				RTC_Hooks.BIZHAWK_SAVESTATE(path, quickSlotName); //savestate
+				Hooks.BIZHAWK_SAVESTATE(path, quickSlotName); //savestate
 
 			return path;
 		}
@@ -336,17 +334,17 @@ namespace RTC
 			try
 			{
 				//If we don't have a core just exit out
-				if (RTC_Hooks.BIZHAWK_ISNULLEMULATORCORE())
+				if (Hooks.BIZHAWK_ISNULLEMULATORCORE())
 					return false;
 
 				//If we can't find the file, throw a message
 				if (File.Exists(path) == false)
 				{
-					RTC_Hooks.BIZHAWK_OSDMESSAGE("Unable to load " + Path.GetFileName(path) + " from " + stateLocation);
+					Hooks.BIZHAWK_OSDMESSAGE("Unable to load " + Path.GetFileName(path) + " from " + stateLocation);
 					return false;
 				}
 
-				RTC_Hooks.BIZHAWK_LOADSTATE(path);
+				Hooks.BIZHAWK_LOADSTATE(path);
 
 				return true;
 			}
@@ -365,9 +363,9 @@ namespace RTC
 			if (RTCV.NetCore.Params.IsParamSet("BIZHAWK_SIZE"))
 			{
 				string[] size = RTCV.NetCore.Params.ReadParam("BIZHAWK_SIZE").Split(',');
-				RTC_Hooks.BIZHAWK_GETSET_MAINFORMSIZE = new Size(Convert.ToInt32(size[0]), Convert.ToInt32(size[1]));
+				Hooks.BIZHAWK_GETSET_MAINFORMSIZE = new Size(Convert.ToInt32(size[0]), Convert.ToInt32(size[1]));
 				string[] location = RTCV.NetCore.Params.ReadParam("BIZHAWK_LOCATION").Split(',');
-				RTC_Hooks.BIZHAWK_GETSET_MAINFORMLOCATION = new Point(Convert.ToInt32(location[0]), Convert.ToInt32(location[1]));
+				Hooks.BIZHAWK_GETSET_MAINFORMLOCATION = new Point(Convert.ToInt32(location[0]), Convert.ToInt32(location[1]));
 			}
 		}
 		/// <summary>
@@ -375,8 +373,8 @@ namespace RTC
 		/// </summary>
 		public static void SaveBizhawkWindowState()
 		{
-			var size = RTC_Hooks.BIZHAWK_GETSET_MAINFORMSIZE;
-			var location = RTC_Hooks.BIZHAWK_GETSET_MAINFORMLOCATION;
+			var size = Hooks.BIZHAWK_GETSET_MAINFORMSIZE;
+			var location = Hooks.BIZHAWK_GETSET_MAINFORMLOCATION;
 
 			RTCV.NetCore.Params.SetParam("BIZHAWK_SIZE", $"{size.Width},{size.Height}");
 			RTCV.NetCore.Params.SetParam("BIZHAWK_LOCATION", $"{location.X},{location.Y}");
@@ -388,8 +386,8 @@ namespace RTC
 		public static void LoadDefaultAndShowBizhawkForm()
 		{
 
-			RTC_EmuCore.LoadDefaultRom();
-			RTC_EmuCore.LoadBizhawkWindowState();
+			VanguardCore.LoadDefaultRom();
+			VanguardCore.LoadBizhawkWindowState();
 			GlobalWin.MainForm.Focus();
 
 			//Yell at the user if they're using audio throttle as it's buggy
@@ -398,7 +396,7 @@ namespace RTC
 				MessageBox.Show("Sound throttle is buggy and can result in crashes.\nSwapping to clock throttle.");
 				Global.Config.SoundThrottle = false;
 				Global.Config.ClockThrottle = true;
-				RTC_Hooks.BIZHAWK_MAINFORM_SAVECONFIG();
+				Hooks.BIZHAWK_MAINFORM_SAVECONFIG();
 			}
 		}
 
@@ -442,7 +440,7 @@ namespace RTC
 					domainBlacklist.Add("System Bus"); // maxvalue is not representative of chip (goes ridiculously high)
 					domainBlacklist.Add("SGB CARTROM"); // Supergameboy cartridge
 
-					if (RTC_MemoryDomains.MemoryInterfaces.ContainsKey("SGB CARTROM"))
+					if (MemoryDomains.MemoryInterfaces.ContainsKey("SGB CARTROM"))
 					{
 						domainBlacklist.Add("VRAM");
 						domainBlacklist.Add("WRAM");

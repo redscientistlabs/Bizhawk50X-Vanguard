@@ -47,13 +47,13 @@ namespace RTCV.UI
 				tbNote.Text = note.Note.Replace("\n", Environment.NewLine);
 
 			// Set window location
-			if (RTC_UICore.NoteBoxPosition != new Point(0, 0))
+			if (UICore.NoteBoxPosition != new Point(0, 0))
 			{
-				this.Location = RTC_UICore.NoteBoxPosition;
+				this.Location = UICore.NoteBoxPosition;
 			}
-			if (RTC_UICore.NoteBoxSize != new Size(0,0))
+			if (UICore.NoteBoxSize != new Size(0,0))
 			{
-				this.Size = RTC_UICore.NoteBoxSize;
+				this.Size = UICore.NoteBoxSize;
 			}
 		}
 
@@ -72,8 +72,8 @@ namespace RTCV.UI
 
 		private void RTC_NE_Form_FormClosing(object sender, FormClosingEventArgs e)
 		{
-			RTC_UICore.NoteBoxSize = this.Size;
-			RTC_UICore.NoteBoxPosition = this.Location;
+			UICore.NoteBoxSize = this.Size;
+			UICore.NoteBoxPosition = this.Location;
 
 			string cleanText = string.Join("\n", tbNote.Lines.Select(it => it.Trim()));
 

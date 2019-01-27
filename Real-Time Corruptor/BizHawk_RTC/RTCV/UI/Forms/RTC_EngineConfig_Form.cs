@@ -45,22 +45,22 @@ namespace RTCV.UI
 			{
 				S.GET<RTC_CustomEngineConfig_Form>().cbLimiterList.DisplayMember = "Name";
 				S.GET<RTC_CustomEngineConfig_Form>().cbLimiterList.ValueMember = "Value";
-				S.GET<RTC_CustomEngineConfig_Form>().cbLimiterList.DataSource = RTC_UICore.LimiterListBindingSource;
+				S.GET<RTC_CustomEngineConfig_Form>().cbLimiterList.DataSource = UICore.LimiterListBindingSource;
 
 
 				S.GET<RTC_CustomEngineConfig_Form>().cbValueList.DisplayMember = "Name";
 				S.GET<RTC_CustomEngineConfig_Form>().cbValueList.ValueMember = "Value";
-				S.GET<RTC_CustomEngineConfig_Form>().cbValueList.DataSource = RTC_UICore.ValueListBindingSource;
+				S.GET<RTC_CustomEngineConfig_Form>().cbValueList.DataSource = UICore.ValueListBindingSource;
 
 
 
 				S.GET<RTC_CorruptionEngine_Form>().cbVectorLimiterList.DisplayMember = "Name";
 				S.GET<RTC_CorruptionEngine_Form>().cbVectorLimiterList.ValueMember = "Value";
-				S.GET<RTC_CorruptionEngine_Form>().cbVectorLimiterList.DataSource = RTC_UICore.LimiterListBindingSource;
+				S.GET<RTC_CorruptionEngine_Form>().cbVectorLimiterList.DataSource = UICore.LimiterListBindingSource;
 
 				S.GET<RTC_CorruptionEngine_Form>().cbVectorValueList.DisplayMember = "Name";
 				S.GET<RTC_CorruptionEngine_Form>().cbVectorValueList.ValueMember = "Value";
-				S.GET<RTC_CorruptionEngine_Form>().cbVectorValueList.DataSource = RTC_UICore.ValueListBindingSource;
+				S.GET<RTC_CorruptionEngine_Form>().cbVectorValueList.DataSource = UICore.ValueListBindingSource;
 			}
 			else
 			{
@@ -75,14 +75,14 @@ namespace RTCV.UI
 		public void LoadLists()
 		{
 			toggleLimiterBoxSource(false);
-			RTC_UICore.LimiterListBindingSource.Clear();
-			RTC_UICore.ValueListBindingSource.Clear();
+			UICore.LimiterListBindingSource.Clear();
+			UICore.ValueListBindingSource.Clear();
 
-			string[] paths = System.IO.Directory.GetFiles(RTC_CorruptCore.listsDir);
+			string[] paths = System.IO.Directory.GetFiles(CorruptCore.CorruptCore.listsDir);
 
 			paths = paths.OrderBy(x => x).ToArray();
 
-			List<string> hashes = RTC_Filtering.LoadListsFromPaths(paths);
+			List<string> hashes = Filtering.LoadListsFromPaths(paths);
 			for (int i = 0; i < hashes.Count; i++)
 			{
 				string[] _paths = paths[i].Split('\\' , '.');
@@ -93,8 +93,8 @@ namespace RTCV.UI
 
 		public void RegisterListInUI(string name, string hash)
 		{
-			RTC_UICore.LimiterListBindingSource.Add(new ComboBoxItem<String>(name, hash));
-			RTC_UICore.ValueListBindingSource.Add((new ComboBoxItem<String>(name, hash)));
+			UICore.LimiterListBindingSource.Add(new ComboBoxItem<String>(name, hash));
+			UICore.ValueListBindingSource.Add((new ComboBoxItem<String>(name, hash)));
 		}
 	}
 }

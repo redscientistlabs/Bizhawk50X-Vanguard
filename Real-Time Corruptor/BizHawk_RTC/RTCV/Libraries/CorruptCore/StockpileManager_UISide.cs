@@ -9,7 +9,7 @@ using RTCV.NetCore;
 
 namespace RTCV.CorruptCore
 {
-	public static class RTC_StockpileManager_UISide
+	public static class StockpileManager_UISide
 	{
 		//Object references
 		public static Stockpile CurrentStockpile { get; set; }
@@ -38,9 +38,9 @@ namespace RTCV.CorruptCore
 
 		private static void PostApplyStashkey()
 		{
-			if (RTC_StockpileManager_EmuSide.RenderAtLoad)
+			if (StockpileManager_EmuSide.RenderAtLoad)
 			{
-				RTC_Render_CorruptCore.StartRender();
+				Render.StartRender();
 			}
 		}
 
@@ -79,7 +79,7 @@ namespace RTCV.CorruptCore
 			PreApplyStashkey();
 
 
-			StashKey psk = RTC_StockpileManager_UISide.GetCurrentSavestateStashkey();
+			StashKey psk = StockpileManager_UISide.GetCurrentSavestateStashkey();
 
 			if (psk == null)
 			{
@@ -100,7 +100,7 @@ namespace RTCV.CorruptCore
 
 
 			//We make it without the blastlayer so we can send it across and use the cached version without needing a prototype
-			CurrentStashkey = new StashKey(RTC_CorruptCore.GetRandomKey(), psk.ParentKey, null)
+			CurrentStashkey = new StashKey(CorruptCore.GetRandomKey(), psk.ParentKey, null)
 			{
 				RomFilename = psk.RomFilename,
 				SystemName = psk.SystemName,
@@ -138,7 +138,7 @@ namespace RTCV.CorruptCore
 		{
 			PreApplyStashkey();
 
-			StashKey psk = RTC_StockpileManager_UISide.GetCurrentSavestateStashkey();
+			StashKey psk = StockpileManager_UISide.GetCurrentSavestateStashkey();
 
 			if (psk == null)
 			{
@@ -146,13 +146,13 @@ namespace RTCV.CorruptCore
 				return false;
 			}
 
-			if (psk.SystemCore != sk.SystemCore && !RTC_CorruptCore.AllowCrossCoreCorruption)
+			if (psk.SystemCore != sk.SystemCore && !CorruptCore.AllowCrossCoreCorruption)
 			{
 				MessageBox.Show("Merge attempt failed: Core mismatch\n\n" + $"{psk.GameName} -> {psk.SystemName} -> {psk.SystemCore}\n{sk.GameName} -> {sk.SystemName} -> {sk.SystemCore}");
 				return false;
 			}
 
-			CurrentStashkey = new StashKey(RTC_CorruptCore.GetRandomKey(), psk.ParentKey, sk.BlastLayer)
+			CurrentStashkey = new StashKey(CorruptCore.GetRandomKey(), psk.ParentKey, sk.BlastLayer)
 			{
 				RomFilename = psk.RomFilename,
 				SystemName = psk.SystemName,
@@ -218,7 +218,7 @@ namespace RTCV.CorruptCore
 						break;
 					}
 
-				if (!allCoresIdentical && !RTC_CorruptCore.AllowCrossCoreCorruption)
+				if (!allCoresIdentical && !CorruptCore.AllowCrossCoreCorruption)
 				{
 					MessageBox.Show("Merge attempt failed: Core mismatch\n\n" + string.Join("\n", sks.Select(it => $"{it.GameName} -> {it.SystemName} -> {it.SystemCore}")));
 
@@ -242,7 +242,7 @@ namespace RTCV.CorruptCore
 
 				bl.Layer = bl.Layer.Distinct().ToList();
 
-				CurrentStashkey = new StashKey(RTC_CorruptCore.GetRandomKey(), master.ParentKey, bl)
+				CurrentStashkey = new StashKey(CorruptCore.GetRandomKey(), master.ParentKey, bl)
 				{
 					RomFilename = master.RomFilename,
 					SystemName = master.SystemName,

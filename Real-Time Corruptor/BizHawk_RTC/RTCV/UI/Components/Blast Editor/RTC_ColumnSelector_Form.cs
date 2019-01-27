@@ -18,7 +18,7 @@ namespace RTCV.UI
 		public ColumnSelector()
 		{
 			InitializeComponent();
-			RTC_UICore.SetRTCColor(RTC_UICore.GeneralColor, this);
+			UICore.SetRTCColor(UICore.GeneralColor, this);
 			this.FormClosing += this.ColumnSelector_Closing;
 		}
 

@@ -17,7 +17,7 @@ using RTCV;
 using RTCV.CorruptCore;
 using static RTCV.NetCore.NetcoreCommands;
 
-namespace RTC
+namespace Vanguard
 {
 	public static class VanguardImplementation
 	{
@@ -32,7 +32,7 @@ namespace RTC
 			//the server takes a bit more time to start then the client.
 
 			var spec = new NetCoreReceiver();
-			spec.Attached = RTC_EmuCore.attached;
+			spec.Attached = VanguardCore.attached;
 			spec.MessageReceived += OnMessageReceived;
 
 			connector = new RTCV.Vanguard.VanguardConnector(spec);
@@ -40,7 +40,7 @@ namespace RTC
 			}
 			catch (Exception ex)
 			{
-				if (RTC_EmuCore.ShowErrorDialog(ex, true) == DialogResult.Abort)
+				if (VanguardCore.ShowErrorDialog(ex, true) == DialogResult.Abort)
 					throw new RTCV.NetCore.AbortEverythingException();
 			}
 		}
@@ -85,7 +85,7 @@ namespace RTC
 					case REMOTE_ALLSPECSSENT:
 						SyncObjectSingleton.FormExecute((o, ea) =>
 						{
-							RTC_EmuCore.LoadDefaultAndShowBizhawkForm();
+							VanguardCore.LoadDefaultAndShowBizhawkForm();
 						});
 						break;
 					/*
@@ -95,12 +95,12 @@ namespace RTC
 					}
 					case "PEEKBYTE":
 					{
-						RTC_Hooks.
+						Hooks.
 					}*/
 					case SAVESAVESTATE:
 						SyncObjectSingleton.FormExecute((o, ea) =>
 						{
-							e.setReturnValue(RTC_EmuCore.SaveSavestate_NET(advancedMessage.objectValue as string));
+							e.setReturnValue(VanguardCore.SaveSavestate_NET(advancedMessage.objectValue as string));
 						});
 						break;
 
@@ -111,7 +111,7 @@ namespace RTC
 							var location = (StashKeySavestateLocation)cmd[1];
 							SyncObjectSingleton.FormExecute((o, ea) =>
 							{
-								e.setReturnValue(RTC_EmuCore.LoadSavestate_NET(path, location));
+								e.setReturnValue(VanguardCore.LoadSavestate_NET(path, location));
 							});
 							break;
 						}
@@ -121,7 +121,7 @@ namespace RTC
 							var fileName = advancedMessage.objectValue as String;
 							SyncObjectSingleton.FormExecute((o, ea) =>
 							{
-								RTC_EmuCore.LoadRom_NET(fileName);
+								VanguardCore.LoadRom_NET(fileName);
 							});
 
 						}
@@ -130,14 +130,14 @@ namespace RTC
 					case REMOTE_DOMAIN_GETDOMAINS:
 						SyncObjectSingleton.FormExecute((o, ea) =>
 						{
-							e.setReturnValue(RTC_Hooks.GetInterfaces());
+							e.setReturnValue(Hooks.GetInterfaces());
 						});
 						break;
 
 					case REMOTE_KEY_SETSYNCSETTINGS:
 						SyncObjectSingleton.FormExecute((o, ea) =>
 						{
-							RTC_Hooks.BIZHAWK_GETSET_SYNCSETTINGS = (string)advancedMessage.objectValue;
+							Hooks.BIZHAWK_GETSET_SYNCSETTINGS = (string)advancedMessage.objectValue;
 						});
 						break;
 
@@ -148,7 +148,7 @@ namespace RTC
 							var systemCore = (string)cmd[1];
 							SyncObjectSingleton.FormExecute((o, ea) =>
 							{
-								RTC_Hooks.BIZHAWK_SET_SYSTEMCORE(systemName, systemCore);
+								Hooks.BIZHAWK_SET_SYSTEMCORE(systemName, systemCore);
 							});
 						}
 						break;
@@ -159,12 +159,12 @@ namespace RTC
 							string domain = (string)temp[0];
 							long address = (long)temp[1];
 
-							MemoryDomainProxy mdp = RTC_MemoryDomains.GetProxy(domain, address);
-							long realAddress = RTC_MemoryDomains.GetRealAddress(domain, address);
+							MemoryDomainProxy mdp = MemoryDomains.GetProxy(domain, address);
+							long realAddress = MemoryDomains.GetRealAddress(domain, address);
 
 							SyncObjectSingleton.FormExecute((o, ea) =>
 							{
-								RTC_Hooks.BIZHAWK_OPEN_HEXEDITOR_ADDRESS(mdp, realAddress);
+								Hooks.BIZHAWK_OPEN_HEXEDITOR_ADDRESS(mdp, realAddress);
 							});
 
 							break;
@@ -172,14 +172,14 @@ namespace RTC
 					case REMOTE_EVENT_BIZHAWK_MAINFORM_CLOSE:
 						SyncObjectSingleton.FormExecute((o, ea) =>
 						{
-							RTC_Hooks.BIZHAWK_MAINFORM_CLOSE();
+							Hooks.BIZHAWK_MAINFORM_CLOSE();
 						});
 						break;
 
 					case REMOTE_EVENT_SAVEBIZHAWKCONFIG:
 						SyncObjectSingleton.FormExecute((o, ea) =>
 						{
-							RTC_Hooks.BIZHAWK_MAINFORM_SAVECONFIG();
+							Hooks.BIZHAWK_MAINFORM_SAVECONFIG();
 						});
 						break;
 
@@ -187,35 +187,35 @@ namespace RTC
 					case REMOTE_RENDER_START:
 						SyncObjectSingleton.FormExecute((o, ea) =>
 						{
-							RTC_Render.StartRender_NET();
+							Render.StartRender_NET();
 						});
 						break;
 
 					case REMOTE_RENDER_STOP:
 						SyncObjectSingleton.FormExecute((o, ea) =>
 						{
-							RTC_Render.StopRender_NET();
+							Render.StopRender_NET();
 						});
 						break;
 
 					case REMOTE_IMPORTKEYBINDS:
 						SyncObjectSingleton.FormExecute((o, ea) =>
 						{
-							RTC_Hooks.BIZHAWK_IMPORTCONFIGINI(RTC_CorruptCore.bizhawkDir + Path.DirectorySeparatorChar + "import_config.ini", RTC_CorruptCore.bizhawkDir + Path.DirectorySeparatorChar + "stockpile_config.ini");
+							Hooks.BIZHAWK_IMPORTCONFIGINI(CorruptCore.bizhawkDir + Path.DirectorySeparatorChar + "import_config.ini", CorruptCore.bizhawkDir + Path.DirectorySeparatorChar + "stockpile_config.ini");
 						});
 						break;
 
 					case REMOTE_MERGECONFIG:
 						SyncObjectSingleton.FormExecute((o, ea) =>
 						{
-							RTC_Hooks.BIZHAWK_MERGECONFIGINI(RTC_CorruptCore.bizhawkDir + Path.DirectorySeparatorChar + "backup_config.ini", RTC_CorruptCore.bizhawkDir + Path.DirectorySeparatorChar + "stockpile_config.ini");
+							Hooks.BIZHAWK_MERGECONFIGINI(CorruptCore.bizhawkDir + Path.DirectorySeparatorChar + "backup_config.ini", CorruptCore.bizhawkDir + Path.DirectorySeparatorChar + "stockpile_config.ini");
 						});
 						break;
 
 					case REMOTE_RESTOREBIZHAWKCONFIG:
 						SyncObjectSingleton.FormExecute((o, ea) =>
 						{
-							Process.Start(RTC_CorruptCore.bizhawkDir + Path.DirectorySeparatorChar + $"RestoreConfigDETACHED.bat");
+							Process.Start(CorruptCore.bizhawkDir + Path.DirectorySeparatorChar + $"RestoreConfigDETACHED.bat");
 						});
 						break;
 
@@ -225,7 +225,7 @@ namespace RTC
 
 
 						//Todo
-						//RTC_NetcoreImplementation.SendCommandToBizhawk(new RTC_Command("REMOTE_PUSHVMDS) { objectValue = RTC_MemoryDomains.VmdPool.Values.Select(it => (it as VirtualMemoryDomain).Proto).ToArray() }, true, true);
+						//RTC_NetcoreImplementation.SendCommandToBizhawk(new RTC_Command("REMOTE_PUSHVMDS) { objectValue = MemoryDomains.VmdPool.Values.Select(it => (it as VirtualMemoryDomain).Proto).ToArray() }, true, true);
 
 						//Thread.Sleep(100);
 
@@ -237,7 +237,7 @@ namespace RTC
 
 						break;
 					case REMOTE_ISNORMALADVANCE:
-						e.setReturnValue(RTC_Hooks.isNormalAdvance);
+						e.setReturnValue(Hooks.isNormalAdvance);
 						break;
 
 
@@ -248,7 +248,7 @@ namespace RTC
 			}
 			catch (Exception ex)
 			{
-				if (RTC_EmuCore.ShowErrorDialog(ex, true) == DialogResult.Abort)
+				if (VanguardCore.ShowErrorDialog(ex, true) == DialogResult.Abort)
 					throw new RTCV.NetCore.AbortEverythingException();
 			}
 		}

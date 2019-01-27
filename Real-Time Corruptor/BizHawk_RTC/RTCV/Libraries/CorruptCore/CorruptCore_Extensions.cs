@@ -22,7 +22,7 @@ using Newtonsoft.Json;
 
 namespace RTCV.CorruptCore
 {
-	public static class RTC_Extensions
+	public static class CorruptCore_Extensions
 	{
 
 		public static void DirectoryRequired(string path)
@@ -719,7 +719,7 @@ namespace RTCV.CorruptCore
 
 			return val;
 		}
-		#region Image Extensions
+		#region Image CorruptCore_Extensions
 
 		public static byte[] ImageToByteArray(System.Drawing.Image imageIn, System.Drawing.Imaging.ImageFormat imageFormat)
 		{

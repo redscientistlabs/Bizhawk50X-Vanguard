@@ -55,7 +55,7 @@
             this.btnRtcFactoryClean.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnRtcFactoryClean.Font = new System.Drawing.Font("Segoe UI", 8F);
             this.btnRtcFactoryClean.ForeColor = System.Drawing.Color.Black;
-            this.btnRtcFactoryClean.Image = global::UI.Properties.Resources.refresh_new;
+            this.btnRtcFactoryClean.Image = global::RTCV.UI.Properties.Resources.refresh_new;
             this.btnRtcFactoryClean.ImageAlign = System.Drawing.ContentAlignment.MiddleRight;
             this.btnRtcFactoryClean.Location = new System.Drawing.Point(409, 465);
             this.btnRtcFactoryClean.Name = "btnRtcFactoryClean";

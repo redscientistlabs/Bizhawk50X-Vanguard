@@ -75,11 +75,11 @@ namespace RTCV.UI
 		public void RefreshDomains()
 		{
 			lbMemoryDomains.Items.Clear();
-			if (RTC_MemoryDomains.MemoryInterfaces != null)
-				lbMemoryDomains.Items.AddRange(RTC_MemoryDomains.MemoryInterfaces.Keys.ToArray());
+			if (MemoryDomains.MemoryInterfaces != null)
+				lbMemoryDomains.Items.AddRange(MemoryDomains.MemoryInterfaces.Keys.ToArray());
 
-			if (RTC_MemoryDomains.VmdPool.Count > 0)
-				lbMemoryDomains.Items.AddRange(RTC_MemoryDomains.VmdPool.Values.Select(it => it.ToString()).ToArray());
+			if (MemoryDomains.VmdPool.Count > 0)
+				lbMemoryDomains.Items.AddRange(MemoryDomains.VmdPool.Values.Select(it => it.ToString()).ToArray());
 		}
 
 		public void RefreshDomainsAndKeepSelected(string[] overrideDomains = null)

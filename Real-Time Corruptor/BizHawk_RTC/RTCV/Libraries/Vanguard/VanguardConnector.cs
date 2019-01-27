@@ -6,7 +6,7 @@ using System.Text;
 using System.Windows.Forms;
 using RTCV.CorruptCore;
 using NetworkSide = RTCV.NetCore.NetworkSide;
-using static RTCV.CorruptCore.RTC_CorruptCore;
+using static RTCV.CorruptCore.CorruptCore;
 
 namespace RTCV.Vanguard
 {
@@ -27,8 +27,8 @@ namespace RTCV.Vanguard
 
 			if (receiver.Attached)//attached mode
 			{
-				RTC_CorruptCore.Attached = true;
-				RTCV.UI.RTC_UICore.Start(null);
+				CorruptCore.CorruptCore.Attached = true;
+				RTCV.UI.UICore.Start(null);
 				return;
 			}
 
@@ -47,7 +47,7 @@ namespace RTCV.Vanguard
 
 		private static void NetCoreSpec_ClientConnected(object sender, EventArgs e)
 		{
-			LocalNetCoreRouter.Route(NetcoreCommands.UI, NetcoreCommands.REMOTE_PUSHEMUSPEC, RTCV.NetCore.AllSpec.VanguardSpec.GetPartialSpec(), true);
+			LocalNetCoreRouter.Route(NetcoreCommands.UI, NetcoreCommands.REMOTE_PUSHVANGUARDSPEC, RTCV.NetCore.AllSpec.VanguardSpec.GetPartialSpec(), true);
 			LocalNetCoreRouter.Route(NetcoreCommands.UI, NetcoreCommands.REMOTE_ALLSPECSSENT, true);
 		}
 		

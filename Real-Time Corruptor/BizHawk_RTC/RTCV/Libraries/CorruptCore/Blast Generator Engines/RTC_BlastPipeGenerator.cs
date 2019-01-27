@@ -28,7 +28,7 @@ namespace RTCV.CorruptCore
 			/*
 			try
 			{
-				MemoryDomainProxy mdp = RTC_MemoryDomains.GetProxy(domain, address);
+				MemoryDomainProxy mdp = MemoryDomains.GetProxy(domain, address);
 
 				byte[] value = new byte[precision];
 				long destAddress = 0;

@@ -10,11 +10,11 @@ using RTCV.NetCore;
 
 namespace RTCV.CorruptCore
 {
-	public static class RTC_Filtering
+	public static class Filtering
 	{
-		public static Dictionary<string, RTC_Extensions.HashSetByteArrayComparator> Hash2LimiterDico
+		public static Dictionary<string, CorruptCore_Extensions.HashSetByteArrayComparator> Hash2LimiterDico
 		{
-			get => (Dictionary<string, RTC_Extensions.HashSetByteArrayComparator>)RTCV.NetCore.AllSpec.CorruptCoreSpec[RTCSPEC.FILTERING_HASH2LIMITERDICO.ToString()];
+			get => (Dictionary<string, CorruptCore_Extensions.HashSetByteArrayComparator>)RTCV.NetCore.AllSpec.CorruptCoreSpec[RTCSPEC.FILTERING_HASH2LIMITERDICO.ToString()];
 			set => RTCV.NetCore.AllSpec.CorruptCoreSpec.Update(RTCSPEC.FILTERING_HASH2VALUEDICO.ToString(), value);
 		}
 		public static Dictionary<string, List<Byte[]>> Hash2ValueDico
@@ -27,7 +27,7 @@ namespace RTCV.CorruptCore
 		{
 			var partial = new PartialSpec("RTCSpec");
 
-			partial[RTCSPEC.FILTERING_HASH2LIMITERDICO.ToString()] = new Dictionary<string, RTC_Extensions.HashSetByteArrayComparator>();
+			partial[RTCSPEC.FILTERING_HASH2LIMITERDICO.ToString()] = new Dictionary<string, CorruptCore_Extensions.HashSetByteArrayComparator>();
 			partial[RTCSPEC.FILTERING_HASH2VALUEDICO.ToString()] = new Dictionary<string, List<Byte[]>>();
 
 			return partial;
@@ -79,7 +79,7 @@ namespace RTCV.CorruptCore
 				try
 				{
 					//Get the string as a byte array
-					bytes = RTC_Extensions.StringToByteArray(t);
+					bytes = CorruptCore_Extensions.StringToByteArray(t);
 				}
 				catch (Exception e)
 				{
@@ -127,7 +127,7 @@ namespace RTCV.CorruptCore
 			if (!Hash2ValueDico?.ContainsKey(hashStr) ?? false)
 				Hash2ValueDico[hashStr] = list;
 			if (!Hash2LimiterDico?.ContainsKey(hashStr) ?? false)
-				Hash2LimiterDico[hashStr] = new RTC_Extensions.HashSetByteArrayComparator(list);
+				Hash2LimiterDico[hashStr] = new CorruptCore_Extensions.HashSetByteArrayComparator(list);
 
 			//Push it over netcore if we need to
 			if (syncListsViaNetcore)
@@ -181,7 +181,7 @@ namespace RTCV.CorruptCore
 				return false;
 
 			//We use this extension class due to Ceras being unable to serialize a hashset with a custom comparator
-			RTC_Extensions.HashSetByteArrayComparator hs = null;
+			CorruptCore_Extensions.HashSetByteArrayComparator hs = null;
 
 			//If the limiter dictionary contains the hash, check if the hashset contains the byte sequence
 			if (Hash2LimiterDico.TryGetValue(hash, out hs))
@@ -211,7 +211,7 @@ namespace RTCV.CorruptCore
 			}
 
 			//Get a random line in the list and grab the value
-			int line = RTC_CorruptCore.RND.Next(Hash2ValueDico[hash].Count);
+			int line = CorruptCore.RND.Next(Hash2ValueDico[hash].Count);
 			Byte[] value = Hash2ValueDico[hash][line];
 
 			//Copy the value to a working array

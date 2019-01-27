@@ -121,19 +121,19 @@ namespace RTCV.UI
 					{
 						float f = Convert<float>(trimmedLine.Substring(0, trimmedLine.Length-1));
 						byte[] t = BitConverter.GetBytes(f);
-						newList.Add(RTC_Extensions.BytesToHexString(t));
+						newList.Add(CorruptCore_Extensions.BytesToHexString(t));
 					}
 					else if (Regex.IsMatch(trimmedLine, "^[0-9]+[dD]$")) //123d double
 					{
 						double d = Convert<double>(trimmedLine.Substring(0, trimmedLine.Length - 1));
 						byte[] t = BitConverter.GetBytes(d);
-						newList.Add(RTC_Extensions.BytesToHexString(t));
+						newList.Add(CorruptCore_Extensions.BytesToHexString(t));
 					}
 					else if (isDecimalNumber(trimmedLine)) //double no suffix
 					{
 						double d = Convert<double>(trimmedLine);
 						byte[] t = BitConverter.GetBytes(d);
-						newList.Add(RTC_Extensions.BytesToHexString(t));
+						newList.Add(CorruptCore_Extensions.BytesToHexString(t));
 					}
 					else if (isWholeNumber(trimmedLine)) //plain old number
 					{
@@ -148,7 +148,7 @@ namespace RTCV.UI
 			{
 				if (!String.IsNullOrWhiteSpace(filename))
 				{
-					File.WriteAllLines(RTC_CorruptCore.rtcDir + "//LISTS//" + filename + ".txt", newList);
+					File.WriteAllLines(CorruptCore.CorruptCore.rtcDir + "//LISTS//" + filename + ".txt", newList);
 				}
 				else
 				{
@@ -158,16 +158,16 @@ namespace RTCV.UI
 
 			//If there's no name just generate one
 			if (String.IsNullOrWhiteSpace(filename))
-				filename = RTC_CorruptCore.GetRandomKey();
+				filename = CorruptCore.CorruptCore.GetRandomKey();
 
 			//Register the list and update netcore
 			List<Byte[]> byteList = new List<byte[]>();
 			foreach (string t in newList)
 			{
-				byte[] bytes = RTC_Extensions.StringToByteArray(t);
+				byte[] bytes = CorruptCore_Extensions.StringToByteArray(t);
 				byteList.Add(bytes);
 			}
-			string hash = RTC_Filtering.RegisterList(byteList, true);
+			string hash = Filtering.RegisterList(byteList, true);
 
 			//Register the list in the ui
 			S.GET<RTC_EngineConfig_Form>().RegisterListInUI(filename, hash);

@@ -8,7 +8,7 @@ using RTCV.NetCore;
 
 namespace RTCV.CorruptCore
 {
-	public static class RTC_Render_CorruptCore
+	public static class Render
 	{
 		public static bool IsRendering
 		{

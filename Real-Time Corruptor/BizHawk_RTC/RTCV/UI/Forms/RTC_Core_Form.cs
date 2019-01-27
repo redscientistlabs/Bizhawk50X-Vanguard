@@ -38,7 +38,7 @@ namespace RTCV.UI
 		{
 			get
 			{
-				return RTC_CorruptCore.AutoCorrupt;
+				return CorruptCore.CorruptCore.AutoCorrupt;
 			}
 			set
 			{
@@ -47,7 +47,7 @@ namespace RTCV.UI
 				else
 					btnAutoCorrupt.Text = "Start Auto-Corrupt";
 
-				RTC_CorruptCore.AutoCorrupt = value;
+				CorruptCore.CorruptCore.AutoCorrupt = value;
 			}
 		}
 
@@ -75,16 +75,16 @@ namespace RTCV.UI
 
 		private void RTC_Form_Load(object sender, EventArgs e)
 		{
-			btnLogo.Text = "   Version " + RTC_CorruptCore.RtcVersion;
+			btnLogo.Text = "   Version " + CorruptCore.CorruptCore.RtcVersion;
 
 			if (!NetCore.Params.IsParamSet("DISCLAIMER_READ"))
 			{
-				MessageBox.Show(File.ReadAllText(RTC_CorruptCore.rtcDir + Path.DirectorySeparatorChar + "LICENSES\\DISCLAIMER.TXT").Replace("[ver]", RTC_CorruptCore.RtcVersion), "RTC", MessageBoxButtons.OK, MessageBoxIcon.Information);
+				MessageBox.Show(File.ReadAllText(CorruptCore.CorruptCore.rtcDir + Path.DirectorySeparatorChar + "LICENSES\\DISCLAIMER.TXT").Replace("[ver]", CorruptCore.CorruptCore.RtcVersion), "RTC", MessageBoxButtons.OK, MessageBoxIcon.Information);
 				NetCore.Params.SetParam("DISCLAIMER_READ");
 			}
 
-			RTC_CorruptCore.DownloadProblematicProcesses();
-			RTC_CorruptCore.CheckForProblematicProcesses();
+			CorruptCore.CorruptCore.DownloadProblematicProcesses();
+			CorruptCore.CorruptCore.CheckForProblematicProcesses();
 
 			GhostBoxInvisible(btnEasyMode);
 			GhostBoxInvisible(btnEngineConfig);
@@ -106,7 +106,7 @@ namespace RTCV.UI
 
 		private void RTC_Form_FormClosing(object sender, FormClosingEventArgs e)
 		{
-			if (S.GET<RTC_GlitchHarvester_Form>().UnsavedEdits && !RTC_UICore.isClosing && MessageBox.Show("You have unsaved edits in the Glitch Harvester Stockpile. \n\n Are you sure you want to close RTC without saving?", "Unsaved edits in Stockpile", MessageBoxButtons.YesNo) == DialogResult.No)
+			if (S.GET<RTC_GlitchHarvester_Form>().UnsavedEdits && !UICore.isClosing && MessageBox.Show("You have unsaved edits in the Glitch Harvester Stockpile. \n\n Are you sure you want to close RTC without saving?", "Unsaved edits in Stockpile", MessageBoxButtons.YesNo) == DialogResult.No)
 			{
 				e.Cancel = true;
 				return;
@@ -115,7 +115,7 @@ namespace RTCV.UI
 			LocalNetCoreRouter.Route(NetcoreCommands.CORRUPTCORE, NetcoreCommands.REMOTE_EVENT_CLOSEEMULATOR);
 			Thread.Sleep(1000);
 
-			RTC_UICore.CloseAllRtcForms();
+			UICore.CloseAllRtcForms();
 		}
 		
 		public void btnEasyModeCurrent_Click(object sender, EventArgs e)
@@ -216,13 +216,13 @@ namespace RTCV.UI
 		{
 			if (cbUseGameProtection.Checked)
 			{
-				RTC_GameProtection.Start();
+				GameProtection.Start();
 			}
 			else
 			{
-				RTC_GameProtection.Stop();
-				RTC_StockpileManager_UISide.BackupedState = null;
-				RTC_StockpileManager_UISide.AllBackupStates.Clear();
+				GameProtection.Stop();
+				StockpileManager_UISide.BackupedState = null;
+				StockpileManager_UISide.AllBackupStates.Clear();
 				btnGpJumpBack.Visible = false;
 				btnGpJumpNow.Visible = false;
 			}
@@ -345,18 +345,18 @@ namespace RTCV.UI
 			{
 				btnGpJumpBack.Visible = false;
 
-				if (RTC_StockpileManager_UISide.AllBackupStates.Count == 0)
+				if (StockpileManager_UISide.AllBackupStates.Count == 0)
 					return;
 
-				StashKey sk = RTC_StockpileManager_UISide.AllBackupStates.Pop();
+				StashKey sk = StockpileManager_UISide.AllBackupStates.Pop();
 
 				sk?.Run();
 
-				RTC_GameProtection.Reset();
+				GameProtection.Reset();
 			}
 			finally
 			{
-				if (RTC_StockpileManager_UISide.AllBackupStates.Count != 0)
+				if (StockpileManager_UISide.AllBackupStates.Count != 0)
 					btnGpJumpBack.Visible = true;
 			}
 		}
@@ -367,10 +367,10 @@ namespace RTCV.UI
 			{
 				btnGpJumpNow.Visible = false;
 
-				if (RTC_StockpileManager_UISide.BackupedState != null)
-					RTC_StockpileManager_UISide.BackupedState.Run();
+				if (StockpileManager_UISide.BackupedState != null)
+					StockpileManager_UISide.BackupedState.Run();
 
-				RTC_GameProtection.Reset();
+				GameProtection.Reset();
 			}
 			finally
 			{
@@ -451,7 +451,7 @@ Environment.NewLine + "───█───▌────────▐▀─
 		private void cbUseAutoKillSwitch_CheckedChanged(object sender, EventArgs e)
 		{
 			pbAutoKillSwitchTimeout.Visible = cbUseAutoKillSwitch.Checked;
-			RTC_AutoKillSwitch.Enabled = cbUseAutoKillSwitch.Checked;
+			AutoKillSwitch.Enabled = cbUseAutoKillSwitch.Checked;
 		}
 
 		private void cbAutoKillSwitchExecuteAction_SelectedIndexChanged(object sender, EventArgs e)
@@ -477,7 +477,7 @@ Environment.NewLine + "───█───▌────────▐▀─
 
 			S.GET<RTC_Core_Form>().pbAutoKillSwitchTimeout.Value = S.GET<RTC_Core_Form>().pbAutoKillSwitchTimeout.Maximum;
 
-			RTC_AutoKillSwitch.KillEmulator(btnAutoKillSwitchExecute.Text.ToUpper());
+			AutoKillSwitch.KillEmulator(btnAutoKillSwitchExecute.Text.ToUpper());
 		}
 
 		private void KillswitchSpamPreventTimer_Tick(object sender, EventArgs e)

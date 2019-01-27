@@ -40,7 +40,7 @@ namespace RTCV.UI
 			p.StartInfo.FileName = "FactoryCleanDETACHED.bat";
 			p.StartInfo.WindowStyle = ProcessWindowStyle.Hidden;
 			p.StartInfo.CreateNoWindow = true;
-			p.StartInfo.WorkingDirectory = RTC_CorruptCore.rtcDir;
+			p.StartInfo.WorkingDirectory = CorruptCore.CorruptCore.rtcDir;
 			p.Start();
 		}
 

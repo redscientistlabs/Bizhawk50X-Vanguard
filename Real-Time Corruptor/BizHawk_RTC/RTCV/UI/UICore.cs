@@ -14,13 +14,12 @@ using Newtonsoft.Json;
 using RTCV.CorruptCore;
 using RTCV.NetCore;
 using RTCV.UI;
-using UI;
 using static RTCV.UI.UI_Extensions;
 using RTCV.NetCore.StaticTools;
 
 namespace RTCV.UI
 {
-	public static class RTC_UICore
+	public static class UICore
 	{
 		//Engine Values
 		public static BindingList<ComboBoxItem<string>> LimiterListBindingSource = new BindingList<ComboBoxItem<string>>();
@@ -42,13 +41,13 @@ namespace RTCV.UI
 			S.formRegister.FormRegistered += FormRegister_FormRegistered;
 			registerFormEvents(S.GET<RTC_Core_Form>());
 
-			RTC_Extensions.DirectoryRequired(paths: new string[] {
-				RTC_CorruptCore.workingDir, RTC_CorruptCore.workingDir + "\\TEMP\\"
-				, RTC_CorruptCore.workingDir + "\\SKS\\", RTC_CorruptCore.workingDir + "\\SSK\\"
-				, RTC_CorruptCore.workingDir + "\\SESSION\\", RTC_CorruptCore.workingDir + "\\MEMORYDUMPS\\"
-				, RTC_CorruptCore.workingDir + "\\MP\\", RTC_CorruptCore.assetsDir + "\\CRASHSOUNDS\\"
-				, RTC_CorruptCore.rtcDir + "\\PARAMS\\", RTC_CorruptCore.rtcDir + "\\LISTS\\"
-				, RTC_CorruptCore.rtcDir + "\\RENDEROUTPUT\\",
+			CorruptCore_Extensions.DirectoryRequired(paths: new string[] {
+				CorruptCore.CorruptCore.workingDir, CorruptCore.CorruptCore.workingDir + "\\TEMP\\"
+				, CorruptCore.CorruptCore.workingDir + "\\SKS\\", CorruptCore.CorruptCore.workingDir + "\\SSK\\"
+				, CorruptCore.CorruptCore.workingDir + "\\SESSION\\", CorruptCore.CorruptCore.workingDir + "\\MEMORYDUMPS\\"
+				, CorruptCore.CorruptCore.workingDir + "\\MP\\", CorruptCore.CorruptCore.assetsDir + "\\CRASHSOUNDS\\"
+				, CorruptCore.CorruptCore.rtcDir + "\\PARAMS\\", CorruptCore.CorruptCore.rtcDir + "\\LISTS\\"
+				, CorruptCore.CorruptCore.rtcDir + "\\RENDEROUTPUT\\",
 			});
 
 			S.SET<RTC_Standalone_Form>((RTC_Standalone_Form)standaloneForm);
@@ -65,7 +64,7 @@ namespace RTCV.UI
 
 			p["SELECTEDDOMAINS"] = new string[]{};
 
-			RTCV.NetCore.AllSpec.UISpec = new FullSpec(p, !RTC_CorruptCore.Attached);
+			RTCV.NetCore.AllSpec.UISpec = new FullSpec(p, !CorruptCore.CorruptCore.Attached);
 			RTCV.NetCore.AllSpec.UISpec.SpecUpdated += (o, e) =>
 			{
 				PartialSpec partial = e.partialSpec;
@@ -73,7 +72,7 @@ namespace RTCV.UI
 				  LocalNetCoreRouter.Route(NetcoreCommands.CORRUPTCORE, NetcoreCommands.REMOTE_PUSHUISPECUPDATE, partial, e.syncedUpdate);
 			};
 
-			RTC_CorruptCore.StartUISide();
+			CorruptCore.CorruptCore.StartUISide();
 
 			//Loading RTC Params
 			LoadRTCColor();
@@ -171,11 +170,11 @@ namespace RTCV.UI
 				return;
 
 			isClosing = true;
-			if(NetCoreServer.loopbackConnector != null)
-				NetCoreServer.StopLoopback();
+			if (UI_VanguardImplementation.connector != null)
+				UI_VanguardImplementation.connector.Kill();
 
 
-			foreach (Form frm in RTC_UICore.AllRtcForms)
+			foreach (Form frm in UICore.AllRtcForms)
 			{
 				if (frm != null)
 					frm.Close();
@@ -185,7 +184,7 @@ namespace RTCV.UI
 				S.GET<RTC_Standalone_Form>().Close();
 
 			//Clean out the working folders
-			if (!RTC_CorruptCore.DontCleanSavestatesOnQuit)
+			if (!CorruptCore.CorruptCore.DontCleanSavestatesOnQuit)
 			{
 				Stockpile.EmptyFolder(Path.DirectorySeparatorChar + "WORKING" + Path.DirectorySeparatorChar);
 			}
@@ -201,7 +200,7 @@ namespace RTCV.UI
 
 			if (form == null)
 			{
-				foreach (Form targetForm in RTC_UICore.AllRtcForms)
+				foreach (Form targetForm in UICore.AllRtcForms)
 				{
 					if (targetForm != null)
 					{
@@ -239,7 +238,7 @@ namespace RTCV.UI
 
 			if (form == null)
 			{
-				foreach (Form targetForm in RTC_UICore.AllRtcForms)
+				foreach (Form targetForm in UICore.AllRtcForms)
 				{
 					if (targetForm != null)
 					{
@@ -324,12 +323,12 @@ namespace RTCV.UI
 				if (RTCV.NetCore.Params.IsParamSet("COLOR"))
 				{
 					string[] bytes = RTCV.NetCore.Params.ReadParam("COLOR").Split(',');
-					RTC_UICore.GeneralColor = Color.FromArgb(Convert.ToByte(bytes[0]), Convert.ToByte(bytes[1]), Convert.ToByte(bytes[2]));
+					UICore.GeneralColor = Color.FromArgb(Convert.ToByte(bytes[0]), Convert.ToByte(bytes[1]), Convert.ToByte(bytes[2]));
 				}
 				else
-					RTC_UICore.GeneralColor = Color.FromArgb(110, 150, 193);
+					UICore.GeneralColor = Color.FromArgb(110, 150, 193);
 
-				RTC_UICore.SetRTCColor(RTC_UICore.GeneralColor);
+				UICore.SetRTCColor(UICore.GeneralColor);
 		}
 
 		public static void SaveRTCColor(Color color)

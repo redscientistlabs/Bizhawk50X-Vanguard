@@ -349,7 +349,7 @@ namespace BizHawk.Client.EmuHawk
 			
 			
 			//RTC_Hijack : Force save Controller config
-			RTC.RTC_Hooks.BIZHAWK_MAINFORM_SAVECONFIG();
+			Vanguard.Hooks.BIZHAWK_MAINFORM_SAVECONFIG();
 
 			GlobalWin.OSD.AddMessage("Controller settings saved");
 			DialogResult = DialogResult.OK;

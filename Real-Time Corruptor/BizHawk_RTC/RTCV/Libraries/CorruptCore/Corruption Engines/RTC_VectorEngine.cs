@@ -39,15 +39,15 @@ namespace RTCV.CorruptCore
 
 			long safeAddress = address - (address % 4); //32-bit trunk
 
-			MemoryDomainProxy mdp = RTC_MemoryDomains.GetProxy(domain, safeAddress);
+			MemoryDomainProxy mdp = MemoryDomains.GetProxy(domain, safeAddress);
 			if (mdp == null)
 				return null;
 
 			try
 			{
 				//Enforce the safeaddress at generation
-				if (RTC_Filtering.LimiterPeekBytes(safeAddress, safeAddress + 4, domain, LimiterListHash, mdp))
-					return new BlastUnit(RTC_Filtering.GetRandomConstant(ValueListHash, 4), domain, safeAddress, 4, mdp.BigEndian);
+				if (Filtering.LimiterPeekBytes(safeAddress, safeAddress + 4, domain, LimiterListHash, mdp))
+					return new BlastUnit(Filtering.GetRandomConstant(ValueListHash, 4), domain, safeAddress, 4, mdp.BigEndian);
 				return null;
 			}
 			catch (Exception ex)

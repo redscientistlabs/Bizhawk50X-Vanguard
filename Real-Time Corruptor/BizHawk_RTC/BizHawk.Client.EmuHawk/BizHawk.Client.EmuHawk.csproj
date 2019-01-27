@@ -768,11 +768,11 @@
     <Compile Include="RomStatusPicker.Designer.cs">
       <DependentUpon>RomStatusPicker.cs</DependentUpon>
     </Compile>
-    <Compile Include="RTC\RTC_EmuCore.cs" />
-    <Compile Include="RTC\RTC_Extensions.cs" />
-    <Compile Include="RTC\RTC_Hooks.cs" />
-    <Compile Include="RTC\RTC_Render.cs" />
-    <Compile Include="RTC\RTC_VanguardImplementation.cs" />
+    <Compile Include="RTC\VanguardCore.cs" />
+    <Compile Include="RTC\Vanguard_Extensions.cs" />
+    <Compile Include="RTC\Hooks.cs" />
+    <Compile Include="RTC\Render.cs" />
+    <Compile Include="RTC\Vanguard_VanguardImplementation.cs" />
     <Compile Include="Sound\Interfaces\IBufferedSoundProvider.cs" />
     <Compile Include="Sound\Interfaces\ISoundOutput.cs" />
     <Compile Include="Sound\Output\DirectSoundSoundOutput.cs" />

@@ -6,7 +6,7 @@ using RTCV.NetCore;
 namespace RTCV.UI
 {
 	//Todo, rebuild this?
-	public static class RTC_GameProtection
+	public static class GameProtection
 	{
 		static Timer t;
 		public static int BackupInterval = 30;

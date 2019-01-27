@@ -79,7 +79,7 @@ namespace RTCV.CorruptCore
 						break;
 
 					case NightmareAlgo.RANDOMTILT: //RANDOMTILT may add 1,substract 1 or set a random value
-						int result = RTC_CorruptCore.RND.Next(1, 4);
+						int result = CorruptCore.RND.Next(1, 4);
 						switch (result)
 						{
 							case 1:
@@ -99,7 +99,7 @@ namespace RTCV.CorruptCore
 						break;
 
 					case NightmareAlgo.TILT: //TILT can either add 1 or substract 1
-						result = RTC_CorruptCore.RND.Next(1, 3);
+						result = CorruptCore.RND.Next(1, 3);
 						switch (result)
 						{
 							case 1:
@@ -120,7 +120,7 @@ namespace RTCV.CorruptCore
 
 				if (domain == null)
 					return null;
-				MemoryDomainProxy mdp = RTC_MemoryDomains.GetProxy(domain, address);
+				MemoryDomainProxy mdp = MemoryDomains.GetProxy(domain, address);
 
 				byte[] value = new byte[precision];
 
@@ -132,25 +132,25 @@ namespace RTCV.CorruptCore
 					switch (precision)
 					{
 						case 1:
-							randomValue = RTC_CorruptCore.RND.RandomLong(MinValue8Bit, MaxValue8Bit);
+							randomValue = CorruptCore.RND.RandomLong(MinValue8Bit, MaxValue8Bit);
 							break;
 						case 2:
-							randomValue = RTC_CorruptCore.RND.RandomLong(MinValue16Bit, MaxValue16Bit);
+							randomValue = CorruptCore.RND.RandomLong(MinValue16Bit, MaxValue16Bit);
 							break;
 						case 4:
-							randomValue = RTC_CorruptCore.RND.RandomLong(MinValue32Bit, MaxValue32Bit);
+							randomValue = CorruptCore.RND.RandomLong(MinValue32Bit, MaxValue32Bit);
 							break;
 					}
 
 					if (randomValue != -1)
 					{
-						value = RTC_Extensions.GetByteArrayValue(precision, randomValue, true);
+						value = CorruptCore_Extensions.GetByteArrayValue(precision, randomValue, true);
 					}
 					else
 					{
 						for (int i = 0; i < precision; i++)
 						{
-							value[i] = (byte)RTC_CorruptCore.RND.Next();
+							value[i] = (byte)CorruptCore.RND.Next();
 						}
 					}
 

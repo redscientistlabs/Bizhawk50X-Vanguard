@@ -68,7 +68,7 @@ namespace BizHawk.Client.EmuHawk
 			SetStatusBar();
 
 			//RTC_HIJACK : Hook at Mainform MainForm_load() and disable version check
-			RTC.RTC_Hooks.MAINFORM_FORM_LOAD_END();
+			Vanguard.Hooks.MAINFORM_FORM_LOAD_END();
 			/*
 						// New version notification
 						UpdateChecker.CheckComplete += (s2, e2) =>
@@ -674,7 +674,7 @@ namespace BizHawk.Client.EmuHawk
 				|| ActiveForm is VirtualpadTool
 				
 					//RTC_Hijack : Polling RTC focus for Background input
-					|| RTC.RTC_Hooks.IsAllowedBackgroundInputForm()
+					|| Vanguard.Hooks.IsAllowedBackgroundInputForm()
 					)//--------------------------------------
 			{
 				return true;
@@ -3035,7 +3035,7 @@ namespace BizHawk.Client.EmuHawk
 				Global.CheatList.Pulse();
 
 				//Step for frame 0. Note the true on the end. We handle doing nothing for any step after the first one in the method itself
-				RTC.RTC_Hooks.CPU_STEP(isRewinding, isFastForwarding, true);
+				Vanguard.Hooks.CPU_STEP(isRewinding, isFastForwarding, true);
 
 
 				if (IsLagFrame && Global.Config.AutofireLagFrames)
@@ -3053,7 +3053,7 @@ namespace BizHawk.Client.EmuHawk
 				}
 				
 				//RTC_HIJACK : Hooking the step here as it's just before the tools update
-				RTC.RTC_Hooks.CPU_STEP(isRewinding, isFastForwarding);
+				Vanguard.Hooks.CPU_STEP(isRewinding, isFastForwarding);
 				//---------------------------------------
 
 
@@ -3607,7 +3607,7 @@ namespace BizHawk.Client.EmuHawk
 		public bool _LoadRom(string path, LoadRomArgs args)
 		{			
 			//RTC_HIJACK : Hook at beginning of LoadRom
-			RTC.RTC_Hooks.LOAD_GAME_BEGIN();
+			Vanguard.Hooks.LOAD_GAME_BEGIN();
 			//----------
 			
 			path = HawkFile.Util_ResolveLink(path);
@@ -3896,7 +3896,7 @@ namespace BizHawk.Client.EmuHawk
 					ClientApi.OnRomLoaded();
 					
 					//RTC_HIJACK : Hook at the end of LoadRom
-					RTC.RTC_Hooks.LOAD_GAME_DONE();
+					Vanguard.Hooks.LOAD_GAME_DONE();
 					//----------
 					
 					return true;
@@ -3910,7 +3910,7 @@ namespace BizHawk.Client.EmuHawk
 					if (!(Emulator is NullEmulator))
 						{
 						//RTC_HIJACK : Hook in case this happens
-						RTC.RTC_Hooks.LOAD_GAME_DONE();
+						Vanguard.Hooks.LOAD_GAME_DONE();
 						//----------
 						ClientApi.OnRomLoaded();
 						return true;
@@ -3925,7 +3925,7 @@ namespace BizHawk.Client.EmuHawk
 					SetWindowText();
 					
 					//RTC_HIJACK : Hook at LoadRom failure
-					RTC.RTC_Hooks.LOAD_GAME_FAILED();
+					Vanguard.Hooks.LOAD_GAME_FAILED();
 					//----------
 					return false;
 				}
@@ -4031,7 +4031,7 @@ namespace BizHawk.Client.EmuHawk
 			GameIsClosing = false;
 			
 			// RTC_HIJACK : Hook after CloseGame
-			RTC.RTC_Hooks.CLOSE_GAME();
+			Vanguard.Hooks.CLOSE_GAME();
 		}
 
 
@@ -4131,7 +4131,7 @@ namespace BizHawk.Client.EmuHawk
 			}
 
 			//RTC_HIJACK Hook at beginning of Load Savestate
-			RTC.RTC_Hooks.LOAD_SAVESTATE_BEGIN();
+			Vanguard.Hooks.LOAD_SAVESTATE_BEGIN();
 			//-----------
 			// If from lua, disable counting rerecords
 			bool wasCountingRerecords = Global.MovieSession.Movie.IsCountingRerecords;
@@ -4175,7 +4175,7 @@ namespace BizHawk.Client.EmuHawk
 			Global.MovieSession.Movie.IsCountingRerecords = wasCountingRerecords;
 			
 			//RTC_HIJACK : Hook at the end of Load SaveState
-			RTC.RTC_Hooks.LOAD_SAVESTATE_END();
+			Vanguard.Hooks.LOAD_SAVESTATE_END();
 			//-----------
 		}
 
@@ -4615,7 +4615,7 @@ namespace BizHawk.Client.EmuHawk
 
 			//This event function might not exist if the bizhawk gets updated.
 			//Just do recreate the ResizeEnd Event and bind the hook to it.
-			RTC.RTC_Hooks.MAINFORM_RESIZEEND();
+			Vanguard.Hooks.MAINFORM_RESIZEEND();
 			//------------
 		}
 
@@ -4623,7 +4623,7 @@ namespace BizHawk.Client.EmuHawk
 		{
 			//RTC_HIJACK : MainForm_FormClosing
 			//You might have to recreate
-			RTC.RTC_Hooks.MAINFORM_CLOSING();
+			Vanguard.Hooks.MAINFORM_CLOSING();
 			//---------------------
 		}
 	}

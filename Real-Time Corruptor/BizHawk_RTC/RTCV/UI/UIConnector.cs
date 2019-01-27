@@ -41,7 +41,7 @@ namespace RTCV.UI
 
 		private void NetCoreSpec_ServerConnectionLost(object sender, EventArgs e)
 		{
-			if(RTC_UICore.isClosing)
+			if(UICore.isClosing)
 				return;
 
 			SyncObjectSingleton.FormExecute((o, ea) =>
@@ -62,9 +62,9 @@ namespace RTCV.UI
 				S.GET<RTC_VmdAct_Form>().cbAutoAddDump.Checked = false;
 				S.GET<RTC_Core_Form>().AutoCorrupt = false;
 			});
-			RTC_GameProtection.Stop();
+			GameProtection.Stop();
 
-			RTC_AutoKillSwitch.KillEmulator("KILL + RESTART");
+			AutoKillSwitch.KillEmulator("KILL + RESTART");
 		}
 
 		private static void Spec_ServerConnected(object sender, EventArgs e)

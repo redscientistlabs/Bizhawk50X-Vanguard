@@ -131,7 +131,7 @@ namespace RTCV.CorruptCore
 				if (domain == null)
 					return null;
 
-				MemoryDomainProxy mdp = RTC_MemoryDomains.GetProxy(domain, address);
+				MemoryDomainProxy mdp = MemoryDomains.GetProxy(domain, address);
 
 
 				byte[] value = new byte[precision];
@@ -148,7 +148,7 @@ namespace RTCV.CorruptCore
 						{
 							case CustomValueSource.VALUELIST:
 							{
-								value = RTC_Filtering.GetRandomConstant(ValueListHash, precision);
+								value = Filtering.GetRandomConstant(ValueListHash, precision);
 							}
 							break;
 
@@ -158,28 +158,28 @@ namespace RTCV.CorruptCore
 								switch (precision)
 								{
 									case 1:
-										randomValue = RTC_CorruptCore.RND.RandomLong(MinValue8Bit, MaxValue8Bit);
+										randomValue = CorruptCore.RND.RandomLong(MinValue8Bit, MaxValue8Bit);
 										break;
 									case 2:
-										randomValue = RTC_CorruptCore.RND.RandomLong(MinValue16Bit, MaxValue16Bit);
+										randomValue = CorruptCore.RND.RandomLong(MinValue16Bit, MaxValue16Bit);
 										break;
 									case 4:
-										randomValue = RTC_CorruptCore.RND.RandomLong(MinValue32Bit, MaxValue32Bit);
+										randomValue = CorruptCore.RND.RandomLong(MinValue32Bit, MaxValue32Bit);
 										break;
 								}
 
 								if (randomValue != -1)
-									value = RTC_Extensions.GetByteArrayValue(precision, randomValue, true);
+									value = CorruptCore_Extensions.GetByteArrayValue(precision, randomValue, true);
 								else
 									for (int i = 0; i < precision; i++)
-										value[i] = (byte)RTC_CorruptCore.RND.Next();
+										value[i] = (byte)CorruptCore.RND.Next();
 							}
 							break;
 
 							case CustomValueSource.RANDOM:
 							{
 								for (int i = 0; i < precision; i++)
-									value[i] = (byte)RTC_CorruptCore.RND.Next();
+									value[i] = (byte)CorruptCore.RND.Next();
 							}
 							break;
 								
@@ -196,7 +196,7 @@ namespace RTCV.CorruptCore
 						{
 							case CustomStoreAddress.RANDOM:
 							{
-								BlastTarget bt = RTC_CorruptCore.GetBlastTarget();
+								BlastTarget bt = CorruptCore.GetBlastTarget();
 								long safeStartAddress = bt.Address - (bt.Address % precision);
 								bu.SourceDomain = bt.Domain;
 								bu.SourceAddress = safeStartAddress;
@@ -233,13 +233,13 @@ namespace RTCV.CorruptCore
 				{
 					if (LimiterInverted)
 					{
-						if (RTC_Filtering.LimiterPeekBytes(bu.Address,
+						if (Filtering.LimiterPeekBytes(bu.Address,
 															 bu.Address + bu.Precision, bu.Domain, LimiterListHash, mdp))
 							return null;
 					}
 					else
 					{
-						if (RTC_Filtering.LimiterPeekBytes(bu.Address,
+						if (Filtering.LimiterPeekBytes(bu.Address,
 															 bu.Address + bu.Precision, bu.Domain, LimiterListHash, mdp))
 							return null;
 					}
@@ -274,11 +274,11 @@ namespace RTCV.CorruptCore
 			if (list == null)
 			{
 				byte[] buffer = new byte[4];
-				RTC_CorruptCore.RND.NextBytes(buffer);
+				CorruptCore.RND.NextBytes(buffer);
 				return buffer;
 			}
 
-			return StringToByteArray(list[RTC_CorruptCore.RND.Next(list.Length)]);
+			return StringToByteArray(list[CorruptCore.RND.Next(list.Length)]);
 		}
 
 		public static byte[] StringToByteArray(string hex)
