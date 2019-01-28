@@ -855,7 +855,7 @@ namespace RTCV.CorruptCore
 
 		public void Reroll()
 		{
-			foreach (BlastUnit bu in Layer)
+			foreach (BlastUnit bu in Layer.Where(x => x.IsLocked == false))
 				bu.Reroll();
 		}
 

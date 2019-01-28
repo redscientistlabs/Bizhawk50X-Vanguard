@@ -442,8 +442,7 @@ namespace RTCV.UI
 		private void updateMaximum(DataGridViewNumericUpDownCell cell, String domain)
 		{
 			if (domainToMiDico.ContainsKey(domain))
-				cell.Maximum = domainToMiDico[domain]
-					.Size;
+				cell.Maximum = domainToMiDico[domain].Size - 1;
 			else
 				cell.Maximum = Int32.MaxValue;
 

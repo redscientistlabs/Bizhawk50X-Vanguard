@@ -404,127 +404,133 @@ namespace RTCV.UI
 			cbSelectedTemplate.Text = TemplateName;
 		}
 
-		
+
 		private void RestoreUIStateFromSpec()
 		{
-			dontUpdateSpec = true;
-
-			switch (RTC_CustomEngine.Source)
+			try
 			{
-				case (BlastUnitSource.STORE):
-					rbUnitSourceStore.Checked = true;
-					break;
-				case (BlastUnitSource.VALUE):
-					rbUnitSourceValue.Checked = true;
-					break;
-			}
 
-			switch (RTC_CustomEngine.ValueSource)
+				dontUpdateSpec = true;
+
+				switch (RTC_CustomEngine.Source)
+				{
+					case (BlastUnitSource.STORE):
+						rbUnitSourceStore.Checked = true;
+						break;
+					case (BlastUnitSource.VALUE):
+						rbUnitSourceValue.Checked = true;
+						break;
+				}
+
+				switch (RTC_CustomEngine.ValueSource)
+				{
+					case (CustomValueSource.RANDOM):
+						rbRandom.Checked = true;
+						break;
+					case (CustomValueSource.VALUELIST):
+						rbValueList.Checked = true;
+						break;
+					case (CustomValueSource.RANGE):
+						rbRange.Checked = true;
+						break;
+				}
+
+				switch (RTC_CustomEngine.StoreTime)
+				{
+					case (StoreTime.IMMEDIATE):
+						rbStoreImmediate.Checked = true;
+						break;
+					case (StoreTime.PREEXECUTE):
+						rbStoreFirstExecute.Checked = true;
+						break;
+				}
+
+				switch (RTC_CustomEngine.StoreAddress)
+				{
+					case (CustomStoreAddress.RANDOM):
+						rbStoreRandom.Checked = true;
+						break;
+					case (CustomStoreAddress.SAME):
+						rbStoreSame.Checked = true;
+						break;
+				}
+
+				switch (RTC_CustomEngine.StoreType)
+				{
+					case (StoreType.ONCE):
+						rbStoreOnce.Checked = true;
+						break;
+					case (StoreType.CONTINUOUS):
+						rbStoreStep.Checked = true;
+						break;
+				}
+
+				switch (RTC_CustomEngine.LimiterTime)
+				{
+					case (LimiterTime.NONE):
+						rbLimiterNone.Checked = true;
+						break;
+					case (LimiterTime.GENERATE):
+						rbLimiterGenerate.Checked = true;
+						break;
+					case (LimiterTime.PREEXECUTE):
+						rbLimiterFirstExecute.Checked = true;
+						break;
+					case (LimiterTime.EXECUTE):
+						rbLimiterExecute.Checked = true;
+						break;
+
+				}
+
+
+
+				cbLockUnits.Checked = StepActions.LockExecution;
+				cbClearRewind.Checked = StepActions.ClearStepActionsOnRewind;
+
+				cbLoopUnit.Checked = RTC_CustomEngine.Loop;
+				cbLimiterInverted.Checked = RTC_CustomEngine.LimiterInverted;
+
+				cbValueList.SelectedValue = RTC_CustomEngine.ValueListHash;
+				cbLimiterList.SelectedValue = RTC_CustomEngine.LimiterListHash;
+
+
+				if (RTC_CustomEngine.TiltValue > (BigInteger)decimal.MaxValue)
+					RTC_CustomEngine.TiltValue = (BigInteger)decimal.MaxValue;
+				nmTilt.Value = (Decimal)RTC_CustomEngine.TiltValue;
+				nmDelay.Value = RTC_CustomEngine.Delay;
+				nmLifetime.Value = RTC_CustomEngine.Lifetime;
+
+
+				switch (CorruptCore.CorruptCore.CurrentPrecision)
+				{
+					case 1:
+						nmMinValue.Value = RTC_CustomEngine.MinValue8Bit;
+						break;
+					case 2:
+						nmMinValue.Value = RTC_CustomEngine.MinValue16Bit;
+						break;
+					case 4:
+						nmMinValue.Value = RTC_CustomEngine.MinValue32Bit;
+						break;
+				}
+
+				switch (CorruptCore.CorruptCore.CurrentPrecision)
+				{
+					case 1:
+						nmMaxValue.Value = RTC_CustomEngine.MaxValue8Bit;
+						break;
+					case 2:
+						nmMaxValue.Value = RTC_CustomEngine.MaxValue16Bit;
+						break;
+					case 4:
+						nmMaxValue.Value = RTC_CustomEngine.MaxValue32Bit;
+						break;
+				}
+			}
+			finally
 			{
-				case (CustomValueSource.RANDOM):
-					rbRandom.Checked = true;
-					break;
-				case (CustomValueSource.VALUELIST):
-					rbValueList.Checked = true;
-					break;
-				case (CustomValueSource.RANGE):
-					rbRange.Checked = true;
-					break;
+				dontUpdateSpec = false;
 			}
-
-			switch (RTC_CustomEngine.StoreTime)
-			{
-				case (StoreTime.IMMEDIATE):
-					rbStoreImmediate.Checked = true;
-					break;
-				case (StoreTime.PREEXECUTE):
-					rbStoreFirstExecute.Checked = true;
-					break;
-			}
-
-			switch (RTC_CustomEngine.StoreAddress)
-			{
-				case (CustomStoreAddress.RANDOM):
-					rbStoreRandom.Checked = true;
-					break;
-				case (CustomStoreAddress.SAME):
-					rbStoreSame.Checked = true;
-					break;
-			}
-
-			switch (RTC_CustomEngine.StoreType)
-			{
-				case (StoreType.ONCE):
-					rbStoreOnce.Checked = true;
-					break;
-				case (StoreType.CONTINUOUS):
-					rbStoreStep.Checked = true;
-					break;
-			}
-
-			switch (RTC_CustomEngine.LimiterTime)
-			{
-				case (LimiterTime.NONE):
-					rbLimiterNone.Checked = true;
-					break;
-				case (LimiterTime.GENERATE):
-					rbLimiterGenerate.Checked = true;
-					break;
-				case (LimiterTime.PREEXECUTE):
-					rbLimiterFirstExecute.Checked = true;
-					break;
-				case (LimiterTime.EXECUTE):
-					rbLimiterExecute.Checked = true;
-					break;
-
-			}
-
-
-			
-			cbLockUnits.Checked = StepActions.LockExecution;
-			cbClearRewind.Checked = StepActions.ClearStepActionsOnRewind;
-
-			cbLoopUnit.Checked = RTC_CustomEngine.Loop;
-			cbLimiterInverted.Checked = RTC_CustomEngine.LimiterInverted;
-
-			cbValueList.SelectedValue = RTC_CustomEngine.ValueListHash;
-			cbLimiterList.SelectedValue = RTC_CustomEngine.LimiterListHash;
-
-
-			if (RTC_CustomEngine.TiltValue > (BigInteger)decimal.MaxValue)
-				RTC_CustomEngine.TiltValue = (BigInteger)decimal.MaxValue;
-			nmTilt.Value = (Decimal)RTC_CustomEngine.TiltValue;
-			nmDelay.Value = RTC_CustomEngine.Delay;
-			nmLifetime.Value = RTC_CustomEngine.Lifetime;
-
-
-			switch (CorruptCore.CorruptCore.CurrentPrecision)
-			{
-				case 1:
-					nmMinValue.Value = RTC_CustomEngine.MinValue8Bit;
-					break;								
-				case 2:									
-					nmMinValue.Value = RTC_CustomEngine.MinValue16Bit;
-					break;								
-				case 4:									
-					nmMinValue.Value = RTC_CustomEngine.MinValue32Bit;
-					break;
-			}
-
-			switch (CorruptCore.CorruptCore.CurrentPrecision)
-			{
-				case 1:
-					nmMaxValue.Value = RTC_CustomEngine.MaxValue8Bit;
-					break;
-				case 2:
-					nmMaxValue.Value = RTC_CustomEngine.MaxValue16Bit;
-					break;
-				case 4:
-					nmMaxValue.Value = RTC_CustomEngine.MaxValue32Bit;
-					break;
-			}
-
-			dontUpdateSpec = false;
 		}
 	}
 }
