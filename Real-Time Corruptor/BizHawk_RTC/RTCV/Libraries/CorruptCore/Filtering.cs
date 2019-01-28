@@ -96,7 +96,7 @@ namespace RTCV.CorruptCore
 				byteList.Add(bytes);
 			}
 
-			return RegisterList(byteList.Distinct().ToList(), syncListViaNetcore);
+			return RegisterList(byteList.Distinct(new CorruptCore_Extensions.ByteArrayComparer()).ToList(), syncListViaNetcore);
 		}
 
 		/// <summary>
@@ -266,7 +266,13 @@ namespace RTCV.CorruptCore
 					{
 						StringBuilder sb = new StringBuilder();
 						foreach (var b in line)
-							sb.Append(b.ToString());
+						{
+							//If the string isn't of an even length, pad it
+							string tmp = b.ToString("X");
+							if (tmp.Length % 2 != 0)
+								tmp = "0" + tmp;
+							sb.Append(tmp);
+						}
 						strList.Add(sb.ToString());
 					}
 					returnList.Add(strList.ToArray());

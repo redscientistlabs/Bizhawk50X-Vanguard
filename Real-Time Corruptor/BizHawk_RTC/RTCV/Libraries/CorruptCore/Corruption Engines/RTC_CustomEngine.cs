@@ -131,7 +131,7 @@ namespace RTCV.CorruptCore
 				if (domain == null)
 					return null;
 
-				MemoryDomainProxy mdp = MemoryDomains.GetProxy(domain, address);
+				MemoryInterface mi = MemoryDomains.GetInterface(domain);
 
 
 				byte[] value = new byte[precision];
@@ -231,18 +231,8 @@ namespace RTCV.CorruptCore
 				//Limiter handling
 				if (LimiterTime == LimiterTime.IMMEDIATE)
 				{
-					if (LimiterInverted)
-					{
-						if (Filtering.LimiterPeekBytes(bu.Address,
-															 bu.Address + bu.Precision, bu.Domain, LimiterListHash, mdp))
-							return null;
-					}
-					else
-					{
-						if (Filtering.LimiterPeekBytes(bu.Address,
-															 bu.Address + bu.Precision, bu.Domain, LimiterListHash, mdp))
-							return null;
-					}
+					if (!bu.LimiterCheck(mi))
+						return null;
 				}
 
 				return bu;

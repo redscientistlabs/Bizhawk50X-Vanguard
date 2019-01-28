@@ -104,18 +104,27 @@ namespace RTCV.CorruptCore
 		/// <returns></returns>
 		public static byte[] StringToByteArray(string hex)
 		{
-			//If it's odd, prepend a 0
-			if (hex.Length % 2 == 1)
-			{
-				string temp = "0" + hex;
-				byte[] t = Enumerable.Range(0, temp.Length).Where(x => x % 2 == 0).Select(x => Convert.ToByte(temp.Substring(x, 2), 16)).ToArray();
-				return t;
-			}
+			var lengthPadded = (hex.Length / 2) + (hex.Length % 2);
+			var bytes = new byte[lengthPadded];
+			if (hex == null)
+				return null;
+			string temp = hex.PadLeft(lengthPadded * 2, '0'); //*2 since a byte is two characters
 
-			return Enumerable.Range(0, hex.Length)
-				.Where(x => x % 2 == 0)
-				.Select(x => Convert.ToByte(hex.Substring(x, 2), 16))
-				.ToArray();
+			int j = 0;
+			for (var i = 0; i < lengthPadded * 2; i += 2)
+			{
+				try
+				{
+					bytes[j] = (byte)Convert.ToUInt32(temp.Substring(i, 2), 16);
+				}
+				catch (FormatException e)
+				{
+					return null;
+				}
+
+				j++;
+			}
+			return bytes;
 		}
 
 		/// <summary>
