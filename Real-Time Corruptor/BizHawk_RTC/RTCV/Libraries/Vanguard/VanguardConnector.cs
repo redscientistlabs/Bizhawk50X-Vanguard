@@ -92,7 +92,7 @@ namespace RTCV.Vanguard
 
 		public static bool IsUIForm()
 		{
-			return RTCV.NetCore.AllSpec.UISpec?[NetcoreCommands.RTC_INFOCUS] != null;
+			return (bool?)RTCV.NetCore.AllSpec.UISpec?[NetcoreCommands.RTC_INFOCUS] ?? false;
 		}
 
 		public void KillNetcore()

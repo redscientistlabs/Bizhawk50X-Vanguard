@@ -117,7 +117,7 @@ namespace RTCV.UI
 			if (RTCV.NetCore.AllSpec.UISpec == null)
 				return;
 
-			bool previousState = RTCV.NetCore.AllSpec.UISpec[NetcoreCommands.RTC_INFOCUS] != null;
+			bool previousState = (bool?)RTCV.NetCore.AllSpec.UISpec[NetcoreCommands.RTC_INFOCUS] ?? false;
 			bool currentState = isAnyRTCFormFocused();
 			if(previousState != currentState)
 			{	//This is a non-synced spec update to prevent jittering. Shouldn't have any other noticeable impact
