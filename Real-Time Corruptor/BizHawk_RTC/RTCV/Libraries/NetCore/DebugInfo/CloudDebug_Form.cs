@@ -25,8 +25,6 @@ namespace RTCV.NetCore
 		public CloudDebug(Exception _ex, bool canContinue = false)
 		{
 			InitializeComponent();
-			var path = Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), "7z.dll");
-			SevenZip.SevenZipBase.SetLibraryPath(path);
             ex = _ex;
 			if (!(ex is OperationAbortedException))
 			{
@@ -108,8 +106,8 @@ namespace RTCV.NetCore
 				File.WriteAllText(emufile, getEmuInfo());
 
 
-				var path = Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), Environment.Is64BitProcess ? "x64" : "x86", "7z.dll");
-				SevenZip.SevenZipCompressor.SetLibraryPath(path);
+				var path = Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), "7z.dll");
+				SevenZip.SevenZipBase.SetLibraryPath(path);
 				var comp = new SevenZip.SevenZipCompressor();
 				comp.CompressionMode = SevenZip.CompressionMode.Create;
 				comp.TempFolderPath = Path.GetTempPath();
