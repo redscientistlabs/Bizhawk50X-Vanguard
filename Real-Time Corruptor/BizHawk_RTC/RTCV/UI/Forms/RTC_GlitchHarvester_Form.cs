@@ -179,7 +179,7 @@ namespace RTCV.UI
 			lbStashHistory.SelectedIndex = lbStashHistory.Items.Count - 1;
 		}
 
-		public void RefreshStashHistory(bool scrolldown = false)
+		public void RefreshStashHistory()
 		{
 			DontLoadSelectedStash = true;
 			var lastSelect = lbStashHistory.SelectedIndex;
@@ -475,6 +475,7 @@ namespace RTCV.UI
 
 				if (!cbLoadOnSelect.Checked)
 					return;
+
 				OneTimeExecute();
 			}
 			finally
@@ -493,7 +494,10 @@ namespace RTCV.UI
 			if (rbCorrupt.Checked)
 				IsCorruptionApplied = StockpileManager_UISide.ApplyStashkey(StockpileManager_UISide.CurrentStashkey, loadBeforeOperation);
 			else if (rbInject.Checked)
+			{
 				IsCorruptionApplied = StockpileManager_UISide.InjectFromStashkey(StockpileManager_UISide.CurrentStashkey, loadBeforeOperation);
+				RefreshStashHistory();
+			}
 			else if (rbOriginal.Checked)
 				IsCorruptionApplied = StockpileManager_UISide.OriginalFromStashkey(StockpileManager_UISide.CurrentStashkey);
 
@@ -507,7 +511,6 @@ namespace RTCV.UI
 				btnRender.Text = "Start Render";
 				btnRender.ForeColor = Color.White;
 			}
-			RefreshStashHistory();
 		}
 
 		private void rbInject_CheckedChanged(object sender, EventArgs e)

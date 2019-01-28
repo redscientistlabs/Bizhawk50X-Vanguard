@@ -3959,21 +3959,6 @@ namespace BizHawk.Client.EmuHawk
 			}
 		}
 		
-		//RTC_Hijack
-		public void Bad()
-		{
-			StopAv();
-			Global.Rewinder.Uninitialize();
-			Emulator.Dispose();
-			var coreComm = CreateCoreComm();
-			CoreFileProvider.SyncCoreCommInputSignals(coreComm);
-			Emulator = new NullEmulator(coreComm, Global.Config.GetCoreSettings<NullEmulator>());
-			Global.ActiveController = new Controller(NullController.Instance.Definition);
-			Global.AutoFireController = _autofireNullControls;
-			RewireSound();
-			RebootStatusBarIcon.Visible = false;
-		}
-
 		// whats the difference between these two methods??
 		// its very tricky. rename to be more clear or combine them.
 		// This gets called whenever a core related thing is changed.
