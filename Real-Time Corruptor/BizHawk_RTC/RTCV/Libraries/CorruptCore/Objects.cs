@@ -266,6 +266,7 @@ namespace RTCV.CorruptCore
 			return true;
 		}
 
+		//Todo - get this out of the objects
 		public static bool Load(DataGridView dgvStockpile, string Filename = null)
 		{
 			if (Filename == null)
@@ -1232,32 +1233,8 @@ namespace RTCV.CorruptCore
 				//Limiter handling
 				if (LimiterListHash != null && LimiterTime == LimiterTime.EXECUTE)
 				{
-					if (InvertLimiter)
-					{
-						/*
-						//If it's store, we need to use the sourceaddress and sourcedomain
-						if (Source == BlastUnitSource.STORE && Filtering.LimiterPeekBytes(SourceAddress,
-								SourceAddress + Precision, SourceDomain, LimiterListHash, mi))
-							return;
-						//If it's VALUE, we need to use the address and domain
-						*/
-						if (Filtering.LimiterPeekBytes(Address,
-							Address + Precision, Domain, LimiterListHash, mi))
-							return;
-					}
-					else
-					{
-						/*
-						//If it's store, we need to use the sourceaddress and sourcedomain
-						if (Source == BlastUnitSource.STORE && !Filtering.LimiterPeekBytes(SourceAddress,
-								SourceAddress + Precision, SourceDomain, LimiterListHash, mi))
-							return;
-						//If it's VALUE, we need to use the address and domain
-						*/
-						if (!Filtering.LimiterPeekBytes(Address,
-							Address + Precision, Domain, LimiterListHash, mi))
-							return;
-					}
+					if (!LimiterCheck(mi))
+						return;
 				}
 
 
@@ -1376,6 +1353,22 @@ namespace RTCV.CorruptCore
 			}
 		}
 
+		public bool LimiterCheck(MemoryInterface mi)
+		{
+			if (InvertLimiter)
+			{
+				if (Filtering.LimiterPeekBytes(Address,
+					Address + Precision, Domain, LimiterListHash, mi))
+					return false;
+			}
+			else
+			{
+				if (!Filtering.LimiterPeekBytes(Address,
+					Address + Precision, Domain, LimiterListHash, mi))
+					return false;
+			}
+			return true;
+		}
 
 		public BlastUnit GetBackup()
 		{
@@ -1477,18 +1470,8 @@ namespace RTCV.CorruptCore
 			//Limiter handling. Normal operation is to not do anything if it doesn't match the limiter. Inverted is to only continue if it doesn't match
 			if (LimiterTime == LimiterTime.PREEXECUTE)
 			{
-				if (InvertLimiter)
-				{
-					if (Filtering.LimiterPeekBytes(Address,
-						Address + Precision, Domain, LimiterListHash, mi))
-						return false;
-				}
-				else
-				{ 
-					if (!Filtering.LimiterPeekBytes(Address,
-						Address + Precision, Domain, LimiterListHash, mi))
-						return false;
-				}
+				if (!LimiterCheck(mi))
+					return false;
 			}
 
 			return true;
