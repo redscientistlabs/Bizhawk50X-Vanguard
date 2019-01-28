@@ -28,7 +28,7 @@ namespace TestVanguardImplemented
 
 		public static System.Diagnostics.Stopwatch watch = null;
 
-		public static volatile bool BIZHAWK_ALLOWED_DOUBLECLICK_FULLSCREEN = true;
+		public static volatile bool EMU_ALLOWED_DOUBLECLICK_FULLSCREEN = true;
 
 		static int CPU_STEP_Count = 0;
 
@@ -216,13 +216,13 @@ namespace TestVanguardImplemented
 				bool domainsChanged = RefreshDomains(false);
 
 				PartialSpec gameDone = new PartialSpec("VanguardSpec");
-				gameDone[VSPEC.SYSTEM.ToString()] = BIZHAWK_GET_CURRENTLYLOADEDSYSTEMNAME().ToUpper();
-				gameDone[VSPEC.GAMENAME.ToString()] = BIZHAWK_GET_FILESYSTEMGAMENAME();
-				gameDone[VSPEC.SYSTEMPREFIX.ToString()] = BIZHAWK_GET_SAVESTATEPREFIX();
-				gameDone[VSPEC.SYSTEMCORE.ToString()] = BIZHAWK_GET_SYSTEMCORENAME("");
-				gameDone[VSPEC.SYNCSETTINGS.ToString()] = BIZHAWK_GETSET_SYNCSETTINGS;
+				gameDone[VSPEC.SYSTEM.ToString()] = EMU_GET_CURRENTLYLOADEDSYSTEMNAME().ToUpper();
+				gameDone[VSPEC.GAMENAME.ToString()] = EMU_GET_FILESYSTEMGAMENAME();
+				gameDone[VSPEC.SYSTEMPREFIX.ToString()] = EMU_GET_SAVESTATEPREFIX();
+				gameDone[VSPEC.SYSTEMCORE.ToString()] = EMU_GET_SYSTEMCORENAME("");
+				gameDone[VSPEC.SYNCSETTINGS.ToString()] = EMU_GETSET_SYNCSETTINGS;
 				gameDone[VSPEC.OPENROMFILENAME.ToString()] = Program.RomFilename;
-				gameDone[VSPEC.MEMORYDOMAINS_BLACKLISTEDDOMAINS.ToString()] = VanguardCore.GetBlacklistedDomains(BIZHAWK_GET_CURRENTLYLOADEDSYSTEMNAME().ToUpper());
+				gameDone[VSPEC.MEMORYDOMAINS_BLACKLISTEDDOMAINS.ToString()] = VanguardCore.GetBlacklistedDomains(EMU_GET_CURRENTLYLOADEDSYSTEMNAME().ToUpper());
 				gameDone[VSPEC.MEMORYDOMAINS_INTERFACES.ToString()] = GetInterfaces();
 				VanguardCore.VanguardSpec.Update(gameDone);
 
@@ -332,13 +332,13 @@ namespace TestVanguardImplemented
 
 		}
 
-		public static Bitmap BIZHAWK_GET_SCREENSHOT()
+		public static Bitmap EMU_GET_SCREENSHOT()
 		{
 			return new Bitmap(0,0);
 		}
 
 
-		public static string BIZHAWK_GET_FILESYSTEMCORENAME()
+		public static string EMU_GET_FILESYSTEMCORENAME()
 		{
 			try
 			{
@@ -353,7 +353,7 @@ namespace TestVanguardImplemented
 			}
 		}
 
-		public static string BIZHAWK_GET_FILESYSTEMGAMENAME()
+		public static string EMU_GET_FILESYSTEMGAMENAME()
 		{
 			try
 			{
@@ -368,7 +368,7 @@ namespace TestVanguardImplemented
 			}
 		}
 
-		public static string BIZHAWK_GET_CURRENTLYLOADEDSYSTEMNAME()
+		public static string EMU_GET_CURRENTLYLOADEDSYSTEMNAME()
 		{
 			try
 			{
@@ -383,7 +383,7 @@ namespace TestVanguardImplemented
 			}
 		}
 
-		public static string BIZHAWK_GET_CURRENTLYOPENEDROM()
+		public static string EMU_GET_CURRENTLYOPENEDROM()
 		{
 			try
 			{
@@ -398,7 +398,7 @@ namespace TestVanguardImplemented
 			}
 		}
 
-		public static bool BIZHAWK_ISNULLEMULATORCORE()
+		public static bool EMU_ISNULLEMULATORCORE()
 		{
 			try
 			{
@@ -413,7 +413,7 @@ namespace TestVanguardImplemented
 			}
 		}
 
-		public static bool BIZHAWK_ISMAINFORMVISIBLE()
+		public static bool EMU_ISMAINFORMVISIBLE()
 		{
 			try
 			{
@@ -428,7 +428,7 @@ namespace TestVanguardImplemented
 			}
 		}
 
-		public static void BIZHAWK_LOADROM(string RomFile)
+		public static void EMU_LOADROM(string RomFile)
 		{
 			try
 			{
@@ -445,7 +445,7 @@ namespace TestVanguardImplemented
 			}
 		}
 
-		public static void BIZHAWK_OPEN_HEXEDITOR_ADDRESS(MemoryDomainProxy mdp, long address)
+		public static void EMU_OPEN_HEXEDITOR_ADDRESS(MemoryDomainProxy mdp, long address)
 		{
 			try
 			{
@@ -460,7 +460,7 @@ namespace TestVanguardImplemented
 			}
 		}
 
-		public static Size BIZHAWK_GETSET_MAINFORMSIZE
+		public static Size EMU_GETSET_MAINFORMSIZE
 		{
 			get
 			{
@@ -472,7 +472,7 @@ namespace TestVanguardImplemented
 			}
 		}
 
-		public static Point BIZHAWK_GETSET_MAINFORMLOCATION
+		public static Point EMU_GETSET_MAINFORMLOCATION
 		{
 			get
 			{
@@ -486,72 +486,72 @@ namespace TestVanguardImplemented
 		}
 
 
-		public static void BIZHAWK_STARTSOUND()
+		public static void EMU_STARTSOUND()
 		{
 			
 		}
 
-		public static void BIZHAWK_STOPSOUND()
+		public static void EMU_STOPSOUND()
 		{
 		}
 
-		public static void BIZHAWK_MAINFORM_CLOSE()
+		public static void EMU_MAINFORM_CLOSE()
 		{
 			Application.Exit();
 		}
 
-		public static void BIZHAWK_MAINFORM_FOCUS()
+		public static void EMU_MAINFORM_FOCUS()
 		{
 			
 		}
 
-		public static void BIZHAWK_MAINFORM_SAVECONFIG()
+		public static void EMU_MAINFORM_SAVECONFIG()
 		{
 
 		}
 
-		public static string BIZHAWK_GET_SAVESTATEPREFIX()
+		public static string EMU_GET_SAVESTATEPREFIX()
 		{
 			return Path.GetFileName(Program.RomFilename);
 		}
 
-		public static void BIZHAWK_LOADSTATE(string path)
+		public static void EMU_LOADSTATE(string path)
 		{
 			Console.Write(File.ReadAllLines(path));
 		}
 
-		public static void BIZHAWK_SAVESTATE(string path, string quickSlotName)
+		public static void EMU_SAVESTATE(string path, string quickSlotName)
 		{
 			File.WriteAllText(path, "SAVESTATE");
 		}
 
-		public static void BIZHAWK_OSDMESSAGE(string message)
+		public static void EMU_OSDMESSAGE(string message)
 		{
 
 		}
 
-		public static void BIZHAWK_MERGECONFIGINI(string backupConfigPath, string stockpileConfigPath)
-		{
-			
-		}
-
-		public static void BIZHAWK_IMPORTCONFIGINI(string importConfigPath, string stockpileConfigPath)
+		public static void EMU_MERGECONFIGINI(string backupConfigPath, string stockpileConfigPath)
 		{
 			
 		}
 
+		public static void EMU_IMPORTCONFIGINI(string importConfigPath, string stockpileConfigPath)
+		{
+			
+		}
 
-		public static void BIZHAWK_SET_SYSTEMCORE(string systemName, string systemCore)
+
+		public static void EMU_SET_SYSTEMCORE(string systemName, string systemCore)
 		{
 
 		}
 
-		public static string BIZHAWK_GET_SYSTEMCORENAME(string systemName)
+		public static string EMU_GET_SYSTEMCORENAME(string systemName)
 		{
 			return "DEFAULTSYSTEMNAME";
 		}
 
-		public static string BIZHAWK_GETSET_SYNCSETTINGS
+		public static string EMU_GETSET_SYNCSETTINGS
 		{
 			get
 			{
@@ -563,12 +563,12 @@ namespace TestVanguardImplemented
 			}
 		}
 
-		public static void BIZHAWK_STARTRECORDAV(string videowritername, string filename, bool unattended)
+		public static void EMU_STARTRECORDAV(string videowritername, string filename, bool unattended)
 		{
 			
 		}
 
-		public static void BIZHAWK_STOPRECORDAV()
+		public static void EMU_STOPRECORDAV()
 		{
 			
 		}

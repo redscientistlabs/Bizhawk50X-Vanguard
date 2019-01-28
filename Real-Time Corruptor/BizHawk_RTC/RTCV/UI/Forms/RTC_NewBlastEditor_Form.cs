@@ -219,10 +219,10 @@ namespace RTCV.UI
 			((ToolStripMenuItem)cms.Items.Add("Open Selected Address in Hex Editor", null, new EventHandler((ob, ev) =>
 			{
 				if (cell.OwningColumn == dgvBlastEditor.Columns[buProperty.Address.ToString()])
-					LocalNetCoreRouter.Route(NetcoreCommands.VANGUARD, NetcoreCommands.BIZHAWK_OPEN_HEXEDITOR_ADDRESS, new object[] { bu.Domain, bu.Address });
+					LocalNetCoreRouter.Route(NetcoreCommands.VANGUARD, NetcoreCommands.EMU_OPEN_HEXEDITOR_ADDRESS, new object[] { bu.Domain, bu.Address });
 
 				if (cell.OwningColumn == dgvBlastEditor.Columns[buProperty.SourceAddress.ToString()])
-					LocalNetCoreRouter.Route(NetcoreCommands.VANGUARD, NetcoreCommands.BIZHAWK_OPEN_HEXEDITOR_ADDRESS, new object[] { bu.SourceDomain, bu.SourceAddress });
+					LocalNetCoreRouter.Route(NetcoreCommands.VANGUARD, NetcoreCommands.EMU_OPEN_HEXEDITOR_ADDRESS, new object[] { bu.SourceDomain, bu.SourceAddress });
 			}))).Enabled = true;
 		}
 

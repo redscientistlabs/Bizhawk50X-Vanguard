@@ -82,15 +82,7 @@ namespace TestVanguardImplemented
 
 						});
 						break;
-					/*
-					case "POKEBYTE":
-					{
-						break;
-					}
-					case "PEEKBYTE":
-					{
-						Hooks.
-					}*/
+
 					case SAVESAVESTATE:
 						SyncObjectSingleton.FormExecute((o, ea) =>
 						{
@@ -131,7 +123,7 @@ namespace TestVanguardImplemented
 					case REMOTE_KEY_SETSYNCSETTINGS:
 						SyncObjectSingleton.FormExecute((o, ea) =>
 						{
-							Hooks.BIZHAWK_GETSET_SYNCSETTINGS = (string)advancedMessage.objectValue;
+							Hooks.EMU_GETSET_SYNCSETTINGS = (string)advancedMessage.objectValue;
 						});
 						break;
 
@@ -142,12 +134,12 @@ namespace TestVanguardImplemented
 							var systemCore = (string)cmd[1];
 							SyncObjectSingleton.FormExecute((o, ea) =>
 							{
-								Hooks.BIZHAWK_SET_SYSTEMCORE(systemName, systemCore);
+								Hooks.EMU_SET_SYSTEMCORE(systemName, systemCore);
 							});
 						}
 						break;
 
-					case BIZHAWK_OPEN_HEXEDITOR_ADDRESS:
+					case EMU_OPEN_HEXEDITOR_ADDRESS:
 						{
 							var temp = advancedMessage.objectValue as object[];
 							string domain = (string)temp[0];
@@ -158,22 +150,22 @@ namespace TestVanguardImplemented
 
 							SyncObjectSingleton.FormExecute((o, ea) =>
 							{
-								Hooks.BIZHAWK_OPEN_HEXEDITOR_ADDRESS(mdp, realAddress);
+								Hooks.EMU_OPEN_HEXEDITOR_ADDRESS(mdp, realAddress);
 							});
 
 							break;
 						}
-					case REMOTE_EVENT_BIZHAWK_MAINFORM_CLOSE:
+					case REMOTE_EVENT_EMU_MAINFORM_CLOSE:
 						SyncObjectSingleton.FormExecute((o, ea) =>
 						{
-							Hooks.BIZHAWK_MAINFORM_CLOSE();
+							Hooks.EMU_MAINFORM_CLOSE();
 						});
 						break;
 
 					case REMOTE_EVENT_SAVEBIZHAWKCONFIG:
 						SyncObjectSingleton.FormExecute((o, ea) =>
 						{
-							Hooks.BIZHAWK_MAINFORM_SAVECONFIG();
+							Hooks.EMU_MAINFORM_SAVECONFIG();
 						});
 						break;
 
@@ -181,14 +173,14 @@ namespace TestVanguardImplemented
 					case REMOTE_IMPORTKEYBINDS:
 						SyncObjectSingleton.FormExecute((o, ea) =>
 						{
-							Hooks.BIZHAWK_IMPORTCONFIGINI(CorruptCore.bizhawkDir + Path.DirectorySeparatorChar + "import_config.ini", CorruptCore.bizhawkDir + Path.DirectorySeparatorChar + "stockpile_config.ini");
+							Hooks.EMU_IMPORTCONFIGINI(CorruptCore.bizhawkDir + Path.DirectorySeparatorChar + "import_config.ini", CorruptCore.bizhawkDir + Path.DirectorySeparatorChar + "stockpile_config.ini");
 						});
 						break;
 
 					case REMOTE_MERGECONFIG:
 						SyncObjectSingleton.FormExecute((o, ea) =>
 						{
-							Hooks.BIZHAWK_MERGECONFIGINI(CorruptCore.bizhawkDir + Path.DirectorySeparatorChar + "backup_config.ini", CorruptCore.bizhawkDir + Path.DirectorySeparatorChar + "stockpile_config.ini");
+							Hooks.EMU_MERGECONFIGINI(CorruptCore.bizhawkDir + Path.DirectorySeparatorChar + "backup_config.ini", CorruptCore.bizhawkDir + Path.DirectorySeparatorChar + "stockpile_config.ini");
 						});
 						break;
 
@@ -199,31 +191,9 @@ namespace TestVanguardImplemented
 						});
 						break;
 
-					case REMOTE_EVENT_BIZHAWKSTARTED:
-						//if (RTC_StockpileManager.BackupedState == null)
-						//S.GET<RTC_Core_Form>().AutoCorrupt = false;
-
-
-						//Todo
-						//RTC_NetcoreImplementation.SendCommandToBizhawk(new RTC_Command("REMOTE_PUSHVMDS) { objectValue = MemoryDomains.VmdPool.Values.Select(it => (it as VirtualMemoryDomain).Proto).ToArray() }, true, true);
-
-						//Thread.Sleep(100);
-
-						//		if (RTC_StockpileManager.BackupedState != null)
-						//			S.GET<RTC_MemoryDomains_Form>().RefreshDomainsAndKeepSelected(RTC_StockpileManager.BackupedState.SelectedDomains.ToArray());
-
-						//		if (S.GET<RTC_Core_Form>().cbUseGameProtection.Checked)
-						//			RTC_GameProtection.Start();
-
-						break;
 					case REMOTE_ISNORMALADVANCE:
 						e.setReturnValue(Hooks.isNormalAdvance);
 						break;
-
-
-
-
-
 				}
 			}
 			catch (Exception ex)

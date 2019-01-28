@@ -153,7 +153,7 @@ namespace Vanguard
 						}
 						break;
 
-					case BIZHAWK_OPEN_HEXEDITOR_ADDRESS:
+					case EMU_OPEN_HEXEDITOR_ADDRESS:
 						{
 							var temp = advancedMessage.objectValue as object[];
 							string domain = (string)temp[0];
@@ -169,7 +169,7 @@ namespace Vanguard
 
 							break;
 						}
-					case REMOTE_EVENT_BIZHAWK_MAINFORM_CLOSE:
+					case REMOTE_EVENT_EMU_MAINFORM_CLOSE:
 						SyncObjectSingleton.FormExecute((o, ea) =>
 						{
 							Hooks.BIZHAWK_MAINFORM_CLOSE();
@@ -219,7 +219,7 @@ namespace Vanguard
 						});
 						break;
 
-					case REMOTE_EVENT_BIZHAWKSTARTED:
+					case REMOTE_EVENT_EMUSTARTED:
 						//if (RTC_StockpileManager.BackupedState == null)
 						//S.GET<RTC_Core_Form>().AutoCorrupt = false;
 

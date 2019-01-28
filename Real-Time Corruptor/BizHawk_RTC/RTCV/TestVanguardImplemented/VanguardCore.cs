@@ -170,11 +170,11 @@ namespace TestVanguardImplemented
 			CorruptCore.StartEmuSide();
 
 			//Refocus on Bizhawk
-			Hooks.BIZHAWK_MAINFORM_FOCUS();
+			Hooks.EMU_MAINFORM_FOCUS();
 
 			//Force create bizhawk config file if it doesn't exist
 			if (!File.Exists(CorruptCore.bizhawkDir + Path.DirectorySeparatorChar + "config.ini"))
-				Hooks.BIZHAWK_MAINFORM_SAVECONFIG();
+				Hooks.EMU_MAINFORM_SAVECONFIG();
 
 			//If it's attached, lie to vanguard
 			if (VanguardCore.attached)
@@ -184,12 +184,12 @@ namespace TestVanguardImplemented
 
 		public static void StartSound()
 		{
-			Hooks.BIZHAWK_STARTSOUND();
+			Hooks.EMU_STARTSOUND();
 		}
 
 		public static void StopSound()
 		{
-			Hooks.BIZHAWK_STOPSOUND();
+			Hooks.EMU_STOPSOUND();
 		}
 
 
@@ -238,12 +238,12 @@ namespace TestVanguardImplemented
 			StopSound();
 
 			if (RomFile == null)
-				RomFile = Hooks.BIZHAWK_GET_CURRENTLYOPENEDROM(); ;
+				RomFile = Hooks.EMU_GET_CURRENTLYOPENEDROM(); ;
 
 
 			//Stop capturing rewind while we load
 			Hooks.AllowCaptureRewindState = false;
-			Hooks.BIZHAWK_LOADROM(RomFile);
+			Hooks.EMU_LOADROM(RomFile);
 			Hooks.AllowCaptureRewindState = true;
 
 			StartSound();
@@ -261,14 +261,14 @@ namespace TestVanguardImplemented
 		public static string SaveSavestate_NET(string Key, bool threadSave = false)
 		{
 			//Don't state if we don't have a core
-			if (Hooks.BIZHAWK_ISNULLEMULATORCORE())
+			if (Hooks.EMU_ISNULLEMULATORCORE())
 				return null;
 
 			//Build the shortname
 			string quickSlotName = Key + ".timejump";
 
 			//Get the prefix for the state
-			string prefix = Hooks.BIZHAWK_GET_SAVESTATEPREFIX();
+			string prefix = Hooks.EMU_GET_SAVESTATEPREFIX();
 			prefix = prefix.Substring(prefix.LastIndexOf('\\') + 1);
 
 			//Build up our path
@@ -286,7 +286,7 @@ namespace TestVanguardImplemented
 				{
 					try
 					{
-						Hooks.BIZHAWK_SAVESTATE(path, quickSlotName);
+						Hooks.EMU_SAVESTATE(path, quickSlotName);
 					}
 					catch (Exception ex)
 					{
@@ -295,7 +295,7 @@ namespace TestVanguardImplemented
 				})).Start();
 			}
 			else
-				Hooks.BIZHAWK_SAVESTATE(path, quickSlotName); //savestate
+				Hooks.EMU_SAVESTATE(path, quickSlotName); //savestate
 
 			return path;
 		}
@@ -311,17 +311,17 @@ namespace TestVanguardImplemented
 			try
 			{
 				//If we don't have a core just exit out
-				if (Hooks.BIZHAWK_ISNULLEMULATORCORE())
+				if (Hooks.EMU_ISNULLEMULATORCORE())
 					return false;
 
 				//If we can't find the file, throw a message
 				if (File.Exists(path) == false)
 				{
-					Hooks.BIZHAWK_OSDMESSAGE("Unable to load " + Path.GetFileName(path) + " from " + stateLocation);
+					Hooks.EMU_OSDMESSAGE("Unable to load " + Path.GetFileName(path) + " from " + stateLocation);
 					return false;
 				}
 
-				Hooks.BIZHAWK_LOADSTATE(path);
+				Hooks.EMU_LOADSTATE(path);
 
 				return true;
 			}
@@ -337,12 +337,12 @@ namespace TestVanguardImplemented
 		/// </summary>
 		public static void LoadBizhawkWindowState()
 		{
-			if (RTCV.NetCore.Params.IsParamSet("BIZHAWK_SIZE"))
+			if (RTCV.NetCore.Params.IsParamSet("EMU_SIZE"))
 			{
-				string[] size = RTCV.NetCore.Params.ReadParam("BIZHAWK_SIZE").Split(',');
-				Hooks.BIZHAWK_GETSET_MAINFORMSIZE = new Size(Convert.ToInt32(size[0]), Convert.ToInt32(size[1]));
-				string[] location = RTCV.NetCore.Params.ReadParam("BIZHAWK_LOCATION").Split(',');
-				Hooks.BIZHAWK_GETSET_MAINFORMLOCATION = new Point(Convert.ToInt32(location[0]), Convert.ToInt32(location[1]));
+				string[] size = RTCV.NetCore.Params.ReadParam("EMU_SIZE").Split(',');
+				Hooks.EMU_GETSET_MAINFORMSIZE = new Size(Convert.ToInt32(size[0]), Convert.ToInt32(size[1]));
+				string[] location = RTCV.NetCore.Params.ReadParam("EMU_LOCATION").Split(',');
+				Hooks.EMU_GETSET_MAINFORMLOCATION = new Point(Convert.ToInt32(location[0]), Convert.ToInt32(location[1]));
 			}
 		}
 		/// <summary>
@@ -350,11 +350,11 @@ namespace TestVanguardImplemented
 		/// </summary>
 		public static void SaveBizhawkWindowState()
 		{
-			var size = Hooks.BIZHAWK_GETSET_MAINFORMSIZE;
-			var location = Hooks.BIZHAWK_GETSET_MAINFORMLOCATION;
+			var size = Hooks.EMU_GETSET_MAINFORMSIZE;
+			var location = Hooks.EMU_GETSET_MAINFORMLOCATION;
 
-			RTCV.NetCore.Params.SetParam("BIZHAWK_SIZE", $"{size.Width},{size.Height}");
-			RTCV.NetCore.Params.SetParam("BIZHAWK_LOCATION", $"{location.X},{location.Y}");
+			RTCV.NetCore.Params.SetParam("EMU_SIZE", $"{size.Width},{size.Height}");
+			RTCV.NetCore.Params.SetParam("EMU_LOCATION", $"{location.X},{location.Y}");
 		}
 
 		/// <summary>
