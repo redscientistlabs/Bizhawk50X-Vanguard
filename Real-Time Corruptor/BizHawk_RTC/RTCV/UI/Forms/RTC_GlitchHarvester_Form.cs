@@ -28,7 +28,7 @@ namespace RTCV.UI
 		public Label lbConnectionStatus = new Label();
 		public Button btnEmergencySaveStockpile = new Button();
 
-		public bool UnsavedEdits = false;
+		public bool UnsavedEdits { get; set; }
 
 		Dictionary<string, TextBox> StateBoxes = new Dictionary<string, TextBox>();
 
@@ -739,6 +739,7 @@ namespace RTCV.UI
 			if (Stockpile.Save(sks, true))
 				sendCurrentStockpileToSKS();
 
+			UnsavedEdits = false;
 		}
 
 		public void btnBlastToggle_Click(object sender, EventArgs e)
