@@ -816,7 +816,10 @@ namespace RTCV.CorruptCore
 						"One of the BlastUnits in the BlastLayer failed to Apply().\n\n" +
 						"The operation was cancelled");
 				}
-				StepActions.FilterBuListCollection();
+
+				//Only filter if there are actually enabled units
+				if (Layer.Any(x => x.IsEnabled))
+					StepActions.FilterBuListCollection();
 			}
 			catch (Exception ex)
 			{

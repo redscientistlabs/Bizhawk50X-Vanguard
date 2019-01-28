@@ -135,10 +135,6 @@ namespace RTCV.CorruptCore
 		//TODO OPTIMIZE THIS TO INSERT RATHER THAN REBUILD
 		public static void FilterBuListCollection()
 		{
-			//If there's nothing queued just exit out
-			if (queued.Count == 0)
-				return;
-
 			//Build up our list of buLists
 			foreach (List<BlastUnit> buList in queued)
 				buListCollection.Add(buList);
