@@ -111,13 +111,14 @@ namespace RTCV.CorruptCore
 
 		public static string LimiterListHash
 		{
-			get => (string)RTCV.NetCore.AllSpec.CorruptCoreSpec[RTCSPEC.CUSTOM_LIMITERLISTHASH.ToString()];
+			//Intentionally nullable cast
+			get => RTCV.NetCore.AllSpec.CorruptCoreSpec[RTCSPEC.CUSTOM_LIMITERLISTHASH.ToString()] as string;
 			set => RTCV.NetCore.AllSpec.CorruptCoreSpec.Update(RTCSPEC.CUSTOM_LIMITERLISTHASH.ToString(), value);
 		}
-
 		public static string ValueListHash
 		{
-			get => (string)RTCV.NetCore.AllSpec.CorruptCoreSpec[RTCSPEC.CUSTOM_VALUELISTHASH.ToString()];
+			//Intentionally nullable cast
+			get => RTCV.NetCore.AllSpec.CorruptCoreSpec[RTCSPEC.CUSTOM_VALUELISTHASH.ToString()] as string;
 			set => RTCV.NetCore.AllSpec.CorruptCoreSpec.Update(RTCSPEC.CUSTOM_VALUELISTHASH.ToString(), value);
 		}
 
@@ -223,13 +224,14 @@ namespace RTCV.CorruptCore
 				bu.LimiterTime = LimiterTime;
 				bu.Loop = Loop;
 				bu.InvertLimiter = LimiterInverted;
+				bu.TiltValue = TiltValue;
 
 				//Only set a list if it's used to save on memory
 				if (LimiterTime != LimiterTime.NONE)
 					bu.LimiterListHash = LimiterListHash;
 
 				//Limiter handling
-				if (LimiterTime == LimiterTime.IMMEDIATE)
+				if (LimiterTime == LimiterTime.GENERATE)
 				{
 					if (!bu.LimiterCheck(mi))
 						return null;
@@ -279,6 +281,8 @@ namespace RTCV.CorruptCore
 				.ToArray();
 		}
 
+		//Don't set a Limiter or Value list hash in any of these. We just leave it on whatever is currently set and set that it shouldn't be used.
+		//This is because we need to be able to have the UI select some item (the comboboxes don't have an "empty" state)
 		public static void InitTemplate_NightmareEngine(PartialSpec pSpec)
 		{
 
@@ -288,13 +292,10 @@ namespace RTCV.CorruptCore
 			pSpec[RTCSPEC.CUSTOM_LIFETIME.ToString()] = 1;
 			pSpec[RTCSPEC.CUSTOM_LOOP.ToString()] = false;
 
-			pSpec[RTCSPEC.CUSTOM_TILTVALUE.ToString()] = 1;
+			pSpec[RTCSPEC.CUSTOM_TILTVALUE.ToString()] = new BigInteger(0);
 
-			pSpec[RTCSPEC.CUSTOM_LIMITERLISTHASH.ToString()] = null;
 			pSpec[RTCSPEC.CUSTOM_LIMITERTIME.ToString()] = LimiterTime.NONE;
 			pSpec[RTCSPEC.CUSTOM_LIMITERINVERTED.ToString()] = false;
-
-			pSpec[RTCSPEC.CUSTOM_VALUELISTHASH.ToString()] = null;
 
 			pSpec[RTCSPEC.CUSTOM_MINVALUE8BIT.ToString()] = 0L;
 			pSpec[RTCSPEC.CUSTOM_MINVALUE16BIT.ToString()] = 0L;
@@ -318,16 +319,14 @@ namespace RTCV.CorruptCore
 			pSpec[RTCSPEC.CUSTOM_NAME.ToString()] = "Hellgenie Engine";
 
 			pSpec[RTCSPEC.CUSTOM_DELAY.ToString()] = 0;
-			pSpec[RTCSPEC.CUSTOM_LIFETIME.ToString()] = 1;
+			pSpec[RTCSPEC.CUSTOM_LIFETIME.ToString()] = 0;
 			pSpec[RTCSPEC.CUSTOM_LOOP.ToString()] = false;
 
-			pSpec[RTCSPEC.CUSTOM_TILTVALUE.ToString()] = 1;
+			pSpec[RTCSPEC.CUSTOM_TILTVALUE.ToString()] = new BigInteger(0);
 
-			pSpec[RTCSPEC.CUSTOM_LIMITERLISTHASH.ToString()] = null;
 			pSpec[RTCSPEC.CUSTOM_LIMITERTIME.ToString()] = LimiterTime.NONE;
 			pSpec[RTCSPEC.CUSTOM_LIMITERINVERTED.ToString()] = false;
 
-			pSpec[RTCSPEC.CUSTOM_VALUELISTHASH.ToString()] = null;
 
 			pSpec[RTCSPEC.CUSTOM_MINVALUE8BIT.ToString()] = 0L;
 			pSpec[RTCSPEC.CUSTOM_MINVALUE16BIT.ToString()] = 0L;
@@ -350,17 +349,15 @@ namespace RTCV.CorruptCore
 		{
 			pSpec[RTCSPEC.CUSTOM_NAME.ToString()] = "Distortion Engine";
 
-			pSpec[RTCSPEC.CUSTOM_DELAY.ToString()] = 0;
+			pSpec[RTCSPEC.CUSTOM_DELAY.ToString()] = 50;
 			pSpec[RTCSPEC.CUSTOM_LIFETIME.ToString()] = 1;
 			pSpec[RTCSPEC.CUSTOM_LOOP.ToString()] = false;
 
-			pSpec[RTCSPEC.CUSTOM_TILTVALUE.ToString()] = 1;
+			pSpec[RTCSPEC.CUSTOM_TILTVALUE.ToString()] = new BigInteger(0);
 
-			pSpec[RTCSPEC.CUSTOM_LIMITERLISTHASH.ToString()] = null;
 			pSpec[RTCSPEC.CUSTOM_LIMITERTIME.ToString()] = LimiterTime.NONE;
 			pSpec[RTCSPEC.CUSTOM_LIMITERINVERTED.ToString()] = false;
 
-			pSpec[RTCSPEC.CUSTOM_VALUELISTHASH.ToString()] = null;
 
 			pSpec[RTCSPEC.CUSTOM_MINVALUE8BIT.ToString()] = 0L;
 			pSpec[RTCSPEC.CUSTOM_MINVALUE16BIT.ToString()] = 0L;
@@ -371,9 +368,9 @@ namespace RTCV.CorruptCore
 
 			pSpec[RTCSPEC.CUSTOM_VALUESOURCE.ToString()] = CustomValueSource.RANDOM;
 
-			pSpec[RTCSPEC.CUSTOM_SOURCE.ToString()] = BlastUnitSource.VALUE;
+			pSpec[RTCSPEC.CUSTOM_SOURCE.ToString()] = BlastUnitSource.STORE;
 
-			pSpec[RTCSPEC.CUSTOM_STOREADDRESS.ToString()] = CustomStoreAddress.RANDOM;
+			pSpec[RTCSPEC.CUSTOM_STOREADDRESS.ToString()] = CustomStoreAddress.SAME;
 			pSpec[RTCSPEC.CUSTOM_STORETIME.ToString()] = StoreTime.IMMEDIATE;
 			pSpec[RTCSPEC.CUSTOM_STORETYPE.ToString()] = StoreType.ONCE;
 
@@ -384,16 +381,14 @@ namespace RTCV.CorruptCore
 			pSpec[RTCSPEC.CUSTOM_NAME.ToString()] = "Freeze Engine";
 
 			pSpec[RTCSPEC.CUSTOM_DELAY.ToString()] = 0;
-			pSpec[RTCSPEC.CUSTOM_LIFETIME.ToString()] = 1;
+			pSpec[RTCSPEC.CUSTOM_LIFETIME.ToString()] = 0;
 			pSpec[RTCSPEC.CUSTOM_LOOP.ToString()] = false;
 
-			pSpec[RTCSPEC.CUSTOM_TILTVALUE.ToString()] = 1;
+			pSpec[RTCSPEC.CUSTOM_TILTVALUE.ToString()] = new BigInteger(0);
 
-			pSpec[RTCSPEC.CUSTOM_LIMITERLISTHASH.ToString()] = null;
 			pSpec[RTCSPEC.CUSTOM_LIMITERTIME.ToString()] = LimiterTime.NONE;
 			pSpec[RTCSPEC.CUSTOM_LIMITERINVERTED.ToString()] = false;
 
-			pSpec[RTCSPEC.CUSTOM_VALUELISTHASH.ToString()] = null;
 
 			pSpec[RTCSPEC.CUSTOM_MINVALUE8BIT.ToString()] = 0L;
 			pSpec[RTCSPEC.CUSTOM_MINVALUE16BIT.ToString()] = 0L;
@@ -404,10 +399,10 @@ namespace RTCV.CorruptCore
 
 			pSpec[RTCSPEC.CUSTOM_VALUESOURCE.ToString()] = CustomValueSource.RANDOM;
 
-			pSpec[RTCSPEC.CUSTOM_SOURCE.ToString()] = BlastUnitSource.VALUE;
+			pSpec[RTCSPEC.CUSTOM_SOURCE.ToString()] = BlastUnitSource.STORE;
 
-			pSpec[RTCSPEC.CUSTOM_STOREADDRESS.ToString()] = CustomStoreAddress.RANDOM;
-			pSpec[RTCSPEC.CUSTOM_STORETIME.ToString()] = StoreTime.IMMEDIATE;
+			pSpec[RTCSPEC.CUSTOM_STOREADDRESS.ToString()] = CustomStoreAddress.SAME;
+			pSpec[RTCSPEC.CUSTOM_STORETIME.ToString()] = StoreTime.PREEXECUTE;
 			pSpec[RTCSPEC.CUSTOM_STORETYPE.ToString()] = StoreType.ONCE;
 
 			lastLoadedTemplate = (PartialSpec)pSpec.Clone();
@@ -417,16 +412,14 @@ namespace RTCV.CorruptCore
 			pSpec[RTCSPEC.CUSTOM_NAME.ToString()] = "Pipe Engine";
 
 			pSpec[RTCSPEC.CUSTOM_DELAY.ToString()] = 0;
-			pSpec[RTCSPEC.CUSTOM_LIFETIME.ToString()] = 1;
+			pSpec[RTCSPEC.CUSTOM_LIFETIME.ToString()] = 0;
 			pSpec[RTCSPEC.CUSTOM_LOOP.ToString()] = false;
 
-			pSpec[RTCSPEC.CUSTOM_TILTVALUE.ToString()] = 1;
+			pSpec[RTCSPEC.CUSTOM_TILTVALUE.ToString()] = new BigInteger(0);
 
-			pSpec[RTCSPEC.CUSTOM_LIMITERLISTHASH.ToString()] = null;
 			pSpec[RTCSPEC.CUSTOM_LIMITERTIME.ToString()] = LimiterTime.NONE;
 			pSpec[RTCSPEC.CUSTOM_LIMITERINVERTED.ToString()] = false;
 
-			pSpec[RTCSPEC.CUSTOM_VALUELISTHASH.ToString()] = null;
 
 			pSpec[RTCSPEC.CUSTOM_MINVALUE8BIT.ToString()] = 0L;
 			pSpec[RTCSPEC.CUSTOM_MINVALUE16BIT.ToString()] = 0L;
@@ -437,11 +430,11 @@ namespace RTCV.CorruptCore
 
 			pSpec[RTCSPEC.CUSTOM_VALUESOURCE.ToString()] = CustomValueSource.RANDOM;
 
-			pSpec[RTCSPEC.CUSTOM_SOURCE.ToString()] = BlastUnitSource.VALUE;
+			pSpec[RTCSPEC.CUSTOM_SOURCE.ToString()] = BlastUnitSource.STORE;
 
 			pSpec[RTCSPEC.CUSTOM_STOREADDRESS.ToString()] = CustomStoreAddress.RANDOM;
-			pSpec[RTCSPEC.CUSTOM_STORETIME.ToString()] = StoreTime.IMMEDIATE;
-			pSpec[RTCSPEC.CUSTOM_STORETYPE.ToString()] = StoreType.ONCE;
+			pSpec[RTCSPEC.CUSTOM_STORETIME.ToString()] = StoreTime.PREEXECUTE;
+			pSpec[RTCSPEC.CUSTOM_STORETYPE.ToString()] = StoreType.CONTINUOUS;
 
 			lastLoadedTemplate = (PartialSpec)pSpec.Clone();
 		}
@@ -453,13 +446,11 @@ namespace RTCV.CorruptCore
 			pSpec[RTCSPEC.CUSTOM_LIFETIME.ToString()] = 1;
 			pSpec[RTCSPEC.CUSTOM_LOOP.ToString()] = false;
 
-			pSpec[RTCSPEC.CUSTOM_TILTVALUE.ToString()] = 1;
+			pSpec[RTCSPEC.CUSTOM_TILTVALUE.ToString()] = new BigInteger(0);
 
-			pSpec[RTCSPEC.CUSTOM_LIMITERLISTHASH.ToString()] = null;
-			pSpec[RTCSPEC.CUSTOM_LIMITERTIME.ToString()] = LimiterTime.NONE;
+			pSpec[RTCSPEC.CUSTOM_LIMITERTIME.ToString()] = LimiterTime.GENERATE;
 			pSpec[RTCSPEC.CUSTOM_LIMITERINVERTED.ToString()] = false;
 
-			pSpec[RTCSPEC.CUSTOM_VALUELISTHASH.ToString()] = null;
 
 			pSpec[RTCSPEC.CUSTOM_MINVALUE8BIT.ToString()] = 0L;
 			pSpec[RTCSPEC.CUSTOM_MINVALUE16BIT.ToString()] = 0L;
@@ -468,7 +459,7 @@ namespace RTCV.CorruptCore
 			pSpec[RTCSPEC.CUSTOM_MAXVALUE16BIT.ToString()] = 0xFFFFL;
 			pSpec[RTCSPEC.CUSTOM_MAXVALUE32BIT.ToString()] = 0xFFFFFFFFL;
 
-			pSpec[RTCSPEC.CUSTOM_VALUESOURCE.ToString()] = CustomValueSource.RANDOM;
+			pSpec[RTCSPEC.CUSTOM_VALUESOURCE.ToString()] = CustomValueSource.VALUELIST;
 
 			pSpec[RTCSPEC.CUSTOM_SOURCE.ToString()] = BlastUnitSource.VALUE;
 

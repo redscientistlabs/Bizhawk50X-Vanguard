@@ -20,6 +20,7 @@ namespace RTCV.UI
 	{
 
 		private bool updatingMinMax = false;
+		private bool dontUpdateSpec = false;
 
 		public RTC_CustomEngineConfig_Form()
 		{
@@ -61,6 +62,9 @@ namespace RTCV.UI
 
 		private void nmMaxInfinite_ValueChanged(object sender, EventArgs e)
 		{
+			if (dontUpdateSpec)
+				return;
+
 			StepActions.MaxInfiniteBlastUnits = Convert.ToInt32(nmMaxInfinite.Value);
 		}
 
@@ -68,6 +72,8 @@ namespace RTCV.UI
 		//The switch statements required more lines and were harder to read.
 		private void unitSource_CheckedChanged(object sender, EventArgs e)
 		{
+			if (dontUpdateSpec)
+				return;
 
 			if (rbUnitSourceStore.Checked)
 				RTC_CustomEngine.Source = BlastUnitSource.STORE;
@@ -78,6 +84,8 @@ namespace RTCV.UI
 
 		private void valueSource_CheckedChanged(object sender, EventArgs e)
 		{
+			if (dontUpdateSpec)
+				return;
 			if (rbRandom.Checked)
 				RTC_CustomEngine.ValueSource = CustomValueSource.RANDOM;
 
@@ -91,6 +99,9 @@ namespace RTCV.UI
 
 		private void storeTime_CheckedChanged(object sender, EventArgs e)
 		{
+			if (dontUpdateSpec)
+				return;
+
 			if (rbStoreImmediate.Checked)
 				RTC_CustomEngine.StoreTime = StoreTime.IMMEDIATE;
 
@@ -100,6 +111,9 @@ namespace RTCV.UI
 		
 		private void storeAddress_CheckedChanged(object sender, EventArgs e)
 		{
+			if (dontUpdateSpec)
+				return;
+
 			if (rbStoreRandom.Checked)
 				RTC_CustomEngine.StoreAddress = CustomStoreAddress.RANDOM;
 
@@ -110,6 +124,9 @@ namespace RTCV.UI
 
 		private void storeType_CheckedChanged(object sender, EventArgs e)
 		{
+			if (dontUpdateSpec)
+				return;
+
 			if (rbStoreOnce.Checked)
 				RTC_CustomEngine.StoreType = StoreType.ONCE;
 
@@ -121,6 +138,9 @@ namespace RTCV.UI
 
 		private void nmMinValue_ValueChanged(object sender, EventArgs e)
 		{
+			if (dontUpdateSpec)
+				return;
+
 			//We don't want to trigger this if it caps when stepping downwards
 			if (updatingMinMax)
 				return;
@@ -142,6 +162,9 @@ namespace RTCV.UI
 
 		private void nmMaxValue_ValueChanged(object sender, EventArgs e)
 		{
+			if (dontUpdateSpec)
+				return;
+
 			//We don't want to trigger this if it caps when stepping downwards
 			if (updatingMinMax)
 				return;
@@ -165,34 +188,52 @@ namespace RTCV.UI
 
 		private void cbLockUnits_CheckedChanged(object sender, EventArgs e)
 		{
+			if (dontUpdateSpec)
+				return;
+
 			StepActions.LockExecution = cbLockUnits.Checked;
 		}
 
 		private void cbClearRewind_CheckedChanged(object sender, EventArgs e)
 		{
+			if (dontUpdateSpec)
+				return;
+
 			StepActions.ClearStepActionsOnRewind = cbClearRewind.Checked;
 		}
 
 		private void cbLoopUnit_CheckedChanged(object sender, EventArgs e)
 		{
+			if (dontUpdateSpec)
+				return;
+
 			RTC_CustomEngine.Loop = cbLoopUnit.Checked;
 		}
 
 		private void cbValueList_SelectedIndexChanged(object sender, EventArgs e)
 		{
+			if (dontUpdateSpec)
+				return;
+
 			RTC_CustomEngine.ValueListHash = (string)cbValueList.SelectedValue;
 		}
 		private void cbLimiterList_SelectedIndexChanged(object sender, EventArgs e)
 		{
+			if (dontUpdateSpec)
+				return;
+
 			RTC_CustomEngine.LimiterListHash = (string)cbLimiterList.SelectedValue;
 		}
 		private void limiterTime_CheckedChanged(object sender, EventArgs e)
 		{
+			if (dontUpdateSpec)
+				return;
+
 			if (rbLimiterNone.Checked)
 				RTC_CustomEngine.LimiterTime = LimiterTime.NONE;
 
 			else if (rbLimiterGenerate.Checked)
-				RTC_CustomEngine.LimiterTime = LimiterTime.IMMEDIATE;
+				RTC_CustomEngine.LimiterTime = LimiterTime.GENERATE;
 
 			else if (rbLimiterFirstExecute.Checked)
 				RTC_CustomEngine.LimiterTime = LimiterTime.PREEXECUTE;
@@ -208,21 +249,32 @@ namespace RTCV.UI
 
 		private void nmLifetime_ValueChanged(object sender, EventArgs e)
 		{
+			if (dontUpdateSpec)
+				return;
+
 			RTC_CustomEngine.Lifetime = Convert.ToInt32(nmLifetime.Value);
 		}
 
 		private void nmDelay_ValueChanged(object sender, EventArgs e)
 		{
+			if (dontUpdateSpec)
+				return;
+
 			RTC_CustomEngine.Delay = Convert.ToInt32(nmDelay.Value);
 		}
 
 		private void nmTilt_ValueChanged(object sender, EventArgs e)
 		{
+			if (dontUpdateSpec)
+				return;
+
 			RTC_CustomEngine.TiltValue = (BigInteger)nmTilt.Value;
 		}
 
 		public void UpdateMinMaxBoxes(int precision)
 		{
+			if (dontUpdateSpec)
+				return;
 			updatingMinMax = true;
 			switch (precision)
 			{
@@ -255,6 +307,8 @@ namespace RTCV.UI
 
 		private void cbLimiterInverted_CheckedChanged(object sender, EventArgs e)
 		{
+			if (dontUpdateSpec)
+				return;
 			RTC_CustomEngine.LimiterInverted = cbLimiterInverted.Checked;
 		}
 
@@ -262,6 +316,7 @@ namespace RTCV.UI
 		{
 			PartialSpec spec = (PartialSpec)RTC_CustomEngine.lastLoadedTemplate.Clone();
 			RTCV.NetCore.AllSpec.CorruptCoreSpec.Update(spec);
+			RestoreUIStateFromSpec();
 			Refresh();
 		}
 
@@ -304,6 +359,7 @@ namespace RTCV.UI
 			}
 
 			RTCV.NetCore.AllSpec.CorruptCoreSpec.Update(spec);
+			RestoreUIStateFromSpec();
 			Refresh();
 
 		}
@@ -348,9 +404,127 @@ namespace RTCV.UI
 			cbSelectedTemplate.Text = TemplateName;
 		}
 
+		
 		private void RestoreUIStateFromSpec()
 		{
+			dontUpdateSpec = true;
 
+			switch (RTC_CustomEngine.Source)
+			{
+				case (BlastUnitSource.STORE):
+					rbUnitSourceStore.Checked = true;
+					break;
+				case (BlastUnitSource.VALUE):
+					rbUnitSourceValue.Checked = true;
+					break;
+			}
+
+			switch (RTC_CustomEngine.ValueSource)
+			{
+				case (CustomValueSource.RANDOM):
+					rbRandom.Checked = true;
+					break;
+				case (CustomValueSource.VALUELIST):
+					rbValueList.Checked = true;
+					break;
+				case (CustomValueSource.RANGE):
+					rbRange.Checked = true;
+					break;
+			}
+
+			switch (RTC_CustomEngine.StoreTime)
+			{
+				case (StoreTime.IMMEDIATE):
+					rbStoreImmediate.Checked = true;
+					break;
+				case (StoreTime.PREEXECUTE):
+					rbStoreFirstExecute.Checked = true;
+					break;
+			}
+
+			switch (RTC_CustomEngine.StoreAddress)
+			{
+				case (CustomStoreAddress.RANDOM):
+					rbStoreRandom.Checked = true;
+					break;
+				case (CustomStoreAddress.SAME):
+					rbStoreSame.Checked = true;
+					break;
+			}
+
+			switch (RTC_CustomEngine.StoreType)
+			{
+				case (StoreType.ONCE):
+					rbStoreOnce.Checked = true;
+					break;
+				case (StoreType.CONTINUOUS):
+					rbStoreStep.Checked = true;
+					break;
+			}
+
+			switch (RTC_CustomEngine.LimiterTime)
+			{
+				case (LimiterTime.NONE):
+					rbLimiterNone.Checked = true;
+					break;
+				case (LimiterTime.GENERATE):
+					rbLimiterGenerate.Checked = true;
+					break;
+				case (LimiterTime.PREEXECUTE):
+					rbLimiterFirstExecute.Checked = true;
+					break;
+				case (LimiterTime.EXECUTE):
+					rbLimiterExecute.Checked = true;
+					break;
+
+			}
+
+
+			
+			cbLockUnits.Checked = StepActions.LockExecution;
+			cbClearRewind.Checked = StepActions.ClearStepActionsOnRewind;
+
+			cbLoopUnit.Checked = RTC_CustomEngine.Loop;
+			cbLimiterInverted.Checked = RTC_CustomEngine.LimiterInverted;
+
+			cbValueList.SelectedValue = RTC_CustomEngine.ValueListHash;
+			cbLimiterList.SelectedValue = RTC_CustomEngine.LimiterListHash;
+
+
+			if (RTC_CustomEngine.TiltValue > (BigInteger)decimal.MaxValue)
+				RTC_CustomEngine.TiltValue = (BigInteger)decimal.MaxValue;
+			nmTilt.Value = (Decimal)RTC_CustomEngine.TiltValue;
+			nmDelay.Value = RTC_CustomEngine.Delay;
+			nmLifetime.Value = RTC_CustomEngine.Lifetime;
+
+
+			switch (CorruptCore.CorruptCore.CurrentPrecision)
+			{
+				case 1:
+					nmMinValue.Value = RTC_CustomEngine.MinValue8Bit;
+					break;								
+				case 2:									
+					nmMinValue.Value = RTC_CustomEngine.MinValue16Bit;
+					break;								
+				case 4:									
+					nmMinValue.Value = RTC_CustomEngine.MinValue32Bit;
+					break;
+			}
+
+			switch (CorruptCore.CorruptCore.CurrentPrecision)
+			{
+				case 1:
+					nmMaxValue.Value = RTC_CustomEngine.MaxValue8Bit;
+					break;
+				case 2:
+					nmMaxValue.Value = RTC_CustomEngine.MaxValue16Bit;
+					break;
+				case 4:
+					nmMaxValue.Value = RTC_CustomEngine.MaxValue32Bit;
+					break;
+			}
+
+			dontUpdateSpec = false;
 		}
 	}
 }

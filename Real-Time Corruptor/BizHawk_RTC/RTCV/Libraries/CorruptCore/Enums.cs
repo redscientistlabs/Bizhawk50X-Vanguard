@@ -25,7 +25,7 @@
 	public enum LimiterTime
 	{
 		NONE,       //For when something will never happen
-		IMMEDIATE,  //Frame 0 for the blastunit. 
+		GENERATE,  //Generate
 		PREEXECUTE, //For when you want it to happen right before the first step
 		EXECUTE     //For when you want it to happen every step
 	}
