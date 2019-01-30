@@ -49,7 +49,7 @@
             // nmControlValue
             // 
             this.nmControlValue.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.nmControlValue.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(32)))), ((int)(((byte)(32)))), ((int)(((byte)(32)))));
+            this.nmControlValue.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
             this.nmControlValue.Font = new System.Drawing.Font("Segoe UI", 8F);
             this.nmControlValue.ForeColor = System.Drawing.Color.White;
             this.nmControlValue.Location = new System.Drawing.Point(134, 5);
@@ -58,20 +58,10 @@
             2147483647,
             0,
             0});
-            this.nmControlValue.Minimum = new decimal(new int[] {
-            1,
-            0,
-            0,
-            0});
             this.nmControlValue.Name = "nmControlValue";
             this.nmControlValue.Size = new System.Drawing.Size(81, 22);
             this.nmControlValue.TabIndex = 2;
-            this.nmControlValue.Tag = "color:darker";
-            this.nmControlValue.Value = new decimal(new int[] {
-            1,
-            0,
-            0,
-            0});
+            this.nmControlValue.Tag = "color:dark";
             this.nmControlValue.ValueChanged += new System.EventHandler(this.nmControlValue_ValueChanged);
             // 
             // tbControlValue
@@ -80,27 +70,25 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.tbControlValue.Location = new System.Drawing.Point(0, 29);
             this.tbControlValue.Maximum = 65536;
-            this.tbControlValue.Minimum = 1;
             this.tbControlValue.Name = "tbControlValue";
             this.tbControlValue.Size = new System.Drawing.Size(227, 45);
             this.tbControlValue.TabIndex = 3;
             this.tbControlValue.TabStop = false;
             this.tbControlValue.TickFrequency = 6553;
-            this.tbControlValue.Value = 1;
             this.tbControlValue.ValueChanged += new System.EventHandler(this.tbControlValue_ValueChanged);
             // 
             // MultiTrackBar
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(32)))), ((int)(((byte)(32)))), ((int)(((byte)(32)))));
+            this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(94)))), ((int)(((byte)(94)))), ((int)(((byte)(94)))));
             this.Controls.Add(this.nmControlValue);
             this.Controls.Add(this.lbControlName);
             this.Controls.Add(this.tbControlValue);
             this.Font = new System.Drawing.Font("Segoe UI", 8.25F);
             this.Name = "MultiTrackBar";
             this.Size = new System.Drawing.Size(227, 60);
-            this.Tag = "color:darker";
+            this.Tag = "color:normal";
             this.Load += new System.EventHandler(this.MultiTrackBar_Comp_Load);
             ((System.ComponentModel.ISupportInitialize)(this.nmControlValue)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.tbControlValue)).EndInit();

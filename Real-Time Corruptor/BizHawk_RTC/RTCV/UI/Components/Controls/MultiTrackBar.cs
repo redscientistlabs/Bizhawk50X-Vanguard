@@ -17,11 +17,45 @@ namespace RTCV.UI.Components.Controls
 
         private bool GeneralUpdateFlag = false; //makes other events ignore firing
 
+		private long _Value;
         [Description("Net value of the control (displayed in numeric box)"), Category("Data")]
-        public long Value { get; set; } = 1;
+        public long Value
+		{
+			get
+			{
+				return _Value;
+			}
+			set
+			{
+				_Value = value;
 
-        private bool FirstLoadDone = false;
-        private long _Maximum = 500000;
+				long nmValue = Convert.ToInt64(nmControlValue.Value);
+				int tbValue = nmValueToTbValueQuadScale(nmControlValue.Value);
+				UpdateAllControls(nmValue, tbValue, null);
+			}
+		}
+
+		private bool FirstLoadDone = false;
+
+		private long _Minimum = 0;
+		[Description("Minimum value of the control"), Category("Data")]
+		public long Minimum
+		{
+			get
+			{
+				return _Minimum;
+			}
+			set
+			{
+				_Minimum = value;
+				nmControlValue.Minimum = value;
+				tbControlValue.Minimum = nmValueToTbValueQuadScale(value);
+				tbControlValue.Refresh();
+				if (FirstLoadDone)
+					tbControlValue_ValueChanged(null, null);
+			}
+		}
+		private long _Maximum = 500000;
         [Description("Maximum value of the control"), Category("Data")]
         public long Maximum
         {
@@ -55,7 +89,7 @@ namespace RTCV.UI.Components.Controls
         {
             InitializeComponent();
 
-            updater = new Timer();
+			updater = new Timer();
             updater.Interval = updateThreshold;
             updater.Tick += Updater_Tick;
 
@@ -109,14 +143,12 @@ namespace RTCV.UI.Components.Controls
         {
             updater.Stop();
             OnValueChanged(new ValueUpdateEventArgs(Value));
-            
         }
 
         public void registerSlave(MultiTrackBar comp)
         {
             slaveComps.Add(comp);
             comp._parent = this;
-
         }
 
         private void MultiTrackBar_Comp_Load(object sender, EventArgs e)
@@ -130,11 +162,14 @@ namespace RTCV.UI.Components.Controls
 
             if (setter != this)
             {
-
                 if (setter != tbControlValue)
                 {
                     if (tbValue > 65536)
                         tbControlValue.Value = Convert.ToInt32(65536);
+					else if (tbValue < Minimum)
+					{
+						tbControlValue.Value = Convert.ToInt32(Minimum);
+					}
                     else
                         tbControlValue.Value = Convert.ToInt32(tbValue);
                 }
@@ -142,7 +177,9 @@ namespace RTCV.UI.Components.Controls
                 if (setter != nmControlValue)
                     if (nmValue > Maximum && !UncapNumericBox)
                         nmControlValue.Value = Convert.ToInt32(Maximum);
-                    else
+					else if (nmValue < Minimum)
+						nmControlValue.Value = Convert.ToInt32(Minimum);
+					else
                         nmControlValue.Value = nmValue;
 
                 foreach (var slave in slaveComps)
@@ -172,6 +209,8 @@ namespace RTCV.UI.Components.Controls
 
             int tbValue = tbControlValue.Value;
             long nmValue = tbValueToNmValueQuadScale(tbValue);
+			if(nmValue < _Minimum)
+				nmValue = _Minimum;
 
             PropagateValue(nmValue, tbValue, tbControlValue);
         }

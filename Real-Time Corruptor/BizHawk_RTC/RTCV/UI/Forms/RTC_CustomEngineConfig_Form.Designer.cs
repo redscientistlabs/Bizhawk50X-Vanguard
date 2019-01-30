@@ -109,7 +109,7 @@
             this.cbLockUnits.ForeColor = System.Drawing.Color.White;
             this.cbLockUnits.Location = new System.Drawing.Point(6, 17);
             this.cbLockUnits.Name = "cbLockUnits";
-            this.cbLockUnits.Size = new System.Drawing.Size(95, 23);
+            this.cbLockUnits.Size = new System.Drawing.Size(79, 17);
             this.cbLockUnits.TabIndex = 151;
             this.cbLockUnits.Text = "Lock Units";
             this.cbLockUnits.UseVisualStyleBackColor = true;
@@ -149,7 +149,7 @@
             0,
             0});
             this.nmMaxInfinite.Name = "nmMaxInfinite";
-            this.nmMaxInfinite.Size = new System.Drawing.Size(106, 25);
+            this.nmMaxInfinite.Size = new System.Drawing.Size(106, 22);
             this.nmMaxInfinite.TabIndex = 149;
             this.nmMaxInfinite.Tag = "color:dark";
             this.nmMaxInfinite.Value = new decimal(new int[] {
@@ -166,7 +166,7 @@
             this.label1.ForeColor = System.Drawing.Color.White;
             this.label1.Location = new System.Drawing.Point(6, 63);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(120, 19);
+            this.label1.Size = new System.Drawing.Size(101, 13);
             this.label1.TabIndex = 148;
             this.label1.Text = "Max Infinite Units:";
             this.label1.TextAlign = System.Drawing.ContentAlignment.TopCenter;
@@ -191,7 +191,7 @@
             this.rbUnitSourceStore.ForeColor = System.Drawing.Color.White;
             this.rbUnitSourceStore.Location = new System.Drawing.Point(6, 31);
             this.rbUnitSourceStore.Name = "rbUnitSourceStore";
-            this.rbUnitSourceStore.Size = new System.Drawing.Size(62, 23);
+            this.rbUnitSourceStore.Size = new System.Drawing.Size(52, 17);
             this.rbUnitSourceStore.TabIndex = 1;
             this.rbUnitSourceStore.Text = "Store";
             this.rbUnitSourceStore.UseVisualStyleBackColor = true;
@@ -205,7 +205,7 @@
             this.rbUnitSourceValue.ForeColor = System.Drawing.Color.White;
             this.rbUnitSourceValue.Location = new System.Drawing.Point(6, 14);
             this.rbUnitSourceValue.Name = "rbUnitSourceValue";
-            this.rbUnitSourceValue.Size = new System.Drawing.Size(63, 23);
+            this.rbUnitSourceValue.Size = new System.Drawing.Size(53, 17);
             this.rbUnitSourceValue.TabIndex = 0;
             this.rbUnitSourceValue.TabStop = true;
             this.rbUnitSourceValue.Text = "Value";
@@ -234,7 +234,7 @@
             this.cbValueList.FormattingEnabled = true;
             this.cbValueList.Location = new System.Drawing.Point(12, 24);
             this.cbValueList.Name = "cbValueList";
-            this.cbValueList.Size = new System.Drawing.Size(115, 25);
+            this.cbValueList.Size = new System.Drawing.Size(115, 21);
             this.cbValueList.TabIndex = 87;
             this.cbValueList.Tag = "color:dark";
             this.cbValueList.SelectedIndexChanged += new System.EventHandler(this.cbValueList_SelectedIndexChanged);
@@ -262,7 +262,7 @@
             this.rbRange.ForeColor = System.Drawing.Color.White;
             this.rbRange.Location = new System.Drawing.Point(6, 36);
             this.rbRange.Name = "rbRange";
-            this.rbRange.Size = new System.Drawing.Size(68, 23);
+            this.rbRange.Size = new System.Drawing.Size(58, 17);
             this.rbRange.TabIndex = 180;
             this.rbRange.Text = "Range";
             this.rbRange.UseVisualStyleBackColor = true;
@@ -275,7 +275,7 @@
             this.rbValueList.ForeColor = System.Drawing.Color.White;
             this.rbValueList.Location = new System.Drawing.Point(6, 54);
             this.rbValueList.Name = "rbValueList";
-            this.rbValueList.Size = new System.Drawing.Size(88, 23);
+            this.rbValueList.Size = new System.Drawing.Size(73, 17);
             this.rbValueList.TabIndex = 177;
             this.rbValueList.Text = "Value List";
             this.rbValueList.UseVisualStyleBackColor = true;
@@ -289,7 +289,7 @@
             this.rbRandom.ForeColor = System.Drawing.Color.White;
             this.rbRandom.Location = new System.Drawing.Point(6, 18);
             this.rbRandom.Name = "rbRandom";
-            this.rbRandom.Size = new System.Drawing.Size(81, 23);
+            this.rbRandom.Size = new System.Drawing.Size(68, 17);
             this.rbRandom.TabIndex = 176;
             this.rbRandom.TabStop = true;
             this.rbRandom.Text = "Random";
@@ -318,7 +318,7 @@
             this.label26.ForeColor = System.Drawing.Color.White;
             this.label26.Location = new System.Drawing.Point(6, 38);
             this.label26.Name = "label26";
-            this.label26.Size = new System.Drawing.Size(72, 19);
+            this.label26.Size = new System.Drawing.Size(59, 13);
             this.label26.TabIndex = 169;
             this.label26.Text = "Max Value";
             // 
@@ -329,7 +329,7 @@
             this.label27.ForeColor = System.Drawing.Color.White;
             this.label27.Location = new System.Drawing.Point(6, 17);
             this.label27.Name = "label27";
-            this.label27.Size = new System.Drawing.Size(70, 19);
+            this.label27.Size = new System.Drawing.Size(58, 13);
             this.label27.TabIndex = 166;
             this.label27.Text = "Min Value";
             // 
@@ -341,7 +341,7 @@
             this.nmMaxValue.Hexadecimal = true;
             this.nmMaxValue.Location = new System.Drawing.Point(67, 38);
             this.nmMaxValue.Name = "nmMaxValue";
-            this.nmMaxValue.Size = new System.Drawing.Size(70, 23);
+            this.nmMaxValue.Size = new System.Drawing.Size(70, 20);
             this.nmMaxValue.TabIndex = 168;
             this.nmMaxValue.Tag = "color:dark";
             this.nmMaxValue.Value = new decimal(new int[] {
@@ -359,7 +359,7 @@
             this.nmMinValue.Hexadecimal = true;
             this.nmMinValue.Location = new System.Drawing.Point(67, 13);
             this.nmMinValue.Name = "nmMinValue";
-            this.nmMinValue.Size = new System.Drawing.Size(70, 23);
+            this.nmMinValue.Size = new System.Drawing.Size(70, 20);
             this.nmMinValue.TabIndex = 167;
             this.nmMinValue.Tag = "color:dark";
             this.nmMinValue.ValueChanged += new System.EventHandler(this.nmMinValue_ValueChanged);
@@ -389,7 +389,7 @@
             this.cbLimiterInverted.ForeColor = System.Drawing.Color.White;
             this.cbLimiterInverted.Location = new System.Drawing.Point(9, 43);
             this.cbLimiterInverted.Name = "cbLimiterInverted";
-            this.cbLimiterInverted.Size = new System.Drawing.Size(82, 23);
+            this.cbLimiterInverted.Size = new System.Drawing.Size(68, 17);
             this.cbLimiterInverted.TabIndex = 183;
             this.cbLimiterInverted.Text = "Inverted";
             this.cbLimiterInverted.UseVisualStyleBackColor = true;
@@ -403,7 +403,7 @@
             this.rbLimiterNone.ForeColor = System.Drawing.Color.White;
             this.rbLimiterNone.Location = new System.Drawing.Point(9, 76);
             this.rbLimiterNone.Name = "rbLimiterNone";
-            this.rbLimiterNone.Size = new System.Drawing.Size(63, 23);
+            this.rbLimiterNone.Size = new System.Drawing.Size(53, 17);
             this.rbLimiterNone.TabIndex = 187;
             this.rbLimiterNone.TabStop = true;
             this.rbLimiterNone.Text = "None";
@@ -417,7 +417,7 @@
             this.rbLimiterExecute.ForeColor = System.Drawing.Color.White;
             this.rbLimiterExecute.Location = new System.Drawing.Point(9, 123);
             this.rbLimiterExecute.Name = "rbLimiterExecute";
-            this.rbLimiterExecute.Size = new System.Drawing.Size(76, 23);
+            this.rbLimiterExecute.Size = new System.Drawing.Size(64, 17);
             this.rbLimiterExecute.TabIndex = 186;
             this.rbLimiterExecute.Text = "Execute";
             this.rbLimiterExecute.UseVisualStyleBackColor = true;
@@ -430,7 +430,7 @@
             this.label7.ForeColor = System.Drawing.Color.White;
             this.label7.Location = new System.Drawing.Point(6, 62);
             this.label7.Name = "label7";
-            this.label7.Size = new System.Drawing.Size(84, 19);
+            this.label7.Size = new System.Drawing.Size(67, 13);
             this.label7.TabIndex = 185;
             this.label7.Text = "Limiter Time";
             // 
@@ -441,7 +441,7 @@
             this.rbLimiterFirstExecute.ForeColor = System.Drawing.Color.White;
             this.rbLimiterFirstExecute.Location = new System.Drawing.Point(9, 108);
             this.rbLimiterFirstExecute.Name = "rbLimiterFirstExecute";
-            this.rbLimiterFirstExecute.Size = new System.Drawing.Size(106, 23);
+            this.rbLimiterFirstExecute.Size = new System.Drawing.Size(89, 17);
             this.rbLimiterFirstExecute.TabIndex = 184;
             this.rbLimiterFirstExecute.Text = "First Execute";
             this.rbLimiterFirstExecute.UseVisualStyleBackColor = true;
@@ -454,7 +454,7 @@
             this.rbLimiterGenerate.ForeColor = System.Drawing.Color.White;
             this.rbLimiterGenerate.Location = new System.Drawing.Point(9, 92);
             this.rbLimiterGenerate.Name = "rbLimiterGenerate";
-            this.rbLimiterGenerate.Size = new System.Drawing.Size(86, 23);
+            this.rbLimiterGenerate.Size = new System.Drawing.Size(72, 17);
             this.rbLimiterGenerate.TabIndex = 183;
             this.rbLimiterGenerate.Text = "Generate";
             this.rbLimiterGenerate.UseVisualStyleBackColor = true;
@@ -470,7 +470,7 @@
             this.cbLimiterList.FormattingEnabled = true;
             this.cbLimiterList.Location = new System.Drawing.Point(9, 18);
             this.cbLimiterList.Name = "cbLimiterList";
-            this.cbLimiterList.Size = new System.Drawing.Size(115, 25);
+            this.cbLimiterList.Size = new System.Drawing.Size(115, 21);
             this.cbLimiterList.TabIndex = 87;
             this.cbLimiterList.Tag = "color:dark";
             this.cbLimiterList.SelectedIndexChanged += new System.EventHandler(this.cbLimiterList_SelectedIndexChanged);
@@ -482,7 +482,7 @@
             this.cbClearRewind.ForeColor = System.Drawing.Color.White;
             this.cbClearRewind.Location = new System.Drawing.Point(6, 35);
             this.cbClearRewind.Name = "cbClearRewind";
-            this.cbClearRewind.Size = new System.Drawing.Size(130, 23);
+            this.cbClearRewind.Size = new System.Drawing.Size(111, 17);
             this.cbClearRewind.TabIndex = 182;
             this.cbClearRewind.Text = "Clear on Rewind";
             this.cbClearRewind.UseVisualStyleBackColor = true;
@@ -495,7 +495,7 @@
             this.cbLoopUnit.ForeColor = System.Drawing.Color.White;
             this.cbLoopUnit.Location = new System.Drawing.Point(9, 90);
             this.cbLoopUnit.Name = "cbLoopUnit";
-            this.cbLoopUnit.Size = new System.Drawing.Size(166, 23);
+            this.cbLoopUnit.Size = new System.Drawing.Size(139, 17);
             this.cbLoopUnit.TabIndex = 183;
             this.cbLoopUnit.Text = "Loop Generated Units";
             this.cbLoopUnit.UseVisualStyleBackColor = true;
@@ -526,7 +526,7 @@
             this.label11.ForeColor = System.Drawing.Color.White;
             this.label11.Location = new System.Drawing.Point(6, 65);
             this.label11.Name = "label11";
-            this.label11.Size = new System.Drawing.Size(27, 19);
+            this.label11.Size = new System.Drawing.Size(22, 13);
             this.label11.TabIndex = 191;
             this.label11.Text = "Tilt";
             // 
@@ -547,7 +547,7 @@
             0,
             -2147483648});
             this.nmTilt.Name = "nmTilt";
-            this.nmTilt.Size = new System.Drawing.Size(70, 25);
+            this.nmTilt.Size = new System.Drawing.Size(70, 22);
             this.nmTilt.TabIndex = 190;
             this.nmTilt.Tag = "color:dark";
             this.nmTilt.ValueChanged += new System.EventHandler(this.nmTilt_ValueChanged);
@@ -559,7 +559,7 @@
             this.label9.ForeColor = System.Drawing.Color.White;
             this.label9.Location = new System.Drawing.Point(6, 19);
             this.label9.Name = "label9";
-            this.label9.Size = new System.Drawing.Size(57, 19);
+            this.label9.Size = new System.Drawing.Size(47, 13);
             this.label9.TabIndex = 188;
             this.label9.Text = "Lifetime";
             // 
@@ -570,7 +570,7 @@
             this.label10.ForeColor = System.Drawing.Color.White;
             this.label10.Location = new System.Drawing.Point(6, 41);
             this.label10.Name = "label10";
-            this.label10.Size = new System.Drawing.Size(43, 19);
+            this.label10.Size = new System.Drawing.Size(35, 13);
             this.label10.TabIndex = 189;
             this.label10.Text = "Delay";
             // 
@@ -586,7 +586,7 @@
             0,
             0});
             this.nmDelay.Name = "nmDelay";
-            this.nmDelay.Size = new System.Drawing.Size(70, 25);
+            this.nmDelay.Size = new System.Drawing.Size(70, 22);
             this.nmDelay.TabIndex = 187;
             this.nmDelay.Tag = "color:dark";
             this.nmDelay.ValueChanged += new System.EventHandler(this.nmDelay_ValueChanged);
@@ -603,7 +603,7 @@
             0,
             0});
             this.nmLifetime.Name = "nmLifetime";
-            this.nmLifetime.Size = new System.Drawing.Size(70, 25);
+            this.nmLifetime.Size = new System.Drawing.Size(70, 22);
             this.nmLifetime.TabIndex = 185;
             this.nmLifetime.Tag = "color:dark";
             this.nmLifetime.Value = new decimal(new int[] {
@@ -648,7 +648,7 @@
             this.rbStoreFirstExecute.ForeColor = System.Drawing.Color.White;
             this.rbStoreFirstExecute.Location = new System.Drawing.Point(6, 33);
             this.rbStoreFirstExecute.Name = "rbStoreFirstExecute";
-            this.rbStoreFirstExecute.Size = new System.Drawing.Size(106, 23);
+            this.rbStoreFirstExecute.Size = new System.Drawing.Size(89, 17);
             this.rbStoreFirstExecute.TabIndex = 181;
             this.rbStoreFirstExecute.Text = "First Execute";
             this.rbStoreFirstExecute.UseVisualStyleBackColor = true;
@@ -662,7 +662,7 @@
             this.rbStoreImmediate.ForeColor = System.Drawing.Color.White;
             this.rbStoreImmediate.Location = new System.Drawing.Point(6, 16);
             this.rbStoreImmediate.Name = "rbStoreImmediate";
-            this.rbStoreImmediate.Size = new System.Drawing.Size(95, 23);
+            this.rbStoreImmediate.Size = new System.Drawing.Size(78, 17);
             this.rbStoreImmediate.TabIndex = 180;
             this.rbStoreImmediate.TabStop = true;
             this.rbStoreImmediate.Text = "Immediate";
@@ -677,7 +677,7 @@
             this.rbStoreSame.ForeColor = System.Drawing.Color.White;
             this.rbStoreSame.Location = new System.Drawing.Point(6, 17);
             this.rbStoreSame.Name = "rbStoreSame";
-            this.rbStoreSame.Size = new System.Drawing.Size(63, 23);
+            this.rbStoreSame.Size = new System.Drawing.Size(52, 17);
             this.rbStoreSame.TabIndex = 180;
             this.rbStoreSame.TabStop = true;
             this.rbStoreSame.Text = "Same";
@@ -691,7 +691,7 @@
             this.rbStoreRandom.ForeColor = System.Drawing.Color.White;
             this.rbStoreRandom.Location = new System.Drawing.Point(6, 34);
             this.rbStoreRandom.Name = "rbStoreRandom";
-            this.rbStoreRandom.Size = new System.Drawing.Size(81, 23);
+            this.rbStoreRandom.Size = new System.Drawing.Size(68, 17);
             this.rbStoreRandom.TabIndex = 181;
             this.rbStoreRandom.Text = "Random";
             this.rbStoreRandom.UseVisualStyleBackColor = true;
@@ -717,7 +717,7 @@
             this.rbStoreStep.ForeColor = System.Drawing.Color.White;
             this.rbStoreStep.Location = new System.Drawing.Point(6, 33);
             this.rbStoreStep.Name = "rbStoreStep";
-            this.rbStoreStep.Size = new System.Drawing.Size(101, 23);
+            this.rbStoreStep.Size = new System.Drawing.Size(86, 17);
             this.rbStoreStep.TabIndex = 181;
             this.rbStoreStep.Text = "Continuous";
             this.rbStoreStep.UseVisualStyleBackColor = true;
@@ -731,7 +731,7 @@
             this.rbStoreOnce.ForeColor = System.Drawing.Color.White;
             this.rbStoreOnce.Location = new System.Drawing.Point(6, 16);
             this.rbStoreOnce.Name = "rbStoreOnce";
-            this.rbStoreOnce.Size = new System.Drawing.Size(62, 23);
+            this.rbStoreOnce.Size = new System.Drawing.Size(52, 17);
             this.rbStoreOnce.TabIndex = 180;
             this.rbStoreOnce.TabStop = true;
             this.rbStoreOnce.Text = "Once";
@@ -857,7 +857,7 @@
             "Vector Engine"});
             this.cbSelectedTemplate.Location = new System.Drawing.Point(12, 20);
             this.cbSelectedTemplate.Name = "cbSelectedTemplate";
-            this.cbSelectedTemplate.Size = new System.Drawing.Size(211, 25);
+            this.cbSelectedTemplate.Size = new System.Drawing.Size(211, 21);
             this.cbSelectedTemplate.TabIndex = 168;
             this.cbSelectedTemplate.Tag = "color:dark";
             this.cbSelectedTemplate.SelectedIndexChanged += new System.EventHandler(this.cbSelectedTemplate_SelectedIndexChanged);
@@ -869,7 +869,7 @@
             this.label2.ForeColor = System.Drawing.Color.White;
             this.label2.Location = new System.Drawing.Point(9, 5);
             this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(121, 19);
+            this.label2.Size = new System.Drawing.Size(101, 13);
             this.label2.TabIndex = 167;
             this.label2.Text = "Selected Template:";
             // 
@@ -892,7 +892,7 @@
             // 
             // RTC_CustomEngineConfig_Form
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 19F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
             this.ClientSize = new System.Drawing.Size(471, 413);

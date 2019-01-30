@@ -29,10 +29,10 @@
         private void InitializeComponent()
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(RTC_GlitchHarvester_Form));
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle3 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle4 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle5 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle7 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle8 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle6 = new System.Windows.Forms.DataGridViewCellStyle();
             this.pnSidebar = new System.Windows.Forms.Panel();
             this.panel4 = new System.Windows.Forms.Panel();
             this.label9 = new System.Windows.Forms.Label();
@@ -164,27 +164,27 @@
             this.panel2 = new System.Windows.Forms.Panel();
             this.btnRerollSelected = new System.Windows.Forms.Button();
             this.label8 = new System.Windows.Forms.Label();
+            this.cbCompressStockpiles = new System.Windows.Forms.CheckBox();
+            this.pnIntensity = new System.Windows.Forms.Panel();
             this.dgvStockpile = new RTCV.UI.DataGridViewDraggable();
             this.Item = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.GameName = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.SystemName = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.SystemCore = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.Note = new System.Windows.Forms.DataGridViewButtonColumn();
-            this.cbCompressStockpiles = new System.Windows.Forms.CheckBox();
+            this.multiTB_Intensity = new RTCV.UI.Components.Controls.MultiTrackBar();
             this.dataGridViewTextBoxColumn1 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.dataGridViewTextBoxColumn2 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.dataGridViewTextBoxColumn3 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.dataGridViewTextBoxColumn4 = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.pnIntensity = new System.Windows.Forms.Panel();
-            this.multiTB_Intensity = new RTCV.UI.Components.Controls.MultiTrackBar();
             this.pnSidebar.SuspendLayout();
             this.panel4.SuspendLayout();
             this.panel3.SuspendLayout();
             this.pnSavestateHolder.SuspendLayout();
             this.panel1.SuspendLayout();
             this.panel2.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.dgvStockpile)).BeginInit();
             this.pnIntensity.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.dgvStockpile)).BeginInit();
             this.SuspendLayout();
             // 
             // pnSidebar
@@ -2229,6 +2229,32 @@
             this.label8.TabIndex = 137;
             this.label8.Text = "Parameters";
             // 
+            // cbCompressStockpiles
+            // 
+            this.cbCompressStockpiles.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+            this.cbCompressStockpiles.AutoSize = true;
+            this.cbCompressStockpiles.Checked = true;
+            this.cbCompressStockpiles.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.cbCompressStockpiles.Font = new System.Drawing.Font("Segoe UI", 8F);
+            this.cbCompressStockpiles.ForeColor = System.Drawing.Color.White;
+            this.cbCompressStockpiles.Location = new System.Drawing.Point(697, 467);
+            this.cbCompressStockpiles.Name = "cbCompressStockpiles";
+            this.cbCompressStockpiles.Size = new System.Drawing.Size(78, 30);
+            this.cbCompressStockpiles.TabIndex = 144;
+            this.cbCompressStockpiles.TabStop = false;
+            this.cbCompressStockpiles.Text = "Compress\nStockpiles";
+            this.cbCompressStockpiles.UseVisualStyleBackColor = true;
+            // 
+            // pnIntensity
+            // 
+            this.pnIntensity.BackColor = System.Drawing.Color.Gray;
+            this.pnIntensity.Controls.Add(this.multiTB_Intensity);
+            this.pnIntensity.Location = new System.Drawing.Point(158, 30);
+            this.pnIntensity.Name = "pnIntensity";
+            this.pnIntensity.Size = new System.Drawing.Size(204, 58);
+            this.pnIntensity.TabIndex = 122;
+            this.pnIntensity.Tag = "color:normal";
+            // 
             // dgvStockpile
             // 
             this.dgvStockpile.AllowDrop = true;
@@ -2241,14 +2267,14 @@
             this.dgvStockpile.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
             this.dgvStockpile.BackgroundColor = System.Drawing.Color.Gray;
             this.dgvStockpile.BorderStyle = System.Windows.Forms.BorderStyle.None;
-            dataGridViewCellStyle1.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle1.BackColor = System.Drawing.SystemColors.Control;
-            dataGridViewCellStyle1.Font = new System.Drawing.Font("Segoe UI Symbol", 8F);
-            dataGridViewCellStyle1.ForeColor = System.Drawing.SystemColors.WindowText;
-            dataGridViewCellStyle1.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle1.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle1.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
-            this.dgvStockpile.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle1;
+            dataGridViewCellStyle5.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle5.BackColor = System.Drawing.SystemColors.Control;
+            dataGridViewCellStyle5.Font = new System.Drawing.Font("Segoe UI Symbol", 8F);
+            dataGridViewCellStyle5.ForeColor = System.Drawing.SystemColors.WindowText;
+            dataGridViewCellStyle5.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle5.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle5.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+            this.dgvStockpile.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle5;
             this.dgvStockpile.ColumnHeadersHeight = 21;
             this.dgvStockpile.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.DisableResizing;
             this.dgvStockpile.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
@@ -2257,31 +2283,31 @@
             this.SystemName,
             this.SystemCore,
             this.Note});
-            dataGridViewCellStyle3.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle3.BackColor = System.Drawing.SystemColors.Window;
-            dataGridViewCellStyle3.Font = new System.Drawing.Font("Segoe UI Symbol", 8F);
-            dataGridViewCellStyle3.ForeColor = System.Drawing.SystemColors.ControlText;
-            dataGridViewCellStyle3.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle3.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle3.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
-            this.dgvStockpile.DefaultCellStyle = dataGridViewCellStyle3;
+            dataGridViewCellStyle7.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle7.BackColor = System.Drawing.SystemColors.Window;
+            dataGridViewCellStyle7.Font = new System.Drawing.Font("Segoe UI Symbol", 8F);
+            dataGridViewCellStyle7.ForeColor = System.Drawing.SystemColors.ControlText;
+            dataGridViewCellStyle7.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle7.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle7.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
+            this.dgvStockpile.DefaultCellStyle = dataGridViewCellStyle7;
             this.dgvStockpile.GridColor = System.Drawing.Color.Black;
             this.dgvStockpile.Location = new System.Drawing.Point(401, 29);
             this.dgvStockpile.Name = "dgvStockpile";
             this.dgvStockpile.RightToLeft = System.Windows.Forms.RightToLeft.No;
-            dataGridViewCellStyle4.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle4.BackColor = System.Drawing.SystemColors.Control;
-            dataGridViewCellStyle4.Font = new System.Drawing.Font("Segoe UI Symbol", 8F);
-            dataGridViewCellStyle4.ForeColor = System.Drawing.SystemColors.WindowText;
-            dataGridViewCellStyle4.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle4.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle4.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
-            this.dgvStockpile.RowHeadersDefaultCellStyle = dataGridViewCellStyle4;
+            dataGridViewCellStyle8.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle8.BackColor = System.Drawing.SystemColors.Control;
+            dataGridViewCellStyle8.Font = new System.Drawing.Font("Segoe UI Symbol", 8F);
+            dataGridViewCellStyle8.ForeColor = System.Drawing.SystemColors.WindowText;
+            dataGridViewCellStyle8.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle8.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle8.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+            this.dgvStockpile.RowHeadersDefaultCellStyle = dataGridViewCellStyle8;
             this.dgvStockpile.RowHeadersVisible = false;
             this.dgvStockpile.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
             this.dgvStockpile.Size = new System.Drawing.Size(451, 432);
             this.dgvStockpile.TabIndex = 140;
-            this.dgvStockpile.Tag = "color:normal";
+            this.dgvStockpile.Tag = "color:dark";
             this.dgvStockpile.CellClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dgvStockpile_CellClick);
             this.dgvStockpile.MouseDown += new System.Windows.Forms.MouseEventHandler(this.dgvStockpile_MouseDown);
             // 
@@ -2316,10 +2342,10 @@
             // 
             // Note
             // 
-            dataGridViewCellStyle2.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
-            dataGridViewCellStyle2.Font = new System.Drawing.Font("Segoe UI Symbol", 14.25F);
-            dataGridViewCellStyle2.ForeColor = System.Drawing.Color.Black;
-            this.Note.DefaultCellStyle = dataGridViewCellStyle2;
+            dataGridViewCellStyle6.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
+            dataGridViewCellStyle6.Font = new System.Drawing.Font("Segoe UI Symbol", 14.25F);
+            dataGridViewCellStyle6.ForeColor = System.Drawing.Color.Black;
+            this.Note.DefaultCellStyle = dataGridViewCellStyle6;
             this.Note.FillWeight = 23.01949F;
             this.Note.HeaderText = "Note";
             this.Note.MinimumWidth = 35;
@@ -2328,21 +2354,20 @@
             this.Note.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.Automatic;
             this.Note.Text = "";
             // 
-            // cbCompressStockpiles
+            // multiTB_Intensity
             // 
-            this.cbCompressStockpiles.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.cbCompressStockpiles.AutoSize = true;
-            this.cbCompressStockpiles.Checked = true;
-            this.cbCompressStockpiles.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.cbCompressStockpiles.Font = new System.Drawing.Font("Segoe UI", 8F);
-            this.cbCompressStockpiles.ForeColor = System.Drawing.Color.White;
-            this.cbCompressStockpiles.Location = new System.Drawing.Point(697, 467);
-            this.cbCompressStockpiles.Name = "cbCompressStockpiles";
-            this.cbCompressStockpiles.Size = new System.Drawing.Size(78, 30);
-            this.cbCompressStockpiles.TabIndex = 144;
-            this.cbCompressStockpiles.TabStop = false;
-            this.cbCompressStockpiles.Text = "Compress\nStockpiles";
-            this.cbCompressStockpiles.UseVisualStyleBackColor = true;
+            this.multiTB_Intensity.BackColor = System.Drawing.Color.Gray;
+            this.multiTB_Intensity.Font = new System.Drawing.Font("Segoe UI", 8.25F);
+            this.multiTB_Intensity.LabelText = "Intensity";
+            this.multiTB_Intensity.Location = new System.Drawing.Point(0, 1);
+            this.multiTB_Intensity.Maximum = ((long)(65535));
+            this.multiTB_Intensity.Minimum = ((long)(1));
+            this.multiTB_Intensity.Name = "multiTB_Intensity";
+            this.multiTB_Intensity.Size = new System.Drawing.Size(204, 59);
+            this.multiTB_Intensity.TabIndex = 0;
+            this.multiTB_Intensity.Tag = "color:normal";
+            this.multiTB_Intensity.UncapNumericBox = false;
+            this.multiTB_Intensity.Value = ((long)(1));
             // 
             // dataGridViewTextBoxColumn1
             // 
@@ -2375,30 +2400,6 @@
             this.dataGridViewTextBoxColumn4.Name = "dataGridViewTextBoxColumn4";
             this.dataGridViewTextBoxColumn4.ReadOnly = true;
             this.dataGridViewTextBoxColumn4.Visible = false;
-            // 
-            // pnIntensity
-            // 
-            this.pnIntensity.BackColor = System.Drawing.Color.Gray;
-            this.pnIntensity.Controls.Add(this.multiTB_Intensity);
-            this.pnIntensity.Location = new System.Drawing.Point(158, 30);
-            this.pnIntensity.Name = "pnIntensity";
-            this.pnIntensity.Size = new System.Drawing.Size(204, 58);
-            this.pnIntensity.TabIndex = 122;
-            this.pnIntensity.Tag = "color:normal";
-            // 
-            // multiTB_Intensity
-            // 
-            this.multiTB_Intensity.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(32)))), ((int)(((byte)(32)))), ((int)(((byte)(32)))));
-            this.multiTB_Intensity.Font = new System.Drawing.Font("Segoe UI", 8.25F);
-            this.multiTB_Intensity.LabelText = "Intensity";
-            this.multiTB_Intensity.Location = new System.Drawing.Point(0, 0);
-            this.multiTB_Intensity.Maximum = ((long)(65535));
-            this.multiTB_Intensity.Name = "multiTB_Intensity";
-            this.multiTB_Intensity.Size = new System.Drawing.Size(204, 59);
-            this.multiTB_Intensity.TabIndex = 0;
-            this.multiTB_Intensity.Tag = "color:darker";
-            this.multiTB_Intensity.UncapNumericBox = false;
-            this.multiTB_Intensity.Value = ((long)(0));
             // 
             // RTC_GlitchHarvester_Form
             // 
@@ -2450,8 +2451,8 @@
             this.panel1.PerformLayout();
             this.panel2.ResumeLayout(false);
             this.panel2.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.dgvStockpile)).EndInit();
             this.pnIntensity.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.dgvStockpile)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
