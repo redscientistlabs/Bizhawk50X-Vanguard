@@ -29,6 +29,7 @@ namespace RTCV.UI.Components.Controls
 			{
 				_Value = value;
 
+				//Update the controls to whatever the value is. Note the null setter as we want to update both controls so
 				long nmValue = Convert.ToInt64(nmControlValue.Value);
 				int tbValue = nmValueToTbValueQuadScale(nmControlValue.Value);
 				UpdateAllControls(nmValue, tbValue, null);
@@ -50,7 +51,6 @@ namespace RTCV.UI.Components.Controls
 				_Minimum = value;
 				nmControlValue.Minimum = value;
 				tbControlValue.Minimum = nmValueToTbValueQuadScale(value);
-				tbControlValue.Refresh();
 				if (FirstLoadDone)
 					tbControlValue_ValueChanged(null, null);
 			}
