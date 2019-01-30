@@ -40,7 +40,7 @@
             this.lbControlName.AutoSize = true;
             this.lbControlName.Font = new System.Drawing.Font("Segoe UI", 9.25F);
             this.lbControlName.ForeColor = System.Drawing.Color.White;
-            this.lbControlName.Location = new System.Drawing.Point(7, 5);
+            this.lbControlName.Location = new System.Drawing.Point(5, 8);
             this.lbControlName.Name = "lbControlName";
             this.lbControlName.Size = new System.Drawing.Size(43, 17);
             this.lbControlName.TabIndex = 0;
@@ -52,14 +52,14 @@
             this.nmControlValue.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
             this.nmControlValue.Font = new System.Drawing.Font("Segoe UI", 8F);
             this.nmControlValue.ForeColor = System.Drawing.Color.White;
-            this.nmControlValue.Location = new System.Drawing.Point(134, 5);
+            this.nmControlValue.Location = new System.Drawing.Point(148, 7);
             this.nmControlValue.Maximum = new decimal(new int[] {
             -1,
             2147483647,
             0,
             0});
             this.nmControlValue.Name = "nmControlValue";
-            this.nmControlValue.Size = new System.Drawing.Size(81, 22);
+            this.nmControlValue.Size = new System.Drawing.Size(72, 22);
             this.nmControlValue.TabIndex = 2;
             this.nmControlValue.Tag = "color:dark";
             this.nmControlValue.ValueChanged += new System.EventHandler(this.nmControlValue_ValueChanged);
