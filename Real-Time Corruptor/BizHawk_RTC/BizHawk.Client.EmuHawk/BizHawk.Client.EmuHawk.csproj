@@ -1784,18 +1784,22 @@
     <ProjectReference Include="..\BizHawk.Common\BizHawk.Common.csproj">
       <Project>{866f8d13-0678-4ff9-80a4-a3993fd4d8a3}</Project>
       <Name>BizHawk.Common</Name>
+      <Private>False</Private>
     </ProjectReference>
     <ProjectReference Include="..\BizHawk.Emulation.Common\BizHawk.Emulation.Common.csproj">
       <Project>{e1a23168-b571-411c-b360-2229e7225e0e}</Project>
       <Name>BizHawk.Emulation.Common</Name>
+      <Private>False</Private>
     </ProjectReference>
     <ProjectReference Include="..\BizHawk.Emulation.Cores\BizHawk.Emulation.Cores.csproj">
       <Project>{197d4314-8a9f-49ba-977d-54acefaeb6ba}</Project>
       <Name>BizHawk.Emulation.Cores</Name>
+      <Private>False</Private>
     </ProjectReference>
     <ProjectReference Include="..\BizHawk.Emulation.DiscSystem\BizHawk.Emulation.DiscSystem.csproj">
       <Project>{f51946ea-827f-4d82-b841-1f2f6d060312}</Project>
       <Name>BizHawk.Emulation.DiscSystem</Name>
+      <Private>False</Private>
     </ProjectReference>
     <ProjectReference Include="..\Bizware\BizHawk.Bizware.BizwareGL.GdiPlus\BizHawk.Bizware.BizwareGL.GdiPlus.csproj">
       <Project>{337CA23E-65E7-44E1-9411-97EE08BB8116}</Project>
