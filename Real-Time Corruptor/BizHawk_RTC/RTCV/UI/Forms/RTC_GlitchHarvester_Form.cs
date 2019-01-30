@@ -85,6 +85,7 @@ namespace RTCV.UI
 		public RTC_GlitchHarvester_Form()
 		{
 			InitializeComponent();
+			multiTB_Intensity.ValueChanged += (sender, args) => CorruptCore.CorruptCore.Intensity = multiTB_Intensity.Value;
 
 			//btnSavestate_Click(btnSavestate01, null); //Selects first button as default
 
@@ -926,51 +927,8 @@ namespace RTCV.UI
 			StockpileManager_UISide.StockpileChanged();
 		}
 
-
-		private void nmIntensity_ValueChanged(object sender, EventArgs e)
-		{
-			int _fx = Convert.ToInt32(nmIntensity.Value);
-
-			if (S.GET<RTC_GeneralParameters_Form>().Intensity != _fx)
-				S.GET<RTC_GeneralParameters_Form>().Intensity = _fx;
-		}
-		private void nmIntensity_KeyDown(object sender, EventArgs e)
-		{
-			S.GET<RTC_GeneralParameters_Form>().DontUpdateIntensity = true;
-		}
-		private void nmIntensity_KeyUp(object sender, EventArgs e)
-		{
-			S.GET<RTC_GeneralParameters_Form>().DontUpdateIntensity = false;
-		}
-
-		private void track_Intensity_Scroll(object sender, EventArgs e)
-		{
-			S.GET<RTC_GeneralParameters_Form>().DontUpdateIntensity = true;
-			double fx = Math.Floor(Math.Pow((track_Intensity.Value * 0.0005d), 2));
-			int _fx = Convert.ToInt32(fx);
-
-			if (S.GET<RTC_GeneralParameters_Form>().Intensity != _fx)
-				S.GET<RTC_GeneralParameters_Form>().Intensity = _fx;
-		}
-
 		Guid? intensitySliderToken = null;
 
-		private void track_Intensity_MouseDown(object sender, MouseEventArgs e)
-		{
-			S.GET<RTC_GeneralParameters_Form>().DontUpdateIntensity = true;
-		}
-
-		private void track_Intensity_MouseUp(object sender, EventArgs e)
-		{
-			double fx = Math.Floor(Math.Pow((track_Intensity.Value * 0.0005d), 2));
-			int _fx = Convert.ToInt32(fx);
-
-			S.GET<RTC_GeneralParameters_Form>().DontUpdateIntensity = false;
-			S.GET<RTC_GeneralParameters_Form>().DontUpdateUI = false;
-
-			if (S.GET<RTC_GeneralParameters_Form>().Intensity != _fx)
-				S.GET<RTC_GeneralParameters_Form>().Intensity = _fx;
-		}
 		private void dgvStockpile_DragDrop(object sender, DragEventArgs e)
 		{
 			//Bring the UI back to normal after a drag+drop to prevent weird merge stuff 

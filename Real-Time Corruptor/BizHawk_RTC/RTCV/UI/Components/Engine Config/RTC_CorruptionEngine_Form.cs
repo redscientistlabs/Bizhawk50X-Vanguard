@@ -174,27 +174,15 @@ namespace RTCV.UI
 			if (cbSelectedEngine.SelectedItem.ToString() == "Blast Generator")
 			{
 				S.GET<RTC_GeneralParameters_Form>().labelBlastRadius.Visible = false;
-				S.GET<RTC_GeneralParameters_Form>().labelIntensity.Visible = false;
-				S.GET<RTC_GeneralParameters_Form>().labelIntensityTimes.Visible = false;
-				S.GET<RTC_GeneralParameters_Form>().labelErrorDelay.Visible = false;
-				S.GET<RTC_GeneralParameters_Form>().labelErrorDelaySteps.Visible = false;
-				S.GET<RTC_GeneralParameters_Form>().nmErrorDelay.Visible = false;
-				S.GET<RTC_GeneralParameters_Form>().nmIntensity.Visible = false;
-				S.GET<RTC_GeneralParameters_Form>().track_ErrorDelay.Visible = false;
-				S.GET<RTC_GeneralParameters_Form>().track_Intensity.Visible = false;
+				S.GET<RTC_GeneralParameters_Form>().multiTB_Intensity.Visible = false;
+				S.GET<RTC_GeneralParameters_Form>().multiTB_ErrorDelay.Visible = false;
 				S.GET<RTC_GeneralParameters_Form>().cbBlastRadius.Visible = false;
 			}
 			else
 			{
 				S.GET<RTC_GeneralParameters_Form>().labelBlastRadius.Visible = true;
-				S.GET<RTC_GeneralParameters_Form>().labelIntensity.Visible = true;
-				S.GET<RTC_GeneralParameters_Form>().labelIntensityTimes.Visible = true;
-				S.GET<RTC_GeneralParameters_Form>().labelErrorDelay.Visible = true;
-				S.GET<RTC_GeneralParameters_Form>().labelErrorDelaySteps.Visible = true;
-				S.GET<RTC_GeneralParameters_Form>().nmErrorDelay.Visible = true;
-				S.GET<RTC_GeneralParameters_Form>().nmIntensity.Visible = true;
-				S.GET<RTC_GeneralParameters_Form>().track_ErrorDelay.Visible = true;
-				S.GET<RTC_GeneralParameters_Form>().track_Intensity.Visible = true;
+				S.GET<RTC_GeneralParameters_Form>().multiTB_Intensity.Visible = true;
+				S.GET<RTC_GeneralParameters_Form>().multiTB_ErrorDelay.Visible = true;
 				S.GET<RTC_GeneralParameters_Form>().cbBlastRadius.Visible = true;
 			}
 

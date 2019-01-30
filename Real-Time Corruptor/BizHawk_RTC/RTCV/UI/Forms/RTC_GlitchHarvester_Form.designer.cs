@@ -159,10 +159,6 @@
             this.rbCorrupt = new System.Windows.Forms.RadioButton();
             this.cbStashCorrupted = new System.Windows.Forms.CheckBox();
             this.btnImportStockpile = new System.Windows.Forms.Button();
-            this.labelIntensity = new System.Windows.Forms.Label();
-            this.nmIntensity = new System.Windows.Forms.NumericUpDown();
-            this.track_Intensity = new System.Windows.Forms.TrackBar();
-            this.labelIntensityTimes = new System.Windows.Forms.Label();
             this.label6 = new System.Windows.Forms.Label();
             this.btnRenameSelected = new System.Windows.Forms.Button();
             this.panel2 = new System.Windows.Forms.Panel();
@@ -175,18 +171,17 @@
             this.SystemCore = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.Note = new System.Windows.Forms.DataGridViewButtonColumn();
             this.cbCompressStockpiles = new System.Windows.Forms.CheckBox();
-            this.pnIntensity = new System.Windows.Forms.Panel();
             this.dataGridViewTextBoxColumn1 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.dataGridViewTextBoxColumn2 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.dataGridViewTextBoxColumn3 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.dataGridViewTextBoxColumn4 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.pnIntensity = new System.Windows.Forms.Panel();
+            this.multiTB_Intensity = new RTCV.UI.Components.Controls.MultiTrackBar();
             this.pnSidebar.SuspendLayout();
             this.panel4.SuspendLayout();
             this.panel3.SuspendLayout();
             this.pnSavestateHolder.SuspendLayout();
             this.panel1.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.nmIntensity)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.track_Intensity)).BeginInit();
             this.panel2.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgvStockpile)).BeginInit();
             this.pnIntensity.SuspendLayout();
@@ -2162,74 +2157,6 @@
             this.btnImportStockpile.UseVisualStyleBackColor = false;
             this.btnImportStockpile.Click += new System.EventHandler(this.btnImportStockpile_Click);
             // 
-            // labelIntensity
-            // 
-            this.labelIntensity.AutoSize = true;
-            this.labelIntensity.Font = new System.Drawing.Font("Segoe UI", 8F);
-            this.labelIntensity.ForeColor = System.Drawing.Color.White;
-            this.labelIntensity.Location = new System.Drawing.Point(9, 9);
-            this.labelIntensity.Name = "labelIntensity";
-            this.labelIntensity.Size = new System.Drawing.Size(57, 13);
-            this.labelIntensity.TabIndex = 8;
-            this.labelIntensity.Text = "Intensity :";
-            // 
-            // nmIntensity
-            // 
-            this.nmIntensity.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
-            this.nmIntensity.Font = new System.Drawing.Font("Segoe UI", 9.75F);
-            this.nmIntensity.ForeColor = System.Drawing.Color.White;
-            this.nmIntensity.Location = new System.Drawing.Point(65, 5);
-            this.nmIntensity.Maximum = new decimal(new int[] {
-            65536,
-            0,
-            0,
-            0});
-            this.nmIntensity.Minimum = new decimal(new int[] {
-            1,
-            0,
-            0,
-            0});
-            this.nmIntensity.Name = "nmIntensity";
-            this.nmIntensity.Size = new System.Drawing.Size(95, 25);
-            this.nmIntensity.TabIndex = 9;
-            this.nmIntensity.TabStop = false;
-            this.nmIntensity.Tag = "color:dark";
-            this.nmIntensity.Value = new decimal(new int[] {
-            1,
-            0,
-            0,
-            0});
-            this.nmIntensity.ValueChanged += new System.EventHandler(this.nmIntensity_ValueChanged);
-            this.nmIntensity.KeyDown += new System.Windows.Forms.KeyEventHandler(this.nmIntensity_KeyUp);
-            // 
-            // track_Intensity
-            // 
-            this.track_Intensity.Location = new System.Drawing.Point(-2, 30);
-            this.track_Intensity.Maximum = 512000;
-            this.track_Intensity.Minimum = 2000;
-            this.track_Intensity.Name = "track_Intensity";
-            this.track_Intensity.Size = new System.Drawing.Size(204, 45);
-            this.track_Intensity.TabIndex = 15;
-            this.track_Intensity.TabStop = false;
-            this.track_Intensity.TickFrequency = 32000;
-            this.track_Intensity.Value = 2000;
-            this.track_Intensity.Scroll += new System.EventHandler(this.track_Intensity_Scroll);
-            this.track_Intensity.ValueChanged += new System.EventHandler(this.track_Intensity_Scroll);
-            this.track_Intensity.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.track_Intensity_MouseUp);
-            this.track_Intensity.MouseDown += new System.Windows.Forms.MouseEventHandler(this.track_Intensity_MouseDown);
-            this.track_Intensity.MouseUp += new System.Windows.Forms.MouseEventHandler(this.track_Intensity_MouseUp);
-            // 
-            // labelIntensityTimes
-            // 
-            this.labelIntensityTimes.AutoSize = true;
-            this.labelIntensityTimes.Font = new System.Drawing.Font("Segoe UI", 8F);
-            this.labelIntensityTimes.ForeColor = System.Drawing.Color.White;
-            this.labelIntensityTimes.Location = new System.Drawing.Point(164, 10);
-            this.labelIntensityTimes.Name = "labelIntensityTimes";
-            this.labelIntensityTimes.Size = new System.Drawing.Size(34, 13);
-            this.labelIntensityTimes.TabIndex = 16;
-            this.labelIntensityTimes.Text = "times";
-            // 
             // label6
             // 
             this.label6.AutoSize = true;
@@ -2417,19 +2344,6 @@
             this.cbCompressStockpiles.Text = "Compress\nStockpiles";
             this.cbCompressStockpiles.UseVisualStyleBackColor = true;
             // 
-            // pnIntensity
-            // 
-            this.pnIntensity.BackColor = System.Drawing.Color.Gray;
-            this.pnIntensity.Controls.Add(this.labelIntensityTimes);
-            this.pnIntensity.Controls.Add(this.track_Intensity);
-            this.pnIntensity.Controls.Add(this.nmIntensity);
-            this.pnIntensity.Controls.Add(this.labelIntensity);
-            this.pnIntensity.Location = new System.Drawing.Point(158, 30);
-            this.pnIntensity.Name = "pnIntensity";
-            this.pnIntensity.Size = new System.Drawing.Size(204, 58);
-            this.pnIntensity.TabIndex = 122;
-            this.pnIntensity.Tag = "color:normal";
-            // 
             // dataGridViewTextBoxColumn1
             // 
             this.dataGridViewTextBoxColumn1.FillWeight = 145F;
@@ -2461,6 +2375,30 @@
             this.dataGridViewTextBoxColumn4.Name = "dataGridViewTextBoxColumn4";
             this.dataGridViewTextBoxColumn4.ReadOnly = true;
             this.dataGridViewTextBoxColumn4.Visible = false;
+            // 
+            // pnIntensity
+            // 
+            this.pnIntensity.BackColor = System.Drawing.Color.Gray;
+            this.pnIntensity.Controls.Add(this.multiTB_Intensity);
+            this.pnIntensity.Location = new System.Drawing.Point(158, 30);
+            this.pnIntensity.Name = "pnIntensity";
+            this.pnIntensity.Size = new System.Drawing.Size(204, 58);
+            this.pnIntensity.TabIndex = 122;
+            this.pnIntensity.Tag = "color:normal";
+            // 
+            // multiTB_Intensity
+            // 
+            this.multiTB_Intensity.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(32)))), ((int)(((byte)(32)))), ((int)(((byte)(32)))));
+            this.multiTB_Intensity.Font = new System.Drawing.Font("Segoe UI", 8.25F);
+            this.multiTB_Intensity.LabelText = "Intensity";
+            this.multiTB_Intensity.Location = new System.Drawing.Point(0, 0);
+            this.multiTB_Intensity.Maximum = ((long)(65535));
+            this.multiTB_Intensity.Name = "multiTB_Intensity";
+            this.multiTB_Intensity.Size = new System.Drawing.Size(204, 59);
+            this.multiTB_Intensity.TabIndex = 0;
+            this.multiTB_Intensity.Tag = "color:darker";
+            this.multiTB_Intensity.UncapNumericBox = false;
+            this.multiTB_Intensity.Value = ((long)(0));
             // 
             // RTC_GlitchHarvester_Form
             // 
@@ -2510,13 +2448,10 @@
             this.pnSavestateHolder.PerformLayout();
             this.panel1.ResumeLayout(false);
             this.panel1.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.nmIntensity)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.track_Intensity)).EndInit();
             this.panel2.ResumeLayout(false);
             this.panel2.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgvStockpile)).EndInit();
             this.pnIntensity.ResumeLayout(false);
-            this.pnIntensity.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -2556,9 +2491,6 @@
         public System.Windows.Forms.RadioButton rbOriginal;
         public System.Windows.Forms.CheckBox cbLoadOnSelect;
         public System.Windows.Forms.CheckBox cbSavestateLoadOnClick;
-        private System.Windows.Forms.Label labelIntensity;
-        public System.Windows.Forms.NumericUpDown nmIntensity;
-        public System.Windows.Forms.TrackBar track_Intensity;
         public System.Windows.Forms.Button btnSavestate01;
         public System.Windows.Forms.Button btnSavestate20;
         public System.Windows.Forms.Button btnSavestate19;
@@ -2648,7 +2580,6 @@
 		private System.Windows.Forms.Button btnForwardPanelPage;
 		private System.Windows.Forms.Button btnSaveSavestateList;
 		private System.Windows.Forms.Button btnLoadSavestateList;
-		private System.Windows.Forms.Label labelIntensityTimes;
 		private System.Windows.Forms.Panel panel2;
 		private System.Windows.Forms.Label label8;
 		private System.Windows.Forms.Panel panel3;
@@ -2661,7 +2592,6 @@
 		public System.Windows.Forms.Button btnOpenRenderFolder;
         public System.Windows.Forms.CheckBox cbCompressStockpiles;
         private System.Windows.Forms.Panel panel4;
-        public System.Windows.Forms.Panel pnIntensity;
 		private System.Windows.Forms.DataGridViewTextBoxColumn dataGridViewTextBoxColumn1;
 		private System.Windows.Forms.DataGridViewTextBoxColumn dataGridViewTextBoxColumn2;
 		private System.Windows.Forms.DataGridViewTextBoxColumn dataGridViewTextBoxColumn3;
@@ -2671,5 +2601,7 @@
 		private System.Windows.Forms.DataGridViewTextBoxColumn SystemName;
 		private System.Windows.Forms.DataGridViewTextBoxColumn SystemCore;
 		private System.Windows.Forms.DataGridViewButtonColumn Note;
+		public System.Windows.Forms.Panel pnIntensity;
+		public Components.Controls.MultiTrackBar multiTB_Intensity;
 	}
 }
