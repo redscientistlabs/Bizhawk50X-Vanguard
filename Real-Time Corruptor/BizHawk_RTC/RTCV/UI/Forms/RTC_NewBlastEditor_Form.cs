@@ -676,11 +676,13 @@ namespace RTCV.UI
 			var executeFrame = CreateColumn(buProperty.ExecuteFrame.ToString(), buProperty.ExecuteFrame.ToString()
 				, "Execute Frame", new DataGridViewNumericUpDownColumn());
 			executeFrame.SortMode = DataGridViewColumnSortMode.Automatic;
+			((DataGridViewNumericUpDownColumn)(executeFrame)).Maximum = Int32.MaxValue;
 			dgvBlastEditor.Columns.Add(executeFrame);
 
 			var lifetime = CreateColumn(buProperty.Lifetime.ToString(), buProperty.Lifetime.ToString(), "Lifetime"
 				, new DataGridViewNumericUpDownColumn());
 			lifetime.SortMode = DataGridViewColumnSortMode.Automatic;
+			((DataGridViewNumericUpDownColumn)(lifetime)).Maximum = Int32.MaxValue;
 			dgvBlastEditor.Columns.Add(lifetime);
 
 			var loop = CreateColumn(buProperty.Loop.ToString(), buProperty.Loop.ToString(), "Loop"
