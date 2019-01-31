@@ -11,6 +11,7 @@ using RTCV.CorruptCore;
 using RTCV.NetCore;
 using static RTCV.UI.UI_Extensions;
 using RTCV.NetCore.StaticTools;
+using System.Linq;
 
 namespace RTCV.UI
 {
@@ -367,7 +368,9 @@ namespace RTCV.UI
 				{
 					List<StashKey> sks = new List<StashKey>();
 
-					foreach (DataGridViewRow row in dgvStockpile.SelectedRows)
+					//Reverse before merging because DataGridView selectedrows is backwards for some odd reason
+					var reversed = dgvStockpile.SelectedRows.Cast<DataGridViewRow>().Reverse();
+					foreach (DataGridViewRow row in reversed)
 						sks.Add((StashKey)row.Cells[0].Value);
 
 					IsCorruptionApplied = StockpileManager_UISide.MergeStashkeys(sks);

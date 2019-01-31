@@ -51,10 +51,7 @@ namespace StandaloneRTC
 			Application.ThreadException += ApplicationThreadException;
 			AppDomain.CurrentDomain.UnhandledException += CurrentDomainOnUnhandledException;
 
-			Console.WriteLine("Creating Loader");
 			loaderObject = new Loader(args);
-
-			Console.WriteLine("Running loaderObject");
 			Application.Run(loaderObject);
 		}
 
