@@ -32,18 +32,43 @@ namespace RTCV.UI
 		{
 			cbRerollAddress.Checked = CorruptCore.CorruptCore.RerollAddress;
 			cbRerollSourceAddress.Checked = CorruptCore.CorruptCore.RerollSourceAddress;
+
+			cbRerollDomain.Checked = CorruptCore.CorruptCore.RerollDomain;
+			cbRerollSourceDomain.Checked = CorruptCore.CorruptCore.RerollSourceDomain;
+
+			cbRerollFollowsCustom.Checked = CorruptCore.CorruptCore.RerollFollowsCustomEngine;
+			cbRerollUsesLists.Checked = CorruptCore.CorruptCore.RerollUsesValueList;
 		}
 
 		private void cbRerollSourceAddress_CheckedChanged(object sender, EventArgs e)
 		{
 			CorruptCore.CorruptCore.RerollSourceAddress = cbRerollSourceAddress.Checked;
-			RTCV.NetCore.Params.SetParam("REROLL_SOURCEADDRESS", cbRerollSourceAddress.Checked.ToString());
+			
+		}
+
+		private void cbRerollDomain_CheckedChanged(object sender, EventArgs e)
+		{
+			CorruptCore.CorruptCore.RerollAddress = cbRerollDomain.Checked;
+		}
+
+		private void cbRerollSourceDomain_CheckedChanged(object sender, EventArgs e)
+		{
+			CorruptCore.CorruptCore.RerollSourceAddress = cbRerollSourceDomain.Checked;
 		}
 
 		private void cbRerollAddress_CheckedChanged(object sender, EventArgs e)
 		{
 			CorruptCore.CorruptCore.RerollAddress = cbRerollAddress.Checked;
-			RTCV.NetCore.Params.SetParam("REROLL_ADDRESS", cbRerollAddress.Checked.ToString());
+		}
+
+		private void CbRerollFollowsCustom_CheckedChanged(object sender, EventArgs e)
+		{
+			CorruptCore.CorruptCore.RerollFollowsCustomEngine = cbRerollFollowsCustom.Checked;
+		}
+
+		private void CbRerollUsesLists_CheckedChanged(object sender, EventArgs e)
+		{
+			CorruptCore.CorruptCore.RerollUsesValueList = cbRerollUsesLists.Checked;
 		}
 	}
 }

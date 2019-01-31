@@ -47,7 +47,7 @@ namespace RTCV.CorruptCore
 			{
 				//Enforce the safeaddress at generation
 				if (Filtering.LimiterPeekBytes(safeAddress, safeAddress + 4, domain, LimiterListHash, mdp))
-					return new BlastUnit(Filtering.GetRandomConstant(ValueListHash, 4), domain, safeAddress, 4, mdp.BigEndian);
+					return new BlastUnit(Filtering.GetRandomConstant(ValueListHash, 4), domain, safeAddress, 4, mdp.BigEndian, 0, 1, null, true, false, true);
 				return null;
 			}
 			catch (Exception ex)

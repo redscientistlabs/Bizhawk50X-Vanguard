@@ -72,6 +72,12 @@ namespace RTCV.UI
 			if(AutoCorrupt)
 				RTCV.NetCore.AllSpec.CorruptCoreSpec.Update(RTCSPEC.STEP_RUNBEFORE.ToString(), true);
 		}
+		private void OneTimeSettingsInitialize()
+		{
+			CorruptCore.CorruptCore.RerollSourceAddress = true;
+			CorruptCore.CorruptCore.RerollSourceDomain = true;
+			CorruptCore.CorruptCore.RerollFollowsCustomEngine = true;
+		}
 
 		private void RTC_Form_Load(object sender, EventArgs e)
 		{
@@ -81,6 +87,7 @@ namespace RTCV.UI
 			{
 				MessageBox.Show(File.ReadAllText(CorruptCore.CorruptCore.rtcDir + Path.DirectorySeparatorChar + "LICENSES\\DISCLAIMER.TXT").Replace("[ver]", CorruptCore.CorruptCore.RtcVersion), "RTC", MessageBoxButtons.OK, MessageBoxIcon.Information);
 				NetCore.Params.SetParam("DISCLAIMER_READ");
+				OneTimeSettingsInitialize();
 			}
 
 			CorruptCore.CorruptCore.DownloadProblematicProcesses();

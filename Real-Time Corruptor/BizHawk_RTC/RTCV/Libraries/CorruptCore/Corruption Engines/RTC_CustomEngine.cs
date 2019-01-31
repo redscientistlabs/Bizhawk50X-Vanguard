@@ -225,6 +225,7 @@ namespace RTCV.CorruptCore
 				bu.Loop = Loop;
 				bu.InvertLimiter = LimiterInverted;
 				bu.TiltValue = TiltValue;
+				bu.GeneratedUsingValueList = (Source == BlastUnitSource.VALUE && ValueSource == CustomValueSource.VALUELIST);
 
 				//Only set a list if it's used to save on memory
 				if (LimiterTime != LimiterTime.NONE)

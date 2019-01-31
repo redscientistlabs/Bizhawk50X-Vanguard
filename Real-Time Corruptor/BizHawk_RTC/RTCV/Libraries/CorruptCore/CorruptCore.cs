@@ -94,13 +94,58 @@ namespace RTCV.CorruptCore
 		public static bool RerollAddress
 		{
 			get => (bool)RTCV.NetCore.AllSpec.CorruptCoreSpec[RTCSPEC.CORE_REROLLADDRESS.ToString()];
-			set => RTCV.NetCore.AllSpec.CorruptCoreSpec.Update(RTCSPEC.CORE_REROLLADDRESS.ToString(), value);
+			set
+			{
+				RTCV.NetCore.AllSpec.CorruptCoreSpec.Update(RTCSPEC.CORE_REROLLADDRESS.ToString(), value);
+				RTCV.NetCore.Params.SetParam("REROLL_ADDRESS", value.ToString());
+			}
 		}
 
 		public static bool RerollSourceAddress
 		{
 			get => (bool)RTCV.NetCore.AllSpec.CorruptCoreSpec[RTCSPEC.CORE_REROLLSOURCEADDRESS.ToString()];
-			set => RTCV.NetCore.AllSpec.CorruptCoreSpec.Update(RTCSPEC.CORE_REROLLSOURCEADDRESS.ToString(), value);
+			set
+			{
+				RTCV.NetCore.AllSpec.CorruptCoreSpec.Update(RTCSPEC.CORE_REROLLSOURCEADDRESS.ToString(), value);
+				RTCV.NetCore.Params.SetParam("REROLL_SOURCEADDRESS", value.ToString());
+			}
+		}
+		public static bool RerollDomain
+		{
+			get => (bool)RTCV.NetCore.AllSpec.CorruptCoreSpec[RTCSPEC.CORE_REROLLDOMAIN.ToString()];
+			set
+			{
+				RTCV.NetCore.AllSpec.CorruptCoreSpec.Update(RTCSPEC.CORE_REROLLDOMAIN.ToString(), value);
+				RTCV.NetCore.Params.SetParam("REROLL_DOMAIN", value.ToString());
+			}
+		}
+
+		public static bool RerollSourceDomain
+		{
+			get => (bool)RTCV.NetCore.AllSpec.CorruptCoreSpec[RTCSPEC.CORE_REROLLSOURCEDOMAIN.ToString()];
+			set
+			{
+				RTCV.NetCore.AllSpec.CorruptCoreSpec.Update(RTCSPEC.CORE_REROLLSOURCEDOMAIN.ToString(), value);
+				RTCV.NetCore.Params.SetParam("REROLL_SOURCEDOMAIN", value.ToString());
+			}
+		}
+		public static bool RerollUsesValueList
+		{
+			get => (bool)RTCV.NetCore.AllSpec.CorruptCoreSpec[RTCSPEC.CORE_REROLLUSESVALUELIST.ToString()];
+			set
+			{
+				RTCV.NetCore.AllSpec.CorruptCoreSpec.Update(RTCSPEC.CORE_REROLLUSESVALUELIST.ToString(), value);
+				RTCV.NetCore.Params.SetParam("REROLL_USESVALUELIST", value.ToString());
+			}
+		}
+		public static bool RerollFollowsCustomEngine
+		{
+			get => (bool)RTCV.NetCore.AllSpec.CorruptCoreSpec[RTCSPEC.CORE_REROLLFOLLOWENGINESETTINGS.ToString()];
+			set
+			{
+				RTCV.NetCore.AllSpec.CorruptCoreSpec.Update(RTCSPEC.CORE_REROLLFOLLOWENGINESETTINGS.ToString(), value);
+				RTCV.NetCore.Params.SetParam("REROLL_FOLLOWSCUSTOMENGINE", value.ToString());
+			}
 		}
 
 		public static bool ExtractBlastlayer
@@ -225,15 +270,37 @@ namespace RTCV.CorruptCore
 				partial[RTCSPEC.CORE_SHOWCONSOLE.ToString()] = false;
 
 
-				if (NetCore.Params.IsParamSet("REROLL_ADDRESS"))
-					partial[RTCSPEC.CORE_REROLLADDRESS.ToString()] = (NetCore.Params.ReadParam("REROLL_ADDRESS") == "true");
-				else
-					partial[RTCSPEC.CORE_REROLLADDRESS.ToString()] = false;
 
 				if (NetCore.Params.IsParamSet("REROLL_SOURCEADDRESS"))
 					partial[RTCSPEC.CORE_REROLLSOURCEADDRESS.ToString()] = (NetCore.Params.ReadParam("REROLL_SOURCEADDRESS") == "true");
 				else
 					partial[RTCSPEC.CORE_REROLLSOURCEADDRESS.ToString()] = false;
+
+				if (NetCore.Params.IsParamSet("REROLL_SOURCEDOMAIN"))
+					partial[RTCSPEC.CORE_REROLLSOURCEDOMAIN.ToString()] = (NetCore.Params.ReadParam("REROLL_SOURCEDOMAIN") == "true");
+				else
+					partial[RTCSPEC.CORE_REROLLSOURCEDOMAIN.ToString()] = false;
+
+				if (NetCore.Params.IsParamSet("REROLL_ADDRESS"))
+					partial[RTCSPEC.CORE_REROLLADDRESS.ToString()] = (NetCore.Params.ReadParam("REROLL_ADDRESS") == "true");
+				else
+					partial[RTCSPEC.CORE_REROLLADDRESS.ToString()] = false;
+				if (NetCore.Params.IsParamSet("REROLL_DOMAIN"))
+					partial[RTCSPEC.CORE_REROLLDOMAIN.ToString()] = (NetCore.Params.ReadParam("REROLL_DOMAIN") == "true");
+				else
+					partial[RTCSPEC.CORE_REROLLDOMAIN.ToString()] = false;
+
+
+				if (NetCore.Params.IsParamSet("REROLL_FOLLOWSCUSTOMENGINE"))
+					partial[RTCSPEC.CORE_REROLLFOLLOWENGINESETTINGS.ToString()] = (NetCore.Params.ReadParam("REROLL_FOLLOWSCUSTOMENGINE") == "true");
+				else
+					partial[RTCSPEC.CORE_REROLLFOLLOWENGINESETTINGS.ToString()] = false;
+
+				if (NetCore.Params.IsParamSet("REROLL_USESVALUELIST"))
+					partial[RTCSPEC.CORE_REROLLUSESVALUELIST.ToString()] = (NetCore.Params.ReadParam("REROLL_USESVALUELIST") == "true");
+				else
+					partial[RTCSPEC.CORE_REROLLUSESVALUELIST.ToString()] = false;
+
 
 				return partial;
 			}

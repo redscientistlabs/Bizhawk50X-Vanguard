@@ -1086,6 +1086,11 @@ namespace RTCV.CorruptCore
 		[DisplayName("Invert Limiter")]
 		public bool InvertLimiter { get; set; }
 
+		[Category("Data")]
+		[Description("Whether or not the unit was originally seeded with a value list")]
+		[DisplayName("Generated Using Value List")]
+		public bool GeneratedUsingValueList { get; set; }
+
 		[Category("Misc")]
 		[Description("Note associated with this unit")]
 		public string Note { get; set; }
@@ -1146,7 +1151,7 @@ namespace RTCV.CorruptCore
 		/// <param name="isLocked"></param>
 		public BlastUnit(byte[] value,
 			string domain, long address, int precision, bool bigEndian, int executeFrame = 0, int lifetime = 1,
-			string note = null, bool isEnabled = true, bool isLocked = false)
+			string note = null, bool isEnabled = true, bool isLocked = false, bool generatedUsingValueList = false)
 		{
 			Source = BlastUnitSource.VALUE;
 			//Precision has to be set before value
@@ -1160,6 +1165,7 @@ namespace RTCV.CorruptCore
 			Note = note;
 			IsEnabled = isEnabled;
 			IsLocked = isLocked;
+			GeneratedUsingValueList = generatedUsingValueList;
 		}
 
 		public BlastUnit()
@@ -1388,53 +1394,114 @@ namespace RTCV.CorruptCore
 			//Todo - Value List reroll. Currently always generates a random value
 			if (Source == BlastUnitSource.VALUE)
 			{
-				//Generate a random value based on our precision. 
-				//We use a BigInteger as we support arbitrary length, but we do use built in methods for 8,16,32 bit for performance reasons
-				BigInteger randomValue;
-				switch (Precision)
+				if (CorruptCore.RerollFollowsCustomEngine)
 				{
-					case (1):
-						randomValue = CorruptCore.RND.RandomLong(RTC_NightmareEngine.MinValue8Bit, RTC_NightmareEngine.MaxValue8Bit);
-						break;
-					case (2):
-						randomValue = CorruptCore.RND.RandomLong(RTC_NightmareEngine.MinValue16Bit, RTC_NightmareEngine.MaxValue16Bit);
-						break;
-					case (4):
-						randomValue = CorruptCore.RND.RandomLong(RTC_NightmareEngine.MinValue32Bit, RTC_NightmareEngine.MaxValue32Bit);
-						break;
-					//No limits if out of normal range
-					default:
-						byte[] _randomValue = new byte[Precision];
-						CorruptCore.RND.NextBytes(_randomValue);
-						randomValue = new BigInteger(_randomValue);
-						break;
+					if (this.GeneratedUsingValueList && CorruptCore.RerollUsesValueList)
+					{
+						Value = Filtering.GetRandomConstant(RTC_CustomEngine.ValueListHash, Precision);
+					}
+					else
+					{
+						//Generate a random value based on our precision. 
+						//We use a BigInteger as we support arbitrary length, but we do use built in methods for 8,16,32 bit for performance reasons
+						BigInteger randomValue;
+						if (RTC_CustomEngine.ValueSource == CustomValueSource.RANGE)
+						{
+							switch (Precision)
+							{
+								case (1):
+									randomValue = CorruptCore.RND.RandomLong(RTC_CustomEngine.MinValue8Bit, RTC_CustomEngine.MaxValue8Bit);
+									break;
+								case (2):
+									randomValue = CorruptCore.RND.RandomLong(RTC_CustomEngine.MinValue16Bit, RTC_CustomEngine.MaxValue16Bit);
+									break;
+								case (4):
+									randomValue = CorruptCore.RND.RandomLong(RTC_CustomEngine.MinValue32Bit, RTC_CustomEngine.MaxValue32Bit);
+									break;
+								//No limits if out of normal range
+								default:
+									byte[] _randomValue = new byte[Precision];
+									CorruptCore.RND.NextBytes(_randomValue);
+									randomValue = new BigInteger(_randomValue);
+									break;
+							}
+						}
+						else
+						{
+							switch (this.Precision)
+							{
+								case (1):
+									randomValue = CorruptCore.RND.RandomLong(0, 0xFF);
+									break;
+								case (2):
+									randomValue = CorruptCore.RND.RandomLong(0, 0xFFFF);
+									break;
+								case (4):
+									randomValue = CorruptCore.RND.RandomLong(0, 0xFFFFFFFF);
+									break;
+								//No limits if out of normal range
+								default:
+									byte[] _randomValue = new byte[Precision];
+									CorruptCore.RND.NextBytes(_randomValue);
+									randomValue = new BigInteger(_randomValue);
+									break;
+							}
+						}
+						byte[] temp = new byte[Precision];
+						//We use this as it properly handles the length for us
+						byte[] outArr = CorruptCore_Extensions.AddValueToByteArrayUnchecked(temp, randomValue, false);
+						Value = outArr;
+					}
 				}
+				else
+				{
+					//Generate a random value based on our precision. 
+					//We use a BigInteger as we support arbitrary length, but we do use built in methods for 8,16,32 bit for performance reasons
+					BigInteger randomValue;
+					switch (Precision)
+					{
+						case (1):
+							randomValue = CorruptCore.RND.RandomLong(0, 0xFF);
+							break;
+						case (2):
+							randomValue = CorruptCore.RND.RandomLong(0, 0xFFFF);
+							break;
+						case (4):
+							randomValue = CorruptCore.RND.RandomLong(0, 0xFFFFFFFF);
+							break;
+						//No limits if out of normal range
+						default:
+							byte[] _randomValue = new byte[Precision];
+							CorruptCore.RND.NextBytes(_randomValue);
+							randomValue = new BigInteger(_randomValue);
+							break;
+					}
 
-				byte[] temp = new byte[Precision];
-				//We use this as it properly handles the length for us
-				byte[] outArr = CorruptCore_Extensions.AddValueToByteArrayUnchecked(temp, randomValue, false);
-
-				//Todo - Evaluate if this reverse is required
-				//Reverse the bytes to big endian
-				Array.Reverse(outArr);
-				Value = outArr;
+					byte[] temp = new byte[Precision];
+					//We use this as it properly handles the length for us
+					byte[] outArr = CorruptCore_Extensions.AddValueToByteArrayUnchecked(temp, randomValue, false);
+					Value = outArr;
+				}
 			}
 			else if (Source == BlastUnitSource.STORE)
 			{
-				//Todo - Allow rerolling address and domain separately
+				var source = CorruptCore.GetBlastTarget();
+				var dest = CorruptCore.GetBlastTarget();
 				if (CorruptCore.RerollSourceAddress)
 				{
-					var newSource = CorruptCore.GetBlastTarget();
-
-					SourceAddress = newSource.Address;
-					SourceDomain = newSource.Domain;
+					SourceAddress = source.Address;
+				}
+				if (CorruptCore.RerollSourceDomain)
+				{
+					SourceDomain = source.Domain;
 				}
 				if (CorruptCore.RerollAddress)
+				{ 
+					Address = dest.Address;
+				}
+				if (CorruptCore.RerollDomain)
 				{
-					var newSource = CorruptCore.GetBlastTarget();
-
-					Address = newSource.Address;
-					Domain = newSource.Domain;
+					Domain = dest.Domain;
 				}
 			}
 		}
