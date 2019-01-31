@@ -1,8 +1,10 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Reflection;
+using System.Runtime.InteropServices;
 using System.Threading;
 using System.Windows.Forms;
 
@@ -18,9 +20,12 @@ namespace StandaloneRTC
 		[STAThread]
 		static void Main(string[] args)
 		{
-
 			//in case assembly resolution fails, such as if we moved them into the dll subdiretory, this event handler can reroute to them
 			AppDomain.CurrentDomain.AssemblyResolve += CurrentDomain_AssemblyResolve;
+			
+			//Remove any zone files on the dlls because Windows likes to append them
+			string dllDir = Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), "RTC", "DLL");
+			WhackAllMOTW(dllDir);
 
 			var processes = Process.GetProcesses().Select(it => $"{it.ProcessName.ToUpper()}").OrderBy(x => x).ToArray();
 
@@ -31,7 +36,6 @@ namespace StandaloneRTC
 				MessageBox.Show("RTC cannot run more than once at the time in Detached mode.\nLoading aborted", "StandaloneRTC.exe", MessageBoxButtons.OK, MessageBoxIcon.Error);
 				return;
 			}
-
 			StartLoader(args);
 		}
 
@@ -46,7 +50,11 @@ namespace StandaloneRTC
 			Application.SetUnhandledExceptionMode(UnhandledExceptionMode.CatchException);
 			Application.ThreadException += ApplicationThreadException;
 			AppDomain.CurrentDomain.UnhandledException += CurrentDomainOnUnhandledException;
+
+			Console.WriteLine("Creating Loader");
 			loaderObject = new Loader(args);
+
+			Console.WriteLine("Running loaderObject");
 			Application.Run(loaderObject);
 		}
 
@@ -85,24 +93,60 @@ namespace StandaloneRTC
 		//Lifted from Bizhawk
 		static Assembly CurrentDomain_AssemblyResolve(object sender, ResolveEventArgs args)
 		{
-			string requested = args.Name;
-
-			lock (AppDomain.CurrentDomain)
+			try
 			{
-				var asms = AppDomain.CurrentDomain.GetAssemblies();
-				foreach (var asm in asms)
-					if (asm.FullName == requested)
-						return asm;
+				string requested = args.Name;
+				lock (AppDomain.CurrentDomain)
+				{
+					var asms = AppDomain.CurrentDomain.GetAssemblies();
+					foreach (var asm in asms)
+						if (asm.FullName == requested)
+						{
+							return asm;
+						}
 
-				//load missing assemblies by trying to find them in the dll directory
-				string dllname = new AssemblyName(requested).Name + ".dll";
-				string directory = Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), "RTC", "DLL");
-				string simpleName = new AssemblyName(requested).Name;
-				string fname = Path.Combine(directory, dllname);
-				if (!File.Exists(fname)) return null;
+					//load missing assemblies by trying to find them in the dll directory
+					string dllname = new AssemblyName(requested).Name + ".dll";
+					string directory = Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), "RTC", "DLL");
+					string simpleName = new AssemblyName(requested).Name;
+					string fname = Path.Combine(directory, dllname);
+					if (!File.Exists(fname))
+					{
+						Console.WriteLine("Could not find assembly " + fname);
+						return null;
+					}
+					
+					//it is important that we use LoadFile here and not load from a byte array; otherwise mixed (managed/unamanged) assemblies can't load
+					return Assembly.LoadFile(fname);
+				}
+			}catch(Exception e)
+			{
+				Console.WriteLine(e);
+				return null;
+			}
+		}
 
-				//it is important that we use LoadFile here and not load from a byte array; otherwise mixed (managed/unamanged) assemblies can't load
-				return Assembly.LoadFile(fname);
+		//Lifted from Bizhawk
+		[DllImport("kernel32.dll", SetLastError = true)]
+		static extern uint SetDllDirectory(string lpPathName);
+		[DllImport("kernel32.dll", EntryPoint = "DeleteFileW", SetLastError = true, CharSet = CharSet.Unicode, ExactSpelling = true)]
+		static extern bool DeleteFileW([MarshalAs(UnmanagedType.LPWStr)]string lpFileName);
+		public static void RemoveMOTW(string path)
+		{
+			DeleteFileW(path + ":Zone.Identifier");
+		}
+		//Lifted from Bizhawk
+		static void WhackAllMOTW(string dllDir)
+		{
+			var todo = new Queue<DirectoryInfo>(new[] { new DirectoryInfo(dllDir) });
+			while (todo.Count > 0)
+			{
+				var di = todo.Dequeue();
+				foreach (var disub in di.GetDirectories()) todo.Enqueue(disub);
+				foreach (var fi in di.GetFiles("*.dll"))
+					RemoveMOTW(fi.FullName);
+				foreach (var fi in di.GetFiles("*.exe"))
+					RemoveMOTW(fi.FullName);
 			}
 		}
 	}
