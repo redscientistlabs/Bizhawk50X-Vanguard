@@ -138,32 +138,32 @@ namespace RTCV.UI
 					case REMOTE_HOTKEY_ERRORDELAYDECREASE:
 						SyncObjectSingleton.FormExecute((o, ea) =>
 						{
-							if (S.GET<RTC_GeneralParameters_Form>().nmErrorDelay.Value > 1)
-								S.GET<RTC_GeneralParameters_Form>().nmErrorDelay.Value--;
+						//	if (S.GET<RTC_GeneralParameters_Form>().nmErrorDelay.Value > 1)
+						//		S.GET<RTC_GeneralParameters_Form>().nmErrorDelay.Value--;
 						});
 						break;
 
 					case REMOTE_HOTKEY_ERRORDELAYINCREASE:
 						SyncObjectSingleton.FormExecute((o, ea) =>
 						{
-							if (S.GET<RTC_GeneralParameters_Form>().nmErrorDelay.Value < S.GET<RTC_GeneralParameters_Form>().track_ErrorDelay.Maximum)
-								S.GET<RTC_GeneralParameters_Form>().nmErrorDelay.Value++;
+						//	if (S.GET<RTC_GeneralParameters_Form>().nmErrorDelay.Value < S.GET<RTC_GeneralParameters_Form>().track_ErrorDelay.Maximum)
+						//		S.GET<RTC_GeneralParameters_Form>().nmErrorDelay.Value++;
 						});
 						break;
 
 					case REMOTE_HOTKEY_INTENSITYDECREASE:
 						SyncObjectSingleton.FormExecute((o, ea) =>
 						{
-							if (S.GET<RTC_GeneralParameters_Form>().nmIntensity.Value > 1)
-								S.GET<RTC_GeneralParameters_Form>().nmIntensity.Value--;
+						//	if (S.GET<RTC_GeneralParameters_Form>().multiTB.Value > 1)
+						//		S.GET<RTC_GeneralParameters_Form>().nmIntensity.Value--;
 						});
 						break;
 
 					case REMOTE_HOTKEY_INTENSITYINCREASE:
 						SyncObjectSingleton.FormExecute((o, ea) =>
 						{
-							if (S.GET<RTC_GeneralParameters_Form>().nmIntensity.Value < S.GET<RTC_GeneralParameters_Form>().track_Intensity.Maximum)
-								S.GET<RTC_GeneralParameters_Form>().nmIntensity.Value++;
+						//	if (S.GET<RTC_GeneralParameters_Form>().nmIntensity.Value < S.GET<RTC_GeneralParameters_Form>().track_Intensity.Maximum)
+						//		S.GET<RTC_GeneralParameters_Form>().nmIntensity.Value++;
 						});
 						break;
 

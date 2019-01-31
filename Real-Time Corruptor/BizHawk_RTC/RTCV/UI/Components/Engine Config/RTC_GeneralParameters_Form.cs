@@ -18,72 +18,14 @@ namespace RTCV.UI
 		public new void HandleMouseDown(object s, MouseEventArgs e) => base.HandleMouseDown(s, e);
 		public new void HandleFormClosing(object s, FormClosingEventArgs e) => base.HandleFormClosing(s, e);
 
-		public bool DontUpdateIntensity = false;
-		public bool DontUpdateUI = false;
-		public int Intensity
-		{
-			get => CorruptCore.CorruptCore.Intensity;
-			set
-			{
-				if (!DontUpdateIntensity)
-					CorruptCore.CorruptCore.Intensity = value;
-
-
-				if (!DontUpdateUI)
-				{
-					var old = DontUpdateIntensity;
-					var old2 = DontUpdateUI;
-					DontUpdateIntensity = true;
-					DontUpdateUI = true;
-
-					if (nmIntensity.Value != value)
-						nmIntensity.Value = value;
-
-					if (S.GET<RTC_GlitchHarvester_Form>().nmIntensity.Value != value)
-						S.GET<RTC_GlitchHarvester_Form>().nmIntensity.Value = value;
-
-					int fx = Convert.ToInt32(Math.Sqrt(value) * 2000d);
-
-					if (track_Intensity.Value != fx)
-						track_Intensity.Value = fx;
-
-					if (S.GET<RTC_GlitchHarvester_Form>().track_Intensity.Value != fx)
-						S.GET<RTC_GlitchHarvester_Form>().track_Intensity.Value = fx;
-
-					DontUpdateIntensity = old;
-					DontUpdateUI = old2;
-				}
-			}
-		}
-
-		public bool DontUpdateErrorDelay = false;
-		public int ErrorDelay
-		{
-			get => CorruptCore.CorruptCore.ErrorDelay;
-			set
-			{
-				if (DontUpdateErrorDelay)
-					return;
-
-				CorruptCore.CorruptCore.ErrorDelay = Convert.ToInt32(value);
-
-				DontUpdateErrorDelay = true;
-
-				if (nmErrorDelay.Value != value)
-					nmErrorDelay.Value = value;
-
-				int _fx = Convert.ToInt32(Math.Sqrt(value) * 2000d);
-
-				if (track_ErrorDelay.Value != _fx)
-					track_ErrorDelay.Value = _fx;
-
-				DontUpdateErrorDelay = false;
-			}
-		}
 
 		public RTC_GeneralParameters_Form()
 		{
 			InitializeComponent();
+			multiTB_Intensity.ValueChanged += (sender, args) => CorruptCore.CorruptCore.Intensity = multiTB_Intensity.Value;
+			multiTB_Intensity.registerSlave(S.GET<RTC_GlitchHarvester_Form>().multiTB_Intensity);
+
+			multiTB_ErrorDelay.ValueChanged += (sender, args) => CorruptCore.CorruptCore.ErrorDelay = multiTB_ErrorDelay.Value;
 		}
 
 		private void RTC_GeneralParameters_Form_Load(object sender, EventArgs e)
@@ -92,79 +34,10 @@ namespace RTCV.UI
 		}
 
 
-		public void track_ErrorDelay_Scroll(object sender, EventArgs e)
-		{
-			double fx = Math.Ceiling(Math.Pow((track_ErrorDelay.Value * 0.0005d), 2));
-			int _fx = Convert.ToInt32(fx);
-
-			if (_fx != ErrorDelay)
-				ErrorDelay = _fx;
-		}
-
-		public void nmErrorDelay_ValueChanged(object sender, EventArgs e)
-		{
-			int _fx = Convert.ToInt32(nmErrorDelay.Value);
-
-			if (_fx != ErrorDelay)
-				ErrorDelay = _fx;
-		}
 		
 		Guid? errorDelayToken = null;
 		Guid? intensityToken = null;
 
-		private void track_ErrorDelay_MouseDown(object sender, MouseEventArgs e)
-		{
-		}
-
-		private void track_ErrorDelay_MouseUp(object sender, MouseEventArgs e)
-		{
-			track_ErrorDelay_Scroll(sender, e);
-		}
-
-
-		public void nmIntensity_ValueChanged(object sender, EventArgs e)
-		{
-			int _fx = Convert.ToInt32(nmIntensity.Value);
-
-			if (Intensity != _fx)
-				Intensity = _fx;
-		}
-
-		private void nmIntensity_KeyDown(object sender, EventArgs e)
-		{
-			DontUpdateIntensity = true;
-		}
-		private void nmIntensity_KeyUp(object sender, EventArgs e)
-		{
-			DontUpdateIntensity = false;
-		}
-
-
-		public void track_Intensity_Scroll(object sender, EventArgs e)
-		{
-			DontUpdateIntensity = true;
-			double fx = Math.Floor(Math.Pow((track_Intensity.Value * 0.0005d), 2));
-			int _fx = Convert.ToInt32(fx);
-
-			if (Intensity != _fx)
-				Intensity = _fx;
-		}
-
-		private void track_Intensity_MouseDown(object sender, MouseEventArgs e)
-		{
-			DontUpdateIntensity = true;
-		}
-
-		private void track_Intensity_MouseUp(object sender, EventArgs e)
-		{
-			double fx = Math.Floor(Math.Pow((track_Intensity.Value * 0.0005d), 2));
-			int _fx = Convert.ToInt32(fx);
-
-			DontUpdateIntensity = false;
-			DontUpdateUI = false;
-
-			Intensity = _fx;
-		}
 
 		private void cbBlastRadius_SelectedIndexChanged(object sender, EventArgs e)
 		{
@@ -208,5 +81,34 @@ namespace RTCV.UI
 			}
 		}
 
+		private void nmErrorDelay_ValueChanged(object sender, KeyPressEventArgs e)
+		{
+
+		}
+
+		private void nmErrorDelay_ValueChanged(object sender, KeyEventArgs e)
+		{
+
+		}
+
+		private void nmIntensity_KeyDown(object sender, KeyEventArgs e)
+		{
+
+		}
+
+		private void nmIntensity_KeyUp(object sender, KeyEventArgs e)
+		{
+
+		}
+
+		private void track_Intensity_MouseUp(object sender, KeyPressEventArgs e)
+		{
+
+		}
+
+		private void track_Intensity_MouseUp(object sender, MouseEventArgs e)
+		{
+
+		}
 	}
 }

@@ -55,15 +55,15 @@ namespace RTCV.CorruptCore
 			set => RTCV.NetCore.AllSpec.CorruptCoreSpec.Update(RTCSPEC.CORE_CURRENTPRECISION.ToString(), value);
 		}
 
-		public static int Intensity
+		public static long Intensity
 		{
-			get => (int)RTCV.NetCore.AllSpec.CorruptCoreSpec[RTCSPEC.CORE_INTENSITY.ToString()];
+			get => (long)RTCV.NetCore.AllSpec.CorruptCoreSpec[RTCSPEC.CORE_INTENSITY.ToString()];
 			set => RTCV.NetCore.AllSpec.CorruptCoreSpec.Update(RTCSPEC.CORE_INTENSITY.ToString(), value);
 		}
 
-		public static int ErrorDelay
+		public static long ErrorDelay
 		{
-			get => (int)RTCV.NetCore.AllSpec.CorruptCoreSpec[RTCSPEC.CORE_ERRORDELAY.ToString()];
+			get => (long)RTCV.NetCore.AllSpec.CorruptCoreSpec[RTCSPEC.CORE_ERRORDELAY.ToString()];
 			set => RTCV.NetCore.AllSpec.CorruptCoreSpec.Update(RTCSPEC.CORE_ERRORDELAY.ToString(), value);
 		}
 
@@ -213,8 +213,8 @@ namespace RTCV.CorruptCore
 				partial[RTCSPEC.CORE_SELECTEDENGINE.ToString()] = CorruptionEngine.NIGHTMARE;
 
 				partial[RTCSPEC.CORE_CURRENTPRECISION.ToString()] = 1;
-				partial[RTCSPEC.CORE_INTENSITY.ToString()] = 1;
-				partial[RTCSPEC.CORE_ERRORDELAY.ToString()] = 1;
+				partial[RTCSPEC.CORE_INTENSITY.ToString()] = 1L;
+				partial[RTCSPEC.CORE_ERRORDELAY.ToString()] = 1L;
 				partial[RTCSPEC.CORE_RADIUS.ToString()] = BlastRadius.SPREAD;
 
 				partial[RTCSPEC.CORE_EXTRACTBLASTLAYER.ToString()] = false;
@@ -428,19 +428,19 @@ namespace RTCV.CorruptCore
 
 						// Capping intensity at engine-specific maximums
 
-						int _Intensity = CorruptCore.Intensity; //general RTC intensity
+						long intensity = CorruptCore.Intensity; //general RTC intensity
 
 						if ((CorruptCore.SelectedEngine == CorruptionEngine.HELLGENIE ||
 								CorruptCore.SelectedEngine == CorruptionEngine.FREEZE ||
 								CorruptCore.SelectedEngine == CorruptionEngine.PIPE) &&
-							_Intensity > StepActions.MaxInfiniteBlastUnits)
-							_Intensity = StepActions.MaxInfiniteBlastUnits; //Capping for cheat max
+							intensity > StepActions.MaxInfiniteBlastUnits)
+							intensity = StepActions.MaxInfiniteBlastUnits; //Capping for cheat max
 
 						switch (CorruptCore.Radius) //Algorithm branching
 						{
 							case BlastRadius.SPREAD: //Randomly spreads all corruption bytes to all selected domains
 
-								for (int i = 0; i < _Intensity; i++)
+								for (int i = 0; i < intensity; i++)
 								{
 									Domain = selectedDomains[CorruptCore.RND.Next(selectedDomains.Length)];
 
@@ -460,7 +460,7 @@ namespace RTCV.CorruptCore
 
 								MaxAddress = MemoryDomains.GetInterface(Domain).Size;
 
-								for (int i = 0; i < _Intensity; i++)
+								for (int i = 0; i < intensity; i++)
 								{
 									RandomAddress = CorruptCore.RND.RandomLong(MaxAddress - 1);
 
@@ -479,7 +479,7 @@ namespace RTCV.CorruptCore
 
 									MaxAddress = MemoryDomains.GetInterface(Domain).Size;
 
-									for (int i = 0; i < (int)((double)_Intensity / 10); i++)
+									for (int i = 0; i < (int)((double)intensity / 10); i++)
 									{
 										RandomAddress = CorruptCore.RND.RandomLong(MaxAddress - 1);
 
@@ -512,7 +512,7 @@ namespace RTCV.CorruptCore
 									//Get the intensity divider. The size of the largest domain divided by the size of the current domain
 									long normalized = ((domainSize[selectedDomains.Length - 1] / (domainSize[i])));
 
-									for (int j = 0; j < (_Intensity / normalized); j++)
+									for (int j = 0; j < (intensity / normalized); j++)
 									{
 										MaxAddress = MemoryDomains.GetInterface(Domain).Size;
 										RandomAddress = CorruptCore.RND.RandomLong(MaxAddress - 1);
@@ -533,7 +533,7 @@ namespace RTCV.CorruptCore
 								for (int i = 0; i < selectedDomains.Length; i++)
 								{   //calculates the proportionnal normalized Intensity based on total selected domains size
 									double proportion = (double)MemoryDomains.GetInterface(selectedDomains[i]).Size / (double)totalSize;
-									normalizedIntensity[i] = Convert.ToInt64((double)_Intensity * proportion);
+									normalizedIntensity[i] = Convert.ToInt64((double)intensity * proportion);
 								}
 
 								for (int i = 0; i < selectedDomains.Length; i++)
@@ -559,7 +559,7 @@ namespace RTCV.CorruptCore
 								{
 									Domain = selectedDomains[i];
 
-									for (int j = 0; j < (_Intensity / selectedDomains.Length); j++)
+									for (int j = 0; j < (intensity / selectedDomains.Length); j++)
 									{
 										MaxAddress = MemoryDomains.GetInterface(Domain).Size;
 										RandomAddress = CorruptCore.RND.RandomLong(MaxAddress - 1);

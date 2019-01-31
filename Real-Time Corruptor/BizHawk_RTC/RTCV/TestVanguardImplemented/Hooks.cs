@@ -99,7 +99,7 @@ namespace TestVanguardImplemented
 			CPU_STEP_Count++;
 
 			bool autoCorrupt = CorruptCore.AutoCorrupt;
-			int errorDelay = CorruptCore.ErrorDelay;
+			long errorDelay = CorruptCore.ErrorDelay;
 			if (autoCorrupt && CPU_STEP_Count >= errorDelay)
 			{
 				CPU_STEP_Count = 0;
