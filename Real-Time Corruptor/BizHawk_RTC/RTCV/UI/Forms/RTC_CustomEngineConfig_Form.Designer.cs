@@ -626,7 +626,7 @@
             this.gbCheckBoxes.Size = new System.Drawing.Size(118, 113);
             this.gbCheckBoxes.TabIndex = 189;
             this.gbCheckBoxes.TabStop = false;
-            this.gbCheckBoxes.Text = "Misc";
+            this.gbCheckBoxes.Text = "Settings";
             // 
             // gbStoreTime
             // 

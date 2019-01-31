@@ -159,7 +159,7 @@ namespace RTCV.UI
             this.dgvBlastEditor.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
             this.dgvBlastEditor.Size = new System.Drawing.Size(662, 216);
             this.dgvBlastEditor.TabIndex = 0;
-            this.dgvBlastEditor.Tag = "color:dark";
+            this.dgvBlastEditor.Tag = "color:normal";
             // 
             // panelSidebar
             // 
@@ -184,7 +184,7 @@ namespace RTCV.UI
             this.panelSidebar.Name = "panelSidebar";
             this.panelSidebar.Size = new System.Drawing.Size(159, 447);
             this.panelSidebar.TabIndex = 146;
-            this.panelSidebar.Tag = "color:normal";
+            this.panelSidebar.Tag = "color:dark";
             // 
             // panel1
             // 
@@ -498,7 +498,7 @@ namespace RTCV.UI
             this.panel2.Name = "panel2";
             this.panel2.Size = new System.Drawing.Size(662, 21);
             this.panel2.TabIndex = 148;
-            this.panel2.Tag = "color:dark";
+            this.panel2.Tag = "color:light";
             // 
             // cbFilterColumn
             // 
@@ -533,7 +533,7 @@ namespace RTCV.UI
             this.panel3.Name = "panel3";
             this.panel3.Size = new System.Drawing.Size(662, 210);
             this.panel3.TabIndex = 149;
-            this.panel3.Tag = "color:normal";
+            this.panel3.Tag = "color:dark";
             // 
             // panel9
             // 

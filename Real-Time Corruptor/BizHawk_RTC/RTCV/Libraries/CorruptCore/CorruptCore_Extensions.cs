@@ -391,7 +391,7 @@ namespace RTCV.CorruptCore
 						bigIntValue -= addValue;
 
 					//Calculate the max value you can store in this many bits 
-					BigInteger maxValue = BigInteger.Pow(2, value.Length) - 1;
+					BigInteger maxValue = BigInteger.Pow(2, value.Length * 8) - 1;
 
 					if (bigIntValue > maxValue)
 						bigIntValue = bigIntValue % maxValue - 1; //Works fine for positive
@@ -400,7 +400,9 @@ namespace RTCV.CorruptCore
 
 					byte[] added = bigIntValue.ToByteArray();
 					byte[] outArray = new byte[value.Length];
-					added.CopyTo(outArray, outArray.Length - added.Length);
+					//Don't use copyto as we actually want to copy a trimmed array out
+					for (int i = 0; i < value.Length; i++)
+						outArray[i] = added[i];
 
 
 					if (isInputBigEndian)

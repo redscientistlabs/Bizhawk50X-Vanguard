@@ -276,7 +276,7 @@ namespace RTCV.UI
 
 
 
-			S.GET<RTC_NewBlastEditor_Form>().dgvBlastEditor.BackgroundColor = color.ChangeColorBrightness(-0.30f);
+			S.GET<RTC_NewBlastEditor_Form>().dgvBlastEditor.BackgroundColor = color;
 			S.GET<RTC_BlastGenerator_Form>().dgvBlastGenerator.BackgroundColor = color;
 
 			foreach (Control c in darkColorControls)
@@ -287,15 +287,15 @@ namespace RTCV.UI
 
 			foreach (Control c in darkerColorControls)
 				if (c is Label)
-					c.ForeColor = color.ChangeColorBrightness(-0.75f);
+					c.ForeColor = color.ChangeColorBrightness(-0.55f);
 				else
-					c.BackColor = color.ChangeColorBrightness(-0.75f);
+					c.BackColor = color.ChangeColorBrightness(-0.55f);
 
 			foreach (Control c in darkererColorControls)
 				if (c is Label)
-					c.ForeColor = color.ChangeColorBrightness(-0.825f);
+					c.ForeColor = color.ChangeColorBrightness(-0.75f);
 				else
-					c.BackColor = color.ChangeColorBrightness(-0.825f);
+					c.BackColor = color.ChangeColorBrightness(-0.75f);
 		}
 
 		public static void SelectRTCColor()
