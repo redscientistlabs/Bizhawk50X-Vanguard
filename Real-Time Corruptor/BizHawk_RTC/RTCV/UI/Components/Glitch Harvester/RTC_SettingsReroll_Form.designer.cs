@@ -30,6 +30,8 @@
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(RTC_SettingsReroll_Form));
             this.panel1 = new System.Windows.Forms.Panel();
+            this.cbRerollDomain = new System.Windows.Forms.CheckBox();
+            this.cbRerollSourceDomain = new System.Windows.Forms.CheckBox();
             this.cbRerollAddress = new System.Windows.Forms.CheckBox();
             this.cbRerollSourceAddress = new System.Windows.Forms.CheckBox();
             this.label4 = new System.Windows.Forms.Label();
@@ -37,8 +39,6 @@
             this.cbRerollUsesLists = new System.Windows.Forms.CheckBox();
             this.cbRerollFollowsCustom = new System.Windows.Forms.CheckBox();
             this.label1 = new System.Windows.Forms.Label();
-            this.cbRerollSourceDomain = new System.Windows.Forms.CheckBox();
-            this.cbRerollDomain = new System.Windows.Forms.CheckBox();
             this.panel1.SuspendLayout();
             this.panel2.SuspendLayout();
             this.SuspendLayout();
@@ -56,6 +56,34 @@
             this.panel1.TabIndex = 140;
             this.panel1.Tag = "color:dark";
             // 
+            // cbRerollDomain
+            // 
+            this.cbRerollDomain.AutoSize = true;
+            this.cbRerollDomain.Enabled = false;
+            this.cbRerollDomain.Font = new System.Drawing.Font("Segoe UI", 8F);
+            this.cbRerollDomain.ForeColor = System.Drawing.Color.White;
+            this.cbRerollDomain.Location = new System.Drawing.Point(10, 64);
+            this.cbRerollDomain.Name = "cbRerollDomain";
+            this.cbRerollDomain.Size = new System.Drawing.Size(99, 17);
+            this.cbRerollDomain.TabIndex = 3;
+            this.cbRerollDomain.Text = "Reroll Domain";
+            this.cbRerollDomain.UseVisualStyleBackColor = true;
+            this.cbRerollDomain.CheckedChanged += new System.EventHandler(this.cbRerollDomain_CheckedChanged);
+            // 
+            // cbRerollSourceDomain
+            // 
+            this.cbRerollSourceDomain.AutoSize = true;
+            this.cbRerollSourceDomain.Enabled = false;
+            this.cbRerollSourceDomain.Font = new System.Drawing.Font("Segoe UI", 8F);
+            this.cbRerollSourceDomain.ForeColor = System.Drawing.Color.White;
+            this.cbRerollSourceDomain.Location = new System.Drawing.Point(10, 24);
+            this.cbRerollSourceDomain.Name = "cbRerollSourceDomain";
+            this.cbRerollSourceDomain.Size = new System.Drawing.Size(137, 17);
+            this.cbRerollSourceDomain.TabIndex = 2;
+            this.cbRerollSourceDomain.Text = "Reroll Source Domain";
+            this.cbRerollSourceDomain.UseVisualStyleBackColor = true;
+            this.cbRerollSourceDomain.CheckedChanged += new System.EventHandler(this.cbRerollSourceDomain_CheckedChanged);
+            // 
             // cbRerollAddress
             // 
             this.cbRerollAddress.AutoSize = true;
@@ -67,6 +95,7 @@
             this.cbRerollAddress.TabIndex = 1;
             this.cbRerollAddress.Text = "Reroll Address";
             this.cbRerollAddress.UseVisualStyleBackColor = true;
+            this.cbRerollAddress.CheckedChanged += new System.EventHandler(this.cbRerollAddress_CheckedChanged);
             // 
             // cbRerollSourceAddress
             // 
@@ -79,6 +108,7 @@
             this.cbRerollSourceAddress.TabIndex = 0;
             this.cbRerollSourceAddress.Text = "Reroll Source Address";
             this.cbRerollSourceAddress.UseVisualStyleBackColor = true;
+            this.cbRerollSourceAddress.CheckedChanged += new System.EventHandler(this.cbRerollSourceAddress_CheckedChanged);
             // 
             // label4
             // 
@@ -138,30 +168,6 @@
             this.label1.Size = new System.Drawing.Size(82, 15);
             this.label1.TabIndex = 143;
             this.label1.Text = "Value Settings";
-            // 
-            // cbRerollSourceDomain
-            // 
-            this.cbRerollSourceDomain.AutoSize = true;
-            this.cbRerollSourceDomain.Font = new System.Drawing.Font("Segoe UI", 8F);
-            this.cbRerollSourceDomain.ForeColor = System.Drawing.Color.White;
-            this.cbRerollSourceDomain.Location = new System.Drawing.Point(10, 24);
-            this.cbRerollSourceDomain.Name = "cbRerollSourceDomain";
-            this.cbRerollSourceDomain.Size = new System.Drawing.Size(137, 17);
-            this.cbRerollSourceDomain.TabIndex = 2;
-            this.cbRerollSourceDomain.Text = "Reroll Source Domain";
-            this.cbRerollSourceDomain.UseVisualStyleBackColor = true;
-            // 
-            // cbRerollDomain
-            // 
-            this.cbRerollDomain.AutoSize = true;
-            this.cbRerollDomain.Font = new System.Drawing.Font("Segoe UI", 8F);
-            this.cbRerollDomain.ForeColor = System.Drawing.Color.White;
-            this.cbRerollDomain.Location = new System.Drawing.Point(10, 64);
-            this.cbRerollDomain.Name = "cbRerollDomain";
-            this.cbRerollDomain.Size = new System.Drawing.Size(99, 17);
-            this.cbRerollDomain.TabIndex = 3;
-            this.cbRerollDomain.Text = "Reroll Domain";
-            this.cbRerollDomain.UseVisualStyleBackColor = true;
             // 
             // RTC_SettingsReroll_Form
             // 

@@ -479,12 +479,12 @@ namespace RTCV.UI
 
 
 				if (domainToMiDico.ContainsKey(bu.Domain ?? String.Empty))
-					upDownAddress.Maximum = domainToMiDico[bu.Domain].Size;
+					upDownAddress.Maximum = domainToMiDico[bu.Domain].Size -1;
 				else
 					upDownAddress.Maximum = Int32.MaxValue;
 
 				if (domainToMiDico.ContainsKey(bu.SourceDomain ?? String.Empty))
-					upDownSourceAddress.Maximum = domainToMiDico[bu.SourceDomain].Size;
+					upDownSourceAddress.Maximum = domainToMiDico[bu.SourceDomain].Size -1;
 				else
 					upDownSourceAddress.Maximum = Int32.MaxValue;
 

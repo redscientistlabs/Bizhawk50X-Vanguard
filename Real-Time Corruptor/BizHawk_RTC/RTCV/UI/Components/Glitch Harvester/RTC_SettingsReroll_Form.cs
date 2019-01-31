@@ -21,8 +21,6 @@ namespace RTCV.UI
 		{
 			InitializeComponent();
 
-			cbRerollAddress.CheckedChanged += cbRerollAddress_CheckedChanged;
-			cbRerollSourceAddress.CheckedChanged += cbRerollSourceAddress_CheckedChanged;
 
 			UICore.SetRTCColor(UICore.GeneralColor, this);
 			Load += RTC_SettingRerollForm_Load;
@@ -43,7 +41,15 @@ namespace RTCV.UI
 		private void cbRerollSourceAddress_CheckedChanged(object sender, EventArgs e)
 		{
 			CorruptCore.CorruptCore.RerollSourceAddress = cbRerollSourceAddress.Checked;
-			
+			if (!cbRerollSourceAddress.Checked)
+			{
+				cbRerollSourceDomain.Checked = false;
+				cbRerollSourceDomain.Enabled = false;
+			}
+			else
+			{
+				cbRerollSourceDomain.Enabled = true;
+			}
 		}
 
 		private void cbRerollDomain_CheckedChanged(object sender, EventArgs e)
@@ -59,6 +65,15 @@ namespace RTCV.UI
 		private void cbRerollAddress_CheckedChanged(object sender, EventArgs e)
 		{
 			CorruptCore.CorruptCore.RerollAddress = cbRerollAddress.Checked;
+			if (!cbRerollAddress.Checked)
+			{
+				cbRerollDomain.Checked = false;
+				cbRerollDomain.Enabled = false;
+			}
+			else
+			{
+				cbRerollDomain.Enabled = true;
+			}
 		}
 
 		private void CbRerollFollowsCustom_CheckedChanged(object sender, EventArgs e)

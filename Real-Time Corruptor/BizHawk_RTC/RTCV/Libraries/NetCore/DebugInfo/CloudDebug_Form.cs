@@ -218,7 +218,10 @@ namespace RTCV.NetCore
 		private void CloudDebug_Load(object sender, EventArgs e)
 		{
 			if (RTCV.NetCore.Params.IsParamSet("DEBUG_FETCHMODE"))
+			{
 				btnSendDebug.Text = "Fetch data";
+				tbKey.ReadOnly = false;
+			}
 		}
 
 		private void btnDebugInfo_Click(object sender, EventArgs e)
