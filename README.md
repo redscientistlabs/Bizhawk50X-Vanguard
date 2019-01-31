@@ -20,4 +20,4 @@ Features:
 
 Please consult the Official Wiki for software documentation. https://corrupt.wiki
 
-Download link: http://redscientist.com/#/rtcorruptormod
+Download link: http://redscientist.com/rtc
