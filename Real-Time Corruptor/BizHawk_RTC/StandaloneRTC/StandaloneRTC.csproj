@@ -109,10 +109,6 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\BizHawk.Client.EmuHawk\BizHawk.Client.EmuHawk.csproj">
-      <Project>{dd448b37-ba3f-4544-9754-5406e8094723}</Project>
-      <Name>BizHawk.Client.EmuHawk</Name>
-    </ProjectReference>
     <ProjectReference Include="..\RTCV\Libraries\NetCore\NetCore.csproj">
       <Project>{7e106aec-5614-4206-9e4d-25759c90e8ae}</Project>
       <Name>NetCore</Name>
