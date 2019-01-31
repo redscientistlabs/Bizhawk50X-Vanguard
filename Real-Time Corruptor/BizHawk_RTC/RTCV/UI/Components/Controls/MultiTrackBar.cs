@@ -15,7 +15,11 @@ namespace RTCV.UI.Components.Controls
         public event EventHandler<ValueUpdateEventArgs> ValueChanged;
         public virtual void OnValueChanged(ValueUpdateEventArgs e) => ValueChanged?.Invoke(this, e);
 
-        private bool GeneralUpdateFlag = false; //makes other events ignore firing
+
+		public event EventHandler<EventArgs> CheckChanged;
+		public virtual void OnCheckChanged(object sender, EventArgs e) => CheckChanged?.Invoke(sender, e);
+
+		private bool GeneralUpdateFlag = false; //makes other events ignore firing
 
 		private long _Value;
         [Description("Net value of the control (displayed in numeric box)"), Category("Data")]
@@ -33,6 +37,29 @@ namespace RTCV.UI.Components.Controls
 				long nmValue = Convert.ToInt64(nmControlValue.Value);
 				int tbValue = nmValueToTbValueQuadScale(nmControlValue.Value);
 				UpdateAllControls(nmValue, tbValue, null);
+			}
+		}
+		private bool _DisplayCheckbox = false;
+		[Description("Display a checkbox before the label"), Category("Data")]
+		public bool DisplayCheckbox
+		{
+			get
+			{
+				return _DisplayCheckbox;
+			}
+			set
+			{
+				_DisplayCheckbox = value;
+				if (value)
+				{
+					lbControlName.Visible = false;
+					cbControlName.Visible = true;
+				}
+				else
+				{
+					lbControlName.Visible = true;
+					cbControlName.Visible = false;
+				}
 			}
 		}
 
@@ -88,6 +115,7 @@ namespace RTCV.UI.Components.Controls
         public MultiTrackBar()
         {
             InitializeComponent();
+			cbControlName.Location = lbControlName.Location;
 
 			updater = new Timer();
             updater.Interval = updateThreshold;
@@ -151,7 +179,7 @@ namespace RTCV.UI.Components.Controls
             comp._parent = this;
         }
 
-        private void MultiTrackBar_Comp_Load(object sender, EventArgs e)
+        private void MultiTrackBar_Load(object sender, EventArgs e)
         {
             FirstLoadDone = true;
         }
@@ -225,7 +253,22 @@ namespace RTCV.UI.Components.Controls
 
             PropagateValue(nmValue, tbValue, nmControlValue);
         }
-    }
+		private void cbControlName_CheckedChanged(object sender, EventArgs e)
+		{
+			OnCheckChanged(sender, e);
+		}
+
+		private void nmControlValue_KeyUp(object sender, KeyEventArgs e)
+		{
+			if (GeneralUpdateFlag)
+				return;
+
+			long nmValue = Convert.ToInt64(nmControlValue.Value);
+			int tbValue = nmValueToTbValueQuadScale(nmControlValue.Value);
+
+			PropagateValue(nmValue, tbValue, nmControlValue);
+		}
+	}
 
     internal class NoFocusTrackBar : System.Windows.Forms.TrackBar
     {
