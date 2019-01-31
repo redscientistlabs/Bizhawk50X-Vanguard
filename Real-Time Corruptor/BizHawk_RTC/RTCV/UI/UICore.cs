@@ -313,6 +313,7 @@ namespace RTCV.UI
 			else
 				return;
 
+			GeneralColor = color;
 			SetRTCColor(color);
 
 			SaveRTCColor(color);
