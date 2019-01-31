@@ -62,11 +62,12 @@
             this.nmControlValue.Size = new System.Drawing.Size(72, 22);
             this.nmControlValue.TabIndex = 2;
             this.nmControlValue.Tag = "color:dark";
-            this.nmControlValue.ValueChanged += new System.EventHandler(this.nmControlValue_ValueChanged);
-            // 
-            // tbControlValue
-            // 
-            this.tbControlValue.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+			this.nmControlValue.ValueChanged += new System.EventHandler(this.nmControlValue_ValueChanged);
+			this.nmControlValue.KeyUp += this.nmControlValue_ValueChanged;
+			// 
+			// tbControlValue
+			// 
+			this.tbControlValue.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.tbControlValue.Location = new System.Drawing.Point(0, 29);
             this.tbControlValue.Maximum = 65536;
