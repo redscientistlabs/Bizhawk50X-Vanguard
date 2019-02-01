@@ -123,16 +123,23 @@ namespace Vanguard
 			}
 
 			try { 
-			VanguardCore.args = args;
+				VanguardCore.args = args;
 
-			disableRTC = VanguardCore.args.Contains("-DISABLERTC");
+				disableRTC = VanguardCore.args.Contains("-DISABLERTC");
 
-			//VanguardCore.attached = true;
-			VanguardCore.attached = VanguardCore.args.Contains("-ATTACHED");
-				//RTC_E.isStandaloneEmu = VanguardCore.args.Contains("-REMOTERTC");
+				//VanguardCore.attached = true;
+				VanguardCore.attached = VanguardCore.args.Contains("-ATTACHED");
 
-				//RTC_Unispec.RTCSpec.Update(Spec.HOOKS_SHOWCONSOLE.ToString(), RTC_Core.args.Contains("-CONSOLE"));
-			}
+				RTCV.NetCore.Extensions.ConsoleHelper.CreateConsole("debug/Bizhawk.log");
+				if (args.Contains("-CONSOLE"))
+				{
+					RTCV.NetCore.Extensions.ConsoleHelper.ShowConsole();
+				}
+				else
+				{
+					RTCV.NetCore.Extensions.ConsoleHelper.HideConsole();
+				}
+				}
 			catch (Exception ex)
 			{
 				if (VanguardCore.ShowErrorDialog(ex, true) == DialogResult.Abort)

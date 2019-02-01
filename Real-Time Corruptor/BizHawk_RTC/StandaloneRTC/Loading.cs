@@ -2,29 +2,28 @@
 using System.Linq;
 using System.Windows.Forms;
 using RTCV.UI;
+using RTCV;
 
 namespace StandaloneRTC
 {
-	public partial class Loader : UI_Extensions.RTC_Standalone_Form
+public partial class Loader : UI_Extensions.RTC_Standalone_Form
 	{ 
 		Timer t;
 
 		public Loader(string[] args)
 		{
 			InitializeComponent();
-
-			LogConsole.CreateConsole();
-
+			RTCV.NetCore.Extensions.ConsoleHelper.CreateConsole("debug/UI.log");
 			if (args.Contains("-CONSOLE"))
 			{
-				LogConsole.ShowConsole();
+				RTCV.NetCore.Extensions.ConsoleHelper.ShowConsole();
 			}
 			else
 			{
-				LogConsole.HideConsole();
+				RTCV.NetCore.Extensions.ConsoleHelper.HideConsole();
 			}
+			//Extensions.ConsoleHelper.ShowConsole();
 
-		//	RTC.LogConsole.ShowConsole();
 			UICore.Start(this);
 		}
 
