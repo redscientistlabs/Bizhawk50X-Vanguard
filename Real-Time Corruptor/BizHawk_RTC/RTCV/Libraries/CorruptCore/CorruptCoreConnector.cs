@@ -37,8 +37,11 @@ namespace RTCV.CorruptCore
 					StringBuilder sb = new StringBuilder();
 					sb.AppendLine("Spec Dump from CorruptCore");
 					sb.AppendLine();
+					sb.AppendLine("UISpec");
 					RTCV.NetCore.AllSpec.UISpec?.GetDump().ForEach(x => sb.AppendLine(x));
+					sb.AppendLine("CorruptCoreSpec");
 					RTCV.NetCore.AllSpec.CorruptCoreSpec?.GetDump().ForEach(x => sb.AppendLine(x));
+					sb.AppendLine("VanguardSpec");
 					RTCV.NetCore.AllSpec.VanguardSpec?.GetDump().ForEach(x => sb.AppendLine(x));
 					e.setReturnValue(sb.ToString());
 					break;

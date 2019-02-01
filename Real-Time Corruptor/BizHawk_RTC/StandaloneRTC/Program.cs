@@ -109,7 +109,6 @@ namespace StandaloneRTC
 					string fname = Path.Combine(directory, dllname);
 					if (!File.Exists(fname))
 					{
-						Console.WriteLine("Could not find assembly " + fname);
 						return null;
 					}
 					
@@ -118,7 +117,7 @@ namespace StandaloneRTC
 				}
 			}catch(Exception e)
 			{
-				Console.WriteLine(e);
+				MessageBox.Show("Something went really wrong in AssemblyResolve. Send this to the devs\n" + e);
 				return null;
 			}
 		}
