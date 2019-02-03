@@ -80,6 +80,7 @@ namespace RTCV.UI
 				RTC_CustomEngine.Source = BlastUnitSource.STORE;
 				gbValueSettings.Enabled = false;
 				gbStoreSettings.Enabled = true;
+				gbStoreCompare.Enabled = true;
 			}
 
 			else if (rbUnitSourceValue.Checked)
@@ -87,6 +88,7 @@ namespace RTCV.UI
 				RTC_CustomEngine.Source = BlastUnitSource.VALUE;
 				gbValueSettings.Enabled = true;
 				gbStoreSettings.Enabled = false;
+				gbStoreCompare.Enabled = false;
 			}
 		}
 
@@ -507,7 +509,7 @@ namespace RTCV.UI
 				switch (RTC_CustomEngine.StoreLimiterSource)
 				{
 					case (StoreLimiterSource.ADDRESS):
-						rbStoreModeAtddress.Checked = true;
+						rbStoreModeAddress.Checked = true;
 						break;
 					case (StoreLimiterSource.SOURCEADDRESS):
 						rbStoreModeSource.Checked = true;

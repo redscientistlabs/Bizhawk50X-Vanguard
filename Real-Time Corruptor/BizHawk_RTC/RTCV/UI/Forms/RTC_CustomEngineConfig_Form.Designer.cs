@@ -42,8 +42,6 @@
             this.gbValueRange = new System.Windows.Forms.GroupBox();
             this.label26 = new System.Windows.Forms.Label();
             this.label27 = new System.Windows.Forms.Label();
-            this.nmMaxValue = new RTCV.UI.NumericUpDownHexFix();
-            this.nmMinValue = new RTCV.UI.NumericUpDownHexFix();
             this.rbRange = new System.Windows.Forms.RadioButton();
             this.rbValueList = new System.Windows.Forms.RadioButton();
             this.rbRandom = new System.Windows.Forms.RadioButton();
@@ -53,7 +51,7 @@
             this.rbLimiterGenerate = new System.Windows.Forms.RadioButton();
             this.rbLimiterFirstExecute = new System.Windows.Forms.RadioButton();
             this.rbLimiterNone = new System.Windows.Forms.RadioButton();
-            this.gbStoreMode = new System.Windows.Forms.GroupBox();
+            this.gbStoreCompare = new System.Windows.Forms.GroupBox();
             this.rbStoreModeBoth = new System.Windows.Forms.RadioButton();
             this.rbStoreModeSource = new System.Windows.Forms.RadioButton();
             this.rbStoreModeAddress = new System.Windows.Forms.RadioButton();
@@ -88,16 +86,16 @@
             this.label2 = new System.Windows.Forms.Label();
             this.panel1 = new System.Windows.Forms.Panel();
             this.gbValueSource = new System.Windows.Forms.GroupBox();
+            this.nmMaxValue = new RTCV.UI.NumericUpDownHexFix();
+            this.nmMinValue = new RTCV.UI.NumericUpDownHexFix();
             ((System.ComponentModel.ISupportInitialize)(this.nmMaxInfinite)).BeginInit();
             this.gbUnitSource.SuspendLayout();
             this.gbValueList.SuspendLayout();
             this.gbValueSettings.SuspendLayout();
             this.gbValueRange.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.nmMaxValue)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.nmMinValue)).BeginInit();
             this.gbLimiterList.SuspendLayout();
             this.groupBox2.SuspendLayout();
-            this.gbStoreMode.SuspendLayout();
+            this.gbStoreCompare.SuspendLayout();
             this.gbStepSettings.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.nmTilt)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.nmDelay)).BeginInit();
@@ -110,6 +108,8 @@
             this.pnTopBar.SuspendLayout();
             this.panel1.SuspendLayout();
             this.gbValueSource.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.nmMaxValue)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.nmMinValue)).BeginInit();
             this.SuspendLayout();
             // 
             // cbLockUnits
@@ -174,7 +174,7 @@
             this.label1.AutoSize = true;
             this.label1.Font = new System.Drawing.Font("Segoe UI", 8F);
             this.label1.ForeColor = System.Drawing.Color.White;
-            this.label1.Location = new System.Drawing.Point(6, 63);
+            this.label1.Location = new System.Drawing.Point(4, 63);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(101, 13);
             this.label1.TabIndex = 148;
@@ -197,6 +197,7 @@
             // rbUnitSourceStore
             // 
             this.rbUnitSourceStore.AutoSize = true;
+            this.rbUnitSourceStore.BackColor = System.Drawing.Color.Transparent;
             this.rbUnitSourceStore.Font = new System.Drawing.Font("Segoe UI", 8F);
             this.rbUnitSourceStore.ForeColor = System.Drawing.Color.White;
             this.rbUnitSourceStore.Location = new System.Drawing.Point(6, 31);
@@ -204,7 +205,7 @@
             this.rbUnitSourceStore.Size = new System.Drawing.Size(52, 17);
             this.rbUnitSourceStore.TabIndex = 1;
             this.rbUnitSourceStore.Text = "Store";
-            this.rbUnitSourceStore.UseVisualStyleBackColor = true;
+            this.rbUnitSourceStore.UseVisualStyleBackColor = false;
             this.rbUnitSourceStore.CheckedChanged += new System.EventHandler(this.unitSource_CheckedChanged);
             // 
             // rbUnitSourceValue
@@ -224,6 +225,7 @@
             // 
             // gbValueList
             // 
+            this.gbValueList.BackColor = System.Drawing.Color.Transparent;
             this.gbValueList.Controls.Add(this.cbValueList);
             this.gbValueList.Font = new System.Drawing.Font("Segoe UI", 8F);
             this.gbValueList.ForeColor = System.Drawing.Color.White;
@@ -251,8 +253,10 @@
             // 
             // gbValueSettings
             // 
+            this.gbValueSettings.BackColor = System.Drawing.Color.Transparent;
             this.gbValueSettings.Controls.Add(this.gbValueRange);
             this.gbValueSettings.Controls.Add(this.gbValueList);
+            this.gbValueSettings.Controls.Add(this.gbValueSource);
             this.gbValueSettings.Font = new System.Drawing.Font("Segoe UI", 8F);
             this.gbValueSettings.ForeColor = System.Drawing.Color.White;
             this.gbValueSettings.Location = new System.Drawing.Point(15, 91);
@@ -264,6 +268,7 @@
             // 
             // gbValueRange
             // 
+            this.gbValueRange.BackColor = System.Drawing.Color.Transparent;
             this.gbValueRange.Controls.Add(this.label26);
             this.gbValueRange.Controls.Add(this.label27);
             this.gbValueRange.Controls.Add(this.nmMaxValue);
@@ -299,40 +304,10 @@
             this.label27.TabIndex = 166;
             this.label27.Text = "Min Value";
             // 
-            // nmMaxValue
-            // 
-            this.nmMaxValue.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
-            this.nmMaxValue.Font = new System.Drawing.Font("Consolas", 8F);
-            this.nmMaxValue.ForeColor = System.Drawing.Color.White;
-            this.nmMaxValue.Hexadecimal = true;
-            this.nmMaxValue.Location = new System.Drawing.Point(67, 38);
-            this.nmMaxValue.Name = "nmMaxValue";
-            this.nmMaxValue.Size = new System.Drawing.Size(92, 20);
-            this.nmMaxValue.TabIndex = 168;
-            this.nmMaxValue.Tag = "color:dark";
-            this.nmMaxValue.Value = new decimal(new int[] {
-            255,
-            0,
-            0,
-            0});
-            this.nmMaxValue.ValueChanged += new System.EventHandler(this.nmMaxValue_ValueChanged);
-            // 
-            // nmMinValue
-            // 
-            this.nmMinValue.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
-            this.nmMinValue.Font = new System.Drawing.Font("Consolas", 8F);
-            this.nmMinValue.ForeColor = System.Drawing.Color.White;
-            this.nmMinValue.Hexadecimal = true;
-            this.nmMinValue.Location = new System.Drawing.Point(67, 13);
-            this.nmMinValue.Name = "nmMinValue";
-            this.nmMinValue.Size = new System.Drawing.Size(92, 20);
-            this.nmMinValue.TabIndex = 167;
-            this.nmMinValue.Tag = "color:dark";
-            this.nmMinValue.ValueChanged += new System.EventHandler(this.nmMinValue_ValueChanged);
-            // 
             // rbRange
             // 
             this.rbRange.AutoSize = true;
+            this.rbRange.BackColor = System.Drawing.Color.Transparent;
             this.rbRange.Font = new System.Drawing.Font("Segoe UI", 8F);
             this.rbRange.ForeColor = System.Drawing.Color.White;
             this.rbRange.Location = new System.Drawing.Point(6, 30);
@@ -340,12 +315,13 @@
             this.rbRange.Size = new System.Drawing.Size(58, 17);
             this.rbRange.TabIndex = 180;
             this.rbRange.Text = "Range";
-            this.rbRange.UseVisualStyleBackColor = true;
+            this.rbRange.UseVisualStyleBackColor = false;
             this.rbRange.CheckedChanged += new System.EventHandler(this.valueSource_CheckedChanged);
             // 
             // rbValueList
             // 
             this.rbValueList.AutoSize = true;
+            this.rbValueList.BackColor = System.Drawing.Color.Transparent;
             this.rbValueList.Font = new System.Drawing.Font("Segoe UI", 8F);
             this.rbValueList.ForeColor = System.Drawing.Color.White;
             this.rbValueList.Location = new System.Drawing.Point(6, 46);
@@ -353,12 +329,13 @@
             this.rbValueList.Size = new System.Drawing.Size(73, 17);
             this.rbValueList.TabIndex = 177;
             this.rbValueList.Text = "Value List";
-            this.rbValueList.UseVisualStyleBackColor = true;
+            this.rbValueList.UseVisualStyleBackColor = false;
             this.rbValueList.CheckedChanged += new System.EventHandler(this.valueSource_CheckedChanged);
             // 
             // rbRandom
             // 
             this.rbRandom.AutoSize = true;
+            this.rbRandom.BackColor = System.Drawing.Color.Transparent;
             this.rbRandom.Checked = true;
             this.rbRandom.Font = new System.Drawing.Font("Segoe UI", 8F);
             this.rbRandom.ForeColor = System.Drawing.Color.White;
@@ -368,14 +345,14 @@
             this.rbRandom.TabIndex = 176;
             this.rbRandom.TabStop = true;
             this.rbRandom.Text = "Random";
-            this.rbRandom.UseVisualStyleBackColor = true;
+            this.rbRandom.UseVisualStyleBackColor = false;
             this.rbRandom.CheckedChanged += new System.EventHandler(this.valueSource_CheckedChanged);
             // 
             // gbLimiterList
             // 
             this.gbLimiterList.BackColor = System.Drawing.Color.Transparent;
             this.gbLimiterList.Controls.Add(this.groupBox2);
-            this.gbLimiterList.Controls.Add(this.gbStoreMode);
+            this.gbLimiterList.Controls.Add(this.gbStoreCompare);
             this.gbLimiterList.Controls.Add(this.cbLimiterInverted);
             this.gbLimiterList.Controls.Add(this.cbLimiterList);
             this.gbLimiterList.Font = new System.Drawing.Font("Segoe UI", 8F);
@@ -454,26 +431,28 @@
             this.rbLimiterNone.UseVisualStyleBackColor = true;
             this.rbLimiterNone.CheckedChanged += new System.EventHandler(this.limiterTime_CheckedChanged);
             // 
-            // gbStoreMode
+            // gbStoreCompare
             // 
-            this.gbStoreMode.Controls.Add(this.rbStoreModeBoth);
-            this.gbStoreMode.Controls.Add(this.rbStoreModeSource);
-            this.gbStoreMode.Controls.Add(this.rbStoreModeAddress);
-            this.gbStoreMode.Font = new System.Drawing.Font("Segoe UI", 8F);
-            this.gbStoreMode.ForeColor = System.Drawing.Color.White;
-            this.gbStoreMode.Location = new System.Drawing.Point(100, 50);
-            this.gbStoreMode.Name = "gbStoreMode";
-            this.gbStoreMode.Size = new System.Drawing.Size(97, 65);
-            this.gbStoreMode.TabIndex = 184;
-            this.gbStoreMode.TabStop = false;
-            this.gbStoreMode.Text = "Store Compare";
+            this.gbStoreCompare.BackColor = System.Drawing.Color.Transparent;
+            this.gbStoreCompare.Controls.Add(this.rbStoreModeBoth);
+            this.gbStoreCompare.Controls.Add(this.rbStoreModeSource);
+            this.gbStoreCompare.Controls.Add(this.rbStoreModeAddress);
+            this.gbStoreCompare.Enabled = false;
+            this.gbStoreCompare.Font = new System.Drawing.Font("Segoe UI", 8F);
+            this.gbStoreCompare.ForeColor = System.Drawing.Color.White;
+            this.gbStoreCompare.Location = new System.Drawing.Point(100, 47);
+            this.gbStoreCompare.Name = "gbStoreCompare";
+            this.gbStoreCompare.Size = new System.Drawing.Size(97, 68);
+            this.gbStoreCompare.TabIndex = 184;
+            this.gbStoreCompare.TabStop = false;
+            this.gbStoreCompare.Text = "Store Compare";
             // 
             // rbStoreModeBoth
             // 
             this.rbStoreModeBoth.AutoSize = true;
             this.rbStoreModeBoth.Font = new System.Drawing.Font("Segoe UI", 8F);
             this.rbStoreModeBoth.ForeColor = System.Drawing.Color.White;
-            this.rbStoreModeBoth.Location = new System.Drawing.Point(5, 45);
+            this.rbStoreModeBoth.Location = new System.Drawing.Point(5, 46);
             this.rbStoreModeBoth.Name = "rbStoreModeBoth";
             this.rbStoreModeBoth.Size = new System.Drawing.Size(50, 17);
             this.rbStoreModeBoth.TabIndex = 194;
@@ -486,7 +465,7 @@
             this.rbStoreModeSource.AutoSize = true;
             this.rbStoreModeSource.Font = new System.Drawing.Font("Segoe UI", 8F);
             this.rbStoreModeSource.ForeColor = System.Drawing.Color.White;
-            this.rbStoreModeSource.Location = new System.Drawing.Point(5, 29);
+            this.rbStoreModeSource.Location = new System.Drawing.Point(5, 30);
             this.rbStoreModeSource.Name = "rbStoreModeSource";
             this.rbStoreModeSource.Size = new System.Drawing.Size(60, 17);
             this.rbStoreModeSource.TabIndex = 193;
@@ -500,7 +479,7 @@
             this.rbStoreModeAddress.Checked = true;
             this.rbStoreModeAddress.Font = new System.Drawing.Font("Segoe UI", 8F);
             this.rbStoreModeAddress.ForeColor = System.Drawing.Color.White;
-            this.rbStoreModeAddress.Location = new System.Drawing.Point(5, 13);
+            this.rbStoreModeAddress.Location = new System.Drawing.Point(5, 14);
             this.rbStoreModeAddress.Name = "rbStoreModeAddress";
             this.rbStoreModeAddress.Size = new System.Drawing.Size(66, 17);
             this.rbStoreModeAddress.TabIndex = 192;
@@ -515,7 +494,7 @@
             this.cbLimiterInverted.AutoSize = true;
             this.cbLimiterInverted.Font = new System.Drawing.Font("Segoe UI", 8F);
             this.cbLimiterInverted.ForeColor = System.Drawing.Color.White;
-            this.cbLimiterInverted.Location = new System.Drawing.Point(119, 17);
+            this.cbLimiterInverted.Location = new System.Drawing.Point(129, 17);
             this.cbLimiterInverted.Name = "cbLimiterInverted";
             this.cbLimiterInverted.Size = new System.Drawing.Size(68, 17);
             this.cbLimiterInverted.TabIndex = 183;
@@ -533,7 +512,7 @@
             this.cbLimiterList.FormattingEnabled = true;
             this.cbLimiterList.Location = new System.Drawing.Point(9, 15);
             this.cbLimiterList.Name = "cbLimiterList";
-            this.cbLimiterList.Size = new System.Drawing.Size(101, 21);
+            this.cbLimiterList.Size = new System.Drawing.Size(110, 21);
             this.cbLimiterList.TabIndex = 87;
             this.cbLimiterList.Tag = "color:dark";
             this.cbLimiterList.SelectedIndexChanged += new System.EventHandler(this.cbLimiterList_SelectedIndexChanged);
@@ -554,6 +533,7 @@
             // cbLoopUnit
             // 
             this.cbLoopUnit.AutoSize = true;
+            this.cbLoopUnit.BackColor = System.Drawing.Color.Transparent;
             this.cbLoopUnit.Font = new System.Drawing.Font("Segoe UI", 8F);
             this.cbLoopUnit.ForeColor = System.Drawing.Color.White;
             this.cbLoopUnit.Location = new System.Drawing.Point(9, 90);
@@ -561,7 +541,7 @@
             this.cbLoopUnit.Size = new System.Drawing.Size(139, 17);
             this.cbLoopUnit.TabIndex = 183;
             this.cbLoopUnit.Text = "Loop Generated Units";
-            this.cbLoopUnit.UseVisualStyleBackColor = true;
+            this.cbLoopUnit.UseVisualStyleBackColor = false;
             this.cbLoopUnit.CheckedChanged += new System.EventHandler(this.cbLoopUnit_CheckedChanged);
             // 
             // gbStepSettings
@@ -577,7 +557,7 @@
             this.gbStepSettings.ForeColor = System.Drawing.Color.White;
             this.gbStepSettings.Location = new System.Drawing.Point(15, 186);
             this.gbStepSettings.Name = "gbStepSettings";
-            this.gbStepSettings.Size = new System.Drawing.Size(154, 115);
+            this.gbStepSettings.Size = new System.Drawing.Size(148, 115);
             this.gbStepSettings.TabIndex = 188;
             this.gbStepSettings.TabStop = false;
             this.gbStepSettings.Text = "Modifiers";
@@ -598,7 +578,7 @@
             this.nmTilt.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
             this.nmTilt.Font = new System.Drawing.Font("Segoe UI", 8F);
             this.nmTilt.ForeColor = System.Drawing.Color.White;
-            this.nmTilt.Location = new System.Drawing.Point(75, 63);
+            this.nmTilt.Location = new System.Drawing.Point(72, 63);
             this.nmTilt.Maximum = new decimal(new int[] {
             -1981284353,
             -1966660860,
@@ -642,7 +622,7 @@
             this.nmDelay.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
             this.nmDelay.Font = new System.Drawing.Font("Segoe UI", 8F);
             this.nmDelay.ForeColor = System.Drawing.Color.White;
-            this.nmDelay.Location = new System.Drawing.Point(75, 38);
+            this.nmDelay.Location = new System.Drawing.Point(72, 38);
             this.nmDelay.Maximum = new decimal(new int[] {
             -1981284353,
             -1966660860,
@@ -659,7 +639,7 @@
             this.nmLifetime.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
             this.nmLifetime.Font = new System.Drawing.Font("Segoe UI", 8F);
             this.nmLifetime.ForeColor = System.Drawing.Color.White;
-            this.nmLifetime.Location = new System.Drawing.Point(75, 13);
+            this.nmLifetime.Location = new System.Drawing.Point(72, 13);
             this.nmLifetime.Maximum = new decimal(new int[] {
             -1981284353,
             -1966660860,
@@ -707,6 +687,7 @@
             // rbStoreImmediate
             // 
             this.rbStoreImmediate.AutoSize = true;
+            this.rbStoreImmediate.BackColor = System.Drawing.Color.Transparent;
             this.rbStoreImmediate.Checked = true;
             this.rbStoreImmediate.Font = new System.Drawing.Font("Segoe UI", 8F);
             this.rbStoreImmediate.ForeColor = System.Drawing.Color.White;
@@ -716,12 +697,13 @@
             this.rbStoreImmediate.TabIndex = 180;
             this.rbStoreImmediate.TabStop = true;
             this.rbStoreImmediate.Text = "Immediate";
-            this.rbStoreImmediate.UseVisualStyleBackColor = true;
+            this.rbStoreImmediate.UseVisualStyleBackColor = false;
             this.rbStoreImmediate.CheckedChanged += new System.EventHandler(this.storeTime_CheckedChanged);
             // 
             // rbStoreFirstExecute
             // 
             this.rbStoreFirstExecute.AutoSize = true;
+            this.rbStoreFirstExecute.BackColor = System.Drawing.Color.Transparent;
             this.rbStoreFirstExecute.Font = new System.Drawing.Font("Segoe UI", 8F);
             this.rbStoreFirstExecute.ForeColor = System.Drawing.Color.White;
             this.rbStoreFirstExecute.Location = new System.Drawing.Point(6, 33);
@@ -729,12 +711,13 @@
             this.rbStoreFirstExecute.Size = new System.Drawing.Size(89, 17);
             this.rbStoreFirstExecute.TabIndex = 181;
             this.rbStoreFirstExecute.Text = "First Execute";
-            this.rbStoreFirstExecute.UseVisualStyleBackColor = true;
+            this.rbStoreFirstExecute.UseVisualStyleBackColor = false;
             this.rbStoreFirstExecute.CheckedChanged += new System.EventHandler(this.storeTime_CheckedChanged);
             // 
             // rbStoreSame
             // 
             this.rbStoreSame.AutoSize = true;
+            this.rbStoreSame.BackColor = System.Drawing.Color.Transparent;
             this.rbStoreSame.Checked = true;
             this.rbStoreSame.Font = new System.Drawing.Font("Segoe UI", 8F);
             this.rbStoreSame.ForeColor = System.Drawing.Color.White;
@@ -744,12 +727,13 @@
             this.rbStoreSame.TabIndex = 180;
             this.rbStoreSame.TabStop = true;
             this.rbStoreSame.Text = "Same";
-            this.rbStoreSame.UseVisualStyleBackColor = true;
+            this.rbStoreSame.UseVisualStyleBackColor = false;
             this.rbStoreSame.CheckedChanged += new System.EventHandler(this.storeAddress_CheckedChanged);
             // 
             // rbStoreRandom
             // 
             this.rbStoreRandom.AutoSize = true;
+            this.rbStoreRandom.BackColor = System.Drawing.Color.Transparent;
             this.rbStoreRandom.Font = new System.Drawing.Font("Segoe UI", 8F);
             this.rbStoreRandom.ForeColor = System.Drawing.Color.White;
             this.rbStoreRandom.Location = new System.Drawing.Point(7, 33);
@@ -757,7 +741,7 @@
             this.rbStoreRandom.Size = new System.Drawing.Size(68, 17);
             this.rbStoreRandom.TabIndex = 181;
             this.rbStoreRandom.Text = "Random";
-            this.rbStoreRandom.UseVisualStyleBackColor = true;
+            this.rbStoreRandom.UseVisualStyleBackColor = false;
             this.rbStoreRandom.CheckedChanged += new System.EventHandler(this.storeAddress_CheckedChanged);
             // 
             // gbStoreType
@@ -776,6 +760,7 @@
             // rbStoreStep
             // 
             this.rbStoreStep.AutoSize = true;
+            this.rbStoreStep.BackColor = System.Drawing.Color.Transparent;
             this.rbStoreStep.Font = new System.Drawing.Font("Segoe UI", 8F);
             this.rbStoreStep.ForeColor = System.Drawing.Color.White;
             this.rbStoreStep.Location = new System.Drawing.Point(6, 33);
@@ -783,12 +768,13 @@
             this.rbStoreStep.Size = new System.Drawing.Size(86, 17);
             this.rbStoreStep.TabIndex = 181;
             this.rbStoreStep.Text = "Continuous";
-            this.rbStoreStep.UseVisualStyleBackColor = true;
+            this.rbStoreStep.UseVisualStyleBackColor = false;
             this.rbStoreStep.CheckedChanged += new System.EventHandler(this.storeType_CheckedChanged);
             // 
             // rbStoreOnce
             // 
             this.rbStoreOnce.AutoSize = true;
+            this.rbStoreOnce.BackColor = System.Drawing.Color.Transparent;
             this.rbStoreOnce.Checked = true;
             this.rbStoreOnce.Font = new System.Drawing.Font("Segoe UI", 8F);
             this.rbStoreOnce.ForeColor = System.Drawing.Color.White;
@@ -798,14 +784,16 @@
             this.rbStoreOnce.TabIndex = 180;
             this.rbStoreOnce.TabStop = true;
             this.rbStoreOnce.Text = "Once";
-            this.rbStoreOnce.UseVisualStyleBackColor = true;
+            this.rbStoreOnce.UseVisualStyleBackColor = false;
             this.rbStoreOnce.CheckedChanged += new System.EventHandler(this.storeType_CheckedChanged);
             // 
             // gbStoreSettings
             // 
+            this.gbStoreSettings.BackColor = System.Drawing.Color.Transparent;
             this.gbStoreSettings.Controls.Add(this.groupBox3);
             this.gbStoreSettings.Controls.Add(this.gbStoreType);
             this.gbStoreSettings.Controls.Add(this.gbStoreTime);
+            this.gbStoreSettings.Enabled = false;
             this.gbStoreSettings.Font = new System.Drawing.Font("Segoe UI", 8F);
             this.gbStoreSettings.ForeColor = System.Drawing.Color.White;
             this.gbStoreSettings.Location = new System.Drawing.Point(122, 12);
@@ -835,7 +823,7 @@
             this.btnResetConfig.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnResetConfig.Font = new System.Drawing.Font("Segoe UI", 8F);
             this.btnResetConfig.ForeColor = System.Drawing.Color.Black;
-            this.btnResetConfig.Location = new System.Drawing.Point(342, 307);
+            this.btnResetConfig.Location = new System.Drawing.Point(349, 307);
             this.btnResetConfig.Name = "btnResetConfig";
             this.btnResetConfig.Size = new System.Drawing.Size(148, 24);
             this.btnResetConfig.TabIndex = 190;
@@ -951,15 +939,14 @@
             // panel1
             // 
             this.panel1.BackColor = System.Drawing.Color.Gray;
-            this.panel1.Controls.Add(this.gbValueSource);
             this.panel1.Controls.Add(this.gbUnitSource);
             this.panel1.Controls.Add(this.btnClearActive);
             this.panel1.Controls.Add(this.btnResetConfig);
-            this.panel1.Controls.Add(this.gbValueSettings);
             this.panel1.Controls.Add(this.gbCheckBoxes);
             this.panel1.Controls.Add(this.gbStoreSettings);
             this.panel1.Controls.Add(this.gbStepSettings);
             this.panel1.Controls.Add(this.gbLimiterList);
+            this.panel1.Controls.Add(this.gbValueSettings);
             this.panel1.Location = new System.Drawing.Point(12, 61);
             this.panel1.Name = "panel1";
             this.panel1.Size = new System.Drawing.Size(505, 340);
@@ -968,17 +955,49 @@
             // 
             // gbValueSource
             // 
+            this.gbValueSource.BackColor = System.Drawing.Color.Transparent;
             this.gbValueSource.Controls.Add(this.rbRandom);
             this.gbValueSource.Controls.Add(this.rbRange);
             this.gbValueSource.Controls.Add(this.rbValueList);
             this.gbValueSource.Font = new System.Drawing.Font("Segoe UI", 8F);
             this.gbValueSource.ForeColor = System.Drawing.Color.White;
-            this.gbValueSource.Location = new System.Drawing.Point(21, 106);
+            this.gbValueSource.Location = new System.Drawing.Point(9, 15);
             this.gbValueSource.Name = "gbValueSource";
             this.gbValueSource.Size = new System.Drawing.Size(92, 66);
             this.gbValueSource.TabIndex = 185;
             this.gbValueSource.TabStop = false;
             this.gbValueSource.Text = "Value Source";
+            // 
+            // nmMaxValue
+            // 
+            this.nmMaxValue.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
+            this.nmMaxValue.Font = new System.Drawing.Font("Consolas", 8F);
+            this.nmMaxValue.ForeColor = System.Drawing.Color.White;
+            this.nmMaxValue.Hexadecimal = true;
+            this.nmMaxValue.Location = new System.Drawing.Point(67, 38);
+            this.nmMaxValue.Name = "nmMaxValue";
+            this.nmMaxValue.Size = new System.Drawing.Size(92, 20);
+            this.nmMaxValue.TabIndex = 168;
+            this.nmMaxValue.Tag = "color:dark";
+            this.nmMaxValue.Value = new decimal(new int[] {
+            255,
+            0,
+            0,
+            0});
+            this.nmMaxValue.ValueChanged += new System.EventHandler(this.nmMaxValue_ValueChanged);
+            // 
+            // nmMinValue
+            // 
+            this.nmMinValue.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
+            this.nmMinValue.Font = new System.Drawing.Font("Consolas", 8F);
+            this.nmMinValue.ForeColor = System.Drawing.Color.White;
+            this.nmMinValue.Hexadecimal = true;
+            this.nmMinValue.Location = new System.Drawing.Point(67, 13);
+            this.nmMinValue.Name = "nmMinValue";
+            this.nmMinValue.Size = new System.Drawing.Size(92, 20);
+            this.nmMinValue.TabIndex = 167;
+            this.nmMinValue.Tag = "color:dark";
+            this.nmMinValue.ValueChanged += new System.EventHandler(this.nmMinValue_ValueChanged);
             // 
             // RTC_CustomEngineConfig_Form
             // 
@@ -1004,14 +1023,12 @@
             this.gbValueSettings.ResumeLayout(false);
             this.gbValueRange.ResumeLayout(false);
             this.gbValueRange.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.nmMaxValue)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.nmMinValue)).EndInit();
             this.gbLimiterList.ResumeLayout(false);
             this.gbLimiterList.PerformLayout();
             this.groupBox2.ResumeLayout(false);
             this.groupBox2.PerformLayout();
-            this.gbStoreMode.ResumeLayout(false);
-            this.gbStoreMode.PerformLayout();
+            this.gbStoreCompare.ResumeLayout(false);
+            this.gbStoreCompare.PerformLayout();
             this.gbStepSettings.ResumeLayout(false);
             this.gbStepSettings.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.nmTilt)).EndInit();
@@ -1031,6 +1048,8 @@
             this.panel1.ResumeLayout(false);
             this.gbValueSource.ResumeLayout(false);
             this.gbValueSource.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.nmMaxValue)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.nmMinValue)).EndInit();
             this.ResumeLayout(false);
 
 		}
@@ -1088,7 +1107,7 @@
 		private System.Windows.Forms.Button btnCustomTemplateSave;
 		public System.Windows.Forms.ComboBox cbSelectedTemplate;
 		private System.Windows.Forms.Label label2;
-		private System.Windows.Forms.GroupBox gbStoreMode;
+		private System.Windows.Forms.GroupBox gbStoreCompare;
 		private System.Windows.Forms.RadioButton rbStoreModeBoth;
 		private System.Windows.Forms.RadioButton rbStoreModeSource;
 		private System.Windows.Forms.RadioButton rbStoreModeAddress;

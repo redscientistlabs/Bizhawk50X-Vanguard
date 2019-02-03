@@ -35,7 +35,7 @@
 		CONTINUOUS
 	}
 
-	public enum StoreLimiterMode
+	public enum StoreLimiterSource
 	{
 		ADDRESS,
 		SOURCEADDRESS,
