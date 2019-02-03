@@ -978,7 +978,12 @@ namespace RTCV.CorruptCore
 						Value = new byte[1];
 						precision = 1;
 					}
-
+					//If Value was 0 bytes long for some reason (deserialization?), just make a new byte of the correct length
+					else if (Value.Length == 0)
+					{
+						Value = new byte[value];
+					}
+					//Figure out the new length
 					else
 					{
 						//If there was no precision set, set it to 1
@@ -1043,7 +1048,13 @@ namespace RTCV.CorruptCore
 			}
 			set
 			{
-				var temp = CorruptCore_Extensions.StringToByteArrayPadLeft(value, this.Precision);
+				//If there's no precision, use the length of the string rounded up 
+				int p = this.Precision;
+				if (p == 0 && value.Length != 0)
+				{
+					p = (value.Length / 2) + (Value.Length % 2);
+				}
+				var temp = CorruptCore_Extensions.StringToByteArrayPadLeft(value, p);
 				if (temp != null)
 					this.Value = temp;
 			}
@@ -1070,6 +1081,12 @@ namespace RTCV.CorruptCore
 		public int Lifetime { get; set; }
 		public bool Loop { get; set; } = false;
 
+
+
+		[Category("Limiter")]
+		[Description("What mode to use for the limiter in STORE mode")]
+		[DisplayName("Store Limiter Mode")]
+		public StoreLimiterMode StoreLimiterMode { get; set; }
 
 		[Category("Limiter")]
 		[Description("When to apply the limiter list")]
@@ -1364,19 +1381,40 @@ namespace RTCV.CorruptCore
 
 		public bool LimiterCheck(MemoryInterface mi)
 		{
-			if (InvertLimiter)
+			if (Source == BlastUnitSource.STORE)
 			{
-				if (Filtering.LimiterPeekBytes(Address,
-					Address + Precision, Domain, LimiterListHash, mi))
-					return false;
+				if (StoreLimiterMode == StoreLimiterMode.ADDRESS || StoreLimiterMode == StoreLimiterMode.BOTH)
+				{
+					if (Filtering.LimiterPeekBytes(Address,
+						Address + Precision, Domain, LimiterListHash, mi))
+					{
+						if (InvertLimiter)
+							return false;
+						return true;
+					}
+				}
+				if (StoreLimiterMode == StoreLimiterMode.SOURCEADDRESS || StoreLimiterMode == StoreLimiterMode.BOTH)
+				{
+					if (Filtering.LimiterPeekBytes(SourceAddress,
+						SourceAddress + Precision, Domain, LimiterListHash, mi))
+					{
+						if (InvertLimiter)
+							return false;
+						return true;
+					}
+				}
 			}
 			else
 			{
-				if (!Filtering.LimiterPeekBytes(Address,
+				if (Filtering.LimiterPeekBytes(Address,
 					Address + Precision, Domain, LimiterListHash, mi))
-					return false;
+				{
+					if (InvertLimiter)
+						return false;
+					return true;
+				}
 			}
-			return true;
+			return false;
 		}
 
 		public BlastUnit GetBackup()

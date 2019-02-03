@@ -96,6 +96,11 @@ namespace RTCV.CorruptCore
 			get => (bool)RTCV.NetCore.AllSpec.CorruptCoreSpec[RTCSPEC.CUSTOM_LIMITERINVERTED.ToString()];
 			set => RTCV.NetCore.AllSpec.CorruptCoreSpec.Update(RTCSPEC.CUSTOM_LIMITERINVERTED.ToString(), value);
 		}
+		public static StoreLimiterMode StoreLimiterMode
+		{
+			get => (StoreLimiterMode)RTCV.NetCore.AllSpec.CorruptCoreSpec[RTCSPEC.CUSTOM_STORELIMITERMODE.ToString()];
+			set => RTCV.NetCore.AllSpec.CorruptCoreSpec.Update(RTCSPEC.CUSTOM_STORELIMITERMODE.ToString(), value);
+		}
 
 		public static bool Loop
 		{
@@ -216,6 +221,7 @@ namespace RTCV.CorruptCore
 				//Precision has to be before Value
 				bu.Precision = precision;
 				bu.Value = value;
+
 				bu.Address = safeAddress;
 				bu.Domain = domain;
 				bu.Source = Source;
@@ -225,9 +231,10 @@ namespace RTCV.CorruptCore
 				bu.Loop = Loop;
 				bu.InvertLimiter = LimiterInverted;
 				bu.TiltValue = TiltValue;
+				bu.StoreLimiterMode = StoreLimiterMode;
 				bu.GeneratedUsingValueList = (Source == BlastUnitSource.VALUE && ValueSource == CustomValueSource.VALUELIST);
 
-				//Only set a list if it's used to save on memory
+				//Only set a list if it's used
 				if (LimiterTime != LimiterTime.NONE)
 					bu.LimiterListHash = LimiterListHash;
 
@@ -296,6 +303,7 @@ namespace RTCV.CorruptCore
 			pSpec[RTCSPEC.CUSTOM_TILTVALUE.ToString()] = new BigInteger(0);
 
 			pSpec[RTCSPEC.CUSTOM_LIMITERTIME.ToString()] = LimiterTime.NONE;
+			pSpec[RTCSPEC.CUSTOM_STORELIMITERMODE.ToString()] = StoreLimiterMode.ADDRESS;
 			pSpec[RTCSPEC.CUSTOM_LIMITERINVERTED.ToString()] = false;
 
 			pSpec[RTCSPEC.CUSTOM_MINVALUE8BIT.ToString()] = 0L;
@@ -326,6 +334,7 @@ namespace RTCV.CorruptCore
 			pSpec[RTCSPEC.CUSTOM_TILTVALUE.ToString()] = new BigInteger(0);
 
 			pSpec[RTCSPEC.CUSTOM_LIMITERTIME.ToString()] = LimiterTime.NONE;
+			pSpec[RTCSPEC.CUSTOM_STORELIMITERMODE.ToString()] = StoreLimiterMode.ADDRESS;
 			pSpec[RTCSPEC.CUSTOM_LIMITERINVERTED.ToString()] = false;
 
 
@@ -357,6 +366,7 @@ namespace RTCV.CorruptCore
 			pSpec[RTCSPEC.CUSTOM_TILTVALUE.ToString()] = new BigInteger(0);
 
 			pSpec[RTCSPEC.CUSTOM_LIMITERTIME.ToString()] = LimiterTime.NONE;
+			pSpec[RTCSPEC.CUSTOM_STORELIMITERMODE.ToString()] = StoreLimiterMode.ADDRESS;
 			pSpec[RTCSPEC.CUSTOM_LIMITERINVERTED.ToString()] = false;
 
 
@@ -388,6 +398,7 @@ namespace RTCV.CorruptCore
 			pSpec[RTCSPEC.CUSTOM_TILTVALUE.ToString()] = new BigInteger(0);
 
 			pSpec[RTCSPEC.CUSTOM_LIMITERTIME.ToString()] = LimiterTime.NONE;
+			pSpec[RTCSPEC.CUSTOM_STORELIMITERMODE.ToString()] = StoreLimiterMode.ADDRESS;
 			pSpec[RTCSPEC.CUSTOM_LIMITERINVERTED.ToString()] = false;
 
 
@@ -419,6 +430,7 @@ namespace RTCV.CorruptCore
 			pSpec[RTCSPEC.CUSTOM_TILTVALUE.ToString()] = new BigInteger(0);
 
 			pSpec[RTCSPEC.CUSTOM_LIMITERTIME.ToString()] = LimiterTime.NONE;
+			pSpec[RTCSPEC.CUSTOM_STORELIMITERMODE.ToString()] = StoreLimiterMode.ADDRESS;
 			pSpec[RTCSPEC.CUSTOM_LIMITERINVERTED.ToString()] = false;
 
 
@@ -450,6 +462,7 @@ namespace RTCV.CorruptCore
 			pSpec[RTCSPEC.CUSTOM_TILTVALUE.ToString()] = new BigInteger(0);
 
 			pSpec[RTCSPEC.CUSTOM_LIMITERTIME.ToString()] = LimiterTime.GENERATE;
+			pSpec[RTCSPEC.CUSTOM_STORELIMITERMODE.ToString()] = StoreLimiterMode.ADDRESS;
 			pSpec[RTCSPEC.CUSTOM_LIMITERINVERTED.ToString()] = false;
 
 
@@ -503,6 +516,7 @@ namespace RTCV.CorruptCore
 			pSpec[RTCSPEC.CUSTOM_STOREADDRESS.ToString()] = RTCV.NetCore.AllSpec.CorruptCoreSpec[RTCSPEC.CUSTOM_STOREADDRESS.ToString()];
 			pSpec[RTCSPEC.CUSTOM_STORETIME.ToString()] = RTCV.NetCore.AllSpec.CorruptCoreSpec[RTCSPEC.CUSTOM_STORETIME.ToString()];
 			pSpec[RTCSPEC.CUSTOM_STORETYPE.ToString()] = RTCV.NetCore.AllSpec.CorruptCoreSpec[RTCSPEC.CUSTOM_STORETYPE.ToString()];
+			pSpec[RTCSPEC.CUSTOM_STORELIMITERMODE.ToString()] = RTCV.NetCore.AllSpec.CorruptCoreSpec[RTCSPEC.CUSTOM_STORELIMITERMODE.ToString()];
 
 			return pSpec;
 		}

@@ -76,10 +76,18 @@ namespace RTCV.UI
 				return;
 
 			if (rbUnitSourceStore.Checked)
+			{
 				RTC_CustomEngine.Source = BlastUnitSource.STORE;
+				gbValueSettings.Enabled = false;
+				gbStoreSettings.Enabled = true;
+			}
 
 			else if (rbUnitSourceValue.Checked)
+			{
 				RTC_CustomEngine.Source = BlastUnitSource.VALUE;
+				gbValueSettings.Enabled = true;
+				gbStoreSettings.Enabled = false;
+			}
 		}
 
 		private void valueSource_CheckedChanged(object sender, EventArgs e)
@@ -224,6 +232,8 @@ namespace RTCV.UI
 
 			RTC_CustomEngine.LimiterListHash = (string)cbLimiterList.SelectedValue;
 		}
+
+
 		private void limiterTime_CheckedChanged(object sender, EventArgs e)
 		{
 			if (dontUpdateSpec)
@@ -241,7 +251,19 @@ namespace RTCV.UI
 			else if (rbLimiterExecute.Checked)
 				RTC_CustomEngine.LimiterTime = LimiterTime.EXECUTE;
 		}
-		
+
+		private void rbStoreLimiterMode_CheckChanged(object sender, EventArgs e)
+		{
+			if (rbStoreModeAddress.Checked)
+				RTC_CustomEngine.StoreLimiterSource = StoreLimiterSource.ADDRESS;
+
+			else if (rbStoreModeSource.Checked)
+				RTC_CustomEngine.StoreLimiterSource = StoreLimiterSource.SOURCEADDRESS;
+
+			else if (rbStoreModeBoth.Checked)
+				RTC_CustomEngine.StoreLimiterSource = StoreLimiterSource.BOTH;
+		}
+
 		private void btnClearActive_Click(object sender, EventArgs e)
 		{
 			LocalNetCoreRouter.Route(NetcoreCommands.CORRUPTCORE, NetcoreCommands.REMOTE_CLEARSTEPBLASTUNITS, null, true);
@@ -482,7 +504,19 @@ namespace RTCV.UI
 
 				}
 
+				switch (RTC_CustomEngine.StoreLimiterSource)
+				{
+					case (StoreLimiterSource.ADDRESS):
+						rbStoreModeAddress.Checked = true;
+						break;
+					case (StoreLimiterSource.SOURCEADDRESS):
+						rbStoreModeSource.Checked = true;
+						break;
+					case (StoreLimiterSource.BOTH):
+						rbStoreModeBoth.Checked = true;
+						break;
 
+				}
 
 				cbLockUnits.Checked = StepActions.LockExecution;
 				cbClearRewind.Checked = StepActions.ClearStepActionsOnRewind;

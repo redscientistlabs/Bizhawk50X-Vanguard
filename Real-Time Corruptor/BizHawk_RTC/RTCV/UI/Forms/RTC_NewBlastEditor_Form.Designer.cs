@@ -121,6 +121,8 @@ namespace RTCV.UI
             this.sanitizeDuplicatesToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.rasterizeVMDsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.bakeBlastunitsToVALUEToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.cbStoreLimiterMode = new System.Windows.Forms.ComboBox();
+            this.label17 = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.dgvBlastEditor)).BeginInit();
             this.panelSidebar.SuspendLayout();
             this.panel1.SuspendLayout();
@@ -157,7 +159,7 @@ namespace RTCV.UI
             this.dgvBlastEditor.RowHeadersVisible = false;
             this.dgvBlastEditor.RowHeadersWidthSizeMode = System.Windows.Forms.DataGridViewRowHeadersWidthSizeMode.AutoSizeToDisplayedHeaders;
             this.dgvBlastEditor.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.dgvBlastEditor.Size = new System.Drawing.Size(662, 216);
+            this.dgvBlastEditor.Size = new System.Drawing.Size(662, 221);
             this.dgvBlastEditor.TabIndex = 0;
             this.dgvBlastEditor.Tag = "color:normal";
             // 
@@ -182,7 +184,7 @@ namespace RTCV.UI
             this.panelSidebar.Dock = System.Windows.Forms.DockStyle.Right;
             this.panelSidebar.Location = new System.Drawing.Point(662, 24);
             this.panelSidebar.Name = "panelSidebar";
-            this.panelSidebar.Size = new System.Drawing.Size(159, 447);
+            this.panelSidebar.Size = new System.Drawing.Size(159, 463);
             this.panelSidebar.TabIndex = 146;
             this.panelSidebar.Tag = "color:dark";
             // 
@@ -494,7 +496,7 @@ namespace RTCV.UI
             this.panel2.Controls.Add(this.cbFilterColumn);
             this.panel2.Controls.Add(this.tbFilter);
             this.panel2.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.panel2.Location = new System.Drawing.Point(0, 240);
+            this.panel2.Location = new System.Drawing.Point(0, 245);
             this.panel2.Name = "panel2";
             this.panel2.Size = new System.Drawing.Size(662, 21);
             this.panel2.TabIndex = 148;
@@ -529,9 +531,9 @@ namespace RTCV.UI
             this.panel3.Controls.Add(this.panel4);
             this.panel3.Dock = System.Windows.Forms.DockStyle.Bottom;
             this.panel3.ForeColor = System.Drawing.Color.White;
-            this.panel3.Location = new System.Drawing.Point(0, 261);
+            this.panel3.Location = new System.Drawing.Point(0, 266);
             this.panel3.Name = "panel3";
-            this.panel3.Size = new System.Drawing.Size(662, 210);
+            this.panel3.Size = new System.Drawing.Size(662, 221);
             this.panel3.TabIndex = 149;
             this.panel3.Tag = "color:dark";
             // 
@@ -543,15 +545,15 @@ namespace RTCV.UI
             this.panel9.Controls.Add(this.label1);
             this.panel9.Controls.Add(this.upDownExecuteFrame);
             this.panel9.Controls.Add(this.cbLoop);
-            this.panel9.Location = new System.Drawing.Point(20, 96);
+            this.panel9.Location = new System.Drawing.Point(20, 102);
             this.panel9.Name = "panel9";
-            this.panel9.Size = new System.Drawing.Size(118, 108);
+            this.panel9.Size = new System.Drawing.Size(118, 116);
             this.panel9.TabIndex = 4;
             // 
             // label16
             // 
             this.label16.AutoSize = true;
-            this.label16.Location = new System.Drawing.Point(-1, 44);
+            this.label16.Location = new System.Drawing.Point(-1, 46);
             this.label16.Name = "label16";
             this.label16.Size = new System.Drawing.Size(47, 13);
             this.label16.TabIndex = 26;
@@ -575,7 +577,7 @@ namespace RTCV.UI
             // 
             // upDownExecuteFrame
             // 
-            this.upDownExecuteFrame.Location = new System.Drawing.Point(3, 20);
+            this.upDownExecuteFrame.Location = new System.Drawing.Point(3, 19);
             this.upDownExecuteFrame.Name = "upDownExecuteFrame";
             this.upDownExecuteFrame.Size = new System.Drawing.Size(109, 22);
             this.upDownExecuteFrame.TabIndex = 12;
@@ -583,7 +585,7 @@ namespace RTCV.UI
             // cbLoop
             // 
             this.cbLoop.AutoSize = true;
-            this.cbLoop.Location = new System.Drawing.Point(6, 87);
+            this.cbLoop.Location = new System.Drawing.Point(6, 92);
             this.cbLoop.Name = "cbLoop";
             this.cbLoop.Size = new System.Drawing.Size(52, 17);
             this.cbLoop.TabIndex = 0;
@@ -618,7 +620,7 @@ namespace RTCV.UI
             this.panel5.Controls.Add(this.cbDomain);
             this.panel5.Location = new System.Drawing.Point(148, 24);
             this.panel5.Name = "panel5";
-            this.panel5.Size = new System.Drawing.Size(484, 180);
+            this.panel5.Size = new System.Drawing.Size(484, 194);
             this.panel5.TabIndex = 2;
             // 
             // btnNote
@@ -630,7 +632,7 @@ namespace RTCV.UI
             this.btnNote.ForeColor = System.Drawing.Color.Black;
             this.btnNote.Location = new System.Drawing.Point(353, 100);
             this.btnNote.Name = "btnNote";
-            this.btnNote.Size = new System.Drawing.Size(120, 73);
+            this.btnNote.Size = new System.Drawing.Size(120, 88);
             this.btnNote.TabIndex = 142;
             this.btnNote.TabStop = false;
             this.btnNote.Tag = "color:light";
@@ -641,6 +643,8 @@ namespace RTCV.UI
             // panel8
             // 
             this.panel8.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.panel8.Controls.Add(this.cbStoreLimiterMode);
+            this.panel8.Controls.Add(this.label17);
             this.panel8.Controls.Add(this.cbInvertLimiter);
             this.panel8.Controls.Add(this.cbLimiterTime);
             this.panel8.Controls.Add(this.label18);
@@ -648,13 +652,13 @@ namespace RTCV.UI
             this.panel8.Controls.Add(this.label19);
             this.panel8.Location = new System.Drawing.Point(128, 104);
             this.panel8.Name = "panel8";
-            this.panel8.Size = new System.Drawing.Size(210, 70);
+            this.panel8.Size = new System.Drawing.Size(210, 84);
             this.panel8.TabIndex = 25;
             // 
             // cbInvertLimiter
             // 
             this.cbInvertLimiter.AutoSize = true;
-            this.cbInvertLimiter.Location = new System.Drawing.Point(3, 48);
+            this.cbInvertLimiter.Location = new System.Drawing.Point(3, 47);
             this.cbInvertLimiter.Name = "cbInvertLimiter";
             this.cbInvertLimiter.Size = new System.Drawing.Size(92, 17);
             this.cbInvertLimiter.TabIndex = 11;
@@ -664,7 +668,7 @@ namespace RTCV.UI
             // cbLimiterTime
             // 
             this.cbLimiterTime.FormattingEnabled = true;
-            this.cbLimiterTime.Location = new System.Drawing.Point(110, 19);
+            this.cbLimiterTime.Location = new System.Drawing.Point(107, 19);
             this.cbLimiterTime.Name = "cbLimiterTime";
             this.cbLimiterTime.Size = new System.Drawing.Size(92, 21);
             this.cbLimiterTime.TabIndex = 10;
@@ -672,7 +676,7 @@ namespace RTCV.UI
             // label18
             // 
             this.label18.AutoSize = true;
-            this.label18.Location = new System.Drawing.Point(107, 4);
+            this.label18.Location = new System.Drawing.Point(104, 4);
             this.label18.Name = "label18";
             this.label18.Size = new System.Drawing.Size(67, 13);
             this.label18.TabIndex = 9;
@@ -700,7 +704,7 @@ namespace RTCV.UI
             this.tbTiltValue.AllowDecimal = false;
             this.tbTiltValue.AllowNegative = true;
             this.tbTiltValue.AllowSpace = false;
-            this.tbTiltValue.Location = new System.Drawing.Point(4, 144);
+            this.tbTiltValue.Location = new System.Drawing.Point(4, 148);
             this.tbTiltValue.Name = "tbTiltValue";
             this.tbTiltValue.Size = new System.Drawing.Size(108, 22);
             this.tbTiltValue.TabIndex = 24;
@@ -708,7 +712,7 @@ namespace RTCV.UI
             // label15
             // 
             this.label15.AutoSize = true;
-            this.label15.Location = new System.Drawing.Point(1, 128);
+            this.label15.Location = new System.Drawing.Point(1, 132);
             this.label15.Name = "label15";
             this.label15.Size = new System.Drawing.Size(54, 13);
             this.label15.TabIndex = 23;
@@ -780,7 +784,7 @@ namespace RTCV.UI
             // cbSourceDomain
             // 
             this.cbSourceDomain.FormattingEnabled = true;
-            this.cbSourceDomain.Location = new System.Drawing.Point(95, 14);
+            this.cbSourceDomain.Location = new System.Drawing.Point(95, 18);
             this.cbSourceDomain.Name = "cbSourceDomain";
             this.cbSourceDomain.Size = new System.Drawing.Size(109, 21);
             this.cbSourceDomain.TabIndex = 11;
@@ -789,7 +793,7 @@ namespace RTCV.UI
             // 
             this.upDownSourceAddress.Font = new System.Drawing.Font("Consolas", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel);
             this.upDownSourceAddress.Hexadecimal = true;
-            this.upDownSourceAddress.Location = new System.Drawing.Point(95, 54);
+            this.upDownSourceAddress.Location = new System.Drawing.Point(95, 58);
             this.upDownSourceAddress.Name = "upDownSourceAddress";
             this.upDownSourceAddress.Size = new System.Drawing.Size(109, 22);
             this.upDownSourceAddress.TabIndex = 13;
@@ -797,7 +801,7 @@ namespace RTCV.UI
             // label13
             // 
             this.label13.AutoSize = true;
-            this.label13.Location = new System.Drawing.Point(92, 40);
+            this.label13.Location = new System.Drawing.Point(92, 44);
             this.label13.Name = "label13";
             this.label13.Size = new System.Drawing.Size(86, 13);
             this.label13.TabIndex = 14;
@@ -806,7 +810,7 @@ namespace RTCV.UI
             // label14
             // 
             this.label14.AutoSize = true;
-            this.label14.Location = new System.Drawing.Point(92, 0);
+            this.label14.Location = new System.Drawing.Point(92, 3);
             this.label14.Name = "label14";
             this.label14.Size = new System.Drawing.Size(85, 13);
             this.label14.TabIndex = 12;
@@ -815,7 +819,7 @@ namespace RTCV.UI
             // cbStoreTime
             // 
             this.cbStoreTime.FormattingEnabled = true;
-            this.cbStoreTime.Location = new System.Drawing.Point(3, 55);
+            this.cbStoreTime.Location = new System.Drawing.Point(3, 58);
             this.cbStoreTime.Name = "cbStoreTime";
             this.cbStoreTime.Size = new System.Drawing.Size(83, 21);
             this.cbStoreTime.TabIndex = 10;
@@ -823,7 +827,7 @@ namespace RTCV.UI
             // label6
             // 
             this.label6.AutoSize = true;
-            this.label6.Location = new System.Drawing.Point(3, 41);
+            this.label6.Location = new System.Drawing.Point(3, 44);
             this.label6.Name = "label6";
             this.label6.Size = new System.Drawing.Size(60, 13);
             this.label6.TabIndex = 9;
@@ -832,7 +836,7 @@ namespace RTCV.UI
             // cbStoreType
             // 
             this.cbStoreType.FormattingEnabled = true;
-            this.cbStoreType.Location = new System.Drawing.Point(3, 14);
+            this.cbStoreType.Location = new System.Drawing.Point(3, 18);
             this.cbStoreType.Name = "cbStoreType";
             this.cbStoreType.Size = new System.Drawing.Size(83, 21);
             this.cbStoreType.TabIndex = 8;
@@ -840,7 +844,7 @@ namespace RTCV.UI
             // label7
             // 
             this.label7.AutoSize = true;
-            this.label7.Location = new System.Drawing.Point(3, 0);
+            this.label7.Location = new System.Drawing.Point(3, 3);
             this.label7.Name = "label7";
             this.label7.Size = new System.Drawing.Size(60, 13);
             this.label7.TabIndex = 7;
@@ -849,7 +853,7 @@ namespace RTCV.UI
             // label10
             // 
             this.label10.AutoSize = true;
-            this.label10.Location = new System.Drawing.Point(0, 85);
+            this.label10.Location = new System.Drawing.Point(0, 88);
             this.label10.Name = "label10";
             this.label10.Size = new System.Drawing.Size(53, 13);
             this.label10.TabIndex = 12;
@@ -857,7 +861,7 @@ namespace RTCV.UI
             // 
             // upDownPrecision
             // 
-            this.upDownPrecision.Location = new System.Drawing.Point(3, 100);
+            this.upDownPrecision.Location = new System.Drawing.Point(3, 102);
             this.upDownPrecision.Minimum = new decimal(new int[] {
             1,
             0,
@@ -875,7 +879,7 @@ namespace RTCV.UI
             // label9
             // 
             this.label9.AutoSize = true;
-            this.label9.Location = new System.Drawing.Point(1, 42);
+            this.label9.Location = new System.Drawing.Point(1, 44);
             this.label9.Name = "label9";
             this.label9.Size = new System.Drawing.Size(48, 13);
             this.label9.TabIndex = 10;
@@ -885,7 +889,7 @@ namespace RTCV.UI
             // 
             this.upDownAddress.Font = new System.Drawing.Font("Consolas", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel);
             this.upDownAddress.Hexadecimal = true;
-            this.upDownAddress.Location = new System.Drawing.Point(4, 57);
+            this.upDownAddress.Location = new System.Drawing.Point(4, 58);
             this.upDownAddress.Name = "upDownAddress";
             this.upDownAddress.Size = new System.Drawing.Size(109, 22);
             this.upDownAddress.TabIndex = 9;
@@ -924,13 +928,13 @@ namespace RTCV.UI
             this.panel4.Controls.Add(this.cbEnabled);
             this.panel4.Location = new System.Drawing.Point(20, 24);
             this.panel4.Name = "panel4";
-            this.panel4.Size = new System.Drawing.Size(118, 63);
+            this.panel4.Size = new System.Drawing.Size(118, 68);
             this.panel4.TabIndex = 0;
             // 
             // cbBigEndian
             // 
             this.cbBigEndian.AutoSize = true;
-            this.cbBigEndian.Location = new System.Drawing.Point(3, 41);
+            this.cbBigEndian.Location = new System.Drawing.Point(3, 46);
             this.cbBigEndian.Name = "cbBigEndian";
             this.cbBigEndian.Size = new System.Drawing.Size(82, 17);
             this.cbBigEndian.TabIndex = 2;
@@ -940,7 +944,7 @@ namespace RTCV.UI
             // cbLocked
             // 
             this.cbLocked.AutoSize = true;
-            this.cbLocked.Location = new System.Drawing.Point(3, 22);
+            this.cbLocked.Location = new System.Drawing.Point(3, 25);
             this.cbLocked.Name = "cbLocked";
             this.cbLocked.Size = new System.Drawing.Size(62, 17);
             this.cbLocked.TabIndex = 1;
@@ -950,7 +954,7 @@ namespace RTCV.UI
             // cbEnabled
             // 
             this.cbEnabled.AutoSize = true;
-            this.cbEnabled.Location = new System.Drawing.Point(3, 3);
+            this.cbEnabled.Location = new System.Drawing.Point(3, 4);
             this.cbEnabled.Name = "cbEnabled";
             this.cbEnabled.Size = new System.Drawing.Size(68, 17);
             this.cbEnabled.TabIndex = 0;
@@ -1134,11 +1138,28 @@ namespace RTCV.UI
             this.bakeBlastunitsToVALUEToolStripMenuItem.Text = "Bake Selected Blastunits to VALUE";
             this.bakeBlastunitsToVALUEToolStripMenuItem.Click += new System.EventHandler(this.bakeBlastunitsToVALUEToolStripMenuItem_Click);
             // 
+            // cbStoreLimiterMode
+            // 
+            this.cbStoreLimiterMode.FormattingEnabled = true;
+            this.cbStoreLimiterMode.Location = new System.Drawing.Point(107, 57);
+            this.cbStoreLimiterMode.Name = "cbStoreLimiterMode";
+            this.cbStoreLimiterMode.Size = new System.Drawing.Size(92, 21);
+            this.cbStoreLimiterMode.TabIndex = 13;
+            // 
+            // label17
+            // 
+            this.label17.AutoSize = true;
+            this.label17.Location = new System.Drawing.Point(104, 43);
+            this.label17.Name = "label17";
+            this.label17.Size = new System.Drawing.Size(104, 13);
+            this.label17.TabIndex = 12;
+            this.label17.Text = "Store Limiter Mode";
+            // 
             // RTC_NewBlastEditor_Form
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(821, 471);
+            this.ClientSize = new System.Drawing.Size(821, 487);
             this.Controls.Add(this.dgvBlastEditor);
             this.Controls.Add(this.panel2);
             this.Controls.Add(this.panel3);
@@ -1276,5 +1297,7 @@ namespace RTCV.UI
 		private System.Windows.Forms.CheckBox cbLoop;
 		private System.Windows.Forms.Button btnNote;
 		private System.Windows.Forms.ToolStripMenuItem bakeBlastunitsToVALUEToolStripMenuItem;
+		private ComboBox cbStoreLimiterMode;
+		private Label label17;
 	}
 }
