@@ -1086,7 +1086,7 @@ namespace RTCV.CorruptCore
 		[Category("Limiter")]
 		[Description("What mode to use for the limiter in STORE mode")]
 		[DisplayName("Store Limiter Mode")]
-		public StoreLimiterMode StoreLimiterMode { get; set; }
+		public StoreLimiterSource StoreLimiterSource { get; set; }
 
 		[Category("Limiter")]
 		[Description("When to apply the limiter list")]
@@ -1383,7 +1383,7 @@ namespace RTCV.CorruptCore
 		{
 			if (Source == BlastUnitSource.STORE)
 			{
-				if (StoreLimiterMode == StoreLimiterMode.ADDRESS || StoreLimiterMode == StoreLimiterMode.BOTH)
+				if (StoreLimiterSource == StoreLimiterSource.ADDRESS || StoreLimiterSource == StoreLimiterSource.BOTH)
 				{
 					if (Filtering.LimiterPeekBytes(Address,
 						Address + Precision, Domain, LimiterListHash, mi))
@@ -1393,7 +1393,7 @@ namespace RTCV.CorruptCore
 						return true;
 					}
 				}
-				if (StoreLimiterMode == StoreLimiterMode.SOURCEADDRESS || StoreLimiterMode == StoreLimiterMode.BOTH)
+				if (StoreLimiterSource == StoreLimiterSource.SOURCEADDRESS || StoreLimiterSource == StoreLimiterSource.BOTH)
 				{
 					if (Filtering.LimiterPeekBytes(SourceAddress,
 						SourceAddress + Precision, Domain, LimiterListHash, mi))

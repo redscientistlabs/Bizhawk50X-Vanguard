@@ -68,6 +68,8 @@ namespace RTCV.UI
             this.panel5 = new System.Windows.Forms.Panel();
             this.btnNote = new System.Windows.Forms.Button();
             this.panel8 = new System.Windows.Forms.Panel();
+            this.cbStoreLimiterMode = new System.Windows.Forms.ComboBox();
+            this.label17 = new System.Windows.Forms.Label();
             this.cbInvertLimiter = new System.Windows.Forms.CheckBox();
             this.cbLimiterTime = new System.Windows.Forms.ComboBox();
             this.label18 = new System.Windows.Forms.Label();
@@ -121,8 +123,6 @@ namespace RTCV.UI
             this.sanitizeDuplicatesToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.rasterizeVMDsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.bakeBlastunitsToVALUEToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.cbStoreLimiterMode = new System.Windows.Forms.ComboBox();
-            this.label17 = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.dgvBlastEditor)).BeginInit();
             this.panelSidebar.SuspendLayout();
             this.panel1.SuspendLayout();
@@ -655,6 +655,23 @@ namespace RTCV.UI
             this.panel8.Size = new System.Drawing.Size(210, 84);
             this.panel8.TabIndex = 25;
             // 
+            // cbStoreLimiterMode
+            // 
+            this.cbStoreLimiterMode.FormattingEnabled = true;
+            this.cbStoreLimiterMode.Location = new System.Drawing.Point(107, 57);
+            this.cbStoreLimiterMode.Name = "cbStoreLimiterMode";
+            this.cbStoreLimiterMode.Size = new System.Drawing.Size(92, 21);
+            this.cbStoreLimiterMode.TabIndex = 13;
+            // 
+            // label17
+            // 
+            this.label17.AutoSize = true;
+            this.label17.Location = new System.Drawing.Point(104, 43);
+            this.label17.Name = "label17";
+            this.label17.Size = new System.Drawing.Size(99, 13);
+            this.label17.TabIndex = 12;
+            this.label17.Text = "Store Comparison";
+            // 
             // cbInvertLimiter
             // 
             this.cbInvertLimiter.AutoSize = true;
@@ -1137,23 +1154,6 @@ namespace RTCV.UI
             this.bakeBlastunitsToVALUEToolStripMenuItem.Size = new System.Drawing.Size(252, 22);
             this.bakeBlastunitsToVALUEToolStripMenuItem.Text = "Bake Selected Blastunits to VALUE";
             this.bakeBlastunitsToVALUEToolStripMenuItem.Click += new System.EventHandler(this.bakeBlastunitsToVALUEToolStripMenuItem_Click);
-            // 
-            // cbStoreLimiterMode
-            // 
-            this.cbStoreLimiterMode.FormattingEnabled = true;
-            this.cbStoreLimiterMode.Location = new System.Drawing.Point(107, 57);
-            this.cbStoreLimiterMode.Name = "cbStoreLimiterMode";
-            this.cbStoreLimiterMode.Size = new System.Drawing.Size(92, 21);
-            this.cbStoreLimiterMode.TabIndex = 13;
-            // 
-            // label17
-            // 
-            this.label17.AutoSize = true;
-            this.label17.Location = new System.Drawing.Point(104, 43);
-            this.label17.Name = "label17";
-            this.label17.Size = new System.Drawing.Size(104, 13);
-            this.label17.TabIndex = 12;
-            this.label17.Text = "Store Limiter Mode";
             // 
             // RTC_NewBlastEditor_Form
             // 

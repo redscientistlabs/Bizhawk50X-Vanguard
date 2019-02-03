@@ -257,7 +257,7 @@
             this.gbValueSettings.ForeColor = System.Drawing.Color.White;
             this.gbValueSettings.Location = new System.Drawing.Point(15, 91);
             this.gbValueSettings.Name = "gbValueSettings";
-            this.gbValueSettings.Size = new System.Drawing.Size(475, 90);
+            this.gbValueSettings.Size = new System.Drawing.Size(482, 90);
             this.gbValueSettings.TabIndex = 169;
             this.gbValueSettings.TabStop = false;
             this.gbValueSettings.Text = "Value Settings";
@@ -382,7 +382,7 @@
             this.gbLimiterList.ForeColor = System.Drawing.Color.White;
             this.gbLimiterList.Location = new System.Drawing.Point(300, 186);
             this.gbLimiterList.Name = "gbLimiterList";
-            this.gbLimiterList.Size = new System.Drawing.Size(190, 115);
+            this.gbLimiterList.Size = new System.Drawing.Size(197, 115);
             this.gbLimiterList.TabIndex = 181;
             this.gbLimiterList.TabStop = false;
             this.gbLimiterList.Text = "Limiter List";
@@ -397,7 +397,7 @@
             this.groupBox2.ForeColor = System.Drawing.Color.White;
             this.groupBox2.Location = new System.Drawing.Point(0, 39);
             this.groupBox2.Name = "groupBox2";
-            this.groupBox2.Size = new System.Drawing.Size(98, 76);
+            this.groupBox2.Size = new System.Drawing.Size(95, 76);
             this.groupBox2.TabIndex = 188;
             this.groupBox2.TabStop = false;
             this.groupBox2.Text = "Limiter Time";
@@ -461,12 +461,12 @@
             this.gbStoreMode.Controls.Add(this.rbStoreModeAddress);
             this.gbStoreMode.Font = new System.Drawing.Font("Segoe UI", 8F);
             this.gbStoreMode.ForeColor = System.Drawing.Color.White;
-            this.gbStoreMode.Location = new System.Drawing.Point(108, 50);
+            this.gbStoreMode.Location = new System.Drawing.Point(100, 50);
             this.gbStoreMode.Name = "gbStoreMode";
-            this.gbStoreMode.Size = new System.Drawing.Size(82, 65);
+            this.gbStoreMode.Size = new System.Drawing.Size(97, 65);
             this.gbStoreMode.TabIndex = 184;
             this.gbStoreMode.TabStop = false;
-            this.gbStoreMode.Text = "Store Mode";
+            this.gbStoreMode.Text = "Store Compare";
             // 
             // rbStoreModeBoth
             // 
@@ -515,7 +515,7 @@
             this.cbLimiterInverted.AutoSize = true;
             this.cbLimiterInverted.Font = new System.Drawing.Font("Segoe UI", 8F);
             this.cbLimiterInverted.ForeColor = System.Drawing.Color.White;
-            this.cbLimiterInverted.Location = new System.Drawing.Point(116, 17);
+            this.cbLimiterInverted.Location = new System.Drawing.Point(119, 17);
             this.cbLimiterInverted.Name = "cbLimiterInverted";
             this.cbLimiterInverted.Size = new System.Drawing.Size(68, 17);
             this.cbLimiterInverted.TabIndex = 183;
@@ -697,7 +697,7 @@
             this.gbStoreTime.Controls.Add(this.rbStoreFirstExecute);
             this.gbStoreTime.Font = new System.Drawing.Font("Segoe UI", 8F);
             this.gbStoreTime.ForeColor = System.Drawing.Color.White;
-            this.gbStoreTime.Location = new System.Drawing.Point(130, 15);
+            this.gbStoreTime.Location = new System.Drawing.Point(131, 15);
             this.gbStoreTime.Name = "gbStoreTime";
             this.gbStoreTime.Size = new System.Drawing.Size(110, 55);
             this.gbStoreTime.TabIndex = 0;
@@ -766,7 +766,7 @@
             this.gbStoreType.Controls.Add(this.rbStoreOnce);
             this.gbStoreType.Font = new System.Drawing.Font("Segoe UI", 8F);
             this.gbStoreType.ForeColor = System.Drawing.Color.White;
-            this.gbStoreType.Location = new System.Drawing.Point(249, 15);
+            this.gbStoreType.Location = new System.Drawing.Point(252, 15);
             this.gbStoreType.Name = "gbStoreType";
             this.gbStoreType.Size = new System.Drawing.Size(110, 55);
             this.gbStoreType.TabIndex = 183;
@@ -810,7 +810,7 @@
             this.gbStoreSettings.ForeColor = System.Drawing.Color.White;
             this.gbStoreSettings.Location = new System.Drawing.Point(122, 12);
             this.gbStoreSettings.Name = "gbStoreSettings";
-            this.gbStoreSettings.Size = new System.Drawing.Size(368, 80);
+            this.gbStoreSettings.Size = new System.Drawing.Size(375, 80);
             this.gbStoreSettings.TabIndex = 180;
             this.gbStoreSettings.TabStop = false;
             this.gbStoreSettings.Text = "Store Settings";
@@ -962,7 +962,7 @@
             this.panel1.Controls.Add(this.gbLimiterList);
             this.panel1.Location = new System.Drawing.Point(12, 61);
             this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(500, 340);
+            this.panel1.Size = new System.Drawing.Size(505, 340);
             this.panel1.TabIndex = 192;
             this.panel1.Tag = "color:normal";
             // 

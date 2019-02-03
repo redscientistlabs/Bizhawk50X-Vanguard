@@ -510,7 +510,7 @@ namespace RTCV.UI
 				upDownLifetime.Value = bu.Lifetime;
 				cbLoop.Checked = bu.Loop;
 				cbLimiterTime.SelectedItem = bu.LimiterTime;
-				cbStoreLimiterMode.SelectedItem = bu.StoreLimiterMode;
+				cbStoreLimiterMode.SelectedItem = bu.StoreLimiterSource;
 
 				cbLimiterList.SelectedItem = UICore.LimiterListBindingSource.FirstOrDefault(x => x.Value == bu.LimiterListHash);
 
@@ -595,7 +595,7 @@ namespace RTCV.UI
 			{
 				cbLimiterTime.Items.Add(item);
 			}
-			foreach (var item in Enum.GetValues(typeof(StoreLimiterMode)))
+			foreach (var item in Enum.GetValues(typeof(StoreLimiterSource)))
 			{
 				cbStoreLimiterMode.Items.Add(item);
 			}
@@ -719,7 +719,7 @@ namespace RTCV.UI
 			dgvBlastEditor.Columns.Add(limiterHash);
 
 			DataGridViewComboBoxColumn storeLimiterMode = CreateColumn(buProperty.StoreLimiterMode.ToString(), buProperty.StoreLimiterMode.ToString(), "Store Limiter Mode", new DataGridViewComboBoxColumn()) as DataGridViewComboBoxColumn;
-			foreach (var item in Enum.GetValues(typeof(StoreLimiterMode)))
+			foreach (var item in Enum.GetValues(typeof(StoreLimiterSource)))
 				storeLimiterMode.Items.Add(item);
 			dgvBlastEditor.Columns.Add(storeLimiterMode);
 

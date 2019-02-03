@@ -507,7 +507,7 @@ namespace RTCV.UI
 				switch (RTC_CustomEngine.StoreLimiterSource)
 				{
 					case (StoreLimiterSource.ADDRESS):
-						rbStoreModeAddress.Checked = true;
+						rbStoreModeAtddress.Checked = true;
 						break;
 					case (StoreLimiterSource.SOURCEADDRESS):
 						rbStoreModeSource.Checked = true;
