@@ -130,7 +130,7 @@ namespace Vanguard
 				//VanguardCore.attached = true;
 				VanguardCore.attached = VanguardCore.args.Contains("-ATTACHED");
 
-				RTCV.NetCore.Extensions.ConsoleHelper.CreateConsole("debug/Bizhawk.log");
+				RTCV.NetCore.Extensions.ConsoleHelper.CreateConsole("EMU_LOG.txt");
 				if (args.Contains("-CONSOLE"))
 				{
 					RTCV.NetCore.Extensions.ConsoleHelper.ShowConsole();

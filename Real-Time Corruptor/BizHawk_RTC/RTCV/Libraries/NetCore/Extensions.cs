@@ -50,11 +50,11 @@ namespace RTCV.NetCore
 
 		public static class ConsoleHelper
 		{
-			static ConsoleCopy con;
+			public static ConsoleCopy con;
 			public static void CreateConsole(string path)
 			{
 				AllocConsole();
-				ConsoleCopy con = new ConsoleCopy(path);
+				con = new ConsoleCopy(path);
 
 				//Disable the X button on the console window
 				EnableMenuItem(GetSystemMenu(GetConsoleWindow(), false), SC_CLOSE, MF_DISABLED);
@@ -107,10 +107,10 @@ namespace RTCV.NetCore
 			public static extern IntPtr GetSystemMenu(IntPtr HWNDValue, bool isRevert);
 			[DllImport("user32.dll")]
 			public static extern int EnableMenuItem(IntPtr tMenu, int targetItem, int targetStatus);
-			class ConsoleCopy : IDisposable
+			public class ConsoleCopy : IDisposable
 			{
 				FileStream fileStream;
-				StreamWriter fileWriter;
+				public StreamWriter FileWriter;
 				TextWriter doubleWriter;
 				TextWriter oldOut;
 
@@ -151,12 +151,12 @@ namespace RTCV.NetCore
 
 					try
 					{
-						fileStream = File.Create(path);
+						File.Create(path).Close();
+						fileStream = File.Open(path, FileMode.Open, FileAccess.Write, FileShare.Read);
+						FileWriter = new StreamWriter(fileStream);
+						FileWriter.AutoFlush = true;
 
-						fileWriter = new StreamWriter(fileStream);
-						fileWriter.AutoFlush = true;
-
-						doubleWriter = new DoubleWriter(fileWriter, oldOut);
+						doubleWriter = new DoubleWriter(FileWriter, oldOut);
 					}
 					catch (Exception e)
 					{
@@ -171,11 +171,11 @@ namespace RTCV.NetCore
 				public void Dispose()
 				{
 					Console.SetOut(oldOut);
-					if (fileWriter != null)
+					if (FileWriter != null)
 					{
-						fileWriter.Flush();
-						fileWriter.Close();
-						fileWriter = null;
+						FileWriter.Flush();
+						FileWriter.Close();
+						FileWriter = null;
 					}
 					if (fileStream != null)
 					{

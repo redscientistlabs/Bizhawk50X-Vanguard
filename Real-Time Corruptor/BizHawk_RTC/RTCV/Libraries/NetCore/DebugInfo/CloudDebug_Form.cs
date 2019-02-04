@@ -31,11 +31,11 @@ namespace RTCV.NetCore
 				lbException.Text = ex.Message;
 				tbStackTrace.Text = ex.Message + "\n" + ex.StackTrace;
 				btnContinue.Visible = canContinue;
+				btnContinue.Visible = true;
 			}
 
 			this.Focus();
 			this.BringToFront();
-			this.TopMost = true;
 		}
 
 		public DialogResult Start()
@@ -108,6 +108,19 @@ namespace RTCV.NetCore
 				string emufile = tempdebugdir + "\\EMU_PERSPECTIVE.txt";
 				File.WriteAllText(emufile, getEmuInfo());
 
+				//Copying the log files
+				string emuLog = tempdebugdir + "\\EMU_LOG.txt";
+				lock (Extensions.ConsoleHelper.con.FileWriter)
+				{
+					File.Copy(relativedir + "\\EMU_LOG.txt", emuLog, true);
+				}
+
+				//Copying the log files
+				string rtcLog = tempdebugdir + "\\RTC_LOG.txt";
+				lock (Extensions.ConsoleHelper.con.FileWriter)
+				{
+					File.Copy(relativedir + "\\RTC_LOG.txt", rtcLog, true);
+				}
 
 				var path = Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), "7z.dll");
 				SevenZip.SevenZipBase.SetLibraryPath(path);
@@ -158,8 +171,6 @@ namespace RTCV.NetCore
 
 				File.Delete(downloadfilepath);
 				Process.Start(extractpath);
-
-
 			}
 		}
 
