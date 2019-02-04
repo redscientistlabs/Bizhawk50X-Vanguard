@@ -37,7 +37,7 @@ namespace RTCV.UI
 		private void btnRtcFactoryClean_Click(object sender, EventArgs e)
 		{
 			Process p = new Process();
-			p.StartInfo.FileName = "FactoryCleanDETACHED.bat";
+			p.StartInfo.FileName = "FactoryClean.bat";
 			p.StartInfo.WindowStyle = ProcessWindowStyle.Hidden;
 			p.StartInfo.CreateNoWindow = true;
 			p.StartInfo.WorkingDirectory = CorruptCore.CorruptCore.rtcDir;

@@ -474,7 +474,7 @@ namespace RTCV.CorruptCore
 
 
 			LocalNetCoreRouter.Route(NetcoreCommands.VANGUARD, NetcoreCommands.REMOTE_IMPORTKEYBINDS);
-			Process.Start(CorruptCore.bizhawkDir + Path.DirectorySeparatorChar + $"StockpileConfigDETACHED.bat");
+			Process.Start(CorruptCore.bizhawkDir + Path.DirectorySeparatorChar + $"StockpileConfig.bat");
 
 		}
 
@@ -517,7 +517,7 @@ namespace RTCV.CorruptCore
 			LocalNetCoreRouter.Route(NetcoreCommands.VANGUARD, NetcoreCommands.REMOTE_MERGECONFIG);
 
 
-			Process.Start(CorruptCore.bizhawkDir + Path.DirectorySeparatorChar + $"StockpileConfigDETACHED.bat");
+			Process.Start(CorruptCore.bizhawkDir + Path.DirectorySeparatorChar + $"StockpileConfig.bat");
 
 		}
 

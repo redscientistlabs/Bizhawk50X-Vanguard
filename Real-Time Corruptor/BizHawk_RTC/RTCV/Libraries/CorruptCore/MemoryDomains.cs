@@ -387,13 +387,14 @@ namespace RTCV.CorruptCore
 			{
 				long start = range[0];
 				long end = range[1];
+				if (end < start)
+					continue;
 
 				for (long i = start; i < end; i++)
 				{
 					if (!IsAddressInRanges(i, RemoveSingles, RemoveRanges))
 						if (PointerSpacer == 1 || addressCount % PointerSpacer == 0)
 						{
-							//VMD.MemoryPointers.Add(new Tuple<string, long>(Domain, i));
 							VMD.PointerDomains.Add(GenDomain);
 							VMD.PointerAddresses.Add(i);
 						}
@@ -403,7 +404,6 @@ namespace RTCV.CorruptCore
 
 			foreach (long single in AddSingles)
 			{
-				//VMD.MemoryPointers.Add(new Tuple<string, long>(Domain, single));
 				VMD.PointerDomains.Add(GenDomain);
 				VMD.PointerAddresses.Add(single);
 				addressCount++;

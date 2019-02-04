@@ -66,9 +66,6 @@ namespace RTCV.UI
 				case "KILL + RESTART":
 					Process.Start("RESTARTDETACHEDRTC.bat");
 					break;
-				case "RESTART + RESET":
-					Process.Start("RESETDETACHEDRTC.bat");
-					break;
 			}
 		}
 

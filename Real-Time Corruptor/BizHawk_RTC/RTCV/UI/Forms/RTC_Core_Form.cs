@@ -474,7 +474,7 @@ Environment.NewLine + "───█───▌────────▐▀─
 			if (killswitchSpamPreventTimer == null)
 			{
 				killswitchSpamPreventTimer = new Timer();
-				killswitchSpamPreventTimer.Interval = 2000;
+				killswitchSpamPreventTimer.Interval = 3000;
 				killswitchSpamPreventTimer.Tick += KillswitchSpamPreventTimer_Tick;
 			}
 			killswitchSpamPreventTimer.Start();
