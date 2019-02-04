@@ -19,8 +19,7 @@ namespace RTCV.UI
 		public Form previousForm = null;
 		public Form activeForm = null;
 		private const int CP_NOCLOSE_BUTTON = 0x200;
-		private Timer killswitchSpamPreventTimer;
-		private bool shouldKillswitchFire = true;
+		
 
 		protected override CreateParams CreateParams
 		{
@@ -120,7 +119,7 @@ namespace RTCV.UI
 			}
 
 			LocalNetCoreRouter.Route(NetcoreCommands.CORRUPTCORE, NetcoreCommands.REMOTE_EVENT_CLOSEEMULATOR);
-			Thread.Sleep(1000);
+			
 
 			UICore.CloseAllRtcForms();
 		}
@@ -468,18 +467,6 @@ Environment.NewLine + "───█───▌────────▐▀─
 
 		private void btnAutoKillSwitchExecute_Click(object sender, EventArgs e)
 		{
-			if (!shouldKillswitchFire)
-				return;;
-			
-			if (killswitchSpamPreventTimer == null)
-			{
-				killswitchSpamPreventTimer = new Timer();
-				killswitchSpamPreventTimer.Interval = 3000;
-				killswitchSpamPreventTimer.Tick += KillswitchSpamPreventTimer_Tick;
-			}
-			killswitchSpamPreventTimer.Start();
-			shouldKillswitchFire = false;
-
 			ShowPanelForm(S.GET<RTC_ConnectionStatus_Form>());
 
 			S.GET<RTC_Core_Form>().pbAutoKillSwitchTimeout.Value = S.GET<RTC_Core_Form>().pbAutoKillSwitchTimeout.Maximum;
@@ -487,10 +474,5 @@ Environment.NewLine + "───█───▌────────▐▀─
 			AutoKillSwitch.KillEmulator(btnAutoKillSwitchExecute.Text.ToUpper());
 		}
 
-		private void KillswitchSpamPreventTimer_Tick(object sender, EventArgs e)
-		{
-			shouldKillswitchFire = true;
-			killswitchSpamPreventTimer.Stop();
-		}
 	}
 }

@@ -102,7 +102,7 @@ namespace RTCV.UI
 
 		public void Kill()
 		{
-
+			netConn.Kill();
 		}
 	}
 }

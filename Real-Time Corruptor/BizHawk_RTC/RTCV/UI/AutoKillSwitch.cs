@@ -4,8 +4,7 @@ using System.Diagnostics;
 using System.Linq;
 using System.Media;
 using System.Text;
-using System.Threading;
-using System.Threading.Tasks;
+using System.Windows.Forms;
 using RTCV.NetCore;
 using RTCV.NetCore.StaticTools;
 using RTCV.CorruptCore;
@@ -18,6 +17,8 @@ namespace RTCV.UI
 	public static class AutoKillSwitch
 	{
 		public static int MaxMissedPulses = 15;
+		private static Timer killswitchSpamPreventTimer;
+		private static bool shouldKillswitchFire = true;
 
 		public static bool Enabled
 		{
@@ -57,6 +58,18 @@ namespace RTCV.UI
 
 		public static void KillEmulator(string str)
 		{
+			if (!shouldKillswitchFire)
+				return; 
+
+			if (killswitchSpamPreventTimer == null)
+			{
+				killswitchSpamPreventTimer = new Timer();
+				killswitchSpamPreventTimer.Interval = 3000;
+				killswitchSpamPreventTimer.Tick += KillswitchSpamPreventTimer_Tick;
+			}
+			killswitchSpamPreventTimer.Start();
+			shouldKillswitchFire = false;
+
 			PlayCrashSound(true);
 			switch (str)
 			{
@@ -67,6 +80,11 @@ namespace RTCV.UI
 					Process.Start("RESTARTDETACHEDRTC.bat");
 					break;
 			}
+		}
+		private static void KillswitchSpamPreventTimer_Tick(object sender, EventArgs e)
+		{
+			shouldKillswitchFire = true;
+			killswitchSpamPreventTimer.Stop();
 		}
 
 		private static void Start()

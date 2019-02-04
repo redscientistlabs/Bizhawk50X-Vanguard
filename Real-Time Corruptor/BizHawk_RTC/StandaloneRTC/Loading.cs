@@ -13,7 +13,7 @@ public partial class Loader : UI_Extensions.RTC_Standalone_Form
 		public Loader(string[] args)
 		{
 			InitializeComponent();
-			RTCV.NetCore.Extensions.ConsoleHelper.CreateConsole("RTC_LOG.txt");
+			RTCV.NetCore.Extensions.ConsoleHelper.CreateConsole("RTC\\WORKING\\RTC_LOG.txt");
 			if (args.Contains("-CONSOLE"))
 			{
 				RTCV.NetCore.Extensions.ConsoleHelper.ShowConsole();
