@@ -348,7 +348,7 @@ namespace RTCV.CorruptCore
 
 
 				case REMOTE_EVENT_CLOSEEMULATOR:
-						Application.Exit();
+					Application.Exit();
 					break;
 
 					
