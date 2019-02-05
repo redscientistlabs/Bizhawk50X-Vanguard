@@ -348,10 +348,7 @@ namespace RTCV.CorruptCore
 
 
 				case REMOTE_EVENT_CLOSEEMULATOR:
-					SyncObjectSingleton.FormExecute((o, ea) =>
-					{
 						Application.Exit();
-					});
 					break;
 
 					

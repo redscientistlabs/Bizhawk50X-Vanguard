@@ -72,7 +72,6 @@ namespace RTCV.UI
 			dgvBlastGenerator.CellValueChanged += dgvBlastGenerator_CellValueChanged;
 			dgvBlastGenerator.CellClick += dgvBlastGenerator_CellClick;
 
-			DataGridViewCol cell = dgvBlastGenerator.Rows[e.RowIndex].Cells["dgvNoteText"];
 
 
 			UICore.SetRTCColor(UICore.GeneralColor, this);
@@ -797,7 +796,6 @@ namespace RTCV.UI
 				DataGridViewCell buttonCell = row.Cells["dgvNoteButton"];
 
 				buttonCell.Value = string.IsNullOrWhiteSpace(textCell.Value?.ToString()) ? string.Empty : "📝";
-
 			}
 		}
 	}
