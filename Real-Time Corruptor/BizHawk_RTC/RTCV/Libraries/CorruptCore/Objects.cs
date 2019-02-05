@@ -1600,28 +1600,27 @@ namespace RTCV.CorruptCore
 			Data = data;
 		}
 	}
-
 	[Serializable]
 	public class BlastGeneratorProto : INote
 	{
-		public string BlastType;
-		public string Domain;
-		public int Precision;
-		public long StepSize;
-		public long StartAddress;
-		public long EndAddress;
-		public long Param1;
-		public long Param2;
-		public string Mode;
-		public BlastLayer Bl;
-
+		public string BlastType { get; }
+		public string Domain { get; }
+		public int Precision { get; }
+		public long StepSize { get; }
+		public long StartAddress { get; }
+		public long EndAddress { get; }
+		public long Param1 { get; }
+		public long Param2 { get; }
+		public string Mode { get; }
 		public string Note { get; set; }
+		public int Seed { get; }
+		public BlastLayer bl;
 
 		public BlastGeneratorProto()
 		{
 		}
 
-		public BlastGeneratorProto(string _note, string _blastType, string _domain, string _mode, int _precision, long _stepSize, long _startAddress, long _endAddress, long _param1, long _param2)
+		public BlastGeneratorProto(string _note, string _blastType, string _domain, string _mode, int _precision, long _stepSize, long _startAddress, long _endAddress, long _param1, long _param2, int _seed)
 		{
 			Note = _note;
 			BlastType = _blastType;
@@ -1633,31 +1632,25 @@ namespace RTCV.CorruptCore
 			Param2 = _param2;
 			Mode = _mode;
 			StepSize = _stepSize;
+			Seed = _seed;
 		}
 
 		public BlastLayer GenerateBlastLayer()
 		{
 			switch (BlastType)
 			{
-				case "BlastByte":
-					RTC_BlastByteGenerator bbGenerator = new RTC_BlastByteGenerator();
-					Bl = bbGenerator.GenerateLayer(Note, Domain, StepSize, StartAddress, EndAddress, Param1, Param2, Precision, (BGBlastByteModes)Enum.Parse(typeof(BGBlastByteModes), Mode, true));
+				case "Value":
+					bl = RTC_ValueGenerator.GenerateLayer(Note, Domain, StepSize, StartAddress, EndAddress, Param1, Param2, Precision, Seed, (BGValueModes)Enum.Parse(typeof(BGValueModes), Mode, true));
 					break;
-				case "BlastCheat":
-					RTC_BlastCheatGenerator bcGenerator = new RTC_BlastCheatGenerator();
-					Bl = bcGenerator.GenerateLayer(Note, Domain, StepSize, StartAddress, EndAddress, Param1, Param2, Precision, (BGBlastCheatModes)Enum.Parse(typeof(BGBlastCheatModes), Mode, true));
-					break;
-				case "BlastPipe":
-					RTC_BlastPipeGenerator bpGenerator = new RTC_BlastPipeGenerator();
-					Bl = bpGenerator.GenerateLayer(Note, Domain, StepSize, StartAddress, EndAddress, Param1, Param2, Precision, (BGBlastPipeModes)Enum.Parse(typeof(BGBlastPipeModes), Mode, true));
+				case "Store":
+					bl = RTC_StoreGenerator.GenerateLayer(Note, Domain, StepSize, StartAddress, EndAddress, Param1, Param2, Precision, Seed, (BGStoreModes)Enum.Parse(typeof(BGStoreModes), Mode, true));
 					break;
 				default:
 					return null;
 			}
 
-			return Bl;
+			return bl;
 		}
-
 	}
 
 	public class ProblematicProcess

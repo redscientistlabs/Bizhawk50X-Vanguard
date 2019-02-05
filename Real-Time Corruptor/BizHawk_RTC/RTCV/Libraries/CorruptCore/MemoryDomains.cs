@@ -308,7 +308,7 @@ namespace RTCV.CorruptCore
 
 		public abstract byte[] GetDump();
 
-		public abstract byte[] PeekBytes(long startAddress, long endAddress, bool bigEndian);
+		public abstract byte[] PeekBytes(long startAddress, long endAddress, bool raw);
 
 		public abstract byte PeekByte(long address);
 

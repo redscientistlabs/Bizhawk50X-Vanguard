@@ -332,13 +332,10 @@ namespace RTCV.UI
 
 		private void btnOpenBlastGenerator_Click(object sender, EventArgs e)
 		{
-			MessageBox.Show("New Blast Generator currently not implemented");
-			/*
 			if (S.GET<RTC_BlastGenerator_Form>() != null)
 				S.GET<RTC_BlastGenerator_Form>().Close();
 			S.SET(new RTC_BlastGenerator_Form());
 			S.GET<RTC_BlastGenerator_Form>().LoadNoStashKey();
-			*/
 		}
 
 
