@@ -300,7 +300,7 @@
       <Private>False</Private>
     </ProjectReference>
     <ProjectReference Include="..\BizHawk.Emulation.Cores\BizHawk.Emulation.Cores.csproj">
-      <Project>{197D4314-8A9F-49BA-977D-54ACEFAEB6BA}</Project>
+      <Project>{197d4314-8a9f-49ba-977d-54acefaeb6ba}</Project>
       <Name>BizHawk.Emulation.Cores</Name>
       <Private>False</Private>
     </ProjectReference>

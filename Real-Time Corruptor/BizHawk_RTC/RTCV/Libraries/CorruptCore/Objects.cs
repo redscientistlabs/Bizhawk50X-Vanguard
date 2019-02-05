@@ -1325,7 +1325,7 @@ namespace RTCV.CorruptCore
 		public void StoreBackup()
 		{
 			//Snag our memory interface
-			MemoryDomainProxy mi = MemoryDomains.GetInterface(SourceDomain);
+			MemoryInterface mi = MemoryDomains.GetInterface(SourceDomain);
 
 			if (mi == null)
 				throw new Exception(
