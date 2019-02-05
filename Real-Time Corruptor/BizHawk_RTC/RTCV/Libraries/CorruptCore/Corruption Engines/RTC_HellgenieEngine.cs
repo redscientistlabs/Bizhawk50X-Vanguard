@@ -63,7 +63,7 @@ namespace RTCV.CorruptCore
 			{
 				if (domain == null)
 					return null;
-				MemoryDomainProxy mdp = MemoryDomains.GetProxy(domain, address);
+				MemoryInterface mi = MemoryDomains.GetInterface(domain);
 
 				Byte[] value = new Byte[precision];
 
@@ -95,7 +95,7 @@ namespace RTCV.CorruptCore
 					}
 				}
 
-				return new BlastUnit(value, domain, safeAddress, precision, mdp.BigEndian, 0, 0);
+				return new BlastUnit(value, domain, safeAddress, precision, mi.BigEndian, 0, 0);
 			}
 			catch (Exception ex)
 			{

@@ -170,13 +170,6 @@ namespace RTCV.UI
 				return;
 
 			isClosing = true;
-			if (UI_VanguardImplementation.connector?.netConn != null)
-			{
-				UI_VanguardImplementation.connector.netConn.spec.AutoReconnect = false;
-				UI_VanguardImplementation.connector?.netConn.Kill();
-			}
-				
-
 
 			foreach (Form frm in UICore.AllRtcForms)
 			{

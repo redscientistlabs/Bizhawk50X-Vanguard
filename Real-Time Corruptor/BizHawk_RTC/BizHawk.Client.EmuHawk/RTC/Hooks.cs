@@ -130,7 +130,7 @@ namespace Vanguard
 				//VanguardCore.attached = true;
 				VanguardCore.attached = VanguardCore.args.Contains("-ATTACHED");
 
-				RTCV.NetCore.Extensions.ConsoleHelper.CreateConsole("RTC\\WORKING\\EMU_LOG.txt");
+				RTCV.NetCore.Extensions.ConsoleHelper.CreateConsole("RTC\\EMU_LOG.txt");
 				if (args.Contains("-CONSOLE"))
 				{
 					RTCV.NetCore.Extensions.ConsoleHelper.ShowConsole();

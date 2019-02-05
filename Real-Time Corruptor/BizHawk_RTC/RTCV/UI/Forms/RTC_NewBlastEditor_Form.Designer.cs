@@ -68,7 +68,7 @@ namespace RTCV.UI
             this.panel5 = new System.Windows.Forms.Panel();
             this.btnNote = new System.Windows.Forms.Button();
             this.panel8 = new System.Windows.Forms.Panel();
-            this.cbStoreLimiterMode = new System.Windows.Forms.ComboBox();
+            this.cbStoreLimiterSource = new System.Windows.Forms.ComboBox();
             this.label17 = new System.Windows.Forms.Label();
             this.cbInvertLimiter = new System.Windows.Forms.CheckBox();
             this.cbLimiterTime = new System.Windows.Forms.ComboBox();
@@ -643,7 +643,7 @@ namespace RTCV.UI
             // panel8
             // 
             this.panel8.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.panel8.Controls.Add(this.cbStoreLimiterMode);
+            this.panel8.Controls.Add(this.cbStoreLimiterSource);
             this.panel8.Controls.Add(this.label17);
             this.panel8.Controls.Add(this.cbInvertLimiter);
             this.panel8.Controls.Add(this.cbLimiterTime);
@@ -657,11 +657,11 @@ namespace RTCV.UI
             // 
             // cbStoreLimiterMode
             // 
-            this.cbStoreLimiterMode.FormattingEnabled = true;
-            this.cbStoreLimiterMode.Location = new System.Drawing.Point(107, 57);
-            this.cbStoreLimiterMode.Name = "cbStoreLimiterMode";
-            this.cbStoreLimiterMode.Size = new System.Drawing.Size(92, 21);
-            this.cbStoreLimiterMode.TabIndex = 13;
+            this.cbStoreLimiterSource.FormattingEnabled = true;
+            this.cbStoreLimiterSource.Location = new System.Drawing.Point(107, 57);
+            this.cbStoreLimiterSource.Name = "cbStoreLimiterMode";
+            this.cbStoreLimiterSource.Size = new System.Drawing.Size(92, 21);
+            this.cbStoreLimiterSource.TabIndex = 13;
             // 
             // label17
             // 
@@ -1297,7 +1297,7 @@ namespace RTCV.UI
 		private System.Windows.Forms.CheckBox cbLoop;
 		private System.Windows.Forms.Button btnNote;
 		private System.Windows.Forms.ToolStripMenuItem bakeBlastunitsToVALUEToolStripMenuItem;
-		private ComboBox cbStoreLimiterMode;
+		private ComboBox cbStoreLimiterSource;
 		private Label label17;
 	}
 }

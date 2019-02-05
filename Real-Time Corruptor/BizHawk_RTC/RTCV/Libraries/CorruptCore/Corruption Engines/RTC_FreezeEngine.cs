@@ -11,9 +11,9 @@ namespace RTCV.CorruptCore
 			{
 				if (domain == null)
 					return null;
-				MemoryDomainProxy mdp = MemoryDomains.GetProxy(domain, address);
+				MemoryInterface mi = MemoryDomains.GetInterface(domain);
 				long safeAddress = address - (address % precision);
-				return new BlastUnit(StoreType.ONCE, StoreTime.PREEXECUTE, domain, safeAddress, domain, safeAddress, precision, mdp.BigEndian, 0, 0);
+				return new BlastUnit(StoreType.ONCE, StoreTime.PREEXECUTE, domain, safeAddress, domain, safeAddress, precision, mi.BigEndian, 0, 0);
 			}
 			catch (Exception ex)
 			{

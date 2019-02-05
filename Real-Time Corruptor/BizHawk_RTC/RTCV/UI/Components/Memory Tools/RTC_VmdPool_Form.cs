@@ -108,9 +108,9 @@ namespace RTCV.UI
 
 			SaveFileDialog saveFileDialog1 = new SaveFileDialog
 			{
-				DefaultExt = "xml",
+				DefaultExt = "json",
 				Title = "Save VMD to File",
-				Filter = "XML VMD file|*.xml",
+				Filter = "JSON VMD file|*.json",
 				RestoreDirectory = true
 			};
 
@@ -119,11 +119,9 @@ namespace RTCV.UI
 				string filename = saveFileDialog1.FileName;
 
 				//creater stockpile.xml to temp folder from stockpile object
-				using (FileStream fs = File.Open(filename, FileMode.OpenOrCreate))
+				using (FileStream fs = File.Open(filename, FileMode.Create))
 				{
-					XmlSerializer xs = new XmlSerializer(typeof(VmdPrototype));
-					xs.Serialize(fs, vmd.Proto);
-					fs.Close();
+					JsonHelper.Serialize(vmd.Proto, fs);
 				}
 			}
 			else
@@ -134,31 +132,55 @@ namespace RTCV.UI
 		{
 			OpenFileDialog ofd = new OpenFileDialog
 			{
-				DefaultExt = "xml",
+				DefaultExt = "json",
 				Multiselect = true,
 				Title = "Open VMD File",
-				Filter = "VMD xml files|*.xml",
+				Filter = "VMD json files|*.json|VMD xml files|*.XML",
 				RestoreDirectory = true
 			};
 			if (ofd.ShowDialog() == DialogResult.OK)
 			{
+				bool notified = false;
 				//string Filename = ofd.FileName.ToString();
 				foreach (string filename in ofd.FileNames)
 				{
 					try
 					{
-						using (FileStream fs = File.Open(filename, FileMode.OpenOrCreate))
+						if(Path.GetExtension(filename).ToUpper() == "XML")
 						{
-							XmlSerializer xs = new XmlSerializer(typeof(VmdPrototype));
-							VmdPrototype proto = (VmdPrototype)xs.Deserialize(fs);
-							fs.Close();
+							if (!notified)
+							{
+								MessageBox.Show("Legacy XML VMD detected. We're going to drop support for these at some point.\nConverting to JSON and saving to the original folder.");
+								notified = true;
+							}
 
-							MemoryDomains.AddVMD(proto);
+							using (FileStream fs = File.Open(filename, FileMode.Open))
+							{
+								XmlSerializer ser = new XmlSerializer(typeof(VmdPrototype));
+								VmdPrototype proto = (VmdPrototype)ser.Deserialize(fs);
+
+								var jsonFilename = Path.Combine(Path.GetFileNameWithoutExtension(filename), ".json");
+								using(FileStream _fs = File.Open(jsonFilename, FileMode.Create))
+								{
+									JsonHelper.Serialize(proto, _fs);
+								}
+															   
+								MemoryDomains.AddVMD(proto);
+							}
+						}
+						else
+						{
+							using (FileStream fs = File.Open(filename, FileMode.Open))
+							{
+								VmdPrototype proto = JsonHelper.Deserialize<VmdPrototype>(fs);
+
+								MemoryDomains.AddVMD(proto);
+							}
 						}
 					}
-					catch
+					catch(Exception ex)
 					{
-						MessageBox.Show($"The VMD xml file {filename} could not be loaded.");
+						throw new NetCore.CustomException($"The VMD file {filename} could not be loaded." + ex.Message, ex.StackTrace);
 					}
 				}
 

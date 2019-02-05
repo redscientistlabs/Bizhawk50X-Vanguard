@@ -1,0 +1,642 @@
+throttle method: 1; resolution: 10000000
+loading external game database gamedb_a2600.txt
+loading external game database gamedb_a7800.txt
+loading external game database gamedb_appleII.txt
+loading external game database gamedb_coleco.txt
+loading external game database gamedb_e_cards.txt
+loading external game database gamedb_intv.txt
+loading external game database gamedb_gb.txt
+loading external game database gamedb_gba.txt
+loading external game database gamedb_gbc.txt
+loading external game database gamedb_lynx.txt
+loading external game database gamedb_msx1.txt
+loading external game database gamedb_msx2.txt
+loading external game database gamedb_n64.txt
+loading external game database gamedb_nes.txt
+loading external game database gamedb_goodnes.txt
+loading external game database gamedb_neshomebrew.txt
+loading external game database gamedb_vs.txt
+gamedb: Multiple hash entries 8A7DAB8B78DA1C5EA159BA9EEC00FF97742245F1, duplicate detected on "Super Donkey Kong (Unl) [o1]" and "Super Donkey Kong (Unl) [b1]"
+loading external game database gamedb_pce_cd.txt
+loading external game database gamedb_pce_hucards.txt
+loading external game database gamedb_psx.txt
+loading external game database gamedb_sega_sg1000.txt
+loading external game database gamedb_sega_gg.txt
+loading external game database gamedb_sega_sms.txt
+loading external game database gamedb_sega_md.txt
+loading external game database gamedb_snes.txt
+BENIGN: missing external game database gamedb_user.txt
+loading external game database gamedb_ws.txt
+loading external game database gamedb_wsc.txt
+loading external game database gamedb_zxspectrum.txt
+loading external game database gamedb_zxspectrum_disks.txt
+loading external game database gamedb_zxspectrum_tapes.txt
+loading external game database gamedb_amstradcpc.txt
+loading external game database gamedb_amstradcpc_disks.txt
+gamedb: Multiple hash entries D43014458EB34D3E5217E0B8CDC38E14, duplicate detected on "XSshow (1993)(Bollaware)" and "XSshow (1993)(Bollaware)"
+gamedb: Multiple hash entries 63235D6F9A8186046CA1CC88BA4FD55F, duplicate detected on "Wheels of Fire (1990)(Domark)(Disk 2 of 4)" and "Wheels of Fire (1990)(Domark)(Disk 2 of 4)"
+gamedb: Multiple hash entries B3FB4B0AA13346798D50A3B6214A90F7, duplicate detected on "Zona 0 Crack Intro (1991)(The Spanish Hacker)" and "Zona 0 Crack Intro (1991)(The Spanish Hacker)"
+gamedb: Multiple hash entries 90B81658D801B6BF82DCD6EB8D2BE7F6, duplicate detected on "3D Pool (1989)(Firebird Software)(Disk 2 of 2)" and "Zipi y Zape (1989)(Dro Soft)(+3)(ES)(Side B)[master disk]"
+gamedb: Multiple hash entries 4F1AAC899FCC0831AE7F1F8C756746D6, duplicate detected on "Football Manager 3 (1992)(Addictive Games)[CPM Version]" and "Football Manager 3 (1991)(Addictive Games)(+3)(Side A)"
+gamedb: Multiple hash entries E964FB74A118A72319DEB425A206FF0A, duplicate detected on "Gnome Ranger (1987)(Level 9 Computing)(Disk 2 of 2)" and "Gnome Ranger (1987)(Level 9 Computing)(+3)(Side B)"
+gamedb: Multiple hash entries 611ADD3B10510210BC0FB31808109DA3, duplicate detected on "Ingrid's Back (1988)(Level 9 Computing)(Disk 1 of 2)" and "Ingrid's Back (1988)(Level 9 Computing)(+3)(Side A)[a]"
+gamedb: Multiple hash entries A2C4AD1F26A4EC9DEFF9E5C37D899917, duplicate detected on "Ingrid's Back (1988)(Level 9 Computing)(Disk 2 of 2)" and "Ingrid's Back (1988)(Level 9 Computing)(+3)(Side B)[a]"
+gamedb: Multiple hash entries 5E9505B2D5E40B7395BE6FE531F58FFC, duplicate detected on "Knight Orc (1987)(Rainbird Software)(Disk 2 of 2)" and "Knight Orc v2 (1987)(Rainbird)(+3)(Side B)"
+gamedb: Multiple hash entries 65BEAF0E1CDA24523F74CDB4632FC195, duplicate detected on "Lancelot (1988)(Mandarin Software)(Disk 1 of 2)" and "Lancelot (1988)(Mandarin)(+3)(Side A)"
+gamedb: Multiple hash entries 69D45E6317F44A6DB6201F720B69A207, duplicate detected on "Lancelot (1988)(Mandarin Software)(Disk 2 of 2)" and "Lancelot (1988)(Mandarin)(+3)(Side B)"
+gamedb: Multiple hash entries 3ABB29A0167CABBD49BE3CC58EB259EF, duplicate detected on "Las Vegas Casino (1989)(Zeppelin Games)[master disk 2]" and "American 3D Pool (1992)(Zeppelin Games)(+3)(Side B)[master disk]"
+gamedb: Multiple hash entries 911609021E3D8BE055C0AE71E4DDA7D7, duplicate detected on "Mirando a las Estrellas (1984)(Amsoft)(ES)" and "Mirando a las Estrellas (1984)(Amsoft)(ES)"
+gamedb: Multiple hash entries 3A8AD6D71202DFF00E29800DA7EC3905, duplicate detected on "Scapeghost (1989)(Level 9 Computing)(Disk 1 of 2)" and "Scapeghost (1989)(Level 9 Computing)(+3)(Side A)[aka Spook]"
+gamedb: Multiple hash entries 38A1B6F42FE3326F6E716314579FE05A, duplicate detected on "Scapeghost (1989)(Level 9 Computing)(Disk 2 of 2)" and "Scapeghost (1989)(Level 9 Computing)(+3)(Side B)[aka Spook]"
+gamedb: Multiple hash entries 3E6D72A817056D17BED2F3BBCFC2E4BD, duplicate detected on "Zynaps (1987)(Hewson Consultants)[a]" and "Zynaps (1987)(Hewson Consultants)[a]"
+loading external game database gamedb_ngp.txt
+loading external game database gamedb_ngp_tosec.txt
+gamedb: Multiple hash entries D13F954B2F1C703BDF857837C24E332E, duplicate detected on "Samurai Shodown! - Pocket Fighting Series (1998)(SNK)(en-ja)" and "Samurai Shodown! - Pocket Fighting Series (1998)(SNK)(en-ja)"
+gamedb: Multiple hash entries 6DE94AF216AD802C16EBC9E0D3ED1177, duplicate detected on "TPaint v0.7b (2000)(Carvan, Toby)(PD)" and "TPaint v0.7b (2000)(Carvan, Toby)(PD)"
+gamedb: Multiple hash entries CA3B2B48B9C4192BF02E35944492B6F0, duplicate detected on "WAV Player Sample (2001)(Thor)(PD)" and "WAV Player Sample (2001)(Thor)(PD)"
+gamedb: Multiple hash entries 84C3FC57DEB3573B742A495753BB2926, duplicate detected on "Mezase! Kanji Ou (2000)(SNK)(JP)" and "Mezase! Kanji Ou (2000)(SNK)(JP)"
+gamedb: Multiple hash entries 3655AACEBB43A963607D4CF821FC1301, duplicate detected on "SNK Neo-Geo Pocket Color BIOS (1999)(SNK)(en-ja)" and "SNK Neo-Geo Pocket Color BIOS (1999)(SNK)(en-ja)"
+gamedb: Multiple hash entries 5E9603FFFFEAAD87C91BF171AA6C833B, duplicate detected on "Thieves v1.0 (2000)(Mackintosh, Ivan)(PD)" and "Thieves v1.0 (2000)(Mackintosh, Ivan)(PD)"
+gamedb: Multiple hash entries 3E84CBC943FFA156F46D3CA84BC89C9A, duplicate detected on "Slideshow Rev 20030320 (2003)(Thor)(PD)" and "Slideshow Rev 20030320 (2003)(Thor)(PD)"
+loading external game database gamedb_ngp_nointro.txt
+gamedb: Multiple hash entries 9150A58F7094A48B980C1AC71B9CFAB9, duplicate detected on "Baseball Stars (Japan, Europe) (En,Ja)" and "Baseball Stars v1.10 (1998)(Saurus - SNK)(en-ja)"
+gamedb: Multiple hash entries 347D0EF33C889CC826D214CAF8475AE0, duplicate detected on "King of Fighters R-1 - Pocket Fighting Series (Japan, Europe) (En,Ja)" and "King of Fighters - R-1 (1998)(SNK)(en-ja)"
+gamedb: Multiple hash entries 006AFE2DEC77D73A2C592AEB1B3F694C, duplicate detected on "Neo Cherry Master - Real Casino Series (Japan, Europe) (En,Ja)" and "Neo Cherry Master (1998)(Dyna)(JP)(en-ja)"
+gamedb: Multiple hash entries 30EFE4F72D4678FFB97B885B1B7C3DA1, duplicate detected on "Neo Geo Cup '98 (Japan, Europe) (En,Ja)" and "NeoGeo Cup '98 (1998)(SNK)(JP)(en-ja)"
+gamedb: Multiple hash entries 6523C679A90573B09B4F70532CDFF09C, duplicate detected on "Pocket Tennis - Pocket Sports Series (Japan, Europe) (En,Ja)" and "Pocket Tennis - Pocket Sports Series (1998)(Yumekobo)(en-ja)"
+gamedb: Multiple hash entries D13F954B2F1C703BDF857837C24E332E, duplicate detected on "Samurai Shodown! - Pocket Fighting Series (Japan, Europe) (En,Ja)" and "Samurai Shodown! - Pocket Fighting Series (1998)(SNK)(en-ja)"
+gamedb: Multiple hash entries 9250B3328D64D3A1E7F9D50A04CEB64F, duplicate detected on "Shougi no Tatsujin (Japan)" and "Master of Syougi (1998)(ADK)(JP)"
+gamedb: Multiple hash entries 2C7076BD626B8360F8D3834384323F30, duplicate detected on "Bakumatsu Rouman Tokubetsu Hen - Gekka no Kenshi - Tsuki ni Saku Hana, Chiri Yuku Hana (Japan)" and "Last Blade, The - Beyond the Destiny (2000)(SNK)(JP)"
+gamedb: Multiple hash entries F2F296F4BE215E826FAC519FBA96609B, duplicate detected on "Baseball Stars Color (World) (En,Ja)" and "Baseball Stars Color (1999)(Saurus - SNK)(en-ja)"
+gamedb: Multiple hash entries F384FF31B5B27903383E3C597654A9D5, duplicate detected on "Big Bang Pro Wrestling (Japan) (En,Ja)" and "Big Bang Pro Wrestling (2000)(SNK)(JP)(en)"
+gamedb: Multiple hash entries 570086C0C471392E8058A913D5C7AE21, duplicate detected on "Biomotor Unitron (Japan)" and "Biomotor Unitron (1999)(Yumekobo)(JP)(en-ja)"
+gamedb: Multiple hash entries 4E9E47682CDB5BC314131548A4FB1A95, duplicate detected on "Biomotor Unitron (Japan) (Demo)" and "Biomotor Unitron (demo-kiosk) (1999)(Yumekobo)(JP)"
+gamedb: Multiple hash entries F4BBE8CF42074B75C8A911BF7B0562D5, duplicate detected on "Biomotor Unitron (USA, Europe)" and "Biomotor Unitron (1999)(Yumekobo)"
+gamedb: Multiple hash entries 1AFB182567C6030C6D68F257E6245184, duplicate detected on "Bust-A-Move Pocket (USA)" and "Bust-A-Move Pocket (1999)(SNK - Taito)(US)"
+gamedb: Multiple hash entries DC8FA0CEDEF94FE22A219F2EECA43DC0, duplicate detected on "Cool Boarders Pocket (Japan, Europe) (En,Ja)" and "Cool Boarders Pocket (2000)(UEP Systems)(en-ja)"
+gamedb: Multiple hash entries F367E3BD61C308966A4815200FAFB6A6, duplicate detected on "Cool Cool Jam (Japan)" and "Cool Cool Jam (2000)(SNK)(JP)"
+gamedb: Multiple hash entries CA88E3D6291C5CDF7B518D43DF5D0D98, duplicate detected on "Cool Cool Jam (USA, Europe) (Sample)" and "Cool Cool Jam (demo) (2000)(SNK)"
+gamedb: Multiple hash entries FE0E58D34D650AE5174CA03D3EFC67B0, duplicate detected on "Dark Arms - Beast Buster 1999 (World) (En,Ja)" and "Dark Arms - Beast Buster 1999 (1999)(SNK)(en-ja)"
+gamedb: Multiple hash entries D4651757A3DB5A8E5A5A64C337C6002F, duplicate detected on "Delta Warp (Japan) (En,Ja)" and "Delta Warp (2000)(Iosys)(JP)(en-ja)"
+gamedb: Multiple hash entries 26D0557D8A465AA8F430D5E4D94C679A, duplicate detected on "Densetsu no Ogre Battle Gaiden - Zenobia no Ouji (Japan)" and "Densetsu no Ogre Battle Gaiden - Zenobia no Ouji (2000)(Quest - SNK)(JP)"
+gamedb: Multiple hash entries C79DD020410D1D80C2709CB6AF4CF64A, duplicate detected on "Densha de Go! 2 on Neo Geo Pocket (Japan)" and "Densha de GO! 2 (1999)(Taito - SNK)(JP)"
+gamedb: Multiple hash entries C148B30103DE704EEED63DFE7A7D6100, duplicate detected on "Dive Alert - Becky's Version (USA, Europe)" and "Dive Alert - Becky's Version (1999)(Sacnoth)"
+gamedb: Multiple hash entries B149CB1F866942ECA70DF78BB25351CF, duplicate detected on "Dive Alert - Burn Hen (Japan)" and "Dive Alert - Burn Hen (1999)(Sacnoth)(JP)"
+gamedb: Multiple hash entries 0C38B2D5D1A2BE15D6C15C6B16B7BC98, duplicate detected on "Dive Alert - Matt's Version (USA, Europe)" and "Dive Alert - Matt's Version (1999)(Sacnoth)"
+gamedb: Multiple hash entries B26C96EE636795787CF58E2D5DB56C4A, duplicate detected on "Dive Alert - Rebecca Hen (Japan)" and "Dive Alert - Rebecca Hen (1999)(Sacnoth)(JP)"
+gamedb: Multiple hash entries 66885D788F8474295FCCBEBA107F2421, duplicate detected on "Dokodemo Mahjong (Japan)" and "Dokodemo Mahjong (1999)(ADK)(JP)"
+gamedb: Multiple hash entries C84F675A617DF14B1A1BF06F02BE773D, duplicate detected on "Dynamite Slugger (Japan, Europe) (En,Ja)" and "Dynamite Slugger (2000)(ADK)(en-ja)"
+gamedb: Multiple hash entries 9C9C2D533BE340600EF9F92ED1253DD9, duplicate detected on "Evolution - Eternal Dungeons (Europe)" and "Evolution - Eternal Dungeons (2000)(ESP - Sega)"
+gamedb: Multiple hash entries 5A2A155706A201A1C0227C7FE671256F, duplicate detected on "Fantastic Night Dreams - Cotton (Europe)" and "Cotton - Fantastic Night Dreams (2000)(Success)"
+gamedb: Multiple hash entries F6C0C5D77EAE342FCDD6CFFABF783226, duplicate detected on "Fantastic Night Dreams - Cotton (Japan)" and "Cotton - Fantastic Night Dreams (2000)(Success)(JP)"
+gamedb: Multiple hash entries F580078164DC2B8DFFB9F38EEEC1035D, duplicate detected on "Faselei! (Europe)" and "Faselei! (1999)(Sacnoth)"
+gamedb: Multiple hash entries 08B5385BD6D1FDCFED39BDB411FABD85, duplicate detected on "Faselei! (Japan)" and "Faselei! (1999)(Sacnoth)(JP)"
+gamedb: Multiple hash entries 690A3397F20E31B2C4A2833F51670245, duplicate detected on "Fatal Fury F-Contact - Pocket Fighting Series (World) (En,Ja)" and "Fatal Fury - F-Contact (1999)(SNK)"
+gamedb: Multiple hash entries 99ED127490F9D5D6482D20CC6ABC8056, duplicate detected on "Ganbare Neo Poke-kun (Ka) (Japan)" and "Ganbare Neo Poke Kun (2000)(SNK)(JP)"
+gamedb: Multiple hash entries 4BDA8B3669C5BBD72266853940D626CB, duplicate detected on "Infinity Cure (Japan)" and "Infinity Cure (2000)(KID)(JP)"
+gamedb: Multiple hash entries 9827FE3F592BD73CE1603E516C5E0532, duplicate detected on "Kikou Seiki Unitron - Sono Tsuide. Hikari Umareru Chi Yori. (Japan)" and "Kikou Seiki Unitron - Sono Tsuide. Hikari Umareru Chi Yori. (1999)(Yumekobo)(JP)"
+gamedb: Multiple hash entries B361ED78F6126F94179DC69FE4C58781, duplicate detected on "King of Fighters R-2 - Pocket Fighting Series (World) (En,Ja)" and "King of Fighters - R-2 (1999)(SNK)(en-ja)[a]"
+gamedb: Multiple hash entries 362E9C04EC255225EEB0A9DEE8FCAC1B, duplicate detected on "King of Fighters, The - Battle de Paradise (Japan)" and "King of Fighters, The - Battle de Paradise (2000)(SNK)(JP)"
+gamedb: Multiple hash entries 05AB35ED7BE398072CAE34783AA6751A, duplicate detected on "Koi Koi Mahjong (Japan)" and "Koi Koi Mahjong (2000)(Visco)(JP)"
+gamedb: Multiple hash entries 83FA4CB3C629AA57C12F9CEC52C5A53D, duplicate detected on "Last Blade, The - Beyond the Destiny (Europe)" and "Last Blade, The - Beyond the Destiny (2000)(SNK)"
+gamedb: Multiple hash entries 4D3EFEF436C67D4F4E031951B97D64C8, duplicate detected on "Metal Slug - 1st Mission (World) (En,Ja)" and "Metal Slug - 1st Mission (1999)(SNK)(en-ja)"
+gamedb: Multiple hash entries A58F7C41CD9E6C96CD5B4B477F022570, duplicate detected on "Metal Slug - 2nd Mission (World) (En,Ja)" and "Metal Slug - 2nd Mission (2000)(SNK)(en-ja)"
+gamedb: Multiple hash entries 89B605A1FC6DB5855B432CCC62F9E6E3, duplicate detected on "Mizuki Shigeru no Youkai Shashinkan (Japan)" and "Mizuki Shigeru no Youkai Shashinkan (1999)(SNK)(JP)"
+gamedb: Multiple hash entries 0865F375EAD2FEBBC86AB3FB9274B9B7, duplicate detected on "Neo 21 - Real Casino Series (World)" and "Neo 21 - Real Casino Series (1999)(Dyna)"
+gamedb: Multiple hash entries 1018F765F460588D975C9B4E9385A547, duplicate detected on "Neo Baccarat - Real Casino Series (World)" and "Neo Baccarat - Real Casino Series (2000)(Dyna)"
+gamedb: Multiple hash entries 7992904F8C4040AEE0CDE040AFBF757D, duplicate detected on "Neo Cherry Master Color - Real Casino Series (World) (En,Ja)" and "Neo Cherry Master Color - Real Casino Series (1999)(Dyna)(en-ja)"
+gamedb: Multiple hash entries CD5C1EB7CB2E83D6B6D64918574C8CDB, duplicate detected on "Neo Derby Champ Daiyosou (Japan)" and "Neo Derby Champ Daiyosou (1999)(Dyna)(JP)"
+gamedb: Multiple hash entries C0CED1D22506E46C4667BC0E926D921E, duplicate detected on "Neo Dragon's Wild - Real Casino Series (World) (En,Ja) (v1.11)" and "Neo Dragon's Wild - Real Casino Series Rev 11 (1999)(Dyna)(en-ja)"
+gamedb: Multiple hash entries F0FDD57F4D1A1470B826082586EAD479, duplicate detected on "Neo Dragon's Wild - Real Casino Series (World) (En,Ja) (v1.13)" and "Neo Dragon's Wild - Real Casino Series Rev 13 (1999)(Dyna)(en-ja)"
+gamedb: Multiple hash entries A6C3369F28558E4A9719DC54D50BE713, duplicate detected on "Neo Geo Cup '98 Plus (World) (En,Ja)" and "NeoGeo Cup '98 Plus (1999)(SNK)(en-ja)"
+gamedb: Multiple hash entries CEF050E2591435A5C41FF851AFA55A82, duplicate detected on "Neo Mystery Bonus - Real Casino Series (World) (En,Ja)" and "Neo Mystery Bonus - Real Casino Series (1999)(Dyna)(en-ja)"
+gamedb: Multiple hash entries 93D3810AE176507EBAAE782A612C930B, duplicate detected on "Neo Poke Pro Yakyuu (Japan)" and "Neo Poke Pro Yakyuu (1999)(ADK)(JP)"
+gamedb: Multiple hash entries E055837BB0E227C1DDC3E68B0AA89AE9, duplicate detected on "Neo Turf Masters (World) (En,Ja)" and "Neo Turf Masters (1999)(SNK)(en-ja)"
+gamedb: Multiple hash entries F78476C51C398B28E1D2257299D14758, duplicate detected on "Neo Turf Masters (World) (En,Ja) (Demo)" and "Neo Turf Masters (demo-kiosk) (1999)(SNK)(JP)(en-ja)"
+gamedb: Multiple hash entries 9C73091689138179323FF48B279F8B1E, duplicate detected on "Nigeronpa (Japan)" and "Nige-ron-pa (2000)(Dennou Eizou)(JP)"
+gamedb: Multiple hash entries 299761888BB026D76B698B9745BD8D27, duplicate detected on "Pachinko Hisshou Guide - Pocket Parlor (Japan)" and "Pachinko Hissyou Guide Pocket Parlor (1999)(Sankyo)(JP)"
+gamedb: Multiple hash entries 1676F66C906188D9DCA7015FB5AADA0E, duplicate detected on "Pachi-Slot Aruze Oukoku Pocket - Azteca (Japan)" and "Pachisuro Aruze Oogkoku Pocket - Azteca v1.03 (2000)(Aruze)(JP)"
+gamedb: Multiple hash entries 1CBB6692DB2357F80691BC7462ED4EAE, duplicate detected on "Pachi-Slot Aruze Oukoku Pocket - Dekahel 2 (Japan)" and "Pachisuro Aruze Oogkoku Pocket - Dekahel (2000)(Aruze)(JP)"
+gamedb: Multiple hash entries 0DBEBA28E62ECE2E9B08C62890650FF5, duplicate detected on "Pachi-Slot Aruze Oukoku Pocket - e-Cup (Japan)" and "Pachisuro Aruze Oogkoku Pocket - e-Cup (2001)(Aruze)(JP)"
+gamedb: Multiple hash entries 888A2BBDE70D6F67B1C776ABC12C5AF8, duplicate detected on "Pachi-Slot Aruze Oukoku Pocket - Hanabi (Japan) (v1.02)" and "Pachisuro Aruze Oogkoku Pocket - Hanabi v1.02 (1999)(Aruze)(JP)"
+gamedb: Multiple hash entries B3EDF9AD99CBD433C8E62836F32092EC, duplicate detected on "Pachi-Slot Aruze Oukoku Pocket - Hanabi (Japan) (v1.04)" and "Pachisuro Aruze Oogkoku Pocket - Hanabi v1.04 (1999)(Aruze)(JP)"
+gamedb: Multiple hash entries 3C340FE221635BA52AAE8ADCC8E43758, duplicate detected on "Pachi-Slot Aruze Oukoku Pocket - Oohanabi (Japan)" and "Pachisuro Aruze Oogkoku Pocket - Oohanabi (2000)(Aruze)(JP)"
+gamedb: Multiple hash entries 8EFD3C40988452782E55548F7369A050, duplicate detected on "Pachi-Slot Aruze Oukoku Pocket - Porcano 2 (Japan)" and "Pachisuro Aruze Oogkoku Pocket - Adventure of Porcano - Porcano 2 v1.01 (2000)(Aruze)(JP)"
+gamedb: Multiple hash entries AC5AD76D5E6614AE576C2C837F0FAB1D, duplicate detected on "Pac-Man (World) (En,Ja)" and "Pac-Man (1999)(Namco - SNK)(en-ja)"
+gamedb: Multiple hash entries C86E826C8413C0DC3AD19A63BA6D4D97, duplicate detected on "Party Mail (Japan)" and "Party Mail (1999)(ADK)(JP)"
+gamedb: Multiple hash entries 81D3C10271AD5B09032DD00321B41AA0, duplicate detected on "Picture Puzzle (USA, Europe)" and "Picture Puzzle (2000)(Success)[b]"
+gamedb: Multiple hash entries 62347264D918559A95034BE7CEA8756D, duplicate detected on "Pocket Love - if (Japan)" and "Pocket Love - If (1999)(KID)(JP)"
+gamedb: Multiple hash entries 50DB2D67493CC92FA382A3F9CB16905C, duplicate detected on "Pocket Reversi (Europe)" and "Pocket Reversi (2000)(Itsui - Success)[b]"
+gamedb: Multiple hash entries C1427EF852912D672BE49622DEAC5EC2, duplicate detected on "Pocket Reversi (Japan)" and "Pocket Reversi (2000)(Itsui - Success)(JP)"
+gamedb: Multiple hash entries C7BFC59B4CB593409541D4CCFFE083B4, duplicate detected on "Pocket Tennis Color - Pocket Sports Series (World) (En,Ja)" and "Pocket Tennis Color - Pocket Sports Series (1999)(Yumekobo)(en-ja)"
+gamedb: Multiple hash entries 7FF625DC216783B034B011351C98255F, duplicate detected on "Puyo Pop (World) (En,Ja) (v1.05)" and "Puyo Puyo 2 Rev 5 (1999)(Sega)(en-ja)"
+gamedb: Multiple hash entries D40DC57B9CC3A30A2400F8CFD8724578, duplicate detected on "Puyo Pop (World) (En,Ja) (v1.06)" and "Puyo Puyo 2 Rev 6 (1999)(Sega)(en-ja)"
+gamedb: Multiple hash entries D69F1C4B9A015666184580737C6B2024, duplicate detected on "Puzzle Bobble Mini (Japan, Europe) (En,Ja) (Demo)" and "Puzzle Bobble Mini Rev 9 (1999)(SNK - Taito)(en-ja)[a]"
+gamedb: Multiple hash entries 75FFD166FDC777B58F8280652988F441, duplicate detected on "Puzzle Bobble Mini (Japan, Europe) (v1.09)" and "Puzzle Bobble Mini Rev 9 (1999)(SNK - Taito)(en-ja)"
+gamedb: Multiple hash entries 94537FD169751658F3A50A3B7A80CEF2, duplicate detected on "Puzzle Bobble Mini (Japan, Europe) (v1.10)" and "Puzzle Bobble Mini Rev 10 (1999)(SNK - Taito)(en-ja)"
+gamedb: Multiple hash entries C71AF75C76778B8A2D32A0C6F170736E, duplicate detected on "Rockman - Battle & Fighters (Japan)" and "Rockman - Battle & Fighters (2000)(Capcom)(JP)"
+gamedb: Multiple hash entries 62EC0E37ACFE58CC41EBA8BD8A5F14A2, duplicate detected on "Rockman - Battle & Fighters (Japan) (Demo)" and "Rockman - Battle & Fighters (demo-kiosk) (2000)(Capcom)(JP)"
+gamedb: Multiple hash entries 8D6A36ACD3B171970D87D2FCA6796A4A, duplicate detected on "Samurai Shodown! 2 - Pocket Fighting Series (World) (En,Ja)" and "Samurai Shodown! 2 - Pocket Fighting Series (1999)(SNK)(en-ja)"
+gamedb: Multiple hash entries 7C262A2C6390445170D0BF83290C939C, duplicate detected on "Shanghai Mini (World) (En,Ja)" and "Shanghai Mini (1999)(Activision)(en-ja)"
+gamedb: Multiple hash entries 3AB7276071D35CD11F316B6B936CEE38, duplicate detected on "Shinki Sekai Evolution - Hateshinai Dungeon (Japan)" and "Shinki Sekai Evolution - Hateshinai Dungeon (2000)(ESP - Sega)(JP)"
+gamedb: Multiple hash entries 9250B3328D64D3A1E7F9D50A04CEB64F, duplicate detected on "Shougi no Tatsujin (Japan)" and "Shougi no Tatsujin (Japan)"
+gamedb: Multiple hash entries A874C1D95BADE2143C0712D22DDBD452, duplicate detected on "Shougi no Tatsujin Color (Japan)" and "Master of Syougi Color (1999)(ADK)(JP)"
+gamedb: Multiple hash entries 3540951DFDBA4697EE5F9D8B9356C18B, duplicate detected on "SNK Gals' Fighters (Japan)" and "SNK Gals Fighters (2000)(SNK)(JP)"
+gamedb: Multiple hash entries 08922D2BDC6C80D56DDF50836CCAD77C, duplicate detected on "SNK Gals' Fighters (USA, Europe)" and "SNK Gals Fighters (2000)(SNK)"
+gamedb: Multiple hash entries EBC0E8C33D1A5E5BE5457AD988233FEB, duplicate detected on "SNK vs. Capcom - Card Fighters 2 - Expand Edition (Japan)" and "SNK vs. Capcom - Card Fighters Clash 2 - Expand Edition (2001)(Capcom - Moto Kikaku - SNK)(JP)"
+gamedb: Multiple hash entries 3BCC1C9EF59A75E3C2E6B49BE6B84BAB, duplicate detected on "SNK vs. Capcom - Card Fighters' Clash - Capcom Version (USA, Europe)" and "SNK vs. Capcom - Card Fighters Clash - Capcom Version (1999)(Capcom - Moto Kikaku - SNK)"
+gamedb: Multiple hash entries 74E8381E94565E21A3197449BB4423BF, duplicate detected on "SNK vs. Capcom - Card Fighters' Clash - SNK Version (USA, Europe)" and "SNK vs. Capcom - Card Fighters Clash - SNK Version (1999)(Capcom - Moto Kikaku - SNK)"
+gamedb: Multiple hash entries E99AC2011126B8B617E77CAFF032D744, duplicate detected on "SNK vs. Capcom - Gekitotsu Card Fighters - Capcom Supporter Version (Japan)" and "SNK vs. Capcom - Gekitotsu Card Fighters - Capcom Version (1999)(Capcom - Moto Kikaku - SNK)(JP)"
+gamedb: Multiple hash entries 6CF60C8E14D7CAACCA38FF13963F5A32, duplicate detected on "SNK vs. Capcom - Gekitotsu Card Fighters - SNK Supporter Version (Japan)" and "SNK vs. Capcom - Gekitotsu Card Fighters - SNK Version (1999)(Capcom - Moto Kikaku - SNK)(JP)"
+gamedb: Multiple hash entries DFEA3AD9AF4A631DE6F97D86589B971E, duplicate detected on "SNK vs. Capcom - The Match of the Millennium (World) (En,Ja)" and "SNK vs. Capcom - The Match of the Millennium (1999)(Capcom - SNK)(en-ja)"
+gamedb: Multiple hash entries B8A899AE2B0F1DFA0DB5417DE745A51E, duplicate detected on "Sonic The Hedgehog - Pocket Adventure (World)" and "Sonic the Hedgehog - Pocket Adventure (1999)(Sega)"
+gamedb: Multiple hash entries 8B12FEC8E96DAD41380AB419A216AD08, duplicate detected on "Soreike!! Hanafuda Doujou (Japan)" and "Soreike!! Hanafuda Doujou (1999)(Dyna)(JP)"
+gamedb: Multiple hash entries 07873A332EF8AC5CB5177EE3C304FF2B, duplicate detected on "Super Real Mahjong - Premium Collection (Japan)" and "Super Real Mahjong - Premium Collection (2001)(Seta - SNK)(JP)"
+gamedb: Multiple hash entries 95BD72B9E9081CB8AD8FC32BF7FF37B7, duplicate detected on "Wrestling Madness (USA, Europe) (Demo)" and "Big Bang Pro Wrestling (2000)(SNK)(JP)(en)(beta)"
+gamedb: Multiple hash entries 829A295C, duplicate detected on "Monster Rancher 2 (U) (EXE Patched)" and "Monster Rancher 2 (USA)"
+Selecting display size {Width=512, Height=384}
+Selecting display size {Width=512, Height=384}
+Selecting display size {Width=512, Height=384}
+Selecting display size {Width=512, Height=384}
+[09:18:36.5723] Starting Vanguard Client
+[09:18:37.3398] Starting UI Vanguard Implementation
+2/4/2019 9:18:41 PMEntering CheckForProblematicProcesses
+[09:18:41.7356] REMOTE_ALLSPECSSENT
+HawkFile bound C:\Users\Daniel\Documents\RTC3\Real-Time Corruptor\BizHawk_RTC\output\RTC\\ASSETS\overridedefault.nes
+ROM was not a multiple of 1024 bytes, and not a recognized header size: 16. Assume it's purely ROM data.
+Game was not in DB. CRC: 5AB4CF63 MD5: 5F5C1A8D5613613A285441DB6855562F
+660ADE413C1C05897692958321F2DAB4E5CD00CC
+QuickNES: Booted with Mapper #4 "mmc3"
+HawkFile bound C:\Users\Daniel\Documents\RTC3\Real-Time Corruptor\BizHawk_RTC\output\gamedb\NesCarts.xml
+Hash for BootGod: E53DE46FF08459B3366771A68FBE4A0DDE888016
+No BootGod entry found.
+Core reported BoardID: "mmc3"
+ getInterfaces()
+ getInterfaces()
+Time taken for LoadRom_NET: 0ms
+[09:18:42.0408] REMOTE_ALLSPECSSENT
+HawkFile bound C:\Users\Daniel\Documents\RTC3\Real-Time Corruptor\BizHawk_RTC\output\RTC\\ASSETS\overridedefault.nes
+ROM was not a multiple of 1024 bytes, and not a recognized header size: 16. Assume it's purely ROM data.
+Game was not in DB. CRC: 5AB4CF63 MD5: 5F5C1A8D5613613A285441DB6855562F
+660ADE413C1C05897692958321F2DAB4E5CD00CC
+QuickNES: Booted with Mapper #4 "mmc3"
+Hash for BootGod: E53DE46FF08459B3366771A68FBE4A0DDE888016
+No BootGod entry found.
+Core reported BoardID: "mmc3"
+ getInterfaces()
+ getInterfaces()
+Time taken for LoadRom_NET: 0ms
+Selecting display size {Width=586, Height=448}
+Selecting display size {Width=586, Height=448}
+btnCorrupt Clicked
+Blast done
+[09:19:46.4881] SAVESAVESTATE
+Elapsed time for Save Core: 0ms
+btnCorrupt Clicked
+It took 5 ms to blastlayer
+[09:19:47.0834] REMOTE_KEY_SETSYSTEMCORE
+[09:19:47.0844] REMOTE_LOADROM
+HawkFile bound C:\Users\Daniel\Documents\RTC3\Real-Time Corruptor\BizHawk_RTC\output\RTC\\ASSETS\overridedefault.nes
+ROM was not a multiple of 1024 bytes, and not a recognized header size: 16. Assume it's purely ROM data.
+Game was not in DB. CRC: 5AB4CF63 MD5: 5F5C1A8D5613613A285441DB6855562F
+660ADE413C1C05897692958321F2DAB4E5CD00CC
+QuickNES: Booted with Mapper #4 "mmc3"
+Hash for BootGod: E53DE46FF08459B3366771A68FBE4A0DDE888016
+No BootGod entry found.
+Core reported BoardID: "mmc3"
+ getInterfaces()
+ getInterfaces()
+Time taken for LoadRom_NET: 0ms
+[09:19:47.1188] LOADSAVESTATE
+Read a zipstate of version 1.0.1
+Elapsed time for Load Core: 3ms
+Blast done
+[09:20:35.9342] REMOTE_KEY_SETSYSTEMCORE
+[09:20:35.9351] REMOTE_LOADROM
+HawkFile bound C:\Users\Daniel\Documents\RTC3\Real-Time Corruptor\BizHawk_RTC\output\RTC\\ASSETS\overridedefault.nes
+ROM was not a multiple of 1024 bytes, and not a recognized header size: 16. Assume it's purely ROM data.
+Game was not in DB. CRC: 5AB4CF63 MD5: 5F5C1A8D5613613A285441DB6855562F
+660ADE413C1C05897692958321F2DAB4E5CD00CC
+QuickNES: Booted with Mapper #4 "mmc3"
+Hash for BootGod: E53DE46FF08459B3366771A68FBE4A0DDE888016
+No BootGod entry found.
+Core reported BoardID: "mmc3"
+ getInterfaces()
+ getInterfaces()
+Time taken for LoadRom_NET: 0ms
+[09:20:35.9661] LOADSAVESTATE
+Read a zipstate of version 1.0.1
+Elapsed time for Load Core: 0ms
+HawkFile bound C:\Users\Daniel\Documents\RTC3\Real-Time Corruptor\BizHawk_RTC\output\RTC\\ASSETS\overridedefault.nes
+[09:20:45.9710] REMOTE_KEY_SETSYSTEMCORE
+[09:20:45.9720] REMOTE_LOADROM
+HawkFile bound C:\Users\Daniel\Documents\RTC3\Real-Time Corruptor\BizHawk_RTC\output\RTC\\ASSETS\overridedefault.nes
+ROM was not a multiple of 1024 bytes, and not a recognized header size: 16. Assume it's purely ROM data.
+Game was not in DB. CRC: 5AB4CF63 MD5: 5F5C1A8D5613613A285441DB6855562F
+660ADE413C1C05897692958321F2DAB4E5CD00CC
+QuickNES: Booted with Mapper #4 "mmc3"
+Hash for BootGod: E53DE46FF08459B3366771A68FBE4A0DDE888016
+No BootGod entry found.
+Core reported BoardID: "mmc3"
+HawkFile bound C:\Users\Daniel\Documents\RTC3\Real-Time Corruptor\BizHawk_RTC\output\RTC\\ASSETS\overridedefault.nes
+ getInterfaces()
+ getInterfaces()
+Time taken for LoadRom_NET: 0ms
+[09:20:46.0044] LOADSAVESTATE
+Read a zipstate of version 1.0.1
+Elapsed time for Load Core: 0ms
+HawkFile bound F:\Dropbox\Emulation\Roms\Sony Playstation\Doom (USA).cue
+HawkFile bound C:\Users\Daniel\Documents\RTC3\Real-Time Corruptor\BizHawk_RTC\output\RTC\\ASSETS\overridedefault.nes
+Active Firmwares:
+  U : 0555C6FAE8906F3F09BAF5988F00E55F88E9F30B
+ getInterfaces()
+ getInterfaces()
+Selecting display size {Width=1600, Height=960}
+Selecting display size {Width=1600, Height=960}
+[09:22:24.2748] SAVESAVESTATE
+Elapsed time for Save Core: 20ms
+btnCorrupt Clicked
+It took 0 ms to blastlayer
+[09:22:25.2357] REMOTE_KEY_SETSYSTEMCORE
+[09:22:25.2367] REMOTE_LOADROM
+HawkFile bound F:\Dropbox\Emulation\Roms\Sony Playstation\Doom (USA).cue
+HawkFile bound F:\Dropbox\Emulation\Roms\Sony Playstation\Doom (USA).cue
+Active Firmwares:
+  U : 0555C6FAE8906F3F09BAF5988F00E55F88E9F30B
+ getInterfaces()
+ getInterfaces()
+Time taken for LoadRom_NET: 0ms
+[09:22:25.3255] LOADSAVESTATE
+Read a zipstate of version 1.0.1
+Elapsed time for Load Core: 8ms
+Blast done
+[09:22:41.5524] REMOTE_KEY_SETSYSTEMCORE
+[09:22:41.5534] REMOTE_LOADROM
+HawkFile bound F:\Dropbox\Emulation\Roms\Sony Playstation\Doom (USA).cue
+HawkFile bound F:\Dropbox\Emulation\Roms\Sony Playstation\Doom (USA).cue
+Active Firmwares:
+  U : 0555C6FAE8906F3F09BAF5988F00E55F88E9F30B
+ getInterfaces()
+ getInterfaces()
+Time taken for LoadRom_NET: 0ms
+[09:22:41.6287] LOADSAVESTATE
+Read a zipstate of version 1.0.1
+Elapsed time for Load Core: 11ms
+[09:22:49.2295] REMOTE_KEY_SETSYSTEMCORE
+[09:22:49.2295] REMOTE_LOADROM
+HawkFile bound F:\Dropbox\Emulation\Roms\Sony Playstation\Doom (USA).cue
+HawkFile bound F:\Dropbox\Emulation\Roms\Sony Playstation\Doom (USA).cue
+Active Firmwares:
+  U : 0555C6FAE8906F3F09BAF5988F00E55F88E9F30B
+ getInterfaces()
+ getInterfaces()
+Time taken for LoadRom_NET: 0ms
+[09:22:49.3068] LOADSAVESTATE
+Read a zipstate of version 1.0.1
+Elapsed time for Load Core: 7ms
+[09:22:50.6871] REMOTE_KEY_SETSYSTEMCORE
+[09:22:50.6871] REMOTE_LOADROM
+HawkFile bound F:\Dropbox\Emulation\Roms\Sony Playstation\Doom (USA).cue
+HawkFile bound F:\Dropbox\Emulation\Roms\Sony Playstation\Doom (USA).cue
+Active Firmwares:
+  U : 0555C6FAE8906F3F09BAF5988F00E55F88E9F30B
+ getInterfaces()
+ getInterfaces()
+Time taken for LoadRom_NET: 0ms
+[09:22:50.7654] LOADSAVESTATE
+Read a zipstate of version 1.0.1
+Elapsed time for Load Core: 8ms
+[09:22:52.8793] REMOTE_KEY_SETSYSTEMCORE
+[09:22:52.8793] REMOTE_LOADROM
+HawkFile bound F:\Dropbox\Emulation\Roms\Sony Playstation\Doom (USA).cue
+HawkFile bound F:\Dropbox\Emulation\Roms\Sony Playstation\Doom (USA).cue
+Active Firmwares:
+  U : 0555C6FAE8906F3F09BAF5988F00E55F88E9F30B
+ getInterfaces()
+ getInterfaces()
+Time taken for LoadRom_NET: 0ms
+[09:22:52.9581] LOADSAVESTATE
+Read a zipstate of version 1.0.1
+Elapsed time for Load Core: 8ms
+[09:24:04.6476] REMOTE_KEY_SETSYSTEMCORE
+[09:24:04.6476] REMOTE_LOADROM
+HawkFile bound C:\Users\Daniel\Documents\RTC3\Real-Time Corruptor\BizHawk_RTC\output\RTC\\ASSETS\overridedefault.nes
+ROM was not a multiple of 1024 bytes, and not a recognized header size: 16. Assume it's purely ROM data.
+Game was not in DB. CRC: 5AB4CF63 MD5: 5F5C1A8D5613613A285441DB6855562F
+660ADE413C1C05897692958321F2DAB4E5CD00CC
+QuickNES: Booted with Mapper #4 "mmc3"
+Hash for BootGod: E53DE46FF08459B3366771A68FBE4A0DDE888016
+No BootGod entry found.
+Core reported BoardID: "mmc3"
+HawkFile bound F:\Dropbox\Emulation\Roms\Sony Playstation\Doom (USA).cue
+ getInterfaces()
+ getInterfaces()
+Time taken for LoadRom_NET: 0ms
+[09:24:04.6855] LOADSAVESTATE
+Read a zipstate of version 1.0.1
+Elapsed time for Load Core: 0ms
+Selecting display size {Width=586, Height=448}
+Selecting display size {Width=586, Height=448}
+btnCorrupt Clicked
+[09:24:29.0731] REMOTE_LOADROM
+HawkFile bound F:\Dropbox\Emulation\Roms\Sony Playstation\Doom (USA).cue
+HawkFile bound C:\Users\Daniel\Documents\RTC3\Real-Time Corruptor\BizHawk_RTC\output\RTC\\ASSETS\overridedefault.nes
+Active Firmwares:
+  U : 0555C6FAE8906F3F09BAF5988F00E55F88E9F30B
+ getInterfaces()
+ getInterfaces()
+Time taken for LoadRom_NET: 0ms
+It took 0 ms to blastlayer
+[09:24:29.1674] REMOTE_KEY_SETSYSTEMCORE
+[09:24:29.1674] REMOTE_LOADROM
+HawkFile bound F:\Dropbox\Emulation\Roms\Sony Playstation\Doom (USA).cue
+HawkFile bound F:\Dropbox\Emulation\Roms\Sony Playstation\Doom (USA).cue
+Active Firmwares:
+  U : 0555C6FAE8906F3F09BAF5988F00E55F88E9F30B
+ getInterfaces()
+ getInterfaces()
+Time taken for LoadRom_NET: 0ms
+[09:24:29.2527] LOADSAVESTATE
+Read a zipstate of version 1.0.1
+Elapsed time for Load Core: 8ms
+Blast done
+Selecting display size {Width=1600, Height=960}
+Selecting display size {Width=1600, Height=960}
+HawkFile bound C:\Users\Daniel\Documents\RTC3\Real-Time Corruptor\BizHawk_RTC\output\RTC\\ASSETS\overridedefault.nes
+ROM was not a multiple of 1024 bytes, and not a recognized header size: 16. Assume it's purely ROM data.
+Game was not in DB. CRC: 5AB4CF63 MD5: 5F5C1A8D5613613A285441DB6855562F
+660ADE413C1C05897692958321F2DAB4E5CD00CC
+QuickNES: Booted with Mapper #4 "mmc3"
+Hash for BootGod: E53DE46FF08459B3366771A68FBE4A0DDE888016
+No BootGod entry found.
+Core reported BoardID: "mmc3"
+HawkFile bound F:\Dropbox\Emulation\Roms\Sony Playstation\Doom (USA).cue
+ getInterfaces()
+ getInterfaces()
+Time taken for LoadRom_NET: 0ms
+Selecting display size {Width=586, Height=448}
+Selecting display size {Width=586, Height=448}
+[09:24:35.4148] SAVESAVESTATE
+Elapsed time for Save Core: 0ms
+btnCorrupt Clicked
+It took 0 ms to blastlayer
+[09:24:38.8935] REMOTE_KEY_SETSYSTEMCORE
+[09:24:38.8935] REMOTE_LOADROM
+HawkFile bound C:\Users\Daniel\Documents\RTC3\Real-Time Corruptor\BizHawk_RTC\output\RTC\\ASSETS\overridedefault.nes
+ROM was not a multiple of 1024 bytes, and not a recognized header size: 16. Assume it's purely ROM data.
+Game was not in DB. CRC: 5AB4CF63 MD5: 5F5C1A8D5613613A285441DB6855562F
+660ADE413C1C05897692958321F2DAB4E5CD00CC
+QuickNES: Booted with Mapper #4 "mmc3"
+Hash for BootGod: E53DE46FF08459B3366771A68FBE4A0DDE888016
+No BootGod entry found.
+Core reported BoardID: "mmc3"
+HawkFile bound C:\Users\Daniel\Documents\RTC3\Real-Time Corruptor\BizHawk_RTC\output\RTC\\ASSETS\overridedefault.nes
+ getInterfaces()
+ getInterfaces()
+Time taken for LoadRom_NET: 0ms
+[09:24:38.9334] LOADSAVESTATE
+Read a zipstate of version 1.0.1
+Elapsed time for Load Core: 0ms
+Blast done
+[09:24:46.6901] REMOTE_KEY_SETSYSTEMCORE
+[09:24:46.6911] REMOTE_LOADROM
+HawkFile bound C:\Users\Daniel\Documents\RTC3\Real-Time Corruptor\BizHawk_RTC\output\RTC\\ASSETS\overridedefault.nes
+ROM was not a multiple of 1024 bytes, and not a recognized header size: 16. Assume it's purely ROM data.
+Game was not in DB. CRC: 5AB4CF63 MD5: 5F5C1A8D5613613A285441DB6855562F
+660ADE413C1C05897692958321F2DAB4E5CD00CC
+QuickNES: Booted with Mapper #4 "mmc3"
+Hash for BootGod: E53DE46FF08459B3366771A68FBE4A0DDE888016
+No BootGod entry found.
+Core reported BoardID: "mmc3"
+HawkFile bound C:\Users\Daniel\Documents\RTC3\Real-Time Corruptor\BizHawk_RTC\output\RTC\\ASSETS\overridedefault.nes
+ getInterfaces()
+ getInterfaces()
+Time taken for LoadRom_NET: 0ms
+[09:24:46.7270] LOADSAVESTATE
+Read a zipstate of version 1.0.1
+Elapsed time for Load Core: 0ms
+[09:24:52.2065] REMOTE_KEY_SETSYSTEMCORE
+[09:24:52.2065] REMOTE_LOADROM
+HawkFile bound C:\Users\Daniel\Documents\RTC3\Real-Time Corruptor\BizHawk_RTC\output\RTC\\ASSETS\overridedefault.nes
+ROM was not a multiple of 1024 bytes, and not a recognized header size: 16. Assume it's purely ROM data.
+Game was not in DB. CRC: 5AB4CF63 MD5: 5F5C1A8D5613613A285441DB6855562F
+660ADE413C1C05897692958321F2DAB4E5CD00CC
+QuickNES: Booted with Mapper #4 "mmc3"
+Hash for BootGod: E53DE46FF08459B3366771A68FBE4A0DDE888016
+No BootGod entry found.
+Core reported BoardID: "mmc3"
+HawkFile bound C:\Users\Daniel\Documents\RTC3\Real-Time Corruptor\BizHawk_RTC\output\RTC\\ASSETS\overridedefault.nes
+ getInterfaces()
+ getInterfaces()
+Time taken for LoadRom_NET: 0ms
+[09:24:52.2404] LOADSAVESTATE
+Read a zipstate of version 1.0.1
+Elapsed time for Load Core: 0ms
+[09:24:52.9790] REMOTE_KEY_SETSYSTEMCORE
+[09:24:52.9790] REMOTE_LOADROM
+HawkFile bound C:\Users\Daniel\Documents\RTC3\Real-Time Corruptor\BizHawk_RTC\output\RTC\\ASSETS\overridedefault.nes
+ROM was not a multiple of 1024 bytes, and not a recognized header size: 16. Assume it's purely ROM data.
+Game was not in DB. CRC: 5AB4CF63 MD5: 5F5C1A8D5613613A285441DB6855562F
+660ADE413C1C05897692958321F2DAB4E5CD00CC
+QuickNES: Booted with Mapper #4 "mmc3"
+Hash for BootGod: E53DE46FF08459B3366771A68FBE4A0DDE888016
+No BootGod entry found.
+Core reported BoardID: "mmc3"
+HawkFile bound C:\Users\Daniel\Documents\RTC3\Real-Time Corruptor\BizHawk_RTC\output\RTC\\ASSETS\overridedefault.nes
+ getInterfaces()
+ getInterfaces()
+Time taken for LoadRom_NET: 0ms
+[09:24:53.0129] LOADSAVESTATE
+Read a zipstate of version 1.0.1
+Elapsed time for Load Core: 0ms
+[09:24:56.9579] REMOTE_KEY_SETSYSTEMCORE
+[09:24:56.9579] REMOTE_LOADROM
+HawkFile bound C:\Users\Daniel\Documents\RTC3\Real-Time Corruptor\BizHawk_RTC\output\RTC\\ASSETS\overridedefault.nes
+ROM was not a multiple of 1024 bytes, and not a recognized header size: 16. Assume it's purely ROM data.
+Game was not in DB. CRC: 5AB4CF63 MD5: 5F5C1A8D5613613A285441DB6855562F
+660ADE413C1C05897692958321F2DAB4E5CD00CC
+QuickNES: Booted with Mapper #4 "mmc3"
+Hash for BootGod: E53DE46FF08459B3366771A68FBE4A0DDE888016
+No BootGod entry found.
+Core reported BoardID: "mmc3"
+HawkFile bound C:\Users\Daniel\Documents\RTC3\Real-Time Corruptor\BizHawk_RTC\output\RTC\\ASSETS\overridedefault.nes
+ getInterfaces()
+ getInterfaces()
+Time taken for LoadRom_NET: 0ms
+[09:24:56.9928] LOADSAVESTATE
+Read a zipstate of version 1.0.1
+Elapsed time for Load Core: 0ms
+[09:24:57.5962] REMOTE_KEY_SETSYSTEMCORE
+[09:24:57.5962] REMOTE_LOADROM
+HawkFile bound C:\Users\Daniel\Documents\RTC3\Real-Time Corruptor\BizHawk_RTC\output\RTC\\ASSETS\overridedefault.nes
+ROM was not a multiple of 1024 bytes, and not a recognized header size: 16. Assume it's purely ROM data.
+Game was not in DB. CRC: 5AB4CF63 MD5: 5F5C1A8D5613613A285441DB6855562F
+660ADE413C1C05897692958321F2DAB4E5CD00CC
+QuickNES: Booted with Mapper #4 "mmc3"
+Hash for BootGod: E53DE46FF08459B3366771A68FBE4A0DDE888016
+No BootGod entry found.
+Core reported BoardID: "mmc3"
+HawkFile bound C:\Users\Daniel\Documents\RTC3\Real-Time Corruptor\BizHawk_RTC\output\RTC\\ASSETS\overridedefault.nes
+ getInterfaces()
+ getInterfaces()
+Time taken for LoadRom_NET: 0ms
+[09:24:57.6351] LOADSAVESTATE
+Read a zipstate of version 1.0.1
+Elapsed time for Load Core: 0ms
+[09:24:58.0639] REMOTE_KEY_SETSYSTEMCORE
+[09:24:58.0639] REMOTE_LOADROM
+HawkFile bound C:\Users\Daniel\Documents\RTC3\Real-Time Corruptor\BizHawk_RTC\output\RTC\\ASSETS\overridedefault.nes
+ROM was not a multiple of 1024 bytes, and not a recognized header size: 16. Assume it's purely ROM data.
+Game was not in DB. CRC: 5AB4CF63 MD5: 5F5C1A8D5613613A285441DB6855562F
+660ADE413C1C05897692958321F2DAB4E5CD00CC
+QuickNES: Booted with Mapper #4 "mmc3"
+Hash for BootGod: E53DE46FF08459B3366771A68FBE4A0DDE888016
+No BootGod entry found.
+Core reported BoardID: "mmc3"
+HawkFile bound C:\Users\Daniel\Documents\RTC3\Real-Time Corruptor\BizHawk_RTC\output\RTC\\ASSETS\overridedefault.nes
+ getInterfaces()
+ getInterfaces()
+Time taken for LoadRom_NET: 0ms
+[09:24:58.1028] LOADSAVESTATE
+Read a zipstate of version 1.0.1
+Elapsed time for Load Core: 0ms
+[09:25:15.3605] SAVESAVESTATE
+Elapsed time for Save Core: 0ms
+[09:25:16.3653] REMOTE_KEY_SETSYSTEMCORE
+[09:25:16.3653] REMOTE_LOADROM
+HawkFile bound C:\Users\Daniel\Documents\RTC3\Real-Time Corruptor\BizHawk_RTC\output\RTC\\ASSETS\overridedefault.nes
+ROM was not a multiple of 1024 bytes, and not a recognized header size: 16. Assume it's purely ROM data.
+Game was not in DB. CRC: 5AB4CF63 MD5: 5F5C1A8D5613613A285441DB6855562F
+660ADE413C1C05897692958321F2DAB4E5CD00CC
+QuickNES: Booted with Mapper #4 "mmc3"
+Hash for BootGod: E53DE46FF08459B3366771A68FBE4A0DDE888016
+No BootGod entry found.
+Core reported BoardID: "mmc3"
+HawkFile bound C:\Users\Daniel\Documents\RTC3\Real-Time Corruptor\BizHawk_RTC\output\RTC\\ASSETS\overridedefault.nes
+ getInterfaces()
+ getInterfaces()
+Time taken for LoadRom_NET: 0ms
+[09:25:16.4022] LOADSAVESTATE
+Read a zipstate of version 1.0.1
+Elapsed time for Load Core: 0ms
+HawkFile bound F:\Dropbox\Emulation\Roms\Sony Playstation\Doom (USA).cue
+HawkFile bound C:\Users\Daniel\Documents\RTC3\Real-Time Corruptor\BizHawk_RTC\output\RTC\\ASSETS\overridedefault.nes
+Active Firmwares:
+  U : 0555C6FAE8906F3F09BAF5988F00E55F88E9F30B
+ getInterfaces()
+ getInterfaces()
+Selecting display size {Width=1600, Height=960}
+Selecting display size {Width=1600, Height=960}
+[09:27:04.6236] SAVESAVESTATE
+Elapsed time for Save Core: 19ms
+btnCorrupt Clicked
+It took 0 ms to blastlayer
+[09:27:05.1128] REMOTE_KEY_SETSYSTEMCORE
+[09:27:05.1128] REMOTE_LOADROM
+HawkFile bound F:\Dropbox\Emulation\Roms\Sony Playstation\Doom (USA).cue
+HawkFile bound F:\Dropbox\Emulation\Roms\Sony Playstation\Doom (USA).cue
+Active Firmwares:
+  U : 0555C6FAE8906F3F09BAF5988F00E55F88E9F30B
+ getInterfaces()
+ getInterfaces()
+Time taken for LoadRom_NET: 0ms
+[09:27:05.1990] LOADSAVESTATE
+Read a zipstate of version 1.0.1
+Elapsed time for Load Core: 8ms
+Blast done
+[09:27:16.9284] REMOTE_KEY_SETSYSTEMCORE
+[09:27:16.9284] REMOTE_LOADROM
+HawkFile bound F:\Dropbox\Emulation\Roms\Sony Playstation\Doom (USA).cue
+HawkFile bound F:\Dropbox\Emulation\Roms\Sony Playstation\Doom (USA).cue
+Active Firmwares:
+  U : 0555C6FAE8906F3F09BAF5988F00E55F88E9F30B
+ getInterfaces()
+ getInterfaces()
+Time taken for LoadRom_NET: 0ms
+[09:27:17.0052] LOADSAVESTATE
+Read a zipstate of version 1.0.1
+Elapsed time for Load Core: 7ms
+[09:27:33.2899] REMOTE_KEY_SETSYSTEMCORE
+[09:27:33.2899] REMOTE_LOADROM
+HawkFile bound F:\Dropbox\Emulation\Roms\Sony Playstation\Doom (USA).cue
+HawkFile bound F:\Dropbox\Emulation\Roms\Sony Playstation\Doom (USA).cue
+Active Firmwares:
+  U : 0555C6FAE8906F3F09BAF5988F00E55F88E9F30B
+ getInterfaces()
+ getInterfaces()
+Time taken for LoadRom_NET: 0ms
+[09:27:33.3647] LOADSAVESTATE
+Read a zipstate of version 1.0.1
+Elapsed time for Load Core: 7ms
+[09:27:45.1469] REMOTE_KEY_SETSYSTEMCORE
+[09:27:45.1469] REMOTE_LOADROM
+HawkFile bound F:\Dropbox\Emulation\Roms\Sony Playstation\Doom (USA).cue
+HawkFile bound F:\Dropbox\Emulation\Roms\Sony Playstation\Doom (USA).cue
+Active Firmwares:
+  U : 0555C6FAE8906F3F09BAF5988F00E55F88E9F30B
+ getInterfaces()
+ getInterfaces()
+Time taken for LoadRom_NET: 0ms
+[09:27:45.2222] LOADSAVESTATE
+Read a zipstate of version 1.0.1
+Elapsed time for Load Core: 7ms
+[09:27:55.4505] REMOTE_KEY_SETSYSTEMCORE
+[09:27:55.4515] REMOTE_LOADROM
+HawkFile bound F:\Dropbox\Emulation\Roms\Sony Playstation\Doom (USA).cue
+HawkFile bound F:\Dropbox\Emulation\Roms\Sony Playstation\Doom (USA).cue
+Active Firmwares:
+  U : 0555C6FAE8906F3F09BAF5988F00E55F88E9F30B
+ getInterfaces()
+ getInterfaces()
+Time taken for LoadRom_NET: 0ms
+[09:27:55.5223] LOADSAVESTATE
+Read a zipstate of version 1.0.1
+Elapsed time for Load Core: 8ms
+[09:28:35.0248] REMOTE_KEY_SETSYSTEMCORE
+[09:28:35.0248] REMOTE_LOADROM
+HawkFile bound F:\Dropbox\Emulation\Roms\Sony Playstation\Doom (USA).cue
+HawkFile bound F:\Dropbox\Emulation\Roms\Sony Playstation\Doom (USA).cue
+Active Firmwares:
+  U : 0555C6FAE8906F3F09BAF5988F00E55F88E9F30B
+ getInterfaces()
+ getInterfaces()
+Time taken for LoadRom_NET: 0ms
+[09:28:35.1236] LOADSAVESTATE
+Read a zipstate of version 1.0.1
+Elapsed time for Load Core: 8ms
+[09:28:47.1396] REMOTE_KEY_SETSYSTEMCORE
+[09:28:47.1396] REMOTE_LOADROM
+HawkFile bound F:\Dropbox\Emulation\Roms\Sony Playstation\Doom (USA).cue
+HawkFile bound F:\Dropbox\Emulation\Roms\Sony Playstation\Doom (USA).cue
+Active Firmwares:
+  U : 0555C6FAE8906F3F09BAF5988F00E55F88E9F30B
+ getInterfaces()
+ getInterfaces()
+Time taken for LoadRom_NET: 0ms
+[09:28:47.2204] LOADSAVESTATE
+Read a zipstate of version 1.0.1
+Elapsed time for Load Core: 7ms
+[09:28:48.0732] REMOTE_KEY_SETSYSTEMCORE
+[09:28:48.0732] REMOTE_LOADROM
+HawkFile bound F:\Dropbox\Emulation\Roms\Sony Playstation\Doom (USA).cue
+HawkFile bound F:\Dropbox\Emulation\Roms\Sony Playstation\Doom (USA).cue
+Active Firmwares:
+  U : 0555C6FAE8906F3F09BAF5988F00E55F88E9F30B
+ getInterfaces()
+ getInterfaces()
+Time taken for LoadRom_NET: 0ms
+[09:28:48.1480] LOADSAVESTATE
+Read a zipstate of version 1.0.1
+Elapsed time for Load Core: 7ms
+[09:29:21.3368] REMOTE_KEY_SETSYSTEMCORE
+[09:29:21.3378] REMOTE_LOADROM
+HawkFile bound F:\Dropbox\Emulation\Roms\Sony Playstation\Doom (USA).cue
+HawkFile bound F:\Dropbox\Emulation\Roms\Sony Playstation\Doom (USA).cue
+Active Firmwares:
+  U : 0555C6FAE8906F3F09BAF5988F00E55F88E9F30B
+ getInterfaces()
+ getInterfaces()
+Time taken for LoadRom_NET: 0ms
+[09:29:21.4136] LOADSAVESTATE
+Read a zipstate of version 1.0.1
+Elapsed time for Load Core: 7ms

@@ -1085,7 +1085,7 @@ namespace RTCV.CorruptCore
 
 		[Category("Limiter")]
 		[Description("What mode to use for the limiter in STORE mode")]
-		[DisplayName("Store Limiter Mode")]
+		[DisplayName("Store Limiter Source")]
 		public StoreLimiterSource StoreLimiterSource { get; set; }
 
 		[Category("Limiter")]
@@ -1325,7 +1325,7 @@ namespace RTCV.CorruptCore
 		public void StoreBackup()
 		{
 			//Snag our memory interface
-			MemoryDomainProxy mi = MemoryDomains.GetProxy(SourceDomain, SourceAddress);
+			MemoryDomainProxy mi = MemoryDomains.GetInterface(SourceDomain);
 
 			if (mi == null)
 				throw new Exception(

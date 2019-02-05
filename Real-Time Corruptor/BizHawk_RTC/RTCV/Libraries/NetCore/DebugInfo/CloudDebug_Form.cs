@@ -112,14 +112,14 @@ namespace RTCV.NetCore
 				string emuLog = tempdebugdir + "\\EMU_LOG.txt";
 				lock (Extensions.ConsoleHelper.con.FileWriter)
 				{
-					File.Copy(relativedir + "\\RTC\\WORKING\\EMU_LOG.txt", emuLog, true);
+					File.Copy(relativedir + "\\RTC\\EMU_LOG.txt", emuLog, true);
 				}
 
 				//Copying the log files
 				string rtcLog = tempdebugdir + "\\RTC_LOG.txt";
 				lock (Extensions.ConsoleHelper.con.FileWriter)
 				{
-					File.Copy(relativedir + "\\RTC\\WORKING\\RTC_LOG.txt", rtcLog, true);
+					File.Copy(relativedir + "\\RTC\\RTC_LOG.txt", rtcLog, true);
 				}
 
 				var path = Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), "7z.dll");
