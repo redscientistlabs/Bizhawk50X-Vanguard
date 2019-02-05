@@ -9,6 +9,7 @@ using System.Text;
 using System.Windows.Forms;
 using System.Xml.Serialization;
 using Ceras;
+using Newtonsoft.Json;
 using RTCV.CorruptCore;
 using RTCV.NetCore;
 

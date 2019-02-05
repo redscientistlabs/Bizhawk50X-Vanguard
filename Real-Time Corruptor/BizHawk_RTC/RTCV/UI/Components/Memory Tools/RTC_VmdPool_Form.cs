@@ -135,7 +135,7 @@ namespace RTCV.UI
 				DefaultExt = "json",
 				Multiselect = true,
 				Title = "Open VMD File",
-				Filter = "VMD json files|*.json|VMD xml files|*.XML",
+				Filter = "VMD files|*.json;*.xml",
 				RestoreDirectory = true
 			};
 			if (ofd.ShowDialog() == DialogResult.OK)
@@ -146,7 +146,7 @@ namespace RTCV.UI
 				{
 					try
 					{
-						if(Path.GetExtension(filename).ToUpper() == "XML")
+						if(Path.GetExtension(filename).ToUpper() == ".XML")
 						{
 							if (!notified)
 							{
@@ -156,13 +156,13 @@ namespace RTCV.UI
 
 							using (FileStream fs = File.Open(filename, FileMode.Open))
 							{
-								XmlSerializer ser = new XmlSerializer(typeof(VmdPrototype));
-								VmdPrototype proto = (VmdPrototype)ser.Deserialize(fs);
+								XmlSerializer xs = new XmlSerializer(typeof(VmdPrototype));
+								VmdPrototype proto = (VmdPrototype)xs.Deserialize(fs);
 
-								var jsonFilename = Path.Combine(Path.GetFileNameWithoutExtension(filename), ".json");
+								var jsonFilename =  Path.Combine(Path.GetDirectoryName(filename), Path.GetFileNameWithoutExtension(filename) + ".json");
 								using(FileStream _fs = File.Open(jsonFilename, FileMode.Create))
 								{
-									JsonHelper.Serialize(proto, _fs);
+									JsonHelper.Serialize(proto, _fs, Newtonsoft.Json.Formatting.Indented);
 								}
 															   
 								MemoryDomains.AddVMD(proto);
