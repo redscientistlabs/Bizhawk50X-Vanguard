@@ -4,6 +4,7 @@ using RTCV.NetCore.StaticTools;
 using System;
 using System.Collections.Generic;
 using System.Data;
+using System.IO;
 using System.Linq;
 using System.Windows.Forms;
 
@@ -667,15 +668,16 @@ namespace RTCV.UI
 				dt.Rows.Add(cellValues);
 			}
 
-			DataSet ds = new DataSet();
-			ds.Tables.Add(dt);
 			SaveFileDialog sfd = new SaveFileDialog();
 			sfd.Filter = "bg|*.bg";
 			if (sfd.ShowDialog() == DialogResult.OK)
 			{
 				try
 				{
-					ds.Tables[0].WriteXml(sfd.FileName);
+					using (FileStream fs = new FileStream(sfd.FileName, FileMode.Create))
+					{
+						JsonHelper.Serialize(dt, fs);
+					}
 				}
 				catch (Exception ex)
 				{
@@ -691,7 +693,6 @@ namespace RTCV.UI
 
 		private bool loadDataGridView(DataGridView dgv, bool import = false)
 		{
-			DataSet ds = new DataSet();
 			OpenFileDialog ofd = new OpenFileDialog
 			{
 				Filter = "bg|*.bg"
@@ -700,18 +701,15 @@ namespace RTCV.UI
 			{
 				try
 				{
-					DataTable dt = new DataTable();
-					ds.Tables.Add(dt);
-					foreach (DataGridViewColumn column in dgv.Columns)
-						dt.Columns.Add();
-					ds.Tables[0].ReadXml(ofd.FileName);
-					if (!import)
+					DataTable dt = null;
+					using (FileStream fs = new FileStream(ofd.FileName, FileMode.Open))
 					{
-						foreach (DataGridViewRow row in dgv.Rows)
-							dgv.Rows.Remove(row);
+						dt = JsonHelper.Deserialize<DataTable>(fs);
 					}
+					if (!import)
+						dgv.Rows.Clear();
 
-					foreach (DataRow row in ds.Tables[0].Rows)
+					foreach (DataRow row in dt.Rows)
 					{
 						dgv.Rows.Add();
 

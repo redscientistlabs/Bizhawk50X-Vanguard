@@ -4,6 +4,7 @@ using System.Drawing;
 using System.IO;
 using System.Linq;
 using System.Windows.Forms;
+using System.Xml;
 using System.Xml.Serialization;
 using RTCV.CorruptCore;
 using static RTCV.UI.UI_Extensions;
@@ -108,9 +109,9 @@ namespace RTCV.UI
 
 			SaveFileDialog saveFileDialog1 = new SaveFileDialog
 			{
-				DefaultExt = "json",
+				DefaultExt = "vmd",
 				Title = "Save VMD to File",
-				Filter = "JSON VMD file|*.json",
+				Filter = "VMD file|*.vmd",
 				RestoreDirectory = true
 			};
 
@@ -132,10 +133,10 @@ namespace RTCV.UI
 		{
 			OpenFileDialog ofd = new OpenFileDialog
 			{
-				DefaultExt = "json",
+				DefaultExt = "vmd",
 				Multiselect = true,
 				Title = "Open VMD File",
-				Filter = "VMD files|*.json;*.xml",
+				Filter = "VMD files|*.vmd;*.xml",
 				RestoreDirectory = true
 			};
 			if (ofd.ShowDialog() == DialogResult.OK)
@@ -154,19 +155,19 @@ namespace RTCV.UI
 								notified = true;
 							}
 
-							using (FileStream fs = File.Open(filename, FileMode.Open))
-							{
-								XmlSerializer xs = new XmlSerializer(typeof(VmdPrototype));
-								VmdPrototype proto = (VmdPrototype)xs.Deserialize(fs);
+							//Fix int[] to long[]
+							string vmdXML = File.ReadAllText(filename);
+							vmdXML = vmdXML.Replace("int[]", "long[]");
+							XmlSerializer xs = new XmlSerializer(typeof(VmdPrototype));
+							VmdPrototype proto = (VmdPrototype) xs.Deserialize(new StringReader(vmdXML));
 
-								var jsonFilename =  Path.Combine(Path.GetDirectoryName(filename), Path.GetFileNameWithoutExtension(filename) + ".json");
-								using(FileStream _fs = File.Open(jsonFilename, FileMode.Create))
-								{
-									JsonHelper.Serialize(proto, _fs, Newtonsoft.Json.Formatting.Indented);
-								}
-															   
-								MemoryDomains.AddVMD(proto);
+							var jsonFilename =  Path.Combine(Path.GetDirectoryName(filename), Path.GetFileNameWithoutExtension(filename) + ".json");
+							using(FileStream _fs = File.Open(jsonFilename, FileMode.Create))
+							{
+								JsonHelper.Serialize(proto, _fs, Newtonsoft.Json.Formatting.Indented);
 							}
+														   
+							MemoryDomains.AddVMD(proto);
 						}
 						else
 						{
