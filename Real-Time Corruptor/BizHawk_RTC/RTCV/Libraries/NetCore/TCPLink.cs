@@ -64,7 +64,7 @@ namespace RTCV.NetCore
 
             DefaultBoopMonitoringCounter = spec.DefaultBoopMonitoringCounter;
             BoopMonitoringCounter = spec.DefaultBoopMonitoringCounter;
-
+			
             if (spec.AutoReconnect)
             {
                 linkWatch = new TCPLinkWatch(this, spec);
