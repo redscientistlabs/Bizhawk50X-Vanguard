@@ -193,13 +193,15 @@ namespace RTCV.CorruptCore
 
 				case BLASTGENERATOR_BLAST:
 					{
-						List<BlastGeneratorProto> returnList;
+						List<BlastGeneratorProto> returnList = null;
 						StashKey sk = (StashKey)(advancedMessage.objectValue as object[])[0];
 						List<BlastGeneratorProto> blastGeneratorProtos = (List<BlastGeneratorProto>)(advancedMessage.objectValue as object[])[1];
 						bool loadBeforeCorrupt = (bool)(advancedMessage.objectValue as object[])[2];
 
-						returnList = BlastTools.GenerateBlastLayersFromBlastGeneratorProtos(blastGeneratorProtos, sk, loadBeforeCorrupt);
-
+						SyncObjectSingleton.FormExecute((o, ea) =>
+						{
+							returnList = BlastTools.GenerateBlastLayersFromBlastGeneratorProtos(blastGeneratorProtos, sk, loadBeforeCorrupt);
+						});
 						e.setReturnValue(returnList);
 
 						break;

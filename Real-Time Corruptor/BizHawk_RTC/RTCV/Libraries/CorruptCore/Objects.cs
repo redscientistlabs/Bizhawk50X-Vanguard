@@ -1601,20 +1601,21 @@ namespace RTCV.CorruptCore
 		}
 	}
 	[Serializable]
+	[Ceras.MemberConfig(TargetMember.AllPublic)]
 	public class BlastGeneratorProto : INote
 	{
-		public string BlastType { get; }
-		public string Domain { get; }
-		public int Precision { get; }
-		public long StepSize { get; }
-		public long StartAddress { get; }
-		public long EndAddress { get; }
-		public long Param1 { get; }
-		public long Param2 { get; }
-		public string Mode { get; }
+		public string BlastType { get; set; }
+		public string Domain { get; set; }
+		public int Precision { get; set; }
+		public long StepSize { get; set; }
+		public long StartAddress { get; set; }
+		public long EndAddress { get; set; }
+		public long Param1 { get; set; }
+		public long Param2 { get; set; }
+		public string Mode { get; set; }
 		public string Note { get; set; }
-		public int Seed { get; }
-		public BlastLayer bl;
+		public int Seed { get; set; }
+		public BlastLayer bl { get; set; }
 
 		public BlastGeneratorProto()
 		{
