@@ -117,11 +117,18 @@ namespace RTCV.CorruptCore
 
 				case GENERATEBLASTLAYER:
 				{
-					string[] domains = advancedMessage.objectValue as string[];
+					var val = advancedMessage.objectValue as object[];
+					string[] domains = val[0] as string[];
+					StashKey sk = val[1] as StashKey;
+					bool? loadBeforeCorrupt = val[2] as bool?;
 
 					BlastLayer bl = null;
 					SyncObjectSingleton.FormExecute((o, ea) =>
 					{
+						if (loadBeforeCorrupt == true)
+						{
+							StockpileManager_EmuSide.LoadState_NET(sk, true, false, false);
+						}
 						bl = CorruptCore.GenerateBlastLayer(domains);
 					});
 					StockpileManager_EmuSide.CachedBL = bl;
