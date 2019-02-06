@@ -407,8 +407,7 @@ namespace RTCV.CorruptCore
 			}
 			catch (Exception ex)
 			{
-				MessageBox.Show("Unable to empty a temp folder! If your stockpile has any CD based games, close them before saving the stockpile! If this isn't the case, report this bug to the RTC developers.");
-				throw new Exception(ex.ToString());
+				throw new CustomException("Unable to empty a temp folder! If your stockpile has any CD based games, close them before saving the stockpile! If this isn't the case, report this bug to the RTC developers." + ex.Message, ex.StackTrace);
 			}
 		}
 
@@ -823,10 +822,10 @@ namespace RTCV.CorruptCore
 			}
 			catch (Exception ex)
 			{
-				throw new Exception(
+				throw new CustomException(
 							"An error occurred in RTC while applying a BlastLayer to the game.\n\n" +
-							"The operation was cancelled\n\n" +
-							ex
+							"The operation was cancelled\n\n" + ex.Message,
+							ex.StackTrace
 							);
 			}
 			finally
@@ -1311,9 +1310,7 @@ namespace RTCV.CorruptCore
 			}
 			catch (Exception ex)
 			{
-				throw new Exception("The BlastUnit apply() function threw up. \n" +
-					"This is an RTC error, so you should probably send this to the RTC devs.\n" +
-					"If you know the steps to reproduce this error it would be greatly appreciated.\n\n", ex);
+				throw new CustomException("The BlastUnit apply() function threw up. \n" + ex.Message, ex.StackTrace);
 			}
 
 			return;
@@ -1372,10 +1369,7 @@ namespace RTCV.CorruptCore
 			}
 			catch (Exception ex)
 			{
-				throw new Exception("The BlastUnit GetBakedUnit() function threw up. \n" +
-					"This is an RTC error, so you should probably send this to the RTC devs.\n" +
-					"If you know the steps to reproduce this error it would be greatly appreciated.\n\n" +
-				ex);
+				throw new CustomException("The BlastUnit GetBakedUnit() function threw up. \n" + ex.Message, ex.StackTrace);
 			}
 		}
 
@@ -1670,7 +1664,6 @@ namespace RTCV.CorruptCore
 	/// Has a name and a value of type T for storing any object.
 	/// </summary>
 	/// <typeparam name="T">The type of object you want the comboxbox value to be</typeparam>
-	[Serializable]
 	public class ComboBoxItem<T>
 	{
 		public string Name { get; set; }
