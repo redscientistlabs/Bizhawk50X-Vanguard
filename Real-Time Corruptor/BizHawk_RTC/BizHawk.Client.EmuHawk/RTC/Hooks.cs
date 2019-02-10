@@ -420,14 +420,27 @@ namespace Vanguard
 						LocalNetCoreRouter.Route(UI, REMOTE_HOTKEY_BLASTLAYERREBLAST);
 						break;
 
-					case "Game Protec Back":
+					case "Game Protect Back":
 						LocalNetCoreRouter.Route(UI, REMOTE_HOTKEY_GAMEPROTECTIONBACK);
 						break;
 
-					case "Game Protec Now":
+					case "Game Protect Now":
 						LocalNetCoreRouter.Route(UI, REMOTE_HOTKEY_GAMEPROTECTIONNOW);
 						break;
+					case "Blast Editor Disable 50":
+						LocalNetCoreRouter.Route(UI, REMOTE_HOTKEY_BEDISABLE50);
+						break;
+
+					case "Blast Editor Remove Disabled":
+						LocalNetCoreRouter.Route(UI, REMOTE_HOTKEY_BEREMOVEDISABLED);
+						break;
+
+					case "Blast Editor Invert Disabled":
+						LocalNetCoreRouter.Route(UI, REMOTE_HOTKEY_BEINVERTDISABLED);
+						break;
 				}
+			}
+			}
 				return true;
 
 			}

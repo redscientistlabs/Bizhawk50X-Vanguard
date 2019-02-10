@@ -956,7 +956,7 @@ namespace RTCV.UI
 			MessageBox.Show(e.Exception.ToString() + "\nRow:" + e.RowIndex + "\nColumn" + e.ColumnIndex + "\n" + e.Context + "\n" + dgvBlastEditor[e.ColumnIndex, e.RowIndex].Value?.ToString());
 		}
 
-		private void btnDisable50_Click(object sender, EventArgs e)
+		public void btnDisable50_Click(object sender, EventArgs e)
 		{
 			foreach (BlastUnit bu in currentSK.BlastLayer.Layer.
 				Where(x => x.IsLocked == false))
@@ -974,7 +974,7 @@ namespace RTCV.UI
 			dgvBlastEditor.Refresh();
 		}
 
-		private void btnInvertDisabled_Click(object sender, EventArgs e)
+		public void btnInvertDisabled_Click(object sender, EventArgs e)
 		{
 			foreach (BlastUnit bu in currentSK.BlastLayer.Layer.
 				Where(x => x.IsLocked == false))
@@ -984,7 +984,7 @@ namespace RTCV.UI
 			dgvBlastEditor.Refresh();
 		}
 
-		private void btnRemoveDisabled_Click(object sender, EventArgs e)
+		public void btnRemoveDisabled_Click(object sender, EventArgs e)
 		{
 			List<BlastUnit> buToRemove = new List<BlastUnit>();
 

@@ -265,6 +265,36 @@ namespace RTCV.UI
 								f.btnGpJumpNow_Click(null, null);
 						});
 						break;
+					case REMOTE_HOTKEY_BEDISABLE50:
+						SyncObjectSingleton.FormExecute((o, ea) =>
+						{
+							var bef = S.GET<RTC_NewBlastEditor_Form>();
+							if (bef != null && bef.Focused)
+							{
+								bef.btnDisable50_Click(null, null);
+							}
+						});
+						break;
+					case REMOTE_HOTKEY_BEINVERTDISABLED:
+						SyncObjectSingleton.FormExecute((o, ea) =>
+						{
+							var bef = S.GET<RTC_NewBlastEditor_Form>();
+							if (bef != null && bef.Focused)
+							{
+								bef.btnInvertDisabled_Click(null, null);
+							}
+						});
+						break;
+					case REMOTE_HOTKEY_BEREMOVEDISABLED:
+						SyncObjectSingleton.FormExecute((o, ea) =>
+						{
+							var bef = S.GET<RTC_NewBlastEditor_Form>();
+							if (bef != null && bef.Focused)
+							{
+								bef.btnDisable50_Click(null, null);
+							}
+						});
+						break;
 
 					case REMOTE_BACKUPKEY_STASH:
 						StockpileManager_UISide.BackupedState = (StashKey)advancedMessage.objectValue;
