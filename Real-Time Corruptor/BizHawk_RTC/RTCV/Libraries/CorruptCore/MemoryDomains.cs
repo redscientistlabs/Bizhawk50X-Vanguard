@@ -9,6 +9,7 @@ using System.Text;
 using System.Windows.Forms;
 using System.Xml.Serialization;
 using Ceras;
+using Newtonsoft.Json;
 using RTCV.CorruptCore;
 using RTCV.NetCore;
 
@@ -308,7 +309,7 @@ namespace RTCV.CorruptCore
 
 		public abstract byte[] GetDump();
 
-		public abstract byte[] PeekBytes(long startAddress, long endAddress, bool bigEndian);
+		public abstract byte[] PeekBytes(long startAddress, long endAddress, bool raw);
 
 		public abstract byte PeekByte(long address);
 
@@ -387,13 +388,14 @@ namespace RTCV.CorruptCore
 			{
 				long start = range[0];
 				long end = range[1];
+				if (end < start)
+					continue;
 
 				for (long i = start; i < end; i++)
 				{
 					if (!IsAddressInRanges(i, RemoveSingles, RemoveRanges))
 						if (PointerSpacer == 1 || addressCount % PointerSpacer == 0)
 						{
-							//VMD.MemoryPointers.Add(new Tuple<string, long>(Domain, i));
 							VMD.PointerDomains.Add(GenDomain);
 							VMD.PointerAddresses.Add(i);
 						}
@@ -403,7 +405,6 @@ namespace RTCV.CorruptCore
 
 			foreach (long single in AddSingles)
 			{
-				//VMD.MemoryPointers.Add(new Tuple<string, long>(Domain, single));
 				VMD.PointerDomains.Add(GenDomain);
 				VMD.PointerAddresses.Add(single);
 				addressCount++;

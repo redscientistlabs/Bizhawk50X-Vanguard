@@ -1,12 +1,12 @@
-﻿using System;
+﻿using RTCV.CorruptCore;
+using RTCV.NetCore;
+using RTCV.NetCore.StaticTools;
+using System;
 using System.Collections.Generic;
 using System.Data;
+using System.IO;
 using System.Linq;
 using System.Windows.Forms;
-using RTCV.CorruptCore;
-using RTCV.NetCore;
-using static RTCV.UI.UI_Extensions;
-using RTCV.NetCore.StaticTools;
 
 namespace RTCV.UI
 {
@@ -23,12 +23,13 @@ namespace RTCV.UI
 	// 10 dgvEndAddress
 	// 11 dgvParam1
 	// 12 dgvParam2
-	// 13 dgvNoteButton
+	// 13 dgvSeed
+	// 14 dgvNoteButton
 
 	//TYPE = BLASTUNITTYPE
 	//MODE = GENERATIONMODE
 
-	public partial class RTC_BlastGenerator_Form : Form, IAutoColorize
+	public partial class RTC_BlastGenerator_Form : Form
 	{
 		private enum BlastGeneratorColumn
 		{
@@ -45,6 +46,7 @@ namespace RTCV.UI
 			DgvEndAddress,
 			DgvParam1,
 			DgvParam2,
+			DgvSeed,
 			DgvNoteButton
 		}
 
@@ -55,11 +57,14 @@ namespace RTCV.UI
 		private bool initialized = false;
 
 		private static Dictionary<string, MemoryInterface> domainToMiDico = new Dictionary<string, MemoryInterface>();
-		private string[] domains;
+		private string[] domains = MemoryDomains.MemoryInterfaces?.Keys?.Concat(MemoryDomains.VmdPool.Values.Select(it => it.ToString())).ToArray();
 
 		public RTC_BlastGenerator_Form()
 		{
 			InitializeComponent();
+
+			//For some godforsaken reason, xmlSerializer deserialization wont fill this in as a bool so just use a string god help us all 
+			(dgvBlastGenerator.Columns["dgvEnabled"]).ValueType = typeof(string);
 		}
 
 		private void RTC_BlastGeneratorForm_Load(object sender, EventArgs e)
@@ -67,8 +72,10 @@ namespace RTCV.UI
 			dgvBlastGenerator.MouseClick += dgvBlastGenerator_MouseClick;
 			dgvBlastGenerator.CellValueChanged += dgvBlastGenerator_CellValueChanged;
 			dgvBlastGenerator.CellClick += dgvBlastGenerator_CellClick;
+
+
+
 			UICore.SetRTCColor(UICore.GeneralColor, this);
-			domains = MemoryDomains.MemoryInterfaces?.Keys?.Concat(MemoryDomains.VmdPool.Values.Select(it => it.ToString())).ToArray();
 		}
 
 		public void LoadNoStashKey()
@@ -110,7 +117,14 @@ namespace RTCV.UI
 				int lastrow = dgvBlastGenerator.RowCount - 1;
 				//Set up the DGV based on the current state of Bizhawk
 				(dgvBlastGenerator.Rows[lastrow].Cells["dgvRowDirty"]).Value = true;
-				(dgvBlastGenerator.Rows[lastrow].Cells["dgvEnabled"]).Value = true;
+
+
+				//For some godforsaken reason, xmlSerializer deserialization wont fill this in as a bool so just use a string god help us all 
+				(dgvBlastGenerator.Rows[lastrow].Cells["dgvEnabled"]).ValueType = typeof(string);
+				((DataGridViewCheckBoxCell)(dgvBlastGenerator.Rows[lastrow].Cells["dgvEnabled"])).TrueValue = "true";
+				((DataGridViewCheckBoxCell)(dgvBlastGenerator.Rows[lastrow].Cells["dgvEnabled"])).FalseValue = "false";
+				(dgvBlastGenerator.Rows[lastrow].Cells["dgvEnabled"]).Value = "true";
+
 				((DataGridViewComboBoxCell)dgvBlastGenerator.Rows[lastrow].Cells["dgvPrecision"]).Value = ((DataGridViewComboBoxCell)dgvBlastGenerator.Rows[0].Cells["dgvPrecision"]).Items[0];
 				((DataGridViewComboBoxCell)dgvBlastGenerator.Rows[lastrow].Cells["dgvType"]).Value = ((DataGridViewComboBoxCell)dgvBlastGenerator.Rows[0].Cells["dgvType"]).Items[0];
 
@@ -120,6 +134,7 @@ namespace RTCV.UI
 				dgvBlastGenerator.Rows[lastrow].Cells["dgvEndAddress"].ValueType = typeof(System.Decimal);
 				dgvBlastGenerator.Rows[lastrow].Cells["dgvParam1"].ValueType = typeof(System.Decimal);
 				dgvBlastGenerator.Rows[lastrow].Cells["dgvParam2"].ValueType = typeof(System.Decimal);
+				dgvBlastGenerator.Rows[lastrow].Cells["dgvSeed"].ValueType = typeof(System.Decimal);
 
 
 				//These can't be null or else things go bad when trying to save and load them from a file. Include an M as they NEED to be decimal.
@@ -127,6 +142,11 @@ namespace RTCV.UI
 				((DataGridViewNumericUpDownCell)dgvBlastGenerator.Rows[lastrow].Cells["dgvEndAddress"]).Value = 1M;
 				((DataGridViewNumericUpDownCell)dgvBlastGenerator.Rows[lastrow].Cells["dgvParam1"]).Value = 0M;
 				((DataGridViewNumericUpDownCell)dgvBlastGenerator.Rows[lastrow].Cells["dgvParam2"]).Value = 0M;
+
+
+				//Generate a random seed
+				((DataGridViewTextBoxCell)dgvBlastGenerator.Rows[lastrow].Cells["dgvSeed"]).Value = CorruptCore.CorruptCore.RND.Next();
+
 
 				PopulateDomainCombobox(dgvBlastGenerator.Rows[lastrow]);
 				PopulateModeCombobox(dgvBlastGenerator.Rows[lastrow]);
@@ -138,13 +158,10 @@ namespace RTCV.UI
 			}
 			catch (Exception ex)
 			{
-				string additionalInfo = "An error occurred in RTC while adding a new row.\n\n" +
-					"Your session is probably broken\n\n";
-
-				var ex2 = new CustomException(ex.Message, additionalInfo + ex.StackTrace);
-
-				if (CloudDebug.ShowErrorDialog(ex2, true) == DialogResult.Abort)
-					throw new RTCV.NetCore.AbortEverythingException();
+				MessageBox.Show(
+					"An error occurred in RTC while adding a new row.\n\n" +
+					"Your session is probably broken\n\n\n" +
+					ex.ToString() + ex.StackTrace);
 			}
 		}
 
@@ -199,14 +216,15 @@ namespace RTCV.UI
 			}
 			catch (Exception ex)
 			{
-				throw;
+				throw new Exception("Unable to find domain! Are you sure you have the right core loaded?\n\n" + ex.ToString());
 			}
 		}
 
 		private static void PopulateModeCombobox(DataGridViewRow row)
 		{
+			DataGridViewComboBoxCell cell = row.Cells["dgvMode"] as DataGridViewComboBoxCell;
 
-			if (row.Cells["dgvMode"] is DataGridViewComboBoxCell cell)
+			if (cell != null)
 			{
 				cell.Value = null;
 				cell.Items.Clear();
@@ -214,23 +232,19 @@ namespace RTCV.UI
 
 				switch (row.Cells["dgvType"].Value.ToString())
 				{
-					case "BlastByte":
-						foreach (BGBlastByteModes type in Enum.GetValues(typeof(BGBlastByteModes)))
+					case "Value":
+						foreach (BGValueModes type in Enum.GetValues(typeof(BGValueModes)))
 						{
 							cell.Items.Add(type.ToString());
 						}
 						break;
-					case "BlastCheat":
-						foreach (BGBlastCheatModes type in Enum.GetValues(typeof(BGBlastCheatModes)))
+					case "Store":
+						foreach (BGStoreModes type in Enum.GetValues(typeof(BGStoreModes)))
 						{
 							cell.Items.Add(type.ToString());
 						}
 						break;
-					case "BlastPipe":
-						foreach (BGBlastPipeModes type in Enum.GetValues(typeof(BGBlastPipeModes)))
-						{
-							cell.Items.Add(type.ToString());
-						}
+					default:
 						break;
 				}
 				cell.Value = cell.Items[0];
@@ -240,11 +254,12 @@ namespace RTCV.UI
 		private void btnJustCorrupt_Click(object sender, EventArgs e)
 		{
 			BlastLayer bl = GenerateBlastLayers();
-			(bl?.Clone() as BlastLayer)?.Apply(true);
+			LocalNetCoreRouter.Route(NetcoreCommands.CORRUPTCORE, NetcoreCommands.APPLYBLASTLAYER, new object[] { bl?.Clone() as BlastLayer, true }, true);
 		}
 
 		private void btnLoadCorrupt_Click(object sender, EventArgs e)
 		{
+			StashKey newSk = null;
 			if (sk == null)
 			{
 				StashKey psk = StockpileManager_UISide.GetCurrentSavestateStashkey();
@@ -253,10 +268,18 @@ namespace RTCV.UI
 					MessageBox.Show("Could not perform the CORRUPT action\n\nEither no Savestate Box was selected in the Savestate Manager\nor the Savetate Box itself is empty.");
 					return;
 				}
-				sk = (StashKey)psk.Clone();
+				newSk = new StashKey(CorruptCore.CorruptCore.GetRandomKey(), psk.ParentKey, null)
+				{
+					RomFilename = psk.RomFilename,
+					SystemName = psk.SystemName,
+					SystemCore = psk.SystemCore,
+					GameName = psk.GameName,
+					SyncSettings = psk.SyncSettings,
+					StateLocation = psk.StateLocation
+				};
 			}
-
-			StashKey newSk = (StashKey)sk.Clone();
+			else
+				newSk = (StashKey)sk.Clone();
 
 			BlastLayer bl = GenerateBlastLayers(true);
 			if (bl == null)
@@ -268,6 +291,7 @@ namespace RTCV.UI
 
 		private void btnSendTo_Click(object sender, EventArgs e)
 		{
+			StashKey newSk = null;
 			if (sk == null)
 			{
 				StashKey psk = StockpileManager_UISide.GetCurrentSavestateStashkey();
@@ -276,10 +300,18 @@ namespace RTCV.UI
 					MessageBox.Show("Could not perform the CORRUPT action\n\nEither no Savestate Box was selected in the Savestate Manager\nor the Savetate Box itself is empty.");
 					return;
 				}
-				sk = (StashKey)psk.Clone();
+				newSk = new StashKey(CorruptCore.CorruptCore.GetRandomKey(), psk.ParentKey, null);
+				newSk.RomFilename = psk.RomFilename;
+				newSk.SystemName = psk.SystemName;
+				newSk.SystemCore = psk.SystemCore;
+				newSk.GameName = psk.GameName;
+				newSk.SyncSettings = psk.SyncSettings;
+			}
+			else
+			{
+				newSk = (StashKey)sk.Clone();
 			}
 
-			StashKey newSk = (StashKey)sk.Clone();
 			BlastLayer bl = GenerateBlastLayers(true);
 			if (bl == null)
 				return;
@@ -289,8 +321,7 @@ namespace RTCV.UI
 			{
 				if (S.GET<RTC_NewBlastEditor_Form>() != null)
 				{
-					//TODO
-					//	S.GET<RTC_BlastEditor_Form>().ImportBlastLayer(newSk.BlastLayer);
+					S.GET<RTC_NewBlastEditor_Form>().ImportBlastLayer(newSk.BlastLayer);
 				}
 			}
 			else
@@ -340,13 +371,14 @@ namespace RTCV.UI
 			}
 		}
 
-		public BlastLayer GenerateBlastLayers(bool useStashkey = false)
+		public BlastLayer GenerateBlastLayers(bool loadBeforeCorrupt = false)
 		{
+			StashKey newSk = null;
 			try
 			{
 				BlastLayer bl = new BlastLayer();
 
-				if (useStashkey)
+				if (loadBeforeCorrupt)
 				{
 					//If opened from engine config, use the GH state
 					if (!openedFromBlastEditor)
@@ -358,59 +390,68 @@ namespace RTCV.UI
 								"The Blast Generator could not perform the CORRUPT action\n\nEither no Savestate Box was selected in the Savestate Manager\nor the Savetate Box itself is empty.");
 							return null;
 						}
-
-						sk = (StashKey)psk.Clone();
+						newSk = new StashKey(CorruptCore.CorruptCore.GetRandomKey(), psk.ParentKey, bl);
+						newSk.RomFilename = psk.RomFilename;
+						newSk.SystemName = psk.SystemName;
+						newSk.SystemCore = psk.SystemCore;
+						newSk.GameName = psk.GameName;
+						newSk.SyncSettings = psk.SyncSettings;
 					}
+					else
+						newSk = (StashKey)sk.Clone();
 				}
 
 				List<BlastGeneratorProto> protoList = new List<BlastGeneratorProto>();
 
 				foreach (DataGridViewRow row in dgvBlastGenerator.Rows)
 				{
-					BlastGeneratorProto proto;
-					if ((bool)row.Cells["dgvRowDirty"].Value == true)
+					BlastGeneratorProto proto = null;
+					//Why the hell can't you get the checked state from a dgvCheckbox why do I need to make this a string aaaaaaaaaaa
+					if (row.Cells["dgvEnabled"].Value.ToString() == "true" ||
+						row.Cells["dgvEnabled"].Value.ToString() == "True")
 					{
-						proto = CreateProtoFromRow(row);
-						row.Cells["dgvBlastProtoReference"].Value = proto;
+						if ((bool)row.Cells["dgvRowDirty"].Value == true)
+						{
+							proto = CreateProtoFromRow(row);
+							if (proto != null)
+								row.Cells["dgvBlastProtoReference"].Value = proto;
+						}
+						else
+						{
+							proto = (BlastGeneratorProto)row.Cells["dgvBlastProtoReference"].Value;
+						}
 					}
-					else
-					{
-						proto = (BlastGeneratorProto)row.Cells["dgvBlastProtoReference"].Value;
-					}
-
 					protoList.Add(proto);
 				}
 
 
 				List<BlastGeneratorProto> returnList = new List<BlastGeneratorProto>();
 
+				returnList = NetCore.LocalNetCoreRouter.QueryRoute<List<BlastGeneratorProto>>(NetCore.NetcoreCommands.CORRUPTCORE, NetCore.NetcoreCommands.BLASTGENERATOR_BLAST, new object[] { newSk, protoList, loadBeforeCorrupt }, true);
 
-
-				returnList = LocalNetCoreRouter.QueryRoute<List<BlastGeneratorProto>>(NetcoreCommands.CORRUPTCORE, NetcoreCommands.BLASTGENERATOR_BLAST, new object[] {protoList, sk}, true);
-
-				if (returnList == null) return null;
+				if (returnList.Count != protoList.Count)
+					throw (new Exception("Got less blastlayers back compared to protos sent. Aborting!"));
 
 				//The return list is in the same order as the original list so we can go by index here
 				for (int i = 0; i < dgvBlastGenerator.RowCount; i++)
 				{
-					dgvBlastGenerator.Rows[i].Cells["dgvBlastProtoReference"].Value = returnList[i];
-					dgvBlastGenerator.Rows[i].Cells["dgvRowDirty"].Value = false;
+					//Why the hell can't you get the checked state from a dgvCheckbox why do I need to make this a string aaaaaaaaaaa
+					if (dgvBlastGenerator.Rows[i].Cells["dgvEnabled"].Value.ToString() == "true" || dgvBlastGenerator.Rows[i].Cells["dgvEnabled"].Value.ToString() == "True")
+					{
+						dgvBlastGenerator.Rows[i].Cells["dgvBlastProtoReference"].Value = returnList[i];
+						dgvBlastGenerator.Rows[i].Cells["dgvRowDirty"].Value = false;
 
-					bl.Layer.AddRange(returnList[i].Bl.Layer);
+						bl.Layer.AddRange(returnList[i].bl.Layer);
+					}
 				}
-
 				return bl;
 			}
 			catch (Exception ex)
 			{
-				string additionalInfo = "Something went wrong when generating the blastlayers. \n" +
-								"Are you sure your input is correct and you have the correct core loaded?\n\n";
-
-				var ex2 = new CustomException(ex.Message, additionalInfo + ex.StackTrace);
-
-				if (CloudDebug.ShowErrorDialog(ex2, true) == DialogResult.Abort)
-					throw new RTCV.NetCore.AbortEverythingException();
-
+				MessageBox.Show("Something went wrong when generating the blastlayers. \n" +
+								"Are you sure your input is correct and you have the correct core loaded?\n\n" +
+								ex.ToString() +
+								ex.StackTrace);
 				return null;
 			}
 			finally
@@ -449,9 +490,11 @@ namespace RTCV.UI
 				long endAddress = Convert.ToInt64(row.Cells["dgvEndAddress"].Value);
 				long param1 = Convert.ToInt64(row.Cells["dgvParam1"].Value);
 				long param2 = Convert.ToInt64(row.Cells["dgvParam2"].Value);
+				int seed = Convert.ToInt32(row.Cells["dgvSeed"].Value);
 
-				return new BlastGeneratorProto(note, type, domain, mode, precision, stepSize, startAddress, endAddress, param1, param2);
-			}catch(Exception ex)
+				return new BlastGeneratorProto(note, type, domain, mode, precision, stepSize, startAddress, endAddress, param1, param2, seed);
+			}
+			catch (Exception ex)
 			{
 				throw;
 			}
@@ -598,8 +641,7 @@ namespace RTCV.UI
 							"An error occurred in RTC while refreshing the domains\n" +
 							"Are you sure you don't have an invalid domain selected?\n" +
 							"Make sure any VMDs are loaded and you have the correct core loaded in Bizhawk\n" +
-							ex.ToString()
-							);
+							ex.ToString() + ex.StackTrace);
 			}
 		}
 
@@ -626,17 +668,16 @@ namespace RTCV.UI
 				dt.Rows.Add(cellValues);
 			}
 
-			DataSet ds = new DataSet();
-			ds.Tables.Add(dt);
-			SaveFileDialog sfd = new SaveFileDialog
-			{
-				Filter = "bg|*.bg"
-			};
+			SaveFileDialog sfd = new SaveFileDialog();
+			sfd.Filter = "bg|*.bg";
 			if (sfd.ShowDialog() == DialogResult.OK)
 			{
 				try
 				{
-					ds.Tables[0].WriteXml(sfd.FileName);
+					using (FileStream fs = new FileStream(sfd.FileName, FileMode.Create))
+					{
+						JsonHelper.Serialize(dt, fs);
+					}
 				}
 				catch (Exception ex)
 				{
@@ -652,7 +693,6 @@ namespace RTCV.UI
 
 		private bool loadDataGridView(DataGridView dgv, bool import = false)
 		{
-			DataSet ds = new DataSet();
 			OpenFileDialog ofd = new OpenFileDialog
 			{
 				Filter = "bg|*.bg"
@@ -661,18 +701,15 @@ namespace RTCV.UI
 			{
 				try
 				{
-					DataTable dt = new DataTable();
-					ds.Tables.Add(dt);
-					foreach (DataGridViewColumn column in dgv.Columns)
-						dt.Columns.Add();
-					ds.Tables[0].ReadXml(ofd.FileName);
-					if (!import)
+					DataTable dt = null;
+					using (FileStream fs = new FileStream(ofd.FileName, FileMode.Open))
 					{
-						foreach (DataGridViewRow row in dgv.Rows)
-							dgv.Rows.Remove(row);
+						dt = JsonHelper.Deserialize<DataTable>(fs);
 					}
+					if (!import)
+						dgv.Rows.Clear();
 
-					foreach (DataRow row in ds.Tables[0].Rows)
+					foreach (DataRow row in dt.Rows)
 					{
 						dgv.Rows.Add();
 
@@ -697,13 +734,7 @@ namespace RTCV.UI
 				}
 				catch (Exception ex)
 				{
-					string additionalInfo = "Something went wrong while loading the DataGridview of the Blast Generator. \n\n";
-
-					var ex2 = new CustomException(ex.Message, additionalInfo + ex.StackTrace);
-
-					if (CloudDebug.ShowErrorDialog(ex2, true) == DialogResult.Abort)
-						throw new RTCV.NetCore.AbortEverythingException();
-
+					MessageBox.Show(ex.ToString() + ex.StackTrace);
 					return false;
 				}
 			}
@@ -730,7 +761,7 @@ namespace RTCV.UI
 			System.Diagnostics.ProcessStartInfo sInfo = new System.Diagnostics.ProcessStartInfo("https://corrupt.wiki/corruptors/rtc-real-time-corruptor/blast-generator.html");
 			System.Diagnostics.Process.Start(sInfo);
 		}
-		
+
 		private void dgvBlastGenerator_CellClick(object sender, DataGridViewCellEventArgs e)
 		{
 			// Note handling
@@ -741,23 +772,16 @@ namespace RTCV.UI
 				if (senderGrid.Columns[e.ColumnIndex] is DataGridViewButtonColumn &&
 					e.RowIndex >= 0)
 				{
-					DataGridViewCell cell = dgvBlastGenerator.Rows[e.RowIndex].Cells["dgvNoteText"];
-					string note = cell.Value == null ? "" : cell.Value.ToString();
-
-					/*
-					if (RTC_NoteEditor_Form.CurrentlyOpenNoteForm == null)
 					{
-						RTC_NoteEditor_Form.CurrentlyOpenNoteForm = new RTC_NoteEditor_Form(note, "BlastGenerator", cell);
-					}
-					else
-					{
-						if (RTC_NoteEditor_Form.CurrentlyOpenNoteForm.Visible)
-							RTC_NoteEditor_Form.CurrentlyOpenNoteForm.Close();
+						DataGridViewCell textCell = dgvBlastGenerator.Rows[e.RowIndex].Cells["dgvNoteText"];
+						DataGridViewCell buttonCell = dgvBlastGenerator.Rows[e.RowIndex].Cells["dgvNoteButton"];
 
-						RTC_NoteEditor_Form.CurrentlyOpenNoteForm = new RTC_NoteEditor_Form(note, "BlastGenerator", cell);
+						NoteItem note = new NoteItem(textCell.Value == null ? "" : textCell.Value.ToString());
+						textCell.Value = note;
+
+						new RTC_NoteEditor_Form(note, buttonCell);
+						return;
 					}
-					*/
-					return;
 				}
 			}
 		}
@@ -770,8 +794,19 @@ namespace RTCV.UI
 				DataGridViewCell buttonCell = row.Cells["dgvNoteButton"];
 
 				buttonCell.Value = string.IsNullOrWhiteSpace(textCell.Value?.ToString()) ? string.Empty : "📝";
-				
 			}
+		}
+	}
+	class NoteItem : INote
+	{
+		public string Note { get; set; }
+		public NoteItem(string note)
+		{
+			Note = note;
+		}
+		public override string ToString()
+		{
+			return Note;
 		}
 	}
 }

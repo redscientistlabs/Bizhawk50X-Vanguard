@@ -2532,7 +2532,7 @@ namespace RTCV.UI
 
 public static class JsonHelper
 {
-	public static void Serialize(object value, Stream s, Formatting f = Formatting.None)
+	public static void Serialize(object value, Stream s, Formatting f = Formatting.Indented)
 	{
 		using (StreamWriter writer = new StreamWriter(s))
 		using (JsonTextWriter jsonWriter = new JsonTextWriter(writer))

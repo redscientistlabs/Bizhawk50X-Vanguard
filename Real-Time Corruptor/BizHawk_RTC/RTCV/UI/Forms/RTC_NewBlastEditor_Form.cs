@@ -96,7 +96,7 @@ namespace RTCV.UI
 			LimiterListHash,
 			InvertLimiter,
 			StoreTime,
-			StoreLimiterMode,
+			StoreLimiterSource,
 			StoreType,
 			SourceDomain,
 			SourceAddress,
@@ -143,7 +143,7 @@ namespace RTCV.UI
 
 				cbInvertLimiter.Validated += CbInvertLimiter_Validated;
 				cbLimiterTime.Validated += CbLimiterTime_Validated;
-				cbStoreLimiterMode.Validated += CbStoreLimiterMode_Validated;
+				cbStoreLimiterSource.Validated += cbStoreLimiterSource_Validated;
 				cbLimiterList.Validated += CbLimiterList_Validated;
 
 				upDownSourceAddress.Validated += UpDownSourceAddress_Validated;
@@ -375,11 +375,11 @@ namespace RTCV.UI
 			UpdateBottom();
 		}
 		
-		private void CbStoreLimiterMode_Validated(object sender, EventArgs e)
+		private void cbStoreLimiterSource_Validated(object sender, EventArgs e)
 		{
-			var value = cbStoreLimiterMode.SelectedItem;
+			var value = cbStoreLimiterSource.SelectedItem;
 			foreach (DataGridViewRow row in dgvBlastEditor.SelectedRows)
-				row.Cells[buProperty.StoreLimiterMode.ToString()].Value = value;
+				row.Cells[buProperty.StoreLimiterSource.ToString()].Value = value;
 			UpdateBottom();
 		}
 
@@ -510,7 +510,7 @@ namespace RTCV.UI
 				upDownLifetime.Value = bu.Lifetime;
 				cbLoop.Checked = bu.Loop;
 				cbLimiterTime.SelectedItem = bu.LimiterTime;
-				cbStoreLimiterMode.SelectedItem = bu.StoreLimiterSource;
+				cbStoreLimiterSource.SelectedItem = bu.StoreLimiterSource;
 
 				cbLimiterList.SelectedItem = UICore.LimiterListBindingSource.FirstOrDefault(x => x.Value == bu.LimiterListHash);
 
@@ -597,7 +597,7 @@ namespace RTCV.UI
 			}
 			foreach (var item in Enum.GetValues(typeof(StoreLimiterSource)))
 			{
-				cbStoreLimiterMode.Items.Add(item);
+				cbStoreLimiterSource.Items.Add(item);
 			}
 			foreach (var item in Enum.GetValues(typeof(StoreTime)))
 			{
@@ -630,7 +630,7 @@ namespace RTCV.UI
 			property2ControlDico.Add(buProperty.SourceAddress.ToString(), upDownSourceAddress);
 			property2ControlDico.Add(buProperty.SourceDomain.ToString(), cbSourceDomain);
 			property2ControlDico.Add(buProperty.StoreTime.ToString(), cbStoreTime);
-			property2ControlDico.Add(buProperty.StoreLimiterMode.ToString(), cbStoreTime);
+			property2ControlDico.Add(buProperty.StoreLimiterSource.ToString(), cbStoreTime);
 			property2ControlDico.Add(buProperty.StoreType.ToString(), cbStoreType);
 			property2ControlDico.Add(buProperty.ValueString.ToString(), tbValue);
 		}
@@ -718,10 +718,10 @@ namespace RTCV.UI
 			limiterHash.ValueMember = "Value";
 			dgvBlastEditor.Columns.Add(limiterHash);
 
-			DataGridViewComboBoxColumn storeLimiterMode = CreateColumn(buProperty.StoreLimiterMode.ToString(), buProperty.StoreLimiterMode.ToString(), "Store Limiter Mode", new DataGridViewComboBoxColumn()) as DataGridViewComboBoxColumn;
+			DataGridViewComboBoxColumn storeLimiterSource = CreateColumn(buProperty.StoreLimiterSource.ToString(), buProperty.StoreLimiterSource.ToString(), "Store Limiter Source", new DataGridViewComboBoxColumn()) as DataGridViewComboBoxColumn;
 			foreach (var item in Enum.GetValues(typeof(StoreLimiterSource)))
-				storeLimiterMode.Items.Add(item);
-			dgvBlastEditor.Columns.Add(storeLimiterMode);
+				storeLimiterSource.Items.Add(item);
+			dgvBlastEditor.Columns.Add(storeLimiterSource);
 
 			dgvBlastEditor.Columns.Add(CreateColumn(buProperty.InvertLimiter.ToString(), buProperty.InvertLimiter.ToString(), "Invert Limiter", new DataGridViewCheckBoxColumn()));
 

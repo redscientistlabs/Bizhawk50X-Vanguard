@@ -120,7 +120,7 @@ namespace RTCV.CorruptCore
 
 				if (domain == null)
 					return null;
-				MemoryDomainProxy mdp = MemoryDomains.GetProxy(domain, address);
+				MemoryInterface mi = MemoryDomains.GetInterface(domain);
 
 				byte[] value = new byte[precision];
 
@@ -154,9 +154,9 @@ namespace RTCV.CorruptCore
 						}
 					}
 
-					return new BlastUnit(value, domain, safeAddress, precision, mdp.BigEndian, 0, 1);
+					return new BlastUnit(value, domain, safeAddress, precision, mi.BigEndian, 0, 1);
 				}
-				BlastUnit bu = new BlastUnit(StoreType.ONCE, StoreTime.PREEXECUTE, domain, safeAddress, domain, safeAddress, precision, mdp.BigEndian);
+				BlastUnit bu = new BlastUnit(StoreType.ONCE, StoreTime.PREEXECUTE, domain, safeAddress, domain, safeAddress, precision, mi.BigEndian);
 				switch (type)
 				{
 					case NightmareType.ADD:

@@ -57,9 +57,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Blast Generator Engines\RTC_BlastByteGenerator.cs" />
-    <Compile Include="Blast Generator Engines\RTC_BlastCheatGenerator.cs" />
-    <Compile Include="Blast Generator Engines\RTC_BlastPipeGenerator.cs" />
+    <Compile Include="Blast Generator Engines\RTC_ValueGenerator.cs" />
+    <Compile Include="Blast Generator Engines\RTC_StoreGenerator.cs" />
     <Compile Include="CorruptCoreConnector.cs" />
     <Compile Include="Corruption Engines\RTC_BlastGeneratorEngine.cs" />
     <Compile Include="Corruption Engines\RTC_CustomEngine.cs" />

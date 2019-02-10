@@ -407,8 +407,7 @@ namespace RTCV.CorruptCore
 			}
 			catch (Exception ex)
 			{
-				MessageBox.Show("Unable to empty a temp folder! If your stockpile has any CD based games, close them before saving the stockpile! If this isn't the case, report this bug to the RTC developers.");
-				throw new Exception(ex.ToString());
+				throw new CustomException("Unable to empty a temp folder! If your stockpile has any CD based games, close them before saving the stockpile! If this isn't the case, report this bug to the RTC developers." + ex.Message, ex.StackTrace);
 			}
 		}
 
@@ -474,7 +473,7 @@ namespace RTCV.CorruptCore
 
 
 			LocalNetCoreRouter.Route(NetcoreCommands.VANGUARD, NetcoreCommands.REMOTE_IMPORTKEYBINDS);
-			Process.Start(CorruptCore.bizhawkDir + Path.DirectorySeparatorChar + $"StockpileConfigDETACHED.bat");
+			Process.Start(CorruptCore.bizhawkDir + Path.DirectorySeparatorChar + $"StockpileConfig.bat");
 
 		}
 
@@ -517,7 +516,7 @@ namespace RTCV.CorruptCore
 			LocalNetCoreRouter.Route(NetcoreCommands.VANGUARD, NetcoreCommands.REMOTE_MERGECONFIG);
 
 
-			Process.Start(CorruptCore.bizhawkDir + Path.DirectorySeparatorChar + $"StockpileConfigDETACHED.bat");
+			Process.Start(CorruptCore.bizhawkDir + Path.DirectorySeparatorChar + $"StockpileConfig.bat");
 
 		}
 
@@ -823,10 +822,10 @@ namespace RTCV.CorruptCore
 			}
 			catch (Exception ex)
 			{
-				throw new Exception(
+				throw new CustomException(
 							"An error occurred in RTC while applying a BlastLayer to the game.\n\n" +
-							"The operation was cancelled\n\n" +
-							ex
+							"The operation was cancelled\n\n" + ex.Message,
+							ex.StackTrace
 							);
 			}
 			finally
@@ -1085,7 +1084,7 @@ namespace RTCV.CorruptCore
 
 		[Category("Limiter")]
 		[Description("What mode to use for the limiter in STORE mode")]
-		[DisplayName("Store Limiter Mode")]
+		[DisplayName("Store Limiter Source")]
 		public StoreLimiterSource StoreLimiterSource { get; set; }
 
 		[Category("Limiter")]
@@ -1311,9 +1310,7 @@ namespace RTCV.CorruptCore
 			}
 			catch (Exception ex)
 			{
-				throw new Exception("The BlastUnit apply() function threw up. \n" +
-					"This is an RTC error, so you should probably send this to the RTC devs.\n" +
-					"If you know the steps to reproduce this error it would be greatly appreciated.\n\n", ex);
+				throw new CustomException("The BlastUnit apply() function threw up. \n" + ex.Message, ex.StackTrace);
 			}
 
 			return;
@@ -1325,7 +1322,7 @@ namespace RTCV.CorruptCore
 		public void StoreBackup()
 		{
 			//Snag our memory interface
-			MemoryDomainProxy mi = MemoryDomains.GetProxy(SourceDomain, SourceAddress);
+			MemoryInterface mi = MemoryDomains.GetInterface(SourceDomain);
 
 			if (mi == null)
 				throw new Exception(
@@ -1372,10 +1369,7 @@ namespace RTCV.CorruptCore
 			}
 			catch (Exception ex)
 			{
-				throw new Exception("The BlastUnit GetBakedUnit() function threw up. \n" +
-					"This is an RTC error, so you should probably send this to the RTC devs.\n" +
-					"If you know the steps to reproduce this error it would be greatly appreciated.\n\n" +
-				ex);
+				throw new CustomException("The BlastUnit GetBakedUnit() function threw up. \n" + ex.Message, ex.StackTrace);
 			}
 		}
 
@@ -1600,28 +1594,28 @@ namespace RTCV.CorruptCore
 			Data = data;
 		}
 	}
-
 	[Serializable]
+	[Ceras.MemberConfig(TargetMember.AllPublic)]
 	public class BlastGeneratorProto : INote
 	{
-		public string BlastType;
-		public string Domain;
-		public int Precision;
-		public long StepSize;
-		public long StartAddress;
-		public long EndAddress;
-		public long Param1;
-		public long Param2;
-		public string Mode;
-		public BlastLayer Bl;
-
+		public string BlastType { get; set; }
+		public string Domain { get; set; }
+		public int Precision { get; set; }
+		public long StepSize { get; set; }
+		public long StartAddress { get; set; }
+		public long EndAddress { get; set; }
+		public long Param1 { get; set; }
+		public long Param2 { get; set; }
+		public string Mode { get; set; }
 		public string Note { get; set; }
+		public int Seed { get; set; }
+		public BlastLayer bl { get; set; }
 
 		public BlastGeneratorProto()
 		{
 		}
 
-		public BlastGeneratorProto(string _note, string _blastType, string _domain, string _mode, int _precision, long _stepSize, long _startAddress, long _endAddress, long _param1, long _param2)
+		public BlastGeneratorProto(string _note, string _blastType, string _domain, string _mode, int _precision, long _stepSize, long _startAddress, long _endAddress, long _param1, long _param2, int _seed)
 		{
 			Note = _note;
 			BlastType = _blastType;
@@ -1633,31 +1627,25 @@ namespace RTCV.CorruptCore
 			Param2 = _param2;
 			Mode = _mode;
 			StepSize = _stepSize;
+			Seed = _seed;
 		}
 
 		public BlastLayer GenerateBlastLayer()
 		{
 			switch (BlastType)
 			{
-				case "BlastByte":
-					RTC_BlastByteGenerator bbGenerator = new RTC_BlastByteGenerator();
-					Bl = bbGenerator.GenerateLayer(Note, Domain, StepSize, StartAddress, EndAddress, Param1, Param2, Precision, (BGBlastByteModes)Enum.Parse(typeof(BGBlastByteModes), Mode, true));
+				case "Value":
+					bl = RTC_ValueGenerator.GenerateLayer(Note, Domain, StepSize, StartAddress, EndAddress, Param1, Param2, Precision, Seed, (BGValueModes)Enum.Parse(typeof(BGValueModes), Mode, true));
 					break;
-				case "BlastCheat":
-					RTC_BlastCheatGenerator bcGenerator = new RTC_BlastCheatGenerator();
-					Bl = bcGenerator.GenerateLayer(Note, Domain, StepSize, StartAddress, EndAddress, Param1, Param2, Precision, (BGBlastCheatModes)Enum.Parse(typeof(BGBlastCheatModes), Mode, true));
-					break;
-				case "BlastPipe":
-					RTC_BlastPipeGenerator bpGenerator = new RTC_BlastPipeGenerator();
-					Bl = bpGenerator.GenerateLayer(Note, Domain, StepSize, StartAddress, EndAddress, Param1, Param2, Precision, (BGBlastPipeModes)Enum.Parse(typeof(BGBlastPipeModes), Mode, true));
+				case "Store":
+					bl = RTC_StoreGenerator.GenerateLayer(Note, Domain, StepSize, StartAddress, EndAddress, Param1, Param2, Precision, Seed, (BGStoreModes)Enum.Parse(typeof(BGStoreModes), Mode, true));
 					break;
 				default:
 					return null;
 			}
 
-			return Bl;
+			return bl;
 		}
-
 	}
 
 	public class ProblematicProcess
@@ -1676,7 +1664,6 @@ namespace RTCV.CorruptCore
 	/// Has a name and a value of type T for storing any object.
 	/// </summary>
 	/// <typeparam name="T">The type of object you want the comboxbox value to be</typeparam>
-	[Serializable]
 	public class ComboBoxItem<T>
 	{
 		public string Name { get; set; }

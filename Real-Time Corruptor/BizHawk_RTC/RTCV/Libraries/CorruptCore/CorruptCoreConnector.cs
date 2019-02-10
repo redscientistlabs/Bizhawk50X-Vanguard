@@ -117,11 +117,18 @@ namespace RTCV.CorruptCore
 
 				case GENERATEBLASTLAYER:
 				{
-					string[] domains = advancedMessage.objectValue as string[];
+					var val = advancedMessage.objectValue as object[];
+					string[] domains = val[0] as string[];
+					StashKey sk = val[1] as StashKey;
+					bool? loadBeforeCorrupt = val[2] as bool?;
 
 					BlastLayer bl = null;
 					SyncObjectSingleton.FormExecute((o, ea) =>
 					{
+						if (loadBeforeCorrupt == true)
+						{
+							StockpileManager_EmuSide.LoadState_NET(sk, true, false, false);
+						}
 						bl = CorruptCore.GenerateBlastLayer(domains);
 					});
 					StockpileManager_EmuSide.CachedBL = bl;
@@ -186,20 +193,17 @@ namespace RTCV.CorruptCore
 
 				case BLASTGENERATOR_BLAST:
 					{
-						var temp = advancedMessage.objectValue as object[];
-						var blastGeneratorProtos = (List<BlastGeneratorProto>)(temp[0]);
-						var sk = (StashKey)(temp[1]);
-
 						List<BlastGeneratorProto> returnList = null;
+						StashKey sk = (StashKey)(advancedMessage.objectValue as object[])[0];
+						List<BlastGeneratorProto> blastGeneratorProtos = (List<BlastGeneratorProto>)(advancedMessage.objectValue as object[])[1];
+						bool loadBeforeCorrupt = (bool)(advancedMessage.objectValue as object[])[2];
+
 						SyncObjectSingleton.FormExecute((o, ea) =>
 						{
-							returnList = BlastTools.GenerateBlastLayersFromBlastGeneratorProtos(blastGeneratorProtos, sk);
+							returnList = BlastTools.GenerateBlastLayersFromBlastGeneratorProtos(blastGeneratorProtos, sk, loadBeforeCorrupt);
 						});
+						e.setReturnValue(returnList);
 
-						if (advancedMessage.requestGuid != null)
-						{
-							e.setReturnValue(returnList);
-						}
 						break;
 					}
 
@@ -353,10 +357,7 @@ namespace RTCV.CorruptCore
 
 
 				case REMOTE_EVENT_CLOSEEMULATOR:
-					SyncObjectSingleton.FormExecute((o, ea) =>
-					{
-						Application.Exit();
-					});
+					Application.Exit();
 					break;
 
 					

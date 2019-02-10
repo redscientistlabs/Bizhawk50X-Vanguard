@@ -170,9 +170,6 @@ namespace RTCV.UI
 				return;
 
 			isClosing = true;
-			if (UI_VanguardImplementation.connector != null)
-				UI_VanguardImplementation.connector.Kill();
-
 
 			foreach (Form frm in UICore.AllRtcForms)
 			{

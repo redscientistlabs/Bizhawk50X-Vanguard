@@ -56,10 +56,18 @@ namespace RTCV.UI
 
 		public long SafeStringToLong(string input)
 		{
-			if (input.ToUpper().Contains("0X"))
-				return long.Parse(input.Substring(2), NumberStyles.HexNumber);
-			else
-				return long.Parse(input, NumberStyles.HexNumber);
+			try
+			{
+				if (input.ToUpper()
+					.Contains("0X"))
+					return long.Parse(input.Substring(2), NumberStyles.HexNumber);
+				else
+					return long.Parse(input, NumberStyles.HexNumber);
+			}
+			catch (FormatException e)
+			{
+				return -1;
+			}
 		}
 
 		private void btnGenerateVMD_Click(object sender, EventArgs e) => GenerateVMD();
@@ -133,6 +141,9 @@ namespace RTCV.UI
 					long start = SafeStringToLong(lineParts[0]);
 					long end = SafeStringToLong(lineParts[1]);
 
+					if(end < start)
+						continue;
+
 					if (end >= currentDomainSize)
 						end = Convert.ToInt64(currentDomainSize - 1);
 
@@ -145,7 +156,7 @@ namespace RTCV.UI
 				{
 					long address = SafeStringToLong(lineParts[0]);
 
-					if (address < currentDomainSize)
+					if (address > 0 && address < currentDomainSize)
 					{
 						if (remove)
 							proto.RemoveSingles.Add(address);

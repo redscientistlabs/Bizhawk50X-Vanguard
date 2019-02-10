@@ -166,8 +166,7 @@
             this.cbAutoKillSwitchExecuteAction.FormattingEnabled = true;
             this.cbAutoKillSwitchExecuteAction.Items.AddRange(new object[] {
             "Kill",
-            "Kill + Restart",
-            "Restart + Reset"});
+            "Kill + Restart"});
             this.cbAutoKillSwitchExecuteAction.Location = new System.Drawing.Point(9, 65);
             this.cbAutoKillSwitchExecuteAction.Name = "cbAutoKillSwitchExecuteAction";
             this.cbAutoKillSwitchExecuteAction.Size = new System.Drawing.Size(123, 25);

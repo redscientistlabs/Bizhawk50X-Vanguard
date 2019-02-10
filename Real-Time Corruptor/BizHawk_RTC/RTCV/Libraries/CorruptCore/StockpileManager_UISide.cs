@@ -93,12 +93,6 @@ namespace RTCV.CorruptCore
 				LocalNetCoreRouter.Route(NetcoreCommands.VANGUARD, NetcoreCommands.REMOTE_LOADROM, psk.RomFilename, true);
 			}
 
-			var watch = System.Diagnostics.Stopwatch.StartNew();
-			BlastLayer bl = LocalNetCoreRouter.QueryRoute<BlastLayer>(NetcoreCommands.CORRUPTCORE, NetcoreCommands.GENERATEBLASTLAYER, (string[])RTCV.NetCore.AllSpec.UISpec["SELECTEDDOMAINS"], true);
-			watch.Stop();
-			Console.WriteLine($"It took " + watch.ElapsedMilliseconds + " ms to blastlayer");
-
-
 			//We make it without the blastlayer so we can send it across and use the cached version without needing a prototype
 			CurrentStashkey = new StashKey(CorruptCore.GetRandomKey(), psk.ParentKey, null)
 			{
@@ -110,11 +104,19 @@ namespace RTCV.CorruptCore
 				StateLocation = psk.StateLocation
 			};
 
+
+			var watch = System.Diagnostics.Stopwatch.StartNew();
+			BlastLayer bl = LocalNetCoreRouter.QueryRoute<BlastLayer>(NetcoreCommands.CORRUPTCORE, NetcoreCommands.GENERATEBLASTLAYER, new object[]{(string[])RTCV.NetCore.AllSpec.UISpec["SELECTEDDOMAINS"], CurrentStashkey, true}, true);
+			watch.Stop();
+			Console.WriteLine($"It took " + watch.ElapsedMilliseconds + " ms to blastlayer");
+
+
 			bool isCorruptionApplied = bl?.Layer?.Count > 0;
 
 			if (_loadBeforeOperation)
 			{
-				if (!LoadState(CurrentStashkey, true, true, true))
+				//We don't need to reload the rom here because it's already been reloaded up above and since this is one sequential process, we can just load the state
+				if (!LoadState(CurrentStashkey, false, true, true))
 				{
 					CurrentStashkey.BlastLayer = bl;
 					return isCorruptionApplied;

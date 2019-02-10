@@ -74,6 +74,12 @@ namespace RTCV.UI
 		{
 			if (dontUpdateSpec)
 				return;
+			updateUILock();
+
+		}
+
+		private void updateUILock()
+		{
 
 			if (rbUnitSourceStore.Checked)
 			{
@@ -381,7 +387,7 @@ namespace RTCV.UI
 				btnCustomTemplateSave.BackColor = Color.LightGray;
 				btnCustomTemplateSave.ForeColor = Color.DimGray;
 			}
-
+			updateUILock();
 			RTCV.NetCore.AllSpec.CorruptCoreSpec.Update(spec);
 			RestoreUIStateFromSpec();
 			Refresh();

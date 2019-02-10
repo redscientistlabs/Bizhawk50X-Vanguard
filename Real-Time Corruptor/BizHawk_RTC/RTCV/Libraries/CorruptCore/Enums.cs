@@ -79,8 +79,7 @@
 		CUSTOM,
 		NONE
 	}
-
-	public enum BGBlastByteModes
+	public enum BGValueModes
 	{
 		SET,
 		ADD,
@@ -100,33 +99,13 @@
 		BITWISE_ROTATE_RIGHT
 	}
 
-	public enum BGBlastCheatModes
-	{
-		SET,
-		ADD,
-		SUBTRACT,
-		RANDOM,
-		RANDOM_RANGE,
-		SHIFT_LEFT,
-		SHIFT_RIGHT,
-		FREEZE,
-		REPLACE_X_WITH_Y,
-		BITWISE_AND,
-		BITWISE_OR,
-		BITWISE_XOR,
-		BITWISE_COMPLEMENT,
-		BITWISE_SHIFT_LEFT,
-		BITWISE_SHIFT_RIGHT,
-		BITWISE_ROTATE_LEFT,
-		BITWISE_ROTATE_RIGHT
-	}
-
-	public enum BGBlastPipeModes
+	public enum BGStoreModes
 	{
 		CHAINED,
 		SOURCE_SET,
 		SOURCE_RANDOM,
-		DEST_RANDOM
+		DEST_RANDOM,
+		FREEZE,
 	}
 
 	public enum ProblematicItemTypes

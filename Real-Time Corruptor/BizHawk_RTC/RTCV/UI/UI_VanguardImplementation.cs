@@ -69,8 +69,7 @@ namespace RTCV.UI
 						SyncObjectSingleton.FormExecute((o, ea) =>
 						{
 							S.GET<RTC_Core_Form>().Show();
-						//S.GET<RTC_Test_Form>().Show();
-						if (UICore.FirstConnect)
+							if (UICore.FirstConnect)
 							{
 								UICore.FirstConnect = false;
 								S.GET<RTC_Core_Form>().btnEngineConfig_Click(null, null);

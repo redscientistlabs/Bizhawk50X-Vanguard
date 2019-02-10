@@ -239,21 +239,22 @@ namespace RTCV.CorruptCore
 			return bl;
 		}
 
-		public static List<BlastGeneratorProto> GenerateBlastLayersFromBlastGeneratorProtos(List<BlastGeneratorProto> blastLayers, StashKey sk)
+		public static List<BlastGeneratorProto> GenerateBlastLayersFromBlastGeneratorProtos(List<BlastGeneratorProto> blastLayers, StashKey sk, bool loadBeforeCorrupt)
 		{
 			//Load the game first for stuff like REPLACE_X_WITH_Y
-			sk?.RunOriginal();
+			if (loadBeforeCorrupt)
+				sk?.RunOriginal();
 			foreach (BlastGeneratorProto bgp in blastLayers)
 			{
 				//Only generate if there's no BlastLayer.
 				//A new proto is always generated if the cell is dirty which means no BlastLayer will exist
 				//Otherwise, we just return the existing BlastLayer
-				if (bgp.Bl == null)
+				if (bgp?.bl == null)
 				{
 					Console.Write("BGP was dirty. Generating BlastLayer\n");
-					bgp.Bl = bgp.GenerateBlastLayer();
+					bgp.bl = bgp.GenerateBlastLayer();
 				}
-					
+
 			}
 
 			return blastLayers;
