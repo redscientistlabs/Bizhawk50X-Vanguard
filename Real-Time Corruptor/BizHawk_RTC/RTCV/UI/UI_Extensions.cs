@@ -2372,7 +2372,7 @@ namespace RTCV.UI
 		{
 			base.OnCellMouseDown(e);
 
-			if (e.RowIndex >= 0 && e.Button == MouseButtons.Right)
+			if (e.RowIndex >= 0 && e.Button == MouseButtons.Right && this.CurrentRow != null)
 			{
 				var currentRow = this.CurrentRow.Index;
 				var selectedRows = this.SelectedRows.OfType<DataGridViewRow>().ToList();
