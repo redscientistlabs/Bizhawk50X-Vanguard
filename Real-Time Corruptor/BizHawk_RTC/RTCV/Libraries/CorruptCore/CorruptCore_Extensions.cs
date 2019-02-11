@@ -948,6 +948,7 @@ namespace RTCV.CorruptCore
 				{
 					Formatting = f
 				};
+				ser.Converters.Add(new Newtonsoft.Json.Converters.StringEnumConverter());
 				ser.Serialize(jsonWriter, value);
 				jsonWriter.Flush();
 			}

@@ -18,7 +18,6 @@
 	}
 	public enum StoreTime
 	{
-		NONE,       //For when something will never happen
 		IMMEDIATE,  //Frame 0 for the blastunit. Right when it's applied. Used for Distortion
 		PREEXECUTE, //For when you want it to happen right before the first step
 	}

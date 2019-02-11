@@ -7,19 +7,16 @@ using System.IO.Compression;
 using System.Linq;
 using System.Windows.Forms;
 using System.Numerics;
-using System.Xml.Serialization;
 using System.ComponentModel;
 using System.Data;
 using Ceras;
+using Newtonsoft.Json.Converters;
 using RTCV.CorruptCore;
 using RTCV.NetCore;
 using Exception = System.Exception;
 
 namespace RTCV.CorruptCore
 {
-	[XmlInclude(typeof(StashKey))]
-	[XmlInclude(typeof(BlastLayer))]
-	[XmlInclude(typeof(BlastUnit))]
 	[Serializable]
 	[Ceras.MemberConfig(TargetMember.All)]
 	public class Stockpile
@@ -641,6 +638,7 @@ namespace RTCV.CorruptCore
 		public string StateShortFilename { get; set; }
 		public string StateFilename { get; set; }
 		public byte[] StateData { get; set; }
+		[JsonConverter(typeof(StringEnumConverter))]
 		public StashKeySavestateLocation StateLocation { get; set; } = StashKeySavestateLocation.SESSION;
 
 		public string SystemName { get; set; }
@@ -772,7 +770,6 @@ namespace RTCV.CorruptCore
 		}
 	}
 
-	[XmlInclude(typeof(BlastUnit))]
 	[Ceras.MemberConfig(TargetMember.All)]
 	[Serializable]
 	public class BlastLayer : ICloneable, INote
@@ -896,21 +893,22 @@ namespace RTCV.CorruptCore
 	/// Working data for BlastUnits.
 	/// Not serialized
 	/// </summary>
+	[Ceras.MemberConfig(TargetMember.None)]
 	public class BlastUnitWorkingData
 	{
 		//We Calculate a LastFrame at the beginning of execute
-		[XmlIgnore, NonSerialized]
+		[NonSerialized]
 		public int LastFrame = -1;
 		//We calculate ExecuteFrameQueued which is the ExecuteFrame + the currentframe that was calculated at the time of it entering the execution pool
-		[XmlIgnore, NonSerialized]
+		[NonSerialized]
 		public int ExecuteFrameQueued = 0;
 
 		//We use ApplyValue so we don't need to keep re-calculating the tiled value every execute if we don't have to.
-		[XmlIgnore, NonSerialized]
+		[NonSerialized]
 		public byte[] ApplyValue = null;
 
 		//The data that has been backed up. This is a list of bytes so if they start backing up at IMMEDIATE, they can have historical backups
-		[XmlIgnore, NonSerialized]
+		[NonSerialized]
 		public Queue<byte[]> StoreData = new Queue<byte[]>();
 	}
 
@@ -1014,16 +1012,19 @@ namespace RTCV.CorruptCore
 		[Category("Source")]
 		[Description("The source for the value for this unit for STORE mode")]
 		[DisplayName("Source")]
+		[JsonConverter(typeof(StringEnumConverter))]
 		public BlastUnitSource Source { get; set; }
 
 		[Category("Store")]
 		[Description("The time when the store will take place")]
 		[DisplayName("Store Time")]
+		[JsonConverter(typeof(StringEnumConverter))]
 		public StoreTime StoreTime { get; set; }
 
 		[Category("Store")]
 		[Description("The type of store that when the store will take place")]
 		[DisplayName("Store Type")]
+		[JsonConverter(typeof(StringEnumConverter))]
 		public StoreType StoreType { get; set; }
 
 
@@ -1085,11 +1086,13 @@ namespace RTCV.CorruptCore
 		[Category("Limiter")]
 		[Description("What mode to use for the limiter in STORE mode")]
 		[DisplayName("Store Limiter Source")]
+		[JsonConverter(typeof(StringEnumConverter))]
 		public StoreLimiterSource StoreLimiterSource { get; set; }
 
 		[Category("Limiter")]
 		[Description("When to apply the limiter list")]
 		[DisplayName("Limiter List")]
+		[JsonConverter(typeof(StringEnumConverter))]
 		public LimiterTime LimiterTime { get; set; }
 
 		[Category("Limiter")]
@@ -1114,7 +1117,7 @@ namespace RTCV.CorruptCore
 
 
 		//Don't serialize this
-		[XmlIgnore, NonSerialized, JsonIgnore, Ceras.Ignore]
+		[NonSerialized, JsonIgnore, Ceras.Ignore]
 		public BlastUnitWorkingData Working;
 
 

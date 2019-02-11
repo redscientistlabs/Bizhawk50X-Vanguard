@@ -245,43 +245,25 @@ namespace RTCV.CorruptCore
 				//Remove it
 				appliedLifetime.Remove(buList);
 
-				//Since we already have it filtered as a list, there's no reason to build a new list
-				//We just update the ExecuteFrameQueued and LastFrame, then just add it back to buListCollection
-				//The storeDataPool still has the units so we don't need to touch that
+				foreach (BlastUnit bu in buList)
+				{
+					bu.Working = null;
+					//Remove it from the store pool
+					if (bu.Source == BlastUnitSource.STORE)
+						StoreDataPool.Remove(bu);
+				}
+
+				//If there's a loop, re-apply all the units
 				if (buList[0].Loop)
 				{
-					//Clean out the working data for all units and if needed, do an Apply() action
-					foreach (BlastUnit bu in buList)
-					{
-						bu.Working = new BlastUnitWorkingData();
-
-						//If the store time is immediate, we store on the frame the unit is created.
-						//In the case of a looping unit, that'd be right now
-						if (bu.Source == BlastUnitSource.STORE && bu.StoreTime == StoreTime.IMMEDIATE)
-							bu.StoreBackup();
-					}
-
-
-
-					//We have to add 1 since currentFrame hasn't been incremented yet
-					buList[0].Working.ExecuteFrameQueued = buList[0].ExecuteFrame + currentFrame + 1;
-					buList[0].Working.LastFrame = buList[0].Working.ExecuteFrameQueued + buList[0].Lifetime + 1;
-					buListCollection.Add(buList);
 					needsRefilter = true;
-				}
-				//If we're not looping, set the working data to null instead of instantiating a new one
-				else
-				{
 					foreach (BlastUnit bu in buList)
 					{
-						bu.Working = null;
-						//Remove it from the store pool
-						if (bu.Source == BlastUnitSource.STORE)
-							StoreDataPool.Remove(bu);
+						bu.Apply();
 					}
 				}
 			}
-			//We only call this if there's a loop layer for optimization purposes.
+			//We only call this if there's a loop
 			if(needsRefilter)
 				FilterBuListCollection();
 
