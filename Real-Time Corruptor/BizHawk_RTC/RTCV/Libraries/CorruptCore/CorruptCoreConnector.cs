@@ -356,10 +356,6 @@ namespace RTCV.CorruptCore
 					break;
 
 
-				case REMOTE_EVENT_CLOSEEMULATOR:
-					Application.Exit();
-					break;
-
 					
 				case REMOTE_HOTKEY_MANUALBLAST:
 					LocalNetCoreRouter.Route(NetcoreCommands.CORRUPTCORE, ASYNCBLAST);

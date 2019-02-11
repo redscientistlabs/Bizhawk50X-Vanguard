@@ -118,7 +118,8 @@ namespace RTCV.UI
 				return;
 			}
 
-			LocalNetCoreRouter.Route(NetcoreCommands.CORRUPTCORE, NetcoreCommands.REMOTE_EVENT_CLOSEEMULATOR);
+			
+			LocalNetCoreRouter.Route(NetcoreCommands.UI, NetcoreCommands.REMOTE_EVENT_CLOSEEMULATOR);
 			
 
 			UICore.CloseAllRtcForms();

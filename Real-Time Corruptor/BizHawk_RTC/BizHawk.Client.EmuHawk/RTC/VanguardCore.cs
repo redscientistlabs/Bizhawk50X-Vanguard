@@ -68,48 +68,48 @@ namespace Vanguard
 
 		public static string System
 		{
-			get => (string)VanguardSpec[VSPEC.SYSTEM.ToString()];
-			set => VanguardSpec.Update(VSPEC.SYSTEM.ToString(), value);
+			get => (string)AllSpec.VanguardSpec[VSPEC.SYSTEM.ToString()];
+			set => AllSpec.VanguardSpec.Update(VSPEC.SYSTEM.ToString(), value);
 		}
 		public static string GameName
 		{
-			get => (string)VanguardSpec[VSPEC.GAMENAME.ToString()];
-			set => VanguardSpec.Update(VSPEC.GAMENAME.ToString(), value);
+			get => (string)AllSpec.VanguardSpec[VSPEC.GAMENAME.ToString()];
+			set => AllSpec.VanguardSpec.Update(VSPEC.GAMENAME.ToString(), value);
 		}
 		public static string SystemPrefix
 		{
-			get => (string)VanguardSpec[VSPEC.SYSTEMPREFIX.ToString()];
-			set => VanguardSpec.Update(VSPEC.SYSTEMPREFIX.ToString(), value);
+			get => (string)AllSpec.VanguardSpec[VSPEC.SYSTEMPREFIX.ToString()];
+			set => AllSpec.VanguardSpec.Update(VSPEC.SYSTEMPREFIX.ToString(), value);
 		}
 		public static string SystemCore
 		{
-			get => (string)VanguardSpec[VSPEC.SYSTEMCORE.ToString()];
-			set => VanguardSpec.Update(VSPEC.SYSTEMCORE.ToString(), value);
+			get => (string)AllSpec.VanguardSpec[VSPEC.SYSTEMCORE.ToString()];
+			set => AllSpec.VanguardSpec.Update(VSPEC.SYSTEMCORE.ToString(), value);
 		}
 		public static string SyncSettings
 		{
-			get => (string)VanguardSpec[VSPEC.SYNCSETTINGS.ToString()];
-			set => VanguardSpec.Update(VSPEC.SYNCSETTINGS.ToString(), value);
+			get => (string)AllSpec.VanguardSpec[VSPEC.SYNCSETTINGS.ToString()];
+			set => AllSpec.VanguardSpec.Update(VSPEC.SYNCSETTINGS.ToString(), value);
 		}
 		public static string OpenRomFilename
 		{
-			get => (string)VanguardSpec[VSPEC.OPENROMFILENAME.ToString()];
-			set => VanguardSpec.Update(VSPEC.OPENROMFILENAME.ToString(), value);
+			get => (string)AllSpec.VanguardSpec[VSPEC.OPENROMFILENAME.ToString()];
+			set => AllSpec.VanguardSpec.Update(VSPEC.OPENROMFILENAME.ToString(), value);
 		}
 		public static int LastLoaderRom
 		{
-			get => (int)VanguardSpec[VSPEC.CORE_LASTLOADERROM.ToString()];
-			set => VanguardSpec.Update(VSPEC.CORE_LASTLOADERROM.ToString(), value);
+			get => (int)AllSpec.VanguardSpec[VSPEC.CORE_LASTLOADERROM.ToString()];
+			set => AllSpec.VanguardSpec.Update(VSPEC.CORE_LASTLOADERROM.ToString(), value);
 		}
 		public static string[] BlacklistedDomains
 		{
-			get => (string[])VanguardSpec[VSPEC.MEMORYDOMAINS_BLACKLISTEDDOMAINS.ToString()];
-			set => VanguardSpec.Update(VSPEC.MEMORYDOMAINS_BLACKLISTEDDOMAINS.ToString(), value);
+			get => (string[])AllSpec.VanguardSpec[VSPEC.MEMORYDOMAINS_BLACKLISTEDDOMAINS.ToString()];
+			set => AllSpec.VanguardSpec.Update(VSPEC.MEMORYDOMAINS_BLACKLISTEDDOMAINS.ToString(), value);
 		}
 		public static MemoryDomainProxy[] MemoryInterfacees
 		{
-			get => (MemoryDomainProxy[])VanguardSpec[VSPEC.MEMORYDOMAINS_INTERFACES.ToString()];
-			set => VanguardSpec.Update(VSPEC.MEMORYDOMAINS_INTERFACES.ToString(), value);
+			get => (MemoryDomainProxy[])AllSpec.VanguardSpec[VSPEC.MEMORYDOMAINS_INTERFACES.ToString()];
+			set => AllSpec.VanguardSpec.Update(VSPEC.MEMORYDOMAINS_INTERFACES.ToString(), value);
 		}
 
 		public static PartialSpec getDefaultPartial()
@@ -129,7 +129,6 @@ namespace Vanguard
 			return partial;
 		}
 
-		public static volatile FullSpec VanguardSpec;
 
 
 		public static void RegisterEmuhawkSpec()
@@ -138,21 +137,19 @@ namespace Vanguard
 
 			emuSpecTemplate.Insert(VanguardCore.getDefaultPartial());
 
-			VanguardSpec = new FullSpec(emuSpecTemplate, !CorruptCore.Attached); //You have to feed a partial spec as a template
+			AllSpec.VanguardSpec = new FullSpec(emuSpecTemplate, !CorruptCore.Attached); //You have to feed a partial spec as a template
 
 			if (VanguardCore.attached)
-				RTCV.Vanguard.VanguardConnector.PushVanguardSpecRef(VanguardCore.VanguardSpec);
+				RTCV.Vanguard.VanguardConnector.PushVanguardSpecRef(AllSpec.VanguardSpec);
 
 			LocalNetCoreRouter.Route(NetcoreCommands.CORRUPTCORE, NetcoreCommands.REMOTE_PUSHVANGUARDSPEC, emuSpecTemplate, true);
 			LocalNetCoreRouter.Route(NetcoreCommands.UI, NetcoreCommands.REMOTE_PUSHVANGUARDSPEC, emuSpecTemplate, true);
 
 
-			VanguardSpec.SpecUpdated += (o, e) =>
+			AllSpec.VanguardSpec.SpecUpdated += (o, e) =>
 			{
 				PartialSpec partial = e.partialSpec;
 
-				if(!VanguardCore.attached)
-					RTCV.NetCore.AllSpec.VanguardSpec = VanguardSpec;
 
 				LocalNetCoreRouter.Route(NetcoreCommands.CORRUPTCORE, NetcoreCommands.REMOTE_PUSHVANGUARDSPECUPDATE, partial, true);
 				LocalNetCoreRouter.Route(NetcoreCommands.UI, NetcoreCommands.REMOTE_PUSHVANGUARDSPECUPDATE, partial, true);
@@ -567,7 +564,7 @@ namespace Vanguard
 					//TODO: Add more domains for cores like gamegear, atari, turbo graphx
 			}
 
-			return domainBlacklist.ToArray();;
+			return domainBlacklist.ToArray(); ;
 		}
 
 	}

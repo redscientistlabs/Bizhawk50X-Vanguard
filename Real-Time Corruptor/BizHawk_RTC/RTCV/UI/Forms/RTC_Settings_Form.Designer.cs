@@ -37,13 +37,13 @@
             this.btnDebugInfo = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
-            // label2
+            // lbSettingsAndTools
             // 
             this.lbSettingsAndTools.AutoSize = true;
             this.lbSettingsAndTools.Font = new System.Drawing.Font("Segoe UI Semibold", 26.25F, System.Drawing.FontStyle.Bold);
             this.lbSettingsAndTools.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(192)))), ((int)(((byte)(255)))), ((int)(((byte)(192)))));
             this.lbSettingsAndTools.Location = new System.Drawing.Point(11, 9);
-            this.lbSettingsAndTools.Name = "label2";
+            this.lbSettingsAndTools.Name = "lbSettingsAndTools";
             this.lbSettingsAndTools.Size = new System.Drawing.Size(307, 47);
             this.lbSettingsAndTools.TabIndex = 118;
             this.lbSettingsAndTools.Text = "Settings and tools";
@@ -55,7 +55,7 @@
             this.btnRtcFactoryClean.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnRtcFactoryClean.Font = new System.Drawing.Font("Segoe UI", 8F);
             this.btnRtcFactoryClean.ForeColor = System.Drawing.Color.Black;
-            this.btnRtcFactoryClean.Image = global::RTCV.UI.Properties.Resources.refresh_new;
+            this.btnRtcFactoryClean.Image = ((System.Drawing.Image)(resources.GetObject("btnRtcFactoryClean.Image")));
             this.btnRtcFactoryClean.ImageAlign = System.Drawing.ContentAlignment.MiddleRight;
             this.btnRtcFactoryClean.Location = new System.Drawing.Point(409, 465);
             this.btnRtcFactoryClean.Name = "btnRtcFactoryClean";
@@ -67,14 +67,14 @@
             this.btnRtcFactoryClean.UseVisualStyleBackColor = false;
             this.btnRtcFactoryClean.Click += new System.EventHandler(this.btnRtcFactoryClean_Click);
             // 
-            // button1
+            // btnCloseSettings
             // 
             this.btnCloseSettings.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(224)))), ((int)(((byte)(224)))), ((int)(((byte)(224)))));
             this.btnCloseSettings.FlatAppearance.BorderSize = 0;
             this.btnCloseSettings.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnCloseSettings.Font = new System.Drawing.Font("Segoe UI", 8F);
             this.btnCloseSettings.ForeColor = System.Drawing.Color.Black;
-            this.btnCloseSettings.Image = ((System.Drawing.Image)(resources.GetObject("button1.Image")));
+            this.btnCloseSettings.Image = ((System.Drawing.Image)(resources.GetObject("btnCloseSettings.Image")));
             this.btnCloseSettings.ImageAlign = System.Drawing.ContentAlignment.MiddleRight;
             this.btnCloseSettings.Location = new System.Drawing.Point(19, 465);
             this.btnCloseSettings.Name = "btnCloseSettings";

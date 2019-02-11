@@ -241,7 +241,7 @@ namespace Vanguard
 				gameDone[VSPEC.OPENROMFILENAME.ToString()] = GlobalWin.MainForm.CurrentlyOpenRom;
 				gameDone[VSPEC.MEMORYDOMAINS_BLACKLISTEDDOMAINS.ToString()] = VanguardCore.GetBlacklistedDomains(BIZHAWK_GET_CURRENTLYLOADEDSYSTEMNAME().ToUpper());
 				gameDone[VSPEC.MEMORYDOMAINS_INTERFACES.ToString()] = GetInterfaces();
-				VanguardCore.VanguardSpec.Update(gameDone);
+				AllSpec.VanguardSpec.Update(gameDone);
 
 				//This is local. If the domains changed it propgates over netcore
 				LocalNetCoreRouter.Route(CORRUPTCORE, REMOTE_EVENT_DOMAINSUPDATED, domainsChanged, true);
@@ -929,40 +929,38 @@ namespace Vanguard
 
 		public static bool RefreshDomains(bool updateSpecs = true)
 		{
-			try { 
-			if (Global.Emulator is NullEmulator)
-				return false;
+			try
+			{ 
+				if (Global.Emulator is NullEmulator)
+					return false;
 
-			//Compare the old to the new. If the name and sizes are all the same, don't push that there were changes.
-			//We need to compare like this because the domains can change from syncsettings.
-			//We only check name and size as those are the only things that can change on the fly
-			var oldInterfaces = VanguardCore.MemoryInterfacees;
-			var newInterfaces = GetInterfaces();
-			bool domainsChanged = false;
+				//Compare the old to the new. If the name and sizes are all the same, don't push that there were changes.
+				//We need to compare like this because the domains can change from syncsettings.
+				//We only check name and size as those are the only things that can change on the fly
+				var oldInterfaces = VanguardCore.MemoryInterfacees;
+				var newInterfaces = GetInterfaces();
+				bool domainsChanged = false;
 
-			if (oldInterfaces.Length != newInterfaces.Length)
-				domainsChanged = true;
-
-			for (int i = 0; i < oldInterfaces.Length; i++)
-			{
-				if (domainsChanged)
-					break;
-				if (oldInterfaces[i].Name != newInterfaces[i].Name)
+				if (oldInterfaces.Length != newInterfaces.Length)
 					domainsChanged = true;
-				if (oldInterfaces[i].Size != newInterfaces[i].Size)
-					domainsChanged = true;
-			}
 
-			//We gotta push this no matter what since it's new underlying objects
-			if (updateSpecs)
-			{
-				VanguardCore.VanguardSpec.Update(VSPEC.MEMORYDOMAINS_INTERFACES.ToString(), GetInterfaces());
-				LocalNetCoreRouter.Route(CORRUPTCORE, REMOTE_EVENT_DOMAINSUPDATED, domainsChanged, true);
-			}
+				for (int i = 0; i < oldInterfaces.Length; i++)
+				{
+					if (domainsChanged)
+						break;
+					if (oldInterfaces[i].Name != newInterfaces[i].Name)
+						domainsChanged = true;
+					if (oldInterfaces[i].Size != newInterfaces[i].Size)
+						domainsChanged = true;
+				}
 
-
-			return domainsChanged;
-
+				//We gotta push this no matter what since it's new underlying objects
+				if (updateSpecs)
+				{
+					AllSpec.VanguardSpec.Update(VSPEC.MEMORYDOMAINS_INTERFACES.ToString(), GetInterfaces());
+					LocalNetCoreRouter.Route(CORRUPTCORE, REMOTE_EVENT_DOMAINSUPDATED, domainsChanged, true);
+				}
+				return domainsChanged;
 			}
 			catch (Exception ex)
 			{

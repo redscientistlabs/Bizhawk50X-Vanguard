@@ -35,9 +35,7 @@ namespace RTCV.NetCore
 		public FullSpec(PartialSpec partialSpec, bool _propagationEnabled)
 		{
 			propagationIsEnabled = _propagationEnabled;
-
-			if (propagationIsEnabled)
-				new object();
+			
 
 			//Creating a FullSpec requires a template
 			template = partialSpec;

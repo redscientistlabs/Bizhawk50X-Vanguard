@@ -28,8 +28,8 @@
         /// </summary>
         private void InitializeComponent()
         {
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(RTC_StockpilePlayer_Form));
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
             this.btnNextItem = new System.Windows.Forms.Button();
             this.btnReloadItem = new System.Windows.Forms.Button();
             this.btnPreviousItem = new System.Windows.Forms.Button();
@@ -37,12 +37,12 @@
             this.label2 = new System.Windows.Forms.Label();
             this.btnBlastToggle = new System.Windows.Forms.Button();
             this.dgvStockpile = new System.Windows.Forms.DataGridView();
-            this.tbNoteBox = new System.Windows.Forms.RichTextBox();
             this.Item = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.GameName = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.SystemName = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.SystemCore = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.Note = new System.Windows.Forms.DataGridViewButtonColumn();
+            this.tbNoteBox = new System.Windows.Forms.RichTextBox();
             ((System.ComponentModel.ISupportInitialize)(this.dgvStockpile)).BeginInit();
             this.SuspendLayout();
             // 
@@ -69,6 +69,7 @@
             this.btnReloadItem.FlatAppearance.BorderSize = 0;
             this.btnReloadItem.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnReloadItem.ForeColor = System.Drawing.Color.Black;
+            this.btnReloadItem.Image = ((System.Drawing.Image)(resources.GetObject("btnReloadItem.Image")));
             this.btnReloadItem.Location = new System.Drawing.Point(538, 17);
             this.btnReloadItem.Name = "btnReloadItem";
             this.btnReloadItem.Size = new System.Drawing.Size(35, 32);
@@ -170,21 +171,6 @@
             this.dgvStockpile.CellClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dgvStockpile_CellClick);
             this.dgvStockpile.MouseDown += new System.Windows.Forms.MouseEventHandler(this.dgvStockpile_MouseDown);
             // 
-            // tbNoteBox
-            // 
-            this.tbNoteBox.BackColor = System.Drawing.Color.Gray;
-            this.tbNoteBox.BorderStyle = System.Windows.Forms.BorderStyle.None;
-            this.tbNoteBox.Font = new System.Drawing.Font("Segoe UI Symbol", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.tbNoteBox.ForeColor = System.Drawing.Color.White;
-            this.tbNoteBox.Location = new System.Drawing.Point(12, 389);
-            this.tbNoteBox.Name = "tbNoteBox";
-            this.tbNoteBox.ReadOnly = true;
-            this.tbNoteBox.ScrollBars = System.Windows.Forms.RichTextBoxScrollBars.Vertical;
-            this.tbNoteBox.Size = new System.Drawing.Size(628, 74);
-            this.tbNoteBox.TabIndex = 143;
-            this.tbNoteBox.Tag = "color:normal";
-            this.tbNoteBox.Text = "Notes will appear here...";
-            // 
             // Item
             // 
             this.Item.HeaderText = "Item Name";
@@ -223,6 +209,21 @@
             this.Note.Name = "Note";
             this.Note.Resizable = System.Windows.Forms.DataGridViewTriState.True;
             this.Note.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.Automatic;
+            // 
+            // tbNoteBox
+            // 
+            this.tbNoteBox.BackColor = System.Drawing.Color.Gray;
+            this.tbNoteBox.BorderStyle = System.Windows.Forms.BorderStyle.None;
+            this.tbNoteBox.Font = new System.Drawing.Font("Segoe UI Symbol", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.tbNoteBox.ForeColor = System.Drawing.Color.White;
+            this.tbNoteBox.Location = new System.Drawing.Point(12, 389);
+            this.tbNoteBox.Name = "tbNoteBox";
+            this.tbNoteBox.ReadOnly = true;
+            this.tbNoteBox.ScrollBars = System.Windows.Forms.RichTextBoxScrollBars.Vertical;
+            this.tbNoteBox.Size = new System.Drawing.Size(628, 74);
+            this.tbNoteBox.TabIndex = 143;
+            this.tbNoteBox.Tag = "color:normal";
+            this.tbNoteBox.Text = "Notes will appear here...";
             // 
             // RTC_StockpilePlayer_Form
             // 

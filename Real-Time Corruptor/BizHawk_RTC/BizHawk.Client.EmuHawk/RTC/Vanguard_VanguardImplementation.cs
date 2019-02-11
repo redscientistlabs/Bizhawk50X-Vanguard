@@ -240,10 +240,9 @@ namespace Vanguard
 						e.setReturnValue(Hooks.isNormalAdvance);
 						break;
 
-
-
-
-
+					case REMOTE_EVENT_CLOSEEMULATOR:
+						GlobalWin.MainForm.CloseEmulator();
+						break;
 				}
 			}
 			catch (Exception ex)
