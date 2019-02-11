@@ -20,7 +20,7 @@ namespace StandaloneRTC
 		[STAThread]
 		static void Main(string[] args)
 		{
-			//in case assembly resolution fails, such as if we moved them into the dll subdiretory, this event handler can reroute to them
+			//Make sure we resolve our dlls
 			AppDomain.CurrentDomain.AssemblyResolve += CurrentDomain_AssemblyResolve;
 			
 			//Remove any zone files on the dlls because Windows likes to append them
@@ -122,9 +122,6 @@ namespace StandaloneRTC
 			}
 		}
 
-		//Lifted from Bizhawk
-		[DllImport("kernel32.dll", SetLastError = true)]
-		static extern uint SetDllDirectory(string lpPathName);
 		[DllImport("kernel32.dll", EntryPoint = "DeleteFileW", SetLastError = true, CharSet = CharSet.Unicode, ExactSpelling = true)]
 		static extern bool DeleteFileW([MarshalAs(UnmanagedType.LPWStr)]string lpFileName);
 		public static void RemoveMOTW(string path)

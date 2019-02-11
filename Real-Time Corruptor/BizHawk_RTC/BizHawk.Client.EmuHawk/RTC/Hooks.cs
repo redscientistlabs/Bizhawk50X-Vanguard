@@ -439,10 +439,7 @@ namespace Vanguard
 						LocalNetCoreRouter.Route(UI, REMOTE_HOTKEY_BEINVERTDISABLED);
 						break;
 				}
-			}
-			}
 				return true;
-
 			}
 			catch (Exception ex)
 			{

@@ -8,7 +8,6 @@ namespace StandaloneRTC
 {
 public partial class Loader : UI_Extensions.RTC_Standalone_Form
 	{ 
-		Timer t;
 
 		public Loader(string[] args)
 		{
@@ -22,7 +21,6 @@ public partial class Loader : UI_Extensions.RTC_Standalone_Form
 			{
 				RTCV.NetCore.Extensions.ConsoleHelper.HideConsole();
 			}
-			//Extensions.ConsoleHelper.ShowConsole();
 
 			UICore.Start(this);
 		}
