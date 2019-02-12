@@ -8,6 +8,7 @@ using System.IO.Compression;
 using System.Linq;
 using System.Text;
 using System.Windows.Forms;
+using RTCV.CorruptCore;
 
 namespace StockpileFixer
 {
@@ -39,24 +40,45 @@ namespace StockpileFixer
 
                 ZipFile.ExtractToDirectory(Filename, tempDir);
 
-                string stockpileXml = File.ReadAllText(tempDir + "\\stockpile.xml");
+                string data = File.ReadAllText(tempDir + "\\stockpile.json");
+                /*
+		        SKS,
+		        SSK,
+		        MP,
+		        SESSION,
+		        DEFAULTVALUE
+                */
 
-                stockpileXml = stockpileXml.Replace("address", "Address");
-                stockpileXml = stockpileXml.Replace("value", "Value");
-                stockpileXml = stockpileXml.Replace("displayType", "DisplayType");
-                stockpileXml = stockpileXml.Replace("bigEndian", "BigEndian");
-                stockpileXml = stockpileXml.Replace("pipeAdress", "PipeAddress");
-                stockpileXml = stockpileXml.Replace("pipeAddress", "PipeAddress");
-                stockpileXml = stockpileXml.Replace("pipeDomain", "PipeDomain");
-                stockpileXml = stockpileXml.Replace("blastlayer", "BlastLayer");
-                stockpileXml = stockpileXml.Replace("stateShortFilename", "StateShortFilename");
-                stockpileXml = stockpileXml.Replace("stateFilename", "StateFilename");
-                stockpileXml = stockpileXml.Replace("stashkeys", "StashKeys");
-                stockpileXml = stockpileXml.Replace("Stashkeys", "StashKeys");
-                stockpileXml = stockpileXml.Replace("stateData", "StateData");
+                data = data.Replace("\"StateLocation\": 0,", "\"StateLocation\": \"SKS\",");
+                data = data.Replace("\"StateLocation\": 1,", "\"StateLocation\": \"SSK\",");
+                data = data.Replace("\"StateLocation\": 2,", "\"StateLocation\": \"MP\",");
+                data = data.Replace("\"StateLocation\": 3,", "\"StateLocation\": \"SESSION\",");
+                data = data.Replace("\"StateLocation\": 4,", "\"StateLocation\": \"DEFAULTVALUE\",");
 
-                File.Delete(tempDir + "\\stockpile.xml");
-                File.WriteAllText(tempDir + "\\stockpile.xml", stockpileXml, Encoding.UTF8);
+
+                data = data.Replace("\"LimiterTime\": 0,", "\"LimiterTime\": \"NONE\",");
+                data = data.Replace("\"LimiterTime\": 1,", "\"LimiterTime\": \"GENERATE\",");
+                data = data.Replace("\"LimiterTime\": 2,", "\"LimiterTime\": \"PREEXECUTE\",");
+                data = data.Replace("\"LimiterTime\": 3,", "\"LimiterTime\": \"EXECUTE\",");
+
+                data = data.Replace("\"StoreTime\": 0,", "\"StateLocation\": \"IMMEDIATE\",");
+                data = data.Replace("\"StoreTime\": 1,", "\"StateLocation\": \"IMMEDIATE\",");
+                data = data.Replace("\"StoreTime\": 2,", "\"StateLocation\": \"PREEXECUTE\",");
+
+                data = data.Replace("\"StoreType\": 0,", "\"StateLocation\": \"ONCE\",");
+                data = data.Replace("\"StoreType\": 1,", "\"StateLocation\": \"CONTINUOUS\",");
+
+                data = data.Replace("\"StoreLimiterSource\": 0,", "\"StoreLimiterSource\": \"ADDRESS\",");
+                data = data.Replace("\"StoreLimiterSource\": 1,", "\"StoreLimiterSource\": \"SOURCEADDRESS\",");
+                data = data.Replace("\"StoreLimiterSource\": 2,", "\"StoreLimiterSource\": \"BOTH\",");
+
+
+                data = data.Replace("\"BlastUnitSource\": 0,", "\"BlastUnitSource\": \"VALUE\",");
+                data = data.Replace("\"BlastUnitSource\": 1,", "\"BlastUnitSource\": \"STORE\",");
+
+
+                File.Delete(tempDir + "\\stockpile.json");
+                File.WriteAllText(tempDir + "\\stockpile.json", data, Encoding.UTF8);
 
                 SaveFileDialog sfd = new SaveFileDialog();
                 sfd.DefaultExt = "*";
@@ -71,7 +93,6 @@ namespace StockpileFixer
                         Directory.Delete(tempDir, true);
 
                     MessageBox.Show("SKS FILE FIXED");
-                    Application.Exit();
                 }
             }
         }
@@ -97,24 +118,18 @@ namespace StockpileFixer
 
                 ZipFile.ExtractToDirectory(Filename, tempDir);
 
-                string stockpileXml = File.ReadAllText(tempDir + "\\keys.xml");
+                string data = File.ReadAllText(tempDir + "\\keys.json");
 
-                stockpileXml = stockpileXml.Replace("address", "Address");
-                stockpileXml = stockpileXml.Replace("value", "Value");
-                stockpileXml = stockpileXml.Replace("displayType", "DisplayType");
-                stockpileXml = stockpileXml.Replace("bigEndian", "BigEndian");
-                stockpileXml = stockpileXml.Replace("pipeAdress", "PipeAddress");
-                stockpileXml = stockpileXml.Replace("pipeAddress", "PipeAddress");
-                stockpileXml = stockpileXml.Replace("pipeDomain", "PipeDomain");
-                stockpileXml = stockpileXml.Replace("blastlayer", "BlastLayer");
-                stockpileXml = stockpileXml.Replace("stateShortFilename", "StateShortFilename");
-                stockpileXml = stockpileXml.Replace("stateFilename", "StateFilename");
-                stockpileXml = stockpileXml.Replace("stashkeys", "StashKeys");
-                stockpileXml = stockpileXml.Replace("Stashkeys", "StashKeys");
-                stockpileXml = stockpileXml.Replace("stateData", "StateData");
 
-                File.Delete(tempDir + "\\keys.xml");
-                File.WriteAllText(tempDir + "\\keys.xml", stockpileXml, Encoding.UTF8);
+                data = data.Replace("\"StateLocation\": 0,", "\"StateLocation\": \"SKS\",");
+                data = data.Replace("\"StateLocation\": 1,", "\"StateLocation\": \"SSK\",");
+                data = data.Replace("\"StateLocation\": 2,", "\"StateLocation\": \"MP\",");
+                data = data.Replace("\"StateLocation\": 3,", "\"StateLocation\": \"SESSION\",");
+                data = data.Replace("\"StateLocation\": 4,", "\"StateLocation\": \"DEFAULTVALUE\",");
+
+
+                File.Delete(tempDir + "\\keys.json");
+                File.WriteAllText(tempDir + "\\keys.json", data, Encoding.UTF8);
 
                 SaveFileDialog sfd = new SaveFileDialog();
                 sfd.DefaultExt = "*";

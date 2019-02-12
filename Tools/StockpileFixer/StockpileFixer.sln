@@ -1,9 +1,11 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 14
-VisualStudioVersion = 14.0.25420.1
+# Visual Studio 15
+VisualStudioVersion = 15.0.28307.329
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "StockpileFixer", "StockpileFixer\StockpileFixer.csproj", "{A3BD1BF7-9B5F-480F-BAA9-97D8053A473E}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CorruptCore", "..\..\Real-Time Corruptor\BizHawk_RTC\RTCV\Libraries\CorruptCore\CorruptCore.csproj", "{B5633A86-DC66-4723-88EB-7DFC95458072}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -15,8 +17,15 @@ Global
 		{A3BD1BF7-9B5F-480F-BAA9-97D8053A473E}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{A3BD1BF7-9B5F-480F-BAA9-97D8053A473E}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{A3BD1BF7-9B5F-480F-BAA9-97D8053A473E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B5633A86-DC66-4723-88EB-7DFC95458072}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B5633A86-DC66-4723-88EB-7DFC95458072}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B5633A86-DC66-4723-88EB-7DFC95458072}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B5633A86-DC66-4723-88EB-7DFC95458072}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {99A1C28B-EB3F-4AA0-9DA7-082D9CA6C45B}
 	EndGlobalSection
 EndGlobal
