@@ -129,13 +129,13 @@ namespace RTCV.CorruptCore
 				RTCV.NetCore.Params.SetParam("REROLL_SOURCEDOMAIN", value.ToString());
 			}
 		}
-		public static bool RerollUsesValueList
+		public static bool RerollIgnoresOriginalSource
 		{
-			get => (bool)RTCV.NetCore.AllSpec.CorruptCoreSpec[RTCSPEC.CORE_REROLLUSESVALUELIST.ToString()];
+			get => (bool)RTCV.NetCore.AllSpec.CorruptCoreSpec[RTCSPEC.CORE_REROLLIGNOREORIGINALSOURCE.ToString()];
 			set
 			{
-				RTCV.NetCore.AllSpec.CorruptCoreSpec.Update(RTCSPEC.CORE_REROLLUSESVALUELIST.ToString(), value);
-				RTCV.NetCore.Params.SetParam("REROLL_USESVALUELIST", value.ToString());
+				RTCV.NetCore.AllSpec.CorruptCoreSpec.Update(RTCSPEC.CORE_REROLLIGNOREORIGINALSOURCE.ToString(), value);
+				RTCV.NetCore.Params.SetParam("REROLL_IGNOREORIGINALSOURCE", value.ToString());
 			}
 		}
 		public static bool RerollFollowsCustomEngine
@@ -297,9 +297,9 @@ namespace RTCV.CorruptCore
 					partial[RTCSPEC.CORE_REROLLFOLLOWENGINESETTINGS.ToString()] = false;
 
 				if (NetCore.Params.IsParamSet("REROLL_USESVALUELIST"))
-					partial[RTCSPEC.CORE_REROLLUSESVALUELIST.ToString()] = (NetCore.Params.ReadParam("REROLL_USESVALUELIST") == "true");
+					partial[RTCSPEC.CORE_REROLLIGNOREORIGINALSOURCE.ToString()] = (NetCore.Params.ReadParam("REROLL_USESVALUELIST") == "true");
 				else
-					partial[RTCSPEC.CORE_REROLLUSESVALUELIST.ToString()] = false;
+					partial[RTCSPEC.CORE_REROLLIGNOREORIGINALSOURCE.ToString()] = false;
 
 
 				return partial;

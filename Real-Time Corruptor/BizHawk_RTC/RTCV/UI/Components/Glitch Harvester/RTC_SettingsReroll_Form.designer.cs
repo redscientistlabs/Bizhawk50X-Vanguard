@@ -36,7 +36,7 @@
             this.cbRerollSourceAddress = new System.Windows.Forms.CheckBox();
             this.label4 = new System.Windows.Forms.Label();
             this.panel2 = new System.Windows.Forms.Panel();
-            this.cbRerollUsesLists = new System.Windows.Forms.CheckBox();
+            this.cbIgnoreUnitOrigin = new System.Windows.Forms.CheckBox();
             this.cbRerollFollowsCustom = new System.Windows.Forms.CheckBox();
             this.label1 = new System.Windows.Forms.Label();
             this.panel1.SuspendLayout();
@@ -124,7 +124,7 @@
             // panel2
             // 
             this.panel2.BackColor = System.Drawing.Color.Gray;
-            this.panel2.Controls.Add(this.cbRerollUsesLists);
+            this.panel2.Controls.Add(this.cbIgnoreUnitOrigin);
             this.panel2.Controls.Add(this.cbRerollFollowsCustom);
             this.panel2.Location = new System.Drawing.Point(27, 36);
             this.panel2.Name = "panel2";
@@ -132,18 +132,18 @@
             this.panel2.TabIndex = 142;
             this.panel2.Tag = "color:dark";
             // 
-            // cbRerollUsesLists
+            // cbIgnoreUnitOrigin
             // 
-            this.cbRerollUsesLists.AutoSize = true;
-            this.cbRerollUsesLists.Font = new System.Drawing.Font("Segoe UI", 8F);
-            this.cbRerollUsesLists.ForeColor = System.Drawing.Color.White;
-            this.cbRerollUsesLists.Location = new System.Drawing.Point(11, 27);
-            this.cbRerollUsesLists.Name = "cbRerollUsesLists";
-            this.cbRerollUsesLists.Size = new System.Drawing.Size(218, 17);
-            this.cbRerollUsesLists.TabIndex = 1;
-            this.cbRerollUsesLists.Text = "List-generated units reroll using a list";
-            this.cbRerollUsesLists.UseVisualStyleBackColor = true;
-            this.cbRerollUsesLists.CheckedChanged += new System.EventHandler(this.CbRerollUsesLists_CheckedChanged);
+            this.cbIgnoreUnitOrigin.AutoSize = true;
+            this.cbIgnoreUnitOrigin.Font = new System.Drawing.Font("Segoe UI", 8F);
+            this.cbIgnoreUnitOrigin.ForeColor = System.Drawing.Color.White;
+            this.cbIgnoreUnitOrigin.Location = new System.Drawing.Point(11, 27);
+            this.cbIgnoreUnitOrigin.Name = "cbIgnoreUnitOrigin";
+            this.cbIgnoreUnitOrigin.Size = new System.Drawing.Size(154, 17);
+            this.cbIgnoreUnitOrigin.TabIndex = 1;
+            this.cbIgnoreUnitOrigin.Text = "Ignore Unit Origin Mode";
+            this.cbIgnoreUnitOrigin.UseVisualStyleBackColor = true;
+            this.cbIgnoreUnitOrigin.CheckedChanged += new System.EventHandler(this.CBRerollIgnoresOriginalSource);
             // 
             // cbRerollFollowsCustom
             // 
@@ -205,7 +205,7 @@
 		public System.Windows.Forms.CheckBox cbRerollSourceAddress;
 		private System.Windows.Forms.Label label4;
 		private System.Windows.Forms.Panel panel2;
-		public System.Windows.Forms.CheckBox cbRerollUsesLists;
+		public System.Windows.Forms.CheckBox cbIgnoreUnitOrigin;
 		public System.Windows.Forms.CheckBox cbRerollFollowsCustom;
 		private System.Windows.Forms.Label label1;
 		public System.Windows.Forms.CheckBox cbRerollSourceDomain;

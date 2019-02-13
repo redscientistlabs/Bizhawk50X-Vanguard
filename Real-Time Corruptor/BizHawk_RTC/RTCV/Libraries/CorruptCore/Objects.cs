@@ -1431,7 +1431,7 @@ namespace RTCV.CorruptCore
 			{
 				if (CorruptCore.RerollFollowsCustomEngine)
 				{
-					if (this.GeneratedUsingValueList && CorruptCore.RerollUsesValueList)
+					if (this.GeneratedUsingValueList && !CorruptCore.RerollIgnoresOriginalSource)
 					{
 						Value = Filtering.GetRandomConstant(RTC_CustomEngine.ValueListHash, Precision);
 					}
