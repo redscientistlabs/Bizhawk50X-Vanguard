@@ -111,7 +111,7 @@ namespace RTCV.NetCore
         private void StoreMessages(NetworkStream providedStream)
 		{
 			var config = new SerializerConfig();
-			config.PersistTypeCache = true;
+			config.Advanced.PersistTypeCache = true;
 			var serializer = new CerasSerializer(config);
 
             TcpListener server = null;
