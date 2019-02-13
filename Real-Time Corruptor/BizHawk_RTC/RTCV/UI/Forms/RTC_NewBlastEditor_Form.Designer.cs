@@ -535,7 +535,7 @@ namespace RTCV.UI
             this.panel3.Name = "panel3";
             this.panel3.Size = new System.Drawing.Size(662, 221);
             this.panel3.TabIndex = 149;
-            this.panel3.Tag = "color:dark";
+            this.panel3.Tag = "color:normal";
             // 
             // panel9
             // 
@@ -655,11 +655,11 @@ namespace RTCV.UI
             this.panel8.Size = new System.Drawing.Size(210, 84);
             this.panel8.TabIndex = 25;
             // 
-            // cbStoreLimiterMode
+            // cbStoreLimiterSource
             // 
             this.cbStoreLimiterSource.FormattingEnabled = true;
             this.cbStoreLimiterSource.Location = new System.Drawing.Point(107, 57);
-            this.cbStoreLimiterSource.Name = "cbStoreLimiterMode";
+            this.cbStoreLimiterSource.Name = "cbStoreLimiterSource";
             this.cbStoreLimiterSource.Size = new System.Drawing.Size(92, 21);
             this.cbStoreLimiterSource.TabIndex = 13;
             // 

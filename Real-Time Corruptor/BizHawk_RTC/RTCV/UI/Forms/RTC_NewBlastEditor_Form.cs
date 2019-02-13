@@ -201,6 +201,7 @@ namespace RTCV.UI
 
 				if (e.RowIndex != -1 && e.ColumnIndex != -1)
 				{
+					PopulateGenericContextMenu();
 					//Can't use a switch statement because dynamic
 					if (dgvBlastEditor.Columns[e.ColumnIndex] == dgvBlastEditor.Columns[buProperty.Address.ToString()] ||
 						dgvBlastEditor.Columns[e.ColumnIndex] == dgvBlastEditor.Columns[buProperty.SourceAddress.ToString()])
@@ -212,13 +213,26 @@ namespace RTCV.UI
 				}
 			}
 		}
-		
+
+		private void PopulateGenericContextMenu()
+		{
+			((ToolStripMenuItem)cms.Items.Add("Re-roll Selected Row(s)", null, new EventHandler((ob, ev) =>
+			{
+				foreach (DataGridViewRow row in dgvBlastEditor.SelectedRows)
+				{
+					BlastUnit bu = (BlastUnit)row.DataBoundItem;
+					bu.Reroll();
+				}
+				dgvBlastEditor.Refresh();
+				UpdateBottom();
+			}))).Enabled = true;
+		}
+
 		private void PopulateAddressContextMenu(DataGridViewCell cell)
 		{
-			BlastUnit bu = (BlastUnit)dgvBlastEditor.Rows[cell.RowIndex].DataBoundItem;
-
 			((ToolStripMenuItem)cms.Items.Add("Open Selected Address in Hex Editor", null, new EventHandler((ob, ev) =>
 			{
+				BlastUnit bu = (BlastUnit)dgvBlastEditor.Rows[cell.RowIndex].DataBoundItem;
 				if (cell.OwningColumn == dgvBlastEditor.Columns[buProperty.Address.ToString()])
 					LocalNetCoreRouter.Route(NetcoreCommands.VANGUARD, NetcoreCommands.EMU_OPEN_HEXEDITOR_ADDRESS, new object[] { bu.Domain, bu.Address });
 
@@ -1539,7 +1553,6 @@ namespace RTCV.UI
 									u.Value = Convert.ToInt64(u.Value) - updownShiftBlastLayerAmount.Value;
 								else
 									u.Value = 0;
-
 						}
 						else
 						{
@@ -1554,10 +1567,12 @@ namespace RTCV.UI
 						//Unlike addresses, we want values to roll over so we work on the underlying value and use existing code 
 						BlastUnit bu = (BlastUnit)cell.OwningRow.DataBoundItem;
 
+
+						//Since the units are always stored as big endian, always say true
 						if (shiftDown)
-							bu.Value = CorruptCore_Extensions.AddValueToByteArrayUnchecked(bu.Value, new BigInteger(0 - updownShiftBlastLayerAmount.Value), bu.BigEndian);
+							bu.Value = CorruptCore_Extensions.AddValueToByteArrayUnchecked(bu.Value, new BigInteger(0 - updownShiftBlastLayerAmount.Value), true);
 						else
-							bu.Value = CorruptCore_Extensions.AddValueToByteArrayUnchecked(bu.Value, new BigInteger(updownShiftBlastLayerAmount.Value), bu.BigEndian);
+							bu.Value = CorruptCore_Extensions.AddValueToByteArrayUnchecked(bu.Value, new BigInteger(updownShiftBlastLayerAmount.Value), true);
 
 					}
 					else

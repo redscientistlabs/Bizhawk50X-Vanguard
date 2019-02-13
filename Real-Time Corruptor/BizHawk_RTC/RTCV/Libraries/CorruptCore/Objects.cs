@@ -1548,7 +1548,7 @@ namespace RTCV.CorruptCore
 				enabledString = "[x] BlastByte -> ";
 
 			string cleanDomainName = Domain.Replace("(nametables)", ""); //Shortens the domain name if it contains "(nametables)"
-			return (enabledString + cleanDomainName + "(" + Convert.ToInt32(Address).ToString() + ")." + Source.ToString() + "(" + CorruptCore_Extensions.GetDecimalValue(Value, BigEndian).ToString() + ")");
+			return (enabledString + cleanDomainName + "(" + Convert.ToInt32(Address).ToString() + ")." + Source.ToString() + "(" + ValueString + ")");
 		}
 
 		/// <summary>
