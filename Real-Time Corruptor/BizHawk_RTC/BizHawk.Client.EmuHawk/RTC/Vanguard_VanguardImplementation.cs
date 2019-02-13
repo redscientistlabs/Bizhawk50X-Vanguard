@@ -280,12 +280,14 @@ namespace Vanguard
 
 			public byte PeekByte(long addr)
 			{
-				return MD.PeekByte(addr);
+				//Ensure we stay within range
+				return addr <= MD.Size - 1 ? MD.PeekByte(addr) : (byte)0;
 			}
 
 			public void PokeByte(long addr, byte val)
 			{
-				MD.PokeByte(addr, val);
+				if(addr <= MD.Size - 1)
+					MD.PokeByte(addr, val);
 			}
 
 			public override string ToString()
