@@ -516,6 +516,7 @@ namespace RTCV.UI
 				cbDomain.SelectedItem = bu.Domain;
 				cbEnabled.Checked = bu.IsEnabled;
 				cbLocked.Checked = bu.IsLocked;
+				cbBigEndian.Checked = bu.BigEndian;
 
 				upDownAddress.Value = bu.Address;
 				upDownPrecision.Value = bu.Precision;

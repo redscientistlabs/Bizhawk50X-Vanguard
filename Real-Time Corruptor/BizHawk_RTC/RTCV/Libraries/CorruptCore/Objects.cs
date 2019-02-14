@@ -628,7 +628,7 @@ namespace RTCV.CorruptCore
 	}
 
 	[Serializable]
-	[Ceras.MemberConfig(TargetMember.All)]
+	[Ceras.MemberConfig(TargetMember.AllPublic)]
 	public class StashKey : ICloneable, INote
 	{
 		public string RomFilename { get; set; }
@@ -1185,6 +1185,7 @@ namespace RTCV.CorruptCore
 			IsEnabled = isEnabled;
 			IsLocked = isLocked;
 			GeneratedUsingValueList = generatedUsingValueList;
+			BigEndian = bigEndian;
 		}
 
 		public BlastUnit()
