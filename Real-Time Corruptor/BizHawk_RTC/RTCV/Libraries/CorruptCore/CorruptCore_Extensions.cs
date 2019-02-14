@@ -751,37 +751,48 @@ namespace RTCV.CorruptCore
 		 * A HashSet byte which uses a custom comparator for byte array value comparison
 		 * This exists because Ceras can't handle read-only properties.
 		 */
-		public class HashSetByteArrayComparator : HashSet<byte[]>
+		public class HashSetByteArrayComparator<T> : HashSet<T>
 		{
-			public HashSetByteArrayComparator(IEnumerable<byte[]> collection) : base(collection, new ByteArrayComparer())
+			public HashSetByteArrayComparator(IEnumerable<T> collection) : base(collection, new ByteArrayComparer<T>())
 			{
 
 			}
 
-			public HashSetByteArrayComparator() : base(new ByteArrayComparer())
+			public HashSetByteArrayComparator() : base(new ByteArrayComparer<T>())
 			{
 
 			}
+
 		}
 
 
+		//Horrible temp workaround until ceras dev gets back to me
 		[Serializable]
-		[Ceras.MemberConfig(TargetMember.All)]
-		public class ByteArrayComparer : IEqualityComparer<byte[]>
+		public class ByteArrayComparer<T> : IEqualityComparer<T>
 		{
-			public bool Equals(byte[] a, byte[] b)
+
+			public bool Equals(T _a, T _b)
 			{
-				if (a.Length != b.Length) return false;
-				for (int i = 0; i < a.Length; i++)
-					if (a[i] != b[i]) return false;
-				return true;
+				if(_a is byte[] a && _b is byte[] b)
+				{
+					if (a.Length != b.Length) return false;
+					for (int i = 0; i < a.Length; i++)
+						if (a[i] != b[i]) return false;
+					return true;
+				}
+				return false;
 			}
-			public int GetHashCode(byte[] a)
+
+			public int GetHashCode(T _a)
 			{
-				uint b = 0;
-				for (int i = 0; i < a.Length; i++)
-					b = ((b << 23) | (b >> 9)) ^ a[i];
-				return unchecked((int)b);
+				if( _a is byte[] a)
+				{
+					uint b = 0;
+					for (int i = 0; i < a.Length; i++)
+						b = ((b << 23) | (b >> 9)) ^ a[i];
+					return unchecked((int)b);
+				}
+				return 0;
 			}
 
 			public ByteArrayComparer()
