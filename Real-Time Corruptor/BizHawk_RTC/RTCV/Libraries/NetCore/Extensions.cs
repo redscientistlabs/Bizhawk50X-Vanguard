@@ -233,5 +233,43 @@ namespace RTCV.NetCore
 				}
 			}
 		}
+		
+
+		public static bool IsGDIEnhancedScalingAvailable()
+		{
+			return (Environment.OSVersion.Version.Major == 10 &
+					Environment.OSVersion.Version.Build >= 17763);
+		}
+
+		public enum DPI_AWARENESS
+		{
+			DPI_AWARENESS_INVALID = -1,
+			DPI_AWARENESS_UNAWARE = 0,
+			DPI_AWARENESS_SYSTEM_AWARE = 1,
+			DPI_AWARENESS_PER_MONITOR_AWARE = 2
+		}
+
+		public enum DPI_AWARENESS_CONTEXT
+		{
+			DPI_AWARENESS_CONTEXT_DEFAULT = 0, 
+			DPI_AWARENESS_CONTEXT_UNAWARE = -1, 
+			DPI_AWARENESS_CONTEXT_SYSTEM_AWARE = -2,
+			DPI_AWARENESS_CONTEXT_PER_MONITOR_AWARE = -3,
+			DPI_AWARENESS_CONTEXT_PER_MONITOR_AWARE_V2 = -4,
+			DPI_AWARENESS_CONTEXT_UNAWARE_GDISCALED = -5
+		}
+
+		[DllImport("User32.dll")]
+		public static extern DPI_AWARENESS_CONTEXT GetThreadDpiAwarenessContext();
+
+		[DllImport("User32.dll")]
+		public static extern DPI_AWARENESS_CONTEXT GetWindowDpiAwarenessContext(
+			IntPtr hwnd);
+
+		[DllImport("User32.dll")]
+		public static extern DPI_AWARENESS_CONTEXT SetThreadDpiAwarenessContext(
+			DPI_AWARENESS_CONTEXT dpiContext);
+
 	}
+
 }

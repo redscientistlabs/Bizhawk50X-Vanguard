@@ -11,6 +11,12 @@ public partial class Loader : UI_Extensions.RTC_Standalone_Form
 
 		public Loader(string[] args)
 		{
+			if (RTCV.NetCore.Extensions.IsGDIEnhancedScalingAvailable())
+			{
+				RTCV.NetCore.Extensions.SetThreadDpiAwarenessContext(RTCV.NetCore.Extensions.DPI_AWARENESS_CONTEXT.DPI_AWARENESS_CONTEXT_UNAWARE_GDISCALED);
+				Application.EnableVisualStyles();
+			}
+
 			InitializeComponent();
 			RTCV.NetCore.Extensions.ConsoleHelper.CreateConsole("RTC\\RTC_LOG.txt");
 			if (args.Contains("-CONSOLE"))
