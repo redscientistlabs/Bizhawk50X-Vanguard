@@ -54,6 +54,7 @@ namespace RTCV.NetCore
 			public static ConsoleCopy con;
 			public static void CreateConsole(string path)
 			{
+				ReleaseConsole();
 				AllocConsole();
 				con = new ConsoleCopy(path);
 
@@ -83,7 +84,11 @@ namespace RTCV.NetCore
 				else
 					ShowConsole();
 			}
-
+			public static void ReleaseConsole()
+			{
+				var handle = GetConsoleWindow();
+				CloseHandle(handle);
+			}
 			// P/Invoke required:
 			internal const int SW_HIDE = 0;
 			internal const int SW_SHOW = 5;
@@ -96,6 +101,8 @@ namespace RTCV.NetCore
 			private const UInt32 StdOutputHandle = 0xFFFFFFF5;
 			[DllImport("kernel32.dll")]
 			private static extern IntPtr GetStdHandle(UInt32 nStdHandle);
+			[DllImport("kernel32.dll", ExactSpelling = true, SetLastError = true)]
+			public static extern bool CloseHandle(IntPtr handle);
 			[DllImport("kernel32.dll")]
 			private static extern void SetStdHandle(UInt32 nStdHandle, IntPtr handle);
 			[DllImport("kernel32")]

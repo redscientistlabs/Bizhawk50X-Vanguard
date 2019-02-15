@@ -120,6 +120,10 @@ namespace RTCV.UI
 
 			
 			LocalNetCoreRouter.Route(NetcoreCommands.VANGUARD, NetcoreCommands.REMOTE_EVENT_CLOSEEMULATOR);
+
+			//Sleep to make sure the message is sent
+			Thread.Sleep(500);
+
 			UICore.CloseAllRtcForms();
 		}
 		

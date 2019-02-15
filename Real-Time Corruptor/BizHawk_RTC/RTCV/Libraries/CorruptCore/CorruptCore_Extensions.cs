@@ -1071,7 +1071,7 @@ namespace RTCV.CorruptCore
 			ConsoleVisible = true;
 		}
 
-		static void ReleaseConsole()
+		public static void ReleaseConsole()
 		{
 			if (!hasConsole)
 				return;

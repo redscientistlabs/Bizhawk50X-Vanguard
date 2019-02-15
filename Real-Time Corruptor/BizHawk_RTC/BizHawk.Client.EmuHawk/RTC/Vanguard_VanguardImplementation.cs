@@ -225,7 +225,7 @@ namespace Vanguard
 						break;
 
 					case REMOTE_EVENT_CLOSEEMULATOR:
-						GlobalWin.MainForm.CloseEmulator();
+						Environment.Exit(-1);
 						break;
 				}
 			}
