@@ -193,7 +193,8 @@ namespace BizHawk.Client.EmuHawk
 			}
 		}
 
-		static void ReleaseConsole()
+		//rtc_hijack - public
+		public static void ReleaseConsole()
 		{
 			if (!hasConsole)
 				return;
