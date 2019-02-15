@@ -1621,6 +1621,9 @@ namespace RTCV.CorruptCore
 		public long Param2 { get; set; }
 		public string Mode { get; set; }
 		public string Note { get; set; }
+		public int Lifetime { get; set; }
+		public int ExecuteFrame { get; set; }
+		public bool Loop { get; set; }
 		public int Seed { get; set; }
 		public BlastLayer bl { get; set; }
 
@@ -1628,7 +1631,7 @@ namespace RTCV.CorruptCore
 		{
 		}
 
-		public BlastGeneratorProto(string _note, string _blastType, string _domain, string _mode, int _precision, long _stepSize, long _startAddress, long _endAddress, long _param1, long _param2, int _seed)
+		public BlastGeneratorProto(string _note, string _blastType, string _domain, string _mode, int _precision, long _stepSize, long _startAddress, long _endAddress, long _param1, long _param2, int lifetime, int executeframe, bool loop, int _seed)
 		{
 			Note = _note;
 			BlastType = _blastType;
@@ -1640,6 +1643,9 @@ namespace RTCV.CorruptCore
 			Param2 = _param2;
 			Mode = _mode;
 			StepSize = _stepSize;
+			Lifetime = lifetime;
+			ExecuteFrame = executeframe;
+			Loop = loop;
 			Seed = _seed;
 		}
 
@@ -1648,10 +1654,10 @@ namespace RTCV.CorruptCore
 			switch (BlastType)
 			{
 				case "Value":
-					bl = RTC_ValueGenerator.GenerateLayer(Note, Domain, StepSize, StartAddress, EndAddress, Param1, Param2, Precision, Seed, (BGValueModes)Enum.Parse(typeof(BGValueModes), Mode, true));
-					break;
-				case "Store":
-					bl = RTC_StoreGenerator.GenerateLayer(Note, Domain, StepSize, StartAddress, EndAddress, Param1, Param2, Precision, Seed, (BGStoreModes)Enum.Parse(typeof(BGStoreModes), Mode, true));
+					bl = RTC_ValueGenerator.GenerateLayer(Note, Domain, StepSize, StartAddress, EndAddress, Param1, Param2, Precision, Lifetime, ExecuteFrame, Loop, Seed, (BGValueModes)Enum.Parse(typeof(BGValueModes), Mode, true));
+					break;																											  
+				case "Store":																										  
+					bl = RTC_StoreGenerator.GenerateLayer(Note, Domain, StepSize, StartAddress, EndAddress, Param1, Param2, Precision, Lifetime, ExecuteFrame, Loop, Seed, (BGStoreModes)Enum.Parse(typeof(BGStoreModes), Mode, true));
 					break;
 				default:
 					return null;

@@ -46,6 +46,9 @@ namespace RTCV.UI
 			DgvEndAddress,
 			DgvParam1,
 			DgvParam2,
+			DgvLifetime,
+			DgvExecuteFrame,
+			DgvLoop,
 			DgvSeed,
 			DgvNoteButton
 		}
@@ -134,6 +137,8 @@ namespace RTCV.UI
 				dgvBlastGenerator.Rows[lastrow].Cells["dgvEndAddress"].ValueType = typeof(System.Decimal);
 				dgvBlastGenerator.Rows[lastrow].Cells["dgvParam1"].ValueType = typeof(System.Decimal);
 				dgvBlastGenerator.Rows[lastrow].Cells["dgvParam2"].ValueType = typeof(System.Decimal);
+				dgvBlastGenerator.Rows[lastrow].Cells["dgvLifetime"].ValueType = typeof(System.Decimal);
+				dgvBlastGenerator.Rows[lastrow].Cells["dgvExecuteFrame"].ValueType = typeof(System.Decimal);
 				dgvBlastGenerator.Rows[lastrow].Cells["dgvSeed"].ValueType = typeof(System.Decimal);
 
 
@@ -142,6 +147,9 @@ namespace RTCV.UI
 				((DataGridViewNumericUpDownCell)dgvBlastGenerator.Rows[lastrow].Cells["dgvEndAddress"]).Value = 1M;
 				((DataGridViewNumericUpDownCell)dgvBlastGenerator.Rows[lastrow].Cells["dgvParam1"]).Value = 0M;
 				((DataGridViewNumericUpDownCell)dgvBlastGenerator.Rows[lastrow].Cells["dgvParam2"]).Value = 0M;
+				((DataGridViewNumericUpDownCell)dgvBlastGenerator.Rows[lastrow].Cells["dgvEndAddress"]).Value = 1M;
+				((DataGridViewNumericUpDownCell)dgvBlastGenerator.Rows[lastrow].Cells["dgvLifetime"]).Value = 1M;
+				((DataGridViewNumericUpDownCell)dgvBlastGenerator.Rows[lastrow].Cells["dgvExecuteFrame"]).Value = 0M;
 
 
 				//Generate a random seed
@@ -490,9 +498,12 @@ namespace RTCV.UI
 				long endAddress = Convert.ToInt64(row.Cells["dgvEndAddress"].Value);
 				long param1 = Convert.ToInt64(row.Cells["dgvParam1"].Value);
 				long param2 = Convert.ToInt64(row.Cells["dgvParam2"].Value);
+				int lifetime = Convert.ToInt32(row.Cells["dgvLifetime"].Value);
+				int executeframe = Convert.ToInt32(row.Cells["dgvExecuteFrame"].Value);
+				bool loop = Convert.ToBoolean(row.Cells["dgvLoop"].Value);
 				int seed = Convert.ToInt32(row.Cells["dgvSeed"].Value);
 
-				return new BlastGeneratorProto(note, type, domain, mode, precision, stepSize, startAddress, endAddress, param1, param2, seed);
+				return new BlastGeneratorProto(note, type, domain, mode, precision, stepSize, startAddress, endAddress, param1, param2, lifetime, executeframe, loop, seed);
 			}
 			catch (Exception ex)
 			{

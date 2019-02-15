@@ -933,9 +933,8 @@ namespace RTCV.UI
 			dgvBlastEditor.DataSource = bs;
 			InitializeDGV();
 			InitializeBottom();
-			RefreshAllNoteIcons();
-
 			this.Show();
+			RefreshAllNoteIcons();
 		}
 
 
