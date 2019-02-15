@@ -66,21 +66,6 @@ namespace Vanguard
 				ConsoleEx.WriteLine(message.Type);
 				switch (message.Type) //Handle received messages here
 				{
-					case "INFINITELOOP":
-						SyncObjectSingleton.FormExecute((o, ea) =>
-						{
-							while (true)
-							{
-								Thread.Sleep(10);
-							}
-						});
-						break;
-
-
-					case "KILLCORE":
-						//GlobalWin.MainForm.Bad();
-						GlobalWin.MainForm.CloseRom();
-						break;
 
 					case REMOTE_ALLSPECSSENT:
 						SyncObjectSingleton.FormExecute((o, ea) =>
@@ -88,15 +73,6 @@ namespace Vanguard
 							VanguardCore.LoadDefaultAndShowBizhawkForm();
 						});
 						break;
-					/*
-					case "POKEBYTE":
-					{
-						break;
-					}
-					case "PEEKBYTE":
-					{
-						Hooks.
-					}*/
 					case SAVESAVESTATE:
 						SyncObjectSingleton.FormExecute((o, ea) =>
 						{
@@ -124,6 +100,14 @@ namespace Vanguard
 								VanguardCore.LoadRom_NET(fileName);
 							});
 
+						}
+						break;
+					case REMOTE_CLOSEGAME:
+						{
+							SyncObjectSingleton.FormExecute((o, ea) =>
+							{
+								Vanguard.Hooks.CLOSE_GAME();
+							});
 						}
 						break;
 

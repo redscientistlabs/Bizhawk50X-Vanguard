@@ -85,6 +85,7 @@ namespace RTCV.CorruptCore
 
 			//Backup bizhawk settings
 			LocalNetCoreRouter.Route(NetcoreCommands.VANGUARD, NetcoreCommands.REMOTE_EVENT_SAVEBIZHAWKCONFIG, true);
+			LocalNetCoreRouter.Route(NetcoreCommands.VANGUARD, NetcoreCommands.REMOTE_CLOSEGAME, true);
 
 			//Watermarking RTC Version
 			sks.RtcVersion = CorruptCore.RtcVersion;
@@ -152,7 +153,15 @@ namespace RTCV.CorruptCore
 				}
 
 			//clean temp folder
-			EmptyFolder(Path.DirectorySeparatorChar + "WORKING\\TEMP");
+			try
+			{
+				EmptyFolder(Path.DirectorySeparatorChar + "WORKING\\TEMP");
+			}
+			catch (Exception e)
+			{
+				MessageBox.Show(e.Message);
+				return false;
+			}
 
 			//populating temp folder with roms
 			foreach (string str in allRoms)
@@ -245,7 +254,14 @@ namespace RTCV.CorruptCore
 			File.Move(tempFilename, sks.Filename);
 
 			//Move all the files from temp into SKS
-			EmptyFolder(Path.DirectorySeparatorChar + "WORKING\\SKS");
+			try
+			{
+				EmptyFolder(Path.DirectorySeparatorChar + "WORKING\\SKS");
+			}
+			catch(Exception e)
+			{
+				MessageBox.Show("Unable to empty the stockpile folder. There's probably something locking a file inside it (iso based game loaded?)\n. Your stockpile is saved, but your current session is bunk.\nRe-load the file");
+			}
 			foreach (string file in Directory.GetFiles(CorruptCore.workingDir + Path.DirectorySeparatorChar + "TEMP"))
 				try
 				{

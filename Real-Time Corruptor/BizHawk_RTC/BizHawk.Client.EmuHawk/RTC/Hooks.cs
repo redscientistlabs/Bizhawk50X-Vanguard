@@ -681,6 +681,7 @@ namespace Vanguard
 			GlobalWin.MainForm.SaveState(path, quickSlotName, false);
 		}
 
+
 		public static void BIZHAWK_OSDMESSAGE(string message)
 		{
 			GlobalWin.OSD.AddMessage(message);
