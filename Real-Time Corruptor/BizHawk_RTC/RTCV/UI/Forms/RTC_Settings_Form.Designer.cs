@@ -104,9 +104,9 @@
             this.btnOpenConsole.ForeColor = System.Drawing.Color.Black;
             this.btnOpenConsole.Image = ((System.Drawing.Image)(resources.GetObject("btnOpenConsole.Image")));
             this.btnOpenConsole.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.btnOpenConsole.Location = new System.Drawing.Point(528, 27);
+            this.btnOpenConsole.Location = new System.Drawing.Point(515, 27);
             this.btnOpenConsole.Name = "btnOpenConsole";
-            this.btnOpenConsole.Size = new System.Drawing.Size(113, 29);
+            this.btnOpenConsole.Size = new System.Drawing.Size(126, 29);
             this.btnOpenConsole.TabIndex = 138;
             this.btnOpenConsole.Tag = "color:light";
             this.btnOpenConsole.Text = " Toggle Console";
@@ -122,7 +122,7 @@
             this.btnDebugInfo.Font = new System.Drawing.Font("Segoe UI", 8F);
             this.btnDebugInfo.ForeColor = System.Drawing.Color.Black;
             this.btnDebugInfo.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.btnDebugInfo.Location = new System.Drawing.Point(396, 27);
+            this.btnDebugInfo.Location = new System.Drawing.Point(380, 27);
             this.btnDebugInfo.Name = "btnDebugInfo";
             this.btnDebugInfo.Size = new System.Drawing.Size(126, 29);
             this.btnDebugInfo.TabIndex = 139;
