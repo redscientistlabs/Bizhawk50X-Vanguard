@@ -14,6 +14,7 @@ using Newtonsoft.Json.Converters;
 using RTCV.CorruptCore;
 using RTCV.NetCore;
 using Exception = System.Exception;
+using System.Xml.Serialization;
 
 namespace RTCV.CorruptCore
 {
@@ -772,6 +773,7 @@ namespace RTCV.CorruptCore
 
 	[Ceras.MemberConfig(TargetMember.All)]
 	[Serializable]
+	[XmlInclude(typeof(BlastUnit))]
 	public class BlastLayer : ICloneable, INote
 	{
 		public List<BlastUnit> Layer;
@@ -1117,7 +1119,7 @@ namespace RTCV.CorruptCore
 
 
 		//Don't serialize this
-		[NonSerialized, JsonIgnore, Ceras.Ignore]
+		[NonSerialized, XmlIgnore, JsonIgnore, Ceras.Ignore]
 		public BlastUnitWorkingData Working;
 
 
