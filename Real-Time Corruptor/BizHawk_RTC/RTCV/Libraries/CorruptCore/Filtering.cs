@@ -12,9 +12,9 @@ namespace RTCV.CorruptCore
 {
 	public static class Filtering
 	{
-		public static Dictionary<string, CorruptCore_Extensions.HashSetByteArrayComparator<byte[]>> Hash2LimiterDico
+		public static Dictionary<string, HashSet<byte[]>> Hash2LimiterDico
 		{
-			get => (Dictionary<string, CorruptCore_Extensions.HashSetByteArrayComparator<byte[]>>)RTCV.NetCore.AllSpec.CorruptCoreSpec[RTCSPEC.FILTERING_HASH2LIMITERDICO.ToString()];
+			get => (Dictionary<string, HashSet<byte[]>>)RTCV.NetCore.AllSpec.CorruptCoreSpec[RTCSPEC.FILTERING_HASH2LIMITERDICO.ToString()];
 			set => RTCV.NetCore.AllSpec.CorruptCoreSpec.Update(RTCSPEC.FILTERING_HASH2VALUEDICO.ToString(), value);
 		}
 		public static Dictionary<string, List<Byte[]>> Hash2ValueDico
@@ -26,8 +26,7 @@ namespace RTCV.CorruptCore
 		public static PartialSpec getDefaultPartial()
 		{
 			var partial = new PartialSpec("RTCSpec");
-
-			partial[RTCSPEC.FILTERING_HASH2LIMITERDICO.ToString()] = new Dictionary<string, CorruptCore_Extensions.HashSetByteArrayComparator<byte[]>>();
+			partial[RTCSPEC.FILTERING_HASH2LIMITERDICO.ToString()] = new Dictionary<string, HashSet<byte[]>> ();
 			partial[RTCSPEC.FILTERING_HASH2VALUEDICO.ToString()] = new Dictionary<string, List<Byte[]>>();
 
 			return partial;
@@ -96,7 +95,7 @@ namespace RTCV.CorruptCore
 				byteList.Add(bytes);
 			}
 
-			return RegisterList(byteList.Distinct(new CorruptCore_Extensions.ByteArrayComparer<byte[]>()).ToList(), syncListViaNetcore);
+			return RegisterList(byteList.Distinct(new CorruptCore_Extensions.ByteArrayComparer()).ToList(), syncListViaNetcore);
 		}
 
 		/// <summary>
@@ -127,7 +126,7 @@ namespace RTCV.CorruptCore
 			if (!Hash2ValueDico?.ContainsKey(hashStr) ?? false)
 				Hash2ValueDico[hashStr] = list;
 			if (!Hash2LimiterDico?.ContainsKey(hashStr) ?? false)
-				Hash2LimiterDico[hashStr] = new CorruptCore_Extensions.HashSetByteArrayComparator<byte[]>(list);
+				Hash2LimiterDico[hashStr] = new HashSet<byte[]>(list, new CorruptCore_Extensions.ByteArrayComparer());
 
 			//Push it over netcore if we need to
 			if (syncListsViaNetcore)
@@ -179,9 +178,8 @@ namespace RTCV.CorruptCore
 			//If the limiter dico doesn't exist, return false
 			if (Hash2LimiterDico == null)
 				return false;
-
-			//We use this extension class due to Ceras being unable to serialize a hashset with a custom comparator
-			CorruptCore_Extensions.HashSetByteArrayComparator<byte[]> hs = null;
+			
+			HashSet<byte[]> hs = null;
 
 			//If the limiter dictionary contains the hash, check if the hashset contains the byte sequence
 			if (Hash2LimiterDico.TryGetValue(hash, out hs))

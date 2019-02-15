@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Ceras;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -182,6 +183,52 @@ namespace RTCV.NetCore
 						fileStream.Close();
 						fileStream = null;
 					}
+				}
+			}
+		}
+
+
+		public class HashSetFormatterThatKeepsItsComparer : Ceras.Formatters.IFormatter<HashSet<byte[]>>
+		{
+			// Sub-formatters are automatically set by Ceras' dependency injection
+			public Ceras.Formatters.IFormatter<byte[]> _byteArrayFormatter;
+			public Ceras.Formatters.IFormatter<IEqualityComparer<byte[]>> _comparerFormatter; // auto-implemented by Ceras using DynamicObjectFormatter
+
+			public void Serialize(ref byte[] buffer, ref int offset, HashSet<byte[]> set)
+			{
+				// What do we need?
+				// - The comparer
+				// - Number of entries
+				// - Actual content
+
+				// Comparer
+				_comparerFormatter.Serialize(ref buffer, ref offset, set.Comparer);
+
+				// Count
+				// We could use a 'IFormatter<int>' field, but Ceras will resolve it to this method anyway...
+				SerializerBinary.WriteInt32(ref buffer, ref offset, set.Count);
+
+				// Actual content
+				foreach (var array in set)
+					_byteArrayFormatter.Serialize(ref buffer, ref offset, array);
+			}
+
+			public void Deserialize(byte[] buffer, ref int offset, ref HashSet<byte[]> set)
+			{
+				IEqualityComparer<byte[]> equalityComparer = null;
+				_comparerFormatter.Deserialize(buffer, ref offset, ref equalityComparer);
+
+				// We can already create the hashset
+				set = new HashSet<byte[]>(equalityComparer);
+
+				// Read content...
+				int count = SerializerBinary.ReadInt32(buffer, ref offset);
+				for (int i = 0; i < count; i++)
+				{
+					byte[] ar = null;
+					_byteArrayFormatter.Deserialize(buffer, ref offset, ref ar);
+
+					set.Add(ar);
 				}
 			}
 		}

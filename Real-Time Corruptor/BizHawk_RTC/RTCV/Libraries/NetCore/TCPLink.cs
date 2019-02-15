@@ -112,6 +112,12 @@ namespace RTCV.NetCore
 		{
 			var config = new SerializerConfig();
 			config.Advanced.PersistTypeCache = true;
+			config.OnResolveFormatter.Add((c, t) =>
+			{
+				if (t == typeof(HashSet<byte[]>))
+					return new NetCore.Extensions.HashSetFormatterThatKeepsItsComparer();
+				return null; // continue searching
+			});
 			var serializer = new CerasSerializer(config);
 
             TcpListener server = null;
