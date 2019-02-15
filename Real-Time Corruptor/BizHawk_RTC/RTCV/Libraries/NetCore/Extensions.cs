@@ -188,6 +188,7 @@ namespace RTCV.NetCore
 		}
 
 
+		//Thanks to Riki, dev of Ceras for writing this
 		public class HashSetFormatterThatKeepsItsComparer : Ceras.Formatters.IFormatter<HashSet<byte[]>>
 		{
 			// Sub-formatters are automatically set by Ceras' dependency injection

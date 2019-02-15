@@ -1412,6 +1412,9 @@ namespace RTCV.CorruptCore
 					return true;
 				}
 			}
+			//Note the flipped logic here
+			if(InvertLimiter)
+				return true;
 			return false;
 		}
 
@@ -1438,9 +1441,15 @@ namespace RTCV.CorruptCore
 					}
 					else
 					{
+						if (RTC_CustomEngine.ValueSource == CustomValueSource.VALUELIST)
+						{
+							Value = Filtering.GetRandomConstant(RTC_CustomEngine.ValueListHash, Precision);
+							return;
+						}
+
 						//Generate a random value based on our precision. 
 						//We use a BigInteger as we support arbitrary length, but we do use built in methods for 8,16,32 bit for performance reasons
-						BigInteger randomValue;
+						BigInteger randomValue = 0;
 						if (RTC_CustomEngine.ValueSource == CustomValueSource.RANGE)
 						{
 							switch (Precision)
@@ -1462,7 +1471,7 @@ namespace RTCV.CorruptCore
 									break;
 							}
 						}
-						else
+						else if(RTC_CustomEngine.ValueSource == CustomValueSource.RANDOM)
 						{
 							switch (this.Precision)
 							{

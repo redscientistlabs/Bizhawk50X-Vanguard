@@ -64,7 +64,7 @@ namespace RTCV.UI
 			if (killswitchSpamPreventTimer == null)
 			{
 				killswitchSpamPreventTimer = new Timer();
-				killswitchSpamPreventTimer.Interval = 3000;
+				killswitchSpamPreventTimer.Interval = Debugger.IsAttached ? 300000 : 3000;
 				killswitchSpamPreventTimer.Tick += KillswitchSpamPreventTimer_Tick;
 			}
 			killswitchSpamPreventTimer.Start();
