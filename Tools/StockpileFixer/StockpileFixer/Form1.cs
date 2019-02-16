@@ -8,7 +8,6 @@ using System.IO.Compression;
 using System.Linq;
 using System.Text;
 using System.Windows.Forms;
-using RTCV.CorruptCore;
 
 namespace StockpileFixer
 {
@@ -61,12 +60,12 @@ namespace StockpileFixer
                 data = data.Replace("\"LimiterTime\": 2,", "\"LimiterTime\": \"PREEXECUTE\",");
                 data = data.Replace("\"LimiterTime\": 3,", "\"LimiterTime\": \"EXECUTE\",");
 
-                data = data.Replace("\"StoreTime\": 0,", "\"StateLocation\": \"IMMEDIATE\",");
-                data = data.Replace("\"StoreTime\": 1,", "\"StateLocation\": \"IMMEDIATE\",");
-                data = data.Replace("\"StoreTime\": 2,", "\"StateLocation\": \"PREEXECUTE\",");
+                data = data.Replace("\"StoreTime\": 0,", "\"StoreTime\": \"IMMEDIATE\",");
+                data = data.Replace("\"StoreTime\": 1,", "\"StoreTime\": \"IMMEDIATE\",");
+                data = data.Replace("\"StoreTime\": 2,", "\"StoreTime\": \"PREEXECUTE\",");
 
-                data = data.Replace("\"StoreType\": 0,", "\"StateLocation\": \"ONCE\",");
-                data = data.Replace("\"StoreType\": 1,", "\"StateLocation\": \"CONTINUOUS\",");
+                data = data.Replace("\"StoreType\": 0,", "\"StoreType\": \"ONCE\",");
+                data = data.Replace("\"StoreType\": 1,", "\"StoreType\": \"CONTINUOUS\",");
 
                 data = data.Replace("\"StoreLimiterSource\": 0,", "\"StoreLimiterSource\": \"ADDRESS\",");
                 data = data.Replace("\"StoreLimiterSource\": 1,", "\"StoreLimiterSource\": \"SOURCEADDRESS\",");
