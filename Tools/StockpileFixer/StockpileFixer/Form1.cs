@@ -70,8 +70,8 @@ namespace StockpileFixer
                 //Fix my fixer goof
                 data = data.Replace("\"StateLocation\":\"ONCE\",", "\"StoreType\": \"ONCE\",");
                 data = data.Replace("\"StateLocation\": \"CONTINUOUS\",", "\"StoreType\": \"CONTINUOUS\",");
-                data = data.Replace("\"StateLocation\":\"IMMEDIATE\",", "\"StoreType\": \"IMMEDIATE\",");
-                data = data.Replace("\"StateLocation\": \"PREEXECUTE\",", "\"StoreType\": \"PREEXECUTE\",");
+                data = data.Replace("\"StateLocation\":\"IMMEDIATE\",", "\"StoreTime\": \"IMMEDIATE\",");
+                data = data.Replace("\"StateLocation\": \"PREEXECUTE\",", "\"StoreTime\": \"PREEXECUTE\",");
 
                 data = data.Replace("\"StoreLimiterSource\": 0,", "\"StoreLimiterSource\": \"ADDRESS\",");
                 data = data.Replace("\"StoreLimiterSource\": 1,", "\"StoreLimiterSource\": \"SOURCEADDRESS\",");
