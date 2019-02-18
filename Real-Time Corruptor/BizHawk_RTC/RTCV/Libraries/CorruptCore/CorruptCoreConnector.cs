@@ -127,7 +127,7 @@ namespace RTCV.CorruptCore
 					BlastLayer bl = null;
 					SyncObjectSingleton.FormExecute((o, ea) =>
 					{
-						if (loadBeforeCorrupt == true)
+						if (loadBeforeCorrupt)
 						{
 							StockpileManager_EmuSide.LoadState_NET(sk, true, false);
 						}
