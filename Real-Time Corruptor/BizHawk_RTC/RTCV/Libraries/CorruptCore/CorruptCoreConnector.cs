@@ -120,42 +120,20 @@ namespace RTCV.CorruptCore
 					var val = advancedMessage.objectValue as object[];
 					string[] domains = val[0] as string[];
 					StashKey sk = val[1] as StashKey;
-					bool? loadBeforeCorrupt = val[2] as bool?;
+					bool loadBeforeCorrupt = (bool)val[2];
+					bool applyBlastLayer = (bool)val[3];
+					bool backup = (bool)val[4];
 
 					BlastLayer bl = null;
 					SyncObjectSingleton.FormExecute((o, ea) =>
 					{
 						if (loadBeforeCorrupt == true)
 						{
-							StockpileManager_EmuSide.LoadState_NET(sk, true, false, false);
+							StockpileManager_EmuSide.LoadState_NET(sk, true, false);
 						}
 						bl = CorruptCore.GenerateBlastLayer(domains);
-					});
-					StockpileManager_EmuSide.CachedBL = bl;
-					if (advancedMessage.requestGuid != null)
-					{
-						e.setReturnValue(bl);
-					}
-					break;
-				}
-				case GENERATEANDAPPLYBLASTLAYER:
-				{
-					var val = advancedMessage.objectValue as object[];
-					string[] domains = val[0] as string[];
-					StashKey sk = val[1] as StashKey;
-					bool? loadBeforeCorrupt = val[2] as bool?;
-					bool backup = (bool)val[3];
-
-					BlastLayer bl = null;
-					SyncObjectSingleton.FormExecute((o, ea) =>
-					{
-						if (loadBeforeCorrupt == true)
-						{
-							StockpileManager_EmuSide.LoadState_NET(sk, true, false, false);
-						}
-						bl = CorruptCore.GenerateBlastLayer(domains);
-						StockpileManager_EmuSide.CachedBL = bl;
-						StockpileManager_EmuSide.CachedBL.Apply(backup);
+						if(applyBlastLayer)
+							bl?.Apply(backup);
 					});
 					if (advancedMessage.requestGuid != null)
 					{
@@ -174,16 +152,6 @@ namespace RTCV.CorruptCore
 					});
 						break;
 				}
-				case APPLYCACHEDBLASTLAYER:
-				{
-					var temp = advancedMessage.objectValue as object[];
-					bool backup = (bool)temp[0];
-					SyncObjectSingleton.FormExecute((o, ea) =>
-					{
-						StockpileManager_EmuSide.CachedBL.Apply(backup);
-					});
-				}
-					break;
 
 				/*
 				case STASHKEY:
@@ -237,12 +205,11 @@ namespace RTCV.CorruptCore
 					StashKey sk = (StashKey)(advancedMessage.objectValue as object[])[0];
 					bool reloadRom = (bool)(advancedMessage.objectValue as object[])[1];
 					bool runBlastLayer = (bool)(advancedMessage.objectValue as object[])[2];
-					bool useCachedBlastLayer = (bool)(advancedMessage.objectValue as object[])[3];
 
 					bool returnValue = false;
 					SyncObjectSingleton.FormExecute((o, ea) =>
 					{
-						returnValue = StockpileManager_EmuSide.LoadState_NET(sk, reloadRom, runBlastLayer, useCachedBlastLayer);
+						returnValue = StockpileManager_EmuSide.LoadState_NET(sk, reloadRom, runBlastLayer);
 					});
 
 					e.setReturnValue(returnValue);
