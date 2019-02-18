@@ -1448,7 +1448,6 @@ namespace RTCV.CorruptCore
 		/// </summary>
 		public void Reroll()
 		{
-			//Todo - Value List reroll. Currently always generates a random value
 			if (Source == BlastUnitSource.VALUE)
 			{
 				if (CorruptCore.RerollFollowsCustomEngine)

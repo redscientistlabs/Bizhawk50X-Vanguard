@@ -1461,9 +1461,9 @@ namespace RTCV.UI
 				foreach (DataGridViewRow selected in dgvBlastEditor.SelectedRows.Cast<DataGridViewRow>()
 					.Where((item => ((BlastUnit)item.DataBoundItem).IsLocked == false)))
 				{
-					currentSK.BlastLayer.Layer.Insert(selected.Index, newBlastLayer.Layer[i]);
+					bs.Insert(selected.Index, newBlastLayer.Layer[i]);
 					i++;
-					currentSK.BlastLayer.Layer.Remove((BlastUnit)selected.DataBoundItem);
+					bs.Remove((BlastUnit)selected.DataBoundItem);
 				}
 			}
 			catch (Exception ex)
