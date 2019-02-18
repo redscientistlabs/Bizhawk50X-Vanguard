@@ -239,6 +239,10 @@ namespace RTCV.CorruptCore
 			}
 
 			bool needsRefilter = false;
+
+			//Increment the frame
+			currentFrame++;
+
 			//Remove any temp units that have expired
 			foreach (List<BlastUnit> buList in itemsToRemove)
 			{
@@ -267,7 +271,6 @@ namespace RTCV.CorruptCore
 			if(needsRefilter)
 				FilterBuListCollection();
 
-			currentFrame++;
 		}
 	}
 }
