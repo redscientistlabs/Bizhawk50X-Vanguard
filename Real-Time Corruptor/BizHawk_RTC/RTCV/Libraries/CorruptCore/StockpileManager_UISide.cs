@@ -105,14 +105,16 @@ namespace RTCV.CorruptCore
 			};
 
 
-			var watch = System.Diagnostics.Stopwatch.StartNew();
-			BlastLayer bl = LocalNetCoreRouter.QueryRoute<BlastLayer>(NetcoreCommands.CORRUPTCORE, NetcoreCommands.GENERATEBLASTLAYER, new object[]{(string[])RTCV.NetCore.AllSpec.UISpec["SELECTEDDOMAINS"], CurrentStashkey, true}, true);
-			watch.Stop();
-			Console.WriteLine($"It took " + watch.ElapsedMilliseconds + " ms to blastlayer");
-
-
+			BlastLayer bl = LocalNetCoreRouter.QueryRoute<BlastLayer>(NetcoreCommands.CORRUPTCORE, NetcoreCommands.GENERATEANDAPPLYBLASTLAYER,
+				new object[]
+				{
+					(string[])RTCV.NetCore.AllSpec.UISpec["SELECTEDDOMAINS"],
+					CurrentStashkey,
+					_loadBeforeOperation,
+					true
+				}, true);
 			bool isCorruptionApplied = bl?.Layer?.Count > 0;
-
+			/*
 			if (_loadBeforeOperation)
 			{
 				//We don't need to reload the rom here because it's already been reloaded up above and since this is one sequential process, we can just load the state
@@ -124,6 +126,7 @@ namespace RTCV.CorruptCore
 			}
 			else
 				LocalNetCoreRouter.Route(NetcoreCommands.CORRUPTCORE, NetcoreCommands.APPLYCACHEDBLASTLAYER, new object[] { true }, true);
+				*/
 			CurrentStashkey.BlastLayer = bl;
 
 			if (StashAfterOperation && bl != null)

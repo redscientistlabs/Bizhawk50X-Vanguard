@@ -138,7 +138,32 @@ namespace RTCV.CorruptCore
 					}
 					break;
 				}
-				case APPLYBLASTLAYER:
+				case GENERATEANDAPPLYBLASTLAYER:
+				{
+					var val = advancedMessage.objectValue as object[];
+					string[] domains = val[0] as string[];
+					StashKey sk = val[1] as StashKey;
+					bool? loadBeforeCorrupt = val[2] as bool?;
+					bool backup = (bool)val[3];
+
+					BlastLayer bl = null;
+					SyncObjectSingleton.FormExecute((o, ea) =>
+					{
+						if (loadBeforeCorrupt == true)
+						{
+							StockpileManager_EmuSide.LoadState_NET(sk, true, false, false);
+						}
+						bl = CorruptCore.GenerateBlastLayer(domains);
+						StockpileManager_EmuSide.CachedBL = bl;
+						StockpileManager_EmuSide.CachedBL.Apply(backup);
+					});
+					if (advancedMessage.requestGuid != null)
+					{
+						e.setReturnValue(bl);
+					}
+					break;
+				}
+					case APPLYBLASTLAYER:
 				{
 					var temp = advancedMessage.objectValue as object[];
 					BlastLayer bl = (BlastLayer)temp[0];
