@@ -33,9 +33,6 @@ namespace RTCV.UI
 
 			foreach (var item in childForms)
 				lbComponentForms.Items.Add(new { text = item.Text, value = item });
-			
-
-			
 		}
 
 		private void lbComponentForms_SelectedIndexChanged(object sender, EventArgs e)
@@ -46,6 +43,11 @@ namespace RTCV.UI
 		private void RTC_ListBox_Form_Load(object sender, EventArgs e)
 		{
 			lbComponentForms.SelectedIndex = 0;
+		}
+
+		public void SetFocusedForm(ComponentForm form)
+		{
+			lbComponentForms.SelectedItem = form;
 		}
 	}
 }

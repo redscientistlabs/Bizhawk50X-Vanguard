@@ -57,8 +57,6 @@
             this.cbClearPipesOnRewind = new System.Windows.Forms.CheckBox();
             this.cbLockPipes = new System.Windows.Forms.CheckBox();
             this.btnClearPipes = new System.Windows.Forms.Button();
-            this.nmMaxPipes = new System.Windows.Forms.NumericUpDown();
-            this.label8 = new System.Windows.Forms.Label();
             this.gbDistortionEngine = new System.Windows.Forms.GroupBox();
             this.panel6 = new System.Windows.Forms.Panel();
             this.label17 = new System.Windows.Forms.Label();
@@ -72,8 +70,6 @@
             this.comboBox4 = new System.Windows.Forms.ComboBox();
             this.cbClearFreezesOnRewind = new System.Windows.Forms.CheckBox();
             this.btnClearAllFreezes = new System.Windows.Forms.Button();
-            this.nmMaxFreezes = new System.Windows.Forms.NumericUpDown();
-            this.label4 = new System.Windows.Forms.Label();
             this.gbHellgenieEngine = new System.Windows.Forms.GroupBox();
             this.label26 = new System.Windows.Forms.Label();
             this.label27 = new System.Windows.Forms.Label();
@@ -84,8 +80,6 @@
             this.comboBox2 = new System.Windows.Forms.ComboBox();
             this.cbClearCheatsOnRewind = new System.Windows.Forms.CheckBox();
             this.btnClearCheats = new System.Windows.Forms.Button();
-            this.nmMaxCheats = new System.Windows.Forms.NumericUpDown();
-            this.label1 = new System.Windows.Forms.Label();
             this.gbNightmareEngine = new System.Windows.Forms.GroupBox();
             this.label24 = new System.Windows.Forms.Label();
             this.label23 = new System.Windows.Forms.Label();
@@ -108,15 +102,12 @@
             this.panel2.SuspendLayout();
             this.pnLimiterList.SuspendLayout();
             this.gbPipeEngine.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.nmMaxPipes)).BeginInit();
             this.gbDistortionEngine.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.nmDistortionDelay)).BeginInit();
             this.gbFreezeEngine.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.nmMaxFreezes)).BeginInit();
             this.gbHellgenieEngine.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.nmMaxValueHellgenie)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.nmMinValueHellgenie)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.nmMaxCheats)).BeginInit();
             this.gbNightmareEngine.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.nmMaxValueNightmare)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.nmMinValueNightmare)).BeginInit();
@@ -435,8 +426,6 @@
             this.gbPipeEngine.Controls.Add(this.cbClearPipesOnRewind);
             this.gbPipeEngine.Controls.Add(this.cbLockPipes);
             this.gbPipeEngine.Controls.Add(this.btnClearPipes);
-            this.gbPipeEngine.Controls.Add(this.nmMaxPipes);
-            this.gbPipeEngine.Controls.Add(this.label8);
             this.gbPipeEngine.Font = new System.Drawing.Font("Segoe UI", 9.75F);
             this.gbPipeEngine.ForeColor = System.Drawing.Color.White;
             this.gbPipeEngine.Location = new System.Drawing.Point(854, 4);
@@ -492,9 +481,9 @@
             this.cbClearPipesOnRewind.ForeColor = System.Drawing.Color.White;
             this.cbClearPipesOnRewind.Location = new System.Drawing.Point(172, 55);
             this.cbClearPipesOnRewind.Name = "cbClearPipesOnRewind";
-            this.cbClearPipesOnRewind.Size = new System.Drawing.Size(142, 17);
+            this.cbClearPipesOnRewind.Size = new System.Drawing.Size(165, 17);
             this.cbClearPipesOnRewind.TabIndex = 79;
-            this.cbClearPipesOnRewind.Text = "Clear pipes on Rewind";
+            this.cbClearPipesOnRewind.Text = "Clear step units on Rewind";
             this.cbClearPipesOnRewind.UseVisualStyleBackColor = true;
             this.cbClearPipesOnRewind.CheckedChanged += new System.EventHandler(this.cbClearRewind_CheckedChanged);
             this.cbClearPipesOnRewind.MouseDown += new System.Windows.Forms.MouseEventHandler(this.HandleMouseDown);
@@ -506,9 +495,9 @@
             this.cbLockPipes.ForeColor = System.Drawing.Color.White;
             this.cbLockPipes.Location = new System.Drawing.Point(172, 35);
             this.cbLockPipes.Name = "cbLockPipes";
-            this.cbLockPipes.Size = new System.Drawing.Size(79, 17);
+            this.cbLockPipes.Size = new System.Drawing.Size(103, 17);
             this.cbLockPipes.TabIndex = 77;
-            this.cbLockPipes.Text = "Lock Pipes";
+            this.cbLockPipes.Text = "Lock step units";
             this.cbLockPipes.UseVisualStyleBackColor = true;
             this.cbLockPipes.CheckedChanged += new System.EventHandler(this.cbLockPipes_CheckedChanged);
             this.cbLockPipes.MouseDown += new System.Windows.Forms.MouseEventHandler(this.HandleMouseDown);
@@ -530,45 +519,6 @@
             this.btnClearPipes.UseVisualStyleBackColor = false;
             this.btnClearPipes.Click += new System.EventHandler(this.btnClearPipes_Click);
             this.btnClearPipes.MouseDown += new System.Windows.Forms.MouseEventHandler(this.HandleMouseDown);
-            // 
-            // nmMaxPipes
-            // 
-            this.nmMaxPipes.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
-            this.nmMaxPipes.Font = new System.Drawing.Font("Segoe UI", 8F);
-            this.nmMaxPipes.ForeColor = System.Drawing.Color.White;
-            this.nmMaxPipes.Location = new System.Drawing.Point(95, 36);
-            this.nmMaxPipes.Maximum = new decimal(new int[] {
-            65536,
-            0,
-            0,
-            0});
-            this.nmMaxPipes.Minimum = new decimal(new int[] {
-            1,
-            0,
-            0,
-            0});
-            this.nmMaxPipes.Name = "nmMaxPipes";
-            this.nmMaxPipes.Size = new System.Drawing.Size(70, 22);
-            this.nmMaxPipes.TabIndex = 9;
-            this.nmMaxPipes.Tag = "color:dark";
-            this.nmMaxPipes.Value = new decimal(new int[] {
-            50,
-            0,
-            0,
-            0});
-            this.nmMaxPipes.ValueChanged += new System.EventHandler(this.nmMaxPipes_ValueChanged);
-            this.nmMaxPipes.MouseDown += new System.Windows.Forms.MouseEventHandler(this.HandleMouseDown);
-            // 
-            // label8
-            // 
-            this.label8.AutoSize = true;
-            this.label8.Font = new System.Drawing.Font("Segoe UI", 8F);
-            this.label8.Location = new System.Drawing.Point(4, 40);
-            this.label8.Name = "label8";
-            this.label8.Size = new System.Drawing.Size(62, 13);
-            this.label8.TabIndex = 0;
-            this.label8.Text = "Max pipes:";
-            this.label8.MouseDown += new System.Windows.Forms.MouseEventHandler(this.HandleMouseDown);
             // 
             // gbDistortionEngine
             // 
@@ -690,8 +640,6 @@
             this.gbFreezeEngine.Controls.Add(this.comboBox4);
             this.gbFreezeEngine.Controls.Add(this.cbClearFreezesOnRewind);
             this.gbFreezeEngine.Controls.Add(this.btnClearAllFreezes);
-            this.gbFreezeEngine.Controls.Add(this.nmMaxFreezes);
-            this.gbFreezeEngine.Controls.Add(this.label4);
             this.gbFreezeEngine.Font = new System.Drawing.Font("Segoe UI", 9.75F);
             this.gbFreezeEngine.ForeColor = System.Drawing.Color.White;
             this.gbFreezeEngine.Location = new System.Drawing.Point(453, 459);
@@ -747,9 +695,9 @@
             this.cbClearFreezesOnRewind.ForeColor = System.Drawing.Color.White;
             this.cbClearFreezesOnRewind.Location = new System.Drawing.Point(183, 34);
             this.cbClearFreezesOnRewind.Name = "cbClearFreezesOnRewind";
-            this.cbClearFreezesOnRewind.Size = new System.Drawing.Size(150, 17);
+            this.cbClearFreezesOnRewind.Size = new System.Drawing.Size(165, 17);
             this.cbClearFreezesOnRewind.TabIndex = 75;
-            this.cbClearFreezesOnRewind.Text = "Clear freezes on Rewind";
+            this.cbClearFreezesOnRewind.Text = "Clear step units on Rewind";
             this.cbClearFreezesOnRewind.UseVisualStyleBackColor = true;
             this.cbClearFreezesOnRewind.CheckedChanged += new System.EventHandler(this.cbClearRewind_CheckedChanged);
             this.cbClearFreezesOnRewind.MouseDown += new System.Windows.Forms.MouseEventHandler(this.HandleMouseDown);
@@ -772,45 +720,6 @@
             this.btnClearAllFreezes.Click += new System.EventHandler(this.btnClearCheats_Click);
             this.btnClearAllFreezes.MouseDown += new System.Windows.Forms.MouseEventHandler(this.HandleMouseDown);
             // 
-            // nmMaxFreezes
-            // 
-            this.nmMaxFreezes.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
-            this.nmMaxFreezes.Font = new System.Drawing.Font("Segoe UI", 8F);
-            this.nmMaxFreezes.ForeColor = System.Drawing.Color.White;
-            this.nmMaxFreezes.Location = new System.Drawing.Point(95, 36);
-            this.nmMaxFreezes.Maximum = new decimal(new int[] {
-            65536,
-            0,
-            0,
-            0});
-            this.nmMaxFreezes.Minimum = new decimal(new int[] {
-            1,
-            0,
-            0,
-            0});
-            this.nmMaxFreezes.Name = "nmMaxFreezes";
-            this.nmMaxFreezes.Size = new System.Drawing.Size(70, 22);
-            this.nmMaxFreezes.TabIndex = 9;
-            this.nmMaxFreezes.Tag = "color:dark";
-            this.nmMaxFreezes.Value = new decimal(new int[] {
-            50,
-            0,
-            0,
-            0});
-            this.nmMaxFreezes.ValueChanged += new System.EventHandler(this.nmMaxFreezes_ValueChanged);
-            this.nmMaxFreezes.MouseDown += new System.Windows.Forms.MouseEventHandler(this.HandleMouseDown);
-            // 
-            // label4
-            // 
-            this.label4.AutoSize = true;
-            this.label4.Font = new System.Drawing.Font("Segoe UI", 8F);
-            this.label4.Location = new System.Drawing.Point(4, 40);
-            this.label4.Name = "label4";
-            this.label4.Size = new System.Drawing.Size(70, 13);
-            this.label4.TabIndex = 0;
-            this.label4.Text = "Max freezes:";
-            this.label4.MouseDown += new System.Windows.Forms.MouseEventHandler(this.HandleMouseDown);
-            // 
             // gbHellgenieEngine
             // 
             this.gbHellgenieEngine.Controls.Add(this.label26);
@@ -822,8 +731,6 @@
             this.gbHellgenieEngine.Controls.Add(this.comboBox2);
             this.gbHellgenieEngine.Controls.Add(this.cbClearCheatsOnRewind);
             this.gbHellgenieEngine.Controls.Add(this.btnClearCheats);
-            this.gbHellgenieEngine.Controls.Add(this.nmMaxCheats);
-            this.gbHellgenieEngine.Controls.Add(this.label1);
             this.gbHellgenieEngine.Font = new System.Drawing.Font("Segoe UI", 9.75F);
             this.gbHellgenieEngine.ForeColor = System.Drawing.Color.White;
             this.gbHellgenieEngine.Location = new System.Drawing.Point(453, 155);
@@ -838,7 +745,7 @@
             // 
             this.label26.AutoSize = true;
             this.label26.Font = new System.Drawing.Font("Segoe UI", 8F);
-            this.label26.Location = new System.Drawing.Point(4, 90);
+            this.label26.Location = new System.Drawing.Point(4, 66);
             this.label26.Name = "label26";
             this.label26.Size = new System.Drawing.Size(87, 13);
             this.label26.TabIndex = 147;
@@ -849,7 +756,7 @@
             // 
             this.label27.AutoSize = true;
             this.label27.Font = new System.Drawing.Font("Segoe UI", 8F);
-            this.label27.Location = new System.Drawing.Point(4, 65);
+            this.label27.Location = new System.Drawing.Point(4, 41);
             this.label27.Name = "label27";
             this.label27.Size = new System.Drawing.Size(86, 13);
             this.label27.TabIndex = 144;
@@ -873,7 +780,7 @@
             this.nmMaxValueHellgenie.Font = new System.Drawing.Font("Consolas", 8.25F);
             this.nmMaxValueHellgenie.ForeColor = System.Drawing.Color.White;
             this.nmMaxValueHellgenie.Hexadecimal = true;
-            this.nmMaxValueHellgenie.Location = new System.Drawing.Point(95, 88);
+            this.nmMaxValueHellgenie.Location = new System.Drawing.Point(95, 64);
             this.nmMaxValueHellgenie.Name = "nmMaxValueHellgenie";
             this.nmMaxValueHellgenie.Size = new System.Drawing.Size(70, 20);
             this.nmMaxValueHellgenie.TabIndex = 146;
@@ -903,7 +810,7 @@
             this.nmMinValueHellgenie.Font = new System.Drawing.Font("Consolas", 8.25F);
             this.nmMinValueHellgenie.ForeColor = System.Drawing.Color.White;
             this.nmMinValueHellgenie.Hexadecimal = true;
-            this.nmMinValueHellgenie.Location = new System.Drawing.Point(95, 63);
+            this.nmMinValueHellgenie.Location = new System.Drawing.Point(95, 39);
             this.nmMinValueHellgenie.Name = "nmMinValueHellgenie";
             this.nmMinValueHellgenie.Size = new System.Drawing.Size(70, 20);
             this.nmMinValueHellgenie.TabIndex = 145;
@@ -934,10 +841,11 @@
             this.cbClearCheatsOnRewind.ForeColor = System.Drawing.Color.White;
             this.cbClearCheatsOnRewind.Location = new System.Drawing.Point(183, 34);
             this.cbClearCheatsOnRewind.Name = "cbClearCheatsOnRewind";
-            this.cbClearCheatsOnRewind.Size = new System.Drawing.Size(147, 17);
+            this.cbClearCheatsOnRewind.Size = new System.Drawing.Size(165, 17);
             this.cbClearCheatsOnRewind.TabIndex = 75;
-            this.cbClearCheatsOnRewind.Text = "Clear cheats on Rewind";
+            this.cbClearCheatsOnRewind.Text = "Clear step units on Rewind";
             this.cbClearCheatsOnRewind.UseVisualStyleBackColor = true;
+            this.cbClearCheatsOnRewind.CheckedChanged += new System.EventHandler(this.cbClearRewind_CheckedChanged);
             this.cbClearCheatsOnRewind.MouseDown += new System.Windows.Forms.MouseEventHandler(this.HandleMouseDown);
             // 
             // btnClearCheats
@@ -957,45 +865,6 @@
             this.btnClearCheats.UseVisualStyleBackColor = false;
             this.btnClearCheats.Click += new System.EventHandler(this.btnClearCheats_Click);
             this.btnClearCheats.MouseDown += new System.Windows.Forms.MouseEventHandler(this.HandleMouseDown);
-            // 
-            // nmMaxCheats
-            // 
-            this.nmMaxCheats.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
-            this.nmMaxCheats.Font = new System.Drawing.Font("Segoe UI", 8F);
-            this.nmMaxCheats.ForeColor = System.Drawing.Color.White;
-            this.nmMaxCheats.Location = new System.Drawing.Point(95, 36);
-            this.nmMaxCheats.Maximum = new decimal(new int[] {
-            65536,
-            0,
-            0,
-            0});
-            this.nmMaxCheats.Minimum = new decimal(new int[] {
-            1,
-            0,
-            0,
-            0});
-            this.nmMaxCheats.Name = "nmMaxCheats";
-            this.nmMaxCheats.Size = new System.Drawing.Size(70, 22);
-            this.nmMaxCheats.TabIndex = 9;
-            this.nmMaxCheats.Tag = "color:dark";
-            this.nmMaxCheats.Value = new decimal(new int[] {
-            50,
-            0,
-            0,
-            0});
-            this.nmMaxCheats.ValueChanged += new System.EventHandler(this.nmMaxCheats_ValueChanged);
-            this.nmMaxCheats.MouseDown += new System.Windows.Forms.MouseEventHandler(this.HandleMouseDown);
-            // 
-            // label1
-            // 
-            this.label1.AutoSize = true;
-            this.label1.Font = new System.Drawing.Font("Segoe UI", 8F);
-            this.label1.Location = new System.Drawing.Point(4, 40);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(67, 13);
-            this.label1.TabIndex = 0;
-            this.label1.Text = "Max cheats:";
-            this.label1.MouseDown += new System.Windows.Forms.MouseEventHandler(this.HandleMouseDown);
             // 
             // gbNightmareEngine
             // 
@@ -1257,18 +1126,15 @@
             this.pnLimiterList.PerformLayout();
             this.gbPipeEngine.ResumeLayout(false);
             this.gbPipeEngine.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.nmMaxPipes)).EndInit();
             this.gbDistortionEngine.ResumeLayout(false);
             this.gbDistortionEngine.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.nmDistortionDelay)).EndInit();
             this.gbFreezeEngine.ResumeLayout(false);
             this.gbFreezeEngine.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.nmMaxFreezes)).EndInit();
             this.gbHellgenieEngine.ResumeLayout(false);
             this.gbHellgenieEngine.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.nmMaxValueHellgenie)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.nmMinValueHellgenie)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.nmMaxCheats)).EndInit();
             this.gbNightmareEngine.ResumeLayout(false);
             this.gbNightmareEngine.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.nmMaxValueNightmare)).EndInit();
@@ -1308,8 +1174,6 @@
 		public System.Windows.Forms.CheckBox cbClearPipesOnRewind;
 		public System.Windows.Forms.CheckBox cbLockPipes;
 		private System.Windows.Forms.Button btnClearPipes;
-		public System.Windows.Forms.NumericUpDown nmMaxPipes;
-		private System.Windows.Forms.Label label8;
 		private System.Windows.Forms.GroupBox gbDistortionEngine;
 		private System.Windows.Forms.Panel panel6;
 		private System.Windows.Forms.Label label17;
@@ -1323,8 +1187,6 @@
 		public System.Windows.Forms.ComboBox comboBox4;
 		public System.Windows.Forms.CheckBox cbClearFreezesOnRewind;
 		private System.Windows.Forms.Button btnClearAllFreezes;
-		public System.Windows.Forms.NumericUpDown nmMaxFreezes;
-		private System.Windows.Forms.Label label4;
 		private System.Windows.Forms.GroupBox gbHellgenieEngine;
 		private System.Windows.Forms.Label label26;
 		private System.Windows.Forms.Label label27;
@@ -1335,8 +1197,6 @@
 		public System.Windows.Forms.ComboBox comboBox2;
 		public System.Windows.Forms.CheckBox cbClearCheatsOnRewind;
 		private System.Windows.Forms.Button btnClearCheats;
-		public System.Windows.Forms.NumericUpDown nmMaxCheats;
-		private System.Windows.Forms.Label label1;
 		private System.Windows.Forms.GroupBox gbNightmareEngine;
 		private System.Windows.Forms.Label label24;
 		private System.Windows.Forms.Label label23;

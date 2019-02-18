@@ -29,10 +29,7 @@
 		private void InitializeComponent()
 		{
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(RTC_CustomEngineConfig_Form));
-            this.cbLockUnits = new System.Windows.Forms.CheckBox();
             this.btnClearActive = new System.Windows.Forms.Button();
-            this.nmMaxInfinite = new System.Windows.Forms.NumericUpDown();
-            this.label1 = new System.Windows.Forms.Label();
             this.gbUnitSource = new System.Windows.Forms.GroupBox();
             this.rbUnitSourceStore = new System.Windows.Forms.RadioButton();
             this.rbUnitSourceValue = new System.Windows.Forms.RadioButton();
@@ -60,7 +57,6 @@
             this.rbStoreModeAddress = new System.Windows.Forms.RadioButton();
             this.cbLimiterInverted = new System.Windows.Forms.CheckBox();
             this.cbLimiterList = new System.Windows.Forms.ComboBox();
-            this.cbClearRewind = new System.Windows.Forms.CheckBox();
             this.cbLoopUnit = new System.Windows.Forms.CheckBox();
             this.gbStepSettings = new System.Windows.Forms.GroupBox();
             this.label11 = new System.Windows.Forms.Label();
@@ -69,7 +65,6 @@
             this.label10 = new System.Windows.Forms.Label();
             this.nmDelay = new System.Windows.Forms.NumericUpDown();
             this.nmLifetime = new System.Windows.Forms.NumericUpDown();
-            this.gbCheckBoxes = new System.Windows.Forms.GroupBox();
             this.gbStoreTime = new System.Windows.Forms.GroupBox();
             this.rbStoreImmediate = new System.Windows.Forms.RadioButton();
             this.rbStoreFirstExecute = new System.Windows.Forms.RadioButton();
@@ -80,7 +75,6 @@
             this.rbStoreOnce = new System.Windows.Forms.RadioButton();
             this.gbStoreSettings = new System.Windows.Forms.GroupBox();
             this.groupBox3 = new System.Windows.Forms.GroupBox();
-            this.btnResetConfig = new System.Windows.Forms.Button();
             this.pnTopBar = new System.Windows.Forms.Panel();
             this.btnCustomTemplateSaveAs = new System.Windows.Forms.Button();
             this.btnCustomTemplateLoad = new System.Windows.Forms.Button();
@@ -88,7 +82,7 @@
             this.cbSelectedTemplate = new System.Windows.Forms.ComboBox();
             this.label2 = new System.Windows.Forms.Label();
             this.panel1 = new System.Windows.Forms.Panel();
-            ((System.ComponentModel.ISupportInitialize)(this.nmMaxInfinite)).BeginInit();
+            this.cbClearRewind = new System.Windows.Forms.CheckBox();
             this.gbUnitSource.SuspendLayout();
             this.gbValueList.SuspendLayout();
             this.gbValueSettings.SuspendLayout();
@@ -103,7 +97,6 @@
             ((System.ComponentModel.ISupportInitialize)(this.nmTilt)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.nmDelay)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.nmLifetime)).BeginInit();
-            this.gbCheckBoxes.SuspendLayout();
             this.gbStoreTime.SuspendLayout();
             this.gbStoreType.SuspendLayout();
             this.gbStoreSettings.SuspendLayout();
@@ -112,19 +105,6 @@
             this.panel1.SuspendLayout();
             this.SuspendLayout();
             // 
-            // cbLockUnits
-            // 
-            this.cbLockUnits.AutoSize = true;
-            this.cbLockUnits.Font = new System.Drawing.Font("Segoe UI", 8F);
-            this.cbLockUnits.ForeColor = System.Drawing.Color.White;
-            this.cbLockUnits.Location = new System.Drawing.Point(6, 17);
-            this.cbLockUnits.Name = "cbLockUnits";
-            this.cbLockUnits.Size = new System.Drawing.Size(79, 17);
-            this.cbLockUnits.TabIndex = 151;
-            this.cbLockUnits.Text = "Lock Units";
-            this.cbLockUnits.UseVisualStyleBackColor = true;
-            this.cbLockUnits.CheckedChanged += new System.EventHandler(this.cbLockUnits_CheckedChanged);
-            // 
             // btnClearActive
             // 
             this.btnClearActive.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(224)))), ((int)(((byte)(224)))), ((int)(((byte)(224)))));
@@ -132,9 +112,9 @@
             this.btnClearActive.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnClearActive.Font = new System.Drawing.Font("Segoe UI", 8F);
             this.btnClearActive.ForeColor = System.Drawing.Color.Black;
-            this.btnClearActive.Location = new System.Drawing.Point(15, 307);
+            this.btnClearActive.Location = new System.Drawing.Point(280, 310);
             this.btnClearActive.Name = "btnClearActive";
-            this.btnClearActive.Size = new System.Drawing.Size(148, 24);
+            this.btnClearActive.Size = new System.Drawing.Size(148, 25);
             this.btnClearActive.TabIndex = 150;
             this.btnClearActive.TabStop = false;
             this.btnClearActive.Tag = "color:light";
@@ -142,56 +122,19 @@
             this.btnClearActive.UseVisualStyleBackColor = false;
             this.btnClearActive.Click += new System.EventHandler(this.btnClearActive_Click);
             // 
-            // nmMaxInfinite
-            // 
-            this.nmMaxInfinite.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
-            this.nmMaxInfinite.Font = new System.Drawing.Font("Segoe UI", 8F);
-            this.nmMaxInfinite.ForeColor = System.Drawing.Color.White;
-            this.nmMaxInfinite.Location = new System.Drawing.Point(6, 80);
-            this.nmMaxInfinite.Maximum = new decimal(new int[] {
-            65536,
-            0,
-            0,
-            0});
-            this.nmMaxInfinite.Minimum = new decimal(new int[] {
-            1,
-            0,
-            0,
-            0});
-            this.nmMaxInfinite.Name = "nmMaxInfinite";
-            this.nmMaxInfinite.Size = new System.Drawing.Size(106, 22);
-            this.nmMaxInfinite.TabIndex = 149;
-            this.nmMaxInfinite.Tag = "color:dark";
-            this.nmMaxInfinite.Value = new decimal(new int[] {
-            50,
-            0,
-            0,
-            0});
-            this.nmMaxInfinite.ValueChanged += new System.EventHandler(this.nmMaxInfinite_ValueChanged);
-            // 
-            // label1
-            // 
-            this.label1.AutoSize = true;
-            this.label1.Font = new System.Drawing.Font("Segoe UI", 8F);
-            this.label1.ForeColor = System.Drawing.Color.White;
-            this.label1.Location = new System.Drawing.Point(4, 63);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(101, 13);
-            this.label1.TabIndex = 148;
-            this.label1.Text = "Max Infinite Units:";
-            this.label1.TextAlign = System.Drawing.ContentAlignment.TopCenter;
-            // 
             // gbUnitSource
             // 
+            this.gbUnitSource.BackColor = System.Drawing.Color.Gray;
             this.gbUnitSource.Controls.Add(this.rbUnitSourceStore);
             this.gbUnitSource.Controls.Add(this.rbUnitSourceValue);
             this.gbUnitSource.Font = new System.Drawing.Font("Segoe UI", 8F);
             this.gbUnitSource.ForeColor = System.Drawing.Color.White;
             this.gbUnitSource.Location = new System.Drawing.Point(15, 12);
             this.gbUnitSource.Name = "gbUnitSource";
-            this.gbUnitSource.Size = new System.Drawing.Size(98, 54);
+            this.gbUnitSource.Size = new System.Drawing.Size(88, 55);
             this.gbUnitSource.TabIndex = 161;
             this.gbUnitSource.TabStop = false;
+            this.gbUnitSource.Tag = "color:dark";
             this.gbUnitSource.Text = "Unit Source";
             // 
             // rbUnitSourceStore
@@ -200,7 +143,7 @@
             this.rbUnitSourceStore.BackColor = System.Drawing.Color.Transparent;
             this.rbUnitSourceStore.Font = new System.Drawing.Font("Segoe UI", 8F);
             this.rbUnitSourceStore.ForeColor = System.Drawing.Color.White;
-            this.rbUnitSourceStore.Location = new System.Drawing.Point(6, 31);
+            this.rbUnitSourceStore.Location = new System.Drawing.Point(6, 32);
             this.rbUnitSourceStore.Name = "rbUnitSourceStore";
             this.rbUnitSourceStore.Size = new System.Drawing.Size(52, 17);
             this.rbUnitSourceStore.TabIndex = 1;
@@ -214,7 +157,7 @@
             this.rbUnitSourceValue.Checked = true;
             this.rbUnitSourceValue.Font = new System.Drawing.Font("Segoe UI", 8F);
             this.rbUnitSourceValue.ForeColor = System.Drawing.Color.White;
-            this.rbUnitSourceValue.Location = new System.Drawing.Point(6, 14);
+            this.rbUnitSourceValue.Location = new System.Drawing.Point(6, 15);
             this.rbUnitSourceValue.Name = "rbUnitSourceValue";
             this.rbUnitSourceValue.Size = new System.Drawing.Size(53, 17);
             this.rbUnitSourceValue.TabIndex = 0;
@@ -229,9 +172,9 @@
             this.gbValueList.Controls.Add(this.cbValueList);
             this.gbValueList.Font = new System.Drawing.Font("Segoe UI", 8F);
             this.gbValueList.ForeColor = System.Drawing.Color.White;
-            this.gbValueList.Location = new System.Drawing.Point(285, 15);
+            this.gbValueList.Location = new System.Drawing.Point(276, 15);
             this.gbValueList.Name = "gbValueList";
-            this.gbValueList.Size = new System.Drawing.Size(184, 66);
+            this.gbValueList.Size = new System.Drawing.Size(128, 66);
             this.gbValueList.TabIndex = 167;
             this.gbValueList.TabStop = false;
             this.gbValueList.Text = "Value List";
@@ -246,7 +189,7 @@
             this.cbValueList.FormattingEnabled = true;
             this.cbValueList.Location = new System.Drawing.Point(9, 24);
             this.cbValueList.Name = "cbValueList";
-            this.cbValueList.Size = new System.Drawing.Size(169, 21);
+            this.cbValueList.Size = new System.Drawing.Size(110, 21);
             this.cbValueList.TabIndex = 87;
             this.cbValueList.Tag = "color:dark";
             this.cbValueList.SelectedIndexChanged += new System.EventHandler(this.cbValueList_SelectedIndexChanged);
@@ -261,7 +204,7 @@
             this.gbValueSettings.ForeColor = System.Drawing.Color.White;
             this.gbValueSettings.Location = new System.Drawing.Point(15, 91);
             this.gbValueSettings.Name = "gbValueSettings";
-            this.gbValueSettings.Size = new System.Drawing.Size(482, 90);
+            this.gbValueSettings.Size = new System.Drawing.Size(413, 90);
             this.gbValueSettings.TabIndex = 169;
             this.gbValueSettings.TabStop = false;
             this.gbValueSettings.Text = "Value Settings";
@@ -277,7 +220,7 @@
             this.gbValueRange.ForeColor = System.Drawing.Color.White;
             this.gbValueRange.Location = new System.Drawing.Point(107, 15);
             this.gbValueRange.Name = "gbValueRange";
-            this.gbValueRange.Size = new System.Drawing.Size(165, 66);
+            this.gbValueRange.Size = new System.Drawing.Size(155, 66);
             this.gbValueRange.TabIndex = 166;
             this.gbValueRange.TabStop = false;
             this.gbValueRange.Text = "Range";
@@ -312,7 +255,7 @@
             this.nmMaxValue.Hexadecimal = true;
             this.nmMaxValue.Location = new System.Drawing.Point(67, 38);
             this.nmMaxValue.Name = "nmMaxValue";
-            this.nmMaxValue.Size = new System.Drawing.Size(92, 20);
+            this.nmMaxValue.Size = new System.Drawing.Size(77, 20);
             this.nmMaxValue.TabIndex = 168;
             this.nmMaxValue.Tag = "color:dark";
             this.nmMaxValue.Value = new decimal(new int[] {
@@ -330,7 +273,7 @@
             this.nmMinValue.Hexadecimal = true;
             this.nmMinValue.Location = new System.Drawing.Point(67, 13);
             this.nmMinValue.Name = "nmMinValue";
-            this.nmMinValue.Size = new System.Drawing.Size(92, 20);
+            this.nmMinValue.Size = new System.Drawing.Size(77, 20);
             this.nmMinValue.TabIndex = 167;
             this.nmMinValue.Tag = "color:dark";
             this.nmMinValue.ValueChanged += new System.EventHandler(this.nmMinValue_ValueChanged);
@@ -403,9 +346,9 @@
             this.gbLimiterList.Controls.Add(this.cbLimiterList);
             this.gbLimiterList.Font = new System.Drawing.Font("Segoe UI", 8F);
             this.gbLimiterList.ForeColor = System.Drawing.Color.White;
-            this.gbLimiterList.Location = new System.Drawing.Point(300, 186);
+            this.gbLimiterList.Location = new System.Drawing.Point(193, 187);
             this.gbLimiterList.Name = "gbLimiterList";
-            this.gbLimiterList.Size = new System.Drawing.Size(197, 115);
+            this.gbLimiterList.Size = new System.Drawing.Size(235, 120);
             this.gbLimiterList.TabIndex = 181;
             this.gbLimiterList.TabStop = false;
             this.gbLimiterList.Text = "Limiter List";
@@ -418,9 +361,9 @@
             this.groupBox2.Controls.Add(this.rbLimiterNone);
             this.groupBox2.Font = new System.Drawing.Font("Segoe UI", 8F);
             this.groupBox2.ForeColor = System.Drawing.Color.White;
-            this.groupBox2.Location = new System.Drawing.Point(0, 39);
+            this.groupBox2.Location = new System.Drawing.Point(0, 40);
             this.groupBox2.Name = "groupBox2";
-            this.groupBox2.Size = new System.Drawing.Size(95, 76);
+            this.groupBox2.Size = new System.Drawing.Size(104, 80);
             this.groupBox2.TabIndex = 188;
             this.groupBox2.TabStop = false;
             this.groupBox2.Text = "Limiter Time";
@@ -430,7 +373,7 @@
             this.rbLimiterExecute.AutoSize = true;
             this.rbLimiterExecute.Font = new System.Drawing.Font("Segoe UI", 8F);
             this.rbLimiterExecute.ForeColor = System.Drawing.Color.White;
-            this.rbLimiterExecute.Location = new System.Drawing.Point(6, 57);
+            this.rbLimiterExecute.Location = new System.Drawing.Point(6, 59);
             this.rbLimiterExecute.Name = "rbLimiterExecute";
             this.rbLimiterExecute.Size = new System.Drawing.Size(64, 17);
             this.rbLimiterExecute.TabIndex = 186;
@@ -443,7 +386,7 @@
             this.rbLimiterGenerate.AutoSize = true;
             this.rbLimiterGenerate.Font = new System.Drawing.Font("Segoe UI", 8F);
             this.rbLimiterGenerate.ForeColor = System.Drawing.Color.White;
-            this.rbLimiterGenerate.Location = new System.Drawing.Point(6, 27);
+            this.rbLimiterGenerate.Location = new System.Drawing.Point(6, 29);
             this.rbLimiterGenerate.Name = "rbLimiterGenerate";
             this.rbLimiterGenerate.Size = new System.Drawing.Size(72, 17);
             this.rbLimiterGenerate.TabIndex = 183;
@@ -456,7 +399,7 @@
             this.rbLimiterFirstExecute.AutoSize = true;
             this.rbLimiterFirstExecute.Font = new System.Drawing.Font("Segoe UI", 8F);
             this.rbLimiterFirstExecute.ForeColor = System.Drawing.Color.White;
-            this.rbLimiterFirstExecute.Location = new System.Drawing.Point(6, 42);
+            this.rbLimiterFirstExecute.Location = new System.Drawing.Point(6, 44);
             this.rbLimiterFirstExecute.Name = "rbLimiterFirstExecute";
             this.rbLimiterFirstExecute.Size = new System.Drawing.Size(89, 17);
             this.rbLimiterFirstExecute.TabIndex = 184;
@@ -470,7 +413,7 @@
             this.rbLimiterNone.Checked = true;
             this.rbLimiterNone.Font = new System.Drawing.Font("Segoe UI", 8F);
             this.rbLimiterNone.ForeColor = System.Drawing.Color.White;
-            this.rbLimiterNone.Location = new System.Drawing.Point(6, 12);
+            this.rbLimiterNone.Location = new System.Drawing.Point(6, 14);
             this.rbLimiterNone.Name = "rbLimiterNone";
             this.rbLimiterNone.Size = new System.Drawing.Size(53, 17);
             this.rbLimiterNone.TabIndex = 187;
@@ -488,9 +431,9 @@
             this.gbStoreCompare.Enabled = false;
             this.gbStoreCompare.Font = new System.Drawing.Font("Segoe UI", 8F);
             this.gbStoreCompare.ForeColor = System.Drawing.Color.White;
-            this.gbStoreCompare.Location = new System.Drawing.Point(100, 47);
+            this.gbStoreCompare.Location = new System.Drawing.Point(122, 52);
             this.gbStoreCompare.Name = "gbStoreCompare";
-            this.gbStoreCompare.Size = new System.Drawing.Size(97, 68);
+            this.gbStoreCompare.Size = new System.Drawing.Size(118, 68);
             this.gbStoreCompare.TabIndex = 184;
             this.gbStoreCompare.TabStop = false;
             this.gbStoreCompare.Text = "Store Compare";
@@ -515,9 +458,9 @@
             this.rbStoreModeSource.ForeColor = System.Drawing.Color.White;
             this.rbStoreModeSource.Location = new System.Drawing.Point(5, 30);
             this.rbStoreModeSource.Name = "rbStoreModeSource";
-            this.rbStoreModeSource.Size = new System.Drawing.Size(60, 17);
+            this.rbStoreModeSource.Size = new System.Drawing.Size(104, 17);
             this.rbStoreModeSource.TabIndex = 193;
-            this.rbStoreModeSource.Text = "Source";
+            this.rbStoreModeSource.Text = "Source Address";
             this.rbStoreModeSource.UseVisualStyleBackColor = true;
             this.rbStoreModeSource.CheckedChanged += new System.EventHandler(this.rbStoreLimiterMode_CheckChanged);
             // 
@@ -542,7 +485,7 @@
             this.cbLimiterInverted.AutoSize = true;
             this.cbLimiterInverted.Font = new System.Drawing.Font("Segoe UI", 8F);
             this.cbLimiterInverted.ForeColor = System.Drawing.Color.White;
-            this.cbLimiterInverted.Location = new System.Drawing.Point(129, 17);
+            this.cbLimiterInverted.Location = new System.Drawing.Point(127, 17);
             this.cbLimiterInverted.Name = "cbLimiterInverted";
             this.cbLimiterInverted.Size = new System.Drawing.Size(68, 17);
             this.cbLimiterInverted.TabIndex = 183;
@@ -565,26 +508,13 @@
             this.cbLimiterList.Tag = "color:dark";
             this.cbLimiterList.SelectedIndexChanged += new System.EventHandler(this.cbLimiterList_SelectedIndexChanged);
             // 
-            // cbClearRewind
-            // 
-            this.cbClearRewind.AutoSize = true;
-            this.cbClearRewind.Font = new System.Drawing.Font("Segoe UI", 8F);
-            this.cbClearRewind.ForeColor = System.Drawing.Color.White;
-            this.cbClearRewind.Location = new System.Drawing.Point(6, 35);
-            this.cbClearRewind.Name = "cbClearRewind";
-            this.cbClearRewind.Size = new System.Drawing.Size(111, 17);
-            this.cbClearRewind.TabIndex = 182;
-            this.cbClearRewind.Text = "Clear on Rewind";
-            this.cbClearRewind.UseVisualStyleBackColor = true;
-            this.cbClearRewind.CheckedChanged += new System.EventHandler(this.cbClearRewind_CheckedChanged);
-            // 
             // cbLoopUnit
             // 
             this.cbLoopUnit.AutoSize = true;
             this.cbLoopUnit.BackColor = System.Drawing.Color.Transparent;
             this.cbLoopUnit.Font = new System.Drawing.Font("Segoe UI", 8F);
             this.cbLoopUnit.ForeColor = System.Drawing.Color.White;
-            this.cbLoopUnit.Location = new System.Drawing.Point(9, 90);
+            this.cbLoopUnit.Location = new System.Drawing.Point(9, 91);
             this.cbLoopUnit.Name = "cbLoopUnit";
             this.cbLoopUnit.Size = new System.Drawing.Size(139, 17);
             this.cbLoopUnit.TabIndex = 183;
@@ -605,7 +535,7 @@
             this.gbStepSettings.ForeColor = System.Drawing.Color.White;
             this.gbStepSettings.Location = new System.Drawing.Point(15, 186);
             this.gbStepSettings.Name = "gbStepSettings";
-            this.gbStepSettings.Size = new System.Drawing.Size(148, 115);
+            this.gbStepSettings.Size = new System.Drawing.Size(150, 120);
             this.gbStepSettings.TabIndex = 188;
             this.gbStepSettings.TabStop = false;
             this.gbStepSettings.Text = "Modifiers";
@@ -626,7 +556,7 @@
             this.nmTilt.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
             this.nmTilt.Font = new System.Drawing.Font("Segoe UI", 8F);
             this.nmTilt.ForeColor = System.Drawing.Color.White;
-            this.nmTilt.Location = new System.Drawing.Point(72, 63);
+            this.nmTilt.Location = new System.Drawing.Point(74, 63);
             this.nmTilt.Maximum = new decimal(new int[] {
             -1981284353,
             -1966660860,
@@ -670,7 +600,7 @@
             this.nmDelay.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
             this.nmDelay.Font = new System.Drawing.Font("Segoe UI", 8F);
             this.nmDelay.ForeColor = System.Drawing.Color.White;
-            this.nmDelay.Location = new System.Drawing.Point(72, 38);
+            this.nmDelay.Location = new System.Drawing.Point(74, 38);
             this.nmDelay.Maximum = new decimal(new int[] {
             -1981284353,
             -1966660860,
@@ -687,7 +617,7 @@
             this.nmLifetime.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
             this.nmLifetime.Font = new System.Drawing.Font("Segoe UI", 8F);
             this.nmLifetime.ForeColor = System.Drawing.Color.White;
-            this.nmLifetime.Location = new System.Drawing.Point(72, 13);
+            this.nmLifetime.Location = new System.Drawing.Point(74, 13);
             this.nmLifetime.Maximum = new decimal(new int[] {
             -1981284353,
             -1966660860,
@@ -704,30 +634,15 @@
             0});
             this.nmLifetime.ValueChanged += new System.EventHandler(this.nmLifetime_ValueChanged);
             // 
-            // gbCheckBoxes
-            // 
-            this.gbCheckBoxes.Controls.Add(this.cbLockUnits);
-            this.gbCheckBoxes.Controls.Add(this.cbClearRewind);
-            this.gbCheckBoxes.Controls.Add(this.nmMaxInfinite);
-            this.gbCheckBoxes.Controls.Add(this.label1);
-            this.gbCheckBoxes.Font = new System.Drawing.Font("Segoe UI", 8F);
-            this.gbCheckBoxes.ForeColor = System.Drawing.Color.White;
-            this.gbCheckBoxes.Location = new System.Drawing.Point(175, 186);
-            this.gbCheckBoxes.Name = "gbCheckBoxes";
-            this.gbCheckBoxes.Size = new System.Drawing.Size(118, 115);
-            this.gbCheckBoxes.TabIndex = 189;
-            this.gbCheckBoxes.TabStop = false;
-            this.gbCheckBoxes.Text = "Settings";
-            // 
             // gbStoreTime
             // 
             this.gbStoreTime.Controls.Add(this.rbStoreImmediate);
             this.gbStoreTime.Controls.Add(this.rbStoreFirstExecute);
             this.gbStoreTime.Font = new System.Drawing.Font("Segoe UI", 8F);
             this.gbStoreTime.ForeColor = System.Drawing.Color.White;
-            this.gbStoreTime.Location = new System.Drawing.Point(131, 15);
+            this.gbStoreTime.Location = new System.Drawing.Point(103, 15);
             this.gbStoreTime.Name = "gbStoreTime";
-            this.gbStoreTime.Size = new System.Drawing.Size(110, 55);
+            this.gbStoreTime.Size = new System.Drawing.Size(100, 55);
             this.gbStoreTime.TabIndex = 0;
             this.gbStoreTime.TabStop = false;
             this.gbStoreTime.Text = "Start Storing";
@@ -798,9 +713,9 @@
             this.gbStoreType.Controls.Add(this.rbStoreOnce);
             this.gbStoreType.Font = new System.Drawing.Font("Segoe UI", 8F);
             this.gbStoreType.ForeColor = System.Drawing.Color.White;
-            this.gbStoreType.Location = new System.Drawing.Point(252, 15);
+            this.gbStoreType.Location = new System.Drawing.Point(207, 15);
             this.gbStoreType.Name = "gbStoreType";
-            this.gbStoreType.Size = new System.Drawing.Size(110, 55);
+            this.gbStoreType.Size = new System.Drawing.Size(100, 55);
             this.gbStoreType.TabIndex = 183;
             this.gbStoreType.TabStop = false;
             this.gbStoreType.Text = "Store Type";
@@ -844,9 +759,9 @@
             this.gbStoreSettings.Enabled = false;
             this.gbStoreSettings.Font = new System.Drawing.Font("Segoe UI", 8F);
             this.gbStoreSettings.ForeColor = System.Drawing.Color.White;
-            this.gbStoreSettings.Location = new System.Drawing.Point(122, 12);
+            this.gbStoreSettings.Location = new System.Drawing.Point(112, 12);
             this.gbStoreSettings.Name = "gbStoreSettings";
-            this.gbStoreSettings.Size = new System.Drawing.Size(375, 80);
+            this.gbStoreSettings.Size = new System.Drawing.Size(316, 80);
             this.gbStoreSettings.TabIndex = 180;
             this.gbStoreSettings.TabStop = false;
             this.gbStoreSettings.Text = "Store Settings";
@@ -859,27 +774,10 @@
             this.groupBox3.ForeColor = System.Drawing.Color.White;
             this.groupBox3.Location = new System.Drawing.Point(11, 15);
             this.groupBox3.Name = "groupBox3";
-            this.groupBox3.Size = new System.Drawing.Size(110, 55);
+            this.groupBox3.Size = new System.Drawing.Size(88, 55);
             this.groupBox3.TabIndex = 184;
             this.groupBox3.TabStop = false;
             this.groupBox3.Text = "Store Source";
-            // 
-            // btnResetConfig
-            // 
-            this.btnResetConfig.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(224)))), ((int)(((byte)(224)))), ((int)(((byte)(224)))));
-            this.btnResetConfig.FlatAppearance.BorderSize = 0;
-            this.btnResetConfig.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btnResetConfig.Font = new System.Drawing.Font("Segoe UI", 8F);
-            this.btnResetConfig.ForeColor = System.Drawing.Color.Black;
-            this.btnResetConfig.Location = new System.Drawing.Point(349, 307);
-            this.btnResetConfig.Name = "btnResetConfig";
-            this.btnResetConfig.Size = new System.Drawing.Size(148, 24);
-            this.btnResetConfig.TabIndex = 190;
-            this.btnResetConfig.TabStop = false;
-            this.btnResetConfig.Tag = "color:light";
-            this.btnResetConfig.Text = "Reset Config";
-            this.btnResetConfig.UseVisualStyleBackColor = false;
-            this.btnResetConfig.Click += new System.EventHandler(this.btnResetConfig_Click);
             // 
             // pnTopBar
             // 
@@ -892,7 +790,7 @@
             this.pnTopBar.Dock = System.Windows.Forms.DockStyle.Top;
             this.pnTopBar.Location = new System.Drawing.Point(0, 0);
             this.pnTopBar.Name = "pnTopBar";
-            this.pnTopBar.Size = new System.Drawing.Size(524, 51);
+            this.pnTopBar.Size = new System.Drawing.Size(464, 51);
             this.pnTopBar.TabIndex = 191;
             this.pnTopBar.Tag = "color:normal";
             // 
@@ -903,9 +801,9 @@
             this.btnCustomTemplateSaveAs.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnCustomTemplateSaveAs.Font = new System.Drawing.Font("Segoe UI", 8F);
             this.btnCustomTemplateSaveAs.ForeColor = System.Drawing.Color.Black;
-            this.btnCustomTemplateSaveAs.Location = new System.Drawing.Point(376, 11);
+            this.btnCustomTemplateSaveAs.Location = new System.Drawing.Point(339, 14);
             this.btnCustomTemplateSaveAs.Name = "btnCustomTemplateSaveAs";
-            this.btnCustomTemplateSaveAs.Size = new System.Drawing.Size(64, 30);
+            this.btnCustomTemplateSaveAs.Size = new System.Drawing.Size(65, 25);
             this.btnCustomTemplateSaveAs.TabIndex = 193;
             this.btnCustomTemplateSaveAs.TabStop = false;
             this.btnCustomTemplateSaveAs.Tag = "";
@@ -921,9 +819,9 @@
             this.btnCustomTemplateLoad.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnCustomTemplateLoad.Font = new System.Drawing.Font("Segoe UI", 8F);
             this.btnCustomTemplateLoad.ForeColor = System.Drawing.Color.Black;
-            this.btnCustomTemplateLoad.Location = new System.Drawing.Point(315, 11);
+            this.btnCustomTemplateLoad.Location = new System.Drawing.Point(278, 14);
             this.btnCustomTemplateLoad.Name = "btnCustomTemplateLoad";
-            this.btnCustomTemplateLoad.Size = new System.Drawing.Size(55, 30);
+            this.btnCustomTemplateLoad.Size = new System.Drawing.Size(55, 25);
             this.btnCustomTemplateLoad.TabIndex = 192;
             this.btnCustomTemplateLoad.TabStop = false;
             this.btnCustomTemplateLoad.Tag = "";
@@ -940,9 +838,9 @@
             this.btnCustomTemplateSave.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnCustomTemplateSave.Font = new System.Drawing.Font("Segoe UI", 8F);
             this.btnCustomTemplateSave.ForeColor = System.Drawing.Color.DimGray;
-            this.btnCustomTemplateSave.Location = new System.Drawing.Point(446, 11);
+            this.btnCustomTemplateSave.Location = new System.Drawing.Point(406, 14);
             this.btnCustomTemplateSave.Name = "btnCustomTemplateSave";
-            this.btnCustomTemplateSave.Size = new System.Drawing.Size(50, 30);
+            this.btnCustomTemplateSave.Size = new System.Drawing.Size(50, 25);
             this.btnCustomTemplateSave.TabIndex = 191;
             this.btnCustomTemplateSave.TabStop = false;
             this.btnCustomTemplateSave.Tag = "";
@@ -987,26 +885,39 @@
             // panel1
             // 
             this.panel1.BackColor = System.Drawing.Color.Gray;
+            this.panel1.Controls.Add(this.cbClearRewind);
             this.panel1.Controls.Add(this.gbUnitSource);
             this.panel1.Controls.Add(this.btnClearActive);
-            this.panel1.Controls.Add(this.btnResetConfig);
-            this.panel1.Controls.Add(this.gbCheckBoxes);
             this.panel1.Controls.Add(this.gbStoreSettings);
             this.panel1.Controls.Add(this.gbStepSettings);
             this.panel1.Controls.Add(this.gbLimiterList);
             this.panel1.Controls.Add(this.gbValueSettings);
             this.panel1.Location = new System.Drawing.Point(12, 61);
             this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(505, 340);
+            this.panel1.Size = new System.Drawing.Size(441, 340);
             this.panel1.TabIndex = 192;
             this.panel1.Tag = "color:normal";
+            // 
+            // cbClearRewind
+            // 
+            this.cbClearRewind.AutoSize = true;
+            this.cbClearRewind.BackColor = System.Drawing.Color.Transparent;
+            this.cbClearRewind.Font = new System.Drawing.Font("Segoe UI", 8F);
+            this.cbClearRewind.ForeColor = System.Drawing.Color.White;
+            this.cbClearRewind.Location = new System.Drawing.Point(24, 315);
+            this.cbClearRewind.Name = "cbClearRewind";
+            this.cbClearRewind.Size = new System.Drawing.Size(167, 17);
+            this.cbClearRewind.TabIndex = 192;
+            this.cbClearRewind.Text = "Clear Step Units on Rewind";
+            this.cbClearRewind.UseVisualStyleBackColor = false;
+            this.cbClearRewind.CheckedChanged += new System.EventHandler(this.CbClearRewind_CheckedChanged);
             // 
             // RTC_CustomEngineConfig_Form
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
-            this.ClientSize = new System.Drawing.Size(524, 413);
+            this.ClientSize = new System.Drawing.Size(464, 411);
             this.Controls.Add(this.panel1);
             this.Controls.Add(this.pnTopBar);
             this.Font = new System.Drawing.Font("Segoe UI Symbol", 8.25F);
@@ -1018,7 +929,6 @@
             this.Text = "Custom Engine Config";
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.RTC_CustomEngineConfig_Form_FormClosing);
             this.Load += new System.EventHandler(this.RTC_CustomEngineConfig_Form_Load);
-            ((System.ComponentModel.ISupportInitialize)(this.nmMaxInfinite)).EndInit();
             this.gbUnitSource.ResumeLayout(false);
             this.gbUnitSource.PerformLayout();
             this.gbValueList.ResumeLayout(false);
@@ -1040,8 +950,6 @@
             ((System.ComponentModel.ISupportInitialize)(this.nmTilt)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.nmDelay)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.nmLifetime)).EndInit();
-            this.gbCheckBoxes.ResumeLayout(false);
-            this.gbCheckBoxes.PerformLayout();
             this.gbStoreTime.ResumeLayout(false);
             this.gbStoreTime.PerformLayout();
             this.gbStoreType.ResumeLayout(false);
@@ -1052,15 +960,13 @@
             this.pnTopBar.ResumeLayout(false);
             this.pnTopBar.PerformLayout();
             this.panel1.ResumeLayout(false);
+            this.panel1.PerformLayout();
             this.ResumeLayout(false);
 
 		}
 
 		#endregion
-		public System.Windows.Forms.CheckBox cbLockUnits;
 		private System.Windows.Forms.Button btnClearActive;
-		public System.Windows.Forms.NumericUpDown nmMaxInfinite;
-		private System.Windows.Forms.Label label1;
 		private System.Windows.Forms.GroupBox gbUnitSource;
 		private System.Windows.Forms.RadioButton rbUnitSourceStore;
 		private System.Windows.Forms.RadioButton rbUnitSourceValue;
@@ -1075,7 +981,6 @@
 		private System.Windows.Forms.RadioButton rbLimiterFirstExecute;
 		private System.Windows.Forms.RadioButton rbLimiterGenerate;
 		public System.Windows.Forms.ComboBox cbLimiterList;
-		public System.Windows.Forms.CheckBox cbClearRewind;
 		public System.Windows.Forms.CheckBox cbLoopUnit;
 		private System.Windows.Forms.RadioButton rbLimiterNone;
 		private System.Windows.Forms.GroupBox gbStepSettings;
@@ -1083,7 +988,6 @@
 		private System.Windows.Forms.Label label10;
 		public System.Windows.Forms.NumericUpDown nmDelay;
 		public System.Windows.Forms.NumericUpDown nmLifetime;
-		private System.Windows.Forms.GroupBox gbCheckBoxes;
 		private System.Windows.Forms.Label label11;
 		public System.Windows.Forms.NumericUpDown nmTilt;
 		private System.Windows.Forms.GroupBox gbStoreTime;
@@ -1101,7 +1005,6 @@
 		public NumericUpDownHexFix nmMaxValue;
 		public NumericUpDownHexFix nmMinValue;
 		public System.Windows.Forms.CheckBox cbLimiterInverted;
-		private System.Windows.Forms.Button btnResetConfig;
 		private System.Windows.Forms.Panel pnTopBar;
 		private System.Windows.Forms.Panel panel1;
 		private System.Windows.Forms.Button btnCustomTemplateSaveAs;
@@ -1116,5 +1019,6 @@
 		private System.Windows.Forms.GroupBox groupBox2;
 		private System.Windows.Forms.GroupBox groupBox3;
 		private System.Windows.Forms.GroupBox gbValueSource;
+		public System.Windows.Forms.CheckBox cbClearRewind;
 	}
 }

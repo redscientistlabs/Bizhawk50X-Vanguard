@@ -809,7 +809,7 @@ namespace RTCV.CorruptCore
 			return ObjectCopierCeras.Clone(this);
 		}
 
-		public void Apply(bool storeUncorruptBackup, bool ignoreMaximums = false)
+		public void Apply(bool storeUncorruptBackup, bool autoCorrupt = false)
 		{
 			if (storeUncorruptBackup && this != StockpileManager_EmuSide.UnCorruptBL)
 				StockpileManager_EmuSide.UnCorruptBL = GetBackup();
@@ -845,7 +845,7 @@ namespace RTCV.CorruptCore
 			}
 			finally
 			{
-				if (!ignoreMaximums)
+				if (autoCorrupt)
 				{
 					StepActions.RemoveExcessInfiniteStepUnits();
 				}

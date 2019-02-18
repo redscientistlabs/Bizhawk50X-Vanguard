@@ -497,11 +497,6 @@ namespace RTCV.CorruptCore
 
 						long intensity = CorruptCore.Intensity; //general RTC intensity
 
-						if ((CorruptCore.SelectedEngine == CorruptionEngine.HELLGENIE ||
-								CorruptCore.SelectedEngine == CorruptionEngine.FREEZE ||
-								CorruptCore.SelectedEngine == CorruptionEngine.PIPE) &&
-							intensity > StepActions.MaxInfiniteBlastUnits)
-							intensity = StepActions.MaxInfiniteBlastUnits; //Capping for cheat max
 
 						switch (CorruptCore.Radius) //Algorithm branching
 						{

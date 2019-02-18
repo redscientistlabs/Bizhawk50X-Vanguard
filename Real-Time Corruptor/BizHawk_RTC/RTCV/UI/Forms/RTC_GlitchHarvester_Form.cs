@@ -1097,7 +1097,8 @@ namespace RTCV.UI
 				ContextMenuStrip rerollMenu = new ContextMenuStrip();
 				rerollMenu.Items.Add("Configure Reroll", null, new EventHandler((ob, ev) =>
 				{
-					new RTC_SettingsReroll_Form().Show();
+					S.GET<RTC_Settings_Form>().lbForm.SetFocusedForm(S.GET<RTC_SettingsCorrupt_Form>());
+					S.GET<RTC_Core_Form>().ShowPanelForm(S.GET<RTC_Settings_Form>(), false);
 				}));
 
 				rerollMenu.Show(this, locate);

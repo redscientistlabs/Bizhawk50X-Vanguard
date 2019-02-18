@@ -49,9 +49,9 @@
             this.pnDetachedModeSettings.BackColor = System.Drawing.Color.Gray;
             this.pnDetachedModeSettings.Controls.Add(this.groupBox2);
             this.pnDetachedModeSettings.Controls.Add(this.groupBox1);
-            this.pnDetachedModeSettings.Location = new System.Drawing.Point(33, 39);
+            this.pnDetachedModeSettings.Location = new System.Drawing.Point(80, 40);
             this.pnDetachedModeSettings.Name = "pnDetachedModeSettings";
-            this.pnDetachedModeSettings.Size = new System.Drawing.Size(232, 189);
+            this.pnDetachedModeSettings.Size = new System.Drawing.Size(250, 190);
             this.pnDetachedModeSettings.TabIndex = 132;
             this.pnDetachedModeSettings.Tag = "color:normal";
             // 
@@ -61,9 +61,9 @@
             this.groupBox2.Controls.Add(this.label1);
             this.groupBox2.Font = new System.Drawing.Font("Segoe UI Semibold", 9F);
             this.groupBox2.ForeColor = System.Drawing.Color.White;
-            this.groupBox2.Location = new System.Drawing.Point(15, 7);
+            this.groupBox2.Location = new System.Drawing.Point(10, 4);
             this.groupBox2.Name = "groupBox2";
-            this.groupBox2.Size = new System.Drawing.Size(201, 82);
+            this.groupBox2.Size = new System.Drawing.Size(230, 88);
             this.groupBox2.TabIndex = 125;
             this.groupBox2.TabStop = false;
             this.groupBox2.Text = "NetCore";
@@ -106,9 +106,9 @@
             this.groupBox1.Controls.Add(this.nmGameProtectionDelay);
             this.groupBox1.Font = new System.Drawing.Font("Segoe UI Semibold", 9F);
             this.groupBox1.ForeColor = System.Drawing.Color.White;
-            this.groupBox1.Location = new System.Drawing.Point(15, 95);
+            this.groupBox1.Location = new System.Drawing.Point(10, 97);
             this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(201, 81);
+            this.groupBox1.Size = new System.Drawing.Size(230, 88);
             this.groupBox1.TabIndex = 124;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Game Protection";
@@ -151,7 +151,7 @@
             this.nmGameProtectionDelay.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
             this.nmGameProtectionDelay.Font = new System.Drawing.Font("Segoe UI", 9.75F);
             this.nmGameProtectionDelay.ForeColor = System.Drawing.Color.White;
-            this.nmGameProtectionDelay.Location = new System.Drawing.Point(54, 42);
+            this.nmGameProtectionDelay.Location = new System.Drawing.Point(47, 41);
             this.nmGameProtectionDelay.Maximum = new decimal(new int[] {
             60,
             0,
@@ -163,7 +163,7 @@
             0,
             0});
             this.nmGameProtectionDelay.Name = "nmGameProtectionDelay";
-            this.nmGameProtectionDelay.Size = new System.Drawing.Size(37, 25);
+            this.nmGameProtectionDelay.Size = new System.Drawing.Size(45, 25);
             this.nmGameProtectionDelay.TabIndex = 114;
             this.nmGameProtectionDelay.Tag = "color:dark";
             this.nmGameProtectionDelay.Value = new decimal(new int[] {
@@ -180,7 +180,7 @@
             this.lbDetachedModeSettings.AutoSize = true;
             this.lbDetachedModeSettings.Font = new System.Drawing.Font("Segoe UI Semibold", 9F);
             this.lbDetachedModeSettings.ForeColor = System.Drawing.Color.White;
-            this.lbDetachedModeSettings.Location = new System.Drawing.Point(37, 23);
+            this.lbDetachedModeSettings.Location = new System.Drawing.Point(81, 22);
             this.lbDetachedModeSettings.Name = "lbDetachedModeSettings";
             this.lbDetachedModeSettings.Size = new System.Drawing.Size(138, 15);
             this.lbDetachedModeSettings.TabIndex = 133;
@@ -191,7 +191,7 @@
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
-            this.ClientSize = new System.Drawing.Size(296, 366);
+            this.ClientSize = new System.Drawing.Size(412, 352);
             this.Controls.Add(this.pnDetachedModeSettings);
             this.Controls.Add(this.lbDetachedModeSettings);
             this.DoubleBuffered = true;

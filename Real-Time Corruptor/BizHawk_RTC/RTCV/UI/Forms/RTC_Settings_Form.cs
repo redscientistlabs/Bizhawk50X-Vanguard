@@ -15,7 +15,7 @@ namespace RTCV.UI
 	public partial class RTC_Settings_Form : Form, IAutoColorize
 	{
 
-		RTC_ListBox_Form lbForm;
+		public RTC_ListBox_Form lbForm;
 
 		public RTC_Settings_Form()
 		{
@@ -23,8 +23,9 @@ namespace RTCV.UI
 
 			lbForm = new RTC_ListBox_Form(new ComponentForm[]{
 				S.GET<RTC_SettingsGeneral_Form>(),
+				S.GET<RTC_SettingsCorrupt_Form>(),
 				S.GET<RTC_SettingsNetCore_Form>(),
-			 	S.GET<RTC_SettingsAbout_Form>(),
+				S.GET<RTC_SettingsAbout_Form>(),
 			})
 			{
 				popoutAllowed = false

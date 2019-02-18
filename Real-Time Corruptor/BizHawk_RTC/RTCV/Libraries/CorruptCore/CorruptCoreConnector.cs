@@ -148,7 +148,7 @@ namespace RTCV.CorruptCore
 					bool backup = (bool)temp[1];
 					SyncObjectSingleton.FormExecute((o, ea) =>
 					{
-						bl.Apply(backup);
+						bl.Apply(backup, true);
 					});
 						break;
 				}
@@ -347,13 +347,9 @@ namespace RTCV.CorruptCore
 					});
 					break;
 
-
-					
 				case REMOTE_HOTKEY_MANUALBLAST:
 					LocalNetCoreRouter.Route(NetcoreCommands.CORRUPTCORE, ASYNCBLAST);
 					break;
-
-
 
 				default:
 					new object();

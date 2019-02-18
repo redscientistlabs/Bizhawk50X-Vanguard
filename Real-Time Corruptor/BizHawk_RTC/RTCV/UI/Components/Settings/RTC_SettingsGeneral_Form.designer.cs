@@ -49,9 +49,9 @@
             this.btnImportKeyBindings.ForeColor = System.Drawing.Color.Black;
             this.btnImportKeyBindings.Image = ((System.Drawing.Image)(resources.GetObject("btnImportKeyBindings.Image")));
             this.btnImportKeyBindings.ImageAlign = System.Drawing.ContentAlignment.MiddleRight;
-            this.btnImportKeyBindings.Location = new System.Drawing.Point(29, 31);
+            this.btnImportKeyBindings.Location = new System.Drawing.Point(80, 21);
             this.btnImportKeyBindings.Name = "btnImportKeyBindings";
-            this.btnImportKeyBindings.Size = new System.Drawing.Size(238, 45);
+            this.btnImportKeyBindings.Size = new System.Drawing.Size(250, 45);
             this.btnImportKeyBindings.TabIndex = 137;
             this.btnImportKeyBindings.Tag = "color:light";
             this.btnImportKeyBindings.Text = "   Import key bindings";
@@ -65,9 +65,9 @@
             this.panel1.Controls.Add(this.cbDontCleanAtQuit);
             this.panel1.Controls.Add(this.cbAllowCrossCoreCorruption);
             this.panel1.Controls.Add(this.cbDisableBizhawkOSD);
-            this.panel1.Location = new System.Drawing.Point(28, 210);
+            this.panel1.Location = new System.Drawing.Point(80, 198);
             this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(239, 129);
+            this.panel1.Size = new System.Drawing.Size(250, 88);
             this.panel1.TabIndex = 138;
             this.panel1.Tag = "color:normal";
             // 
@@ -117,7 +117,7 @@
             this.label4.AutoSize = true;
             this.label4.Font = new System.Drawing.Font("Segoe UI Semibold", 9F);
             this.label4.ForeColor = System.Drawing.Color.White;
-            this.label4.Location = new System.Drawing.Point(29, 192);
+            this.label4.Location = new System.Drawing.Point(77, 180);
             this.label4.Name = "label4";
             this.label4.Size = new System.Drawing.Size(117, 15);
             this.label4.TabIndex = 139;
@@ -132,9 +132,9 @@
             this.btnChangeRTCColor.ForeColor = System.Drawing.Color.Black;
             this.btnChangeRTCColor.Image = ((System.Drawing.Image)(resources.GetObject("btnChangeRTCColor.Image")));
             this.btnChangeRTCColor.ImageAlign = System.Drawing.ContentAlignment.MiddleRight;
-            this.btnChangeRTCColor.Location = new System.Drawing.Point(29, 133);
+            this.btnChangeRTCColor.Location = new System.Drawing.Point(80, 123);
             this.btnChangeRTCColor.Name = "btnChangeRTCColor";
-            this.btnChangeRTCColor.Size = new System.Drawing.Size(238, 45);
+            this.btnChangeRTCColor.Size = new System.Drawing.Size(250, 45);
             this.btnChangeRTCColor.TabIndex = 136;
             this.btnChangeRTCColor.Tag = "color:light";
             this.btnChangeRTCColor.Text = "   Change color theme";
@@ -151,9 +151,9 @@
             this.btnOpenOnlineWiki.ForeColor = System.Drawing.Color.Black;
             this.btnOpenOnlineWiki.Image = ((System.Drawing.Image)(resources.GetObject("btnOpenOnlineWiki.Image")));
             this.btnOpenOnlineWiki.ImageAlign = System.Drawing.ContentAlignment.MiddleRight;
-            this.btnOpenOnlineWiki.Location = new System.Drawing.Point(29, 82);
+            this.btnOpenOnlineWiki.Location = new System.Drawing.Point(80, 72);
             this.btnOpenOnlineWiki.Name = "btnOpenOnlineWiki";
-            this.btnOpenOnlineWiki.Size = new System.Drawing.Size(238, 45);
+            this.btnOpenOnlineWiki.Size = new System.Drawing.Size(250, 45);
             this.btnOpenOnlineWiki.TabIndex = 135;
             this.btnOpenOnlineWiki.Tag = "color:light";
             this.btnOpenOnlineWiki.Text = "    Open the online wiki";
@@ -166,7 +166,7 @@
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
-            this.ClientSize = new System.Drawing.Size(296, 366);
+            this.ClientSize = new System.Drawing.Size(412, 352);
             this.Controls.Add(this.panel1);
             this.Controls.Add(this.label4);
             this.Controls.Add(this.btnImportKeyBindings);
