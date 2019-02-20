@@ -673,6 +673,8 @@ namespace RTC
 					if (RTC_Core.SelectedEngine == CorruptionEngine.PIPE && _Intensity > RTC_PipeEngine.MaxPipes)
 						_Intensity = RTC_PipeEngine.MaxPipes; //Capping for pipe max
 
+					MemoryInterface mi = RTC_MemoryDomains.GetInterface(Domain);
+
 					switch (Radius) //Algorithm branching
 					{
 						case BlastRadius.SPREAD: //Randomly spreads all corruption bytes to all selected domains
@@ -682,7 +684,7 @@ namespace RTC
 								Domain = _selectedDomains[RND.Next(_selectedDomains.Length)];
 
 								MaxAddress = RTC_MemoryDomains.GetInterface(Domain).Size;
-								RandomAddress = RTC_Core.RND.RandomLong(MaxAddress - 1);
+								RandomAddress = RTC_Core.RND.RandomLong(MaxAddress - (CustomPrecision != -1 ? CustomPrecision : mi.WordSize));
 
 								bu = getBlastUnit(Domain, RandomAddress);
 								if (bu != null)
@@ -699,7 +701,7 @@ namespace RTC
 
 							for (int i = 0; i < _Intensity; i++)
 							{
-								RandomAddress = RTC_Core.RND.RandomLong(MaxAddress - 1);
+								RandomAddress = RTC_Core.RND.RandomLong(MaxAddress - (CustomPrecision != -1 ? CustomPrecision : mi.WordSize));
 
 								bu = getBlastUnit(Domain, RandomAddress);
 								if (bu != null)
@@ -718,7 +720,7 @@ namespace RTC
 
 								for (int i = 0; i < (int)((double)_Intensity / 10); i++)
 								{
-									RandomAddress = RTC_Core.RND.RandomLong(MaxAddress - 1);
+									RandomAddress = RTC_Core.RND.RandomLong(MaxAddress - (CustomPrecision != -1 ? CustomPrecision : mi.WordSize));
 
 									bu = getBlastUnit(Domain, RandomAddress);
 									if (bu != null)
@@ -752,7 +754,7 @@ namespace RTC
 								for (int j = 0; j < (_Intensity / normalized); j++)
 								{
 									MaxAddress = RTC_MemoryDomains.GetInterface(Domain).Size;
-									RandomAddress = RTC_Core.RND.RandomLong(MaxAddress - 1);
+									RandomAddress = RTC_Core.RND.RandomLong(MaxAddress - (CustomPrecision != -1 ? CustomPrecision : mi.WordSize));
 
 									bu = getBlastUnit(Domain, RandomAddress);
 									if (bu != null)
@@ -780,7 +782,7 @@ namespace RTC
 								for (int j = 0; j < normalizedIntensity[i]; j++)
 								{
 									MaxAddress = RTC_MemoryDomains.GetInterface(Domain).Size;
-									RandomAddress = RTC_Core.RND.RandomLong(MaxAddress - 1);
+									RandomAddress = RTC_Core.RND.RandomLong(MaxAddress - (CustomPrecision != -1 ? CustomPrecision : mi.WordSize));
 
 									bu = getBlastUnit(Domain, RandomAddress);
 									if (bu != null)
@@ -799,7 +801,7 @@ namespace RTC
 								for (int j = 0; j < (_Intensity / _selectedDomains.Length); j++)
 								{
 									MaxAddress = RTC_MemoryDomains.GetInterface(Domain).Size;
-									RandomAddress = RTC_Core.RND.RandomLong(MaxAddress - 1);
+									RandomAddress = RTC_Core.RND.RandomLong(MaxAddress - (CustomPrecision != -1 ? CustomPrecision : mi.WordSize));
 
 									bu = getBlastUnit(Domain, RandomAddress);
 									if (bu != null)
