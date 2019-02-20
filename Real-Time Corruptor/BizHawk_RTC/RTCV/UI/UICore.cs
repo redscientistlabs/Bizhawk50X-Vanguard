@@ -186,7 +186,7 @@ namespace RTCV.UI
 				Stockpile.EmptyFolder(Path.DirectorySeparatorChar + "WORKING" + Path.DirectorySeparatorChar);
 			}
 
-			Application.Exit();
+			Environment.Exit(-1);
 		}
 
 		public static void SetRTCHexadecimal(bool useHex, Form form = null)

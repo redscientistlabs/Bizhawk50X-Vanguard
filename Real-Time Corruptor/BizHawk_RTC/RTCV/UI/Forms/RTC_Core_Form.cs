@@ -473,7 +473,7 @@ Environment.NewLine + "───█───▌────────▐▀─
 			ShowPanelForm(S.GET<RTC_ConnectionStatus_Form>());
 
 			S.GET<RTC_Core_Form>().pbAutoKillSwitchTimeout.Value = S.GET<RTC_Core_Form>().pbAutoKillSwitchTimeout.Maximum;
-
+			AutoKillSwitch.ShouldKillswitchFire = true;
 			AutoKillSwitch.KillEmulator(btnAutoKillSwitchExecute.Text.ToUpper());
 		}
 

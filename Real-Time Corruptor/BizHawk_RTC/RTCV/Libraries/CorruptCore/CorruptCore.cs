@@ -19,7 +19,7 @@ namespace RTCV.CorruptCore
 	public static class CorruptCore
 	{
 		//General RTC Values
-		public static string RtcVersion = "3.42";
+		public static string RtcVersion = "3.42b";
 
 		public static Random RND = new Random();
 		public static bool Attached = false;
@@ -497,11 +497,6 @@ namespace RTCV.CorruptCore
 
 						long intensity = CorruptCore.Intensity; //general RTC intensity
 
-						if ((CorruptCore.SelectedEngine == CorruptionEngine.HELLGENIE ||
-								CorruptCore.SelectedEngine == CorruptionEngine.FREEZE ||
-								CorruptCore.SelectedEngine == CorruptionEngine.PIPE) &&
-							intensity > StepActions.MaxInfiniteBlastUnits)
-							intensity = StepActions.MaxInfiniteBlastUnits; //Capping for cheat max
 
 						switch (CorruptCore.Radius) //Algorithm branching
 						{

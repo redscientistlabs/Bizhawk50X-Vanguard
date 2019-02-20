@@ -18,7 +18,7 @@ namespace RTCV.UI
 	{
 		public static int MaxMissedPulses = 15;
 		private static Timer killswitchSpamPreventTimer;
-		private static bool shouldKillswitchFire = true;
+		public static bool ShouldKillswitchFire = true;
 
 		public static bool Enabled
 		{
@@ -58,17 +58,15 @@ namespace RTCV.UI
 
 		public static void KillEmulator(string str)
 		{
-			if (!shouldKillswitchFire)
+			if (!ShouldKillswitchFire)
 				return; 
 
-			if (killswitchSpamPreventTimer == null)
-			{
-				killswitchSpamPreventTimer = new Timer();
-				killswitchSpamPreventTimer.Interval = Debugger.IsAttached ? 300000 : 3000;
-				killswitchSpamPreventTimer.Tick += KillswitchSpamPreventTimer_Tick;
-			}
+			killswitchSpamPreventTimer = new Timer();
+			killswitchSpamPreventTimer.Interval = Debugger.IsAttached ? 300000 : 3000;
+			killswitchSpamPreventTimer.Tick += KillswitchSpamPreventTimer_Tick;
 			killswitchSpamPreventTimer.Start();
-			shouldKillswitchFire = false;
+
+			ShouldKillswitchFire = false;
 
 			PlayCrashSound(true);
 			switch (str)
@@ -83,7 +81,7 @@ namespace RTCV.UI
 		}
 		private static void KillswitchSpamPreventTimer_Tick(object sender, EventArgs e)
 		{
-			shouldKillswitchFire = true;
+			ShouldKillswitchFire = true;
 			killswitchSpamPreventTimer.Stop();
 		}
 

@@ -2953,6 +2953,9 @@ namespace BizHawk.Client.EmuHawk
 
 				Global.CheatList.Pulse();
 
+				//Step for frame 0. Note the true on the end. We handle doing nothing for any step after the first one in the method itself
+				Vanguard.Hooks.CPU_STEP(isRewinding, isFastForwarding, true);
+
 				// zero 03-may-2014 - moved this before call to UpdateToolsBefore(), since it seems to clear the state which a lua event.framestart is going to want to alter
 				Global.ClickyVirtualPadController.FrameTick();
 				Global.LuaAndAdaptor.FrameTick();
@@ -3034,8 +3037,6 @@ namespace BizHawk.Client.EmuHawk
 
 				Global.CheatList.Pulse();
 
-				//Step for frame 0. Note the true on the end. We handle doing nothing for any step after the first one in the method itself
-				Vanguard.Hooks.CPU_STEP(isRewinding, isFastForwarding, true);
 
 
 				if (IsLagFrame && Global.Config.AutofireLagFrames)

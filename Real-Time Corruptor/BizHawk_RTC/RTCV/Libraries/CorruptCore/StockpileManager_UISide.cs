@@ -105,32 +105,23 @@ namespace RTCV.CorruptCore
 			};
 
 
-			var watch = System.Diagnostics.Stopwatch.StartNew();
-			BlastLayer bl = LocalNetCoreRouter.QueryRoute<BlastLayer>(NetcoreCommands.CORRUPTCORE, NetcoreCommands.GENERATEBLASTLAYER, new object[]{(string[])RTCV.NetCore.AllSpec.UISpec["SELECTEDDOMAINS"], CurrentStashkey, true}, true);
-			watch.Stop();
-			Console.WriteLine($"It took " + watch.ElapsedMilliseconds + " ms to blastlayer");
-
-
+			BlastLayer bl = LocalNetCoreRouter.QueryRoute<BlastLayer>(NetcoreCommands.CORRUPTCORE, NetcoreCommands.GENERATEBLASTLAYER,
+				new object[]
+				{
+					(string[])RTCV.NetCore.AllSpec.UISpec["SELECTEDDOMAINS"],
+					CurrentStashkey,
+					_loadBeforeOperation,
+					true,
+					true
+				}, true);
 			bool isCorruptionApplied = bl?.Layer?.Count > 0;
 
-			if (_loadBeforeOperation)
-			{
-				//We don't need to reload the rom here because it's already been reloaded up above and since this is one sequential process, we can just load the state
-				if (!LoadState(CurrentStashkey, false, true, true))
-				{
-					CurrentStashkey.BlastLayer = bl;
-					return isCorruptionApplied;
-				}
-			}
-			else
-				LocalNetCoreRouter.Route(NetcoreCommands.CORRUPTCORE, NetcoreCommands.APPLYCACHEDBLASTLAYER, new object[] { true }, true);
 			CurrentStashkey.BlastLayer = bl;
 
 			if (StashAfterOperation && bl != null)
 			{
 				StashHistory.Add(CurrentStashkey);
 			}
-
 
 			PostApplyStashkey();
 			return isCorruptionApplied;
@@ -283,9 +274,9 @@ namespace RTCV.CorruptCore
 			return false;
 		}
 
-		public static bool LoadState(StashKey sk, bool reloadRom = true, bool applyBlastLayer = true, bool useCachedBlastLayer = false)
+		public static bool LoadState(StashKey sk, bool reloadRom = true, bool applyBlastLayer = true)
 		{
-			LocalNetCoreRouter.QueryRoute<bool>(NetcoreCommands.CORRUPTCORE, NetcoreCommands.REMOTE_LOADSTATE, new object[] {sk, true, applyBlastLayer, useCachedBlastLayer }, true);
+			LocalNetCoreRouter.QueryRoute<bool>(NetcoreCommands.CORRUPTCORE, NetcoreCommands.REMOTE_LOADSTATE, new object[] {sk, true, applyBlastLayer}, true);
 			return true;
 		}
 

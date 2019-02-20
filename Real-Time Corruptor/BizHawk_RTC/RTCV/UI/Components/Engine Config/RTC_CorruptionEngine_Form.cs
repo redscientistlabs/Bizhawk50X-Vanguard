@@ -72,15 +72,6 @@ namespace RTCV.UI
 
 		}
 
-		private void nmMaxCheats_ValueChanged(object sender, EventArgs e)
-		{
-			if (Convert.ToInt32(nmMaxCheats.Value) != StepActions.MaxInfiniteBlastUnits)
-				StepActions.MaxInfiniteBlastUnits = Convert.ToInt32(nmMaxCheats.Value);
-
-			if (nmMaxCheats.Value != nmMaxFreezes.Value)
-				nmMaxFreezes.Value = nmMaxCheats.Value;
-		}
-
 
 		private void nmDistortionDelay_ValueChanged(object sender, EventArgs e)
 		{
@@ -192,32 +183,30 @@ namespace RTCV.UI
 			LocalNetCoreRouter.Route(NetcoreCommands.CORRUPTCORE, NetcoreCommands.REMOTE_CLEARSTEPBLASTUNITS, null, true);
 		}
 
-		bool dontUpdate = false;
+		public void SetLockBoxes(bool enabled)
+		{
+			dontUpdate = true;
+			cbLockPipes.Checked = enabled;
+			dontUpdate = false;
+		}
+		public void SetRewindBoxes(bool enabled)
+		{
+			dontUpdate = true;
+			cbClearFreezesOnRewind.Checked = enabled;
+			cbClearCheatsOnRewind.Checked = enabled;
+			cbClearPipesOnRewind.Checked = enabled;
+			dontUpdate = false;
+		}
+		public bool dontUpdate = false;
 		private void cbClearRewind_CheckedChanged(object sender, EventArgs e)
 		{
 			if (dontUpdate)
 				return;
-			dontUpdate = true;
-			cbClearFreezesOnRewind.Checked = ((CheckBox)sender).Checked;
-			cbClearCheatsOnRewind.Checked = ((CheckBox)sender).Checked;
-			cbClearPipesOnRewind.Checked = ((CheckBox)sender).Checked;
-			dontUpdate = false;
+			SetRewindBoxes(((CheckBox)sender).Checked);
+
+			S.GET<RTC_CustomEngineConfig_Form>().SetRewindBoxes(((CheckBox)sender).Checked);
 
 			StepActions.ClearStepActionsOnRewind = cbClearFreezesOnRewind.Checked;
-		}
-
-
-		private void nmMaxFreezes_ValueChanged(object sender, EventArgs e)
-		{
-			StepActions.MaxInfiniteBlastUnits = Convert.ToInt32(nmMaxFreezes.Value);
-
-			if (nmMaxCheats.Value != nmMaxFreezes.Value)
-				nmMaxCheats.Value = nmMaxFreezes.Value;
-		}
-
-		private void nmMaxPipes_ValueChanged(object sender, EventArgs e)
-		{
-			StepActions.MaxInfiniteBlastUnits = Convert.ToInt32(nmMaxPipes.Value);
 		}
 
 		private void btnClearPipes_Click(object sender, EventArgs e)
@@ -227,6 +216,7 @@ namespace RTCV.UI
 
 		private void cbLockPipes_CheckedChanged(object sender, EventArgs e)
 		{
+			S.GET<RTC_SettingsCorrupt_Form>().SetLockBoxes(cbLockPipes.Checked);
 			StepActions.LockExecution = cbLockPipes.Checked;
 		}
 
@@ -458,5 +448,6 @@ namespace RTCV.UI
 			S.GET<RTC_CustomEngineConfig_Form>().Show();
 			S.GET<RTC_CustomEngineConfig_Form>().Focus();
 		}
+
 	}
 }

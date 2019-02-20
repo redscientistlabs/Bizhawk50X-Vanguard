@@ -14,10 +14,12 @@ using RTCV.NetCore.StaticTools;
 
 namespace RTCV.UI
 {
-	public partial class RTC_SettingsReroll_Form : Form, IAutoColorize
+	public partial class RTC_SettingsCorrupt_Form : ComponentForm, IAutoColorize
 	{
+		public new void HandleMouseDown(object s, MouseEventArgs e) => base.HandleMouseDown(s, e);
+		public new void HandleFormClosing(object s, FormClosingEventArgs e) => base.HandleFormClosing(s, e);
 
-		public RTC_SettingsReroll_Form()
+        public RTC_SettingsCorrupt_Form()
 		{
 			InitializeComponent();
 
@@ -84,6 +86,41 @@ namespace RTCV.UI
 		private void CBRerollIgnoresOriginalSource(object sender, EventArgs e)
 		{
 			CorruptCore.CorruptCore.RerollIgnoresOriginalSource = cbIgnoreUnitOrigin.Checked;
+		}
+
+		public void SetRewindBoxes(bool enabled)
+		{
+			DontUpdateSpec = true;
+			cbClearStepUnitsOnRewind.Checked = true;
+			DontUpdateSpec = false;
+		}
+		public void SetLockBoxes(bool enabled)
+		{
+			DontUpdateSpec = true;
+			cbLockUnits.Checked = true;
+			DontUpdateSpec = false;
+		}
+
+		public bool DontUpdateSpec;
+		private void CbClearStepUnitsOnRewind_CheckedChanged(object sender, EventArgs e)
+		{
+			if (DontUpdateSpec)
+				return;
+
+			S.GET<RTC_CorruptionEngine_Form>().SetRewindBoxes(cbClearStepUnitsOnRewind.Checked);
+			S.GET<RTC_CustomEngineConfig_Form>().SetRewindBoxes(cbClearStepUnitsOnRewind.Checked);
+
+			StepActions.ClearStepActionsOnRewind = cbClearStepUnitsOnRewind.Checked;
+		}
+
+		private void CbLockUnits_CheckedChanged(object sender, EventArgs e)
+		{
+			if (DontUpdateSpec)
+				return;
+
+			S.GET<RTC_CorruptionEngine_Form>().SetLockBoxes(cbLockUnits.Checked);
+
+			StepActions.ClearStepActionsOnRewind = cbLockUnits.Checked;
 		}
 	}
 }

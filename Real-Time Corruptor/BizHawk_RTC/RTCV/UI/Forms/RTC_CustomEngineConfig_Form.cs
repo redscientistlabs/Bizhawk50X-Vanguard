@@ -20,7 +20,7 @@ namespace RTCV.UI
 	{
 
 		private bool updatingMinMax = false;
-		private bool dontUpdateSpec = false;
+		public bool DontUpdateSpec = false;
 
 		public RTC_CustomEngineConfig_Form()
 		{
@@ -60,19 +60,12 @@ namespace RTCV.UI
 			}
 		}
 
-		private void nmMaxInfinite_ValueChanged(object sender, EventArgs e)
-		{
-			if (dontUpdateSpec)
-				return;
-
-			StepActions.MaxInfiniteBlastUnits = Convert.ToInt32(nmMaxInfinite.Value);
-		}
 
 		//I'm using if-else's rather than switch statements on purpose.
 		//The switch statements required more lines and were harder to read.
 		private void unitSource_CheckedChanged(object sender, EventArgs e)
 		{
-			if (dontUpdateSpec)
+			if (DontUpdateSpec)
 				return;
 			updateUILock();
 
@@ -100,7 +93,7 @@ namespace RTCV.UI
 
 		private void valueSource_CheckedChanged(object sender, EventArgs e)
 		{
-			if (dontUpdateSpec)
+			if (DontUpdateSpec)
 				return;
 			if (rbRandom.Checked)
 				RTC_CustomEngine.ValueSource = CustomValueSource.RANDOM;
@@ -115,7 +108,7 @@ namespace RTCV.UI
 
 		private void storeTime_CheckedChanged(object sender, EventArgs e)
 		{
-			if (dontUpdateSpec)
+			if (DontUpdateSpec)
 				return;
 
 			if (rbStoreImmediate.Checked)
@@ -127,7 +120,7 @@ namespace RTCV.UI
 		
 		private void storeAddress_CheckedChanged(object sender, EventArgs e)
 		{
-			if (dontUpdateSpec)
+			if (DontUpdateSpec)
 				return;
 
 			if (rbStoreRandom.Checked)
@@ -140,7 +133,7 @@ namespace RTCV.UI
 
 		private void storeType_CheckedChanged(object sender, EventArgs e)
 		{
-			if (dontUpdateSpec)
+			if (DontUpdateSpec)
 				return;
 
 			if (rbStoreOnce.Checked)
@@ -154,7 +147,7 @@ namespace RTCV.UI
 
 		private void nmMinValue_ValueChanged(object sender, EventArgs e)
 		{
-			if (dontUpdateSpec)
+			if (DontUpdateSpec)
 				return;
 
 			//We don't want to trigger this if it caps when stepping downwards
@@ -178,7 +171,7 @@ namespace RTCV.UI
 
 		private void nmMaxValue_ValueChanged(object sender, EventArgs e)
 		{
-			if (dontUpdateSpec)
+			if (DontUpdateSpec)
 				return;
 
 			//We don't want to trigger this if it caps when stepping downwards
@@ -201,26 +194,25 @@ namespace RTCV.UI
 			}
 		}
 
-
-		private void cbLockUnits_CheckedChanged(object sender, EventArgs e)
+		public void SetRewindBoxes(bool enabled)
 		{
-			if (dontUpdateSpec)
-				return;
-
-			StepActions.LockExecution = cbLockUnits.Checked;
+			DontUpdateSpec = true;
+			cbClearRewind.Checked = enabled;
+			DontUpdateSpec = false;
 		}
 
-		private void cbClearRewind_CheckedChanged(object sender, EventArgs e)
+		private void CbClearRewind_CheckedChanged(object sender, EventArgs e)
 		{
-			if (dontUpdateSpec)
+			if (DontUpdateSpec)
 				return;
+			S.GET<RTC_CorruptionEngine_Form>().SetRewindBoxes(cbClearRewind.Checked);
 
 			StepActions.ClearStepActionsOnRewind = cbClearRewind.Checked;
 		}
 
 		private void cbLoopUnit_CheckedChanged(object sender, EventArgs e)
 		{
-			if (dontUpdateSpec)
+			if (DontUpdateSpec)
 				return;
 
 			RTC_CustomEngine.Loop = cbLoopUnit.Checked;
@@ -228,14 +220,14 @@ namespace RTCV.UI
 
 		private void cbValueList_SelectedIndexChanged(object sender, EventArgs e)
 		{
-			if (dontUpdateSpec)
+			if (DontUpdateSpec)
 				return;
 
 			RTC_CustomEngine.ValueListHash = (string)cbValueList.SelectedValue;
 		}
 		private void cbLimiterList_SelectedIndexChanged(object sender, EventArgs e)
 		{
-			if (dontUpdateSpec)
+			if (DontUpdateSpec)
 				return;
 
 			RTC_CustomEngine.LimiterListHash = (string)cbLimiterList.SelectedValue;
@@ -244,7 +236,7 @@ namespace RTCV.UI
 
 		private void limiterTime_CheckedChanged(object sender, EventArgs e)
 		{
-			if (dontUpdateSpec)
+			if (DontUpdateSpec)
 				return;
 
 			if (rbLimiterNone.Checked)
@@ -279,7 +271,7 @@ namespace RTCV.UI
 
 		private void nmLifetime_ValueChanged(object sender, EventArgs e)
 		{
-			if (dontUpdateSpec)
+			if (DontUpdateSpec)
 				return;
 
 			RTC_CustomEngine.Lifetime = Convert.ToInt32(nmLifetime.Value);
@@ -287,7 +279,7 @@ namespace RTCV.UI
 
 		private void nmDelay_ValueChanged(object sender, EventArgs e)
 		{
-			if (dontUpdateSpec)
+			if (DontUpdateSpec)
 				return;
 
 			RTC_CustomEngine.Delay = Convert.ToInt32(nmDelay.Value);
@@ -295,7 +287,7 @@ namespace RTCV.UI
 
 		private void nmTilt_ValueChanged(object sender, EventArgs e)
 		{
-			if (dontUpdateSpec)
+			if (DontUpdateSpec)
 				return;
 
 			RTC_CustomEngine.TiltValue = (BigInteger)nmTilt.Value;
@@ -303,7 +295,7 @@ namespace RTCV.UI
 
 		public void UpdateMinMaxBoxes(int precision)
 		{
-			if (dontUpdateSpec)
+			if (DontUpdateSpec)
 				return;
 			updatingMinMax = true;
 			switch (precision)
@@ -337,7 +329,7 @@ namespace RTCV.UI
 
 		private void cbLimiterInverted_CheckedChanged(object sender, EventArgs e)
 		{
-			if (dontUpdateSpec)
+			if (DontUpdateSpec)
 				return;
 			RTC_CustomEngine.LimiterInverted = cbLimiterInverted.Checked;
 		}
@@ -440,7 +432,7 @@ namespace RTCV.UI
 			try
 			{
 
-				dontUpdateSpec = true;
+				DontUpdateSpec = true;
 
 				switch (RTC_CustomEngine.Source)
 				{
@@ -526,7 +518,6 @@ namespace RTCV.UI
 
 				}
 
-				cbLockUnits.Checked = StepActions.LockExecution;
 				cbClearRewind.Checked = StepActions.ClearStepActionsOnRewind;
 
 				cbLoopUnit.Checked = RTC_CustomEngine.Loop;
@@ -571,7 +562,7 @@ namespace RTCV.UI
 			}
 			finally
 			{
-				dontUpdateSpec = false;
+				DontUpdateSpec = false;
 			}
 		}
 	}

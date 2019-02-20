@@ -19,7 +19,6 @@ namespace RTCV.CorruptCore
 		}
 
 
-		public static BlastLayer CachedBL = null;
 		public static BlastLayer CorruptBL = null;
 		public static BlastLayer UnCorruptBL = null;
 
@@ -31,7 +30,7 @@ namespace RTCV.CorruptCore
 			return partial;
 		}
 
-		public static bool LoadState_NET(StashKey sk, bool reloadRom = true, bool applyBlastLayer = true, bool useCachedBlastLayer = false)
+		public static bool LoadState_NET(StashKey sk, bool reloadRom = true, bool applyBlastLayer = true)
 		{
 			if (sk == null)
 				return false;
@@ -76,13 +75,6 @@ namespace RTCV.CorruptCore
 				CorruptBL = sk.BlastLayer;
 				sk.BlastLayer.Apply(true);
 			}
-			else if (applyBlastLayer && useCachedBlastLayer)
-			{
-				CorruptBL = CachedBL;
-				CachedBL?.Apply(true);
-			}
-
-
 
 			return true;
 		}

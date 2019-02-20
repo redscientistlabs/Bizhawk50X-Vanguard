@@ -105,7 +105,7 @@ namespace TestVanguardImplemented
 				CPU_STEP_Count = 0;
 				BlastLayer bl = CorruptCore.GenerateBlastLayer((string[])RTCV.NetCore.AllSpec.UISpec["SELECTEDDOMAINS"]);
 				if (bl != null)
-					bl.Apply(false);
+					bl.Apply(false, true);
 			}
 		}
 
