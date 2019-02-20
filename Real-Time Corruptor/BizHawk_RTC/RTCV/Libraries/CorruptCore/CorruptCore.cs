@@ -512,7 +512,7 @@ namespace RTCV.CorruptCore
 									Domain = selectedDomains[CorruptCore.RND.Next(selectedDomains.Length)];
 
 									MaxAddress = MemoryDomains.GetInterface(Domain).Size;
-									RandomAddress = CorruptCore.RND.RandomLong(MaxAddress - 1);
+									RandomAddress = CorruptCore.RND.RandomLong(MaxAddress - CurrentPrecision);
 
 									bu = GetBlastUnit(Domain, RandomAddress, CorruptCore.CurrentPrecision);
 									if (bu != null)
@@ -529,7 +529,7 @@ namespace RTCV.CorruptCore
 
 								for (int i = 0; i < intensity; i++)
 								{
-									RandomAddress = CorruptCore.RND.RandomLong(MaxAddress - 1);
+									RandomAddress = CorruptCore.RND.RandomLong(MaxAddress - CurrentPrecision);
 
 									bu = GetBlastUnit(Domain, RandomAddress, CorruptCore.CurrentPrecision);
 									if (bu != null)
@@ -548,7 +548,7 @@ namespace RTCV.CorruptCore
 
 									for (int i = 0; i < (int)((double)intensity / 10); i++)
 									{
-										RandomAddress = CorruptCore.RND.RandomLong(MaxAddress - 1);
+										RandomAddress = CorruptCore.RND.RandomLong(MaxAddress - CurrentPrecision);
 
 										bu = GetBlastUnit(Domain, RandomAddress, CorruptCore.CurrentPrecision);
 										if (bu != null)
@@ -582,7 +582,7 @@ namespace RTCV.CorruptCore
 									for (int j = 0; j < (intensity / normalized); j++)
 									{
 										MaxAddress = MemoryDomains.GetInterface(Domain).Size;
-										RandomAddress = CorruptCore.RND.RandomLong(MaxAddress - 1);
+										RandomAddress = CorruptCore.RND.RandomLong(MaxAddress - CurrentPrecision);
 
 										bu = GetBlastUnit(Domain, RandomAddress, CorruptCore.CurrentPrecision);
 										if (bu != null)
@@ -610,7 +610,7 @@ namespace RTCV.CorruptCore
 									for (int j = 0; j < normalizedIntensity[i]; j++)
 									{
 										MaxAddress = MemoryDomains.GetInterface(Domain).Size;
-										RandomAddress = CorruptCore.RND.RandomLong(MaxAddress - 1);
+										RandomAddress = CorruptCore.RND.RandomLong(MaxAddress - CurrentPrecision);
 
 										bu = GetBlastUnit(Domain, RandomAddress, CorruptCore.CurrentPrecision);
 										if (bu != null)
@@ -629,7 +629,7 @@ namespace RTCV.CorruptCore
 									for (int j = 0; j < (intensity / selectedDomains.Length); j++)
 									{
 										MaxAddress = MemoryDomains.GetInterface(Domain).Size;
-										RandomAddress = CorruptCore.RND.RandomLong(MaxAddress - 1);
+										RandomAddress = CorruptCore.RND.RandomLong(MaxAddress - CurrentPrecision);
 
 										bu = GetBlastUnit(Domain, RandomAddress, CorruptCore.CurrentPrecision);
 										if (bu != null)
