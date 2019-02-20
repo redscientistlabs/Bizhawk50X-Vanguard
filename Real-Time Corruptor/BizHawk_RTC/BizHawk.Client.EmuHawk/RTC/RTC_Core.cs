@@ -28,7 +28,7 @@ namespace RTC
 		public static List<ProblematicProcess> ProblematicProcesses;
 
 		//General RTC Values
-		public static string RtcVersion = "3.28";
+		public static string RtcVersion = "3.28a";
 
 		//Directories
 		public static string bizhawkDir = Directory.GetCurrentDirectory();
@@ -673,52 +673,36 @@ namespace RTC
 					if (RTC_Core.SelectedEngine == CorruptionEngine.PIPE && _Intensity > RTC_PipeEngine.MaxPipes)
 						_Intensity = RTC_PipeEngine.MaxPipes; //Capping for pipe max
 
-					MemoryInterface mi = RTC_MemoryDomains.GetInterface(Domain);
 
 					switch (Radius) //Algorithm branching
 					{
 						case BlastRadius.SPREAD: //Randomly spreads all corruption bytes to all selected domains
-
-							for (int i = 0; i < _Intensity; i++)
 							{
-								Domain = _selectedDomains[RND.Next(_selectedDomains.Length)];
 
-								MaxAddress = RTC_MemoryDomains.GetInterface(Domain).Size;
-								RandomAddress = RTC_Core.RND.RandomLong(MaxAddress - (CustomPrecision != -1 ? CustomPrecision : mi.WordSize));
+								for (int i = 0; i < _Intensity; i++)
+								{
+									Domain = _selectedDomains[RND.Next(_selectedDomains.Length)];
+									MemoryInterface mi = RTC_MemoryDomains.GetInterface(Domain);
 
-								bu = getBlastUnit(Domain, RandomAddress);
-								if (bu != null)
-									bl.Layer.Add(bu);
+									MaxAddress = RTC_MemoryDomains.GetInterface(Domain).Size;
+									RandomAddress = RTC_Core.RND.RandomLong(MaxAddress - (CustomPrecision != -1 ? CustomPrecision : mi.WordSize));
+
+									bu = getBlastUnit(Domain, RandomAddress);
+									if (bu != null)
+										bl.Layer.Add(bu);
+								}
+
 							}
-
 							break;
 
 						case BlastRadius.CHUNK: //Randomly spreads the corruption bytes in one randomly selected domain
-
-							Domain = _selectedDomains[RND.Next(_selectedDomains.Length)];
-
-							MaxAddress = RTC_MemoryDomains.GetInterface(Domain).Size;
-
-							for (int i = 0; i < _Intensity; i++)
-							{
-								RandomAddress = RTC_Core.RND.RandomLong(MaxAddress - (CustomPrecision != -1 ? CustomPrecision : mi.WordSize));
-
-								bu = getBlastUnit(Domain, RandomAddress);
-								if (bu != null)
-									bl.Layer.Add(bu);
-							}
-
-							break;
-
-						case BlastRadius.BURST: // 10 shots of 10% chunk
-
-							for (int j = 0; j < 10; j++)
 							{
 								Domain = _selectedDomains[RND.Next(_selectedDomains.Length)];
+								MemoryInterface mi = RTC_MemoryDomains.GetInterface(Domain);
 
 								MaxAddress = RTC_MemoryDomains.GetInterface(Domain).Size;
 
-								for (int i = 0; i < (int)((double)_Intensity / 10); i++)
+								for (int i = 0; i < _Intensity; i++)
 								{
 									RandomAddress = RTC_Core.RND.RandomLong(MaxAddress - (CustomPrecision != -1 ? CustomPrecision : mi.WordSize));
 
@@ -726,11 +710,34 @@ namespace RTC
 									if (bu != null)
 										bl.Layer.Add(bu);
 								}
-							}
 
+							}
+							break;
+
+						case BlastRadius.BURST: // 10 shots of 10% chunk
+							{
+
+								for (int j = 0; j < 10; j++)
+								{
+									Domain = _selectedDomains[RND.Next(_selectedDomains.Length)];
+									MemoryInterface mi = RTC_MemoryDomains.GetInterface(Domain);
+
+									MaxAddress = RTC_MemoryDomains.GetInterface(Domain).Size;
+
+									for (int i = 0; i < (int)((double)_Intensity / 10); i++)
+									{
+										RandomAddress = RTC_Core.RND.RandomLong(MaxAddress - (CustomPrecision != -1 ? CustomPrecision : mi.WordSize));
+
+										bu = getBlastUnit(Domain, RandomAddress);
+										if (bu != null)
+											bl.Layer.Add(bu);
+									}
+								}
+							}
 							break;
 
 						case BlastRadius.NORMALIZED: // Blasts based on the size of the largest selected domain. Intensity =  Intensity / (domainSize[largestdomain]/domainSize[currentdomain])
+							{
 
 							//Find the smallest domain and base our normalization around it
 							//Domains aren't IComparable so I used keys
@@ -744,68 +751,74 @@ namespace RTC
 							//Sort the arrays
 							Array.Sort(domainSize, _selectedDomains);
 
-							for (int i = 0; i < _selectedDomains.Length; i++)
-							{
-								Domain = _selectedDomains[i];
-
-								//Get the intensity divider. The size of the largest domain divided by the size of the current domain
-								long normalized = ((domainSize[_selectedDomains.Length - 1] / (domainSize[i])));
-
-								for (int j = 0; j < (_Intensity / normalized); j++)
+								for (int i = 0; i < _selectedDomains.Length; i++)
 								{
-									MaxAddress = RTC_MemoryDomains.GetInterface(Domain).Size;
-									RandomAddress = RTC_Core.RND.RandomLong(MaxAddress - (CustomPrecision != -1 ? CustomPrecision : mi.WordSize));
+									Domain = _selectedDomains[i];
+									MemoryInterface mi = RTC_MemoryDomains.GetInterface(Domain);
+									//Get the intensity divider. The size of the largest domain divided by the size of the current domain
+									long normalized = ((domainSize[_selectedDomains.Length - 1] / (domainSize[i])));
 
-									bu = getBlastUnit(Domain, RandomAddress);
-									if (bu != null)
-										bl.Layer.Add(bu);
+									for (int j = 0; j < (_Intensity / normalized); j++)
+									{
+										MaxAddress = RTC_MemoryDomains.GetInterface(Domain).Size;
+										RandomAddress = RTC_Core.RND.RandomLong(MaxAddress - (CustomPrecision != -1 ? CustomPrecision : mi.WordSize));
+
+										bu = getBlastUnit(Domain, RandomAddress);
+										if (bu != null)
+											bl.Layer.Add(bu);
+									}
 								}
-							}
 
+							}
 							break;
 
 						case BlastRadius.PROPORTIONAL: //Blasts proportionally based on the total size of all selected domains
-
-							long totalSize = _selectedDomains.Select(it => RTC_MemoryDomains.GetInterface(it).Size).Sum(); //Gets the total size of all selected domains
-
-							long[] normalizedIntensity = new long[_selectedDomains.Length]; //matches the index of selectedDomains
-							for (int i = 0; i < _selectedDomains.Length; i++)
-							{   //calculates the proportionnal normalized Intensity based on total selected domains size
-								double proportion = (double)RTC_MemoryDomains.GetInterface(_selectedDomains[i]).Size / (double)totalSize;
-								normalizedIntensity[i] = Convert.ToInt64((double)_Intensity * proportion);
-							}
-
-							for (int i = 0; i < _selectedDomains.Length; i++)
 							{
-								Domain = _selectedDomains[i];
 
-								for (int j = 0; j < normalizedIntensity[i]; j++)
-								{
-									MaxAddress = RTC_MemoryDomains.GetInterface(Domain).Size;
-									RandomAddress = RTC_Core.RND.RandomLong(MaxAddress - (CustomPrecision != -1 ? CustomPrecision : mi.WordSize));
+								long totalSize = _selectedDomains.Select(it => RTC_MemoryDomains.GetInterface(it).Size).Sum(); //Gets the total size of all selected domains
 
-									bu = getBlastUnit(Domain, RandomAddress);
-									if (bu != null)
-										bl.Layer.Add(bu);
+								long[] normalizedIntensity = new long[_selectedDomains.Length]; //matches the index of selectedDomains
+								for (int i = 0; i < _selectedDomains.Length; i++)
+								{   //calculates the proportionnal normalized Intensity based on total selected domains size
+									double proportion = (double)RTC_MemoryDomains.GetInterface(_selectedDomains[i]).Size / (double)totalSize;
+									normalizedIntensity[i] = Convert.ToInt64((double)_Intensity * proportion);
 								}
-							}
 
+								for (int i = 0; i < _selectedDomains.Length; i++)
+								{
+									Domain = _selectedDomains[i];
+									MemoryInterface mi = RTC_MemoryDomains.GetInterface(Domain);
+
+									for (int j = 0; j < normalizedIntensity[i]; j++)
+									{
+										MaxAddress = RTC_MemoryDomains.GetInterface(Domain).Size;
+										RandomAddress = RTC_Core.RND.RandomLong(MaxAddress - (CustomPrecision != -1 ? CustomPrecision : mi.WordSize));
+
+										bu = getBlastUnit(Domain, RandomAddress);
+										if (bu != null)
+											bl.Layer.Add(bu);
+									}
+								}
+
+							}
 							break;
 
 						case BlastRadius.EVEN: //Evenly distributes the blasts through all selected domains
-
-							for (int i = 0; i < _selectedDomains.Length; i++)
 							{
-								Domain = _selectedDomains[i];
-
-								for (int j = 0; j < (_Intensity / _selectedDomains.Length); j++)
+								for (int i = 0; i < _selectedDomains.Length; i++)
 								{
-									MaxAddress = RTC_MemoryDomains.GetInterface(Domain).Size;
-									RandomAddress = RTC_Core.RND.RandomLong(MaxAddress - (CustomPrecision != -1 ? CustomPrecision : mi.WordSize));
+									Domain = _selectedDomains[i];
+									MemoryInterface mi = RTC_MemoryDomains.GetInterface(Domain);
 
-									bu = getBlastUnit(Domain, RandomAddress);
-									if (bu != null)
-										bl.Layer.Add(bu);
+									for (int j = 0; j < (_Intensity / _selectedDomains.Length); j++)
+									{
+										MaxAddress = RTC_MemoryDomains.GetInterface(Domain).Size;
+										RandomAddress = RTC_Core.RND.RandomLong(MaxAddress - (CustomPrecision != -1 ? CustomPrecision : mi.WordSize));
+
+										bu = getBlastUnit(Domain, RandomAddress);
+										if (bu != null)
+											bl.Layer.Add(bu);
+									}
 								}
 							}
 
