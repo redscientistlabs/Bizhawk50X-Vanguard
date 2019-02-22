@@ -127,14 +127,17 @@ namespace RTCV.CorruptCore
 
 		public static BlastLayer GetAppliedBackupLayer(BlastLayer bl, StashKey sk)
 		{
-			BlastLayer newBlastLayer = new BlastLayer();
 			//So basically due to how netcore handles synced commands, we can't actually call sk.Run()
 			//from within emuhawk or else it'll apply the blastlayer AFTER this code completes
 			//So we manually apply the blastlayer
 			sk.RunOriginal();
 			sk.BlastLayer.Apply(false);
 
-			newBlastLayer = bl.GetBackup();
+			//Fake advance a frame here to get it processed and the values set
+			StepActions.Execute();
+			BlastLayer newBlastLayer = bl.GetBackup();
+			//Clear it all out
+			StepActions.ClearStepBlastUnits();
 			return newBlastLayer;
 		}
 
