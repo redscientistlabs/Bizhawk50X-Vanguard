@@ -174,6 +174,9 @@ namespace RTCV.CorruptCore
 
 		public static void GenerateActiveTableDump(string domain, string key)
 		{
+			if(!MemoryInterfaces.ContainsKey(domain))
+				return;
+
 			MemoryInterface mi = MemoryInterfaces[domain];
 
 			byte[] dump = mi.GetDump();
@@ -463,7 +466,7 @@ namespace RTCV.CorruptCore
 		public string GetRealDomain(long address)
 		{
 			if (address < 0 || address > PointerDomains.Count)
-				return null;
+				return "ERROR";
 
 			return PointerDomains[(int)address];
 		}
@@ -545,6 +548,8 @@ namespace RTCV.CorruptCore
 		{
 			if (address < this.Proto.Padding)
 				return (byte)0;
+			if (address > this.Size)
+				return 0;
 			string targetDomain = GetRealDomain(address);
 			long targetAddress = GetRealAddress(address);
 
@@ -556,6 +561,8 @@ namespace RTCV.CorruptCore
 		public override void PokeByte(long address, byte value)
 		{
 			if (address < this.Proto.Padding)
+				return;
+			if (address > this.Size)
 				return;
 
 			string targetDomain = GetRealDomain(address);
