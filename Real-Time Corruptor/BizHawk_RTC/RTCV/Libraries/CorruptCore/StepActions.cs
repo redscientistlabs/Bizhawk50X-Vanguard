@@ -101,7 +101,11 @@ namespace RTCV.CorruptCore
 		public static BlastLayer GetRawBlastLayer()
 		{
 			BlastLayer bl = new BlastLayer();
-			foreach (List<BlastUnit> buList in buListCollection)
+			var tempList = new List<List<BlastUnit>>();
+			tempList.AddRange(appliedInfinite);
+			tempList.AddRange(appliedLifetime);
+
+			foreach (List<BlastUnit> buList in (buListCollection))
 			{
 				foreach (BlastUnit bu in buList)
 				{
@@ -119,7 +123,21 @@ namespace RTCV.CorruptCore
 			//We subtract 1 here as we want lifetime to be exclusive. 1 means 1 apply, not applies 0 > applies 1 > done
 			bu.Working.LastFrame = bu.Working.ExecuteFrameQueued + bu.Lifetime - 1;
 
-			List<BlastUnit> collection = buListCollection.FirstOrDefault(it => (it[0].Working.ExecuteFrameQueued == bu.Working.ExecuteFrameQueued) && (it[0].Lifetime == bu.Lifetime) && (it[0].Loop == bu.Loop));
+			//Todo - Probably shouldn't use linq here 
+			List<BlastUnit> collection = buListCollection.FirstOrDefault(it => 
+				(it[0].Working.ExecuteFrameQueued == bu.Working.ExecuteFrameQueued) &&
+				(it[0].Lifetime == bu.Lifetime) &&
+				(it[0].Loop == bu.Loop) &&
+				(it[0].LimiterListHash == bu.LimiterListHash) &&
+				(it[0].LimiterTime == bu.LimiterTime) &&
+				(it[0].InvertLimiter == bu.InvertLimiter) &&
+				(it[0].StoreLimiterSource == bu.StoreLimiterSource) &&
+				(
+					(it[0].StoreLimiterSource == StoreLimiterSource.ADDRESS) && (it[0].Address == bu.Address && it[0].Domain == bu.Domain) ||
+					(it[0].StoreLimiterSource == StoreLimiterSource.SOURCEADDRESS) && (it[0].SourceAddress == bu.SourceAddress && it[0].SourceDomain == bu.SourceDomain) ||
+					(it[0].StoreLimiterSource == StoreLimiterSource.BOTH) && (it[0].Address == bu.Address && it[0].Domain == bu.Domain) &&
+																			 (it[0].SourceAddress == bu.SourceAddress && it[0].SourceDomain == bu.SourceDomain)
+				));
 			
 			if (collection == null)
 			{
