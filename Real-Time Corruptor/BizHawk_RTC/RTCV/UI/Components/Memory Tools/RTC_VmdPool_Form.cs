@@ -157,7 +157,13 @@ namespace RTCV.UI
 
 							//Fix int[] to long[]
 							string vmdXML = File.ReadAllText(filename);
-							vmdXML = vmdXML.Replace("int[]", "long[]");
+							vmdXML = vmdXML.Replace("<int>", "<long>");
+							vmdXML = vmdXML.Replace("</int>", "</long>");
+							vmdXML = vmdXML.Replace("ArrayOfInt", "ArrayOfLong");
+							vmdXML = vmdXML.Replace("addRanges", "AddRanges");
+							vmdXML = vmdXML.Replace("addSingles", "AddSingles");
+							vmdXML = vmdXML.Replace("removeRanges", "RemoveRanges");
+							vmdXML = vmdXML.Replace("removeSingles", "removeSingles");
 							XmlSerializer xs = new XmlSerializer(typeof(VmdPrototype));
 							VmdPrototype proto = (VmdPrototype) xs.Deserialize(new StringReader(vmdXML));
 

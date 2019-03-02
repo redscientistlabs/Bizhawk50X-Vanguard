@@ -117,37 +117,74 @@ namespace RTCV.CorruptCore
 			return bl;
 		}
 
+		/*
+		 Iterate over all the existing batches.
+		 If a batch that matches all the params already exists, return that. otherwise, create and return a new batch.
+		 */
+		public static List<BlastUnit> GetBatchedLayer(BlastUnit bu)
+		{
+			List<BlastUnit> collection = null;
+			foreach (List<BlastUnit> it in buListCollection)
+			{
+				if ((it[0].Working.ExecuteFrameQueued == bu.Working.ExecuteFrameQueued) &&
+					(it[0].Lifetime == bu.Lifetime) &&
+					(it[0].Loop == bu.Loop) &&
+					CheckLimitersMatch(it[0], bu))
+				{
+					//We found one that matches so return that
+					collection = it;
+					break;
+				}
+			}
+
+			//Checks that the limiters match
+			bool CheckLimitersMatch(BlastUnit bu1, BlastUnit bu2)
+			{
+				if (bu1.LimiterListHash == bu2.LimiterListHash &&
+					bu1.LimiterTime == bu2.LimiterTime &&
+					bu1.InvertLimiter == bu2.InvertLimiter &&
+					bu1.StoreLimiterSource == bu2.StoreLimiterSource)
+				{
+					switch (bu1.StoreLimiterSource)
+					{
+						case StoreLimiterSource.ADDRESS:
+							return (bu1.Address == bu2.Address &&
+									bu1.Domain == bu2.Domain
+							);
+						case StoreLimiterSource.SOURCEADDRESS:
+							return (bu1.SourceAddress == bu2.SourceAddress &&
+									bu1.SourceDomain == bu2.SourceDomain
+							);
+						case StoreLimiterSource.BOTH:
+							return (bu1.Address == bu2.Address &&
+									bu1.Domain == bu2.Domain &&
+									bu1.SourceAddress == bu2.SourceAddress &&
+									bu1.SourceDomain == bu2.SourceDomain
+							);
+					}
+				}
+				return false;
+			}
+
+
+			//No match so make a new list
+			if (collection == null)
+			{
+				collection = new List<BlastUnit>();
+				buListCollection.Add(collection);
+			}
+
+			return collection;
+		}
+
 		public static void AddBlastUnit(BlastUnit bu)
 		{
 			bu.Working.ExecuteFrameQueued = bu.ExecuteFrame + currentFrame;
 			//We subtract 1 here as we want lifetime to be exclusive. 1 means 1 apply, not applies 0 > applies 1 > done
 			bu.Working.LastFrame = bu.Working.ExecuteFrameQueued + bu.Lifetime - 1;
 
-			//Todo - Probably shouldn't use linq here 
-			List<BlastUnit> collection = buListCollection.FirstOrDefault(it => 
-				(it[0].Working.ExecuteFrameQueued == bu.Working.ExecuteFrameQueued) &&
-				(it[0].Lifetime == bu.Lifetime) &&
-				(it[0].Loop == bu.Loop) &&
-				(it[0].LimiterListHash == bu.LimiterListHash) &&
-				(it[0].LimiterTime == bu.LimiterTime) &&
-				(it[0].InvertLimiter == bu.InvertLimiter) &&
-				(it[0].StoreLimiterSource == bu.StoreLimiterSource) &&
-				(
-					(it[0].StoreLimiterSource == StoreLimiterSource.ADDRESS) && (it[0].Address == bu.Address && it[0].Domain == bu.Domain) ||
-					(it[0].StoreLimiterSource == StoreLimiterSource.SOURCEADDRESS) && (it[0].SourceAddress == bu.SourceAddress && it[0].SourceDomain == bu.SourceDomain) ||
-					(it[0].StoreLimiterSource == StoreLimiterSource.BOTH) && (it[0].Address == bu.Address && it[0].Domain == bu.Domain) &&
-																			 (it[0].SourceAddress == bu.SourceAddress && it[0].SourceDomain == bu.SourceDomain)
-				));
-			
-			if (collection == null)
-			{
-				collection = new List<BlastUnit> {bu};
-				buListCollection.Add(collection);
-			}
-			else
-			{
-				collection.Add(bu);
-			}
+			var collection = GetBatchedLayer(bu);
+			collection.Add(bu);
 		}
 
 		//TODO OPTIMIZE THIS TO INSERT RATHER THAN REBUILD
