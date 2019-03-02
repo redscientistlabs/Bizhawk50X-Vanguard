@@ -4,10 +4,13 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using System.Runtime.Serialization;
+using System.Runtime.Serialization.Formatters;
 using System.Security.Permissions;
 using System.Text;
 using System.Threading.Tasks;
 using Ceras;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Converters;
 using RTCV.NetCore;
 
 namespace RTCV.NetCore
@@ -244,6 +247,32 @@ namespace RTCV.NetCore
 			}
 		}
 
+		public String GetSafeSerializedDico()
+		{
+			//VERY IMPORTANT - NOTE THE specKnownTypes. 
+			var jsonSerializerSettings = new JsonSerializerSettings()
+			{
+				TypeNameHandling = TypeNameHandling.All,
+				Formatting = Formatting.Indented,
+				SerializationBinder = GetSafeValueTypeBinder(),
+				ContractResolver = SafeJsonTypeSerialization.UntypedToTypedValueContractResolver.Instance,
+				Converters = new JsonConverter[] {new StringEnumConverter()}
+			};
+			return JsonConvert.SerializeObject(specDico, jsonSerializerSettings);
+		}
+
+		public SafeJsonTypeSerialization.JsonKnownTypesBinder GetSafeValueTypeBinder()
+		{
+			var tb = new SafeJsonTypeSerialization.JsonKnownTypesBinder();
+			foreach (var k in specDico.Keys)
+			{
+				Type t = specDico[k]?.GetType();
+				if (t != null && (t.IsValueType || t == typeof(string)) && !tb.KnownTypes.Contains(t))
+					tb.KnownTypes.Add(t);
+			}
+
+			return tb;
+		}
 
 		public void Reset() => specDico.Clear();
 		public object Clone() => Extensions.ObjectCopier.Clone(this);

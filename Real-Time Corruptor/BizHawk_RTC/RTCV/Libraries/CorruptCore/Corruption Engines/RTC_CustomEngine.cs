@@ -1,11 +1,15 @@
 ﻿using Newtonsoft.Json;
 using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Numerics;
 using System.Security.Cryptography;
+using System.Text;
 using System.Windows.Forms;
+using Newtonsoft.Json.Converters;
+using Newtonsoft.Json.Serialization;
 using RTCV.NetCore;
 
 
@@ -13,7 +17,6 @@ namespace RTCV.CorruptCore
 {
 	public static class RTC_CustomEngine
 	{
-
 		public static long MinValue8Bit
 		{
 			get => (long)RTCV.NetCore.AllSpec.CorruptCoreSpec[RTCSPEC.CUSTOM_MINVALUE8BIT.ToString()];
@@ -126,6 +129,7 @@ namespace RTCV.CorruptCore
 			get => RTCV.NetCore.AllSpec.CorruptCoreSpec[RTCSPEC.CUSTOM_VALUELISTHASH.ToString()] as string;
 			set => RTCV.NetCore.AllSpec.CorruptCoreSpec.Update(RTCSPEC.CUSTOM_VALUELISTHASH.ToString(), value);
 		}
+		
 
 		public static PartialSpec lastLoadedTemplate = null;
 
@@ -528,6 +532,14 @@ namespace RTCV.CorruptCore
 			set => RTCV.NetCore.AllSpec.CorruptCoreSpec.Update(RTCSPEC.CUSTOM_PATH.ToString(), value);
 		}
 
+		private static SafeJsonTypeSerialization.JsonKnownTypesBinder InitSpecKnownTypes()
+		{
+			var t = new SafeJsonTypeSerialization.JsonKnownTypesBinder();
+			t.KnownTypes.Add(typeof(long));
+			t.KnownTypes.Add(typeof(string));
+			return t;
+		}
+
 		public static PartialSpec LoadTemplateFile()
 		{
 			string Filename;
@@ -547,16 +559,27 @@ namespace RTCV.CorruptCore
 			else
 				return null;
 
-			PartialSpec pSpec;
+			PartialSpec pSpec = new PartialSpec();
 
 			try
 			{
-				using (FileStream fs = File.Open(Filename, FileMode.OpenOrCreate))
+				//VERY VERY IMPORTANT
+				//We're using TypeNameHandling.All. Therefore, we NEED a SerializationBinder to prevent potential vulnerabilities.
+				//We get one by using the types of the current config as if someone has the ability to insert bad data into the spec, it's already too late
+				SafeJsonTypeSerialization.JsonKnownTypesBinder binder = getCurrentConfigSpec()
+					.GetSafeValueTypeBinder();
+				var settings = new JsonSerializerSettings
 				{
-					pSpec = JsonHelper.Deserialize<PartialSpec>(fs);
-					fs.Close();
-				}
-
+					TypeNameHandling = TypeNameHandling.All
+					, ContractResolver = SafeJsonTypeSerialization.UntypedToTypedValueContractResolver.Instance
+					, SerializationBinder = getCurrentConfigSpec()
+						.GetSafeValueTypeBinder()
+					, Converters = new[] {new StringEnumConverter()}, // If you prefer
+				};
+				string json = File.ReadAllText(Filename);
+				var d = JsonConvert.DeserializeObject<Dictionary<string, object>>(json, settings);
+				foreach (var k in d.Keys)
+					pSpec[k] = d;
 			}
 			catch (Exception e)
 			{
@@ -607,21 +630,9 @@ namespace RTCV.CorruptCore
 			pSpec[RTCSPEC.CUSTOM_NAME.ToString()] = templateName;
 			pSpec[RTCSPEC.CUSTOM_PATH.ToString()] = path;
 
-			//Create stockpile.xml to temp folder from stockpile object
-			using (FileStream fs = File.Open(path, FileMode.OpenOrCreate))
-			{
-				var jsonSerializerSettings = new JsonSerializerSettings()
-				{
-					TypeNameHandling = TypeNameHandling.All,
-					Formatting = Formatting.Indented
-				};
 
-				var jsonString = JsonConvert.SerializeObject(pSpec, jsonSerializerSettings);
-				var byteArray = jsonString.GetBytes();
-				fs.Write(byteArray, 0, byteArray.Length);
-				//JsonHelper.Serialize(pSpec, fs, Formatting.Indented);
-				fs.Close();
-			}
+			string jsonString = pSpec.GetSafeSerializedDico();
+			File.WriteAllText(path, jsonString);
 
 			return templateName;
 		}
