@@ -234,14 +234,14 @@ namespace Vanguard
 				bool domainsChanged = RefreshDomains(false);
 
 				PartialSpec gameDone = new PartialSpec("VanguardSpec");
-				gameDone[VSPEC.SYSTEM.ToString()] = BIZHAWK_GET_CURRENTLYLOADEDSYSTEMNAME().ToUpper();
-				gameDone[VSPEC.GAMENAME.ToString()] = BIZHAWK_GET_FILESYSTEMGAMENAME();
-				gameDone[VSPEC.SYSTEMPREFIX.ToString()] = BIZHAWK_GET_SAVESTATEPREFIX();
-				gameDone[VSPEC.SYSTEMCORE.ToString()] = BIZHAWK_GET_SYSTEMCORENAME(Global.Game.System);
-				gameDone[VSPEC.SYNCSETTINGS.ToString()] = BIZHAWK_GETSET_SYNCSETTINGS;
-				gameDone[VSPEC.OPENROMFILENAME.ToString()] = GlobalWin.MainForm.CurrentlyOpenRom;
-				gameDone[VSPEC.MEMORYDOMAINS_BLACKLISTEDDOMAINS.ToString()] = VanguardCore.GetBlacklistedDomains(BIZHAWK_GET_CURRENTLYLOADEDSYSTEMNAME().ToUpper());
-				gameDone[VSPEC.MEMORYDOMAINS_INTERFACES.ToString()] = GetInterfaces();
+				gameDone[VSPEC.SYSTEM] = BIZHAWK_GET_CURRENTLYLOADEDSYSTEMNAME().ToUpper();
+				gameDone[VSPEC.GAMENAME] = BIZHAWK_GET_FILESYSTEMGAMENAME();
+				gameDone[VSPEC.SYSTEMPREFIX] = BIZHAWK_GET_SAVESTATEPREFIX();
+				gameDone[VSPEC.SYSTEMCORE] = BIZHAWK_GET_SYSTEMCORENAME(Global.Game.System);
+				gameDone[VSPEC.SYNCSETTINGS] = BIZHAWK_GETSET_SYNCSETTINGS;
+				gameDone[VSPEC.OPENROMFILENAME] = GlobalWin.MainForm.CurrentlyOpenRom;
+				gameDone[VSPEC.MEMORYDOMAINS_BLACKLISTEDDOMAINS] = VanguardCore.GetBlacklistedDomains(BIZHAWK_GET_CURRENTLYLOADEDSYSTEMNAME().ToUpper());
+				gameDone[VSPEC.MEMORYDOMAINS_INTERFACES] = GetInterfaces();
 				AllSpec.VanguardSpec.Update(gameDone);
 
 				//This is local. If the domains changed it propgates over netcore
@@ -959,7 +959,7 @@ namespace Vanguard
 				//We gotta push this no matter what since it's new underlying objects
 				if (updateSpecs)
 				{
-					AllSpec.VanguardSpec.Update(VSPEC.MEMORYDOMAINS_INTERFACES.ToString(), GetInterfaces());
+					AllSpec.VanguardSpec.Update(VSPEC.MEMORYDOMAINS_INTERFACES, GetInterfaces());
 					LocalNetCoreRouter.Route(CORRUPTCORE, REMOTE_EVENT_DOMAINSUPDATED, domainsChanged, true);
 				}
 				return domainsChanged;

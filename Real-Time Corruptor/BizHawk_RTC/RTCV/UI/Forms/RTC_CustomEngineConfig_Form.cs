@@ -18,13 +18,17 @@ namespace RTCV.UI
 {
 	public partial class RTC_CustomEngineConfig_Form : Form, IAutoColorize
 	{
-
 		private bool updatingMinMax = false;
 		public bool DontUpdateSpec = false;
 
 		public RTC_CustomEngineConfig_Form()
 		{
 			InitializeComponent();
+			CorruptCore.RTC_CustomEngine.InitTemplates();
+
+			foreach (var k in CorruptCore.RTC_CustomEngine.Name2TemplateDico.Keys)
+				cbSelectedTemplate.Items.Add(k);
+			cbSelectedTemplate.SelectedIndex = 0;
 		}
 
 
@@ -334,42 +338,22 @@ namespace RTCV.UI
 			RTC_CustomEngine.LimiterInverted = cbLimiterInverted.Checked;
 		}
 
-		private void btnResetConfig_Click(object sender, EventArgs e)
-		{
-			PartialSpec spec = (PartialSpec)RTC_CustomEngine.lastLoadedTemplate.Clone();
-			RTCV.NetCore.AllSpec.CorruptCoreSpec.Update(spec);
-			RestoreUIStateFromSpec();
-			Refresh();
-		}
 
 		private void cbSelectedTemplate_SelectedIndexChanged(object sender, EventArgs e)
 		{
 			PartialSpec spec = new PartialSpec("RTCSpec");
 
-			bool readOnlyTemplate = true;
+			bool readOnlyTemplate = false;
 
 			switch (cbSelectedTemplate.SelectedItem.ToString())
 			{
 				case "Nightmare Engine":
-					RTC_CustomEngine.InitTemplate_NightmareEngine(spec);
-					break;
 				case "Hellgenie Engine":
-					RTC_CustomEngine.InitTemplate_HellgenieEngine(spec);
-					break;
 				case "Distortion Engine":
-					RTC_CustomEngine.InitTemplate_DistortionEngine(spec);
-					break;
 				case "Freeze Engine":
-					RTC_CustomEngine.InitTemplate_FreezeEngine(spec);
-					break;
 				case "Pipe Engine":
-					RTC_CustomEngine.InitTemplate_PipeEngine(spec);
-					break;
 				case "Vector Engine":
-					RTC_CustomEngine.InitTemplate_VectorEngine(spec);
-					break;
-				default:
-					readOnlyTemplate = false;
+					readOnlyTemplate = true;
 					break;
 			}
 
@@ -379,10 +363,20 @@ namespace RTCV.UI
 				btnCustomTemplateSave.BackColor = Color.LightGray;
 				btnCustomTemplateSave.ForeColor = Color.DimGray;
 			}
-			updateUILock();
-			RTCV.NetCore.AllSpec.CorruptCoreSpec.Update(spec);
-			RestoreUIStateFromSpec();
-			Refresh();
+			else
+			{
+				btnCustomTemplateSave.Enabled = true;
+				btnCustomTemplateSave.BackColor = Color.Tomato;
+				btnCustomTemplateSave.ForeColor = Color.Black;
+			}
+
+			if (RTC_CustomEngine.LoadTemplate(cbSelectedTemplate.SelectedItem.ToString()))
+			{
+				RTCV.NetCore.AllSpec.CorruptCoreSpec.Update(spec);
+				RestoreUIStateFromSpec();
+				updateUILock();
+				Refresh();
+			}
 
 		}
 
@@ -394,9 +388,11 @@ namespace RTCV.UI
 				return;
 
 			RTCV.NetCore.AllSpec.CorruptCoreSpec.Update(spec);
+			RestoreUIStateFromSpec();
 			Refresh();
-
-			cbSelectedTemplate.Text = spec.Name;
+			if (!cbSelectedTemplate.Items.Contains(spec[RTCSPEC.CUSTOM_NAME.ToString()].ToString()))
+				cbSelectedTemplate.Items.Add(spec[RTCSPEC.CUSTOM_NAME.ToString()].ToString());
+			cbSelectedTemplate.SelectedItem = spec[RTCSPEC.CUSTOM_NAME.ToString()].ToString();
 		}
 
 		private void btnCustomTemplateSaveAs_Click(object sender, EventArgs e)
@@ -406,22 +402,19 @@ namespace RTCV.UI
 			if (string.IsNullOrWhiteSpace(TemplateName))
 				return;
 
-			cbSelectedTemplate.Text = TemplateName;
+			if (!cbSelectedTemplate.Items.Contains(TemplateName))
+				cbSelectedTemplate.Items.Add(TemplateName);
+			cbSelectedTemplate.SelectedItem = TemplateName;
 
-			btnCustomTemplateSaveAs.Enabled = true;
-			btnCustomTemplateSaveAs.BackColor = Color.Tomato;
-			btnCustomTemplateSaveAs.ForeColor = Color.Black;
+
+			btnCustomTemplateSave.Enabled = true;
+			btnCustomTemplateSave.BackColor = Color.Tomato;
+			btnCustomTemplateSave.ForeColor = Color.Black;
 		}
 
 		private void btnCustomTemplateSave_Click(object sender, EventArgs e)
 		{
-			throw new NotImplementedException();
-			string TemplateName = RTC_CustomEngine.SaveTemplateFile(false);
-
-			if (string.IsNullOrWhiteSpace(TemplateName))
-				return;
-
-			cbSelectedTemplate.Text = TemplateName;
+			RTC_CustomEngine.SaveTemplateFile(false);
 		}
 
 

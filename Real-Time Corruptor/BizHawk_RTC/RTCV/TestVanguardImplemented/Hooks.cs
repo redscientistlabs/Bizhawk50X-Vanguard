@@ -216,14 +216,14 @@ namespace TestVanguardImplemented
 				bool domainsChanged = RefreshDomains(false);
 
 				PartialSpec gameDone = new PartialSpec("VanguardSpec");
-				gameDone[VSPEC.SYSTEM.ToString()] = EMU_GET_CURRENTLYLOADEDSYSTEMNAME().ToUpper();
-				gameDone[VSPEC.GAMENAME.ToString()] = EMU_GET_FILESYSTEMGAMENAME();
-				gameDone[VSPEC.SYSTEMPREFIX.ToString()] = EMU_GET_SAVESTATEPREFIX();
-				gameDone[VSPEC.SYSTEMCORE.ToString()] = EMU_GET_SYSTEMCORENAME("");
-				gameDone[VSPEC.SYNCSETTINGS.ToString()] = EMU_GETSET_SYNCSETTINGS;
-				gameDone[VSPEC.OPENROMFILENAME.ToString()] = Program.RomFilename;
-				gameDone[VSPEC.MEMORYDOMAINS_BLACKLISTEDDOMAINS.ToString()] = VanguardCore.GetBlacklistedDomains(EMU_GET_CURRENTLYLOADEDSYSTEMNAME().ToUpper());
-				gameDone[VSPEC.MEMORYDOMAINS_INTERFACES.ToString()] = GetInterfaces();
+				gameDone[VSPEC.SYSTEM] = EMU_GET_CURRENTLYLOADEDSYSTEMNAME().ToUpper();
+				gameDone[VSPEC.GAMENAME] = EMU_GET_FILESYSTEMGAMENAME();
+				gameDone[VSPEC.SYSTEMPREFIX] = EMU_GET_SAVESTATEPREFIX();
+				gameDone[VSPEC.SYSTEMCORE] = EMU_GET_SYSTEMCORENAME("");
+				gameDone[VSPEC.SYNCSETTINGS] = EMU_GETSET_SYNCSETTINGS;
+				gameDone[VSPEC.OPENROMFILENAME] = Program.RomFilename;
+				gameDone[VSPEC.MEMORYDOMAINS_BLACKLISTEDDOMAINS] = VanguardCore.GetBlacklistedDomains(EMU_GET_CURRENTLYLOADEDSYSTEMNAME().ToUpper());
+				gameDone[VSPEC.MEMORYDOMAINS_INTERFACES] = GetInterfaces();
 				VanguardCore.VanguardSpec.Update(gameDone);
 
 				//This is local. If the domains changed it propgates over netcore

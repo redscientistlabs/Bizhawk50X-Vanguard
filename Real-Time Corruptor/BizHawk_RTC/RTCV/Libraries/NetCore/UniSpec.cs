@@ -209,6 +209,7 @@ namespace RTCV.NetCore
 				this[key] = partialSpec.specDico[key];
 		}
 
+
 		protected PartialSpec(SerializationInfo info, StreamingContext context)
 		{
 			Name = info.GetString("Name");
@@ -247,31 +248,18 @@ namespace RTCV.NetCore
 			}
 		}
 
-		public String GetSafeSerializedDico()
+		public List<String> GetKeys()
 		{
-			//VERY IMPORTANT - NOTE THE specKnownTypes. 
+			return specDico.Keys.ToList();
+		}
+		public String GetSerializedDico()
+		{
 			var jsonSerializerSettings = new JsonSerializerSettings()
 			{
-				TypeNameHandling = TypeNameHandling.All,
 				Formatting = Formatting.Indented,
-				SerializationBinder = GetSafeValueTypeBinder(),
-				ContractResolver = SafeJsonTypeSerialization.UntypedToTypedValueContractResolver.Instance,
 				Converters = new JsonConverter[] {new StringEnumConverter()}
 			};
 			return JsonConvert.SerializeObject(specDico, jsonSerializerSettings);
-		}
-
-		public SafeJsonTypeSerialization.JsonKnownTypesBinder GetSafeValueTypeBinder()
-		{
-			var tb = new SafeJsonTypeSerialization.JsonKnownTypesBinder();
-			foreach (var k in specDico.Keys)
-			{
-				Type t = specDico[k]?.GetType();
-				if (t != null && (t.IsValueType || t == typeof(string)) && !tb.KnownTypes.Contains(t))
-					tb.KnownTypes.Add(t);
-			}
-
-			return tb;
 		}
 
 		public void Reset() => specDico.Clear();

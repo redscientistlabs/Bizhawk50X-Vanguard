@@ -157,7 +157,7 @@ namespace RTCV.UI
 			if (useTemplate)
 			{
 				//Put Console templates HERE
-				string thisSystem = (string)RTCV.NetCore.AllSpec.VanguardSpec[VSPEC.SYSTEM.ToString()];
+				string thisSystem = (string)RTCV.NetCore.AllSpec.VanguardSpec[VSPEC.SYSTEM];
 
 				switch (thisSystem)
 				{

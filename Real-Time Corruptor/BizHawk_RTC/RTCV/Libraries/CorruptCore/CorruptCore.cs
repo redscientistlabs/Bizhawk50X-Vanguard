@@ -35,6 +35,7 @@ namespace RTCV.CorruptCore
 		public static string workingDir = rtcDir + Path.DirectorySeparatorChar + "WORKING" + Path.DirectorySeparatorChar;
 		public static string assetsDir = rtcDir + Path.DirectorySeparatorChar + "ASSETS" + Path.DirectorySeparatorChar;
 		public static string listsDir = rtcDir + Path.DirectorySeparatorChar + "LISTS" + Path.DirectorySeparatorChar;
+		public static string engineTemplateDir = rtcDir + Path.DirectorySeparatorChar + "ENGINETEMPLATES" + Path.DirectorySeparatorChar;
 
 
 		public static bool AllowCrossCoreCorruption
@@ -163,11 +164,15 @@ namespace RTCV.CorruptCore
 		public static bool IsStandaloneUI;
 		public static bool IsEmulatorSide;
 
-
+		public static void Start()
+		{
+			CorruptCore_Extensions.DirectoryRequired(new[] {CorruptCore.engineTemplateDir});
+		}
 		public static void StartUISide()
 		{
 			try
 			{
+				Start();
 				RegisterCorruptcoreSpec();
 				IsStandaloneUI = true;
 			}
@@ -181,6 +186,7 @@ namespace RTCV.CorruptCore
 		{
 			if (!Attached)
 			{
+				Start();
 				if (KillswitchTimer == null)
 					KillswitchTimer = new System.Windows.Forms.Timer();
 
@@ -211,7 +217,7 @@ namespace RTCV.CorruptCore
 			rtcSpecTemplate.Insert(RTC_DistortionEngine.getDefaultPartial());
 
 			//Custom Engine Config with Nightmare Engine
-			RTC_CustomEngine.InitTemplate_NightmareEngine(rtcSpecTemplate);
+			RTC_CustomEngine.getDefaultPartial(rtcSpecTemplate);
 
 			rtcSpecTemplate.Insert(StepActions.getDefaultPartial());
 			rtcSpecTemplate.Insert(Filtering.getDefaultPartial());

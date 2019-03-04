@@ -117,7 +117,7 @@ namespace RTCV.UI
 						SyncObjectSingleton.FormExecute((o, ea) =>
 						{
 							S.GET<RTC_MemoryDomains_Form>().RefreshDomains();
-							S.GET<RTC_MemoryDomains_Form>().SetMemoryDomainsAllButSelectedDomains((string[])RTCV.NetCore.AllSpec.VanguardSpec[VSPEC.MEMORYDOMAINS_BLACKLISTEDDOMAINS.ToString()]);
+							S.GET<RTC_MemoryDomains_Form>().SetMemoryDomainsAllButSelectedDomains((string[])RTCV.NetCore.AllSpec.VanguardSpec[VSPEC.MEMORYDOMAINS_BLACKLISTEDDOMAINS]);
 						});
 						break;
 					case ERROR_DISABLE_AUTOCORRUPT:
@@ -177,7 +177,7 @@ namespace RTCV.UI
 						break;
 
 					case REMOTE_HOTKEY_GHCORRUPT:
-						RTCV.NetCore.AllSpec.CorruptCoreSpec.Update(VSPEC.STEP_RUNBEFORE.ToString(), true);
+						RTCV.NetCore.AllSpec.CorruptCoreSpec.Update(VSPEC.STEP_RUNBEFORE, true);
 
 						SyncObjectSingleton.FormExecute((o, ea) =>
 						{
@@ -220,7 +220,7 @@ namespace RTCV.UI
 					case REMOTE_HOTKEY_BLASTRAWSTASH:
 						SyncObjectSingleton.FormExecute((o, ea) =>
 						{
-							RTCV.NetCore.AllSpec.CorruptCoreSpec.Update(VSPEC.STEP_RUNBEFORE.ToString(), true);
+							RTCV.NetCore.AllSpec.CorruptCoreSpec.Update(VSPEC.STEP_RUNBEFORE, true);
 							LocalNetCoreRouter.Route(CORRUPTCORE, ASYNCBLAST, null, true);
 
 							S.GET<RTC_GlitchHarvester_Form>().btnSendRaw_Click(null, null);

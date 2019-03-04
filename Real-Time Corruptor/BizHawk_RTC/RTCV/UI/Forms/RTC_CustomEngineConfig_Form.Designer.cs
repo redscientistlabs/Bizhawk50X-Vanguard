@@ -854,13 +854,6 @@
             this.cbSelectedTemplate.Font = new System.Drawing.Font("Segoe UI", 8F);
             this.cbSelectedTemplate.ForeColor = System.Drawing.Color.White;
             this.cbSelectedTemplate.FormattingEnabled = true;
-            this.cbSelectedTemplate.Items.AddRange(new object[] {
-            "Nightmare Engine",
-            "Hellgenie Engine",
-            "Distortion Engine",
-            "Freeze Engine",
-            "Pipe Engine",
-            "Vector Engine"});
             this.cbSelectedTemplate.Location = new System.Drawing.Point(12, 20);
             this.cbSelectedTemplate.Name = "cbSelectedTemplate";
             this.cbSelectedTemplate.Size = new System.Drawing.Size(211, 21);
