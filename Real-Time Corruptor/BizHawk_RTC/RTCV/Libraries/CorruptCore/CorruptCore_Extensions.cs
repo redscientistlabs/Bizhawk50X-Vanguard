@@ -19,6 +19,8 @@ using System.Windows.Forms;
 using System.Xml.Serialization;
 using Ceras;
 using Newtonsoft.Json;
+using Newtonsoft.Json.Serialization;
+using RTCV.NetCore;
 
 namespace RTCV.CorruptCore
 {
@@ -923,14 +925,15 @@ namespace RTCV.CorruptCore
 
 	public static class JsonHelper
 	{
-		public static void Serialize(object value, Stream s, Formatting f = Formatting.None)
+		public static void Serialize(object value, Stream s, Formatting f = Formatting.None, SafeJsonTypeSerialization.JsonKnownTypesBinder binder = null)
 		{
 			using (StreamWriter writer = new StreamWriter(s))
 			using (JsonTextWriter jsonWriter = new JsonTextWriter(writer))
 			{
 				JsonSerializer ser = new JsonSerializer
 				{
-					Formatting = f
+					Formatting = f,
+					SerializationBinder = binder ?? new SafeJsonTypeSerialization.JsonKnownTypesBinder()
 				};
 				ser.Converters.Add(new Newtonsoft.Json.Converters.StringEnumConverter());
 				ser.Serialize(jsonWriter, value);
@@ -938,12 +941,15 @@ namespace RTCV.CorruptCore
 			}
 		}
 
-		public static T Deserialize<T>(Stream s)
+		public static T Deserialize<T>(Stream s, SafeJsonTypeSerialization.JsonKnownTypesBinder binder = null)
 		{
 			using (StreamReader reader = new StreamReader(s))
 			using (JsonTextReader jsonReader = new JsonTextReader(reader))
 			{
-				JsonSerializer ser = new JsonSerializer();
+				JsonSerializer ser = new JsonSerializer()
+				{
+					SerializationBinder = binder ?? new SafeJsonTypeSerialization.JsonKnownTypesBinder()
+				};
 				return ser.Deserialize<T>(jsonReader);
 			}
 		}
@@ -951,7 +957,7 @@ namespace RTCV.CorruptCore
 
 
 	//Lifted from Bizhawk https://github.com/TASVideos/BizHawk
-	#pragma warning disable 162
+#pragma warning disable 162
 	public static class LogConsole
 	{
 		public static bool ConsoleVisible
@@ -1183,5 +1189,4 @@ namespace RTCV.CorruptCore
 		public static extern bool CloseHandle(IntPtr handle);
 	}
 
-	
 }

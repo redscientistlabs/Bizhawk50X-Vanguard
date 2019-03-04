@@ -384,7 +384,7 @@ namespace RTCV.UI
 
 				if (rbCorrupt.Checked)
 				{
-					string romFilename = (string)RTCV.NetCore.AllSpec.VanguardSpec[VSPEC.OPENROMFILENAME.ToString()];
+					string romFilename = (string)RTCV.NetCore.AllSpec.VanguardSpec[VSPEC.OPENROMFILENAME];
 					if (romFilename == null)
 						return;
 					if (romFilename.Contains("|"))
@@ -943,7 +943,7 @@ namespace RTCV.UI
 				btnSendRaw.Visible = false;
 
 
-				string romFilename = (string)RTCV.NetCore.AllSpec.VanguardSpec[VSPEC.OPENROMFILENAME.ToString()];
+				string romFilename = (string)RTCV.NetCore.AllSpec.VanguardSpec[VSPEC.OPENROMFILENAME];
 				if (romFilename == null)
 					return;
 				if (romFilename.Contains("|"))

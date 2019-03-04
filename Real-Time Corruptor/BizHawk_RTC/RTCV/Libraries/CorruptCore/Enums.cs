@@ -1,4 +1,7 @@
-﻿	namespace RTCV.CorruptCore
+﻿	using System;
+	using System.Collections.Generic;
+
+	namespace RTCV.CorruptCore
 {
 	public enum BlastRadius
 	{
@@ -217,27 +220,23 @@
 
 	}
 
-	public enum VSPEC
+	public static class VSPEC
 	{
-		CORE_LASTLOADERROM,
-
-		STEP_RUNBEFORE,
-
-		SYSTEM,
-		GAMENAME,
-		SYSTEMPREFIX,
-		SYSTEMCORE,
-		SYNCSETTINGS,
-		OPENROMFILENAME,
-
-		SYNCOBJECT,
-
-		MEMORYDOMAINS_INTERFACES,
-		MEMORYDOMAINS_BLACKLISTEDDOMAINS
-
+		public static readonly string CORE_LASTLOADERROM = "CORE_LASTLOADERROM";
+		public static readonly string STEP_RUNBEFORE = "STEP_RUNBEFORE";
+		public static readonly string SYSTEM = "SYSTEM";
+		public static readonly string GAMENAME = "GAMENAME";
+		public static readonly string SYSTEMPREFIX = "SYSTEMPREFIX";
+		public static readonly string SYSTEMCORE = "SYSTEMCORE";
+		public static readonly string SYNCSETTINGS = "SYNCSETTINGS";
+		public static readonly string OPENROMFILENAME = "OPENROMFILENAME";
+		public static readonly string SYNCOBJECT = "SYNCOBJECT";
+		public static readonly string MEMORYDOMAINS_INTERFACES = "MEMORYDOMAINS_INTERFACES";
+		public static readonly string MEMORYDOMAINS_BLACKLISTEDDOMAINS = "MEMORYDOMAINS_BLACKLISTEDDOMAINS";
 	}
 
 	public enum UISPEC
 	{
 	}
+
 }

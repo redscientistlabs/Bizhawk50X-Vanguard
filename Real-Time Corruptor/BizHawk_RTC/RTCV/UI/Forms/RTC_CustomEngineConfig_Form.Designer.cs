@@ -801,7 +801,7 @@
             this.btnCustomTemplateSaveAs.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnCustomTemplateSaveAs.Font = new System.Drawing.Font("Segoe UI", 8F);
             this.btnCustomTemplateSaveAs.ForeColor = System.Drawing.Color.Black;
-            this.btnCustomTemplateSaveAs.Location = new System.Drawing.Point(339, 14);
+            this.btnCustomTemplateSaveAs.Location = new System.Drawing.Point(337, 14);
             this.btnCustomTemplateSaveAs.Name = "btnCustomTemplateSaveAs";
             this.btnCustomTemplateSaveAs.Size = new System.Drawing.Size(65, 25);
             this.btnCustomTemplateSaveAs.TabIndex = 193;
@@ -809,7 +809,6 @@
             this.btnCustomTemplateSaveAs.Tag = "";
             this.btnCustomTemplateSaveAs.Text = "Save as";
             this.btnCustomTemplateSaveAs.UseVisualStyleBackColor = false;
-            this.btnCustomTemplateSaveAs.Visible = false;
             this.btnCustomTemplateSaveAs.Click += new System.EventHandler(this.btnCustomTemplateSaveAs_Click);
             // 
             // btnCustomTemplateLoad
@@ -827,7 +826,6 @@
             this.btnCustomTemplateLoad.Tag = "";
             this.btnCustomTemplateLoad.Text = "Load";
             this.btnCustomTemplateLoad.UseVisualStyleBackColor = false;
-            this.btnCustomTemplateLoad.Visible = false;
             this.btnCustomTemplateLoad.Click += new System.EventHandler(this.btnCustomTemplateLoad_Click);
             // 
             // btnCustomTemplateSave
@@ -846,7 +844,6 @@
             this.btnCustomTemplateSave.Tag = "";
             this.btnCustomTemplateSave.Text = "Save";
             this.btnCustomTemplateSave.UseVisualStyleBackColor = false;
-            this.btnCustomTemplateSave.Visible = false;
             this.btnCustomTemplateSave.Click += new System.EventHandler(this.btnCustomTemplateSave_Click);
             // 
             // cbSelectedTemplate
@@ -857,13 +854,6 @@
             this.cbSelectedTemplate.Font = new System.Drawing.Font("Segoe UI", 8F);
             this.cbSelectedTemplate.ForeColor = System.Drawing.Color.White;
             this.cbSelectedTemplate.FormattingEnabled = true;
-            this.cbSelectedTemplate.Items.AddRange(new object[] {
-            "Nightmare Engine",
-            "Hellgenie Engine",
-            "Distortion Engine",
-            "Freeze Engine",
-            "Pipe Engine",
-            "Vector Engine"});
             this.cbSelectedTemplate.Location = new System.Drawing.Point(12, 20);
             this.cbSelectedTemplate.Name = "cbSelectedTemplate";
             this.cbSelectedTemplate.Size = new System.Drawing.Size(211, 21);

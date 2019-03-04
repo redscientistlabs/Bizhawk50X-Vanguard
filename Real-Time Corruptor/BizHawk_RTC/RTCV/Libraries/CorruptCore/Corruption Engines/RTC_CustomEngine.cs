@@ -1,11 +1,16 @@
 ﻿using Newtonsoft.Json;
 using System;
+using System.Collections.Generic;
+using System.ComponentModel;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Numerics;
 using System.Security.Cryptography;
+using System.Text;
 using System.Windows.Forms;
+using Newtonsoft.Json.Converters;
+using Newtonsoft.Json.Serialization;
 using RTCV.NetCore;
 
 
@@ -13,6 +18,8 @@ namespace RTCV.CorruptCore
 {
 	public static class RTC_CustomEngine
 	{
+		private static Dictionary<String, Type> name2TypeDico = new Dictionary<string, Type>();
+		public static Dictionary<String, PartialSpec> Name2TemplateDico = new Dictionary<string, PartialSpec>();
 
 		public static long MinValue8Bit
 		{
@@ -126,8 +133,8 @@ namespace RTCV.CorruptCore
 			get => RTCV.NetCore.AllSpec.CorruptCoreSpec[RTCSPEC.CUSTOM_VALUELISTHASH.ToString()] as string;
 			set => RTCV.NetCore.AllSpec.CorruptCoreSpec.Update(RTCSPEC.CUSTOM_VALUELISTHASH.ToString(), value);
 		}
+		
 
-		public static PartialSpec lastLoadedTemplate = null;
 
 		public static BlastUnit GenerateUnit(string domain, long address, int precision)
 		{
@@ -289,10 +296,59 @@ namespace RTCV.CorruptCore
 				.ToArray();
 		}
 
-		//Don't set a Limiter or Value list hash in any of these. We just leave it on whatever is currently set and set that it shouldn't be used.
-		//This is because we need to be able to have the UI select some item (the comboboxes don't have an "empty" state)
-		public static void InitTemplate_NightmareEngine(PartialSpec pSpec)
+		public static void getDefaultPartial(PartialSpec pSpec)
 		{
+			pSpec =	InitTemplate_NightmareEngine(pSpec.Name);
+			pSpec[RTCSPEC.CUSTOM_PATH.ToString()] = "";
+			foreach (var k in pSpec.GetKeys())
+			{
+				name2TypeDico[k] = pSpec[k].GetType();
+			}
+				
+		}
+
+
+		public static void InitTemplates()
+		{
+			var nightmare = InitTemplate_NightmareEngine();
+			var hellgenie = InitTemplate_HellgenieEngine();
+			var freeze = InitTemplate_FreezeEngine();
+			var distortion = InitTemplate_DistortionEngine();
+			var pipe = InitTemplate_PipeEngine();
+			var vector = InitTemplate_VectorEngine();
+
+			Name2TemplateDico[nightmare[RTCSPEC.CUSTOM_NAME.ToString()].ToString()] = nightmare;
+			Name2TemplateDico[hellgenie[RTCSPEC.CUSTOM_NAME.ToString()].ToString()] = hellgenie;
+			Name2TemplateDico[freeze[RTCSPEC.CUSTOM_NAME.ToString()].ToString()] = freeze;
+			Name2TemplateDico[distortion[RTCSPEC.CUSTOM_NAME.ToString()].ToString()] = distortion;
+			Name2TemplateDico[pipe[RTCSPEC.CUSTOM_NAME.ToString()].ToString()] = pipe;
+			Name2TemplateDico[vector[RTCSPEC.CUSTOM_NAME.ToString()].ToString()] = vector;
+
+			LoadUserTemplates();
+
+		}
+
+		public static void LoadUserTemplates()
+		{
+			string[] paths = System.IO.Directory.GetFiles(CorruptCore.engineTemplateDir);
+			paths = paths.OrderBy(x => x).ToArray();
+			foreach (var p in paths)
+			{
+				PartialSpec _p = LoadTemplateFile(p);
+				Name2TemplateDico[_p[RTCSPEC.CUSTOM_NAME.ToString()].ToString()] = _p;
+			}
+		}
+
+		//Don't set a Limiter or Value list hash in any of these. We just leave it on whatever is currently set and set that it shouldn't be used.
+
+		//This is because we need to be able to have the UI select some item (the comboboxes don't have an "empty" state)
+		public static PartialSpec InitTemplate_NightmareEngine(string name = null)
+		{
+			PartialSpec pSpec;
+			if (name == null)
+				pSpec = new PartialSpec(NetCore.AllSpec.CorruptCoreSpec.name);
+			else
+				pSpec = new PartialSpec(name);
 
 			pSpec[RTCSPEC.CUSTOM_NAME.ToString()] = "Nightmare Engine";
 
@@ -320,11 +376,11 @@ namespace RTCV.CorruptCore
 			pSpec[RTCSPEC.CUSTOM_STOREADDRESS.ToString()] = CustomStoreAddress.RANDOM;
 			pSpec[RTCSPEC.CUSTOM_STORETIME.ToString()] = StoreTime.IMMEDIATE;
 			pSpec[RTCSPEC.CUSTOM_STORETYPE.ToString()] = StoreType.ONCE;
-
-			lastLoadedTemplate = (PartialSpec)pSpec.Clone();
+			return pSpec;
 		}
-		public static void InitTemplate_HellgenieEngine(PartialSpec pSpec)
+		public static PartialSpec InitTemplate_HellgenieEngine()
 		{
+			PartialSpec pSpec = new PartialSpec(NetCore.AllSpec.CorruptCoreSpec.name);
 			pSpec[RTCSPEC.CUSTOM_NAME.ToString()] = "Hellgenie Engine";
 
 			pSpec[RTCSPEC.CUSTOM_DELAY.ToString()] = 0;
@@ -352,11 +408,12 @@ namespace RTCV.CorruptCore
 			pSpec[RTCSPEC.CUSTOM_STOREADDRESS.ToString()] = CustomStoreAddress.RANDOM;
 			pSpec[RTCSPEC.CUSTOM_STORETIME.ToString()] = StoreTime.IMMEDIATE;
 			pSpec[RTCSPEC.CUSTOM_STORETYPE.ToString()] = StoreType.ONCE;
-
-			lastLoadedTemplate = (PartialSpec)pSpec.Clone();
+			return pSpec;
 		}
-		public static void InitTemplate_DistortionEngine(PartialSpec pSpec)
+		public static PartialSpec InitTemplate_DistortionEngine()
 		{
+			PartialSpec pSpec = new PartialSpec(NetCore.AllSpec.CorruptCoreSpec.name);
+
 			pSpec[RTCSPEC.CUSTOM_NAME.ToString()] = "Distortion Engine";
 
 			pSpec[RTCSPEC.CUSTOM_DELAY.ToString()] = 50;
@@ -384,11 +441,12 @@ namespace RTCV.CorruptCore
 			pSpec[RTCSPEC.CUSTOM_STOREADDRESS.ToString()] = CustomStoreAddress.SAME;
 			pSpec[RTCSPEC.CUSTOM_STORETIME.ToString()] = StoreTime.IMMEDIATE;
 			pSpec[RTCSPEC.CUSTOM_STORETYPE.ToString()] = StoreType.ONCE;
-
-			lastLoadedTemplate = (PartialSpec)pSpec.Clone();
+			return pSpec;
 		}
-		public static void InitTemplate_FreezeEngine(PartialSpec pSpec)
+		public static PartialSpec InitTemplate_FreezeEngine()
 		{
+			PartialSpec pSpec = new PartialSpec(NetCore.AllSpec.CorruptCoreSpec.name);
+
 			pSpec[RTCSPEC.CUSTOM_NAME.ToString()] = "Freeze Engine";
 
 			pSpec[RTCSPEC.CUSTOM_DELAY.ToString()] = 0;
@@ -416,11 +474,11 @@ namespace RTCV.CorruptCore
 			pSpec[RTCSPEC.CUSTOM_STOREADDRESS.ToString()] = CustomStoreAddress.SAME;
 			pSpec[RTCSPEC.CUSTOM_STORETIME.ToString()] = StoreTime.PREEXECUTE;
 			pSpec[RTCSPEC.CUSTOM_STORETYPE.ToString()] = StoreType.ONCE;
-
-			lastLoadedTemplate = (PartialSpec)pSpec.Clone();
+			return pSpec;
 		}
-		public static void InitTemplate_PipeEngine(PartialSpec pSpec)
+		public static PartialSpec InitTemplate_PipeEngine()
 		{
+			PartialSpec pSpec = new PartialSpec(NetCore.AllSpec.CorruptCoreSpec.name);
 			pSpec[RTCSPEC.CUSTOM_NAME.ToString()] = "Pipe Engine";
 
 			pSpec[RTCSPEC.CUSTOM_DELAY.ToString()] = 0;
@@ -448,11 +506,13 @@ namespace RTCV.CorruptCore
 			pSpec[RTCSPEC.CUSTOM_STOREADDRESS.ToString()] = CustomStoreAddress.RANDOM;
 			pSpec[RTCSPEC.CUSTOM_STORETIME.ToString()] = StoreTime.PREEXECUTE;
 			pSpec[RTCSPEC.CUSTOM_STORETYPE.ToString()] = StoreType.CONTINUOUS;
+			return pSpec;
 
-			lastLoadedTemplate = (PartialSpec)pSpec.Clone();
 		}
-		public static void InitTemplate_VectorEngine(PartialSpec pSpec)
+		public static PartialSpec InitTemplate_VectorEngine()
 		{
+			PartialSpec pSpec = new PartialSpec(NetCore.AllSpec.CorruptCoreSpec.name);
+
 			pSpec[RTCSPEC.CUSTOM_NAME.ToString()] = "Vector Engine";
 
 			pSpec[RTCSPEC.CUSTOM_DELAY.ToString()] = 0;
@@ -480,8 +540,8 @@ namespace RTCV.CorruptCore
 			pSpec[RTCSPEC.CUSTOM_STOREADDRESS.ToString()] = CustomStoreAddress.RANDOM;
 			pSpec[RTCSPEC.CUSTOM_STORETIME.ToString()] = StoreTime.IMMEDIATE;
 			pSpec[RTCSPEC.CUSTOM_STORETYPE.ToString()] = StoreType.ONCE;
+			return pSpec;
 
-			lastLoadedTemplate = (PartialSpec)pSpec.Clone();
 		}
 
 		public static PartialSpec getCurrentConfigSpec()
@@ -528,35 +588,96 @@ namespace RTCV.CorruptCore
 			set => RTCV.NetCore.AllSpec.CorruptCoreSpec.Update(RTCSPEC.CUSTOM_PATH.ToString(), value);
 		}
 
-		public static PartialSpec LoadTemplateFile()
+		private static SafeJsonTypeSerialization.JsonKnownTypesBinder InitSpecKnownTypes()
 		{
-			string Filename;
+			var t = new SafeJsonTypeSerialization.JsonKnownTypesBinder();
+			t.KnownTypes.Add(typeof(long));
+			t.KnownTypes.Add(typeof(string));
+			return t;
+		}
 
-			OpenFileDialog ofd = new OpenFileDialog
-			{
-				DefaultExt = "json",
-				Title = "Open Engine Template File",
-				Filter = "JSON files|*.json",
-				RestoreDirectory = true
-			};
+		public static bool LoadTemplate(String template)
+		{
+			PartialSpec spec = Name2TemplateDico[template];
+			if (spec == null)
+				return false;
 
-			if (ofd.ShowDialog() == DialogResult.OK)
+			RTCV.NetCore.AllSpec.CorruptCoreSpec.Update(spec);
+			return true;
+		}
+
+		public static PartialSpec LoadTemplateFile(string Filename = null)
+		{
+			if (Filename == null)
 			{
-				Filename = ofd.FileName;
+				OpenFileDialog ofd = new OpenFileDialog
+				{
+					DefaultExt = "json",
+					Title = "Open Engine Template File",
+					Filter = "JSON files|*.json",
+					RestoreDirectory = true
+				};
+
+				if (ofd.ShowDialog() == DialogResult.OK)
+				{
+					Filename = ofd.FileName;
+				}
+				else
+					return null;
 			}
-			else
-				return null;
 
-			PartialSpec pSpec;
-
+			PartialSpec pSpec = new PartialSpec("RTCSpec");
 			try
 			{
 				using (FileStream fs = File.Open(Filename, FileMode.OpenOrCreate))
 				{
-					pSpec = JsonHelper.Deserialize<PartialSpec>(fs);
-					fs.Close();
-				}
+					Dictionary<String, Object> d = JsonHelper.Deserialize<Dictionary<String,Object>>(fs);
 
+
+					//We don't want to store type data in the serialized data but specs store object
+					//To work around this, we store the type in a dictionary and pass the data through a typeconverter
+					foreach (var k in d.Keys)
+					{
+						var t = d[k];
+						//If the type doesn't exist, just use what it's parsed as
+						if (!name2TypeDico.ContainsKey(k))
+						{
+							pSpec[k] = t;
+							continue;
+						}
+
+						var type = name2TypeDico[k];
+						if (t.GetType() != type)
+						{
+							//There's no typeconverter for bigint so we have to handle it manually. Convert it to a string then bigint it
+							if (type == typeof(BigInteger))
+							{
+								if (BigInteger.TryParse(t.ToString(), out BigInteger a))
+									t = a;
+								else
+									throw new Exception("Couldn't convert " + t.ToString() +
+										" to BigInteger! Something is wrong with your template.");
+							}
+							//handle the enums
+							else if (type.BaseType == typeof(Enum))
+							{
+								//We can't use tryparse here so we have to catch the exception
+								try
+								{
+									t = Enum.Parse(type, t.ToString());
+								}catch(ArgumentException e)
+								{
+									throw new Exception("Couldn't convert " + t.ToString() +
+										" to " + type.Name + "! Something is wrong with your template.");
+								}
+							}
+							else
+								t = TypeDescriptor.GetConverter(t).ConvertTo(t, type);
+						}
+						pSpec[k] = t;
+					}
+
+				}
 			}
 			catch (Exception e)
 			{
@@ -567,8 +688,6 @@ namespace RTCV.CorruptCore
 			//Overwrites spec path with loaded path
 			pSpec[RTCSPEC.CUSTOM_PATH.ToString()] = Filename;
 
-			//Keeps a backup for Reset Config
-			lastLoadedTemplate = (PartialSpec)pSpec.Clone();
 
 			return pSpec;
 		}
@@ -607,22 +726,10 @@ namespace RTCV.CorruptCore
 			pSpec[RTCSPEC.CUSTOM_NAME.ToString()] = templateName;
 			pSpec[RTCSPEC.CUSTOM_PATH.ToString()] = path;
 
-			//Create stockpile.xml to temp folder from stockpile object
-			using (FileStream fs = File.Open(path, FileMode.OpenOrCreate))
-			{
-				var jsonSerializerSettings = new JsonSerializerSettings()
-				{
-					TypeNameHandling = TypeNameHandling.All,
-					Formatting = Formatting.Indented
-				};
 
-				var jsonString = JsonConvert.SerializeObject(pSpec, jsonSerializerSettings);
-				var byteArray = jsonString.GetBytes();
-				fs.Write(byteArray, 0, byteArray.Length);
-				//JsonHelper.Serialize(pSpec, fs, Formatting.Indented);
-				fs.Close();
-			}
-
+			string jsonString = pSpec.GetSerializedDico();
+			File.WriteAllText(path, jsonString);
+			Name2TemplateDico.Add(templateName, pSpec);
 			return templateName;
 		}
 	}

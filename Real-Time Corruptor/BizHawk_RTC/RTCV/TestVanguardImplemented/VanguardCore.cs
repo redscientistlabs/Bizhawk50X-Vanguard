@@ -67,63 +67,63 @@ namespace TestVanguardImplemented
 
 		public static string System
 		{
-			get => (string)VanguardSpec[VSPEC.SYSTEM.ToString()];
-			set => VanguardSpec.Update(VSPEC.SYSTEM.ToString(), value);
+			get => (string)VanguardSpec[VSPEC.SYSTEM];
+			set => VanguardSpec.Update(VSPEC.SYSTEM, value);
 		}
 		public static string GameName
 		{
-			get => (string)VanguardSpec[VSPEC.GAMENAME.ToString()];
-			set => VanguardSpec.Update(VSPEC.GAMENAME.ToString(), value);
+			get => (string)VanguardSpec[VSPEC.GAMENAME];
+			set => VanguardSpec.Update(VSPEC.GAMENAME, value);
 		}
 		public static string SystemPrefix
 		{
-			get => (string)VanguardSpec[VSPEC.SYSTEMPREFIX.ToString()];
-			set => VanguardSpec.Update(VSPEC.SYSTEMPREFIX.ToString(), value);
+			get => (string)VanguardSpec[VSPEC.SYSTEMPREFIX];
+			set => VanguardSpec.Update(VSPEC.SYSTEMPREFIX, value);
 		}
 		public static string SystemCore
 		{
-			get => (string)VanguardSpec[VSPEC.SYSTEMCORE.ToString()];
-			set => VanguardSpec.Update(VSPEC.SYSTEMCORE.ToString(), value);
+			get => (string)VanguardSpec[VSPEC.SYSTEMCORE];
+			set => VanguardSpec.Update(VSPEC.SYSTEMCORE, value);
 		}
 		public static string SyncSettings
 		{
-			get => (string)VanguardSpec[VSPEC.SYNCSETTINGS.ToString()];
-			set => VanguardSpec.Update(VSPEC.SYNCSETTINGS.ToString(), value);
+			get => (string)VanguardSpec[VSPEC.SYNCSETTINGS];
+			set => VanguardSpec.Update(VSPEC.SYNCSETTINGS, value);
 		}
 		public static string OpenRomFilename
 		{
-			get => (string)VanguardSpec[VSPEC.OPENROMFILENAME.ToString()];
-			set => VanguardSpec.Update(VSPEC.OPENROMFILENAME.ToString(), value);
+			get => (string)VanguardSpec[VSPEC.OPENROMFILENAME];
+			set => VanguardSpec.Update(VSPEC.OPENROMFILENAME, value);
 		}
 		public static int LastLoaderRom
 		{
-			get => (int)VanguardSpec[VSPEC.CORE_LASTLOADERROM.ToString()];
-			set => VanguardSpec.Update(VSPEC.CORE_LASTLOADERROM.ToString(), value);
+			get => (int)VanguardSpec[VSPEC.CORE_LASTLOADERROM];
+			set => VanguardSpec.Update(VSPEC.CORE_LASTLOADERROM, value);
 		}
 		public static string[] BlacklistedDomains
 		{
-			get => (string[])VanguardSpec[VSPEC.MEMORYDOMAINS_BLACKLISTEDDOMAINS.ToString()];
-			set => VanguardSpec.Update(VSPEC.MEMORYDOMAINS_BLACKLISTEDDOMAINS.ToString(), value);
+			get => (string[])VanguardSpec[VSPEC.MEMORYDOMAINS_BLACKLISTEDDOMAINS];
+			set => VanguardSpec.Update(VSPEC.MEMORYDOMAINS_BLACKLISTEDDOMAINS, value);
 		}
 		public static MemoryDomainProxy[] MemoryInterfacees
 		{
-			get => (MemoryDomainProxy[])VanguardSpec[VSPEC.MEMORYDOMAINS_INTERFACES.ToString()];
-			set => VanguardSpec.Update(VSPEC.MEMORYDOMAINS_INTERFACES.ToString(), value);
+			get => (MemoryDomainProxy[])VanguardSpec[VSPEC.MEMORYDOMAINS_INTERFACES];
+			set => VanguardSpec.Update(VSPEC.MEMORYDOMAINS_INTERFACES, value);
 		}
 
 		public static PartialSpec getDefaultPartial()
 		{
 			var partial = new PartialSpec("RTCSpec");
 
-			partial[VSPEC.SYSTEM.ToString()] = String.Empty;
-			partial[VSPEC.GAMENAME.ToString()] = String.Empty;
-			partial[VSPEC.SYSTEMPREFIX.ToString()] = String.Empty;
-			partial[VSPEC.OPENROMFILENAME.ToString()] = String.Empty;
-			partial[VSPEC.SYNCSETTINGS.ToString()] = String.Empty;
-			partial[VSPEC.OPENROMFILENAME.ToString()] = String.Empty;
-			partial[VSPEC.MEMORYDOMAINS_BLACKLISTEDDOMAINS.ToString()] = new string[] { };
-			partial[VSPEC.MEMORYDOMAINS_INTERFACES.ToString()] = new MemoryDomainProxy[] { };
-			partial[VSPEC.CORE_LASTLOADERROM.ToString()] = -1;
+			partial[VSPEC.SYSTEM] = String.Empty;
+			partial[VSPEC.GAMENAME] = String.Empty;
+			partial[VSPEC.SYSTEMPREFIX] = String.Empty;
+			partial[VSPEC.OPENROMFILENAME] = String.Empty;
+			partial[VSPEC.SYNCSETTINGS] = String.Empty;
+			partial[VSPEC.OPENROMFILENAME] = String.Empty;
+			partial[VSPEC.MEMORYDOMAINS_BLACKLISTEDDOMAINS] = new string[] { };
+			partial[VSPEC.MEMORYDOMAINS_INTERFACES] = new MemoryDomainProxy[] { };
+			partial[VSPEC.CORE_LASTLOADERROM] = -1;
 
 			return partial;
 		}

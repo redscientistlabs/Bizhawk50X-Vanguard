@@ -4,10 +4,13 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using System.Runtime.Serialization;
+using System.Runtime.Serialization.Formatters;
 using System.Security.Permissions;
 using System.Text;
 using System.Threading.Tasks;
 using Ceras;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Converters;
 using RTCV.NetCore;
 
 namespace RTCV.NetCore
@@ -206,6 +209,7 @@ namespace RTCV.NetCore
 				this[key] = partialSpec.specDico[key];
 		}
 
+
 		protected PartialSpec(SerializationInfo info, StreamingContext context)
 		{
 			Name = info.GetString("Name");
@@ -244,6 +248,19 @@ namespace RTCV.NetCore
 			}
 		}
 
+		public List<String> GetKeys()
+		{
+			return specDico.Keys.ToList();
+		}
+		public String GetSerializedDico()
+		{
+			var jsonSerializerSettings = new JsonSerializerSettings()
+			{
+				Formatting = Formatting.Indented,
+				Converters = new JsonConverter[] {new StringEnumConverter()}
+			};
+			return JsonConvert.SerializeObject(specDico, jsonSerializerSettings);
+		}
 
 		public void Reset() => specDico.Clear();
 		public object Clone() => Extensions.ObjectCopier.Clone(this);

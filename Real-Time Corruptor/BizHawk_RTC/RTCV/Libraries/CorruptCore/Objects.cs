@@ -685,11 +685,11 @@ namespace RTCV.CorruptCore
 			ParentKey = parentkey;
 			BlastLayer = blastlayer;
 
-			RomFilename = (string)RTCV.NetCore.AllSpec.VanguardSpec[VSPEC.OPENROMFILENAME.ToString()];
-			SystemName = (string)RTCV.NetCore.AllSpec.VanguardSpec[VSPEC.SYSTEM.ToString()];
-			SystemCore = (string)RTCV.NetCore.AllSpec.VanguardSpec[VSPEC.SYSTEMCORE.ToString()];
-			GameName = (string)RTCV.NetCore.AllSpec.VanguardSpec[VSPEC.GAMENAME.ToString()];
-			SyncSettings = (string)RTCV.NetCore.AllSpec.VanguardSpec[VSPEC.SYNCSETTINGS.ToString()];
+			RomFilename = (string)RTCV.NetCore.AllSpec.VanguardSpec[VSPEC.OPENROMFILENAME];
+			SystemName = (string)RTCV.NetCore.AllSpec.VanguardSpec[VSPEC.SYSTEM];
+			SystemCore = (string)RTCV.NetCore.AllSpec.VanguardSpec[VSPEC.SYSTEMCORE];
+			GameName = (string)RTCV.NetCore.AllSpec.VanguardSpec[VSPEC.GAMENAME];
+			SyncSettings = (string)RTCV.NetCore.AllSpec.VanguardSpec[VSPEC.SYNCSETTINGS];
 
 			this.SelectedDomains.AddRange((string[])RTCV.NetCore.AllSpec.UISpec["SELECTEDDOMAINS"]);
 		}

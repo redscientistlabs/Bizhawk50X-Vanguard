@@ -20,6 +20,7 @@ svnrev.cs
 /output/RTC/PARAMS/*
 /output/RTC/WORKING/*
 /output/RTC/RENDEROUTPUT/*
+/output/RTC/ENGINETEMPLATES/*
 
 !/output/*.bat
 !/output/AutoKillSwitch.exe
