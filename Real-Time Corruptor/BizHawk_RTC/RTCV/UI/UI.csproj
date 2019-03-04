@@ -78,6 +78,9 @@
     <Compile Include="Components\Controls\MultiTrackBar.designer.cs">
       <DependentUpon>MultiTrackBar.cs</DependentUpon>
     </Compile>
+    <Compile Include="Components\Controls\MultiUpDown.cs">
+      <SubType>Component</SubType>
+    </Compile>
     <Compile Include="Components\Engine Config\RTC_CorruptionEngine_Form.cs">
       <SubType>Form</SubType>
     </Compile>

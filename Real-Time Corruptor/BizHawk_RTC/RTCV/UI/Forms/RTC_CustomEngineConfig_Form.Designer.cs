@@ -82,6 +82,11 @@
             this.cbSelectedTemplate = new System.Windows.Forms.ComboBox();
             this.label2 = new System.Windows.Forms.Label();
             this.panel1 = new System.Windows.Forms.Panel();
+            this.pictureBox1 = new System.Windows.Forms.PictureBox();
+            this.lbFlavorText = new System.Windows.Forms.Label();
+            this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.updownMaxInfiniteUnits = new RTCV.UI.Components.Controls.MultiUpDown();
+            this.label1 = new System.Windows.Forms.Label();
             this.cbClearRewind = new System.Windows.Forms.CheckBox();
             this.gbUnitSource.SuspendLayout();
             this.gbValueList.SuspendLayout();
@@ -103,18 +108,21 @@
             this.groupBox3.SuspendLayout();
             this.pnTopBar.SuspendLayout();
             this.panel1.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
+            this.groupBox1.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.updownMaxInfiniteUnits)).BeginInit();
             this.SuspendLayout();
             // 
             // btnClearActive
             // 
-            this.btnClearActive.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(224)))), ((int)(((byte)(224)))), ((int)(((byte)(224)))));
+            this.btnClearActive.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(96)))), ((int)(((byte)(96)))), ((int)(((byte)(96)))));
             this.btnClearActive.FlatAppearance.BorderSize = 0;
             this.btnClearActive.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnClearActive.Font = new System.Drawing.Font("Segoe UI", 8F);
-            this.btnClearActive.ForeColor = System.Drawing.Color.Black;
-            this.btnClearActive.Location = new System.Drawing.Point(280, 310);
+            this.btnClearActive.ForeColor = System.Drawing.Color.White;
+            this.btnClearActive.Location = new System.Drawing.Point(193, 310);
             this.btnClearActive.Name = "btnClearActive";
-            this.btnClearActive.Size = new System.Drawing.Size(148, 25);
+            this.btnClearActive.Size = new System.Drawing.Size(122, 30);
             this.btnClearActive.TabIndex = 150;
             this.btnClearActive.TabStop = false;
             this.btnClearActive.Tag = "color:light";
@@ -124,7 +132,7 @@
             // 
             // gbUnitSource
             // 
-            this.gbUnitSource.BackColor = System.Drawing.Color.Gray;
+            this.gbUnitSource.BackColor = System.Drawing.Color.Transparent;
             this.gbUnitSource.Controls.Add(this.rbUnitSourceStore);
             this.gbUnitSource.Controls.Add(this.rbUnitSourceValue);
             this.gbUnitSource.Font = new System.Drawing.Font("Segoe UI", 8F);
@@ -134,7 +142,7 @@
             this.gbUnitSource.Size = new System.Drawing.Size(88, 55);
             this.gbUnitSource.TabIndex = 161;
             this.gbUnitSource.TabStop = false;
-            this.gbUnitSource.Tag = "color:dark";
+            this.gbUnitSource.Tag = "";
             this.gbUnitSource.Text = "Unit Source";
             // 
             // rbUnitSourceStore
@@ -346,9 +354,9 @@
             this.gbLimiterList.Controls.Add(this.cbLimiterList);
             this.gbLimiterList.Font = new System.Drawing.Font("Segoe UI", 8F);
             this.gbLimiterList.ForeColor = System.Drawing.Color.White;
-            this.gbLimiterList.Location = new System.Drawing.Point(193, 187);
+            this.gbLimiterList.Location = new System.Drawing.Point(193, 184);
             this.gbLimiterList.Name = "gbLimiterList";
-            this.gbLimiterList.Size = new System.Drawing.Size(235, 120);
+            this.gbLimiterList.Size = new System.Drawing.Size(235, 115);
             this.gbLimiterList.TabIndex = 181;
             this.gbLimiterList.TabStop = false;
             this.gbLimiterList.Text = "Limiter List";
@@ -361,9 +369,9 @@
             this.groupBox2.Controls.Add(this.rbLimiterNone);
             this.groupBox2.Font = new System.Drawing.Font("Segoe UI", 8F);
             this.groupBox2.ForeColor = System.Drawing.Color.White;
-            this.groupBox2.Location = new System.Drawing.Point(0, 40);
+            this.groupBox2.Location = new System.Drawing.Point(0, 37);
             this.groupBox2.Name = "groupBox2";
-            this.groupBox2.Size = new System.Drawing.Size(104, 80);
+            this.groupBox2.Size = new System.Drawing.Size(104, 78);
             this.groupBox2.TabIndex = 188;
             this.groupBox2.TabStop = false;
             this.groupBox2.Text = "Limiter Time";
@@ -431,9 +439,9 @@
             this.gbStoreCompare.Enabled = false;
             this.gbStoreCompare.Font = new System.Drawing.Font("Segoe UI", 8F);
             this.gbStoreCompare.ForeColor = System.Drawing.Color.White;
-            this.gbStoreCompare.Location = new System.Drawing.Point(122, 52);
+            this.gbStoreCompare.Location = new System.Drawing.Point(122, 49);
             this.gbStoreCompare.Name = "gbStoreCompare";
-            this.gbStoreCompare.Size = new System.Drawing.Size(118, 68);
+            this.gbStoreCompare.Size = new System.Drawing.Size(118, 66);
             this.gbStoreCompare.TabIndex = 184;
             this.gbStoreCompare.TabStop = false;
             this.gbStoreCompare.Text = "Store Compare";
@@ -514,7 +522,7 @@
             this.cbLoopUnit.BackColor = System.Drawing.Color.Transparent;
             this.cbLoopUnit.Font = new System.Drawing.Font("Segoe UI", 8F);
             this.cbLoopUnit.ForeColor = System.Drawing.Color.White;
-            this.cbLoopUnit.Location = new System.Drawing.Point(9, 91);
+            this.cbLoopUnit.Location = new System.Drawing.Point(8, 88);
             this.cbLoopUnit.Name = "cbLoopUnit";
             this.cbLoopUnit.Size = new System.Drawing.Size(139, 17);
             this.cbLoopUnit.TabIndex = 183;
@@ -533,9 +541,9 @@
             this.gbStepSettings.Controls.Add(this.nmLifetime);
             this.gbStepSettings.Font = new System.Drawing.Font("Segoe UI", 8F);
             this.gbStepSettings.ForeColor = System.Drawing.Color.White;
-            this.gbStepSettings.Location = new System.Drawing.Point(15, 186);
+            this.gbStepSettings.Location = new System.Drawing.Point(15, 183);
             this.gbStepSettings.Name = "gbStepSettings";
-            this.gbStepSettings.Size = new System.Drawing.Size(150, 120);
+            this.gbStepSettings.Size = new System.Drawing.Size(150, 110);
             this.gbStepSettings.TabIndex = 188;
             this.gbStepSettings.TabStop = false;
             this.gbStepSettings.Text = "Modifiers";
@@ -545,7 +553,7 @@
             this.label11.AutoSize = true;
             this.label11.Font = new System.Drawing.Font("Segoe UI", 8F);
             this.label11.ForeColor = System.Drawing.Color.White;
-            this.label11.Location = new System.Drawing.Point(6, 65);
+            this.label11.Location = new System.Drawing.Point(5, 65);
             this.label11.Name = "label11";
             this.label11.Size = new System.Drawing.Size(22, 13);
             this.label11.TabIndex = 191;
@@ -578,7 +586,7 @@
             this.label9.AutoSize = true;
             this.label9.Font = new System.Drawing.Font("Segoe UI", 8F);
             this.label9.ForeColor = System.Drawing.Color.White;
-            this.label9.Location = new System.Drawing.Point(6, 19);
+            this.label9.Location = new System.Drawing.Point(5, 19);
             this.label9.Name = "label9";
             this.label9.Size = new System.Drawing.Size(47, 13);
             this.label9.TabIndex = 188;
@@ -589,7 +597,7 @@
             this.label10.AutoSize = true;
             this.label10.Font = new System.Drawing.Font("Segoe UI", 8F);
             this.label10.ForeColor = System.Drawing.Color.White;
-            this.label10.Location = new System.Drawing.Point(6, 41);
+            this.label10.Location = new System.Drawing.Point(5, 41);
             this.label10.Name = "label10";
             this.label10.Size = new System.Drawing.Size(35, 13);
             this.label10.TabIndex = 189;
@@ -790,7 +798,7 @@
             this.pnTopBar.Dock = System.Windows.Forms.DockStyle.Top;
             this.pnTopBar.Location = new System.Drawing.Point(0, 0);
             this.pnTopBar.Name = "pnTopBar";
-            this.pnTopBar.Size = new System.Drawing.Size(464, 51);
+            this.pnTopBar.Size = new System.Drawing.Size(459, 51);
             this.pnTopBar.TabIndex = 191;
             this.pnTopBar.Tag = "color:normal";
             // 
@@ -875,18 +883,86 @@
             // panel1
             // 
             this.panel1.BackColor = System.Drawing.Color.Gray;
-            this.panel1.Controls.Add(this.cbClearRewind);
             this.panel1.Controls.Add(this.gbUnitSource);
+            this.panel1.Controls.Add(this.pictureBox1);
+            this.panel1.Controls.Add(this.lbFlavorText);
+            this.panel1.Controls.Add(this.groupBox1);
             this.panel1.Controls.Add(this.btnClearActive);
             this.panel1.Controls.Add(this.gbStoreSettings);
             this.panel1.Controls.Add(this.gbStepSettings);
             this.panel1.Controls.Add(this.gbLimiterList);
             this.panel1.Controls.Add(this.gbValueSettings);
-            this.panel1.Location = new System.Drawing.Point(12, 61);
+            this.panel1.Location = new System.Drawing.Point(10, 60);
             this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(441, 340);
+            this.panel1.Size = new System.Drawing.Size(441, 365);
             this.panel1.TabIndex = 192;
             this.panel1.Tag = "color:normal";
+            // 
+            // pictureBox1
+            // 
+            this.pictureBox1.BackColor = System.Drawing.Color.Transparent;
+            this.pictureBox1.Image = ((System.Drawing.Image)(resources.GetObject("pictureBox1.Image")));
+            this.pictureBox1.Location = new System.Drawing.Point(366, 310);
+            this.pictureBox1.Name = "pictureBox1";
+            this.pictureBox1.Size = new System.Drawing.Size(65, 30);
+            this.pictureBox1.TabIndex = 193;
+            this.pictureBox1.TabStop = false;
+            // 
+            // lbFlavorText
+            // 
+            this.lbFlavorText.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.lbFlavorText.Font = new System.Drawing.Font("Segoe UI Semibold", 9F, ((System.Drawing.FontStyle)((System.Drawing.FontStyle.Bold | System.Drawing.FontStyle.Underline))));
+            this.lbFlavorText.ImageAlign = System.Drawing.ContentAlignment.MiddleRight;
+            this.lbFlavorText.Location = new System.Drawing.Point(190, 346);
+            this.lbFlavorText.Name = "lbFlavorText";
+            this.lbFlavorText.Size = new System.Drawing.Size(241, 14);
+            this.lbFlavorText.TabIndex = 194;
+            this.lbFlavorText.Text = "Actually kinda works!";
+            this.lbFlavorText.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            // 
+            // groupBox1
+            // 
+            this.groupBox1.Controls.Add(this.updownMaxInfiniteUnits);
+            this.groupBox1.Controls.Add(this.label1);
+            this.groupBox1.Controls.Add(this.cbClearRewind);
+            this.groupBox1.Font = new System.Drawing.Font("Segoe UI", 8F);
+            this.groupBox1.ForeColor = System.Drawing.Color.White;
+            this.groupBox1.Location = new System.Drawing.Point(15, 296);
+            this.groupBox1.Name = "groupBox1";
+            this.groupBox1.Size = new System.Drawing.Size(150, 65);
+            this.groupBox1.TabIndex = 192;
+            this.groupBox1.TabStop = false;
+            this.groupBox1.Text = "Step Settings";
+            // 
+            // updownMaxInfiniteUnits
+            // 
+            this.updownMaxInfiniteUnits.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
+            this.updownMaxInfiniteUnits.Font = new System.Drawing.Font("Segoe UI", 8F);
+            this.updownMaxInfiniteUnits.ForeColor = System.Drawing.Color.White;
+            this.updownMaxInfiniteUnits.Location = new System.Drawing.Point(74, 37);
+            this.updownMaxInfiniteUnits.Maximum = new decimal(new int[] {
+            65536,
+            0,
+            0,
+            0});
+            this.updownMaxInfiniteUnits.Name = "updownMaxInfiniteUnits";
+            this.updownMaxInfiniteUnits.Size = new System.Drawing.Size(70, 22);
+            this.updownMaxInfiniteUnits.TabIndex = 193;
+            this.updownMaxInfiniteUnits.Tag = "color:dark";
+            this.updownMaxInfiniteUnits.Value = new decimal(new int[] {
+            50,
+            0,
+            0,
+            0});
+            // 
+            // label1
+            // 
+            this.label1.AutoSize = true;
+            this.label1.Location = new System.Drawing.Point(5, 42);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(70, 13);
+            this.label1.TabIndex = 194;
+            this.label1.Text = "Max ∞ Units";
             // 
             // cbClearRewind
             // 
@@ -894,11 +970,11 @@
             this.cbClearRewind.BackColor = System.Drawing.Color.Transparent;
             this.cbClearRewind.Font = new System.Drawing.Font("Segoe UI", 8F);
             this.cbClearRewind.ForeColor = System.Drawing.Color.White;
-            this.cbClearRewind.Location = new System.Drawing.Point(24, 315);
+            this.cbClearRewind.Location = new System.Drawing.Point(8, 17);
             this.cbClearRewind.Name = "cbClearRewind";
-            this.cbClearRewind.Size = new System.Drawing.Size(167, 17);
+            this.cbClearRewind.Size = new System.Drawing.Size(141, 17);
             this.cbClearRewind.TabIndex = 192;
-            this.cbClearRewind.Text = "Clear Step Units on Rewind";
+            this.cbClearRewind.Text = "Clear Units on Rewind";
             this.cbClearRewind.UseVisualStyleBackColor = false;
             this.cbClearRewind.CheckedChanged += new System.EventHandler(this.CbClearRewind_CheckedChanged);
             // 
@@ -907,7 +983,7 @@
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
-            this.ClientSize = new System.Drawing.Size(464, 411);
+            this.ClientSize = new System.Drawing.Size(459, 436);
             this.Controls.Add(this.panel1);
             this.Controls.Add(this.pnTopBar);
             this.Font = new System.Drawing.Font("Segoe UI Symbol", 8.25F);
@@ -950,7 +1026,10 @@
             this.pnTopBar.ResumeLayout(false);
             this.pnTopBar.PerformLayout();
             this.panel1.ResumeLayout(false);
-            this.panel1.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
+            this.groupBox1.ResumeLayout(false);
+            this.groupBox1.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.updownMaxInfiniteUnits)).EndInit();
             this.ResumeLayout(false);
 
 		}
@@ -1010,5 +1089,10 @@
 		private System.Windows.Forms.GroupBox groupBox3;
 		private System.Windows.Forms.GroupBox gbValueSource;
 		public System.Windows.Forms.CheckBox cbClearRewind;
+		private System.Windows.Forms.Label label1;
+		public Components.Controls.MultiUpDown updownMaxInfiniteUnits;
+		private System.Windows.Forms.GroupBox groupBox1;
+		private System.Windows.Forms.PictureBox pictureBox1;
+		private System.Windows.Forms.Label lbFlavorText;
 	}
 }

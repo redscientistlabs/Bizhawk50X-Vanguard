@@ -31,9 +31,9 @@
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(RTC_SettingsCorrupt_Form));
             this.panel1 = new System.Windows.Forms.GroupBox();
             this.cbRerollDomain = new System.Windows.Forms.CheckBox();
-            this.cbRerollSourceDomain = new System.Windows.Forms.CheckBox();
             this.cbRerollAddress = new System.Windows.Forms.CheckBox();
             this.cbRerollSourceAddress = new System.Windows.Forms.CheckBox();
+            this.cbRerollSourceDomain = new System.Windows.Forms.CheckBox();
             this.panel2 = new System.Windows.Forms.GroupBox();
             this.cbIgnoreUnitOrigin = new System.Windows.Forms.CheckBox();
             this.cbRerollFollowsCustom = new System.Windows.Forms.CheckBox();
@@ -42,7 +42,7 @@
             this.label3 = new System.Windows.Forms.Label();
             this.panel4 = new System.Windows.Forms.Panel();
             this.panel5 = new System.Windows.Forms.GroupBox();
-            this.nmMaxInfiniteStepUnits = new System.Windows.Forms.NumericUpDown();
+            this.nmMaxInfiniteStepUnits = new RTCV.UI.Components.Controls.MultiUpDown();
             this.label5 = new System.Windows.Forms.Label();
             this.panel6 = new System.Windows.Forms.GroupBox();
             this.cbClearStepUnitsOnRewind = new System.Windows.Forms.CheckBox();
@@ -86,20 +86,6 @@
             this.cbRerollDomain.UseVisualStyleBackColor = true;
             this.cbRerollDomain.CheckedChanged += new System.EventHandler(this.cbRerollDomain_CheckedChanged);
             // 
-            // cbRerollSourceDomain
-            // 
-            this.cbRerollSourceDomain.AutoSize = true;
-            this.cbRerollSourceDomain.Enabled = false;
-            this.cbRerollSourceDomain.Font = new System.Drawing.Font("Segoe UI", 8F);
-            this.cbRerollSourceDomain.ForeColor = System.Drawing.Color.White;
-            this.cbRerollSourceDomain.Location = new System.Drawing.Point(10, 32);
-            this.cbRerollSourceDomain.Name = "cbRerollSourceDomain";
-            this.cbRerollSourceDomain.Size = new System.Drawing.Size(137, 17);
-            this.cbRerollSourceDomain.TabIndex = 2;
-            this.cbRerollSourceDomain.Text = "Reroll Source Domain";
-            this.cbRerollSourceDomain.UseVisualStyleBackColor = true;
-            this.cbRerollSourceDomain.CheckedChanged += new System.EventHandler(this.cbRerollSourceDomain_CheckedChanged);
-            // 
             // cbRerollAddress
             // 
             this.cbRerollAddress.AutoSize = true;
@@ -125,6 +111,20 @@
             this.cbRerollSourceAddress.Text = "Reroll Source Address";
             this.cbRerollSourceAddress.UseVisualStyleBackColor = true;
             this.cbRerollSourceAddress.CheckedChanged += new System.EventHandler(this.cbRerollSourceAddress_CheckedChanged);
+            // 
+            // cbRerollSourceDomain
+            // 
+            this.cbRerollSourceDomain.AutoSize = true;
+            this.cbRerollSourceDomain.Enabled = false;
+            this.cbRerollSourceDomain.Font = new System.Drawing.Font("Segoe UI", 8F);
+            this.cbRerollSourceDomain.ForeColor = System.Drawing.Color.White;
+            this.cbRerollSourceDomain.Location = new System.Drawing.Point(10, 32);
+            this.cbRerollSourceDomain.Name = "cbRerollSourceDomain";
+            this.cbRerollSourceDomain.Size = new System.Drawing.Size(137, 17);
+            this.cbRerollSourceDomain.TabIndex = 2;
+            this.cbRerollSourceDomain.Text = "Reroll Source Domain";
+            this.cbRerollSourceDomain.UseVisualStyleBackColor = true;
+            this.cbRerollSourceDomain.CheckedChanged += new System.EventHandler(this.cbRerollSourceDomain_CheckedChanged);
             // 
             // panel2
             // 
@@ -353,7 +353,7 @@
 		private System.Windows.Forms.Label label2;
 		private System.Windows.Forms.Label label3;
 		private System.Windows.Forms.Panel panel4;
-		public System.Windows.Forms.NumericUpDown nmMaxInfiniteStepUnits;
+		public Components.Controls.MultiUpDown nmMaxInfiniteStepUnits;
 		private System.Windows.Forms.Label label5;
 		private System.Windows.Forms.GroupBox panel5;
 		private System.Windows.Forms.GroupBox panel6;

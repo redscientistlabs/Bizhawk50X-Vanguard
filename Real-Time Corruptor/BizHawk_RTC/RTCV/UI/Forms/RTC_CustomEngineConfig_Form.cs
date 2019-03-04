@@ -52,8 +52,24 @@ namespace RTCV.UI
 			{
 				cbLimiterList_SelectedIndexChanged(cbLimiterList, null);
 			}
+			setFlavorText();
 		}
 
+		private void setFlavorText()
+		{
+			var text = new []
+			{
+				"Make your own engine",
+				"Yes it probably works",
+				"Never ask me for anything ever again",
+				">Imagine using default engines",
+				"I just needed to fill this empty space",
+				"I've run out of ideas for flavor text",
+			};
+
+			Random rnd = new Random();
+			lbFlavorText.Text = text[rnd.Next(0, text.Length)];
+		}
 		private void RTC_CustomEngineConfig_Form_FormClosing(object sender, FormClosingEventArgs e)
 		{
 			if (e.CloseReason != CloseReason.FormOwnerClosing)
@@ -556,5 +572,7 @@ namespace RTCV.UI
 				DontUpdateSpec = false;
 			}
 		}
+
 	}
+
 }

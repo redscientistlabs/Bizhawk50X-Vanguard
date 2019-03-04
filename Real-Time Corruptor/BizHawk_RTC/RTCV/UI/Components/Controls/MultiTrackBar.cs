@@ -268,6 +268,16 @@ namespace RTCV.UI.Components.Controls
 
 			PropagateValue(nmValue, tbValue, nmControlValue);
 		}
+		
+	public class ValueUpdateEventArgs : EventArgs
+    {
+        public long value;
+
+        public ValueUpdateEventArgs(long _value)
+        {
+            value = _value;
+        }
+    }
 	}
 
     internal class NoFocusTrackBar : System.Windows.Forms.TrackBar
@@ -285,15 +295,7 @@ namespace RTCV.UI.Components.Controls
             base.OnGotFocus(e);
             SendMessage(this.Handle, 0x0128, MakeParam(1, 0x1), 0);
         }
+		
     }
 
-    public class ValueUpdateEventArgs : EventArgs
-    {
-        public long value;
-
-        public ValueUpdateEventArgs(long _value)
-        {
-            value = _value;
-        }
-    }
 }
