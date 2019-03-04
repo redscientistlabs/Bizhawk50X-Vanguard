@@ -140,26 +140,36 @@ namespace RTCV.CorruptCore
 			//Checks that the limiters match
 			bool CheckLimitersMatch(BlastUnit bu1, BlastUnit bu2)
 			{
-				if (bu1.LimiterListHash == bu2.LimiterListHash &&
+				//We only care if it's pre-execute because otherwise its limiter is independent from batching 
+				if (bu1.LimiterTime == LimiterTime.PREEXECUTE &&
+					bu1.LimiterListHash == bu2.LimiterListHash &&
 					bu1.LimiterTime == bu2.LimiterTime &&
-					bu1.InvertLimiter == bu2.InvertLimiter &&
-					bu1.StoreLimiterSource == bu2.StoreLimiterSource)
+					bu1.InvertLimiter == bu2.InvertLimiter)
 				{
-					switch (bu1.StoreLimiterSource)
+					if (bu.Source == BlastUnitSource.STORE)
 					{
-						case StoreLimiterSource.ADDRESS:
-							return (bu1.Address == bu2.Address &&
-									bu1.Domain == bu2.Domain
-							);
-						case StoreLimiterSource.SOURCEADDRESS:
-							return (bu1.SourceAddress == bu2.SourceAddress &&
-									bu1.SourceDomain == bu2.SourceDomain
-							);
-						case StoreLimiterSource.BOTH:
-							return (bu1.Address == bu2.Address &&
-									bu1.Domain == bu2.Domain &&
-									bu1.SourceAddress == bu2.SourceAddress &&
-									bu1.SourceDomain == bu2.SourceDomain
+						switch (bu1.StoreLimiterSource)
+						{
+							case StoreLimiterSource.ADDRESS:
+								return (bu1.Address == bu2.Address &&
+										bu1.Domain == bu2.Domain
+									);
+							case StoreLimiterSource.SOURCEADDRESS:
+								return (bu1.SourceAddress == bu2.SourceAddress &&
+										bu1.SourceDomain == bu2.SourceDomain
+									);
+							case StoreLimiterSource.BOTH:
+								return (bu1.Address == bu2.Address &&
+										bu1.Domain == bu2.Domain &&
+										bu1.SourceAddress == bu2.SourceAddress &&
+										bu1.SourceDomain == bu2.SourceDomain
+									);
+						}
+					}
+					else // It's VALUE so check the domain and address are the same
+					{
+						return (bu1.Address == bu2.Address &&
+								bu1.Domain == bu2.Domain
 							);
 					}
 				}
