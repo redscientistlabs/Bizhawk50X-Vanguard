@@ -48,7 +48,7 @@
             this.lbVersion.AutoSize = true;
             this.lbVersion.Font = new System.Drawing.Font("Segoe UI Semibold", 12F, System.Drawing.FontStyle.Bold);
             this.lbVersion.ForeColor = System.Drawing.Color.White;
-            this.lbVersion.Location = new System.Drawing.Point(14, 52);
+            this.lbVersion.Location = new System.Drawing.Point(14, 53);
             this.lbVersion.Name = "lbVersion";
             this.lbVersion.Size = new System.Drawing.Size(72, 21);
             this.lbVersion.TabIndex = 1;
@@ -59,7 +59,7 @@
             this.lbProcess.AutoSize = true;
             this.lbProcess.Font = new System.Drawing.Font("Segoe UI Semibold", 12F, System.Drawing.FontStyle.Bold);
             this.lbProcess.ForeColor = System.Drawing.Color.White;
-            this.lbProcess.Location = new System.Drawing.Point(14, 76);
+            this.lbProcess.Location = new System.Drawing.Point(14, 77);
             this.lbProcess.Name = "lbProcess";
             this.lbProcess.Size = new System.Drawing.Size(121, 21);
             this.lbProcess.TabIndex = 2;
@@ -70,7 +70,7 @@
             this.lbConnectedTo.AutoSize = true;
             this.lbConnectedTo.Font = new System.Drawing.Font("Segoe UI Semibold", 12F, System.Drawing.FontStyle.Bold);
             this.lbConnectedTo.ForeColor = System.Drawing.Color.White;
-            this.lbConnectedTo.Location = new System.Drawing.Point(14, 100);
+            this.lbConnectedTo.Location = new System.Drawing.Point(14, 101);
             this.lbConnectedTo.Name = "lbConnectedTo";
             this.lbConnectedTo.Size = new System.Drawing.Size(118, 21);
             this.lbConnectedTo.TabIndex = 3;
@@ -81,7 +81,7 @@
             this.lbSourceCode.AutoSize = true;
             this.lbSourceCode.Font = new System.Drawing.Font("Segoe UI", 11F);
             this.lbSourceCode.LinkColor = System.Drawing.Color.White;
-            this.lbSourceCode.Location = new System.Drawing.Point(128, 346);
+            this.lbSourceCode.Location = new System.Drawing.Point(131, 326);
             this.lbSourceCode.Name = "lbSourceCode";
             this.lbSourceCode.Size = new System.Drawing.Size(230, 20);
             this.lbSourceCode.TabIndex = 4;
@@ -95,7 +95,7 @@
             this.label1.AutoSize = true;
             this.label1.Font = new System.Drawing.Font("Segoe UI Semibold", 12F, System.Drawing.FontStyle.Bold);
             this.label1.ForeColor = System.Drawing.Color.White;
-            this.label1.Location = new System.Drawing.Point(14, 345);
+            this.label1.Location = new System.Drawing.Point(14, 325);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(108, 21);
             this.label1.TabIndex = 5;
@@ -106,7 +106,7 @@
             this.label2.AutoSize = true;
             this.label2.Font = new System.Drawing.Font("Segoe UI Semibold", 12F, System.Drawing.FontStyle.Bold);
             this.label2.ForeColor = System.Drawing.Color.White;
-            this.label2.Location = new System.Drawing.Point(14, 252);
+            this.label2.Location = new System.Drawing.Point(14, 234);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(78, 21);
             this.label2.TabIndex = 6;
@@ -117,7 +117,7 @@
             this.label3.AutoSize = true;
             this.label3.Font = new System.Drawing.Font("Segoe UI", 11F);
             this.label3.ForeColor = System.Drawing.Color.White;
-            this.label3.Location = new System.Drawing.Point(14, 273);
+            this.label3.Location = new System.Drawing.Point(14, 257);
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(140, 20);
             this.label3.TabIndex = 7;
@@ -128,16 +128,16 @@
             this.label4.AutoSize = true;
             this.label4.Font = new System.Drawing.Font("Segoe UI", 11F);
             this.label4.ForeColor = System.Drawing.Color.White;
-            this.label4.Location = new System.Drawing.Point(14, 293);
+            this.label4.Location = new System.Drawing.Point(14, 276);
             this.label4.Name = "label4";
-            this.label4.Size = new System.Drawing.Size(143, 20);
+            this.label4.Size = new System.Drawing.Size(279, 20);
             this.label4.TabIndex = 8;
-            this.label4.Text = "Dan Barreiro (Narry)";
+            this.label4.Text = "Dan Barreiro (Narry/SmellyFeetYouHave)";
             // 
             // pictureBox1
             // 
             this.pictureBox1.Image = ((System.Drawing.Image)(resources.GetObject("pictureBox1.Image")));
-            this.pictureBox1.Location = new System.Drawing.Point(1, 2);
+            this.pictureBox1.Location = new System.Drawing.Point(-7, 2);
             this.pictureBox1.Name = "pictureBox1";
             this.pictureBox1.Size = new System.Drawing.Size(426, 50);
             this.pictureBox1.TabIndex = 9;
@@ -148,7 +148,7 @@
             this.label5.AutoSize = true;
             this.label5.Font = new System.Drawing.Font("Segoe UI Semibold", 12F, System.Drawing.FontStyle.Bold);
             this.label5.ForeColor = System.Drawing.Color.White;
-            this.label5.Location = new System.Drawing.Point(14, 325);
+            this.label5.Location = new System.Drawing.Point(14, 305);
             this.label5.Name = "label5";
             this.label5.Size = new System.Drawing.Size(111, 21);
             this.label5.TabIndex = 11;
@@ -159,7 +159,7 @@
             this.linkLabel1.AutoSize = true;
             this.linkLabel1.Font = new System.Drawing.Font("Segoe UI", 11F);
             this.linkLabel1.LinkColor = System.Drawing.Color.White;
-            this.linkLabel1.Location = new System.Drawing.Point(128, 326);
+            this.linkLabel1.Location = new System.Drawing.Point(131, 304);
             this.linkLabel1.Name = "linkLabel1";
             this.linkLabel1.Size = new System.Drawing.Size(187, 20);
             this.linkLabel1.TabIndex = 10;
@@ -173,7 +173,7 @@
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
-            this.ClientSize = new System.Drawing.Size(450, 375);
+            this.ClientSize = new System.Drawing.Size(412, 352);
             this.Controls.Add(this.label5);
             this.Controls.Add(this.linkLabel1);
             this.Controls.Add(this.pictureBox1);
