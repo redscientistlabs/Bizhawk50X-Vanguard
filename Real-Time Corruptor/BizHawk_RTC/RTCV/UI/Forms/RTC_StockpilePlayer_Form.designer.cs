@@ -37,12 +37,16 @@
             this.label2 = new System.Windows.Forms.Label();
             this.btnBlastToggle = new System.Windows.Forms.Button();
             this.dgvStockpile = new System.Windows.Forms.DataGridView();
+            this.Note = new System.Windows.Forms.DataGridViewButtonColumn();
+            this.tbNoteBox = new System.Windows.Forms.RichTextBox();
+            this.dataGridViewTextBoxColumn1 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.dataGridViewTextBoxColumn2 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.dataGridViewTextBoxColumn3 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.dataGridViewTextBoxColumn4 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.Item = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.GameName = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.SystemName = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.SystemCore = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.Note = new System.Windows.Forms.DataGridViewButtonColumn();
-            this.tbNoteBox = new System.Windows.Forms.RichTextBox();
             ((System.ComponentModel.ISupportInitialize)(this.dgvStockpile)).BeginInit();
             this.SuspendLayout();
             // 
@@ -141,6 +145,7 @@
             // 
             // dgvStockpile
             // 
+            this.dgvStockpile.AllowDrop = true;
             this.dgvStockpile.AllowUserToAddRows = false;
             this.dgvStockpile.AllowUserToDeleteRows = false;
             this.dgvStockpile.AllowUserToResizeRows = false;
@@ -171,32 +176,6 @@
             this.dgvStockpile.CellClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dgvStockpile_CellClick);
             this.dgvStockpile.MouseDown += new System.Windows.Forms.MouseEventHandler(this.dgvStockpile_MouseDown);
             // 
-            // Item
-            // 
-            this.Item.HeaderText = "Item Name";
-            this.Item.Name = "Item";
-            this.Item.ReadOnly = true;
-            // 
-            // GameName
-            // 
-            this.GameName.FillWeight = 45F;
-            this.GameName.HeaderText = "Game";
-            this.GameName.Name = "GameName";
-            this.GameName.ReadOnly = true;
-            // 
-            // SystemName
-            // 
-            this.SystemName.FillWeight = 45F;
-            this.SystemName.HeaderText = "System";
-            this.SystemName.Name = "SystemName";
-            this.SystemName.ReadOnly = true;
-            // 
-            // SystemCore
-            // 
-            this.SystemCore.FillWeight = 40F;
-            this.SystemCore.HeaderText = "Core";
-            this.SystemCore.Name = "SystemCore";
-            // 
             // Note
             // 
             dataGridViewCellStyle1.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
@@ -225,8 +204,65 @@
             this.tbNoteBox.Tag = "color:normal";
             this.tbNoteBox.Text = "Notes will appear here...";
             // 
+            // dataGridViewTextBoxColumn1
+            // 
+            this.dataGridViewTextBoxColumn1.HeaderText = "Item Name";
+            this.dataGridViewTextBoxColumn1.Name = "dataGridViewTextBoxColumn1";
+            this.dataGridViewTextBoxColumn1.ReadOnly = true;
+            this.dataGridViewTextBoxColumn1.Width = 238;
+            // 
+            // dataGridViewTextBoxColumn2
+            // 
+            this.dataGridViewTextBoxColumn2.FillWeight = 45F;
+            this.dataGridViewTextBoxColumn2.HeaderText = "Game";
+            this.dataGridViewTextBoxColumn2.Name = "dataGridViewTextBoxColumn2";
+            this.dataGridViewTextBoxColumn2.ReadOnly = true;
+            this.dataGridViewTextBoxColumn2.Width = 113;
+            // 
+            // dataGridViewTextBoxColumn3
+            // 
+            this.dataGridViewTextBoxColumn3.FillWeight = 45F;
+            this.dataGridViewTextBoxColumn3.HeaderText = "System";
+            this.dataGridViewTextBoxColumn3.Name = "dataGridViewTextBoxColumn3";
+            this.dataGridViewTextBoxColumn3.ReadOnly = true;
+            this.dataGridViewTextBoxColumn3.Width = 112;
+            // 
+            // dataGridViewTextBoxColumn4
+            // 
+            this.dataGridViewTextBoxColumn4.FillWeight = 40F;
+            this.dataGridViewTextBoxColumn4.HeaderText = "Core";
+            this.dataGridViewTextBoxColumn4.Name = "dataGridViewTextBoxColumn4";
+            this.dataGridViewTextBoxColumn4.Width = 101;
+            // 
+            // Item
+            // 
+            this.Item.HeaderText = "Item Name";
+            this.Item.Name = "Item";
+            this.Item.ReadOnly = true;
+            // 
+            // GameName
+            // 
+            this.GameName.FillWeight = 45F;
+            this.GameName.HeaderText = "Game";
+            this.GameName.Name = "GameName";
+            this.GameName.ReadOnly = true;
+            // 
+            // SystemName
+            // 
+            this.SystemName.FillWeight = 45F;
+            this.SystemName.HeaderText = "System";
+            this.SystemName.Name = "SystemName";
+            this.SystemName.ReadOnly = true;
+            // 
+            // SystemCore
+            // 
+            this.SystemCore.FillWeight = 40F;
+            this.SystemCore.HeaderText = "Core";
+            this.SystemCore.Name = "SystemCore";
+            // 
             // RTC_StockpilePlayer_Form
             // 
+            this.AllowDrop = true;
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
@@ -267,5 +303,9 @@
 		private System.Windows.Forms.DataGridViewTextBoxColumn SystemName;
 		private System.Windows.Forms.DataGridViewTextBoxColumn SystemCore;
 		private System.Windows.Forms.DataGridViewButtonColumn Note;
+		private System.Windows.Forms.DataGridViewTextBoxColumn dataGridViewTextBoxColumn1;
+		private System.Windows.Forms.DataGridViewTextBoxColumn dataGridViewTextBoxColumn2;
+		private System.Windows.Forms.DataGridViewTextBoxColumn dataGridViewTextBoxColumn3;
+		private System.Windows.Forms.DataGridViewTextBoxColumn dataGridViewTextBoxColumn4;
 	}
 }

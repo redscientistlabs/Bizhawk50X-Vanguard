@@ -1394,6 +1394,7 @@ namespace RTCV.UI
 		{
 			BlastLayer temp = BlastTools.LoadBlastLayerFromFile();
 			ImportBlastLayer(temp);
+			RefreshAllNoteIcons();
 			dgvBlastEditor.Refresh();
 		}
 

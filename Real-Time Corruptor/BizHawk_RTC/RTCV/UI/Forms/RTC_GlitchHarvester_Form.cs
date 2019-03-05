@@ -169,7 +169,14 @@ namespace RTCV.UI
 
 			RefreshStashHistory();
 			RefreshSavestateTextboxes();
+
+			dgvStockpile.AllowDrop = true;
 			dgvStockpile.DragDrop += dgvStockpile_DragDrop;
+			dgvStockpile.DragEnter += dgvStockpile_DragEnter;
+
+			pnSavestateHolder.AllowDrop = true;
+			pnSavestateHolder.DragDrop += pnSavestateHolder_DragDrop;
+			pnSavestateHolder.DragEnter += pnSavestateHolder_DragEnter;
 		}
 
 		public void RefreshStashHistorySelectLast()
@@ -657,6 +664,30 @@ namespace RTCV.UI
 			}
 		}
 
+		private void LoadStockpile(string filename = null)
+		{
+			if (UnsavedEdits && MessageBox.Show("You have unsaved edits in the Glitch Harvester Stockpile. \n\n Are you sure you want to load without saving?",
+				"Unsaved edits in Stockpile", MessageBoxButtons.YesNo) == DialogResult.No)
+			{
+				return;
+			}
+
+			if (Stockpile.Load(dgvStockpile, filename))
+			{
+				S.GET<RTC_GlitchHarvester_Form>().btnSaveStockpile.Enabled = true;
+				S.GET<RTC_GlitchHarvester_Form>().btnSaveStockpile.BackColor = Color.Tomato;
+				S.GET<RTC_GlitchHarvester_Form>().btnSaveStockpile.ForeColor = Color.Black;
+				S.GET<RTC_GlitchHarvester_Form>().RefreshNoteIcons();
+			}
+
+			S.GET<RTC_StockpilePlayer_Form>().dgvStockpile.Rows.Clear();
+
+			dgvStockpile.ClearSelection();
+			StockpileManager_UISide.StockpileChanged();
+
+			UnsavedEdits = false;
+		}
+
 		private void btnLoadStockpile_Click(object sender, MouseEventArgs e)
 		{
 			CorruptCore.CorruptCore.CheckForProblematicProcesses();
@@ -668,31 +699,23 @@ namespace RTCV.UI
 			{
 				try
 				{
-
-					if (Stockpile.Load(dgvStockpile))
-					{
-						S.GET<RTC_GlitchHarvester_Form>().btnSaveStockpile.Enabled = true;
-						S.GET<RTC_GlitchHarvester_Form>().btnSaveStockpile.BackColor = Color.Tomato;
-						S.GET<RTC_GlitchHarvester_Form>().btnSaveStockpile.ForeColor = Color.Black;
-						S.GET<RTC_GlitchHarvester_Form>().RefreshNoteIcons();
-					}
-
-					S.GET<RTC_StockpilePlayer_Form>().dgvStockpile.Rows.Clear();
-
-					dgvStockpile.ClearSelection();
-					StockpileManager_UISide.StockpileChanged();
-
-					UnsavedEdits = false;
+					LoadStockpile();
 				}
 				finally
 				{
 				}
 			}));
+			
 
 			loadMenuItems.Items.Add("Load Bizhawk settings from Stockpile", null, new EventHandler((ob, ev) =>
 			{
 				try
 				{
+					if (UnsavedEdits && MessageBox.Show("You have unsaved edits in the Glitch Harvester Stockpile. \n\n This will restart Bizhawk. Are you sure you want to load without saving?",
+						"Unsaved edits in Stockpile", MessageBoxButtons.YesNo) == DialogResult.No)
+					{
+						return;
+					}
 					Stockpile.LoadBizhawkConfigFromStockpile();
 				}
 				finally
@@ -704,6 +727,10 @@ namespace RTCV.UI
 			{
 				try
 				{
+					if (UnsavedEdits && MessageBox.Show(
+						"You have unsaved edits in the Glitch Harvester Stockpile. \n\n This will restart Bizhawk. Are you sure you want to load without saving?",
+						"Unsaved edits in Stockpile", MessageBoxButtons.YesNo) == DialogResult.No)
+						return;
 					Stockpile.RestoreBizhawkConfig();
 				}
 				finally
@@ -932,9 +959,40 @@ namespace RTCV.UI
 
 		private void dgvStockpile_DragDrop(object sender, DragEventArgs e)
 		{
+			string[] files = (string[])e.Data.GetData(DataFormats.FileDrop, false);
+			if (files?.Length > 0 && files[0]
+				.Contains(".sks"))
+			{
+				LoadStockpile(files[0]);
+			}
+
 			//Bring the UI back to normal after a drag+drop to prevent weird merge stuff 
 			RedrawActionUI();
 		}
+
+		private void dgvStockpile_DragEnter(object sender, DragEventArgs e)
+		{
+			e.Effect = DragDropEffects.Link;
+		}
+
+		private void pnSavestateHolder_DragEnter(object sender, DragEventArgs e)
+		{
+			e.Effect = DragDropEffects.Link;
+		}
+
+		private void pnSavestateHolder_DragDrop(object sender, DragEventArgs e)
+		{
+			string[] files = (string[])e.Data.GetData(DataFormats.FileDrop, false);
+			if (files?.Length > 0 && files[0]
+				.Contains(".ssk"))
+			{
+				loadSavestateList(files[0]);
+			}
+
+			//Bring the UI back to normal after a drag+drop to prevent weird merge stuff 
+			RedrawActionUI();
+		}
+
 
 		public void btnSendRaw_Click(object sender, EventArgs e)
 		{
@@ -1097,8 +1155,9 @@ namespace RTCV.UI
 				ContextMenuStrip rerollMenu = new ContextMenuStrip();
 				rerollMenu.Items.Add("Configure Reroll", null, new EventHandler((ob, ev) =>
 				{
-					S.GET<RTC_Settings_Form>().lbForm.SetFocusedForm(S.GET<RTC_SettingsCorrupt_Form>());
 					S.GET<RTC_Core_Form>().ShowPanelForm(S.GET<RTC_Settings_Form>(), false);
+					S.GET<RTC_Settings_Form>().lbForm.SetFocusedForm(S.GET<RTC_SettingsCorrupt_Form>());
+					S.GET<RTC_Core_Form>().BringToFront();
 				}));
 
 				rerollMenu.Show(this, locate);
@@ -1247,25 +1306,26 @@ namespace RTCV.UI
 			}
 		}
 
-		private void btnLoadSavestateList_Click(object sender, EventArgs e)
+		private void loadSavestateList(string fileName = null)
 		{
-			string filename;
-
-			OpenFileDialog ofd = new OpenFileDialog
+			if (fileName == null)
 			{
-				DefaultExt = "ssk",
-				Title = "Open Savestate Keys File",
-				Filter = "SSK files|*.ssk",
-				RestoreDirectory = true
-			};
-			if (ofd.ShowDialog() == DialogResult.OK)
-			{
-				filename = ofd.FileName;
+				OpenFileDialog ofd = new OpenFileDialog
+				{
+					DefaultExt = "ssk",
+					Title = "Open Savestate Keys File",
+					Filter = "SSK files|*.ssk",
+					RestoreDirectory = true
+				};
+				if (ofd.ShowDialog() == DialogResult.OK)
+				{
+					fileName = ofd.FileName;
+				}
+				else
+					return;
 			}
-			else
-				return;
 
-			if (!File.Exists(filename))
+			if (!File.Exists(fileName))
 			{
 				MessageBox.Show("The Savestate Keys file wasn't found");
 				return;
@@ -1276,7 +1336,7 @@ namespace RTCV.UI
 			try
 			{
 				Stockpile.EmptyFolder(Path.DirectorySeparatorChar + "WORKING\\TEMP");
-				if (!Stockpile.Extract(filename, Path.DirectorySeparatorChar + "WORKING\\SSK", "keys.json"))
+				if (!Stockpile.Extract(fileName, Path.DirectorySeparatorChar + "WORKING\\SSK", "keys.json"))
 					return;
 
 				using (FileStream fs = File.Open(CorruptCore.CorruptCore.workingDir + Path.DirectorySeparatorChar + "SSK\\keys.json", FileMode.OpenOrCreate))
@@ -1340,6 +1400,11 @@ namespace RTCV.UI
 
 
 			RefreshSavestateTextboxes();
+		}
+
+		private void btnLoadSavestateList_Click(object sender, EventArgs e)
+		{
+			loadSavestateList();
 		}
 
 

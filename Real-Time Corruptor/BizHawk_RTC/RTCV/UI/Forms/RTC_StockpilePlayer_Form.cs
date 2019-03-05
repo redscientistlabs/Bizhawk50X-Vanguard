@@ -17,6 +17,24 @@ namespace RTCV.UI
 		public RTC_StockpilePlayer_Form()
 		{
 			InitializeComponent();
+			dgvStockpile.DragDrop += dgvStockpile_DragDrop;
+			dgvStockpile.DragEnter += dgvStockpile_DragEnter;
+		}
+
+		private void dgvStockpile_DragEnter(object sender, DragEventArgs e)
+		{
+			e.Effect = DragDropEffects.Link;
+		}
+
+		private void dgvStockpile_DragDrop(object sender, DragEventArgs e)
+		{
+			string[] files = (string[])e.Data.GetData(DataFormats.FileDrop, false);
+			if (files.Length > 0 && files[0]
+				.Contains(".sks"))
+			{
+				Stockpile.Load(dgvStockpile, files[0]);
+			}
+
 		}
 
 		private void RTC_BE_Form_FormClosing(object sender, FormClosingEventArgs e)

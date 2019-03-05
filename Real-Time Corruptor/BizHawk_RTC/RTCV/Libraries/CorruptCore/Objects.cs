@@ -809,7 +809,7 @@ namespace RTCV.CorruptCore
 			return ObjectCopierCeras.Clone(this);
 		}
 
-		public void Apply(bool storeUncorruptBackup, bool autoCorrupt = false)
+		public void Apply(bool storeUncorruptBackup, bool followMaximums = false)
 		{
 			if (storeUncorruptBackup && this != StockpileManager_EmuSide.UnCorruptBL)
 				StockpileManager_EmuSide.UnCorruptBL = GetBackup();
@@ -845,7 +845,7 @@ namespace RTCV.CorruptCore
 			}
 			finally
 			{
-				if (autoCorrupt)
+				if (followMaximums)
 				{
 					StepActions.RemoveExcessInfiniteStepUnits();
 				}
@@ -1395,6 +1395,13 @@ namespace RTCV.CorruptCore
 			}
 		}
 
+		private bool ReturnFalseAndDequeueIfContinuousStore()
+		{
+			if(this.Source == BlastUnitSource.STORE && this.StoreType == StoreType.CONTINUOUS)
+				this.Working.StoreData.Dequeue();
+			return false;
+		}
+
 		public bool LimiterCheck(MemoryInterface mi)
 		{
 			if (Source == BlastUnitSource.STORE)
@@ -1405,7 +1412,7 @@ namespace RTCV.CorruptCore
 						Address + Precision, Domain, LimiterListHash, mi))
 					{
 						if (InvertLimiter)
-							return false;
+							return ReturnFalseAndDequeueIfContinuousStore();
 						return true;
 					}
 				}
@@ -1415,7 +1422,7 @@ namespace RTCV.CorruptCore
 						SourceAddress + Precision, Domain, LimiterListHash, mi))
 					{
 						if (InvertLimiter)
-							return false;
+							return ReturnFalseAndDequeueIfContinuousStore();
 						return true;
 					}
 				}
@@ -1426,14 +1433,14 @@ namespace RTCV.CorruptCore
 					Address + Precision, Domain, LimiterListHash, mi))
 				{
 					if (InvertLimiter)
-						return false;
+						return ReturnFalseAndDequeueIfContinuousStore();
 					return true;
 				}
 			}
 			//Note the flipped logic here
 			if(InvertLimiter)
 				return true;
-			return false;
+			return ReturnFalseAndDequeueIfContinuousStore();
 		}
 
 		public BlastUnit GetBackup()
@@ -1547,23 +1554,27 @@ namespace RTCV.CorruptCore
 			}
 			else if (Source == BlastUnitSource.STORE)
 			{
-				var source = CorruptCore.GetBlastTarget();
-				var dest = CorruptCore.GetBlastTarget();
-				if (CorruptCore.RerollSourceAddress)
-				{
-					SourceAddress = source.Address;
-				}
+				string[] _selectedDomains = (string[])RTCV.NetCore.AllSpec.UISpec["SELECTEDDOMAINS"];
+
+				//Always reroll domain before address
 				if (CorruptCore.RerollSourceDomain)
 				{
-					SourceDomain = source.Domain;
+					SourceDomain = _selectedDomains[CorruptCore.RND.Next(_selectedDomains.Length)];
 				}
-				if (CorruptCore.RerollAddress)
-				{ 
-					Address = dest.Address;
+				if (CorruptCore.RerollSourceAddress)
+				{
+					long maxAddress = MemoryDomains.GetInterface(SourceDomain)?.Size ?? 1;
+					SourceAddress = CorruptCore.RND.RandomLong(maxAddress - 1);
 				}
+				
 				if (CorruptCore.RerollDomain)
 				{
-					Domain = dest.Domain;
+					Domain = _selectedDomains[CorruptCore.RND.Next(_selectedDomains.Length)];
+				}
+				if (CorruptCore.RerollAddress)
+				{
+					long maxAddress = MemoryDomains.GetInterface(Domain)?.Size ?? 1;
+					Address = CorruptCore.RND.RandomLong(maxAddress - 1);
 				}
 			}
 		}

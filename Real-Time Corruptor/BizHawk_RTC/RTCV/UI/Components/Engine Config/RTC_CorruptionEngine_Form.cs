@@ -192,6 +192,7 @@ namespace RTCV.UI
 		public void SetRewindBoxes(bool enabled)
 		{
 			dontUpdate = true;
+			S.GET<RTC_SettingsCorrupt_Form>().SetRewindBoxes(enabled);
 			cbClearFreezesOnRewind.Checked = enabled;
 			cbClearCheatsOnRewind.Checked = enabled;
 			cbClearPipesOnRewind.Checked = enabled;

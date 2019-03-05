@@ -28,16 +28,17 @@ namespace RTCV.UI
 
 			childForms = _childForms;
 
-			lbComponentForms.DisplayMember = "text";
-			lbComponentForms.ValueMember = "value";
+			//Populate the filter ComboBox
+			lbComponentForms.DisplayMember = "Name";
+			lbComponentForms.ValueMember = "Value";
 
 			foreach (var item in childForms)
-				lbComponentForms.Items.Add(new { text = item.Text, value = item });
+				lbComponentForms.Items.Add(new ComboBoxItem<Form>(item.Text, item));
 		}
 
 		private void lbComponentForms_SelectedIndexChanged(object sender, EventArgs e)
 		{
-			((lbComponentForms.SelectedItem as dynamic).value as ComponentForm)?.AnchorToPanel(pnTargetComponentForm);
+			((lbComponentForms.SelectedItem as ComboBoxItem<Form>)?.Value as ComponentForm)?.AnchorToPanel(pnTargetComponentForm);
 		}
 
 		private void RTC_ListBox_Form_Load(object sender, EventArgs e)
@@ -47,7 +48,7 @@ namespace RTCV.UI
 
 		public void SetFocusedForm(ComponentForm form)
 		{
-			lbComponentForms.SelectedItem = form;
+			lbComponentForms.SelectedItem = lbComponentForms.Items.Cast<ComboBoxItem<Form>>().FirstOrDefault(x => x.Value == form);
 		}
 	}
 }

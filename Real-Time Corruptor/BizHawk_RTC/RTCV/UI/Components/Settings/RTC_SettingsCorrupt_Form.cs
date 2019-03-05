@@ -25,12 +25,24 @@ namespace RTCV.UI
 
 
 			UICore.SetRTCColor(UICore.GeneralColor, this);
+
 			Load += RTC_SettingRerollForm_Load;
+
 			nmMaxInfiniteStepUnits.registerSlave(S.GET<RTC_CorruptionEngine_Form>().updownMaxCheats);
 			nmMaxInfiniteStepUnits.registerSlave(S.GET<RTC_CorruptionEngine_Form>().updownMaxFreeze);
 			nmMaxInfiniteStepUnits.registerSlave(S.GET<RTC_CorruptionEngine_Form>().updownMaxPipes);
 			nmMaxInfiniteStepUnits.registerSlave(S.GET<RTC_CustomEngineConfig_Form>().updownMaxInfiniteUnits);
 			nmMaxInfiniteStepUnits.ValueChanged += nmMaxInfiniteStepUnits_ValueChanged;
+
+
+			cbRerollAddress.Checked = CorruptCore.CorruptCore.RerollAddress;
+			cbRerollSourceAddress.Checked = CorruptCore.CorruptCore.RerollSourceAddress;
+
+			cbRerollDomain.Checked = CorruptCore.CorruptCore.RerollDomain;
+			cbRerollSourceDomain.Checked = CorruptCore.CorruptCore.RerollSourceDomain;
+
+			cbRerollFollowsCustom.Checked = CorruptCore.CorruptCore.RerollFollowsCustomEngine;
+			cbIgnoreUnitOrigin.Checked = CorruptCore.CorruptCore.RerollIgnoresOriginalSource;
 		}
 
 		private void nmMaxInfiniteStepUnits_ValueChanged(object sender, EventArgs e)
@@ -40,14 +52,6 @@ namespace RTCV.UI
 
 		private void RTC_SettingRerollForm_Load(object sender, EventArgs e)
 		{
-			cbRerollAddress.Checked = CorruptCore.CorruptCore.RerollAddress;
-			cbRerollSourceAddress.Checked = CorruptCore.CorruptCore.RerollSourceAddress;
-
-			cbRerollDomain.Checked = CorruptCore.CorruptCore.RerollDomain;
-			cbRerollSourceDomain.Checked = CorruptCore.CorruptCore.RerollSourceDomain;
-
-			cbRerollFollowsCustom.Checked = CorruptCore.CorruptCore.RerollFollowsCustomEngine;
-			cbIgnoreUnitOrigin.Checked = CorruptCore.CorruptCore.RerollIgnoresOriginalSource;
 		}
 
 		private void cbRerollSourceAddress_CheckedChanged(object sender, EventArgs e)
@@ -130,7 +134,7 @@ namespace RTCV.UI
 
 			S.GET<RTC_CorruptionEngine_Form>().SetLockBoxes(cbLockUnits.Checked);
 
-			StepActions.ClearStepActionsOnRewind = cbLockUnits.Checked;
+			StepActions.LockExecution = cbLockUnits.Checked;
 		}
 	}
 }

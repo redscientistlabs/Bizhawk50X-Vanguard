@@ -451,7 +451,7 @@
             // 
             this.label4.AutoSize = true;
             this.label4.Font = new System.Drawing.Font("Segoe UI Symbol", 8F);
-            this.label4.Location = new System.Drawing.Point(4, 37);
+            this.label4.Location = new System.Drawing.Point(4, 41);
             this.label4.Name = "label4";
             this.label4.Size = new System.Drawing.Size(72, 13);
             this.label4.TabIndex = 143;
@@ -462,7 +462,7 @@
             this.updownMaxPipes.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
             this.updownMaxPipes.Font = new System.Drawing.Font("Segoe UI", 8F);
             this.updownMaxPipes.ForeColor = System.Drawing.Color.White;
-            this.updownMaxPipes.Location = new System.Drawing.Point(93, 35);
+            this.updownMaxPipes.Location = new System.Drawing.Point(95, 39);
             this.updownMaxPipes.Maximum = new decimal(new int[] {
             65536,
             0,
@@ -521,7 +521,7 @@
             this.cbClearPipesOnRewind.AutoSize = true;
             this.cbClearPipesOnRewind.Font = new System.Drawing.Font("Segoe UI", 8F);
             this.cbClearPipesOnRewind.ForeColor = System.Drawing.Color.White;
-            this.cbClearPipesOnRewind.Location = new System.Drawing.Point(172, 55);
+            this.cbClearPipesOnRewind.Location = new System.Drawing.Point(183, 55);
             this.cbClearPipesOnRewind.Name = "cbClearPipesOnRewind";
             this.cbClearPipesOnRewind.Size = new System.Drawing.Size(165, 17);
             this.cbClearPipesOnRewind.TabIndex = 79;
@@ -535,7 +535,7 @@
             this.cbLockPipes.AutoSize = true;
             this.cbLockPipes.Font = new System.Drawing.Font("Segoe UI", 8F);
             this.cbLockPipes.ForeColor = System.Drawing.Color.White;
-            this.cbLockPipes.Location = new System.Drawing.Point(172, 35);
+            this.cbLockPipes.Location = new System.Drawing.Point(183, 35);
             this.cbLockPipes.Name = "cbLockPipes";
             this.cbLockPipes.Size = new System.Drawing.Size(103, 17);
             this.cbLockPipes.TabIndex = 77;
@@ -641,7 +641,7 @@
             this.nmDistortionDelay.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
             this.nmDistortionDelay.Font = new System.Drawing.Font("Segoe UI", 8F);
             this.nmDistortionDelay.ForeColor = System.Drawing.Color.White;
-            this.nmDistortionDelay.Location = new System.Drawing.Point(95, 36);
+            this.nmDistortionDelay.Location = new System.Drawing.Point(95, 38);
             this.nmDistortionDelay.Maximum = new decimal(new int[] {
             65536,
             0,
@@ -668,7 +668,7 @@
             // 
             this.label7.AutoSize = true;
             this.label7.Font = new System.Drawing.Font("Segoe UI", 8F);
-            this.label7.Location = new System.Drawing.Point(4, 40);
+            this.label7.Location = new System.Drawing.Point(4, 41);
             this.label7.Name = "label7";
             this.label7.Size = new System.Drawing.Size(92, 13);
             this.label7.TabIndex = 0;
@@ -698,7 +698,7 @@
             // 
             this.label6.AutoSize = true;
             this.label6.Font = new System.Drawing.Font("Segoe UI Symbol", 8F);
-            this.label6.Location = new System.Drawing.Point(4, 39);
+            this.label6.Location = new System.Drawing.Point(4, 41);
             this.label6.Name = "label6";
             this.label6.Size = new System.Drawing.Size(72, 13);
             this.label6.TabIndex = 143;
@@ -709,7 +709,7 @@
             this.updownMaxFreeze.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
             this.updownMaxFreeze.Font = new System.Drawing.Font("Segoe UI", 8F);
             this.updownMaxFreeze.ForeColor = System.Drawing.Color.White;
-            this.updownMaxFreeze.Location = new System.Drawing.Point(95, 37);
+            this.updownMaxFreeze.Location = new System.Drawing.Point(95, 38);
             this.updownMaxFreeze.Maximum = new decimal(new int[] {
             65536,
             0,
@@ -822,7 +822,7 @@
             // 
             this.label1.AutoSize = true;
             this.label1.Font = new System.Drawing.Font("Segoe UI Symbol", 8F);
-            this.label1.Location = new System.Drawing.Point(4, 89);
+            this.label1.Location = new System.Drawing.Point(4, 91);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(72, 13);
             this.label1.TabIndex = 141;
@@ -844,7 +844,7 @@
             this.updownMaxCheats.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
             this.updownMaxCheats.Font = new System.Drawing.Font("Segoe UI", 8F);
             this.updownMaxCheats.ForeColor = System.Drawing.Color.White;
-            this.updownMaxCheats.Location = new System.Drawing.Point(95, 87);
+            this.updownMaxCheats.Location = new System.Drawing.Point(95, 89);
             this.updownMaxCheats.Maximum = new decimal(new int[] {
             65536,
             0,

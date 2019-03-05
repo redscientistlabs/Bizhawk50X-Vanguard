@@ -19,7 +19,7 @@ namespace RTCV.CorruptCore
 	public static class CorruptCore
 	{
 		//General RTC Values
-		public static string RtcVersion = "3.42b";
+		public static string RtcVersion = "3.43";
 
 		public static Random RND = new Random();
 		public static bool Attached = false;
@@ -278,32 +278,32 @@ namespace RTCV.CorruptCore
 
 
 				if (NetCore.Params.IsParamSet("REROLL_SOURCEADDRESS"))
-					partial[RTCSPEC.CORE_REROLLSOURCEADDRESS.ToString()] = (NetCore.Params.ReadParam("REROLL_SOURCEADDRESS") == "true");
+					partial[RTCSPEC.CORE_REROLLSOURCEADDRESS.ToString()] = (NetCore.Params.ReadParam("REROLL_SOURCEADDRESS").ToUpper() == "TRUE");
 				else
 					partial[RTCSPEC.CORE_REROLLSOURCEADDRESS.ToString()] = false;
 
 				if (NetCore.Params.IsParamSet("REROLL_SOURCEDOMAIN"))
-					partial[RTCSPEC.CORE_REROLLSOURCEDOMAIN.ToString()] = (NetCore.Params.ReadParam("REROLL_SOURCEDOMAIN") == "true");
+					partial[RTCSPEC.CORE_REROLLSOURCEDOMAIN.ToString()] = (NetCore.Params.ReadParam("REROLL_SOURCEDOMAIN").ToUpper() == "TRUE");
 				else
 					partial[RTCSPEC.CORE_REROLLSOURCEDOMAIN.ToString()] = false;
 
 				if (NetCore.Params.IsParamSet("REROLL_ADDRESS"))
-					partial[RTCSPEC.CORE_REROLLADDRESS.ToString()] = (NetCore.Params.ReadParam("REROLL_ADDRESS") == "true");
+					partial[RTCSPEC.CORE_REROLLADDRESS.ToString()] = (NetCore.Params.ReadParam("REROLL_ADDRESS").ToUpper() == "TRUE");
 				else
 					partial[RTCSPEC.CORE_REROLLADDRESS.ToString()] = false;
 				if (NetCore.Params.IsParamSet("REROLL_DOMAIN"))
-					partial[RTCSPEC.CORE_REROLLDOMAIN.ToString()] = (NetCore.Params.ReadParam("REROLL_DOMAIN") == "true");
+					partial[RTCSPEC.CORE_REROLLDOMAIN.ToString()] = (NetCore.Params.ReadParam("REROLL_DOMAIN").ToUpper() == "TRUE");
 				else
 					partial[RTCSPEC.CORE_REROLLDOMAIN.ToString()] = false;
 
 
 				if (NetCore.Params.IsParamSet("REROLL_FOLLOWSCUSTOMENGINE"))
-					partial[RTCSPEC.CORE_REROLLFOLLOWENGINESETTINGS.ToString()] = (NetCore.Params.ReadParam("REROLL_FOLLOWSCUSTOMENGINE") == "true");
+					partial[RTCSPEC.CORE_REROLLFOLLOWENGINESETTINGS.ToString()] = (NetCore.Params.ReadParam("REROLL_FOLLOWSCUSTOMENGINE").ToUpper() == "TRUE");
 				else
 					partial[RTCSPEC.CORE_REROLLFOLLOWENGINESETTINGS.ToString()] = false;
 
 				if (NetCore.Params.IsParamSet("REROLL_USESVALUELIST"))
-					partial[RTCSPEC.CORE_REROLLIGNOREORIGINALSOURCE.ToString()] = (NetCore.Params.ReadParam("REROLL_USESVALUELIST") == "true");
+					partial[RTCSPEC.CORE_REROLLIGNOREORIGINALSOURCE.ToString()] = (NetCore.Params.ReadParam("REROLL_USESVALUELIST").ToUpper() == "TRUE");
 				else
 					partial[RTCSPEC.CORE_REROLLIGNOREORIGINALSOURCE.ToString()] = false;
 
@@ -492,43 +492,66 @@ namespace RTCV.CorruptCore
 						else
 							return bl;
 					}
-					else
+
+					bl = new BlastLayer();
+
+					if (selectedDomains == null || selectedDomains.Count() == 0)
+						return null;
+
+					long intensity = CorruptCore.Intensity; //general RTC intensity
+
+				// Capping intensity at engine-specific maximums
+					if ((CorruptCore.SelectedEngine == CorruptionEngine.HELLGENIE ||
+						CorruptCore.SelectedEngine == CorruptionEngine.FREEZE ||
+						CorruptCore.SelectedEngine == CorruptionEngine.PIPE ||
+						CorruptCore.SelectedEngine == CorruptionEngine.CUSTOM && RTC_CustomEngine.Lifetime == 0) &&
+						intensity > StepActions.MaxInfiniteBlastUnits)
+						intensity = StepActions.MaxInfiniteBlastUnits; //Capping for cheat max
+
+					switch (CorruptCore.Radius) //Algorithm branching
 					{
-						bl = new BlastLayer();
+						case BlastRadius.SPREAD: //Randomly spreads all corruption bytes to all selected domains
 
-						if (selectedDomains == null || selectedDomains.Count() == 0)
-							return null;
+							for (int i = 0; i < intensity; i++)
+							{
+								Domain = selectedDomains[CorruptCore.RND.Next(selectedDomains.Length)];
 
-						// Capping intensity at engine-specific maximums
+								MaxAddress = MemoryDomains.GetInterface(Domain).Size;
+								RandomAddress = CorruptCore.RND.RandomLong(MaxAddress - CurrentPrecision);
 
-						long intensity = CorruptCore.Intensity; //general RTC intensity
+								bu = GetBlastUnit(Domain, RandomAddress, CorruptCore.CurrentPrecision);
+								if (bu != null)
+									bl.Layer.Add(bu);
+							}
 
+							break;
 
-						switch (CorruptCore.Radius) //Algorithm branching
-						{
-							case BlastRadius.SPREAD: //Randomly spreads all corruption bytes to all selected domains
+						case BlastRadius.CHUNK: //Randomly spreads the corruption bytes in one randomly selected domain
 
-								for (int i = 0; i < intensity; i++)
-								{
-									Domain = selectedDomains[CorruptCore.RND.Next(selectedDomains.Length)];
+							Domain = selectedDomains[CorruptCore.RND.Next(selectedDomains.Length)];
 
-									MaxAddress = MemoryDomains.GetInterface(Domain).Size;
-									RandomAddress = CorruptCore.RND.RandomLong(MaxAddress - CurrentPrecision);
+							MaxAddress = MemoryDomains.GetInterface(Domain).Size;
 
-									bu = GetBlastUnit(Domain, RandomAddress, CorruptCore.CurrentPrecision);
-									if (bu != null)
-										bl.Layer.Add(bu);
-								}
+							for (int i = 0; i < intensity; i++)
+							{
+								RandomAddress = CorruptCore.RND.RandomLong(MaxAddress - CurrentPrecision);
 
-								break;
+								bu = GetBlastUnit(Domain, RandomAddress, CorruptCore.CurrentPrecision);
+								if (bu != null)
+									bl.Layer.Add(bu);
+							}
 
-							case BlastRadius.CHUNK: //Randomly spreads the corruption bytes in one randomly selected domain
+							break;
 
+						case BlastRadius.BURST: // 10 shots of 10% chunk
+
+							for (int j = 0; j < 10; j++)
+							{
 								Domain = selectedDomains[CorruptCore.RND.Next(selectedDomains.Length)];
 
 								MaxAddress = MemoryDomains.GetInterface(Domain).Size;
 
-								for (int i = 0; i < intensity; i++)
+								for (int i = 0; i < (int)((double)intensity / 10); i++)
 								{
 									RandomAddress = CorruptCore.RND.RandomLong(MaxAddress - CurrentPrecision);
 
@@ -536,119 +559,99 @@ namespace RTCV.CorruptCore
 									if (bu != null)
 										bl.Layer.Add(bu);
 								}
+							}
 
-								break;
+							break;
 
-							case BlastRadius.BURST: // 10 shots of 10% chunk
+						case BlastRadius.NORMALIZED: // Blasts based on the size of the largest selected domain. Intensity =  Intensity / (domainSize[largestdomain]/domainSize[currentdomain])
 
-								for (int j = 0; j < 10; j++)
+							//Find the smallest domain and base our normalization around it
+							//Domains aren't IComparable so I used keys
+
+							long[] domainSize = new long[selectedDomains.Length];
+							for (int i = 0; i < selectedDomains.Length; i++)
+							{
+								Domain = selectedDomains[i];
+								domainSize[i] = MemoryDomains.GetInterface(Domain).Size;
+							}
+							//Sort the arrays
+							Array.Sort(domainSize, selectedDomains);
+
+							for (int i = 0; i < selectedDomains.Length; i++)
+							{
+								Domain = selectedDomains[i];
+
+								//Get the intensity divider. The size of the largest domain divided by the size of the current domain
+								long normalized = ((domainSize[selectedDomains.Length - 1] / (domainSize[i])));
+
+								for (int j = 0; j < (intensity / normalized); j++)
 								{
-									Domain = selectedDomains[CorruptCore.RND.Next(selectedDomains.Length)];
-
 									MaxAddress = MemoryDomains.GetInterface(Domain).Size;
+									RandomAddress = CorruptCore.RND.RandomLong(MaxAddress - CurrentPrecision);
 
-									for (int i = 0; i < (int)((double)intensity / 10); i++)
-									{
-										RandomAddress = CorruptCore.RND.RandomLong(MaxAddress - CurrentPrecision);
-
-										bu = GetBlastUnit(Domain, RandomAddress, CorruptCore.CurrentPrecision);
-										if (bu != null)
-											bl.Layer.Add(bu);
-									}
+									bu = GetBlastUnit(Domain, RandomAddress, CorruptCore.CurrentPrecision);
+									if (bu != null)
+										bl.Layer.Add(bu);
 								}
+							}
 
-								break;
+							break;
 
-							case BlastRadius.NORMALIZED: // Blasts based on the size of the largest selected domain. Intensity =  Intensity / (domainSize[largestdomain]/domainSize[currentdomain])
+						case BlastRadius.PROPORTIONAL: //Blasts proportionally based on the total size of all selected domains
 
-								//Find the smallest domain and base our normalization around it
-								//Domains aren't IComparable so I used keys
+							long totalSize = selectedDomains.Select(it => MemoryDomains.GetInterface(it).Size).Sum(); //Gets the total size of all selected domains
 
-								long[] domainSize = new long[selectedDomains.Length];
-								for (int i = 0; i < selectedDomains.Length; i++)
+							long[] normalizedIntensity = new long[selectedDomains.Length]; //matches the index of selectedDomains
+							for (int i = 0; i < selectedDomains.Length; i++)
+							{   //calculates the proportionnal normalized Intensity based on total selected domains size
+								double proportion = (double)MemoryDomains.GetInterface(selectedDomains[i]).Size / (double)totalSize;
+								normalizedIntensity[i] = Convert.ToInt64((double)intensity * proportion);
+							}
+
+							for (int i = 0; i < selectedDomains.Length; i++)
+							{
+								Domain = selectedDomains[i];
+
+								for (int j = 0; j < normalizedIntensity[i]; j++)
 								{
-									Domain = selectedDomains[i];
-									domainSize[i] = MemoryDomains.GetInterface(Domain).Size;
-								}
-								//Sort the arrays
-								Array.Sort(domainSize, selectedDomains);
+									MaxAddress = MemoryDomains.GetInterface(Domain).Size;
+									RandomAddress = CorruptCore.RND.RandomLong(MaxAddress - CurrentPrecision);
 
-								for (int i = 0; i < selectedDomains.Length; i++)
+									bu = GetBlastUnit(Domain, RandomAddress, CorruptCore.CurrentPrecision);
+									if (bu != null)
+										bl.Layer.Add(bu);
+								}
+							}
+
+							break;
+
+						case BlastRadius.EVEN: //Evenly distributes the blasts through all selected domains
+
+							for (int i = 0; i < selectedDomains.Length; i++)
+							{
+								Domain = selectedDomains[i];
+
+								for (int j = 0; j < (intensity / selectedDomains.Length); j++)
 								{
-									Domain = selectedDomains[i];
+									MaxAddress = MemoryDomains.GetInterface(Domain).Size;
+									RandomAddress = CorruptCore.RND.RandomLong(MaxAddress - CurrentPrecision);
 
-									//Get the intensity divider. The size of the largest domain divided by the size of the current domain
-									long normalized = ((domainSize[selectedDomains.Length - 1] / (domainSize[i])));
-
-									for (int j = 0; j < (intensity / normalized); j++)
-									{
-										MaxAddress = MemoryDomains.GetInterface(Domain).Size;
-										RandomAddress = CorruptCore.RND.RandomLong(MaxAddress - CurrentPrecision);
-
-										bu = GetBlastUnit(Domain, RandomAddress, CorruptCore.CurrentPrecision);
-										if (bu != null)
-											bl.Layer.Add(bu);
-									}
+									bu = GetBlastUnit(Domain, RandomAddress, CorruptCore.CurrentPrecision);
+									if (bu != null)
+										bl.Layer.Add(bu);
 								}
+							}
 
-								break;
+							break;
 
-							case BlastRadius.PROPORTIONAL: //Blasts proportionally based on the total size of all selected domains
-
-								long totalSize = selectedDomains.Select(it => MemoryDomains.GetInterface(it).Size).Sum(); //Gets the total size of all selected domains
-
-								long[] normalizedIntensity = new long[selectedDomains.Length]; //matches the index of selectedDomains
-								for (int i = 0; i < selectedDomains.Length; i++)
-								{   //calculates the proportionnal normalized Intensity based on total selected domains size
-									double proportion = (double)MemoryDomains.GetInterface(selectedDomains[i]).Size / (double)totalSize;
-									normalizedIntensity[i] = Convert.ToInt64((double)intensity * proportion);
-								}
-
-								for (int i = 0; i < selectedDomains.Length; i++)
-								{
-									Domain = selectedDomains[i];
-
-									for (int j = 0; j < normalizedIntensity[i]; j++)
-									{
-										MaxAddress = MemoryDomains.GetInterface(Domain).Size;
-										RandomAddress = CorruptCore.RND.RandomLong(MaxAddress - CurrentPrecision);
-
-										bu = GetBlastUnit(Domain, RandomAddress, CorruptCore.CurrentPrecision);
-										if (bu != null)
-											bl.Layer.Add(bu);
-									}
-								}
-
-								break;
-
-							case BlastRadius.EVEN: //Evenly distributes the blasts through all selected domains
-
-								for (int i = 0; i < selectedDomains.Length; i++)
-								{
-									Domain = selectedDomains[i];
-
-									for (int j = 0; j < (intensity / selectedDomains.Length); j++)
-									{
-										MaxAddress = MemoryDomains.GetInterface(Domain).Size;
-										RandomAddress = CorruptCore.RND.RandomLong(MaxAddress - CurrentPrecision);
-
-										bu = GetBlastUnit(Domain, RandomAddress, CorruptCore.CurrentPrecision);
-										if (bu != null)
-											bl.Layer.Add(bu);
-									}
-								}
-
-								break;
-
-							case BlastRadius.NONE: //Shouldn't ever happen but handled anyway
-								return null;
-						}
-
-						if (bl.Layer.Count == 0)
+						case BlastRadius.NONE: //Shouldn't ever happen but handled anyway
 							return null;
-						else
-							return bl;
 					}
+
+					if (bl.Layer.Count == 0)
+						return null;
+					else
+						return bl;
 				}
 				catch (Exception ex)
 				{
@@ -712,7 +715,7 @@ namespace RTCV.CorruptCore
 		{
 			BlastLayer bl = CorruptCore.GenerateBlastLayer((string[])RTCV.NetCore.AllSpec.UISpec["SELECTEDDOMAINS"]);
 			if (bl != null)
-				bl.Apply(false);
+				bl.Apply(false, true);
 		}
 
 		/*
