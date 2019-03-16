@@ -1417,8 +1417,12 @@ namespace RTCV.CorruptCore
 
 		private bool ReturnFalseAndDequeueIfContinuousStore()
 		{
-			if(this.Source == BlastUnitSource.STORE && this.StoreType == StoreType.CONTINUOUS)
-				this.Working.StoreData.Dequeue();
+			if (this.Source == BlastUnitSource.STORE && this.StoreType == StoreType.CONTINUOUS)
+			{
+				if(this.Working.StoreData.Count > 0)
+					this.Working.StoreData.Dequeue();
+			}
+				
 			return false;
 		}
 

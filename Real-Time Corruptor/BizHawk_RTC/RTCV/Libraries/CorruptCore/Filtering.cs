@@ -221,10 +221,23 @@ namespace RTCV.CorruptCore
 		/// <returns></returns>
 		public static bool LimiterContainsValue(byte[] bytes, string hash)
 		{
-			//If the limiter dico doesn't exist, return false
+			//Specifically log if any of these are null
 			if (Hash2LimiterDico == null)
+			{
+				Console.WriteLine("Hash2LimiterDico null");
 				return false;
-			
+			}
+			if (bytes == null)
+			{
+				Console.WriteLine("Bytes null");
+				return false;
+			}
+			if (hash == null)
+			{
+				Console.WriteLine("Hash null");
+				return false;
+			}
+
 			HashSet<byte[]> hs = null;
 
 			//If the limiter dictionary contains the hash, check if the hashset contains the byte sequence
