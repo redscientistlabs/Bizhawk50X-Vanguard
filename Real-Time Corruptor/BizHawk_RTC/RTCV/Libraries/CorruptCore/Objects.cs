@@ -327,8 +327,9 @@ namespace RTCV.CorruptCore
 				return false;
 			}
 
-			//Load the limiter lists into the dictionary
-			Filtering.LoadListsFromPaths(Directory.GetFiles(CorruptCore.workingDir + Path.DirectorySeparatorChar + "SKS" + Path.DirectorySeparatorChar, "*.limiter"));
+			//Load the limiter lists into the dictionary and UI
+			Filtering.LoadStockpileLists(sks);
+
 
 			//Update the current stockpile to this one
 			StockpileManager_UISide.CurrentStockpile = sks;
@@ -658,6 +659,8 @@ namespace RTCV.CorruptCore
 		[JsonConverter(typeof(StringEnumConverter))]
 		public StashKeySavestateLocation StateLocation { get; set; } = StashKeySavestateLocation.SESSION;
 
+		public Dictionary<string, string> KnownLists { get; set; } = new Dictionary<string, string>();
+
 		public string SystemName { get; set; }
 		public string SystemDeepName { get; set; }
 		public string SystemCore { get; set; }
@@ -761,6 +764,23 @@ namespace RTCV.CorruptCore
 		public string GetSavestateFullPath()
 		{
 			return CorruptCore.workingDir + Path.DirectorySeparatorChar + this.StateLocation.ToString() + Path.DirectorySeparatorChar + this.GameName + "." + this.ParentKey + ".timejump.State"; // get savestate name
+		}
+
+		//Todo - Replace this when compat is broken
+		//Yes I intentionally wrote disgusting code so I'd want to rewrite it the moment I can
+		public void PopulateKnownLists()
+		{
+			List<String> knownListKeys = new List<string>();
+			foreach (var bu in BlastLayer.Layer.Where(x => x.LimiterListHash != null))
+			{
+				if (knownListKeys.Contains(bu.LimiterListHash))
+					continue;
+				knownListKeys.Add(bu.LimiterListHash);
+
+				Filtering.Hash2NameDico.TryGetValue(bu.LimiterListHash, out string name);
+				this.KnownLists[bu.LimiterListHash] = name ?? ("UNKNOWN_" + Filtering.StockpileListCount++);
+			}
+
 		}
 
 	}

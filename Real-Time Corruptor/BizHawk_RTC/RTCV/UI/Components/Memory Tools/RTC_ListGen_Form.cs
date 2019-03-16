@@ -170,7 +170,7 @@ namespace RTCV.UI
 			string hash = Filtering.RegisterList(byteList, true);
 
 			//Register the list in the ui
-			S.GET<RTC_EngineConfig_Form>().RegisterListInUI(filename, hash);
+			CorruptCore.Filtering.RegisterListInUI(filename, hash);
 
 			return true;
 		}

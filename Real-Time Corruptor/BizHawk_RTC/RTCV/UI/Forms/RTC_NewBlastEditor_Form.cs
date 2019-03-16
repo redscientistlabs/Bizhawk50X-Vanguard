@@ -527,7 +527,7 @@ namespace RTCV.UI
 				cbLimiterTime.SelectedItem = bu.LimiterTime;
 				cbStoreLimiterSource.SelectedItem = bu.StoreLimiterSource;
 
-				cbLimiterList.SelectedItem = UICore.LimiterListBindingSource.FirstOrDefault(x => x.Value == bu.LimiterListHash);
+				cbLimiterList.SelectedItem = CorruptCore.CorruptCore.LimiterListBindingSource.FirstOrDefault(x => x.Value == bu.LimiterListHash);
 
 				cbInvertLimiter.Checked = bu.InvertLimiter;
 				cbStoreTime.SelectedItem = bu.StoreTime;
@@ -623,7 +623,7 @@ namespace RTCV.UI
 				cbSource.Items.Add(item);
 			}
 
-			cbLimiterList.DataSource = UICore.LimiterListBindingSource;
+			cbLimiterList.DataSource = CorruptCore.CorruptCore.LimiterListBindingSource;
 			cbLimiterList.DisplayMember = "Name";
 			cbLimiterList.ValueMember = "Value";
 
@@ -728,7 +728,7 @@ namespace RTCV.UI
 			dgvBlastEditor.Columns.Add(limiterTime);
 
 			DataGridViewComboBoxColumn limiterHash = CreateColumn(buProperty.LimiterListHash.ToString(), buProperty.LimiterListHash.ToString(), "Limiter List", new DataGridViewComboBoxColumn()) as DataGridViewComboBoxColumn;
-			limiterHash.DataSource = UICore.LimiterListBindingSource;
+			limiterHash.DataSource = CorruptCore.CorruptCore.LimiterListBindingSource;
 			limiterHash.DisplayMember = "Name";
 			limiterHash.ValueMember = "Value";
 			dgvBlastEditor.Columns.Add(limiterHash);

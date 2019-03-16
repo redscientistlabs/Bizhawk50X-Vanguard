@@ -38,6 +38,10 @@ namespace RTCV.CorruptCore
 		public static string engineTemplateDir = rtcDir + Path.DirectorySeparatorChar + "ENGINETEMPLATES" + Path.DirectorySeparatorChar;
 
 
+		//This is for the UI only but needs to be in here as well
+		public static BindingList<ComboBoxItem<string>> LimiterListBindingSource = new BindingList<ComboBoxItem<string>>();
+		public static BindingList<ComboBoxItem<string>> ValueListBindingSource = new BindingList<ComboBoxItem<string>>();
+
 		public static bool AllowCrossCoreCorruption
 		{
 			get => (bool)RTCV.NetCore.AllSpec.CorruptCoreSpec[RTCSPEC.CORE_ALLOWCROSSCORECORRUPTION.ToString()];

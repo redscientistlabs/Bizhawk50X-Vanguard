@@ -23,13 +23,55 @@ namespace RTCV.CorruptCore
 			set => RTCV.NetCore.AllSpec.CorruptCoreSpec.Update(RTCSPEC.FILTERING_HASH2VALUEDICO.ToString(), value);
 		}
 
+		public static Dictionary<string, string> Hash2NameDico
+		{
+			get => (Dictionary<string, string>)RTCV.NetCore.AllSpec.CorruptCoreSpec[RTCSPEC.FILTERING_HASH2NAMEDICO.ToString()];
+			set => RTCV.NetCore.AllSpec.CorruptCoreSpec.Update(RTCSPEC.FILTERING_HASH2NAMEDICO.ToString(), value);
+		}
+
+		public static int StockpileListCount = 0;
+
 		public static PartialSpec getDefaultPartial()
 		{
 			var partial = new PartialSpec("RTCSpec");
 			partial[RTCSPEC.FILTERING_HASH2LIMITERDICO.ToString()] = new Dictionary<string, HashSet<byte[]>> ();
 			partial[RTCSPEC.FILTERING_HASH2VALUEDICO.ToString()] = new Dictionary<string, List<Byte[]>>();
+			partial[RTCSPEC.FILTERING_HASH2NAMEDICO.ToString()] = new Dictionary<string, string>();
 
 			return partial;
+		}
+
+		public static void LoadStockpileLists(Stockpile sks)
+		{
+			var lists = LoadListsFromPaths(Directory.GetFiles(CorruptCore.workingDir + Path.DirectorySeparatorChar + "SKS" + Path.DirectorySeparatorChar, "*.limiter"));
+
+			Dictionary<string, string> allKnownLists = new Dictionary<string, string>();
+
+			//Get the knownlists and add dummy entries for them
+			foreach (var sk in sks.StashKeys)
+			{
+				allKnownLists = allKnownLists.Concat(sk.KnownLists).ToDictionary(x => x.Key, x => x.Value);
+			}
+
+			//We don't have names for these lists so just add them with a generic name if they're not in the knownlists
+			foreach (var list in lists)
+			{
+				//We have the name so use it
+				if (allKnownLists.ContainsKey(list))
+					RegisterListInUI(allKnownLists[list], list);
+				//Throw in a generic name
+				else
+				{
+					RegisterListInUI("SK_" + StockpileListCount, list);
+					Hash2NameDico[list] = "SK_" + StockpileListCount;
+					StockpileListCount++;
+				}
+			}
+			//Now add the dummy lists. Since a list doesn't register if the hash already exists, this works
+			foreach (var key in allKnownLists.Keys)
+			{
+				RegisterListInUI("MISSING_" + allKnownLists[key], key);
+			}
 		}
 
 		/// <summary>
@@ -95,7 +137,10 @@ namespace RTCV.CorruptCore
 				byteList.Add(bytes);
 			}
 
-			return RegisterList(byteList.Distinct(new CorruptCore_Extensions.ByteArrayComparer()).ToList(), syncListViaNetcore);
+			var hash =  RegisterList(byteList.Distinct(new CorruptCore_Extensions.ByteArrayComparer()).ToList(), syncListViaNetcore);
+			var name = Path.GetFileName(path);
+			Hash2NameDico[hash] = name;
+			return hash;
 		}
 
 		/// <summary>
@@ -134,6 +179,7 @@ namespace RTCV.CorruptCore
 				PartialSpec update = new PartialSpec("RTCSpec");
 				update[RTCSPEC.FILTERING_HASH2LIMITERDICO.ToString()] = Hash2LimiterDico;
 				update[RTCSPEC.FILTERING_HASH2VALUEDICO.ToString()] = Hash2ValueDico;
+				update[RTCSPEC.FILTERING_HASH2NAMEDICO.ToString()] = Hash2NameDico;
 				RTCV.NetCore.AllSpec.CorruptCoreSpec.Update(update);
 			}
 
@@ -246,6 +292,7 @@ namespace RTCV.CorruptCore
 			//Build up a list of all the lists used by every blastunit
 			foreach (StashKey sk in sks.StashKeys)
 			{
+				sk.PopulateKnownLists();
 				foreach (BlastUnit bu in sk.BlastLayer.Layer)
 				{
 					if (!hashList.Contains(bu.LimiterListHash))
@@ -278,7 +325,7 @@ namespace RTCV.CorruptCore
 				//If we have a value but the dictionary didn't have it, pop that we couldn't find the list
 				else if(s != null)
 				{
-					DialogResult dr = MessageBox.Show("Couldn't find Limiter List " + s +
+					DialogResult dr = MessageBox.Show("Couldn't find Limiter List " + Filtering.Hash2NameDico[s] +
 						" If you continue saving, any blastunit using this list will ignore the limiter on playback if the list still cannot be found.\nDo you want to continue?", "Couldn't Find Limiter List",
 						MessageBoxButtons.YesNo);
 
@@ -290,6 +337,20 @@ namespace RTCV.CorruptCore
 			}
 
 			return returnList;
+		}
+		public static bool RegisterListInUI(string name, string hash)
+		{
+			//Don't double-register the same name. For now, just iterate over the limiter lists and pull the names out.
+			//In the future, we'll keep a proper dictionary when this code is re-written
+			if (CorruptCore.LimiterListBindingSource.Any(x => x.Value == hash))
+				return false;
+
+			if (CorruptCore.LimiterListBindingSource.Any(x => x.Name == name))
+				name = name + "_1";
+
+			CorruptCore.LimiterListBindingSource.Add(new ComboBoxItem<String>(name, hash));
+			CorruptCore.ValueListBindingSource.Add((new ComboBoxItem<String>(name, hash)));
+			return true;
 		}
 
 	}

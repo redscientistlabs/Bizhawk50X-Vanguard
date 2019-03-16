@@ -41,14 +41,14 @@ namespace RTCV.UI
 			cbLimiterList.ValueMember = "Value";
 
 			//Do this here as if it's stuck into the designer, it keeps defaulting out
-			cbValueList.DataSource = UICore.ValueListBindingSource;
-			cbLimiterList.DataSource = UICore.LimiterListBindingSource;
+			cbValueList.DataSource = CorruptCore.CorruptCore.ValueListBindingSource;
+			cbLimiterList.DataSource = CorruptCore.CorruptCore.LimiterListBindingSource;
 	
-			if (UICore.ValueListBindingSource.Count > 0)
+			if (CorruptCore.CorruptCore.ValueListBindingSource.Count > 0)
 			{
 				cbValueList_SelectedIndexChanged(cbValueList, null);
 			}
-			if (UICore.LimiterListBindingSource.Count > 0)
+			if (CorruptCore.CorruptCore.LimiterListBindingSource.Count > 0)
 			{
 				cbLimiterList_SelectedIndexChanged(cbLimiterList, null);
 			}

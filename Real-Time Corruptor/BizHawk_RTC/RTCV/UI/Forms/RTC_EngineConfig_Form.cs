@@ -45,22 +45,22 @@ namespace RTCV.UI
 			{
 				S.GET<RTC_CustomEngineConfig_Form>().cbLimiterList.DisplayMember = "Name";
 				S.GET<RTC_CustomEngineConfig_Form>().cbLimiterList.ValueMember = "Value";
-				S.GET<RTC_CustomEngineConfig_Form>().cbLimiterList.DataSource = UICore.LimiterListBindingSource;
+				S.GET<RTC_CustomEngineConfig_Form>().cbLimiterList.DataSource = CorruptCore.CorruptCore.LimiterListBindingSource;
 
 
 				S.GET<RTC_CustomEngineConfig_Form>().cbValueList.DisplayMember = "Name";
 				S.GET<RTC_CustomEngineConfig_Form>().cbValueList.ValueMember = "Value";
-				S.GET<RTC_CustomEngineConfig_Form>().cbValueList.DataSource = UICore.ValueListBindingSource;
+				S.GET<RTC_CustomEngineConfig_Form>().cbValueList.DataSource = CorruptCore.CorruptCore.ValueListBindingSource;
 
 
 
 				S.GET<RTC_CorruptionEngine_Form>().cbVectorLimiterList.DisplayMember = "Name";
 				S.GET<RTC_CorruptionEngine_Form>().cbVectorLimiterList.ValueMember = "Value";
-				S.GET<RTC_CorruptionEngine_Form>().cbVectorLimiterList.DataSource = UICore.LimiterListBindingSource;
+				S.GET<RTC_CorruptionEngine_Form>().cbVectorLimiterList.DataSource = CorruptCore.CorruptCore.LimiterListBindingSource;
 
 				S.GET<RTC_CorruptionEngine_Form>().cbVectorValueList.DisplayMember = "Name";
 				S.GET<RTC_CorruptionEngine_Form>().cbVectorValueList.ValueMember = "Value";
-				S.GET<RTC_CorruptionEngine_Form>().cbVectorValueList.DataSource = UICore.ValueListBindingSource;
+				S.GET<RTC_CorruptionEngine_Form>().cbVectorValueList.DataSource = CorruptCore.CorruptCore.ValueListBindingSource;
 			}
 			else
 			{
@@ -75,8 +75,6 @@ namespace RTCV.UI
 		public void LoadLists()
 		{
 			toggleLimiterBoxSource(false);
-			UICore.LimiterListBindingSource.Clear();
-			UICore.ValueListBindingSource.Clear();
 
 			string[] paths = System.IO.Directory.GetFiles(CorruptCore.CorruptCore.listsDir);
 
@@ -86,15 +84,11 @@ namespace RTCV.UI
 			for (int i = 0; i < hashes.Count; i++)
 			{
 				string[] _paths = paths[i].Split('\\' , '.');
-				RegisterListInUI(_paths[_paths.Length - 2], hashes[i]);
+				CorruptCore.Filtering.RegisterListInUI(_paths[_paths.Length - 2], hashes[i]);
 			}
 			toggleLimiterBoxSource(true);
 		}
 
-		public void RegisterListInUI(string name, string hash)
-		{
-			UICore.LimiterListBindingSource.Add(new ComboBoxItem<String>(name, hash));
-			UICore.ValueListBindingSource.Add((new ComboBoxItem<String>(name, hash)));
-		}
+
 	}
 }
