@@ -1592,6 +1592,29 @@ namespace RTCV.UI
 			System.Diagnostics.Process.Start(sInfo);
 		}
 
+		private void OpenBlastGeneratorToolStripMenuItem_Click(object sender, EventArgs e)
+		{
+			var bgForm = S.GET<RTC_BlastGenerator_Form>();
+			if (bgForm != null)
+			{
+				if (bgForm.OpenedFromBlastEditor)
+				{
+					bgForm.LoadStashkey(currentSK);
+					bgForm.BringToFront();
+				}
+				else
+				{
+					MessageBox.Show("Please close the current instance of the Blast Generator first.");
+				}
+			}
+			else
+			{
+				S.SET(new RTC_BlastGenerator_Form());
+				bgForm = S.GET<RTC_BlastGenerator_Form>();
+				bgForm.LoadStashkey(currentSK);
+			}
+		}
+
 		private void UpdateLayerSize()
 		{
 			lbBlastLayerSize.Text = "Size: " + currentSK.BlastLayer.Layer.Count;

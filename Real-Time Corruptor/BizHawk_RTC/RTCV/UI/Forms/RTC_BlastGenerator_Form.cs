@@ -54,7 +54,7 @@ namespace RTCV.UI
 		}
 
 		public static BlastLayer CurrentBlastLayer = null;
-		private bool openedFromBlastEditor = false;
+		public bool OpenedFromBlastEditor = false;
 		private StashKey sk = null;
 		private ContextMenuStrip cms = new ContextMenuStrip();
 		private bool initialized = false;
@@ -86,11 +86,12 @@ namespace RTCV.UI
 			RefreshDomains();
 			AddDefaultRow();
 			PopulateModeCombobox(dgvBlastGenerator.Rows[0]);
-			openedFromBlastEditor = false;
+			OpenedFromBlastEditor = false;
 			btnSendTo.Text = "Send to Stash";
 			initialized = true;
 
 			this.Show();
+			this.BringToFront();
 		}
 
 		public void LoadStashkey(StashKey _sk)
@@ -104,11 +105,12 @@ namespace RTCV.UI
 			RefreshDomains();
 			AddDefaultRow();
 			PopulateModeCombobox(dgvBlastGenerator.Rows[0]);
-			openedFromBlastEditor = true;
+			OpenedFromBlastEditor = true;
 			btnSendTo.Text = "Send to Blast Editor";
 			initialized = true;
 
 			this.Show();
+			this.BringToFront();
 		}
 
 		private void AddDefaultRow()
@@ -325,12 +327,14 @@ namespace RTCV.UI
 				return;
 			newSk.BlastLayer = bl;
 
-			if (openedFromBlastEditor)
+			if (OpenedFromBlastEditor)
 			{
-				if (S.GET<RTC_NewBlastEditor_Form>() != null)
+				if (S.GET<RTC_NewBlastEditor_Form>() == null)
 				{
-					S.GET<RTC_NewBlastEditor_Form>().ImportBlastLayer(newSk.BlastLayer);
+					S.SET(new RTC_NewBlastEditor_Form());
 				}
+				S.GET<RTC_NewBlastEditor_Form>().ImportBlastLayer(newSk.BlastLayer);
+				S.GET<RTC_NewBlastEditor_Form>().Show();
 			}
 			else
 			{
@@ -389,7 +393,7 @@ namespace RTCV.UI
 				if (loadBeforeCorrupt)
 				{
 					//If opened from engine config, use the GH state
-					if (!openedFromBlastEditor)
+					if (!OpenedFromBlastEditor)
 					{
 						StashKey psk = StockpileManager_UISide.GetCurrentSavestateStashkey();
 						if (psk == null)
