@@ -245,6 +245,9 @@ namespace RTCV.UI
 				else                            //If the ComponentForm was moved to another panel than the default one
 					targetPanel = defaultPanel; //and that panel was hidden, then we move it back to the original panel.
 
+				//Restore the state since we don't want it maximized or minimized
+				this.WindowState = FormWindowState.Normal;
+
 				//This searches for a ComponentForm in the target Panel
 				ComponentForm componentFormInTargetPanel = (targetPanel?.Controls.Cast<Control>().FirstOrDefault(it => it is ComponentForm) as ComponentForm);
 				if (componentFormInTargetPanel != null && componentFormInTargetPanel != this)
