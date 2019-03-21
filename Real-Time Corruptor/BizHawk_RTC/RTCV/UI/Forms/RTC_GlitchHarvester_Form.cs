@@ -452,6 +452,7 @@ namespace RTCV.UI
 				lbStashHistory.Enabled = false;
 				btnStashUP.Enabled = false;
 				btnStashDOWN.Enabled = false;
+				btnAddStashToStockpile.Enabled = false;
 
 
 				if (DontLoadSelectedStash || lbStashHistory.SelectedIndex == -1)
@@ -494,6 +495,7 @@ namespace RTCV.UI
 				lbStashHistory.Enabled = true;
 				btnStashUP.Enabled = true;
 				btnStashDOWN.Enabled = true;
+				btnAddStashToStockpile.Enabled = true;
 			}
 		}
 
@@ -1507,6 +1509,7 @@ namespace RTCV.UI
 		{
 			try
 			{
+				btnAddStashToStockpile.Enabled = false;
 				dgvStockpile.Enabled = false;
 				btnStockpileUP.Enabled = false;
 				btnStockpileDOWN.Enabled = false;
@@ -1567,6 +1570,7 @@ namespace RTCV.UI
 			}
 			finally
 			{
+				btnAddStashToStockpile.Enabled = true;
 				dgvStockpile.Enabled = true;
 				btnStockpileUP.Enabled = true;
 				btnStockpileDOWN.Enabled = true;
