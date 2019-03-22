@@ -39,13 +39,16 @@ namespace RTCV.UI.Components.Controls
 
 		public void registerSlave(MultiUpDown comp)
 		{
+			//Sync the slave's settings
+			comp.Value = this.Value;
+			comp.Minimum = this.Minimum;
+			comp.Maximum = this.Maximum;
 			slaveComps.Add(comp);
 			comp._parent = this;
 		}
 
 		private void UpdateAllControls(decimal value, Control setter, bool ignore = false)
 		{
-
 			GeneralUpdateFlag = true;
 			if (setter != this || ignore)
 			{
