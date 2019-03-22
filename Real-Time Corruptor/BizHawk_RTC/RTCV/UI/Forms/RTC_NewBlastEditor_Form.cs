@@ -684,6 +684,7 @@ namespace RTCV.UI
 			DataGridViewNumericUpDownColumn address = (DataGridViewNumericUpDownColumn)CreateColumn(buProperty.Address.ToString(), buProperty.Address.ToString(), "Address", new DataGridViewNumericUpDownColumn());
 			address.Hexadecimal = true;
 			address.SortMode = DataGridViewColumnSortMode.Automatic;
+			address.Increment = 1;
 			dgvBlastEditor.Columns.Add(address);
 
 
@@ -761,6 +762,7 @@ namespace RTCV.UI
 			DataGridViewNumericUpDownColumn sourceAddress = (DataGridViewNumericUpDownColumn)CreateColumn(buProperty.SourceAddress.ToString(), buProperty.SourceAddress.ToString(), "Source Address", new DataGridViewNumericUpDownColumn());
 			sourceAddress.Hexadecimal = true;
 			sourceAddress.SortMode = DataGridViewColumnSortMode.Automatic;
+			sourceAddress.Increment = 1;
 			dgvBlastEditor.Columns.Add(sourceAddress);
 
 
@@ -1394,8 +1396,6 @@ namespace RTCV.UI
 		{
 			BlastLayer temp = BlastTools.LoadBlastLayerFromFile();
 			ImportBlastLayer(temp);
-			RefreshAllNoteIcons();
-			dgvBlastEditor.Refresh();
 		}
 
 		public void ImportBlastLayer(BlastLayer bl)
@@ -1406,6 +1406,7 @@ namespace RTCV.UI
 					bs.Add(bu);
 			}
 			dgvBlastEditor.ResetBindings();
+			RefreshAllNoteIcons();
 			dgvBlastEditor.Refresh();
 		}
 

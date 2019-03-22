@@ -329,11 +329,16 @@ namespace RTCV.UI
 
 			if (OpenedFromBlastEditor)
 			{
-				if (S.GET<RTC_NewBlastEditor_Form>() == null)
+				if (S.GET<RTC_NewBlastEditor_Form>() == null || S.GET<RTC_NewBlastEditor_Form>().IsDisposed)
 				{
 					S.SET(new RTC_NewBlastEditor_Form());
+					S.GET<RTC_NewBlastEditor_Form>().LoadStashkey((StashKey)newSk.Clone());
 				}
-				S.GET<RTC_NewBlastEditor_Form>().ImportBlastLayer(newSk.BlastLayer);
+				else
+					S.GET<RTC_NewBlastEditor_Form>().ImportBlastLayer(newSk.BlastLayer);
+				{
+
+				}
 				S.GET<RTC_NewBlastEditor_Form>().Show();
 			}
 			else
@@ -388,6 +393,8 @@ namespace RTCV.UI
 			StashKey newSk = null;
 			try
 			{
+				RefreshDomains();
+
 				BlastLayer bl = new BlastLayer();
 
 				if (loadBeforeCorrupt)
@@ -635,7 +642,7 @@ namespace RTCV.UI
 			}
 		}
 
-		private void RefreshDomains()
+		private bool RefreshDomains()
 		{
 			try
 			{
@@ -649,6 +656,7 @@ namespace RTCV.UI
 
 				foreach (DataGridViewRow row in dgvBlastGenerator.Rows)
 					PopulateDomainCombobox(row);
+				return true;
 			}
 			catch (Exception ex)
 			{
@@ -657,6 +665,7 @@ namespace RTCV.UI
 							"Are you sure you don't have an invalid domain selected?\n" +
 							"Make sure any VMDs are loaded and you have the correct core loaded in Bizhawk\n" +
 							ex.ToString() + ex.StackTrace);
+				return false;
 			}
 		}
 
@@ -809,6 +818,15 @@ namespace RTCV.UI
 				DataGridViewCell buttonCell = row.Cells["dgvNoteButton"];
 
 				buttonCell.Value = string.IsNullOrWhiteSpace(textCell.Value?.ToString()) ? string.Empty : "📝";
+			}
+		}
+
+		private void CbUnitsShareNote_CheckedChanged(object sender, EventArgs e)
+		{
+			//mark the rows as dirty
+			foreach(DataGridViewRow row in dgvBlastGenerator.Rows)
+			{
+				row.Cells["dgvRowDirty"].Value = true;
 			}
 		}
 	}
