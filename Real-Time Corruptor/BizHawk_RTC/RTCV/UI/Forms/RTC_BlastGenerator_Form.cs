@@ -54,10 +54,11 @@ namespace RTCV.UI
 		}
 
 		public static BlastLayer CurrentBlastLayer = null;
-		private bool openedFromBlastEditor = false;
+		public bool OpenedFromBlastEditor = false;
 		private StashKey sk = null;
 		private ContextMenuStrip cms = new ContextMenuStrip();
 		private bool initialized = false;
+		private List<Control> allControls;
 
 		private static Dictionary<string, MemoryInterface> domainToMiDico = new Dictionary<string, MemoryInterface>();
 		private string[] domains = MemoryDomains.MemoryInterfaces?.Keys?.Concat(MemoryDomains.VmdPool.Values.Select(it => it.ToString())).ToArray();
@@ -76,21 +77,29 @@ namespace RTCV.UI
 			dgvBlastGenerator.CellValueChanged += dgvBlastGenerator_CellValueChanged;
 			dgvBlastGenerator.CellClick += dgvBlastGenerator_CellClick;
 
-
-
 			UICore.SetRTCColor(UICore.GeneralColor, this);
+			getAllControls(this);
 		}
-
+		private void getAllControls(Control container)
+		{
+			allControls = new List<Control>();
+			foreach (Control c in container.Controls)
+			{
+				getAllControls(c);
+				allControls.Add(c);
+			}
+		}
 		public void LoadNoStashKey()
 		{
 			RefreshDomains();
 			AddDefaultRow();
 			PopulateModeCombobox(dgvBlastGenerator.Rows[0]);
-			openedFromBlastEditor = false;
+			OpenedFromBlastEditor = false;
 			btnSendTo.Text = "Send to Stash";
 			initialized = true;
 
 			this.Show();
+			this.BringToFront();
 		}
 
 		public void LoadStashkey(StashKey _sk)
@@ -104,11 +113,12 @@ namespace RTCV.UI
 			RefreshDomains();
 			AddDefaultRow();
 			PopulateModeCombobox(dgvBlastGenerator.Rows[0]);
-			openedFromBlastEditor = true;
+			OpenedFromBlastEditor = true;
 			btnSendTo.Text = "Send to Blast Editor";
 			initialized = true;
 
 			this.Show();
+			this.BringToFront();
 		}
 
 		private void AddDefaultRow()
@@ -325,12 +335,19 @@ namespace RTCV.UI
 				return;
 			newSk.BlastLayer = bl;
 
-			if (openedFromBlastEditor)
+			if (OpenedFromBlastEditor)
 			{
-				if (S.GET<RTC_NewBlastEditor_Form>() != null)
+				if (S.GET<RTC_NewBlastEditor_Form>() == null || S.GET<RTC_NewBlastEditor_Form>().IsDisposed)
 				{
-					S.GET<RTC_NewBlastEditor_Form>().ImportBlastLayer(newSk.BlastLayer);
+					S.SET(new RTC_NewBlastEditor_Form());
+					S.GET<RTC_NewBlastEditor_Form>().LoadStashkey((StashKey)newSk.Clone());
 				}
+				else
+					S.GET<RTC_NewBlastEditor_Form>().ImportBlastLayer(newSk.BlastLayer);
+				{
+
+				}
+				S.GET<RTC_NewBlastEditor_Form>().Show();
 			}
 			else
 			{
@@ -384,12 +401,14 @@ namespace RTCV.UI
 			StashKey newSk = null;
 			try
 			{
+				RefreshDomains();
+
 				BlastLayer bl = new BlastLayer();
 
 				if (loadBeforeCorrupt)
 				{
 					//If opened from engine config, use the GH state
-					if (!openedFromBlastEditor)
+					if (!OpenedFromBlastEditor)
 					{
 						StashKey psk = StockpileManager_UISide.GetCurrentSavestateStashkey();
 						if (psk == null)
@@ -631,7 +650,7 @@ namespace RTCV.UI
 			}
 		}
 
-		private void RefreshDomains()
+		private bool RefreshDomains()
 		{
 			try
 			{
@@ -645,6 +664,7 @@ namespace RTCV.UI
 
 				foreach (DataGridViewRow row in dgvBlastGenerator.Rows)
 					PopulateDomainCombobox(row);
+				return true;
 			}
 			catch (Exception ex)
 			{
@@ -653,6 +673,7 @@ namespace RTCV.UI
 							"Are you sure you don't have an invalid domain selected?\n" +
 							"Make sure any VMDs are loaded and you have the correct core loaded in Bizhawk\n" +
 							ex.ToString() + ex.StackTrace);
+				return false;
 			}
 		}
 
@@ -789,8 +810,8 @@ namespace RTCV.UI
 
 						NoteItem note = new NoteItem(textCell.Value == null ? "" : textCell.Value.ToString());
 						textCell.Value = note;
-
-						new RTC_NoteEditor_Form(note, buttonCell);
+						S.SET(new RTC_NoteEditor_Form(note, buttonCell));
+						S.GET<RTC_NoteEditor_Form>().Show(); 
 						return;
 					}
 				}
@@ -806,6 +827,31 @@ namespace RTCV.UI
 
 				buttonCell.Value = string.IsNullOrWhiteSpace(textCell.Value?.ToString()) ? string.Empty : "📝";
 			}
+		}
+
+		private void CbUnitsShareNote_CheckedChanged(object sender, EventArgs e)
+		{
+			//mark the rows as dirty
+			foreach(DataGridViewRow row in dgvBlastGenerator.Rows)
+			{
+				row.Cells["dgvRowDirty"].Value = true;
+			}
+		}
+
+		public bool IsUserEditing()
+		{
+			if (dgvBlastGenerator.IsCurrentCellInEditMode)
+				return true;
+			foreach (var control in allControls)
+			{
+				//We assume focus on a TB or UpDown is edit mode
+				if (control is TextBox || control is NumericUpDown)
+				{
+					if (control.Focused)
+						return true;
+				}
+			}
+			return false;
 		}
 	}
 	class NoteItem : INote

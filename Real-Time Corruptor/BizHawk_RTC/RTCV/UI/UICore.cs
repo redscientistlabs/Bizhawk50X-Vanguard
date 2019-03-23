@@ -106,17 +106,25 @@ namespace RTCV.UI
 
 			f.LostFocus -= NewForm_FocusChanged;
 			f.LostFocus += NewForm_FocusChanged;
+
+			
+			//There's a chance that the form may already be visible by the time this fires
+			if (f.Focused)
+			{
+				UpdateFormFocusStatus(true);
+			}
 		}
 
-		private static void NewForm_FocusChanged(object sender, EventArgs e) => UpdateFormFocusStatus();
-		public static void UpdateFormFocusStatus()
+		private static void NewForm_FocusChanged(object sender, EventArgs e) => UpdateFormFocusStatus(null);
+		public static void UpdateFormFocusStatus(bool? forceSet = null)
 		{
 			if (RTCV.NetCore.AllSpec.UISpec == null)
 				return;
 
 			bool previousState = (bool?)RTCV.NetCore.AllSpec.UISpec[NetcoreCommands.RTC_INFOCUS] ?? false;
-			bool currentState = isAnyRTCFormFocused();
-			if(previousState != currentState)
+			bool currentState = forceSet ?? isAnyRTCFormFocused();
+
+			if (previousState != currentState)
 			{	//This is a non-synced spec update to prevent jittering. Shouldn't have any other noticeable impact
 				RTCV.NetCore.AllSpec.UISpec.Update(NetcoreCommands.RTC_INFOCUS, currentState,true,false);
 			}
@@ -130,16 +138,20 @@ namespace RTCV.UI
 			if (ExternalForm)
 				return false;
 
-			var t = Form.ActiveForm.GetType();
+			var form = Form.ActiveForm;
+			var t = form.GetType();
 
-			bool isAllowedForm = (
+			focus = (
 				typeof(IAutoColorize).IsAssignableFrom(t) ||
 				typeof(CloudDebug).IsAssignableFrom(t) ||
 				typeof(DebugInfo_Form).IsAssignableFrom(t)
-				);
+			);
+
+			bool isAllowedForm = focus;
 
 			return isAllowedForm;
 		}
+
 
 		//All RTC forms
 		public static Form[] AllRtcForms
@@ -161,6 +173,8 @@ namespace RTCV.UI
 		}
 
 		public static volatile bool isClosing = false;
+		private static bool focus;
+
 		public static void CloseAllRtcForms() //This allows every form to get closed to prevent RTC from hanging
 		{
 			if (isClosing)

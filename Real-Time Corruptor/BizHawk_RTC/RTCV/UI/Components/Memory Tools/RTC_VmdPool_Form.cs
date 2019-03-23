@@ -167,7 +167,7 @@ namespace RTCV.UI
 							XmlSerializer xs = new XmlSerializer(typeof(VmdPrototype));
 							VmdPrototype proto = (VmdPrototype) xs.Deserialize(new StringReader(vmdXML));
 
-							var jsonFilename =  Path.Combine(Path.GetDirectoryName(filename), Path.GetFileNameWithoutExtension(filename) + ".json");
+							var jsonFilename =  Path.Combine(Path.GetDirectoryName(filename), Path.GetFileNameWithoutExtension(filename) + ".vmd");
 							using(FileStream _fs = File.Open(jsonFilename, FileMode.Create))
 							{
 								JsonHelper.Serialize(proto, _fs, Newtonsoft.Json.Formatting.Indented);

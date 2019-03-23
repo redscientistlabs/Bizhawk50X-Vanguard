@@ -123,6 +123,7 @@ namespace RTCV.UI
             this.sanitizeDuplicatesToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.rasterizeVMDsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.bakeBlastunitsToVALUEToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.openBlastGeneratorToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             ((System.ComponentModel.ISupportInitialize)(this.dgvBlastEditor)).BeginInit();
             this.panelSidebar.SuspendLayout();
             this.panel1.SuspendLayout();
@@ -316,7 +317,7 @@ namespace RTCV.UI
             this.btnLoadCorrupt.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnLoadCorrupt.Font = new System.Drawing.Font("Segoe UI Symbol", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel);
             this.btnLoadCorrupt.ForeColor = System.Drawing.Color.OrangeRed;
-            this.btnLoadCorrupt.Location = new System.Drawing.Point(14, 359);
+            this.btnLoadCorrupt.Location = new System.Drawing.Point(14, 372);
             this.btnLoadCorrupt.Name = "btnLoadCorrupt";
             this.btnLoadCorrupt.Size = new System.Drawing.Size(135, 25);
             this.btnLoadCorrupt.TabIndex = 14;
@@ -350,7 +351,7 @@ namespace RTCV.UI
             this.btnCorrupt.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnCorrupt.Font = new System.Drawing.Font("Segoe UI Symbol", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel);
             this.btnCorrupt.ForeColor = System.Drawing.Color.OrangeRed;
-            this.btnCorrupt.Location = new System.Drawing.Point(14, 385);
+            this.btnCorrupt.Location = new System.Drawing.Point(14, 398);
             this.btnCorrupt.Name = "btnCorrupt";
             this.btnCorrupt.Size = new System.Drawing.Size(135, 25);
             this.btnCorrupt.TabIndex = 13;
@@ -367,7 +368,7 @@ namespace RTCV.UI
             this.btnSendToStash.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnSendToStash.Font = new System.Drawing.Font("Segoe UI Symbol", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel);
             this.btnSendToStash.ForeColor = System.Drawing.Color.OrangeRed;
-            this.btnSendToStash.Location = new System.Drawing.Point(14, 411);
+            this.btnSendToStash.Location = new System.Drawing.Point(14, 424);
             this.btnSendToStash.Name = "btnSendToStash";
             this.btnSendToStash.Size = new System.Drawing.Size(135, 25);
             this.btnSendToStash.TabIndex = 12;
@@ -1128,7 +1129,8 @@ namespace RTCV.UI
             this.toolsToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.sanitizeDuplicatesToolStripMenuItem,
             this.rasterizeVMDsToolStripMenuItem,
-            this.bakeBlastunitsToVALUEToolStripMenuItem});
+            this.bakeBlastunitsToVALUEToolStripMenuItem,
+            this.openBlastGeneratorToolStripMenuItem});
             this.toolsToolStripMenuItem.Name = "toolsToolStripMenuItem";
             this.toolsToolStripMenuItem.Size = new System.Drawing.Size(48, 20);
             this.toolsToolStripMenuItem.Tag = "";
@@ -1154,6 +1156,13 @@ namespace RTCV.UI
             this.bakeBlastunitsToVALUEToolStripMenuItem.Size = new System.Drawing.Size(252, 22);
             this.bakeBlastunitsToVALUEToolStripMenuItem.Text = "Bake Selected Blastunits to VALUE";
             this.bakeBlastunitsToVALUEToolStripMenuItem.Click += new System.EventHandler(this.bakeBlastunitsToVALUEToolStripMenuItem_Click);
+            // 
+            // openBlastGeneratorToolStripMenuItem
+            // 
+            this.openBlastGeneratorToolStripMenuItem.Name = "openBlastGeneratorToolStripMenuItem";
+            this.openBlastGeneratorToolStripMenuItem.Size = new System.Drawing.Size(252, 22);
+            this.openBlastGeneratorToolStripMenuItem.Text = "Open Blast Generator";
+            this.openBlastGeneratorToolStripMenuItem.Click += new System.EventHandler(this.OpenBlastGeneratorToolStripMenuItem_Click);
             // 
             // RTC_NewBlastEditor_Form
             // 
@@ -1299,5 +1308,6 @@ namespace RTCV.UI
 		private System.Windows.Forms.ToolStripMenuItem bakeBlastunitsToVALUEToolStripMenuItem;
 		private ComboBox cbStoreLimiterSource;
 		private Label label17;
+		private ToolStripMenuItem openBlastGeneratorToolStripMenuItem;
 	}
 }

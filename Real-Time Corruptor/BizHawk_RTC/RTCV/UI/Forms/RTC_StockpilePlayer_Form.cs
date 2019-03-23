@@ -243,8 +243,8 @@ namespace RTCV.UI
 					if (senderGrid.Columns[e.ColumnIndex] is DataGridViewButtonColumn &&
 						e.RowIndex >= 0)
 					{
-						 new RTC_NoteEditor_Form(sk, senderGrid.Rows[e.RowIndex].Cells["Note"]);
-
+						S.SET(new RTC_NoteEditor_Form(sk, senderGrid.Rows[e.RowIndex].Cells["Note"]));
+						S.GET<RTC_NoteEditor_Form>().Show();
 						return;
 					}
 				}

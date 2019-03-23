@@ -27,7 +27,6 @@ namespace RTCV.UI
 				_cell
 			};
 			InitializeComponent();
-			this.Show();
 		}
 
 		public RTC_NoteEditor_Form(INote noteObject, List<DataGridViewCell> _cells)
@@ -37,7 +36,6 @@ namespace RTCV.UI
 			note = noteObject;
 			cells = _cells;
 			InitializeComponent();
-			this.Show();
 		}
 
 

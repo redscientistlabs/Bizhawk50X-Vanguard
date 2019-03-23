@@ -692,29 +692,9 @@ namespace Vanguard
 		{
 			try
 			{
-				Config bc;
-				Config sc;
+				Config bc = BizHawk.Client.Common.ConfigService.Load<Config>(backupConfigPath);
+				Config sc = BizHawk.Client.Common.ConfigService.Load<Config>(stockpileConfigPath);
 
-				FileInfo fileBc = new FileInfo(backupConfigPath);
-				FileInfo fileSc = new FileInfo(stockpileConfigPath);
-
-				using (StreamReader reader = fileBc.OpenText())
-				{
-					JsonSerializer serializer = new JsonSerializer();
-
-					JsonTextReader r = new JsonTextReader(reader);
-					bc = (Config)serializer.Deserialize(r, typeof(Config));
-				}
-
-				using (StreamReader reader = fileSc.OpenText())
-				{
-					JsonSerializer serializer = new JsonSerializer();
-					JsonTextReader r = new JsonTextReader(reader);
-					sc = (Config)serializer.Deserialize(r, typeof(Config));
-				}
-
-				//bc = (JObject)JsonConvert.DeserializeObject(backupConfig);
-				//sc = (JObject)JsonConvert.DeserializeObject(stockpileConfig);
 
 				sc.HotkeyBindings = bc.HotkeyBindings;
 				sc.AllTrollers = bc.AllTrollers;
@@ -724,6 +704,7 @@ namespace Vanguard
 				if (File.Exists(stockpileConfigPath))
 					File.Delete(stockpileConfigPath);
 
+				FileInfo fileSc = new FileInfo(stockpileConfigPath);
 				using (StreamWriter writer = fileSc.CreateText())
 				{
 					JsonSerializer serializer = new JsonSerializer();
@@ -745,28 +726,10 @@ namespace Vanguard
 		{
 			try
 			{
-				Config bc;
-				Config sc;
+				Config bc = BizHawk.Client.Common.ConfigService.Load<Config>(importConfigPath);
+				Config sc = BizHawk.Client.Common.ConfigService.Load<Config>(stockpileConfigPath);
 
-				FileInfo fileBc = new FileInfo(importConfigPath);
 				FileInfo fileSc = new FileInfo(stockpileConfigPath);
-
-				JsonSerializer serializer = new JsonSerializer();
-
-				using (StreamReader reader = fileBc.OpenText())
-				{
-					JsonTextReader r = new JsonTextReader(reader);
-					bc = (Config)serializer.Deserialize(r, typeof(Config));
-				}
-
-				using (StreamReader reader = fileSc.OpenText())
-				{
-					JsonTextReader r = new JsonTextReader(reader);
-					sc = (Config)serializer.Deserialize(r, typeof(Config));
-				}
-
-				//bc = (JObject)JsonConvert.DeserializeObject(backupConfig);
-				//sc = (JObject)JsonConvert.DeserializeObject(stockpileConfig);
 
 				sc.HotkeyBindings = bc.HotkeyBindings;
 				sc.AllTrollers = bc.AllTrollers;
@@ -779,6 +742,7 @@ namespace Vanguard
 
 				using (StreamWriter writer = fileSc.CreateText())
 				{
+					JsonSerializer serializer = new JsonSerializer();
 					JsonTextWriter w = new JsonTextWriter(writer) { Formatting = Formatting.Indented };
 					serializer.Serialize(w, sc);
 				}

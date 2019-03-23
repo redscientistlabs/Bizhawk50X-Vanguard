@@ -40,10 +40,19 @@ namespace RTCV.CorruptCore
 		{
 			try
 			{
-				if (!MemoryDomains.MemoryInterfaces.ContainsKey(domain))
-					return null;
-
-				MemoryInterface mi = MemoryDomains.GetInterface(domain);
+				MemoryInterface mi = null;
+				if (domain.Contains("[V]"))
+				{
+					if (!MemoryDomains.VmdPool.ContainsKey(domain))
+						return null;
+					mi = MemoryDomains.VmdPool[domain];
+				}
+				else
+				{
+					if (!MemoryDomains.MemoryInterfaces.ContainsKey(domain))
+						return null;
+					mi = MemoryDomains.MemoryInterfaces[domain];
+				}
 
 				byte[] value = new byte[precision];
 				byte[] _temp = new byte[precision];

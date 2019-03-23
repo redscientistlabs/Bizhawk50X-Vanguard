@@ -64,6 +64,7 @@ namespace RTCV.UI
 		private string searchValue, searchColumn;
 		public List<String> VisibleColumns;
 		private string CurrentBlastLayerFile = "";
+		
 
 		private int searchOffset = 0;
 		private IEnumerable<BlastUnit> searchEnumerable;
@@ -165,7 +166,29 @@ namespace RTCV.UI
 		private void RTC_NewBlastEditorForm_Load(object sender, EventArgs e)
 		{
 			UICore.SetRTCColor(UICore.GeneralColor, this);
-			domains = MemoryDomains.MemoryInterfaces?.Keys?.Concat(MemoryDomains.VmdPool.Values.Select(it => it.ToString())).ToArray();;
+			domains = MemoryDomains.MemoryInterfaces?.Keys?.Concat(MemoryDomains.VmdPool.Values.Select(it => it.ToString())).ToArray();
+			registerHotkeyBlacklistEvents(this);
+		}
+
+		private void registerHotkeyBlacklistEvents(Control container)
+		{
+
+			var allTextControls = new List<Control>();
+			foreach (Control c in container.Controls)
+			{
+				registerHotkeyBlacklistEvents(c);
+				if (c is NumericUpDown || c is TextBox)
+					allTextControls.Add(c);
+			}
+
+			foreach (var c in allTextControls)
+			{
+				c.GotFocus += (o, e) => UICore.UpdateFormFocusStatus(false);
+				c.LostFocus += (o, e) => UICore.UpdateFormFocusStatus(true);
+			}
+
+			dgvBlastEditor.CellBeginEdit += (o, e) => UICore.UpdateFormFocusStatus(false);
+			dgvBlastEditor.CellEndEdit += (o,e) => UICore.UpdateFormFocusStatus(true);
 		}
 
 		private void dgvBlastEditor_CellMouseClick(object sender, DataGridViewCellMouseEventArgs e)
@@ -177,7 +200,10 @@ namespace RTCV.UI
 				{
 					BlastUnit bu = dgvBlastEditor.Rows[e.RowIndex].DataBoundItem as BlastUnit;
 					if (bu != null)
-						new RTC_NoteEditor_Form(bu, dgvBlastEditor[e.ColumnIndex, e.RowIndex]);
+					{
+						S.SET(new RTC_NoteEditor_Form(bu, dgvBlastEditor[e.ColumnIndex, e.RowIndex]));
+						S.GET<RTC_NoteEditor_Form>().Show();
+					}
 				}
 			}
 
@@ -684,6 +710,7 @@ namespace RTCV.UI
 			DataGridViewNumericUpDownColumn address = (DataGridViewNumericUpDownColumn)CreateColumn(buProperty.Address.ToString(), buProperty.Address.ToString(), "Address", new DataGridViewNumericUpDownColumn());
 			address.Hexadecimal = true;
 			address.SortMode = DataGridViewColumnSortMode.Automatic;
+			address.Increment = 1;
 			dgvBlastEditor.Columns.Add(address);
 
 
@@ -761,6 +788,7 @@ namespace RTCV.UI
 			DataGridViewNumericUpDownColumn sourceAddress = (DataGridViewNumericUpDownColumn)CreateColumn(buProperty.SourceAddress.ToString(), buProperty.SourceAddress.ToString(), "Source Address", new DataGridViewNumericUpDownColumn());
 			sourceAddress.Hexadecimal = true;
 			sourceAddress.SortMode = DataGridViewColumnSortMode.Automatic;
+			sourceAddress.Increment = 1;
 			dgvBlastEditor.Columns.Add(sourceAddress);
 
 
@@ -1112,7 +1140,9 @@ namespace RTCV.UI
 						cellList.Add(row.Cells[buProperty.Note.ToString()]);
 					}					
 				}
-				new RTC_NoteEditor_Form(temp, cellList);
+
+				S.SET(new RTC_NoteEditor_Form(temp, cellList));
+				S.GET<RTC_NoteEditor_Form>().Show();
 			}
 		}
 
@@ -1394,8 +1424,6 @@ namespace RTCV.UI
 		{
 			BlastLayer temp = BlastTools.LoadBlastLayerFromFile();
 			ImportBlastLayer(temp);
-			RefreshAllNoteIcons();
-			dgvBlastEditor.Refresh();
 		}
 
 		public void ImportBlastLayer(BlastLayer bl)
@@ -1406,6 +1434,7 @@ namespace RTCV.UI
 					bs.Add(bu);
 			}
 			dgvBlastEditor.ResetBindings();
+			RefreshAllNoteIcons();
 			dgvBlastEditor.Refresh();
 		}
 
@@ -1592,9 +1621,21 @@ namespace RTCV.UI
 			System.Diagnostics.Process.Start(sInfo);
 		}
 
+		private void OpenBlastGeneratorToolStripMenuItem_Click(object sender, EventArgs e)
+		{
+			var bgForm = S.GET<RTC_BlastGenerator_Form>();
+
+			if (S.GET<RTC_BlastGenerator_Form>() != null)
+				S.GET<RTC_BlastGenerator_Form>().Close();
+			S.SET(new RTC_BlastGenerator_Form());
+			bgForm = S.GET<RTC_BlastGenerator_Form>();
+			bgForm.LoadStashkey(currentSK);
+		}
+
 		private void UpdateLayerSize()
 		{
 			lbBlastLayerSize.Text = "Size: " + currentSK.BlastLayer.Layer.Count;
 		}
+
 	}
 }

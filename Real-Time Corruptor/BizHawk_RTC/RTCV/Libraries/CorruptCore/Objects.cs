@@ -522,11 +522,11 @@ namespace RTCV.CorruptCore
 			else
 				File.Copy((CorruptCore.bizhawkDir + Path.DirectorySeparatorChar + "config.ini"), (CorruptCore.bizhawkDir + Path.DirectorySeparatorChar + "backup_config.ini"));
 
-			Extract(Filename, Path.DirectorySeparatorChar + "WORKING\\TEMP", "stockpile.json");
+			Extract(Filename, "WORKING" + Path.DirectorySeparatorChar + "TEMP", "stockpile.json");
 
 			if (File.Exists(CorruptCore.bizhawkDir + Path.DirectorySeparatorChar + "stockpile_config.ini"))
 				File.Delete(CorruptCore.bizhawkDir + Path.DirectorySeparatorChar + "stockpile_config.ini");
-			File.Copy((CorruptCore.workingDir + Path.DirectorySeparatorChar + "SKS\\config.ini"), (CorruptCore.bizhawkDir + Path.DirectorySeparatorChar + "stockpile_config.ini"));
+			File.Copy((CorruptCore.workingDir + Path.DirectorySeparatorChar + "TEMP\\config.ini"), (CorruptCore.bizhawkDir + Path.DirectorySeparatorChar + "stockpile_config.ini"));
 
 			LocalNetCoreRouter.Route(NetcoreCommands.VANGUARD, NetcoreCommands.REMOTE_MERGECONFIG);
 
