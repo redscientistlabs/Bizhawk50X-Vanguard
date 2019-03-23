@@ -58,6 +58,7 @@ namespace RTCV.UI
 		private StashKey sk = null;
 		private ContextMenuStrip cms = new ContextMenuStrip();
 		private bool initialized = false;
+		private List<Control> allControls;
 
 		private static Dictionary<string, MemoryInterface> domainToMiDico = new Dictionary<string, MemoryInterface>();
 		private string[] domains = MemoryDomains.MemoryInterfaces?.Keys?.Concat(MemoryDomains.VmdPool.Values.Select(it => it.ToString())).ToArray();
@@ -76,11 +77,18 @@ namespace RTCV.UI
 			dgvBlastGenerator.CellValueChanged += dgvBlastGenerator_CellValueChanged;
 			dgvBlastGenerator.CellClick += dgvBlastGenerator_CellClick;
 
-
-
 			UICore.SetRTCColor(UICore.GeneralColor, this);
+			getAllControls(this);
 		}
-
+		private void getAllControls(Control container)
+		{
+			allControls = new List<Control>();
+			foreach (Control c in container.Controls)
+			{
+				getAllControls(c);
+				allControls.Add(c);
+			}
+		}
 		public void LoadNoStashKey()
 		{
 			RefreshDomains();
@@ -802,8 +810,8 @@ namespace RTCV.UI
 
 						NoteItem note = new NoteItem(textCell.Value == null ? "" : textCell.Value.ToString());
 						textCell.Value = note;
-
-						new RTC_NoteEditor_Form(note, buttonCell);
+						S.SET(new RTC_NoteEditor_Form(note, buttonCell));
+						S.GET<RTC_NoteEditor_Form>().Show(); 
 						return;
 					}
 				}
@@ -828,6 +836,22 @@ namespace RTCV.UI
 			{
 				row.Cells["dgvRowDirty"].Value = true;
 			}
+		}
+
+		public bool IsUserEditing()
+		{
+			if (dgvBlastGenerator.IsCurrentCellInEditMode)
+				return true;
+			foreach (var control in allControls)
+			{
+				//We assume focus on a TB or UpDown is edit mode
+				if (control is TextBox || control is NumericUpDown)
+				{
+					if (control.Focused)
+						return true;
+				}
+			}
+			return false;
 		}
 	}
 	class NoteItem : INote
