@@ -195,7 +195,9 @@
             this.cbValueList.Font = new System.Drawing.Font("Segoe UI", 8F);
             this.cbValueList.ForeColor = System.Drawing.Color.White;
             this.cbValueList.FormattingEnabled = true;
+            this.cbValueList.IntegralHeight = false;
             this.cbValueList.Location = new System.Drawing.Point(9, 24);
+            this.cbValueList.MaxDropDownItems = 15;
             this.cbValueList.Name = "cbValueList";
             this.cbValueList.Size = new System.Drawing.Size(110, 21);
             this.cbValueList.TabIndex = 87;
@@ -509,7 +511,9 @@
             this.cbLimiterList.Font = new System.Drawing.Font("Segoe UI", 8F);
             this.cbLimiterList.ForeColor = System.Drawing.Color.White;
             this.cbLimiterList.FormattingEnabled = true;
+            this.cbLimiterList.IntegralHeight = false;
             this.cbLimiterList.Location = new System.Drawing.Point(9, 15);
+            this.cbLimiterList.MaxDropDownItems = 15;
             this.cbLimiterList.Name = "cbLimiterList";
             this.cbLimiterList.Size = new System.Drawing.Size(110, 21);
             this.cbLimiterList.TabIndex = 87;
@@ -862,6 +866,7 @@
             this.cbSelectedTemplate.Font = new System.Drawing.Font("Segoe UI", 8F);
             this.cbSelectedTemplate.ForeColor = System.Drawing.Color.White;
             this.cbSelectedTemplate.FormattingEnabled = true;
+            this.cbSelectedTemplate.IntegralHeight = false;
             this.cbSelectedTemplate.Location = new System.Drawing.Point(12, 20);
             this.cbSelectedTemplate.Name = "cbSelectedTemplate";
             this.cbSelectedTemplate.Size = new System.Drawing.Size(211, 21);

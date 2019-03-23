@@ -703,7 +703,9 @@ namespace RTCV.UI
             // cbLimiterList
             // 
             this.cbLimiterList.FormattingEnabled = true;
+            this.cbLimiterList.IntegralHeight = false;
             this.cbLimiterList.Location = new System.Drawing.Point(3, 19);
+            this.cbLimiterList.MaxDropDownItems = 15;
             this.cbLimiterList.Name = "cbLimiterList";
             this.cbLimiterList.Size = new System.Drawing.Size(92, 21);
             this.cbLimiterList.TabIndex = 8;

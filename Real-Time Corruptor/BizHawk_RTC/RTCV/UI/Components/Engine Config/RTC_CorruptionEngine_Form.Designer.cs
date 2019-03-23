@@ -326,7 +326,9 @@
             this.cbVectorValueList.Font = new System.Drawing.Font("Segoe UI", 8F);
             this.cbVectorValueList.ForeColor = System.Drawing.Color.White;
             this.cbVectorValueList.FormattingEnabled = true;
+            this.cbVectorValueList.IntegralHeight = false;
             this.cbVectorValueList.Location = new System.Drawing.Point(7, 18);
+            this.cbVectorValueList.MaxDropDownItems = 15;
             this.cbVectorValueList.Name = "cbVectorValueList";
             this.cbVectorValueList.Size = new System.Drawing.Size(152, 21);
             this.cbVectorValueList.TabIndex = 81;
@@ -380,7 +382,9 @@
             this.cbVectorLimiterList.Font = new System.Drawing.Font("Segoe UI", 8F);
             this.cbVectorLimiterList.ForeColor = System.Drawing.Color.White;
             this.cbVectorLimiterList.FormattingEnabled = true;
+            this.cbVectorLimiterList.IntegralHeight = false;
             this.cbVectorLimiterList.Location = new System.Drawing.Point(7, 18);
+            this.cbVectorLimiterList.MaxDropDownItems = 15;
             this.cbVectorLimiterList.Name = "cbVectorLimiterList";
             this.cbVectorLimiterList.Size = new System.Drawing.Size(152, 21);
             this.cbVectorLimiterList.TabIndex = 78;

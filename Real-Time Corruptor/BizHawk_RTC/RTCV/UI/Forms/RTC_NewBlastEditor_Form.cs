@@ -758,6 +758,7 @@ namespace RTCV.UI
 			limiterHash.DataSource = CorruptCore.CorruptCore.LimiterListBindingSource;
 			limiterHash.DisplayMember = "Name";
 			limiterHash.ValueMember = "Value";
+			limiterHash.MaxDropDownItems = 15;
 			dgvBlastEditor.Columns.Add(limiterHash);
 
 			DataGridViewComboBoxColumn storeLimiterSource = CreateColumn(buProperty.StoreLimiterSource.ToString(), buProperty.StoreLimiterSource.ToString(), "Store Limiter Source", new DataGridViewComboBoxColumn()) as DataGridViewComboBoxColumn;
