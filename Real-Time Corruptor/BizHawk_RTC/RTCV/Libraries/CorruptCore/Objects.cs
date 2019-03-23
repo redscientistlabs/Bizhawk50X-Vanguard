@@ -443,8 +443,8 @@ namespace RTCV.CorruptCore
 				if (!File.Exists(CorruptCore.rtcDir + Path.DirectorySeparatorChar + $"{folder}\\{masterFile}"))
 				{
 					MessageBox.Show("The file could not be read properly");
-
 					EmptyFolder(folder);
+					return false;
 				}
 
 				return true;
@@ -1155,7 +1155,7 @@ namespace RTCV.CorruptCore
 
 
 		//Don't serialize this
-		[NonSerialized, XmlIgnore, JsonIgnore, Ceras.Ignore]
+		[NonSerialized, XmlIgnore, JsonIgnore, Ceras.Exclude]
 		public BlastUnitWorkingData Working;
 
 

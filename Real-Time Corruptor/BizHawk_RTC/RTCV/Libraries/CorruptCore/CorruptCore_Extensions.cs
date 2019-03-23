@@ -895,9 +895,15 @@ namespace RTCV.CorruptCore
 
 			var config = new SerializerConfig();
 			config.DefaultTargets = TargetMember.All;
-			config.Advanced.ShouldSerializeMember = m => SerializationOverride.ForceInclude;
+			config.OnConfigNewType = t =>
+			{
+				foreach (var m in t.Members)
+				{
+					m.SerializationOverride = SerializationOverride.ForceInclude;
+				}
+			};
+			//config.Advanced. = m => SerializationOverride.ForceInclude;
 			var s = new CerasSerializer(config);
-
 
 			return s.Deserialize<T>(s.Serialize(source));
 		}

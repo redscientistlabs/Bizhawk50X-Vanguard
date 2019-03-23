@@ -238,10 +238,8 @@ namespace RTCV.CorruptCore
 				return false;
 			}
 
-			HashSet<byte[]> hs = null;
-
 			//If the limiter dictionary contains the hash, check if the hashset contains the byte sequence
-			if (Hash2LimiterDico.TryGetValue(hash, out hs))
+			if (Hash2LimiterDico.TryGetValue(hash, out HashSet<byte[]> hs))
 			{
 				return hs.Contains(bytes);
 			}

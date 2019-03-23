@@ -579,7 +579,7 @@ namespace RTCV.CorruptCore
 	[Ceras.MemberConfig(TargetMember.All)]
 	public sealed class MemoryDomainProxy : MemoryInterface
 	{
-		[NonSerialized , Ceras.Ignore]
+		[NonSerialized , Ceras.Exclude]
 		public IMemoryDomain MD = null;
 		public override long Size { get; set; }
 		public MemoryDomainProxy(IMemoryDomain _md)
