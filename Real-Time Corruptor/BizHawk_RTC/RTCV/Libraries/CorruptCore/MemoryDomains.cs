@@ -548,7 +548,7 @@ namespace RTCV.CorruptCore
 		{
 			if (address < this.Proto.Padding)
 				return (byte)0;
-			if (address > this.Size)
+			if (address > this.Size - 1)
 				return 0;
 			string targetDomain = GetRealDomain(address);
 			long targetAddress = GetRealAddress(address);
@@ -562,7 +562,7 @@ namespace RTCV.CorruptCore
 		{
 			if (address < this.Proto.Padding)
 				return;
-			if (address > this.Size)
+			if (address > this.Size - 1)
 				return;
 
 			string targetDomain = GetRealDomain(address);
@@ -622,18 +622,17 @@ namespace RTCV.CorruptCore
 
 		public override byte PeekByte(long address)
 		{
-		//	if (MD == null)
-			//	return (byte)LocalNetCoreRouter.Route(NetcoreCommands.VANGUARD, NetcoreCommands.PEEKBYTE, new object[] { Name, address }, true);
-		//	else
-				return MD.PeekByte(address);
+			if (address > Size - 1)
+				return 0;
+			return MD.PeekByte(address);
 		}
 
 		public override void PokeByte(long address, byte value)
 		{
-		//	if (MD == null)
-		//		LocalNetCoreRouter.Route(NetcoreCommands.VANGUARD, NetcoreCommands.POKEBYTE, new object[] { Name, address }, true);
-		//	else
-				MD.PokeByte(address, value);
+			if (address > Size - 1)
+				return;
+
+			MD.PokeByte(address, value);
 		}
 	}
 
