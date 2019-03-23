@@ -106,7 +106,7 @@ namespace Vanguard
 						{
 							SyncObjectSingleton.FormExecute((o, ea) =>
 							{
-								Vanguard.Hooks.CLOSE_GAME();
+								Vanguard.Hooks.CLOSE_GAME(true);
 							});
 						}
 						break;

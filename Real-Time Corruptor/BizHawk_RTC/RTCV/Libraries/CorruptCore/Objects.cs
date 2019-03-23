@@ -58,6 +58,19 @@ namespace RTCV.CorruptCore
 				return false;
 			}
 
+			if ((bool?)AllSpec.VanguardSpec[VSPEC.CORE_DISKBASED] ?? true)
+			{
+				var dr = MessageBox.Show("The currently loaded game is disk based and needs to be closed before saving. Press OK to close the game and continue saving.", "Saving requires closing game", MessageBoxButtons.OKCancel);
+				if (dr == DialogResult.OK)
+				{
+					LocalNetCoreRouter.Route(NetcoreCommands.VANGUARD, NetcoreCommands.REMOTE_CLOSEGAME, true);
+				}
+				else
+				{
+					return false;
+				}
+			}
+
 			if (!isQuickSave)
 			{
 				SaveFileDialog saveFileDialog1 = new SaveFileDialog
@@ -283,6 +296,20 @@ namespace RTCV.CorruptCore
 		//Todo - get this out of the objects
 		public static bool Load(DataGridView dgvStockpile, string Filename = null)
 		{
+
+			if ((bool?)AllSpec.VanguardSpec[VSPEC.CORE_DISKBASED] ?? true)
+			{
+				var dr = MessageBox.Show("The currently loaded game is disk based and needs to be closed before loading. Press OK to close the game and continue loading.", "Loading requires closing game", MessageBoxButtons.OKCancel);
+				if (dr == DialogResult.OK)
+				{
+					LocalNetCoreRouter.Route(NetcoreCommands.VANGUARD, NetcoreCommands.REMOTE_CLOSEGAME, true);
+				}
+				else
+				{
+					return false;
+				}
+			}
+
 			if (Filename == null)
 			{
 				OpenFileDialog ofd = new OpenFileDialog

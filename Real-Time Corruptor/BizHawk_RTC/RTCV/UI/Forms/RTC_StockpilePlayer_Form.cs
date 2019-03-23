@@ -169,6 +169,7 @@ namespace RTCV.UI
 				try
 				{
 					DontLoadSelectedStockpile = true;
+					LocalNetCoreRouter.Route(NetcoreCommands.VANGUARD, NetcoreCommands.REMOTE_CLOSEGAME, true);
 
 					if (Stockpile.Load(dgvStockpile))
 					{

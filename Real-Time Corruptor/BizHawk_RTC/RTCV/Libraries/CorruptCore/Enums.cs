@@ -234,6 +234,8 @@
 		public static readonly string SYNCOBJECT = "SYNCOBJECT";
 		public static readonly string MEMORYDOMAINS_INTERFACES = "MEMORYDOMAINS_INTERFACES";
 		public static readonly string MEMORYDOMAINS_BLACKLISTEDDOMAINS = "MEMORYDOMAINS_BLACKLISTEDDOMAINS";
+		public static readonly string CORE_DISKBASED = "CORE_DISKBASED";
+		
 	}
 
 	public enum UISPEC

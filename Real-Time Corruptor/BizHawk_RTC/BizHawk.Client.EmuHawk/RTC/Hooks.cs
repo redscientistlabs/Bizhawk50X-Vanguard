@@ -13,6 +13,7 @@ using RTCV.CorruptCore;
 using RTCV.NetCore;
 using static RTCV.NetCore.NetcoreCommands;
 using System.Data;
+using BizHawk.Emulation.Common.IEmulatorExtensions;
 
 namespace Vanguard
 {
@@ -242,6 +243,7 @@ namespace Vanguard
 				gameDone[VSPEC.OPENROMFILENAME] = GlobalWin.MainForm.CurrentlyOpenRom;
 				gameDone[VSPEC.MEMORYDOMAINS_BLACKLISTEDDOMAINS] = VanguardCore.GetBlacklistedDomains(BIZHAWK_GET_CURRENTLYLOADEDSYSTEMNAME().ToUpper());
 				gameDone[VSPEC.MEMORYDOMAINS_INTERFACES] = GetInterfaces();
+				gameDone[VSPEC.CORE_DISKBASED] = isCurrentCoreDiskBased();
 				AllSpec.VanguardSpec.Update(gameDone);
 
 				//This is local. If the domains changed it propgates over netcore
@@ -964,6 +966,11 @@ namespace Vanguard
 				return new MemoryDomainProxy[] { };
 			}
 
+		}
+
+		private static bool isCurrentCoreDiskBased()
+		{
+			return Global.Emulator.HasDriveLight() && Global.Emulator.AsDriveLight().DriveLightEnabled;
 		}
 
 
