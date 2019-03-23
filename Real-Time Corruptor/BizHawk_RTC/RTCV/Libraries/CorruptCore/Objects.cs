@@ -335,7 +335,8 @@ namespace RTCV.CorruptCore
 
 
 			//Extract the stockpile
-			Extract(Filename, Path.DirectorySeparatorChar + "WORKING\\SKS", "stockpile.json");
+			if (!Extract(Filename, Path.DirectorySeparatorChar + "WORKING\\SKS", "stockpile.json"))
+				return false;
 
 			Stockpile sks;
 			//Read in the stockpile
@@ -469,7 +470,7 @@ namespace RTCV.CorruptCore
 
 				if (!File.Exists(CorruptCore.rtcDir + Path.DirectorySeparatorChar + $"{folder}\\{masterFile}"))
 				{
-					MessageBox.Show("The file could not be read properly");
+					MessageBox.Show("The file could not be read properly\n\n");
 					EmptyFolder(folder);
 					return false;
 				}
@@ -479,7 +480,7 @@ namespace RTCV.CorruptCore
 			catch (Exception e)
 			{
 				//If it errors out, empty the folder
-				MessageBox.Show("The file could not be read properly" + e);
+				MessageBox.Show("The file could not be read properly\n\n" + e);
 				EmptyFolder(folder);
 				return false;
 			}
@@ -549,7 +550,8 @@ namespace RTCV.CorruptCore
 			else
 				File.Copy((CorruptCore.bizhawkDir + Path.DirectorySeparatorChar + "config.ini"), (CorruptCore.bizhawkDir + Path.DirectorySeparatorChar + "backup_config.ini"));
 
-			Extract(Filename, "WORKING" + Path.DirectorySeparatorChar + "TEMP", "stockpile.json");
+			if (!Extract(Filename, "WORKING" + Path.DirectorySeparatorChar + "TEMP", "stockpile.json"))
+				return;
 
 			if (File.Exists(CorruptCore.bizhawkDir + Path.DirectorySeparatorChar + "stockpile_config.ini"))
 				File.Delete(CorruptCore.bizhawkDir + Path.DirectorySeparatorChar + "stockpile_config.ini");
@@ -805,7 +807,7 @@ namespace RTCV.CorruptCore
 				knownListKeys.Add(bu.LimiterListHash);
 
 				Filtering.Hash2NameDico.TryGetValue(bu.LimiterListHash, out string name);
-				this.KnownLists[bu.LimiterListHash] = name ?? ("UNKNOWN_" + Filtering.StockpileListCount++);
+				this.KnownLists[bu.LimiterListHash] = Path.GetFileNameWithoutExtension(name) ?? ("UNKNOWN_" + Filtering.StockpileListCount++);
 			}
 
 		}

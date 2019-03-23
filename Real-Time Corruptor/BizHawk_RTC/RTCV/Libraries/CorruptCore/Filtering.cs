@@ -50,7 +50,10 @@ namespace RTCV.CorruptCore
 			//Get the knownlists and add dummy entries for them
 			foreach (var sk in sks.StashKeys)
 			{
-				allKnownLists = allKnownLists.Concat(sk.KnownLists).ToDictionary(x => x.Key, x => x.Value);
+				foreach (var t in sk.KnownLists)
+				{
+					allKnownLists[t.Key] = t.Value;
+				}
 			}
 
 			//We don't have names for these lists so just add them with a generic name if they're not in the knownlists
