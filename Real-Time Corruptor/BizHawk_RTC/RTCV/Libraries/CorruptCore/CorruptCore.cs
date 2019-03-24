@@ -19,7 +19,7 @@ namespace RTCV.CorruptCore
 	public static class CorruptCore
 	{
 		//General RTC Values
-		public static string RtcVersion = "3.44a";
+		public static string RtcVersion = "3.45a";
 
 		public static Random RND = new Random();
 		public static bool Attached = false;
@@ -264,7 +264,7 @@ namespace RTCV.CorruptCore
 				var partial = new PartialSpec("RTCSpec");
 
 
-				partial[RTCSPEC.CORE_ALLOWCROSSCORECORRUPTION.ToString()] = CorruptionEngine.NIGHTMARE;
+
 				partial[RTCSPEC.CORE_SELECTEDENGINE.ToString()] = CorruptionEngine.NIGHTMARE;
 
 				partial[RTCSPEC.CORE_CURRENTPRECISION.ToString()] = 1;
@@ -280,6 +280,10 @@ namespace RTCV.CorruptCore
 				partial[RTCSPEC.CORE_SHOWCONSOLE.ToString()] = false;
 
 
+				if (NetCore.Params.IsParamSet("ALLOW_CROSS_CORE_CORRUPTION"))
+					partial[RTCSPEC.CORE_ALLOWCROSSCORECORRUPTION.ToString()] = (NetCore.Params.ReadParam("ALLOW_CROSS_CORE_CORRUPTION").ToUpper() == "TRUE");
+				else
+					partial[RTCSPEC.CORE_ALLOWCROSSCORECORRUPTION.ToString()] = false;
 
 				if (NetCore.Params.IsParamSet("REROLL_SOURCEADDRESS"))
 					partial[RTCSPEC.CORE_REROLLSOURCEADDRESS.ToString()] = (NetCore.Params.ReadParam("REROLL_SOURCEADDRESS").ToUpper() == "TRUE");

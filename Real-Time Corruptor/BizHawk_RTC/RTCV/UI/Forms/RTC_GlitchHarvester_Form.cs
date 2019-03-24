@@ -406,12 +406,19 @@ namespace RTCV.UI
 				}
 				else if (rbInject.Checked)
 				{
+					if (StockpileManager_UISide.CurrentStashkey == null)
+						throw new CustomException("CurrentStashkey in inject was somehow null! Report this to the devs and tell them how you caused this.", Environment.StackTrace);
+
 					DontLoadSelectedStash = true;
+
 					IsCorruptionApplied = StockpileManager_UISide.InjectFromStashkey(StockpileManager_UISide.CurrentStashkey, loadBeforeOperation);
 					RefreshStashHistorySelectLast();
 				}
 				else if (rbOriginal.Checked)
 				{
+					if (StockpileManager_UISide.CurrentStashkey == null)
+						throw new CustomException("CurrentStashkey in original was somehow null! Report this to the devs and tell them how you caused this.", Environment.StackTrace);
+
 					DontLoadSelectedStash = true;
 					IsCorruptionApplied = StockpileManager_UISide.OriginalFromStashkey(StockpileManager_UISide.CurrentStashkey);
 				}
