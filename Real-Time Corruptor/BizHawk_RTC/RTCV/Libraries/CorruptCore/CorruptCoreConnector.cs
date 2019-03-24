@@ -118,11 +118,10 @@ namespace RTCV.CorruptCore
 				case GENERATEBLASTLAYER:
 				{
 					var val = advancedMessage.objectValue as object[];
-					string[] domains = val[0] as string[];
-					StashKey sk = val[1] as StashKey;
-					bool loadBeforeCorrupt = (bool)val[2];
-					bool applyBlastLayer = (bool)val[3];
-					bool backup = (bool)val[4];
+					StashKey sk = val[0] as StashKey;
+					bool loadBeforeCorrupt = (bool)val[1];
+					bool applyBlastLayer = (bool)val[2];
+					bool backup = (bool)val[3];
 
 					BlastLayer bl = null;
 					SyncObjectSingleton.FormExecute((o, ea) =>
@@ -131,6 +130,8 @@ namespace RTCV.CorruptCore
 						{
 							StockpileManager_EmuSide.LoadState_NET(sk, true, false);
 						}
+						//We pull the domains here because if the syncsettings changed, there's a chance the domains changed
+						string[] domains = (string[])RTCV.NetCore.AllSpec.UISpec["SELECTEDDOMAINS"];
 						bl = CorruptCore.GenerateBlastLayer(domains);
 						if(applyBlastLayer)
 							bl?.Apply(backup);

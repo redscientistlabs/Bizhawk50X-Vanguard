@@ -108,7 +108,6 @@ namespace RTCV.CorruptCore
 			BlastLayer bl = LocalNetCoreRouter.QueryRoute<BlastLayer>(NetcoreCommands.CORRUPTCORE, NetcoreCommands.GENERATEBLASTLAYER,
 				new object[]
 				{
-					(string[])RTCV.NetCore.AllSpec.UISpec["SELECTEDDOMAINS"],
 					CurrentStashkey,
 					_loadBeforeOperation,
 					true,
