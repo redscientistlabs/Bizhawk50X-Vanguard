@@ -213,6 +213,7 @@ namespace RTCV.CorruptCore
 		{
 			try { 
 			PartialSpec rtcSpecTemplate = new PartialSpec("RTCSpec");
+			rtcSpecTemplate["RTCVERSION"] = RtcVersion;
 
 			//Engine Settings
 			rtcSpecTemplate.Insert(CorruptCore.getDefaultPartial());
@@ -667,10 +668,10 @@ namespace RTCV.CorruptCore
 
 					if (MemoryDomains.GetInterface(Domain) == null)
 					{
-						additionalInfo = "Unable to get an interface to the selected memory domain! \n,Try clicking the Auto-Select Domains button to refresh the domains!\n\n";
+						additionalInfo = "Unable to get an interface to the selected memory domain! \nTry clicking the Auto-Select Domains button to refresh the domains!\n\n";
 					}
 
-					throw new CustomException(ex.Message, additionalInfo + ex.StackTrace);
+					throw new CustomException(ex.Message, additionalInfo + ex.StackTrace + ex.InnerException);
 
 				}
 			}

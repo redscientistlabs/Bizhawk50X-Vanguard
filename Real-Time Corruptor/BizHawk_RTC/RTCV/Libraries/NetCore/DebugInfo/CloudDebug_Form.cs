@@ -92,13 +92,22 @@ namespace RTCV.NetCore
 					File.Delete(tempzipfile);
 
 
-				//Exporting Message
-				string messagefile = tempdebugdir + "\\MESSAGE.TXT";
-				File.WriteAllText(messagefile, ex.Message);
-
 				//Exporting Stacktrace
 				string stacktracefile = tempdebugdir + "\\STACKTRACE.TXT";
-				File.WriteAllText(stacktracefile, ex.StackTrace);
+				File.WriteAllText(stacktracefile, ex.Message + "\n" + ex.StackTrace);
+
+				//Exporting Inner Exception
+				string innerexceptionfile = tempdebugdir + "\\INNEREXCEPTION.TXT";
+				File.WriteAllText(innerexceptionfile, ex.Message + "\n" + ex.InnerException);
+
+				//Exporting data
+				string data = tempdebugdir + "\\DATA.TXT";
+				StringBuilder sb = new StringBuilder();
+				foreach (var key in ex.Data.Keys)
+				{
+					sb.AppendLine(key + " : " + ex.Data[key]);
+				}
+				File.WriteAllText(data, sb.ToString());
 
 				//Exporting Specs from RTC's perspective
 				string rtcfile = tempdebugdir + "\\RTC_PERSPECTIVE.TXT";

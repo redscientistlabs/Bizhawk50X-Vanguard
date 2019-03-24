@@ -357,8 +357,6 @@
   <ItemGroup>
     <None Include="Resources\refresh new.png" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Components\Glitch Harvester\" />
-  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
