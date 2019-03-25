@@ -124,6 +124,7 @@ namespace RTCV.UI
             this.rasterizeVMDsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.bakeBlastunitsToVALUEToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.openBlastGeneratorToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.btnAddRow = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.dgvBlastEditor)).BeginInit();
             this.panelSidebar.SuspendLayout();
             this.panel1.SuspendLayout();
@@ -167,6 +168,7 @@ namespace RTCV.UI
             // panelSidebar
             // 
             this.panelSidebar.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
+            this.panelSidebar.Controls.Add(this.btnAddRow);
             this.panelSidebar.Controls.Add(this.panel1);
             this.panelSidebar.Controls.Add(this.pnMemoryTargetting);
             this.panelSidebar.Controls.Add(this.btnHelp);
@@ -1166,6 +1168,23 @@ namespace RTCV.UI
             this.openBlastGeneratorToolStripMenuItem.Text = "Open Blast Generator";
             this.openBlastGeneratorToolStripMenuItem.Click += new System.EventHandler(this.OpenBlastGeneratorToolStripMenuItem_Click);
             // 
+            // btnAddRow
+            // 
+            this.btnAddRow.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(224)))), ((int)(((byte)(224)))), ((int)(((byte)(224)))));
+            this.btnAddRow.FlatAppearance.BorderSize = 0;
+            this.btnAddRow.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnAddRow.Font = new System.Drawing.Font("Segoe UI Symbol", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel);
+            this.btnAddRow.ForeColor = System.Drawing.Color.Black;
+            this.btnAddRow.Location = new System.Drawing.Point(14, 330);
+            this.btnAddRow.Name = "btnAddRow";
+            this.btnAddRow.Size = new System.Drawing.Size(135, 25);
+            this.btnAddRow.TabIndex = 177;
+            this.btnAddRow.TabStop = false;
+            this.btnAddRow.Tag = "color:light";
+            this.btnAddRow.Text = "Add New Row";
+            this.btnAddRow.UseVisualStyleBackColor = false;
+            this.btnAddRow.Click += new System.EventHandler(this.BtnAddRow_Click);
+            // 
             // RTC_NewBlastEditor_Form
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -1312,5 +1331,6 @@ namespace RTCV.UI
 		private ComboBox cbStoreLimiterSource;
 		private Label label17;
 		private ToolStripMenuItem openBlastGeneratorToolStripMenuItem;
+		private Button btnAddRow;
 	}
 }

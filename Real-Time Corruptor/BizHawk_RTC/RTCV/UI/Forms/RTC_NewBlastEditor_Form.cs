@@ -1669,6 +1669,12 @@ namespace RTCV.UI
 			bgForm.LoadStashkey(currentSK);
 		}
 
+		private void BtnAddRow_Click(object sender, EventArgs e)
+		{
+			BlastUnit bu = new BlastUnit(new byte[] {0}, domains[0], 0, 1, MemoryDomains.GetInterface(domains[0]).BigEndian);
+			bs.Add(bu);
+		}
+
 		private void UpdateLayerSize()
 		{
 			lbBlastLayerSize.Text = "Size: " + currentSK.BlastLayer.Layer.Count;
