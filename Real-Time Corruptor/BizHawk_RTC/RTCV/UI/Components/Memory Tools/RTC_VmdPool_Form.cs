@@ -155,8 +155,9 @@ namespace RTCV.UI
 
 				MemoryDomains.AddVMD(proto);
 			}
-			if(refreshvmds)
-				RefreshVMDs()
+
+			if (refreshvmds)
+				RefreshVMDs();
 		}
 
 		private void loadLegacyVmd(string path)

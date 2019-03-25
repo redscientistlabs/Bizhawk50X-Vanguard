@@ -74,13 +74,6 @@ namespace RTCV.UI
 
 		private bool GenerateVMD()
 		{
-			//Verify they want to continue if the domain is larger than 32MB
-			if (currentDomainSize > 0x2000000)
-			{
-				DialogResult result = MessageBox.Show("The domain you have selected is larger than 32MB\n The domain size is " + (currentDomainSize / 1024) + "MB.\n Are you sure you want to continue?", "Large Domain Detected", MessageBoxButtons.YesNo);
-				if (result == DialogResult.No)
-					return false;
-			}
 
 			if (string.IsNullOrWhiteSpace(cbSelectedMemoryDomain.SelectedItem?.ToString()) || !MemoryDomains.MemoryInterfaces.ContainsKey(cbSelectedMemoryDomain.SelectedItem.ToString()))
 			{
@@ -171,6 +164,42 @@ namespace RTCV.UI
 			{
 				//No add range was specified, use entire domain
 				proto.AddRanges.Add(new long[] { 0, (currentDomainSize > long.MaxValue ? long.MaxValue : Convert.ToInt64(currentDomainSize)) });
+			}
+
+
+			//Precalc the size of the vmd
+			//Ignore the fact that addranges and subtractranges can overlap. Only account for add
+			long size = 0;
+			foreach (var v in proto.AddSingles)
+				size++;
+			foreach (var v in proto.AddRanges)
+			{
+				long x = v[1] - v[0];
+				size += x;
+			}
+			//If the size is still 0 and we have removals, we're gonna use the entire range then sub from it so size is now the size of the domain
+			if (size == 0 &&
+				(proto.RemoveSingles.Count > 0 || proto.RemoveRanges.Count > 0) ||
+				(proto.RemoveSingles.Count == 0 && proto.RemoveRanges.Count == 0 && size == 0))
+			{
+				size = currentDomainSize;
+			}
+				
+			foreach (var v in proto.RemoveSingles)
+				size--;
+			foreach (var v in proto.RemoveRanges)
+			{
+				long x = v[1] - v[0];
+				size -= x;
+			}
+
+
+			//Verify they want to continue if the domain is larger than 32MB and they didn't manually set ranges
+			if (size > 0x2000000)
+			{
+				DialogResult result = MessageBox.Show("The VMD you're trying to generate is larger than 32MB\n The VMD size is " + ((size / 1024 / 1024) + 1) + " MB (" + size/1024f/1024f/1024f + " GB).\n Are you sure you want to continue?", "VMD Detected", MessageBoxButtons.YesNo);
+				if (result == DialogResult.No)
+					return false;
 			}
 
 			VMD = proto.Generate();
