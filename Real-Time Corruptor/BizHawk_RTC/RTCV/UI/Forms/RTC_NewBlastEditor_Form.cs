@@ -168,6 +168,13 @@ namespace RTCV.UI
 			UICore.SetRTCColor(UICore.GeneralColor, this);
 			domains = MemoryDomains.MemoryInterfaces?.Keys?.Concat(MemoryDomains.VmdPool.Values.Select(it => it.ToString())).ToArray();
 			registerHotkeyBlacklistEvents(this);
+
+			dgvBlastEditor.AllowUserToOrderColumns = true;
+			SetDisplayOrder();
+		}
+		private void RTC_NewBlastEditorForm_Close(object sender, FormClosingEventArgs e)
+		{
+			SaveDisplayOrder();
 		}
 
 		private void registerHotkeyBlacklistEvents(Control container)
@@ -189,6 +196,35 @@ namespace RTCV.UI
 
 			dgvBlastEditor.CellBeginEdit += (o, e) => UICore.UpdateFormFocusStatus(false);
 			dgvBlastEditor.CellEndEdit += (o,e) => UICore.UpdateFormFocusStatus(true);
+		}
+
+		private void SetDisplayOrder()
+		{
+			if (!Params.IsParamSet("BLASTEDITOR_COLUMN_ORDER"))
+				return;
+			//Names split with commas
+			var s = Params.ReadParam("BLASTEDITOR_COLUMN_ORDER");
+			var order = s.Split(',');
+
+			//Use a foreach and keep track in-case the number of entries changes
+			int i = 0;
+			foreach (var c in order)
+			{
+				if (dgvBlastEditor.Columns.Cast<DataGridViewColumn>().Any(x => x.Name == c))
+				{
+					dgvBlastEditor.Columns[c].DisplayIndex = i;
+					i++;
+				}
+			}
+		}
+
+		private void SaveDisplayOrder()
+		{
+			var cols = dgvBlastEditor.Columns.Cast<DataGridViewColumn>().OrderBy(x => x.DisplayIndex);
+			StringBuilder sb = new StringBuilder();
+			foreach (var c in cols)
+				sb.Append(c.Name + ",");
+			Params.SetParam("BLASTEDITOR_COLUMN_ORDER", sb.ToString());
 		}
 
 		private void dgvBlastEditor_CellMouseClick(object sender, DataGridViewCellMouseEventArgs e)

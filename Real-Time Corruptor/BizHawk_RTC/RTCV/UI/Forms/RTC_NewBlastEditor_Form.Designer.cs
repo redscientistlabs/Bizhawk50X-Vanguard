@@ -1181,8 +1181,9 @@ namespace RTCV.UI
             this.Margin = new System.Windows.Forms.Padding(2);
             this.Name = "RTC_NewBlastEditor_Form";
             this.Text = "Blast Editor 3";
-            this.Load += new System.EventHandler(this.RTC_NewBlastEditorForm_Load);
-            ((System.ComponentModel.ISupportInitialize)(this.dgvBlastEditor)).EndInit();
+			this.Load += new System.EventHandler(this.RTC_NewBlastEditorForm_Load);
+			this.FormClosing += this.RTC_NewBlastEditorForm_Close;
+			((System.ComponentModel.ISupportInitialize)(this.dgvBlastEditor)).EndInit();
             this.panelSidebar.ResumeLayout(false);
             this.panelSidebar.PerformLayout();
             this.panel1.ResumeLayout(false);
