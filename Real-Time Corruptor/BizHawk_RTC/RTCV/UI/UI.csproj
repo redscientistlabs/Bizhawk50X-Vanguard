@@ -38,6 +38,10 @@
     <StartupObject />
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Ceras, Version=4.0.33.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\Ceras.4.0.33\lib\net45\Ceras.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
     <Reference Include="Newtonsoft.Json, Version=12.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
       <HintPath>..\..\packages\Newtonsoft.Json.12.0.1\lib\net45\Newtonsoft.Json.dll</HintPath>
     </Reference>
@@ -50,6 +54,9 @@
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="System.Data" />
     <Reference Include="System.Drawing" />
+    <Reference Include="System.ValueTuple, Version=4.0.3.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\System.ValueTuple.4.5.0\lib\net461\System.ValueTuple.dll</HintPath>
+    </Reference>
     <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml" />
   </ItemGroup>
@@ -226,6 +233,12 @@
       <DependentUpon>RTC_StockpilePlayer_Form.cs</DependentUpon>
     </Compile>
     <Compile Include="AutoKillSwitch.cs" />
+    <Compile Include="Forms\RTC_Test_Form.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\RTC_Test_Form.Designer.cs">
+      <DependentUpon>RTC_Test_Form.cs</DependentUpon>
+    </Compile>
     <Compile Include="GameProtection.cs" />
     <Compile Include="UICore.cs" />
     <Compile Include="UIConnector.cs" />
@@ -316,6 +329,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\RTC_StockpilePlayer_Form.resx">
       <DependentUpon>RTC_StockpilePlayer_Form.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\RTC_Test_Form.resx">
+      <DependentUpon>RTC_Test_Form.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>

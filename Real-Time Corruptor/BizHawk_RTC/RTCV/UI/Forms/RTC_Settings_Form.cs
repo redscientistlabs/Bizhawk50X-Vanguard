@@ -47,6 +47,8 @@ namespace RTCV.UI
 
 		private void RTC_Settings_Form_Load(object sender, EventArgs e)
 		{
+			if (Debugger.IsAttached)
+				btnTestForm.Show();
 
 		}
 
@@ -63,6 +65,12 @@ namespace RTCV.UI
 		private void btnDebugInfo_Click(object sender, EventArgs e)
 		{
 			S.GET<RTCV.NetCore.DebugInfo_Form>().ShowDialog();
+		}
+
+		private void BtnTestForm_Click(object sender, EventArgs e)
+		{
+			var testform = new RTC_Test_Form();
+			testform.Show();
 		}
 	}
 }

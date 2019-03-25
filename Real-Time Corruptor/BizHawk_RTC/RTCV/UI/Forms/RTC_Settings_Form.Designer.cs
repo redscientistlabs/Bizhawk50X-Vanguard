@@ -35,6 +35,7 @@
             this.pnListBoxForm = new System.Windows.Forms.Panel();
             this.btnOpenConsole = new System.Windows.Forms.Button();
             this.btnDebugInfo = new System.Windows.Forms.Button();
+            this.btnTestForm = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // lbSettingsAndTools
@@ -132,12 +133,24 @@
             this.btnDebugInfo.UseVisualStyleBackColor = false;
             this.btnDebugInfo.Click += new System.EventHandler(this.btnDebugInfo_Click);
             // 
+            // btnTestForm
+            // 
+            this.btnTestForm.Location = new System.Drawing.Point(317, 9);
+            this.btnTestForm.Name = "btnTestForm";
+            this.btnTestForm.Size = new System.Drawing.Size(57, 51);
+            this.btnTestForm.TabIndex = 140;
+            this.btnTestForm.Text = "Open Test Form";
+            this.btnTestForm.UseVisualStyleBackColor = true;
+            this.btnTestForm.Visible = false;
+            this.btnTestForm.Click += new System.EventHandler(this.BtnTestForm_Click);
+            // 
             // RTC_Settings_Form
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
             this.ClientSize = new System.Drawing.Size(655, 515);
+            this.Controls.Add(this.btnTestForm);
             this.Controls.Add(this.btnDebugInfo);
             this.Controls.Add(this.btnOpenConsole);
             this.Controls.Add(this.pnListBoxForm);
@@ -161,5 +174,6 @@
 		private System.Windows.Forms.Panel pnListBoxForm;
 		public System.Windows.Forms.Button btnOpenConsole;
 		public System.Windows.Forms.Button btnDebugInfo;
+		private System.Windows.Forms.Button btnTestForm;
 	}
 }
