@@ -20,7 +20,26 @@ namespace RTCV.UI
 		public RTC_VmdPool_Form()
 		{
 			InitializeComponent();
+			AllowDrop = true;
+			this.DragEnter += RTC_VmdPool_Form_DragEnter;
+			this.DragDrop += RTC_VmdPool_Form_DragDrop;
 		}
+
+		private void RTC_VmdPool_Form_DragEnter(object sender, DragEventArgs e)
+		{
+			e.Effect = DragDropEffects.Link;
+		}
+		private void RTC_VmdPool_Form_DragDrop(object sender, DragEventArgs e)
+		{
+			string[] files = (string[])e.Data.GetData(DataFormats.FileDrop, false);
+			foreach (var f in files)
+			{
+				if (f.Contains(".vmd"))
+					loadVmd(f, false);
+			}
+			RefreshVMDs();
+		}
+
 
 		private void btnUnloadVMD_Click(object sender, EventArgs e)
 		{
@@ -125,8 +144,42 @@ namespace RTCV.UI
 					JsonHelper.Serialize(vmd.Proto, fs);
 				}
 			}
-			else
-				return;
+		}
+
+		private void loadVmd(string path, bool refreshvmds)
+		{
+			using (FileStream fs = File.Open(path, FileMode.Open))
+			{
+				VmdPrototype proto = null;
+				proto = JsonHelper.Deserialize<VmdPrototype>(fs);
+
+				MemoryDomains.AddVMD(proto);
+			}
+			if(refreshvmds)
+				RefreshVMDs()
+		}
+
+		private void loadLegacyVmd(string path)
+		{
+			//Fix int[] to long[]
+			string vmdXML = File.ReadAllText(path);
+			vmdXML = vmdXML.Replace("<int>", "<long>");
+			vmdXML = vmdXML.Replace("</int>", "</long>");
+			vmdXML = vmdXML.Replace("ArrayOfInt", "ArrayOfLong");
+			vmdXML = vmdXML.Replace("addRanges", "AddRanges");
+			vmdXML = vmdXML.Replace("addSingles", "AddSingles");
+			vmdXML = vmdXML.Replace("removeRanges", "RemoveRanges");
+			vmdXML = vmdXML.Replace("removeSingles", "removeSingles");
+			XmlSerializer xs = new XmlSerializer(typeof(VmdPrototype));
+			VmdPrototype proto = (VmdPrototype)xs.Deserialize(new StringReader(vmdXML));
+
+			var jsonFilename = Path.Combine(Path.GetDirectoryName(path), Path.GetFileNameWithoutExtension(path) + ".vmd");
+			using (FileStream _fs = File.Open(jsonFilename, FileMode.Create))
+			{
+				JsonHelper.Serialize(proto, _fs, Newtonsoft.Json.Formatting.Indented);
+			}
+
+			MemoryDomains.AddVMD(proto);
 		}
 
 		private void btnLoadVmd_Click(object sender, EventArgs e)
@@ -155,34 +208,11 @@ namespace RTCV.UI
 								notified = true;
 							}
 
-							//Fix int[] to long[]
-							string vmdXML = File.ReadAllText(filename);
-							vmdXML = vmdXML.Replace("<int>", "<long>");
-							vmdXML = vmdXML.Replace("</int>", "</long>");
-							vmdXML = vmdXML.Replace("ArrayOfInt", "ArrayOfLong");
-							vmdXML = vmdXML.Replace("addRanges", "AddRanges");
-							vmdXML = vmdXML.Replace("addSingles", "AddSingles");
-							vmdXML = vmdXML.Replace("removeRanges", "RemoveRanges");
-							vmdXML = vmdXML.Replace("removeSingles", "removeSingles");
-							XmlSerializer xs = new XmlSerializer(typeof(VmdPrototype));
-							VmdPrototype proto = (VmdPrototype) xs.Deserialize(new StringReader(vmdXML));
-
-							var jsonFilename =  Path.Combine(Path.GetDirectoryName(filename), Path.GetFileNameWithoutExtension(filename) + ".vmd");
-							using(FileStream _fs = File.Open(jsonFilename, FileMode.Create))
-							{
-								JsonHelper.Serialize(proto, _fs, Newtonsoft.Json.Formatting.Indented);
-							}
-														   
-							MemoryDomains.AddVMD(proto);
+							loadLegacyVmd(filename);
 						}
 						else
 						{
-							using (FileStream fs = File.Open(filename, FileMode.Open))
-							{
-								VmdPrototype proto = JsonHelper.Deserialize<VmdPrototype>(fs);
-
-								MemoryDomains.AddVMD(proto);
-							}
+							loadVmd(filename, false);
 						}
 					}
 					catch(Exception ex)
