@@ -1029,6 +1029,7 @@ namespace RTCV.UI
 				RefreshStashHistorySelectLast();
 				DontLoadSelectedStash = true;
 				dgvStockpile.ClearSelection();
+				DontLoadSelectedStash = false;
 			}
 			finally
 			{

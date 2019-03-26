@@ -113,6 +113,16 @@ namespace Vanguard
 			}
 		}
 
+		public static void SHOW_CONSOLE(bool show)
+		{
+			if (disableRTC) return;
+
+			if (show)
+				RTCV.NetCore.Extensions.ConsoleHelper.ShowConsole();
+			else
+				RTCV.NetCore.Extensions.ConsoleHelper.HideConsole();
+		}
+
 		public static void MAIN_BIZHAWK(string[] args)
 		{
 			//MessageBox.Show("ATTACH DEBUGGER NOW");
@@ -131,7 +141,7 @@ namespace Vanguard
 				//VanguardCore.attached = true;
 				VanguardCore.attached = VanguardCore.args.Contains("-ATTACHED");
 
-				BizHawk.Client.EmuHawk.LogConsole.ReleaseConsole();
+				//BizHawk.Client.EmuHawk.LogConsole.ReleaseConsole();
 				RTCV.NetCore.Extensions.ConsoleHelper.CreateConsole("RTC\\EMU_LOG.txt");
 				if (args.Contains("-CONSOLE"))
 				{
@@ -141,7 +151,7 @@ namespace Vanguard
 				{
 					RTCV.NetCore.Extensions.ConsoleHelper.HideConsole();
 				}
-				}
+			}
 			catch (Exception ex)
 			{
 				if (VanguardCore.ShowErrorDialog(ex, true) == DialogResult.Abort)

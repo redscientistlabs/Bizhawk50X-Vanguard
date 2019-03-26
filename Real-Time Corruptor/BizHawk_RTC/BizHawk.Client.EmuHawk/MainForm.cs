@@ -126,11 +126,11 @@ namespace BizHawk.Client.EmuHawk
 			InitializeComponent();
 			Global.Game = GameInfo.NullInstance;
 			
-			//RTC_Hijack - Check for manually triggered console
-			bool showConsole = (bool)(RTCV.NetCore.AllSpec.CorruptCoreSpec?[RTCSPEC.CORE_SHOWCONSOLE.ToString()] ?? false);
-			if (Global.Config.ShowLogWindow || showConsole)
+			if (Global.Config.ShowLogWindow)
 			{
-				LogConsole.ShowConsole();
+				//RTC_HIJACK - Nuke bizhawk's console as we spawn our own
+				//LogConsole.ShowConsole();
+				Vanguard.Hooks.SHOW_CONSOLE(true);
 				DisplayLogWindowMenuItem.Checked = true;
 			}
 

@@ -905,13 +905,16 @@ namespace BizHawk.Client.EmuHawk
 		{
 			Global.Config.ShowLogWindow ^= true;
 
+			//RTC_HIJACK - Replace bizhawk console with ours 
 			if (Global.Config.ShowLogWindow)
 			{
-				LogConsole.ShowConsole();
+				Vanguard.Hooks.SHOW_CONSOLE(true);
+				//LogConsole.ShowConsole();
 			}
 			else
 			{
-				LogConsole.HideConsole();
+				Vanguard.Hooks.SHOW_CONSOLE(false);
+				//LogConsole.HideConsole();
 			}
 		}
 
