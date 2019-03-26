@@ -459,7 +459,12 @@ namespace RTCV.CorruptCore
 			foreach (BlastUnit bu in bl.Layer)
 			{
 				PointerDomains.Add(bu.Domain);
-				PointerAddresses.Add(bu.Address);
+				for (int i = 0; i < bu.Precision; i++)
+				{
+					if(PointerAddresses.Contains(bu.Address))
+						PointerAddresses.Add(bu.Address);
+				}
+					
 			}
 		}
 
