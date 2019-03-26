@@ -34,6 +34,7 @@ namespace RTCV.UI
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(RTC_NewBlastEditor_Form));
             this.dgvBlastEditor = new System.Windows.Forms.DataGridView();
             this.panelSidebar = new System.Windows.Forms.Panel();
+            this.btnAddRow = new System.Windows.Forms.Button();
             this.panel1 = new System.Windows.Forms.Panel();
             this.cbShiftBlastlayer = new System.Windows.Forms.ComboBox();
             this.btnShiftBlastLayerDown = new System.Windows.Forms.Button();
@@ -57,7 +58,7 @@ namespace RTCV.UI
             this.panel2 = new System.Windows.Forms.Panel();
             this.cbFilterColumn = new System.Windows.Forms.ComboBox();
             this.tbFilter = new System.Windows.Forms.TextBox();
-            this.panel3 = new System.Windows.Forms.Panel();
+            this.panelBottom = new System.Windows.Forms.Panel();
             this.panel9 = new System.Windows.Forms.Panel();
             this.label16 = new System.Windows.Forms.Label();
             this.upDownLifetime = new RTCV.UI.NumericUpDownHexFix();
@@ -124,14 +125,13 @@ namespace RTCV.UI
             this.rasterizeVMDsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.bakeBlastunitsToVALUEToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.openBlastGeneratorToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.btnAddRow = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.dgvBlastEditor)).BeginInit();
             this.panelSidebar.SuspendLayout();
             this.panel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.updownShiftBlastLayerAmount)).BeginInit();
             this.pnMemoryTargetting.SuspendLayout();
             this.panel2.SuspendLayout();
-            this.panel3.SuspendLayout();
+            this.panelBottom.SuspendLayout();
             this.panel9.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.upDownLifetime)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.upDownExecuteFrame)).BeginInit();
@@ -190,6 +190,23 @@ namespace RTCV.UI
             this.panelSidebar.Size = new System.Drawing.Size(159, 463);
             this.panelSidebar.TabIndex = 146;
             this.panelSidebar.Tag = "color:dark";
+            // 
+            // btnAddRow
+            // 
+            this.btnAddRow.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(224)))), ((int)(((byte)(224)))), ((int)(((byte)(224)))));
+            this.btnAddRow.FlatAppearance.BorderSize = 0;
+            this.btnAddRow.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnAddRow.Font = new System.Drawing.Font("Segoe UI Symbol", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel);
+            this.btnAddRow.ForeColor = System.Drawing.Color.Black;
+            this.btnAddRow.Location = new System.Drawing.Point(14, 330);
+            this.btnAddRow.Name = "btnAddRow";
+            this.btnAddRow.Size = new System.Drawing.Size(135, 25);
+            this.btnAddRow.TabIndex = 177;
+            this.btnAddRow.TabStop = false;
+            this.btnAddRow.Tag = "color:light";
+            this.btnAddRow.Text = "Add New Row";
+            this.btnAddRow.UseVisualStyleBackColor = false;
+            this.btnAddRow.Click += new System.EventHandler(this.BtnAddRow_Click);
             // 
             // panel1
             // 
@@ -524,21 +541,21 @@ namespace RTCV.UI
             this.tbFilter.Size = new System.Drawing.Size(100, 22);
             this.tbFilter.TabIndex = 7;
             // 
-            // panel3
+            // panelBottom
             // 
-            this.panel3.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
-            this.panel3.Controls.Add(this.panel9);
-            this.panel3.Controls.Add(this.label5);
-            this.panel3.Controls.Add(this.panel5);
-            this.panel3.Controls.Add(this.label2);
-            this.panel3.Controls.Add(this.panel4);
-            this.panel3.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.panel3.ForeColor = System.Drawing.Color.White;
-            this.panel3.Location = new System.Drawing.Point(0, 266);
-            this.panel3.Name = "panel3";
-            this.panel3.Size = new System.Drawing.Size(662, 221);
-            this.panel3.TabIndex = 149;
-            this.panel3.Tag = "color:normal";
+            this.panelBottom.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
+            this.panelBottom.Controls.Add(this.panel9);
+            this.panelBottom.Controls.Add(this.label5);
+            this.panelBottom.Controls.Add(this.panel5);
+            this.panelBottom.Controls.Add(this.label2);
+            this.panelBottom.Controls.Add(this.panel4);
+            this.panelBottom.Dock = System.Windows.Forms.DockStyle.Bottom;
+            this.panelBottom.ForeColor = System.Drawing.Color.White;
+            this.panelBottom.Location = new System.Drawing.Point(0, 266);
+            this.panelBottom.Name = "panelBottom";
+            this.panelBottom.Size = new System.Drawing.Size(662, 221);
+            this.panelBottom.TabIndex = 149;
+            this.panelBottom.Tag = "color:normal";
             // 
             // panel9
             // 
@@ -1168,23 +1185,6 @@ namespace RTCV.UI
             this.openBlastGeneratorToolStripMenuItem.Text = "Open Blast Generator";
             this.openBlastGeneratorToolStripMenuItem.Click += new System.EventHandler(this.OpenBlastGeneratorToolStripMenuItem_Click);
             // 
-            // btnAddRow
-            // 
-            this.btnAddRow.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(224)))), ((int)(((byte)(224)))), ((int)(((byte)(224)))));
-            this.btnAddRow.FlatAppearance.BorderSize = 0;
-            this.btnAddRow.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btnAddRow.Font = new System.Drawing.Font("Segoe UI Symbol", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel);
-            this.btnAddRow.ForeColor = System.Drawing.Color.Black;
-            this.btnAddRow.Location = new System.Drawing.Point(14, 330);
-            this.btnAddRow.Name = "btnAddRow";
-            this.btnAddRow.Size = new System.Drawing.Size(135, 25);
-            this.btnAddRow.TabIndex = 177;
-            this.btnAddRow.TabStop = false;
-            this.btnAddRow.Tag = "color:light";
-            this.btnAddRow.Text = "Add New Row";
-            this.btnAddRow.UseVisualStyleBackColor = false;
-            this.btnAddRow.Click += new System.EventHandler(this.BtnAddRow_Click);
-            // 
             // RTC_NewBlastEditor_Form
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -1192,7 +1192,7 @@ namespace RTCV.UI
             this.ClientSize = new System.Drawing.Size(821, 487);
             this.Controls.Add(this.dgvBlastEditor);
             this.Controls.Add(this.panel2);
-            this.Controls.Add(this.panel3);
+            this.Controls.Add(this.panelBottom);
             this.Controls.Add(this.panelSidebar);
             this.Controls.Add(this.menuStripEx1);
             this.Font = new System.Drawing.Font("Segoe UI Symbol", 11F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel);
@@ -1200,9 +1200,8 @@ namespace RTCV.UI
             this.Margin = new System.Windows.Forms.Padding(2);
             this.Name = "RTC_NewBlastEditor_Form";
             this.Text = "Blast Editor 3";
-			this.Load += new System.EventHandler(this.RTC_NewBlastEditorForm_Load);
-			this.FormClosing += this.RTC_NewBlastEditorForm_Close;
-			((System.ComponentModel.ISupportInitialize)(this.dgvBlastEditor)).EndInit();
+            this.Load += new System.EventHandler(this.RTC_NewBlastEditorForm_Load);
+            ((System.ComponentModel.ISupportInitialize)(this.dgvBlastEditor)).EndInit();
             this.panelSidebar.ResumeLayout(false);
             this.panelSidebar.PerformLayout();
             this.panel1.ResumeLayout(false);
@@ -1211,8 +1210,8 @@ namespace RTCV.UI
             this.pnMemoryTargetting.PerformLayout();
             this.panel2.ResumeLayout(false);
             this.panel2.PerformLayout();
-            this.panel3.ResumeLayout(false);
-            this.panel3.PerformLayout();
+            this.panelBottom.ResumeLayout(false);
+            this.panelBottom.PerformLayout();
             this.panel9.ResumeLayout(false);
             this.panel9.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.upDownLifetime)).EndInit();
@@ -1282,7 +1281,7 @@ namespace RTCV.UI
 		private System.Windows.Forms.ToolStripMenuItem toolsToolStripMenuItem;
 		private System.Windows.Forms.ToolStripMenuItem sanitizeDuplicatesToolStripMenuItem;
 		private System.Windows.Forms.ToolStripMenuItem rasterizeVMDsToolStripMenuItem;
-		private System.Windows.Forms.Panel panel3;
+		private System.Windows.Forms.Panel panelBottom;
 		private System.Windows.Forms.Panel panel5;
 		private System.Windows.Forms.Label label2;
 		private System.Windows.Forms.Panel panel4;

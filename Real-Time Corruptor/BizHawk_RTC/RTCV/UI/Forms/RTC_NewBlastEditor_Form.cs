@@ -123,6 +123,7 @@ namespace RTCV.UI
 				dgvBlastEditor.RowsAdded += DgvBlastEditor_RowsAdded;
 				dgvBlastEditor.RowsRemoved += DgvBlastEditor_RowsRemoved;
 				dgvBlastEditor.CellFormatting += DgvBlastEditor_CellFormatting;
+				dgvBlastEditor.MouseClick += DgvBlastEditor_Click;
 
 				tbFilter.TextChanged += tbFilter_TextChanged;
 
@@ -164,6 +165,8 @@ namespace RTCV.UI
 
 			}
 		}
+
+
 		private void RTC_NewBlastEditorForm_Load(object sender, EventArgs e)
 		{
 			UICore.SetRTCColor(UICore.GeneralColor, this);
@@ -241,6 +244,16 @@ namespace RTCV.UI
 			foreach (var c in cols)
 				sb.Append(c.Name + ",");
 			Params.SetParam("BLASTEDITOR_COLUMN_ORDER", sb.ToString());
+		}
+
+		private void DgvBlastEditor_Click(object sender, MouseEventArgs e)
+		{
+			//Exit edit mode if you click away from a cell
+			var ht = dgvBlastEditor.HitTest(e.X, e.Y);
+
+			if (ht.Type != DataGridViewHitTestType.Cell)
+				dgvBlastEditor.EndEdit();
+
 		}
 
 		private void dgvBlastEditor_CellMouseClick(object sender, DataGridViewCellMouseEventArgs e)

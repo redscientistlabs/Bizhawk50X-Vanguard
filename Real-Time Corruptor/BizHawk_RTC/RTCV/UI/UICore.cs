@@ -118,9 +118,6 @@ namespace RTCV.UI
 					dgv.CellEndEdit -= ControlFocusLost;
 					dgv.CellEndEdit += ControlFocusLost;
 				}
-				else
-				{
-				}
 			}
 		}
 
