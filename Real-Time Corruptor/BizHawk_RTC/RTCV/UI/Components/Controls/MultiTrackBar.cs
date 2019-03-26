@@ -82,7 +82,7 @@ namespace RTCV.UI.Components.Controls
 					tbControlValue_ValueChanged(null, null);
 			}
 		}
-		private long _Maximum = 500000;
+		private long _Maximum = 65535;
         [Description("Maximum value of the control"), Category("Data")]
         public long Maximum
         {
@@ -203,12 +203,11 @@ namespace RTCV.UI.Components.Controls
                 }
 
                 if (setter != nmControlValue)
-                    if (nmValue > Maximum && !UncapNumericBox)
-                        nmControlValue.Value = Convert.ToInt32(Maximum);
+					if (nmValue > Maximum && !UncapNumericBox)
+						nmValue = Convert.ToInt32(Maximum);
 					else if (nmValue < Minimum)
-						nmControlValue.Value = Convert.ToInt32(Minimum);
-					else
-                        nmControlValue.Value = nmValue;
+						nmValue = Convert.ToInt32(Minimum);
+                   nmControlValue.Value = nmValue;
 
                 foreach (var slave in slaveComps)
                     slave.UpdateAllControls(nmValue, tbValue, this);
@@ -225,7 +224,12 @@ namespace RTCV.UI.Components.Controls
         {
             UpdateAllControls(nmValue, tbValue, setter);
 
-            Value = nmValue;
+			if (nmValue > Maximum && !UncapNumericBox)
+				nmValue = Convert.ToInt32(Maximum);
+			if (nmValue < Minimum)
+				nmValue = Convert.ToInt32(Minimum);
+
+			Value = nmValue;
             updater.Stop();
             updater.Start();
         }
