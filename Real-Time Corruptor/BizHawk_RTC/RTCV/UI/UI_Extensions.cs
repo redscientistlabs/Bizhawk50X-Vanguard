@@ -25,6 +25,7 @@ namespace RTCV.UI
 	{
 		public static DialogResult GetInputBox(string title, string promptText, ref string value)
 		{
+			
 			Form form = new Form();
 			Label label = new Label();
 			TextBox textBox = new TextBox();
@@ -34,6 +35,8 @@ namespace RTCV.UI
 			form.Text = title;
 			label.Text = promptText;
 			textBox.Text = value;
+			textBox.GotFocus += (o, e) => UICore.UpdateFormFocusStatus(false);
+			textBox.LostFocus += (o, e) => UICore.UpdateFormFocusStatus(false);
 
 			buttonOk.Text = "OK";
 			buttonCancel.Text = "Cancel";
@@ -64,98 +67,6 @@ namespace RTCV.UI
 			value = textBox.Text;
 			return dialogResult;
 		}
-		public static DialogResult GetInputBox(string title, string promptText, ref decimal value, bool hex = false, UInt64 maximum = UInt64.MaxValue)
-		{
-			Form form = new Form();
-			Label label = new Label();
-			NumericUpDownHexFix updown = new NumericUpDownHexFix();
-			Button buttonOk = new Button();
-			Button buttonCancel = new Button();
-
-			updown.Hexadecimal = hex;
-			updown.Maximum = maximum;
-
-			form.Text = title;
-			label.Text = promptText;
-			updown.Value = value;
-
-			buttonOk.Text = "OK";
-			buttonCancel.Text = "Cancel";
-			buttonOk.DialogResult = DialogResult.OK;
-			buttonCancel.DialogResult = DialogResult.Cancel;
-
-			label.SetBounds(9, 20, 372, 13);
-			updown.SetBounds(12, 36, 372, 20);
-			buttonOk.SetBounds(228, 72, 75, 23);
-			buttonCancel.SetBounds(309, 72, 75, 23);
-
-			label.AutoSize = true;
-			updown.Anchor = updown.Anchor | AnchorStyles.Right;
-			buttonOk.Anchor = AnchorStyles.Bottom | AnchorStyles.Right;
-			buttonCancel.Anchor = AnchorStyles.Bottom | AnchorStyles.Right;
-
-			form.ClientSize = new Size(396, 107);
-			form.Controls.AddRange(new Control[] { label, updown, buttonOk, buttonCancel });
-			form.ClientSize = new Size(Math.Max(300, label.Right + 10), form.ClientSize.Height);
-			form.FormBorderStyle = FormBorderStyle.FixedDialog;
-			form.StartPosition = FormStartPosition.CenterScreen;
-			form.MinimizeBox = false;
-			form.MaximizeBox = false;
-			form.AcceptButton = buttonOk;
-			form.CancelButton = buttonCancel;
-
-			DialogResult dialogResult = form.ShowDialog();
-			value = updown.Value;
-			return dialogResult;
-		}
-		public static DialogResult GetComboInputBox(string title, string promptText, string[] options, ref string value)
-		{
-			Form form = new Form();
-			Label label = new Label();
-			Button buttonOk = new Button();
-			Button buttonCancel = new Button();
-
-			ComboBox comboBox = new ComboBox();
-
-			foreach (string option in options)
-			{
-				comboBox.Items.Add(option);
-			}
-
-			comboBox.SelectedIndex = 0;
-
-			form.Text = title;
-			label.Text = promptText;
-
-			buttonOk.Text = "OK";
-			buttonCancel.Text = "Cancel";
-			buttonOk.DialogResult = DialogResult.OK;
-			buttonCancel.DialogResult = DialogResult.Cancel;
-
-			label.SetBounds(16, 6, 372, 13);
-			comboBox.SetBounds(42, 24, 96, 20);
-			buttonOk.SetBounds(12, 48, 75, 23);
-			buttonCancel.SetBounds(92, 48, 75, 23);
-
-			label.AutoSize = true;
-			comboBox.Anchor = comboBox.Anchor | AnchorStyles.Right;
-			buttonOk.Anchor = AnchorStyles.Bottom | AnchorStyles.Right;
-			buttonCancel.Anchor = AnchorStyles.Bottom | AnchorStyles.Right;
-
-			form.ClientSize = new Size(180, 80);
-			form.Controls.AddRange(new Control[] { label, comboBox, buttonOk, buttonCancel });
-			form.FormBorderStyle = FormBorderStyle.FixedDialog;
-			form.StartPosition = FormStartPosition.CenterScreen;
-			form.MinimizeBox = false;
-			form.MaximizeBox = false;
-			form.AcceptButton = buttonOk;
-			form.CancelButton = buttonCancel;
-
-			DialogResult dialogResult = form.ShowDialog();
-			value = comboBox.SelectedItem.ToString();
-			return dialogResult;
-		}
-
 
 		public interface ISF<T>
 		{
@@ -179,7 +90,7 @@ namespace RTCV.UI
 
 			public bool undockedSizable = true;
 			public bool popoutAllowed = true;
-
+			
 			public void AnchorToPanel(Panel pn)
 			{
 

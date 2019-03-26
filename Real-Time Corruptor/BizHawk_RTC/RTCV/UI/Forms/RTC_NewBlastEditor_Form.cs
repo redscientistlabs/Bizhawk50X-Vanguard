@@ -168,7 +168,7 @@ namespace RTCV.UI
 		{
 			UICore.SetRTCColor(UICore.GeneralColor, this);
 			domains = MemoryDomains.MemoryInterfaces?.Keys?.Concat(MemoryDomains.VmdPool.Values.Select(it => it.ToString())).ToArray();
-			registerHotkeyBlacklistEvents(this);
+
 			registerValueStringScrollEvents();
 
 			dgvBlastEditor.AllowUserToOrderColumns = true;
@@ -213,27 +213,6 @@ namespace RTCV.UI
 			}
 		}
 
-
-		private void registerHotkeyBlacklistEvents(Control container)
-		{
-
-			var allTextControls = new List<Control>();
-			foreach (Control c in container.Controls)
-			{
-				registerHotkeyBlacklistEvents(c);
-				if (c is NumericUpDown || c is TextBox)
-					allTextControls.Add(c);
-			}
-
-			foreach (var c in allTextControls)
-			{
-				c.GotFocus += (o, e) => UICore.UpdateFormFocusStatus(false);
-				c.LostFocus += (o, e) => UICore.UpdateFormFocusStatus(true);
-			}
-
-			dgvBlastEditor.CellBeginEdit += (o, e) => UICore.UpdateFormFocusStatus(false);
-			dgvBlastEditor.CellEndEdit += (o,e) => UICore.UpdateFormFocusStatus(true);
-		}
 
 		private void SetDisplayOrder()
 		{

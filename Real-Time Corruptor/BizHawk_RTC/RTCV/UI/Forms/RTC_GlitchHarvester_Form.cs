@@ -503,6 +503,7 @@ namespace RTCV.UI
 				btnStashUP.Enabled = true;
 				btnStashDOWN.Enabled = true;
 				btnAddStashToStockpile.Enabled = true;
+				((Control) sender).Focus();
 			}
 		}
 

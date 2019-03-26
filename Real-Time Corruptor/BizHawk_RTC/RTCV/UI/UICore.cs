@@ -88,12 +88,43 @@ namespace RTCV.UI
 		{
 			Form newForm = ((e.message as NetCoreAdvancedMessage)?.objectValue as Form);
 
-			if(newForm != null)
+			if (newForm != null)
+			{
 				registerFormEvents(newForm);
+				registerHotkeyBlacklistControls(newForm);
+			}
 			
 		}
 
-		private static void registerFormEvents(Form f)
+		public static void registerHotkeyBlacklistControls(Control container)
+		{
+			foreach (Control c in container.Controls)
+			{
+				registerHotkeyBlacklistControls(c);
+				if (c is NumericUpDown || c is TextBox)
+				{
+					c.Enter -= ControlFocusObtained;
+					c.Enter += ControlFocusObtained;
+
+					c.Leave -= ControlFocusLost;
+					c.Leave += ControlFocusLost;
+
+				}
+				else if (c is DataGridView dgv)
+				{
+					dgv.CellBeginEdit -= ControlFocusObtained;
+					dgv.CellBeginEdit += ControlFocusObtained;
+
+					dgv.CellEndEdit -= ControlFocusLost;
+					dgv.CellEndEdit += ControlFocusLost;
+				}
+				else
+				{
+				}
+			}
+		}
+
+		public static void registerFormEvents(Form f)
 		{
 			f.Deactivate -= NewForm_FocusChanged;
 			f.Deactivate += NewForm_FocusChanged;
@@ -115,7 +146,15 @@ namespace RTCV.UI
 			}
 		}
 
-		private static void NewForm_FocusChanged(object sender, EventArgs e) => UpdateFormFocusStatus(null);
+		private static void ControlFocusObtained(object sender, EventArgs e) => UpdateFormFocusStatus(false);
+		private static void ControlFocusLost(object sender, EventArgs e) => UpdateFormFocusStatus(true);
+
+		private static void NewForm_FocusChanged(object sender, EventArgs e)
+		{
+			((Control) sender).TabIndex = 0;
+			UpdateFormFocusStatus(null);
+		}
+
 		public static void UpdateFormFocusStatus(bool? forceSet = null)
 		{
 			if (RTCV.NetCore.AllSpec.UISpec == null)
@@ -123,6 +162,7 @@ namespace RTCV.UI
 
 			bool previousState = (bool?)RTCV.NetCore.AllSpec.UISpec[NetcoreCommands.RTC_INFOCUS] ?? false;
 			bool currentState = forceSet ?? isAnyRTCFormFocused();
+			Console.WriteLine("Setting state to " + currentState);
 
 			if (previousState != currentState)
 			{	//This is a non-synced spec update to prevent jittering. Shouldn't have any other noticeable impact
