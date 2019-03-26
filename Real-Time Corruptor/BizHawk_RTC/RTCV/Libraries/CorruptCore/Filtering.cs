@@ -278,7 +278,7 @@ namespace RTCV.CorruptCore
 
 			//If the list is shorter than the current precision, left pad it
 			if (outValue.Length < precision)
-				outValue.PadLeft(precision);
+				outValue = outValue.PadLeft(precision);
 			//If the list is longer than the current precision, truncate it. Lists are stored little endian so truncate from the right
 			else if (outValue.Length > precision)
 			{
