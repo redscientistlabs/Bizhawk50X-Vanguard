@@ -48,6 +48,9 @@
 			this.GLideN64Tab = new System.Windows.Forms.TabPage();
 			this.tabControl3 = new System.Windows.Forms.TabControl();
 			this.tabPage5 = new System.Windows.Forms.TabPage();
+			this.label98 = new System.Windows.Forms.Label();
+			this.GLideN64_ShowRenderingResolution = new System.Windows.Forms.CheckBox();
+			this.GLideN64_ShowInternalResolution = new System.Windows.Forms.CheckBox();
 			this.GLideN64_FXAA = new System.Windows.Forms.CheckBox();
 			this.label88 = new System.Windows.Forms.Label();
 			this.GLideN64_GammaCorrectionLevel = new System.Windows.Forms.TextBox();
@@ -73,6 +76,7 @@
 			this.GLideN64_EnableNoise = new System.Windows.Forms.CheckBox();
 			this.GLideN64_EnableLOD = new System.Windows.Forms.CheckBox();
 			this.tabPage6 = new System.Windows.Forms.TabPage();
+			this.GLideN64_enableHalosRemoval = new System.Windows.Forms.CheckBox();
 			this.label87 = new System.Windows.Forms.Label();
 			this.GLideN64_txPath = new System.Windows.Forms.TextBox();
 			this.GLideN64_txSaveCache = new System.Windows.Forms.CheckBox();
@@ -96,6 +100,23 @@
 			this.GLideN64_bilinearMode = new System.Windows.Forms.ComboBox();
 			this.GLideN64_MaxAnisotropy = new System.Windows.Forms.CheckBox();
 			this.tabPage7 = new System.Windows.Forms.TabPage();
+			this.GLideN64_OverscanPalRight = new System.Windows.Forms.TextBox();
+			this.GLideN64_OverscanNtscRight = new System.Windows.Forms.TextBox();
+			this.GLideN64_OverscanPalLeft = new System.Windows.Forms.TextBox();
+			this.GLideN64_OverscanNtscLeft = new System.Windows.Forms.TextBox();
+			this.GLideN64_OverscanPalBottom = new System.Windows.Forms.TextBox();
+			this.GLideN64_OverscanNtscBottom = new System.Windows.Forms.TextBox();
+			this.GLideN64_OverscanPalTop = new System.Windows.Forms.TextBox();
+			this.label97 = new System.Windows.Forms.Label();
+			this.GLideN64_OverscanNtscTop = new System.Windows.Forms.TextBox();
+			this.label96 = new System.Windows.Forms.Label();
+			this.label93 = new System.Windows.Forms.Label();
+			this.label95 = new System.Windows.Forms.Label();
+			this.label92 = new System.Windows.Forms.Label();
+			this.label94 = new System.Windows.Forms.Label();
+			this.label91 = new System.Windows.Forms.Label();
+			this.label90 = new System.Windows.Forms.Label();
+			this.GLideN64_EnableOverscan = new System.Windows.Forms.CheckBox();
 			this.label89 = new System.Windows.Forms.Label();
 			this.GLideN64_UseNativeResolutionFactor = new System.Windows.Forms.TextBox();
 			this.GLideN64_DisableFBInfo = new System.Windows.Forms.CheckBox();
@@ -362,25 +383,6 @@
 			this.SaveButton = new System.Windows.Forms.Button();
 			this.CancelBT = new System.Windows.Forms.Button();
 			this.toolTip1 = new System.Windows.Forms.ToolTip(this.components);
-			this.GLideN64_ShowInternalResolution = new System.Windows.Forms.CheckBox();
-			this.GLideN64_ShowRenderingResolution = new System.Windows.Forms.CheckBox();
-			this.GLideN64_EnableOverscan = new System.Windows.Forms.CheckBox();
-			this.label90 = new System.Windows.Forms.Label();
-			this.label91 = new System.Windows.Forms.Label();
-			this.label92 = new System.Windows.Forms.Label();
-			this.label93 = new System.Windows.Forms.Label();
-			this.GLideN64_OverscanNtscTop = new System.Windows.Forms.TextBox();
-			this.GLideN64_OverscanNtscBottom = new System.Windows.Forms.TextBox();
-			this.GLideN64_OverscanNtscLeft = new System.Windows.Forms.TextBox();
-			this.GLideN64_OverscanNtscRight = new System.Windows.Forms.TextBox();
-			this.label94 = new System.Windows.Forms.Label();
-			this.label95 = new System.Windows.Forms.Label();
-			this.label96 = new System.Windows.Forms.Label();
-			this.label97 = new System.Windows.Forms.Label();
-			this.GLideN64_OverscanPalTop = new System.Windows.Forms.TextBox();
-			this.GLideN64_OverscanPalBottom = new System.Windows.Forms.TextBox();
-			this.GLideN64_OverscanPalLeft = new System.Windows.Forms.TextBox();
-			this.GLideN64_OverscanPalRight = new System.Windows.Forms.TextBox();
 			this.N64plugintabcontrol.SuspendLayout();
 			this.N64vpluginglobaltab.SuspendLayout();
 			this.GLideN64Tab.SuspendLayout();
@@ -410,9 +412,9 @@
 			// 
 			// N64plugintabcontrol
 			// 
-			this.N64plugintabcontrol.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
+			this.N64plugintabcontrol.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)
+			| System.Windows.Forms.AnchorStyles.Left)
+			| System.Windows.Forms.AnchorStyles.Right)));
 			this.N64plugintabcontrol.Controls.Add(this.N64vpluginglobaltab);
 			this.N64plugintabcontrol.Controls.Add(this.GLideN64Tab);
 			this.N64plugintabcontrol.Controls.Add(this.Glide64mk2TabPage);
@@ -502,9 +504,9 @@
 			this.RspTypeDropdown.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
 			this.RspTypeDropdown.FormattingEnabled = true;
 			this.RspTypeDropdown.Items.AddRange(new object[] {
-            "Pure Interpreter",
-            "Interpreter",
-            "DynaRec"});
+			"Pure Interpreter",
+			"Interpreter",
+			"DynaRec"});
 			this.RspTypeDropdown.Location = new System.Drawing.Point(209, 29);
 			this.RspTypeDropdown.Name = "RspTypeDropdown";
 			this.RspTypeDropdown.Size = new System.Drawing.Size(136, 21);
@@ -525,9 +527,9 @@
 			this.CoreTypeDropdown.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
 			this.CoreTypeDropdown.FormattingEnabled = true;
 			this.CoreTypeDropdown.Items.AddRange(new object[] {
-            "Pure Interpreter",
-            "Interpreter",
-            "DynaRec"});
+			"Pure Interpreter",
+			"Interpreter",
+			"DynaRec"});
 			this.CoreTypeDropdown.Location = new System.Drawing.Point(13, 29);
 			this.CoreTypeDropdown.Name = "CoreTypeDropdown";
 			this.CoreTypeDropdown.Size = new System.Drawing.Size(136, 21);
@@ -556,20 +558,20 @@
 			this.VideoResolutionComboBox.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
 			this.VideoResolutionComboBox.FormattingEnabled = true;
 			this.VideoResolutionComboBox.Items.AddRange(new object[] {
-            "320 x 240",
-            "400 x 300",
-            "480 x 360",
-            "512 x 384",
-            "640 x 480",
-            "800 x 600",
-            "1024 x 768",
-            "1152 x 864",
-            "1280 x 960",
-            "1400 x 1050",
-            "1600 x 1200",
-            "1920 x 1440",
-            "2048 x 1536",
-            "Custom"});
+			"320 x 240",
+			"400 x 300",
+			"480 x 360",
+			"512 x 384",
+			"640 x 480",
+			"800 x 600",
+			"1024 x 768",
+			"1152 x 864",
+			"1280 x 960",
+			"1400 x 1050",
+			"1600 x 1200",
+			"1920 x 1440",
+			"2048 x 1536",
+			"Custom"});
 			this.VideoResolutionComboBox.Location = new System.Drawing.Point(13, 217);
 			this.VideoResolutionComboBox.Name = "VideoResolutionComboBox";
 			this.VideoResolutionComboBox.Size = new System.Drawing.Size(136, 21);
@@ -581,10 +583,10 @@
 			this.PluginComboBox.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
 			this.PluginComboBox.FormattingEnabled = true;
 			this.PluginComboBox.Items.AddRange(new object[] {
-            "Rice",
-            "Glide64",
-            "Glide64mk2",
-            "GLideN64"});
+			"Rice",
+			"Glide64",
+			"Glide64mk2",
+			"GLideN64"});
 			this.PluginComboBox.Location = new System.Drawing.Point(13, 91);
 			this.PluginComboBox.Name = "PluginComboBox";
 			this.PluginComboBox.Size = new System.Drawing.Size(173, 21);
@@ -624,6 +626,7 @@
 			// 
 			// tabPage5
 			// 
+			this.tabPage5.Controls.Add(this.label98);
 			this.tabPage5.Controls.Add(this.GLideN64_ShowRenderingResolution);
 			this.tabPage5.Controls.Add(this.GLideN64_ShowInternalResolution);
 			this.tabPage5.Controls.Add(this.GLideN64_FXAA);
@@ -658,10 +661,39 @@
 			this.tabPage5.Text = "General";
 			this.tabPage5.UseVisualStyleBackColor = true;
 			// 
+			// label98
+			// 
+			this.label98.AutoSize = true;
+			this.label98.Location = new System.Drawing.Point(3, 253);
+			this.label98.Name = "label98";
+			this.label98.Size = new System.Drawing.Size(107, 26);
+			this.label98.TabIndex = 82;
+			this.label98.Text = "(Incompatible with\nN64 Depth Compare)";
+			// 
+			// GLideN64_ShowRenderingResolution
+			// 
+			this.GLideN64_ShowRenderingResolution.AutoSize = true;
+			this.GLideN64_ShowRenderingResolution.Location = new System.Drawing.Point(309, 234);
+			this.GLideN64_ShowRenderingResolution.Name = "GLideN64_ShowRenderingResolution";
+			this.GLideN64_ShowRenderingResolution.Size = new System.Drawing.Size(158, 17);
+			this.GLideN64_ShowRenderingResolution.TabIndex = 81;
+			this.GLideN64_ShowRenderingResolution.Text = "Show Rendering Resolution";
+			this.GLideN64_ShowRenderingResolution.UseVisualStyleBackColor = true;
+			// 
+			// GLideN64_ShowInternalResolution
+			// 
+			this.GLideN64_ShowInternalResolution.AutoSize = true;
+			this.GLideN64_ShowInternalResolution.Location = new System.Drawing.Point(309, 210);
+			this.GLideN64_ShowInternalResolution.Name = "GLideN64_ShowInternalResolution";
+			this.GLideN64_ShowInternalResolution.Size = new System.Drawing.Size(144, 17);
+			this.GLideN64_ShowInternalResolution.TabIndex = 80;
+			this.GLideN64_ShowInternalResolution.Text = "Show Internal Resolution";
+			this.GLideN64_ShowInternalResolution.UseVisualStyleBackColor = true;
+			// 
 			// GLideN64_FXAA
 			// 
 			this.GLideN64_FXAA.AutoSize = true;
-			this.GLideN64_FXAA.Location = new System.Drawing.Point(6, 237);
+			this.GLideN64_FXAA.Location = new System.Drawing.Point(6, 207);
 			this.GLideN64_FXAA.Name = "GLideN64_FXAA";
 			this.GLideN64_FXAA.Size = new System.Drawing.Size(53, 17);
 			this.GLideN64_FXAA.TabIndex = 79;
@@ -697,7 +729,7 @@
 			// label81
 			// 
 			this.label81.AutoSize = true;
-			this.label81.Location = new System.Drawing.Point(3, 210);
+			this.label81.Location = new System.Drawing.Point(3, 234);
 			this.label81.Name = "label81";
 			this.label81.Size = new System.Drawing.Size(75, 13);
 			this.label81.TabIndex = 69;
@@ -708,12 +740,12 @@
 			this.GLideN64_MultiSampling.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
 			this.GLideN64_MultiSampling.FormattingEnabled = true;
 			this.GLideN64_MultiSampling.Items.AddRange(new object[] {
-            "0",
-            "2",
-            "4",
-            "8",
-            "16"});
-			this.GLideN64_MultiSampling.Location = new System.Drawing.Point(128, 207);
+			"0",
+			"2",
+			"4",
+			"8",
+			"16"});
+			this.GLideN64_MultiSampling.Location = new System.Drawing.Point(128, 231);
 			this.GLideN64_MultiSampling.Name = "GLideN64_MultiSampling";
 			this.GLideN64_MultiSampling.Size = new System.Drawing.Size(138, 21);
 			this.GLideN64_MultiSampling.TabIndex = 68;
@@ -732,97 +764,97 @@
 			this.GLideN64_blurStrength.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
 			this.GLideN64_blurStrength.FormattingEnabled = true;
 			this.GLideN64_blurStrength.Items.AddRange(new object[] {
-            "10",
-            "11",
-            "12",
-            "13",
-            "14",
-            "15",
-            "16",
-            "17",
-            "18",
-            "19",
-            "20",
-            "21",
-            "22",
-            "23",
-            "24",
-            "25",
-            "26",
-            "27",
-            "28",
-            "29",
-            "30",
-            "31",
-            "32",
-            "33",
-            "34",
-            "35",
-            "36",
-            "37",
-            "38",
-            "39",
-            "40",
-            "41",
-            "42",
-            "43",
-            "44",
-            "45",
-            "46",
-            "47",
-            "48",
-            "49",
-            "50",
-            "51",
-            "52",
-            "53",
-            "54",
-            "55",
-            "56",
-            "57",
-            "58",
-            "59",
-            "60",
-            "61",
-            "62",
-            "63",
-            "64",
-            "65",
-            "66",
-            "67",
-            "68",
-            "69",
-            "70",
-            "71",
-            "72",
-            "73",
-            "74",
-            "75",
-            "76",
-            "77",
-            "78",
-            "79",
-            "80",
-            "81",
-            "82",
-            "83",
-            "84",
-            "85",
-            "86",
-            "87",
-            "88",
-            "89",
-            "90",
-            "91",
-            "92",
-            "93",
-            "94",
-            "95",
-            "96",
-            "97",
-            "98",
-            "99",
-            "100"});
+			"10",
+			"11",
+			"12",
+			"13",
+			"14",
+			"15",
+			"16",
+			"17",
+			"18",
+			"19",
+			"20",
+			"21",
+			"22",
+			"23",
+			"24",
+			"25",
+			"26",
+			"27",
+			"28",
+			"29",
+			"30",
+			"31",
+			"32",
+			"33",
+			"34",
+			"35",
+			"36",
+			"37",
+			"38",
+			"39",
+			"40",
+			"41",
+			"42",
+			"43",
+			"44",
+			"45",
+			"46",
+			"47",
+			"48",
+			"49",
+			"50",
+			"51",
+			"52",
+			"53",
+			"54",
+			"55",
+			"56",
+			"57",
+			"58",
+			"59",
+			"60",
+			"61",
+			"62",
+			"63",
+			"64",
+			"65",
+			"66",
+			"67",
+			"68",
+			"69",
+			"70",
+			"71",
+			"72",
+			"73",
+			"74",
+			"75",
+			"76",
+			"77",
+			"78",
+			"79",
+			"80",
+			"81",
+			"82",
+			"83",
+			"84",
+			"85",
+			"86",
+			"87",
+			"88",
+			"89",
+			"90",
+			"91",
+			"92",
+			"93",
+			"94",
+			"95",
+			"96",
+			"97",
+			"98",
+			"99",
+			"100"});
 			this.GLideN64_blurStrength.Location = new System.Drawing.Point(430, 119);
 			this.GLideN64_blurStrength.Name = "GLideN64_blurStrength";
 			this.GLideN64_blurStrength.Size = new System.Drawing.Size(60, 21);
@@ -842,15 +874,15 @@
 			this.GLideN64_blurAmount.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
 			this.GLideN64_blurAmount.FormattingEnabled = true;
 			this.GLideN64_blurAmount.Items.AddRange(new object[] {
-            "2",
-            "3",
-            "4",
-            "5",
-            "6",
-            "7",
-            "8",
-            "9",
-            "10"});
+			"2",
+			"3",
+			"4",
+			"5",
+			"6",
+			"7",
+			"8",
+			"9",
+			"10"});
 			this.GLideN64_blurAmount.Location = new System.Drawing.Point(430, 92);
 			this.GLideN64_blurAmount.Name = "GLideN64_blurAmount";
 			this.GLideN64_blurAmount.Size = new System.Drawing.Size(60, 21);
@@ -870,9 +902,9 @@
 			this.GLideN64_bloomBlendMode.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
 			this.GLideN64_bloomBlendMode.FormattingEnabled = true;
 			this.GLideN64_bloomBlendMode.Items.AddRange(new object[] {
-            "Strong",
-            "Mild",
-            "Light"});
+			"Strong",
+			"Mild",
+			"Light"});
 			this.GLideN64_bloomBlendMode.Location = new System.Drawing.Point(430, 65);
 			this.GLideN64_bloomBlendMode.Name = "GLideN64_bloomBlendMode";
 			this.GLideN64_bloomBlendMode.Size = new System.Drawing.Size(128, 21);
@@ -892,11 +924,11 @@
 			this.GLideN64_bloomThresholdLevel.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
 			this.GLideN64_bloomThresholdLevel.FormattingEnabled = true;
 			this.GLideN64_bloomThresholdLevel.Items.AddRange(new object[] {
-            "2",
-            "3",
-            "4",
-            "5",
-            "6"});
+			"2",
+			"3",
+			"4",
+			"5",
+			"6"});
 			this.GLideN64_bloomThresholdLevel.Location = new System.Drawing.Point(430, 38);
 			this.GLideN64_bloomThresholdLevel.Name = "GLideN64_bloomThresholdLevel";
 			this.GLideN64_bloomThresholdLevel.Size = new System.Drawing.Size(60, 21);
@@ -956,9 +988,9 @@
 			this.GLideN64_CorrectTexrectCoords.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
 			this.GLideN64_CorrectTexrectCoords.FormattingEnabled = true;
 			this.GLideN64_CorrectTexrectCoords.Items.AddRange(new object[] {
-            "Off",
-            "Auto",
-            "Force"});
+			"Off",
+			"Auto",
+			"Force"});
 			this.GLideN64_CorrectTexrectCoords.Location = new System.Drawing.Point(128, 111);
 			this.GLideN64_CorrectTexrectCoords.Name = "GLideN64_CorrectTexrectCoords";
 			this.GLideN64_CorrectTexrectCoords.Size = new System.Drawing.Size(138, 21);
@@ -1006,6 +1038,7 @@
 			// 
 			// tabPage6
 			// 
+			this.tabPage6.Controls.Add(this.GLideN64_enableHalosRemoval);
 			this.tabPage6.Controls.Add(this.label87);
 			this.tabPage6.Controls.Add(this.GLideN64_txPath);
 			this.tabPage6.Controls.Add(this.GLideN64_txSaveCache);
@@ -1035,6 +1068,16 @@
 			this.tabPage6.TabIndex = 1;
 			this.tabPage6.Text = "Texture settings";
 			this.tabPage6.UseVisualStyleBackColor = true;
+			// 
+			// GLideN64_enableHalosRemoval
+			// 
+			this.GLideN64_enableHalosRemoval.AutoSize = true;
+			this.GLideN64_enableHalosRemoval.Location = new System.Drawing.Point(123, 19);
+			this.GLideN64_enableHalosRemoval.Name = "GLideN64_enableHalosRemoval";
+			this.GLideN64_enableHalosRemoval.Size = new System.Drawing.Size(134, 17);
+			this.GLideN64_enableHalosRemoval.TabIndex = 77;
+			this.GLideN64_enableHalosRemoval.Text = "Enable Halos Removal";
+			this.GLideN64_enableHalosRemoval.UseVisualStyleBackColor = true;
 			// 
 			// label87
 			// 
@@ -1172,20 +1215,20 @@
 			this.GLideN64_txEnhancementMode.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
 			this.GLideN64_txEnhancementMode.FormattingEnabled = true;
 			this.GLideN64_txEnhancementMode.Items.AddRange(new object[] {
-            "None",
-            "Store as is",
-            "X2",
-            "X2SAI",
-            "HQ2X",
-            "HQ2XS",
-            "LQ2X",
-            "LQ2XS",
-            "HQ4X",
-            "2xBRZ",
-            "3xBRZ",
-            "4xBRZ",
-            "5xBRZ",
-            "6xBRZ"});
+			"None",
+			"Store as is",
+			"X2",
+			"X2SAI",
+			"HQ2X",
+			"HQ2XS",
+			"LQ2X",
+			"LQ2XS",
+			"HQ4X",
+			"2xBRZ",
+			"3xBRZ",
+			"4xBRZ",
+			"5xBRZ",
+			"6xBRZ"});
 			this.GLideN64_txEnhancementMode.Location = new System.Drawing.Point(123, 122);
 			this.GLideN64_txEnhancementMode.Name = "GLideN64_txEnhancementMode";
 			this.GLideN64_txEnhancementMode.Size = new System.Drawing.Size(138, 21);
@@ -1205,13 +1248,13 @@
 			this.GLideN64_txFilterMode.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
 			this.GLideN64_txFilterMode.FormattingEnabled = true;
 			this.GLideN64_txFilterMode.Items.AddRange(new object[] {
-            "None",
-            "Smooth filtering 1",
-            "Smooth filtering 2",
-            "Smooth filtering 3",
-            "Smooth filtering 4",
-            "Sharp filtering 1",
-            "Sharp filtering 2"});
+			"None",
+			"Smooth filtering 1",
+			"Smooth filtering 2",
+			"Smooth filtering 3",
+			"Smooth filtering 4",
+			"Sharp filtering 1",
+			"Sharp filtering 2"});
 			this.GLideN64_txFilterMode.Location = new System.Drawing.Point(123, 95);
 			this.GLideN64_txFilterMode.Name = "GLideN64_txFilterMode";
 			this.GLideN64_txFilterMode.Size = new System.Drawing.Size(138, 21);
@@ -1249,8 +1292,8 @@
 			this.GLideN64_bilinearMode.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
 			this.GLideN64_bilinearMode.FormattingEnabled = true;
 			this.GLideN64_bilinearMode.Items.AddRange(new object[] {
-            "N64 3point",
-            "Standard"});
+			"N64 3point",
+			"Standard"});
 			this.GLideN64_bilinearMode.Location = new System.Drawing.Point(123, 42);
 			this.GLideN64_bilinearMode.Name = "GLideN64_bilinearMode";
 			this.GLideN64_bilinearMode.Size = new System.Drawing.Size(138, 21);
@@ -1309,6 +1352,146 @@
 			this.tabPage7.TabIndex = 2;
 			this.tabPage7.Text = "Frame buffer settings";
 			this.tabPage7.UseVisualStyleBackColor = true;
+			// 
+			// GLideN64_OverscanPalRight
+			// 
+			this.GLideN64_OverscanPalRight.Location = new System.Drawing.Point(517, 266);
+			this.GLideN64_OverscanPalRight.Name = "GLideN64_OverscanPalRight";
+			this.GLideN64_OverscanPalRight.Size = new System.Drawing.Size(42, 20);
+			this.GLideN64_OverscanPalRight.TabIndex = 87;
+			// 
+			// GLideN64_OverscanNtscRight
+			// 
+			this.GLideN64_OverscanNtscRight.Location = new System.Drawing.Point(368, 266);
+			this.GLideN64_OverscanNtscRight.Name = "GLideN64_OverscanNtscRight";
+			this.GLideN64_OverscanNtscRight.Size = new System.Drawing.Size(42, 20);
+			this.GLideN64_OverscanNtscRight.TabIndex = 87;
+			// 
+			// GLideN64_OverscanPalLeft
+			// 
+			this.GLideN64_OverscanPalLeft.Location = new System.Drawing.Point(517, 244);
+			this.GLideN64_OverscanPalLeft.Name = "GLideN64_OverscanPalLeft";
+			this.GLideN64_OverscanPalLeft.Size = new System.Drawing.Size(42, 20);
+			this.GLideN64_OverscanPalLeft.TabIndex = 86;
+			// 
+			// GLideN64_OverscanNtscLeft
+			// 
+			this.GLideN64_OverscanNtscLeft.Location = new System.Drawing.Point(368, 244);
+			this.GLideN64_OverscanNtscLeft.Name = "GLideN64_OverscanNtscLeft";
+			this.GLideN64_OverscanNtscLeft.Size = new System.Drawing.Size(42, 20);
+			this.GLideN64_OverscanNtscLeft.TabIndex = 86;
+			// 
+			// GLideN64_OverscanPalBottom
+			// 
+			this.GLideN64_OverscanPalBottom.Location = new System.Drawing.Point(517, 221);
+			this.GLideN64_OverscanPalBottom.Name = "GLideN64_OverscanPalBottom";
+			this.GLideN64_OverscanPalBottom.Size = new System.Drawing.Size(42, 20);
+			this.GLideN64_OverscanPalBottom.TabIndex = 85;
+			// 
+			// GLideN64_OverscanNtscBottom
+			// 
+			this.GLideN64_OverscanNtscBottom.Location = new System.Drawing.Point(368, 221);
+			this.GLideN64_OverscanNtscBottom.Name = "GLideN64_OverscanNtscBottom";
+			this.GLideN64_OverscanNtscBottom.Size = new System.Drawing.Size(42, 20);
+			this.GLideN64_OverscanNtscBottom.TabIndex = 85;
+			// 
+			// GLideN64_OverscanPalTop
+			// 
+			this.GLideN64_OverscanPalTop.Location = new System.Drawing.Point(517, 198);
+			this.GLideN64_OverscanPalTop.Name = "GLideN64_OverscanPalTop";
+			this.GLideN64_OverscanPalTop.Size = new System.Drawing.Size(42, 20);
+			this.GLideN64_OverscanPalTop.TabIndex = 84;
+			// 
+			// label97
+			// 
+			this.label97.AutoSize = true;
+			this.label97.Location = new System.Drawing.Point(448, 269);
+			this.label97.Name = "label97";
+			this.label97.Size = new System.Drawing.Size(55, 13);
+			this.label97.TabIndex = 83;
+			this.label97.Text = "PAL Right";
+			// 
+			// GLideN64_OverscanNtscTop
+			// 
+			this.GLideN64_OverscanNtscTop.Location = new System.Drawing.Point(368, 198);
+			this.GLideN64_OverscanNtscTop.Name = "GLideN64_OverscanNtscTop";
+			this.GLideN64_OverscanNtscTop.Size = new System.Drawing.Size(42, 20);
+			this.GLideN64_OverscanNtscTop.TabIndex = 84;
+			// 
+			// label96
+			// 
+			this.label96.AutoSize = true;
+			this.label96.Location = new System.Drawing.Point(448, 247);
+			this.label96.Name = "label96";
+			this.label96.Size = new System.Drawing.Size(48, 13);
+			this.label96.TabIndex = 82;
+			this.label96.Text = "PAL Left";
+			// 
+			// label93
+			// 
+			this.label93.AutoSize = true;
+			this.label93.Location = new System.Drawing.Point(290, 269);
+			this.label93.Name = "label93";
+			this.label93.Size = new System.Drawing.Size(64, 13);
+			this.label93.TabIndex = 83;
+			this.label93.Text = "NTSC Right";
+			// 
+			// label95
+			// 
+			this.label95.AutoSize = true;
+			this.label95.Location = new System.Drawing.Point(448, 224);
+			this.label95.Name = "label95";
+			this.label95.Size = new System.Drawing.Size(63, 13);
+			this.label95.TabIndex = 81;
+			this.label95.Text = "PAL Bottom";
+			// 
+			// label92
+			// 
+			this.label92.AutoSize = true;
+			this.label92.Location = new System.Drawing.Point(290, 247);
+			this.label92.Name = "label92";
+			this.label92.Size = new System.Drawing.Size(57, 13);
+			this.label92.TabIndex = 82;
+			this.label92.Text = "NTSC Left";
+			// 
+			// label94
+			// 
+			this.label94.AutoSize = true;
+			this.label94.Location = new System.Drawing.Point(448, 201);
+			this.label94.Name = "label94";
+			this.label94.Size = new System.Drawing.Size(49, 13);
+			this.label94.TabIndex = 80;
+			this.label94.Text = "PAL Top";
+			// 
+			// label91
+			// 
+			this.label91.AutoSize = true;
+			this.label91.Location = new System.Drawing.Point(290, 224);
+			this.label91.Name = "label91";
+			this.label91.Size = new System.Drawing.Size(72, 13);
+			this.label91.TabIndex = 81;
+			this.label91.Text = "NTSC Bottom";
+			// 
+			// label90
+			// 
+			this.label90.AutoSize = true;
+			this.label90.Location = new System.Drawing.Point(290, 201);
+			this.label90.Name = "label90";
+			this.label90.Size = new System.Drawing.Size(58, 13);
+			this.label90.TabIndex = 80;
+			this.label90.Text = "NTSC Top";
+			// 
+			// GLideN64_EnableOverscan
+			// 
+			this.GLideN64_EnableOverscan.AutoSize = true;
+			this.GLideN64_EnableOverscan.Enabled = false;
+			this.GLideN64_EnableOverscan.Location = new System.Drawing.Point(293, 171);
+			this.GLideN64_EnableOverscan.Name = "GLideN64_EnableOverscan";
+			this.GLideN64_EnableOverscan.Size = new System.Drawing.Size(108, 17);
+			this.GLideN64_EnableOverscan.TabIndex = 79;
+			this.GLideN64_EnableOverscan.Text = "Enable Overscan";
+			this.GLideN64_EnableOverscan.UseVisualStyleBackColor = true;
+			this.GLideN64_EnableOverscan.CheckedChanged += new System.EventHandler(this.GLideN64_EnableOverscan_CheckedChanged);
 			// 
 			// label89
 			// 
@@ -1370,9 +1553,9 @@
 			this.GLideN64_BufferSwapMode.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
 			this.GLideN64_BufferSwapMode.FormattingEnabled = true;
 			this.GLideN64_BufferSwapMode.Items.AddRange(new object[] {
-            "On VI update call",
-            "On VI origin change",
-            "On buffer update"});
+			"On VI update call",
+			"On VI origin change",
+			"On buffer update"});
 			this.GLideN64_BufferSwapMode.Location = new System.Drawing.Point(134, 168);
 			this.GLideN64_BufferSwapMode.Name = "GLideN64_BufferSwapMode";
 			this.GLideN64_BufferSwapMode.Size = new System.Drawing.Size(138, 21);
@@ -1392,10 +1575,10 @@
 			this.GLideN64_AspectRatio.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
 			this.GLideN64_AspectRatio.FormattingEnabled = true;
 			this.GLideN64_AspectRatio.Items.AddRange(new object[] {
-            "Stretch",
-            "Force 4:3",
-            "Force 16:9",
-            "Adjust"});
+			"Stretch",
+			"Force 4:3",
+			"Force 16:9",
+			"Adjust"});
 			this.GLideN64_AspectRatio.Location = new System.Drawing.Point(134, 141);
 			this.GLideN64_AspectRatio.Name = "GLideN64_AspectRatio";
 			this.GLideN64_AspectRatio.Size = new System.Drawing.Size(138, 21);
@@ -1425,9 +1608,9 @@
 			this.GLideN64_EnableCopyColorToRDRAM.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
 			this.GLideN64_EnableCopyColorToRDRAM.FormattingEnabled = true;
 			this.GLideN64_EnableCopyColorToRDRAM.Items.AddRange(new object[] {
-            "Do not copy",
-            "Copy in sync mode",
-            "Copy in async mode"});
+			"Do not copy",
+			"Copy in sync mode",
+			"Copy in async mode"});
 			this.GLideN64_EnableCopyColorToRDRAM.Location = new System.Drawing.Point(421, 115);
 			this.GLideN64_EnableCopyColorToRDRAM.Name = "GLideN64_EnableCopyColorToRDRAM";
 			this.GLideN64_EnableCopyColorToRDRAM.Size = new System.Drawing.Size(138, 21);
@@ -1467,9 +1650,9 @@
 			this.GLideN64_EnableCopyDepthToRDRAM.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
 			this.GLideN64_EnableCopyDepthToRDRAM.FormattingEnabled = true;
 			this.GLideN64_EnableCopyDepthToRDRAM.Items.AddRange(new object[] {
-            "Do not copy",
-            "Copy from video memory",
-            "Use software render"});
+			"Do not copy",
+			"Copy from video memory",
+			"Use software render"});
 			this.GLideN64_EnableCopyDepthToRDRAM.Location = new System.Drawing.Point(421, 42);
 			this.GLideN64_EnableCopyDepthToRDRAM.Name = "GLideN64_EnableCopyDepthToRDRAM";
 			this.GLideN64_EnableCopyDepthToRDRAM.Size = new System.Drawing.Size(138, 21);
@@ -1587,10 +1770,10 @@
 			this.Glide64mk2_card_id.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
 			this.Glide64mk2_card_id.FormattingEnabled = true;
 			this.Glide64mk2_card_id.Items.AddRange(new object[] {
-            "0",
-            "1",
-            "2",
-            "3"});
+			"0",
+			"1",
+			"2",
+			"3"});
 			this.Glide64mk2_card_id.Location = new System.Drawing.Point(58, 27);
 			this.Glide64mk2_card_id.Name = "Glide64mk2_card_id";
 			this.Glide64mk2_card_id.Size = new System.Drawing.Size(36, 21);
@@ -1968,9 +2151,9 @@
 			this.Glide64mk2_read_back_to_screen.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
 			this.Glide64mk2_read_back_to_screen.FormattingEnabled = true;
 			this.Glide64mk2_read_back_to_screen.Items.AddRange(new object[] {
-            "0",
-            "1",
-            "2"});
+			"0",
+			"1",
+			"2"});
 			this.Glide64mk2_read_back_to_screen.Location = new System.Drawing.Point(396, 142);
 			this.Glide64mk2_read_back_to_screen.Name = "Glide64mk2_read_back_to_screen";
 			this.Glide64mk2_read_back_to_screen.Size = new System.Drawing.Size(78, 21);
@@ -1981,10 +2164,10 @@
 			this.Glide64mk2_aspectmode.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
 			this.Glide64mk2_aspectmode.FormattingEnabled = true;
 			this.Glide64mk2_aspectmode.Items.AddRange(new object[] {
-            "4:3",
-            "16:9",
-            "?????",
-            "Original"});
+			"4:3",
+			"16:9",
+			"?????",
+			"Original"});
 			this.Glide64mk2_aspectmode.Location = new System.Drawing.Point(396, 87);
 			this.Glide64mk2_aspectmode.Name = "Glide64mk2_aspectmode";
 			this.Glide64mk2_aspectmode.Size = new System.Drawing.Size(78, 21);
@@ -1995,9 +2178,9 @@
 			this.Glide64mk2_fb_crc_mode.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
 			this.Glide64mk2_fb_crc_mode.FormattingEnabled = true;
 			this.Glide64mk2_fb_crc_mode.Items.AddRange(new object[] {
-            "None",
-            "Fast",
-            "Safe"});
+			"None",
+			"Fast",
+			"Safe"});
 			this.Glide64mk2_fb_crc_mode.Location = new System.Drawing.Point(396, 115);
 			this.Glide64mk2_fb_crc_mode.Name = "Glide64mk2_fb_crc_mode";
 			this.Glide64mk2_fb_crc_mode.Size = new System.Drawing.Size(78, 21);
@@ -2035,36 +2218,36 @@
 			this.Glide64mk2_enable_hacks_for_game.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
 			this.Glide64mk2_enable_hacks_for_game.FormattingEnabled = true;
 			this.Glide64mk2_enable_hacks_for_game.Items.AddRange(new object[] {
-            "None",
-            "All-Star Baseball",
-            "Banjo Tooie",
-            "Beetle Adventure Racing",
-            "Chopper Attack",
-            "Diddy Kong Racing",
-            "FIFA - Road to World Cup 98",
-            "F-Zero",
-            "Golden Eye",
-            "Top Gear Hyper Bike",
-            "International Superstar Soccer 64",
-            "Killer Instinct",
-            "Knockout Kings 2000",
-            "LEGO Racers",
-            "Mario Kart",
-            "Megaman64",
-            "Mischief-makers",
-            "WCW Nitro",
-            "Ogre Battle 64",
-            "Pilotwings",
-            "Paper Mario",
-            "Pokemon Puzzle League",
-            "Resident Evil 2",
-            "StarCraft64",
-            "Supercross 2000",
-            "Top Gear Rally",
-            "Top Gear Rally 2",
-            "Tonic Trouble",
-            "Yoshi Story",
-            "Zelda"});
+			"None",
+			"All-Star Baseball",
+			"Banjo Tooie",
+			"Beetle Adventure Racing",
+			"Chopper Attack",
+			"Diddy Kong Racing",
+			"FIFA - Road to World Cup 98",
+			"F-Zero",
+			"Golden Eye",
+			"Top Gear Hyper Bike",
+			"International Superstar Soccer 64",
+			"Killer Instinct",
+			"Knockout Kings 2000",
+			"LEGO Racers",
+			"Mario Kart",
+			"Megaman64",
+			"Mischief-makers",
+			"WCW Nitro",
+			"Ogre Battle 64",
+			"Pilotwings",
+			"Paper Mario",
+			"Pokemon Puzzle League",
+			"Resident Evil 2",
+			"StarCraft64",
+			"Supercross 2000",
+			"Top Gear Rally",
+			"Top Gear Rally 2",
+			"Tonic Trouble",
+			"Yoshi Story",
+			"Zelda"});
 			this.Glide64mk2_enable_hacks_for_game.Location = new System.Drawing.Point(396, 59);
 			this.Glide64mk2_enable_hacks_for_game.Name = "Glide64mk2_enable_hacks_for_game";
 			this.Glide64mk2_enable_hacks_for_game.Size = new System.Drawing.Size(155, 21);
@@ -2084,9 +2267,9 @@
 			this.Glide64mk2_swapmode.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
 			this.Glide64mk2_swapmode.FormattingEnabled = true;
 			this.Glide64mk2_swapmode.Items.AddRange(new object[] {
-            "Old",
-            "New",
-            "Hybrid"});
+			"Old",
+			"New",
+			"Hybrid"});
 			this.Glide64mk2_swapmode.Location = new System.Drawing.Point(396, 32);
 			this.Glide64mk2_swapmode.Name = "Glide64mk2_swapmode";
 			this.Glide64mk2_swapmode.Size = new System.Drawing.Size(78, 21);
@@ -2138,9 +2321,9 @@
 			this.Glide64mk2_lodmode.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
 			this.Glide64mk2_lodmode.FormattingEnabled = true;
 			this.Glide64mk2_lodmode.Items.AddRange(new object[] {
-            "Off",
-            "Fast",
-            "Precise"});
+			"Off",
+			"Fast",
+			"Precise"});
 			this.Glide64mk2_lodmode.Location = new System.Drawing.Point(92, 115);
 			this.Glide64mk2_lodmode.Name = "Glide64mk2_lodmode";
 			this.Glide64mk2_lodmode.Size = new System.Drawing.Size(78, 21);
@@ -2160,9 +2343,9 @@
 			this.Glide64mk2_filtering.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
 			this.Glide64mk2_filtering.FormattingEnabled = true;
 			this.Glide64mk2_filtering.Items.AddRange(new object[] {
-            "None",
-            "Force bilinear",
-            "Force point-sampled"});
+			"None",
+			"Force bilinear",
+			"Force point-sampled"});
 			this.Glide64mk2_filtering.Location = new System.Drawing.Point(92, 62);
 			this.Glide64mk2_filtering.Name = "Glide64mk2_filtering";
 			this.Glide64mk2_filtering.Size = new System.Drawing.Size(138, 21);
@@ -2370,11 +2553,11 @@
 			this.Glide_tex_filter.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
 			this.Glide_tex_filter.FormattingEnabled = true;
 			this.Glide_tex_filter.Items.AddRange(new object[] {
-            "None",
-            "Blur edges",
-            "Super 2xSai",
-            "Hq2x",
-            "Hq4x"});
+			"None",
+			"Blur edges",
+			"Super 2xSai",
+			"Hq2x",
+			"Hq4x"});
 			this.Glide_tex_filter.Location = new System.Drawing.Point(297, 86);
 			this.Glide_tex_filter.Name = "Glide_tex_filter";
 			this.Glide_tex_filter.Size = new System.Drawing.Size(95, 21);
@@ -2454,9 +2637,9 @@
 			this.Glide_wfmode.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
 			this.Glide_wfmode.FormattingEnabled = true;
 			this.Glide_wfmode.Items.AddRange(new object[] {
-            "Normal colors",
-            "Vertex colors",
-            "Red only"});
+			"Normal colors",
+			"Vertex colors",
+			"Red only"});
 			this.Glide_wfmode.Location = new System.Drawing.Point(100, 136);
 			this.Glide_wfmode.Name = "Glide_wfmode";
 			this.Glide_wfmode.Size = new System.Drawing.Size(104, 21);
@@ -2487,10 +2670,10 @@
 			this.Glide_card_id.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
 			this.Glide_card_id.FormattingEnabled = true;
 			this.Glide_card_id.Items.AddRange(new object[] {
-            "0",
-            "1",
-            "2",
-            "3"});
+			"0",
+			"1",
+			"2",
+			"3"});
 			this.Glide_card_id.Location = new System.Drawing.Point(58, 86);
 			this.Glide_card_id.Name = "Glide_card_id";
 			this.Glide_card_id.Size = new System.Drawing.Size(36, 21);
@@ -2520,15 +2703,15 @@
 			this.Glide_ucode.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
 			this.Glide_ucode.FormattingEnabled = true;
 			this.Glide_ucode.Items.AddRange(new object[] {
-            "0: RSP SW 2.0X (ex. Super Mario 64)",
-            "1: F3DEX 1.XX (ex. Star Fox 64)",
-            "2: F3DEX 2.XX (ex. Zelda: OOT)",
-            "3: F3DEX ? (WaveRace)",
-            "4: RSP SW 2.0D EXT (ex. Shadows of the Empire)",
-            "5: RSP SW 2.0 (ex. Diddy Kong Racing)",
-            "6: S2DEX 1.XX  (ex. Yoshi\'s Story)",
-            "7: RSP SW PD (ex. Perfect Dark)",
-            "8: F3DEXBG 2.08 (ex. Conker\'s Bad Fur Day)"});
+			"0: RSP SW 2.0X (ex. Super Mario 64)",
+			"1: F3DEX 1.XX (ex. Star Fox 64)",
+			"2: F3DEX 2.XX (ex. Zelda: OOT)",
+			"3: F3DEX ? (WaveRace)",
+			"4: RSP SW 2.0D EXT (ex. Shadows of the Empire)",
+			"5: RSP SW 2.0 (ex. Diddy Kong Racing)",
+			"6: S2DEX 1.XX  (ex. Yoshi\'s Story)",
+			"7: RSP SW PD (ex. Perfect Dark)",
+			"8: F3DEXBG 2.08 (ex. Conker\'s Bad Fur Day)"});
 			this.Glide_ucode.Location = new System.Drawing.Point(102, 36);
 			this.Glide_ucode.Name = "Glide_ucode";
 			this.Glide_ucode.Size = new System.Drawing.Size(273, 21);
@@ -2859,26 +3042,26 @@
 			this.Glide_enable_hacks_for_game.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
 			this.Glide_enable_hacks_for_game.FormattingEnabled = true;
 			this.Glide_enable_hacks_for_game.Items.AddRange(new object[] {
-            "None",
-            "Zelda",
-            "Bomberman64",
-            "Diddy Kong Racing",
-            "Tonic Trouble",
-            "All-Star Baseball",
-            "Doraemon 2",
-            "Space Invaders",
-            "Beetle Adventure Racing",
-            "ISS64",
-            "Resident Evil 2",
-            "WCW Nitro",
-            "Chopper Attack",
-            "Yoshi Story",
-            "F-Zero",
-            "Paper Mario",
-            "Top Gear Rally",
-            "Top Gear Rally 2",
-            "Killer Instinct",
-            "LEGO Racers"});
+			"None",
+			"Zelda",
+			"Bomberman64",
+			"Diddy Kong Racing",
+			"Tonic Trouble",
+			"All-Star Baseball",
+			"Doraemon 2",
+			"Space Invaders",
+			"Beetle Adventure Racing",
+			"ISS64",
+			"Resident Evil 2",
+			"WCW Nitro",
+			"Chopper Attack",
+			"Yoshi Story",
+			"F-Zero",
+			"Paper Mario",
+			"Top Gear Rally",
+			"Top Gear Rally 2",
+			"Killer Instinct",
+			"LEGO Racers"});
 			this.Glide_enable_hacks_for_game.Location = new System.Drawing.Point(396, 59);
 			this.Glide_enable_hacks_for_game.Name = "Glide_enable_hacks_for_game";
 			this.Glide_enable_hacks_for_game.Size = new System.Drawing.Size(155, 21);
@@ -2898,9 +3081,9 @@
 			this.Glide_swapmode.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
 			this.Glide_swapmode.FormattingEnabled = true;
 			this.Glide_swapmode.Items.AddRange(new object[] {
-            "Old",
-            "New",
-            "Hybrid"});
+			"Old",
+			"New",
+			"Hybrid"});
 			this.Glide_swapmode.Location = new System.Drawing.Point(396, 32);
 			this.Glide_swapmode.Name = "Glide_swapmode";
 			this.Glide_swapmode.Size = new System.Drawing.Size(78, 21);
@@ -2952,9 +3135,9 @@
 			this.Glide_lodmode.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
 			this.Glide_lodmode.FormattingEnabled = true;
 			this.Glide_lodmode.Items.AddRange(new object[] {
-            "Off",
-            "Fast",
-            "Precise"});
+			"Off",
+			"Fast",
+			"Precise"});
 			this.Glide_lodmode.Location = new System.Drawing.Point(92, 115);
 			this.Glide_lodmode.Name = "Glide_lodmode";
 			this.Glide_lodmode.Size = new System.Drawing.Size(78, 21);
@@ -2990,9 +3173,9 @@
 			this.Glide_filtering.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
 			this.Glide_filtering.FormattingEnabled = true;
 			this.Glide_filtering.Items.AddRange(new object[] {
-            "None",
-            "Force bilinear",
-            "Force point-sampled"});
+			"None",
+			"Force bilinear",
+			"Force point-sampled"});
 			this.Glide_filtering.Location = new System.Drawing.Point(92, 62);
 			this.Glide_filtering.Name = "Glide_filtering";
 			this.Glide_filtering.Size = new System.Drawing.Size(138, 21);
@@ -3103,14 +3286,14 @@
 			this.RiceScreenUpdateSetting_Combo.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
 			this.RiceScreenUpdateSetting_Combo.FormattingEnabled = true;
 			this.RiceScreenUpdateSetting_Combo.Items.AddRange(new object[] {
-            "ROM default",
-            "VI origin update",
-            "VI origin change",
-            "CI change",
-            "First CI change",
-            "First primitive draw",
-            "Before screen clear",
-            "After screen drawn"});
+			"ROM default",
+			"VI origin update",
+			"VI origin change",
+			"CI change",
+			"First CI change",
+			"First primitive draw",
+			"Before screen clear",
+			"After screen drawn"});
 			this.RiceScreenUpdateSetting_Combo.Location = new System.Drawing.Point(409, 201);
 			this.RiceScreenUpdateSetting_Combo.Name = "RiceScreenUpdateSetting_Combo";
 			this.RiceScreenUpdateSetting_Combo.Size = new System.Drawing.Size(121, 21);
@@ -3134,11 +3317,11 @@
 			this.RiceMultiSampling_Combo.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
 			this.RiceMultiSampling_Combo.FormattingEnabled = true;
 			this.RiceMultiSampling_Combo.Items.AddRange(new object[] {
-            "Off",
-            "2x",
-            "4x",
-            "8x",
-            "16x"});
+			"Off",
+			"2x",
+			"4x",
+			"8x",
+			"16x"});
 			this.RiceMultiSampling_Combo.Location = new System.Drawing.Point(409, 174);
 			this.RiceMultiSampling_Combo.Name = "RiceMultiSampling_Combo";
 			this.RiceMultiSampling_Combo.Size = new System.Drawing.Size(121, 21);
@@ -3162,15 +3345,15 @@
 			this.RiceOpenGLRenderSetting_Combo.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
 			this.RiceOpenGLRenderSetting_Combo.FormattingEnabled = true;
 			this.RiceOpenGLRenderSetting_Combo.Items.AddRange(new object[] {
-            "Auto",
-            "OGL_1.1",
-            "OGL_1.2",
-            "OGL_1.3",
-            "OGL_1.4",
-            "OGL_1.4_V2",
-            "OGL_TNT2",
-            "NVIDIA_OGL",
-            "OpenGL Fragment Program Extension"});
+			"Auto",
+			"OGL_1.1",
+			"OGL_1.2",
+			"OGL_1.3",
+			"OGL_1.4",
+			"OGL_1.4_V2",
+			"OGL_TNT2",
+			"NVIDIA_OGL",
+			"OpenGL Fragment Program Extension"});
 			this.RiceOpenGLRenderSetting_Combo.Location = new System.Drawing.Point(409, 147);
 			this.RiceOpenGLRenderSetting_Combo.Name = "RiceOpenGLRenderSetting_Combo";
 			this.RiceOpenGLRenderSetting_Combo.Size = new System.Drawing.Size(121, 21);
@@ -3194,8 +3377,8 @@
 			this.RiceColorQuality_Combo.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
 			this.RiceColorQuality_Combo.FormattingEnabled = true;
 			this.RiceColorQuality_Combo.Items.AddRange(new object[] {
-            "32-bits",
-            "16-bits"});
+			"32-bits",
+			"16-bits"});
 			this.RiceColorQuality_Combo.Location = new System.Drawing.Point(409, 120);
 			this.RiceColorQuality_Combo.Name = "RiceColorQuality_Combo";
 			this.RiceColorQuality_Combo.Size = new System.Drawing.Size(121, 21);
@@ -3219,8 +3402,8 @@
 			this.RiceOpenGLDepthBufferSetting_Combo.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
 			this.RiceOpenGLDepthBufferSetting_Combo.FormattingEnabled = true;
 			this.RiceOpenGLDepthBufferSetting_Combo.Items.AddRange(new object[] {
-            "16-bits",
-            "32-bits"});
+			"16-bits",
+			"32-bits"});
 			this.RiceOpenGLDepthBufferSetting_Combo.Location = new System.Drawing.Point(409, 93);
 			this.RiceOpenGLDepthBufferSetting_Combo.Name = "RiceOpenGLDepthBufferSetting_Combo";
 			this.RiceOpenGLDepthBufferSetting_Combo.Size = new System.Drawing.Size(121, 21);
@@ -3244,9 +3427,9 @@
 			this.RiceTextureQuality_Combo.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
 			this.RiceTextureQuality_Combo.FormattingEnabled = true;
 			this.RiceTextureQuality_Combo.Items.AddRange(new object[] {
-            "Default",
-            "32-bits",
-            "16-bits"});
+			"Default",
+			"32-bits",
+			"16-bits"});
 			this.RiceTextureQuality_Combo.Location = new System.Drawing.Point(409, 66);
 			this.RiceTextureQuality_Combo.Name = "RiceTextureQuality_Combo";
 			this.RiceTextureQuality_Combo.Size = new System.Drawing.Size(121, 21);
@@ -3273,7 +3456,7 @@
 			this.RiceSkipFrame_CB.TabIndex = 23;
 			this.RiceSkipFrame_CB.Text = "Skip Frame";
 			this.toolTip1.SetToolTip(this.RiceSkipFrame_CB, "If this option is enabled, the plugin will skip every other frame.\r\n\r\nDefault: Of" +
-        "f");
+		"f");
 			this.RiceSkipFrame_CB.UseVisualStyleBackColor = true;
 			// 
 			// RiceEnableHacks_CB
@@ -3296,7 +3479,7 @@
 			this.RiceFullTMEMEmulation_CB.TabIndex = 16;
 			this.RiceFullTMEMEmulation_CB.Text = "Full Texture Memory Emulation";
 			this.toolTip1.SetToolTip(this.RiceFullTMEMEmulation_CB, "N64 Texture Memory Full Emulation.\r\nMay fix some games, may break others.\r\n\r\nDefa" +
-        "ult: Off");
+		"ult: Off");
 			this.RiceFullTMEMEmulation_CB.UseVisualStyleBackColor = true;
 			// 
 			// RiceOpenGLVertexClipper_CB
@@ -3349,9 +3532,9 @@
 			this.RiceFogMethod_Combo.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
 			this.RiceFogMethod_Combo.FormattingEnabled = true;
 			this.RiceFogMethod_Combo.Items.AddRange(new object[] {
-            "Disabled",
-            "Enabled (N64 choose)",
-            "Force Fog"});
+			"Disabled",
+			"Enabled (N64 choose)",
+			"Force Fog"});
 			this.RiceFogMethod_Combo.Location = new System.Drawing.Point(409, 39);
 			this.RiceFogMethod_Combo.Name = "RiceFogMethod_Combo";
 			this.RiceFogMethod_Combo.Size = new System.Drawing.Size(121, 21);
@@ -3368,7 +3551,7 @@
 			this.label5.Text = "Use Mipmapping:";
 			this.label5.TextAlign = System.Drawing.ContentAlignment.TopRight;
 			this.toolTip1.SetToolTip(this.label5, "Allows textures to look nicer viewed from far away.\r\nCan also increase performanc" +
-        "e in some case.\r\n\r\nDefault: Bilinear\r\n");
+		"e in some case.\r\n\r\nDefault: Bilinear\r\n");
 			// 
 			// RiceMipmapping_Combo
 			// 
@@ -3376,16 +3559,16 @@
 			this.RiceMipmapping_Combo.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
 			this.RiceMipmapping_Combo.FormattingEnabled = true;
 			this.RiceMipmapping_Combo.Items.AddRange(new object[] {
-            "None",
-            "Nearest",
-            "Bilinear",
-            "Trilinear"});
+			"None",
+			"Nearest",
+			"Bilinear",
+			"Trilinear"});
 			this.RiceMipmapping_Combo.Location = new System.Drawing.Point(409, 16);
 			this.RiceMipmapping_Combo.Name = "RiceMipmapping_Combo";
 			this.RiceMipmapping_Combo.Size = new System.Drawing.Size(121, 21);
 			this.RiceMipmapping_Combo.TabIndex = 9;
 			this.toolTip1.SetToolTip(this.RiceMipmapping_Combo, "Allows textures to look nicer viewed from far away.\r\nCan also increase performanc" +
-        "e in some case.\r\n\r\nDefault: Bilinear");
+		"e in some case.\r\n\r\nDefault: Bilinear");
 			// 
 			// RiceWinFrameMode_CB
 			// 
@@ -3396,7 +3579,7 @@
 			this.RiceWinFrameMode_CB.TabIndex = 8;
 			this.RiceWinFrameMode_CB.Text = "Enable WinFrame Mode";
 			this.toolTip1.SetToolTip(this.RiceWinFrameMode_CB, "If enabled, graphics will be drawn in WinFrame mode instead of solid and texture " +
-        "mode.\r\n\r\nDefault: Off");
+		"mode.\r\n\r\nDefault: Off");
 			this.RiceWinFrameMode_CB.UseVisualStyleBackColor = true;
 			// 
 			// RiceInN64Resolution_CB
@@ -3419,7 +3602,7 @@
 			this.RiceFastTextureLoading_CB.TabIndex = 5;
 			this.RiceFastTextureLoading_CB.Text = "Fast Texture Loading";
 			this.toolTip1.SetToolTip(this.RiceFastTextureLoading_CB, "Use a faster algorithm to speed up texture loading and CRC computation.\r\n\r\nDefaul" +
-        "t: Off");
+		"t: Off");
 			this.RiceFastTextureLoading_CB.UseVisualStyleBackColor = true;
 			// 
 			// RiceAccurateTextureMapping_CB
@@ -3544,14 +3727,14 @@
 			this.RiceFrameBufferWriteBackControl_Combo.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
 			this.RiceFrameBufferWriteBackControl_Combo.FormattingEnabled = true;
 			this.RiceFrameBufferWriteBackControl_Combo.Items.AddRange(new object[] {
-            "Every Frame",
-            "Every 2 Frames",
-            "Every 3 Frames",
-            "Every 4 Frames",
-            "Every 5 Frames",
-            "Every 6 Frames",
-            "Every 7 Frames",
-            "Every 8 Frames"});
+			"Every Frame",
+			"Every 2 Frames",
+			"Every 3 Frames",
+			"Every 4 Frames",
+			"Every 5 Frames",
+			"Every 6 Frames",
+			"Every 7 Frames",
+			"Every 8 Frames"});
 			this.RiceFrameBufferWriteBackControl_Combo.Location = new System.Drawing.Point(226, 97);
 			this.RiceFrameBufferWriteBackControl_Combo.Name = "RiceFrameBufferWriteBackControl_Combo";
 			this.RiceFrameBufferWriteBackControl_Combo.Size = new System.Drawing.Size(121, 21);
@@ -3564,8 +3747,8 @@
 			this.RiceFrameBufferSetting_Combo.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
 			this.RiceFrameBufferSetting_Combo.FormattingEnabled = true;
 			this.RiceFrameBufferSetting_Combo.Items.AddRange(new object[] {
-            "Rom Default",
-            "Disable"});
+			"Rom Default",
+			"Disable"});
 			this.RiceFrameBufferSetting_Combo.Location = new System.Drawing.Point(226, 43);
 			this.RiceFrameBufferSetting_Combo.Name = "RiceFrameBufferSetting_Combo";
 			this.RiceFrameBufferSetting_Combo.Size = new System.Drawing.Size(121, 21);
@@ -3581,7 +3764,7 @@
 			this.RiceDoubleSizeForSmallTxtrBuf_CB.TabIndex = 3;
 			this.RiceDoubleSizeForSmallTxtrBuf_CB.Text = "Double Resolution For Small Render-to-Textures";
 			this.toolTip1.SetToolTip(this.RiceDoubleSizeForSmallTxtrBuf_CB, "Enable this option to have better render-to-texture quality.\r\nThis requires more " +
-        "VRAM.\r\n\r\nDefault: Off");
+		"VRAM.\r\n\r\nDefault: Off");
 			this.RiceDoubleSizeForSmallTxtrBuf_CB.UseVisualStyleBackColor = true;
 			// 
 			// RiceRenderToTexture_Combo
@@ -3590,11 +3773,11 @@
 			this.RiceRenderToTexture_Combo.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
 			this.RiceRenderToTexture_Combo.FormattingEnabled = true;
 			this.RiceRenderToTexture_Combo.Items.AddRange(new object[] {
-            "None",
-            "Hide Render-to-texture Effects",
-            "Basic Render-to-texture",
-            "Basic & Write Back",
-            "Write Back & Reload"});
+			"None",
+			"Hide Render-to-texture Effects",
+			"Basic Render-to-texture",
+			"Basic & Write Back",
+			"Write Back & Reload"});
 			this.RiceRenderToTexture_Combo.Location = new System.Drawing.Point(226, 70);
 			this.RiceRenderToTexture_Combo.Name = "RiceRenderToTexture_Combo";
 			this.RiceRenderToTexture_Combo.Size = new System.Drawing.Size(121, 21);
@@ -3636,9 +3819,9 @@
 			this.RiceForceTextureFilter_Combo.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
 			this.RiceForceTextureFilter_Combo.FormattingEnabled = true;
 			this.RiceForceTextureFilter_Combo.Items.AddRange(new object[] {
-            "Let N64 choose",
-            "Force No Filtering",
-            "Force Filtering"});
+			"Let N64 choose",
+			"Force No Filtering",
+			"Force Filtering"});
 			this.RiceForceTextureFilter_Combo.Location = new System.Drawing.Point(287, 112);
 			this.RiceForceTextureFilter_Combo.Name = "RiceForceTextureFilter_Combo";
 			this.RiceForceTextureFilter_Combo.Size = new System.Drawing.Size(120, 21);
@@ -3660,11 +3843,11 @@
 			this.RiceTextureEnhancementControl_Combo.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
 			this.RiceTextureEnhancementControl_Combo.FormattingEnabled = true;
 			this.RiceTextureEnhancementControl_Combo.Items.AddRange(new object[] {
-            "Normal",
-            "Smooth",
-            "Less smooth",
-            "2xSaI smooth",
-            "Less 2xSaI smooth"});
+			"Normal",
+			"Smooth",
+			"Less smooth",
+			"2xSaI smooth",
+			"Less 2xSaI smooth"});
 			this.RiceTextureEnhancementControl_Combo.Location = new System.Drawing.Point(287, 166);
 			this.RiceTextureEnhancementControl_Combo.Name = "RiceTextureEnhancementControl_Combo";
 			this.RiceTextureEnhancementControl_Combo.Size = new System.Drawing.Size(120, 21);
@@ -3686,16 +3869,16 @@
 			this.RiceTextureEnhancement_Combo.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
 			this.RiceTextureEnhancement_Combo.FormattingEnabled = true;
 			this.RiceTextureEnhancement_Combo.Items.AddRange(new object[] {
-            "None",
-            "2X",
-            "2XSAI",
-            "HQ2X",
-            "LQ2X",
-            "HQ4X",
-            "Sharpen",
-            "Sharpen More",
-            "External",
-            "Mirrored"});
+			"None",
+			"2X",
+			"2XSAI",
+			"HQ2X",
+			"LQ2X",
+			"HQ4X",
+			"Sharpen",
+			"Sharpen More",
+			"External",
+			"Mirrored"});
 			this.RiceTextureEnhancement_Combo.Location = new System.Drawing.Point(287, 139);
 			this.RiceTextureEnhancement_Combo.Name = "RiceTextureEnhancement_Combo";
 			this.RiceTextureEnhancement_Combo.Size = new System.Drawing.Size(120, 21);
@@ -3711,7 +3894,7 @@
 			this.RiceTexRectOnly_CB.TabIndex = 27;
 			this.RiceTexRectOnly_CB.Text = "TexRect Only";
 			this.toolTip1.SetToolTip(this.RiceTexRectOnly_CB, "If enabled, texture enhancement will be done only for TxtRect ucode.\r\n\r\nDefault: " +
-        "Off");
+		"Off");
 			this.RiceTexRectOnly_CB.UseVisualStyleBackColor = true;
 			// 
 			// RiceSmallTextureOnly_CB
@@ -3723,7 +3906,7 @@
 			this.RiceSmallTextureOnly_CB.TabIndex = 26;
 			this.RiceSmallTextureOnly_CB.Text = "Enhance Small Texture Only";
 			this.toolTip1.SetToolTip(this.RiceSmallTextureOnly_CB, "If enabled, texture enhancement will be done \r\nonly for textures width+height<=12" +
-        "8.\r\n\r\nDefault: Off");
+		"8.\r\n\r\nDefault: Off");
 			this.RiceSmallTextureOnly_CB.UseVisualStyleBackColor = true;
 			// 
 			// RiceLoadHiResCRCOnly_CB
@@ -3735,7 +3918,7 @@
 			this.RiceLoadHiResCRCOnly_CB.TabIndex = 25;
 			this.RiceLoadHiResCRCOnly_CB.Text = "Use CRC only to load Hi-Res Texture";
 			this.toolTip1.SetToolTip(this.RiceLoadHiResCRCOnly_CB, "Select hi-resolution textures based only on the CRC and \r\nignore format+size info" +
-        "rmation (Glide64 compatibility).\r\n\r\nDefault: On");
+		"rmation (Glide64 compatibility).\r\n\r\nDefault: On");
 			this.RiceLoadHiResCRCOnly_CB.UseVisualStyleBackColor = true;
 			// 
 			// RiceLoadHiResTextures_CB
@@ -3823,42 +4006,42 @@
 			this.RiceEnableHacksForGame_Combo.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
 			this.RiceEnableHacksForGame_Combo.FormattingEnabled = true;
 			this.RiceEnableHacksForGame_Combo.Items.AddRange(new object[] {
-            "NO_HACK_FOR_GAME",
-            "HACK_FOR_BANJO_TOOIE",
-            "HACK_FOR_DR_MARIO",
-            "HACK_FOR_ZELDA",
-            "HACK_FOR_MARIO_TENNIS",
-            "HACK_FOR_BANJO",
-            "HACK_FOR_PD",
-            "HACK_FOR_GE",
-            "HACK_FOR_PILOT_WINGS",
-            "HACK_FOR_YOSHI",
-            "HACK_FOR_NITRO",
-            "HACK_FOR_TONYHAWK",
-            "HACK_FOR_NASCAR",
-            "HACK_FOR_SUPER_BOWLING",
-            "HACK_FOR_CONKER",
-            "HACK_FOR_ALL_STAR_BASEBALL",
-            "HACK_FOR_TIGER_HONEY_HUNT",
-            "HACK_REVERSE_XY_COOR",
-            "HACK_REVERSE_Y_COOR",
-            "HACK_FOR_GOLDEN_EYE",
-            "HACK_FOR_FZERO",
-            "HACK_FOR_COMMANDCONQUER",
-            "HACK_FOR_RUMBLE",
-            "HACK_FOR_SOUTH_PARK_RALLY",
-            "HACK_FOR_BUST_A_MOVE",
-            "HACK_FOR_OGRE_BATTLE",
-            "HACK_FOR_TWINE",
-            "HACK_FOR_EXTREME_G2",
-            "HACK_FOR_ROGUE_SQUADRON",
-            "HACK_FOR_MARIO_GOLF",
-            "HACK_FOR_MLB",
-            "HACK_FOR_POLARISSNOCROSS",
-            "HACK_FOR_TOPGEARRALLY",
-            "HACK_FOR_DUKE_NUKEM",
-            "HACK_FOR_ZELDA_MM",
-            "HACK_FOR_MARIO_KART"});
+			"NO_HACK_FOR_GAME",
+			"HACK_FOR_BANJO_TOOIE",
+			"HACK_FOR_DR_MARIO",
+			"HACK_FOR_ZELDA",
+			"HACK_FOR_MARIO_TENNIS",
+			"HACK_FOR_BANJO",
+			"HACK_FOR_PD",
+			"HACK_FOR_GE",
+			"HACK_FOR_PILOT_WINGS",
+			"HACK_FOR_YOSHI",
+			"HACK_FOR_NITRO",
+			"HACK_FOR_TONYHAWK",
+			"HACK_FOR_NASCAR",
+			"HACK_FOR_SUPER_BOWLING",
+			"HACK_FOR_CONKER",
+			"HACK_FOR_ALL_STAR_BASEBALL",
+			"HACK_FOR_TIGER_HONEY_HUNT",
+			"HACK_REVERSE_XY_COOR",
+			"HACK_REVERSE_Y_COOR",
+			"HACK_FOR_GOLDEN_EYE",
+			"HACK_FOR_FZERO",
+			"HACK_FOR_COMMANDCONQUER",
+			"HACK_FOR_RUMBLE",
+			"HACK_FOR_SOUTH_PARK_RALLY",
+			"HACK_FOR_BUST_A_MOVE",
+			"HACK_FOR_OGRE_BATTLE",
+			"HACK_FOR_TWINE",
+			"HACK_FOR_EXTREME_G2",
+			"HACK_FOR_ROGUE_SQUADRON",
+			"HACK_FOR_MARIO_GOLF",
+			"HACK_FOR_MLB",
+			"HACK_FOR_POLARISSNOCROSS",
+			"HACK_FOR_TOPGEARRALLY",
+			"HACK_FOR_DUKE_NUKEM",
+			"HACK_FOR_ZELDA_MM",
+			"HACK_FOR_MARIO_KART"});
 			this.RiceEnableHacksForGame_Combo.Location = new System.Drawing.Point(313, 194);
 			this.RiceEnableHacksForGame_Combo.Name = "RiceEnableHacksForGame_Combo";
 			this.RiceEnableHacksForGame_Combo.Size = new System.Drawing.Size(240, 21);
@@ -3888,9 +4071,9 @@
 			this.RiceUseCIWidthAndRatio_Combo.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
 			this.RiceUseCIWidthAndRatio_Combo.FormattingEnabled = true;
 			this.RiceUseCIWidthAndRatio_Combo.Items.AddRange(new object[] {
-            "NOT_USE_CI_WIDTH_AND_RATIO",
-            "USE_CI_WIDTH_AND_RATIO_FOR_NTSC",
-            "USE_CI_WIDTH_AND_RATIO_FOR_PAL"});
+			"NOT_USE_CI_WIDTH_AND_RATIO",
+			"USE_CI_WIDTH_AND_RATIO_FOR_NTSC",
+			"USE_CI_WIDTH_AND_RATIO_FOR_PAL"});
 			this.RiceUseCIWidthAndRatio_Combo.Location = new System.Drawing.Point(133, 241);
 			this.RiceUseCIWidthAndRatio_Combo.Name = "RiceUseCIWidthAndRatio_Combo";
 			this.RiceUseCIWidthAndRatio_Combo.Size = new System.Drawing.Size(274, 21);
@@ -3910,11 +4093,11 @@
 			this.RiceRenderToTextureOption_Combo.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
 			this.RiceRenderToTextureOption_Combo.FormattingEnabled = true;
 			this.RiceRenderToTextureOption_Combo.Items.AddRange(new object[] {
-            "TXT_BUF_NONE",
-            "TXT_BUF_IGNORE",
-            "TXT_BUF_NORMAL",
-            "TXT_BUF_WRITE_BACK",
-            "TXT_BUF_WRITE_BACK_AND_RELOAD"});
+			"TXT_BUF_NONE",
+			"TXT_BUF_IGNORE",
+			"TXT_BUF_NORMAL",
+			"TXT_BUF_WRITE_BACK",
+			"TXT_BUF_WRITE_BACK_AND_RELOAD"});
 			this.RiceRenderToTextureOption_Combo.Location = new System.Drawing.Point(313, 154);
 			this.RiceRenderToTextureOption_Combo.Name = "RiceRenderToTextureOption_Combo";
 			this.RiceRenderToTextureOption_Combo.Size = new System.Drawing.Size(240, 21);
@@ -3934,16 +4117,16 @@
 			this.RiceFrameBufferOption_Combo.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
 			this.RiceFrameBufferOption_Combo.FormattingEnabled = true;
 			this.RiceFrameBufferOption_Combo.Items.AddRange(new object[] {
-            "FRM_BUF_NONE",
-            "FRM_BUF_IGNORE",
-            "FRM_BUF_BASIC",
-            "FRM_BUF_BASIC_AND_WRITEBACK",
-            "FRM_BUF_WRITEBACK_AND_RELOAD",
-            "FRM_BUF_COMPLETE",
-            "FRM_BUF_WITH_EMULATOR",
-            "FRM_BUF_BASIC_AND_WITH_EMULATOR",
-            "FRM_BUF_WITH_EMULATOR_READ_ONLY",
-            "FRM_BUF_WITH_EMULATOR_WRITE_ONLY"});
+			"FRM_BUF_NONE",
+			"FRM_BUF_IGNORE",
+			"FRM_BUF_BASIC",
+			"FRM_BUF_BASIC_AND_WRITEBACK",
+			"FRM_BUF_WRITEBACK_AND_RELOAD",
+			"FRM_BUF_COMPLETE",
+			"FRM_BUF_WITH_EMULATOR",
+			"FRM_BUF_BASIC_AND_WITH_EMULATOR",
+			"FRM_BUF_WITH_EMULATOR_READ_ONLY",
+			"FRM_BUF_WITH_EMULATOR_WRITE_ONLY"});
 			this.RiceFrameBufferOption_Combo.Location = new System.Drawing.Point(313, 114);
 			this.RiceFrameBufferOption_Combo.Name = "RiceFrameBufferOption_Combo";
 			this.RiceFrameBufferOption_Combo.Size = new System.Drawing.Size(239, 21);
@@ -3965,9 +4148,9 @@
 			this.RiceNormalBlender_Combo.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
 			this.RiceNormalBlender_Combo.FormattingEnabled = true;
 			this.RiceNormalBlender_Combo.Items.AddRange(new object[] {
-            "0",
-            "1",
-            "2"});
+			"0",
+			"1",
+			"2"});
 			this.RiceNormalBlender_Combo.Location = new System.Drawing.Point(515, 31);
 			this.RiceNormalBlender_Combo.Name = "RiceNormalBlender_Combo";
 			this.RiceNormalBlender_Combo.Size = new System.Drawing.Size(37, 21);
@@ -3990,8 +4173,8 @@
 			this.RiceAccurateTextureMappingHack_Combo.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
 			this.RiceAccurateTextureMappingHack_Combo.FormattingEnabled = true;
 			this.RiceAccurateTextureMappingHack_Combo.Items.AddRange(new object[] {
-            "0",
-            "1"});
+			"0",
+			"1"});
 			this.RiceAccurateTextureMappingHack_Combo.Location = new System.Drawing.Point(515, 4);
 			this.RiceAccurateTextureMappingHack_Combo.Name = "RiceAccurateTextureMappingHack_Combo";
 			this.RiceAccurateTextureMappingHack_Combo.Size = new System.Drawing.Size(37, 21);
@@ -4013,9 +4196,9 @@
 			this.RiceFastTextureCRC_Combo.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
 			this.RiceFastTextureCRC_Combo.FormattingEnabled = true;
 			this.RiceFastTextureCRC_Combo.Items.AddRange(new object[] {
-            "0",
-            "1",
-            "2"});
+			"0",
+			"1",
+			"2"});
 			this.RiceFastTextureCRC_Combo.Location = new System.Drawing.Point(515, 58);
 			this.RiceFastTextureCRC_Combo.Name = "RiceFastTextureCRC_Combo";
 			this.RiceFastTextureCRC_Combo.Size = new System.Drawing.Size(37, 21);
@@ -4037,9 +4220,9 @@
 			this.RiceFullTMEM_Combo.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
 			this.RiceFullTMEM_Combo.FormattingEnabled = true;
 			this.RiceFullTMEM_Combo.Items.AddRange(new object[] {
-            "0",
-            "1",
-            "2"});
+			"0",
+			"1",
+			"2"});
 			this.RiceFullTMEM_Combo.Location = new System.Drawing.Point(515, 85);
 			this.RiceFullTMEM_Combo.Name = "RiceFullTMEM_Combo";
 			this.RiceFullTMEM_Combo.Size = new System.Drawing.Size(36, 21);
@@ -4059,14 +4242,14 @@
 			this.RiceScreenUpdateSettingHack_Combo.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
 			this.RiceScreenUpdateSettingHack_Combo.FormattingEnabled = true;
 			this.RiceScreenUpdateSettingHack_Combo.Items.AddRange(new object[] {
-            "SCREEN_UPDATE_DEFAULT",
-            "SCREEN_UPDATE_AT_VI_UPDATE",
-            "SCREEN_UPDATE_AT_VI_CHANGE",
-            "SCREEN_UPDATE_AT_CI_CHANGE",
-            "SCREEN_UPDATE_AT_1ST_CI_CHANGE",
-            "SCREEN_UPDATE_AT_1ST_PRIMITIVE",
-            "SCREEN_UPDATE_BEFORE_SCREEN_CLEAR",
-            "SCREEN_UPDATE_AT_VI_UPDATE_AND_DRAWN"});
+			"SCREEN_UPDATE_DEFAULT",
+			"SCREEN_UPDATE_AT_VI_UPDATE",
+			"SCREEN_UPDATE_AT_VI_CHANGE",
+			"SCREEN_UPDATE_AT_CI_CHANGE",
+			"SCREEN_UPDATE_AT_1ST_CI_CHANGE",
+			"SCREEN_UPDATE_AT_1ST_PRIMITIVE",
+			"SCREEN_UPDATE_BEFORE_SCREEN_CLEAR",
+			"SCREEN_UPDATE_AT_VI_UPDATE_AND_DRAWN"});
 			this.RiceScreenUpdateSettingHack_Combo.Location = new System.Drawing.Point(133, 272);
 			this.RiceScreenUpdateSettingHack_Combo.Name = "RiceScreenUpdateSettingHack_Combo";
 			this.RiceScreenUpdateSettingHack_Combo.Size = new System.Drawing.Size(274, 21);
@@ -4431,165 +4614,6 @@
 			this.toolTip1.IsBalloon = true;
 			this.toolTip1.ReshowDelay = 100;
 			this.toolTip1.ToolTipIcon = System.Windows.Forms.ToolTipIcon.Info;
-			// 
-			// GLideN64_ShowInternalResolution
-			// 
-			this.GLideN64_ShowInternalResolution.AutoSize = true;
-			this.GLideN64_ShowInternalResolution.Location = new System.Drawing.Point(309, 210);
-			this.GLideN64_ShowInternalResolution.Name = "GLideN64_ShowInternalResolution";
-			this.GLideN64_ShowInternalResolution.Size = new System.Drawing.Size(144, 17);
-			this.GLideN64_ShowInternalResolution.TabIndex = 80;
-			this.GLideN64_ShowInternalResolution.Text = "Show Internal Resolution";
-			this.GLideN64_ShowInternalResolution.UseVisualStyleBackColor = true;
-			// 
-			// GLideN64_ShowRenderingResolution
-			// 
-			this.GLideN64_ShowRenderingResolution.AutoSize = true;
-			this.GLideN64_ShowRenderingResolution.Location = new System.Drawing.Point(309, 234);
-			this.GLideN64_ShowRenderingResolution.Name = "GLideN64_ShowRenderingResolution";
-			this.GLideN64_ShowRenderingResolution.Size = new System.Drawing.Size(158, 17);
-			this.GLideN64_ShowRenderingResolution.TabIndex = 81;
-			this.GLideN64_ShowRenderingResolution.Text = "Show Rendering Resolution";
-			this.GLideN64_ShowRenderingResolution.UseVisualStyleBackColor = true;
-			// 
-			// GLideN64_EnableOverscan
-			// 
-			this.GLideN64_EnableOverscan.AutoSize = true;
-			this.GLideN64_EnableOverscan.Location = new System.Drawing.Point(293, 171);
-			this.GLideN64_EnableOverscan.Name = "GLideN64_EnableOverscan";
-			this.GLideN64_EnableOverscan.Size = new System.Drawing.Size(108, 17);
-			this.GLideN64_EnableOverscan.TabIndex = 79;
-			this.GLideN64_EnableOverscan.Text = "Enable Overscan";
-			this.GLideN64_EnableOverscan.UseVisualStyleBackColor = true;
-			this.GLideN64_EnableOverscan.CheckedChanged += new System.EventHandler(this.GLideN64_EnableOverscan_CheckedChanged);
-			// 
-			// label90
-			// 
-			this.label90.AutoSize = true;
-			this.label90.Location = new System.Drawing.Point(290, 201);
-			this.label90.Name = "label90";
-			this.label90.Size = new System.Drawing.Size(58, 13);
-			this.label90.TabIndex = 80;
-			this.label90.Text = "NTSC Top";
-			// 
-			// label91
-			// 
-			this.label91.AutoSize = true;
-			this.label91.Location = new System.Drawing.Point(290, 224);
-			this.label91.Name = "label91";
-			this.label91.Size = new System.Drawing.Size(72, 13);
-			this.label91.TabIndex = 81;
-			this.label91.Text = "NTSC Bottom";
-			// 
-			// label92
-			// 
-			this.label92.AutoSize = true;
-			this.label92.Location = new System.Drawing.Point(290, 247);
-			this.label92.Name = "label92";
-			this.label92.Size = new System.Drawing.Size(57, 13);
-			this.label92.TabIndex = 82;
-			this.label92.Text = "NTSC Left";
-			// 
-			// label93
-			// 
-			this.label93.AutoSize = true;
-			this.label93.Location = new System.Drawing.Point(290, 269);
-			this.label93.Name = "label93";
-			this.label93.Size = new System.Drawing.Size(64, 13);
-			this.label93.TabIndex = 83;
-			this.label93.Text = "NTSC Right";
-			// 
-			// GLideN64_OverscanNtscTop
-			// 
-			this.GLideN64_OverscanNtscTop.Location = new System.Drawing.Point(368, 198);
-			this.GLideN64_OverscanNtscTop.Name = "GLideN64_OverscanNtscTop";
-			this.GLideN64_OverscanNtscTop.Size = new System.Drawing.Size(42, 20);
-			this.GLideN64_OverscanNtscTop.TabIndex = 84;
-			// 
-			// GLideN64_OverscanNtscBottom
-			// 
-			this.GLideN64_OverscanNtscBottom.Location = new System.Drawing.Point(368, 221);
-			this.GLideN64_OverscanNtscBottom.Name = "GLideN64_OverscanNtscBottom";
-			this.GLideN64_OverscanNtscBottom.Size = new System.Drawing.Size(42, 20);
-			this.GLideN64_OverscanNtscBottom.TabIndex = 85;
-			// 
-			// GLideN64_OverscanNtscLeft
-			// 
-			this.GLideN64_OverscanNtscLeft.Location = new System.Drawing.Point(368, 244);
-			this.GLideN64_OverscanNtscLeft.Name = "GLideN64_OverscanNtscLeft";
-			this.GLideN64_OverscanNtscLeft.Size = new System.Drawing.Size(42, 20);
-			this.GLideN64_OverscanNtscLeft.TabIndex = 86;
-			// 
-			// GLideN64_OverscanNtscRight
-			// 
-			this.GLideN64_OverscanNtscRight.Location = new System.Drawing.Point(368, 266);
-			this.GLideN64_OverscanNtscRight.Name = "GLideN64_OverscanNtscRight";
-			this.GLideN64_OverscanNtscRight.Size = new System.Drawing.Size(42, 20);
-			this.GLideN64_OverscanNtscRight.TabIndex = 87;
-			// 
-			// label94
-			// 
-			this.label94.AutoSize = true;
-			this.label94.Location = new System.Drawing.Point(448, 201);
-			this.label94.Name = "label94";
-			this.label94.Size = new System.Drawing.Size(49, 13);
-			this.label94.TabIndex = 80;
-			this.label94.Text = "PAL Top";
-			// 
-			// label95
-			// 
-			this.label95.AutoSize = true;
-			this.label95.Location = new System.Drawing.Point(448, 224);
-			this.label95.Name = "label95";
-			this.label95.Size = new System.Drawing.Size(63, 13);
-			this.label95.TabIndex = 81;
-			this.label95.Text = "PAL Bottom";
-			// 
-			// label96
-			// 
-			this.label96.AutoSize = true;
-			this.label96.Location = new System.Drawing.Point(448, 247);
-			this.label96.Name = "label96";
-			this.label96.Size = new System.Drawing.Size(48, 13);
-			this.label96.TabIndex = 82;
-			this.label96.Text = "PAL Left";
-			// 
-			// label97
-			// 
-			this.label97.AutoSize = true;
-			this.label97.Location = new System.Drawing.Point(448, 269);
-			this.label97.Name = "label97";
-			this.label97.Size = new System.Drawing.Size(55, 13);
-			this.label97.TabIndex = 83;
-			this.label97.Text = "PAL Right";
-			// 
-			// GLideN64_OverscanPalTop
-			// 
-			this.GLideN64_OverscanPalTop.Location = new System.Drawing.Point(517, 198);
-			this.GLideN64_OverscanPalTop.Name = "GLideN64_OverscanPalTop";
-			this.GLideN64_OverscanPalTop.Size = new System.Drawing.Size(42, 20);
-			this.GLideN64_OverscanPalTop.TabIndex = 84;
-			// 
-			// GLideN64_OverscanPalBottom
-			// 
-			this.GLideN64_OverscanPalBottom.Location = new System.Drawing.Point(517, 221);
-			this.GLideN64_OverscanPalBottom.Name = "GLideN64_OverscanPalBottom";
-			this.GLideN64_OverscanPalBottom.Size = new System.Drawing.Size(42, 20);
-			this.GLideN64_OverscanPalBottom.TabIndex = 85;
-			// 
-			// GLideN64_OverscanPalLeft
-			// 
-			this.GLideN64_OverscanPalLeft.Location = new System.Drawing.Point(517, 244);
-			this.GLideN64_OverscanPalLeft.Name = "GLideN64_OverscanPalLeft";
-			this.GLideN64_OverscanPalLeft.Size = new System.Drawing.Size(42, 20);
-			this.GLideN64_OverscanPalLeft.TabIndex = 86;
-			// 
-			// GLideN64_OverscanPalRight
-			// 
-			this.GLideN64_OverscanPalRight.Location = new System.Drawing.Point(517, 266);
-			this.GLideN64_OverscanPalRight.Name = "GLideN64_OverscanPalRight";
-			this.GLideN64_OverscanPalRight.Size = new System.Drawing.Size(42, 20);
-			this.GLideN64_OverscanPalRight.TabIndex = 87;
 			// 
 			// N64VideoPluginconfig
 			// 
@@ -5004,5 +5028,7 @@
 		private System.Windows.Forms.Label label94;
 		private System.Windows.Forms.Label label91;
 		private System.Windows.Forms.Label label90;
+		private System.Windows.Forms.CheckBox GLideN64_enableHalosRemoval;
+		private System.Windows.Forms.Label label98;
 	}
 }
