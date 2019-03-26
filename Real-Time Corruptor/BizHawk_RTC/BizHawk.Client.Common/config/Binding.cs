@@ -113,18 +113,19 @@ namespace BizHawk.Client.Common
 			{
 				if (_defaultValues == null)
 				{
+					//RTC_Hijack - Remove some of the more annoying default binds that don't line up with bizhawk usage
 					_defaultValues = new List<Binding>
 					{
-						Bind("General", "Frame Advance", "F"),
-						Bind("General", "Rewind", "Shift+R, J1 B7, X1 LeftTrigger"),
+						Bind("General", "Frame Advance"), //RTC
+						Bind("General", "Rewind", "Shift+R"),//RTC - Remove default gamepad binds
 						Bind("General", "Pause", "Pause"),
-						Bind("General", "Fast Forward", "Tab, J1 B8, X1 RightTrigger"),
+						Bind("General", "Fast Forward", "Tab"),//RTC - Remove default gamepad binds
 						Bind("General", "Turbo", "Shift+Tab"),
 						Bind("General", "Toggle Throttle"),
 						Bind("General", "Soft Reset"),
 						Bind("General", "Hard Reset"),
-						Bind("General", "Quick Load", "P"),
-						Bind("General", "Quick Save", "I"),
+						Bind("General", "Quick Load"),//RTC
+						Bind("General", "Quick Save"),//RTC
 						Bind("General", "Autofire"),
 						Bind("General", "Autohold"),
 						Bind("General", "Clear Autohold"),
@@ -146,13 +147,13 @@ namespace BizHawk.Client.Common
 						Bind("General", "Stop A/V"),
 						Bind("General", "Larger Window", "Alt+UpArrow"),
 						Bind("General", "Smaller Window", "Alt+DownArrow"),
-						Bind("General", "Increase Speed", "Equals"),
-						Bind("General", "Decrease Speed", "Minus"),
+						Bind("General", "Increase Speed"),//RTC
+						Bind("General", "Decrease Speed"),//RTC
 						Bind("General", "Reboot Core", "Ctrl+R"),
 						Bind("General", "Toggle Sound"),
 						Bind("General", "Exit Program"),
-						Bind("General", "Screen Raw to Clipboard", "Ctrl+C"),
-						Bind("General", "Screen Client to Clipboard", "Ctrl+Shift+C"),
+						Bind("General", "Screen Raw to Clipboard"),//RTC
+						Bind("General", "Screen Client to Clipboard"),//RTC
 						Bind("General", "Toggle Skip Lag Frame"),
 						Bind("General", "Toggle Key Priority"),
 
@@ -191,7 +192,7 @@ namespace BizHawk.Client.Common
 						Bind("Save States", "Previous Slot"),
 						Bind("Save States", "Next Slot"),
 
-						Bind("Movie", "Toggle read-only", "Q"),
+						Bind("Movie", "Toggle read-only"),//RTC
 						Bind("Movie", "Play Movie"),
 						Bind("Movie", "Record Movie"),
 						Bind("Movie", "Stop Movie"),
@@ -212,7 +213,7 @@ namespace BizHawk.Client.Common
 						Bind("Tools", "Lua Console"),
 						Bind("Tools", "Cheats"),
 						Bind("Tools", "TAStudio"),
-						Bind("Tools", "ToolBox", "Shift+T"),
+						Bind("Tools", "ToolBox"),//RTC
 						Bind("Tools", "Virtual Pad"),
 
 						Bind("RAM Search", "New Search"),
@@ -222,22 +223,22 @@ namespace BizHawk.Client.Common
 						Bind("RAM Search", "Previous Operator"),
 						Bind("RAM Search", "Next Operator"),
 
-						Bind("TAStudio", "Add Branch", "Alt+Insert"),
-						Bind("TAStudio", "Delete Branch", "Alt+Delete"),
+						Bind("TAStudio", "Add Branch"),//RTC
+						Bind("TAStudio", "Delete Branch"),//RTC
 						Bind("TAStudio", "Show Cursor"),
-						Bind("TAStudio", "Toggle Follow Cursor", "Shift+F"),
-						Bind("TAStudio", "Toggle Auto-Restore", "Shift+R"),
-						Bind("TAStudio", "Toggle Turbo Seek", "Shift+S"),
-						Bind("TAStudio", "Clear Frames", "Delete"),
-						Bind("TAStudio", "Insert Frame", "Insert"),
-						Bind("TAStudio", "Delete Frames", "Ctrl+Delete"),
-						Bind("TAStudio", "Clone Frames", "Ctrl+Insert"),
-						Bind("TAStudio", "Analog Increment", "UpArrow"),
-						Bind("TAStudio", "Analog Decrement", "DownArrow"),
-						Bind("TAStudio", "Analog Incr. by 10", "Shift+UpArrow"),
-						Bind("TAStudio", "Analog Decr. by 10", "Shift+DownArrow"),
-						Bind("TAStudio", "Analog Maximum", "RightArrow"),
-						Bind("TAStudio", "Analog Minimum", "LeftArrow"),
+						Bind("TAStudio", "Toggle Follow Cursor"),//RTC
+						Bind("TAStudio", "Toggle Auto-Restore"),//RTC
+						Bind("TAStudio", "Toggle Turbo Seek"),//RTC
+						Bind("TAStudio", "Clear Frames"),//RTC
+						Bind("TAStudio", "Insert Frame"),//RTC
+						Bind("TAStudio", "Delete Frames"),//RTC
+						Bind("TAStudio", "Clone Frames"),//RTC
+						Bind("TAStudio", "Analog Increment"),//RTC
+						Bind("TAStudio", "Analog Decrement"),//RTC
+						Bind("TAStudio", "Analog Incr. by 10"),//RTC
+						Bind("TAStudio", "Analog Decr. by 10"),//RTC
+						Bind("TAStudio", "Analog Maximum"),//RTC
+						Bind("TAStudio", "Analog Minimum"),//RTC
 
 						Bind("SNES", "Toggle BG 1"),
 						Bind("SNES", "Toggle BG 2"),
