@@ -146,7 +146,10 @@ namespace RTCV.CorruptCore
 			{
 				try
 				{
-					bytes[j] = (byte) Convert.ToUInt32(temp.Substring(i, 2), 16);
+					if (!Byte.TryParse(temp.Substring(i, 2), NumberStyles.HexNumber, CultureInfo.CurrentCulture
+						, out byte b))
+						return null;
+					bytes[j] = b;
 				}
 				catch (FormatException e)
 				{
