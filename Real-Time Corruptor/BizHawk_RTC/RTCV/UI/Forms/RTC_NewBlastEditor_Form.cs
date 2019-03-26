@@ -59,6 +59,7 @@ namespace RTCV.UI
 	public partial class RTC_NewBlastEditor_Form : Form, IAutoColorize
 	{
 
+
 		private static Dictionary<string, MemoryInterface> domainToMiDico = new Dictionary<string, MemoryInterface>();
 		private string[] domains = null;
 		private string searchValue, searchColumn;
@@ -168,6 +169,7 @@ namespace RTCV.UI
 			UICore.SetRTCColor(UICore.GeneralColor, this);
 			domains = MemoryDomains.MemoryInterfaces?.Keys?.Concat(MemoryDomains.VmdPool.Values.Select(it => it.ToString())).ToArray();
 			registerHotkeyBlacklistEvents(this);
+			registerValueStringScrollEvents();
 
 			dgvBlastEditor.AllowUserToOrderColumns = true;
 			SetDisplayOrder();
@@ -176,6 +178,41 @@ namespace RTCV.UI
 		{
 			SaveDisplayOrder();
 		}
+		
+
+
+		private void registerValueStringScrollEvents()
+		{
+			tbValue.MouseWheel += tbValueScroll;
+			dgvBlastEditor.MouseWheel += DgvBlastEditor_MouseWheel;
+		}
+	
+		private void DgvBlastEditor_MouseWheel(object sender, MouseEventArgs e)
+		{
+			var owningRow = dgvBlastEditor.CurrentCell.OwningRow;
+			
+			if (dgvBlastEditor.IsCurrentCellInEditMode && dgvBlastEditor.CurrentCell == owningRow.Cells[buProperty.ValueString.ToString()])
+			{
+				int precision = (int)dgvBlastEditor.CurrentCell.OwningRow.Cells[buProperty.Precision.ToString()].Value;
+				dgvCellValueScroll(dgvBlastEditor.EditingControl, e, precision);
+			}
+		}
+
+		private void dgvCellValueScroll(object sender, MouseEventArgs e, int precision)
+		{
+			if (sender is TextBox tb)
+			{
+				tb.Text = getShiftedHexString(tb.Text, e.Delta / SystemInformation.MouseWheelScrollDelta, precision);
+			}
+		}
+		private void tbValueScroll(object sender, MouseEventArgs e)
+		{
+			if (sender is TextBox tb)
+			{
+				tb.Text = getShiftedHexString(tb.Text, e.Delta / SystemInformation.MouseWheelScrollDelta, Convert.ToInt32(upDownPrecision.Value));
+			}
+		}
+
 
 		private void registerHotkeyBlacklistEvents(Control container)
 		{
@@ -762,7 +799,7 @@ namespace RTCV.UI
 
 			var valuestring = CreateColumn(buProperty.ValueString.ToString(), buProperty.ValueString.ToString(), "Value"
 				, new DataGridViewTextBoxColumn());
-
+			valuestring.DefaultCellStyle.Tag = "numeric";
 			valuestring.SortMode = DataGridViewColumnSortMode.Automatic;
 			dgvBlastEditor.Columns.Add(valuestring);
 
@@ -1591,56 +1628,54 @@ namespace RTCV.UI
 
 		private void btnShiftBlastLayerDown_Click(object sender, EventArgs e)
 		{
-			ShiftBlastLayer(true);
+			var amount = updownShiftBlastLayerAmount.Value * -1; //Shift down
+			var column = ((ComboBoxItem<String>)cbShiftBlastlayer.SelectedItem).Value;
+			var rows = dgvBlastEditor.SelectedRows.Cast<DataGridViewRow>()
+				.Where((item => ((BlastUnit)item.DataBoundItem).IsLocked == false))
+				.ToList();
+			ShiftBlastLayer(amount, column, rows);
 		}
 
 		private void btnShiftBlastLayerUp_Click(object sender, EventArgs e)
 		{
-			ShiftBlastLayer(false);
+			var amount = updownShiftBlastLayerAmount.Value;
+			var column = ((ComboBoxItem<String>) cbShiftBlastlayer.SelectedItem).Value;
+			var rows = dgvBlastEditor.SelectedRows.Cast<DataGridViewRow>()
+				.Where((item => ((BlastUnit) item.DataBoundItem).IsLocked == false))
+				.ToList();
+			ShiftBlastLayer(amount, column, rows);
 		}
 
 
-		private void ShiftBlastLayer(bool shiftDown = false)
+		private void ShiftBlastLayer(decimal amount, string column, List<DataGridViewRow> rows)
 		{
-				foreach (DataGridViewRow selected in dgvBlastEditor.SelectedRows.Cast<DataGridViewRow>()
-					.Where((item => ((BlastUnit)item.DataBoundItem).IsLocked == false)))
-				{
-					var cell = selected.Cells[((ComboBoxItem<String>)cbShiftBlastlayer.SelectedItem).Value];
+			bool shiftDown = (amount < 0);
+			foreach (DataGridViewRow row in rows) 
+			{
+				var cell = row.Cells[column];
 
-					//Can't use a switch statement because tostring is evaluated at runtime
-					if (cell.OwningColumn.Name == buProperty.SourceAddress.ToString() ||
-						cell.OwningColumn.Name == buProperty.Address.ToString() ||
-						cell.OwningColumn.Name == buProperty.Lifetime.ToString() ||
-						cell.OwningColumn.Name == buProperty.ExecuteFrame.ToString())
+				//Can't use a switch statement because tostring is evaluated at runtime
+				if (cell is DataGridViewNumericUpDownCell u)
 					{
-						var u = (DataGridViewNumericUpDownCell)cell;
 						if (shiftDown)
 							{
-								if ((Convert.ToInt64(u.Value) - updownShiftBlastLayerAmount.Value) >= 0)
-									u.Value = Convert.ToInt64(u.Value) - updownShiftBlastLayerAmount.Value;
+								if ((Convert.ToInt64(u.Value) - amount) >= 0)
+									u.Value = Convert.ToInt64(u.Value) - amount;
 								else
 									u.Value = 0;
 						}
 						else
 						{
-							if ((Convert.ToInt64(u.Value) + updownShiftBlastLayerAmount.Value) <= u.Maximum)
-								u.Value = Convert.ToInt64(u.Value) + updownShiftBlastLayerAmount.Value;
+							if ((Convert.ToInt64(u.Value) + amount) <= u.Maximum)
+								u.Value = Convert.ToInt64(u.Value) + amount;
 							else
 								u.Value = u.Maximum;
 						}
 					}
 					else if (cell.OwningColumn.Name == buProperty.ValueString.ToString())
 					{
-						//Unlike addresses, we want values to roll over so we work on the underlying value and use existing code 
-						BlastUnit bu = (BlastUnit)cell.OwningRow.DataBoundItem;
-
-
-						//Since the units are always stored as big endian, always say true
-						if (shiftDown)
-							bu.Value = CorruptCore_Extensions.AddValueToByteArrayUnchecked(bu.Value, new BigInteger(0 - updownShiftBlastLayerAmount.Value), true);
-						else
-							bu.Value = CorruptCore_Extensions.AddValueToByteArrayUnchecked(bu.Value, new BigInteger(updownShiftBlastLayerAmount.Value), true);
-
+						int precision = (int)row.Cells[buProperty.Precision.ToString()].Value;
+						cell.Value = getShiftedHexString((string)cell.Value, amount, precision);
 					}
 					else
 					{
@@ -1650,6 +1685,16 @@ namespace RTCV.UI
 				}
 			dgvBlastEditor.Refresh();
 			UpdateBottom();
+		}
+
+		private string getShiftedHexString(string value, decimal amount, int precision)
+		{
+			//Convert the string we have into a byte array
+			var valueBytes= CorruptCore_Extensions.StringToByteArrayPadLeft(value, precision);
+			if (valueBytes == null)
+				return value;
+			valueBytes = CorruptCore_Extensions.AddValueToByteArrayUnchecked(valueBytes, new BigInteger(amount), true);
+			return BitConverter.ToString(valueBytes).Replace("-", string.Empty);
 		}
 
 		private void btnHelp_Click(object sender, EventArgs e)
