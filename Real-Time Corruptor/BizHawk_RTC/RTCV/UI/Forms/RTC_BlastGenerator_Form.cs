@@ -76,10 +76,12 @@ namespace RTCV.UI
 			dgvBlastGenerator.MouseClick += dgvBlastGenerator_MouseClick;
 			dgvBlastGenerator.CellValueChanged += dgvBlastGenerator_CellValueChanged;
 			dgvBlastGenerator.CellClick += dgvBlastGenerator_CellClick;
+			dgvBlastGenerator.CellMouseDoubleClick += DgvBlastGenerator_CellMouseDoubleClick;
 
 			UICore.SetRTCColor(UICore.GeneralColor, this);
 			getAllControls(this);
 		}
+
 		private void getAllControls(Control container)
 		{
 			allControls = new List<Control>();
@@ -818,6 +820,17 @@ namespace RTCV.UI
 			}
 		}
 
+		private void DgvBlastGenerator_CellMouseDoubleClick(object sender, DataGridViewCellMouseEventArgs e)
+		{
+			if (e.Button == MouseButtons.Left)
+			{
+				if (e.RowIndex == -1)
+				{
+					dgvBlastGenerator.EndEdit();
+					dgvBlastGenerator.ClearSelection();
+				}
+			}
+		}
 		public void RefreshNoteIcons()
 		{
 			foreach (DataGridViewRow row in dgvBlastGenerator.Rows)

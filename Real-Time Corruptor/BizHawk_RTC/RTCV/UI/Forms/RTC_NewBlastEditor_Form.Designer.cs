@@ -155,6 +155,7 @@ namespace RTCV.UI
             this.dgvBlastEditor.ClipboardCopyMode = System.Windows.Forms.DataGridViewClipboardCopyMode.Disable;
             this.dgvBlastEditor.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.dgvBlastEditor.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.dgvBlastEditor.EditMode = System.Windows.Forms.DataGridViewEditMode.EditOnKeystroke;
             this.dgvBlastEditor.Location = new System.Drawing.Point(0, 24);
             this.dgvBlastEditor.Margin = new System.Windows.Forms.Padding(2);
             this.dgvBlastEditor.Name = "dgvBlastEditor";

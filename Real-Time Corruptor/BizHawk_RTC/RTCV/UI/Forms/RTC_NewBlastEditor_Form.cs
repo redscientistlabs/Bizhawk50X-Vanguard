@@ -120,6 +120,7 @@ namespace RTCV.UI
 				dgvBlastEditor.ColumnHeaderMouseClick += dgvBlastEditor_ColumnHeaderMouseClick;
 				dgvBlastEditor.CellValueChanged += dgvBlastEditor_CellValueChanged;
 				dgvBlastEditor.CellMouseClick += dgvBlastEditor_CellMouseClick;
+				dgvBlastEditor.CellMouseDoubleClick += dgvBlastEditor_CellMouseDoubleClick;
 				dgvBlastEditor.RowsAdded += DgvBlastEditor_RowsAdded;
 				dgvBlastEditor.RowsRemoved += DgvBlastEditor_RowsRemoved;
 				dgvBlastEditor.CellFormatting += DgvBlastEditor_CellFormatting;
@@ -165,7 +166,6 @@ namespace RTCV.UI
 
 			}
 		}
-
 
 		private void RTC_NewBlastEditorForm_Load(object sender, EventArgs e)
 		{
@@ -304,6 +304,15 @@ namespace RTCV.UI
 				}
 			}
 		}
+
+		private void dgvBlastEditor_CellMouseDoubleClick(object sender, DataGridViewCellMouseEventArgs e)
+		{
+			if (e.Button == MouseButtons.Left)
+			{
+				dgvBlastEditor.BeginEdit(false);
+			}
+		}
+
 
 		private void PopulateGenericContextMenu()
 		{
