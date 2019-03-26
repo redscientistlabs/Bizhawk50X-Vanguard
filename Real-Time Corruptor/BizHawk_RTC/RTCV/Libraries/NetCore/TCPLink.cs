@@ -112,7 +112,6 @@ namespace RTCV.NetCore
 		{
 			var config = new SerializerConfig();
 			config.Advanced.PersistTypeCache = true;
-			config.Advanced.UseReinterpretFormatter = false;
 			config.OnResolveFormatter.Add((c, t) =>
 			{
 				if (t == typeof(HashSet<byte[]>))
