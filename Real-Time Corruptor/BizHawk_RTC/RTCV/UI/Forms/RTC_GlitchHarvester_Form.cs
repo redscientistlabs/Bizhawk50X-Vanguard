@@ -1387,6 +1387,7 @@ namespace RTCV.UI
 				string newStatePath = CorruptCore.CorruptCore.workingDir + Path.DirectorySeparatorChar + key.StateLocation + Path.DirectorySeparatorChar + statefilename;
 
 				key.StateFilename = newStatePath;
+				key.StateShortFilename = Path.GetFileName(newStatePath);
 				key.StateLocation = StashKeySavestateLocation.SSK;
 			}
 
@@ -1429,12 +1430,13 @@ namespace RTCV.UI
 			allStashKeys.AddRange(StockpileManager_UISide.StashHistory);
 			allStashKeys.AddRange(S.GET<RTC_NewBlastEditor_Form>().GetStashKeys());
 			allStashKeys.AddRange(S.GET<RTC_BlastGenerator_Form>().GetStashKeys());
-			foreach (var sk in allStashKeys.Where(x => x.StateLocation == StashKeySavestateLocation.SSK))
+			foreach (var sk in allStashKeys.Where(x => x?.StateLocation == StashKeySavestateLocation.SSK))
 			{
 				try
 				{
-					File.Copy(Path.DirectorySeparatorChar + "WORKING\\SSK" + sk.StateShortFilename
-						, Path.DirectorySeparatorChar + "WORKING\\SESSION" + sk.StateShortFilename);
+					var stateName = sk.GameName + "." + sk.ParentKey + ".timejump.State"; // get savestate name
+					File.Copy(CorruptCore.CorruptCore.workingDir + Path.DirectorySeparatorChar + "SSK" + Path.DirectorySeparatorChar + stateName
+						, CorruptCore.CorruptCore.workingDir + Path.DirectorySeparatorChar + "SESSION" + Path.DirectorySeparatorChar + stateName);
 					sk.StateLocation = StashKeySavestateLocation.SESSION;
 				}
 				catch (IOException e)
