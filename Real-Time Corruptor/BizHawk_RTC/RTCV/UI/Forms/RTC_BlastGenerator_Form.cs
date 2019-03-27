@@ -18,7 +18,7 @@ namespace RTCV.UI
 	// 5  dgvPrecision
 	// 6  dgvType
 	// 7  dgvMode
-	// 8  dgvStepSize
+	// 8  dgvInterval
 	// 9  dgvStartAddress
 	// 10 dgvEndAddress
 	// 11 dgvParam1
@@ -41,7 +41,7 @@ namespace RTCV.UI
 			DgvPrecision,
 			DgvType,
 			DgvMode,
-			DgvStepSize,
+			dgvInterval,
 			DgvStartAddress,
 			DgvEndAddress,
 			DgvParam1,
@@ -174,7 +174,7 @@ namespace RTCV.UI
 
 
 				//For some reason, setting the minimum on the DGV to 1 doesn't change the fact it inserts with a count of 0
-				(dgvBlastGenerator.Rows[lastrow].Cells["dgvStepSize"]).Value = 1;
+				(dgvBlastGenerator.Rows[lastrow].Cells["dgvInterval"]).Value = 1;
 			}
 			catch (Exception ex)
 			{
@@ -514,7 +514,7 @@ namespace RTCV.UI
 				string type = row.Cells["dgvType"].Value.ToString();
 				string mode = row.Cells["dgvMode"].Value.ToString();
 				int precision = GetPrecisionSizeFromName(row.Cells["dgvPrecision"].Value.ToString());
-				int stepSize = Convert.ToInt32(row.Cells["dgvStepSize"].Value);
+				int interval = Convert.ToInt32(row.Cells["dgvInterval"].Value);
 				long startAddress = Convert.ToInt64(row.Cells["dgvStartAddress"].Value);
 				long endAddress = Convert.ToInt64(row.Cells["dgvEndAddress"].Value);
 				long param1 = Convert.ToInt64(row.Cells["dgvParam1"].Value);
@@ -524,7 +524,7 @@ namespace RTCV.UI
 				bool loop = Convert.ToBoolean(row.Cells["dgvLoop"].Value);
 				int seed = Convert.ToInt32(row.Cells["dgvSeed"].Value);
 
-				return new BlastGeneratorProto(note, type, domain, mode, precision, stepSize, startAddress, endAddress, param1, param2, lifetime, executeframe, loop, seed);
+				return new BlastGeneratorProto(note, type, domain, mode, precision, interval, startAddress, endAddress, param1, param2, lifetime, executeframe, loop, seed);
 			}
 			catch (Exception ex)
 			{
@@ -813,7 +813,7 @@ namespace RTCV.UI
 						NoteItem note = new NoteItem(textCell.Value == null ? "" : textCell.Value.ToString());
 						textCell.Value = note;
 						S.SET(new RTC_NoteEditor_Form(note, buttonCell));
-						S.GET<RTC_NoteEditor_Form>().Show(); 
+						S.GET<RTC_NoteEditor_Form>().Show();
 						return;
 					}
 				}
@@ -845,7 +845,7 @@ namespace RTCV.UI
 		private void CbUnitsShareNote_CheckedChanged(object sender, EventArgs e)
 		{
 			//mark the rows as dirty
-			foreach(DataGridViewRow row in dgvBlastGenerator.Rows)
+			foreach (DataGridViewRow row in dgvBlastGenerator.Rows)
 			{
 				row.Cells["dgvRowDirty"].Value = true;
 			}
