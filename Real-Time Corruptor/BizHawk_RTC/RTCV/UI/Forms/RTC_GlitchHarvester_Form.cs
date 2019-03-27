@@ -785,8 +785,7 @@ namespace RTCV.UI
 
 		public void btnBlastToggle_Click(object sender, EventArgs e)
 		{
-			if (StockpileManager_UISide.CurrentStashkey?.BlastLayer?.Layer == null ||
-				StockpileManager_UISide.CurrentStashkey?.BlastLayer?.Layer.Count > 0)
+			if (StockpileManager_UISide.CurrentStashkey?.BlastLayer?.Layer == null || StockpileManager_UISide.CurrentStashkey?.BlastLayer?.Layer.Count == 0)
 			{
 				IsCorruptionApplied = false;
 				return;

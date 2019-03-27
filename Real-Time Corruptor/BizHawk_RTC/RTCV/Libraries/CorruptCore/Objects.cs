@@ -914,7 +914,7 @@ namespace RTCV.CorruptCore
 		{
 			List<BlastUnit> BackupLayer = new List<BlastUnit>();
 
-			BackupLayer.AddRange(Layer.Select(it => it.GetBackup()));
+			BackupLayer.AddRange(Layer.Select(it => it.GetBackup()).Where(it => it != null));
 
 			return new BlastLayer(BackupLayer);
 		}
