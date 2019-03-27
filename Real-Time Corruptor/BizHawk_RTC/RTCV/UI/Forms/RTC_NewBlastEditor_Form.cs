@@ -193,19 +193,30 @@ namespace RTCV.UI
 		private void DgvBlastEditor_MouseWheel(object sender, MouseEventArgs e)
 		{
 			var owningRow = dgvBlastEditor.CurrentCell.OwningRow;
-			
-			if (dgvBlastEditor.IsCurrentCellInEditMode && dgvBlastEditor.CurrentCell == owningRow.Cells[buProperty.ValueString.ToString()])
+
+
+			//If we're in the cell already, just scroll
+			if (dgvBlastEditor.CurrentCell == owningRow.Cells[buProperty.ValueString.ToString()])
 			{
+				if (!dgvBlastEditor.IsCurrentCellInEditMode)
+				{
+					dgvBlastEditor.BeginEdit(false);
+				}
 				int precision = (int)dgvBlastEditor.CurrentCell.OwningRow.Cells[buProperty.Precision.ToString()].Value;
 				dgvCellValueScroll(dgvBlastEditor.EditingControl, e, precision);
 			}
+
 		}
 
 		private void dgvCellValueScroll(object sender, MouseEventArgs e, int precision)
 		{
 			if (sender is TextBox tb)
 			{
-				tb.Text = getShiftedHexString(tb.Text, e.Delta / SystemInformation.MouseWheelScrollDelta, precision);
+				var negative = (e.Delta < 0);
+				var scrollBy = 1;
+				if (negative)
+					scrollBy *= -1;
+				tb.Text = getShiftedHexString(tb.Text, scrollBy, precision);
 			}
 		}
 		private void tbValueScroll(object sender, MouseEventArgs e)
@@ -1037,6 +1048,7 @@ namespace RTCV.UI
 			InitializeDGV();
 			InitializeBottom();
 			this.Show();
+			this.BringToFront();
 			RefreshAllNoteIcons();
 		}
 
