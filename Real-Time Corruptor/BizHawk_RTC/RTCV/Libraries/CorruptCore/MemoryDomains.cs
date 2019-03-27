@@ -461,8 +461,7 @@ namespace RTCV.CorruptCore
 				PointerDomains.Add(bu.Domain);
 				for (int i = 0; i < bu.Precision; i++)
 				{
-					if(PointerAddresses.Contains(bu.Address))
-						PointerAddresses.Add(bu.Address);
+					PointerAddresses.Add(bu.Address);
 				}
 					
 			}
