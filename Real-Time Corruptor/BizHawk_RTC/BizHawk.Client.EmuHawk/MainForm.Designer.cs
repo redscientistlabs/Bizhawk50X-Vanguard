@@ -1571,7 +1571,7 @@
             // 
             this.extensionsToolStripMenuItem.Name = "extensionsToolStripMenuItem";
             this.extensionsToolStripMenuItem.Size = new System.Drawing.Size(179, 22);
-            this.extensionsToolStripMenuItem.Text = "File CorruptCore_Extensions...";
+            this.extensionsToolStripMenuItem.Text = "File Extensions...";
             this.extensionsToolStripMenuItem.Click += new System.EventHandler(this.FileExtensionsMenuItem_Click);
             // 
             // ClientOptionsMenuItem
@@ -4106,7 +4106,7 @@
             // 
             this.toolStripMenuItem15.Name = "toolStripMenuItem15";
             this.toolStripMenuItem15.Size = new System.Drawing.Size(159, 22);
-            this.toolStripMenuItem15.Text = "File CorruptCore_Extensions...";
+            this.toolStripMenuItem15.Text = "File Extensions...";
             this.toolStripMenuItem15.Click += new System.EventHandler(this.FileExtensionsMenuItem_Click);
             // 
             // customizeToolStripMenuItem
