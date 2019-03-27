@@ -866,6 +866,11 @@ namespace RTCV.UI
 			}
 			return false;
 		}
+
+		public StashKey[] GetStashKeys()
+		{
+			return new[] {sk};
+		}
 	}
 	class NoteItem : INote
 	{

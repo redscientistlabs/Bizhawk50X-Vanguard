@@ -1738,5 +1738,9 @@ namespace RTCV.UI
 			lbBlastLayerSize.Text = "Size: " + currentSK.BlastLayer.Layer.Count;
 		}
 
+		public StashKey[] GetStashKeys()
+		{
+			return new[] {currentSK, originalSK};
+		}
 	}
 }

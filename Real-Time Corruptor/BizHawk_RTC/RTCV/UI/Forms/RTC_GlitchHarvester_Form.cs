@@ -1345,6 +1345,7 @@ namespace RTCV.UI
 
 			try
 			{
+
 				Stockpile.EmptyFolder(Path.DirectorySeparatorChar + "WORKING\\TEMP");
 				if (!Stockpile.Extract(fileName, Path.DirectorySeparatorChar + "WORKING\\SSK", "keys.json"))
 					return;
@@ -1371,6 +1372,9 @@ namespace RTCV.UI
 				MessageBox.Show("The Savestate Keys file was empty (null).\n");
 				return;
 			}
+
+			//Commit any used states to the SESSION folder
+			moveSavestatestoSession();
 
 			for (int i = 1; i < 41; i++)
 			{
@@ -1410,6 +1414,34 @@ namespace RTCV.UI
 
 
 			RefreshSavestateTextboxes();
+		}
+
+
+		private void moveSavestatestoSession()
+		{
+			var allStashKeys = new List<StashKey>();
+			//Commit any used states to SESSION so we can safely unload the sk
+			foreach (var row in dgvStockpile.Rows.Cast<DataGridViewRow>().ToList())
+			{
+				if (row.Cells[0].Value is StashKey sk)
+					allStashKeys.Add(sk);
+			}
+			allStashKeys.AddRange(StockpileManager_UISide.StashHistory);
+			allStashKeys.AddRange(S.GET<RTC_NewBlastEditor_Form>().GetStashKeys());
+			allStashKeys.AddRange(S.GET<RTC_BlastGenerator_Form>().GetStashKeys());
+			foreach (var sk in allStashKeys.Where(x => x.StateLocation == StashKeySavestateLocation.SSK))
+			{
+				try
+				{
+					File.Copy(Path.DirectorySeparatorChar + "WORKING\\SSK" + sk.StateShortFilename
+						, Path.DirectorySeparatorChar + "WORKING\\SESSION" + sk.StateShortFilename);
+					sk.StateLocation = StashKeySavestateLocation.SESSION;
+				}
+				catch (IOException e)
+				{
+					throw new CustomException("Couldn't copy savestate " + sk.StateShortFilename + " to SESSION! " + e.Message, e.StackTrace);
+				}
+			}
 		}
 
 		private void btnLoadSavestateList_Click(object sender, EventArgs e)
