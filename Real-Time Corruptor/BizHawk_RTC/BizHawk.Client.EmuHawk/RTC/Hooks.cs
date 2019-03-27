@@ -440,16 +440,31 @@ namespace Vanguard
 					case "Game Protect Now":
 						LocalNetCoreRouter.Route(UI, REMOTE_HOTKEY_GAMEPROTECTIONNOW);
 						break;
-					case "Blast Editor Disable 50":
+					case "BE Disable 50":
 						LocalNetCoreRouter.Route(UI, REMOTE_HOTKEY_BEDISABLE50);
 						break;
 
-					case "Blast Editor Remove Disabled":
+					case "BE Remove Disabled":
 						LocalNetCoreRouter.Route(UI, REMOTE_HOTKEY_BEREMOVEDISABLED);
 						break;
 
-					case "Blast Editor Invert Disabled":
+					case "BE Invert Disabled":
 						LocalNetCoreRouter.Route(UI, REMOTE_HOTKEY_BEINVERTDISABLED);
+						break;
+					case "BE Shift Up":
+						LocalNetCoreRouter.Route(UI, REMOTE_HOTKEY_BESHIFTUP);
+						break;
+					case "BE Shift Down":
+						LocalNetCoreRouter.Route(UI, REMOTE_HOTKEY_BESHIFTDOWN);
+						break;
+					case "BE Load Corrupt":
+						LocalNetCoreRouter.Route(UI, REMOTE_HOTKEY_BELOADCORRUPT);
+						break;
+					case "BE Apply":
+						LocalNetCoreRouter.Route(UI, REMOTE_HOTKEY_BEAPPLY);
+						break;
+					case "BE Send Stash":
+						LocalNetCoreRouter.Route(UI, REMOTE_HOTKEY_BESENDSTASH);
 						break;
 				}
 				return true;

@@ -282,9 +282,14 @@ namespace BizHawk.Client.Common
 						Bind("RTC","BlastLayer Re-Blast", toolTip: "For RTC" ),
 						Bind("RTC","Game Protect Back", toolTip: "For RTC" ),
 						Bind("RTC","Game Protect Now", toolTip: "For RTC" ),
-						Bind("RTC","Blast Editor Disable 50", toolTip: "For RTC" ),
-						Bind("RTC","Blast Editor Remove Disabled", toolTip: "For RTC" ),
-						Bind("RTC","Blast Editor Invert Disabled", toolTip: "For RTC" ),
+						Bind("RTC","BE Disable 50", toolTip: "For RTC" ),
+						Bind("RTC","BE Remove Disabled", toolTip: "For RTC" ),
+						Bind("RTC","BE Invert Disabled", toolTip: "For RTC" ),
+						Bind("RTC","BE Shift Up", toolTip: "For RTC" ),
+						Bind("RTC","BE Shift Down", toolTip: "For RTC" ),
+						Bind("RTC","BE Load Corrupt", toolTip: "For RTC" ),
+						Bind("RTC","BE Apply", toolTip: "For RTC" ),
+						Bind("RTC","BE Send Stash", toolTip: "For RTC" ),
 						//------------------
 						Bind("Tools", "Toggle All Cheats"),
 					};

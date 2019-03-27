@@ -1167,7 +1167,7 @@ namespace RTCV.UI
 			RefreshAllNoteIcons();
 		}
 
-		private void btnSendToStash_Click(object sender, EventArgs e)
+		public void btnSendToStash_Click(object sender, EventArgs e)
 		{
 			if (currentSK.ParentKey == null)
 			{
@@ -1583,7 +1583,7 @@ namespace RTCV.UI
 			}
 		}
 
-		private void btnLoadCorrupt_Click(object sender, EventArgs e)
+		public void btnLoadCorrupt_Click(object sender, EventArgs e)
 		{
 
 			if (currentSK.ParentKey == null)
@@ -1596,7 +1596,7 @@ namespace RTCV.UI
 			newSk.Run();
 		}
 
-		private void btnCorrupt_Click(object sender, EventArgs e)
+		public void btnCorrupt_Click(object sender, EventArgs e)
 		{
 			StashKey newSk = (StashKey)currentSK.Clone();
 			StockpileManager_UISide.ApplyStashkey(newSk, false);
@@ -1627,7 +1627,7 @@ namespace RTCV.UI
 		}
 
 
-		private void btnShiftBlastLayerDown_Click(object sender, EventArgs e)
+		public void btnShiftBlastLayerDown_Click(object sender, EventArgs e)
 		{
 			var amount = updownShiftBlastLayerAmount.Value * -1; //Shift down
 			var column = ((ComboBoxItem<String>)cbShiftBlastlayer.SelectedItem).Value;
@@ -1637,7 +1637,7 @@ namespace RTCV.UI
 			ShiftBlastLayer(amount, column, rows);
 		}
 
-		private void btnShiftBlastLayerUp_Click(object sender, EventArgs e)
+		public void btnShiftBlastLayerUp_Click(object sender, EventArgs e)
 		{
 			var amount = updownShiftBlastLayerAmount.Value;
 			var column = ((ComboBoxItem<String>) cbShiftBlastlayer.SelectedItem).Value;

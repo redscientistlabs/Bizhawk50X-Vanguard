@@ -290,7 +290,57 @@ namespace RTCV.UI
 							var bef = S.GET<RTC_NewBlastEditor_Form>();
 							if (bef != null && bef.Focused)
 							{
-								bef.btnDisable50_Click(null, null);
+								bef.btnRemoveDisabled_Click(null, null);
+							}
+						});
+						break;
+					case REMOTE_HOTKEY_BESHIFTUP:
+						SyncObjectSingleton.FormExecute((o, ea) =>
+						{
+							var bef = S.GET<RTC_NewBlastEditor_Form>();
+							if (bef != null && bef.Focused)
+							{
+								bef.btnShiftBlastLayerUp_Click(null, null);
+							}
+						});
+						break;
+					case REMOTE_HOTKEY_BESHIFTDOWN:
+						SyncObjectSingleton.FormExecute((o, ea) =>
+						{
+							var bef = S.GET<RTC_NewBlastEditor_Form>();
+							if (bef != null && bef.Focused)
+							{
+								bef.btnShiftBlastLayerDown_Click(null, null);
+							}
+						});
+						break;
+					case REMOTE_HOTKEY_BELOADCORRUPT:
+						SyncObjectSingleton.FormExecute((o, ea) =>
+						{
+							var bef = S.GET<RTC_NewBlastEditor_Form>();
+							if (bef != null && bef.Focused)
+							{
+								bef.btnLoadCorrupt_Click(null, null);
+							}
+						});
+						break;
+					case REMOTE_HOTKEY_BEAPPLY:
+						SyncObjectSingleton.FormExecute((o, ea) =>
+						{
+							var bef = S.GET<RTC_NewBlastEditor_Form>();
+							if (bef != null && bef.Focused)
+							{
+								bef.btnCorrupt_Click(null, null);
+							}
+						});
+						break;
+					case REMOTE_HOTKEY_BESENDSTASH:
+						SyncObjectSingleton.FormExecute((o, ea) =>
+						{
+							var bef = S.GET<RTC_NewBlastEditor_Form>();
+							if (bef != null && bef.Focused)
+							{
+								bef.btnSendToStash_Click(null, null);
 							}
 						});
 						break;
