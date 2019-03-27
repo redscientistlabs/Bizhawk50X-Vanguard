@@ -116,6 +116,7 @@ namespace RTCV.UI.Components.Controls
         {
             InitializeComponent();
 			cbControlName.Location = lbControlName.Location;
+			tbControlValue.MouseWheel += TbControlValue_MouseWheel;
 
 			updater = new Timer();
             updater.Interval = updateThreshold;
@@ -167,7 +168,26 @@ namespace RTCV.UI.Components.Controls
             return (decimal)Math.Sqrt((double)x);
         }
 
-        private void Updater_Tick(object sender, EventArgs e)
+		private void TbControlValue_MouseWheel(object sender, MouseEventArgs e)
+		{
+			((HandledMouseEventArgs)e).Handled = true;//disable default mouse wheel
+			if (e.Delta > 0)
+			{
+				if (tbControlValue.Value < tbControlValue.Maximum)
+				{
+					tbControlValue.Value += e.Delta;
+				}
+			}
+			else
+			{
+				if (tbControlValue.Value > tbControlValue.Minimum)
+				{
+					tbControlValue.Value += e.Delta;
+				}
+			}
+		}
+
+		private void Updater_Tick(object sender, EventArgs e)
         {
             updater.Stop();
             OnValueChanged(new ValueUpdateEventArgs(Value));
