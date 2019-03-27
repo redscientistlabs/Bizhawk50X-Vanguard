@@ -54,7 +54,11 @@ namespace RTCV.UI
 
 		private void btnCloseSettings_Click(object sender, EventArgs e)
 		{
-			S.GET<RTC_Core_Form>().ShowPanelForm(S.GET<RTC_Core_Form>().previousForm, false);
+			//If we're not connected, go to connectionstatus
+			if (UI_VanguardImplementation.connector.netConn.status != NetCore.NetworkStatus.CONNECTED)
+				S.GET<RTC_Core_Form>().ShowPanelForm(S.GET<RTC_ConnectionStatus_Form>());
+			else
+				S.GET<RTC_Core_Form>().ShowPanelForm(S.GET<RTC_Core_Form>().previousForm, false);
 		}
 
 		private void btnToggleConsole_Click(object sender, EventArgs e)
