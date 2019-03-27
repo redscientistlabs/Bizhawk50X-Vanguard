@@ -66,8 +66,8 @@ namespace Vanguard
 				if (VanguardCore.ShowErrorDialog(ex, true) == DialogResult.Abort)
 					throw new RTCV.NetCore.AbortEverythingException();
 				MessageBox.Show("Clearing all step blastunits due to an exception within Core_Step().");
+				LocalNetCoreRouter.Route(UI, ERROR_DISABLE_AUTOCORRUPT, false);
 				StepActions.ClearStepBlastUnits();
-				CorruptCore.AutoCorrupt = false;
 			}
 		}
 
