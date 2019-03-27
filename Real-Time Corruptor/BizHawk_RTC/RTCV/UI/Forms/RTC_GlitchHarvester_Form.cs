@@ -1374,7 +1374,7 @@ namespace RTCV.UI
 			}
 
 			//Commit any used states to the SESSION folder
-			moveSavestatestoSession();
+			commitUsedStatesToSession();
 
 			for (int i = 1; i < 41; i++)
 			{
@@ -1417,7 +1417,7 @@ namespace RTCV.UI
 		}
 
 
-		private void moveSavestatestoSession()
+		private void commitUsedStatesToSession()
 		{
 			var allStashKeys = new List<StashKey>();
 			//Commit any used states to SESSION so we can safely unload the sk
@@ -1690,6 +1690,9 @@ namespace RTCV.UI
 				ContextMenuStrip columnsMenu = new ContextMenuStrip();
 				columnsMenu.Items.Add("Clear Savestate List", null, new EventHandler((ob, ev) =>
 				{
+					//Commit any used states to disk
+					commitUsedStatesToSession();
+
 					foreach (var item in pnSavestateHolder.Controls)
 					{
 						if (item is Button)
