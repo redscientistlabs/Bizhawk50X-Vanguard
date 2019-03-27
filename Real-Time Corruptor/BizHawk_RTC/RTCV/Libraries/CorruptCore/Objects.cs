@@ -58,7 +58,7 @@ namespace RTCV.CorruptCore
 				return false;
 			}
 
-			if ((bool?)AllSpec.VanguardSpec[VSPEC.CORE_DISKBASED] ?? true)
+			if ((bool?)AllSpec.VanguardSpec[VSPEC.CORE_DISKBASED] ?? false)
 			{
 				var dr = MessageBox.Show("The currently loaded game is disk based and needs to be closed before saving. Press OK to close the game and continue saving.", "Saving requires closing game", MessageBoxButtons.OKCancel);
 				if (dr == DialogResult.OK)
@@ -98,7 +98,6 @@ namespace RTCV.CorruptCore
 
 			//Backup bizhawk settings
 			LocalNetCoreRouter.Route(NetcoreCommands.VANGUARD, NetcoreCommands.REMOTE_EVENT_SAVEBIZHAWKCONFIG, true);
-			LocalNetCoreRouter.Route(NetcoreCommands.VANGUARD, NetcoreCommands.REMOTE_CLOSEGAME, true);
 
 			//Watermarking RTC Version
 			sks.RtcVersion = CorruptCore.RtcVersion;
