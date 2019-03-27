@@ -67,6 +67,7 @@ namespace Vanguard
 					throw new RTCV.NetCore.AbortEverythingException();
 				MessageBox.Show("Clearing all step blastunits due to an exception within Core_Step().");
 				StepActions.ClearStepBlastUnits();
+				CorruptCore.AutoCorrupt = false;
 			}
 		}
 
