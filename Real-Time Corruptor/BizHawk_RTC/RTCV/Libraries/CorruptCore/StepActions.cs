@@ -141,8 +141,9 @@ namespace RTCV.CorruptCore
 			bool CheckLimitersMatch(BlastUnit bu1, BlastUnit bu2)
 			{
 				//We only care if it's pre-execute because otherwise its limiter is independent from batching 
-				if (bu1.LimiterTime == LimiterTime.PREEXECUTE &&
-					bu1.LimiterListHash == bu2.LimiterListHash &&
+				if (bu1.LimiterTime != LimiterTime.PREEXECUTE)
+					return true;
+				if (bu1.LimiterListHash == bu2.LimiterListHash &&
 					bu1.LimiterTime == bu2.LimiterTime &&
 					bu1.InvertLimiter == bu2.InvertLimiter)
 				{
