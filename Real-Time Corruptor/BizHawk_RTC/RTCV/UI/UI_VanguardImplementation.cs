@@ -120,6 +120,14 @@ namespace RTCV.UI
 							S.GET<RTC_MemoryDomains_Form>().SetMemoryDomainsAllButSelectedDomains((string[])RTCV.NetCore.AllSpec.VanguardSpec[VSPEC.MEMORYDOMAINS_BLACKLISTEDDOMAINS]);
 						});
 						break;
+
+					case REMOTE_GETBLASTGENERATOR_LAYER:
+
+						SyncObjectSingleton.FormExecute((o, ea) =>
+						{
+							e.setReturnValue(S.GET<RTC_BlastGenerator_Form>().GenerateBlastLayers(true));
+						});
+						break;
 					case ERROR_DISABLE_AUTOCORRUPT:
 						SyncObjectSingleton.FormExecute((o, ea) =>
 						{

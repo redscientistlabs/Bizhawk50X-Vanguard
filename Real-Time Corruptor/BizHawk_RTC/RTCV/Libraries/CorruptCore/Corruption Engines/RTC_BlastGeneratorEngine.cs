@@ -1,4 +1,5 @@
-﻿namespace RTCV.CorruptCore
+﻿
+namespace RTCV.CorruptCore
 {
 	public static class RTC_BlastGeneratorEngine
 	{
@@ -9,9 +10,7 @@
 
 		public static BlastLayer GetBlastLayer()
 		{
-			//todo
-			//return S.GET<RTC_BlastGenerator_Form>().GenerateBlastLayers();
-			return null;
+			return NetCore.LocalNetCoreRouter.QueryRoute<BlastLayer>(NetCore.NetcoreCommands.UI, NetCore.NetcoreCommands.REMOTE_GETBLASTGENERATOR_LAYER, true);
 		}
 	}
 }

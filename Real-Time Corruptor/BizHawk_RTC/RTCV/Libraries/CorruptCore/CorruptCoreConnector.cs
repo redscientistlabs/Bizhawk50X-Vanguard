@@ -186,22 +186,33 @@ namespace RTCV.CorruptCore
 
 
 				case BLASTGENERATOR_BLAST:
+				{
+					List<BlastGeneratorProto> returnList = null;
+					StashKey sk = (StashKey)(advancedMessage.objectValue as object[])[0];
+					List<BlastGeneratorProto> blastGeneratorProtos = (List<BlastGeneratorProto>)(advancedMessage.objectValue as object[])[1];
+					bool loadBeforeCorrupt = (bool)(advancedMessage.objectValue as object[])[2];
+					bool applyAfterCorrupt = (bool)(advancedMessage.objectValue as object[])[3];
+
+					SyncObjectSingleton.FormExecute((o, ea) =>
 					{
-						List<BlastGeneratorProto> returnList = null;
-						StashKey sk = (StashKey)(advancedMessage.objectValue as object[])[0];
-						List<BlastGeneratorProto> blastGeneratorProtos = (List<BlastGeneratorProto>)(advancedMessage.objectValue as object[])[1];
-						bool loadBeforeCorrupt = (bool)(advancedMessage.objectValue as object[])[2];
-
-						SyncObjectSingleton.FormExecute((o, ea) =>
+						returnList = BlastTools.GenerateBlastLayersFromBlastGeneratorProtos(blastGeneratorProtos, sk, loadBeforeCorrupt);
+						if (applyAfterCorrupt)
 						{
-							returnList = BlastTools.GenerateBlastLayersFromBlastGeneratorProtos(blastGeneratorProtos, sk, loadBeforeCorrupt);
-						});
-						e.setReturnValue(returnList);
+							BlastLayer bl = new BlastLayer();
+							foreach (var p in returnList)
+							{
+								bl.Layer.AddRange(p.bl.Layer);
+							}
+							bl.Apply(true);
+						}
+					});
+					e.setReturnValue(returnList);
 
-						break;
-					}
+					break;
+				}
 
-				case REMOTE_LOADSTATE:
+
+					case REMOTE_LOADSTATE:
 				{
 					StashKey sk = (StashKey)(advancedMessage.objectValue as object[])[0];
 					bool reloadRom = (bool)(advancedMessage.objectValue as object[])[1];

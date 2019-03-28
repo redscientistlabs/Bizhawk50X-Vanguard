@@ -273,94 +273,130 @@ namespace RTCV.UI
 
 		private void btnJustCorrupt_Click(object sender, EventArgs e)
 		{
-			BlastLayer bl = GenerateBlastLayers();
-			LocalNetCoreRouter.Route(NetcoreCommands.CORRUPTCORE, NetcoreCommands.APPLYBLASTLAYER, new object[] { bl?.Clone() as BlastLayer, true }, true);
+			try
+			{
+				btnLoadCorrupt.Enabled = false;
+				btnSendTo.Enabled = false;
+				btnJustCorrupt.Enabled = false;
+
+				GenerateBlastLayers(false, true);
+				//LocalNetCoreRouter.Route(NetcoreCommands.CORRUPTCORE, NetcoreCommands.APPLYBLASTLAYER, new object[] { bl?.Clone() as BlastLayer, true }, true);
+			}
+			finally
+			{
+
+				btnLoadCorrupt.Enabled = true;
+				btnSendTo.Enabled = true;
+				btnJustCorrupt.Enabled = true;
+
+			}
 		}
 
 		private void btnLoadCorrupt_Click(object sender, EventArgs e)
 		{
-			StashKey newSk = null;
-			if (sk == null)
-			{
-				StashKey psk = StockpileManager_UISide.GetCurrentSavestateStashkey();
-				if (psk == null)
+			try
+			{ 
+				btnLoadCorrupt.Enabled = false;
+				btnSendTo.Enabled = false;
+				btnJustCorrupt.Enabled = false;
+
+				StashKey newSk = null;
+				if (sk == null)
 				{
-					MessageBox.Show("Could not perform the CORRUPT action\n\nEither no Savestate Box was selected in the Savestate Manager\nor the Savetate Box itself is empty.");
-					return;
+					StashKey psk = StockpileManager_UISide.GetCurrentSavestateStashkey();
+					if (psk == null)
+					{
+						MessageBox.Show(
+							"Could not perform the CORRUPT action\n\nEither no Savestate Box was selected in the Savestate Manager\nor the Savetate Box itself is empty.");
+						return;
+					}
+
+					newSk = new StashKey(CorruptCore.CorruptCore.GetRandomKey(), psk.ParentKey, null)
+					{
+						RomFilename = psk.RomFilename, SystemName = psk.SystemName, SystemCore = psk.SystemCore
+						, GameName = psk.GameName, SyncSettings = psk.SyncSettings, StateLocation = psk.StateLocation
+					};
 				}
-				newSk = new StashKey(CorruptCore.CorruptCore.GetRandomKey(), psk.ParentKey, null)
-				{
-					RomFilename = psk.RomFilename,
-					SystemName = psk.SystemName,
-					SystemCore = psk.SystemCore,
-					GameName = psk.GameName,
-					SyncSettings = psk.SyncSettings,
-					StateLocation = psk.StateLocation
-				};
+				else
+					newSk = (StashKey) sk.Clone();
+
+				BlastLayer bl = GenerateBlastLayers(true, true);
+				if (bl == null)
+					return;
+				newSk.BlastLayer = bl;
 			}
-			else
-				newSk = (StashKey)sk.Clone();
-
-			BlastLayer bl = GenerateBlastLayers(true);
-			if (bl == null)
-				return;
-			newSk.BlastLayer = bl;
-
-			newSk.Run();
+			finally
+			{
+				btnLoadCorrupt.Enabled = true;
+				btnSendTo.Enabled = true;
+				btnJustCorrupt.Enabled = true;
+			}
 		}
 
 		private void btnSendTo_Click(object sender, EventArgs e)
 		{
-			StashKey newSk = null;
-			if (sk == null)
-			{
-				StashKey psk = StockpileManager_UISide.GetCurrentSavestateStashkey();
-				if (psk == null)
-				{
-					MessageBox.Show("Could not perform the CORRUPT action\n\nEither no Savestate Box was selected in the Savestate Manager\nor the Savetate Box itself is empty.");
-					return;
-				}
-				newSk = new StashKey(CorruptCore.CorruptCore.GetRandomKey(), psk.ParentKey, null);
-				newSk.RomFilename = psk.RomFilename;
-				newSk.SystemName = psk.SystemName;
-				newSk.SystemCore = psk.SystemCore;
-				newSk.GameName = psk.GameName;
-				newSk.SyncSettings = psk.SyncSettings;
-			}
-			else
-			{
-				newSk = (StashKey)sk.Clone();
-			}
 
-			BlastLayer bl = GenerateBlastLayers(true);
-			if (bl == null)
-				return;
-			newSk.BlastLayer = bl;
-
-			if (OpenedFromBlastEditor)
+			btnLoadCorrupt.Enabled = false;
+			btnSendTo.Enabled = false;
+			btnJustCorrupt.Enabled = false;
+			try
 			{
-				if (S.GET<RTC_NewBlastEditor_Form>() == null || S.GET<RTC_NewBlastEditor_Form>().IsDisposed)
+				StashKey newSk = null;
+				if (sk == null)
 				{
-					S.SET(new RTC_NewBlastEditor_Form());
-					S.GET<RTC_NewBlastEditor_Form>().LoadStashkey((StashKey)newSk.Clone());
+					StashKey psk = StockpileManager_UISide.GetCurrentSavestateStashkey();
+					if (psk == null)
+					{
+						MessageBox.Show("Could not perform the CORRUPT action\n\nEither no Savestate Box was selected in the Savestate Manager\nor the Savetate Box itself is empty.");
+						return;
+					}
+					newSk = new StashKey(CorruptCore.CorruptCore.GetRandomKey(), psk.ParentKey, null);
+					newSk.RomFilename = psk.RomFilename;
+					newSk.SystemName = psk.SystemName;
+					newSk.SystemCore = psk.SystemCore;
+					newSk.GameName = psk.GameName;
+					newSk.SyncSettings = psk.SyncSettings;
 				}
 				else
-					S.GET<RTC_NewBlastEditor_Form>().ImportBlastLayer(newSk.BlastLayer);
 				{
-
+					newSk = (StashKey)sk.Clone();
 				}
-				S.GET<RTC_NewBlastEditor_Form>().Show();
-			}
-			else
-			{
-				StockpileManager_UISide.StashHistory.Add(newSk);
-				S.GET<RTC_GlitchHarvester_Form>().RefreshStashHistory();
-				S.GET<RTC_GlitchHarvester_Form>().dgvStockpile.ClearSelection();
-				S.GET<RTC_GlitchHarvester_Form>().lbStashHistory.ClearSelected();
 
-				S.GET<RTC_GlitchHarvester_Form>().DontLoadSelectedStash = true;
-				S.GET<RTC_GlitchHarvester_Form>().lbStashHistory.SelectedIndex = S.GET<RTC_GlitchHarvester_Form>().lbStashHistory.Items.Count - 1;
-				StockpileManager_UISide.CurrentStashkey = StockpileManager_UISide.StashHistory[S.GET<RTC_GlitchHarvester_Form>().lbStashHistory.SelectedIndex];
+				BlastLayer bl = GenerateBlastLayers(true);
+				if (bl == null)
+					return;
+				newSk.BlastLayer = bl;
+				if (OpenedFromBlastEditor)
+				{
+					if (S.GET<RTC_NewBlastEditor_Form>() == null || S.GET<RTC_NewBlastEditor_Form>().IsDisposed)
+					{
+						S.SET(new RTC_NewBlastEditor_Form());
+						S.GET<RTC_NewBlastEditor_Form>().LoadStashkey((StashKey)newSk.Clone());
+					}
+					else
+						S.GET<RTC_NewBlastEditor_Form>().ImportBlastLayer(newSk.BlastLayer);
+					{
+
+					}
+					S.GET<RTC_NewBlastEditor_Form>().Show();
+				}
+				else
+				{
+					StockpileManager_UISide.StashHistory.Add(newSk);
+					S.GET<RTC_GlitchHarvester_Form>().RefreshStashHistory();
+					S.GET<RTC_GlitchHarvester_Form>().dgvStockpile.ClearSelection();
+					S.GET<RTC_GlitchHarvester_Form>().lbStashHistory.ClearSelected();
+
+					S.GET<RTC_GlitchHarvester_Form>().DontLoadSelectedStash = true;
+					S.GET<RTC_GlitchHarvester_Form>().lbStashHistory.SelectedIndex = S.GET<RTC_GlitchHarvester_Form>().lbStashHistory.Items.Count - 1;
+					StockpileManager_UISide.CurrentStashkey = StockpileManager_UISide.StashHistory[S.GET<RTC_GlitchHarvester_Form>().lbStashHistory.SelectedIndex];
+				}
+			}
+			finally
+			{
+				btnLoadCorrupt.Enabled = true;
+				btnSendTo.Enabled = true;
+				btnJustCorrupt.Enabled = true;
 			}
 		}
 
@@ -398,7 +434,8 @@ namespace RTCV.UI
 			}
 		}
 
-		public BlastLayer GenerateBlastLayers(bool loadBeforeCorrupt = false)
+
+		public BlastLayer GenerateBlastLayers(bool loadBeforeCorrupt = false, bool applyAfterCorrupt = false)
 		{
 			StashKey newSk = null;
 			try
@@ -456,10 +493,13 @@ namespace RTCV.UI
 
 				List<BlastGeneratorProto> returnList = new List<BlastGeneratorProto>();
 
-				returnList = NetCore.LocalNetCoreRouter.QueryRoute<List<BlastGeneratorProto>>(NetCore.NetcoreCommands.CORRUPTCORE, NetCore.NetcoreCommands.BLASTGENERATOR_BLAST, new object[] { newSk, protoList, loadBeforeCorrupt }, true);
+				returnList = NetCore.LocalNetCoreRouter.QueryRoute<List<BlastGeneratorProto>>(NetCore.NetcoreCommands.CORRUPTCORE, NetCore.NetcoreCommands.BLASTGENERATOR_BLAST, new object[] { newSk, protoList, loadBeforeCorrupt, applyAfterCorrupt }, true);
+
+				if (returnList == null)
+					return null;
 
 				if (returnList.Count != protoList.Count)
-					throw (new Exception("Got less blastlayers back compared to protos sent. Aborting!"));
+					throw (new Exception("Got less protos back compared to protos sent. Aborting!"));
 
 				//The return list is in the same order as the original list so we can go by index here
 				for (int i = 0; i < dgvBlastGenerator.RowCount; i++)
