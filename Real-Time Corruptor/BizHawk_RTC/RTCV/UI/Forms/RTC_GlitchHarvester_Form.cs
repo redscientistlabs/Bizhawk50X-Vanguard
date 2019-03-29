@@ -151,6 +151,9 @@ namespace RTCV.UI
 			btnEmergencySaveStockpile.Click += btnSaveStockpileAs_Click;
 			pnHideGlitchHarvester.Controls.Add(btnEmergencySaveStockpile);
 
+
+			this.MouseDoubleClick += ClearSelectedSKs;
+
 			Controls.Add(pnHideGlitchHarvester);
 			pnHideGlitchHarvester.Hide();
 
@@ -158,6 +161,7 @@ namespace RTCV.UI
 			
 			lbStashHistory.DataSource = StockpileManager_UISide.StashHistory;
 		}
+
 
 		private void RTC_GH_Form_Load(object sender, EventArgs e)
 		{
@@ -550,6 +554,20 @@ namespace RTCV.UI
 		{
 			if (rbOriginal.Checked)
 				btnCorrupt.Text = "Original";
+		}
+
+		private void ClearSelectedSKs(object sender, MouseEventArgs e)
+		{
+			DontLoadSelectedStash = true;
+			lbStashHistory.ClearSelected();
+			DontLoadSelectedStash = true;
+			dgvStockpile.ClearSelection();
+
+			if (rbCorrupt.Checked)
+				btnCorrupt.Text = "Blast/Send";
+			else if (rbInject.Checked)
+				btnCorrupt.Text = "Inject";
+			else if (rbOriginal.Checked) btnCorrupt.Text = "Original";
 		}
 
 		private void btnAddStashToStockpile_Click(object sender, EventArgs e)
