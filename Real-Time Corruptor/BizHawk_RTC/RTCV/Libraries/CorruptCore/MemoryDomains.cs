@@ -18,13 +18,13 @@ namespace RTCV.CorruptCore
 	public static class MemoryDomains
 	{
 
-		public static Dictionary<string, MemoryInterface> MemoryInterfaces
+		public static Dictionary<string, MemoryDomainProxy> MemoryInterfaces
 		{
-			get => RTCV.NetCore.AllSpec.CorruptCoreSpec?["MEMORYINTERFACES"] as Dictionary<string, MemoryInterface>;
+			get => RTCV.NetCore.AllSpec.CorruptCoreSpec?["MEMORYINTERFACES"] as Dictionary<string, MemoryDomainProxy>;
 			set => RTCV.NetCore.AllSpec.CorruptCoreSpec.Update("MEMORYINTERFACES", value);
 		}
 
-		public static Dictionary<string, MemoryInterface> VmdPool = new Dictionary<string, MemoryInterface>();
+		public static Dictionary<string, VirtualMemoryDomain> VmdPool = new Dictionary<string, VirtualMemoryDomain>();
 
 		public static PartialSpec getDefaultPartial()
 		{
@@ -38,10 +38,10 @@ namespace RTCV.CorruptCore
 
 		public static void RefreshDomains(bool domainsChanged = false)
 		{
-			var temp = new Dictionary<string, MemoryInterface>();
-			var mis = (MemoryInterface[])RTCV.NetCore.AllSpec.VanguardSpec[VSPEC.MEMORYDOMAINS_INTERFACES.ToString()];
-			foreach (MemoryInterface mi in mis)
-				temp.Add(mi.ToString(), mi);
+			var temp = new Dictionary<string, MemoryDomainProxy>();
+			var mdps = (MemoryDomainProxy[])RTCV.NetCore.AllSpec.VanguardSpec[VSPEC.MEMORYDOMAINS_INTERFACES];
+			foreach (MemoryDomainProxy mdp in mdps)
+				temp.Add(mdp.ToString(), mdp);
 			MemoryInterfaces = temp;
 
 			if(domainsChanged)
@@ -59,17 +59,12 @@ namespace RTCV.CorruptCore
 			if (MemoryInterfaces.Count == 0)
 				RefreshDomains();
 
-			if (MemoryInterfaces.ContainsKey(domain))
-			{
-				MemoryInterface mi = MemoryInterfaces[domain];
-				return (MemoryDomainProxy)mi;
-			}
-			else if (VmdPool.ContainsKey(domain))
-			{
-				MemoryInterface mi = VmdPool[domain];
-				if (mi is VirtualMemoryDomain vmd)
-					return GetProxy(vmd.GetRealDomain(address), vmd.GetRealAddress(address));
-			}
+			if (MemoryInterfaces.TryGetValue(domain, out MemoryDomainProxy mdp))
+				return mdp;
+
+			if (VmdPool.TryGetValue(domain, out VirtualMemoryDomain vmd))
+				return GetProxy(vmd.GetRealDomain(address), vmd.GetRealAddress(address));
+
 			return null;
 		}
 
@@ -77,12 +72,12 @@ namespace RTCV.CorruptCore
 		{
 			if (MemoryInterfaces.Count == 0)
 				RefreshDomains();
+			
+			if (MemoryInterfaces.TryGetValue(_domain, out MemoryDomainProxy mi))
+				return mi;
 
-			if (MemoryInterfaces.ContainsKey(_domain))
-				return MemoryInterfaces[_domain];
-
-			if (VmdPool.ContainsKey(_domain))
-				return VmdPool[_domain];
+			if (VmdPool.TryGetValue(_domain, out VirtualMemoryDomain vmd))
+				return vmd;
 
 			return null;
 		}

@@ -143,12 +143,12 @@ namespace Vanguard
 							string domain = (string)temp[0];
 							long address = (long)temp[1];
 
-							MemoryDomainProxy mdp = MemoryDomains.GetProxy(domain, address);
+							MemoryInterface mi = MemoryDomains.GetInterface(domain);
 							long realAddress = MemoryDomains.GetRealAddress(domain, address);
 
 							SyncObjectSingleton.FormExecute((o, ea) =>
 							{
-								Hooks.BIZHAWK_OPEN_HEXEDITOR_ADDRESS(mdp, realAddress);
+								Hooks.BIZHAWK_OPEN_HEXEDITOR_ADDRESS(mi, realAddress);
 							});
 
 							break;

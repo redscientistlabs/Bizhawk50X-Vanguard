@@ -76,7 +76,7 @@ namespace RTCV.UI
 		{
 			lbMemoryDomains.Items.Clear();
 			if (MemoryDomains.MemoryInterfaces != null)
-				lbMemoryDomains.Items.AddRange(MemoryDomains.MemoryInterfaces.Keys.ToArray());
+				lbMemoryDomains.Items.AddRange(MemoryDomains.MemoryInterfaces?.Keys.ToArray());
 
 			if (MemoryDomains.VmdPool.Count > 0)
 				lbMemoryDomains.Items.AddRange(MemoryDomains.VmdPool.Values.Select(it => it.ToString()).ToArray());
