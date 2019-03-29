@@ -26,6 +26,8 @@ namespace RTCV.UI
 			InitializeComponent();
 			CorruptCore.RTC_CustomEngine.InitTemplates();
 
+			this.GotFocus += (o, e) => this.Refresh();
+
 			foreach (var k in CorruptCore.RTC_CustomEngine.Name2TemplateDico.Keys)
 				cbSelectedTemplate.Items.Add(k);
 			cbSelectedTemplate.SelectedIndex = 0;

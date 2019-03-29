@@ -2217,11 +2217,12 @@
             this.btnRerollSelected.Tag = "color:darker";
             this.btnRerollSelected.Text = "Reroll Selected";
             this.btnRerollSelected.UseVisualStyleBackColor = false;
-            this.btnRerollSelected.MouseDown += new System.Windows.Forms.MouseEventHandler(this.btnRerollSelected_MouseDown);
-            // 
-            // label8
-            // 
-            this.label8.AutoSize = true;
+			this.btnRerollSelected.MouseDown += new System.Windows.Forms.MouseEventHandler(this.btnRerollSelected_MouseDown);
+			this.btnRerollSelected.Click += btnRerollSelected_Click;
+			// 
+			// label8
+			// 
+			this.label8.AutoSize = true;
             this.label8.Font = new System.Drawing.Font("Segoe UI Semibold", 9F);
             this.label8.ForeColor = System.Drawing.Color.White;
             this.label8.Location = new System.Drawing.Point(161, 11);

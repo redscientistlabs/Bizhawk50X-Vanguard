@@ -7,6 +7,7 @@ using System.Data;
 using System.IO;
 using System.Linq;
 using System.Windows.Forms;
+using Newtonsoft.Json;
 
 namespace RTCV.UI
 {
@@ -224,20 +225,21 @@ namespace RTCV.UI
 
 		private static void UpdateAddressRange(DataGridViewRow row)
 		{
-			try
-			{
 				if (row.Cells["dgvDomain"].Value == null)
 					return;
+
+				if (!domainToMiDico.ContainsKey(row.Cells["dgvDomain"]
+					.Value.ToString()))
+				{
+					MessageBox.Show("Couldn't find the selected domain " + row.Cells["dgvDomain"]
+						.Value.ToString() + ".\nAre you sure you have the right core loaded?");
+				}
+				
 
 				long size = domainToMiDico[row.Cells["dgvDomain"].Value.ToString()].Size;
 
 				((DataGridViewNumericUpDownCell)row.Cells["dgvStartAddress"]).Maximum = size;
 				((DataGridViewNumericUpDownCell)row.Cells["dgvEndAddress"]).Maximum = size;
-			}
-			catch (Exception ex)
-			{
-				throw new Exception("Unable to find domain! Are you sure you have the right core loaded?\n\n" + ex.ToString());
-			}
 		}
 
 		private static void PopulateModeCombobox(DataGridViewRow row)
@@ -748,10 +750,13 @@ namespace RTCV.UI
 			{
 				try
 				{
-					using (FileStream fs = new FileStream(sfd.FileName, FileMode.Create))
+					var settings = new JsonSerializerSettings
 					{
-						JsonHelper.Serialize(dt, fs);
-					}
+						//NullValueHandling = NullValueHandling.Ignore,
+					};
+					var s = JsonConvert.SerializeObject(dt, settings);
+					File.WriteAllText(sfd.FileName, s);
+
 				}
 				catch (Exception ex)
 				{
@@ -776,10 +781,11 @@ namespace RTCV.UI
 				try
 				{
 					DataTable dt = null;
-					using (FileStream fs = new FileStream(ofd.FileName, FileMode.Open))
+					var settings = new JsonSerializerSettings
 					{
-						dt = JsonHelper.Deserialize<DataTable>(fs);
-					}
+					//	NullValueHandling = NullValueHandling.Ignore,
+					};
+					dt = JsonConvert.DeserializeObject<DataTable>(File.ReadAllText(ofd.FileName), settings);
 					if (!import)
 						dgv.Rows.Clear();
 
@@ -799,7 +805,12 @@ namespace RTCV.UI
 
 						for (int i = 0; i < dgv.Rows[lastrow].Cells.Count; i++)
 						{
-							dgv.Rows[lastrow].Cells[i].Value = row.ItemArray[i];
+							var item = row.ItemArray[i];
+							if(item is DBNull)
+								dgv.Rows[lastrow].Cells[i].Value = 0;
+							else
+								dgv.Rows[lastrow].Cells[i].Value = item;
+
 						}
 						//Override these two
 						dgv[(int)BlastGeneratorColumn.dgvBlastProtoReference, lastrow].Value = null;

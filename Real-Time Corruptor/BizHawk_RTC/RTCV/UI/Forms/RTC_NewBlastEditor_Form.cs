@@ -154,6 +154,8 @@ namespace RTCV.UI
 				cbStoreTime.Validated += CbStoreTime_Validated;
 				cbStoreType.Validated += CbStoreType_Validated;
 				cbSourceDomain.Validated += CbSourceDomain_Validated;
+
+				registerValueStringScrollEvents();
 			}
 			catch(Exception ex)
 			{
@@ -172,7 +174,6 @@ namespace RTCV.UI
 			UICore.SetRTCColor(UICore.GeneralColor, this);
 			domains = MemoryDomains.MemoryInterfaces?.Keys?.Concat(MemoryDomains.VmdPool.Values.Select(it => it.ToString())).ToArray();
 
-			registerValueStringScrollEvents();
 
 			dgvBlastEditor.AllowUserToOrderColumns = true;
 			SetDisplayOrder();
@@ -205,6 +206,7 @@ namespace RTCV.UI
 				int precision = (int)dgvBlastEditor.CurrentCell.OwningRow.Cells[buProperty.Precision.ToString()].Value;
 				dgvCellValueScroll(dgvBlastEditor.EditingControl, e, precision);
 			}
+			((HandledMouseEventArgs)e).Handled = true;
 
 		}
 

@@ -1172,30 +1172,30 @@ namespace RTCV.UI
 
 				rerollMenu.Show(this, locate);
 			}
+		}
 
-			else
+		private void btnRerollSelected_Click(object sender, EventArgs e)
+		{
+			if (lbStashHistory.SelectedIndex != -1)
 			{
-				if (lbStashHistory.SelectedIndex != -1)
-				{
-					StockpileManager_UISide.CurrentStashkey = (StashKey)StockpileManager_UISide.StashHistory[lbStashHistory.SelectedIndex].Clone();
-				}
-				else if (dgvStockpile.SelectedRows.Count != 0 && dgvStockpile.SelectedRows[0].Cells[0].Value != null)
-				{
-					StockpileManager_UISide.CurrentStashkey = (StashKey)(dgvStockpile.SelectedRows[0].Cells[0].Value as StashKey)?.Clone();
-					//StockpileManager_UISide.unsavedEdits = true;
-				}
-				else
-					return;
+				StockpileManager_UISide.CurrentStashkey = (StashKey)StockpileManager_UISide.StashHistory[lbStashHistory.SelectedIndex].Clone();
+			}
+			else if (dgvStockpile.SelectedRows.Count != 0 && dgvStockpile.SelectedRows[0].Cells[0].Value != null)
+			{
+				StockpileManager_UISide.CurrentStashkey = (StashKey)(dgvStockpile.SelectedRows[0].Cells[0].Value as StashKey)?.Clone();
+				//StockpileManager_UISide.unsavedEdits = true;
+			}
+			else
+				return;
 
-				if (StockpileManager_UISide.CurrentStashkey != null)
-				{
-					StockpileManager_UISide.CurrentStashkey.BlastLayer.Reroll();
+			if (StockpileManager_UISide.CurrentStashkey != null)
+			{
+				StockpileManager_UISide.CurrentStashkey.BlastLayer.Reroll();
 
-					StockpileManager_UISide.AddCurrentStashkeyToStash();
-					RefreshStashHistory();
+				StockpileManager_UISide.AddCurrentStashkeyToStash();
+				RefreshStashHistory();
 
-					StockpileManager_UISide.ApplyStashkey(StockpileManager_UISide.CurrentStashkey);
-				}
+				StockpileManager_UISide.ApplyStashkey(StockpileManager_UISide.CurrentStashkey);
 			}
 		}
 
