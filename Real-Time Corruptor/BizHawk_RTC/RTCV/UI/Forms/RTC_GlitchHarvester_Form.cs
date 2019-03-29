@@ -1383,12 +1383,14 @@ namespace RTCV.UI
 				if (key == null)
 					continue;
 
+				//We have to set this first as we then change the other stuff
+				key.StateLocation = StashKeySavestateLocation.SSK;
+
 				string statefilename = key.GameName + "." + key.ParentKey + ".timejump.State"; // get savestate name
 				string newStatePath = CorruptCore.CorruptCore.workingDir + Path.DirectorySeparatorChar + key.StateLocation + Path.DirectorySeparatorChar + statefilename;
 
 				key.StateFilename = newStatePath;
 				key.StateShortFilename = Path.GetFileName(newStatePath);
-				key.StateLocation = StashKeySavestateLocation.SSK;
 			}
 
 			//clear the stockpile dico
