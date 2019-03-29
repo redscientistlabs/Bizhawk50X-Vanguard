@@ -2200,9 +2200,9 @@ namespace RTCV.UI
 			if (hme != null)
 				hme.Handled = true;
 
-			if (e.Delta > 0)
+			if (e.Delta > 0 && this.Value < this.Maximum)
 				this.Value += this.Increment;
-			else if (e.Delta < 0)
+			else if (e.Delta < 0 && this.Value > this.Minimum)
 				this.Value -= this.Increment;
 		}
 
