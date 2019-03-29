@@ -1438,7 +1438,7 @@ namespace RTCV.UI
 				{
 					var stateName = sk.GameName + "." + sk.ParentKey + ".timejump.State"; // get savestate name
 					File.Copy(CorruptCore.CorruptCore.workingDir + Path.DirectorySeparatorChar + "SSK" + Path.DirectorySeparatorChar + stateName
-						, CorruptCore.CorruptCore.workingDir + Path.DirectorySeparatorChar + "SESSION" + Path.DirectorySeparatorChar + stateName);
+						, CorruptCore.CorruptCore.workingDir + Path.DirectorySeparatorChar + "SESSION" + Path.DirectorySeparatorChar + stateName, true);
 					sk.StateLocation = StashKeySavestateLocation.SESSION;
 				}
 				catch (IOException e)
