@@ -801,6 +801,13 @@ namespace RTCV.UI
 						dgv[(int)BlastGeneratorColumn.DgvType, lastrow].Value = row.ItemArray[(int)BlastGeneratorColumn.DgvType];
 
 						PopulateModeCombobox(dgv.Rows[lastrow]);
+
+						//If the domain doesn't exist, cancel out
+						if (!domains.Contains(row.ItemArray[(int)BlastGeneratorColumn.DgvDomain].ToString()))
+						{
+							MessageBox.Show("Skipping row as domain couldn't be found! Are you sure you have the right core and all VMDs loaded?");
+						}
+
 						(dgv.Rows[lastrow].Cells["dgvDomain"] as DataGridViewComboBoxCell)?.Items.Add(row.ItemArray[(int)BlastGeneratorColumn.DgvDomain]);
 
 						for (int i = 0; i < dgv.Rows[lastrow].Cells.Count; i++)
