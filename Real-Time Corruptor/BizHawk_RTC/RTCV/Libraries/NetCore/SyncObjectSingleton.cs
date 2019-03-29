@@ -14,6 +14,12 @@ namespace RTCV.NetCore
 
 		public static void FormExecute(Action<object, EventArgs> a, object[] args = null)
 		{
+			if (a == null)
+			{
+				Console.WriteLine("Syncobject was null!");
+					return;
+			}
+
 			if (SyncObject.InvokeRequired)
 				SyncObject.Invoke(new MethodInvoker(() => { a.Invoke(null, null); }));
 			else
@@ -22,6 +28,12 @@ namespace RTCV.NetCore
 
 		public static void SyncObjectExecute(Form sync, Action<object, EventArgs> a, object[] args = null)
 		{
+			if (sync == null)
+			{
+				Console.WriteLine("Syncobject was null!");
+				return;
+			}
+
 			if (sync.InvokeRequired)
 				sync.Invoke(new MethodInvoker(() => { a.Invoke(null, null); }));
 			else
