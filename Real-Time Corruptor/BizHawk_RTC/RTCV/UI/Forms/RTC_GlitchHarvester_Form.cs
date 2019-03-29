@@ -1145,7 +1145,6 @@ namespace RTCV.UI
 					RefreshStashHistory();
 				}))).Enabled = (dgvStockpile.SelectedRows.Count > 1);
 
-				columnsMenu.Items.Add(new ToolStripSeparator());
 				/*
 				if (!RTC_NetcoreImplementation.isStandaloneUI)
 				{
@@ -1594,7 +1593,8 @@ namespace RTCV.UI
 
 					foreach (DataGridViewRow row in dgvStockpile.SelectedRows)
 						sks.Add((StashKey)row.Cells[0].Value);
-
+					//dgv is stupid since it selects rows backwards
+					sks.Reverse();
 					StockpileManager_UISide.MergeStashkeys(sks);
 
 					if (StockpileManager_EmuSide.RenderAtLoad && loadBeforeOperation)
