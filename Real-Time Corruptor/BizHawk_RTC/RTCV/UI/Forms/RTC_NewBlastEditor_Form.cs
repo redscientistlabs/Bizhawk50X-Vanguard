@@ -196,17 +196,13 @@ namespace RTCV.UI
 			var owningRow = dgvBlastEditor.CurrentCell.OwningRow;
 
 
-			//If we're in the cell already, just scroll
 			if (dgvBlastEditor.CurrentCell == owningRow.Cells[buProperty.ValueString.ToString()])
 			{
-				if (!dgvBlastEditor.IsCurrentCellInEditMode)
-				{
-					dgvBlastEditor.BeginEdit(false);
-				}
 				int precision = (int)dgvBlastEditor.CurrentCell.OwningRow.Cells[buProperty.Precision.ToString()].Value;
 				dgvCellValueScroll(dgvBlastEditor.EditingControl, e, precision);
+
+				((HandledMouseEventArgs)e).Handled = true;
 			}
-			((HandledMouseEventArgs)e).Handled = true;
 
 		}
 
