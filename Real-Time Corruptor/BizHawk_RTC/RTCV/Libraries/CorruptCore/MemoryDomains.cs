@@ -181,7 +181,7 @@ namespace RTCV.CorruptCore
 
 		public static byte[] GetDomainData(string domain)
 		{
-			MemoryInterface mi = domain.Contains("[V]") ? VmdPool[domain] : MemoryInterfaces[domain];
+			MemoryInterface mi = domain.Contains("[V]") ? (MemoryInterface)VmdPool[domain] : MemoryInterfaces[domain];
 			return mi.GetDump();
 		}
 
