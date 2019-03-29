@@ -339,7 +339,10 @@ namespace RTCV.CorruptCore
 				//If we have a value but the dictionary didn't have it, pop that we couldn't find the list
 				else if(s != null)
 				{
-					DialogResult dr = MessageBox.Show("Couldn't find Limiter List " + Filtering.Hash2NameDico[s] +
+					var name = "";
+					name = Hash2NameDico.ContainsKey(s) ? Hash2NameDico[s] : "UNKNOWN LIST OF HASH: " + s;
+
+					DialogResult dr = MessageBox.Show("Couldn't find Limiter List " + name +
 						" If you continue saving, any blastunit using this list will ignore the limiter on playback if the list still cannot be found.\nDo you want to continue?", "Couldn't Find Limiter List",
 						MessageBoxButtons.YesNo);
 
