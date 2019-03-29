@@ -85,7 +85,7 @@ namespace RTCV.CorruptCore
 
 		public static long GetRealAddress(string domain, long address)
 		{
-			if (domain.StartsWith("[V]"))
+			if (domain.Contains("[V]"))
 			{
 				MemoryInterface mi = VmdPool[domain];
 				VirtualMemoryDomain vmd = ((VirtualMemoryDomain)mi);
@@ -97,7 +97,7 @@ namespace RTCV.CorruptCore
 
 		public static string GetRealDomain(string domain, long address)
 		{
-			if (domain.StartsWith("[V]"))
+			if (domain.Contains("[V]"))
 			{
 				MemoryInterface mi = VmdPool[domain];
 				VirtualMemoryDomain vmd = ((VirtualMemoryDomain)mi);
