@@ -293,12 +293,12 @@ namespace RTCV.CorruptCore
 		}
 
 		//Todo - get this out of the objects
-		public static bool Load(DataGridView dgvStockpile, string Filename = null)
+		public static bool Load(DataGridView dgvStockpile, string Filename = null, bool import = false)
 		{
 
 			if ((bool?)AllSpec.VanguardSpec[VSPEC.CORE_DISKBASED] ?? true)
 			{
-				var dr = MessageBox.Show("The currently loaded game is disk based and needs to be closed before loading. Press OK to close the game and continue loading.", "Loading requires closing game", MessageBoxButtons.OKCancel);
+				var dr = MessageBox.Show("The currently loaded game is disk based and needs to be closed before" + (import ? "importing" : "loading") + ". Press OK to close the game and continue loading.", "Loading requires closing game", MessageBoxButtons.OKCancel);
 				if (dr == DialogResult.OK)
 				{
 					LocalNetCoreRouter.Route(NetcoreCommands.VANGUARD, NetcoreCommands.REMOTE_CLOSEGAME, true);
@@ -333,15 +333,17 @@ namespace RTCV.CorruptCore
 			}
 
 
+			Stockpile sks;
+			var extractFolder = import ? "TEMP" : "SKS";
+
 			//Extract the stockpile
-			if (!Extract(Filename, Path.DirectorySeparatorChar + "WORKING\\SKS", "stockpile.json"))
+			if (!Extract(Filename, Path.DirectorySeparatorChar + "WORKING" + Path.DirectorySeparatorChar + extractFolder, "stockpile.json"))
 				return false;
 
-			Stockpile sks;
 			//Read in the stockpile
 			try
 			{
-				using (FileStream fs = File.Open(CorruptCore.workingDir + Path.DirectorySeparatorChar + "SKS\\stockpile.json", FileMode.OpenOrCreate))
+				using (FileStream fs = File.Open(CorruptCore.workingDir + Path.DirectorySeparatorChar + extractFolder + Path.DirectorySeparatorChar + "stockpile.json", FileMode.OpenOrCreate))
 				{
 					sks = JsonHelper.Deserialize<Stockpile>(fs);
 					fs.Close();
@@ -354,33 +356,73 @@ namespace RTCV.CorruptCore
 				return false;
 			}
 
-			//Load the limiter lists into the dictionary and UI
-			Filtering.LoadStockpileLists(sks);
+			if (import)
+			{
+				var allCopied = new List<string>();
+				//Copy from temp to sks
+				foreach (string file in Directory.GetFiles(CorruptCore.workingDir + Path.DirectorySeparatorChar + "TEMP" + Path.DirectorySeparatorChar))
+				{
+					if (!file.Contains(".sk"))
+					{
+						try
+						{
+							string dest = CorruptCore.workingDir + Path.DirectorySeparatorChar + "SKS" + Path.DirectorySeparatorChar + Path.GetFileName(file);
 
+							//Only copy if a version doesn't exist
+							//This prevents copying over keys
+							if (!File.Exists(dest))
+							{
+								File.Copy(file, dest); // copy roms/stockpile/whatever to sks folder
+								allCopied.Add(dest);
+							}
 
-			//Update the current stockpile to this one
-			StockpileManager_UISide.CurrentStockpile = sks;
+						}
+						catch (Exception ex)
+						{
+							MessageBox.Show("Unable to copy a file from temp to sks. The culprit is " + file + ".\nCancelling operation.\n " + ex.ToString());
+							//Attempt to cleanup
+							foreach (var f in allCopied)
+								File.Delete(f);
+							return false;
 
-			//Set up the correct 
+						}
+					}
+
+				}
+				EmptyFolder(Path.DirectorySeparatorChar + "WORKING\\TEMP");
+			}
+			else
+			{
+
+				//Update the current stockpile to this one
+				StockpileManager_UISide.CurrentStockpile = sks;
+
+				//fill list controls
+				dgvStockpile.Rows.Clear();
+
+				//Update the filename in case they renamed it
+				sks.Filename = Filename;
+			}
+
+			//Set up the correct paths
 			foreach (StashKey t in sks.StashKeys)
 			{
 				t.RomFilename = CorruptCore.workingDir + Path.DirectorySeparatorChar + "SKS" + Path.DirectorySeparatorChar + t.RomShortFilename;
 				t.StateLocation = StashKeySavestateLocation.SKS;
 			}
 
-			//fill list controls
-			dgvStockpile.Rows.Clear();
 
 			//Todo - Refactor this to get it out of the object
 			//Populate the dgv
 			foreach (StashKey key in sks.StashKeys)
 				dgvStockpile?.Rows.Add(key, key.GameName, key.SystemName, key.SystemCore, key.Note);
 
-			//Update the filename in case they renamed it
-			sks.Filename = Filename;
-
 			//Check version compatibility
 			CheckCompatibility(sks);
+
+			//Load the limiter lists into the dictionary and UI
+			Filtering.LoadStockpileLists(sks);
+
 
 			//If there's a limiter missing, pop a message
 			if (sks.MissingLimiter)
@@ -391,6 +433,10 @@ namespace RTCV.CorruptCore
 			return true;
 		}
 
+		public static void Import(string filename, DataGridView dgvStockpile)
+		{
+			Load(dgvStockpile, filename, true);
+		}
 		/// <summary>
 		/// Checks a stockpile for compatibility with the current version of the RTC
 		/// </summary>
@@ -569,108 +615,6 @@ namespace RTCV.CorruptCore
 		}
 
 
-		public static void Import(string filename, DataGridView dgvStockpile)
-		{
-			//clean temp folder
-			EmptyFolder(Path.DirectorySeparatorChar + "WORKING\\TEMP");
-
-			if (filename == null)
-			{
-				OpenFileDialog openFileDialog1 = new OpenFileDialog
-				{
-					DefaultExt = "sks",
-					Title = "Open Stockpile File",
-					Filter = "SKS files|*.sks",
-					RestoreDirectory = true
-				};
-				if (openFileDialog1.ShowDialog() == DialogResult.OK)
-				{
-					filename = openFileDialog1.FileName.ToString();
-				}
-				else
-					return;
-			}
-
-			if (!File.Exists(filename))
-			{
-				MessageBox.Show("The Stockpile file wasn't found");
-				return;
-			}
-
-			System.IO.Compression.ZipFile.ExtractToDirectory(filename, CorruptCore.workingDir + Path.DirectorySeparatorChar + $"TEMP" + Path.DirectorySeparatorChar);
-
-			if (!File.Exists(CorruptCore.workingDir + Path.DirectorySeparatorChar + "TEMP\\stockpile.json"))
-			{
-				MessageBox.Show("The file could not be read properly");
-
-				EmptyFolder(Path.DirectorySeparatorChar + "WORKING\\TEMP");
-
-				return;
-			}
-
-			//stockpile deserialization
-			Stockpile sks;
-
-			try
-			{
-				using (FileStream fs = File.Open(CorruptCore.workingDir + Path.DirectorySeparatorChar + "TEMP\\stockpile.json", FileMode.OpenOrCreate))
-				{
-					JsonSerializer js = new JsonSerializer();
-					sks = JsonHelper.Deserialize<Stockpile>(fs);
-					fs.Close();
-				}
-			}
-			catch
-			{
-				MessageBox.Show("The Stockpile file could not be loaded");
-				return;
-			}
-
-			foreach (StashKey sk in sks.StashKeys)
-			{
-				sk.RomShortFilename = CorruptCore_Extensions.getShortFilenameFromPath(sk.RomFilename);
-				sk.RomFilename = CorruptCore.workingDir + Path.DirectorySeparatorChar + "SKS" + Path.DirectorySeparatorChar + sk.RomShortFilename;
-				sk.StateLocation = StashKeySavestateLocation.SKS;
-			}
-
-			foreach (string file in Directory.GetFiles(CorruptCore.workingDir + Path.DirectorySeparatorChar + "TEMP" + Path.DirectorySeparatorChar))
-			{
-				if (!file.Contains(".sk"))
-				{
-					try
-					{
-						string dest = CorruptCore.workingDir + Path.DirectorySeparatorChar + "SKS" + Path.DirectorySeparatorChar + Path.GetFileName(file);
-
-						if (!File.Exists(dest))
-						{
-							File.Copy(file, dest); // copy roms/stockpile/whatever to sks folder
-						}
-
-					}
-					catch (Exception ex)
-					{
-						MessageBox.Show(ex.ToString());
-					}
-				}
-
-			}
-			EmptyFolder(Path.DirectorySeparatorChar + "WORKING\\TEMP");
-
-			//fill list controls
-			//Todo - Get this out of the object
-			foreach (StashKey sk in sks.StashKeys)
-			{
-				DataGridViewRow dgvRow = dgvStockpile.Rows[dgvStockpile.Rows.Add()];
-				dgvRow.Cells["Item"].Value = sk;
-				dgvRow.Cells["GameName"].Value = sk.GameName;
-				dgvRow.Cells["SystemName"].Value = sk.SystemName;
-				dgvRow.Cells["SystemCore"].Value = sk.SystemCore;
-			}
-
-			CheckCompatibility(sks);
-
-			StockpileManager_UISide.StockpileChanged();
-		}
 	}
 
 	[Serializable]
