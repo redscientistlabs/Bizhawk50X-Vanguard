@@ -197,6 +197,14 @@ namespace RTCV.UI
 
 						break;
 
+					case REMOTE_HOTKEY_GHREROLL:
+						SyncObjectSingleton.FormExecute((o, ea) =>
+						{
+							S.GET<RTC_GlitchHarvester_Form>().btnRerollSelected_Click(null, null);
+						});
+
+						break;
+
 					case REMOTE_HOTKEY_GHLOAD:
 						SyncObjectSingleton.FormExecute((o, ea) =>
 						{

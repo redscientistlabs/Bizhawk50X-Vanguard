@@ -272,6 +272,7 @@ namespace BizHawk.Client.Common
 						Bind("RTC","Intensity++", toolTip: "For RTC" ),
 						Bind("RTC","GH Load and Corrupt", toolTip: "For RTC" ),
 						Bind("RTC","GH Just Corrupt", toolTip: "For RTC" ),
+						Bind("RTC","GH Reroll", toolTip: "For RTC" ),
 						Bind("RTC","GH Load", toolTip: "For RTC" ),
 						Bind("RTC","GH Save", toolTip: "For RTC" ),
 						Bind("RTC","Stash->Stockpile", toolTip: "For RTC" ),

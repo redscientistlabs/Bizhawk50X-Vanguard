@@ -1174,7 +1174,7 @@ namespace RTCV.UI
 			}
 		}
 
-		private void btnRerollSelected_Click(object sender, EventArgs e)
+		public void btnRerollSelected_Click(object sender, EventArgs e)
 		{
 			if (lbStashHistory.SelectedIndex != -1)
 			{

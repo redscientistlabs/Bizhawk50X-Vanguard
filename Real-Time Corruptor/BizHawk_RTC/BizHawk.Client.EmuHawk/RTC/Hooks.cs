@@ -401,6 +401,9 @@ namespace Vanguard
 					case "GH Just Corrupt":
 						LocalNetCoreRouter.Route(UI, REMOTE_HOTKEY_GHCORRUPT);
 						break;
+					case "GH Reroll":
+						LocalNetCoreRouter.Route(UI, REMOTE_HOTKEY_GHREROLL);
+						break;
 
 					case "GH Load":
 						LocalNetCoreRouter.Route(UI, REMOTE_HOTKEY_GHLOAD);
