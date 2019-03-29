@@ -1404,8 +1404,10 @@ namespace RTCV.CorruptCore
 			{
 				value[i] = mi.PeekByte(SourceAddress + i);
 			}
+
 			//Calculate the final value after adding the tilt value
-			value = CorruptCore_Extensions.AddValueToByteArrayUnchecked(value, TiltValue, mi.BigEndian);
+			if (TiltValue != 0)
+				value = CorruptCore_Extensions.AddValueToByteArrayUnchecked(value, TiltValue, mi.BigEndian);
 
 			//Enqueue it
 			Working.StoreData.Enqueue(value);
