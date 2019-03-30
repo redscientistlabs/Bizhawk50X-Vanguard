@@ -1306,11 +1306,8 @@ namespace RTCV.CorruptCore
 							if (Working.ApplyValue == null)
 							{
 								//Calculate the actual value to apply
+								//This handles the endianess for us and will return the output how we want it
 								Working.ApplyValue = CorruptCore_Extensions.AddValueToByteArrayUnchecked(Value, TiltValue, this.BigEndian);
-
-								//Flip it if it's big endian
-								if (this.BigEndian)
-									Working.ApplyValue.FlipBytes();
 							}
 							//Poke the memory
 							for (int i = 0; i < Precision; i++)
@@ -1351,7 +1348,7 @@ namespace RTCV.CorruptCore
 
 			//Calculate the final value after adding the tilt value
 			if (TiltValue != 0)
-				value = CorruptCore_Extensions.AddValueToByteArrayUnchecked(value, TiltValue, mi.BigEndian);
+				value = CorruptCore_Extensions.AddValueToByteArrayUnchecked(value, TiltValue, this.BigEndian);
 
 			//Enqueue it
 			Working.StoreData.Enqueue(value);
