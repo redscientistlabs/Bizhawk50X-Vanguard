@@ -1130,6 +1130,15 @@ namespace RTCV.CorruptCore
 		[NonSerialized, XmlIgnore, JsonIgnore, Ceras.Exclude]
 		public BlastUnitWorkingData Working;
 
+		//Don't serialize this either
+		[NonSerialized, XmlIgnore, JsonIgnore, Ceras.Exclude]
+		private MemoryInterface sourceMi;
+
+		//Don't serialize this either
+		[NonSerialized, XmlIgnore, JsonIgnore, Ceras.Exclude]
+		private MemoryInterface destMi;
+
+
 
 
 		/// <summary>
@@ -1236,6 +1245,8 @@ namespace RTCV.CorruptCore
 				return true;
 			//Create our working data object
 			this.Working = new BlastUnitWorkingData();
+			this.sourceMi = MemoryDomains.GetInterface(SourceDomain);
+			this.destMi = MemoryDomains.GetInterface(Domain);
 
 			//We need to grab the value to freeze
 			if (Source == BlastUnitSource.STORE && StoreTime == StoreTime.IMMEDIATE)
@@ -1264,15 +1275,15 @@ namespace RTCV.CorruptCore
 
 			try
 			{
-				//Get our memory interface
-				MemoryInterface mi = MemoryDomains.GetInterface(Domain);
-				if (mi == null)
-					return;
+				if (destMi == null)
+					if ((this.destMi = MemoryDomains.GetInterface(Domain)) == null)
+						throw new Exception($"Memory Domain error. destMi was null. If you know how to reproduce this, let the devs know");
+
 
 				//Limiter handling
 				if (LimiterListHash != null && LimiterTime == LimiterTime.EXECUTE)
 				{
-					if (!LimiterCheck(mi))
+					if (!LimiterCheck(destMi))
 						return;
 				}
 
@@ -1295,7 +1306,7 @@ namespace RTCV.CorruptCore
 							//All the data is already handled by GetStoreBackup, so we can just poke
 							for (int i = 0; i < Precision; i++)
 							{
-								mi.PokeByte(Address + i, Working.ApplyValue[i]);
+								destMi.PokeByte(Address + i, Working.ApplyValue[i]);
 							}
 						}
 						break;
@@ -1312,7 +1323,7 @@ namespace RTCV.CorruptCore
 							//Poke the memory
 							for (int i = 0; i < Precision; i++)
 							{
-								mi.PokeByte(Address + i, Working.ApplyValue[i]);
+								destMi.PokeByte(Address + i, Working.ApplyValue[i]);
 							}
 
 							break;
@@ -1335,18 +1346,16 @@ namespace RTCV.CorruptCore
 			if (SourceDomain == null)
 				return;
 
-			//Snag our memory interface
-			MemoryInterface mi = MemoryDomains.GetInterface(SourceDomain);
+			if (sourceMi == null)
+				if ((this.sourceMi = MemoryDomains.GetInterface(SourceDomain)) == null)
+					throw new Exception($"Memory Domain error. sourceMI was null. If you know how to reproduce this, let the devs know");
 
-			if (mi == null)
-				throw new Exception(
-					$"Memory Domain error. Mi was null. If you know how to reproduce this, let the devs know");
 
 			//Get the value
 			Byte[] value = new byte[Precision];
 			for (int i = 0; i < Precision; i++)
 			{
-				value[i] = mi.PeekByte(SourceAddress + i);
+				value[i] = sourceMi.PeekByte(SourceAddress + i);
 			}
 
 			//Calculate the final value after adding the tilt value
@@ -1593,10 +1602,10 @@ namespace RTCV.CorruptCore
 		/// <returns></returns>
 		public bool EnteringExecution()
 		{
-			//Snag our MI
-			MemoryInterface mi = MemoryDomains.GetInterface(Domain);
-			if (mi == null)
-				return false;
+			if (destMi == null)
+				if ((this.destMi = MemoryDomains.GetInterface(Domain)) == null)
+					throw new Exception(
+						$"Memory Domain error. destMi was null. If you know how to reproduce this, let the devs know");
 
 			//If it's a store unit, store the backup
 			if (Source == BlastUnitSource.STORE && StoreTime == StoreTime.PREEXECUTE)
@@ -1611,7 +1620,7 @@ namespace RTCV.CorruptCore
 			//Limiter handling. Normal operation is to not do anything if it doesn't match the limiter. Inverted is to only continue if it doesn't match
 			if (LimiterTime == LimiterTime.PREEXECUTE)
 			{
-				if (!LimiterCheck(mi))
+				if (!LimiterCheck(destMi))
 					return false;
 			}
 
