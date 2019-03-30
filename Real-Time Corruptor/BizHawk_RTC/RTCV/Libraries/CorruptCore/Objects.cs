@@ -1332,6 +1332,9 @@ namespace RTCV.CorruptCore
 		/// </summary>
 		public void StoreBackup()
 		{
+			if (SourceDomain == null)
+				return;
+
 			//Snag our memory interface
 			MemoryInterface mi = MemoryDomains.GetInterface(SourceDomain);
 

@@ -430,7 +430,9 @@ namespace RTCV.UI
 
 		private void TbTiltValue_Validated(object sender, EventArgs e)
 		{
-			BigInteger value = BigInteger.Parse(tbTiltValue.Text);
+			if (!BigInteger.TryParse(tbTiltValue.Text, out BigInteger value))
+				value = 0;
+
 			//Tilt isn't stored within the DGV so operate on the BUs. No validation neccesary as it's a bigint
 			foreach (DataGridViewRow row in dgvBlastEditor.SelectedRows)
 			{

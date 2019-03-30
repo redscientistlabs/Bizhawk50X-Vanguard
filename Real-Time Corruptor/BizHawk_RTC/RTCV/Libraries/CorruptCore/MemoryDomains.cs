@@ -56,6 +56,9 @@ namespace RTCV.CorruptCore
 
 		public static MemoryDomainProxy GetProxy(string domain, long address)
 		{
+			if (domain == null)
+				return null;
+
 			if (MemoryInterfaces.Count == 0)
 				RefreshDomains();
 
@@ -70,6 +73,9 @@ namespace RTCV.CorruptCore
 
 		public static MemoryInterface GetInterface(string _domain)
 		{
+			if (_domain == null)
+				return null;
+
 			if (MemoryInterfaces.Count == 0)
 				RefreshDomains();
 			
