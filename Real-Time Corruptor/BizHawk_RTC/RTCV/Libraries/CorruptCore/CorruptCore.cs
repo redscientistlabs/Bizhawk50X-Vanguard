@@ -421,7 +421,7 @@ namespace RTCV.CorruptCore
 				//Warn based on loaded processes
 				foreach (var item in ProblematicProcesses)
 				{
-					if (processes.Contains(item.Name.ToUpper())))
+					if (processes.Contains(item.Name.ToUpper()))
 					{
 						MessageBox.Show(item.Message, "Incompatible Program Detected!");
 						Warned = true;
