@@ -64,7 +64,8 @@ namespace RTCV.UI
 			});
 			GameProtection.Stop();
 
-			AutoKillSwitch.KillEmulator("KILL + RESTART");
+			if(S.GET<RTC_Core_Form>().cbUseAutoKillSwitch.Checked)
+				AutoKillSwitch.KillEmulator("KILL + RESTART");
 		}
 
 		private static void Spec_ServerConnected(object sender, EventArgs e)
