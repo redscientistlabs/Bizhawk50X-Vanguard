@@ -240,6 +240,7 @@ namespace RTCV.CorruptCore
 				bu.TiltValue = TiltValue;
 				bu.StoreLimiterSource = StoreLimiterSource;
 				bu.GeneratedUsingValueList = (Source == BlastUnitSource.VALUE && ValueSource == CustomValueSource.VALUELIST);
+				bu.BigEndian = mi.BigEndian;
 
 				//Only set a list if it's used
 				if (LimiterTime != LimiterTime.NONE)
