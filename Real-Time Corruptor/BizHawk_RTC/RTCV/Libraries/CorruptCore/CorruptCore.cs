@@ -171,13 +171,26 @@ namespace RTCV.CorruptCore
 		public static void Start()
 		{
 			CorruptCore_Extensions.DirectoryRequired(new[] {CorruptCore.engineTemplateDir});
+
 		}
+
+		private static  void OneTimeSettingsInitialize()
+		{
+			CorruptCore.RerollSourceAddress = true;
+			CorruptCore.RerollSourceDomain = true;
+			CorruptCore.RerollFollowsCustomEngine = true;
+		}
+
 		public static void StartUISide()
 		{
 			try
 			{
 				Start();
 				RegisterCorruptcoreSpec();
+
+				if (!NetCore.Params.IsParamSet("DISCLAIMER_READ"))
+					OneTimeSettingsInitialize();
+
 				IsStandaloneUI = true;
 			}
 			catch (Exception ex)
