@@ -346,7 +346,11 @@ namespace RTCV.CorruptCore
 					{
 						DateTime lastModified = File.GetLastWriteTime(LocalPath);
 						if (lastModified.Date == DateTime.Today)
+						{
+							ProblematicProcesses = JsonConvert.DeserializeObject<List<ProblematicProcess>>(File.ReadAllText(LocalPath));
+							CheckForProblematicProcesses();
 							return;
+						}
 					}
 
 					using (HttpClient client = new HttpClient())
@@ -417,10 +421,11 @@ namespace RTCV.CorruptCore
 				//Warn based on loaded processes
 				foreach (var item in ProblematicProcesses)
 				{
-					if (processes.Contains(item.Name))
+					if (processes.Contains(item.Name.ToUpper())))
 					{
 						MessageBox.Show(item.Message, "Incompatible Program Detected!");
 						Warned = true;
+						return;
 					}
 				}
 			}
