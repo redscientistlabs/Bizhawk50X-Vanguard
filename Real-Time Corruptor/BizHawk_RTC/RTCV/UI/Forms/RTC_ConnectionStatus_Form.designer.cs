@@ -32,7 +32,7 @@
             this.lbConnectionStatus = new System.Windows.Forms.Label();
             this.btnStartEmuhawkDetached = new System.Windows.Forms.Button();
             this.pnCorruptionEngine = new System.Windows.Forms.Panel();
-            this.label11 = new System.Windows.Forms.Label();
+            this.lbBizhawk = new System.Windows.Forms.Label();
             this.panel1 = new System.Windows.Forms.Panel();
             this.lbRTCver = new System.Windows.Forms.Label();
             this.pictureBox1 = new System.Windows.Forms.PictureBox();
@@ -80,17 +80,17 @@
             this.pnCorruptionEngine.TabIndex = 114;
             this.pnCorruptionEngine.Tag = "";
             // 
-            // label11
+            // lbBizhawk
             // 
-            this.label11.AutoSize = true;
-            this.label11.BackColor = System.Drawing.Color.Transparent;
-            this.label11.Font = new System.Drawing.Font("Segoe UI Semibold", 12F, System.Drawing.FontStyle.Bold);
-            this.label11.ForeColor = System.Drawing.Color.White;
-            this.label11.Location = new System.Drawing.Point(15, 325);
-            this.label11.Name = "label11";
-            this.label11.Size = new System.Drawing.Size(140, 21);
-            this.label11.TabIndex = 116;
-            this.label11.Text = "BizHawk Emulator";
+            this.lbBizhawk.AutoSize = true;
+            this.lbBizhawk.BackColor = System.Drawing.Color.Transparent;
+            this.lbBizhawk.Font = new System.Drawing.Font("Segoe UI Semibold", 12F, System.Drawing.FontStyle.Bold);
+            this.lbBizhawk.ForeColor = System.Drawing.Color.White;
+            this.lbBizhawk.Location = new System.Drawing.Point(15, 325);
+            this.lbBizhawk.Name = "lbBizhawk";
+            this.lbBizhawk.Size = new System.Drawing.Size(140, 21);
+            this.lbBizhawk.TabIndex = 116;
+            this.lbBizhawk.Text = "BizHawk Emulator";
             // 
             // panel1
             // 
@@ -133,7 +133,7 @@
             this.Controls.Add(this.pictureBox1);
             this.Controls.Add(this.lbRTCver);
             this.Controls.Add(this.panel1);
-            this.Controls.Add(this.label11);
+            this.Controls.Add(this.lbBizhawk);
             this.Controls.Add(this.pnCorruptionEngine);
             this.Controls.Add(this.lbConnectionStatus);
             this.DoubleBuffered = true;
@@ -153,8 +153,8 @@
 		#endregion
 		public System.Windows.Forms.Label lbConnectionStatus;
 		public System.Windows.Forms.Button btnStartEmuhawkDetached;
-		private System.Windows.Forms.Panel pnCorruptionEngine;
-		private System.Windows.Forms.Label label11;
+		public System.Windows.Forms.Panel pnCorruptionEngine;
+		public System.Windows.Forms.Label lbBizhawk;
 		private System.Windows.Forms.Panel panel1;
         private System.Windows.Forms.Label lbRTCver;
 		private System.Windows.Forms.PictureBox pictureBox1;
