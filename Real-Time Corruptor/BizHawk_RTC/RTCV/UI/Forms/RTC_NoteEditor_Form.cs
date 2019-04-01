@@ -6,6 +6,7 @@ using System.Windows.Forms;
 using System.Collections.Generic;
 using System.Text;
 using RTCV.CorruptCore;
+using RTCV.NetCore.StaticTools;
 using static RTCV.UI.UI_Extensions;
 
 namespace RTCV.UI
@@ -78,6 +79,8 @@ namespace RTCV.UI
 			if(cleanText == "[DIFFERENT]")
 				return;
 
+			var oldText = note.Note;
+
 			if (String.IsNullOrEmpty(cleanText))
 			{
 				note.Note = String.Empty;
@@ -93,6 +96,13 @@ namespace RTCV.UI
 						cell.Value = "📝";
 			}
 
+			//If our cell comes from the GH's dgv and the text changed, prompt unsavededits
+			if (oldText != cleanText && cells?.First()
+				?.DataGridView == S.GET<RTC_GlitchHarvester_Form>()
+				.dgvStockpile)
+			{
+				S.GET<RTC_GlitchHarvester_Form>().UnsavedEdits = true;
+			}
 		}
 
 		private void RTC_NE_Form_Shown(object sender, EventArgs e)
