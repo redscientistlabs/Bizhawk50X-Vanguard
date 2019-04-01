@@ -156,6 +156,14 @@ namespace RTCV.UI
 				cbSourceDomain.Validated += CbSourceDomain_Validated;
 
 				registerValueStringScrollEvents();
+
+
+				//On today's episode of "why is the designer overriding these values every time I build"
+				upDownExecuteFrame.Maximum = Int32.MaxValue;
+				upDownPrecision.Maximum = 16348; //Textbox doesn't like more than ~20k
+				upDownLifetime.Maximum = Int32.MaxValue;
+				upDownSourceAddress.Maximum = Int32.MaxValue;
+				upDownAddress.Maximum = Int32.MaxValue;
 			}
 			catch(Exception ex)
 			{
@@ -443,6 +451,8 @@ namespace RTCV.UI
 		private void UpDownLifetime_Validated(object sender, EventArgs e)
 		{
 			var value = upDownLifetime.Value;
+			if (value > Int32.MaxValue)
+				value = Int32.MaxValue;
 			foreach (DataGridViewRow row in dgvBlastEditor.SelectedRows)
 				row.Cells[buProperty.Lifetime.ToString()].Value = value;
 
@@ -452,6 +462,8 @@ namespace RTCV.UI
 		private void UpDownExecuteFrame_Validated(object sender, EventArgs e)
 		{
 			var value = upDownExecuteFrame.Value;
+			if (value > Int32.MaxValue)
+				value = Int32.MaxValue;
 			foreach (DataGridViewRow row in dgvBlastEditor.SelectedRows)
 				row.Cells[buProperty.ExecuteFrame.ToString()].Value = value;
 
@@ -462,6 +474,10 @@ namespace RTCV.UI
 		private void UpDownPrecision_Validated(object sender, EventArgs e)
 		{
 			var value = upDownPrecision.Value;
+
+			if (value > Int32.MaxValue)
+				value = Int32.MaxValue;
+
 			foreach (DataGridViewRow row in dgvBlastEditor.SelectedRows)
 				row.Cells[buProperty.Precision.ToString()].Value = value;
 			UpdateBottom();
@@ -471,6 +487,8 @@ namespace RTCV.UI
 		private void UpDownAddress_Validated(object sender, EventArgs e)
 		{
 			var value = upDownAddress.Value;
+			if (value > Int32.MaxValue)
+				value = Int32.MaxValue;
 			foreach (DataGridViewRow row in dgvBlastEditor.SelectedRows)
 				row.Cells[buProperty.Address.ToString()].Value = value;
 			UpdateBottom();
@@ -479,6 +497,8 @@ namespace RTCV.UI
 		private void UpDownSourceAddress_Validated(object sender, EventArgs e)
 		{
 			var value = upDownSourceAddress.Value;
+			if (value > Int32.MaxValue)
+				value = Int32.MaxValue;
 			foreach (DataGridViewRow row in dgvBlastEditor.SelectedRows)
 				row.Cells[buProperty.SourceAddress.ToString()].Value = value;
 			UpdateBottom();
@@ -813,6 +833,7 @@ namespace RTCV.UI
 				, new DataGridViewTextBoxColumn());
 			valuestring.DefaultCellStyle.Tag = "numeric";
 			valuestring.SortMode = DataGridViewColumnSortMode.Automatic;
+			((DataGridViewTextBoxColumn)valuestring).MaxInputLength = 16348; //textbox doesn't like larger than ~20k
 			dgvBlastEditor.Columns.Add(valuestring);
 
 

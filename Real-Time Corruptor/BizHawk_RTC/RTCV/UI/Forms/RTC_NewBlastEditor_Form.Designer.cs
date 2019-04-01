@@ -799,6 +799,7 @@ namespace RTCV.UI
             this.tbValue.CharacterCasing = System.Windows.Forms.CharacterCasing.Upper;
             this.tbValue.Font = new System.Drawing.Font("Consolas", 11F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel);
             this.tbValue.Location = new System.Drawing.Point(3, 17);
+            this.tbValue.MaxLength = 16348;
             this.tbValue.Name = "tbValue";
             this.tbValue.Nullable = true;
             this.tbValue.Size = new System.Drawing.Size(100, 20);

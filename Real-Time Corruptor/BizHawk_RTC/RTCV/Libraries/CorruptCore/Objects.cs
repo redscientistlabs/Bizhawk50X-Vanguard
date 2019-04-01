@@ -971,6 +971,9 @@ namespace RTCV.CorruptCore
 			}
 			set
 			{
+				int max = 16348; //The textbox breaks if I go over 20k
+				if (value > max)
+					value = max;
 				//Cache the old precision
 				int oldPrecision = precision;
 				//Update the precision
