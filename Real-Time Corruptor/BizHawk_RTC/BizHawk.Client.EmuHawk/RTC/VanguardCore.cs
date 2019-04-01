@@ -343,6 +343,8 @@ namespace Vanguard
 
 				Hooks.BIZHAWK_LOADSTATE(path);
 
+				RTCV.NetCore.AllSpec.CorruptCoreSpec.Update(RTCSPEC.STEP_RUNBEFORE.ToString(), true);
+
 				return true;
 			}
 			catch (Exception ex)

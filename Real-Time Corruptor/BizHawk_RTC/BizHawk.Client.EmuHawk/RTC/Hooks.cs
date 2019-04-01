@@ -43,10 +43,17 @@ namespace Vanguard
 				if (disableRTC || Global.Emulator is NullEmulator)
 					return;
 
+				bool runBefore = (bool)(RTCV.NetCore.AllSpec.CorruptCoreSpec?[RTCSPEC.STEP_RUNBEFORE.ToString()] ?? false);
+
 				//Return out if it's being called from before the step and we're not on frame 0. If we're on frame 0, then we go as normal
 				//If we can't get runbefore, just assume we don't want to run before
-				if (isBeforeStep && CPU_STEP_Count != 0 && ((bool)(RTCV.NetCore.AllSpec.CorruptCoreSpec?[RTCSPEC.STEP_RUNBEFORE.ToString()] ?? false)) == false)
+				 if (isBeforeStep && runBefore == false)
 					return;
+				if (runBefore)
+				{
+					RTCV.NetCore.AllSpec.CorruptCoreSpec.Update(RTCSPEC.STEP_RUNBEFORE.ToString(), false);
+				}
+
 
 				isNormalAdvance = !(isRewinding || isFastForwarding);
 
