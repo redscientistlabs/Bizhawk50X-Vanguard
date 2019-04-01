@@ -405,8 +405,8 @@ namespace RTCV.CorruptCore
 
 					byte[] added = bigIntValue.ToByteArray();
 					byte[] outArray = new byte[value.Length];
-					//Don't use copyto as we actually want to copy a trimmed array out
-					for (int i = 0; i < value.Length; i++)
+					//Don't use copyto as we actually want to copy a trimmed array out (left aligned)
+					for (int i = 0; i < added.Length; i++)
 						outArray[i] = added[i];
 
 
