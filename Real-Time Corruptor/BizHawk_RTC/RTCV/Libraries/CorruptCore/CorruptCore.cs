@@ -329,68 +329,76 @@ namespace RTCV.CorruptCore
 		}
 
 
-		public static void DownloadProblematicProcesses()
+		public static void  DownloadProblematicProcesses()
 		{
 			//Windows does the big dumb: part 11
 			WebRequest.DefaultWebProxy = null;
 
-			string LocalPath = NetCore.Params.paramsDir + "\\BADPROCESSES";
-			string json = "";
-			try
+			//Do this on its own thread as downloading the json is slow
+			(new Thread(() =>
 			{
-				if (File.Exists(LocalPath))
+				string LocalPath = NetCore.Params.paramsDir + "\\BADPROCESSES";
+
+				string json = "";
+				try
 				{
-					DateTime lastModified = File.GetLastWriteTime(LocalPath);
-					if (lastModified.Date == DateTime.Today)
-						return;
-				}
-				using (HttpClient client = new HttpClient())
-				{
-					client.Timeout = TimeSpan.FromMilliseconds(5000);
-					//Using .Result makes it synchronous
-					json = client.GetStringAsync("http://redscientist.com/software/rtc/ProblematicProcesses.json").Result;
-				}
-				File.WriteAllText(LocalPath, json);
-			}
-			catch (Exception ex)
-			{
-				if (ex is WebException)
-				{
-					//Couldn't download the new one so just fall back to the old one if it's there
-					Console.WriteLine(ex.ToString());
 					if (File.Exists(LocalPath))
 					{
-						try
-						{
-							json = File.ReadAllText(LocalPath);
-						}
-						catch (Exception _ex)
-						{
-							Console.WriteLine("Couldn't read BADPROCESSES\n\n" + _ex.ToString());
+						DateTime lastModified = File.GetLastWriteTime(LocalPath);
+						if (lastModified.Date == DateTime.Today)
 							return;
+					}
+
+					using (HttpClient client = new HttpClient())
+					{
+						client.Timeout = TimeSpan.FromMilliseconds(5000);
+						//Using .Result makes it synchronous
+						json = client.GetStringAsync("http://redscientist.com/software/rtc/ProblematicProcesses.json")
+							.Result;
+					}
+
+					File.WriteAllText(LocalPath, json);
+				}
+				catch (Exception ex)
+				{
+					if (ex is WebException)
+					{
+						//Couldn't download the new one so just fall back to the old one if it's there
+						Console.WriteLine(ex.ToString());
+						if (File.Exists(LocalPath))
+						{
+							try
+							{
+								json = File.ReadAllText(LocalPath);
+							}
+							catch (Exception _ex)
+							{
+								Console.WriteLine("Couldn't read BADPROCESSES\n\n" + _ex.ToString());
+								return;
+							}
 						}
+						else
+							return;
 					}
 					else
-						return;
+					{
+						Console.WriteLine(ex.ToString());
+					}
 				}
-				else
+
+				try
+				{
+					ProblematicProcesses = JsonConvert.DeserializeObject<List<ProblematicProcess>>(json);
+					CheckForProblematicProcesses();
+				}
+				catch (Exception ex)
 				{
 					Console.WriteLine(ex.ToString());
+					if (File.Exists(LocalPath))
+						File.Delete(LocalPath);
+					throw ex;
 				}
-			}
-
-			try
-			{
-				ProblematicProcesses = JsonConvert.DeserializeObject<List<ProblematicProcess>>(json);
-			}
-			catch (Exception ex)
-			{
-				Console.WriteLine(ex.ToString());
-				if (File.Exists(LocalPath))
-					File.Delete(LocalPath);
-				throw ex;
-			}
-
+			})).Start();
 		}
 
 		//Checks if any problematic processes are found

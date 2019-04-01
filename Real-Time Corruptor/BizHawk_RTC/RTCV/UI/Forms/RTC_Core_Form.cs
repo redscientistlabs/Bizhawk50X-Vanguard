@@ -90,7 +90,6 @@ namespace RTCV.UI
 			}
 
 			CorruptCore.CorruptCore.DownloadProblematicProcesses();
-			CorruptCore.CorruptCore.CheckForProblematicProcesses();
 
 			GhostBoxInvisible(btnEasyMode);
 			GhostBoxInvisible(btnEngineConfig);
