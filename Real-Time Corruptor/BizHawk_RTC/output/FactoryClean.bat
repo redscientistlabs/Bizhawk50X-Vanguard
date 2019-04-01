@@ -33,6 +33,7 @@ del RTC/MEMORYDUMPS/*.* /F /Q
 del RTC/RENDEROUTPUT/*.* /F /Q
 del RTC/WORKING/*.* /F /Q /S
 del RTC/PARAMS/*.* /F /Q
+del RTC/ENGINETEMPLATES/*.* /F /Q
 	
 del WGH/PARAMS/*.* /F /Q
 
