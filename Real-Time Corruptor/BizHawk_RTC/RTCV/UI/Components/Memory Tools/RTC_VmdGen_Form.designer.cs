@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(RTC_VmdGen_Form));
             this.cbSelectedMemoryDomain = new System.Windows.Forms.ComboBox();
             this.btnLoadDomains = new System.Windows.Forms.Button();
             this.label17 = new System.Windows.Forms.Label();
@@ -294,7 +295,7 @@
             this.btnHelp.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnHelp.Font = new System.Drawing.Font("Segoe UI Semibold", 9.75F, System.Drawing.FontStyle.Bold);
             this.btnHelp.ForeColor = System.Drawing.Color.Black;
-            this.btnHelp.Image = global::RTCV.UI.Properties.Resources.Question_Mark;
+            this.btnHelp.Image = ((System.Drawing.Image)(resources.GetObject("btnHelp.Image")));
             this.btnHelp.Location = new System.Drawing.Point(367, 4);
             this.btnHelp.Name = "btnHelp";
             this.btnHelp.Size = new System.Drawing.Size(19, 19);
