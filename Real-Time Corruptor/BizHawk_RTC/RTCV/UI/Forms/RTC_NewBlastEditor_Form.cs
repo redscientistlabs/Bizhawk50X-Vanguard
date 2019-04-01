@@ -547,7 +547,11 @@ namespace RTCV.UI
 		private void cbDomain_Validated(object sender, EventArgs e)
 		{
 			var value = cbDomain.SelectedItem;
-			foreach (DataGridViewRow row in dgvBlastEditor.SelectedRows)
+
+			if (!domains.Contains(value))
+				return;
+
+				foreach (DataGridViewRow row in dgvBlastEditor.SelectedRows)
 				row.Cells[buProperty.Domain.ToString()].Value = value;
 			UpdateBottom();
 		}
