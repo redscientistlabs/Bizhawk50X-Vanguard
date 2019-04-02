@@ -82,8 +82,7 @@ namespace RTCV.UI
 			S.GET<RTC_Core_Form>().ShowPanelForm(S.GET<RTC_ConnectionStatus_Form>());
 			if (HideStartButton)
 			{
-				S.GET<RTC_ConnectionStatus_Form>().pnCorruptionEngine.Visible = false;
-				S.GET<RTC_ConnectionStatus_Form>().lbBizhawk.Visible = false;
+				S.GET<RTC_ConnectionStatus_Form>().btnStartEmuhawkDetached.Visible = false;
 			}
 			S.GET<RTC_Core_Form>().Show();
 

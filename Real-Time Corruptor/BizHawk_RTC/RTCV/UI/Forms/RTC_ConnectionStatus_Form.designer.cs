@@ -31,12 +31,9 @@
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(RTC_ConnectionStatus_Form));
             this.lbConnectionStatus = new System.Windows.Forms.Label();
             this.btnStartEmuhawkDetached = new System.Windows.Forms.Button();
-            this.pnCorruptionEngine = new System.Windows.Forms.Panel();
-            this.lbBizhawk = new System.Windows.Forms.Label();
             this.panel1 = new System.Windows.Forms.Panel();
             this.lbRTCver = new System.Windows.Forms.Label();
             this.pictureBox1 = new System.Windows.Forms.PictureBox();
-            this.pnCorruptionEngine.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             this.SuspendLayout();
             // 
@@ -54,43 +51,20 @@
             // 
             // btnStartEmuhawkDetached
             // 
-            this.btnStartEmuhawkDetached.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(224)))), ((int)(((byte)(224)))), ((int)(((byte)(224)))));
+            this.btnStartEmuhawkDetached.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
             this.btnStartEmuhawkDetached.FlatAppearance.BorderSize = 0;
             this.btnStartEmuhawkDetached.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnStartEmuhawkDetached.Font = new System.Drawing.Font("Segoe UI Semibold", 11F, System.Drawing.FontStyle.Bold);
-            this.btnStartEmuhawkDetached.ForeColor = System.Drawing.Color.Black;
+            this.btnStartEmuhawkDetached.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(224)))), ((int)(((byte)(224)))), ((int)(((byte)(224)))));
             this.btnStartEmuhawkDetached.ImageAlign = System.Drawing.ContentAlignment.MiddleRight;
-            this.btnStartEmuhawkDetached.Location = new System.Drawing.Point(18, 14);
+            this.btnStartEmuhawkDetached.Location = new System.Drawing.Point(31, 442);
             this.btnStartEmuhawkDetached.Name = "btnStartEmuhawkDetached";
-            this.btnStartEmuhawkDetached.Size = new System.Drawing.Size(271, 49);
+            this.btnStartEmuhawkDetached.Size = new System.Drawing.Size(167, 36);
             this.btnStartEmuhawkDetached.TabIndex = 2;
-            this.btnStartEmuhawkDetached.Text = "  Start BizHawk (Detached)";
+            this.btnStartEmuhawkDetached.Text = "  Start BizHawk";
             this.btnStartEmuhawkDetached.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageBeforeText;
             this.btnStartEmuhawkDetached.UseVisualStyleBackColor = false;
             this.btnStartEmuhawkDetached.Click += new System.EventHandler(this.btnStartEmuhawkDetached_Click);
-            // 
-            // pnCorruptionEngine
-            // 
-            this.pnCorruptionEngine.BackColor = System.Drawing.Color.Transparent;
-            this.pnCorruptionEngine.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.pnCorruptionEngine.Controls.Add(this.btnStartEmuhawkDetached);
-            this.pnCorruptionEngine.Location = new System.Drawing.Point(19, 349);
-            this.pnCorruptionEngine.Name = "pnCorruptionEngine";
-            this.pnCorruptionEngine.Size = new System.Drawing.Size(308, 81);
-            this.pnCorruptionEngine.TabIndex = 114;
-            this.pnCorruptionEngine.Tag = "";
-            // 
-            // lbBizhawk
-            // 
-            this.lbBizhawk.AutoSize = true;
-            this.lbBizhawk.BackColor = System.Drawing.Color.Transparent;
-            this.lbBizhawk.Font = new System.Drawing.Font("Segoe UI Semibold", 12F, System.Drawing.FontStyle.Bold);
-            this.lbBizhawk.ForeColor = System.Drawing.Color.White;
-            this.lbBizhawk.Location = new System.Drawing.Point(15, 325);
-            this.lbBizhawk.Name = "lbBizhawk";
-            this.lbBizhawk.Size = new System.Drawing.Size(140, 21);
-            this.lbBizhawk.TabIndex = 116;
-            this.lbBizhawk.Text = "BizHawk Emulator";
             // 
             // panel1
             // 
@@ -130,11 +104,10 @@
             this.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("$this.BackgroundImage")));
             this.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
             this.ClientSize = new System.Drawing.Size(655, 515);
+            this.Controls.Add(this.btnStartEmuhawkDetached);
             this.Controls.Add(this.pictureBox1);
             this.Controls.Add(this.lbRTCver);
             this.Controls.Add(this.panel1);
-            this.Controls.Add(this.lbBizhawk);
-            this.Controls.Add(this.pnCorruptionEngine);
             this.Controls.Add(this.lbConnectionStatus);
             this.DoubleBuffered = true;
             this.Font = new System.Drawing.Font("Segoe UI Symbol", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
@@ -143,7 +116,6 @@
             this.Name = "RTC_ConnectionStatus_Form";
             this.Text = "RTC_ConnectionStatus_Form";
             this.Load += new System.EventHandler(this.RTC_ConnectionStatus_Form_Load);
-            this.pnCorruptionEngine.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
@@ -153,8 +125,6 @@
 		#endregion
 		public System.Windows.Forms.Label lbConnectionStatus;
 		public System.Windows.Forms.Button btnStartEmuhawkDetached;
-		public System.Windows.Forms.Panel pnCorruptionEngine;
-		public System.Windows.Forms.Label lbBizhawk;
 		private System.Windows.Forms.Panel panel1;
         private System.Windows.Forms.Label lbRTCver;
 		private System.Windows.Forms.PictureBox pictureBox1;

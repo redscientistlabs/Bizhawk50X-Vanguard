@@ -49,6 +49,7 @@ namespace RTCV.UI
 				if (S.GET<RTC_ConnectionStatus_Form>() != null && !S.GET<RTC_ConnectionStatus_Form>().IsDisposed)
 				{
 					S.GET<RTC_ConnectionStatus_Form>().lbConnectionStatus.Text = "Connection status: Bizhawk timed out";
+					S.GET<RTC_ConnectionStatus_Form>().btnStartEmuhawkDetached.Visible = true;
 					S.GET<RTC_Core_Form>().ShowPanelForm(S.GET<RTC_ConnectionStatus_Form>());
 				}
 
