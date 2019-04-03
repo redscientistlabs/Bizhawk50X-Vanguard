@@ -1711,6 +1711,8 @@ namespace RTCV.UI
 					}
 					else if (cell.OwningColumn.Name == buProperty.ValueString.ToString())
 					{
+					if (shiftDown)
+						amount = 0 - amount;
 						int precision = (int)row.Cells[buProperty.Precision.ToString()].Value;
 						cell.Value = getShiftedHexString((string)cell.Value, amount, precision);
 					}
