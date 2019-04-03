@@ -58,7 +58,7 @@
             this.tablePanel.RowStyles.Add(new System.Windows.Forms.RowStyle());
             this.tablePanel.RowStyles.Add(new System.Windows.Forms.RowStyle());
             this.tablePanel.RowStyles.Add(new System.Windows.Forms.RowStyle());
-            this.tablePanel.Size = new System.Drawing.Size(270, 288);
+            this.tablePanel.Size = new System.Drawing.Size(269, 285);
             this.tablePanel.TabIndex = 0;
             this.tablePanel.Tag = "color:dark";
             // 
@@ -71,7 +71,7 @@
             this.panel1.Controls.Add(this.tablePanel);
             this.panel1.Location = new System.Drawing.Point(12, 12);
             this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(281, 300);
+            this.panel1.Size = new System.Drawing.Size(280, 297);
             this.panel1.TabIndex = 141;
             this.panel1.Tag = "color:dark";
             // 
@@ -80,13 +80,16 @@
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
-            this.ClientSize = new System.Drawing.Size(305, 324);
+            this.ClientSize = new System.Drawing.Size(304, 321);
             this.Controls.Add(this.panel1);
             this.Font = new System.Drawing.Font("Segoe UI Emoji", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.ForeColor = System.Drawing.Color.White;
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Margin = new System.Windows.Forms.Padding(2);
+            this.MaximumSize = new System.Drawing.Size(320, 360);
+            this.MinimumSize = new System.Drawing.Size(320, 360);
             this.Name = "ColumnSelector";
+            this.Tag = "color:normal";
             this.Text = "Select Columns";
             this.panel1.ResumeLayout(false);
             this.ResumeLayout(false);
