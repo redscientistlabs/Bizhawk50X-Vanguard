@@ -71,7 +71,10 @@ namespace RTCV.UI
 
 		private static void Spec_ServerConnected(object sender, EventArgs e)
 		{
-
+			SyncObjectSingleton.FormExecute((o, ea) =>
+			{
+				S.GET<RTC_ConnectionStatus_Form>().lbConnectionStatus.Text = "Connection status: Connected to Bizhawk";
+			});
 		}
 
 		public void OnMessageReceivedProxy(object sender, NetCoreEventArgs e) => OnMessageReceived(sender, e);
