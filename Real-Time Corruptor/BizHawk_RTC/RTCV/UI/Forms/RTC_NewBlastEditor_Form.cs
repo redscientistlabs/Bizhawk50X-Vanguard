@@ -126,6 +126,7 @@ namespace RTCV.UI
 				dgvBlastEditor.CellFormatting += DgvBlastEditor_CellFormatting;
 				dgvBlastEditor.MouseClick += DgvBlastEditor_Click;
 
+				cbFilterColumn.SelectedValueChanged += (o, e) => { tbFilter_TextChanged(null, null); };
 				tbFilter.TextChanged += tbFilter_TextChanged;
 
 				cbEnabled.Validated += cbEnabled_Validated;
@@ -950,6 +951,7 @@ namespace RTCV.UI
 				if (!(column is DataGridViewCheckBoxColumn || column is DataGridViewButtonColumn))// && column.Visible)
 					cbFilterColumn.Items.Add(new ComboBoxItem<String>(column.HeaderText, column.Name));
 			}
+			cbFilterColumn.SelectedIndex = 0;
 		}
 
 		private void PopulateShiftCombobox()

@@ -1201,7 +1201,7 @@ namespace RTCV.UI
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Margin = new System.Windows.Forms.Padding(2);
             this.Name = "RTC_NewBlastEditor_Form";
-            this.Text = "Blast Editor 3";
+            this.Text = "Blast Editor";
             this.Load += new System.EventHandler(this.RTC_NewBlastEditorForm_Load);
             ((System.ComponentModel.ISupportInitialize)(this.dgvBlastEditor)).EndInit();
             this.panelSidebar.ResumeLayout(false);
