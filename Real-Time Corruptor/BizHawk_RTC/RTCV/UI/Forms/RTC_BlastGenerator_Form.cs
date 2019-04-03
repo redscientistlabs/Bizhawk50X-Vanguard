@@ -806,6 +806,7 @@ namespace RTCV.UI
 						if (!domains.Contains(row.ItemArray[(int)BlastGeneratorColumn.DgvDomain].ToString()))
 						{
 							MessageBox.Show("Skipping row as domain couldn't be found! Are you sure you have the right core and all VMDs loaded?");
+							continue;
 						}
 
 						(dgv.Rows[lastrow].Cells["dgvDomain"] as DataGridViewComboBoxCell)?.Items.Add(row.ItemArray[(int)BlastGeneratorColumn.DgvDomain]);
