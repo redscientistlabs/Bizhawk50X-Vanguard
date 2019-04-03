@@ -1463,6 +1463,10 @@ namespace RTCV.CorruptCore
 		/// </summary>
 		public void Reroll()
 		{
+			//Don't reroll locked units
+			if (this.IsLocked)
+				return;
+
 			if (Source == BlastUnitSource.VALUE)
 			{
 				if (CorruptCore.RerollFollowsCustomEngine)
