@@ -29,9 +29,8 @@ namespace RTCV.NetCore
 		{
 			get
 			{
-				if (specDico.ContainsKey(key))
-					return specDico[key];
-				return null;
+				specDico.TryGetValue(key, out object value);
+				return value; //returns null if doesn't exist
 			}
 		}
 
@@ -231,9 +230,8 @@ namespace RTCV.NetCore
 		{
 			get
 			{
-				if (specDico.ContainsKey(key))
-					return specDico[key];
-				return null;
+				specDico.TryGetValue(key, out object value);
+				return value;	//returns null if doesn't exist
 			}
 			set
 			{
