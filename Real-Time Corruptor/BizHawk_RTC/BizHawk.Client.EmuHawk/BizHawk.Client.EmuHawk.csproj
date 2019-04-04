@@ -69,6 +69,7 @@
   <ItemGroup>
     <Reference Include="Ceras, Version=4.0.36.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\Ceras.4.0.36\lib\net45\Ceras.dll</HintPath>
+      <Private>False</Private>
     </Reference>
     <Reference Include="GongShell">
       <HintPath>..\References\GongShell.dll</HintPath>
