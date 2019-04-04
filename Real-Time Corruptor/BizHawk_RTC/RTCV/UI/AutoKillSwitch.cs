@@ -58,7 +58,7 @@ namespace RTCV.UI
 
 		public static void KillEmulator(string str)
 		{
-			if (!ShouldKillswitchFire)
+			if (!ShouldKillswitchFire || !S.GET<RTC_Core_Form>().cbUseAutoKillSwitch.Checked)
 				return; 
 
 			killswitchSpamPreventTimer = new Timer();
