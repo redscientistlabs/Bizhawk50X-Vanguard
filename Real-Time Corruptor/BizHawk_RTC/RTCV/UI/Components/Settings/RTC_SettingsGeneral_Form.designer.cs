@@ -37,6 +37,7 @@
             this.label4 = new System.Windows.Forms.Label();
             this.btnChangeRTCColor = new System.Windows.Forms.Button();
             this.btnOpenOnlineWiki = new System.Windows.Forms.Button();
+            this.cbUncapIntensity = new System.Windows.Forms.CheckBox();
             this.panel1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -62,12 +63,13 @@
             // panel1
             // 
             this.panel1.BackColor = System.Drawing.Color.Gray;
+            this.panel1.Controls.Add(this.cbUncapIntensity);
             this.panel1.Controls.Add(this.cbDontCleanAtQuit);
             this.panel1.Controls.Add(this.cbAllowCrossCoreCorruption);
             this.panel1.Controls.Add(this.cbDisableBizhawkOSD);
             this.panel1.Location = new System.Drawing.Point(80, 198);
             this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(250, 88);
+            this.panel1.Size = new System.Drawing.Size(250, 96);
             this.panel1.TabIndex = 138;
             this.panel1.Tag = "color:normal";
             // 
@@ -76,7 +78,7 @@
             this.cbDontCleanAtQuit.AutoSize = true;
             this.cbDontCleanAtQuit.Font = new System.Drawing.Font("Segoe UI", 8F);
             this.cbDontCleanAtQuit.ForeColor = System.Drawing.Color.White;
-            this.cbDontCleanAtQuit.Location = new System.Drawing.Point(11, 56);
+            this.cbDontCleanAtQuit.Location = new System.Drawing.Point(11, 70);
             this.cbDontCleanAtQuit.Name = "cbDontCleanAtQuit";
             this.cbDontCleanAtQuit.Size = new System.Drawing.Size(177, 17);
             this.cbDontCleanAtQuit.TabIndex = 2;
@@ -89,7 +91,7 @@
             this.cbAllowCrossCoreCorruption.AutoSize = true;
             this.cbAllowCrossCoreCorruption.Font = new System.Drawing.Font("Segoe UI", 8F);
             this.cbAllowCrossCoreCorruption.ForeColor = System.Drawing.Color.White;
-            this.cbAllowCrossCoreCorruption.Location = new System.Drawing.Point(11, 33);
+            this.cbAllowCrossCoreCorruption.Location = new System.Drawing.Point(11, 30);
             this.cbAllowCrossCoreCorruption.Name = "cbAllowCrossCoreCorruption";
             this.cbAllowCrossCoreCorruption.Size = new System.Drawing.Size(172, 17);
             this.cbAllowCrossCoreCorruption.TabIndex = 1;
@@ -161,6 +163,19 @@
             this.btnOpenOnlineWiki.UseVisualStyleBackColor = false;
             this.btnOpenOnlineWiki.Click += new System.EventHandler(this.btnOpenOnlineWiki_Click);
             // 
+            // cbUncapIntensity
+            // 
+            this.cbUncapIntensity.AutoSize = true;
+            this.cbUncapIntensity.Font = new System.Drawing.Font("Segoe UI", 8F);
+            this.cbUncapIntensity.ForeColor = System.Drawing.Color.White;
+            this.cbUncapIntensity.Location = new System.Drawing.Point(11, 50);
+            this.cbUncapIntensity.Name = "cbUncapIntensity";
+            this.cbUncapIntensity.Size = new System.Drawing.Size(158, 17);
+            this.cbUncapIntensity.TabIndex = 3;
+            this.cbUncapIntensity.Text = "Uncap intensity box value";
+            this.cbUncapIntensity.UseVisualStyleBackColor = true;
+            this.cbUncapIntensity.CheckedChanged += new System.EventHandler(this.CbUncapIntensity_CheckedChanged);
+            // 
             // RTC_SettingsGeneral_Form
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -196,5 +211,6 @@
 		public System.Windows.Forms.CheckBox cbAllowCrossCoreCorruption;
 		public System.Windows.Forms.CheckBox cbDisableBizhawkOSD;
 		private System.Windows.Forms.Label label4;
+		public System.Windows.Forms.CheckBox cbUncapIntensity;
 	}
 }

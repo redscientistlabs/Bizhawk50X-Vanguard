@@ -105,5 +105,17 @@ namespace RTCV.UI
 
 			CorruptCore.CorruptCore.DontCleanSavestatesOnQuit = cbDontCleanAtQuit.Checked;
 		}
+
+		private void CbUncapIntensity_CheckedChanged(object sender, EventArgs e)
+		{
+			if (cbUncapIntensity.Checked)
+				RTCV.NetCore.Params.SetParam("UNCAP_INTENSITY");
+			else
+				RTCV.NetCore.Params.RemoveParam("UNCAP_INTENSITY");
+
+			S.GET<RTC_GeneralParameters_Form>().multiTB_Intensity.UncapNumericBox = cbUncapIntensity.Checked;
+			S.GET<RTC_GlitchHarvester_Form>().multiTB_Intensity.UncapNumericBox = cbUncapIntensity.Checked;
+
+		}
 	}
 }
