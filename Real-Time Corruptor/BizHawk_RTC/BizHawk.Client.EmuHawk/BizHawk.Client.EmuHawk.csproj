@@ -67,8 +67,8 @@
     <CodeAnalysisRuleSet Condition=" '$(OS)' == 'Windows_NT' ">AllRules.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Ceras, Version=4.0.36.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Ceras.4.0.36\lib\net45\Ceras.dll</HintPath>
+    <Reference Include="Ceras, Version=4.0.37.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Ceras.4.0.37\lib\net45\Ceras.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="GongShell">
