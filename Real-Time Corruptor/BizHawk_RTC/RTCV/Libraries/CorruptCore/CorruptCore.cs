@@ -543,16 +543,26 @@ namespace RTCV.CorruptCore
 						intensity > StepActions.MaxInfiniteBlastUnits)
 						intensity = StepActions.MaxInfiniteBlastUnits; //Capping for cheat max
 
+
+					//Spec lookups add up really fast if you have a high intensity so we cache stuff we're going to be looking up over and over again
 					var cachedPrecision = CurrentPrecision;
+					var cachedDomainSizes = new long[selectedDomains.Length];
+					for (int i = 0; i < selectedDomains.Length; i++)
+					{
+						cachedDomainSizes[i] = MemoryDomains.GetInterface(selectedDomains[i]).Size;
+					}
+
+
 					switch (CorruptCore.Radius) //Algorithm branching
 					{
 						case BlastRadius.SPREAD: //Randomly spreads all corruption bytes to all selected domains
-
+						{
 							for (int i = 0; i < intensity; i++)
 							{
-								Domain = selectedDomains[CorruptCore.RND.Next(selectedDomains.Length)];
+								var r = CorruptCore.RND.Next(selectedDomains.Length);
+								Domain = selectedDomains[r];
 
-								MaxAddress = MemoryDomains.GetInterface(Domain).Size;
+								MaxAddress = cachedDomainSizes[r];
 								RandomAddress = CorruptCore.RND.RandomLong(MaxAddress - cachedPrecision);
 
 								bu = GetBlastUnit(Domain, RandomAddress, cachedPrecision);
@@ -561,12 +571,14 @@ namespace RTCV.CorruptCore
 							}
 
 							break;
+						}
 
 						case BlastRadius.CHUNK: //Randomly spreads the corruption bytes in one randomly selected domain
+						{
+							var r = CorruptCore.RND.Next(selectedDomains.Length);
+							Domain = selectedDomains[r];
 
-							Domain = selectedDomains[CorruptCore.RND.Next(selectedDomains.Length)];
-
-							MaxAddress = MemoryDomains.GetInterface(Domain).Size;
+							MaxAddress = cachedDomainSizes[r];
 
 							for (int i = 0; i < intensity; i++)
 							{
@@ -578,14 +590,15 @@ namespace RTCV.CorruptCore
 							}
 
 							break;
-
+						}
 						case BlastRadius.BURST: // 10 shots of 10% chunk
-
+						{
 							for (int j = 0; j < 10; j++)
 							{
-								Domain = selectedDomains[CorruptCore.RND.Next(selectedDomains.Length)];
+								var r = CorruptCore.RND.Next(selectedDomains.Length);
+								Domain = selectedDomains[r];
 
-								MaxAddress = MemoryDomains.GetInterface(Domain).Size;
+								MaxAddress = cachedDomainSizes[r];
 
 								for (int i = 0; i < (int)((double)intensity / 10); i++)
 								{
@@ -598,9 +611,11 @@ namespace RTCV.CorruptCore
 							}
 
 							break;
+						}
+
 
 						case BlastRadius.NORMALIZED: // Blasts based on the size of the largest selected domain. Intensity =  Intensity / (domainSize[largestdomain]/domainSize[currentdomain])
-
+						{
 							//Find the smallest domain and base our normalization around it
 							//Domains aren't IComparable so I used keys
 
@@ -608,8 +623,10 @@ namespace RTCV.CorruptCore
 							for (int i = 0; i < selectedDomains.Length; i++)
 							{
 								Domain = selectedDomains[i];
-								domainSize[i] = MemoryDomains.GetInterface(Domain).Size;
+								domainSize[i] = MemoryDomains.GetInterface(Domain)
+									.Size;
 							}
+
 							//Sort the arrays
 							Array.Sort(domainSize, selectedDomains);
 
@@ -622,7 +639,7 @@ namespace RTCV.CorruptCore
 
 								for (int j = 0; j < (intensity / normalized); j++)
 								{
-									MaxAddress = MemoryDomains.GetInterface(Domain).Size;
+									MaxAddress = domainSize[i];
 									RandomAddress = CorruptCore.RND.RandomLong(MaxAddress - cachedPrecision);
 
 									bu = GetBlastUnit(Domain, RandomAddress, cachedPrecision);
@@ -632,15 +649,16 @@ namespace RTCV.CorruptCore
 							}
 
 							break;
+						}
 
 						case BlastRadius.PROPORTIONAL: //Blasts proportionally based on the total size of all selected domains
 
-							long totalSize = selectedDomains.Select(it => MemoryDomains.GetInterface(it).Size).Sum(); //Gets the total size of all selected domains
+							long totalSize = cachedDomainSizes.Sum(); //Gets the total size of all selected domains
 
 							long[] normalizedIntensity = new long[selectedDomains.Length]; //matches the index of selectedDomains
 							for (int i = 0; i < selectedDomains.Length; i++)
 							{   //calculates the proportionnal normalized Intensity based on total selected domains size
-								double proportion = (double)MemoryDomains.GetInterface(selectedDomains[i]).Size / (double)totalSize;
+								double proportion = (double)cachedDomainSizes[i] / (double)totalSize;
 								normalizedIntensity[i] = Convert.ToInt64((double)intensity * proportion);
 							}
 
@@ -650,7 +668,7 @@ namespace RTCV.CorruptCore
 
 								for (int j = 0; j < normalizedIntensity[i]; j++)
 								{
-									MaxAddress = MemoryDomains.GetInterface(Domain).Size;
+									MaxAddress = cachedDomainSizes[i];
 									RandomAddress = CorruptCore.RND.RandomLong(MaxAddress - cachedPrecision);
 
 									bu = GetBlastUnit(Domain, RandomAddress, cachedPrecision);
@@ -669,7 +687,7 @@ namespace RTCV.CorruptCore
 
 								for (int j = 0; j < (intensity / selectedDomains.Length); j++)
 								{
-									MaxAddress = MemoryDomains.GetInterface(Domain).Size;
+									MaxAddress = cachedDomainSizes[i];
 									RandomAddress = CorruptCore.RND.RandomLong(MaxAddress - cachedPrecision);
 
 									bu = GetBlastUnit(Domain, RandomAddress, cachedPrecision);
