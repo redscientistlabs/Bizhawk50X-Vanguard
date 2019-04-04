@@ -1398,7 +1398,9 @@ namespace RTCV.UI
 				{
 					if (bu.Source == BlastUnitSource.VALUE)
 					{
-						byte[] outvalue = CorruptCore_Extensions.AddValueToByteArrayUnchecked(bu.Value, bu.TiltValue, bu.BigEndian);
+						//We don't want to modify the original
+						byte[] outvalue = (byte[])bu.Value.Clone();
+						CorruptCore_Extensions.AddValueToByteArrayUnchecked(ref outvalue, bu.TiltValue, bu.BigEndian);
 						//Flip it if it's big endian
 						if (bu.BigEndian)
 							outvalue.FlipBytes();
@@ -1759,7 +1761,7 @@ namespace RTCV.UI
 			var valueBytes= CorruptCore_Extensions.StringToByteArrayPadLeft(value, precision);
 			if (valueBytes == null)
 				return value;
-			valueBytes = CorruptCore_Extensions.AddValueToByteArrayUnchecked(valueBytes, new BigInteger(amount), true);
+			CorruptCore_Extensions.AddValueToByteArrayUnchecked(ref valueBytes, new BigInteger(amount), true);
 			return BitConverter.ToString(valueBytes).Replace("-", string.Empty);
 		}
 

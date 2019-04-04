@@ -309,10 +309,9 @@ namespace RTCV.CorruptCore
 			return 0;
 		}
 
-		public static byte[] AddValueToByteArrayUnchecked(byte[] originalValue, BigInteger addValue, bool isInputBigEndian)
-		{
-			byte[] value = (byte[])originalValue.Clone();
 
+		public static byte[] AddValueToByteArrayUnchecked(ref byte[] value, BigInteger addValue, bool isInputBigEndian)
+		{
 			if (isInputBigEndian)
 				Array.Reverse(value);
 
@@ -322,15 +321,14 @@ namespace RTCV.CorruptCore
 			switch (value.Length)
 			{
 				case 1:
-					byte byteValue = value[0];
 					byte addByteValue = (bigintAddValueAbs > byte.MaxValue ? byte.MaxValue : (byte)bigintAddValueAbs);
 
 					if (isAdd)
-						unchecked { byteValue += addByteValue; }
+						unchecked { value[0] += addByteValue; }
 					else
-						unchecked { byteValue -= addByteValue; }
+						unchecked { value[0] -= addByteValue; }
 
-					return new byte[] { byteValue };
+					return value;
 
 				case 2:
 					{
@@ -342,12 +340,12 @@ namespace RTCV.CorruptCore
 						else
 							unchecked { int16Value -= addInt16Value; }
 
-						byte[] newInt16Array = BitConverter.GetBytes(int16Value);
+						value = BitConverter.GetBytes(int16Value);
 
 						if (isInputBigEndian)
-							Array.Reverse(newInt16Array);
+							Array.Reverse(value);
 
-						return newInt16Array;
+						return value;
 					}
 				case 4:
 					{
@@ -359,12 +357,12 @@ namespace RTCV.CorruptCore
 						else
 							unchecked { int32Value -= addInt32Value; }
 
-						byte[] newInt32Array = BitConverter.GetBytes(int32Value);
+						value = BitConverter.GetBytes(int32Value);
 
 						if (isInputBigEndian)
-							Array.Reverse(newInt32Array);
+							Array.Reverse(value);
 
-						return newInt32Array;
+						return value;
 					}
 				case 8:
 					{
@@ -376,12 +374,12 @@ namespace RTCV.CorruptCore
 						else
 							unchecked { int64Value -= addInt64Value; }
 
-						byte[] newInt64Array = BitConverter.GetBytes(int64Value);
+						value = BitConverter.GetBytes(int64Value);
 
 						if (isInputBigEndian)
-							Array.Reverse(newInt64Array);
+							Array.Reverse(value);
 
-						return newInt64Array;
+						return value;
 					}
 				default:
 				{

@@ -1309,8 +1309,12 @@ namespace RTCV.CorruptCore
 							//If the length has changed (blast editor) we gotta recalc it
 							if (Working.ApplyValue == null)
 							{
+
+								//We don't want to modify the original array
+								Working.ApplyValue = (byte[])Value.Clone();
+
 								//Calculate the actual value to apply
-								Working.ApplyValue = CorruptCore_Extensions.AddValueToByteArrayUnchecked(Value, TiltValue, this.BigEndian);
+								CorruptCore_Extensions.AddValueToByteArrayUnchecked(ref Working.ApplyValue, TiltValue, this.BigEndian);
 
 								//Flip it if it's big endian
 								if (this.BigEndian)
@@ -1358,7 +1362,7 @@ namespace RTCV.CorruptCore
 
 			//Calculate the final value after adding the tilt value
 			if (TiltValue != 0)
-				value = CorruptCore_Extensions.AddValueToByteArrayUnchecked(value, TiltValue, this.BigEndian);
+				CorruptCore_Extensions.AddValueToByteArrayUnchecked(ref value, TiltValue, this.BigEndian);
 
 			//Flip it if it's big endian
 			if (this.BigEndian)
@@ -1531,8 +1535,8 @@ namespace RTCV.CorruptCore
 						}
 						byte[] temp = new byte[Precision];
 						//We use this as it properly handles the length for us
-						byte[] outArr = CorruptCore_Extensions.AddValueToByteArrayUnchecked(temp, randomValue, false);
-						Value = outArr;
+						CorruptCore_Extensions.AddValueToByteArrayUnchecked(ref temp, randomValue, false);
+						Value = temp;
 					}
 				}
 				else
@@ -1561,8 +1565,8 @@ namespace RTCV.CorruptCore
 
 					byte[] temp = new byte[Precision];
 					//We use this as it properly handles the length for us
-					byte[] outArr = CorruptCore_Extensions.AddValueToByteArrayUnchecked(temp, randomValue, false);
-					Value = outArr;
+					CorruptCore_Extensions.AddValueToByteArrayUnchecked(ref temp, randomValue, false);
+					Value = temp;
 				}
 			}
 			else if (Source == BlastUnitSource.STORE)
