@@ -57,9 +57,9 @@
             this.btnStartEmuhawkDetached.Font = new System.Drawing.Font("Segoe UI Semibold", 11F, System.Drawing.FontStyle.Bold);
             this.btnStartEmuhawkDetached.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(224)))), ((int)(((byte)(224)))), ((int)(((byte)(224)))));
             this.btnStartEmuhawkDetached.ImageAlign = System.Drawing.ContentAlignment.MiddleRight;
-            this.btnStartEmuhawkDetached.Location = new System.Drawing.Point(31, 386);
+            this.btnStartEmuhawkDetached.Location = new System.Drawing.Point(31, 407);
             this.btnStartEmuhawkDetached.Name = "btnStartEmuhawkDetached";
-            this.btnStartEmuhawkDetached.Size = new System.Drawing.Size(167, 36);
+            this.btnStartEmuhawkDetached.Size = new System.Drawing.Size(167, 42);
             this.btnStartEmuhawkDetached.TabIndex = 2;
             this.btnStartEmuhawkDetached.Text = "  Start BizHawk";
             this.btnStartEmuhawkDetached.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageBeforeText;

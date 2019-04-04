@@ -65,7 +65,7 @@ namespace RTCV.UI
 		private string searchValue, searchColumn;
 		public List<String> VisibleColumns;
 		private string CurrentBlastLayerFile = "";
-		
+		private bool batchOperation = false;
 
 		private int searchOffset = 0;
 		private IEnumerable<BlastUnit> searchEnumerable;
@@ -165,6 +165,7 @@ namespace RTCV.UI
 				upDownLifetime.Maximum = Int32.MaxValue;
 				upDownSourceAddress.Maximum = Int32.MaxValue;
 				upDownAddress.Maximum = Int32.MaxValue;
+
 			}
 			catch(Exception ex)
 			{
@@ -205,7 +206,7 @@ namespace RTCV.UI
 			var owningRow = dgvBlastEditor.CurrentCell.OwningRow;
 
 
-			if (dgvBlastEditor.CurrentCell == owningRow.Cells[buProperty.ValueString.ToString()])
+			if (dgvBlastEditor.CurrentCell == owningRow.Cells[buProperty.ValueString.ToString()] && dgvBlastEditor.IsCurrentCellInEditMode)
 			{
 				int precision = (int)dgvBlastEditor.CurrentCell.OwningRow.Cells[buProperty.Precision.ToString()].Value;
 				dgvCellValueScroll(dgvBlastEditor.EditingControl, e, precision);
@@ -703,6 +704,8 @@ namespace RTCV.UI
 			if (tbFilter.Text.Length == 0)
 			{
 				dgvBlastEditor.DataSource = bs;
+				_bs = null;
+				RefreshAllNoteIcons();
 				return;
 			}
 				
@@ -711,7 +714,7 @@ namespace RTCV.UI
 			if (value == null)
 				return;
 
-			BindingSource _bs = new BindingSource();
+			_bs = new BindingSource();
 			switch (((ComboBoxItem<String>)cbFilterColumn.SelectedItem).Value)
 			{
 				//If it's an address or a source address we want decimal
@@ -726,7 +729,7 @@ namespace RTCV.UI
 					break;
 			}
 			dgvBlastEditor.DataSource = _bs;
-
+			RefreshAllNoteIcons();
 		}
 	
 		private void InitializeBottom()
@@ -1036,7 +1039,7 @@ namespace RTCV.UI
 		StashKey originalSK = null;
 		StashKey currentSK = null;
 		BindingSource bs = null;
-
+		BindingSource _bs = null;
 		public void LoadStashkey(StashKey sk)
 		{
 			if (!RefreshDomains())
@@ -1070,7 +1073,13 @@ namespace RTCV.UI
 
 
 			bs = new BindingSource {DataSource = new SortableBindingList<BlastUnit>(currentSK.BlastLayer.Layer)};
-		
+
+			bs.CurrentChanged += (o, e) =>
+			{
+				if (batchOperation)
+					((HandledEventArgs) e).Handled = true;
+			};
+
 			dgvBlastEditor.DataSource = bs;
 			InitializeDGV();
 			InitializeBottom();
@@ -1144,6 +1153,10 @@ namespace RTCV.UI
 		{
 			List<BlastUnit> buToRemove = new List<BlastUnit>();
 
+			dgvBlastEditor.SuspendLayout();
+			batchOperation = true;
+			var oldBS = dgvBlastEditor.DataSource;
+			dgvBlastEditor.DataSource = null;
 			foreach (BlastUnit bu in currentSK.BlastLayer.Layer.
 				Where(x => 
 				x.IsLocked == false &&
@@ -1155,7 +1168,12 @@ namespace RTCV.UI
 			foreach (BlastUnit bu in buToRemove)
 			{
 				bs.Remove(bu);
+				if (_bs != null && _bs.Contains(bu))
+					_bs.Remove(bu);
 			}
+			batchOperation = false;
+			dgvBlastEditor.DataSource = oldBS;
+			dgvBlastEditor.ResumeLayout();
 		}
 
 		private void btnDisableEverything_Click(object sender, EventArgs e)
@@ -1185,7 +1203,14 @@ namespace RTCV.UI
 			foreach(DataGridViewRow row in dgvBlastEditor.SelectedRows)
 			{
 				if ((row.DataBoundItem as BlastUnit).IsLocked == false)
-					bs.Remove(row.DataBoundItem as BlastUnit);
+				{
+					var bu = row.DataBoundItem as BlastUnit;
+					bs.Remove(bu);
+					//Todo replace how this works
+					if (_bs != null && _bs.Contains(bu))
+						bs.Remove(bu);
+				}
+					
 			}
 		}
 

@@ -1051,6 +1051,7 @@ namespace RTCV.CorruptCore
 		[Category("Value")]
 		[Description("Gets and sets Value[] through a string. Used for Textboxes")]
 		[DisplayName("ValueString")]
+		[Ceras.Exclude]
 		public string ValueString
 		{
 			get
