@@ -56,9 +56,9 @@ namespace RTCV.UI
 			pulseCount = MaxMissedPulses;
 		}
 
-		public static void KillEmulator(string str)
+		public static void KillEmulator(string str, bool forceBypass = false)
 		{
-			if (!ShouldKillswitchFire || !S.GET<RTC_Core_Form>().cbUseAutoKillSwitch.Checked)
+			if (!ShouldKillswitchFire || (!S.GET<RTC_Core_Form>().cbUseAutoKillSwitch.Checked && !forceBypass))
 				return; 
 
 			killswitchSpamPreventTimer = new Timer();
