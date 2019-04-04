@@ -222,12 +222,15 @@ namespace RTCV.UI.Components.Controls
                         tbControlValue.Value = Convert.ToInt32(tbValue);
                 }
 
-                if (setter != nmControlValue)
+				if (setter != nmControlValue)
+				{
 					if (nmValue > Maximum && !UncapNumericBox)
 						nmValue = Convert.ToInt32(Maximum);
 					else if (nmValue < Minimum)
 						nmValue = Convert.ToInt32(Minimum);
-                   nmControlValue.Value = nmValue;
+
+					nmControlValue.Value = nmValue;
+				}
 
                 foreach (var slave in slaveComps)
                     slave.UpdateAllControls(nmValue, tbValue, this);
@@ -271,6 +274,13 @@ namespace RTCV.UI.Components.Controls
         {
             if (GeneralUpdateFlag)
                 return;
+
+			if (nmControlValue.Value > Int32.MaxValue)
+			{
+				GeneralUpdateFlag = true;
+				nmControlValue.Value = Int32.MaxValue;
+				GeneralUpdateFlag = false;
+			}
 
             long nmValue = Convert.ToInt64(nmControlValue.Value);
             int tbValue = nmValueToTbValueQuadScale(nmControlValue.Value);
