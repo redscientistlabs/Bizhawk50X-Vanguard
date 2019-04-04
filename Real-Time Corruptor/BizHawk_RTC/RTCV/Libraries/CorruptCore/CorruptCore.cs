@@ -543,6 +543,7 @@ namespace RTCV.CorruptCore
 						intensity > StepActions.MaxInfiniteBlastUnits)
 						intensity = StepActions.MaxInfiniteBlastUnits; //Capping for cheat max
 
+					var cachedPrecision = CurrentPrecision;
 					switch (CorruptCore.Radius) //Algorithm branching
 					{
 						case BlastRadius.SPREAD: //Randomly spreads all corruption bytes to all selected domains
@@ -552,9 +553,9 @@ namespace RTCV.CorruptCore
 								Domain = selectedDomains[CorruptCore.RND.Next(selectedDomains.Length)];
 
 								MaxAddress = MemoryDomains.GetInterface(Domain).Size;
-								RandomAddress = CorruptCore.RND.RandomLong(MaxAddress - CurrentPrecision);
+								RandomAddress = CorruptCore.RND.RandomLong(MaxAddress - cachedPrecision);
 
-								bu = GetBlastUnit(Domain, RandomAddress, CorruptCore.CurrentPrecision);
+								bu = GetBlastUnit(Domain, RandomAddress, cachedPrecision);
 								if (bu != null)
 									bl.Layer.Add(bu);
 							}
@@ -569,9 +570,9 @@ namespace RTCV.CorruptCore
 
 							for (int i = 0; i < intensity; i++)
 							{
-								RandomAddress = CorruptCore.RND.RandomLong(MaxAddress - CurrentPrecision);
+								RandomAddress = CorruptCore.RND.RandomLong(MaxAddress - cachedPrecision);
 
-								bu = GetBlastUnit(Domain, RandomAddress, CorruptCore.CurrentPrecision);
+								bu = GetBlastUnit(Domain, RandomAddress, cachedPrecision);
 								if (bu != null)
 									bl.Layer.Add(bu);
 							}
@@ -588,9 +589,9 @@ namespace RTCV.CorruptCore
 
 								for (int i = 0; i < (int)((double)intensity / 10); i++)
 								{
-									RandomAddress = CorruptCore.RND.RandomLong(MaxAddress - CurrentPrecision);
+									RandomAddress = CorruptCore.RND.RandomLong(MaxAddress - cachedPrecision);
 
-									bu = GetBlastUnit(Domain, RandomAddress, CorruptCore.CurrentPrecision);
+									bu = GetBlastUnit(Domain, RandomAddress, cachedPrecision);
 									if (bu != null)
 										bl.Layer.Add(bu);
 								}
@@ -622,9 +623,9 @@ namespace RTCV.CorruptCore
 								for (int j = 0; j < (intensity / normalized); j++)
 								{
 									MaxAddress = MemoryDomains.GetInterface(Domain).Size;
-									RandomAddress = CorruptCore.RND.RandomLong(MaxAddress - CurrentPrecision);
+									RandomAddress = CorruptCore.RND.RandomLong(MaxAddress - cachedPrecision);
 
-									bu = GetBlastUnit(Domain, RandomAddress, CorruptCore.CurrentPrecision);
+									bu = GetBlastUnit(Domain, RandomAddress, cachedPrecision);
 									if (bu != null)
 										bl.Layer.Add(bu);
 								}
@@ -650,9 +651,9 @@ namespace RTCV.CorruptCore
 								for (int j = 0; j < normalizedIntensity[i]; j++)
 								{
 									MaxAddress = MemoryDomains.GetInterface(Domain).Size;
-									RandomAddress = CorruptCore.RND.RandomLong(MaxAddress - CurrentPrecision);
+									RandomAddress = CorruptCore.RND.RandomLong(MaxAddress - cachedPrecision);
 
-									bu = GetBlastUnit(Domain, RandomAddress, CorruptCore.CurrentPrecision);
+									bu = GetBlastUnit(Domain, RandomAddress, cachedPrecision);
 									if (bu != null)
 										bl.Layer.Add(bu);
 								}
@@ -669,9 +670,9 @@ namespace RTCV.CorruptCore
 								for (int j = 0; j < (intensity / selectedDomains.Length); j++)
 								{
 									MaxAddress = MemoryDomains.GetInterface(Domain).Size;
-									RandomAddress = CorruptCore.RND.RandomLong(MaxAddress - CurrentPrecision);
+									RandomAddress = CorruptCore.RND.RandomLong(MaxAddress - cachedPrecision);
 
-									bu = GetBlastUnit(Domain, RandomAddress, CorruptCore.CurrentPrecision);
+									bu = GetBlastUnit(Domain, RandomAddress, cachedPrecision);
 									if (bu != null)
 										bl.Layer.Add(bu);
 								}
