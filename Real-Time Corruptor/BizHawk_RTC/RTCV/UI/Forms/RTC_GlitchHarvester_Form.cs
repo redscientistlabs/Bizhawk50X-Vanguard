@@ -1364,6 +1364,9 @@ namespace RTCV.UI
 
 			SaveStateKeys ssk;
 
+			//Commit any used states to the SESSION folder
+			commitUsedStatesToSession();
+
 			try
 			{
 
@@ -1394,8 +1397,6 @@ namespace RTCV.UI
 				return;
 			}
 
-			//Commit any used states to the SESSION folder
-			commitUsedStatesToSession();
 
 			for (int i = 1; i < 41; i++)
 			{
