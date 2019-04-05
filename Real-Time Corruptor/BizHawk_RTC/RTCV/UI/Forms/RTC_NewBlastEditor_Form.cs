@@ -59,8 +59,12 @@ namespace RTCV.UI
 	public partial class RTC_NewBlastEditor_Form : Form, IAutoColorize
 	{
 
-
-		private static Dictionary<string, MemoryInterface> domainToMiDico = new Dictionary<string, MemoryInterface>();
+		private static Dictionary<string, MemoryInterface> _domainToMiDico;
+		private static Dictionary<string, MemoryInterface> domainToMiDico
+		{
+			get => _domainToMiDico ?? (_domainToMiDico = new Dictionary<string, MemoryInterface>());
+			set => _domainToMiDico = value;
+		}
 		private string[] domains = null;
 		private string searchValue, searchColumn;
 		public List<String> VisibleColumns;
@@ -166,6 +170,9 @@ namespace RTCV.UI
 				upDownSourceAddress.Maximum = Int32.MaxValue;
 				upDownAddress.Maximum = Int32.MaxValue;
 
+				this.FormClosed += RTC_NewBlastEditorForm_Close;
+				this.FormClosing += RTC_NewBlastEditorForm_Closing;
+
 			}
 			catch(Exception ex)
 			{
@@ -188,11 +195,24 @@ namespace RTCV.UI
 			dgvBlastEditor.AllowUserToOrderColumns = true;
 			SetDisplayOrder();
 		}
-		private void RTC_NewBlastEditorForm_Close(object sender, FormClosingEventArgs e)
+		private void RTC_NewBlastEditorForm_Closing(object sender, FormClosingEventArgs e)
 		{
 			SaveDisplayOrder();
 		}
-		
+		private void RTC_NewBlastEditorForm_Close(object sender, FormClosedEventArgs e)
+		{
+			//Clean up
+			bs = null;
+			_bs = null;
+			currentSK = null;
+			originalSK = null;
+			domainToMiDico = null;
+			//Force cleanup
+			GC.Collect();
+			GC.WaitForPendingFinalizers();
+			this.Dispose();
+		}
+
 
 
 		private void registerValueStringScrollEvents()
@@ -1077,7 +1097,10 @@ namespace RTCV.UI
 			bs.CurrentChanged += (o, e) =>
 			{
 				if (batchOperation)
-					((HandledEventArgs) e).Handled = true;
+				{
+					if(e is HandledEventArgs h)
+						h.Handled = true;
+				}
 			};
 
 			dgvBlastEditor.DataSource = bs;
@@ -1173,6 +1196,7 @@ namespace RTCV.UI
 			}
 			batchOperation = false;
 			dgvBlastEditor.DataSource = oldBS;
+			RefreshAllNoteIcons();
 			dgvBlastEditor.ResumeLayout();
 		}
 
@@ -1209,8 +1233,7 @@ namespace RTCV.UI
 					//Todo replace how this works
 					if (_bs != null && _bs.Contains(bu))
 						bs.Remove(bu);
-				}
-					
+				}		
 			}
 		}
 

@@ -645,6 +645,10 @@ namespace RTCV.UI
 		{
 			StockpileManager_UISide.StashHistory.Clear();
 			RefreshStashHistory();
+
+			//Force clean up
+			GC.Collect();
+			GC.WaitForPendingFinalizers();
 		}
 
 		private void btnRemoveSelectedStockpile_Click(object sender, EventArgs e) => RemoveSelected();
