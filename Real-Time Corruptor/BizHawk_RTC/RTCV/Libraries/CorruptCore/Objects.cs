@@ -515,7 +515,13 @@ namespace RTCV.CorruptCore
 
 				if (!File.Exists(CorruptCore.rtcDir + Path.DirectorySeparatorChar + $"{folder}\\{masterFile}"))
 				{
-					MessageBox.Show("The file could not be read properly\n\n");
+					if (File.Exists(CorruptCore.rtcDir + Path.DirectorySeparatorChar + $"{folder}\\stockpile.xml"))
+						MessageBox.Show("Legacy stockpile found. This stockpile isn't supported by this version of the RTC.");
+					else if (File.Exists(CorruptCore.rtcDir + Path.DirectorySeparatorChar + $"{folder}\\keys.xml"))
+						MessageBox.Show("Legacy SSK found. This SSK isn't supported by this version of the RTC.");
+					else
+						MessageBox.Show("The file could not be read properly");
+
 					EmptyFolder(folder);
 					return false;
 				}
@@ -525,8 +531,8 @@ namespace RTCV.CorruptCore
 			catch (Exception e)
 			{
 				//If it errors out, empty the folder
-				MessageBox.Show("The file could not be read properly\n\n" + e);
 				EmptyFolder(folder);
+				throw new CustomException("The file could not be read properly", e.Message + "\n" + e.StackTrace);
 				return false;
 			}
 		}
