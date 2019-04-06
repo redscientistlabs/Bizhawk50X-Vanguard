@@ -293,11 +293,10 @@ namespace RTCV.UI
             // 
             // lbBlastLayerSize
             // 
-            this.lbBlastLayerSize.AutoSize = true;
             this.lbBlastLayerSize.ForeColor = System.Drawing.Color.White;
             this.lbBlastLayerSize.Location = new System.Drawing.Point(5, 5);
             this.lbBlastLayerSize.Name = "lbBlastLayerSize";
-            this.lbBlastLayerSize.Size = new System.Drawing.Size(58, 13);
+            this.lbBlastLayerSize.Size = new System.Drawing.Size(120, 19);
             this.lbBlastLayerSize.TabIndex = 132;
             this.lbBlastLayerSize.Text = "Layer size:";
             // 
@@ -332,6 +331,7 @@ namespace RTCV.UI
             // 
             // btnLoadCorrupt
             // 
+            this.btnLoadCorrupt.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.btnLoadCorrupt.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(32)))), ((int)(((byte)(32)))), ((int)(((byte)(32)))));
             this.btnLoadCorrupt.FlatAppearance.BorderSize = 0;
             this.btnLoadCorrupt.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
@@ -366,6 +366,7 @@ namespace RTCV.UI
             // 
             // btnCorrupt
             // 
+            this.btnCorrupt.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.btnCorrupt.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(32)))), ((int)(((byte)(32)))), ((int)(((byte)(32)))));
             this.btnCorrupt.FlatAppearance.BorderSize = 0;
             this.btnCorrupt.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
@@ -383,6 +384,7 @@ namespace RTCV.UI
             // 
             // btnSendToStash
             // 
+            this.btnSendToStash.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.btnSendToStash.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(32)))), ((int)(((byte)(32)))), ((int)(((byte)(32)))));
             this.btnSendToStash.FlatAppearance.BorderSize = 0;
             this.btnSendToStash.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
@@ -1209,7 +1211,6 @@ namespace RTCV.UI
             this.panel1.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.updownShiftBlastLayerAmount)).EndInit();
             this.pnMemoryTargetting.ResumeLayout(false);
-            this.pnMemoryTargetting.PerformLayout();
             this.panel2.ResumeLayout(false);
             this.panel2.PerformLayout();
             this.panelBottom.ResumeLayout(false);
