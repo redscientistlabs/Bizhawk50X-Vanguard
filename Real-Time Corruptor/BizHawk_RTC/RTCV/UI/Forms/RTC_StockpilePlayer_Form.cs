@@ -19,6 +19,10 @@ namespace RTCV.UI
 			InitializeComponent();
 			dgvStockpile.DragDrop += dgvStockpile_DragDrop;
 			dgvStockpile.DragEnter += dgvStockpile_DragEnter;
+			dgvStockpile.RowsAdded += (o, e) =>
+			{
+				RefreshNoteIcons();
+			};
 		}
 
 		private void dgvStockpile_DragEnter(object sender, DragEventArgs e)
@@ -173,10 +177,10 @@ namespace RTCV.UI
 
 					if (Stockpile.Load(dgvStockpile))
 					{
-						S.GET<RTC_StockpilePlayer_Form>().RefreshNoteIcons();
 						S.GET<RTC_GlitchHarvester_Form>().dgvStockpile.Rows.Clear();
 					}
 					dgvStockpile.ClearSelection();
+					RefreshNoteIcons();
 				}
 				catch (Exception ex)
 				{

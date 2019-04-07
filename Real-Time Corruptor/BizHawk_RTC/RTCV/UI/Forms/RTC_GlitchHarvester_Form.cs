@@ -151,6 +151,9 @@ namespace RTCV.UI
 			btnEmergencySaveStockpile.Click += btnSaveStockpileAs_Click;
 			pnHideGlitchHarvester.Controls.Add(btnEmergencySaveStockpile);
 
+			dgvStockpile.RowsAdded += (o,e) => {
+				RefreshNoteIcons();
+			};
 
 			this.MouseDoubleClick += ClearSelectedSKs;
 
@@ -706,10 +709,10 @@ namespace RTCV.UI
 
 			if (Stockpile.Load(dgvStockpile, filename))
 			{
-				S.GET<RTC_GlitchHarvester_Form>().btnSaveStockpile.Enabled = true;
-				S.GET<RTC_GlitchHarvester_Form>().btnSaveStockpile.BackColor = Color.Tomato;
-				S.GET<RTC_GlitchHarvester_Form>().btnSaveStockpile.ForeColor = Color.Black;
-				S.GET<RTC_GlitchHarvester_Form>().RefreshNoteIcons();
+				btnSaveStockpile.Enabled = true;
+				btnSaveStockpile.BackColor = Color.Tomato;
+				btnSaveStockpile.ForeColor = Color.Black;
+				RefreshNoteIcons();
 			}
 
 			S.GET<RTC_StockpilePlayer_Form>().dgvStockpile.Rows.Clear();
