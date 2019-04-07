@@ -58,25 +58,30 @@ namespace RTCV.UI
 
 		public static void KillEmulator(string str, bool forceBypass = false)
 		{
-			if (!ShouldKillswitchFire || (!S.GET<RTC_Core_Form>().cbUseAutoKillSwitch.Checked && !forceBypass))
-				return; 
-
-			killswitchSpamPreventTimer = new Timer();
-			killswitchSpamPreventTimer.Interval = Debugger.IsAttached ? 300000 : 3000;
-			killswitchSpamPreventTimer.Tick += KillswitchSpamPreventTimer_Tick;
-			killswitchSpamPreventTimer.Start();
-
-			ShouldKillswitchFire = false;
-
-			PlayCrashSound(true);
-			switch (str)
+			SyncObjectSingleton.FormExecute((o, ea) =>
 			{
-				case "KILL":
-					Process.Start("KILLDETACHEDRTC.bat");
-					break;
-				case "KILL + RESTART":
-					Process.Start("RESTARTDETACHEDRTC.bat");
-					break;
+
+				if (!ShouldKillswitchFire || (!S.GET<RTC_Core_Form>()
+					.cbUseAutoKillSwitch.Checked && !forceBypass))
+					return;
+
+				killswitchSpamPreventTimer = new Timer();
+				killswitchSpamPreventTimer.Interval = Debugger.IsAttached ? 300000 : 1000;
+				killswitchSpamPreventTimer.Tick += KillswitchSpamPreventTimer_Tick;
+				killswitchSpamPreventTimer.Start();
+
+				ShouldKillswitchFire = false;
+
+				PlayCrashSound(true);
+				switch (str)
+				{
+					case "KILL":
+						Process.Start("KILLDETACHEDRTC.bat");
+						break;
+					case "KILL + RESTART":
+						Process.Start("RESTARTDETACHEDRTC.bat");
+						break;
+				}
 			}
 		}
 		private static void KillswitchSpamPreventTimer_Tick(object sender, EventArgs e)
