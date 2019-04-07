@@ -298,6 +298,23 @@ namespace RTCV.UI
 			if (btn != null)
 				btn.Text = "● " + btn.Text;
 
+			if (!(frm is RTC_ConnectionStatus_Form) || !hideButtons)
+			{
+				if (!(frm is RTC_Settings_Form) || !hideButtons)
+				{
+					btnEasyMode.Visible = true;
+					btnEngineConfig.Visible = true;
+					btnGlitchHarvester.Visible = true;
+					btnStockpilePlayer.Visible = true;
+					btnAutoCorrupt.Visible = true;
+					btnManualBlast.Visible = true;
+
+					RemoveGhostBoxes();
+
+					pnCrashProtection.Visible = true;
+				}
+			}
+
 			if (!this.Controls.Contains(frm))
 			{
 				if (activeForm != null)
@@ -315,22 +332,7 @@ namespace RTCV.UI
 				frm.Show();
 			}
 
-			if (!(frm is RTC_ConnectionStatus_Form) || !hideButtons)
-			{
-				if (!(frm is RTC_Settings_Form) || !hideButtons)
-				{
-					btnEasyMode.Visible = true;
-					btnEngineConfig.Visible = true;
-					btnGlitchHarvester.Visible = true;
-					btnStockpilePlayer.Visible = true;
-					btnAutoCorrupt.Visible = true;
-					btnManualBlast.Visible = true;
-
-					RemoveGhostBoxes();
-
-					pnCrashProtection.Visible = true;
-				}
-			}
+			frm.Refresh();
 		}
 
 		public void btnEngineConfig_Click(object sender, EventArgs e) => ShowPanelForm(S.GET<RTC_EngineConfig_Form>());
