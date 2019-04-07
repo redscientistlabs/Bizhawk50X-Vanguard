@@ -75,6 +75,14 @@ namespace RTCV.UI
 		{
 			btnLogo.Text = "   Version " + CorruptCore.CorruptCore.RtcVersion;
 
+			GhostBoxInvisible(btnEasyMode);
+			GhostBoxInvisible(btnEngineConfig);
+			GhostBoxInvisible(btnGlitchHarvester);
+			GhostBoxInvisible(btnStockpilePlayer);
+			GhostBoxInvisible(btnManualBlast);
+			GhostBoxInvisible(btnAutoCorrupt);
+			GhostBoxInvisible(pnCrashProtection);
+
 			if (!NetCore.Params.IsParamSet("DISCLAIMER_READ"))
 			{
 				MessageBox.Show(File.ReadAllText(CorruptCore.CorruptCore.rtcDir + Path.DirectorySeparatorChar + "LICENSES\\DISCLAIMER.TXT").Replace("[ver]", CorruptCore.CorruptCore.RtcVersion), "RTC", MessageBoxButtons.OK, MessageBoxIcon.Information);
@@ -83,13 +91,6 @@ namespace RTCV.UI
 
 			CorruptCore.CorruptCore.DownloadProblematicProcesses();
 
-			GhostBoxInvisible(btnEasyMode);
-			GhostBoxInvisible(btnEngineConfig);
-			GhostBoxInvisible(btnGlitchHarvester);
-			GhostBoxInvisible(btnStockpilePlayer);
-			GhostBoxInvisible(btnManualBlast);
-			GhostBoxInvisible(btnAutoCorrupt);
-			GhostBoxInvisible(pnCrashProtection);
 		}
 
 		private void btnGlitchHarvester_Click(object sender, EventArgs e)
