@@ -65,6 +65,7 @@ namespace RTCV.UI
 					.cbUseAutoKillSwitch.Checked && !forceBypass))
 					return;
 
+				killswitchSpamPreventTimer.Stop();
 				killswitchSpamPreventTimer = new Timer();
 				killswitchSpamPreventTimer.Interval = Debugger.IsAttached ? 300000 : 1000;
 				killswitchSpamPreventTimer.Tick += KillswitchSpamPreventTimer_Tick;
@@ -82,7 +83,7 @@ namespace RTCV.UI
 						Process.Start("RESTARTDETACHEDRTC.bat");
 						break;
 				}
-			}
+			});
 		}
 		private static void KillswitchSpamPreventTimer_Tick(object sender, EventArgs e)
 		{
