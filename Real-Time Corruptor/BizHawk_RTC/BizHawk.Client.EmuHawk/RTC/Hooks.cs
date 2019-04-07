@@ -242,7 +242,7 @@ namespace Vanguard
 				string uppercaseFilename = GlobalWin.MainForm.CurrentlyOpenRom.ToUpper();
 				if (uppercaseFilename.Contains(".ZIP") || uppercaseFilename.Contains(".7Z"))
 				{
-					MessageBox.Show($"The selected file {Path.GetFileName(uppercaseFilename.Split('|')[0])} is an archive.\nThe RTC does not support archived rom files. Please extract the file then try again. Closing game.");
+					MessageBox.Show($"The selected file {Path.GetFileName(uppercaseFilename.Split('|')[0])} is an archive.\nThe RTC does not support archived rom files. Please extract the file then try again.");
 					CLOSE_GAME(true);
 					return;
 				}
