@@ -74,14 +74,14 @@ namespace RTCV.UI
 		private void RTC_Form_Load(object sender, EventArgs e)
 		{
 			btnLogo.Text = "   Version " + CorruptCore.CorruptCore.RtcVersion;
-
+			/*
 			GhostBoxInvisible(btnEasyMode);
 			GhostBoxInvisible(btnEngineConfig);
 			GhostBoxInvisible(btnGlitchHarvester);
 			GhostBoxInvisible(btnStockpilePlayer);
 			GhostBoxInvisible(btnManualBlast);
 			GhostBoxInvisible(btnAutoCorrupt);
-			GhostBoxInvisible(pnCrashProtection);
+			GhostBoxInvisible(pnCrashProtection);*/
 
 			if (!NetCore.Params.IsParamSet("DISCLAIMER_READ"))
 			{

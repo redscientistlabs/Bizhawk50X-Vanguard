@@ -65,7 +65,14 @@ namespace RTCV.UI
 					.cbUseAutoKillSwitch.Checked && !forceBypass))
 					return;
 
-				killswitchSpamPreventTimer?.Stop();
+				//Stop the old timer and eat any exceptions
+				try
+				{
+					BoopMonitoringTimer?.Stop();
+					BoopMonitoringTimer?.Dispose();
+				}
+				catch { }
+
 				killswitchSpamPreventTimer = new Timer();
 				killswitchSpamPreventTimer.Interval = Debugger.IsAttached ? 300000 : 1000;
 				killswitchSpamPreventTimer.Tick += KillswitchSpamPreventTimer_Tick;
@@ -94,7 +101,15 @@ namespace RTCV.UI
 		private static void Start()
 		{
 			pulseCount = MaxMissedPulses;
-			BoopMonitoringTimer?.Stop();
+
+			//Stop the old timer and eat any exceptions
+			try
+			{
+				BoopMonitoringTimer?.Stop();
+				BoopMonitoringTimer?.Dispose();
+			}
+			catch { }
+
 			BoopMonitoringTimer = new System.Timers.Timer();
 			BoopMonitoringTimer.Interval = 500;
 			BoopMonitoringTimer.Elapsed += BoopMonitoringTimer_Tick;
