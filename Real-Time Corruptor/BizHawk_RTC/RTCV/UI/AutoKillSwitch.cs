@@ -65,7 +65,7 @@ namespace RTCV.UI
 					.cbUseAutoKillSwitch.Checked && !forceBypass))
 					return;
 
-				killswitchSpamPreventTimer.Stop();
+				killswitchSpamPreventTimer?.Stop();
 				killswitchSpamPreventTimer = new Timer();
 				killswitchSpamPreventTimer.Interval = Debugger.IsAttached ? 300000 : 1000;
 				killswitchSpamPreventTimer.Tick += KillswitchSpamPreventTimer_Tick;
