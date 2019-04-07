@@ -353,6 +353,8 @@ namespace RTCV.CorruptCore
 
 			pSpec[RTCSPEC.CUSTOM_NAME.ToString()] = "Nightmare Engine";
 
+			pSpec[RTCSPEC.CORE_CURRENTPRECISION.ToString()] = 1;
+
 			pSpec[RTCSPEC.CUSTOM_DELAY.ToString()] = 0;
 			pSpec[RTCSPEC.CUSTOM_LIFETIME.ToString()] = 1;
 			pSpec[RTCSPEC.CUSTOM_LOOP.ToString()] = false;
@@ -383,6 +385,8 @@ namespace RTCV.CorruptCore
 		{
 			PartialSpec pSpec = new PartialSpec(NetCore.AllSpec.CorruptCoreSpec.name);
 			pSpec[RTCSPEC.CUSTOM_NAME.ToString()] = "Hellgenie Engine";
+
+			pSpec[RTCSPEC.CORE_CURRENTPRECISION.ToString()] = 1;
 
 			pSpec[RTCSPEC.CUSTOM_DELAY.ToString()] = 0;
 			pSpec[RTCSPEC.CUSTOM_LIFETIME.ToString()] = 0;
@@ -417,6 +421,8 @@ namespace RTCV.CorruptCore
 
 			pSpec[RTCSPEC.CUSTOM_NAME.ToString()] = "Distortion Engine";
 
+			pSpec[RTCSPEC.CORE_CURRENTPRECISION.ToString()] = 1;
+
 			pSpec[RTCSPEC.CUSTOM_DELAY.ToString()] = 50;
 			pSpec[RTCSPEC.CUSTOM_LIFETIME.ToString()] = 1;
 			pSpec[RTCSPEC.CUSTOM_LOOP.ToString()] = false;
@@ -450,6 +456,8 @@ namespace RTCV.CorruptCore
 
 			pSpec[RTCSPEC.CUSTOM_NAME.ToString()] = "Freeze Engine";
 
+			pSpec[RTCSPEC.CORE_CURRENTPRECISION.ToString()] = 1;
+
 			pSpec[RTCSPEC.CUSTOM_DELAY.ToString()] = 0;
 			pSpec[RTCSPEC.CUSTOM_LIFETIME.ToString()] = 0;
 			pSpec[RTCSPEC.CUSTOM_LOOP.ToString()] = false;
@@ -481,6 +489,8 @@ namespace RTCV.CorruptCore
 		{
 			PartialSpec pSpec = new PartialSpec(NetCore.AllSpec.CorruptCoreSpec.name);
 			pSpec[RTCSPEC.CUSTOM_NAME.ToString()] = "Pipe Engine";
+
+			pSpec[RTCSPEC.CORE_CURRENTPRECISION.ToString()] = 1;
 
 			pSpec[RTCSPEC.CUSTOM_DELAY.ToString()] = 0;
 			pSpec[RTCSPEC.CUSTOM_LIFETIME.ToString()] = 0;
@@ -516,6 +526,8 @@ namespace RTCV.CorruptCore
 
 			pSpec[RTCSPEC.CUSTOM_NAME.ToString()] = "Vector Engine";
 
+			pSpec[RTCSPEC.CORE_CURRENTPRECISION.ToString()] = 4;
+
 			pSpec[RTCSPEC.CUSTOM_DELAY.ToString()] = 0;
 			pSpec[RTCSPEC.CUSTOM_LIFETIME.ToString()] = 1;
 			pSpec[RTCSPEC.CUSTOM_LOOP.ToString()] = false;
@@ -550,6 +562,8 @@ namespace RTCV.CorruptCore
 			PartialSpec pSpec = new PartialSpec(RTCV.NetCore.AllSpec.CorruptCoreSpec.name);
 
 			pSpec[RTCSPEC.CUSTOM_NAME.ToString()] = pSpec[RTCSPEC.CUSTOM_NAME.ToString()];
+
+			pSpec[RTCSPEC.CORE_CURRENTPRECISION.ToString()] = RTCV.NetCore.AllSpec.CorruptCoreSpec[RTCSPEC.CORE_CURRENTPRECISION.ToString()];
 
 			pSpec[RTCSPEC.CUSTOM_DELAY.ToString()] = RTCV.NetCore.AllSpec.CorruptCoreSpec[RTCSPEC.CUSTOM_DELAY.ToString()];
 			pSpec[RTCSPEC.CUSTOM_LIFETIME.ToString()] = RTCV.NetCore.AllSpec.CorruptCoreSpec[RTCSPEC.CUSTOM_LIFETIME.ToString()];
@@ -726,6 +740,7 @@ namespace RTCV.CorruptCore
 
 			pSpec[RTCSPEC.CUSTOM_NAME.ToString()] = templateName;
 			pSpec[RTCSPEC.CUSTOM_PATH.ToString()] = path;
+			pSpec[RTCSPEC.CORE_CURRENTPRECISION] = CorruptCore.CurrentPrecision;
 
 
 			string jsonString = pSpec.GetSerializedDico();

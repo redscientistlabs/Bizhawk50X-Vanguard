@@ -543,6 +543,20 @@ namespace RTCV.UI
 				nmLifetime.Value = RTC_CustomEngine.Lifetime;
 
 
+				//Todo - replace this and data-bind it
+				switch (CorruptCore.CorruptCore.CurrentPrecision)
+				{
+					case 1:
+						S.GET<RTC_CorruptionEngine_Form>().cbCustomPrecision.SelectedIndex = 0;
+						break;
+					case 2:
+						S.GET<RTC_CorruptionEngine_Form>().cbCustomPrecision.SelectedIndex = 1;
+						break;
+					case 4:
+						S.GET<RTC_CorruptionEngine_Form>().cbCustomPrecision.SelectedIndex = 2;
+						break;
+				}
+
 				switch (CorruptCore.CorruptCore.CurrentPrecision)
 				{
 					case 1:
@@ -572,6 +586,7 @@ namespace RTCV.UI
 			finally
 			{
 				DontUpdateSpec = false;
+				this.Focus();
 			}
 		}
 
