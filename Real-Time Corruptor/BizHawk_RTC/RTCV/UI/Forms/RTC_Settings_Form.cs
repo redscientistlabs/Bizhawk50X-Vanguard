@@ -41,7 +41,7 @@ namespace RTCV.UI
 			p.StartInfo.FileName = "FactoryClean.bat";
 			p.StartInfo.WindowStyle = ProcessWindowStyle.Hidden;
 			p.StartInfo.CreateNoWindow = true;
-			p.StartInfo.WorkingDirectory = CorruptCore.CorruptCore.rtcDir;
+			p.StartInfo.WorkingDirectory = CorruptCore.CorruptCore.bizhawkDir;
 			p.Start();
 		}
 
