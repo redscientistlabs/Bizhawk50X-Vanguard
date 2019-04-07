@@ -813,7 +813,7 @@
             this.btnCustomTemplateSaveAs.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnCustomTemplateSaveAs.Font = new System.Drawing.Font("Segoe UI", 8F);
             this.btnCustomTemplateSaveAs.ForeColor = System.Drawing.Color.Black;
-            this.btnCustomTemplateSaveAs.Location = new System.Drawing.Point(337, 14);
+            this.btnCustomTemplateSaveAs.Location = new System.Drawing.Point(329, 14);
             this.btnCustomTemplateSaveAs.Name = "btnCustomTemplateSaveAs";
             this.btnCustomTemplateSaveAs.Size = new System.Drawing.Size(65, 25);
             this.btnCustomTemplateSaveAs.TabIndex = 193;
@@ -830,7 +830,7 @@
             this.btnCustomTemplateLoad.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnCustomTemplateLoad.Font = new System.Drawing.Font("Segoe UI", 8F);
             this.btnCustomTemplateLoad.ForeColor = System.Drawing.Color.Black;
-            this.btnCustomTemplateLoad.Location = new System.Drawing.Point(278, 14);
+            this.btnCustomTemplateLoad.Location = new System.Drawing.Point(268, 14);
             this.btnCustomTemplateLoad.Name = "btnCustomTemplateLoad";
             this.btnCustomTemplateLoad.Size = new System.Drawing.Size(55, 25);
             this.btnCustomTemplateLoad.TabIndex = 192;
@@ -848,7 +848,7 @@
             this.btnCustomTemplateSave.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnCustomTemplateSave.Font = new System.Drawing.Font("Segoe UI", 8F);
             this.btnCustomTemplateSave.ForeColor = System.Drawing.Color.DimGray;
-            this.btnCustomTemplateSave.Location = new System.Drawing.Point(406, 14);
+            this.btnCustomTemplateSave.Location = new System.Drawing.Point(401, 14);
             this.btnCustomTemplateSave.Name = "btnCustomTemplateSave";
             this.btnCustomTemplateSave.Size = new System.Drawing.Size(50, 25);
             this.btnCustomTemplateSave.TabIndex = 191;
