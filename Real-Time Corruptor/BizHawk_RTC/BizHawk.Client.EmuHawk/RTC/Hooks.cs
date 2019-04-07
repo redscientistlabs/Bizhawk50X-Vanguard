@@ -241,7 +241,11 @@ namespace Vanguard
 
 				string uppercaseFilename = GlobalWin.MainForm.CurrentlyOpenRom.ToUpper();
 				if (uppercaseFilename.Contains(".ZIP") || uppercaseFilename.Contains(".7Z"))
-					MessageBox.Show($"The rom {Path.GetFileName(uppercaseFilename)} is in an archive and can't be added to a Stockpile");
+				{
+					MessageBox.Show($"The selected file {Path.GetFileName(uppercaseFilename.Split('|')[0])} is an archive.\nThe RTC does not support archived rom files. Please extract the file then try again. Closing game.");
+					CLOSE_GAME(true);
+					return;
+				}
 
 				//Load Game vars into RTC_Core
 				PathEntry pathEntry = Global.Config.PathEntries[Global.Game.System, "Savestates"] ??
