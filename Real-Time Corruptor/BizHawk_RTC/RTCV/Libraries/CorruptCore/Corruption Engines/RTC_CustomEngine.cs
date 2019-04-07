@@ -627,9 +627,9 @@ namespace RTCV.CorruptCore
 			{
 				OpenFileDialog ofd = new OpenFileDialog
 				{
-					DefaultExt = "json",
+					DefaultExt = "cet",
 					Title = "Open Engine Template File",
-					Filter = "JSON files|*.json",
+					Filter = "CET files|*.cet",
 					RestoreDirectory = true
 				};
 
@@ -718,9 +718,9 @@ namespace RTCV.CorruptCore
 			{
 				SaveFileDialog saveFileDialog1 = new SaveFileDialog
 				{
-					DefaultExt = "json",
+					DefaultExt = "cet",
 					Title = "Save Engine Template File",
-					Filter = "JSON files|*.json",
+					Filter = "CET files|*.cet",
 					RestoreDirectory = true,
 				};
 
