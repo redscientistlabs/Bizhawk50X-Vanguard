@@ -20,8 +20,8 @@ rem DO NOT EDIT THIS BATCHFILE
 rem !!!!!!!!!!!!!!!!!!!!!!!!!!!
 
 cls
-taskkill /F /IM "EmuHawk.exe"
-taskkill /F /IM "StandaloneRTC.exe" > nul
+taskkill /F /IM "EmuHawk.exe" > nul 2>&1
+taskkill /F /IM "StandaloneRTC.exe" > nul 2>&1
 
 del config.ini /F
 del backup_config.ini /F
@@ -29,13 +29,19 @@ del stockpile_config.ini /F
 del CorruptedROM.rom /F
 del VinesauceROMCorruptor.txt /F
 
-del RTC/MEMORYDUMPS/*.* /F /Q
-del RTC/RENDEROUTPUT/*.* /F /Q
-del RTC/WORKING/*.* /F /Q /S
-del RTC/PARAMS/*.* /F /Q
-del RTC/ENGINETEMPLATES/*.* /F /Q
+del "RTC\MEMORYDUMPS\*.*" /F /Q
+del "RTC\RENDEROUTPUT\*.*" /F /Q
+del "RTC\WORKING\*.*" /F /Q /S
+del "RTC\PARAMS\*.*" /F /Q
+del "RTC\ENGINETEMPLATES\*.*" /F /Q
+del "debug\*.*" /F /Q
+
+del "RTC\EMU_LOG.txt" /F /Q
+del "RTC\RTC_LOG.txt" /F /Q
 	
-del WGH/PARAMS/*.* /F /Q
+del "WGH\PARAMS\*.*" /F /Q
+
 
 echo.
 echo.
+pause

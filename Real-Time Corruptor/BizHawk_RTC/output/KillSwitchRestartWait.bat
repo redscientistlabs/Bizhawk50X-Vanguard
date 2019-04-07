@@ -10,9 +10,9 @@ echo  Press any key to restart RTC.
 pause > nul
 
 taskkill /F /IM StandaloneRTC.exe > nul 2>&1
-taskkill /F /IM EmuHawk.exe > nul
+taskkill /F /IM EmuHawk.exe > nul 2>&1
 taskkill /F /IM WerFault.exe > nul 2>&1
-taskkill /F /IM ffmpeg.exe > nul
+taskkill /F /IM ffmpeg.exe > nul 2>&1
 
 start EmuHawk.exe
 goto start
