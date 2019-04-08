@@ -1719,7 +1719,11 @@ namespace RTCV.UI
 		public void btnShiftBlastLayerDown_Click(object sender, EventArgs e)
 		{
 			var amount = updownShiftBlastLayerAmount.Value;
-			var column = ((ComboBoxItem<String>)cbShiftBlastlayer.SelectedItem).Value;
+			var column = ((ComboBoxItem<String>)cbShiftBlastlayer?.SelectedItem)?.Value;
+
+			if (column == null)
+				return;
+
 			var rows = dgvBlastEditor.SelectedRows.Cast<DataGridViewRow>()
 				.Where((item => ((BlastUnit)item.DataBoundItem).IsLocked == false))
 				.ToList();
@@ -1729,7 +1733,11 @@ namespace RTCV.UI
 		public void btnShiftBlastLayerUp_Click(object sender, EventArgs e)
 		{
 			var amount = updownShiftBlastLayerAmount.Value;
-			var column = ((ComboBoxItem<String>) cbShiftBlastlayer.SelectedItem).Value;
+			var column = ((ComboBoxItem<String>)cbShiftBlastlayer?.SelectedItem)?.Value;
+
+			if (column == null)
+				return;
+
 			var rows = dgvBlastEditor.SelectedRows.Cast<DataGridViewRow>()
 				.Where((item => ((BlastUnit) item.DataBoundItem).IsLocked == false))
 				.ToList();

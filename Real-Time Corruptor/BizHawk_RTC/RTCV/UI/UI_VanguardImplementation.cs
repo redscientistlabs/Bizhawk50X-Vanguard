@@ -286,7 +286,7 @@ namespace RTCV.UI
 						SyncObjectSingleton.FormExecute((o, ea) =>
 						{
 							var bef = S.GET<RTC_NewBlastEditor_Form>();
-							if (bef != null && bef.Focused)
+							if (bef != null && Form.ActiveForm == bef)
 							{
 								bef.btnDisable50_Click(null, null);
 							}
@@ -296,7 +296,7 @@ namespace RTCV.UI
 						SyncObjectSingleton.FormExecute((o, ea) =>
 						{
 							var bef = S.GET<RTC_NewBlastEditor_Form>();
-							if (bef != null && bef.Focused)
+							if (bef != null && Form.ActiveForm == bef)
 							{
 								bef.btnInvertDisabled_Click(null, null);
 							}
@@ -306,7 +306,7 @@ namespace RTCV.UI
 						SyncObjectSingleton.FormExecute((o, ea) =>
 						{
 							var bef = S.GET<RTC_NewBlastEditor_Form>();
-							if (bef != null && bef.Focused)
+							if (bef != null && Form.ActiveForm == bef)
 							{
 								bef.btnRemoveDisabled_Click(null, null);
 							}
@@ -316,7 +316,7 @@ namespace RTCV.UI
 						SyncObjectSingleton.FormExecute((o, ea) =>
 						{
 							var bef = S.GET<RTC_NewBlastEditor_Form>();
-							if (bef != null && bef.Focused)
+							if (bef != null && Form.ActiveForm == bef)
 							{
 								bef.btnShiftBlastLayerUp_Click(null, null);
 							}
@@ -326,7 +326,7 @@ namespace RTCV.UI
 						SyncObjectSingleton.FormExecute((o, ea) =>
 						{
 							var bef = S.GET<RTC_NewBlastEditor_Form>();
-							if (bef != null && bef.Focused)
+							if (bef != null && Form.ActiveForm == bef)
 							{
 								bef.btnShiftBlastLayerDown_Click(null, null);
 							}
@@ -356,7 +356,7 @@ namespace RTCV.UI
 						SyncObjectSingleton.FormExecute((o, ea) =>
 						{
 							var bef = S.GET<RTC_NewBlastEditor_Form>();
-							if (bef != null && bef.Focused)
+							if (bef != null && Form.ActiveForm == bef)
 							{
 								bef.btnSendToStash_Click(null, null);
 							}
