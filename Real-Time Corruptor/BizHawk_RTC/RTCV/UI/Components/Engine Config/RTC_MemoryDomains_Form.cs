@@ -43,7 +43,7 @@ namespace RTCV.UI
 
 			for (
 				int i = 0; i < lbMemoryDomains.Items.Count; i++)
-				if (_blacklistedDomains.Contains(lbMemoryDomains.Items[i].ToString()))
+				if (_blacklistedDomains?.Contains(lbMemoryDomains.Items[i].ToString()) ?? false)
 					lbMemoryDomains.SetSelected(i, false);
 				else
 					lbMemoryDomains.SetSelected(i, true);
