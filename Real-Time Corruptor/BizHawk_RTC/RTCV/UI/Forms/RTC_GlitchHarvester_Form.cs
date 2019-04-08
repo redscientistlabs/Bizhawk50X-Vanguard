@@ -72,6 +72,8 @@ namespace RTCV.UI
 			foreach (DataGridViewRow dataRow in dgvStockpile.Rows)
 			{
 				StashKey sk = (StashKey)dataRow.Cells["Item"].Value;
+				if (sk == null)
+					continue;
 				if (String.IsNullOrWhiteSpace(sk.Note))
 				{
 					dataRow.Cells["Note"].Value = "";
