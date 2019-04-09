@@ -1,20 +1,15 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Diagnostics;
-using System.Drawing;
-using System.IO;
-using System.Linq;
-using System.Net;
-using System.Reflection;
-using System.Threading;
-using System.Windows.Forms;
-using BizHawk.Client.Common;
+﻿using BizHawk.Client.Common;
 using BizHawk.Client.EmuHawk;
-using Newtonsoft.Json;
 using RTCV.CorruptCore;
 using RTCV.NetCore;
 using RTCV.Vanguard;
+using System;
+using System.Collections.Generic;
+using System.Diagnostics;
+using System.Drawing;
+using System.IO;
+using System.Threading;
+using System.Windows.Forms;
 
 namespace Vanguard
 {

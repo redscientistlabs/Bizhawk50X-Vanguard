@@ -119,7 +119,7 @@ namespace RTCV.UI
 						SyncObjectSingleton.FormExecute((o, ea) =>
 						{
 							S.GET<RTC_MemoryDomains_Form>().RefreshDomains();
-							S.GET<RTC_MemoryDomains_Form>().SetMemoryDomainsAllButSelectedDomains((string[])RTCV.NetCore.AllSpec.VanguardSpec[VSPEC.MEMORYDOMAINS_BLACKLISTEDDOMAINS]);
+							S.GET<RTC_MemoryDomains_Form>().SetMemoryDomainsAllButSelectedDomains(RTCV.NetCore.AllSpec.VanguardSpec[VSPEC.MEMORYDOMAINS_BLACKLISTEDDOMAINS] as string[] ?? new string[]{});
 						});
 						break;
 
