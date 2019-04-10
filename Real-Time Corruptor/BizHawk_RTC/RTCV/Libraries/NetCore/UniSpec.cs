@@ -246,6 +246,20 @@ namespace RTCV.NetCore
 			}
 		}
 
+        public void Set(string key, object value)
+        {
+            this[key] = value;
+        }
+
+        public T Get<T>(string key)
+        {
+            if (specDico.TryGetValue(key, out object value))
+            {
+                return (T)value;
+            }
+            return default(T);
+        }
+
 		public List<String> GetKeys()
 		{
 			return specDico.Keys.ToList();
