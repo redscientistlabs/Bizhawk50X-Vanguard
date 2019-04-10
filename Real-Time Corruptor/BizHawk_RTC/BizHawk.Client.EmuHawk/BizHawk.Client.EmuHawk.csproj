@@ -10,7 +10,7 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>BizHawk.Client.EmuHawk</RootNamespace>
     <AssemblyName>EmuHawk</AssemblyName>
-    <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.7.1</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <StartupObject>BizHawk.Client.EmuHawk.Program</StartupObject>
     <IsWebBootstrapper>false</IsWebBootstrapper>
@@ -67,10 +67,6 @@
     <CodeAnalysisRuleSet Condition=" '$(OS)' == 'Windows_NT' ">AllRules.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Ceras, Version=4.0.38.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Ceras.4.0.38\lib\net45\Ceras.dll</HintPath>
-      <Private>False</Private>
-    </Reference>
     <Reference Include="GongShell">
       <HintPath>..\References\GongShell.dll</HintPath>
       <Private>False</Private>
@@ -108,10 +104,6 @@
     <Reference Include="System.IO.Compression.FileSystem" />
     <Reference Include="System.Net.Http" />
     <Reference Include="System.Numerics" />
-    <Reference Include="System.ValueTuple, Version=4.0.3.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
-      <HintPath>..\packages\System.ValueTuple.4.5.0\lib\net461\System.ValueTuple.dll</HintPath>
-      <Private>False</Private>
-    </Reference>
     <Reference Include="System.Xaml" />
     <Reference Include="System.Xml.Linq">
       <RequiredTargetFramework>3.5</RequiredTargetFramework>
@@ -1775,6 +1767,18 @@
     <EmbeddedResource Include="Resources\courier16px.fnt" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\..\..\RTCV\CorruptCore\CorruptCore.csproj">
+      <Project>{b5633a86-dc66-4723-88eb-7dfc95458072}</Project>
+      <Name>CorruptCore</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\..\..\RTCV\NetCore\NetCore.csproj">
+      <Project>{7e106aec-5614-4206-9e4d-25759c90e8ae}</Project>
+      <Name>NetCore</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\..\..\RTCV\Vanguard\Vanguard.csproj">
+      <Project>{364c705e-b7ab-4a94-a59b-88899ce65958}</Project>
+      <Name>Vanguard</Name>
+    </ProjectReference>
     <ProjectReference Include="..\BizHawk.Client.ApiHawk\BizHawk.Client.ApiHawk.csproj">
       <Project>{8e2f11f2-3955-4382-8c3a-ceba1276caea}</Project>
       <Name>BizHawk.Client.ApiHawk</Name>
@@ -1823,21 +1827,6 @@
     <ProjectReference Include="..\Bizware\BizHawk.Bizware.BizwareGL\BizHawk.Bizware.BizwareGL.csproj">
       <Project>{9F84A0B2-861E-4EF4-B89B-5E2A3F38A465}</Project>
       <Name>BizHawk.Bizware.BizwareGL</Name>
-      <Private>False</Private>
-    </ProjectReference>
-    <ProjectReference Include="..\RTCV\Libraries\CorruptCore\CorruptCore.csproj">
-      <Project>{b5633a86-dc66-4723-88eb-7dfc95458072}</Project>
-      <Name>CorruptCore</Name>
-      <Private>False</Private>
-    </ProjectReference>
-    <ProjectReference Include="..\RTCV\Libraries\NetCore\NetCore.csproj">
-      <Project>{7e106aec-5614-4206-9e4d-25759c90e8ae}</Project>
-      <Name>NetCore</Name>
-      <Private>False</Private>
-    </ProjectReference>
-    <ProjectReference Include="..\RTCV\Libraries\Vanguard\Vanguard.csproj">
-      <Project>{364c705e-b7ab-4a94-a59b-88899ce65958}</Project>
-      <Name>Vanguard</Name>
       <Private>False</Private>
     </ProjectReference>
   </ItemGroup>
@@ -1925,7 +1914,6 @@
     <Content Include="Resources\inifile_icon.png" />
     <Content Include="Resources\notepad_icon.png" />
     <Content Include="Resources\paintbrush_icon.png" />
-    <None Include="packages.config" />
     <None Include="Resources\MoveTop.png" />
     <None Include="Resources\MoveBottom.png" />
     <None Include="Resources\MoveTop.bmp" />
@@ -2298,6 +2286,11 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="config\Saturn\" />
+  </ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="Ceras">
+      <Version>4.0.38</Version>
+    </PackageReference>
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
