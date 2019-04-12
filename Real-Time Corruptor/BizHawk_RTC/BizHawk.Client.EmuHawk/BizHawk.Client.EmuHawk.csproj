@@ -1767,15 +1767,15 @@
     <EmbeddedResource Include="Resources\courier16px.fnt" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\..\..\RTCV\CorruptCore\CorruptCore.csproj">
+    <ProjectReference Include="..\..\..\..\RTCV\Source\Libraries\CorruptCore\CorruptCore.csproj">
       <Project>{b5633a86-dc66-4723-88eb-7dfc95458072}</Project>
       <Name>CorruptCore</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\..\..\RTCV\NetCore\NetCore.csproj">
+    <ProjectReference Include="..\..\..\..\RTCV\Source\Libraries\NetCore\NetCore.csproj">
       <Project>{7e106aec-5614-4206-9e4d-25759c90e8ae}</Project>
       <Name>NetCore</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\..\..\RTCV\Vanguard\Vanguard.csproj">
+    <ProjectReference Include="..\..\..\..\RTCV\Source\Libraries\Vanguard\Vanguard.csproj">
       <Project>{364c705e-b7ab-4a94-a59b-88899ce65958}</Project>
       <Name>Vanguard</Name>
     </ProjectReference>

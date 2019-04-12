@@ -156,6 +156,7 @@ namespace Vanguard
 		{
 			//Grab an object on the main thread to use for netcore invokes
 			SyncObjectSingleton.SyncObject = GlobalWin.MainForm;
+			SyncObjectSingleton.EmuThreadIsMainThread = true;
 
 			//Start everything
 			VanguardImplementation.StartClient();
