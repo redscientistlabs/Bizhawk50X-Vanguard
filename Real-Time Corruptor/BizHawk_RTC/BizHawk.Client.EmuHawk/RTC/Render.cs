@@ -19,12 +19,12 @@ namespace Vanguard
 			switch (RTCV.CorruptCore.Render.RenderType)
 			{
 				case RTCV.CorruptCore.Render.RENDERTYPE.WAV:
-					Hooks.BIZHAWK_STARTRECORDAV("wave", CorruptCore.rtcDir + Path.DirectorySeparatorChar + "RENDEROUTPUT" + Path.DirectorySeparatorChar + Key + ".wav", true);
+					Hooks.BIZHAWK_STARTRECORDAV("wave", CorruptCore.RtcDir + Path.DirectorySeparatorChar + "RENDEROUTPUT" + Path.DirectorySeparatorChar + Key + ".wav", true);
 					break;
 				case RTCV.CorruptCore.Render.RENDERTYPE.AVI:
 					try
 					{
-						Hooks.BIZHAWK_STARTRECORDAV("vfwavi", CorruptCore.rtcDir + Path.DirectorySeparatorChar + "RENDEROUTPUT" + Path.DirectorySeparatorChar + Key + ".avi", true);
+						Hooks.BIZHAWK_STARTRECORDAV("vfwavi", CorruptCore.RtcDir + Path.DirectorySeparatorChar + "RENDEROUTPUT" + Path.DirectorySeparatorChar + Key + ".avi", true);
 					}
 					catch (Exception ex)
 					{
@@ -33,7 +33,7 @@ namespace Vanguard
 
 					break;
 				case RTCV.CorruptCore.Render.RENDERTYPE.MPEG:
-					Hooks.BIZHAWK_STARTRECORDAV("ffmpeg", CorruptCore.rtcDir + Path.DirectorySeparatorChar + "RENDEROUTPUT" + Path.DirectorySeparatorChar + Key + ".mpg", true);
+					Hooks.BIZHAWK_STARTRECORDAV("ffmpeg", CorruptCore.RtcDir + Path.DirectorySeparatorChar + "RENDEROUTPUT" + Path.DirectorySeparatorChar + Key + ".mpg", true);
 					break;
 			}
 		}

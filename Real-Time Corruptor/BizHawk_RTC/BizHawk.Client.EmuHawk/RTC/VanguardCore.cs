@@ -107,6 +107,10 @@ namespace Vanguard
 			set => AllSpec.VanguardSpec.Update(VSPEC.MEMORYDOMAINS_INTERFACES, value);
 		}
 
+		public static string logPath = "EMU_LOG.txt";
+
+
+
 		public static PartialSpec getDefaultPartial()
 		{
 			var partial = new PartialSpec("RTCSpec");
@@ -167,8 +171,8 @@ namespace Vanguard
 			Hooks.BIZHAWK_MAINFORM_FOCUS();
 
 			//Force create bizhawk config file if it doesn't exist
-			if (!File.Exists(CorruptCore.bizhawkDir + Path.DirectorySeparatorChar + "config.ini"))
-				Hooks.BIZHAWK_MAINFORM_SAVECONFIG();
+			//if (!File.Exists(CorruptCore.bizhawkDir + Path.DirectorySeparatorChar + "config.ini"))
+				//Hooks.BIZHAWK_MAINFORM_SAVECONFIG();
 
 			//If it's attached, lie to vanguard
 			if (VanguardCore.attached)

@@ -68,10 +68,14 @@ namespace Vanguard
 				{
 
 					case REMOTE_ALLSPECSSENT:
+					{
+						//We still need to set the emulator's path
+						AllSpec.VanguardSpec.Update(RTCSPEC.EMUDIR, Directory.GetCurrentDirectory());
 						SyncObjectSingleton.FormExecute((o, ea) =>
 						{
 							VanguardCore.LoadDefaultAndShowBizhawkForm();
 						});
+					}
 						break;
 					case SAVESAVESTATE:
 						SyncObjectSingleton.FormExecute((o, ea) =>
@@ -185,21 +189,21 @@ namespace Vanguard
 					case REMOTE_IMPORTKEYBINDS:
 						SyncObjectSingleton.FormExecute((o, ea) =>
 						{
-							Hooks.BIZHAWK_IMPORTCONFIGINI(CorruptCore.bizhawkDir + Path.DirectorySeparatorChar + "import_config.ini", CorruptCore.bizhawkDir + Path.DirectorySeparatorChar + "stockpile_config.ini");
+							Hooks.BIZHAWK_IMPORTCONFIGINI(CorruptCore.EmuDir + Path.DirectorySeparatorChar + "import_config.ini", CorruptCore.EmuDir + Path.DirectorySeparatorChar + "stockpile_config.ini");
 						});
 						break;
 
 					case REMOTE_MERGECONFIG:
 						SyncObjectSingleton.FormExecute((o, ea) =>
 						{
-							Hooks.BIZHAWK_MERGECONFIGINI(CorruptCore.bizhawkDir + Path.DirectorySeparatorChar + "backup_config.ini", CorruptCore.bizhawkDir + Path.DirectorySeparatorChar + "stockpile_config.ini");
+							Hooks.BIZHAWK_MERGECONFIGINI(CorruptCore.EmuDir + Path.DirectorySeparatorChar + "backup_config.ini", CorruptCore.EmuDir + Path.DirectorySeparatorChar + "stockpile_config.ini");
 						});
 						break;
 
 					case REMOTE_RESTOREBIZHAWKCONFIG:
 						SyncObjectSingleton.FormExecute((o, ea) =>
 						{
-							Process.Start(CorruptCore.bizhawkDir + Path.DirectorySeparatorChar + $"RestoreConfigDETACHED.bat");
+							Process.Start(CorruptCore.EmuDir + Path.DirectorySeparatorChar + $"RestoreConfigDETACHED.bat");
 						});
 						break;
 

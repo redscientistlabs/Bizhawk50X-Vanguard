@@ -150,7 +150,7 @@ namespace Vanguard
 				VanguardCore.attached = VanguardCore.args.Contains("-ATTACHED");
 
 				//BizHawk.Client.EmuHawk.LogConsole.ReleaseConsole();
-				RTCV.NetCore.Extensions.ConsoleHelper.CreateConsole("RTC\\EMU_LOG.txt");
+				RTCV.NetCore.Extensions.ConsoleHelper.CreateConsole(VanguardCore.logPath);
 				if (args.Contains("-CONSOLE"))
 				{
 					RTCV.NetCore.Extensions.ConsoleHelper.ShowConsole();
