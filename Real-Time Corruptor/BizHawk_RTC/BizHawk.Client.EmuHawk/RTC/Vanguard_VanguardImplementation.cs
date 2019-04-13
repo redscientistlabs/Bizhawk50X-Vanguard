@@ -5,6 +5,7 @@ using System.ComponentModel;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
@@ -70,7 +71,7 @@ namespace Vanguard
 					case REMOTE_ALLSPECSSENT:
 					{
 						//We still need to set the emulator's path
-						AllSpec.VanguardSpec.Update(RTCSPEC.EMUDIR, Directory.GetCurrentDirectory());
+						AllSpec.VanguardSpec.Update(RTCSPEC.EMUDIR, Assembly.GetExecutingAssembly().Location);
 						SyncObjectSingleton.FormExecute((o, ea) =>
 						{
 							VanguardCore.LoadDefaultAndShowBizhawkForm();

@@ -113,7 +113,7 @@ namespace Vanguard
 
 		public static PartialSpec getDefaultPartial()
 		{
-			var partial = new PartialSpec("RTCSpec");
+			var partial = new PartialSpec("VanguardSpec");
 
 			partial[VSPEC.SYSTEM] = String.Empty;
 			partial[VSPEC.GAMENAME] = String.Empty;
