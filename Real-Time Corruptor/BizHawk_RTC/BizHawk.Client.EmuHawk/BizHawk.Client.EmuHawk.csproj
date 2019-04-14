@@ -2301,7 +2301,8 @@
   </Target>
   -->
   <PropertyGroup>
-    <PostBuildEvent>echo f | xcopy /y /c "..\output" "..\..\..\..\RTCV\Build"</PostBuildEvent>
+    <PostBuildEvent>
+    </PostBuildEvent>
   </PropertyGroup>
   <PropertyGroup>
     <PreBuildEvent Condition=" '$(OS)' == 'Windows_NT' ">"$(SolutionDir)subwcrev.bat" "$(ProjectDir)"</PreBuildEvent>

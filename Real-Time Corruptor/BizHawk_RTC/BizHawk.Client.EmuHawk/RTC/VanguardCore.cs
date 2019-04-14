@@ -8,6 +8,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Drawing;
 using System.IO;
+using System.Reflection;
 using System.Threading;
 using System.Windows.Forms;
 
@@ -107,14 +108,15 @@ namespace Vanguard
 			set => AllSpec.VanguardSpec.Update(VSPEC.MEMORYDOMAINS_INTERFACES, value);
 		}
 
-		public static string logPath = "EMU_LOG.txt";
-
+		public static string emuDir = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
+		public static string logPath = Path.Combine(emuDir, "EMU_LOG.txt");
 
 
 		public static PartialSpec getDefaultPartial()
 		{
 			var partial = new PartialSpec("VanguardSpec");
 
+			partial[VSPEC.NAME] = "Bizhawk";
 			partial[VSPEC.SYSTEM] = String.Empty;
 			partial[VSPEC.GAMENAME] = String.Empty;
 			partial[VSPEC.SYSTEMPREFIX] = String.Empty;
@@ -124,6 +126,10 @@ namespace Vanguard
 			partial[VSPEC.MEMORYDOMAINS_BLACKLISTEDDOMAINS] = new string[] { };
 			partial[VSPEC.MEMORYDOMAINS_INTERFACES] = new MemoryDomainProxy[] { };
 			partial[VSPEC.CORE_LASTLOADERROM] = -1;
+			partial[VSPEC.SUPPORTS_RENDERING] = true;
+			partial[VSPEC.SUPPORTS_CONFIG_MANAGEMENT] = true;
+			partial[VSPEC.SUPPORTS_CONFIG_HANDOFF] = true;
+			partial[VSPEC.CONFIG_PATHS] = new[] {Path.Combine(emuDir, "config.ini")};
 
 			return partial;
 		}
