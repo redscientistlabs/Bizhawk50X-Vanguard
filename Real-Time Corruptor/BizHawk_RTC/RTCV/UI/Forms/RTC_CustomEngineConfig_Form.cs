@@ -406,6 +406,7 @@ namespace RTCV.UI
 				return;
 
 			RTCV.NetCore.AllSpec.CorruptCoreSpec.Update(spec);
+			RTC_CustomEngine.Name2TemplateDico[spec[RTCSPEC.CUSTOM_NAME.ToString()].ToString()] = spec;
 			RestoreUIStateFromSpec();
 			Refresh();
 			if (!cbSelectedTemplate.Items.Contains(spec[RTCSPEC.CUSTOM_NAME.ToString()].ToString()))
