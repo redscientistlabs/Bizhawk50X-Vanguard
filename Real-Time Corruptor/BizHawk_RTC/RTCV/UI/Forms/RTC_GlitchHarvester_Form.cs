@@ -1775,6 +1775,5 @@ namespace RTCV.UI
 				columnsMenu.Show(this, locate);
 			}
 		}
-
 	}
 }
