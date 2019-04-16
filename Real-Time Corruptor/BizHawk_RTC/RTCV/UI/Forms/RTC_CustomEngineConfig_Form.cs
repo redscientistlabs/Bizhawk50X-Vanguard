@@ -543,6 +543,7 @@ namespace RTCV.UI
 				nmDelay.Value = RTC_CustomEngine.Delay;
 				nmLifetime.Value = RTC_CustomEngine.Lifetime;
 
+				UpdateMinMaxBoxes(CorruptCore.CorruptCore.CurrentPrecision);
 
 				//Todo - replace this and data-bind it
 				switch (CorruptCore.CorruptCore.CurrentPrecision)
