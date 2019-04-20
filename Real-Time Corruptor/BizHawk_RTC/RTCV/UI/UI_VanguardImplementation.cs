@@ -93,7 +93,23 @@ namespace RTCV.UI
 							S.GET<RTC_Core_Form>().pbAutoKillSwitchTimeout.Value = 0;
 
 							if (!CorruptCore.CorruptCore.Attached)
-								AutoKillSwitch.Enabled = true;
+								AutoKillSwitch.Enabled = true;                     
+							
+							//Restart game protection
+							if (S.GET<RTC_Core_Form>().cbUseGameProtection.Checked)
+							{
+								if (CorruptCore.StockpileManager_UISide.BackupedState != null)
+									CorruptCore.StockpileManager_UISide.BackupedState.Run();
+
+								if (CorruptCore.StockpileManager_UISide.BackupedState != null)
+									S.GET<RTC_MemoryDomains_Form>().RefreshDomainsAndKeepSelected(CorruptCore.StockpileManager_UISide.BackupedState.SelectedDomains.ToArray());
+
+								GameProtection.Start();
+								if (GameProtection.WasAutoCorruptRunning)
+									S.GET<RTC_Core_Form>().AutoCorrupt = true;
+							}
+
+
 						});
 						break;
 
@@ -377,6 +393,10 @@ namespace RTCV.UI
 						AutoKillSwitch.Pulse();
 						break;
 
+					case RESET_GAME_PROTECTION_IF_RUNNING:
+						if (GameProtection.isRunning)
+							GameProtection.Reset();
+						break;
 				}
 			}
 			catch (Exception ex)

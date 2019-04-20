@@ -61,6 +61,8 @@ namespace RTCV.UI
 				}
 
 				S.GET<RTC_VmdAct_Form>().cbAutoAddDump.Checked = false;
+
+				GameProtection.WasAutoCorruptRunning = CorruptCore.CorruptCore.AutoCorrupt;
 				S.GET<RTC_Core_Form>().AutoCorrupt = false;
 			});
 			GameProtection.Stop();

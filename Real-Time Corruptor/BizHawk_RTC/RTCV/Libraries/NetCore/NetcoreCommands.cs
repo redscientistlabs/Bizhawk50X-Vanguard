@@ -12,6 +12,7 @@ namespace RTCV.NetCore
 		public const string VANGUARD = "VANGUARD";
 		public const string UI = "UI";
 		public const string KILLSWITCH_PULSE = "KILLSWITCH_PULSE";
+		public const string RESET_GAME_PROTECTION_IF_RUNNING = "RESET_GAME_PROTECTION_IF_RUNNING";
 
 
 		public const string REMOTE_PUSHVANGUARDSPEC = "REMOTE_PUSHVANGUARDSPEC";
