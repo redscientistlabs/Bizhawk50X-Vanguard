@@ -73,7 +73,7 @@
             // 
             this.multiTB_ErrorDelay.BackColor = System.Drawing.Color.Gray;
             this.multiTB_ErrorDelay.Font = new System.Drawing.Font("Segoe UI", 8.25F);
-            this.multiTB_ErrorDelay.LabelText = "Error Delay";
+            this.multiTB_ErrorDelay.Label = "Error Delay";
             this.multiTB_ErrorDelay.Location = new System.Drawing.Point(9, 65);
             this.multiTB_ErrorDelay.Maximum = ((long)(65535));
             this.multiTB_ErrorDelay.Minimum = ((long)(1));
@@ -88,7 +88,7 @@
             // 
             this.multiTB_Intensity.BackColor = System.Drawing.Color.Gray;
             this.multiTB_Intensity.Font = new System.Drawing.Font("Segoe UI", 8.25F);
-            this.multiTB_Intensity.LabelText = "Intensity";
+            this.multiTB_Intensity.Label = "Intensity";
             this.multiTB_Intensity.Location = new System.Drawing.Point(9, 2);
             this.multiTB_Intensity.Maximum = ((long)(65535));
             this.multiTB_Intensity.Minimum = ((long)(1));

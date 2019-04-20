@@ -52,8 +52,8 @@
             this.panel3.SuspendLayout();
             this.panel4.SuspendLayout();
             this.panel5.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.nmMaxInfiniteStepUnits)).BeginInit();
-            this.panel6.SuspendLayout();
+            this.nmMaxInfiniteStepUnits.SuspendLayout();
+			this.panel6.SuspendLayout();
             this.SuspendLayout();
             // 
             // panel1
@@ -331,7 +331,8 @@
             this.panel4.ResumeLayout(false);
             this.panel5.ResumeLayout(false);
             this.panel5.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.nmMaxInfiniteStepUnits)).EndInit();
+			this.nmMaxInfiniteStepUnits.ResumeLayout(false);
+			this.nmMaxInfiniteStepUnits.PerformLayout();
             this.panel6.ResumeLayout(false);
             this.panel6.PerformLayout();
             this.ResumeLayout(false);

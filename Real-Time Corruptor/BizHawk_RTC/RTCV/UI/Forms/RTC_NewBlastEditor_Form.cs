@@ -193,11 +193,13 @@ namespace RTCV.UI
 
 
 			dgvBlastEditor.AllowUserToOrderColumns = true;
-			SetDisplayOrder();
+			RestoreColumnDisplayOrder();
+			RestoreColumnWidth();
 		}
 		private void RTC_NewBlastEditorForm_Closing(object sender, FormClosingEventArgs e)
 		{
 			SaveDisplayOrder();
+			SaveColumnWidth();
 		}
 		private void RTC_NewBlastEditorForm_Close(object sender, FormClosedEventArgs e)
 		{
@@ -256,7 +258,7 @@ namespace RTCV.UI
 		}
 
 
-		private void SetDisplayOrder()
+		private void RestoreColumnDisplayOrder()
 		{
 			if (!Params.IsParamSet("BLASTEDITOR_COLUMN_ORDER"))
 				return;
@@ -275,7 +277,6 @@ namespace RTCV.UI
 				}
 			}
 		}
-
 		private void SaveDisplayOrder()
 		{
 			var cols = dgvBlastEditor.Columns.Cast<DataGridViewColumn>().OrderBy(x => x.DisplayIndex);
@@ -283,6 +284,36 @@ namespace RTCV.UI
 			foreach (var c in cols)
 				sb.Append(c.Name + ",");
 			Params.SetParam("BLASTEDITOR_COLUMN_ORDER", sb.ToString());
+		}
+
+		private void RestoreColumnWidth()
+		{
+			if (!Params.IsParamSet("BLASTEDITOR_COLUMN_WIDTH"))
+				return;
+
+			//Names split with commas
+			var s = Params.ReadParam("BLASTEDITOR_COLUMN_WIDTH");
+			var columns = s.Split('|');
+
+			foreach (var c in columns)
+			{
+				var sp = c.Split(',');
+				if (dgvBlastEditor.Columns.Cast<DataGridViewColumn>().Any(x => x.Name == sp[0]))
+				{
+					dgvBlastEditor.Columns[sp[0]].Width = Convert.ToInt32(sp[1]);
+				}
+			}
+		}
+		private void SaveColumnWidth()
+		{
+			var cols = dgvBlastEditor.Columns.Cast<DataGridViewColumn>().OrderBy(x => x.DisplayIndex);
+			StringBuilder sb = new StringBuilder();
+			foreach (var c in cols)
+			{
+				sb.Append(c.Name + "," + c.Width + "|");
+			}
+				
+			Params.SetParam("BLASTEDITOR_COLUMN_width", sb.ToString());
 		}
 
 		private void DgvBlastEditor_Click(object sender, MouseEventArgs e)
