@@ -57,7 +57,6 @@ namespace RTCV.UI.Components.Controls
 
 
             updown.Tag = base.Tag;
-			base.ValueChanged += updown_ValueChanged;
 			updown.ValueChanged += updown_ValueChanged;
 		}
 
