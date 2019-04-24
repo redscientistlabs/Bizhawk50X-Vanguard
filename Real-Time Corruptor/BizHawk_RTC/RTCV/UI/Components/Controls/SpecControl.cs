@@ -24,7 +24,7 @@ namespace RTCV.UI.Components.Controls
 		public event EventHandler<ValueUpdateEventArgs<T>> ValueChanged;
 		public virtual void OnValueChanged(ValueUpdateEventArgs<T> e) => ValueChanged?.Invoke(this, e);
 
-		private T _Value;
+		internal T _Value;
 
 		internal bool initialized = false;
 
@@ -36,6 +36,7 @@ namespace RTCV.UI.Components.Controls
 			{
 				if (!initialized)
 				{
+					_Value = value;
 					UpdateAllControls(value, null);
 					initialized = true;
 					return;
@@ -73,24 +74,10 @@ namespace RTCV.UI.Components.Controls
 
 		internal void PropagateValue(T value, Control setter)
 		{
-			UpdateAllControls(value, setter, true);
+			UpdateAllControls(value, setter);
 			Value = value;
 			updater.Stop();
 			updater.Start();
-		}
-
-		private void InitializeComponent()
-		{
-			this.SuspendLayout();
-			// 
-			// SpecControl
-			// 
-			this.BackColor = System.Drawing.Color.White;
-			this.ForeColor = System.Drawing.Color.Black;
-			this.Name = "SpecControl";
-			this.Size = new System.Drawing.Size(123, 30);
-			this.ResumeLayout(false);
-
 		}
 	}
 
