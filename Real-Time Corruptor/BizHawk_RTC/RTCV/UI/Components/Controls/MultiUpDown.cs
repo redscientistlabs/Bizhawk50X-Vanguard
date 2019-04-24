@@ -21,17 +21,32 @@ namespace RTCV.UI.Components.Controls
 			get => updown.Hexadecimal;
 			set => updown.Hexadecimal = value;
 		}
+
 		[Description("The minimum value of the NumericUpDown"), Category("Data")]
 		public decimal Minimum
 		{
 			get => updown.Minimum;
-			set => updown.Minimum = value;
+			set
+			{
+				//If the minimum is going to change the current value, we need to mark initialized as false at the end
+				bool reinit = value < updown.Value;
+				updown.Minimum = value;
+				initialized = reinit;
+			}
 		}
+
 		[Description("The maximum value of the NumericUpDown"), Category("Data")]
 		public decimal Maximum
 		{
 			get => updown.Maximum;
-			set => updown.Maximum = value;
+			set
+			{
+
+				//If the minimum is going to change the current value, we need to mark initialized as false at the end
+				bool reinit = value > updown.Value;
+				updown.Maximum = value;
+				initialized = reinit;
+			}
 		}
 
 		public MultiUpDown()
@@ -42,7 +57,8 @@ namespace RTCV.UI.Components.Controls
 
 
             updown.Tag = base.Tag;
-            updown.ValueChanged += updown_ValueChanged;
+			base.ValueChanged += updown_ValueChanged;
+			updown.ValueChanged += updown_ValueChanged;
 		}
 
         internal override void UpdateAllControls(decimal value, Control setter, bool ignore = false)

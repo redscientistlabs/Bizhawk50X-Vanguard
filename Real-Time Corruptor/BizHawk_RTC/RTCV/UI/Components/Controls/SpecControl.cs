@@ -26,7 +26,7 @@ namespace RTCV.UI.Components.Controls
 
 		private T _Value;
 
-		private bool initialized = false;
+		internal bool initialized = false;
 
 		[Description("Net value of the control"), Category("Data")]
 		public T Value
@@ -74,7 +74,7 @@ namespace RTCV.UI.Components.Controls
 		internal void PropagateValue(T value, Control setter)
 		{
 			UpdateAllControls(value, setter, true);
-
+			Value = value;
 			updater.Stop();
 			updater.Start();
 		}
@@ -96,11 +96,11 @@ namespace RTCV.UI.Components.Controls
 
 	public class ValueUpdateEventArgs<T> : EventArgs
 	{
-		public T Value;
+		public T _value;
 
 		public ValueUpdateEventArgs(T value)
 		{
-			Value = value;
+			_value = value;
 		}
 	}
 }

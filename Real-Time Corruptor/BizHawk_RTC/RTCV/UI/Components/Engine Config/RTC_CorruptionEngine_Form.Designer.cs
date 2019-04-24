@@ -64,8 +64,8 @@
             this.label17 = new System.Windows.Forms.Label();
             this.comboBox3 = new System.Windows.Forms.ComboBox();
             this.btnResyncDistortionEngine = new System.Windows.Forms.Button();
-            this.nmDistortionDelay = new System.Windows.Forms.NumericUpDown();
-            this.label7 = new System.Windows.Forms.Label();
+            this.nmDistortionDelay = new RTCV.UI.Components.Controls.MultiUpDown();
+			this.label7 = new System.Windows.Forms.Label();
             this.gbFreezeEngine = new System.Windows.Forms.GroupBox();
             this.label6 = new System.Windows.Forms.Label();
             this.updownMaxFreeze = new RTCV.UI.Components.Controls.MultiUpDown();
@@ -108,19 +108,16 @@
             this.panel2.SuspendLayout();
             this.pnLimiterList.SuspendLayout();
             this.gbPipeEngine.SuspendLayout();
-			this.updownMaxPipes.SuspendLayout();
 			this.gbDistortionEngine.SuspendLayout();
-			this.nmDistortionDelay.SuspendLayout();
-			this.gbFreezeEngine.SuspendLayout();
-			this.updownMaxFreeze.SuspendLayout();
-			this.gbHellgenieEngine.SuspendLayout();
-			this.updownMaxCheats.SuspendLayout();
-			this.nmMaxValueHellgenie.SuspendLayout();
-			this.nmMinValueHellgenie.SuspendLayout();
-			this.gbNightmareEngine.SuspendLayout();
-			this.nmMaxValueNightmare.SuspendLayout();
-			this.nmMinValueNightmare.SuspendLayout();
-			this.gbCustomEngine.SuspendLayout();
+            this.nmDistortionDelay.SuspendLayout();
+            this.gbFreezeEngine.SuspendLayout();
+            this.gbHellgenieEngine.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.nmMaxValueHellgenie)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.nmMinValueHellgenie)).BeginInit();
+            this.gbNightmareEngine.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.nmMaxValueNightmare)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.nmMinValueNightmare)).BeginInit();
+            this.gbCustomEngine.SuspendLayout();
             this.SuspendLayout();
             // 
             // pnCustomPrecision
@@ -466,9 +463,15 @@
             this.updownMaxPipes.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
             this.updownMaxPipes.Font = new System.Drawing.Font("Segoe UI", 8F);
             this.updownMaxPipes.ForeColor = System.Drawing.Color.White;
+            this.updownMaxPipes.Hexadecimal = false;
             this.updownMaxPipes.Location = new System.Drawing.Point(95, 39);
             this.updownMaxPipes.Maximum = new decimal(new int[] {
             65536,
+            0,
+            0,
+            0});
+            this.updownMaxPipes.Minimum = new decimal(new int[] {
+            1,
             0,
             0,
             0});
@@ -665,7 +668,7 @@
             0,
             0,
             0});
-            this.nmDistortionDelay.ValueChanged += new System.EventHandler(this.nmDistortionDelay_ValueChanged);
+			this.nmDistortionDelay.ValueChanged += this.nmDistortionDelay_ValueChanged;
             this.nmDistortionDelay.MouseDown += new System.Windows.Forms.MouseEventHandler(this.HandleMouseDown);
             // 
             // label7
@@ -713,9 +716,15 @@
             this.updownMaxFreeze.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
             this.updownMaxFreeze.Font = new System.Drawing.Font("Segoe UI", 8F);
             this.updownMaxFreeze.ForeColor = System.Drawing.Color.White;
+            this.updownMaxFreeze.Hexadecimal = false;
             this.updownMaxFreeze.Location = new System.Drawing.Point(95, 38);
             this.updownMaxFreeze.Maximum = new decimal(new int[] {
             65536,
+            0,
+            0,
+            0});
+            this.updownMaxFreeze.Minimum = new decimal(new int[] {
+            1,
             0,
             0,
             0});
@@ -848,9 +857,15 @@
             this.updownMaxCheats.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
             this.updownMaxCheats.Font = new System.Drawing.Font("Segoe UI", 8F);
             this.updownMaxCheats.ForeColor = System.Drawing.Color.White;
+            this.updownMaxCheats.Hexadecimal = false;
             this.updownMaxCheats.Location = new System.Drawing.Point(95, 89);
             this.updownMaxCheats.Maximum = new decimal(new int[] {
             65536,
+            0,
+            0,
+            0});
+            this.updownMaxCheats.Minimum = new decimal(new int[] {
+            1,
             0,
             0,
             0});
@@ -1238,31 +1253,21 @@
             this.pnLimiterList.PerformLayout();
             this.gbPipeEngine.ResumeLayout(false);
             this.gbPipeEngine.PerformLayout();
-			this.updownMaxPipes.ResumeLayout(false);
-			this.updownMaxPipes.PerformLayout();
 			this.gbDistortionEngine.ResumeLayout(false);
-            this.gbDistortionEngine.PerformLayout();
+			this.gbDistortionEngine.PerformLayout();
 			this.nmDistortionDelay.ResumeLayout(false);
 			this.nmDistortionDelay.PerformLayout();
-			this.gbFreezeEngine.ResumeLayout(false);
+            this.gbFreezeEngine.ResumeLayout(false);
             this.gbFreezeEngine.PerformLayout();
-			this.updownMaxFreeze.ResumeLayout(false);
-			this.updownMaxFreeze.PerformLayout();
-			this.gbHellgenieEngine.ResumeLayout(false);
+            this.gbHellgenieEngine.ResumeLayout(false);
             this.gbHellgenieEngine.PerformLayout();
-			this.updownMaxCheats.ResumeLayout(false);
-			this.updownMaxCheats.PerformLayout();
-			this.nmMaxValueHellgenie.ResumeLayout(false);
-			this.nmMaxValueHellgenie.PerformLayout();
-			this.nmMinValueHellgenie.ResumeLayout(false);
-			this.nmMinValueHellgenie.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.nmMaxValueHellgenie)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.nmMinValueHellgenie)).EndInit();
             this.gbNightmareEngine.ResumeLayout(false);
             this.gbNightmareEngine.PerformLayout();
-			this.nmMaxValueNightmare.ResumeLayout(false);
-			this.nmMaxValueNightmare.PerformLayout();
-			this.nmMinValueNightmare.ResumeLayout();
-			this.nmMinValueNightmare.PerformLayout();
-			this.gbCustomEngine.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.nmMaxValueNightmare)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.nmMinValueNightmare)).EndInit();
+            this.gbCustomEngine.ResumeLayout(false);
             this.gbCustomEngine.PerformLayout();
             this.ResumeLayout(false);
 
@@ -1302,7 +1307,7 @@
 		private System.Windows.Forms.Label label17;
 		public System.Windows.Forms.ComboBox comboBox3;
 		private System.Windows.Forms.Button btnResyncDistortionEngine;
-		public System.Windows.Forms.NumericUpDown nmDistortionDelay;
+		public RTCV.UI.Components.Controls.MultiUpDown nmDistortionDelay;
 		private System.Windows.Forms.Label label7;
 		private System.Windows.Forms.GroupBox gbFreezeEngine;
 		private System.Windows.Forms.Panel panel7;
