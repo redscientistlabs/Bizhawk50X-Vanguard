@@ -1784,35 +1784,34 @@ namespace RTCV.UI
 
 				//Can't use a switch statement because tostring is evaluated at runtime
 				if (cell is DataGridViewNumericUpDownCell u)
-					{
-						if (shiftDown)
-							{
-								if ((Convert.ToInt64(u.Value) - amount) >= 0)
-									u.Value = Convert.ToInt64(u.Value) - amount;
-								else
-									u.Value = 0;
-						}
-						else
-						{
-							if ((Convert.ToInt64(u.Value) + amount) <= u.Maximum)
-								u.Value = Convert.ToInt64(u.Value) + amount;
-							else
-								u.Value = u.Maximum;
-						}
-					}
-					else if (cell.OwningColumn.Name == buProperty.ValueString.ToString())
-					{
+				{
 					if (shiftDown)
-						amount = 0 - amount;
-						int precision = (int)row.Cells[buProperty.Precision.ToString()].Value;
-						cell.Value = getShiftedHexString((string)cell.Value, amount, precision);
+					{
+						if ((Convert.ToInt64(u.Value) - amount) >= 0)
+							u.Value = Convert.ToInt64(u.Value) - amount;
+						else
+							u.Value = 0;
 					}
 					else
 					{
-						throw new NotImplementedException("Invalid column type.");
+						if ((Convert.ToInt64(u.Value) + amount) <= u.Maximum)
+								u.Value = Convert.ToInt64(u.Value) + amount;
+						else
+								u.Value = u.Maximum;
 					}
-
 				}
+				else if (cell.OwningColumn.Name == buProperty.ValueString.ToString())
+				{
+					var _amount = shiftDown ? 0 - amount : amount;
+					int precision = (int)row.Cells[buProperty.Precision.ToString()].Value;
+					cell.Value = getShiftedHexString((string)cell.Value, _amount, precision);
+				}
+				else
+				{
+					throw new NotImplementedException("Invalid column type.");
+				}
+
+			}
 			dgvBlastEditor.Refresh();
 			UpdateBottom();
 		}
