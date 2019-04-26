@@ -27,8 +27,8 @@ namespace Vanguard
 		public static bool disableRTC;
 		public static bool isNormalAdvance = false;
 
-		private static Guid? loadGameToken = null;
-		private static Guid? loadSavestateToken = null;
+		//private static Guid? loadGameToken = null;
+		//private static Guid? loadSavestateToken = null;
 
 		public static System.Diagnostics.Stopwatch watch = null;
 
