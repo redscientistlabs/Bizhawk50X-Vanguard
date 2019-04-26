@@ -164,15 +164,6 @@ namespace Vanguard
 							Hooks.BIZHAWK_MAINFORM_CLOSE();
 						});
 						break;
-
-					case REMOTE_EVENT_SAVEBIZHAWKCONFIG:
-						SyncObjectSingleton.FormExecute((o, ea) =>
-						{
-							Hooks.BIZHAWK_MAINFORM_SAVECONFIG();
-						});
-						break;
-
-
 					case REMOTE_RENDER_START:
 						SyncObjectSingleton.FormExecute((o, ea) =>
 						{
@@ -184,27 +175,6 @@ namespace Vanguard
 						SyncObjectSingleton.FormExecute((o, ea) =>
 						{
 							Render.StopRender_NET();
-						});
-						break;
-
-					case REMOTE_IMPORTKEYBINDS:
-						SyncObjectSingleton.FormExecute((o, ea) =>
-						{
-							Hooks.BIZHAWK_IMPORTCONFIGINI(CorruptCore.EmuDir + Path.DirectorySeparatorChar + "import_config.ini", CorruptCore.EmuDir + Path.DirectorySeparatorChar + "stockpile_config.ini");
-						});
-						break;
-
-					case REMOTE_MERGECONFIG:
-						SyncObjectSingleton.FormExecute((o, ea) =>
-						{
-							Hooks.BIZHAWK_MERGECONFIGINI(CorruptCore.EmuDir + Path.DirectorySeparatorChar + "backup_config.ini", CorruptCore.EmuDir + Path.DirectorySeparatorChar + "stockpile_config.ini");
-						});
-						break;
-
-					case REMOTE_RESTOREBIZHAWKCONFIG:
-						SyncObjectSingleton.FormExecute((o, ea) =>
-						{
-							Process.Start(CorruptCore.EmuDir + Path.DirectorySeparatorChar + $"RestoreConfigDETACHED.bat");
 						});
 						break;
 

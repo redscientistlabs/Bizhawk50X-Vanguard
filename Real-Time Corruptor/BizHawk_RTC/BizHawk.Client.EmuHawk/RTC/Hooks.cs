@@ -730,109 +730,39 @@ namespace Vanguard
 			GlobalWin.OSD.AddMessage(message);
 		}
 
-		public static void BIZHAWK_MERGECONFIGINI(string backupConfigPath, string stockpileConfigPath)
-		{
-			try
-			{
-				Config bc = BizHawk.Client.Common.ConfigService.Load<Config>(backupConfigPath);
-				Config sc = BizHawk.Client.Common.ConfigService.Load<Config>(stockpileConfigPath);
-
-
-				sc.HotkeyBindings = bc.HotkeyBindings;
-				sc.AllTrollers = bc.AllTrollers;
-				sc.AllTrollersAutoFire = bc.AllTrollersAutoFire;
-				sc.AllTrollersAnalog = bc.AllTrollersAnalog;
-
-				if (File.Exists(stockpileConfigPath))
-					File.Delete(stockpileConfigPath);
-
-				FileInfo fileSc = new FileInfo(stockpileConfigPath);
-				using (StreamWriter writer = fileSc.CreateText())
-				{
-					JsonSerializer serializer = new JsonSerializer();
-					JsonTextWriter w = new JsonTextWriter(writer) { Formatting = Formatting.Indented };
-					serializer.Serialize(w, sc);
-				}
-
-			}
-			catch (Exception ex)
-			{
-				if (VanguardCore.ShowErrorDialog(ex, true) == DialogResult.Abort)
-					throw new RTCV.NetCore.AbortEverythingException();
-
-				return;
-			}
-		}
-
-		public static void BIZHAWK_IMPORTCONFIGINI(string importConfigPath, string stockpileConfigPath)
-		{
-			try
-			{
-				Config bc = BizHawk.Client.Common.ConfigService.Load<Config>(importConfigPath);
-				Config sc = BizHawk.Client.Common.ConfigService.Load<Config>(stockpileConfigPath);
-
-				FileInfo fileSc = new FileInfo(stockpileConfigPath);
-
-				sc.HotkeyBindings = bc.HotkeyBindings;
-				sc.AllTrollers = bc.AllTrollers;
-				sc.AllTrollersAutoFire = bc.AllTrollersAutoFire;
-				sc.AllTrollersAnalog = bc.AllTrollersAnalog;
-
-				if (File.Exists(stockpileConfigPath))
-					File.Delete(stockpileConfigPath);
-
-
-				using (StreamWriter writer = fileSc.CreateText())
-				{
-					JsonSerializer serializer = new JsonSerializer();
-					JsonTextWriter w = new JsonTextWriter(writer) { Formatting = Formatting.Indented };
-					serializer.Serialize(w, sc);
-				}
-
-			}
-			catch (Exception ex)
-			{
-				if (VanguardCore.ShowErrorDialog(ex, true) == DialogResult.Abort)
-					throw new RTCV.NetCore.AbortEverythingException();
-
-				return;
-			}
-		}
-
-
 		public static void BIZHAWK_SET_SYSTEMCORE(string systemName, string systemCore)
 		{
 			try { 
-			switch (systemName.ToUpper())
-			{
-				case "GAMEBOY":
-					Global.Config.GB_AsSGB = systemCore == "sameboy";
-					Global.Config.SGB_UseBsnes = false;
-					Global.Config.GB_UseGBHawk = systemCore == "gbhawk";
+				switch (systemName.ToUpper())
+				{
+					case "GAMEBOY":
+						Global.Config.GB_AsSGB = systemCore == "sameboy";
+						Global.Config.SGB_UseBsnes = false;
+						Global.Config.GB_UseGBHawk = systemCore == "gbhawk";
 
-					break;
+						break;
 
-				case "NES":
-					Global.Config.NES_InQuickNES = systemCore == "quicknes";
-					break;
+					case "NES":
+						Global.Config.NES_InQuickNES = systemCore == "quicknes";
+						break;
 
-				case "SNES":
+					case "SNES":
 
-					if (systemCore == "bsnes_SGB")
-					{
-						Global.Config.GB_AsSGB = true;
-						Global.Config.SGB_UseBsnes = true;
-					}
-					else
-						Global.Config.SNES_InSnes9x = systemCore == "snes9x";
+						if (systemCore == "bsnes_SGB")
+						{
+							Global.Config.GB_AsSGB = true;
+							Global.Config.SGB_UseBsnes = true;
+						}
+						else
+							Global.Config.SNES_InSnes9x = systemCore == "snes9x";
 
-					break;
+						break;
 
-				case "GBA":
-					Global.Config.GBA_UsemGBA = systemCore == "mgba";
-					break;
+					case "GBA":
+						Global.Config.GBA_UsemGBA = systemCore == "mgba";
+						break;
 
-			}
+				}
 			}
 			catch (Exception ex)
 			{
