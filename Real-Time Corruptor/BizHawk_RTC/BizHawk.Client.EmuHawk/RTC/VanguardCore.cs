@@ -122,7 +122,6 @@ namespace Vanguard
 			partial[VSPEC.SYSTEMPREFIX] = String.Empty;
 			partial[VSPEC.OPENROMFILENAME] = String.Empty;
 			partial[VSPEC.SYNCSETTINGS] = String.Empty;
-			partial[VSPEC.OPENROMFILENAME] = String.Empty;
 			partial[VSPEC.MEMORYDOMAINS_BLACKLISTEDDOMAINS] = new string[] { };
 			partial[VSPEC.MEMORYDOMAINS_INTERFACES] = new MemoryDomainProxy[] { };
 			partial[VSPEC.CORE_LASTLOADERROM] = -1;
