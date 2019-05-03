@@ -260,38 +260,6 @@ namespace BizHawk.Client.Common
 						Bind("Analog", "X Up Large", toolTip: "For Virtual Pad"),
 						Bind("Analog", "X Down Small", toolTip: "For Virtual Pad"),
 						Bind("Analog", "X Down Large", toolTip: "For Virtual Pad"),
-						
-						//RTC_HIJACK : Hotkey binding menu hijack
-                        // Unfortunately this has to be inserted directly in the project because hooking it into RTC
-                        // would create a circular dependency in BizHawk
-                        Bind("RTC","Manual Blast", toolTip: "For RTC" ),
-						Bind("RTC","Auto-Corrupt", toolTip: "For RTC" ),
-						Bind("RTC","Error Delay--", toolTip: "For RTC" ),
-						Bind("RTC","Error Delay++", toolTip: "For RTC" ),
-						Bind("RTC","Intensity--", toolTip: "For RTC" ),
-						Bind("RTC","Intensity++", toolTip: "For RTC" ),
-						Bind("RTC","GH Load and Corrupt", toolTip: "For RTC" ),
-						Bind("RTC","GH Just Corrupt", toolTip: "For RTC" ),
-						Bind("RTC","GH Reroll", toolTip: "For RTC" ),
-						Bind("RTC","GH Load", toolTip: "For RTC" ),
-						Bind("RTC","GH Save", toolTip: "For RTC" ),
-						Bind("RTC","Stash->Stockpile", toolTip: "For RTC" ),
-						Bind("RTC","Induce KS Crash", toolTip: "For RTC" ),
-						Bind("RTC","Blast+RawStash", toolTip: "For RTC" ),
-						Bind("RTC","Send Raw to Stash", toolTip: "For RTC" ),
-						Bind("RTC","BlastLayer Toggle", toolTip: "For RTC" ),
-						Bind("RTC","BlastLayer Re-Blast", toolTip: "For RTC" ),
-						Bind("RTC","Game Protect Back", toolTip: "For RTC" ),
-						Bind("RTC","Game Protect Now", toolTip: "For RTC" ),
-						Bind("RTC","BE Disable 50", toolTip: "For RTC" ),
-						Bind("RTC","BE Remove Disabled", toolTip: "For RTC" ),
-						Bind("RTC","BE Invert Disabled", toolTip: "For RTC" ),
-						Bind("RTC","BE Shift Up", toolTip: "For RTC" ),
-						Bind("RTC","BE Shift Down", toolTip: "For RTC" ),
-						Bind("RTC","BE Load Corrupt", toolTip: "For RTC" ),
-						Bind("RTC","BE Apply", toolTip: "For RTC" ),
-						Bind("RTC","BE Send Stash", toolTip: "For RTC" ),
-						//------------------
 						Bind("Tools", "Toggle All Cheats"),
 					};
 

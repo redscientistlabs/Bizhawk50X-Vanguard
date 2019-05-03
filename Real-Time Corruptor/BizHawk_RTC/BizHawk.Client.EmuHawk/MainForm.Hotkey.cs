@@ -12,14 +12,6 @@ namespace BizHawk.Client.EmuHawk
 		{
 			switch (trigger)
 			{
-				//RTC_HIJACK : Hook for HOTKEY_CHECK
-				default:
-					if (!Vanguard.Hooks.HOTKEY_CHECK(trigger))
-						return false;
-					else
-						break;
-				//---------------------
-
 				// General
 				case "Pause":
 					TogglePause();

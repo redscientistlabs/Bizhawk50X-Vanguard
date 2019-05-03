@@ -165,6 +165,17 @@ namespace BizHawk.Client.EmuHawk
 
 				HotkeyTabControl.TabPages.Add(tb);
 			}
+			//RTC_Hijack - Add a tab telling people to go to the RTC settings //Todo - Remove this once enough time has passed
+			var _tb = new TabPage { Name = "RTC", Text = "RTC" };
+			var _l = new Label
+			{
+				Text = "RTC hotkeys have been moved into the RTC's settings menu (bottom-left of the main UI)",
+				Location = new Point(UIHelper.ScaleX(6), UIHelper.ScaleY(14)),
+				AutoSize = true,
+			};
+			_tb.Controls.Add(_l);
+			HotkeyTabControl.TabPages.Add(_tb);
+			//-----------------
 		}
 
 		private void Defaults()
