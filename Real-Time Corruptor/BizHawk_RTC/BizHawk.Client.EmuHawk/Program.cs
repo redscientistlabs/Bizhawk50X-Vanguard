@@ -483,16 +483,23 @@ namespace BizHawk.Client.EmuHawk
 				string fname = "";
 				string asmName = new AssemblyName(requested).Name;
 				string callerName = args?.RequestingAssembly?.GetName().Name;
+				Console.WriteLine("Loading " + asmName + "(" + requested + ") from" + callerName + "\n" + args);
 				if (asmName == "StandaloneRTC" ||
 					asmName == "CorruptCore" ||
 					asmName == "Vanguard" ||
 					asmName == "UI" ||
 					asmName == "NetCore"||
+					asmName == "Ceras" ||
+					asmName == "System.ValueTuple" ||
+					asmName == "System.Buffers" ||
 					callerName == "StandaloneRTC" ||
 					callerName == "CorruptCore" ||
 					callerName == "Vanguard" ||
 					callerName == "UI" ||
-					callerName == "NetCore")
+					callerName == "NetCore" ||
+					callerName == "Ceras" ||
+					callerName == "System.ValueTuple" ||
+					callerName == "System.Buffers")
 				{
 					string dllname = new AssemblyName(requested).Name + ".dll";
 					string directory = Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), "RTC", "DLL");
