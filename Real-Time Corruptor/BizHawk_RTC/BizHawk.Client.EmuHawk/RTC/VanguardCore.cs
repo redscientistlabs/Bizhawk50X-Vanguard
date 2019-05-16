@@ -242,13 +242,13 @@ namespace Vanguard
 
 				if (newNumber != lastLoaderRom)
 				{
-					if (File.Exists(CorruptCore.assetsDir + "overridedefault.nes"))
-						LoadRom_NET(CorruptCore.assetsDir + "overridedefault.nes");
+					if (File.Exists(Path.Combine(CorruptCore.assetsDir, "overridedefault.nes") ))
+						LoadRom_NET(Path.Combine(CorruptCore.assetsDir + "overridedefault.nes"));
 					//Please ignore
 					else if (CorruptCore.RND.Next(0, 420) == 7)
-						LoadRom_NET(CorruptCore.assetsDir + "gd.fds");
+						LoadRom_NET(Path.Combine(CorruptCore.assetsDir + "gd.fds"));
 					else
-						LoadRom_NET(CorruptCore.assetsDir + newNumber.ToString() + "default.nes");
+						LoadRom_NET(Path.Combine(CorruptCore.assetsDir, newNumber.ToString() + "default.nes"));
 
 					lastLoaderRom = newNumber;
 					break;
@@ -301,7 +301,7 @@ namespace Vanguard
 			prefix = prefix.Substring(prefix.LastIndexOf('\\') + 1);
 
 			//Build up our path
-			var path = CorruptCore.workingDir + Path.DirectorySeparatorChar + "SESSION" + Path.DirectorySeparatorChar + prefix + "." + quickSlotName + ".State";
+			var path = Path.Combine(CorruptCore.workingDir, "SESSION", prefix + "." + quickSlotName + ".State");
 
 			//If the path doesn't exist, make it
 			var file = new FileInfo(path);
