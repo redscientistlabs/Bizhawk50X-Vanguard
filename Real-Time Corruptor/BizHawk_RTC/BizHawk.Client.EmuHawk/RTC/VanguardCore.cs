@@ -200,31 +200,6 @@ namespace Vanguard
 		}
 
 
-		public static string EmuFolderCheck(string SystemDisplayName)
-		{
-			//Workaround for Bizhawk's folder name quirk
-
-			if (SystemDisplayName.Contains("(INTERIM)"))
-			{
-				char[] delimiters = { '(', ' ', ')' };
-
-				string temp = SystemDisplayName.Split(delimiters)[0];
-				SystemDisplayName = temp + "_INTERIM";
-			}
-			switch (SystemDisplayName)
-			{
-				case "Playstation":
-					return "PSX";
-				case "GG":
-					return "Game Gear";
-				case "Commodore 64":
-					return "C64";
-				case "SG":
-					return "SG-1000";
-				default:
-					return SystemDisplayName;
-			}
-		}
 		/// <summary>
 		/// Loads a NES-based title screen.
 		/// Can be overriden by putting a file named "overridedefault.nes" in the ASSETS folder
