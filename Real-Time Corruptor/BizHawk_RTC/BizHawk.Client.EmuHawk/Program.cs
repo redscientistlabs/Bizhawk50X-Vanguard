@@ -485,7 +485,8 @@ namespace BizHawk.Client.EmuHawk
 				//RTC_Hijack - Add our dlls into assemblyresolve
 				string callerName = args?.RequestingAssembly?.GetName().Name;
 
-				Console.WriteLine("Resolving assembly " + asmName + " from " + callerName);
+				if(callerName != string.Empty)
+					Console.WriteLine("Resolving assembly " + asmName + " from " + callerName);
 				if (asmName == "StandaloneRTC" ||
 					asmName == "CorruptCore" ||
 					asmName == "Vanguard" ||

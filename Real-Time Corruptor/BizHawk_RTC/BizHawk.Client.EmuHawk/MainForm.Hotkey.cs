@@ -12,6 +12,8 @@ namespace BizHawk.Client.EmuHawk
 		{
 			switch (trigger)
 			{
+				default:
+					return false;
 				// General
 				case "Pause":
 					TogglePause();
