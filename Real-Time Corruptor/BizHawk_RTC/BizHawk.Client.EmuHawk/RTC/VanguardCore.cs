@@ -211,19 +211,19 @@ namespace Vanguard
 
 			while (newNumber == lastLoaderRom)
 			{
-				int nbNesFiles = Directory.GetFiles(CorruptCore.assetsDir, "*.nes").Length;
+				int nbNesFiles = Directory.GetFiles(CorruptCore.EmuAssetsDir, "*.nes").Length;
 
 				newNumber = CorruptCore.RND.Next(1, nbNesFiles + 1);
 
 				if (newNumber != lastLoaderRom)
 				{
-					if (File.Exists(Path.Combine(CorruptCore.assetsDir, "overridedefault.nes") ))
-						LoadRom_NET(Path.Combine(CorruptCore.assetsDir + "overridedefault.nes"));
+					if (File.Exists(Path.Combine(CorruptCore.EmuAssetsDir, "overridedefault.nes") ))
+						LoadRom_NET(Path.Combine(CorruptCore.EmuAssetsDir + "overridedefault.nes"));
 					//Please ignore
 					else if (CorruptCore.RND.Next(0, 420) == 7)
-						LoadRom_NET(Path.Combine(CorruptCore.assetsDir + "gd.fds"));
+						LoadRom_NET(Path.Combine(CorruptCore.EmuAssetsDir + "gd.fds"));
 					else
-						LoadRom_NET(Path.Combine(CorruptCore.assetsDir, newNumber.ToString() + "default.nes"));
+						LoadRom_NET(Path.Combine(CorruptCore.EmuAssetsDir, newNumber.ToString() + "default.nes"));
 
 					lastLoaderRom = newNumber;
 					break;
