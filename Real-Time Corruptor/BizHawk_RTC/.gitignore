@@ -1,4 +1,3 @@
-
 /snes9xgit
 
 svnrev.cs
@@ -16,13 +15,15 @@ svnrev.cs
 !/output/RTC/
 /output/RTC/*.txt
 /output/RTC/DLL/*
-!/output/RTC/DLL/7z.dll
 /output/RTC/PARAMS/*
 /output/RTC/WORKING/*
+/output/RTC/LISTS/*
 /output/RTC/RENDEROUTPUT/*
 /output/RTC/ENGINETEMPLATES/*
 
 !/output/*.bat
+!/output/ASSETS/**
+!/output/ASSETS/
 !/output/AutoKillSwitch.exe
 !/output/defctrl.json
 
