@@ -765,7 +765,6 @@
       <DependentUpon>RomStatusPicker.cs</DependentUpon>
     </Compile>
     <Compile Include="RTC\VanguardCore.cs" />
-    <Compile Include="RTC\Vanguard_Extensions.cs" />
     <Compile Include="RTC\Hooks.cs" />
     <Compile Include="RTC\Render.cs" />
     <Compile Include="RTC\Vanguard_VanguardImplementation.cs" />

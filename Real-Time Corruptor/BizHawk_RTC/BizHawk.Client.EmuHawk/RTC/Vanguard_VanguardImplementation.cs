@@ -240,7 +240,21 @@ namespace Vanguard
 			public byte PeekByte(long addr)
 			{
 				//Ensure we stay within range
-				return addr <= MD.Size - 1 ? MD.PeekByte(addr) : (byte)0;
+				return addr < MD.Size ? MD.PeekByte(addr) : (byte)0;
+			}
+
+			public byte[] PeekBytes(long addr, int range)
+			{
+				//Ensure we stay within range
+				if (addr >= (MD.Size + range))
+					return new byte[range];
+
+				byte[] returnArray = new byte[range];
+
+				for (int i = 0; i < range; i++)
+					returnArray[i] = MD.PeekByte(addr + i);
+
+				return returnArray;
 			}
 
 			public void PokeByte(long addr, byte val)

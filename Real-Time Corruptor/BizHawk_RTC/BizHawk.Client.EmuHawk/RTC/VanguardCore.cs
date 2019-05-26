@@ -139,7 +139,7 @@ namespace Vanguard
 
 
 
-		public static void RegisterEmuhawkSpec()
+		public static void RegisterVanguardSpec()
 		{
 			PartialSpec emuSpecTemplate = new PartialSpec("VanguardSpec");
 
@@ -165,7 +165,7 @@ namespace Vanguard
 		}
 
 		//This is the entry point of RTC. Without this method, nothing will load.
-		public static void Start(RTC_Standalone_Form _standaloneForm = null)
+		public static void Start()
 		{
 			//Grab an object on the main thread to use for netcore invokes
 			SyncObjectSingleton.SyncObject = GlobalWin.MainForm;
@@ -173,7 +173,7 @@ namespace Vanguard
 
 			//Start everything
 			VanguardImplementation.StartClient();
-			VanguardCore.RegisterEmuhawkSpec();
+			VanguardCore.RegisterVanguardSpec();
 			CorruptCore.StartEmuSide();
 
 			//Refocus on Bizhawk
