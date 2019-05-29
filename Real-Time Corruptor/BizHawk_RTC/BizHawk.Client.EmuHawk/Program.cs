@@ -12,6 +12,7 @@ using Microsoft.VisualBasic.ApplicationServices;
 
 using BizHawk.Common;
 using BizHawk.Client.Common;
+using RTCV.BizhawkVanguard;
 
 namespace BizHawk.Client.EmuHawk
 {
@@ -28,8 +29,8 @@ namespace BizHawk.Client.EmuHawk
 
 			//RTC_Hijack : Hijack unhandled errors
 			Application.SetUnhandledExceptionMode(UnhandledExceptionMode.CatchException);
-			Application.ThreadException += (o,e) => Vanguard.VanguardCore.ApplicationThreadException(GlobalWin.MainForm,e);
-			AppDomain.CurrentDomain.UnhandledException += (o,e) => Vanguard.VanguardCore.CurrentDomainOnUnhandledException(GlobalWin.MainForm, e);
+			Application.ThreadException += (o,e) => VanguardCore.ApplicationThreadException(GlobalWin.MainForm,e);
+			AppDomain.CurrentDomain.UnhandledException += (o,e) => VanguardCore.CurrentDomainOnUnhandledException(GlobalWin.MainForm, e);
 			//-------------------------
 
 			PlatformSpecificLinkedLibs libLoader = RunningOnUnix ? (PlatformSpecificLinkedLibs) new UnixMono() : (PlatformSpecificLinkedLibs) new Win32();
@@ -96,7 +97,7 @@ namespace BizHawk.Client.EmuHawk
 		public static int Main(string[] args)
 		{
 			//RTC_Hijack : Hook before form is created
-			Vanguard.Hooks.MAIN_BIZHAWK(args);
+			Hooks.MAIN_BIZHAWK(args);
 			return SubMain(args);
 		}
 

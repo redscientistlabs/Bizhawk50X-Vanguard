@@ -9,6 +9,7 @@ using BizHawk.Common;
 using BizHawk.Client.Common;
 using BizHawk.Emulation.Common;
 using BizHawk.Client.EmuHawk.WinFormExtensions;
+using RTCV.BizhawkVanguard;
 
 namespace BizHawk.Client.EmuHawk
 {
@@ -349,7 +350,7 @@ namespace BizHawk.Client.EmuHawk
 			
 			
 			//RTC_Hijack : Force save Controller config
-			Vanguard.Hooks.BIZHAWK_MAINFORM_SAVECONFIG();
+			Hooks.BIZHAWK_MAINFORM_SAVECONFIG();
 
 			GlobalWin.OSD.AddMessage("Controller settings saved");
 			DialogResult = DialogResult.OK;

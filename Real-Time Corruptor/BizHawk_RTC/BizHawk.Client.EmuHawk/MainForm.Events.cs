@@ -375,7 +375,7 @@ namespace BizHawk.Client.EmuHawk
 		{
 			//RTC_HIJACK : Disable normal CloseRom and replace with RTC CloseRom
 			//CloseRom();
-			Vanguard.Hooks.CLOSE_GAME(true);
+			RTCV.BizhawkVanguard.Hooks.CLOSE_GAME(true);
 		}
 
 		private void Savestate1MenuItem_Click(object sender, EventArgs e) { SaveQuickSave("QuickSave1"); }
@@ -908,12 +908,12 @@ namespace BizHawk.Client.EmuHawk
 			//RTC_HIJACK - Replace bizhawk console with ours 
 			if (Global.Config.ShowLogWindow)
 			{
-				Vanguard.Hooks.SHOW_CONSOLE(true);
+				RTCV.BizhawkVanguard.Hooks.SHOW_CONSOLE(true);
 				//LogConsole.ShowConsole();
 			}
 			else
 			{
-				Vanguard.Hooks.SHOW_CONSOLE(false);
+				RTCV.BizhawkVanguard.Hooks.SHOW_CONSOLE(false);
 				//LogConsole.HideConsole();
 			}
 		}

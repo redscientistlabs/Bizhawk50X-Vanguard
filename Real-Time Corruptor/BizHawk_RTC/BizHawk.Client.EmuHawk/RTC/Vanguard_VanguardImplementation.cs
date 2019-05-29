@@ -18,7 +18,7 @@ using RTCV;
 using RTCV.CorruptCore;
 using static RTCV.NetCore.NetcoreCommands;
 
-namespace Vanguard
+namespace RTCV.BizhawkVanguard
 {
 	public static class VanguardImplementation
 	{
@@ -111,7 +111,7 @@ namespace Vanguard
 						{
 							SyncObjectSingleton.FormExecute((o, ea) =>
 							{
-								Vanguard.Hooks.CLOSE_GAME(true);
+								Hooks.CLOSE_GAME(true);
 							});
 						}
 						break;
@@ -167,14 +167,14 @@ namespace Vanguard
 					case REMOTE_RENDER_START:
 						SyncObjectSingleton.FormExecute((o, ea) =>
 						{
-							Render.StartRender_NET();
+							BizhawkRender.StartRender_NET();
 						});
 						break;
 
 					case REMOTE_RENDER_STOP:
 						SyncObjectSingleton.FormExecute((o, ea) =>
 						{
-							Render.StopRender_NET();
+							BizhawkRender.StopRender_NET();
 						});
 						break;
 

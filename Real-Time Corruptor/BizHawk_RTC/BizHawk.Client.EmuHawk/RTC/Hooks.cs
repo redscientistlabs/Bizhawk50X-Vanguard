@@ -14,8 +14,9 @@ using RTCV.NetCore;
 using static RTCV.NetCore.NetcoreCommands;
 using System.Data;
 using BizHawk.Emulation.Common.IEmulatorExtensions;
+using RTCV.Vanguard;
 
-namespace Vanguard
+namespace RTCV.BizhawkVanguard
 {
 	public static class Hooks
 	{
@@ -43,7 +44,7 @@ namespace Vanguard
 				if (disableRTC || Global.Emulator is NullEmulator)
 					return;
 
-				bool runBefore = (bool)(RTCV.NetCore.AllSpec.CorruptCoreSpec?[RTCSPEC.STEP_RUNBEFORE.ToString()] ?? false);
+				bool runBefore = (bool)(AllSpec.CorruptCoreSpec?[RTCSPEC.STEP_RUNBEFORE.ToString()] ?? false);
 
 				//Return out if it's being called from before the step and we're not on frame 0. If we're on frame 0, then we go as normal
 				//If we can't get runbefore, just assume we don't want to run before
@@ -51,9 +52,8 @@ namespace Vanguard
 					return;
 				if (runBefore)
 				{
-					RTCV.NetCore.AllSpec.CorruptCoreSpec.Update(RTCSPEC.STEP_RUNBEFORE.ToString(), false);
+					AllSpec.CorruptCoreSpec.Update(RTCSPEC.STEP_RUNBEFORE.ToString(), false);
 				}
-
 
 				isNormalAdvance = !(isRewinding || isFastForwarding);
 
@@ -71,7 +71,7 @@ namespace Vanguard
 			catch(Exception ex)
 			{
 				if (VanguardCore.ShowErrorDialog(ex, true) == DialogResult.Abort)
-					throw new RTCV.NetCore.AbortEverythingException();
+					throw new AbortEverythingException();
 				MessageBox.Show("Clearing all step blastunits due to an exception within Core_Step().");
 				LocalNetCoreRouter.Route(UI, ERROR_DISABLE_AUTOCORRUPT, false);
 				StepActions.ClearStepBlastUnits();
@@ -110,12 +110,12 @@ namespace Vanguard
 
 			CPU_STEP_Count++;
 
-			bool autoCorrupt = CorruptCore.AutoCorrupt;
-			long errorDelay = CorruptCore.ErrorDelay;
+			bool autoCorrupt = RtcCore.AutoCorrupt;
+			long errorDelay = RtcCore.ErrorDelay;
 			if (autoCorrupt && CPU_STEP_Count >= errorDelay)
 			{
 				CPU_STEP_Count = 0;
-				BlastLayer bl = CorruptCore.GenerateBlastLayer((string[])RTCV.NetCore.AllSpec.UISpec["SELECTEDDOMAINS"]);
+				BlastLayer bl = RtcCore.GenerateBlastLayer((string[])AllSpec.UISpec["SELECTEDDOMAINS"]);
 				if (bl != null)
 					bl.Apply(false, false);
 			}
@@ -126,9 +126,9 @@ namespace Vanguard
 			if (disableRTC) return;
 
 			if (show)
-				RTCV.NetCore.Extensions.ConsoleHelper.ShowConsole();
+				NetCore_Extensions.ConsoleHelper.ShowConsole();
 			else
-				RTCV.NetCore.Extensions.ConsoleHelper.HideConsole();
+				NetCore_Extensions.ConsoleHelper.HideConsole();
 		}
 
 		public static void MAIN_BIZHAWK(string[] args)
@@ -150,20 +150,20 @@ namespace Vanguard
 				VanguardCore.attached = VanguardCore.args.Contains("-ATTACHED");
 
 				//BizHawk.Client.EmuHawk.LogConsole.ReleaseConsole();
-				RTCV.NetCore.Extensions.ConsoleHelper.CreateConsole(VanguardCore.logPath);
+				NetCore_Extensions.ConsoleHelper.CreateConsole(VanguardCore.logPath);
 				if (args.Contains("-CONSOLE"))
 				{
-					RTCV.NetCore.Extensions.ConsoleHelper.ShowConsole();
+					NetCore_Extensions.ConsoleHelper.ShowConsole();
 				}
 				else
 				{
-					RTCV.NetCore.Extensions.ConsoleHelper.HideConsole();
+					NetCore_Extensions.ConsoleHelper.HideConsole();
 				}
 			}
 			catch (Exception ex)
 			{
 				if (VanguardCore.ShowErrorDialog(ex, true) == DialogResult.Abort)
-					throw new RTCV.NetCore.AbortEverythingException();
+					throw new AbortEverythingException();
 			}
 		}
 
@@ -178,7 +178,7 @@ namespace Vanguard
 			catch (Exception ex)
 			{
 				if (VanguardCore.ShowErrorDialog(ex, true) == DialogResult.Abort)
-					throw new RTCV.NetCore.AbortEverythingException();
+					throw new AbortEverythingException();
 			}
 		}
 
@@ -195,7 +195,7 @@ namespace Vanguard
 			catch (Exception ex)
 			{
 				if (VanguardCore.ShowErrorDialog(ex, true) == DialogResult.Abort)
-					throw new RTCV.NetCore.AbortEverythingException();
+					throw new AbortEverythingException();
 			}
 		}
 
@@ -224,7 +224,7 @@ namespace Vanguard
 			catch (Exception ex)
 			{
 				if (VanguardCore.ShowErrorDialog(ex) == DialogResult.Abort)
-					throw new RTCV.NetCore.AbortEverythingException();
+					throw new AbortEverythingException();
 			}
 		}
 
@@ -284,7 +284,7 @@ namespace Vanguard
 			catch (Exception ex)
 			{
 				if (VanguardCore.ShowErrorDialog(ex) == DialogResult.Abort)
-					throw new RTCV.NetCore.AbortEverythingException();
+					throw new AbortEverythingException();
 			}
 		}
 
@@ -327,7 +327,7 @@ namespace Vanguard
 			catch (Exception ex)
 			{
 				if (VanguardCore.ShowErrorDialog(ex) == DialogResult.Abort)
-					throw new RTCV.NetCore.AbortEverythingException();
+					throw new AbortEverythingException();
 			}
 		}
 
@@ -356,7 +356,7 @@ namespace Vanguard
 			//MessageBox.Show("SORRY EMULATOR CRASHED\n\n" + msg);
 
 			if (VanguardCore.ShowErrorDialog(new CustomException("SORRY EMULATOR CRASHED",msg),true) == DialogResult.Abort)
-				throw new RTCV.NetCore.AbortEverythingException();
+				throw new AbortEverythingException();
 
 		}
 
@@ -487,7 +487,7 @@ namespace Vanguard
 			catch (Exception ex)
 			{
 				if (VanguardCore.ShowErrorDialog(ex, true) == DialogResult.Abort)
-					throw new RTCV.NetCore.AbortEverythingException();
+					throw new AbortEverythingException();
 
 				return false;
 			}
@@ -497,7 +497,7 @@ namespace Vanguard
 		{
 			if (disableRTC) return false;
 
-			return RTCV.Vanguard.VanguardConnector.IsUIForm();
+			return VanguardConnector.IsUIForm();
 
 			
 
@@ -512,7 +512,7 @@ namespace Vanguard
 			catch (Exception ex)
 			{
 				if (VanguardCore.ShowErrorDialog(ex, true) == DialogResult.Abort)
-					throw new RTCV.NetCore.AbortEverythingException();
+					throw new AbortEverythingException();
 
 				return null;
 			}
@@ -534,7 +534,7 @@ namespace Vanguard
 			catch (Exception ex)
 			{
 				if (VanguardCore.ShowErrorDialog(ex, true) == DialogResult.Abort)
-					throw new RTCV.NetCore.AbortEverythingException();
+					throw new AbortEverythingException();
 
 				return null;
 			}
@@ -554,7 +554,7 @@ namespace Vanguard
 			catch (Exception ex)
 			{
 				if (VanguardCore.ShowErrorDialog(ex, true) == DialogResult.Abort)
-					throw new RTCV.NetCore.AbortEverythingException();
+					throw new AbortEverythingException();
 
 				return null;
 			}
@@ -571,7 +571,7 @@ namespace Vanguard
 			catch (Exception ex)
 			{
 				if (VanguardCore.ShowErrorDialog(ex, true) == DialogResult.Abort)
-					throw new RTCV.NetCore.AbortEverythingException();
+					throw new AbortEverythingException();
 
 				return null;
 			}
@@ -588,7 +588,7 @@ namespace Vanguard
 			catch (Exception ex)
 			{
 				if (VanguardCore.ShowErrorDialog(ex, true) == DialogResult.Abort)
-					throw new RTCV.NetCore.AbortEverythingException();
+					throw new AbortEverythingException();
 
 				return null;
 			}
@@ -605,7 +605,7 @@ namespace Vanguard
 			catch (Exception ex)
 			{
 				if (VanguardCore.ShowErrorDialog(ex) == DialogResult.Abort)
-					throw new RTCV.NetCore.AbortEverythingException();
+					throw new AbortEverythingException();
 
 				return false;
 			}
@@ -620,7 +620,7 @@ namespace Vanguard
 			catch (Exception ex)
 			{
 				if (VanguardCore.ShowErrorDialog(ex, true) == DialogResult.Abort)
-					throw new RTCV.NetCore.AbortEverythingException();
+					throw new AbortEverythingException();
 
 				return false;
 			}
@@ -636,7 +636,7 @@ namespace Vanguard
 			catch (Exception ex)
 			{
 				if (VanguardCore.ShowErrorDialog(ex, true) == DialogResult.Abort)
-					throw new RTCV.NetCore.AbortEverythingException();
+					throw new AbortEverythingException();
 
 				return;
 			}
@@ -653,7 +653,7 @@ namespace Vanguard
 			catch (Exception ex)
 			{
 				if (VanguardCore.ShowErrorDialog(ex, true) == DialogResult.Abort)
-					throw new RTCV.NetCore.AbortEverythingException();
+					throw new AbortEverythingException();
 
 				return;
 			}
@@ -767,7 +767,7 @@ namespace Vanguard
 			catch (Exception ex)
 			{
 				if (VanguardCore.ShowErrorDialog(ex, true) == DialogResult.Abort)
-					throw new RTCV.NetCore.AbortEverythingException();
+					throw new AbortEverythingException();
 
 				return;
 			}
@@ -816,7 +816,7 @@ namespace Vanguard
 			catch (Exception ex)
 			{
 				if (VanguardCore.ShowErrorDialog(ex) == DialogResult.Abort)
-					throw new RTCV.NetCore.AbortEverythingException();
+					throw new AbortEverythingException();
 
 				return null;
 			}
@@ -903,7 +903,7 @@ namespace Vanguard
 			catch (Exception ex)
 			{
 				if (VanguardCore.ShowErrorDialog(ex) == DialogResult.Abort)
-					throw new RTCV.NetCore.AbortEverythingException();
+					throw new AbortEverythingException();
 
 				return false;
 			}
@@ -931,7 +931,7 @@ namespace Vanguard
 			catch (Exception ex)
 			{
 				if (VanguardCore.ShowErrorDialog(ex, true) == DialogResult.Abort)
-					throw new RTCV.NetCore.AbortEverythingException();
+					throw new AbortEverythingException();
 
 				return new MemoryDomainProxy[] { };
 			}

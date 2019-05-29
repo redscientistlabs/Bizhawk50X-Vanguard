@@ -4,27 +4,27 @@ using System.IO;
 using RTCV.CorruptCore;
 using RTCV.NetCore;
 
-namespace Vanguard
+namespace RTCV.BizhawkVanguard
 {
-	public static class Render
+	public static class BizhawkRender
 	{
 
 		public static void StartRender_NET()
 		{
-			if (RTCV.CorruptCore.Render.RenderType == RTCV.CorruptCore.Render.RENDERTYPE.NONE)
+			if (Render.RenderType == Render.RENDERTYPE.NONE)
 				return;
 
-			string Key = "RENDER_" + (CorruptCore.GetRandomKey());
+			string Key = "RENDER_" + (RtcCore.GetRandomKey());
 
-			switch (RTCV.CorruptCore.Render.RenderType)
+			switch (Render.RenderType)
 			{
-				case RTCV.CorruptCore.Render.RENDERTYPE.WAV:
-					Hooks.BIZHAWK_STARTRECORDAV("wave", Path.Combine(CorruptCore.RtcDir,"RENDEROUTPUT", Key + ".wav"), true);
+				case Render.RENDERTYPE.WAV:
+					Hooks.BIZHAWK_STARTRECORDAV("wave", Path.Combine(RtcCore.RtcDir,"RENDEROUTPUT", Key + ".wav"), true);
 					break;
-				case RTCV.CorruptCore.Render.RENDERTYPE.AVI:
+				case Render.RENDERTYPE.AVI:
 					try
 					{
-						Hooks.BIZHAWK_STARTRECORDAV("vfwavi", Path.Combine(CorruptCore.RtcDir, "RENDEROUTPUT", Key + ".avi"), true);
+						Hooks.BIZHAWK_STARTRECORDAV("vfwavi", Path.Combine(RtcCore.RtcDir, "RENDEROUTPUT", Key + ".avi"), true);
 					}
 					catch (Exception ex)
 					{
@@ -32,8 +32,8 @@ namespace Vanguard
 					}
 
 					break;
-				case RTCV.CorruptCore.Render.RENDERTYPE.MPEG:
-					Hooks.BIZHAWK_STARTRECORDAV("ffmpeg", Path.Combine(CorruptCore.RtcDir, "RENDEROUTPUT", Key + ".mpg"), true);
+				case Render.RENDERTYPE.MPEG:
+					Hooks.BIZHAWK_STARTRECORDAV("ffmpeg", Path.Combine(RtcCore.RtcDir, "RENDEROUTPUT", Key + ".mpg"), true);
 					break;
 			}
 		}

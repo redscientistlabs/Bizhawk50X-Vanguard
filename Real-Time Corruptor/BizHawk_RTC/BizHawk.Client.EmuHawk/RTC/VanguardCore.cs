@@ -12,7 +12,7 @@ using System.Reflection;
 using System.Threading;
 using System.Windows.Forms;
 
-namespace Vanguard
+namespace RTCV.BizhawkVanguard
 {
 	public static class VanguardCore
 	{
@@ -111,6 +111,7 @@ namespace Vanguard
 		public static string emuDir = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
 		public static string logPath = Path.Combine(emuDir, "EMU_LOG.txt");
 
+		public static string BizhawkVanguardVersion = "0.05";
 
 		public static PartialSpec getDefaultPartial()
 		{
@@ -145,7 +146,7 @@ namespace Vanguard
 
 			emuSpecTemplate.Insert(VanguardCore.getDefaultPartial());
 
-			AllSpec.VanguardSpec = new FullSpec(emuSpecTemplate, !CorruptCore.Attached); //You have to feed a partial spec as a template
+			AllSpec.VanguardSpec = new FullSpec(emuSpecTemplate, !RtcCore.Attached); //You have to feed a partial spec as a template
 
 			if (VanguardCore.attached)
 				RTCV.Vanguard.VanguardConnector.PushVanguardSpecRef(AllSpec.VanguardSpec);
@@ -174,7 +175,7 @@ namespace Vanguard
 			//Start everything
 			VanguardImplementation.StartClient();
 			VanguardCore.RegisterVanguardSpec();
-			CorruptCore.StartEmuSide();
+			RtcCore.StartEmuSide();
 
 			//Refocus on Bizhawk
 			Hooks.BIZHAWK_MAINFORM_FOCUS();
@@ -211,19 +212,19 @@ namespace Vanguard
 
 			while (newNumber == lastLoaderRom)
 			{
-				int nbNesFiles = Directory.GetFiles(CorruptCore.EmuAssetsDir, "*.nes").Length;
+				int nbNesFiles = Directory.GetFiles(RtcCore.EmuAssetsDir, "*.nes").Length;
 
-				newNumber = CorruptCore.RND.Next(1, nbNesFiles + 1);
+				newNumber = RtcCore.RND.Next(1, nbNesFiles + 1);
 
 				if (newNumber != lastLoaderRom)
 				{
-					if (File.Exists(Path.Combine(CorruptCore.EmuAssetsDir, "overridedefault.nes") ))
-						LoadRom_NET(Path.Combine(CorruptCore.EmuAssetsDir + "overridedefault.nes"));
+					if (File.Exists(Path.Combine(RtcCore.EmuAssetsDir, "overridedefault.nes") ))
+						LoadRom_NET(Path.Combine(RtcCore.EmuAssetsDir + "overridedefault.nes"));
 					//Please ignore
-					else if (CorruptCore.RND.Next(0, 420) == 7)
-						LoadRom_NET(Path.Combine(CorruptCore.EmuAssetsDir + "gd.fds"));
+					else if (RtcCore.RND.Next(0, 420) == 7)
+						LoadRom_NET(Path.Combine(RtcCore.EmuAssetsDir + "gd.fds"));
 					else
-						LoadRom_NET(Path.Combine(CorruptCore.EmuAssetsDir, newNumber.ToString() + "default.nes"));
+						LoadRom_NET(Path.Combine(RtcCore.EmuAssetsDir, newNumber.ToString() + "default.nes"));
 
 					lastLoaderRom = newNumber;
 					break;
@@ -276,7 +277,7 @@ namespace Vanguard
 			prefix = prefix.Substring(prefix.LastIndexOf('\\') + 1);
 
 			//Build up our path
-			var path = Path.Combine(CorruptCore.workingDir, "SESSION", prefix + "." + quickSlotName + ".State");
+			var path = Path.Combine(RtcCore.workingDir, "SESSION", prefix + "." + quickSlotName + ".State");
 
 			//If the path doesn't exist, make it
 			var file = new FileInfo(path);
