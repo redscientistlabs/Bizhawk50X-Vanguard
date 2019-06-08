@@ -271,14 +271,10 @@ namespace RTCV.BizhawkVanguard
 				//This is local. If the domains changed it propgates over netcore
 				LocalNetCoreRouter.Route(CORRUPTCORE, REMOTE_EVENT_DOMAINSUPDATED, domainsChanged, true);
 
-
 				if (VanguardCore.GameName != lastGameName)
 				{
+					LocalNetCoreRouter.Route(UI, RESET_GAME_PROTECTION_IF_RUNNING, true);
 				}
-				else
-				{
-				}
-
 				lastGameName = VanguardCore.GameName;
 			}
 			catch (Exception ex)
@@ -877,11 +873,9 @@ namespace RTCV.BizhawkVanguard
 				//We only check name and size as those are the only things that can change on the fly
 				var oldInterfaces = VanguardCore.MemoryInterfacees;
 				var newInterfaces = GetInterfaces();
-				bool domainsChanged = false;
+				bool domainsChanged = oldInterfaces.Length != newInterfaces.Length;
 
-				if (oldInterfaces.Length != newInterfaces.Length)
-					domainsChanged = true;
-
+				//Bruteforce it since domains can change inconsistently
 				for (int i = 0; i < oldInterfaces.Length; i++)
 				{
 					if (domainsChanged)
@@ -895,7 +889,7 @@ namespace RTCV.BizhawkVanguard
 				//We gotta push this no matter what since it's new underlying objects
 				if (updateSpecs)
 				{
-					AllSpec.VanguardSpec.Update(VSPEC.MEMORYDOMAINS_INTERFACES, GetInterfaces());
+					AllSpec.VanguardSpec.Update(VSPEC.MEMORYDOMAINS_INTERFACES, newInterfaces);
 					LocalNetCoreRouter.Route(CORRUPTCORE, REMOTE_EVENT_DOMAINSUPDATED, domainsChanged, true);
 				}
 				return domainsChanged;

@@ -155,14 +155,16 @@ namespace RTCV.BizhawkVanguard
 			LocalNetCoreRouter.Route(NetcoreCommands.UI, NetcoreCommands.REMOTE_PUSHVANGUARDSPEC, emuSpecTemplate, true);
 
 
-			AllSpec.VanguardSpec.SpecUpdated += (o, e) =>
-			{
-				PartialSpec partial = e.partialSpec;
+			AllSpec.VanguardSpec.SpecUpdated += new EventHandler<SpecUpdateEventArgs>(OnVanguardSpecOnSpecUpdated);
+		}
+
+		private static void OnVanguardSpecOnSpecUpdated(object o, SpecUpdateEventArgs e)
+		{
+			PartialSpec partial = e.partialSpec;
 
 
-				LocalNetCoreRouter.Route(NetcoreCommands.CORRUPTCORE, NetcoreCommands.REMOTE_PUSHVANGUARDSPECUPDATE, partial, true);
-				LocalNetCoreRouter.Route(NetcoreCommands.UI, NetcoreCommands.REMOTE_PUSHVANGUARDSPECUPDATE, partial, true);
-			};
+			LocalNetCoreRouter.Route(NetcoreCommands.CORRUPTCORE, NetcoreCommands.REMOTE_PUSHVANGUARDSPECUPDATE, partial, true);
+			LocalNetCoreRouter.Route(NetcoreCommands.UI, NetcoreCommands.REMOTE_PUSHVANGUARDSPECUPDATE, partial, true);
 		}
 
 		//This is the entry point of RTC. Without this method, nothing will load.
