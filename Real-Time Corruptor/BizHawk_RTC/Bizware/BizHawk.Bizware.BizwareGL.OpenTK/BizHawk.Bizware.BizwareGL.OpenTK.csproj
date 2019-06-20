@@ -40,6 +40,9 @@
     <CodeAnalysisIgnoreBuiltInRuleSets>false</CodeAnalysisIgnoreBuiltInRuleSets>
     <CodeAnalysisIgnoreBuiltInRules>false</CodeAnalysisIgnoreBuiltInRules>
   </PropertyGroup>
+  <PropertyGroup>
+    <AutoGenerateBindingRedirects>false</AutoGenerateBindingRedirects>
+  </PropertyGroup>
   <ItemGroup>
     <Reference Include="OpenTK, Version=1.1.0.0, Culture=neutral, PublicKeyToken=bad199fe84eb3df4, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
@@ -63,10 +66,12 @@
     <ProjectReference Include="..\..\BizHawk.Common\BizHawk.Common.csproj">
       <Project>{866F8D13-0678-4FF9-80A4-A3993FD4D8A3}</Project>
       <Name>BizHawk.Common</Name>
+      <Private>False</Private>
     </ProjectReference>
     <ProjectReference Include="..\BizHawk.Bizware.BizwareGL\BizHawk.Bizware.BizwareGL.csproj">
       <Project>{9F84A0B2-861E-4EF4-B89B-5E2A3F38A465}</Project>
       <Name>BizHawk.Bizware.BizwareGL</Name>
+      <Private>False</Private>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Drawing;
 
+using BizHawk.Common;
 using BizHawk.Emulation.Common;
 
 // ReSharper disable FieldCanBeMadeReadOnly.Global
@@ -113,13 +114,11 @@ namespace BizHawk.Client.Common
 		public bool HotkeyConfigAutoTab = true;
 		public bool InputConfigAutoTab = true;
 		public bool ShowLogWindow = false;
-		
 		//RTC_HIJACK : Put BackupSavestates to False
 		public bool BackupSavestates = false;
 
 		//RTC_HIJACK : Put SaveScreenshotWithStates to False
 		public bool SaveScreenshotWithStates = false;
-		
 		public int BigScreenshotSize = 128 * 1024;
 		public bool NoLowResLargeScreenshotWithStates = false;
 		public int AutofireOn = 1;
@@ -226,7 +225,6 @@ namespace BizHawk.Client.Common
 
 		// Rewind settings
 		public bool Rewind_UseDelta = true;
-
 		//RTC_HIJACK : Put RewindEnabledSmall to true
 		public bool RewindEnabledSmall = true;
 
@@ -244,11 +242,10 @@ namespace BizHawk.Client.Common
 
 		//RTC_HIJACK : Put RewindFrequencyMedium to 9
 		public int RewindFrequencyLarge = 9;
-		
 		public int Rewind_MediumStateSize = 262144; // 256kb
 		public int Rewind_LargeStateSize = 1048576; // 1mb
 		public int Rewind_BufferSize = 128; // in mb
-
+		
 		//RTC_Hijack - Prevents GC hitching
 		public bool Rewind_OnDisk = true;
 
@@ -364,8 +361,13 @@ namespace BizHawk.Client.Common
 		
 		public int DispPrescale = 1;
 
-		// warning: we dont even want to deal with changing this at runtime. but we want it changed here for config purposes. so dont check this variable. check in GlobalWin or something like that.
-		public EDispMethod DispMethod = EDispMethod.SlimDX9;
+		/// <remarks>
+		/// warning: we dont even want to deal with changing this at runtime. but we want it changed here for config purposes. so dont check this variable. check in GlobalWin or something like that.
+		/// force DX for Windows and GDI+ for Unix when a new config is generated
+		/// </remarks>
+		public EDispMethod DispMethod = OSTailoredCode.CurrentOS == OSTailoredCode.DistinctOS.Windows
+			? EDispMethod.SlimDX9
+			: EDispMethod.GdiPlus;
 
 		public int DispChrome_FrameWindowed = 2;
 		public bool DispChrome_StatusBarWindowed = true;
@@ -386,12 +388,16 @@ namespace BizHawk.Client.Common
 		public float DispCustomUserARX = -1;
 		public float DispCustomUserARY = -1;
 
+		//these default to 0 because by default we crop nothing
+		public int DispCropLeft = 0;
+		public int DispCropTop = 0;
+		public int DispCropRight = 0;
+		public int DispCropBottom = 0;
+
 		// Sound options
-#if WINDOWS
-		public ESoundOutputMethod SoundOutputMethod = ESoundOutputMethod.DirectSound;
-#else
-		public ESoundOutputMethod SoundOutputMethod = ESoundOutputMethod.OpenAL;
-#endif
+		public ESoundOutputMethod SoundOutputMethod = OSTailoredCode.CurrentOS == OSTailoredCode.DistinctOS.Windows
+			? ESoundOutputMethod.DirectSound
+			: ESoundOutputMethod.OpenAL; // force OpenAL for Unix when config is generated
 		public bool SoundEnabled = true;
 		public bool SoundEnabledNormal = true;
 		public bool SoundEnabledRWFF = true;
@@ -577,12 +583,11 @@ namespace BizHawk.Client.Common
 		// as this setting spans multiple cores and doesn't actually affect the behavior of any core,
 		// it hasn't been absorbed into the new system
 		public bool GB_AsSGB = false;
+		public bool UseSubNESHawk = false;
 		public bool NES_InQuickNES = true;
-		//RTC_Hijack - Change BSNES to default as it exposes more domains
-		public bool SNES_InSnes9x = false;
+		public bool SNES_InSnes9x = true;
 		public bool GBA_UsemGBA = true;
-		//RTC_Hijack - Change BSNES to default as it exposes more domains
-		public bool SGB_UseBsnes = true;
+		public bool SGB_UseBsnes = false;
 		public bool GB_UseGBHawk = false;
 		public bool CoreForcingViaGameDB = true;
 		public string LibretroCore;

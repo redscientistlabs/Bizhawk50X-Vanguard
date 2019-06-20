@@ -111,9 +111,6 @@ namespace BizHawk.Emulation.Cores.Waterbox
 			/// size of the domain
 			/// </summary>
 			public long Size;
-			/// <summary>
-			/// 
-			/// </summary>
 			public MemoryDomainFlags Flags;
 		}
 
@@ -156,7 +153,7 @@ namespace BizHawk.Emulation.Cores.Waterbox
 					{
 						throw new ArgumentOutOfRangeException(nameof(addr));
 					}
-				//}//HIJACK_END
+				//}HIJACK_END------------------
 			}
 
 			public WaterboxMemoryDomain(MemoryArea m, IMonitor monitor)

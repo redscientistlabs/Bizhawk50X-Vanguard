@@ -17,8 +17,7 @@ using BizHawk.Client.Common;
 
 namespace BizHawk.Client.EmuHawk
 {
-	//RTC_HIJACK - Make public
-	public static class LogConsole
+	static class LogConsole
 	{
 		public static bool ConsoleVisible
 		{
@@ -119,7 +118,7 @@ namespace BizHawk.Client.EmuHawk
 			}
 			string remainder = cmdLine.Substring(childCmdLine);
 			string path = cmdLine.Substring(lastSlash, lastGood - lastSlash);
-			return path + " " + remainder;
+			return $"{path} {remainder}";
 		}
 
 		static IntPtr oldOut, conOut;
@@ -165,7 +164,7 @@ namespace BizHawk.Client.EmuHawk
 					hasConsole = true;
 				}
 				else
-					System.Windows.Forms.MessageBox.Show(string.Format("Couldn't allocate win32 console: {0}", Marshal.GetLastWin32Error()));
+					System.Windows.Forms.MessageBox.Show($"Couldn't allocate win32 console: {Marshal.GetLastWin32Error()}");
 			}
 
 			if(hasConsole)
@@ -180,7 +179,7 @@ namespace BizHawk.Client.EmuHawk
 				conOut = Win32.CreateFile("CONOUT$", 0x40000000, 2, IntPtr.Zero, 3, 0, IntPtr.Zero);
 
 				if (!Win32.SetStdHandle(-11, conOut))
-				  throw new Exception("SetStdHandle() failed");
+				  throw new Exception($"{nameof(Win32.SetStdHandle)}() failed");
 			}
 
 			//DotNetRewireConout();
@@ -193,8 +192,7 @@ namespace BizHawk.Client.EmuHawk
 			}
 		}
 
-		//rtc_hijack - public
-		public static void ReleaseConsole()
+		static void ReleaseConsole()
 		{
 			if (!hasConsole)
 				return;
@@ -232,7 +230,6 @@ namespace BizHawk.Client.EmuHawk
 			{
 				NeedToRelease = true;
 				CreateConsole();
-
 				//not sure whether we need to set a buffer size here
 				//var sout = new StreamWriter(Console.OpenStandardOutput(),Encoding.ASCII,1) { AutoFlush = true };
 				//var sout = new StreamWriter(Console.OpenStandardOutput()) { AutoFlush = true };

@@ -63,6 +63,7 @@ namespace BizHawk.Emulation.Cores.Computers.SinclairSpectrum
 				
                 // load the media into the tape device
                 tapeMediaIndex = result;
+
                 // fire osd message
                 if (!IsLoadState)
                     Spectrum.OSD_TapeInserted();
@@ -114,7 +115,6 @@ namespace BizHawk.Emulation.Cores.Computers.SinclairSpectrum
         /// <summary>
         /// Called on first instantiation (and subsequent core reboots)
         /// </summary>
-        /// <param name="files"></param>
         protected void InitializeMedia(List<byte[]> files)
         {
             mediaImages = files;
@@ -232,10 +232,6 @@ namespace BizHawk.Emulation.Cores.Computers.SinclairSpectrum
                 Spectrum.CoreComm.ShowMessage("You are trying to load one of more disk images.\n\n Please select ZX Spectrum +3 emulation immediately and reboot the core");
                 return;
             }
-            else
-            {
-                //Spectrum.CoreComm.ShowMessage("You are attempting to load a disk into the +3 disk drive.\n\nThis DOES NOT currently work properly but IS under active development.");
-            }
 
             UPDDiskDevice.FDD_LoadDisk(diskImages[diskMediaIndex]);
         }
@@ -243,7 +239,6 @@ namespace BizHawk.Emulation.Cores.Computers.SinclairSpectrum
         /// <summary>
         /// Identifies and sorts the various media types
         /// </summary>
-        /// <returns></returns>
         private SpectrumMediaType IdentifyMedia(byte[] data)
         {
             // get first 16 bytes as a string

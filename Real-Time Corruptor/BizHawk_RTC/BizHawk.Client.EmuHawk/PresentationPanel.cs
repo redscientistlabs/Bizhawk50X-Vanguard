@@ -6,9 +6,6 @@ using sysdrawing2d=System.Drawing.Drawing2D;
 using System.IO;
 using System.Threading;
 using System.Windows.Forms;
-#if WINDOWS
-using SlimDX;
-#endif
 
 using BizHawk.Client.Common;
 using BizHawk.Bizware.BizwareGL;
@@ -55,14 +52,6 @@ namespace BizHawk.Client.EmuHawk
 
 		private void HandleFullscreenToggle(object sender, MouseEventArgs e)
 		{
-			
-			//RTC_Hijack : Return if hook is true
-			if (!RTCV.BizhawkVanguard.Hooks.BIZHAWK_ALLOWED_DOUBLECLICK_FULLSCREEN)
-			{
-			//	RTC.S.GET<RTC.RTC_MultiPeerPopout_Form>().pbPeerScreen_DoubleClick(null, null);
-				return;
-			}
-			
 			if (e.Button == MouseButtons.Left)
 			{
 				//allow suppression of the toggle.. but if shift is pressed, always do the toggle

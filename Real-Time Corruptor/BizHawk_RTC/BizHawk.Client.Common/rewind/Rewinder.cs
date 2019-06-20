@@ -203,6 +203,7 @@ namespace BizHawk.Client.Common
 			UpdateLastState(state, 0, state.Length);
 		}
 
+
 		private unsafe void CaptureStateDelta(byte[] currentState)
 		{			
 			//RTC_HIJACK : handle null _lastState
@@ -272,7 +273,6 @@ namespace BizHawk.Client.Common
 
 					// Length
 					VLInteger.WriteUnsigned((uint)length, _deltaBuffer, ref index);
-
 
 					//RTC_HIJACK : prevent null _lastState
 					if (_lastState == null)

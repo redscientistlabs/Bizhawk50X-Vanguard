@@ -15,6 +15,7 @@ namespace BizHawk.Client.EmuHawk
 		private N64Settings _s;
 		private N64SyncSettings _ss;
 
+		private static string _customResItemName = "Custom";
 		private static readonly string[] ValidResolutions =
 		{
 			"320 x 240",
@@ -31,7 +32,7 @@ namespace BizHawk.Client.EmuHawk
 			"1920 x 1440",
 			"2048 x 1536",
 			"2880 x 2160",
-			"Custom"
+			_customResItemName
 		};
 
 		private bool _programmaticallyChangingPluginComboBox = false;
@@ -98,18 +99,18 @@ namespace BizHawk.Client.EmuHawk
 		private void Button1_Click(object sender, EventArgs e)
 		{
 			SaveSettings();
+			DialogResult = DialogResult.OK;
 
 			//RTC_HIJACK - save config after saving plugin settings
 			RTCV.BizhawkVanguard.Hooks.BIZHAWK_MAINFORM_SAVECONFIG();
-			
-			DialogResult = DialogResult.OK;
+
 			Close();
 		}
 
 		private void SaveSettings()
 		{
 			// Global
-			if (VideoResolutionComboBox.Text != "Custom")
+			if (VideoResolutionComboBox.Text != _customResItemName)
 			{
 				var videoSettings = VideoResolutionComboBox.SelectedItem.ToString();
 				var strArr = videoSettings.Split('x');
@@ -508,7 +509,7 @@ namespace BizHawk.Client.EmuHawk
 
 			PutSettings(_s);
 			PutSyncSettings(_ss);
-		}
+		} 
 
 		private void N64VideoPluginconfig_Load(object sender, EventArgs e)
 		{
@@ -537,18 +538,17 @@ namespace BizHawk.Client.EmuHawk
 			VideoResolutionXTextBox.Text = _s.VideoSizeX.ToString();
 			VideoResolutionYTextBox.Text = _s.VideoSizeY.ToString();
 
-			var videoSetting = _s.VideoSizeX
-						+ " x "
-						+ _s.VideoSizeY;
+			var videoSetting = $"{_s.VideoSizeX} x {_s.VideoSizeY}";
 
 			var index = VideoResolutionComboBox.Items.IndexOf(videoSetting);
 			if (index >= 0)
 			{
 				VideoResolutionComboBox.SelectedIndex = index;
 			}
-			else if (PluginComboBox.SelectedIndex != 4)
+			else if (PluginComboBox.SelectedIndex != 4) // wtf
 			{
-				VideoResolutionComboBox.SelectedIndex = 13;
+				VideoResolutionComboBox.SelectedIndex =
+					VideoResolutionComboBox.Items.IndexOf(_customResItemName);
 				ShowCustomVideoResolutionControls();
 			}
 
@@ -609,7 +609,7 @@ namespace BizHawk.Client.EmuHawk
 			RiceColorQuality_Combo.SelectedIndex = _ss.RicePlugin.ColorQuality;
 			RiceOpenGLRenderSetting_Combo.SelectedIndex = _ss.RicePlugin.OpenGLRenderSetting;
 			RiceAnisotropicFiltering_TB.Value = _ss.RicePlugin.AnisotropicFiltering;
-			AnisotropicFiltering_LB.Text = "Anisotropic Filtering: " + RiceAnisotropicFiltering_TB.Value;
+			AnisotropicFiltering_LB.Text = $"Anisotropic Filtering: {RiceAnisotropicFiltering_TB.Value}";
 
 			RiceUseDefaultHacks_CB.Checked = _ss.RicePlugin.UseDefaultHacks;
 
@@ -669,7 +669,7 @@ namespace BizHawk.Client.EmuHawk
 			Glide_offset_y.Text = _ss.GlidePlugin.offset_y.ToString();
 			Glide_scale_x.Text = _ss.GlidePlugin.scale_x.ToString();
 			Glide_scale_y.Text = _ss.GlidePlugin.scale_y.ToString();
-
+			
 
 			GlideUseDefaultHacks1.Checked = _ss.GlidePlugin.UseDefaultHacks;
 			GlideUseDefaultHacks2.Checked = _ss.GlidePlugin.UseDefaultHacks;
@@ -855,10 +855,10 @@ namespace BizHawk.Client.EmuHawk
 				GLideN64_EnableCopyAuxiliaryToRDRAM.Checked = _ss.GLideN64Plugin.EnableCopyAuxiliaryToRDRAM;
 			}
 		}
-
+		
 		private void RiceAnisotropicFiltering_Tb_Scroll_1(object sender, EventArgs e)
 		{
-			AnisotropicFiltering_LB.Text = "Anisotropic Filtering: " + RiceAnisotropicFiltering_TB.Value;
+			AnisotropicFiltering_LB.Text = $"Anisotropic Filtering: {RiceAnisotropicFiltering_TB.Value}";
 		}
 
 		private void RiceUseDefaultHacks_Cb_CheckedChanged(object sender, EventArgs e)
@@ -972,7 +972,7 @@ namespace BizHawk.Client.EmuHawk
 				Glide_stipple_pattern.Text = Global.Game.GetInt("Glide_stipple_pattern", 1041204192).ToString();
 				Glide_swapmode.SelectedIndex = Global.Game.GetInt("Glide_swapmode", 1);
 				Glide_enable_hacks_for_game.SelectedIndex = Global.Game.GetInt("Glide_enable_hacks_for_game", 0);
-
+				
 				ToggleGlideHackCheckboxEnable(false);
 			}
 			else
@@ -1012,7 +1012,7 @@ namespace BizHawk.Client.EmuHawk
 				RiceRenderToTextureOption_Combo.SelectedIndex = GetIntFromDB("RiceRenderToTextureOption", 0);
 				RiceScreenUpdateSettingHack_Combo.SelectedIndex = GetIntFromDB("RiceScreenUpdateSettingHack", 0);
 				RiceEnableHacksForGame_Combo.SelectedIndex = GetIntFromDB("RiceEnableHacksForGame", 0);
-
+				
 				ToggleRiceHackCheckboxEnable(false);
 			}
 			else
@@ -1036,7 +1036,7 @@ namespace BizHawk.Client.EmuHawk
 			return defaultVal;
 		}
 
-		private void ToggleRiceHackCheckboxEnable(bool val)
+		private void ToggleRiceHackCheckboxEnable (bool val)
 		{
 			RiceDisableTextureCRC_CB.Enabled = val;
 			RiceDisableCulling_CB.Enabled = val;
@@ -1206,11 +1206,11 @@ namespace BizHawk.Client.EmuHawk
 				VideoResolutionComboBox.SelectedIndex = 0;
 			}
 
-			var strArr = new string[] { };
+			var strArr = new string[] {};
 			int oldSizeX, oldSizeY;
 
 			var oldResolution = VideoResolutionComboBox.SelectedItem.ToString();
-			if (oldResolution != "Custom")
+			if (oldResolution != _customResItemName)
 			{
 				strArr = oldResolution.Split('x');
 				oldSizeX = int.Parse(strArr[0].Trim());
@@ -1222,7 +1222,7 @@ namespace BizHawk.Client.EmuHawk
 				oldSizeY = int.Parse(VideoResolutionYTextBox.Text);
 			}
 
-
+			
 			// Change resolution list to the rest
 			VideoResolutionComboBox.Items.Clear();
 			VideoResolutionComboBox.Items.AddRange(ValidResolutions);
@@ -1239,7 +1239,7 @@ namespace BizHawk.Client.EmuHawk
 				int bestFit = -1;
 				for (int i = 0; i < VideoResolutionComboBox.Items.Count; i++)
 				{
-					if ((string)VideoResolutionComboBox.Items[i] != "Custom")
+					if ((string)VideoResolutionComboBox.Items[i] != _customResItemName)
 					{
 						string option = (string)VideoResolutionComboBox.Items[i];
 						strArr = option.Split('x');
@@ -1274,7 +1274,7 @@ namespace BizHawk.Client.EmuHawk
 
 		private void VideoResolutionComboBox_SelectedIndexChanged(object sender, EventArgs e)
 		{
-			if (VideoResolutionComboBox.Text == "Custom")
+			if (VideoResolutionComboBox.Text == _customResItemName)
 			{
 				ShowCustomVideoResolutionControls();
 			}

@@ -117,7 +117,7 @@ namespace BizHawk.Client.Common
 			}
 		}
 
-		public static byte[] DeInterleaveSMD(byte[] source)
+		private static byte[] DeInterleaveSMD(byte[] source)
 		{
 			// SMD files are interleaved in pages of 16k, with the first 8k containing all 
 			// odd bytes and the second 8k containing all even bytes.
@@ -142,7 +142,7 @@ namespace BizHawk.Client.Common
 			return output;
 		}
 
-		public static unsafe byte[] MutateSwapN64(byte[] source)
+		private static unsafe byte[] MutateSwapN64(byte[] source)
 		{
 			// N64 roms are in one of the following formats:
 			//  .Z64 = No swapping

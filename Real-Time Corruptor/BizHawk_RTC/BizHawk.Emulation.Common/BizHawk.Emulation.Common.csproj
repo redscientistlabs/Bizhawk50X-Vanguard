@@ -43,6 +43,7 @@
     <Reference Include="Newtonsoft.Json, Version=6.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\References\Newtonsoft.Json.dll</HintPath>
+      <Private>False</Private>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
@@ -121,15 +122,21 @@
     <Compile Include="Sound\Utilities\Waves.cs" />
     <Compile Include="SystemLookup.cs" />
     <Compile Include="TextState.cs" />
+    <Compile Include="WorkingTypes\wshort.cs" />
+    <Compile Include="WorkingTypes\wushort.cs" />
+    <Compile Include="WorkingTypes\wsbyte.cs" />
+    <Compile Include="WorkingTypes\wbyte.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\BizHawk.Common\BizHawk.Common.csproj">
       <Project>{866f8d13-0678-4ff9-80a4-a3993fd4d8a3}</Project>
       <Name>BizHawk.Common</Name>
+      <Private>False</Private>
     </ProjectReference>
     <ProjectReference Include="..\BizHawk.Emulation.DiscSystem\BizHawk.Emulation.DiscSystem.csproj">
       <Project>{F51946EA-827F-4D82-B841-1F2F6D060312}</Project>
       <Name>BizHawk.Emulation.DiscSystem</Name>
+      <Private>False</Private>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

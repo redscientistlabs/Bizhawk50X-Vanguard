@@ -45,7 +45,7 @@ namespace BizHawk.Emulation.Cores.Waterbox
 				ulong newused = ((Used - 1) | (ulong)(align - 1)) + 1;
 				if (newused > Memory.Size)
 				{
-					throw new InvalidOperationException(string.Format("Failed to meet alignment {0} on heap {1}", align, Name));
+					throw new InvalidOperationException($"Failed to meet alignment {align} on heap {Name}");
 				}
 				return newused;
 			}
@@ -55,13 +55,13 @@ namespace BizHawk.Emulation.Cores.Waterbox
 		public ulong Allocate(ulong size, int align)
 		{
 			if (Sealed)
-				throw new InvalidOperationException(string.Format("Attempt made to allocate from sealed heap {0}", Name));
+				throw new InvalidOperationException($"Attempt made to allocate from sealed heap {Name}");
 
 			ulong allocstart = EnsureAlignment(align);
 			ulong newused = allocstart + size;
 			if (newused > Memory.Size)
 			{
-				throw new InvalidOperationException(string.Format("Failed to allocate {0} bytes from heap {1}", size, Name));
+				throw new InvalidOperationException($"Failed to allocate {size} bytes from heap {Name}");
 			}
 			ulong ret = Memory.Start + allocstart;
 			Memory.Protect(Memory.Start + Used, newused - Used, MemoryBlock.Protection.RW);
@@ -76,13 +76,12 @@ namespace BizHawk.Emulation.Cores.Waterbox
 			{
 				//RTC_Hijack : Change the protect level to RW instead of R
 				Memory.Protect(Memory.Start, Used, MemoryBlock.Protection.RW);
-				
 				_hash = WaterboxUtils.Hash(Memory.GetStream(Memory.Start, Used, false));
 				Sealed = true;
 			}
 			else
 			{
-				throw new InvalidOperationException(string.Format("Attempt to reseal heap {0}", Name));
+				throw new InvalidOperationException($"Attempt to reseal heap {Name}");
 			}
 		}
 
@@ -107,10 +106,10 @@ namespace BizHawk.Emulation.Cores.Waterbox
 			var name = br.ReadString();
 			if (name != Name)
 				// probable cause: internal error
-				throw new InvalidOperationException(string.Format("Name did not match for heap {0}", Name));
+				throw new InvalidOperationException($"Name did not match for heap {Name}");
 			var used = br.ReadUInt64();
 			if (used > Memory.Size)
-				throw new InvalidOperationException(string.Format("Heap {0} used {1} larger than available {2}", Name, used, Memory.Size));
+				throw new InvalidOperationException($"Heap {Name} used {used} larger than available {Memory.Size}");
 			if (!Sealed)
 			{
 				var hash = br.ReadBytes(Memory.XorHash.Length);

@@ -9,7 +9,6 @@ using BizHawk.Common;
 using BizHawk.Client.Common;
 using BizHawk.Emulation.Common;
 using BizHawk.Client.EmuHawk.WinFormExtensions;
-using RTCV.BizhawkVanguard;
 
 namespace BizHawk.Client.EmuHawk
 {
@@ -25,6 +24,8 @@ namespace BizHawk.Client.EmuHawk
 			ControllerImages.Add("SNES Controller", Properties.Resources.SNES_Controller);
 			ControllerImages.Add("Nintento 64 Controller", Properties.Resources.N64);
 			ControllerImages.Add("Gameboy Controller", Properties.Resources.GBController);
+			ControllerImages.Add("Gameboy Controller H", Properties.Resources.GBController);
+			ControllerImages.Add("Gameboy Controller + Tilt", Properties.Resources.GBController);
 			ControllerImages.Add("GBA Controller", Properties.Resources.GBA_Controller);
 			ControllerImages.Add("Dual Gameboy Controller", Properties.Resources.GBController);
 
@@ -125,7 +126,7 @@ namespace BizHawk.Client.EmuHawk
 				int i;
 				for (i = MaxPlayers; i > 0; i--)
 				{
-					if (button.StartsWith("P" + i))
+					if (button.StartsWith($"P{i}"))
 					{
 						break;
 					}
@@ -161,7 +162,7 @@ namespace BizHawk.Client.EmuHawk
 				{
 					if (buckets[i].Count > 0)
 					{
-						string tabname = Global.Emulator.SystemId == "WSWAN" ? i == 1 ? "Normal" : "Rotated" : "Player " + i; // hack
+						string tabname = Global.Emulator.SystemId != "WSWAN" ? $"Player {i}" : i == 1 ? "Normal" : "Rotated"; // hack
 						tt.TabPages.Add(tabname);
 						tt.TabPages[pageidx].Controls.Add(createpanel(settings, buckets[i], tt.Size));
 						pageidx++;
@@ -175,7 +176,7 @@ namespace BizHawk.Client.EmuHawk
 					tt.TabPages[pageidx].Controls.Add(createpanel(settings, cat.Value, tt.Size));
 
                     // zxhawk hack - it uses multiple categoryLabels
-                    if (Global.Emulator.SystemId == "ZXSpectrum" || Global.Emulator.SystemId == "AmstradCPC")
+                    if (Global.Emulator.SystemId == "ZXSpectrum" || Global.Emulator.SystemId == "AmstradCPC" || Global.Emulator.SystemId == "ChannelF")
                         pageidx++;
 
                 }
@@ -183,7 +184,7 @@ namespace BizHawk.Client.EmuHawk
 				if (buckets[0].Count > 0)
 				{
                     // ZXHawk needs to skip this bit
-                    if (Global.Emulator.SystemId == "ZXSpectrum" || Global.Emulator.SystemId == "AmstradCPC")
+                    if (Global.Emulator.SystemId == "ZXSpectrum" || Global.Emulator.SystemId == "AmstradCPC" || Global.Emulator.SystemId == "ChannelF")
                         return;
 
                     string tabname = (Global.Emulator.SystemId == "C64") ? "Keyboard" : "Console"; // hack
@@ -274,6 +275,11 @@ namespace BizHawk.Client.EmuHawk
                 tableLayoutPanel1.ColumnStyles[1].Width = Properties.Resources.ZXSpectrumKeyboards.Width;
             }
 
+			if (controlName == "ChannelF Controller")
+			{
+
+			}
+
             if (controlName == "AmstradCPC Controller")
             {
                 /*
@@ -347,11 +353,10 @@ namespace BizHawk.Client.EmuHawk
 			Global.Config.InputConfigAutoTab = checkBoxAutoTab.Checked;
 
 			Save();
-			
-			
-			//RTC_Hijack : Force save Controller config
-			Hooks.BIZHAWK_MAINFORM_SAVECONFIG();
 
+			//RTC_Hijack : Force save Controller config
+			RTCV.BizhawkVanguard.Hooks.BIZHAWK_MAINFORM_SAVECONFIG();
+			
 			GlobalWin.OSD.AddMessage("Controller settings saved");
 			DialogResult = DialogResult.OK;
 			Close();
@@ -365,7 +370,7 @@ namespace BizHawk.Client.EmuHawk
 
 		private void NewControllerConfig_Load(object sender, EventArgs e)
 		{
-			Text = _theDefinition.Name + " Configuration";
+			Text = $"{_theDefinition.Name} Configuration";
 		}
 
 		private static TabControl GetTabControl(IEnumerable controls)

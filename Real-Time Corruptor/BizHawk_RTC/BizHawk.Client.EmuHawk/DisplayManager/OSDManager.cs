@@ -9,7 +9,6 @@ using BizHawk.Emulation.Common.IEmulatorExtensions;
 using BizHawk.Client.Common;
 using BizHawk.Client.Common.InputAdapterExtensions;
 using BizHawk.Bizware.BizwareGL;
-using RTCV.CorruptCore;
 
 namespace BizHawk.Client.EmuHawk
 {
@@ -54,7 +53,7 @@ namespace BizHawk.Client.EmuHawk
 
 		public void Begin(IBlitter blitter)
 		{
-			MessageFont = blitter.GetFontType("MessageFont");
+			MessageFont = blitter.GetFontType(nameof(MessageFont));
 		}
 
 		public Color FixedMessagesColor { get { return Color.FromArgb(Global.Config.MessagesColor); } }
@@ -133,12 +132,10 @@ namespace BizHawk.Client.EmuHawk
 
 		public void AddMessage(string message)
 		{
-				
 			//RTC_HIJACK : Disable OSD Messages (Add this block)
-			if ((bool?)(RTCV.NetCore.AllSpec.CorruptCoreSpec?[RTCSPEC.CORE_BIZHAWKOSDDISABLED.ToString()]) ?? false)
+			if ((bool?)(RTCV.NetCore.AllSpec.CorruptCoreSpec?[RTCV.CorruptCore.RTCSPEC.CORE_BIZHAWKOSDDISABLED.ToString()]) ?? false)
 				return;
 			//--------------------------------
-			
 			messages.Add(new UIMessage { Message = message, ExpireAt = DateTime.Now + TimeSpan.FromSeconds(2) });
 		}
 
