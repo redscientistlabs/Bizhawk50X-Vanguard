@@ -1,3 +1,4 @@
+
 /snes9xgit
 
 svnrev.cs
@@ -6,7 +7,9 @@ svnrev.cs
 **/obj/**
 /output/**
 /output64/**
-
+**/Release/**
+**/Debug/**
+**/ipch/**
 
 !/output/dll/**
 !/output/dll/
@@ -27,11 +30,9 @@ svnrev.cs
 !/output/AutoKillSwitch.exe
 !/output/defctrl.json
 
-**/Release/**
-**/Debug/**
-**/ipch/**
 
 *.ilk
+*.il
 *.tlog
 *.obj
 *.o
@@ -93,3 +94,8 @@ ExternalCoreProjects/Virtu/bin/*.*
 libsnes/vs2015/libsnes.VC.db
 waterbox/**/*.wbx
 waterbox/**/*.wbx.in
+/BizHawkTool_template.zip
+
+mono_crash*
+
+.idea

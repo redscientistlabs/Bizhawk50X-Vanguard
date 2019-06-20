@@ -99,6 +99,7 @@
     <ProjectReference Include="..\..\BizHawk.Common\BizHawk.Common.csproj">
       <Project>{866F8D13-0678-4FF9-80A4-A3993FD4D8A3}</Project>
       <Name>BizHawk.Common</Name>
+      <Private>False</Private>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

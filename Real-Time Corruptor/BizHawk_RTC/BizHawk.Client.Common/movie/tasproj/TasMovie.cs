@@ -35,7 +35,7 @@ namespace BizHawk.Client.Common
 		public TasLagLog TasLagLog => _lagLog;
 		public IStringLog InputLog => Log;
 		public int BranchCount => Branches.Count;
-		public int LastValidFrame => _lagLog.LastValidFrame;
+		public int LastStatedFrame => _stateManager.LastStatedFrame;
 		public override string PreferredExtension => Extension;
 		public TasStateManager TasStateManager => _stateManager;
 
@@ -55,7 +55,7 @@ namespace BizHawk.Client.Common
 			_progressReportWorker = progressReportWorker;
 			if (!Global.Emulator.HasSavestates())
 			{
-				throw new InvalidOperationException("Cannot create a TasMovie against a core that does not implement IStatable");
+				throw new InvalidOperationException($"Cannot create a {nameof(TasMovie)} against a core that does not implement {nameof(IStatable)}");
 			}
 
 			ChangeLog = new TasMovieChangeLog(this);
@@ -65,7 +65,7 @@ namespace BizHawk.Client.Common
 			Markers = new TasMovieMarkerList(this);
 			Markers.CollectionChanged += Markers_CollectionChanged;
 			Markers.Add(0, startsFromSavestate ? "Savestate" : "Power on");
-			BindMarkersToInput = true;
+			BindMarkersToInput = false;
 			CurrentBranch = -1;
 		}
 
@@ -74,7 +74,7 @@ namespace BizHawk.Client.Common
 			_progressReportWorker = progressReportWorker;
 			if (!Global.Emulator.HasSavestates())
 			{
-				throw new InvalidOperationException("Cannot create a TasMovie against a core that does not implement IStatable");
+				throw new InvalidOperationException($"Cannot create a {nameof(TasMovie)} against a core that does not implement {nameof(IStatable)}");
 			}
 
 			ChangeLog = new TasMovieChangeLog(this);
@@ -84,7 +84,7 @@ namespace BizHawk.Client.Common
 			Markers = new TasMovieMarkerList(this);
 			Markers.CollectionChanged += Markers_CollectionChanged;
 			Markers.Add(0, startsFromSavestate ? "Savestate" : "Power on");
-			BindMarkersToInput = true;
+			BindMarkersToInput = false;
 			CurrentBranch = -1;
 		}
 
@@ -225,7 +225,9 @@ namespace BizHawk.Client.Common
 
 		public void GreenzoneCurrentFrame()
 		{
-			if (Global.Emulator.Frame > LastValidFrame)
+			// todo: this isn't working quite right when autorestore is off and we're editing while seeking
+			// but accounting for that requires access to Mainform.IsSeeking
+			if (Global.Emulator.Frame > LastEditedFrame)
 			{
 				// emulated a new frame, current editing segment may change now. taseditor logic
 				LastPositionStable = false;
@@ -509,17 +511,13 @@ namespace BizHawk.Client.Common
 			Log?.Dispose();
 			Log = branch.InputLog.Clone();
 
-			_lagLog.FromLagLog(branch.LagLog);
-
-			// if there are branch states, they will be loaded anyway
-			// but if there's none, or only *after* divergent point, don't invalidate the entire movie anymore
 			if (divergentPoint.HasValue)
 			{
-				_stateManager.Invalidate(divergentPoint.Value);
+				InvalidateAfter(divergentPoint.Value);
 			}
 			else
 			{
-				_stateManager.Invalidate(branch.InputLog.Count);
+				InvalidateAfter(branch.InputLog.Count);
 			}
 			
 			if (BindMarkersToInput) // pretty critical not to erase them

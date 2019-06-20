@@ -14,8 +14,6 @@
     <ErrorReport>prompt</ErrorReport>
     <!--<CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>-->
     <CodeAnalysisRuleSet Condition=" '$(OS)' == 'Windows_NT' ">MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
-    <DocumentationFile>
-    </DocumentationFile>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|AnyCPU'">
     <OutputPath>..\output\</OutputPath>
@@ -45,7 +43,6 @@
   <ItemGroup>
     <Reference Include="CSharp-SQLite">
       <HintPath>.\CSharp-SQLite.dll</HintPath>
-      <Private>False</Private>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />

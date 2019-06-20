@@ -44,11 +44,9 @@
   <ItemGroup>
     <Reference Include="ICSharpCode.SharpZipLib">
       <HintPath>..\References\ICSharpCode.SharpZipLib.dll</HintPath>
-      <Private>False</Private>
     </Reference>
     <Reference Include="Ionic.Zip">
       <HintPath>..\References\Ionic.Zip.dll</HintPath>
-      <Private>False</Private>
     </Reference>
     <Reference Include="Newtonsoft.Json, Version=4.5.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
@@ -64,10 +62,10 @@
     <Reference Include="System.Data.SQLite, Version=1.0.105.2, Culture=neutral, PublicKeyToken=db937bc2d44ff139, processorArchitecture=AMD64">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\References\x64\SQLite\System.Data.SQLite.dll</HintPath>
-      <Private>False</Private>
     </Reference>
     <Reference Include="System.Drawing" />
     <Reference Include="System.IO.Compression" />
+    <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -145,6 +143,7 @@
     <Compile Include="inputAdapters\OverrideAdaptor.cs" />
     <Compile Include="inputAdapters\SimpleController.cs" />
     <Compile Include="inputAdapters\UDLRController.cs" />
+    <Compile Include="input\PolarRectConversion.cs" />
     <Compile Include="IonicZipWriter.cs" />
     <Compile Include="IPS.cs" />
     <Compile Include="IZipWriter.cs" />
@@ -248,6 +247,7 @@
     <Compile Include="movie\tasproj\TasMovieRecord.cs" />
     <Compile Include="movie\tasproj\TasStateManagerSettings.cs" />
     <Compile Include="NESGameGenieEncoderDecoder.cs" />
+    <Compile Include="OpenAdvanced.cs" />
     <Compile Include="PathManager.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="QuickBmpFile.cs" />
@@ -300,7 +300,7 @@
       <Private>False</Private>
     </ProjectReference>
     <ProjectReference Include="..\BizHawk.Emulation.Cores\BizHawk.Emulation.Cores.csproj">
-      <Project>{197d4314-8a9f-49ba-977d-54acefaeb6ba}</Project>
+      <Project>{197D4314-8A9F-49BA-977D-54ACEFAEB6BA}</Project>
       <Name>BizHawk.Emulation.Cores</Name>
       <Private>False</Private>
     </ProjectReference>
@@ -330,7 +330,6 @@
       <Private>False</Private>
     </ProjectReference>
   </ItemGroup>
-  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
     <PreBuildEvent>

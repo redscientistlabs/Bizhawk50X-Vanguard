@@ -111,9 +111,8 @@ namespace BizHawk.Client.Common
 		{
 			get
 			{
-				if (_defaultValues == null)
-				{
-					//RTC_Hijack - Remove some of the more annoying default binds that don't line up with bizhawk usage
+				if (_defaultValues == null)//RTC_Hijack - Remove some of the more annoying default binds that don't line up with bizhawk usage
+				{ 
 					_defaultValues = new List<Binding>
 					{
 						Bind("General", "Frame Advance"), //RTC

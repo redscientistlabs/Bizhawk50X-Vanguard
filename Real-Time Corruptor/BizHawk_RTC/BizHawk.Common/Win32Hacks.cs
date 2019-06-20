@@ -414,7 +414,6 @@ namespace BizHawk.Common
 		/// <summary>
 		/// Functionally the same as WaitOne(), but pumps com messa
 		/// </summary>
-		/// <param name="handle"></param>
 		public static void HackyComWaitOne(WaitHandle handle)
 		{
 			uint nativeResult; // result of the native wait API (WaitForMultipleObjects or MsgWaitForMultipleObjectsEx)
@@ -462,12 +461,12 @@ namespace BizHawk.Common
 		//I only put this for use here by external cores
 		public static void RemoveMOTW(string path)
 		{
-			DeleteFileW(path + ":Zone.Identifier");
+			DeleteFileW($"{path}:Zone.Identifier");
 		}
 
 		[DllImport("kernel32.dll")]
 		static extern bool IsDebuggerPresent();
-
+		
 		public static bool IsDebuggerReallyPresent()
 		{
 			return IsDebuggerPresent();
