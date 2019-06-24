@@ -345,157 +345,11 @@ namespace RTCV.BizhawkVanguard
 
 		}
 
-		public static void EMU_CRASH(string msg)
-		{
-			if (disableRTC) return;
-
-			//MessageBox.Show("SORRY EMULATOR CRASHED\n\n" + msg);
-
-			if (VanguardCore.ShowErrorDialog(new CustomException("SORRY EMULATOR CRASHED",msg),true) == DialogResult.Abort)
-				throw new AbortEverythingException();
-
-		}
-
-		public static bool HOTKEY_CHECK(string trigger)
-		{// You can go to the injected Hotkey Hijack by searching #HotkeyHijack
-			try
-			{
-				if (disableRTC) return false;
-
-				if (watch != null)
-				{
-					long elapsedMs = watch.ElapsedMilliseconds;
-					if (elapsedMs > 3000)
-					{
-						watch.Stop();
-						watch = null;
-					}
-				}
-
-				switch (trigger)
-				{
-					default:
-						return false;
-
-					case "Manual Blast":
-						LocalNetCoreRouter.Route(CORRUPTCORE, REMOTE_HOTKEY_MANUALBLAST);
-						break;
-
-					case "Auto-Corrupt":
-						LocalNetCoreRouter.Route(UI, REMOTE_HOTKEY_AUTOCORRUPTTOGGLE);
-						break;
-
-					case "Error Delay--":
-						LocalNetCoreRouter.Route(UI, REMOTE_HOTKEY_ERRORDELAYDECREASE);
-						break;
-
-					case "Error Delay++":
-						LocalNetCoreRouter.Route(UI, REMOTE_HOTKEY_ERRORDELAYINCREASE);
-						break;
-
-					case "Intensity--":
-						LocalNetCoreRouter.Route(UI, REMOTE_HOTKEY_INTENSITYDECREASE);
-						break;
-
-					case "Intensity++":
-						LocalNetCoreRouter.Route(UI, REMOTE_HOTKEY_INTENSITYINCREASE);
-						break;
-
-					case "GH Load and Corrupt":
-						LocalNetCoreRouter.Route(UI, REMOTE_HOTKEY_GHLOADCORRUPT);
-						break;
-
-					case "GH Just Corrupt":
-						LocalNetCoreRouter.Route(UI, REMOTE_HOTKEY_GHCORRUPT);
-						break;
-					case "GH Reroll":
-						LocalNetCoreRouter.Route(UI, REMOTE_HOTKEY_GHREROLL);
-						break;
-
-					case "GH Load":
-						LocalNetCoreRouter.Route(UI, REMOTE_HOTKEY_GHLOAD);
-						break;
-
-					case "GH Save":
-						LocalNetCoreRouter.Route(UI, REMOTE_HOTKEY_GHSAVE);
-						break;
-
-					case "Stash->Stockpile":
-						LocalNetCoreRouter.Route(UI, REMOTE_HOTKEY_GHSTASHTOSTOCKPILE);
-						break;
-
-					case "Induce KS Crash":
-						VanguardImplementation.connector.Kill();
-						break;
-
-					case "Blast+RawStash":
-						var x = LocalNetCoreRouter.Route(UI, REMOTE_HOTKEY_BLASTRAWSTASH);
-						break;
-
-					case "Send Raw to Stash":
-						LocalNetCoreRouter.Route(UI, REMOTE_HOTKEY_SENDRAWSTASH);
-						break;
-
-					case "BlastLayer Toggle":
-						LocalNetCoreRouter.Route(UI, REMOTE_HOTKEY_BLASTLAYERTOGGLE);
-						break;
-
-					case "BlastLayer Re-Blast":
-						LocalNetCoreRouter.Route(UI, REMOTE_HOTKEY_BLASTLAYERREBLAST);
-						break;
-
-					case "Game Protect Back":
-						LocalNetCoreRouter.Route(UI, REMOTE_HOTKEY_GAMEPROTECTIONBACK);
-						break;
-
-					case "Game Protect Now":
-						LocalNetCoreRouter.Route(UI, REMOTE_HOTKEY_GAMEPROTECTIONNOW);
-						break;
-					case "BE Disable 50":
-						LocalNetCoreRouter.Route(UI, REMOTE_HOTKEY_BEDISABLE50);
-						break;
-
-					case "BE Remove Disabled":
-						LocalNetCoreRouter.Route(UI, REMOTE_HOTKEY_BEREMOVEDISABLED);
-						break;
-
-					case "BE Invert Disabled":
-						LocalNetCoreRouter.Route(UI, REMOTE_HOTKEY_BEINVERTDISABLED);
-						break;
-					case "BE Shift Up":
-						LocalNetCoreRouter.Route(UI, REMOTE_HOTKEY_BESHIFTUP);
-						break;
-					case "BE Shift Down":
-						LocalNetCoreRouter.Route(UI, REMOTE_HOTKEY_BESHIFTDOWN);
-						break;
-					case "BE Load Corrupt":
-						LocalNetCoreRouter.Route(UI, REMOTE_HOTKEY_BELOADCORRUPT);
-						break;
-					case "BE Apply":
-						LocalNetCoreRouter.Route(UI, REMOTE_HOTKEY_BEAPPLY);
-						break;
-					case "BE Send Stash":
-						LocalNetCoreRouter.Route(UI, REMOTE_HOTKEY_BESENDSTASH);
-						break;
-				}
-				return true;
-			}
-			catch (Exception ex)
-			{
-				if (VanguardCore.ShowErrorDialog(ex, true) == DialogResult.Abort)
-					throw new AbortEverythingException();
-
-				return false;
-			}
-		}
-
 		public static bool IsAllowedBackgroundInputForm()
 		{
 			if (disableRTC) return false;
 
 			return VanguardConnector.IsUIForm();
-
-			
 
 		}
 
@@ -515,26 +369,6 @@ namespace RTCV.BizhawkVanguard
 		}
 
 
-		public static string BIZHAWK_GET_FILESYSTEMCORENAME()
-		{
-			try
-			{
-				//This returns the folder name of the currently loaded system core
-
-
-				PathEntry pathEntry = Global.Config.PathEntries[Global.Game.System, "Savestates"] ??
-				Global.Config.PathEntries[Global.Game.System, "Base"];
-
-				return pathEntry.SystemDisplayName;
-			}
-			catch (Exception ex)
-			{
-				if (VanguardCore.ShowErrorDialog(ex, true) == DialogResult.Abort)
-					throw new AbortEverythingException();
-
-				return null;
-			}
-		}
 
 		public static string BIZHAWK_GET_FILESYSTEMGAMENAME()
 		{
