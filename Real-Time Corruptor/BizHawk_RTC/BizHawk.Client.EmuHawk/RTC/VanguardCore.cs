@@ -111,7 +111,7 @@ namespace RTCV.BizhawkVanguard
 		public static string emuDir = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
 		public static string logPath = Path.Combine(emuDir, "EMU_LOG.txt");
 
-		public static string BizhawkVanguardVersion = "0.1.3";
+		public static string BizhawkVanguardVersion = "0.1.4";
 
 		public static PartialSpec getDefaultPartial()
 		{
@@ -341,17 +341,21 @@ namespace RTCV.BizhawkVanguard
 			}
 		}
 
+		private static object windowLock = new object();
 		/// <summary>
 		/// Loads the window size/position from a param
 		/// </summary>
 		public static void LoadBizhawkWindowState()
 		{
-			if (RTCV.NetCore.Params.IsParamSet("BIZHAWK_SIZE"))
+			lock (windowLock)
 			{
-				string[] size = RTCV.NetCore.Params.ReadParam("BIZHAWK_SIZE").Split(',');
-				Hooks.BIZHAWK_GETSET_MAINFORMSIZE = new Size(Convert.ToInt32(size[0]), Convert.ToInt32(size[1]));
-				string[] location = RTCV.NetCore.Params.ReadParam("BIZHAWK_LOCATION").Split(',');
-				Hooks.BIZHAWK_GETSET_MAINFORMLOCATION = new Point(Convert.ToInt32(location[0]), Convert.ToInt32(location[1]));
+				if (RTCV.NetCore.Params.IsParamSet("BIZHAWK_SIZE"))
+				{
+					string[] size = RTCV.NetCore.Params.ReadParam("BIZHAWK_SIZE").Split(',');
+					Hooks.BIZHAWK_GETSET_MAINFORMSIZE = new Size(Convert.ToInt32(size[0]), Convert.ToInt32(size[1]));
+					string[] location = RTCV.NetCore.Params.ReadParam("BIZHAWK_LOCATION").Split(',');
+					Hooks.BIZHAWK_GETSET_MAINFORMLOCATION = new Point(Convert.ToInt32(location[0]), Convert.ToInt32(location[1]));
+				}
 			}
 		}
 		/// <summary>
@@ -359,11 +363,14 @@ namespace RTCV.BizhawkVanguard
 		/// </summary>
 		public static void SaveBizhawkWindowState()
 		{
-			var size = Hooks.BIZHAWK_GETSET_MAINFORMSIZE;
-			var location = Hooks.BIZHAWK_GETSET_MAINFORMLOCATION;
+			lock (windowLock)
+			{
+				var size = Hooks.BIZHAWK_GETSET_MAINFORMSIZE;
+				var location = Hooks.BIZHAWK_GETSET_MAINFORMLOCATION;
 
-			RTCV.NetCore.Params.SetParam("BIZHAWK_SIZE", $"{size.Width},{size.Height}");
-			RTCV.NetCore.Params.SetParam("BIZHAWK_LOCATION", $"{location.X},{location.Y}");
+				RTCV.NetCore.Params.SetParam("BIZHAWK_SIZE", $"{size.Width},{size.Height}");
+				RTCV.NetCore.Params.SetParam("BIZHAWK_LOCATION", $"{location.X},{location.Y}");
+			}
 		}
 
 		/// <summary>
