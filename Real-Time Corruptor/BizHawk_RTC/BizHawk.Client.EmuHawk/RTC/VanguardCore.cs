@@ -351,8 +351,13 @@ namespace RTCV.BizhawkVanguard
 			{
 				if (RTCV.NetCore.Params.IsParamSet("BIZHAWK_SIZE"))
 				{
-					string[] size = RTCV.NetCore.Params.ReadParam("BIZHAWK_SIZE").Split(',');
+					string[] size = RTCV.NetCore.Params.ReadParam("BIZHAWK_SIZE")
+						.Split(',');
 					Hooks.BIZHAWK_GETSET_MAINFORMSIZE = new Size(Convert.ToInt32(size[0]), Convert.ToInt32(size[1]));
+				}
+
+				if (RTCV.NetCore.Params.IsParamSet("BIZHAWK_LOCATION"))
+				{
 					string[] location = RTCV.NetCore.Params.ReadParam("BIZHAWK_LOCATION").Split(',');
 					Hooks.BIZHAWK_GETSET_MAINFORMLOCATION = new Point(Convert.ToInt32(location[0]), Convert.ToInt32(location[1]));
 				}
