@@ -206,8 +206,7 @@ namespace RTCV.BizhawkVanguard
 			}
 			catch (Exception ex)
 			{
-				if (VanguardCore.ShowErrorDialog(ex, true) == DialogResult.Abort)
-					throw new RTCV.NetCore.AbortEverythingException();
+				VanguardCore.ShowErrorDialog(ex,true);
 			}
 		}
 
