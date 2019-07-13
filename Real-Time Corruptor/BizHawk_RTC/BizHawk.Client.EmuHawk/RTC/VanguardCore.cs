@@ -226,7 +226,7 @@ namespace RTCV.BizhawkVanguard
 					else if (RtcCore.RND.Next(0, 420) == 7)
 						LoadRom_NET(Path.Combine(RtcCore.EmuAssetsDir + "gd.fds"));
 					else
-						LoadRom_NET(Path.Combine(RtcCore.EmuAssetsDir, newNumber.ToString() + "default.nes"));
+						LoadRom_NET(Path.Combine(RtcCore.EmuAssetsDir, newNumber.ToString() + ".nes"));
 
 					lastLoaderRom = newNumber;
 					break;
