@@ -585,7 +585,7 @@ namespace BizHawk.Client.Common
 		public bool GB_AsSGB = false;
 		public bool UseSubNESHawk = false;
 		public bool NES_InQuickNES = true;
-		public bool SNES_InSnes9x = true;
+		public bool SNES_InSnes9x = false;  //RTC_HIJACK - bsnes by default
 		public bool GBA_UsemGBA = true;
 		public bool SGB_UseBsnes = false;
 		public bool GB_UseGBHawk = false;
