@@ -72,14 +72,14 @@ namespace RTCV.BizhawkVanguard
 					{
 						//We still need to set the emulator's path
 						AllSpec.VanguardSpec.Update(VSPEC.EMUDIR, VanguardCore.emuDir);
-						SyncObjectSingleton.FormExecute((o, ea) =>
+						SyncObjectSingleton.FormExecute(() =>
 						{
 							VanguardCore.LoadDefaultAndShowBizhawkForm();
 						});
 					}
 						break;
 					case SAVESAVESTATE:
-						SyncObjectSingleton.FormExecute((o, ea) =>
+						SyncObjectSingleton.FormExecute(() =>
 						{
 							e.setReturnValue(VanguardCore.SaveSavestate_NET(advancedMessage.objectValue as string));
 						});
@@ -90,7 +90,7 @@ namespace RTCV.BizhawkVanguard
 							var cmd = advancedMessage.objectValue as object[];
 							var path = cmd[0] as string;
 							var location = (StashKeySavestateLocation)cmd[1];
-							SyncObjectSingleton.FormExecute((o, ea) =>
+							SyncObjectSingleton.FormExecute(() =>
 							{
 								e.setReturnValue(VanguardCore.LoadSavestate_NET(path, location));
 							});
@@ -100,7 +100,7 @@ namespace RTCV.BizhawkVanguard
 					case REMOTE_LOADROM:
 						{
 							var fileName = advancedMessage.objectValue as String;
-							SyncObjectSingleton.FormExecute((o, ea) =>
+							SyncObjectSingleton.FormExecute(() =>
 							{
 								VanguardCore.LoadRom_NET(fileName);
 							});
@@ -109,7 +109,7 @@ namespace RTCV.BizhawkVanguard
 						break;
 					case REMOTE_CLOSEGAME:
 						{
-							SyncObjectSingleton.FormExecute((o, ea) =>
+							SyncObjectSingleton.FormExecute(() =>
 							{
 								Hooks.CLOSE_GAME(true);
 							});
@@ -117,14 +117,14 @@ namespace RTCV.BizhawkVanguard
 						break;
 
 					case REMOTE_DOMAIN_GETDOMAINS:
-						SyncObjectSingleton.FormExecute((o, ea) =>
+						SyncObjectSingleton.FormExecute(() =>
 						{
 							e.setReturnValue(Hooks.GetInterfaces());
 						});
 						break;
 
 					case REMOTE_KEY_SETSYNCSETTINGS:
-						SyncObjectSingleton.FormExecute((o, ea) =>
+						SyncObjectSingleton.FormExecute(() =>
 						{
 							Hooks.BIZHAWK_GETSET_SYNCSETTINGS = (string)advancedMessage.objectValue;
 						});
@@ -135,7 +135,7 @@ namespace RTCV.BizhawkVanguard
 							var cmd = advancedMessage.objectValue as object[];
 							var systemName = (string)cmd[0];
 							var systemCore = (string)cmd[1];
-							SyncObjectSingleton.FormExecute((o, ea) =>
+							SyncObjectSingleton.FormExecute(() =>
 							{
 								Hooks.BIZHAWK_SET_SYSTEMCORE(systemName, systemCore);
 							});
@@ -151,7 +151,7 @@ namespace RTCV.BizhawkVanguard
 							MemoryDomainProxy mdp = MemoryDomains.GetProxy(domain, address);
 							long realAddress = MemoryDomains.GetRealAddress(domain, address);
 
-							SyncObjectSingleton.FormExecute((o, ea) =>
+							SyncObjectSingleton.FormExecute(() =>
 							{
 								Hooks.BIZHAWK_OPEN_HEXEDITOR_ADDRESS(mdp, realAddress);
 							});
@@ -159,20 +159,20 @@ namespace RTCV.BizhawkVanguard
 							break;
 						}
 					case REMOTE_EVENT_EMU_MAINFORM_CLOSE:
-						SyncObjectSingleton.FormExecute((o, ea) =>
+						SyncObjectSingleton.FormExecute(() =>
 						{
 							Hooks.BIZHAWK_MAINFORM_CLOSE();
 						});
 						break;
 					case REMOTE_RENDER_START:
-						SyncObjectSingleton.FormExecute((o, ea) =>
+						SyncObjectSingleton.FormExecute(() =>
 						{
 							BizhawkRender.StartRender_NET();
 						});
 						break;
 
 					case REMOTE_RENDER_STOP:
-						SyncObjectSingleton.FormExecute((o, ea) =>
+						SyncObjectSingleton.FormExecute(() =>
 						{
 							BizhawkRender.StopRender_NET();
 						});
