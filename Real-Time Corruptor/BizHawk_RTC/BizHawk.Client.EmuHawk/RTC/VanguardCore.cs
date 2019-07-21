@@ -438,7 +438,7 @@ namespace RTCV.BizhawkVanguard
 					domainBlacklist.Add("System Bus"); // maxvalue is not representative of chip (goes ridiculously high)
 					domainBlacklist.Add("SGB CARTROM"); // Supergameboy cartridge
 
-					if (MemoryDomains.MemoryInterfaces.ContainsKey("SGB CARTROM"))
+					if (MemoryDomains.MemoryInterfaces?.ContainsKey("SGB CARTROM") ?? false)
 					{
 						domainBlacklist.Add("VRAM");
 						domainBlacklist.Add("WRAM");
