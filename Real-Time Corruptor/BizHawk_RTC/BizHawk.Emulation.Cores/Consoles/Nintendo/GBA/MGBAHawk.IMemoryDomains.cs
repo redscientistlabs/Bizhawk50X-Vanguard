@@ -16,7 +16,7 @@ namespace BizHawk.Emulation.Cores.Nintendo.GBA
 		private MemoryDomainIntPtr _vram;
 		private MemoryDomainIntPtr _oam;
 		private MemoryDomainIntPtr _rom;
-		private MemoryDomainIntPtr _sram;
+		//private MemoryDomainIntPtr _sram;
 		private MemoryDomainDelegate _cwram;
 
 		private void CreateMemoryDomains(int romsize)
@@ -31,7 +31,7 @@ namespace BizHawk.Emulation.Cores.Nintendo.GBA
 			mm.Add(_vram = new MemoryDomainIntPtr("VRAM", le, IntPtr.Zero, 96 * 1024, true, 4));
 			mm.Add(_oam = new MemoryDomainIntPtr("OAM", le, IntPtr.Zero, 1024, true, 4));
 			mm.Add(_rom = new MemoryDomainIntPtr("ROM", le, IntPtr.Zero, romsize, false, 4));
-			mm.Add(_sram = new MemoryDomainIntPtr("SRAM", le, IntPtr.Zero, 0, true, 4)); // size will be fixed in wireup
+			//mm.Add(_sram = new MemoryDomainIntPtr("SRAM", le, IntPtr.Zero, 0, true, 4)); // size will be fixed in wireup
 			mm.Add(_cwram = new MemoryDomainDelegate("Combined WRAM", (256 + 32) * 1024, le, null, null, 4));
 
 			mm.Add(new MemoryDomainDelegate("System Bus", 0x10000000, le,
@@ -72,8 +72,8 @@ namespace BizHawk.Emulation.Cores.Nintendo.GBA
 			_vram.Data = s.vram;
 			_oam.Data = s.oam;
 			_rom.Data = s.rom;
-			_sram.Data = s.sram;
-			_sram.SetSize(s.sram_size);
+			//_sram.Data = s.sram;
+			//_sram.SetSize(s.sram_size);
 
 			// special combined ram memory domain
 			_cwram.Peek =
