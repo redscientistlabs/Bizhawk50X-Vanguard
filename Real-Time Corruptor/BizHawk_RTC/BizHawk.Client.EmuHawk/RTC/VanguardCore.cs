@@ -111,7 +111,7 @@ namespace RTCV.BizhawkVanguard
 		public static string emuDir = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
 		public static string logPath = Path.Combine(emuDir, "EMU_LOG.txt");
 
-		public static string BizhawkVanguardVersion = "0.1.8";
+		public static string BizhawkVanguardVersion = "0.1.9";
 
 		public static PartialSpec getDefaultPartial()
 		{
@@ -133,8 +133,7 @@ namespace RTCV.BizhawkVanguard
 			partial[VSPEC.SUPPORTS_REALTIME] = true;
 			partial[VSPEC.SUPPORTS_SAVESTATES] = true;
 			partial[VSPEC.SUPPORTS_MIXED_STOCKPILE] = true;
-			partial[VSPEC.CONFIG_PATHS] = new[] { Path.Combine(emuDir, "config.ini") };
-			partial[VSPEC.EMUDIR] = emuDir;
+			partial[VSPEC.CONFIG_PATHS] = new[] {Path.Combine(emuDir, "config.ini")};
 
 			return partial;
 		}

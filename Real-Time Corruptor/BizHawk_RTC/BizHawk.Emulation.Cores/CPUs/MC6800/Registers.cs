@@ -1,32 +1,23 @@
 using System;
 
-namespace BizHawk.Emulation.Common.Components.MC6809
+namespace BizHawk.Emulation.Common.Components.MC6800
 {
-	public partial class MC6809
+	public partial class MC6800
 	{
 		// registers
-		public ushort[] Regs = new ushort[14];
+		public ushort[] Regs = new ushort[11];
 
 		public const ushort PC = 0;
-		public const ushort US = 1;
-		public const ushort SP = 2;
-		public const ushort X = 3;
-		public const ushort Y = 4;
-		public const ushort A = 5;
-		public const ushort B = 6;
-		public const ushort ADDR = 7; // internal
-		public const ushort ALU = 8; // internal
-		public const ushort ALU2 = 9; // internal
-		public const ushort DP = 10;
-		public const ushort CC = 11;
-		public const ushort Dr = 12;
-		public const ushort IDX_EA = 13;
-
-		public ushort D
-		{
-			get { return (ushort)(Regs[B] | (Regs[A] << 8)); }
-			set { Regs[B] = (ushort)(value & 0xFF); Regs[A] = (ushort)((value >> 8) & 0xFF); }
-		}
+		public const ushort SP = 1;
+		public const ushort X = 2;
+		public const ushort A = 3;
+		public const ushort B = 4;
+		public const ushort ADDR = 5; // internal
+		public const ushort ALU = 6; // internal
+		public const ushort ALU2 = 7; // internal
+		public const ushort DP = 8; // always zero
+		public const ushort CC = 9;
+		public const ushort IDX_EA = 10;
 
 		public bool FlagC
 		{
@@ -62,18 +53,6 @@ namespace BizHawk.Emulation.Common.Components.MC6809
 		{
 			get { return (Regs[CC] & 0x20) != 0; }
 			set { Regs[CC] = (byte)((Regs[CC] & ~0x20) | (value ? 0x20 : 0x00)); }
-		}
-
-		public bool FlagF
-		{
-			get { return (Regs[CC] & 0x40) != 0; }
-			set { Regs[CC] = (byte)((Regs[CC] & ~0x40) | (value ? 0x40 : 0x00)); }
-		}
-
-		public bool FlagE
-		{
-			get { return (Regs[CC] & 0x80) != 0; }
-			set { Regs[CC] = (byte)((Regs[CC] & ~0x80) | (value ? 0x80 : 0x00)); }
 		}
 
 		private void ResetRegisters()

@@ -1,7 +1,6 @@
 ﻿using System;
 
 using BizHawk.Common;
-using BizHawk.Common.BufferExtensions;
 using BizHawk.Emulation.Common;
 using BizHawk.Common.NumberExtensions;
 
@@ -17,6 +16,9 @@ namespace BizHawk.Emulation.Cores.Consoles.Vectrex
 		public uint master_audio_clock;
 
 		private short current_sample, old_sample;
+
+		// not actually part of the AY chip, the Vectrex schematics show a line directly feeding audio from multiplexer output
+		public short pcm_sample;
 
 		public byte[] Register = new byte[16];
 
@@ -75,6 +77,8 @@ namespace BizHawk.Emulation.Cores.Consoles.Vectrex
 			ser.Sync(nameof(current_sample), ref current_sample);
 			ser.Sync(nameof(old_sample), ref old_sample);
 			ser.Sync(nameof(master_audio_clock), ref master_audio_clock);
+
+			ser.Sync(nameof(pcm_sample), ref pcm_sample);
 
 			sync_psg_state();
 
@@ -300,7 +304,7 @@ namespace BizHawk.Emulation.Cores.Consoles.Vectrex
 					v += (short)(sound_out_C ? VolumeTable[env_E] : 0);
 				}
 
-				current_sample = (short)v;
+				current_sample = (short)(v + pcm_sample);
 
 				if (current_sample != old_sample)
 				{
