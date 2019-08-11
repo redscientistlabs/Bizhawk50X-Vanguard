@@ -70,8 +70,6 @@ namespace RTCV.BizhawkVanguard
 
 					case REMOTE_ALLSPECSSENT:
 					{
-						//We still need to set the emulator's path
-						AllSpec.VanguardSpec.Update(VSPEC.EMUDIR, VanguardCore.emuDir);
 						SyncObjectSingleton.FormExecute(() =>
 						{
 							VanguardCore.LoadDefaultAndShowBizhawkForm();
