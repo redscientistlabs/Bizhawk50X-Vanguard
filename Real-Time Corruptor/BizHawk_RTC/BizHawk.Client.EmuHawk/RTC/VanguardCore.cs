@@ -134,6 +134,7 @@ namespace RTCV.BizhawkVanguard
 			partial[VSPEC.SUPPORTS_SAVESTATES] = true;
 			partial[VSPEC.SUPPORTS_MIXED_STOCKPILE] = true;
 			partial[VSPEC.CONFIG_PATHS] = new[] {Path.Combine(emuDir, "config.ini")};
+			partial[VSPEC.EMUDIR] = emuDir;
 
 			return partial;
 		}
