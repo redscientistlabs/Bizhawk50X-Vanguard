@@ -11,12 +11,14 @@ using System.IO;
 using System.Reflection;
 using System.Threading;
 using System.Windows.Forms;
+using Timer = System.Threading.Timer;
 
 namespace RTCV.BizhawkVanguard
 {
 	public static class VanguardCore
 	{
 		public static string[] args;
+		public static System.Windows.Forms.Timer focusTimer;
 
 		internal static DialogResult ShowErrorDialog(Exception exception, bool canContinue = false)
 		{
@@ -111,7 +113,7 @@ namespace RTCV.BizhawkVanguard
 		public static string emuDir = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
 		public static string logPath = Path.Combine(emuDir, "EMU_LOG.txt");
 
-		public static string BizhawkVanguardVersion = "0.1.9";
+		public static string BizhawkVanguardVersion = "0.2.0";
 
 		public static PartialSpec getDefaultPartial()
 		{
@@ -182,10 +184,25 @@ namespace RTCV.BizhawkVanguard
 
 			//Refocus on Bizhawk
 			Hooks.BIZHAWK_MAINFORM_FOCUS();
+			
+			focusTimer = new System.Windows.Forms.Timer();
+			focusTimer.Interval = 250; //Update the focus state of the emulator
+			focusTimer.Tick += (sender, eventArgs) =>
+			{
+				if (VanguardImplementation.connector.netConn.status == NetworkStatus.CONNECTED)
+				{
+					var state = Form.ActiveForm != null;
+					Console.WriteLine(state);
+					if (((bool?)RTCV.NetCore.AllSpec.VanguardSpec?[NetcoreCommands.EMU_INFOCUS] ?? true) != state)
+						RTCV.NetCore.AllSpec.VanguardSpec?.Update(NetcoreCommands.EMU_INFOCUS, state, true, false);
+				}
+			};
+			focusTimer.Start();
+				
 
 			//Force create bizhawk config file if it doesn't exist
 			//if (!File.Exists(CorruptCore.bizhawkDir + Path.DirectorySeparatorChar + "config.ini"))
-				//Hooks.BIZHAWK_MAINFORM_SAVECONFIG();
+			//Hooks.BIZHAWK_MAINFORM_SAVECONFIG();
 
 			//If it's attached, lie to vanguard
 			if (VanguardCore.attached)

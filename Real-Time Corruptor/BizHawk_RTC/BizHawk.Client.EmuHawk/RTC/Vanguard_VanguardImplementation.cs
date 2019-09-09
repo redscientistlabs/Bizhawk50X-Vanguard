@@ -27,16 +27,17 @@ namespace RTCV.BizhawkVanguard
 
 		public static void StartClient()
 		{
-			try { 
-			ConsoleEx.WriteLine("Starting Vanguard Client");
-			Thread.Sleep(500); //When starting in Multiple Startup Project, the first try will be uncessful since
-			//the server takes a bit more time to start then the client.
+			try
+			{ 
+				ConsoleEx.WriteLine("Starting Vanguard Client");
+				Thread.Sleep(500); //When starting in Multiple Startup Project, the first try will be uncessful since
+				//the server takes a bit more time to start then the client.
 
-			var spec = new NetCoreReceiver();
-			spec.Attached = VanguardCore.attached;
-			spec.MessageReceived += OnMessageReceived;
+				var spec = new NetCoreReceiver();
+				spec.Attached = VanguardCore.attached;
+				spec.MessageReceived += OnMessageReceived;
 
-			connector = new RTCV.Vanguard.VanguardConnector(spec);
+				connector = new RTCV.Vanguard.VanguardConnector(spec);
 
 			}
 			catch (Exception ex)
