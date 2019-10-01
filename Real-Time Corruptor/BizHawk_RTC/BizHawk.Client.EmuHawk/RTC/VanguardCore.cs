@@ -189,6 +189,11 @@ namespace RTCV.BizhawkVanguard
 			focusTimer.Interval = 250; //Update the focus state of the emulator
 			focusTimer.Tick += (sender, eventArgs) =>
 			{
+				if (VanguardCore.attached)
+				{
+					focusTimer.Enabled = false;
+					return;
+				}
 				if (VanguardImplementation.connector.netConn.status == NetworkStatus.CONNECTED)
 				{
 					var state = Form.ActiveForm != null;
