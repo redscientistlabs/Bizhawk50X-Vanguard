@@ -79,7 +79,7 @@ namespace BizHawk.Client.EmuHawk
 				//but before we even try doing that, whack the MOTW from everything in that directory (thats a dll)
 				//otherwise, some people will have crashes at boot-up due to .net security disliking MOTW.
 				//some people are getting MOTW through a combination of browser used to download bizhawk, and program used to dearchive it
-				WhackAllMOTW(dllDir);
+				//WhackAllMOTW(dllDir);
 
 				//We need to do it here too... otherwise people get exceptions when externaltools we distribute try to startup
 			}
@@ -388,7 +388,7 @@ REDO_DISPMETHOD:
 				}//Hijack-End
 
 				//it is important that we use LoadFile here and not load from a byte array; otherwise mixed (managed/unamanged) assemblies can't load
-				return Assembly.LoadFile(fname);
+				return Assembly.UnsafeLoadFrom(fname);
 			}
 		}
 
