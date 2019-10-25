@@ -236,6 +236,15 @@ namespace RTCV.BizhawkVanguard
 			{
 				if (disableRTC) return;
 
+				if (AllSpec.UISpec == null)
+				{
+					CLOSE_GAME();
+					GlobalWin.MainForm.CloseRom();
+					MessageBox.Show("It appears you haven't connected to StandaloneRTC. Please make sure that the RTC is running and not just Bizhawk.\nIf you have an antivirus, it might be blocking the RTC from launching.\n\nIf you keep getting this message, poke the RTC devs for help (Discord is in the launcher).", "RTC Not Connected");
+					return;
+				}
+					
+
 
 				//Glitch Harvester warning for archives
 
