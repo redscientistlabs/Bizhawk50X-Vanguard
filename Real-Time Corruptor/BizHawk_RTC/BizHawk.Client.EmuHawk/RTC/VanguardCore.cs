@@ -197,7 +197,7 @@ namespace RTCV.BizhawkVanguard
 				if (VanguardImplementation.connector.netConn.status == NetworkStatus.CONNECTED)
 				{
 					var state = Form.ActiveForm != null;
-					Console.WriteLine(state);
+					//Console.WriteLine(state);
 					if (((bool?)RTCV.NetCore.AllSpec.VanguardSpec?[NetcoreCommands.EMU_INFOCUS] ?? true) != state)
 						RTCV.NetCore.AllSpec.VanguardSpec?.Update(NetcoreCommands.EMU_INFOCUS, state, true, false);
 				}
