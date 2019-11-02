@@ -1737,6 +1737,20 @@ namespace BizHawk.Client.EmuHawk
 			MemoryViewerBox.Refresh();
 		}
 
+		//RTC_HIJACK
+		private void CreateVMDFromSelectedMenuItem_Click(object sender, EventArgs e)
+		{
+			if (HighlightedAddress == null) return;
+
+			List<long> allAddresses = new List<long>() { HighlightedAddress.Value };
+			allAddresses.AddRange(_secondaryHighlightedAddresses);
+			RTCV.BizhawkVanguard.Hooks.CREATE_VMD_FROM_SELECTED_HEXEDITOR(_domain.ToString(), allAddresses);
+
+			MemoryViewerBox.Refresh();
+		}
+		//-------------------------------
+
+
 		private void UnfreezeAllMenuItem_Click(object sender, EventArgs e)
 		{
 			Global.CheatList.RemoveAll();

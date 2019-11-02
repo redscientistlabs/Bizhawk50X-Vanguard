@@ -65,6 +65,7 @@
 			this.FreezeAddressMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.UnfreezeAllMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.PokeAddressMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+			this.CreateVMDMenuItem = new System.Windows.Forms.ToolStripMenuItem(); //RTC_HIJACK
 			this.SettingsSubMenu = new System.Windows.Forms.ToolStripMenuItem();
 			this.CustomColorsSubMenu = new System.Windows.Forms.ToolStripMenuItem();
 			this.SetColorsMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -400,6 +401,13 @@
 			this.PokeAddressMenuItem.Text = "&Poke Address";
 			this.PokeAddressMenuItem.Click += new System.EventHandler(this.PokeAddressMenuItem_Click);
 			// 
+			// CreateVMDMenuItem //RTC_HIJACK
+			// 
+			this.CreateVMDMenuItem.Name = "Create VMDMenuItem";
+			this.CreateVMDMenuItem.Size = new System.Drawing.Size(221, 22);
+			this.CreateVMDMenuItem.Text = "&Create VMD from Selected Addresses";
+			this.CreateVMDMenuItem.Click += new System.EventHandler(this.CreateVMDFromSelectedMenuItem_Click);
+			// 
 			// SettingsSubMenu
 			// 
 			this.SettingsSubMenu.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
@@ -464,7 +472,16 @@
             this.ContextSeparator2,
             this.GoToContextItem,
             this.toolStripMenuItem1,
-            this.viewN64MatrixToolStripMenuItem});
+            
+
+			//RTC_HIJACK
+			this.viewN64MatrixToolStripMenuItem,
+			this.PokeAddressMenuItem,
+			this.toolStripSeparator2,
+			this.CreateVMDMenuItem});
+			//-------------------------------
+			//this.viewN64MatrixToolStripMenuItem});
+
 			this.ViewerContextMenuStrip.Name = "ViewerContextMenuStrip";
 			this.ViewerContextMenuStrip.Size = new System.Drawing.Size(222, 264);
 			this.ViewerContextMenuStrip.Opening += new System.ComponentModel.CancelEventHandler(this.ViewerContextMenuStrip_Opening);
@@ -730,6 +747,7 @@
 		private System.Windows.Forms.ToolStripMenuItem FindPrevMenuItem;
 		private System.Windows.Forms.ToolStripMenuItem SaveMenuItem;
 		private System.Windows.Forms.ToolStripMenuItem PokeAddressMenuItem;
+		private System.Windows.Forms.ToolStripMenuItem CreateVMDMenuItem;//RTC_HIJACK
 		private System.Windows.Forms.ToolStripMenuItem PokeContextItem;
 		private System.Windows.Forms.ToolStripSeparator toolStripSeparator4;
 		private System.Windows.Forms.ToolStripMenuItem LoadTableFileMenuItem;

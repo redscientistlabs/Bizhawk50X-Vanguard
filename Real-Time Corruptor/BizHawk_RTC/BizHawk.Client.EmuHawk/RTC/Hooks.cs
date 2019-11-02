@@ -131,6 +131,46 @@ namespace RTCV.BizhawkVanguard
 				NetCore_Extensions.ConsoleHelper.HideConsole();
 		}
 
+		public static void CREATE_VMD_FROM_SELECTED_HEXEDITOR(string domain, List<long> allAddresses)
+		{
+
+			var ordered = allAddresses.OrderBy(it => it);
+			bool contiguous = true;
+			long? lastAddress = null;
+			int i = 0;
+
+			foreach (long item in ordered)
+			{
+				if (lastAddress != null) //not the first one
+					if (i != (ordered.Count() - 1)) //not the last one
+						if (item != lastAddress.Value + 1) //checks expected address
+							contiguous = false;
+
+				lastAddress = item;
+				i++;
+			}
+
+			string ToHexString(long n)
+			{
+				return $"{n:X}";
+			}
+
+			string text;
+			if (contiguous)
+			{
+				var listOrdered = ordered.ToList();
+				text = $"{ToHexString(listOrdered[0])}-{ToHexString(listOrdered[listOrdered.Count-1])}";
+			}
+			else
+			{
+				text = String.Join("\n", ordered.Select(it => ToHexString(it)));
+			}
+
+			VanguardCore.CreateVmdText(domain, text);
+
+		}
+
+
 		public static void MAIN_BIZHAWK(string[] args)
 		{
 			//MessageBox.Show("ATTACH DEBUGGER NOW");

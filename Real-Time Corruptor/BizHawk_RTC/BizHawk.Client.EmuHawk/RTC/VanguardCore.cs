@@ -141,7 +141,10 @@ namespace RTCV.BizhawkVanguard
 			return partial;
 		}
 
-
+		internal static void CreateVmdText(string domain,string text)
+		{	//Sends text to the VMD Generator and trigger generation
+			LocalNetCoreRouter.Route(NetcoreCommands.UI, NetcoreCommands.REMOTE_GENERATEVMDTEXT, new object[] { domain,text}, true);
+		}
 
 		public static void RegisterVanguardSpec()
 		{
