@@ -19,9 +19,15 @@ namespace BizHawk.Emulation.Cores.Nintendo.GBHawk
 		public bool in_vblank;
 		public bool vblank_rise;
 
+		//RTC_Hijack - Add crashed 
+		private bool crashed = false;
 		public bool FrameAdvance(IController controller, bool render, bool rendersound)
 		{
 			//Console.WriteLine("-----------------------FRAME-----------------------");
+			
+			//RTC_Hijack
+			if (crashed)
+				return false;
 
 			//Update the color palette if a setting changed
 			if(_settings.Palette == GBSettings.PaletteType.BW)
@@ -59,7 +65,8 @@ namespace BizHawk.Emulation.Cores.Nintendo.GBHawk
 
 			GetControllerState(controller);
 
-			do_frame();
+			//RTC_Hijack
+			crashed = !do_frame();
 
 			if (_scanlineCallback != null)
 			{
@@ -78,7 +85,8 @@ namespace BizHawk.Emulation.Cores.Nintendo.GBHawk
 			return true;
 		}
 
-		public void do_frame()
+		//RTC_Hijack - Swap to bool
+		public bool do_frame()
 		{
 			// gameboy frames can be variable lengths
 			// we want to end a frame when VBlank turns from false to true
@@ -161,13 +169,17 @@ namespace BizHawk.Emulation.Cores.Nintendo.GBHawk
 				}
 
 				ticker++;
-				if (ticker > 42134400) { throw new Exception("ERROR: Unable to Resolve Frame"); }
+
+				//RTC_Hijack
+				//if (ticker > 42134400) { throw new Exception("ERROR: Unable to Resolve Frame"); }
+				if (ticker > 42134400){return false; }
 
 				in_vblank_old = in_vblank;
 				REG_FF0F_OLD = REG_FF0F;
 			}
 
-			vblank_rise = false;			
+			vblank_rise = false;
+			return true;
 		}
 
 		public void do_single_step()
