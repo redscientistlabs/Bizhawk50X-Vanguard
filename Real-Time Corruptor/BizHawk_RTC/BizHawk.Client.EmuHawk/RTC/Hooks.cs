@@ -283,8 +283,6 @@ namespace RTCV.BizhawkVanguard
 					MessageBox.Show("It appears you haven't connected to StandaloneRTC. Please make sure that the RTC is running and not just Bizhawk.\nIf you have an antivirus, it might be blocking the RTC from launching.\n\nIf you keep getting this message, poke the RTC devs for help (Discord is in the launcher).", "RTC Not Connected");
 					return;
 				}
-					
-
 
 				//Glitch Harvester warning for archives
 
@@ -325,6 +323,8 @@ namespace RTCV.BizhawkVanguard
 					LocalNetCoreRouter.Route(UI, RESET_GAME_PROTECTION_IF_RUNNING, true);
 				}
 				lastGameName = VanguardCore.GameName;
+
+				RtcCore.LOAD_GAME_DONE();
 			}
 			catch (Exception ex)
 			{
@@ -364,10 +364,17 @@ namespace RTCV.BizhawkVanguard
 
 				if (loadDefault)
 					VanguardCore.LoadDefaultRom();
+				else
+				{
+					RefreshDomains();
+				}
 
 				//RTC_RPC.SendToKillSwitch("UNFREEZE");
 
 				CLOSE_GAME_loop_flag = false;
+
+				RtcCore.GAME_CLOSED();
+
 			}
 			catch (Exception ex)
 			{
@@ -747,10 +754,7 @@ namespace RTCV.BizhawkVanguard
 		public static bool RefreshDomains(bool updateSpecs = true)
 		{
 			try
-			{ 
-				if (Global.Emulator is NullEmulator)
-					return false;
-
+			{
 				//Compare the old to the new. If the name and sizes are all the same, don't push that there were changes.
 				//We need to compare like this because the domains can change from syncsettings.
 				//We only check name and size as those are the only things that can change on the fly
@@ -795,7 +799,7 @@ namespace RTCV.BizhawkVanguard
 				List<MemoryDomainProxy> interfaces = new List<MemoryDomainProxy>();
 
 				if (Global.Emulator?.ServiceProvider == null)
-					return null;
+					return new MemoryDomainProxy[] { };
 
 				ServiceInjector.UpdateServices(Global.Emulator.ServiceProvider, MDRI);
 
