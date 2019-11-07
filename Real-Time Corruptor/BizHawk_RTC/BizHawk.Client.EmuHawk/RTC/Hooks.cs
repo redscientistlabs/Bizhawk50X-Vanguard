@@ -798,7 +798,7 @@ namespace RTCV.BizhawkVanguard
 
 				List<MemoryDomainProxy> interfaces = new List<MemoryDomainProxy>();
 
-				if (Global.Emulator?.ServiceProvider == null)
+				if (Global.Emulator?.ServiceProvider == null || Global.Emulator is NullEmulator)
 					return new MemoryDomainProxy[] { };
 
 				ServiceInjector.UpdateServices(Global.Emulator.ServiceProvider, MDRI);
