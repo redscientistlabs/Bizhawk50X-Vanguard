@@ -364,6 +364,10 @@ namespace RTCV.BizhawkVanguard
 
 				if (loadDefault)
 					VanguardCore.LoadDefaultRom();
+				else
+				{
+					RefreshDomains();
+				}
 
 				//RTC_RPC.SendToKillSwitch("UNFREEZE");
 
@@ -514,6 +518,23 @@ namespace RTCV.BizhawkVanguard
 			{
 				var lra = new BizHawk.Client.EmuHawk.MainForm.LoadRomArgs { OpenAdvanced = new OpenAdvanced_OpenRom { Path = RomFile } };
 				GlobalWin.MainForm.LoadRom(RomFile, lra);
+			}
+			catch (Exception ex)
+			{
+				if (VanguardCore.ShowErrorDialog(ex, true) == DialogResult.Abort)
+					throw new AbortEverythingException();
+
+				return;
+			}
+		}
+
+		public static void BIZHAWK_OPEN_HEXEDITOR_ADDRESS(MemoryDomainProxy mdp, long address)
+		{
+			try
+			{
+				GlobalWin.Tools.Load<HexEditor>();
+				GlobalWin.Tools.HexEditor.SetDomain(((VanguardImplementation.BizhawkMemoryDomain)(mdp.MD)).MD);
+				GlobalWin.Tools.HexEditor.GoToAddress(address);
 			}
 			catch (Exception ex)
 			{

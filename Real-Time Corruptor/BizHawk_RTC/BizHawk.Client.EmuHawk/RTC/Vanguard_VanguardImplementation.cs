@@ -141,6 +141,22 @@ namespace RTCV.BizhawkVanguard
 						}
 						break;
 
+					case EMU_OPEN_HEXEDITOR_ADDRESS:
+						{
+							var temp = advancedMessage.objectValue as object[];
+							string domain = (string)temp[0];
+							long address = (long)temp[1];
+
+							MemoryDomainProxy mdp = MemoryDomains.GetProxy(domain, address);
+							long realAddress = MemoryDomains.GetRealAddress(domain, address);
+
+							SyncObjectSingleton.FormExecute(() =>
+							{
+								Hooks.BIZHAWK_OPEN_HEXEDITOR_ADDRESS(mdp, realAddress);
+							});
+
+							break;
+						}
 					case REMOTE_EVENT_EMU_MAINFORM_CLOSE:
 						SyncObjectSingleton.FormExecute(() =>
 						{
