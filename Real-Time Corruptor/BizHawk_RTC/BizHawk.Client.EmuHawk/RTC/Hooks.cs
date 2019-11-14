@@ -528,6 +528,20 @@ namespace RTCV.BizhawkVanguard
 			}
 		}
 
+		public static void BIZHAWK_OPEN_HEXEDITOR()
+		{
+			try
+			{
+				GlobalWin.Tools.Load<HexEditor>();
+			}
+			catch (Exception ex)
+			{
+				if (VanguardCore.ShowErrorDialog(ex, true) == DialogResult.Abort)
+					throw new AbortEverythingException();
+
+				return;
+			}
+		}
 		public static void BIZHAWK_OPEN_HEXEDITOR_ADDRESS(MemoryDomainProxy mdp, long address)
 		{
 			try

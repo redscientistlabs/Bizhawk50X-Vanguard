@@ -141,6 +141,10 @@ namespace RTCV.BizhawkVanguard
 						}
 						break;
 
+					case REMOTE_OPENHEXEDITOR:
+						SyncObjectSingleton.FormExecute(() => Hooks.BIZHAWK_OPEN_HEXEDITOR());
+						break;
+
 					case EMU_OPEN_HEXEDITOR_ADDRESS:
 						{
 							var temp = advancedMessage.objectValue as object[];
