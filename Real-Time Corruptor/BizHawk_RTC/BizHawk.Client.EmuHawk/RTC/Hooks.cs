@@ -364,10 +364,6 @@ namespace RTCV.BizhawkVanguard
 
 				if (loadDefault)
 					VanguardCore.LoadDefaultRom();
-				else
-				{
-					RefreshDomains();
-				}
 
 				//RTC_RPC.SendToKillSwitch("UNFREEZE");
 
