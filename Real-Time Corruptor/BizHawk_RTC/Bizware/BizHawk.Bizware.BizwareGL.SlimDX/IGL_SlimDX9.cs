@@ -945,7 +945,15 @@ namespace BizHawk.Bizware.BizwareGL.Drivers.SlimDX
 				PresentationInterval = control.Vsync ? PresentInterval.One : PresentInterval.Immediate
 			};
 
-			control.SwapChain = new SwapChain(dev, pp);
+			//RTC_Hijack - eat this exception
+			try
+			{
+				control.SwapChain = new SwapChain(dev, pp);
+			}
+			catch (Exception e)
+			{
+
+			}
 		}
 
 		public IGraphicsControl Internal_CreateGraphicsControl()
