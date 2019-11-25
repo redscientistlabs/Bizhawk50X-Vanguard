@@ -684,6 +684,12 @@ namespace RTCV.BizhawkVanguard
 						else
 							return "gambatte";
 
+					case "GBC":
+						if (Global.Config.GB_UseGBHawk)
+							return "gbhawk";
+						else
+							return "gambatte";
+
 					case "NES":
 						return (Global.Config.NES_InQuickNES ? "quicknes" : "neshawk");
 
