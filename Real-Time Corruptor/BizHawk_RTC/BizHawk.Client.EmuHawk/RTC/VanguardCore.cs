@@ -18,7 +18,7 @@ namespace RTCV.BizhawkVanguard
 	public static class VanguardCore
 	{
 		public static string[] args;
-		public static System.Windows.Forms.Timer focusTimer;
+		public static System.Timers.Timer focusTimer;
 
 		internal static DialogResult ShowErrorDialog(Exception exception, bool canContinue = false)
 		{
@@ -188,10 +188,13 @@ namespace RTCV.BizhawkVanguard
 
 			//Refocus on Bizhawk
 			Hooks.BIZHAWK_MAINFORM_FOCUS();
-			
-			focusTimer = new System.Windows.Forms.Timer();
-			focusTimer.Interval = 250; //Update the focus state of the emulator
-			focusTimer.Tick += (sender, eventArgs) =>
+
+			focusTimer = new System.Timers.Timer {
+				AutoReset = true,
+				Interval = 250
+			};
+			//Update the focus state of the emulator
+			focusTimer.Elapsed += (sender, eventArgs) =>
 			{
 				if (VanguardCore.attached)
 				{

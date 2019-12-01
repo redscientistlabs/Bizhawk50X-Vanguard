@@ -374,6 +374,7 @@ REDO_DISPMETHOD:
 					fname = Path.Combine(directory, dllname);
 					if (!File.Exists(fname))
 						return null;
+					return Assembly.UnsafeLoadFrom(fname);
 				}
 				else{
 					//load missing assemblies by trying to find them in the dll directory
@@ -388,7 +389,7 @@ REDO_DISPMETHOD:
 				}//Hijack-End
 
 				//it is important that we use LoadFile here and not load from a byte array; otherwise mixed (managed/unamanged) assemblies can't load
-				return Assembly.UnsafeLoadFrom(fname);
+				return Assembly.LoadFile(fname);
 			}
 		}
 
