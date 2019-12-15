@@ -1744,7 +1744,7 @@ namespace BizHawk.Client.EmuHawk
 
 			List<long> allAddresses = new List<long>() { HighlightedAddress.Value };
 			allAddresses.AddRange(_secondaryHighlightedAddresses);
-			RTCV.BizhawkVanguard.Hooks.CREATE_VMD_FROM_SELECTED_HEXEDITOR(_domain.ToString(), allAddresses);
+			RTCV.BizhawkVanguard.Hooks.CREATE_VMD_FROM_SELECTED_HEXEDITOR(_domain.ToString(), allAddresses, DataSize);
 
 			MemoryViewerBox.Refresh();
 		}
