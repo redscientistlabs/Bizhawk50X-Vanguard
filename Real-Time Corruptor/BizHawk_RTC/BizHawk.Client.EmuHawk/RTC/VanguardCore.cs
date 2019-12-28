@@ -19,6 +19,7 @@ namespace RTCV.BizhawkVanguard
 	{
 		public static string[] args;
 		public static System.Timers.Timer focusTimer;
+		public static bool FirstConnect = true;
 
 		internal static DialogResult ShowErrorDialog(Exception exception, bool canContinue = false)
 		{

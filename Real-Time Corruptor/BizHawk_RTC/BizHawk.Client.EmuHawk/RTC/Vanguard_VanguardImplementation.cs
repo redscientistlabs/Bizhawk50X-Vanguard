@@ -71,10 +71,14 @@ namespace RTCV.BizhawkVanguard
 
 					case REMOTE_ALLSPECSSENT:
 					{
-						SyncObjectSingleton.FormExecute(() =>
+						if (VanguardCore.FirstConnect)
 						{
-							VanguardCore.LoadDefaultAndShowBizhawkForm();
-						});
+							SyncObjectSingleton.FormExecute(() =>
+							{
+								VanguardCore.LoadDefaultAndShowBizhawkForm();
+							});
+							VanguardCore.FirstConnect = false;
+						}
 					}
 						break;
 					case SAVESAVESTATE:
