@@ -197,7 +197,7 @@ namespace RTCV.BizhawkVanguard
 				VanguardCore.attached = VanguardCore.args.Contains("-ATTACHED");
 
 				//BizHawk.Client.EmuHawk.LogConsole.ReleaseConsole();
-				NetCore_Extensions.ConsoleHelper.CreateConsole(VanguardCore.logPath);
+				RTCV.Common.Logging.StartLogging(VanguardCore.logPath);
 				if (args.Contains("-CONSOLE"))
 				{
 					NetCore_Extensions.ConsoleHelper.ShowConsole();
