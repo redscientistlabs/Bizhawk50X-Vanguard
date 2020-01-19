@@ -549,6 +549,8 @@ namespace RTCV.BizhawkVanguard
 		{
 			try
 			{
+				if(mdp?.MD == null)
+					return;
 				GlobalWin.Tools.Load<HexEditor>();
 				GlobalWin.Tools.HexEditor.SetDomain(((VanguardImplementation.BizhawkMemoryDomain)(mdp.MD)).MD);
 				GlobalWin.Tools.HexEditor.GoToAddress(address);

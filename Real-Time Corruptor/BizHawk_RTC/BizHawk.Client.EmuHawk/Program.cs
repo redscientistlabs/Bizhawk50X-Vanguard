@@ -355,6 +355,9 @@ REDO_DISPMETHOD:
 					asmName == "Vanguard" ||
 					asmName == "UI" ||
 					asmName == "NetCore" ||
+					asmName == "RTCV.Common" ||
+					asmName == "NLog" ||
+					asmName == "NLog.Windows.Forms" ||
 					asmName == "Ceras" ||
 					asmName == "System.ValueTuple" ||
 					asmName == "System.Buffers" ||
@@ -363,6 +366,9 @@ REDO_DISPMETHOD:
 					callerName == "Vanguard" ||
 					callerName == "UI" ||
 					callerName == "NetCore" ||
+					callerName == "RTCV.Common" ||
+					callerName == "NLog" ||
+					callerName == "NLog.Windows.Forms" ||
 					callerName == "Ceras" ||
 					callerName == "System.ValueTuple" ||
 					callerName == "System.Buffers")
