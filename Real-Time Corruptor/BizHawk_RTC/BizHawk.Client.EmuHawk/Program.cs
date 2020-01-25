@@ -347,6 +347,9 @@ REDO_DISPMETHOD:
 				string callerName = args?.RequestingAssembly?.GetName().Name;
 				var fname = "";
 				string asmName = new AssemblyName(requested).Name;
+				string dllname = "";
+				string directory = "";
+				string simpleName = "";
 
 				if (callerName != string.Empty)
 					Console.WriteLine("Resolving assembly " + asmName + " from " + callerName);
@@ -373,26 +376,24 @@ REDO_DISPMETHOD:
 					callerName == "System.ValueTuple" ||
 					callerName == "System.Buffers")
 				{
-					string dllname = new AssemblyName(requested).Name + ".dll";
-					string directory = Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), "..", "RTCV");
-					string simpleName = new AssemblyName(requested).Name;
+					dllname = new AssemblyName(requested).Name + ".dll";
+					directory = Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), "..", "RTCV");
+					simpleName = new AssemblyName(requested).Name;
 					if (simpleName == "NLua" || simpleName == "KopiLua") directory = Path.Combine(directory, "nlua");
 					fname = Path.Combine(directory, dllname);
-					if (!File.Exists(fname))
-						return null;
-					return Assembly.UnsafeLoadFrom(fname);
+					if (File.Exists(fname))
+						return Assembly.UnsafeLoadFrom(fname);
 				}
-				else{
-					//load missing assemblies by trying to find them in the dll directory
-					var dllname = $"{new AssemblyName(requested).Name}.dll";
-					var directory = Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), "dll");
-					var simpleName = new AssemblyName(requested).Name;
+				//load missing assemblies by trying to find them in the dll directory
+				dllname = $"{new AssemblyName(requested).Name}.dll";
+				directory = Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), "dll");
+				simpleName = new AssemblyName(requested).Name;
 
-					if(simpleName == "NLua" || simpleName == "KopiLua") directory = Path.Combine(directory, "nlua");
-					fname = Path.Combine(directory, dllname);
-					if (!File.Exists(fname))
-						return null;
-				}//Hijack-End
+				if(simpleName == "NLua" || simpleName == "KopiLua") directory = Path.Combine(directory, "nlua");
+				fname = Path.Combine(directory, dllname);
+				if (!File.Exists(fname))
+					return null;
+				//Hijack-End
 
 				//it is important that we use LoadFile here and not load from a byte array; otherwise mixed (managed/unamanged) assemblies can't load
 				return Assembly.LoadFile(fname);

@@ -114,7 +114,7 @@ namespace RTCV.BizhawkVanguard
 		public static string emuDir = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
 		public static string logPath = Path.Combine(emuDir, "EMU_LOG.txt");
 
-		public static string BizhawkVanguardVersion = "0.3.2";
+		public static string BizhawkVanguardVersion = "0.3.3";
 
 		public static PartialSpec getDefaultPartial()
 		{
