@@ -35,8 +35,6 @@ namespace RTCV.BizhawkVanguard
 
 		public static volatile bool BIZHAWK_ALLOWED_DOUBLECLICK_FULLSCREEN = true;
 
-		static int CPU_STEP_Count = 0;
-
 		public static void CPU_STEP(bool isRewinding, bool isFastForwarding, bool isBeforeStep = false)
 		{
 			try
@@ -100,25 +98,11 @@ namespace RTCV.BizhawkVanguard
 		{
 			if (disableRTC) return;
 
-			if (!_isRewinding)
-			{
-				StepActions.Execute();
-			}
+			bool executeActions = !_isRewinding; //keep active unit executing when forwarding and fast forwarding
+			bool performStep = (!_isRewinding && !_isFastForwarding); //don't corrupt when altering time
 
-			if (_isRewinding || _isFastForwarding)
-				return;
+			RtcClock.STEP_CORRUPT(executeActions, performStep);
 
-			CPU_STEP_Count++;
-
-			bool autoCorrupt = RtcCore.AutoCorrupt;
-			long errorDelay = RtcCore.ErrorDelay;
-			if (autoCorrupt && CPU_STEP_Count >= errorDelay)
-			{
-				CPU_STEP_Count = 0;
-				BlastLayer bl = RtcCore.GenerateBlastLayer((string[])AllSpec.UISpec["SELECTEDDOMAINS"]);
-				if (bl != null)
-					bl.Apply(false, false);
-			}
 		}
 
 		public static void SHOW_CONSOLE(bool show)
@@ -266,7 +250,7 @@ namespace RTCV.BizhawkVanguard
 				isNormalAdvance = false;
 
 				StepActions.ClearStepBlastUnits();
-				CPU_STEP_Count = 0;
+				RtcClock.RESET_COUNT();
 			}
 			catch (Exception ex)
 			{
