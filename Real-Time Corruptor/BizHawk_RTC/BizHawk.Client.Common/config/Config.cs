@@ -591,6 +591,10 @@ namespace BizHawk.Client.Common
 		public bool GB_UseGBHawk = false;
 		public bool CoreForcingViaGameDB = true;
 		public string LibretroCore;
+
+
+		//RTC_HIJACK
+		public bool HexEditorAllowBackgroundInput = false;
 	}
 
 	// These are used in the defctrl.json or wherever
