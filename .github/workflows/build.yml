@@ -2,7 +2,7 @@ name: Build
 on: [push, pull_request]
 
 jobs:
-  buildBizHawk:
+  buildCemuStub:
     runs-on: windows-2019
     steps:
     - name: Checkout current build target
