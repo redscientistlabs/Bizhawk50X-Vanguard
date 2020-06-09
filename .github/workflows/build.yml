@@ -5,7 +5,14 @@ jobs:
   buildBizHawk:
     runs-on: windows-2019
     steps:
-    - uses: actions/checkout@v1
+    - name: Checkout current build target
+      uses: actions/checkout@v1
+    - name: Checkout RTCV peer dependency
+      uses: actions/checkout@v2
+      with:
+        repository: 'ircluzar/RTCV'
+        ref: '505'
+        path: '..\RTCV'
     - name: Setup Nuget.exe
       uses: warrenbuckley/Setup-Nuget@v1
     - name: Restore packages
