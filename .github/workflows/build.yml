@@ -17,7 +17,9 @@ jobs:
         path: 'RTCV'
     - name: Setup Nuget.exe
       uses: warrenbuckley/Setup-Nuget@v1
-    - name: Restore packages
+    - name: Restore Nuget packages in RTCV
+      run: nuget restore '.\RTCV\'
+    - name: Restore Nuget packages in Bizhawk-Vanguard
       run: nuget restore '.\Bizhawk-Vanguard\Real-Time Corruptor\BizHawk_RTC\BizHawk.sln'
     - name: Setup MSBuild.exe
       uses: warrenbuckley/Setup-MSBuild@v1
