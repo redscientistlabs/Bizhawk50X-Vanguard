@@ -1,0 +1,29 @@
+name: Build
+on: [push, pull_request]
+
+jobs:
+  buildBizhawk:
+    runs-on: windows-2019
+    steps:
+    - name: Checkout current build target
+      uses: actions/checkout@v2
+      with:
+        path: 'Bizhawk-Vanguard'
+    - name: Checkout RTCV peer dependency
+      uses: actions/checkout@v2
+      with:
+        repository: 'ircluzar/RTCV'
+        ref: '505'
+        path: 'RTCV'
+    - name: Setup Nuget
+      uses: nuget/setup-nuget@v1.0.2
+      with:
+        nuget-version: 'latest'
+    - name: Restore Nuget packages in RTCV
+      run: nuget restore '.\RTCV\'
+    - name: Restore Nuget packages in Bizhawk-Vanguard
+      run: nuget restore '.\Bizhawk-Vanguard\Real-Time Corruptor\BizHawk_RTC\BizHawk.sln'
+    - name: Setup MSBuild.exe
+      uses: microsoft/setup-msbuild@v1.0.0
+    - name: Build with MSBuild
+      run: msbuild '.\Bizhawk-Vanguard\Real-Time Corruptor\BizHawk_RTC\BizHawk.sln'
