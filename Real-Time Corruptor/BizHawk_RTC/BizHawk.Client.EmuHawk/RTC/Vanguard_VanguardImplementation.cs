@@ -28,7 +28,7 @@ namespace RTCV.BizhawkVanguard
 		public static void StartClient()
 		{
 			try
-			{ 
+			{
 				ConsoleEx.WriteLine("Starting Vanguard Client");
 				Thread.Sleep(500); //When starting in Multiple Startup Project, the first try will be uncessful since
 				//the server takes a bit more time to start then the client.
@@ -43,7 +43,7 @@ namespace RTCV.BizhawkVanguard
 			catch (Exception ex)
 			{
 				if (VanguardCore.ShowErrorDialog(ex, true) == DialogResult.Abort)
-					throw new RTCV.NetCore.AbortEverythingException();
+					throw new Exception();
 			}
 		}
 

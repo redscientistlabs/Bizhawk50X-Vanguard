@@ -69,7 +69,7 @@ namespace RTCV.BizhawkVanguard
 			catch(Exception ex)
 			{
 				if (VanguardCore.ShowErrorDialog(ex, true) == DialogResult.Abort)
-					throw new AbortEverythingException();
+					throw new Exception();
 				MessageBox.Show("Clearing all step blastunits due to an exception within Core_Step().");
 				LocalNetCoreRouter.Route(UI, ERROR_DISABLE_AUTOCORRUPT, false);
 				StepActions.ClearStepBlastUnits();
@@ -172,7 +172,7 @@ namespace RTCV.BizhawkVanguard
 				Application.Exit();
 			}
 
-			try { 
+			try {
 				VanguardCore.args = args;
 
 				disableRTC = VanguardCore.args.Contains("-DISABLERTC");
@@ -194,7 +194,7 @@ namespace RTCV.BizhawkVanguard
 			catch (Exception ex)
 			{
 				if (VanguardCore.ShowErrorDialog(ex, true) == DialogResult.Abort)
-					throw new AbortEverythingException();
+					throw new Exception();
 			}
 		}
 
@@ -209,7 +209,7 @@ namespace RTCV.BizhawkVanguard
 			catch (Exception ex)
 			{
 				if (VanguardCore.ShowErrorDialog(ex, true) == DialogResult.Abort)
-					throw new AbortEverythingException();
+					throw new Exception();
 			}
 		}
 
@@ -226,7 +226,7 @@ namespace RTCV.BizhawkVanguard
 			catch (Exception ex)
 			{
 				if (VanguardCore.ShowErrorDialog(ex, true) == DialogResult.Abort)
-					throw new AbortEverythingException();
+					throw new Exception();
 			}
 		}
 
@@ -255,7 +255,7 @@ namespace RTCV.BizhawkVanguard
 			catch (Exception ex)
 			{
 				if (VanguardCore.ShowErrorDialog(ex) == DialogResult.Abort)
-					throw new AbortEverythingException();
+					throw new Exception();
 			}
 		}
 
@@ -320,7 +320,7 @@ namespace RTCV.BizhawkVanguard
 			catch (Exception ex)
 			{
 				if (VanguardCore.ShowErrorDialog(ex) == DialogResult.Abort)
-					throw new AbortEverythingException();
+					throw new Exception();
 			}
 		}
 
@@ -366,7 +366,7 @@ namespace RTCV.BizhawkVanguard
 			catch (Exception ex)
 			{
 				if (VanguardCore.ShowErrorDialog(ex) == DialogResult.Abort)
-					throw new AbortEverythingException();
+					throw new Exception();
 			}
 		}
 
@@ -384,7 +384,7 @@ namespace RTCV.BizhawkVanguard
 		public static void LOAD_SAVESTATE_END()
 		{
 			if (disableRTC) return;
-			
+
 
 		}
 
@@ -392,7 +392,7 @@ namespace RTCV.BizhawkVanguard
 		{
 			if (disableRTC) return false;
 
-			return VanguardConnector.IsUIForm() || 
+			return VanguardConnector.IsUIForm() ||
 				(Form.ActiveForm is HexEditor && Global.Config.HexEditorAllowBackgroundInput);
 
 		}
@@ -406,7 +406,7 @@ namespace RTCV.BizhawkVanguard
 			catch (Exception ex)
 			{
 				if (VanguardCore.ShowErrorDialog(ex, true) == DialogResult.Abort)
-					throw new AbortEverythingException();
+					throw new Exception();
 
 				return null;
 			}
@@ -428,7 +428,7 @@ namespace RTCV.BizhawkVanguard
 			catch (Exception ex)
 			{
 				if (VanguardCore.ShowErrorDialog(ex, true) == DialogResult.Abort)
-					throw new AbortEverythingException();
+					throw new Exception();
 
 				return null;
 			}
@@ -445,7 +445,7 @@ namespace RTCV.BizhawkVanguard
 			catch (Exception ex)
 			{
 				if (VanguardCore.ShowErrorDialog(ex, true) == DialogResult.Abort)
-					throw new AbortEverythingException();
+					throw new Exception();
 
 				return null;
 			}
@@ -462,7 +462,7 @@ namespace RTCV.BizhawkVanguard
 			catch (Exception ex)
 			{
 				if (VanguardCore.ShowErrorDialog(ex, true) == DialogResult.Abort)
-					throw new AbortEverythingException();
+					throw new Exception();
 
 				return null;
 			}
@@ -479,7 +479,7 @@ namespace RTCV.BizhawkVanguard
 			catch (Exception ex)
 			{
 				if (VanguardCore.ShowErrorDialog(ex) == DialogResult.Abort)
-					throw new AbortEverythingException();
+					throw new Exception();
 
 				return false;
 			}
@@ -494,7 +494,7 @@ namespace RTCV.BizhawkVanguard
 			catch (Exception ex)
 			{
 				if (VanguardCore.ShowErrorDialog(ex, true) == DialogResult.Abort)
-					throw new AbortEverythingException();
+					throw new Exception();
 
 				return false;
 			}
@@ -510,7 +510,7 @@ namespace RTCV.BizhawkVanguard
 			catch (Exception ex)
 			{
 				if (VanguardCore.ShowErrorDialog(ex, true) == DialogResult.Abort)
-					throw new AbortEverythingException();
+					throw new Exception();
 
 				return;
 			}
@@ -525,7 +525,7 @@ namespace RTCV.BizhawkVanguard
 			catch (Exception ex)
 			{
 				if (VanguardCore.ShowErrorDialog(ex, true) == DialogResult.Abort)
-					throw new AbortEverythingException();
+					throw new Exception();
 
 				return;
 			}
@@ -543,7 +543,7 @@ namespace RTCV.BizhawkVanguard
 			catch (Exception ex)
 			{
 				if (VanguardCore.ShowErrorDialog(ex, true) == DialogResult.Abort)
-					throw new AbortEverythingException();
+					throw new Exception();
 
 				return;
 			}
@@ -622,7 +622,7 @@ namespace RTCV.BizhawkVanguard
 
 		public static void BIZHAWK_SET_SYSTEMCORE(string systemName, string systemCore)
 		{
-			try { 
+			try {
 				switch (systemName.ToUpper())
 				{
 					case "GAMEBOY":
@@ -657,7 +657,7 @@ namespace RTCV.BizhawkVanguard
 			catch (Exception ex)
 			{
 				if (VanguardCore.ShowErrorDialog(ex, true) == DialogResult.Abort)
-					throw new AbortEverythingException();
+					throw new Exception();
 
 				return;
 			}
@@ -712,7 +712,7 @@ namespace RTCV.BizhawkVanguard
 			catch (Exception ex)
 			{
 				if (VanguardCore.ShowErrorDialog(ex) == DialogResult.Abort)
-					throw new AbortEverythingException();
+					throw new Exception();
 
 				return null;
 			}
@@ -794,7 +794,7 @@ namespace RTCV.BizhawkVanguard
 			catch (Exception ex)
 			{
 				if (VanguardCore.ShowErrorDialog(ex) == DialogResult.Abort)
-					throw new AbortEverythingException();
+					throw new Exception();
 
 				return false;
 			}
@@ -822,7 +822,7 @@ namespace RTCV.BizhawkVanguard
 			catch (Exception ex)
 			{
 				if (VanguardCore.ShowErrorDialog(ex, true) == DialogResult.Abort)
-					throw new AbortEverythingException();
+					throw new Exception();
 
 				return new MemoryDomainProxy[] { };
 			}

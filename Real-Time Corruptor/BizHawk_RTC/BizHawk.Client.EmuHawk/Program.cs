@@ -89,7 +89,7 @@ namespace BizHawk.Client.EmuHawk
 		public static int Main(string[] args)
 		{
 			//RTC_Hijack : Hook before form is created
-			Hooks.MAIN_BIZHAWK(args);			
+			Hooks.MAIN_BIZHAWK(args);
 			var exitCode = SubMain(args);
 			if (EXE_PROJECT.OSTailoredCode.CurrentOS == EXE_PROJECT.OSTailoredCode.DistinctOS.Linux)
 			{
@@ -256,10 +256,6 @@ REDO_DISPMETHOD:
 			}
 			catch (Exception e) when (!Debugger.IsAttached)
 			{
-				//RTC_Hijack - ignore AbortEverythingException
-				if (e is RTCV.NetCore.AbortEverythingException)
-					return 0;
-					
 				new ExceptionBox(e).ShowDialog();
 			}
 			finally
@@ -342,7 +338,7 @@ REDO_DISPMETHOD:
 				var firstAsm = Array.Find(AppDomain.CurrentDomain.GetAssemblies(), asm => asm.FullName == requested);
 				if (firstAsm != null) return firstAsm;
 
-				
+
 				//RTC_Hijack - Add our dlls into assemblyresolve
 				string callerName = args?.RequestingAssembly?.GetName().Name;
 				var fname = "";
