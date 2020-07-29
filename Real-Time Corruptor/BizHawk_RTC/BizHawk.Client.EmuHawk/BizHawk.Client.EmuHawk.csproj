@@ -771,6 +771,7 @@
     <Compile Include="RTC\Hooks.cs" />
     <Compile Include="RTC\Render.cs" />
     <Compile Include="RTC\VanguardCore.cs" />
+    <Compile Include="RTC\VanguardRealTimeEvents.cs" />
     <Compile Include="RTC\Vanguard_VanguardImplementation.cs" />
     <Compile Include="Sound\Interfaces\IBufferedSoundProvider.cs" />
     <Compile Include="Sound\Interfaces\ISoundOutput.cs" />

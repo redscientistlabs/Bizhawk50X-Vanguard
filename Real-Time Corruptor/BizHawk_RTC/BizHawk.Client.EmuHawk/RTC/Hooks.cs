@@ -55,8 +55,10 @@ namespace RTCV.BizhawkVanguard
 
 				isNormalAdvance = !(isRewinding || isFastForwarding);
 
+				bool isForward = (!isRewinding && !isFastForwarding);
+
 				// Unique step hooks
-				if (!isRewinding && !isFastForwarding)
+				if (isForward)
 					STEP_FORWARD();
 				else if (isRewinding)
 					STEP_REWIND();
@@ -65,6 +67,7 @@ namespace RTCV.BizhawkVanguard
 
 				//Any step hook for corruption
 				STEP_CORRUPT(isRewinding, isFastForwarding);
+				VanguardCore.RTE_API.ON_STEP(isForward, isRewinding, isFastForwarding);
 			}
 			catch(Exception ex)
 			{
@@ -316,6 +319,7 @@ namespace RTCV.BizhawkVanguard
 				lastGameName = VanguardCore.GameName;
 
 				RtcCore.LOAD_GAME_DONE();
+				VanguardCore.RTE_API.LOAD_GAME();
 			}
 			catch (Exception ex)
 			{
@@ -361,6 +365,7 @@ namespace RTCV.BizhawkVanguard
 				CLOSE_GAME_loop_flag = false;
 
 				RtcCore.GAME_CLOSED();
+				VanguardCore.RTE_API.GAME_CLOSED();
 
 			}
 			catch (Exception ex)
@@ -368,11 +373,6 @@ namespace RTCV.BizhawkVanguard
 				if (VanguardCore.ShowErrorDialog(ex) == DialogResult.Abort)
 					throw new AbortEverythingException();
 			}
-		}
-
-		public static void RESET()
-		{
-			if (disableRTC) return;
 		}
 
 		public static void LOAD_SAVESTATE_BEGIN()

@@ -149,6 +149,10 @@ namespace RTCV.BizhawkVanguard
 						SyncObjectSingleton.FormExecute(() => Hooks.BIZHAWK_OPEN_HEXEDITOR());
 						break;
 
+					case EMU_GET_REALTIME_API:
+						e.setReturnValue(VanguardCore.RTE_API);
+						break;
+
 					case EMU_OPEN_HEXEDITOR_ADDRESS:
 						{
 							var temp = advancedMessage.objectValue as object[];
