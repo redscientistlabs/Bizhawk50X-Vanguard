@@ -153,6 +153,10 @@ namespace RTCV.BizhawkVanguard
 						e.setReturnValue(VanguardCore.RTE_API);
 						break;
 
+					case EMU_GET_SCREENSHOT:
+						e.setReturnValue(Hooks.BIZHAWK_GET_SCREENSHOT());
+						break;
+
 					case EMU_OPEN_HEXEDITOR_ADDRESS:
 						{
 							var temp = advancedMessage.objectValue as object[];
