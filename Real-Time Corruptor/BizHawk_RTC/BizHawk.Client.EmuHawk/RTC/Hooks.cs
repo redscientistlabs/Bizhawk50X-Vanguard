@@ -110,9 +110,9 @@ namespace RTCV.BizhawkVanguard
 			if (disableRTC) return;
 
 			if (show)
-				NetCore_Extensions.ConsoleHelper.ShowConsole();
+				Common.ConsoleHelper.ShowConsole();
 			else
-				NetCore_Extensions.ConsoleHelper.HideConsole();
+				Common.ConsoleHelper.HideConsole();
 		}
 
 		public static void CREATE_VMD_FROM_SELECTED_HEXEDITOR(string domain, List<long> allAddresses, int wordSize)
@@ -172,7 +172,7 @@ namespace RTCV.BizhawkVanguard
 				Application.Exit();
 			}
 
-			try { 
+			try {
 				VanguardCore.args = args;
 
 				disableRTC = VanguardCore.args.Contains("-DISABLERTC");
@@ -184,11 +184,11 @@ namespace RTCV.BizhawkVanguard
 				RTCV.Common.Logging.StartLogging(VanguardCore.logPath);
 				if (args.Contains("-CONSOLE"))
 				{
-					NetCore_Extensions.ConsoleHelper.ShowConsole();
+					Common.ConsoleHelper.ShowConsole();
 				}
 				else
 				{
-					NetCore_Extensions.ConsoleHelper.HideConsole();
+					Common.ConsoleHelper.HideConsole();
 				}
 			}
 			catch (Exception ex)
@@ -384,7 +384,7 @@ namespace RTCV.BizhawkVanguard
 		public static void LOAD_SAVESTATE_END()
 		{
 			if (disableRTC) return;
-			
+
 
 		}
 
@@ -392,7 +392,7 @@ namespace RTCV.BizhawkVanguard
 		{
 			if (disableRTC) return false;
 
-			return VanguardConnector.IsUIForm() || 
+			return VanguardConnector.IsUIForm() ||
 				(Form.ActiveForm is HexEditor && Global.Config.HexEditorAllowBackgroundInput);
 
 		}
@@ -622,7 +622,7 @@ namespace RTCV.BizhawkVanguard
 
 		public static void BIZHAWK_SET_SYSTEMCORE(string systemName, string systemCore)
 		{
-			try { 
+			try {
 				switch (systemName.ToUpper())
 				{
 					case "GAMEBOY":
