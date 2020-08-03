@@ -114,9 +114,9 @@ namespace RTCV.BizhawkVanguard
 			if (disableRTC) return;
 
 			if (show)
-				ConsoleHelper.ShowConsole();
+				Common.ConsoleHelper.ShowConsole();
 			else
-				ConsoleHelper.HideConsole();
+				Common.ConsoleHelper.HideConsole();
 		}
 
 		public static void CREATE_VMD_FROM_SELECTED_HEXEDITOR(string domain, List<long> allAddresses, int wordSize)
@@ -188,11 +188,11 @@ namespace RTCV.BizhawkVanguard
 				RTCV.Common.Logging.StartLogging(VanguardCore.logPath);
 				if (args.Contains("-CONSOLE"))
 				{
-					ConsoleHelper.ShowConsole();
+					Common.ConsoleHelper.ShowConsole();
 				}
 				else
 				{
-					ConsoleHelper.HideConsole();
+					Common.ConsoleHelper.HideConsole();
 				}
 			}
 			catch (Exception ex)
