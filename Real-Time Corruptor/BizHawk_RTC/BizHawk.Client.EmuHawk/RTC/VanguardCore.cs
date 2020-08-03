@@ -21,6 +21,8 @@ namespace RTCV.BizhawkVanguard
 		public static System.Timers.Timer focusTimer;
 		public static bool FirstConnect = true;
 
+		public static VanguardRealTimeEvents RTE_API = new VanguardRealTimeEvents();
+
 		internal static DialogResult ShowErrorDialog(Exception exception, bool canContinue = false)
 		{
 			return new RTCV.NetCore.CloudDebug(exception, canContinue).Start();
