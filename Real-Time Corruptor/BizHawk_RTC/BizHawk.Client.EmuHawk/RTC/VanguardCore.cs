@@ -205,7 +205,7 @@ namespace RTCV.BizhawkVanguard
 					focusTimer.Enabled = false;
 					return;
 				}
-				if (VanguardImplementation.connector.netConn.status == NetworkStatus.CONNECTED)
+				if (VanguardImplementation.connector.netConn.status == NetCore.Enums.NetworkStatus.CONNECTED)
 				{
 					var state = Form.ActiveForm != null;
 					//Console.WriteLine(state);
@@ -214,7 +214,7 @@ namespace RTCV.BizhawkVanguard
 				}
 			};
 			focusTimer.Start();
-				
+
 
 			//Force create bizhawk config file if it doesn't exist
 			//if (!File.Exists(CorruptCore.bizhawkDir + Path.DirectorySeparatorChar + "config.ini"))
@@ -342,7 +342,7 @@ namespace RTCV.BizhawkVanguard
 		}
 
 		/// <summary>
-		/// Loads a savestate from a path. 
+		/// Loads a savestate from a path.
 		/// </summary>
 		/// <param name="path">The path of the state</param>
 		/// <param name="stateLocation">Where the state is located in a stashkey (used for errors, not required)</param>
