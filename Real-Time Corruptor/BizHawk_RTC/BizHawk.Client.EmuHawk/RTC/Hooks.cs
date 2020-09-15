@@ -104,7 +104,7 @@ namespace RTCV.BizhawkVanguard
 			bool executeActions = !_isRewinding; //keep active unit executing when forwarding and fast forwarding
 			bool performStep = (!_isRewinding && !_isFastForwarding); //don't corrupt when altering time
 
-			RtcClock.STEP_CORRUPT(executeActions, performStep);
+			RtcClock.StepCorrupt(executeActions, performStep);
 
 		}
 
@@ -253,7 +253,7 @@ namespace RTCV.BizhawkVanguard
 				isNormalAdvance = false;
 
 				StepActions.ClearStepBlastUnits();
-				RtcClock.RESET_COUNT();
+				RtcClock.ResetCount();
 			}
 			catch (Exception ex)
 			{
@@ -318,7 +318,7 @@ namespace RTCV.BizhawkVanguard
 				}
 				lastGameName = VanguardCore.GameName;
 
-				RtcCore.LOAD_GAME_DONE();
+				RtcCore.InvokeLoadGameDone();
 				VanguardCore.RTE_API.LOAD_GAME();
 			}
 			catch (Exception ex)
@@ -364,7 +364,7 @@ namespace RTCV.BizhawkVanguard
 
 				CLOSE_GAME_loop_flag = false;
 
-				RtcCore.GAME_CLOSED();
+				RtcCore.InvokeGameClosed();
 				VanguardCore.RTE_API.GAME_CLOSED();
 
 			}
