@@ -148,7 +148,7 @@ namespace RTCV.BizhawkVanguard
 
 		internal static void CreateVmdText(string domain,string text)
 		{	//Sends text to the VMD Generator and trigger generation
-			LocalNetCoreRouter.Route(NetcoreCommands.UI, NetcoreCommands.REMOTE_GENERATEVMDTEXT, new object[] { domain,text}, false);
+			LocalNetCoreRouter.Route(NetCore.Commands.Basic.UI, NetCore.Commands.Remote.GenerateVMDText, new object[] { domain,text}, false);
 		}
 
 		public static void RegisterVanguardSpec()
@@ -162,8 +162,8 @@ namespace RTCV.BizhawkVanguard
 			if (VanguardCore.attached)
 				RTCV.Vanguard.VanguardConnector.PushVanguardSpecRef(AllSpec.VanguardSpec);
 
-			LocalNetCoreRouter.Route(NetcoreCommands.CORRUPTCORE, NetcoreCommands.REMOTE_PUSHVANGUARDSPEC, emuSpecTemplate, true);
-			LocalNetCoreRouter.Route(NetcoreCommands.UI, NetcoreCommands.REMOTE_PUSHVANGUARDSPEC, emuSpecTemplate, true);
+			LocalNetCoreRouter.Route(RTCV.NetCore.Commands.Basic.CorruptCore, RTCV.NetCore.Commands.Remote.PushVanguardSpec, emuSpecTemplate, true);
+			LocalNetCoreRouter.Route(NetCore.Commands.Basic.UI, RTCV.NetCore.Commands.Remote.PushVanguardSpec, emuSpecTemplate, true);
 
 
 			AllSpec.VanguardSpec.SpecUpdated += new EventHandler<SpecUpdateEventArgs>(OnVanguardSpecOnSpecUpdated);
@@ -174,8 +174,8 @@ namespace RTCV.BizhawkVanguard
 			PartialSpec partial = e.partialSpec;
 
 
-			LocalNetCoreRouter.Route(NetcoreCommands.CORRUPTCORE, NetcoreCommands.REMOTE_PUSHVANGUARDSPECUPDATE, partial, true);
-			LocalNetCoreRouter.Route(NetcoreCommands.UI, NetcoreCommands.REMOTE_PUSHVANGUARDSPECUPDATE, partial, true);
+			LocalNetCoreRouter.Route(RTCV.NetCore.Commands.Basic.CorruptCore, RTCV.NetCore.Commands.Remote.PushVanguardSpecUpdate, partial, true);
+			LocalNetCoreRouter.Route(RTCV.NetCore.Commands.Basic.UI, RTCV.NetCore.Commands.Remote.PushVanguardSpecUpdate, partial, true);
 		}
 
 		//This is the entry point of RTC. Without this method, nothing will load.
@@ -209,8 +209,8 @@ namespace RTCV.BizhawkVanguard
 				{
 					var state = Form.ActiveForm != null;
 					//Console.WriteLine(state);
-					if (((bool?)RTCV.NetCore.AllSpec.VanguardSpec?[NetcoreCommands.EMU_INFOCUS] ?? true) != state)
-						RTCV.NetCore.AllSpec.VanguardSpec?.Update(NetcoreCommands.EMU_INFOCUS, state, true, false);
+					if (((bool?)RTCV.NetCore.AllSpec.VanguardSpec?[RTCV.NetCore.Commands.Emulator.InFocus] ?? true) != state)
+						RTCV.NetCore.AllSpec.VanguardSpec?.Update(RTCV.NetCore.Commands.Emulator.InFocus, state, true, false);
 				}
 			};
 			focusTimer.Start();
