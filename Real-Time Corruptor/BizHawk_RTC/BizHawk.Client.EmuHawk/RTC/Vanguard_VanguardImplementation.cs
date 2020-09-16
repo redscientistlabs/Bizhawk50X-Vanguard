@@ -172,7 +172,7 @@ namespace RTCV.BizhawkVanguard
 
 							break;
 						}
-					case RTCV.NetCore.Commands.Remote.EventEmuManiformClose:
+					case RTCV.NetCore.Commands.Remote.EventEmuMainFormClose:
 						SyncObjectSingleton.FormExecute(() =>
 						{
 							Hooks.BIZHAWK_MAINFORM_CLOSE();
