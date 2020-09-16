@@ -74,7 +74,7 @@ namespace RTCV.BizhawkVanguard
 				if (VanguardCore.ShowErrorDialog(ex, true) == DialogResult.Abort)
 					throw new AbortEverythingException();
 				MessageBox.Show("Clearing all step blastunits due to an exception within Core_Step().");
-				LocalNetCoreRouter.Route(Basic.UI, Basic.ErrorDiableAutoCorrupt, false);
+				LocalNetCoreRouter.Route(Basic.UI, Basic.ErrorDisableAutoCorrupt, false);
 				StepActions.ClearStepBlastUnits();
 			}
 		}
