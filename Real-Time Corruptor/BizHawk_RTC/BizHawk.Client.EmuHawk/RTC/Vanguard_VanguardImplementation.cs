@@ -16,7 +16,6 @@ using BizHawk.Emulation.Common;
 using BizHawk.Emulation.Cores.Nintendo.N64;
 using RTCV;
 using RTCV.CorruptCore;
-using static RTCV.NetCore.NetcoreCommands;
 
 namespace RTCV.BizhawkVanguard
 {
@@ -28,7 +27,7 @@ namespace RTCV.BizhawkVanguard
 		public static void StartClient()
 		{
 			try
-			{ 
+			{
 				ConsoleEx.WriteLine("Starting Vanguard Client");
 				Thread.Sleep(500); //When starting in Multiple Startup Project, the first try will be uncessful since
 				//the server takes a bit more time to start then the client.
@@ -69,7 +68,7 @@ namespace RTCV.BizhawkVanguard
 				switch (message.Type) //Handle received messages here
 				{
 
-					case REMOTE_ALLSPECSSENT:
+					case RTCV.NetCore.Commands.Remote.AllSpecSent:
 					{
 						if (VanguardCore.FirstConnect)
 						{
@@ -81,14 +80,14 @@ namespace RTCV.BizhawkVanguard
 						}
 					}
 						break;
-					case SAVESAVESTATE:
+					case RTCV.NetCore.Commands.Basic.SaveSavestate:
 						SyncObjectSingleton.FormExecute(() =>
 						{
 							e.setReturnValue(VanguardCore.SaveSavestate_NET(advancedMessage.objectValue as string));
 						});
 						break;
 
-					case LOADSAVESTATE:
+					case RTCV.NetCore.Commands.Basic.LoadSavestate:
 						{
 							var cmd = advancedMessage.objectValue as object[];
 							var path = cmd[0] as string;
@@ -100,7 +99,7 @@ namespace RTCV.BizhawkVanguard
 							break;
 						}
 
-					case REMOTE_LOADROM:
+					case RTCV.NetCore.Commands.Remote.LoadROM:
 						{
 							var fileName = advancedMessage.objectValue as String;
 							SyncObjectSingleton.FormExecute(() =>
@@ -110,7 +109,7 @@ namespace RTCV.BizhawkVanguard
 
 						}
 						break;
-					case REMOTE_CLOSEGAME:
+					case RTCV.NetCore.Commands.Remote.CloseGame:
 						{
 							SyncObjectSingleton.FormExecute(() =>
 							{
@@ -119,21 +118,21 @@ namespace RTCV.BizhawkVanguard
 						}
 						break;
 
-					case REMOTE_DOMAIN_GETDOMAINS:
+					case RTCV.NetCore.Commands.Remote.DomainGetDomains:
 						SyncObjectSingleton.FormExecute(() =>
 						{
 							e.setReturnValue(Hooks.GetInterfaces());
 						});
 						break;
 
-					case REMOTE_KEY_SETSYNCSETTINGS:
+					case RTCV.NetCore.Commands.Remote.KeySetSyncSettings:
 						SyncObjectSingleton.FormExecute(() =>
 						{
 							Hooks.BIZHAWK_GETSET_SYNCSETTINGS = (string)advancedMessage.objectValue;
 						});
 						break;
 
-					case REMOTE_KEY_SETSYSTEMCORE:
+					case RTCV.NetCore.Commands.Remote.KeySetSystemCore:
 						{
 							var cmd = advancedMessage.objectValue as object[];
 							var systemName = (string)cmd[0];
@@ -145,19 +144,19 @@ namespace RTCV.BizhawkVanguard
 						}
 						break;
 
-					case REMOTE_OPENHEXEDITOR:
+					case RTCV.NetCore.Commands.Remote.OpenHexEditor:
 						SyncObjectSingleton.FormExecute(() => Hooks.BIZHAWK_OPEN_HEXEDITOR());
 						break;
 
-					case EMU_GET_REALTIME_API:
+					case RTCV.NetCore.Commands.Emulator.GetRealtimeAPI:
 						e.setReturnValue(VanguardCore.RTE_API);
 						break;
 
-					case EMU_GET_SCREENSHOT:
+					case RTCV.NetCore.Commands.Emulator.GetScreenshot:
 						e.setReturnValue(Hooks.BIZHAWK_GET_SCREENSHOT());
 						break;
 
-					case EMU_OPEN_HEXEDITOR_ADDRESS:
+					case RTCV.NetCore.Commands.Emulator.OpenHexEditorAddress:
 						{
 							var temp = advancedMessage.objectValue as object[];
 							string domain = (string)temp[0];
@@ -173,27 +172,27 @@ namespace RTCV.BizhawkVanguard
 
 							break;
 						}
-					case REMOTE_EVENT_EMU_MAINFORM_CLOSE:
+					case RTCV.NetCore.Commands.Remote.EventEmuMainFormClose:
 						SyncObjectSingleton.FormExecute(() =>
 						{
 							Hooks.BIZHAWK_MAINFORM_CLOSE();
 						});
 						break;
-					case REMOTE_RENDER_START:
+					case RTCV.NetCore.Commands.Remote.RenderStart:
 						SyncObjectSingleton.FormExecute(() =>
 						{
 							BizhawkRender.StartRender_NET();
 						});
 						break;
 
-					case REMOTE_RENDER_STOP:
+					case RTCV.NetCore.Commands.Remote.RenderStop:
 						SyncObjectSingleton.FormExecute(() =>
 						{
 							BizhawkRender.StopRender_NET();
 						});
 						break;
 
-					case REMOTE_EVENT_EMUSTARTED:
+					case RTCV.NetCore.Commands.Remote.EventEmuStarted:
 						//if (RTC_StockpileManager.BackupedState == null)
 						//S.GET<RTC_Core_Form>().AutoCorrupt = false;
 
@@ -210,11 +209,11 @@ namespace RTCV.BizhawkVanguard
 						//			RTC_GameProtection.Start();
 
 						break;
-					case REMOTE_ISNORMALADVANCE:
+					case RTCV.NetCore.Commands.Remote.IsNormalAdvance:
 						e.setReturnValue(Hooks.isNormalAdvance);
 						break;
 
-					case REMOTE_EVENT_CLOSEEMULATOR:
+					case RTCV.NetCore.Commands.Remote.EventCloseEmulator:
 						Environment.Exit(-1);
 						break;
 				}

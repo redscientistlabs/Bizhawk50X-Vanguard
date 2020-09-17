@@ -11,7 +11,7 @@ using System.Linq;
 using System.Windows.Forms;
 using RTCV.CorruptCore;
 using RTCV.NetCore;
-using static RTCV.NetCore.NetcoreCommands;
+using RTCV.NetCore.Commands;
 using System.Data;
 using BizHawk.Emulation.Common.IEmulatorExtensions;
 using RTCV.Vanguard;
@@ -74,7 +74,7 @@ namespace RTCV.BizhawkVanguard
 				if (VanguardCore.ShowErrorDialog(ex, true) == DialogResult.Abort)
 					throw new AbortEverythingException();
 				MessageBox.Show("Clearing all step blastunits due to an exception within Core_Step().");
-				LocalNetCoreRouter.Route(UI, ERROR_DISABLE_AUTOCORRUPT, false);
+				LocalNetCoreRouter.Route(Basic.UI, Basic.ErrorDisableAutoCorrupt, false);
 				StepActions.ClearStepBlastUnits();
 			}
 		}
@@ -104,7 +104,7 @@ namespace RTCV.BizhawkVanguard
 			bool executeActions = !_isRewinding; //keep active unit executing when forwarding and fast forwarding
 			bool performStep = (!_isRewinding && !_isFastForwarding); //don't corrupt when altering time
 
-			RtcClock.STEP_CORRUPT(executeActions, performStep);
+			RtcClock.StepCorrupt(executeActions, performStep);
 
 		}
 
@@ -253,7 +253,7 @@ namespace RTCV.BizhawkVanguard
 				isNormalAdvance = false;
 
 				StepActions.ClearStepBlastUnits();
-				RtcClock.RESET_COUNT();
+				RtcClock.ResetCount();
 			}
 			catch (Exception ex)
 			{
@@ -310,15 +310,15 @@ namespace RTCV.BizhawkVanguard
 				AllSpec.VanguardSpec.Update(gameDone);
 
 				//This is local. If the domains changed it propgates over netcore
-				LocalNetCoreRouter.Route(CORRUPTCORE, REMOTE_EVENT_DOMAINSUPDATED, domainsChanged, true);
+				LocalNetCoreRouter.Route(Basic.CorruptCore, Remote.EventDomainsUpdated, domainsChanged, true);
 
 				if (VanguardCore.GameName != lastGameName)
 				{
-					LocalNetCoreRouter.Route(UI, RESET_GAME_PROTECTION_IF_RUNNING, true);
+					LocalNetCoreRouter.Route(Basic.UI, Basic.ResetGameProtectionIfRunning, true);
 				}
 				lastGameName = VanguardCore.GameName;
 
-				RtcCore.LOAD_GAME_DONE();
+				RtcCore.InvokeLoadGameDone();
 				VanguardCore.RTE_API.LOAD_GAME();
 			}
 			catch (Exception ex)
@@ -364,7 +364,7 @@ namespace RTCV.BizhawkVanguard
 
 				CLOSE_GAME_loop_flag = false;
 
-				RtcCore.GAME_CLOSED();
+				RtcCore.InvokeGameClosed();
 				VanguardCore.RTE_API.GAME_CLOSED();
 
 			}
@@ -787,7 +787,7 @@ namespace RTCV.BizhawkVanguard
 				if (updateSpecs)
 				{
 					AllSpec.VanguardSpec.Update(VSPEC.MEMORYDOMAINS_INTERFACES, newInterfaces);
-					LocalNetCoreRouter.Route(CORRUPTCORE, REMOTE_EVENT_DOMAINSUPDATED, domainsChanged, true);
+					LocalNetCoreRouter.Route(Basic.CorruptCore, Remote.EventDomainsUpdated, domainsChanged, true);
 				}
 				return domainsChanged;
 			}
