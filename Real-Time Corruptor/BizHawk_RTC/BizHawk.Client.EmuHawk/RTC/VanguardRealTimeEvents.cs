@@ -13,13 +13,13 @@ namespace RTCV.BizhawkVanguard
 		public bool SupportsForwarding { get; set; } = true;
 		public bool SupportsFastForwarding { get; set; } = true;
 
-		public event EventHandler<RealTimeEventArgs> Step;
+		public event EventHandler<RealTimeEventArgs> StepHandler;
 		public event EventHandler GameLoaded;
 		public event EventHandler GameClosed;
 
 		public void ON_STEP(bool _isForwarding, bool _isRewinding, bool _isFastForwarding)
 		{
-			Step?.Invoke(this, new RealTimeEventArgs()
+			StepHandler?.Invoke(this, new RealTimeEventArgs()
 			{
 				isForwarding = _isForwarding,
 				isRewinding = _isRewinding,
