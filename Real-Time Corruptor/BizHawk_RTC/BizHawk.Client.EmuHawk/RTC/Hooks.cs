@@ -74,7 +74,7 @@ namespace RTCV.BizhawkVanguard
 				if (VanguardCore.ShowErrorDialog(ex, true) == DialogResult.Abort)
 					throw new AbortEverythingException();
 				MessageBox.Show("Clearing all step blastunits due to an exception within Core_Step().");
-				LocalNetCoreRouter.Route(Basic.UI, Basic.ErrorDisableAutoCorrupt, false);
+				LocalNetCoreRouter.Route(Endpoints.UI, Basic.ErrorDisableAutoCorrupt, false);
 				StepActions.ClearStepBlastUnits();
 			}
 		}
@@ -310,11 +310,11 @@ namespace RTCV.BizhawkVanguard
 				AllSpec.VanguardSpec.Update(gameDone);
 
 				//This is local. If the domains changed it propgates over netcore
-				LocalNetCoreRouter.Route(Basic.CorruptCore, Remote.EventDomainsUpdated, domainsChanged, true);
+				LocalNetCoreRouter.Route(Endpoints.CorruptCore, Remote.EventDomainsUpdated, domainsChanged, true);
 
 				if (VanguardCore.GameName != lastGameName)
 				{
-					LocalNetCoreRouter.Route(Basic.UI, Basic.ResetGameProtectionIfRunning, true);
+					LocalNetCoreRouter.Route(Endpoints.UI, Basic.ResetGameProtectionIfRunning, true);
 				}
 				lastGameName = VanguardCore.GameName;
 
@@ -787,7 +787,7 @@ namespace RTCV.BizhawkVanguard
 				if (updateSpecs)
 				{
 					AllSpec.VanguardSpec.Update(VSPEC.MEMORYDOMAINS_INTERFACES, newInterfaces);
-					LocalNetCoreRouter.Route(Basic.CorruptCore, Remote.EventDomainsUpdated, domainsChanged, true);
+					LocalNetCoreRouter.Route(Endpoints.CorruptCore, Remote.EventDomainsUpdated, domainsChanged, true);
 				}
 				return domainsChanged;
 			}
