@@ -33,6 +33,8 @@
     <TargetFrameworkVersion>v4.7.1</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <TargetFrameworkProfile />
+    <NoWarn>0168</NoWarn> <!-- RTCV: Ignore warnings generated from upstream (Bizhawk) code -->
+    <MSBuildWarningsAsMessages>$(MSBuildWarningsAsMessages);MSB3270</MSBuildWarningsAsMessages> <!-- RTCV: Ignore warnings generated from upstream (Bizhawk) code -->
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
@@ -127,7 +129,7 @@
     <None Include="Resources\ApiClassDiagram.cd" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
-  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it.
        Other similar extension points exist, see Microsoft.Common.targets.
   <Target Name="BeforeBuild">
   </Target>
