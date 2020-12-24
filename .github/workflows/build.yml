@@ -15,11 +15,11 @@ jobs:
         repository: 'redscientistlabs/RTCV'
         ref: '506'
         path: 'RTCV'
+    - name: Setup MSBuild.exe
+      uses: microsoft/setup-msbuild@v1.0.0
     - name: Restore packages in RTCV
       run: msbuild /t:restore '.\RTCV\'
     - name: Restore packages in Bizhawk-Vanguard
       run: msbuild /t:restore '.\Bizhawk-Vanguard\Real-Time Corruptor\BizHawk_RTC\BizHawk.sln'
-    - name: Setup MSBuild.exe
-      uses: microsoft/setup-msbuild@v1.0.0
     - name: Build with MSBuild
       run: msbuild '.\Bizhawk-Vanguard\Real-Time Corruptor\BizHawk_RTC\BizHawk.sln'
