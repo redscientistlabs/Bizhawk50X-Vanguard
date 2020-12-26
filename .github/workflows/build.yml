@@ -15,15 +15,11 @@ jobs:
         repository: 'redscientistlabs/RTCV'
         ref: '506'
         path: 'RTCV'
-    - name: Setup Nuget
-      uses: nuget/setup-nuget@v1.0.2
-      with:
-        nuget-version: 'latest'
-    - name: Restore Nuget packages in RTCV
-      run: nuget restore '.\RTCV\'
-    - name: Restore Nuget packages in Bizhawk-Vanguard
-      run: nuget restore '.\Bizhawk-Vanguard\Real-Time Corruptor\BizHawk_RTC\BizHawk.sln'
     - name: Setup MSBuild.exe
-      uses: microsoft/setup-msbuild@v1.0.0
+      uses: microsoft/setup-msbuild@v1.0.2
+    - name: Restore packages in RTCV
+      run: msbuild /t:restore '.\RTCV\'
+    - name: Restore packages in Bizhawk-Vanguard
+      run: msbuild /t:restore '.\Bizhawk-Vanguard\Real-Time Corruptor\BizHawk_RTC\BizHawk.sln'
     - name: Build with MSBuild
       run: msbuild '.\Bizhawk-Vanguard\Real-Time Corruptor\BizHawk_RTC\BizHawk.sln'
