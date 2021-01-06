@@ -1,9 +1,11 @@
-﻿using RTCV.CorruptCore;
+﻿using BizHawk.Client.EmuHawk;
+using RTCV.CorruptCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Forms;
 
 namespace RTCV.BizhawkVanguard
 {
@@ -12,6 +14,14 @@ namespace RTCV.BizhawkVanguard
 		public bool SupportsRewind { get; set; } = true;
 		public bool SupportsForwarding { get; set; } = true;
 		public bool SupportsFastForwarding { get; set; } = true;
+
+		public object GetDisplayForm { get
+			{
+				return GlobalWin.MainForm;
+			}
+		}
+
+		public bool OverrideBackgroundInput { get; set; } = false;
 
 		public event EventHandler<RealTimeEventArgs> StepHandler;
 		public event EventHandler GameLoaded;

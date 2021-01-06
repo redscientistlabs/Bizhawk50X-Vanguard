@@ -392,7 +392,7 @@ namespace RTCV.BizhawkVanguard
 		{
 			if (disableRTC) return false;
 
-			return VanguardConnector.IsUIForm() ||
+			return VanguardCore.RTE_API.OverrideBackgroundInput || VanguardConnector.IsUIForm() ||
 				(Form.ActiveForm is HexEditor && Global.Config.HexEditorAllowBackgroundInput);
 
 		}
