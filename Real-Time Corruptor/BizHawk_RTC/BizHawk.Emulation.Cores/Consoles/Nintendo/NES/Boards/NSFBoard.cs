@@ -378,21 +378,29 @@ namespace BizHawk.Emulation.Cores.Nintendo.NES
 			}
 			else
 			{
-				if (BankSwitched)
+				//RTC_hIJACK - Fix corrupting NSFs 
+				try
 				{
-					int bank_4k = addr >> 12;
-					int ofs = addr & ((1 << 12) - 1);
-					bank_4k = prg_banks_4k[bank_4k];
-					addr = (bank_4k << 12) | ofs;
+					if (BankSwitched)
+					{
+						int bank_4k = addr >> 12;
+						int ofs = addr & ((1 << 12) - 1);
+						bank_4k = prg_banks_4k[bank_4k];
+						addr = (bank_4k << 12) | ofs;
 
-					//rom data began at 0x80 of the NSF file
-					addr += 0x80;
+						//rom data began at 0x80 of the NSF file
+						addr += 0x80;
 
-					return ROM[addr];
+						return ROM[addr];
+					}
+					else
+					{
+						return FakePRG[addr];
+					}
 				}
-				else
+				catch
 				{
-					return FakePRG[addr];
+					return 0;
 				}
 			}
 		}
