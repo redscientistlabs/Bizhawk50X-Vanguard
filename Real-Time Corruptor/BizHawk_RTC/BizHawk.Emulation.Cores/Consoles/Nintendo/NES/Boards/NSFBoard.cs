@@ -1,6 +1,7 @@
 ﻿using System;
 
 using BizHawk.Common;
+using BizHawk.Emulation.Cores.Computers.AmstradCPC;
 
 //NSF ROM and general approaches are heavily derived from FCEUX. the general ideas:
 //1. Have a hardcoded NSF driver rom loaded to 0x3800
@@ -166,9 +167,16 @@ namespace BizHawk.Emulation.Cores.Nintendo.NES
 
 		public override byte PeekReg2xxx(int addr)
 		{
-			if (addr < 0x3FF0)
-				return NSFROM[addr - 0x3800];
-			else return base.PeekReg2xxx(addr);
+			try //RTC_Hijack fix nsf out of bounds for system bus
+			{
+				if (addr < 0x3FF0)
+					return NSFROM[addr - 0x3800];
+				else return base.PeekReg2xxx(addr);
+			}
+			catch
+			{
+				return 0;
+			}
 		}
 
 		public override byte ReadReg2xxx(int addr)
@@ -329,16 +337,22 @@ namespace BizHawk.Emulation.Cores.Nintendo.NES
 			//A: restart song
 
 			bool reset = false;
-			if (right)
+
+			//RTC_Hijack :: control NSF from System Bus 0x00CE
+			ushort songChangeAdress = 0x00CE;//RTC_Hijack
+			byte songValue = NES.ReadMemory(songChangeAdress);//RTC_Hijack
+			if (right || (songValue == 0xFB)) //RTC_Hijack
 			{
+				NES.WriteMemory(songChangeAdress, 0xFF); //RTC_Hijack
 				if (CurrentSong < nsf.TotalSongs - 1)
 				{
 					CurrentSong++;
 					reset = true;
 				}
 			}
-			if (left)
+			if (left || (songValue == 0xFA)) //RTC_Hijack
 			{
+				NES.WriteMemory(songChangeAdress, 0xFF); //RTC_Hijack
 				if (CurrentSong > 0)
 				{
 					CurrentSong--;
