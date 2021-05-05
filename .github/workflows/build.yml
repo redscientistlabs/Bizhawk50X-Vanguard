@@ -13,7 +13,7 @@ jobs:
       uses: actions/checkout@v2
       with:
         repository: 'redscientistlabs/RTCV'
-        ref: '506'
+        ref: '506v2'
         path: 'RTCV'
     - name: Setup MSBuild.exe
       uses: microsoft/setup-msbuild@v1.0.2
