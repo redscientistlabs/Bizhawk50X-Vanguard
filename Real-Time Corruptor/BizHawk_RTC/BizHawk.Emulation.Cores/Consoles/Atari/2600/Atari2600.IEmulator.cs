@@ -9,6 +9,7 @@ namespace BizHawk.Emulation.Cores.Atari.Atari2600
 
 		public ControllerDefinition ControllerDefinition => _controllerDeck.Definition;
 
+		//RTC_Hijack
 		private bool crashed = false;
 		public bool FrameAdvance(IController controller, bool render, bool rendersound)
 		{

@@ -445,6 +445,9 @@
             this.ResetColorsToDefaultMenuItem.Size = new System.Drawing.Size(157, 22);
             this.ResetColorsToDefaultMenuItem.Text = "Reset to Default";
             this.ResetColorsToDefaultMenuItem.Click += new System.EventHandler(this.ResetColorsToDefaultMenuItem_Click);
+
+			//RTC_Hijack
+			//-------------------------------
             // 
             // CreateVMDMenuItem
             // 
@@ -452,10 +455,12 @@
             this.CreateVMDMenuItem.Size = new System.Drawing.Size(269, 22);
             this.CreateVMDMenuItem.Text = "&Create VMD from Selected Addresses";
             this.CreateVMDMenuItem.Click += new System.EventHandler(this.CreateVMDFromSelectedMenuItem_Click);
-            // 
-            // toolStripSeparator7
-            // 
-            this.toolStripSeparator7.Name = "toolStripSeparator7";
+			//-------------------------------
+
+			// 
+			// toolStripSeparator7
+			// 
+			this.toolStripSeparator7.Name = "toolStripSeparator7";
             this.toolStripSeparator7.Size = new System.Drawing.Size(154, 6);
             // 
             // resetToDefaultToolStripMenuItem
@@ -748,7 +753,9 @@
 		private System.Windows.Forms.ToolStripMenuItem FindPrevMenuItem;
 		private System.Windows.Forms.ToolStripMenuItem SaveMenuItem;
 		private System.Windows.Forms.ToolStripMenuItem PokeAddressMenuItem;
+
 		private System.Windows.Forms.ToolStripMenuItem CreateVMDMenuItem;//RTC_HIJACK
+
 		private System.Windows.Forms.ToolStripMenuItem PokeContextItem;
 		private System.Windows.Forms.ToolStripSeparator toolStripSeparator4;
 		private System.Windows.Forms.ToolStripMenuItem LoadTableFileMenuItem;

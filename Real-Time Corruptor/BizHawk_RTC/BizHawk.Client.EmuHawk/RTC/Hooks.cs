@@ -338,13 +338,13 @@ namespace RTCV.BizhawkVanguard
 
 		public static bool AllowCaptureRewindState = true;
 
-		public static void CLOSE_GAME(bool loadDefault = false)
+		public static void CLOSE_GAME(bool loadDefault = false, bool currentlyLoading = false)
 		{
 			try
 			{
 				if (disableRTC) return;
 
-				if (CLOSE_GAME_loop_flag == true)
+				if (CLOSE_GAME_loop_flag || currentlyLoading)
 					return;
 
 				CLOSE_GAME_loop_flag = true;

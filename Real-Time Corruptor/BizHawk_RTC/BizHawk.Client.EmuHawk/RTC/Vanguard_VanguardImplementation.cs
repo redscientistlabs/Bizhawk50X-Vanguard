@@ -152,6 +152,13 @@ namespace RTCV.BizhawkVanguard
 						e.setReturnValue(VanguardCore.RTE_API);
 						break;
 
+					case RTCV.NetCore.Commands.Emulator.ResetGame:
+						SyncObjectSingleton.FormExecute(() =>
+						{
+							Hooks.BIZHAWK_LOADROM(Hooks.BIZHAWK_GET_CURRENTLYOPENEDROM());
+						});
+						break;
+
 					case RTCV.NetCore.Commands.Emulator.GetScreenshot:
 						e.setReturnValue(Hooks.BIZHAWK_GET_SCREENSHOT());
 						break;

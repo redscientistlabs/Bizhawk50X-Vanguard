@@ -130,7 +130,7 @@ namespace BizHawk.Client.EmuHawk
 			if (Global.Config.ShowLogWindow)
 			{				
 				//RTC_HIJACK - Nuke bizhawk's console as we spawn our own
-				//LogConsole.ShowConsole();
+				LogConsole.ShowConsole();
 				RTCV.BizhawkVanguard.Hooks.SHOW_CONSOLE(true);
 				DisplayLogWindowMenuItem.Checked = true;
 			}
@@ -3692,7 +3692,7 @@ namespace BizHawk.Client.EmuHawk
 				// any settings changes that we made need to make it back to config before we try to instantiate that core with
 				// the new settings objects
 				CommitCoreSettingsToConfig(); // adelikat: I Think by reordering things, this isn't necessary anymore
-				CloseGame();
+				CloseGame(currentlyLoading: true);
 
 				var nextComm = CreateCoreComm();
 
@@ -3978,7 +3978,7 @@ namespace BizHawk.Client.EmuHawk
 		// its very tricky. rename to be more clear or combine them.
 		// This gets called whenever a core related thing is changed.
 		// Like reboot core.
-		private void CloseGame(bool clearSram = false)
+		private void CloseGame(bool clearSram = false, bool currentlyLoading = false) //RTC_Hijack : Add currentlyLoading identifier
 		{
 			GameIsClosing = true;
 			if (clearSram)
@@ -4031,7 +4031,7 @@ namespace BizHawk.Client.EmuHawk
 			RebootStatusBarIcon.Visible = false;
 			GameIsClosing = false;
 			// RTC_HIJACK : Hook after CloseGame
-			RTCV.BizhawkVanguard.Hooks.CLOSE_GAME();
+			RTCV.BizhawkVanguard.Hooks.CLOSE_GAME(currentlyLoading: currentlyLoading);
 		}
 
 		public bool GameIsClosing { get; private set; } // Lets tools make better decisions when being called by CloseGame
