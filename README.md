@@ -11,9 +11,8 @@
     <a href="https://redscientist.com/rtc"><img src="https://img.shields.io/badge/download-RTC-red.svg" alt="Download badge" /></a>
 </p>
 
-# Bizhawk-Vanguard
-> Bizhawk Vanguard
+# Bizhawk50X-Vanguard
+> Bizhawk50X Vanguard
 
-Bizhawk Vanguard is a Vanguard implementation over the Bizhawk Emulator. You can find more information about RTCV and Vanguard on the RTCV repo.  https://github.com/ircluzar/RTCV
+Bizhawk50X Vanguard is a Copatibility Vanguard implementation for stockpiles made with RTC 5.0.x. You can find more information about RTCV and Vanguard on the RTCV repo.  https://github.com/ircluzar/RTCV
 
-All RTC code has been migrated to that repo and development will be taking place there now.
