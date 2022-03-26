@@ -1006,7 +1006,7 @@ namespace BizHawk.Client.EmuHawk
 			nesHawkToolStripMenuItem.Checked = !Global.Config.NES_InQuickNES;
 		}
 
-		private void ControllersMenuItem_Click(object sender, EventArgs e)
+		public void ControllersMenuItem_Click(object sender, EventArgs e)
 		{
 			var controller = new ControllerConfig(Emulator.ControllerDefinition);
 			if (controller.ShowDialog() == DialogResult.OK)
@@ -1715,7 +1715,7 @@ namespace BizHawk.Client.EmuHawk
 			}
 		}
 
-		private void NesControllerSettingsMenuItem_Click(object sender, EventArgs e)
+		public void NesControllerSettingsMenuItem_Click(object sender, EventArgs e)
 		{
 			if (Emulator is NES)
 			{

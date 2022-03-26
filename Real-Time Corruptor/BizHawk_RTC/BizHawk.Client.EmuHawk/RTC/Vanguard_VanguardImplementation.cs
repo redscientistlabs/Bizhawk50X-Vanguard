@@ -68,6 +68,14 @@ namespace RTCV.BizhawkVanguard
 				switch (message.Type) //Handle received messages here
 				{
 
+					case RTCV.NetCore.Commands.Remote.EditController:
+						{
+							SyncObjectSingleton.FormExecute(() =>
+							{
+								Hooks.EDIT_CONTROLLER(true);
+							});
+						}
+						break;
 					case RTCV.NetCore.Commands.Remote.AllSpecSent:
 					{
 						if (VanguardCore.FirstConnect)

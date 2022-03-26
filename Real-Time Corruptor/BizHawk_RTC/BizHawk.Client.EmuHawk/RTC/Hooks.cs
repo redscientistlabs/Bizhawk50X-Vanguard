@@ -28,6 +28,8 @@ namespace RTCV.BizhawkVanguard
 		public static bool disableRTC;
 		public static bool isNormalAdvance = false;
 
+		public static object OneCallAtATimeLock = new object();
+
 		//private static Guid? loadGameToken = null;
 		//private static Guid? loadSavestateToken = null;
 
@@ -340,38 +342,59 @@ namespace RTCV.BizhawkVanguard
 
 		public static void CLOSE_GAME(bool loadDefault = false, bool currentlyLoading = false)
 		{
-			try
+			lock (OneCallAtATimeLock)
 			{
-				if (disableRTC) return;
+				try
+				{
+					if (disableRTC) return;
 
-				if (CLOSE_GAME_loop_flag || currentlyLoading)
-					return;
+					if (CLOSE_GAME_loop_flag || currentlyLoading)
+						return;
 
-				CLOSE_GAME_loop_flag = true;
+					CLOSE_GAME_loop_flag = true;
 
-				//RTC_Core.AutoCorrupt = false;
+					//RTC_Core.AutoCorrupt = false;
 
-				StepActions.ClearStepBlastUnits();
+					StepActions.ClearStepBlastUnits();
 
-				MemoryDomains.Clear();
+					MemoryDomains.Clear();
 
-				VanguardCore.OpenRomFilename = null;
+					VanguardCore.OpenRomFilename = null;
 
-				if (loadDefault)
-					VanguardCore.LoadDefaultRom();
+					if (loadDefault)
+						VanguardCore.LoadDefaultRom();
 
-				//RTC_RPC.SendToKillSwitch("UNFREEZE");
+					//RTC_RPC.SendToKillSwitch("UNFREEZE");
 
-				CLOSE_GAME_loop_flag = false;
+					CLOSE_GAME_loop_flag = false;
 
-				RtcCore.InvokeGameClosed();
-				VanguardCore.RTE_API.GAME_CLOSED();
+					RtcCore.InvokeGameClosed();
+					VanguardCore.RTE_API.GAME_CLOSED();
 
+				}
+				catch (Exception ex)
+				{
+					if (VanguardCore.ShowErrorDialog(ex) == DialogResult.Abort)
+						throw new AbortEverythingException();
+				}
 			}
-			catch (Exception ex)
+		}
+
+		public static void EDIT_CONTROLLER(bool loadDefault = false, bool currentlyLoading = false)
+		{
+			lock (OneCallAtATimeLock)
 			{
-				if (VanguardCore.ShowErrorDialog(ex) == DialogResult.Abort)
-					throw new AbortEverythingException();
+				try
+				{
+					if (disableRTC) return;
+
+					GlobalWin.MainForm.ControllersMenuItem_Click(null, null);
+
+				}
+				catch (Exception ex)
+				{
+
+				}
 			}
 		}
 
@@ -392,6 +415,8 @@ namespace RTCV.BizhawkVanguard
 		{
 			if (disableRTC) return false;
 
+			return true;
+
 			return VanguardCore.RTE_API.OverrideBackgroundInput || VanguardConnector.IsUIForm() ||
 				(Form.ActiveForm is HexEditor && Global.Config.HexEditorAllowBackgroundInput);
 
@@ -399,16 +424,19 @@ namespace RTCV.BizhawkVanguard
 
 		public static Bitmap BIZHAWK_GET_SCREENSHOT()
 		{
-			try
+			lock (OneCallAtATimeLock)
 			{
-				return GlobalWin.MainForm.MakeScreenshotImage().ToSysdrawingBitmap();
-			}
-			catch (Exception ex)
-			{
-				if (VanguardCore.ShowErrorDialog(ex, true) == DialogResult.Abort)
-					throw new AbortEverythingException();
+				try
+				{
+					return GlobalWin.MainForm.MakeScreenshotImage().ToSysdrawingBitmap();
+				}
+				catch (Exception ex)
+				{
+					//if (VanguardCore.ShowErrorDialog(ex, true) == DialogResult.Abort)
+					//	throw new AbortEverythingException();
 
-				return null;
+					return null;
+				}
 			}
 		}
 
@@ -502,17 +530,20 @@ namespace RTCV.BizhawkVanguard
 
 		public static void BIZHAWK_LOADROM(string RomFile)
 		{
-			try
+			lock (OneCallAtATimeLock)
 			{
-				var lra = new BizHawk.Client.EmuHawk.MainForm.LoadRomArgs { OpenAdvanced = new OpenAdvanced_OpenRom { Path = RomFile } };
-				GlobalWin.MainForm.LoadRom(RomFile, lra);
-			}
-			catch (Exception ex)
-			{
-				if (VanguardCore.ShowErrorDialog(ex, true) == DialogResult.Abort)
-					throw new AbortEverythingException();
+				try
+				{
+					var lra = new BizHawk.Client.EmuHawk.MainForm.LoadRomArgs { OpenAdvanced = new OpenAdvanced_OpenRom { Path = RomFile } };
+					GlobalWin.MainForm.LoadRom(RomFile, lra);
+				}
+				catch (Exception ex)
+				{
+					if (VanguardCore.ShowErrorDialog(ex, true) == DialogResult.Abort)
+						throw new AbortEverythingException();
 
-				return;
+					return;
+				}
 			}
 		}
 
@@ -606,7 +637,10 @@ namespace RTCV.BizhawkVanguard
 
 		public static void BIZHAWK_LOADSTATE(string path)
 		{
-			GlobalWin.MainForm.LoadState(path, Path.GetFileName(path), false);
+			lock (OneCallAtATimeLock)
+			{
+				GlobalWin.MainForm.LoadState(path, Path.GetFileName(path), false);
+			}
 		}
 
 		public static void BIZHAWK_SAVESTATE(string path, string quickSlotName)
