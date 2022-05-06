@@ -32,7 +32,8 @@
     <UseApplicationTrust>false</UseApplicationTrust>
     <BootstrapperEnabled>true</BootstrapperEnabled>
     <TargetFrameworkProfile />
-    <NoWarn>0162,0169,0219,0414,0612,0649,0675</NoWarn> <!-- RTCV: Ignore warnings generated from upstream (Bizhawk) code -->
+    <NoWarn>0162,0169,0219,0414,0612,0649,0675</NoWarn>
+    <!-- RTCV: Ignore warnings generated from upstream (Bizhawk) code -->
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|AnyCPU'">
     <DebugSymbols>true</DebugSymbols>
@@ -61,6 +62,7 @@
     <CodeAnalysisRuleSet Condition=" '$(OS)' == 'Windows_NT' ">AllRules.ruleset</CodeAnalysisRuleSet>
     <CodeAnalysisIgnoreBuiltInRuleSets>false</CodeAnalysisIgnoreBuiltInRuleSets>
     <CodeAnalysisIgnoreBuiltInRules>false</CodeAnalysisIgnoreBuiltInRules>
+    <WarningLevel>0</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="ELFSharp">
