@@ -187,6 +187,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Viewers", "Viewers", "{14AF
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "XeniaTemplatePlugin", "..\..\..\FileStubTemplate-Xenia\XeniaTemplatePlugin.csproj", "{48A292CC-0354-489A-94F8-CEC4A28DB88A}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Template", "..\..\..\RTCV_Plugin_Template\RTCV_Plugin_Template\RTCV_Plugin_Template\Template.csproj", "{F257BBBE-E085-42DB-9F8D-C6BAC2726F59}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|x64 = Debug|x64
@@ -449,6 +451,10 @@ Global
 		{48A292CC-0354-489A-94F8-CEC4A28DB88A}.Debug|x64.Build.0 = Debug|Any CPU
 		{48A292CC-0354-489A-94F8-CEC4A28DB88A}.Release|x64.ActiveCfg = Release|Any CPU
 		{48A292CC-0354-489A-94F8-CEC4A28DB88A}.Release|x64.Build.0 = Release|Any CPU
+		{F257BBBE-E085-42DB-9F8D-C6BAC2726F59}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{F257BBBE-E085-42DB-9F8D-C6BAC2726F59}.Debug|x64.Build.0 = Debug|Any CPU
+		{F257BBBE-E085-42DB-9F8D-C6BAC2726F59}.Release|x64.ActiveCfg = Release|Any CPU
+		{F257BBBE-E085-42DB-9F8D-C6BAC2726F59}.Release|x64.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -533,6 +539,7 @@ Global
 		{41EEF51A-BFBA-485A-8313-C2942B80FA84} = {0C3F1B8D-2B86-48F6-92FB-EAC0922950D6}
 		{14AF8DFE-02E6-43FD-93CA-C3EAF26BB235} = {0C3F1B8D-2B86-48F6-92FB-EAC0922950D6}
 		{48A292CC-0354-489A-94F8-CEC4A28DB88A} = {CA777CC5-B568-4BDA-8121-CCE5FCF3FD71}
+		{F257BBBE-E085-42DB-9F8D-C6BAC2726F59} = {8D54E9BA-327D-453D-BDA2-93178D0CD49D}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {9B9E4316-9185-412E-B951-A63355ACA956}
