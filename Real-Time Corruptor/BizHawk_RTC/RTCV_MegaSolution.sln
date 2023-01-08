@@ -151,7 +151,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DataCardPlugin", "..\..\..\
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "DataCard", "DataCard", "{C9C9088A-A395-45FC-A2E8-D45FB1867731}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BoardGame", "..\..\..\RTCV_Plugin_DataCard\RTCV_Plugin_DataCard\BoardGame\BoardGame.csproj", "{AA52CB43-0C63-4084-ACE7-F755EEC14C47}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GlitchAttack", "..\..\..\RTCV_Plugin_DataCard\RTCV_Plugin_DataCard\BoardGame\GlitchAttack.csproj", "{AA52CB43-0C63-4084-ACE7-F755EEC14C47}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BoardGameEngine", "..\..\..\RTCV_Plugin_DataCard\RTCV_Plugin_DataCard\BoardGameEngine\BoardGameEngine.csproj", "{17C85F6A-F64B-431B-AFD0-1ECEB7CE7916}"
 EndProject
@@ -192,6 +192,8 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WinVolumeLimiter", "..\..\..\WinVolumeLimiter\WinVolumeLimiter\WinVolumeLimiter.csproj", "{39EDCF46-C40E-45CF-9186-E421B7D2B197}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Ceras", "..\..\..\RTCV\Source\Libraries\ZombieCeras\src\Ceras\Ceras.csproj", "{5CD29E13-385E-400B-AA6F-498D9E1C7A0A}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Review", "..\..\..\RTCV_Plugin_Review\RTCV_Plugin_Review\RTCV_Plugin_Review\Review.csproj", "{941158E9-20DF-4489-B0DD-AD97783EFDED}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -719,6 +721,14 @@ Global
 		{5CD29E13-385E-400B-AA6F-498D9E1C7A0A}.Release|Any CPU.Build.0 = Release|Any CPU
 		{5CD29E13-385E-400B-AA6F-498D9E1C7A0A}.Release|x64.ActiveCfg = Release|Any CPU
 		{5CD29E13-385E-400B-AA6F-498D9E1C7A0A}.Release|x64.Build.0 = Release|Any CPU
+		{941158E9-20DF-4489-B0DD-AD97783EFDED}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{941158E9-20DF-4489-B0DD-AD97783EFDED}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{941158E9-20DF-4489-B0DD-AD97783EFDED}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{941158E9-20DF-4489-B0DD-AD97783EFDED}.Debug|x64.Build.0 = Debug|Any CPU
+		{941158E9-20DF-4489-B0DD-AD97783EFDED}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{941158E9-20DF-4489-B0DD-AD97783EFDED}.Release|Any CPU.Build.0 = Release|Any CPU
+		{941158E9-20DF-4489-B0DD-AD97783EFDED}.Release|x64.ActiveCfg = Release|Any CPU
+		{941158E9-20DF-4489-B0DD-AD97783EFDED}.Release|x64.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -806,6 +816,7 @@ Global
 		{F257BBBE-E085-42DB-9F8D-C6BAC2726F59} = {8D54E9BA-327D-453D-BDA2-93178D0CD49D}
 		{39EDCF46-C40E-45CF-9186-E421B7D2B197} = {BDB45197-FD4A-4C7F-B817-7F4E5D73ECC2}
 		{5CD29E13-385E-400B-AA6F-498D9E1C7A0A} = {355FD3A5-95D2-4BC7-A628-7A5BFD3FD0BF}
+		{941158E9-20DF-4489-B0DD-AD97783EFDED} = {8D54E9BA-327D-453D-BDA2-93178D0CD49D}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {9B9E4316-9185-412E-B951-A63355ACA956}
